@@ -323,5 +323,6 @@ jobs:
           git add index.html 404.html robots.txt sitemap.xml assets publicaties tools eai-blog eai-tools-modules eaa-model onderwijsin twee-pijlers workshop-ai werkvormen praktijk
           if ! git diff --cached --quiet; then
             git commit -m "build: refresh EAI site"
+            git pull --rebase origin "$GITHUB_REF_NAME"
             git push
           fi
