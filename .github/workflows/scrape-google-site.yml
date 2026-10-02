@@ -1,4 +1,4 @@
-name: Scrape Google Site
+name: Build EAI Site
 
 on:
   push:
@@ -7,6 +7,7 @@ on:
     paths:
       - '.github/workflows/scrape-google-site.yml'
       - 'scripts/build_site.py'
+      - 'content/**'
   workflow_dispatch:
 
 permissions:
@@ -227,9 +228,50 @@ jobs:
         run: |
           python scripts/build_site.py --scrape scrape --out site-build
 
+      - name: Validate internal links
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from urllib.parse import urlsplit
+          from bs4 import BeautifulSoup
+
+          root = Path("site-build")
+          failures = []
+
+          def target_for(href: str) -> Path | None:
+              if not href.startswith("/") or href.startswith("//"):
+                  return None
+              path = urlsplit(href).path
+              if path == "/":
+                  return root / "index.html"
+              rel = path.lstrip("/")
+              candidate = root / rel
+              if path.endswith("/"):
+                  return candidate / "index.html"
+              if candidate.is_file():
+                  return candidate
+              return candidate / "index.html"
+
+          for page in root.rglob("*.html"):
+              soup = BeautifulSoup(page.read_text(encoding="utf-8"), "html.parser")
+              for a in soup.find_all("a", href=True):
+                  href = a["href"].strip()
+                  target = target_for(href)
+                  if target is not None and not target.exists():
+                      failures.append((str(page.relative_to(root)), href))
+
+          if failures:
+              print("Broken internal links:")
+              for page, href in failures:
+                  print(f"  {page}: {href}")
+              raise SystemExit(1)
+
+          print("Internal link check passed")
+          PY
+
       - name: Publish generated files to migration branch
         run: |
-          rm -rf assets publicaties tools eai-blog eai-tools-modules eaa-model onderwijsin
+          rm -rf assets publicaties tools eai-blog eai-tools-modules eaa-model onderwijsin twee-pijlers workshop-ai werkvormen praktijk
           cp -R site-build/assets .
           cp -R site-build/publicaties .
           cp -R site-build/tools .
@@ -237,11 +279,15 @@ jobs:
           cp -R site-build/eai-tools-modules .
           cp -R site-build/eaa-model .
           cp -R site-build/onderwijsin .
+          cp -R site-build/twee-pijlers .
+          cp -R site-build/workshop-ai .
+          cp -R site-build/werkvormen .
+          cp -R site-build/praktijk .
           cp site-build/index.html site-build/404.html site-build/robots.txt site-build/sitemap.xml .
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add index.html 404.html robots.txt sitemap.xml assets publicaties tools eai-blog eai-tools-modules eaa-model onderwijsin
+          git add index.html 404.html robots.txt sitemap.xml assets publicaties tools eai-blog eai-tools-modules eaa-model onderwijsin twee-pijlers workshop-ai werkvormen praktijk
           if ! git diff --cached --quiet; then
-            git commit -m "build: migrate Google Site content"
+            git commit -m "build: refresh EAI site"
             git push
           fi
