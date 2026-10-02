@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - site-migration
+      - site-preview
     paths:
       - '.github/workflows/scrape-google-site.yml'
       - 'scripts/build_site.py'
@@ -267,6 +268,39 @@ jobs:
               raise SystemExit(1)
 
           print("Internal link check passed")
+          PY
+
+      - name: Rewrite preview URLs for static branch preview
+        if: github.ref == 'refs/heads/site-preview'
+        env:
+          PREVIEW_BASE: https://raw.githack.com/E-AI-MODEL/website/site-preview
+        run: |
+          python - <<'PY'
+          import os
+          from pathlib import Path
+          from bs4 import BeautifulSoup
+
+          root = Path("site-build")
+          base = os.environ["PREVIEW_BASE"].rstrip("/")
+
+          for page in root.rglob("*.html"):
+              soup = BeautifulSoup(page.read_text(encoding="utf-8"), "html.parser")
+
+              for tag, attr in (("a", "href"), ("link", "href"), ("img", "src"), ("script", "src")):
+                  for node in soup.find_all(tag):
+                      value = node.get(attr)
+                      if not value or not value.startswith("/") or value.startswith("//"):
+                          continue
+                      if value == "/":
+                          node[attr] = f"{base}/index.html"
+                      elif value.endswith("/"):
+                          node[attr] = f"{base}{value}index.html"
+                      else:
+                          node[attr] = f"{base}{value}"
+
+              page.write_text(str(soup), encoding="utf-8")
+
+          print(f"Preview URLs rewritten to {base}")
           PY
 
       - name: Publish generated files to migration branch
