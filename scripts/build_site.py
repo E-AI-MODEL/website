@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+# v2 editorial build: two pillars -> workforms -> practice -> publications
+
 import argparse
 import html
 import re
