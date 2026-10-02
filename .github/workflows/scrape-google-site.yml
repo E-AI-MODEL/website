@@ -6,7 +6,11 @@ on:
       - site-migration
     paths:
       - '.github/workflows/scrape-google-site.yml'
+      - 'scripts/build_site.py'
   workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   scrape:
@@ -218,3 +222,26 @@ jobs:
           name: google-site-scrape
           path: scrape/
           if-no-files-found: error
+
+      - name: Build new site
+        run: |
+          python scripts/build_site.py --scrape scrape --out site-build
+
+      - name: Publish generated files to migration branch
+        run: |
+          rm -rf assets publicaties tools eai-blog eai-tools-modules eaa-model onderwijsin
+          cp -R site-build/assets .
+          cp -R site-build/publicaties .
+          cp -R site-build/tools .
+          cp -R site-build/eai-blog .
+          cp -R site-build/eai-tools-modules .
+          cp -R site-build/eaa-model .
+          cp -R site-build/onderwijsin .
+          cp site-build/index.html site-build/404.html site-build/robots.txt site-build/sitemap.xml .
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html 404.html robots.txt sitemap.xml assets publicaties tools eai-blog eai-tools-modules eaa-model onderwijsin
+          if ! git diff --cached --quiet; then
+            git commit -m "build: migrate Google Site content"
+            git push
+          fi
