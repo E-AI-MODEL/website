@@ -46,7 +46,7 @@ Do not translate canonical English terminology just for stylistic consistency.
 ## Main navigation
 
 - Home
-- Kijken naar leren
+- Twee pijlers
 - Workshop AI
 - Werkvormen
 - Praktijk
@@ -58,22 +58,29 @@ Contact is a secondary action.
 ## Home
 
 ### Hero
-**De vraag die we vergeten**
-AI kan steeds meer. De onderwijskeuze begint ergens anders:
-welke stap moet hier door een mens worden gezet, en waarom?
+**Twee pijlers voor AI in onderwijs**
+
+The two pillars must be immediately visible and equally weighted:
+
+1. **Hoe leren werkt**
+2. **Hoe taalmodellen werken**
+
+The bridge question sits between them:
+**welke menselijke handeling moet hier betekenis krijgen, en wat doet AI precies op die plek?**
 
 Primary actions:
-- Lees het artikel
-- Gebruik een werkvorm
+- Bekijk de twee pijlers
+- Naar Workshop AI
 
-### Section: begin niet bij de tool
-Four-step visual route:
+### Section: de verbinding
+Use the article's order as the public route:
 1. Proces
-2. Positie in het proces
-3. Core human action / core learning action
-4. Wat doet AI hier?
+2. Fase / process position
+3. Kernhandeling / core human action
+4. AI action
+5. Human evidence where a claim about learning or human performance is needed
 
-Keep the explanation accessible. Link to deeper Core page for canonical semantics.
+Do not start the public explanation with model architecture.
 
 ### Section: meteen proberen
 Three workforms:
@@ -95,10 +102,14 @@ Feature:
 
 Then selected existing publications.
 
-## Kijken naar leren
+## Twee pijlers
 
 Editorial question:
-**Wat verandert er in het leren wanneer AI een handeling uitvoert?**
+**Wat verandert er wanneer wat we weten over leren botst met wat AI inmiddels kan uitvoeren?**
+
+Pijler 1 explains how learning and human professional action work.
+Pijler 2 explains enough about language models and AI systems to see where work can shift.
+The public EAI route begins where those two knowledge bases meet.
 
 Explain, in ordinary language:
 - context and goal;
