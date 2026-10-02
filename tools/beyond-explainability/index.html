@@ -1,0 +1,1032 @@
+<!doctype html><html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>EAI Toolkit · EAI</title><link rel="canonical" href="https://eaimodel.nl/tools/beyond-explainability/"><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/><style>
+    /* Algemene styling voor de hele pagina */
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #ffffff;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+      font-weight: 400;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 40px 20px 60px;
+      position: relative;
+    }
+
+    /* Loader Animatie */
+    .loader {
+      --color: rgba(255, 255, 255, 0.4);
+      --size-dot: 8px;
+      display: block;
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 40px;
+      height: 40px;
+      opacity: 1;
+      transition: opacity 0.3s ease;
+    }
+
+    .loader.active {
+      opacity: 1;
+    }
+
+    .loader::before,
+    .loader::after {
+      content: '';
+      position: absolute;
+      width: var(--size-dot);
+      height: var(--size-dot);
+      border-radius: 50%;
+      background-color: var(--color);
+      animation: loader-bounce 0.42s cubic-bezier(0.39, 0.31, 0, 1.11) infinite;
+    }
+
+    .loader::before {
+      left: calc(50% - var(--size-dot) - 8px);
+    }
+
+    .loader::after {
+      left: calc(50% + 8px);
+      animation-delay: 0.12s;
+    }
+
+    @keyframes loader-bounce {
+      0%, 100% {
+        opacity: 0.3;
+        transform: translate(-16px, -16px);
+      }
+      66% {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    /* Hoofdtitel styling en animatie */
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 300;
+      margin: 0 0 1rem 0;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #ffffff 0%, rgba(255,255,255,0.8) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-align: center;
+      animation: text-pop-in 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+      cursor: pointer; /* Maakt de titel klikbaar */
+    }
+
+    @keyframes text-pop-in {
+      0% {
+        opacity: 1;
+        transform: translateY(20px);
+        filter: blur(5px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+      }
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 500;
+      margin: 0 0 2rem 0;
+      letter-spacing: -0.01em;
+      color: rgba(255, 255, 255, 0.95);
+    }
+
+    p {
+      margin: 0 0 2rem 0;
+      color: rgba(255, 255, 255, 0.85);
+      max-width: 600px;
+      font-size: 1.1rem;
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .stap {
+      opacity: 1; /* Start verborgen, wordt door JS zichtbaar gemaakt of geanimeerd */
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out; /* Algemene transitie voor stap-divs */
+    }
+    
+    /* Zorgt ervoor dat stap1 direct zichtbaar is bij laden, voordat animaties starten */
+    .stap#stap1 {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Styling voor het introductie kader */
+    .intro-box {
+      border: 1px solid rgba(255, 255, 255, 0.3); /* Dunne omlijning */
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 2rem; /* Ruimte tussen tekst en knop */
+      background: rgba(255, 255, 255, 0.05); /* Lichte achtergrond voor zichtbaarheid */
+      backdrop-filter: blur(5px); /* Zachte blur */
+      transition: all 0.6s ease-out; /* Vloeiende transitie voor het kader */
+      max-height: 500px; /* Maximale hoogte voor initiële weergave */
+      opacity: 1;
+      overflow: hidden; /* Verbergt overlopende inhoud tijdens inklappen */
+      display: block; /* Zorgt ervoor dat het kader als block element wordt behandeld */
+    }
+
+    /* Ingeklapte staat voor stap1 en het introductie kader */
+    .stap.collapsed-intro-state .intro-box {
+      max-height: 0; /* Klapt het kader in */
+      padding-top: 0;
+      padding-bottom: 0;
+      margin-bottom: 0;
+      opacity: 1;
+      pointer-events: none; /* Maakt het niet-interactief wanneer ingeklapt */
+    }
+
+    /* Startknop styling */
+    .btn {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      padding: 16px 32px;
+      border-radius: 12px;
+      transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); /* Aangepaste transitie voor vloeiender bewegen */
+      outline: none;
+      letter-spacing: 0.01em;
+      margin-top: 2rem; /* Initiële marge */
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .btn:hover::before {
+      left: 100%;
+    }
+
+    .btn:hover {
+      background: rgba(255, 255, 255, 0.25);
+      border-color: rgba(255, 255, 255, 0.4);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+    
+    /* Verplaats de knop omhoog wanneer de intro is ingeklapt */
+    .stap.collapsed-intro-state .btn {
+      margin-top: 0.5rem; /* Een kleinere marge om de knop nog steeds onder de titel te houden */
+      /* transform: translateY is verwijderd */
+    }
+
+    /* Standaard staat voor vaardigheids- en werkvormknoppen */
+    .vaard-btn, .wv-btn {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 400;
+      cursor: pointer;
+      color: rgba(255, 255, 255, 0.95);
+      padding: 20px 24px;
+      margin: 0 0 12px 0;
+      text-align: left;
+      width: 100%;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      outline: none;
+      border-radius: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .vaard-btn::before, .wv-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+      transition: left 0.6s;
+    }
+
+    .vaard-btn:hover::before, .wv-btn:hover::before {
+      left: 100%;
+    }
+
+    .vaard-btn:hover, .wv-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.3);
+      transform: translateX(8px) translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .vaard-btn:last-child, .wv-btn:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Terug-knop styling */
+    .terug-btn {
+      background: transparent;
+      border: none;
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 400;
+      cursor: pointer;
+      color: rgba(255, 255, 255, 0.7);
+      padding: 12px 0;
+      margin-bottom: 2rem;
+      transition: all 0.3s ease;
+      outline: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .terug-btn:hover {
+      color: rgba(255, 255, 255, 0.95);
+      transform: translateX(-4px);
+    }
+
+    /* Werkvorm inhoud styling */
+    .werkvorm-content {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 16px;
+      padding: 32px;
+      margin-top: 2rem;
+      animation: fadeInUp 0.6s ease-out;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+
+    .wv-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.95);
+      margin-bottom: 1rem;
+      letter-spacing: -0.01em;
+    }
+
+    .wv-uitleg {
+      color: rgba(255, 255, 255, 0.85);
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+
+    .wv-voorbeeld {
+      background: rgba(255, 255, 255, 0.08);
+      padding: 16px 20px;
+      border-radius: 12px;
+      margin: 20px 0;
+      font-size: 0.95rem;
+      color: rgba(255, 255, 255, 0.8);
+      border-left: 3px solid rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(10px);
+    }
+
+    .wv-voorbeeld::before {
+      content: "Voorbeeld: ";
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.95);
+    }
+
+    .wv-reflectie {
+      margin: 20px 0;
+      color: rgba(255, 255, 255, 0.85);
+      font-style: italic;
+    }
+
+    .wv-reflectie::before {
+      content: "Reflectievraag: ";
+      font-weight: 500;
+      font-style: normal;
+      color: rgba(255, 255, 255, 0.95);
+    }
+
+    .wv-prompt-row {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      margin-top: 24px;
+      gap: 12px;
+    }
+    .generate-prompt-button {
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 10px 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      outline: none;
+      border-radius: 8px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.85);
+      font-family: inherit;
+    }
+
+    .generate-prompt-button:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.4);
+      color: rgba(255, 255, 255, 0.95);
+      transform: translateY(-1px);
+    }
+
+
+    .promptknop {
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 10px 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      outline: none;
+      border-radius: 8px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.85);
+      font-family: inherit;
+    }
+
+    .promptknop:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.4);
+      color: rgba(255, 255, 255, 0.95);
+      transform: translateY(-1px);
+    }
+
+    .prompt-icoon {
+      width: 16px;
+      height: 16px;
+      stroke: currentColor;
+      stroke-width: 2;
+      fill: none;
+      margin-right: 8px;
+    }
+
+    .wv-promptbox {
+      width: 100%;
+      font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+      font-size: 0.9rem;
+      margin-top: 16px;
+      background: rgba(0, 0, 0, 0.3);
+      color: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      padding: 20px;
+      resize: none;
+      outline: none;
+      line-height: 1.5;
+      min-height: 120px;
+      backdrop-filter: blur(10px);
+    }
+    .wv-generated-prompt-content {
+      width: 100%;
+      font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+      font-size: 0.9rem;
+      margin-top: 16px;
+      background: rgba(0, 0, 0, 0.3);
+      color: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      padding: 20px;
+      resize: none;
+      outline: none;
+      line-height: 1.5;
+      min-height: 120px;
+      backdrop-filter: blur(10px);
+    }
+
+
+    .skill-list {
+      margin-top: 1rem;
+    }
+
+    .skill-list > * {
+      animation: fadeInUp 0.6s ease-out forwards;
+      animation-delay: calc(var(--delay, 0) * 0.1s);
+      opacity: 0;
+    }
+
+    /* Zwevende deeltjes effect */
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      animation: float 6s linear infinite;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      90% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-10vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    /* Media queries voor responsiviteit */
+    @media (max-width: 768px) {
+      .container {
+        padding: 20px 16px 40px;
+      }
+
+      h1 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+      }
+
+      .werkvorm-content {
+        padding: 24px 20px;
+      }
+
+      .btn {
+        padding: 14px 24px;
+        font-size: 0.95rem;
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style><link rel="stylesheet" href="/assets/article-chrome.css"></head><body><header class="eai-site-nav"><div class="eai-site-nav__inner"><a class="eai-site-nav__brand" href="/">EAI</a><div class="eai-site-nav__links"><a href="/publicaties/">Publicaties</a><a href="/tools/">Tools</a><a href="/onderwijsin/">OnderwijsIn</a><a href="mailto:vis@emmauscollege.nl">Contact</a></div></div></header>
+<div class="particles" id="particles"></div>
+<div class="loader" id="loader"></div>
+<div class="container">
+<h1 onclick="toggleIntroText()">EAI Toolkit</h1>
+<div class="stap" id="stap1">
+<div class="intro-box">
+<p>Welkom bij de EAI Toolkit! Deze tool is ontworpen om docenten en leerlingen te helpen bij het ontwikkelen van essentiële vaardigheden voor Effectieve AI-integratie in het onderwijs. Ontdek micro-werkvormen die kritisch denken, zelfregulatie en ethisch bewustzijn rondom AI bevorderen. Leer hoe je AI doelgericht inzet om het leerproces te verrijken, zonder dat het eigenaarschap van leren verloren gaat. Start nu en verhoog de impact van AI in jouw lespraktijk.</p>
+</div>
+<button class="btn" onclick="naarVaardigheden()">Start</button>
+</div>
+<div class="stap" id="stap2" style="display:none;"></div>
+<div class="stap" id="stap3" style="display:none;"></div>
+<div class="stap" id="stap4" style="display:none;"></div>
+</div>
+<script>
+    // Define the vaardigheden (skills) array with updated and new content
+    const vaardigheden = [
+      {
+        naam: "Eigenaarschap van leren",
+        werkvormen: [
+          {
+            titel: "Leer-logboek",
+            uitleg: "Leerlingen documenteren wat ze zelf hebben ontdekt versus wat AI hen gaf. Dit stimuleert metacognitieve reflectie en maakt het leerproces transparanter.",
+            voorbeeld: "Na een AI-gesprek over de Tweede Wereldoorlog: 'Mijn eigen inzicht was dat oorzaken complex zijn, AI hielp met een tijdlijn van belangrijke gebeurtenissen.'",
+            reflectie: "Waar kwam jouw eigen denken tot leven? Welke momenten waren cruciaal voor jouw begrip, los van de AI-input?",
+            prompt: "Creëer een gedetailleerd logboeksjabloon voor leerlingen, waarin ze dagelijks of per opdracht nauwkeurig bijhouden: 1. Wat heb ik zelfstandig ontdekt of bedacht (met concrete voorbeelden)? 2. Welke specifieke informatie of inzichten heeft de AI geleverd (met vermelding van de prompt die hiervoor gebruikt is)? 3. Hoe heb ik bewust het eigenaarschap over mijn leerproces genomen, bijvoorbeeld door kritische vragen te stellen, AI-output te verifiëren, of alternatieve paden te kiezen? Zorg voor voldoende ruimte voor diepgaande reflectie."
+          },
+          {
+            titel: "Regie-check",
+            uitleg: "Laat leerlingen kort omschrijven wanneer ze tijdens de opdracht bewust de regie namen over het leerproces. Dit versterkt hun autonomie en zelfregulatievaardigheden.",
+            voorbeeld: "Kiezen om een AI-antwoord over de opbouw van een essay niet te gebruiken omdat het te algemeen was, en zelf specifieke voorbeelden te zoeken die beter bij de opdracht pasten.",
+            reflectie: "Wanneer voelde jij je echt eigenaar van de oplossing of het proces? Wat was de impact van die keuze op jouw leerresultaat?",
+            prompt: "Ontwikkel een reflectieopdracht waarin leerlingen één of twee concrete momenten beschrijven waarop ze tijdens een leertaak bewust de regie hebben genomen door af te zien van een AI-antwoord, of door AI op een specifieke, sturende manier in te zetten. Ze moeten uitleggen: 1. De context van de beslissing. 2. Waarom ze deze keuze maakten. 3. Wat het directe gevolg van die keuze was voor hun leerproces of het eindproduct. Focus op de ontwikkeling van metacognitieve vaardigheden."
+          }
+        ]
+      },
+      {
+        naam: "Kritisch beoordelen van AI-output",
+        werkvormen: [
+          {
+            titel: "AI-feedback check",
+            uitleg: "Leerlingen controleren de AI-output op nauwkeurigheid, bruikbaarheid en volledigheid. Dit bevordert kritische denkvaardigheden en de beoordeling van informatiebronnen.",
+            voorbeeld: "Een AI-gegenereerde samenvatting van een historisch evenement wordt vergeleken met primaire bronnen en indien nodig gecorrigeerd of aangevuld met ontbrekende nuances.",
+            reflectie: "Welke specifieke AI-zinnen of -argumenten heb jij moeten veranderen of aanvullen? Waarom was dit nodig en wat zegt dit over de betrouwbaarheid van AI als bron?",
+            prompt: "Ontwikkel een gedetailleerd werkblad voor kritisch lezen. Leerlingen krijgen een stuk AI-gegenereerde tekst (bijvoorbeeld een uitleg over een complex concept). Ze moeten de tekst beoordelen op: 1. Juistheid (feitelijke correctheid). 2. Volledigheid (worden alle relevante aspecten behandeld?). 3. Bruikbaarheid (is de informatie direct toepasbaar en duidelijk?). Voeg specifieke instructies en ruimte toe voor leerlingen om correcties, aanvullingen of kanttekeningen te plaatsen, met een onderbouwing van hun keuzes."
+          },
+          {
+            titel: "Bias-spotter",
+            uitleg: "Leerlingen analyseren AI-output op mogelijke vooroordelen, framing of onbedoelde vertekeningen, en leren zo over algoritmische bias.",
+            voorbeeld: "Een AI-gegenereerd nieuwsbericht over een sociaal-economisch vraagstuk wordt gescand op woordkeuze of perspectieven die een bepaalde groep bevoordelen of benadelen.",
+            reflectie: "Waar zie je concrete voorbeelden van bias in de AI-output? Hoe zou deze bias ontstaan kunnen zijn en welk effect heeft het op de ontvanger?",
+            prompt: "Ontwerp een opdrachtblad waarbij leerlingen een specifiek stuk AI-tekst (bijv. een beschrijving van een beroep, een historische gebeurtenis of een maatschappelijk thema) grondig analyseren op aanwijzingen van bias of framing. Ze moeten concrete zinnen of passages citeren die dit illustreren en vervolgens kort reflecteren op: 1. De aard van de bias (stereotypering, weglating, overdrijving etc.). 2. De mogelijke oorzaken van deze bias. 3. De potentiële impact van deze bias op lezers of gebruikers."
+          },
+          {
+            titel: "Feitenchecker",
+            uitleg: "Leerlingen verifiëren feiten en beweringen in AI-antwoorden met behulp van betrouwbare, onafhankelijke bronnen, en leren zo over bronnenkritiek.",
+            voorbeeld: "Een AI-antwoord op een biologie-vraag over fotosynthese wordt gecheckt met wetenschappelijke artikelen of erkende handboeken om de feitelijke juistheid te bevestigen.",
+            reflectie: "Waar week de AI het meest af van de betrouwbare bronnen? Wat zegt dit over de noodzaak van kritische controle?",
+            prompt: "Ontwikkel een gedetailleerd werkblad waarin leerlingen een reeks AI-gegenereerde antwoorden (op feitelijke vragen over een specifiek onderwerp) vergelijken met ten minste twee onafhankelijke, betrouwbare bronnen (wetenschappelijke publicaties, erkende encyclopedieën, overheidsrapporten). Ze moeten: 1. Elk feit of elke bewering controleren. 2. Afwijkingen of onjuistheden markeren. 3. De betrouwbaarheid van de AI-informatie bepalen op basis van hun bevindingen. 4. Korte conclusies trekken over de validatie van AI-output."
+          }
+        ]
+      },
+      {
+        naam: "Promptstrategie ontwerpen",
+        werkvormen: [
+          {
+            titel: "Prompt-vergelijker",
+            uitleg: "Leerlingen experimenteren met verschillende prompts over hetzelfde onderwerp om te zien hoe de formulering de AI-output beïnvloedt.",
+            voorbeeld: "Prompt 1: 'Wat is waterstof?' versus Prompt 2: 'Leg de rol van waterstof uit als energiedrager in de toekomst, inclusief de voor- en nadelen.' Ze vergelijken de diepgang en focus van de antwoorden.",
+            reflectie: "Welke prompt levert de meest diepgaande, bruikbare of genuanceerde informatie op? Wat maakt die prompt effectiever?",
+            prompt: "Maak een werkblad waar leerlingen voor een gegeven complex onderwerp (bijv. klimaatverandering, blockchain, genetische modificatie) ten minste drie verschillende prompts ontwerpen die variëren in specificiteit, instructies (bijv. 'leg uit', 'vergelijk', 'analyseer kritisch') en gewenste outputformaat. Vervolgens vergelijken ze de AI-outputs uitvoerig en reflecteren op de relatie tussen promptkwaliteit en de relevantie, diepgang en nauwkeurigheid van het gegenereerde antwoord."
+          },
+          {
+            titel: "Prompt-misleiding",
+            uitleg: "Leerlingen schrijven bewust een suggestieve of biased prompt en analyseren hoe AI hierop reageert, om zo inzicht te krijgen in AI's gevoeligheid voor framing.",
+            voorbeeld: "Prompt: 'Waarom zijn fossiele brandstoffen de enige realistische optie voor toekomstige energievoorziening?' De AI-output wordt geanalyseerd op hoe het de suggestie oppikt of weerlegt.",
+            reflectie: "Wat doet framing met de AI-output? Hoe beïnvloedt jouw sturing de objectiviteit van het antwoord?",
+            prompt: "Stel een korte opdracht op waarin leerlingen een bewust suggestieve, leidende of vertekende prompt bedenken over een controversieel onderwerp. Ze genereren de AI-output en analyseren vervolgens: 1. Hoe de AI reageert op de suggestie (volgt het, nuanceert het, of corrigeert het?). 2. Welke ethische overwegingen er spelen bij het gebruik van dergelijke prompts. 3. Wat dit experiment leert over de verantwoordelijkheid van de prompt-schrijver. Focus op ethiek en kritisch denken."
+          },
+          {
+            titel: "Verbeter-de-prompt",
+            uitleg: "Leerlingen krijgen een matige of onduidelijke prompt en werken samen om deze te herschrijven naar een veel effectievere, preciezere en neutralere vraagstelling.",
+            voorbeeld: "Oorspronkelijke prompt: 'Schrijf een tekst over planten.' Beter: 'Geef drie essentiële verschillen tussen een monocotyl en een dicotyl plant, inclusief botanische voorbeelden en hun ecologische relevantie.'",
+            reflectie: "Hoe verandert de kwaliteit van de uitkomst door je prompt scherper en specifieker te formuleren? Wat zijn de universele principes van een goede prompt?",
+            prompt: "Maak een interactief opdrachtblad met een reeks vage of ineffectieve prompts. Laat leerlingen deze prompts herschrijven naar optimale, duidelijke, onderzoekbare, of kritische vragen. Ze moeten hun verbeteringen motiveren door uit te leggen welke elementen ze hebben toegevoegd of gewijzigd (bijv. rol, context, format, constrainsts, tone) en waarom dit de kwaliteit van de verwachte AI-output zal verbeteren. Dit bevordert precisie en strategisch denken."
+          }
+        ]
+      },
+      {
+        naam: "Tool-Impact Analyse",
+        werkvormen: [
+          {
+            titel: "Tool-wegingskaart",
+            uitleg: "Leerlingen noteren wat een AI-tool oplevert (voordelen) en wat het kost aan eigen denkwerk of leerervaring (nadelen). Dit helpt bij een afgewogen inzet.",
+            voorbeeld: "Een chatbot helpt bij het samenvatten van een lange tekst, maar de leerling moet wel kritisch beoordelen of de hoofdgedachte nog zelfstandig wordt gevormd of dat dit proces wordt uitbesteed aan de AI.",
+            reflectie: "Waar schuift eigenaarschap of een diepere leerervaring richting AI? Welke vaardigheden dreigen minder ontwikkeld te worden door deze tool?",
+            prompt: "Maak een gedetailleerd analyseblad waarop leerlingen per AI-tool (bijv. vertaaltool, schrijfassistent, code-generator) noteren: 1. Welke taken gaan aantoonbaar makkelijker of sneller door de tool? 2. Welke cognitieve vaardigheden of leerervaringen worden hierdoor potentieel minder geoefend of ontwikkeld? 3. Waar verschuift het eigenaarschap van het leerproces (bijv. van 'zelf iets bedenken' naar 'AI-output beoordelen')? 4. Wat is de balans tussen efficiëntie en diepgang van leren?"
+          },
+          {
+            titel: "Impact-vragenlijst",
+            uitleg: "Leerlingen beantwoorden stellingen over hun AI-gebruik en de waargenomen impact op hun leren, motivatie en begrip.",
+            voorbeeld: "'Door het gebruik van deze AI-tool begrijp ik het onderwerp beter' – leerlingen kiezen 'helemaal eens' tot 'helemaal oneens' en onderbouwen hun antwoord.",
+            reflectie: "Wat heb je over jezelf geleerd door de impact van deze tool te analyseren? Heeft het je geholpen of juist belemmerd in jouw leerproces?",
+            prompt: "Maak een uitgebreide vragenlijst met Likert-schaal stellingen (bijv. 1=Helemaal oneens, 5=Helemaal eens) waarin leerlingen reflecteren op de invloed van een specifieke AI-tool op diverse aspecten van hun leerproces: 1. Begrip van de leerstof. 2. Motivatie en betrokkenheid. 3. Ontwikkeling van kritisch denken/probleemoplossende vaardigheden. 4. Eigenaarschap over hun leerproces. 5. Gevoel van zelfeffectiviteit. Voeg telkens ruimte toe voor een korte kwalitatieve onderbouwing van hun score."
+          }
+        ]
+      },
+      {
+        naam: "Digitale zelfregulatie",
+        werkvormen: [
+          {
+            titel: "AI-aan/uit keuze",
+            uitleg: "Leerlingen worden uitgedaagd om bewust te kiezen wanneer ze wel of geen AI gebruiken voor een taak, en vergelijken daarna de leeropbrengsten en ervaringen.",
+            voorbeeld: "De ene helft van de klas werkt aan een onderzoeksvraag mét AI-ondersteuning, de andere helft zonder. Daarna bespreken ze de verschillen in proces, resultaat en leerervaring.",
+            reflectie: "Wat leverde het werken zonder AI je op wat je met AI misschien had gemist? Wanneer is AI echt een toevoeging, en wanneer niet?",
+            prompt: "Ontwerp een gedifferentieerde opdracht: een deel van de klas werkt aan een complexe probleemoplossende taak (bijv. een ethisch dilemma analyseren of een ingewikkelde case bestuderen) mét AI, en het andere deel zonder AI. Na afloop vergelijken beide groepen hun resultaten, proces, en vooral hun leerervaringen. De prompt moet leerlingen stimuleren om te reflecteren op de voordelen en nadelen van beide benaderingen, en te bepalen in welke situaties zij AI wel of niet zouden inzetten voor optimale leerresultaten."
+          },
+          {
+            titel: "Reflectiepauze",
+            uitleg: "Laat leerlingen tijdens het werk op een vooraf bepaald moment stilstaan en opschrijven wanneer ze AI wel of niet hebben ingezet, en waarom.",
+            voorbeeld: "Bij een lange schrijfopdracht: na 10 minuten zelfstandig schrijven, een korte reflectiepauze om te noteren of AI werd gebruikt en met welk doel, of bewust niet werd gebruikt.",
+            reflectie: "Welke bewuste keuzes maakte je tot nu toe over het inzetten van AI? Hoe beïnvloeden deze keuzes jouw autonomie in het leerproces?",
+            prompt: "Creëer een 'reflectie-check-in' moment voor leerlingen die werken aan een open opdracht. Halverwege de taak onderbreken ze hun werk en noteren ze: 1. Op welke momenten heb ik AI ingezet en waarom? 2. Op welke momenten heb ik bewust géén AI ingezet en waarom? 3. Hoe beïnvloedt deze bewuste keuze (wel/niet gebruiken) mijn begrip van de stof, mijn creativiteit, en mijn gevoel van eigenaarschap over de taak? Deze prompt moedigt metacognitie en strategische inzet van AI aan."
+          }
+        ]
+      },
+      {
+        naam: "AI-uitvoer checken op metacognitieve waarde",
+        werkvormen: [
+          {
+            titel: "Metacognitieve Meerwaarde Analyse",
+            uitleg: "Leerlingen analyseren AI-output specifiek op elementen die hun eigen denken, reflectie of diepere verwerking stimuleren. Dit bevordert het herkennen van hoogwaardige AI-feedback.",
+            voorbeeld: "Een AI-generatie die niet alleen een antwoord geeft, maar ook suggesties voor verdieping of alternatieve perspectieven, wordt als hoogwaardiger beoordeeld.",
+            reflectie: "Welke delen van de AI-output hebben je echt aan het denken gezet of je geholpen je eigen leerproces te verbeteren?",
+            prompt: "Ontwikkel een evaluatieformulier voor AI-output, specifiek gericht op de 'metacognitieve waarde'. Leerlingen beoordelen AI-teksten of -feedback op de aanwezigheid van elementen die: 1. Nieuwsgierigheid opwekken. 2. Aanzetten tot verdere vragen. 3. Verschillende perspectieven bieden. 4. De leerling uitdagen om dieper na te denken dan alleen het beantwoorden van de vraag. Ze moeten concrete voorbeelden uit de AI-output aanwijzen en toelichten waarom dit bijdraagt aan hun metacognitieve ontwikkeling."
+          }
+        ]
+      },
+      {
+        naam: "Feedbackcontrole",
+        werkvormen: [
+          {
+            titel: "Feedbackvalidatie",
+            uitleg: "Leerlingen controleren de correctheid, bruikbaarheid en leerdoelgerichtheid van AI-gegenereerde feedback op hun werk.",
+            voorbeeld: "AI-feedback op een essay wordt gecheckt: is de grammatica correct? Is de structuurverbetering logisch? Draagt het bij aan de leerdoelen van de schrijfopdracht?",
+            reflectie: "Welke AI-feedback was het meest waardevol en waarom? Wat zou de AI de volgende keer beter kunnen doen?",
+            prompt: "Stel een gedetailleerd protocol op voor het valideren van AI-feedback. Leerlingen krijgen AI-feedback op een ingeleverd werkstuk (bijv. een verslag, een presentatiescript). Ze beoordelen de feedback op: 1. Correctheid (feitelijk/grammaticaal). 2. Bruikbaarheid (is de suggestie praktisch toepasbaar?). 3. Leerdoelgerichtheid (draagt het bij aan de gespecificeerde leerdoelen?). Ze moeten specifieke voorbeelden van goede en minder goede feedback identificeren en een advies geven aan de AI over hoe de feedback in de toekomst verbeterd kan worden."
+          }
+        ]
+      },
+      {
+        naam: "Intentional Framing",
+        werkvormen: [
+          {
+            titel: "AI-Integratieplan",
+            uitleg: "Docenten (of gevorderde leerlingen) ontwerpen een lesactiviteit waarin ze bewust bepalen waarom en hoe AI wordt ingezet om specifieke leerdoelen te ondersteunen.",
+            voorbeeld: "Een lesplan waarbij AI wordt ingezet voor differentiatie: leerlingen krijgen AI-gegenereerde oefeningen op hun eigen niveau.",
+            reflectie: "Hoe draagt de specifieke AI-inzet bij aan de gestelde leerdoelen? Welke didactische overwegingen zijn hierbij essentieel?",
+            prompt: "Ontwikkel een sjabloon voor een 'AI-integratieplan' voor een lesactiviteit. Het sjabloon moet de gebruiker (docent/leerling) begeleiden bij het invullen van: 1. Het leerdoel van de activiteit. 2. De specifieke AI-tool die wordt ingezet. 3. De exacte momenten in de lesfase waarop AI wordt gebruikt. 4. Een didactische verantwoording: waarom is AI hier de meest effectieve keuze? 5. Hoe wordt metacognitie en eigenaarschap van leerlingen gewaarborgd? 6. Mogelijke risico's en mitigerende maatregelen. Dit stimuleert doelgerichtheid en verantwoorde AI-inzet."
+          }
+        ]
+      },
+      {
+        naam: "Scenario-denken (AI als actor)",
+        werkvormen: [
+          {
+            titel: "AI-Reactie Predictor",
+            uitleg: "Leerlingen voorspellen hoe een AI zal reageren op verschillende soorten prompts, op basis van hun kennis van AI-systemen.",
+            voorbeeld: "Voorspellen hoe een AI zal reageren op een vage prompt versus een zeer specifieke prompt, of op een vraag die ethische overwegingen vereist.",
+            reflectie: "Wat zegt je voorspelling over je begrip van hoe AI 'denkt' en informatie verwerkt?",
+            prompt: "Creëer een scenario-oefening waarin leerlingen een reeks prompts krijgen (variërend in duidelijkheid, complexiteit, en gevoeligheid). Voor elke prompt moeten ze gedetailleerd voorspellen: 1. Hoe de AI waarschijnlijk zal reageren (qua inhoud, stijl, volledigheid). 2. Welke mogelijke valkuilen of onnauwkeurigheden de AI zou kunnen vertonen. 3. Welke follow-up prompt zij zelf zouden geven om de output te verbeteren. Dit bevordert 'theory of mind' ten opzichte van AI."
+          }
+        ]
+      },
+      {
+        naam: "Workflow-denken (AI-perspectief)",
+        werkvormen: [
+          {
+            titel: "AI-Workflow Mapping",
+            uitleg: "Leerlingen (of docenten) herstructureren een lesinhoud of taakproces vanuit het perspectief van AI-inzet, om optimale momenten en methoden te bepalen.",
+            voorbeeld: "Een projectplanning wordt herzien: waar kan AI ingezet worden voor brainstormen, waar voor data-analyse, waar voor het genereren van eerste concepten?",
+            reflectie: "Hoe verandert je didactische aanpak als je een taakproces optimaliseert met AI in gedachten?",
+            prompt: "Ontwikkel een 'AI-workflow mapping' opdracht. Geef leerlingen een bestaande lesinhoud, projectplan of onderzoeksopdracht. Ze moeten dit proces herstructureren door in elke fase te bepalen: 1. Welke deeltaken er zijn. 2. Waar AI zinvol kan worden ingezet om de efficiëntie of kwaliteit te verhogen (met specifieke AI-tools). 3. Welke prompts of instructies de AI nodig heeft. 4. Hoe menselijke controle en kritische beoordeling gewaarborgd blijven in die workflow. Focus op systematisch ontwerp en efficiëntie."
+          }
+        ]
+      },
+      {
+        naam: "AI-risico's kunnen inschatten bij lesgebruik",
+        werkvormen: [
+          {
+            titel: "Risico-Analyse Matrix",
+            uitleg: "Leerlingen (of docenten) beoordelen potentiële risico's van een AI-tool in een onderwijscontext (bijv. privacy, bias, misinformatie) en bedenken mitigerende strategieën.",
+            voorbeeld: "Voor een vertaaltool: risico op privacy van ingevoerde teksten, risico op verlies van originele schrijfvaardigheid.",
+            reflectie: "Wat zijn de belangrijkste afwegingen tussen het gemak van AI en de potentiële risico's voor leren en ethiek?",
+            prompt: "Maak een Risico-Analyse Matrix voor het gebruik van AI in het onderwijs. Leerlingen kiezen een specifieke AI-tool (bijv. een AI-chatbot, een automatische nakijktool) en identificeren: 1. Potentiële risico's (bijv. privacy, bias, auteursrecht, misinformatie, afname van kritische vaardigheden). 2. De waarschijnlijkheid van elk risico (laag, gemiddeld, hoog). 3. De potentiële impact (laag, gemiddeld, hoog). 4. Concrete mitigerende maatregelen of strategieën om deze risico's te beperken. Dit bevordert risicobewustzijn en verantwoord gebruik."
+          }
+        ]
+      },
+      {
+        naam: "Ethiekbewust handelen bij AI-gebruik",
+        werkvormen: [
+          {
+            titel: "Ethisch Dilemma Casus",
+            uitleg: "Leerlingen analyseren korte casussen over ethische dilemma's rondom AI-gebruik in het onderwijs en formuleren mogelijke oplossingen.",
+            voorbeeld: "Een casus over een leerling die AI gebruikt om een plagiaatopdracht te maken, of een AI die discriminerende feedback geeft.",
+            reflectie: "Welke ethische principes zijn hier in het geding? Hoe zou je handelen en waarom?",
+            prompt: "Ontwikkel 3-5 korte, realistische casussen die ethische dilemma's rondom AI-gebruik in het onderwijs presenteren (bijv. onbedoelde bias in AI-feedback, privacy van leerlingdata bij AI-tools, plagiaatdetectie, AI als 'black box' bij beslissingen). Voor elke casus moeten leerlingen: 1. De ethische kern van het dilemma identificeren. 2. De betrokken waarden en stakeholders benoemen. 3. Twee tot drie mogelijke handelingsopties formuleren. 4. De voor- en nadelen van elke optie afwegen op basis van ethische principes. Dit stimuleert ethisch redeneren en verantwoordelijkheid."
+          }
+        ]
+      },
+      {
+        naam: "Leerdoel-AI matching",
+        werkvormen: [
+          {
+            titel: "Leerdoel-AI Matcher",
+            uitleg: "Docenten (of leerlingen) kiezen een specifiek leerdoel en bepalen welke AI-tool het meest geschikt is om dit leerdoel te ondersteunen, inclusief een onderbouwing.",
+            voorbeeld: "Leerdoel: 'De leerling kan complexe data visualiseren.' Geschikte AI-tool: een AI-gestuurde datavisualisatietool. Onderbouwing: de tool kan snel verschillende grafieken genereren om patronen te ontdekken.",
+            reflectie: "Waarom is deze specifieke AI-tool de beste match voor dit leerdoel, en wat zijn de alternatieven?",
+            prompt: "Creëer een 'Leerdoel-AI Matcher' sjabloon. De gebruiker formuleert een specifiek leerdoel (SMART). Vervolgens identificeert de gebruiker: 1. Minimaal twee verschillende AI-tools die potentieel kunnen bijdragen aan dit leerdoel. 2. Voor elke tool een gedetailleerde onderbouwing waarom deze wel/niet geschikt is, rekening houdend met de aard van het leerdoel (cognitief, sociaal, emotioneel, psychomotorisch) en de leerfase van de leerlingen. 3. Een concrete beschrijving van hoe de gekozen AI-tool specifiek zal worden ingezet om het leerdoel te bereiken. Dit bevordert doelgerichtheid en didactische integratie."
+          }
+        ]
+      },
+      {
+        naam: "Procesfase-analyse",
+        werkvormen: [
+          {
+            titel: "AI-Fasenplan",
+            uitleg: "Leerlingen (of docenten) analyseren een leerproces in fases en bepalen in welke specifieke fase AI kan worden ingezet voor maximale didactische impact.",
+            voorbeeld: "Bij een onderzoeksopdracht: AI in de brainstormfase voor ideegeneratie, in de onderzoeksfase voor literatuuronderzoek, in de schrijfase voor feedback op concepten.",
+            reflectie: "Hoe beïnvloedt de timing van AI-inzet de effectiviteit van het leerproces en de autonomie van de leerling?",
+            prompt: "Ontwikkel een 'AI-Fasenplan' sjabloon. Geef een generiek leerproces (bijv. 'het schrijven van een onderzoekspaper', 'het voorbereiden van een presentatie', 'het uitvoeren van een project'). De gebruiker moet dit proces opdelen in logische fasen (bijv. Oriëntatie, Verzameling, Verwerking, Presentatie, Reflectie). Voor elke fase moet vervolgens worden bepaald: 1. Welke specifieke AI-tool of functionaliteit hierin kan worden ingezet. 2. De didactische rationale: waarom is AI in deze fase waardevol? 3. Hoe wordt gewaarborgd dat AI de leerling ondersteunt en niet vervangt in deze fase? Focus op het strategisch plannen van AI-inzet."
+          }
+        ]
+      },
+      {
+        naam: "AI-besluitvorming doorzien",
+        werkvormen: [
+          {
+            titel: "Black Box Decoder",
+            uitleg: "Leerlingen proberen te doorgronden hoe een AI tot een bepaald antwoord of besluit komt door te experimenteren en te observeren.",
+            voorbeeld: "Vragen stellen aan een AI-chatbot om de beperkingen of 'denkprocessen' te achterhalen, bijv. door inconsistente prompts te geven.",
+            reflectie: "Hoe transparant is de besluitvorming van deze AI? Wat zegt dit over de betrouwbaarheid en verklaarbaarheid?",
+            prompt: "Ontwikkel een 'Black Box Decoder' opdracht. Leerlingen krijgen toegang tot een AI-tool (bijv. een aanbevelingssysteem, een beeldherkenningstool of een complexe chatbot). Ze moeten een reeks gestructureerde experimenten uitvoeren (bijv. specifieke inputs geven, randgevallen testen, inconsistente data aanbieden) om te proberen te achterhalen: 1. Welke factoren de AI-output het meest beïnvloeden. 2. Hoe 'transparant' of 'verklaarbaar' de beslissingen van de AI zijn. 3. Waar de beperkingen of mogelijke fouten van de AI liggen. De reflectie moet ingaan op het belang van inzicht in AI-besluitvorming voor verantwoord gebruik."
+          }
+        ]
+      },
+      {
+        naam: "Autonomiebalans",
+        werkvormen: [
+          {
+            titel: "Autonomie Spectrum Analyse",
+            uitleg: "Leerlingen (of docenten) analyseren de mate van autonomie van een AI-tool en de benodigde menselijke sturing of toezicht in verschillende scenario's.",
+            voorbeeld: "Een AI die zelfstandig oefenopdrachten genereert (hoge autonomie) vereist andere toezicht dan een AI die alleen grammaticale suggesties doet (lage autonomie).",
+            reflectie: "Waar ligt het optimale punt tussen AI-autonomie en menselijk toezicht voor deze leersituatie?",
+            prompt: "Maak een 'Autonomie Spectrum Analyse' opdracht. Leerlingen krijgen een scenario voor AI-inzet in de klas (bijv. AI die leerroutes personaliseert, AI die essays nakijkt, AI die leermateriaal genereert). Ze moeten de AI positioneren op een autonomiespectrum (bijv. 'Volledig menselijke controle' t/m 'Volledige AI-autonomie'). Vervolgens analyseren ze: 1. De voordelen en risico's van het gekozen autonomieniveau. 2. De benodigde menselijke interventies of toezichtsmechanismen. 3. Welke factoren (leerdoel, leerlingvaardigheid, complexiteit taak) het optimale autonomieniveau bepalen. Dit bevordert een gebalanceerd perspectief op AI-integratie."
+          }
+        ]
+      },
+      {
+        naam: "Integratievermogen",
+        werkvormen: [
+          {
+            titel: "Integratie Checklist",
+            uitleg: "Docenten (of leerlingen) beoordelen hoe goed een AI-tool past binnen de bestaande digitale infrastructuur en onderwijspraktijk van de school.",
+            voorbeeld: "Checken of de AI-tool compatibel is met het Leermanagementsysteem, of het voldoende toegankelijk is voor alle leerlingen, en of het docenten niet overbelast.",
+            reflectie: "Wat zijn de belangrijkste technische en organisatorische hobbels bij het succesvol integreren van deze AI-tool?",
+            prompt: "Ontwikkel een 'Integratie Checklist' voor AI-tools in een onderwijsomgeving. De checklist moet vragen bevatten over: 1. Technische compatibiliteit (met bestaande systemen, apparaten). 2. Gebruiksgemak voor zowel docenten als leerlingen (usability, leercurve). 3. Noodzakelijke training of support. 4. Data-integratie en privacyoverwegingen. 5. Organisatorische impact (bijv. op roosters, budget). 6. Schaalgrootte en implementatiegemak. De checklist moet helpen bij een gestructureerde beoordeling van de praktische haalbaarheid van AI-integratie."
+          }
+        ]
+      },
+      {
+        naam: "Scorekaarten kunnen toepassen (rubric-gebruik)",
+        werkvormen: [
+          {
+            titel: "AI-Tool Rubric Evaluatie",
+            uitleg: "Leerlingen (of docenten) passen een gestandaardiseerde rubric toe om de kwaliteit en geschiktheid van een AI-tool objectief te beoordelen.",
+            voorbeeld: "Gebruik een rubric met criteria zoals 'nauwkeurigheid output', 'gebruikersvriendelijkheid', 'ethische overwegingen', 'didactische meerwaarde'.",
+            reflectie: "Hoe helpt een rubric je om objectiever en systematischer na te denken over de kwaliteit van een AI-tool?",
+            prompt: "Ontwikkel een voorbeeld van een 'AI-Tool Evaluatie Rubric' voor onderwijsdoeleinden. De rubric moet minimaal 5-7 criteria bevatten (bijv. Nauwkeurigheid en Betrouwbaarheid van Output, Gebruikersvriendelijkheid en Toegankelijkheid, Didactische Meerwaarde en Leerondersteuning, Ethische Overwegingen en Transparantie, Integratiegemak). Voor elk criterium moeten minimaal 3 tot 4 niveaus van prestatie worden gedefinieerd (bijv. Onvoldoende, Voldoende, Goed, Uitstekend), met concrete beschrijvingen van wat elk niveau inhoudt. Deze prompt stimuleert systematische en objectieve beoordeling van AI-tools."
+          }
+        ]
+      }
+    ];
+
+    let huidigeVaardigheid = 0;
+
+    // Initializes floating particles background effect
+    function createParticles() {
+      const particlesContainer = document.getElementById('particles');
+      const particleCount = 20; // Number of particles
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        // Randomize initial position and animation delay/duration for a natural look
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.animationDelay = Math.random() * 6 + 's';
+        particle.style.animationDuration = (6 + Math.random() * 4) + 's';
+        particlesContainer.appendChild(particle);
+      }
+    }
+
+    // Shows the loader animation
+    function showLoader() {
+      document.getElementById('loader').classList.add('active');
+      // Hide loader after a short delay for smoother transitions
+      setTimeout(() => {
+        document.getElementById('loader').classList.remove('active');
+      }, 400); // Reduced delay for quicker perceived response
+    }
+
+    // Toggles the visibility of the intro text and the position of the start button
+    function toggleIntroVisibility(collapse) {
+      const stap1 = document.getElementById('stap1');
+      const btn = stap1.querySelector('.btn'); // Get the button element within stap1
+
+      if (collapse) {
+        stap1.classList.add('collapsed-intro-state');
+        // If the intro box collapses, ensure the button's margin-top brings it up
+        // but not too close to the title. Adjust this value as needed.
+        btn.style.marginTop = '0.5rem';
+      } else {
+        stap1.classList.remove('collapsed-intro-state');
+        // Reset to original margin-top when expanding
+        btn.style.marginTop = '2rem';
+      }
+    }
+
+    // Handles the click on the H1 title to toggle intro text visibility
+    function toggleIntroText() {
+      const stap1 = document.getElementById('stap1');
+      // Toggle the collapsed state. If it has the class, remove it; otherwise, add it.
+      toggleIntroVisibility(stap1.classList.contains('collapsed-intro-state'));
+    }
+
+    // Navigates to the skills selection screen
+    function naarVaardigheden() {
+      showLoader();
+      toggleIntroVisibility(true); // Ensure intro is collapsed when starting
+      setTimeout(() => {
+        document.getElementById('stap1').style.display = 'none';
+        document.getElementById('stap2').style.display = 'block';
+        toonVaardigheden(); // Render the skills list
+      }, 400);
+    }
+
+    // Displays the list of skills
+    function toonVaardigheden() {
+      const stap2 = document.getElementById('stap2');
+      // Construct HTML for the back button and skills list
+      let html = '<button class="terug-btn" onclick="naarStart()">← Terug naar start</button>';
+      html += '<h2>Kies een vaardigheid</h2>';
+      html += '<div class="skill-list">';
+      vaardigheden.forEach((vaardigheid, index) => {
+        // Create a button for each skill with a delay for animation
+        html += `<button class="vaard-btn" style="--delay: ${index}" onclick="naarWerkvormen(${index})">${vaardigheid.naam}</button>`;
+      });
+      html += '</div>';
+      stap2.innerHTML = html;
+    }
+
+    // Navigates to the werkvormen (work forms) selection screen for a given skill
+    function naarWerkvormen(vaardigheidIndex) {
+      huidigeVaardigheid = vaardigheidIndex; // Set current skill index
+      showLoader();
+      setTimeout(() => {
+        document.getElementById('stap2').style.display = 'none';
+        document.getElementById('stap3').style.display = 'block';
+        toonWerkvormen(); // Render the work forms list
+      }, 400);
+    }
+
+    // Displays the list of werkvormen for the currently selected skill
+    function toonWerkvormen() {
+      const stap3 = document.getElementById('stap3');
+      const vaardigheid = vaardigheden[huidigeVaardigheid];
+
+      // Construct HTML for the back button, skill title, and work forms list
+      let html = '<button class="terug-btn" onclick="toonVaardigheden(); document.getElementById(\'stap3\').style.display = \'none\'; document.getElementById(\'stap2\').style.display = \'block\';">← Terug naar vaardigheden</button>';
+      html += `<h2>${vaardigheid.naam}</h2>`;
+      html += '<p>Kies een werkvorm:</p>';
+      html += '<div class="skill-list">';
+      vaardigheid.werkvormen.forEach((werkvorm, index) => {
+        // Create a button for each work form with a delay for animation
+        html += `<button class="wv-btn" style="--delay: ${index}" onclick="toonWerkvorm(${index})">${werkvorm.titel}</button>`;
+      });
+      html += '</div>';
+      stap3.innerHTML = html;
+    }
+
+    // Displays the details of a specific werkvorm
+    async function toonWerkvorm(werkvormIndex) {
+      showLoader();
+      setTimeout(async () => { // Make this function async
+        document.getElementById('stap3').style.display = 'none';
+        document.getElementById('stap4').style.display = 'block';
+
+        const werkvorm = vaardigheden[huidigeVaardigheid].werkvormen[werkvormIndex];
+        const stap4 = document.getElementById('stap4');
+
+        // Construct HTML for the back button and werkvorm details
+        let html = '<button class="terug-btn" onclick="toonWerkvormen(); document.getElementById(\'stap4\').style.display = \'none\'; document.getElementById(\'stap3\').style.display = \'block\';">← Terug naar werkvormen</button>';
+
+        html += '<div class="werkvorm-content">';
+        html += `<div class="wv-title">${werkvorm.titel}</div>`;
+        html += `<div class="wv-uitleg">${werkvorm.uitleg}</div>`;
+        html += `<div class="wv-voorbeeld">${werkvorm.voorbeeld}</div>`;
+        html += `<div class="wv-reflectie">${werkvorm.reflectie}</div>`;
+
+        html += '<div class="wv-prompt-row">';
+        html += `<button class="promptknop" onclick="toonPrompt(${werkvormIndex})">`;
+        html += '<svg class="prompt-icoon" viewBox="0 0 24 24"><path d="m9 12 2 2 4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>';
+        html += 'Toon prompt';
+        html += '</button>';
+
+        // Add the 'Generate Prompt' button
+        html += `<button class="generate-prompt-button" onclick="generatePromptContent(${werkvormIndex})">`;
+        html += '<svg class="prompt-icoon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>';
+        html += 'Genereer inhoud';
+        html += '</button>';
+        html += '</div>';
+
+        html += `<textarea class="wv-promptbox" id="promptbox-${werkvormIndex}" style="display:none;" readonly>${werkvorm.prompt}</textarea>`;
+        // Add a div for generated content
+        html += `<div class="wv-generated-prompt-content" id="generated-content-${werkvormIndex}" style="display:none;"></div>`;
+        html += '</div>';
+
+        stap4.innerHTML = html;
+      }, 400);
+    }
+
+    // Toggles the visibility of the original prompt textarea
+    function toonPrompt(werkvormIndex) {
+      const promptbox = document.getElementById(`promptbox-${werkvormIndex}`);
+      if (promptbox.style.display === 'none') {
+        promptbox.style.display = 'block';
+        promptbox.style.height = 'auto'; // Adjust height to content
+        promptbox.style.height = Math.max(120, promptbox.scrollHeight + 4) + 'px';
+      } else {
+        promptbox.style.display = 'none';
+      }
+    }
+
+    // Function to call the LLM and generate content based on the prompt
+    async function generatePromptContent(werkvormIndex) {
+      const werkvorm = vaardigheden[huidigeVaardigheid].werkvormen[werkvormIndex];
+      const promptText = werkvorm.prompt;
+      const generatedContentDiv = document.getElementById(`generated-content-${werkvormIndex}`);
+      generatedContentDiv.style.display = 'block';
+      generatedContentDiv.innerHTML = '<p>Genereren van inhoud...</p>'; // Loading message
+
+      showLoader(); // Show overall app loader
+
+      try {
+        let chatHistory = [];
+        chatHistory.push({ role: "user", parts: [{ text: promptText }] });
+        const payload = { contents: chatHistory };
+        const apiKey = ""; // Leave as empty string for Canvas environment
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const result = await response.json();
+
+        if (result.candidates && result.candidates.length > 0 &&
+            result.candidates[0].content && result.candidates[0].content.parts &&
+            result.candidates[0].content.parts.length > 0) {
+          const text = result.candidates[0].content.parts[0].text;
+          generatedContentDiv.innerHTML = text.replace(/\n/g, '<br>'); // Display generated text, convert newlines to <br>
+        } else {
+          generatedContentDiv.innerHTML = '<p>Geen inhoud gegenereerd of onverwachte responsstructuur.</p>';
+        }
+      } catch (error) {
+        console.error('Fout bij het genereren van inhoud:', error);
+        generatedContentDiv.innerHTML = `<p>Hij doet het niet..want geen back-end is geen API! wel zo veilig: ${error.message} volgende keer beter.</p>`;
+      } finally {
+        document.getElementById('loader').classList.remove('active'); // Hide overall app loader
+        // Adjust the height of the generated content div after content is loaded
+        generatedContentDiv.style.height = 'auto';
+        generatedContentDiv.style.height = Math.max(120, generatedContentDiv.scrollHeight + 4) + 'px';
+      }
+    }
+
+    // Navigates back to the start screen
+    function naarStart() {
+      showLoader();
+      setTimeout(() => {
+        document.getElementById('stap2').style.display = 'none';
+        document.getElementById('stap3').style.display = 'none';
+        document.getElementById('stap4').style.display = 'none';
+        document.getElementById('stap1').style.display = 'block';
+        toggleIntroVisibility(false); // Make intro visible when returning to start
+      }, 400);
+    }
+
+    // Initialize on load
+    document.addEventListener('DOMContentLoaded', function() {
+      createParticles(); // Create background particles when the DOM is ready
+
+      const h1Element = document.querySelector('h1'); // Get the H1 element
+
+      // Auto-collapse after a delay
+      setTimeout(() => {
+        toggleIntroVisibility(true); // Collapse the intro
+      }, 5000); // 5 seconds before it collapses
+
+      // Add click listener to H1
+      h1Element.addEventListener('click', toggleIntroText);
+    });
+  </script>
+<footer class="eai-site-footer"><a href="/tools/">← Terug</a> · <a href="mailto:vis@emmauscollege.nl">Contact</a></footer></body></html>
