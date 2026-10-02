@@ -11,7 +11,7 @@ on:
 jobs:
   scrape:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
 
@@ -69,6 +69,26 @@ jobs:
               slug = re.sub(r"[^a-zA-Z0-9._-]+", "-", path).strip("-")
               return slug or "home"
 
+          def clean_text(markup: str) -> str:
+              soup = BeautifulSoup(markup, "html.parser")
+              for tag in soup(["script", "style", "noscript"]):
+                  tag.decompose()
+              return "\n".join(
+                  line.strip()
+                  for line in soup.get_text("\n").splitlines()
+                  if line.strip()
+              )
+
+          def extract_links(markup: str):
+              soup = BeautifulSoup(markup, "html.parser")
+              out = []
+              for a in soup.find_all("a", href=True):
+                  out.append({
+                      "href": a.get("href", ""),
+                      "text": " ".join(a.stripped_strings),
+                  })
+              return out
+
           async def main():
               async with async_playwright() as p:
                   browser = await p.chromium.launch(headless=True)
@@ -76,7 +96,7 @@ jobs:
                   queue = [START_URL]
                   seen = set()
                   pages = []
-                  max_pages = 120
+                  max_pages = 160
 
                   while queue and len(seen) < max_pages:
                       url = normalize(queue.pop(0))
@@ -86,7 +106,7 @@ jobs:
 
                       try:
                           response = await page.goto(url, wait_until="domcontentloaded", timeout=45000)
-                          await page.wait_for_timeout(1800)
+                          await page.wait_for_timeout(1600)
                           status = response.status if response else None
                           title = await page.title()
                           body_text = await page.locator("body").inner_text()
@@ -100,21 +120,48 @@ jobs:
                           )
 
                           internal = []
-                          for item in links:
-                              n = normalize(item.get("href"))
+                          external = []
+
+                          def register_link(href, text="", source="outer"):
+                              n = normalize(href)
+                              item = {"url": href, "text": text, "source": source}
                               if n:
-                                  internal.append({"url": n, "text": item.get("text", "")})
+                                  item["url"] = n
+                                  internal.append(item)
                                   if n not in seen and n not in queue:
                                       queue.append(n)
+                              elif href and href.startswith(("http://", "https://", "mailto:")):
+                                  external.append(item)
 
-                          soup = BeautifulSoup(html, "html.parser")
-                          for tag in soup(["script", "style", "noscript"]):
-                              tag.decompose()
-                          visible_text = "\n".join(
-                              line.strip()
-                              for line in soup.get_text("\n").splitlines()
-                              if line.strip()
-                          )
+                          for item in links:
+                              register_link(item.get("href", ""), item.get("text", ""), "outer")
+
+                          soup_full = BeautifulSoup(html, "html.parser")
+                          embeds = []
+                          slug = slug_for(url)
+
+                          for idx, tag in enumerate(soup_full.find_all(attrs={"data-code": True}), start=1):
+                              code = tag.get("data-code") or ""
+                              if not code.strip():
+                                  continue
+                              embed_text = clean_text(code)
+                              embed_links = extract_links(code)
+                              for item in embed_links:
+                                  register_link(item.get("href", ""), item.get("text", ""), f"embed-{idx}")
+
+                              embed_html_name = f"{slug}-embed{idx}.html"
+                              embed_txt_name = f"{slug}-embed{idx}.txt"
+                              (OUT / embed_html_name).write_text(code, encoding="utf-8")
+                              (OUT / embed_txt_name).write_text(embed_text, encoding="utf-8")
+                              embeds.append({
+                                  "index": idx,
+                                  "html_file": embed_html_name,
+                                  "text_file": embed_txt_name,
+                                  "text": embed_text,
+                                  "links": embed_links,
+                              })
+
+                          visible_text = clean_text(html)
 
                           record = {
                               "url": url,
@@ -123,39 +170,44 @@ jobs:
                               "body_text": body_text,
                               "visible_text": visible_text,
                               "internal_links": internal,
+                              "external_links": external,
                               "images": images,
+                              "embeds": embeds,
                           }
                           pages.append(record)
 
-                          slug = slug_for(url)
                           (OUT / f"{slug}.html").write_text(html, encoding="utf-8")
                           (OUT / f"{slug}.txt").write_text(body_text, encoding="utf-8")
 
-                          print(f"SCRAPED {status} {url} :: {title} :: {len(body_text)} chars :: {len(internal)} internal links")
+                          print(
+                              f"SCRAPED {status} {url} :: {title} :: "
+                              f"{len(body_text)} body chars :: {len(embeds)} embeds :: "
+                              f"{len(internal)} internal links"
+                          )
                       except Exception as exc:
                           pages.append({"url": url, "error": repr(exc)})
                           print(f"ERROR {url}: {exc!r}")
 
                   await browser.close()
 
+              inventory = {
+                  "start_url": START_URL,
+                  "site_prefix": SITE_PREFIX,
+                  "page_count": len(pages),
+                  "pages": pages,
+              }
               (OUT / "site_inventory.json").write_text(
-                  json.dumps(
-                      {
-                          "start_url": START_URL,
-                          "site_prefix": SITE_PREFIX,
-                          "page_count": len(pages),
-                          "pages": pages,
-                      },
-                      ensure_ascii=False,
-                      indent=2,
-                  ),
+                  json.dumps(inventory, ensure_ascii=False, indent=2),
                   encoding="utf-8",
               )
 
               print(f"DONE: {len(pages)} pages captured")
               for rec in pages:
                   if "title" in rec:
-                      print(f"PAGE {rec['url']} | {rec['title']}")
+                      print(
+                          f"PAGE {rec['url']} | {rec['title']} | "
+                          f"embeds={len(rec.get('embeds', []))}"
+                      )
 
           asyncio.run(main())
           PY
