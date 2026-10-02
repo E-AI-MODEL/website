@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><title>Task Density: A Transparent Metric for Agency in AI-Supported Learning · EAI</title><link href="https://eaimodel.nl/publicaties/task-density/" rel="canonical"/><link href="https://raw.githack.com/E-AI-MODEL/website/site-preview/assets/eai-logo.svg" rel="icon" type="image/svg+xml"/><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><style>
+    body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; background: #f6f8fa; color: #222; }
+    main { max-width: 840px; margin: 32px auto 50px auto; background: #fff; border-radius: 14px; box-shadow: 0 2px 15px rgba(0,0,0,0.09); padding: 2.6em 2.2em 2.2em 2.2em; }
+    h1 { font-size: 2.15em; margin-bottom: 0.22em; }
+    h2 { color: #2a4671; border-bottom: 2px solid #e0e6ef; padding-bottom: 2px; margin-top: 2.2em; margin-bottom: 0.8em; }
+    h3 { color: #35588e; margin-top: 1.4em; }
+    .abstract { background: #f1f5fa; border-left: 6px solid #3972b8; padding: 1.1em 1.5em; font-style: italic; margin-bottom: 2.1em; border-radius: 4px 18px 18px 4px;}
+    figure { margin: 2.6em 0 2.5em 0; text-align: center; }
+    figcaption { font-size: 0.96em; color: #444; margin-top: 0.7em; }
+    .reference { font-size: 0.99em; color: #415a82; margin-bottom: 0.7em; }
+    a { color: #3467b2; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    ul, ol { margin-left: 2em; }
+    @media (max-width: 600px) { main { padding: 1em; } }
+    code { background: #f3f3f6; border-radius: 5px; padding: 2px 6px;}
+  </style><link href="https://raw.githack.com/E-AI-MODEL/website/site-preview/assets/article-chrome.css" rel="stylesheet"/></head><body><header class="eai-site-nav"><div class="eai-site-nav__inner"><a aria-label="EAI home" class="eai-site-nav__brand" href="https://raw.githack.com/E-AI-MODEL/website/site-preview/index.html"><img alt="EAI" height="34" src="https://raw.githack.com/E-AI-MODEL/website/site-preview/assets/eai-logo.svg" width="34"/></a><div class="eai-site-nav__links"><a href="https://raw.githack.com/E-AI-MODEL/website/site-preview/twee-pijlers/index.html">Twee pijlers</a><a href="https://raw.githack.com/E-AI-MODEL/website/site-preview/workshop-ai/index.html">Workshop AI</a><a href="https://raw.githack.com/E-AI-MODEL/website/site-preview/werkvormen/index.html">Werkvormen</a><a href="https://raw.githack.com/E-AI-MODEL/website/site-preview/praktijk/index.html">Praktijk</a><a href="https://raw.githack.com/E-AI-MODEL/website/site-preview/publicaties/index.html">Publicaties</a><a href="https://raw.githack.com/E-AI-MODEL/website/site-preview/tools/index.html">Tools</a><a href="mailto:vis@emmauscollege.nl">Contact</a></div></div></header>
+<main>
+<h1>Task Density: A Transparent Metric for Agency in AI-Supported Learning</h1>
+<p class="reference">
+<strong>Author:</strong> H.Visser<br/>
+<strong>Affiliation:</strong> None <br/>
+<strong>Date:</strong> 20250514
+    </p>
+<section class="abstract">
+<strong>Abstract:</strong> This paper introduces <b>Task Density (TD)</b> as a transparent, process-oriented metric for quantifying the division of cognitive labor between learners and AI systems in educational contexts. TD, operationalized within the EAI (Educational AI) model, leverages rubric-driven analysis and audit trails to provide a reproducible score for the proportion of essential learning actions executed by AI versus students. TD is not a simplistic indicator: its interpretation depends on learning phase, skill domain, context, and parameter configuration. We demonstrate that TD enables stakeholders to explicitly identify when AI supports, augments, or overtakes genuine learning—thereby offering a critical tool for responsible, explainable AI in education.
+    </section>
+<h2>1. Introduction</h2>
+<p>
+      Artificial Intelligence (AI) is rapidly transforming the landscape of education. The potential of AI to enable adaptive feedback, automate routine assessment, and personalize learning has been widely recognized. Yet, as these tools become more deeply embedded in classrooms, a central question arises: <em>Who is actually doing the learning—the student or the AI?</em> While most evaluation frameworks and studies focus on end results, there is often little insight into the actual learning process and the balance of cognitive work. <b>Task Density (TD)</b> is proposed as a novel metric that addresses this oversight, offering a way to measure, for any educational task, the relative contribution of the AI and the human learner in essential learning actions.
+    </p>
+<h2>2. Definition and Theoretical Rationale</h2>
+<p>
+      Task Density (TD) quantifies the proportion of core learning actions performed by the AI system as compared to those performed by the student, within a particular phase or activity. A TD of <b>0.0</b> means the learner is fully in control and the AI is merely supportive, while a TD of <b>1.0</b> would indicate that the AI is executing all substantive steps, leaving the learner passive. Intermediate values reflect varying degrees of shared or shifting agency.
+    </p>
+<p>
+      Importantly, a high TD (e.g., above 0.7) is often a warning sign, suggesting potential loss of learner agency or the risk of shallow, automated learning. However, the context and purpose are crucial: there are scenarios (such as basic instruction, accessibility, or administrative tasks) where a higher TD is justified, while in phases demanding reflection, application, or transfer, a lower TD is generally more desirable. 
+    </p>
+<p>
+      The concept is theoretically grounded in literature on self-regulated learning <span style="color:#557;">[Panadero, 2017; Zimmerman, 2002]</span>, cognitive load <span style="color:#557;">[Sweller, 2023; Kirschner et al., 2006]</span>, motivation and agency <span style="color:#557;">[Deci &amp; Ryan, 2000]</span>, and educational AI policy <span style="color:#557;">[EU AI Act, UNESCO]</span>.
+    </p>
+<figure>
+<!-- FLOWCHART SVG -->
+<svg height="260" style="background:#f7fafd; border-radius:14px; box-shadow:0 1px 6px #b4c7dd55;" viewbox="0 0 830 260" width="830">
+<!-- Input -->
+<rect fill="#b9e0ff" height="45" rx="16" stroke="#275587" stroke-width="2" width="140" x="25" y="95"></rect>
+<text fill="#222" font-family="Segoe UI, Arial" font-size="17" text-anchor="middle" x="95" y="122">Educational Task</text>
+<!-- Parameters -->
+<rect fill="#eaf2fb" height="195" rx="18" stroke="#215099" stroke-width="2" width="148" x="180" y="25"></rect>
+<text fill="#215099" font-family="Segoe UI, Arial" font-size="14" font-weight="bold" text-anchor="middle" x="254" y="47">Parameters</text>
+<text fill="#222" font-family="Segoe UI, Arial" font-size="13" x="195" y="70">• Cognitive</text>
+<text fill="#222" font-family="Segoe UI, Arial" font-size="13" x="195" y="90">• Metacognitive</text>
+<text fill="#222" font-family="Segoe UI, Arial" font-size="13" x="195" y="110">• Motivation</text>
+<text fill="#222" font-family="Segoe UI, Arial" font-size="13" x="195" y="130">• Social</text>
+<text fill="#222" font-family="Segoe UI, Arial" font-size="13" x="195" y="150">• Autonomy</text>
+<text fill="#222" font-family="Segoe UI, Arial" font-size="13" x="195" y="170">• Bias</text>
+<text fill="#222" font-family="Segoe UI, Arial" font-size="13" x="195" y="190">• Supervision</text>
+<text fill="#222" font-family="Segoe UI, Arial" font-size="13" x="195" y="210">• Tech Integration</text>
+<!-- Rubrics -->
+<rect fill="#d8eafc" height="68" rx="16" stroke="#215099" stroke-width="2" width="110" x="355" y="82"></rect>
+<text fill="#275587" font-family="Segoe UI, Arial" font-size="13" text-anchor="middle" x="410" y="104">Rubrics</text>
+<text fill="#21436b" font-family="Segoe UI, Arial" font-size="12" text-anchor="middle" x="410" y="122">Scorebands</text>
+<text fill="#21436b" font-family="Segoe UI, Arial" font-size="12" text-anchor="middle" x="410" y="139">&amp; Microdescriptors</text>
+<!-- Matrix Matching -->
+<rect fill="#d8eafc" height="68" rx="16" stroke="#215099" stroke-width="2" width="110" x="490" y="82"></rect>
+<text fill="#275587" font-family="Segoe UI, Arial" font-size="13" text-anchor="middle" x="545" y="105">Matrix Matching</text>
+<text fill="#21436b" font-family="Segoe UI, Arial" font-size="12" text-anchor="middle" x="545" y="128">(P × V_sub)</text>
+<!-- TD Calculation -->
+<rect fill="#bee8be" height="68" rx="16" stroke="#246b24" stroke-width="2" width="90" x="625" y="82"></rect>
+<text fill="#195c23" font-family="Segoe UI, Arial" font-size="13" text-anchor="middle" x="670" y="106">TD Score</text>
+<text fill="#2d872b" font-family="Segoe UI, Arial" font-size="12" text-anchor="middle" x="670" y="126">+ F_TD</text>
+<text fill="#2d872b" font-family="Segoe UI, Arial" font-size="12" text-anchor="middle" x="670" y="146">Correction</text>
+<!-- Output/Audit -->
+<rect fill="#f7e7c4" height="102" rx="18" stroke="#b88e32" stroke-width="2" width="76" x="735" y="65"></rect>
+<text fill="#9e6e00" font-family="Segoe UI, Arial" font-size="13" text-anchor="middle" x="773" y="90">Flags</text>
+<text fill="#b88e32" font-family="Segoe UI, Arial" font-size="12" text-anchor="middle" x="773" y="111">Audit Trail</text>
+<text fill="#b88e32" font-family="Segoe UI, Arial" font-size="12" text-anchor="middle" x="773" y="132">Advice</text>
+<!-- Arrows -->
+<polygon fill="#215099" points="165,117 180,117 180,127 165,127"></polygon>
+<polygon fill="#215099" points="328,117 355,117 355,127 328,127"></polygon>
+<polygon fill="#215099" points="465,117 490,117 490,127 465,127"></polygon>
+<polygon fill="#246b24" points="600,117 625,117 625,127 600,127"></polygon>
+<polygon fill="#b88e32" points="715,117 735,117 735,127 715,127"></polygon>
+</svg>
+<figcaption>
+<b>Figure 1.</b> Conceptual flowchart of Task Density (TD) calculation in the EAI Model. The process includes parameter scoring, rubric matching, matrix alignment, calculation of TD with corrections, and results in audit trails, warnings, and recommendations.
+      </figcaption>
+</figure>
+<h2>3. Operationalization in the EAI Model</h2>
+<p>
+      The EAI model provides a structured process for calculating Task Density. After defining the educational task and gathering contextual input, the model scores a range of parameters, including cognitive, metacognitive, motivational, social, and technical factors. Each parameter is evaluated using detailed rubrics and scorebands, which are rooted in current literature and best practices. The model then performs a matrix matching step, aligning the observed behaviors with the relevant learning phase and skill type. This approach ensures that the TD score is not a simplistic guess, but a nuanced calculation reflecting the realities of learning, teaching, and AI support. All steps are logged in an audit trail for maximum transparency and reproducibility.
+    </p>
+<figure>
+<!-- BAR CHART SVG -->
+<svg height="280" style="background:#fcfdff; border-radius:11px; box-shadow:0 2px 10px #b4c7dd44;" viewbox="0 0 540 280" width="540">
+<g style="font-family:Segoe UI, Arial;font-size:13px;fill:#5a5a7a;">
+<text x="28" y="235">0.0</text>
+<text x="28" y="175">0.3</text>
+<text x="28" y="115">0.7</text>
+<text x="28" y=" 55">1.0</text>
+<line stroke="#b3c3d7" stroke-dasharray="3,6" x1="55" x2="505" y1="235" y2="235"></line>
+<line stroke="#b3c3d7" stroke-dasharray="3,6" x1="55" x2="505" y1="175" y2="175"></line>
+<line stroke="#eab5b5" stroke-width="2" x1="55" x2="505" y1="115" y2="115"></line>
+<line stroke="#b3c3d7" stroke-dasharray="3,6" x1="55" x2="505" y1=" 55" y2=" 55"></line>
+</g>
+<g style="font-family:Segoe UI, Arial;font-size:16px;fill:#183a66;">
+<text x="100" y="260">Orientation</text>
+<text x="215" y="260">Practice</text>
+<text x="335" y="260">Application</text>
+<text x="445" y="260">Assessment</text>
+</g>
+<rect fill="#77cb77" height="30" rx="6" width="40" x="85" y="205"></rect>
+<rect fill="#ffe07c" height="95" rx="6" width="40" x="200" y="140"></rect>
+<rect fill="#fcbc58" height="150" rx="6" width="40" x="320" y="85"></rect>
+<rect fill="#e45a5a" height="190" rx="6" width="40" x="430" y="45"></rect>
+<text fill="#b03535" font-family="Segoe UI, Arial" font-size="13" x="515" y="120">Risk threshold (TD=0.7)</text>
+<text fill="#276b29" font-size="14" x="105" y="200">0.25</text>
+<text fill="#9d9400" font-size="14" x="220" y="135">0.45</text>
+<text fill="#cc7e12" font-size="14" x="340" y="80">0.68</text>
+<text fill="#b72b2b" font-size="14" x="450" y="40">0.88</text>
+<rect fill="#77cb77" height="16" rx="3" width="16" x="55" y="25"></rect>
+<text fill="#276b29" font-size="13" x="75" y="38">Safe</text>
+<rect fill="#ffe07c" height="16" rx="3" width="16" x="135" y="25"></rect>
+<text fill="#9d9400" font-size="13" x="155" y="38">Monitor</text>
+<rect fill="#e45a5a" height="16" rx="3" width="16" x="225" y="25"></rect>
+<text fill="#b72b2b" font-size="13" x="245" y="38">Risk</text>
+</svg>
+<figcaption>
+<b>Figure 2.</b> Example Task Density (TD) scores across learning phases. Green: safe/active, Yellow/Orange: monitor/attention, Red: high risk of agency loss.
+      </figcaption>
+</figure>
+<h2>4. Use Cases and Dynamic Agency</h2>
+<p>
+      The practical value of Task Density becomes clear when examining real or hypothetical classroom scenarios. For example, in an automated essay grading system, the TD may reach as high as 0.9 during summative assessment, signaling that the AI is dominant and the student mostly passive—acceptable for automation, but risky if deep learning or reflection is desired. During a collaborative writing task, TD values fluctuate: initial drafting may be mostly student-driven (TD=0.2), while the AI's suggestions push agency higher (TD=0.7), and subsequent student revision brings the value back down. In programming with AI-assisted code completion, a TD above 0.75 may be observed, which could indicate lost learning opportunity unless the process is paired with explicit reflection or critical thinking.
+    </p>
+<figure>
+<!-- PROCESS TIMELINE SVG -->
+<svg height="175" id="tdTimeline" style="background:#f9fbff; border-radius:12px; box-shadow:0 2px 8px #b4c7dd44;" viewbox="0 0 620 175" width="620">
+<line stroke="#294b7b" stroke-width="3" x1="70" x2="550" y1="100" y2="100"></line>
+<g>
+<circle cx="100" cy="100" fill="#77cb77" r="22" stroke="#215099" stroke-width="2"></circle>
+<circle cx="200" cy="100" fill="#fcbc58" r="22" stroke="#215099" stroke-width="2"></circle>
+<circle cx="320" cy="100" fill="#77cb77" r="22" stroke="#215099" stroke-width="2"></circle>
+<circle cx="440" cy="100" fill="#e45a5a" r="22" stroke="#215099" stroke-width="2"></circle>
+<circle cx="540" cy="100" fill="#77cb77" r="22" stroke="#215099" stroke-width="2"></circle>
+</g>
+<g fill="#222" font-family="Segoe UI, Arial" font-size="14">
+<text x="87" y="96">0.20</text>
+<text x="187" y="96">0.70</text>
+<text x="307" y="96">0.30</text>
+<text x="427" y="96">0.80</text>
+<text x="527" y="96">0.25</text>
+</g>
+<g fill="#374e6b" font-family="Segoe UI, Arial" font-size="14">
+<text x="48" y="135">Student Drafts</text>
+<text x="175" y="155">AI Suggests</text>
+<text x="284" y="135">Student Revises</text>
+<text x="408" y="155">AI Reviews</text>
+<text x="514" y="135">Student Finalizes</text>
+</g>
+<text fill="#fcba11" font-size="23" x="188" y="75">⚠</text>
+<text fill="#f44336" font-size="23" x="437" y="75">⚠</text>
+</svg>
+<figcaption>
+<b>Figure 3.</b> Timeline of Task Density (TD) in a collaborative process. Yellow and red steps flag high TD and risk of agency loss, showing how responsibility can shift between student and AI across a single assignment.
+      </figcaption>
+</figure>
+<h2>5. Transparency, Audit Trail, and Policy Alignment</h2>
+<p>
+      A critical strength of the EAI model is its transparent audit trail: every calculation step, rubric match, and warning flag is recorded and reviewable by humans. This not only allows for didactic improvement and external audit, but also aligns with new legal and ethical guidelines (such as the EU AI Act and UNESCO frameworks) that require explainability, bias mitigation, and clear human oversight in AI applications for education.
+    </p>
+<h2>6. Discussion and Limitations</h2>
+<p>
+      Task Density is not intended as a rigid rule, but as a context-sensitive analytical lens. Its primary value lies in making the process and balance of learning with AI visible and actionable. Limitations include its dependence on well-designed rubrics and the accuracy of context input. Ongoing validation in diverse domains is encouraged, as is the involvement of educators and learners in refining the model for practical use.
+    </p>
+<h2>7. Conclusion</h2>
+<p>
+      Task Density brings agency and process quality back to the forefront in educational AI research and practice. By quantifying the real share of cognitive work and enabling a transparent, reviewable learning audit, TD empowers teachers, students, policymakers, and developers to ask and answer: “Who is really learning here?” Further research and collaboration are invited to refine, extend, and apply this metric in a range of learning settings.
+    </p>
+<h2>References</h2>
+<p style="font-size:0.99em;">
+      Kirschner, P. A., Sweller, J., &amp; Clark, R. E. (2006). Why Minimal Guidance During Instruction Does Not Work: An Analysis of the Failure of Constructivist, Discovery, Problem-Based, Experiential, and Inquiry-Based Teaching. <i>Educational Psychologist</i>, 41(2), 75–86.<br/>
+      Zimmerman, B. J. (2002). Becoming a self-regulated learner: An overview. <i>Theory into Practice</i>, 41(2), 64–70.<br/>
+      Panadero, E. (2017). A review of self-regulated learning: Six models and four directions for research. <i>Frontiers in Psychology</i>, 8, 422.<br/>
+      Surma, T., Kirschner, P., Sluijsmans, D., et al. (2019). <i>Wijze Lessen: 12 Bouwstenen voor Effectieve Didactiek</i>. Ten Brink.<br/>
+      Sweller, J. (2023). Cognitive load theory and generative artificial intelligence. <i>Educational Psychology Review</i>, 35, Article 11.<br/>
+      Deci, E. L., &amp; Ryan, R. M. (2000). The “what” and “why” of goal pursuits: Human needs and the self-determination of behavior. <i>Psychological Inquiry</i>, 11(4), 227–268.<br/>
+      European Union, Artificial Intelligence Act, 2024. Available at: <a href="https://artificial-intelligence-act.eu/">https://artificial-intelligence-act.eu/</a><br/>
+      UNESCO. (2021). Artificial Intelligence and Education: Guidance for Policy-makers. Paris.
+    </p>
+</main>
+<footer class="eai-site-footer"><a href="https://raw.githack.com/E-AI-MODEL/website/site-preview/publicaties/index.html">← Terug</a> · <a href="mailto:vis@emmauscollege.nl">Contact</a></footer></body></html>

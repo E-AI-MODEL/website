@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="nl"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><title>Interactieve EAI Workflow Bouwer · EAI</title><link href="https://eaimodel.nl/publicaties/eai-stappenplan/" rel="canonical"/><link href="https://raw.githack.com/E-AI-MODEL/website/site-preview/assets/eai-logo.svg" rel="icon" type="image/svg+xml"/><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><style>
+        /* --- Algemene Stijlen & Variabelen --- */
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #f5a623;
+            --hybrid-color: #9013fe;
+            --background-color: #f4f7f9;
+            --text-color: #333;
+            --light-gray: #e0e0e0;
+            --white: #ffffff;
+            --danger-color: #d0021b;
+            --font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        /* --- Hoofdcontent & Wizard Stappen --- */
+        .wizard-container {
+            flex-grow: 1;
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .wizard-step {
+            display: none; /* Standaard verborgen */
+        }
+
+        .wizard-step.active {
+            display: block; /* Actieve stap tonen */
+        }
+
+        h1, h2, h3 {
+            color: var(--primary-color);
+            margin-top: 0;
+        }
+
+        p {
+            line-height: 1.6;
+        }
+
+        /* --- Progressiebalk --- */
+        .progress-bar-container {
+            width: 100%;
+            background-color: var(--light-gray);
+            border-radius: 20px;
+            height: 10px;
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+
+        #progress-bar {
+            width: 0%;
+            height: 100%;
+            background-color: var(--primary-color);
+            border-radius: 20px;
+            transition: width 0.4s ease-in-out;
+        }
+
+        /* --- Interactieve Elementen --- */
+        .task-selection-grid, .workflow-configuration {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .task-card, .config-card {
+            border: 1px solid var(--light-gray);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            background-color: var(--white);
+        }
+        
+        .task-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+        }
+
+        .task-card .icon, .config-card .icon {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #357ABD;
+        }
+        
+        button.secondary {
+            background-color: #6c757d;
+        }
+        button.secondary:hover {
+            background-color: #5a6268;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: auto; /* Duwt de knoppen naar onderen */
+            padding-top: 20px;
+            border-top: 1px solid var(--light-gray);
+        }
+
+        #prev-btn {
+            background-color: #6c757d;
+        }
+
+        /* --- Accordion (Lees meer) --- */
+        .accordion {
+            background-color: #f9f9f9;
+            color: #444;
+            cursor: pointer;
+            padding: 18px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 15px;
+            transition: 0.4s;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .accordion:after {
+            content: '\002B'; /* Plus-teken */
+            color: var(--primary-color);
+            font-weight: bold;
+            float: right;
+            margin-left: 5px;
+        }
+        .accordion.active:after {
+            content: "\2212"; /* Min-teken */
+        }
+        .panel {
+            padding: 0 18px;
+            background-color: white;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            border-left: 2px solid var(--primary-color);
+            margin-left: 5px;
+        }
+
+        /* --- Zijbalk (Live Samenvatting) --- */
+        #summary-sidebar {
+            width: 300px;
+            background-color: var(--white);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            position: sticky;
+            top: 20px;
+        }
+
+        #summary-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        #summary-list li {
+            padding: 10px;
+            border-bottom: 1px solid var(--light-gray);
+            font-size: 0.9em;
+            transition: background-color 0.3s;
+        }
+        #summary-list li:last-child {
+            border-bottom: none;
+        }
+
+        .summary-item {
+            display: flex;
+            flex-direction: column;
+        }
+        .summary-item .role {
+            font-size: 0.8em;
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 10px;
+            color: white;
+            align-self: flex-start;
+            margin-top: 5px;
+        }
+        .role-mens { background-color: var(--primary-color); }
+        .role-ai { background-color: var(--secondary-color); }
+        .role-samen { background-color: var(--hybrid-color); }
+
+
+        /* --- Stap 3: Configuratie kaarten --- */
+        .config-card {
+            text-align: left;
+            padding: 20px;
+        }
+
+        .config-card h3 { color: var(--text-color); margin-bottom: 15px;}
+
+        .toggle-switch {
+            display: flex;
+            margin: 15px 0;
+        }
+        .toggle-switch label {
+            cursor: pointer;
+            padding: 8px 12px;
+            border: 1px solid var(--light-gray);
+            background: #f0f0f0;
+            transition: all 0.3s;
+        }
+        .toggle-switch input[type="radio"] { display: none; }
+        .toggle-switch label:first-of-type { border-radius: 15px 0 0 15px; }
+        .toggle-switch label:last-of-type { border-radius: 0 15px 15px 0; }
+
+        .toggle-switch input[type="radio"]:checked + label {
+            color: white;
+        }
+        .toggle-switch input[id*="-mens"]:checked + label { background-color: var(--primary-color); }
+        .toggle-switch input[id*="-ai"]:checked + label { background-color: var(--secondary-color); }
+        .toggle-switch input[id*="-samen"]:checked + label { background-color: var(--hybrid-color); }
+
+        .slider-container { margin: 15px 0; }
+        .slider-container label { display: block; margin-bottom: 5px; font-size: 0.9em; }
+        input[type="range"] { width: 100%; cursor: pointer; }
+        .slider-value { font-weight: bold; color: var(--primary-color); }
+        .warning { color: var(--danger-color); font-weight: bold; font-size: 0.9em; display: none; }
+        
+        .kern-handeling { margin-top: 15px; }
+
+
+        /* --- Stap 4: Eindresultaat & Export --- */
+        #final-summary-container {
+            border: 2px dashed var(--primary-color);
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            background: #fdfdfd;
+        }
+        
+        .export-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        /* --- Responsiviteit --- */
+        @media (max-width: 992px) {
+            .container {
+                flex-direction: column-reverse; /* Samenvatting bovenaan op mobiel */
+            }
+            #summary-sidebar {
+                width: 100%;
+                position: relative;
+                top: 0;
+                box-sizing: border-box;
+            }
+        }
+    </style><link href="https://raw.githack.com/E-AI-MODEL/website/site-preview/assets/article-chrome.css" rel="stylesheet"/></head><body><header class="eai-site-nav"><div class="eai-site-nav__inner"><a aria-label="EAI home" class="eai-site-nav__brand" href="https://raw.githack.com/E-AI-MODEL/website/site-preview/index.html"><img alt="EAI" height="34" src="https://raw.githack.com/E-AI-MODEL/website/site-preview/assets/eai-logo.svg" width="34"/></a><div class="eai-site-nav__links"><a href="https://raw.githack.com/E-AI-MODEL/website/site-preview/twee-pijlers/index.html">Twee pijlers</a><a href="https://raw.githack.com/E-AI-MODEL/website/site-preview/workshop-ai/index.html">Workshop AI</a><a href="https://raw.githack.com/E-AI-MODEL/website/site-preview/werkvormen/index.html">Werkvormen</a><a href="https://raw.githack.com/E-AI-MODEL/website/site-preview/praktijk/index.html">Praktijk</a><a href="https://raw.githack.com/E-AI-MODEL/website/site-preview/publicaties/index.html">Publicaties</a><a href="https://raw.githack.com/E-AI-MODEL/website/site-preview/tools/index.html">Tools</a><a href="mailto:vis@emmauscollege.nl">Contact</a></div></div></header>
+<div class="container">
+<!-- Live Samenvatting Zijbalk -->
+<aside id="summary-sidebar">
+<h2>Workflow Overzicht</h2>
+<p id="summary-placeholder">Je keuzes verschijnen hier live.</p>
+<ul id="summary-list"></ul>
+</aside>
+<!-- Hoofdcontent: De Wizard -->
+<main class="wizard-container">
+<div class="progress-bar-container">
+<div id="progress-bar"></div>
+</div>
+<!-- Stap 1: Introductie -->
+<section class="wizard-step active" id="step-1">
+<h1>Welkom bij de EAI Workflow Bouwer</h1>
+<p>Deze interactieve tool helpt je om op een gestructureerde manier na te denken over de inzet van AI in een onderwijsproces. We doorlopen samen een 3-stappenplan om een doordachte en uitlegbare workflow te creëren.</p>
+<p>EAI (Explainable AI) gaat niet alleen over de techniek, maar vooral over het proces: wie doet wat, wanneer en waarom?</p>
+<button class="accordion">Wat is het doel van deze tool?</button>
+<div class="panel">
+<p>Het doel is om EAI voelbaar en toepasbaar te maken. Door concrete keuzes te maken, zie je direct de impact op een workflow. Dit helpt docenten, studenten en beleidsmakers om het gesprek over AI concreet te voeren.</p>
+</div>
+</section>
+<!-- Stap 2: Workflow Stappen Kiezen -->
+<section class="wizard-step" id="step-2">
+<h2>Stap 1/3: Definieer de Workflow</h2>
+<p>Selecteer de stappen die deel uitmaken van jouw (leer)proces. Elke geselecteerde stap wordt toegevoegd aan je workflow in de zijbalk.</p>
+<div class="task-selection-grid">
+<div class="task-card">
+<div class="icon">🧠</div>
+<h3>Oriënteren &amp; Brainstormen</h3>
+<button class="add-task-btn" data-task-id="brainstorm" data-task-name="Oriënteren &amp; Brainstormen">Voeg toe</button>
+</div>
+<div class="task-card">
+<div class="icon">🔍</div>
+<h3>Informatie Zoeken</h3>
+<button class="add-task-btn" data-task-id="search" data-task-name="Informatie Zoeken">Voeg toe</button>
+</div>
+<div class="task-card">
+<div class="icon">✍️</div>
+<h3>Concept Schrijven</h3>
+<button class="add-task-btn" data-task-id="draft" data-task-name="Concept Schrijven">Voeg toe</button>
+</div>
+<div class="task-card">
+<div class="icon">📊</div>
+<h3>Analyseren &amp; Structureren</h3>
+<button class="add-task-btn" data-task-id="analyze" data-task-name="Analyseren &amp; Structureren">Voeg toe</button>
+</div>
+<div class="task-card">
+<div class="icon">🎨</div>
+<h3>Visualiseren &amp; Presenteren</h3>
+<button class="add-task-btn" data-task-id="visualize" data-task-name="Visualiseren &amp; Presenteren">Voeg toe</button>
+</div>
+<div class="task-card">
+<div class="icon">🤔</div>
+<h3>Reflecteren &amp; Evalueren</h3>
+<button class="add-task-btn" data-task-id="reflect" data-task-name="Reflecteren &amp; Evalueren">Voeg toe</button>
+</div>
+</div>
+</section>
+<!-- Stap 3: Kernhandeling, Rol en Dichtheid -->
+<section class="wizard-step" id="step-3">
+<h2>Stap 2/3: Wijs Rollen en Taakdichtheid toe</h2>
+<p>Configureer per stap wie de hoofdrol speelt en hoe intensief AI wordt ingezet. Geef ook aan welke stap de 'kernhandeling' is: de meest cruciale stap waar het leerdoel aan gekoppeld is.</p>
+<div class="workflow-configuration" id="workflow-configuration">
+<!-- Kaarten worden hier dynamisch door JS ingevoegd -->
+</div>
+</section>
+<!-- Stap 4: Samenvatting & Export -->
+<section class="wizard-step" id="step-4">
+<h2>Stap 3/3: Jouw EAI Workflow Samenvatting</h2>
+<p>Hier is het complete overzicht van jouw geconfigureerde workflow. Je kunt deze visualisatie exporteren als afbeelding (PNG) of document (PDF) om te delen of te bespreken.</p>
+<div id="final-summary-container">
+<h3>Visuele Workflow</h3>
+<div id="final-summary-visual"></div>
+</div>
+<div class="export-buttons">
+<button id="export-png-btn">Export als PNG</button>
+<button id="export-pdf-btn">Export als PDF</button>
+</div>
+<h3 style="margin-top: 30px;">Inspiratiegalerij</h3>
+<p>Bekijk voorbeelden van andere EAI-workflows.</p>
+<!-- Hier kan een swipebare galerij komen -->
+</section>
+<!-- Navigatie Knoppen -->
+<div class="navigation-buttons">
+<button id="prev-btn" style="display: none;">Vorige Stap</button>
+<button id="next-btn">Volgende Stap</button>
+</div>
+</main>
+</div>
+<!-- Externe Bibliotheken -->
+<!-- GSAP voor soepele animaties -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+<!-- jsPDF voor PDF export -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<!-- html2canvas voor het "screenshotten" van een HTML element -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+        // --- Globale variabelen en status ---
+        let currentStep = 1;
+        const totalSteps = 4;
+        let workflow = []; // Array om de gekozen stappen en hun configuratie op te slaan
+
+        // --- DOM Elementen ---
+        const progressBar = document.getElementById('progress-bar');
+        const wizardSteps = document.querySelectorAll('.wizard-step');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const summaryPlaceholder = document.getElementById('summary-placeholder');
+        const summaryList = document.getElementById('summary-list');
+
+        // --- Functies ---
+
+        /**
+         * Toont de juiste stap en verbergt de anderen.
+         * @param {number} stepNumber - Het nummer van de stap die getoond moet worden.
+         */
+        function showStep(stepNumber) {
+            wizardSteps.forEach(step => step.classList.remove('active'));
+            const activeStep = document.getElementById(`step-${stepNumber}`);
+            activeStep.classList.add('active');
+
+            // Animaties met GSAP voor een vloeiende overgang
+            gsap.from(activeStep, { duration: 0.5, opacity: 0, y: 20 });
+
+            updateUI();
+        }
+
+        /**
+         * Update de UI-elementen zoals de progressiebalk en knoppen.
+         */
+        function updateUI() {
+            // Update progressiebalk
+            const progress = ((currentStep - 1) / (totalSteps - 1)) * 100;
+            progressBar.style.width = `${progress}%`;
+
+            // Update knoppen
+            prevBtn.style.display = currentStep > 1 ? 'inline-block' : 'none';
+            nextBtn.textContent = currentStep === totalSteps ? 'Afronden & Exporteren' : 'Volgende Stap';
+            
+            if (currentStep === totalSteps) {
+                // Verberg de knop op de laatste pagina na klikken, of verander functionaliteit.
+                // Voor nu laten we hem zien maar de logica zit in de event listener.
+                nextBtn.style.display = 'none'; // Verberg 'Volgende' op de laatste stap
+                generateFinalSummary(); // Genereer de eind-samenvatting
+            } else {
+                 nextBtn.style.display = 'inline-block';
+            }
+        }
+        
+        /**
+         * Werkt de live samenvatting in de zijbalk bij.
+         */
+        function updateSummary() {
+            if (workflow.length === 0) {
+                summaryPlaceholder.style.display = 'block';
+                summaryList.innerHTML = '';
+                return;
+            }
+
+            summaryPlaceholder.style.display = 'none';
+            summaryList.innerHTML = ''; // Leeg de lijst
+
+            workflow.forEach(task => {
+                const li = document.createElement('li');
+                li.className = 'summary-item';
+                
+                let roleInfo = '';
+                if (task.role) {
+                    const roleClass = `role-${task.role}`;
+                    roleInfo = `<span class="role ${roleClass}">${task.role.toUpperCase()}</span>`;
+                }
+
+                li.innerHTML = `
+                    <strong>${task.name}</strong>
+                    ${roleInfo}
+                `;
+                summaryList.appendChild(li);
+            });
+        }
+
+        /**
+         * Genereert de configuratie-interface in stap 3 op basis van de gekozen workflow.
+         */
+        function generateConfigurationInterface() {
+            const container = document.getElementById('workflow-configuration');
+            container.innerHTML = ''; // Leeg de container
+
+            workflow.forEach(task => {
+                const card = document.createElement('div');
+                card.className = 'config-card';
+                card.innerHTML = `
+                    <h3>${task.name}</h3>
+                    
+                    <div class="kern-handeling">
+                        <label>
+                            <input type="checkbox" class="kern-checkbox" data-task-id="${task.id}"> Is dit de kernhandeling?
+                        </label>
+                    </div>
+
+                    <p><strong>Wie voert de taak uit?</strong></p>
+                    <div class="toggle-switch">
+                        <input type="radio" id="${task.id}-mens" name="role-${task.id}" value="mens" data-task-id="${task.id}" checked>
+                        <label for="${task.id}-mens">Mens</label>
+                        <input type="radio" id="${task.id}-ai" name="role-${task.id}" value="ai" data-task-id="${task.id}">
+                        <label for="${task.id}-ai">AI</label>
+                        <input type="radio" id="${task.id}-samen" name="role-${task.id}" value="samen" data-task-id="${task.id}">
+                        <label for="${task.id}-samen">Samen</label>
+                    </div>
+
+                    <div class="slider-container">
+                        <label for="density-${task.id}">Taakdichtheid AI (0% = geen, 100% = vol)</label>
+                        <input type="range" id="density-${task.id}" min="0" max="100" value="0" data-task-id="${task.id}" disabled>
+                        <span class="slider-value">0%</span>
+                        <p class="warning" id="warning-${task.id}">Let op! AI neemt hier het denkwerk over.</p>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        /**
+        * Genereert de definitieve, visuele samenvatting op de laatste pagina.
+        */
+        function generateFinalSummary() {
+            const container = document.getElementById('final-summary-visual');
+            container.innerHTML = ''; // Leeg de container
+            
+            if (workflow.length === 0) {
+                container.innerHTML = '<p>Je hebt geen workflow stappen gekozen.</p>';
+                return;
+            }
+
+            workflow.forEach(task => {
+                const isCore = task.isCore ? ' (⭐ Kernhandeling)' : '';
+                const roleClass = `role-${task.role || 'mens'}`;
+
+                const taskElement = document.createElement('div');
+                taskElement.style.border = '1px solid #ddd';
+                taskElement.style.borderRadius = '8px';
+                taskElement.style.padding = '15px';
+                taskElement.style.margin = '10px 0';
+                taskElement.style.display = 'flex';
+                taskElement.style.alignItems = 'center';
+                taskElement.style.gap = '15px';
+
+                taskElement.innerHTML = `
+                    <div style="flex-grow: 1;">
+                        <h4 style="margin: 0 0 5px 0;">${task.name}${isCore}</h4>
+                        <div>Rol: <span style="padding: 3px 8px; border-radius: 12px; color: white;" class="${roleClass}">${(task.role || 'mens').toUpperCase()}</span></div>
+                        <div>AI Taakdichtheid: <strong>${task.density || 0}%</strong></div>
+                    </div>
+                `;
+                container.appendChild(taskElement);
+
+                if (workflow.indexOf(task) < workflow.length - 1) {
+                    const arrow = document.createElement('div');
+                    arrow.textContent = '⬇️';
+                    arrow.style.textAlign = 'center';
+                    arrow.style.fontSize = '24px';
+                    container.appendChild(arrow);
+                }
+            });
+        }
+
+
+        // --- Event Listeners ---
+
+        // Navigatieknoppen
+        nextBtn.addEventListener('click', () => {
+            if (currentStep < totalSteps) {
+                currentStep++;
+                if (currentStep === 3) {
+                    generateConfigurationInterface();
+                }
+                showStep(currentStep);
+            }
+        });
+
+        prevBtn.addEventListener('click', () => {
+            if (currentStep > 1) {
+                currentStep--;
+                showStep(currentStep);
+            }
+        });
+
+        // "Voeg toe" knoppen in Stap 2
+        document.querySelector('.task-selection-grid').addEventListener('click', (e) => {
+            if (e.target.classList.contains('add-task-btn')) {
+                const button = e.target;
+                const taskId = button.dataset.taskId;
+                const taskName = button.dataset.taskName;
+                
+                // Voorkom dubbele toevoeging
+                if (!workflow.find(task => task.id === taskId)) {
+                    workflow.push({
+                        id: taskId,
+                        name: taskName,
+                        role: 'mens', // Standaardwaarde
+                        density: 0,   // Standaardwaarde
+                        isCore: false // Standaardwaarde
+                    });
+                    
+                    button.textContent = 'Toegevoegd ✓';
+                    button.disabled = true;
+                    gsap.to(button, { duration: 0.3, backgroundColor: '#28a745' });
+
+                    updateSummary();
+                }
+            }
+        });
+        
+        // Dynamische listeners voor configuratie in Stap 3
+        document.getElementById('workflow-configuration').addEventListener('input', (e) => {
+            const target = e.target;
+            const taskId = target.dataset.taskId;
+            const task = workflow.find(t => t.id === taskId);
+            
+            if (!task) return;
+
+            // Update op basis van type input
+            if (target.type === 'radio' && target.name.startsWith('role-')) {
+                task.role = target.value;
+                const slider = document.getElementById(`density-${taskId}`);
+                slider.disabled = target.value === 'mens';
+                if(slider.disabled) {
+                    slider.value = 0;
+                    task.density = 0;
+                    document.querySelector(`#density-${taskId} + .slider-value`).textContent = '0%';
+                    document.getElementById(`warning-${taskId}`).style.display = 'none';
+                }
+            } else if (target.type === 'range') {
+                task.density = target.value;
+                const valueSpan = target.nextElementSibling;
+                valueSpan.textContent = `${target.value}%`;
+                // Toon waarschuwing bij hoge dichtheid
+                const warningP = document.getElementById(`warning-${taskId}`);
+                if (target.value > 80) {
+                    warningP.style.display = 'block';
+                    gsap.from(warningP, {duration: 0.5, opacity: 0});
+                } else {
+                    warningP.style.display = 'none';
+                }
+            } else if (target.type === 'checkbox' && target.classList.contains('kern-checkbox')) {
+                task.isCore = target.checked;
+            }
+            
+            updateSummary();
+        });
+
+        // Accordion functionaliteit
+        document.querySelectorAll('.accordion').forEach(acc => {
+            acc.addEventListener('click', function() {
+                this.classList.toggle('active');
+                const panel = this.nextElementSibling;
+                if (panel.style.maxHeight) {
+                    panel.style.maxHeight = null;
+                } else {
+                    panel.style.maxHeight = panel.scrollHeight + "px";
+                }
+            });
+        });
+
+        // Export knoppen
+        document.getElementById('export-png-btn').addEventListener('click', () => {
+            const summaryContainer = document.getElementById('final-summary-container');
+            html2canvas(summaryContainer, { 
+                backgroundColor: '#ffffff',
+                scale: 2 // Hogere resolutie
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'eai-workflow.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            });
+        });
+
+        document.getElementById('export-pdf-btn').addEventListener('click', () => {
+            const { jsPDF } = window.jspdf;
+            const summaryContainer = document.getElementById('final-summary-container');
+            
+            html2canvas(summaryContainer, {
+                backgroundColor: '#ffffff',
+                scale: 2
+            }).then(canvas => {
+                const imgData = canvas.toDataURL('image/png');
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+                
+                pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+                pdf.save('eai-workflow.pdf');
+            });
+        });
+
+        // --- Initialisatie ---
+        showStep(currentStep); // Toon de eerste stap bij het laden
+    </script>
+<footer class="eai-site-footer"><a href="https://raw.githack.com/E-AI-MODEL/website/site-preview/publicaties/index.html">← Terug</a> · <a href="mailto:vis@emmauscollege.nl">Contact</a></footer></body></html>
