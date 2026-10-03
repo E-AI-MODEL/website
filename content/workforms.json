@@ -1,0 +1,783 @@
+{
+  "version": "1.0",
+  "workforms": [
+    {
+      "slug": "eai-kaart",
+      "title": "EAI-kaart",
+      "category": "analyse",
+      "audience": [
+        "teacher",
+        "team"
+      ],
+      "evidence": [
+        "design",
+        "process"
+      ],
+      "summary": "Breng een taak terug naar de vijf vaste velden: proces/doel, fase, kernhandeling, taakdichtheid en output.",
+      "lede": "Gebruik de EAI-kaart wanneer een gesprek over AI te snel naar tools, prompts of algemene labels springt.",
+      "question": "Wat gebeurt er in dit proces, op dit moment, en welke menselijke handeling draagt hier betekenis?",
+      "route": [
+        "proces",
+        "fase",
+        "kernhandeling",
+        "taakdichtheid",
+        "output"
+      ],
+      "steps": [
+        "Beschrijf het proces of doel en de belangrijkste fasen.",
+        "Kies de fase die je nu wilt analyseren.",
+        "Benoem de kernhandeling zo concreet mogelijk: actor, handeling, object en criterium.",
+        "Breng in kaart wie welke handeling uitvoert en wanneer AI in beeld komt.",
+        "Bekijk de output: welke menselijke en technische bijdragen zijn nog herkenbaar of herleidbaar?",
+        "Voeg pas daarna de onderwijslaag toe: welk bewijs van leren heb je nodig voor de claim die je wilt doen?"
+      ],
+      "result": "Een compacte analyse waarin de technische keuze pas volgt nadat proces, fase, kernhandeling, taakverdeling en output helder zijn.",
+      "caution": "Gebruik de vijf velden niet als invulritueel. Een verandering in één veld kan de rest van de analyse verschuiven.",
+      "source": "EAI · Nieuwe uitgave 2026"
+    },
+    {
+      "slug": "kernhandeling-check",
+      "title": "Kernhandeling-check",
+      "category": "analyse",
+      "audience": [
+        "teacher",
+        "team"
+      ],
+      "evidence": [
+        "design",
+        "process"
+      ],
+      "summary": "Bepaal welke menselijke handeling in deze fase inhoudelijke betekenis draagt voordat je AI een rol geeft.",
+      "lede": "De kernhandeling is niet automatisch de moeilijkste, langste of meest zichtbare stap.",
+      "question": "Welke stap moet de leerling of professional hier zelf uitvoeren om betekenis te geven aan het proces?",
+      "route": [
+        "proces",
+        "fase",
+        "kernhandeling"
+      ],
+      "steps": [],
+      "result": "",
+      "caution": "",
+      "source": "EAI · Nieuwe uitgave 2026"
+    },
+    {
+      "slug": "task-density-scan",
+      "title": "Task Density Map",
+      "category": "analyse",
+      "audience": [
+        "teacher",
+        "team"
+      ],
+      "evidence": [
+        "design",
+        "process"
+      ],
+      "summary": "Maak zichtbaar wie welke handeling uitvoert, op welk moment, gelezen ten opzichte van de kernhandeling.",
+      "lede": "Task Density is geen score voor hoeveel AI wordt gebruikt.",
+      "question": "Welke handelingen verschuiven tussen mens en AI, en raakt dat de kernhandeling?",
+      "route": [
+        "fase",
+        "kernhandeling",
+        "taakdichtheid"
+      ],
+      "steps": [],
+      "result": "",
+      "caution": "",
+      "source": "EAI · Nieuwe uitgave 2026"
+    },
+    {
+      "slug": "prompt-variation-lab",
+      "title": "Prompt Variation Lab",
+      "category": "analyse",
+      "audience": [
+        "teacher",
+        "team"
+      ],
+      "evidence": [
+        "design"
+      ],
+      "summary": "Voer dezelfde vraag meerdere keren uit en onderzoek variatie, toon, aannames en mogelijke fouten.",
+      "lede": "Een taalmodel kan bij dezelfde korte vraag verschillende plausibele antwoorden geven. Deze werkvorm maakt dat gedrag zichtbaar voordat je gaat sturen.",
+      "question": "Wat blijft stabiel, wat varieert en welke context verandert het systeemgedrag?",
+      "route": [
+        "fase",
+        "taakdichtheid",
+        "output"
+      ],
+      "steps": [
+        "Kies één korte, realistische vraag uit je eigen vak of taak.",
+        "Voer exact dezelfde vraag drie keer uit zonder extra context.",
+        "Noteer per output de kernclaims, toon van zekerheid en opvallende verschillen of mogelijke fouten.",
+        "Bepaal welke context ontbreekt, bijvoorbeeld doelgroep, fase, bronnen, outputstructuur of controlecheck.",
+        "Voeg die context toe en herhaal de proef.",
+        "Bespreek niet welke output het mooist is, maar welk systeemgedrag door de extra context veranderde."
+      ],
+      "result": "Een concreet beeld van variatie en van de invloed die context en instructie op de output hebben.",
+      "caution": "Meer consistente output is niet automatisch betere didactiek. De kernhandeling en bewijsfunctie moeten apart worden beoordeeld.",
+      "source": "Werkboek workshop EAI in onderwijs · concept v3.1.2"
+    },
+    {
+      "slug": "toollab",
+      "title": "Toollab: dezelfde vraag, twee omgevingen",
+      "category": "analyse",
+      "audience": [
+        "teacher",
+        "team"
+      ],
+      "evidence": [
+        "design"
+      ],
+      "summary": "Vergelijk een algemene AI met een brongebonden omgeving en analyseer wat context en bronnen veranderen.",
+      "lede": "Dezelfde leerlingvraag kan in verschillende AI-omgevingen een andere informatiebasis en andere output krijgen.",
+      "question": "Wat verandert door bronbinding, en welk onderwijsprobleem lost bronbinding niet vanzelf op?",
+      "route": [
+        "fase",
+        "taakdichtheid",
+        "output"
+      ],
+      "steps": [],
+      "result": "",
+      "caution": "",
+      "source": "Werkboek workshop EAI in onderwijs · concept v3.1.2"
+    },
+    {
+      "slug": "first-attempt",
+      "title": "First Attempt & Version Comparison",
+      "category": "zichtbaar",
+      "audience": [
+        "learner",
+        "teacher"
+      ],
+      "evidence": [
+        "process"
+      ],
+      "summary": "Bewaar een eerste eigen poging en vergelijk daarna wat met AI-hulp veranderde, door wie en waarom.",
+      "lede": "Een eerste poging maakt zichtbaar wat al aanwezig was voordat inhoudelijke AI-hulp het product veranderde.",
+      "question": "Wat deed de leerling vóór de AI-bijdrage, en wat veranderde daarna?",
+      "route": [
+        "kernhandeling",
+        "taakdichtheid",
+        "output"
+      ],
+      "steps": [],
+      "result": "",
+      "caution": "",
+      "source": "EAI · Nieuwe uitgave 2026"
+    },
+    {
+      "slug": "justification-mapping",
+      "title": "Justification Mapping",
+      "category": "zichtbaar",
+      "audience": [
+        "learner",
+        "teacher"
+      ],
+      "evidence": [
+        "process"
+      ],
+      "summary": "Leg per relevante AI-bijdrage vast wat is overgenomen, aangepast of verworpen en waarom.",
+      "lede": "Maak niet alleen prompts zichtbaar, maar juist de inhoudelijke beslissingen die erop volgden.",
+      "question": "Welke AI-suggestie kwam binnen, wat deed de leerling ermee en welke reden lag daarachter?",
+      "route": [
+        "kernhandeling",
+        "taakdichtheid",
+        "output"
+      ],
+      "steps": [],
+      "result": "",
+      "caution": "",
+      "source": "EAI Dictionary · corpus term"
+    },
+    {
+      "slug": "trace-back-prompting",
+      "title": "Trace-back Prompting",
+      "category": "zichtbaar",
+      "audience": [
+        "learner",
+        "teacher"
+      ],
+      "evidence": [
+        "process"
+      ],
+      "summary": "Redeneer vanaf een concrete passage, keuze of wijziging terug naar AI-bijdragen, eigen beslissingen en redenen.",
+      "lede": "Trace-back Prompting begint bij wat er nu ligt en gaat stap voor stap terug naar hoe een relevante keuze is ontstaan.",
+      "question": "Kan de leerling verklaren hoe deze specifieke keuze in het eindproduct tot stand kwam?",
+      "route": [
+        "taakdichtheid",
+        "output"
+      ],
+      "steps": [
+        "Kies één concrete passage, beslissing of wijziging in het eindproduct.",
+        "Vraag waar die keuze voor het eerst ontstond.",
+        "Bepaal welke AI-bijdrage, bron, prompt of suggestie op dat moment meespeelde.",
+        "Laat de leerling benoemen wat hij of zij zelf koos, wijzigde of verwierp.",
+        "Vraag naar de inhoudelijke reden achter die beslissing.",
+        "Controleer of de leerling de keuze ook zonder de oorspronkelijke AI-formulering kan uitleggen."
+      ],
+      "result": "Een herleidbaar beslisspoor rond één relevante keuze, zonder dat het hele gesprek hoeft te worden gelogd.",
+      "caution": "Een opgeslagen promptgeschiedenis is nog geen procesbewijs. De menselijke afweging moet uit de reconstructie zelf blijken.",
+      "source": "EAI Dictionary · Trace-back Prompting"
+    },
+    {
+      "slug": "reflective-re-entry",
+      "title": "Reflective Re-Entry",
+      "category": "zichtbaar",
+      "audience": [
+        "learner",
+        "teacher"
+      ],
+      "evidence": [
+        "process"
+      ],
+      "summary": "Betreed na AI-gebruik opnieuw het denkproces en reconstrueer voorstellen, keuzes, afwijzingen en alternatieve routes.",
+      "lede": "AI kan een proces zo versnellen dat het pad naar de uitkomst verdwijnt. Reflective Re-Entry brengt de leerling doelgericht terug in dat pad.",
+      "question": "Waar zat mijn eigen afweging, en wat zou ik zonder deze AI-route anders hebben gedaan?",
+      "route": [
+        "kernhandeling",
+        "taakdichtheid",
+        "output"
+      ],
+      "steps": [
+        "Leg het eindproduct kort weg en benoem de oorspronkelijke taak of het doel.",
+        "Reconstructeer één of twee beslismomenten die inhoudelijk bepalend waren.",
+        "Benoem wat AI voorstelde en wat de leerling accepteerde, verwierp of veranderde.",
+        "Laat een alternatief noemen dat ook mogelijk was.",
+        "Vraag waarom de uiteindelijke route is gekozen.",
+        "Sluit af met wat de leerling bij een vergelijkbare taak zelf anders zou doen."
+      ],
+      "result": "Een korte reconstructie van menselijk handelen achter een AI-ondersteund product.",
+      "caution": "Laat AI de reflectie niet uitschrijven. Dan wordt juist de metacognitieve handeling opnieuw uitbesteed.",
+      "source": "EAI Dictionary · Reflective Re-Entry"
+    },
+    {
+      "slug": "controlled-detachment",
+      "title": "Controlled Detachment",
+      "category": "zelfstandigheid",
+      "audience": [
+        "learner",
+        "teacher"
+      ],
+      "evidence": [
+        "independent"
+      ],
+      "summary": "Neem relevante AI-ondersteuning tijdelijk weg en kijk of de kernhandeling zelfstandig beschikbaar blijft.",
+      "lede": "Een sterke prestatie met AI laat niet vanzelf zien wat de leerling zonder diezelfde inhoudelijke steun kan.",
+      "question": "Blijft de kernhandeling beschikbaar wanneer de hulp die de eerdere prestatie droeg tijdelijk wegvalt?",
+      "route": [
+        "kernhandeling",
+        "taakdichtheid",
+        "output"
+      ],
+      "steps": [
+        "Bepaal welke kernhandeling je zelfstandig wilt kunnen zien.",
+        "Benoem welke AI-ondersteuning de eerdere uitvoering materieel droeg.",
+        "Kies dezelfde of een vergelijkbare taak.",
+        "Verwijder precies die relevante ondersteuning tijdelijk.",
+        "Laat de leerling de kernhandeling opnieuw uitvoeren of uitleggen.",
+        "Leg vast wat nu zelfstandig zichtbaar is en welke ondersteuning eventueel nog nodig blijft."
+      ],
+      "result": "Zelfstandig bewijs over de kernhandeling onder duidelijk beschreven ondersteuningsvoorwaarden.",
+      "caution": "Controlled Detachment is geen straf voor AI-gebruik en geen algemene AI-vrije toets. Je haalt alleen weg wat de claim over zelfstandigheid anders onduidelijk maakt.",
+      "source": "EAI Dictionary · Controlled Detachment"
+    },
+    {
+      "slug": "explain-before-continue",
+      "title": "Explain Before Continue",
+      "category": "zelfstandigheid",
+      "audience": [
+        "learner",
+        "teacher"
+      ],
+      "evidence": [
+        "process",
+        "independent"
+      ],
+      "summary": "Pauzeer verdere AI-hulp en laat eerst de relevante redenering of keuze door de leerling zichtbaar maken.",
+      "lede": "Wanneer AI steeds verder helpt, kan een onzichtbare kennislacune worden meegenomen naar de volgende stap.",
+      "question": "Kan de leerling de huidige stap uitleggen voordat het systeem verder bouwt?",
+      "route": [
+        "kernhandeling",
+        "taakdichtheid"
+      ],
+      "steps": [
+        "Pauzeer de volgende AI-stap of verberg verdere inhoudelijke hulp.",
+        "Vraag de leerling de huidige keuze, regel of redenering in eigen woorden uit te leggen.",
+        "Stel één gerichte vervolgvraag op het onduidelijke deel.",
+        "Laat de leerling de ontbrekende stap zelf herstellen of aanvullen.",
+        "Hervat pas daarna de begrensde AI-ondersteuning.",
+        "Bewaar de uitleg alleen wanneer die relevant is voor de leerclaim."
+      ],
+      "result": "Zichtbaar menselijk begrip op het moment dat AI anders verder zou bouwen op een mogelijk onbegrepen stap.",
+      "caution": "Vraag niet om uitleg van ieder klein detail. Richt de pauze op de handeling die voor het doel of de claim relevant is.",
+      "source": "EAI Standard 0.4-candidate · remediation REM-05",
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/remediation/interventions.yaml"
+    },
+    {
+      "slug": "fresh-item-same-operation",
+      "title": "Fresh Item, Same Operation",
+      "category": "zelfstandigheid",
+      "audience": [
+        "learner",
+        "teacher"
+      ],
+      "evidence": [
+        "independent"
+      ],
+      "summary": "Laat dezelfde onderliggende handeling uitvoeren op een nieuw item met minder kans op antwoordhergebruik.",
+      "lede": "Opnieuw werken met exact dezelfde opgave kan vooral geheugen voor het eerder gegeven antwoord meten.",
+      "question": "Kan de leerling dezelfde bewerking of redenering uitvoeren wanneer de oppervlakte van de taak verandert?",
+      "route": [
+        "kernhandeling",
+        "output"
+      ],
+      "steps": [
+        "Bepaal de onderliggende handeling die je wilt zien.",
+        "Maak of kies een nieuw item waarin die handeling hetzelfde blijft.",
+        "Verminder inhoudelijke overlap met het eerdere antwoord.",
+        "Haal eerdere AI-output uit beeld voor de eerste poging.",
+        "Laat de leerling de handeling uitvoeren.",
+        "Vergelijk het nieuwe bewijs met de oorspronkelijke claim over zelfstandigheid."
+      ],
+      "result": "Sterker zelfstandig bewijs doordat antwoordhergebruik en oppervlakkige herkenning worden beperkt.",
+      "caution": "Een nieuw item moet de onderliggende handeling behouden. Verander niet zoveel dat je feitelijk een andere vaardigheid gaat meten.",
+      "source": "EAI Standard 0.4-candidate · EV-11 / REM-06",
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/standard/evidence-types.yaml"
+    },
+    {
+      "slug": "compare-then-reconstruct",
+      "title": "Compare Then Reconstruct",
+      "category": "zelfstandigheid",
+      "audience": [
+        "learner",
+        "teacher"
+      ],
+      "evidence": [
+        "process",
+        "independent"
+      ],
+      "summary": "Gebruik AI-output als contrastmateriaal en laat daarna de relevante handeling opnieuw door de leerling opbouwen.",
+      "lede": "Vergelijken kan leerzaam zijn, zolang de uiteindelijke reconstructie niet neerkomt op kopiëren van de betere versie.",
+      "question": "Kan de leerling het verschil beoordelen én daarna zelf een nieuwe versie opbouwen?",
+      "route": [
+        "taakdichtheid",
+        "output"
+      ],
+      "steps": [
+        "Leg een eigen en een AI-versie of twee alternatieven naast elkaar.",
+        "Laat de leerling een inhoudelijk relevant verschil aanwijzen.",
+        "Vraag welke versie op dat punt sterker is en op basis van welk criterium.",
+        "Laat de leerling een voorstel accepteren, verwerpen of aanpassen met reden.",
+        "Haal de voorbeeldformuleringen uit beeld.",
+        "Laat de leerling het relevante deel opnieuw reconstrueren en kort verantwoorden."
+      ],
+      "result": "Procesbewijs over vergelijking en keuze, gevolgd door nieuw menselijk bewijs over de handeling zelf.",
+      "caution": "Alleen het beste alternatief aanklikken is geen reconstructie. De relevante menselijke handeling moet na de vergelijking opnieuw zichtbaar worden.",
+      "source": "EAI Standard 0.4-candidate · remediation REM-04",
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/remediation/interventions.yaml"
+    },
+    {
+      "slug": "bewijs-van-leren",
+      "title": "Bewijs van leren",
+      "category": "bewijs",
+      "audience": [
+        "teacher",
+        "team"
+      ],
+      "evidence": [
+        "process",
+        "independent",
+        "retention",
+        "transfer"
+      ],
+      "summary": "Kies bewijs dat past bij de claim: huidige prestatie, zelfstandigheid, retentie of transfer.",
+      "lede": "Output is universeel. In onderwijs krijgt een deel daarvan de functie van bewijs van leren.",
+      "question": "Welke uitspraak wil je kunnen doen over het leren, en welk bewijs kan die uitspraak werkelijk dragen?",
+      "route": [
+        "kernhandeling",
+        "output"
+      ],
+      "steps": [],
+      "result": "",
+      "caution": "",
+      "source": "EAI · Nieuwe uitgave 2026"
+    },
+    {
+      "slug": "delayed-reperformance",
+      "title": "Delayed Reperformance",
+      "category": "bewijs",
+      "audience": [
+        "learner",
+        "teacher"
+      ],
+      "evidence": [
+        "retention"
+      ],
+      "summary": "Laat de relevante handeling na een betekenisvolle tijd opnieuw uitvoeren zonder het eerdere antwoord opnieuw aan te bieden.",
+      "lede": "Zelfstandig kunnen uitvoeren direct na ondersteuning is iets anders dan de handeling later nog beschikbaar hebben.",
+      "question": "Kan de leerling de relevante handeling na verloop van tijd opnieuw uitvoeren?",
+      "route": [
+        "kernhandeling",
+        "output"
+      ],
+      "steps": [
+        "Kies een kernhandeling waarvoor retentie relevant is.",
+        "Plan een later moment dat lang genoeg uit elkaar ligt om meer te meten dan directe herhaling.",
+        "Gebruik bij voorkeur een nieuw of licht gewijzigd item.",
+        "Toon het eerdere antwoord of de volledige AI-route niet vlak voor de poging.",
+        "Laat de leerling eerst zelfstandig uitvoeren.",
+        "Leg het resultaat apart vast als retentiebewijs, niet als dezelfde meting als de eerdere prestatie."
+      ],
+      "result": "Een aparte aanwijzing voor retentie van de relevante handeling.",
+      "caution": "De juiste vertraging is contextafhankelijk. EAI schrijft geen universeel aantal dagen voor.",
+      "source": "EAI Standard 0.4-candidate · EV-06 / REM-07",
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/docs/08-evidence-handback-remediation.md"
+    },
+    {
+      "slug": "transfer-task",
+      "title": "Transfer Task",
+      "category": "bewijs",
+      "audience": [
+        "learner",
+        "teacher"
+      ],
+      "evidence": [
+        "transfer"
+      ],
+      "summary": "Verander context of representatie terwijl de onderliggende handeling gelijk blijft.",
+      "lede": "Een vaardigheid kunnen herhalen in vrijwel dezelfde taak zegt nog niet dat zij ook in een andere situatie beschikbaar is.",
+      "question": "Herkent en gebruikt de leerling dezelfde onderliggende handeling wanneer de context betekenisvol verandert?",
+      "route": [
+        "kernhandeling",
+        "output"
+      ],
+      "steps": [
+        "Bepaal welke onderliggende handeling centraal staat.",
+        "Ontwerp een taak met een andere context, representatie of oppervlakte.",
+        "Laat de leerling zelf herkennen welke eerdere kennis of aanpak relevant is.",
+        "Laat de handeling zonder antwoordniveau-hulp uitvoeren.",
+        "Vraag kort wat hetzelfde bleef en wat moest worden aangepast.",
+        "Leg dit apart vast als transferbewijs."
+      ],
+      "result": "Een aanwijzing of de leerling de relevante handeling buiten de oorspronkelijke taak kan herkennen en toepassen.",
+      "caution": "Transfer is meer dan een nieuw getal of andere naam in dezelfde opgave. De context moet betekenisvol verschillen zonder de kernhandeling te vervangen.",
+      "source": "EAI Standard 0.4-candidate · EV-07 / REM-08",
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/standard/evidence-types.yaml"
+    },
+    {
+      "slug": "confidence-vs-evidence",
+      "title": "Confidence vs Evidence",
+      "category": "bewijs",
+      "audience": [
+        "learner",
+        "teacher"
+      ],
+      "evidence": [
+        "independent",
+        "retention"
+      ],
+      "summary": "Leg vertrouwen in eigen kunnen naast een verse zelfstandige poging.",
+      "lede": "Vloeiende AI-uitleg en succesvolle ondersteunde uitvoering kunnen het gevoel van beheersing versterken zonder dat dezelfde handeling al zelfstandig beschikbaar is.",
+      "question": "Welk prestatiebewijs ondersteunt mijn vertrouwen dat ik dit zelf kan?",
+      "route": [
+        "kernhandeling",
+        "output"
+      ],
+      "steps": [
+        "Laat de leerling vooraf inschatten hoe zeker hij of zij is over de relevante handeling.",
+        "Vraag waarop die inschatting is gebaseerd.",
+        "Geef een verse taak met ondersteuning teruggebracht tot het niveau dat bij de claim past.",
+        "Laat eerst zelfstandig uitvoeren.",
+        "Vergelijk de inschatting met het zichtbare bewijs.",
+        "Laat de leerling de eigen inschatting bijstellen op basis van die uitvoering."
+      ],
+      "result": "Een expliciet onderscheid tussen gevoel van beheersing en zichtbaar bewijs van beheersing.",
+      "caution": "Gebruik vertrouwen niet als vervanging voor prestatiebewijs. Het is een extra reflectielaag.",
+      "source": "EAI Standard 0.4-candidate · learner retrieval microstructure MS-LRI-12",
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/learner-retrieval-and-independent-performance.yaml"
+    },
+    {
+      "slug": "foutanalyse",
+      "title": "Foutanalyse",
+      "category": "herstellen",
+      "audience": [
+        "learner",
+        "teacher"
+      ],
+      "evidence": [
+        "process"
+      ],
+      "summary": "Laat de leerling een fout herkennen, lokaliseren, verklaren en herstellen voordat een volledige oplossing verschijnt.",
+      "lede": "Een fout verbeteren is iets anders dan zelf zien waar de redenering ontspoort.",
+      "question": "Kan de leerling aanwijzen waar het voor het eerst misgaat en waarom?",
+      "route": [
+        "kernhandeling",
+        "output"
+      ],
+      "steps": [],
+      "result": "",
+      "caution": "",
+      "source": "Werkboek workshop EAI in onderwijs"
+    },
+    {
+      "slug": "feedback-redo",
+      "title": "Feedback → Redo",
+      "category": "herstellen",
+      "audience": [
+        "learner",
+        "teacher"
+      ],
+      "evidence": [
+        "process",
+        "independent"
+      ],
+      "summary": "Laat feedback leiden tot een gerichte nieuwe handeling van de leerling in plaats van tot een kant-en-klare verbeterde versie.",
+      "lede": "Feedback draagt pas bij aan leren wanneer de leerling er zelf iets mee moet doen.",
+      "question": "Welke gerichte wijziging voert de leerling na feedback zelf uit, en waarom?",
+      "route": [
+        "kernhandeling",
+        "taakdichtheid",
+        "output"
+      ],
+      "steps": [
+        "Geef feedback op maximaal één of twee relevante punten.",
+        "Laat de leerling de feedback in eigen woorden herhalen.",
+        "Vraag welk punt eerst wordt aangepakt en waarom.",
+        "Laat de leerling de wijziging zelf uitvoeren.",
+        "Vraag kort wat er veranderde en welk criterium daarbij hielp.",
+        "Gebruik daarna een kleine nieuwe toepassing of variant om te zien of de stap opnieuw lukt."
+      ],
+      "result": "Procesbewijs over het gebruiken van feedback plus een nieuwe uitvoering van de relevante handeling.",
+      "caution": "Laat AI de verbeterde versie niet meteen herschrijven. Dan zie je vooral de kwaliteit van de correctie door het systeem.",
+      "source": "EAI Tutor-handleiding · feedback, redo en transfer"
+    },
+    {
+      "slug": "source-verification",
+      "title": "Source Verification",
+      "category": "herstellen",
+      "audience": [
+        "learner",
+        "teacher"
+      ],
+      "evidence": [
+        "process"
+      ],
+      "summary": "Controleer een materiële AI-claim tegen een passende bron en leg uit wat de vergelijking oplevert.",
+      "lede": "Bronvermelding door een systeem is niet hetzelfde als menselijke verificatie van een claim.",
+      "question": "Klopt deze relevante AI-claim volgens een geschikte bron, en wat verandert dat aan mijn gebruik ervan?",
+      "route": [
+        "taakdichtheid",
+        "output"
+      ],
+      "steps": [
+        "Selecteer één materiële claim uit de AI-output.",
+        "Bepaal welk type bron geschikt is om die claim te controleren.",
+        "Zoek de relevante passage of gegevens in die bron.",
+        "Vergelijk de AI-claim met de bron: overeenstemming, verschil, nuance of onvoldoende bewijs.",
+        "Laat de leerling de conclusie van die vergelijking in eigen woorden formuleren.",
+        "Pas het product of de mate van vertrouwen aan wanneer de bron daar aanleiding toe geeft."
+      ],
+      "result": "Procesbewijs dat de leerling of professional niet alleen een bron heeft toegevoegd, maar een claim daadwerkelijk heeft geverifieerd.",
+      "caution": "Niet iedere zin vraagt om dezelfde broncheck. Richt verificatie op claims die voor de taak of beslissing materieel zijn.",
+      "source": "EAI Standard 0.4-candidate · AIS-005 / EV-13",
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/skills/ai-interaction.yaml"
+    },
+    {
+      "slug": "smallest-help-needed",
+      "title": "Smallest Help Needed",
+      "category": "zelfregulatie",
+      "audience": [
+        "learner"
+      ],
+      "evidence": [
+        "process"
+      ],
+      "summary": "Laat de leerling eerst bepalen waar hij vastloopt en wat de kleinste hulp is waarmee hij zelf verder kan.",
+      "lede": "Een algemene vraag om hulp kan in een AI-omgeving gemakkelijk veranderen in het uitbesteden van de hele taak.",
+      "question": "Wat is de kleinste vorm van hulp die mij laat doorgaan zonder de kernhandeling weg te geven?",
+      "route": [
+        "fase",
+        "kernhandeling",
+        "taakdichtheid"
+      ],
+      "steps": [
+        "Laat de leerling het precieze vastlooppunt benoemen.",
+        "Vraag welk deel hij of zij daarna zelf wil blijven uitvoeren.",
+        "Laat kiezen welk type hulp nodig is: vraag, hint, voorbeeld, uitleg, bron of feedback.",
+        "Formuleer de hulpvraag zo klein en gericht mogelijk.",
+        "Gebruik de hulp.",
+        "Laat de leerling daarna zelf de volgende inhoudelijke stap zetten."
+      ],
+      "result": "Een gerichte hulpvraag die de eigen handeling bewaart en tegelijk zelfregulatie zichtbaar maakt.",
+      "caution": "De kleinste hulp is niet altijd de minste hulp. De passende hulp is groot genoeg om verder te kunnen, maar neemt de relevante handeling niet onnodig over.",
+      "source": "EAI Standard 0.4-candidate · self-regulation MS-LSR-07 t/m 09",
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/learner-self-regulation-and-metacognition.yaml"
+    },
+    {
+      "slug": "accept-adapt-reject",
+      "title": "Accept / Adapt / Reject",
+      "category": "zelfregulatie",
+      "audience": [
+        "learner"
+      ],
+      "evidence": [
+        "process"
+      ],
+      "summary": "Laat de leerling een AI-suggestie bewust accepteren, aanpassen of verwerpen vóórdat hij ermee verdergaat.",
+      "lede": "Vloeiende AI-suggesties kunnen automatisch worden gevolgd. Deze korte routine maakt het oordeel van de leerling expliciet.",
+      "question": "Wat in deze ondersteuning is bruikbaar, wat niet, en wat ga ik er werkelijk mee doen?",
+      "route": [
+        "kernhandeling",
+        "taakdichtheid",
+        "output"
+      ],
+      "steps": [
+        "Kies één relevante AI-suggestie.",
+        "Laat de leerling één van drie acties kiezen: accepteren, aanpassen of verwerpen.",
+        "Vraag om één inhoudelijke reden voor die keuze.",
+        "Bij aanpassen: laat precies aangeven wat verandert.",
+        "Voer de gekozen route uit.",
+        "Controleer achteraf of de keuze nog steeds verdedigbaar is."
+      ],
+      "result": "Zichtbaar menselijk oordeel voordat AI-output in het werk wordt opgenomen.",
+      "caution": "Een vinkje zonder reden is geen inhoudelijke afweging. Houd de verantwoording kort, maar inhoudelijk.",
+      "source": "EAI Standard 0.4-candidate · self-regulation MS-LSR-10",
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/learner-self-regulation-and-metacognition.yaml"
+    },
+    {
+      "slug": "resume-control",
+      "title": "Resume Control",
+      "category": "zelfregulatie",
+      "audience": [
+        "learner"
+      ],
+      "evidence": [
+        "process",
+        "independent"
+      ],
+      "summary": "Geef na een periode van AI-hulp de keuze over de volgende stap en de controle op voortgang terug aan de leerling.",
+      "lede": "Een leerling kan de zichtbare taak zelf uitvoeren terwijl het systeem nog steeds route, tempo en volgende stap bepaalt.",
+      "question": "Wat beslis en controleer ik vanaf dit punt weer zelf?",
+      "route": [
+        "fase",
+        "kernhandeling",
+        "taakdichtheid"
+      ],
+      "steps": [
+        "Benoem kort welke keuzes het systeem tot nu toe heeft gestuurd.",
+        "Pauzeer automatische routing, aanbevelingen of volgende-stap-suggesties.",
+        "Herhaal het leerdoel.",
+        "Laat de leerling zelf de volgende stap kiezen en kort uitleggen waarom.",
+        "Laat de leerling één criterium noemen waarmee de voortgang wordt gecontroleerd.",
+        "Hervat alleen de begrensde ondersteuning die nog nodig is."
+      ],
+      "result": "Procesbewijs dat de leerling na ondersteuning opnieuw regulerende beslissingen uitvoert.",
+      "caution": "Regie hoeft niet altijd bij de leerling te liggen. Deze werkvorm is relevant wanneer plannen, monitoren of bijsturen onderdeel is van het doel of de claim.",
+      "source": "EAI Standard 0.4-candidate · REM-11 / MS-LSR-11",
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/remediation/interventions.yaml"
+    },
+    {
+      "slug": "herontwerp-opdracht",
+      "title": "Herontwerp je opdracht",
+      "category": "ontwerpen",
+      "audience": [
+        "teacher",
+        "team"
+      ],
+      "evidence": [
+        "design",
+        "process"
+      ],
+      "summary": "Herontwerp een bestaande taak vanuit de actuele EAI-volgorde en voeg pas daarna AI en bewijs toe.",
+      "lede": "Een bestaande opdracht kan er hetzelfde uitzien terwijl AI de onderliggende onderwijsbetekenis sterk verandert.",
+      "question": "Hoe ziet deze taak eruit als ik eerst proces, fase, kernhandeling, taakverdeling en output expliciet maak?",
+      "route": [
+        "proces",
+        "fase",
+        "kernhandeling",
+        "taakdichtheid",
+        "output"
+      ],
+      "steps": [
+        "Beschrijf het proces of leerdoel en kies de relevante fase.",
+        "Inventariseer de concrete handelingen van leerling en docent.",
+        "Benoem de kernhandeling die in deze fase betekenis draagt.",
+        "Breng de gewenste taakdichtheid in kaart: mens, AI, gedeeld en volgorde.",
+        "Bepaal welke output uit de fase moet komen.",
+        "Kies in de onderwijslaag welk proces- of zelfstandig bewijs nodig is.",
+        "Formuleer daarna pas welke AI-acties wel en niet passen en welke tool of inrichting dat kan uitvoeren."
+      ],
+      "result": "Een uitlegbaar herontwerp waarin de AI-rol voortkomt uit het leerproces in plaats van andersom.",
+      "caution": "Het oude zesstappenwerkboek blijft bruikbaar als werkvorm, maar de actuele EAI-kern is vijf velden. Bewijs van leren hoort in onderwijs bij de domeinlaag rond output.",
+      "source": "Werkboek workshop EAI in onderwijs, geordend volgens EAI · Nieuwe uitgave 2026"
+    },
+    {
+      "slug": "ai-role-handback-plan",
+      "title": "AI Role & Handback Plan",
+      "category": "ontwerpen",
+      "audience": [
+        "teacher",
+        "team"
+      ],
+      "evidence": [
+        "design",
+        "independent"
+      ],
+      "summary": "Leg vast wat AI in een taak mag doen én op welk moment een relevante handeling teruggaat naar de mens.",
+      "lede": "Alleen opschrijven dat AI 'ondersteunt' zegt te weinig. Beschrijf concrete systeemacties en het geplande teruggeefmoment.",
+      "question": "Welke AI-acties zijn hier passend, en wanneer moet de relevante handeling weer zichtbaar door de mens worden uitgevoerd?",
+      "route": [
+        "fase",
+        "kernhandeling",
+        "taakdichtheid",
+        "output"
+      ],
+      "steps": [
+        "Benoem de kernhandeling en de claim die je later wilt kunnen doen.",
+        "Beschrijf concrete toegestane AI-acties, bijvoorbeeld vragen stellen, hints geven, alternatieven tonen of formulering controleren.",
+        "Beschrijf concrete uitgesloten acties voor deze fase.",
+        "Bepaal het handback-punt: wanneer wordt ondersteuning verminderd of verwijderd?",
+        "Ontwerp de nieuwe menselijke uitvoering die daarna zichtbaar moet worden.",
+        "Leg vast welk bewijs je op dat moment verzamelt."
+      ],
+      "result": "Een taakontwerp met expliciete AI-rol, grens, handback en bewijsroute.",
+      "caution": "Handback is alleen nodig wanneer AI een handeling materieel uitvoert of onzichtbaar maakt die relevant is voor de claim en waarvoor menselijk bewijs nodig blijft.",
+      "source": "EAI Standard 0.4-candidate · AIS-001, AIS-008 en handback",
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/docs/08-evidence-handback-remediation.md"
+    },
+    {
+      "slug": "assessment-redesign",
+      "title": "Assessment Redesign",
+      "category": "ontwerpen",
+      "audience": [
+        "teacher",
+        "team"
+      ],
+      "evidence": [
+        "design",
+        "process",
+        "independent"
+      ],
+      "summary": "Bepaal opnieuw wat een product nog kan bewijzen wanneer AI delen van de relevante handeling kan uitvoeren.",
+      "lede": "De kwaliteit van een AI-ondersteund product kan hoog zijn terwijl de bewijsfunctie van dat product verandert.",
+      "question": "Welke claim trok ik vroeger uit dit product, en welk aanvullend of ander bewijs is nu nodig?",
+      "route": [
+        "proces",
+        "kernhandeling",
+        "taakdichtheid",
+        "output"
+      ],
+      "steps": [
+        "Schrijf de claim op die je met de huidige opdracht of toets wilt ondersteunen.",
+        "Benoem welke menselijke handelingen die claim veronderstelt.",
+        "Breng in kaart welke daarvan door AI kunnen worden uitgevoerd, voorbereid of verborgen.",
+        "Beperk de claim als het huidige product die niet meer kan dragen.",
+        "Voeg alleen het bewijs toe dat voor de resterende claim nodig is, bijvoorbeeld procesbewijs, een verse zelfstandige uitvoering of een mondelinge probe.",
+        "Controleer of de nieuwe bewijsroute proportioneel en uitvoerbaar blijft."
+      ],
+      "result": "Een beoordeling waarin productkwaliteit en bewijs over menselijke beheersing niet automatisch aan elkaar worden gelijkgesteld.",
+      "caution": "Meer controle is niet automatisch beter. De bewijsroute moet passen bij de claim en bij de gevolgen van een foutieve conclusie.",
+      "source": "EAI Standard 0.4-candidate · AIS-019 en evidence semantics",
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/standard/evidence-types.yaml"
+    }
+  ]
+}
