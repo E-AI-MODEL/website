@@ -318,6 +318,14 @@ jobs:
 
       - name: Publish generated files to migration branch
         run: |
+          git fetch origin "$GITHUB_REF_NAME"
+          REMOTE_SHA="$(git rev-parse "origin/$GITHUB_REF_NAME")"
+          LOCAL_SHA="$(git rev-parse HEAD)"
+          if [ "$REMOTE_SHA" != "$LOCAL_SHA" ]; then
+            echo "A newer commit exists on $GITHUB_REF_NAME; this run is stale and will not publish generated files."
+            exit 0
+          fi
+
           rm -rf assets publicaties tools eai-blog eai-tools-modules eaa-model onderwijsin twee-pijlers workshop-ai werkvormen onderbouwing praktijk over
           cp -R site-build/assets .
           cp -R site-build/publicaties .
@@ -338,6 +346,5 @@ jobs:
           git add index.html 404.html robots.txt sitemap.xml assets publicaties tools eai-blog eai-tools-modules eaa-model onderwijsin twee-pijlers workshop-ai werkvormen onderbouwing praktijk over
           if ! git diff --cached --quiet; then
             git commit -m "build: refresh EAI site"
-            git pull --rebase origin "$GITHUB_REF_NAME"
-            git push
+            git push origin HEAD:"$GITHUB_REF_NAME"
           fi
