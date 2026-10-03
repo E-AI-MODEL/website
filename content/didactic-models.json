@@ -1,0 +1,324 @@
+{
+  "models": [
+    {
+      "id": "edi-2.0",
+      "name": "Expliciete Directe Instructie 2.0",
+      "short_name": "EDI 2.0",
+      "kind": "ordered_phases",
+      "adapter_id": "ADP-EDI-2",
+      "adapter_status": "candidate",
+      "source_reference": "Hollingsworth & Ybarra (2025), Nederlandse bewerking Marcel Schmeier",
+      "source_url": "https://www.uitgeverijpica.nl/titels/expliciete-directe-instructie-pica",
+      "standard_url": "https://github.com/E-AI-MODEL/EAI-standard/tree/main/adapters/edi-2.0",
+      "intro": "De negen EDI-lesfasen blijven intact. EAI voegt per fase alleen de vraag toe welke menselijke handeling daar betekenis draagt, wat AI doet en welk bewijs je daarna nodig hebt.",
+      "cross_cutting": [
+        "Betrekken en activeren",
+        "Herhalen",
+        "Controleren van begrip",
+        "Feedback"
+      ],
+      "phases": [
+        {
+          "id": "EDI-P1",
+          "label": "Voorkennis",
+          "order": 1,
+          "purpose": "Activeer relevante voorkennis zodat nieuw leren kan aansluiten op wat al beschikbaar is.",
+          "eai_question": "Welke voorkennis moet de leerling hier zelf ophalen of verbinden?",
+          "workforms": [
+            "first-attempt",
+            "confidence-vs-evidence"
+          ]
+        },
+        {
+          "id": "EDI-P2",
+          "label": "Lesdoel",
+          "order": 2,
+          "purpose": "Maak duidelijk wat de leerling aan het einde van de les moet kennen en kunnen.",
+          "eai_question": "Begrijpt de leerling wat hij moet leren, los van alleen de taak afronden?",
+          "workforms": [
+            "learning-goal-vs-task",
+            "kernhandeling-check",
+            "target-action-first"
+          ]
+        },
+        {
+          "id": "EDI-P3",
+          "label": "Instructie",
+          "order": 3,
+          "purpose": "Onderwijs en modelleer de kennis of procedure die nodig is voor het lesdoel.",
+          "eai_question": "Wat mag worden voorgedaan, en welke stap moet daarna weer bij de leerling terechtkomen?",
+          "workforms": [
+            "model-then-reperform",
+            "target-action-first",
+            "ai-role-handback-plan"
+          ]
+        },
+        {
+          "id": "EDI-P4",
+          "label": "Begeleide inoefening",
+          "order": 4,
+          "purpose": "Oefen samen en bouw ondersteuning af terwijl verantwoordelijkheid naar de leerling verschuift.",
+          "eai_question": "Hoeveel hulp is hier nodig zonder dat de doelhandeling al wordt overgenomen?",
+          "workforms": [
+            "least-intrusive-support",
+            "eliciting-question",
+            "feedback-without-rewrite",
+            "fade-one-layer"
+          ]
+        },
+        {
+          "id": "EDI-P5",
+          "label": "Kleine lesafsluiting",
+          "order": 5,
+          "purpose": "Controleer of leerlingen voldoende zelfstandig verder kunnen.",
+          "eai_question": "Welk bewijs heb je nodig voordat je besluit dat zelfstandig verdergaan verantwoord is?",
+          "workforms": [
+            "fresh-item-same-operation",
+            "controlled-detachment",
+            "bewijs-van-leren",
+            "confidence-vs-evidence"
+          ]
+        },
+        {
+          "id": "EDI-P6",
+          "label": "Zelfstandige verwerking",
+          "order": 6,
+          "purpose": "Laat leerlingen het lesdoel zelfstandig oefenen en consolideren.",
+          "eai_question": "Voert de leerling de relevante handeling nu werkelijk zelf uit?",
+          "workforms": [
+            "controlled-detachment",
+            "hand-back-the-action",
+            "fresh-item-same-operation",
+            "bewijs-van-leren"
+          ]
+        },
+        {
+          "id": "EDI-P7",
+          "label": "Verlengde instructie",
+          "order": 7,
+          "purpose": "Geef extra instructie en leertijd wanneer de leerling nog onvoldoende zelfstandig verder kan.",
+          "eai_question": "Waar zit het eerste breekpunt en welke hulp is precies nodig?",
+          "workforms": [
+            "first-breakdown",
+            "smallest-help-needed",
+            "practice-or-reteach",
+            "feedback-redo"
+          ]
+        },
+        {
+          "id": "EDI-P8",
+          "label": "Verdiepende instructie",
+          "order": 8,
+          "purpose": "Bied extra uitdaging wanneer leerlingen toe zijn aan verdieping.",
+          "eai_question": "Welke nieuwe context, afweging of transfer moet de leerling nu zelf uitvoeren?",
+          "workforms": [
+            "transfer-task",
+            "perspective-weighing",
+            "hidden-assumption",
+            "source-suitability"
+          ]
+        },
+        {
+          "id": "EDI-P9",
+          "label": "Grote lesafsluiting",
+          "order": 9,
+          "purpose": "Kijk terug op het leerproces en het resultaat van de les.",
+          "eai_question": "Wat laat de les nu werkelijk zien, en wat blijft nog onbekend?",
+          "workforms": [
+            "process-reconstruction",
+            "bewijs-van-leren",
+            "confidence-vs-evidence",
+            "bound-the-claim"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "explicit-instruction-archer-hughes",
+      "name": "Explicit Instruction",
+      "short_name": "Explicit Instruction",
+      "kind": "ordered_functions",
+      "adapter_id": "ADP-EI-ARCHER-HUGHES",
+      "adapter_status": "candidate",
+      "source_reference": "Archer & Hughes (2011), Explicit Instruction: Effective and Efficient Teaching",
+      "source_url": "https://explicitinstruction.org/download/sample-chapter.pdf",
+      "standard_url": "https://github.com/E-AI-MODEL/EAI-standard/tree/main/adapters/explicit-instruction-archer-hughes",
+      "intro": "De zes teaching functions uit het bronmodel blijven in hun eigen volgorde en terminologie staan. EAI legt daar alleen een analyse van menselijke en AI-handelingen overheen.",
+      "cross_cutting": [
+        "Productive learner engagement",
+        "High success during learning",
+        "Scaffold and systematically fade support"
+      ],
+      "phases": [
+        {
+          "id": "EI-F1",
+          "label": "Review",
+          "order": 1,
+          "purpose": "Activeer en controleer relevante voorkennis en voorwaarden voor nieuw leren.",
+          "eai_question": "Wat moet de leerling hier zelf kunnen ophalen en laten zien?",
+          "workforms": [
+            "first-attempt",
+            "confidence-vs-evidence",
+            "fresh-item-same-operation"
+          ]
+        },
+        {
+          "id": "EI-F2",
+          "label": "Presentation",
+          "order": 2,
+          "purpose": "Introduceer doelen en nieuwe stof in overzichtelijke stappen met modellen en voorbeelden.",
+          "eai_question": "Wat wordt gemodelleerd en wat moet de leerling daarna zelf construeren of uitvoeren?",
+          "workforms": [
+            "model-then-reperform",
+            "kernhandeling-check",
+            "target-action-first"
+          ]
+        },
+        {
+          "id": "EI-F3",
+          "label": "Guided practice",
+          "order": 3,
+          "purpose": "Laat leerlingen veel reageren en oefenen met ondersteuning en feedback.",
+          "eai_question": "Welke steun helpt de leerling verder zonder de doelhandeling over te nemen?",
+          "workforms": [
+            "least-intrusive-support",
+            "eliciting-question",
+            "fade-one-layer",
+            "feedback-without-rewrite"
+          ]
+        },
+        {
+          "id": "EI-F4",
+          "label": "Corrections and feedback",
+          "order": 4,
+          "purpose": "Corrigeer fouten, geef feedback en geef opnieuw instructie wanneer het bewijs daar aanleiding toe geeft.",
+          "eai_question": "Wie detecteert, wie corrigeert en wie voert de nieuwe poging uit?",
+          "workforms": [
+            "foutanalyse",
+            "feedback-without-rewrite",
+            "feedback-redo",
+            "practice-or-reteach"
+          ]
+        },
+        {
+          "id": "EI-F5",
+          "label": "Independent practice",
+          "order": 5,
+          "purpose": "Verschuif uitvoering naar de leerling en oefen richting stabiele zelfstandige beheersing.",
+          "eai_question": "Wat kan de leerling nu zonder dezelfde inhoudelijke ondersteuning?",
+          "workforms": [
+            "controlled-detachment",
+            "hand-back-the-action",
+            "fresh-item-same-operation",
+            "bewijs-van-leren"
+          ]
+        },
+        {
+          "id": "EI-F6",
+          "label": "Weekly and monthly reviews",
+          "order": 6,
+          "purpose": "Haal eerder geleerd materiaal later opnieuw op om beschikbaarheid en retentie te versterken.",
+          "eai_question": "Is het geleerde later nog beschikbaar en bruikbaar?",
+          "workforms": [
+            "delayed-reperformance",
+            "transfer-task",
+            "confidence-vs-evidence"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "formatieve-toetscyclus",
+      "name": "Formatieve toetscyclus",
+      "short_name": "Formatief handelen",
+      "kind": "cyclic_phases",
+      "adapter_id": "ADP-FTC-GB",
+      "adapter_status": "candidate",
+      "source_reference": "Gulikers & Baartman (2017), Doelgericht professionaliseren",
+      "source_url": "https://www.hu.nl/onderzoek/publicaties/doelgericht-professionaliseren",
+      "standard_url": "https://github.com/E-AI-MODEL/EAI-standard/tree/main/adapters/formatieve-toetscyclus-gulikers-baartman",
+      "intro": "De vijf fasen vormen samen een formatief proces. EAI verandert die cyclus niet, maar maakt per fase zichtbaar welke menselijke handeling, AI-bijdrage en bewijsbetekenis relevant kunnen zijn.",
+      "cross_cutting": [
+        "Doelgericht bewijs verzamelen",
+        "Interpretatie scheiden van observatie",
+        "Vervolgactie baseren op leerlingbewijs"
+      ],
+      "phases": [
+        {
+          "id": "FTC-P1",
+          "label": "Verwachtingen verhelderen",
+          "source_label": "Verhelderen van verwachtingen",
+          "order": 1,
+          "purpose": "Maak leerdoelen en kwaliteitsverwachtingen helder.",
+          "eai_question": "Wat moet de leerling begrijpen over het leerdoel en de criteria, en wat mag AI hier wel of niet invullen?",
+          "workforms": [
+            "learning-goal-vs-task",
+            "kernhandeling-check",
+            "target-action-first"
+          ]
+        },
+        {
+          "id": "FTC-P2",
+          "label": "Leerlingreacties ontlokken",
+          "source_label": "Ontlokken van studentreacties",
+          "order": 2,
+          "purpose": "Ontlok reacties die zichtbaar maken waar de leerling staat.",
+          "eai_question": "Laat de reactie de leerling zien, of vooral wat AI voor hem kan produceren?",
+          "workforms": [
+            "first-attempt",
+            "discriminating-probe",
+            "fresh-item-same-operation",
+            "confidence-vs-evidence"
+          ]
+        },
+        {
+          "id": "FTC-P3",
+          "label": "Reacties analyseren en interpreteren",
+          "source_label": "Analyseren en interpreteren van studentreacties",
+          "order": 3,
+          "purpose": "Analyseer de reacties in relatie tot het leerdoel en houd observatie en interpretatie uit elkaar.",
+          "eai_question": "Wat zie je werkelijk, wat leid je daaruit af en hoeveel zekerheid rechtvaardigt dat?",
+          "workforms": [
+            "observation-vs-inference",
+            "first-breakdown",
+            "competing-explanations",
+            "bound-the-claim"
+          ]
+        },
+        {
+          "id": "FTC-P4",
+          "label": "Communiceren over resultaten",
+          "source_label": "Communiceren over resultaten met studenten",
+          "order": 4,
+          "purpose": "Communiceer over de resultaten zodat de leerling ermee verder kan.",
+          "eai_question": "Krijgt de leerling informatie om zelf te verbeteren, of levert AI de verbetering meteen?",
+          "workforms": [
+            "feedback-without-rewrite",
+            "feedback-redo",
+            "learner-voice-check",
+            "accept-adapt-reject"
+          ]
+        },
+        {
+          "id": "FTC-P5",
+          "label": "Vervolgacties ondernemen",
+          "source_label": "Vervolgactiviteiten ondernemen",
+          "order": 5,
+          "purpose": "Pas onderwijs en leren aan op basis van het verzamelde en geïnterpreteerde bewijs.",
+          "eai_question": "Welke volgende stap volgt uit het bewijs, en wie neemt die professionele beslissing?",
+          "workforms": [
+            "evidence-to-next-response",
+            "practice-or-reteach",
+            "smallest-help-needed",
+            "proportionate-follow-up"
+          ]
+        }
+      ]
+    }
+  ],
+  "notes": {
+    "source_preserving": "De bronmodellen behouden hun eigen namen, fasen en volgorde. De EAI-koppeling is een aparte interpretatielaag.",
+    "not_a_new_model": "Werkvormen worden binnen een fase getoond als mogelijke EAI-interventies. Ze worden daarmee geen onderdeel van het oorspronkelijke model.",
+    "direct_instruction_boundary": "Direct Instruction in de Engelmann-traditie staat wel als adapter in de EAI Standard, maar wordt hier niet als universele lineaire lesroute getoond omdat de bron dat model niet zo structureert."
+  }
+}
