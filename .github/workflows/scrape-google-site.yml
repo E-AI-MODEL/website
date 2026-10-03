@@ -16,6 +16,7 @@ on:
       - workforms-concrete-actions
       - site-interface-v4
       - didactic-model-adapters-ui
+      - didactic-model-adapters-fix
       - workforms-toolbox-phase2
     paths:
       - '.github/workflows/scrape-google-site.yml'
