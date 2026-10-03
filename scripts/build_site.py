@@ -1024,25 +1024,23 @@ def esc(value: str) -> str:
     return html.escape(value, quote=True)
 
 def nav(active: str = "") -> str:
+    active_key = "verdieping" if active in {"onderbouwing", "praktijk", "publicaties", "tools", "pijlers"} else active
     links = [
-        ("model", "/", "EAI model"),
+        ("model", "/", "EAI"),
         ("werkvormen", "/werkvormen/", "Werkvormen"),
-        ("onderbouwing", "/onderbouwing/", "Onderbouwing"),
-        ("praktijk", "/praktijk/", "Praktijk"),
-        ("publicaties", "/publicaties/", "Publicaties"),
-        ("tools", "/tools/", "Tools"),
+        ("verdieping", "/verdieping/", "Verdieping"),
         ("over", "/over/", "Over"),
     ]
     items = "".join(
-        f'<a href="{href}"' + (' aria-current="page"' if key == active else "") + f'>{label}</a>'
+        f'<a href="{href}"' + (' aria-current="page"' if key == active_key else "") + f'>{label}</a>'
         for key, href, label in links
     )
     mobile_items = "".join(
-        f'<a href="{href}"' + (' aria-current="page"' if key == active else "") + f'>{label}</a>'
+        f'<a href="{href}"' + (' aria-current="page"' if key == active_key else "") + f'>{label}</a>'
         for key, href, label in links
     )
     return (
-        f'<header class="site-header"><nav class="nav">'
+        f'<header class="site-header"><nav class="nav" aria-label="Hoofdnavigatie">'
         f'<a class="brand" href="/" aria-label="EAI home"><img src="/assets/eai-logo.svg" alt="EAI"></a>'
         f'<div class="nav-links">{items}<a class="nav-cta" href="mailto:{EMAIL}">Contact</a></div>'
         f'<details class="mobile-nav"><summary>Menu</summary><div class="mobile-nav-panel">{mobile_items}<a href="mailto:{EMAIL}">Contact</a></div></details>'
@@ -1061,7 +1059,8 @@ def footer() -> str:
 def doc(title: str, body: str, canonical_path: str, active: str = "", description: str = "") -> str:
     desc = description or "EAI — Educational AI, leren en eigenaarschap."
     canonical = f"{BASE_URL}{canonical_path}"
-    return f'<!doctype html><html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{esc(title)} · EAI</title><meta name="description" content="{esc(desc)}"><link rel="canonical" href="{esc(canonical)}"><link rel="icon" href="/assets/eai-logo.svg" type="image/svg+xml"><link rel="stylesheet" href="/assets/site.css"></head><body>{nav(active)}{body}{footer()}</body></html>'
+    body = body.replace("<main", '<main id="main-content"', 1)
+    return f'<!doctype html><html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{esc(title)} · EAI</title><meta name="description" content="{esc(desc)}"><link rel="canonical" href="{esc(canonical)}"><link rel="icon" href="/assets/eai-logo.svg" type="image/svg+xml"><link rel="stylesheet" href="/assets/site.css"></head><body><a class="skip-link" href="#main-content">Ga naar de inhoud</a>{nav(active)}{body}{footer()}</body></html>'
 
 def render_article_fragment(fragment: Path, title: str, canonical_path: str, description: str) -> str:
     body = fragment.read_text(encoding="utf-8")
@@ -1130,21 +1129,29 @@ def build(scrape: Path, out: Path) -> None:
     write(out, "assets/eai-logo.svg", LOGO_SVG)
 
     home_body = f'''<main>
-<section class="welcome">
-<div class="wrap welcome-grid">
-<div class="welcome-copy">
+<section class="welcome welcome-v4">
+<div class="wrap welcome-v4-grid">
+<div class="welcome-v4-copy">
 <div class="eyebrow">Welkom bij EAI</div>
 <h1>Wat moet de leerling hier eigenlijk leren?</h1>
-<p class="lede">AI kan schrijven, uitleggen, samenvatten, vergelijken, feedback geven en een volgende stap voorstellen. Allemaal waar. Maar voordat je bepaalt wat AI mag doen, moet je weten wat de leerling in deze taak zelf moet leren doen.</p>
-<p class="welcome-audience">EAI helpt om die vraag concreet te maken in een les, opdracht, toets of professionele beslissing.</p>
+<p class="lede">AI kan veel werk uit handen nemen. Dat is niet automatisch goed of slecht. Eerst wil je weten waar het leren in deze taak zit.</p>
+<p class="welcome-audience">EAI helpt je die vraag scherp te krijgen en er een concrete onderwijskeuze van te maken.</p>
+<div class="button-row"><a class="button" href="/werkvormen/">Werk met een eigen les</a><a class="button secondary" href="#model">Bekijk het model</a></div>
 </div>
-<div class="welcome-routes" aria-label="Kies waar je wilt beginnen">
-<a href="#model"><span>Nieuw hier?</span><strong>Begrijp EAI</strong><p>Bekijk het model en één concreet voorbeeld. Dit is de beste plek om te beginnen.</p><b>Start hier →</b></a>
-<a href="/werkvormen/"><span>Ik wil iets doen</span><strong>Gebruik de toolbox</strong><p>57 werkvormen voor lesontwerp, bewijs, zelfstandigheid, feedback en professioneel oordeel.</p><b>Naar de werkvormen →</b></a>
-<a href="/onderbouwing/"><span>Ik wil weten waar dit op rust</span><strong>Bekijk de onderbouwing</strong><p>Didactiek, leerpsychologie, pedagogiek, recent AI-onderzoek en wat EAI zelf nog als kandidaatmodel behandelt.</p><b>Naar de onderbouwing →</b></a>
+<div class="hero-eai-visual" aria-label="De EAI-kijkroute">
+<div class="hero-eai-visual-head"><span>EAI-kijkroute</span><strong>Waar zit hier het leren?</strong></div>
+<div class="hero-eai-step"><span>01</span><div><b>Wat moet de leerling leren?</b><small>Begin bij het doel, niet bij de tool.</small></div></div>
+<div class="hero-eai-step"><span>02</span><div><b>Waar zit de leerling nu?</b><small>Dezelfde hulp kan in een andere fase iets anders doen.</small></div></div>
+<div class="hero-eai-step is-core"><span>03</span><div><b>Welke stap moet de leerling zelf zetten?</b><small>Hier zit de kernhandeling.</small></div></div>
+<div class="hero-eai-step"><span>04</span><div><b>Wat doet AI precies op die plek?</b><small>Helpt het, of voert het de stap al uit?</small></div></div>
+<div class="hero-eai-check"><span>?</span><div><b>En daarna?</b><small>Wat weet je nu werkelijk over wat de leerling zelf kan?</small></div></div>
 </div>
 </div>
-<div class="wrap welcome-note"><p><strong>Begin dus niet bij de tool.</strong> Begin bij de vraag wat er geleerd moet worden. Soms kan AI daarna bijna alles doen. En soms zit het leren juist in die ene stap die AI zo makkelijk kan overnemen.</p></div>
+<div class="wrap welcome-shortcuts">
+<a href="#model"><span>Nieuw bij EAI</span><strong>Begrijp het in één voorbeeld</strong><b>Start →</b></a>
+<a href="/werkvormen/"><span>Voor je volgende les</span><strong>Kies een passende werkvorm</strong><b>Aan de slag →</b></a>
+<a href="/verdieping/"><span>Verder kijken</span><strong>Onderbouwing, praktijk en publicaties</strong><b>Verdiep →</b></a>
+</div>
 </section>
 
 <section class="section model-intro" id="model"><div class="wrap hero-grid">
@@ -1203,6 +1210,18 @@ def build(scrape: Path, out: Path) -> None:
 </main>'''
 
     write(out, "index.html", doc("EAI model voor AI en leren", home_body, "/", "model", description="EAI helpt bepalen welke menselijke handeling in een leer- of professioneel proces betekenis moet houden wanneer AI meedoet."))
+
+    verdieping_body = '''<main>
+<section class="page-hero"><div class="wrap"><div class="eyebrow">Verdieping</div><h1>Wil je verder dan de werkvorm?</h1><p class="lede">Hier vind je de onderbouwing, publicaties, praktijkvoorbeelden en tools achter EAI. Kies wat je nodig hebt; je hoeft niet alles te lezen om met EAI te kunnen werken.</p></div></section>
+<section class="section"><div class="wrap"><div class="depth-grid">
+<a class="depth-card depth-card--wide" href="/onderbouwing/"><span>Onderbouwing</span><h2>Waar rust EAI op?</h2><p>Didactiek, leerpsychologie, pedagogiek, professioneel oordeel en recent AI-onderzoek. Met expliciete grenzen aan wat EAI wel en niet claimt.</p><b>Bekijk de onderbouwing →</b></a>
+<a class="depth-card" href="/publicaties/"><span>Publicaties & media</span><h2>Lees, kijk en luister verder.</h2><p>Eigen EAI-publicaties, externe bijdragen, podcast en video.</p><b>Naar publicaties →</b></a>
+<a class="depth-card" href="/praktijk/"><span>Praktijk</span><h2>Wat gebeurt er als je het bouwt?</h2><p>Live demonstrators en toepassingen waarin dezelfde ontwerpvragen terugkomen.</p><b>Bekijk de praktijk →</b></a>
+<a class="depth-card" href="/tools/"><span>Tools</span><h2>Van vraag naar ontwerp.</h2><p>Toepassingen die helpen bij analyse, prompts, eigenaarschap en lesontwerp.</p><b>Bekijk de tools →</b></a>
+<a class="depth-card" href="/twee-pijlers/"><span>Achter het model</span><h2>Waarom leren én AI?</h2><p>De twee kennisgebieden die je nodig hebt om niet alleen over technologie te praten.</p><b>Lees de twee pijlers →</b></a>
+</div></div></section>
+</main>'''
+    write(out, "verdieping/index.html", doc("Verdieping", verdieping_body, "/verdieping/", "verdieping", "Onderbouwing, publicaties, praktijk en tools achter het EAI-model."))
 
     pillars_body = '''<main><section class="page-hero"><div class="wrap"><div class="eyebrow">Twee pijlers</div><h1>Je hebt beide nodig om goede keuzes te maken.</h1><p class="lede">De ene pijler gaat over leren. De andere over de technologie die steeds meer stappen kan uitvoeren. Het onderwijskundige ontwerp ontstaat waar die twee kennisgebieden elkaar raken.</p></div></section>
 <section class="section"><div class="wrap"><figure class="pdf-figure pillar-visual" aria-label="Twee pijlers die samenkomen in de ontwerpvraag"><svg viewBox="0 0 560 220" role="img"><g class="stroke"><rect x="105" y="58" width="82" height="112"/><path d="M126 93c14-10 25 10 39 0M126 113c14-10 25 10 39 0M126 133c14-10 25 10 39 0"/><rect x="373" y="58" width="82" height="112"/><rect x="396" y="92" width="36" height="36"/><path d="M396 100h-12M396 110h-12M396 120h-12M396 130h-12M432 100h12M432 110h12M432 120h12M432 130h12"/></g><path class="dash" d="M187 91c42 0 57 37 83 62M373 91c-42 0-57 37-83 62"/><circle class="accent-fill" cx="280" cy="164" r="8"/></svg><figcaption>De ontwerpvraag ontstaat niet in één pijler, maar precies waar leren en AI elkaar raken.</figcaption></figure></div></section>
