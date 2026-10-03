@@ -5,6 +5,7 @@ on:
     branches:
       - site-migration
       - site-preview
+      - ui-pdf-editorial
     paths:
       - '.github/workflows/scrape-google-site.yml'
       - 'scripts/build_site.py'
@@ -13,6 +14,10 @@ on:
 
 permissions:
   contents: write
+
+concurrency:
+  group: eai-site-${{ github.ref_name }}
+  cancel-in-progress: true
 
 jobs:
   scrape:
