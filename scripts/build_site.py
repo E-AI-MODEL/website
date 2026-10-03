@@ -211,6 +211,9 @@ def load_workforms() -> list[dict]:
     payload = json.loads(Path("content/workforms.json").read_text(encoding="utf-8"))
     return payload["workforms"]
 
+def load_didactic_models() -> dict:
+    return json.loads(Path("content/didactic-models.json").read_text(encoding="utf-8"))
+
 def render_route(route: list[str]) -> str:
     parts = []
     active = set(route)
@@ -255,8 +258,7 @@ def render_toolbox_card(item: dict) -> str:
         f'</article>'
     )
 
-def render_workforms_index(items: list[dict]) -> str:
-    item_by_slug = {item["slug"]: item for item in items}
+def render_workforms_index(items: list[dict], didactic_models: dict) -> str:
     cards = "".join(render_toolbox_card(item) for item in items)
 
     route_buttons = "".join(
@@ -267,20 +269,67 @@ def render_workforms_index(items: list[dict]) -> str:
         for idx, route in enumerate(PRIMARY_WORKFORM_ROUTES, start=1)
     )
 
+    model_buttons = "".join(
+        f'<button type="button" class="didactic-model-button" data-model-choice="{esc(model["id"])}" aria-pressed="false">'
+        f'<span>{esc(model["short_name"])}</span><strong>{esc(model["name"])}</strong>'
+        f'<small>{len(model["phases"])} {"fasen" if "phases" in model["kind"] else "functies"} · EAI Standard adapter {esc(model["adapter_id"])}</small></button>'
+        for model in didactic_models["models"]
+    )
+
+    model_panels = []
+    for model in didactic_models["models"]:
+        phase_buttons = "".join(
+            f'<button type="button" class="didactic-phase" data-phase-choice '
+            f'data-model-name="{esc(model["short_name"])}" data-phase-name="{esc(phase["label"])}" '
+            f'data-phase-purpose="{esc(phase["purpose"])}" data-phase-question="{esc(phase["eai_question"])}" '
+            f'data-phase-workforms="{esc(" ".join(phase["workforms"]))}" aria-pressed="false">'
+            f'<span>{int(phase["order"]):02d}</span><strong>{esc(phase["label"])}</strong>'
+            f'<small>{esc(phase["purpose"])}</small></button>'
+            for phase in model["phases"]
+        )
+        cross_cutting = "".join(f'<span>{esc(value)}</span>' for value in model.get("cross_cutting", []))
+        model_panels.append(
+            f'<section class="didactic-model-detail" data-model-panel="{esc(model["id"])}" hidden>'
+            f'<div class="didactic-model-detail-head"><div><div class="kicker">Bronmodel</div>'
+            f'<h3>{esc(model["name"])}</h3><p>{esc(model["intro"])}</p></div>'
+            f'<div class="didactic-model-source"><span>{esc(model["source_reference"])}</span>'
+            f'<a href="{esc(model["source_url"])}" target="_blank" rel="noopener">Bronmodel ↗</a>'
+            f'<a href="{esc(model["standard_url"])}" target="_blank" rel="noopener">EAI-adapter ↗</a></div></div>'
+            f'<div class="didactic-phase-grid">{phase_buttons}</div>'
+            f'<div class="didactic-cross-cutting"><strong>Loopt door meerdere fasen heen</strong>{cross_cutting}</div>'
+            f'</section>'
+        )
+    model_panels_html = "".join(model_panels)
+    boundary_note = esc(didactic_models["notes"]["direct_instruction_boundary"])
+
     return f'''<main>
-<section class="page-hero toolbox-hero"><div class="wrap"><div class="eyebrow">Werkvormen</div><h1>Waar wil je in je les mee verder?</h1><p class="lede">Kies een situatie die je herkent. Je krijgt eerst een paar passende werkvormen. De volledige bibliotheek blijft beschikbaar als je verder wilt zoeken.</p></div></section>
+<section class="page-hero toolbox-hero"><div class="wrap"><div class="eyebrow">Werkvormen</div><h1>Waar wil je in je les mee verder?</h1><p class="lede">Begin bij een concrete onderwijsvraag, of vertrek vanuit het didactische model waarmee je al werkt. EAI voegt geen nieuw lesmodel toe.</p></div></section>
 
 <section class="section toolbox-start"><div class="wrap">
 <div class="toolbox-situation">
-<div><div class="kicker">Pak één echte les of opdracht</div><h2>Wat moet de leerling hier zelf doen?</h2><p>Wat moet er geleerd worden? Waar zit de leerling nu? Welke stap moet hij zelf zetten? En wat doet AI precies op die plek?</p></div>
-<div class="toolbox-situation-path" aria-label="EAI-kijkroute"><span>leren</span><b>→</b><span>fase</span><b>→</b><span>kernhandeling</span><b>→</b><span>AI</span></div>
+<div><div class="kicker">Dezelfde EAI-vraag, twee ingangen</div><h2>Wat moet de leerling hier zelf doen?</h2><p>Je kunt beginnen bij een probleem dat je in de les ziet. Of bij de fase van een bestaand didactisch model. In beide gevallen blijft de vraag hetzelfde: welke handeling draagt hier het leren?</p></div>
+<div class="toolbox-situation-path" aria-label="EAI-kijkroute"><span>onderwijsmodel</span><b>→</b><span>fase</span><b>→</b><span>kernhandeling</span><b>→</b><span>AI</span><b>→</b><span>bewijs</span></div>
 </div>
 
+<div class="toolbox-mode-tabs" role="tablist" aria-label="Kies hoe je wilt beginnen">
+<button type="button" class="toolbox-mode-tab" data-mode-tab="question" aria-pressed="true">Ik begin bij een onderwijsvraag</button>
+<button type="button" class="toolbox-mode-tab" data-mode-tab="model" aria-pressed="false">Ik werk vanuit een didactisch model</button>
+</div>
+
+<section class="toolbox-mode-panel" data-mode-panel="question">
 <div class="toolbox-route-head"><div><div class="kicker">Kies wat je nodig hebt</div><h2>Welke situatie herken je?</h2></div><p>Je hoeft geen EAI-term te kennen. Klik op wat je als docent probeert te bereiken.</p></div>
 <div class="toolbox-route-grid" aria-label="Kies een onderwijssituatie">{route_buttons}</div>
+</section>
+
+<section class="toolbox-mode-panel didactic-model-mode" data-mode-panel="model" id="didactisch-model" hidden>
+<div class="toolbox-route-head"><div><div class="kicker">Bestaand model, eigen fasen</div><h2>Met welk model werk je?</h2></div><p>EAI verandert de namen, volgorde of bedoeling van het bronmodel niet. We laten alleen zien welke EAI-vragen en werkvormen binnen een fase relevant kunnen zijn.</p></div>
+<div class="didactic-model-grid">{model_buttons}</div>
+<div class="didactic-model-panels">{model_panels_html}</div>
+<p class="didactic-model-boundary">{boundary_note}</p>
+</section>
 
 <section class="toolbox-results" id="resultaten" aria-live="polite">
-<div class="toolbox-results-head"><div><div class="kicker">Passende werkvormen</div><h2 id="toolbox-result-title">Kies hierboven een situatie</h2><p id="toolbox-result-copy">Dan verschijnen hier eerst vier werkvormen die daar goed bij aansluiten.</p></div>
+<div class="toolbox-results-head"><div><div class="kicker">Passende werkvormen</div><h2 id="toolbox-result-title">Kies hierboven een situatie of lesfase</h2><p id="toolbox-result-copy">Dan verschijnen hier eerst de werkvormen die daar inhoudelijk het best bij aansluiten.</p></div>
 <div class="toolbox-results-tools">
 <label class="toolbox-search"><span>Zoek</span><input id="toolbox-search" type="search" placeholder="Bijv. feedback, bron, vastlopen…" autocomplete="off"></label>
 <button type="button" id="toolbox-show-saved">Bewaard <span id="saved-count">0</span></button>
@@ -294,7 +343,7 @@ def render_workforms_index(items: list[dict]) -> str:
 </section>
 
 <details class="toolbox-library" id="alle-werkvormen">
-<summary>Alle 57 werkvormen bekijken</summary>
+<summary>Alle {len(items)} werkvormen bekijken</summary>
 <div class="toolbox-library-tools">
 <p>Voor wie al weet wat hij zoekt. Gebruik zoeken of de extra filters.</p>
 <div class="toolbox-filters" aria-label="Filter alle werkvormen">
@@ -306,13 +355,18 @@ def render_workforms_index(items: list[dict]) -> str:
 
 <div class="toolbox-card-pool" id="toolbox-card-pool" hidden>{cards}</div>
 
-<aside class="toolbox-standard-note"><strong>Waarom staan docent, leerling en AI apart?</strong><p>Omdat precies daar zichtbaar wordt wie de relevante handeling uitvoert. Op de detailpagina staat de concrete uitvoering, de onderbouwing en pas daarna de technische EAI Standard-laag. <a href="/onderbouwing/">Bekijk de onderbouwing →</a></p></aside>
+<aside class="toolbox-standard-note"><strong>Wat gebeurt hier precies?</strong><p>Een didactisch model organiseert het grotere onderwijsproces. EAI legt daar geen nieuwe route overheen. Binnen een fase kijken we alleen naar de kernhandeling, de rol van AI en welk bewijs daarna nog betekenis heeft. <a href="https://github.com/E-AI-MODEL/EAI-standard/tree/main/adapters" target="_blank" rel="noopener">Bekijk de bronbehoudende adapters ↗</a></p></aside>
 </div></section>
 
 <script>
 (() => {{
   const sourceCards = [...document.querySelectorAll('#toolbox-card-pool [data-workform-card]')];
   const routeButtons = [...document.querySelectorAll('[data-route-key]')];
+  const modeTabs = [...document.querySelectorAll('[data-mode-tab]')];
+  const modePanels = [...document.querySelectorAll('[data-mode-panel]')];
+  const modelButtons = [...document.querySelectorAll('[data-model-choice]')];
+  const modelPanels = [...document.querySelectorAll('[data-model-panel]')];
+  const phaseButtons = [...document.querySelectorAll('[data-phase-choice]')];
   const resultGrid = document.getElementById('toolbox-results-grid');
   const libraryGrid = document.getElementById('toolbox-library-grid');
   const search = document.getElementById('toolbox-search');
@@ -334,13 +388,11 @@ def render_workforms_index(items: list[dict]) -> str:
     catch (_) {{ return new Set(); }}
   }};
   const writeSaved = saved => {{ try {{ localStorage.setItem(STORAGE_KEY, JSON.stringify([...saved])); }} catch (_) {{}} }};
-  const routeFor = button => ({{
-    key: button.dataset.routeKey,
-    intents: (button.dataset.routeIntents || '').split(' ').filter(Boolean),
-    featured: (button.dataset.routeFeatured || '').split(' ').filter(Boolean),
-    title: button.querySelector('strong').textContent,
-    copy: button.querySelector('small').textContent
-  }});
+
+  const resetSelections = () => {{
+    routeButtons.forEach(item => item.setAttribute('aria-pressed', 'false'));
+    phaseButtons.forEach(item => item.setAttribute('aria-pressed', 'false'));
+  }};
 
   const cloneCard = card => {{
     const clone = card.cloneNode(true);
@@ -361,6 +413,7 @@ def render_workforms_index(items: list[dict]) -> str:
 
   const routeMatches = card => {{
     if (!activeRoute) return true;
+    if (activeRoute.exact) return activeRoute.featured.includes(card.dataset.slug);
     const values = (card.dataset.intents || '').split(' ');
     return activeRoute.intents.some(intent => values.includes(intent));
   }};
@@ -391,12 +444,12 @@ def render_workforms_index(items: list[dict]) -> str:
     matches = sortForRoute(matches);
 
     resultGrid.innerHTML = '';
-    const visible = expanded || search.value.trim() || savedOnly ? matches : matches.slice(0, 4);
+    const visible = expanded || search.value.trim() || savedOnly || activeRoute?.exact ? matches : matches.slice(0, 4);
     visible.forEach(card => resultGrid.appendChild(cloneCard(card)));
 
     if (!activeRoute && !search.value.trim() && !savedOnly) {{
-      resultTitle.textContent = 'Kies hierboven een situatie';
-      resultCopy.textContent = 'Dan verschijnen hier eerst vier werkvormen die daar goed bij aansluiten.';
+      resultTitle.textContent = 'Kies hierboven een situatie of lesfase';
+      resultCopy.textContent = 'Dan verschijnen hier eerst de werkvormen die daar inhoudelijk het best bij aansluiten.';
       resultGrid.innerHTML = '';
     }} else if (savedOnly) {{
       resultTitle.textContent = 'Jouw bewaarde werkvormen';
@@ -409,7 +462,7 @@ def render_workforms_index(items: list[dict]) -> str:
       resultCopy.textContent = matches.length + ' werkvormen gevonden.';
     }}
 
-    showMore.hidden = !activeRoute || expanded || matches.length <= 4 || !!search.value.trim() || savedOnly;
+    showMore.hidden = !activeRoute || activeRoute.exact || expanded || matches.length <= 4 || !!search.value.trim() || savedOnly;
     showMore.textContent = 'Toon alle ' + matches.length + ' passende werkvormen';
     clearRoute.hidden = !activeRoute && !search.value.trim() && !savedOnly;
     empty.hidden = matches.length !== 0 || (!activeRoute && !search.value.trim() && !savedOnly);
@@ -419,11 +472,56 @@ def render_workforms_index(items: list[dict]) -> str:
     updateSavedCount();
   }};
 
-  routeButtons.forEach(button => button.addEventListener('click', () => {{
-    activeRoute = routeFor(button);
+  modeTabs.forEach(tab => tab.addEventListener('click', () => {{
+    const mode = tab.dataset.modeTab;
+    modeTabs.forEach(item => item.setAttribute('aria-pressed', item === tab ? 'true' : 'false'));
+    modePanels.forEach(panel => panel.hidden = panel.dataset.modePanel !== mode);
+    activeRoute = null;
     expanded = false;
     savedOnly = false;
-    routeButtons.forEach(item => item.setAttribute('aria-pressed', item === button ? 'true' : 'false'));
+    resetSelections();
+    render();
+  }}));
+
+  routeButtons.forEach(button => button.addEventListener('click', () => {{
+    activeRoute = {{
+      key: button.dataset.routeKey,
+      intents: (button.dataset.routeIntents || '').split(' ').filter(Boolean),
+      featured: (button.dataset.routeFeatured || '').split(' ').filter(Boolean),
+      exact: false,
+      title: button.querySelector('strong').textContent,
+      copy: button.querySelector('small').textContent
+    }};
+    expanded = false;
+    savedOnly = false;
+    resetSelections();
+    button.setAttribute('aria-pressed', 'true');
+    render();
+    document.getElementById('resultaten').scrollIntoView({{behavior:'smooth', block:'start'}});
+  }}));
+
+  modelButtons.forEach(button => button.addEventListener('click', () => {{
+    const id = button.dataset.modelChoice;
+    modelButtons.forEach(item => item.setAttribute('aria-pressed', item === button ? 'true' : 'false'));
+    modelPanels.forEach(panel => panel.hidden = panel.dataset.modelPanel !== id);
+    phaseButtons.forEach(item => item.setAttribute('aria-pressed', 'false'));
+    activeRoute = null;
+    render();
+  }}));
+
+  phaseButtons.forEach(button => button.addEventListener('click', () => {{
+    activeRoute = {{
+      key: 'model-phase',
+      intents: [],
+      featured: (button.dataset.phaseWorkforms || '').split(' ').filter(Boolean),
+      exact: true,
+      title: button.dataset.modelName + ' · ' + button.dataset.phaseName,
+      copy: button.dataset.phaseQuestion
+    }};
+    expanded = true;
+    savedOnly = false;
+    resetSelections();
+    button.setAttribute('aria-pressed', 'true');
     render();
     document.getElementById('resultaten').scrollIntoView({{behavior:'smooth', block:'start'}});
   }}));
@@ -432,7 +530,7 @@ def render_workforms_index(items: list[dict]) -> str:
     activeRoute = null;
     expanded = true;
     savedOnly = false;
-    routeButtons.forEach(item => item.setAttribute('aria-pressed', 'false'));
+    resetSelections();
     render();
   }});
   filters.forEach(filter => filter.addEventListener('change', render));
@@ -440,12 +538,12 @@ def render_workforms_index(items: list[dict]) -> str:
   clearRoute.addEventListener('click', () => {{
     activeRoute = null; expanded = false; savedOnly = false; search.value = '';
     filters.forEach(filter => filter.value = 'all');
-    routeButtons.forEach(item => item.setAttribute('aria-pressed', 'false'));
+    resetSelections();
     render();
   }});
   showSaved.addEventListener('click', () => {{
     savedOnly = !savedOnly; activeRoute = null; expanded = true; search.value = '';
-    routeButtons.forEach(item => item.setAttribute('aria-pressed', 'false'));
+    resetSelections();
     showSaved.setAttribute('aria-pressed', savedOnly ? 'true' : 'false');
     render();
   }});
@@ -1116,6 +1214,49 @@ iframe{max-width:100%}
   body:has(.workform-lesson-card) .workform-toolbar-actions{display:none!important}
 }
 
+
+/* Source-preserving didactic model adapters */
+.toolbox-mode-tabs{display:inline-flex;gap:0;border:1px solid var(--line);margin:0 0 34px;background:#fff}
+.toolbox-mode-tab{appearance:none;border:0;border-right:1px solid var(--line);background:#fff;color:var(--ink);padding:12px 16px;cursor:pointer;font:800 .84rem/1.2 Inter,ui-sans-serif,sans-serif}
+.toolbox-mode-tab:last-child{border-right:0}
+.toolbox-mode-tab[aria-pressed="true"]{background:var(--ink);color:#fff}
+.didactic-model-mode{scroll-margin-top:90px}
+.didactic-model-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:22px}
+.didactic-model-button{appearance:none;border:1px solid var(--line);background:#fff;color:var(--ink);text-align:left;padding:18px;cursor:pointer;display:flex;flex-direction:column;min-height:145px}
+.didactic-model-button>span{font:800 .68rem/1.2 Inter,ui-sans-serif,sans-serif;text-transform:uppercase;letter-spacing:.07em;color:#718096}
+.didactic-model-button>strong{font:800 1.05rem/1.25 Inter,ui-sans-serif,sans-serif;margin:10px 0}
+.didactic-model-button>small{margin-top:auto;color:var(--muted);font:400 .78rem/1.4 Inter,ui-sans-serif,sans-serif}
+.didactic-model-button:hover,.didactic-model-button[aria-pressed="true"]{border-color:var(--ink);background:var(--soft)}
+.didactic-model-button[aria-pressed="true"]>span{color:var(--accent)}
+.didactic-model-detail{border-top:1px solid var(--line);padding-top:26px;margin-top:12px}
+.didactic-model-detail-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,.55fr);gap:28px;align-items:start;margin-bottom:20px}
+.didactic-model-detail-head h3{font-size:clamp(1.7rem,3vw,2.5rem);margin:8px 0 10px}
+.didactic-model-detail-head p{margin:0;color:var(--muted);max-width:70ch}
+.didactic-model-source{display:grid;gap:7px;border-left:3px solid var(--accent);padding-left:14px;font:400 .76rem/1.4 Inter,ui-sans-serif,sans-serif;color:#687487}
+.didactic-model-source a{font-weight:750;text-underline-offset:3px}
+.didactic-phase-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.didactic-phase{appearance:none;border:1px solid var(--line);background:#fff;color:var(--ink);text-align:left;padding:16px;cursor:pointer;display:grid;grid-template-columns:34px 1fr;grid-template-areas:"num title" "num copy";gap:7px 9px;min-height:140px}
+.didactic-phase>span{grid-area:num;font:800 .68rem/1.3 Inter,ui-sans-serif,sans-serif;color:#98a2af}
+.didactic-phase>strong{grid-area:title;font:800 .95rem/1.25 Inter,ui-sans-serif,sans-serif}
+.didactic-phase>small{grid-area:copy;color:var(--muted);font:400 .78rem/1.4 Inter,ui-sans-serif,sans-serif}
+.didactic-phase:hover,.didactic-phase[aria-pressed="true"]{border-color:var(--ink);background:#fbfaf7}
+.didactic-phase[aria-pressed="true"]{box-shadow:inset 3px 0 0 var(--accent)}
+.didactic-cross-cutting{display:flex;flex-wrap:wrap;gap:7px;align-items:center;margin-top:16px;padding-top:14px;border-top:1px solid var(--line);font-family:Inter,ui-sans-serif,sans-serif}
+.didactic-cross-cutting strong{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:#718096;margin-right:4px}
+.didactic-cross-cutting span{background:var(--soft);padding:5px 8px;font-size:.76rem;font-weight:700}
+.didactic-model-boundary{margin:22px 0 0;padding:14px 16px;border-left:4px solid var(--accent);background:var(--soft);color:#556171;font-size:.9rem}
+@media(max-width:900px){
+  .didactic-model-grid,.didactic-phase-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .didactic-model-detail-head{grid-template-columns:1fr}
+}
+@media(max-width:700px){
+  .toolbox-mode-tabs{display:grid;width:100%}
+  .toolbox-mode-tab{border-right:0;border-bottom:1px solid var(--line);text-align:left}
+  .toolbox-mode-tab:last-child{border-bottom:0}
+  .didactic-model-grid,.didactic-phase-grid{grid-template-columns:1fr}
+  .didactic-model-button,.didactic-phase{min-height:0}
+}
+
 '''
 
 CHROME_CSS = r'''
@@ -1337,6 +1478,7 @@ def build(scrape: Path, out: Path) -> None:
 <a class="depth-card" href="/praktijk/"><span>Praktijk</span><h2>Wat gebeurt er als je het bouwt?</h2><p>Live demonstrators en toepassingen waarin dezelfde ontwerpvragen terugkomen.</p><b>Bekijk de praktijk →</b></a>
 <a class="depth-card" href="/tools/"><span>Tools</span><h2>Van vraag naar ontwerp.</h2><p>Toepassingen die helpen bij analyse, prompts, eigenaarschap en lesontwerp.</p><b>Bekijk de tools →</b></a>
 <a class="depth-card" href="/twee-pijlers/"><span>Achter het model</span><h2>Waarom leren én AI?</h2><p>De twee kennisgebieden die je nodig hebt om niet alleen over technologie te praten.</p><b>Lees de twee pijlers →</b></a>
+<a class="depth-card" href="/werkvormen/#didactisch-model"><span>Didactische modellen</span><h2>EAI binnen een model dat je al gebruikt.</h2><p>Bekijk EDI 2.0, Explicit Instruction en formatief handelen zonder de bronmodellen te herschrijven.</p><b>Bekijk de modeladapters →</b></a>
 </div></div></section>
 </main>'''
     write(out, "verdieping/index.html", doc("Verdieping", verdieping_body, "/verdieping/", "verdieping", "Onderbouwing, publicaties, praktijk en tools achter het EAI-model."))
@@ -1411,8 +1553,9 @@ def build(scrape: Path, out: Path) -> None:
     write(out, "workshop-ai/index.html", doc("Workshop AI", workshop_body, "/workshop-ai/", "workshop", "Workshopreeks over leren, taalmodellen, denkwerk en herontwerp."))
 
     workforms = load_workforms()
+    didactic_models = load_didactic_models()
     workforms_by_slug = {item["slug"]: item for item in workforms}
-    workforms_body = render_workforms_index(workforms)
+    workforms_body = render_workforms_index(workforms, didactic_models)
     write(out, "werkvormen/index.html", doc("EAI Toolbox", workforms_body, "/werkvormen/", "werkvormen", "EAI-werkvormen om menselijk handelen, taakverdeling, bewijs en zelfstandigheid zichtbaar te maken."))
 
     jm_body = '''<main><section class="page-hero"><div class="wrap"><div class="eyebrow">Werkvorm · Workshop AI</div><h1>Keuzes verantwoorden</h1><p class="workform-technical-name detail">EAI-term: Justification Mapping</p><p class="lede">AI kan een formulering, argument of route voorstellen. De vraag is vervolgens niet alleen wat de leerling overneemt, maar waarom hij dat doet.</p></div></section><section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Waarvoor?</div><div><h2>Niet alleen laten zien dát er een keuze is gemaakt.</h2><p>De werkvorm richt zich op de grens tussen AI-assistentie en menselijk begrip. Een leerling kan een AI-suggestie aanpassen zonder de inhoudelijke afweging zelf te hebben gemaakt. Daarom wordt juist de rationale zichtbaar.</p></div></div><figure class="pdf-figure" aria-label="Justification Mapping van AI-suggestie naar menselijke verantwoording"><svg viewBox="0 0 760 220" role="img"><g class="stroke"><rect x="70" y="74" width="130" height="70" rx="4"/><rect x="315" y="50" width="130" height="70" rx="4"/><rect x="315" y="130" width="130" height="70" rx="4"/><rect x="560" y="74" width="130" height="70" rx="4"/></g><path class="dash" d="M200 109h115M445 85h115M445 165c58 0 72-26 115-45"/><circle class="accent-fill" cx="258" cy="109" r="8"/><text x="135" y="114" text-anchor="middle" font-size="14" fill="#687487">AI-suggestie</text><text x="380" y="92" text-anchor="middle" font-size="14" fill="#687487">accepteren</text><text x="380" y="172" text-anchor="middle" font-size="14" fill="#687487">verwerpen / wijzigen</text><text x="625" y="114" text-anchor="middle" font-size="14" fill="#687487">waarom?</text></svg><figcaption>Niet alleen vastleggen wat veranderde, maar zichtbaar maken waarom de leerling iets overnam, verwierp of herschreef.</figcaption></figure><div class="panel"><h3>Breng één AI-ondersteunde keuze in kaart</h3><ol><li><strong>Suggestie:</strong> wat stelde AI voor?</li><li><strong>Accepteren:</strong> wat heb je overgenomen?</li><li><strong>Verwerpen:</strong> wat heb je bewust niet gebruikt?</li><li><strong>Waarom:</strong> welke inhoudelijke reden lag achter beide keuzes?</li><li><strong>Eigen wijziging:</strong> wat heb je zelf toegevoegd, veranderd of opnieuw opgebouwd?</li><li><strong>Verdedigen:</strong> kun je de uiteindelijke keuze zonder het systeem uitleggen en onderbouwen?</li></ol></div></div></section><section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Belangrijk onderscheid</div><div><h2>Dit is procesverantwoording rond AI-assistentie.</h2><p>Binnen deze workshop is Justification Mapping geen algemene methodekeuzekaart. Het doel is zichtbaar maken waar een AI-bijdrage ophoudt en de inhoudelijke afweging van de leerling begint.</p></div></div><p><a class="button" href="https://eai-prompt.lovable.app/" target="_blank" rel="noopener">Bekijk in Prompt Builder hoe de AI-rol wordt gestuurd</a></p></div></section></main>'''
