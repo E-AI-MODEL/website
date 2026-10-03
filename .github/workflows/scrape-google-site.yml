@@ -6,6 +6,7 @@ on:
       - site-migration
       - site-preview
       - ui-pdf-editorial
+      - workforms-toolbox
     paths:
       - '.github/workflows/scrape-google-site.yml'
       - 'scripts/build_site.py'
