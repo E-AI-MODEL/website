@@ -1199,6 +1199,575 @@
       "caution": "Een overtuigend geformuleerde conclusie kan sterker klinken dan het bewijs toelaat. Stijl is geen vervanging voor bewijskracht.",
       "source": "EAI Standard 0.4-candidate · MS-ARG-22",
       "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/argumentation.yaml"
+    },
+    {
+      "slug": "observation-vs-inference",
+      "title": "Observation vs Inference",
+      "category": "professioneel-oordeel",
+      "audience": [
+        "teacher",
+        "team"
+      ],
+      "evidence": [
+        "process"
+      ],
+      "summary": "Scheid wat de leerling daadwerkelijk zei, schreef of deed van de interpretatie die je eraan geeft.",
+      "lede": "AI-samenvattingen kunnen observatie en interpretatie ongemerkt in één vloeiende formulering samenvoegen.",
+      "question": "Wat is hier rechtstreeks zichtbaar, en welk deel is mijn professionele interpretatie?",
+      "route": [
+        "fase",
+        "kernhandeling",
+        "output"
+      ],
+      "steps": [
+        "Neem één concrete leerlingreactie, observatie of fragment.",
+        "Schrijf eerst alleen op wat letterlijk of rechtstreeks zichtbaar is.",
+        "Schrijf daarnaast welke interpretatie je eraan geeft.",
+        "Markeer welke woorden in die interpretatie niet rechtstreeks uit de observatie volgen.",
+        "Benoem welke extra informatie nodig zou zijn om de interpretatie sterker te maken.",
+        "Gebruik AI pas daarna om alternatieve interpretaties te vergelijken, niet om observatie en conclusie samen te voegen."
+      ],
+      "result": "Een traceerbaar onderscheid tussen leerlingbewijs en professioneel oordeel.",
+      "caution": "Een plausibele interpretatie wordt niet feitelijk doordat zij zorgvuldig of zelfverzekerd is geformuleerd.",
+      "source": "EAI Standard 0.4-candidate · teacher diagnostic judgement MS-TDJ-03/04",
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/teacher-diagnostic-judgement.yaml"
+    },
+    {
+      "slug": "discriminating-probe",
+      "title": "Discriminating Probe",
+      "category": "professioneel-oordeel",
+      "audience": [
+        "teacher"
+      ],
+      "evidence": [
+        "process"
+      ],
+      "summary": "Ontwerp één vervolgvraag die onderscheid maakt tussen twee plausibele verklaringen van een leerlingreactie.",
+      "lede": "Meer leerlingwerk verzamelen helpt niet altijd. Soms heb je juist één vraag nodig die twee mogelijke verklaringen uit elkaar trekt.",
+      "question": "Welke reactie zou mij helpen kiezen tussen de twee meest plausibele verklaringen?",
+      "route": [
+        "fase",
+        "kernhandeling",
+        "output"
+      ],
+      "steps": [
+        "Benoem twee plausibele verklaringen voor wat je bij de leerling ziet.",
+        "Schrijf op welk zichtbaar verschil je tussen die verklaringen zou verwachten.",
+        "Ontwerp één korte vraag, taak of probe die dat verschil kan oproepen.",
+        "Laat de leerling eerst reageren zonder dat de mogelijke verklaringen worden verklapt.",
+        "Vergelijk de reactie met beide verklaringen.",
+        "Stel je oordeel bij of houd de onzekerheid expliciet als de probe niet onderscheidend genoeg was."
+      ],
+      "result": "Nieuw leerlingbewijs dat gericht is gekozen om een professioneel oordeel te verfijnen.",
+      "caution": "Een goede probe is geen verkapte hint naar het gewenste antwoord.",
+      "source": "EAI Standard 0.4-candidate · teacher diagnostic judgement MS-TDJ-02",
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/teacher-diagnostic-judgement.yaml"
+    },
+    {
+      "slug": "first-breakdown",
+      "title": "First Breakdown",
+      "category": "professioneel-oordeel",
+      "audience": [
+        "teacher"
+      ],
+      "evidence": [
+        "process"
+      ],
+      "summary": "Traceer een fout terug naar het eerste punt waar het proces onvoldoende wordt, niet alleen naar het laatste verkeerde antwoord.",
+      "lede": "De laatste zichtbare fout is niet altijd de plek waar het probleem is ontstaan.",
+      "question": "Op welk moment wijkt de leerling voor het eerst af van een werkbare aanpak?",
+      "route": [
+        "fase",
+        "kernhandeling",
+        "output"
+      ],
+      "steps": [
+        "Neem een concrete uitwerking of leerlingroute.",
+        "Loop de stappen terug vanaf het eindresultaat.",
+        "Markeer het eerste punt waar een relatie, keuze of bewerking niet meer voldoende is.",
+        "Controleer of eerdere stappen nog wel bruikbaar zijn.",
+        "Formuleer wat de leerling op dat eerste breekpunt nodig had.",
+        "Ontwerp de volgende ondersteuning rond dat punt in plaats van rond alleen de eindfout."
+      ],
+      "result": "Een preciezere diagnose van waar een leerproces ontspoort.",
+      "caution": "Een terugredenering uit één product blijft voorlopig totdat nieuw leerlingbewijs de verklaring ondersteunt.",
+      "source": "EAI Standard 0.4-candidate · teacher diagnostic judgement MS-TDJ-05",
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/teacher-diagnostic-judgement.yaml"
+    },
+    {
+      "slug": "competing-explanations",
+      "title": "Competing Explanations",
+      "category": "professioneel-oordeel",
+      "audience": [
+        "teacher",
+        "team"
+      ],
+      "evidence": [
+        "process"
+      ],
+      "summary": "Formuleer meer dan één plausibele verklaring voordat je een leerlingreactie diagnostisch duidt.",
+      "lede": "Een goed geformuleerde AI-uitleg kan de eerste plausibele verklaring te snel als diagnose laten voelen.",
+      "question": "Welke andere verklaring kan hetzelfde leerlinggedrag of dezelfde fout opleveren?",
+      "route": [
+        "fase",
+        "output"
+      ],
+      "steps": [
+        "Noteer de eerste verklaring die bij je opkomt.",
+        "Formuleer minimaal één geloofwaardig alternatief.",
+        "Schrijf per verklaring welk bewijs ervoor en ertegen spreekt.",
+        "Bepaal welk ontbrekend bewijs het meeste verschil zou maken.",
+        "Verzamel dat bewijs met een korte probe of observatie.",
+        "Kies pas daarna een werkhypothese en houd resterende onzekerheid zichtbaar."
+      ],
+      "result": "Een minder geankerd professioneel oordeel dat expliciet is verbonden aan leerlingbewijs.",
+      "caution": "Het doel is niet altijd twee verklaringen even waarschijnlijk maken, maar voorkomen dat plausibiliteit als bewijs wordt behandeld.",
+      "source": "EAI Standard 0.4-candidate · teacher diagnostic judgement MS-TDJ-07/08",
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/teacher-diagnostic-judgement.yaml"
+    },
+    {
+      "slug": "bound-the-claim",
+      "title": "Bound the Claim",
+      "category": "professioneel-oordeel",
+      "audience": [
+        "teacher",
+        "team"
+      ],
+      "evidence": [
+        "process"
+      ],
+      "summary": "Beperk je conclusie tot wat het beschikbare leerlingbewijs werkelijk ondersteunt.",
+      "lede": "Eén fout, gesprek of taak kan door AI gemakkelijk worden samengevat als een brede uitspraak over een leerling.",
+      "question": "Wat is de sterkste uitspraak die ik op basis van dit bewijs daadwerkelijk mag doen?",
+      "route": [
+        "fase",
+        "output"
+      ],
+      "steps": [
+        "Schrijf je huidige conclusie in één zin op.",
+        "Onderstreep welk leerlingbewijs die conclusie draagt.",
+        "Markeer woorden die verder gaan dan taak, moment of handeling.",
+        "Maak de conclusie smaller totdat ieder belangrijk onderdeel herleidbaar is tot bewijs.",
+        "Noteer wat je nog níet weet.",
+        "Bepaal alleen als dat nodig is welk aanvullend bewijs de claim zou kunnen verbreden."
+      ],
+      "result": "Een professioneel oordeel met een expliciete grens tussen waarneming, lokale interpretatie en bredere claim.",
+      "caution": "Voorzichtig formuleren is geen doel op zichzelf. De begrenzing moet volgen uit de reikwijdte van het bewijs.",
+      "source": "EAI Standard 0.4-candidate · teacher diagnostic judgement MS-TDJ-09",
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/teacher-diagnostic-judgement.yaml"
+    },
+    {
+      "slug": "preserve-uncertainty",
+      "title": "Preserve Uncertainty",
+      "category": "professioneel-oordeel",
+      "audience": [
+        "teacher",
+        "team"
+      ],
+      "evidence": [
+        "process"
+      ],
+      "summary": "Maak expliciet wat nog onbekend is en of die onzekerheid de volgende beslissing werkelijk beïnvloedt.",
+      "lede": "Vloeiende AI-taal kan een voorlopig oordeel stelliger laten klinken dan het beschikbare bewijs rechtvaardigt.",
+      "question": "Wat weet ik nog niet, en kan dat onbekende mijn volgende stap veranderen?",
+      "route": [
+        "fase",
+        "output"
+      ],
+      "steps": [
+        "Benoem wat op basis van het huidige bewijs redelijk duidelijk is.",
+        "Schrijf één of twee relevante onbekenden op.",
+        "Bepaal of elk onbekend punt de volgende beslissing kan veranderen.",
+        "Als dat niet zo is, ga proportioneel verder zonder schijnzekerheid.",
+        "Als dat wel zo is, verzamel de kleinste hoeveelheid extra informatie die het verschil kan maken.",
+        "Werk daarna het oordeel bij en laat zien welke onzekerheid eventueel overblijft."
+      ],
+      "result": "Een besluit waarin onzekerheid functioneel wordt behandeld in plaats van weggeformuleerd.",
+      "caution": "Onzekerheid bewaren betekent niet dat iedere beslissing moet worden uitgesteld.",
+      "source": "EAI Standard 0.4-candidate · teacher diagnostic judgement MS-TDJ-10",
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/teacher-diagnostic-judgement.yaml"
+    },
+    {
+      "slug": "evidence-to-next-response",
+      "title": "Evidence → Next Response",
+      "category": "professioneel-oordeel",
+      "audience": [
+        "teacher",
+        "team"
+      ],
+      "evidence": [
+        "design",
+        "process"
+      ],
+      "summary": "Koppel een volgende onderwijsinterventie expliciet aan het geïdentificeerde probleem en het beschikbare bewijs.",
+      "lede": "Een plausibel AI-advies is nog geen passende interventie voor deze leerling op dit moment.",
+      "question": "Welk concreet leerlingbewijs maakt deze volgende stap passender dan een andere?",
+      "route": [
+        "fase",
+        "kernhandeling",
+        "taakdichtheid"
+      ],
+      "steps": [
+        "Formuleer het geïdentificeerde probleem of breekpunt.",
+        "Leg het relevante leerlingbewijs ernaast.",
+        "Bedenk twee mogelijke reacties die op dat probleem zouden kunnen volgen.",
+        "Vergelijk welke reactie het beste past bij leerdoel, breekpunt en beschikbare zekerheid.",
+        "Kies de minst ingrijpende route die voldoende kans geeft om verder te leren.",
+        "Bepaal vooraf welk nieuw leerlingbewijs laat zien of de gekozen reactie werkte."
+      ],
+      "result": "Een volgende stap waarvan de rationale terug te voeren is op concreet leerlingbewijs.",
+      "caution": "Dat een interventie algemeen effectief kan zijn, zegt nog niet dat hij het geobserveerde probleem in deze fase adresseert.",
+      "source": "EAI Standard 0.4-candidate · teacher diagnostic judgement MS-TDJ-11/13",
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/teacher-diagnostic-judgement.yaml"
+    },
+    {
+      "slug": "reconstruct-professional-judgement",
+      "title": "Reconstruct Professional Judgement",
+      "category": "professioneel-oordeel",
+      "audience": [
+        "teacher",
+        "team"
+      ],
+      "evidence": [
+        "process"
+      ],
+      "summary": "Verberg een AI-advies tijdelijk en reconstrueer de professionele beslissing vanuit oorspronkelijke leerlinginformatie.",
+      "lede": "Menselijke goedkeuring kan nominaal worden wanneer AI zowel conclusie als onderbouwing al heeft geleverd.",
+      "question": "Zou ik dezelfde beslissing kunnen uitleggen wanneer het AI-advies en de AI-rationale verdwenen?",
+      "route": [
+        "fase",
+        "kernhandeling",
+        "output"
+      ],
+      "steps": [
+        "Leg het AI-advies en de AI-rationale tijdelijk buiten beeld.",
+        "Ga terug naar de oorspronkelijke leerlingreactie, observatie of gegevens.",
+        "Benoem de relevante interpretatie en onzekerheid.",
+        "Formuleer zelf welke beslissing je passend vindt en waarom.",
+        "Vergelijk daarna pas met het AI-advies.",
+        "Noteer waar de vergelijking je oordeel veranderde en welke reden daarvoor doorslaggevend was."
+      ],
+      "result": "Een traceerbare professionele redenering die niet alleen de AI-aanbeveling bekrachtigt.",
+      "caution": "Afwijken van AI is geen doel. Het gaat erom dat de menselijke rationale zelfstandig reconstrueerbaar blijft.",
+      "source": "EAI Standard 0.4-candidate · teacher diagnostic judgement MS-TDJ-12",
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/teacher-diagnostic-judgement.yaml"
+    },
+    {
+      "slug": "learner-voice-check",
+      "title": "Learner Voice Check",
+      "category": "professioneel-oordeel",
+      "audience": [
+        "teacher",
+        "team"
+      ],
+      "evidence": [
+        "process"
+      ],
+      "summary": "Controleer een betekenisvolle interpretatie rechtstreeks bij de leerling voordat die onderdeel wordt van een besluit over de leerling.",
+      "lede": "AI kan een geloofwaardig perspectief op de leerling formuleren zonder dat de leerling dat perspectief ooit heeft bevestigd.",
+      "question": "Waar is de eigen stem van de leerling zichtbaar in deze interpretatie en beslissing?",
+      "route": [
+        "fase",
+        "kernhandeling",
+        "output"
+      ],
+      "steps": [
+        "Scheid de woorden of voorkeur van de leerling van je eigen interpretatie.",
+        "Vat de interpretatie kort en neutraal terug naar de leerling.",
+        "Vraag wat klopt, wat niet klopt en wat ontbreekt.",
+        "Pas de interpretatie aan op basis van de reactie.",
+        "Bewaar de bevestigde leerlingpositie apart van het professionele oordeel.",
+        "Gebruik beide daarna bij de afweging over de volgende stap."
+      ],
+      "result": "Een beslissing waarin de relevante leerlingpositie zichtbaar blijft naast het professionele oordeel.",
+      "caution": "De leerling hoeft niet iedere professionele conclusie te onderschrijven. De werkvorm voorkomt wel dat een verondersteld perspectief als leerlingstem wordt gepresenteerd.",
+      "source": "EAI Standard 0.4-candidate · teacher pedagogical judgement MS-TPJ-04/06/09",
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/teacher-pedagogical-judgement.yaml"
+    },
+    {
+      "slug": "proportionate-follow-up",
+      "title": "Proportionate Follow-up",
+      "category": "professioneel-oordeel",
+      "audience": [
+        "teacher",
+        "team"
+      ],
+      "evidence": [
+        "design",
+        "process"
+      ],
+      "summary": "Kies de minst ingrijpende vervolgstap die past bij bewijs, onderwijsdoel en resterende onzekerheid.",
+      "lede": "AI-aanbevelingen kunnen uitgebreid of daadkrachtig klinken terwijl het bewijs slechts een kleinere stap ondersteunt.",
+      "question": "Wat is de minst ingrijpende professionele reactie die het huidige probleem voldoende adresseert?",
+      "route": [
+        "fase",
+        "output"
+      ],
+      "steps": [
+        "Benoem het onderwijsdoel en het huidige probleem.",
+        "Leg vast wat zeker, aannemelijk en nog onbekend is.",
+        "Formuleer twee of drie mogelijke vervolgstappen.",
+        "Vergelijk noodzaak, proportionaliteit en mogelijke gevolgen.",
+        "Kies de kleinste stap die het probleem voldoende adresseert.",
+        "Bepaal welk vervolgcontact of bewijs nodig is om de werking ervan te beoordelen."
+      ],
+      "result": "Een proportionele professionele reactie die past bij de sterkte van het beschikbare bewijs.",
+      "caution": "Minst ingrijpend betekent niet altijd licht of vrijblijvend. De stap moet nog steeds voldoende zijn voor de situatie.",
+      "source": "EAI Standard 0.4-candidate · teacher pedagogical judgement MS-TPJ-10",
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/teacher-pedagogical-judgement.yaml"
+    },
+    {
+      "slug": "target-action-first",
+      "title": "Target Action First",
+      "category": "scaffolding",
+      "audience": [
+        "teacher"
+      ],
+      "evidence": [
+        "design",
+        "process"
+      ],
+      "summary": "Benoem vóór je hulp kiest welke handeling na die hulp nog of weer door de leerling zelf moet worden uitgevoerd.",
+      "lede": "Zonder doelhandeling is niet goed te beoordelen of ondersteuning helpt of de relevante handeling overneemt.",
+      "question": "Wat moet de leerling na deze ondersteuning nog zelf doen?",
+      "route": [
+        "fase",
+        "kernhandeling",
+        "taakdichtheid"
+      ],
+      "steps": [
+        "Benoem de huidige leerfase en het concrete vastlooppunt.",
+        "Schrijf de handeling op die uiteindelijk bij de leerling moet liggen.",
+        "Bepaal welk deel van die handeling nu al lukt.",
+        "Kies pas daarna ondersteuning.",
+        "Controleer of de gekozen ondersteuning de doelhandeling nog openlaat.",
+        "Plan hoe je na de hulp opnieuw leerlinguitvoering zichtbaar maakt."
+      ],
+      "result": "Een expliciet doel voor ondersteuning, zodat hulp kan worden beoordeeld op wat zij bewaart en teruggeeft.",
+      "caution": "Niet iedere taakhandeling hoeft bij de leerling te blijven. Bescherm alleen de handeling die in deze fase relevant is voor het doel of de claim.",
+      "source": "EAI Standard 0.4-candidate · teacher scaffolding MS-TSF-01",
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/teacher-scaffolding-and-feedback.yaml"
+    },
+    {
+      "slug": "least-intrusive-support",
+      "title": "Least Intrusive Support",
+      "category": "scaffolding",
+      "audience": [
+        "teacher"
+      ],
+      "evidence": [
+        "design",
+        "process"
+      ],
+      "summary": "Kies de kleinste ondersteuning die voortgang weer mogelijk maakt terwijl zo veel mogelijk van de doelhandeling bij de leerling blijft.",
+      "lede": "AI gaat gemakkelijk van hint naar uitleg en van uitleg naar uitgewerkte oplossing.",
+      "question": "Wat is de kleinste cue waarmee de leerling zelf weer verder kan?",
+      "route": [
+        "fase",
+        "kernhandeling",
+        "taakdichtheid"
+      ],
+      "steps": [
+        "Lokaliseer eerst het precieze vastlooppunt.",
+        "Bepaal de doelhandeling die bij de leerling moet blijven.",
+        "Begin met een vraag, aanwijzing of gedeeltelijke cue in plaats van een volledige route.",
+        "Laat de leerling reageren.",
+        "Voeg alleen meer ondersteuning toe wanneer het bewijs laat zien dat dit nodig is.",
+        "Stop met escaleren zodra de leerling de relevante handeling weer kan uitvoeren."
+      ],
+      "result": "Ondersteuning die zo veel mogelijk menselijke uitvoering bewaart.",
+      "caution": "Kleinste ondersteuning is geen vast niveau. Wat voldoende is, hangt af van taak, leerling en fase.",
+      "source": "EAI Standard 0.4-candidate · teacher scaffolding MS-TSF-03",
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/teacher-scaffolding-and-feedback.yaml"
+    },
+    {
+      "slug": "eliciting-question",
+      "title": "Eliciting Question",
+      "category": "scaffolding",
+      "audience": [
+        "teacher"
+      ],
+      "evidence": [
+        "process"
+      ],
+      "summary": "Formuleer een vraag die de ontbrekende handeling uitlokt zonder de relatie, keuze of oplossingsroute al in de vraag mee te geven.",
+      "lede": "Een vraag kan eruitzien als scaffolding terwijl hij feitelijk het denkwerk al structureert.",
+      "question": "Moet de leerling in deze vraag de relevante handeling nog zelf uitvoeren?",
+      "route": [
+        "kernhandeling",
+        "taakdichtheid"
+      ],
+      "steps": [
+        "Benoem de ontbrekende leerlinghandeling.",
+        "Schrijf de eerste hulvraag op die je zou willen stellen.",
+        "Markeer woorden die al richting antwoord, criterium of oplossingsroute sturen.",
+        "Herschrijf de vraag zodat de leerling de ontbrekende relatie of keuze moet leveren.",
+        "Laat de leerling antwoorden voordat je vervolghulp geeft.",
+        "Controleer of de reactie werkelijk de doelhandeling bevat."
+      ],
+      "result": "Een hulpvraag die leerlingactiviteit uitlokt in plaats van alleen een antwoordpad onthult.",
+      "caution": "Soms is direct uitleggen efficiënter en passender. De werkvorm is relevant wanneer juist de ontbrekende handeling geoefend of zichtbaar moet worden.",
+      "source": "EAI Standard 0.4-candidate · teacher scaffolding MS-TSF-04",
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/teacher-scaffolding-and-feedback.yaml"
+    },
+    {
+      "slug": "feedback-without-rewrite",
+      "title": "Feedback Without Rewrite",
+      "category": "scaffolding",
+      "audience": [
+        "teacher"
+      ],
+      "evidence": [
+        "process",
+        "independent"
+      ],
+      "summary": "Geef foutinformatie of een criterium zonder de inhoudelijke revisie uit handen van de leerling te nemen.",
+      "lede": "AI-feedback verandert snel in een volledig herschreven versie. Dan verdwijnt juist de revisiehandeling die je wilt laten oefenen.",
+      "question": "Welke informatie heeft de leerling nodig om de correctie zélf uit te voeren?",
+      "route": [
+        "kernhandeling",
+        "taakdichtheid",
+        "output"
+      ],
+      "steps": [
+        "Bepaal welk aspect van de huidige versie niet voldoet.",
+        "Geef alleen het foutsignaal, criterium of relevante aanwijzing.",
+        "Laat de verbeterde formulering of oplossing weg.",
+        "Vraag de leerling zelf een wijziging te maken.",
+        "Laat kort uitleggen welk criterium bij die wijziging is gebruikt.",
+        "Gebruik eventueel een verse kleine toepassing om te zien of dezelfde revisiehandeling opnieuw lukt."
+      ],
+      "result": "Procesbewijs en nieuwe leerlinguitvoering rond de revisiehandeling.",
+      "caution": "Bij onbekende kennis kan eerst uitleg of modelleren nodig zijn. Laat feedback niet doen alsof de leerling al over kennis beschikt die ontbreekt.",
+      "source": "EAI Standard 0.4-candidate · teacher scaffolding MS-TSF-05",
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/teacher-scaffolding-and-feedback.yaml"
+    },
+    {
+      "slug": "model-then-reperform",
+      "title": "Model → Reperform",
+      "category": "scaffolding",
+      "audience": [
+        "teacher"
+      ],
+      "evidence": [
+        "process",
+        "independent"
+      ],
+      "summary": "Modelleer wanneer dat nodig is, maar geef de doelhandeling daarna terug via een nieuwe uitvoering die geen kopie is.",
+      "lede": "Voordoen kan didactisch passend zijn. Het probleem ontstaat wanneer de demonstratie als bewijs voor leerlingbeheersing wordt behandeld.",
+      "question": "Wat doet de leerling onmiddellijk ná het model om de relevante handeling zelf opnieuw op te bouwen?",
+      "route": [
+        "kernhandeling",
+        "taakdichtheid",
+        "output"
+      ],
+      "steps": [
+        "Bepaal waarom verdere hints onvoldoende zijn en modelleren nu passend is.",
+        "Maak expliciet dat het model een demonstratie is, geen leerlingprestatie.",
+        "Laat de leerling tijdens of na het model één relevant principe of keuze benoemen.",
+        "Haal de modeluitwerking uit beeld.",
+        "Geef een vers of equivalent item.",
+        "Laat de leerling de doelhandeling opnieuw uitvoeren en controleer welk niveau van steun nog nodig is."
+      ],
+      "result": "Een duidelijke scheiding tussen demonstratie en nieuwe leerlinguitvoering.",
+      "caution": "Direct overschrijven of licht aanpassen van het model levert geen zelfstandig bewijs op.",
+      "source": "EAI Standard 0.4-candidate · teacher scaffolding MS-TSF-06",
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/teacher-scaffolding-and-feedback.yaml"
+    },
+    {
+      "slug": "fade-one-layer",
+      "title": "Fade One Layer",
+      "category": "scaffolding",
+      "audience": [
+        "teacher"
+      ],
+      "evidence": [
+        "independent"
+      ],
+      "summary": "Verwijder één ondersteuningslaag zodra leerlingbewijs laat zien dat meer van de handeling kan terugkeren.",
+      "lede": "Persistente AI-hulp kan actief blijven lang nadat de leerling delen van de taak weer zelf kan uitvoeren.",
+      "question": "Welke ondersteuning kan ik nu weghalen zonder de taak onnodig ontoegankelijk te maken?",
+      "route": [
+        "kernhandeling",
+        "taakdichtheid",
+        "output"
+      ],
+      "steps": [
+        "Benoem welke ondersteuning nu actief is.",
+        "Kijk welk deel van de doelhandeling inmiddels stabiel zichtbaar is.",
+        "Kies één ondersteuningslaag die waarschijnlijk niet meer nodig is.",
+        "Verwijder alleen die laag.",
+        "Laat een verse korte poging uitvoeren.",
+        "Houd de ondersteuning weg wanneer de handeling standhoudt, of herstel gericht als de nieuwe poging laat zien dat dit te vroeg was."
+      ],
+      "result": "Een gecontroleerde afbouw van ondersteuning op basis van leerlingbewijs.",
+      "caution": "Fading is geen vaste kalender. Verminder ondersteuning wanneer bewijs daar aanleiding toe geeft.",
+      "source": "EAI Standard 0.4-candidate · teacher scaffolding MS-TSF-08",
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/teacher-scaffolding-and-feedback.yaml"
+    },
+    {
+      "slug": "hand-back-the-action",
+      "title": "Hand Back the Action",
+      "category": "scaffolding",
+      "audience": [
+        "teacher"
+      ],
+      "evidence": [
+        "independent"
+      ],
+      "summary": "Plan expliciet waar een door docent of AI uitgevoerde handeling weer door de leerling wordt uitgevoerd.",
+      "lede": "Ondersteuning kan de taak succesvol afronden zonder dat er nog een moment komt waarop de leerling de relevante handeling zelf doet.",
+      "question": "Waar in deze route krijgt de leerling de doelhandeling daadwerkelijk terug?",
+      "route": [
+        "kernhandeling",
+        "taakdichtheid",
+        "output"
+      ],
+      "steps": [
+        "Markeer welke relevante handeling tijdelijk door docent of AI is uitgevoerd.",
+        "Benoem waarom die overname op dat moment passend was.",
+        "Kies een handback-moment vóórdat de leerroute eindigt.",
+        "Gebruik een vers equivalent item of nieuwe deelhandeling.",
+        "Laat de leerling de handeling uitvoeren met minder of geen inhoudelijke steun.",
+        "Leg de nieuwe uitvoering apart vast als bewijs na handback."
+      ],
+      "result": "Een leerroute waarin tijdelijke overname niet het laatste woord heeft over de relevante menselijke handeling.",
+      "caution": "Handback is alleen nodig als de overgenomen handeling relevant is voor wat de leerling moet leren of laten zien.",
+      "source": "EAI Standard 0.4-candidate · teacher scaffolding MS-TSF-10/11",
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/teacher-scaffolding-and-feedback.yaml"
+    },
+    {
+      "slug": "practice-or-reteach",
+      "title": "Practice or Reteach?",
+      "category": "scaffolding",
+      "audience": [
+        "teacher",
+        "team"
+      ],
+      "evidence": [
+        "design",
+        "process"
+      ],
+      "summary": "Bepaal of de leerling vooral nieuwe uitvoering nodig heeft of dat de onderliggende representatie opnieuw moet worden opgebouwd.",
+      "lede": "Meer oefenen helpt niet wanneer het begrip waarop de uitvoering rust verkeerd of afwezig is.",
+      "question": "Ontbreekt hier begrip, uitvoeringsstabiliteit of beide?",
+      "route": [
+        "fase",
+        "kernhandeling",
+        "output"
+      ],
+      "steps": [
+        "Neem het eerste breekpunt in de leerlinguitvoering.",
+        "Vraag of de benodigde kennis of relatie inhoudelijk beschikbaar lijkt.",
+        "Controleer dit met één korte verklarende of nieuwe toepassing.",
+        "Bij bruikbaar begrip maar instabiele uitvoering: kies gerichte oefening.",
+        "Bij ontbrekende of foutieve representatie: kies herinstructie of modelleren.",
+        "Plan daarna een nieuwe uitvoering om te zien of de gekozen route het breekpunt daadwerkelijk verandert."
+      ],
+      "result": "Een onderbouwde keuze tussen meer oefenen en opnieuw uitleggen of modelleren.",
+      "caution": "De twee routes zijn niet altijd volledig gescheiden. Gebruik leerlingbewijs om te bepalen welk probleem eerst moet worden aangepakt.",
+      "source": "EAI Standard 0.4-candidate · teacher scaffolding MS-TSF-12",
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/teacher-scaffolding-and-feedback.yaml"
     }
   ]
 }

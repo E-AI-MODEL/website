@@ -52,6 +52,8 @@ WORKFORM_CATEGORIES = [
     ("herstellen", "Feedback, controle en herstellen", "Gebruik AI-output als aanleiding voor menselijk controleren, corrigeren en opnieuw uitvoeren."),
     ("zelfregulatie", "Zelfregulatie", "Laat de leerling zelf bepalen waar hij vastloopt, welke hulp nodig is en wanneer hij de regie weer overneemt."),
     ("argumentatie", "Argumenteren & bronnen", "Maak analyse, bronkeuze, tegenargumenten en conclusies zichtbaar zonder het inhoudelijke oordeel aan AI uit te besteden."),
+    ("professioneel-oordeel", "Professioneel oordeel", "Scheid leerlingbewijs, interpretatie, onzekerheid en professionele beslissing voordat AI de conclusie inkleurt."),
+    ("scaffolding", "Scaffolding & feedback", "Kies, doseer en bouw ondersteuning af zodat de relevante handeling terugkeert naar de leerling."),
     ("ontwerpen", "Ontwerpen als docent of team", "Herontwerp taken, AI-rollen en beoordeling vanuit het proces in plaats van vanuit de tool."),
 ]
 WORKFORM_AUDIENCE_LABELS = {"learner": "Leerling", "teacher": "Docent", "team": "Team"}
@@ -126,6 +128,8 @@ def render_workforms_index(items: list[dict]) -> str:
 <a href="#zelfregulatie"><span>Ik wil voorkomen</span><strong>dat AI ook de route en regie overneemt.</strong></a>
 <a href="#bewijs"><span>Ik wil bepalen</span><strong>welk bewijs mijn conclusie werkelijk draagt.</strong></a>
 <a href="#argumentatie"><span>Ik wil oefenen</span><strong>met bronnen, tegenargumenten en conclusies.</strong></a>
+<a href="#professioneel-oordeel"><span>Ik wil voorkomen</span><strong>dat AI mijn professionele interpretatie al invult.</strong></a>
+<a href="#scaffolding"><span>Ik wil hulp geven</span><strong>zonder de kernhandeling over te nemen.</strong></a>
 <a href="#ontwerpen"><span>Ik wil herontwerpen</span><strong>vanuit leerproces en kernhandeling.</strong></a>
 </nav>
 <div class="toolbox-filters" aria-label="Filter werkvormen">
@@ -136,7 +140,7 @@ def render_workforms_index(items: list[dict]) -> str:
 <p class="toolbox-count"><strong id="toolbox-count">{len(items)}</strong> werkvormen zichtbaar</p>
 <div class="toolbox-groups">{"".join(sections)}</div>
 <p class="toolbox-empty" id="toolbox-empty" hidden>Geen werkvorm combineert deze filters. Kies een bredere combinatie.</p>
-<aside class="toolbox-standard-note"><strong>Over de Standard-laag</strong><p>Een deel van de werkvormen is afgeleid van de EAI Standard 0.4-candidate. Die Standard biedt een kandidaat-taxonomie en ontwerpgrammatica, geen gevalideerde meettest. Gebruik de werkvormen daarom als manier om menselijk handelen, taakverdeling en bewijs preciezer te ontwerpen en bespreken.</p></aside>
+<aside class="toolbox-standard-note"><strong>Over de Standard-laag</strong><p>Een deel van de werkvormen is afgeleid van de EAI Standard 0.4-candidate. Daaronder vallen nu ook microstructuren voor professioneel oordeel en scaffolding. De Standard biedt een kandidaat-taxonomie en ontwerpgrammatica, geen gevalideerde meettest of geautomatiseerde beslisregel. Gebruik de werkvormen om menselijk handelen, ondersteuning, bewijs en professionele afweging preciezer te ontwerpen en bespreken.</p></aside>
 </div></section>
 <script>
 (() => {{
