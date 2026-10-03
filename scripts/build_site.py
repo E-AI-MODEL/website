@@ -61,10 +61,10 @@ WORKFORM_CATEGORIES = [
 WORKFORM_AUDIENCE_LABELS = {"learner": "Leerling", "teacher": "Docent", "team": "Team"}
 WORKFORM_EVIDENCE_LABELS = {
     "design": "Ontwerp",
-    "process": "Procesbewijs",
-    "independent": "Zelfstandig bewijs",
-    "retention": "Later nog kunnen",
-    "transfer": "In een andere situatie",
+    "process": "Proces",
+    "independent": "Zelfstandig",
+    "retention": "Later nog",
+    "transfer": "Andere situatie",
 }
 WORKFORM_ROUTE_LABELS = {
     "proces": "Proces",
@@ -127,7 +127,7 @@ def render_workforms_index(items: list[dict]) -> str:
 <section class="page-hero"><div class="wrap"><div class="eyebrow">Werkvormen</div><h1>Begin bij je les. Niet bij de naam van een werkvorm.</h1><p class="lede">Wat moet de leerling uiteindelijk kennen of kunnen? Waar bevindt hij zich nu in dat leren? En aan welke stap moet hij hier zelf inhoudelijke betekenis geven? Pas als dat scherp is, wordt de vraag naar AI interessant.</p></div></section>
 <section class="section toolbox-start"><div class="wrap">
 <div class="toolbox-example-intro"><div><div class="kicker">Eerst de onderwijs­vraag</div><h2>Wat moet de leerling hier zelf doen?</h2><p>Neem een leerling die met AI een betoog schrijft. Dat AI kan helpen is duidelijk. De onderwijs­vraag is preciezer: moet de leerling hier argumenten verzamelen, ze wegen, een tegenargument onderzoeken of zijn conclusie formuleren? Welke van die stappen is in deze fase de kernhandeling? Daar zoek je vervolgens een werkvorm bij.</p></div><div class="toolbox-example-path"><span>Proces</span><span>Fase</span><span>Kernhandeling</span><span>Wat doet AI?</span><span>Wat zie je daarna?</span></div></div>
-<div class="toolbox-intro"><div><div class="kicker">Zoek op je vraag</div><h2>Wat wil je hier kunnen zien of besluiten?</h2></div><p>Filter op doel, doelgroep en bewijsfunctie. Op iedere detailpagina staat een concreet klasvoorbeeld naast de werkroute.</p></div>
+<div class="toolbox-intro"><div><div class="kicker">Zoek op je vraag</div><h2>Wat wil je hier kunnen zien of besluiten?</h2></div><p>Filter op wat je wilt doen, voor wie de werkvorm is en waar je naar wilt kijken. Op iedere detailpagina staat een concreet voorbeeld naast de werkroute.</p></div>
 <nav class="toolbox-questions" aria-label="Veelvoorkomende startvragen">
 <a href="#zelfstandigheid"><span>Ik wil weten</span><strong>wat de leerling zonder AI zelf kan.</strong></a>
 <a href="#zichtbaar"><span>Ik wil zien</span><strong>hoe een keuze met AI tot stand kwam.</strong></a>
@@ -141,7 +141,7 @@ def render_workforms_index(items: list[dict]) -> str:
 <div class="toolbox-filters" aria-label="Filter werkvormen">
 <label>Doel<select data-toolbox-filter="category"><option value="all">Alle doelen</option>{''.join(f'<option value="{esc(key)}">{esc(title)}</option>' for key,title,_ in WORKFORM_CATEGORIES)}</select></label>
 <label>Voor wie<select data-toolbox-filter="audience"><option value="all">Iedereen</option><option value="learner">Leerling</option><option value="teacher">Docent</option><option value="team">Team</option></select></label>
-<label>Bewijsfunctie<select data-toolbox-filter="evidence"><option value="all">Alle functies</option><option value="process">Procesbewijs</option><option value="independent">Zelfstandig bewijs</option><option value="retention">Retentie</option><option value="transfer">Transfer</option><option value="design">Ontwerp</option></select></label>
+<label>Waar wil je naar kijken?<select data-toolbox-filter="evidence"><option value="all">Alles</option><option value="process">Procesbewijs</option><option value="independent">Zelfstandig bewijs</option><option value="retention">Retentie</option><option value="transfer">Transfer</option><option value="design">Ontwerp</option></select></label>
 </div>
 <p class="toolbox-count"><strong id="toolbox-count">{len(items)}</strong> werkvormen zichtbaar</p>
 <div class="toolbox-groups">{"".join(sections)}</div>
@@ -239,10 +239,10 @@ def render_catalog_workform(item: dict) -> str:
         source_html = source
     return f'''<main>
 <section class="page-hero"><div class="wrap"><div class="eyebrow">Werkvorm · {esc(audience)}</div><h1>{esc(public_title)}</h1>{technical_html}<p class="lede">{esc(item["lede"])}</p>{render_route(item.get("route", []))}</div></section>
-<section class="section"><div class="wrap"><div class="workform-detail-grid"><div class="workform-question"><div class="kicker">De vraag eronder</div><h2>{esc(item["question"])}</h2></div><div class="workform-facts"><p><strong>Voor wie</strong><br>{esc(audience)}</p><p><strong>Bewijsfunctie</strong><br>{esc(evidence)}</p></div></div>{visual_html}</div></section>
+<section class="section"><div class="wrap"><div class="workform-detail-grid"><div class="workform-question"><div class="kicker">De vraag eronder</div><h2>{esc(item["question"])}</h2></div><div class="workform-facts"><p><strong>Voor wie</strong><br>{esc(audience)}</p><p><strong>Waar kijk je naar?</strong><br>{esc(evidence)}</p></div></div>{visual_html}</div></section>
 {example_html}
 <section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Zo werkt het</div><div><h2>Doe dit in deze volgorde.</h2><p>De stappen vormen een werkroute. Pas de formulering aan je vak en taak aan, maar houd de menselijke handeling en het bewijs expliciet.</p></div></div><div class="panel workform-steps"><ol>{steps}</ol></div></div></section>
-<section class="section"><div class="wrap"><div class="split"><article class="panel"><div class="kicker">Opbrengst</div><h3>Waar kijk je daarna naar?</h3><p>{esc(item["result"])}</p></article><article class="panel"><div class="kicker">Let op</div><h3>Wat bewijst dit nog niet?</h3><p>{esc(item["caution"])}</p></article></div><p class="workform-source"><strong>Bronlaag:</strong> {source_html}</p><p><a href="/werkvormen/">← Terug naar de EAI Toolbox</a></p></div></section>
+<section class="section"><div class="wrap"><div class="split"><article class="panel"><div class="kicker">Opbrengst</div><h3>Waar kijk je daarna naar?</h3><p>{esc(item["result"])}</p></article><article class="panel"><div class="kicker">Let op</div><h3>Wat bewijst dit nog niet?</h3><p>{esc(item["caution"])}</p></article></div><p class="workform-source"><strong>Bron / verdieping:</strong> {source_html}</p><p><a href="/werkvormen/">← Terug naar de EAI Toolbox</a></p></div></section>
 </main>'''
 
 TOOLS = [
