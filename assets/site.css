@@ -84,3 +84,116 @@ h1{font-size:clamp(3.05rem,5.8vw,5.25rem);max-width:13ch;letter-spacing:-.042em}
 /* Keep the PDF-led mobile rhythm after the legacy migration breakpoints. */
 @media(max-width:900px){html{scroll-padding-top:126px}.app-showcase[id],section[id]{scroll-margin-top:128px}.hero-grid{grid-template-columns:1fr;gap:30px}.pillar+.pillar,.article-pillars>div+div{border-color:var(--line)}}
 @media(max-width:620px){body{font-size:16px}.hero-grid{padding:54px 0 48px}.section{padding:52px 0}.page-hero{padding:54px 0 34px}h1{font-size:clamp(2.65rem,13vw,4rem)}.article-body{font-size:1rem;padding-top:50px}.article-body h2{margin-top:44px}.article-route{gap:12px;font-size:.75rem}.pdf-figure{overflow-x:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-inline:contain}.pdf-figure svg{min-width:680px;max-width:none}.pillar-visual{max-width:100%}}
+
+/* v3 cohesion and responsive system */
+img{max-width:100%;height:auto}
+iframe{max-width:100%}
+.hero-grid>*,.profile-grid>*,.case-study>*,.media-feature>*,.app-showcase>*,.workform-detail-grid>*{min-width:0}
+.mobile-nav{display:none;margin-left:auto;font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.mobile-nav summary{cursor:pointer;list-style:none;border:1px solid var(--line);padding:8px 11px;font-weight:800;font-size:.82rem}
+.mobile-nav summary::-webkit-details-marker{display:none}
+.mobile-nav-panel{position:absolute;left:16px;right:16px;top:58px;background:#fff;border:1px solid var(--line);padding:10px;display:grid;box-shadow:0 12px 30px rgba(32,41,54,.12)}
+.mobile-nav-panel a{padding:10px 8px;text-decoration:none;border-bottom:1px solid var(--line);font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:.92rem}
+.mobile-nav-panel a:last-child{border-bottom:0}
+.mobile-nav-panel a[aria-current="page"]{font-weight:800}
+
+.model-stack{display:grid;gap:8px;align-self:center}
+.model-stack>div{display:grid;grid-template-columns:42px minmax(0,1fr);column-gap:12px;align-items:start;border-top:1px solid var(--line);padding:12px 0}
+.model-stack span{grid-row:1/3;font:800 .72rem/1 Inter,ui-sans-serif,sans-serif;color:var(--accent)}
+.model-stack strong{font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:.96rem}
+.model-stack p{margin:4px 0 0;color:var(--muted);font-size:.9rem;line-height:1.45}
+
+.case-study{display:grid;grid-template-columns:minmax(260px,.72fr) minmax(0,1.28fr);gap:28px;border:1px solid var(--line);padding:28px;background:#fff}
+.case-study__task h3{font-size:clamp(1.55rem,2.5vw,2.3rem);margin:14px 0 12px}
+.case-study__task p{color:var(--muted)}
+.case-study__route{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.case-study__route>div{border-top:3px solid var(--accent);background:var(--soft);padding:14px 12px;min-width:0}
+.case-study__route span{display:block;font:800 .66rem/1.2 Inter,ui-sans-serif,sans-serif;text-transform:uppercase;letter-spacing:.06em;color:#6b7788}
+.case-study__route strong{display:block;margin-top:8px;font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:.9rem;line-height:1.35}
+
+.profile-section{background:var(--soft)}
+.profile-grid{display:grid;grid-template-columns:minmax(220px,.48fr) minmax(0,1.52fr);gap:42px;align-items:center}
+.profile-grid--wide{grid-template-columns:minmax(260px,.55fr) minmax(0,1.45fr)}
+.profile-photo{max-width:360px}
+.profile-photo img{display:block;width:100%;aspect-ratio:1/1;object-fit:cover;border:1px solid var(--line);background:#fff}
+.profile-grid h2{font-size:clamp(2rem,3.4vw,3.2rem);margin:10px 0 14px}
+.profile-lede{font-size:1.14rem;color:#435165;max-width:58ch}
+.profile-grid p{max-width:66ch}
+
+.model-principles{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.model-principles article{border-top:3px solid var(--accent);padding:18px 14px;background:var(--soft);min-width:0}
+.model-principles span{font:800 .7rem/1 Inter,ui-sans-serif,sans-serif;color:#7b8796}
+.model-principles h3{font-size:1.05rem;margin:12px 0 8px}
+.model-principles p{margin:0;color:var(--muted);font-size:.9rem}
+
+.publication-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.publication-card{border:1px solid var(--line);background:#fff;text-decoration:none;display:flex;flex-direction:column;min-width:0}
+.publication-card img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;border-bottom:1px solid var(--line)}
+.publication-card--image img[alt="Hans Visser"]{aspect-ratio:1/1;object-fit:cover;object-position:center top}
+.publication-card__body{padding:22px;display:flex;flex-direction:column;flex:1}
+.publication-card .meta{font:800 .68rem/1.2 Inter,ui-sans-serif,sans-serif;text-transform:uppercase;letter-spacing:.06em;color:#718096}
+.publication-card h3{font-size:1.45rem;margin:12px 0 10px}
+.publication-card p{margin:0 0 18px;color:var(--muted)}
+.publication-card .arrow{margin-top:auto;font-weight:800;font-family:Inter,ui-sans-serif,sans-serif}
+.media-thumb{display:block;width:100%;border:1px solid var(--line)}
+.media-embeds{display:grid;gap:14px}
+.spotify-window{overflow:hidden;background:#fff}
+.publication-links{margin-top:22px}
+
+.toolbox-example-intro{display:grid;grid-template-columns:minmax(0,1fr) minmax(320px,.85fr);gap:30px;align-items:center;padding:24px 0 32px;border-bottom:1px solid var(--line);margin-bottom:32px}
+.toolbox-example-intro h2{font-size:clamp(1.9rem,3vw,2.8rem);margin:8px 0 10px}
+.toolbox-example-intro p{margin:0;color:var(--muted);max-width:62ch}
+.toolbox-example-path{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+.toolbox-example-path span{padding:12px 8px;border-top:3px solid var(--accent);background:var(--soft);font:800 .7rem/1.3 Inter,ui-sans-serif,sans-serif;text-align:center}
+
+.workform-example-section{background:var(--soft)}
+.workform-example-grid{display:grid;grid-template-columns:minmax(220px,.7fr) minmax(0,1.3fr);gap:36px;align-items:start}
+.workform-example-grid h2{font-size:clamp(1.7rem,3vw,2.6rem);margin:10px 0 0}
+.workform-example-card{background:#fff;border-left:4px solid var(--accent);padding:24px 26px}
+.workform-example-card p{margin:0;font-size:1.08rem;line-height:1.62;color:#3d4959}
+
+@media(max-width:980px){
+  .case-study{grid-template-columns:1fr}
+  .case-study__route{grid-template-columns:repeat(5,minmax(120px,1fr));overflow-x:auto;padding-bottom:6px}
+  .model-principles{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .publication-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .toolbox-example-intro{grid-template-columns:1fr}
+}
+@media(max-width:760px){
+  html{scroll-padding-top:72px}
+  .nav{min-height:58px;padding:10px 16px;align-items:center!important;display:flex!important;position:relative}
+  .nav-links{display:none!important}
+  .mobile-nav{display:block}
+  .brand img{width:34px;height:34px}
+  .hero-grid{padding:44px 0 38px!important;gap:28px}
+  .section{padding:46px 0!important}
+  .page-hero{padding:46px 0 30px!important}
+  h1{font-size:clamp(2.45rem,12vw,3.7rem)!important;max-width:none}
+  .lede{font-size:1.05rem}
+  .case-study{padding:18px}
+  .case-study__route{display:grid;grid-template-columns:1fr;overflow:visible}
+  .case-study__route>div{padding:13px 14px}
+  .profile-grid,.profile-grid--wide{grid-template-columns:1fr;gap:26px}
+  .profile-photo{max-width:280px}
+  .model-principles{grid-template-columns:1fr}
+  .publication-grid{grid-template-columns:1fr}
+  .media-feature{grid-template-columns:1fr!important}
+  .toolbox-example-path{grid-template-columns:1fr}
+  .toolbox-example-path span{text-align:left}
+  .workform-example-grid{grid-template-columns:1fr;gap:18px}
+  .toolbox-card-meta{flex-wrap:wrap;justify-content:flex-start}
+  .pdf-figure{overflow:visible!important;padding:16px 12px}
+  .pdf-figure svg{display:block!important;width:100%!important;min-width:0!important;max-width:100%!important;height:auto!important}
+  .pillar-visual{max-width:100%}
+  .embed-card{padding:8px}
+  .embed-window,.embed-window.app{width:100%;max-width:100%}
+  .app-showcase{grid-template-columns:1fr!important}
+}
+@media(max-width:480px){
+  .wrap{padding-left:17px;padding-right:17px}
+  .button-row{display:grid;grid-template-columns:1fr}
+  .button{text-align:center}
+  .workform-visual{padding:16px}
+  .workform-visual-node{min-height:0}
+  .footer-grid{display:block}
+}
