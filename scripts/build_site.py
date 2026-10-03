@@ -178,6 +178,8 @@ def render_workforms_index(items: list[dict]) -> str:
     for item in items:
         audience = " ".join(item.get("audience", []))
         evidence = " ".join(item.get("evidence", []))
+        action = item.get("action_layer", {})
+        intents = " ".join(action.get("intents", []))
         audience_labels = " · ".join(WORKFORM_AUDIENCE_LABELS.get(value, value) for value in item.get("audience", []))
         evidence_labels = " · ".join(WORKFORM_EVIDENCE_LABELS.get(value, value) for value in item.get("evidence", []))
         public_title = item.get("public_title", item["title"])
@@ -185,11 +187,10 @@ def render_workforms_index(items: list[dict]) -> str:
         technical_html = f'<div class="workform-technical-name">{esc(technical)}</div>' if technical else ""
         card = (
             f'<article class="toolbox-card" data-workform-card data-category="{esc(item["category"])}" '
-            f'data-audience="{esc(audience)}" data-evidence="{esc(evidence)}">'
+            f'data-audience="{esc(audience)}" data-evidence="{esc(evidence)}" data-intents="{esc(intents)}">'
             f'<div class="toolbox-card-meta"><span>{esc(audience_labels)}</span><span>{esc(evidence_labels)}</span></div>'
             f'<h3>{esc(public_title)}</h3>{technical_html}<p>{esc(item["summary"])}</p>'
-            f'{render_route(item.get("route", []))}'
-            f'<a class="toolbox-link" href="/werkvormen/{esc(item["slug"])}/">Open werkvorm →</a></article>'
+            f'<a class="toolbox-link" href="/werkvormen/{esc(item["slug"])}/">Wat doe ik? →</a></article>'
         )
         cards_by_category[item["category"]].append(card)
 
@@ -197,52 +198,62 @@ def render_workforms_index(items: list[dict]) -> str:
     for key, title, description in WORKFORM_CATEGORIES:
         sections.append(
             f'<section class="toolbox-category" id="{esc(key)}" data-toolbox-group>'
-            f'<div class="toolbox-category-head"><div><div class="kicker">Doel</div><h2>{esc(title)}</h2></div>'
+            f'<div class="toolbox-category-head"><div><div class="kicker">Werkvormen</div><h2>{esc(title)}</h2></div>'
             f'<p>{esc(description)}</p></div><div class="toolbox-grid">{"".join(cards_by_category[key])}</div></section>'
         )
 
+    intent_buttons = "".join(
+        f'<button type="button" class="toolbox-intent" data-intent-choice="{esc(key)}" aria-pressed="false">'
+        f'<strong>{esc(title)}</strong><span>{esc(description)}</span></button>'
+        for key, title, description in WORKFORM_INTENTS
+    )
+
     return f'''<main>
-<section class="page-hero"><div class="wrap"><div class="eyebrow">Werkvormen</div><h1>Begin bij je les. Niet bij de naam van een werkvorm.</h1><p class="lede">Wat moet de leerling uiteindelijk kennen of kunnen? Waar bevindt hij zich nu in dat leren? En aan welke stap moet hij hier zelf inhoudelijke betekenis geven? Pas als dat scherp is, wordt de vraag naar AI interessant.</p></div></section>
+<section class="page-hero"><div class="wrap"><div class="eyebrow">Werkvormen</div><h1>Wat wil je dat er in je les gebeurt?</h1><p class="lede">Je hoeft de namen van 57 werkvormen niet te kennen. Pak één concrete situatie en kies hieronder wat je wilt bereiken. Dan blijven alleen de werkvormen over die daarbij kunnen helpen.</p></div></section>
 <section class="section toolbox-start"><div class="wrap">
-<div class="toolbox-example-intro"><div><div class="kicker">Eerst de onderwijs­vraag</div><h2>Wat moet de leerling hier zelf doen?</h2><p>Neem een leerling die met AI een betoog schrijft. Dat AI kan helpen is duidelijk. De onderwijs­vraag is preciezer: moet de leerling hier argumenten verzamelen, ze wegen, een tegenargument onderzoeken of zijn conclusie formuleren? Welke van die stappen is in deze fase de kernhandeling? Daar zoek je vervolgens een werkvorm bij.</p></div><div class="toolbox-example-path"><span>Proces</span><span>Fase</span><span>Kernhandeling</span><span>Wat doet AI?</span><span>Wat zie je daarna?</span></div></div>
-<div class="toolbox-intro"><div><div class="kicker">Zoek op je vraag</div><h2>Wat wil je hier kunnen zien of besluiten?</h2></div><p>Filter op wat je wilt doen, voor wie de werkvorm is en waar je naar wilt kijken. Op iedere detailpagina staat een concreet voorbeeld naast de werkroute.</p></div>
-<nav class="toolbox-questions" aria-label="Veelvoorkomende startvragen">
-<a href="#zelfstandigheid"><span>Ik wil weten</span><strong>wat de leerling zonder AI zelf kan.</strong></a>
-<a href="#zichtbaar"><span>Ik wil zien</span><strong>hoe een keuze met AI tot stand kwam.</strong></a>
-<a href="#zelfregulatie"><span>Ik wil voorkomen</span><strong>dat AI ook de route en regie overneemt.</strong></a>
-<a href="#bewijs"><span>Ik wil bepalen</span><strong>welk bewijs mijn conclusie werkelijk draagt.</strong></a>
-<a href="#argumentatie"><span>Ik wil oefenen</span><strong>met bronnen, tegenargumenten en conclusies.</strong></a>
-<a href="#professioneel-oordeel"><span>Ik wil voorkomen</span><strong>dat AI mijn professionele interpretatie al invult.</strong></a>
-<a href="#scaffolding"><span>Ik wil hulp geven</span><strong>zonder de kernhandeling over te nemen.</strong></a>
-<a href="#ontwerpen"><span>Ik wil herontwerpen</span><strong>vanuit leerproces en kernhandeling.</strong></a>
-</nav>
+<div class="toolbox-example-intro"><div><div class="kicker">Begin met je eigen situatie</div><h2>Wat moet de leerling hier zelf doen?</h2><p>Neem een opdracht die je morgen geeft. Wat moet de leerling leren? Waar bevindt hij zich nu in dat leren? Aan welke stap moet hij hier zelf inhoudelijke betekenis geven? En wat doet AI precies op die plek? Je hoeft die analyse niet perfect af te hebben voordat je begint.</p></div><div class="toolbox-example-path"><span>Proces</span><span>Fase</span><span>Kernhandeling</span><span>Wat doet AI?</span><span>Wat wil je nu doen?</span></div></div>
+
+<div class="toolbox-intro"><div><div class="kicker">Kies je volgende handeling</div><h2>Waar wil je mee verder?</h2></div><p>Dit is de gewone route voor docenten. De filters en de volledige bibliotheek staan daaronder voor wie al preciezer weet wat hij zoekt.</p></div>
+<div class="toolbox-intent-grid" aria-label="Kies wat je wilt laten gebeuren">{intent_buttons}</div>
+<div class="toolbox-intent-state"><span id="toolbox-intent-label">Alle werkvormen</span><button type="button" id="toolbox-intent-clear" hidden>Wis keuze</button></div>
+
+<details class="toolbox-advanced"><summary>Verder filteren</summary>
 <div class="toolbox-filters" aria-label="Filter werkvormen">
-<label>Doel<select data-toolbox-filter="category"><option value="all">Alle doelen</option>{''.join(f'<option value="{esc(key)}">{esc(title)}</option>' for key,title,_ in WORKFORM_CATEGORIES)}</select></label>
+<label>Thema<select data-toolbox-filter="category"><option value="all">Alle thema's</option>{''.join(f'<option value="{esc(key)}">{esc(title)}</option>' for key,title,_ in WORKFORM_CATEGORIES)}</select></label>
 <label>Voor wie<select data-toolbox-filter="audience"><option value="all">Iedereen</option><option value="learner">Leerling</option><option value="teacher">Docent</option><option value="team">Team</option></select></label>
-<label>Waar wil je naar kijken?<select data-toolbox-filter="evidence"><option value="all">Alles</option><option value="process">Procesbewijs</option><option value="independent">Zelfstandig bewijs</option><option value="retention">Retentie</option><option value="transfer">Transfer</option><option value="design">Ontwerp</option></select></label>
-</div>
-<p class="toolbox-count"><strong id="toolbox-count">{len(items)}</strong> werkvormen zichtbaar</p>
+<label>Wat wil je daarna weten?<select data-toolbox-filter="evidence"><option value="all">Alles</option><option value="process">Wat er in het proces gebeurde</option><option value="independent">Wat de leerling zelf kan</option><option value="retention">Of het later nog lukt</option><option value="transfer">Of het ergens anders ook lukt</option><option value="design">Hoe je het kunt ontwerpen</option></select></label>
+</div></details>
+
+<p class="toolbox-count"><strong id="toolbox-count">{len(items)}</strong> passende werkvormen</p>
 <div class="toolbox-groups">{"".join(sections)}</div>
-<p class="toolbox-empty" id="toolbox-empty" hidden>Geen werkvorm combineert deze filters. Kies een bredere combinatie.</p>
-<aside class="toolbox-standard-note"><strong>Waarom sommige werkvormen ook een Engelse naam hebben</strong><p>Achter een deel van deze werkvormen ligt een preciezere EAI Standard-term. Die naam staat kleiner bij de werkvorm voor wie de technische of onderzoekslaag nodig heeft. Voor gebruik in school beginnen we hier gewoon bij de onderwijs­vraag.</p></aside>
+<p class="toolbox-empty" id="toolbox-empty" hidden>Geen werkvorm combineert deze keuzes. Wis een filter of kies een bredere route.</p>
+<aside class="toolbox-standard-note"><strong>Wil je de laag eronder zien?</strong><p>Op iedere werkvormpagina staat ook welke handelingen bij docent, leerling en AI liggen, welke EAI Standard-werkwoorden erbij horen en op welke didactische of onderzoekslijn de werkvorm aansluit. <a href="/onderbouwing/">Bekijk de onderbouwing →</a></p></aside>
 </div></section>
 <script>
 (() => {{
   const filters = [...document.querySelectorAll('[data-toolbox-filter]')];
   const cards = [...document.querySelectorAll('[data-workform-card]')];
   const groups = [...document.querySelectorAll('[data-toolbox-group]')];
+  const intentButtons = [...document.querySelectorAll('[data-intent-choice]')];
+  const clearIntent = document.getElementById('toolbox-intent-clear');
+  const intentLabel = document.getElementById('toolbox-intent-label');
   const count = document.getElementById('toolbox-count');
   const empty = document.getElementById('toolbox-empty');
+  let activeIntent = 'all';
+
   const matches = (card, key, value) => {{
     if (value === 'all') return true;
     if (key === 'category') return card.dataset.category === value;
     return (card.dataset[key] || '').split(' ').includes(value);
   }};
+
   const apply = () => {{
     const values = Object.fromEntries(filters.map(el => [el.dataset.toolboxFilter, el.value]));
     let visible = 0;
     cards.forEach(card => {{
-      const show = Object.entries(values).every(([key, value]) => matches(card, key, value));
+      const intentMatch = activeIntent === 'all' || (card.dataset.intents || '').split(' ').includes(activeIntent);
+      const filterMatch = Object.entries(values).every(([key, value]) => matches(card, key, value));
+      const show = intentMatch && filterMatch;
       card.hidden = !show;
       if (show) visible += 1;
     }});
@@ -252,6 +263,23 @@ def render_workforms_index(items: list[dict]) -> str:
     count.textContent = String(visible);
     empty.hidden = visible !== 0;
   }};
+
+  intentButtons.forEach(button => button.addEventListener('click', () => {{
+    activeIntent = button.dataset.intentChoice;
+    intentButtons.forEach(item => item.setAttribute('aria-pressed', item === button ? 'true' : 'false'));
+    intentLabel.textContent = button.querySelector('strong').textContent;
+    clearIntent.hidden = false;
+    apply();
+  }}));
+
+  clearIntent.addEventListener('click', () => {{
+    activeIntent = 'all';
+    intentButtons.forEach(item => item.setAttribute('aria-pressed', 'false'));
+    intentLabel.textContent = 'Alle werkvormen';
+    clearIntent.hidden = true;
+    apply();
+  }});
+
   filters.forEach(el => el.addEventListener('change', apply));
   apply();
 }})();
@@ -295,32 +323,83 @@ def render_workform_example(item: dict) -> str:
         '</div></div></section>'
     )
 
-def append_workform_example(body: str, item: dict) -> str:
-    section = render_workform_example(item)
-    if not section:
-        return body
-    return body.replace("</main>", section + "</main>", 1)
+def render_workform_quickstart(item: dict) -> str:
+    action = item.get("action_layer", {})
+    teacher = action.get("teacher", "")
+    learner = action.get("learner", "")
+    ai = action.get("ai", "")
+    ai_not = action.get("ai_not", "")
+    return (
+        '<section class="section workform-quickstart"><div class="wrap">'
+        '<div class="workform-use-grid">'
+        f'<article><div class="kicker">Gebruik dit als</div><p>{esc(item.get("lede", ""))}</p></article>'
+        f'<article><div class="kicker">De vraag eronder</div><p>{esc(item.get("question", ""))}</p></article>'
+        '</div>'
+        '<div class="workform-role-grid">'
+        f'<article><span>Jij als docent</span><p>{esc(teacher)}</p></article>'
+        f'<article><span>De leerling</span><p>{esc(learner)}</p></article>'
+        f'<article><span>AI kan hier</span><p>{esc(ai)}</p></article>'
+        '</div>'
+        f'<div class="workform-boundary"><strong>Niet automatisch doen</strong><p>{esc(ai_not)}</p></div>'
+        '</div></section>'
+    )
+
+def render_workform_underpinning(item: dict) -> str:
+    mechanism = WORKFORM_MECHANISMS.get(item.get("category"), {})
+    action = item.get("action_layer", {})
+    refs = action.get("standard", [])
+    refs_html = "".join(
+        f'<li><code>{esc(ref[0])}</code><span>{esc(ref[1])}</span></li>'
+        for ref in refs
+    )
+    source = esc(item.get("source", "EAI"))
+    if item.get("source_url"):
+        source_html = f'<a href="{esc(item["source_url"])}" target="_blank" rel="noopener">{source}</a>'
+    else:
+        source_html = source
+    return (
+        '<section class="section workform-foundation"><div class="wrap">'
+        '<div class="workform-foundation-grid">'
+        '<div>'
+        '<div class="kicker">Waarom dit kan helpen</div>'
+        f'<h2>{esc(mechanism.get("title", "De handeling achter de werkvorm"))}</h2>'
+        f'<p>{esc(mechanism.get("text", ""))}</p>'
+        f'<p class="foundation-basis">Onderbouwing op de site: {esc(mechanism.get("basis", ""))}</p>'
+        f'<p><a href="/onderbouwing/#{esc(mechanism.get("anchor", "eai-standard"))}">Lees de onderbouwing en beperkingen →</a></p>'
+        '</div>'
+        '<details class="standard-details"><summary>EAI Standard / technische laag</summary>'
+        '<p>De termen hieronder helpen om dezelfde handeling precies terug te vinden in de Standard. Ze maken de werkvorm niet automatisch wetenschappelijk gevalideerd.</p>'
+        f'<ul>{refs_html}</ul>'
+        f'<p><strong>Bron van deze werkvorm:</strong> {source_html}</p>'
+        '</details>'
+        '</div></div></section>'
+    )
+
+def enrich_manual_workform(body: str, item: dict) -> str:
+    quick = render_workform_quickstart(item)
+    body = body.replace("</section>", "</section>" + quick, 1)
+    tail = render_workform_example(item) + render_workform_underpinning(item)
+    return body.replace("</main>", tail + "</main>", 1)
 
 def render_catalog_workform(item: dict) -> str:
     steps = "".join(f"<li>{esc(step)}</li>" for step in item.get("steps", []))
     audience = " · ".join(WORKFORM_AUDIENCE_LABELS.get(value, value) for value in item.get("audience", []))
     evidence = " · ".join(WORKFORM_EVIDENCE_LABELS.get(value, value) for value in item.get("evidence", []))
-    source = esc(item.get("source", "EAI"))
     public_title = item.get("public_title", item["title"])
     technical = item["title"] if public_title != item["title"] else ""
     technical_html = f'<p class="workform-technical-name detail">EAI-term: {esc(technical)}</p>' if technical else ""
     visual_html = render_workform_visual(item.get("visual"))
+    quickstart_html = render_workform_quickstart(item)
     example_html = render_workform_example(item)
-    if item.get("source_url"):
-        source_html = f'<a href="{esc(item["source_url"])}" target="_blank" rel="noopener">{source}</a>'
-    else:
-        source_html = source
+    foundation_html = render_workform_underpinning(item)
     return f'''<main>
-<section class="page-hero"><div class="wrap"><div class="eyebrow">Werkvorm · {esc(audience)}</div><h1>{esc(public_title)}</h1>{technical_html}<p class="lede">{esc(item["lede"])}</p>{render_route(item.get("route", []))}</div></section>
-<section class="section"><div class="wrap"><div class="workform-detail-grid"><div class="workform-question"><div class="kicker">De vraag eronder</div><h2>{esc(item["question"])}</h2></div><div class="workform-facts"><p><strong>Voor wie</strong><br>{esc(audience)}</p><p><strong>Waar kijk je naar?</strong><br>{esc(evidence)}</p></div></div>{visual_html}</div></section>
+<section class="page-hero"><div class="wrap"><div class="eyebrow">Werkvorm · {esc(audience)}</div><h1>{esc(public_title)}</h1>{technical_html}<p class="lede">{esc(item["summary"])}</p>{render_route(item.get("route", []))}</div></section>
+{quickstart_html}
+<section class="section"><div class="wrap">{visual_html}</div></section>
 {example_html}
-<section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Zo werkt het</div><div><h2>Doe dit in deze volgorde.</h2><p>De stappen vormen een werkroute. Pas de formulering aan je vak en taak aan, maar houd de menselijke handeling en het bewijs expliciet.</p></div></div><div class="panel workform-steps"><ol>{steps}</ol></div></div></section>
-<section class="section"><div class="wrap"><div class="split"><article class="panel"><div class="kicker">Opbrengst</div><h3>Waar kijk je daarna naar?</h3><p>{esc(item["result"])}</p></article><article class="panel"><div class="kicker">Let op</div><h3>Wat bewijst dit nog niet?</h3><p>{esc(item["caution"])}</p></article></div><p class="workform-source"><strong>Bron / verdieping:</strong> {source_html}</p><p><a href="/werkvormen/">← Terug naar de EAI Toolbox</a></p></div></section>
+<section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Zo doe je het</div><div><h2>Werk stap voor stap.</h2><p>Pas de formulering aan je vak en klas aan. De volgorde bewaakt dat de relevante leerlinghandeling niet ongemerkt uit beeld verdwijnt.</p></div></div><div class="panel workform-steps"><ol>{steps}</ol></div></div></section>
+<section class="section"><div class="wrap"><div class="split"><article class="panel"><div class="kicker">Daarna</div><h3>Waar kijk je naar?</h3><p>{esc(item["result"])}</p></article><article class="panel"><div class="kicker">Let op</div><h3>Wat kun je nog niet concluderen?</h3><p>{esc(item["caution"])}</p></article></div><p><a href="/werkvormen/">← Terug naar de werkvormen</a></p></div></section>
+{foundation_html}
 </main>'''
 
 TOOLS = [
