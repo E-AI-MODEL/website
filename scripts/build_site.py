@@ -661,6 +661,7 @@ def nav(active: str = "") -> str:
     links = [
         ("model", "/", "EAI model"),
         ("werkvormen", "/werkvormen/", "Werkvormen"),
+        ("onderbouwing", "/onderbouwing/", "Onderbouwing"),
         ("praktijk", "/praktijk/", "Praktijk"),
         ("publicaties", "/publicaties/", "Publicaties"),
         ("tools", "/tools/", "Tools"),
@@ -767,23 +768,23 @@ def build(scrape: Path, out: Path) -> None:
 <div class="wrap welcome-grid">
 <div class="welcome-copy">
 <div class="eyebrow">Welkom bij EAI</div>
-<h1>AI kan steeds meer van een taak uitvoeren. Wat moet de mens zelf blijven doen?</h1>
-<p class="lede">EAI helpt je om die vraag concreet te beantwoorden. Voor een les, toets, AI-tool, professionele beslissing of compleet onderwijsontwerp.</p>
-<p class="welcome-audience">Voor docenten, schoolleiders, onderzoekers en ontwikkelaars die AI willen verbinden aan leren en professioneel handelen.</p>
+<h1>Wat moet de leerling hier eigenlijk leren?</h1>
+<p class="lede">AI kan schrijven, uitleggen, samenvatten, vergelijken, feedback geven en een volgende stap voorstellen. Allemaal waar. Maar voordat je bepaalt wat AI mag doen, moet je weten wat de leerling in deze taak zelf moet leren doen.</p>
+<p class="welcome-audience">EAI helpt om die vraag concreet te maken in een les, opdracht, toets of professionele beslissing.</p>
 </div>
 <div class="welcome-routes" aria-label="Kies waar je wilt beginnen">
 <a href="#model"><span>Nieuw hier?</span><strong>Begrijp EAI</strong><p>Bekijk het model en één concreet voorbeeld. Dit is de beste plek om te beginnen.</p><b>Start hier →</b></a>
 <a href="/werkvormen/"><span>Ik wil iets doen</span><strong>Gebruik de toolbox</strong><p>57 werkvormen voor lesontwerp, bewijs, zelfstandigheid, feedback en professioneel oordeel.</p><b>Naar de werkvormen →</b></a>
-<a href="/publicaties/"><span>Ik wil verder lezen</span><strong>Verdiep je</strong><p>Publicaties, praktijkverhalen, video en podcast over AI, leren en menselijk handelen.</p><b>Bekijk publicaties →</b></a>
+<a href="/onderbouwing/"><span>Ik wil weten waar dit op rust</span><strong>Bekijk de onderbouwing</strong><p>Didactiek, leerpsychologie, pedagogiek, recent AI-onderzoek en wat EAI zelf nog als kandidaatmodel behandelt.</p><b>Naar de onderbouwing →</b></a>
 </div>
 </div>
-<div class="wrap welcome-note"><p><strong>EAI begint niet bij de tool.</strong> Eerst kijken we naar het proces, de fase en de menselijke handeling. Daarna pas naar de rol van AI. Klinkt logisch. Toch slaan we juist die stap gemakkelijk over zodra een tool iets indrukwekkends kan.</p></div>
+<div class="wrap welcome-note"><p><strong>Begin dus niet bij de tool.</strong> Begin bij de vraag wat er geleerd moet worden. Soms kan AI daarna bijna alles doen. En soms zit het leren juist in die ene stap die AI zo makkelijk kan overnemen.</p></div>
 </section>
 
 <section class="section model-intro" id="model"><div class="wrap hero-grid">
-<div><div class="eyebrow">Het EAI-model</div><h2>Vier vragen. Altijd in deze volgorde.</h2>
-<p class="lede">Begin bij het onderwijs. Wat moet een leerling leren? Waar bevindt hij zich nu in dat leren? Aan welke stap moet hij in deze fase zelf inhoudelijke betekenis geven? Kijk pas daarna naar wat AI precies op die plek doet.</p>
-<p>Daarna komt een vijfde vraag vanzelf: wat kun je op basis van wat je ziet nu werkelijk zeggen over het leren van de leerling?</p>
+<div><div class="eyebrow">Het EAI-model</div><h2>Leg eerst het onderwijs op tafel.</h2>
+<p class="lede">Wat moet de leerling leren? Waar bevindt hij zich nu in dat leren? Aan welke stap moet hij in deze fase zelf inhoudelijke betekenis geven? Pas daarna komt de vraag wat AI precies op die plek doet.</p>
+<p>En dan kijk je nog één keer terug: wat weet je nu werkelijk over wat de leerling zelf kan?</p>
 <div class="button-row"><a class="button" href="#voorbeeld">Bekijk het voorbeeld</a><a class="button secondary" href="/over/">Over EAI</a></div></div>
 <div class="model-stack" aria-label="De vier vragen van EAI">
 <div><span>01</span><strong>Proces</strong><p>Wat moet de leerling uiteindelijk kennen of kunnen, en hoe komt hij daar?</p></div>
@@ -1007,7 +1008,7 @@ def build(scrape: Path, out: Path) -> None:
     not_found = '<main><section class="page-hero"><div class="wrap"><div class="eyebrow">404</div><h1>Deze pagina is er niet meer.</h1><p class="lede">De oude Google-site bevatte ook een paar dode links. Ga terug naar de publicaties of tools.</p><div class="button-row"><a class="button" href="/publicaties/">Publicaties</a><a class="button secondary" href="/tools/">Tools</a></div></div></section></main>'
     write(out, "404.html", doc("Niet gevonden", not_found, "/404.html"))
     write(out, "robots.txt", "User-agent: *\nAllow: /\nSitemap: https://eaimodel.nl/sitemap.xml\n")
-    urls = ["/", "/twee-pijlers/", "/workshop-ai/", "/werkvormen/", "/praktijk/", "/publicaties/", "/publicaties/de-vraag-die-we-vergeten/", "/tools/", "/over/", "/eaa-model/", "/onderwijsin/"] + [f"/werkvormen/{item['slug']}/" for item in workforms] + [f"/publicaties/{slug}/" for slug, _, _, _ in PUBLICATIONS] + ["/tools/beyond-explainability/"]
+    urls = ["/", "/twee-pijlers/", "/workshop-ai/", "/werkvormen/", "/onderbouwing/", "/praktijk/", "/publicaties/", "/publicaties/de-vraag-die-we-vergeten/", "/tools/", "/over/", "/eaa-model/", "/onderwijsin/"] + [f"/werkvormen/{item['slug']}/" for item in workforms] + [f"/publicaties/{slug}/" for slug, _, _, _ in PUBLICATIONS] + ["/tools/beyond-explainability/"]
     items = "".join(f"<url><loc>{BASE_URL}{path}</loc></url>" for path in urls)
     write(out, "sitemap.xml", f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{items}</urlset>')
 
