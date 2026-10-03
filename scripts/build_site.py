@@ -50,7 +50,9 @@ WORKFORM_CATEGORIES = [
     ("zelfstandigheid", "Zelfstandigheid terugbrengen", "Geef een relevante handeling na AI-hulp doelgericht terug aan de leerling en verzamel nieuw menselijk bewijs."),
     ("bewijs", "Leren aantonen", "Kies bewijs dat past bij de claim: huidige prestatie, zelfstandigheid, retentie of transfer."),
     ("herstellen", "Feedback, controle en herstellen", "Gebruik AI-output als aanleiding voor menselijk controleren, corrigeren en opnieuw uitvoeren."),
-    ("zelfregulatie", "Zelfregulatie", "Laat de leerling zelf bepalen waar hij vastloopt, welke hulp nodig is en wanneer hij de regie weer overneemt."),
+    ("zelfregulatie", "Zelfregulatie", "Laat de leerling zelf doelen, plannen, checkpoints, hulp en aanpassingen reguleren wanneer dat voor het leerdoel relevant is."),
+    ("argumenteren", "Argumenteren & bronnen", "Maak zichtbaar hoe een leerling een kwestie analyseert, bewijs aan claims koppelt, tegenargumenten weegt en conclusies begrenst."),
+    ("professioneel", "Professioneel handelen", "Breng professioneel en pedagogisch oordeel terug naar de mens wanneer AI-interpretatie of aanbeveling te veel richting geeft."),
     ("ontwerpen", "Ontwerpen als docent of team", "Herontwerp taken, AI-rollen en beoordeling vanuit het proces in plaats van vanuit de tool."),
 ]
 WORKFORM_AUDIENCE_LABELS = {"learner": "Leerling", "teacher": "Docent", "team": "Team"}
@@ -97,9 +99,15 @@ def render_workforms_index(items: list[dict]) -> str:
         evidence = " ".join(item.get("evidence", []))
         audience_labels = " · ".join(WORKFORM_AUDIENCE_LABELS.get(value, value) for value in item.get("audience", []))
         evidence_labels = " · ".join(WORKFORM_EVIDENCE_LABELS.get(value, value) for value in item.get("evidence", []))
+        search_text = " ".join([
+            item.get("title", ""),
+            item.get("summary", ""),
+            item.get("question", ""),
+            item.get("source", ""),
+        ]).lower()
         card = (
             f'<article class="toolbox-card" data-workform-card data-category="{esc(item["category"])}" '
-            f'data-audience="{esc(audience)}" data-evidence="{esc(evidence)}">'
+            f'data-audience="{esc(audience)}" data-evidence="{esc(evidence)}" data-search="{esc(search_text)}">'
             f'<div class="toolbox-card-meta"><span>{esc(audience_labels)}</span><span>{esc(evidence_labels)}</span></div>'
             f'<h3>{esc(item["title"])}</h3><p>{esc(item["summary"])}</p>'
             f'{render_route(item.get("route", []))}'
@@ -119,18 +127,30 @@ def render_workforms_index(items: list[dict]) -> str:
 <section class="page-hero"><div class="wrap"><div class="eyebrow">Werkvormen</div><h1>EAI Toolbox</h1><p class="lede">Begin niet bij de naam van een werkvorm. Begin bij wat je wilt zien, terugbrengen of ontwerpen. De werkvormen hieronder volgen dezelfde EAI-kijkvorm: proces/doel → fase → kernhandeling → taakdichtheid → output.</p></div></section>
 <section class="section toolbox-start"><div class="wrap">
 <div class="toolbox-intro"><div><div class="kicker">Zoek op je vraag</div><h2>Wat wil je hier kunnen zien of besluiten?</h2></div><p>Filter op doel, doelgroep en bewijsfunctie. Een werkvorm is geen los trucje: hij is bruikbaar wanneer hij past bij de handeling en de claim die in deze fase belangrijk zijn.</p></div>
+<div class="toolbox-question-links" aria-label="Start vanuit een vraag">
+<button type="button" data-toolbox-preset data-category="all" data-audience="all" data-evidence="independent">Wat kan de leerling zelf?</button>
+<button type="button" data-toolbox-preset data-category="zichtbaar" data-audience="all" data-evidence="all">Hoe maak ik keuzes zichtbaar?</button>
+<button type="button" data-toolbox-preset data-category="zelfregulatie" data-audience="learner" data-evidence="all">Hoe geef ik de regie terug?</button>
+<button type="button" data-toolbox-preset data-category="argumenteren" data-audience="all" data-evidence="all">Hoe maak ik argumentatie zichtbaar?</button>
+<button type="button" data-toolbox-preset data-category="professioneel" data-audience="teacher" data-evidence="all">Waar blijft professioneel oordeel?</button>
+<button type="button" data-toolbox-preset data-category="ontwerpen" data-audience="all" data-evidence="design">Hoe herontwerp ik de taak?</button>
+</div>
+<div class="toolbox-search"><label for="toolbox-search">Zoek op werkvorm, vraag of begrip</label><input id="toolbox-search" type="search" data-toolbox-search placeholder="bijv. tegenargument, retentie, plannen, bron..." autocomplete="off"></div>
 <div class="toolbox-filters" aria-label="Filter werkvormen">
 <label>Doel<select data-toolbox-filter="category"><option value="all">Alle doelen</option>{''.join(f'<option value="{esc(key)}">{esc(title)}</option>' for key,title,_ in WORKFORM_CATEGORIES)}</select></label>
 <label>Voor wie<select data-toolbox-filter="audience"><option value="all">Iedereen</option><option value="learner">Leerling</option><option value="teacher">Docent</option><option value="team">Team</option></select></label>
 <label>Bewijsfunctie<select data-toolbox-filter="evidence"><option value="all">Alle functies</option><option value="process">Procesbewijs</option><option value="independent">Zelfstandig bewijs</option><option value="retention">Retentie</option><option value="transfer">Transfer</option><option value="design">Ontwerp</option></select></label>
 </div>
-<p class="toolbox-count"><strong id="toolbox-count">{len(items)}</strong> werkvormen zichtbaar</p>
+<div class="toolbox-result-row"><p class="toolbox-count"><strong id="toolbox-count">{len(items)}</strong> werkvormen zichtbaar</p><button type="button" class="toolbox-reset" id="toolbox-reset">Wis filters</button></div>
 <div class="toolbox-groups">{"".join(sections)}</div>
 <p class="toolbox-empty" id="toolbox-empty" hidden>Geen werkvorm combineert deze filters. Kies een bredere combinatie.</p>
 </div></section>
 <script>
 (() => {{
   const filters = [...document.querySelectorAll('[data-toolbox-filter]')];
+  const search = document.querySelector('[data-toolbox-search]');
+  const presets = [...document.querySelectorAll('[data-toolbox-preset]')];
+  const reset = document.getElementById('toolbox-reset');
   const cards = [...document.querySelectorAll('[data-workform-card]')];
   const groups = [...document.querySelectorAll('[data-toolbox-group]')];
   const count = document.getElementById('toolbox-count');
@@ -143,8 +163,11 @@ def render_workforms_index(items: list[dict]) -> str:
   const apply = () => {{
     const values = Object.fromEntries(filters.map(el => [el.dataset.toolboxFilter, el.value]));
     let visible = 0;
+    const query = (search?.value || '').trim().toLocaleLowerCase('nl');
     cards.forEach(card => {{
-      const show = Object.entries(values).every(([key, value]) => matches(card, key, value));
+      const filterMatch = Object.entries(values).every(([key, value]) => matches(card, key, value));
+      const searchMatch = !query || (card.dataset.search || '').includes(query);
+      const show = filterMatch && searchMatch;
       card.hidden = !show;
       if (show) visible += 1;
     }});
@@ -155,6 +178,23 @@ def render_workforms_index(items: list[dict]) -> str:
     empty.hidden = visible !== 0;
   }};
   filters.forEach(el => el.addEventListener('change', apply));
+  search?.addEventListener('input', apply);
+  presets.forEach(button => button.addEventListener('click', () => {{
+    const map = {{
+      category: button.dataset.category || 'all',
+      audience: button.dataset.audience || 'all',
+      evidence: button.dataset.evidence || 'all',
+    }};
+    filters.forEach(el => {{ el.value = map[el.dataset.toolboxFilter] || 'all'; }});
+    if (search) search.value = '';
+    apply();
+    document.querySelector('.toolbox-groups')?.scrollIntoView({{behavior:'smooth', block:'start'}});
+  }}));
+  reset?.addEventListener('click', () => {{
+    filters.forEach(el => {{ el.value = 'all'; }});
+    if (search) search.value = '';
+    apply();
+  }});
   apply();
 }})();
 </script>
@@ -266,8 +306,8 @@ h1{font-size:clamp(3.05rem,5.8vw,5.25rem);max-width:13ch;letter-spacing:-.042em}
 @media(max-width:620px){.nav{display:block}.nav-links{margin-top:10px}.hero-grid{padding:66px 0 60px}h1{font-size:clamp(3rem,16vw,4.8rem)}.section{padding:62px 0}.split,.card-grid{grid-template-columns:1fr}.footer-grid{display:block}.footer-grid p+p{margin-top:14px}}
 
 /* EAI Toolbox */
-.toolbox-start{padding-top:52px}.toolbox-intro{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:38px;align-items:end;margin-bottom:30px}.toolbox-intro h2{font-size:clamp(1.9rem,3vw,2.8rem);margin:8px 0 0}.toolbox-intro p{margin:0;color:var(--muted);max-width:62ch}.toolbox-filters{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;padding:18px;background:var(--soft);border-left:4px solid var(--accent)}.toolbox-filters label{font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:.78rem;font-weight:800;color:#4f5a69;letter-spacing:.04em;text-transform:uppercase}.toolbox-filters select{display:block;width:100%;margin-top:7px;padding:10px 12px;border:1px solid var(--line);background:#fff;color:var(--ink);font:inherit;text-transform:none;letter-spacing:0;font-weight:600}.toolbox-count{font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--muted);font-size:.86rem;margin:15px 0 0}.toolbox-groups{margin-top:52px}.toolbox-category{padding:0 0 58px;scroll-margin-top:100px}.toolbox-category+.toolbox-category{padding-top:58px;border-top:1px solid var(--line)}.toolbox-category-head{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:38px;align-items:end;margin-bottom:24px}.toolbox-category-head h2{font-size:clamp(1.75rem,3vw,2.7rem);margin:8px 0 0}.toolbox-category-head p{margin:0;color:var(--muted);max-width:60ch}.toolbox-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.toolbox-card{border:1px solid var(--line);background:#fff;padding:24px;display:flex;flex-direction:column;min-height:280px}.toolbox-card[hidden]{display:none}.toolbox-card-meta{display:flex;justify-content:space-between;gap:12px;font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#718096}.toolbox-card h3{font-size:1.55rem;margin:18px 0 10px}.toolbox-card p{margin:0 0 18px;color:var(--muted)}.toolbox-link{margin-top:auto;padding-top:18px;font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-weight:800;text-underline-offset:5px}.eai-route{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0 20px}.route-chip{padding:4px 7px;border:1px solid var(--line);font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:.66rem;font-weight:700;color:#8a94a2}.route-chip.is-active{border-color:#9aa9ba;color:#294b73;background:#f6f8fa}.toolbox-empty{padding:24px;border:1px solid var(--line);background:var(--soft)}.workform-detail-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(260px,.75fr);gap:46px;align-items:start}.workform-question h2{font-size:clamp(2rem,4vw,3.6rem);margin:12px 0;max-width:17ch}.workform-facts{border-left:4px solid var(--accent);padding:2px 0 2px 20px}.workform-facts p{margin:0 0 18px;color:var(--muted)}.workform-facts strong{color:var(--ink)}.workform-steps ol{margin:0;padding-left:24px}.workform-steps li{padding:8px 0}.workform-source{margin-top:28px;color:var(--muted);font-size:.9rem}.workform-source a{text-underline-offset:4px}
-@media(max-width:900px){.toolbox-intro,.toolbox-category-head,.workform-detail-grid{grid-template-columns:1fr}.toolbox-grid{grid-template-columns:1fr}.toolbox-filters{grid-template-columns:1fr}.toolbox-category{scroll-margin-top:140px}}
+.toolbox-start{padding-top:52px}.toolbox-intro{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:38px;align-items:end;margin-bottom:30px}.toolbox-intro h2{font-size:clamp(1.9rem,3vw,2.8rem);margin:8px 0 0}.toolbox-intro p{margin:0;color:var(--muted);max-width:62ch}.toolbox-question-links{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 18px}.toolbox-question-links button,.toolbox-reset{border:1px solid var(--line);background:#fff;color:var(--ink);padding:8px 11px;font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:.78rem;font-weight:700;cursor:pointer}.toolbox-question-links button:hover,.toolbox-reset:hover{border-color:#9aa9ba}.toolbox-search{margin:0 0 12px}.toolbox-search label{display:block;margin-bottom:7px;font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:.78rem;font-weight:800;color:#4f5a69;letter-spacing:.04em;text-transform:uppercase}.toolbox-search input{width:100%;padding:13px 14px;border:1px solid var(--line);background:#fff;color:var(--ink);font:inherit}.toolbox-filters{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;padding:18px;background:var(--soft);border-left:4px solid var(--accent)}.toolbox-filters label{font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:.78rem;font-weight:800;color:#4f5a69;letter-spacing:.04em;text-transform:uppercase}.toolbox-filters select{display:block;width:100%;margin-top:7px;padding:10px 12px;border:1px solid var(--line);background:#fff;color:var(--ink);font:inherit;text-transform:none;letter-spacing:0;font-weight:600}.toolbox-result-row{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:15px 0 0}.toolbox-count{font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--muted);font-size:.86rem;margin:0}.toolbox-groups{margin-top:52px}.toolbox-category{padding:0 0 58px;scroll-margin-top:100px}.toolbox-category+.toolbox-category{padding-top:58px;border-top:1px solid var(--line)}.toolbox-category-head{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:38px;align-items:end;margin-bottom:24px}.toolbox-category-head h2{font-size:clamp(1.75rem,3vw,2.7rem);margin:8px 0 0}.toolbox-category-head p{margin:0;color:var(--muted);max-width:60ch}.toolbox-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.toolbox-card{border:1px solid var(--line);background:#fff;padding:24px;display:flex;flex-direction:column;min-height:280px}.toolbox-card[hidden]{display:none}.toolbox-card-meta{display:flex;justify-content:space-between;gap:12px;font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#718096}.toolbox-card h3{font-size:1.55rem;margin:18px 0 10px}.toolbox-card p{margin:0 0 18px;color:var(--muted)}.toolbox-link{margin-top:auto;padding-top:18px;font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-weight:800;text-underline-offset:5px}.eai-route{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0 20px}.route-chip{padding:4px 7px;border:1px solid var(--line);font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:.66rem;font-weight:700;color:#8a94a2}.route-chip.is-active{border-color:#9aa9ba;color:#294b73;background:#f6f8fa}.toolbox-empty{padding:24px;border:1px solid var(--line);background:var(--soft)}.workform-detail-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(260px,.75fr);gap:46px;align-items:start}.workform-question h2{font-size:clamp(2rem,4vw,3.6rem);margin:12px 0;max-width:17ch}.workform-facts{border-left:4px solid var(--accent);padding:2px 0 2px 20px}.workform-facts p{margin:0 0 18px;color:var(--muted)}.workform-facts strong{color:var(--ink)}.workform-steps ol{margin:0;padding-left:24px}.workform-steps li{padding:8px 0}.workform-source{margin-top:28px;color:var(--muted);font-size:.9rem}.workform-source a{text-underline-offset:4px}
+@media(max-width:900px){.toolbox-intro,.toolbox-category-head,.workform-detail-grid{grid-template-columns:1fr}.toolbox-grid{grid-template-columns:1fr}.toolbox-filters{grid-template-columns:1fr}.toolbox-category{scroll-margin-top:140px}}@media(max-width:620px){.toolbox-result-row{align-items:flex-start}.toolbox-question-links{display:grid;grid-template-columns:1fr}.toolbox-question-links button{text-align:left}}
 
 /* Keep the PDF-led mobile rhythm after the legacy migration breakpoints. */
 @media(max-width:900px){html{scroll-padding-top:126px}.app-showcase[id],section[id]{scroll-margin-top:128px}.hero-grid{grid-template-columns:1fr;gap:30px}.pillar+.pillar,.article-pillars>div+div{border-color:var(--line)}}
