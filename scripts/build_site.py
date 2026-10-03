@@ -322,14 +322,14 @@ def render_workforms_index(items: list[dict], didactic_models: dict) -> str:
 </section>
 
 <section class="toolbox-mode-panel didactic-model-mode" data-mode-panel="model" id="didactisch-model" hidden>
-<div class="toolbox-route-head"><div><div class="kicker">Bestaand model, eigen fasen</div><h2>Met welk model werk je?</h2></div><p>EAI verandert de namen, volgorde of bedoeling van het bronmodel niet. We laten alleen zien welke EAI-vragen en werkvormen binnen een fase relevant kunnen zijn.</p></div>
+<div class="toolbox-route-head"><div><div class="kicker">Bestaand model, eigen fasen</div><h2>Met welk model werk je?</h2></div><p>EAI verandert de namen, volgorde of bedoeling van het bronmodel niet. We laten alleen zien welke EAI-vragen en werkvormen binnen een fase of functie relevant kunnen zijn.</p></div>
 <div class="didactic-model-grid">{model_buttons}</div>
 <div class="didactic-model-panels">{model_panels_html}</div>
 <p class="didactic-model-boundary">{boundary_note}</p>
 </section>
 
 <section class="toolbox-results" id="resultaten" aria-live="polite">
-<div class="toolbox-results-head"><div><div class="kicker">Passende werkvormen</div><h2 id="toolbox-result-title">Kies hierboven een situatie of lesfase</h2><p id="toolbox-result-copy">Dan verschijnen hier eerst de werkvormen die daar inhoudelijk het best bij aansluiten.</p></div>
+<div class="toolbox-results-head"><div><div class="kicker">Passende werkvormen</div><h2 id="toolbox-result-title">Kies hierboven een situatie, fase of functie</h2><p id="toolbox-result-copy">Dan verschijnen hier eerst de werkvormen die daar inhoudelijk het best bij aansluiten.</p></div>
 <div class="toolbox-results-tools">
 <label class="toolbox-search"><span>Zoek</span><input id="toolbox-search" type="search" placeholder="Bijv. feedback, bron, vastlopen…" autocomplete="off"></label>
 <button type="button" id="toolbox-show-saved">Bewaard <span id="saved-count">0</span></button>
@@ -355,7 +355,7 @@ def render_workforms_index(items: list[dict], didactic_models: dict) -> str:
 
 <div class="toolbox-card-pool" id="toolbox-card-pool" hidden>{cards}</div>
 
-<aside class="toolbox-standard-note"><strong>Wat gebeurt hier precies?</strong><p>Een didactisch model organiseert het grotere onderwijsproces. EAI legt daar geen nieuwe route overheen. Binnen een fase kijken we alleen naar de kernhandeling, de rol van AI en welk bewijs daarna nog betekenis heeft. <a href="https://github.com/E-AI-MODEL/EAI-standard/tree/main/adapters" target="_blank" rel="noopener">Bekijk de bronbehoudende adapters ↗</a></p></aside>
+<aside class="toolbox-standard-note"><strong>Wat gebeurt hier precies?</strong><p>Een didactisch model organiseert het grotere onderwijsproces. EAI legt daar geen nieuwe route overheen. Binnen een fase of functie kijken we alleen naar de kernhandeling, de rol van AI en welk bewijs daarna nog betekenis heeft. Andere modellen kunnen later via dezelfde bronbehoudende adapterlaag worden toegevoegd. <a href="https://github.com/E-AI-MODEL/EAI-standard/tree/main/adapters" target="_blank" rel="noopener">Bekijk de bronbehoudende adapters ↗</a></p></aside>
 </div></section>
 
 <script>
@@ -448,7 +448,7 @@ def render_workforms_index(items: list[dict], didactic_models: dict) -> str:
     visible.forEach(card => resultGrid.appendChild(cloneCard(card)));
 
     if (!activeRoute && !search.value.trim() && !savedOnly) {{
-      resultTitle.textContent = 'Kies hierboven een situatie of lesfase';
+      resultTitle.textContent = 'Kies hierboven een situatie, fase of functie';
       resultCopy.textContent = 'Dan verschijnen hier eerst de werkvormen die daar inhoudelijk het best bij aansluiten.';
       resultGrid.innerHTML = '';
     }} else if (savedOnly) {{
