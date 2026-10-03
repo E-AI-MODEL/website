@@ -344,6 +344,17 @@ def render_workform_quickstart(item: dict) -> str:
         '</div></section>'
     )
 
+def workform_standard_relation(item: dict) -> str:
+    source = item.get("source", "")
+    if "EAI Standard" in source and "MS-" in source:
+        return "Direct gekoppeld aan één of meer kandidaat-microstructuren in de EAI Standard."
+    if "EAI Standard" in source:
+        return "Gekoppeld aan een EAI Standard-patroon voor evidence, remediatie of AI-interactie."
+    refs = item.get("action_layer", {}).get("standard", [])
+    if any(str(ref[0]).startswith(("MS-", "AIS-", "EV-", "REM-", "EAI-R")) for ref in refs):
+        return "Werkvorm uit de EAI-praktijklaag met inhoudelijke aansluiting op Standard-termen of -patronen."
+    return "Werkvorm uit de EAI-praktijklaag; de technische koppeling is nog geen directe Standard-microstructuur."
+
 def render_workform_underpinning(item: dict) -> str:
     mechanism = WORKFORM_MECHANISMS.get(item.get("category"), {})
     action = item.get("action_layer", {})
@@ -368,7 +379,8 @@ def render_workform_underpinning(item: dict) -> str:
         f'<p><a href="/onderbouwing/#{esc(mechanism.get("anchor", "eai-standard"))}">Lees de onderbouwing en beperkingen →</a></p>'
         '</div>'
         '<details class="standard-details"><summary>EAI Standard / technische laag</summary>'
-        '<p>De termen hieronder helpen om dezelfde handeling precies terug te vinden in de Standard. Ze maken de werkvorm niet automatisch wetenschappelijk gevalideerd.</p>'
+        f'<p><strong>Relatie tot de Standard:</strong> {esc(workform_standard_relation(item))}</p>'
+        '<p>De termen hieronder helpen om dezelfde handeling precies terug te vinden. Dit is geen kwaliteitsrangorde en maakt de werkvorm niet automatisch wetenschappelijk gevalideerd.</p>'
         f'<ul>{refs_html}</ul>'
         f'<p><strong>Bron van deze werkvorm:</strong> {source_html}</p>'
         '</details>'
