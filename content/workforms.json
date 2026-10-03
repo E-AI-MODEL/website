@@ -48,7 +48,22 @@
             "EAI core analysis",
             "context → goal → actor → process position"
           ]
-        ]
+        ],
+        "verbs": {
+          "teacher": [
+            "beschrijf",
+            "lokaliseer",
+            "benoem",
+            "vergelijk"
+          ],
+          "learner": [
+            "voer uit",
+            "licht toe"
+          ],
+          "ai": [
+            "beschrijf feitelijke AI-actie"
+          ]
+        }
       }
     },
     {
@@ -90,7 +105,21 @@
             "core_human_action",
             "contextafhankelijke kernhandeling"
           ]
-        ]
+        ],
+        "verbs": {
+          "teacher": [
+            "bepaal",
+            "benoem",
+            "toets"
+          ],
+          "learner": [
+            "voer uit",
+            "geef betekenis"
+          ],
+          "ai": [
+            "ondersteun rondom"
+          ]
+        }
       }
     },
     {
@@ -137,7 +166,24 @@
             "AIS-020",
             "configure_support_density"
           ]
-        ]
+        ],
+        "verbs": {
+          "teacher": [
+            "ontleed",
+            "wijs toe",
+            "vergelijk"
+          ],
+          "learner": [
+            "kies",
+            "formuleer",
+            "controleer"
+          ],
+          "ai": [
+            "structureer",
+            "genereer",
+            "controleer"
+          ]
+        }
       }
     },
     {
@@ -189,7 +235,22 @@
             "AIS-010",
             "recognise_model_limit"
           ]
-        ]
+        ],
+        "verbs": {
+          "teacher": [
+            "varieer",
+            "vergelijk",
+            "duid"
+          ],
+          "learner": [
+            "beoordeel",
+            "vergelijk"
+          ],
+          "ai": [
+            "genereer",
+            "reageer"
+          ]
+        }
       }
     },
     {
@@ -233,7 +294,23 @@
             "AIS-010",
             "recognise_model_limit"
           ]
-        ]
+        ],
+        "verbs": {
+          "teacher": [
+            "vergelijk",
+            "analyseer",
+            "duid"
+          ],
+          "learner": [
+            "beoordeel",
+            "controleer"
+          ],
+          "ai": [
+            "haal op",
+            "vat samen",
+            "formuleer"
+          ]
+        }
       }
     },
     {
@@ -289,7 +366,23 @@
             "MS-LRI-01",
             "attempt_before_answer_access"
           ]
-        ]
+        ],
+        "verbs": {
+          "teacher": [
+            "laat proberen",
+            "bewaar",
+            "vergelijk"
+          ],
+          "learner": [
+            "probeer",
+            "vergelijk",
+            "herzie"
+          ],
+          "ai": [
+            "geef feedback",
+            "toon alternatief"
+          ]
+        }
       }
     },
     {
@@ -331,7 +424,23 @@
             "AIS-013",
             "compare_ai_and_human_alternatives"
           ]
-        ]
+        ],
+        "verbs": {
+          "teacher": [
+            "selecteer",
+            "vraag door"
+          ],
+          "learner": [
+            "accepteer",
+            "pas aan",
+            "verwerp",
+            "verantwoord"
+          ],
+          "ai": [
+            "stel voor",
+            "genereer alternatief"
+          ]
+        }
       }
     },
     {
@@ -382,7 +491,22 @@
             "EV-14",
             "process_trace"
           ]
-        ]
+        ],
+        "verbs": {
+          "teacher": [
+            "selecteer",
+            "vraag terug",
+            "controleer"
+          ],
+          "learner": [
+            "reconstrueer",
+            "verklaar",
+            "verantwoord"
+          ],
+          "ai": [
+            "lever oorspronkelijke bijdrage"
+          ]
+        }
       }
     },
     {
@@ -431,7 +555,21 @@
             "MS-LSR-15",
             "reconstruct_regulatory_process"
           ]
-        ]
+        ],
+        "verbs": {
+          "teacher": [
+            "laat terugkijken",
+            "vraag door"
+          ],
+          "learner": [
+            "reconstrueer",
+            "vergelijk",
+            "reflecteer"
+          ],
+          "ai": [
+            "blijf onderwerp van reflectie"
+          ]
+        }
       }
     },
     {
@@ -501,7 +639,21 @@
             "EAI-R007",
             "evidence_must_match_claim"
           ]
-        ]
+        ],
+        "verbs": {
+          "teacher": [
+            "isoleer",
+            "verminder hulp",
+            "observeer"
+          ],
+          "learner": [
+            "voer opnieuw uit",
+            "toon zelfstandigheid"
+          ],
+          "ai": [
+            "trek ondersteuning terug"
+          ]
+        }
       }
     },
     {
@@ -551,7 +703,23 @@
             "REM-05",
             "explain_before_continue"
           ]
-        ]
+        ],
+        "verbs": {
+          "teacher": [
+            "pauzeer",
+            "vraag uitleg",
+            "hervat"
+          ],
+          "learner": [
+            "leg uit",
+            "herstel",
+            "ga verder"
+          ],
+          "ai": [
+            "wacht",
+            "geef daarna begrensde hulp"
+          ]
+        }
       }
     },
     {
@@ -603,7 +771,22 @@
             "EV-11",
             "fresh_item_same_operation"
           ]
-        ]
+        ],
+        "verbs": {
+          "teacher": [
+            "kies handeling",
+            "maak nieuw item",
+            "observeer"
+          ],
+          "learner": [
+            "herken",
+            "voer uit",
+            "licht toe"
+          ],
+          "ai": [
+            "genereer oefenitem"
+          ]
+        }
       }
     },
     {
@@ -653,7 +836,22 @@
             "REM-04",
             "compare_then_reconstruct"
           ]
-        ]
+        ],
+        "verbs": {
+          "teacher": [
+            "laat vergelijken",
+            "haal weg",
+            "laat herbouwen"
+          ],
+          "learner": [
+            "vergelijk",
+            "kies",
+            "reconstrueer"
+          ],
+          "ai": [
+            "genereer alternatief"
+          ]
+        }
       }
     },
     {
@@ -700,7 +898,22 @@
             "EAI-R008",
             "generated_performance_is_not_mastery"
           ]
-        ]
+        ],
+        "verbs": {
+          "teacher": [
+            "formuleer uitspraak",
+            "kies bewijs",
+            "interpreteer"
+          ],
+          "learner": [
+            "voer uit",
+            "herhaal",
+            "pas toe"
+          ],
+          "ai": [
+            "ondersteun waar passend"
+          ]
+        }
       }
     },
     {
@@ -769,7 +982,21 @@
             "EV-06",
             "delayed_reperformance"
           ]
-        ]
+        ],
+        "verbs": {
+          "teacher": [
+            "plan later",
+            "bied nieuw item",
+            "observeer"
+          ],
+          "learner": [
+            "haal op",
+            "voer opnieuw uit"
+          ],
+          "ai": [
+            "genereer nieuw item"
+          ]
+        }
       }
     },
     {
@@ -838,7 +1065,22 @@
             "EV-07",
             "novel_context_performance"
           ]
-        ]
+        ],
+        "verbs": {
+          "teacher": [
+            "verander context",
+            "bewaar handeling",
+            "observeer"
+          ],
+          "learner": [
+            "herken",
+            "pas aan",
+            "voer uit"
+          ],
+          "ai": [
+            "genereer nieuwe context"
+          ]
+        }
       }
     },
     {
@@ -902,7 +1144,22 @@
             "MS-LRI-12",
             "distinguish_confidence_from_evidence"
           ]
-        ]
+        ],
+        "verbs": {
+          "teacher": [
+            "vraag inschatting",
+            "laat uitvoeren",
+            "vergelijk"
+          ],
+          "learner": [
+            "schat in",
+            "voer uit",
+            "stel bij"
+          ],
+          "ai": [
+            "genereer verse taak"
+          ]
+        }
       }
     },
     {
@@ -946,7 +1203,24 @@
             "MS-TDJ-05",
             "locate_first_breakdown"
           ]
-        ]
+        ],
+        "verbs": {
+          "teacher": [
+            "laat lokaliseren",
+            "vraag waarom",
+            "laat herstellen"
+          ],
+          "learner": [
+            "detecteer",
+            "lokaliseer",
+            "verklaar",
+            "corrigeer"
+          ],
+          "ai": [
+            "signaleer",
+            "controleer"
+          ]
+        }
       }
     },
     {
@@ -1017,7 +1291,24 @@
             "AIS-021",
             "use_ai_feedback_productively"
           ]
-        ]
+        ],
+        "verbs": {
+          "teacher": [
+            "geef feedback",
+            "begrens",
+            "laat opnieuw doen"
+          ],
+          "learner": [
+            "interpreteer",
+            "kies",
+            "herzie",
+            "voer opnieuw uit"
+          ],
+          "ai": [
+            "geef feedback",
+            "controleer"
+          ]
+        }
       }
     },
     {
@@ -1070,7 +1361,23 @@
             "EV-13",
             "source_based_verification"
           ]
-        ]
+        ],
+        "verbs": {
+          "teacher": [
+            "selecteer claim",
+            "vraag controle"
+          ],
+          "learner": [
+            "zoek",
+            "vergelijk",
+            "verifieer",
+            "stel bij"
+          ],
+          "ai": [
+            "haal informatie op",
+            "noem bron"
+          ]
+        }
       }
     },
     {
@@ -1144,7 +1451,23 @@
             "MS-LSR-09",
             "formulate_targeted_help_request"
           ]
-        ]
+        ],
+        "verbs": {
+          "teacher": [
+            "laat lokaliseren",
+            "laat hulp kiezen",
+            "doseer"
+          ],
+          "learner": [
+            "lokaliseer",
+            "vraag gericht",
+            "hervat"
+          ],
+          "ai": [
+            "stel vraag",
+            "geef hint"
+          ]
+        }
       }
     },
     {
@@ -1197,7 +1520,23 @@
             "AIS-014",
             "resist_automation_bias"
           ]
-        ]
+        ],
+        "verbs": {
+          "teacher": [
+            "laat beoordelen",
+            "vraag reden"
+          ],
+          "learner": [
+            "accepteer",
+            "pas aan",
+            "verwerp",
+            "motiveer"
+          ],
+          "ai": [
+            "stel voor",
+            "geef alternatief"
+          ]
+        }
       }
     },
     {
@@ -1251,7 +1590,23 @@
             "REM-11",
             "return_regulatory_control"
           ]
-        ]
+        ],
+        "verbs": {
+          "teacher": [
+            "bouw stopmoment in",
+            "geef regie terug"
+          ],
+          "learner": [
+            "plan",
+            "kies",
+            "monitor",
+            "hervat"
+          ],
+          "ai": [
+            "ondersteun",
+            "wacht"
+          ]
+        }
       }
     },
     {
@@ -1302,7 +1657,21 @@
             "AIS-018",
             "evaluate_ai_impact_on_task"
           ]
-        ]
+        ],
+        "verbs": {
+          "teacher": [
+            "ontleed",
+            "bepaal kernhandeling",
+            "herontwerp"
+          ],
+          "learner": [
+            "voer relevante handeling uit"
+          ],
+          "ai": [
+            "genereer variant",
+            "ondersteun"
+          ]
+        }
       }
     },
     {
@@ -1379,7 +1748,24 @@
             "AIS-008",
             "choose_handback_point"
           ]
-        ]
+        ],
+        "verbs": {
+          "teacher": [
+            "definieer rol",
+            "begrens",
+            "plan terugkeer"
+          ],
+          "learner": [
+            "neem over",
+            "voer opnieuw uit"
+          ],
+          "ai": [
+            "vraag",
+            "hint",
+            "modelleer",
+            "geef feedback"
+          ]
+        }
       }
     },
     {
@@ -1436,7 +1822,20 @@
             "EAI-R007",
             "evidence_must_match_claim"
           ]
-        ]
+        ],
+        "verbs": {
+          "teacher": [
+            "bepaal uitspraak",
+            "analyseer bijdrage",
+            "ontwerp bewijs"
+          ],
+          "learner": [
+            "voer relevante handeling uit"
+          ],
+          "ai": [
+            "ondersteun begrensd"
+          ]
+        }
       }
     },
     {
@@ -1504,7 +1903,20 @@
             "MS-LSR-02",
             "set_or_restate_learning_goal"
           ]
-        ]
+        ],
+        "verbs": {
+          "teacher": [
+            "vraag door",
+            "verhelder"
+          ],
+          "learner": [
+            "onderscheid",
+            "formuleer leerdoel"
+          ],
+          "ai": [
+            "stel verhelderende vraag"
+          ]
+        }
       }
     },
     {
@@ -1553,7 +1965,21 @@
             "MS-LSR-03",
             "construct_action_plan"
           ]
-        ]
+        ],
+        "verbs": {
+          "teacher": [
+            "laat eerst plannen",
+            "vergelijk daarna"
+          ],
+          "learner": [
+            "plan",
+            "orden",
+            "kies controlepunt"
+          ],
+          "ai": [
+            "geef alternatief plan"
+          ]
+        }
       }
     },
     {
@@ -1628,7 +2054,22 @@
             "MS-LSR-06",
             "monitor_progress_against_goal"
           ]
-        ]
+        ],
+        "verbs": {
+          "teacher": [
+            "bouw controlepunt in",
+            "laat eerst zelf beoordelen"
+          ],
+          "learner": [
+            "kies criterium",
+            "monitor",
+            "vergelijk"
+          ],
+          "ai": [
+            "controleer",
+            "geef feedback"
+          ]
+        }
       }
     },
     {
@@ -1678,7 +2119,21 @@
             "MS-LSR-07",
             "detect_and_localise_impasse"
           ]
-        ]
+        ],
+        "verbs": {
+          "teacher": [
+            "vraag door",
+            "lokaliseer"
+          ],
+          "learner": [
+            "herken",
+            "lokaliseer",
+            "benoem"
+          ],
+          "ai": [
+            "stel verhelderende vraag"
+          ]
+        }
       }
     },
     {
@@ -1728,7 +2183,21 @@
             "MS-LSR-12",
             "change_strategy_from_evidence"
           ]
-        ]
+        ],
+        "verbs": {
+          "teacher": [
+            "laat bewijs bekijken",
+            "vraag keuze"
+          ],
+          "learner": [
+            "evalueer",
+            "kies",
+            "verander strategie"
+          ],
+          "ai": [
+            "stel alternatieven voor"
+          ]
+        }
       }
     },
     {
@@ -1779,7 +2248,21 @@
             "MS-LSR-15",
             "reconstruct_regulatory_process"
           ]
-        ]
+        ],
+        "verbs": {
+          "teacher": [
+            "selecteer momenten",
+            "vraag terug"
+          ],
+          "learner": [
+            "reconstrueer",
+            "verklaar",
+            "pas aan"
+          ],
+          "ai": [
+            "lever procesinformatie"
+          ]
+        }
       }
     },
     {
@@ -1845,7 +2328,22 @@
             "MS-ARG-06",
             "identify_implicit_assumption"
           ]
-        ]
+        ],
+        "verbs": {
+          "teacher": [
+            "vraag wat ertussen zit",
+            "laat toetsen"
+          ],
+          "learner": [
+            "identificeer",
+            "toets",
+            "herzie"
+          ],
+          "ai": [
+            "stel vraag",
+            "genereer alternatief"
+          ]
+        }
       }
     },
     {
@@ -1908,7 +2406,22 @@
             "MS-ARG-13",
             "evaluate_source_for_argument"
           ]
-        ]
+        ],
+        "verbs": {
+          "teacher": [
+            "laat koppelen",
+            "vraag waarom"
+          ],
+          "learner": [
+            "beoordeel",
+            "vergelijk",
+            "onderbouw"
+          ],
+          "ai": [
+            "haal bronnen op",
+            "vat samen"
+          ]
+        }
       }
     },
     {
@@ -1974,7 +2487,21 @@
             "MS-ARG-14",
             "connect_evidence_to_standpoint"
           ]
-        ]
+        ],
+        "verbs": {
+          "teacher": [
+            "vraag verbinding",
+            "begrens"
+          ],
+          "learner": [
+            "verbind",
+            "redeneer",
+            "concludeer"
+          ],
+          "ai": [
+            "geef feedback"
+          ]
+        }
       }
     },
     {
@@ -2024,7 +2551,21 @@
             "MS-ARG-15",
             "recognise_counterargument"
           ]
-        ]
+        ],
+        "verbs": {
+          "teacher": [
+            "vraag tegenargument",
+            "laat wegen"
+          ],
+          "learner": [
+            "herken",
+            "formuleer",
+            "weeg"
+          ],
+          "ai": [
+            "simuleer tegenspraak"
+          ]
+        }
       }
     },
     {
@@ -2073,7 +2614,21 @@
             "MS-ARG-16",
             "weigh_multiple_perspectives"
           ]
-        ]
+        ],
+        "verbs": {
+          "teacher": [
+            "bied perspectieven",
+            "vraag weging"
+          ],
+          "learner": [
+            "vergelijk",
+            "weeg",
+            "verantwoord"
+          ],
+          "ai": [
+            "genereer perspectieven"
+          ]
+        }
       }
     },
     {
@@ -2124,7 +2679,22 @@
             "MS-ARG-17",
             "formulate_rebuttal"
           ]
-        ]
+        ],
+        "verbs": {
+          "teacher": [
+            "laat voorbeeld verdwijnen",
+            "bied nieuwe situatie"
+          ],
+          "learner": [
+            "weerleg",
+            "reconstrueer",
+            "verantwoord"
+          ],
+          "ai": [
+            "lever tegenargument",
+            "modelleer eerder"
+          ]
+        }
       }
     },
     {
@@ -2173,7 +2743,22 @@
             "MS-ARG-22",
             "draw_conclusion"
           ]
-        ]
+        ],
+        "verbs": {
+          "teacher": [
+            "vraag begrenzing",
+            "laat formuleren"
+          ],
+          "learner": [
+            "weeg bewijs",
+            "concludeer",
+            "begrens"
+          ],
+          "ai": [
+            "vergelijk formuleringen",
+            "signaleer overclaim"
+          ]
+        }
       }
     },
     {
@@ -2240,7 +2825,21 @@
             "MS-TDJ-04",
             "separate_observation_from_inference"
           ]
-        ]
+        ],
+        "verbs": {
+          "teacher": [
+            "observeer",
+            "scheid",
+            "interpreteer"
+          ],
+          "learner": [
+            "geef directe informatie"
+          ],
+          "ai": [
+            "signaleer",
+            "classificeer"
+          ]
+        }
       }
     },
     {
@@ -2289,7 +2888,21 @@
             "MS-TDJ-02",
             "elicit_discriminating_response"
           ]
-        ]
+        ],
+        "verbs": {
+          "teacher": [
+            "formuleer verklaringen",
+            "lok reactie uit",
+            "vergelijk"
+          ],
+          "learner": [
+            "reageer",
+            "laat nieuw bewijs zien"
+          ],
+          "ai": [
+            "genereer mogelijke vraag"
+          ]
+        }
       }
     },
     {
@@ -2338,7 +2951,22 @@
             "MS-TDJ-05",
             "locate_first_breakdown"
           ]
-        ]
+        ],
+        "verbs": {
+          "teacher": [
+            "traceer",
+            "lokaliseer",
+            "kies hulp"
+          ],
+          "learner": [
+            "voer uit",
+            "licht toe"
+          ],
+          "ai": [
+            "signaleer",
+            "controleer"
+          ]
+        }
       }
     },
     {
@@ -2391,7 +3019,21 @@
             "MS-TDJ-08",
             "test_explanation_against_new_evidence"
           ]
-        ]
+        ],
+        "verbs": {
+          "teacher": [
+            "genereer verklaringen",
+            "toets",
+            "stel bij"
+          ],
+          "learner": [
+            "reageer",
+            "lever nieuw bewijs"
+          ],
+          "ai": [
+            "genereer alternatieven"
+          ]
+        }
       }
     },
     {
@@ -2439,7 +3081,21 @@
             "MS-TDJ-09",
             "bound_the_interpretation"
           ]
-        ]
+        ],
+        "verbs": {
+          "teacher": [
+            "observeer",
+            "begrens interpretatie",
+            "noteer onbekend"
+          ],
+          "learner": [
+            "lever werk of reactie"
+          ],
+          "ai": [
+            "vat samen",
+            "stel interpretatie voor"
+          ]
+        }
       }
     },
     {
@@ -2487,7 +3143,20 @@
             "MS-TDJ-10",
             "preserve_uncertainty"
           ]
-        ]
+        ],
+        "verbs": {
+          "teacher": [
+            "benoem onbekend",
+            "weeg relevantie",
+            "beslis"
+          ],
+          "learner": [
+            "vul perspectief aan"
+          ],
+          "ai": [
+            "inventariseer alternatieven"
+          ]
+        }
       }
     },
     {
@@ -2563,7 +3232,22 @@
             "MS-TDJ-13",
             "evaluate_response_effect"
           ]
-        ]
+        ],
+        "verbs": {
+          "teacher": [
+            "interpreteer",
+            "vergelijk opties",
+            "kies respons",
+            "evalueer"
+          ],
+          "learner": [
+            "reageer",
+            "laat effect zien"
+          ],
+          "ai": [
+            "stel vervolgstap voor"
+          ]
+        }
       }
     },
     {
@@ -2616,7 +3300,21 @@
             "AIS-014",
             "resist_automation_bias"
           ]
-        ]
+        ],
+        "verbs": {
+          "teacher": [
+            "verberg advies",
+            "interpreteer zelf",
+            "beslis",
+            "vergelijk"
+          ],
+          "learner": [
+            "lever oorspronkelijke informatie"
+          ],
+          "ai": [
+            "geef advies ter vergelijking"
+          ]
+        }
       }
     },
     {
@@ -2673,7 +3371,22 @@
             "MS-TPJ-09",
             "preserve_learner_voice_in_decision"
           ]
-        ]
+        ],
+        "verbs": {
+          "teacher": [
+            "luister",
+            "verhelder",
+            "controleer interpretatie"
+          ],
+          "learner": [
+            "vertel",
+            "corrigeer",
+            "vul aan"
+          ],
+          "ai": [
+            "vat achteraf samen"
+          ]
+        }
       }
     },
     {
@@ -2722,7 +3435,21 @@
             "MS-TPJ-10",
             "select_proportionate_follow_up"
           ]
-        ]
+        ],
+        "verbs": {
+          "teacher": [
+            "weeg",
+            "kies proportioneel",
+            "volg op"
+          ],
+          "learner": [
+            "reageer",
+            "laat effect zien"
+          ],
+          "ai": [
+            "stel opties voor"
+          ]
+        }
       }
     },
     {
@@ -2789,7 +3516,23 @@
             "MS-TSF-01",
             "identify_target_learner_action"
           ]
-        ]
+        ],
+        "verbs": {
+          "teacher": [
+            "identificeer doelhandeling",
+            "kies hulp",
+            "plan terugkeer"
+          ],
+          "learner": [
+            "voer doelhandeling uit"
+          ],
+          "ai": [
+            "vraag",
+            "hint",
+            "modelleer",
+            "geef feedback"
+          ]
+        }
       }
     },
     {
@@ -2855,7 +3598,22 @@
             "MS-TSF-03",
             "select_least_intrusive_support"
           ]
-        ]
+        ],
+        "verbs": {
+          "teacher": [
+            "lokaliseer",
+            "kies kleinste hulp",
+            "observeer"
+          ],
+          "learner": [
+            "hervat",
+            "voer zelf uit"
+          ],
+          "ai": [
+            "stel vraag",
+            "geef hint"
+          ]
+        }
       }
     },
     {
@@ -2902,7 +3660,22 @@
             "MS-TSF-04",
             "choose_question_that_elicits_action"
           ]
-        ]
+        ],
+        "verbs": {
+          "teacher": [
+            "identificeer ontbrekende stap",
+            "vraag uitlokkend",
+            "observeer"
+          ],
+          "learner": [
+            "lever relatie",
+            "kies",
+            "redeneer"
+          ],
+          "ai": [
+            "formuleer vraag"
+          ]
+        }
       }
     },
     {
@@ -2952,7 +3725,23 @@
             "MS-TSF-05",
             "provide_corrective_information_without_replacing_revision"
           ]
-        ]
+        ],
+        "verbs": {
+          "teacher": [
+            "signaleer",
+            "geef criterium",
+            "geef terug"
+          ],
+          "learner": [
+            "herzie",
+            "corrigeer",
+            "licht toe"
+          ],
+          "ai": [
+            "controleer",
+            "geef feedback"
+          ]
+        }
       }
     },
     {
@@ -3023,7 +3812,22 @@
             "MS-TSF-06",
             "model_when_needed"
           ]
-        ]
+        ],
+        "verbs": {
+          "teacher": [
+            "modelleer",
+            "haal model weg",
+            "laat opnieuw doen"
+          ],
+          "learner": [
+            "observeer",
+            "reconstrueer",
+            "voer uit"
+          ],
+          "ai": [
+            "modelleer voorbeeld"
+          ]
+        }
       }
     },
     {
@@ -3089,7 +3893,20 @@
             "MS-TSF-08",
             "reduce_support_contingently"
           ]
-        ]
+        ],
+        "verbs": {
+          "teacher": [
+            "observeer",
+            "verminder steun",
+            "controleer"
+          ],
+          "learner": [
+            "voer met minder steun uit"
+          ],
+          "ai": [
+            "pas ondersteuning aan"
+          ]
+        }
       }
     },
     {
@@ -3163,7 +3980,23 @@
             "MS-TSF-11",
             "verify_reperformance_with_less_support"
           ]
-        ]
+        ],
+        "verbs": {
+          "teacher": [
+            "markeer overname",
+            "geef terug",
+            "controleer"
+          ],
+          "learner": [
+            "neem over",
+            "voer opnieuw uit"
+          ],
+          "ai": [
+            "modelleer",
+            "hint",
+            "voer tijdelijk deel uit"
+          ]
+        }
       }
     },
     {
@@ -3228,7 +4061,24 @@
             "MS-TSF-12",
             "decide_between_more_practice_and_reinstruction"
           ]
-        ]
+        ],
+        "verbs": {
+          "teacher": [
+            "diagnosticeer",
+            "kies oefenen of uitleg",
+            "controleer"
+          ],
+          "learner": [
+            "oefen",
+            "begrijp",
+            "voer opnieuw uit"
+          ],
+          "ai": [
+            "genereer oefening",
+            "modelleer",
+            "leg uit"
+          ]
+        }
       }
     }
   ]
