@@ -47,31 +47,31 @@ PUBLICATION_INTROS = {
 
 
 WORKFORM_CATEGORIES = [
-    ("analyse", "Analyseren wat AI verandert", "Breng eerst in kaart wat de taak vraagt en wat er verandert zodra AI meedoet."),
-    ("zichtbaar", "Menselijk handelen zichtbaar maken", "Maak keuzes, eerste pogingen, revisies en afwegingen zichtbaar zonder elk klikje te hoeven volgen."),
-    ("zelfstandigheid", "Zelfstandigheid terugbrengen", "Geef een relevante handeling na AI-hulp doelgericht terug aan de leerling en verzamel nieuw menselijk bewijs."),
-    ("bewijs", "Leren aantonen", "Kies bewijs dat past bij de claim: huidige prestatie, zelfstandigheid, retentie of transfer."),
-    ("herstellen", "Feedback, controle en herstellen", "Gebruik AI-output als aanleiding voor menselijk controleren, corrigeren en opnieuw uitvoeren."),
-    ("zelfregulatie", "Zelfregulatie", "Laat de leerling zelf bepalen waar hij vastloopt, welke hulp nodig is en wanneer hij de regie weer overneemt."),
-    ("argumentatie", "Argumenteren & bronnen", "Maak analyse, bronkeuze, tegenargumenten en conclusies zichtbaar zonder het inhoudelijke oordeel aan AI uit te besteden."),
-    ("professioneel-oordeel", "Professioneel oordeel", "Scheid leerlingbewijs, interpretatie, onzekerheid en professionele beslissing voordat AI de conclusie inkleurt."),
-    ("scaffolding", "Scaffolding & feedback", "Kies, doseer en bouw ondersteuning af zodat de relevante handeling terugkeert naar de leerling."),
-    ("ontwerpen", "Ontwerpen als docent of team", "Herontwerp taken, AI-rollen en beoordeling vanuit het proces in plaats van vanuit de tool."),
+    ("analyse", "Eerst begrijpen wat er verandert", "Pak één concrete taak. Wat moet de leerling leren, waar zit hij in dat leren en wat doet AI precies op die plek?"),
+    ("zichtbaar", "Zichtbaar maken wat de leerling zelf deed", "Maak eerste pogingen, keuzes en veranderingen zichtbaar. Niet om elk klikje te volgen, maar om te zien waar de leerling zelf betekenis gaf."),
+    ("zelfstandigheid", "Kijken wat de leerling zelf kan", "Geef de relevante handeling na hulp weer terug aan de leerling en kijk wat er dan nog zelfstandig beschikbaar is."),
+    ("bewijs", "Niet alleen naar het eindproduct kijken", "Een goed product is nog geen bewijs van leren. Kijk ook wat de leerling zelfstandig, later en in een andere situatie kan."),
+    ("herstellen", "Feedback gebruiken om opnieuw te doen", "Laat feedback leiden tot een nieuwe handeling van de leerling. De verbetering zelf blijft dus niet bij AI liggen."),
+    ("zelfregulatie", "Zelf sturen en controleren", "Laat de leerling zelf bepalen waar hij vastloopt, wat hij gaat proberen en waaraan hij ziet of dat werkt."),
+    ("argumentatie", "Argumenteren en bronnen wegen", "Houd bronkeuze, afweging, tegenargument en conclusie zichtbaar bij de leerling waar juist die stappen geleerd moeten worden."),
+    ("professioneel-oordeel", "Professioneel oordeel", "Houd uit elkaar wat je werkelijk ziet, wat je daaruit afleidt en welk besluit je vervolgens neemt."),
+    ("scaffolding", "Hulp geven zonder de stap over te nemen", "Geef precies genoeg hulp om de leerling verder te laten komen en bouw die hulp weer af zodra dat kan."),
+    ("ontwerpen", "Een taak of toets opnieuw ontwerpen", "Begin bij het leren. Bepaal daarna welke rol AI krijgt en waar de leerling iets opnieuw zelf moet laten zien."),
 ]
 WORKFORM_AUDIENCE_LABELS = {"learner": "Leerling", "teacher": "Docent", "team": "Team"}
 WORKFORM_EVIDENCE_LABELS = {
     "design": "Ontwerp",
     "process": "Procesbewijs",
     "independent": "Zelfstandig bewijs",
-    "retention": "Retentie",
-    "transfer": "Transfer",
+    "retention": "Later nog kunnen",
+    "transfer": "In een andere situatie",
 }
 WORKFORM_ROUTE_LABELS = {
-    "proces": "Proces / doel",
+    "proces": "Proces",
     "fase": "Fase",
     "kernhandeling": "Kernhandeling",
-    "taakdichtheid": "Taakdichtheid",
-    "output": "Output",
+    "taakdichtheid": "Wat doet AI?",
+    "output": "Wat kun je nu zeggen?",
 }
 MANUAL_WORKFORMS = {
     "kernhandeling-check",
@@ -102,11 +102,14 @@ def render_workforms_index(items: list[dict]) -> str:
         evidence = " ".join(item.get("evidence", []))
         audience_labels = " · ".join(WORKFORM_AUDIENCE_LABELS.get(value, value) for value in item.get("audience", []))
         evidence_labels = " · ".join(WORKFORM_EVIDENCE_LABELS.get(value, value) for value in item.get("evidence", []))
+        public_title = item.get("public_title", item["title"])
+        technical = item["title"] if public_title != item["title"] else ""
+        technical_html = f'<div class="workform-technical-name">{esc(technical)}</div>' if technical else ""
         card = (
             f'<article class="toolbox-card" data-workform-card data-category="{esc(item["category"])}" '
             f'data-audience="{esc(audience)}" data-evidence="{esc(evidence)}">'
             f'<div class="toolbox-card-meta"><span>{esc(audience_labels)}</span><span>{esc(evidence_labels)}</span></div>'
-            f'<h3>{esc(item["title"])}</h3><p>{esc(item["summary"])}</p>'
+            f'<h3>{esc(public_title)}</h3>{technical_html}<p>{esc(item["summary"])}</p>'
             f'{render_route(item.get("route", []))}'
             f'<a class="toolbox-link" href="/werkvormen/{esc(item["slug"])}/">Open werkvorm →</a></article>'
         )
@@ -121,9 +124,9 @@ def render_workforms_index(items: list[dict]) -> str:
         )
 
     return f'''<main>
-<section class="page-hero"><div class="wrap"><div class="eyebrow">Werkvormen</div><h1>Van principe naar leshandeling.</h1><p class="lede">Elke werkvorm begint bij een concrete situatie: wat moet de leerling of professional hier zelf doen, welke hulp is passend en welk bewijs heb je daarna werkelijk in handen?</p></div></section>
+<section class="page-hero"><div class="wrap"><div class="eyebrow">Werkvormen</div><h1>Begin bij je les. Niet bij de naam van een werkvorm.</h1><p class="lede">Wat moet de leerling uiteindelijk kennen of kunnen? Waar bevindt hij zich nu in dat leren? En aan welke stap moet hij hier zelf inhoudelijke betekenis geven? Pas als dat scherp is, wordt de vraag naar AI interessant.</p></div></section>
 <section class="section toolbox-start"><div class="wrap">
-<div class="toolbox-example-intro"><div><div class="kicker">Zo werkt de toolbox</div><h2>Eerst de situatie. Dan de werkvorm.</h2><p>Voorbeeld: een leerling schrijft met AI een betoog. De vraag is niet alleen of AI gebruikt mag worden. De vraag is welke handeling de leerling zelf moet uitvoeren om te kunnen zeggen dat hij kan argumenteren. Vanuit die vraag kies je een werkvorm.</p></div><div class="toolbox-example-path"><span>Situatie</span><span>Kernhandeling</span><span>AI-rol</span><span>Werkvorm</span><span>Bewijs</span></div></div>
+<div class="toolbox-example-intro"><div><div class="kicker">Eerst de onderwijs­vraag</div><h2>Wat moet de leerling hier zelf doen?</h2><p>Neem een leerling die met AI een betoog schrijft. Dat AI kan helpen is duidelijk. De onderwijs­vraag is preciezer: moet de leerling hier argumenten verzamelen, ze wegen, een tegenargument onderzoeken of zijn conclusie formuleren? Welke van die stappen is in deze fase de kernhandeling? Daar zoek je vervolgens een werkvorm bij.</p></div><div class="toolbox-example-path"><span>Proces</span><span>Fase</span><span>Kernhandeling</span><span>Wat doet AI?</span><span>Wat zie je daarna?</span></div></div>
 <div class="toolbox-intro"><div><div class="kicker">Zoek op je vraag</div><h2>Wat wil je hier kunnen zien of besluiten?</h2></div><p>Filter op doel, doelgroep en bewijsfunctie. Op iedere detailpagina staat een concreet klasvoorbeeld naast de werkroute.</p></div>
 <nav class="toolbox-questions" aria-label="Veelvoorkomende startvragen">
 <a href="#zelfstandigheid"><span>Ik wil weten</span><strong>wat de leerling zonder AI zelf kan.</strong></a>
@@ -143,7 +146,7 @@ def render_workforms_index(items: list[dict]) -> str:
 <p class="toolbox-count"><strong id="toolbox-count">{len(items)}</strong> werkvormen zichtbaar</p>
 <div class="toolbox-groups">{"".join(sections)}</div>
 <p class="toolbox-empty" id="toolbox-empty" hidden>Geen werkvorm combineert deze filters. Kies een bredere combinatie.</p>
-<aside class="toolbox-standard-note"><strong>Over de Standard-laag</strong><p>Een deel van de werkvormen is afgeleid van de EAI Standard 0.4-candidate. Daaronder vallen nu ook microstructuren voor professioneel oordeel en scaffolding. De Standard biedt een kandidaat-taxonomie en ontwerpgrammatica, geen gevalideerde meettest of geautomatiseerde beslisregel. Gebruik de werkvormen om menselijk handelen, ondersteuning, bewijs en professionele afweging preciezer te ontwerpen en bespreken.</p></aside>
+<aside class="toolbox-standard-note"><strong>Waarom sommige werkvormen ook een Engelse naam hebben</strong><p>Achter een deel van deze werkvormen ligt een preciezere EAI Standard-term. Die naam staat kleiner bij de werkvorm voor wie de technische of onderzoekslaag nodig heeft. Voor gebruik in school beginnen we hier gewoon bij de onderwijs­vraag.</p></aside>
 </div></section>
 <script>
 (() => {{
@@ -225,6 +228,9 @@ def render_catalog_workform(item: dict) -> str:
     audience = " · ".join(WORKFORM_AUDIENCE_LABELS.get(value, value) for value in item.get("audience", []))
     evidence = " · ".join(WORKFORM_EVIDENCE_LABELS.get(value, value) for value in item.get("evidence", []))
     source = esc(item.get("source", "EAI"))
+    public_title = item.get("public_title", item["title"])
+    technical = item["title"] if public_title != item["title"] else ""
+    technical_html = f'<p class="workform-technical-name detail">EAI-term: {esc(technical)}</p>' if technical else ""
     visual_html = render_workform_visual(item.get("visual"))
     example_html = render_workform_example(item)
     if item.get("source_url"):
@@ -232,8 +238,8 @@ def render_catalog_workform(item: dict) -> str:
     else:
         source_html = source
     return f'''<main>
-<section class="page-hero"><div class="wrap"><div class="eyebrow">Werkvorm · {esc(audience)}</div><h1>{esc(item["title"])}</h1><p class="lede">{esc(item["lede"])}</p>{render_route(item.get("route", []))}</div></section>
-<section class="section"><div class="wrap"><div class="workform-detail-grid"><div class="workform-question"><div class="kicker">Kernvraag</div><h2>{esc(item["question"])}</h2></div><div class="workform-facts"><p><strong>Voor wie</strong><br>{esc(audience)}</p><p><strong>Bewijsfunctie</strong><br>{esc(evidence)}</p></div></div>{visual_html}</div></section>
+<section class="page-hero"><div class="wrap"><div class="eyebrow">Werkvorm · {esc(audience)}</div><h1>{esc(public_title)}</h1>{technical_html}<p class="lede">{esc(item["lede"])}</p>{render_route(item.get("route", []))}</div></section>
+<section class="section"><div class="wrap"><div class="workform-detail-grid"><div class="workform-question"><div class="kicker">De vraag eronder</div><h2>{esc(item["question"])}</h2></div><div class="workform-facts"><p><strong>Voor wie</strong><br>{esc(audience)}</p><p><strong>Bewijsfunctie</strong><br>{esc(evidence)}</p></div></div>{visual_html}</div></section>
 {example_html}
 <section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Zo werkt het</div><div><h2>Doe dit in deze volgorde.</h2><p>De stappen vormen een werkroute. Pas de formulering aan je vak en taak aan, maar houd de menselijke handeling en het bewijs expliciet.</p></div></div><div class="panel workform-steps"><ol>{steps}</ol></div></div></section>
 <section class="section"><div class="wrap"><div class="split"><article class="panel"><div class="kicker">Opbrengst</div><h3>Waar kijk je daarna naar?</h3><p>{esc(item["result"])}</p></article><article class="panel"><div class="kicker">Let op</div><h3>Wat bewijst dit nog niet?</h3><p>{esc(item["caution"])}</p></article></div><p class="workform-source"><strong>Bronlaag:</strong> {source_html}</p><p><a href="/werkvormen/">← Terug naar de EAI Toolbox</a></p></div></section>
@@ -337,6 +343,7 @@ h1{font-size:clamp(3.05rem,5.8vw,5.25rem);max-width:13ch;letter-spacing:-.042em}
 @media(max-width:620px){body{font-size:16px}.hero-grid{padding:54px 0 48px}.section{padding:52px 0}.page-hero{padding:54px 0 34px}h1{font-size:clamp(2.65rem,13vw,4rem)}.article-body{font-size:1rem;padding-top:50px}.article-body h2{margin-top:44px}.article-route{gap:12px;font-size:.75rem}.pdf-figure{overflow-x:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-inline:contain}.pdf-figure svg{min-width:680px;max-width:none}.pillar-visual{max-width:100%}}
 
 /* v3 cohesion and responsive system */
+.workform-technical-name{font:700 .68rem/1.25 Inter,ui-sans-serif,sans-serif;letter-spacing:.04em;color:#7b8796;margin:-2px 0 10px}.workform-technical-name.detail{margin:8px 0 12px;text-transform:none}
 
 .welcome{border-bottom:1px solid var(--line);background:linear-gradient(180deg,#fff 0%,#fbfaf7 100%)}
 .welcome-grid{display:grid;grid-template-columns:minmax(0,1.06fr) minmax(360px,.94fr);gap:58px;padding-top:76px;padding-bottom:44px;align-items:end}
