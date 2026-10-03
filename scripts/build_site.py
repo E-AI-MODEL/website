@@ -89,6 +89,52 @@ WORKFORM_INTENTS = [
     ("make-visible", "Keuzes en proces zichtbaar maken", "Ik wil zien wat de leerling met een AI-bijdrage deed en waarom."),
 ]
 
+
+PRIMARY_WORKFORM_ROUTES = [
+    {
+        "key": "diagnose",
+        "title": "Ik wil zien waar het misgaat",
+        "description": "Eerst begrijpen waar een leerling vastloopt voordat je hulp kiest.",
+        "intents": ["diagnose"],
+        "featured": ["find-my-impasse", "first-breakdown", "discriminating-probe", "foutanalyse"],
+    },
+    {
+        "key": "support",
+        "title": "Ik wil helpen zonder het over te nemen",
+        "description": "Geef precies genoeg steun zodat de leerling zelf verder kan.",
+        "intents": ["support", "feedback"],
+        "featured": ["least-intrusive-support", "eliciting-question", "feedback-without-rewrite", "model-then-reperform"],
+    },
+    {
+        "key": "independent",
+        "title": "Ik wil weten wat de leerling zelf kan",
+        "description": "Geef de handeling terug en kijk wat zonder dezelfde inhoudelijke hulp lukt.",
+        "intents": ["independent", "return", "retention-transfer"],
+        "featured": ["controlled-detachment", "hand-back-the-action", "fresh-item-same-operation", "delayed-reperformance"],
+    },
+    {
+        "key": "visible",
+        "title": "Ik wil keuzes en AI-gebruik zichtbaar maken",
+        "description": "Zie wat de leerling zelf koos, veranderde, controleerde of verwierp.",
+        "intents": ["make-visible", "selfreg", "argument"],
+        "featured": ["first-attempt", "justification-mapping", "trace-back-prompting", "accept-adapt-reject"],
+    },
+    {
+        "key": "redesign",
+        "title": "Ik wil een taak of toets anders ontwerpen",
+        "description": "Bepaal opnieuw wat de leerling doet, wat AI doet en welk bewijs je nodig hebt.",
+        "intents": ["redesign", "orient"],
+        "featured": ["kernhandeling-check", "task-density-scan", "ai-role-handback-plan", "assessment-redesign"],
+    },
+    {
+        "key": "professional",
+        "title": "Ik wil mijn professionele oordeel zelf vormen",
+        "description": "Houd observatie, interpretatie, leerlingstem en besluit uit elkaar.",
+        "intents": ["professional"],
+        "featured": ["observation-vs-inference", "reconstruct-professional-judgement", "learner-voice-check", "proportionate-follow-up"],
+    },
+]
+
 WORKFORM_MECHANISMS = {
     "analyse": {
         "title": "Eerst het leren en de taak begrijpen",
@@ -173,119 +219,250 @@ def render_route(route: list[str]) -> str:
         parts.append(f'<span class="route-chip{state}">{esc(WORKFORM_ROUTE_LABELS[key])}</span>')
     return '<div class="eai-route" aria-label="Plaats in de EAI-kijkvorm">' + "".join(parts) + "</div>"
 
+def render_toolbox_card(item: dict) -> str:
+    action = item.get("action_layer", {})
+    verbs = action.get("verbs", {})
+    teacher = verbs.get("teacher", [])[:3]
+    learner = verbs.get("learner", [])[:3]
+    intents = " ".join(action.get("intents", []))
+    evidence = " ".join(item.get("evidence", []))
+    audience = " ".join(item.get("audience", []))
+    public_title = item.get("public_title", item["title"])
+    search_parts = [
+        public_title,
+        item.get("title", ""),
+        item.get("summary", ""),
+        item.get("question", ""),
+        " ".join(teacher),
+        " ".join(learner),
+        item.get("category", ""),
+    ]
+    search_text = " ".join(search_parts).lower()
+    teacher_chain = '<span class="action-arrow">→</span>'.join(f'<b>{esc(value)}</b>' for value in teacher)
+    learner_chain = '<span class="action-arrow">→</span>'.join(f'<b>{esc(value)}</b>' for value in learner)
+    return (
+        f'<article class="toolbox-result-card" data-workform-card data-slug="{esc(item["slug"])}" '
+        f'data-category="{esc(item["category"])}" data-audience="{esc(audience)}" '
+        f'data-evidence="{esc(evidence)}" data-intents="{esc(intents)}" data-search="{esc(search_text)}">'
+        f'<div class="toolbox-result-top"><span class="toolbox-result-kicker">Werkvorm</span>'
+        f'<button type="button" class="save-workform" data-save-slug="{esc(item["slug"])}" aria-pressed="false">Bewaar</button></div>'
+        f'<h3>{esc(public_title)}</h3><p class="toolbox-result-summary">{esc(item["summary"])}</p>'
+        f'<div class="toolbox-result-actions">'
+        f'<div><span>Docent</span><p>{teacher_chain}</p></div>'
+        f'<div><span>Leerling</span><p>{learner_chain}</p></div>'
+        f'</div>'
+        f'<a class="toolbox-result-link" href="/werkvormen/{esc(item["slug"])}/">Bekijk hoe →</a>'
+        f'</article>'
+    )
+
 def render_workforms_index(items: list[dict]) -> str:
-    cards_by_category = {key: [] for key, _, _ in WORKFORM_CATEGORIES}
-    for item in items:
-        audience = " ".join(item.get("audience", []))
-        evidence = " ".join(item.get("evidence", []))
-        action = item.get("action_layer", {})
-        intents = " ".join(action.get("intents", []))
-        audience_labels = " · ".join(WORKFORM_AUDIENCE_LABELS.get(value, value) for value in item.get("audience", []))
-        evidence_labels = " · ".join(WORKFORM_EVIDENCE_LABELS.get(value, value) for value in item.get("evidence", []))
-        public_title = item.get("public_title", item["title"])
-        technical = item["title"] if public_title != item["title"] else ""
-        technical_html = f'<div class="workform-technical-name">{esc(technical)}</div>' if technical else ""
-        card = (
-            f'<article class="toolbox-card" data-workform-card data-category="{esc(item["category"])}" '
-            f'data-audience="{esc(audience)}" data-evidence="{esc(evidence)}" data-intents="{esc(intents)}">'
-            f'<div class="toolbox-card-meta"><span>{esc(audience_labels)}</span><span>{esc(evidence_labels)}</span></div>'
-            f'<h3>{esc(public_title)}</h3>{technical_html}<p>{esc(item["summary"])}</p>'
-            f'<a class="toolbox-link" href="/werkvormen/{esc(item["slug"])}/">Wat doe ik? →</a></article>'
-        )
-        cards_by_category[item["category"]].append(card)
+    item_by_slug = {item["slug"]: item for item in items}
+    cards = "".join(render_toolbox_card(item) for item in items)
 
-    sections = []
-    for key, title, description in WORKFORM_CATEGORIES:
-        sections.append(
-            f'<section class="toolbox-category" id="{esc(key)}" data-toolbox-group>'
-            f'<div class="toolbox-category-head"><div><div class="kicker">Werkvormen</div><h2>{esc(title)}</h2></div>'
-            f'<p>{esc(description)}</p></div><div class="toolbox-grid">{"".join(cards_by_category[key])}</div></section>'
-        )
-
-    intent_buttons = "".join(
-        f'<button type="button" class="toolbox-intent" data-intent-choice="{esc(key)}" aria-pressed="false">'
-        f'<strong>{esc(title)}</strong><span>{esc(description)}</span></button>'
-        for key, title, description in WORKFORM_INTENTS
+    route_buttons = "".join(
+        f'<button type="button" class="toolbox-route" data-route-key="{esc(route["key"])}" '
+        f'data-route-intents="{esc(" ".join(route["intents"]))}" '
+        f'data-route-featured="{esc(" ".join(route["featured"]))}" aria-pressed="false">'
+        f'<span>{idx:02d}</span><strong>{esc(route["title"])}</strong><small>{esc(route["description"])}</small></button>'
+        for idx, route in enumerate(PRIMARY_WORKFORM_ROUTES, start=1)
     )
 
     return f'''<main>
-<section class="page-hero"><div class="wrap"><div class="eyebrow">Werkvormen</div><h1>Wat wil je dat er in je les gebeurt?</h1><p class="lede">Je hoeft de namen van 57 werkvormen niet te kennen. Pak één concrete situatie en kies hieronder wat je wilt bereiken. Dan blijven alleen de werkvormen over die daarbij kunnen helpen.</p></div></section>
+<section class="page-hero toolbox-hero"><div class="wrap"><div class="eyebrow">Werkvormen</div><h1>Waar wil je in je les mee verder?</h1><p class="lede">Kies een situatie die je herkent. Je krijgt eerst een paar passende werkvormen. De volledige bibliotheek blijft beschikbaar als je verder wilt zoeken.</p></div></section>
+
 <section class="section toolbox-start"><div class="wrap">
-<div class="toolbox-example-intro"><div><div class="kicker">Begin met je eigen situatie</div><h2>Wat moet de leerling hier zelf doen?</h2><p>Neem een opdracht die je morgen geeft. Wat moet de leerling leren? Waar bevindt hij zich nu in dat leren? Aan welke stap moet hij hier zelf inhoudelijke betekenis geven? En wat doet AI precies op die plek? Je hoeft die analyse niet perfect af te hebben voordat je begint.</p></div><div class="toolbox-example-path"><span>Proces</span><span>Fase</span><span>Kernhandeling</span><span>Wat doet AI?</span><span>Wat wil je nu doen?</span></div></div>
+<div class="toolbox-situation">
+<div><div class="kicker">Pak één echte les of opdracht</div><h2>Wat moet de leerling hier zelf doen?</h2><p>Wat moet er geleerd worden? Waar zit de leerling nu? Welke stap moet hij zelf zetten? En wat doet AI precies op die plek?</p></div>
+<div class="toolbox-situation-path" aria-label="EAI-kijkroute"><span>leren</span><b>→</b><span>fase</span><b>→</b><span>kernhandeling</span><b>→</b><span>AI</span></div>
+</div>
 
-<div class="toolbox-intro"><div><div class="kicker">Kies je volgende handeling</div><h2>Waar wil je mee verder?</h2></div><p>Dit is de gewone route voor docenten. De filters en de volledige bibliotheek staan daaronder voor wie al preciezer weet wat hij zoekt.</p></div>
-<div class="toolbox-intent-grid" aria-label="Kies wat je wilt laten gebeuren">{intent_buttons}</div>
-<div class="toolbox-intent-state"><span id="toolbox-intent-label">Alle werkvormen</span><button type="button" id="toolbox-intent-clear" hidden>Wis keuze</button></div>
+<div class="toolbox-route-head"><div><div class="kicker">Kies wat je nodig hebt</div><h2>Welke situatie herken je?</h2></div><p>Je hoeft geen EAI-term te kennen. Klik op wat je als docent probeert te bereiken.</p></div>
+<div class="toolbox-route-grid" aria-label="Kies een onderwijssituatie">{route_buttons}</div>
 
-<details class="toolbox-advanced"><summary>Verder filteren</summary>
-<div class="toolbox-filters" aria-label="Filter werkvormen">
-<label>Thema<select data-toolbox-filter="category"><option value="all">Alle thema's</option>{''.join(f'<option value="{esc(key)}">{esc(title)}</option>' for key,title,_ in WORKFORM_CATEGORIES)}</select></label>
+<section class="toolbox-results" id="resultaten" aria-live="polite">
+<div class="toolbox-results-head"><div><div class="kicker">Passende werkvormen</div><h2 id="toolbox-result-title">Kies hierboven een situatie</h2><p id="toolbox-result-copy">Dan verschijnen hier eerst vier werkvormen die daar goed bij aansluiten.</p></div>
+<div class="toolbox-results-tools">
+<label class="toolbox-search"><span>Zoek</span><input id="toolbox-search" type="search" placeholder="Bijv. feedback, bron, vastlopen…" autocomplete="off"></label>
+<button type="button" id="toolbox-show-saved">Bewaard <span id="saved-count">0</span></button>
+</div></div>
+<div class="toolbox-results-grid" id="toolbox-results-grid"></div>
+<div class="toolbox-results-footer">
+<button type="button" class="button secondary" id="toolbox-show-more" hidden>Toon alle passende werkvormen</button>
+<button type="button" class="text-button" id="toolbox-clear-route" hidden>Wis keuze</button>
+</div>
+<p class="toolbox-empty" id="toolbox-empty" hidden>Hier vind ik nu geen passende werkvorm. Probeer een ander woord of wis je keuze.</p>
+</section>
+
+<details class="toolbox-library" id="alle-werkvormen">
+<summary>Alle 57 werkvormen bekijken</summary>
+<div class="toolbox-library-tools">
+<p>Voor wie al weet wat hij zoekt. Gebruik zoeken of de extra filters.</p>
+<div class="toolbox-filters" aria-label="Filter alle werkvormen">
 <label>Voor wie<select data-toolbox-filter="audience"><option value="all">Iedereen</option><option value="learner">Leerling</option><option value="teacher">Docent</option><option value="team">Team</option></select></label>
-<label>Wat wil je daarna weten?<select data-toolbox-filter="evidence"><option value="all">Alles</option><option value="process">Wat er in het proces gebeurde</option><option value="independent">Wat de leerling zelf kan</option><option value="retention">Of het later nog lukt</option><option value="transfer">Of het ergens anders ook lukt</option><option value="design">Hoe je het kunt ontwerpen</option></select></label>
-</div></details>
+<label>Waar kijk je naar?<select data-toolbox-filter="evidence"><option value="all">Alles</option><option value="process">Proces</option><option value="independent">Zelfstandig</option><option value="retention">Later nog</option><option value="transfer">Andere situatie</option><option value="design">Ontwerp</option></select></label>
+</div></div>
+<div class="toolbox-library-grid" id="toolbox-library-grid"></div>
+</details>
 
-<p class="toolbox-count"><strong id="toolbox-count">{len(items)}</strong> passende werkvormen</p>
-<div class="toolbox-groups">{"".join(sections)}</div>
-<p class="toolbox-empty" id="toolbox-empty" hidden>Geen werkvorm combineert deze keuzes. Wis een filter of kies een bredere route.</p>
-<aside class="toolbox-standard-note"><strong>Wil je de laag eronder zien?</strong><p>Op iedere werkvormpagina staat ook welke handelingen bij docent, leerling en AI liggen, welke EAI Standard-werkwoorden erbij horen en op welke didactische of onderzoekslijn de werkvorm aansluit. <a href="/onderbouwing/">Bekijk de onderbouwing →</a></p></aside>
+<div class="toolbox-card-pool" id="toolbox-card-pool" hidden>{cards}</div>
+
+<aside class="toolbox-standard-note"><strong>Waarom staan docent, leerling en AI apart?</strong><p>Omdat precies daar zichtbaar wordt wie de relevante handeling uitvoert. Op de detailpagina staat de concrete uitvoering, de onderbouwing en pas daarna de technische EAI Standard-laag. <a href="/onderbouwing/">Bekijk de onderbouwing →</a></p></aside>
 </div></section>
+
 <script>
 (() => {{
-  const filters = [...document.querySelectorAll('[data-toolbox-filter]')];
-  const cards = [...document.querySelectorAll('[data-workform-card]')];
-  const groups = [...document.querySelectorAll('[data-toolbox-group]')];
-  const intentButtons = [...document.querySelectorAll('[data-intent-choice]')];
-  const clearIntent = document.getElementById('toolbox-intent-clear');
-  const intentLabel = document.getElementById('toolbox-intent-label');
-  const count = document.getElementById('toolbox-count');
+  const sourceCards = [...document.querySelectorAll('#toolbox-card-pool [data-workform-card]')];
+  const routeButtons = [...document.querySelectorAll('[data-route-key]')];
+  const resultGrid = document.getElementById('toolbox-results-grid');
+  const libraryGrid = document.getElementById('toolbox-library-grid');
+  const search = document.getElementById('toolbox-search');
+  const showMore = document.getElementById('toolbox-show-more');
+  const clearRoute = document.getElementById('toolbox-clear-route');
   const empty = document.getElementById('toolbox-empty');
-  let activeIntent = 'all';
+  const resultTitle = document.getElementById('toolbox-result-title');
+  const resultCopy = document.getElementById('toolbox-result-copy');
+  const savedCount = document.getElementById('saved-count');
+  const showSaved = document.getElementById('toolbox-show-saved');
+  const filters = [...document.querySelectorAll('[data-toolbox-filter]')];
+  const STORAGE_KEY = 'eai-saved-workforms-v1';
+  let activeRoute = null;
+  let expanded = false;
+  let savedOnly = false;
 
-  const matches = (card, key, value) => {{
-    if (value === 'all') return true;
-    if (key === 'category') return card.dataset.category === value;
-    return (card.dataset[key] || '').split(' ').includes(value);
+  const readSaved = () => {{
+    try {{ return new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')); }}
+    catch (_) {{ return new Set(); }}
   }};
-
-  const apply = () => {{
-    const values = Object.fromEntries(filters.map(el => [el.dataset.toolboxFilter, el.value]));
-    let visible = 0;
-    cards.forEach(card => {{
-      const intentMatch = activeIntent === 'all' || (card.dataset.intents || '').split(' ').includes(activeIntent);
-      const filterMatch = Object.entries(values).every(([key, value]) => matches(card, key, value));
-      const show = intentMatch && filterMatch;
-      card.hidden = !show;
-      if (show) visible += 1;
-    }});
-    groups.forEach(group => {{
-      group.hidden = ![...group.querySelectorAll('[data-workform-card]')].some(card => !card.hidden);
-    }});
-    count.textContent = String(visible);
-    empty.hidden = visible !== 0;
-  }};
-
-  intentButtons.forEach(button => button.addEventListener('click', () => {{
-    activeIntent = button.dataset.intentChoice;
-    intentButtons.forEach(item => item.setAttribute('aria-pressed', item === button ? 'true' : 'false'));
-    intentLabel.textContent = button.querySelector('strong').textContent;
-    clearIntent.hidden = false;
-    apply();
-    window.setTimeout(() => count.scrollIntoView({{behavior: 'smooth', block: 'center'}}), 50);
-  }}));
-
-  clearIntent.addEventListener('click', () => {{
-    activeIntent = 'all';
-    intentButtons.forEach(item => item.setAttribute('aria-pressed', 'false'));
-    intentLabel.textContent = 'Alle werkvormen';
-    clearIntent.hidden = true;
-    apply();
+  const writeSaved = saved => {{ try {{ localStorage.setItem(STORAGE_KEY, JSON.stringify([...saved])); }} catch (_) {{}} }};
+  const routeFor = button => ({{
+    key: button.dataset.routeKey,
+    intents: (button.dataset.routeIntents || '').split(' ').filter(Boolean),
+    featured: (button.dataset.routeFeatured || '').split(' ').filter(Boolean),
+    title: button.querySelector('strong').textContent,
+    copy: button.querySelector('small').textContent
   }});
 
-  filters.forEach(el => el.addEventListener('change', apply));
-  apply();
+  const cloneCard = card => {{
+    const clone = card.cloneNode(true);
+    const saved = readSaved();
+    const save = clone.querySelector('[data-save-slug]');
+    if (save) {{
+      const on = saved.has(save.dataset.saveSlug);
+      save.setAttribute('aria-pressed', on ? 'true' : 'false');
+      save.textContent = on ? 'Bewaard' : 'Bewaar';
+    }}
+    return clone;
+  }};
+
+  const matchesFilters = card => filters.every(filter => {{
+    if (filter.value === 'all') return true;
+    return (card.dataset[filter.dataset.toolboxFilter] || '').split(' ').includes(filter.value);
+  }});
+
+  const routeMatches = card => {{
+    if (!activeRoute) return true;
+    const values = (card.dataset.intents || '').split(' ');
+    return activeRoute.intents.some(intent => values.includes(intent));
+  }};
+
+  const searchMatches = card => {{
+    const q = search.value.trim().toLowerCase();
+    return !q || (card.dataset.search || '').includes(q);
+  }};
+
+  const sortForRoute = cards => {{
+    if (!activeRoute) return cards;
+    const order = new Map(activeRoute.featured.map((slug, index) => [slug, index]));
+    return [...cards].sort((a, b) => {{
+      const ar = order.has(a.dataset.slug) ? order.get(a.dataset.slug) : 99;
+      const br = order.has(b.dataset.slug) ? order.get(b.dataset.slug) : 99;
+      return ar - br;
+    }});
+  }};
+
+  const updateSavedCount = () => {{
+    savedCount.textContent = String(readSaved().size);
+  }};
+
+  const render = () => {{
+    const saved = readSaved();
+    let matches = sourceCards.filter(card => routeMatches(card) && searchMatches(card) && matchesFilters(card));
+    if (savedOnly) matches = matches.filter(card => saved.has(card.dataset.slug));
+    matches = sortForRoute(matches);
+
+    resultGrid.innerHTML = '';
+    const visible = expanded || search.value.trim() || savedOnly ? matches : matches.slice(0, 4);
+    visible.forEach(card => resultGrid.appendChild(cloneCard(card)));
+
+    if (!activeRoute && !search.value.trim() && !savedOnly) {{
+      resultTitle.textContent = 'Kies hierboven een situatie';
+      resultCopy.textContent = 'Dan verschijnen hier eerst vier werkvormen die daar goed bij aansluiten.';
+      resultGrid.innerHTML = '';
+    }} else if (savedOnly) {{
+      resultTitle.textContent = 'Jouw bewaarde werkvormen';
+      resultCopy.textContent = matches.length ? 'Deze werkvormen zijn alleen op dit apparaat bewaard.' : 'Je hebt nog geen werkvormen bewaard.';
+    }} else if (activeRoute) {{
+      resultTitle.textContent = activeRoute.title;
+      resultCopy.textContent = activeRoute.copy;
+    }} else {{
+      resultTitle.textContent = 'Zoekresultaten';
+      resultCopy.textContent = matches.length + ' werkvormen gevonden.';
+    }}
+
+    showMore.hidden = !activeRoute || expanded || matches.length <= 4 || !!search.value.trim() || savedOnly;
+    showMore.textContent = 'Toon alle ' + matches.length + ' passende werkvormen';
+    clearRoute.hidden = !activeRoute && !search.value.trim() && !savedOnly;
+    empty.hidden = matches.length !== 0 || (!activeRoute && !search.value.trim() && !savedOnly);
+
+    libraryGrid.innerHTML = '';
+    sourceCards.filter(card => searchMatches(card) && matchesFilters(card)).forEach(card => libraryGrid.appendChild(cloneCard(card)));
+    updateSavedCount();
+  }};
+
+  routeButtons.forEach(button => button.addEventListener('click', () => {{
+    activeRoute = routeFor(button);
+    expanded = false;
+    savedOnly = false;
+    routeButtons.forEach(item => item.setAttribute('aria-pressed', item === button ? 'true' : 'false'));
+    render();
+    document.getElementById('resultaten').scrollIntoView({{behavior:'smooth', block:'start'}});
+  }}));
+
+  search.addEventListener('input', () => {{
+    activeRoute = null;
+    expanded = true;
+    savedOnly = false;
+    routeButtons.forEach(item => item.setAttribute('aria-pressed', 'false'));
+    render();
+  }});
+  filters.forEach(filter => filter.addEventListener('change', render));
+  showMore.addEventListener('click', () => {{ expanded = true; render(); }});
+  clearRoute.addEventListener('click', () => {{
+    activeRoute = null; expanded = false; savedOnly = false; search.value = '';
+    filters.forEach(filter => filter.value = 'all');
+    routeButtons.forEach(item => item.setAttribute('aria-pressed', 'false'));
+    render();
+  }});
+  showSaved.addEventListener('click', () => {{
+    savedOnly = !savedOnly; activeRoute = null; expanded = true; search.value = '';
+    routeButtons.forEach(item => item.setAttribute('aria-pressed', 'false'));
+    showSaved.setAttribute('aria-pressed', savedOnly ? 'true' : 'false');
+    render();
+  }});
+  document.addEventListener('click', event => {{
+    const button = event.target.closest('[data-save-slug]');
+    if (!button) return;
+    const saved = readSaved();
+    const slug = button.dataset.saveSlug;
+    if (saved.has(slug)) saved.delete(slug); else saved.add(slug);
+    writeSaved(saved);
+    render();
+  }});
+  render();
 }})();
 </script>
 </main>'''
+
 
 def render_workform_visual(visual: dict | None) -> str:
     if not visual:
@@ -324,6 +501,29 @@ def render_workform_example(item: dict) -> str:
         '</div></div></section>'
     )
 
+def workform_copy_text(item: dict) -> str:
+    action = item.get("action_layer", {})
+    role_steps = action.get("role_steps", {})
+    public_title = item.get("public_title", item["title"])
+    lines = [
+        public_title,
+        "",
+        "Gebruik dit als:",
+        item.get("lede", ""),
+        "",
+        "De vraag eronder:",
+        item.get("question", ""),
+    ]
+    for label, key in [("Jij als docent", "teacher"), ("De leerling", "learner"), ("AI kan hier", "ai")]:
+        steps = role_steps.get(key, [])
+        if steps:
+            lines.extend(["", label + ":"])
+            lines.extend(f"{idx}. {step}" for idx, step in enumerate(steps, start=1))
+    if action.get("ai_not"):
+        lines.extend(["", "Niet automatisch doen:", action["ai_not"]])
+    lines.extend(["", "Daarna kijk je naar:", item.get("result", "")])
+    return "\n".join(lines)
+
 def render_workform_quickstart(item: dict) -> str:
     action = item.get("action_layer", {})
     ai_not = action.get("ai_not", "")
@@ -346,9 +546,14 @@ def render_workform_quickstart(item: dict) -> str:
         elif action.get(key):
             role_cards.append(f'<article><span>{label}</span><p>{esc(action[key])}</p></article>')
     roles_html = "".join(role_cards)
+    copy_text = esc(workform_copy_text(item))
 
     return (
         '<section class="section workform-quickstart"><div class="wrap">'
+        '<div class="workform-lesson-card" id="werkvormkaart">'
+        '<div class="workform-toolbar"><div><span class="kicker">Morgen gebruiken</span><strong>Werkvormkaart</strong></div>'
+        f'<div class="workform-toolbar-actions"><button type="button" data-copy-workform data-copy-text="{copy_text}">Kopieer</button>'
+        '<button type="button" onclick="window.print()">Print</button><button type="button" data-share-workform>Deel</button></div></div>'
         '<div class="workform-use-grid">'
         f'<article><div class="kicker">Gebruik dit als</div><p>{esc(item.get("lede", ""))}</p></article>'
         f'<article><div class="kicker">De vraag eronder</div><p>{esc(item.get("question", ""))}</p></article>'
@@ -356,8 +561,60 @@ def render_workform_quickstart(item: dict) -> str:
         f'{verbs_html}'
         f'<div class="workform-role-grid">{roles_html}</div>'
         f'<div class="workform-boundary"><strong>Niet automatisch doen</strong><p>{esc(ai_not)}</p></div>'
+        '</div></div>'
+        '<script>(()=>{const copy=document.querySelector("[data-copy-workform]");const share=document.querySelector("[data-share-workform]");'
+        'if(copy){copy.addEventListener("click",async()=>{try{await navigator.clipboard.writeText(copy.dataset.copyText||"");const old=copy.textContent;copy.textContent="Gekopieerd";setTimeout(()=>copy.textContent=old,1400)}catch(_){}})}'
+        'if(share){share.addEventListener("click",async()=>{if(navigator.share){try{await navigator.share({title:document.title,url:location.href})}catch(_){}}else{try{await navigator.clipboard.writeText(location.href);const old=share.textContent;share.textContent="Link gekopieerd";setTimeout(()=>share.textContent=old,1400)}catch(_){}}})}})();</script>'
+        '</section>'
+    )
+
+def related_workforms(item: dict, all_items: list[dict], limit: int = 3) -> list[dict]:
+    source_action = item.get("action_layer", {})
+    source_intents = set(source_action.get("intents", []))
+    source_evidence = set(item.get("evidence", []))
+    source_route = set(item.get("route", []))
+    scored = []
+    for other in all_items:
+        if other["slug"] == item["slug"]:
+            continue
+        other_intents = set(other.get("action_layer", {}).get("intents", []))
+        score = 0
+        score += 4 * len(source_intents & other_intents)
+        score += 2 if other.get("category") == item.get("category") else 0
+        score += len(source_evidence & set(other.get("evidence", [])))
+        score += len(source_route & set(other.get("route", [])))
+        if score:
+            scored.append((score, other))
+    scored.sort(key=lambda pair: (-pair[0], pair[1].get("public_title", pair[1]["title"])))
+    return [other for _, other in scored[:limit]]
+
+def render_related_workforms(item: dict, all_items: list[dict]) -> str:
+    related = related_workforms(item, all_items)
+    if not related:
+        return ""
+    cards = []
+    for other in related:
+        verbs = other.get("action_layer", {}).get("verbs", {})
+        teacher = verbs.get("teacher", [])[:2]
+        learner = verbs.get("learner", [])[:2]
+        teacher_chain = " → ".join(teacher)
+        learner_chain = " → ".join(learner)
+        cards.append(
+            f'<a class="related-workform-card" href="/werkvormen/{esc(other["slug"])}/">'
+            f'<span>Kan hierna passen</span><h3>{esc(other.get("public_title", other["title"]))}</h3>'
+            f'<p>{esc(other["summary"])}</p>'
+            f'<div><b>Docent</b> {esc(teacher_chain)}</div><div><b>Leerling</b> {esc(learner_chain)}</div>'
+            f'<strong>Bekijk →</strong></a>'
+        )
+    return (
+        '<section class="section related-workforms"><div class="wrap">'
+        '<div class="section-head"><div class="kicker">Wat kan hierna?</div><div><h2>Werkvormen die logisch aansluiten.</h2>'
+        '<p>Niet als vaste route, wel omdat ze een volgende stap in dezelfde onderwijsafweging kunnen ondersteunen.</p></div></div>'
+        f'<div class="related-workform-grid">{"".join(cards)}</div>'
+        '<p class="related-all"><a href="/werkvormen/">Alle werkvormen bekijken →</a></p>'
         '</div></section>'
     )
+
 
 def workform_standard_relation(item: dict) -> str:
     source = item.get("source", "")
@@ -402,13 +659,13 @@ def render_workform_underpinning(item: dict) -> str:
         '</div></div></section>'
     )
 
-def enrich_manual_workform(body: str, item: dict) -> str:
+def enrich_manual_workform(body: str, item: dict, all_items: list[dict]) -> str:
     quick = render_workform_quickstart(item)
     body = body.replace("</section>", "</section>" + quick, 1)
-    tail = render_workform_example(item) + render_workform_underpinning(item)
+    tail = render_workform_example(item) + render_workform_underpinning(item) + render_related_workforms(item, all_items)
     return body.replace("</main>", tail + "</main>", 1)
 
-def render_catalog_workform(item: dict) -> str:
+def render_catalog_workform(item: dict, all_items: list[dict]) -> str:
     steps = "".join(f"<li>{esc(step)}</li>" for step in item.get("steps", []))
     audience = " · ".join(WORKFORM_AUDIENCE_LABELS.get(value, value) for value in item.get("audience", []))
     evidence = " · ".join(WORKFORM_EVIDENCE_LABELS.get(value, value) for value in item.get("evidence", []))
@@ -420,6 +677,7 @@ def render_catalog_workform(item: dict) -> str:
     quickstart_html = render_workform_quickstart(item)
     example_html = render_workform_example(item)
     foundation_html = render_workform_underpinning(item)
+    related_html = render_related_workforms(item, all_items)
     return f'''<main>
 <section class="page-hero"><div class="wrap"><div class="eyebrow">Werkvorm · {esc(audience)}</div><h1>{esc(public_title)}</h1>{technical_html}<p class="lede">{esc(item["summary"])}</p>{render_route(item.get("route", []))}</div></section>
 {quickstart_html}
@@ -428,6 +686,7 @@ def render_catalog_workform(item: dict) -> str:
 <section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Zo doe je het</div><div><h2>Werk stap voor stap.</h2><p>Pas de formulering aan je vak en klas aan. De volgorde bewaakt dat de relevante leerlinghandeling niet ongemerkt uit beeld verdwijnt.</p></div></div><div class="panel workform-steps"><ol>{steps}</ol></div></div></section>
 <section class="section"><div class="wrap"><div class="split"><article class="panel"><div class="kicker">Daarna</div><h3>Waar kijk je naar?</h3><p>{esc(item["result"])}</p></article><article class="panel"><div class="kicker">Let op</div><h3>Wat kun je nog niet concluderen?</h3><p>{esc(item["caution"])}</p></article></div><p><a href="/werkvormen/">← Terug naar de werkvormen</a></p></div></section>
 {foundation_html}
+{related_html}
 </main>'''
 
 TOOLS = [
@@ -739,6 +998,124 @@ iframe{max-width:100%}
 
 }
 
+
+/* Interface v4: landing, guided toolbox and reusable workform cards */
+.skip-link{position:fixed;left:12px;top:10px;z-index:100000;transform:translateY(-160%);background:#fff;border:2px solid var(--ink);padding:9px 12px;font:800 .8rem/1 Inter,ui-sans-serif,sans-serif;text-decoration:none}
+.skip-link:focus{transform:none}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+
+.welcome-v4{background:#fff;border-bottom:1px solid var(--line)}
+.welcome-v4-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(390px,.92fr);gap:64px;align-items:center;padding-top:72px;padding-bottom:44px}
+.welcome-v4-copy h1{margin:.14em 0 .27em;max-width:11ch}
+.welcome-v4-copy .lede{max-width:54ch;margin-bottom:16px}
+.welcome-v4-copy .button-row{margin-top:26px}
+.hero-eai-visual{border:1px solid var(--line);background:linear-gradient(145deg,#fff 0%,#f7f4ed 100%);padding:24px 24px 18px;box-shadow:0 18px 50px rgba(32,41,54,.07)}
+.hero-eai-visual-head{display:flex;justify-content:space-between;gap:20px;align-items:baseline;border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:3px;font-family:Inter,ui-sans-serif,sans-serif}
+.hero-eai-visual-head span{font-size:.68rem;text-transform:uppercase;letter-spacing:.09em;color:#718096;font-weight:800}
+.hero-eai-visual-head strong{font-size:1rem}
+.hero-eai-step,.hero-eai-check{display:grid;grid-template-columns:42px 1fr;gap:12px;padding:14px 0;border-bottom:1px solid var(--line);align-items:start}
+.hero-eai-step>span,.hero-eai-check>span{font:800 .7rem/1.3 Inter,ui-sans-serif,sans-serif;color:#8894a3;padding-top:3px}
+.hero-eai-step b,.hero-eai-check b{display:block;font:800 .96rem/1.25 Inter,ui-sans-serif,sans-serif}
+.hero-eai-step small,.hero-eai-check small{display:block;margin-top:4px;color:#667283;font:400 .8rem/1.4 Inter,ui-sans-serif,sans-serif}
+.hero-eai-step.is-core{margin:5px -12px;background:#fff3ed;border-left:4px solid var(--accent);padding-left:8px;padding-right:12px}
+.hero-eai-step.is-core>span{color:var(--accent)}
+.hero-eai-check{border-bottom:0;padding-bottom:5px}
+.hero-eai-check>span{font-size:1rem;color:var(--accent)}
+.welcome-shortcuts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line)}
+.welcome-shortcuts a{display:grid;grid-template-columns:1fr auto;gap:5px 14px;padding:20px 18px;text-decoration:none;border-right:1px solid var(--line);font-family:Inter,ui-sans-serif,sans-serif}
+.welcome-shortcuts a:first-child{padding-left:0}.welcome-shortcuts a:last-child{border-right:0;padding-right:0}
+.welcome-shortcuts span{grid-column:1/-1;font-size:.66rem;text-transform:uppercase;letter-spacing:.08em;color:#728094;font-weight:800}
+.welcome-shortcuts strong{font-size:.94rem}.welcome-shortcuts b{font-size:.78rem;align-self:center}
+.welcome-shortcuts a:hover strong{text-decoration:underline;text-underline-offset:4px}
+
+.depth-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.depth-card{display:flex;flex-direction:column;min-height:260px;border:1px solid var(--line);padding:26px;text-decoration:none;background:#fff}
+.depth-card--wide{grid-column:1/-1;min-height:220px}
+.depth-card span{font:800 .68rem/1.2 Inter,ui-sans-serif,sans-serif;text-transform:uppercase;letter-spacing:.08em;color:#718096}
+.depth-card h2{font-size:clamp(1.7rem,3vw,2.5rem);margin:14px 0 12px}
+.depth-card p{color:var(--muted);max-width:60ch}.depth-card b{margin-top:auto;font-family:Inter,ui-sans-serif,sans-serif}
+.depth-card:hover{border-color:#9ba6b3;transform:translateY(-1px)}
+
+.toolbox-hero{padding-bottom:36px}
+.toolbox-situation{display:grid;grid-template-columns:minmax(0,1fr) minmax(320px,.8fr);gap:36px;align-items:end;padding:0 0 38px;border-bottom:1px solid var(--line);margin-bottom:42px}
+.toolbox-situation h2{font-size:clamp(2rem,3.2vw,3rem);margin:8px 0 12px}.toolbox-situation p{max-width:60ch;color:var(--muted);margin:0}
+.toolbox-situation-path{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-family:Inter,ui-sans-serif,sans-serif}
+.toolbox-situation-path span{border-top:3px solid var(--accent);background:var(--soft);padding:10px 12px;font-size:.78rem;font-weight:800}.toolbox-situation-path b{color:#9aa5b2}
+.toolbox-route-head{display:grid;grid-template-columns:1fr .8fr;gap:28px;align-items:end;margin-bottom:18px}.toolbox-route-head h2{font-size:clamp(2rem,3vw,2.8rem);margin:8px 0 0}.toolbox-route-head p{margin:0;color:var(--muted)}
+.toolbox-route-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:48px}
+.toolbox-route{appearance:none;border:1px solid var(--line);background:#fff;text-align:left;padding:20px;min-height:166px;cursor:pointer;color:var(--ink);display:grid;grid-template-columns:36px 1fr;grid-template-areas:"num title" "num copy";gap:8px 10px;align-content:start}
+.toolbox-route>span{grid-area:num;font:800 .7rem/1.4 Inter,ui-sans-serif,sans-serif;color:#95a0ad}
+.toolbox-route>strong{grid-area:title;font:800 1.05rem/1.25 Inter,ui-sans-serif,sans-serif}
+.toolbox-route>small{grid-area:copy;color:var(--muted);font:400 .86rem/1.45 Inter,ui-sans-serif,sans-serif}
+.toolbox-route:hover,.toolbox-route[aria-pressed="true"]{border-color:var(--ink);background:var(--soft)}
+.toolbox-route[aria-pressed="true"]>span{color:var(--accent)}
+
+.toolbox-results{scroll-margin-top:90px;border-top:1px solid var(--line);padding-top:34px}
+.toolbox-results-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(310px,.7fr);gap:32px;align-items:end;margin-bottom:20px}
+.toolbox-results-head h2{font-size:clamp(1.9rem,3vw,2.7rem);margin:8px 0 8px}.toolbox-results-head p{color:var(--muted);margin:0;max-width:60ch}
+.toolbox-results-tools{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:end}
+.toolbox-search{display:grid;gap:5px;font:800 .68rem/1.2 Inter,ui-sans-serif,sans-serif;text-transform:uppercase;letter-spacing:.06em;color:#687487}
+.toolbox-search input{width:100%;border:1px solid var(--line);background:#fff;padding:11px 12px;font:400 .9rem/1.2 Inter,ui-sans-serif,sans-serif;color:var(--ink)}
+#toolbox-show-saved{border:1px solid var(--line);background:#fff;padding:11px 12px;white-space:nowrap;font:750 .82rem/1 Inter,ui-sans-serif,sans-serif;cursor:pointer}
+#toolbox-show-saved[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.toolbox-results-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.toolbox-result-card{border:1px solid var(--line);background:#fff;padding:20px;display:flex;flex-direction:column;min-height:310px}
+.toolbox-result-top{display:flex;justify-content:space-between;gap:12px;align-items:center}
+.toolbox-result-kicker{font:800 .66rem/1.2 Inter,ui-sans-serif,sans-serif;text-transform:uppercase;letter-spacing:.08em;color:#728094}
+.save-workform{appearance:none;border:0;background:transparent;text-decoration:underline;text-underline-offset:4px;font:750 .75rem/1 Inter,ui-sans-serif,sans-serif;cursor:pointer;color:#596576}
+.save-workform[aria-pressed="true"]{color:var(--accent);text-decoration:none}
+.toolbox-result-card h3{font-size:1.45rem;margin:14px 0 9px}.toolbox-result-summary{margin:0 0 16px;color:var(--muted)}
+.toolbox-result-actions{margin-top:auto;border-top:1px solid var(--line);padding-top:12px}
+.toolbox-result-actions>div{display:grid;grid-template-columns:66px 1fr;gap:8px;padding:5px 0;font-family:Inter,ui-sans-serif,sans-serif}
+.toolbox-result-actions span{font-size:.65rem;text-transform:uppercase;letter-spacing:.06em;color:#7b8796;font-weight:800}
+.toolbox-result-actions p{display:flex;gap:5px;flex-wrap:wrap;margin:0;font-size:.78rem}.toolbox-result-actions b{font-weight:750}
+.toolbox-result-link{margin-top:16px;font:800 .83rem/1 Inter,ui-sans-serif,sans-serif;text-underline-offset:4px}
+.toolbox-results-footer{display:flex;gap:14px;align-items:center;margin:20px 0 44px}.text-button{appearance:none;border:0;background:transparent;text-decoration:underline;text-underline-offset:4px;cursor:pointer}
+.toolbox-library{border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-top:20px;padding:0}
+.toolbox-library>summary{cursor:pointer;padding:18px 0;font:800 1rem/1.3 Inter,ui-sans-serif,sans-serif}.toolbox-library[open]>summary{border-bottom:1px solid var(--line)}
+.toolbox-library-tools{display:grid;grid-template-columns:1fr 1fr;gap:24px;padding:18px 0}.toolbox-library-tools p{color:var(--muted);margin:0}
+.toolbox-library-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;padding:0 0 24px}.toolbox-library-grid .toolbox-result-card{min-height:290px}
+.toolbox-card-pool{display:none!important}
+
+.workform-lesson-card{border:1px solid var(--ink);background:#fff;padding:24px}
+.workform-toolbar{display:flex;justify-content:space-between;gap:20px;align-items:center;border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:22px;font-family:Inter,ui-sans-serif,sans-serif}
+.workform-toolbar>div:first-child{display:grid;gap:3px}.workform-toolbar>div:first-child>strong{font-size:1.05rem}
+.workform-toolbar-actions{display:flex;gap:7px;flex-wrap:wrap}.workform-toolbar-actions button{appearance:none;border:1px solid var(--line);background:#fff;padding:8px 10px;font:750 .75rem/1 Inter,ui-sans-serif,sans-serif;cursor:pointer}
+.workform-toolbar-actions button:hover{border-color:var(--ink)}
+.workform-lesson-card .workform-role-grid{margin-top:18px}
+.related-workform-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.related-workform-card{border:1px solid var(--line);background:#fff;padding:20px;text-decoration:none;display:flex;flex-direction:column;min-height:280px}
+.related-workform-card>span{font:800 .66rem/1.2 Inter,ui-sans-serif,sans-serif;text-transform:uppercase;letter-spacing:.07em;color:#728094}
+.related-workform-card h3{font-size:1.35rem;margin:12px 0 9px}.related-workform-card p{color:var(--muted);margin:0 0 14px}
+.related-workform-card div{font:400 .78rem/1.4 Inter,ui-sans-serif,sans-serif;padding:4px 0;border-top:1px solid var(--line)}.related-workform-card div b{display:inline-block;min-width:58px}
+.related-workform-card>strong{margin-top:auto;padding-top:14px;font-family:Inter,ui-sans-serif,sans-serif}.related-workform-card:hover{border-color:#9ba6b3}
+.related-all{margin-top:22px}
+
+@media(max-width:980px){
+  .welcome-v4-grid{grid-template-columns:1fr;gap:34px}
+  .hero-eai-visual{max-width:680px}
+  .toolbox-route-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .toolbox-results-head,.toolbox-situation{grid-template-columns:1fr}
+  .toolbox-library-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:760px){
+  .welcome-v4-grid{padding-top:44px;padding-bottom:30px}
+  .welcome-shortcuts{grid-template-columns:1fr}.welcome-shortcuts a,.welcome-shortcuts a:first-child,.welcome-shortcuts a:last-child{padding:15px 0;border-right:0;border-bottom:1px solid var(--line)}.welcome-shortcuts a:last-child{border-bottom:0}
+  .hero-eai-visual{padding:18px 16px}.hero-eai-visual-head{display:grid;gap:4px}.hero-eai-step,.hero-eai-check{grid-template-columns:34px 1fr}
+  .depth-grid{grid-template-columns:1fr}.depth-card--wide{grid-column:auto}
+  .toolbox-route-grid{grid-template-columns:1fr}.toolbox-route{min-height:0}
+  .toolbox-results-grid,.toolbox-library-grid,.related-workform-grid{grid-template-columns:1fr}
+  .toolbox-results-tools,.toolbox-library-tools{grid-template-columns:1fr}
+  .workform-toolbar{align-items:flex-start;display:grid}.workform-toolbar-actions{width:100%}.workform-toolbar-actions button{flex:1}
+}
+@media print{
+  body:has(.workform-lesson-card) *{visibility:hidden!important}
+  body:has(.workform-lesson-card) .workform-lesson-card,
+  body:has(.workform-lesson-card) .workform-lesson-card *{visibility:visible!important}
+  body:has(.workform-lesson-card) .workform-lesson-card{position:absolute;left:0;top:0;width:100%;border:0;padding:0}
+  body:has(.workform-lesson-card) .workform-toolbar-actions{display:none!important}
+}
+
 '''
 
 CHROME_CSS = r'''
@@ -765,25 +1142,23 @@ def esc(value: str) -> str:
     return html.escape(value, quote=True)
 
 def nav(active: str = "") -> str:
+    active_key = "verdieping" if active in {"onderbouwing", "praktijk", "publicaties", "tools", "pijlers"} else active
     links = [
-        ("model", "/", "EAI model"),
+        ("model", "/", "EAI"),
         ("werkvormen", "/werkvormen/", "Werkvormen"),
-        ("onderbouwing", "/onderbouwing/", "Onderbouwing"),
-        ("praktijk", "/praktijk/", "Praktijk"),
-        ("publicaties", "/publicaties/", "Publicaties"),
-        ("tools", "/tools/", "Tools"),
+        ("verdieping", "/verdieping/", "Verdieping"),
         ("over", "/over/", "Over"),
     ]
     items = "".join(
-        f'<a href="{href}"' + (' aria-current="page"' if key == active else "") + f'>{label}</a>'
+        f'<a href="{href}"' + (' aria-current="page"' if key == active_key else "") + f'>{label}</a>'
         for key, href, label in links
     )
     mobile_items = "".join(
-        f'<a href="{href}"' + (' aria-current="page"' if key == active else "") + f'>{label}</a>'
+        f'<a href="{href}"' + (' aria-current="page"' if key == active_key else "") + f'>{label}</a>'
         for key, href, label in links
     )
     return (
-        f'<header class="site-header"><nav class="nav">'
+        f'<header class="site-header"><nav class="nav" aria-label="Hoofdnavigatie">'
         f'<a class="brand" href="/" aria-label="EAI home"><img src="/assets/eai-logo.svg" alt="EAI"></a>'
         f'<div class="nav-links">{items}<a class="nav-cta" href="mailto:{EMAIL}">Contact</a></div>'
         f'<details class="mobile-nav"><summary>Menu</summary><div class="mobile-nav-panel">{mobile_items}<a href="mailto:{EMAIL}">Contact</a></div></details>'
@@ -795,14 +1170,15 @@ def footer() -> str:
         f'<footer class="site-footer"><div class="wrap footer-grid">'
         f'<p style="display:flex;gap:12px;align-items:center"><img src="/assets/eai-logo.svg" alt="" width="42" height="42">'
         f'<span><strong>EAI</strong> · Hans Visser<br>AI, leren en professioneel handelen.</span></p>'
-        f'<p><a href="/onderbouwing/">Onderbouwing</a> · <a href="/over/">Over EAI en Hans</a> · <a href="mailto:{EMAIL}">{EMAIL}</a> · '
+        f'<p><a href="/verdieping/">Verdieping</a> · <a href="/over/">Over EAI en Hans</a> · <a href="mailto:{EMAIL}">{EMAIL}</a> · '
         f'<a href="{GITHUB}" target="_blank" rel="noopener">GitHub</a></p></div></footer>'
     )
 
 def doc(title: str, body: str, canonical_path: str, active: str = "", description: str = "") -> str:
     desc = description or "EAI — Educational AI, leren en eigenaarschap."
     canonical = f"{BASE_URL}{canonical_path}"
-    return f'<!doctype html><html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{esc(title)} · EAI</title><meta name="description" content="{esc(desc)}"><link rel="canonical" href="{esc(canonical)}"><link rel="icon" href="/assets/eai-logo.svg" type="image/svg+xml"><link rel="stylesheet" href="/assets/site.css"></head><body>{nav(active)}{body}{footer()}</body></html>'
+    body = body.replace("<main", '<main id="main-content"', 1)
+    return f'<!doctype html><html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{esc(title)} · EAI</title><meta name="description" content="{esc(desc)}"><link rel="canonical" href="{esc(canonical)}"><link rel="icon" href="/assets/eai-logo.svg" type="image/svg+xml"><link rel="stylesheet" href="/assets/site.css"></head><body><a class="skip-link" href="#main-content">Ga naar de inhoud</a>{nav(active)}{body}{footer()}</body></html>'
 
 def render_article_fragment(fragment: Path, title: str, canonical_path: str, description: str) -> str:
     body = fragment.read_text(encoding="utf-8")
@@ -846,7 +1222,7 @@ def inject_embed(source: Path, canonical_path: str, fallback_title: str, footer_
                 head_parts.append(str(node))
     body_inner = soup.body.decode_contents() if soup.body else src
     body_inner = rewrite_legacy_links(body_inner)
-    chrome = f'<header class="eai-site-nav"><div class="eai-site-nav__inner"><a class="eai-site-nav__brand" href="/" aria-label="EAI home"><img src="/assets/eai-logo.svg" alt="EAI" width="34" height="34"></a><div class="eai-site-nav__links"><a href="/">EAI model</a><a href="/werkvormen/">Werkvormen</a><a href="/onderbouwing/">Onderbouwing</a><a href="/praktijk/">Praktijk</a><a href="/publicaties/">Publicaties</a><a href="/tools/">Tools</a><a href="/over/">Over</a><a href="mailto:{EMAIL}">Contact</a></div></div></header>'
+    chrome = f'<header class="eai-site-nav"><div class="eai-site-nav__inner"><a class="eai-site-nav__brand" href="/" aria-label="EAI home"><img src="/assets/eai-logo.svg" alt="EAI" width="34" height="34"></a><div class="eai-site-nav__links"><a href="/">EAI</a><a href="/werkvormen/">Werkvormen</a><a href="/verdieping/">Verdieping</a><a href="/over/">Over</a><a href="mailto:{EMAIL}">Contact</a></div></div></header>'
     foot = f'<footer class="eai-site-footer"><a href="{footer_back}">← Terug</a> · <a href="mailto:{EMAIL}">Contact</a></footer>'
     canonical = f"{BASE_URL}{canonical_path}"
     return f'<!doctype html><html lang="{esc(lang)}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{esc(title)} · EAI</title><link rel="canonical" href="{esc(canonical)}"><link rel="icon" href="/assets/eai-logo.svg" type="image/svg+xml">{"".join(head_parts)}<link rel="stylesheet" href="/assets/article-chrome.css"></head><body>{chrome}{body_inner}{foot}</body></html>'
@@ -871,21 +1247,29 @@ def build(scrape: Path, out: Path) -> None:
     write(out, "assets/eai-logo.svg", LOGO_SVG)
 
     home_body = f'''<main>
-<section class="welcome">
-<div class="wrap welcome-grid">
-<div class="welcome-copy">
+<section class="welcome welcome-v4">
+<div class="wrap welcome-v4-grid">
+<div class="welcome-v4-copy">
 <div class="eyebrow">Welkom bij EAI</div>
 <h1>Wat moet de leerling hier eigenlijk leren?</h1>
-<p class="lede">AI kan schrijven, uitleggen, samenvatten, vergelijken, feedback geven en een volgende stap voorstellen. Allemaal waar. Maar voordat je bepaalt wat AI mag doen, moet je weten wat de leerling in deze taak zelf moet leren doen.</p>
-<p class="welcome-audience">EAI helpt om die vraag concreet te maken in een les, opdracht, toets of professionele beslissing.</p>
+<p class="lede">AI kan veel werk uit handen nemen. Dat is niet automatisch goed of slecht. Eerst wil je weten waar het leren in deze taak zit.</p>
+<p class="welcome-audience">EAI helpt je die vraag scherp te krijgen en er een concrete onderwijskeuze van te maken.</p>
+<div class="button-row"><a class="button" href="/werkvormen/">Werk met een eigen les</a><a class="button secondary" href="#model">Bekijk het model</a></div>
 </div>
-<div class="welcome-routes" aria-label="Kies waar je wilt beginnen">
-<a href="#model"><span>Nieuw hier?</span><strong>Begrijp EAI</strong><p>Bekijk het model en één concreet voorbeeld. Dit is de beste plek om te beginnen.</p><b>Start hier →</b></a>
-<a href="/werkvormen/"><span>Ik wil iets doen</span><strong>Gebruik de toolbox</strong><p>57 werkvormen voor lesontwerp, bewijs, zelfstandigheid, feedback en professioneel oordeel.</p><b>Naar de werkvormen →</b></a>
-<a href="/onderbouwing/"><span>Ik wil weten waar dit op rust</span><strong>Bekijk de onderbouwing</strong><p>Didactiek, leerpsychologie, pedagogiek, recent AI-onderzoek en wat EAI zelf nog als kandidaatmodel behandelt.</p><b>Naar de onderbouwing →</b></a>
+<div class="hero-eai-visual" aria-label="De EAI-kijkroute">
+<div class="hero-eai-visual-head"><span>EAI-kijkroute</span><strong>Waar zit hier het leren?</strong></div>
+<div class="hero-eai-step"><span>01</span><div><b>Wat moet de leerling leren?</b><small>Begin bij het doel, niet bij de tool.</small></div></div>
+<div class="hero-eai-step"><span>02</span><div><b>Waar zit de leerling nu?</b><small>Dezelfde hulp kan in een andere fase iets anders doen.</small></div></div>
+<div class="hero-eai-step is-core"><span>03</span><div><b>Welke stap moet de leerling zelf zetten?</b><small>Hier zit de kernhandeling.</small></div></div>
+<div class="hero-eai-step"><span>04</span><div><b>Wat doet AI precies op die plek?</b><small>Helpt het, of voert het de stap al uit?</small></div></div>
+<div class="hero-eai-check"><span>?</span><div><b>En daarna?</b><small>Wat weet je nu werkelijk over wat de leerling zelf kan?</small></div></div>
 </div>
 </div>
-<div class="wrap welcome-note"><p><strong>Begin dus niet bij de tool.</strong> Begin bij de vraag wat er geleerd moet worden. Soms kan AI daarna bijna alles doen. En soms zit het leren juist in die ene stap die AI zo makkelijk kan overnemen.</p></div>
+<div class="wrap welcome-shortcuts">
+<a href="#model"><span>Nieuw bij EAI</span><strong>Begrijp het in één voorbeeld</strong><b>Start →</b></a>
+<a href="/werkvormen/"><span>Voor je volgende les</span><strong>Kies een passende werkvorm</strong><b>Aan de slag →</b></a>
+<a href="/verdieping/"><span>Verder kijken</span><strong>Onderbouwing, praktijk en publicaties</strong><b>Verdiep →</b></a>
+</div>
 </section>
 
 <section class="section model-intro" id="model"><div class="wrap hero-grid">
@@ -944,6 +1328,18 @@ def build(scrape: Path, out: Path) -> None:
 </main>'''
 
     write(out, "index.html", doc("EAI model voor AI en leren", home_body, "/", "model", description="EAI helpt bepalen welke menselijke handeling in een leer- of professioneel proces betekenis moet houden wanneer AI meedoet."))
+
+    verdieping_body = '''<main>
+<section class="page-hero"><div class="wrap"><div class="eyebrow">Verdieping</div><h1>Wil je verder dan de werkvorm?</h1><p class="lede">Hier vind je de onderbouwing, publicaties, praktijkvoorbeelden en tools achter EAI. Kies wat je nodig hebt; je hoeft niet alles te lezen om met EAI te kunnen werken.</p></div></section>
+<section class="section"><div class="wrap"><div class="depth-grid">
+<a class="depth-card depth-card--wide" href="/onderbouwing/"><span>Onderbouwing</span><h2>Waar rust EAI op?</h2><p>Didactiek, leerpsychologie, pedagogiek, professioneel oordeel en recent AI-onderzoek. Met expliciete grenzen aan wat EAI wel en niet claimt.</p><b>Bekijk de onderbouwing →</b></a>
+<a class="depth-card" href="/publicaties/"><span>Publicaties & media</span><h2>Lees, kijk en luister verder.</h2><p>Eigen EAI-publicaties, externe bijdragen, podcast en video.</p><b>Naar publicaties →</b></a>
+<a class="depth-card" href="/praktijk/"><span>Praktijk</span><h2>Wat gebeurt er als je het bouwt?</h2><p>Live demonstrators en toepassingen waarin dezelfde ontwerpvragen terugkomen.</p><b>Bekijk de praktijk →</b></a>
+<a class="depth-card" href="/tools/"><span>Tools</span><h2>Van vraag naar ontwerp.</h2><p>Toepassingen die helpen bij analyse, prompts, eigenaarschap en lesontwerp.</p><b>Bekijk de tools →</b></a>
+<a class="depth-card" href="/twee-pijlers/"><span>Achter het model</span><h2>Waarom leren én AI?</h2><p>De twee kennisgebieden die je nodig hebt om niet alleen over technologie te praten.</p><b>Lees de twee pijlers →</b></a>
+</div></div></section>
+</main>'''
+    write(out, "verdieping/index.html", doc("Verdieping", verdieping_body, "/verdieping/", "verdieping", "Onderbouwing, publicaties, praktijk en tools achter het EAI-model."))
 
     pillars_body = '''<main><section class="page-hero"><div class="wrap"><div class="eyebrow">Twee pijlers</div><h1>Je hebt beide nodig om goede keuzes te maken.</h1><p class="lede">De ene pijler gaat over leren. De andere over de technologie die steeds meer stappen kan uitvoeren. Het onderwijskundige ontwerp ontstaat waar die twee kennisgebieden elkaar raken.</p></div></section>
 <section class="section"><div class="wrap"><figure class="pdf-figure pillar-visual" aria-label="Twee pijlers die samenkomen in de ontwerpvraag"><svg viewBox="0 0 560 220" role="img"><g class="stroke"><rect x="105" y="58" width="82" height="112"/><path d="M126 93c14-10 25 10 39 0M126 113c14-10 25 10 39 0M126 133c14-10 25 10 39 0"/><rect x="373" y="58" width="82" height="112"/><rect x="396" y="92" width="36" height="36"/><path d="M396 100h-12M396 110h-12M396 120h-12M396 130h-12M432 100h12M432 110h12M432 120h12M432 130h12"/></g><path class="dash" d="M187 91c42 0 57 37 83 62M373 91c-42 0-57 37-83 62"/><circle class="accent-fill" cx="280" cy="164" r="8"/></svg><figcaption>De ontwerpvraag ontstaat niet in één pijler, maar precies waar leren en AI elkaar raken.</figcaption></figure></div></section>
@@ -1020,23 +1416,23 @@ def build(scrape: Path, out: Path) -> None:
     write(out, "werkvormen/index.html", doc("EAI Toolbox", workforms_body, "/werkvormen/", "werkvormen", "EAI-werkvormen om menselijk handelen, taakverdeling, bewijs en zelfstandigheid zichtbaar te maken."))
 
     jm_body = '''<main><section class="page-hero"><div class="wrap"><div class="eyebrow">Werkvorm · Workshop AI</div><h1>Keuzes verantwoorden</h1><p class="workform-technical-name detail">EAI-term: Justification Mapping</p><p class="lede">AI kan een formulering, argument of route voorstellen. De vraag is vervolgens niet alleen wat de leerling overneemt, maar waarom hij dat doet.</p></div></section><section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Waarvoor?</div><div><h2>Niet alleen laten zien dát er een keuze is gemaakt.</h2><p>De werkvorm richt zich op de grens tussen AI-assistentie en menselijk begrip. Een leerling kan een AI-suggestie aanpassen zonder de inhoudelijke afweging zelf te hebben gemaakt. Daarom wordt juist de rationale zichtbaar.</p></div></div><figure class="pdf-figure" aria-label="Justification Mapping van AI-suggestie naar menselijke verantwoording"><svg viewBox="0 0 760 220" role="img"><g class="stroke"><rect x="70" y="74" width="130" height="70" rx="4"/><rect x="315" y="50" width="130" height="70" rx="4"/><rect x="315" y="130" width="130" height="70" rx="4"/><rect x="560" y="74" width="130" height="70" rx="4"/></g><path class="dash" d="M200 109h115M445 85h115M445 165c58 0 72-26 115-45"/><circle class="accent-fill" cx="258" cy="109" r="8"/><text x="135" y="114" text-anchor="middle" font-size="14" fill="#687487">AI-suggestie</text><text x="380" y="92" text-anchor="middle" font-size="14" fill="#687487">accepteren</text><text x="380" y="172" text-anchor="middle" font-size="14" fill="#687487">verwerpen / wijzigen</text><text x="625" y="114" text-anchor="middle" font-size="14" fill="#687487">waarom?</text></svg><figcaption>Niet alleen vastleggen wat veranderde, maar zichtbaar maken waarom de leerling iets overnam, verwierp of herschreef.</figcaption></figure><div class="panel"><h3>Breng één AI-ondersteunde keuze in kaart</h3><ol><li><strong>Suggestie:</strong> wat stelde AI voor?</li><li><strong>Accepteren:</strong> wat heb je overgenomen?</li><li><strong>Verwerpen:</strong> wat heb je bewust niet gebruikt?</li><li><strong>Waarom:</strong> welke inhoudelijke reden lag achter beide keuzes?</li><li><strong>Eigen wijziging:</strong> wat heb je zelf toegevoegd, veranderd of opnieuw opgebouwd?</li><li><strong>Verdedigen:</strong> kun je de uiteindelijke keuze zonder het systeem uitleggen en onderbouwen?</li></ol></div></div></section><section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Belangrijk onderscheid</div><div><h2>Dit is procesverantwoording rond AI-assistentie.</h2><p>Binnen deze workshop is Justification Mapping geen algemene methodekeuzekaart. Het doel is zichtbaar maken waar een AI-bijdrage ophoudt en de inhoudelijke afweging van de leerling begint.</p></div></div><p><a class="button" href="https://eai-prompt.lovable.app/" target="_blank" rel="noopener">Bekijk in Prompt Builder hoe de AI-rol wordt gestuurd</a></p></div></section></main>'''
-    write(out, "werkvormen/justification-mapping/index.html", doc("Keuzes verantwoorden", enrich_manual_workform(jm_body, workforms_by_slug["justification-mapping"]), "/werkvormen/justification-mapping/", "werkvormen", "Justification Mapping als EAI-werkvorm voor zichtbare keuzes en procesverantwoording."))
+    write(out, "werkvormen/justification-mapping/index.html", doc("Keuzes verantwoorden", enrich_manual_workform(jm_body, workforms_by_slug["justification-mapping"], workforms), "/werkvormen/justification-mapping/", "werkvormen", "Justification Mapping als EAI-werkvorm voor zichtbare keuzes en procesverantwoording."))
     core_action_body = '''<main><section class="page-hero"><div class="wrap"><div class="eyebrow">Werkvorm</div><h1>Kernhandeling-check</h1><p class="lede">Aan welke stap moet de leerling in deze fase zelf inhoudelijke betekenis geven om tot leren te komen? Dat is de kernhandeling waar deze werkvorm naar zoekt.</p></div></section><section class="section"><div class="wrap"><div class="panel"><h3>Werk van buiten naar binnen</h3><ol><li><strong>Proces:</strong> wat moet uiteindelijk geleerd, beheerst of professioneel beoordeeld worden?</li><li><strong>Fase:</strong> waar bevindt de leerling zich nu in dat leren?</li><li><strong>Handelingen:</strong> welke stappen worden hier uitgevoerd?</li><li><strong>Kernhandeling:</strong> aan welke stap moet de leerling hier zelf inhoudelijke betekenis geven?</li><li><strong>AI-check:</strong> voert AI precies die handeling uit, ondersteunt het eromheen, of doet het iets anders?</li><li><strong>Evidence:</strong> wat moet zichtbaar zijn als je later iets over menselijke beheersing of professioneel oordeel wilt zeggen?</li></ol></div></div></section><section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Test</div><div><h2>Haal de AI-bijdrage denkbeeldig weg.</h2><p>Verdwijnt daarmee alleen routinewerk, of verdwijnt de stap waaraan de leerling juist zelf betekenis moest geven? Dat onderscheid bepaalt de volgende ontwerpkeuze.</p></div></div><p><a href="/publicaties/de-vraag-die-we-vergeten/">Lees de redenering achter deze vraag →</a></p></div></section></main>'''
-    write(out, "werkvormen/kernhandeling-check/index.html", doc("Kernhandeling-check", enrich_manual_workform(core_action_body, workforms_by_slug["kernhandeling-check"]), "/werkvormen/kernhandeling-check/", "werkvormen", "Bepaal eerst aan welke stap de leerling in deze fase zelf inhoudelijke betekenis moet geven."))
+    write(out, "werkvormen/kernhandeling-check/index.html", doc("Kernhandeling-check", enrich_manual_workform(core_action_body, workforms_by_slug["kernhandeling-check"], workforms), "/werkvormen/kernhandeling-check/", "werkvormen", "Bepaal eerst aan welke stap de leerling in deze fase zelf inhoudelijke betekenis moet geven."))
     td_body = '''<main><section class="page-hero"><div class="wrap"><div class="eyebrow">Werkvorm</div><h1>Wie doet welk werk?</h1><p class="workform-technical-name detail">EAI-term: Task Density Map</p><p class="lede">Niet hoeveel AI er wordt gebruikt is de kern. Kijk per stap wie het werk uitvoert en of AI juist de kernhandeling van deze fase overneemt.</p></div></section><section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Stap 1</div><div><h2>Neem één concrete opdracht.</h2><p>Schrijf niet “AI bij Nederlands” op. Kies één taak waarin een leerling iets moet leren of laten zien.</p></div></div><figure class="pdf-figure" aria-label="Task Density verdeelt handelingen tussen mens en AI"><svg viewBox="0 0 720 230" role="img"><g class="stroke"><circle cx="145" cy="70" r="24"/><path d="M105 155c7-34 23-50 40-50s33 16 40 50"/><rect x="535" y="52" width="72" height="58" rx="4"/><path d="M553 52v-10M571 52v-10M589 52v-10M553 110v10M571 110v10M589 110v10"/></g><path class="dash" d="M200 95h310"/><circle class="accent-fill" cx="285" cy="95" r="7"/><circle class="accent-fill" cx="430" cy="95" r="7"/><text x="145" y="195" text-anchor="middle" font-size="14" fill="#687487">mens</text><text x="570" y="195" text-anchor="middle" font-size="14" fill="#687487">AI</text><text x="360" y="135" text-anchor="middle" font-size="14" fill="#687487">welke handelingen verschuiven?</text></svg><figcaption>Task Density gaat niet om “hoeveel AI”, maar om welke relevante handelingen van actor veranderen.</figcaption></figure><div class="panel"><h3>Maak een kaart van de werkelijke handelingen</h3><ol><li>Ontleed de fase in concrete handelingen en deelhandelingen.</li><li>Noteer per handeling: mens, AI, gedeeld of nog onbekend.</li><li>Beschrijf wanneer AI in beeld komt: vóór, tijdens of na de kernhandeling.</li><li>Noteer welke opties, criteria of routes AI al heeft geselecteerd voordat de mens reageert.</li><li>Bekijk daarna welke menselijke handelingen verdwijnen, verschuiven of een andere betekenis krijgen.</li></ol><p>Gebruik werkwoorden die passen bij de concrete taak. Structureren, formuleren, controleren, kiezen, herzien en verantwoorden zijn voorbeelden, geen vaste checklist.</p></div></div></section><section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Stap 2</div><div><h2>Zoek de handeling die ertoe doet.</h2><p>Welke van deze handelingen moet in deze fase door de leerling zelf inhoudelijke betekenis krijgen? Dat is belangrijker dan een totaalpercentage.</p></div></div><div class="panel"><h3>De beslisvraag</h3><p>Als AI deze handeling uitvoert, wat kan ik daarna nog betrouwbaar zeggen over het leren van de leerling?</p></div></div></section></main>'''
-    write(out, "werkvormen/task-density-scan/index.html", doc("Wie doet welk werk?", enrich_manual_workform(td_body, workforms_by_slug["task-density-scan"]), "/werkvormen/task-density-scan/", "werkvormen", "Analyseer wie welk denkwerk uitvoert in een AI-ondersteunde taak."))
+    write(out, "werkvormen/task-density-scan/index.html", doc("Wie doet welk werk?", enrich_manual_workform(td_body, workforms_by_slug["task-density-scan"], workforms), "/werkvormen/task-density-scan/", "werkvormen", "Analyseer wie welk denkwerk uitvoert in een AI-ondersteunde taak."))
 
     evidence_body = '''<main><section class="page-hero"><div class="wrap"><div class="eyebrow">Werkvorm</div><h1>Bewijs van leren</h1><p class="lede">Een goed eindproduct is bewijs van een goed eindproduct. Het is niet automatisch bewijs dat de onderliggende handeling zelfstandig beheerst wordt.</p></div></section><section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Kies bewust</div><div><h2>Wat wil je eigenlijk kunnen beweren?</h2><p>Lukt het mét hulp? Kan de leerling dezelfde handeling daarna zelfstandig uitvoeren? Kan hij dat later nog? En in een andere situatie?</p></div></div><figure class="pdf-figure" aria-label="Een goed product is niet automatisch bewijs van leren"><svg viewBox="0 0 720 220" role="img"><g class="stroke"><rect x="90" y="65" width="120" height="92"/><path d="M112 92h75M112 112h62M112 132h69"/><circle cx="580" cy="76" r="23"/><path d="M540 162c7-34 23-50 40-50s33 16 40 50"/></g><path class="dash" d="M210 111h116M394 111h146"/><circle class="accent-fill" cx="360" cy="111" r="8"/><text x="150" y="192" text-anchor="middle" font-size="14" fill="#687487">product</text><text x="360" y="192" text-anchor="middle" font-size="14" fill="#687487">≠ automatisch</text><text x="580" y="192" text-anchor="middle" font-size="14" fill="#687487">menselijke beheersing</text></svg><figcaption>Output kan goed zijn terwijl nog onduidelijk is wat de leerling zelfstandig kan uitvoeren.</figcaption></figure><div class="panel"><h3>Drie soorten bewijs</h3><ul><li><strong>Outputbewijs:</strong> laat zien wat is geproduceerd, maar niet vanzelf wie het relevante werk uitvoerde.</li><li><strong>Procesbewijs:</strong> laat keuzes, eerste pogingen, wijzigingen, controles en uitleg zien.</li><li><strong>Zelfstandig bewijs:</strong> laat een nieuwe of vergelijkbare uitvoering zien zonder de relevante AI-bijdrage.</li></ul><p>Wil je weten of de leerling het later nog kan, of ook in een andere situatie? Dan heb je opnieuw passend bewijs nodig. Begin dus steeds bij de vraag wat je werkelijk over het leren wilt kunnen zeggen.</p></div></div></section></main>'''
-    write(out, "werkvormen/bewijs-van-leren/index.html", doc("Bewijs van leren", enrich_manual_workform(evidence_body, workforms_by_slug["bewijs-van-leren"]), "/werkvormen/bewijs-van-leren/", "werkvormen", "Kies bewijs dat past bij wat je over het leren van de leerling wilt kunnen zeggen."))
+    write(out, "werkvormen/bewijs-van-leren/index.html", doc("Bewijs van leren", enrich_manual_workform(evidence_body, workforms_by_slug["bewijs-van-leren"], workforms), "/werkvormen/bewijs-van-leren/", "werkvormen", "Kies bewijs dat past bij wat je over het leren van de leerling wilt kunnen zeggen."))
 
     first_body = '''<main><section class="page-hero"><div class="wrap"><div class="eyebrow">Werkvorm</div><h1>Eerste poging en versie vergelijken</h1><p class="workform-technical-name detail">EAI-term: First Attempt &amp; Version Comparison</p><p class="lede">Laat eerst iets van de leerling zelf ontstaan. Vergelijk daarna wat met hulp veranderde en vraag waar de leerling zelf betekenis gaf.</p></div></section><section class="section"><div class="wrap"><div class="panel"><h3>Zo werkt het</h3><ol><li>Laat de leerling een korte eerste poging maken zonder AI.</li><li>Gebruik daarna AI voor een vooraf afgesproken vorm van ondersteuning.</li><li>Bewaar beide versies.</li><li>Laat de leerling drie veranderingen aanwijzen.</li><li>Vraag per verandering: wie stelde dit voor, waarom heb je het overgenomen of verworpen, en wat begrijp je nu anders?</li></ol><p>Het doel is niet bewijzen dat de leerling “zonder AI” werkte. Het doel is zichtbaar maken wat vóór en na ondersteuning door de leerling zelf is gedaan.</p></div></div></section></main>'''
-    write(out, "werkvormen/first-attempt/index.html", doc("Eerste poging en versie vergelijken", enrich_manual_workform(first_body, workforms_by_slug["first-attempt"]), "/werkvormen/first-attempt/", "werkvormen", "Vergelijk een eerste eigen poging met een latere AI-ondersteunde versie."))
+    write(out, "werkvormen/first-attempt/index.html", doc("Eerste poging en versie vergelijken", enrich_manual_workform(first_body, workforms_by_slug["first-attempt"], workforms), "/werkvormen/first-attempt/", "werkvormen", "Vergelijk een eerste eigen poging met een latere AI-ondersteunde versie."))
 
     error_body = '''<main><section class="page-hero"><div class="wrap"><div class="eyebrow">Werkvorm</div><h1>Foutanalyse</h1><p class="lede">Een fout verbeteren is iets anders dan een fout herkennen, lokaliseren en verklaren.</p></div></section><section class="section"><div class="wrap"><div class="panel"><h3>Geef niet meteen de oplossing</h3><ol><li>Geef een foutieve redenering, eventueel door AI gegenereerd.</li><li>Laat de leerling aanwijzen waar het voor het eerst misgaat.</li><li>Laat uitleggen waarom die stap niet klopt.</li><li>Vraag wat er vanaf dat punt moet veranderen.</li><li>Laat pas daarna een volledige verbeterde versie maken.</li></ol><p>De kernhandeling ligt bij diagnosticeren en herstellen. AI kan materiaal leveren, maar hoeft het oordeel niet alvast te geven.</p></div></div></section></main>'''
-    write(out, "werkvormen/foutanalyse/index.html", doc("Foutanalyse", enrich_manual_workform(error_body, workforms_by_slug["foutanalyse"]), "/werkvormen/foutanalyse/", "werkvormen", "Werkvorm voor zichtbaar diagnosticeren en herstellen van fouten."))
+    write(out, "werkvormen/foutanalyse/index.html", doc("Foutanalyse", enrich_manual_workform(error_body, workforms_by_slug["foutanalyse"], workforms), "/werkvormen/foutanalyse/", "werkvormen", "Werkvorm voor zichtbaar diagnosticeren en herstellen van fouten."))
 
     toollab_body = '''<main><section class="page-hero"><div class="wrap"><div class="eyebrow">Workshop AI · Toollab</div><h1>Dezelfde vraag, twee omgevingen.</h1><p class="lede">Niet elke AI-omgeving krijgt dezelfde context. Dat verandert wat het systeem kan aannemen, onderbouwen en teruggeven.</p></div></section><section class="section"><div class="wrap"><div class="panel"><h3>Werk in tweetallen</h3><ol><li>Kies een realistische leerlingvraag uit je eigen vak.</li><li>Voer die zonder extra context in een algemene AI in.</li><li>Noteer aannames, gaten en sterke punten in de output.</li><li>Gebruik daarna een brongebonden omgeving en voeg twee tot vier relevante bronnen toe.</li><li>Stel exact dezelfde vraag.</li><li>Vergelijk wat verandert en wat níet wordt opgelost door extra bronnen.</li></ol><p>De opbrengst is niet “welke tool wint?”, maar begrip van wat context, bronnen en systeeminrichting doen met het antwoord.</p></div></div></section></main>'''
-    write(out, "werkvormen/toollab/index.html", doc("Toollab", enrich_manual_workform(toollab_body, workforms_by_slug["toollab"]), "/werkvormen/toollab/", "werkvormen", "Vergelijk een algemene AI met een brongebonden omgeving."))
+    write(out, "werkvormen/toollab/index.html", doc("Toollab", enrich_manual_workform(toollab_body, workforms_by_slug["toollab"], workforms), "/werkvormen/toollab/", "werkvormen", "Vergelijk een algemene AI met een brongebonden omgeving."))
 
     for item in workforms:
         if item["slug"] in MANUAL_WORKFORMS:
@@ -1046,7 +1442,7 @@ def build(scrape: Path, out: Path) -> None:
             f'werkvormen/{item["slug"]}/index.html',
             doc(
                 item.get("public_title", item["title"]),
-                render_catalog_workform(item),
+                render_catalog_workform(item, workforms),
                 f'/werkvormen/{item["slug"]}/',
                 "werkvormen",
                 item["summary"],
@@ -1169,7 +1565,7 @@ def build(scrape: Path, out: Path) -> None:
     not_found = '<main><section class="page-hero"><div class="wrap"><div class="eyebrow">404</div><h1>Deze pagina is er niet meer.</h1><p class="lede">De oude Google-site bevatte ook een paar dode links. Ga terug naar de publicaties of tools.</p><div class="button-row"><a class="button" href="/publicaties/">Publicaties</a><a class="button secondary" href="/tools/">Tools</a></div></div></section></main>'
     write(out, "404.html", doc("Niet gevonden", not_found, "/404.html"))
     write(out, "robots.txt", "User-agent: *\nAllow: /\nSitemap: https://eaimodel.nl/sitemap.xml\n")
-    urls = ["/", "/twee-pijlers/", "/workshop-ai/", "/werkvormen/", "/onderbouwing/", "/praktijk/", "/publicaties/", "/publicaties/de-vraag-die-we-vergeten/", "/tools/", "/over/", "/eaa-model/", "/onderwijsin/"] + [f"/werkvormen/{item['slug']}/" for item in workforms] + [f"/publicaties/{slug}/" for slug, _, _, _ in PUBLICATIONS] + ["/tools/beyond-explainability/"]
+    urls = ["/", "/twee-pijlers/", "/workshop-ai/", "/werkvormen/", "/verdieping/", "/onderbouwing/", "/praktijk/", "/publicaties/", "/publicaties/de-vraag-die-we-vergeten/", "/tools/", "/over/", "/eaa-model/", "/onderwijsin/"] + [f"/werkvormen/{item['slug']}/" for item in workforms] + [f"/publicaties/{slug}/" for slug, _, _, _ in PUBLICATIONS] + ["/tools/beyond-explainability/"]
     items = "".join(f"<url><loc>{BASE_URL}{path}</loc></url>" for path in urls)
     write(out, "sitemap.xml", f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{items}</urlset>')
 
