@@ -9,6 +9,7 @@ on:
       - workforms-toolbox
       - workforms-professional-judgement
       - workforms-visual-support
+      - site-v3-cohesion
       - workforms-toolbox-phase2
     paths:
       - '.github/workflows/scrape-google-site.yml'
