@@ -89,6 +89,52 @@ WORKFORM_INTENTS = [
     ("make-visible", "Keuzes en proces zichtbaar maken", "Ik wil zien wat de leerling met een AI-bijdrage deed en waarom."),
 ]
 
+
+PRIMARY_WORKFORM_ROUTES = [
+    {
+        "key": "diagnose",
+        "title": "Ik wil zien waar het misgaat",
+        "description": "Eerst begrijpen waar een leerling vastloopt voordat je hulp kiest.",
+        "intents": ["diagnose"],
+        "featured": ["find-my-impasse", "first-breakdown", "discriminating-probe", "foutanalyse"],
+    },
+    {
+        "key": "support",
+        "title": "Ik wil helpen zonder het over te nemen",
+        "description": "Geef precies genoeg steun zodat de leerling zelf verder kan.",
+        "intents": ["support", "feedback"],
+        "featured": ["least-intrusive-support", "eliciting-question", "feedback-without-rewrite", "model-then-reperform"],
+    },
+    {
+        "key": "independent",
+        "title": "Ik wil weten wat de leerling zelf kan",
+        "description": "Geef de handeling terug en kijk wat zonder dezelfde inhoudelijke hulp lukt.",
+        "intents": ["independent", "return", "retention-transfer"],
+        "featured": ["controlled-detachment", "hand-back-the-action", "fresh-item-same-operation", "delayed-reperformance"],
+    },
+    {
+        "key": "visible",
+        "title": "Ik wil keuzes en AI-gebruik zichtbaar maken",
+        "description": "Zie wat de leerling zelf koos, veranderde, controleerde of verwierp.",
+        "intents": ["make-visible", "selfreg", "argument"],
+        "featured": ["first-attempt", "justification-mapping", "trace-back-prompting", "accept-adapt-reject"],
+    },
+    {
+        "key": "redesign",
+        "title": "Ik wil een taak of toets anders ontwerpen",
+        "description": "Bepaal opnieuw wat de leerling doet, wat AI doet en welk bewijs je nodig hebt.",
+        "intents": ["redesign", "orient"],
+        "featured": ["kernhandeling-check", "task-density-scan", "ai-role-handback-plan", "assessment-redesign"],
+    },
+    {
+        "key": "professional",
+        "title": "Ik wil mijn professionele oordeel zelf vormen",
+        "description": "Houd observatie, interpretatie, leerlingstem en besluit uit elkaar.",
+        "intents": ["professional"],
+        "featured": ["observation-vs-inference", "reconstruct-professional-judgement", "learner-voice-check", "proportionate-follow-up"],
+    },
+]
+
 WORKFORM_MECHANISMS = {
     "analyse": {
         "title": "Eerst het leren en de taak begrijpen",
@@ -173,119 +219,250 @@ def render_route(route: list[str]) -> str:
         parts.append(f'<span class="route-chip{state}">{esc(WORKFORM_ROUTE_LABELS[key])}</span>')
     return '<div class="eai-route" aria-label="Plaats in de EAI-kijkvorm">' + "".join(parts) + "</div>"
 
+def render_toolbox_card(item: dict) -> str:
+    action = item.get("action_layer", {})
+    verbs = action.get("verbs", {})
+    teacher = verbs.get("teacher", [])[:3]
+    learner = verbs.get("learner", [])[:3]
+    intents = " ".join(action.get("intents", []))
+    evidence = " ".join(item.get("evidence", []))
+    audience = " ".join(item.get("audience", []))
+    public_title = item.get("public_title", item["title"])
+    search_parts = [
+        public_title,
+        item.get("title", ""),
+        item.get("summary", ""),
+        item.get("question", ""),
+        " ".join(teacher),
+        " ".join(learner),
+        item.get("category", ""),
+    ]
+    search_text = " ".join(search_parts).lower()
+    teacher_chain = '<span class="action-arrow">→</span>'.join(f'<b>{esc(value)}</b>' for value in teacher)
+    learner_chain = '<span class="action-arrow">→</span>'.join(f'<b>{esc(value)}</b>' for value in learner)
+    return (
+        f'<article class="toolbox-result-card" data-workform-card data-slug="{esc(item["slug"])}" '
+        f'data-category="{esc(item["category"])}" data-audience="{esc(audience)}" '
+        f'data-evidence="{esc(evidence)}" data-intents="{esc(intents)}" data-search="{esc(search_text)}">'
+        f'<div class="toolbox-result-top"><span class="toolbox-result-kicker">Werkvorm</span>'
+        f'<button type="button" class="save-workform" data-save-slug="{esc(item["slug"])}" aria-pressed="false">Bewaar</button></div>'
+        f'<h3>{esc(public_title)}</h3><p class="toolbox-result-summary">{esc(item["summary"])}</p>'
+        f'<div class="toolbox-result-actions">'
+        f'<div><span>Docent</span><p>{teacher_chain}</p></div>'
+        f'<div><span>Leerling</span><p>{learner_chain}</p></div>'
+        f'</div>'
+        f'<a class="toolbox-result-link" href="/werkvormen/{esc(item["slug"])}/">Bekijk hoe →</a>'
+        f'</article>'
+    )
+
 def render_workforms_index(items: list[dict]) -> str:
-    cards_by_category = {key: [] for key, _, _ in WORKFORM_CATEGORIES}
-    for item in items:
-        audience = " ".join(item.get("audience", []))
-        evidence = " ".join(item.get("evidence", []))
-        action = item.get("action_layer", {})
-        intents = " ".join(action.get("intents", []))
-        audience_labels = " · ".join(WORKFORM_AUDIENCE_LABELS.get(value, value) for value in item.get("audience", []))
-        evidence_labels = " · ".join(WORKFORM_EVIDENCE_LABELS.get(value, value) for value in item.get("evidence", []))
-        public_title = item.get("public_title", item["title"])
-        technical = item["title"] if public_title != item["title"] else ""
-        technical_html = f'<div class="workform-technical-name">{esc(technical)}</div>' if technical else ""
-        card = (
-            f'<article class="toolbox-card" data-workform-card data-category="{esc(item["category"])}" '
-            f'data-audience="{esc(audience)}" data-evidence="{esc(evidence)}" data-intents="{esc(intents)}">'
-            f'<div class="toolbox-card-meta"><span>{esc(audience_labels)}</span><span>{esc(evidence_labels)}</span></div>'
-            f'<h3>{esc(public_title)}</h3>{technical_html}<p>{esc(item["summary"])}</p>'
-            f'<a class="toolbox-link" href="/werkvormen/{esc(item["slug"])}/">Wat doe ik? →</a></article>'
-        )
-        cards_by_category[item["category"]].append(card)
+    item_by_slug = {item["slug"]: item for item in items}
+    cards = "".join(render_toolbox_card(item) for item in items)
 
-    sections = []
-    for key, title, description in WORKFORM_CATEGORIES:
-        sections.append(
-            f'<section class="toolbox-category" id="{esc(key)}" data-toolbox-group>'
-            f'<div class="toolbox-category-head"><div><div class="kicker">Werkvormen</div><h2>{esc(title)}</h2></div>'
-            f'<p>{esc(description)}</p></div><div class="toolbox-grid">{"".join(cards_by_category[key])}</div></section>'
-        )
-
-    intent_buttons = "".join(
-        f'<button type="button" class="toolbox-intent" data-intent-choice="{esc(key)}" aria-pressed="false">'
-        f'<strong>{esc(title)}</strong><span>{esc(description)}</span></button>'
-        for key, title, description in WORKFORM_INTENTS
+    route_buttons = "".join(
+        f'<button type="button" class="toolbox-route" data-route-key="{esc(route["key"])}" '
+        f'data-route-intents="{esc(" ".join(route["intents"]))}" '
+        f'data-route-featured="{esc(" ".join(route["featured"]))}" aria-pressed="false">'
+        f'<span>{idx:02d}</span><strong>{esc(route["title"])}</strong><small>{esc(route["description"])}</small></button>'
+        for idx, route in enumerate(PRIMARY_WORKFORM_ROUTES, start=1)
     )
 
     return f'''<main>
-<section class="page-hero"><div class="wrap"><div class="eyebrow">Werkvormen</div><h1>Wat wil je dat er in je les gebeurt?</h1><p class="lede">Je hoeft de namen van 57 werkvormen niet te kennen. Pak één concrete situatie en kies hieronder wat je wilt bereiken. Dan blijven alleen de werkvormen over die daarbij kunnen helpen.</p></div></section>
+<section class="page-hero toolbox-hero"><div class="wrap"><div class="eyebrow">Werkvormen</div><h1>Waar wil je in je les mee verder?</h1><p class="lede">Kies een situatie die je herkent. Je krijgt eerst een paar passende werkvormen. De volledige bibliotheek blijft beschikbaar als je verder wilt zoeken.</p></div></section>
+
 <section class="section toolbox-start"><div class="wrap">
-<div class="toolbox-example-intro"><div><div class="kicker">Begin met je eigen situatie</div><h2>Wat moet de leerling hier zelf doen?</h2><p>Neem een opdracht die je morgen geeft. Wat moet de leerling leren? Waar bevindt hij zich nu in dat leren? Aan welke stap moet hij hier zelf inhoudelijke betekenis geven? En wat doet AI precies op die plek? Je hoeft die analyse niet perfect af te hebben voordat je begint.</p></div><div class="toolbox-example-path"><span>Proces</span><span>Fase</span><span>Kernhandeling</span><span>Wat doet AI?</span><span>Wat wil je nu doen?</span></div></div>
+<div class="toolbox-situation">
+<div><div class="kicker">Pak één echte les of opdracht</div><h2>Wat moet de leerling hier zelf doen?</h2><p>Wat moet er geleerd worden? Waar zit de leerling nu? Welke stap moet hij zelf zetten? En wat doet AI precies op die plek?</p></div>
+<div class="toolbox-situation-path" aria-label="EAI-kijkroute"><span>leren</span><b>→</b><span>fase</span><b>→</b><span>kernhandeling</span><b>→</b><span>AI</span></div>
+</div>
 
-<div class="toolbox-intro"><div><div class="kicker">Kies je volgende handeling</div><h2>Waar wil je mee verder?</h2></div><p>Dit is de gewone route voor docenten. De filters en de volledige bibliotheek staan daaronder voor wie al preciezer weet wat hij zoekt.</p></div>
-<div class="toolbox-intent-grid" aria-label="Kies wat je wilt laten gebeuren">{intent_buttons}</div>
-<div class="toolbox-intent-state"><span id="toolbox-intent-label">Alle werkvormen</span><button type="button" id="toolbox-intent-clear" hidden>Wis keuze</button></div>
+<div class="toolbox-route-head"><div><div class="kicker">Kies wat je nodig hebt</div><h2>Welke situatie herken je?</h2></div><p>Je hoeft geen EAI-term te kennen. Klik op wat je als docent probeert te bereiken.</p></div>
+<div class="toolbox-route-grid" aria-label="Kies een onderwijssituatie">{route_buttons}</div>
 
-<details class="toolbox-advanced"><summary>Verder filteren</summary>
-<div class="toolbox-filters" aria-label="Filter werkvormen">
-<label>Thema<select data-toolbox-filter="category"><option value="all">Alle thema's</option>{''.join(f'<option value="{esc(key)}">{esc(title)}</option>' for key,title,_ in WORKFORM_CATEGORIES)}</select></label>
+<section class="toolbox-results" id="resultaten" aria-live="polite">
+<div class="toolbox-results-head"><div><div class="kicker">Passende werkvormen</div><h2 id="toolbox-result-title">Kies hierboven een situatie</h2><p id="toolbox-result-copy">Dan verschijnen hier eerst vier werkvormen die daar goed bij aansluiten.</p></div>
+<div class="toolbox-results-tools">
+<label class="toolbox-search"><span>Zoek</span><input id="toolbox-search" type="search" placeholder="Bijv. feedback, bron, vastlopen…" autocomplete="off"></label>
+<button type="button" id="toolbox-show-saved">Bewaard <span id="saved-count">0</span></button>
+</div></div>
+<div class="toolbox-results-grid" id="toolbox-results-grid"></div>
+<div class="toolbox-results-footer">
+<button type="button" class="button secondary" id="toolbox-show-more" hidden>Toon alle passende werkvormen</button>
+<button type="button" class="text-button" id="toolbox-clear-route" hidden>Wis keuze</button>
+</div>
+<p class="toolbox-empty" id="toolbox-empty" hidden>Hier vind ik nu geen passende werkvorm. Probeer een ander woord of wis je keuze.</p>
+</section>
+
+<details class="toolbox-library" id="alle-werkvormen">
+<summary>Alle 57 werkvormen bekijken</summary>
+<div class="toolbox-library-tools">
+<p>Voor wie al weet wat hij zoekt. Gebruik zoeken of de extra filters.</p>
+<div class="toolbox-filters" aria-label="Filter alle werkvormen">
 <label>Voor wie<select data-toolbox-filter="audience"><option value="all">Iedereen</option><option value="learner">Leerling</option><option value="teacher">Docent</option><option value="team">Team</option></select></label>
-<label>Wat wil je daarna weten?<select data-toolbox-filter="evidence"><option value="all">Alles</option><option value="process">Wat er in het proces gebeurde</option><option value="independent">Wat de leerling zelf kan</option><option value="retention">Of het later nog lukt</option><option value="transfer">Of het ergens anders ook lukt</option><option value="design">Hoe je het kunt ontwerpen</option></select></label>
-</div></details>
+<label>Waar kijk je naar?<select data-toolbox-filter="evidence"><option value="all">Alles</option><option value="process">Proces</option><option value="independent">Zelfstandig</option><option value="retention">Later nog</option><option value="transfer">Andere situatie</option><option value="design">Ontwerp</option></select></label>
+</div></div>
+<div class="toolbox-library-grid" id="toolbox-library-grid"></div>
+</details>
 
-<p class="toolbox-count"><strong id="toolbox-count">{len(items)}</strong> passende werkvormen</p>
-<div class="toolbox-groups">{"".join(sections)}</div>
-<p class="toolbox-empty" id="toolbox-empty" hidden>Geen werkvorm combineert deze keuzes. Wis een filter of kies een bredere route.</p>
-<aside class="toolbox-standard-note"><strong>Wil je de laag eronder zien?</strong><p>Op iedere werkvormpagina staat ook welke handelingen bij docent, leerling en AI liggen, welke EAI Standard-werkwoorden erbij horen en op welke didactische of onderzoekslijn de werkvorm aansluit. <a href="/onderbouwing/">Bekijk de onderbouwing →</a></p></aside>
+<div class="toolbox-card-pool" id="toolbox-card-pool" hidden>{cards}</div>
+
+<aside class="toolbox-standard-note"><strong>Waarom staan docent, leerling en AI apart?</strong><p>Omdat precies daar zichtbaar wordt wie de relevante handeling uitvoert. Op de detailpagina staat de concrete uitvoering, de onderbouwing en pas daarna de technische EAI Standard-laag. <a href="/onderbouwing/">Bekijk de onderbouwing →</a></p></aside>
 </div></section>
+
 <script>
 (() => {{
-  const filters = [...document.querySelectorAll('[data-toolbox-filter]')];
-  const cards = [...document.querySelectorAll('[data-workform-card]')];
-  const groups = [...document.querySelectorAll('[data-toolbox-group]')];
-  const intentButtons = [...document.querySelectorAll('[data-intent-choice]')];
-  const clearIntent = document.getElementById('toolbox-intent-clear');
-  const intentLabel = document.getElementById('toolbox-intent-label');
-  const count = document.getElementById('toolbox-count');
+  const sourceCards = [...document.querySelectorAll('#toolbox-card-pool [data-workform-card]')];
+  const routeButtons = [...document.querySelectorAll('[data-route-key]')];
+  const resultGrid = document.getElementById('toolbox-results-grid');
+  const libraryGrid = document.getElementById('toolbox-library-grid');
+  const search = document.getElementById('toolbox-search');
+  const showMore = document.getElementById('toolbox-show-more');
+  const clearRoute = document.getElementById('toolbox-clear-route');
   const empty = document.getElementById('toolbox-empty');
-  let activeIntent = 'all';
+  const resultTitle = document.getElementById('toolbox-result-title');
+  const resultCopy = document.getElementById('toolbox-result-copy');
+  const savedCount = document.getElementById('saved-count');
+  const showSaved = document.getElementById('toolbox-show-saved');
+  const filters = [...document.querySelectorAll('[data-toolbox-filter]')];
+  const STORAGE_KEY = 'eai-saved-workforms-v1';
+  let activeRoute = null;
+  let expanded = false;
+  let savedOnly = false;
 
-  const matches = (card, key, value) => {{
-    if (value === 'all') return true;
-    if (key === 'category') return card.dataset.category === value;
-    return (card.dataset[key] || '').split(' ').includes(value);
+  const readSaved = () => {{
+    try {{ return new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')); }}
+    catch (_) {{ return new Set(); }}
   }};
-
-  const apply = () => {{
-    const values = Object.fromEntries(filters.map(el => [el.dataset.toolboxFilter, el.value]));
-    let visible = 0;
-    cards.forEach(card => {{
-      const intentMatch = activeIntent === 'all' || (card.dataset.intents || '').split(' ').includes(activeIntent);
-      const filterMatch = Object.entries(values).every(([key, value]) => matches(card, key, value));
-      const show = intentMatch && filterMatch;
-      card.hidden = !show;
-      if (show) visible += 1;
-    }});
-    groups.forEach(group => {{
-      group.hidden = ![...group.querySelectorAll('[data-workform-card]')].some(card => !card.hidden);
-    }});
-    count.textContent = String(visible);
-    empty.hidden = visible !== 0;
-  }};
-
-  intentButtons.forEach(button => button.addEventListener('click', () => {{
-    activeIntent = button.dataset.intentChoice;
-    intentButtons.forEach(item => item.setAttribute('aria-pressed', item === button ? 'true' : 'false'));
-    intentLabel.textContent = button.querySelector('strong').textContent;
-    clearIntent.hidden = false;
-    apply();
-    window.setTimeout(() => count.scrollIntoView({{behavior: 'smooth', block: 'center'}}), 50);
-  }}));
-
-  clearIntent.addEventListener('click', () => {{
-    activeIntent = 'all';
-    intentButtons.forEach(item => item.setAttribute('aria-pressed', 'false'));
-    intentLabel.textContent = 'Alle werkvormen';
-    clearIntent.hidden = true;
-    apply();
+  const writeSaved = saved => localStorage.setItem(STORAGE_KEY, JSON.stringify([...saved]));
+  const routeFor = button => ({{
+    key: button.dataset.routeKey,
+    intents: (button.dataset.routeIntents || '').split(' ').filter(Boolean),
+    featured: (button.dataset.routeFeatured || '').split(' ').filter(Boolean),
+    title: button.querySelector('strong').textContent,
+    copy: button.querySelector('small').textContent
   }});
 
-  filters.forEach(el => el.addEventListener('change', apply));
-  apply();
+  const cloneCard = card => {{
+    const clone = card.cloneNode(true);
+    const saved = readSaved();
+    const save = clone.querySelector('[data-save-slug]');
+    if (save) {{
+      const on = saved.has(save.dataset.saveSlug);
+      save.setAttribute('aria-pressed', on ? 'true' : 'false');
+      save.textContent = on ? 'Bewaard' : 'Bewaar';
+    }}
+    return clone;
+  }};
+
+  const matchesFilters = card => filters.every(filter => {{
+    if (filter.value === 'all') return true;
+    return (card.dataset[filter.dataset.toolboxFilter] || '').split(' ').includes(filter.value);
+  }});
+
+  const routeMatches = card => {{
+    if (!activeRoute) return true;
+    const values = (card.dataset.intents || '').split(' ');
+    return activeRoute.intents.some(intent => values.includes(intent));
+  }};
+
+  const searchMatches = card => {{
+    const q = search.value.trim().toLowerCase();
+    return !q || (card.dataset.search || '').includes(q);
+  }};
+
+  const sortForRoute = cards => {{
+    if (!activeRoute) return cards;
+    const order = new Map(activeRoute.featured.map((slug, index) => [slug, index]));
+    return [...cards].sort((a, b) => {{
+      const ar = order.has(a.dataset.slug) ? order.get(a.dataset.slug) : 99;
+      const br = order.has(b.dataset.slug) ? order.get(b.dataset.slug) : 99;
+      return ar - br;
+    }});
+  }};
+
+  const updateSavedCount = () => {{
+    savedCount.textContent = String(readSaved().size);
+  }};
+
+  const render = () => {{
+    const saved = readSaved();
+    let matches = sourceCards.filter(card => routeMatches(card) && searchMatches(card) && matchesFilters(card));
+    if (savedOnly) matches = matches.filter(card => saved.has(card.dataset.slug));
+    matches = sortForRoute(matches);
+
+    resultGrid.innerHTML = '';
+    const visible = expanded || search.value.trim() || savedOnly ? matches : matches.slice(0, 4);
+    visible.forEach(card => resultGrid.appendChild(cloneCard(card)));
+
+    if (!activeRoute && !search.value.trim() && !savedOnly) {{
+      resultTitle.textContent = 'Kies hierboven een situatie';
+      resultCopy.textContent = 'Dan verschijnen hier eerst vier werkvormen die daar goed bij aansluiten.';
+      resultGrid.innerHTML = '';
+    }} else if (savedOnly) {{
+      resultTitle.textContent = 'Jouw bewaarde werkvormen';
+      resultCopy.textContent = matches.length ? 'Deze werkvormen zijn alleen op dit apparaat bewaard.' : 'Je hebt nog geen werkvormen bewaard.';
+    }} else if (activeRoute) {{
+      resultTitle.textContent = activeRoute.title;
+      resultCopy.textContent = activeRoute.copy;
+    }} else {{
+      resultTitle.textContent = 'Zoekresultaten';
+      resultCopy.textContent = matches.length + ' werkvormen gevonden.';
+    }}
+
+    showMore.hidden = !activeRoute || expanded || matches.length <= 4 || !!search.value.trim() || savedOnly;
+    showMore.textContent = 'Toon alle ' + matches.length + ' passende werkvormen';
+    clearRoute.hidden = !activeRoute && !search.value.trim() && !savedOnly;
+    empty.hidden = matches.length !== 0 || (!activeRoute && !search.value.trim() && !savedOnly);
+
+    libraryGrid.innerHTML = '';
+    sourceCards.filter(card => searchMatches(card) && matchesFilters(card)).forEach(card => libraryGrid.appendChild(cloneCard(card)));
+    updateSavedCount();
+  }};
+
+  routeButtons.forEach(button => button.addEventListener('click', () => {{
+    activeRoute = routeFor(button);
+    expanded = false;
+    savedOnly = false;
+    routeButtons.forEach(item => item.setAttribute('aria-pressed', item === button ? 'true' : 'false'));
+    render();
+    document.getElementById('resultaten').scrollIntoView({{behavior:'smooth', block:'start'}});
+  }}));
+
+  search.addEventListener('input', () => {{
+    activeRoute = null;
+    expanded = true;
+    savedOnly = false;
+    routeButtons.forEach(item => item.setAttribute('aria-pressed', 'false'));
+    render();
+  }});
+  filters.forEach(filter => filter.addEventListener('change', render));
+  showMore.addEventListener('click', () => {{ expanded = true; render(); }});
+  clearRoute.addEventListener('click', () => {{
+    activeRoute = null; expanded = false; savedOnly = false; search.value = '';
+    filters.forEach(filter => filter.value = 'all');
+    routeButtons.forEach(item => item.setAttribute('aria-pressed', 'false'));
+    render();
+  }});
+  showSaved.addEventListener('click', () => {{
+    savedOnly = !savedOnly; activeRoute = null; expanded = true; search.value = '';
+    routeButtons.forEach(item => item.setAttribute('aria-pressed', 'false'));
+    showSaved.setAttribute('aria-pressed', savedOnly ? 'true' : 'false');
+    render();
+  }});
+  document.addEventListener('click', event => {{
+    const button = event.target.closest('[data-save-slug]');
+    if (!button) return;
+    const saved = readSaved();
+    const slug = button.dataset.saveSlug;
+    if (saved.has(slug)) saved.delete(slug); else saved.add(slug);
+    writeSaved(saved);
+    render();
+  }});
+  render();
 }})();
 </script>
 </main>'''
+
 
 def render_workform_visual(visual: dict | None) -> str:
     if not visual:
