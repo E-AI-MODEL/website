@@ -1,5 +1,5 @@
 {
-  "version": "1.0",
+  "version": "1.1",
   "workforms": [
     {
       "slug": "eai-kaart",
@@ -778,6 +778,448 @@
       "caution": "Meer controle is niet automatisch beter. De bewijsroute moet passen bij de claim en bij de gevolgen van een foutieve conclusie.",
       "source": "EAI Standard 0.4-candidate · AIS-019 en evidence semantics",
       "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/standard/evidence-types.yaml"
+    },
+    {
+      "slug": "goal-before-task",
+      "title": "Learning Goal Before Task",
+      "category": "zelfregulatie",
+      "audience": [
+        "learner",
+        "teacher"
+      ],
+      "evidence": [
+        "process"
+      ],
+      "summary": "Laat de leerling eerst onderscheiden wat geleerd of verbeterd moet worden van wat alleen afgemaakt moet worden.",
+      "lede": "AI kan heel goed helpen om een taak af te krijgen. Dat betekent nog niet dat de leerling scherp heeft welke vaardigheid of kennis ontwikkeld moet worden.",
+      "question": "Wat probeer ik hier te leren of beter te kunnen, los van het feit dat de taak af moet?",
+      "route": [
+        "proces",
+        "fase",
+        "kernhandeling"
+      ],
+      "steps": [
+        "Laat de leerling eerst de taak in één zin samenvatten.",
+        "Vraag daarna wat er door deze taak geleerd, geoefend of verbeterd moet worden.",
+        "Vergelijk taakdoel en leerdoel en haal eventuele verwarring uit elkaar.",
+        "Laat de leerling één concrete vaardigheid of kenniscomponent kiezen die nu centraal staat.",
+        "Gebruik pas daarna AI-ondersteuning die bij dat leerdoel past.",
+        "Kom aan het eind terug op de vraag of juist dat leerdoel zichtbaar is geworden."
+      ],
+      "result": "Een expliciet onderscheid tussen taakafronding en leren, voordat AI de route naar een acceptabele output gaat optimaliseren.",
+      "caution": "Niet iedere taak heeft één enkel leerdoel. De werkvorm is bedoeld om richting zichtbaar te maken, niet om complexe doelen kunstmatig te versimpelen.",
+      "source": "EAI Standard 0.4-candidate · MS-LSR-01",
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/learner-self-regulation-and-metacognition.yaml"
+    },
+    {
+      "slug": "plan-it-yourself",
+      "title": "Plan It Yourself",
+      "category": "zelfregulatie",
+      "audience": [
+        "learner",
+        "teacher"
+      ],
+      "evidence": [
+        "process"
+      ],
+      "summary": "Laat de leerling zelf een minimale werkroute en checkpoint maken voordat AI een volledig plan aanbiedt.",
+      "lede": "Een leerling kan een perfect AI-plan volgen zonder zelf te hebben nagedacht over volgorde, middelen of controlepunten.",
+      "question": "Wat is mijn plan vanaf hier, en waarom is deze volgorde logisch?",
+      "route": [
+        "fase",
+        "kernhandeling",
+        "taakdichtheid"
+      ],
+      "steps": [
+        "Benoem het huidige leerdoel of probleem.",
+        "Laat de leerling drie tot vijf stappen formuleren die nodig lijken.",
+        "Laat één bron, hulpmiddel of informatiebron per relevante stap kiezen.",
+        "Laat de leerling één checkpoint toevoegen waarop hij of zij controleert of de route nog werkt.",
+        "Vergelijk daarna desgewenst met een AI-plan.",
+        "Laat de leerling alleen wijzigingen overnemen die inhoudelijk te verantwoorden zijn."
+      ],
+      "result": "Procesbewijs dat de leerling zelf een route kan construeren en niet alleen een gegenereerd stappenplan kan uitvoeren.",
+      "caution": "Als plannen geen onderdeel is van het leerdoel, hoeft de leerling niet altijd het hele plan zelfstandig te maken. Kijk naar de functie van planning in deze fase.",
+      "source": "EAI Standard 0.4-candidate · MS-LSR-03",
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/learner-self-regulation-and-metacognition.yaml"
+    },
+    {
+      "slug": "strategy-choice",
+      "title": "Strategy Choice",
+      "category": "zelfregulatie",
+      "audience": [
+        "learner",
+        "teacher"
+      ],
+      "evidence": [
+        "process"
+      ],
+      "summary": "Laat de leerling twee plausibele aanpakken vergelijken en zelf kiezen welke strategie nu het best past.",
+      "lede": "Een door AI gekozen strategie kan tot een goede uitvoering leiden zonder dat de leerling leert kiezen tussen mogelijke aanpakken.",
+      "question": "Welke strategie past hier beter, en waarop baseer ik die keuze?",
+      "route": [
+        "fase",
+        "kernhandeling",
+        "taakdichtheid"
+      ],
+      "steps": [
+        "Formuleer het probleem of de taak kort.",
+        "Laat de leerling minimaal twee mogelijke strategieën noemen of herkennen.",
+        "Bepaal per strategie één voordeel en één beperking in deze context.",
+        "Laat de leerling één strategie kiezen en de keuze kort onderbouwen.",
+        "Voer de aanpak uit.",
+        "Evalueer achteraf of de gekozen strategie paste bij het doel en de voortgang."
+      ],
+      "result": "Zichtbaar menselijk oordeel over de keuze van een aanpak, in plaats van alleen zichtbare uitvoering van een aangeleverde route.",
+      "caution": "De werkvorm is alleen zinvol wanneer strategie kiezen inhoudelijk relevant is. Bij routinetaken kan een vaste aanpak juist gewenst zijn.",
+      "source": "EAI Standard 0.4-candidate · MS-LSR-04",
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/learner-self-regulation-and-metacognition.yaml"
+    },
+    {
+      "slug": "monitoring-checkpoint",
+      "title": "Monitoring Checkpoint",
+      "category": "zelfregulatie",
+      "audience": [
+        "learner",
+        "teacher"
+      ],
+      "evidence": [
+        "process"
+      ],
+      "summary": "Laat de leerling vooraf bepalen waarop hij tussentijds controleert of begrip en voortgang nog op koers liggen.",
+      "lede": "Wanneer AI permanent meekijkt en fouten of vertraging signaleert, kan de leerling stoppen met zelf monitoren.",
+      "question": "Wat ga ik zelf controleren om te weten of mijn aanpak nog werkt voordat het systeem dat voor mij doet?",
+      "route": [
+        "fase",
+        "kernhandeling",
+        "taakdichtheid"
+      ],
+      "steps": [
+        "Benoem het leerdoel of de gewenste uitkomst.",
+        "Laat de leerling één concreet criterium kiezen waarop voortgang zichtbaar is.",
+        "Bepaal een moment waarop dat criterium wordt gecontroleerd.",
+        "Pauzeer eventuele automatische AI-evaluatie op dat moment.",
+        "Laat de leerling zelf een oordeel geven op basis van het gekozen criterium.",
+        "Vergelijk daarna eventueel met AI-feedback en bespreek verschillen."
+      ],
+      "result": "Procesbewijs dat de leerling zelf een criterium kan gebruiken om voortgang te beoordelen.",
+      "caution": "Een dashboard of score kan nuttige informatie geven. De vraag is alleen of zelfstandig monitoren in deze fase onderdeel is van wat geleerd of aangetoond moet worden.",
+      "source": "EAI Standard 0.4-candidate · MS-LSR-05 / MS-LSR-06",
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/learner-self-regulation-and-metacognition.yaml"
+    },
+    {
+      "slug": "find-my-impasse",
+      "title": "Find My Impasse",
+      "category": "zelfregulatie",
+      "audience": [
+        "learner"
+      ],
+      "evidence": [
+        "process"
+      ],
+      "summary": "Laat de leerling eerst precies lokaliseren waar hij vastloopt voordat hulp wordt gevraagd of aangeboden.",
+      "lede": "Proactieve AI-hulp kan al ingrijpen voordat de leerling zelf heeft gemerkt waar het probleem zit.",
+      "question": "Waar ben ik precies vastgelopen, onzeker geworden of gestopt met vooruitgaan?",
+      "route": [
+        "fase",
+        "kernhandeling",
+        "taakdichtheid"
+      ],
+      "steps": [
+        "Pauzeer inhoudelijke AI-hulp.",
+        "Laat de leerling aanwijzen bij welke stap de voortgang stopte.",
+        "Vraag wat er op dat punt ontbreekt: kennis, begrip, keuze, strategie, controle of informatie.",
+        "Laat de leerling één concrete vraag formuleren over dat vastlooppunt.",
+        "Kies daarna pas een passende en begrensde vorm van hulp.",
+        "Laat de leerling na de hulp benoemen welke volgende stap hij nu zelf kan zetten."
+      ],
+      "result": "Een zichtbaar door de leerling gelokaliseerd probleem dat de basis vormt voor gerichte hulp.",
+      "caution": "De leerling hoeft niet altijd zelf te ontdekken dat hulp nodig is. Deze werkvorm is vooral relevant wanneer probleemdetectie of hulpregulatie onderdeel is van het leerdoel.",
+      "source": "EAI Standard 0.4-candidate · MS-LSR-07",
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/learner-self-regulation-and-metacognition.yaml"
+    },
+    {
+      "slug": "hidden-assumption",
+      "title": "Hidden Assumption",
+      "category": "argumentatie",
+      "audience": [
+        "learner",
+        "teacher"
+      ],
+      "evidence": [
+        "process"
+      ],
+      "summary": "Maak zichtbaar welke onuitgesproken aanname nodig is om een redenering te laten werken.",
+      "lede": "AI kan impliciete aannames razendsnel benoemen. Daardoor kan precies de analyse verdwijnen die de leerling zelf moest uitvoeren.",
+      "question": "Wat moet hier waar zijn om deze redenering te laten kloppen?",
+      "route": [
+        "kernhandeling",
+        "output"
+      ],
+      "steps": [
+        "Kies een korte redenering met een relevante impliciete stap.",
+        "Laat de leerling de conclusie en zichtbare redenen markeren.",
+        "Vraag welke ontbrekende premisse nodig is om de stap tussen reden en conclusie te maken.",
+        "Laat de leerling de aanname expliciet formuleren.",
+        "Vraag vervolgens of die aanname aannemelijk, onzeker of betwistbaar is.",
+        "Test de redenering opnieuw wanneer de aanname niet geldt."
+      ],
+      "result": "Zichtbaar begrip van de onuitgesproken premisse achter een redenering.",
+      "caution": "Het doel is niet zoveel mogelijk verborgen aannames vinden. Richt de analyse op aannames die de geldigheid of betekenis van de redenering echt beïnvloeden.",
+      "source": "EAI Standard 0.1-candidate · MS-ARG-06",
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/argumentation.yaml"
+    },
+    {
+      "slug": "source-suitability",
+      "title": "Source Suitability",
+      "category": "argumentatie",
+      "audience": [
+        "learner",
+        "teacher"
+      ],
+      "evidence": [
+        "process"
+      ],
+      "summary": "Laat de leerling beoordelen waarom een bron wel of niet geschikt is voor precies de claim die ermee wordt ondersteund.",
+      "lede": "Een bron toevoegen is niet hetzelfde als beoordelen of die bron betrouwbaar en relevant genoeg is voor de specifieke claim.",
+      "question": "Waarom is deze bron geschikt bewijs voor deze specifieke bewering?",
+      "route": [
+        "kernhandeling",
+        "taakdichtheid",
+        "output"
+      ],
+      "steps": [
+        "Kies één belangrijke claim uit het werk.",
+        "Leg twee mogelijke bronnen naast elkaar.",
+        "Laat de leerling per bron relevantie, herkomst en bruikbaarheid voor deze claim beoordelen.",
+        "Laat één bron kiezen en de keuze onderbouwen.",
+        "Vraag welk deel van de claim de bron wel en niet ondersteunt.",
+        "Pas de formulering van de claim aan als het bewijs minder sterk is dan eerst gedacht."
+      ],
+      "result": "Procesbewijs dat de leerling bronkeuze koppelt aan de inhoudelijke claim in plaats van bronnen alleen te verzamelen.",
+      "caution": "Een algemeen betrouwbare bron is niet automatisch geschikt voor iedere claim. Relevantie en bewijskracht blijven claimafhankelijk.",
+      "source": "EAI Standard 0.1-candidate · MS-ARG-13",
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/argumentation.yaml"
+    },
+    {
+      "slug": "evidence-to-claim",
+      "title": "Evidence-to-Claim",
+      "category": "argumentatie",
+      "audience": [
+        "learner",
+        "teacher"
+      ],
+      "evidence": [
+        "process"
+      ],
+      "summary": "Laat de leerling expliciet maken hoe informatie of bewijs daadwerkelijk leidt naar de verdedigde conclusie.",
+      "lede": "Bewijs en conclusie kunnen in een tekst naast elkaar staan zonder dat de leerling de verbindende redenering zelf heeft gemaakt.",
+      "question": "Hoe leidt deze informatie precies tot deze positie of conclusie?",
+      "route": [
+        "kernhandeling",
+        "output"
+      ],
+      "steps": [
+        "Markeer één claim en het bijbehorende bewijs.",
+        "Verwijder tijdelijk de verbindende uitleg.",
+        "Laat de leerling in eigen woorden formuleren wat uit het bewijs volgt.",
+        "Vraag welke stap nodig is om van dat bewijs naar de claim te komen.",
+        "Controleer of die stap logisch en inhoudelijk verdedigbaar is.",
+        "Formuleer daarna pas de verbindende zin of redenering opnieuw."
+      ],
+      "result": "Zichtbare inferentiële redenering tussen bewijs en conclusie.",
+      "caution": "Een nette verbindingszin kan door AI worden geformuleerd zonder dat de leerling de relatie begrijpt. Laat daarom eerst de redenering in eigen woorden ontstaan.",
+      "source": "EAI Standard 0.1-candidate · MS-ARG-14",
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/argumentation.yaml"
+    },
+    {
+      "slug": "counterargument-first",
+      "title": "Counterargument First",
+      "category": "argumentatie",
+      "audience": [
+        "learner",
+        "teacher"
+      ],
+      "evidence": [
+        "process"
+      ],
+      "summary": "Laat de leerling eerst zelf een geloofwaardig bezwaar tegen het eigen standpunt formuleren voordat AI tegenargumenten genereert.",
+      "lede": "Wanneer AI de oppositie levert, hoeft de leerling niet zelf van perspectief te wisselen.",
+      "question": "Wat zou een goed geïnformeerde tegenstander hier redelijkerwijs tegenin brengen?",
+      "route": [
+        "kernhandeling",
+        "taakdichtheid",
+        "output"
+      ],
+      "steps": [
+        "Formuleer het huidige standpunt in één zin.",
+        "Laat AI-suggesties tijdelijk buiten beeld.",
+        "Laat de leerling één geloofwaardig tegenargument formuleren dat het standpunt werkelijk raakt.",
+        "Vraag waarom dit tegenargument serieus genomen moet worden.",
+        "Laat daarna eventueel AI nog een alternatief tegenargument geven.",
+        "Vergelijk welke tegenwerping de redenering het sterkst uitdaagt."
+      ],
+      "result": "Procesbewijs dat de leerling zelfstandig een relevant tegenperspectief kan construeren.",
+      "caution": "Een zwakke karikatuur van de tegenpartij telt niet. Het tegenargument moet inhoudelijk plausibel genoeg zijn om het eigen standpunt echt te testen.",
+      "source": "EAI Standard 0.1-candidate · MS-ARG-15",
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/argumentation.yaml"
+    },
+    {
+      "slug": "perspective-weighing",
+      "title": "Perspective Weighing",
+      "category": "argumentatie",
+      "audience": [
+        "learner",
+        "teacher"
+      ],
+      "evidence": [
+        "process"
+      ],
+      "summary": "Laat de leerling verschillende perspectieven vergelijken en expliciet maken welk perspectief de conclusie het meest verandert.",
+      "lede": "Een lijst met meerdere perspectieven is nog geen afweging. De betekenis zit in vergelijken en wegen.",
+      "question": "Welk perspectief verandert of uitdaagt mijn redenering het meest, en waarom?",
+      "route": [
+        "kernhandeling",
+        "output"
+      ],
+      "steps": [
+        "Kies twee of drie materieel verschillende perspectieven.",
+        "Laat de leerling per perspectief één sterk punt en één beperking voor de kwestie benoemen.",
+        "Vergelijk de perspectieven op een expliciet criterium.",
+        "Laat de leerling aangeven welk perspectief de eigen redenering het meest beïnvloedt.",
+        "Vraag wat daardoor aan de conclusie verandert.",
+        "Laat de aangepaste conclusie in eigen woorden formuleren."
+      ],
+      "result": "Zichtbare weging van perspectieven in plaats van alleen opsomming.",
+      "caution": "Een 'gebalanceerd' antwoord hoeft niet automatisch goed te zijn. Perspectieven kunnen verschillen in relevantie of bewijskracht.",
+      "source": "EAI Standard 0.1-candidate · MS-ARG-16",
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/argumentation.yaml"
+    },
+    {
+      "slug": "rebuttal-reconstruction",
+      "title": "Rebuttal Reconstruction",
+      "category": "argumentatie",
+      "audience": [
+        "learner",
+        "teacher"
+      ],
+      "evidence": [
+        "process",
+        "independent"
+      ],
+      "summary": "Haal een AI-geformuleerd weerwoord weg en laat de leerling zelf opnieuw reageren op een vergelijkbaar tegenargument.",
+      "lede": "Een overtuigend AI-weerwoord maakt niet zichtbaar of de leerling zelf begrijpt wat zwak of onvolledig is aan het tegenargument.",
+      "question": "Wat is precies zwak of onvolledig in dit tegenargument, en hoe reageer ik daarop?",
+      "route": [
+        "kernhandeling",
+        "taakdichtheid",
+        "output"
+      ],
+      "steps": [
+        "Kies een relevant tegenargument.",
+        "Laat de leerling eerst uitleggen welk deel daarvan sterk of terecht is.",
+        "Benoem daarna welk deel volgens de leerling onvolledig of zwak is.",
+        "Verwijder eventueel eerder AI-geformuleerd weerwoord uit beeld.",
+        "Geef een vergelijkbaar tegenargument of herformulering.",
+        "Laat de leerling zelfstandig een nieuwe inhoudelijke rebuttal opbouwen."
+      ],
+      "result": "Nieuw menselijk bewijs dat de leerling een tegenargument kan analyseren en beantwoorden.",
+      "caution": "Een weerwoord is niet hetzelfde als het tegenargument simpelweg afwijzen. Het moet inhoudelijk reageren op wat er daadwerkelijk wordt aangevoerd.",
+      "source": "EAI Standard 0.1-candidate · MS-ARG-17",
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/argumentation.yaml"
+    },
+    {
+      "slug": "reasoning-error-explained",
+      "title": "Reasoning Error Explained",
+      "category": "argumentatie",
+      "audience": [
+        "learner",
+        "teacher"
+      ],
+      "evidence": [
+        "process"
+      ],
+      "summary": "Laat de leerling niet alleen een redeneerfout labelen, maar uitleggen wat er in de redenering misgaat.",
+      "lede": "Een AI kan een drogreden of fout benoemen terwijl de leerling de onderliggende foutieve relatie niet begrijpt.",
+      "question": "Wat gaat er inhoudelijk mis in deze redenering, los van de naam van de fout?",
+      "route": [
+        "kernhandeling",
+        "output"
+      ],
+      "steps": [
+        "Geef een korte redenering met een relevante fout.",
+        "Laat de leerling eerst uitleggen welke stap niet volgt.",
+        "Vraag waarom die stap de redenering verzwakt.",
+        "Laat pas daarna eventueel een formele naam aan de fout koppelen.",
+        "Geef een nieuw voorbeeld zonder label.",
+        "Laat de leerling opnieuw de fout uitleggen."
+      ],
+      "result": "Procesbewijs dat de leerling de foutieve redeneerrelatie begrijpt en niet alleen een label herkent.",
+      "caution": "Niet iedere zwakke redenering past netjes in één drogredencategorie. De uitleg van het probleem is belangrijker dan het label.",
+      "source": "EAI Standard 0.1-candidate · MS-ARG-18",
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/argumentation.yaml"
+    },
+    {
+      "slug": "conclusion-strength",
+      "title": "Conclusion Strength",
+      "category": "argumentatie",
+      "audience": [
+        "learner",
+        "teacher"
+      ],
+      "evidence": [
+        "process"
+      ],
+      "summary": "Laat de leerling bepalen welke conclusie het beschikbare bewijs werkelijk rechtvaardigt en hoe sterk die conclusie mag zijn.",
+      "lede": "AI kan een afgeronde conclusie formuleren die stelliger is dan de redenering en het bewijs toelaten.",
+      "question": "Welke conclusie volgt hier werkelijk uit, en hoe sterk mag ik die formuleren?",
+      "route": [
+        "kernhandeling",
+        "output"
+      ],
+      "steps": [
+        "Zet de belangrijkste redenen en het bewijs kort onder elkaar.",
+        "Laat de leerling formuleren wat daar minimaal uit volgt.",
+        "Vraag welke woorden de sterkte van de conclusie bepalen, bijvoorbeeld 'kan', 'waarschijnlijk', 'laat zien' of 'bewijst'.",
+        "Laat de leerling controleren of de gekozen formulering bij de bewijskracht past.",
+        "Vergelijk eventueel met een stelliger AI-voorstel.",
+        "Laat de leerling de definitieve conclusie zelf formuleren."
+      ],
+      "result": "Zichtbaar oordeel over de verhouding tussen bewijs en de sterkte van een conclusie.",
+      "caution": "Voorzichtig formuleren is niet automatisch beter. De formulering moet passen bij wat de redenering en het bewijs daadwerkelijk dragen.",
+      "source": "EAI Standard 0.1-candidate · MS-ARG-22",
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/argumentation.yaml"
+    },
+    {
+      "slug": "position-path",
+      "title": "Position Path",
+      "category": "argumentatie",
+      "audience": [
+        "learner",
+        "teacher"
+      ],
+      "evidence": [
+        "process"
+      ],
+      "summary": "Reconstrueer hoe informatie, argumenten en bezwaren de uiteindelijke positie van de leerling hebben gevormd.",
+      "lede": "Een afgeronde tekst kan coherent klinken zonder dat zichtbaar is welke informatie of tegenwerping het oordeel daadwerkelijk veranderde.",
+      "question": "Hoe ontwikkelde mijn positie zich van eerste idee naar uiteindelijke conclusie?",
+      "route": [
+        "taakdichtheid",
+        "output"
+      ],
+      "steps": [
+        "Noteer het eerste voorlopige standpunt of uitgangspunt.",
+        "Kies twee of drie momenten waarop nieuwe informatie, een argument of bezwaar de redenering beïnvloedde.",
+        "Laat de leerling per moment beschrijven wat er veranderde.",
+        "Benoem welke AI-bijdrage eventueel meespeelde en welke beslissing de leerling zelf nam.",
+        "Laat zien welk argument of criterium uiteindelijk het zwaarst woog.",
+        "Formuleer in één korte keten hoe het eindstandpunt tot stand kwam."
+      ],
+      "result": "Een herleidbare ontwikkellijn van informatie en afweging naar het uiteindelijke standpunt.",
+      "caution": "Een achteraf perfect verhaal kan schijncoherentie geven. Koppel de reconstructie waar mogelijk aan echte notities, versies of concrete beslismomenten.",
+      "source": "EAI Standard 0.1-candidate · MS-ARG-26",
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/argumentation.yaml"
     }
   ]
 }
