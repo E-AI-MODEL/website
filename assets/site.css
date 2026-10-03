@@ -159,7 +159,7 @@ iframe{max-width:100%}
   .publication-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .toolbox-example-intro{grid-template-columns:1fr}
 }
-@media(max-width:760px){
+@media(max-width:900px){
   html{scroll-padding-top:72px}
   .nav{min-height:58px;padding:10px 16px;align-items:center!important;display:flex!important;position:relative}
   .nav-links{display:none!important}
