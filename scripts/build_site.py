@@ -333,7 +333,7 @@ def render_workforms_index(items: list[dict]) -> str:
     try {{ return new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')); }}
     catch (_) {{ return new Set(); }}
   }};
-  const writeSaved = saved => localStorage.setItem(STORAGE_KEY, JSON.stringify([...saved]));
+  const writeSaved = saved => { try { localStorage.setItem(STORAGE_KEY, JSON.stringify([...saved])); } catch (_) {} };
   const routeFor = button => ({{
     key: button.dataset.routeKey,
     intents: (button.dataset.routeIntents || '').split(' ').filter(Boolean),
@@ -1170,7 +1170,7 @@ def footer() -> str:
         f'<footer class="site-footer"><div class="wrap footer-grid">'
         f'<p style="display:flex;gap:12px;align-items:center"><img src="/assets/eai-logo.svg" alt="" width="42" height="42">'
         f'<span><strong>EAI</strong> · Hans Visser<br>AI, leren en professioneel handelen.</span></p>'
-        f'<p><a href="/onderbouwing/">Onderbouwing</a> · <a href="/over/">Over EAI en Hans</a> · <a href="mailto:{EMAIL}">{EMAIL}</a> · '
+        f'<p><a href="/verdieping/">Verdieping</a> · <a href="/over/">Over EAI en Hans</a> · <a href="mailto:{EMAIL}">{EMAIL}</a> · '
         f'<a href="{GITHUB}" target="_blank" rel="noopener">GitHub</a></p></div></footer>'
     )
 
