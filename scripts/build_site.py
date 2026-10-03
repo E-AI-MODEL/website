@@ -73,6 +73,84 @@ WORKFORM_ROUTE_LABELS = {
     "taakdichtheid": "Wat doet AI?",
     "output": "Wat kun je nu zeggen?",
 }
+
+WORKFORM_INTENTS = [
+    ("orient", "Eerst scherp krijgen wat er verandert", "Ik wil een taak eerst goed bekijken voordat ik iets aan AI verander."),
+    ("diagnose", "Zien waar de leerling vastloopt", "Ik wil weten waar het voor het eerst misgaat of welke verklaring het beste past."),
+    ("support", "Hulp geven zonder de stap over te nemen", "Ik wil ondersteunen, maar de relevante handeling bij de leerling houden."),
+    ("return", "Een handeling teruggeven", "AI of ikzelf nam tijdelijk iets over; nu moet de leerling het weer zelf doen."),
+    ("independent", "Kijken wat de leerling zelf kan", "Ik wil niet alleen het product zien, maar zelfstandige uitvoering."),
+    ("retention-transfer", "Kijken of het later of ergens anders ook lukt", "Ik wil weten of het geleerde beschikbaar blijft buiten deze ene taak."),
+    ("feedback", "Feedback laten leiden tot zelf verbeteren", "De leerling moet na feedback zelf weer handelen."),
+    ("selfreg", "De regie bij de leerling houden", "Ik wil dat de leerling zelf plant, controleert, hulp kiest of bijstuurt."),
+    ("argument", "Argumenten, bronnen en conclusies laten wegen", "De inhoudelijke afweging moet zichtbaar bij de leerling blijven."),
+    ("professional", "Mijn professionele oordeel zelf vormen", "Ik wil AI gebruiken zonder observatie, interpretatie en besluit in elkaar te laten schuiven."),
+    ("redesign", "Een taak, toets of AI-rol herontwerpen", "Ik wil vanuit het leren opnieuw bepalen wie welke handeling uitvoert."),
+    ("make-visible", "Keuzes en proces zichtbaar maken", "Ik wil zien wat de leerling met een AI-bijdrage deed en waarom."),
+]
+
+WORKFORM_MECHANISMS = {
+    "analyse": {
+        "title": "Eerst het leren en de taak begrijpen",
+        "text": "Onderzoek naar AI in onderwijs laat geen simpel effect van 'wel of geen AI' zien. Het maakt uit welke rol AI krijgt, welke taak wordt uitgevoerd en welk menselijk werk overblijft. Daarom begint EAI met de concrete situatie en niet met een toolcategorie.",
+        "basis": "EAI evidence claims CLM-001, CLM-005 en CLM-015",
+        "anchor": "taak-en-ai",
+    },
+    "zichtbaar": {
+        "title": "Een eindproduct laat het proces niet vanzelf zien",
+        "text": "Wanneer AI meeschrijft of voorstellen doet, wordt de uiteindelijke output een zwakker spoor van wie welke keuze maakte. Procesinformatie, een eerste poging of een korte reconstructie kan die menselijke afweging weer zichtbaar maken.",
+        "basis": "EAI evidence semantics en process-trace patronen",
+        "anchor": "proces-en-bewijs",
+    },
+    "zelfstandigheid": {
+        "title": "Ondersteunde prestatie is niet hetzelfde als zelfstandig kunnen",
+        "text": "Een leerling kan met AI sterk presteren terwijl nog onbekend is of dezelfde handeling zonder die ondersteuning beschikbaar is. Daarom gebruikt EAI nieuwe uitvoering en gerichte handback wanneer zelfstandigheid de vraag is.",
+        "basis": "CLM-002, CLM-003 en CLM-009",
+        "anchor": "zelfstandigheid",
+    },
+    "bewijs": {
+        "title": "Bewijs moet passen bij wat je wilt kunnen zeggen",
+        "text": "Een product, een zelfstandige poging, later opnieuw uitvoeren en toepassen in een andere situatie zijn verschillende soorten bewijs. Ze mogen niet als één en dezelfde uitspraak over leren worden behandeld.",
+        "basis": "CLM-009 en CLM-010",
+        "anchor": "bewijs",
+    },
+    "herstellen": {
+        "title": "Feedback wordt pas interessant wanneer de leerling daarna weer handelt",
+        "text": "Feedback kan richting geven, maar wanneer de correctie zelf volledig wordt uitgevoerd door AI ontstaat weinig nieuw zicht op de leerlinghandeling. Daarom eindigen deze werkvormen in eigen revisie, controle of een nieuwe poging.",
+        "basis": "feedbackliteratuur + EAI learner-reperformance",
+        "anchor": "feedback",
+    },
+    "zelfregulatie": {
+        "title": "Plannen, monitoren en hulp kiezen kunnen zelf leerhandelingen zijn",
+        "text": "Zelfregulatie bestaat niet alleen uit 'zelfstandig werken'. Doelen stellen, voortgang controleren, een impasse herkennen, hulp kiezen en een strategie aanpassen zijn afzonderlijke handelingen die AI ook kan overnemen.",
+        "basis": "self-regulated learning + EAI self-regulation registry",
+        "anchor": "zelfregulatie",
+    },
+    "argumentatie": {
+        "title": "Kritisch denken wordt concreet in afzonderlijke handelingen",
+        "text": "Bronnen beoordelen, een verborgen aanname herkennen, perspectieven wegen en een conclusie begrenzen zijn verschillende activiteiten. Door ze uit elkaar te halen wordt zichtbaar waar AI helpt en waar de leerling zelf moet redeneren.",
+        "basis": "EAI argumentation microstructure registry",
+        "anchor": "argumentatie",
+    },
+    "professioneel-oordeel": {
+        "title": "Een AI-advies is niet hetzelfde als professioneel oordeel",
+        "text": "Bij professioneel handelen tellen niet alleen uitkomst en efficiëntie, maar ook observatie, interpretatie, onzekerheid, leerlingperspectief en verantwoordelijkheid. Die menselijke oordeelsvorming moet van een AI-aanbeveling te onderscheiden blijven.",
+        "basis": "CLM-007, CLM-008 en pedagogical judgement registry",
+        "anchor": "professioneel-oordeel",
+    },
+    "scaffolding": {
+        "title": "Goede hulp is tijdelijk, passend en laat de leerling weer verder handelen",
+        "text": "Scaffolding draait om afgestemde ondersteuning, het verminderen van hulp en het teruggeven van verantwoordelijkheid. AI maakt zeer veel hulp goedkoop beschikbaar; daardoor wordt juist de vraag hoeveel hulp hier nodig is belangrijker.",
+        "basis": "scaffoldingliteratuur + CLM-003, CLM-004 en CLM-005",
+        "anchor": "scaffolding",
+    },
+    "ontwerpen": {
+        "title": "Ontwerp vanuit het leerdoel, niet vanuit de beschikbare AI-functie",
+        "text": "Dezelfde AI-actie kan in instructie behulpzaam zijn en tijdens zelfstandige uitvoering de relevante leerhandeling vervangen. Daarom koppelt EAI taakontwerp en toetsing aan fase, kernhandeling en passend bewijs.",
+        "basis": "CLM-001, CLM-009 en CLM-015",
+        "anchor": "ontwerp",
+    },
+}
 MANUAL_WORKFORMS = {
     "kernhandeling-check",
     "task-density-scan",
