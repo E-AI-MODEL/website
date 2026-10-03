@@ -162,7 +162,21 @@
       "steps": [],
       "result": "",
       "caution": "",
-      "source": "EAI · Nieuwe uitgave 2026"
+      "source": "EAI · Nieuwe uitgave 2026",
+      "visual": {
+        "type": "contrast",
+        "items": [
+          {
+            "label": "Eerste poging",
+            "text": "Wat de leerling vóór hulp zelf deed."
+          },
+          {
+            "label": "Na hulp",
+            "text": "Wat daarna veranderde en waarom."
+          }
+        ],
+        "caption": "Vergelijk de handeling en keuzes, niet alleen welke versie mooier is."
+      }
     },
     {
       "slug": "justification-mapping",
@@ -278,7 +292,24 @@
       ],
       "result": "Zelfstandig bewijs over de kernhandeling onder duidelijk beschreven ondersteuningsvoorwaarden.",
       "caution": "Controlled Detachment is geen straf voor AI-gebruik en geen algemene AI-vrije toets. Je haalt alleen weg wat de claim over zelfstandigheid anders onduidelijk maakt.",
-      "source": "EAI Dictionary · Controlled Detachment"
+      "source": "EAI Dictionary · Controlled Detachment",
+      "visual": {
+        "type": "flow",
+        "items": [
+          {
+            "label": "Met steun",
+            "text": "De handeling wordt ondersteund."
+          },
+          {
+            "label": "Afbouwen",
+            "text": "Steun wordt doelgericht verminderd."
+          },
+          {
+            "label": "Zelf uitvoeren",
+            "text": "De leerling laat de handeling opnieuw zien."
+          }
+        ]
+      }
     },
     {
       "slug": "explain-before-continue",
@@ -430,7 +461,24 @@
       "result": "Een aparte aanwijzing voor retentie van de relevante handeling.",
       "caution": "De juiste vertraging is contextafhankelijk. EAI schrijft geen universeel aantal dagen voor.",
       "source": "EAI Standard 0.4-candidate · EV-06 / REM-07",
-      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/docs/08-evidence-handback-remediation.md"
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/docs/08-evidence-handback-remediation.md",
+      "visual": {
+        "type": "flow",
+        "items": [
+          {
+            "label": "Oefenen",
+            "text": "De handeling wordt geleerd of hersteld."
+          },
+          {
+            "label": "Tijd ertussen",
+            "text": "De directe steun verdwijnt uit beeld."
+          },
+          {
+            "label": "Opnieuw",
+            "text": "De leerling voert de handeling opnieuw uit."
+          }
+        ]
+      }
     },
     {
       "slug": "transfer-task",
@@ -461,7 +509,24 @@
       "result": "Een aanwijzing of de leerling de relevante handeling buiten de oorspronkelijke taak kan herkennen en toepassen.",
       "caution": "Transfer is meer dan een nieuw getal of andere naam in dezelfde opgave. De context moet betekenisvol verschillen zonder de kernhandeling te vervangen.",
       "source": "EAI Standard 0.4-candidate · EV-07 / REM-08",
-      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/standard/evidence-types.yaml"
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/standard/evidence-types.yaml",
+      "visual": {
+        "type": "flow",
+        "items": [
+          {
+            "label": "Bekende context",
+            "text": "De handeling is eerder geoefend."
+          },
+          {
+            "label": "Nieuwe context",
+            "text": "Oppervlak of situatie verandert."
+          },
+          {
+            "label": "Zelfde handeling",
+            "text": "De leerling past het geleerde opnieuw toe."
+          }
+        ]
+      }
     },
     {
       "slug": "confidence-vs-evidence",
@@ -493,7 +558,21 @@
       "result": "Een expliciet onderscheid tussen gevoel van beheersing en zichtbaar bewijs van beheersing.",
       "caution": "Gebruik vertrouwen niet als vervanging voor prestatiebewijs. Het is een extra reflectielaag.",
       "source": "EAI Standard 0.4-candidate · learner retrieval microstructure MS-LRI-12",
-      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/learner-retrieval-and-independent-performance.yaml"
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/learner-retrieval-and-independent-performance.yaml",
+      "visual": {
+        "type": "contrast",
+        "items": [
+          {
+            "label": "Zelfinschatting",
+            "text": "Hoe zeker de leerling denkt te zijn."
+          },
+          {
+            "label": "Zichtbaar bewijs",
+            "text": "Wat de uitvoering daadwerkelijk laat zien."
+          }
+        ],
+        "caption": "Zelfvertrouwen en bewijs kunnen uit elkaar lopen."
+      }
     },
     {
       "slug": "foutanalyse",
@@ -548,7 +627,24 @@
       ],
       "result": "Procesbewijs over het gebruiken van feedback plus een nieuwe uitvoering van de relevante handeling.",
       "caution": "Laat AI de verbeterde versie niet meteen herschrijven. Dan zie je vooral de kwaliteit van de correctie door het systeem.",
-      "source": "EAI Tutor-handleiding · feedback, redo en transfer"
+      "source": "EAI Tutor-handleiding · feedback, redo en transfer",
+      "visual": {
+        "type": "flow",
+        "items": [
+          {
+            "label": "Feedback",
+            "text": "Een fout, criterium of aanwijzing wordt zichtbaar."
+          },
+          {
+            "label": "Zelf herwerken",
+            "text": "De leerling voert de inhoudelijke revisie uit."
+          },
+          {
+            "label": "Nieuwe uitvoering",
+            "text": "De herziene handeling levert nieuw bewijs."
+          }
+        ]
+      }
     },
     {
       "slug": "source-verification",
@@ -610,7 +706,24 @@
       "result": "Een gerichte hulpvraag die de eigen handeling bewaart en tegelijk zelfregulatie zichtbaar maakt.",
       "caution": "De kleinste hulp is niet altijd de minste hulp. De passende hulp is groot genoeg om verder te kunnen, maar neemt de relevante handeling niet onnodig over.",
       "source": "EAI Standard 0.4-candidate · self-regulation MS-LSR-07 t/m 09",
-      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/learner-self-regulation-and-metacognition.yaml"
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/learner-self-regulation-and-metacognition.yaml",
+      "visual": {
+        "type": "flow",
+        "items": [
+          {
+            "label": "Vastloper",
+            "text": "Lokaliseer waar de voortgang stopt."
+          },
+          {
+            "label": "Kleinste hulp",
+            "text": "Geef alleen wat nodig is om verder te kunnen."
+          },
+          {
+            "label": "Zelf verder",
+            "text": "De volgende inhoudelijke stap ligt weer bij de leerling."
+          }
+        ]
+      }
     },
     {
       "slug": "accept-adapt-reject",
@@ -742,7 +855,28 @@
       "result": "Een taakontwerp met expliciete AI-rol, grens, handback en bewijsroute.",
       "caution": "Handback is alleen nodig wanneer AI een handeling materieel uitvoert of onzichtbaar maakt die relevant is voor de claim en waarvoor menselijk bewijs nodig blijft.",
       "source": "EAI Standard 0.4-candidate · AIS-001, AIS-008 en handback",
-      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/docs/08-evidence-handback-remediation.md"
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/docs/08-evidence-handback-remediation.md",
+      "visual": {
+        "type": "flow",
+        "items": [
+          {
+            "label": "AI helpt",
+            "text": "Een concrete systeemactie ondersteunt de taak."
+          },
+          {
+            "label": "Handback",
+            "text": "De relevante handeling gaat terug naar de mens."
+          },
+          {
+            "label": "Mens voert uit",
+            "text": "De leerling of docent handelt opnieuw zelf."
+          },
+          {
+            "label": "Bewijs",
+            "text": "De nieuwe uitvoering wordt apart zichtbaar."
+          }
+        ]
+      }
     },
     {
       "slug": "assessment-redesign",
@@ -809,7 +943,21 @@
       "result": "Een zichtbaar onderscheid tussen taakvoltooiing en het leerdoel dat de leerling zelf moet kunnen sturen.",
       "caution": "Een taak kan succesvol afgerond zijn zonder dat het beoogde leren zichtbaar is. De twee mogen niet automatisch aan elkaar worden gelijkgesteld.",
       "source": "EAI Standard 0.4-candidate · MS-LSR-01 en MS-LSR-02",
-      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/learner-self-regulation-and-metacognition.yaml"
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/learner-self-regulation-and-metacognition.yaml",
+      "visual": {
+        "type": "contrast",
+        "items": [
+          {
+            "label": "Taak afronden",
+            "text": "Wat moet af, ingeleverd of geproduceerd worden?"
+          },
+          {
+            "label": "Leren",
+            "text": "Wat moet de leerling daarna beter kennen of kunnen?"
+          }
+        ],
+        "caption": "Een afgeronde taak is niet automatisch bewijs dat het leerdoel is bereikt."
+      }
     },
     {
       "slug": "plan-it-yourself",
@@ -874,7 +1022,28 @@
       "result": "Procesbewijs over zelf monitoren in plaats van alleen reageren op automatische systeemfeedback.",
       "caution": "AI-monitoring is niet automatisch problematisch. Het wordt relevant wanneer zelfstandig monitoren zelf onderdeel is van wat de leerling moet leren of aantonen.",
       "source": "EAI Standard 0.4-candidate · MS-LSR-05 en MS-LSR-06",
-      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/learner-self-regulation-and-metacognition.yaml"
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/learner-self-regulation-and-metacognition.yaml",
+      "visual": {
+        "type": "flow",
+        "items": [
+          {
+            "label": "Eigen criterium",
+            "text": "De leerling kiest vooraf waarop hij let."
+          },
+          {
+            "label": "Eigen oordeel",
+            "text": "Eerst zelf beoordelen: op koers, twijfel of bijsturen."
+          },
+          {
+            "label": "AI-signaal",
+            "text": "Pas daarna verschijnt automatische feedback."
+          },
+          {
+            "label": "Vergelijken",
+            "text": "Verschillen worden verklaard."
+          }
+        ]
+      }
     },
     {
       "slug": "find-my-impasse",
@@ -1004,7 +1173,24 @@
       "result": "Procesbewijs dat de leerling zelfstandig een impliciete premisse kan opsporen en uitleggen.",
       "caution": "Het herkennen van een aanname nadat AI die al heeft aangewezen is iets anders dan haar zelfstandig vinden.",
       "source": "EAI Standard 0.4-candidate · MS-ARG-06",
-      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/argumentation.yaml"
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/argumentation.yaml",
+      "visual": {
+        "type": "flow",
+        "items": [
+          {
+            "label": "Reden",
+            "text": "Wat wordt expliciet aangevoerd?"
+          },
+          {
+            "label": "Verborgen aanname",
+            "text": "Wat moet óók waar zijn om de stap te laten werken?"
+          },
+          {
+            "label": "Conclusie",
+            "text": "Wat volgt er volgens de redenering?"
+          }
+        ]
+      }
     },
     {
       "slug": "source-suitability",
@@ -1036,7 +1222,21 @@
       "result": "Procesbewijs over bronkeuze dat verder gaat dan alleen een link of correcte bronvermelding toevoegen.",
       "caution": "Bronkwaliteit is claimafhankelijk. Een goede algemene bron is niet automatisch geschikt bewijs voor iedere specifieke bewering.",
       "source": "EAI Standard 0.4-candidate · MS-ARG-13",
-      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/argumentation.yaml"
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/argumentation.yaml",
+      "visual": {
+        "type": "contrast",
+        "items": [
+          {
+            "label": "Betrouwbaar",
+            "text": "Is de bron op zichzelf geloofwaardig?"
+          },
+          {
+            "label": "Geschikt",
+            "text": "Ondersteunt deze bron juist deze specifieke claim?"
+          }
+        ],
+        "caption": "Een betrouwbare bron is niet automatisch geschikt bewijs voor iedere claim."
+      }
     },
     {
       "slug": "evidence-to-claim",
@@ -1068,7 +1268,24 @@
       "result": "Zichtbaar inferentieel werk tussen bron of gegeven en de uiteindelijke claim.",
       "caution": "Veel bewijs naast een conclusie plaatsen maakt de verbindende redenering niet automatisch sterker.",
       "source": "EAI Standard 0.4-candidate · MS-ARG-14",
-      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/argumentation.yaml"
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/argumentation.yaml",
+      "visual": {
+        "type": "flow",
+        "items": [
+          {
+            "label": "Bewijs",
+            "text": "Welke informatie ligt er daadwerkelijk?"
+          },
+          {
+            "label": "Redenering",
+            "text": "Welke stap verbindt die informatie met de conclusie?"
+          },
+          {
+            "label": "Claim",
+            "text": "Hoe sterk mag de conclusie daardoor zijn?"
+          }
+        ]
+      }
     },
     {
       "slug": "counterargument-first",
@@ -1230,7 +1447,21 @@
       "result": "Een traceerbaar onderscheid tussen leerlingbewijs en professioneel oordeel.",
       "caution": "Een plausibele interpretatie wordt niet feitelijk doordat zij zorgvuldig of zelfverzekerd is geformuleerd.",
       "source": "EAI Standard 0.4-candidate · teacher diagnostic judgement MS-TDJ-03/04",
-      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/teacher-diagnostic-judgement.yaml"
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/teacher-diagnostic-judgement.yaml",
+      "visual": {
+        "type": "contrast",
+        "items": [
+          {
+            "label": "Waarneming",
+            "text": "Wat de leerling letterlijk zei, schreef of deed."
+          },
+          {
+            "label": "Interpretatie",
+            "text": "Wat jij daar professioneel uit afleidt."
+          }
+        ],
+        "caption": "Houd waarneming en interpretatie uit elkaar zolang het bewijs dat vraagt."
+      }
     },
     {
       "slug": "discriminating-probe",
@@ -1418,7 +1649,28 @@
       "result": "Een volgende stap waarvan de rationale terug te voeren is op concreet leerlingbewijs.",
       "caution": "Dat een interventie algemeen effectief kan zijn, zegt nog niet dat hij het geobserveerde probleem in deze fase adresseert.",
       "source": "EAI Standard 0.4-candidate · teacher diagnostic judgement MS-TDJ-11/13",
-      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/teacher-diagnostic-judgement.yaml"
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/teacher-diagnostic-judgement.yaml",
+      "visual": {
+        "type": "flow",
+        "items": [
+          {
+            "label": "Leerlingbewijs",
+            "text": "Wat laat de uitvoering zien?"
+          },
+          {
+            "label": "Duiding",
+            "text": "Wat is het waarschijnlijke breekpunt?"
+          },
+          {
+            "label": "Volgende respons",
+            "text": "Welke kleine interventie past daarbij?"
+          },
+          {
+            "label": "Nieuw bewijs",
+            "text": "Waaraan zie je of die respons werkte?"
+          }
+        ]
+      }
     },
     {
       "slug": "reconstruct-professional-judgement",
@@ -1546,7 +1798,24 @@
       "result": "Een expliciet doel voor ondersteuning, zodat hulp kan worden beoordeeld op wat zij bewaart en teruggeeft.",
       "caution": "Niet iedere taakhandeling hoeft bij de leerling te blijven. Bescherm alleen de handeling die in deze fase relevant is voor het doel of de claim.",
       "source": "EAI Standard 0.4-candidate · teacher scaffolding MS-TSF-01",
-      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/teacher-scaffolding-and-feedback.yaml"
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/teacher-scaffolding-and-feedback.yaml",
+      "visual": {
+        "type": "flow",
+        "items": [
+          {
+            "label": "Doelhandeling",
+            "text": "Wat moet uiteindelijk bij de leerling liggen?"
+          },
+          {
+            "label": "Hulp",
+            "text": "Ondersteun zonder die handeling dicht te zetten."
+          },
+          {
+            "label": "Terug naar leerling",
+            "text": "Laat de handeling daarna opnieuw zelf uitvoeren."
+          }
+        ]
+      }
     },
     {
       "slug": "least-intrusive-support",
@@ -1578,7 +1847,24 @@
       "result": "Ondersteuning die zo veel mogelijk menselijke uitvoering bewaart.",
       "caution": "Kleinste ondersteuning is geen vast niveau. Wat voldoende is, hangt af van taak, leerling en fase.",
       "source": "EAI Standard 0.4-candidate · teacher scaffolding MS-TSF-03",
-      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/teacher-scaffolding-and-feedback.yaml"
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/teacher-scaffolding-and-feedback.yaml",
+      "visual": {
+        "type": "flow",
+        "items": [
+          {
+            "label": "Vastloper",
+            "text": "Waar stopt de leerling precies?"
+          },
+          {
+            "label": "Kleine cue",
+            "text": "Geef de minst ingrijpende bruikbare hulp."
+          },
+          {
+            "label": "Zelf verder",
+            "text": "De leerling zet de volgende inhoudelijke stap."
+          }
+        ]
+      }
     },
     {
       "slug": "eliciting-question",
@@ -1672,7 +1958,28 @@
       "result": "Een duidelijke scheiding tussen demonstratie en nieuwe leerlinguitvoering.",
       "caution": "Direct overschrijven of licht aanpassen van het model levert geen zelfstandig bewijs op.",
       "source": "EAI Standard 0.4-candidate · teacher scaffolding MS-TSF-06",
-      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/teacher-scaffolding-and-feedback.yaml"
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/teacher-scaffolding-and-feedback.yaml",
+      "visual": {
+        "type": "flow",
+        "items": [
+          {
+            "label": "Model",
+            "text": "Laat de relevante handeling een keer zien."
+          },
+          {
+            "label": "Uit beeld",
+            "text": "Voorkom dat de leerling alleen kopieert."
+          },
+          {
+            "label": "Nieuw item",
+            "text": "Gebruik een vers of equivalent probleem."
+          },
+          {
+            "label": "Zelf uitvoeren",
+            "text": "De leerling bouwt de handeling opnieuw op."
+          }
+        ]
+      }
     },
     {
       "slug": "fade-one-layer",
@@ -1703,7 +2010,24 @@
       "result": "Een gecontroleerde afbouw van ondersteuning op basis van leerlingbewijs.",
       "caution": "Fading is geen vaste kalender. Verminder ondersteuning wanneer bewijs daar aanleiding toe geeft.",
       "source": "EAI Standard 0.4-candidate · teacher scaffolding MS-TSF-08",
-      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/teacher-scaffolding-and-feedback.yaml"
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/teacher-scaffolding-and-feedback.yaml",
+      "visual": {
+        "type": "flow",
+        "items": [
+          {
+            "label": "Steun",
+            "text": "Meerdere ondersteuningslagen zijn actief."
+          },
+          {
+            "label": "Eén laag weg",
+            "text": "Verwijder alleen wat waarschijnlijk niet meer nodig is."
+          },
+          {
+            "label": "Verse poging",
+            "text": "Controleer of de handeling standhoudt."
+          }
+        ]
+      }
     },
     {
       "slug": "hand-back-the-action",
@@ -1734,7 +2058,28 @@
       "result": "Een leerroute waarin tijdelijke overname niet het laatste woord heeft over de relevante menselijke handeling.",
       "caution": "Handback is alleen nodig als de overgenomen handeling relevant is voor wat de leerling moet leren of laten zien.",
       "source": "EAI Standard 0.4-candidate · teacher scaffolding MS-TSF-10/11",
-      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/teacher-scaffolding-and-feedback.yaml"
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/teacher-scaffolding-and-feedback.yaml",
+      "visual": {
+        "type": "flow",
+        "items": [
+          {
+            "label": "Overname",
+            "text": "Docent of AI voert tijdelijk een relevante handeling uit."
+          },
+          {
+            "label": "Handback",
+            "text": "Plan expliciet waar die overname stopt."
+          },
+          {
+            "label": "Leerling voert uit",
+            "text": "De handeling komt terug bij de leerling."
+          },
+          {
+            "label": "Bewijs",
+            "text": "De nieuwe uitvoering telt apart."
+          }
+        ]
+      }
     },
     {
       "slug": "practice-or-reteach",
@@ -1767,7 +2112,21 @@
       "result": "Een onderbouwde keuze tussen meer oefenen en opnieuw uitleggen of modelleren.",
       "caution": "De twee routes zijn niet altijd volledig gescheiden. Gebruik leerlingbewijs om te bepalen welk probleem eerst moet worden aangepakt.",
       "source": "EAI Standard 0.4-candidate · teacher scaffolding MS-TSF-12",
-      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/teacher-scaffolding-and-feedback.yaml"
+      "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/teacher-scaffolding-and-feedback.yaml",
+      "visual": {
+        "type": "contrast",
+        "items": [
+          {
+            "label": "Oefenen",
+            "text": "Begrip is bruikbaar, maar de uitvoering is nog instabiel."
+          },
+          {
+            "label": "Herinstructie",
+            "text": "De onderliggende kennis of representatie ontbreekt of is fout."
+          }
+        ],
+        "caption": "Kies op basis van het breekpunt, niet op basis van de netheid van het antwoord."
+      }
     }
   ]
 }
