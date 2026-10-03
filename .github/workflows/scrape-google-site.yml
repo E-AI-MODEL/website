@@ -5,6 +5,7 @@ on:
     branches:
       - site-migration
       - site-preview
+      - ui-pdf-editorial
     paths:
       - '.github/workflows/scrape-google-site.yml'
       - 'scripts/build_site.py'
