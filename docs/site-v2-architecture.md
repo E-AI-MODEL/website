@@ -286,3 +286,34 @@ Do not merge to `main` until:
 - article page is complete;
 - mobile layout is checked;
 - old Google Site links that matter have redirects.
+
+
+## Visual source of truth
+
+The visual reference for the public website is the PDF **De vraag die we vergeten in het AI-debat**.
+
+Use its design grammar:
+- white editorial pages;
+- dark blue-grey typography;
+- strong sans-serif display headings;
+- serif body copy for long reading;
+- coral-red marks and short divider lines;
+- warm paper callouts;
+- sparse navy line illustrations with a single coral focal point;
+- large areas of whitespace, but not excessive vertical padding.
+
+The round EAI logo remains the brand mark in navigation, favicon and footer. It does **not** determine the page palette.
+
+### Reading and scroll rhythm
+
+Do not solve long pages by shrinking all text or by adding scroll-snap / animated text.
+
+Instead:
+- keep long-form body copy around 16–17 px with a narrow reading measure;
+- reduce oversized display headings by roughly 10–15% compared with the first migration draft;
+- shorten vertical section spacing;
+- insert a meaningful diagram, pull question or workform after several paragraphs where the source supports it;
+- provide a compact reading route at the top of long publications;
+- preserve a normal continuous document scroll.
+
+The purpose is to make the site read like an EAI publication, not like a slide deck or app dashboard.
