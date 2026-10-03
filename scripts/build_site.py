@@ -337,6 +337,24 @@ h1{font-size:clamp(3.05rem,5.8vw,5.25rem);max-width:13ch;letter-spacing:-.042em}
 @media(max-width:620px){body{font-size:16px}.hero-grid{padding:54px 0 48px}.section{padding:52px 0}.page-hero{padding:54px 0 34px}h1{font-size:clamp(2.65rem,13vw,4rem)}.article-body{font-size:1rem;padding-top:50px}.article-body h2{margin-top:44px}.article-route{gap:12px;font-size:.75rem}.pdf-figure{overflow-x:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-inline:contain}.pdf-figure svg{min-width:680px;max-width:none}.pillar-visual{max-width:100%}}
 
 /* v3 cohesion and responsive system */
+
+.welcome{border-bottom:1px solid var(--line);background:linear-gradient(180deg,#fff 0%,#fbfaf7 100%)}
+.welcome-grid{display:grid;grid-template-columns:minmax(0,1.06fr) minmax(360px,.94fr);gap:58px;padding-top:76px;padding-bottom:44px;align-items:end}
+.welcome-copy h1{font-size:clamp(3rem,5.7vw,5.35rem);max-width:12ch;margin:.16em 0 .28em}
+.welcome-copy .lede{max-width:58ch;margin-bottom:20px}
+.welcome-audience{max-width:58ch;margin:0;color:#5b6776;font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:.94rem}
+.welcome-routes{display:grid;gap:10px}
+.welcome-routes a{display:grid;grid-template-columns:1fr auto;grid-template-areas:"label label" "title arrow" "copy copy";gap:5px 18px;padding:18px 20px;border:1px solid var(--line);background:#fff;text-decoration:none;transition:.18s ease}
+.welcome-routes a:hover{border-color:#aab3be;transform:translateY(-1px)}
+.welcome-routes span{grid-area:label;font:800 .67rem/1.2 Inter,ui-sans-serif,sans-serif;text-transform:uppercase;letter-spacing:.08em;color:#738094}
+.welcome-routes strong{grid-area:title;font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:1.18rem;line-height:1.2}
+.welcome-routes p{grid-area:copy;margin:2px 0 0;color:var(--muted);font-size:.91rem;line-height:1.45}
+.welcome-routes b{grid-area:arrow;align-self:center;font:800 .83rem/1 Inter,ui-sans-serif,sans-serif;white-space:nowrap}
+.welcome-note{padding-bottom:34px}
+.welcome-note p{max-width:76ch;margin:0;border-top:1px solid var(--line);padding-top:18px;color:#556171}
+.model-intro{background:#fff}
+.model-intro .hero-grid{padding-top:8px;padding-bottom:8px}
+.model-intro h2{font-size:clamp(2.25rem,4vw,3.9rem);margin:10px 0 18px;max-width:12ch}
 img{max-width:100%;height:auto}
 iframe{max-width:100%}
 .hero-grid>*,.profile-grid>*,.case-study>*,.media-feature>*,.app-showcase>*,.workform-detail-grid>*{min-width:0}
@@ -410,6 +428,7 @@ iframe{max-width:100%}
   .publication-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .toolbox-example-intro{grid-template-columns:1fr}
 }
+@media(max-width:980px){.welcome-grid{grid-template-columns:1fr;gap:34px;padding-top:58px}.welcome-routes{grid-template-columns:repeat(3,minmax(0,1fr))}.welcome-routes a{display:block}.welcome-routes b{display:block;margin-top:14px;white-space:normal}}
 @media(max-width:900px){
   html{scroll-padding-top:72px}
   .nav{min-height:58px;padding:10px 16px;align-items:center!important;display:flex!important;position:relative}
@@ -440,6 +459,7 @@ iframe{max-width:100%}
   .embed-window,.embed-window.app{width:100%;max-width:100%}
   .app-showcase{grid-template-columns:1fr!important}
 }
+@media(max-width:700px){.welcome-grid{padding-top:42px;padding-bottom:28px;gap:28px}.welcome-copy h1{font-size:clamp(2.55rem,12vw,3.7rem)!important;max-width:none}.welcome-routes{grid-template-columns:1fr}.welcome-routes a{padding:17px}.welcome-note{padding-bottom:28px}.model-intro .hero-grid{padding-top:0!important;padding-bottom:0!important}}
 @media(max-width:480px){
   .wrap{padding-left:17px;padding-right:17px}
   .button-row{display:grid;grid-template-columns:1fr}
@@ -579,10 +599,27 @@ def build(scrape: Path, out: Path) -> None:
     write(out, "assets/eai-logo.svg", LOGO_SVG)
 
     home_body = f'''<main>
-<section class="hero"><div class="wrap hero-grid">
-<div><div class="eyebrow">EAI model</div><h1>Wat moet de mens hier zelf blijven doen?</h1>
+<section class="welcome">
+<div class="wrap welcome-grid">
+<div class="welcome-copy">
+<div class="eyebrow">Welkom bij EAI</div>
+<h1>AI kan steeds meer van een taak uitvoeren. Wat moet de mens zelf blijven doen?</h1>
+<p class="lede">EAI helpt je om die vraag concreet te beantwoorden. Voor een les, toets, AI-tool, professionele beslissing of compleet onderwijsontwerp.</p>
+<p class="welcome-audience">Voor docenten, schoolleiders, onderzoekers en ontwikkelaars die AI willen verbinden aan leren en professioneel handelen.</p>
+</div>
+<div class="welcome-routes" aria-label="Kies waar je wilt beginnen">
+<a href="#model"><span>Nieuw hier?</span><strong>Begrijp EAI</strong><p>Bekijk het model en één concreet voorbeeld. Dit is de beste plek om te beginnen.</p><b>Start hier →</b></a>
+<a href="/werkvormen/"><span>Ik wil iets doen</span><strong>Gebruik de toolbox</strong><p>57 werkvormen voor lesontwerp, bewijs, zelfstandigheid, feedback en professioneel oordeel.</p><b>Naar de werkvormen →</b></a>
+<a href="/publicaties/"><span>Ik wil verder lezen</span><strong>Verdiep je</strong><p>Publicaties, praktijkverhalen, video en podcast over AI, leren en menselijk handelen.</p><b>Bekijk publicaties →</b></a>
+</div>
+</div>
+<div class="wrap welcome-note"><p><strong>EAI begint niet bij de tool.</strong> Eerst kijken we naar het proces, de fase en de menselijke handeling. Daarna pas naar de rol van AI.</p></div>
+</section>
+
+<section class="section model-intro" id="model"><div class="wrap hero-grid">
+<div><div class="eyebrow">Het EAI-model</div><h2>Vijf vragen voor één concrete situatie.</h2>
 <p class="lede">EAI helpt je bepalen welke rol AI in een leer- of professioneel proces mag krijgen. Je begint bij het doel, de fase en de menselijke handeling die ertoe doet. Pas daarna bepaal je wat AI uitvoert en welk bewijs je nodig hebt.</p>
-<div class="button-row"><a class="button" href="#model">Zo werkt EAI</a><a class="button secondary" href="/werkvormen/">Naar de werkvormen</a></div></div>
+<div class="button-row"><a class="button" href="#voorbeeld">Bekijk het voorbeeld</a><a class="button secondary" href="/over/">Over EAI</a></div></div>
 <div class="model-stack" aria-label="De vijf vragen van EAI">
 <div><span>01</span><strong>Proces en doel</strong><p>Wat probeer je op te bouwen of zichtbaar te maken?</p></div>
 <div><span>02</span><strong>Fase</strong><p>Waar bevindt de leerling of professional zich nu?</p></div>
@@ -591,7 +628,7 @@ def build(scrape: Path, out: Path) -> None:
 <div><span>05</span><strong>Output en bewijs</strong><p>Wat heb je daarna werkelijk gezien of aangetoond?</p></div>
 </div></div></section>
 
-<section class="section" id="model"><div class="wrap"><div class="section-head"><div class="kicker">EAI in één voorbeeld</div><div><h2>Een goed product zegt nog niet wie het relevante werk deed.</h2><p>Daarom kijkt EAI naar de handeling achter de output.</p></div></div>
+<section class="section" id="voorbeeld"><div class="wrap"><div class="section-head"><div class="kicker">EAI in één voorbeeld</div><div><h2>Een goed product zegt nog niet wie het relevante werk deed.</h2><p>Daarom kijkt EAI naar de handeling achter de output.</p></div></div>
 <div class="case-study">
 <div class="case-study__task"><span class="badge">Situatie</span><h3>Een leerling schrijft met AI een betoog.</h3><p>De tekst is sterk. Maar de docent wil kunnen zeggen dat de leerling zelf argumenten kan wegen en een conclusie kan onderbouwen.</p></div>
 <div class="case-study__route">
