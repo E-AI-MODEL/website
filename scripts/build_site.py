@@ -753,7 +753,7 @@ def footer() -> str:
         f'<footer class="site-footer"><div class="wrap footer-grid">'
         f'<p style="display:flex;gap:12px;align-items:center"><img src="/assets/eai-logo.svg" alt="" width="42" height="42">'
         f'<span><strong>EAI</strong> · Hans Visser<br>AI, leren en professioneel handelen.</span></p>'
-        f'<p><a href="/over/">Over EAI en Hans</a> · <a href="mailto:{EMAIL}">{EMAIL}</a> · '
+        f'<p><a href="/onderbouwing/">Onderbouwing</a> · <a href="/over/">Over EAI en Hans</a> · <a href="mailto:{EMAIL}">{EMAIL}</a> · '
         f'<a href="{GITHUB}" target="_blank" rel="noopener">GitHub</a></p></div></footer>'
     )
 
@@ -804,7 +804,7 @@ def inject_embed(source: Path, canonical_path: str, fallback_title: str, footer_
                 head_parts.append(str(node))
     body_inner = soup.body.decode_contents() if soup.body else src
     body_inner = rewrite_legacy_links(body_inner)
-    chrome = f'<header class="eai-site-nav"><div class="eai-site-nav__inner"><a class="eai-site-nav__brand" href="/" aria-label="EAI home"><img src="/assets/eai-logo.svg" alt="EAI" width="34" height="34"></a><div class="eai-site-nav__links"><a href="/">EAI model</a><a href="/werkvormen/">Werkvormen</a><a href="/praktijk/">Praktijk</a><a href="/publicaties/">Publicaties</a><a href="/tools/">Tools</a><a href="/over/">Over</a><a href="mailto:{EMAIL}">Contact</a></div></div></header>'
+    chrome = f'<header class="eai-site-nav"><div class="eai-site-nav__inner"><a class="eai-site-nav__brand" href="/" aria-label="EAI home"><img src="/assets/eai-logo.svg" alt="EAI" width="34" height="34"></a><div class="eai-site-nav__links"><a href="/">EAI model</a><a href="/werkvormen/">Werkvormen</a><a href="/onderbouwing/">Onderbouwing</a><a href="/praktijk/">Praktijk</a><a href="/publicaties/">Publicaties</a><a href="/tools/">Tools</a><a href="/over/">Over</a><a href="mailto:{EMAIL}">Contact</a></div></div></header>'
     foot = f'<footer class="eai-site-footer"><a href="{footer_back}">← Terug</a> · <a href="mailto:{EMAIL}">Contact</a></footer>'
     canonical = f"{BASE_URL}{canonical_path}"
     return f'<!doctype html><html lang="{esc(lang)}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{esc(title)} · EAI</title><link rel="canonical" href="{esc(canonical)}"><link rel="icon" href="/assets/eai-logo.svg" type="image/svg+xml">{"".join(head_parts)}<link rel="stylesheet" href="/assets/article-chrome.css"></head><body>{chrome}{body_inner}{foot}</body></html>'
