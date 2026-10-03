@@ -121,9 +121,10 @@ def render_workforms_index(items: list[dict]) -> str:
         )
 
     return f'''<main>
-<section class="page-hero"><div class="wrap"><div class="eyebrow">Werkvormen</div><h1>EAI Toolbox</h1><p class="lede">Begin niet bij de naam van een werkvorm. Begin bij wat je wilt zien, terugbrengen of ontwerpen. De werkvormen hieronder volgen dezelfde EAI-kijkvorm: proces/doel → fase → kernhandeling → taakdichtheid → output.</p></div></section>
+<section class="page-hero"><div class="wrap"><div class="eyebrow">Werkvormen</div><h1>Van principe naar leshandeling.</h1><p class="lede">Elke werkvorm begint bij een concrete situatie: wat moet de leerling of professional hier zelf doen, welke hulp is passend en welk bewijs heb je daarna werkelijk in handen?</p></div></section>
 <section class="section toolbox-start"><div class="wrap">
-<div class="toolbox-intro"><div><div class="kicker">Zoek op je vraag</div><h2>Wat wil je hier kunnen zien of besluiten?</h2></div><p>Filter op doel, doelgroep en bewijsfunctie. Een werkvorm is geen los trucje: hij is bruikbaar wanneer hij past bij de handeling en de claim die in deze fase belangrijk zijn.</p></div>
+<div class="toolbox-example-intro"><div><div class="kicker">Zo werkt de toolbox</div><h2>Eerst de situatie. Dan de werkvorm.</h2><p>Voorbeeld: een leerling schrijft met AI een betoog. De vraag is niet alleen of AI gebruikt mag worden. De vraag is welke handeling de leerling zelf moet uitvoeren om te kunnen zeggen dat hij kan argumenteren. Vanuit die vraag kies je een werkvorm.</p></div><div class="toolbox-example-path"><span>Situatie</span><span>Kernhandeling</span><span>AI-rol</span><span>Werkvorm</span><span>Bewijs</span></div></div>
+<div class="toolbox-intro"><div><div class="kicker">Zoek op je vraag</div><h2>Wat wil je hier kunnen zien of besluiten?</h2></div><p>Filter op doel, doelgroep en bewijsfunctie. Op iedere detailpagina staat een concreet klasvoorbeeld naast de werkroute.</p></div>
 <nav class="toolbox-questions" aria-label="Veelvoorkomende startvragen">
 <a href="#zelfstandigheid"><span>Ik wil weten</span><strong>wat de leerling zonder AI zelf kan.</strong></a>
 <a href="#zichtbaar"><span>Ik wil zien</span><strong>hoe een keuze met AI tot stand kwam.</strong></a>
@@ -201,12 +202,31 @@ def render_workform_visual(visual: dict | None) -> str:
         f'{caption_html}</figure>'
     )
 
+def render_workform_example(item: dict) -> str:
+    example = item.get("example")
+    if not example:
+        return ""
+    return (
+        '<section class="section workform-example-section"><div class="wrap">'
+        '<div class="workform-example-grid">'
+        '<div><div class="kicker">Concreet voorbeeld</div><h2>Zo kan dit er in de klas uitzien.</h2></div>'
+        f'<div class="workform-example-card"><p>{esc(example)}</p></div>'
+        '</div></div></section>'
+    )
+
+def append_workform_example(body: str, item: dict) -> str:
+    section = render_workform_example(item)
+    if not section:
+        return body
+    return body.replace("</main>", section + "</main>", 1)
+
 def render_catalog_workform(item: dict) -> str:
     steps = "".join(f"<li>{esc(step)}</li>" for step in item.get("steps", []))
     audience = " · ".join(WORKFORM_AUDIENCE_LABELS.get(value, value) for value in item.get("audience", []))
     evidence = " · ".join(WORKFORM_EVIDENCE_LABELS.get(value, value) for value in item.get("evidence", []))
     source = esc(item.get("source", "EAI"))
     visual_html = render_workform_visual(item.get("visual"))
+    example_html = render_workform_example(item)
     if item.get("source_url"):
         source_html = f'<a href="{esc(item["source_url"])}" target="_blank" rel="noopener">{source}</a>'
     else:
@@ -214,8 +234,9 @@ def render_catalog_workform(item: dict) -> str:
     return f'''<main>
 <section class="page-hero"><div class="wrap"><div class="eyebrow">Werkvorm · {esc(audience)}</div><h1>{esc(item["title"])}</h1><p class="lede">{esc(item["lede"])}</p>{render_route(item.get("route", []))}</div></section>
 <section class="section"><div class="wrap"><div class="workform-detail-grid"><div class="workform-question"><div class="kicker">Kernvraag</div><h2>{esc(item["question"])}</h2></div><div class="workform-facts"><p><strong>Voor wie</strong><br>{esc(audience)}</p><p><strong>Bewijsfunctie</strong><br>{esc(evidence)}</p></div></div>{visual_html}</div></section>
-<section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Zo werkt het</div><div><h2>Werk vanuit de handeling.</h2><p>De stappen hieronder zijn een werkroute. Pas ze aan de taak en de fase aan, maar sla de vraag naar de menselijke handeling niet over.</p></div></div><div class="panel workform-steps"><ol>{steps}</ol></div></div></section>
-<section class="section"><div class="wrap"><div class="split"><article class="panel"><div class="kicker">Opbrengst</div><h3>Wat wordt zichtbaar?</h3><p>{esc(item["result"])}</p></article><article class="panel"><div class="kicker">Let op</div><h3>Wat kun je hier niet vanzelf uit concluderen?</h3><p>{esc(item["caution"])}</p></article></div><p class="workform-source"><strong>Bronlaag:</strong> {source_html}</p><p><a href="/werkvormen/">← Terug naar de EAI Toolbox</a></p></div></section>
+{example_html}
+<section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Zo werkt het</div><div><h2>Doe dit in deze volgorde.</h2><p>De stappen vormen een werkroute. Pas de formulering aan je vak en taak aan, maar houd de menselijke handeling en het bewijs expliciet.</p></div></div><div class="panel workform-steps"><ol>{steps}</ol></div></div></section>
+<section class="section"><div class="wrap"><div class="split"><article class="panel"><div class="kicker">Opbrengst</div><h3>Waar kijk je daarna naar?</h3><p>{esc(item["result"])}</p></article><article class="panel"><div class="kicker">Let op</div><h3>Wat bewijst dit nog niet?</h3><p>{esc(item["caution"])}</p></article></div><p class="workform-source"><strong>Bronlaag:</strong> {source_html}</p><p><a href="/werkvormen/">← Terug naar de EAI Toolbox</a></p></div></section>
 </main>'''
 
 TOOLS = [
