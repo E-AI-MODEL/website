@@ -11,7 +11,7 @@ body{background:#fff;color:var(--ink);font-family:Georgia,"Times New Roman",seri
 .nav-links a{color:#394452}
 .nav-cta{border-color:#283240}
 .eyebrow,.kicker,.badge,.card .meta,.pillar .num,.embed-top,.app-tag{font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-.eyebrow,.kicker{color:#76869a;letter-spacing:.11em;font-weight:800}
+.eyebrow,.kicker{color:#5f7085;letter-spacing:.11em;font-weight:800}
 h1,h2,h3,.panel h3,.card h3,.tool-card h2,.pillar h3,.reading h3,.media-copy h2,.app-copy h2,.feature-publication h2,.article-body h2,.article-action h3,.article-pillars strong{font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);font-weight:800;letter-spacing:-.025em}
 h1{font-size:clamp(3.05rem,5.8vw,5.25rem);max-width:13ch;letter-spacing:-.042em}
 .lede{font-family:Georgia,"Times New Roman",serif;font-size:clamp(1.02rem,1.65vw,1.22rem);color:#465467;line-height:1.55}
@@ -78,4 +78,4 @@ h1{font-size:clamp(3.05rem,5.8vw,5.25rem);max-width:13ch;letter-spacing:-.042em}
 @media(max-width:620px){.nav{display:block}.nav-links{margin-top:10px}.hero-grid{padding:66px 0 60px}h1{font-size:clamp(3rem,16vw,4.8rem)}.section{padding:62px 0}.split,.card-grid{grid-template-columns:1fr}.footer-grid{display:block}.footer-grid p+p{margin-top:14px}}
 /* Keep the PDF-led mobile rhythm after the legacy migration breakpoints. */
 @media(max-width:900px){html{scroll-padding-top:126px}.app-showcase[id],section[id]{scroll-margin-top:128px}.hero-grid{grid-template-columns:1fr;gap:30px}.pillar+.pillar,.article-pillars>div+div{border-color:var(--line)}}
-@media(max-width:620px){body{font-size:16px}.hero-grid{padding:54px 0 48px}.section{padding:52px 0}.page-hero{padding:54px 0 34px}h1{font-size:clamp(2.65rem,13vw,4rem)}.article-body{font-size:1rem;padding-top:50px}.article-body h2{margin-top:44px}.article-route{gap:12px;font-size:.75rem}}
+@media(max-width:620px){body{font-size:16px}.hero-grid{padding:54px 0 48px}.section{padding:52px 0}.page-hero{padding:54px 0 34px}h1{font-size:clamp(2.65rem,13vw,4rem)}.article-body{font-size:1rem;padding-top:50px}.article-body h2{margin-top:44px}.article-route{gap:12px;font-size:.75rem}.pdf-figure{overflow-x:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-inline:contain}.pdf-figure svg{min-width:680px;max-width:none}.pillar-visual{max-width:100%}}
