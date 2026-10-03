@@ -389,13 +389,14 @@ def render_catalog_workform(item: dict) -> str:
     technical = item["title"] if public_title != item["title"] else ""
     technical_html = f'<p class="workform-technical-name detail">EAI-term: {esc(technical)}</p>' if technical else ""
     visual_html = render_workform_visual(item.get("visual"))
+    visual_section = f'<section class="section"><div class="wrap">{visual_html}</div></section>' if visual_html else ""
     quickstart_html = render_workform_quickstart(item)
     example_html = render_workform_example(item)
     foundation_html = render_workform_underpinning(item)
     return f'''<main>
 <section class="page-hero"><div class="wrap"><div class="eyebrow">Werkvorm · {esc(audience)}</div><h1>{esc(public_title)}</h1>{technical_html}<p class="lede">{esc(item["summary"])}</p>{render_route(item.get("route", []))}</div></section>
 {quickstart_html}
-<section class="section"><div class="wrap">{visual_html}</div></section>
+{visual_section}
 {example_html}
 <section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Zo doe je het</div><div><h2>Werk stap voor stap.</h2><p>Pas de formulering aan je vak en klas aan. De volgorde bewaakt dat de relevante leerlinghandeling niet ongemerkt uit beeld verdwijnt.</p></div></div><div class="panel workform-steps"><ol>{steps}</ol></div></div></section>
 <section class="section"><div class="wrap"><div class="split"><article class="panel"><div class="kicker">Daarna</div><h3>Waar kijk je naar?</h3><p>{esc(item["result"])}</p></article><article class="panel"><div class="kicker">Let op</div><h3>Wat kun je nog niet concluderen?</h3><p>{esc(item["caution"])}</p></article></div><p><a href="/werkvormen/">← Terug naar de werkvormen</a></p></div></section>
@@ -921,7 +922,7 @@ def build(scrape: Path, out: Path) -> None:
 <article><span>03</span><h3>AI-specifiek onderzoek</h3><p>Recente studies laten zien dat effecten van generatieve AI sterk afhangen van taak, ondersteuning en wat AI precies overneemt. Daarom analyseert EAI handelingen in plaats van alleen 'AI-gebruik'.</p></article>
 </div></div></section>
 
-<section class="section" id="zelfstandigheid"><div class="wrap"><div class="section-head"><div class="kicker">Zelfstandigheid</div><div><h2>Met hulp iets goed doen is niet hetzelfde als het zelf kunnen.</h2><p>Dat klinkt bijna te vanzelfsprekend. Toch wordt een sterk AI-ondersteund product gemakkelijk gelezen alsof het iets zegt over zelfstandige beheersing. EAI houdt ondersteunde prestatie, zelfstandig uitvoeren, later opnieuw uitvoeren en transfer daarom uit elkaar.</p></div></div>
+<section class="section" id="zelfstandigheid"><span id="proces-en-bewijs"></span><span id="bewijs"></span><div class="wrap"><div class="section-head"><div class="kicker">Zelfstandigheid</div><div><h2>Met hulp iets goed doen is niet hetzelfde als het zelf kunnen.</h2><p>Dat klinkt bijna te vanzelfsprekend. Toch wordt een sterk AI-ondersteund product gemakkelijk gelezen alsof het iets zegt over zelfstandige beheersing. EAI houdt ondersteunde prestatie, zelfstandig uitvoeren, later opnieuw uitvoeren en transfer daarom uit elkaar.</p></div></div>
 <div class="evidence-pair"><article><h3>Onderwijswetenschappelijk</h3><p>Onderzoek naar retrieval en opnieuw uitvoeren laat zien waarom een nieuwe poging iets anders kan laten zien dan opnieuw bestuderen of herkennen.</p><p><a href="https://doi.org/10.1111/j.1467-9280.2006.01693.x" target="_blank" rel="noopener">Roediger &amp; Karpicke (2006) →</a></p></article>
 <article><h3>AI-specifiek</h3><p>Recente studies onderscheiden eveneens sterke prestatie mét AI van wat later zonder dezelfde ondersteuning beschikbaar blijft.</p><p><a href="https://doi.org/10.1073/pnas.2422633122" target="_blank" rel="noopener">Bastani et al. (2025) →</a></p></article></div>
 </div></section>
@@ -949,7 +950,7 @@ def build(scrape: Path, out: Path) -> None:
 <article><h3>Teacher-AI samenwerking</h3><p>Recente studies beschrijven hoe initiatief, epistemische agency en professionele verantwoordelijkheid anders verdeeld kunnen raken wanneer docenten met AI werken.</p><p><a href="https://doi.org/10.1016/j.caeo.2026.100371" target="_blank" rel="noopener">Velander (2026) →</a></p></article></div>
 </div></section>
 
-<section class="section" id="taak-en-ai"><div class="wrap"><div class="section-head"><div class="kicker">Recente AI-evidence</div><div><h2>Het effect van AI hangt af van wat AI in de taak doet.</h2><p>De huidige literatuur is heterogeen. Gemiddelde positieve of negatieve effecten vertellen weinig zonder te weten welke taak, welk vak, welke ondersteuning en welke menselijke activiteit in beeld was.</p></div></div>
+<section class="section" id="taak-en-ai"><span id="ontwerp"></span><div class="wrap"><div class="section-head"><div class="kicker">Recente AI-evidence</div><div><h2>Het effect van AI hangt af van wat AI in de taak doet.</h2><p>De huidige literatuur is heterogeen. Gemiddelde positieve of negatieve effecten vertellen weinig zonder te weten welke taak, welk vak, welke ondersteuning en welke menselijke activiteit in beeld was.</p></div></div>
 <div class="publication-grid evidence-source-grid">
 <a class="publication-card" href="https://doi.org/10.1007/s10462-026-11665-9" target="_blank" rel="noopener"><div class="publication-card__body"><span class="meta">Meta-analyse · 2026</span><h3>Boolzen et al.</h3><p>STEM, generatieve AI en cognitieve leeruitkomsten. Onder meer relevant voor het onderscheid tussen augmenteren en vervangen van leerlingactiviteit.</p><span class="arrow">Bron →</span></div></a>
 <a class="publication-card" href="https://cepr.org/publications/dp21577" target="_blank" rel="noopener"><div class="publication-card__body"><span class="meta">Working paper · 2026</span><h3>Stromberg, Lei &amp; Wu</h3><p>Langdurige data uit Chinees voortgezet onderwijs; homeworkprestaties en latere gesloten toetsen lopen niet automatisch gelijk.</p><span class="arrow">Bron →</span></div></a>
