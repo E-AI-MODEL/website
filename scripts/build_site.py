@@ -270,6 +270,7 @@ def render_workforms_index(items: list[dict]) -> str:
     intentLabel.textContent = button.querySelector('strong').textContent;
     clearIntent.hidden = false;
     apply();
+    window.setTimeout(() => count.scrollIntoView({{behavior: 'smooth', block: 'center'}}), 50);
   }}));
 
   clearIntent.addEventListener('click', () => {{
