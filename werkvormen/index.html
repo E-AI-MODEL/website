@@ -64,7 +64,7 @@
     try { return new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')); }
     catch (_) { return new Set(); }
   };
-  const writeSaved = saved => localStorage.setItem(STORAGE_KEY, JSON.stringify([...saved]));
+  const writeSaved = saved => { try { localStorage.setItem(STORAGE_KEY, JSON.stringify([...saved])); } catch (_) {} };
   const routeFor = button => ({
     key: button.dataset.routeKey,
     intents: (button.dataset.routeIntents || '').split(' ').filter(Boolean),
@@ -192,4 +192,4 @@
   render();
 })();
 </script>
-</main><footer class="site-footer"><div class="wrap footer-grid"><p style="display:flex;gap:12px;align-items:center"><img src="/assets/eai-logo.svg" alt="" width="42" height="42"><span><strong>EAI</strong> · Hans Visser<br>AI, leren en professioneel handelen.</span></p><p><a href="/onderbouwing/">Onderbouwing</a> · <a href="/over/">Over EAI en Hans</a> · <a href="mailto:vis@emmauscollege.nl">vis@emmauscollege.nl</a> · <a href="https://github.com/E-AI-MODEL" target="_blank" rel="noopener">GitHub</a></p></div></footer></body></html>
+</main><footer class="site-footer"><div class="wrap footer-grid"><p style="display:flex;gap:12px;align-items:center"><img src="/assets/eai-logo.svg" alt="" width="42" height="42"><span><strong>EAI</strong> · Hans Visser<br>AI, leren en professioneel handelen.</span></p><p><a href="/verdieping/">Verdieping</a> · <a href="/over/">Over EAI en Hans</a> · <a href="mailto:vis@emmauscollege.nl">vis@emmauscollege.nl</a> · <a href="https://github.com/E-AI-MODEL" target="_blank" rel="noopener">GitHub</a></p></div></footer></body></html>
