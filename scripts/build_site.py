@@ -726,7 +726,7 @@ def build(scrape: Path, out: Path) -> None:
             out,
             f'werkvormen/{item["slug"]}/index.html',
             doc(
-                item["title"],
+                item.get("public_title", item["title"]),
                 render_catalog_workform(item),
                 f'/werkvormen/{item["slug"]}/',
                 "werkvormen",
