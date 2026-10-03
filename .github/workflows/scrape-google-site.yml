@@ -7,6 +7,7 @@ on:
       - site-preview
       - ui-pdf-editorial
       - workforms-toolbox
+      - workforms-depth-2
     paths:
       - '.github/workflows/scrape-google-site.yml'
       - 'scripts/build_site.py'
