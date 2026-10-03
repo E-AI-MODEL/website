@@ -10,6 +10,7 @@ on:
       - workforms-professional-judgement
       - workforms-visual-support
       - site-v3-cohesion
+      - site-welcome-landing
       - workforms-toolbox-phase2
     paths:
       - '.github/workflows/scrape-google-site.yml'
