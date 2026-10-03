@@ -63,6 +63,21 @@
           "ai": [
             "beschrijf feitelijke AI-actie"
           ]
+        },
+        "role_steps": {
+          "teacher": [
+            "Kies één concrete taak uit je eigen les.",
+            "Schrijf op wat de leerling aan het einde moet kunnen.",
+            "Benoem de stap waar de leerling zelf betekenis aan moet geven.",
+            "Noteer daarna pas wat AI in die taak doet."
+          ],
+          "learner": [
+            "Voer de taak of relevante stap uit.",
+            "Licht toe welke keuze je zelf hebt gemaakt."
+          ],
+          "ai": [
+            "Beschrijf alleen wat AI feitelijk doet in deze taak."
+          ]
         }
       }
     },
@@ -118,6 +133,20 @@
           ],
           "ai": [
             "ondersteun rondom"
+          ]
+        },
+        "role_steps": {
+          "teacher": [
+            "Schrijf het leerdoel in één zin op.",
+            "Vraag: welke stap moet de leerling hier zelf uitvoeren om dit te leren?",
+            "Benoem die stap zo concreet mogelijk met een werkwoord."
+          ],
+          "learner": [
+            "Voer juist die stap zelf uit.",
+            "Leg kort uit wat je daarbij hebt gedaan."
+          ],
+          "ai": [
+            "Ondersteun om die stap heen, niet in plaats van die stap."
           ]
         }
       }
@@ -182,6 +211,20 @@
             "structureer",
             "genereer",
             "controleer"
+          ]
+        },
+        "role_steps": {
+          "teacher": [
+            "Knip de taak op in losse handelingen.",
+            "Zet achter elke handeling: leerling, AI of samen.",
+            "Markeer welke handeling voor het leren het zwaarst weegt."
+          ],
+          "learner": [
+            "Laat zien welke keuzes je zelf maakt.",
+            "Controleer welke stappen je aan AI hebt uitbesteed."
+          ],
+          "ai": [
+            "Voer alleen de handelingen uit die bewust aan AI zijn toegewezen."
           ]
         }
       }
@@ -250,6 +293,20 @@
             "genereer",
             "reageer"
           ]
+        },
+        "role_steps": {
+          "teacher": [
+            "Kies één echte vraag uit je vak.",
+            "Voer dezelfde vraag meerdere keren uit met kleine promptverschillen.",
+            "Vergelijk welke verschillen door de prompt ontstaan."
+          ],
+          "learner": [
+            "Vergelijk antwoorden op inhoud, niet op stijl.",
+            "Benoem wat de prompt zichtbaar veranderde."
+          ],
+          "ai": [
+            "Geef antwoord op de verschillende promptvarianten."
+          ]
         }
       }
     },
@@ -309,6 +366,20 @@
             "haal op",
             "vat samen",
             "formuleer"
+          ]
+        },
+        "role_steps": {
+          "teacher": [
+            "Stel exact dezelfde vraag in twee AI-omgevingen.",
+            "Vergelijk bronnen, formulering en zekerheid.",
+            "Bespreek wat het verschil betekent voor gebruik in de les."
+          ],
+          "learner": [
+            "Controleer welke bron of context het antwoord beïnvloedt.",
+            "Benoem welk antwoord je wel of niet vertrouwt en waarom."
+          ],
+          "ai": [
+            "Beantwoord dezelfde vraag vanuit verschillende broncondities."
           ]
         }
       }
@@ -382,6 +453,21 @@
             "geef feedback",
             "toon alternatief"
           ]
+        },
+        "role_steps": {
+          "teacher": [
+            "Laat de leerling eerst zonder inhoudelijke AI-hulp beginnen.",
+            "Bewaar die eerste versie.",
+            "Laat daarna pas AI-hulp toe en vergelijk beide versies."
+          ],
+          "learner": [
+            "Maak eerst zelf een poging.",
+            "Gebruik daarna AI-hulp.",
+            "Markeer wat je na de AI-hulp hebt veranderd."
+          ],
+          "ai": [
+            "Geef pas na de eerste poging feedback of een alternatief."
+          ]
         }
       }
     },
@@ -439,6 +525,20 @@
           "ai": [
             "stel voor",
             "genereer alternatief"
+          ]
+        },
+        "role_steps": {
+          "teacher": [
+            "Kies één of twee belangrijke AI-suggesties.",
+            "Vraag per suggestie: overnemen, aanpassen of verwerpen?",
+            "Vraag steeds om één inhoudelijke reden."
+          ],
+          "learner": [
+            "Kies bewust wat je met de suggestie doet.",
+            "Geef één reden voor die keuze."
+          ],
+          "ai": [
+            "Doe een voorstel of geef een alternatief."
           ]
         }
       }
@@ -506,6 +606,20 @@
           "ai": [
             "lever oorspronkelijke bijdrage"
           ]
+        },
+        "role_steps": {
+          "teacher": [
+            "Kies één zin, keuze of wijziging uit het eindproduct.",
+            "Vraag waar die keuze vandaan kwam.",
+            "Vraag welke rol AI daarbij speelde."
+          ],
+          "learner": [
+            "Ga terug naar het beslismoment.",
+            "Leg uit wat AI voorstelde en wat jij zelf besloot."
+          ],
+          "ai": [
+            "Lever alleen de oorspronkelijke bijdrage of suggestie terug."
+          ]
         }
       }
     },
@@ -568,6 +682,21 @@
           ],
           "ai": [
             "blijf onderwerp van reflectie"
+          ]
+        },
+        "role_steps": {
+          "teacher": [
+            "Laat de leerling twee beslismomenten terughalen.",
+            "Vraag wat AI voorstelde en wat de leerling zelf veranderde.",
+            "Sluit af met: wat zou je de volgende keer anders doen?"
+          ],
+          "learner": [
+            "Kijk terug op je keuzes.",
+            "Noem wat je overnam, veranderde of afwees.",
+            "Benoem één andere aanpak voor een volgende keer."
+          ],
+          "ai": [
+            "Blijf onderwerp van de reflectie, schrijf de reflectie niet."
           ]
         }
       }
@@ -653,6 +782,20 @@
           "ai": [
             "trek ondersteuning terug"
           ]
+        },
+        "role_steps": {
+          "teacher": [
+            "Kies precies welke hulp je tijdelijk wegneemt.",
+            "Geef een nieuwe maar vergelijkbare taak.",
+            "Observeer wat de leerling zonder die hulp nog kan."
+          ],
+          "learner": [
+            "Voer dezelfde kernhandeling opnieuw uit.",
+            "Vraag pas hulp nadat je zelf hebt geprobeerd."
+          ],
+          "ai": [
+            "Blijf weg bij de gekozen handeling tijdens deze poging."
+          ]
         }
       }
     },
@@ -718,6 +861,21 @@
           "ai": [
             "wacht",
             "geef daarna begrensde hulp"
+          ]
+        },
+        "role_steps": {
+          "teacher": [
+            "Stop verdere hulp op het gekozen moment.",
+            "Vraag de leerling de huidige stap in eigen woorden uit te leggen.",
+            "Hervat pas daarna de hulp."
+          ],
+          "learner": [
+            "Leg uit waarom deze stap klopt.",
+            "Herstel wat nog ontbreekt.",
+            "Ga daarna pas verder."
+          ],
+          "ai": [
+            "Wacht op de uitleg voordat nieuwe inhoudelijke hulp volgt."
           ]
         }
       }
@@ -786,6 +944,20 @@
           "ai": [
             "genereer oefenitem"
           ]
+        },
+        "role_steps": {
+          "teacher": [
+            "Kies een nieuw item met dezelfde onderliggende handeling.",
+            "Haal het vorige antwoord uit beeld.",
+            "Laat de leerling opnieuw beginnen."
+          ],
+          "learner": [
+            "Herken welke handeling hetzelfde is.",
+            "Voer die handeling opnieuw uit."
+          ],
+          "ai": [
+            "Genereer eventueel het nieuwe item, niet de oplossing."
+          ]
         }
       }
     },
@@ -851,6 +1023,21 @@
           "ai": [
             "genereer alternatief"
           ]
+        },
+        "role_steps": {
+          "teacher": [
+            "Leg twee versies naast elkaar.",
+            "Laat één inhoudelijk verschil kiezen.",
+            "Haal daarna beide versies weg en laat opnieuw opbouwen."
+          ],
+          "learner": [
+            "Vergelijk de versies.",
+            "Kies wat sterker is en waarom.",
+            "Bouw daarna zelf een nieuwe versie."
+          ],
+          "ai": [
+            "Lever één van de vergelijkingsversies of een alternatief."
+          ]
         }
       }
     },
@@ -912,6 +1099,20 @@
           ],
           "ai": [
             "ondersteun waar passend"
+          ]
+        },
+        "role_steps": {
+          "teacher": [
+            "Schrijf eerst op wat je over de leerling wilt kunnen zeggen.",
+            "Kies bewijs dat precies bij die uitspraak past.",
+            "Gebruik een nieuwe uitvoering als zelfstandigheid de vraag is."
+          ],
+          "learner": [
+            "Laat de relevante handeling zien.",
+            "Voer die opnieuw uit als de docent daar om vraagt."
+          ],
+          "ai": [
+            "Ondersteun alleen waar dat past bij het soort bewijs dat wordt verzameld."
           ]
         }
       }
@@ -995,6 +1196,20 @@
           ],
           "ai": [
             "genereer nieuw item"
+          ]
+        },
+        "role_steps": {
+          "teacher": [
+            "Plan een nieuw moment na voldoende tijd.",
+            "Gebruik een nieuw of licht veranderd item.",
+            "Laat de leerling eerst zonder antwoordhulp uitvoeren."
+          ],
+          "learner": [
+            "Haal de aanpak opnieuw op uit je geheugen.",
+            "Voer de taak uit zonder het oude antwoord."
+          ],
+          "ai": [
+            "Genereer eventueel een nieuw item, niet het antwoord."
           ]
         }
       }
@@ -1080,6 +1295,20 @@
           "ai": [
             "genereer nieuwe context"
           ]
+        },
+        "role_steps": {
+          "teacher": [
+            "Verander context of vorm van de taak.",
+            "Houd de onderliggende handeling hetzelfde.",
+            "Vraag achteraf wat de leerling moest herkennen en aanpassen."
+          ],
+          "learner": [
+            "Herken wat uit de eerdere taak bruikbaar is.",
+            "Pas die kennis aan de nieuwe situatie aan."
+          ],
+          "ai": [
+            "Genereer eventueel een nieuwe context, niet de toepassing zelf."
+          ]
         }
       }
     },
@@ -1159,6 +1388,21 @@
           "ai": [
             "genereer verse taak"
           ]
+        },
+        "role_steps": {
+          "teacher": [
+            "Vraag vooraf hoe zeker de leerling is.",
+            "Laat daarna een verse taak uitvoeren.",
+            "Leg inschatting en uitvoering naast elkaar."
+          ],
+          "learner": [
+            "Schat vooraf je eigen beheersing in.",
+            "Voer de taak uit.",
+            "Stel je inschatting bij op basis van wat je liet zien."
+          ],
+          "ai": [
+            "Genereer eventueel de verse taak."
+          ]
         }
       }
     },
@@ -1219,6 +1463,21 @@
           "ai": [
             "signaleer",
             "controleer"
+          ]
+        },
+        "role_steps": {
+          "teacher": [
+            "Vraag waar het voor het eerst misgaat.",
+            "Laat de leerling die stap aanwijzen.",
+            "Vraag daarna pas om verklaring en herstel."
+          ],
+          "learner": [
+            "Lokaliseer de eerste fout.",
+            "Leg uit waarom die fout ontstaat.",
+            "Herstel de stap zelf."
+          ],
+          "ai": [
+            "Signaleer of controleer, maar geef de volledige correctie niet meteen."
           ]
         }
       }
@@ -1308,6 +1567,21 @@
             "geef feedback",
             "controleer"
           ]
+        },
+        "role_steps": {
+          "teacher": [
+            "Geef maximaal één of twee concrete feedbackpunten.",
+            "Vraag de leerling welk punt hij eerst aanpakt.",
+            "Laat daarna een nieuwe versie maken."
+          ],
+          "learner": [
+            "Herhaal de feedback in eigen woorden.",
+            "Kies wat je verandert.",
+            "Maak zelf de nieuwe versie."
+          ],
+          "ai": [
+            "Geef feedback of controleer aan een criterium."
+          ]
         }
       }
     },
@@ -1376,6 +1650,21 @@
           "ai": [
             "haal informatie op",
             "noem bron"
+          ]
+        },
+        "role_steps": {
+          "teacher": [
+            "Kies één belangrijke AI-uitspraak.",
+            "Vraag welke bron die uitspraak kan controleren.",
+            "Laat claim en bron naast elkaar leggen."
+          ],
+          "learner": [
+            "Zoek de bron.",
+            "Vergelijk wat AI zegt met wat de bron echt zegt.",
+            "Pas je conclusie aan als dat nodig is."
+          ],
+          "ai": [
+            "Haal informatie of een bron op, maar voer de controle niet voor de leerling uit."
           ]
         }
       }
@@ -1467,6 +1756,21 @@
             "stel vraag",
             "geef hint"
           ]
+        },
+        "role_steps": {
+          "teacher": [
+            "Vraag eerst waar de leerling precies vastloopt.",
+            "Vraag welke soort hulp nodig is.",
+            "Geef alleen die kleine aanwijzing."
+          ],
+          "learner": [
+            "Benoem de laatste stap die nog lukt.",
+            "Vraag gericht om hulp.",
+            "Ga daarna zelf verder."
+          ],
+          "ai": [
+            "Stel een vraag of geef een kleine hint."
+          ]
         }
       }
     },
@@ -1535,6 +1839,21 @@
           "ai": [
             "stel voor",
             "geef alternatief"
+          ]
+        },
+        "role_steps": {
+          "teacher": [
+            "Kies één AI-suggestie die inhoudelijk telt.",
+            "Vraag: overnemen, aanpassen of verwerpen?",
+            "Vraag om één reden."
+          ],
+          "learner": [
+            "Kies wat je met de suggestie doet.",
+            "Pas hem zo nodig aan.",
+            "Leg kort uit waarom."
+          ],
+          "ai": [
+            "Geef één voorstel of alternatief."
           ]
         }
       }
@@ -1606,6 +1925,21 @@
             "ondersteun",
             "wacht"
           ]
+        },
+        "role_steps": {
+          "teacher": [
+            "Bouw een duidelijk stopmoment in.",
+            "Vraag de leerling hoe hij nu verder wil.",
+            "Geef de regie daarna terug."
+          ],
+          "learner": [
+            "Kies zelf je volgende stap.",
+            "Controleer of die stap werkt.",
+            "Vraag pas daarna nieuwe hulp."
+          ],
+          "ai": [
+            "Ondersteun tot het stopmoment en wacht daarna."
+          ]
         }
       }
     },
@@ -1670,6 +2004,20 @@
           "ai": [
             "genereer variant",
             "ondersteun"
+          ]
+        },
+        "role_steps": {
+          "teacher": [
+            "Pak een bestaande opdracht.",
+            "Benoem leerdoel en kernhandeling.",
+            "Schrijf per stap op wat AI wel en niet doet.",
+            "Pas de opdracht daarop aan."
+          ],
+          "learner": [
+            "Voer de opnieuw ontworpen kernhandeling zelf uit."
+          ],
+          "ai": [
+            "Help varianten genereren of ondersteunen buiten de kernhandeling."
           ]
         }
       }
@@ -1765,6 +2113,20 @@
             "modelleer",
             "geef feedback"
           ]
+        },
+        "role_steps": {
+          "teacher": [
+            "Schrijf op wat AI precies mag doen.",
+            "Markeer waar die AI-hulp stopt.",
+            "Plan een moment waarop de leerling de handeling zelf uitvoert."
+          ],
+          "learner": [
+            "Neem de handeling na de AI-hulp weer over.",
+            "Voer haar op een nieuw moment zelf uit."
+          ],
+          "ai": [
+            "Vraag, hint, modelleer of geef feedback binnen de afgesproken grens."
+          ]
         }
       }
     },
@@ -1834,6 +2196,19 @@
           ],
           "ai": [
             "ondersteun begrensd"
+          ]
+        },
+        "role_steps": {
+          "teacher": [
+            "Schrijf op welke uitspraak de toets moet kunnen dragen.",
+            "Markeer waar AI die uitspraak kan vertroebelen.",
+            "Voeg bewijs toe waarin de relevante handeling zichtbaar blijft."
+          ],
+          "learner": [
+            "Voer de gekozen menselijke handeling zelf uit."
+          ],
+          "ai": [
+            "Ondersteun alleen waar de interpretatie van het bewijs helder blijft."
           ]
         }
       }
@@ -1916,6 +2291,19 @@
           "ai": [
             "stel verhelderende vraag"
           ]
+        },
+        "role_steps": {
+          "teacher": [
+            "Vraag niet alleen wat er af moet, maar wat er geleerd moet worden.",
+            "Laat de leerling dat leerdoel in eigen woorden formuleren."
+          ],
+          "learner": [
+            "Benoem wat je moet leren.",
+            "Maak verschil tussen taak afmaken en iets leren beheersen."
+          ],
+          "ai": [
+            "Stel verhelderende vragen, vul het leerdoel niet in."
+          ]
         }
       }
     },
@@ -1978,6 +2366,21 @@
           ],
           "ai": [
             "geef alternatief plan"
+          ]
+        },
+        "role_steps": {
+          "teacher": [
+            "Laat de leerling eerst zelf een kort plan maken.",
+            "Vraag waar hij tussendoor controleert of het werkt.",
+            "Vergelijk daarna pas met AI-hulp."
+          ],
+          "learner": [
+            "Maak zelf je stappenplan.",
+            "Kies één controlepunt.",
+            "Pas je plan aan als dat nodig is."
+          ],
+          "ai": [
+            "Geef pas daarna een alternatief plan of gerichte vraag."
           ]
         }
       }
@@ -2069,6 +2472,21 @@
             "controleer",
             "geef feedback"
           ]
+        },
+        "role_steps": {
+          "teacher": [
+            "Laat de leerling vóór AI-feedback één criterium kiezen.",
+            "Vraag om een eigen beoordeling.",
+            "Toon daarna pas de AI-feedback."
+          ],
+          "learner": [
+            "Kies waarop je let.",
+            "Beoordeel je eigen werk.",
+            "Vergelijk dat oordeel met de feedback."
+          ],
+          "ai": [
+            "Controleer of geef feedback nadat de leerling zelf heeft beoordeeld."
+          ]
         }
       }
     },
@@ -2132,6 +2550,20 @@
           ],
           "ai": [
             "stel verhelderende vraag"
+          ]
+        },
+        "role_steps": {
+          "teacher": [
+            "Vraag: wat lukt nog wel?",
+            "Laat de leerling de eerstvolgende stap aanwijzen die niet lukt.",
+            "Blijf daar bij."
+          ],
+          "learner": [
+            "Noem de laatste stap die nog lukt.",
+            "Benoem precies waar je vastloopt."
+          ],
+          "ai": [
+            "Stel één vraag die helpt het vastlooppunt scherper te krijgen."
           ]
         }
       }
@@ -2197,6 +2629,21 @@
           "ai": [
             "stel alternatieven voor"
           ]
+        },
+        "role_steps": {
+          "teacher": [
+            "Laat eerst resultaten of terugkerende fouten bekijken.",
+            "Vraag of de huidige aanpak nog werkt.",
+            "Laat de leerling zelf een andere strategie kiezen."
+          ],
+          "learner": [
+            "Bekijk wat je eigen aanpak oplevert.",
+            "Beslis of je doorgaat of verandert.",
+            "Probeer de nieuwe aanpak."
+          ],
+          "ai": [
+            "Geef alternatieve strategieën als opties."
+          ]
         }
       }
     },
@@ -2261,6 +2708,21 @@
           ],
           "ai": [
             "lever procesinformatie"
+          ]
+        },
+        "role_steps": {
+          "teacher": [
+            "Kies twee of drie beslismomenten uit het proces.",
+            "Vraag per moment wat er gebeurde en waarom.",
+            "Laat één verbetering voor een volgende keer formuleren."
+          ],
+          "learner": [
+            "Benoem de beslissing.",
+            "Leg uit wat aanleiding en gevolg waren.",
+            "Formuleer één aanpassing voor later."
+          ],
+          "ai": [
+            "Lever procesinformatie terug, niet de reflectie zelf."
           ]
         }
       }
@@ -2343,6 +2805,21 @@
             "stel vraag",
             "genereer alternatief"
           ]
+        },
+        "role_steps": {
+          "teacher": [
+            "Kies één redenering met een sprong.",
+            "Vraag: wat moet hier waar zijn om deze conclusie te laten volgen?",
+            "Laat die aanname daarna toetsen."
+          ],
+          "learner": [
+            "Benoem de verborgen aanname.",
+            "Controleer of die aanname klopt.",
+            "Pas de redenering zo nodig aan."
+          ],
+          "ai": [
+            "Stel een vraag of geef alternatieve aannames."
+          ]
         }
       }
     },
@@ -2420,6 +2897,21 @@
           "ai": [
             "haal bronnen op",
             "vat samen"
+          ]
+        },
+        "role_steps": {
+          "teacher": [
+            "Leg twee mogelijke bronnen naast elkaar.",
+            "Vraag welke bron deze specifieke conclusie beter kan dragen.",
+            "Vraag waarom."
+          ],
+          "learner": [
+            "Vergelijk de bronnen.",
+            "Kies welke beter past.",
+            "Onderbouw je keuze."
+          ],
+          "ai": [
+            "Haal bronnen op of vat verschillen samen."
           ]
         }
       }
@@ -2501,6 +2993,20 @@
           "ai": [
             "geef feedback"
           ]
+        },
+        "role_steps": {
+          "teacher": [
+            "Leg bewijs en conclusie naast elkaar.",
+            "Vraag welke stap ertussen zit.",
+            "Laat de sterkte van de conclusie aanpassen aan het bewijs."
+          ],
+          "learner": [
+            "Leg uit hoe het bewijs tot de conclusie leidt.",
+            "Maak de conclusie minder stellig als dat nodig is."
+          ],
+          "ai": [
+            "Geef feedback op de redenering."
+          ]
         }
       }
     },
@@ -2565,6 +3071,19 @@
           "ai": [
             "simuleer tegenspraak"
           ]
+        },
+        "role_steps": {
+          "teacher": [
+            "Vraag eerst om het sterkste tegenargument.",
+            "Laat pas daarna het eigen standpunt verder uitwerken."
+          ],
+          "learner": [
+            "Formuleer een serieus tegenargument.",
+            "Weeg het tegen je eigen standpunt."
+          ],
+          "ai": [
+            "Speel later eventueel tegenspreker."
+          ]
         }
       }
     },
@@ -2627,6 +3146,21 @@
           ],
           "ai": [
             "genereer perspectieven"
+          ]
+        },
+        "role_steps": {
+          "teacher": [
+            "Bied twee of drie perspectieven.",
+            "Vraag welk perspectief op welk punt het sterkst is.",
+            "Vraag welk bewijs daarbij telt."
+          ],
+          "learner": [
+            "Vergelijk perspectieven.",
+            "Weeg bewijs.",
+            "Verantwoord je keuze."
+          ],
+          "ai": [
+            "Genereer perspectieven of contrastgevallen."
           ]
         }
       }
@@ -2694,6 +3228,21 @@
             "lever tegenargument",
             "modelleer eerder"
           ]
+        },
+        "role_steps": {
+          "teacher": [
+            "Laat eerst een voorbeeldweerlegging zien.",
+            "Haal die weg.",
+            "Geef een nieuw tegenargument en laat opnieuw opbouwen."
+          ],
+          "learner": [
+            "Bestudeer het voorbeeld.",
+            "Bouw daarna zelf een nieuwe weerlegging.",
+            "Leg uit waarom die werkt."
+          ],
+          "ai": [
+            "Lever het tegenargument of eerder een voorbeeld."
+          ]
         }
       }
     },
@@ -2757,6 +3306,20 @@
           "ai": [
             "vergelijk formuleringen",
             "signaleer overclaim"
+          ]
+        },
+        "role_steps": {
+          "teacher": [
+            "Laat de leerling kiezen hoe stellig de conclusie mag zijn.",
+            "Vraag welk bewijs die stelligheid rechtvaardigt."
+          ],
+          "learner": [
+            "Weeg het bewijs.",
+            "Kies de formulering die daarbij past.",
+            "Leg uit waarom."
+          ],
+          "ai": [
+            "Vergelijk formuleringen of signaleer overclaimen."
           ]
         }
       }
@@ -2839,6 +3402,19 @@
             "signaleer",
             "classificeer"
           ]
+        },
+        "role_steps": {
+          "teacher": [
+            "Schrijf eerst letterlijk op wat je ziet of hoort.",
+            "Zet daarna pas je interpretatie ernaast.",
+            "Houd beide regels zichtbaar van elkaar gescheiden."
+          ],
+          "learner": [
+            "Geef extra informatie als dat helpt de observatie te begrijpen."
+          ],
+          "ai": [
+            "Signaleer of classificeer, maar neem de interpretatie niet automatisch over."
+          ]
         }
       }
     },
@@ -2901,6 +3477,20 @@
           ],
           "ai": [
             "genereer mogelijke vraag"
+          ]
+        },
+        "role_steps": {
+          "teacher": [
+            "Schrijf twee mogelijke verklaringen op.",
+            "Bedenk één vraag waarop die verklaringen verschillend zouden reageren.",
+            "Stel alleen die vraag."
+          ],
+          "learner": [
+            "Beantwoord de nieuwe vraag of taak.",
+            "Laat daarmee nieuw bewijs zien."
+          ],
+          "ai": [
+            "Genereer eventueel mogelijke vragen, niet de diagnose."
           ]
         }
       }
@@ -2965,6 +3555,20 @@
           "ai": [
             "signaleer",
             "controleer"
+          ]
+        },
+        "role_steps": {
+          "teacher": [
+            "Loop de uitwerking stap voor stap terug.",
+            "Markeer de eerste stap die niet meer klopt.",
+            "Kies pas daarna de hulp."
+          ],
+          "learner": [
+            "Laat je uitwerking zien.",
+            "Licht toe wat je op het breekpunt dacht."
+          ],
+          "ai": [
+            "Signaleer fouten of controleer stappen."
           ]
         }
       }
@@ -3033,6 +3637,20 @@
           "ai": [
             "genereer alternatieven"
           ]
+        },
+        "role_steps": {
+          "teacher": [
+            "Noteer minstens twee plausibele verklaringen.",
+            "Bedenk welk nieuw bewijs onderscheid kan maken.",
+            "Stel je oordeel uit tot dat bewijs er is."
+          ],
+          "learner": [
+            "Geef een nieuwe reactie of uitvoering.",
+            "Laat zien welke verklaring daardoor sterker of zwakker wordt."
+          ],
+          "ai": [
+            "Genereer mogelijke verklaringen als opties."
+          ]
         }
       }
     },
@@ -3095,6 +3713,19 @@
             "vat samen",
             "stel interpretatie voor"
           ]
+        },
+        "role_steps": {
+          "teacher": [
+            "Schrijf op wat je werkelijk hebt gezien.",
+            "Formuleer je conclusie één stap voorzichtiger dan je eerste impuls.",
+            "Controleer of elk woord door het bewijs wordt gedragen."
+          ],
+          "learner": [
+            "Lever werk of reactie waarop het oordeel kan rusten."
+          ],
+          "ai": [
+            "Vat samen of stel interpretaties voor, maar vergroot de reikwijdte niet."
+          ]
         }
       }
     },
@@ -3155,6 +3786,19 @@
           ],
           "ai": [
             "inventariseer alternatieven"
+          ]
+        },
+        "role_steps": {
+          "teacher": [
+            "Benoem wat nog onbekend is.",
+            "Vraag of dat onbekende je beslissing kan veranderen.",
+            "Zo ja, verzamel eerst meer informatie."
+          ],
+          "learner": [
+            "Vul informatie of perspectief aan waar dat relevant is."
+          ],
+          "ai": [
+            "Inventariseer ontbrekende informatie of alternatieven."
           ]
         }
       }
@@ -3247,6 +3891,20 @@
           "ai": [
             "stel vervolgstap voor"
           ]
+        },
+        "role_steps": {
+          "teacher": [
+            "Benoem het concrete breekpunt.",
+            "Kies één vervolgstap die precies daarop aansluit.",
+            "Controleer daarna of die stap effect had."
+          ],
+          "learner": [
+            "Voer de nieuwe poging uit.",
+            "Laat zien of de gekozen hulp werkelijk hielp."
+          ],
+          "ai": [
+            "Stel mogelijke vervolgstappen voor."
+          ]
         }
       }
     },
@@ -3313,6 +3971,19 @@
           ],
           "ai": [
             "geef advies ter vergelijking"
+          ]
+        },
+        "role_steps": {
+          "teacher": [
+            "Verberg eerst het AI-advies.",
+            "Vorm zelf een oordeel uit het oorspronkelijke bewijs.",
+            "Vergelijk daarna pas met het AI-advies."
+          ],
+          "learner": [
+            "Lever het oorspronkelijke werk of de oorspronkelijke informatie."
+          ],
+          "ai": [
+            "Geef een advies dat pas na het eigen oordeel wordt bekeken."
           ]
         }
       }
@@ -3386,6 +4057,20 @@
           "ai": [
             "vat achteraf samen"
           ]
+        },
+        "role_steps": {
+          "teacher": [
+            "Leg je interpretatie in gewone taal aan de leerling voor.",
+            "Vraag wat klopt en wat niet.",
+            "Pas je beeld aan voordat je besluit."
+          ],
+          "learner": [
+            "Vertel hoe jij de situatie ziet.",
+            "Corrigeer of vul de interpretatie aan."
+          ],
+          "ai": [
+            "Vat het gesprek pas achteraf samen als dat nodig is."
+          ]
         }
       }
     },
@@ -3448,6 +4133,20 @@
           ],
           "ai": [
             "stel opties voor"
+          ]
+        },
+        "role_steps": {
+          "teacher": [
+            "Bepaal hoe zwaar het huidige signaal werkelijk is.",
+            "Kies de kleinste vervolgstap die daarbij past.",
+            "Evalueer pas daarna of opschalen nodig is."
+          ],
+          "learner": [
+            "Reageer op de gekozen stap.",
+            "Laat zien wat het effect ervan is."
+          ],
+          "ai": [
+            "Stel opties voor, neem de proportionaliteitskeuze niet over."
           ]
         }
       }
@@ -3532,6 +4231,19 @@
             "modelleer",
             "geef feedback"
           ]
+        },
+        "role_steps": {
+          "teacher": [
+            "Benoem vóór de hulp welke leerlinghandeling je wilt behouden.",
+            "Kies daarna pas de vorm van hulp.",
+            "Plan waar de leerling die handeling weer zelf uitvoert."
+          ],
+          "learner": [
+            "Voer de doelhandeling na de hulp zelf uit."
+          ],
+          "ai": [
+            "Vraag, hint, modelleer of geef feedback rond de doelhandeling."
+          ]
         }
       }
     },
@@ -3613,6 +4325,20 @@
             "stel vraag",
             "geef hint"
           ]
+        },
+        "role_steps": {
+          "teacher": [
+            "Vraag eerst waar het precies misgaat.",
+            "Geef de kleinste aanwijzing waarmee de leerling verder kan.",
+            "Wacht en kijk wat de leerling zelf doet."
+          ],
+          "learner": [
+            "Pak de taak na de hint zelf weer op.",
+            "Vraag pas opnieuw hulp als je opnieuw vastloopt."
+          ],
+          "ai": [
+            "Stel één vraag of geef één kleine hint."
+          ]
         }
       }
     },
@@ -3674,6 +4400,19 @@
           ],
           "ai": [
             "formuleer vraag"
+          ]
+        },
+        "role_steps": {
+          "teacher": [
+            "Bepaal welke stap de leerling zelf moet zetten.",
+            "Stel een vraag die precies die stap oproept.",
+            "Stop voordat de richting of oplossing al in de vraag zit."
+          ],
+          "learner": [
+            "Geef zelf de relatie, keuze of redeneringsstap."
+          ],
+          "ai": [
+            "Formuleer eventueel een vraag, maar encodeer het antwoord niet."
           ]
         }
       }
@@ -3740,6 +4479,22 @@
           "ai": [
             "controleer",
             "geef feedback"
+          ]
+        },
+        "role_steps": {
+          "teacher": [
+            "Wijs aan waar het probleem zit.",
+            "Noem het criterium waaraan het moet voldoen.",
+            "Stop. Schrijf de betere versie niet voor.",
+            "Laat de leerling zelf een nieuwe versie maken."
+          ],
+          "learner": [
+            "Benoem wat er volgens jou ontbreekt.",
+            "Herschrijf de passage zelf.",
+            "Vergelijk oud en nieuw en leg uit wat je veranderde."
+          ],
+          "ai": [
+            "Signaleer een probleem, geef een criterium of stel een gerichte vraag."
           ]
         }
       }
@@ -3827,6 +4582,20 @@
           "ai": [
             "modelleer voorbeeld"
           ]
+        },
+        "role_steps": {
+          "teacher": [
+            "Doe één voorbeeld hardop voor.",
+            "Haal het voorbeeld uit beeld.",
+            "Geef een nieuwe taak waarin dezelfde handeling nodig is."
+          ],
+          "learner": [
+            "Kijk naar het voorbeeld.",
+            "Voer daarna dezelfde handeling zelf uit op de nieuwe taak."
+          ],
+          "ai": [
+            "Modelleer één voorbeeld of demonstratie."
+          ]
         }
       }
     },
@@ -3905,6 +4674,20 @@
           ],
           "ai": [
             "pas ondersteuning aan"
+          ]
+        },
+        "role_steps": {
+          "teacher": [
+            "Kies één laag hulp die weg kan.",
+            "Haal alleen die laag weg.",
+            "Laat de leerling opnieuw uitvoeren en kijk wat er gebeurt."
+          ],
+          "learner": [
+            "Voer de taak met minder steun uit.",
+            "Vraag alleen terug wat nog nodig is."
+          ],
+          "ai": [
+            "Verminder één ondersteuningslaag."
           ]
         }
       }
@@ -3996,6 +4779,20 @@
             "hint",
             "voer tijdelijk deel uit"
           ]
+        },
+        "role_steps": {
+          "teacher": [
+            "Markeer welke handeling tijdelijk is overgenomen.",
+            "Kies een vers moment waarop de leerling haar terugkrijgt.",
+            "Laat de leerling die handeling zelf uitvoeren."
+          ],
+          "learner": [
+            "Neem de handeling weer over.",
+            "Voer haar zelfstandig opnieuw uit."
+          ],
+          "ai": [
+            "Stop met die handeling en blijf alleen ondersteunen waar afgesproken."
+          ]
         }
       }
     },
@@ -4077,6 +4874,21 @@
             "genereer oefening",
             "modelleer",
             "leg uit"
+          ]
+        },
+        "role_steps": {
+          "teacher": [
+            "Vraag of de leerling de regel of aanpak kan uitleggen.",
+            "Kan hij dat wel, laat dan meer oefenen.",
+            "Kan hij dat niet, leg opnieuw uit en laat daarna opnieuw proberen."
+          ],
+          "learner": [
+            "Leg uit wat je weet.",
+            "Oefen verder of volg de nieuwe uitleg.",
+            "Voer daarna opnieuw uit."
+          ],
+          "ai": [
+            "Genereer oefening of geef uitleg passend bij de gekozen route."
           ]
         }
       }
