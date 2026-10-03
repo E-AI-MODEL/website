@@ -33,7 +33,38 @@
       "result": "Een compacte analyse waarin je eerst het onderwijs beschrijft en pas daarna de rol van AI.",
       "caution": "Gebruik deze vragen niet als invulritueel. Een verandering in de fase of kernhandeling kan de hele afweging veranderen.",
       "source": "EAI · Nieuwe uitgave 2026",
-      "example": "Een docent wil een opdracht geschiedenis aanpassen waarin leerlingen met AI een vergelijking tussen twee bronnen schrijven. De kaart maakt eerst zichtbaar wat het leerdoel is, in welke fase de klas zit, welke vergelijking de leerling zelf moet maken en waar AI wel of niet mag helpen."
+      "example": "Een docent wil een opdracht geschiedenis aanpassen waarin leerlingen met AI een vergelijking tussen twee bronnen schrijven. De kaart maakt eerst zichtbaar wat het leerdoel is, in welke fase de klas zit, welke vergelijking de leerling zelf moet maken en waar AI wel of niet mag helpen.",
+      "action_layer": {
+        "intents": [
+          "orient",
+          "redesign"
+        ],
+        "teacher": "Leg leerdoel, fase en kernhandeling op tafel en beschrijf daarna pas wat AI doet.",
+        "learner": "Brengt alleen eigen werk of uitvoering in beeld als dat voor de analyse nodig is.",
+        "ai": "Geen vaste rol. Beschrijf feitelijk welke AI-actie in de gekozen taak plaatsvindt.",
+        "ai_not": "Begin niet bij wat de tool kan; dat zegt nog niets over wat in deze fase onderwijskundig passend is.",
+        "standard": [
+          [
+            "EAI core analysis",
+            "context → goal → actor → process position"
+          ]
+        ],
+        "verbs": {
+          "teacher": [
+            "beschrijf",
+            "lokaliseer",
+            "benoem",
+            "vergelijk"
+          ],
+          "learner": [
+            "voer uit",
+            "licht toe"
+          ],
+          "ai": [
+            "beschrijf feitelijke AI-actie"
+          ]
+        }
+      }
     },
     {
       "slug": "kernhandeling-check",
@@ -59,7 +90,37 @@
       "result": "",
       "caution": "",
       "source": "EAI · Nieuwe uitgave 2026",
-      "example": "Bij een betoog Nederlands mag AI taal verbeteren. De docent vraagt eerst welke handeling centraal staat: argumenten wegen en een conclusie onderbouwen. Die stap blijft daarom bij de leerling."
+      "example": "Bij een betoog Nederlands mag AI taal verbeteren. De docent vraagt eerst welke handeling centraal staat: argumenten wegen en een conclusie onderbouwen. Die stap blijft daarom bij de leerling.",
+      "action_layer": {
+        "intents": [
+          "orient",
+          "redesign"
+        ],
+        "teacher": "Benoem de stap waaraan de leerling in deze fase zelf inhoudelijke betekenis moet geven.",
+        "learner": "Voert juist die gekozen handeling zelf uit wanneer die voor het leren centraal staat.",
+        "ai": "Kan om de kernhandeling heen ondersteunen, zolang die handeling zelf bij de leerling blijft.",
+        "ai_not": "Maak een handeling niet automatisch 'beschermd'; haar betekenis hangt af van doel, fase en context.",
+        "standard": [
+          [
+            "core_human_action",
+            "contextafhankelijke kernhandeling"
+          ]
+        ],
+        "verbs": {
+          "teacher": [
+            "bepaal",
+            "benoem",
+            "toets"
+          ],
+          "learner": [
+            "voer uit",
+            "geef betekenis"
+          ],
+          "ai": [
+            "ondersteun rondom"
+          ]
+        }
+      }
     },
     {
       "slug": "task-density-scan",
@@ -86,7 +147,44 @@
       "caution": "",
       "source": "EAI · Nieuwe uitgave 2026",
       "example": "Een leerling maakt een profielwerkstuk. De scan laat per stap zien wie zoekt, selecteert, ordent, formuleert en controleert: leerling, AI of beiden. Zo wordt zichtbaar dat AI ongemerkt al drie inhoudelijke keuzes overneemt.",
-      "public_title": "Wie doet welk werk?"
+      "public_title": "Wie doet welk werk?",
+      "action_layer": {
+        "intents": [
+          "orient",
+          "redesign"
+        ],
+        "teacher": "Splits de taak in handelingen en noteer per handeling wie haar uitvoert.",
+        "learner": "Maakt zichtbaar welke inhoudelijke keuzes en bewerkingen hij zelf uitvoert.",
+        "ai": "Kan allerlei acties uitvoeren; leg de feitelijke AI-actie vast in plaats van alleen 'AI gebruikt'.",
+        "ai_not": "Gebruik hoeveelheid tekst of tijd met AI niet als maat voor overname.",
+        "standard": [
+          [
+            "AIS-018",
+            "evaluate_ai_impact_on_task"
+          ],
+          [
+            "AIS-020",
+            "configure_support_density"
+          ]
+        ],
+        "verbs": {
+          "teacher": [
+            "ontleed",
+            "wijs toe",
+            "vergelijk"
+          ],
+          "learner": [
+            "kies",
+            "formuleer",
+            "controleer"
+          ],
+          "ai": [
+            "structureer",
+            "genereer",
+            "controleer"
+          ]
+        }
+      }
     },
     {
       "slug": "prompt-variation-lab",
@@ -119,7 +217,41 @@
       "caution": "Een voorspelbaarder antwoord is niet automatisch beter voor het leren. Kijk steeds opnieuw naar de kernhandeling en wat de leerling zelf moet doen.",
       "source": "Werkboek workshop EAI in onderwijs · concept v3.1.2",
       "example": "Een docent geeft dezelfde inhoudelijke vraag drie keer aan een taalmodel, maar verandert alleen de rol en context. De verschillen in antwoord maken zichtbaar hoeveel de prompt al stuurt vóórdat de leerling iets beoordeelt.",
-      "public_title": "Wat verandert er als je de prompt verandert?"
+      "public_title": "Wat verandert er als je de prompt verandert?",
+      "action_layer": {
+        "intents": [
+          "orient"
+        ],
+        "teacher": "Varieert één prompt gericht en vergelijkt welk systeemgedrag daardoor verandert.",
+        "learner": "Kan verschillen beoordelen wanneer dat onderdeel is van het leerdoel.",
+        "ai": "Voert dezelfde taak uit onder verschillende instructies en contexten.",
+        "ai_not": "Behandel een stabieler of mooier antwoord niet automatisch als didactisch beter.",
+        "standard": [
+          [
+            "AIS-002",
+            "frame_request"
+          ],
+          [
+            "AIS-010",
+            "recognise_model_limit"
+          ]
+        ],
+        "verbs": {
+          "teacher": [
+            "varieer",
+            "vergelijk",
+            "duid"
+          ],
+          "learner": [
+            "beoordeel",
+            "vergelijk"
+          ],
+          "ai": [
+            "genereer",
+            "reageer"
+          ]
+        }
+      }
     },
     {
       "slug": "toollab",
@@ -144,7 +276,42 @@
       "result": "",
       "caution": "",
       "source": "Werkboek workshop EAI in onderwijs · concept v3.1.2",
-      "example": "Een leerling vraagt in een algemene chatbot en in een brongebonden omgeving waarom de Franse Revolutie uitbrak. De tweede omgeving verwijst naar aangeleverde bronnen, maar de leerling moet nog steeds bepalen welke oorzaken relevant zijn."
+      "example": "Een leerling vraagt in een algemene chatbot en in een brongebonden omgeving waarom de Franse Revolutie uitbrak. De tweede omgeving verwijst naar aangeleverde bronnen, maar de leerling moet nog steeds bepalen welke oorzaken relevant zijn.",
+      "action_layer": {
+        "intents": [
+          "orient"
+        ],
+        "teacher": "Legt dezelfde vraag in twee AI-omgevingen en vergelijkt brongebruik, context en antwoordgedrag.",
+        "learner": "Beoordeelt wat bronbinding wel en niet oplost als dat in de taak relevant is.",
+        "ai": "Kan informatie ophalen, samenvatten of formuleren vanuit verschillende broncondities.",
+        "ai_not": "Verwar bronbinding niet met automatisch juiste interpretatie of goed leren.",
+        "standard": [
+          [
+            "AIS-006",
+            "evaluate_ai_fit"
+          ],
+          [
+            "AIS-010",
+            "recognise_model_limit"
+          ]
+        ],
+        "verbs": {
+          "teacher": [
+            "vergelijk",
+            "analyseer",
+            "duid"
+          ],
+          "learner": [
+            "beoordeel",
+            "controleer"
+          ],
+          "ai": [
+            "haal op",
+            "vat samen",
+            "formuleer"
+          ]
+        }
+      }
     },
     {
       "slug": "first-attempt",
@@ -184,7 +351,39 @@
         "caption": "Vergelijk de handeling en keuzes, niet alleen welke versie mooier is."
       },
       "example": "Een leerling schrijft eerst zelf een alinea met een historische verklaring. Daarna gebruikt hij AI voor feedback. Bij de vergelijking markeert hij welke redenering al van hemzelf was en welke wijziging na de feedback ontstond.",
-      "public_title": "Eerste poging en versie vergelijken"
+      "public_title": "Eerste poging en versie vergelijken",
+      "action_layer": {
+        "intents": [
+          "make-visible",
+          "independent"
+        ],
+        "teacher": "Bewaart eerst een eigen poging en laat pas daarna AI-hulp toe.",
+        "learner": "Doet eerst zelf een relevante poging en vergelijkt vervolgens wat door hulp veranderde.",
+        "ai": "Kan daarna feedback geven, alternatieven tonen of helpen herformuleren.",
+        "ai_not": "Geef antwoordniveau-hulp niet vóór de eerste poging wanneer juist eigen uitvoering zichtbaar moet worden.",
+        "standard": [
+          [
+            "MS-LRI-01",
+            "attempt_before_answer_access"
+          ]
+        ],
+        "verbs": {
+          "teacher": [
+            "laat proberen",
+            "bewaar",
+            "vergelijk"
+          ],
+          "learner": [
+            "probeer",
+            "vergelijk",
+            "herzie"
+          ],
+          "ai": [
+            "geef feedback",
+            "toon alternatief"
+          ]
+        }
+      }
     },
     {
       "slug": "justification-mapping",
@@ -210,7 +409,39 @@
       "caution": "",
       "source": "EAI Dictionary · corpus term",
       "example": "AI stelt drie argumenten voor een betoog voor. De leerling neemt er één over, past één aan en verwerpt één. Bij elke keuze noteert hij kort waarom.",
-      "public_title": "Keuzes verantwoorden"
+      "public_title": "Keuzes verantwoorden",
+      "action_layer": {
+        "intents": [
+          "make-visible",
+          "selfreg"
+        ],
+        "teacher": "Kiest alleen de inhoudelijk relevante AI-bijdragen waarvoor een keuze zichtbaar moet worden.",
+        "learner": "Accepteert, past aan of verwerpt een voorstel en geeft daar een inhoudelijke reden voor.",
+        "ai": "Kan alternatieven, feedback of een conceptvoorstel geven.",
+        "ai_not": "Laat AI niet de verantwoording van de eigen keuze uitschrijven.",
+        "standard": [
+          [
+            "AIS-013",
+            "compare_ai_and_human_alternatives"
+          ]
+        ],
+        "verbs": {
+          "teacher": [
+            "selecteer",
+            "vraag door"
+          ],
+          "learner": [
+            "accepteer",
+            "pas aan",
+            "verwerp",
+            "verantwoord"
+          ],
+          "ai": [
+            "stel voor",
+            "genereer alternatief"
+          ]
+        }
+      }
     },
     {
       "slug": "trace-back-prompting",
@@ -242,7 +473,41 @@
       "caution": "Een opgeslagen promptgeschiedenis is nog geen procesbewijs. De menselijke afweging moet uit de reconstructie zelf blijken.",
       "source": "EAI Dictionary · Trace-back Prompting",
       "example": "Een leerling levert een sterk AI-ondersteund antwoord in. De docent kiest één conclusie en vraagt stap voor stap terug: waar kwam deze keuze vandaan, welk bewijs lag eronder en wat heb jij zelf besloten?",
-      "public_title": "Terug naar de keuze"
+      "public_title": "Terug naar de keuze",
+      "action_layer": {
+        "intents": [
+          "make-visible"
+        ],
+        "teacher": "Kiest één belangrijke passage of beslissing en vraagt terug waar die keuze ontstond.",
+        "learner": "Reconstructeert AI-bijdrage, eigen beslissing en reden achter één concrete keuze.",
+        "ai": "Mag onderdeel van het oorspronkelijke proces zijn geweest; de reconstructie hoeft niet door AI geschreven te worden.",
+        "ai_not": "Een chatlog is niet hetzelfde als zicht op de menselijke afweging.",
+        "standard": [
+          [
+            "AIS-012",
+            "document_material_ai_contribution"
+          ],
+          [
+            "EV-14",
+            "process_trace"
+          ]
+        ],
+        "verbs": {
+          "teacher": [
+            "selecteer",
+            "vraag terug",
+            "controleer"
+          ],
+          "learner": [
+            "reconstrueer",
+            "verklaar",
+            "verantwoord"
+          ],
+          "ai": [
+            "lever oorspronkelijke bijdrage"
+          ]
+        }
+      }
     },
     {
       "slug": "reflective-re-entry",
@@ -275,7 +540,37 @@
       "caution": "Laat AI de reflectie niet uitschrijven. Dan wordt juist de metacognitieve handeling opnieuw uitbesteed.",
       "source": "EAI Dictionary · Reflective Re-Entry",
       "example": "Na een AI-ondersteunde schrijfopdracht krijgt de leerling zijn prompts en eindtekst terug. Hij reconstrueert twee momenten waarop hij een voorstel bewust heeft veranderd en legt uit waarom.",
-      "public_title": "Terugkijken op je eigen keuzes"
+      "public_title": "Terugkijken op je eigen keuzes",
+      "action_layer": {
+        "intents": [
+          "make-visible",
+          "selfreg"
+        ],
+        "teacher": "Laat de leerling na afloop teruggaan naar een paar echte beslismomenten.",
+        "learner": "Reconstructeert wat hij koos, verwierp of veranderde en wat hij een volgende keer anders zou doen.",
+        "ai": "Kan onderwerp van reflectie zijn, maar schrijft de reflectie niet.",
+        "ai_not": "Besteed juist de metacognitieve reconstructie niet opnieuw uit.",
+        "standard": [
+          [
+            "MS-LSR-15",
+            "reconstruct_regulatory_process"
+          ]
+        ],
+        "verbs": {
+          "teacher": [
+            "laat terugkijken",
+            "vraag door"
+          ],
+          "learner": [
+            "reconstrueer",
+            "vergelijk",
+            "reflecteer"
+          ],
+          "ai": [
+            "blijf onderwerp van reflectie"
+          ]
+        }
+      }
     },
     {
       "slug": "controlled-detachment",
@@ -325,7 +620,41 @@
         ]
       },
       "example": "Een leerling oefent vergelijkingen oplossen met hints van AI. Na drie opgaven worden de hints uitgezet en krijgt hij een nieuwe opgave met dezelfde onderliggende handeling.",
-      "public_title": "Hulp tijdelijk weghalen"
+      "public_title": "Hulp tijdelijk weghalen",
+      "action_layer": {
+        "intents": [
+          "return",
+          "independent"
+        ],
+        "teacher": "Haalt precies de relevante ondersteuning tijdelijk weg en biedt een vergelijkbare nieuwe poging.",
+        "learner": "Voert de kernhandeling opnieuw uit zonder de hulp die de eerdere prestatie droeg.",
+        "ai": "Wordt tijdelijk verminderd of verwijderd rond de gekozen handeling.",
+        "ai_not": "Maak hier geen algemene AI-vrije toets van; verwijder alleen de hulp die het bewijs vertroebelt.",
+        "standard": [
+          [
+            "EAI-R010",
+            "handback_before_mastery_claims"
+          ],
+          [
+            "EAI-R007",
+            "evidence_must_match_claim"
+          ]
+        ],
+        "verbs": {
+          "teacher": [
+            "isoleer",
+            "verminder hulp",
+            "observeer"
+          ],
+          "learner": [
+            "voer opnieuw uit",
+            "toon zelfstandigheid"
+          ],
+          "ai": [
+            "trek ondersteuning terug"
+          ]
+        }
+      }
     },
     {
       "slug": "explain-before-continue",
@@ -359,7 +688,39 @@
       "source": "EAI Standard 0.4-candidate · remediation REM-05",
       "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/remediation/interventions.yaml",
       "example": "Een leerling vraagt AI om de volgende stap in een wiskundeopgave. Voordat de chatbot verder mag helpen, legt de leerling eerst uit waarom de vorige stap klopt.",
-      "public_title": "Eerst uitleggen, dan verder"
+      "public_title": "Eerst uitleggen, dan verder",
+      "action_layer": {
+        "intents": [
+          "return",
+          "independent"
+        ],
+        "teacher": "Pauzeert verdere hulp en vraagt om uitleg van precies de stap die ertoe doet.",
+        "learner": "Legt de huidige redenering of keuze uit en herstelt een ontbrekende stap zelf.",
+        "ai": "Kan na die uitleg weer begrensde hulp geven, bijvoorbeeld een vraag of hint.",
+        "ai_not": "Bouw niet automatisch verder op een stap die de leerling zelf niet kan uitleggen.",
+        "standard": [
+          [
+            "REM-05",
+            "explain_before_continue"
+          ]
+        ],
+        "verbs": {
+          "teacher": [
+            "pauzeer",
+            "vraag uitleg",
+            "hervat"
+          ],
+          "learner": [
+            "leg uit",
+            "herstel",
+            "ga verder"
+          ],
+          "ai": [
+            "wacht",
+            "geef daarna begrensde hulp"
+          ]
+        }
+      }
     },
     {
       "slug": "fresh-item-same-operation",
@@ -392,7 +753,41 @@
       "source": "EAI Standard 0.4-candidate · EV-11 / REM-06",
       "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/standard/evidence-types.yaml",
       "example": "AI hielp bij het analyseren van één gedicht. Daarna krijgt de leerling een nieuw gedicht en moet hij dezelfde analyse zonder inhoudelijke AI-hulp uitvoeren.",
-      "public_title": "Nieuwe opgave, dezelfde handeling"
+      "public_title": "Nieuwe opgave, dezelfde handeling",
+      "action_layer": {
+        "intents": [
+          "independent"
+        ],
+        "teacher": "Geeft een nieuw item waarin dezelfde onderliggende handeling nodig is.",
+        "learner": "Voert die handeling opnieuw uit zonder het eerdere antwoord te hergebruiken.",
+        "ai": "Kan een nieuw oefenitem genereren, maar hoeft de oplossing niet te geven.",
+        "ai_not": "Verander de taak niet zo sterk dat je ineens een andere vaardigheid toetst.",
+        "standard": [
+          [
+            "REM-06",
+            "new_item_same_operation"
+          ],
+          [
+            "EV-11",
+            "fresh_item_same_operation"
+          ]
+        ],
+        "verbs": {
+          "teacher": [
+            "kies handeling",
+            "maak nieuw item",
+            "observeer"
+          ],
+          "learner": [
+            "herken",
+            "voer uit",
+            "licht toe"
+          ],
+          "ai": [
+            "genereer oefenitem"
+          ]
+        }
+      }
     },
     {
       "slug": "compare-then-reconstruct",
@@ -426,7 +821,38 @@
       "source": "EAI Standard 0.4-candidate · remediation REM-04",
       "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/remediation/interventions.yaml",
       "example": "De leerling vergelijkt zijn eigen samenvatting met een AI-versie, benoemt twee sterke verschillen en schrijft daarna zonder beide versies in beeld een nieuwe samenvatting.",
-      "public_title": "Vergelijk en bouw opnieuw op"
+      "public_title": "Vergelijk en bouw opnieuw op",
+      "action_layer": {
+        "intents": [
+          "return",
+          "independent"
+        ],
+        "teacher": "Laat eerst vergelijken en haalt de voorbeelden daarna uit beeld.",
+        "learner": "Beoordeelt verschillen, kiest met reden en bouwt vervolgens zelf opnieuw op.",
+        "ai": "Kan een alternatief of contrast leveren.",
+        "ai_not": "Laat de leerling na de vergelijking niet alleen de gekozen formulering kopiëren.",
+        "standard": [
+          [
+            "REM-04",
+            "compare_then_reconstruct"
+          ]
+        ],
+        "verbs": {
+          "teacher": [
+            "laat vergelijken",
+            "haal weg",
+            "laat herbouwen"
+          ],
+          "learner": [
+            "vergelijk",
+            "kies",
+            "reconstrueer"
+          ],
+          "ai": [
+            "genereer alternatief"
+          ]
+        }
+      }
     },
     {
       "slug": "bewijs-van-leren",
@@ -453,7 +879,42 @@
       "result": "",
       "caution": "",
       "source": "EAI · Nieuwe uitgave 2026",
-      "example": "Een leerling levert met AI een sterk betoog in. De docent gebruikt daarnaast een korte nieuwe stelling in de les om te zien of de leerling zelfstandig opnieuw argumenten kan wegen en onderbouwen."
+      "example": "Een leerling levert met AI een sterk betoog in. De docent gebruikt daarnaast een korte nieuwe stelling in de les om te zien of de leerling zelfstandig opnieuw argumenten kan wegen en onderbouwen.",
+      "action_layer": {
+        "intents": [
+          "independent",
+          "retention-transfer"
+        ],
+        "teacher": "Formuleert eerst wat hij over het leren wil kunnen zeggen en kiest daar passend bewijs bij.",
+        "learner": "Laat de relevante handeling zien onder de ondersteuningsvoorwaarden die bij die uitspraak passen.",
+        "ai": "Kan in eerdere leerfasen ondersteunen; de rol moet bekend zijn wanneer je bewijs interpreteert.",
+        "ai_not": "Leid zelfstandige beheersing niet af uit alleen een sterk AI-ondersteund product.",
+        "standard": [
+          [
+            "EAI-R007",
+            "evidence_must_match_claim"
+          ],
+          [
+            "EAI-R008",
+            "generated_performance_is_not_mastery"
+          ]
+        ],
+        "verbs": {
+          "teacher": [
+            "formuleer uitspraak",
+            "kies bewijs",
+            "interpreteer"
+          ],
+          "learner": [
+            "voer uit",
+            "herhaal",
+            "pas toe"
+          ],
+          "ai": [
+            "ondersteun waar passend"
+          ]
+        }
+      }
     },
     {
       "slug": "delayed-reperformance",
@@ -503,7 +964,40 @@
         ]
       },
       "example": "Een leerling oefent vandaag met AI-hints op grammatica. Twee dagen later krijgt hij een nieuwe reeks zinnen zonder hints om te zien wat nog beschikbaar is.",
-      "public_title": "Later opnieuw uitvoeren"
+      "public_title": "Later opnieuw uitvoeren",
+      "action_layer": {
+        "intents": [
+          "retention-transfer"
+        ],
+        "teacher": "Plant later een nieuwe gelegenheid voor dezelfde onderliggende handeling.",
+        "learner": "Haalt kennis of aanpak opnieuw op en voert de handeling zonder het eerdere antwoord uit.",
+        "ai": "Kan een nieuw item genereren; antwoordniveau-hulp blijft weg als retentie de vraag is.",
+        "ai_not": "Noem directe herhaling geen bewijs dat iets later nog beschikbaar is.",
+        "standard": [
+          [
+            "REM-07",
+            "delayed_reperformance"
+          ],
+          [
+            "EV-06",
+            "delayed_reperformance"
+          ]
+        ],
+        "verbs": {
+          "teacher": [
+            "plan later",
+            "bied nieuw item",
+            "observeer"
+          ],
+          "learner": [
+            "haal op",
+            "voer opnieuw uit"
+          ],
+          "ai": [
+            "genereer nieuw item"
+          ]
+        }
+      }
     },
     {
       "slug": "transfer-task",
@@ -553,7 +1047,41 @@
         ]
       },
       "example": "Een leerling leerde procentuele groei berekenen met winkelprijzen. Daarna krijgt hij zonder AI een opgave over bevolkingsgroei waarin dezelfde bewerking nodig is.",
-      "public_title": "Dezelfde handeling in een andere situatie"
+      "public_title": "Dezelfde handeling in een andere situatie",
+      "action_layer": {
+        "intents": [
+          "retention-transfer"
+        ],
+        "teacher": "Verandert context of representatie terwijl de onderliggende handeling hetzelfde blijft.",
+        "learner": "Herkent wat uit de eerdere situatie bruikbaar is en past dat zelfstandig aan de nieuwe context aan.",
+        "ai": "Kan een nieuwe context of oefentaak genereren.",
+        "ai_not": "Laat AI niet alvast aangeven welke eerdere methode hier toegepast moet worden wanneer herkenning onderdeel van de transfer is.",
+        "standard": [
+          [
+            "REM-08",
+            "transfer_task"
+          ],
+          [
+            "EV-07",
+            "novel_context_performance"
+          ]
+        ],
+        "verbs": {
+          "teacher": [
+            "verander context",
+            "bewaar handeling",
+            "observeer"
+          ],
+          "learner": [
+            "herken",
+            "pas aan",
+            "voer uit"
+          ],
+          "ai": [
+            "genereer nieuwe context"
+          ]
+        }
+      }
     },
     {
       "slug": "confidence-vs-evidence",
@@ -601,7 +1129,38 @@
         "caption": "Zelfvertrouwen en bewijs kunnen uit elkaar lopen."
       },
       "example": "Een leerling zegt na AI-oefening dat hij de stof volledig beheerst. Daarna maakt hij één verse opgave zonder hulp. De docent legt de zelfinschatting naast de uitvoering.",
-      "public_title": "Hoe zeker ben je, en wat laat je zien?"
+      "public_title": "Hoe zeker ben je, en wat laat je zien?",
+      "action_layer": {
+        "intents": [
+          "independent",
+          "selfreg"
+        ],
+        "teacher": "Legt een zelfinschatting naast een verse zelfstandige uitvoering.",
+        "learner": "Schat eigen beheersing in, voert uit en stelt die inschatting daarna bij op basis van bewijs.",
+        "ai": "Kan een verse taak genereren, maar bepaalt niet wat het gevoel van zekerheid waard is.",
+        "ai_not": "Gebruik vertrouwen nooit als vervanging voor uitvoering.",
+        "standard": [
+          [
+            "MS-LRI-12",
+            "distinguish_confidence_from_evidence"
+          ]
+        ],
+        "verbs": {
+          "teacher": [
+            "vraag inschatting",
+            "laat uitvoeren",
+            "vergelijk"
+          ],
+          "learner": [
+            "schat in",
+            "voer uit",
+            "stel bij"
+          ],
+          "ai": [
+            "genereer verse taak"
+          ]
+        }
+      }
     },
     {
       "slug": "foutanalyse",
@@ -625,7 +1184,44 @@
       "result": "",
       "caution": "",
       "source": "Werkboek workshop EAI in onderwijs",
-      "example": "AI genereert een redenering met één inhoudelijke fout. De leerling moet niet meteen verbeteren, maar eerst aanwijzen waar de redenering voor het eerst ontspoort en waarom."
+      "example": "AI genereert een redenering met één inhoudelijke fout. De leerling moet niet meteen verbeteren, maar eerst aanwijzen waar de redenering voor het eerst ontspoort en waarom.",
+      "action_layer": {
+        "intents": [
+          "diagnose",
+          "feedback"
+        ],
+        "teacher": "Laat eerst lokaliseren waar het misgaat voordat uitleg of oplossing volgt.",
+        "learner": "Herkent, lokaliseert, verklaart en herstelt de fout.",
+        "ai": "Kan een mogelijke fout signaleren of werk aan een criterium controleren.",
+        "ai_not": "Geef de volledige verklaring of correctie niet vóór de leerling de fout zelf heeft onderzocht.",
+        "standard": [
+          [
+            "MS-LRI-06",
+            "detect_own_error_or_gap"
+          ],
+          [
+            "MS-TDJ-05",
+            "locate_first_breakdown"
+          ]
+        ],
+        "verbs": {
+          "teacher": [
+            "laat lokaliseren",
+            "vraag waarom",
+            "laat herstellen"
+          ],
+          "learner": [
+            "detecteer",
+            "lokaliseer",
+            "verklaar",
+            "corrigeer"
+          ],
+          "ai": [
+            "signaleer",
+            "controleer"
+          ]
+        }
+      }
     },
     {
       "slug": "feedback-redo",
@@ -676,7 +1272,44 @@
         ]
       },
       "example": "AI geeft aan dat een alinea geen duidelijk bewijs bevat. De leerling krijgt geen herschreven versie, maar past zelf de alinea aan en levert de nieuwe versie als apart bewijs in.",
-      "public_title": "Feedback krijgen, zelf opnieuw doen"
+      "public_title": "Feedback krijgen, zelf opnieuw doen",
+      "action_layer": {
+        "intents": [
+          "feedback",
+          "return"
+        ],
+        "teacher": "Begrenst feedback tot een of twee relevante punten en vraagt daarna om een nieuwe uitvoering.",
+        "learner": "Interpreteert de feedback, kiest wat hij verandert en voert de verbetering zelf uit.",
+        "ai": "Kan feedback geven of controleren aan expliciete criteria.",
+        "ai_not": "Schrijf de verbeterde versie niet automatisch voor wanneer herzien de handeling is die geleerd moet worden.",
+        "standard": [
+          [
+            "MS-LRI-08",
+            "self_correct_after_feedback"
+          ],
+          [
+            "AIS-021",
+            "use_ai_feedback_productively"
+          ]
+        ],
+        "verbs": {
+          "teacher": [
+            "geef feedback",
+            "begrens",
+            "laat opnieuw doen"
+          ],
+          "learner": [
+            "interpreteer",
+            "kies",
+            "herzie",
+            "voer opnieuw uit"
+          ],
+          "ai": [
+            "geef feedback",
+            "controleer"
+          ]
+        }
+      }
     },
     {
       "slug": "source-verification",
@@ -709,7 +1342,43 @@
       "source": "EAI Standard 0.4-candidate · AIS-005 / EV-13",
       "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/skills/ai-interaction.yaml",
       "example": "Een chatbot beweert dat een bepaalde maatregel in 1919 is ingevoerd. De leerling zoekt de oorspronkelijke bron of een betrouwbare secundaire bron op en beschrijft wat wel en niet wordt bevestigd.",
-      "public_title": "Controleer de bron"
+      "public_title": "Controleer de bron",
+      "action_layer": {
+        "intents": [
+          "argument",
+          "feedback"
+        ],
+        "teacher": "Kiest een materiële AI-uitspraak en vraagt om controle bij een geschikte bron.",
+        "learner": "Zoekt de bron, vergelijkt claim en bron en past conclusie of vertrouwen aan.",
+        "ai": "Kan informatie of bronnen ophalen, maar de controlehandeling blijft zichtbaar bij de mens.",
+        "ai_not": "Behandel een door AI genoemde bron niet als verificatie op zichzelf.",
+        "standard": [
+          [
+            "AIS-005",
+            "verify_ai_claim"
+          ],
+          [
+            "EV-13",
+            "source_based_verification"
+          ]
+        ],
+        "verbs": {
+          "teacher": [
+            "selecteer claim",
+            "vraag controle"
+          ],
+          "learner": [
+            "zoek",
+            "vergelijk",
+            "verifieer",
+            "stel bij"
+          ],
+          "ai": [
+            "haal informatie op",
+            "noem bron"
+          ]
+        }
+      }
     },
     {
       "slug": "smallest-help-needed",
@@ -759,7 +1428,47 @@
         ]
       },
       "example": "Een leerling loopt vast bij een natuurkundeopgave. In plaats van om de oplossing te vragen, formuleert hij: 'Ik weet niet welke formule bij deze grootheden past.' De AI mag alleen daarop een kleine aanwijzing geven.",
-      "public_title": "Wat is de kleinste hulp die nodig is?"
+      "public_title": "Wat is de kleinste hulp die nodig is?",
+      "action_layer": {
+        "intents": [
+          "support",
+          "selfreg"
+        ],
+        "teacher": "Laat eerst het precieze vastlooppunt en de gewenste soort hulp benoemen.",
+        "learner": "Lokaliseert waar hij vastloopt, vraagt gericht om de kleinste passende hulp en gaat daarna zelf verder.",
+        "ai": "Kan een vraag stellen of een kleine hint geven.",
+        "ai_not": "Geef niet automatisch een volledige uitleg wanneer een kleine aanwijzing genoeg is.",
+        "standard": [
+          [
+            "MS-LSR-07",
+            "detect_and_localise_impasse"
+          ],
+          [
+            "MS-LSR-08",
+            "determine_needed_support"
+          ],
+          [
+            "MS-LSR-09",
+            "formulate_targeted_help_request"
+          ]
+        ],
+        "verbs": {
+          "teacher": [
+            "laat lokaliseren",
+            "laat hulp kiezen",
+            "doseer"
+          ],
+          "learner": [
+            "lokaliseer",
+            "vraag gericht",
+            "hervat"
+          ],
+          "ai": [
+            "stel vraag",
+            "geef hint"
+          ]
+        }
+      }
     },
     {
       "slug": "accept-adapt-reject",
@@ -792,7 +1501,43 @@
       "source": "EAI Standard 0.4-candidate · self-regulation MS-LSR-10",
       "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/learner-self-regulation-and-metacognition.yaml",
       "example": "AI stelt een hoofdstukindeling voor een werkstuk voor. De leerling labelt elk onderdeel als accepteren, aanpassen of verwerpen en geeft per keuze één inhoudelijke reden.",
-      "public_title": "Overnemen, aanpassen of verwerpen"
+      "public_title": "Overnemen, aanpassen of verwerpen",
+      "action_layer": {
+        "intents": [
+          "selfreg",
+          "make-visible"
+        ],
+        "teacher": "Laat één relevante AI-suggestie bewust beoordelen voordat die wordt gebruikt.",
+        "learner": "Accepteert, past aan of verwerpt de suggestie en motiveert die keuze.",
+        "ai": "Kan een voorstel, alternatief of feedback leveren.",
+        "ai_not": "Laat vloeiend geformuleerde output niet automatisch de standaardkeuze worden.",
+        "standard": [
+          [
+            "MS-LSR-10",
+            "evaluate_support_before_use"
+          ],
+          [
+            "AIS-014",
+            "resist_automation_bias"
+          ]
+        ],
+        "verbs": {
+          "teacher": [
+            "laat beoordelen",
+            "vraag reden"
+          ],
+          "learner": [
+            "accepteer",
+            "pas aan",
+            "verwerp",
+            "motiveer"
+          ],
+          "ai": [
+            "stel voor",
+            "geef alternatief"
+          ]
+        }
+      }
     },
     {
       "slug": "resume-control",
@@ -826,7 +1571,43 @@
       "source": "EAI Standard 0.4-candidate · REM-11 / MS-LSR-11",
       "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/remediation/interventions.yaml",
       "example": "Na drie AI-hints vraagt het systeem niet automatisch door. De leerling kiest zelf of hij verder oefent, een voorbeeld nodig heeft of de hulp uitzet en legt kort uit waarom.",
-      "public_title": "Neem de regie weer over"
+      "public_title": "Neem de regie weer over",
+      "action_layer": {
+        "intents": [
+          "selfreg",
+          "return"
+        ],
+        "teacher": "Bouwt een expliciet moment in waarop de leerling weer zelf beslist hoe hij verdergaat.",
+        "learner": "Neemt plannen, kiezen en controleren weer over na AI-hulp.",
+        "ai": "Kan tot dat moment ondersteuning bieden en daarna wachten.",
+        "ai_not": "Laat AI niet automatisch de volgende route kiezen wanneer zelfregulatie juist het leerdoel is.",
+        "standard": [
+          [
+            "MS-LSR-11",
+            "resume_regulatory_control_after_support"
+          ],
+          [
+            "REM-11",
+            "return_regulatory_control"
+          ]
+        ],
+        "verbs": {
+          "teacher": [
+            "bouw stopmoment in",
+            "geef regie terug"
+          ],
+          "learner": [
+            "plan",
+            "kies",
+            "monitor",
+            "hervat"
+          ],
+          "ai": [
+            "ondersteun",
+            "wacht"
+          ]
+        }
+      }
     },
     {
       "slug": "herontwerp-opdracht",
@@ -862,7 +1643,36 @@
       "result": "Een uitlegbaar herontwerp waarin de AI-rol voortkomt uit het leerproces in plaats van andersom.",
       "caution": "Gebruik het bestaande werkboek gerust als hulpmiddel. Houd voor de onderwijskeuze vooral deze volgorde vast: eerst leren, dan AI, daarna pas kijken welk bewijs je nodig hebt.",
       "source": "Werkboek workshop EAI in onderwijs, geordend volgens EAI · Nieuwe uitgave 2026",
-      "example": "Een sectie bekijkt een bestaande boekopdracht waarin AI het volledige antwoord kan maken. Ze herontwerpen de taak zodat bronkeuze en vergelijking tijdens de les zichtbaar door de leerling worden uitgevoerd."
+      "example": "Een sectie bekijkt een bestaande boekopdracht waarin AI het volledige antwoord kan maken. Ze herontwerpen de taak zodat bronkeuze en vergelijking tijdens de les zichtbaar door de leerling worden uitgevoerd.",
+      "action_layer": {
+        "intents": [
+          "redesign"
+        ],
+        "teacher": "Ontleedt een bestaande opdracht vanuit leerdoel, fase en kernhandeling en ontwerpt daarna de AI-rol.",
+        "learner": "Krijgt in het nieuwe ontwerp de handelingen terug die voor het leren werkelijk nodig zijn.",
+        "ai": "Kan helpen alternatieven of taakvarianten te genereren.",
+        "ai_not": "Laat de bestaande mogelijkheden van een tool niet bepalen wat de opdracht moet worden.",
+        "standard": [
+          [
+            "AIS-018",
+            "evaluate_ai_impact_on_task"
+          ]
+        ],
+        "verbs": {
+          "teacher": [
+            "ontleed",
+            "bepaal kernhandeling",
+            "herontwerp"
+          ],
+          "learner": [
+            "voer relevante handeling uit"
+          ],
+          "ai": [
+            "genereer variant",
+            "ondersteun"
+          ]
+        }
+      }
     },
     {
       "slug": "ai-role-handback-plan",
@@ -919,7 +1729,44 @@
         ]
       },
       "example": "AI mag bij een schrijfopdracht twee voorbeeldopeningen tonen. Daarna verdwijnt de hulp en schrijft de leerling op een nieuwe casus zelf een opening. Die tweede uitvoering telt als bewijs.",
-      "public_title": "Wat doet AI, en wanneer gaat het terug naar de leerling?"
+      "public_title": "Wat doet AI, en wanneer gaat het terug naar de leerling?",
+      "action_layer": {
+        "intents": [
+          "redesign",
+          "return"
+        ],
+        "teacher": "Beschrijft expliciet welke AI-acties zijn toegestaan en waar een relevante handeling weer teruggaat naar de leerling.",
+        "learner": "Voert de teruggegeven handeling daarna op een nieuw moment zelf uit.",
+        "ai": "Krijgt een afgebakende rol, bijvoorbeeld vragen, hints, feedback of voorbeeldvorming.",
+        "ai_not": "Gebruik 'AI ondersteunt' niet als voldoende beschrijving van de rol.",
+        "standard": [
+          [
+            "AIS-001",
+            "define_ai_role"
+          ],
+          [
+            "AIS-008",
+            "choose_handback_point"
+          ]
+        ],
+        "verbs": {
+          "teacher": [
+            "definieer rol",
+            "begrens",
+            "plan terugkeer"
+          ],
+          "learner": [
+            "neem over",
+            "voer opnieuw uit"
+          ],
+          "ai": [
+            "vraag",
+            "hint",
+            "modelleer",
+            "geef feedback"
+          ]
+        }
+      }
     },
     {
       "slug": "assessment-redesign",
@@ -956,7 +1803,40 @@
       "source": "EAI Standard 0.4-candidate · AIS-019 en evidence semantics",
       "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/standard/evidence-types.yaml",
       "example": "Een thuisessay zegt weinig meer over zelfstandig schrijven wanneer AI vrij beschikbaar is. Het team houdt het essay, maar voegt een korte nieuwe schrijftaak en mondelinge toelichting toe voor de claims die zelfstandige beheersing vragen.",
-      "public_title": "Toets opnieuw ontwerpen"
+      "public_title": "Toets opnieuw ontwerpen",
+      "action_layer": {
+        "intents": [
+          "redesign",
+          "independent"
+        ],
+        "teacher": "Bepaalt welke uitspraak de toets moet dragen en ontwerpt bewijs dat ondanks AI-gebruik nog geldig is.",
+        "learner": "Laat de relevante menselijke handeling zien op een manier die bij die uitspraak past.",
+        "ai": "Kan in sommige onderdelen ondersteunen, zolang de bijdrage wordt meegewogen bij de interpretatie.",
+        "ai_not": "Behandel een product met materiële AI-bijdrage niet automatisch als bewijs van zelfstandige beheersing.",
+        "standard": [
+          [
+            "AIS-019",
+            "evaluate_ai_impact_on_assessment"
+          ],
+          [
+            "EAI-R007",
+            "evidence_must_match_claim"
+          ]
+        ],
+        "verbs": {
+          "teacher": [
+            "bepaal uitspraak",
+            "analyseer bijdrage",
+            "ontwerp bewijs"
+          ],
+          "learner": [
+            "voer relevante handeling uit"
+          ],
+          "ai": [
+            "ondersteun begrensd"
+          ]
+        }
+      }
     },
     {
       "slug": "learning-goal-vs-task",
@@ -1004,7 +1884,40 @@
         "caption": "Een afgeronde taak is niet automatisch bewijs dat het leerdoel is bereikt."
       },
       "example": "Een leerling zegt: 'Ik moet een presentatie afmaken.' De docent vraagt wat hij daarbij moet leren. Het antwoord wordt: 'Ik moet bronnen kunnen selecteren en mijn keuze kunnen uitleggen.'",
-      "public_title": "Wat leer je, behalve dat de taak af is?"
+      "public_title": "Wat leer je, behalve dat de taak af is?",
+      "action_layer": {
+        "intents": [
+          "orient",
+          "selfreg"
+        ],
+        "teacher": "Vraagt wat de leerling moet leren naast het simpelweg afronden van de taak.",
+        "learner": "Formuleert het leerdoel in eigen woorden en onderscheidt dat van 'klaar zijn'.",
+        "ai": "Kan vragen stellen om het doel te verhelderen.",
+        "ai_not": "Laat AI het leerdoel niet invullen wanneer doeloriëntatie juist onderdeel is van de handeling.",
+        "standard": [
+          [
+            "MS-LSR-01",
+            "distinguish_learning_goal_from_task_completion"
+          ],
+          [
+            "MS-LSR-02",
+            "set_or_restate_learning_goal"
+          ]
+        ],
+        "verbs": {
+          "teacher": [
+            "vraag door",
+            "verhelder"
+          ],
+          "learner": [
+            "onderscheid",
+            "formuleer leerdoel"
+          ],
+          "ai": [
+            "stel verhelderende vraag"
+          ]
+        }
+      }
     },
     {
       "slug": "plan-it-yourself",
@@ -1038,7 +1951,36 @@
       "source": "EAI Standard 0.4-candidate · MS-LSR-03",
       "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/learner-self-regulation-and-metacognition.yaml",
       "example": "Voordat AI een stappenplan mag geven, maakt de leerling zelf een plan van maximaal vier stappen en kiest hij één moment waarop hij controleert of zijn aanpak werkt.",
-      "public_title": "Eerst zelf een plan maken"
+      "public_title": "Eerst zelf een plan maken",
+      "action_layer": {
+        "intents": [
+          "selfreg"
+        ],
+        "teacher": "Laat de leerling eerst een eigen beknopt plan maken voordat AI een route voorstelt.",
+        "learner": "Bepaalt zelf de volgorde van stappen en een controlepunt.",
+        "ai": "Kan daarna een alternatief plan of gerichte vraag bieden.",
+        "ai_not": "Geef niet meteen een volledig stappenplan als plannen de kernhandeling is.",
+        "standard": [
+          [
+            "MS-LSR-03",
+            "construct_action_plan"
+          ]
+        ],
+        "verbs": {
+          "teacher": [
+            "laat eerst plannen",
+            "vergelijk daarna"
+          ],
+          "learner": [
+            "plan",
+            "orden",
+            "kies controlepunt"
+          ],
+          "ai": [
+            "geef alternatief plan"
+          ]
+        }
+      }
     },
     {
       "slug": "monitoring-checkpoint",
@@ -1094,7 +2036,41 @@
         ]
       },
       "example": "Voor de leerling AI-feedback opent, kiest hij zelf één criterium voor een goede inleiding en beoordeelt hij zijn tekst eerst langs dat criterium.",
-      "public_title": "Eerst zelf controleren"
+      "public_title": "Eerst zelf controleren",
+      "action_layer": {
+        "intents": [
+          "selfreg"
+        ],
+        "teacher": "Bouwt een moment in waarop de leerling zichzelf beoordeelt vóór automatische feedback verschijnt.",
+        "learner": "Kiest een criterium, beoordeelt eigen voortgang en vergelijkt daarna met AI-feedback.",
+        "ai": "Kan na de eigen beoordeling controleren of feedback geven.",
+        "ai_not": "Neem de eerste monitoring niet over wanneer de leerling juist moet leren zichzelf te controleren.",
+        "standard": [
+          [
+            "MS-LSR-05",
+            "define_monitoring_criterion_or_checkpoint"
+          ],
+          [
+            "MS-LSR-06",
+            "monitor_progress_against_goal"
+          ]
+        ],
+        "verbs": {
+          "teacher": [
+            "bouw controlepunt in",
+            "laat eerst zelf beoordelen"
+          ],
+          "learner": [
+            "kies criterium",
+            "monitor",
+            "vergelijk"
+          ],
+          "ai": [
+            "controleer",
+            "geef feedback"
+          ]
+        }
+      }
     },
     {
       "slug": "find-my-impasse",
@@ -1128,7 +2104,37 @@
       "source": "EAI Standard 0.4-candidate · MS-LSR-07",
       "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/learner-self-regulation-and-metacognition.yaml",
       "example": "Een leerling zegt dat hij 'de hele opgave niet snapt'. Hij markeert eerst de laatste stap die nog wel lukt. Daardoor blijkt dat alleen het omzetten van de tekst naar een vergelijking het probleem is.",
-      "public_title": "Waar loop ik precies vast?"
+      "public_title": "Waar loop ik precies vast?",
+      "action_layer": {
+        "intents": [
+          "diagnose",
+          "selfreg"
+        ],
+        "teacher": "Vraagt niet 'waar snap je het niet?', maar helpt het eerste concrete vastlooppunt te lokaliseren.",
+        "learner": "Benoemt de laatste stap die nog lukt en waar de voortgang daarna stopt.",
+        "ai": "Kan een vraag stellen die helpt het vastlooppunt te verhelderen.",
+        "ai_not": "Geef de oplossingsroute niet voordat duidelijk is waar de echte impasse zit.",
+        "standard": [
+          [
+            "MS-LSR-07",
+            "detect_and_localise_impasse"
+          ]
+        ],
+        "verbs": {
+          "teacher": [
+            "vraag door",
+            "lokaliseer"
+          ],
+          "learner": [
+            "herken",
+            "lokaliseer",
+            "benoem"
+          ],
+          "ai": [
+            "stel verhelderende vraag"
+          ]
+        }
+      }
     },
     {
       "slug": "strategy-switch-from-evidence",
@@ -1163,7 +2169,36 @@
       "source": "EAI Standard 0.4-candidate · MS-LSR-12",
       "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/learner-self-regulation-and-metacognition.yaml",
       "example": "Een leerling blijft woordjes leren door ze over te schrijven, maar maakt steeds dezelfde fouten. Hij bekijkt zijn eigen resultaten en kiest zelf een andere oefenstrategie voordat AI helpt.",
-      "public_title": "Verander je aanpak op basis van wat je ziet"
+      "public_title": "Verander je aanpak op basis van wat je ziet",
+      "action_layer": {
+        "intents": [
+          "selfreg"
+        ],
+        "teacher": "Laat eerst het eigen bewijs van voortgang of herhaalde fouten bekijken.",
+        "learner": "Besluit op basis daarvan of hij de huidige strategie houdt, verandert of stopt.",
+        "ai": "Kan alternatieve strategieën voorstellen.",
+        "ai_not": "Laat AI niet alleen op basis van voorkeur de volgende strategie kiezen.",
+        "standard": [
+          [
+            "MS-LSR-12",
+            "change_strategy_from_evidence"
+          ]
+        ],
+        "verbs": {
+          "teacher": [
+            "laat bewijs bekijken",
+            "vraag keuze"
+          ],
+          "learner": [
+            "evalueer",
+            "kies",
+            "verander strategie"
+          ],
+          "ai": [
+            "stel alternatieven voor"
+          ]
+        }
+      }
     },
     {
       "slug": "process-reconstruction",
@@ -1198,7 +2233,37 @@
       "source": "EAI Standard 0.4-candidate · MS-LSR-15",
       "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/learner-self-regulation-and-metacognition.yaml",
       "example": "Na een AI-ondersteund werkstuk kiest de leerling drie concrete beslismomenten uit zijn geschiedenis. Hij noteert wat hij toen besloot, welk signaal daartoe leidde en wat daarna veranderde.",
-      "public_title": "Bouw je eigen proces terug"
+      "public_title": "Bouw je eigen proces terug",
+      "action_layer": {
+        "intents": [
+          "make-visible",
+          "selfreg"
+        ],
+        "teacher": "Laat een paar bepalende beslismomenten uit het proces terugbouwen.",
+        "learner": "Benoemt beslissing, aanleiding en gevolg en trekt daaruit een aanpassing voor later.",
+        "ai": "Kan procesinformatie beschikbaar maken, maar reconstrueert de betekenis niet voor de leerling.",
+        "ai_not": "Een automatisch gegenereerde samenvatting van het proces is nog geen eigen reflectie.",
+        "standard": [
+          [
+            "MS-LSR-15",
+            "reconstruct_regulatory_process"
+          ]
+        ],
+        "verbs": {
+          "teacher": [
+            "selecteer momenten",
+            "vraag terug"
+          ],
+          "learner": [
+            "reconstrueer",
+            "verklaar",
+            "pas aan"
+          ],
+          "ai": [
+            "lever procesinformatie"
+          ]
+        }
+      }
     },
     {
       "slug": "hidden-assumption",
@@ -1249,7 +2314,37 @@
         ]
       },
       "example": "In de redenering 'de cijfers stijgen, dus de maatregel werkt' zoekt de leerling eerst zelf welke aanname ertussen zit, bijvoorbeeld dat er geen andere belangrijke oorzaak voor de stijging is.",
-      "public_title": "Welke aanname zit ertussen?"
+      "public_title": "Welke aanname zit ertussen?",
+      "action_layer": {
+        "intents": [
+          "argument"
+        ],
+        "teacher": "Vraagt welke onuitgesproken stap nodig is om van reden naar conclusie te komen.",
+        "learner": "Benoemt en toetst de verborgen aanname in een redenering.",
+        "ai": "Kan vragen stellen of alternatieve aannames voorstellen.",
+        "ai_not": "Laat AI de aanname niet simpelweg aanwijzen wanneer juist het herkennen ervan geoefend wordt.",
+        "standard": [
+          [
+            "MS-ARG-06",
+            "identify_implicit_assumption"
+          ]
+        ],
+        "verbs": {
+          "teacher": [
+            "vraag wat ertussen zit",
+            "laat toetsen"
+          ],
+          "learner": [
+            "identificeer",
+            "toets",
+            "herzie"
+          ],
+          "ai": [
+            "stel vraag",
+            "genereer alternatief"
+          ]
+        }
+      }
     },
     {
       "slug": "source-suitability",
@@ -1297,7 +2392,37 @@
         "caption": "Een betrouwbare bron is niet automatisch geschikt bewijs voor iedere claim."
       },
       "example": "Voor de claim dat jongeren minder lezen vergelijkt de leerling een opinieblog met recente onderzoeksdata. Hij legt uit welke bron de claim beter kan dragen en welke beperking blijft.",
-      "public_title": "Past deze bron bij deze claim?"
+      "public_title": "Past deze bron bij deze claim?",
+      "action_layer": {
+        "intents": [
+          "argument"
+        ],
+        "teacher": "Laat niet alleen betrouwbaarheid, maar vooral geschiktheid voor déze conclusie beoordelen.",
+        "learner": "Beoordeelt waarom een bron deze specifieke redenering wel of niet kan dragen.",
+        "ai": "Kan bronnen ophalen of verschillen samenvatten.",
+        "ai_not": "Laat ranking of reputatie van een bron niet automatisch bepalen of hij bij de conclusie past.",
+        "standard": [
+          [
+            "MS-ARG-13",
+            "evaluate_source_for_argument"
+          ]
+        ],
+        "verbs": {
+          "teacher": [
+            "laat koppelen",
+            "vraag waarom"
+          ],
+          "learner": [
+            "beoordeel",
+            "vergelijk",
+            "onderbouw"
+          ],
+          "ai": [
+            "haal bronnen op",
+            "vat samen"
+          ]
+        }
+      }
     },
     {
       "slug": "evidence-to-claim",
@@ -1348,7 +2473,36 @@
         ]
       },
       "example": "Een leerling heeft één onderzoeksresultaat en een stevige conclusie. Hij schrijft expliciet de redeneringsstap ertussen en verzwakt de conclusie wanneer het bewijs minder ver reikt.",
-      "public_title": "Van bewijs naar conclusie"
+      "public_title": "Van bewijs naar conclusie",
+      "action_layer": {
+        "intents": [
+          "argument"
+        ],
+        "teacher": "Vraagt de redeneringsstap tussen informatie en conclusie expliciet te maken.",
+        "learner": "Legt uit hoe het bewijs de conclusie ondersteunt en begrenst de sterkte ervan.",
+        "ai": "Kan feedback geven op de redenering.",
+        "ai_not": "Laat AI niet alleen een mooie verbindingszin genereren als juist de inferentie geleerd moet worden.",
+        "standard": [
+          [
+            "MS-ARG-14",
+            "connect_evidence_to_standpoint"
+          ]
+        ],
+        "verbs": {
+          "teacher": [
+            "vraag verbinding",
+            "begrens"
+          ],
+          "learner": [
+            "verbind",
+            "redeneer",
+            "concludeer"
+          ],
+          "ai": [
+            "geef feedback"
+          ]
+        }
+      }
     },
     {
       "slug": "counterargument-first",
@@ -1383,7 +2537,36 @@
       "source": "EAI Standard 0.4-candidate · MS-ARG-15",
       "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/argumentation.yaml",
       "example": "Voordat de leerling AI om steun voor zijn eigen standpunt vraagt, formuleert hij eerst het sterkste tegenargument dat een goed geïnformeerde tegenstander zou kunnen geven.",
-      "public_title": "Begin met het tegenargument"
+      "public_title": "Begin met het tegenargument",
+      "action_layer": {
+        "intents": [
+          "argument"
+        ],
+        "teacher": "Laat eerst een serieus tegenargument formuleren voordat steun voor het eigen standpunt wordt gezocht.",
+        "learner": "Formuleert of beoordeelt het sterkste relevante tegenargument.",
+        "ai": "Kan later als tegenspreker of perspectiefsimulator optreden.",
+        "ai_not": "Laat AI het tegenargument niet volledig produceren wanneer het herkennen ervan de kernhandeling is.",
+        "standard": [
+          [
+            "MS-ARG-15",
+            "recognise_counterargument"
+          ]
+        ],
+        "verbs": {
+          "teacher": [
+            "vraag tegenargument",
+            "laat wegen"
+          ],
+          "learner": [
+            "herken",
+            "formuleer",
+            "weeg"
+          ],
+          "ai": [
+            "simuleer tegenspraak"
+          ]
+        }
+      }
     },
     {
       "slug": "perspective-weighing",
@@ -1417,7 +2600,36 @@
       "source": "EAI Standard 0.4-candidate · MS-ARG-16",
       "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/argumentation.yaml",
       "example": "Bij een maatschappelijk vraagstuk krijgt de leerling drie perspectieven. Hij moet niet alleen opsommen, maar per perspectief aangeven welk bewijs zwaar weegt en waarom.",
-      "public_title": "Weeg verschillende perspectieven"
+      "public_title": "Weeg verschillende perspectieven",
+      "action_layer": {
+        "intents": [
+          "argument"
+        ],
+        "teacher": "Biedt meerdere perspectieven en vraagt om expliciete weging, niet alleen opsomming.",
+        "learner": "Vergelijkt perspectieven en verantwoordt welk bewijs of criterium het zwaarst weegt.",
+        "ai": "Kan perspectieven of contrastgevallen genereren.",
+        "ai_not": "Laat AI de uiteindelijke weging of waardeafweging niet onzichtbaar overnemen.",
+        "standard": [
+          [
+            "MS-ARG-16",
+            "weigh_multiple_perspectives"
+          ]
+        ],
+        "verbs": {
+          "teacher": [
+            "bied perspectieven",
+            "vraag weging"
+          ],
+          "learner": [
+            "vergelijk",
+            "weeg",
+            "verantwoord"
+          ],
+          "ai": [
+            "genereer perspectieven"
+          ]
+        }
+      }
     },
     {
       "slug": "rebuttal-reconstruction",
@@ -1452,7 +2664,38 @@
       "source": "EAI Standard 0.4-candidate · MS-ARG-17",
       "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/argumentation.yaml",
       "example": "AI levert een scherpe weerlegging. De leerling krijgt alleen het tegenargument en moet zonder de AI-tekst zelf een nieuwe weerlegging opbouwen.",
-      "public_title": "Bouw de weerlegging zelf opnieuw op"
+      "public_title": "Bouw de weerlegging zelf opnieuw op",
+      "action_layer": {
+        "intents": [
+          "argument",
+          "return"
+        ],
+        "teacher": "Haalt een AI-weerlegging uit beeld en geeft een nieuwe of vergelijkbare situatie.",
+        "learner": "Bouwt zelf een weerlegging op en legt uit waarom die werkt.",
+        "ai": "Kan het tegenargument leveren of eerder een voorbeeldweerlegging hebben gegeven.",
+        "ai_not": "Laat de eerdere AI-formulering niet zichtbaar blijven tijdens de reconstructie.",
+        "standard": [
+          [
+            "MS-ARG-17",
+            "formulate_rebuttal"
+          ]
+        ],
+        "verbs": {
+          "teacher": [
+            "laat voorbeeld verdwijnen",
+            "bied nieuwe situatie"
+          ],
+          "learner": [
+            "weerleg",
+            "reconstrueer",
+            "verantwoord"
+          ],
+          "ai": [
+            "lever tegenargument",
+            "modelleer eerder"
+          ]
+        }
+      }
     },
     {
       "slug": "conclusion-strength",
@@ -1486,7 +2729,37 @@
       "source": "EAI Standard 0.4-candidate · MS-ARG-22",
       "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/argumentation.yaml",
       "example": "Een bron laat een verband zien, maar geen oorzaak. De leerling kiest daarom tussen 'bewijst', 'wijst erop' en 'is verenigbaar met' en verantwoordt de sterkte van zijn conclusie.",
-      "public_title": "Hoe sterk mag je conclusie zijn?"
+      "public_title": "Hoe sterk mag je conclusie zijn?",
+      "action_layer": {
+        "intents": [
+          "argument"
+        ],
+        "teacher": "Laat de formulering van een conclusie aansluiten op wat het bewijs werkelijk toelaat.",
+        "learner": "Kiest hoe stellig de conclusie mag zijn en verantwoordt die keuze.",
+        "ai": "Kan op overclaimen wijzen of formuleringen vergelijken.",
+        "ai_not": "Laat vloeiende stelligheid niet doorgaan voor een sterkere redenering.",
+        "standard": [
+          [
+            "MS-ARG-22",
+            "draw_conclusion"
+          ]
+        ],
+        "verbs": {
+          "teacher": [
+            "vraag begrenzing",
+            "laat formuleren"
+          ],
+          "learner": [
+            "weeg bewijs",
+            "concludeer",
+            "begrens"
+          ],
+          "ai": [
+            "vergelijk formuleringen",
+            "signaleer overclaim"
+          ]
+        }
+      }
     },
     {
       "slug": "observation-vs-inference",
@@ -1534,7 +2807,40 @@
         "caption": "Houd waarneming en interpretatie uit elkaar zolang het bewijs dat vraagt."
       },
       "example": "Een leerling geeft drie korte antwoorden. De docent schrijft eerst letterlijk op wat zichtbaar is en zet pas daarnaast de interpretatie 'begrijpt oorzaak en gevolg nog onvoldoende'.",
-      "public_title": "Wat zie je, en wat maak je ervan?"
+      "public_title": "Wat zie je, en wat maak je ervan?",
+      "action_layer": {
+        "intents": [
+          "professional"
+        ],
+        "teacher": "Schrijft eerst op wat de leerling letterlijk deed of zei en zet de interpretatie daar apart naast.",
+        "learner": "Kan aanvullende directe informatie geven wanneer dat relevant is.",
+        "ai": "Kan signaleren, classificeren of patronen aangeven.",
+        "ai_not": "Laat een AI-signaal niet samenvallen met de professionele interpretatie.",
+        "standard": [
+          [
+            "MS-TDJ-03",
+            "observe_relevant_response"
+          ],
+          [
+            "MS-TDJ-04",
+            "separate_observation_from_inference"
+          ]
+        ],
+        "verbs": {
+          "teacher": [
+            "observeer",
+            "scheid",
+            "interpreteer"
+          ],
+          "learner": [
+            "geef directe informatie"
+          ],
+          "ai": [
+            "signaleer",
+            "classificeer"
+          ]
+        }
+      }
     },
     {
       "slug": "discriminating-probe",
@@ -1567,7 +2873,37 @@
       "source": "EAI Standard 0.4-candidate · teacher diagnostic judgement MS-TDJ-02",
       "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/teacher-diagnostic-judgement.yaml",
       "example": "Een leerling maakt een fout die kan komen door begripsgebrek of slordigheid. De docent stelt één nieuwe vraag die onderscheid maakt tussen die twee verklaringen.",
-      "public_title": "Eén vraag die twee verklaringen uit elkaar haalt"
+      "public_title": "Eén vraag die twee verklaringen uit elkaar haalt",
+      "action_layer": {
+        "intents": [
+          "professional",
+          "diagnose"
+        ],
+        "teacher": "Formuleert twee plausibele verklaringen en ontwerpt één vraag die ertussen kan onderscheiden.",
+        "learner": "Geeft een nieuwe reactie die extra bewijs oplevert.",
+        "ai": "Kan mogelijke vragen of verklaringen voorstellen.",
+        "ai_not": "Laat AI niet uit één eerste reactie al een diagnose vaststellen.",
+        "standard": [
+          [
+            "MS-TDJ-02",
+            "elicit_discriminating_response"
+          ]
+        ],
+        "verbs": {
+          "teacher": [
+            "formuleer verklaringen",
+            "lok reactie uit",
+            "vergelijk"
+          ],
+          "learner": [
+            "reageer",
+            "laat nieuw bewijs zien"
+          ],
+          "ai": [
+            "genereer mogelijke vraag"
+          ]
+        }
+      }
     },
     {
       "slug": "first-breakdown",
@@ -1600,7 +2936,38 @@
       "source": "EAI Standard 0.4-candidate · teacher diagnostic judgement MS-TDJ-05",
       "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/teacher-diagnostic-judgement.yaml",
       "example": "Een rekenuitwerking eindigt fout. In plaats van alleen het eindantwoord te corrigeren zoekt de docent met de leerling het eerste punt waar de redenering niet meer klopt.",
-      "public_title": "Waar gaat het voor het eerst mis?"
+      "public_title": "Waar gaat het voor het eerst mis?",
+      "action_layer": {
+        "intents": [
+          "professional",
+          "diagnose"
+        ],
+        "teacher": "Zoekt het eerste punt waar de leerling van een werkbare route afwijkt.",
+        "learner": "Laat via uitwerking of toelichting zien waar de aanpak nog wel en niet standhoudt.",
+        "ai": "Kan fouten signaleren of stappen controleren.",
+        "ai_not": "Richt hulp niet alleen op de laatste zichtbare fout als het breekpunt eerder ligt.",
+        "standard": [
+          [
+            "MS-TDJ-05",
+            "locate_first_breakdown"
+          ]
+        ],
+        "verbs": {
+          "teacher": [
+            "traceer",
+            "lokaliseer",
+            "kies hulp"
+          ],
+          "learner": [
+            "voer uit",
+            "licht toe"
+          ],
+          "ai": [
+            "signaleer",
+            "controleer"
+          ]
+        }
+      }
     },
     {
       "slug": "competing-explanations",
@@ -1633,7 +3000,41 @@
       "source": "EAI Standard 0.4-candidate · teacher diagnostic judgement MS-TDJ-07/08",
       "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/teacher-diagnostic-judgement.yaml",
       "example": "Een leerling doet weinig mee. Het team noteert eerst meerdere plausibele verklaringen, bijvoorbeeld onbegrip, tempo of motivatie, voordat één interpretatie leidend wordt.",
-      "public_title": "Houd meerdere verklaringen open"
+      "public_title": "Houd meerdere verklaringen open",
+      "action_layer": {
+        "intents": [
+          "professional",
+          "diagnose"
+        ],
+        "teacher": "Houdt meer dan één verklaring open en zoekt nieuw bewijs dat onderscheid maakt.",
+        "learner": "Levert een nieuwe reactie of observatie waarop de verklaringen kunnen worden getoetst.",
+        "ai": "Kan alternatieve verklaringen genereren.",
+        "ai_not": "Behandel de meest plausibel klinkende AI-verklaring niet als vastgesteld.",
+        "standard": [
+          [
+            "MS-TDJ-07",
+            "generate_competing_explanations"
+          ],
+          [
+            "MS-TDJ-08",
+            "test_explanation_against_new_evidence"
+          ]
+        ],
+        "verbs": {
+          "teacher": [
+            "genereer verklaringen",
+            "toets",
+            "stel bij"
+          ],
+          "learner": [
+            "reageer",
+            "lever nieuw bewijs"
+          ],
+          "ai": [
+            "genereer alternatieven"
+          ]
+        }
+      }
     },
     {
       "slug": "bound-the-claim",
@@ -1666,7 +3067,36 @@
       "source": "EAI Standard 0.4-candidate · teacher diagnostic judgement MS-TDJ-09",
       "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/teacher-diagnostic-judgement.yaml",
       "example": "Na één zwakke toets schrijft de docent niet 'de leerling beheerst dit onderwerp niet', maar beperkt de conclusie tot wat deze toets werkelijk laat zien.",
-      "public_title": "Maak je conclusie niet groter dan het bewijs"
+      "public_title": "Maak je conclusie niet groter dan het bewijs",
+      "action_layer": {
+        "intents": [
+          "professional"
+        ],
+        "teacher": "Begrenst het oordeel tot precies wat het huidige bewijs ondersteunt.",
+        "learner": "Hoeft hier niet per se een aparte handeling uit te voeren; zijn werk vormt het bewijs waarop het oordeel rust.",
+        "ai": "Kan samenvatten of mogelijke interpretaties voorstellen.",
+        "ai_not": "Laat taalzekerheid de reikwijdte van het bewijs niet vergroten.",
+        "standard": [
+          [
+            "MS-TDJ-09",
+            "bound_the_interpretation"
+          ]
+        ],
+        "verbs": {
+          "teacher": [
+            "observeer",
+            "begrens interpretatie",
+            "noteer onbekend"
+          ],
+          "learner": [
+            "lever werk of reactie"
+          ],
+          "ai": [
+            "vat samen",
+            "stel interpretatie voor"
+          ]
+        }
+      }
     },
     {
       "slug": "preserve-uncertainty",
@@ -1699,7 +3129,35 @@
       "source": "EAI Standard 0.4-candidate · teacher diagnostic judgement MS-TDJ-10",
       "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/teacher-diagnostic-judgement.yaml",
       "example": "Twee signalen wijzen verschillende kanten op. De docent noteert expliciet wat nog onbekend is en welke extra informatie nodig is voordat een groter besluit wordt genomen.",
-      "public_title": "Laat onzekerheid nog even bestaan"
+      "public_title": "Laat onzekerheid nog even bestaan",
+      "action_layer": {
+        "intents": [
+          "professional"
+        ],
+        "teacher": "Benoemt wat nog onbekend is en bepaalt of dat onbekende de volgende beslissing kan veranderen.",
+        "learner": "Kan extra informatie geven wanneer zijn perspectief of uitvoering relevant is.",
+        "ai": "Kan alternatieven of ontbrekende informatie helpen inventariseren.",
+        "ai_not": "Laat AI onzekerheid niet wegformuleren alleen om tot een nette conclusie te komen.",
+        "standard": [
+          [
+            "MS-TDJ-10",
+            "preserve_uncertainty"
+          ]
+        ],
+        "verbs": {
+          "teacher": [
+            "benoem onbekend",
+            "weeg relevantie",
+            "beslis"
+          ],
+          "learner": [
+            "vul perspectief aan"
+          ],
+          "ai": [
+            "inventariseer alternatieven"
+          ]
+        }
+      }
     },
     {
       "slug": "evidence-to-next-response",
@@ -1755,7 +3213,42 @@
         ]
       },
       "example": "Een leerling gebruikt de verkeerde strategie bij breuken. De docent koppelt de volgende interventie aan precies dat bewijs en bepaalt vooraf wat in de volgende poging moet veranderen.",
-      "public_title": "Van wat je ziet naar je volgende stap"
+      "public_title": "Van wat je ziet naar je volgende stap",
+      "action_layer": {
+        "intents": [
+          "professional",
+          "support"
+        ],
+        "teacher": "Koppelt de volgende onderwijsreactie expliciet aan het breekpunt en het beschikbare bewijs.",
+        "learner": "Reageert op de gekozen ondersteuning, zodat zichtbaar wordt of die het probleem raakt.",
+        "ai": "Kan mogelijke vervolgstappen voorstellen.",
+        "ai_not": "Laat de aanbeveling van AI niet de reden voor de interventie vervangen.",
+        "standard": [
+          [
+            "MS-TDJ-11",
+            "select_next_instructional_response"
+          ],
+          [
+            "MS-TDJ-13",
+            "evaluate_response_effect"
+          ]
+        ],
+        "verbs": {
+          "teacher": [
+            "interpreteer",
+            "vergelijk opties",
+            "kies respons",
+            "evalueer"
+          ],
+          "learner": [
+            "reageer",
+            "laat effect zien"
+          ],
+          "ai": [
+            "stel vervolgstap voor"
+          ]
+        }
+      }
     },
     {
       "slug": "reconstruct-professional-judgement",
@@ -1789,7 +3282,40 @@
       "source": "EAI Standard 0.4-candidate · teacher diagnostic judgement MS-TDJ-12",
       "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/teacher-diagnostic-judgement.yaml",
       "example": "Een AI-systeem geeft een risicosignaal over een leerling. De docent verbergt het advies, bekijkt eerst het oorspronkelijke leerlingwerk en formuleert zelfstandig een oordeel voordat hij vergelijkt.",
-      "public_title": "Vorm eerst je eigen professionele oordeel"
+      "public_title": "Vorm eerst je eigen professionele oordeel",
+      "action_layer": {
+        "intents": [
+          "professional"
+        ],
+        "teacher": "Verbergt tijdelijk het AI-advies en bouwt het eigen oordeel opnieuw op vanuit leerlingbewijs.",
+        "learner": "Zijn directe werk, reactie of context blijft de bron van het professionele oordeel.",
+        "ai": "Kan een aanbeveling geven die pas daarna wordt vergeleken met het eigen oordeel.",
+        "ai_not": "Verwar goedkeuring van een AI-advies niet met zelfstandig professioneel oordeel.",
+        "standard": [
+          [
+            "MS-TDJ-12",
+            "justify_professional_judgement"
+          ],
+          [
+            "AIS-014",
+            "resist_automation_bias"
+          ]
+        ],
+        "verbs": {
+          "teacher": [
+            "verberg advies",
+            "interpreteer zelf",
+            "beslis",
+            "vergelijk"
+          ],
+          "learner": [
+            "lever oorspronkelijke informatie"
+          ],
+          "ai": [
+            "geef advies ter vergelijking"
+          ]
+        }
+      }
     },
     {
       "slug": "learner-voice-check",
@@ -1823,7 +3349,45 @@
       "source": "EAI Standard 0.4-candidate · teacher pedagogical judgement MS-TPJ-04/06/09",
       "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/teacher-pedagogical-judgement.yaml",
       "example": "Een docent denkt dat een leerling een opdracht heeft vermeden uit onzekerheid. Voor dit als conclusie wordt vastgelegd, vraagt hij de leerling hoe die zelf het moment heeft ervaren.",
-      "public_title": "Vraag de leerling zelf"
+      "public_title": "Vraag de leerling zelf",
+      "action_layer": {
+        "intents": [
+          "professional"
+        ],
+        "teacher": "Legt een belangrijke interpretatie terug aan de leerling en controleert wat klopt, ontbreekt of anders wordt bedoeld.",
+        "learner": "Geeft zijn eigen betekenis of perspectief voordat dat in een besluit wordt opgenomen.",
+        "ai": "Kan directe informatie samenvatten nadat het gesprek heeft plaatsgevonden.",
+        "ai_not": "Gebruik AI niet als vervanging voor direct contact wanneer juist de stem van de leerling nodig is.",
+        "standard": [
+          [
+            "MS-TPJ-04",
+            "clarify_meaning_with_learner"
+          ],
+          [
+            "MS-TPJ-06",
+            "represent_learner_perspective"
+          ],
+          [
+            "MS-TPJ-09",
+            "preserve_learner_voice_in_decision"
+          ]
+        ],
+        "verbs": {
+          "teacher": [
+            "luister",
+            "verhelder",
+            "controleer interpretatie"
+          ],
+          "learner": [
+            "vertel",
+            "corrigeer",
+            "vul aan"
+          ],
+          "ai": [
+            "vat achteraf samen"
+          ]
+        }
+      }
     },
     {
       "slug": "proportionate-follow-up",
@@ -1857,7 +3421,36 @@
       "source": "EAI Standard 0.4-candidate · teacher pedagogical judgement MS-TPJ-10",
       "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/teacher-pedagogical-judgement.yaml",
       "example": "Een kleine onzekerheid in één opdracht leidt eerst tot een korte vervolgvraag, niet meteen tot een zwaar interventietraject. De volgende stap groeit alleen mee als nieuw bewijs dat nodig maakt.",
-      "public_title": "Kies een vervolg dat past bij het signaal"
+      "public_title": "Kies een vervolg dat past bij het signaal",
+      "action_layer": {
+        "intents": [
+          "professional"
+        ],
+        "teacher": "Kiest de minst ingrijpende professionele stap die het huidige probleem voldoende adresseert.",
+        "learner": "Blijft betrokken in de opvolging en kan laten zien wat het effect van de gekozen stap is.",
+        "ai": "Kan alternatieve vervolgstappen voorstellen.",
+        "ai_not": "Laat een AI-risicosignaal niet automatisch leiden tot een zwaardere interventie.",
+        "standard": [
+          [
+            "MS-TPJ-10",
+            "select_proportionate_follow_up"
+          ]
+        ],
+        "verbs": {
+          "teacher": [
+            "weeg",
+            "kies proportioneel",
+            "volg op"
+          ],
+          "learner": [
+            "reageer",
+            "laat effect zien"
+          ],
+          "ai": [
+            "stel opties voor"
+          ]
+        }
+      }
     },
     {
       "slug": "target-action-first",
@@ -1908,7 +3501,39 @@
         ]
       },
       "example": "Een leerling loopt vast bij een tekstverklaring. De docent benoemt eerst dat de leerling uiteindelijk zelf oorzaak en gevolg moet verbinden en kiest daarna pas welke hulp past.",
-      "public_title": "Wat moet de leerling straks zelf doen?"
+      "public_title": "Wat moet de leerling straks zelf doen?",
+      "action_layer": {
+        "intents": [
+          "support",
+          "redesign"
+        ],
+        "teacher": "Benoemt vóór de hulp welke handeling na die hulp nog of weer bij de leerling moet liggen.",
+        "learner": "Voert die doelhandeling na ondersteuning zelf uit.",
+        "ai": "Kan vragen, hints, modellen of feedback geven rond de doelhandeling.",
+        "ai_not": "Kies geen hulp voordat duidelijk is welke leerlinghandeling je wilt bewaren.",
+        "standard": [
+          [
+            "MS-TSF-01",
+            "identify_target_learner_action"
+          ]
+        ],
+        "verbs": {
+          "teacher": [
+            "identificeer doelhandeling",
+            "kies hulp",
+            "plan terugkeer"
+          ],
+          "learner": [
+            "voer doelhandeling uit"
+          ],
+          "ai": [
+            "vraag",
+            "hint",
+            "modelleer",
+            "geef feedback"
+          ]
+        }
+      }
     },
     {
       "slug": "least-intrusive-support",
@@ -1959,7 +3584,37 @@
         ]
       },
       "example": "Bij een vastloper geeft de docent eerst één gerichte vraag. Pas wanneer dat onvoldoende is volgt een voorbeeld of model, zodat zoveel mogelijk van de handeling bij de leerling blijft.",
-      "public_title": "Geef de kleinste hulp die nodig is"
+      "public_title": "Geef de kleinste hulp die nodig is",
+      "action_layer": {
+        "intents": [
+          "support"
+        ],
+        "teacher": "Lokaliseert het vastlooppunt en kiest de kleinste hulp die voortgang weer mogelijk maakt.",
+        "learner": "Pakt de inhoudelijke handeling na de hulp weer zelf op.",
+        "ai": "Kan een vraag stellen of een gedeeltelijke hint geven.",
+        "ai_not": "Escaleren naar uitleg of oplossing is niet nodig als een kleinere aanwijzing voldoende is.",
+        "standard": [
+          [
+            "MS-TSF-03",
+            "select_least_intrusive_support"
+          ]
+        ],
+        "verbs": {
+          "teacher": [
+            "lokaliseer",
+            "kies kleinste hulp",
+            "observeer"
+          ],
+          "learner": [
+            "hervat",
+            "voer zelf uit"
+          ],
+          "ai": [
+            "stel vraag",
+            "geef hint"
+          ]
+        }
+      }
     },
     {
       "slug": "eliciting-question",
@@ -1991,7 +3646,37 @@
       "source": "EAI Standard 0.4-candidate · teacher scaffolding MS-TSF-04",
       "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/teacher-scaffolding-and-feedback.yaml",
       "example": "In plaats van te vragen 'Is het misschien omdat de temperatuur stijgt?' vraagt de docent: 'Welke verandering in de gegevens kan dit verschil verklaren?'",
-      "public_title": "Stel een vraag die de leerling zelf laat denken"
+      "public_title": "Stel een vraag die de leerling zelf laat denken",
+      "action_layer": {
+        "intents": [
+          "support"
+        ],
+        "teacher": "Stelt een vraag die de ontbrekende handeling uitlokt zonder de relatie of oplossingsroute al in de vraag te stoppen.",
+        "learner": "Levert zelf de ontbrekende relatie, keuze of redeneringsstap.",
+        "ai": "Kan een vraag formuleren, mits die de handeling niet al encodeert.",
+        "ai_not": "Maak van een vraag geen verkapte instructie met het antwoord erin.",
+        "standard": [
+          [
+            "MS-TSF-04",
+            "choose_question_that_elicits_action"
+          ]
+        ],
+        "verbs": {
+          "teacher": [
+            "identificeer ontbrekende stap",
+            "vraag uitlokkend",
+            "observeer"
+          ],
+          "learner": [
+            "lever relatie",
+            "kies",
+            "redeneer"
+          ],
+          "ai": [
+            "formuleer vraag"
+          ]
+        }
+      }
     },
     {
       "slug": "feedback-without-rewrite",
@@ -2025,7 +3710,39 @@
       "source": "EAI Standard 0.4-candidate · teacher scaffolding MS-TSF-05",
       "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/teacher-scaffolding-and-feedback.yaml",
       "example": "Een docent markeert dat een alinea onvoldoende bewijs bevat en noemt het criterium, maar schrijft de alinea niet voor. De leerling maakt zelf de revisie.",
-      "public_title": "Geef feedback zonder het over te schrijven"
+      "public_title": "Geef feedback zonder het over te schrijven",
+      "action_layer": {
+        "intents": [
+          "support",
+          "feedback"
+        ],
+        "teacher": "Geeft foutinformatie, een criterium of gerichte aanwijzing en laat de inhoudelijke revisie open.",
+        "learner": "Voert de correctie zelf uit en kan uitleggen welk criterium daarbij hielp.",
+        "ai": "Kan controleren of feedback geven.",
+        "ai_not": "Laat AI niet meteen de verbeterde tekst of oplossing produceren.",
+        "standard": [
+          [
+            "MS-TSF-05",
+            "provide_corrective_information_without_replacing_revision"
+          ]
+        ],
+        "verbs": {
+          "teacher": [
+            "signaleer",
+            "geef criterium",
+            "geef terug"
+          ],
+          "learner": [
+            "herzie",
+            "corrigeer",
+            "licht toe"
+          ],
+          "ai": [
+            "controleer",
+            "geef feedback"
+          ]
+        }
+      }
     },
     {
       "slug": "model-then-reperform",
@@ -2080,7 +3797,38 @@
         ]
       },
       "example": "De docent modelleert één bronanalyse hardop. Daarna gaat het voorbeeld uit beeld en krijgt de leerling een andere bron om dezelfde handeling zelf uit te voeren.",
-      "public_title": "Doe voor, laat daarna zelf opnieuw doen"
+      "public_title": "Doe voor, laat daarna zelf opnieuw doen",
+      "action_layer": {
+        "intents": [
+          "support",
+          "return"
+        ],
+        "teacher": "Doet één keer voor wanneer dat nodig is en plant direct daarna een nieuwe leerlingpoging.",
+        "learner": "Kijkt naar het model, haalt het uit beeld en bouwt de handeling opnieuw op.",
+        "ai": "Kan een voorbeeld of model demonstreren.",
+        "ai_not": "Laat het model niet de uiteindelijke leerlingprestatie worden.",
+        "standard": [
+          [
+            "MS-TSF-06",
+            "model_when_needed"
+          ]
+        ],
+        "verbs": {
+          "teacher": [
+            "modelleer",
+            "haal model weg",
+            "laat opnieuw doen"
+          ],
+          "learner": [
+            "observeer",
+            "reconstrueer",
+            "voer uit"
+          ],
+          "ai": [
+            "modelleer voorbeeld"
+          ]
+        }
+      }
     },
     {
       "slug": "fade-one-layer",
@@ -2130,7 +3878,36 @@
         ]
       },
       "example": "Een leerling gebruikt eerst een stappenkaart en voorbeeld. Wanneer de uitvoering stabieler wordt, verdwijnt eerst het voorbeeld. Pas later gaat ook de stappenkaart weg.",
-      "public_title": "Haal één laag hulp weg"
+      "public_title": "Haal één laag hulp weg",
+      "action_layer": {
+        "intents": [
+          "support",
+          "return"
+        ],
+        "teacher": "Haalt één ondersteuningslaag weg zodra leerlingbewijs laat zien dat dat kan.",
+        "learner": "Voert de handeling met minder steun opnieuw uit.",
+        "ai": "Kan ondersteuning aanpassen, maar de afbouw moet zichtbaar en doelgericht zijn.",
+        "ai_not": "Laat permanente assistentie niet blijven staan alleen omdat zij beschikbaar is.",
+        "standard": [
+          [
+            "MS-TSF-08",
+            "reduce_support_contingently"
+          ]
+        ],
+        "verbs": {
+          "teacher": [
+            "observeer",
+            "verminder steun",
+            "controleer"
+          ],
+          "learner": [
+            "voer met minder steun uit"
+          ],
+          "ai": [
+            "pas ondersteuning aan"
+          ]
+        }
+      }
     },
     {
       "slug": "hand-back-the-action",
@@ -2184,7 +3961,43 @@
         ]
       },
       "example": "AI ordent tijdens instructie samen met de klas argumenten. In de oefenfase krijgt de leerling een nieuwe set argumenten en moet hij de ordening zelf uitvoeren.",
-      "public_title": "Geef de handeling terug"
+      "public_title": "Geef de handeling terug",
+      "action_layer": {
+        "intents": [
+          "return",
+          "independent"
+        ],
+        "teacher": "Plant waar een tijdelijk overgenomen handeling weer door de leerling wordt uitgevoerd.",
+        "learner": "Voert die handeling op een vers moment zelf uit.",
+        "ai": "Kan tijdelijk modelleren, hinten of een deel uitvoeren.",
+        "ai_not": "Laat ondersteuning eindigen zonder een moment waarop de leerling de relevante handeling terugkrijgt.",
+        "standard": [
+          [
+            "MS-TSF-10",
+            "hand_back_target_action"
+          ],
+          [
+            "MS-TSF-11",
+            "verify_reperformance_with_less_support"
+          ]
+        ],
+        "verbs": {
+          "teacher": [
+            "markeer overname",
+            "geef terug",
+            "controleer"
+          ],
+          "learner": [
+            "neem over",
+            "voer opnieuw uit"
+          ],
+          "ai": [
+            "modelleer",
+            "hint",
+            "voer tijdelijk deel uit"
+          ]
+        }
+      }
     },
     {
       "slug": "practice-or-reteach",
@@ -2233,7 +4046,40 @@
         "caption": "Kies op basis van het breekpunt, niet op basis van de netheid van het antwoord."
       },
       "example": "Een leerling kent de regel wel maar past hem wisselend toe. De docent kiest extra oefening. Bij een leerling die de regel zelf niet kan uitleggen volgt eerst herinstructie.",
-      "public_title": "Meer oefenen of opnieuw uitleggen?"
+      "public_title": "Meer oefenen of opnieuw uitleggen?",
+      "action_layer": {
+        "intents": [
+          "support",
+          "diagnose"
+        ],
+        "teacher": "Bepaalt vanuit het breekpunt of vooral begrip ontbreekt of de uitvoering nog instabiel is.",
+        "learner": "Krijgt óf nieuwe oefenkansen óf opnieuw uitleg en laat daarna opnieuw zien wat lukt.",
+        "ai": "Kan oefenitems, een model of gerichte uitleg leveren.",
+        "ai_not": "Laat AI niet automatisch 'meer oefenen' adviseren wanneer het onderliggende begrip fout is.",
+        "standard": [
+          [
+            "MS-TSF-12",
+            "decide_between_more_practice_and_reinstruction"
+          ]
+        ],
+        "verbs": {
+          "teacher": [
+            "diagnosticeer",
+            "kies oefenen of uitleg",
+            "controleer"
+          ],
+          "learner": [
+            "oefen",
+            "begrijp",
+            "voer opnieuw uit"
+          ],
+          "ai": [
+            "genereer oefening",
+            "modelleer",
+            "leg uit"
+          ]
+        }
+      }
     }
   ]
 }
