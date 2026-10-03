@@ -24,15 +24,14 @@
         "output"
       ],
       "steps": [
-        "Beschrijf het proces of doel en de belangrijkste fasen.",
-        "Kies de fase die je nu wilt analyseren.",
-        "Benoem de kernhandeling zo concreet mogelijk: actor, handeling, object en criterium.",
-        "Breng in kaart wie welke handeling uitvoert en wanneer AI in beeld komt.",
-        "Bekijk de output: welke menselijke en technische bijdragen zijn nog herkenbaar of herleidbaar?",
-        "Voeg pas daarna de onderwijslaag toe: welk bewijs van leren heb je nodig voor de claim die je wilt doen?"
+        "Beschrijf eerst wat de leerling uiteindelijk moet kennen of kunnen en hoe dat leerproces eruitziet.",
+        "Kies de fase die je nu wilt bekijken.",
+        "Benoem de kernhandeling zo concreet mogelijk: aan welke stap moet de leerling hier zelf inhoudelijke betekenis geven?",
+        "Leg AI ernaast: wat doet het systeem precies op die plek, en wat blijft bij de leerling?",
+        "Kijk daarna wat je werkelijk hebt gezien. Wat zegt dit over wat de leerling zelf kan, en welk extra bewijs heb je nog nodig?"
       ],
       "result": "Een compacte analyse waarin je eerst het onderwijs beschrijft en pas daarna de rol van AI.",
-      "caution": "Gebruik de vijf velden niet als invulritueel. Een verandering in één veld kan de rest van de analyse verschuiven.",
+      "caution": "Gebruik deze vragen niet als invulritueel. Een verandering in de fase of kernhandeling kan de hele afweging veranderen.",
       "source": "EAI · Nieuwe uitgave 2026",
       "example": "Een docent wil een opdracht geschiedenis aanpassen waarin leerlingen met AI een vergelijking tussen twee bronnen schrijven. De kaart maakt eerst zichtbaar wat het leerdoel is, in welke fase de klas zit, welke vergelijking de leerling zelf moet maken en waar AI wel of niet mag helpen."
     },
