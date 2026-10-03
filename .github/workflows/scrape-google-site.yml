@@ -12,6 +12,7 @@ on:
       - site-v3-cohesion
       - site-welcome-landing
       - site-language-alignment
+      - workforms-action-ux
       - workforms-toolbox-phase2
     paths:
       - '.github/workflows/scrape-google-site.yml'
