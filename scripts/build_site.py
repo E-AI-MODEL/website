@@ -329,12 +329,21 @@ def render_workform_quickstart(item: dict) -> str:
     learner = action.get("learner", "")
     ai = action.get("ai", "")
     ai_not = action.get("ai_not", "")
+    verbs = action.get("verbs", {})
+    verb_rows = []
+    for label, key in [("Docent", "teacher"), ("Leerling", "learner"), ("AI", "ai")]:
+        values = verbs.get(key, [])
+        if values:
+            chain = '<span class="action-arrow">→</span>'.join(f'<b>{esc(value)}</b>' for value in values)
+            verb_rows.append(f'<div><span>{label}</span><p>{chain}</p></div>')
+    verbs_html = f'<div class="workform-verb-chain">{"".join(verb_rows)}</div>' if verb_rows else ""
     return (
         '<section class="section workform-quickstart"><div class="wrap">'
         '<div class="workform-use-grid">'
         f'<article><div class="kicker">Gebruik dit als</div><p>{esc(item.get("lede", ""))}</p></article>'
         f'<article><div class="kicker">De vraag eronder</div><p>{esc(item.get("question", ""))}</p></article>'
         '</div>'
+        f'{verbs_html}'
         '<div class="workform-role-grid">'
         f'<article><span>Jij als docent</span><p>{esc(teacher)}</p></article>'
         f'<article><span>De leerling</span><p>{esc(learner)}</p></article>'
@@ -646,6 +655,13 @@ iframe{max-width:100%}
   .footer-grid{display:block}
 }
 /* Action-led toolbox and workform UX */
+.workform-verb-chain{margin:6px 0 22px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.workform-verb-chain>div{display:grid;grid-template-columns:90px 1fr;gap:14px;align-items:center;padding:11px 0}
+.workform-verb-chain>div+div{border-top:1px solid var(--line)}
+.workform-verb-chain>div>span{font:800 .68rem/1.2 Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;text-transform:uppercase;letter-spacing:.07em;color:#718096}
+.workform-verb-chain p{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0;font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.workform-verb-chain b{font-size:.9rem;font-weight:750}
+.action-arrow{color:#9aa5b2;font-weight:700}
 .toolbox-intent-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0 0 16px}
 .toolbox-intent{appearance:none;text-align:left;border:1px solid var(--line);background:#fff;padding:16px;cursor:pointer;color:var(--ink);min-height:128px}
 .toolbox-intent:hover{border-color:#a9b2bd}
@@ -708,6 +724,9 @@ iframe{max-width:100%}
   .workform-use-grid p{font-size:1rem}
   .evidence-pair{grid-template-columns:1fr}
   .standard-details li{grid-template-columns:1fr}
+  .workform-verb-chain>div{grid-template-columns:1fr;gap:5px}
+  .workform-verb-chain p{gap:6px}
+
 }
 
 '''
