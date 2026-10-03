@@ -333,7 +333,7 @@ def render_workforms_index(items: list[dict]) -> str:
     try {{ return new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')); }}
     catch (_) {{ return new Set(); }}
   }};
-  const writeSaved = saved => { try { localStorage.setItem(STORAGE_KEY, JSON.stringify([...saved])); } catch (_) {} };
+  const writeSaved = saved => {{ try {{ localStorage.setItem(STORAGE_KEY, JSON.stringify([...saved])); }} catch (_) {{}} }};
   const routeFor = button => ({{
     key: button.dataset.routeKey,
     intents: (button.dataset.routeIntents || '').split(' ').filter(Boolean),
