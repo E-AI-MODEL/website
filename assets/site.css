@@ -177,7 +177,7 @@ iframe{max-width:100%}
   .publication-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .toolbox-example-intro{grid-template-columns:1fr}
 }
-@media(max-width:980px){.welcome-grid{grid-template-columns:1fr;gap:34px;padding-top:58px}.welcome-routes{grid-template-columns:repeat(3,minmax(0,1fr))}.welcome-routes a{display:block}.welcome-routes b{display:block;margin-top:14px;white-space:normal}}
+@media(max-width:980px){.welcome-grid{grid-template-columns:1fr;gap:34px;padding-top:58px}.welcome-routes{grid-template-columns:repeat(3,minmax(0,1fr))}.welcome-routes a{display:grid;grid-template-columns:1fr;grid-template-areas:"label" "title" "copy" "arrow";gap:6px}.welcome-routes b{display:block;margin-top:10px;white-space:normal}}
 @media(max-width:900px){
   html{scroll-padding-top:72px}
   .nav{min-height:58px;padding:10px 16px;align-items:center!important;display:flex!important;position:relative}
