@@ -998,6 +998,124 @@ iframe{max-width:100%}
 
 }
 
+
+/* Interface v4: landing, guided toolbox and reusable workform cards */
+.skip-link{position:fixed;left:12px;top:10px;z-index:100000;transform:translateY(-160%);background:#fff;border:2px solid var(--ink);padding:9px 12px;font:800 .8rem/1 Inter,ui-sans-serif,sans-serif;text-decoration:none}
+.skip-link:focus{transform:none}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+
+.welcome-v4{background:#fff;border-bottom:1px solid var(--line)}
+.welcome-v4-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(390px,.92fr);gap:64px;align-items:center;padding-top:72px;padding-bottom:44px}
+.welcome-v4-copy h1{margin:.14em 0 .27em;max-width:11ch}
+.welcome-v4-copy .lede{max-width:54ch;margin-bottom:16px}
+.welcome-v4-copy .button-row{margin-top:26px}
+.hero-eai-visual{border:1px solid var(--line);background:linear-gradient(145deg,#fff 0%,#f7f4ed 100%);padding:24px 24px 18px;box-shadow:0 18px 50px rgba(32,41,54,.07)}
+.hero-eai-visual-head{display:flex;justify-content:space-between;gap:20px;align-items:baseline;border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:3px;font-family:Inter,ui-sans-serif,sans-serif}
+.hero-eai-visual-head span{font-size:.68rem;text-transform:uppercase;letter-spacing:.09em;color:#718096;font-weight:800}
+.hero-eai-visual-head strong{font-size:1rem}
+.hero-eai-step,.hero-eai-check{display:grid;grid-template-columns:42px 1fr;gap:12px;padding:14px 0;border-bottom:1px solid var(--line);align-items:start}
+.hero-eai-step>span,.hero-eai-check>span{font:800 .7rem/1.3 Inter,ui-sans-serif,sans-serif;color:#8894a3;padding-top:3px}
+.hero-eai-step b,.hero-eai-check b{display:block;font:800 .96rem/1.25 Inter,ui-sans-serif,sans-serif}
+.hero-eai-step small,.hero-eai-check small{display:block;margin-top:4px;color:#667283;font:400 .8rem/1.4 Inter,ui-sans-serif,sans-serif}
+.hero-eai-step.is-core{margin:5px -12px;background:#fff3ed;border-left:4px solid var(--accent);padding-left:8px;padding-right:12px}
+.hero-eai-step.is-core>span{color:var(--accent)}
+.hero-eai-check{border-bottom:0;padding-bottom:5px}
+.hero-eai-check>span{font-size:1rem;color:var(--accent)}
+.welcome-shortcuts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line)}
+.welcome-shortcuts a{display:grid;grid-template-columns:1fr auto;gap:5px 14px;padding:20px 18px;text-decoration:none;border-right:1px solid var(--line);font-family:Inter,ui-sans-serif,sans-serif}
+.welcome-shortcuts a:first-child{padding-left:0}.welcome-shortcuts a:last-child{border-right:0;padding-right:0}
+.welcome-shortcuts span{grid-column:1/-1;font-size:.66rem;text-transform:uppercase;letter-spacing:.08em;color:#728094;font-weight:800}
+.welcome-shortcuts strong{font-size:.94rem}.welcome-shortcuts b{font-size:.78rem;align-self:center}
+.welcome-shortcuts a:hover strong{text-decoration:underline;text-underline-offset:4px}
+
+.depth-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.depth-card{display:flex;flex-direction:column;min-height:260px;border:1px solid var(--line);padding:26px;text-decoration:none;background:#fff}
+.depth-card--wide{grid-column:1/-1;min-height:220px}
+.depth-card span{font:800 .68rem/1.2 Inter,ui-sans-serif,sans-serif;text-transform:uppercase;letter-spacing:.08em;color:#718096}
+.depth-card h2{font-size:clamp(1.7rem,3vw,2.5rem);margin:14px 0 12px}
+.depth-card p{color:var(--muted);max-width:60ch}.depth-card b{margin-top:auto;font-family:Inter,ui-sans-serif,sans-serif}
+.depth-card:hover{border-color:#9ba6b3;transform:translateY(-1px)}
+
+.toolbox-hero{padding-bottom:36px}
+.toolbox-situation{display:grid;grid-template-columns:minmax(0,1fr) minmax(320px,.8fr);gap:36px;align-items:end;padding:0 0 38px;border-bottom:1px solid var(--line);margin-bottom:42px}
+.toolbox-situation h2{font-size:clamp(2rem,3.2vw,3rem);margin:8px 0 12px}.toolbox-situation p{max-width:60ch;color:var(--muted);margin:0}
+.toolbox-situation-path{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-family:Inter,ui-sans-serif,sans-serif}
+.toolbox-situation-path span{border-top:3px solid var(--accent);background:var(--soft);padding:10px 12px;font-size:.78rem;font-weight:800}.toolbox-situation-path b{color:#9aa5b2}
+.toolbox-route-head{display:grid;grid-template-columns:1fr .8fr;gap:28px;align-items:end;margin-bottom:18px}.toolbox-route-head h2{font-size:clamp(2rem,3vw,2.8rem);margin:8px 0 0}.toolbox-route-head p{margin:0;color:var(--muted)}
+.toolbox-route-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:48px}
+.toolbox-route{appearance:none;border:1px solid var(--line);background:#fff;text-align:left;padding:20px;min-height:166px;cursor:pointer;color:var(--ink);display:grid;grid-template-columns:36px 1fr;grid-template-areas:"num title" "num copy";gap:8px 10px;align-content:start}
+.toolbox-route>span{grid-area:num;font:800 .7rem/1.4 Inter,ui-sans-serif,sans-serif;color:#95a0ad}
+.toolbox-route>strong{grid-area:title;font:800 1.05rem/1.25 Inter,ui-sans-serif,sans-serif}
+.toolbox-route>small{grid-area:copy;color:var(--muted);font:400 .86rem/1.45 Inter,ui-sans-serif,sans-serif}
+.toolbox-route:hover,.toolbox-route[aria-pressed="true"]{border-color:var(--ink);background:var(--soft)}
+.toolbox-route[aria-pressed="true"]>span{color:var(--accent)}
+
+.toolbox-results{scroll-margin-top:90px;border-top:1px solid var(--line);padding-top:34px}
+.toolbox-results-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(310px,.7fr);gap:32px;align-items:end;margin-bottom:20px}
+.toolbox-results-head h2{font-size:clamp(1.9rem,3vw,2.7rem);margin:8px 0 8px}.toolbox-results-head p{color:var(--muted);margin:0;max-width:60ch}
+.toolbox-results-tools{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:end}
+.toolbox-search{display:grid;gap:5px;font:800 .68rem/1.2 Inter,ui-sans-serif,sans-serif;text-transform:uppercase;letter-spacing:.06em;color:#687487}
+.toolbox-search input{width:100%;border:1px solid var(--line);background:#fff;padding:11px 12px;font:400 .9rem/1.2 Inter,ui-sans-serif,sans-serif;color:var(--ink)}
+#toolbox-show-saved{border:1px solid var(--line);background:#fff;padding:11px 12px;white-space:nowrap;font:750 .82rem/1 Inter,ui-sans-serif,sans-serif;cursor:pointer}
+#toolbox-show-saved[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.toolbox-results-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.toolbox-result-card{border:1px solid var(--line);background:#fff;padding:20px;display:flex;flex-direction:column;min-height:310px}
+.toolbox-result-top{display:flex;justify-content:space-between;gap:12px;align-items:center}
+.toolbox-result-kicker{font:800 .66rem/1.2 Inter,ui-sans-serif,sans-serif;text-transform:uppercase;letter-spacing:.08em;color:#728094}
+.save-workform{appearance:none;border:0;background:transparent;text-decoration:underline;text-underline-offset:4px;font:750 .75rem/1 Inter,ui-sans-serif,sans-serif;cursor:pointer;color:#596576}
+.save-workform[aria-pressed="true"]{color:var(--accent);text-decoration:none}
+.toolbox-result-card h3{font-size:1.45rem;margin:14px 0 9px}.toolbox-result-summary{margin:0 0 16px;color:var(--muted)}
+.toolbox-result-actions{margin-top:auto;border-top:1px solid var(--line);padding-top:12px}
+.toolbox-result-actions>div{display:grid;grid-template-columns:66px 1fr;gap:8px;padding:5px 0;font-family:Inter,ui-sans-serif,sans-serif}
+.toolbox-result-actions span{font-size:.65rem;text-transform:uppercase;letter-spacing:.06em;color:#7b8796;font-weight:800}
+.toolbox-result-actions p{display:flex;gap:5px;flex-wrap:wrap;margin:0;font-size:.78rem}.toolbox-result-actions b{font-weight:750}
+.toolbox-result-link{margin-top:16px;font:800 .83rem/1 Inter,ui-sans-serif,sans-serif;text-underline-offset:4px}
+.toolbox-results-footer{display:flex;gap:14px;align-items:center;margin:20px 0 44px}.text-button{appearance:none;border:0;background:transparent;text-decoration:underline;text-underline-offset:4px;cursor:pointer}
+.toolbox-library{border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-top:20px;padding:0}
+.toolbox-library>summary{cursor:pointer;padding:18px 0;font:800 1rem/1.3 Inter,ui-sans-serif,sans-serif}.toolbox-library[open]>summary{border-bottom:1px solid var(--line)}
+.toolbox-library-tools{display:grid;grid-template-columns:1fr 1fr;gap:24px;padding:18px 0}.toolbox-library-tools p{color:var(--muted);margin:0}
+.toolbox-library-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;padding:0 0 24px}.toolbox-library-grid .toolbox-result-card{min-height:290px}
+.toolbox-card-pool{display:none!important}
+
+.workform-lesson-card{border:1px solid var(--ink);background:#fff;padding:24px}
+.workform-toolbar{display:flex;justify-content:space-between;gap:20px;align-items:center;border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:22px;font-family:Inter,ui-sans-serif,sans-serif}
+.workform-toolbar>div:first-child{display:grid;gap:3px}.workform-toolbar>div:first-child>strong{font-size:1.05rem}
+.workform-toolbar-actions{display:flex;gap:7px;flex-wrap:wrap}.workform-toolbar-actions button{appearance:none;border:1px solid var(--line);background:#fff;padding:8px 10px;font:750 .75rem/1 Inter,ui-sans-serif,sans-serif;cursor:pointer}
+.workform-toolbar-actions button:hover{border-color:var(--ink)}
+.workform-lesson-card .workform-role-grid{margin-top:18px}
+.related-workform-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.related-workform-card{border:1px solid var(--line);background:#fff;padding:20px;text-decoration:none;display:flex;flex-direction:column;min-height:280px}
+.related-workform-card>span{font:800 .66rem/1.2 Inter,ui-sans-serif,sans-serif;text-transform:uppercase;letter-spacing:.07em;color:#728094}
+.related-workform-card h3{font-size:1.35rem;margin:12px 0 9px}.related-workform-card p{color:var(--muted);margin:0 0 14px}
+.related-workform-card div{font:400 .78rem/1.4 Inter,ui-sans-serif,sans-serif;padding:4px 0;border-top:1px solid var(--line)}.related-workform-card div b{display:inline-block;min-width:58px}
+.related-workform-card>strong{margin-top:auto;padding-top:14px;font-family:Inter,ui-sans-serif,sans-serif}.related-workform-card:hover{border-color:#9ba6b3}
+.related-all{margin-top:22px}
+
+@media(max-width:980px){
+  .welcome-v4-grid{grid-template-columns:1fr;gap:34px}
+  .hero-eai-visual{max-width:680px}
+  .toolbox-route-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .toolbox-results-head,.toolbox-situation{grid-template-columns:1fr}
+  .toolbox-library-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:760px){
+  .welcome-v4-grid{padding-top:44px;padding-bottom:30px}
+  .welcome-shortcuts{grid-template-columns:1fr}.welcome-shortcuts a,.welcome-shortcuts a:first-child,.welcome-shortcuts a:last-child{padding:15px 0;border-right:0;border-bottom:1px solid var(--line)}.welcome-shortcuts a:last-child{border-bottom:0}
+  .hero-eai-visual{padding:18px 16px}.hero-eai-visual-head{display:grid;gap:4px}.hero-eai-step,.hero-eai-check{grid-template-columns:34px 1fr}
+  .depth-grid{grid-template-columns:1fr}.depth-card--wide{grid-column:auto}
+  .toolbox-route-grid{grid-template-columns:1fr}.toolbox-route{min-height:0}
+  .toolbox-results-grid,.toolbox-library-grid,.related-workform-grid{grid-template-columns:1fr}
+  .toolbox-results-tools,.toolbox-library-tools{grid-template-columns:1fr}
+  .workform-toolbar{align-items:flex-start;display:grid}.workform-toolbar-actions{width:100%}.workform-toolbar-actions button{flex:1}
+}
+@media print{
+  body:has(.workform-lesson-card) *{visibility:hidden!important}
+  body:has(.workform-lesson-card) .workform-lesson-card,
+  body:has(.workform-lesson-card) .workform-lesson-card *{visibility:visible!important}
+  body:has(.workform-lesson-card) .workform-lesson-card{position:absolute;left:0;top:0;width:100%;border:0;padding:0}
+  body:has(.workform-lesson-card) .workform-toolbar-actions{display:none!important}
+}
+
 '''
 
 CHROME_CSS = r'''
@@ -1104,7 +1222,7 @@ def inject_embed(source: Path, canonical_path: str, fallback_title: str, footer_
                 head_parts.append(str(node))
     body_inner = soup.body.decode_contents() if soup.body else src
     body_inner = rewrite_legacy_links(body_inner)
-    chrome = f'<header class="eai-site-nav"><div class="eai-site-nav__inner"><a class="eai-site-nav__brand" href="/" aria-label="EAI home"><img src="/assets/eai-logo.svg" alt="EAI" width="34" height="34"></a><div class="eai-site-nav__links"><a href="/">EAI model</a><a href="/werkvormen/">Werkvormen</a><a href="/onderbouwing/">Onderbouwing</a><a href="/praktijk/">Praktijk</a><a href="/publicaties/">Publicaties</a><a href="/tools/">Tools</a><a href="/over/">Over</a><a href="mailto:{EMAIL}">Contact</a></div></div></header>'
+    chrome = f'<header class="eai-site-nav"><div class="eai-site-nav__inner"><a class="eai-site-nav__brand" href="/" aria-label="EAI home"><img src="/assets/eai-logo.svg" alt="EAI" width="34" height="34"></a><div class="eai-site-nav__links"><a href="/">EAI</a><a href="/werkvormen/">Werkvormen</a><a href="/verdieping/">Verdieping</a><a href="/over/">Over</a><a href="mailto:{EMAIL}">Contact</a></div></div></header>'
     foot = f'<footer class="eai-site-footer"><a href="{footer_back}">← Terug</a> · <a href="mailto:{EMAIL}">Contact</a></footer>'
     canonical = f"{BASE_URL}{canonical_path}"
     return f'<!doctype html><html lang="{esc(lang)}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{esc(title)} · EAI</title><link rel="canonical" href="{esc(canonical)}"><link rel="icon" href="/assets/eai-logo.svg" type="image/svg+xml">{"".join(head_parts)}<link rel="stylesheet" href="/assets/article-chrome.css"></head><body>{chrome}{body_inner}{foot}</body></html>'
@@ -1447,7 +1565,7 @@ def build(scrape: Path, out: Path) -> None:
     not_found = '<main><section class="page-hero"><div class="wrap"><div class="eyebrow">404</div><h1>Deze pagina is er niet meer.</h1><p class="lede">De oude Google-site bevatte ook een paar dode links. Ga terug naar de publicaties of tools.</p><div class="button-row"><a class="button" href="/publicaties/">Publicaties</a><a class="button secondary" href="/tools/">Tools</a></div></div></section></main>'
     write(out, "404.html", doc("Niet gevonden", not_found, "/404.html"))
     write(out, "robots.txt", "User-agent: *\nAllow: /\nSitemap: https://eaimodel.nl/sitemap.xml\n")
-    urls = ["/", "/twee-pijlers/", "/workshop-ai/", "/werkvormen/", "/onderbouwing/", "/praktijk/", "/publicaties/", "/publicaties/de-vraag-die-we-vergeten/", "/tools/", "/over/", "/eaa-model/", "/onderwijsin/"] + [f"/werkvormen/{item['slug']}/" for item in workforms] + [f"/publicaties/{slug}/" for slug, _, _, _ in PUBLICATIONS] + ["/tools/beyond-explainability/"]
+    urls = ["/", "/twee-pijlers/", "/workshop-ai/", "/werkvormen/", "/verdieping/", "/onderbouwing/", "/praktijk/", "/publicaties/", "/publicaties/de-vraag-die-we-vergeten/", "/tools/", "/over/", "/eaa-model/", "/onderwijsin/"] + [f"/werkvormen/{item['slug']}/" for item in workforms] + [f"/publicaties/{slug}/" for slug, _, _, _ in PUBLICATIONS] + ["/tools/beyond-explainability/"]
     items = "".join(f"<url><loc>{BASE_URL}{path}</loc></url>" for path in urls)
     write(out, "sitemap.xml", f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{items}</urlset>')
 
