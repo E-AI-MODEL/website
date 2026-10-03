@@ -258,8 +258,7 @@ def render_toolbox_card(item: dict) -> str:
         f'</article>'
     )
 
-def render_workforms_index(items: list[dict]) -> str:
-    item_by_slug = {item["slug"]: item for item in items}
+def render_workforms_index(items: list[dict], didactic_models: dict) -> str:
     cards = "".join(render_toolbox_card(item) for item in items)
 
     route_buttons = "".join(
@@ -270,20 +269,67 @@ def render_workforms_index(items: list[dict]) -> str:
         for idx, route in enumerate(PRIMARY_WORKFORM_ROUTES, start=1)
     )
 
+    model_buttons = "".join(
+        f'<button type="button" class="didactic-model-button" data-model-choice="{esc(model["id"])}" aria-pressed="false">'
+        f'<span>{esc(model["short_name"])}</span><strong>{esc(model["name"])}</strong>'
+        f'<small>{len(model["phases"])} {"fasen" if "phases" in model["kind"] else "functies"} · EAI Standard adapter {esc(model["adapter_id"])}</small></button>'
+        for model in didactic_models["models"]
+    )
+
+    model_panels = []
+    for model in didactic_models["models"]:
+        phase_buttons = "".join(
+            f'<button type="button" class="didactic-phase" data-phase-choice '
+            f'data-model-name="{esc(model["short_name"])}" data-phase-name="{esc(phase["label"])}" '
+            f'data-phase-purpose="{esc(phase["purpose"])}" data-phase-question="{esc(phase["eai_question"])}" '
+            f'data-phase-workforms="{esc(" ".join(phase["workforms"]))}" aria-pressed="false">'
+            f'<span>{int(phase["order"]):02d}</span><strong>{esc(phase["label"])}</strong>'
+            f'<small>{esc(phase["purpose"])}</small></button>'
+            for phase in model["phases"]
+        )
+        cross_cutting = "".join(f'<span>{esc(value)}</span>' for value in model.get("cross_cutting", []))
+        model_panels.append(
+            f'<section class="didactic-model-detail" data-model-panel="{esc(model["id"])}" hidden>'
+            f'<div class="didactic-model-detail-head"><div><div class="kicker">Bronmodel</div>'
+            f'<h3>{esc(model["name"])}</h3><p>{esc(model["intro"])}</p></div>'
+            f'<div class="didactic-model-source"><span>{esc(model["source_reference"])}</span>'
+            f'<a href="{esc(model["source_url"])}" target="_blank" rel="noopener">Bronmodel ↗</a>'
+            f'<a href="{esc(model["standard_url"])}" target="_blank" rel="noopener">EAI-adapter ↗</a></div></div>'
+            f'<div class="didactic-phase-grid">{phase_buttons}</div>'
+            f'<div class="didactic-cross-cutting"><strong>Loopt door meerdere fasen heen</strong>{cross_cutting}</div>'
+            f'</section>'
+        )
+    model_panels_html = "".join(model_panels)
+    boundary_note = esc(didactic_models["notes"]["direct_instruction_boundary"])
+
     return f'''<main>
-<section class="page-hero toolbox-hero"><div class="wrap"><div class="eyebrow">Werkvormen</div><h1>Waar wil je in je les mee verder?</h1><p class="lede">Kies een situatie die je herkent. Je krijgt eerst een paar passende werkvormen. De volledige bibliotheek blijft beschikbaar als je verder wilt zoeken.</p></div></section>
+<section class="page-hero toolbox-hero"><div class="wrap"><div class="eyebrow">Werkvormen</div><h1>Waar wil je in je les mee verder?</h1><p class="lede">Begin bij een concrete onderwijsvraag, of vertrek vanuit het didactische model waarmee je al werkt. EAI voegt geen nieuw lesmodel toe.</p></div></section>
 
 <section class="section toolbox-start"><div class="wrap">
 <div class="toolbox-situation">
-<div><div class="kicker">Pak één echte les of opdracht</div><h2>Wat moet de leerling hier zelf doen?</h2><p>Wat moet er geleerd worden? Waar zit de leerling nu? Welke stap moet hij zelf zetten? En wat doet AI precies op die plek?</p></div>
-<div class="toolbox-situation-path" aria-label="EAI-kijkroute"><span>leren</span><b>→</b><span>fase</span><b>→</b><span>kernhandeling</span><b>→</b><span>AI</span></div>
+<div><div class="kicker">Dezelfde EAI-vraag, twee ingangen</div><h2>Wat moet de leerling hier zelf doen?</h2><p>Je kunt beginnen bij een probleem dat je in de les ziet. Of bij de fase van een bestaand didactisch model. In beide gevallen blijft de vraag hetzelfde: welke handeling draagt hier het leren?</p></div>
+<div class="toolbox-situation-path" aria-label="EAI-kijkroute"><span>onderwijsmodel</span><b>→</b><span>fase</span><b>→</b><span>kernhandeling</span><b>→</b><span>AI</span><b>→</b><span>bewijs</span></div>
 </div>
 
+<div class="toolbox-mode-tabs" role="tablist" aria-label="Kies hoe je wilt beginnen">
+<button type="button" class="toolbox-mode-tab" data-mode-tab="question" aria-pressed="true">Ik begin bij een onderwijsvraag</button>
+<button type="button" class="toolbox-mode-tab" data-mode-tab="model" aria-pressed="false">Ik werk vanuit een didactisch model</button>
+</div>
+
+<section class="toolbox-mode-panel" data-mode-panel="question">
 <div class="toolbox-route-head"><div><div class="kicker">Kies wat je nodig hebt</div><h2>Welke situatie herken je?</h2></div><p>Je hoeft geen EAI-term te kennen. Klik op wat je als docent probeert te bereiken.</p></div>
 <div class="toolbox-route-grid" aria-label="Kies een onderwijssituatie">{route_buttons}</div>
+</section>
+
+<section class="toolbox-mode-panel didactic-model-mode" data-mode-panel="model" id="didactisch-model" hidden>
+<div class="toolbox-route-head"><div><div class="kicker">Bestaand model, eigen fasen</div><h2>Met welk model werk je?</h2></div><p>EAI verandert de namen, volgorde of bedoeling van het bronmodel niet. We laten alleen zien welke EAI-vragen en werkvormen binnen een fase relevant kunnen zijn.</p></div>
+<div class="didactic-model-grid">{model_buttons}</div>
+<div class="didactic-model-panels">{model_panels_html}</div>
+<p class="didactic-model-boundary">{boundary_note}</p>
+</section>
 
 <section class="toolbox-results" id="resultaten" aria-live="polite">
-<div class="toolbox-results-head"><div><div class="kicker">Passende werkvormen</div><h2 id="toolbox-result-title">Kies hierboven een situatie</h2><p id="toolbox-result-copy">Dan verschijnen hier eerst vier werkvormen die daar goed bij aansluiten.</p></div>
+<div class="toolbox-results-head"><div><div class="kicker">Passende werkvormen</div><h2 id="toolbox-result-title">Kies hierboven een situatie of lesfase</h2><p id="toolbox-result-copy">Dan verschijnen hier eerst de werkvormen die daar inhoudelijk het best bij aansluiten.</p></div>
 <div class="toolbox-results-tools">
 <label class="toolbox-search"><span>Zoek</span><input id="toolbox-search" type="search" placeholder="Bijv. feedback, bron, vastlopen…" autocomplete="off"></label>
 <button type="button" id="toolbox-show-saved">Bewaard <span id="saved-count">0</span></button>
@@ -297,7 +343,7 @@ def render_workforms_index(items: list[dict]) -> str:
 </section>
 
 <details class="toolbox-library" id="alle-werkvormen">
-<summary>Alle 57 werkvormen bekijken</summary>
+<summary>Alle {len(items)} werkvormen bekijken</summary>
 <div class="toolbox-library-tools">
 <p>Voor wie al weet wat hij zoekt. Gebruik zoeken of de extra filters.</p>
 <div class="toolbox-filters" aria-label="Filter alle werkvormen">
@@ -309,13 +355,18 @@ def render_workforms_index(items: list[dict]) -> str:
 
 <div class="toolbox-card-pool" id="toolbox-card-pool" hidden>{cards}</div>
 
-<aside class="toolbox-standard-note"><strong>Waarom staan docent, leerling en AI apart?</strong><p>Omdat precies daar zichtbaar wordt wie de relevante handeling uitvoert. Op de detailpagina staat de concrete uitvoering, de onderbouwing en pas daarna de technische EAI Standard-laag. <a href="/onderbouwing/">Bekijk de onderbouwing →</a></p></aside>
+<aside class="toolbox-standard-note"><strong>Wat gebeurt hier precies?</strong><p>Een didactisch model organiseert het grotere onderwijsproces. EAI legt daar geen nieuwe route overheen. Binnen een fase kijken we alleen naar de kernhandeling, de rol van AI en welk bewijs daarna nog betekenis heeft. <a href="https://github.com/E-AI-MODEL/EAI-standard/tree/main/adapters" target="_blank" rel="noopener">Bekijk de bronbehoudende adapters ↗</a></p></aside>
 </div></section>
 
 <script>
 (() => {{
   const sourceCards = [...document.querySelectorAll('#toolbox-card-pool [data-workform-card]')];
   const routeButtons = [...document.querySelectorAll('[data-route-key]')];
+  const modeTabs = [...document.querySelectorAll('[data-mode-tab]')];
+  const modePanels = [...document.querySelectorAll('[data-mode-panel]')];
+  const modelButtons = [...document.querySelectorAll('[data-model-choice]')];
+  const modelPanels = [...document.querySelectorAll('[data-model-panel]')];
+  const phaseButtons = [...document.querySelectorAll('[data-phase-choice]')];
   const resultGrid = document.getElementById('toolbox-results-grid');
   const libraryGrid = document.getElementById('toolbox-library-grid');
   const search = document.getElementById('toolbox-search');
@@ -337,13 +388,11 @@ def render_workforms_index(items: list[dict]) -> str:
     catch (_) {{ return new Set(); }}
   }};
   const writeSaved = saved => {{ try {{ localStorage.setItem(STORAGE_KEY, JSON.stringify([...saved])); }} catch (_) {{}} }};
-  const routeFor = button => ({{
-    key: button.dataset.routeKey,
-    intents: (button.dataset.routeIntents || '').split(' ').filter(Boolean),
-    featured: (button.dataset.routeFeatured || '').split(' ').filter(Boolean),
-    title: button.querySelector('strong').textContent,
-    copy: button.querySelector('small').textContent
-  }});
+
+  const resetSelections = () => {{
+    routeButtons.forEach(item => item.setAttribute('aria-pressed', 'false'));
+    phaseButtons.forEach(item => item.setAttribute('aria-pressed', 'false'));
+  }};
 
   const cloneCard = card => {{
     const clone = card.cloneNode(true);
@@ -364,6 +413,7 @@ def render_workforms_index(items: list[dict]) -> str:
 
   const routeMatches = card => {{
     if (!activeRoute) return true;
+    if (activeRoute.exact) return activeRoute.featured.includes(card.dataset.slug);
     const values = (card.dataset.intents || '').split(' ');
     return activeRoute.intents.some(intent => values.includes(intent));
   }};
@@ -394,12 +444,12 @@ def render_workforms_index(items: list[dict]) -> str:
     matches = sortForRoute(matches);
 
     resultGrid.innerHTML = '';
-    const visible = expanded || search.value.trim() || savedOnly ? matches : matches.slice(0, 4);
+    const visible = expanded || search.value.trim() || savedOnly || activeRoute?.exact ? matches : matches.slice(0, 4);
     visible.forEach(card => resultGrid.appendChild(cloneCard(card)));
 
     if (!activeRoute && !search.value.trim() && !savedOnly) {{
-      resultTitle.textContent = 'Kies hierboven een situatie';
-      resultCopy.textContent = 'Dan verschijnen hier eerst vier werkvormen die daar goed bij aansluiten.';
+      resultTitle.textContent = 'Kies hierboven een situatie of lesfase';
+      resultCopy.textContent = 'Dan verschijnen hier eerst de werkvormen die daar inhoudelijk het best bij aansluiten.';
       resultGrid.innerHTML = '';
     }} else if (savedOnly) {{
       resultTitle.textContent = 'Jouw bewaarde werkvormen';
@@ -412,7 +462,7 @@ def render_workforms_index(items: list[dict]) -> str:
       resultCopy.textContent = matches.length + ' werkvormen gevonden.';
     }}
 
-    showMore.hidden = !activeRoute || expanded || matches.length <= 4 || !!search.value.trim() || savedOnly;
+    showMore.hidden = !activeRoute || activeRoute.exact || expanded || matches.length <= 4 || !!search.value.trim() || savedOnly;
     showMore.textContent = 'Toon alle ' + matches.length + ' passende werkvormen';
     clearRoute.hidden = !activeRoute && !search.value.trim() && !savedOnly;
     empty.hidden = matches.length !== 0 || (!activeRoute && !search.value.trim() && !savedOnly);
@@ -422,11 +472,56 @@ def render_workforms_index(items: list[dict]) -> str:
     updateSavedCount();
   }};
 
-  routeButtons.forEach(button => button.addEventListener('click', () => {{
-    activeRoute = routeFor(button);
+  modeTabs.forEach(tab => tab.addEventListener('click', () => {{
+    const mode = tab.dataset.modeTab;
+    modeTabs.forEach(item => item.setAttribute('aria-pressed', item === tab ? 'true' : 'false'));
+    modePanels.forEach(panel => panel.hidden = panel.dataset.modePanel !== mode);
+    activeRoute = null;
     expanded = false;
     savedOnly = false;
-    routeButtons.forEach(item => item.setAttribute('aria-pressed', item === button ? 'true' : 'false'));
+    resetSelections();
+    render();
+  }}));
+
+  routeButtons.forEach(button => button.addEventListener('click', () => {{
+    activeRoute = {{
+      key: button.dataset.routeKey,
+      intents: (button.dataset.routeIntents || '').split(' ').filter(Boolean),
+      featured: (button.dataset.routeFeatured || '').split(' ').filter(Boolean),
+      exact: false,
+      title: button.querySelector('strong').textContent,
+      copy: button.querySelector('small').textContent
+    }};
+    expanded = false;
+    savedOnly = false;
+    resetSelections();
+    button.setAttribute('aria-pressed', 'true');
+    render();
+    document.getElementById('resultaten').scrollIntoView({{behavior:'smooth', block:'start'}});
+  }}));
+
+  modelButtons.forEach(button => button.addEventListener('click', () => {{
+    const id = button.dataset.modelChoice;
+    modelButtons.forEach(item => item.setAttribute('aria-pressed', item === button ? 'true' : 'false'));
+    modelPanels.forEach(panel => panel.hidden = panel.dataset.modelPanel !== id);
+    phaseButtons.forEach(item => item.setAttribute('aria-pressed', 'false'));
+    activeRoute = null;
+    render();
+  }}));
+
+  phaseButtons.forEach(button => button.addEventListener('click', () => {{
+    activeRoute = {{
+      key: 'model-phase',
+      intents: [],
+      featured: (button.dataset.phaseWorkforms || '').split(' ').filter(Boolean),
+      exact: true,
+      title: button.dataset.modelName + ' · ' + button.dataset.phaseName,
+      copy: button.dataset.phaseQuestion
+    }};
+    expanded = true;
+    savedOnly = false;
+    resetSelections();
+    button.setAttribute('aria-pressed', 'true');
     render();
     document.getElementById('resultaten').scrollIntoView({{behavior:'smooth', block:'start'}});
   }}));
@@ -435,7 +530,7 @@ def render_workforms_index(items: list[dict]) -> str:
     activeRoute = null;
     expanded = true;
     savedOnly = false;
-    routeButtons.forEach(item => item.setAttribute('aria-pressed', 'false'));
+    resetSelections();
     render();
   }});
   filters.forEach(filter => filter.addEventListener('change', render));
@@ -443,12 +538,12 @@ def render_workforms_index(items: list[dict]) -> str:
   clearRoute.addEventListener('click', () => {{
     activeRoute = null; expanded = false; savedOnly = false; search.value = '';
     filters.forEach(filter => filter.value = 'all');
-    routeButtons.forEach(item => item.setAttribute('aria-pressed', 'false'));
+    resetSelections();
     render();
   }});
   showSaved.addEventListener('click', () => {{
     savedOnly = !savedOnly; activeRoute = null; expanded = true; search.value = '';
-    routeButtons.forEach(item => item.setAttribute('aria-pressed', 'false'));
+    resetSelections();
     showSaved.setAttribute('aria-pressed', savedOnly ? 'true' : 'false');
     render();
   }});
