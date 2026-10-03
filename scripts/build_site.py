@@ -14,6 +14,8 @@ from bs4 import BeautifulSoup
 BASE_URL = "https://eaimodel.nl"
 EMAIL = "vis@emmauscollege.nl"
 GITHUB = "https://github.com/E-AI-MODEL"
+PORTRAIT_URL = "https://onderwijs-ai.nl/_app/immutable/assets/hans-visser.CagpLyUi.png"
+RESEARCHED_THUMB_URL = "https://files.sgbsg.nl/redeu/uploads/2026/04/08151244/POD-ThumbYT-71.png"
 
 LOGO_SVG = r'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-labelledby="title desc">
 <title id="title">EAI</title><desc id="desc">Donker rond EAI-beeldmerk met blauwe en cyaan bogen.</desc>
@@ -338,15 +340,38 @@ def esc(value: str) -> str:
     return html.escape(value, quote=True)
 
 def nav(active: str = "") -> str:
-    links = [("pijlers", "/twee-pijlers/", "Twee pijlers"), ("workshop", "/workshop-ai/", "Workshop AI"), ("werkvormen", "/werkvormen/", "Werkvormen"), ("praktijk", "/praktijk/", "Praktijk"), ("publicaties", "/publicaties/", "Publicaties"), ("tools", "/tools/", "Tools")]
+    links = [
+        ("model", "/", "EAI model"),
+        ("werkvormen", "/werkvormen/", "Werkvormen"),
+        ("praktijk", "/praktijk/", "Praktijk"),
+        ("publicaties", "/publicaties/", "Publicaties"),
+        ("tools", "/tools/", "Tools"),
+        ("over", "/over/", "Over"),
+    ]
     items = "".join(
         f'<a href="{href}"' + (' aria-current="page"' if key == active else "") + f'>{label}</a>'
         for key, href, label in links
     )
-    return f'<header class="site-header"><nav class="nav"><a class="brand" href="/" aria-label="EAI home"><img src="/assets/eai-logo.svg" alt="EAI"></a><div class="nav-links">{items}<a class="nav-cta" href="mailto:{EMAIL}">Contact</a></div></nav></header>'
+    mobile_items = "".join(
+        f'<a href="{href}"' + (' aria-current="page"' if key == active else "") + f'>{label}</a>'
+        for key, href, label in links
+    )
+    return (
+        f'<header class="site-header"><nav class="nav">'
+        f'<a class="brand" href="/" aria-label="EAI home"><img src="/assets/eai-logo.svg" alt="EAI"></a>'
+        f'<div class="nav-links">{items}<a class="nav-cta" href="mailto:{EMAIL}">Contact</a></div>'
+        f'<details class="mobile-nav"><summary>Menu</summary><div class="mobile-nav-panel">{mobile_items}<a href="mailto:{EMAIL}">Contact</a></div></details>'
+        f'</nav></header>'
+    )
 
 def footer() -> str:
-    return f'<footer class="site-footer"><div class="wrap footer-grid"><p style="display:flex;gap:12px;align-items:center"><img src="/assets/eai-logo.svg" alt="" width="42" height="42"><span><strong>EAI</strong> · Hans Visser<br>AI, leren en professioneel handelen.</span></p><p><a href="mailto:{EMAIL}">{EMAIL}</a> · <a href="{GITHUB}" target="_blank" rel="noopener">GitHub</a></p></div></footer>'
+    return (
+        f'<footer class="site-footer"><div class="wrap footer-grid">'
+        f'<p style="display:flex;gap:12px;align-items:center"><img src="/assets/eai-logo.svg" alt="" width="42" height="42">'
+        f'<span><strong>EAI</strong> · Hans Visser<br>AI, leren en professioneel handelen.</span></p>'
+        f'<p><a href="/over/">Over EAI en Hans</a> · <a href="mailto:{EMAIL}">{EMAIL}</a> · '
+        f'<a href="{GITHUB}" target="_blank" rel="noopener">GitHub</a></p></div></footer>'
+    )
 
 def doc(title: str, body: str, canonical_path: str, active: str = "", description: str = "") -> str:
     desc = description or "EAI — Educational AI, leren en eigenaarschap."
