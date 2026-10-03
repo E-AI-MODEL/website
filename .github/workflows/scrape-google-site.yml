@@ -8,6 +8,7 @@ on:
       - ui-pdf-editorial
       - workforms-toolbox
       - workforms-professional-judgement
+      - workforms-visual-support
       - workforms-toolbox-phase2
     paths:
       - '.github/workflows/scrape-google-site.yml'
