@@ -54,7 +54,7 @@ h1{font-size:clamp(3.05rem,5.8vw,5.25rem);max-width:13ch;letter-spacing:-.042em}
 .pillar-visual{max-width:620px;margin:4px auto 30px}
 .pillar-visual svg{max-height:195px}
 .app-showcase[id],section[id]{scroll-margin-top:84px}
-.article-body{max-width:780px;font-size:1.03rem;line-height:1.7;color:#384555;padding:68px 0 92px}
+.article-body{max-width:780px;font-size:1.03rem;line-height:1.7;color:#384555;padding:68px 0 92px}.article-route{max-width:680px;margin:0 auto 34px;padding:12px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);display:flex;gap:18px;flex-wrap:wrap;font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:.78rem}.article-route a{text-decoration:none;color:#5b6878}.article-route a:hover{text-decoration:underline;text-underline-offset:4px}.article-route+ .article-intro{margin-top:0}.article-visual{max-width:680px;margin:28px auto 34px}.article-visual figcaption{max-width:58ch}
 .article-header{border-bottom:0;padding-bottom:20px;margin-bottom:26px}
 .article-header::before{content:"AI, MENS & TAAL";display:block;padding-bottom:9px;border-bottom:1px solid var(--line);font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:.7rem;font-weight:800;letter-spacing:.12em;color:#7d8998}
 .article-header h1{font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-weight:800;letter-spacing:-.035em;font-size:clamp(2.7rem,5vw,4.7rem);max-width:13ch}
