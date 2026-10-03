@@ -14,6 +14,7 @@ on:
       - site-language-alignment
       - workforms-action-ux
       - workforms-concrete-actions
+      - site-interface-v4
       - workforms-toolbox-phase2
     paths:
       - '.github/workflows/scrape-google-site.yml'
@@ -327,7 +328,7 @@ jobs:
             exit 0
           fi
 
-          rm -rf assets publicaties tools eai-blog eai-tools-modules eaa-model onderwijsin twee-pijlers workshop-ai werkvormen onderbouwing praktijk over
+          rm -rf assets publicaties tools eai-blog eai-tools-modules eaa-model onderwijsin twee-pijlers workshop-ai werkvormen onderbouwing praktijk over verdieping
           cp -R site-build/assets .
           cp -R site-build/publicaties .
           cp -R site-build/tools .
@@ -341,10 +342,11 @@ jobs:
           cp -R site-build/onderbouwing .
           cp -R site-build/praktijk .
           cp -R site-build/over .
+          cp -R site-build/verdieping .
           cp site-build/index.html site-build/404.html site-build/robots.txt site-build/sitemap.xml .
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add index.html 404.html robots.txt sitemap.xml assets publicaties tools eai-blog eai-tools-modules eaa-model onderwijsin twee-pijlers workshop-ai werkvormen onderbouwing praktijk over
+          git add index.html 404.html robots.txt sitemap.xml assets publicaties tools eai-blog eai-tools-modules eaa-model onderwijsin twee-pijlers workshop-ai werkvormen onderbouwing praktijk over verdieping
           if ! git diff --cached --quiet; then
             git commit -m "build: refresh EAI site"
             git push origin HEAD:"$GITHUB_REF_NAME"
