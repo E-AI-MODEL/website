@@ -326,11 +326,9 @@ def render_workform_example(item: dict) -> str:
 
 def render_workform_quickstart(item: dict) -> str:
     action = item.get("action_layer", {})
-    teacher = action.get("teacher", "")
-    learner = action.get("learner", "")
-    ai = action.get("ai", "")
     ai_not = action.get("ai_not", "")
     verbs = action.get("verbs", {})
+    role_steps = action.get("role_steps", {})
     verb_rows = []
     for label, key in [("Docent", "teacher"), ("Leerling", "learner"), ("AI", "ai")]:
         values = verbs.get(key, [])
@@ -338,6 +336,17 @@ def render_workform_quickstart(item: dict) -> str:
             chain = '<span class="action-arrow">→</span>'.join(f'<b>{esc(value)}</b>' for value in values)
             verb_rows.append(f'<div><span>{label}</span><p>{chain}</p></div>')
     verbs_html = f'<div class="workform-verb-chain">{"".join(verb_rows)}</div>' if verb_rows else ""
+
+    role_cards = []
+    for label, key in [("Jij als docent", "teacher"), ("De leerling", "learner"), ("AI kan hier", "ai")]:
+        steps = role_steps.get(key, [])
+        if steps:
+            steps_html = "".join(f'<li>{esc(step)}</li>' for step in steps)
+            role_cards.append(f'<article><span>{label}</span><ol>{steps_html}</ol></article>')
+        elif action.get(key):
+            role_cards.append(f'<article><span>{label}</span><p>{esc(action[key])}</p></article>')
+    roles_html = "".join(role_cards)
+
     return (
         '<section class="section workform-quickstart"><div class="wrap">'
         '<div class="workform-use-grid">'
@@ -345,11 +354,7 @@ def render_workform_quickstart(item: dict) -> str:
         f'<article><div class="kicker">De vraag eronder</div><p>{esc(item.get("question", ""))}</p></article>'
         '</div>'
         f'{verbs_html}'
-        '<div class="workform-role-grid">'
-        f'<article><span>Jij als docent</span><p>{esc(teacher)}</p></article>'
-        f'<article><span>De leerling</span><p>{esc(learner)}</p></article>'
-        f'<article><span>AI kan hier</span><p>{esc(ai)}</p></article>'
-        '</div>'
+        f'<div class="workform-role-grid">{roles_html}</div>'
         f'<div class="workform-boundary"><strong>Niet automatisch doen</strong><p>{esc(ai_not)}</p></div>'
         '</div></section>'
     )
@@ -685,6 +690,10 @@ iframe{max-width:100%}
 .workform-role-grid article{border:1px solid var(--line);background:var(--soft);padding:20px}
 .workform-role-grid span{display:block;font:800 .72rem/1.2 Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;text-transform:uppercase;letter-spacing:.07em;color:#637286}
 .workform-role-grid p{margin:10px 0 0;color:#34404f;line-height:1.55}
+.workform-role-grid ol{margin:12px 0 0;padding-left:1.25rem;color:#34404f}
+.workform-role-grid li{padding-left:3px;line-height:1.5}
+.workform-role-grid li+li{margin-top:8px}
+.workform-role-grid article:first-child li::marker{font-weight:800}
 .workform-boundary{margin-top:12px;border-left:4px solid var(--accent);background:#fff;padding:15px 18px}
 .workform-boundary strong{font:800 .78rem/1.2 Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;text-transform:uppercase;letter-spacing:.06em}
 .workform-boundary p{margin:5px 0 0;color:#4b5665}
