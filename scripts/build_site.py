@@ -211,6 +211,9 @@ def load_workforms() -> list[dict]:
     payload = json.loads(Path("content/workforms.json").read_text(encoding="utf-8"))
     return payload["workforms"]
 
+def load_didactic_models() -> dict:
+    return json.loads(Path("content/didactic-models.json").read_text(encoding="utf-8"))
+
 def render_route(route: list[str]) -> str:
     parts = []
     active = set(route)
