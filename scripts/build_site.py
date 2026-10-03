@@ -501,6 +501,29 @@ def render_workform_example(item: dict) -> str:
         '</div></div></section>'
     )
 
+def workform_copy_text(item: dict) -> str:
+    action = item.get("action_layer", {})
+    role_steps = action.get("role_steps", {})
+    public_title = item.get("public_title", item["title"])
+    lines = [
+        public_title,
+        "",
+        "Gebruik dit als:",
+        item.get("lede", ""),
+        "",
+        "De vraag eronder:",
+        item.get("question", ""),
+    ]
+    for label, key in [("Jij als docent", "teacher"), ("De leerling", "learner"), ("AI kan hier", "ai")]:
+        steps = role_steps.get(key, [])
+        if steps:
+            lines.extend(["", label + ":"])
+            lines.extend(f"{idx}. {step}" for idx, step in enumerate(steps, start=1))
+    if action.get("ai_not"):
+        lines.extend(["", "Niet automatisch doen:", action["ai_not"]])
+    lines.extend(["", "Daarna kijk je naar:", item.get("result", "")])
+    return "\n".join(lines)
+
 def render_workform_quickstart(item: dict) -> str:
     action = item.get("action_layer", {})
     ai_not = action.get("ai_not", "")
@@ -523,9 +546,14 @@ def render_workform_quickstart(item: dict) -> str:
         elif action.get(key):
             role_cards.append(f'<article><span>{label}</span><p>{esc(action[key])}</p></article>')
     roles_html = "".join(role_cards)
+    copy_text = esc(workform_copy_text(item))
 
     return (
         '<section class="section workform-quickstart"><div class="wrap">'
+        '<div class="workform-lesson-card" id="werkvormkaart">'
+        '<div class="workform-toolbar"><div><span class="kicker">Morgen gebruiken</span><strong>Werkvormkaart</strong></div>'
+        f'<div class="workform-toolbar-actions"><button type="button" data-copy-workform data-copy-text="{copy_text}">Kopieer</button>'
+        '<button type="button" onclick="window.print()">Print</button><button type="button" data-share-workform>Deel</button></div></div>'
         '<div class="workform-use-grid">'
         f'<article><div class="kicker">Gebruik dit als</div><p>{esc(item.get("lede", ""))}</p></article>'
         f'<article><div class="kicker">De vraag eronder</div><p>{esc(item.get("question", ""))}</p></article>'
@@ -533,8 +561,60 @@ def render_workform_quickstart(item: dict) -> str:
         f'{verbs_html}'
         f'<div class="workform-role-grid">{roles_html}</div>'
         f'<div class="workform-boundary"><strong>Niet automatisch doen</strong><p>{esc(ai_not)}</p></div>'
+        '</div></div>'
+        '<script>(()=>{const copy=document.querySelector("[data-copy-workform]");const share=document.querySelector("[data-share-workform]");'
+        'if(copy){copy.addEventListener("click",async()=>{try{await navigator.clipboard.writeText(copy.dataset.copyText||"");const old=copy.textContent;copy.textContent="Gekopieerd";setTimeout(()=>copy.textContent=old,1400)}catch(_){}})}'
+        'if(share){share.addEventListener("click",async()=>{if(navigator.share){try{await navigator.share({title:document.title,url:location.href})}catch(_){}}else{try{await navigator.clipboard.writeText(location.href);const old=share.textContent;share.textContent="Link gekopieerd";setTimeout(()=>share.textContent=old,1400)}catch(_){}}})}})();</script>'
+        '</section>'
+    )
+
+def related_workforms(item: dict, all_items: list[dict], limit: int = 3) -> list[dict]:
+    source_action = item.get("action_layer", {})
+    source_intents = set(source_action.get("intents", []))
+    source_evidence = set(item.get("evidence", []))
+    source_route = set(item.get("route", []))
+    scored = []
+    for other in all_items:
+        if other["slug"] == item["slug"]:
+            continue
+        other_intents = set(other.get("action_layer", {}).get("intents", []))
+        score = 0
+        score += 4 * len(source_intents & other_intents)
+        score += 2 if other.get("category") == item.get("category") else 0
+        score += len(source_evidence & set(other.get("evidence", [])))
+        score += len(source_route & set(other.get("route", [])))
+        if score:
+            scored.append((score, other))
+    scored.sort(key=lambda pair: (-pair[0], pair[1].get("public_title", pair[1]["title"])))
+    return [other for _, other in scored[:limit]]
+
+def render_related_workforms(item: dict, all_items: list[dict]) -> str:
+    related = related_workforms(item, all_items)
+    if not related:
+        return ""
+    cards = []
+    for other in related:
+        verbs = other.get("action_layer", {}).get("verbs", {})
+        teacher = verbs.get("teacher", [])[:2]
+        learner = verbs.get("learner", [])[:2]
+        teacher_chain = " → ".join(teacher)
+        learner_chain = " → ".join(learner)
+        cards.append(
+            f'<a class="related-workform-card" href="/werkvormen/{esc(other["slug"])}/">'
+            f'<span>Kan hierna passen</span><h3>{esc(other.get("public_title", other["title"]))}</h3>'
+            f'<p>{esc(other["summary"])}</p>'
+            f'<div><b>Docent</b> {esc(teacher_chain)}</div><div><b>Leerling</b> {esc(learner_chain)}</div>'
+            f'<strong>Bekijk →</strong></a>'
+        )
+    return (
+        '<section class="section related-workforms"><div class="wrap">'
+        '<div class="section-head"><div class="kicker">Wat kan hierna?</div><div><h2>Werkvormen die logisch aansluiten.</h2>'
+        '<p>Niet als vaste route, wel omdat ze een volgende stap in dezelfde onderwijsafweging kunnen ondersteunen.</p></div></div>'
+        f'<div class="related-workform-grid">{"".join(cards)}</div>'
+        '<p class="related-all"><a href="/werkvormen/">Alle werkvormen bekijken →</a></p>'
         '</div></section>'
     )
+
 
 def workform_standard_relation(item: dict) -> str:
     source = item.get("source", "")
@@ -579,13 +659,13 @@ def render_workform_underpinning(item: dict) -> str:
         '</div></div></section>'
     )
 
-def enrich_manual_workform(body: str, item: dict) -> str:
+def enrich_manual_workform(body: str, item: dict, all_items: list[dict]) -> str:
     quick = render_workform_quickstart(item)
     body = body.replace("</section>", "</section>" + quick, 1)
-    tail = render_workform_example(item) + render_workform_underpinning(item)
+    tail = render_workform_example(item) + render_workform_underpinning(item) + render_related_workforms(item, all_items)
     return body.replace("</main>", tail + "</main>", 1)
 
-def render_catalog_workform(item: dict) -> str:
+def render_catalog_workform(item: dict, all_items: list[dict]) -> str:
     steps = "".join(f"<li>{esc(step)}</li>" for step in item.get("steps", []))
     audience = " · ".join(WORKFORM_AUDIENCE_LABELS.get(value, value) for value in item.get("audience", []))
     evidence = " · ".join(WORKFORM_EVIDENCE_LABELS.get(value, value) for value in item.get("evidence", []))
@@ -597,6 +677,7 @@ def render_catalog_workform(item: dict) -> str:
     quickstart_html = render_workform_quickstart(item)
     example_html = render_workform_example(item)
     foundation_html = render_workform_underpinning(item)
+    related_html = render_related_workforms(item, all_items)
     return f'''<main>
 <section class="page-hero"><div class="wrap"><div class="eyebrow">Werkvorm · {esc(audience)}</div><h1>{esc(public_title)}</h1>{technical_html}<p class="lede">{esc(item["summary"])}</p>{render_route(item.get("route", []))}</div></section>
 {quickstart_html}
@@ -605,6 +686,7 @@ def render_catalog_workform(item: dict) -> str:
 <section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Zo doe je het</div><div><h2>Werk stap voor stap.</h2><p>Pas de formulering aan je vak en klas aan. De volgorde bewaakt dat de relevante leerlinghandeling niet ongemerkt uit beeld verdwijnt.</p></div></div><div class="panel workform-steps"><ol>{steps}</ol></div></div></section>
 <section class="section"><div class="wrap"><div class="split"><article class="panel"><div class="kicker">Daarna</div><h3>Waar kijk je naar?</h3><p>{esc(item["result"])}</p></article><article class="panel"><div class="kicker">Let op</div><h3>Wat kun je nog niet concluderen?</h3><p>{esc(item["caution"])}</p></article></div><p><a href="/werkvormen/">← Terug naar de werkvormen</a></p></div></section>
 {foundation_html}
+{related_html}
 </main>'''
 
 TOOLS = [
@@ -1197,23 +1279,23 @@ def build(scrape: Path, out: Path) -> None:
     write(out, "werkvormen/index.html", doc("EAI Toolbox", workforms_body, "/werkvormen/", "werkvormen", "EAI-werkvormen om menselijk handelen, taakverdeling, bewijs en zelfstandigheid zichtbaar te maken."))
 
     jm_body = '''<main><section class="page-hero"><div class="wrap"><div class="eyebrow">Werkvorm · Workshop AI</div><h1>Keuzes verantwoorden</h1><p class="workform-technical-name detail">EAI-term: Justification Mapping</p><p class="lede">AI kan een formulering, argument of route voorstellen. De vraag is vervolgens niet alleen wat de leerling overneemt, maar waarom hij dat doet.</p></div></section><section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Waarvoor?</div><div><h2>Niet alleen laten zien dát er een keuze is gemaakt.</h2><p>De werkvorm richt zich op de grens tussen AI-assistentie en menselijk begrip. Een leerling kan een AI-suggestie aanpassen zonder de inhoudelijke afweging zelf te hebben gemaakt. Daarom wordt juist de rationale zichtbaar.</p></div></div><figure class="pdf-figure" aria-label="Justification Mapping van AI-suggestie naar menselijke verantwoording"><svg viewBox="0 0 760 220" role="img"><g class="stroke"><rect x="70" y="74" width="130" height="70" rx="4"/><rect x="315" y="50" width="130" height="70" rx="4"/><rect x="315" y="130" width="130" height="70" rx="4"/><rect x="560" y="74" width="130" height="70" rx="4"/></g><path class="dash" d="M200 109h115M445 85h115M445 165c58 0 72-26 115-45"/><circle class="accent-fill" cx="258" cy="109" r="8"/><text x="135" y="114" text-anchor="middle" font-size="14" fill="#687487">AI-suggestie</text><text x="380" y="92" text-anchor="middle" font-size="14" fill="#687487">accepteren</text><text x="380" y="172" text-anchor="middle" font-size="14" fill="#687487">verwerpen / wijzigen</text><text x="625" y="114" text-anchor="middle" font-size="14" fill="#687487">waarom?</text></svg><figcaption>Niet alleen vastleggen wat veranderde, maar zichtbaar maken waarom de leerling iets overnam, verwierp of herschreef.</figcaption></figure><div class="panel"><h3>Breng één AI-ondersteunde keuze in kaart</h3><ol><li><strong>Suggestie:</strong> wat stelde AI voor?</li><li><strong>Accepteren:</strong> wat heb je overgenomen?</li><li><strong>Verwerpen:</strong> wat heb je bewust niet gebruikt?</li><li><strong>Waarom:</strong> welke inhoudelijke reden lag achter beide keuzes?</li><li><strong>Eigen wijziging:</strong> wat heb je zelf toegevoegd, veranderd of opnieuw opgebouwd?</li><li><strong>Verdedigen:</strong> kun je de uiteindelijke keuze zonder het systeem uitleggen en onderbouwen?</li></ol></div></div></section><section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Belangrijk onderscheid</div><div><h2>Dit is procesverantwoording rond AI-assistentie.</h2><p>Binnen deze workshop is Justification Mapping geen algemene methodekeuzekaart. Het doel is zichtbaar maken waar een AI-bijdrage ophoudt en de inhoudelijke afweging van de leerling begint.</p></div></div><p><a class="button" href="https://eai-prompt.lovable.app/" target="_blank" rel="noopener">Bekijk in Prompt Builder hoe de AI-rol wordt gestuurd</a></p></div></section></main>'''
-    write(out, "werkvormen/justification-mapping/index.html", doc("Keuzes verantwoorden", enrich_manual_workform(jm_body, workforms_by_slug["justification-mapping"]), "/werkvormen/justification-mapping/", "werkvormen", "Justification Mapping als EAI-werkvorm voor zichtbare keuzes en procesverantwoording."))
+    write(out, "werkvormen/justification-mapping/index.html", doc("Keuzes verantwoorden", enrich_manual_workform(jm_body, workforms_by_slug["justification-mapping"], workforms), "/werkvormen/justification-mapping/", "werkvormen", "Justification Mapping als EAI-werkvorm voor zichtbare keuzes en procesverantwoording."))
     core_action_body = '''<main><section class="page-hero"><div class="wrap"><div class="eyebrow">Werkvorm</div><h1>Kernhandeling-check</h1><p class="lede">Aan welke stap moet de leerling in deze fase zelf inhoudelijke betekenis geven om tot leren te komen? Dat is de kernhandeling waar deze werkvorm naar zoekt.</p></div></section><section class="section"><div class="wrap"><div class="panel"><h3>Werk van buiten naar binnen</h3><ol><li><strong>Proces:</strong> wat moet uiteindelijk geleerd, beheerst of professioneel beoordeeld worden?</li><li><strong>Fase:</strong> waar bevindt de leerling zich nu in dat leren?</li><li><strong>Handelingen:</strong> welke stappen worden hier uitgevoerd?</li><li><strong>Kernhandeling:</strong> aan welke stap moet de leerling hier zelf inhoudelijke betekenis geven?</li><li><strong>AI-check:</strong> voert AI precies die handeling uit, ondersteunt het eromheen, of doet het iets anders?</li><li><strong>Evidence:</strong> wat moet zichtbaar zijn als je later iets over menselijke beheersing of professioneel oordeel wilt zeggen?</li></ol></div></div></section><section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Test</div><div><h2>Haal de AI-bijdrage denkbeeldig weg.</h2><p>Verdwijnt daarmee alleen routinewerk, of verdwijnt de stap waaraan de leerling juist zelf betekenis moest geven? Dat onderscheid bepaalt de volgende ontwerpkeuze.</p></div></div><p><a href="/publicaties/de-vraag-die-we-vergeten/">Lees de redenering achter deze vraag →</a></p></div></section></main>'''
-    write(out, "werkvormen/kernhandeling-check/index.html", doc("Kernhandeling-check", enrich_manual_workform(core_action_body, workforms_by_slug["kernhandeling-check"]), "/werkvormen/kernhandeling-check/", "werkvormen", "Bepaal eerst aan welke stap de leerling in deze fase zelf inhoudelijke betekenis moet geven."))
+    write(out, "werkvormen/kernhandeling-check/index.html", doc("Kernhandeling-check", enrich_manual_workform(core_action_body, workforms_by_slug["kernhandeling-check"], workforms), "/werkvormen/kernhandeling-check/", "werkvormen", "Bepaal eerst aan welke stap de leerling in deze fase zelf inhoudelijke betekenis moet geven."))
     td_body = '''<main><section class="page-hero"><div class="wrap"><div class="eyebrow">Werkvorm</div><h1>Wie doet welk werk?</h1><p class="workform-technical-name detail">EAI-term: Task Density Map</p><p class="lede">Niet hoeveel AI er wordt gebruikt is de kern. Kijk per stap wie het werk uitvoert en of AI juist de kernhandeling van deze fase overneemt.</p></div></section><section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Stap 1</div><div><h2>Neem één concrete opdracht.</h2><p>Schrijf niet “AI bij Nederlands” op. Kies één taak waarin een leerling iets moet leren of laten zien.</p></div></div><figure class="pdf-figure" aria-label="Task Density verdeelt handelingen tussen mens en AI"><svg viewBox="0 0 720 230" role="img"><g class="stroke"><circle cx="145" cy="70" r="24"/><path d="M105 155c7-34 23-50 40-50s33 16 40 50"/><rect x="535" y="52" width="72" height="58" rx="4"/><path d="M553 52v-10M571 52v-10M589 52v-10M553 110v10M571 110v10M589 110v10"/></g><path class="dash" d="M200 95h310"/><circle class="accent-fill" cx="285" cy="95" r="7"/><circle class="accent-fill" cx="430" cy="95" r="7"/><text x="145" y="195" text-anchor="middle" font-size="14" fill="#687487">mens</text><text x="570" y="195" text-anchor="middle" font-size="14" fill="#687487">AI</text><text x="360" y="135" text-anchor="middle" font-size="14" fill="#687487">welke handelingen verschuiven?</text></svg><figcaption>Task Density gaat niet om “hoeveel AI”, maar om welke relevante handelingen van actor veranderen.</figcaption></figure><div class="panel"><h3>Maak een kaart van de werkelijke handelingen</h3><ol><li>Ontleed de fase in concrete handelingen en deelhandelingen.</li><li>Noteer per handeling: mens, AI, gedeeld of nog onbekend.</li><li>Beschrijf wanneer AI in beeld komt: vóór, tijdens of na de kernhandeling.</li><li>Noteer welke opties, criteria of routes AI al heeft geselecteerd voordat de mens reageert.</li><li>Bekijk daarna welke menselijke handelingen verdwijnen, verschuiven of een andere betekenis krijgen.</li></ol><p>Gebruik werkwoorden die passen bij de concrete taak. Structureren, formuleren, controleren, kiezen, herzien en verantwoorden zijn voorbeelden, geen vaste checklist.</p></div></div></section><section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Stap 2</div><div><h2>Zoek de handeling die ertoe doet.</h2><p>Welke van deze handelingen moet in deze fase door de leerling zelf inhoudelijke betekenis krijgen? Dat is belangrijker dan een totaalpercentage.</p></div></div><div class="panel"><h3>De beslisvraag</h3><p>Als AI deze handeling uitvoert, wat kan ik daarna nog betrouwbaar zeggen over het leren van de leerling?</p></div></div></section></main>'''
-    write(out, "werkvormen/task-density-scan/index.html", doc("Wie doet welk werk?", enrich_manual_workform(td_body, workforms_by_slug["task-density-scan"]), "/werkvormen/task-density-scan/", "werkvormen", "Analyseer wie welk denkwerk uitvoert in een AI-ondersteunde taak."))
+    write(out, "werkvormen/task-density-scan/index.html", doc("Wie doet welk werk?", enrich_manual_workform(td_body, workforms_by_slug["task-density-scan"], workforms), "/werkvormen/task-density-scan/", "werkvormen", "Analyseer wie welk denkwerk uitvoert in een AI-ondersteunde taak."))
 
     evidence_body = '''<main><section class="page-hero"><div class="wrap"><div class="eyebrow">Werkvorm</div><h1>Bewijs van leren</h1><p class="lede">Een goed eindproduct is bewijs van een goed eindproduct. Het is niet automatisch bewijs dat de onderliggende handeling zelfstandig beheerst wordt.</p></div></section><section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Kies bewust</div><div><h2>Wat wil je eigenlijk kunnen beweren?</h2><p>Lukt het mét hulp? Kan de leerling dezelfde handeling daarna zelfstandig uitvoeren? Kan hij dat later nog? En in een andere situatie?</p></div></div><figure class="pdf-figure" aria-label="Een goed product is niet automatisch bewijs van leren"><svg viewBox="0 0 720 220" role="img"><g class="stroke"><rect x="90" y="65" width="120" height="92"/><path d="M112 92h75M112 112h62M112 132h69"/><circle cx="580" cy="76" r="23"/><path d="M540 162c7-34 23-50 40-50s33 16 40 50"/></g><path class="dash" d="M210 111h116M394 111h146"/><circle class="accent-fill" cx="360" cy="111" r="8"/><text x="150" y="192" text-anchor="middle" font-size="14" fill="#687487">product</text><text x="360" y="192" text-anchor="middle" font-size="14" fill="#687487">≠ automatisch</text><text x="580" y="192" text-anchor="middle" font-size="14" fill="#687487">menselijke beheersing</text></svg><figcaption>Output kan goed zijn terwijl nog onduidelijk is wat de leerling zelfstandig kan uitvoeren.</figcaption></figure><div class="panel"><h3>Drie soorten bewijs</h3><ul><li><strong>Outputbewijs:</strong> laat zien wat is geproduceerd, maar niet vanzelf wie het relevante werk uitvoerde.</li><li><strong>Procesbewijs:</strong> laat keuzes, eerste pogingen, wijzigingen, controles en uitleg zien.</li><li><strong>Zelfstandig bewijs:</strong> laat een nieuwe of vergelijkbare uitvoering zien zonder de relevante AI-bijdrage.</li></ul><p>Wil je weten of de leerling het later nog kan, of ook in een andere situatie? Dan heb je opnieuw passend bewijs nodig. Begin dus steeds bij de vraag wat je werkelijk over het leren wilt kunnen zeggen.</p></div></div></section></main>'''
-    write(out, "werkvormen/bewijs-van-leren/index.html", doc("Bewijs van leren", enrich_manual_workform(evidence_body, workforms_by_slug["bewijs-van-leren"]), "/werkvormen/bewijs-van-leren/", "werkvormen", "Kies bewijs dat past bij wat je over het leren van de leerling wilt kunnen zeggen."))
+    write(out, "werkvormen/bewijs-van-leren/index.html", doc("Bewijs van leren", enrich_manual_workform(evidence_body, workforms_by_slug["bewijs-van-leren"], workforms), "/werkvormen/bewijs-van-leren/", "werkvormen", "Kies bewijs dat past bij wat je over het leren van de leerling wilt kunnen zeggen."))
 
     first_body = '''<main><section class="page-hero"><div class="wrap"><div class="eyebrow">Werkvorm</div><h1>Eerste poging en versie vergelijken</h1><p class="workform-technical-name detail">EAI-term: First Attempt &amp; Version Comparison</p><p class="lede">Laat eerst iets van de leerling zelf ontstaan. Vergelijk daarna wat met hulp veranderde en vraag waar de leerling zelf betekenis gaf.</p></div></section><section class="section"><div class="wrap"><div class="panel"><h3>Zo werkt het</h3><ol><li>Laat de leerling een korte eerste poging maken zonder AI.</li><li>Gebruik daarna AI voor een vooraf afgesproken vorm van ondersteuning.</li><li>Bewaar beide versies.</li><li>Laat de leerling drie veranderingen aanwijzen.</li><li>Vraag per verandering: wie stelde dit voor, waarom heb je het overgenomen of verworpen, en wat begrijp je nu anders?</li></ol><p>Het doel is niet bewijzen dat de leerling “zonder AI” werkte. Het doel is zichtbaar maken wat vóór en na ondersteuning door de leerling zelf is gedaan.</p></div></div></section></main>'''
-    write(out, "werkvormen/first-attempt/index.html", doc("Eerste poging en versie vergelijken", enrich_manual_workform(first_body, workforms_by_slug["first-attempt"]), "/werkvormen/first-attempt/", "werkvormen", "Vergelijk een eerste eigen poging met een latere AI-ondersteunde versie."))
+    write(out, "werkvormen/first-attempt/index.html", doc("Eerste poging en versie vergelijken", enrich_manual_workform(first_body, workforms_by_slug["first-attempt"], workforms), "/werkvormen/first-attempt/", "werkvormen", "Vergelijk een eerste eigen poging met een latere AI-ondersteunde versie."))
 
     error_body = '''<main><section class="page-hero"><div class="wrap"><div class="eyebrow">Werkvorm</div><h1>Foutanalyse</h1><p class="lede">Een fout verbeteren is iets anders dan een fout herkennen, lokaliseren en verklaren.</p></div></section><section class="section"><div class="wrap"><div class="panel"><h3>Geef niet meteen de oplossing</h3><ol><li>Geef een foutieve redenering, eventueel door AI gegenereerd.</li><li>Laat de leerling aanwijzen waar het voor het eerst misgaat.</li><li>Laat uitleggen waarom die stap niet klopt.</li><li>Vraag wat er vanaf dat punt moet veranderen.</li><li>Laat pas daarna een volledige verbeterde versie maken.</li></ol><p>De kernhandeling ligt bij diagnosticeren en herstellen. AI kan materiaal leveren, maar hoeft het oordeel niet alvast te geven.</p></div></div></section></main>'''
-    write(out, "werkvormen/foutanalyse/index.html", doc("Foutanalyse", enrich_manual_workform(error_body, workforms_by_slug["foutanalyse"]), "/werkvormen/foutanalyse/", "werkvormen", "Werkvorm voor zichtbaar diagnosticeren en herstellen van fouten."))
+    write(out, "werkvormen/foutanalyse/index.html", doc("Foutanalyse", enrich_manual_workform(error_body, workforms_by_slug["foutanalyse"], workforms), "/werkvormen/foutanalyse/", "werkvormen", "Werkvorm voor zichtbaar diagnosticeren en herstellen van fouten."))
 
     toollab_body = '''<main><section class="page-hero"><div class="wrap"><div class="eyebrow">Workshop AI · Toollab</div><h1>Dezelfde vraag, twee omgevingen.</h1><p class="lede">Niet elke AI-omgeving krijgt dezelfde context. Dat verandert wat het systeem kan aannemen, onderbouwen en teruggeven.</p></div></section><section class="section"><div class="wrap"><div class="panel"><h3>Werk in tweetallen</h3><ol><li>Kies een realistische leerlingvraag uit je eigen vak.</li><li>Voer die zonder extra context in een algemene AI in.</li><li>Noteer aannames, gaten en sterke punten in de output.</li><li>Gebruik daarna een brongebonden omgeving en voeg twee tot vier relevante bronnen toe.</li><li>Stel exact dezelfde vraag.</li><li>Vergelijk wat verandert en wat níet wordt opgelost door extra bronnen.</li></ol><p>De opbrengst is niet “welke tool wint?”, maar begrip van wat context, bronnen en systeeminrichting doen met het antwoord.</p></div></div></section></main>'''
-    write(out, "werkvormen/toollab/index.html", doc("Toollab", enrich_manual_workform(toollab_body, workforms_by_slug["toollab"]), "/werkvormen/toollab/", "werkvormen", "Vergelijk een algemene AI met een brongebonden omgeving."))
+    write(out, "werkvormen/toollab/index.html", doc("Toollab", enrich_manual_workform(toollab_body, workforms_by_slug["toollab"], workforms), "/werkvormen/toollab/", "werkvormen", "Vergelijk een algemene AI met een brongebonden omgeving."))
 
     for item in workforms:
         if item["slug"] in MANUAL_WORKFORMS:
@@ -1223,7 +1305,7 @@ def build(scrape: Path, out: Path) -> None:
             f'werkvormen/{item["slug"]}/index.html',
             doc(
                 item.get("public_title", item["title"]),
-                render_catalog_workform(item),
+                render_catalog_workform(item, workforms),
                 f'/werkvormen/{item["slug"]}/',
                 "werkvormen",
                 item["summary"],
