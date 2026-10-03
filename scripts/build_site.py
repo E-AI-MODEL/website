@@ -14,6 +14,8 @@ from bs4 import BeautifulSoup
 BASE_URL = "https://eaimodel.nl"
 EMAIL = "vis@emmauscollege.nl"
 GITHUB = "https://github.com/E-AI-MODEL"
+PORTRAIT_URL = "https://onderwijs-ai.nl/_app/immutable/assets/hans-visser.CagpLyUi.png"
+RESEARCHED_THUMB_URL = "https://files.sgbsg.nl/redeu/uploads/2026/04/08151244/POD-ThumbYT-71.png"
 
 LOGO_SVG = r'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-labelledby="title desc">
 <title id="title">EAI</title><desc id="desc">Donker rond EAI-beeldmerk met blauwe en cyaan bogen.</desc>
@@ -119,9 +121,10 @@ def render_workforms_index(items: list[dict]) -> str:
         )
 
     return f'''<main>
-<section class="page-hero"><div class="wrap"><div class="eyebrow">Werkvormen</div><h1>EAI Toolbox</h1><p class="lede">Begin niet bij de naam van een werkvorm. Begin bij wat je wilt zien, terugbrengen of ontwerpen. De werkvormen hieronder volgen dezelfde EAI-kijkvorm: proces/doel → fase → kernhandeling → taakdichtheid → output.</p></div></section>
+<section class="page-hero"><div class="wrap"><div class="eyebrow">Werkvormen</div><h1>Van principe naar leshandeling.</h1><p class="lede">Elke werkvorm begint bij een concrete situatie: wat moet de leerling of professional hier zelf doen, welke hulp is passend en welk bewijs heb je daarna werkelijk in handen?</p></div></section>
 <section class="section toolbox-start"><div class="wrap">
-<div class="toolbox-intro"><div><div class="kicker">Zoek op je vraag</div><h2>Wat wil je hier kunnen zien of besluiten?</h2></div><p>Filter op doel, doelgroep en bewijsfunctie. Een werkvorm is geen los trucje: hij is bruikbaar wanneer hij past bij de handeling en de claim die in deze fase belangrijk zijn.</p></div>
+<div class="toolbox-example-intro"><div><div class="kicker">Zo werkt de toolbox</div><h2>Eerst de situatie. Dan de werkvorm.</h2><p>Voorbeeld: een leerling schrijft met AI een betoog. De vraag is niet alleen of AI gebruikt mag worden. De vraag is welke handeling de leerling zelf moet uitvoeren om te kunnen zeggen dat hij kan argumenteren. Vanuit die vraag kies je een werkvorm.</p></div><div class="toolbox-example-path"><span>Situatie</span><span>Kernhandeling</span><span>AI-rol</span><span>Werkvorm</span><span>Bewijs</span></div></div>
+<div class="toolbox-intro"><div><div class="kicker">Zoek op je vraag</div><h2>Wat wil je hier kunnen zien of besluiten?</h2></div><p>Filter op doel, doelgroep en bewijsfunctie. Op iedere detailpagina staat een concreet klasvoorbeeld naast de werkroute.</p></div>
 <nav class="toolbox-questions" aria-label="Veelvoorkomende startvragen">
 <a href="#zelfstandigheid"><span>Ik wil weten</span><strong>wat de leerling zonder AI zelf kan.</strong></a>
 <a href="#zichtbaar"><span>Ik wil zien</span><strong>hoe een keuze met AI tot stand kwam.</strong></a>
@@ -199,12 +202,31 @@ def render_workform_visual(visual: dict | None) -> str:
         f'{caption_html}</figure>'
     )
 
+def render_workform_example(item: dict) -> str:
+    example = item.get("example")
+    if not example:
+        return ""
+    return (
+        '<section class="section workform-example-section"><div class="wrap">'
+        '<div class="workform-example-grid">'
+        '<div><div class="kicker">Concreet voorbeeld</div><h2>Zo kan dit er in de klas uitzien.</h2></div>'
+        f'<div class="workform-example-card"><p>{esc(example)}</p></div>'
+        '</div></div></section>'
+    )
+
+def append_workform_example(body: str, item: dict) -> str:
+    section = render_workform_example(item)
+    if not section:
+        return body
+    return body.replace("</main>", section + "</main>", 1)
+
 def render_catalog_workform(item: dict) -> str:
     steps = "".join(f"<li>{esc(step)}</li>" for step in item.get("steps", []))
     audience = " · ".join(WORKFORM_AUDIENCE_LABELS.get(value, value) for value in item.get("audience", []))
     evidence = " · ".join(WORKFORM_EVIDENCE_LABELS.get(value, value) for value in item.get("evidence", []))
     source = esc(item.get("source", "EAI"))
     visual_html = render_workform_visual(item.get("visual"))
+    example_html = render_workform_example(item)
     if item.get("source_url"):
         source_html = f'<a href="{esc(item["source_url"])}" target="_blank" rel="noopener">{source}</a>'
     else:
@@ -212,8 +234,9 @@ def render_catalog_workform(item: dict) -> str:
     return f'''<main>
 <section class="page-hero"><div class="wrap"><div class="eyebrow">Werkvorm · {esc(audience)}</div><h1>{esc(item["title"])}</h1><p class="lede">{esc(item["lede"])}</p>{render_route(item.get("route", []))}</div></section>
 <section class="section"><div class="wrap"><div class="workform-detail-grid"><div class="workform-question"><div class="kicker">Kernvraag</div><h2>{esc(item["question"])}</h2></div><div class="workform-facts"><p><strong>Voor wie</strong><br>{esc(audience)}</p><p><strong>Bewijsfunctie</strong><br>{esc(evidence)}</p></div></div>{visual_html}</div></section>
-<section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Zo werkt het</div><div><h2>Werk vanuit de handeling.</h2><p>De stappen hieronder zijn een werkroute. Pas ze aan de taak en de fase aan, maar sla de vraag naar de menselijke handeling niet over.</p></div></div><div class="panel workform-steps"><ol>{steps}</ol></div></div></section>
-<section class="section"><div class="wrap"><div class="split"><article class="panel"><div class="kicker">Opbrengst</div><h3>Wat wordt zichtbaar?</h3><p>{esc(item["result"])}</p></article><article class="panel"><div class="kicker">Let op</div><h3>Wat kun je hier niet vanzelf uit concluderen?</h3><p>{esc(item["caution"])}</p></article></div><p class="workform-source"><strong>Bronlaag:</strong> {source_html}</p><p><a href="/werkvormen/">← Terug naar de EAI Toolbox</a></p></div></section>
+{example_html}
+<section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Zo werkt het</div><div><h2>Doe dit in deze volgorde.</h2><p>De stappen vormen een werkroute. Pas de formulering aan je vak en taak aan, maar houd de menselijke handeling en het bewijs expliciet.</p></div></div><div class="panel workform-steps"><ol>{steps}</ol></div></div></section>
+<section class="section"><div class="wrap"><div class="split"><article class="panel"><div class="kicker">Opbrengst</div><h3>Waar kijk je daarna naar?</h3><p>{esc(item["result"])}</p></article><article class="panel"><div class="kicker">Let op</div><h3>Wat bewijst dit nog niet?</h3><p>{esc(item["caution"])}</p></article></div><p class="workform-source"><strong>Bronlaag:</strong> {source_html}</p><p><a href="/werkvormen/">← Terug naar de EAI Toolbox</a></p></div></section>
 </main>'''
 
 TOOLS = [
@@ -312,6 +335,119 @@ h1{font-size:clamp(3.05rem,5.8vw,5.25rem);max-width:13ch;letter-spacing:-.042em}
 /* Keep the PDF-led mobile rhythm after the legacy migration breakpoints. */
 @media(max-width:900px){html{scroll-padding-top:126px}.app-showcase[id],section[id]{scroll-margin-top:128px}.hero-grid{grid-template-columns:1fr;gap:30px}.pillar+.pillar,.article-pillars>div+div{border-color:var(--line)}}
 @media(max-width:620px){body{font-size:16px}.hero-grid{padding:54px 0 48px}.section{padding:52px 0}.page-hero{padding:54px 0 34px}h1{font-size:clamp(2.65rem,13vw,4rem)}.article-body{font-size:1rem;padding-top:50px}.article-body h2{margin-top:44px}.article-route{gap:12px;font-size:.75rem}.pdf-figure{overflow-x:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-inline:contain}.pdf-figure svg{min-width:680px;max-width:none}.pillar-visual{max-width:100%}}
+
+/* v3 cohesion and responsive system */
+img{max-width:100%;height:auto}
+iframe{max-width:100%}
+.hero-grid>*,.profile-grid>*,.case-study>*,.media-feature>*,.app-showcase>*,.workform-detail-grid>*{min-width:0}
+.mobile-nav{display:none;margin-left:auto;font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.mobile-nav summary{cursor:pointer;list-style:none;border:1px solid var(--line);padding:8px 11px;font-weight:800;font-size:.82rem}
+.mobile-nav summary::-webkit-details-marker{display:none}
+.mobile-nav-panel{position:absolute;left:16px;right:16px;top:58px;background:#fff;border:1px solid var(--line);padding:10px;display:grid;box-shadow:0 12px 30px rgba(32,41,54,.12)}
+.mobile-nav-panel a{padding:10px 8px;text-decoration:none;border-bottom:1px solid var(--line);font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:.92rem}
+.mobile-nav-panel a:last-child{border-bottom:0}
+.mobile-nav-panel a[aria-current="page"]{font-weight:800}
+
+.model-stack{display:grid;gap:8px;align-self:center}
+.model-stack>div{display:grid;grid-template-columns:42px minmax(0,1fr);column-gap:12px;align-items:start;border-top:1px solid var(--line);padding:12px 0}
+.model-stack span{grid-row:1/3;font:800 .72rem/1 Inter,ui-sans-serif,sans-serif;color:var(--accent)}
+.model-stack strong{font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:.96rem}
+.model-stack p{margin:4px 0 0;color:var(--muted);font-size:.9rem;line-height:1.45}
+
+.case-study{display:grid;grid-template-columns:minmax(260px,.72fr) minmax(0,1.28fr);gap:28px;border:1px solid var(--line);padding:28px;background:#fff}
+.case-study__task h3{font-size:clamp(1.55rem,2.5vw,2.3rem);margin:14px 0 12px}
+.case-study__task p{color:var(--muted)}
+.case-study__route{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.case-study__route>div{border-top:3px solid var(--accent);background:var(--soft);padding:14px 12px;min-width:0}
+.case-study__route span{display:block;font:800 .66rem/1.2 Inter,ui-sans-serif,sans-serif;text-transform:uppercase;letter-spacing:.06em;color:#6b7788}
+.case-study__route strong{display:block;margin-top:8px;font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:.9rem;line-height:1.35}
+
+.profile-section{background:var(--soft)}
+.profile-grid{display:grid;grid-template-columns:minmax(220px,.48fr) minmax(0,1.52fr);gap:42px;align-items:center}
+.profile-grid--wide{grid-template-columns:minmax(260px,.55fr) minmax(0,1.45fr)}
+.profile-photo{max-width:360px}
+.profile-photo img{display:block;width:100%;aspect-ratio:1/1;object-fit:cover;border:1px solid var(--line);background:#fff}
+.profile-grid h2{font-size:clamp(2rem,3.4vw,3.2rem);margin:10px 0 14px}
+.profile-lede{font-size:1.14rem;color:#435165;max-width:58ch}
+.profile-grid p{max-width:66ch}
+
+.model-principles{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.model-principles article{border-top:3px solid var(--accent);padding:18px 14px;background:var(--soft);min-width:0}
+.model-principles span{font:800 .7rem/1 Inter,ui-sans-serif,sans-serif;color:#7b8796}
+.model-principles h3{font-size:1.05rem;margin:12px 0 8px}
+.model-principles p{margin:0;color:var(--muted);font-size:.9rem}
+
+.publication-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.publication-card{border:1px solid var(--line);background:#fff;text-decoration:none;display:flex;flex-direction:column;min-width:0}
+.publication-card img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;border-bottom:1px solid var(--line)}
+.publication-card--image img[alt="Hans Visser"]{aspect-ratio:1/1;object-fit:cover;object-position:center top}
+.publication-card__body{padding:22px;display:flex;flex-direction:column;flex:1}
+.publication-card .meta{font:800 .68rem/1.2 Inter,ui-sans-serif,sans-serif;text-transform:uppercase;letter-spacing:.06em;color:#718096}
+.publication-card h3{font-size:1.45rem;margin:12px 0 10px}
+.publication-card p{margin:0 0 18px;color:var(--muted)}
+.publication-card .arrow{margin-top:auto;font-weight:800;font-family:Inter,ui-sans-serif,sans-serif}
+.media-thumb{display:block;width:100%;border:1px solid var(--line)}
+.media-embeds{display:grid;gap:14px}
+.spotify-window{overflow:hidden;background:#fff}
+.publication-links{margin-top:22px}
+
+.toolbox-example-intro{display:grid;grid-template-columns:minmax(0,1fr) minmax(320px,.85fr);gap:30px;align-items:center;padding:24px 0 32px;border-bottom:1px solid var(--line);margin-bottom:32px}
+.toolbox-example-intro h2{font-size:clamp(1.9rem,3vw,2.8rem);margin:8px 0 10px}
+.toolbox-example-intro p{margin:0;color:var(--muted);max-width:62ch}
+.toolbox-example-path{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+.toolbox-example-path span{padding:12px 8px;border-top:3px solid var(--accent);background:var(--soft);font:800 .7rem/1.3 Inter,ui-sans-serif,sans-serif;text-align:center}
+
+.workform-example-section{background:var(--soft)}
+.workform-example-grid{display:grid;grid-template-columns:minmax(220px,.7fr) minmax(0,1.3fr);gap:36px;align-items:start}
+.workform-example-grid h2{font-size:clamp(1.7rem,3vw,2.6rem);margin:10px 0 0}
+.workform-example-card{background:#fff;border-left:4px solid var(--accent);padding:24px 26px}
+.workform-example-card p{margin:0;font-size:1.08rem;line-height:1.62;color:#3d4959}
+
+@media(max-width:980px){
+  .case-study{grid-template-columns:1fr}
+  .case-study__route{grid-template-columns:repeat(5,minmax(120px,1fr));overflow-x:auto;padding-bottom:6px}
+  .model-principles{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .publication-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .toolbox-example-intro{grid-template-columns:1fr}
+}
+@media(max-width:900px){
+  html{scroll-padding-top:72px}
+  .nav{min-height:58px;padding:10px 16px;align-items:center!important;display:flex!important;position:relative}
+  .nav-links{display:none!important}
+  .mobile-nav{display:block}
+  .brand img{width:34px;height:34px}
+  .hero-grid{padding:44px 0 38px!important;gap:28px}
+  .section{padding:46px 0!important}
+  .page-hero{padding:46px 0 30px!important}
+  h1{font-size:clamp(2.45rem,12vw,3.7rem)!important;max-width:none}
+  .lede{font-size:1.05rem}
+  .case-study{padding:18px}
+  .case-study__route{display:grid;grid-template-columns:1fr;overflow:visible}
+  .case-study__route>div{padding:13px 14px}
+  .profile-grid,.profile-grid--wide{grid-template-columns:1fr;gap:26px}
+  .profile-photo{max-width:280px}
+  .model-principles{grid-template-columns:1fr}
+  .publication-grid{grid-template-columns:1fr}
+  .media-feature{grid-template-columns:1fr!important}
+  .toolbox-example-path{grid-template-columns:1fr}
+  .toolbox-example-path span{text-align:left}
+  .workform-example-grid{grid-template-columns:1fr;gap:18px}
+  .toolbox-card-meta{flex-wrap:wrap;justify-content:flex-start}
+  .pdf-figure{overflow:visible!important;padding:16px 12px}
+  .pdf-figure svg{display:block!important;width:100%!important;min-width:0!important;max-width:100%!important;height:auto!important}
+  .pillar-visual{max-width:100%}
+  .embed-card{padding:8px}
+  .embed-window,.embed-window.app{width:100%;max-width:100%}
+  .app-showcase{grid-template-columns:1fr!important}
+}
+@media(max-width:480px){
+  .wrap{padding-left:17px;padding-right:17px}
+  .button-row{display:grid;grid-template-columns:1fr}
+  .button{text-align:center}
+  .workform-visual{padding:16px}
+  .workform-visual-node{min-height:0}
+  .footer-grid{display:block}
+}
 '''
 
 CHROME_CSS = r'''
@@ -338,15 +474,38 @@ def esc(value: str) -> str:
     return html.escape(value, quote=True)
 
 def nav(active: str = "") -> str:
-    links = [("pijlers", "/twee-pijlers/", "Twee pijlers"), ("workshop", "/workshop-ai/", "Workshop AI"), ("werkvormen", "/werkvormen/", "Werkvormen"), ("praktijk", "/praktijk/", "Praktijk"), ("publicaties", "/publicaties/", "Publicaties"), ("tools", "/tools/", "Tools")]
+    links = [
+        ("model", "/", "EAI model"),
+        ("werkvormen", "/werkvormen/", "Werkvormen"),
+        ("praktijk", "/praktijk/", "Praktijk"),
+        ("publicaties", "/publicaties/", "Publicaties"),
+        ("tools", "/tools/", "Tools"),
+        ("over", "/over/", "Over"),
+    ]
     items = "".join(
         f'<a href="{href}"' + (' aria-current="page"' if key == active else "") + f'>{label}</a>'
         for key, href, label in links
     )
-    return f'<header class="site-header"><nav class="nav"><a class="brand" href="/" aria-label="EAI home"><img src="/assets/eai-logo.svg" alt="EAI"></a><div class="nav-links">{items}<a class="nav-cta" href="mailto:{EMAIL}">Contact</a></div></nav></header>'
+    mobile_items = "".join(
+        f'<a href="{href}"' + (' aria-current="page"' if key == active else "") + f'>{label}</a>'
+        for key, href, label in links
+    )
+    return (
+        f'<header class="site-header"><nav class="nav">'
+        f'<a class="brand" href="/" aria-label="EAI home"><img src="/assets/eai-logo.svg" alt="EAI"></a>'
+        f'<div class="nav-links">{items}<a class="nav-cta" href="mailto:{EMAIL}">Contact</a></div>'
+        f'<details class="mobile-nav"><summary>Menu</summary><div class="mobile-nav-panel">{mobile_items}<a href="mailto:{EMAIL}">Contact</a></div></details>'
+        f'</nav></header>'
+    )
 
 def footer() -> str:
-    return f'<footer class="site-footer"><div class="wrap footer-grid"><p style="display:flex;gap:12px;align-items:center"><img src="/assets/eai-logo.svg" alt="" width="42" height="42"><span><strong>EAI</strong> · Hans Visser<br>AI, leren en professioneel handelen.</span></p><p><a href="mailto:{EMAIL}">{EMAIL}</a> · <a href="{GITHUB}" target="_blank" rel="noopener">GitHub</a></p></div></footer>'
+    return (
+        f'<footer class="site-footer"><div class="wrap footer-grid">'
+        f'<p style="display:flex;gap:12px;align-items:center"><img src="/assets/eai-logo.svg" alt="" width="42" height="42">'
+        f'<span><strong>EAI</strong> · Hans Visser<br>AI, leren en professioneel handelen.</span></p>'
+        f'<p><a href="/over/">Over EAI en Hans</a> · <a href="mailto:{EMAIL}">{EMAIL}</a> · '
+        f'<a href="{GITHUB}" target="_blank" rel="noopener">GitHub</a></p></div></footer>'
+    )
 
 def doc(title: str, body: str, canonical_path: str, active: str = "", description: str = "") -> str:
     desc = description or "EAI — Educational AI, leren en eigenaarschap."
@@ -395,7 +554,7 @@ def inject_embed(source: Path, canonical_path: str, fallback_title: str, footer_
                 head_parts.append(str(node))
     body_inner = soup.body.decode_contents() if soup.body else src
     body_inner = rewrite_legacy_links(body_inner)
-    chrome = f'<header class="eai-site-nav"><div class="eai-site-nav__inner"><a class="eai-site-nav__brand" href="/" aria-label="EAI home"><img src="/assets/eai-logo.svg" alt="EAI" width="34" height="34"></a><div class="eai-site-nav__links"><a href="/twee-pijlers/">Twee pijlers</a><a href="/workshop-ai/">Workshop AI</a><a href="/werkvormen/">Werkvormen</a><a href="/praktijk/">Praktijk</a><a href="/publicaties/">Publicaties</a><a href="/tools/">Tools</a><a href="mailto:{EMAIL}">Contact</a></div></div></header>'
+    chrome = f'<header class="eai-site-nav"><div class="eai-site-nav__inner"><a class="eai-site-nav__brand" href="/" aria-label="EAI home"><img src="/assets/eai-logo.svg" alt="EAI" width="34" height="34"></a><div class="eai-site-nav__links"><a href="/">EAI model</a><a href="/werkvormen/">Werkvormen</a><a href="/praktijk/">Praktijk</a><a href="/publicaties/">Publicaties</a><a href="/tools/">Tools</a><a href="/over/">Over</a><a href="mailto:{EMAIL}">Contact</a></div></div></header>'
     foot = f'<footer class="eai-site-footer"><a href="{footer_back}">← Terug</a> · <a href="mailto:{EMAIL}">Contact</a></footer>'
     canonical = f"{BASE_URL}{canonical_path}"
     return f'<!doctype html><html lang="{esc(lang)}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{esc(title)} · EAI</title><link rel="canonical" href="{esc(canonical)}"><link rel="icon" href="/assets/eai-logo.svg" type="image/svg+xml">{"".join(head_parts)}<link rel="stylesheet" href="/assets/article-chrome.css"></head><body>{chrome}{body_inner}{foot}</body></html>'
@@ -420,15 +579,61 @@ def build(scrape: Path, out: Path) -> None:
     write(out, "assets/eai-logo.svg", LOGO_SVG)
 
     home_body = f'''<main>
-<section class="hero"><div class="wrap hero-grid"><div><div class="eyebrow">AI, MENS & TAAL</div><h1>Twee pijlers voor AI in onderwijs.</h1><p class="lede">Effectieve inzet van AI vraagt kennis van twee kanten: <strong>hoe leren werkt</strong> en <strong>hoe taalmodellen werken</strong>. Pas waar die twee elkaar raken, kun je bepalen wat AI in een concrete leerhandeling wel en niet moet doen.</p><div class="button-row"><a class="button" href="/twee-pijlers/">Bekijk de twee pijlers</a><a class="button secondary" href="/workshop-ai/">Naar Workshop AI</a></div></div><figure class="pdf-figure" aria-label="Van informatie via een beslispunt naar menselijk handelen"><svg viewBox="0 0 520 260" role="img"><g class="stroke"><rect x="48" y="76" width="78" height="104"/><rect x="62" y="62" width="78" height="104"/><rect x="76" y="48" width="78" height="104"/><path d="M70 103h38M70 124h38M70 145h28"/><circle cx="424" cy="91" r="28"/><path d="M376 182c8-38 28-57 48-57s41 19 49 57"/></g><path class="dash" d="M164 115h108M316 115h64"/><circle class="accent-fill" cx="294" cy="115" r="8"/><path class="accent-stroke" d="M446 38a17 17 0 1 1-13-8"/></svg><figcaption>Niet alleen: wat kan AI? Wel: wat doet AI precies op het moment waarop leren moet plaatsvinden?</figcaption></figure></div></section>
-<section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Het vertrekpunt</div><div><h2>Beide pijlers zijn nodig.</h2><p>Onderwijskundige kennis zonder zicht op de werking van AI mist een deel van de nieuwe werkelijkheid. Technische AI-kennis zonder inzicht in leren zegt nog niet of een toepassing onderwijskundig klopt.</p></div></div><figure class="pdf-figure pillar-visual" aria-label="Twee kennisgebieden die samenkomen"><svg viewBox="0 0 560 220" role="img"><g class="stroke"><rect x="105" y="58" width="82" height="112"/><path d="M126 93c14-10 25 10 39 0M126 113c14-10 25 10 39 0M126 133c14-10 25 10 39 0"/><rect x="373" y="58" width="82" height="112"/><rect x="396" y="92" width="36" height="36"/><path d="M396 100h-12M396 110h-12M396 120h-12M396 130h-12M432 100h12M432 110h12M432 120h12M432 130h12"/></g><path class="dash" d="M187 91c42 0 57 37 83 62M373 91c-42 0-57 37-83 62"/><circle class="accent-fill" cx="280" cy="164" r="8"/></svg><figcaption>De echte ontwerpvragen ontstaan waar kennis van leren en kennis van AI elkaar raken.</figcaption></figure><div class="pillars"><article class="pillar"><div class="num">Pijler 01</div><h3>Hoe leren werkt</h3><p>Leren vraagt actieve verwerking: voorkennis ophalen, betekenis geven, relaties leggen, oefenen, fouten herstellen, keuzes maken en kennis opnieuw kunnen inzetten.</p><p><a href="/twee-pijlers/#leren">Lees verder →</a></p></article><article class="pillar"><div class="num">Pijler 02</div><h3>Hoe taalmodellen werken</h3><p>Taalmodellen genereren op basis van context en patronen. Ze kunnen structureren, formuleren, samenvatten en redeneringsstappen suggereren. Precies daardoor kunnen ze ondersteunen, maar ook menselijk denkwerk overnemen.</p><p><a href="/twee-pijlers/#taalmodellen">Lees verder →</a></p></article></div><p class="bridge"><strong>De ontwerpvraag zit ertussen.</strong> Welke menselijke handeling moet hier zichtbaar blijven, en welke AI-bijdrage past daarbij?</p></div></section>
-<section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Van inzicht naar handelen</div><div><h2>Niet alleen lezen. Proberen.</h2><p>De werkvormen maken het leerproces en de verdeling van denkwerk concreet in een eigen taak of les.</p></div></div><div class="workform"><div><span class="badge">Werkvorm</span></div><div><strong>Justification Mapping</strong><p>Maak zichtbaar wat uit AI-suggesties is geaccepteerd, verworpen of veranderd, en waarom.</p></div><a href="/werkvormen/justification-mapping/">Open →</a></div><div class="workform"><div><span class="badge">Analyse</span></div><div><strong>Wie doet welke handeling?</strong><p>Breng de feitelijke taakverdeling tussen mens en AI in kaart en lees die ten opzichte van de kernhandeling.</p></div><a href="/werkvormen/task-density-scan/">Open →</a></div><div class="workform"><div><span class="badge">Ontwerp</span></div><div><strong>Bewijs van leren</strong><p>Bepaal vooraf wat zichtbaar moet worden om iets te kunnen zeggen over menselijke uitvoering of begrip.</p></div><a href="/werkvormen/bewijs-van-leren/">Open →</a></div></div></section>
-<section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Samen met Onderwijs AI</div><div><h2>Dezelfde lijn in toetsing en implementatie.</h2><p>In gezamenlijke stukken komt dezelfde beweging terug: niet achteraf proberen AI te detecteren, maar leerdoelen, leeractiviteiten, toetsing en dagelijkse werkwijzen opnieuw ontwerpen.</p></div></div><div class="reading-strip"><article class="reading"><h3>De gevolgen van AI op toetsing</h3><p>Leren en presteren zijn niet hetzelfde. De hele keten van leerdoel tot beoordeling moet met een onderwijs- én een AI-bril worden bekeken.</p><a href="https://onderwijs-ai.nl/blog/de-gevolgen-van-ai-toetsing" target="_blank" rel="noopener">Lees bij Onderwijs AI →</a></article><article class="reading"><h3>AI-implementaties in kleine stappen</h3><p>AI invoeren is geen licentie- of toolvraag alleen. Het vraagt gedragsverandering en een route van inzicht naar nieuwe routines.</p><a href="https://onderwijs-ai.nl/blog/ai-implementatie-onderwijs-gedragsverandering" target="_blank" rel="noopener">Lees bij Onderwijs AI →</a></article></div></div></section>
-<section class="section"><div class="wrap"><div class="media-feature"><div class="media-copy"><div class="kicker">In gesprek</div><h2>AI in onderwijs, zonder bij de tool te beginnen.</h2><p>In aflevering 71 van de researchED Nederland Podcast schuif ik aan bij Jan van de Ven en Erik Ex. Het gesprek gaat over AI in onderwijs en de vraag wat er in de praktijk anders moet wanneer systemen steeds meer werk kunnen uitvoeren.</p><p class="source-note">researchED Nederland Podcast #71 · 9 april 2026</p><div class="button-row"><a class="button secondary" href="https://researched.eu/2026/04/09/de-researched-nederland-podcast-aflevering-71-ai-in-ons-onderwijs-en-uitwerking-van-het-inspectie-oordeel/" target="_blank" rel="noopener">Bekijk video bij researchED</a><a class="button secondary" href="https://open.spotify.com/episode/4ORaDFgdorGuJsP44N0T9E" target="_blank" rel="noopener">Luister op Spotify</a></div></div><div class="embed-card"><div class="embed-top"><span><span class="embed-dots"><i></i><i></i><i></i></span></span><span>researchED Nederland Podcast #71</span></div><div class="embed-window"><iframe src="https://www.youtube-nocookie.com/embed/4GpAPMdP5hA?rel=0" title="researchED Nederland Podcast #71 met Hans Visser" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div></div></div></div></section>
-<section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Praktijk</div><div><h2>Wat gebeurt er als je dit bouwt?</h2><p>De projecten zijn voorbeelden van dezelfde ontwerpkeuzes in verschillende vormen. Ze zijn niet het model zelf.</p></div></div><div class="card-grid"><a class="card" href="/praktijk/#classroom"><span class="meta">Lespraktijk</span><h3>EAI Classroom</h3><p>Van leerdoel en succescriteria naar misconceptions, interventies en bewijs van leren.</p><span class="arrow">Bekijk →</span></a><a class="card" href="/praktijk/#hub"><span class="meta">Leeromgeving</span><h3>EAIHUB</h3><p>Ondersteuning koppelen aan de positie in het leerproces en zichtbaar houden wat de leerling doet.</p><span class="arrow">Bekijk →</span></a><a class="card" href="https://eai-prompt.lovable.app/" target="_blank" rel="noopener"><span class="meta">Taal & systeem</span><h3>Prompt Builder</h3><p>Een concreet voorbeeld van hoe woorden, context, workflow en guardrails bepalen welke rol AI krijgt.</p><span class="arrow">Open →</span></a></div></div></section>
-<section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Publicaties</div><div><h2>Van output naar proces.</h2><p>De publicaties verdiepen de vraag wat er met leren en menselijk handelen gebeurt wanneer AI een deel van het werk uitvoert.</p></div></div><article class="feature-publication"><div><div class="kicker">Start hier</div><h2>De vraag die we vergeten in het AI-debat</h2><p>De redactionele ruggengraat van deze site: eerst het proces, dan de fase, dan de kernhandeling, en pas daarna AI.</p><p><a class="button" href="/publicaties/de-vraag-die-we-vergeten/">Lees het artikel</a></p></div><div class="question-mark">?</div></article><div class="card-grid"><a class="card" href="/publicaties/the-act-of-learning/"><span class="meta">Essay</span><h3>The Act of Learning</h3><p>Over Reverse Scaffolding en de ruimte die nodig blijft om zelf te denken, proberen en herzien.</p><span class="arrow">Lees →</span></a><a class="card" href="/publicaties/beyond-explainability/"><span class="meta">Paper</span><h3>Beyond Explainability</h3><p>Didactic Controllability en Task Density als manieren om menselijk handelen zichtbaar te houden.</p><span class="arrow">Lees →</span></a><a class="card" href="/publicaties/task-density/"><span class="meta">Paper</span><h3>Task Density</h3><p>Over de verdeling van cognitief werk tussen mens en systeem.</p><span class="arrow">Lees →</span></a></div><p style="margin-top:28px"><a href="/publicaties/">Alle publicaties bekijken →</a></p></div></section>
+<section class="hero"><div class="wrap hero-grid">
+<div><div class="eyebrow">EAI model</div><h1>Wat moet de mens hier zelf blijven doen?</h1>
+<p class="lede">EAI helpt je bepalen welke rol AI in een leer- of professioneel proces mag krijgen. Je begint bij het doel, de fase en de menselijke handeling die ertoe doet. Pas daarna bepaal je wat AI uitvoert en welk bewijs je nodig hebt.</p>
+<div class="button-row"><a class="button" href="#model">Zo werkt EAI</a><a class="button secondary" href="/werkvormen/">Naar de werkvormen</a></div></div>
+<div class="model-stack" aria-label="De vijf vragen van EAI">
+<div><span>01</span><strong>Proces en doel</strong><p>Wat probeer je op te bouwen of zichtbaar te maken?</p></div>
+<div><span>02</span><strong>Fase</strong><p>Waar bevindt de leerling of professional zich nu?</p></div>
+<div><span>03</span><strong>Kernhandeling</strong><p>Welke handeling moet de mens hier zelf betekenis geven?</p></div>
+<div><span>04</span><strong>Taakverdeling</strong><p>Wat doet de mens, wat doet AI en in welke volgorde?</p></div>
+<div><span>05</span><strong>Output en bewijs</strong><p>Wat heb je daarna werkelijk gezien of aangetoond?</p></div>
+</div></div></section>
+
+<section class="section" id="model"><div class="wrap"><div class="section-head"><div class="kicker">EAI in één voorbeeld</div><div><h2>Een goed product zegt nog niet wie het relevante werk deed.</h2><p>Daarom kijkt EAI naar de handeling achter de output.</p></div></div>
+<div class="case-study">
+<div class="case-study__task"><span class="badge">Situatie</span><h3>Een leerling schrijft met AI een betoog.</h3><p>De tekst is sterk. Maar de docent wil kunnen zeggen dat de leerling zelf argumenten kan wegen en een conclusie kan onderbouwen.</p></div>
+<div class="case-study__route">
+<div><span>Doel</span><strong>Argumenteren</strong></div>
+<div><span>Fase</span><strong>Zelfstandig oefenen</strong></div>
+<div><span>Kernhandeling</span><strong>Argumenten wegen</strong></div>
+<div><span>AI</span><strong>Formulering en feedback</strong></div>
+<div><span>Bewijs</span><strong>Nieuwe stelling zonder inhoudelijke AI-hulp</strong></div>
+</div></div>
+<p class="bridge"><strong>De ontwerpkeuze volgt uit het leerproces.</strong> AI mag veel doen, zolang duidelijk blijft welke menselijke handeling je wilt opbouwen of beoordelen en waar die opnieuw zichtbaar wordt.</p>
+</div></section>
+
+<section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Waarom twee pijlers?</div><div><h2>Je moet zowel leren als AI begrijpen.</h2><p>EAI verbindt onderwijskundige kennis met kennis van wat taalmodellen feitelijk doen. Zonder die combinatie blijft een oordeel over AI te algemeen.</p></div></div>
+<div class="pillars"><article class="pillar"><div class="num">Pijler 01</div><h3>Hoe leren werkt</h3><p>Welke verwerking, oefening, fout, keuze of herhaling draagt in deze fase bij aan leren?</p><p><a href="/twee-pijlers/#leren">Lees verder →</a></p></article>
+<article class="pillar"><div class="num">Pijler 02</div><h3>Hoe taalmodellen werken</h3><p>Welke stappen kan het systeem al structureren, voorspellen, formuleren, controleren of voorstellen?</p><p><a href="/twee-pijlers/#taalmodellen">Lees verder →</a></p></article></div></div></section>
+
+<section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Van model naar praktijk</div><div><h2>Gebruik EAI om iets te doen.</h2><p>De toolbox vertaalt dezelfde vijf vragen naar concrete handelingen voor leerlingen, docenten en teams.</p></div></div>
+<div class="card-grid">
+<a class="card" href="/werkvormen/kernhandeling-check/"><span class="meta">Start hier</span><h3>Kernhandeling-check</h3><p>Bepaal eerst welke menselijke handeling in deze fase inhoudelijk betekenis moet krijgen.</p><span class="arrow">Open →</span></a>
+<a class="card" href="/werkvormen/ai-role-handback-plan/"><span class="meta">Ontwerp</span><h3>AI Role &amp; Handback Plan</h3><p>Maak concreet wat AI doet en waar de relevante handeling teruggaat naar de mens.</p><span class="arrow">Open →</span></a>
+<a class="card" href="/werkvormen/bewijs-van-leren/"><span class="meta">Bewijs</span><h3>Bewijs van leren</h3><p>Kies bewijs dat past bij de claim die je over menselijke beheersing wilt kunnen doen.</p><span class="arrow">Open →</span></a>
+</div><p style="margin-top:28px"><a href="/werkvormen/">Bekijk alle 57 werkvormen →</a></p></div></section>
+
+<section class="section profile-section"><div class="wrap"><div class="profile-grid">
+<div class="profile-photo"><img src="{PORTRAIT_URL}" alt="Hans Visser" loading="lazy" decoding="async" referrerpolicy="no-referrer"></div>
+<div><div class="kicker">Achter EAI</div><h2>Hans Visser</h2><p class="profile-lede">Onderwijsleider, AI-adviseur en ontwikkelaar van het EAI-model.</p>
+<p>EAI ontstond uit een praktische onderwijs­vraag: wanneer AI steeds meer stappen van een taak kan uitvoeren, hoe bepalen we dan welk menselijk handelen voor leren en professioneel oordeel behouden moet blijven?</p>
+<p>Ik werk als conrector op het Emmauscollege in Rotterdam en werk daarnaast met scholen en onderwijsorganisaties aan didactische en organisatorische keuzes rond AI.</p>
+<div class="button-row"><a class="button secondary" href="/over/">Over EAI en Hans</a><a class="button secondary" href="https://onderwijs-ai.nl/over-ons/team/hans-visser" target="_blank" rel="noopener">Profiel bij Onderwijs AI</a></div></div>
+</div></div></section>
+
+<section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Publicaties en gesprekken</div><div><h2>Dezelfde vraag, vanuit verschillende kanten.</h2><p>Publicaties, praktijkverhalen en gesprekken laten zien hoe de EAI-lijn zich heeft ontwikkeld.</p></div></div>
+<div class="media-feature"><div class="media-copy"><div class="kicker">researchED Nederland Podcast #71</div><h2>AI in ons onderwijs</h2><p>Een gesprek over AI in onderwijs, leren en de keuzes die scholen zelf moeten blijven maken.</p><p class="source-note">9 april 2026 · researchED Nederland</p><div class="button-row"><a class="button secondary" href="https://researched.eu/2026/04/09/de-researched-nederland-podcast-aflevering-71-ai-in-ons-onderwijs-en-uitwerking-van-het-inspectie-oordeel/" target="_blank" rel="noopener">Bekijk bij researchED</a></div></div>
+<div class="embed-card"><div class="embed-top"><span>researchED Nederland</span><span>Podcast #71</span></div><div class="embed-window"><iframe src="https://www.youtube-nocookie.com/embed/4GpAPMdP5hA?rel=0" title="researchED Nederland Podcast #71 met Hans Visser" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div></div></div>
+<div class="reading-strip publication-links">
+<article class="reading"><h3>De gevolgen van AI op toetsing</h3><p>Over leerdoelen, leeractiviteiten en beoordeling wanneer AI delen van het werk kan uitvoeren.</p><a href="https://onderwijs-ai.nl/blog/de-gevolgen-van-ai-toetsing" target="_blank" rel="noopener">Lees bij Onderwijs AI →</a></article>
+<article class="reading"><h3>AI als (on)gewenste collega</h3><p>Kennisnet over de manier waarop AI op het Emmauscollege als onderwijs- en organisatievraag wordt benaderd.</p><a href="https://www.kennisnet.nl/artificial-intelligence/nadenken-over-ai-op-je-school-ai-als-ongewenste-collega/" target="_blank" rel="noopener">Lees bij Kennisnet →</a></article>
+</div>
+<p style="margin-top:28px"><a href="/publicaties/">Alle publicaties en media →</a></p></div></section>
 </main>'''
-    write(out, "index.html", doc("Twee pijlers voor AI in onderwijs", home_body, "/", description="EAI vertrekt vanuit twee pijlers: hoe leren werkt en hoe taalmodellen werken."))
+
+    write(out, "index.html", doc("EAI model voor AI en leren", home_body, "/", "model", description="EAI helpt bepalen welke menselijke handeling in een leer- of professioneel proces betekenis moet houden wanneer AI meedoet."))
 
     pillars_body = '''<main><section class="page-hero"><div class="wrap"><div class="eyebrow">Twee pijlers</div><h1>Je hebt beide nodig om goede keuzes te maken.</h1><p class="lede">De ene pijler gaat over leren. De andere over de technologie die steeds meer stappen kan uitvoeren. Het onderwijskundige ontwerp ontstaat waar die twee kennisgebieden elkaar raken.</p></div></section>
 <section class="section"><div class="wrap"><figure class="pdf-figure pillar-visual" aria-label="Twee pijlers die samenkomen in de ontwerpvraag"><svg viewBox="0 0 560 220" role="img"><g class="stroke"><rect x="105" y="58" width="82" height="112"/><path d="M126 93c14-10 25 10 39 0M126 113c14-10 25 10 39 0M126 133c14-10 25 10 39 0"/><rect x="373" y="58" width="82" height="112"/><rect x="396" y="92" width="36" height="36"/><path d="M396 100h-12M396 110h-12M396 120h-12M396 130h-12M432 100h12M432 110h12M432 120h12M432 130h12"/></g><path class="dash" d="M187 91c42 0 57 37 83 62M373 91c-42 0-57 37-83 62"/><circle class="accent-fill" cx="280" cy="164" r="8"/></svg><figcaption>De ontwerpvraag ontstaat niet in één pijler, maar precies waar leren en AI elkaar raken.</figcaption></figure></div></section>
@@ -446,27 +651,28 @@ def build(scrape: Path, out: Path) -> None:
     write(out, "workshop-ai/index.html", doc("Workshop AI", workshop_body, "/workshop-ai/", "workshop", "Workshopreeks over leren, taalmodellen, denkwerk en herontwerp."))
 
     workforms = load_workforms()
+    workforms_by_slug = {item["slug"]: item for item in workforms}
     workforms_body = render_workforms_index(workforms)
     write(out, "werkvormen/index.html", doc("EAI Toolbox", workforms_body, "/werkvormen/", "werkvormen", "EAI-werkvormen om menselijk handelen, taakverdeling, bewijs en zelfstandigheid zichtbaar te maken."))
 
     jm_body = '''<main><section class="page-hero"><div class="wrap"><div class="eyebrow">Werkvorm · Workshop AI</div><h1>Justification Mapping</h1><p class="lede">AI kan een formulering, argument, samenvatting of andere route voorstellen. Justification Mapping maakt zichtbaar wat de leerling daarvan accepteert, verwerpt of verandert, en waarom.</p></div></section><section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Waarvoor?</div><div><h2>Niet alleen laten zien dát er een keuze is gemaakt.</h2><p>De werkvorm richt zich op de grens tussen AI-assistentie en menselijk begrip. Een leerling kan een AI-suggestie aanpassen zonder de inhoudelijke afweging zelf te hebben gemaakt. Daarom wordt juist de rationale zichtbaar.</p></div></div><figure class="pdf-figure" aria-label="Justification Mapping van AI-suggestie naar menselijke verantwoording"><svg viewBox="0 0 760 220" role="img"><g class="stroke"><rect x="70" y="74" width="130" height="70" rx="4"/><rect x="315" y="50" width="130" height="70" rx="4"/><rect x="315" y="130" width="130" height="70" rx="4"/><rect x="560" y="74" width="130" height="70" rx="4"/></g><path class="dash" d="M200 109h115M445 85h115M445 165c58 0 72-26 115-45"/><circle class="accent-fill" cx="258" cy="109" r="8"/><text x="135" y="114" text-anchor="middle" font-size="14" fill="#687487">AI-suggestie</text><text x="380" y="92" text-anchor="middle" font-size="14" fill="#687487">accepteren</text><text x="380" y="172" text-anchor="middle" font-size="14" fill="#687487">verwerpen / wijzigen</text><text x="625" y="114" text-anchor="middle" font-size="14" fill="#687487">waarom?</text></svg><figcaption>Niet alleen vastleggen wat veranderde, maar zichtbaar maken waarom de leerling iets overnam, verwierp of herschreef.</figcaption></figure><div class="panel"><h3>Breng één AI-ondersteunde keuze in kaart</h3><ol><li><strong>Suggestie:</strong> wat stelde AI voor?</li><li><strong>Accepteren:</strong> wat heb je overgenomen?</li><li><strong>Verwerpen:</strong> wat heb je bewust niet gebruikt?</li><li><strong>Waarom:</strong> welke inhoudelijke reden lag achter beide keuzes?</li><li><strong>Eigen wijziging:</strong> wat heb je zelf toegevoegd, veranderd of opnieuw opgebouwd?</li><li><strong>Verdedigen:</strong> kun je de uiteindelijke keuze zonder het systeem uitleggen en onderbouwen?</li></ol></div></div></section><section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Belangrijk onderscheid</div><div><h2>Dit is procesverantwoording rond AI-assistentie.</h2><p>Binnen deze workshop is Justification Mapping geen algemene methodekeuzekaart. Het doel is zichtbaar maken waar een AI-bijdrage ophoudt en de inhoudelijke afweging van de leerling begint.</p></div></div><p><a class="button" href="https://eai-prompt.lovable.app/" target="_blank" rel="noopener">Bekijk in Prompt Builder hoe de AI-rol wordt gestuurd</a></p></div></section></main>'''
-    write(out, "werkvormen/justification-mapping/index.html", doc("Justification Mapping", jm_body, "/werkvormen/justification-mapping/", "werkvormen", "Justification Mapping als EAI-werkvorm voor zichtbare keuzes en procesverantwoording."))
+    write(out, "werkvormen/justification-mapping/index.html", doc("Justification Mapping", append_workform_example(jm_body, workforms_by_slug["justification-mapping"]), "/werkvormen/justification-mapping/", "werkvormen", "Justification Mapping als EAI-werkvorm voor zichtbare keuzes en procesverantwoording."))
     core_action_body = '''<main><section class="page-hero"><div class="wrap"><div class="eyebrow">Werkvorm</div><h1>Kernhandeling-check</h1><p class="lede">Welke stap moet hier door de leerling of professional zelf betekenis krijgen? In Core-termen: wat is in deze context de relevante <strong>core human action</strong>?</p></div></section><section class="section"><div class="wrap"><div class="panel"><h3>Werk van buiten naar binnen</h3><ol><li><strong>Proces:</strong> wat moet uiteindelijk geleerd, beheerst of professioneel beoordeeld worden?</li><li><strong>Fase / process position:</strong> waar bevindt de persoon zich nu in dat proces?</li><li><strong>Handelingen:</strong> welke stappen worden hier uitgevoerd?</li><li><strong>Kern:</strong> aan welke stap moet de mens op dit moment zelf inhoudelijke betekenis geven?</li><li><strong>AI-check:</strong> voert AI precies die handeling uit, ondersteunt het eromheen, of doet het iets anders?</li><li><strong>Evidence:</strong> wat moet zichtbaar zijn als je later iets over menselijke beheersing of professioneel oordeel wilt zeggen?</li></ol></div></div></section><section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Test</div><div><h2>Haal de AI-bijdrage denkbeeldig weg.</h2><p>Verdwijnt daarmee alleen routinewerk, of verdwijnt de stap waaraan de leerling juist zelf betekenis moest geven? Dat onderscheid bepaalt de volgende ontwerpkeuze.</p></div></div><p><a href="/publicaties/de-vraag-die-we-vergeten/">Lees de redenering achter deze vraag →</a></p></div></section></main>'''
-    write(out, "werkvormen/kernhandeling-check/index.html", doc("Kernhandeling-check", core_action_body, "/werkvormen/kernhandeling-check/", "werkvormen", "Bepaal de contextafhankelijke core human action voordat je AI inzet."))
+    write(out, "werkvormen/kernhandeling-check/index.html", doc("Kernhandeling-check", append_workform_example(core_action_body, workforms_by_slug["kernhandeling-check"]), "/werkvormen/kernhandeling-check/", "werkvormen", "Bepaal de contextafhankelijke core human action voordat je AI inzet."))
     td_body = '''<main><section class="page-hero"><div class="wrap"><div class="eyebrow">Werkvorm</div><h1>Task Density scan</h1><p class="lede">Niet hoeveel AI er wordt gebruikt is de kern. De vraag is wie welk betekenisvol werk uitvoert.</p></div></section><section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Stap 1</div><div><h2>Neem één concrete opdracht.</h2><p>Schrijf niet “AI bij Nederlands” op. Kies één taak waarin een leerling iets moet leren of laten zien.</p></div></div><figure class="pdf-figure" aria-label="Task Density verdeelt handelingen tussen mens en AI"><svg viewBox="0 0 720 230" role="img"><g class="stroke"><circle cx="145" cy="70" r="24"/><path d="M105 155c7-34 23-50 40-50s33 16 40 50"/><rect x="535" y="52" width="72" height="58" rx="4"/><path d="M553 52v-10M571 52v-10M589 52v-10M553 110v10M571 110v10M589 110v10"/></g><path class="dash" d="M200 95h310"/><circle class="accent-fill" cx="285" cy="95" r="7"/><circle class="accent-fill" cx="430" cy="95" r="7"/><text x="145" y="195" text-anchor="middle" font-size="14" fill="#687487">mens</text><text x="570" y="195" text-anchor="middle" font-size="14" fill="#687487">AI</text><text x="360" y="135" text-anchor="middle" font-size="14" fill="#687487">welke handelingen verschuiven?</text></svg><figcaption>Task Density gaat niet om “hoeveel AI”, maar om welke relevante handelingen van actor veranderen.</figcaption></figure><div class="panel"><h3>Maak een kaart van de werkelijke handelingen</h3><ol><li>Ontleed de fase in concrete handelingen en deelhandelingen.</li><li>Noteer per handeling: mens, AI, gedeeld of nog onbekend.</li><li>Beschrijf wanneer AI in beeld komt: vóór, tijdens of na de kernhandeling.</li><li>Noteer welke opties, criteria of routes AI al heeft geselecteerd voordat de mens reageert.</li><li>Bekijk daarna welke menselijke handelingen verdwijnen, verschuiven of een andere betekenis krijgen.</li></ol><p>Gebruik werkwoorden die passen bij de concrete taak. Structureren, formuleren, controleren, kiezen, herzien en verantwoorden zijn voorbeelden, geen vaste checklist.</p></div></div></section><section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Stap 2</div><div><h2>Zoek de handeling die ertoe doet.</h2><p>Welke van deze handelingen moet in deze fase door de leerling zelf inhoudelijke betekenis krijgen? Dat is belangrijker dan een totaalpercentage.</p></div></div><div class="panel"><h3>De beslisvraag</h3><p>Als AI deze handeling uitvoert, wat kan ik daarna nog betrouwbaar zeggen over het leren van de leerling?</p></div></div></section></main>'''
-    write(out, "werkvormen/task-density-scan/index.html", doc("Task Density scan", td_body, "/werkvormen/task-density-scan/", "werkvormen", "Analyseer wie welk denkwerk uitvoert in een AI-ondersteunde taak."))
+    write(out, "werkvormen/task-density-scan/index.html", doc("Task Density scan", append_workform_example(td_body, workforms_by_slug["task-density-scan"]), "/werkvormen/task-density-scan/", "werkvormen", "Analyseer wie welk denkwerk uitvoert in een AI-ondersteunde taak."))
 
     evidence_body = '''<main><section class="page-hero"><div class="wrap"><div class="eyebrow">Werkvorm</div><h1>Bewijs van leren</h1><p class="lede">Een goed eindproduct is bewijs van een goed eindproduct. Het is niet automatisch bewijs dat de onderliggende handeling zelfstandig beheerst wordt.</p></div></section><section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Kies bewust</div><div><h2>Wat wil je eigenlijk kunnen beweren?</h2><p>Lukt het mét hulp? Kan de leerling dezelfde handeling daarna zelfstandig uitvoeren? Kan hij dat later nog? En in een andere situatie?</p></div></div><figure class="pdf-figure" aria-label="Een goed product is niet automatisch bewijs van leren"><svg viewBox="0 0 720 220" role="img"><g class="stroke"><rect x="90" y="65" width="120" height="92"/><path d="M112 92h75M112 112h62M112 132h69"/><circle cx="580" cy="76" r="23"/><path d="M540 162c7-34 23-50 40-50s33 16 40 50"/></g><path class="dash" d="M210 111h116M394 111h146"/><circle class="accent-fill" cx="360" cy="111" r="8"/><text x="150" y="192" text-anchor="middle" font-size="14" fill="#687487">product</text><text x="360" y="192" text-anchor="middle" font-size="14" fill="#687487">≠ automatisch</text><text x="580" y="192" text-anchor="middle" font-size="14" fill="#687487">menselijke beheersing</text></svg><figcaption>Output kan goed zijn terwijl nog onduidelijk is wat de leerling zelfstandig kan uitvoeren.</figcaption></figure><div class="panel"><h3>Drie soorten bewijs</h3><ul><li><strong>Outputbewijs:</strong> laat zien wat is geproduceerd, maar niet vanzelf wie het relevante werk uitvoerde.</li><li><strong>Procesbewijs:</strong> laat keuzes, eerste pogingen, wijzigingen, controles en uitleg zien.</li><li><strong>Zelfstandig bewijs:</strong> laat een nieuwe of vergelijkbare uitvoering zien zonder de relevante AI-bijdrage.</li></ul><p>Retentie en transfer vragen vervolgens een later of betekenisvol ander bewijs-moment. Kies dus eerst welke claim je wilt kunnen doen.</p></div></div></section></main>'''
-    write(out, "werkvormen/bewijs-van-leren/index.html", doc("Bewijs van leren", evidence_body, "/werkvormen/bewijs-van-leren/", "werkvormen", "Kies passend human evidence bij AI-ondersteund leren."))
+    write(out, "werkvormen/bewijs-van-leren/index.html", doc("Bewijs van leren", append_workform_example(evidence_body, workforms_by_slug["bewijs-van-leren"]), "/werkvormen/bewijs-van-leren/", "werkvormen", "Kies passend human evidence bij AI-ondersteund leren."))
 
     first_body = '''<main><section class="page-hero"><div class="wrap"><div class="eyebrow">Werkvorm</div><h1>First attempt & version comparison</h1><p class="lede">Laat eerst iets van de leerling zelf ontstaan. Vergelijk daarna wat met hulp veranderde.</p></div></section><section class="section"><div class="wrap"><div class="panel"><h3>Zo werkt het</h3><ol><li>Laat de leerling een korte eerste poging maken zonder AI.</li><li>Gebruik daarna AI voor een vooraf afgesproken vorm van ondersteuning.</li><li>Bewaar beide versies.</li><li>Laat de leerling drie veranderingen aanwijzen.</li><li>Vraag per verandering: wie stelde dit voor, waarom heb je het overgenomen of verworpen, en wat begrijp je nu anders?</li></ol><p>Het doel is niet bewijzen dat de leerling “zonder AI” werkte. Het doel is zichtbaar maken wat vóór en na ondersteuning door de leerling zelf is gedaan.</p></div></div></section></main>'''
-    write(out, "werkvormen/first-attempt/index.html", doc("First attempt & version comparison", first_body, "/werkvormen/first-attempt/", "werkvormen", "Vergelijk een eerste eigen poging met een latere AI-ondersteunde versie."))
+    write(out, "werkvormen/first-attempt/index.html", doc("First attempt & version comparison", append_workform_example(first_body, workforms_by_slug["first-attempt"]), "/werkvormen/first-attempt/", "werkvormen", "Vergelijk een eerste eigen poging met een latere AI-ondersteunde versie."))
 
     error_body = '''<main><section class="page-hero"><div class="wrap"><div class="eyebrow">Werkvorm</div><h1>Foutanalyse</h1><p class="lede">Een fout verbeteren is iets anders dan een fout herkennen, lokaliseren en verklaren.</p></div></section><section class="section"><div class="wrap"><div class="panel"><h3>Geef niet meteen de oplossing</h3><ol><li>Geef een foutieve redenering, eventueel door AI gegenereerd.</li><li>Laat de leerling aanwijzen waar het voor het eerst misgaat.</li><li>Laat uitleggen waarom die stap niet klopt.</li><li>Vraag wat er vanaf dat punt moet veranderen.</li><li>Laat pas daarna een volledige verbeterde versie maken.</li></ol><p>De kernhandeling ligt bij diagnosticeren en herstellen. AI kan materiaal leveren, maar hoeft het oordeel niet alvast te geven.</p></div></div></section></main>'''
-    write(out, "werkvormen/foutanalyse/index.html", doc("Foutanalyse", error_body, "/werkvormen/foutanalyse/", "werkvormen", "Werkvorm voor zichtbaar diagnosticeren en herstellen van fouten."))
+    write(out, "werkvormen/foutanalyse/index.html", doc("Foutanalyse", append_workform_example(error_body, workforms_by_slug["foutanalyse"]), "/werkvormen/foutanalyse/", "werkvormen", "Werkvorm voor zichtbaar diagnosticeren en herstellen van fouten."))
 
     toollab_body = '''<main><section class="page-hero"><div class="wrap"><div class="eyebrow">Workshop AI · Toollab</div><h1>Dezelfde vraag, twee omgevingen.</h1><p class="lede">Niet elke AI-omgeving krijgt dezelfde context. Dat verandert wat het systeem kan aannemen, onderbouwen en teruggeven.</p></div></section><section class="section"><div class="wrap"><div class="panel"><h3>Werk in tweetallen</h3><ol><li>Kies een realistische leerlingvraag uit je eigen vak.</li><li>Voer die zonder extra context in een algemene AI in.</li><li>Noteer aannames, gaten en sterke punten in de output.</li><li>Gebruik daarna een brongebonden omgeving en voeg twee tot vier relevante bronnen toe.</li><li>Stel exact dezelfde vraag.</li><li>Vergelijk wat verandert en wat níet wordt opgelost door extra bronnen.</li></ol><p>De opbrengst is niet “welke tool wint?”, maar begrip van wat context, bronnen en systeeminrichting doen met het antwoord.</p></div></div></section></main>'''
-    write(out, "werkvormen/toollab/index.html", doc("Toollab", toollab_body, "/werkvormen/toollab/", "werkvormen", "Vergelijk een algemene AI met een brongebonden omgeving."))
+    write(out, "werkvormen/toollab/index.html", doc("Toollab", append_workform_example(toollab_body, workforms_by_slug["toollab"]), "/werkvormen/toollab/", "werkvormen", "Vergelijk een algemene AI met een brongebonden omgeving."))
 
     for item in workforms:
         if item["slug"] in MANUAL_WORKFORMS:
@@ -495,6 +701,29 @@ def build(scrape: Path, out: Path) -> None:
 </main>'''
     write(out, "praktijk/index.html", doc("Praktijk", practice_body, "/praktijk/", "praktijk", "Live voorbeelden van EAI in verschillende contexten: EAI Classroom, EAIHUB, Demo Regio en Prompt Builder."))
 
+    over_body = f'''<main>
+<section class="page-hero"><div class="wrap"><div class="eyebrow">Over EAI</div><h1>Ontstaan vanuit de onderwijspraktijk.</h1><p class="lede">EAI is ontwikkeld om een praktische vraag scherper te beantwoorden: wat moet een leerling of professional zelf blijven doen wanneer AI steeds meer stappen van een taak kan uitvoeren?</p></div></section>
+<section class="section"><div class="wrap"><div class="profile-grid profile-grid--wide">
+<div class="profile-photo"><img src="{PORTRAIT_URL}" alt="Hans Visser" loading="eager" decoding="async" referrerpolicy="no-referrer"></div>
+<div><div class="kicker">Hans Visser</div><h2>Onderwijsleider en ontwikkelaar van EAI.</h2>
+<p class="profile-lede">Conrector op het Emmauscollege in Rotterdam. Daarnaast actief als AI-adviseur en spreker rond AI, leren en onderwijsontwerp.</p>
+<p>Mijn vertrekpunt is meestal niet: welke AI-tool zullen we gebruiken? Ik wil eerst weten wat er in het leren of professionele handelen moet gebeuren. Welke keuze, analyse, fout, afweging of uitvoering moet bij de mens blijven? Pas daarna krijgt AI een rol.</p>
+<p>Die manier van kijken groeide vanuit schoolpraktijk, experimenten met AI en gesprekken met docenten, leerlingen, schoolleiders en ontwikkelaars. EAI maakt die afweging expliciet: proces en doel, fase, kernhandeling, taakverdeling en bewijs.</p>
+<div class="button-row"><a class="button secondary" href="https://onderwijs-ai.nl/over-ons/team/hans-visser" target="_blank" rel="noopener">Onderwijs AI-profiel</a><a class="button secondary" href="https://nl.linkedin.com/in/hans-visser-92531a105" target="_blank" rel="noopener">LinkedIn</a></div>
+<p class="source-note">Portret wordt rechtstreeks geladen vanaf het openbare Onderwijs AI-profiel.</p>
+</div></div></div></section>
+<section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Wat EAI probeert te voorkomen</div><div><h2>Een nette output verwarren met menselijk leren of oordeel.</h2><p>AI kan een sterke tekst, uitleg, diagnose of aanbeveling produceren. EAI vraagt daarom steeds wat die output nog bewijst over de mens die ermee werkte.</p></div></div>
+<div class="model-principles"><article><span>01</span><h3>Begin bij het proces</h3><p>Welke ontwikkeling of professionele taak staat hier centraal?</p></article><article><span>02</span><h3>Kijk naar de fase</h3><p>Dezelfde AI-hulp kan in instructie passend zijn en tijdens zelfstandige uitvoering te veel overnemen.</p></article><article><span>03</span><h3>Benoem de kernhandeling</h3><p>Welke menselijke handeling moet op dit moment zelf betekenis krijgen?</p></article><article><span>04</span><h3>Maak taakverdeling zichtbaar</h3><p>Welke stap doet de mens, welke AI, en in welke volgorde?</p></article><article><span>05</span><h3>Kies passend bewijs</h3><p>Wat moet je daarna zien om iets te kunnen zeggen over menselijke beheersing?</p></article></div>
+</div></section>
+<section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Publiek werk</div><div><h2>Van schoolpraktijk naar publicaties en gesprekken.</h2><p>Een paar openbare plekken waar dezelfde lijn terugkomt.</p></div></div>
+<div class="publication-grid">
+<a class="publication-card" href="https://www.kennisnet.nl/artificial-intelligence/nadenken-over-ai-op-je-school-ai-als-ongewenste-collega/" target="_blank" rel="noopener"><div class="publication-card__body"><span class="meta">Kennisnet · 2025</span><h3>AI als (on)gewenste collega</h3><p>Praktijkverhaal over AI op school, regie en de vraag welke taken je technologie wel en niet geeft.</p><span class="arrow">Lees →</span></div></a>
+<a class="publication-card" href="https://onderwijs-ai.nl/blog/de-gevolgen-van-ai-toetsing" target="_blank" rel="noopener"><div class="publication-card__body"><span class="meta">Onderwijs AI · 2026</span><h3>De gevolgen van AI op toetsing</h3><p>Over leerdoelen, leeractiviteiten, bewijs van leren en toetsing in een wereld met generatieve AI.</p><span class="arrow">Lees →</span></div></a>
+<a class="publication-card publication-card--image" href="https://researched.eu/2026/04/09/de-researched-nederland-podcast-aflevering-71-ai-in-ons-onderwijs-en-uitwerking-van-het-inspectie-oordeel/" target="_blank" rel="noopener"><img src="{RESEARCHED_THUMB_URL}" alt="researchED Nederland Podcast #71" loading="lazy" decoding="async" referrerpolicy="no-referrer"><div class="publication-card__body"><span class="meta">researchED · 2026</span><h3>AI in ons onderwijs</h3><p>Podcastgesprek over AI en onderwijspraktijk.</p><span class="arrow">Bekijk →</span></div></a>
+</div></div></section>
+</main>'''
+    write(out, "over/index.html", doc("Over EAI en Hans Visser", over_body, "/over/", "over", "Over het EAI-model en Hans Visser, onderwijsleider en ontwikkelaar van EAI."))
+
     article_source = Path("content/de-vraag-die-we-vergeten.html")
     if not article_source.exists():
         raise SystemExit("Missing content/de-vraag-die-we-vergeten.html")
@@ -522,7 +751,26 @@ def build(scrape: Path, out: Path) -> None:
         write(out, f"publicaties/{slug}/index.html", inject_embed(source, f"/publicaties/{slug}/", title))
         write(out, f"eai-blog/{legacy[slug]}/index.html", redirect(f"/publicaties/{slug}/"))
 
-    pubs_body = f'<main><section class="page-hero"><div class="wrap"><div class="eyebrow">Publicaties</div><h1>Denken over AI vanuit het leerproces.</h1><p class="lede">Niet beginnen bij wat de technologie kan, maar bij wat er in het leren moet gebeuren.</p><p class="mini-note">De publicaties laten ook de ontwikkeling van EAI zien. Voor actuele begrippen en semantiek is Core/Standard leidend; oudere modelversies blijven hier beschikbaar als publicatie of ontwikkelgeschiedenis.</p></div></section><section class="section"><div class="wrap"><article class="feature-publication"><div><div class="kicker">Uitgelicht · 2026</div><h2>De vraag die we vergeten in het AI-debat</h2><p>Over AI, leren en professioneel handelen. De centrale vraag: aan welke stap moet de leerling in deze fase zelf inhoudelijke betekenis geven om tot leren te komen?</p><p><a class="button" href="/publicaties/de-vraag-die-we-vergeten/">Lees het artikel</a></p></div><div class="question-mark">?</div></article><div class="card-grid">{"".join(pub_cards)}</div></div></section></main>'
+    pubs_body = f'''<main>
+<section class="page-hero"><div class="wrap"><div class="eyebrow">Publicaties & media</div><h1>Lees, kijk en luister verder.</h1><p class="lede">Eigen EAI-publicaties staan hier naast openbare artikelen en gesprekken waarin dezelfde vragen over leren, menselijk handelen en AI terugkomen.</p></div></section>
+<section class="section"><div class="wrap"><article class="feature-publication"><div><div class="kicker">Start hier</div><h2>De vraag die we vergeten in het AI-debat</h2><p>De kern van EAI in gewone taal: begin bij het proces, de fase en de kernhandeling. Bepaal daarna pas wat AI mag doen.</p><p><a class="button" href="/publicaties/de-vraag-die-we-vergeten/">Lees het artikel</a></p></div><div class="question-mark">?</div></article></div></section>
+
+<section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Eigen publicaties</div><div><h2>De ontwikkellijn van EAI.</h2><p>Deze stukken laten zien hoe begrippen als Task Density, handback, bewijs en menselijke uitvoering zich hebben ontwikkeld.</p></div></div><div class="card-grid">{"".join(pub_cards)}</div></div></section>
+
+<section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Openbare publicaties</div><div><h2>EAI buiten deze site.</h2><p>Artikelen en praktijkverhalen waarin Hans Visser als auteur, mede-auteur of geïnterviewde voorkomt.</p></div></div>
+<div class="publication-grid">
+<a class="publication-card publication-card--image" href="https://onderwijs-ai.nl/over-ons/team/hans-visser" target="_blank" rel="noopener"><img src="{PORTRAIT_URL}" alt="Hans Visser" loading="lazy" decoding="async" referrerpolicy="no-referrer"><div class="publication-card__body"><span class="meta">Onderwijs AI</span><h3>Profiel en publicaties</h3><p>Publiek profiel met achtergrond en artikelen.</p><span class="arrow">Open →</span></div></a>
+<a class="publication-card" href="https://onderwijs-ai.nl/blog/de-gevolgen-van-ai-toetsing" target="_blank" rel="noopener"><div class="publication-card__body"><span class="meta">Onderwijs AI · 8 mei 2026</span><h3>De gevolgen van AI op toetsing</h3><p>Over leerdoelen, leeractiviteiten en beoordeling wanneer AI delen van het werk kan uitvoeren.</p><span class="arrow">Lees →</span></div></a>
+<a class="publication-card" href="https://onderwijs-ai.nl/blog/ai-implementatie-onderwijs-gedragsverandering" target="_blank" rel="noopener"><div class="publication-card__body"><span class="meta">Onderwijs AI · 20 september 2026</span><h3>AI-implementaties in kleine stappen</h3><p>Over gedragsverandering en dagelijkse routines bij invoering van AI in onderwijsorganisaties.</p><span class="arrow">Lees →</span></div></a>
+<a class="publication-card" href="https://www.kennisnet.nl/artificial-intelligence/nadenken-over-ai-op-je-school-ai-als-ongewenste-collega/" target="_blank" rel="noopener"><div class="publication-card__body"><span class="meta">Kennisnet · 13 februari 2025</span><h3>AI als (on)gewenste collega</h3><p>Praktijkverhaal over het Emmauscollege, AI als collega en regie bij de mens.</p><span class="arrow">Lees →</span></div></a>
+</div></div></section>
+
+<section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Kijken & luisteren</div><div><h2>researchED Nederland Podcast #71</h2><p>Hans Visser in gesprek met Jan van de Ven en Erik Ex over AI in het onderwijs.</p></div></div>
+<div class="media-feature"><div class="media-copy"><img class="media-thumb" src="{RESEARCHED_THUMB_URL}" alt="researchED Nederland Podcast #71" loading="lazy" decoding="async" referrerpolicy="no-referrer"><p class="source-note">9 april 2026 · 48 minuten</p><div class="button-row"><a class="button secondary" href="https://researched.eu/2026/04/09/de-researched-nederland-podcast-aflevering-71-ai-in-ons-onderwijs-en-uitwerking-van-het-inspectie-oordeel/" target="_blank" rel="noopener">researchED</a><a class="button secondary" href="https://open.spotify.com/episode/4ORaDFgdorGuJsP44N0T9E" target="_blank" rel="noopener">Spotify</a></div></div>
+<div class="media-embeds"><div class="embed-card"><div class="embed-top"><span>Video</span><span>YouTube</span></div><div class="embed-window"><iframe src="https://www.youtube-nocookie.com/embed/4GpAPMdP5hA?rel=0" title="researchED Nederland Podcast #71 met Hans Visser" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div></div>
+<div class="embed-card"><div class="embed-top"><span>Audio</span><span>Spotify</span></div><div class="spotify-window"><iframe style="border-radius:12px" src="https://open.spotify.com/embed/episode/4ORaDFgdorGuJsP44N0T9E?utm_source=generator" width="100%" height="232" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe></div></div></div>
+</div></div></section>
+</main>'''
     write(out, "publicaties/index.html", doc("Publicaties", pubs_body, "/publicaties/", "publicaties", "Artikelen en analyses van EAI over AI, leren en professioneel handelen."))
     write(out, "eai-blog/index.html", redirect("/publicaties/"))
 
@@ -557,7 +805,7 @@ def build(scrape: Path, out: Path) -> None:
     not_found = '<main><section class="page-hero"><div class="wrap"><div class="eyebrow">404</div><h1>Deze pagina is er niet meer.</h1><p class="lede">De oude Google-site bevatte ook een paar dode links. Ga terug naar de publicaties of tools.</p><div class="button-row"><a class="button" href="/publicaties/">Publicaties</a><a class="button secondary" href="/tools/">Tools</a></div></div></section></main>'
     write(out, "404.html", doc("Niet gevonden", not_found, "/404.html"))
     write(out, "robots.txt", "User-agent: *\nAllow: /\nSitemap: https://eaimodel.nl/sitemap.xml\n")
-    urls = ["/", "/twee-pijlers/", "/workshop-ai/", "/werkvormen/", "/praktijk/", "/publicaties/", "/publicaties/de-vraag-die-we-vergeten/", "/tools/", "/eaa-model/", "/onderwijsin/"] + [f"/werkvormen/{item['slug']}/" for item in workforms] + [f"/publicaties/{slug}/" for slug, _, _, _ in PUBLICATIONS] + ["/tools/beyond-explainability/"]
+    urls = ["/", "/twee-pijlers/", "/workshop-ai/", "/werkvormen/", "/praktijk/", "/publicaties/", "/publicaties/de-vraag-die-we-vergeten/", "/tools/", "/over/", "/eaa-model/", "/onderwijsin/"] + [f"/werkvormen/{item['slug']}/" for item in workforms] + [f"/publicaties/{slug}/" for slug, _, _, _ in PUBLICATIONS] + ["/tools/beyond-explainability/"]
     items = "".join(f"<url><loc>{BASE_URL}{path}</loc></url>" for path in urls)
     write(out, "sitemap.xml", f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{items}</urlset>')
 
