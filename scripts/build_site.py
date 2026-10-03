@@ -50,6 +50,7 @@ WORKFORM_CATEGORIES = [
     ("zelfstandigheid", "Zelfstandigheid terugbrengen", "Geef een relevante handeling na AI-hulp doelgericht terug aan de leerling en verzamel nieuw menselijk bewijs."),
     ("bewijs", "Leren aantonen", "Kies bewijs dat past bij de claim: huidige prestatie, zelfstandigheid, retentie of transfer."),
     ("herstellen", "Feedback, controle en herstellen", "Gebruik AI-output als aanleiding voor menselijk controleren, corrigeren en opnieuw uitvoeren."),
+    ("argumentatie", "Argumenteren en bronnen", "Laat de leerling aannames, bewijs, tegenargumenten, perspectieven en conclusies zelf analyseren en wegen."),
     ("zelfregulatie", "Zelfregulatie", "Laat de leerling zelf bepalen waar hij vastloopt, welke hulp nodig is en wanneer hij de regie weer overneemt."),
     ("ontwerpen", "Ontwerpen als docent of team", "Herontwerp taken, AI-rollen en beoordeling vanuit het proces in plaats van vanuit de tool."),
 ]
