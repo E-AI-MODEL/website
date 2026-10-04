@@ -1,0 +1,398 @@
+<!doctype html><html lang="nl"><head><meta charset="utf-8"><title>AI in het onderwijs: motor voor verdieping of katalysator voor oppervlakkigheid?</title><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/><meta content="AI kan lessen stroomlijnen, feedback versnellen en leerpaden personaliseren. Zonder stevig didactisch kompas dreigt oppervlakkig leren en verlies van eigenaarschap. Met bouwstenen, voorbeelden, checklist, FAQ en compacte EAI/EAA-callouts." name="description"/><style>
+/* ===== Design Tokens ===== */
+:root {
+  /* AANPASSING: Achtergrond is nu zachtgrijs ipv wit, tekst iets zachter zwart */
+  --text: #1f2937;
+  --muted: #4b5563;
+  --bg: #f9fafb;
+  --border: #e5e7eb;
+  --radius: 14px;
+  --measure: 74ch;
+  --navy: #0e223a;
+  --navy-ink: #091728;
+  --yellow: #ffc82c;
+  --ink: #ffffff;
+  --acc: #1e88e5;
+  --neon-cyan: #32e3ff;
+  --neon-mag: #c33cff;
+  /* AANPASSING: Schaduwen iets subtieler gemaakt */
+  --shadow-1: 0 4px 12px rgba(30,41,59,.04), 0 2px 8px rgba(30,41,59,.03);
+  --shadow-2: 0 10px 30px rgba(30,41,59,.08), 0 4px 15px rgba(30,41,59,.05);
+  /* Card tokens — alle “witte vlakken” gebruiken deze */
+  --card: #ffffff;
+  --card-ink: #1f2937;
+  --card-subtle: #f7f9fc; /* AANPASSING: Subtiele gradientkleur aangepast */
+  --chip: #f3f4f6;       /* AANPASSING: Chip kleur aangepast */
+}
+@media (prefers-color-scheme: dark) {
+  /* Dark mode is ongewijzigd en blijft functioneren zoals voorheen */
+  :root {
+    --text: #cbd5e1;
+    --muted: #94a3b8;
+    --bg: #111827;
+    --border: #1f2937;
+    --navy: #111827;
+    --navy-ink: #0f172a;
+    --ink: #f1f5f9;
+    --shadow-1: 0 8px 26px rgba(0,0,0,.6);
+    --shadow-2: 0 18px 60px rgba(0,0,0,.8);
+    --card: #1e293b;
+    --card-ink: #d1d5db;
+    --card-subtle: #172033;
+    --chip: #1a2435;
+  }
+}
+html, body { margin:0; padding:0; background:var(--bg); color:var(--text); }
+body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, "Helvetica Neue", Arial, sans-serif; line-height: 1.6; }
+/* AANPASSING: Meer verticale ruimte voor een rustiger beeld */
+.wrap { max-width: var(--measure); margin-inline: auto; padding: clamp(2rem, 5vw, 4rem) clamp(1rem, 3vw, 2rem); }
+
+/* ===== HERO ===== */
+.hero { position: relative; isolation: isolate;
+  background: radial-gradient(1200px 400px at 110% -20%, rgba(255,200,44,.25), transparent 60%),
+              linear-gradient(180deg, var(--navy) 0%, var(--navy-ink) 100%);
+  color: var(--ink); padding: clamp(28px,6vw,72px) 24px;
+  /* AANPASSING: Subtiele schaduw voor een zachte scheiding met de content */
+  box-shadow: 0 4px 20px rgba(14, 34, 58, 0.08);
+}
+.hero .inner { max-width: 1100px; margin-inline: auto; display:grid; gap: clamp(16px,2vw,22px); }
+.super { text-transform: uppercase; font-weight: 800; letter-spacing:.02em; font-size: clamp(2.6rem,6vw,4rem); opacity:.92; }
+.title { font-weight: 900; line-height: 1.1; font-size: clamp(2rem,5vw,3.2rem); margin:0; }
+.title em { color: var(--yellow); font-style: normal; }
+.poster-points { list-style:none; padding:0; margin:.5rem 0 0; font-size: clamp(1.05rem,2.2vw,1.15rem); }
+.poster-points li { margin:8px 0; display:grid; grid-template-columns:18px 1fr; gap:10px; }
+.poster-points li::before { content:"•"; color: var(--ink); font-weight:900; }
+.hero-grid { display:grid; grid-template-columns:1.1fr minmax(180px,.9fr); gap: clamp(16px,4vw,48px); align-items:center; }
+@media (max-width:860px) { .hero-grid { grid-template-columns:1fr; } .neon { justify-self:start; } }
+
+/* Neon emblem – abstract netwerk (geen tekst) */
+.neon { width: clamp(180px,26vw,280px); aspect-ratio:1/1; justify-self:end; align-self:center;
+  position: relative; display:grid; place-items:center; border-radius:24px;
+  background: radial-gradient(100% 100%, rgba(11,16,32,.6), rgba(11,16,32,.3) 60%, transparent);
+  box-shadow: 0 0 60px rgba(50,227,255,.12), inset 0 0 80px rgba(195,60,255,.12);
+}
+.neon::after { content:""; width:70%; height:70%; background-repeat:no-repeat; background-size:contain;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><circle cx="128" cy="128" r="80" fill="none" stroke="%2332e3ff" stroke-width="6"/><circle cx="128" cy="88" r="8" fill="%23c33cff"/><circle cx="168" cy="128" r="6" fill="%23c33cff"/><circle cx="88" cy="128" r="6" fill="%23c33cff"/><line x1="128" y1="88" x2="168" y2="128" stroke="%23c33cff" stroke-width="3"/><line x1="128" y1="88" x2="88" y2="128" stroke="%23c33cff" stroke-width="3"/></svg>');
+  filter: drop-shadow(0 0 10px rgba(50,227,255,.55)) drop-shadow(0 0 14px rgba(195,60,255,.5));
+}
+
+/* ===== Meta, TOC, Content ===== */
+.article-header { padding: 22px 0 10px; }
+.deck { color: var(--muted); margin: 6px 0 12px; }
+.meta { display:flex; flex-wrap:wrap; gap:10px; font-size:.95rem; color: var(--muted); margin-bottom: 12px; }
+.meta .tag{ padding: 3px 10px; border:1px solid var(--border); border-radius:999px; background: var(--chip); color: var(--text); }
+
+nav.toc { border:1px solid var(--border); border-radius: var(--radius); padding: 20px; background: var(--card); color: var(--card-ink); margin: 24px 0 32px; box-shadow: var(--shadow-1); }
+nav.toc h2 { font-size: 1.05rem; margin: 0 0 10px; color: inherit; }
+nav.toc ol{ margin: 0; padding-left: 20px; }
+
+/* AANPASSING: Meer ademruimte boven de koppen */
+article h2 { margin-top: 2.75rem; font-size: clamp(1.35rem, 2vw, 1.6rem); }
+article h3 { margin-top: 1.75rem; font-size: clamp(1.12rem, 1.6vw, 1.25rem); }
+p { margin: 0 0 14px; }
+ul, ol { padding-left: 1.2rem; }
+li { margin: 8px 0; }
+blockquote { margin: 18px 0; padding: 12px 18px; border-left: 4px solid var(--acc); background: color-mix(in srgb, var(--acc) 8%, var(--bg)); color: var(--text); border-radius: 0 6px 6px 0; }
+
+.grid { display:grid; grid-template-columns: 1fr; gap: 16px; }
+@media (min-width: 900px){ .grid.two { grid-template-columns: 1fr 1fr; gap: 24px; } }
+.keypoints { border-left: 4px solid var(--acc); padding-left: 16px; margin-bottom: 2rem; }
+
+/* ===== Callouts (Sticky) ===== */
+.callout {
+  --co-border: #dfe9ff;
+  position: relative; isolation: isolate; overflow: hidden;
+  border-radius: var(--radius);
+  border:1px solid var(--co-border);
+  background: linear-gradient(180deg, var(--card) 0%, var(--card) 52%, var(--card-subtle) 100%);
+  color: var(--card-ink);
+  padding: 18px 18px 18px 80px;
+  /* AANPASSING: Rotatie verwijderd voor een stabielere, rustigere look */
+  transform: none;
+  box-shadow: var(--shadow-1);
+}
+@media (prefers-color-scheme: dark){
+  .callout { --co-border: #27405e; }
+}
+.callout::before{ content:""; position:absolute; inset:0 auto 0 0; width:8px; background: linear-gradient(180deg,#9bc7ff 0%,#1e88e5 100%); z-index:1; opacity:.99; }
+.callout::after{
+  content:""; position:absolute; right:-10px; top:-10px; width:260px; height:180px; z-index:0; opacity:.16;
+  background-repeat:no-repeat; background-size:contain;
+  background-image: url('data:image/svg+xml;utf8,\
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 220">\
+      <g fill="none" stroke="%23405572" stroke-opacity=".8">\
+        <path d="M60,40 C100,10 200,10 240,40 C280,70 280,150 240,180 C200,210 100,210 60,180 C20,150 20,70 60,40 Z" stroke-width="2"/>\
+        <path d="M80,70 L160,60 L220,100 L200,150 L120,160 L80,120 Z" stroke-width="1.4"/>\
+        <circle cx="160" cy="60" r="5" fill="%23fff" stroke="%23405572" stroke-width="1.4"/>\
+        <circle cx="220" cy="100" r="5" fill="%23fff" stroke="%23405572" stroke-width="1.4"/>\
+        <circle cx="200" cy="150" r="5" fill="%23fff" stroke="%23405572" stroke-width="1.4"/>\
+        <circle cx="120" cy="160" r="5" fill="%23fff" stroke="%23405572" stroke-width="1.4"/>\
+        <circle cx="80" cy="120" r="5" fill="%23fff" stroke="%23405572" stroke-width="1.4"/>\
+        <circle cx="120" cy="100" r="6.5" fill="%231e88e5" stroke="%231e88e5" stroke-width="1.2"/>\
+        <path d="M120,100 L160,60 M120,100 L220,100 M120,100 L200,150 M120,100 L120,160 M120,100 L80,120" stroke="%23405572" stroke-opacity=".7" stroke-width="1.4"/>\
+      </g>\
+    </svg>');
+}
+.callout .icon{ position:absolute; left:22px; top:18px; width:36px; height:36px; border-radius:50%;
+  background: radial-gradient(circle at 30% 30%, #ffffff 0 30%, #f0f7ff 31% 100%);
+  border:1px solid #e1edff; display:grid; place-items:center; box-shadow: 0 4px 16px rgba(30,136,229,.15); z-index:2;
+}
+.callout .icon::before{ content:""; width:20px; height:20px; display:block; background-size:20px 20px; background-repeat:no-repeat; }
+.callout .label{ display:inline-block; font-size:.82rem; font-weight:700; letter-spacing:.02em;
+  color:#0f3e77; background:#eaf3ff; border:1px solid #d6e8ff; padding:2px 8px; border-radius:999px; margin:0 8px 8px 0; position:relative; z-index:2;
+}
+.callout p, .callout ul { position:relative; z-index:2; margin: 6px 0 0; color: inherit; }
+
+/* varianten */
+.callout[data-type="tip"]::before{ background: linear-gradient(180deg,#a7f3d0 0%,#0a7d3b 100%); }
+.callout[data-type="waarschuwing"]::before{ background: linear-gradient(180deg,#ffd9b0 0%,#b15d00 100%); }
+.callout[data-type="info"]::before{ background: linear-gradient(180deg,#c7d2fe 0%,#3f5efb 100%); }
+
+.callout[data-type="opmerking"] .icon::before{
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M2 12a8 8 0 1 1 16 0c0 2.5-1.2 4.4-3 6H5c-1.8-1.6-3-3.5-3-6z" fill="none" stroke="%231e88e5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 18h6M10 22h4" fill="none" stroke="%231e88e5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+}
+.callout[data-type="tip"] .icon::before{
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" fill="none" stroke="%230a7d3b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+}
+.callout[data-type="waarschuwing"] .icon::before{
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 3l10 18H2L12 3z" fill="none" stroke="%23b15d00" stroke-width="2"/><path d="M12 9v5M12 19h.01" stroke="%23b15d00" stroke-width="2" stroke-linecap="round"/></svg>');
+}
+.callout[data-type="info"] .icon::before{
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="%233f5efb" stroke-width="2"/><path d="M12 8h.01M11 12h2v5h-2z" fill="none" stroke="%233f5efb" stroke-width="2" stroke-linecap="round"/></svg>');
+}
+
+/* Checklist, FAQ, Footer */
+.checklist{ border:1px solid var(--border); border-radius: var(--radius); overflow: clip; box-shadow: var(--shadow-1); background: var(--card); color: var(--card-ink); }
+.checklist header{ background: linear-gradient(180deg, var(--card) 0%, var(--card-subtle) 100%); padding: 12px 16px; border-bottom:1px solid var(--border); font-weight:600; display:flex; align-items:center; gap:10px; color: inherit; }
+.checklist .row{ display:flex; gap: 12px; align-items:flex-start; padding: 12px 16px; border-top:1px solid var(--border); background: var(--card); color: var(--card-ink); }
+.checklist input[type="checkbox"]{ transform: scale(1.15); margin-top: 2px; accent-color: var(--acc); }
+
+details{ border:1px solid var(--border); border-radius: var(--radius); padding: 12px 16px; margin: 12px 0; background: var(--card); color: var(--card-ink); box-shadow: var(--shadow-1); }
+details[open] summary{ margin-bottom: 8px; }
+summary{ cursor: pointer; font-weight: 600; color: inherit; }
+
+footer.article-footer { margin-top: 36px; padding-top: 16px; border-top: 1px solid var(--border); color: var(--muted); }
+a { color: var(--acc); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ===== Minimal EAA-inspired garnish ===== */
+.eaa-mini { display:grid; gap: 8px; margin: 14px 0; }
+.eaa-row { display:flex; flex-wrap:wrap; gap: 8px; }
+.badge { padding: 4px 10px; border-radius: 999px; font-weight: 600; font-size: .86rem; border:1px solid var(--border); color: var(--card-ink); background: var(--card-subtle); }
+.eaa-advice { border:1px dashed var(--border); border-radius: 12px; padding: 10px 12px; font-size:.95rem; color: var(--card-ink); background: var(--card); }
+.eaa-controls { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+.eaa-controls select{ padding:4px 8px; border-radius:8px; border:1px solid var(--border); background: var(--card); color: var(--card-ink); }
+</style><script>
+document.addEventListener('DOMContentLoaded', function(){
+  // Callouts auto label + icon
+  document.querySelectorAll('.callout').forEach(function(el){
+    el.setAttribute('role', 'note');
+    if(!el.querySelector('.icon')){
+      const i = document.createElement('span'); i.className = 'icon'; i.setAttribute('aria-hidden','true'); el.prepend(i);
+    }
+    if(!el.querySelector('.label')){
+      const label = document.createElement('span'); label.className = 'label';
+      const type = (el.getAttribute('data-type') || 'opmerking').toLowerCase();
+      const map = { 'opmerking':'Opmerking', 'tip':'Tip', 'waarschuwing':'Waarschuwing', 'info':'Info' };
+      label.textContent = map[type] || 'Opmerking';
+      label.id = (el.id ? el.id+'-label' : Math.random().toString(36).slice(2));
+      el.setAttribute('aria-labelledby', label.id);
+      el.prepend(label);
+    }
+  });
+
+  // Tiny EAA-inspired advisor
+  const selects = document.querySelectorAll('.eaa-controls select');
+  const out = document.getElementById('eaa-out');
+  const advice = () => {
+    const vals = Array.from(selects).map(s=>s.value);
+    const score = vals.reduce((acc,v)=>acc+({'Laag':0,'Gemiddeld':1,'Hoog':2}[v]||0),0);
+    let txt = 'Gebalanceerd & functioneel. Voeg waar mogelijk expliciete reflectievragen toe.';
+    if(score <= 1) txt = 'Start met kleine wins: maak doelen concreet, beperk keuzes en oefen zichtbaar denken.';
+    else if(score <= 3) txt = 'Goed op weg. Veranker keuzes in feedbackloops en laat leerlingen verantwoorden.';
+    else if(score >= 5) txt = 'Sterk profiel. Daag uit met transferopdrachten en tijdelijke “AI‑detachment” voor controle.';
+    if(out) out.textContent = txt;
+  };
+  if(out){ selects.forEach(s=>s.addEventListener('change',advice)); advice(); }
+});
+</script></head><body><header class="hero">
+<div class="inner hero-grid">
+<div>
+<div class="super">AI in onderwijs?</div>
+<h1 class="title">Zonder didactiek én tech‑kennis is het <em>een speeltje</em>, geen versterker</h1>
+<ul class="poster-points">
+<li>Doelgericht leren met kennis als basis</li>
+<li>Versterkte zelfregie van leerlingen</li>
+<li>Technologie als verlengstuk van jouw onderwijsvisie</li>
+</ul>
+</div>
+<div aria-hidden="true" class="neon"></div>
+</div>
+</header>
+<a class="sr-only" href="#main">Ga naar inhoud</a>
+<div class="wrap">
+<header class="article-header">
+<p class="deck">AI kan lessen stroomlijnen, feedback versnellen en leerpaden personaliseren. Maar zonder stevig didactisch kompas vergroot technologie juist de kans op oppervlakkig leren en verlies van eigenaarschap. Hieronder: wat we weten over leren, waar AI wel/niet in uitblinkt, en hoe je regie houdt — met een compacte EAI/EAA‑notitie.</p>
+<div class="meta">
+<span>Leestijd: ± 7 min</span>
+<span class="tag">AI &amp; onderwijs</span>
+<span class="tag">Didactiek</span>
+<span class="tag">Eigenaarschap</span>
+</div>
+</header>
+<nav aria-label="Inhoudsopgave" class="toc">
+<h2>Inhoud</h2>
+<ol>
+<li><a href="#wat-we-weten">Wat we weten over leren</a></li>
+<li><a href="#emergent-denken">Denken als emergente eigenschap (Bereiter)</a></li>
+<li><a href="#technologie-in-de-praktijk">Wat technologie in de praktijk laat zien</a></li>
+<li><a href="#drie-bouwstenen">Drie bouwstenen voor zinvolle AI</a></li>
+<li><a href="#risicos">Wat gaat mis als de basis ontbreekt?</a></li>
+<li><a href="#toepassingen">Voorbeelden: wanneer wel / niet inzetten</a></li>
+<li><a href="#checklist">Checklist voor didactische regie</a></li>
+<li><a href="#faq">Veelgestelde vragen</a></li>
+<li><a href="#eaa-mini">Kleine EAA‑notitie</a></li>
+<li><a href="#bronnen">Bronnen &amp; verder lezen</a></li>
+</ol>
+</nav>
+<main id="main" role="main">
+<article>
+<section aria-labelledby="wat-we-weten-heading" class="keypoints" id="wat-we-weten">
+<h2 id="wat-we-weten-heading">Wat we weten over leren</h2>
+<p><strong>Kennis bouw je op elkaar.</strong> Nieuwe informatie beklijft als ze wordt verbonden aan bestaande voorkennis in het langetermijngeheugen. Actieve verwerking (samenvatten, uitleggen, ophalen) is cruciaal.</p>
+<p><strong>Vaardigheden rusten op kennis.</strong> Kritisch redeneren en creatief problemen oplossen zijn geen losse “trucjes”; ze groeien vanuit een rijk netwerk van concepten en voorbeelden.</p>
+<p><strong>Diep leren is herhaald en betekenisvol.</strong> Variatie in contexten, spreiding in de tijd en koppeling aan betekenisvolle voorkennis vergroten transfer en retentie.</p>
+</section>
+<section aria-labelledby="emergent-heading" id="emergent-denken">
+<h2 id="emergent-heading">Denken als emergente eigenschap (Bereiter)</h2>
+<p>In lijn met <strong>Carl Bereiter</strong>: <em>denken</em> is geen geïsoleerde “skill” die je even traint, maar een <strong>emergente eigenschap</strong> die voortkomt uit rijk gestructureerde kennis. Zoals spijsvertering uit anatomie voortkomt, zo komt denken voort uit kennisstructuren.</p>
+<blockquote><em>Vrij naar Bereiter:</em> je traint het proces niet los van inhoud; je verbetert het door het <strong>substraat</strong> te bouwen — kennis, begrippen, voorbeelden.</blockquote>
+<div class="grid two">
+<figure>
+<figcaption><strong>Implicaties voor curriculum</strong></figcaption>
+<ul>
+<li>Rijke domeinkennis en begripsnetwerken eerst; generieke “denktrucs” zijn onvoldoende.</li>
+<li>Ontwerp taken die kennis <em>activeren</em> en <em>herstructureren</em> (uitleggen, vergelijken, transfer).</li>
+<li>Begeleid leerlingen bij het <strong>opbouwen van conceptuele schema’s</strong>.</li>
+</ul>
+</figure>
+<figure>
+<figcaption><strong>Implicaties voor AI‑gebruik</strong></figcaption>
+<ul>
+<li>Gebruik AI voor <em>kennisopbouw</em> (voorbeeldvariatie, elaboratievragen), niet als eindproductscribent.</li>
+<li>Laat AI <strong>retrieval prompts</strong> en <strong>diagnostische vragen</strong> genereren, gekoppeld aan leerdoelen.</li>
+<li>Valideer consequent met menselijke beoordeling en bronnen; AI is hulpmiddel, geen bron op zichzelf.</li>
+</ul>
+</figure>
+</div>
+</section>
+<section aria-labelledby="praktijk-heading" id="technologie-in-de-praktijk">
+<h2 id="praktijk-heading">Wat technologie in de praktijk laat zien</h2>
+<div class="grid two">
+<div>
+<h3>Wat werkt</h3>
+<ul>
+<li>Formatieve feedback die snel en specifiek is.</li>
+<li>Adaptieve oefening die aansluit bij voorkennis.</li>
+<li>Transparante hulpmiddelen die aanzetten tot eigen verwerking.</li>
+</ul>
+</div>
+<div>
+<h3>Wat schuurt</h3>
+<ul>
+<li>Overtuigend klinkende maar foutieve AI‑antwoorden zonder controle.</li>
+<li>Bias en gebrek aan contextkennis in modellen.</li>
+<li>Zwakkere didactiek die door tools wordt uitvergroot.</li>
+</ul>
+</div>
+</div>
+<div class="callout" data-type="info">
+<p><strong>Menselijke sturing blijft onmisbaar:</strong> de docent bepaalt doelen, ontwerpt leeractiviteiten en zet AI in als middel — niet als vervanging.</p>
+</div>
+</section>
+<section aria-labelledby="bouwstenen-heading" id="drie-bouwstenen">
+<h2 id="bouwstenen-heading">Drie bouwstenen voor zinvolle AI‑toepassing</h2>
+<ol>
+<li><strong>Inzicht in leren</strong> — weten hoe kennis wordt opgebouwd, geactiveerd en benut.</li>
+<li><strong>Begrip van technologie</strong> — herkennen waar AI in uitblinkt (patronen/snelheid) en waar het struikelt (betekenis, oordeel, context).</li>
+<li><strong>Didactische regie</strong> — technologie pas inzetten als ze het leerdoel aantoonbaar versterkt.</li>
+</ol>
+<div class="callout" data-type="opmerking">
+<p>Je ziet soms de termen <em>taakdichtheid</em> en <em>didactische controleerbaarheid</em>. Handig als interpretatiekaders om te duiden <em>wie</em> welk denkwerk deed (leerling ↔︎ AI) en of keuzes te reconstrueren zijn. Klein houden; het zijn géén meetdoelen.</p>
+</div>
+</section>
+<section aria-labelledby="risicos-heading" id="risicos">
+<h2 id="risicos-heading">Wat gaat mis als de basis ontbreekt?</h2>
+<ul>
+<li>Leerlingen produceren sneller dan ze begrijpen.</li>
+<li>Meer copy‑paste, minder eigen verwerking.</li>
+<li>Minder zelfsturing en minder gevoel van eigenaarschap.</li>
+</ul>
+</section>
+<section aria-labelledby="toepassingen-heading" id="toepassingen">
+<h2 id="toepassingen-heading">Voorbeelden: wanneer wel / niet inzetten</h2>
+<div class="grid two">
+<figure>
+<figcaption><strong>Wel:</strong> AI als feedback‑assistent</figcaption>
+<ul>
+<li>Laat AI rubrics toepassen op conceptversies; docent valideert en nuanceert.</li>
+<li>Gebruik AI voor hints of diagnosestappen, niet voor volledige oplossingen.</li>
+<li>Koppel feedback aan leerdoelen en laat leerlingen verantwoorden: “Wat pas je aan en waarom?”</li>
+</ul>
+</figure>
+<figure>
+<figcaption><strong>Niet (of terughoudend):</strong> AI als schrijfmachine</figcaption>
+<ul>
+<li>Hele teksten laten genereren zonder eigen denkinspanning.</li>
+<li>Bronloze samenvattingen overnemen.</li>
+<li>AI‑antwoorden gebruiken zonder feiten‑ en contextcontrole.</li>
+</ul>
+</figure>
+</div>
+</section>
+<section aria-labelledby="checklist-heading" id="checklist">
+<h2 id="checklist-heading">Checklist voor didactische regie</h2>
+<div aria-labelledby="checklist-heading" class="checklist" role="group">
+<header>Loop deze vragen langs vóór je AI inzet</header>
+<div class="row"><input aria-label="Leerdoel helder" type="checkbox"/> <div>Is het <strong>leerdoel</strong> helder (kennis, vaardigheid, transfer)?</div></div>
+<div class="row"><input aria-label="Voorkennis geactiveerd" type="checkbox"/> <div>Is relevante <strong>voorkennis</strong> geactiveerd of herhaald?</div></div>
+<div class="row"><input aria-label="Actieve verwerking" type="checkbox"/> <div>Bevat de activiteit <strong>actieve verwerking</strong> (uitleggen, ophalen, toepassen)?</div></div>
+<div class="row"><input aria-label="Transparantie richting leerling" type="checkbox"/> <div>Is helder <strong>wat AI doet</strong> en wat de leerling zelf doet?</div></div>
+<div class="row"><input aria-label="Validatie en bias" type="checkbox"/> <div>Hoe <strong>valideer</strong> je uitkomsten en beperk je <strong>bias</strong>?</div></div>
+<div class="row"><input aria-label="Ethische en privacy-aspecten" type="checkbox"/> <div>Zijn <strong>privacy</strong> en <strong>ethiek</strong> geborgd (data, auteursrecht, transparantie)?</div></div>
+</div>
+</section>
+<section aria-labelledby="faq-heading" id="faq">
+<h2 id="faq-heading">Veelgestelde vragen</h2>
+<details>
+<summary>Is AI geschikt voor formatieve toetsing?</summary>
+<p>Ja, mits de docent de criteria bepaalt en AI‑feedback <em>valideert</em>. Laat leerlingen expliciet aangeven welke aanpassingen ze doen en waarom.</p>
+</details>
+<details>
+<summary>Hoe voorkom ik afhankelijkheid van AI?</summary>
+<p>Werk in fasen: eerst zelf denken (schets/plan), dan AI als coach (vragen/hints), tot slot <strong>reflecteren</strong> en <strong>verantwoorden</strong> van keuzes.</p>
+</details>
+<details>
+<summary>Wat zeg ik tegen “mag ik ChatGPT gebruiken”?</summary>
+<p>“Ja, als hulpmiddel” — met grenzen: benoem <strong>toegestane rollen</strong> (sparringpartner, rubric‑assistent) en <strong>verboden rollen</strong> (schrijver eindproduct), plus bronvermelding en reflectie‑eis.</p>
+</details>
+</section>
+<section aria-labelledby="bronnen-heading" id="bronnen">
+<h2 id="bronnen-heading">Bronnen &amp; verder lezen</h2>
+<p>Kerninzichten sluiten aan bij leerpsychologie (retrieval practice, spreiding, elaboratie) en bij het idee dat technologie didactiek <em>versterkt</em> — niet vervangt. Deze versie verwerkt compact EAI/EAA‑inzichten (denkproces, taakverdeling) <strong>zonder</strong> drempelwaarden op te nemen.</p>
+<ul>
+<li>Bereiter, C. — <em>Education and the Mind in the Knowledge Age</em>.</li>
+<li>Rosenshine, B. — <em>Principles of Instruction</em>.</li>
+<li>Agarwal &amp; Bain — <em>Powerful Teaching: Unleash the Science of Learning</em>.</li>
+<li>Eigen beleid: AI‑gedragsregels, privacykader, formatief evalueren.</li>
+</ul>
+</section>
+</article>
+<aside aria-label="Tip" class="callout" data-type="tip">
+<p><strong>Bottom line:</strong> AI haalt het beste naar boven als het stevig is verankerd in kennisopbouw én technologiebegrip — met de docent als regisseur.</p>
+</aside>
+</main>
+<footer class="article-footer">
+<p>© 2025 EAI‑model van H. Visser · Volledig client‑side · Geen externe assets of trackers.</p>
+</footer>
+</div></body></html>
