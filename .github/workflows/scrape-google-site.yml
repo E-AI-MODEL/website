@@ -1,24 +1,16 @@
 name: Build EAI Site
 
 on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/scrape-google-site.yml'
+      - 'scripts/build_site.py'
+      - 'content/**'
   push:
     branches:
-      - site-migration
-      - site-preview
-      - ui-pdf-editorial
-      - workforms-toolbox
-      - workforms-professional-judgement
-      - workforms-visual-support
-      - site-v3-cohesion
-      - site-welcome-landing
-      - site-language-alignment
-      - workforms-action-ux
-      - workforms-concrete-actions
-      - site-interface-v4
-      - didactic-model-adapters-ui
-      - didactic-model-catalog-boundary
-      - didactic-model-adapters-fix
-      - workforms-toolbox-phase2
+      - main
     paths:
       - '.github/workflows/scrape-google-site.yml'
       - 'scripts/build_site.py'
@@ -321,17 +313,18 @@ jobs:
           print(f"Preview URLs rewritten to {base}")
           PY
 
-      - name: Publish generated files to migration branch
+      - name: Publish generated files to main
+        if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')
         run: |
-          git fetch origin "$GITHUB_REF_NAME"
-          REMOTE_SHA="$(git rev-parse "origin/$GITHUB_REF_NAME")"
+          git fetch origin main
+          REMOTE_SHA="$(git rev-parse origin/main)"
           LOCAL_SHA="$(git rev-parse HEAD)"
           if [ "$REMOTE_SHA" != "$LOCAL_SHA" ]; then
-            echo "A newer commit exists on $GITHUB_REF_NAME; this run is stale and will not publish generated files."
+            echo "A newer commit exists on main; this run is stale and will not publish generated files."
             exit 0
           fi
 
-          rm -rf assets publicaties tools eai-blog eai-tools-modules eaa-model onderwijsin twee-pijlers workshop-ai werkvormen onderbouwing praktijk over verdieping
+          rm -rf assets publicaties tools eai-blog eai-tools-modules eaa-model onderwijsin twee-pijlers workshop-ai werkvormen taalwerkvormen onderbouwing bronnen praktijk over verdieping
           cp -R site-build/assets .
           cp -R site-build/publicaties .
           cp -R site-build/tools .
@@ -342,15 +335,17 @@ jobs:
           cp -R site-build/twee-pijlers .
           cp -R site-build/workshop-ai .
           cp -R site-build/werkvormen .
+          cp -R site-build/taalwerkvormen .
           cp -R site-build/onderbouwing .
+          cp -R site-build/bronnen .
           cp -R site-build/praktijk .
           cp -R site-build/over .
           cp -R site-build/verdieping .
           cp site-build/index.html site-build/404.html site-build/robots.txt site-build/sitemap.xml .
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add index.html 404.html robots.txt sitemap.xml assets publicaties tools eai-blog eai-tools-modules eaa-model onderwijsin twee-pijlers workshop-ai werkvormen onderbouwing praktijk over verdieping
+          git add index.html 404.html robots.txt sitemap.xml assets publicaties tools eai-blog eai-tools-modules eaa-model onderwijsin twee-pijlers workshop-ai werkvormen taalwerkvormen onderbouwing bronnen praktijk over verdieping
           if ! git diff --cached --quiet; then
             git commit -m "build: refresh EAI site"
-            git push origin HEAD:"$GITHUB_REF_NAME"
+            git push origin HEAD:main
           fi
