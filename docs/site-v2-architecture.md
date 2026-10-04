@@ -1,319 +1,99 @@
-# EAI website v2 — information architecture & editorial frame
+# EAI website — actuele architectuur
 
-Status: working document for the `site-migration` branch.
+Status: productiearchitectuur voor `main`.
 
-## Goal
+## Doel
 
-The site is not a museum of previous EAI versions and not a directory of tools.
-It should help a visitor move from a concrete educational question to:
-1. a sharper way of looking;
-2. a usable workform;
-3. an example or tool;
-4. deeper reading where useful.
+De site helpt een bezoeker vanuit een concrete onderwijs- of ontwerpvraag naar:
 
-The article *De vraag die we vergeten in het AI-debat* sets the editorial voice:
-recognisable situation first, then the educational question, then the concept.
+1. een scherpere analyse van leren en AI;
+2. een passende werkvorm;
+3. een bestaand didactisch model als ingang waar relevant;
+4. bronnen, onderbouwing en publicaties voor verdieping.
 
-## Source priority
+De site is geen versie-archief en geen losse verzameling AI-tools.
 
-For public copy, use sources in this order:
+## Hoofdnavigatie
 
-1. current EAI Standard / Core semantics for canonical concepts;
-2. current workshop materials for workforms and practical flow;
-3. current EAI Classroom / EAI Hub / EAI Prompt implementations for examples;
-4. existing publications for theory and provenance;
-5. older GAMMA / model material only as historical or supporting source, never as an unqualified current public layer.
-
-Do not expose version archaeology to ordinary visitors.
-
-## Language policy
-
-Dutch is the default prose language.
-
-Keep established English terms in English when they name a concept, method, product or publication. Examples:
-- Justification Mapping
-- Task Density
-- Reverse Scaffolding
-- Didactic Controllability
-- EAI Core
-- EAI Classroom
-- EAI Hub
-- Prompt Builder
-
-On first use, a short Dutch explanation can follow in parentheses where that helps.
-Do not translate canonical English terminology just for stylistic consistency.
-
-## Main navigation
-
-- Home
-- Twee pijlers
-- Workshop AI
+- EAI
 - Werkvormen
-- Praktijk
-- Publicaties
-- Tools
-
-Contact is a secondary action.
-
-## Home
-
-### Hero
-**Twee pijlers voor AI in onderwijs**
-
-The two pillars must be immediately visible and equally weighted:
-
-1. **Hoe leren werkt**
-2. **Hoe taalmodellen werken**
-
-The bridge question sits between them:
-**welke menselijke handeling moet hier betekenis krijgen, en wat doet AI precies op die plek?**
-
-Primary actions:
-- Bekijk de twee pijlers
-- Naar Workshop AI
-
-### Section: de verbinding
-Use the article's order as the public route:
-1. Proces
-2. Fase / process position
-3. Kernhandeling / core human action
-4. AI action
-5. Human evidence where a claim about learning or human performance is needed
-
-Do not start the public explanation with model architecture.
-
-### Section: meteen proberen
-Three workforms:
-- Justification Mapping
-- Wie doet welk denkwerk?
-- Bewijs van leren
-
-### Section: zo ziet het eruit
-Cards linking out to:
-- EAI Classroom
-- EAI Hub
-- Prompt Builder
-
-These are examples/implementations, not the definition of EAI.
-
-### Section: lezen
-Feature:
-- De vraag die we vergeten in het AI-debat
-
-Then selected existing publications.
-
-## Twee pijlers
-
-Editorial question:
-**Wat verandert er wanneer wat we weten over leren botst met wat AI inmiddels kan uitvoeren?**
-
-Pijler 1 explains how learning and human professional action work.
-Pijler 2 explains enough about language models and AI systems to see where work can shift.
-The public EAI route begins where those two knowledge bases meet.
-
-Explain, in ordinary language:
-- context and goal;
-- actor;
-- process position;
-- core human action;
-- observed AI action;
-- allocation;
-- human evidence;
-- handback / re-demonstration where needed.
-
-Use current EAI Standard semantics. Do not lead with GAMMA.
-
-Every concept section ends with:
-- Probeer dit
-- Voorbeeld
+- TAALwerkvormen
 - Verdieping
+- Bronnen
+- Over
+- LinkedIn als primaire externe contactroute
 
-## Workshop AI
+E-mail is alleen een rustige fallback op de Over-pagina.
 
-Landing page based on the existing three-workshop sequence:
+## Inhoudelijke lagen
 
-### Workshop 1 — Twee pijlers voor AI in onderwijs
-Learning and language models. Output is not evidence of learning.
+### EAI Toolbox
 
-### Workshop 2 — Wie doet welk (denk)werk?
-Task Density, division of cognitive work, core action, evidence.
+57 EAI-werkvormen. De bezoeker kan starten vanuit een gewone onderwijsvraag of vanuit een ondersteund didactisch bronmodel. De toolbox biedt zoeken, filters, bewaren en inhoudelijk aansluitende vervolgstappen.
 
-### Workshop 3 — Van inzicht naar ontwerp
-Process position, action, visibility, boundaries and redesign.
+### TAALwerkvormen
 
-The page links to the individual workforms rather than embedding a PDF dump.
+Zelfstandige verzameling van 15 complete werkvormkaarten uit TAALwerkvormen Emmauscollege v11, inclusief achtergrond, bewijs van leren, redo en volledige LLM-prompts.
 
-## Werkvormen
+### Didactische modellen
 
-Every workform follows the same template:
+EAI herschrijft bronmodellen niet. De huidige modelingangen gebruiken de termen, fasen en functies van hun bronmodel en voegen EAI-vragen als aparte analysetlaag toe.
 
-1. **Wanneer gebruik je dit?**
-2. **De vraag**
-3. **Zo werkt het**
-4. **Werk met een eigen taak**
-5. **Wat moet zichtbaar worden?**
-6. **Voorbeeld**
-7. **Ga verder** — relevant publication, tool or implementation.
+### Onderbouwing en Bronnen
 
-Initial set:
-- Justification Mapping
-- Task Density scan
-- Kernhandeling / core action check
-- Bewijs van leren
-- First attempt
-- Foutanalyse
-- Version comparison
-- AI-logboek
-- Toollab: dezelfde vraag in twee omgevingen
+`/onderbouwing/` legt de redenering en grenzen van claims uit.
 
-## Justification Mapping
+`/bronnen/` is het bronregister. Het maakt onderscheid tussen:
+- bronmodel;
+- onderbouwend onderzoek;
+- EAI-ontwerpvertaling.
 
-This is explicitly the workshop workform Anouk referred to.
+Een onderliggende bron maakt een specifieke EAI-werkvorm niet automatisch wetenschappelijk gevalideerd.
 
-Purpose:
-make the reasoning behind a choice visible, not merely the final choice.
+## Redactionele lijn
 
-Do not redefine it as the UU method-choice card.
-Use the EAI workshop meaning: process accountability around a choice, including alternatives, criteria, evidence and why the chosen route fits.
+- gewone Nederlandse onderwijstaal voorop;
+- technische EAI-termen pas in een tweede laag;
+- geen antropomorf AI-taalgebruik;
+- geen sterkere claims dan de bronnen dragen;
+- een eindproduct niet verwarren met bewijs van zelfstandig leren of professioneel oordeel;
+- bronmodel en EAI-ontwerpkeuze expliciet uit elkaar houden.
 
-Suggested interaction:
-- Welke keuze moest jij maken?
-- Welke alternatieven waren serieus mogelijk?
-- Welke criteria gebruikte je?
-- Welk bewijs woog mee?
-- Wat sprak tegen je keuze?
-- Waarom koos je uiteindelijk deze route?
-- Wat zou je keuze kunnen veranderen?
+## Visuele lijn
 
-Output:
-a compact map that can be discussed, compared or submitted as human evidence.
+- rustige, redactionele vormgeving;
+- groot en leesbaar;
+- veel witruimte zonder slide-deck-ritme;
+- compacte kaarten voor keuzes en acties;
+- diagrammen alleen waar ze een onderscheid verduidelijken;
+- geen decoratieve AI-beelden;
+- dezelfde inhoudsvolgorde op desktop en mobiel.
 
-## Praktijk
+## Technische bron van waarheid
 
-Not a sales page. A set of examples showing what EAI ideas look like in systems.
+De website wordt volledig vanuit de repository gebouwd.
 
-### EAI Classroom
-Short new introduction in the same editorial voice.
-Show the relation between lesson preparation, success criteria, misconceptions, interventions and evidence.
-External link to the live application.
+Belangrijkste bronnen:
+- `content/workforms.json`
+- `content/didactic-models.json`
+- `content/taalwerkvormen-page.html`
+- `content/bronnen-page.html`
+- `content/legacy/`
+- `scripts/build_site.py`
 
-### EAI Hub
-Short new introduction.
-Show how process, support and visibility are brought together.
-External link to the live application.
+Historische publicatie-embeds zijn als vaste snapshots onder `content/legacy/` opgenomen. De build crawlt de oude Google Site niet meer.
 
-### Prompt Builder
-Use the recent Prompt Builder as the clearest example that wording is not neutral:
-a prompt encodes choices about task, role, context and what the AI is allowed to do.
-External link to the current implementation.
+## Build en validatie
 
-## Publicaties
+`.github/workflows/build-site.yml`:
 
-Featured first:
-### De vraag die we vergeten in het AI-debat
-Publish as stable HTML and provide the PDF as secondary format.
-Canonical path:
-`/publicaties/de-vraag-die-we-vergeten/`
+1. installeert alleen de noodzakelijke Python-builddependency;
+2. bouwt de volledige statische site;
+3. controleert interne links;
+4. publiceert alleen op `main`.
 
-Keep the original voice and structure.
+Pull requests krijgen dezelfde build- en linkcontrole zonder productie-output te publiceren.
 
-Existing publications stay available but receive new introductions where necessary so the catalogue reads as one site rather than a migration archive.
+## Wijzigingsregel
 
-## Tools
-
-Tools are grouped by the question they help with, not by project chronology.
-
-Suggested groups:
-- Begrijpen / analyseren
-- Ontwerpen
-- Uitproberen
-- Verdiepen
-
-Each tool card says:
-- what question it helps answer;
-- what it does not prove;
-- whether it opens another EAI application.
-
-## Editorial pattern
-
-Avoid:
-- generic AI optimism/pessimism;
-- product language;
-- version labels in normal prose;
-- unnecessary model acronyms;
-- anthropomorphic AI language;
-- claims that a tool proves learning.
-
-Prefer:
-- one concrete educational situation;
-- one precise question;
-- ordinary Dutch;
-- short paragraphs;
-- examples from teaching;
-- an action the reader can try immediately.
-
-A typical page rhythm:
-
-> concrete situation  
-> what changes here?  
-> name the concept  
-> show the distinction  
-> try it on your own task  
-> link to a workform/tool  
-> offer deeper reading
-
-## Design / wireframe rule
-
-The wireframe is an internal build step, not a separate approval gate.
-
-Visual hierarchy:
-- generous white/cream space;
-- editorial typography rather than dashboard aesthetics;
-- one accent colour;
-- wide reading column for articles;
-- compact cards only for actions/workforms;
-- diagrams only when they clarify a distinction;
-- no decorative AI imagery.
-
-Desktop and mobile should preserve the same reading order.
-
-## Migration rule
-
-Do not merge to `main` until:
-- navigation works;
-- all featured internal links resolve;
-- external EAI application URLs are verified;
-- article page is complete;
-- mobile layout is checked;
-- old Google Site links that matter have redirects.
-
-
-## Visual source of truth
-
-The visual reference for the public website is the PDF **De vraag die we vergeten in het AI-debat**.
-
-Use its design grammar:
-- white editorial pages;
-- dark blue-grey typography;
-- strong sans-serif display headings;
-- serif body copy for long reading;
-- coral-red marks and short divider lines;
-- warm paper callouts;
-- sparse navy line illustrations with a single coral focal point;
-- large areas of whitespace, but not excessive vertical padding.
-
-The round EAI logo remains the brand mark in navigation, favicon and footer. It does **not** determine the page palette.
-
-### Reading and scroll rhythm
-
-Do not solve long pages by shrinking all text or by adding scroll-snap / animated text.
-
-Instead:
-- keep long-form body copy around 16–17 px with a narrow reading measure;
-- reduce oversized display headings by roughly 10–15% compared with the first migration draft;
-- shorten vertical section spacing;
-- insert a meaningful diagram, pull question or workform after several paragraphs where the source supports it;
-- provide a compact reading route at the top of long publications;
-- preserve a normal continuous document scroll.
-
-The purpose is to make the site read like an EAI publication, not like a slide deck or app dashboard.
+Bewerk structurele inhoud in de bronbestanden. Gegenereerde HTML mag alleen rechtstreeks worden aangepast wanneer die wijziging óók in de generator of broncontent wordt vastgelegd. Zo blijft een volledige rebuild gelijkwaardig aan de gepubliceerde site.
