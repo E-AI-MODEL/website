@@ -1338,6 +1338,15 @@ iframe{max-width:100%}
 .sources-group{padding:34px 0;border-top:1px solid var(--line)}.sources-group>h2{font-size:1.6rem;margin:0 0 20px}.sources-list{display:grid}.sources-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:center;padding:18px 0;border-top:1px solid var(--line)}.sources-row:first-child{border-top:0}.sources-row span:first-child{font:800 .68rem/1.2 Inter,ui-sans-serif,sans-serif;text-transform:uppercase;letter-spacing:.05em;color:#768292}.sources-row h3{font-size:1.08rem;margin:5px 0}.sources-row p{margin:0;color:var(--muted)}.sources-row>a,.sources-no-link{font:800 .76rem/1.2 Inter,ui-sans-serif,sans-serif;white-space:nowrap}.sources-no-link{color:#8a94a2}
 @media(max-width:980px){.taal-principles{grid-template-columns:repeat(2,minmax(0,1fr))}.taal-card>summary{grid-template-columns:42px 1fr}.taal-card-meta{grid-column:2;justify-content:flex-start}.taal-card-body{grid-template-columns:1fr}.taal-prompt-panel{border-left:0;border-top:1px solid var(--line)}}
 @media(max-width:700px){.taal-guide-facts{grid-template-columns:repeat(2,minmax(0,1fr))}.taal-longcopy>section{grid-template-columns:36px minmax(0,1fr);gap:12px}.taal-principles,.sources-legend,.taal-how,.taal-three-grid{grid-template-columns:1fr}.taal-principles article,.sources-legend article{min-height:0}.taal-card>summary{padding:15px;gap:10px}.taal-card-main,.taal-prompt-panel{padding:20px}.taal-card-lead{grid-template-columns:1fr}.taal-source-cta,.sources-row,.toolbox-companion-card{grid-template-columns:1fr;align-items:start}.toolbox-companion-mark{font-size:1rem}.sources-row>a,.sources-no-link{white-space:normal}}
+
+/* Long-page navigation and compact TAAL overview */
+.page-local-nav{position:sticky;top:68px;z-index:12;background:rgba(255,255,255,.96);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.page-local-nav .wrap{display:flex;gap:6px;overflow-x:auto;padding-top:9px;padding-bottom:9px;scrollbar-width:thin}
+.page-local-nav a{flex:0 0 auto;text-decoration:none;border:1px solid var(--line);background:#fff;padding:7px 10px;font:750 .72rem/1.2 Inter,ui-sans-serif,sans-serif}
+.page-local-nav a:hover{border-color:var(--ink)}
+@media(max-width:900px){.page-local-nav{top:58px}}
+@media(max-width:700px){.taal-table{min-width:0}.taal-table th:nth-child(3),.taal-table td:nth-child(3),.taal-table th:nth-child(5),.taal-table td:nth-child(5),.taal-table th:nth-child(6),.taal-table td:nth-child(6){display:none}.taal-table th,.taal-table td{padding:9px 7px;font-size:.78rem}}
+
 '''
 
 CHROME_CSS = r'''
