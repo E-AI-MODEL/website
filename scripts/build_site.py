@@ -1692,6 +1692,7 @@ def build(scrape: Path, out: Path) -> None:
             "Bronnen",
             load_content_fragment("bronnen-page.html"),
             "/bronnen/",
+            "bronnen",
             "Bronnen en onderbouwing achter EAI, TAALwerkvormen, didactische adapters en ontwerpkeuzes.",
         ),
     )
