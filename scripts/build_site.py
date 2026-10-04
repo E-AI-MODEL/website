@@ -1481,7 +1481,7 @@ def require_sources(sources: Path) -> None:
     required = [file for _, _, file, _ in PUBLICATIONS] + ["onderwijsin-embed1.html", "eai-tools-modules-eai-toolkit-beyond-explainability-embed1.html"]
     missing = [name for name in required if not (sources / name).exists()]
     if missing:
-        raise SystemExit("Missing scraped sources: " + ", ".join(missing))
+        raise SystemExit("Missing vendored legacy sources: " + ", ".join(missing))
 
 def build(sources: Path, out: Path) -> None:
     require_sources(sources)
