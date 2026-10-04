@@ -14,6 +14,7 @@ from bs4 import BeautifulSoup
 BASE_URL = "https://eaimodel.nl"
 EMAIL = "vis@emmauscollege.nl"
 GITHUB = "https://github.com/E-AI-MODEL"
+LINKEDIN = "https://nl.linkedin.com/in/hans-visser-92531a105"
 PORTRAIT_URL = "https://onderwijs-ai.nl/_app/immutable/assets/hans-visser.CagpLyUi.png"
 RESEARCHED_THUMB_URL = "https://files.sgbsg.nl/redeu/uploads/2026/04/08151244/POD-ThumbYT-71.png"
 
@@ -1339,6 +1340,11 @@ iframe{max-width:100%}
 @media(max-width:980px){.taal-principles{grid-template-columns:repeat(2,minmax(0,1fr))}.taal-card>summary{grid-template-columns:42px 1fr}.taal-card-meta{grid-column:2;justify-content:flex-start}.taal-card-body{grid-template-columns:1fr}.taal-prompt-panel{border-left:0;border-top:1px solid var(--line)}}
 @media(max-width:700px){.taal-guide-facts{grid-template-columns:repeat(2,minmax(0,1fr))}.taal-longcopy>section{grid-template-columns:36px minmax(0,1fr);gap:12px}.taal-principles,.sources-legend,.taal-how,.taal-three-grid{grid-template-columns:1fr}.taal-principles article,.sources-legend article{min-height:0}.taal-card>summary{padding:15px;gap:10px}.taal-card-main,.taal-prompt-panel{padding:20px}.taal-card-lead{grid-template-columns:1fr}.taal-source-cta,.sources-row,.toolbox-companion-card{grid-template-columns:1fr;align-items:start}.toolbox-companion-mark{font-size:1rem}.sources-row>a,.sources-no-link{white-space:normal}}
 
+.quiet-contact{margin-top:14px;color:var(--muted);font-size:.86rem}
+.quiet-contact summary{cursor:pointer;display:inline-block;font-family:Inter,ui-sans-serif,sans-serif;font-weight:700;text-decoration:underline;text-underline-offset:3px}
+.quiet-contact p{margin:7px 0 0}
+.quiet-contact a{color:var(--muted)}
+
 /* Long-page navigation and compact TAAL overview */
 .page-local-nav{position:sticky;top:68px;z-index:12;background:rgba(255,255,255,.96);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
 .page-local-nav .wrap{display:flex;gap:6px;overflow-x:auto;padding-top:9px;padding-bottom:9px;scrollbar-width:thin}
@@ -1393,8 +1399,8 @@ def nav(active: str = "") -> str:
     return (
         f'<header class="site-header"><nav class="nav" aria-label="Hoofdnavigatie">'
         f'<a class="brand" href="/" aria-label="EAI home"><img src="/assets/eai-logo.svg" alt="EAI"></a>'
-        f'<div class="nav-links">{items}<a class="nav-cta" href="mailto:{EMAIL}">Contact</a></div>'
-        f'<details class="mobile-nav"><summary>Menu</summary><div class="mobile-nav-panel">{mobile_items}<a href="mailto:{EMAIL}">Contact</a></div></details>'
+        f'<div class="nav-links">{items}<a class="nav-cta" href="{LINKEDIN}" target="_blank" rel="noopener">LinkedIn ↗</a></div>'
+        f'<details class="mobile-nav"><summary>Menu</summary><div class="mobile-nav-panel">{mobile_items}<a href="{LINKEDIN}" target="_blank" rel="noopener">LinkedIn ↗</a></div></details>'
         f'</nav></header>'
     )
 
@@ -1405,7 +1411,7 @@ def footer() -> str:
         f'<span><strong>EAI</strong> · Hans Visser<br>AI, leren en professioneel handelen.</span></p>'
         f'<p><a href="/werkvormen/">Werkvormen</a> · <a href="/taalwerkvormen/">TAALwerkvormen</a> · '
         f'<a href="/verdieping/">Verdieping</a> · <a href="/bronnen/">Bronnen</a> · <a href="/over/">Over EAI en Hans</a> · '
-        f'<a href="mailto:{EMAIL}">{EMAIL}</a> · <a href="{GITHUB}" target="_blank" rel="noopener">GitHub</a></p></div></footer>'
+        f'<a href="{LINKEDIN}" target="_blank" rel="noopener">LinkedIn</a> · <a href="{GITHUB}" target="_blank" rel="noopener">GitHub</a></p></div></footer>'
     )
 
 def doc(title: str, body: str, canonical_path: str, active: str = "", description: str = "") -> str:
@@ -1456,8 +1462,8 @@ def inject_embed(source: Path, canonical_path: str, fallback_title: str, footer_
                 head_parts.append(str(node))
     body_inner = soup.body.decode_contents() if soup.body else src
     body_inner = rewrite_legacy_links(body_inner)
-    chrome = f'<header class="eai-site-nav"><div class="eai-site-nav__inner"><a class="eai-site-nav__brand" href="/" aria-label="EAI home"><img src="/assets/eai-logo.svg" alt="EAI" width="34" height="34"></a><div class="eai-site-nav__links"><a href="/">EAI</a><a href="/werkvormen/">Werkvormen</a><a href="/taalwerkvormen/">TAALwerkvormen</a><a href="/verdieping/">Verdieping</a><a href="/bronnen/">Bronnen</a><a href="/over/">Over</a><a href="mailto:{EMAIL}">Contact</a></div></div></header>'
-    foot = f'<footer class="eai-site-footer"><a href="{footer_back}">← Terug</a> · <a href="/bronnen/">Bronnen</a> · <a href="mailto:{EMAIL}">Contact</a></footer>'
+    chrome = f'<header class="eai-site-nav"><div class="eai-site-nav__inner"><a class="eai-site-nav__brand" href="/" aria-label="EAI home"><img src="/assets/eai-logo.svg" alt="EAI" width="34" height="34"></a><div class="eai-site-nav__links"><a href="/">EAI</a><a href="/werkvormen/">Werkvormen</a><a href="/taalwerkvormen/">TAALwerkvormen</a><a href="/verdieping/">Verdieping</a><a href="/bronnen/">Bronnen</a><a href="/over/">Over</a><a href="{LINKEDIN}" target="_blank" rel="noopener">LinkedIn ↗</a></div></div></header>'
+    foot = f'<footer class="eai-site-footer"><a href="{footer_back}">← Terug</a> · <a href="/bronnen/">Bronnen</a> · <a href="{LINKEDIN}" target="_blank" rel="noopener">LinkedIn ↗</a></footer>'
     canonical = f"{BASE_URL}{canonical_path}"
     return f'<!doctype html><html lang="{esc(lang)}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{esc(title)} · EAI</title><link rel="canonical" href="{esc(canonical)}"><link rel="icon" href="/assets/eai-logo.svg" type="image/svg+xml">{"".join(head_parts)}<link rel="stylesheet" href="/assets/article-chrome.css"></head><body>{chrome}{body_inner}{foot}</body></html>'
 
@@ -1716,7 +1722,7 @@ def build(scrape: Path, out: Path) -> None:
 <p class="profile-lede">Conrector op het Emmauscollege in Rotterdam. Daarnaast actief als AI-adviseur en spreker rond AI, leren en onderwijsontwerp.</p>
 <p>Mijn vertrekpunt is meestal niet: welke AI-tool zullen we gebruiken? Ik wil eerst weten wat een leerling uiteindelijk moet leren, waar hij zich in dat leren bevindt en aan welke stap hij daar zelf inhoudelijke betekenis moet geven. Pas daarna kijk ik naar wat AI precies op die plek doet.</p>
 <p>Die vragen kwamen steeds terug in lessen, studiedagen, gesprekken met docenten en experimenten met AI. Daaruit groeide EAI. Niet als lijst met toegestane tools, maar als een manier om samen beter naar een concrete onderwijssituatie te kijken.</p>
-<div class="button-row"><a class="button secondary" href="https://onderwijs-ai.nl/over-ons/team/hans-visser" target="_blank" rel="noopener">Onderwijs AI-profiel</a><a class="button secondary" href="https://nl.linkedin.com/in/hans-visser-92531a105" target="_blank" rel="noopener">LinkedIn</a></div>
+<div class="button-row"><a class="button" href="{LINKEDIN}" target="_blank" rel="noopener">Volg of neem contact op via LinkedIn ↗</a><a class="button secondary" href="https://onderwijs-ai.nl/over-ons/team/hans-visser" target="_blank" rel="noopener">Onderwijs AI-profiel</a></div><details class="quiet-contact"><summary>Andere contactmogelijkheid</summary><p><a href="mailto:{EMAIL}">Stuur een e-mail</a></p></details>
 <p class="source-note">Portret wordt rechtstreeks geladen vanaf het openbare Onderwijs AI-profiel.</p>
 </div></div></div></section>
 <section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Wat EAI probeert te voorkomen</div><div><h2>Een nette output verwarren met menselijk leren of oordeel.</h2><p>AI kan een sterke tekst, uitleg, diagnose of aanbeveling produceren. EAI vraagt daarom steeds wat die output nog bewijst over de mens die ermee werkte.</p></div></div>
