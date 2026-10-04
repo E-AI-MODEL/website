@@ -522,3 +522,9 @@ iframe{max-width:100%}
 .page-local-nav a:hover{border-color:var(--ink)}
 @media(max-width:900px){.page-local-nav{top:58px}}
 @media(max-width:700px){.taal-table{min-width:0}.taal-table th:nth-child(3),.taal-table td:nth-child(3),.taal-table th:nth-child(5),.taal-table td:nth-child(5),.taal-table th:nth-child(6),.taal-table td:nth-child(6){display:none}.taal-table th,.taal-table td{padding:9px 7px;font-size:.78rem}}
+
+
+.quiet-contact{margin-top:14px;color:var(--muted);font-size:.86rem}
+.quiet-contact summary{cursor:pointer;display:inline-block;font-family:Inter,ui-sans-serif,sans-serif;font-weight:700;text-decoration:underline;text-underline-offset:3px}
+.quiet-contact p{margin:7px 0 0}
+.quiet-contact a{color:var(--muted)}
