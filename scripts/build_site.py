@@ -303,9 +303,14 @@ def render_workforms_index(items: list[dict], didactic_models: dict) -> str:
     boundary_note = esc(didactic_models["notes"]["direct_instruction_boundary"])
 
     return f'''<main>
-<section class="page-hero toolbox-hero"><div class="wrap"><div class="eyebrow">Werkvormen</div><h1>Waar wil je in je les mee verder?</h1><p class="lede">Begin bij een concrete onderwijsvraag, of vertrek vanuit het didactische model waarmee je al werkt. EAI voegt geen nieuw lesmodel toe.</p></div></section>
+<section class="page-hero toolbox-hero"><div class="wrap"><div class="eyebrow">Werkvormen</div><h1>Waar wil je in je les mee verder?</h1><p class="lede">Kies eerst welke verzameling bij je vraag past. De EAI Toolbox helpt bij leren en AI. TAALwerkvormen combineert vaktaal met formatief handelen.</p></div></section>
 
-<section class="section toolbox-start"><div class="wrap">
+<section class="section workform-collections"><div class="wrap"><div class="workform-collection-grid">
+<a class="workform-collection-card is-eai" href="#eai-toolbox"><span>EAI Toolbox</span><strong>{len(items)} EAI-werkvormen</strong><p>Begin bij een onderwijsvraag of bij een bestaand didactisch model. Kijk daarna naar kernhandeling, AI-rol en bewijs.</p><b>Naar de EAI Toolbox ↓</b></a>
+<a class="workform-collection-card is-taal" href="/taalwerkvormen/"><span>TAALwerkvormen · Emmauscollege</span><strong>15 complete werkvormkaarten</strong><p>Vaktaal, formatief handelen, redo en volledige LLM-prompts in één zelfstandige verzameling.</p><b>Open TAALwerkvormen →</b></a>
+</div></div></section>
+
+<section class="section toolbox-start" id="eai-toolbox"><div class="wrap">
 <div class="toolbox-situation">
 <div><div class="kicker">Dezelfde EAI-vraag, twee ingangen</div><h2>Wat moet de leerling hier zelf doen?</h2><p>Je kunt beginnen bij een probleem dat je in de les ziet. Of bij de fase van een bestaand didactisch model. In beide gevallen blijft de vraag hetzelfde: welke handeling draagt hier het leren?</p></div>
 <div class="toolbox-situation-path" aria-label="EAI-kijkroute"><span>onderwijsmodel</span><b>→</b><span>fase</span><b>→</b><span>kernhandeling</span><b>→</b><span>AI</span><b>→</b><span>bewijs</span></div>
@@ -1236,6 +1241,30 @@ iframe{max-width:100%}
 }
 
 
+/* Content-growth navigation and hub UX */
+.home-entry-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.home-entry-grid a{display:flex;flex-direction:column;min-height:240px;padding:24px;border:1px solid var(--line);background:#fff;text-decoration:none}
+.home-entry-grid a:hover{border-color:var(--ink);transform:translateY(-1px)}
+.home-entry-grid span,.workform-collection-card>span{font:800 .68rem/1.2 Inter,ui-sans-serif,sans-serif;text-transform:uppercase;letter-spacing:.07em;color:#718096}
+.home-entry-grid h3{font-size:1.55rem;margin:16px 0 10px;max-width:22ch}
+.home-entry-grid p{margin:0 0 18px;color:var(--muted);max-width:56ch}
+.home-entry-grid b{margin-top:auto;font-family:Inter,ui-sans-serif,sans-serif}
+.home-practice-links{display:flex;gap:20px;flex-wrap:wrap;margin-top:28px;font-family:Inter,ui-sans-serif,sans-serif;font-weight:800}
+.workform-collections{padding-top:34px;padding-bottom:34px}
+.workform-collection-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.workform-collection-card{display:flex;flex-direction:column;min-height:220px;padding:24px;border:1px solid var(--line);background:#fff;text-decoration:none}
+.workform-collection-card.is-eai{border-top:4px solid var(--ink)}
+.workform-collection-card.is-taal{border-top:4px solid var(--accent)}
+.workform-collection-card>strong{font:800 1.5rem/1.2 Inter,ui-sans-serif,sans-serif;margin:16px 0 10px}
+.workform-collection-card>p{margin:0 0 18px;color:var(--muted)}
+.workform-collection-card>b{margin-top:auto;font-family:Inter,ui-sans-serif,sans-serif}
+.workform-collection-card:hover{border-color:var(--ink)}
+.source-register-cta{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:end;border-left:5px solid var(--accent);background:var(--soft);padding:28px}
+.source-register-cta h2{margin:7px 0 8px}.source-register-cta p{margin:0;max-width:70ch}
+@media(max-width:980px){.welcome-shortcuts{grid-template-columns:repeat(2,minmax(0,1fr))}.welcome-shortcuts a:nth-child(2){border-right:0;padding-right:0}.welcome-shortcuts a:nth-child(3){padding-left:0;border-top:1px solid var(--line)}.welcome-shortcuts a:nth-child(4){border-right:0;border-top:1px solid var(--line);padding-right:0}}
+@media(max-width:760px){.home-entry-grid,.workform-collection-grid{grid-template-columns:1fr}.home-entry-grid a,.workform-collection-card{min-height:0}.source-register-cta{grid-template-columns:1fr}.welcome-shortcuts{grid-template-columns:1fr}.welcome-shortcuts a,.welcome-shortcuts a:first-child,.welcome-shortcuts a:nth-child(2),.welcome-shortcuts a:nth-child(3),.welcome-shortcuts a:nth-child(4){padding:15px 0;border-right:0;border-top:0;border-bottom:1px solid var(--line)}.welcome-shortcuts a:last-child{border-bottom:0}}
+
+
 /* Source-preserving didactic model adapters */
 .toolbox-mode-tabs{display:inline-flex;gap:0;border:1px solid var(--line);margin:0 0 34px;background:#fff}
 .toolbox-mode-tab{appearance:none;border:0;border-right:1px solid var(--line);background:#fff;color:var(--ink);padding:12px 16px;cursor:pointer;font:800 .84rem/1.2 Inter,ui-sans-serif,sans-serif}
@@ -1315,7 +1344,9 @@ def nav(active: str = "") -> str:
     links = [
         ("model", "/", "EAI"),
         ("werkvormen", "/werkvormen/", "Werkvormen"),
+        ("taal", "/taalwerkvormen/", "TAALwerkvormen"),
         ("verdieping", "/verdieping/", "Verdieping"),
+        ("bronnen", "/bronnen/", "Bronnen"),
         ("over", "/over/", "Over"),
     ]
     items = "".join(
@@ -1339,8 +1370,9 @@ def footer() -> str:
         f'<footer class="site-footer"><div class="wrap footer-grid">'
         f'<p style="display:flex;gap:12px;align-items:center"><img src="/assets/eai-logo.svg" alt="" width="42" height="42">'
         f'<span><strong>EAI</strong> · Hans Visser<br>AI, leren en professioneel handelen.</span></p>'
-        f'<p><a href="/verdieping/">Verdieping</a> · <a href="/over/">Over EAI en Hans</a> · <a href="mailto:{EMAIL}">{EMAIL}</a> · '
-        f'<a href="{GITHUB}" target="_blank" rel="noopener">GitHub</a></p></div></footer>'
+        f'<p><a href="/werkvormen/">Werkvormen</a> · <a href="/taalwerkvormen/">TAALwerkvormen</a> · '
+        f'<a href="/verdieping/">Verdieping</a> · <a href="/bronnen/">Bronnen</a> · <a href="/over/">Over EAI en Hans</a> · '
+        f'<a href="mailto:{EMAIL}">{EMAIL}</a> · <a href="{GITHUB}" target="_blank" rel="noopener">GitHub</a></p></div></footer>'
     )
 
 def doc(title: str, body: str, canonical_path: str, active: str = "", description: str = "") -> str:
@@ -1391,8 +1423,8 @@ def inject_embed(source: Path, canonical_path: str, fallback_title: str, footer_
                 head_parts.append(str(node))
     body_inner = soup.body.decode_contents() if soup.body else src
     body_inner = rewrite_legacy_links(body_inner)
-    chrome = f'<header class="eai-site-nav"><div class="eai-site-nav__inner"><a class="eai-site-nav__brand" href="/" aria-label="EAI home"><img src="/assets/eai-logo.svg" alt="EAI" width="34" height="34"></a><div class="eai-site-nav__links"><a href="/">EAI</a><a href="/werkvormen/">Werkvormen</a><a href="/verdieping/">Verdieping</a><a href="/over/">Over</a><a href="mailto:{EMAIL}">Contact</a></div></div></header>'
-    foot = f'<footer class="eai-site-footer"><a href="{footer_back}">← Terug</a> · <a href="mailto:{EMAIL}">Contact</a></footer>'
+    chrome = f'<header class="eai-site-nav"><div class="eai-site-nav__inner"><a class="eai-site-nav__brand" href="/" aria-label="EAI home"><img src="/assets/eai-logo.svg" alt="EAI" width="34" height="34"></a><div class="eai-site-nav__links"><a href="/">EAI</a><a href="/werkvormen/">Werkvormen</a><a href="/taalwerkvormen/">TAALwerkvormen</a><a href="/verdieping/">Verdieping</a><a href="/bronnen/">Bronnen</a><a href="/over/">Over</a><a href="mailto:{EMAIL}">Contact</a></div></div></header>'
+    foot = f'<footer class="eai-site-footer"><a href="{footer_back}">← Terug</a> · <a href="/bronnen/">Bronnen</a> · <a href="mailto:{EMAIL}">Contact</a></footer>'
     canonical = f"{BASE_URL}{canonical_path}"
     return f'<!doctype html><html lang="{esc(lang)}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{esc(title)} · EAI</title><link rel="canonical" href="{esc(canonical)}"><link rel="icon" href="/assets/eai-logo.svg" type="image/svg+xml">{"".join(head_parts)}<link rel="stylesheet" href="/assets/article-chrome.css"></head><body>{chrome}{body_inner}{foot}</body></html>'
 
@@ -1436,10 +1468,19 @@ def build(scrape: Path, out: Path) -> None:
 </div>
 <div class="wrap welcome-shortcuts">
 <a href="#model"><span>Nieuw bij EAI</span><strong>Begrijp het in één voorbeeld</strong><b>Start →</b></a>
-<a href="/werkvormen/"><span>Voor je volgende les</span><strong>Kies een passende werkvorm</strong><b>Aan de slag →</b></a>
-<a href="/verdieping/"><span>Verder kijken</span><strong>Onderbouwing, praktijk en publicaties</strong><b>Verdiep →</b></a>
+<a href="/werkvormen/"><span>EAI in je les</span><strong>Kies uit 57 EAI-werkvormen</strong><b>Aan de slag →</b></a>
+<a href="/taalwerkvormen/"><span>Taal in elk vak</span><strong>Open 15 TAALwerkvormen</strong><b>Bekijk →</b></a>
+<a href="/verdieping/"><span>Verder kijken</span><strong>Onderbouwing, bronnen en publicaties</strong><b>Verdiep →</b></a>
 </div>
 </section>
+
+<section class="section home-entry-section"><div class="wrap"><div class="section-head"><div class="kicker">Kies je ingang</div><div><h2>Niet iedereen komt met dezelfde vraag.</h2><p>Je kunt EAI eerst begrijpen, direct met een les aan de slag, vaktaal versterken of de bronnen en onderbouwing bekijken.</p></div></div>
+<div class="home-entry-grid">
+<a href="/werkvormen/"><span>01 · EAI Toolbox</span><h3>Ik wil met een concrete lesvraag werken.</h3><p>57 werkvormen, te kiezen vanuit een onderwijsvraag of bestaand didactisch model.</p><b>Open Werkvormen →</b></a>
+<a href="/taalwerkvormen/"><span>02 · TAALwerkvormen</span><h3>Ik wil vaktaal en formatief handelen combineren.</h3><p>15 complete werkvormkaarten met stappen, bewijs, redo en LLM-prompts.</p><b>Open TAALwerkvormen →</b></a>
+<a href="/werkvormen/#didactisch-model"><span>03 · Didactische modellen</span><h3>Ik werk al met een lesmodel.</h3><p>Bekijk EAI binnen EDI 2.0, Explicit Instruction of de formatieve toetscyclus.</p><b>Bekijk de modelingang →</b></a>
+<a href="/bronnen/"><span>04 · Bronnen</span><h3>Ik wil weten waar dit op gebaseerd is.</h3><p>Bronmodellen, onderzoek, EAI-ontwerpkeuzes en de grenzen van de claims op één plek.</p><b>Bekijk de bronnen →</b></a>
+</div></div></section>
 
 <section class="section model-intro" id="model"><div class="wrap hero-grid">
 <div><div class="eyebrow">Het EAI-model</div><h2>Leg eerst het onderwijs op tafel.</h2>
@@ -1476,7 +1517,7 @@ def build(scrape: Path, out: Path) -> None:
 <a class="card" href="/werkvormen/kernhandeling-check/"><span class="meta">Start hier</span><h3>Kernhandeling-check</h3><p>Bepaal eerst welke menselijke handeling in deze fase inhoudelijk betekenis moet krijgen.</p><span class="arrow">Open →</span></a>
 <a class="card" href="/werkvormen/ai-role-handback-plan/"><span class="meta">Ontwerp</span><h3>Wat doet AI, en wanneer gaat het terug naar de leerling?</h3><p>Schrijf niet alleen op dat AI 'ondersteunt'. Maak zichtbaar wat het systeem doet en waar de leerling het weer zelf moet uitvoeren.</p><span class="arrow">Open →</span></a>
 <a class="card" href="/werkvormen/bewijs-van-leren/"><span class="meta">Bewijs</span><h3>Bewijs van leren</h3><p>Kijk welk bewijs je nodig hebt voor wat je over de leerling wilt kunnen zeggen.</p><span class="arrow">Open →</span></a>
-</div><p style="margin-top:28px"><a href="/werkvormen/">Bekijk alle 57 werkvormen →</a></p></div></section>
+</div><div class="home-practice-links"><a href="/werkvormen/">Bekijk 57 EAI-werkvormen →</a><a href="/taalwerkvormen/">Bekijk 15 TAALwerkvormen →</a></div></div></section>
 
 <section class="section profile-section"><div class="wrap"><div class="profile-grid">
 <div class="profile-photo"><img src="{PORTRAIT_URL}" alt="Hans Visser" loading="lazy" decoding="async" referrerpolicy="no-referrer"></div>
@@ -1502,6 +1543,7 @@ def build(scrape: Path, out: Path) -> None:
 <section class="page-hero"><div class="wrap"><div class="eyebrow">Verdieping</div><h1>Wil je verder dan de werkvorm?</h1><p class="lede">Hier vind je de onderbouwing, publicaties, praktijkvoorbeelden en tools achter EAI. Kies wat je nodig hebt; je hoeft niet alles te lezen om met EAI te kunnen werken.</p></div></section>
 <section class="section"><div class="wrap"><div class="depth-grid">
 <a class="depth-card depth-card--wide" href="/onderbouwing/"><span>Onderbouwing</span><h2>Waar rust EAI op?</h2><p>Didactiek, leerpsychologie, pedagogiek, professioneel oordeel en recent AI-onderzoek. Met expliciete grenzen aan wat EAI wel en niet claimt.</p><b>Bekijk de onderbouwing →</b></a>
+<a class="depth-card" href="/bronnen/"><span>Bronnen</span><h2>Waar komt het concreet vandaan?</h2><p>Bronmodellen, onderzoek achter ontwerpprincipes, TAALwerkvormen en eigen EAI-evidencebestanden.</p><b>Naar de bronnen →</b></a>
 <a class="depth-card" href="/publicaties/"><span>Publicaties & media</span><h2>Lees, kijk en luister verder.</h2><p>Eigen EAI-publicaties, externe bijdragen, podcast en video.</p><b>Naar publicaties →</b></a>
 <a class="depth-card" href="/praktijk/"><span>Praktijk</span><h2>Wat gebeurt er als je het bouwt?</h2><p>Live demonstrators en toepassingen waarin dezelfde ontwerpvragen terugkomen.</p><b>Bekijk de praktijk →</b></a>
 <a class="depth-card" href="/tools/"><span>Tools</span><h2>Van vraag naar ontwerp.</h2><p>Toepassingen die helpen bij analyse, prompts, eigenaarschap en lesontwerp.</p><b>Bekijk de tools →</b></a>
@@ -1570,6 +1612,7 @@ def build(scrape: Path, out: Path) -> None:
 <article class="panel"><h3>Niet claimen</h3><ul><li>Dat iedere EAI-werkvorm experimenteel gevalideerd is.</li><li>Dat één lijst kernhandelingen voor alle vakken en fasen geldt.</li><li>Dat AI per definitie goed of slecht is voor leren.</li><li>Dat de EAI-microstructuren al een gevalideerd meetinstrument vormen.</li></ul></article></div>
 <p style="margin-top:28px"><a href="https://github.com/E-AI-MODEL/EAI-standard/blob/main/evidence/claims.yaml" target="_blank" rel="noopener">Bekijk de evidence claims in de EAI Standard →</a><br><a href="https://github.com/E-AI-MODEL/EAI-standard/blob/main/evidence/construct-map.yaml" target="_blank" rel="noopener">Bekijk de construct map en validatiestatus →</a></p>
 </div></section>
+<section class="section"><div class="wrap"><div class="source-register-cta"><div><div class="kicker">Bronregister</div><h2>Alle bronnen bij elkaar.</h2><p>Van bronmodellen en leerpsychologie tot TAALwerkvormen en AI-onderzoek. Met onderscheid tussen bron, onderbouwing en eigen ontwerpvertaling.</p></div><a class="button" href="/bronnen/">Open de bronnenlijst</a></div></div></section>
 </main>'''
     write(out, "onderbouwing/index.html", doc("Onderbouwing", evidence_body, "/onderbouwing/", "onderbouwing", "Didactische, leerpsychologische, pedagogische en AI-specifieke onderbouwing van EAI, met expliciete grenzen aan wat het model claimt."))
 
@@ -1736,7 +1779,7 @@ def build(scrape: Path, out: Path) -> None:
     not_found = '<main><section class="page-hero"><div class="wrap"><div class="eyebrow">404</div><h1>Deze pagina is er niet meer.</h1><p class="lede">De oude Google-site bevatte ook een paar dode links. Ga terug naar de publicaties of tools.</p><div class="button-row"><a class="button" href="/publicaties/">Publicaties</a><a class="button secondary" href="/tools/">Tools</a></div></div></section></main>'
     write(out, "404.html", doc("Niet gevonden", not_found, "/404.html"))
     write(out, "robots.txt", "User-agent: *\nAllow: /\nSitemap: https://eaimodel.nl/sitemap.xml\n")
-    urls = ["/", "/twee-pijlers/", "/workshop-ai/", "/werkvormen/", "/verdieping/", "/onderbouwing/", "/praktijk/", "/publicaties/", "/publicaties/de-vraag-die-we-vergeten/", "/tools/", "/over/", "/eaa-model/", "/onderwijsin/"] + [f"/werkvormen/{item['slug']}/" for item in workforms] + [f"/publicaties/{slug}/" for slug, _, _, _ in PUBLICATIONS] + ["/tools/beyond-explainability/"]
+    urls = ["/", "/twee-pijlers/", "/workshop-ai/", "/werkvormen/", "/taalwerkvormen/", "/verdieping/", "/onderbouwing/", "/bronnen/", "/praktijk/", "/publicaties/", "/publicaties/de-vraag-die-we-vergeten/", "/tools/", "/over/", "/eaa-model/", "/onderwijsin/"] + [f"/werkvormen/{item['slug']}/" for item in workforms] + [f"/publicaties/{slug}/" for slug, _, _, _ in PUBLICATIONS] + ["/tools/beyond-explainability/"]
     items = "".join(f"<url><loc>{BASE_URL}{path}</loc></url>" for path in urls)
     write(out, "sitemap.xml", f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{items}</urlset>')
 
