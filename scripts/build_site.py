@@ -1477,14 +1477,14 @@ def redirect(target: str) -> str:
     canonical = target if target.startswith("http") else f"{BASE_URL}{target}"
     return f'<!doctype html><html lang="nl"><head><meta charset="utf-8"><meta name="robots" content="noindex"><meta http-equiv="refresh" content="0; url={esc(target)}"><link rel="canonical" href="{esc(canonical)}"><title>Doorsturen…</title></head><body><p><a href="{esc(target)}">Ga verder</a></p></body></html>'
 
-def require_sources(scrape: Path) -> None:
-    required = [file for _, _, file, _ in PUBLICATIONS] + ["home-embed1.html", "onderwijsin-embed1.html", "eai-tools-modules-eai-toolkit-beyond-explainability-embed1.html"]
-    missing = [name for name in required if not (scrape / name).exists()]
+def require_sources(sources: Path) -> None:
+    required = [file for _, _, file, _ in PUBLICATIONS] + ["onderwijsin-embed1.html", "eai-tools-modules-eai-toolkit-beyond-explainability-embed1.html"]
+    missing = [name for name in required if not (sources / name).exists()]
     if missing:
         raise SystemExit("Missing scraped sources: " + ", ".join(missing))
 
-def build(scrape: Path, out: Path) -> None:
-    require_sources(scrape)
+def build(sources: Path, out: Path) -> None:
+    require_sources(sources)
     if out.exists():
         shutil.rmtree(out)
     out.mkdir(parents=True)
@@ -1787,7 +1787,7 @@ def build(scrape: Path, out: Path) -> None:
         "wang-fan-2025": "rapportage-wang-fan-2025",
     }
     for slug, title, filename, kind in PUBLICATIONS:
-        source = scrape / filename
+        source = sources / filename
         excerpt = PUBLICATION_INTROS.get(slug, first_excerpt(source))
         pub_cards.append(f'<a class="card" href="/publicaties/{slug}/"><span class="meta">{esc(kind)}</span><h3>{esc(title)}</h3><p>{esc(excerpt)}</p><span class="arrow">Lees →</span></a>')
         write(out, f"publicaties/{slug}/index.html", inject_embed(source, f"/publicaties/{slug}/", title))
@@ -1823,13 +1823,13 @@ def build(scrape: Path, out: Path) -> None:
     write(out, "tools/index.html", doc("Tools", tools_body, "/tools/", "tools", "EAI-tools en werkvormen voor analyse, ontwerp en verdieping rond AI en leren."))
     write(out, "eai-tools-modules/index.html", redirect("/tools/"))
 
-    toolkit = scrape / "eai-tools-modules-eai-toolkit-beyond-explainability-embed1.html"
+    toolkit = sources / "eai-tools-modules-eai-toolkit-beyond-explainability-embed1.html"
     write(out, "tools/beyond-explainability/index.html", inject_embed(toolkit, "/tools/beyond-explainability/", "EAI Toolkit: Beyond Explainability", "/tools/"))
 
     eaa_body = '<main><section class="page-hero"><div class="wrap"><div class="eyebrow">EAA Model</div><h1>Eigenaarschap. Autonomie. Agency.</h1><p class="lede">Het EAA-model richt zich op menselijk leren, motivatie en regie. Het staat naast EAI en kan ook zonder AI worden gebruikt.</p><p><a class="button" href="https://sunny-blancmange-dec4a1.netlify.app" target="_blank" rel="noopener">Open de EAA Model Tool</a></p></div></section></main>'
     write(out, "eaa-model/index.html", doc("EAA Model", eaa_body, "/eaa-model/", description="EAA — eigenaarschap, autonomie en agency in leren."))
 
-    onderwijs = scrape / "onderwijsin-embed1.html"
+    onderwijs = sources / "onderwijsin-embed1.html"
     write(out, "onderwijsin/index.html", inject_embed(onderwijs, "/onderwijsin/", "OnderwijsIn — technische anatomie", "/"))
 
     redirects = {
@@ -1853,10 +1853,10 @@ def build(scrape: Path, out: Path) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--scrape", type=Path, default=Path("scrape"))
+    parser.add_argument("--sources", type=Path, default=Path("content/legacy"))
     parser.add_argument("--out", type=Path, default=Path("site-build"))
     args = parser.parse_args()
-    build(args.scrape, args.out)
+    build(args.sources, args.out)
     count = sum(1 for path in args.out.rglob("*") if path.is_file())
     print(f"Built {count} files at {args.out}")
 
