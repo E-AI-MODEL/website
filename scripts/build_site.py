@@ -303,9 +303,14 @@ def render_workforms_index(items: list[dict], didactic_models: dict) -> str:
     boundary_note = esc(didactic_models["notes"]["direct_instruction_boundary"])
 
     return f'''<main>
-<section class="page-hero toolbox-hero"><div class="wrap"><div class="eyebrow">Werkvormen</div><h1>Waar wil je in je les mee verder?</h1><p class="lede">Begin bij een concrete onderwijsvraag, of vertrek vanuit het didactische model waarmee je al werkt. EAI voegt geen nieuw lesmodel toe.</p></div></section>
+<section class="page-hero toolbox-hero"><div class="wrap"><div class="eyebrow">Werkvormen</div><h1>Waar wil je in je les mee verder?</h1><p class="lede">Kies eerst welke verzameling bij je vraag past. De EAI Toolbox helpt bij leren en AI. TAALwerkvormen combineert vaktaal met formatief handelen.</p></div></section>
 
-<section class="section toolbox-start"><div class="wrap">
+<section class="section workform-collections"><div class="wrap"><div class="workform-collection-grid">
+<a class="workform-collection-card is-eai" href="#eai-toolbox"><span>EAI Toolbox</span><strong>{len(items)} EAI-werkvormen</strong><p>Begin bij een onderwijsvraag of bij een bestaand didactisch model. Kijk daarna naar kernhandeling, AI-rol en bewijs.</p><b>Naar de EAI Toolbox ↓</b></a>
+<a class="workform-collection-card is-taal" href="/taalwerkvormen/"><span>TAALwerkvormen · Emmauscollege</span><strong>15 complete werkvormkaarten</strong><p>Vaktaal, formatief handelen, redo en volledige LLM-prompts in één zelfstandige verzameling.</p><b>Open TAALwerkvormen →</b></a>
+</div></div></section>
+
+<section class="section toolbox-start" id="eai-toolbox"><div class="wrap">
 <div class="toolbox-situation">
 <div><div class="kicker">Dezelfde EAI-vraag, twee ingangen</div><h2>Wat moet de leerling hier zelf doen?</h2><p>Je kunt beginnen bij een probleem dat je in de les ziet. Of bij de fase van een bestaand didactisch model. In beide gevallen blijft de vraag hetzelfde: welke handeling draagt hier het leren?</p></div>
 <div class="toolbox-situation-path" aria-label="EAI-kijkroute"><span>onderwijsmodel</span><b>→</b><span>fase</span><b>→</b><span>kernhandeling</span><b>→</b><span>AI</span><b>→</b><span>bewijs</span></div>
@@ -1236,6 +1241,30 @@ iframe{max-width:100%}
 }
 
 
+/* Content-growth navigation and hub UX */
+.home-entry-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.home-entry-grid a{display:flex;flex-direction:column;min-height:240px;padding:24px;border:1px solid var(--line);background:#fff;text-decoration:none}
+.home-entry-grid a:hover{border-color:var(--ink);transform:translateY(-1px)}
+.home-entry-grid span,.workform-collection-card>span{font:800 .68rem/1.2 Inter,ui-sans-serif,sans-serif;text-transform:uppercase;letter-spacing:.07em;color:#718096}
+.home-entry-grid h3{font-size:1.55rem;margin:16px 0 10px;max-width:22ch}
+.home-entry-grid p{margin:0 0 18px;color:var(--muted);max-width:56ch}
+.home-entry-grid b{margin-top:auto;font-family:Inter,ui-sans-serif,sans-serif}
+.home-practice-links{display:flex;gap:20px;flex-wrap:wrap;margin-top:28px;font-family:Inter,ui-sans-serif,sans-serif;font-weight:800}
+.workform-collections{padding-top:34px;padding-bottom:34px}
+.workform-collection-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.workform-collection-card{display:flex;flex-direction:column;min-height:220px;padding:24px;border:1px solid var(--line);background:#fff;text-decoration:none}
+.workform-collection-card.is-eai{border-top:4px solid var(--ink)}
+.workform-collection-card.is-taal{border-top:4px solid var(--accent)}
+.workform-collection-card>strong{font:800 1.5rem/1.2 Inter,ui-sans-serif,sans-serif;margin:16px 0 10px}
+.workform-collection-card>p{margin:0 0 18px;color:var(--muted)}
+.workform-collection-card>b{margin-top:auto;font-family:Inter,ui-sans-serif,sans-serif}
+.workform-collection-card:hover{border-color:var(--ink)}
+.source-register-cta{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:end;border-left:5px solid var(--accent);background:var(--soft);padding:28px}
+.source-register-cta h2{margin:7px 0 8px}.source-register-cta p{margin:0;max-width:70ch}
+@media(max-width:980px){.welcome-shortcuts{grid-template-columns:repeat(2,minmax(0,1fr))}.welcome-shortcuts a:nth-child(2){border-right:0;padding-right:0}.welcome-shortcuts a:nth-child(3){padding-left:0;border-top:1px solid var(--line)}.welcome-shortcuts a:nth-child(4){border-right:0;border-top:1px solid var(--line);padding-right:0}}
+@media(max-width:760px){.home-entry-grid,.workform-collection-grid{grid-template-columns:1fr}.home-entry-grid a,.workform-collection-card{min-height:0}.source-register-cta{grid-template-columns:1fr}.welcome-shortcuts{grid-template-columns:1fr}.welcome-shortcuts a,.welcome-shortcuts a:first-child,.welcome-shortcuts a:nth-child(2),.welcome-shortcuts a:nth-child(3),.welcome-shortcuts a:nth-child(4){padding:15px 0;border-right:0;border-top:0;border-bottom:1px solid var(--line)}.welcome-shortcuts a:last-child{border-bottom:0}}
+
+
 /* Source-preserving didactic model adapters */
 .toolbox-mode-tabs{display:inline-flex;gap:0;border:1px solid var(--line);margin:0 0 34px;background:#fff}
 .toolbox-mode-tab{appearance:none;border:0;border-right:1px solid var(--line);background:#fff;color:var(--ink);padding:12px 16px;cursor:pointer;font:800 .84rem/1.2 Inter,ui-sans-serif,sans-serif}
@@ -1285,6 +1314,39 @@ iframe{max-width:100%}
 .didactic-model-catalog-note button:hover{border-color:var(--ink)}
 @media(max-width:760px){.didactic-model-catalog-note{grid-template-columns:1fr}.didactic-model-catalog-note button{white-space:normal;width:100%}}
 
+
+/* TAALwerkvormen + bronnen */
+.taal-hero .lede,.sources-hero .lede{max-width:800px}
+.taal-cycle{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:24px;font:800 .72rem/1.2 Inter,ui-sans-serif,sans-serif;text-transform:uppercase;letter-spacing:.05em}
+.taal-cycle span{border:1px solid var(--line);background:#fff;padding:8px 10px}.taal-cycle b{color:var(--accent)}
+.taal-guide-facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);margin-bottom:30px}.taal-guide-facts>div{background:var(--soft);padding:18px}.taal-guide-facts strong{display:block;font:850 1.55rem/1 Inter,ui-sans-serif,sans-serif;color:var(--ink);margin-bottom:6px}.taal-guide-facts span{font:700 .72rem/1.3 Inter,ui-sans-serif,sans-serif;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.taal-longcopy{border-top:1px solid var(--line)}.taal-longcopy>section{display:grid;grid-template-columns:54px minmax(0,1fr);gap:20px;padding:28px 0;border-bottom:1px solid var(--line)}.taal-longcopy>section>span{font:800 .7rem/1 Inter,ui-sans-serif,sans-serif;color:var(--accent);padding-top:7px}.taal-longcopy h3{font-size:1.35rem;margin:0 0 12px}.taal-longcopy p{max-width:78ch;margin:0 0 12px}.taal-longcopy p:last-child{margin-bottom:0}
+.taal-principles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.taal-principles article{background:#fff;padding:22px;min-height:220px}.taal-principles span,.sources-legend span{font:800 .7rem/1 Inter,ui-sans-serif,sans-serif;color:var(--accent)}
+.taal-principles h3,.sources-legend h3{font-size:1.2rem;margin:24px 0 10px}.taal-principles p,.sources-legend p{margin:0;color:var(--muted)}
+.taal-how{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);margin-top:24px}.taal-how>div{background:var(--soft);padding:24px}.taal-how h3{margin-top:0}.taal-how ol{margin-bottom:0;padding-left:20px}.taal-how p{margin:8px 0}
+.taal-three-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.taal-three-grid article{border-top:3px solid var(--ink);padding:18px 0}.taal-three-grid span{font:800 .68rem/1 Inter,ui-sans-serif,sans-serif;color:var(--accent)}.taal-three-grid h3{font-size:1.25rem;margin:10px 0 7px}.taal-three-grid p{margin:0;color:var(--muted)}
+.taal-table-wrap{overflow-x:auto;border:1px solid var(--line)}.taal-table{width:100%;border-collapse:collapse;min-width:850px;background:#fff}.taal-table th{font:800 .68rem/1.2 Inter,ui-sans-serif,sans-serif;text-transform:uppercase;letter-spacing:.06em;text-align:left;background:var(--soft);padding:12px;border-bottom:1px solid var(--line)}.taal-table td{padding:12px;border-bottom:1px solid var(--line);vertical-align:top}.taal-table tr:last-child td{border-bottom:0}.taal-table a{font-family:Inter,ui-sans-serif,sans-serif;font-weight:800;text-decoration-thickness:1px;text-underline-offset:3px}
+.taal-card-list{display:grid;gap:12px}.taal-card{border:1px solid var(--line);background:#fff;scroll-margin-top:90px}.taal-card>summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:52px minmax(0,1fr) minmax(260px,.65fr);gap:16px;align-items:center;padding:18px 20px}.taal-card>summary::-webkit-details-marker{display:none}.taal-card[open]>summary{border-bottom:1px solid var(--line);background:#fbfaf7}.taal-card-num{font:800 .7rem/1 Inter,ui-sans-serif,sans-serif;color:var(--accent)}.taal-card-summary-copy{display:grid;gap:5px}.taal-card-summary-copy strong{font:800 1.08rem/1.2 Inter,ui-sans-serif,sans-serif}.taal-card-summary-copy span{color:var(--muted)}.taal-card-meta{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:6px}.taal-card-meta b{font:750 .66rem/1.2 Inter,ui-sans-serif,sans-serif;background:var(--soft);padding:6px 8px;color:#5c6775}
+.taal-card-body{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(340px,.85fr);gap:0}.taal-card-main{padding:28px}.taal-prompt-panel{border-left:1px solid var(--line);background:#f7f8fa;padding:28px;min-width:0}.taal-card-lead{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px}.taal-card-lead p{margin:0;border-top:2px solid var(--ink);padding-top:10px}.taal-card-lead strong{display:block;font:800 .68rem/1.2 Inter,ui-sans-serif,sans-serif;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.taal-subsection{padding:18px 0;border-top:1px solid var(--line)}.taal-subsection h3,.taal-evidence h3,.taal-variant h3{font-size:.82rem;text-transform:uppercase;letter-spacing:.05em;margin:0 0 10px}.taal-subsection ul,.taal-subsection ol{margin:0;padding-left:22px}.taal-subsection li+li{margin-top:6px}.taal-evidence,.taal-variant{margin-top:18px;padding:18px;background:var(--soft)}.taal-evidence p,.taal-variant p{margin:0}
+.taal-prompt-head>span{display:inline-block;font:800 .68rem/1.2 Inter,ui-sans-serif,sans-serif;text-transform:uppercase;letter-spacing:.06em;color:var(--accent);margin-bottom:10px}.taal-prompt-head p{margin:0 0 20px;color:var(--muted)}.taal-prompt-details{border-top:1px solid var(--line);padding-top:14px}.taal-prompt-details>summary{cursor:pointer;font:800 .84rem/1.2 Inter,ui-sans-serif,sans-serif}.taal-prompt-tools{display:flex;justify-content:flex-end;margin:14px 0 8px}.taal-prompt-tools button{appearance:none;border:1px solid var(--ink);background:var(--ink);color:#fff;padding:8px 11px;cursor:pointer;font:800 .72rem/1 Inter,ui-sans-serif,sans-serif}.taal-prompt-panel pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#fff;border:1px solid var(--line);padding:16px;max-height:560px;overflow:auto;font:400 .76rem/1.55 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.taal-source-cta{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:end;border-left:5px solid var(--accent);background:var(--soft);padding:28px}.taal-source-cta h2{margin:7px 0 8px}.taal-source-cta p{margin:0;max-width:70ch}
+.toolbox-companion{padding-top:0}.toolbox-companion-card{display:grid;grid-template-columns:96px minmax(0,1fr) auto;gap:22px;align-items:center;border:1px solid var(--line);background:var(--soft);padding:22px;color:inherit;text-decoration:none}.toolbox-companion-card:hover{border-color:var(--ink)}.toolbox-companion-mark{font:900 1.4rem/1 Inter,ui-sans-serif,sans-serif;color:var(--accent);letter-spacing:-.04em}.toolbox-companion-card h2{font-size:1.45rem;margin:5px 0}.toolbox-companion-card p{margin:0;color:var(--muted)}.toolbox-companion-card>strong{font-family:Inter,ui-sans-serif,sans-serif}
+.sources-legend{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}.sources-legend article{background:#fff;padding:22px;min-height:210px}
+.sources-register-note{margin:28px 0 44px;padding:18px 20px;border-left:4px solid var(--accent);background:var(--soft)}.sources-register-note strong{font-family:Inter,ui-sans-serif,sans-serif}.sources-register-note p{margin:5px 0 0;color:var(--muted)}
+.sources-group{padding:34px 0;border-top:1px solid var(--line)}.sources-group>h2{font-size:1.6rem;margin:0 0 20px}.sources-list{display:grid}.sources-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:center;padding:18px 0;border-top:1px solid var(--line)}.sources-row:first-child{border-top:0}.sources-row span:first-child{font:800 .68rem/1.2 Inter,ui-sans-serif,sans-serif;text-transform:uppercase;letter-spacing:.05em;color:#768292}.sources-row h3{font-size:1.08rem;margin:5px 0}.sources-row p{margin:0;color:var(--muted)}.sources-row>a,.sources-no-link{font:800 .76rem/1.2 Inter,ui-sans-serif,sans-serif;white-space:nowrap}.sources-no-link{color:#8a94a2}
+@media(max-width:980px){.taal-principles{grid-template-columns:repeat(2,minmax(0,1fr))}.taal-card>summary{grid-template-columns:42px 1fr}.taal-card-meta{grid-column:2;justify-content:flex-start}.taal-card-body{grid-template-columns:1fr}.taal-prompt-panel{border-left:0;border-top:1px solid var(--line)}}
+@media(max-width:700px){.taal-guide-facts{grid-template-columns:repeat(2,minmax(0,1fr))}.taal-longcopy>section{grid-template-columns:36px minmax(0,1fr);gap:12px}.taal-principles,.sources-legend,.taal-how,.taal-three-grid{grid-template-columns:1fr}.taal-principles article,.sources-legend article{min-height:0}.taal-card>summary{padding:15px;gap:10px}.taal-card-main,.taal-prompt-panel{padding:20px}.taal-card-lead{grid-template-columns:1fr}.taal-source-cta,.sources-row,.toolbox-companion-card{grid-template-columns:1fr;align-items:start}.toolbox-companion-mark{font-size:1rem}.sources-row>a,.sources-no-link{white-space:normal}}
+
+/* Long-page navigation and compact TAAL overview */
+.page-local-nav{position:sticky;top:68px;z-index:12;background:rgba(255,255,255,.96);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.page-local-nav .wrap{display:flex;gap:6px;overflow-x:auto;padding-top:9px;padding-bottom:9px;scrollbar-width:thin}
+.page-local-nav a{flex:0 0 auto;text-decoration:none;border:1px solid var(--line);background:#fff;padding:7px 10px;font:750 .72rem/1.2 Inter,ui-sans-serif,sans-serif}
+.page-local-nav a:hover{border-color:var(--ink)}
+@media(max-width:900px){.page-local-nav{top:58px}}
+@media(max-width:700px){.taal-table{min-width:0}.taal-table th:nth-child(3),.taal-table td:nth-child(3),.taal-table th:nth-child(5),.taal-table td:nth-child(5),.taal-table th:nth-child(6),.taal-table td:nth-child(6){display:none}.taal-table th,.taal-table td{padding:9px 7px;font-size:.78rem}}
+
 '''
 
 CHROME_CSS = r'''
@@ -1315,7 +1377,9 @@ def nav(active: str = "") -> str:
     links = [
         ("model", "/", "EAI"),
         ("werkvormen", "/werkvormen/", "Werkvormen"),
+        ("taal", "/taalwerkvormen/", "TAALwerkvormen"),
         ("verdieping", "/verdieping/", "Verdieping"),
+        ("bronnen", "/bronnen/", "Bronnen"),
         ("over", "/over/", "Over"),
     ]
     items = "".join(
@@ -1339,8 +1403,9 @@ def footer() -> str:
         f'<footer class="site-footer"><div class="wrap footer-grid">'
         f'<p style="display:flex;gap:12px;align-items:center"><img src="/assets/eai-logo.svg" alt="" width="42" height="42">'
         f'<span><strong>EAI</strong> · Hans Visser<br>AI, leren en professioneel handelen.</span></p>'
-        f'<p><a href="/verdieping/">Verdieping</a> · <a href="/over/">Over EAI en Hans</a> · <a href="mailto:{EMAIL}">{EMAIL}</a> · '
-        f'<a href="{GITHUB}" target="_blank" rel="noopener">GitHub</a></p></div></footer>'
+        f'<p><a href="/werkvormen/">Werkvormen</a> · <a href="/taalwerkvormen/">TAALwerkvormen</a> · '
+        f'<a href="/verdieping/">Verdieping</a> · <a href="/bronnen/">Bronnen</a> · <a href="/over/">Over EAI en Hans</a> · '
+        f'<a href="mailto:{EMAIL}">{EMAIL}</a> · <a href="{GITHUB}" target="_blank" rel="noopener">GitHub</a></p></div></footer>'
     )
 
 def doc(title: str, body: str, canonical_path: str, active: str = "", description: str = "") -> str:
@@ -1391,8 +1456,8 @@ def inject_embed(source: Path, canonical_path: str, fallback_title: str, footer_
                 head_parts.append(str(node))
     body_inner = soup.body.decode_contents() if soup.body else src
     body_inner = rewrite_legacy_links(body_inner)
-    chrome = f'<header class="eai-site-nav"><div class="eai-site-nav__inner"><a class="eai-site-nav__brand" href="/" aria-label="EAI home"><img src="/assets/eai-logo.svg" alt="EAI" width="34" height="34"></a><div class="eai-site-nav__links"><a href="/">EAI</a><a href="/werkvormen/">Werkvormen</a><a href="/verdieping/">Verdieping</a><a href="/over/">Over</a><a href="mailto:{EMAIL}">Contact</a></div></div></header>'
-    foot = f'<footer class="eai-site-footer"><a href="{footer_back}">← Terug</a> · <a href="mailto:{EMAIL}">Contact</a></footer>'
+    chrome = f'<header class="eai-site-nav"><div class="eai-site-nav__inner"><a class="eai-site-nav__brand" href="/" aria-label="EAI home"><img src="/assets/eai-logo.svg" alt="EAI" width="34" height="34"></a><div class="eai-site-nav__links"><a href="/">EAI</a><a href="/werkvormen/">Werkvormen</a><a href="/taalwerkvormen/">TAALwerkvormen</a><a href="/verdieping/">Verdieping</a><a href="/bronnen/">Bronnen</a><a href="/over/">Over</a><a href="mailto:{EMAIL}">Contact</a></div></div></header>'
+    foot = f'<footer class="eai-site-footer"><a href="{footer_back}">← Terug</a> · <a href="/bronnen/">Bronnen</a> · <a href="mailto:{EMAIL}">Contact</a></footer>'
     canonical = f"{BASE_URL}{canonical_path}"
     return f'<!doctype html><html lang="{esc(lang)}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{esc(title)} · EAI</title><link rel="canonical" href="{esc(canonical)}"><link rel="icon" href="/assets/eai-logo.svg" type="image/svg+xml">{"".join(head_parts)}<link rel="stylesheet" href="/assets/article-chrome.css"></head><body>{chrome}{body_inner}{foot}</body></html>'
 
@@ -1436,10 +1501,19 @@ def build(scrape: Path, out: Path) -> None:
 </div>
 <div class="wrap welcome-shortcuts">
 <a href="#model"><span>Nieuw bij EAI</span><strong>Begrijp het in één voorbeeld</strong><b>Start →</b></a>
-<a href="/werkvormen/"><span>Voor je volgende les</span><strong>Kies een passende werkvorm</strong><b>Aan de slag →</b></a>
-<a href="/verdieping/"><span>Verder kijken</span><strong>Onderbouwing, praktijk en publicaties</strong><b>Verdiep →</b></a>
+<a href="/werkvormen/"><span>EAI in je les</span><strong>Kies uit 57 EAI-werkvormen</strong><b>Aan de slag →</b></a>
+<a href="/taalwerkvormen/"><span>Taal in elk vak</span><strong>Open 15 TAALwerkvormen</strong><b>Bekijk →</b></a>
+<a href="/verdieping/"><span>Verder kijken</span><strong>Onderbouwing, bronnen en publicaties</strong><b>Verdiep →</b></a>
 </div>
 </section>
+
+<section class="section home-entry-section"><div class="wrap"><div class="section-head"><div class="kicker">Kies je ingang</div><div><h2>Niet iedereen komt met dezelfde vraag.</h2><p>Je kunt EAI eerst begrijpen, direct met een les aan de slag, vaktaal versterken of de bronnen en onderbouwing bekijken.</p></div></div>
+<div class="home-entry-grid">
+<a href="/werkvormen/"><span>01 · EAI Toolbox</span><h3>Ik wil met een concrete lesvraag werken.</h3><p>57 werkvormen, te kiezen vanuit een onderwijsvraag of bestaand didactisch model.</p><b>Open Werkvormen →</b></a>
+<a href="/taalwerkvormen/"><span>02 · TAALwerkvormen</span><h3>Ik wil vaktaal en formatief handelen combineren.</h3><p>15 complete werkvormkaarten met stappen, bewijs, redo en LLM-prompts.</p><b>Open TAALwerkvormen →</b></a>
+<a href="/werkvormen/#didactisch-model"><span>03 · Didactische modellen</span><h3>Ik werk al met een lesmodel.</h3><p>Bekijk EAI binnen EDI 2.0, Explicit Instruction of de formatieve toetscyclus.</p><b>Bekijk de modelingang →</b></a>
+<a href="/bronnen/"><span>04 · Bronnen</span><h3>Ik wil weten waar dit op gebaseerd is.</h3><p>Bronmodellen, onderzoek, EAI-ontwerpkeuzes en de grenzen van de claims op één plek.</p><b>Bekijk de bronnen →</b></a>
+</div></div></section>
 
 <section class="section model-intro" id="model"><div class="wrap hero-grid">
 <div><div class="eyebrow">Het EAI-model</div><h2>Leg eerst het onderwijs op tafel.</h2>
@@ -1476,7 +1550,7 @@ def build(scrape: Path, out: Path) -> None:
 <a class="card" href="/werkvormen/kernhandeling-check/"><span class="meta">Start hier</span><h3>Kernhandeling-check</h3><p>Bepaal eerst welke menselijke handeling in deze fase inhoudelijk betekenis moet krijgen.</p><span class="arrow">Open →</span></a>
 <a class="card" href="/werkvormen/ai-role-handback-plan/"><span class="meta">Ontwerp</span><h3>Wat doet AI, en wanneer gaat het terug naar de leerling?</h3><p>Schrijf niet alleen op dat AI 'ondersteunt'. Maak zichtbaar wat het systeem doet en waar de leerling het weer zelf moet uitvoeren.</p><span class="arrow">Open →</span></a>
 <a class="card" href="/werkvormen/bewijs-van-leren/"><span class="meta">Bewijs</span><h3>Bewijs van leren</h3><p>Kijk welk bewijs je nodig hebt voor wat je over de leerling wilt kunnen zeggen.</p><span class="arrow">Open →</span></a>
-</div><p style="margin-top:28px"><a href="/werkvormen/">Bekijk alle 57 werkvormen →</a></p></div></section>
+</div><div class="home-practice-links"><a href="/werkvormen/">Bekijk 57 EAI-werkvormen →</a><a href="/taalwerkvormen/">Bekijk 15 TAALwerkvormen →</a></div></div></section>
 
 <section class="section profile-section"><div class="wrap"><div class="profile-grid">
 <div class="profile-photo"><img src="{PORTRAIT_URL}" alt="Hans Visser" loading="lazy" decoding="async" referrerpolicy="no-referrer"></div>
@@ -1499,9 +1573,10 @@ def build(scrape: Path, out: Path) -> None:
     write(out, "index.html", doc("EAI model voor AI en leren", home_body, "/", "model", description="EAI helpt bepalen welke menselijke handeling in een leer- of professioneel proces betekenis moet houden wanneer AI meedoet."))
 
     verdieping_body = '''<main>
-<section class="page-hero"><div class="wrap"><div class="eyebrow">Verdieping</div><h1>Wil je verder dan de werkvorm?</h1><p class="lede">Hier vind je de onderbouwing, publicaties, praktijkvoorbeelden en tools achter EAI. Kies wat je nodig hebt; je hoeft niet alles te lezen om met EAI te kunnen werken.</p></div></section>
+<section class="page-hero"><div class="wrap"><div class="eyebrow">Verdieping</div><h1>Wil je verder dan de werkvorm?</h1><p class="lede">Hier vind je de onderbouwing, bronnen, publicaties, praktijkvoorbeelden en tools achter EAI. Kies wat je nodig hebt; je hoeft niet alles te lezen om met EAI te kunnen werken.</p></div></section>
 <section class="section"><div class="wrap"><div class="depth-grid">
 <a class="depth-card depth-card--wide" href="/onderbouwing/"><span>Onderbouwing</span><h2>Waar rust EAI op?</h2><p>Didactiek, leerpsychologie, pedagogiek, professioneel oordeel en recent AI-onderzoek. Met expliciete grenzen aan wat EAI wel en niet claimt.</p><b>Bekijk de onderbouwing →</b></a>
+<a class="depth-card" href="/bronnen/"><span>Bronnen</span><h2>Waar komt het concreet vandaan?</h2><p>Bronmodellen, onderzoek achter ontwerpprincipes, TAALwerkvormen en eigen EAI-evidencebestanden.</p><b>Naar de bronnen →</b></a>
 <a class="depth-card" href="/publicaties/"><span>Publicaties & media</span><h2>Lees, kijk en luister verder.</h2><p>Eigen EAI-publicaties, externe bijdragen, podcast en video.</p><b>Naar publicaties →</b></a>
 <a class="depth-card" href="/praktijk/"><span>Praktijk</span><h2>Wat gebeurt er als je het bouwt?</h2><p>Live demonstrators en toepassingen waarin dezelfde ontwerpvragen terugkomen.</p><b>Bekijk de praktijk →</b></a>
 <a class="depth-card" href="/tools/"><span>Tools</span><h2>Van vraag naar ontwerp.</h2><p>Toepassingen die helpen bij analyse, prompts, eigenaarschap en lesontwerp.</p><b>Bekijk de tools →</b></a>
@@ -1570,6 +1645,7 @@ def build(scrape: Path, out: Path) -> None:
 <article class="panel"><h3>Niet claimen</h3><ul><li>Dat iedere EAI-werkvorm experimenteel gevalideerd is.</li><li>Dat één lijst kernhandelingen voor alle vakken en fasen geldt.</li><li>Dat AI per definitie goed of slecht is voor leren.</li><li>Dat de EAI-microstructuren al een gevalideerd meetinstrument vormen.</li></ul></article></div>
 <p style="margin-top:28px"><a href="https://github.com/E-AI-MODEL/EAI-standard/blob/main/evidence/claims.yaml" target="_blank" rel="noopener">Bekijk de evidence claims in de EAI Standard →</a><br><a href="https://github.com/E-AI-MODEL/EAI-standard/blob/main/evidence/construct-map.yaml" target="_blank" rel="noopener">Bekijk de construct map en validatiestatus →</a></p>
 </div></section>
+<section class="section"><div class="wrap"><div class="source-register-cta"><div><div class="kicker">Bronregister</div><h2>Alle bronnen bij elkaar.</h2><p>Van bronmodellen en leerpsychologie tot TAALwerkvormen en AI-onderzoek. Met onderscheid tussen bron, onderbouwing en eigen ontwerpvertaling.</p></div><a class="button" href="/bronnen/">Open de bronnenlijst</a></div></div></section>
 </main>'''
     write(out, "onderbouwing/index.html", doc("Onderbouwing", evidence_body, "/onderbouwing/", "onderbouwing", "Didactische, leerpsychologische, pedagogische en AI-specifieke onderbouwing van EAI, met expliciete grenzen aan wat het model claimt."))
 
@@ -1736,7 +1812,7 @@ def build(scrape: Path, out: Path) -> None:
     not_found = '<main><section class="page-hero"><div class="wrap"><div class="eyebrow">404</div><h1>Deze pagina is er niet meer.</h1><p class="lede">De oude Google-site bevatte ook een paar dode links. Ga terug naar de publicaties of tools.</p><div class="button-row"><a class="button" href="/publicaties/">Publicaties</a><a class="button secondary" href="/tools/">Tools</a></div></div></section></main>'
     write(out, "404.html", doc("Niet gevonden", not_found, "/404.html"))
     write(out, "robots.txt", "User-agent: *\nAllow: /\nSitemap: https://eaimodel.nl/sitemap.xml\n")
-    urls = ["/", "/twee-pijlers/", "/workshop-ai/", "/werkvormen/", "/verdieping/", "/onderbouwing/", "/praktijk/", "/publicaties/", "/publicaties/de-vraag-die-we-vergeten/", "/tools/", "/over/", "/eaa-model/", "/onderwijsin/"] + [f"/werkvormen/{item['slug']}/" for item in workforms] + [f"/publicaties/{slug}/" for slug, _, _, _ in PUBLICATIONS] + ["/tools/beyond-explainability/"]
+    urls = ["/", "/twee-pijlers/", "/workshop-ai/", "/werkvormen/", "/taalwerkvormen/", "/verdieping/", "/onderbouwing/", "/bronnen/", "/praktijk/", "/publicaties/", "/publicaties/de-vraag-die-we-vergeten/", "/tools/", "/over/", "/eaa-model/", "/onderwijsin/"] + [f"/werkvormen/{item['slug']}/" for item in workforms] + [f"/publicaties/{slug}/" for slug, _, _, _ in PUBLICATIONS] + ["/tools/beyond-explainability/"]
     items = "".join(f"<url><loc>{BASE_URL}{path}</loc></url>" for path in urls)
     write(out, "sitemap.xml", f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{items}</urlset>')
 
