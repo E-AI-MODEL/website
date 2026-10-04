@@ -324,6 +324,7 @@ def render_workforms_index(items: list[dict], didactic_models: dict) -> str:
 <section class="toolbox-mode-panel didactic-model-mode" data-mode-panel="model" id="didactisch-model" hidden>
 <div class="toolbox-route-head"><div><div class="kicker">Bestaand model, eigen fasen</div><h2>Met welk model werk je?</h2></div><p>EAI verandert de namen, volgorde of bedoeling van het bronmodel niet. We laten alleen zien welke EAI-vragen en werkvormen binnen een fase of functie relevant kunnen zijn.</p></div>
 <div class="didactic-model-grid">{model_buttons}</div>
+<div class="didactic-model-catalog-note"><div><strong>Dit is geen complete lijst van didactische modellen.</strong><p>We tonen hier alleen modellen waarvoor in de EAI Standard een bronbehoudende adapter is uitgewerkt. Dat is geen aanbeveling of rangorde.</p></div><button type="button" data-switch-question>Mijn model staat er niet bij</button></div>
 <div class="didactic-model-panels">{model_panels_html}</div>
 <p class="didactic-model-boundary">{boundary_note}</p>
 </section>
@@ -367,6 +368,7 @@ def render_workforms_index(items: list[dict], didactic_models: dict) -> str:
   const modelButtons = [...document.querySelectorAll('[data-model-choice]')];
   const modelPanels = [...document.querySelectorAll('[data-model-panel]')];
   const phaseButtons = [...document.querySelectorAll('[data-phase-choice]')];
+  const switchQuestion = document.querySelector('[data-switch-question]');
   const resultGrid = document.getElementById('toolbox-results-grid');
   const libraryGrid = document.getElementById('toolbox-library-grid');
   const search = document.getElementById('toolbox-search');
@@ -491,6 +493,7 @@ def render_workforms_index(items: list[dict], didactic_models: dict) -> str:
   modeTabs.forEach(tab => tab.addEventListener('click', () => {{
     setMode(tab.dataset.modeTab);
   }}));
+  if (switchQuestion) switchQuestion.addEventListener('click', () => setMode('question', {{scroll:true}}));
 
   const applyHashMode = () => {{
     if (location.hash === '#didactisch-model') {{
@@ -1274,6 +1277,13 @@ iframe{max-width:100%}
   .didactic-model-grid,.didactic-phase-grid{grid-template-columns:1fr}
   .didactic-model-button,.didactic-phase{min-height:0}
 }
+
+.didactic-model-catalog-note{display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center;margin:14px 0 22px;padding:16px 18px;border-left:4px solid var(--accent);background:#fbfaf7}
+.didactic-model-catalog-note strong{font-family:Inter,ui-sans-serif,sans-serif;font-size:.9rem}
+.didactic-model-catalog-note p{margin:5px 0 0;color:var(--muted);max-width:70ch}
+.didactic-model-catalog-note button{appearance:none;border:1px solid var(--line);background:#fff;padding:10px 12px;cursor:pointer;font:750 .78rem/1.2 Inter,ui-sans-serif,sans-serif;white-space:nowrap}
+.didactic-model-catalog-note button:hover{border-color:var(--ink)}
+@media(max-width:760px){.didactic-model-catalog-note{grid-template-columns:1fr}.didactic-model-catalog-note button{white-space:normal;width:100%}}
 
 '''
 
