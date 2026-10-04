@@ -1,0 +1,124 @@
+name: Build EAI Site
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/build-site.yml'
+      - 'scripts/build_site.py'
+      - 'content/**'
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/build-site.yml'
+      - 'scripts/build_site.py'
+      - 'content/**'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: eai-site-${{ github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install build dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install beautifulsoup4
+
+      - name: Build site
+        run: |
+          python scripts/build_site.py --sources content/legacy --out site-build
+
+      - name: Validate internal links
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from urllib.parse import urlsplit
+          from bs4 import BeautifulSoup
+
+          root = Path("site-build")
+          failures = []
+
+          def target_for(href: str) -> Path | None:
+              if not href.startswith("/") or href.startswith("//"):
+                  return None
+              path = urlsplit(href).path
+              if path == "/":
+                  return root / "index.html"
+              rel = path.lstrip("/")
+              candidate = root / rel
+              if path.endswith("/"):
+                  return candidate / "index.html"
+              if candidate.is_file():
+                  return candidate
+              return candidate / "index.html"
+
+          for page in root.rglob("*.html"):
+              soup = BeautifulSoup(page.read_text(encoding="utf-8"), "html.parser")
+              for a in soup.find_all("a", href=True):
+                  href = a["href"].strip()
+                  target = target_for(href)
+                  if target is not None and not target.exists():
+                      failures.append((str(page.relative_to(root)), href))
+
+          if failures:
+              print("Broken internal links:")
+              for page, href in failures:
+                  print(f"  {page}: {href}")
+              raise SystemExit(1)
+
+          print("Internal link check passed")
+          PY
+
+      - name: Publish generated files to main
+        if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')
+        run: |
+          git fetch origin main
+          REMOTE_SHA="$(git rev-parse origin/main)"
+          LOCAL_SHA="$(git rev-parse HEAD)"
+          if [ "$REMOTE_SHA" != "$LOCAL_SHA" ]; then
+            echo "A newer commit exists on main; this run is stale and will not publish generated files."
+            exit 0
+          fi
+
+          rm -rf assets publicaties tools eai-blog eai-tools-modules eaa-model onderwijsin twee-pijlers workshop-ai werkvormen taalwerkvormen onderbouwing bronnen praktijk over verdieping
+          cp -R site-build/assets .
+          cp -R site-build/publicaties .
+          cp -R site-build/tools .
+          cp -R site-build/eai-blog .
+          cp -R site-build/eai-tools-modules .
+          cp -R site-build/eaa-model .
+          cp -R site-build/onderwijsin .
+          cp -R site-build/twee-pijlers .
+          cp -R site-build/workshop-ai .
+          cp -R site-build/werkvormen .
+          cp -R site-build/taalwerkvormen .
+          cp -R site-build/onderbouwing .
+          cp -R site-build/bronnen .
+          cp -R site-build/praktijk .
+          cp -R site-build/over .
+          cp -R site-build/verdieping .
+          cp site-build/index.html site-build/404.html site-build/robots.txt site-build/sitemap.xml .
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html 404.html robots.txt sitemap.xml assets publicaties tools eai-blog eai-tools-modules eaa-model onderwijsin twee-pijlers workshop-ai werkvormen taalwerkvormen onderbouwing bronnen praktijk over verdieping
+          if ! git diff --cached --quiet; then
+            git commit -m "build: refresh EAI site"
+            git push origin HEAD:main
+          fi
