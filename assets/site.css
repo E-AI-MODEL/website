@@ -458,3 +458,10 @@ iframe{max-width:100%}
   .didactic-model-button,.didactic-phase{min-height:0}
 }
 
+.didactic-model-catalog-note{display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center;margin:14px 0 22px;padding:16px 18px;border-left:4px solid var(--accent);background:#fbfaf7}
+.didactic-model-catalog-note strong{font-family:Inter,ui-sans-serif,sans-serif;font-size:.9rem}
+.didactic-model-catalog-note p{margin:5px 0 0;color:var(--muted);max-width:70ch}
+.didactic-model-catalog-note button{appearance:none;border:1px solid var(--line);background:#fff;padding:10px 12px;cursor:pointer;font:750 .78rem/1.2 Inter,ui-sans-serif,sans-serif;white-space:nowrap}
+.didactic-model-catalog-note button:hover{border-color:var(--ink)}
+@media(max-width:760px){.didactic-model-catalog-note{grid-template-columns:1fr}.didactic-model-catalog-note button{white-space:normal;width:100%}}
+
