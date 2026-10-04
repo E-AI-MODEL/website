@@ -1249,6 +1249,25 @@ iframe{max-width:100%}
 
 
 
+
+.home-first-example{background:#fff}
+.first-example-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.first-example-grid article{border:1px solid var(--line);border-top:4px solid var(--ink);background:#fff;padding:24px;min-height:300px}
+.first-example-grid article:nth-child(2){border-top-color:var(--accent)}
+.first-example-grid article:nth-child(3){border-top-color:var(--blue)}
+.first-example-grid span{font:800 .68rem/1.2 Inter,ui-sans-serif,sans-serif;text-transform:uppercase;letter-spacing:.07em;color:#718096}
+.first-example-grid h3{font-size:1.35rem;margin:16px 0 10px}
+.first-example-grid p{margin:0;color:var(--muted)}
+.home-guide-strip{padding-top:28px!important;padding-bottom:28px!important;background:var(--soft)}
+.home-guide-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.home-guide-grid a{display:grid;grid-template-columns:1fr auto;gap:6px 12px;background:#fff;padding:18px;text-decoration:none}
+.home-guide-grid span{grid-column:1/-1;font:800 .66rem/1.2 Inter,ui-sans-serif,sans-serif;text-transform:uppercase;letter-spacing:.06em;color:#718096}
+.home-guide-grid strong{font:800 .9rem/1.35 Inter,ui-sans-serif,sans-serif}
+.home-guide-grid b{align-self:center;font-family:Inter,ui-sans-serif,sans-serif}
+.home-guide-grid a:hover{background:#fbfaf7}
+@media(max-width:980px){.first-example-grid{grid-template-columns:1fr}.first-example-grid article{min-height:0}.home-guide-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){.home-guide-grid{grid-template-columns:1fr}}
+
 /* Domain-overstijgende homepage */
 .home-values{background:#fbfaf7}
 .home-value-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
@@ -1515,29 +1534,42 @@ def build(sources: Path, out: Path) -> None:
 <section class="welcome welcome-v4">
 <div class="wrap welcome-v4-grid">
 <div class="welcome-v4-copy">
-<div class="eyebrow">Welkom op de website van het EAI-model</div>
-<h1>AI kan steeds meer. Wat betekent dat voor de mens in het proces?</h1>
-<p class="lede">AI kan informatie vinden, ordenen, vergelijken, formuleren, adviseren en steeds vaker complete stappen van een proces uitvoeren. Dat kan werk sneller en eenvoudiger maken. Maar meer efficiëntie betekent niet automatisch dat een proces ook effectiever wordt, dat de kwaliteit stijgt of dat de mens er beter van gaat handelen.</p>
-<p>Het EAI-model helpt om naar dat totale plaatje te kijken. Niet de technologie staat centraal, maar het menselijke proces waarin die technologie wordt gebruikt: wat proberen we te bereiken, welke handelingen dragen daar betekenis, kennis, afweging of verantwoordelijkheid, en wat verandert er wanneer AI een deel daarvan ondersteunt of overneemt?</p>
-<p class="welcome-audience">Op deze website vind je het model, toepassingen uit verschillende domeinen, praktische werkvormen, hulpmiddelen, publicaties en de bronnen waarop het werk is gebaseerd.</p>
-<div class="button-row"><a class="button" href="#model">Bekijk het model</a><a class="button secondary" href="#beginnen">Kies je ingang</a></div>
+<div class="eyebrow">EAI-model</div>
+<h1>Welkom op de website van het EAI-model.</h1>
+<p class="lede">EAI helpt om bewuste keuzes te maken over wat mensen en AI in een proces doen.</p>
+<p>AI kan werk sneller, makkelijker en soms ook beter maken. Maar een efficiënter proces is niet automatisch een effectiever proces. Een sterke output zegt ook niet vanzelf dat de kwaliteit van het menselijke handelen is verbeterd.</p>
+<p>Met EAI kijk je daarom eerst naar wat je werkelijk wilt bereiken, welke menselijke handelingen daarin belangrijk zijn en welke rol AI daar precies bij krijgt. Zo kun je beter bepalen wat AI kan ondersteunen of overnemen, wat betekenisvol bij de mens blijft en hoe je beoordeelt of het totaal werkelijk beter wordt.</p>
+<p class="welcome-audience">EAI is ontstaan in het onderwijs en wordt inmiddels ook toegepast op organisatievraagstukken en professioneel werk. Op deze website vind je het model, toepassingen, praktische werkvormen, hulpmiddelen, publicaties en de onderbouwing.</p>
+<div class="button-row"><a class="button" href="#eenvoudig-voorbeeld">Bekijk een eenvoudig voorbeeld</a><a class="button secondary" href="#beginnen">Kies je ingang</a></div>
 </div>
-<div class="hero-eai-visual" aria-label="De EAI-kijkroute">
-<div class="hero-eai-visual-head"><span>EAI-kijkroute</span><strong>Van doel naar bewuste AI-inzet</strong></div>
-<div class="hero-eai-step"><span>01</span><div><b>Wat willen we werkelijk bereiken?</b><small>Begin bij het doel en het proces, niet bij de beschikbare technologie.</small></div></div>
-<div class="hero-eai-step"><span>02</span><div><b>Waar bevinden we ons in dat proces?</b><small>Dezelfde AI-functie kan in een andere fase iets heel anders betekenen.</small></div></div>
-<div class="hero-eai-step is-core"><span>03</span><div><b>Welke menselijke handeling draagt hier betekenis?</b><small>Waar zijn kennis, afweging, leren, verantwoordelijkheid of professioneel oordeel belangrijk?</small></div></div>
-<div class="hero-eai-step"><span>04</span><div><b>Wat doet AI precies op die plek?</b><small>Ondersteunt, versnelt, verandert of vervangt het een relevante handeling?</small></div></div>
-<div class="hero-eai-check"><span>?</span><div><b>Wat is er daarna werkelijk beter?</b><small>Kijk naar effectiviteit, kwaliteit, zelfstandigheid, verantwoordelijkheid en passend bewijs, niet alleen naar snelheid of output.</small></div></div>
+<div class="hero-eai-visual" aria-label="EAI in één oogopslag">
+<div class="hero-eai-visual-head"><span>EAI in één oogopslag</span><strong>Niet beginnen bij de tool</strong></div>
+<div class="hero-eai-step"><span>01</span><div><b>Wat wil je bereiken?</b><small>Begin bij het doel van het proces.</small></div></div>
+<div class="hero-eai-step"><span>02</span><div><b>Wat vraagt dat van de mens?</b><small>Kijk naar kennis, afweging, leren, verantwoordelijkheid en uitvoering.</small></div></div>
+<div class="hero-eai-step is-core"><span>03</span><div><b>Wat laat je AI doen?</b><small>Bepaal bewust wat AI ondersteunt, versnelt of overneemt.</small></div></div>
+<div class="hero-eai-check"><span>?</span><div><b>Wordt het totaal werkelijk beter?</b><small>Kijk verder dan alleen tijdwinst of een nette output.</small></div></div>
 </div>
-</div>
-<div class="wrap welcome-shortcuts">
-<a href="#model"><span>Het model</span><strong>Begrijp de EAI-kijkroute</strong><b>Bekijk →</b></a>
-<a href="#toepassingen"><span>In de praktijk</span><strong>Zie EAI in verschillende domeinen</strong><b>Bekijk →</b></a>
-<a href="/werkvormen/"><span>Onderwijs</span><strong>Werk met 57 EAI-werkvormen</strong><b>Aan de slag →</b></a>
-<a href="/bronnen/"><span>Onderbouwing</span><strong>Bekijk bronnen en claims</strong><b>Verdiep →</b></a>
 </div>
 </section>
+
+<section class="section home-first-example" id="eenvoudig-voorbeeld"><div class="wrap">
+<div class="section-head"><div class="kicker">Een eenvoudig voorbeeld</div><div><h2>Dezelfde AI-uitkomst kan in de ene situatie uitstekend zijn en in de andere juist iets belangrijks wegnemen.</h2><p>Stel dat AI in een paar seconden een sterke analyse schrijft. Of dat wenselijk is, hangt af van wat je met die taak probeert te bereiken.</p></div></div>
+<div class="first-example-grid">
+<article><span>Als snelheid het doel is</span><h3>Dan kan vergaande automatisering precies de bedoeling zijn.</h3><p>Als iemand vooral snel een bruikbare analyse nodig heeft, kan AI veel werk uit handen nemen en direct waarde toevoegen.</p></article>
+<article><span>Als leren het doel is</span><h3>Dan kan dezelfde automatisering juist te veel overnemen.</h3><p>Als iemand moet leren informatie te selecteren, vergelijken en wegen, zijn juist die handelingen onderdeel van wat geleerd moet worden.</p></article>
+<article><span>Als professioneel oordeel het doel is</span><h3>Dan moet zichtbaar blijven waar de menselijke afweging zit.</h3><p>AI kan voorbereiden en adviseren, maar het moet duidelijk blijven wie de conclusie heeft beoordeeld en er verantwoordelijkheid voor draagt.</p></article>
+</div>
+<p class="bridge"><strong>Daar helpt EAI bij.</strong> Het model helpt bepalen welk werk je aan AI geeft, welk menselijk handelen betekenis moet houden en welk bewijs je nodig hebt om te beoordelen of de gekozen taakverdeling werkelijk beter werkt.</p>
+</div></section>
+
+<section class="section home-guide-strip"><div class="wrap">
+<div class="home-guide-grid">
+<a href="#model"><span>Ik wil EAI begrijpen</span><strong>Bekijk hoe het model werkt</strong><b>→</b></a>
+<a href="#toepassingen"><span>Ik wil voorbeelden zien</span><strong>Bekijk verschillende domeinen</strong><b>→</b></a>
+<a href="/werkvormen/"><span>Ik werk in onderwijs</span><strong>Ga naar de EAI-werkvormen</strong><b>→</b></a>
+<a href="/bronnen/"><span>Ik wil de onderbouwing</span><strong>Bekijk bronnen en claims</strong><b>→</b></a>
+</div>
+</div></section>
 
 <section class="section home-values"><div class="wrap">
 <div class="section-head"><div class="kicker">Waarom EAI?</div><div><h2>Een betere uitkomst is niet altijd een beter proces.</h2><p>AI maakt veel mogelijk. EAI helpt om naast de zichtbare winst ook te kijken naar wat er onder de oppervlakte verandert voor de mens die in het proces handelt.</p></div></div>
