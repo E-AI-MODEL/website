@@ -1573,7 +1573,7 @@ def build(scrape: Path, out: Path) -> None:
     write(out, "index.html", doc("EAI model voor AI en leren", home_body, "/", "model", description="EAI helpt bepalen welke menselijke handeling in een leer- of professioneel proces betekenis moet houden wanneer AI meedoet."))
 
     verdieping_body = '''<main>
-<section class="page-hero"><div class="wrap"><div class="eyebrow">Verdieping</div><h1>Wil je verder dan de werkvorm?</h1><p class="lede">Hier vind je de onderbouwing, publicaties, praktijkvoorbeelden en tools achter EAI. Kies wat je nodig hebt; je hoeft niet alles te lezen om met EAI te kunnen werken.</p></div></section>
+<section class="page-hero"><div class="wrap"><div class="eyebrow">Verdieping</div><h1>Wil je verder dan de werkvorm?</h1><p class="lede">Hier vind je de onderbouwing, bronnen, publicaties, praktijkvoorbeelden en tools achter EAI. Kies wat je nodig hebt; je hoeft niet alles te lezen om met EAI te kunnen werken.</p></div></section>
 <section class="section"><div class="wrap"><div class="depth-grid">
 <a class="depth-card depth-card--wide" href="/onderbouwing/"><span>Onderbouwing</span><h2>Waar rust EAI op?</h2><p>Didactiek, leerpsychologie, pedagogiek, professioneel oordeel en recent AI-onderzoek. Met expliciete grenzen aan wat EAI wel en niet claimt.</p><b>Bekijk de onderbouwing →</b></a>
 <a class="depth-card" href="/bronnen/"><span>Bronnen</span><h2>Waar komt het concreet vandaan?</h2><p>Bronmodellen, onderzoek achter ontwerpprincipes, TAALwerkvormen en eigen EAI-evidencebestanden.</p><b>Naar de bronnen →</b></a>
