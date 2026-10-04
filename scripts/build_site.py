@@ -215,6 +215,12 @@ def load_workforms() -> list[dict]:
 def load_didactic_models() -> dict:
     return json.loads(Path("content/didactic-models.json").read_text(encoding="utf-8"))
 
+def load_content_fragment(filename: str) -> str:
+    path = Path("content") / filename
+    if not path.exists():
+        raise SystemExit(f"Missing content fragment: {path}")
+    return path.read_text(encoding="utf-8")
+
 def render_route(route: list[str]) -> str:
     parts = []
     active = set(route)
@@ -1667,6 +1673,28 @@ def build(scrape: Path, out: Path) -> None:
     workforms_by_slug = {item["slug"]: item for item in workforms}
     workforms_body = render_workforms_index(workforms, didactic_models)
     write(out, "werkvormen/index.html", doc("EAI Toolbox", workforms_body, "/werkvormen/", "werkvormen", "EAI-werkvormen om menselijk handelen, taakverdeling, bewijs en zelfstandigheid zichtbaar te maken."))
+
+    write(
+        out,
+        "taalwerkvormen/index.html",
+        doc(
+            "TAALwerkvormen",
+            load_content_fragment("taalwerkvormen-page.html"),
+            "/taalwerkvormen/",
+            "taal",
+            "De complete TAALwerkvormen-gids van het Emmauscollege: 15 vakgerichte, formatieve werkvormen met docentstappen, bewijs van leren, redo en volledige LLM-prompts.",
+        ),
+    )
+    write(
+        out,
+        "bronnen/index.html",
+        doc(
+            "Bronnen",
+            load_content_fragment("bronnen-page.html"),
+            "/bronnen/",
+            "Bronnen en onderbouwing achter EAI, TAALwerkvormen, didactische adapters en ontwerpkeuzes.",
+        ),
+    )
 
     jm_body = '''<main><section class="page-hero"><div class="wrap"><div class="eyebrow">Werkvorm · Workshop AI</div><h1>Keuzes verantwoorden</h1><p class="workform-technical-name detail">EAI-term: Justification Mapping</p><p class="lede">AI kan een formulering, argument of route voorstellen. De vraag is vervolgens niet alleen wat de leerling overneemt, maar waarom hij dat doet.</p></div></section><section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Waarvoor?</div><div><h2>Niet alleen laten zien dát er een keuze is gemaakt.</h2><p>De werkvorm richt zich op de grens tussen AI-assistentie en menselijk begrip. Een leerling kan een AI-suggestie aanpassen zonder de inhoudelijke afweging zelf te hebben gemaakt. Daarom wordt juist de rationale zichtbaar.</p></div></div><figure class="pdf-figure" aria-label="Justification Mapping van AI-suggestie naar menselijke verantwoording"><svg viewBox="0 0 760 220" role="img"><g class="stroke"><rect x="70" y="74" width="130" height="70" rx="4"/><rect x="315" y="50" width="130" height="70" rx="4"/><rect x="315" y="130" width="130" height="70" rx="4"/><rect x="560" y="74" width="130" height="70" rx="4"/></g><path class="dash" d="M200 109h115M445 85h115M445 165c58 0 72-26 115-45"/><circle class="accent-fill" cx="258" cy="109" r="8"/><text x="135" y="114" text-anchor="middle" font-size="14" fill="#687487">AI-suggestie</text><text x="380" y="92" text-anchor="middle" font-size="14" fill="#687487">accepteren</text><text x="380" y="172" text-anchor="middle" font-size="14" fill="#687487">verwerpen / wijzigen</text><text x="625" y="114" text-anchor="middle" font-size="14" fill="#687487">waarom?</text></svg><figcaption>Niet alleen vastleggen wat veranderde, maar zichtbaar maken waarom de leerling iets overnam, verwierp of herschreef.</figcaption></figure><div class="panel"><h3>Breng één AI-ondersteunde keuze in kaart</h3><ol><li><strong>Suggestie:</strong> wat stelde AI voor?</li><li><strong>Accepteren:</strong> wat heb je overgenomen?</li><li><strong>Verwerpen:</strong> wat heb je bewust niet gebruikt?</li><li><strong>Waarom:</strong> welke inhoudelijke reden lag achter beide keuzes?</li><li><strong>Eigen wijziging:</strong> wat heb je zelf toegevoegd, veranderd of opnieuw opgebouwd?</li><li><strong>Verdedigen:</strong> kun je de uiteindelijke keuze zonder het systeem uitleggen en onderbouwen?</li></ol></div></div></section><section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Belangrijk onderscheid</div><div><h2>Dit is procesverantwoording rond AI-assistentie.</h2><p>Binnen deze workshop is Justification Mapping geen algemene methodekeuzekaart. Het doel is zichtbaar maken waar een AI-bijdrage ophoudt en de inhoudelijke afweging van de leerling begint.</p></div></div><p><a class="button" href="https://eai-prompt.lovable.app/" target="_blank" rel="noopener">Bekijk in Prompt Builder hoe de AI-rol wordt gestuurd</a></p></div></section></main>'''
     write(out, "werkvormen/justification-mapping/index.html", doc("Keuzes verantwoorden", enrich_manual_workform(jm_body, workforms_by_slug["justification-mapping"], workforms), "/werkvormen/justification-mapping/", "werkvormen", "Justification Mapping als EAI-werkvorm voor zichtbare keuzes en procesverantwoording."))
