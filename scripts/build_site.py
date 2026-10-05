@@ -150,8 +150,8 @@ WORKFORM_MECHANISMS = {
         "anchor": "proces-en-bewijs",
     },
     "zelfstandigheid": {
-        "title": "Ondersteunde prestatie is niet hetzelfde als zelfstandig kunnen",
-        "text": "Een leerling kan met AI sterk presteren terwijl nog onbekend is of dezelfde handeling zonder die ondersteuning beschikbaar is. Daarom gebruikt EAI nieuwe uitvoering en gerichte handback wanneer zelfstandigheid de vraag is.",
+        "title": "Met hulp lukt het. Maar lukt het daarna ook zelf?",
+        "text": "Een leerling kan met een goed voorbeeld, een hint of AI tot sterk werk komen. Dat vertelt nog niet of dezelfde stap daarna zelfstandig lukt. Daarom laat deze groep werkvormen de leerling na de hulp opnieuw zelf handelen.",
         "basis": "CLM-002, CLM-003 en CLM-009",
         "anchor": "zelfstandigheid",
     },
@@ -638,9 +638,37 @@ def render_workform_example(item: dict) -> str:
     )
 
 def workform_copy_text(item: dict) -> str:
+    lesson = item.get("lesson_card")
+    public_title = item.get("public_title", item["title"])
+    if lesson:
+        lines = [
+            public_title,
+            "",
+            "Doel:",
+            lesson.get("goal", ""),
+            "",
+            "Wanneer:",
+            lesson.get("when", ""),
+            "",
+            f'Tijd: {lesson.get("duration", "")}',
+            f'Werkvorm: {lesson.get("grouping", "")}',
+            "",
+            "Startscript:",
+        ]
+        lines.extend(f"- {value}" for value in lesson.get("teacher_script", []))
+        lines.extend(["", "Zo werkt het:"])
+        lines.extend(f"{idx}. {step}" for idx, step in enumerate(item.get("steps", []), start=1))
+        lines.extend(["", "Succescriteria voor de leerling:"])
+        lines.extend(f"- {value}" for value in lesson.get("success_criteria", []))
+        lines.extend(["", "Doorvragen:"])
+        lines.extend(f"- {value}" for value in lesson.get("follow_up_questions", []))
+        lines.extend(["", "Bewijs van leren:", lesson.get("evidence", "")])
+        lines.extend(["", "Rol van AI:", lesson.get("ai_role", "")])
+        lines.extend(["", "Let op:", item.get("caution", "")])
+        return "\n".join(lines)
+
     action = item.get("action_layer", {})
     role_steps = action.get("role_steps", {})
-    public_title = item.get("public_title", item["title"])
     lines = [
         public_title,
         "",
@@ -660,7 +688,85 @@ def workform_copy_text(item: dict) -> str:
     lines.extend(["", "Daarna kijk je naar:", item.get("result", "")])
     return "\n".join(lines)
 
+
+def render_rich_lesson_card(item: dict) -> str:
+    lesson = item["lesson_card"]
+    copy_text = esc(workform_copy_text(item))
+
+    facts = [
+        ("Doel", lesson.get("goal", "")),
+        ("Wanneer", lesson.get("when", "")),
+        ("Tijd", lesson.get("duration", "")),
+        ("Werkvorm", lesson.get("grouping", "")),
+    ]
+    facts_html = "".join(
+        f'<article><span>{esc(label)}</span><p>{esc(value)}</p></article>'
+        for label, value in facts if value
+    )
+
+    script_html = "".join(f'<li>“{esc(value)}”</li>' for value in lesson.get("teacher_script", []))
+    steps_html = "".join(
+        f'<li><span>{idx:02d}</span><p>{esc(step)}</p></li>'
+        for idx, step in enumerate(item.get("steps", []), start=1)
+    )
+    success_html = "".join(f'<li>{esc(value)}</li>' for value in lesson.get("success_criteria", []))
+    questions_html = "".join(f'<li>{esc(value)}</li>' for value in lesson.get("follow_up_questions", []))
+    decisions_html = "".join(
+        '<article>'
+        f'<p><strong>Je ziet:</strong> {esc(rule.get("signal", ""))}</p>'
+        f'<p><strong>Doe dan:</strong> {esc(rule.get("response", ""))}</p>'
+        '</article>'
+        for rule in lesson.get("decision_rules", [])
+    )
+
+    return (
+        '<section class="section workform-quickstart workform-quickstart--rich"><div class="wrap">'
+        '<div class="workform-lesson-card workform-lesson-card--rich" id="werkvormkaart">'
+        '<div class="workform-toolbar"><div><span class="kicker">Morgen gebruiken</span><strong>Werkvormkaart</strong></div>'
+        f'<div class="workform-toolbar-actions"><button type="button" data-copy-workform data-copy-text="{copy_text}">Kopieer</button>'
+        '<button type="button" onclick="window.print()">Print</button><button type="button" data-share-workform>Deel</button></div></div>'
+        f'<div class="lesson-facts">{facts_html}</div>'
+        '<div class="lesson-card-grid">'
+        '<section class="lesson-card-main">'
+        f'<div class="lesson-purpose"><span>Waar deze werkvorm om draait</span><p>{esc(item.get("lede", ""))}</p>'
+        f'<strong>{esc(item.get("question", ""))}</strong></div>'
+        '<div class="lesson-block lesson-script"><div><span>Startscript</span><h2>Zo kun je beginnen.</h2></div>'
+        f'<ul>{script_html}</ul></div>'
+        '<div class="lesson-block"><div><span>Uitvoering</span><h2>Zo werkt het.</h2></div>'
+        f'<ol class="lesson-steps">{steps_html}</ol></div>'
+        '<div class="lesson-two-col">'
+        '<div class="lesson-block compact"><div><span>Succescriteria</span><h3>Dit moet de leerling laten zien.</h3></div>'
+        f'<ul class="lesson-checklist">{success_html}</ul></div>'
+        '<div class="lesson-block compact"><div><span>Doorvragen</span><h3>Vragen die het denken openhouden.</h3></div>'
+        f'<ul class="lesson-question-list">{questions_html}</ul></div>'
+        '</div>'
+        '</section>'
+        '<aside class="lesson-card-side">'
+        '<section class="lesson-example"><span>Voorbeeld uit de klas</span>'
+        f'<p>{esc(item.get("example", ""))}</p></section>'
+        '<section class="lesson-evidence"><span>Bewijs van leren</span>'
+        f'<p>{esc(lesson.get("evidence", ""))}</p></section>'
+        '<section class="lesson-ai-role"><span>Wat kan AI hier doen?</span>'
+        f'<p>{esc(lesson.get("ai_role", ""))}</p></section>'
+        '</aside>'
+        '</div>'
+        f'<div class="lesson-decisions"><div class="lesson-decisions-head"><span>Bijsturen tijdens de les</span><h2>Wat doe je als het niet loopt zoals bedoeld?</h2></div><div class="lesson-decision-grid">{decisions_html}</div></div>'
+        '<div class="lesson-card-bottom">'
+        '<article><span>Variant</span><p>' + esc(lesson.get("variant", "")) + '</p></article>'
+        '<article class="lesson-caution"><span>Wat kun je hierna nog niet zeggen?</span><p>' + esc(item.get("caution", "")) + '</p></article>'
+        '</div>'
+        '</div></div>'
+        '<script>(()=>{const copy=document.querySelector("[data-copy-workform]");const share=document.querySelector("[data-share-workform]");'
+        'if(copy){copy.addEventListener("click",async()=>{try{await navigator.clipboard.writeText(copy.dataset.copyText||"");const old=copy.textContent;copy.textContent="Gekopieerd";setTimeout(()=>copy.textContent=old,1400)}catch(_){}})}'
+        'if(share){share.addEventListener("click",async()=>{if(navigator.share){try{await navigator.share({title:document.title,url:location.href})}catch(_){}}else{try{await navigator.clipboard.writeText(location.href);const old=share.textContent;share.textContent="Link gekopieerd";setTimeout(()=>share.textContent=old,1400)}catch(_){}}})}})();</script>'
+        '</section>'
+    )
+
+
 def render_workform_quickstart(item: dict) -> str:
+    if item.get("lesson_card"):
+        return render_rich_lesson_card(item)
+
     action = item.get("action_layer", {})
     ai_not = action.get("ai_not", "")
     verbs = action.get("verbs", {})
@@ -804,16 +910,42 @@ def enrich_manual_workform(body: str, item: dict, all_items: list[dict]) -> str:
 def render_catalog_workform(item: dict, all_items: list[dict]) -> str:
     steps = "".join(f"<li>{esc(step)}</li>" for step in item.get("steps", []))
     audience = " · ".join(WORKFORM_AUDIENCE_LABELS.get(value, value) for value in item.get("audience", []))
-    evidence = " · ".join(WORKFORM_EVIDENCE_LABELS.get(value, value) for value in item.get("evidence", []))
     public_title = item.get("public_title", item["title"])
     technical = item["title"] if public_title != item["title"] else ""
-    technical_html = f'<p class="workform-technical-name detail">EAI-term: {esc(technical)}</p>' if technical else ""
+    rich = bool(item.get("lesson_card"))
+
+    if technical and rich:
+        technical_html = (
+            '<details class="workform-tech-label"><summary>Technische EAI-term</summary>'
+            f'<p>{esc(technical)}</p></details>'
+        )
+    else:
+        technical_html = f'<p class="workform-technical-name detail">EAI-term: {esc(technical)}</p>' if technical else ""
+
     visual_html = render_workform_visual(item.get("visual"))
     visual_section = f'<section class="section"><div class="wrap">{visual_html}</div></section>' if visual_html else ""
     quickstart_html = render_workform_quickstart(item)
-    example_html = render_workform_example(item)
     foundation_html = render_workform_underpinning(item)
     related_html = render_related_workforms(item, all_items)
+
+    if rich:
+        position_html = (
+            '<section class="section workform-position"><div class="wrap"><details>'
+            '<summary>Waar past deze werkvorm in EAI?</summary>'
+            f'{render_route(item.get("route", []))}'
+            '<p>Deze plaatsbepaling is bedoeld als achtergrond. Voor gebruik in de les kun je direct met de werkvormkaart hierboven werken.</p>'
+            '</details></div></section>'
+        )
+        return f'''<main>
+<section class="page-hero workform-hero--practical"><div class="wrap"><div class="eyebrow">Werkvorm voor de les</div><h1>{esc(public_title)}</h1><p class="lede">{esc(item["summary"])}</p>{technical_html}</div></section>
+{quickstart_html}
+{visual_section}
+{position_html}
+{foundation_html}
+{related_html}
+</main>'''
+
+    example_html = render_workform_example(item)
     return f'''<main>
 <section class="page-hero"><div class="wrap"><div class="eyebrow">Werkvorm · {esc(audience)}</div><h1>{esc(public_title)}</h1>{technical_html}<p class="lede">{esc(item["summary"])}</p>{render_route(item.get("route", []))}</div></section>
 {quickstart_html}
