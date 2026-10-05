@@ -338,17 +338,17 @@ def render_workforms_index(items: list[dict], didactic_models: dict) -> str:
 </section>
 
 <section class="toolbox-results" id="resultaten" aria-live="polite">
-<div class="toolbox-results-head"><div><div class="kicker">Passende werkvormen</div><h2 id="toolbox-result-title">Kies hierboven een situatie, fase of functie</h2><p id="toolbox-result-copy">Dan verschijnen hier eerst de werkvormen die daar inhoudelijk het best bij aansluiten.</p></div>
+<div class="toolbox-results-head"><div><div class="kicker">Werkvormen bij jouw vraag</div><h2 id="toolbox-result-title">Kies hierboven wat je in je les wilt bereiken</h2><p id="toolbox-result-copy">Je ziet daarna eerst een kleine selectie werkvormen die bij die vraag kunnen helpen.</p></div>
 <div class="toolbox-results-tools">
 <label class="toolbox-search"><span>Zoek</span><input id="toolbox-search" type="search" placeholder="Bijv. feedback, bron, vastlopen…" autocomplete="off"></label>
 <button type="button" id="toolbox-show-saved">Bewaard <span id="saved-count">0</span></button>
 </div></div>
 <div class="toolbox-results-grid" id="toolbox-results-grid"></div>
 <div class="toolbox-results-footer">
-<button type="button" class="button secondary" id="toolbox-show-more" hidden>Toon alle passende werkvormen</button>
+<button type="button" class="button secondary" id="toolbox-show-more" hidden>Bekijk meer werkvormen bij deze vraag</button>
 <button type="button" class="text-button" id="toolbox-clear-route" hidden>Wis keuze</button>
 </div>
-<p class="toolbox-empty" id="toolbox-empty" hidden>Hier vind ik nu geen passende werkvorm. Probeer een ander woord of wis je keuze.</p>
+<p class="toolbox-empty" id="toolbox-empty" hidden>Bij deze combinatie verschijnt nu geen werkvorm. Probeer een andere zoekterm of wis één van je keuzes.</p>
 </section>
 
 <details class="toolbox-library" id="alle-werkvormen">
@@ -364,7 +364,7 @@ def render_workforms_index(items: list[dict], didactic_models: dict) -> str:
 
 <div class="toolbox-card-pool" id="toolbox-card-pool" hidden>{cards}</div>
 
-<aside class="toolbox-standard-note"><strong>Waarom werkt de toolbox zo?</strong><p>Je lesdoel en didactische aanpak komen eerst. De werkvormen helpen daarna bij een concretere vraag: wat wil je dat de leerling zelf doet, welke hulp is passend en wat wil je na die hulp bij de leerling kunnen zien? <details><summary>Technische achtergrond</summary><p>De koppeling met didactische modellen is technisch vastgelegd in de EAI Standard. <a href="https://github.com/E-AI-MODEL/EAI-standard/tree/main/adapters" target="_blank" rel="noopener">Bekijk die technische laag ↗</a></p></details></p></aside>
+<aside class="toolbox-standard-note"><strong>Waarom werkt de toolbox zo?</strong><p>Je lesdoel en didactische aanpak komen eerst. De werkvormen helpen daarna bij een concretere vraag: wat wil je dat de leerling zelf doet, welke hulp is passend en wat wil je na die hulp bij de leerling kunnen zien?</p><details><summary>Technische achtergrond</summary><p>De koppeling met didactische modellen is technisch vastgelegd in de EAI Standard. <a href="https://github.com/E-AI-MODEL/EAI-standard/tree/main/adapters" target="_blank" rel="noopener">Bekijk die technische laag ↗</a></p></details></aside>
 </div></section>
 
 <script>
@@ -458,7 +458,7 @@ def render_workforms_index(items: list[dict], didactic_models: dict) -> str:
     visible.forEach(card => resultGrid.appendChild(cloneCard(card)));
 
     if (!activeRoute && !search.value.trim() && !savedOnly) {{
-      resultTitle.textContent = 'Hier verschijnen passende werkvormen';
+      resultTitle.textContent = 'Hier verschijnen werkvormen bij jouw vraag';
       resultCopy.textContent = 'Kies een situatie of lesfase. Je ziet daarna eerst een kleine selectie werkvormen die bij die vraag kunnen helpen.';
       resultGrid.innerHTML = '';
     }} else if (savedOnly) {{
@@ -468,8 +468,8 @@ def render_workforms_index(items: list[dict], didactic_models: dict) -> str:
       resultTitle.textContent = activeRoute.title;
       resultCopy.textContent = activeRoute.copy;
     }} else {{
-      resultTitle.textContent = 'Zoekresultaten';
-      resultCopy.textContent = matches.length + ' werkvormen gevonden.';
+      resultTitle.textContent = 'Gevonden werkvormen';
+      resultCopy.textContent = 'Je zoekterm komt voor bij ' + matches.length + ' werkvormen.';
     }}
 
     showMore.hidden = !activeRoute || activeRoute.exact || expanded || matches.length <= 4 || !!search.value.trim() || savedOnly;
