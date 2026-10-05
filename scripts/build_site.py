@@ -907,6 +907,91 @@ def enrich_manual_workform(body: str, item: dict, all_items: list[dict]) -> str:
     tail = render_workform_example(item) + render_workform_underpinning(item) + render_related_workforms(item, all_items)
     return body.replace("</main>", tail + "</main>", 1)
 
+def render_teacher_explanation(item: dict) -> str:
+    info = item.get("teacher_explanation")
+    if not info:
+        return ""
+
+    why_html = "".join(
+        '<article>'
+        f'<h3>{esc(block.get("title", ""))}</h3>'
+        f'<p>{esc(block.get("text", ""))}</p>'
+        '</article>'
+        for block in info.get("why_it_matters", [])
+    )
+
+    watch_html = "".join(
+        '<article>'
+        f'<div><span>Je ziet</span><p>{esc(block.get("signal", ""))}</p></div>'
+        f'<div><span>Dat kan betekenen</span><p>{esc(block.get("meaning", ""))}</p></div>'
+        f'<div class="teacher-watch-move"><span>Jouw volgende stap</span><p>{esc(block.get("teacher_move", ""))}</p></div>'
+        '</article>'
+        for block in info.get("what_to_watch", [])
+    )
+
+    interpretation_html = "".join(
+        '<article>'
+        f'<span>{esc(block.get("label", ""))}</span>'
+        f'<p>{esc(block.get("text", ""))}</p>'
+        '</article>'
+        for block in info.get("interpretation", [])
+    )
+
+    examples_html = "".join(
+        '<article>'
+        f'<span>{esc(block.get("subject", ""))}</span>'
+        f'<p><strong>Start:</strong> {esc(block.get("situation", ""))}</p>'
+        f'<p><strong>Vergelijk:</strong> {esc(block.get("compare", ""))}</p>'
+        f'<p><strong>Daarna zelf:</strong> {esc(block.get("reconstruct", ""))}</p>'
+        f'<p><strong>Kijk naar:</strong> {esc(block.get("look_for", ""))}</p>'
+        '</article>'
+        for block in info.get("subject_examples", [])
+    )
+
+    council = info.get("onderwijsraad", {})
+    council_html = "".join(
+        '<article>'
+        f'<div class="teacher-council-source"><span>Onderwijsraad · {esc(src.get("year", ""))}</span>'
+        f'<h3>{esc(src.get("title", ""))}</h3></div>'
+        f'<p><strong>Wat de Onderwijsraad zegt:</strong> {esc(src.get("principle", ""))}</p>'
+        f'<p><strong>Vertaling naar deze werkvorm:</strong> {esc(src.get("translation", ""))}</p>'
+        f'<a href="{esc(src.get("url", ""))}" target="_blank" rel="noopener">Bekijk de bron bij de Onderwijsraad ↗</a>'
+        '</article>'
+        for src in council.get("sources", [])
+    )
+
+    return (
+        '<section class="section teacher-explanation"><div class="wrap">'
+        '<div class="teacher-explanation-intro">'
+        '<div><div class="kicker">Voor de docent</div>'
+        f'<h2>{esc(info.get("title", ""))}</h2></div>'
+        f'<p>{esc(info.get("intro", ""))}</p>'
+        '</div>'
+        f'<div class="teacher-why-grid">{why_html}</div>'
+        '<div class="teacher-watch-section">'
+        '<div class="section-head"><div class="kicker">Tijdens de uitvoering</div><div><h2>Waar kijk je naar?</h2>'
+        '<p>De reactie van de leerling bepaalt je volgende stap. Deze signalen helpen om verschil te zien tussen herkennen, toepassen en zelfstandig uitvoeren.</p></div></div>'
+        f'<div class="teacher-watch-grid">{watch_html}</div>'
+        '</div>'
+        '<div class="teacher-interpretation">'
+        '<div><div class="kicker">Wat mag je concluderen?</div><h2>Lees de uitkomst niet groter dan hij is.</h2></div>'
+        f'<div class="teacher-interpretation-grid">{interpretation_html}</div>'
+        '</div>'
+        '<div class="teacher-subject-examples">'
+        '<div class="section-head"><div class="kicker">Drie vakken</div><div><h2>Dezelfde didactische logica, andere inhoud.</h2>'
+        '<p>De kern blijft gelijk: eerst zelf, dan gericht vergelijken, voorbeelden weg en opnieuw zelf handelen.</p></div></div>'
+        f'<div class="teacher-subject-grid">{examples_html}</div>'
+        '</div>'
+        '<div class="teacher-council">'
+        '<div class="teacher-council-head"><div class="kicker">Onderwijsraad</div><h2>Waarom past deze keuze bij breder advies over technologie en toetsing?</h2>'
+        f'<p>{esc(council.get("intro", ""))}</p></div>'
+        f'<div class="teacher-council-grid">{council_html}</div>'
+        '<p class="teacher-council-note"><strong>Belangrijk:</strong> de Onderwijsraad beschrijft deze EAI-werkvorm niet. De bronblokken hierboven geven eerst het uitgangspunt van de raad weer en daarna expliciet onze vertaling naar deze werkvorm.</p>'
+        '</div>'
+        '</div></section>'
+    )
+
+
 def render_catalog_workform(item: dict, all_items: list[dict]) -> str:
     steps = "".join(f"<li>{esc(step)}</li>" for step in item.get("steps", []))
     audience = " · ".join(WORKFORM_AUDIENCE_LABELS.get(value, value) for value in item.get("audience", []))
@@ -927,6 +1012,7 @@ def render_catalog_workform(item: dict, all_items: list[dict]) -> str:
     quickstart_html = render_workform_quickstart(item)
     foundation_html = render_workform_underpinning(item)
     related_html = render_related_workforms(item, all_items)
+    teacher_html = render_teacher_explanation(item)
 
     if rich:
         position_html = (
@@ -939,6 +1025,7 @@ def render_catalog_workform(item: dict, all_items: list[dict]) -> str:
         return f'''<main>
 <section class="page-hero workform-hero--practical"><div class="wrap"><div class="eyebrow">Werkvorm voor de les</div><h1>{esc(public_title)}</h1><p class="lede">{esc(item["summary"])}</p>{technical_html}</div></section>
 {quickstart_html}
+{teacher_html}
 {visual_section}
 {position_html}
 {foundation_html}
@@ -1688,6 +1775,59 @@ iframe{max-width:100%}
   .lesson-decisions{padding:22px 18px}
   .lesson-decisions-head{grid-template-columns:1fr;gap:6px}
   .lesson-card-bottom article+article{border-left:0;border-top:1px solid var(--line)}
+}
+
+
+/* Teacher explanation layer: explain the didactic decision before the technical EAI layer */
+.teacher-explanation{background:#fff}
+.teacher-explanation-intro{display:grid;grid-template-columns:minmax(280px,.7fr) minmax(0,1.3fr);gap:54px;align-items:start;margin-bottom:34px}
+.teacher-explanation-intro h2{font-size:clamp(2.3rem,4vw,4rem);margin:8px 0 0;max-width:12ch}
+.teacher-explanation-intro>p{font-size:1.12rem;line-height:1.7;margin:0;color:#39434f;max-width:65ch}
+.teacher-why-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.teacher-why-grid article{background:#fbfaf7;padding:24px;min-height:220px}
+.teacher-why-grid h3{font-size:1.45rem;margin:0 0 12px}
+.teacher-why-grid p{margin:0;color:#46515d}
+.teacher-watch-section{margin-top:70px}
+.teacher-watch-grid{display:grid;gap:12px}
+.teacher-watch-grid>article{display:grid;grid-template-columns:1fr 1fr 1fr;border:1px solid var(--line);background:#fff}
+.teacher-watch-grid>article>div{padding:18px;border-left:1px solid var(--line)}
+.teacher-watch-grid>article>div:first-child{border-left:0}
+.teacher-watch-grid span,.teacher-interpretation span,.teacher-subject-grid>article>span,.teacher-council-source span{display:block;font:800 .67rem/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;text-transform:uppercase;letter-spacing:.07em;color:var(--blue);margin-bottom:8px}
+.teacher-watch-grid p{margin:0;line-height:1.5;color:#424c58}
+.teacher-watch-move{background:#fff7df}
+.teacher-interpretation{display:grid;grid-template-columns:minmax(280px,.7fr) minmax(0,1.3fr);gap:50px;margin-top:70px;padding:30px;border:1px solid var(--line);background:#eef2f4}
+.teacher-interpretation h2{font-size:2rem;margin:8px 0 0}
+.teacher-interpretation-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.teacher-interpretation-grid article{background:#fff;padding:18px}
+.teacher-interpretation-grid p{margin:0;color:#46515d}
+.teacher-subject-examples{margin-top:70px}
+.teacher-subject-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.teacher-subject-grid>article{border-top:5px solid var(--blue);background:#fbfaf7;padding:22px}
+.teacher-subject-grid p{margin:11px 0 0;font-size:.9rem;line-height:1.52;color:#47515c}
+.teacher-subject-grid strong{color:var(--ink)}
+.teacher-council{margin-top:72px;border:1px solid #cbd4dd;background:#f1f4f6;padding:30px}
+.teacher-council-head{display:grid;grid-template-columns:minmax(280px,.8fr) minmax(0,1.2fr);gap:42px;align-items:end;margin-bottom:26px}
+.teacher-council-head h2{font-size:2.2rem;margin:8px 0 0;max-width:18ch}
+.teacher-council-head p{margin:0;color:#47515d;line-height:1.65}
+.teacher-council-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.teacher-council-grid article{background:#fff;border:1px solid #d4dbe0;padding:20px}
+.teacher-council-grid h3{font-size:1.35rem;margin:8px 0 14px}
+.teacher-council-grid p{font-size:.9rem;line-height:1.55;color:#47515d}
+.teacher-council-grid a{display:inline-block;margin-top:8px;font-weight:800;font-size:.82rem}
+.teacher-council-note{margin:20px 0 0;padding-top:18px;border-top:1px solid #cbd4dd;font-size:.86rem;color:#55616e}
+@media(max-width:980px){
+  .teacher-explanation-intro,.teacher-interpretation,.teacher-council-head{grid-template-columns:1fr}
+  .teacher-watch-grid>article{grid-template-columns:1fr}
+  .teacher-watch-grid>article>div{border-left:0;border-top:1px solid var(--line)}
+  .teacher-watch-grid>article>div:first-child{border-top:0}
+  .teacher-interpretation-grid,.teacher-council-grid{grid-template-columns:1fr}
+  .teacher-subject-grid{grid-template-columns:1fr 1fr}.teacher-subject-grid>article:last-child{grid-column:1/-1}
+}
+@media(max-width:700px){
+  .teacher-why-grid,.teacher-subject-grid{grid-template-columns:1fr}
+  .teacher-subject-grid>article:last-child{grid-column:auto}
+  .teacher-council{padding:22px 18px}
+  .teacher-interpretation{padding:22px 18px}
 }
 
 '''
