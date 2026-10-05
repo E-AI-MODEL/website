@@ -103,3 +103,20 @@ Niet: *Welke kernhandeling moet de leerling zelf uitvoeren?*
 Wel: *Welke leerstap moet de leerling hier zelf zetten?*
 
 De formulering sluit aan bij de centrale vraag uit *De vraag die we vergeten in het AI-debat*: aan welke stap moet de leerling in deze fase zelf inhoudelijke betekenis geven?
+
+
+## 9. Secties hebben een zichtbaar begin en einde
+
+Een pagina mag niet voelen als één lange witte stroom. Een bezoeker moet zonder eerst te lezen kunnen zien welke onderdelen bij elkaar horen.
+
+Daarom gelden voor grote inhoudsblokken de volgende regels:
+
+- ieder hoofdonderdeel heeft een zichtbaar begin en einde;
+- opeenvolgende hoofdsecties worden van elkaar gescheiden door witruimte of een rustige achtergrondstrook;
+- een standaardsectie heeft een duidelijke kopzone en een subtiele boven- en ondergrens;
+- gebruik een klein accent aan het begin van een sectie om de overgang zichtbaar te maken, niet als decoratie maar als navigatiesignaal;
+- binnen complexe onderdelen, zoals de EAI Toolbox, krijgen afzonderlijke beslismomenten een eigen vlak: keuze, resultaten, filters en uitleg staan niet los in dezelfde witte stroom;
+- full-width kleurvlakken die al duidelijk begrensd zijn, zoals een donkere vervolgsectie, hoeven niet nogmaals in een kader;
+- op mobiel blijven de grenzen zichtbaar, maar worden marges en padding kleiner zodat er geen stapel losse kaarten ontstaat.
+
+Toets een pagina op afstand of op klein formaat. Wanneer niet direct zichtbaar is waar een onderwerp begint en eindigt, is de visuele hiërarchie nog onvoldoende.
