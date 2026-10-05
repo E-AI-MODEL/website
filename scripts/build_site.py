@@ -218,7 +218,7 @@ def load_didactic_models() -> dict:
 def validate_public_workform_language(items: list[dict]) -> None:
     """Keep technical EAI vocabulary out of the public teacher-facing workform layer."""
     banned = ("kernhandeling", "doelhandeling", "leerhandeling", "relevante handeling", "onderliggende handeling")
-    skip_keys = {"slug", "title", "route", "source", "source_url", "standard", "verbs"}
+    skip_keys = {"slug", "title", "route", "source", "source_url", "standard"}
 
     def walk(value, path: str, slug: str) -> None:
         if isinstance(value, str):
