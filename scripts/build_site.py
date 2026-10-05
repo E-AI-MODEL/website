@@ -61,18 +61,18 @@ WORKFORM_CATEGORIES = [
 ]
 WORKFORM_AUDIENCE_LABELS = {"learner": "Leerling", "teacher": "Docent", "team": "Team"}
 WORKFORM_EVIDENCE_LABELS = {
-    "design": "Ontwerp",
-    "process": "Proces",
-    "independent": "Zelfstandig",
-    "retention": "Later nog",
-    "transfer": "Andere situatie",
+    "design": "Les of opdracht ontwerpen",
+    "process": "Hoe de leerling werkt",
+    "independent": "Wat de leerling zelf kan",
+    "retention": "Of het later nog lukt",
+    "transfer": "Of het in een nieuwe situatie lukt",
 }
 WORKFORM_ROUTE_LABELS = {
-    "proces": "Proces",
-    "fase": "Fase",
-    "kernhandeling": "Kernhandeling",
+    "proces": "Wat is de opdracht?",
+    "fase": "Waar zit je in de les?",
+    "kernhandeling": "Wat moet de leerling zelf doen?",
     "taakdichtheid": "Wat doet AI?",
-    "output": "Wat kun je nu zeggen?",
+    "output": "Wat kun je daarna zien?",
 }
 
 WORKFORM_INTENTS = [
@@ -231,25 +231,24 @@ def render_route(route: list[str]) -> str:
 
 def render_toolbox_card(item: dict) -> str:
     action = item.get("action_layer", {})
-    verbs = action.get("verbs", {})
-    teacher = verbs.get("teacher", [])[:3]
-    learner = verbs.get("learner", [])[:3]
     intents = " ".join(action.get("intents", []))
     evidence = " ".join(item.get("evidence", []))
     audience = " ".join(item.get("audience", []))
     public_title = item.get("public_title", item["title"])
+    teacher_copy = item.get("card_teacher") or action.get("teacher", "")
+    learner_copy = item.get("card_learner") or action.get("learner", "")
     search_parts = [
         public_title,
         item.get("title", ""),
         item.get("summary", ""),
         item.get("question", ""),
-        " ".join(teacher),
-        " ".join(learner),
+        teacher_copy,
+        learner_copy,
         item.get("category", ""),
     ]
     search_text = " ".join(search_parts).lower()
-    teacher_chain = '<span class="action-arrow">→</span>'.join(f'<b>{esc(value)}</b>' for value in teacher)
-    learner_chain = '<span class="action-arrow">→</span>'.join(f'<b>{esc(value)}</b>' for value in learner)
+    teacher_html = f'<div><span>Als docent</span><p>{esc(teacher_copy)}</p></div>' if teacher_copy else ""
+    learner_html = f'<div><span>De leerling</span><p>{esc(learner_copy)}</p></div>' if learner_copy else ""
     return (
         f'<article class="toolbox-result-card" data-workform-card data-slug="{esc(item["slug"])}" '
         f'data-category="{esc(item["category"])}" data-audience="{esc(audience)}" '
@@ -257,11 +256,8 @@ def render_toolbox_card(item: dict) -> str:
         f'<div class="toolbox-result-top"><span class="toolbox-result-kicker">Werkvorm</span>'
         f'<button type="button" class="save-workform" data-save-slug="{esc(item["slug"])}" aria-pressed="false">Bewaar</button></div>'
         f'<h3>{esc(public_title)}</h3><p class="toolbox-result-summary">{esc(item["summary"])}</p>'
-        f'<div class="toolbox-result-actions">'
-        f'<div><span>Docent</span><p>{teacher_chain}</p></div>'
-        f'<div><span>Leerling</span><p>{learner_chain}</p></div>'
-        f'</div>'
-        f'<a class="toolbox-result-link" href="/werkvormen/{esc(item["slug"])}/">Bekijk deze werkvorm →</a>'
+        f'<div class="toolbox-result-actions">{teacher_html}{learner_html}</div>'
+        f'<a class="toolbox-result-link" href="/werkvormen/{esc(item["slug"])}/">Zo werkt deze werkvorm →</a>'
         f'</article>'
     )
 
@@ -279,7 +275,7 @@ def render_workforms_index(items: list[dict], didactic_models: dict) -> str:
     model_buttons = "".join(
         f'<button type="button" class="didactic-model-button" data-model-choice="{esc(model["id"])}" aria-pressed="false">'
         f'<span>{esc(model["short_name"])}</span><strong>{esc(model["name"])}</strong>'
-        f'<small>{len(model["phases"])} {"fasen" if "phases" in model["kind"] else "functies"} · EAI Standard adapter {esc(model["adapter_id"])}</small></button>'
+        f'<small>{len(model["phases"])} {"fasen" if "phases" in model["kind"] else "functies"} · kies een fase om werkvormen te bekijken</small></button>'
         for model in didactic_models["models"]
     )
 
@@ -313,14 +309,14 @@ def render_workforms_index(items: list[dict], didactic_models: dict) -> str:
 <section class="page-hero toolbox-hero"><div class="wrap"><div class="eyebrow">Werkvormen</div><h1>Waar wil je in je les mee verder?</h1><p class="lede">Kies eerst welke verzameling bij je vraag past. De EAI Toolbox helpt bij leren en AI. TAALwerkvormen combineert vaktaal met formatief handelen.</p></div></section>
 
 <section class="section workform-collections"><div class="wrap"><div class="workform-collection-grid">
-<a class="workform-collection-card is-eai" href="#eai-toolbox"><span>EAI Toolbox</span><strong>{len(items)} EAI-werkvormen</strong><p>Begin bij een onderwijsvraag of bij een bestaand didactisch model. Kijk daarna naar kernhandeling, AI-rol en bewijs.</p><b>Werk met de EAI Toolbox ↓</b></a>
+<a class="workform-collection-card is-eai" href="#eai-toolbox"><span>EAI Toolbox</span><strong>{len(items)} EAI-werkvormen</strong><p>Begin bij iets wat je in de les ziet of wilt bereiken. Kies daarna een werkvorm die helpt om leerlingwerk, hulp en zelfstandigheid zichtbaar te maken.</p><b>Werk met de EAI Toolbox ↓</b></a>
 <a class="workform-collection-card is-taal" href="/taalwerkvormen/"><span>TAALwerkvormen · Emmauscollege</span><strong>15 complete werkvormkaarten</strong><p>Vaktaal, formatief handelen, redo en volledige LLM-prompts in één zelfstandige verzameling.</p><b>Bekijk 15 TAALwerkvormen →</b></a>
 </div></div></section>
 
 <section class="section toolbox-start" id="eai-toolbox"><div class="wrap">
 <div class="toolbox-situation">
-<div><div class="kicker">Twee manieren om te beginnen</div><h2>Wat moet de leerling hier zelf doen?</h2><p>Je kunt beginnen bij een probleem dat je in de les ziet. Of bij de fase van een bestaand didactisch model. In beide gevallen blijft de vraag hetzelfde: welke handeling draagt hier het leren?</p></div>
-<div class="toolbox-situation-path" aria-label="EAI-kijkroute"><span>onderwijsmodel</span><b>→</b><span>fase</span><b>→</b><span>kernhandeling</span><b>→</b><span>AI</span><b>→</b><span>bewijs</span></div>
+<div><div class="kicker">Twee manieren om te beginnen</div><h2>Wat moet de leerling hier zelf doen?</h2><p>Je kunt beginnen bij iets wat je in de les ziet, of bij een fase uit een didactisch model waarmee je al werkt. De vraag blijft praktisch: welke stap wil je dat de leerling zelf leert uitvoeren, en waar kan AI helpen?</p></div>
+<div class="toolbox-situation-path" aria-label="Van lesvraag naar passende AI-hulp"><span>wat gebeurt er in de les?</span><b>→</b><span>wat moet de leerling leren?</span><b>→</b><span>welke hulp is nodig?</span><b>→</b><span>wat doet AI?</span><b>→</b><span>wat wil je daarna zien?</span></div>
 </div>
 
 <div class="toolbox-mode-tabs" role="tablist" aria-label="Kies hoe je wilt beginnen">
@@ -334,41 +330,41 @@ def render_workforms_index(items: list[dict], didactic_models: dict) -> str:
 </section>
 
 <section class="toolbox-mode-panel didactic-model-mode" data-mode-panel="model" id="didactisch-model" hidden>
-<div class="toolbox-route-head"><div><div class="kicker">Bestaand model, eigen fasen</div><h2>Met welk model werk je?</h2></div><p>EAI verandert de namen, volgorde of bedoeling van het bronmodel niet. We laten alleen zien welke EAI-vragen en werkvormen binnen een fase of functie relevant kunnen zijn.</p></div>
+<div class="toolbox-route-head"><div><div class="kicker">Bestaand model, eigen fasen</div><h2>Met welk model werk je?</h2></div><p>Je eigen didactische model blijft het vertrekpunt. Kies een fase of functie en bekijk welke werkvormen daar kunnen helpen bij leerlingdenken, ondersteuning en zelfstandig werken.</p></div>
 <div class="didactic-model-grid">{model_buttons}</div>
-<div class="didactic-model-catalog-note"><div><strong>Dit is geen complete lijst van didactische modellen.</strong><p>We tonen hier alleen modellen waarvoor in de EAI Standard een bronbehoudende adapter is uitgewerkt. Dat is geen aanbeveling of rangorde.</p></div><button type="button" data-switch-question>Mijn model staat er niet bij</button></div>
+<div class="didactic-model-catalog-note"><div><strong>Je hoeft niet met één van deze modellen te werken.</strong><p>Staat jouw model er niet bij? Begin dan bij een concrete onderwijsvraag. De werkvormen zijn niet afhankelijk van één vaste lesstructuur.</p></div><button type="button" data-switch-question>Begin bij mijn onderwijsvraag</button></div>
 <div class="didactic-model-panels">{model_panels_html}</div>
 <p class="didactic-model-boundary">{boundary_note}</p>
 </section>
 
 <section class="toolbox-results" id="resultaten" aria-live="polite">
-<div class="toolbox-results-head"><div><div class="kicker">Passende werkvormen</div><h2 id="toolbox-result-title">Kies hierboven een situatie, fase of functie</h2><p id="toolbox-result-copy">Dan verschijnen hier eerst de werkvormen die daar inhoudelijk het best bij aansluiten.</p></div>
+<div class="toolbox-results-head"><div><div class="kicker">Werkvormen bij jouw vraag</div><h2 id="toolbox-result-title">Kies hierboven wat je in je les wilt bereiken</h2><p id="toolbox-result-copy">Je ziet daarna eerst een kleine selectie werkvormen die bij die vraag kunnen helpen.</p></div>
 <div class="toolbox-results-tools">
 <label class="toolbox-search"><span>Zoek</span><input id="toolbox-search" type="search" placeholder="Bijv. feedback, bron, vastlopen…" autocomplete="off"></label>
 <button type="button" id="toolbox-show-saved">Bewaard <span id="saved-count">0</span></button>
 </div></div>
 <div class="toolbox-results-grid" id="toolbox-results-grid"></div>
 <div class="toolbox-results-footer">
-<button type="button" class="button secondary" id="toolbox-show-more" hidden>Toon alle passende werkvormen</button>
+<button type="button" class="button secondary" id="toolbox-show-more" hidden>Bekijk meer werkvormen bij deze vraag</button>
 <button type="button" class="text-button" id="toolbox-clear-route" hidden>Wis keuze</button>
 </div>
-<p class="toolbox-empty" id="toolbox-empty" hidden>Hier vind ik nu geen passende werkvorm. Probeer een ander woord of wis je keuze.</p>
+<p class="toolbox-empty" id="toolbox-empty" hidden>Bij deze combinatie verschijnt nu geen werkvorm. Probeer een andere zoekterm of wis één van je keuzes.</p>
 </section>
 
 <details class="toolbox-library" id="alle-werkvormen">
-<summary>Alle {len(items)} werkvormen bekijken</summary>
+<summary>Blader zelf door alle {len(items)} werkvormen</summary>
 <div class="toolbox-library-tools">
-<p>Voor wie al weet wat hij zoekt. Gebruik zoeken of de extra filters.</p>
+<p>Weet je al ongeveer wat je nodig hebt? Filter op wie ermee werkt en op wat je bij de leerling wilt zien.</p>
 <div class="toolbox-filters" aria-label="Filter alle werkvormen">
-<label>Voor wie<select data-toolbox-filter="audience"><option value="all">Iedereen</option><option value="learner">Leerling</option><option value="teacher">Docent</option><option value="team">Team</option></select></label>
-<label>Waar kijk je naar?<select data-toolbox-filter="evidence"><option value="all">Alles</option><option value="process">Proces</option><option value="independent">Zelfstandig</option><option value="retention">Later nog</option><option value="transfer">Andere situatie</option><option value="design">Ontwerp</option></select></label>
+<label>Wie werkt ermee?<select data-toolbox-filter="audience"><option value="all">Alle werkvormen</option><option value="learner">Leerling</option><option value="teacher">Docent</option><option value="team">Docententeam</option></select></label>
+<label>Wat wil je zien?<select data-toolbox-filter="evidence"><option value="all">Alle doelen</option><option value="process">Hoe de leerling werkt</option><option value="independent">Wat de leerling zelf kan</option><option value="retention">Of het later nog lukt</option><option value="transfer">Of het in een nieuwe situatie lukt</option><option value="design">Een les of opdracht ontwerpen</option></select></label>
 </div></div>
 <div class="toolbox-library-grid" id="toolbox-library-grid"></div>
 </details>
 
 <div class="toolbox-card-pool" id="toolbox-card-pool" hidden>{cards}</div>
 
-<aside class="toolbox-standard-note"><strong>Wat gebeurt hier precies?</strong><p>Een didactisch model organiseert het grotere onderwijsproces. EAI legt daar geen nieuwe route overheen. Binnen een fase of functie kijken we alleen naar de kernhandeling, de rol van AI en welk bewijs daarna nog betekenis heeft. Andere modellen kunnen later via dezelfde bronbehoudende adapterlaag worden toegevoegd. <a href="https://github.com/E-AI-MODEL/EAI-standard/tree/main/adapters" target="_blank" rel="noopener">Bekijk de bronbehoudende adapters ↗</a></p></aside>
+<aside class="toolbox-standard-note"><strong>Waarom werkt de toolbox zo?</strong><p>Je lesdoel en didactische aanpak komen eerst. De werkvormen helpen daarna bij een concretere vraag: wat wil je dat de leerling zelf doet, welke hulp is passend en wat wil je na die hulp bij de leerling kunnen zien?</p><details><summary>Technische achtergrond</summary><p>De koppeling met didactische modellen is technisch vastgelegd in de EAI Standard. <a href="https://github.com/E-AI-MODEL/EAI-standard/tree/main/adapters" target="_blank" rel="noopener">Bekijk die technische laag ↗</a></p></details></aside>
 </div></section>
 
 <script>
@@ -462,8 +458,8 @@ def render_workforms_index(items: list[dict], didactic_models: dict) -> str:
     visible.forEach(card => resultGrid.appendChild(cloneCard(card)));
 
     if (!activeRoute && !search.value.trim() && !savedOnly) {{
-      resultTitle.textContent = 'Hier verschijnen passende werkvormen';
-      resultCopy.textContent = 'Selecteer een situatie, fase of functie om werkvormen te zien die inhoudelijk aansluiten.';
+      resultTitle.textContent = 'Hier verschijnen werkvormen bij jouw vraag';
+      resultCopy.textContent = 'Kies een situatie of lesfase. Je ziet daarna eerst een kleine selectie werkvormen die bij die vraag kunnen helpen.';
       resultGrid.innerHTML = '';
     }} else if (savedOnly) {{
       resultTitle.textContent = 'Jouw bewaarde werkvormen';
@@ -472,12 +468,12 @@ def render_workforms_index(items: list[dict], didactic_models: dict) -> str:
       resultTitle.textContent = activeRoute.title;
       resultCopy.textContent = activeRoute.copy;
     }} else {{
-      resultTitle.textContent = 'Zoekresultaten';
-      resultCopy.textContent = matches.length + ' werkvormen gevonden.';
+      resultTitle.textContent = 'Gevonden werkvormen';
+      resultCopy.textContent = 'Je zoekterm komt voor bij ' + matches.length + ' werkvormen.';
     }}
 
     showMore.hidden = !activeRoute || activeRoute.exact || expanded || matches.length <= 4 || !!search.value.trim() || savedOnly;
-    showMore.textContent = 'Toon alle ' + matches.length + ' passende werkvormen';
+    showMore.textContent = 'Bekijk meer werkvormen bij deze vraag';
     clearRoute.hidden = !activeRoute && !search.value.trim() && !savedOnly;
     empty.hidden = matches.length !== 0 || (!activeRoute && !search.value.trim() && !savedOnly);
 
@@ -836,24 +832,24 @@ def render_related_workforms(item: dict, all_items: list[dict]) -> str:
         return ""
     cards = []
     for other in related:
-        verbs = other.get("action_layer", {}).get("verbs", {})
-        teacher = verbs.get("teacher", [])[:2]
-        learner = verbs.get("learner", [])[:2]
-        teacher_chain = " → ".join(teacher)
-        learner_chain = " → ".join(learner)
+        action = other.get("action_layer", {})
+        teacher_copy = other.get("card_teacher") or action.get("teacher", "")
+        learner_copy = other.get("card_learner") or action.get("learner", "")
+        teacher_html = f'<div><b>Als docent</b> {esc(teacher_copy)}</div>' if teacher_copy else ""
+        learner_html = f'<div><b>De leerling</b> {esc(learner_copy)}</div>' if learner_copy else ""
         cards.append(
             f'<a class="related-workform-card" href="/werkvormen/{esc(other["slug"])}/">'
-            f'<span>Kan hierna passen</span><h3>{esc(other.get("public_title", other["title"]))}</h3>'
+            f'<span>Mogelijke vervolgstap</span><h3>{esc(other.get("public_title", other["title"]))}</h3>'
             f'<p>{esc(other["summary"])}</p>'
-            f'<div><b>Docent</b> {esc(teacher_chain)}</div><div><b>Leerling</b> {esc(learner_chain)}</div>'
-            f'<strong>Bekijk →</strong></a>'
+            f'{teacher_html}{learner_html}'
+            f'<strong>Bekijk deze werkvorm →</strong></a>'
         )
     return (
         '<section class="section related-workforms"><div class="wrap">'
-        '<div class="section-head"><div class="kicker">Wat kan hierna?</div><div><h2>Werkvormen die logisch aansluiten.</h2>'
-        '<p>Niet als vaste route, wel omdat ze een volgende stap in dezelfde onderwijsafweging kunnen ondersteunen.</p></div></div>'
+        '<div class="section-head"><div class="kicker">Mogelijke vervolgstappen</div><div><h2>Wat kun je hierna proberen?</h2>'
+        '<p>Kies alleen een vervolg dat past bij wat je zojuist bij de leerling zag. Dit is geen vaste volgorde.</p></div></div>'
         f'<div class="related-workform-grid">{"".join(cards)}</div>'
-        '<p class="related-all"><a href="/werkvormen/">Alle werkvormen bekijken →</a></p>'
+        '<p class="related-all"><a href="/werkvormen/">Blader door alle werkvormen →</a></p>'
         '</div></section>'
     )
 
@@ -1423,7 +1419,7 @@ iframe{max-width:100%}
 .toolbox-result-actions{margin-top:auto;border-top:1px solid var(--line);padding-top:12px}
 .toolbox-result-actions>div{display:grid;grid-template-columns:66px 1fr;gap:8px;padding:5px 0;font-family:Inter,ui-sans-serif,sans-serif}
 .toolbox-result-actions span{font-size:.65rem;text-transform:uppercase;letter-spacing:.06em;color:#7b8796;font-weight:800}
-.toolbox-result-actions p{display:flex;gap:5px;flex-wrap:wrap;margin:0;font-size:.78rem}.toolbox-result-actions b{font-weight:750}
+.toolbox-result-actions p{display:block;margin:0;font-size:.79rem;line-height:1.45;color:#3f4a57}.toolbox-result-actions b{font-weight:750}
 .toolbox-result-link{margin-top:16px;font:800 .83rem/1 Inter,ui-sans-serif,sans-serif;text-underline-offset:4px}
 .toolbox-results-footer{display:flex;gap:14px;align-items:center;margin:20px 0 44px}.text-button{appearance:none;border:0;background:transparent;text-decoration:underline;text-underline-offset:4px;cursor:pointer}
 .toolbox-library{border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-top:20px;padding:0}
