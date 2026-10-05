@@ -10,7 +10,7 @@
       "source_reference": "Hollingsworth & Ybarra (2025), Nederlandse bewerking Marcel Schmeier",
       "source_url": "https://www.uitgeverijpica.nl/titels/expliciete-directe-instructie-pica",
       "standard_url": "https://github.com/E-AI-MODEL/EAI-standard/tree/main/adapters/edi-2.0",
-      "intro": "De negen EDI-lesfasen blijven intact. EAI voegt per fase alleen de vraag toe welke menselijke handeling daar betekenis draagt, wat AI doet en welk bewijs je daarna nodig hebt.",
+      "intro": "De negen EDI-lesfasen blijven intact. EAI voegt per fase alleen de vraag toe welke leerstap daar centraal staat, wat AI doet en wat je daarna bij de leerling wilt kunnen zien.",
       "cross_cutting": [
         "Betrekken en activeren",
         "Herhalen",
@@ -58,7 +58,7 @@
           "label": "Begeleide inoefening",
           "order": 4,
           "purpose": "Oefen samen en bouw ondersteuning af terwijl verantwoordelijkheid naar de leerling verschuift.",
-          "eai_question": "Hoeveel hulp is hier nodig zonder dat de doelhandeling al wordt overgenomen?",
+          "eai_question": "Hoeveel hulp is hier nodig zonder dat de leerstap al wordt overgenomen?",
           "workforms": [
             "least-intrusive-support",
             "eliciting-question",
@@ -84,7 +84,7 @@
           "label": "Zelfstandige verwerking",
           "order": 6,
           "purpose": "Laat leerlingen het lesdoel zelfstandig oefenen en consolideren.",
-          "eai_question": "Voert de leerling de relevante handeling nu werkelijk zelf uit?",
+          "eai_question": "Voert de leerling de leerstap nu werkelijk zelf uit?",
           "workforms": [
             "controlled-detachment",
             "hand-back-the-action",
@@ -143,7 +143,7 @@
       "source_reference": "Archer & Hughes (2011), Explicit Instruction: Effective and Efficient Teaching",
       "source_url": "https://explicitinstruction.org/download/sample-chapter.pdf",
       "standard_url": "https://github.com/E-AI-MODEL/EAI-standard/tree/main/adapters/explicit-instruction-archer-hughes",
-      "intro": "De zes teaching functions uit het bronmodel blijven in hun eigen volgorde en terminologie staan. EAI legt daar alleen een analyse van menselijke en AI-handelingen overheen.",
+      "intro": "De zes teaching functions uit het bronmodel blijven in hun eigen volgorde en terminologie staan. EAI legt daar alleen een analyse van de leerstap, de werkstappen van AI en wat je daarna bij de leerling kunt zien overheen.",
       "cross_cutting": [
         "Productive learner engagement",
         "High success during learning",
@@ -179,7 +179,7 @@
           "label": "Guided practice",
           "order": 3,
           "purpose": "Laat leerlingen veel reageren en oefenen met ondersteuning en feedback.",
-          "eai_question": "Welke steun helpt de leerling verder zonder de doelhandeling over te nemen?",
+          "eai_question": "Welke steun helpt de leerling verder zonder de leerstap over te nemen?",
           "workforms": [
             "least-intrusive-support",
             "eliciting-question",
@@ -237,7 +237,7 @@
       "source_reference": "Gulikers & Baartman (2017), Doelgericht professionaliseren",
       "source_url": "https://www.hu.nl/onderzoek/publicaties/doelgericht-professionaliseren",
       "standard_url": "https://github.com/E-AI-MODEL/EAI-standard/tree/main/adapters/formatieve-toetscyclus-gulikers-baartman",
-      "intro": "De vijf fasen vormen samen een formatief proces. EAI verandert die cyclus niet, maar maakt per fase zichtbaar welke menselijke handeling, AI-bijdrage en bewijsbetekenis relevant kunnen zijn.",
+      "intro": "De vijf fasen vormen samen een formatief proces. EAI verandert die cyclus niet, maar maakt per fase zichtbaar welke leerstap centraal staat, wat AI bijdraagt en wat je daarna bij de leerling wilt kunnen zien.",
       "cross_cutting": [
         "Doelgericht bewijs verzamelen",
         "Interpretatie scheiden van observatie",
@@ -317,7 +317,7 @@
     }
   ],
   "notes": {
-    "source_preserving": "De bronmodellen behouden hun eigen namen, fasen en volgorde. De EAI-koppeling is een aparte interpretatielaag.",
+    "source_preserving": "De bronmodellen behouden hun eigen namen, fasen en volgorde. EAI voegt daar alleen een aparte onderwijslaag aan toe met vragen over leerstap, AI-hulp en wat je daarna bij de leerling wilt kunnen zien.",
     "not_a_new_model": "Werkvormen worden binnen een fase getoond als mogelijke EAI-interventies. Ze worden daarmee geen onderdeel van het oorspronkelijke model.",
     "direct_instruction_boundary": "Direct Instruction in de Engelmann-traditie staat wel als adapter in de EAI Standard, maar wordt hier niet als universele lineaire lesroute getoond omdat de bron dat model niet zo structureert."
   }
