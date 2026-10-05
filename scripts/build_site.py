@@ -1855,6 +1855,91 @@ iframe{max-width:100%}
   .teacher-interpretation{padding:22px 18px}
 }
 
+
+/* Site-wide section rhythm: every major content block has a visible start and end */
+main:has(> .section){background:#f3f5f7}
+main:has(> .section)>:where(.page-hero,.hero){background:#fff}
+main:has(> .section)>.section{
+  position:relative;
+  box-shadow:inset 0 1px 0 var(--line),inset 0 -1px 0 var(--line);
+}
+main:has(> .section)>.section+.section,
+main:has(> .page-hero)>.page-hero+.section,
+main:has(> .hero)>.hero+.section{
+  margin-top:12px;
+}
+main:has(> .section)>.section:not(.journey-next):not(.project):not(.case-question-band):not(.home-guide-strip):not(.education-guide-strip)::before{
+  content:"";
+  position:absolute;
+  z-index:1;
+  top:0;
+  left:max(24px,calc((100% - var(--max))/2 + 24px));
+  width:52px;
+  height:4px;
+  background:var(--accent);
+}
+main:has(> .section)>.section:not(.journey-next):not(.project) .section-head{
+  padding-bottom:24px;
+  border-bottom:1px solid var(--line);
+}
+
+/* The Toolbox contains several decisions inside one page section, so each decision gets its own surface. */
+.toolbox-start{background:#f5f7f9}
+.toolbox-situation{
+  padding:28px;
+  margin-bottom:18px;
+  border:1px solid var(--line);
+  border-top:4px solid var(--accent);
+  background:#fff;
+}
+.toolbox-mode-tabs{margin:0 0 14px}
+.toolbox-mode-panel{
+  padding:28px;
+  margin:0 0 18px;
+  border:1px solid var(--line);
+  background:#fff;
+}
+.toolbox-route-grid{margin-bottom:0}
+.toolbox-results{
+  margin-top:18px;
+  padding:28px;
+  border:1px solid var(--line);
+  background:#fff;
+  scroll-margin-top:90px;
+}
+.toolbox-results-footer{margin:20px 0 0}
+.toolbox-library{
+  margin-top:18px;
+  padding:0 20px;
+  border:1px solid var(--line);
+  background:#fff;
+}
+.toolbox-library>summary{padding:18px 0}
+.toolbox-library-tools{padding:20px 0}
+.toolbox-library-grid{padding:0 0 20px}
+.toolbox-standard-note{
+  margin-top:18px;
+  border:1px solid #e4d8bd;
+  border-left:4px solid var(--accent);
+  background:#fff9eb;
+}
+
+/* Make section boundaries survive on small screens without turning every section into a card wall. */
+@media(max-width:760px){
+  main:has(> .section)>.section+.section,
+  main:has(> .page-hero)>.page-hero+.section,
+  main:has(> .hero)>.hero+.section{margin-top:9px}
+  main:has(> .section)>.section:not(.journey-next):not(.project):not(.case-question-band):not(.home-guide-strip):not(.education-guide-strip)::before{
+    left:24px;
+    width:42px;
+  }
+  main:has(> .section)>.section:not(.journey-next):not(.project) .section-head{
+    padding-bottom:18px;
+  }
+  .toolbox-situation,.toolbox-mode-panel,.toolbox-results{padding:20px 18px}
+  .toolbox-library{padding:0 18px}
+}
+
 '''
 
 CHROME_CSS = r'''
