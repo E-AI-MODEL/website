@@ -1090,6 +1090,28 @@
         "evidence": "Bewaar de eerste poging en de nieuwe eigen versie. Combineer die met de korte toelichting van de leerling. Zo zie je niet alleen dat de leerling een sterk voorbeeld kan herkennen, maar ook welke verbetering hij daarna zelf uitvoert.",
         "variant": "Gebruik geen complete AI-versie, maar twee korte fragmenten met een subtiel kwaliteitsverschil. De leerling kiest eerst welk fragment sterker is en reconstrueert daarna alleen dat onderdeel in het eigen werk.",
         "ai_role": "AI kan één alternatief of vergelijkingsversie leveren. Laat AI niet bepalen welke versie het beste is en laat het systeem na de vergelijking geen nieuwe eindversie schrijven."
+      },
+      "visual": {
+        "type": "flow",
+        "items": [
+          {
+            "label": "1 · Eigen poging",
+            "text": "De leerling maakt eerst zelf iets."
+          },
+          {
+            "label": "2 · Vergelijken",
+            "text": "Leg een tweede versie ernaast en bespreek één inhoudelijk verschil."
+          },
+          {
+            "label": "3 · Voorbeelden weg",
+            "text": "De voorbeeldteksten verdwijnen. Alleen de oorspronkelijke taak blijft staan."
+          },
+          {
+            "label": "4 · Opnieuw zelf",
+            "text": "De leerling maakt een nieuwe versie en licht een bewuste keuze toe."
+          }
+        ],
+        "caption": "De vergelijking is tussenstap. Het nieuwe eigen werk is het moment waarop zichtbaar wordt wat de leerling met die vergelijking kan."
       }
     },
     {
