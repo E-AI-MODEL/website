@@ -329,7 +329,7 @@
       "evidence": [
         "design"
       ],
-      "summary": "Vergelijk een algemene AI met een brongebonden omgeving en analyseer wat context en bronnen veranderen.",
+      "summary": "Stel dezelfde vraag aan een algemene AI en aan een AI die alleen met opgegeven bronnen werkt. Vergelijk wat er verandert in antwoorden, verwijzingen en zekerheid.",
       "lede": "Dezelfde leerlingvraag kan in twee AI-omgevingen tot heel andere antwoorden leiden, omdat de systemen andere informatie meekrijgen.",
       "question": "Wat verandert door bronbinding, en welk onderwijsprobleem lost bronbinding niet vanzelf op?",
       "route": [
@@ -390,7 +390,10 @@
             "Beantwoord dezelfde vraag vanuit verschillende broncondities."
           ]
         }
-      }
+      },
+      "public_title": "Dezelfde vraag in twee AI-omgevingen",
+      "card_teacher": "Laat dezelfde inhoudelijke vraag in twee verschillende AI-omgevingen uitvoeren en bespreek de verschillen.",
+      "card_learner": "Vergelijkt de antwoorden en controleert waarop verschillen in inhoud of brongebruik zijn gebaseerd."
     },
     {
       "slug": "first-attempt",
@@ -903,9 +906,9 @@
       "evidence": [
         "independent"
       ],
-      "summary": "Laat dezelfde onderliggende handeling uitvoeren op een nieuw item met minder kans op antwoordhergebruik.",
+      "summary": "Geef een nieuwe opgave waarvoor dezelfde vaardigheid nodig is. Zo zie je beter of de leerling de aanpak zelf kan gebruiken zonder het eerdere antwoord over te nemen.",
       "lede": "Opnieuw werken met exact dezelfde opgave kan vooral geheugen voor het eerder gegeven antwoord meten.",
-      "question": "Kan de leerling dezelfde bewerking of redenering uitvoeren wanneer de oppervlakte van de taak verandert?",
+      "question": "Kan de leerling dezelfde vaardigheid gebruiken bij een nieuwe opgave?",
       "route": [
         "kernhandeling",
         "output"
@@ -923,7 +926,7 @@
       "source": "EAI Standard 0.4-candidate · EV-11 / REM-06",
       "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/standard/evidence-types.yaml",
       "example": "AI hielp bij het analyseren van één gedicht. Daarna krijgt de leerling een nieuw gedicht en moet hij dezelfde analyse zonder inhoudelijke AI-hulp uitvoeren.",
-      "public_title": "Nieuwe opgave, dezelfde handeling",
+      "public_title": "Nieuwe opgave, dezelfde vaardigheid",
       "action_layer": {
         "intents": [
           "independent"
@@ -971,7 +974,9 @@
             "Genereer eventueel het nieuwe item, niet de oplossing."
           ]
         }
-      }
+      },
+      "card_teacher": "Geef een nieuwe opgave waarvoor dezelfde vaardigheid nodig is en kijk hoe de leerling die aanpakt.",
+      "card_learner": "Herkent welke aanpak opnieuw bruikbaar is en voert die zelf uit."
     },
     {
       "slug": "compare-then-reconstruct",
@@ -1247,7 +1252,7 @@
         "retention",
         "transfer"
       ],
-      "summary": "Kijk niet alleen naar het product. Vraag ook: lukt het met hulp, zelfstandig, later nog en in een andere situatie?",
+      "summary": "Kijk verder dan één goed eindproduct. Vraag wat de leerling met hulp kan, wat zonder hulp lukt, wat later nog lukt en wat ook in een nieuwe situatie lukt.",
       "lede": "Een goed product kan waardevol zijn. Het zegt alleen niet vanzelf wat de leerling zelf heeft geleerd of kan uitvoeren.",
       "question": "Welke uitspraak wil je kunnen doen over het leren, en welk bewijs kan die uitspraak werkelijk dragen?",
       "route": [
@@ -1307,7 +1312,9 @@
             "Ondersteun alleen waar dat past bij het soort bewijs dat wordt verzameld."
           ]
         }
-      }
+      },
+      "card_teacher": "Kies eerst wat je over het leren wilt weten en verzamel daarna precies het leerlingwerk dat daarbij past.",
+      "card_learner": "Laat op verschillende momenten en met verschillende mate van hulp zien wat hij kan."
     },
     {
       "slug": "delayed-reperformance",
@@ -2785,7 +2792,7 @@
       "evidence": [
         "process"
       ],
-      "summary": "Laat de leerling zelf beslissen of een strategie moet blijven, veranderen of stoppen op basis van zichtbaar bewijs.",
+      "summary": "Laat de leerling naar zijn eigen werk of resultaat kijken en beslissen: doorgaan met deze aanpak, iets veranderen of opnieuw beginnen?",
       "lede": "Adaptieve AI kan automatisch een andere route of moeilijkheid kiezen zonder dat de leerling de reden voor die verandering zelf beoordeelt.",
       "question": "Welk bewijs zegt dat ik mijn huidige strategie moet houden, aanpassen of stoppen?",
       "route": [
@@ -2851,7 +2858,9 @@
             "Geef alternatieve strategieën als opties."
           ]
         }
-      }
+      },
+      "card_teacher": "Laat de leerling eerst naar eigen werk of resultaat kijken en vraag daarna welke aanpak hij kiest.",
+      "card_learner": "Beoordeelt of de huidige aanpak werkt en kiest bewust of hij doorgaat of verandert."
     },
     {
       "slug": "process-reconstruction",
@@ -3135,7 +3144,7 @@
       "evidence": [
         "process"
       ],
-      "summary": "Maak de redeneringsstap tussen informatie en conclusie expliciet in plaats van bewijs en standpunt alleen naast elkaar te zetten.",
+      "summary": "Laat de leerling uitleggen hoe de informatie die hij gebruikt zijn conclusie ondersteunt. Zo wordt zichtbaar of de stap van bron naar conclusie klopt.",
       "lede": "AI kan een mooie verbindingszin schrijven. Daarmee weet je nog niet of de leerling begrijpt waarom de informatie tot deze conclusie leidt.",
       "question": "Hoe kom ik van deze informatie precies tot deze conclusie?",
       "route": [
@@ -3173,7 +3182,7 @@
         ]
       },
       "example": "Een leerling heeft één onderzoeksresultaat en een stevige conclusie. Hij schrijft expliciet de redeneringsstap ertussen en verzwakt de conclusie wanneer het bewijs minder ver reikt.",
-      "public_title": "Van bewijs naar conclusie",
+      "public_title": "Past je conclusie bij wat je kunt aantonen?",
       "action_layer": {
         "intents": [
           "argument"
@@ -3216,7 +3225,9 @@
             "Geef feedback op de redenering."
           ]
         }
-      }
+      },
+      "card_teacher": "Vraag welke informatie de conclusie ondersteunt en hoe de leerling die verbinding maakt.",
+      "card_learner": "Legt uit hoe de gebruikte informatie leidt tot de conclusie."
     },
     {
       "slug": "counterargument-first",
@@ -3465,7 +3476,7 @@
       "evidence": [
         "process"
       ],
-      "summary": "Laat de leerling bepalen welke conclusie het beschikbare bewijs daadwerkelijk rechtvaardigt en hoe sterk die conclusie mag zijn.",
+      "summary": "Laat de leerling bepalen hoe stellig een conclusie mag zijn op basis van de informatie die beschikbaar is.",
       "lede": "AI formuleert gemakkelijk stellige conclusies, ook wanneer het onderliggende bewijs genuanceerder of beperkter is.",
       "question": "Welke conclusie volgt hier werkelijk uit, en hoe sterk mag ik haar formuleren?",
       "route": [
@@ -3530,7 +3541,9 @@
             "Vergelijk formuleringen of signaleer overclaimen."
           ]
         }
-      }
+      },
+      "card_teacher": "Vraag hoe zeker of stellig de conclusie mag zijn en waarop de leerling dat baseert.",
+      "card_learner": "Weegt de beschikbare informatie en formuleert een conclusie die daarbij past."
     },
     {
       "slug": "observation-vs-inference",
@@ -3877,7 +3890,7 @@
       "evidence": [
         "process"
       ],
-      "summary": "Beperk je conclusie tot wat het beschikbare leerlingbewijs werkelijk ondersteunt.",
+      "summary": "Formuleer je oordeel zo precies dat het alleen gaat over wat het leerlingwerk of antwoord daadwerkelijk laat zien.",
       "lede": "Eén fout, gesprek of taak kan door AI gemakkelijk worden samengevat als een brede uitspraak over een leerling.",
       "question": "Wat is de sterkste uitspraak die ik op basis van dit bewijs daadwerkelijk mag doen?",
       "route": [
@@ -3897,7 +3910,7 @@
       "source": "EAI Standard 0.4-candidate · teacher diagnostic judgement MS-TDJ-09",
       "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/teacher-diagnostic-judgement.yaml",
       "example": "Na één zwakke toets schrijft de docent niet 'de leerling beheerst dit onderwerp niet', maar beperkt de conclusie tot wat deze toets werkelijk laat zien.",
-      "public_title": "Maak je conclusie niet groter dan het bewijs",
+      "public_title": "Zeg niet meer dan je op basis van leerlingwerk weet",
       "action_layer": {
         "intents": [
           "professional"
@@ -3939,7 +3952,9 @@
             "Vat samen of stel interpretaties voor, maar vergroot de reikwijdte niet."
           ]
         }
-      }
+      },
+      "card_teacher": "Scheid wat je in het leerlingwerk ziet van wat je nog niet weet en formuleer je conclusie daarop.",
+      "card_learner": "Levert het werk, antwoord of de toelichting waarop de docent zijn conclusie baseert."
     },
     {
       "slug": "preserve-uncertainty",
@@ -4133,7 +4148,7 @@
       "evidence": [
         "process"
       ],
-      "summary": "Verberg een AI-advies tijdelijk en reconstrueer de professionele beslissing vanuit oorspronkelijke leerlinginformatie.",
+      "summary": "Bekijk de oorspronkelijke leerlinginformatie zonder AI-advies. Vorm eerst zelf een oordeel en vergelijk dat daarna met het advies van AI.",
       "lede": "Menselijke goedkeuring kan nominaal worden wanneer AI zowel conclusie als onderbouwing al heeft geleverd.",
       "question": "Zou ik dezelfde beslissing kunnen uitleggen wanneer het AI-advies en de AI-rationale verdwenen?",
       "route": [
@@ -4154,7 +4169,7 @@
       "source": "EAI Standard 0.4-candidate · teacher diagnostic judgement MS-TDJ-12",
       "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/teacher-diagnostic-judgement.yaml",
       "example": "Een AI-systeem geeft een risicosignaal over een leerling. De docent verbergt het advies, bekijkt eerst het oorspronkelijke leerlingwerk en formuleert zelfstandig een oordeel voordat hij vergelijkt.",
-      "public_title": "Vorm eerst je eigen professionele oordeel",
+      "public_title": "Vorm eerst zelf je oordeel",
       "action_layer": {
         "intents": [
           "professional"
@@ -4200,7 +4215,9 @@
             "Geef een advies dat pas na het eigen oordeel wordt bekeken."
           ]
         }
-      }
+      },
+      "card_teacher": "Verberg het AI-advies, beoordeel eerst zelf de leerlinginformatie en vergelijk beide oordelen daarna.",
+      "card_learner": "Levert de oorspronkelijke informatie waarop het oordeel wordt gebaseerd."
     },
     {
       "slug": "learner-voice-check",
@@ -4300,7 +4317,7 @@
         "design",
         "process"
       ],
-      "summary": "Kies de minst ingrijpende vervolgstap die past bij bewijs, onderwijsdoel en resterende onzekerheid.",
+      "summary": "Kies geen zwaardere interventie dan nodig. Laat leerlingwerk, onderwijsdoel en wat nog onduidelijk is bepalen wat je vervolgens doet.",
       "lede": "AI-aanbevelingen kunnen uitgebreid of daadkrachtig klinken terwijl het bewijs slechts een kleinere stap ondersteunt.",
       "question": "Wat is de minst ingrijpende professionele reactie die het huidige probleem voldoende adresseert?",
       "route": [
@@ -4320,7 +4337,7 @@
       "source": "EAI Standard 0.4-candidate · teacher pedagogical judgement MS-TPJ-10",
       "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/teacher-pedagogical-judgement.yaml",
       "example": "Een kleine onzekerheid in één opdracht leidt eerst tot een korte vervolgvraag, niet meteen tot een zwaar interventietraject. De volgende stap groeit alleen mee als nieuw bewijs dat nodig maakt.",
-      "public_title": "Kies een vervolg dat past bij het signaal",
+      "public_title": "Kies een vervolg dat past bij wat je ziet",
       "action_layer": {
         "intents": [
           "professional"
@@ -4363,7 +4380,9 @@
             "Stel opties voor, neem de proportionaliteitskeuze niet over."
           ]
         }
-      }
+      },
+      "card_teacher": "Kies de kleinste vervolgstap die past bij wat je in het leerlingwerk ziet en wat je nog wilt weten.",
+      "card_learner": "Reageert op die vervolgstap en laat in nieuw werk zien of de gekozen hulp voldoende was."
     },
     {
       "slug": "target-action-first",
@@ -4570,7 +4589,7 @@
       "evidence": [
         "process"
       ],
-      "summary": "Formuleer een vraag die de ontbrekende handeling uitlokt zonder de relatie, keuze of oplossingsroute al in de vraag mee te geven.",
+      "summary": "Stel een vraag die precies de ontbrekende denkstap uitlokt, zonder het antwoord of de oplossingsroute al weg te geven.",
       "lede": "Een vraag kan behulpzaam lijken en ondertussen de hele denkrichting al weggeven. Dan doet de vraag meer werk dan de leerling.",
       "question": "Moet de leerling in deze vraag de relevante handeling nog zelf uitvoeren?",
       "route": [
@@ -4633,7 +4652,9 @@
             "Formuleer eventueel een vraag, maar encodeer het antwoord niet."
           ]
         }
-      }
+      },
+      "card_teacher": "Stel één vraag die de leerling uitnodigt om zelf de ontbrekende denkstap te zetten.",
+      "card_learner": "Denkt de ontbrekende stap zelf uit en legt zijn keuze of redenering uit."
     },
     {
       "slug": "feedback-without-rewrite",
@@ -4968,7 +4989,7 @@
         ]
       },
       "example": "AI ordent tijdens instructie samen met de klas argumenten. In de oefenfase krijgt de leerling een nieuwe set argumenten en moet hij de ordening zelf uitvoeren.",
-      "public_title": "Geef de handeling terug",
+      "public_title": "Laat de leerling de stap weer zelf doen",
       "action_layer": {
         "intents": [
           "return",
