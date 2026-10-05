@@ -590,6 +590,11 @@ def render_workforms_index(items: list[dict], didactic_models: dict) -> str:
   }});
   render();
   applyHashMode();
+  const routeParam = new URLSearchParams(location.search).get('route');
+  if (routeParam) {{
+    const routeButton = routeButtons.find(button => button.dataset.routeKey === routeParam);
+    if (routeButton) window.setTimeout(() => routeButton.click(), 0);
+  }}
 }})();
 </script>
 </main>'''
@@ -1396,6 +1401,84 @@ iframe{max-width:100%}
 .page-local-nav a:hover{border-color:var(--ink)}
 @media(max-width:900px){.page-local-nav{top:58px}}
 @media(max-width:700px){.taal-table{min-width:0}.taal-table th:nth-child(3),.taal-table td:nth-child(3),.taal-table th:nth-child(5),.taal-table td:nth-child(5),.taal-table th:nth-child(6),.taal-table td:nth-child(6){display:none}.taal-table th,.taal-table td{padding:9px 7px;font-size:.78rem}}
+
+
+/* Guided site journeys: hubs have distinct jobs and visuals carry information */
+.case-hub-hero{padding:78px 0 52px;border-bottom:1px solid var(--line)}
+.case-hub-hero-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(360px,.8fr);gap:56px;align-items:end}
+.case-map{display:grid;gap:8px;background:#fff;border:1px solid var(--line);padding:18px}
+.case-map>div{display:grid;gap:4px;padding:12px 14px;background:var(--paper2);border-left:3px solid var(--line)}
+.case-map>div.is-accent{border-left-color:var(--accent);background:#fff7df}
+.case-map span,.case-signal span,.case-card>span,.knowledge-route span,.journey-next span{font:800 .67rem/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;text-transform:uppercase;letter-spacing:.08em;color:var(--blue)}
+.case-map strong{font-size:.92rem}.case-map>b{justify-self:center;color:#7b8087}
+.case-card-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.case-card{display:flex;flex-direction:column;min-height:365px;padding:26px;border:1px solid var(--line);background:#fff;text-decoration:none;transition:transform .16s ease,border-color .16s ease}
+.case-card:hover{transform:translateY(-3px);border-color:var(--ink)}
+.case-card h2{font-size:2rem;margin:18px 0 12px}.case-card p{color:var(--muted);margin:0 0 24px}
+.case-card>strong{margin-top:auto}.case-card--education{border-top:5px solid #143a63}.case-card--region{border-top:5px solid #efb83f}.case-card--legal{border-top:5px solid #586477}
+.case-card-route{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:6px 0 24px;padding:12px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.case-card-route i{font-style:normal;font-size:.76rem;font-weight:750}.case-card-route b{font-size:.74rem;color:#8b8f96}
+.journey-next{background:#13263d;color:#fff}.journey-next-grid{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:36px;align-items:end;padding-top:42px;padding-bottom:42px}
+.journey-next h2{max-width:24ch;margin:8px 0 0;font-size:2rem}.journey-next span{color:#9ed9ee}.journey-next .button{background:#fff;color:#12161d;border-color:#fff}.journey-next .button.secondary{background:transparent;color:#fff;border-color:#fff}
+.case-detail-hero{padding:78px 0 58px;border-bottom:1px solid var(--line)}
+.case-detail-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(300px,.55fr);gap:54px;align-items:end}
+.case-signal{background:#fff;border:1px solid var(--line);border-top:5px solid var(--accent);padding:24px}
+.case-signal strong{display:block;font:500 1.5rem/1.18 Georgia,"Times New Roman",serif;margin-top:12px}
+.case-story-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(340px,.8fr);gap:64px;align-items:start}
+.case-story h2{font-size:2.5rem;max-width:18ch;margin:12px 0 22px}.case-story p{font-size:1.06rem;color:#3e444d}
+.case-process{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);background:#fff}
+.case-process>div{display:grid;align-content:start;gap:8px;padding:24px}.case-process>div+div{border-left:1px solid var(--line)}
+.case-process span{font:800 .7rem/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;text-transform:uppercase;letter-spacing:.08em;color:var(--blue);margin-bottom:9px}
+.case-process strong{padding:10px 0;border-top:1px solid var(--line);font-size:.9rem}.case-process .human{background:#fff8e7}
+.case-question-band{background:#e8eef3}.case-question-band h2{max-width:28ch}
+.case-question-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:#cbd4dd;border:1px solid #cbd4dd;margin-top:30px}
+.case-question-row>div{background:#fff;padding:20px}.case-question-row span{font:800 .72rem/1 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--blue)}.case-question-row p{margin:14px 0 0}
+.density-visual{background:#fff;border:1px solid var(--line);padding:12px}
+.density-visual>div{display:grid;grid-template-columns:minmax(150px,1.4fr) .5fr .5fr;gap:8px;align-items:center;padding:11px 8px;border-top:1px solid var(--line)}.density-visual>div:first-child{border-top:0}
+.density-head{font:800 .68rem/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;text-transform:uppercase;letter-spacing:.06em;color:#6b7179}
+.density-visual i{display:block;height:10px;border-radius:20px;background:#d9dce0}.density-visual i.low{width:28%;background:#d9dce0}.density-visual i.mid{width:62%;background:#8aa1b9}.density-visual i.high{width:100%;background:#143a63}
+.case-next-nav{display:flex;justify-content:space-between;gap:20px;padding-top:28px;padding-bottom:28px}.case-next-nav a{font-weight:750}
+
+/* Onderwijs is task-first rather than another card catalogue */
+.education-hub-hero{padding:78px 0 56px;border-bottom:1px solid var(--line)}
+.education-hero-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(320px,.55fr);gap:64px;align-items:end}
+.education-route-visual{display:grid;justify-items:stretch;gap:7px}
+.education-route-visual>div{display:grid;grid-template-columns:34px 1fr;gap:12px;align-items:center;border:1px solid var(--line);background:#fff;padding:14px}
+.education-route-visual>div.active{background:#fff4d6;border-color:#d9ad41}.education-route-visual span{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#13263d;color:#fff;font:800 .72rem/1 Inter}.education-route-visual>b{justify-self:center;color:#7f848b}
+.education-choice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.education-choice-grid>a{display:grid;grid-template-columns:1fr auto;column-gap:26px;text-decoration:none;background:#fff;border:1px solid var(--line);padding:24px;min-height:200px}
+.education-choice-grid>a>span{grid-column:1/-1;font:800 .68rem/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;text-transform:uppercase;letter-spacing:.06em;color:var(--blue)}
+.education-choice-grid h3{font-size:1.55rem;margin:14px 0 9px}.education-choice-grid p{grid-column:1;margin:0;color:var(--muted)}.education-choice-grid b{grid-column:2;grid-row:2/4;align-self:end;white-space:nowrap;font-size:.82rem}.education-choice-grid>a:hover{border-color:var(--ink)}
+.education-guide-strip{background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.education-guide-strip .wrap{display:grid;grid-template-columns:minmax(240px,.55fr) minmax(0,1.45fr);gap:54px;align-items:start}
+.education-guide-strip h2{font-size:2rem;margin:7px 0}.education-guide-strip span{font:800 .68rem/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;text-transform:uppercase;letter-spacing:.06em;color:var(--blue)}
+.guide-strip-steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;border:1px solid var(--line)}
+.guide-strip-steps p{margin:0;padding:17px;border-left:1px solid var(--line)}.guide-strip-steps p:first-child{border-left:0}.guide-strip-steps b{display:block;margin-bottom:4px}
+
+/* Kennis is a depth selector and linked evidence map */
+.knowledge-hub-hero{padding:78px 0 56px;background:#eef1f3;border-bottom:1px solid #cfd5da}
+.knowledge-hero-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(340px,.7fr);gap:60px;align-items:end}
+.knowledge-depth{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid #c6ccd2;background:#fff}
+.knowledge-depth>div{padding:18px;border-left:1px solid #d7dce0}.knowledge-depth>div:first-child{border-left:0}.knowledge-depth span{font:800 .68rem/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;text-transform:uppercase;color:var(--blue)}.knowledge-depth strong{display:block;margin:18px 0 6px}.knowledge-depth small{display:block;color:var(--muted);line-height:1.35}
+.knowledge-routes .wrap{display:grid;gap:12px}.knowledge-route{display:grid;grid-template-columns:minmax(0,1fr) minmax(230px,.45fr);gap:40px;align-items:center;border:1px solid var(--line);background:#fff;padding:26px}.knowledge-route--primary{border-left:6px solid var(--accent)}
+.knowledge-route h2{font-size:2rem;margin:9px 0 10px}.knowledge-route p{margin:0;color:var(--muted)}.knowledge-route>div:last-child{display:grid;gap:9px}.knowledge-route a{font-weight:800;text-decoration:none;border-bottom:1px solid var(--line);padding:8px 0}.knowledge-route a:hover{border-color:var(--ink)}
+.knowledge-map-section{background:#fff}.knowledge-map{display:flex;align-items:stretch;gap:8px;flex-wrap:wrap}.knowledge-map>a{flex:1 1 190px;display:grid;align-content:center;text-decoration:none;border:1px solid var(--line);padding:20px;min-height:130px}.knowledge-map>a:hover{border-color:var(--ink)}.knowledge-map span{font-weight:800}.knowledge-map small{margin-top:8px;color:var(--muted)}.knowledge-map>b{align-self:center;color:#9aa0a6}
+@media(max-width:980px){
+  .case-hub-hero-grid,.case-detail-grid,.case-story-grid,.education-hero-grid,.knowledge-hero-grid{grid-template-columns:1fr}
+  .case-card-grid{grid-template-columns:1fr 1fr}.case-card:last-child{grid-column:1/-1}
+  .case-question-row{grid-template-columns:1fr 1fr}
+  .guide-strip-steps{grid-template-columns:1fr 1fr}.guide-strip-steps p:nth-child(3){border-left:0;border-top:1px solid var(--line)}.guide-strip-steps p:nth-child(4){border-top:1px solid var(--line)}
+  .knowledge-depth{max-width:720px}
+}
+@media(max-width:700px){
+  .case-card-grid,.education-choice-grid,.case-question-row,.knowledge-route,.education-guide-strip .wrap{grid-template-columns:1fr}
+  .case-card:last-child{grid-column:auto}.journey-next-grid{grid-template-columns:1fr;align-items:start}.journey-next .button{justify-self:start}
+  .case-process{grid-template-columns:1fr}.case-process>div+div{border-left:0;border-top:1px solid var(--line)}
+  .case-next-nav{flex-direction:column}.case-question-row>div{min-height:0}
+  .education-choice-grid>a{grid-template-columns:1fr}.education-choice-grid b{grid-column:1;grid-row:auto;margin-top:18px}.guide-strip-steps{grid-template-columns:1fr}.guide-strip-steps p{border-left:0;border-top:1px solid var(--line)}.guide-strip-steps p:first-child{border-top:0}
+  .knowledge-depth{grid-template-columns:1fr}.knowledge-depth>div{border-left:0;border-top:1px solid #d7dce0}.knowledge-depth>div:first-child{border-top:0}
+  .knowledge-map{display:grid}.knowledge-map>b{justify-self:center;transform:rotate(90deg)}
+}
 
 '''
 
