@@ -150,8 +150,8 @@ WORKFORM_MECHANISMS = {
         "anchor": "proces-en-bewijs",
     },
     "zelfstandigheid": {
-        "title": "Ondersteunde prestatie is niet hetzelfde als zelfstandig kunnen",
-        "text": "Een leerling kan met AI sterk presteren terwijl nog onbekend is of dezelfde handeling zonder die ondersteuning beschikbaar is. Daarom gebruikt EAI nieuwe uitvoering en gerichte handback wanneer zelfstandigheid de vraag is.",
+        "title": "Met hulp lukt het. Maar lukt het daarna ook zelf?",
+        "text": "Een leerling kan met een goed voorbeeld, een hint of AI tot sterk werk komen. Dat vertelt nog niet of dezelfde stap daarna zelfstandig lukt. Daarom laat deze groep werkvormen de leerling na de hulp opnieuw zelf handelen.",
         "basis": "CLM-002, CLM-003 en CLM-009",
         "anchor": "zelfstandigheid",
     },
@@ -638,9 +638,37 @@ def render_workform_example(item: dict) -> str:
     )
 
 def workform_copy_text(item: dict) -> str:
+    lesson = item.get("lesson_card")
+    public_title = item.get("public_title", item["title"])
+    if lesson:
+        lines = [
+            public_title,
+            "",
+            "Doel:",
+            lesson.get("goal", ""),
+            "",
+            "Wanneer:",
+            lesson.get("when", ""),
+            "",
+            f'Tijd: {lesson.get("duration", "")}',
+            f'Werkvorm: {lesson.get("grouping", "")}',
+            "",
+            "Startscript:",
+        ]
+        lines.extend(f"- {value}" for value in lesson.get("teacher_script", []))
+        lines.extend(["", "Zo werkt het:"])
+        lines.extend(f"{idx}. {step}" for idx, step in enumerate(item.get("steps", []), start=1))
+        lines.extend(["", "Succescriteria voor de leerling:"])
+        lines.extend(f"- {value}" for value in lesson.get("success_criteria", []))
+        lines.extend(["", "Doorvragen:"])
+        lines.extend(f"- {value}" for value in lesson.get("follow_up_questions", []))
+        lines.extend(["", "Bewijs van leren:", lesson.get("evidence", "")])
+        lines.extend(["", "Rol van AI:", lesson.get("ai_role", "")])
+        lines.extend(["", "Let op:", item.get("caution", "")])
+        return "\n".join(lines)
+
     action = item.get("action_layer", {})
     role_steps = action.get("role_steps", {})
-    public_title = item.get("public_title", item["title"])
     lines = [
         public_title,
         "",
@@ -660,7 +688,85 @@ def workform_copy_text(item: dict) -> str:
     lines.extend(["", "Daarna kijk je naar:", item.get("result", "")])
     return "\n".join(lines)
 
+
+def render_rich_lesson_card(item: dict) -> str:
+    lesson = item["lesson_card"]
+    copy_text = esc(workform_copy_text(item))
+
+    facts = [
+        ("Doel", lesson.get("goal", "")),
+        ("Wanneer", lesson.get("when", "")),
+        ("Tijd", lesson.get("duration", "")),
+        ("Werkvorm", lesson.get("grouping", "")),
+    ]
+    facts_html = "".join(
+        f'<article><span>{esc(label)}</span><p>{esc(value)}</p></article>'
+        for label, value in facts if value
+    )
+
+    script_html = "".join(f'<li>“{esc(value)}”</li>' for value in lesson.get("teacher_script", []))
+    steps_html = "".join(
+        f'<li><span>{idx:02d}</span><p>{esc(step)}</p></li>'
+        for idx, step in enumerate(item.get("steps", []), start=1)
+    )
+    success_html = "".join(f'<li>{esc(value)}</li>' for value in lesson.get("success_criteria", []))
+    questions_html = "".join(f'<li>{esc(value)}</li>' for value in lesson.get("follow_up_questions", []))
+    decisions_html = "".join(
+        '<article>'
+        f'<p><strong>Je ziet:</strong> {esc(rule.get("signal", ""))}</p>'
+        f'<p><strong>Doe dan:</strong> {esc(rule.get("response", ""))}</p>'
+        '</article>'
+        for rule in lesson.get("decision_rules", [])
+    )
+
+    return (
+        '<section class="section workform-quickstart workform-quickstart--rich"><div class="wrap">'
+        '<div class="workform-lesson-card workform-lesson-card--rich" id="werkvormkaart">'
+        '<div class="workform-toolbar"><div><span class="kicker">Morgen gebruiken</span><strong>Werkvormkaart</strong></div>'
+        f'<div class="workform-toolbar-actions"><button type="button" data-copy-workform data-copy-text="{copy_text}">Kopieer</button>'
+        '<button type="button" onclick="window.print()">Print</button><button type="button" data-share-workform>Deel</button></div></div>'
+        f'<div class="lesson-facts">{facts_html}</div>'
+        '<div class="lesson-card-grid">'
+        '<section class="lesson-card-main">'
+        f'<div class="lesson-purpose"><span>Waar deze werkvorm om draait</span><p>{esc(item.get("lede", ""))}</p>'
+        f'<strong>{esc(item.get("question", ""))}</strong></div>'
+        '<div class="lesson-block lesson-script"><div><span>Startscript</span><h2>Zo kun je beginnen.</h2></div>'
+        f'<ul>{script_html}</ul></div>'
+        '<div class="lesson-block"><div><span>Uitvoering</span><h2>Zo werkt het.</h2></div>'
+        f'<ol class="lesson-steps">{steps_html}</ol></div>'
+        '<div class="lesson-two-col">'
+        '<div class="lesson-block compact"><div><span>Succescriteria</span><h3>Dit moet de leerling laten zien.</h3></div>'
+        f'<ul class="lesson-checklist">{success_html}</ul></div>'
+        '<div class="lesson-block compact"><div><span>Doorvragen</span><h3>Vragen die het denken openhouden.</h3></div>'
+        f'<ul class="lesson-question-list">{questions_html}</ul></div>'
+        '</div>'
+        '</section>'
+        '<aside class="lesson-card-side">'
+        '<section class="lesson-example"><span>Voorbeeld uit de klas</span>'
+        f'<p>{esc(item.get("example", ""))}</p></section>'
+        '<section class="lesson-evidence"><span>Bewijs van leren</span>'
+        f'<p>{esc(lesson.get("evidence", ""))}</p></section>'
+        '<section class="lesson-ai-role"><span>Wat kan AI hier doen?</span>'
+        f'<p>{esc(lesson.get("ai_role", ""))}</p></section>'
+        '</aside>'
+        '</div>'
+        f'<div class="lesson-decisions"><div class="lesson-decisions-head"><span>Bijsturen tijdens de les</span><h2>Wat doe je als het niet loopt zoals bedoeld?</h2></div><div class="lesson-decision-grid">{decisions_html}</div></div>'
+        '<div class="lesson-card-bottom">'
+        '<article><span>Variant</span><p>' + esc(lesson.get("variant", "")) + '</p></article>'
+        '<article class="lesson-caution"><span>Wat kun je hierna nog niet zeggen?</span><p>' + esc(item.get("caution", "")) + '</p></article>'
+        '</div>'
+        '</div></div>'
+        '<script>(()=>{const copy=document.querySelector("[data-copy-workform]");const share=document.querySelector("[data-share-workform]");'
+        'if(copy){copy.addEventListener("click",async()=>{try{await navigator.clipboard.writeText(copy.dataset.copyText||"");const old=copy.textContent;copy.textContent="Gekopieerd";setTimeout(()=>copy.textContent=old,1400)}catch(_){}})}'
+        'if(share){share.addEventListener("click",async()=>{if(navigator.share){try{await navigator.share({title:document.title,url:location.href})}catch(_){}}else{try{await navigator.clipboard.writeText(location.href);const old=share.textContent;share.textContent="Link gekopieerd";setTimeout(()=>share.textContent=old,1400)}catch(_){}}})}})();</script>'
+        '</section>'
+    )
+
+
 def render_workform_quickstart(item: dict) -> str:
+    if item.get("lesson_card"):
+        return render_rich_lesson_card(item)
+
     action = item.get("action_layer", {})
     ai_not = action.get("ai_not", "")
     verbs = action.get("verbs", {})
@@ -804,16 +910,42 @@ def enrich_manual_workform(body: str, item: dict, all_items: list[dict]) -> str:
 def render_catalog_workform(item: dict, all_items: list[dict]) -> str:
     steps = "".join(f"<li>{esc(step)}</li>" for step in item.get("steps", []))
     audience = " · ".join(WORKFORM_AUDIENCE_LABELS.get(value, value) for value in item.get("audience", []))
-    evidence = " · ".join(WORKFORM_EVIDENCE_LABELS.get(value, value) for value in item.get("evidence", []))
     public_title = item.get("public_title", item["title"])
     technical = item["title"] if public_title != item["title"] else ""
-    technical_html = f'<p class="workform-technical-name detail">EAI-term: {esc(technical)}</p>' if technical else ""
+    rich = bool(item.get("lesson_card"))
+
+    if technical and rich:
+        technical_html = (
+            '<details class="workform-tech-label"><summary>Technische EAI-term</summary>'
+            f'<p>{esc(technical)}</p></details>'
+        )
+    else:
+        technical_html = f'<p class="workform-technical-name detail">EAI-term: {esc(technical)}</p>' if technical else ""
+
     visual_html = render_workform_visual(item.get("visual"))
     visual_section = f'<section class="section"><div class="wrap">{visual_html}</div></section>' if visual_html else ""
     quickstart_html = render_workform_quickstart(item)
-    example_html = render_workform_example(item)
     foundation_html = render_workform_underpinning(item)
     related_html = render_related_workforms(item, all_items)
+
+    if rich:
+        position_html = (
+            '<section class="section workform-position"><div class="wrap"><details>'
+            '<summary>Waar past deze werkvorm in EAI?</summary>'
+            f'{render_route(item.get("route", []))}'
+            '<p>Deze plaatsbepaling is bedoeld als achtergrond. Voor gebruik in de les kun je direct met de werkvormkaart hierboven werken.</p>'
+            '</details></div></section>'
+        )
+        return f'''<main>
+<section class="page-hero workform-hero--practical"><div class="wrap"><div class="eyebrow">Werkvorm voor de les</div><h1>{esc(public_title)}</h1><p class="lede">{esc(item["summary"])}</p>{technical_html}</div></section>
+{quickstart_html}
+{visual_section}
+{position_html}
+{foundation_html}
+{related_html}
+</main>'''
+
+    example_html = render_workform_example(item)
     return f'''<main>
 <section class="page-hero"><div class="wrap"><div class="eyebrow">Werkvorm · {esc(audience)}</div><h1>{esc(public_title)}</h1>{technical_html}<p class="lede">{esc(item["summary"])}</p>{render_route(item.get("route", []))}</div></section>
 {quickstart_html}
@@ -1478,6 +1610,84 @@ iframe{max-width:100%}
   .education-choice-grid>a{grid-template-columns:1fr}.education-choice-grid b{grid-column:1;grid-row:auto;margin-top:18px}.guide-strip-steps{grid-template-columns:1fr}.guide-strip-steps p{border-left:0;border-top:1px solid var(--line)}.guide-strip-steps p:first-child{border-top:0}
   .knowledge-depth{grid-template-columns:1fr}.knowledge-depth>div{border-left:0;border-top:1px solid #d7dce0}.knowledge-depth>div:first-child{border-top:0}
   .knowledge-map{display:grid}.knowledge-map>b{justify-self:center;transform:rotate(90deg)}
+}
+
+
+/* Rich workform cards: teacher-first, TAAL-inspired practical structure */
+.workform-hero--practical{padding-bottom:46px}
+.workform-hero--practical .lede{max-width:70ch}
+.workform-tech-label{display:inline-block;margin-top:10px;font-size:.82rem;color:var(--muted)}
+.workform-tech-label summary{cursor:pointer;font-weight:750;text-decoration:underline;text-underline-offset:3px}
+.workform-tech-label p{margin:6px 0 0;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.workform-quickstart--rich{padding-top:34px}
+.workform-lesson-card--rich{padding:0;overflow:hidden;border-color:#b9b3a8}
+.workform-lesson-card--rich .workform-toolbar{padding:18px 22px;margin:0;background:#f8f6f1}
+.lesson-facts{display:grid;grid-template-columns:1.35fr 1.65fr .55fr .8fr;border-bottom:1px solid var(--line);background:#fff}
+.lesson-facts article{padding:17px 18px;border-left:1px solid var(--line)}
+.lesson-facts article:first-child{border-left:0}
+.lesson-facts span,.lesson-purpose span,.lesson-block>div>span,.lesson-card-side span,.lesson-decisions-head span,.lesson-card-bottom span{display:block;font:800 .67rem/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;text-transform:uppercase;letter-spacing:.07em;color:var(--blue)}
+.lesson-facts p{margin:7px 0 0;font-size:.9rem;line-height:1.45;color:#37414d}
+.lesson-card-grid{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(300px,.65fr)}
+.lesson-card-main{padding:28px 30px 32px}
+.lesson-card-side{border-left:1px solid var(--line);background:#faf8f3;padding:28px 24px;display:grid;align-content:start;gap:22px}
+.lesson-purpose{border-left:5px solid var(--accent);padding:4px 0 4px 18px;margin-bottom:30px}
+.lesson-purpose p{font-size:1.1rem;line-height:1.62;margin:8px 0 11px;color:#323b46}
+.lesson-purpose strong{display:block;font-family:Georgia,"Times New Roman",serif;font-size:1.25rem;font-weight:500;line-height:1.35}
+.lesson-block{padding-top:26px;border-top:1px solid var(--line);margin-top:26px}
+.lesson-block:first-of-type{margin-top:0}
+.lesson-block>div h2,.lesson-block>div h3{margin:7px 0 16px;font-family:Georgia,"Times New Roman",serif;font-weight:500}
+.lesson-block>div h2{font-size:2rem}.lesson-block>div h3{font-size:1.35rem}
+.lesson-script ul{list-style:none;padding:0;margin:0;display:grid;gap:9px}
+.lesson-script li{background:#f5f2eb;border-left:3px solid #143a63;padding:12px 14px;font-size:.96rem;line-height:1.55}
+.lesson-steps{list-style:none;padding:0;margin:0;display:grid}
+.lesson-steps li{display:grid;grid-template-columns:42px 1fr;gap:15px;padding:14px 0;border-top:1px solid var(--line);align-items:start}
+.lesson-steps li:first-child{border-top:0}
+.lesson-steps li>span{font:800 .72rem/1 ui-monospace,SFMono-Regular,Menlo,monospace;color:#718096;padding-top:5px}
+.lesson-steps p{margin:0;font-size:.96rem;line-height:1.55}
+.lesson-two-col{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.lesson-block.compact{margin-top:28px}
+.lesson-checklist,.lesson-question-list{margin:0;padding-left:1.15rem}
+.lesson-checklist li,.lesson-question-list li{padding-left:3px;line-height:1.5}
+.lesson-checklist li+li,.lesson-question-list li+li{margin-top:9px}
+.lesson-example,.lesson-evidence,.lesson-ai-role{padding-bottom:20px;border-bottom:1px solid var(--line)}
+.lesson-ai-role{border-bottom:0}
+.lesson-card-side p{margin:9px 0 0;font-size:.92rem;line-height:1.6;color:#46515d}
+.lesson-decisions{border-top:1px solid var(--line);padding:26px 30px 30px;background:#eef2f4}
+.lesson-decisions-head{display:grid;grid-template-columns:220px 1fr;gap:24px;align-items:end;margin-bottom:18px}
+.lesson-decisions-head h2{font-size:1.9rem;margin:0;font-family:Georgia,"Times New Roman",serif;font-weight:500}
+.lesson-decision-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.lesson-decision-grid article{background:#fff;border:1px solid #d4dbe0;padding:16px}
+.lesson-decision-grid p{margin:0;font-size:.86rem;line-height:1.5}
+.lesson-decision-grid p+p{margin-top:12px;padding-top:12px;border-top:1px solid #e1e5e8}
+.lesson-card-bottom{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line)}
+.lesson-card-bottom article{padding:22px 26px}
+.lesson-card-bottom article+article{border-left:1px solid var(--line)}
+.lesson-card-bottom p{margin:8px 0 0;line-height:1.55;color:#46515d}
+.lesson-caution{background:#fff8e6}
+.workform-position{padding-top:26px;padding-bottom:26px;background:#fbfaf7}
+.workform-position details{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:0 4px}
+.workform-position summary{cursor:pointer;padding:14px 0;font-weight:800}
+.workform-position .eai-route{margin:0 0 12px}
+.workform-position p{max-width:72ch;color:var(--muted);font-size:.9rem}
+@media(max-width:980px){
+  .lesson-facts{grid-template-columns:1fr 1fr}
+  .lesson-facts article:nth-child(3){border-top:1px solid var(--line);border-left:0}
+  .lesson-facts article:nth-child(4){border-top:1px solid var(--line)}
+  .lesson-card-grid{grid-template-columns:1fr}
+  .lesson-card-side{border-left:0;border-top:1px solid var(--line);grid-template-columns:repeat(3,minmax(0,1fr))}
+  .lesson-decision-grid{grid-template-columns:1fr}
+}
+@media(max-width:700px){
+  .lesson-facts,.lesson-two-col,.lesson-card-side,.lesson-card-bottom{grid-template-columns:1fr}
+  .lesson-facts article{border-left:0;border-top:1px solid var(--line)}
+  .lesson-facts article:first-child{border-top:0}
+  .lesson-card-main{padding:22px 18px}
+  .lesson-card-side{padding:22px 18px}
+  .lesson-card-side>section{border-bottom:1px solid var(--line);padding-bottom:18px}
+  .lesson-card-side>section:last-child{border-bottom:0}
+  .lesson-decisions{padding:22px 18px}
+  .lesson-decisions-head{grid-template-columns:1fr;gap:6px}
+  .lesson-card-bottom article+article{border-left:0;border-top:1px solid var(--line)}
 }
 
 '''
