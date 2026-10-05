@@ -7,7 +7,7 @@ Deze afspraken gelden voor nieuwe en bestaande pagina's van eaimodel.nl.
 Niet iedere pagina gebruikt dezelfde opbouw.
 
 - **Uitlegpagina**: helpt één idee begrijpen. Gebruik korte secties, een concreet voorbeeld en minimaal één informatief schema wanneer dat echt iets verduidelijkt.
-- **Praktijk- of casepagina**: begint bij een echte situatie. Laat zien wat iemand probeert te bereiken, welke menselijke handeling telt, wat AI doet en wat daarvan geleerd kan worden.
+- **Praktijk- of casepagina**: begint bij een echte situatie. Laat zien wat iemand probeert te bereiken, welke leerstap telt, wat AI doet en wat daarvan geleerd kan worden.
 - **Doe-pagina**: helpt kiezen en gebruiken. Minder uitleg, meer routes, filters, kaarten, stappen en directe acties.
 - **Verdiepingspagina**: mag langer en tekstzwaarder zijn, maar heeft interne navigatie, duidelijke bronrelaties en gerichte vervolgstappen.
 
@@ -68,7 +68,7 @@ Voorbeelden:
 - van een case naar de onderliggende begrippen;
 - van een onderbouwing naar de bron;
 - van een onderwijsprobleem naar een passende werkvorm;
-- van een werkvorm naar een logische volgende handeling.
+- van een werkvorm naar een logische volgende leerstap of docentkeuze.
 
 ## 6. Mobiel is geen verkleinde desktopversie
 
@@ -85,3 +85,21 @@ Controleer voor een nieuwe pagina:
 - Is de volgende stap zichtbaar?
 - Herhaalt de pagina geen uitleg die beter elders staat?
 - Werkt dezelfde route op mobiel?
+
+
+## 8. Terminologie
+
+De publieke onderwijslaag gebruikt één vaste term voor de stap die een leerling in een bepaalde fase zelf moet zetten om tot leren te komen:
+
+- **leerstap** is de standaardterm voor docenten, leerlingen en algemene uitleg;
+- **werkstap** gebruik je voor een gewone stap in een taak of proces;
+- **kernhandeling**, **core_human_action**, **doelhandeling** en vergelijkbare termen horen alleen in de technische EAI Standard-laag wanneer technische herleidbaarheid nodig is;
+- gebruik **handeling** alleen wanneer het werkelijk om een algemene actie gaat en niet om de leerstap die onderwijskundig centraal staat.
+
+Voorbeeld:
+
+Niet: *Welke kernhandeling moet de leerling zelf uitvoeren?*
+
+Wel: *Welke leerstap moet de leerling hier zelf zetten?*
+
+De formulering sluit aan bij de centrale vraag uit *De vraag die we vergeten in het AI-debat*: aan welke stap moet de leerling in deze fase zelf inhoudelijke betekenis geven?

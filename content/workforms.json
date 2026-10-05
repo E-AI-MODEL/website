@@ -26,12 +26,12 @@
       "steps": [
         "Beschrijf eerst wat de leerling uiteindelijk moet kennen of kunnen en hoe dat leerproces eruitziet.",
         "Kies de fase die je nu wilt bekijken.",
-        "Benoem de kernhandeling zo concreet mogelijk: aan welke stap moet de leerling hier zelf inhoudelijke betekenis geven?",
+        "Benoem de leerstap zo concreet mogelijk: aan welke stap moet de leerling hier zelf inhoudelijke betekenis geven?",
         "Leg AI ernaast: wat doet het systeem precies op die plek, en wat blijft bij de leerling?",
         "Kijk daarna wat je werkelijk hebt gezien. Wat zegt dit over wat de leerling zelf kan, en welk extra bewijs heb je nog nodig?"
       ],
       "result": "Een compacte analyse waarin je eerst het onderwijs beschrijft en pas daarna de rol van AI.",
-      "caution": "Gebruik deze vragen niet als invulritueel. Een verandering in de fase of kernhandeling kan de hele afweging veranderen.",
+      "caution": "Gebruik deze vragen niet als invulritueel. Een verandering in de fase of leerstap kan de hele afweging veranderen.",
       "source": "EAI · Nieuwe uitgave 2026",
       "example": "Een docent wil een opdracht geschiedenis aanpassen waarin leerlingen met AI een vergelijking tussen twee bronnen schrijven. De kaart maakt eerst zichtbaar wat het leerdoel is, in welke fase de klas zit, welke vergelijking de leerling zelf moet maken en waar AI wel of niet mag helpen.",
       "action_layer": {
@@ -39,7 +39,7 @@
           "orient",
           "redesign"
         ],
-        "teacher": "Leg leerdoel, fase en kernhandeling op tafel en beschrijf daarna pas wat AI doet.",
+        "teacher": "Leg leerdoel, fase en leerstap op tafel en beschrijf daarna pas wat AI doet.",
         "learner": "Brengt alleen eigen werk of uitvoering in beeld als dat voor de analyse nodig is.",
         "ai": "Geen vaste rol. Beschrijf feitelijk welke AI-actie in de gekozen taak plaatsvindt.",
         "ai_not": "Begin niet bij wat de tool kan; dat zegt nog niets over wat in deze fase onderwijskundig passend is.",
@@ -96,9 +96,9 @@
         "design",
         "process"
       ],
-      "summary": "Kies de stap die de leerling zelf moet uitvoeren om het leerdoel te bereiken. Bepaal daarna pas welke hulp AI mag geven.",
-      "lede": "Niet elke stap in een opdracht hoeft zonder hulp. Kijk eerst welke stap voor dit leerdoel echt geoefend of zichtbaar moet worden.",
-      "question": "Welke stap moet deze leerling zelf uitvoeren om te oefenen of te laten zien wat hij leert?",
+      "summary": "Bepaal welke leerstap de leerling in deze fase zelf moet zetten om tot leren te komen. Kijk daarna pas welke hulp AI rond die stap mag geven.",
+      "lede": "Niet iedere stap in een opdracht is even belangrijk voor het leren. Kies de leerstap waaraan de leerling in deze fase zelf betekenis moet geven.",
+      "question": "Welke leerstap moet de leerling hier zelf zetten om verder te leren?",
       "route": [
         "proces",
         "fase",
@@ -108,16 +108,16 @@
       "result": "",
       "caution": "",
       "source": "EAI · Nieuwe uitgave 2026",
-      "example": "Bij een betoog Nederlands mag AI taal verbeteren. De docent vraagt eerst welke handeling centraal staat: argumenten wegen en een conclusie onderbouwen. Die stap blijft daarom bij de leerling.",
+      "example": "Bij een betoog Nederlands mag AI taal verbeteren. De docent vraagt eerst welke leerstap centraal staat: argumenten wegen en een conclusie onderbouwen. Die stap blijft daarom bij de leerling.",
       "action_layer": {
         "intents": [
           "orient",
           "redesign"
         ],
         "teacher": "Benoem de stap waaraan de leerling in deze fase zelf inhoudelijke betekenis moet geven.",
-        "learner": "Voert juist die gekozen handeling zelf uit wanneer die voor het leren centraal staat.",
-        "ai": "Kan om de kernhandeling heen ondersteunen, zolang die handeling zelf bij de leerling blijft.",
-        "ai_not": "Maak een handeling niet automatisch 'beschermd'; haar betekenis hangt af van doel, fase en context.",
+        "learner": "Voert juist die gekozen leerstap zelf uit wanneer die voor het leren centraal staat.",
+        "ai": "Kan om de leerstap heen ondersteunen, zolang die leerstap zelf bij de leerling blijft.",
+        "ai_not": "Maak een leerstap niet automatisch 'beschermd'; haar betekenis hangt af van doel, fase en context.",
         "standard": [
           [
             "core_human_action",
@@ -153,9 +153,9 @@
           ]
         }
       },
-      "public_title": "Welke stap moet de leerling zelf doen?",
-      "card_teacher": "Benoem het leerdoel en kies de stap die de leerling daarvoor zelf moet uitvoeren.",
-      "card_learner": "Voert juist die stap zelf uit en legt kort uit wat hij daarbij heeft gedaan."
+      "public_title": "Welke leerstap staat centraal?",
+      "card_teacher": "Benoem het leerdoel en bepaal welke leerstap de leerling in deze fase zelf moet zetten.",
+      "card_learner": "Zet die leerstap zelf en legt kort uit wat hij daarbij heeft gedaan."
     },
     {
       "slug": "task-density-scan",
@@ -169,9 +169,9 @@
         "design",
         "process"
       ],
-      "summary": "Knip een opdracht in stappen en noteer per stap: doet de leerling dit, doet AI dit, of doen ze het samen? Zo zie je of AI een stap overneemt die de leerling juist moet oefenen.",
+      "summary": "Knip een opdracht in werkstappen en noteer per stap: doet de leerling dit, doet AI dit, of doen ze het samen? Zo zie je of AI de leerstap overneemt die de leerling juist zelf moet zetten.",
       "lede": "Je hoeft niet te tellen hoeveel AI een leerling gebruikt. Kijk naar welk werk er in de taak verschuift.",
-      "question": "Welke stappen doet de leerling zelf, welke doet AI en welke daarvan zijn belangrijk voor het leerdoel?",
+      "question": "Welke werkstappen doet de leerling zelf, welke doet AI, en waar zit de leerstap die voor het leerdoel telt?",
       "route": [
         "fase",
         "kernhandeling",
@@ -188,7 +188,7 @@
           "orient",
           "redesign"
         ],
-        "teacher": "Splits de taak in handelingen en noteer per handeling wie haar uitvoert.",
+        "teacher": "Splits de taak in werkstappen en noteer per werkstap wie haar uitvoert.",
         "learner": "Maakt zichtbaar welke inhoudelijke keuzes en bewerkingen hij zelf uitvoert.",
         "ai": "Kan allerlei acties uitvoeren; leg de feitelijke AI-actie vast in plaats van alleen 'AI gebruikt'.",
         "ai_not": "Gebruik hoeveelheid tekst of tijd met AI niet als maat voor overname.",
@@ -221,16 +221,16 @@
         },
         "role_steps": {
           "teacher": [
-            "Knip de taak op in losse handelingen.",
-            "Zet achter elke handeling: leerling, AI of samen.",
-            "Markeer welke handeling voor het leren het zwaarst weegt."
+            "Knip de taak op in losse werkstappen.",
+            "Zet achter elke werkstap: leerling, AI of samen.",
+            "Markeer welke werkstap voor het leren het zwaarst weegt."
           ],
           "learner": [
             "Laat zien welke keuzes je zelf maakt.",
             "Controleer welke stappen je aan AI hebt uitbesteed."
           ],
           "ai": [
-            "Voer alleen de handelingen uit die bewust aan AI zijn toegewezen."
+            "Voer alleen de werkstappen uit die bewust aan AI zijn toegewezen."
           ]
         }
       },
@@ -265,7 +265,7 @@
         "Bespreek niet welke output het mooist is, maar welk systeemgedrag door de extra context veranderde."
       ],
       "result": "Een concreet beeld van hoeveel de formulering, context en instructie het antwoord van AI sturen.",
-      "caution": "Een voorspelbaarder antwoord is niet automatisch beter voor het leren. Kijk steeds opnieuw naar de kernhandeling en wat de leerling zelf moet doen.",
+      "caution": "Een voorspelbaarder antwoord is niet automatisch beter voor het leren. Kijk steeds opnieuw naar de leerstap en wat de leerling zelf moet doen.",
       "source": "Werkboek workshop EAI in onderwijs · concept v3.1.2",
       "example": "Een docent geeft dezelfde inhoudelijke vraag drie keer aan een taalmodel, maar verandert alleen de rol en context. De verschillen in antwoord maken zichtbaar hoeveel de prompt al stuurt vóórdat de leerling iets beoordeelt.",
       "public_title": "Wat verandert er als je de prompt verandert?",
@@ -430,7 +430,7 @@
             "text": "Wat daarna veranderde en waarom."
           }
         ],
-        "caption": "Vergelijk de handeling en keuzes, niet alleen welke versie mooier is."
+        "caption": "Vergelijk wat de leerling zelf deed en welke keuzes veranderden, niet alleen welke versie mooier is."
       },
       "example": "Een leerling schrijft eerst zelf een alinea met een historische verklaring. Daarna gebruikt hij AI voor feedback. Bij de vergelijking markeert hij welke redenering al van hemzelf was en welke wijziging na de feedback ontstond.",
       "public_title": "Eerste poging en versie vergelijken",
@@ -662,7 +662,7 @@
         "Sluit af met wat de leerling bij een vergelijkbare taak zelf anders zou doen."
       ],
       "result": "Een korte reconstructie van menselijk handelen achter een AI-ondersteund product.",
-      "caution": "Laat AI de reflectie niet uitschrijven. Dan wordt juist de metacognitieve handeling opnieuw uitbesteed.",
+      "caution": "Laat AI de reflectie niet uitschrijven. Dan besteed je juist de metacognitieve leerstap opnieuw uit.",
       "source": "EAI Dictionary · Reflective Re-Entry",
       "example": "Na een AI-ondersteunde schrijfopdracht krijgt de leerling zijn prompts en eindtekst terug. Hij reconstrueert twee momenten waarop hij een voorstel bewust heeft veranderd en legt uit waarom.",
       "public_title": "Terugkijken op je eigen keuzes",
@@ -727,21 +727,21 @@
       ],
       "summary": "Haal precies de hulp weg die de leerling eerder gebruikte en geef een vergelijkbare nieuwe poging. Zo zie je beter wat zonder die hulp lukt.",
       "lede": "Een sterke prestatie met AI laat niet vanzelf zien wat de leerling zonder diezelfde inhoudelijke steun kan.",
-      "question": "Kan de leerling dezelfde belangrijke stap uitvoeren wanneer deze hulp tijdelijk wegvalt?",
+      "question": "Kan de leerling dezelfde leerstap zetten wanneer deze hulp tijdelijk wegvalt?",
       "route": [
         "kernhandeling",
         "taakdichtheid",
         "output"
       ],
       "steps": [
-        "Bepaal welke kernhandeling je zelfstandig wilt kunnen zien.",
+        "Bepaal welke leerstap je zelfstandig wilt kunnen zien.",
         "Benoem welke AI-ondersteuning de eerdere uitvoering materieel droeg.",
         "Kies dezelfde of een vergelijkbare taak.",
         "Verwijder precies die relevante ondersteuning tijdelijk.",
-        "Laat de leerling de kernhandeling opnieuw uitvoeren of uitleggen.",
+        "Laat de leerling de leerstap opnieuw uitvoeren of uitleggen.",
         "Leg vast wat nu zelfstandig zichtbaar is en welke ondersteuning eventueel nog nodig blijft."
       ],
-      "result": "Zelfstandig bewijs over de kernhandeling onder duidelijk beschreven ondersteuningsvoorwaarden.",
+      "result": "Zelfstandig bewijs over de leerstap onder duidelijk beschreven ondersteuningsvoorwaarden.",
       "caution": "Dit is geen straf voor AI-gebruik en ook geen algemene AI-vrije toets. Je haalt alleen de hulp weg die anders onduidelijk maakt wat de leerling zelf kan.",
       "source": "EAI Dictionary · Controlled Detachment",
       "visual": {
@@ -749,7 +749,7 @@
         "items": [
           {
             "label": "Met steun",
-            "text": "De handeling wordt ondersteund."
+            "text": "De leerstap wordt ondersteund."
           },
           {
             "label": "Afbouwen",
@@ -757,11 +757,11 @@
           },
           {
             "label": "Zelf uitvoeren",
-            "text": "De leerling laat de handeling opnieuw zien."
+            "text": "De leerling laat de leerstap opnieuw zien."
           }
         ]
       },
-      "example": "Een leerling oefent vergelijkingen oplossen met hints van AI. Na drie opgaven worden de hints uitgezet en krijgt hij een nieuwe opgave met dezelfde onderliggende handeling.",
+      "example": "Een leerling oefent vergelijkingen oplossen met hints van AI. Na drie opgaven worden de hints uitgezet en krijgt hij een nieuwe opgave met dezelfde leerstap.",
       "public_title": "Hulp tijdelijk weghalen",
       "action_layer": {
         "intents": [
@@ -769,8 +769,8 @@
           "independent"
         ],
         "teacher": "Haalt precies de relevante ondersteuning tijdelijk weg en biedt een vergelijkbare nieuwe poging.",
-        "learner": "Voert de kernhandeling opnieuw uit zonder de hulp die de eerdere prestatie droeg.",
-        "ai": "Wordt tijdelijk verminderd of verwijderd rond de gekozen handeling.",
+        "learner": "Voert de leerstap opnieuw uit zonder de hulp die de eerdere prestatie droeg.",
+        "ai": "Wordt tijdelijk verminderd of verwijderd rond de gekozen leerstap.",
         "ai_not": "Maak hier geen algemene AI-vrije toets van; verwijder alleen de hulp die het bewijs vertroebelt.",
         "standard": [
           [
@@ -803,11 +803,11 @@
             "Observeer wat de leerling zonder die hulp nog kan."
           ],
           "learner": [
-            "Voer dezelfde kernhandeling opnieuw uit.",
+            "Voer dezelfde leerstap opnieuw uit.",
             "Vraag pas hulp nadat je zelf hebt geprobeerd."
           ],
           "ai": [
-            "Blijf weg bij de gekozen handeling tijdens deze poging."
+            "Blijf weg bij de gekozen leerstap tijdens deze poging."
           ]
         }
       },
@@ -914,15 +914,15 @@
         "output"
       ],
       "steps": [
-        "Bepaal de onderliggende handeling die je wilt zien.",
-        "Maak of kies een nieuw item waarin die handeling hetzelfde blijft.",
+        "Bepaal de leerstap die je wilt zien.",
+        "Maak of kies een nieuw item waarin die leerstap hetzelfde blijft.",
         "Verminder inhoudelijke overlap met het eerdere antwoord.",
         "Haal eerdere AI-output uit beeld voor de eerste poging.",
-        "Laat de leerling de handeling uitvoeren.",
+        "Laat de leerling de leerstap uitvoeren.",
         "Vergelijk het nieuwe bewijs met de oorspronkelijke claim over zelfstandigheid."
       ],
       "result": "Sterker zelfstandig bewijs doordat antwoordhergebruik en oppervlakkige herkenning worden beperkt.",
-      "caution": "Een nieuw item moet de onderliggende handeling behouden. Verander niet zoveel dat je feitelijk een andere vaardigheid gaat meten.",
+      "caution": "Een nieuw item moet de leerstap behouden. Verander niet zoveel dat je feitelijk een andere vaardigheid gaat meten.",
       "source": "EAI Standard 0.4-candidate · EV-11 / REM-06",
       "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/standard/evidence-types.yaml",
       "example": "AI hielp bij het analyseren van één gedicht. Daarna krijgt de leerling een nieuw gedicht en moet hij dezelfde analyse zonder inhoudelijke AI-hulp uitvoeren.",
@@ -931,8 +931,8 @@
         "intents": [
           "independent"
         ],
-        "teacher": "Geeft een nieuw item waarin dezelfde onderliggende handeling nodig is.",
-        "learner": "Voert die handeling opnieuw uit zonder het eerdere antwoord te hergebruiken.",
+        "teacher": "Geeft een nieuw item waarin dezelfde leerstap nodig is.",
+        "learner": "Voert die leerstap opnieuw uit zonder het eerdere antwoord te hergebruiken.",
         "ai": "Kan een nieuw oefenitem genereren, maar hoeft de oplossing niet te geven.",
         "ai_not": "Verander de taak niet zo sterk dat je ineens een andere vaardigheid toetst.",
         "standard": [
@@ -962,13 +962,13 @@
         },
         "role_steps": {
           "teacher": [
-            "Kies een nieuw item met dezelfde onderliggende handeling.",
+            "Kies een nieuw item met dezelfde leerstap.",
             "Haal het vorige antwoord uit beeld.",
             "Laat de leerling opnieuw beginnen."
           ],
           "learner": [
-            "Herken welke handeling hetzelfde is.",
-            "Voer die handeling opnieuw uit."
+            "Herken welke leerstap hetzelfde is.",
+            "Voer die leerstap opnieuw uit."
           ],
           "ai": [
             "Genereer eventueel het nieuwe item, niet de oplossing."
@@ -1184,7 +1184,7 @@
           },
           {
             "label": "Wil je dat ook weten?",
-            "text": "Geef later een nieuwe taak met dezelfde onderliggende handeling, maar andere inhoud. Dan kijk je naar behoud en transfer in plaats van alleen naar directe reconstructie."
+            "text": "Geef later een nieuwe taak met dezelfde leerstap, maar andere inhoud. Dan kijk je naar behoud en transfer in plaats van alleen naar directe reconstructie."
           }
         ],
         "subject_examples": [
@@ -1231,7 +1231,7 @@
               "year": "2017",
               "title": "Doordacht digitaal",
               "principle": "Digitalisering hoort volgens de Onderwijsraad voort te komen uit doordachte onderwijskeuzes en niet uit de enkele beschikbaarheid van technologie.",
-              "translation": "Begin daarom niet met de vraag wat AI kan genereren. Begin met de vraag welke handeling de leerling moet leren en gebruik AI alleen als de vergelijking dat doel aantoonbaar helpt.",
+              "translation": "Begin daarom niet met de vraag wat AI kan genereren. Begin met de vraag welke leerstap de leerling zelf moet zetten en gebruik AI alleen als de vergelijking dat doel aantoonbaar helpt.",
               "url": "https://www.onderwijsraad.nl/documenten/2017/05/09/doordacht-digitaal"
             }
           ]
@@ -1270,7 +1270,7 @@
           "retention-transfer"
         ],
         "teacher": "Formuleert eerst wat hij over het leren wil kunnen zeggen en kiest daar passend bewijs bij.",
-        "learner": "Laat de relevante handeling zien onder de ondersteuningsvoorwaarden die bij die uitspraak passen.",
+        "learner": "Laat de leerstap zien onder de ondersteuningsvoorwaarden die bij die uitspraak passen.",
         "ai": "Kan in eerdere leerfasen ondersteunen; de rol moet bekend zijn wanneer je bewijs interpreteert.",
         "ai_not": "Leid zelfstandige beheersing niet af uit alleen een sterk AI-ondersteund product.",
         "standard": [
@@ -1305,7 +1305,7 @@
             "Gebruik een nieuwe uitvoering als zelfstandigheid de vraag is."
           ],
           "learner": [
-            "Laat de relevante handeling zien.",
+            "Laat de leerstap zien.",
             "Voer die opnieuw uit als de docent daar om vraagt."
           ],
           "ai": [
@@ -1328,21 +1328,21 @@
         "retention"
       ],
       "summary": "Laat de leerling dezelfde soort stap later nog eens uitvoeren met nieuwe inhoud en zonder het eerdere antwoord in beeld.",
-      "lede": "Zelfstandig kunnen uitvoeren direct na ondersteuning is iets anders dan de handeling later nog beschikbaar hebben.",
-      "question": "Kan de leerling de relevante handeling na verloop van tijd opnieuw uitvoeren?",
+      "lede": "Zelfstandig kunnen uitvoeren direct na ondersteuning is iets anders dan de leerstap later nog beschikbaar hebben.",
+      "question": "Kan de leerling de leerstap na verloop van tijd opnieuw uitvoeren?",
       "route": [
         "kernhandeling",
         "output"
       ],
       "steps": [
-        "Kies een kernhandeling waarvoor retentie relevant is.",
+        "Kies een leerstap waarvoor retentie relevant is.",
         "Plan een later moment dat lang genoeg uit elkaar ligt om meer te meten dan directe herhaling.",
         "Gebruik bij voorkeur een nieuw of licht gewijzigd item.",
         "Toon het eerdere antwoord of de volledige AI-route niet vlak voor de poging.",
         "Laat de leerling eerst zelfstandig uitvoeren.",
         "Leg het resultaat apart vast als retentiebewijs, niet als dezelfde meting als de eerdere prestatie."
       ],
-      "result": "Een aparte aanwijzing voor retentie van de relevante handeling.",
+      "result": "Een aparte aanwijzing voor retentie van de leerstap.",
       "caution": "De juiste vertraging is contextafhankelijk. EAI schrijft geen universeel aantal dagen voor.",
       "source": "EAI Standard 0.4-candidate · EV-06 / REM-07",
       "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/docs/08-evidence-handback-remediation.md",
@@ -1351,7 +1351,7 @@
         "items": [
           {
             "label": "Oefenen",
-            "text": "De handeling wordt geleerd of hersteld."
+            "text": "De leerstap wordt geleerd of hersteld."
           },
           {
             "label": "Tijd ertussen",
@@ -1359,7 +1359,7 @@
           },
           {
             "label": "Opnieuw",
-            "text": "De leerling voert de handeling opnieuw uit."
+            "text": "De leerling voert de leerstap opnieuw uit."
           }
         ]
       },
@@ -1369,8 +1369,8 @@
         "intents": [
           "retention-transfer"
         ],
-        "teacher": "Plant later een nieuwe gelegenheid voor dezelfde onderliggende handeling.",
-        "learner": "Haalt kennis of aanpak opnieuw op en voert de handeling zonder het eerdere antwoord uit.",
+        "teacher": "Plant later een nieuwe gelegenheid voor dezelfde leerstap.",
+        "learner": "Haalt kennis of aanpak opnieuw op en voert de leerstap zonder het eerdere antwoord uit.",
         "ai": "Kan een nieuw item genereren; antwoordniveau-hulp blijft weg als retentie de vraag is.",
         "ai_not": "Noem directe herhaling geen bewijs dat iets later nog beschikbaar is.",
         "standard": [
@@ -1428,21 +1428,21 @@
       ],
       "summary": "Geef een nieuwe situatie waarin de leerling dezelfde onderliggende vaardigheid nodig heeft. Kijk of hij zelf herkent wat hij opnieuw kan gebruiken.",
       "lede": "Een vaardigheid kunnen herhalen in vrijwel dezelfde taak zegt nog niet dat zij ook in een andere situatie beschikbaar is.",
-      "question": "Herkent en gebruikt de leerling dezelfde onderliggende handeling wanneer de context betekenisvol verandert?",
+      "question": "Herkent en gebruikt de leerling dezelfde leerstap wanneer de context betekenisvol verandert?",
       "route": [
         "kernhandeling",
         "output"
       ],
       "steps": [
-        "Bepaal welke onderliggende handeling centraal staat.",
+        "Bepaal welke leerstap centraal staat.",
         "Ontwerp een taak met een andere context, representatie of oppervlakte.",
         "Laat de leerling zelf herkennen welke eerdere kennis of aanpak relevant is.",
-        "Laat de handeling zonder antwoordniveau-hulp uitvoeren.",
+        "Laat de leerstap zonder antwoordniveau-hulp uitvoeren.",
         "Vraag kort wat hetzelfde bleef en wat moest worden aangepast.",
         "Leg dit apart vast als transferbewijs."
       ],
-      "result": "Een aanwijzing of de leerling de relevante handeling buiten de oorspronkelijke taak kan herkennen en toepassen.",
-      "caution": "Een ander getal of een andere naam maakt nog geen nieuwe situatie. De context moet echt veranderen, terwijl de onderliggende handeling dezelfde blijft.",
+      "result": "Een aanwijzing of de leerling de leerstap buiten de oorspronkelijke taak kan herkennen en toepassen.",
+      "caution": "Een ander getal of een andere naam maakt nog geen nieuwe situatie. De context moet echt veranderen, terwijl de leerstap dezelfde blijft.",
       "source": "EAI Standard 0.4-candidate · EV-07 / REM-08",
       "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/standard/evidence-types.yaml",
       "visual": {
@@ -1450,25 +1450,25 @@
         "items": [
           {
             "label": "Bekende context",
-            "text": "De handeling is eerder geoefend."
+            "text": "De leerstap is eerder geoefend."
           },
           {
             "label": "Nieuwe context",
             "text": "Oppervlak of situatie verandert."
           },
           {
-            "label": "Zelfde handeling",
+            "label": "Zelfde leerstap",
             "text": "De leerling past het geleerde opnieuw toe."
           }
         ]
       },
       "example": "Een leerling leerde procentuele groei berekenen met winkelprijzen. Daarna krijgt hij zonder AI een opgave over bevolkingsgroei waarin dezelfde bewerking nodig is.",
-      "public_title": "Dezelfde handeling in een andere situatie",
+      "public_title": "Dezelfde leerstap in een andere situatie",
       "action_layer": {
         "intents": [
           "retention-transfer"
         ],
-        "teacher": "Verandert context of representatie terwijl de onderliggende handeling hetzelfde blijft.",
+        "teacher": "Verandert context of representatie terwijl de leerstap hetzelfde blijft.",
         "learner": "Herkent wat uit de eerdere situatie bruikbaar is en past dat zelfstandig aan de nieuwe context aan.",
         "ai": "Kan een nieuwe context of oefentaak genereren.",
         "ai_not": "Laat AI niet alvast aangeven welke eerdere methode hier toegepast moet worden wanneer herkenning onderdeel van de transfer is.",
@@ -1500,7 +1500,7 @@
         "role_steps": {
           "teacher": [
             "Verander context of vorm van de taak.",
-            "Houd de onderliggende handeling hetzelfde.",
+            "Houd de leerstap hetzelfde.",
             "Vraag achteraf wat de leerling moest herkennen en aanpassen."
           ],
           "learner": [
@@ -1528,14 +1528,14 @@
         "retention"
       ],
       "summary": "Leg vertrouwen in eigen kunnen naast een verse zelfstandige poging.",
-      "lede": "Vloeiende AI-uitleg en succesvolle ondersteunde uitvoering kunnen het gevoel van beheersing versterken zonder dat dezelfde handeling al zelfstandig beschikbaar is.",
+      "lede": "Vloeiende AI-uitleg en succesvolle ondersteunde uitvoering kunnen het gevoel van beheersing versterken zonder dat dezelfde leerstap al zelfstandig beschikbaar is.",
       "question": "Welk prestatiebewijs ondersteunt mijn vertrouwen dat ik dit zelf kan?",
       "route": [
         "kernhandeling",
         "output"
       ],
       "steps": [
-        "Laat de leerling vooraf inschatten hoe zeker hij of zij is over de relevante handeling.",
+        "Laat de leerling vooraf inschatten hoe zeker hij of zij is over de leerstap.",
         "Vraag waarop die inschatting is gebaseerd.",
         "Geef een verse taak met ondersteuning teruggebracht tot het niveau dat bij de claim past.",
         "Laat eerst zelfstandig uitvoeren.",
@@ -1715,7 +1715,7 @@
         "Vraag kort wat er veranderde en welk criterium daarbij hielp.",
         "Gebruik daarna een kleine nieuwe toepassing of variant om te zien of de stap opnieuw lukt."
       ],
-      "result": "Je ziet hoe de leerling de opmerkingen gebruikt én hoe hij de relevante handeling opnieuw uitvoert.",
+      "result": "Je ziet hoe de leerling de opmerkingen gebruikt én hoe hij de leerstap opnieuw uitvoert.",
       "caution": "Laat AI de verbeterde versie niet meteen herschrijven. Dan zie je vooral de kwaliteit van de correctie door het systeem.",
       "source": "EAI Tutor-handleiding · feedback, redo en transfer",
       "visual": {
@@ -1731,7 +1731,7 @@
           },
           {
             "label": "Nieuwe uitvoering",
-            "text": "De herziene handeling levert nieuw bewijs."
+            "text": "De nieuwe eigen poging levert nieuw zicht op wat de leerling zelf kan."
           }
         ]
       },
@@ -1745,7 +1745,7 @@
         "teacher": "Begrenst feedback tot een of twee relevante punten en vraagt daarna om een nieuwe uitvoering.",
         "learner": "Interpreteert de feedback, kiest wat hij verandert en voert de verbetering zelf uit.",
         "ai": "Kan feedback geven of controleren aan expliciete criteria.",
-        "ai_not": "Schrijf de verbeterde versie niet automatisch voor wanneer herzien de handeling is die geleerd moet worden.",
+        "ai_not": "Schrijf de verbeterde versie niet automatisch voor wanneer zelf herzien de leerstap is die geoefend moet worden.",
         "standard": [
           [
             "MS-LRI-08",
@@ -1829,7 +1829,7 @@
         ],
         "teacher": "Kiest een materiële AI-uitspraak en vraagt om controle bij een geschikte bron.",
         "learner": "Zoekt de bron, vergelijkt claim en bron en past conclusie of vertrouwen aan.",
-        "ai": "Kan informatie of bronnen ophalen, maar de controlehandeling blijft zichtbaar bij de mens.",
+        "ai": "Kan informatie of bronnen ophalen, maar de broncontrole zelf blijft zichtbaar bij de leerling.",
         "ai_not": "Behandel een door AI genoemde bron niet als verificatie op zichzelf.",
         "standard": [
           [
@@ -1886,7 +1886,7 @@
       ],
       "summary": "Laat de leerling eerst bepalen waar hij vastloopt en wat de kleinste hulp is waarmee hij zelf verder kan.",
       "lede": "Een algemene vraag om hulp kan in een AI-omgeving gemakkelijk veranderen in het uitbesteden van de hele taak.",
-      "question": "Wat is de kleinste vorm van hulp die mij laat doorgaan zonder de kernhandeling weg te geven?",
+      "question": "Wat is de kleinste vorm van hulp die mij laat doorgaan zonder de leerstap weg te geven?",
       "route": [
         "fase",
         "kernhandeling",
@@ -1900,8 +1900,8 @@
         "Gebruik de hulp.",
         "Laat de leerling daarna zelf de volgende inhoudelijke stap zetten."
       ],
-      "result": "Een gerichte hulpvraag die de eigen handeling bewaart en tegelijk zelfregulatie zichtbaar maakt.",
-      "caution": "De kleinste hulp is niet altijd de minste hulp. De passende hulp is groot genoeg om verder te kunnen, maar neemt de relevante handeling niet onnodig over.",
+      "result": "Een gerichte hulpvraag die de leerstap bij de leerling houdt en tegelijk zichtbaar maakt hoe hij hulp kiest.",
+      "caution": "De kleinste hulp is niet altijd de minste hulp. De passende hulp is groot genoeg om verder te kunnen, maar neemt de leerstap niet onnodig over.",
       "source": "EAI Standard 0.4-candidate · self-regulation MS-LSR-07 t/m 09",
       "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/learner-self-regulation-and-metacognition.yaml",
       "visual": {
@@ -2162,7 +2162,7 @@
       ],
       "summary": "Neem een bestaande opdracht en ontwerp hem opnieuw vanuit het leerdoel. Bepaal daarna welke stappen de leerling zelf doet, waar AI mag helpen en wat je wilt kunnen zien.",
       "lede": "Een bestaande opdracht kan er hetzelfde uitzien terwijl AI de onderliggende onderwijsbetekenis sterk verandert.",
-      "question": "Hoe ziet deze taak eruit als ik eerst het leerproces, de fase en de kernhandeling beschrijf en pas daarna bepaal wat AI doet?",
+      "question": "Hoe ziet deze taak eruit als ik eerst het leerproces, de fase en de leerstap beschrijf en pas daarna bepaal wat AI doet?",
       "route": [
         "proces",
         "fase",
@@ -2172,8 +2172,8 @@
       ],
       "steps": [
         "Beschrijf het proces of leerdoel en kies de relevante fase.",
-        "Inventariseer de concrete handelingen van leerling en docent.",
-        "Benoem de kernhandeling die in deze fase betekenis draagt.",
+        "Inventariseer de concrete werkstappen van leerling en docent.",
+        "Benoem de leerstap die in deze fase betekenis draagt.",
         "Breng de gewenste taakdichtheid in kaart: mens, AI, gedeeld en volgorde.",
         "Bepaal welke output uit de fase moet komen.",
         "Kies in de onderwijslaag welk proces- of zelfstandig bewijs nodig is.",
@@ -2187,8 +2187,8 @@
         "intents": [
           "redesign"
         ],
-        "teacher": "Ontleedt een bestaande opdracht vanuit leerdoel, fase en kernhandeling en ontwerpt daarna de AI-rol.",
-        "learner": "Krijgt in het nieuwe ontwerp de handelingen terug die voor het leren werkelijk nodig zijn.",
+        "teacher": "Ontleedt een bestaande opdracht vanuit leerdoel, fase en leerstap en ontwerpt daarna de AI-rol.",
+        "learner": "Krijgt in het nieuwe ontwerp de werkstappen terug die voor het leren werkelijk nodig zijn.",
         "ai": "Kan helpen alternatieven of taakvarianten te genereren.",
         "ai_not": "Laat de bestaande mogelijkheden van een tool niet bepalen wat de opdracht moet worden.",
         "standard": [
@@ -2214,15 +2214,15 @@
         "role_steps": {
           "teacher": [
             "Pak een bestaande opdracht.",
-            "Benoem leerdoel en kernhandeling.",
+            "Benoem leerdoel en leerstap.",
             "Schrijf per stap op wat AI wel en niet doet.",
             "Pas de opdracht daarop aan."
           ],
           "learner": [
-            "Voer de opnieuw ontworpen kernhandeling zelf uit."
+            "Voer de opnieuw ontworpen leerstap zelf uit."
           ],
           "ai": [
-            "Help varianten genereren of ondersteunen buiten de kernhandeling."
+            "Help varianten genereren of ondersteunen buiten de leerstap."
           ]
         }
       },
@@ -2243,7 +2243,7 @@
       ],
       "summary": "Spreek vooraf af wat AI in een opdracht mag doen en plan ook wanneer een belangrijke stap weer door de leerling zelf wordt uitgevoerd.",
       "lede": "Alleen opschrijven dat AI 'ondersteunt' zegt te weinig. Beschrijf concrete systeemacties en het geplande teruggeefmoment.",
-      "question": "Welke AI-acties zijn hier passend, en wanneer moet de relevante handeling weer zichtbaar door de mens worden uitgevoerd?",
+      "question": "Welke AI-acties zijn hier passend, en wanneer moet de leerstap weer zichtbaar door de mens worden uitgevoerd?",
       "route": [
         "fase",
         "kernhandeling",
@@ -2251,15 +2251,15 @@
         "output"
       ],
       "steps": [
-        "Benoem de kernhandeling en de claim die je later wilt kunnen doen.",
+        "Benoem de leerstap en de claim die je later wilt kunnen doen.",
         "Beschrijf concrete toegestane AI-acties, bijvoorbeeld vragen stellen, hints geven, alternatieven tonen of formulering controleren.",
         "Beschrijf concrete uitgesloten acties voor deze fase.",
         "Bepaal het handback-punt: wanneer wordt ondersteuning verminderd of verwijderd?",
         "Ontwerp de nieuwe menselijke uitvoering die daarna zichtbaar moet worden.",
         "Leg vast welk bewijs je op dat moment verzamelt."
       ],
-      "result": "Een taakontwerp waarin duidelijk staat wat AI doet, waar de grens ligt en wanneer de relevante handeling weer bij de leerling ligt.",
-      "caution": "Je hoeft niet iedere AI-handeling terug te geven. Dat is pas nodig wanneer AI precies de stap uitvoert waaraan de leerling in deze fase zelf betekenis moet geven.",
+      "result": "Een taakontwerp waarin duidelijk staat wat AI doet, waar de grens ligt en wanneer de leerstap weer bij de leerling ligt.",
+      "caution": "Je hoeft niet iedere AI-actie terug te geven. Dat is pas nodig wanneer AI precies de leerstap uitvoert die de leerling in deze fase zelf moet zetten.",
       "source": "EAI Standard 0.4-candidate · AIS-001, AIS-008 en handback",
       "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/docs/08-evidence-handback-remediation.md",
       "visual": {
@@ -2271,7 +2271,7 @@
           },
           {
             "label": "Handback",
-            "text": "De relevante handeling gaat terug naar de mens."
+            "text": "De leerstap gaat terug naar de mens."
           },
           {
             "label": "Mens voert uit",
@@ -2290,8 +2290,8 @@
           "redesign",
           "return"
         ],
-        "teacher": "Beschrijft expliciet welke AI-acties zijn toegestaan en waar een relevante handeling weer teruggaat naar de leerling.",
-        "learner": "Voert de teruggegeven handeling daarna op een nieuw moment zelf uit.",
+        "teacher": "Beschrijft expliciet welke AI-acties zijn toegestaan en waar een leerstap weer teruggaat naar de leerling.",
+        "learner": "Zet de teruggegeven leerstap daarna op een nieuw moment zelf.",
         "ai": "Krijgt een afgebakende rol, bijvoorbeeld vragen, hints, feedback of voorbeeldvorming.",
         "ai_not": "Gebruik 'AI ondersteunt' niet als voldoende beschrijving van de rol.",
         "standard": [
@@ -2325,10 +2325,10 @@
           "teacher": [
             "Schrijf op wat AI precies mag doen.",
             "Markeer waar die AI-hulp stopt.",
-            "Plan een moment waarop de leerling de handeling zelf uitvoert."
+            "Plan een moment waarop de leerling de leerstap zelf zet."
           ],
           "learner": [
-            "Neem de handeling na de AI-hulp weer over.",
+            "Neem de leerstap na de AI-hulp weer zelf over.",
             "Voer haar op een nieuw moment zelf uit."
           ],
           "ai": [
@@ -2363,7 +2363,7 @@
       ],
       "steps": [
         "Schrijf de claim op die je met de huidige opdracht of toets wilt ondersteunen.",
-        "Benoem welke menselijke handelingen die claim veronderstelt.",
+        "Benoem welke leerstappen de uitspraak die je wilt doen veronderstelt.",
         "Breng in kaart welke daarvan door AI kunnen worden uitgevoerd, voorbereid of verborgen.",
         "Beperk de claim als het huidige product die niet meer kan dragen.",
         "Voeg alleen het bewijs toe dat voor de resterende claim nodig is, bijvoorbeeld procesbewijs, een verse zelfstandige uitvoering of een mondelinge probe.",
@@ -2381,7 +2381,7 @@
           "independent"
         ],
         "teacher": "Bepaalt welke uitspraak de toets moet dragen en ontwerpt bewijs dat ondanks AI-gebruik nog geldig is.",
-        "learner": "Laat de relevante menselijke handeling zien op een manier die bij die uitspraak past.",
+        "learner": "Laat de leerstap zien op een manier die bij die uitspraak past.",
         "ai": "Kan in sommige onderdelen ondersteunen, zolang de bijdrage wordt meegewogen bij de interpretatie.",
         "ai_not": "Behandel een product met materiële AI-bijdrage niet automatisch als bewijs van zelfstandige beheersing.",
         "standard": [
@@ -2411,10 +2411,10 @@
           "teacher": [
             "Schrijf op welke uitspraak de toets moet kunnen dragen.",
             "Markeer waar AI die uitspraak kan vertroebelen.",
-            "Voeg bewijs toe waarin de relevante handeling zichtbaar blijft."
+            "Voeg bewijs toe waarin de leerstap zichtbaar blijft."
           ],
           "learner": [
-            "Voer de gekozen menselijke handeling zelf uit."
+            "Zet de gekozen leerstap zelf."
           ],
           "ai": [
             "Ondersteun alleen waar de interpretatie van het bewijs helder blijft."
@@ -2479,7 +2479,7 @@
         "teacher": "Vraagt wat de leerling moet leren naast het simpelweg afronden van de taak.",
         "learner": "Formuleert het leerdoel in eigen woorden en onderscheidt dat van 'klaar zijn'.",
         "ai": "Kan vragen stellen om het doel te verhelderen.",
-        "ai_not": "Laat AI het leerdoel niet invullen wanneer doeloriëntatie juist onderdeel is van de handeling.",
+        "ai_not": "Laat AI het leerdoel niet invullen wanneer zelf het leerdoel formuleren juist een leerstap is.",
         "standard": [
           [
             "MS-LSR-01",
@@ -2558,7 +2558,7 @@
         "teacher": "Laat de leerling eerst een eigen beknopt plan maken voordat AI een route voorstelt.",
         "learner": "Bepaalt zelf de volgorde van stappen en een controlepunt.",
         "ai": "Kan daarna een alternatief plan of gerichte vraag bieden.",
-        "ai_not": "Geef niet meteen een volledig stappenplan als plannen de kernhandeling is.",
+        "ai_not": "Geef niet meteen een volledig stappenplan als plannen de leerstap is.",
         "standard": [
           [
             "MS-LSR-03",
@@ -2729,7 +2729,7 @@
         "Laat de leerling na de hulp zelf de eerstvolgende inhoudelijke stap zetten."
       ],
       "result": "Zichtbaar vermogen om een vastloper te herkennen en lokaliseren vóórdat hulp de diagnose overneemt.",
-      "caution": "De bedoeling is niet de leerling onnodig te laten worstelen. De korte vertraging is alleen bedoeld om de relevante regulerende handeling zichtbaar te houden.",
+      "caution": "De bedoeling is niet de leerling onnodig te laten worstelen. De korte vertraging is alleen bedoeld om de regulerende leerstap zichtbaar te houden.",
       "source": "EAI Standard 0.4-candidate · MS-LSR-07",
       "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/learner-self-regulation-and-metacognition.yaml",
       "example": "Een leerling zegt dat hij 'de hele opgave niet snapt'. Hij markeert eerst de laatste stap die nog wel lukt. Daardoor blijkt dat alleen het omzetten van de tekst naar een vergelijking het probleem is.",
@@ -3270,7 +3270,7 @@
         "teacher": "Laat eerst een serieus tegenargument formuleren voordat steun voor het eigen standpunt wordt gezocht.",
         "learner": "Formuleert of beoordeelt het sterkste relevante tegenargument.",
         "ai": "Kan later als tegenspreker of perspectiefsimulator optreden.",
-        "ai_not": "Laat AI het tegenargument niet volledig produceren wanneer het herkennen ervan de kernhandeling is.",
+        "ai_not": "Laat AI het tegenargument niet volledig produceren wanneer het herkennen ervan de leerstap is.",
         "standard": [
           [
             "MS-ARG-15",
@@ -3900,7 +3900,7 @@
       "steps": [
         "Schrijf je huidige conclusie in één zin op.",
         "Onderstreep welk leerlingbewijs die conclusie draagt.",
-        "Markeer woorden die verder gaan dan taak, moment of handeling.",
+        "Markeer woorden die verder gaan dan wat deze taak, dit moment of dit leerlingwerk laat zien.",
         "Maak de conclusie smaller totdat ieder belangrijk onderdeel herleidbaar is tot bewijs.",
         "Noteer wat je nog níet weet.",
         "Bepaal alleen als dat nodig is welk aanvullend bewijs de claim zou kunnen verbreden."
@@ -3916,7 +3916,7 @@
           "professional"
         ],
         "teacher": "Begrenst het oordeel tot precies wat het huidige bewijs ondersteunt.",
-        "learner": "Hoeft hier niet per se een aparte handeling uit te voeren; zijn werk vormt het bewijs waarop het oordeel rust.",
+        "learner": "Hoeft hier niet per se iets extra's te doen; zijn werk vormt de basis voor het oordeel.",
         "ai": "Kan samenvatten of mogelijke interpretaties voorstellen.",
         "ai_not": "Laat taalzekerheid de reikwijdte van het bewijs niet vergroten.",
         "standard": [
@@ -4395,8 +4395,8 @@
         "design",
         "process"
       ],
-      "summary": "Bepaal vóór je hulp geeft welke stap de leerling daarna zelf moet uitvoeren. Kies de hulp zo dat die stap niet ongemerkt verdwijnt.",
-      "lede": "Zonder doelhandeling is niet goed te beoordelen of ondersteuning helpt of de relevante handeling overneemt.",
+      "summary": "Bepaal vóór je hulp geeft welke leerstap de leerling daarna zelf moet zetten. Kies de hulp zo dat die stap niet ongemerkt verdwijnt.",
+      "lede": "Zonder leerstap is niet goed te beoordelen of ondersteuning helpt of de leerstap overneemt.",
       "question": "Wat moet de leerling na deze ondersteuning nog zelf doen?",
       "route": [
         "fase",
@@ -4405,10 +4405,10 @@
       ],
       "steps": [
         "Benoem de huidige leerfase en het concrete vastlooppunt.",
-        "Schrijf de handeling op die uiteindelijk bij de leerling moet liggen.",
-        "Bepaal welk deel van die handeling nu al lukt.",
+        "Schrijf de leerstap op die uiteindelijk bij de leerling moet liggen.",
+        "Bepaal welk deel van die leerstap nu al lukt.",
         "Kies pas daarna ondersteuning.",
-        "Controleer of de gekozen ondersteuning de doelhandeling nog openlaat.",
+        "Controleer of de gekozen ondersteuning de leerstap nog openlaat.",
         "Plan hoe je na de hulp opnieuw leerlinguitvoering zichtbaar maakt."
       ],
       "result": "Een expliciet doel voor ondersteuning, zodat hulp kan worden beoordeeld op wat zij bewaart en teruggeeft.",
@@ -4419,30 +4419,30 @@
         "type": "flow",
         "items": [
           {
-            "label": "Doelhandeling",
+            "label": "Leerstap",
             "text": "Wat moet uiteindelijk bij de leerling liggen?"
           },
           {
             "label": "Hulp",
-            "text": "Ondersteun zonder die handeling dicht te zetten."
+            "text": "Ondersteun zonder die leerstap dicht te zetten."
           },
           {
             "label": "Terug naar leerling",
-            "text": "Laat de handeling daarna opnieuw zelf uitvoeren."
+            "text": "Laat de leerstap daarna opnieuw zelf uitvoeren."
           }
         ]
       },
       "example": "Een leerling loopt vast bij een tekstverklaring. De docent benoemt eerst dat de leerling uiteindelijk zelf oorzaak en gevolg moet verbinden en kiest daarna pas welke hulp past.",
-      "public_title": "Wat moet de leerling straks zelf doen?",
+      "public_title": "Welke leerstap moet de leerling straks zelf zetten?",
       "action_layer": {
         "intents": [
           "support",
           "redesign"
         ],
-        "teacher": "Benoemt vóór de hulp welke handeling na die hulp nog of weer bij de leerling moet liggen.",
-        "learner": "Voert die doelhandeling na ondersteuning zelf uit.",
-        "ai": "Kan vragen, hints, modellen of feedback geven rond de doelhandeling.",
-        "ai_not": "Kies geen hulp voordat duidelijk is welke leerlinghandeling je wilt bewaren.",
+        "teacher": "Benoemt vóór de hulp welke leerstap na die hulp nog of weer bij de leerling moet liggen.",
+        "learner": "Voert die leerstap na ondersteuning zelf uit.",
+        "ai": "Kan vragen, hints, modellen of feedback geven rond de leerstap.",
+        "ai_not": "Kies geen hulp voordat duidelijk is welke leerlingleerstap je wilt bewaren.",
         "standard": [
           [
             "MS-TSF-01",
@@ -4467,15 +4467,15 @@
         },
         "role_steps": {
           "teacher": [
-            "Benoem vóór de hulp welke leerlinghandeling je wilt behouden.",
+            "Benoem vóór de hulp welke leerlingleerstap je wilt behouden.",
             "Kies daarna pas de vorm van hulp.",
-            "Plan waar de leerling die handeling weer zelf uitvoert."
+            "Plan waar de leerling die leerstap weer zelf uitvoert."
           ],
           "learner": [
-            "Voer de doelhandeling na de hulp zelf uit."
+            "Voer de leerstap na de hulp zelf uit."
           ],
           "ai": [
-            "Vraag, hint, modelleer of geef feedback rond de doelhandeling."
+            "Vraag, hint, modelleer of geef feedback rond de leerstap."
           ]
         }
       },
@@ -4493,7 +4493,7 @@
         "design",
         "process"
       ],
-      "summary": "Geef precies genoeg hulp om de leerling weer verder te laten werken. Laat de volgende inhoudelijke stap zo veel mogelijk bij de leerling.",
+      "summary": "Geef precies genoeg hulp om de leerling weer verder te laten werken. Laat de leerstap die centraal staat zo veel mogelijk bij de leerling.",
       "lede": "AI gaat gemakkelijk van hint naar uitleg en van uitleg naar uitgewerkte oplossing.",
       "question": "Wat is de kleinste aanwijzing waarmee de leerling zelf weer verder kan?",
       "route": [
@@ -4503,11 +4503,11 @@
       ],
       "steps": [
         "Lokaliseer eerst het precieze vastlooppunt.",
-        "Bepaal de doelhandeling die bij de leerling moet blijven.",
+        "Bepaal de leerstap die bij de leerling moet blijven.",
         "Begin met een vraag, aanwijzing of gedeeltelijke cue in plaats van een volledige route.",
         "Laat de leerling reageren.",
         "Voeg alleen meer ondersteuning toe wanneer het bewijs laat zien dat dit nodig is.",
-        "Stop met escaleren zodra de leerling de relevante handeling weer kan uitvoeren."
+        "Stop met escaleren zodra de leerling de leerstap weer kan uitvoeren."
       ],
       "result": "Ondersteuning die zo veel mogelijk menselijke uitvoering bewaart.",
       "caution": "Kleinste ondersteuning is geen vast niveau. Wat voldoende is, hangt af van taak, leerling en fase.",
@@ -4530,14 +4530,14 @@
           }
         ]
       },
-      "example": "Bij een vastloper geeft de docent eerst één gerichte vraag. Pas wanneer dat onvoldoende is volgt een voorbeeld of model, zodat zoveel mogelijk van de handeling bij de leerling blijft.",
+      "example": "Bij een vastloper geeft de docent eerst één gerichte vraag. Pas wanneer dat onvoldoende is volgt een voorbeeld of model, zodat zoveel mogelijk van de leerstap bij de leerling blijft.",
       "public_title": "Geef de kleinste hulp die nodig is",
       "action_layer": {
         "intents": [
           "support"
         ],
         "teacher": "Lokaliseert het vastlooppunt en kiest de kleinste hulp die voortgang weer mogelijk maakt.",
-        "learner": "Pakt de inhoudelijke handeling na de hulp weer zelf op.",
+        "learner": "Pakt de inhoudelijke leerstap na de hulp weer zelf op.",
         "ai": "Kan een vraag stellen of een gedeeltelijke hint geven.",
         "ai_not": "Escaleren naar uitleg of oplossing is niet nodig als een kleinere aanwijzing voldoende is.",
         "standard": [
@@ -4591,21 +4591,21 @@
       ],
       "summary": "Stel een vraag die precies de ontbrekende denkstap uitlokt, zonder het antwoord of de oplossingsroute al weg te geven.",
       "lede": "Een vraag kan behulpzaam lijken en ondertussen de hele denkrichting al weggeven. Dan doet de vraag meer werk dan de leerling.",
-      "question": "Moet de leerling in deze vraag de relevante handeling nog zelf uitvoeren?",
+      "question": "Moet de leerling in deze vraag de leerstap nog zelf uitvoeren?",
       "route": [
         "kernhandeling",
         "taakdichtheid"
       ],
       "steps": [
-        "Benoem de ontbrekende leerlinghandeling.",
+        "Benoem de ontbrekende leerlingleerstap.",
         "Schrijf de eerste hulvraag op die je zou willen stellen.",
         "Markeer woorden die al richting antwoord, criterium of oplossingsroute sturen.",
         "Herschrijf de vraag zodat de leerling de ontbrekende relatie of keuze moet leveren.",
         "Laat de leerling antwoorden voordat je vervolghulp geeft.",
-        "Controleer of de reactie werkelijk de doelhandeling bevat."
+        "Controleer of de reactie werkelijk de leerstap bevat."
       ],
       "result": "Een hulpvraag die leerlingactiviteit uitlokt in plaats van alleen een antwoordpad onthult.",
-      "caution": "Soms is direct uitleggen efficiënter en passender. De werkvorm is relevant wanneer juist de ontbrekende handeling geoefend of zichtbaar moet worden.",
+      "caution": "Soms is direct uitleggen efficiënter en passender. De werkvorm is relevant wanneer juist de ontbrekende leerstap geoefend of zichtbaar moet worden.",
       "source": "EAI Standard 0.4-candidate · teacher scaffolding MS-TSF-04",
       "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/teacher-scaffolding-and-feedback.yaml",
       "example": "In plaats van te vragen 'Is het misschien omdat de temperatuur stijgt?' vraagt de docent: 'Welke verandering in de gegevens kan dit verschil verklaren?'",
@@ -4614,9 +4614,9 @@
         "intents": [
           "support"
         ],
-        "teacher": "Stelt een vraag die de ontbrekende handeling uitlokt zonder de relatie of oplossingsroute al in de vraag te stoppen.",
+        "teacher": "Stelt een vraag die de ontbrekende leerstap uitlokt zonder de relatie of oplossingsroute al in de vraag te stoppen.",
         "learner": "Levert zelf de ontbrekende relatie, keuze of redeneringsstap.",
-        "ai": "Kan een vraag formuleren, mits die de handeling niet al encodeert.",
+        "ai": "Kan een vraag formuleren, mits die de leerstap niet al encodeert.",
         "ai_not": "Maak van een vraag geen verkapte instructie met het antwoord erin.",
         "standard": [
           [
@@ -4681,9 +4681,9 @@
         "Laat de verbeterde formulering of oplossing weg.",
         "Vraag de leerling zelf een wijziging te maken.",
         "Laat kort uitleggen welk criterium bij die wijziging is gebruikt.",
-        "Gebruik eventueel een verse kleine toepassing om te zien of dezelfde revisiehandeling opnieuw lukt."
+        "Gebruik eventueel een verse kleine toepassing om te zien of dezelfde leerstap van herzien opnieuw lukt."
       ],
-      "result": "Procesbewijs en nieuwe leerlinguitvoering rond de revisiehandeling.",
+      "result": "Procesinformatie en een nieuwe eigen poging rond de leerstap van herzien.",
       "caution": "Soms ontbreekt nog kennis en is eerst uitleg of voordoen nodig. Geef pas daarna opmerkingen waarop de leerling zelf verder kan bouwen.",
       "source": "EAI Standard 0.4-candidate · teacher scaffolding MS-TSF-05",
       "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/teacher-scaffolding-and-feedback.yaml",
@@ -4751,9 +4751,9 @@
         "process",
         "independent"
       ],
-      "summary": "Doe een stap voor wanneer dat nodig is. Haal het voorbeeld daarna weg en laat de leerling dezelfde soort stap met nieuwe inhoud zelf uitvoeren.",
+      "summary": "Doe een leerstap voor wanneer dat nodig is. Haal het voorbeeld daarna weg en laat de leerling dezelfde soort leerstap met nieuwe inhoud zelf zetten.",
       "lede": "Voordoen kan didactisch passend zijn. Het probleem ontstaat wanneer de demonstratie als bewijs voor leerlingbeheersing wordt behandeld.",
-      "question": "Wat doet de leerling onmiddellijk ná het model om de relevante handeling zelf opnieuw op te bouwen?",
+      "question": "Wat doet de leerling onmiddellijk ná het model om de leerstap zelf opnieuw op te bouwen?",
       "route": [
         "kernhandeling",
         "taakdichtheid",
@@ -4765,7 +4765,7 @@
         "Laat de leerling tijdens of na het model één relevant principe of keuze benoemen.",
         "Haal de modeluitwerking uit beeld.",
         "Geef een vers of equivalent item.",
-        "Laat de leerling de doelhandeling opnieuw uitvoeren en controleer welk niveau van steun nog nodig is."
+        "Laat de leerling de leerstap opnieuw uitvoeren en controleer welk niveau van steun nog nodig is."
       ],
       "result": "Een duidelijke scheiding tussen demonstratie en nieuwe leerlinguitvoering.",
       "caution": "Direct overschrijven of licht aanpassen van het model levert geen zelfstandig bewijs op.",
@@ -4776,7 +4776,7 @@
         "items": [
           {
             "label": "Model",
-            "text": "Laat de relevante handeling een keer zien."
+            "text": "Laat de leerstap een keer zien."
           },
           {
             "label": "Uit beeld",
@@ -4788,11 +4788,11 @@
           },
           {
             "label": "Zelf uitvoeren",
-            "text": "De leerling bouwt de handeling opnieuw op."
+            "text": "De leerling bouwt de leerstap opnieuw op."
           }
         ]
       },
-      "example": "De docent modelleert één bronanalyse hardop. Daarna gaat het voorbeeld uit beeld en krijgt de leerling een andere bron om dezelfde handeling zelf uit te voeren.",
+      "example": "De docent modelleert één bronanalyse hardop. Daarna gaat het voorbeeld uit beeld en krijgt de leerling een andere bron om dezelfde leerstap zelf uit te voeren.",
       "public_title": "Doe voor, laat daarna zelf opnieuw doen",
       "action_layer": {
         "intents": [
@@ -4800,7 +4800,7 @@
           "return"
         ],
         "teacher": "Doet één keer voor wanneer dat nodig is en plant direct daarna een nieuwe leerlingpoging.",
-        "learner": "Kijkt naar het model, haalt het uit beeld en bouwt de handeling opnieuw op.",
+        "learner": "Kijkt naar het model, haalt het uit beeld en bouwt de leerstap opnieuw op.",
         "ai": "Kan een voorbeeld of model demonstreren.",
         "ai_not": "Laat het model niet de uiteindelijke leerlingprestatie worden.",
         "standard": [
@@ -4828,11 +4828,11 @@
           "teacher": [
             "Doe één voorbeeld hardop voor.",
             "Haal het voorbeeld uit beeld.",
-            "Geef een nieuwe taak waarin dezelfde handeling nodig is."
+            "Geef een nieuwe taak waarin dezelfde leerstap nodig is."
           ],
           "learner": [
             "Kijk naar het voorbeeld.",
-            "Voer daarna dezelfde handeling zelf uit op de nieuwe taak."
+            "Voer daarna dezelfde leerstap zelf uit op de nieuwe taak."
           ],
           "ai": [
             "Modelleer één voorbeeld of demonstratie."
@@ -4852,7 +4852,7 @@
       "evidence": [
         "independent"
       ],
-      "summary": "Haal één vorm van hulp weg zodra de leerling laat zien dat hij een groter deel zelf kan. Kijk daarna opnieuw wat zonder die hulp lukt.",
+      "summary": "Haal één vorm van hulp weg zodra de leerling laat zien dat hij een groter deel van de leerstap zelf kan zetten. Kijk daarna opnieuw wat zonder die hulp lukt.",
       "lede": "Persistente AI-hulp kan actief blijven lang nadat de leerling delen van de taak weer zelf kan uitvoeren.",
       "question": "Welke ondersteuning kan ik nu weghalen zonder de taak onnodig ontoegankelijk te maken?",
       "route": [
@@ -4862,11 +4862,11 @@
       ],
       "steps": [
         "Benoem welke ondersteuning nu actief is.",
-        "Kijk welk deel van de doelhandeling inmiddels stabiel zichtbaar is.",
+        "Kijk welk deel van de leerstap inmiddels stabiel zichtbaar is.",
         "Kies één ondersteuningslaag die waarschijnlijk niet meer nodig is.",
         "Verwijder alleen die laag.",
         "Laat een verse korte poging uitvoeren.",
-        "Houd de ondersteuning weg wanneer de handeling standhoudt, of herstel gericht als de nieuwe poging laat zien dat dit te vroeg was."
+        "Houd de ondersteuning weg wanneer de leerstap standhoudt, of herstel gericht als de nieuwe poging laat zien dat dit te vroeg was."
       ],
       "result": "Een gecontroleerde afbouw van ondersteuning op basis van leerlingbewijs.",
       "caution": "Fading is geen vaste kalender. Verminder ondersteuning wanneer bewijs daar aanleiding toe geeft.",
@@ -4885,7 +4885,7 @@
           },
           {
             "label": "Verse poging",
-            "text": "Controleer of de handeling standhoudt."
+            "text": "Controleer of de leerstap standhoudt."
           }
         ]
       },
@@ -4897,7 +4897,7 @@
           "return"
         ],
         "teacher": "Haalt één ondersteuningslaag weg zodra leerlingbewijs laat zien dat dat kan.",
-        "learner": "Voert de handeling met minder steun opnieuw uit.",
+        "learner": "Voert de leerstap met minder steun opnieuw uit.",
         "ai": "Kan ondersteuning aanpassen, maar de afbouw moet zichtbaar en doelgericht zijn.",
         "ai_not": "Laat permanente assistentie niet blijven staan alleen omdat zij beschikbaar is.",
         "standard": [
@@ -4947,24 +4947,24 @@
       "evidence": [
         "independent"
       ],
-      "summary": "Heeft de docent of AI tijdelijk een stap voorgedaan of overgenomen? Plan dan een nieuw moment waarop de leerling die stap zelf uitvoert.",
-      "lede": "Ondersteuning kan de taak succesvol afronden zonder dat er nog een moment komt waarop de leerling de relevante handeling zelf doet.",
-      "question": "Waar in deze route krijgt de leerling de doelhandeling daadwerkelijk terug?",
+      "summary": "Heeft de docent of AI tijdelijk een leerstap voorgedaan of overgenomen? Plan dan een nieuw moment waarop de leerling die stap zelf zet.",
+      "lede": "Ondersteuning kan de taak succesvol afronden zonder dat er nog een moment komt waarop de leerling de leerstap zelf doet.",
+      "question": "Waar in deze route krijgt de leerling de leerstap daadwerkelijk terug?",
       "route": [
         "kernhandeling",
         "taakdichtheid",
         "output"
       ],
       "steps": [
-        "Markeer welke relevante handeling tijdelijk door docent of AI is uitgevoerd.",
+        "Markeer welke leerstap tijdelijk door docent of AI is uitgevoerd.",
         "Benoem waarom die overname op dat moment passend was.",
         "Kies een handback-moment vóórdat de leerroute eindigt.",
-        "Gebruik een vers equivalent item of nieuwe deelhandeling.",
-        "Laat de leerling de handeling uitvoeren met minder of geen inhoudelijke steun.",
+        "Gebruik een nieuwe vergelijkbare opgave of een nieuwe deelstap.",
+        "Laat de leerling de leerstap uitvoeren met minder of geen inhoudelijke steun.",
         "Leg de nieuwe uitvoering apart vast als bewijs na handback."
       ],
-      "result": "Een leerroute waarin tijdelijke overname niet het laatste woord heeft over de relevante menselijke handeling.",
-      "caution": "Je hoeft een overgenomen handeling alleen terug te geven als die stap belangrijk is voor wat de leerling hier moet leren of laten zien.",
+      "result": "Een leerroute waarin tijdelijke overname niet het laatste woord heeft over de leerstap.",
+      "caution": "Je hoeft een overgenomen leerstap alleen terug te geven als die stap belangrijk is voor wat de leerling hier moet leren of laten zien.",
       "source": "EAI Standard 0.4-candidate · teacher scaffolding MS-TSF-10/11",
       "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/microstructures/teacher-scaffolding-and-feedback.yaml",
       "visual": {
@@ -4972,7 +4972,7 @@
         "items": [
           {
             "label": "Overname",
-            "text": "Docent of AI voert tijdelijk een relevante handeling uit."
+            "text": "Docent of AI voert tijdelijk een leerstap uit."
           },
           {
             "label": "Handback",
@@ -4980,7 +4980,7 @@
           },
           {
             "label": "Leerling voert uit",
-            "text": "De handeling komt terug bij de leerling."
+            "text": "De leerstap komt terug bij de leerling."
           },
           {
             "label": "Bewijs",
@@ -4989,16 +4989,16 @@
         ]
       },
       "example": "AI ordent tijdens instructie samen met de klas argumenten. In de oefenfase krijgt de leerling een nieuwe set argumenten en moet hij de ordening zelf uitvoeren.",
-      "public_title": "Laat de leerling de stap weer zelf doen",
+      "public_title": "Geef de leerstap terug",
       "action_layer": {
         "intents": [
           "return",
           "independent"
         ],
-        "teacher": "Plant waar een tijdelijk overgenomen handeling weer door de leerling wordt uitgevoerd.",
-        "learner": "Voert die handeling op een vers moment zelf uit.",
+        "teacher": "Plant waar een tijdelijk overgenomen leerstap weer door de leerling wordt uitgevoerd.",
+        "learner": "Voert die leerstap op een vers moment zelf uit.",
         "ai": "Kan tijdelijk modelleren, hinten of een deel uitvoeren.",
-        "ai_not": "Laat ondersteuning eindigen zonder een moment waarop de leerling de relevante handeling terugkrijgt.",
+        "ai_not": "Laat ondersteuning eindigen zonder een moment waarop de leerling de leerstap terugkrijgt.",
         "standard": [
           [
             "MS-TSF-10",
@@ -5027,21 +5027,21 @@
         },
         "role_steps": {
           "teacher": [
-            "Markeer welke handeling tijdelijk is overgenomen.",
+            "Markeer welke leerstap tijdelijk is overgenomen.",
             "Kies een vers moment waarop de leerling haar terugkrijgt.",
-            "Laat de leerling die handeling zelf uitvoeren."
+            "Laat de leerling die leerstap zelf uitvoeren."
           ],
           "learner": [
-            "Neem de handeling weer over.",
+            "Neem de leerstap weer over.",
             "Voer haar zelfstandig opnieuw uit."
           ],
           "ai": [
-            "Stop met die handeling en blijf alleen ondersteunen waar afgesproken."
+            "Stop met die leerstap en blijf alleen ondersteunen waar afgesproken."
           ]
         }
       },
-      "card_teacher": "Plan bewust wanneer een tijdelijk overgenomen stap weer teruggaat naar de leerling.",
-      "card_learner": "Neemt die stap weer over en voert hem in een nieuwe poging zelf uit."
+      "card_teacher": "Plan bewust wanneer een tijdelijk overgenomen leerstap weer teruggaat naar de leerling.",
+      "card_learner": "Zet die leerstap in een nieuwe poging weer zelf."
     },
     {
       "slug": "practice-or-reteach",
