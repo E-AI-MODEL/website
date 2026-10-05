@@ -2200,11 +2200,11 @@
         "verbs": {
           "teacher": [
             "ontleed",
-            "bepaal kernhandeling",
+            "bepaal leerstap",
             "herontwerp"
           ],
           "learner": [
-            "voer relevante handeling uit"
+            "voer leerstap uit"
           ],
           "ai": [
             "genereer variant",
@@ -2401,7 +2401,7 @@
             "ontwerp bewijs"
           ],
           "learner": [
-            "voer relevante handeling uit"
+            "voer leerstap uit"
           ],
           "ai": [
             "ondersteun begrensd"
@@ -4442,7 +4442,7 @@
         "teacher": "Benoemt vóór de hulp welke leerstap na die hulp nog of weer bij de leerling moet liggen.",
         "learner": "Voert die leerstap na ondersteuning zelf uit.",
         "ai": "Kan vragen, hints, modellen of feedback geven rond de leerstap.",
-        "ai_not": "Kies geen hulp voordat duidelijk is welke leerlingleerstap je wilt bewaren.",
+        "ai_not": "Kies geen hulp voordat duidelijk is welke leerstap je wilt bewaren.",
         "standard": [
           [
             "MS-TSF-01",
@@ -4451,12 +4451,12 @@
         ],
         "verbs": {
           "teacher": [
-            "identificeer doelhandeling",
+            "identificeer leerstap",
             "kies hulp",
             "plan terugkeer"
           ],
           "learner": [
-            "voer doelhandeling uit"
+            "voer leerstap uit"
           ],
           "ai": [
             "vraag",
@@ -4467,7 +4467,7 @@
         },
         "role_steps": {
           "teacher": [
-            "Benoem vóór de hulp welke leerlingleerstap je wilt behouden.",
+            "Benoem vóór de hulp welke leerstap je wilt behouden.",
             "Kies daarna pas de vorm van hulp.",
             "Plan waar de leerling die leerstap weer zelf uitvoert."
           ],
@@ -4597,7 +4597,7 @@
         "taakdichtheid"
       ],
       "steps": [
-        "Benoem de ontbrekende leerlingleerstap.",
+        "Benoem de ontbrekende leerstap.",
         "Schrijf de eerste hulvraag op die je zou willen stellen.",
         "Markeer woorden die al richting antwoord, criterium of oplossingsroute sturen.",
         "Herschrijf de vraag zodat de leerling de ontbrekende relatie of keuze moet leveren.",
