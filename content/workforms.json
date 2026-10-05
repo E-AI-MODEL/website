@@ -1112,6 +1112,113 @@
           }
         ],
         "caption": "De vergelijking is tussenstap. Het nieuwe eigen werk is het moment waarop zichtbaar wordt wat de leerling met die vergelijking kan."
+      },
+      "teacher_explanation": {
+        "title": "Wat je als docent hier eigenlijk aan het doen bent",
+        "intro": "Deze werkvorm gebruik je niet omdat vergelijken op zichzelf leerzaam is. Je gebruikt hem wanneer een leerling eerst iets zelf heeft geprobeerd, daarna baat kan hebben bij een sterker voorbeeld, en je vervolgens wilt zien wat van die vergelijking echt is blijven hangen. De kern zit dus in de laatste stap: opnieuw zelf uitvoeren zonder het voorbeeld in beeld.",
+        "why_it_matters": [
+          {
+            "title": "1. Je gebruikt AI als tijdelijk vergelijkingsmateriaal",
+            "text": "De AI-versie is geen antwoordblad en ook geen eindproduct voor de leerling. Het is één extra voorbeeld waarmee je kwaliteit bespreekbaar maakt. Jij bepaalt vooraf waarop leerlingen vergelijken, bijvoorbeeld argumentatie, nauwkeurigheid, brongebruik of opbouw."
+          },
+          {
+            "title": "2. Je laat de leerling eerst beoordelen",
+            "text": "Vraag niet meteen: ‘maak jouw versie beter’. Laat de leerling eerst benoemen wat er verschilt en waarom één keuze sterker is. Daarmee wordt zichtbaar of de leerling het criterium begrijpt, in plaats van alleen een formulering over te nemen."
+          },
+          {
+            "title": "3. Daarna haal je de steun bewust weg",
+            "text": "Zolang de AI-versie in beeld blijft, weet je niet of de leerling zelfstandig kan reconstrueren of vooral slim kan kopiëren. Daarom verdwijnen beide voorbeelden voordat de leerling opnieuw werkt."
+          },
+          {
+            "title": "4. De nieuwe eigen poging is jouw belangrijkste informatie",
+            "text": "Kijk niet alleen of versie twee mooier is. Kijk welke inhoudelijke keuze de leerling zelfstandig terugbrengt, welke verbetering verdwijnt zodra het voorbeeld weg is en welke uitleg de leerling zelf kan geven."
+          }
+        ],
+        "what_to_watch": [
+          {
+            "signal": "De leerling benoemt alleen stijl: ‘deze klinkt beter’.",
+            "meaning": "Het criterium is nog te vaag.",
+            "teacher_move": "Vraag: wat is inhoudelijk beter, en waaraan kun je dat zien?"
+          },
+          {
+            "signal": "De leerling kan precies uitleggen waarom een versie sterker is, maar past dat niet toe in de nieuwe eigen versie.",
+            "meaning": "Kwaliteit herkennen en kwaliteit zelf produceren zijn nog twee verschillende dingen.",
+            "teacher_move": "Verklein de opdracht. Laat alleen dat ene onderdeel opnieuw uitvoeren."
+          },
+          {
+            "signal": "De nieuwe versie gebruikt bijna letterlijk de formulering van AI.",
+            "meaning": "De leerling heeft mogelijk de formulering onthouden in plaats van het criterium toegepast.",
+            "teacher_move": "Laat eerst mondeling uitleggen wat hij zelf wil zeggen en laat daarna opnieuw formuleren."
+          },
+          {
+            "signal": "De leerling maakt zonder voorbeeld een andere, maar aantoonbaar betere keuze.",
+            "meaning": "Dit is een sterker signaal dat het criterium is begrepen en zelfstandig gebruikt.",
+            "teacher_move": "Vraag de leerling de keuze kort te verantwoorden en bewaar eerste en tweede eigen poging."
+          }
+        ],
+        "interpretation": [
+          {
+            "label": "Dit laat de werkvorm wél zien",
+            "text": "Of de leerling verschillen kan beoordelen en een besproken criterium direct daarna zelfstandig kan toepassen."
+          },
+          {
+            "label": "Dit laat de werkvorm nog niet zien",
+            "text": "Of de leerling hetzelfde criterium een dag later, zonder herinnering aan deze vergelijking, opnieuw gebruikt."
+          },
+          {
+            "label": "Wil je dat ook weten?",
+            "text": "Geef later een nieuwe taak met dezelfde onderliggende handeling, maar andere inhoud. Dan kijk je naar behoud en transfer in plaats van alleen naar directe reconstructie."
+          }
+        ],
+        "subject_examples": [
+          {
+            "subject": "Nederlands",
+            "situation": "Een leerling schrijft eerst zelf een samenvatting.",
+            "compare": "Vergelijk met een AI-versie op één criterium: hoofdzaak en bijzaak.",
+            "reconstruct": "Haal beide versies weg. Laat opnieuw samenvatten vanuit de brontekst.",
+            "look_for": "Kiest de leerling nu zelf de hoofdzaak, of keert hij terug naar dezelfde details als in zijn eerste versie?"
+          },
+          {
+            "subject": "Geschiedenis",
+            "situation": "Een leerling vergelijkt eerst zelf twee bronnen.",
+            "compare": "Leg een AI-analyse ernaast en bespreek één verschil in bronweging.",
+            "reconstruct": "Haal de analyses weg. Geef een nieuwe bronvraag bij dezelfde bronnen.",
+            "look_for": "Gebruikt de leerling nu zelf herkomst, perspectief of betrouwbaarheid in de afweging?"
+          },
+          {
+            "subject": "Biologie",
+            "situation": "Een leerling legt eerst zelf een proces uit, bijvoorbeeld diffusie.",
+            "compare": "Vergelijk met een AI-uitleg op causaliteit: welke stap veroorzaakt de volgende?",
+            "reconstruct": "Haal de uitleg weg en laat het proces opnieuw tekenen en toelichten.",
+            "look_for": "Kan de leerling de causale keten zelf opnieuw opbouwen, of noemt hij vooral losse begrippen?"
+          }
+        ],
+        "onderwijsraad": {
+          "intro": "De Onderwijsraad beschrijft deze specifieke werkvorm niet. Wel sluiten drie bredere uitgangspunten rechtstreeks aan op de keuze die je als docent hier maakt.",
+          "sources": [
+            {
+              "year": "2022",
+              "title": "Inzet van intelligente technologie",
+              "principle": "Intelligente technologie kan werk van leraren ondersteunen, overnemen of anders invullen. De docent blijft volgens de raad de spil en moet didactisch kunnen afwegen hoe technologie wordt ingezet.",
+              "translation": "In deze werkvorm betekent dat: AI mag een vergelijkingsversie leveren, maar jij bepaalt welk leerdoel centraal staat, waarop wordt vergeleken en wanneer de steun weer uit beeld moet.",
+              "url": "https://www.onderwijsraad.nl/documenten/2022/09/28/inzet-van-intelligente-technologie"
+            },
+            {
+              "year": "2026",
+              "title": "Kijk anders naar toetsing",
+              "principle": "De Onderwijsraad benadrukt de onderwijsleerfunctie van toetsing: informatie over leerlingprestaties moet leraren en leerlingen helpen om het leren verder vorm te geven. Ook pleit de raad voor meer eigenaarschap van leraren bij toetsing met zo'n leerfunctie.",
+              "translation": "Gebruik de nieuwe eigen poging dus vooral als informatie voor je volgende onderwijsbeslissing. Niet als mini-toetscijfer, maar om te zien welke hulp nog nodig is.",
+              "url": "https://www.onderwijsraad.nl/documenten/2026/05/28/kijk-anders-naar-toetsing"
+            },
+            {
+              "year": "2017",
+              "title": "Doordacht digitaal",
+              "principle": "Digitalisering hoort volgens de Onderwijsraad voort te komen uit doordachte onderwijskeuzes en niet uit de enkele beschikbaarheid van technologie.",
+              "translation": "Begin daarom niet met de vraag wat AI kan genereren. Begin met de vraag welke handeling de leerling moet leren en gebruik AI alleen als de vergelijking dat doel aantoonbaar helpt.",
+              "url": "https://www.onderwijsraad.nl/documenten/2017/05/09/doordacht-digitaal"
+            }
+          ]
+        }
       }
     },
     {
