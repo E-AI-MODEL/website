@@ -120,3 +120,26 @@ Daarom gelden voor grote inhoudsblokken de volgende regels:
 - op mobiel blijven de grenzen zichtbaar, maar worden marges en padding kleiner zodat er geen stapel losse kaarten ontstaat.
 
 Toets een pagina op afstand of op klein formaat. Wanneer niet direct zichtbaar is waar een onderwerp begint en eindigt, is de visuele hiërarchie nog onvoldoende.
+
+
+## 10. Eén eigenaar per type inhoud
+
+Dezelfde inhoud mag niet op meerdere plekken als volwaardig hoofdonderdeel worden aangeboden. Gebruik kruislinks, maar houd één duidelijke eigenaar.
+
+- **/werkvormen/** is de EAI Toolbox. TAALwerkvormen wordt daar alleen als verwante aparte verzameling genoemd.
+- **/taalwerkvormen/** is eigenaar van de complete TAALwerkvormen.
+- **/praktijk/** bevat werkende demonstrators en prototypes. Geen toolcatalogus en geen losse werkvormen.
+- **/tools/** bevat interactieve hulpmiddelen voor analyse en ontwerp. Geen conceptuele modellen en geen demonstratorcatalogus.
+- **/kennis/** is de ingang voor onderbouwing, bronnen, publicaties, verwante modellen en verdere verdieping.
+- **/publicaties/** is het register van eigen publicaties, externe bijdragen, podcasts en media.
+- **/over/** beschrijft EAI, de ontwikkelaar en de ontstaanscontext. Publiek werk wordt daar alleen doorgelinkt.
+- **/toepassingen/** bevat echte cases. Kaarten van hetzelfde type leiden naar hetzelfde type bestemming.
+- **/bronnen/** onderscheidt externe bronnen, bronmodellen en eigen ontwerpdocumentatie. Eigen EAI-output wordt niet als externe bron gelabeld.
+
+### Componentregel
+
+Een componentvorm heeft één betekenis. Twee kaarten die er hetzelfde uitzien, moeten hetzelfde type keuze of bestemming vertegenwoordigen. Wanneer de functie verschilt, moet ook de componentvorm of hiërarchie verschillen.
+
+### Technische laag
+
+Technische koppelingen, adapters, registry-termen en implementatiedetails staan achter een disclosure of in technische documentatie. Ze mogen de eerste docent- of bezoekerslaag niet domineren.
