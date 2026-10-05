@@ -973,36 +973,37 @@
         "process",
         "independent"
       ],
-      "summary": "Gebruik het AI-antwoord als vergelijkingsmateriaal. Haal het daarna uit beeld en laat de leerling de relevante stap zelf opnieuw opbouwen.",
-      "lede": "Vergelijken kan leerzaam zijn, zolang de uiteindelijke reconstructie niet neerkomt op kopiëren van de betere versie.",
-      "question": "Kan de leerling het verschil beoordelen én daarna zelf een nieuwe versie opbouwen?",
+      "summary": "Vergelijk een eigen uitwerking met een AI-versie. Laat de leerling benoemen wat beter werkt en waarom. Daarna gaan beide voorbeelden weg en bouwt de leerling zelf opnieuw op.",
+      "lede": "Een voorbeeld vergelijken kan helpen om kwaliteit te herkennen. Het leerzame deel zit niet in het kiezen van de beste versie, maar in wat de leerling daarna zonder voorbeeld opnieuw kan maken.",
+      "question": "Kan de leerling uitleggen waarom een versie sterker is en die keuze daarna zelfstandig toepassen in een nieuwe uitwerking?",
       "route": [
         "taakdichtheid",
         "output"
       ],
       "steps": [
-        "Leg een eigen en een AI-versie of twee alternatieven naast elkaar.",
-        "Laat de leerling een inhoudelijk relevant verschil aanwijzen.",
-        "Vraag welke versie op dat punt sterker is en op basis van welk criterium.",
-        "Laat de leerling een voorstel accepteren, verwerpen of aanpassen met reden.",
-        "Haal de voorbeeldformuleringen uit beeld.",
-        "Laat de leerling het relevante deel opnieuw reconstrueren en kort verantwoorden."
+        "Laat de leerling eerst zelf een korte uitwerking maken.",
+        "Leg daar één AI-versie of een ander goed alternatief naast.",
+        "Laat de leerling twee inhoudelijke verschillen aanwijzen. Kies daarna één verschil om verder te bespreken.",
+        "Vraag welke versie op dat punt sterker is en welk criterium de leerling daarvoor gebruikt.",
+        "Haal beide voorbeeldteksten uit beeld. Laat alleen de oorspronkelijke opdracht, bron of vraag staan.",
+        "Laat de leerling opnieuw schrijven, oplossen of redeneren.",
+        "Vergelijk de nieuwe eigen versie met de eerste poging. Vraag welke keuze bewust is veranderd en waarom."
       ],
-      "result": "Procesbewijs over vergelijking en keuze, gevolgd door nieuw menselijk bewijs over de handeling zelf.",
-      "caution": "Alleen het beste alternatief aanklikken is geen reconstructie. De relevante menselijke handeling moet na de vergelijking opnieuw zichtbaar worden.",
+      "result": "Je ziet twee dingen apart: of de leerling kwaliteit kan herkennen tijdens het vergelijken, en of hij die keuze daarna zonder voorbeeldtekst zelf kan toepassen.",
+      "caution": "Een betere tweede versie laat nog niet zien dat de leerling dit later opnieuw of in een andere situatie kan. Daarvoor is een nieuwe taak, uitgestelde poging of transferopdracht nodig.",
       "source": "EAI Standard 0.4-candidate · remediation REM-04",
       "source_url": "https://github.com/E-AI-MODEL/EAI-standard/blob/main/registries/remediation/interventions.yaml",
-      "example": "De leerling vergelijkt zijn eigen samenvatting met een AI-versie, benoemt twee sterke verschillen en schrijft daarna zonder beide versies in beeld een nieuwe samenvatting.",
+      "example": "Een leerling heeft zelf een samenvatting van een tekst geschreven. Daarnaast ligt een AI-versie. De leerling markeert twee inhoudelijke verschillen en legt bij één verschil uit waarom de ene formulering sterker is. Daarna verdwijnen beide teksten uit beeld. De leerling schrijft een nieuwe samenvatting vanuit het oorspronkelijke bronmateriaal en licht één bewuste keuze toe.",
       "public_title": "Vergelijk en bouw opnieuw op",
       "action_layer": {
         "intents": [
           "return",
           "independent"
         ],
-        "teacher": "Laat eerst vergelijken en haalt de voorbeelden daarna uit beeld.",
-        "learner": "Beoordeelt verschillen, kiest met reden en bouwt vervolgens zelf opnieuw op.",
-        "ai": "Kan een alternatief of contrast leveren.",
-        "ai_not": "Laat de leerling na de vergelijking niet alleen de gekozen formulering kopiëren.",
+        "teacher": "Laat een eigen en een tweede versie vergelijken, vraag om een inhoudelijk criterium en haal de voorbeelden daarna weg voordat de leerling opnieuw werkt.",
+        "learner": "Vergelijkt, onderbouwt een keuze en past die daarna zonder voorbeeldtekst toe in een nieuwe eigen versie.",
+        "ai": "Kan één alternatief of contrast leveren voor de vergelijking.",
+        "ai_not": "Laat AI niet bepalen welke versie beter is en laat het na de vergelijking geen eindversie voor de leerling schrijven.",
         "standard": [
           [
             "REM-04",
@@ -1011,34 +1012,84 @@
         ],
         "verbs": {
           "teacher": [
-            "laat vergelijken",
-            "haal weg",
-            "laat herbouwen"
+            "leg naast elkaar",
+            "vraag waarom",
+            "haal voorbeelden weg",
+            "laat opnieuw maken"
           ],
           "learner": [
             "vergelijk",
-            "kies",
-            "reconstrueer"
+            "onderbouw",
+            "bouw opnieuw op",
+            "licht keuze toe"
           ],
           "ai": [
-            "genereer alternatief"
+            "lever één alternatief"
           ]
         },
         "role_steps": {
           "teacher": [
-            "Leg twee versies naast elkaar.",
-            "Laat één inhoudelijk verschil kiezen.",
-            "Haal daarna beide versies weg en laat opnieuw opbouwen."
+            "Laat de leerling eerst zelf een poging maken.",
+            "Leg één vergelijkingsversie ernaast.",
+            "Vraag naar één inhoudelijk verschil en het criterium daarachter.",
+            "Haal beide voorbeelden weg en laat opnieuw werken.",
+            "Vergelijk eerste en tweede eigen poging."
           ],
           "learner": [
-            "Vergelijk de versies.",
-            "Kies wat sterker is en waarom.",
-            "Bouw daarna zelf een nieuwe versie."
+            "Maak eerst een eigen poging.",
+            "Vergelijk die met de tweede versie.",
+            "Leg uit welke keuze sterker is en waarom.",
+            "Maak daarna zonder voorbeeldtekst een nieuwe versie.",
+            "Licht toe wat je bewust hebt veranderd."
           ],
           "ai": [
-            "Lever één van de vergelijkingsversies of een alternatief."
+            "Lever één alternatief dat voldoende kwaliteit heeft om inhoudelijk mee te vergelijken.",
+            "Geef geen rangorde, beoordeling of verbeterde eindversie."
           ]
         }
+      },
+      "lesson_card": {
+        "goal": "De leerling leert kwaliteit herkennen aan een concreet criterium en past die keuze daarna zelfstandig toe in een nieuwe versie.",
+        "when": "Na een eerste eigen poging, bijvoorbeeld bij een samenvatting, uitleg, betoog, berekening, bronvergelijking of andere taak waarbij een voorbeeldversie kan helpen om kwaliteit zichtbaar te maken.",
+        "duration": "10–15 min",
+        "grouping": "Eerst individueel, vergelijken kan kort in duo",
+        "focus": "vergelijken → uitleggen → opnieuw zelf doen",
+        "teacher_script": [
+          "Leg je eigen versie naast deze tweede versie. Zoek twee inhoudelijke verschillen. Nog niet verbeteren.",
+          "Kies één verschil. Welke versie werkt hier beter? Leg uit waaraan je dat ziet.",
+          "Nu gaan beide voorbeelden weg. Gebruik alleen de oorspronkelijke opdracht of bron en maak een nieuwe versie.",
+          "Kijk daarna terug naar je eerste poging. Wat heb je bewust anders gedaan?"
+        ],
+        "decision_rules": [
+          {
+            "signal": "De leerling zegt alleen dat de AI-versie ‘beter’, ‘duidelijker’ of ‘mooier’ is.",
+            "response": "Vraag om één zichtbaar criterium: wat is preciezer, beter onderbouwd, logischer opgebouwd of inhoudelijk vollediger?"
+          },
+          {
+            "signal": "De tweede versie lijkt sterk op de formulering van AI.",
+            "response": "Haal de voorbeeldtekst langer weg en laat eerst mondeling uitleggen wat de leerling zelf wil zeggen. Laat daarna opnieuw formuleren."
+          },
+          {
+            "signal": "De leerling kan goed vergelijken, maar de nieuwe eigen versie wordt niet beter.",
+            "response": "Ga terug naar één gekozen verschil. Laat de leerling dat ene criterium opnieuw toepassen in een kleiner deel van de taak."
+          }
+        ],
+        "success_criteria": [
+          "Ik wijs een inhoudelijk verschil aan tussen twee versies.",
+          "Ik leg uit waarom één keuze sterker is en noem het criterium dat ik gebruik.",
+          "Ik maak daarna zonder voorbeeldtekst een nieuwe eigen versie.",
+          "Ik kan aanwijzen wat ik bewust heb veranderd ten opzichte van mijn eerste poging."
+        ],
+        "follow_up_questions": [
+          "Wat maakt dit verschil inhoudelijk sterker?",
+          "Welk criterium gebruik je om dat te beoordelen?",
+          "Wat bleef bij je hangen toen de voorbeelden weg waren?",
+          "Welke keuze heb je in je nieuwe versie bewust anders gemaakt?",
+          "Zou je dezelfde keuze ook maken bij een nieuwe opdracht? Waarom?"
+        ],
+        "evidence": "Bewaar de eerste poging en de nieuwe eigen versie. Combineer die met de korte toelichting van de leerling. Zo zie je niet alleen dat de leerling een sterk voorbeeld kan herkennen, maar ook welke verbetering hij daarna zelf uitvoert.",
+        "variant": "Gebruik geen complete AI-versie, maar twee korte fragmenten met een subtiel kwaliteitsverschil. De leerling kiest eerst welk fragment sterker is en reconstrueert daarna alleen dat onderdeel in het eigen werk.",
+        "ai_role": "AI kan één alternatief of vergelijkingsversie leveren. Laat AI niet bepalen welke versie het beste is en laat het systeem na de vergelijking geen nieuwe eindversie schrijven."
       }
     },
     {
