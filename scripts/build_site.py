@@ -2106,15 +2106,18 @@ def nav(active: str = "") -> str:
         )
 
     home_current = ' aria-current="page"' if active_key == "model" else ""
+    prompt_current = ' aria-current="page"' if active_key == "prompt-framework" else ""
     over_current = ' aria-current="page"' if active_key == "over" else ""
     return (
         f'<header class="site-header"><nav class="nav" aria-label="Hoofdnavigatie">'
         f'<a class="brand" href="/" aria-label="EAI home"><img src="/assets/eai-logo.svg" alt="EAI"></a>'
         f'<div class="nav-links"><a href="/"{home_current}>EAI</a>{"".join(desktop_groups)}'
+        f'<a href="/tools/prompt-framework/"{prompt_current}>Prompt Framework</a>'
         f'<a href="/over/"{over_current}>Over</a>'
         f'<a class="nav-cta" href="{LINKEDIN}" target="_blank" rel="noopener">LinkedIn ↗</a></div>'
         f'<details class="mobile-nav"><summary>Menu</summary><div class="mobile-nav-panel">'
         f'<a href="/"{home_current}>EAI</a>{"".join(mobile_groups)}'
+        f'<a href="/tools/prompt-framework/"{prompt_current}>Prompt Framework</a>'
         f'<a href="/over/"{over_current}>Over</a>'
         f'<a href="{LINKEDIN}" target="_blank" rel="noopener">LinkedIn ↗</a></div></details>'
         f'</nav></header>'
@@ -2127,7 +2130,7 @@ def footer() -> str:
         f'<span><strong>EAI</strong> · Hans Visser<br>Menselijk handelen en AI in samenhang.</span></p>'
         f'<p><a href="/">EAI</a> · <a href="/toepassingen/">Toepassingen</a> · '
         f'<a href="/onderwijs/">Onderwijs</a> · <a href="/kennis/">Kennis</a> · '
-        f'<a href="/over/">Over</a> · <a href="{LINKEDIN}" target="_blank" rel="noopener">LinkedIn</a> · '
+        f'<a href="/tools/prompt-framework/">Prompt Framework</a> · <a href="/over/">Over</a> · <a href="{LINKEDIN}" target="_blank" rel="noopener">LinkedIn</a> · '
         f'<a href="{GITHUB}" target="_blank" rel="noopener">GitHub</a></p></div></footer>'
     )
 
@@ -2592,7 +2595,7 @@ def build(sources: Path, out: Path) -> None:
 <section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Ontwerpen</div><div><h2>Wat wil je dat AI hier doet?</h2><p>Zodra doel, menselijke stap en taakverdeling helder zijn, kun je de interactie veel preciezer ontwerpen.</p></div></div><div class="tool-grid"><article class="tool-card tool-card--featured"><div class="kicker">EAI · Instructieontwerp</div><h2>EAI Prompt Framework</h2><p>Leg doel, centrale menselijke stap, toegestane AI-hulp, grenzen, bronnen en een eventuele zelfstandige herneming vast. De tool bouwt daar direct een complete AI-instructie van. Voor onderwijs én andere professionele contexten.</p><a href="/tools/prompt-framework/">Gebruik EAI Prompt Framework →</a></article><article class="tool-card"><div class="kicker">Taal & systeem</div><h2>Prompt Builder · Sturen met taal</h2><p>Bekijk hoe de woorden in een prompt, de meegegeven informatie en de grenzen rond het systeem samen bepalen wat AI uiteindelijk doet. De technische termen staan in de tool zelf als je die laag nodig hebt.</p><a href="https://eai-prompt.lovable.app/" target="_blank" rel="noopener">Open Prompt Builder →</a></article><article class="tool-card"><div class="kicker">Lesontwerp</div><h2>EAI What-If Machine</h2><p>Verken hoe een andere keuze in taak of AI-inzet het ontwerp verandert.</p><a href="https://what-if-lesson-designer.lovable.app/" target="_blank" rel="noopener">Open EAI What-If Machine ↗</a></article></div></div></section>
 <section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Verdiepen</div><div><h2>Werk verder vanuit de publicaties.</h2><p>Deze toolkits horen bij eerdere EAI-publicaties en blijven bruikbaar als verdieping.</p></div></div><div class="tool-grid"><article class="tool-card"><div class="kicker">Toolkit</div><h2>Beyond Explainability</h2><p>Werk praktisch met de ideeën achter Didactic Controllability en Task Density.</p><a href="/tools/beyond-explainability/">Open Beyond Explainability →</a></article><article class="tool-card"><div class="kicker">Toolkit · English</div><h2>The Act of Learning</h2><p>Engelstalige toolkit bij de publicatie over Reverse Scaffolding en zichtbaar leren.</p><a href="https://effortless-fenglisu-71cd58.netlify.app/" target="_blank" rel="noopener">Open The Act of Learning toolkit ↗</a></article></div></div></section></main>'''
     write(out, "tools/index.html", doc("Tools", tools_body, "/tools/", "tools", "EAI-tools voor analyse, ontwerp en mens-AI-taakverdeling."))
-    write(out, "tools/prompt-framework/index.html", doc("EAI Prompt Framework", load_content_fragment("prompt-framework-page.html"), "/tools/prompt-framework/", "tools", "Ontwerp een complete EAI-instructie vanuit doel, menselijke stap, AI-hulp, grenzen en controle."))
+    write(out, "tools/prompt-framework/index.html", doc("EAI Prompt Framework", load_content_fragment("prompt-framework-page.html"), "/tools/prompt-framework/", "prompt-framework", "Ontwerp een complete EAI-instructie vanuit doel, menselijke stap, AI-hulp, grenzen en controle."))
     write(out, "eai-tools-modules/index.html", redirect("/tools/"))
 
     toolkit = sources / "eai-tools-modules-eai-toolkit-beyond-explainability-embed1.html"
