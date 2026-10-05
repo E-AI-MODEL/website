@@ -1940,6 +1940,96 @@ main:has(> .section)>.section:not(.journey-next):not(.project) .section-head{
   .toolbox-library{padding:0 18px}
 }
 
+
+/* Long-page hierarchy: subchapters inside a section must also have a visible start. */
+.taal-longcopy{
+  display:grid;
+  gap:12px;
+  border-top:0;
+}
+.taal-longcopy>section{
+  grid-template-columns:54px minmax(0,1fr);
+  gap:20px;
+  padding:24px;
+  border:1px solid var(--line);
+  background:#fff;
+}
+.taal-longcopy>section>span{
+  display:grid;
+  place-items:center;
+  width:34px;
+  height:34px;
+  padding:0;
+  border:1px solid var(--line);
+  background:var(--soft);
+}
+.taal-how{margin-top:18px}
+
+.sources-group{
+  margin-top:12px;
+  padding:24px;
+  border:1px solid var(--line);
+  background:#fff;
+}
+.sources-group:first-of-type{margin-top:0}
+.sources-group>h2{
+  margin:0 0 18px;
+  padding-bottom:14px;
+  border-bottom:1px solid var(--line);
+}
+.sources-list{gap:0}
+
+.app-showcase{
+  margin-top:14px;
+  padding:24px;
+  border:1px solid var(--line);
+  background:#fff;
+}
+.app-showcase:first-child{margin-top:0}
+.app-showcase:last-child{border-bottom:1px solid var(--line)}
+.app-showcase+.app-showcase{border-top:1px solid var(--line)}
+
+.article-body>h2{
+  position:relative;
+  margin-top:64px;
+  padding-top:30px;
+  border-top:1px solid var(--line);
+}
+.article-body>h2::after{
+  content:"";
+  position:absolute;
+  top:-1px;
+  left:0;
+  width:42px;
+  height:4px;
+  background:var(--accent);
+}
+.article-body>h2::before{margin-bottom:14px}
+.article-body>.article-action,
+.article-body>.article-pillars,
+.article-body>.citation-box{
+  margin-top:34px;
+  margin-bottom:34px;
+}
+
+@media(max-width:700px){
+  .taal-longcopy>section{
+    grid-template-columns:36px minmax(0,1fr);
+    gap:12px;
+    padding:18px;
+  }
+  .taal-longcopy>section>span{
+    width:30px;
+    height:30px;
+  }
+  .sources-group{padding:18px}
+  .app-showcase{padding:18px}
+  .article-body>h2{
+    margin-top:50px;
+    padding-top:24px;
+  }
+}
+
 '''
 
 CHROME_CSS = r'''
