@@ -2107,17 +2107,20 @@ def nav(active: str = "") -> str:
 
     home_current = ' aria-current="page"' if active_key == "model" else ""
     prompt_current = ' aria-current="page"' if active_key == "prompt-framework" else ""
+    monitor_current = ' aria-current="page"' if active_key == "model-monitor" else ""
     over_current = ' aria-current="page"' if active_key == "over" else ""
     return (
         f'<header class="site-header"><nav class="nav" aria-label="Hoofdnavigatie">'
         f'<a class="brand" href="/" aria-label="EAI home"><img src="/assets/eai-logo.svg" alt="EAI"></a>'
         f'<div class="nav-links"><a href="/"{home_current}>EAI</a>{"".join(desktop_groups)}'
         f'<a href="/tools/prompt-framework/"{prompt_current}>Prompt Framework</a>'
+        f'<a href="/model-monitor/"{monitor_current}>Model Monitor</a>'
         f'<a href="/over/"{over_current}>Over</a>'
         f'<a class="nav-cta" href="{LINKEDIN}" target="_blank" rel="noopener">LinkedIn ↗</a></div>'
         f'<details class="mobile-nav"><summary>Menu</summary><div class="mobile-nav-panel">'
         f'<a href="/"{home_current}>EAI</a>{"".join(mobile_groups)}'
         f'<a href="/tools/prompt-framework/"{prompt_current}>Prompt Framework</a>'
+        f'<a href="/model-monitor/"{monitor_current}>Model Monitor</a>'
         f'<a href="/over/"{over_current}>Over</a>'
         f'<a href="{LINKEDIN}" target="_blank" rel="noopener">LinkedIn ↗</a></div></details>'
         f'</nav></header>'
@@ -2130,7 +2133,7 @@ def footer() -> str:
         f'<span><strong>EAI</strong> · Hans Visser<br>Menselijk handelen en AI in samenhang.</span></p>'
         f'<p><a href="/">EAI</a> · <a href="/toepassingen/">Toepassingen</a> · '
         f'<a href="/onderwijs/">Onderwijs</a> · <a href="/kennis/">Kennis</a> · '
-        f'<a href="/tools/prompt-framework/">Prompt Framework</a> · <a href="/over/">Over</a> · <a href="{LINKEDIN}" target="_blank" rel="noopener">LinkedIn</a> · '
+        f'<a href="/tools/prompt-framework/">Prompt Framework</a> · <a href="/model-monitor/">Model Monitor</a> · <a href="/over/">Over</a> · <a href="{LINKEDIN}" target="_blank" rel="noopener">LinkedIn</a> · '
         f'<a href="{GITHUB}" target="_blank" rel="noopener">GitHub</a></p></div></footer>'
     )
 
@@ -2182,7 +2185,7 @@ def inject_embed(source: Path, canonical_path: str, fallback_title: str, footer_
                 head_parts.append(str(node))
     body_inner = soup.body.decode_contents() if soup.body else src
     body_inner = rewrite_legacy_links(body_inner)
-    chrome = f'<header class="eai-site-nav"><div class="eai-site-nav__inner"><a class="eai-site-nav__brand" href="/" aria-label="EAI home"><img src="/assets/eai-logo.svg" alt="EAI" width="34" height="34"></a><div class="eai-site-nav__links"><a href="/">EAI</a><a href="/toepassingen/">Toepassingen</a><a href="/onderwijs/">Onderwijs</a><a href="/kennis/">Kennis</a><a href="/over/">Over</a><a href="{LINKEDIN}" target="_blank" rel="noopener">LinkedIn ↗</a></div></div></header>'
+    chrome = f'<header class="eai-site-nav"><div class="eai-site-nav__inner"><a class="eai-site-nav__brand" href="/" aria-label="EAI home"><img src="/assets/eai-logo.svg" alt="EAI" width="34" height="34"></a><div class="eai-site-nav__links"><a href="/">EAI</a><a href="/toepassingen/">Toepassingen</a><a href="/onderwijs/">Onderwijs</a><a href="/kennis/">Kennis</a><a href="/tools/prompt-framework/">Prompt Framework</a><a href="/model-monitor/">Model Monitor</a><a href="/over/">Over</a><a href="{LINKEDIN}" target="_blank" rel="noopener">LinkedIn ↗</a></div></div></header>'
     foot = f'<footer class="eai-site-footer"><a href="{footer_back}">← Terug</a> · <a href="/bronnen/">Bronnen</a> · <a href="{LINKEDIN}" target="_blank" rel="noopener">LinkedIn ↗</a></footer>'
     canonical = f"{BASE_URL}{canonical_path}"
     return f'<!doctype html><html lang="{esc(lang)}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{esc(title)} · EAI</title><link rel="canonical" href="{esc(canonical)}"><link rel="icon" href="/assets/eai-logo.svg" type="image/svg+xml">{"".join(head_parts)}<link rel="stylesheet" href="/assets/article-chrome.css"></head><body>{chrome}{body_inner}{foot}</body></html>'
@@ -2596,6 +2599,7 @@ def build(sources: Path, out: Path) -> None:
 <section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Verdiepen</div><div><h2>Werk verder vanuit de publicaties.</h2><p>Deze toolkits horen bij eerdere EAI-publicaties en blijven bruikbaar als verdieping.</p></div></div><div class="tool-grid"><article class="tool-card"><div class="kicker">Toolkit</div><h2>Beyond Explainability</h2><p>Werk praktisch met de ideeën achter Didactic Controllability en Task Density.</p><a href="/tools/beyond-explainability/">Open Beyond Explainability →</a></article><article class="tool-card"><div class="kicker">Toolkit · English</div><h2>The Act of Learning</h2><p>Engelstalige toolkit bij de publicatie over Reverse Scaffolding en zichtbaar leren.</p><a href="https://effortless-fenglisu-71cd58.netlify.app/" target="_blank" rel="noopener">Open The Act of Learning toolkit ↗</a></article></div></div></section></main>'''
     write(out, "tools/index.html", doc("Tools", tools_body, "/tools/", "tools", "EAI-tools voor analyse, ontwerp en mens-AI-taakverdeling."))
     write(out, "tools/prompt-framework/index.html", doc("EAI Prompt Framework", load_content_fragment("prompt-framework-page.html"), "/tools/prompt-framework/", "prompt-framework", "Ontwerp een complete EAI-instructie vanuit doel, menselijke stap, AI-hulp, grenzen en controle."))
+    write(out, "model-monitor/index.html", doc("AI (Act) Model Monitor", load_content_fragment("model-monitor-page.html"), "/model-monitor/", "model-monitor", "Vergelijk AI-modellen en landen, bekijk gebruik en incidenten, volg onderwijsontwikkelingen en de EU AI Act, en traceer cijfers naar hun bron."))
     write(out, "eai-tools-modules/index.html", redirect("/tools/"))
 
     toolkit = sources / "eai-tools-modules-eai-toolkit-beyond-explainability-embed1.html"
@@ -2622,7 +2626,7 @@ def build(sources: Path, out: Path) -> None:
     not_found = '<main><section class="page-hero"><div class="wrap"><div class="eyebrow">404</div><h1>Deze pagina is er niet meer.</h1><p class="lede">De oude Google-site bevatte ook een paar dode links. Ga terug naar de publicaties of tools.</p><div class="button-row"><a class="button" href="/publicaties/">Publicaties</a><a class="button secondary" href="/tools/">Tools</a></div></div></section></main>'
     write(out, "404.html", doc("Niet gevonden", not_found, "/404.html"))
     write(out, "robots.txt", "User-agent: *\nAllow: /\nSitemap: https://eaimodel.nl/sitemap.xml\n")
-    urls = ["/", "/toepassingen/", "/toepassingen/onderwijs-ai/", "/onderwijs/", "/kennis/", "/twee-pijlers/", "/workshop-ai/", "/werkvormen/", "/taalwerkvormen/", "/verdieping/", "/onderbouwing/", "/bronnen/", "/praktijk/", "/publicaties/", "/publicaties/de-vraag-die-we-vergeten/", "/tools/", "/tools/prompt-framework/", "/over/", "/eaa-model/", "/onderwijsin/"] + [f"/werkvormen/{item['slug']}/" for item in workforms] + [f"/publicaties/{slug}/" for slug, _, _, _ in PUBLICATIONS] + ["/tools/beyond-explainability/"]
+    urls = ["/", "/toepassingen/", "/toepassingen/onderwijs-ai/", "/onderwijs/", "/kennis/", "/twee-pijlers/", "/workshop-ai/", "/werkvormen/", "/taalwerkvormen/", "/verdieping/", "/onderbouwing/", "/bronnen/", "/praktijk/", "/publicaties/", "/publicaties/de-vraag-die-we-vergeten/", "/tools/", "/tools/prompt-framework/", "/model-monitor/", "/over/", "/eaa-model/", "/onderwijsin/"] + [f"/werkvormen/{item['slug']}/" for item in workforms] + [f"/publicaties/{slug}/" for slug, _, _, _ in PUBLICATIONS] + ["/tools/beyond-explainability/"]
     items = "".join(f"<url><loc>{BASE_URL}{path}</loc></url>" for path in urls)
     write(out, "sitemap.xml", f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{items}</urlset>')
 

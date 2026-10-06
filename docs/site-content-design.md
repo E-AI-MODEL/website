@@ -130,6 +130,8 @@ Dezelfde inhoud mag niet op meerdere plekken als volwaardig hoofdonderdeel worde
 - **/taalwerkvormen/** is eigenaar van de complete TAALwerkvormen.
 - **/praktijk/** bevat werkende demonstrators en prototypes. Geen toolcatalogus en geen losse werkvormen.
 - **/tools/** bevat interactieve hulpmiddelen voor analyse en ontwerp. Geen conceptuele modellen en geen demonstratorcatalogus.
+- **/tools/prompt-framework/** is een zelfstandig kernproduct en mag daarom rechtstreeks in de hoofdnavigatie staan, naast de bredere Tools-verzameling.
+- **/model-monitor/** is de EAI-presentatielaag voor de publieke AI (Act) Model Monitor. De monitor zelf blijft de enige bron voor dashboard, modellen, landen, developers, usage, incidents, education, AI Act en sources; de EAI-site embedt en deeplinkt alleen naar die views.
 - **/kennis/** is de ingang voor onderbouwing, bronnen, publicaties, verwante modellen en verdere verdieping.
 - **/publicaties/** is het register van eigen publicaties, externe bijdragen, podcasts en media.
 - **/over/** beschrijft EAI, de ontwikkelaar en de ontstaanscontext. Publiek werk wordt daar alleen doorgelinkt.
