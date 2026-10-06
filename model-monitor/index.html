@@ -1,0 +1,97 @@
+<!doctype html><html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AI (Act) Model Monitor · EAI</title><meta name="description" content="Vergelijk AI-modellen en landen, bekijk gebruik en incidenten, volg onderwijsontwikkelingen en de EU AI Act, en traceer cijfers naar hun bron."><link rel="canonical" href="https://eaimodel.nl/model-monitor/"><link rel="icon" href="/assets/eai-logo.svg" type="image/svg+xml"><link rel="stylesheet" href="/assets/site.css"></head><body><a class="skip-link" href="#main-content">Ga naar de inhoud</a><header class="site-header"><nav class="nav" aria-label="Hoofdnavigatie"><a class="brand" href="/" aria-label="EAI home"><img src="/assets/eai-logo.svg" alt="EAI"></a><div class="nav-links"><a href="/">EAI</a><details class="nav-group"><summary>Toepassingen</summary><div class="nav-group-panel"><a href="/toepassingen/">Overzicht toepassingen</a><a href="/praktijk/">Praktijk & demonstrators</a></div></details><details class="nav-group"><summary>Onderwijs</summary><div class="nav-group-panel"><a href="/onderwijs/">Overzicht onderwijs</a><a href="/werkvormen/">EAI-werkvormen</a><a href="/taalwerkvormen/">TAALwerkvormen</a><a href="/werkvormen/#didactisch-model">Didactische modellen</a></div></details><details class="nav-group"><summary>Kennis</summary><div class="nav-group-panel"><a href="/kennis/">Overzicht kennis</a><a href="/onderbouwing/">Onderbouwing</a><a href="/bronnen/">Bronnen</a><a href="/publicaties/">Publicaties & media</a><a href="/tools/">Tools</a><a href="/twee-pijlers/">Twee pijlers</a></div></details><a href="/tools/prompt-framework/">Prompt Framework</a><a href="/model-monitor/" aria-current="page">Model Monitor</a><a href="/over/">Over</a><a class="nav-cta" href="https://nl.linkedin.com/in/hans-visser-92531a105" target="_blank" rel="noopener">LinkedIn ↗</a></div><details class="mobile-nav"><summary>Menu</summary><div class="mobile-nav-panel"><a href="/">EAI</a><details class="mobile-nav-group"><summary>Toepassingen</summary><div class="mobile-nav-sub"><a href="/toepassingen/">Overzicht toepassingen</a><a href="/praktijk/">Praktijk & demonstrators</a></div></details><details class="mobile-nav-group"><summary>Onderwijs</summary><div class="mobile-nav-sub"><a href="/onderwijs/">Overzicht onderwijs</a><a href="/werkvormen/">EAI-werkvormen</a><a href="/taalwerkvormen/">TAALwerkvormen</a><a href="/werkvormen/#didactisch-model">Didactische modellen</a></div></details><details class="mobile-nav-group"><summary>Kennis</summary><div class="mobile-nav-sub"><a href="/kennis/">Overzicht kennis</a><a href="/onderbouwing/">Onderbouwing</a><a href="/bronnen/">Bronnen</a><a href="/publicaties/">Publicaties & media</a><a href="/tools/">Tools</a><a href="/twee-pijlers/">Twee pijlers</a></div></details><a href="/tools/prompt-framework/">Prompt Framework</a><a href="/model-monitor/" aria-current="page">Model Monitor</a><a href="/over/">Over</a><a href="https://nl.linkedin.com/in/hans-visser-92531a105" target="_blank" rel="noopener">LinkedIn ↗</a></div></details></nav></header><style>
+.monitor-page{background:#f3f5f7}
+.monitor-hero{padding-bottom:34px}
+.monitor-hero-grid{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:28px;align-items:end}
+.monitor-hero .lede{max-width:74ch}
+.monitor-open{white-space:nowrap}
+.monitor-route-shell{position:sticky;top:66px;z-index:12;background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.monitor-routes{display:flex;gap:8px;align-items:center;overflow-x:auto;padding:12px 0;scrollbar-width:thin}
+.monitor-route{flex:0 0 auto;padding:8px 11px;border:1px solid var(--line);background:#fff;text-decoration:none;font:800 .75rem/1 Inter,ui-sans-serif,sans-serif}
+.monitor-route:hover,.monitor-route[aria-current="true"]{border-color:var(--ink);background:var(--ink);color:#fff}
+.monitor-embed-section{padding:18px 0 28px}
+.monitor-frame-shell{background:#fff;border:1px solid var(--line);box-shadow:0 16px 44px rgba(20,35,60,.10);overflow:hidden}
+.monitor-frame{display:block;width:100%;height:min(1080px,calc(100vh - 165px));min-height:760px;border:0;background:#f3f6fa}
+.monitor-note{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;padding:13px 15px;border-top:1px solid var(--line);background:#fff;font-size:.82rem;color:var(--muted)}
+.monitor-note p{margin:0;max-width:76ch}
+.monitor-note a{font-weight:800;white-space:nowrap}
+@media(max-width:900px){
+  .monitor-hero-grid{grid-template-columns:1fr}
+  .monitor-open{justify-self:start}
+  .monitor-route-shell{top:58px}
+  .monitor-frame{height:78vh;min-height:650px}
+}
+@media(max-width:620px){
+  .monitor-hero{padding-bottom:26px}
+  .monitor-embed-section{padding-top:10px}
+  .monitor-frame-shell{margin-left:-12px;margin-right:-12px;border-left:0;border-right:0}
+  .monitor-frame{height:76vh;min-height:600px}
+  .monitor-note{flex-direction:column}
+}
+</style>
+
+<main id="main-content" class="monitor-page">
+<section class="page-hero monitor-hero"><div class="wrap"><div class="monitor-hero-grid">
+<div><div class="eyebrow">EAI · Live monitor</div><h1>AI (Act) Model Monitor</h1><p class="lede">Vergelijk AI-modellen en landen, bekijk gebruik en incidenten, volg onderwijsontwikkelingen en de EU AI Act, en ga vanuit ieder datapunt terug naar de bron.</p></div>
+<a class="button secondary monitor-open" id="monitor-open-full" href="https://ai-act-model-monitor.werkruimte-s-2100.chatgpt.site/#dashboard" target="_blank" rel="noopener">Open volledig scherm ↗</a>
+</div></div></section>
+
+<nav class="monitor-route-shell" aria-label="Onderdelen van de Model Monitor"><div class="wrap monitor-routes">
+<a class="monitor-route" href="#dashboard" data-monitor-route="dashboard">Dashboard</a>
+<a class="monitor-route" href="#models" data-monitor-route="models">Models</a>
+<a class="monitor-route" href="#countries" data-monitor-route="countries">Countries</a>
+<a class="monitor-route" href="#developers" data-monitor-route="developers">Developers</a>
+<a class="monitor-route" href="#usage" data-monitor-route="usage">Usage</a>
+<a class="monitor-route" href="#incidents" data-monitor-route="incidents">Incidents</a>
+<a class="monitor-route" href="#education" data-monitor-route="education">Education</a>
+<a class="monitor-route" href="#legal" data-monitor-route="legal">AI Act</a>
+<a class="monitor-route" href="#sources" data-monitor-route="sources">Sources</a>
+</div></nav>
+
+<section class="monitor-embed-section"><div class="wrap">
+<div class="monitor-frame-shell">
+<iframe class="monitor-frame" id="model-monitor-frame" name="model-monitor-frame" src="https://ai-act-model-monitor.werkruimte-s-2100.chatgpt.site/#dashboard" title="AI (Act) Model Monitor" loading="eager" referrerpolicy="no-referrer" allow="clipboard-write"></iframe>
+<div class="monitor-note"><p>De monitor draait als afzonderlijke publieke ChatGPT Site binnen EAI. Werkt de embed in jouw browser niet of wil je meer schermruimte, open dan dezelfde sectie rechtstreeks.</p><a id="monitor-open-section" href="https://ai-act-model-monitor.werkruimte-s-2100.chatgpt.site/#dashboard" target="_blank" rel="noopener">Open deze sectie ↗</a></div>
+</div>
+</div></section>
+</main>
+
+<script>
+(function(){
+  var base="https://ai-act-model-monitor.werkruimte-s-2100.chatgpt.site/";
+  var allowed=["dashboard","models","countries","developers","usage","incidents","education","legal","sources"];
+  var frame=document.getElementById("model-monitor-frame");
+  var openFull=document.getElementById("monitor-open-full");
+  var openSection=document.getElementById("monitor-open-section");
+  var links=Array.prototype.slice.call(document.querySelectorAll("[data-monitor-route]"));
+
+  function currentRoute(){
+    var route=(window.location.hash||"#dashboard").slice(1).toLowerCase();
+    return allowed.indexOf(route)>=0?route:"dashboard";
+  }
+
+  function applyRoute(route){
+    if(allowed.indexOf(route)<0) route="dashboard";
+    var target=base+"#"+route;
+    if(frame.getAttribute("src")!==target) frame.setAttribute("src",target);
+    openFull.setAttribute("href",target);
+    openSection.setAttribute("href",target);
+    links.forEach(function(link){
+      if(link.getAttribute("data-monitor-route")===route) link.setAttribute("aria-current","true");
+      else link.removeAttribute("aria-current");
+    });
+  }
+
+  links.forEach(function(link){
+    link.addEventListener("click",function(event){
+      event.preventDefault();
+      var route=link.getAttribute("data-monitor-route");
+      if(window.location.hash!=="#"+route) history.pushState(null,"","#"+route);
+      applyRoute(route);
+    });
+  });
+
+  window.addEventListener("hashchange",function(){applyRoute(currentRoute());});
+  window.addEventListener("popstate",function(){applyRoute(currentRoute());});
+  applyRoute(currentRoute());
+})();
+</script><footer class="site-footer"><div class="wrap footer-grid"><p style="display:flex;gap:12px;align-items:center"><img src="/assets/eai-logo.svg" alt="" width="42" height="42"><span><strong>EAI</strong> · Hans Visser<br>Menselijk handelen en AI in samenhang.</span></p><p><a href="/">EAI</a> · <a href="/toepassingen/">Toepassingen</a> · <a href="/onderwijs/">Onderwijs</a> · <a href="/kennis/">Kennis</a> · <a href="/tools/prompt-framework/">Prompt Framework</a> · <a href="/model-monitor/">Model Monitor</a> · <a href="/over/">Over</a> · <a href="https://nl.linkedin.com/in/hans-visser-92531a105" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://github.com/E-AI-MODEL" target="_blank" rel="noopener">GitHub</a></p></div></footer></body></html>
