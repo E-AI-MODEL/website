@@ -20,56 +20,33 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Configure SSH
+      - name: Install FTPS client
         shell: bash
-        env:
-          SSH_KEY: ${{ secrets.THEORY7_SSH_KEY }}
         run: |
-          set -euo pipefail
-          install -m 700 -d ~/.ssh
-          printf '%s\n' "$SSH_KEY" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
+          sudo apt-get update
+          sudo apt-get install -y lftp
 
-      - name: Resolve Theory7 IPv4
-        id: theory7
+      - name: Deploy static site via FTPS
         shell: bash
         env:
           HOST: ${{ secrets.THEORY7_HOST }}
+          FTP_USER: ${{ secrets.THEORY7_FTP_USER }}
+          FTP_PASSWORD: ${{ secrets.THEORY7_FTP_PASSWORD }}
         run: |
           set -euo pipefail
-          IP="$(getent ahostsv4 "$HOST" | awk 'NR==1 {print $1}')"
-          test -n "$IP"
-          echo "ip=$IP" >> "$GITHUB_OUTPUT"
-          echo "Resolved Theory7 host to $IP"
-
-      - name: Test SSH connection
-        shell: bash
-        env:
-          IP: ${{ steps.theory7.outputs.ip }}
-          USER: ${{ secrets.THEORY7_USER }}
-          PORT: ${{ secrets.THEORY7_PORT }}
-        run: |
-          set -euo pipefail
-          ssh -4 -i ~/.ssh/id_rsa \
-            -p "$PORT" \
-            -o StrictHostKeyChecking=accept-new \
-            -o BatchMode=yes \
-            -o ConnectTimeout=15 \
-            "$USER@$IP" "echo SSH connection OK"
-
-      - name: Deploy static site
-        shell: bash
-        env:
-          IP: ${{ steps.theory7.outputs.ip }}
-          USER: ${{ secrets.THEORY7_USER }}
-          PORT: ${{ secrets.THEORY7_PORT }}
-          TARGET: ${{ secrets.THEORY7_PATH }}
-        run: |
-          set -euo pipefail
-          rsync -az --delete \
-            --exclude '.git/' \
-            --exclude '.github/' \
-            --exclude '.gitignore' \
-            --exclude 'README.md' \
-            -e "ssh -4 -i ~/.ssh/id_rsa -p $PORT -o StrictHostKeyChecking=accept-new" \
-            ./ "$USER@$IP:$TARGET"
+          lftp -u "$FTP_USER","$FTP_PASSWORD" "ftp://$HOST:21" <<'EOF'
+          set ftp:ssl-force true
+          set ftp:ssl-protect-data true
+          set ssl:verify-certificate true
+          set net:timeout 20
+          set net:max-retries 1
+          mirror -R --delete --verbose \
+            --exclude-glob .git/ \
+            --exclude-glob .github/ \
+            --exclude-glob .gitignore \
+            --exclude-glob README.md \
+            --exclude-glob cgi-bin/ \
+            --exclude-glob .well-known/ \
+            ./ /
+          bye
+          EOF
