@@ -1,0 +1,51 @@
+name: Deploy to Theory7
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: theory7-production
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure SSH
+        shell: bash
+        env:
+          SSH_KEY: ${{ secrets.THEORY7_SSH_KEY }}
+          HOST: ${{ secrets.THEORY7_HOST }}
+        run: |
+          set -euo pipefail
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H "$HOST" >> ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
+
+      - name: Deploy static site
+        shell: bash
+        env:
+          HOST: ${{ secrets.THEORY7_HOST }}
+          USER: ${{ secrets.THEORY7_USER }}
+          PORT: ${{ secrets.THEORY7_PORT }}
+          TARGET: ${{ secrets.THEORY7_PATH }}
+        run: |
+          set -euo pipefail
+          rsync -az --delete \
+            --exclude '.git/' \
+            --exclude '.github/' \
+            --exclude '.gitignore' \
+            --exclude 'README.md' \
+            -e "ssh -i ~/.ssh/id_rsa -p $PORT" \
+            ./ "$USER@$HOST:$TARGET"
