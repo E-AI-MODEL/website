@@ -30,10 +30,22 @@ jobs:
           printf '%s\n' "$SSH_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
 
-      - name: Test SSH connection
+      - name: Resolve Theory7 IPv4
+        id: theory7
         shell: bash
         env:
           HOST: ${{ secrets.THEORY7_HOST }}
+        run: |
+          set -euo pipefail
+          IP="$(getent ahostsv4 "$HOST" | awk 'NR==1 {print $1}')"
+          test -n "$IP"
+          echo "ip=$IP" >> "$GITHUB_OUTPUT"
+          echo "Resolved Theory7 host to $IP"
+
+      - name: Test SSH connection
+        shell: bash
+        env:
+          IP: ${{ steps.theory7.outputs.ip }}
           USER: ${{ secrets.THEORY7_USER }}
           PORT: ${{ secrets.THEORY7_PORT }}
         run: |
@@ -43,12 +55,12 @@ jobs:
             -o StrictHostKeyChecking=accept-new \
             -o BatchMode=yes \
             -o ConnectTimeout=15 \
-            "$USER@$HOST" "echo SSH connection OK"
+            "$USER@$IP" "echo SSH connection OK"
 
       - name: Deploy static site
         shell: bash
         env:
-          HOST: ${{ secrets.THEORY7_HOST }}
+          IP: ${{ steps.theory7.outputs.ip }}
           USER: ${{ secrets.THEORY7_USER }}
           PORT: ${{ secrets.THEORY7_PORT }}
           TARGET: ${{ secrets.THEORY7_PATH }}
@@ -60,4 +72,4 @@ jobs:
             --exclude '.gitignore' \
             --exclude 'README.md' \
             -e "ssh -4 -i ~/.ssh/id_rsa -p $PORT -o StrictHostKeyChecking=accept-new" \
-            ./ "$USER@$HOST:$TARGET"
+            ./ "$USER@$IP:$TARGET"
