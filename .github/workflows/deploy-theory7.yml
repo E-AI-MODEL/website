@@ -29,7 +29,7 @@ jobs:
       - name: Deploy static site via FTPS
         shell: bash
         env:
-          HOST: ${{ secrets.THEORY7_HOST }}
+          HOST: ftp.eaimodel.nl
           FTP_USER: ${{ secrets.THEORY7_FTP_USER }}
           FTP_PASSWORD: ${{ secrets.THEORY7_FTP_PASSWORD }}
         run: |
