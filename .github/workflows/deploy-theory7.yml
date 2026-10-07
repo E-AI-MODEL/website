@@ -24,14 +24,26 @@ jobs:
         shell: bash
         env:
           SSH_KEY: ${{ secrets.THEORY7_SSH_KEY }}
-          HOST: ${{ secrets.THEORY7_HOST }}
         run: |
           set -euo pipefail
           install -m 700 -d ~/.ssh
           printf '%s\n' "$SSH_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H "$HOST" >> ~/.ssh/known_hosts
-          chmod 600 ~/.ssh/known_hosts
+
+      - name: Test SSH connection
+        shell: bash
+        env:
+          HOST: ${{ secrets.THEORY7_HOST }}
+          USER: ${{ secrets.THEORY7_USER }}
+          PORT: ${{ secrets.THEORY7_PORT }}
+        run: |
+          set -euo pipefail
+          ssh -i ~/.ssh/id_rsa \
+            -p "$PORT" \
+            -o StrictHostKeyChecking=accept-new \
+            -o BatchMode=yes \
+            -o ConnectTimeout=15 \
+            "$USER@$HOST" "echo SSH connection OK"
 
       - name: Deploy static site
         shell: bash
@@ -47,5 +59,5 @@ jobs:
             --exclude '.github/' \
             --exclude '.gitignore' \
             --exclude 'README.md' \
-            -e "ssh -i ~/.ssh/id_rsa -p $PORT" \
+            -e "ssh -i ~/.ssh/id_rsa -p $PORT -o StrictHostKeyChecking=accept-new" \
             ./ "$USER@$HOST:$TARGET"
