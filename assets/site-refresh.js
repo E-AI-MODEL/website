@@ -47,9 +47,12 @@
     syncMonitor();
   }
   document.addEventListener('click',function(event){
-    if(event.target.closest('.eai-mobile .mobile-nav-panel a')){
-      var menu=event.target.closest('.eai-mobile');
-      if(menu)menu.open=false;
-    }
+    document.querySelectorAll('.eai-mobile[open]').forEach(function(menu){
+      if(event.target.closest('.eai-mobile .mobile-nav-panel a'))menu.open=false;
+      else if(!menu.contains(event.target))menu.open=false;
+    });
+  });
+  document.addEventListener('keydown',function(event){
+    if(event.key==='Escape')document.querySelectorAll('.eai-mobile[open]').forEach(function(menu){menu.open=false;});
   });
 })();
