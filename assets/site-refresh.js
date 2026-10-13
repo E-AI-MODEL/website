@@ -52,6 +52,12 @@
       else if(!menu.contains(event.target))menu.open=false;
     });
   });
+  document.querySelectorAll('.eai-mobile').forEach(function(menu){
+    menu.addEventListener('toggle',function(){
+      var summary=menu.querySelector('summary');
+      if(summary)summary.setAttribute('aria-expanded',String(menu.open));
+    });
+  });
   document.addEventListener('keydown',function(event){
     if(event.key==='Escape')document.querySelectorAll('.eai-mobile[open]').forEach(function(menu){menu.open=false;});
   });
