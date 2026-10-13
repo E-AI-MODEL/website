@@ -93,7 +93,8 @@ De publieke onderwijslaag gebruikt één vaste term voor de stap die een leerlin
 
 - **leerstap** is de standaardterm voor docenten, leerlingen en algemene uitleg;
 - **werkstap** gebruik je voor een gewone stap in een taak of proces;
-- **kernhandeling**, **core_human_action**, **doelhandeling** en vergelijkbare termen horen alleen in de technische EAI Standard-laag wanneer technische herleidbaarheid nodig is;
+- **kernhandeling** blijft de exacte modelterm in Proces → Fase → Kernhandeling → AI en in de definitie van betekenisgeving; **leerstap** mag in praktische docentteksten blijven staan, maar mag die definitie niet vervangen;
+- **core_human_action** en technische registry-termen blijven in de technische laag;
 - gebruik **handeling** alleen wanneer het werkelijk om een algemene actie gaat en niet om de leerstap die onderwijskundig centraal staat.
 
 Voorbeeld:
