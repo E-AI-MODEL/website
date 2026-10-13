@@ -31,6 +31,21 @@
       if(hash && !link.href.includes('#'))link.href+=hash;
     },{once:true});
   });
+  // Keep the English monitor's existing shareable hash links usable inside the iframe.
+  if (window.location.pathname.startsWith('/en/model-monitor/')) {
+    var frame=document.getElementById('model-monitor-frame');
+    var openFull=document.querySelector('.monitor-embed-section a[href*="chatgpt.site/"]');
+    var valid=['latest','dashboard','models','countries','developers','usage','incidents','context','education','legal','sources'];
+    var syncMonitor=function(){
+      var route=(window.location.hash||'#dashboard').slice(1).toLowerCase();
+      if(!valid.includes(route))route='dashboard';
+      var url='https://ai-act-model-monitor.werkruimte-s-2100.chatgpt.site/#'+route;
+      if(frame && frame.getAttribute('src')!==url)frame.setAttribute('src',url);
+      if(openFull)openFull.setAttribute('href',url);
+    };
+    window.addEventListener('hashchange',syncMonitor);
+    syncMonitor();
+  }
   document.addEventListener('click',function(event){
     if(event.target.closest('.eai-mobile .mobile-nav-panel a')){
       var menu=event.target.closest('.eai-mobile');
