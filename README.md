@@ -6,7 +6,7 @@ De productiebron is `main`. De site wordt statisch gegenereerd met `scripts/buil
 
 ## Bron van waarheid
 
-Bewerk voor nieuwe inhoud zoveel mogelijk de bronbestanden, niet de gegenereerde HTML:
+De tweetalige hoofdpagina’s worden rechtstreeks onderhouden in `nl/` en `en/`; `index.html` is de Nederlandse ingang. De bijbehorende omgeleide of vernieuwde pagina’s met `class="eai-refresh"` worden eveneens als paginabron bewaard. De build behoudt deze pagina’s en hun gedeelde assets. Bewerk oudere uitlegpagina’s en hulpmiddelen in hun generator of contentbron:
 
 - `content/workforms.json` — EAI-werkvormen
 - `content/didactic-models.json` — didactische bronmodel-adapters
