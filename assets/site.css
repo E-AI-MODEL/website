@@ -1065,3 +1065,10 @@ body.eai-refresh .monitor-note{font-size:.86rem}
 /* Closed disclosure panels must not render: grid styles otherwise override the native details hidden state on mobile. */
 body.eai-refresh details.eai-mobile:not([open]) > .mobile-nav-panel{display:none!important}
 body.eai-refresh details.eai-mobile[open] > .mobile-nav-panel{display:grid}
+
+/* EAI homepage: keep the four-step explanation legible on narrow screens. */
+@media (max-width: 580px) {
+  body.eai-refresh.eai-home .eai-process-wide { grid-template-columns: minmax(0, 1fr); gap: 9px; }
+  body.eai-refresh.eai-home .eai-process-wide li { padding: 17px 18px; }
+  body.eai-refresh.eai-home .eai-process-wide .eai-step-num { margin-bottom: 7px; }
+}
