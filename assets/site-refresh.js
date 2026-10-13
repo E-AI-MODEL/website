@@ -15,6 +15,16 @@
       });
     });
   });
+  // Language links follow the current page, including legacy Dutch routes.
+  var englishRoutes={"/":"/en/","/nl/":"/en/","/toepassingen/":"/en/applications/","/nl/toepassingen/":"/en/applications/","/onderwijs/":"/en/education/","/nl/onderwijs/":"/en/education/","/kennis/":"/en/research/","/nl/onderzoek/":"/en/research/","/publicaties/":"/en/publications/","/nl/publicaties/":"/en/publications/","/tools/":"/en/tools/","/nl/tools/":"/en/tools/","/model-monitor/":"/en/model-monitor/","/nl/model-monitor/":"/en/model-monitor/","/over/":"/en/about/","/nl/over/":"/en/about/","/nl/onderzoek/leermiddelen/":"/en/research/teaching-tools/"};
+  var dutchRoutes={"/en/":"/nl/","/en/applications/":"/nl/toepassingen/","/en/education/":"/nl/onderwijs/","/en/research/":"/nl/onderzoek/","/en/publications/":"/nl/publicaties/","/en/tools/":"/nl/tools/","/en/model-monitor/":"/nl/model-monitor/","/en/about/":"/nl/over/","/en/research/teaching-tools/":"/nl/onderzoek/leermiddelen/"};
+  var currentPath=window.location.pathname.replace(/index\\.html$/,'').replace(/\\/\\/+$/,'/');
+  if (!currentPath.endsWith('/')) currentPath+='/';
+  document.querySelectorAll('.eai-lang a').forEach(function(link){
+    var lang=link.getAttribute('lang');
+    var destination=lang==='en' ? (englishRoutes[currentPath]||'/en/') : (dutchRoutes[currentPath]||'/nl/');
+    link.setAttribute('href',destination);
+  });
   document.querySelectorAll('[data-preserve-hash]').forEach(function(link){
     link.addEventListener('click',function(){
       var hash=window.location.hash;
