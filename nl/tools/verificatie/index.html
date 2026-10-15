@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Controleer een EAI-publicatie | EAI</title><meta name="description" content="Controleer lokaal de digitale handtekening en de integriteit van het EAI Vastloop CMD Promptbook.">
+<link rel="canonical" href="https://eaimodel.nl/nl/tools/verificatie/"><link rel="icon" href="/assets/eai-logo.svg" type="image/svg+xml"><link rel="stylesheet" href="/assets/site.css">
+<style>.eai-verification{max-width:820px;margin:0 auto;padding:54px 20px 90px}.eai-verification h1{font-size:clamp(2rem,5vw,3.4rem)}.eai-verification .lead{font-size:1.2rem;line-height:1.65}.verify-form{display:grid;gap:22px;padding:28px;margin:32px 0;border:1px solid #ccd3dc;border-radius:14px;background:#fff}.verify-form label{font-weight:650;display:grid;gap:9px}.verify-form input{max-width:100%;font-weight:400}.verify-form button{justify-self:start;padding:12px 22px;border:0;border-radius:7px;background:#15263a;color:#fff;font:inherit;cursor:pointer}.verify-result{padding:16px 20px;border-left:4px solid #65788e;background:#eef1f4;margin:18px 0;white-space:pre-wrap}.verify-result[data-status="ok"]{border-color:#16805f}.verify-result[data-status="bad"]{border-color:#ae3939}.small{font-size:.92rem;color:#526170;line-height:1.7}.verify-links{display:flex;flex-wrap:wrap;gap:18px}.verify-links a{overflow-wrap:anywhere}code{overflow-wrap:anywhere}</style>
+</head><body class="eai-refresh"><a class="skip-link" href="#main-content">Ga naar de inhoud</a>
+<header class="site-header eai-header"><nav class="nav eai-nav" aria-label="Hoofdnavigatie"><a class="brand eai-brand" href="/nl/" aria-label="EAI home"><img src="/assets/eai-logo.svg" width="36" height="36" alt=""><span>EAI</span></a><div class="nav-links eai-links"><a href="/nl/#model">Model</a><a href="/nl/toepassingen/">Toepassingen</a><a href="/nl/onderwijs/">Onderwijs</a><a href="/nl/onderzoek/">Onderzoek</a><a href="/nl/tools/">Tools</a><a href="/nl/model-monitor/">Monitor</a></div></nav></header>
+<main id="main-content" class="eai-verification"><p class="eyebrow">EAI · Publicatieverificatie</p><h1>Is dit het originele EAI-promptbook?</h1><p class="lead">Controleer of een Markdown-bestand exact overeenkomt met de door EAI ondertekende versie. De controle vindt in je eigen browser plaats. Je bestanden worden niet naar een server gestuurd.</p>
+<section aria-labelledby="verify-title"><h2 id="verify-title">Controleer je bestand</h2><form class="verify-form" id="verify-form">
+<label>Promptbook (.md)<input required id="document" type="file" accept=".md,text/markdown,text/plain"></label>
+<label>Ondertekend manifest (.json)<input required id="manifest" type="file" accept=".json,application/json"></label>
+<button type="submit">Controleer bestand</button><p class="small">Gebruik het manifest uit hetzelfde verificatiepakket als je promptbook. De publieke sleutel wordt rechtstreeks van deze website geladen.</p>
+</form><div class="verify-result" id="result" role="status" aria-live="polite">Nog geen verificatie uitgevoerd.</div></section>
+<section><h2>Wat wordt gecontroleerd?</h2><p>De SHA-256-vingerafdruk van het bestand wordt vergeleken met het manifest. Daarna controleert de browser de Ed25519-handtekening met de op deze website gepubliceerde publieke sleutel.</p><p><strong>Een geldige uitslag bevestigt alleen de integriteit van de uitgifte.</strong> Dit bewijst niet dat een taalmodel het promptbook daadwerkelijk volgde, dat de inhoud wetenschappelijk gevalideerd is of dat een AI-antwoord authentiek is.</p><p class="small">De huidige sleutel is een voorlopige EAI-uitgiftesleutel. Identiteitszekerheid vereist daarnaast onafhankelijke bevestiging door de uitgever; websitebezit en ondertekening bewijzen niet automatisch auteurschap.</p>
+<div class="verify-links"><a href="/assets/provenance/EAI_PUBLIC_KEY.txt">Bekijk de publieke sleutel</a><a href="/assets/provenance/EAI_SIGNED_MANIFEST.json">Bekijk het ondertekende manifest</a><a href="/nl/tools/">Terug naar EAI-tools</a></div></section>
+</main><script>
+(function(){
+const $=id=>document.getElementById(id);
+function fromB64(s){const str=atob(s);return Uint8Array.from(str,c=>c.charCodeAt(0))}
+function hex(bytes){return Array.from(bytes,b=>b.toString(16).padStart(2,'0')).join('')}
+function canonical(x){if(Array.isArray(x))return '['+x.map(canonical).join(',')+']';if(x&&typeof x==='object')return '{'+Object.keys(x).sort().map(k=>JSON.stringify(k)+':'+canonical(x[k])).join(',')+'}';return JSON.stringify(x)}
+function status(txt,type){$('result').textContent=txt;$('result').dataset.status=type}
+$('verify-form').addEventListener('submit',async e=>{e.preventDefault();status('Verificatie wordt uitgevoerd…','');try{
+if(!crypto.subtle)throw Error('Deze browser ondersteunt geen veilige Web Crypto-omgeving.');
+const file=$('document').files[0], mf=$('manifest').files[0];if(!file||!mf)throw Error('Selecteer beide bestanden.');
+const m=JSON.parse(await mf.text());if(m.schema!=='eai-signed-provenance/v1'||m.signature_algorithm!=='Ed25519')throw Error('Onbekend manifestformaat.');
+if(m.document!==file.name)throw Error('Bestandsnaam komt niet overeen met het ondertekende manifest.');
+const response=await fetch('/assets/provenance/EAI_PUBLIC_KEY.txt',{cache:'no-store'});if(!response.ok)throw Error('Publieke sleutel is niet beschikbaar.');
+const keytext=await response.text();const line=keytext.split(/\r?\n/).find(x=>x.startsWith('base64: '));if(!line)throw Error('Publieke sleutel is ongeldig.');
+const pub=fromB64(line.slice(8).trim());const kid=hex(new Uint8Array(await crypto.subtle.digest('SHA-256',pub))).slice(0,16);
+if(kid!==m.key_id)throw Error('Sleutelidentificatie komt niet overeen.');
+const sig=fromB64(m.signature_base64);const payload={...m};delete payload.signature_base64;
+const verifykey=await crypto.subtle.importKey('raw',pub,{name:'Ed25519'},false,['verify']);
+const valid=await crypto.subtle.verify({name:'Ed25519'},verifykey,sig,new TextEncoder().encode(canonical(payload)));
+if(!valid)throw Error('Digitale handtekening is ongeldig.');
+const digest=hex(new Uint8Array(await crypto.subtle.digest('SHA-256',await file.arrayBuffer())));
+if(digest!==m.document_sha256)throw Error('Het bestand wijkt af van de ondertekende versie.');
+status('Geldig: de handtekening en de inhoud van dit bestand komen overeen met de op EAImodel.nl gepubliceerde sleutel ('+kid+').\nVersie: '+m.document_version+'.','ok')
+}catch(err){status('Niet geverifieerd: '+(err&&err.message?err.message:String(err)),'bad')}})
+})();
+</script></body></html>
