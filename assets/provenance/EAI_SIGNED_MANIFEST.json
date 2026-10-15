@@ -1,0 +1,14 @@
+{
+  "schema": "eai-signed-provenance/v1",
+  "document": "Vastloop_CMD_Promptbook_v3_4_SIGNED.md",
+  "document_version": "3.4",
+  "document_sha256": "eace6042a5f54ea6c16a4965e144056ccab43aa81e2de61885b3605e1a29c381",
+  "publisher_claim": "Hans Visser | EAI-model | https://www.eaimodel.nl",
+  "key_id": "5abf6b01e251959b",
+  "signature_algorithm": "Ed25519",
+  "signature_scope": "canonical manifest payload excluding signature_base64",
+  "status": "provisional; publisher key not yet published on domain",
+  "signed_at_utc": "2026-10-15",
+  "notes": "Proves content integrity under signing key, not AI use or output authenticity.",
+  "signature_base64": "b4bJYEBguNKfxSTs+QpmKNLz8+A60d7zN1+Q0tRvS8UySeO2LwNxd94J09SDKW4Z0HENLDNaCq69dzNFxb+RCg=="
+}
