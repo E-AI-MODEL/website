@@ -1,0 +1,4 @@
+EAI provisional Ed25519 public key
+key_id: 5abf6b01e251959b
+base64: y/scHqT/5rnR8qoVAG+HO4j8CYiwx0xWcYzOoHNSy8I=
+status: provisional, not yet verified at eaimodel.nl
