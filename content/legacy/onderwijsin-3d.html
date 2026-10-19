@@ -2516,4 +2516,13 @@ const VALUE = {
       card:id=>{const n=NODES.find(k=>k.id===id); if(n) openDetail(n);}};
 
     boot();
-    </script><div role="note" style="position:fixed;z-index:600;bottom:10px;left:50%;transform:translateX(-50%);max-width:85vw;background:rgba(19,38,54,.94);color:white;border:1px solid rgba(255,255,255,.25);padding:7px 13px;border-radius:9px;font:12px/1.4 system-ui;text-align:center;pointer-events:auto">Historische 3D-schets, deels gebaseerd op aannames. <a style="color:#ffe2c8" href="/onderwijsin/#overzicht" target="_top">Brongecontroleerd overzicht ↗</a></div></body></html>
+    </script><div role="note" style="position:fixed;z-index:600;bottom:10px;left:50%;transform:translateX(-50%);max-width:85vw;background:rgba(19,38,54,.94);color:white;border:1px solid rgba(255,255,255,.25);padding:7px 13px;border-radius:9px;font:12px/1.4 system-ui;text-align:center;pointer-events:auto">Historische 3D-schets, deels gebaseerd op aannames. <a style="color:#ffe2c8" href="/onderwijsin/#overzicht" target="_top">Brongecontroleerd overzicht ↗</a></div><script>
+/* Het hoofdmenu bepaalt de weergave wanneer deze historische schets is ingesloten. */
+if (window.parent !== window) {
+  document.body.classList.add('oi-embedded-3d');
+  const isolatedStyles=document.createElement('style');
+  isolatedStyles.textContent='.oi-embedded-3d .topbar .viewsel,.oi-embedded-3d .topbar .modeseg{display:none!important}';
+  document.head.appendChild(isolatedStyles);
+}
+</script>
+</body></html>
