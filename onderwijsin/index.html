@@ -84,6 +84,43 @@
 @media(max-width:950px){#oiApp .oi-repos{grid-template-columns:repeat(2,minmax(0,1fr))}#oiApp .oi-flowrow{grid-template-columns:1fr;gap:7px}#oiApp .oi-arr{transform:rotate(90deg);font-size:1.35rem}#oiApp .oi-flowrow .oi-box{min-height:0}#oiApp .oi-appgrid{grid-template-columns:1fr 1fr}}
 @media(max-width:690px){#oiApp .oi-shell{padding:0 17px}#oiApp .oi-hero{padding:40px 0}#oiApp .oi-repos,#oiApp .oi-evidence,#oiApp .oi-appgrid,#oiApp .oi-notegrid{grid-template-columns:1fr}#oiApp .oi-controls{grid-template-columns:1fr}#oiApp .oi-controls input{max-width:none}#oiApp .oi-switch{width:max-content}#oiApp .oi-section{padding:29px 0}#oiApp .oi-repo{min-height:0}#oiApp .oi-appgrid p{min-height:0}#oiApp dialog{max-height:94dvh}#oiApp .oi-hero h1{font-size:2.25rem}}
 @media(prefers-reduced-motion:reduce){#oiApp .oi-repo{transition:none}#oiApp *{scroll-behavior:auto!important}}
+
+/* Onafhankelijke bladermodi: techniek en inhoud blijven in een eigen scope. */
+#oiApp .oi-toolbar{position:sticky;top:0;z-index:12;padding:14px 0 12px;background:rgba(246,245,240,.98);border-bottom:1px solid var(--oi-line);box-shadow:0 7px 20px rgba(18,37,50,.05)}
+#oiApp .oi-toolbarintro{font-size:.78rem;color:var(--oi-mute);font-weight:650;margin:0 0 10px}
+#oiApp .oi-toolbarline{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;align-items:center}
+#oiApp .oi-viewtabs{display:flex;flex-wrap:wrap;align-items:stretch;gap:7px}
+#oiApp .oi-viewtab{background:white;color:#354957;border:1px solid #ced8dc;border-radius:12px;padding:10px 15px;text-align:left;min-width:126px;display:flex;gap:9px;align-items:center;transition:border-color .14s,background .14s}
+#oiApp .oi-viewtab:hover{border-color:#74939c}
+#oiApp .oi-viewtab[aria-selected="true"]{border-color:#295c74;background:#e6f0f3;box-shadow:inset 0 -3px 0 #265a72;color:#113e54}
+#oiApp .oi-viewtab .oi-tabicon{font-size:1.3rem;line-height:1;font-weight:600;width:23px;text-align:center;flex-shrink:0}
+#oiApp .oi-viewtab b{display:block;font-size:.88rem;line-height:1.25}
+#oiApp .oi-viewtab small{display:block;font-size:.69rem;line-height:1.3;color:var(--oi-mute);margin-top:2px}
+#oiApp .oi-language{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+#oiApp .oi-language>span{color:var(--oi-mute);font-size:.79rem;font-weight:650}
+#oiApp .oi-language .oi-switch{box-shadow:none}
+#oiApp .oi-panel[hidden]{display:none!important}
+#oiApp .oi-panel{animation:oiAppears .17s ease-out}
+#oiApp .oi-tabinfo{font-size:.86rem;color:var(--oi-mute);margin:11px 0 0;line-height:1.42}
+#oiApp .oi-primaryintro{max-width:830px;padding:30px 0 2px}
+#oiApp .oi-primaryintro p{color:var(--oi-mute);margin:0}
+#oiApp .oi-contextnotice{background:#faf3e5;border:1px solid #e7d4ae;color:#67502b;padding:15px 18px;border-radius:12px;line-height:1.55;font-size:.87rem;margin:18px 0}
+#oiApp .oi-contextnotice strong{display:block;margin-bottom:4px}
+#oiApp .oi-drawing{padding:16px;background:white;border:1px solid var(--oi-line);border-radius:16px;margin:18px 0 28px;overflow:hidden}
+#oiApp .oi-drawing iframe{display:block;width:100%;height:clamp(550px,75vh,850px);border:0;border-radius:11px;background:#f6f1ea}
+#oiApp .oi-exit3d{font-size:.82rem;font-weight:700}
+#oiApp .oi-verifiedflow{display:flex;flex-wrap:wrap;gap:11px;align-items:stretch;margin:18px 0}
+#oiApp .oi-verifiedflow .oi-mini{background:white;border:1px solid var(--oi-line);border-radius:10px;padding:15px;flex:1 1 160px;min-width:0}
+#oiApp .oi-verifiedflow .oi-mini b{font-size:.91rem;display:block;line-height:1.3}
+#oiApp .oi-verifiedflow .oi-mini span{font-size:.81rem;color:var(--oi-mute);display:block;margin-top:5px;line-height:1.45}
+#oiApp .oi-verifiedflow .oi-mini.caution{border-style:dashed;border-color:#b7a77b;background:#fcfaf3}
+#oiApp .oi-vf-arrow{align-self:center;color:#748d98;font-size:1.2rem}
+#oiApp .oi-secondarysource{font-size:.81rem;color:var(--oi-mute);margin:8px 0}
+#oiApp .oi-panel.oi-repositorypanel .oi-section{padding-top:35px}
+@keyframes oiAppears{from{opacity:.65;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:960px){#oiApp .oi-toolbar{position:relative;top:auto}#oiApp .oi-toolbarline{align-items:flex-start}#oiApp .oi-viewtabs{width:100%}#oiApp .oi-viewtab{flex:1 1 170px}}
+@media(max-width:600px){#oiApp .oi-toolbar{padding:12px 0}#oiApp .oi-viewtabs{display:grid;grid-template-columns:1fr 1fr}#oiApp .oi-viewtab{min-width:0;padding:10px}#oiApp .oi-viewtab small{font-size:.64rem}#oiApp .oi-language{width:100%;justify-content:space-between}#oiApp .oi-drawing{padding:6px;margin-left:-8px;margin-right:-8px}#oiApp .oi-drawing iframe{height:68vh;min-height:510px}#oiApp .oi-vf-arrow{display:none}}
+@media(prefers-reduced-motion:reduce){#oiApp .oi-panel{animation:none}}
 </style><link rel="stylesheet" href="/assets/article-chrome.css"></head><body><header class="eai-site-nav"><div class="eai-site-nav__inner"><a class="eai-site-nav__brand" href="/" aria-label="EAI home"><img src="/assets/eai-logo.svg" alt="EAI" width="34" height="34"></a><div class="eai-site-nav__links"><a href="/">EAI</a><a href="/toepassingen/">Toepassingen</a><a href="/onderwijs/">Onderwijs</a><a href="/kennis/">Kennis</a><a href="/tools/prompt-framework/">Prompt Framework</a><a href="/model-monitor/">Model Monitor</a><a href="/onderwijsin/">Onderwijs in</a><a href="/over/">Over</a><a href="https://nl.linkedin.com/in/hans-visser-92531a105" target="_blank" rel="noopener">LinkedIn ↗</a></div></div></header>
 <main id="oiApp">
 <section class="oi-hero"><div class="oi-shell">
@@ -93,7 +130,19 @@
 <div class="oi-meta"><span>Stand van bronnen: 19 oktober 2026</span><span>18 openbare repositories</span><span>Niet gemaakt of goedgekeurd door Onderwijs in</span><a href="https://github.com/onderwijsin" rel="noopener" target="_blank">Bekijk de GitHub-organisatie ↗</a></div>
 </div></section>
 <div class="oi-shell">
-<nav aria-label="Op deze pagina" class="oi-localnav"><a href="#wat">Wat weten we?</a><a href="#stroom">Gegevensstroom</a><a href="#producten">Toepassingen</a><a href="#repos">Alle repositories</a><a href="#grenzen">Wat blijft open?</a></nav>
+<div aria-label="Kies een weergave en een taalniveau" class="oi-toolbar">
+<p class="oi-toolbarintro">Hoe wil je de openbare GitHub-code van Onderwijs in bekijken?</p>
+<div class="oi-toolbarline">
+<div aria-label="Weergave" class="oi-viewtabs" id="oiViewTabs" role="tablist">
+<button aria-controls="oi-panel-overzicht" aria-selected="true" class="oi-viewtab" data-oi-view="overzicht" id="oiTabOverview" role="tab" type="button"><span aria-hidden="true" class="oi-tabicon">▦</span><span><b>Overzicht</b><small>Wat bestaat er?</small></span></button>
+<button aria-controls="oi-panel-tekst" aria-selected="false" class="oi-viewtab" data-oi-view="tekst" id="oiTabText" role="tab" tabindex="-1" type="button"><span aria-hidden="true" class="oi-tabicon">≡</span><span><b>Tekst</b><small>Alle onderdelen</small></span></button>
+<button aria-controls="oi-panel-pijplijn" aria-selected="false" class="oi-viewtab" data-oi-view="pijplijn" id="oiTabPipeline" role="tab" tabindex="-1" type="button"><span aria-hidden="true" class="oi-tabicon">⇢</span><span><b>Pijplijn</b><small>Wat gaat waarheen?</small></span></button>
+<button aria-controls="oi-panel-3d" aria-selected="false" class="oi-viewtab" data-oi-view="3d" id="oiTab3d" role="tab" tabindex="-1" type="button"><span aria-hidden="true" class="oi-tabicon">⬡</span><span><b>3D</b><small>Interactief model</small></span></button>
+</div>
+<div class="oi-language"><span id="oiLanguageLabel">Uitleg:</span><div aria-labelledby="oiLanguageLabel" class="oi-switch" role="group"><button aria-pressed="true" id="oiPlain" type="button">Gewone taal</button><button aria-pressed="false" id="oiTech" type="button">Technisch</button></div></div>
+</div>
+<p aria-live="polite" class="oi-tabinfo" id="oiTabInfo">Een rustig begin: toepassingen, openbare code en wat we nog niet weten.</p>
+</div><section aria-labelledby="oiTabOverview" class="oi-panel" id="oi-panel-overzicht" role="tabpanel">
 <section class="oi-section" id="wat">
 <h2>GitHub laat code zien. Geen complete productieomgeving.</h2>
 <p class="oi-lead">Een repository kan werkende software, documentatie, een proef of een oud project bevatten. Dat een techniek in code voorkomt, betekent niet dat alle websites die techniek gebruiken.</p>
@@ -103,6 +152,38 @@
 <article><strong>Niet vastgesteld</strong><b>Concept, afleiding of ontbrekend bewijs</b><p>Een mogelijk verband blijft een mogelijkheid. Het wordt niet als bestaand onderdeel in de tekening gezet.</p></article>
 </div>
 </section>
+<section class="oi-section" id="producten">
+<h2>Wat is een toepassing, en wat is alleen ondersteunende code?</h2>
+<p class="oi-lead">Dit zijn geen onderdelen van één aaneengesloten server. Het gaat om verschillende producten en projectonderdelen.</p>
+<div class="oi-appgrid">
+<article><small>Publieke website</small><h3>Onderwijs in</h3><p>De website van de stichting met initiatieven, expertise en publicaties. De gebruikte technieken per pagina zijn niet allemaal uit de openbare GitHub-repositories af te leiden.</p><a href="https://onderwijsin.nl/" rel="noopener" target="_blank">Bekijk de website ↗</a></article>
+<article><small>Publieke website en API-documentatie</small><h3>Het Onderwijsloket</h3><p>Informatie en advies over werken in het onderwijs. De API-voorbeelden gebruiken Directus en Algolia en vereisen toegang via een token.</p><a href="https://onderwijsloket.com/" rel="noopener" target="_blank">Bekijk het Onderwijsloket ↗</a></article>
+<article><small>Gepubliceerde documentatie en code</small><h3>Onderwijsregio-API</h3><p>Documentatie voor een gedeelde API en kandidaatdefinities. Het oude kandidaatmodel is gearchiveerd. De uitrol van een compleet systeem bij regio's is hier niet vastgesteld.</p><a href="https://github.com/onderwijsin/onderwijsregio-api-docs" rel="noopener" target="_blank">Bekijk de documentatiecode ↗</a></article>
+<article><small>Software in GitHub</small><h3>Regional Site Menu</h3><p>Een interactieve toepassing voor het ontwerpen en bekijken van regionale websites, inclusief het maken van een rapport. Gebruik door een specifieke regio vraagt extra bewijs.</p><a href="https://github.com/onderwijsin/regional-site-menu" rel="noopener" target="_blank">Bekijk de software ↗</a></article>
+<article><small>Dataverwerking in GitHub</small><h3>Matching-pipelines</h3><p>Software die opgegeven voorkeuren omzet naar matchmatrices en speeddate-schema's voor trainees en scholen.</p><a href="https://github.com/onderwijsin/tio-matching-pipelines" rel="noopener" target="_blank">Bekijk de code ↗</a></article>
+<article><small>Kenniswebsite en code</small><h3>Buitenkans</h3><p>Een digitale handreiking over schoolleiderschap in het basisonderwijs, geen platform voor het beheren van kandidaten.</p><a href="https://github.com/onderwijsin/buitenkans" rel="noopener" target="_blank">Bekijk de repository ↗</a></article>
+</div>
+</section>
+<section class="oi-section" id="grenzen">
+<h2>Dit halen we niet uit de openbare code</h2>
+<div class="oi-notegrid">
+<article><h3>Geen bewijs van één complete inrichting</h3><p>Cloudflare, Nuxt, Directus, Algolia, Coolify en andere diensten komen in verschillende projecten voor. Dat maakt ze nog geen enkele, overal identieke architectuur.</p><p>Een diagram mag alleen een pijl tussen twee onderdelen tonen als die relatie expliciet in de bron staat.</p></article>
+<article><h3>Wat nog gecontroleerd moet worden</h3><ul><li>Welke toepassingen en API-endpoints nu echt in productie draaien.</li><li>Welke onderwijsregio's zijn aangesloten en wat zij daadwerkelijk gebruiken.</li><li>Of 'Vraag het Jacob' hetzelfde taalmodel gebruikt als de documentatiesites.</li><li>Welke componenten in de huidige deployments actief zijn.</li></ul></article>
+</div>
+<p class="oi-lead">Een repository met plannen of een openstaande test noemen we geen gerealiseerde functie. Een gearchiveerde repository blijft historisch materiaal. Dat onderscheid geldt voor alle 18 kaarten hieronder.</p>
+</section>
+</section><section aria-labelledby="oiTabText" class="oi-panel oi-repositorypanel" hidden="" id="oi-panel-tekst" role="tabpanel">
+<div class="oi-primaryintro"><h2>Alle onderdelen in leesbare volgorde</h2><p>Zoek een repository of kies een onderwerp. Klik door naar de bron en bekijk wat de code wel en niet aantoont. Kies rechtsboven voor technische beschrijvingen.</p></div>
+<section class="oi-section" id="repos">
+<h2>De 18 openbare repositories</h2>
+<p class="oi-lead">Elke kaart verwijst naar de bron. Je kunt schakelen tussen gewone uitleg en technische informatie. De technische stand is niet afgeleid uit slogans, maar uit de gepubliceerde code en README's.</p>
+<div class="oi-controls"><label><span class="oi-label" style="display:block;margin-bottom:7px">Zoek op naam of functie</span><input autocomplete="off" id="oiSearch" placeholder="Bijvoorbeeld: API, Directus, kandidaat..." type="search"/></label><div aria-label="Tekstniveau" class="oi-switch" role="group"><button aria-pressed="true" id="oiPlain" type="button">Gewone taal</button><button aria-pressed="false" id="oiTech" type="button">Technisch</button></div></div>
+<div aria-label="Onderwerpen" class="oi-filters" id="oiFilters" role="group"></div>
+<div aria-live="polite" class="oi-resultmeta" id="oiCount"></div>
+<div class="oi-repos" id="oiRepos"></div>
+</section>
+</section><section aria-labelledby="oiTabPipeline" class="oi-panel" hidden="" id="oi-panel-pijplijn" role="tabpanel">
+<div class="oi-primaryintro"><h2>Welke gegevens gaan waarheen?</h2><p>Hier staan twee afzonderlijk gedocumenteerde gegevensstromen. De pijlen geven alleen relaties aan die in de README's worden beschreven; een gestippelde laatste stap is een beschreven doel, geen geverifieerde live-koppeling.</p></div>
 <section class="oi-section" id="stroom">
 <h2>Een gegevensstroom die wel te volgen is</h2>
 <p class="oi-lead">De README van <a href="https://github.com/onderwijsin/navigator-data-generator" rel="noopener" target="_blank">navigator-data-generator</a> beschrijft hoe gegevens uit HOVI en KiesMBO worden verwerkt. De Onderwijsnavigator was aanleiding voor deze software. Dit is een beschreven verwerking, geen meting van een actuele productierun.</p>
@@ -119,35 +200,23 @@
 <p class="oi-flowcap">De gestippelde laatste stap is bewust anders getekend: het project beschrijft het gebruiksdoel, maar de huidige technische verbinding is niet uit de openbare broncode vastgesteld. De cijfers 10.000+ API-verzoeken en 100 MB gelden voor een ongefilterde ophaalronde volgens de README, niet voor iedere run.</p>
 </div>
 </section>
-<section class="oi-section" id="producten">
-<h2>Wat is een toepassing, en wat is alleen ondersteunende code?</h2>
-<p class="oi-lead">Dit zijn geen onderdelen van één aaneengesloten server. Het gaat om verschillende producten en projectonderdelen.</p>
-<div class="oi-appgrid">
-<article><small>Publieke website</small><h3>Onderwijs in</h3><p>De website van de stichting met initiatieven, expertise en publicaties. De gebruikte technieken per pagina zijn niet allemaal uit de openbare GitHub-repositories af te leiden.</p><a href="https://onderwijsin.nl/" rel="noopener" target="_blank">Bekijk de website ↗</a></article>
-<article><small>Publieke website en API-documentatie</small><h3>Het Onderwijsloket</h3><p>Informatie en advies over werken in het onderwijs. De API-voorbeelden gebruiken Directus en Algolia en vereisen toegang via een token.</p><a href="https://onderwijsloket.com/" rel="noopener" target="_blank">Bekijk het Onderwijsloket ↗</a></article>
-<article><small>Gepubliceerde documentatie en code</small><h3>Onderwijsregio-API</h3><p>Documentatie voor een gedeelde API en kandidaatdefinities. Het oude kandidaatmodel is gearchiveerd. De uitrol van een compleet systeem bij regio's is hier niet vastgesteld.</p><a href="https://github.com/onderwijsin/onderwijsregio-api-docs" rel="noopener" target="_blank">Bekijk de documentatiecode ↗</a></article>
-<article><small>Software in GitHub</small><h3>Regional Site Menu</h3><p>Een interactieve toepassing voor het ontwerpen en bekijken van regionale websites, inclusief het maken van een rapport. Gebruik door een specifieke regio vraagt extra bewijs.</p><a href="https://github.com/onderwijsin/regional-site-menu" rel="noopener" target="_blank">Bekijk de software ↗</a></article>
-<article><small>Dataverwerking in GitHub</small><h3>Matching-pipelines</h3><p>Software die opgegeven voorkeuren omzet naar matchmatrices en speeddate-schema's voor trainees en scholen.</p><a href="https://github.com/onderwijsin/tio-matching-pipelines" rel="noopener" target="_blank">Bekijk de code ↗</a></article>
-<article><small>Kenniswebsite en code</small><h3>Buitenkans</h3><p>Een digitale handreiking over schoolleiderschap in het basisonderwijs, geen platform voor het beheren van kandidaten.</p><a href="https://github.com/onderwijsin/buitenkans" rel="noopener" target="_blank">Bekijk de repository ↗</a></article>
+<section class="oi-section">
+<h2>API-voorbeelden van het Onderwijsloket</h2>
+<p class="oi-lead">Deze aparte stroom komt uit <a href="https://github.com/onderwijsin/onderwijsloket-examples" rel="noopener" target="_blank">onderwijsloket-examples</a>. Het gaat om uitvoerbare voorbeelden. Ze vormen geen bewijs voor een bestaande koppeling met de Onderwijsnavigator of onderwijsregio-API.</p>
+<div aria-label="Voorbeelden van API-verzoeken en gegevensverwerking" class="oi-verifiedflow">
+<div class="oi-mini"><b>API-toegang</b><span>Directus-token en Algolia-sleutels.</span></div><div aria-hidden="true" class="oi-vf-arrow">→</div>
+<div class="oi-mini"><b>TypeScript scripts</b><span>Directus SDK en Algolia Search Client.</span></div><div aria-hidden="true" class="oi-vf-arrow">→</div>
+<div class="oi-mini"><b>Opvragingen</b><span>Relations, content, filters, facets en geosearch.</span></div><div aria-hidden="true" class="oi-vf-arrow">⇢</div>
+<div class="oi-mini caution"><b>Je eigen toepassing</b><span>Zelf bouwen. Niet als draaiende integratie aangetoond.</span></div>
 </div>
+<p class="oi-secondarysource">Andere repositories, zoals Nuxt Modules en Directus Extensions, leveren herbruikbare code. Er is geen publiek bewijs dat ze standaard samen worden uitgerold.</p>
 </section>
-<section class="oi-section" id="repos">
-<h2>De 18 openbare repositories</h2>
-<p class="oi-lead">Elke kaart verwijst naar de bron. Je kunt schakelen tussen gewone uitleg en technische informatie. De technische stand is niet afgeleid uit slogans, maar uit de gepubliceerde code en README's.</p>
-<div class="oi-controls"><label><span class="oi-label" style="display:block;margin-bottom:7px">Zoek op naam of functie</span><input autocomplete="off" id="oiSearch" placeholder="Bijvoorbeeld: API, Directus, kandidaat..." type="search"/></label><div aria-label="Tekstniveau" class="oi-switch" role="group"><button aria-pressed="true" id="oiPlain" type="button">Gewone taal</button><button aria-pressed="false" id="oiTech" type="button">Technisch</button></div></div>
-<div aria-label="Onderwerpen" class="oi-filters" id="oiFilters" role="group"></div>
-<div aria-live="polite" class="oi-resultmeta" id="oiCount"></div>
-<div class="oi-repos" id="oiRepos"></div>
-</section>
-<section class="oi-section" id="grenzen">
-<h2>Dit halen we niet uit de openbare code</h2>
-<div class="oi-notegrid">
-<article><h3>Geen bewijs van één complete inrichting</h3><p>Cloudflare, Nuxt, Directus, Algolia, Coolify en andere diensten komen in verschillende projecten voor. Dat maakt ze nog geen enkele, overal identieke architectuur.</p><p>Een diagram mag alleen een pijl tussen twee onderdelen tonen als die relatie expliciet in de bron staat.</p></article>
-<article><h3>Wat nog gecontroleerd moet worden</h3><ul><li>Welke toepassingen en API-endpoints nu echt in productie draaien.</li><li>Welke onderwijsregio's zijn aangesloten en wat zij daadwerkelijk gebruiken.</li><li>Of 'Vraag het Jacob' hetzelfde taalmodel gebruikt als de documentatiesites.</li><li>Welke componenten in de huidige deployments actief zijn.</li></ul></article>
-</div>
-<p class="oi-lead">Een repository met plannen of een openstaande test noemen we geen gerealiseerde functie. Een gearchiveerde repository blijft historisch materiaal. Dat onderscheid geldt voor alle 18 kaarten hieronder.</p>
-</section>
-<div class="oi-colophon">Bronnen: de openbare repositories onder <a href="https://github.com/onderwijsin" rel="noopener" target="_blank">github.com/onderwijsin</a>, de genoemde README's en publiek bereikbare productpagina's. Peildatum 19 oktober 2026. Deze reconstructie is onafhankelijk gemaakt voor <a href="https://eaimodel.nl/">EAI</a>. Er is geen toegang tot private repositories, serverconfiguraties of beheeraccounts gebruikt.</div>
+</section><section aria-labelledby="oiTab3d" class="oi-panel" hidden="" id="oi-panel-3d" role="tabpanel">
+<div class="oi-primaryintro"><h2>3D-verkenning van de eerdere HTML</h2><p>De oorspronkelijke interactieve tekening is behouden. Je kunt draaien, inzoomen, kaarten openen en een rondleiding volgen.</p></div>
+<div class="oi-contextnotice" role="note"><strong>Let op: dit is een historische ontwerpschets.</strong>De tekening mengt openbare code, gebruikte diensten en aannames. De getekende verbindingen zijn niet allemaal onafhankelijk vastgesteld. Gebruik de pijplijn en repositorybeschrijvingen voor brongecontroleerde informatie.</div>
+<div class="oi-drawing"><iframe allow="fullscreen" data-src="/onderwijsin/3d/" id="oi3dFrame" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" title="Interactieve 3D-schets van Onderwijs in, met deels niet geverifieerde relaties"></iframe></div>
+<p><a class="oi-exit3d" href="/onderwijsin/3d/" rel="noopener" target="_blank">Open de 3D-schets op een volledig scherm ↗</a></p>
+</section><div class="oi-colophon">Bronnen: de openbare repositories onder <a href="https://github.com/onderwijsin" rel="noopener" target="_blank">github.com/onderwijsin</a>, de genoemde README's en publiek bereikbare productpagina's. Peildatum 19 oktober 2026. Deze reconstructie is onafhankelijk gemaakt voor <a href="https://eaimodel.nl/">EAI</a>. Er is geen toegang tot private repositories, serverconfiguraties of beheeraccounts gebruikt.</div>
 </div>
 <dialog aria-label="Repository in detail" id="oiDialog"><div class="oi-detail">
 <div class="oi-modalhead"><span class="oi-label" id="oiDialogGroup"></span><button class="oi-close" id="oiClose" type="button">Sluiten ×</button></div>
@@ -166,6 +235,96 @@ const labels={code:'Code',docs:'Documentatie',archived:'Gearchiveerd',light:'Kle
 let group='Alles',query='',tech=false;
 const cards=root.querySelector('#oiRepos'),count=root.querySelector('#oiCount'),filters=root.querySelector('#oiFilters');
 const detail=root.querySelector('#oiDialog');
+
+/* De vier weergaven zijn apart van het taalniveau te bedienen. */
+const views=['overzicht','tekst','pijplijn','3d'];
+const viewNotes={
+ overzicht:'Een rustig begin: toepassingen, openbare code en wat we nog niet weten.',
+ tekst:'Lees en doorzoek alle 18 repositories. De tekst wisselt mee met het taalniveau.',
+ pijplijn:'Bekijk twee afzonderlijke gegevensstromen. Niet-geteste koppelingen zijn aangeduid.',
+ '3d':'Bewaarde interactieve ontwerpschets. Controleer feitelijke claims via de andere weergaven.'
+};
+const viewTabs=[...root.querySelectorAll('[data-oi-view]')];
+const oldFrame=root.querySelector('#oi3dFrame');
+let activeView='overzicht';
+function sync3dMode(tries=0){
+ if(!oldFrame||!oldFrame.src||oldFrame.src==='about:blank')return;
+ try{
+  const d=oldFrame.contentDocument;
+  const button=d&&d.querySelector(tech?'#modeTech':'#modePlain');
+  if(button){
+   if(button.classList.contains('on'))return;
+   button.click();
+   return;
+  }
+ }catch(_){}
+ if(tries<20)window.setTimeout(()=>sync3dMode(tries+1),200);
+}
+oldFrame.addEventListener('load',()=>sync3dMode());
+function setView(view,updateUrl=true){
+ if(!views.includes(view))view='overzicht';
+ activeView=view;
+ for(const tab of viewTabs){
+  const on=tab.dataset.oiView===view;
+  tab.setAttribute('aria-selected',String(on));
+  tab.tabIndex=on?0:-1;
+  root.querySelector('#oi-panel-'+tab.dataset.oiView).hidden=!on;
+ }
+ root.querySelector('#oiTabInfo').textContent=viewNotes[view];
+ if(view==='3d'&&!oldFrame.hasAttribute('src'))oldFrame.setAttribute('src',oldFrame.dataset.src);
+ if(view==='3d')sync3dMode();
+ if(updateUrl&&window.history&&window.history.replaceState)
+   window.history.replaceState(null,'',window.location.pathname+window.location.search+'#'+(view==='3d'?'3d':view));
+}
+for(const tab of viewTabs){
+ tab.addEventListener('click',()=>setView(tab.dataset.oiView));
+ tab.addEventListener('keydown',e=>{
+  if(!['ArrowRight','ArrowLeft','Home','End'].includes(e.key))return;
+  e.preventDefault();
+  const n=views.indexOf(tab.dataset.oiView);
+  const index=e.key==='Home'?0:e.key==='End'?views.length-1:(n+(e.key==='ArrowRight'?1:-1)+views.length)%views.length;
+  setView(views[index]);viewTabs[index].focus();
+ });
+}
+const techText={
+ product:[
+ 'Voor de publieke website is geen volledige deployment-configuratie af te leiden uit deze repositoryselectie. Geen bewezen end-to-end stack voor alle routes.',
+ 'De openbare integratievoorbeelden gebruiken Directus SDK, Algolia Search Client, TypeScript en token-authenticatie. De API is niet zonder toegangssleutel te gebruiken.',
+ 'Nuxt 4 / Docus Plus voor de documentatielaag. Kandidaatschema v2 in de actuele API-documentatie; het oude TypeScript-model is archived.',
+ 'Nuxt 4, Nuxt UI, Tailwind, Pinia, Tiptap, jsPDF, Cloudflare Workers en AI SDK voor OpenAI/Mistral.',
+ 'Type-safe pipelines voor preference submissions, match matrices en speeddate scheduling. De daadwerkelijke productieruns zijn niet openbaar.',
+ 'Nuxt-gebaseerde documentatietoepassing. De README noemt een herbruikbare Docus-laag.'
+ ],
+ flow:[
+ 'HOVI Organizations/Locations/Products + KiesMBO Schools/Locations/Studies via externe APIs en credentials.',
+ 'TypeScript composables useHovi()/useKiesMbo(); filtering, normalisation, geocoding, caching en type-mapping.',
+ 'Gestandaardiseerde types; export naar JSON of Excel. HOVI en KiesMBO verschillen in brondetail.',
+ 'Onderwijsnavigator is de in README genoemde consumer/use case. Actuele production dependency niet geverifieerd.'
+ ],
+ api:[
+ 'DIRECTUS_TOKEN en ALGOLIA_TOKEN uit environmentconfiguratie.',
+ 'TypeScript CLI scripts, Directus SDK, Algolia Search Client.',
+ 'Relational queries, Tiptap content, filtering, facets, multi-index search en geoqueries.',
+ 'Downstream consumer implementation is niet in deze repo bewezen.'
+ ]
+};
+const originalTexts=new WeakMap();
+function setDescriptionMode(){
+ root.querySelectorAll('#oi-panel-overzicht .oi-appgrid article p').forEach((p,i)=>{
+  if(!originalTexts.has(p))originalTexts.set(p,p.textContent);
+  p.textContent=tech?techText.product[i]:originalTexts.get(p);
+ });
+ root.querySelectorAll('#oi-panel-pijplijn .oi-flowrow .oi-box>span').forEach((p,i)=>{
+  if(!originalTexts.has(p))originalTexts.set(p,p.textContent);
+  p.textContent=tech?techText.flow[i]:originalTexts.get(p);
+ });
+ root.querySelectorAll('#oi-panel-pijplijn .oi-verifiedflow .oi-mini>span').forEach((p,i)=>{
+  if(!originalTexts.has(p))originalTexts.set(p,p.textContent);
+  p.textContent=tech?techText.api[i]:originalTexts.get(p);
+ });
+ sync3dMode();
+}
+
 function button(tag,cls,txt){const e=document.createElement(tag);e.className=cls;e.textContent=txt;return e;}
 for(const g of groups){const b=button('button','',g);b.type='button';b.setAttribute('aria-pressed',g==='Alles'?'true':'false');b.addEventListener('click',()=>{group=g;for(const el of filters.children)el.setAttribute('aria-pressed',el===b?'true':'false');render();});filters.append(b);}
 function show(item){
@@ -193,9 +352,10 @@ count.textContent=found.length+' van '+items.length+' repositories zichtbaar';
 root.querySelector('#oiSearch').addEventListener('input',e=>{query=e.target.value.trim().toLocaleLowerCase('nl');render();});
 root.querySelector('#oiPlain').addEventListener('click',()=>setMode(false));
 root.querySelector('#oiTech').addEventListener('click',()=>setMode(true));
-function setMode(t){tech=t;root.querySelector('#oiPlain').setAttribute('aria-pressed',String(!t));root.querySelector('#oiTech').setAttribute('aria-pressed',String(t));render();}
+function setMode(t){tech=t;root.querySelector('#oiPlain').setAttribute('aria-pressed',String(!t));root.querySelector('#oiTech').setAttribute('aria-pressed',String(t));setDescriptionMode();render();}
 root.querySelector('#oiClose').addEventListener('click',()=>{if(typeof detail.close==='function')detail.close();else detail.removeAttribute('open')});
 detail.addEventListener('click',e=>{if(e.target===detail&&typeof detail.close==='function')detail.close();});
+setView(views.includes(window.location.hash.slice(1))?window.location.hash.slice(1):'overzicht',false);
 render();
 })();
 </script>
