@@ -2197,7 +2197,7 @@ def redirect(target: str) -> str:
     return f'<!doctype html><html lang="nl"><head><meta charset="utf-8"><meta name="robots" content="noindex"><meta http-equiv="refresh" content="0; url={esc(target)}"><link rel="canonical" href="{esc(canonical)}"><title>Doorsturen…</title></head><body><p><a href="{esc(target)}">Ga verder</a></p></body></html>'
 
 def require_sources(sources: Path) -> None:
-    required = [file for _, _, file, _ in PUBLICATIONS] + ["onderwijsin-embed1.html", "eai-tools-modules-eai-toolkit-beyond-explainability-embed1.html"]
+    required = [file for _, _, file, _ in PUBLICATIONS] + ["onderwijsin-embed1.html", "onderwijsin-3d.html", "eai-tools-modules-eai-toolkit-beyond-explainability-embed1.html"]
     missing = [name for name in required if not (sources / name).exists()]
     if missing:
         raise SystemExit("Missing vendored legacy sources: " + ", ".join(missing))
@@ -2612,6 +2612,9 @@ def build(sources: Path, out: Path) -> None:
 
     onderwijs = sources / "onderwijsin-embed1.html"
     write(out, "onderwijsin/index.html", inject_embed(onderwijs, "/onderwijsin/", "OnderwijsIn — technische anatomie", "/"))
+    # Bewaar de oorspronkelijke 3D-illustratie als een geïsoleerde, optionele weergave.
+    # Dit is een historische schets, niet de bron van de gecontroleerde repositoryclaims.
+    write(out, "onderwijsin/3d/index.html", (sources / "onderwijsin-3d.html").read_text(encoding="utf-8"))
 
     redirects = {
         "eai-toolanalyse": "https://subtle-churros-4d44d5.netlify.app",
@@ -2628,7 +2631,7 @@ def build(sources: Path, out: Path) -> None:
     not_found = '<main><section class="page-hero"><div class="wrap"><div class="eyebrow">404</div><h1>Deze pagina is er niet meer.</h1><p class="lede">De oude Google-site bevatte ook een paar dode links. Ga terug naar de publicaties of tools.</p><div class="button-row"><a class="button" href="/publicaties/">Publicaties</a><a class="button secondary" href="/tools/">Tools</a></div></div></section></main>'
     write(out, "404.html", doc("Niet gevonden", not_found, "/404.html"))
     write(out, "robots.txt", "User-agent: *\nAllow: /\nSitemap: https://eaimodel.nl/sitemap.xml\n")
-    urls = ["/", "/toepassingen/", "/toepassingen/onderwijs-ai/", "/onderwijs/", "/kennis/", "/twee-pijlers/", "/workshop-ai/", "/werkvormen/", "/taalwerkvormen/", "/verdieping/", "/onderbouwing/", "/bronnen/", "/praktijk/", "/publicaties/", "/publicaties/de-vraag-die-we-vergeten/", "/tools/", "/tools/prompt-framework/", "/model-monitor/", "/over/", "/eaa-model/", "/onderwijsin/"] + [f"/werkvormen/{item['slug']}/" for item in workforms] + [f"/publicaties/{slug}/" for slug, _, _, _ in PUBLICATIONS] + ["/tools/beyond-explainability/"]
+    urls = ["/", "/toepassingen/", "/toepassingen/onderwijs-ai/", "/onderwijs/", "/kennis/", "/twee-pijlers/", "/workshop-ai/", "/werkvormen/", "/taalwerkvormen/", "/verdieping/", "/onderbouwing/", "/bronnen/", "/praktijk/", "/publicaties/", "/publicaties/de-vraag-die-we-vergeten/", "/tools/", "/tools/prompt-framework/", "/model-monitor/", "/over/", "/eaa-model/", "/onderwijsin/", "/onderwijsin/3d/"] + [f"/werkvormen/{item['slug']}/" for item in workforms] + [f"/publicaties/{slug}/" for slug, _, _, _ in PUBLICATIONS] + ["/tools/beyond-explainability/"]
     # The bilingual redesign is maintained in nl/ and en/. Preserve it during
     # the legacy article/tool build, including its current home and assets.
     repo_root = Path(__file__).resolve().parent.parent
