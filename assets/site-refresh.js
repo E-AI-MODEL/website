@@ -94,29 +94,7 @@
     });
     document.addEventListener('click',function(e){if(!header.contains(e.target))header.querySelectorAll('.eai-nav-group[open]').forEach(function(d){d.open=false;});});
     document.addEventListener('keydown',function(e){if(e.key==='Escape')header.querySelectorAll('.eai-nav-group[open]').forEach(function(d){d.open=false;});});
-    var css=document.createElement('style');
-    css.textContent=`
-.eai-header .eai-links{display:none!important}
-.eai-header .eai-mobile{display:block!important;position:relative}
-.eai-header .eai-header-end{display:flex;align-items:center;gap:20px}
-.eai-header .eai-mobile>summary{display:flex;align-items:center;gap:11px;cursor:pointer;list-style:none;font-weight:650;white-space:nowrap;padding:9px 4px}
-.eai-header .eai-mobile>summary::-webkit-details-marker{display:none}
-.eai-header .eai-mobile>summary:before{content:"";display:inline-block;width:22px;height:16px;border-top:2px solid currentColor;border-bottom:2px solid currentColor;background:linear-gradient(currentColor,currentColor) center / 100% 2px no-repeat}
-.eai-header .eai-mobile[open]>summary:before{background:none;transform:rotate(0deg)}
-.eai-header .eai-mobile .mobile-nav-panel{position:absolute!important;right:0!important;left:auto!important;top:calc(100% + 15px)!important;width:min(420px,calc(100vw - 32px))!important;max-height:calc(100dvh - 90px);overflow-y:auto;display:block;z-index:100;background:#fff;color:#1a2633;border:1px solid #d6dee5;border-radius:10px;box-shadow:0 20px 50px rgba(13,27,44,.18);padding:14px 18px}
-.eai-header .eai-mobile:not([open]) .mobile-nav-panel{display:none!important}
-.eai-header .eai-mobile-group{border-bottom:1px solid #e2e7eb;padding:4px 0}
-.eai-header .eai-mobile-group:last-child{border-bottom:0}
-.eai-header .eai-mobile-group>summary{display:block;cursor:pointer;padding:13px 8px;font-weight:700;list-style:none;font-size:1rem}
-.eai-header .eai-mobile-group>summary::-webkit-details-marker{display:none}
-.eai-header .eai-mobile-group>summary:after{content:"+";float:right;font-size:1.15rem}
-.eai-header .eai-mobile-group[open]>summary:after{content:"−"}
-.eai-header .eai-mobile-group>a{display:block;padding:10px 20px;text-decoration:none;font-size:.94rem;line-height:1.4}
-.eai-header .eai-mobile-group>a:hover,.eai-header .eai-mobile-group>a:focus-visible,.eai-header .eai-mobile-group>a[aria-current]{background:#eef3f6;border-radius:5px}
-.eai-header .eai-mobile>summary:focus-visible,.eai-header .eai-mobile-group>summary:focus-visible{outline:2px solid #276ea0;outline-offset:3px}
-@media(max-width:600px){.eai-header .eai-mobile .mobile-nav-panel{position:fixed!important;top:68px!important;right:10px!important;width:calc(100vw - 20px)!important;max-height:calc(100dvh - 80px)}}
-`;
-    document.head.appendChild(css);
+
   })();
 
   // Keep the English monitor's existing shareable hash links usable inside the iframe.
