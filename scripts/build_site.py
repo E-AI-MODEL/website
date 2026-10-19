@@ -2658,6 +2658,8 @@ def build(sources: Path, out: Path) -> None:
     handoff_site = repo_root / "houseoftalents"
     if handoff_site.is_dir():
         shutil.copytree(handoff_site, out / "houseoftalents", dirs_exist_ok=True)
+        # Mirror under the existing Onderwijs in publishing directory.
+        shutil.copytree(handoff_site, out / "onderwijsin" / "houseoftalents", dirs_exist_ok=True)
     items = "".join(f"<url><loc>{BASE_URL}{path}</loc></url>" for path in urls)
     write(out, "sitemap.xml", f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{items}</urlset>')
 
