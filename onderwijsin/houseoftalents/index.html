@@ -134,59 +134,95 @@ html,body{margin:0;padding:0}
 @media(prefers-reduced-motion:reduce){#oiApp .oi-panel{animation:none}}
 </style>
 <style>
-/* Standalone public handoff access screen */
+/* Rustige overdracht: bestaande visualisatie, zonder extra introductiepagina. */
 html,body{margin:0}
-#oiApp[hidden],#hotGate[hidden]{display:none!important}
-#hotGate{min-height:100dvh;padding:30px 18px;display:grid;place-items:center;background:#f7f7f5;color:#27333c;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
-.hot-gate-card{width:min(100%,460px);padding:clamp(28px,5vw,44px);background:white;border:1px solid #dfe3e4;border-radius:12px}
-.hot-overline{font-size:.71rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:#697683;margin:0 0 15px}
-#hotGate h1{font-size:clamp(1.8rem,4vw,2.25rem);font-weight:650;letter-spacing:-.035em;line-height:1.15;margin:0 0 15px}
-#hotGate p{font-size:.95rem;line-height:1.6;margin:0 0 24px;color:#4d5b67}
-#hotGate label{display:block;font-size:.82rem;font-weight:650;margin-bottom:9px}
-.hot-entry{display:flex;gap:8px;flex-wrap:wrap}
-.hot-entry input{min-width:0;flex:1 1 170px;font:inherit;padding:11px 12px;border:1px solid #b8c3cb;border-radius:6px}
-.hot-entry button{flex:0 0 auto;border:0;border-radius:6px;padding:11px 19px;background:#233a4d;color:white;font:600 .9rem system-ui;cursor:pointer}
-.hot-entry button:hover{background:#304c64}
-.hot-entry input:focus-visible,.hot-entry button:focus-visible{outline:2px solid #467da7;outline-offset:2px}
-#hotGate #hotError{font-size:.82rem;color:#a63232;margin:10px 0 0;min-height:1.2em}
-#hotGate small{display:block;margin-top:20px;color:#78838b;font-size:.76rem;line-height:1.5}
+body.hot-locked{overflow:hidden}
+#oiApp[inert]{pointer-events:none;user-select:none}
+#hotGate[hidden]{display:none!important}
+#hotGate{position:fixed;inset:0;z-index:2000;display:grid;place-items:center;
+  padding:20px;background:rgba(28,42,53,.25);backdrop-filter:blur(3px);
+  font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#27333c}
+#hotGate *{box-sizing:border-box}
+#hotGate .hot-gate-card{width:min(100%,350px);padding:22px 23px 18px;background:#fff;
+  border:1px solid #dfe3e6;border-radius:9px;box-shadow:0 14px 42px rgba(20,32,46,.14)}
+#hotGate h2{margin:0 0 15px;font:600 1rem/1.3 system-ui,sans-serif}
+#hotGate .hot-entry{display:flex;gap:7px;align-items:stretch}
+#hotGate .hot-entry input{flex:1;min-width:0;padding:10px 11px;border:1px solid #b7c2ca;
+  border-radius:5px;font:400 .9rem system-ui;background:#fff;color:#27333c}
+#hotGate .hot-entry button{flex:none;padding:10px 15px;border:1px solid #263e4e;
+  border-radius:5px;background:#263e4e;color:#fff;font:550 .85rem system-ui;cursor:pointer}
+#hotGate .hot-entry button:hover{background:#35536a}
+#hotGate .hot-entry :focus-visible{outline:2px solid #467da7;outline-offset:2px}
+#hotGate #hotError{margin:9px 0 0;min-height:1.1em;color:#ab3838;font-size:.78rem;line-height:1.3}
+.hot-visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+/* De HTML is het product: titel en navigatie nemen zo weinig mogelijk ruimte. */
+#oiApp .oi-hero{background:#fafaf9;color:#263440;border-bottom:1px solid #e4e8e9;
+  padding:27px 0 20px}
+#oiApp .oi-hero h1{font:600 clamp(1.35rem,2.6vw,1.8rem)/1.25 system-ui,sans-serif;
+  letter-spacing:-.025em;margin:0 0 10px;max-width:none}
+#oiApp .oi-meta{margin:0;display:flex;align-items:center;gap:8px 20px;
+  color:#66737b;font-size:.78rem}
+#oiApp .oi-hero a{color:#365772;text-decoration:underline;text-underline-offset:3px}
+#oiApp .oi-toolbar{top:0;padding:11px 0;background:#f6f5f0;box-shadow:none}
+#oiApp .oi-toolbarline{gap:10px 16px}
+#oiApp .oi-viewtabs{gap:2px;flex-wrap:nowrap}
+#oiApp .oi-viewtab,#oiApp .oi-viewtab[aria-selected="true"]{
+  min-width:0;flex:0 1 auto;gap:0;align-items:center;padding:10px 13px;
+  border:0;border-radius:5px;background:transparent;color:#687681;box-shadow:none;
+  font:500 .88rem/1.25 system-ui,sans-serif;text-align:center}
+#oiApp .oi-viewtab b{font:inherit}
+#oiApp .oi-viewtab:hover{background:#ebeeee;color:#243743}
+#oiApp .oi-viewtab[aria-selected="true"]{background:#e5e9eb;color:#1e3d51;font-weight:650}
+#oiApp .oi-language>span{font-size:.77rem;font-weight:500}
+#oiApp .oi-switch{padding:2px;gap:0;border-color:#d9dfe2;border-radius:6px}
+#oiApp .oi-switch button{font-size:.78rem;font-weight:500;border-radius:4px;padding:7px 10px}
+#oiApp .oi-switch button[aria-pressed="true"]{background:#dfe7e9;color:#263a47;font-weight:650}
+#oiApp .oi-tabinfo{font-size:.79rem;margin:7px 0 0}
+@media(max-width:690px){
+  #oiApp .oi-hero{padding:20px 0 15px}
+  #oiApp .oi-hero h1{font-size:1.4rem}
+  #oiApp .oi-toolbar{padding:9px 0}
+  #oiApp .oi-toolbarline{display:grid;gap:9px}
+  #oiApp .oi-viewtabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:2px}
+  #oiApp .oi-viewtab{padding:10px 5px;font-size:.81rem;justify-content:center}
+  #oiApp .oi-language{width:100%;justify-content:space-between}
+}
 </style>
 <meta name="robots" content="noindex,nofollow">
 </head>
-<body>
-<section id="hotGate" aria-labelledby="hotTitle">
+<body class="hot-locked">
+<div id="hotGate" class="hot-gate" role="dialog" aria-modal="true" aria-labelledby="hotTitle">
   <div class="hot-gate-card">
-    <p class="hot-overline">House of Talents · Werkversie</p>
-    <h1 id="hotTitle">Onderwijs in</h1>
-    <p>Een onafhankelijke inventarisatie van openbare code en documentatie. Vul het gedeelde wachtwoord in om de interactieve versie te bekijken.</p>
+    <h2 id="hotTitle">Wachtwoord</h2>
     <form id="hotForm">
-      <label for="hotPassword">Wachtwoord</label>
-      <div class="hot-entry"><input id="hotPassword" type="password" autocomplete="off" required placeholder="Wachtwoord" /><button type="submit">Openen</button></div>
+      <label class="hot-visually-hidden" for="hotPassword">Wachtwoord</label>
+      <div class="hot-entry">
+        <input id="hotPassword" type="password" autocomplete="off" required placeholder="Wachtwoord" aria-describedby="hotError">
+        <button type="submit">Open</button>
+      </div>
       <p id="hotError" role="status" aria-live="polite"></p>
     </form>
-    <small>Deze werkversie is geen officieel document van Stichting Onderwijs in.</small>
   </div>
-</section>
-<main id="oiApp" hidden>
+</div>
+<main id="oiApp" inert aria-hidden="true">
 <section class="oi-hero"><div class="oi-shell">
-<div class="oi-eyebrow">Onafhankelijke inventarisatie · Openbare bronnen</div>
-<h1>Wat staat er werkelijk op GitHub bij Onderwijs in?</h1>
-<p>Je ziet hier de openbare code en documentatie van Stichting Onderwijs in. Wat kun je daaruit opmaken? En wat weten we juist niet? De site maakt dat onderscheid zichtbaar, zonder een concept als werkend systeem te presenteren.</p>
-<div class="oi-meta"><span>Stand van bronnen: 19 oktober 2026</span><span>18 openbare repositories</span><span>Niet gemaakt of goedgekeurd door Onderwijs in</span><a href="https://github.com/onderwijsin" target="_blank" rel="noopener">Bekijk de GitHub-organisatie ↗</a></div>
+<h1>Onderwijs in op GitHub</h1>
+<div class="oi-meta"><span>18 openbare repositories</span><span>Peildatum: 19 oktober 2026</span><a href="https://github.com/onderwijsin" target="_blank" rel="noopener">Bekijk de bron ↗</a></div>
 </div></section>
 <div class="oi-shell">
 <div class="oi-toolbar" aria-label="Kies een weergave en een taalniveau">
-<p class="oi-toolbarintro">Hoe wil je de openbare GitHub-code van Onderwijs in bekijken?</p>
+
 <div class="oi-toolbarline">
 <div class="oi-viewtabs" id="oiViewTabs" role="tablist" aria-label="Weergave">
-<button class="oi-viewtab" id="oiTabOverview" data-oi-view="overzicht" role="tab" type="button" aria-selected="true" aria-controls="oi-panel-overzicht"><span class="oi-tabicon" aria-hidden="true">▦</span><span><b>Overzicht</b><small>Wat bestaat er?</small></span></button>
-<button class="oi-viewtab" id="oiTabText" data-oi-view="tekst" role="tab" type="button" aria-selected="false" aria-controls="oi-panel-tekst" tabindex="-1"><span class="oi-tabicon" aria-hidden="true">≡</span><span><b>Tekst</b><small>Alle onderdelen</small></span></button>
-<button class="oi-viewtab" id="oiTabPipeline" data-oi-view="pijplijn" role="tab" type="button" aria-selected="false" aria-controls="oi-panel-pijplijn" tabindex="-1"><span class="oi-tabicon" aria-hidden="true">⇢</span><span><b>Pijplijn</b><small>Wat gaat waarheen?</small></span></button>
-<button class="oi-viewtab" id="oiTab3d" data-oi-view="3d" role="tab" type="button" aria-selected="false" aria-controls="oi-panel-3d" tabindex="-1"><span class="oi-tabicon" aria-hidden="true">⬡</span><span><b>3D</b><small>Interactief model</small></span></button>
+<button class="oi-viewtab" id="oiTabOverview" data-oi-view="overzicht" role="tab" type="button" aria-selected="true" aria-controls="oi-panel-overzicht"><span><b>Overzicht</b></span></button>
+<button class="oi-viewtab" id="oiTabText" data-oi-view="tekst" role="tab" type="button" aria-selected="false" aria-controls="oi-panel-tekst" tabindex="-1"><span><b>Tekst</b></span></button>
+<button class="oi-viewtab" id="oiTabPipeline" data-oi-view="pijplijn" role="tab" type="button" aria-selected="false" aria-controls="oi-panel-pijplijn" tabindex="-1"><span><b>Pijplijn</b></span></button>
+<button class="oi-viewtab" id="oiTab3d" data-oi-view="3d" role="tab" type="button" aria-selected="false" aria-controls="oi-panel-3d" tabindex="-1"><span><b>3D</b></span></button>
 </div>
-<div class="oi-language"><span id="oiLanguageLabel">Uitleg:</span><div class="oi-switch" role="group" aria-labelledby="oiLanguageLabel"><button type="button" id="oiPlain" aria-pressed="true">Gewone taal</button><button type="button" id="oiTech" aria-pressed="false">Technisch</button></div></div>
+<div class="oi-language"><span id="oiLanguageLabel">Taal</span><div class="oi-switch" role="group" aria-labelledby="oiLanguageLabel"><button type="button" id="oiPlain" aria-pressed="true">Gewone taal</button><button type="button" id="oiTech" aria-pressed="false">Technisch</button></div></div>
 </div>
-<p class="oi-tabinfo" id="oiTabInfo" aria-live="polite">Een rustig begin: toepassingen, openbare code en wat we nog niet weten.</p>
+<p class="oi-tabinfo" id="oiTabInfo" aria-live="polite">Toepassingen, openbare code en wat niet vaststaat.</p>
 </div><section class="oi-panel" id="oi-panel-overzicht" role="tabpanel" aria-labelledby="oiTabOverview">
 <section class="oi-section" id="wat">
 <h2>GitHub laat code zien. Geen complete productieomgeving.</h2>
@@ -289,10 +325,10 @@ const detail=root.querySelector('#oiDialog');
 /* De vier weergaven zijn apart van het taalniveau te bedienen. */
 const views=['overzicht','tekst','pijplijn','3d'];
 const viewNotes={
- overzicht:'Een rustig begin: toepassingen, openbare code en wat we nog niet weten.',
- tekst:'Lees en doorzoek alle 18 repositories. De tekst wisselt mee met het taalniveau.',
- pijplijn:'Bekijk twee afzonderlijke gegevensstromen. Niet-geteste koppelingen zijn aangeduid.',
- '3d':'Bewaarde interactieve ontwerpschets. Controleer feitelijke claims via de andere weergaven.'
+ overzicht:'Toepassingen, openbare code en wat niet vaststaat.',
+ tekst:'Doorzoek de 18 openbare repositories.',
+ pijplijn:'Twee afzonderlijke gegevensstromen. Niet-bevestigde verbindingen zijn aangeduid.',
+ '3d':'Historische ontwerpschets. Niet alle verbindingen zijn bevestigd.'
 };
 const viewTabs=[...root.querySelectorAll('[data-oi-view]')];
 const oldFrame=root.querySelector('#oi3dFrame');
@@ -417,10 +453,13 @@ render();
   const app=document.getElementById("oiApp");
   const input=document.getElementById("hotPassword");
   const error=document.getElementById("hotError");
+  if(input)input.focus();
   function open(){
     gate.hidden=true;
-    app.hidden=false;
-    document.title="Onderwijs in · House of Talents";
+    app.removeAttribute("inert");
+    app.removeAttribute("aria-hidden");
+    document.body.classList.remove("hot-locked");
+    document.title="Onderwijs in op GitHub";
   }
   try{if(sessionStorage.getItem("hot-open-v1")==="yes"){open();return;}}catch(e){}
   form.addEventListener("submit",function(event){
