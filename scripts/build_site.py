@@ -2115,12 +2115,14 @@ def nav(active: str = "") -> str:
         f'<div class="nav-links"><a href="/"{home_current}>EAI</a>{"".join(desktop_groups)}'
         f'<a href="/tools/prompt-framework/"{prompt_current}>Prompt Framework</a>'
         f'<a href="/model-monitor/"{monitor_current}>Model Monitor</a>'
+        f'<a href="/onderwijsin/">Onderwijs in</a>'
         f'<a href="/over/"{over_current}>Over</a>'
         f'<a class="nav-cta" href="{LINKEDIN}" target="_blank" rel="noopener">LinkedIn ↗</a></div>'
         f'<details class="mobile-nav"><summary>Menu</summary><div class="mobile-nav-panel">'
         f'<a href="/"{home_current}>EAI</a>{"".join(mobile_groups)}'
         f'<a href="/tools/prompt-framework/"{prompt_current}>Prompt Framework</a>'
         f'<a href="/model-monitor/"{monitor_current}>Model Monitor</a>'
+        f'<a href="/onderwijsin/">Onderwijs in</a>'
         f'<a href="/over/"{over_current}>Over</a>'
         f'<a href="{LINKEDIN}" target="_blank" rel="noopener">LinkedIn ↗</a></div></details>'
         f'</nav></header>'
@@ -2185,7 +2187,7 @@ def inject_embed(source: Path, canonical_path: str, fallback_title: str, footer_
                 head_parts.append(str(node))
     body_inner = soup.body.decode_contents() if soup.body else src
     body_inner = rewrite_legacy_links(body_inner)
-    chrome = f'<header class="eai-site-nav"><div class="eai-site-nav__inner"><a class="eai-site-nav__brand" href="/" aria-label="EAI home"><img src="/assets/eai-logo.svg" alt="EAI" width="34" height="34"></a><div class="eai-site-nav__links"><a href="/">EAI</a><a href="/toepassingen/">Toepassingen</a><a href="/onderwijs/">Onderwijs</a><a href="/kennis/">Kennis</a><a href="/tools/prompt-framework/">Prompt Framework</a><a href="/model-monitor/">Model Monitor</a><a href="/over/">Over</a><a href="{LINKEDIN}" target="_blank" rel="noopener">LinkedIn ↗</a></div></div></header>'
+    chrome = f'<header class="eai-site-nav"><div class="eai-site-nav__inner"><a class="eai-site-nav__brand" href="/" aria-label="EAI home"><img src="/assets/eai-logo.svg" alt="EAI" width="34" height="34"></a><div class="eai-site-nav__links"><a href="/">EAI</a><a href="/toepassingen/">Toepassingen</a><a href="/onderwijs/">Onderwijs</a><a href="/kennis/">Kennis</a><a href="/tools/prompt-framework/">Prompt Framework</a><a href="/model-monitor/">Model Monitor</a><a href="/onderwijsin/">Onderwijs in</a><a href="/over/">Over</a><a href="{LINKEDIN}" target="_blank" rel="noopener">LinkedIn ↗</a></div></div></header>'
     foot = f'<footer class="eai-site-footer"><a href="{footer_back}">← Terug</a> · <a href="/bronnen/">Bronnen</a> · <a href="{LINKEDIN}" target="_blank" rel="noopener">LinkedIn ↗</a></footer>'
     canonical = f"{BASE_URL}{canonical_path}"
     return f'<!doctype html><html lang="{esc(lang)}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{esc(title)} · EAI</title><link rel="canonical" href="{esc(canonical)}"><link rel="icon" href="/assets/eai-logo.svg" type="image/svg+xml">{"".join(head_parts)}<link rel="stylesheet" href="/assets/article-chrome.css"></head><body>{chrome}{body_inner}{foot}</body></html>'
