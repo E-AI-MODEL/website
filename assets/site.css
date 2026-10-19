@@ -1072,3 +1072,18 @@ body.eai-refresh details.eai-mobile[open] > .mobile-nav-panel{display:grid}
   body.eai-refresh.eai-home .eai-process-wide li { padding: 17px 18px; }
   body.eai-refresh.eai-home .eai-process-wide .eai-step-num { margin-bottom: 7px; }
 }
+
+/* Global hamburger fallback: visible on desktop and mobile without JS. */
+body.eai-refresh .eai-header .eai-links{display:none!important}
+body.eai-refresh .eai-header .eai-mobile{display:block!important;position:relative}
+body.eai-refresh .eai-header .eai-mobile>summary{display:flex;align-items:center;gap:10px;cursor:pointer;list-style:none;border:1px solid #cbd3d6;border-radius:8px;padding:9px 12px;background:#fff;font-weight:700}
+body.eai-refresh .eai-header .eai-mobile>summary::-webkit-details-marker{display:none}
+body.eai-refresh .eai-header .eai-mobile>summary::before{content:"";width:21px;height:16px;display:inline-block;border-block:2px solid currentColor;background:linear-gradient(currentColor,currentColor) center/100% 2px no-repeat}
+body.eai-refresh .eai-header .eai-mobile .mobile-nav-panel{position:absolute;right:0;left:auto;top:calc(100% + 8px);width:min(420px,calc(100vw - 32px));max-height:calc(100dvh - 90px);overflow:auto;z-index:100;background:#fff;border:1px solid #dce1e3;border-radius:9px;box-shadow:0 14px 35px #24314525;padding:12px;display:block}
+body.eai-refresh .eai-header .eai-mobile:not([open])>.mobile-nav-panel{display:none!important}
+body.eai-refresh .eai-header .eai-mobile-group{border-bottom:1px solid #e2e7eb;padding:4px 0}
+body.eai-refresh .eai-header .eai-mobile-group>summary{cursor:pointer;list-style:none;padding:12px 9px;font-weight:700}
+body.eai-refresh .eai-header .eai-mobile-group>summary::after{content:"+";float:right}
+body.eai-refresh .eai-header .eai-mobile-group[open]>summary::after{content:"−"}
+body.eai-refresh .eai-header .eai-mobile-group>a{display:block;padding:10px 20px;text-decoration:none}
+@media(max-width:600px){body.eai-refresh .eai-header .eai-mobile>.mobile-nav-panel{position:fixed;top:66px;right:10px;width:calc(100vw - 20px)}}
