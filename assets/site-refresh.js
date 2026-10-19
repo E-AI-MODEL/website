@@ -31,6 +31,69 @@
       if(hash && !link.href.includes('#'))link.href+=hash;
     },{once:true});
   });
+
+  // Consistent navigation on every refreshed Dutch and English page.
+  (function(){
+    var header=document.querySelector('.eai-header');
+    if(!header)return;
+    var en=document.documentElement.lang==='en'||location.pathname.startsWith('/en/');
+    var groups=en?[
+      ['Explore',[['The EAI model','/en/#model'],['Education','/en/education/']]],
+      ['Applications',[['All applications','/en/applications/'],['Education','/en/education/']]],
+      ['Research',[['Research','/en/research/'],['Publications','/en/publications/']]],
+      ['Tools',[['All tools','/en/tools/'],['Model Monitor','/en/model-monitor/'],['LLMscan','/en/llmscan/']]],
+      ['About EAI',[['About EAI and Hans Visser','/en/about/']]]
+    ]:[
+      ['Ontdekken',[['Het EAI-model','/nl/#model'],['EAI in het onderwijs','/nl/onderwijs/']]],
+      ['Toepassingen',[['Alle toepassingen','/nl/toepassingen/'],['Onderwijs in','/onderwijsin/']]],
+      ['Onderzoek',[['Onderzoek','/nl/onderzoek/'],['Publicaties','/nl/publicaties/']]],
+      ['Tools',[['Alle tools','/nl/tools/'],['Model Monitor','/nl/model-monitor/'],['LLMscan','/nl/llmscan/']]],
+      ['Over EAI',[['Over EAI en Hans Visser','/nl/over/']]]
+    ];
+    var links=header.querySelector('.eai-links');
+    var mobile=header.querySelector('.eai-mobile .mobile-nav-panel');
+    function active(items){return items.some(function(i){return currentPath===i[1]||(i[1]!=='/en/'&&i[1]!=='/nl/'&&currentPath.startsWith(i[1]));});}
+    if(links){
+      links.innerHTML='';
+      groups.forEach(function(group,i){
+        if(i===4){
+          var anchor=document.createElement('a');
+          anchor.href=group[1][0][1];anchor.textContent=group[0];
+          if(active(group[1]))anchor.setAttribute('aria-current','page');
+          links.appendChild(anchor);return;
+        }
+        var details=document.createElement('details');
+        details.className='eai-nav-group';
+        var summary=document.createElement('summary');summary.textContent=group[0];details.appendChild(summary);
+        var panel=document.createElement('div');panel.className='eai-nav-panel';
+        group[1].forEach(function(item){
+          var a=document.createElement('a');a.href=item[1];a.textContent=item[0];panel.appendChild(a);
+        });
+        details.appendChild(panel);if(active(group[1]))details.classList.add('is-current');
+        links.appendChild(details);
+      });
+    }
+    if(mobile){
+      mobile.innerHTML='';
+      groups.forEach(function(group,i){
+        if(i===4){var a=document.createElement('a');a.href=group[1][0][1];a.textContent=group[0];mobile.appendChild(a);return;}
+        var d=document.createElement('details');d.className='eai-mobile-group';
+        var s=document.createElement('summary');s.textContent=group[0];d.appendChild(s);
+        group[1].forEach(function(item){var a=document.createElement('a');a.href=item[1];a.textContent=item[0];d.appendChild(a);});
+        mobile.appendChild(d);
+      });
+    }
+    header.addEventListener('click',function(e){
+      var summary=e.target.closest('.eai-nav-group > summary');
+      if(summary)header.querySelectorAll('.eai-nav-group[open]').forEach(function(d){if(d!==summary.parentElement)d.open=false;});
+    });
+    document.addEventListener('click',function(e){if(!header.contains(e.target))header.querySelectorAll('.eai-nav-group[open]').forEach(function(d){d.open=false;});});
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')header.querySelectorAll('.eai-nav-group[open]').forEach(function(d){d.open=false;});});
+    var css=document.createElement('style');
+    css.textContent='.eai-header .eai-links{display:flex;align-items:center;gap:clamp(12px,1.6vw,26px);flex-wrap:nowrap}.eai-nav-group{position:relative}.eai-nav-group>summary{list-style:none;cursor:pointer;color:#253244;font-size:.93rem;white-space:nowrap;padding:12px 0}.eai-nav-group>summary::-webkit-details-marker{display:none}.eai-nav-group>summary:after{content:"⌄";margin-left:7px}.eai-nav-group[open]>summary:after{content:"⌃"}.eai-nav-group.is-current>summary,.eai-links>a[aria-current]{font-weight:700}.eai-nav-panel{position:absolute;top:100%;left:0;z-index:60;min-width:235px;background:white;border:1px solid #d8dfe5;border-radius:9px;padding:9px;box-shadow:0 16px 36px rgba(19,33,52,.14);display:grid;gap:2px}.eai-nav-panel a{display:block;padding:10px 12px;border-radius:5px;text-decoration:none!important;white-space:nowrap;font-size:.9rem}.eai-nav-panel a:hover,.eai-nav-panel a:focus-visible{background:#edf3f7}.eai-mobile-group{border-bottom:1px solid #e1e5e9;padding:5px 0}.eai-mobile-group>summary{cursor:pointer;padding:12px 8px;font-weight:700;list-style:none}.eai-mobile-group>summary:after{content:"+";float:right}.eai-mobile-group[open]>summary:after{content:"−"}.eai-mobile-group>a{display:block;padding:10px 20px;text-decoration:none}.eai-mobile-group>a:hover{background:#f0f3f5}.eai-nav-group>summary:focus-visible,.eai-mobile-group>summary:focus-visible{outline:2px solid #276ea0;outline-offset:3px}@media(max-width:1080px){.eai-header .eai-links{display:none}}';
+    document.head.appendChild(css);
+  })();
+
   // Keep the English monitor's existing shareable hash links usable inside the iframe.
   if (window.location.pathname.startsWith('/en/model-monitor/')) {
     var frame=document.getElementById('model-monitor-frame');
