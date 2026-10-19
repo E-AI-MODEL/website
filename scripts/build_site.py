@@ -2654,6 +2654,10 @@ def build(sources: Path, out: Path) -> None:
     # Shared styles and behavior belong to the bilingual redesign as well.
     if (repo_root / "nl").is_dir():
         shutil.copytree(repo_root / "assets", out / "assets", dirs_exist_ok=True)
+    # Standalone, intentionally unlisted public handoff page, including its 3D asset.
+    handoff_site = repo_root / "houseoftalents"
+    if handoff_site.is_dir():
+        shutil.copytree(handoff_site, out / "houseoftalents", dirs_exist_ok=True)
     items = "".join(f"<url><loc>{BASE_URL}{path}</loc></url>" for path in urls)
     write(out, "sitemap.xml", f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{items}</urlset>')
 
