@@ -8,6 +8,10 @@ on:
       - '.github/workflows/build-site.yml'
       - 'scripts/build_site.py'
       - 'content/**'
+      - 'nl/**'
+      - 'en/**'
+      - 'assets/**'
+      - 'index.html'
   push:
     branches:
       - main
@@ -15,6 +19,10 @@ on:
       - '.github/workflows/build-site.yml'
       - 'scripts/build_site.py'
       - 'content/**'
+      - 'nl/**'
+      - 'en/**'
+      - 'assets/**'
+      - 'index.html'
   workflow_dispatch:
 
 permissions:
