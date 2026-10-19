@@ -53,7 +53,7 @@
     var links=header.querySelector('.eai-links');
     var mobile=header.querySelector('.eai-mobile .mobile-nav-panel');
     function canonicalPath(path){
-      var pathname=path.split('#')[0].split('?')[0].replace(/index\\.html$/,'').replace(/\\/+$/,'/');
+      var pathname=path.split('#')[0].split('?')[0].replace(/index\.html$/,'').replace(/\/+$/,'/');
       if(!pathname.endsWith('/'))pathname+='/';
       var aliases={'/':'/nl/','/tools/':'/nl/tools/','/publicaties/':'/nl/publicaties/','/over/':'/nl/over/','/toepassingen/':'/nl/toepassingen/','/onderwijs/':'/nl/onderwijs/','/kennis/':'/nl/onderzoek/','/model-monitor/':'/nl/model-monitor/','/llmscan/':'/nl/llmscan/'};
       return aliases[pathname]||pathname;
