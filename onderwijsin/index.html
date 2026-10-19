@@ -86,7 +86,7 @@
 @media(prefers-reduced-motion:reduce){#oiApp .oi-repo{transition:none}#oiApp *{scroll-behavior:auto!important}}
 
 /* Onafhankelijke bladermodi: techniek en inhoud blijven in een eigen scope. */
-#oiApp .oi-toolbar{position:sticky;top:0;z-index:12;padding:14px 0 12px;background:rgba(246,245,240,.98);border-bottom:1px solid var(--oi-line);box-shadow:0 7px 20px rgba(18,37,50,.05)}
+#oiApp .oi-toolbar{position:sticky;top:62px;z-index:12;padding:14px 0 12px;background:rgba(246,245,240,.98);border-bottom:1px solid var(--oi-line);box-shadow:0 7px 20px rgba(18,37,50,.05)}
 #oiApp .oi-toolbarintro{font-size:.78rem;color:var(--oi-mute);font-weight:650;margin:0 0 10px}
 #oiApp .oi-toolbarline{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;align-items:center}
 #oiApp .oi-viewtabs{display:flex;flex-wrap:wrap;align-items:stretch;gap:7px}
@@ -177,7 +177,7 @@
 <section class="oi-section" id="repos">
 <h2>De 18 openbare repositories</h2>
 <p class="oi-lead">Elke kaart verwijst naar de bron. Je kunt schakelen tussen gewone uitleg en technische informatie. De technische stand is niet afgeleid uit slogans, maar uit de gepubliceerde code en README's.</p>
-<div class="oi-controls"><label><span class="oi-label" style="display:block;margin-bottom:7px">Zoek op naam of functie</span><input autocomplete="off" id="oiSearch" placeholder="Bijvoorbeeld: API, Directus, kandidaat..." type="search"/></label><div aria-label="Tekstniveau" class="oi-switch" role="group"><button aria-pressed="true" id="oiPlain" type="button">Gewone taal</button><button aria-pressed="false" id="oiTech" type="button">Technisch</button></div></div>
+<div class="oi-controls"><label><span class="oi-label" style="display:block;margin-bottom:7px">Zoek op naam of functie</span><input autocomplete="off" id="oiSearch" placeholder="Bijvoorbeeld: API, Directus, kandidaat..." type="search"/></label><span class="oi-label">Gebruik de taalkeuze bovenaan.</span></div>
 <div aria-label="Onderwerpen" class="oi-filters" id="oiFilters" role="group"></div>
 <div aria-live="polite" class="oi-resultmeta" id="oiCount"></div>
 <div class="oi-repos" id="oiRepos"></div>
