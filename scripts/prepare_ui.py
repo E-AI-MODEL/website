@@ -12,11 +12,12 @@ from urllib.parse import urlsplit
 from bs4 import BeautifulSoup
 from editorial_ui import apply_editorial
 from archive_review import review as review_archive
+from home_model import materialize as materialize_home_model
 
-ASSETS = ('site.css', 'site-refresh.js', 'site-ui.css', 'site-responsive.css', 'site-editorial.css', 'site-archive.css', 'site-navigation.js')
+ASSETS = ('site.css', 'site-refresh.js', 'site-ui.css', 'site-responsive.css', 'site-editorial.css', 'site-archive.css', 'site-navigation.js', 'home-model.css', 'home-model.js')
 SKIP = {'.git', '.github', 'content', 'scripts', 'tests', 'assets', 'handoff', 'houseoftalents', 'onderwijsin', 'site-build'}
 ALIASES = {'/': '/nl/', '/tools/': '/nl/tools/', '/publicaties/': '/nl/publicaties/', '/over/': '/nl/over/', '/onderwijs/': '/nl/onderwijs/', '/toepassingen/': '/nl/toepassingen/', '/kennis/': '/nl/onderzoek/', '/model-monitor/': '/nl/model-monitor/', '/llmscan/': '/nl/llmscan/'}
-INDEX_PATHS = {'/nl/', '/en/', '/nl/tools/', '/en/tools/', '/nl/onderwijs/', '/en/education/', '/nl/onderzoek/', '/en/research/', '/nl/toepassingen/', '/en/applications/', '/nl/over/', '/en/about/'}
+INDEX_PATHS = {'/nl/', '/en/', '/nl/model/', '/en/model/', '/nl/tools/', '/en/tools/', '/nl/onderwijs/', '/en/education/', '/nl/onderzoek/', '/en/research/', '/nl/toepassingen/', '/en/applications/', '/nl/over/', '/en/about/'}
 
 def canonical(path: str) -> str:
     path = urlsplit(path).path.removesuffix('index.html')
@@ -25,8 +26,8 @@ def canonical(path: str) -> str:
 
 def groups(en: bool):
     if en:
-        return [('The model', [('The four-step approach', '/en/#model'), ('Background and evidence', '/en/research/')]), ('Education & practice', [('Lesson design and teaching', '/en/education/'), ('Examples in practice', '/en/applications/'), ('Onderwijs in: technical review (NL)', '/onderwijsin/')]), ('Research', [('Studies and sources', '/en/research/'), ('Articles and publications', '/en/publications/')]), ('Tools', [('Choose a tool', '/en/tools/'), ('AI Model Monitor', '/en/model-monitor/'), ('LLMscan: product reviews', '/en/llmscan/')]), ('About EAI', [('Hans Visser and EAI', '/en/about/')])]
-    return [('Het model', [('Werkwijze: vier stappen', '/nl/#model'), ('Waarom deze volgorde?', '/twee-pijlers/')]), ('Onderwijs & praktijk', [('Lesontwerp en werkvormen', '/nl/onderwijs/'), ('Voorbeelden uit de praktijk', '/nl/toepassingen/'), ('Onderwijs in: technische verkenning', '/onderwijsin/')]), ('Onderzoek', [('Onderzoeken en onderbouwing', '/nl/onderzoek/'), ('Artikelen en publicaties', '/nl/publicaties/')]), ('Tools', [('Kies een hulpmiddel', '/nl/tools/'), ('AI Model Monitor', '/nl/model-monitor/'), ('LLMscan: AI-producten', '/nl/llmscan/')]), ('Over EAI', [('Hans Visser en het EAI-model', '/nl/over/')])]
+        return [('The model', [('The four-step approach', '/en/model/'), ('Background and evidence', '/en/research/')]), ('Education & practice', [('Lesson design and teaching', '/en/education/'), ('Examples in practice', '/en/applications/'), ('Onderwijs in: technical review (NL)', '/onderwijsin/')]), ('Research', [('Studies and sources', '/en/research/'), ('Articles and publications', '/en/publications/')]), ('Tools', [('Choose a tool', '/en/tools/'), ('AI Model Monitor', '/en/model-monitor/'), ('LLMscan: product reviews', '/en/llmscan/')]), ('About EAI', [('Hans Visser and EAI', '/en/about/')])]
+    return [('Het model', [('Werkwijze: vier stappen', '/nl/model/'), ('Waarom deze volgorde?', '/twee-pijlers/')]), ('Onderwijs & praktijk', [('Lesontwerp en werkvormen', '/nl/onderwijs/'), ('Voorbeelden uit de praktijk', '/nl/toepassingen/'), ('Onderwijs in: technische verkenning', '/onderwijsin/')]), ('Onderzoek', [('Onderzoeken en onderbouwing', '/nl/onderzoek/'), ('Artikelen en publicaties', '/nl/publicaties/')]), ('Tools', [('Kies een hulpmiddel', '/nl/tools/'), ('AI Model Monitor', '/nl/model-monitor/'), ('LLMscan: AI-producten', '/nl/llmscan/')]), ('Over EAI', [('Hans Visser en het EAI-model', '/nl/over/')])]
 
 def navigation(soup: BeautifulSoup, path: str, en: bool) -> str:
     home = '/en/' if en else '/nl/'
@@ -64,6 +65,7 @@ def footer(en: bool) -> str:
     return f'<footer class="eai-site-footer"><div class="eai-site-footer-inner"><div><a class="eai-site-brand" href="{home}"><img src="/assets/eai-logo.svg" width="32" height="32" alt=""><span>EAI</span></a><p>Hans Visser</p></div><nav aria-label="Footer">{rendered}</nav></div></footer>'
 
 def prepare(root: Path) -> dict:
+    materialize_home_model(root)
     assets = root / 'assets'
     manifest = {}
     for name in ASSETS:
@@ -75,7 +77,10 @@ def prepare(root: Path) -> dict:
         target = f'{source.stem}.{digest[:12]}{source.suffix}'
         (assets / target).write_bytes(data)
         manifest[name] = {'url': '/assets/' + target, 'sha256': digest}
-    revision = hashlib.sha256((json.dumps(manifest, sort_keys=True) + Path(__file__).read_text() + Path(__file__).with_name('editorial_ui.py').read_text() + Path(__file__).with_name('archive_review.py').read_text()).encode()).hexdigest()[:12]
+    templates = Path(__file__).resolve().parent.parent / 'content' / 'home-model'
+    editorial_sources = ''.join(Path(__file__).with_name(name).read_text() for name in ('editorial_ui.py', 'archive_review.py', 'home_model.py'))
+    editorial_sources += ''.join(p.read_text() for p in sorted(templates.glob('*.html')))
+    revision = hashlib.sha256((json.dumps(manifest, sort_keys=True) + Path(__file__).read_text() + editorial_sources).encode()).hexdigest()[:12]
     changed = []
     for page in sorted(root.rglob('*.html')):
         relative = page.relative_to(root)
@@ -88,7 +93,8 @@ def prepare(root: Path) -> dict:
         if not body or not review_archive(soup, canonical(path)):
             continue
         en = soup.html.get('lang', '').startswith('en')
-        apply_editorial(soup, canonical(path), en)
+        if not body.get('data-home-model-layout'):
+            apply_editorial(soup, canonical(path), en)
         before_content = soup.main.decode() if soup.main else None
         header = soup.select_one('header.eai-masthead, header.site-header, header.eai-site-nav')
         if header is None:
@@ -103,17 +109,17 @@ def prepare(root: Path) -> dict:
             classes.append('eai-index-page')
         body['class'] = classes
         body['data-ui-version'] = revision
-        css_pattern = re.compile(r'^/assets/(?:site|site-ui|site-responsive|site-editorial|site-archive)(?:\.[a-f0-9]{12})?\.css(?:\?.*)?$')
+        css_pattern = re.compile(r'^/assets/(?:site|site-ui|site-responsive|site-editorial|site-archive|home-model)(?:\.[a-f0-9]{12})?\.css(?:\?.*)?$')
         for tag in list(soup.find_all('link', href=True)):
             if css_pattern.match(tag['href']):
                 tag.decompose()
-        for name in ('site.css', 'site-ui.css', 'site-responsive.css', 'site-editorial.css', 'site-archive.css'):
+        for name in ('site.css', 'site-ui.css', 'site-responsive.css', 'site-editorial.css', 'site-archive.css', 'home-model.css'):
             soup.head.append(soup.new_tag('link', rel='stylesheet', href=manifest[name]['url']))
-        js_pattern = re.compile(r'^/assets/(?:site-refresh|site-navigation)(?:\.[a-f0-9]{12})?\.js(?:\?.*)?$')
+        js_pattern = re.compile(r'^/assets/(?:site-refresh|site-navigation|home-model)(?:\.[a-f0-9]{12})?\.js(?:\?.*)?$')
         for tag in list(soup.find_all('script', src=True)):
             if js_pattern.match(tag['src']):
                 tag.decompose()
-        for name in ('site-refresh.js', 'site-navigation.js'):
+        for name in ('site-refresh.js', 'site-navigation.js', 'home-model.js'):
             tag = soup.new_tag('script', src=manifest[name]['url'])
             tag['defer'] = ''
             soup.head.append(tag)
