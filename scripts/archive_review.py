@@ -1,5 +1,6 @@
 """Dated corrections to rendered archive pages; original source snapshots stay intact."""
 from __future__ import annotations
+from pathlib import Path
 from bs4 import BeautifulSoup
 
 REVIEW = '2026-10-21'
@@ -62,10 +63,12 @@ def fix_workflow(soup):
         code = code.replace('Let op! AI neemt hier het denkwerk over.', 'Dit is jouw inschatting, geen vastgestelde mate van leren.')
         code = code.replace('if (target.value > 80)', 'if (false)')
         code = code.replace('if (currentStep < totalSteps) {', "if (currentStep === 2 && workflow.length === 0) { alert('Kies eerst minimaal een taak.'); return; }\n            if (currentStep < totalSteps) {")
-        code = code.replace("document.getElementById('export-png-btn').addEventListener('click', () => {",
-                            "document.getElementById('export-png-btn').addEventListener('click', () => {\n            if (typeof html2canvas !== 'function') { alert('Exportbibliotheek niet geladen. Gebruik Afdrukken in je browser of probeer later opnieuw.'); return; }")
-        code = code.replace("document.getElementById('export-pdf-btn').addEventListener('click', () => {",
-                            "document.getElementById('export-pdf-btn').addEventListener('click', () => {\n            if (typeof html2canvas !== 'function' || !window.jspdf?.jsPDF) { alert('Exportbibliotheek niet geladen. Gebruik Afdrukken in je browser of probeer later opnieuw.'); return; }")
+        start = code.find('// Export knoppen')
+        end = code.find('// --- Initialisatie ---', start)
+        if start < 0 or end < 0:
+            raise ValueError('Workflow export markers are missing')
+        export_code = Path(__file__).with_name('workflow_export.js').read_text(encoding='utf-8')
+        code = code[:start] + export_code + '\n        ' + code[end:]
         script.string = code
 
 def review(soup: BeautifulSoup, path: str) -> bool:
