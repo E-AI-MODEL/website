@@ -1,0 +1,91 @@
+// Synthetic inputs only. No remote AI calls, real students or published plans.
+import {chromium, webkit} from 'playwright';
+import {spawn} from 'node:child_process';
+import {mkdirSync, readFileSync, writeFileSync} from 'node:fs';
+import {resolve} from 'node:path';
+import assert from 'node:assert/strict';
+import crypto from 'node:crypto';
+const base='http://127.0.0.1:8786',root=resolve('site-build');
+const server=spawn('python3',['-m','http.server','8786','--bind','127.0.0.1','--directory',root],{stdio:'ignore'});
+const results=[];
+let browser;
+function canonical(x){if(Array.isArray(x))return '['+x.map(canonical).join(',')+']';if(x&&typeof x==='object')return '{'+Object.keys(x).sort().map(k=>JSON.stringify(k)+':'+canonical(x[k])).join(',')+'}';return JSON.stringify(x);}
+try{
+ for(let i=0;i<50;i++){try{if((await fetch(base)).ok)break;}catch{}await new Promise(r=>setTimeout(r,100));}
+ const m=JSON.parse(readFileSync(root+'/assets/provenance/EAI_SIGNED_MANIFEST.json','utf8'));
+ const raw=Buffer.from(readFileSync(root+'/assets/provenance/EAI_PUBLIC_KEY.txt','utf8').split(/\r?\n/).find(x=>x.startsWith('base64: ')).slice(8).trim(),'base64');
+ const pub=crypto.createPublicKey({key:Buffer.concat([Buffer.from('302a300506032b6570032100','hex'),raw]),type:'spki',format:'der'});
+ const signature=m.signature_base64;delete m.signature_base64;
+ assert(crypto.verify(null,Buffer.from(canonical(m)),pub,Buffer.from(signature,'base64')));
+ results.push({test:'published_manifest_signature',passed:true,documentBytesVerified:false});
+ for(const engine of [chromium,webkit]){
+  browser=await engine.launch({headless:true});
+  const context=await browser.newContext({viewport:{width:390,height:844},acceptDownloads:true});
+  await context.route('**/*',r=>r.request().url().startsWith(base)?r.continue():r.abort());
+  const page=await context.newPage(),errors=[];
+  page.on('pageerror',e=>errors.push(e.message));
+  await page.goto(base+'/publicaties/eai-stappenplan/',{waitUntil:'domcontentloaded'});
+  const dialogs=[];page.on('dialog',async d=>{dialogs.push(d.message());await d.accept();});
+  await page.locator('#next-btn').click();
+  await page.locator('#next-btn').click();
+  assert.equal(dialogs.at(-1),'Kies eerst minimaal een taak.');
+  await page.locator('.add-task-btn').first().click();
+  await page.locator('#next-btn').click();
+  const card=page.locator('.config-card').first();
+  const role=card.locator('input[value=samen]');
+  await card.locator('label[for="'+await role.getAttribute('id')+'"]').click();
+  const slider=card.locator('input[type=range]');
+  await slider.fill('65');await slider.dispatchEvent('input');
+  await card.locator('input[type=checkbox]').check();
+  await page.locator('#next-btn').click();
+  assert.match(await page.locator('#final-summary-visual').innerText(),/65%/);
+  await page.locator('#prev-btn').click();
+  await page.locator('#prev-btn').click();
+  await page.locator('#next-btn').click();
+  assert(await card.locator('input[value=samen]').isChecked());
+  assert(await card.locator('input[type=checkbox]').isChecked());
+  assert.equal(await card.locator('input[type=range]').inputValue(),'65');
+  await page.locator('#next-btn').click();
+  await page.locator('#export-png-btn').click();
+  assert.match(dialogs.at(-1),/Exportbibliotheek niet geladen/);
+  results.push({test:'legacy_workflow',engine:engine.name(),savedConfiguration:true,emptySelectionRejected:true,missingExportLibraryExplained:true,exportFilesVerified:false});
+  await page.goto(base+'/tools/van-proces-naar-prompt/',{waitUntil:'domcontentloaded'});
+  await page.locator('#example-lesson').click();
+  const example=await page.locator('#output').innerText();
+  assert(example.length>150);
+  await page.locator('#human').fill('De leerling vergelijkt zelfstandig twee bronperspectieven.');
+  await page.locator('#human').dispatchEvent('input');
+  assert.match(await page.locator('#output').innerText(),/twee bronperspectieven/);
+  const downloadPromise=page.waitForEvent('download');await page.locator('#download').click();
+  const download=await downloadPromise;const downloaded=readFileSync(await download.path(),'utf8');
+  assert(downloaded.includes('twee bronperspectieven'));
+  await page.locator('#clear').click();
+  assert.equal(await page.locator('#human').inputValue(),'');
+  results.push({test:'process_to_prompt',engine:engine.name(),sampleAndEdit:true,downloadContainsInput:true,reset:true});
+  await page.goto(base+'/tools/prompt-framework/',{waitUntil:'domcontentloaded'});
+  await page.locator('#pf-goal').fill('Twee historische bronnen vergelijken.');
+  await page.locator('#pf-central').fill('De leerling weegt het perspectief van de bron.');
+  await page.locator('#pf-generate').click();
+  assert.match(await page.locator('#pf-output').innerText(),/Twee historische bronnen vergelijken/);
+  await page.locator('#pf-goal').fill('Een argument zelfstandig onderbouwen.');
+  await page.locator('#pf-generate').click();
+  assert.match(await page.locator('#pf-output').innerText(),/Een argument zelfstandig onderbouwen/);
+  const promise=page.waitForEvent('download');await page.locator('#pf-download').click();
+  assert(readFileSync(await (await promise).path(),'utf8').includes('Een argument zelfstandig onderbouwen'));
+  results.push({test:'prompt_framework',engine:engine.name(),generatedAndChanged:true,downloadContainsInput:true});
+  await page.goto(base+'/nl/tools/verificatie/',{waitUntil:'domcontentloaded'});
+  await page.locator('#document').setInputFiles({name:'test.txt',mimeType:'text/plain',buffer:Buffer.from('fictional audit input')});
+  await page.locator('#manifest').setInputFiles({name:'manifest.json',mimeType:'application/json',buffer:Buffer.from('{}')});
+  await page.locator('button[type=submit]').click();
+  await page.waitForFunction(()=>document.querySelector('#result').dataset.status==='bad');
+  assert.match(await page.locator('#result').innerText(),/Niet geverifieerd/);
+  results.push({test:'signature_checker',engine:engine.name(),invalidManifestRejected:true,validOriginalDocumentTested:false});
+  assert.deepEqual(errors,[]);
+  await browser.close();browser=null;
+ }
+}finally{
+ if(browser)await browser.close();server.kill();
+ mkdirSync('audit-results',{recursive:true});
+ writeFileSync('audit-results/functional.json',JSON.stringify({results,limits:['Synthetic local tests do not establish educational effectiveness.','External export dependencies intentionally blocked: successful PNG/PDF export not claimed.','The original signed promptbook was not supplied.']},null,2));
+ console.log(JSON.stringify(results));
+}
