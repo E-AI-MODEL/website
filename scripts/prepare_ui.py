@@ -1,6 +1,5 @@
-"""Prepare the UI with content-addressed assets and native HTML navigation.
-Run after build_site.py. Public editorial changes are explicit; handoffs stay untouched.
-Repeated execution is idempotent; previous fingerprinted files are not removed.
+"""Prepare content-addressed assets, native navigation and dated archive corrections.
+Run after build_site.py. Standalone handoff source files are not rewritten.
 """
 from __future__ import annotations
 import argparse
@@ -12,8 +11,9 @@ from pathlib import Path
 from urllib.parse import urlsplit
 from bs4 import BeautifulSoup
 from editorial_ui import apply_editorial
+from archive_review import review as review_archive
 
-ASSETS = ('site.css', 'site-refresh.js', 'site-ui.css', 'site-responsive.css', 'site-editorial.css', 'site-navigation.js')
+ASSETS = ('site.css', 'site-refresh.js', 'site-ui.css', 'site-responsive.css', 'site-editorial.css', 'site-archive.css', 'site-navigation.js')
 SKIP = {'.git', '.github', 'content', 'scripts', 'tests', 'assets', 'handoff', 'houseoftalents', 'onderwijsin', 'site-build'}
 ALIASES = {'/': '/nl/', '/tools/': '/nl/tools/', '/publicaties/': '/nl/publicaties/', '/over/': '/nl/over/', '/onderwijs/': '/nl/onderwijs/', '/toepassingen/': '/nl/toepassingen/', '/kennis/': '/nl/onderzoek/', '/model-monitor/': '/nl/model-monitor/', '/llmscan/': '/nl/llmscan/'}
 INDEX_PATHS = {'/nl/', '/en/', '/nl/tools/', '/en/tools/', '/nl/onderwijs/', '/en/education/', '/nl/onderzoek/', '/en/research/', '/nl/toepassingen/', '/en/applications/', '/nl/over/', '/en/about/'}
@@ -75,7 +75,7 @@ def prepare(root: Path) -> dict:
         target = f'{source.stem}.{digest[:12]}{source.suffix}'
         (assets / target).write_bytes(data)
         manifest[name] = {'url': '/assets/' + target, 'sha256': digest}
-    revision = hashlib.sha256((json.dumps(manifest, sort_keys=True) + Path(__file__).read_text() + Path(__file__).with_name('editorial_ui.py').read_text()).encode()).hexdigest()[:12]
+    revision = hashlib.sha256((json.dumps(manifest, sort_keys=True) + Path(__file__).read_text() + Path(__file__).with_name('editorial_ui.py').read_text() + Path(__file__).with_name('archive_review.py').read_text()).encode()).hexdigest()[:12]
     changed = []
     for page in sorted(root.rglob('*.html')):
         relative = page.relative_to(root)
@@ -84,10 +84,10 @@ def prepare(root: Path) -> dict:
         original = page.read_text(encoding='utf-8')
         soup = BeautifulSoup(original, 'html.parser')
         body = soup.body
-        if not body or (relative.as_posix() != 'onderwijsin/index.html' and 'eai-refresh' not in body.get('class', [])):
+        path = '/' + relative.as_posix()
+        if not body or not review_archive(soup, canonical(path)):
             continue
         en = soup.html.get('lang', '').startswith('en')
-        path = '/' + relative.as_posix()
         apply_editorial(soup, canonical(path), en)
         before_content = soup.main.decode() if soup.main else None
         header = soup.select_one('header.eai-masthead, header.site-header, header.eai-site-nav')
@@ -103,11 +103,11 @@ def prepare(root: Path) -> dict:
             classes.append('eai-index-page')
         body['class'] = classes
         body['data-ui-version'] = revision
-        css_pattern = re.compile(r'^/assets/(?:site|site-ui|site-responsive|site-editorial)(?:\.[a-f0-9]{12})?\.css(?:\?.*)?$')
+        css_pattern = re.compile(r'^/assets/(?:site|site-ui|site-responsive|site-editorial|site-archive)(?:\.[a-f0-9]{12})?\.css(?:\?.*)?$')
         for tag in list(soup.find_all('link', href=True)):
             if css_pattern.match(tag['href']):
                 tag.decompose()
-        for name in ('site.css', 'site-ui.css', 'site-responsive.css', 'site-editorial.css'):
+        for name in ('site.css', 'site-ui.css', 'site-responsive.css', 'site-editorial.css', 'site-archive.css'):
             soup.head.append(soup.new_tag('link', rel='stylesheet', href=manifest[name]['url']))
         js_pattern = re.compile(r'^/assets/(?:site-refresh|site-navigation)(?:\.[a-f0-9]{12})?\.js(?:\?.*)?$')
         for tag in list(soup.find_all('script', src=True)):

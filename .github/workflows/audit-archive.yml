@@ -1,0 +1,52 @@
+name: Audit archive and linked tools
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'scripts/audit_archive*'
+      - 'scripts/archive_review.py'
+      - 'scripts/prepare_ui.py'
+      - 'assets/site-archive.css'
+      - 'tests/test_archive_review.py'
+      - '.github/workflows/audit-archive.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build current public sources
+        run: |
+          pip install beautifulsoup4
+          python scripts/build_site.py --sources content/legacy --out site-build
+          python scripts/prepare_ui.py --root site-build
+          python scripts/verify_ui.py --root site-build
+          python -m unittest discover -s tests -p 'test_archive_review.py'
+      - name: Inventory pages, links and live HTTP responses
+        run: python scripts/audit_archive.py
+      - name: Inspect older pages in Chromium and WebKit
+        run: |
+          npm install --no-save playwright@1.56.1
+          npx playwright install --with-deps chromium webkit
+          node scripts/audit_archive_ui.mjs
+      - name: Test local tool workflows with synthetic inputs
+        run: node scripts/audit_archive_functional.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: archive-audit-evidence
+          retention-days: 14
+          path: |
+            audit-results/
+            site-build/
+            scripts/
+            content/legacy/
