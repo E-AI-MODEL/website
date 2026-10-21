@@ -1,15 +1,14 @@
-"""Validate the release, optionally against exact production HTML and asset hashes."""
+"""Validate the release and every prepared production HTML file and asset hash."""
 from __future__ import annotations
 import argparse
 import hashlib
 import json
 import time
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from urllib.parse import urlsplit
 from urllib.request import Request, urlopen
 from bs4 import BeautifulSoup
 
-CHECKS = ('/', '/nl/tools/', '/nl/onderwijs/', '/nl/onderzoek/', '/nl/toepassingen/', '/en/', '/en/about/')
 
 def check(root: Path):
     manifest = json.loads((root / 'assets/ui-manifest.json').read_text())
@@ -46,32 +45,56 @@ def check(root: Path):
     print(f'UI validation passed: {len(manifest["pages"])} pages, {len(manifest["assets"])} fingerprinted assets')
     return manifest
 
+
+def expected_pages(root: Path, manifest: dict) -> dict[str, str]:
+    """Use every prepared page; keep aliases distinct and map index files to URLs."""
+    pages = manifest.get('pages', [])
+    if not pages:
+        raise ValueError('Cannot verify an empty release manifest')
+    expected = {}
+    for relative in pages:
+        path = PurePosixPath(relative)
+        if path.is_absolute() or '..' in path.parts or path.suffix != '.html':
+            raise ValueError(f'Invalid release page: {relative}')
+        local = root / path.as_posix()
+        if path.name == 'index.html':
+            parent = path.parent.as_posix()
+            url = '/' if parent == '.' else '/' + parent + '/'
+        else:
+            url = '/' + path.as_posix()
+        if url in expected:
+            raise ValueError(f'Duplicate release route: {url}')
+        expected[url] = hashlib.sha256(local.read_bytes()).hexdigest()
+    return expected
+
+
 def verify_live(base: str, manifest: dict, timeout: int, root: Path):
     def get(path):
         request = Request(base.rstrip('/') + path, headers={'Cache-Control': 'no-cache', 'User-Agent': 'EAI-release-check/1.0'})
         with urlopen(request, timeout=20) as response:
             return response.read()
-    # The UI revision alone does not identify content-only changes. Compare the
-    # actual page bytes as well, so an older page with the same CSS cannot pass.
-    expected_html = {path: hashlib.sha256((root / path.lstrip('/') / 'index.html').read_bytes()).hexdigest() for path in CHECKS}
+    # Same UI assets can accompany changed page copy. Verify every generated
+    # page's exact bytes, rather than a fixed sample or the UI version alone.
+    expected_html = expected_pages(root, manifest)
     deadline = time.monotonic() + timeout
     while True:
         try:
-            for path in CHECKS:
+            for path, digest in expected_html.items():
                 data = get(path)
-                assert hashlib.sha256(data).hexdigest() == expected_html[path], f'HTML content mismatch: {path}'
+                assert hashlib.sha256(data).hexdigest() == digest, f'HTML content mismatch: {path}'
                 soup = BeautifulSoup(data, 'html.parser')
                 assert soup.body.get('data-ui-version') == manifest['version'], f'Stale UI: {path}'
                 assert soup.select_one('.eai-site-menu'), path
             for info in manifest['assets'].values():
                 assert hashlib.sha256(get(info['url'])).hexdigest() == info['sha256'], f'Asset mismatch: {info["url"]}'
-            print(f'LIVE verified: {len(CHECKS)} exact HTML files and all asset hashes match UI {manifest["version"]}')
+            print(f'LIVE verified: all {len(expected_html)} prepared HTML files and all asset hashes match UI {manifest["version"]}')
             return
         except Exception as exc:
             if time.monotonic() >= deadline:
                 raise RuntimeError(f'Live release not confirmed: {exc}') from exc
             print(f'Waiting for matching release: {exc}', flush=True)
             time.sleep(5)
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
