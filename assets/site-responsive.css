@@ -1,0 +1,8 @@
+/* Mobile type sizes must override the legacy stylesheet's global important h1 rule. */
+@media (max-width:720px){
+  body.eai-ui.eai-index-page main h1{font-size:36px!important;line-height:1.12;max-width:22ch}
+  body.eai-ui.eai-index-page.eai-home main h1{font-size:40px!important;line-height:1.08;max-width:16ch}
+}
+@media (max-width:390px){
+  body.eai-ui.eai-index-page.eai-home main h1{font-size:36px!important}
+}

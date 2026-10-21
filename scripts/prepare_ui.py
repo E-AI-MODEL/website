@@ -12,10 +12,10 @@ from pathlib import Path
 from urllib.parse import urlsplit
 from bs4 import BeautifulSoup
 
-ASSETS = ('site.css', 'site-refresh.js', 'site-ui.css', 'site-navigation.js')
+ASSETS = ('site.css', 'site-refresh.js', 'site-ui.css', 'site-responsive.css', 'site-navigation.js')
 SKIP = {'.git', '.github', 'content', 'scripts', 'tests', 'assets', 'handoff', 'houseoftalents', 'onderwijsin', 'site-build'}
 ALIASES = {'/': '/nl/', '/tools/': '/nl/tools/', '/publicaties/': '/nl/publicaties/', '/over/': '/nl/over/', '/onderwijs/': '/nl/onderwijs/', '/toepassingen/': '/nl/toepassingen/', '/kennis/': '/nl/onderzoek/', '/model-monitor/': '/nl/model-monitor/', '/llmscan/': '/nl/llmscan/'}
-INDEX_PATHS = {'/nl/', '/en/', '/nl/tools/', '/en/tools/', '/nl/onderwijs/', '/en/education/', '/nl/onderzoek/', '/en/research/', '/nl/toepassingen/', '/en/applications/'}
+INDEX_PATHS = {'/nl/', '/en/', '/nl/tools/', '/en/tools/', '/nl/onderwijs/', '/en/education/', '/nl/onderzoek/', '/en/research/', '/nl/toepassingen/', '/en/applications/', '/nl/over/', '/en/about/'}
 
 def canonical(path: str) -> str:
     path = urlsplit(path).path.removesuffix('index.html')
@@ -98,11 +98,11 @@ def prepare(root: Path) -> dict:
             classes.append('eai-index-page')
         body['class'] = classes
         body['data-ui-version'] = revision
-        css_pattern = re.compile(r'^/assets/(?:site|site-ui)(?:\.[a-f0-9]{12})?\.css(?:\?.*)?$')
+        css_pattern = re.compile(r'^/assets/(?:site|site-ui|site-responsive)(?:\.[a-f0-9]{12})?\.css(?:\?.*)?$')
         for tag in list(soup.find_all('link', href=True)):
             if css_pattern.match(tag['href']):
                 tag.decompose()
-        for name in ('site.css', 'site-ui.css'):
+        for name in ('site.css', 'site-ui.css', 'site-responsive.css'):
             soup.head.append(soup.new_tag('link', rel='stylesheet', href=manifest[name]['url']))
         js_pattern = re.compile(r'^/assets/(?:site-refresh|site-navigation)(?:\.[a-f0-9]{12})?\.js(?:\?.*)?$')
         for tag in list(soup.find_all('script', src=True)):
@@ -118,7 +118,8 @@ def prepare(root: Path) -> dict:
             for section in soup.select('main > section.section'):
                 if section.select_one('.section-head a') and not section.select_one('.tool-grid'):
                     section['class'] = list(dict.fromkeys(section.get('class', []) + ['eai-tool-entry']))
-        page.write_text(str(soup), encoding='utf-8')
+        output = re.sub(r'^<!DOCTYPE html>\s*', '<!DOCTYPE html>\n', str(soup))
+        page.write_text(output, encoding='utf-8')
         changed.append(relative.as_posix())
     result = {'version': revision, 'assets': manifest, 'pages': changed}
     (assets / 'ui-manifest.json').write_text(json.dumps(result, indent=2) + '\n', encoding='utf-8')
