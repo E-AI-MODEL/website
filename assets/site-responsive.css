@@ -1,3 +1,9 @@
+/* Explicit reading type overrides the older article-specific font rules. */
+body.eai-ui.eai-index-page main p,
+body.eai-ui.eai-index-page main .lede,
+body.eai-ui.eai-index-page main .eai-lead{font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+body.eai-ui .eai-masthead :focus-visible,
+body.eai-ui .eai-site-footer :focus-visible{outline:2px solid #42697f;outline-offset:3px}
 /* Mobile type sizes override the legacy stylesheet's global important h1 rule. */
 @media (max-width:720px){
   body.eai-ui.eai-index-page main h1{font-size:36px!important;line-height:1.12;max-width:22ch}

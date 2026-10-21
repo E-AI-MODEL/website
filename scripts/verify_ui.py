@@ -1,4 +1,4 @@
-"""Validate the release, optionally against actual production HTML and asset hashes."""
+"""Validate the release, optionally against exact production HTML and asset hashes."""
 from __future__ import annotations
 import argparse
 import hashlib
@@ -46,21 +46,26 @@ def check(root: Path):
     print(f'UI validation passed: {len(manifest["pages"])} pages, {len(manifest["assets"])} fingerprinted assets')
     return manifest
 
-def verify_live(base: str, manifest: dict, timeout: int):
+def verify_live(base: str, manifest: dict, timeout: int, root: Path):
     def get(path):
         request = Request(base.rstrip('/') + path, headers={'Cache-Control': 'no-cache', 'User-Agent': 'EAI-release-check/1.0'})
         with urlopen(request, timeout=20) as response:
             return response.read()
+    # The UI revision alone does not identify content-only changes. Compare the
+    # actual page bytes as well, so an older page with the same CSS cannot pass.
+    expected_html = {path: hashlib.sha256((root / path.lstrip('/') / 'index.html').read_bytes()).hexdigest() for path in CHECKS}
     deadline = time.monotonic() + timeout
     while True:
         try:
             for path in CHECKS:
-                soup = BeautifulSoup(get(path), 'html.parser')
-                assert soup.body.get('data-ui-version') == manifest['version'], f'Stale HTML: {path}'
+                data = get(path)
+                assert hashlib.sha256(data).hexdigest() == expected_html[path], f'HTML content mismatch: {path}'
+                soup = BeautifulSoup(data, 'html.parser')
+                assert soup.body.get('data-ui-version') == manifest['version'], f'Stale UI: {path}'
                 assert soup.select_one('.eai-site-menu'), path
             for info in manifest['assets'].values():
                 assert hashlib.sha256(get(info['url'])).hexdigest() == info['sha256'], f'Asset mismatch: {info["url"]}'
-            print(f'LIVE verified: {len(CHECKS)} entry pages and asset hashes match UI {manifest["version"]}')
+            print(f'LIVE verified: {len(CHECKS)} exact HTML files and all asset hashes match UI {manifest["version"]}')
             return
         except Exception as exc:
             if time.monotonic() >= deadline:
@@ -76,4 +81,4 @@ if __name__ == '__main__':
     args = parser.parse_args()
     manifest = check(args.root)
     if args.url:
-        verify_live(args.url, manifest, args.timeout)
+        verify_live(args.url, manifest, args.timeout, args.root)
