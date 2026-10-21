@@ -7,7 +7,7 @@ import assert from 'node:assert/strict';
 const root = resolve(process.argv[2] || 'site-build');
 const base = 'http://127.0.0.1:8765';
 const server = spawn('python3', ['-m', 'http.server', '8765', '--bind', '127.0.0.1', '--directory', root], { stdio: 'ignore' });
-const pages = ['/', '/nl/tools/', '/nl/onderwijs/', '/nl/onderzoek/', '/nl/toepassingen/', '/en/', '/en/about/'];
+const pages = ['/', '/nl/tools/', '/nl/onderwijs/', '/nl/onderzoek/', '/nl/toepassingen/', '/en/', '/en/about/', '/onderwijsin/'];
 let browser;
 try {
   let ready = false;
@@ -20,7 +20,6 @@ try {
   browser = await chromium.launch({ headless: true });
   const context = await browser.newContext();
   const page = await context.newPage();
-  // Optional external portraits are not part of the layout regression test.
   await page.route('**/*', route => route.request().url().startsWith(base) ? route.continue() : route.abort());
   const errors = [], results = [];
   page.on('pageerror', e => errors.push(e.message));
@@ -48,11 +47,16 @@ try {
       await page.locator('.eai-site-menu>summary').click();
       const panel = await page.locator('.eai-site-menu-panel').boundingBox();
       assert(panel && panel.x >= 0 && panel.x + panel.width <= width, 'Menu offscreen');
+      await page.locator('.eai-site-group').nth(1).locator('summary').click();
       await page.locator('.eai-site-group').nth(3).locator('summary').click();
+      assert.equal(await page.locator('.eai-site-group[open]').count(), 1, 'Only one theme may be open');
       assert.equal(await page.locator('.eai-site-group').nth(3).locator('a:visible').count(), 3);
       await page.keyboard.press('Escape');
       assert.equal(await page.locator('.eai-site-menu').getAttribute('open'), null);
       assert(await page.locator('.eai-site-menu>summary').evaluate(e => e === document.activeElement));
+      await page.locator('.eai-site-menu>summary').click();
+      assert.equal(await page.locator('.eai-site-group[open]').count(), 0, 'Reopening resets themes');
+      await page.keyboard.press('Escape');
       if (width === 1440 || width === 390) {
         await page.screenshot({ path: `test-results/${path.replaceAll('/', '_') || 'home'}-${width}.png`, fullPage: true });
       }
@@ -70,7 +74,9 @@ try {
   const fallback = await noJS.newPage();
   await fallback.goto(base + '/', { waitUntil: 'load' });
   await fallback.locator('.eai-site-menu>summary').click();
+  await fallback.locator('.eai-site-group').nth(1).locator('summary').click();
   await fallback.locator('.eai-site-group').nth(3).locator('summary').click();
+  assert.equal(await fallback.locator('.eai-site-group[open]').count(), 1, 'Native accordion must be exclusive');
   assert.equal(await fallback.locator('.eai-site-group').nth(3).locator('a:visible').count(), 3);
   await noJS.close();
   assert.deepEqual(errors, []);
