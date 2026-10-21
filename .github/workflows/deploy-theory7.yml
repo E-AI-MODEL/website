@@ -2,8 +2,7 @@ name: Deploy to Theory7
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -16,16 +15,23 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build and validate the release to publish
+        run: |
+          pip install beautifulsoup4
+          python scripts/build_site.py --sources content/legacy --out site-build
+          python scripts/prepare_ui.py --root site-build
+          python scripts/verify_ui.py --root site-build
       - name: Install FTPS client
-        shell: bash
         run: |
           sudo apt-get update
           sudo apt-get install -y lftp openssl
-
       - name: Verify Theory7 FTPS certificate fingerprint
         shell: bash
         env:
@@ -33,16 +39,12 @@ jobs:
         run: |
           set -euo pipefail
           expected="4D:F5:15:4C:F3:11:5E:5B:DD:91:BD:5F:BD:0F:0E:A7:35:71:5C:32"
-          actual="$(
-            openssl s_client -starttls ftp -connect "$HOST:21" -servername "$HOST" </dev/null 2>/dev/null               | openssl x509 -noout -fingerprint -sha1               | cut -d= -f2
-          )"
-          echo "FTPS certificate fingerprint: $actual"
+          actual="$(openssl s_client -starttls ftp -connect "$HOST:21" -servername "$HOST" </dev/null 2>/dev/null | openssl x509 -noout -fingerprint -sha1 | cut -d= -f2)"
           if [ "$actual" != "$expected" ]; then
             echo "Unexpected FTPS certificate fingerprint."
             exit 1
           fi
-
-      - name: Deploy static site via FTPS
+      - name: Publish assets before HTML
         shell: bash
         env:
           HOST: ftp.eaimodel.nl
@@ -51,18 +53,16 @@ jobs:
         run: |
           set -euo pipefail
           lftp -u "$FTP_USER","$FTP_PASSWORD" "ftp://$HOST:21" <<'EOF'
+          set cmd:fail-exit yes
           set ftp:ssl-force true
           set ftp:ssl-protect-data true
           set ssl:verify-certificate false
           set net:timeout 20
           set net:max-retries 1
-          mirror -R --delete --verbose \
-            --exclude-glob .git/ \
-            --exclude-glob .github/ \
-            --exclude-glob .gitignore \
-            --exclude-glob README.md \
-            --exclude-glob cgi-bin/ \
-            --exclude-glob .well-known/ \
-            ./ /
+          set xfer:use-temp-file yes
+          mirror -R --verbose site-build/assets/ /assets/
+          mirror -R --verbose --exclude-glob assets/ --exclude-glob .git/ --exclude-glob .github/ --exclude-glob .htaccess --exclude-glob cgi-bin/ --exclude-glob .well-known/ site-build/ /
           bye
           EOF
+      - name: Verify live HTML and exact asset hashes
+        run: python scripts/verify_ui.py --root site-build --url https://eaimodel.nl --timeout 90

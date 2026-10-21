@@ -1,0 +1,20 @@
+/* Explicit reading type overrides the older article-specific font rules. */
+body.eai-ui.eai-index-page main p,
+body.eai-ui.eai-index-page main .lede,
+body.eai-ui.eai-index-page main .eai-lead{font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+body.eai-ui .eai-masthead :focus-visible,
+body.eai-ui .eai-site-footer :focus-visible{outline:2px solid #42697f;outline-offset:3px}
+/* Mobile type sizes override the legacy stylesheet's global important h1 rule. */
+@media (max-width:720px){
+  body.eai-ui.eai-index-page main h1{font-size:36px!important;line-height:1.12;max-width:22ch}
+  body.eai-ui.eai-index-page.eai-home main h1{font-size:40px!important;line-height:1.08;max-width:16ch}
+}
+@media (max-width:520px){
+  body.eai-ui.eai-index-page.eai-home .eai-process-wide{grid-template-columns:minmax(0,1fr);gap:8px}
+  body.eai-ui.eai-index-page.eai-home .eai-process-wide li{padding:15px 0}
+  body.eai-ui.eai-index-page.eai-home .eai-process-wide .eai-step-num{margin-bottom:8px}
+  body.eai-ui.eai-index-page .guide-strip-steps{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:390px){
+  body.eai-ui.eai-index-page.eai-home main h1{font-size:36px!important}
+}
