@@ -46,7 +46,7 @@ def fix_workflow(soup):
         if new != old: text.replace_with(new)
     for script in soup.find_all('script', src=False):
         code = script.string or ''
-        if 'generateConfigurationInterface' not in code:
+        if 'generateConfigurationInterface' not in code or script.get('data-archive-fix') == REVIEW:
             continue
         code = code.replace('gsap.from(', 'window.gsap?.from(').replace('gsap.to(', 'window.gsap?.to(')
         code = code.replace('data-task-id="${task.id}"> Is dit', 'data-task-id="${task.id}" ${task.isCore ? "checked" : ""}> Is dit')
@@ -67,6 +67,7 @@ def fix_workflow(soup):
         code = code.replace("document.getElementById('export-pdf-btn').addEventListener('click', () => {",
                             "document.getElementById('export-pdf-btn').addEventListener('click', () => {\n            if (typeof html2canvas !== 'function' || !window.jspdf?.jsPDF) { alert('Exportbibliotheek niet geladen. Gebruik Afdrukken in je browser of probeer later opnieuw.'); return; }")
         script.string = code
+        script['data-archive-fix'] = REVIEW
 
 def review(soup: BeautifulSoup, path: str) -> bool:
     """Return whether this normal site page can use the shared site navigation."""
@@ -84,7 +85,9 @@ def review(soup: BeautifulSoup, path: str) -> bool:
                 paragraph = a.find('p')
                 if paragraph: paragraph.string = 'De onderliggende studie is ingetrokken. Lees de correctie bij deze historische rapportage.'
     if path == '/publicaties/ai-balans/':
-        for a in soup.find_all('a', href='#eaa-mini'): a['href'] = '#drie-bouwstenen'
+        for a in soup.find_all('a', href='#eaa-mini'):
+            a['href'] = '/eaa-model/'
+            a.string = 'Over het EAA-model'
     site_header = soup.select_one('header.eai-masthead, header.site-header, header.eai-site-nav')
     if not site_header or not soup.find('h1'):
         return False
