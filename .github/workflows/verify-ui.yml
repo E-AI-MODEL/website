@@ -9,12 +9,24 @@ permissions:
 jobs:
   verify:
     runs-on: ubuntu-latest
+    timeout-minutes: 12
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
       - run: pip install beautifulsoup4
       - run: python scripts/build_site.py --sources content/legacy --out site-build
       - run: python scripts/prepare_ui.py --root site-build
       - run: python scripts/verify_ui.py --root site-build
+      - run: npm install --no-save playwright@1.56.1
+      - run: npx playwright install --with-deps chromium
+      - run: node scripts/ui_smoke.mjs site-build
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: public-ui-check
+          path: test-results/

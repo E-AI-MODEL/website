@@ -1,7 +1,13 @@
-/* Mobile type sizes must override the legacy stylesheet's global important h1 rule. */
+/* Mobile type sizes override the legacy stylesheet's global important h1 rule. */
 @media (max-width:720px){
   body.eai-ui.eai-index-page main h1{font-size:36px!important;line-height:1.12;max-width:22ch}
   body.eai-ui.eai-index-page.eai-home main h1{font-size:40px!important;line-height:1.08;max-width:16ch}
+}
+@media (max-width:520px){
+  body.eai-ui.eai-index-page.eai-home .eai-process-wide{grid-template-columns:minmax(0,1fr);gap:8px}
+  body.eai-ui.eai-index-page.eai-home .eai-process-wide li{padding:15px 0}
+  body.eai-ui.eai-index-page.eai-home .eai-process-wide .eai-step-num{margin-bottom:8px}
+  body.eai-ui.eai-index-page .guide-strip-steps{grid-template-columns:minmax(0,1fr)}
 }
 @media (max-width:390px){
   body.eai-ui.eai-index-page.eai-home main h1{font-size:36px!important}
