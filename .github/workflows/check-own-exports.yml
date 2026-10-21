@@ -1,0 +1,41 @@
+name: Check own exports
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'scripts/check_own_exports.mjs'
+      - 'scripts/archive_review.py'
+      - 'scripts/workflow_export.js'
+      - '.github/workflows/check-own-exports.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exports:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build own pages
+        run: |
+          pip install beautifulsoup4
+          python scripts/build_site.py --sources content/legacy --out site-build
+          python scripts/prepare_ui.py --root site-build
+          python scripts/verify_ui.py --root site-build
+      - name: Test real PNG, PDF and text files
+        run: |
+          npm install --no-save playwright@1.56.1
+          npx playwright install --with-deps chromium webkit
+          node scripts/check_own_exports.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: own-export-evidence
+          retention-days: 14
+          path: own-export-results/
