@@ -3,7 +3,7 @@ on:
   pull_request:
     branches: [main]
     paths:
-      - 'scripts/check_own_exports.mjs'
+      - 'scripts/check_own_*.mjs'
       - 'scripts/archive_review.py'
       - 'scripts/workflow_export.js'
       - '.github/workflows/check-own-exports.yml'
@@ -33,6 +33,8 @@ jobs:
           npm install --no-save playwright@1.56.1
           npx playwright install --with-deps chromium webkit
           node scripts/check_own_exports.mjs
+      - name: Verify signed and altered synthetic files
+        run: node scripts/check_own_verifier.mjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
