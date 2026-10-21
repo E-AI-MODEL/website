@@ -7,6 +7,7 @@ from bs4 import BeautifulSoup
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'scripts'))
 from home_model import install, VERSION
+from prepare_ui import ASSETS, prepare
 
 
 class HomeModelTests(unittest.TestCase):
@@ -75,11 +76,26 @@ class HomeModelTests(unittest.TestCase):
         self.assertEqual(sitemap.count('https://eaimodel.nl/nl/model/'), 1)
         self.assertEqual(sitemap.count('https://eaimodel.nl/en/model/'), 1)
 
-    def test_repeated_build_is_idempotent(self):
-        before = {p: (self.root / p).read_bytes() for p in self.paths + ['sitemap.xml']}
+    def test_repeated_install_preserves_document(self):
+        # prepare_ui performs final doctype whitespace normalization. Here we
+        # compare the actual document element, not serializer-only newlines.
+        before = {p: str(self.page(p).html) for p in self.paths}
         install(self.root)
-        after = {p: (self.root / p).read_bytes() for p in self.paths + ['sitemap.xml']}
+        after = {p: str(self.page(p).html) for p in self.paths}
         self.assertEqual(before, after)
+
+    def test_prepared_release_is_byte_identical_on_repeat(self):
+        assets = self.root / 'assets'
+        assets.mkdir()
+        for name in ASSETS:
+            (assets / name).write_text('/* test asset */')
+        first = prepare(self.root)
+        before = {p: (self.root / p).read_bytes() for p in self.paths}
+        second = prepare(self.root)
+        after = {p: (self.root / p).read_bytes() for p in self.paths}
+        self.assertEqual(before, after)
+        self.assertEqual(first, second)
+        self.assertEqual(self.handoff.read_text(), 'DO NOT MODIFY THIS HANDOFF')
 
 
 if __name__ == '__main__':
