@@ -34,3 +34,19 @@ body.eai-archive-page .wizard-content{min-width:0}
  body.eai-ui .sources-list>*{max-width:100%;box-sizing:border-box}
  .archive-review-note{padding:16px 18px}
 }
+
+/* WebKit uses wider glyph and file-input minimum sizes than Chromium.
+   Fix the elements that cause overflow; do not clip the page to hide it. */
+@media(max-width:720px){
+ body.eai-ui:not(.eai-index-page) main h1{font-size:clamp(28px,8vw,36px)!important;line-height:1.14;max-width:100%;overflow-wrap:anywhere}
+ body.eai-ui main :is(h2,h3,.workform-technical-name){max-width:100%;overflow-wrap:anywhere}
+ body.eai-ui main :is(.button,.button-row,button){max-width:100%;box-sizing:border-box}
+ body.eai-ui main :is(.button,button){white-space:normal;overflow-wrap:anywhere}
+ body.eai-ui .page-local-nav{max-width:100%;min-width:0}
+ body.eai-ui .page-local-nav>.wrap{min-width:0;max-width:100%;box-sizing:border-box}
+ body.eai-ui .eai-verification{width:100%;min-width:0;box-sizing:border-box}
+ body.eai-ui .verify-form{grid-template-columns:minmax(0,1fr);min-width:0;padding:20px}
+ body.eai-ui .verify-form label{min-width:0;grid-template-columns:minmax(0,1fr)}
+ body.eai-ui .verify-form input[type=file]{width:100%;min-width:0;max-width:100%;box-sizing:border-box}
+ body.eai-ui .verify-result{min-width:0;max-width:100%;box-sizing:border-box;overflow-wrap:anywhere;word-break:break-word}
+}

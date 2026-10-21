@@ -67,5 +67,9 @@ try {
 } finally {
  if(browser)await browser.close();server.kill();
  writeFileSync('audit-results/browser.json',JSON.stringify({reports,external,limits:['Local browser tests block outside embeds and do not grade the claims.','External pages were rendered; form outputs require separate task-based checks.']},null,2));
- console.log(JSON.stringify({renders:reports.length,overflow:reports.filter(x=>x.horizontalOverflow).length,errors:reports.filter(x=>x.jsErrors?.length||x.failure).length,external:external.length}));
+ const failed=reports.filter(x=>x.failure||x.jsErrors?.length||x.horizontalOverflow||x.menuWithinViewport===false);
+ writeFileSync('audit-results/render-failures.json',JSON.stringify(failed,null,2));
+ console.log(JSON.stringify({renders:reports.length,overflow:reports.filter(x=>x.horizontalOverflow).length,errors:reports.filter(x=>x.jsErrors?.length||x.failure).length,external:external.length,localFailures:failed.length}));
+ // External access controls are neither proof of a broken tool nor approval.
+ if(failed.length){console.error('Local rendering checks failed: '+failed.map(x=>x.engine+': '+x.path).join(', '));process.exitCode=1;}
 }
