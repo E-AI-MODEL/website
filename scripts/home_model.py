@@ -6,6 +6,7 @@ from __future__ import annotations
 from copy import deepcopy
 from pathlib import Path
 import xml.etree.ElementTree as ET
+import re
 from bs4 import BeautifulSoup
 
 VERSION = '20261021-home-model'
@@ -63,7 +64,7 @@ def materialize(root: Path) -> None:
                                      href='https://eaimodel.nl/nl/model/' if kind == 'model' else 'https://eaimodel.nl/'))
         target = root / rel
         target.parent.mkdir(parents=True, exist_ok=True)
-        target.write_text(str(soup), encoding='utf-8')
+        target.write_text(re.sub(r'^<!DOCTYPE html>\s*', '<!DOCTYPE html>\n', str(soup)), encoding='utf-8')
     sitemap = root / 'sitemap.xml'
     if sitemap.is_file():
         namespace = 'http://www.sitemaps.org/schemas/sitemap/0.9'
