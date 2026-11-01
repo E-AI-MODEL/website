@@ -100,7 +100,45 @@ $('example-office').addEventListener('click',()=>setData({kind:'werk',mode:'onde
 $('clear').addEventListener('click',()=>{if((val('process')||val('human'))&&!confirm('Alle ingevulde velden wissen?'))return;setData({kind:'les',mode:'ontwerpen'});});
 $('copy').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(compose());$('message').textContent='Prompt gekopieerd.';}catch{const range=document.createRange();range.selectNodeContents($('output'));const s=window.getSelection();s.removeAllRanges();s.addRange(range);$('message').textContent='De prompt is geselecteerd. Kopieer met Ctrl+C / Cmd+C.';}});
 $('download').addEventListener('click',()=>{const a=document.createElement('a');const url=URL.createObjectURL(new Blob([compose()],{type:'text/plain;charset=utf-8'}));a.href=url;a.download='EAI-van-proces-naar-prompt.txt';a.click();setTimeout(()=>URL.revokeObjectURL(url),1500);});
-displayLabels();
+/* Herken een voorbeeld vanaf de homepage. Geen persoonsgegevens en geen automatische verzending. */
+const homepageExamples={
+  schoolafspraak:{
+    kind:'werk',mode:'ontwerpen',
+    process:'We willen samen schoolafspraken maken over AI-gebruik. Collega’s en leerlingen hebben verschillende voorstellen. De afspraken moeten duidelijk en uitvoerbaar zijn.',
+    context:'Schoolleiding, teams, ondersteunende medewerkers en leerlingen. Gebruik uitsluitend fictieve of geanonimiseerde inbreng.',
+    phase:'Afwegen',
+    human:'Bestuur, medewerkers en vertegenwoordigers van leerlingen wegen de voorstellen, spreken een afspraak af en toetsen of die in de praktijk werkt.',
+    ai:'Orden de geanonimiseerde voorstellen per onderwerp. Benoem overeenkomsten, verschillen en nog open vragen zonder zelf een schoolbesluit te nemen.',
+    boundary:'Gebruik geen herleidbare gegevens van leerlingen of medewerkers. Stel geen schoolbeleid vast en verzin geen standpunten.',
+    evidence:'Bespreek de ordening met betrokkenen, probeer een afspraak in een team uit en verzamel concrete ervaringen.'
+  },
+  ouderbericht:{
+    kind:'werk',mode:'ontwerpen',
+    process:'Een roosterwijziging moet helder aan ouders worden uitgelegd. We willen een conceptbericht maken en afwegen waar persoonlijk contact nodig is.',
+    context:'Fictieve roosterwijziging, zonder namen of andere persoonsgegevens.',
+    phase:'Opties uitwerken',
+    human:'De medewerker controleert de feiten en toon en beslist welke ouders een algemeen bericht krijgen en wanneer een persoonlijk gesprek nodig is.',
+    ai:'Schrijf op basis van de opgegeven, gecontroleerde feiten een kort en duidelijk conceptbericht aan ouders.',
+    boundary:'Gebruik geen leerling- of oudergegevens. Verzend het bericht niet. Laat onbekende feiten open en vul ze niet zelf in.',
+    evidence:'Een collega kan het bericht zonder extra uitleg begrijpen; persoonlijke uitzonderingen worden apart beoordeeld.'
+  },
+  grafiek:{
+    kind:'les',mode:'ontwerpen',
+    process:'Leerlingen leren zelf een grafiek maken bij een set meetgegevens. De docent bespreekt eerst een uitgewerkt voorbeeld, daarna oefenen leerlingen zelfstandig.',
+    context:'Een les met verzonnen meetpunten. De leerlingen kennen de begrippen assen, schaal en meetpunt.',
+    phase:'Zelfstandig oefenen',
+    human:'De leerling kiest zelf een passende schaal, plaatst de meetpunten en licht de gemaakte keuzes toe.',
+    ai:'Geef tijdens de uitleg één gecontroleerd voorbeeld van een grafiek. Geef bij zelfstandig oefenen alleen een vraag over de gekozen schaal, geen uitgewerkte grafiek.',
+    boundary:'Neem het tekenen en het kiezen van de schaal tijdens zelfstandig oefenen niet over. Gebruik alleen fictieve meetwaarden.',
+    evidence:'De leerling maakt zonder AI een nieuwe grafiek en kan de gekozen schaal toelichten.'
+  }
+};
+const homepageExample=new URLSearchParams(window.location.search).get('voorbeeld');
+if(homepageExample && Object.prototype.hasOwnProperty.call(homepageExamples,homepageExample)){
+  setData(homepageExamples[homepageExample]);
+}else{
+  displayLabels();
+}
 })();
 </script>
 </body>
