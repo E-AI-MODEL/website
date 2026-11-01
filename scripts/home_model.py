@@ -9,13 +9,13 @@ import xml.etree.ElementTree as ET
 import re
 from bs4 import BeautifulSoup
 
-VERSION = '20261021-home-model'
+VERSION = '20261101-school-visual-production'
 TEMPLATES = Path(__file__).resolve().parent.parent / 'content' / 'home-model'
 ROUTES = (('index.html', 'nl', 'home'), ('nl/index.html', 'nl', 'home'),
           ('en/index.html', 'en', 'home'), ('nl/model/index.html', 'nl', 'model'),
           ('en/model/index.html', 'en', 'model'))
 DESCRIPTIONS = {
- ('nl', 'home'): 'Wat neemt AI over in het leren? Bekijk een bronnenvoorbeeld en de vier vragen van het EAI-model.',
+ ('nl', 'home'): 'AI in de hele school: kies een herkenbare vraag over schoolafspraken, dagelijks werk, leren of AI-toepassingen.',
  ('en', 'home'): 'What does AI take over in learning? Explore a source-comparison example and the four questions of EAI.',
  ('nl', 'model'): 'Proces, fase, kernhandeling en AI: het EAI-model uitgewerkt met een voorbeeld over historische bronnen.',
  ('en', 'model'): 'Process, stage, meaningful action and AI: the EAI model explained through an example with historical sources.',
@@ -45,7 +45,7 @@ def materialize(root: Path) -> None:
         soup.body['class'] = list(dict.fromkeys(classes + ['eai-refresh', 'eai-hm', 'hm-' + kind]))
         soup.body['data-home-model-layout'] = VERSION
         soup.body.attrs.pop('data-editorial-layout', None)
-        title = ('Het EAI-model | EAI' if lang == 'nl' else 'The EAI model | EAI') if kind == 'model' else ('EAI | Leren en AI' if lang == 'nl' else 'EAI | Learning and AI')
+        title = ('Het EAI-model | EAI' if lang == 'nl' else 'The EAI model | EAI') if kind == 'model' else ('EAI | AI in de hele school' if lang == 'nl' else 'EAI | Learning and AI')
         soup.title.string = title
         description = soup.find('meta', attrs={'name': 'description'})
         if description is None:
