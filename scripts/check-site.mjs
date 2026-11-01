@@ -20,7 +20,9 @@ for (const path of paths) {
   if (!/<html\s+lang="(?:en|nl)"/i.test(html)) fail('missing language declaration');
   if (!/<title>[^<]+<\/title>/.test(html)) fail('missing document title');
   if (!/<link\s+rel="canonical"/.test(html)) fail('missing canonical');
-  if (!/class="eai-lang"/.test(html)) fail('missing NL/EN selector');
+  // The legacy header uses .eai-lang; the refreshed header uses .eai-site-language.
+  // Both are containers. Never require this class on an individual language link.
+  if (!/<(?:div|nav)\b[^>]*class="[^"]*\b(?:eai-lang|eai-site-language)\b[^"]*"/.test(html)) fail('missing NL/EN selector');
   if ((html.match(/<h1\b/gi) || []).length !== 1) fail('expected exactly one H1');
   const ids = [...html.matchAll(/\sid="([^"]+)"/g)].map(x => x[1]);
   for (const id of new Set(ids.filter((x, i) => ids.indexOf(x) !== i))) fail('duplicate id: ' + id);
