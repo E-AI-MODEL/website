@@ -64,9 +64,13 @@ try {
     }
   }
   await page.goto(base + '/', { waitUntil: 'load' });
-  const before = await page.locator('#eai-demo-output').textContent();
-  await page.locator('[data-eai-demo="1"]').click();
-  assert.notEqual(await page.locator('#eai-demo-output').textContent(), before);
+  const expectedHomeCases = ['schoolafspraken', 'dagelijks-werk', 'leren-en-toetsen', 'toepassing-kiezen', 'ai-begrijpen'];
+  const homeChoices = page.locator('[data-eh-explorer] .eh-choice');
+  assert.equal(await homeChoices.count(), expectedHomeCases.length, 'Five homepage entry points');
+  for (let i = 0; i < expectedHomeCases.length; i++) {
+    await homeChoices.nth(i).click();
+    assert.equal(await page.locator('[data-eh-explorer]').getAttribute('data-active-case'), expectedHomeCases[i]);
+  }
   await page.goto(base + '/nl/tools/', { waitUntil: 'load' });
   assert.equal(await page.locator('.eai-site-language a[lang="en"]').getAttribute('href'), '/en/tools/');
   assert.equal(await page.locator('.eai-site-language a[lang="nl"]').getAttribute('href'), '/nl/tools/');
@@ -80,8 +84,8 @@ try {
   assert.equal(await fallback.locator('.eai-site-group').nth(3).locator('a:visible').count(), 3);
   await noJS.close();
   assert.deepEqual(errors, []);
-  writeFileSync('test-results/ui-report.json', JSON.stringify({ results, noJavaScriptMenu: true, demo: true, languageLinks: true, errors }, null, 2));
-  console.log(`PASS: ${results.length} page/viewport checks, native no-JS menu, keyboard, demo and language links.`);
+  writeFileSync('test-results/ui-report.json', JSON.stringify({ results, noJavaScriptMenu: true, homeQuestions: true, languageLinks: true, errors }, null, 2));
+  console.log(`PASS: ${results.length} page/viewport checks, native no-JS menu, keyboard, homepage questions and language links.`);
 } finally {
   if (browser) await browser.close();
   server.kill();
