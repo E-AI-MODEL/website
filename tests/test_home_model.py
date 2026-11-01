@@ -43,9 +43,18 @@ class HomeModelTests(unittest.TestCase):
         soup = BeautifulSoup((self.root / 'nl/index.html').read_text(), 'html.parser')
         for anchor in ('model', 'voorbeeld', 'verhaal', 'verder-lezen', 'beginnen'):
             self.assertIsNotNone(soup.find(id=anchor))
-        self.assertEqual(len(soup.select('.hm-case-source')), 3)
-        self.assertFalse(any(d.has_attr('hidden') for d in soup.select('.hm-case-source')))
-        self.assertTrue(soup.select_one('.hm-case-controls').has_attr('hidden'))
+        self.assertEqual([d['id'] for d in soup.select('.eh-case-source')],
+                         ['schoolafspraken', 'dagelijks-werk', 'leren-en-toetsen', 'toepassing-kiezen', 'ai-begrijpen'])
+        self.assertFalse(any(d.has_attr('hidden') for d in soup.select('.eh-case-source')))
+        self.assertTrue(soup.select_one('.eh-case-source').has_attr('open'))
+        self.assertTrue(soup.select_one('.eh-case-controls').has_attr('hidden'))
+        for case in soup.select('.eh-case-source'):
+            self.assertTrue(case.select_one('article a[href]'), case['id'])
+            self.assertEqual(len(case.select('svg[role="img"][aria-label]')), 2)
+            self.assertTrue(case.select_one('.desktop-map'), case['id'])
+            self.assertTrue(case.select_one('.mobile-map'), case['id'])
+        for anchor in soup.select('.eh-school-map a[href]'):
+            self.assertTrue(soup.find(id=anchor['href'][1:]), anchor['href'])
         model = (self.root / 'nl/model/index.html').read_text()
         self.assertIn('Aan welke stap moet de leerling in deze fase zelf inhoudelijke betekenis geven om tot leren te komen?', model)
         self.assertIn('zonder dat er een nieuw product ontstaat', model)

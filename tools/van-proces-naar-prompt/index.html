@@ -23,7 +23,7 @@
   <div class="shell">
     <section class="panel" aria-label="Invoer">
       <div class="panel-head"><h2>Vul je situatie in</h2><p>Beschrijf wat je al weet. De prompt groeit mee terwijl je invult.</p>
-        <div class="samples"><button id="example-lesson" type="button">Voorbeeld: les geschiedenis</button><button id="example-office" type="button">Voorbeeld: schoolafspraak</button><button id="clear" type="button">Alles wissen</button></div>
+        <div class="samples"><button id="example-lesson" type="button">Voorbeeld: les geschiedenis</button><button id="example-office" type="button">Voorbeeld: ouderberichten onderzoeken</button><button id="clear" type="button">Alles wissen</button></div>
       </div>
       <div class="form-body">
         <div class="pair">
@@ -31,7 +31,7 @@
           <label class="field"><span>Ik wil</span><div class="seg" role="group" aria-label="Toepassing"><button type="button" id="mode-ontwerpen" data-mode="ontwerpen" aria-pressed="true">AI-inzet ontwerpen</button><button type="button" id="mode-onderzoeken" data-mode="onderzoeken" aria-pressed="false">Tool onderzoeken</button></div></label>
         </div>
         <div class="step"><div class="step-title"><em>01</em> Proces</div>
-          <label class="field"><span id="process-label">Wat moet de leerling uiteindelijk kennen of kunnen?</span><small>Beschrijf ook kort hoe de les of het leerproces is opgebouwd.</small><textarea id="process" placeholder="Bijvoorbeeld: 5 vwo geschiedenis; leerlingen leren twee bronnen vergelijken en een onderbouwd oordeel formuleren."></textarea></label>
+          <label class="field"><span id="process-label">Wat moet de leerling uiteindelijk kennen of kunnen?</span><small>Beschrijf ook kort hoe dit proces is opgebouwd.</small><textarea id="process" placeholder="Bijvoorbeeld: 5 vwo geschiedenis; leerlingen leren twee bronnen vergelijken en een onderbouwd oordeel formuleren."></textarea></label>
           <label class="field"><span>Context <small>optioneel</small></span><input id="context" type="text" placeholder="Bijvoorbeeld: 5 vwo, historische bronnen, basiskennis aanwezig"></label>
         </div>
         <div class="step"><div class="step-title"><em>02</em> Fase</div>
@@ -101,6 +101,11 @@ $('clear').addEventListener('click',()=>{if((val('process')||val('human'))&&!con
 $('copy').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(compose());$('message').textContent='Prompt gekopieerd.';}catch{const range=document.createRange();range.selectNodeContents($('output'));const s=window.getSelection();s.removeAllRanges();s.addRange(range);$('message').textContent='De prompt is geselecteerd. Kopieer met Ctrl+C / Cmd+C.';}});
 $('download').addEventListener('click',()=>{const a=document.createElement('a');const url=URL.createObjectURL(new Blob([compose()],{type:'text/plain;charset=utf-8'}));a.href=url;a.download='EAI-van-proces-naar-prompt.txt';a.click();setTimeout(()=>URL.revokeObjectURL(url),1500);});
 displayLabels();
+// Homepage links open the matching example; this does not send any information.
+const requestedExample=new URLSearchParams(window.location.search).get('voorbeeld');
+if(requestedExample==='schoolafspraak')setData({kind:'werk',mode:'ontwerpen',process:'Samen een werkbare schoolafspraak over AI maken. We verzamelen vragen en voorstellen, bespreken de verschillen en proberen een gekozen afspraak uit voordat we haar vastleggen.',context:'Bestuur, schoolleiding, medewerkers en leerlingen brengen vragen en ervaringen in. Dit is een fictief oefenvoorbeeld.',phase:'Opties uitwerken',human:'Betrokkenen wegen af welke afspraak past bij de school, welke gevolgen zij verwachten en wat zij eerst willen uitproberen.',ai:'Orden de aangeleverde vragen en voorstellen per onderwerp. Zet overeenkomsten, verschillen en nog openstaande vragen naast elkaar. Bewaar afwijkende standpunten.',boundary:'Kies de schoolafspraak niet namens ons. Verzin geen draagvlak of ontbrekende standpunten. Gebruik alleen de aangeleverde informatie, zonder herleidbare persoonsgegevens.',evidence:'Tijdens een proefperiode verzamelen we ervaringen uit lessen en ander schoolwerk. Het team bespreekt daarmee wat werkt en wat aanpassing vraagt.'});
+if(requestedExample==='ouderbericht')setData({kind:'werk',mode:'ontwerpen',process:'Ouders duidelijk informeren over een roosterwijziging. Eerst bepalen we wat ouders moeten weten, daarna maken we een concept en kiezen we hoe we contact opnemen.',context:'Een medewerker schrijft namens de school. Dit is een fictief oefenvoorbeeld.',phase:'Opties uitwerken',human:'De medewerker bepaalt welke boodschap nodig is en welke situaties persoonlijk contact vragen.',ai:'Maak een kort concept voor de algemene boodschap. Gebruik alleen de informatie die ik aanlever en markeer ontbrekende gegevens.',boundary:'Verzin geen afspraken of data. Verstuur niets. Gebruik geen herleidbare ouder- of leerlinggegevens in dit oefenvoorbeeld.',evidence:'We controleren of de boodschap klopt en of de gekozen contactvorm past bij de situatie.'});
+if(requestedExample==='grafiek')setData({kind:'les',mode:'ontwerpen',process:'Leerlingen leren een grafiek maken uit meetgegevens. Na uitleg oefenen zij zelfstandig met het kiezen van assen en schaal en het plaatsen van meetpunten.',context:'Een oefening na de gezamenlijke bespreking van een uitgewerkt voorbeeld.',phase:'Zelfstandig oefenen',human:'De leerling kiest zelf een passende schaal en bepaalt waar de meetpunten op de assen terechtkomen.',ai:'Reageer pas na de eerste poging. Benoem of er een probleem in de schaalverdeling zit, zonder een nieuwe schaal of een complete grafiek te geven.',boundary:'Kies de schaal niet vooraf voor de leerling. Controleer of een hint de keuze die de leerling moet oefenen al invult.',evidence:'Bij een volgende opdracht maakt de leerling zonder dezelfde aanwijzing een grafiek met andere meetgegevens.'});
 })();
 </script>
 </body>

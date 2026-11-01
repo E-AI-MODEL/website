@@ -14,7 +14,7 @@ from editorial_ui import apply_editorial
 from archive_review import review as review_archive
 from home_model import materialize as materialize_home_model
 
-ASSETS = ('site.css', 'site-refresh.js', 'site-ui.css', 'site-responsive.css', 'site-editorial.css', 'site-archive.css', 'site-navigation.js', 'home-model.css', 'home-model.js')
+ASSETS = ('site.css', 'site-refresh.js', 'site-ui.css', 'site-responsive.css', 'site-editorial.css', 'site-archive.css', 'site-navigation.js', 'home-model.css', 'school-home.css', 'home-model.js')
 SKIP = {'.git', '.github', 'content', 'scripts', 'tests', 'assets', 'handoff', 'houseoftalents', 'onderwijsin', 'site-build'}
 ALIASES = {'/': '/nl/', '/tools/': '/nl/tools/', '/publicaties/': '/nl/publicaties/', '/over/': '/nl/over/', '/onderwijs/': '/nl/onderwijs/', '/toepassingen/': '/nl/toepassingen/', '/kennis/': '/nl/onderzoek/', '/model-monitor/': '/nl/model-monitor/', '/llmscan/': '/nl/llmscan/'}
 INDEX_PATHS = {'/nl/', '/en/', '/nl/model/', '/en/model/', '/nl/tools/', '/en/tools/', '/nl/onderwijs/', '/en/education/', '/nl/onderzoek/', '/en/research/', '/nl/toepassingen/', '/en/applications/', '/nl/over/', '/en/about/'}
@@ -109,11 +109,11 @@ def prepare(root: Path) -> dict:
             classes.append('eai-index-page')
         body['class'] = classes
         body['data-ui-version'] = revision
-        css_pattern = re.compile(r'^/assets/(?:site|site-ui|site-responsive|site-editorial|site-archive|home-model)(?:\.[a-f0-9]{12})?\.css(?:\?.*)?$')
+        css_pattern = re.compile(r'^/assets/(?:site|site-ui|site-responsive|site-editorial|site-archive|home-model|school-home)(?:\.[a-f0-9]{12})?\.css(?:\?.*)?$')
         for tag in list(soup.find_all('link', href=True)):
             if css_pattern.match(tag['href']):
                 tag.decompose()
-        for name in ('site.css', 'site-ui.css', 'site-responsive.css', 'site-editorial.css', 'site-archive.css', 'home-model.css'):
+        for name in ('site.css', 'site-ui.css', 'site-responsive.css', 'site-editorial.css', 'site-archive.css', 'home-model.css', 'school-home.css'):
             soup.head.append(soup.new_tag('link', rel='stylesheet', href=manifest[name]['url']))
         js_pattern = re.compile(r'^/assets/(?:site-refresh|site-navigation|home-model)(?:\.[a-f0-9]{12})?\.js(?:\?.*)?$')
         for tag in list(soup.find_all('script', src=True)):
