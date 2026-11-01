@@ -43,9 +43,25 @@ class HomeModelTests(unittest.TestCase):
         soup = BeautifulSoup((self.root / 'nl/index.html').read_text(), 'html.parser')
         for anchor in ('model', 'voorbeeld', 'verhaal', 'verder-lezen', 'beginnen'):
             self.assertIsNotNone(soup.find(id=anchor))
-        self.assertEqual(len(soup.select('.hm-case-source')), 3)
-        self.assertFalse(any(d.has_attr('hidden') for d in soup.select('.hm-case-source')))
-        self.assertTrue(soup.select_one('.hm-case-controls').has_attr('hidden'))
+        cases = soup.select('details.eh-case-source')
+        self.assertEqual(
+            [case['id'] for case in cases],
+            ['schoolafspraken', 'dagelijks-werk', 'leren-en-toetsen',
+             'toepassing-kiezen', 'ai-begrijpen'],
+        )
+        # Zonder JavaScript blijven alle vijf uitlegkaarten bereikbaar.
+        self.assertTrue(all(case.find('summary') is not None for case in cases))
+        self.assertTrue(all(not case.has_attr('hidden') for case in cases))
+        self.assertEqual(
+            [case['id'] for case in cases if case.has_attr('open')],
+            ['schoolafspraken'],
+        )
+        controls = soup.select_one('.eh-case-controls')
+        output = soup.select_one('.eh-case-output')
+        self.assertIsNotNone(controls)
+        self.assertIsNotNone(output)
+        self.assertTrue(controls.has_attr('hidden'))
+        self.assertTrue(output.has_attr('hidden'))
         model = (self.root / 'nl/model/index.html').read_text()
         self.assertIn('Aan welke stap moet de leerling in deze fase zelf inhoudelijke betekenis geven om tot leren te komen?', model)
         self.assertIn('zonder dat er een nieuw product ontstaat', model)
