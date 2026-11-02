@@ -1,10 +1,9 @@
-<!DOCTYPE html>
-
+<!doctype html>
 <html lang="nl">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width,initial-scale=1" name="viewport"/>
-<meta content="Brongecontroleerd overzicht van de openbare GitHub-repositories van Stichting Onderwijs in: werkende sites, software, documentatie en grenzen aan wat uit code is af te leiden." name="description"/>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Brongecontroleerd overzicht van de openbare GitHub-repositories van Stichting Onderwijs in: werkende sites, software, documentatie en grenzen aan wat uit code is af te leiden.">
 <title>Onderwijs in: wat staat er werkelijk op GitHub?</title>
 <style>
 /* Zelfstandige HTML-overdracht: geen externe sitestijlen nodig. */
@@ -197,105 +196,110 @@ body.hot-locked{overflow:hidden}
   #oiApp .oi-language{width:100%;justify-content:space-between}
 }
 </style>
-<meta content="noindex,nofollow" name="robots"/>
-<link data-eai-editorial="true" href="/assets/editorial-finish.css" rel="stylesheet"/></head>
+<meta name="robots" content="noindex,nofollow">
+</head>
 <body class="hot-locked">
-<div aria-labelledby="hotTitle" aria-modal="true" class="hot-gate" id="hotGate" role="dialog">
-<div class="hot-gate-card">
-<h2 id="hotTitle">Wachtwoord</h2>
-<form id="hotForm">
-<label class="hot-visually-hidden" for="hotPassword">Wachtwoord</label>
-<div class="hot-entry">
-<input aria-describedby="hotError" autocomplete="off" id="hotPassword" placeholder="Wachtwoord" required="" type="password"/>
-<button type="submit">Open</button>
+<div id="hotGate" class="hot-gate" role="dialog" aria-modal="true" aria-labelledby="hotTitle">
+  <div class="hot-gate-card">
+    <h2 id="hotTitle">Wachtwoord</h2>
+    <form id="hotForm">
+      <label class="hot-visually-hidden" for="hotPassword">Wachtwoord</label>
+      <div class="hot-entry">
+        <input id="hotPassword" type="password" autocomplete="off" required placeholder="Wachtwoord" aria-describedby="hotError">
+        <button type="submit">Open</button>
+      </div>
+      <p id="hotError" role="status" aria-live="polite"></p>
+    </form>
+  </div>
 </div>
-<p aria-live="polite" id="hotError" role="status"></p>
-</form>
-</div>
-</div>
-<main aria-hidden="true" id="oiApp" inert="">
+<main id="oiApp" inert aria-hidden="true">
 <section class="oi-hero"><div class="oi-shell">
 <h1>Onderwijs in op GitHub</h1>
-<div class="oi-meta"><span>18 openbare repositories</span><span>Peildatum: 19 oktober 2026</span><a href="https://github.com/onderwijsin" rel="noopener" target="_blank">Bekijk de bron ↗</a></div>
+<div class="oi-meta"><span>18 openbare repositories</span><span>Peildatum: 19 oktober 2026</span><a href="https://github.com/onderwijsin" target="_blank" rel="noopener">Bekijk de bron ↗</a></div>
 </div></section>
 <div class="oi-shell">
-<div aria-label="Kies een weergave en een taalniveau" class="oi-toolbar">
+<div class="oi-toolbar" aria-label="Kies een weergave en een taalniveau">
+
 <div class="oi-toolbarline">
-<div aria-label="Weergave" class="oi-viewtabs" id="oiViewTabs" role="tablist">
-<button aria-controls="oi-panel-overzicht" aria-selected="true" class="oi-viewtab" data-oi-view="overzicht" id="oiTabOverview" role="tab" type="button"><span><b>Overzicht</b></span></button>
-<button aria-controls="oi-panel-tekst" aria-selected="false" class="oi-viewtab" data-oi-view="tekst" id="oiTabText" role="tab" tabindex="-1" type="button"><span><b>Tekst</b></span></button>
-<button aria-controls="oi-panel-pijplijn" aria-selected="false" class="oi-viewtab" data-oi-view="pijplijn" id="oiTabPipeline" role="tab" tabindex="-1" type="button"><span><b>Pijplijn</b></span></button>
-<button aria-controls="oi-panel-3d" aria-selected="false" class="oi-viewtab" data-oi-view="3d" id="oiTab3d" role="tab" tabindex="-1" type="button"><span><b>3D</b></span></button>
+<div class="oi-viewtabs" id="oiViewTabs" role="tablist" aria-label="Weergave">
+<button class="oi-viewtab" id="oiTabOverview" data-oi-view="overzicht" role="tab" type="button" aria-selected="true" aria-controls="oi-panel-overzicht"><span><b>Overzicht</b></span></button>
+<button class="oi-viewtab" id="oiTabText" data-oi-view="tekst" role="tab" type="button" aria-selected="false" aria-controls="oi-panel-tekst" tabindex="-1"><span><b>Tekst</b></span></button>
+<button class="oi-viewtab" id="oiTabPipeline" data-oi-view="pijplijn" role="tab" type="button" aria-selected="false" aria-controls="oi-panel-pijplijn" tabindex="-1"><span><b>Pijplijn</b></span></button>
+<button class="oi-viewtab" id="oiTab3d" data-oi-view="3d" role="tab" type="button" aria-selected="false" aria-controls="oi-panel-3d" tabindex="-1"><span><b>3D</b></span></button>
 </div>
-<div class="oi-language"><span id="oiLanguageLabel">Taal</span><div aria-labelledby="oiLanguageLabel" class="oi-switch" role="group"><button aria-pressed="true" id="oiPlain" type="button">Gewone taal</button><button aria-pressed="false" id="oiTech" type="button">Technisch</button></div></div>
+<div class="oi-language"><span id="oiLanguageLabel">Taal</span><div class="oi-switch" role="group" aria-labelledby="oiLanguageLabel"><button type="button" id="oiPlain" aria-pressed="true">Gewone taal</button><button type="button" id="oiTech" aria-pressed="false">Technisch</button></div></div>
 </div>
-</div><section aria-labelledby="oiTabOverview" class="oi-panel" id="oi-panel-overzicht" role="tabpanel">
+
+</div><section class="oi-panel" id="oi-panel-overzicht" role="tabpanel" aria-labelledby="oiTabOverview">
 <section class="oi-section" id="producten">
 <h2>Toepassingen en projecten</h2>
 <div class="oi-appgrid">
-<article><small>Publieke website</small><h3>Onderwijs in</h3><p>Website van Stichting Onderwijs in, met initiatieven, expertise en publicaties.</p><a href="https://onderwijsin.nl/" rel="noopener" target="_blank">Bekijk de website ↗</a></article>
-<article><small>Publieke website en API-documentatie</small><h3>Het Onderwijsloket</h3><p>Informatie en advies over werken in het onderwijs. De API-voorbeelden gebruiken Directus en Algolia en vereisen toegang via een token.</p><a href="https://onderwijsloket.com/" rel="noopener" target="_blank">Bekijk het Onderwijsloket ↗</a></article>
-<article><small>Gepubliceerde documentatie en code</small><h3>Onderwijsregio-API</h3><p>Documentatie voor de Onderwijsregio-API en kandidaatdefinities. Het eerdere kandidaatmodel is gearchiveerd.</p><a href="https://github.com/onderwijsin/onderwijsregio-api-docs" rel="noopener" target="_blank">Bekijk de documentatiecode ↗</a></article>
-<article><small>Software in GitHub</small><h3>Regional Site Menu</h3><p>Software voor het ontwerpen en bekijken van regionale websites, inclusief rapportage.</p><a href="https://github.com/onderwijsin/regional-site-menu" rel="noopener" target="_blank">Bekijk de software ↗</a></article>
-<article><small>Dataverwerking in GitHub</small><h3>Matching-pipelines</h3><p>Software die opgegeven voorkeuren omzet naar matchmatrices en speeddate-schema's voor trainees en scholen.</p><a href="https://github.com/onderwijsin/tio-matching-pipelines" rel="noopener" target="_blank">Bekijk de code ↗</a></article>
-<article><small>Kenniswebsite en code</small><h3>Buitenkans</h3><p>Een digitale handreiking over schoolleiderschap in het basisonderwijs, geen platform voor het beheren van kandidaten.</p><a href="https://github.com/onderwijsin/buitenkans" rel="noopener" target="_blank">Bekijk de repository ↗</a></article>
+<article><small>Publieke website</small><h3>Onderwijs in</h3><p>Website van Stichting Onderwijs in, met initiatieven, expertise en publicaties.</p><a href="https://onderwijsin.nl/" target="_blank" rel="noopener">Bekijk de website ↗</a></article>
+<article><small>Publieke website en API-documentatie</small><h3>Het Onderwijsloket</h3><p>Informatie en advies over werken in het onderwijs. De API-voorbeelden gebruiken Directus en Algolia en vereisen toegang via een token.</p><a href="https://onderwijsloket.com/" target="_blank" rel="noopener">Bekijk het Onderwijsloket ↗</a></article>
+<article><small>Gepubliceerde documentatie en code</small><h3>Onderwijsregio-API</h3><p>Documentatie voor de Onderwijsregio-API en kandidaatdefinities. Het eerdere kandidaatmodel is gearchiveerd.</p><a href="https://github.com/onderwijsin/onderwijsregio-api-docs" target="_blank" rel="noopener">Bekijk de documentatiecode ↗</a></article>
+<article><small>Software in GitHub</small><h3>Regional Site Menu</h3><p>Software voor het ontwerpen en bekijken van regionale websites, inclusief rapportage.</p><a href="https://github.com/onderwijsin/regional-site-menu" target="_blank" rel="noopener">Bekijk de software ↗</a></article>
+<article><small>Dataverwerking in GitHub</small><h3>Matching-pipelines</h3><p>Software die opgegeven voorkeuren omzet naar matchmatrices en speeddate-schema's voor trainees en scholen.</p><a href="https://github.com/onderwijsin/tio-matching-pipelines" target="_blank" rel="noopener">Bekijk de code ↗</a></article>
+<article><small>Kenniswebsite en code</small><h3>Buitenkans</h3><p>Een digitale handreiking over schoolleiderschap in het basisonderwijs, geen platform voor het beheren van kandidaten.</p><a href="https://github.com/onderwijsin/buitenkans" target="_blank" rel="noopener">Bekijk de repository ↗</a></article>
 </div>
 </section>
+
 <details class="oi-source-details" id="grenzen">
 <summary>Bronnen en wat nog niet vaststaat</summary>
 <p>De inventarisatie is gebaseerd op openbare GitHub-repositories, README's en productpagina's. Of software nu in productie draait en welke onderdelen daadwerkelijk gekoppeld zijn, is niet overal te controleren.</p>
 <p>Ook ontbreekt openbare bevestiging van welke regio's zijn aangesloten, welke componenten actief zijn en of 'Vraag het Jacob' dezelfde modellen gebruikt als de documentatiesites. De 3D-schets bevat daarnaast aannames.</p>
 </details>
-</section><section aria-labelledby="oiTabText" class="oi-panel oi-repositorypanel" hidden="" id="oi-panel-tekst" role="tabpanel">
+</section><section class="oi-panel oi-repositorypanel" id="oi-panel-tekst" role="tabpanel" aria-labelledby="oiTabText" hidden>
 <section class="oi-section" id="repos">
 <h2>Repositories</h2>
-<div class="oi-controls"><label><span class="oi-label" style="display:block;margin-bottom:7px">Zoeken</span><input autocomplete="off" id="oiSearch" placeholder="Naam, API of functie" type="search"/></label></div>
-<div aria-label="Onderwerpen" class="oi-filters" id="oiFilters" role="group"></div>
-<div aria-live="polite" class="oi-resultmeta" id="oiCount"></div>
+<div class="oi-controls"><label><span class="oi-label" style="display:block;margin-bottom:7px">Zoeken</span><input id="oiSearch" type="search" autocomplete="off" placeholder="Naam, API of functie"></label></div>
+<div class="oi-filters" id="oiFilters" role="group" aria-label="Onderwerpen"></div>
+<div class="oi-resultmeta" id="oiCount" aria-live="polite"></div>
 <div class="oi-repos" id="oiRepos"></div>
 </section>
-</section><section aria-labelledby="oiTabPipeline" class="oi-panel" hidden="" id="oi-panel-pijplijn" role="tabpanel">
+
+</section><section class="oi-panel" id="oi-panel-pijplijn" role="tabpanel" aria-labelledby="oiTabPipeline" hidden>
 <section class="oi-section" id="stroom">
 <h2>HOVI en KiesMBO</h2>
-<p class="oi-lead">De README van <a href="https://github.com/onderwijsin/navigator-data-generator" rel="noopener" target="_blank">navigator-data-generator</a> beschrijft hoe gegevens uit HOVI en KiesMBO worden verwerkt. De Onderwijsnavigator was aanleiding voor deze software. Dit is een beschreven verwerking, geen meting van een actuele productierun.</p>
-<div aria-label="HOVI en KiesMBO worden via een generator genormaliseerd en kunnen als bestanden worden uitgevoerd voor toepassingen als de Onderwijsnavigator" class="oi-flow" role="group">
+<p class="oi-lead">De README van <a href="https://github.com/onderwijsin/navigator-data-generator" target="_blank" rel="noopener">navigator-data-generator</a> beschrijft hoe gegevens uit HOVI en KiesMBO worden verwerkt. De Onderwijsnavigator was aanleiding voor deze software. Dit is een beschreven verwerking, geen meting van een actuele productierun.</p>
+<div class="oi-flow" role="group" aria-label="HOVI en KiesMBO worden via een generator genormaliseerd en kunnen als bestanden worden uitgevoerd voor toepassingen als de Onderwijsnavigator">
 <div class="oi-flowrow">
 <div class="oi-box"><b>HOVI + KiesMBO</b><span>Twee API's, twee verschillende gegevensmodellen. Er zijn toegangsgegevens nodig.</span></div>
-<div aria-hidden="true" class="oi-arr">→</div>
+<div class="oi-arr" aria-hidden="true">→</div>
 <div class="oi-box emphasis"><b>navigator-data-generator</b><span>Ophalen, filteren, normaliseren en zo nodig locaties verrijken.</span></div>
-<div aria-hidden="true" class="oi-arr">→</div>
+<div class="oi-arr" aria-hidden="true">→</div>
 <div class="oi-box"><b>Gestandaardiseerde gegevens</b><span>Uitvoer naar JSON of Excel. De bron blijft per veld mogelijk ongelijk gedetailleerd.</span></div>
-<div aria-hidden="true" class="oi-arr">⇢</div>
+<div class="oi-arr" aria-hidden="true">⇢</div>
 <div class="oi-box cautious"><b>Onderwijsnavigator</b><span>Bedoelde toepassing volgens de README. De huidige live-datakoppeling is niet apart geverifieerd.</span></div>
 </div>
 <p class="oi-flowcap">De gestippelde laatste stap is bewust anders getekend: het project beschrijft het gebruiksdoel, maar de huidige technische verbinding is niet uit de openbare broncode vastgesteld. De cijfers 10.000+ API-verzoeken en 100 MB gelden voor een ongefilterde ophaalronde volgens de README, niet voor iedere run.</p>
 </div>
 </section>
+
 <section class="oi-section">
 <h2>Onderwijsloket-API</h2>
-<p class="oi-lead">Deze aparte stroom komt uit <a href="https://github.com/onderwijsin/onderwijsloket-examples" rel="noopener" target="_blank">onderwijsloket-examples</a>. Het gaat om uitvoerbare voorbeelden. Ze vormen geen bewijs voor een bestaande koppeling met de Onderwijsnavigator of onderwijsregio-API.</p>
-<div aria-label="Voorbeelden van API-verzoeken en gegevensverwerking" class="oi-verifiedflow">
-<div class="oi-mini"><b>API-toegang</b><span>Directus-token en Algolia-sleutels.</span></div><div aria-hidden="true" class="oi-vf-arrow">→</div>
-<div class="oi-mini"><b>TypeScript scripts</b><span>Directus SDK en Algolia Search Client.</span></div><div aria-hidden="true" class="oi-vf-arrow">→</div>
-<div class="oi-mini"><b>Opvragingen</b><span>Relations, content, filters, facets en geosearch.</span></div><div aria-hidden="true" class="oi-vf-arrow">⇢</div>
+<p class="oi-lead">Deze aparte stroom komt uit <a href="https://github.com/onderwijsin/onderwijsloket-examples" target="_blank" rel="noopener">onderwijsloket-examples</a>. Het gaat om uitvoerbare voorbeelden. Ze vormen geen bewijs voor een bestaande koppeling met de Onderwijsnavigator of onderwijsregio-API.</p>
+<div class="oi-verifiedflow" aria-label="Voorbeelden van API-verzoeken en gegevensverwerking">
+<div class="oi-mini"><b>API-toegang</b><span>Directus-token en Algolia-sleutels.</span></div><div class="oi-vf-arrow" aria-hidden="true">→</div>
+<div class="oi-mini"><b>TypeScript scripts</b><span>Directus SDK en Algolia Search Client.</span></div><div class="oi-vf-arrow" aria-hidden="true">→</div>
+<div class="oi-mini"><b>Opvragingen</b><span>Relations, content, filters, facets en geosearch.</span></div><div class="oi-vf-arrow" aria-hidden="true">⇢</div>
 <div class="oi-mini caution"><b>Je eigen toepassing</b><span>Zelf bouwen. Niet als draaiende integratie aangetoond.</span></div>
 </div>
 <p class="oi-secondarysource">Andere repositories, zoals Nuxt Modules en Directus Extensions, leveren herbruikbare code. Er is geen publiek bewijs dat ze standaard samen worden uitgerold.</p>
 </section>
-</section><section aria-labelledby="oiTab3d" class="oi-panel" hidden="" id="oi-panel-3d" role="tabpanel">
+</section><section class="oi-panel" id="oi-panel-3d" role="tabpanel" aria-labelledby="oiTab3d" hidden>
 <div class="oi-contextnotice" role="note"><strong>Historische 3D-schets.</strong> Niet alle weergegeven koppelingen zijn bevestigd.</div>
-<div class="oi-drawing"><iframe allow="fullscreen" data-src="./3d/index.html" id="oi3dFrame" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" title="Interactieve 3D-schets van Onderwijs in, met deels niet geverifieerde relaties"></iframe></div>
-<p><a class="oi-exit3d" href="./3d/index.html" rel="noopener" target="_blank">Open de 3D-schets op een volledig scherm ↗</a></p>
-</section><div class="oi-colophon">Bronnen: de openbare repositories onder <a href="https://github.com/onderwijsin" rel="noopener" target="_blank">github.com/onderwijsin</a>, de genoemde README's en publiek bereikbare productpagina's. Peildatum 19 oktober 2026. Deze inventarisatie is gebaseerd op openbare bronnen en is niet opgesteld namens Stichting Onderwijs in. Er is geen toegang tot private repositories, serverconfiguraties of beheeraccounts gebruikt.</div>
+<div class="oi-drawing"><iframe id="oi3dFrame" title="Interactieve 3D-schets van Onderwijs in, met deels niet geverifieerde relaties" data-src="./3d/index.html" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="fullscreen"></iframe></div>
+<p><a class="oi-exit3d" href="./3d/index.html" target="_blank" rel="noopener">Open de 3D-schets op een volledig scherm ↗</a></p>
+</section><div class="oi-colophon">Bronnen: de openbare repositories onder <a href="https://github.com/onderwijsin" target="_blank" rel="noopener">github.com/onderwijsin</a>, de genoemde README's en publiek bereikbare productpagina's. Peildatum 19 oktober 2026. Deze inventarisatie is gebaseerd op openbare bronnen en is niet opgesteld namens Stichting Onderwijs in. Er is geen toegang tot private repositories, serverconfiguraties of beheeraccounts gebruikt.</div>
 </div>
-<dialog aria-label="Repository in detail" id="oiDialog"><div class="oi-detail">
-<div class="oi-modalhead"><span class="oi-label" id="oiDialogGroup"></span><button class="oi-close" id="oiClose" type="button">Sluiten ×</button></div>
+<dialog id="oiDialog" aria-label="Repository in detail"><div class="oi-detail">
+<div class="oi-modalhead"><span class="oi-label" id="oiDialogGroup"></span><button class="oi-close" type="button" id="oiClose">Sluiten ×</button></div>
 <h2 id="oiDialogName"></h2>
-<dl><dt>Wat doet dit?</dt><dd id="oiDialogPlain"></dd><dt>Technisch</dt><dd id="oiDialogTech"></dd><dt>Wat mag je hier niet uit concluderen?</dt><dd class="oi-disclaimer" id="oiDialogBoundary"></dd></dl>
-<a class="oi-source" id="oiDialogSource" rel="noopener" target="_blank">Open de repository op GitHub ↗</a>
+<dl><dt>Wat doet dit?</dt><dd id="oiDialogPlain"></dd><dt>Technisch</dt><dd id="oiDialogTech"></dd><dt>Wat mag je hier niet uit concluderen?</dt><dd id="oiDialogBoundary" class="oi-disclaimer"></dd></dl>
+<a class="oi-source" id="oiDialogSource" target="_blank" rel="noopener">Open de repository op GitHub ↗</a>
 </div></dialog>
 </main>
-<script id="oiData" type="application/json">[{"n":"navigator-data-generator","g":"Data","s":"code","plain":"Verwerkt gegevens uit HOVI en KiesMBO en zet ze om naar één afgesproken gegevensvorm. De README noemt de Onderwijsnavigator als aanleiding voor dit project.","tech":"TypeScript; useHovi()/useKiesMbo(); HOVI Products/ProductForms/Degrees en KiesMBO Studies/StudyDetails; normalisatie, geocoding, cache, JSON/Excel-export. API-sleutels vereist.","boundary":"De code en de bedoelde toepassing zijn openbaar. Een actuele productie-run of rechtstreekse live-koppeling is hiermee niet aangetoond."},{"n":"tio-matching-pipelines","g":"Data","s":"code","plain":"Verwerkt voorkeuren van trainees en scholen en maakt bestanden voor matching en speeddates.","tech":"Type-safe data pipelines; validatie van voorkeuren, match matrices, speeddate scheduling en Excel-export.","boundary":"De repository bewijst dat er verwerkingscode is. Niet hoeveel matches ermee zijn gemaakt."},{"n":"onderwijsloket-examples","g":"API & documentatie","s":"code","plain":"Voorbeeldcode voor organisaties die gegevens van het Onderwijsloket willen gebruiken.","tech":"TypeScript voorbeelden voor Directus SDK, relationele queries, Tiptap content, Algolia facets en multi-index search. Vereist API-token.","boundary":"Een voorbeeld voor een API is geen bewijs dat iedere route zonder toegangsbeperking beschikbaar is."},{"n":"onderwijsloket-docs","g":"API & documentatie","s":"docs","plain":"De bronbestanden van de technische documentatiesite voor de Onderwijsloket-API.","tech":"Nuxt 4 app met @onderwijsin/docus-plus layer; content/, Nuxt Content, Varlock en Coolify/Nitro Node-deployment.","boundary":"Documentatie en deploymentconfiguratie zeggen niet welke klantkoppelingen actief zijn."},{"n":"onderwijsregio-api-docs","g":"API & documentatie","s":"docs","plain":"Technische documentatie voor een onderwijsregio-API, waaronder een nieuwere beschrijving van kandidaatgegevens.","tech":"Nuxt 4; @onderwijsin/docus-plus; version 2 API schema; pinned layer; Coolify/Nitro Node; Varlock/Proton Pass.","boundary":"Een gepubliceerde API-specificatie bewijst nog geen operationeel ATS of implementatie bij onderwijsregio's."},{"n":"datamodel-kandidaat","g":"API & documentatie","s":"archived","plain":"Ouder datamodel voor kandidaatdossiers. De makers verwijzen zelf naar de nieuwere API-documentatie.","tech":"Archived repository; legacy TypeScript candidate models for regional ATS pilot; superseded by Onderwijsregio API v2 schema.","boundary":"Gebruik dit model niet als actuele specificatie."},{"n":"docus-plus","g":"API & documentatie","s":"code","plain":"Gedeelde software voor documentatiesites, met onder meer zoeken en een API-verkenner.","tech":"Nuxt/Docus layer; Scalar API Explorer, Mistral integration en search extensions.","boundary":"Mistral in deze repository bewijst niet welk model de assistent 'Vraag het Jacob' gebruikt."},{"n":"nuxt-modules","g":"Gedeelde software","s":"code","plain":"Een verzameling herbruikbare modules voor websites en applicaties. De lijst in GitHub bevat inmiddels veel meer dan de paar modules uit de oude visualisatie.","tech":"Nuxt 4 modules; onder meer turnstile, newsletter-signup, directus-client, redirects, healthcheck, cache, sentry-config, markdown-renderer en prerenderer; Node 24/pnpm 11 in actuele README.","boundary":"De aanwezigheid van een module bewijst niet dat die op iedere website is ingeschakeld."},{"n":"directus-extensions","g":"Gedeelde software","s":"code","plain":"Uitbreidingen voor het contentbeheersysteem Directus.","tech":"Reusable Directus extensions; TypeScript/Vue. Repository publishes integration code for CMS behavior.","boundary":"Geen volledig zicht op de gebruikte database, inhoud of hosting van elke toepassing."},{"n":"loops-core","g":"Gedeelde software","s":"code","plain":"Hulpmiddelen om e-mails en nieuwsbrieven via Loops op te maken en te verwerken.","tech":"Portable Loops Email Campaign and LMX utilities; TypeScript.","boundary":"Niet vastgesteld dat elke nieuwsbrief of website Loops gebruikt."},{"n":"regional-site-menu","g":"Toepassingen","s":"code","plain":"Interactieve tool waarmee onderwijsregio's onderdelen van hun website kunnen bekijken en een rapport kunnen opstellen.","tech":"Nuxt 4, Nuxt UI, Tailwind, Pinia, Tiptap, jsPDF, Cloudflare Workers, AI SDK met OpenAI en Mistral providers.","boundary":"De repo beschrijft functies en bevat code; gebruik en uitrol bij specifieke regio's zijn afzonderlijk te verifiëren."},{"n":"buitenkans","g":"Toepassingen","s":"code","plain":"Digitale handreiking over het vinden en begeleiden van nieuwe schoolleiders in het basisonderwijs.","tech":"Nuxt documentation app; content via Nuxt Content; herbruikbare Docus layer.","boundary":"Een kennissite is iets anders dan een kandidaatbeheersysteem."},{"n":"onderwijskroket","g":"Toepassingen","s":"light","plain":"Klein experimenteel project met de naam 'Kroketify het Onderwijsloket'.","tech":"Chrome extension project; README consists of a short 'Kroketify' description.","boundary":"Niet presenteren als onderdeel van de normale productieomgeving."},{"n":"agents","g":"AI & hulpmiddelen","s":"code","plain":"Herbruikbare instructies en plugins voor onder meer redactie, nieuwsbrieven en onderzoek.","tech":"Agent Skills + plugin packages; portable Markdown assets; marketplace definitions; MIT. ChatGPT workspace/runtime testing listed as pending.","boundary":"Een beschikbare plugin in de repository is nog niet bewezen geïnstalleerd of getest in productie."},{"n":"plausible-mcp","g":"AI & hulpmiddelen","s":"fork","plain":"Een kopie van een bestaande MCP-server om webstatistieken uit Plausible te bevragen.","tech":"Fork of getsentry/plausible-mcp; MCP read-only analytics tools; hosted and local deployment examples in upstream README.","boundary":"Een fork is geen bewijs dat Onderwijs in de server zelf heeft gebouwd of in gebruik heeft genomen."},{"n":"pets","g":"AI & hulpmiddelen","s":"light","plain":"Zelfgemaakte animatiefiguurtjes voor ontwikkelaars die met Codex werken.","tech":"Codex pet.json manifest, spritesheet.webp, readme-preview assets.","boundary":"Dit is persoonlijke ontwikkelsoftware, geen AI-infrastructuur van het Onderwijsloket."},{"n":"coolify-notification-router","g":"Beheer","s":"code","plain":"Kleine toepassing om technische meldingen naar het juiste Slack-kanaal door te sturen.","tech":"Cloudflare Worker; Slack events/routing, signing secret, channel env vars; Coolify/Slack notification use case.","boundary":"Dit zegt iets over meldingen, niet over de hosting van alle systemen."},{"n":".github","g":"Beheer","s":"docs","plain":"Instellingen en presentatiebestanden voor de GitHub-organisatie.","tech":"GitHub organization community/profile metadata.","boundary":"Geen uitvoerbaar platformonderdeel."}]</script>
+<script type="application/json" id="oiData">[{"n":"navigator-data-generator","g":"Data","s":"code","plain":"Verwerkt gegevens uit HOVI en KiesMBO en zet ze om naar één afgesproken gegevensvorm. De README noemt de Onderwijsnavigator als aanleiding voor dit project.","tech":"TypeScript; useHovi()/useKiesMbo(); HOVI Products/ProductForms/Degrees en KiesMBO Studies/StudyDetails; normalisatie, geocoding, cache, JSON/Excel-export. API-sleutels vereist.","boundary":"De code en de bedoelde toepassing zijn openbaar. Een actuele productie-run of rechtstreekse live-koppeling is hiermee niet aangetoond."},{"n":"tio-matching-pipelines","g":"Data","s":"code","plain":"Verwerkt voorkeuren van trainees en scholen en maakt bestanden voor matching en speeddates.","tech":"Type-safe data pipelines; validatie van voorkeuren, match matrices, speeddate scheduling en Excel-export.","boundary":"De repository bewijst dat er verwerkingscode is. Niet hoeveel matches ermee zijn gemaakt."},{"n":"onderwijsloket-examples","g":"API & documentatie","s":"code","plain":"Voorbeeldcode voor organisaties die gegevens van het Onderwijsloket willen gebruiken.","tech":"TypeScript voorbeelden voor Directus SDK, relationele queries, Tiptap content, Algolia facets en multi-index search. Vereist API-token.","boundary":"Een voorbeeld voor een API is geen bewijs dat iedere route zonder toegangsbeperking beschikbaar is."},{"n":"onderwijsloket-docs","g":"API & documentatie","s":"docs","plain":"De bronbestanden van de technische documentatiesite voor de Onderwijsloket-API.","tech":"Nuxt 4 app met @onderwijsin/docus-plus layer; content/, Nuxt Content, Varlock en Coolify/Nitro Node-deployment.","boundary":"Documentatie en deploymentconfiguratie zeggen niet welke klantkoppelingen actief zijn."},{"n":"onderwijsregio-api-docs","g":"API & documentatie","s":"docs","plain":"Technische documentatie voor een onderwijsregio-API, waaronder een nieuwere beschrijving van kandidaatgegevens.","tech":"Nuxt 4; @onderwijsin/docus-plus; version 2 API schema; pinned layer; Coolify/Nitro Node; Varlock/Proton Pass.","boundary":"Een gepubliceerde API-specificatie bewijst nog geen operationeel ATS of implementatie bij onderwijsregio's."},{"n":"datamodel-kandidaat","g":"API & documentatie","s":"archived","plain":"Ouder datamodel voor kandidaatdossiers. De makers verwijzen zelf naar de nieuwere API-documentatie.","tech":"Archived repository; legacy TypeScript candidate models for regional ATS pilot; superseded by Onderwijsregio API v2 schema.","boundary":"Gebruik dit model niet als actuele specificatie."},{"n":"docus-plus","g":"API & documentatie","s":"code","plain":"Gedeelde software voor documentatiesites, met onder meer zoeken en een API-verkenner.","tech":"Nuxt/Docus layer; Scalar API Explorer, Mistral integration en search extensions.","boundary":"Mistral in deze repository bewijst niet welk model de assistent 'Vraag het Jacob' gebruikt."},{"n":"nuxt-modules","g":"Gedeelde software","s":"code","plain":"Een verzameling herbruikbare modules voor websites en applicaties. De lijst in GitHub bevat inmiddels veel meer dan de paar modules uit de oude visualisatie.","tech":"Nuxt 4 modules; onder meer turnstile, newsletter-signup, directus-client, redirects, healthcheck, cache, sentry-config, markdown-renderer en prerenderer; Node 24/pnpm 11 in actuele README.","boundary":"De aanwezigheid van een module bewijst niet dat die op iedere website is ingeschakeld."},{"n":"directus-extensions","g":"Gedeelde software","s":"code","plain":"Uitbreidingen voor het contentbeheersysteem Directus.","tech":"Reusable Directus extensions; TypeScript/Vue. Repository publishes integration code for CMS behavior.","boundary":"Geen volledig zicht op de gebruikte database, inhoud of hosting van elke toepassing."},{"n":"loops-core","g":"Gedeelde software","s":"code","plain":"Hulpmiddelen om e-mails en nieuwsbrieven via Loops op te maken en te verwerken.","tech":"Portable Loops Email Campaign and LMX utilities; TypeScript.","boundary":"Niet vastgesteld dat elke nieuwsbrief of website Loops gebruikt."},{"n":"regional-site-menu","g":"Toepassingen","s":"code","plain":"Interactieve tool waarmee onderwijsregio's onderdelen van hun website kunnen bekijken en een rapport kunnen opstellen.","tech":"Nuxt 4, Nuxt UI, Tailwind, Pinia, Tiptap, jsPDF, Cloudflare Workers, AI SDK met OpenAI en Mistral providers.","boundary":"De repo beschrijft functies en bevat code; gebruik en uitrol bij specifieke regio's zijn afzonderlijk te verifiëren."},{"n":"buitenkans","g":"Toepassingen","s":"code","plain":"Digitale handreiking over het vinden en begeleiden van nieuwe schoolleiders in het basisonderwijs.","tech":"Nuxt documentation app; content via Nuxt Content; herbruikbare Docus layer.","boundary":"Een kennissite is iets anders dan een kandidaatbeheersysteem."},{"n":"onderwijskroket","g":"Toepassingen","s":"light","plain":"Klein experimenteel project met de naam 'Kroketify het Onderwijsloket'.","tech":"Chrome extension project; README consists of a short 'Kroketify' description.","boundary":"Niet presenteren als onderdeel van de normale productieomgeving."},{"n":"agents","g":"AI & hulpmiddelen","s":"code","plain":"Herbruikbare instructies en plugins voor onder meer redactie, nieuwsbrieven en onderzoek.","tech":"Agent Skills + plugin packages; portable Markdown assets; marketplace definitions; MIT. ChatGPT workspace/runtime testing listed as pending.","boundary":"Een beschikbare plugin in de repository is nog niet bewezen geïnstalleerd of getest in productie."},{"n":"plausible-mcp","g":"AI & hulpmiddelen","s":"fork","plain":"Een kopie van een bestaande MCP-server om webstatistieken uit Plausible te bevragen.","tech":"Fork of getsentry/plausible-mcp; MCP read-only analytics tools; hosted and local deployment examples in upstream README.","boundary":"Een fork is geen bewijs dat Onderwijs in de server zelf heeft gebouwd of in gebruik heeft genomen."},{"n":"pets","g":"AI & hulpmiddelen","s":"light","plain":"Zelfgemaakte animatiefiguurtjes voor ontwikkelaars die met Codex werken.","tech":"Codex pet.json manifest, spritesheet.webp, readme-preview assets.","boundary":"Dit is persoonlijke ontwikkelsoftware, geen AI-infrastructuur van het Onderwijsloket."},{"n":"coolify-notification-router","g":"Beheer","s":"code","plain":"Kleine toepassing om technische meldingen naar het juiste Slack-kanaal door te sturen.","tech":"Cloudflare Worker; Slack events/routing, signing secret, channel env vars; Coolify/Slack notification use case.","boundary":"Dit zegt iets over meldingen, niet over de hosting van alle systemen."},{"n":".github","g":"Beheer","s":"docs","plain":"Instellingen en presentatiebestanden voor de GitHub-organisatie.","tech":"GitHub organization community/profile metadata.","boundary":"Geen uitvoerbaar platformonderdeel."}]</script>
 <script>
 (function(){
 const root=document.getElementById('oiApp');
