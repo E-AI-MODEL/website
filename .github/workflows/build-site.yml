@@ -133,6 +133,10 @@ jobs:
               if not page.exists():
                   continue
               soup = BeautifulSoup(page.read_text(encoding="utf-8"), "html.parser")
+              # Redesigned pages already own their styling and navigation.
+              # The legacy generator deliberately does not inject into them.
+              if soup.select_one("body.eai-refresh, body.eai-ui"):
+                  continue
               if not soup.select_one('link[data-eai-editorial="true"]'):
                   problems.append(f"Shared styling not linked: {route}")
               if not soup.select_one(".eai-editorial-onward"):
