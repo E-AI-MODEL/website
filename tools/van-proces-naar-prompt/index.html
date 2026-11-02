@@ -1,65 +1,66 @@
 <!DOCTYPE html>
+
 <html lang="nl">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="color-scheme" content="light">
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="light" name="color-scheme"/>
 <title>EAI | Van proces naar prompt</title>
 <style>
 :root{--ink:#222b3b;--dark:#263345;--muted:#627083;--line:#e2e6eb;--paper:#f7f8f9;--white:#fff;--accent:#d5644b;--accent-pale:#fff2ee;--blue:#405b85;--focus:#a7432f;--r:14px}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f4f5f6;color:var(--ink);line-height:1.5}button,input,select,textarea{font:inherit}button{cursor:pointer}header{background:var(--dark);color:#fff;padding:30px max(18px,calc((100vw - 1260px)/2)) 37px}header .brand{color:#f4b9a9;font-size:12px;font-weight:700;letter-spacing:.13em;text-transform:uppercase}h1{font-size:clamp(30px,4vw,52px);margin:10px 0 7px;line-height:1.07;letter-spacing:-.035em}header p{max-width:800px;color:#dbe2e9;font-size:16px;margin:9px 0 0}.context{font-size:12px;color:#bbc7d5;margin-top:14px}.track{display:flex;flex-wrap:wrap;gap:8px;margin:24px 0 0}.track span{font-size:12px;letter-spacing:.01em;background:#ffffff12;border:1px solid #ffffff28;padding:8px 12px;border-radius:50px}.track b{color:#f4b9a9;margin-right:6px}main{max-width:1260px;padding:25px 18px 65px;margin:0 auto}.explainer{font-size:14px;color:#45566b;margin:0 0 18px;line-height:1.65}.shell{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(340px,.92fr);gap:19px;align-items:start}.panel{background:white;border:1px solid var(--line);border-radius:16px;box-shadow:0 1px 8px #24314509}.panel-head{padding:22px 24px 13px}.panel-head h2{font-size:22px;line-height:1.2;letter-spacing:-.02em;margin:0 0 7px}.panel-head p{font-size:14px;color:var(--muted);margin:0} .form-body{padding:0 24px 24px}.pair{display:grid;grid-template-columns:1fr 1fr;gap:15px}.field{display:block;margin:14px 0}.field span{display:block;font-size:14px;font-weight:700;margin-bottom:6px}.field small{font-weight:400;color:var(--muted);font-size:12px;display:block;margin:2px 0 5px}.field input,.field select,.field textarea{width:100%;padding:11px 12px;color:var(--ink);border:1px solid #bfc8d3;border-radius:9px;background:#fff;outline:none}.field textarea{resize:vertical;min-height:77px}.field textarea:focus,.field input:focus,.field select:focus{border-color:var(--accent);box-shadow:0 0 0 3px #d5644b22}.step{border-top:1px solid var(--line);padding-top:16px;margin-top:15px}.step-title{font-size:17px;font-weight:700;display:flex;align-items:center;gap:10px}.step-title em{display:grid;place-items:center;color:#a64c39;background:var(--accent-pale);border-radius:9px;width:32px;height:32px;font-size:14px;font-style:normal}.seg{display:flex;padding:4px;gap:5px;border:1px solid var(--line);border-radius:11px;background:var(--paper)}.seg button{border:0;padding:10px 12px;border-radius:8px;font-weight:700;font-size:13px;background:transparent;flex:1;color:#576779}.seg button[aria-pressed=true]{background:#fff;color:var(--ink);box-shadow:0 1px 4px #202c3c20}.samples{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 0}.samples button{border:1px solid #d7dce3;border-radius:8px;padding:8px 12px;background:white;color:#40516a;font-size:12px;font-weight:700}.samples button:hover{border-color:var(--accent)}.status-line{display:flex;align-items:center;gap:8px;margin:0 24px 15px}.bar{height:6px;flex:1;background:#e8eaee;border-radius:7px;overflow:hidden}.bar > span{display:block;height:100%;width:0;background:var(--accent);transition:width .18s}.status{color:#637184;font-size:12px;min-width:115px;text-align:right}.result{position:sticky;top:18px}.result-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:12px}.result-head h2{font-size:23px;margin:0}.result-head p{font-size:13px;color:var(--muted);margin:5px 0}.badge{display:inline-block;border:1px solid #eed3cc;border-radius:20px;padding:5px 10px;background:var(--accent-pale);color:#9c4735;font-size:11px;white-space:nowrap}.result-inner{padding:23px}.result pre{margin:0;min-height:280px;max-height:490px;white-space:pre-wrap;overflow-wrap:anywhere;overflow-y:auto;background:var(--paper);border:1px solid #e1e6ea;border-radius:10px;padding:18px;color:#263044;font-size:12.8px;line-height:1.62;font-family:'Courier New',monospace}.actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:14px}.primary{background:var(--accent);border:1px solid var(--accent);color:white}.secondary{color:var(--ink);background:white;border:1px solid #c8d0d9}.actions button{border-radius:9px;padding:10px 14px;font-size:13px;font-weight:700}.actions button:disabled{opacity:.46;cursor:not-allowed}.hintbox{background:#f8f3ec;border-radius:10px;padding:15px 16px;font-size:13px;color:#665344;margin-top:18px;line-height:1.6}.hintbox strong{color:#3b4658}.response{font-size:12px;color:#385c45;margin:8px 0;min-height:16px}.footer{color:#68788b;font-size:11px;margin-top:26px;max-width:880px}a{color:var(--blue)}@media(max-width:980px){.shell{grid-template-columns:1fr}.result{position:static}.result pre{max-height:none;min-height:180px}.pair{grid-template-columns:1fr}}@media(max-width:560px){header{padding:24px 18px}main{padding:18px 12px 40px}.panel-head{padding:18px 17px 12px}.form-body{padding:0 17px 19px}.result-inner{padding:18px}.seg{flex-direction:column}.status-line{margin:0 17px 14px}}@media print{header{background:#fff;color:#222;padding-bottom:0}.track,.samples,.actions,.footer{display:none}.shell{display:block}.panel{break-inside:avoid;box-shadow:none}.result pre{max-height:none}body{background:#fff}}
 </style>
-</head>
+<link data-eai-editorial="true" href="/assets/editorial-finish.css" rel="stylesheet"/></head>
 <body><div style="background:#eef1f2;padding:10px 18px;font:600 13px system-ui,sans-serif"><a href="/nl/tools/" style="color:#263345">← Terug naar EAI tools</a></div>
 <header>
-  <div class="brand">EAI-model · werkvorm</div>
-  <h1>Van proces naar prompt</h1>
-  <p>Begin bij het proces dat je wilt ondersteunen. Bepaal de fase, de kernhandeling en de rol die AI daarin krijgt. De werkvorm zet je keuzes om in een prompt die je kunt uitproberen.</p>
-  <div class="context">AI in het onderwijs: van klas tot koers · Onderwijsregio Rotterdam vo-mbo · Laurens Lyceum</div>
-  <div class="track"><span><b>01</b>Proces</span><span><b>02</b>Fase</span><span><b>03</b>Kernhandeling</span><span><b>04</b>AI</span></div>
+<div class="brand">EAI-model · werkvorm</div>
+<h1>Van proces naar prompt</h1>
+<p>Begin bij het proces dat je wilt ondersteunen. Bepaal de fase, de kernhandeling en de rol die AI daarin krijgt. De werkvorm zet je keuzes om in een prompt die je kunt uitproberen.</p>
+<div class="context">AI in het onderwijs: van klas tot koers · Onderwijsregio Rotterdam vo-mbo · Laurens Lyceum</div>
+<div class="track"><span><b>01</b>Proces</span><span><b>02</b>Fase</span><span><b>03</b>Kernhandeling</span><span><b>04</b>AI</span></div>
 </header>
 <main>
-  <p class="explainer">Gebruik een situatie die je kent, bijvoorbeeld uit een les of een bestaande AI-toepassing. Het model schrijft geen juiste taakverdeling voor. Het helpt je preciezer te bepalen wat AI op welk moment mag doen.</p>
-  <div class="shell">
-    <section class="panel" aria-label="Invoer">
-      <div class="panel-head"><h2>Vul je situatie in</h2><p>Beschrijf wat je al weet. De prompt groeit mee terwijl je invult.</p>
-        <div class="samples"><button id="example-lesson" type="button">Voorbeeld: les geschiedenis</button><button id="example-office" type="button">Voorbeeld: schoolafspraak</button><button id="clear" type="button">Alles wissen</button></div>
-      </div>
-      <div class="form-body">
-        <div class="pair">
-          <label class="field"><span>Het gaat om</span><div class="seg" role="group" aria-label="Soort proces"><button type="button" id="kind-les" data-kind="les" aria-pressed="true">Onderwijsleerproces</button><button type="button" id="kind-werk" data-kind="werk" aria-pressed="false">Ander schoolproces</button></div></label>
-          <label class="field"><span>Ik wil</span><div class="seg" role="group" aria-label="Toepassing"><button type="button" id="mode-ontwerpen" data-mode="ontwerpen" aria-pressed="true">AI-inzet ontwerpen</button><button type="button" id="mode-onderzoeken" data-mode="onderzoeken" aria-pressed="false">Tool onderzoeken</button></div></label>
-        </div>
-        <div class="step"><div class="step-title"><em>01</em> Proces</div>
-          <label class="field"><span id="process-label">Wat moet de leerling uiteindelijk kennen of kunnen?</span><small>Beschrijf ook kort hoe de les of het leerproces is opgebouwd.</small><textarea id="process" placeholder="Bijvoorbeeld: 5 vwo geschiedenis; leerlingen leren twee bronnen vergelijken en een onderbouwd oordeel formuleren."></textarea></label>
-          <label class="field"><span>Context <small>optioneel</small></span><input id="context" type="text" placeholder="Bijvoorbeeld: 5 vwo, historische bronnen, basiskennis aanwezig"></label>
-        </div>
-        <div class="step"><div class="step-title"><em>02</em> Fase</div>
-          <label class="field"><span>Op welke plek in het proces kijk je?</span><select id="phase"><option value="">Kies of beschrijf een fase</option></select></label>
-          <label class="field" id="other-phase-box" hidden><span>Beschrijf de fase</span><input id="other-phase" type="text" placeholder="Beschrijf de plek in het proces"></label>
-        </div>
-        <div class="step"><div class="step-title"><em>03</em> Kernhandeling</div>
-          <label class="field"><span id="human-label">Wat is de leerstap waaraan de leerling zelf betekenis moet geven?</span><small id="human-hint">Kies één inhoudelijke leerstap in deze fase.</small><textarea id="human" placeholder="Bijvoorbeeld: de betrouwbaarheid van twee bronnen zelf afwegen en een oordeel onderbouwen."></textarea></label>
-        </div>
-        <div class="step"><div class="step-title"><em>04</em> AI</div>
-          <label class="field"><span id="ai-label">Welke concrete taak geef je AI op die plek?</span><small id="ai-hint">Beschrijf een actie, niet alleen dat AI 'ondersteunt'.</small><textarea id="ai" placeholder="Bijvoorbeeld: stel één gerichte vraag over bronbetrouwbaarheid, zonder zelf de afweging te maken."></textarea></label>
-          <label class="field"><span>Afspraken of grenzen <small>optioneel</small></span><textarea id="boundary" placeholder="Bijvoorbeeld: gebruik alleen de aangeboden bronfragmenten; geef het oordeel niet vooraf."></textarea></label>
-          <label class="field"><span>Waaraan merk je of het iets oplevert? <small>optioneel</small></span><textarea id="evidence" placeholder="Bijvoorbeeld: de leerling motiveert zelfstandig een oordeel in een nieuwe vergelijking."></textarea></label>
-        </div>
-      </div>
-      <div class="status-line"><div class="bar" aria-hidden="true"><span id="fill"></span></div><span id="status" class="status" aria-live="polite">0 van 4 ingevuld</span></div>
-    </section>
-    <aside class="panel result" aria-label="Gegenereerde prompt">
-      <div class="result-inner">
-        <div class="result-head"><div><h2>Je prompt</h2><p>Kopieer naar Copilot, ChatGPT of Gemini om de invoer uit te proberen.</p></div><span class="badge">Direct bruikbaar</span></div>
-        <pre id="output" aria-live="polite"></pre>
-        <div class="actions"><button type="button" class="primary" id="copy" disabled>Kopieer prompt</button><button type="button" class="secondary" id="download" disabled>Bewaar als .txt</button></div>
-        <div class="response" id="message" role="status"></div>
-        <div class="hintbox"><strong>Probeer het uit.</strong> Vergelijk het resultaat met wat je voor ogen had. Welke tussenstappen voert AI daadwerkelijk uit? Past dat bij de fase en kernhandeling? Welke aanpassing wil je doen?</div>
-      </div>
-    </aside>
-  </div>
-  <p class="footer">Deze werkvorm genereert lokaal in je browser een prompt. Er worden geen ingevulde gegevens verstuurd of opgeslagen. Voeg geen herleidbare leerling- of personeelsgegevens toe aan een AI-chat zonder passende afspraken en toestemming. Gebaseerd op het EAI-model en de bestaande EAI Prompt Framework HTML-werkvorm.</p>
+<p class="explainer">Gebruik een situatie die je kent, bijvoorbeeld uit een les of een bestaande AI-toepassing. Het model schrijft geen juiste taakverdeling voor. Het helpt je preciezer te bepalen wat AI op welk moment mag doen.</p>
+<div class="shell">
+<section aria-label="Invoer" class="panel">
+<div class="panel-head"><h2>Vul je situatie in</h2><p>Beschrijf wat je al weet. De prompt groeit mee terwijl je invult.</p>
+<div class="samples"><button id="example-lesson" type="button">Voorbeeld: les geschiedenis</button><button id="example-office" type="button">Voorbeeld: schoolafspraak</button><button id="clear" type="button">Alles wissen</button></div>
+</div>
+<div class="form-body">
+<div class="pair">
+<label class="field"><span>Het gaat om</span><div aria-label="Soort proces" class="seg" role="group"><button aria-pressed="true" data-kind="les" id="kind-les" type="button">Onderwijsleerproces</button><button aria-pressed="false" data-kind="werk" id="kind-werk" type="button">Ander schoolproces</button></div></label>
+<label class="field"><span>Ik wil</span><div aria-label="Toepassing" class="seg" role="group"><button aria-pressed="true" data-mode="ontwerpen" id="mode-ontwerpen" type="button">AI-inzet ontwerpen</button><button aria-pressed="false" data-mode="onderzoeken" id="mode-onderzoeken" type="button">Tool onderzoeken</button></div></label>
+</div>
+<div class="step"><div class="step-title"><em>01</em> Proces</div>
+<label class="field"><span id="process-label">Wat moet de leerling uiteindelijk kennen of kunnen?</span><small>Beschrijf ook kort hoe de les of het leerproces is opgebouwd.</small><textarea id="process" placeholder="Bijvoorbeeld: 5 vwo geschiedenis; leerlingen leren twee bronnen vergelijken en een onderbouwd oordeel formuleren."></textarea></label>
+<label class="field"><span>Context <small>optioneel</small></span><input id="context" placeholder="Bijvoorbeeld: 5 vwo, historische bronnen, basiskennis aanwezig" type="text"/></label>
+</div>
+<div class="step"><div class="step-title"><em>02</em> Fase</div>
+<label class="field"><span>Op welke plek in het proces kijk je?</span><select id="phase"><option value="">Kies of beschrijf een fase</option></select></label>
+<label class="field" hidden="" id="other-phase-box"><span>Beschrijf de fase</span><input id="other-phase" placeholder="Beschrijf de plek in het proces" type="text"/></label>
+</div>
+<div class="step"><div class="step-title"><em>03</em> Kernhandeling</div>
+<label class="field"><span id="human-label">Wat is de leerstap waaraan de leerling zelf betekenis moet geven?</span><small id="human-hint">Kies één inhoudelijke leerstap in deze fase.</small><textarea id="human" placeholder="Bijvoorbeeld: de betrouwbaarheid van twee bronnen zelf afwegen en een oordeel onderbouwen."></textarea></label>
+</div>
+<div class="step"><div class="step-title"><em>04</em> AI</div>
+<label class="field"><span id="ai-label">Welke concrete taak geef je AI op die plek?</span><small id="ai-hint">Beschrijf een actie, niet alleen dat AI 'ondersteunt'.</small><textarea id="ai" placeholder="Bijvoorbeeld: stel één gerichte vraag over bronbetrouwbaarheid, zonder zelf de afweging te maken."></textarea></label>
+<label class="field"><span>Afspraken of grenzen <small>optioneel</small></span><textarea id="boundary" placeholder="Bijvoorbeeld: gebruik alleen de aangeboden bronfragmenten; geef het oordeel niet vooraf."></textarea></label>
+<label class="field"><span>Waaraan merk je of het iets oplevert? <small>optioneel</small></span><textarea id="evidence" placeholder="Bijvoorbeeld: de leerling motiveert zelfstandig een oordeel in een nieuwe vergelijking."></textarea></label>
+</div>
+</div>
+<div class="status-line"><div aria-hidden="true" class="bar"><span id="fill"></span></div><span aria-live="polite" class="status" id="status">0 van 4 ingevuld</span></div>
+</section>
+<aside aria-label="Gegenereerde prompt" class="panel result">
+<div class="result-inner">
+<div class="result-head"><div><h2>Je prompt</h2><p>Kopieer naar Copilot, ChatGPT of Gemini om de invoer uit te proberen.</p></div><span class="badge">Direct bruikbaar</span></div>
+<pre aria-live="polite" id="output"></pre>
+<div class="actions"><button class="primary" disabled="" id="copy" type="button">Kopieer prompt</button><button class="secondary" disabled="" id="download" type="button">Bewaar als .txt</button></div>
+<div class="response" id="message" role="status"></div>
+<div class="hintbox"><strong>Probeer het uit.</strong> Vergelijk het resultaat met wat je voor ogen had. Welke tussenstappen voert AI daadwerkelijk uit? Past dat bij de fase en kernhandeling? Welke aanpassing wil je doen?</div>
+</div>
+</aside>
+</div>
+<p class="footer">Deze werkvorm genereert lokaal in je browser een prompt. Er worden geen ingevulde gegevens verstuurd of opgeslagen. Voeg geen herleidbare leerling- of personeelsgegevens toe aan een AI-chat zonder passende afspraken en toestemming. Gebaseerd op het EAI-model en de bestaande EAI Prompt Framework HTML-werkvorm.</p>
 </main>
 <script>
 (()=>{

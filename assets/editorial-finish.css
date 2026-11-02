@@ -1,0 +1,25 @@
+
+:root{--eai-paper:#f7f8f5;--eai-white:#fff;--eai-ink:#172334;--eai-muted:#526274;--eai-border:#dce3e5;--eai-accent:#236984}
+html{scroll-behavior:smooth}
+body{color:var(--eai-ink);-webkit-font-smoothing:antialiased}
+body:not(.eai-refresh) .eai-site-nav{background:rgba(247,248,245,.96);border-bottom:1px solid var(--eai-border)}
+body:not(.eai-refresh) h1,body:not(.eai-refresh) h2,body:not(.eai-refresh) h3{overflow-wrap:break-word}
+body:not(.eai-refresh) p,body:not(.eai-refresh) li{line-height:1.7}
+body:not(.eai-refresh) a:focus-visible{outline:3px solid var(--eai-accent);outline-offset:4px}
+body:not(.eai-refresh) main a:not(.button):not(.card):not(.hub-card):not(.tool-card){text-underline-offset:3px}
+body:not(.eai-refresh) .page-hero,body:not(.eai-refresh) .hero{background:linear-gradient(155deg,#f7f8f5,#eef5f2)}
+body:not(.eai-refresh) .page-hero h1,body:not(.eai-refresh) .hero h1{max-width:18ch;line-height:1.1}
+body:not(.eai-refresh) .lede{max-width:68ch;line-height:1.6}
+body:not(.eai-refresh) .panel,body:not(.eai-refresh) .card,body:not(.eai-refresh) .tool-card,body:not(.eai-refresh) .hub-card{border-radius:12px;transition:border-color .2s,box-shadow .2s,transform .2s}
+body:not(.eai-refresh) a.card:hover,body:not(.eai-refresh) a.hub-card:hover{box-shadow:0 12px 30px rgba(20,49,68,.09)}
+body:not(.eai-refresh) .article-body{line-height:1.8}
+body:not(.eai-refresh) .article-body p{max-width:72ch}
+body:not(.eai-refresh) .article-body blockquote{border-left:3px solid var(--eai-accent);padding-left:1.2em}
+body:not(.eai-refresh) img,body:not(.eai-refresh) svg{max-width:100%}
+@media(max-width:700px){
+ body:not(.eai-refresh) .page-hero,body:not(.eai-refresh) .section{padding-top:52px;padding-bottom:52px}
+ body:not(.eai-refresh) .article-body{padding-top:42px;padding-bottom:70px}
+ body:not(.eai-refresh) .wrap{padding-left:20px;padding-right:20px}
+ body:not(.eai-refresh) .panel,body:not(.eai-refresh) .card,body:not(.eai-refresh) .tool-card{padding:22px}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}body:not(.eai-refresh) *{transition:none!important}}
