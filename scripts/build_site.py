@@ -2713,7 +2713,7 @@ def finish_generated_pages(out: Path) -> None:
         if 'data-eai-editorial="true"' in source:
             continue
         css = '<link rel="stylesheet" href="/assets/editorial-finish.css" data-eai-editorial="true">'
-        source = re.sub(r"</head\\s*>", lambda m: css + m.group(0), source, count=1, flags=re.I)
+        source = re.sub(r"</head\s*>", lambda m: css + m.group(0), source, count=1, flags=re.I)
         # Offer next steps after reading, without replacing article content.
         # Generated overview pages retain their existing calls to action.
         if relative.parts[0] in {"publicaties", "verdieping", "onderbouwing", "kennis", "praktijk", "onderwijs", "werkvormen"}:
@@ -2732,7 +2732,7 @@ def finish_generated_pages(out: Path) -> None:
                           '<div class="eai-editorial-onward-inner"><h2>Waar wil je verder kijken?</h2>'
                           '<p>Je kunt ook vanuit een andere vraag verder lezen.</p>'
                           f'<div class="eai-editorial-onward-grid">{items}</div></div></nav>')
-                source = re.sub(r"</main\\s*>", lambda m: m.group(0) + onward, source, count=1, flags=re.I)
+                source = re.sub(r"</main\s*>", lambda m: m.group(0) + onward, source, count=1, flags=re.I)
         page.write_text(source, encoding="utf-8")
 
 def main() -> None:
