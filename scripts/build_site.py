@@ -2718,11 +2718,32 @@ def finish_generated_pages(out: Path) -> None:
         # Generated overview pages retain their existing calls to action.
         if relative.parts[0] in {"publicaties", "verdieping", "onderbouwing", "kennis", "praktijk", "onderwijs", "werkvormen"}:
             if "<main" in source.lower() and "</main>" in source.lower():
-                links = [
-                    ("/nl/onderwijs/", "Ik sta voor de klas", "Uitleg en werkvormen"),
-                    ("/nl/onderzoek/", "Ik wil onderzoek bekijken", "Artikelen en onderbouwing"),
-                    ("/nl/model-monitor/", "Ik wil AI beter begrijpen", "Modellen en ontwikkelingen"),
-                    ("/nl/", "Terug naar de vier ingangen", "Begin bij jouw vraag"),
+                # Put the most useful next step first for each kind of page.
+                section = relative.parts[0]
+                routes = {
+                    "onderwijs": [
+                        ("/nl/onderwijs/", "Verder met lesontwerp", "Uitleg en voorbeelden"),
+                        ("/werkvormen/", "Een werkvorm proberen", "Van uitleg naar de les"),
+                    ],
+                    "werkvormen": [
+                        ("/nl/onderwijs/", "Terug naar lesontwerp", "Waarom en wanneer gebruik je dit?"),
+                        ("/nl/onderzoek/", "Wat zegt onderzoek?", "Onderbouwing en beperkingen"),
+                    ],
+                    "publicaties": [
+                        ("/nl/onderzoek/", "Meer onderzoek lezen", "Onderzoeken en analyses"),
+                        ("/nl/onderwijs/", "Vertalen naar de les", "Uitleg en werkvormen"),
+                    ],
+                    "onderbouwing": [
+                        ("/nl/onderzoek/", "Meer onderzoek lezen", "Onderzoeken en analyses"),
+                        ("/nl/onderwijs/", "Vertalen naar de les", "Uitleg en werkvormen"),
+                    ],
+                }
+                links = routes.get(section, [
+                    ("/nl/onderwijs/", "Naar de onderwijspraktijk", "Uitleg en werkvormen"),
+                    ("/nl/onderzoek/", "Onderzoek bekijken", "Artikelen en onderbouwing"),
+                ]) + [
+                    ("/nl/model-monitor/", "AI-modellen begrijpen", "Modellen en ontwikkelingen"),
+                    ("/nl/", "Andere vraag? Begin hier", "Vier manieren om verder te kijken"),
                 ]
                 items = "".join(
                     f'<a href="{href}"><strong>{label}</strong><span>{detail}</span></a>'
