@@ -2690,31 +2690,50 @@ body:not(.eai-refresh) img,body:not(.eai-refresh) svg{max-width:100%}
  body:not(.eai-refresh) .wrap{padding-left:20px;padding-right:20px}
  body:not(.eai-refresh) .panel,body:not(.eai-refresh) .card,body:not(.eai-refresh) .tool-card{padding:22px}
 }
+.eai-editorial-onward{background:#f0f5f3;border-top:1px solid #dce3e5;padding:54px 22px;color:#172334;font-family:Inter,ui-sans-serif,sans-serif}.eai-editorial-onward-inner{max-width:1100px;margin:auto}.eai-editorial-onward h2{font:500 clamp(1.8rem,3vw,2.6rem)/1.2 Georgia,serif;margin:0 0 10px}.eai-editorial-onward p{color:#526274;margin:0 0 24px}.eai-editorial-onward-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.eai-editorial-onward-grid a{display:flex;flex-direction:column;gap:5px;background:white;padding:20px;border:1px solid #dce3e5;border-radius:12px;text-decoration:none;color:#172334}.eai-editorial-onward-grid a:hover{border-color:#236984}.eai-editorial-onward-grid span{color:#526274;font-size:.92rem}@media(max-width:700px){.eai-editorial-onward-grid{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}body:not(.eai-refresh) *{transition:none!important}}
 """
 
 def finish_generated_pages(out: Path) -> None:
-    """Apply shared visual language to generated pages, without editing source articles."""
+    """Add shared styling and contextual onward links to generated editorial pages.
+
+    Do not parse and reserialize full HTML: legacy pages may contain sensitive
+    scripts, embedded markup, or formatting that BeautifulSoup could alter.
+    """
     write(out, "assets/editorial-finish.css", EDITORIAL_CSS)
     for page in out.rglob("*.html"):
-        if page.name == "404.html":
-            continue
         relative = page.relative_to(out)
-        # Current bilingual redesign and standalone tools own their own UI.
-        if relative.parts[0] in {"nl", "en", "houseoftalents"}:
+        if page.name == "404.html" or relative.parts[0] in {"nl", "en", "houseoftalents", "tools"}:
             continue
         source = page.read_text(encoding="utf-8")
         if 'class="eai-refresh' in source or 'class="eai-ui' in source:
             continue
-        soup = BeautifulSoup(source, "html.parser")
-        if soup.head is None or soup.body is None:
+        if "<head" not in source.lower() or "</head>" not in source.lower():
             continue
-        if soup.head.find("link", attrs={"data-eai-editorial": True}):
+        if 'data-eai-editorial="true"' in source:
             continue
-        tag = soup.new_tag("link", rel="stylesheet", href="/assets/editorial-finish.css")
-        tag["data-eai-editorial"] = "true"
-        soup.head.append(tag)
-        page.write_text(str(soup), encoding="utf-8")
+        css = '<link rel="stylesheet" href="/assets/editorial-finish.css" data-eai-editorial="true">'
+        source = re.sub(r"</head\\s*>", lambda m: css + m.group(0), source, count=1, flags=re.I)
+        # Offer next steps after reading, without replacing article content.
+        # Generated overview pages retain their existing calls to action.
+        if relative.parts[0] in {"publicaties", "verdieping", "onderbouwing", "kennis", "praktijk", "onderwijs", "werkvormen"}:
+            if "<main" in source.lower() and "</main>" in source.lower():
+                links = [
+                    ("/nl/onderwijs/", "Ik sta voor de klas", "Uitleg en werkvormen"),
+                    ("/nl/onderzoek/", "Ik wil onderzoek bekijken", "Artikelen en onderbouwing"),
+                    ("/nl/model-monitor/", "Ik wil AI beter begrijpen", "Modellen en ontwikkelingen"),
+                    ("/nl/", "Terug naar de vier ingangen", "Begin bij jouw vraag"),
+                ]
+                items = "".join(
+                    f'<a href="{href}"><strong>{label}</strong><span>{detail}</span></a>'
+                    for href, label, detail in links
+                )
+                onward = ('<nav class="eai-editorial-onward" aria-label="Verder op EAI">'
+                          '<div class="eai-editorial-onward-inner"><h2>Waar wil je verder kijken?</h2>'
+                          '<p>Je kunt ook vanuit een andere vraag verder lezen.</p>'
+                          f'<div class="eai-editorial-onward-grid">{items}</div></div></nav>')
+                source = re.sub(r"</main\\s*>", lambda m: m.group(0) + onward, source, count=1, flags=re.I)
+        page.write_text(source, encoding="utf-8")
 
 def main() -> None:
     parser = argparse.ArgumentParser()
