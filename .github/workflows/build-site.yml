@@ -103,6 +103,45 @@ jobs:
           print("Internal link check passed")
           PY
 
+      - name: Check visitor routes and shared styling
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from bs4 import BeautifulSoup
+
+          root = Path("site-build")
+          problems = []
+          for route in ("index.html", "nl/index.html", "nl/onderwijs/index.html",
+                        "nl/onderzoek/index.html", "nl/model-monitor/index.html"):
+              if not (root / route).exists():
+                  problems.append(f"Missing visitor route: {route}")
+          home = root / "nl/index.html"
+          if home.exists():
+              soup = BeautifulSoup(home.read_text(encoding="utf-8"), "html.parser")
+              cards = soup.select(".eai-need")
+              if len(cards) != 4:
+                  problems.append(f"Expected four homepage entrances, got {len(cards)}")
+              for card in cards:
+                  a = card.get("href", "")
+                  if not a:
+                      problems.append("Homepage entrance without link")
+          css = root / "assets/editorial-finish.css"
+          if not css.exists() or not css.read_text(encoding="utf-8").strip():
+              problems.append("Shared editorial stylesheet is missing or empty")
+          for route in ("publicaties/index.html", "werkvormen/index.html", "onderbouwing/index.html"):
+              page = root / route
+              if not page.exists():
+                  continue
+              soup = BeautifulSoup(page.read_text(encoding="utf-8"), "html.parser")
+              if not soup.select_one('link[data-eai-editorial="true"]'):
+                  problems.append(f"Shared styling not linked: {route}")
+              if not soup.select_one(".eai-editorial-onward"):
+                  problems.append(f"Further-reading routes missing: {route}")
+          if problems:
+              raise SystemExit("\\n".join(problems))
+          print("Visitor route and shared styling checks passed")
+          PY
+
       - name: Publish generated files to main
         if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')
         run: |
