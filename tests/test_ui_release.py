@@ -23,15 +23,20 @@ class ReleaseTests(unittest.TestCase):
             file = self.root / relative
             file.parent.mkdir(parents=True, exist_ok=True)
             file.write_bytes(self.current)
+        self.leif = b'<!DOCTYPE html><html lang="nl"><title>LEIF</title><body><div id="accessGate"></div></body></html>'
+        leif_path = self.root / 'leif/index.html'
+        leif_path.parent.mkdir(parents=True, exist_ok=True)
+        leif_path.write_bytes(self.leif)
 
     def test_exact_release_and_all_manifest_routes_pass(self):
         visited = []
         def response(request, **kwargs):
             visited.append(urlsplit(request.full_url).path)
-            return io.BytesIO(self.current)
+            path = urlsplit(request.full_url).path
+            return io.BytesIO(self.leif if path == '/leif/' else self.current)
         with patch.object(verify_ui, 'urlopen', side_effect=response):
             verify_ui.verify_live('https://example.test', self.manifest, 0, self.root)
-        self.assertEqual(visited, ['/', '/nl/tools/', '/nl/publicaties/', '/en/llmscan/', '/404.html'])
+        self.assertEqual(visited, ['/', '/nl/tools/', '/nl/publicaties/', '/en/llmscan/', '/404.html', '/leif/'])
 
     def test_old_html_same_ui_stamp_is_rejected(self):
         stale = self.current.replace(b'Updated content', b'Previous content')
@@ -42,6 +47,14 @@ class ReleaseTests(unittest.TestCase):
                 with patch.object(verify_ui, 'urlopen', side_effect=response):
                     with self.assertRaisesRegex(RuntimeError, 'HTML content mismatch: ' + target):
                         verify_ui.verify_live('https://example.test', self.manifest, 0, self.root)
+
+    def test_leif_missing_online_is_rejected(self):
+        def response(request, **kwargs):
+            path = urlsplit(request.full_url).path
+            return io.BytesIO(b'404 Not Found' if path == '/leif/' else self.current)
+        with patch.object(verify_ui, 'urlopen', side_effect=response):
+            with self.assertRaisesRegex(RuntimeError, 'LEIF is missing or out of date'):
+                verify_ui.verify_live('https://example.test', self.manifest, 0, self.root)
 
     def test_empty_manifest_is_rejected(self):
         with self.assertRaises(ValueError):
