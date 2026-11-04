@@ -49,6 +49,10 @@ def check(root: Path):
     leif_html = leif.read_text(encoding='utf-8')
     assert '<title>LEIF' in leif_html, 'LEIF page has unexpected content'
     assert 'id="accessGate"' in leif_html, 'LEIF access screen is missing'
+    continuation = root / 'leif/continue/index.html'
+    assert continuation.is_file(), 'LEIF continuation is missing from deployment'
+    continuation_html = continuation.read_text(encoding='utf-8')
+    assert '<title>LEIF' in continuation_html and 'leif-demo-session' in continuation_html, 'Unexpected LEIF continuation'
     print(f'UI validation passed: {len(manifest["pages"])} pages, {len(manifest["assets"])} fingerprinted assets')
     return manifest
 
@@ -94,6 +98,10 @@ def verify_live(base: str, manifest: dict, timeout: int, root: Path):
                 assert soup.select_one('.eai-site-menu'), path
             leif_expected = hashlib.sha256((root / 'leif/index.html').read_bytes()).hexdigest()
             assert hashlib.sha256(get('/leif/')).hexdigest() == leif_expected, 'LEIF is missing or out of date'
+            continuation = root / 'leif/continue/index.html'
+            if continuation.exists():
+                expected_continuation = hashlib.sha256(continuation.read_bytes()).hexdigest()
+                assert hashlib.sha256(get('/leif/continue/')).hexdigest() == expected_continuation, 'LEIF continuation is missing or out of date'
             for info in manifest['assets'].values():
                 assert hashlib.sha256(get(info['url'])).hexdigest() == info['sha256'], f'Asset mismatch: {info["url"]}'
             print(f'LIVE verified: all {len(expected_html)} prepared HTML files and all asset hashes match UI {manifest["version"]}')

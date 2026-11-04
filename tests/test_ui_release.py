@@ -27,16 +27,24 @@ class ReleaseTests(unittest.TestCase):
         leif_path = self.root / 'leif/index.html'
         leif_path.parent.mkdir(parents=True, exist_ok=True)
         leif_path.write_bytes(self.leif)
+        self.continuation = b'<!DOCTYPE html><html lang="nl"><title>LEIF | Verder</title><body>Resumable</body></html>'
+        continuation_path = self.root / 'leif/continue/index.html'
+        continuation_path.parent.mkdir(parents=True, exist_ok=True)
+        continuation_path.write_bytes(self.continuation)
 
     def test_exact_release_and_all_manifest_routes_pass(self):
         visited = []
         def response(request, **kwargs):
             visited.append(urlsplit(request.full_url).path)
             path = urlsplit(request.full_url).path
-            return io.BytesIO(self.leif if path == '/leif/' else self.current)
+            if path == '/leif/':
+                return io.BytesIO(self.leif)
+            if path == '/leif/continue/':
+                return io.BytesIO(self.continuation)
+            return io.BytesIO(self.current)
         with patch.object(verify_ui, 'urlopen', side_effect=response):
             verify_ui.verify_live('https://example.test', self.manifest, 0, self.root)
-        self.assertEqual(visited, ['/', '/nl/tools/', '/nl/publicaties/', '/en/llmscan/', '/404.html', '/leif/'])
+        self.assertEqual(visited, ['/', '/nl/tools/', '/nl/publicaties/', '/en/llmscan/', '/404.html', '/leif/', '/leif/continue/'])
 
     def test_old_html_same_ui_stamp_is_rejected(self):
         stale = self.current.replace(b'Updated content', b'Previous content')
