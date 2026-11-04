@@ -2660,6 +2660,10 @@ def build(sources: Path, out: Path) -> None:
         shutil.copytree(handoff_site, out / "houseoftalents", dirs_exist_ok=True)
         # Mirror under the existing Onderwijs in publishing directory.
         shutil.copytree(handoff_site, out / "onderwijsin" / "houseoftalents", dirs_exist_ok=True)
+    # Standalone, unlisted LEIF reflection page. Keep its source untouched.
+    leif_source = repo_root / "leif"
+    if leif_source.is_dir():
+        shutil.copytree(leif_source, out / "leif", dirs_exist_ok=True)
     finish_generated_pages(out)
     items = "".join(f"<url><loc>{BASE_URL}{path}</loc></url>" for path in urls)
     write(out, "sitemap.xml", f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{items}</urlset>')
@@ -2703,7 +2707,7 @@ def finish_generated_pages(out: Path) -> None:
     write(out, "assets/editorial-finish.css", EDITORIAL_CSS)
     for page in out.rglob("*.html"):
         relative = page.relative_to(out)
-        if page.name == "404.html" or relative.parts[0] in {"nl", "en", "houseoftalents", "tools"}:
+        if page.name == "404.html" or relative.parts[0] in {"nl", "en", "houseoftalents", "leif", "tools"}:
             continue
         source = page.read_text(encoding="utf-8")
         if 'class="eai-refresh' in source or 'class="eai-ui' in source:
