@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light">
+<meta name="robots" content="noindex,nofollow,noarchive"><meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src https://ngcyfbstajfcfdhlelbz.supabase.co; img-src data:; base-uri 'none'; form-action 'none'">
+<title>LEIF | Verder met mijn verhaal</title>
+<style>
+:root{--ink:#17283f;--blue:#235b92;--muted:#64788a;--paper:#fbfaf7;--soft:#eff5f7;--line:#dbe4e8}
+*{box-sizing:border-box}body{margin:0;color:var(--ink);background:var(--paper);font:16px/1.6 Inter,Aptos,"Segoe UI",Arial,sans-serif}
+button,input,textarea{font:inherit}button{cursor:pointer;border:1px solid var(--line);border-radius:11px;background:#fff;color:var(--ink);padding:11px 16px;font-weight:700}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid #6ea8ca;outline-offset:3px}
+button:disabled{opacity:.5;cursor:wait}button:hover{background:#edf3f6}.primary{background:var(--ink);border-color:var(--ink);color:#fff}.primary:hover{background:var(--blue)}
+header{position:sticky;top:0;background:rgba(251,250,247,.97);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);z-index:4}
+.header-inner{max-width:1120px;padding:15px 24px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.brand{font-weight:900;color:var(--blue);font-size:14px;letter-spacing:.14em}.brand span{font-size:12px;font-weight:400;letter-spacing:0;color:var(--muted)}
+.header-status{font-size:12px;color:#466e6a;text-align:right}
+main{max-width:1120px;margin:auto;padding:37px 24px 80px}
+h1,h2,h3{font:400 43px/1.13 Georgia,"Times New Roman",serif;letter-spacing:-.03em;margin:8px 0 22px}
+h1{font-size:clamp(39px,6vw,67px)}h3{font-size:28px}
+p{margin:0 0 17px}.lead{max-width:780px;font-size:18px;color:#516478}
+.eyebrow{font-size:11px;font-weight:850;color:var(--blue);text-transform:uppercase;letter-spacing:.15em}
+.card{background:#fff;border:1px solid var(--line);padding:clamp(22px,4vw,38px);border-radius:19px;box-shadow:0 18px 47px rgba(25,43,61,.04)}
+.notice{background:#eef3f4;border-left:3px solid #75a3af;padding:16px 18px;margin:26px 0;border-radius:0 8px 8px 0;color:#485f6f;font-size:14px}
+.login{max-width:690px;margin:auto}.code-row{display:flex;gap:10px;margin-top:14px}.code-row input{min-width:0;flex:1;border:1px solid var(--line);padding:12px 15px;border-radius:9px;font-size:16px}
+.error{color:#aa393e;font-size:14px;font-weight:700;margin:12px 0}
+[hidden]{display:none!important}
+.hero{display:flex;justify-content:space-between;gap:25px;align-items:end}.count{text-align:right;white-space:nowrap}.count strong{font:400 48px Georgia,serif;color:var(--blue);display:block}
+.count span{color:var(--muted);font-size:13px}
+.progress{margin:22px 0 32px;background:#e3e9eb;height:6px;border-radius:9px;overflow:hidden}.progress div{height:100%;background:#3c8276;width:0;transition:width .2s}
+.work{display:grid;grid-template-columns:215px minmax(0,1fr);gap:32px}.chapters{align-self:start;position:sticky;top:90px;display:grid;gap:5px}
+.chapters button{border:none;background:transparent;padding:10px;text-align:left;font-size:13px;font-weight:650;color:#617485}
+.chapters button.active{background:#e9f1f5;color:#21466c}.chapters .num{display:inline-grid;width:24px;height:24px;place-items:center;border:1px solid #d3dfe3;border-radius:7px;margin-right:8px}
+.question-meta{font-weight:800;letter-spacing:.09em;text-transform:uppercase;font-size:12px;color:var(--blue)}.question-card{min-height:370px}.hint{color:var(--muted);max-width:710px}
+textarea{width:100%;min-height:175px;margin:16px 0 0;padding:18px;border:1px solid #cbd9e0;border-radius:13px;line-height:1.65;resize:vertical;color:var(--ink)}
+.options{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:25px}.options button{text-align:left;min-height:61px;font-weight:550}
+.options button.selected{background:#eaf3f8;border:2px solid var(--blue);color:#1b4770;font-weight:800}
+.actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-top:20px}.actions .group{display:flex;gap:8px;flex-wrap:wrap}
+.save{min-height:22px;color:#40675f;font-size:12px}.utility{display:flex;flex-wrap:wrap;gap:9px;margin:25px 0}
+.report{max-width:960px;margin:auto}.report-section{border-bottom:1px solid var(--line);margin:25px 0 36px;padding-bottom:25px}
+.entry{border-left:3px solid #c8dde6;padding:10px 18px;background:#f4f8f9;margin:12px 0}.entry strong{font-size:13px;color:#35668d;display:block}
+.entry p{margin:5px 0 0;white-space:pre-wrap;overflow-wrap:anywhere}.missing{color:#966947}
+footer{font-size:12px;color:var(--muted);padding-top:19px;border-top:1px solid var(--line);margin-top:40px}
+@media(max-width:760px){.header-inner{padding:13px 15px}main{padding:24px 17px 60px}.hero{display:block}.count{text-align:left;margin-top:16px}.work{display:block}.chapters{position:static;display:flex;overflow:auto;margin-bottom:22px;white-space:nowrap}.chapters button{flex:0 0 auto}.options{grid-template-columns:1fr}.actions{align-items:stretch}.question-card{min-height:300px}.code-row{display:block}.code-row button{margin-top:10px;width:100%}}
+@media print{header,.chapters,.actions,.utility,.progress,.notice,.no-print{display:none!important}body{background:#fff}main{max-width:none;padding:0}.entry,.report-section{break-inside:avoid-page}}
+</style>
+</head>
+<body>
+<header><div class="header-inner"><div class="brand">LEIF <span>Mijn verhaal vervolgen</span></div><div id="saveStatus" class="header-status">Persoonlijk concept</div></div></header>
+<main>
+<section id="gate" class="login">
+<div class="eyebrow">Verder met jouw verhaal</div><h1>Je hoeft niet opnieuw te beginnen.</h1>
+<p class="lead">We hebben een deel van je eerdere antwoorden teruggevonden. Je kunt alles controleren en de overige vragen rustig invullen.</p>
+<div class="notice">Dit is een demo. Je antwoorden worden in een afgeschermde database bewaard en kunnen door de beheerder worden ingezien. De eerste teksten komen uit screenshots van je eerdere verslag. Controleer zelf of ze kloppen. Je hoeft geen vragen in te vullen die je liever overslaat.</div>
+<div class="card"><label for="secret"><strong>Persoonlijke vervolgcode</strong></label><p>Gebruik de code die je hebt ontvangen. Die is persoonlijk, dus stuur hem niet zomaar door.</p>
+<div class="code-row"><input id="secret" type="password" autocomplete="off" aria-label="Persoonlijke vervolgcode" placeholder="Vervolgcode"><button id="open" class="primary" type="button">Open mijn concept</button></div>
+<p class="error" id="error" hidden></p></div>
+</section>
+<section id="editor" hidden>
+<div class="hero"><div><div class="eyebrow">LEIF · persoonlijk gesprek</div><h1>Je verhaal gaat verder.</h1><p class="lead">De overgenomen antwoorden kun je wijzigen. Vragen zonder teruggevonden antwoord blijven open. Je wijzigingen worden lokaal én op de server bewaard.</p></div>
+<div class="count"><strong id="total">0</strong><span>van 32 ingevuld</span></div></div>
+<div class="progress"><div id="bar"></div></div>
+<div class="notice">De beheerder kan de antwoorden bekijken. Op de server staat een concept, geen afgerond verslag. Je kunt na iedere vraag verdergaan, ook later op een ander apparaat met je vervolgcode.</div>
+<div class="work"><nav class="chapters" id="chapters" aria-label="Hoofdstukken"></nav>
+<div><div class="card question-card" id="question"></div>
+<div class="actions"><div class="group"><button type="button" id="prev">Vorige</button><button type="button" id="next" class="primary">Volgende</button><button type="button" id="firstOpen">Volgende open vraag</button></div><span class="save" id="saveDetail"></span></div>
+<div class="utility"><button type="button" id="saveNow">Bewaar nu</button><button type="button" id="viewReport">Bekijk alle antwoorden</button><button type="button" id="download">Download JSON</button><button type="button" id="upload">Importeer JSON</button><input id="jsonInput" type="file" accept=".json,application/json" hidden></div>
+</div></div>
+<footer>Je verhaal blijft van jou. LEIF is geen psychologische test. Opslaan is niet hetzelfde als afronden of versturen.</footer>
+</section>
+<section id="report" class="report" hidden>
+<div class="eyebrow">LEIF · persoonlijk overzicht</div><h1>Mijn verhaal, tot nu toe.</h1>
+<p class="lead">Je antwoorden staan per onderwerp bij elkaar. Open vragen blijven zichtbaar. Je kunt teruggaan en alles aanpassen.</p>
+<div class="utility no-print"><button type="button" id="back">Verder met vragen</button><button type="button" id="print">Print / PDF</button><button type="button" id="saveReport">Bewaar op server</button><button type="button" id="send" class="primary">Markeer als afgerond</button></div>
+<div id="reportBody"></div><p id="sentMessage" role="status"></p>
+<footer>De tekst is gebaseerd op je eigen antwoorden. Er wordt geen persoonlijkheidsdiagnose gemaakt. 'Afronden' verstuurt geen e-mail.</footer>
+</section>
+</main>
+<script>
+'use strict';
+const chapters = [
+ {id:'buitenkant', name:'Wat anderen zien', label:'De buitenkant', intro:'Anderen zien soms vooral je sterke of scherpe kant. Misschien herken je dat, misschien helemaal niet. Jij bepaalt wat daarvan klopt.', desc:'Wat zichtbaar is en wat minder snel wordt opgemerkt.', questions:[
+  {id:'zichtbaar',type:'text',title:'Welke indruk krijgen mensen vaak van jou?',hint:'Je hoeft die indruk niet juist te vinden. Het gaat om wat anderen volgens jou opmerken.',placeholder:'Mensen zien vaak iemand die...'},
+  {id:'observeren',type:'choice',title:'Hoe ben je in een groep die je nog niet goed kent?',hint:'Soms zie je veel voordat je je uitspreekt. Soms ga je direct het gesprek in. Wat herken jij?',options:['Ik kijk en luister eerst','Ik stel vragen om mensen te leren kennen','Ik zeg vrij snel wat ik denk','Het hangt af van de groep']},
+  {id:'onzichtbaar',type:'text',title:'Wat zien mensen minder snel aan jou?',hint:'Sommige kanten van jezelf laat je gemakkelijk zien, andere houd je liever voor jezelf.',placeholder:'Wat niet iedereen weet, is...'},
+  {id:'sterk',type:'text',title:'Wanneer helpt jouw sterke of scherpe kant je?',hint:'Denk aan een situatie waarin je blij was dat je voor jezelf opkwam.',placeholder:'Die kant helpt mij wanneer...'},
+  {id:'schuur',type:'text',title:'Wanneer zit diezelfde kant je in de weg?',hint:'Een manier van reageren kan in de ene situatie helpen en in een andere situatie afstand scheppen.',placeholder:'Het wordt lastig wanneer...'}]},
+ {id:'binnen',name:'Wat je voelt',label:'De binnenkant',intro:'Er bestaat geen juiste verhouding tussen verstandig zijn en geraakt worden. Je mag hierover ook kort antwoorden of verdergaan.',desc:'Gevoelens, kwetsbaarheid en de manieren waarop je ermee omgaat.',questions:[
+  {id:'raak',type:'text',title:'Wat raakt je soms meer dan mensen denken?',hint:'Je hoeft geen namen of gebeurtenissen te noemen. Je mag ook beschrijven wat je in jezelf opmerkt.',placeholder:'Ik merk dat het mij raakt wanneer...'},
+  {id:'reactie',type:'choice',title:'Wat doe je meestal als iets je echt raakt?',hint:'Kies wat op dit moment het meest herkenbaar is. Er kunnen meerdere reacties bestaan.',options:['Ik ga nadenken en analyseren','Ik trek me terug','Ik zoek contact of bevestiging','Ik word scherper of feller','Ik probeer het voor iedereen goed te maken','Het verschilt per situatie']},
+  {id:'emotie',type:'text',title:'Welk gevoel laat je niet gemakkelijk zien?',hint:'Sommige gevoelens tonen we openlijk. Andere houden we liever bij onszelf.',placeholder:'Wat ik niet makkelijk laat zien...'},
+  {id:'behoefte',type:'text',title:'Wat zou iemand op zo’n moment van jou mogen begrijpen?',hint:'Wat zou prettig zijn zonder dat de ander iets hoeft op te lossen?',placeholder:'Ik zou willen dat iemand begrijpt...'}]},
+ {id:'ratio',name:'Verstand en gevoel',label:'Je afwegingen',intro:'Goed kunnen nadenken en veel voelen sluiten elkaar niet uit. De vraag is hoe die twee bij jou samenwerken.',desc:'Hoe je keuzes maakt en wanneer denken en voelen elkaar helpen.',questions:[
+  {id:'keuzes',type:'choice',title:'Wat krijgt bij een lastige keuze meestal als eerste ruimte?',hint:'Er is geen goede of verkeerde volgorde.',options:['Ik analyseer eerst','Ik voel eerst wat klopt','Ik wissel tussen denken en voelen','Het hangt af van de situatie']},
+  {id:'denkenhelpt',type:'text',title:'Wanneer helpt je verstand je echt?',hint:'Wat kan je goed overzien of begrijpen wanneer het spannend wordt?',placeholder:'Mijn verstand helpt mij wanneer...'},
+  {id:'denkenweg',type:'text',title:'Wanneer denk je misschien door, terwijl er ook iets gevoeld wil worden?',hint:'Soms helpt analyseren. Soms schuif je er een lastige vraag mee vooruit. Herken je dat?',placeholder:'Ik merk soms dat ik...'},
+  {id:'waarde',type:'text',title:'Wat wil je bij je keuzes trouw blijven?',hint:'Denk aan een waarde, een behoefte of iets wat voor jou echt telt.',placeholder:'Ik wil trouw blijven aan...'}]},
+ {id:'zorg',name:'Geven en ontvangen',label:'Zorg van twee kanten',intro:'Zorgen voor anderen en zelf verzorgd worden kunnen heel verschillend voelen. De ene keer lukt ontvangen makkelijk, de andere keer minder. Wat herken jij?',desc:'Wat ik voor anderen doe, wat ik zelf nodig heb en hoe ik mijn grenzen merk.',questions:[
+  {id:'zorggeven',type:'text',title:'Hoe laat jij merken dat iemand belangrijk voor je is?',hint:'Denk aan wat je doet, zegt of juist bewust laat.',placeholder:'Ik zorg voor iemand door...'},
+  {id:'zorgontvangen',type:'text',title:'Waaraan merk jij dat iemand echt voor jou zorgt?',hint:'Het hoeft geen groot gebaar te zijn. Wat maakt dat jij je gezien of gesteund voelt?',placeholder:'Ik voel mij verzorgd wanneer...'},
+  {id:'zorgvragen',type:'choice',title:'Hoe makkelijk vind jij het om zelf iets nodig te hebben?',hint:'Niet hoe je zou willen dat het is, maar hoe je het meestal ervaart.',options:['Ik zeg meestal goed wat ik nodig heb','Ik hoop soms dat iemand het zelf ziet','Ik los het liever zelf op','Ik wil het wel vragen, maar vind het lastig','Het verschilt per persoon']},
+  {id:'zorggrens',type:'text',title:'Hoe merk je dat zorgen voor een ander te veel van jou vraagt?',hint:'Je mag ook aangeven dat je je grenzen doorgaans goed voelt.',placeholder:'Ik merk aan mezelf dat...'}]},
+ {id:'verbinding',name:'Dichtbij blijven',label:'Jij en de ander',intro:'Dichtbij iemand zijn kan fijn én spannend zijn. Deze vragen gaan niet uit van een diagnose of vast relatiepatroon.',desc:'Vertrouwen, afstand, verlies en wat je in contact nodig hebt.',questions:[
+  {id:'vertrouwen',type:'text',title:'Wat maakt dat jij iemand werkelijk vertrouwt?',hint:'Denk aan wat iemand doet, laat of zegt. Wat maakt verschil voor jou?',placeholder:'Ik voel vertrouwen wanneer...'},
+  {id:'afstand',type:'text',title:'Wat gebeurt er in jou wanneer iemand belangrijk even afstandelijk voelt?',hint:'Misschien word je stil, onzeker, boos of blijf je juist ontspannen. Alle antwoorden zijn welkom.',placeholder:'Ik merk dan...'},
+  {id:'verlies',type:'text',title:'Welke rol speelt de gedachte iemand kwijt te raken in jouw leven, als die er is?',hint:'Misschien herken je dit sterk, misschien niet. Je mag de vraag overslaan. Details uit je verleden zijn niet nodig.',placeholder:'Als ik denk aan iemand verliezen...'},
+  {id:'contactreactie',type:'choice',title:'Wat is je eerste neiging wanneer je contact onzeker voelt?',hint:'Denk aan je eerste impuls, niet aan wat je vindt dat je zou moeten doen.',options:['Ik zoek duidelijkheid','Ik vraag om bevestiging','Ik houd afstand','Ik pas me aan','Ik spreek me fel uit','Dat verschilt']},
+  {id:'vragen',type:'text',title:'Wat heb je dan nodig, maar vraag je niet altijd?',hint:'Het kan iets kleins zijn: tijd, eerlijkheid, een gebaar, rust of een gesprek.',placeholder:'Ik zou eigenlijk willen vragen om...'}]},
+ {id:'verleden',name:'Wat je meeneemt',label:'Je geschiedenis',intro:'Je geschiedenis is van jou. Er hoeft hier niets verteld te worden wat je liever privé houdt. Een algemeen antwoord is genoeg.',desc:'Wat je hebt geleerd, wat je heeft geholpen en wat mag veranderen.',questions:[
+  {id:'geschiedenis',type:'text',title:'Welke periode of ervaring heeft jouw kijk op mensen beïnvloed?',hint:'Dat mag ook een positieve ervaring zijn. Details, namen en gebeurtenissen zijn niet nodig.',placeholder:'Een periode die me heeft gevormd, is...'},
+  {id:'geleerd',type:'text',title:'Wat heb je jezelf in moeilijke tijden aangeleerd?',hint:'Denk bijvoorbeeld aan zelfstandig worden, alert zijn, relativeren, zorgen of hulp vragen. Of juist iets heel anders.',placeholder:'Ik leerde toen...'},
+  {id:'oudepatronen',type:'text',title:'Welke reactie van vroeger herken je soms nog bij jezelf?',hint:'Niet elke oude reactie is verkeerd. Soms werkt iets nog goed, soms past het minder bij je leven nu.',placeholder:'Ik herken soms dat ik...'},
+  {id:'licht',type:'text',title:'Wat heeft je geschiedenis je ook gegeven?',hint:'Ruimte voor plezier, veerkracht, bijzondere mensen, kennis of iets waarvoor je dankbaar bent.',placeholder:'Wat ik uit die tijd meeneem en wil bewaren...'}]},
+ {id:'verder',name:'Wat mag groeien',label:'Verder leven',intro:'Je hoeft jezelf niet opnieuw uit te vinden. Je kunt iets behouden en op een ander punt een nieuwe reactie oefenen.',desc:'Je ruimte, je relaties en iets kleins om mee te beginnen.',questions:[
+  {id:'jezelf',type:'text',title:'Bij wie of wanneer voel je je het meest jezelf?',hint:'Wat is er in die situatie anders dan op andere momenten?',placeholder:'Ik ben helemaal mezelf wanneer...'},
+  {id:'eigenweg',type:'text',title:'Welke dingen wil jij graag op je eigen manier doen?',hint:'Wat helpt je eigen aanpak jou? En waar wil je ruimte houden voor iemand anders?',placeholder:'Mijn eigen manier is belangrijk bij...'},
+  {id:'behouden',type:'text',title:'Wat wil je beslist niet verliezen van jezelf?',hint:'Ook een eigenschap die soms lastig is, kan waardevol zijn.',placeholder:'Ik wil bewaren dat ik...'},
+  {id:'veranderen',type:'text',title:'Wat zou je graag wat anders willen doen?',hint:'Kies iets wat je zelf kunt oefenen, niet iets wat een ander voor jou moet veranderen.',placeholder:'Ik zou vaker willen...'},
+  {id:'uitspreken',type:'text',title:'Wat zou je tegen iemand dichtbij willen zeggen, zonder jezelf groot te hoeven houden?',hint:'Je hoeft dit nooit echt te versturen. Het mag een zin zijn die alleen voor jou bestaat.',placeholder:'Wat ik eigenlijk wil zeggen, is...'},
+  {id:'stap',type:'text',title:'Wat is één kleine stap die bij jou past?',hint:'Geen groot verbeterplan. Iets kleins dat je op je eigen manier kunt proberen.',placeholder:'Deze week zou ik kunnen...'}]}
+];
+
+const flat = chapters.flatMap((ch,ci)=>ch.questions.map((q,qi)=>({...q,ch,ci,qi})));
+const $=id=>document.getElementById(id);
+const escapeHTML=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const value=id=>typeof answers[id]==='string'?answers[id]:'';
+const filled=q=>value(q.id).trim().length>0;
+const count=()=>flat.filter(filled).length;
+const endpoint='https://ngcyfbstajfcfdhlelbz.supabase.co/functions/v1/leif-demo-session';
+let token='',key='',answers={},pending={},current=0,saveTimer,activeSave=null;
+const setStatus=s=>{$('saveStatus').textContent=s;$('saveDetail').textContent=s;};
+async function api(action,extra={}){
+ const r=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},credentials:'omit',cache:'no-store',body:JSON.stringify({action,token,...extra})});
+ const d=await r.json().catch(()=>({}));
+ if(!r.ok||!d.ok)throw Error(d.error||'server_unavailable');
+ return d;
+}
+function persist(){
+ try{if(key)localStorage.setItem(key,JSON.stringify(pending));}catch{setStatus('Download een JSON als reservekopie');}
+}
+function change(id,val){
+ if(val===null)delete answers[id];else answers[id]=val;
+ pending[id]=val;persist();progress();setStatus('Lokaal bewaard, server volgt');
+ clearTimeout(saveTimer);saveTimer=setTimeout(flush,700);
+}
+async function flush(){
+ if(activeSave)return activeSave;
+ const batch={...pending};
+ if(!Object.keys(batch).length){setStatus('Op server opgeslagen');return true;}
+ activeSave=(async()=>{
+  try{
+   await api('save',{patch:batch});
+   for(const k of Object.keys(batch))if(pending[k]===batch[k])delete pending[k];
+   persist();setStatus(Object.keys(pending).length?'Nog aan het bewaren':'Op server opgeslagen');
+   return true;
+  }catch{setStatus('Server niet bereikbaar, lokaal concept bewaard');return false;}
+  finally{activeSave=null;if(Object.keys(pending).length){clearTimeout(saveTimer);saveTimer=setTimeout(flush,5000);}}
+ })();
+ return activeSave;
+}
+async function openSession(t){
+ token=t.trim();
+ if(token.length<38||token.length>160)throw Error('invalid_code');
+ const digest=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(token));
+ key='leif-demo-cont-'+Array.from(new Uint8Array(digest)).map(b=>b.toString(16).padStart(2,'0')).join('');
+ const data=await api('load');answers={...data.answers};pending={};
+ try{const p=JSON.parse(localStorage.getItem(key)||'{}');if(p&&typeof p==='object'&&!Array.isArray(p))pending=p;}catch{}
+ for(const [id,v] of Object.entries(pending)){if(v===null)delete answers[id];else if(typeof v==='string')answers[id]=v;}
+ try{sessionStorage.setItem('leifContinueToken',token);}catch{}
+ history.replaceState(null,'',location.pathname);
+ $('gate').hidden=true;$('editor').hidden=false;
+ current=firstMissing();render();
+ setStatus(Object.keys(pending).length?'Lokaal concept hersteld, server volgt':'Concept van server geladen');
+ if(Object.keys(pending).length)flush();
+}
+function firstMissing(){const i=flat.findIndex(q=>!filled(q));return i<0?flat.length-1:i;}
+function progress(){
+ $('total').textContent=count();$('bar').style.width=Math.round(count()/flat.length*100)+'%';
+ const nav=$('chapters');nav.innerHTML='';
+ chapters.forEach((ch,ci)=>{
+  const b=document.createElement('button'),n=ch.questions.filter(q=>filled(q)).length;
+  b.type='button';b.className=flat[current].ci===ci?'active':'';
+  const t=document.createElement('span');t.className='num';t.textContent=n===ch.questions.length?'✓':String(ci+1);
+  b.append(t,document.createTextNode(ch.name));b.title=n+' van '+ch.questions.length+' ingevuld';
+  b.onclick=()=>{current=flat.findIndex(q=>q.ci===ci);render();};
+  nav.appendChild(b);
+ });
+}
+function render(){
+ const q=flat[current],box=$('question');box.innerHTML='';
+ const meta=document.createElement('div');meta.className='question-meta';meta.textContent=q.ch.label+' · vraag '+(current+1)+' van '+flat.length;
+ const title=document.createElement('h2');title.textContent=q.title;
+ const hint=document.createElement('p');hint.className='hint';hint.textContent=q.hint;
+ box.append(meta,title,hint);
+ if(q.type==='choice'){
+  const wrap=document.createElement('div');wrap.className='options';
+  q.options.forEach(opt=>{const b=document.createElement('button');b.type='button';b.textContent=opt;b.className=value(q.id)===opt?'selected':'';b.setAttribute('aria-pressed',String(value(q.id)===opt));b.onclick=()=>{change(q.id,opt);render();};wrap.appendChild(b);});box.appendChild(wrap);
+ }else{
+  const text=document.createElement('textarea');text.value=value(q.id);text.placeholder=q.placeholder||'Jouw antwoord';text.setAttribute('aria-label','Jouw antwoord');text.addEventListener('input',()=>change(q.id,text.value));box.appendChild(text);
+ }
+ $('prev').disabled=current===0;$('next').textContent=current===flat.length-1?'Bekijk het verslag':'Volgende';
+ progress();
+}
+function review(){
+ $('editor').hidden=true;$('report').hidden=false;const body=$('reportBody');body.innerHTML='';
+ chapters.forEach(ch=>{
+  const sec=document.createElement('section');sec.className='report-section';
+  const h=document.createElement('h3');h.textContent=ch.label;sec.appendChild(h);
+  ch.questions.forEach(q=>{
+   const article=document.createElement('article');article.className='entry';
+   const title=document.createElement('strong');title.textContent=q.title;
+   const p=document.createElement('p');p.textContent=value(q.id).trim()||'Nog open';if(!filled(q))p.className='missing';
+   article.append(title,p);sec.appendChild(article);
+  });body.appendChild(sec);
+ });scrollTo(0,0);
+}
+function download(){
+ const payload={format:'leif-antwoorden',version:1,naam:'',antwoorden:Object.fromEntries(flat.filter(filled).map(q=>[q.id,value(q.id)])),opgeslagen:new Date().toISOString()};
+ const file=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+ const url=URL.createObjectURL(file),a=document.createElement('a');a.href=url;a.download='LEIF_mijn_antwoorden.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1400);
+}
+$('open').onclick=async()=>{
+ $('open').disabled=true;$('error').hidden=true;
+ try{await openSession($('secret').value);$('secret').value='';}
+ catch(e){$('error').hidden=false;$('error').textContent=e.message==='not_found'?'Vervolgcode niet gevonden.':'Kon het concept niet openen. Controleer je code.';}
+ finally{$('open').disabled=false;}
+};
+$('secret').addEventListener('keydown',e=>{if(e.key==='Enter')$('open').click();});
+$('prev').onclick=()=>{current=Math.max(0,current-1);render();};
+$('next').onclick=()=>{if(current===flat.length-1)review();else{current++;render();}};
+$('firstOpen').onclick=()=>{current=firstMissing();render();};
+$('saveNow').onclick=flush;
+$('viewReport').onclick=review;
+$('download').onclick=download;
+$('back').onclick=()=>{$('report').hidden=true;$('editor').hidden=false;render();scrollTo(0,0);};
+$('print').onclick=()=>print();
+$('saveReport').onclick=async()=>{$('sentMessage').textContent=await flush()?'Op server opgeslagen.':'Server niet bereikbaar; download je JSON.';};
+$('send').onclick=async()=>{
+ if(!confirm('Je verslag wordt op de demoserver als afgerond gemarkeerd. De beheerder kan het inzien. Er wordt geen e-mail verstuurd. Doorgaan?'))return;
+ $('send').disabled=true;
+ try{await flush();if(Object.keys(pending).length)throw Error('Nog niet alles bewaard');await api('submit');$('sentMessage').textContent='Op de server als afgerond gemarkeerd. Geen e-mail verstuurd.';}
+ catch{$('sentMessage').textContent='Afronden is niet gelukt. Het blijft een concept.';}
+ finally{$('send').disabled=false;}
+};
+$('upload').onclick=()=>$('jsonInput').click();
+$('jsonInput').onchange=async e=>{
+ const file=e.target.files&&e.target.files[0];if(!file)return;
+ try{
+  const obj=JSON.parse(await file.text());
+  if(obj.format!=='leif-antwoorden'||obj.version!==1||typeof obj.antwoorden!=='object'||!obj.antwoorden||Array.isArray(obj.antwoorden))throw Error();
+  if(!confirm('Wil je de antwoorden uit dit bestand toevoegen? Bestaande antwoorden met dezelfde vraag worden vervangen.'))return;
+  for(const q of flat)if(typeof obj.antwoorden[q.id]==='string')change(q.id,obj.antwoorden[q.id].slice(0,20000));
+  render();await flush();
+ }catch{alert('Dit bestand bevat geen geldige LEIF-antwoorden.');}
+ e.target.value='';
+};
+window.addEventListener('pagehide',persist);
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden'){persist();flush();}});
+try{
+ const fromLink=new URLSearchParams(location.hash.slice(1)).get('code');
+ const previous=sessionStorage.getItem('leifContinueToken');
+ if(fromLink||previous)openSession(fromLink||previous).catch(()=>{sessionStorage.removeItem('leifContinueToken');$('error').hidden=false;$('error').textContent='Open je persoonlijke concept met je vervolgcode.';});
+}catch{}
+</script></body></html>
