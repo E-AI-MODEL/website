@@ -42,6 +42,13 @@ def check(root: Path):
     handoff = root / 'houseoftalents/index.html'
     if handoff.exists():
         assert 'data-ui-version' not in handoff.read_text(), 'Handoff must be untouched'
+    # The standalone LEIF route is not part of the shared editorial UI.
+    # Validate it separately so the deployment cannot silently omit it.
+    leif = root / 'leif/index.html'
+    assert leif.is_file(), 'Missing standalone LEIF page in deploy output'
+    leif_html = leif.read_text(encoding='utf-8')
+    assert '<title>LEIF' in leif_html, 'LEIF page has unexpected content'
+    assert 'id="accessGate"' in leif_html, 'LEIF access screen is missing'
     print(f'UI validation passed: {len(manifest["pages"])} pages, {len(manifest["assets"])} fingerprinted assets')
     return manifest
 
@@ -85,6 +92,8 @@ def verify_live(base: str, manifest: dict, timeout: int, root: Path):
                 soup = BeautifulSoup(data, 'html.parser')
                 assert soup.body.get('data-ui-version') == manifest['version'], f'Stale UI: {path}'
                 assert soup.select_one('.eai-site-menu'), path
+            leif_expected = hashlib.sha256((root / 'leif/index.html').read_bytes()).hexdigest()
+            assert hashlib.sha256(get('/leif/')).hexdigest() == leif_expected, 'LEIF is missing or out of date'
             for info in manifest['assets'].values():
                 assert hashlib.sha256(get(info['url'])).hexdigest() == info['sha256'], f'Asset mismatch: {info["url"]}'
             print(f'LIVE verified: all {len(expected_html)} prepared HTML files and all asset hashes match UI {manifest["version"]}')
