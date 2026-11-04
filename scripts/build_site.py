@@ -2665,12 +2665,14 @@ def build(sources: Path, out: Path) -> None:
     if leif_source.is_dir():
         shutil.copytree(leif_source, out / "leif", dirs_exist_ok=True)
     finish_generated_pages(out)
-    # LEIF is intentionally unlisted. Keep the standalone source untouched,
-    # but include it in the release uploaded to Theory7.
-    leif_source = repo_root / "leif" / "index.html"
-    if not leif_source.is_file():
+    # Standalone LEIF and its private continuation page are kept byte-for-byte.
+    # Neither page is in the public sitemap or shared editorial UI.
+    leif_source = repo_root / "leif"
+    if not (leif_source / "index.html").is_file():
         raise FileNotFoundError(f"Missing standalone LEIF page: {leif_source}")
-    write(out, "leif/index.html", leif_source.read_text(encoding="utf-8"))
+    if not (leif_source / "continue" / "index.html").is_file():
+        raise FileNotFoundError(f"Missing LEIF continuation page: {leif_source}")
+    shutil.copytree(leif_source, out / "leif", dirs_exist_ok=True)
     items = "".join(f"<url><loc>{BASE_URL}{path}</loc></url>" for path in urls)
     write(out, "sitemap.xml", f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{items}</urlset>')
 
