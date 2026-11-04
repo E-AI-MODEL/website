@@ -2661,6 +2661,12 @@ def build(sources: Path, out: Path) -> None:
         # Mirror under the existing Onderwijs in publishing directory.
         shutil.copytree(handoff_site, out / "onderwijsin" / "houseoftalents", dirs_exist_ok=True)
     finish_generated_pages(out)
+    # LEIF is intentionally unlisted. Keep the standalone source untouched,
+    # but include it in the release uploaded to Theory7.
+    leif_source = repo_root / "leif" / "index.html"
+    if not leif_source.is_file():
+        raise FileNotFoundError(f"Missing standalone LEIF page: {leif_source}")
+    write(out, "leif/index.html", leif_source.read_text(encoding="utf-8"))
     items = "".join(f"<url><loc>{BASE_URL}{path}</loc></url>" for path in urls)
     write(out, "sitemap.xml", f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{items}</urlset>')
 
