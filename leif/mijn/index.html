@@ -254,10 +254,12 @@ function renderExercises(area){
 function renderPersonalTexts(area){
  area.append(pageHeading('Persoonlijke reactie','Alleen voor jou'));
  const material=doc.personal_texts||{};
- const keys=Object.keys(material).filter(k=>typeof material[k]==='string'&&material[k].trim());
- if(!keys.length){area.append(node('p','note','Er is nog geen persoonlijke reactie aan je dossier toegevoegd. Je eigen vragen en verslag kun je al gebruiken.'));return}
+ const published=material.published;
+ const labels={inleiding:'Inleiding',blik_van_een_ander:'Deel 2: de blik van een ander',verder_kijken:'Deel 3: verder kijken',slotwoord:'Slotwoord'};
+ const keys=Object.keys(labels).filter(k=>typeof published?.[k]==='string'&&published[k].trim());
+ if(!keys.length){area.append(node('p','note','Je persoonlijke reactie is nog niet gepubliceerd. Je kunt je vragen en oefeningen wel gebruiken.'));return}
  const out=node('div','panel reader personal');
- for(const key of keys){out.append(node('h3',null,key.replace(/_/g,' ')),node('p',null,material[key]))}
+ for(const key of keys){out.append(node('h3',null,labels[key]),node('p',null,published[key]))}
  area.append(out);
 }
 function downloadBackup(){
