@@ -43,10 +43,22 @@ class WiHTMLPublicationTests(unittest.TestCase):
             with self.subTest(marker=marker):
                 self.assertIn(marker, text)
 
+    def test_complete_v9_lesson_is_preserved(self):
+        source = ROOT / "content/wihtml/verdubbelen-halveren-v9.html"
+        public = BUILD / "tools/wihtml/voorbeeld/index.html"
+        self.assertTrue(source.is_file())
+        self.assertTrue(public.is_file())
+        self.assertEqual(source.read_bytes(), public.read_bytes())
+        text = public.read_text(encoding="utf-8")
+        for marker in ("quickMarker", "quickEraser", "toggleSpotlight", "toggleCurtain", "stopwatchToggle", "saveVotes", "compareVotes"):
+            with self.subTest(marker=marker):
+                self.assertIn(marker, text)
+
     def test_site_has_sitemap_entries(self):
         text = (BUILD / "sitemap.xml").read_text(encoding="utf-8")
         self.assertIn("https://eaimodel.nl/tools/wihtml/</loc>", text)
         self.assertIn("https://eaimodel.nl/tools/wihtml/studio/</loc>", text)
+        self.assertIn("https://eaimodel.nl/tools/wihtml/voorbeeld/</loc>", text)
 
 if __name__ == "__main__":
     unittest.main()
