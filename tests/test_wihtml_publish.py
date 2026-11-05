@@ -70,7 +70,7 @@ class WiHTMLPublicationTests(unittest.TestCase):
         text = (BUILD / "tools/wihtml/studio/index.html").read_text(encoding="utf-8")
         self.assertIn("let draftTrackingReady=false;", text)
         self.assertIn("if(draftTrackingReady)scheduleDraftSave();", text)
-        self.assertIn("renderEditor();\\ndraftTrackingReady=true;".replace("\\n", "\n"), text)
+        self.assertIn("renderEditor();\\nsetWorkMode(savedWorkMode(),false);\\ndraftTrackingReady=true;".replace("\\n", "\n"), text)
         self.assertIn('renderDesigner();scheduleDraftSave();', text)
         self.assertIn('applyFeatures();scheduleDraftSave();', text)
 
