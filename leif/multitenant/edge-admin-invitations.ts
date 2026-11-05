@@ -66,7 +66,7 @@ async function accessFor(userId,tenantId,service){
 async function participantFor(tenantId,personId,service){
  if(typeof personId!=="string"||!/^[a-f0-9-]{36}$/i.test(personId))return null;
  const rows=await db("leif_participants?id=eq."+personId+"&tenant_id=eq."+tenantId+
- "&select=id,tenant_id,display_name,state,created_at,updated_at","GET",null,service);
+ "&select=id,tenant_id,display_name,state,created_at","GET",null,service);
  return Array.isArray(rows)&&rows.length===1?rows[0]:null;
 }
 Deno.serve(async req=>{
