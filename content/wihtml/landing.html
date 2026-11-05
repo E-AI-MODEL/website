@@ -1,0 +1,46 @@
+<style>
+.wi-landing .wi-choices,.wi-landing .wi-steps,.wi-landing .wi-featured{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.wi-landing .wi-choice,.wi-landing .wi-step,.wi-landing .wi-example{padding:22px;border:1px solid #dce2dc;border-radius:14px;background:#fff;min-width:0}
+.wi-landing .wi-choice h2,.wi-landing .wi-step h3,.wi-landing .wi-example h3{margin:0 0 8px;font-size:clamp(1.05rem,2vw,1.35rem)}
+.wi-landing .wi-choice p,.wi-landing .wi-step p,.wi-landing .wi-example p{margin:0 0 14px;line-height:1.55}
+.wi-landing .wi-choice a,.wi-landing .wi-example a{font-weight:700}
+.wi-landing .wi-index{color:#17695e;font-weight:750;font-size:13px;margin-bottom:14px}
+.wi-landing .wi-note{max-width:780px;margin-top:24px}
+.wi-landing .wi-example-art{min-height:92px;border-radius:8px;background:#edf4f0;display:grid;place-items:center;position:relative;overflow:hidden;margin-bottom:14px}
+.wi-landing .wi-example-art span{font-size:1.5rem;color:#245347;font-family:Georgia,serif}
+.wi-landing .wi-example-art .wi-line{height:3px;background:#6a9b88;width:65%;transform:rotate(-15deg)}
+.wi-landing .wi-featured{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media(max-width:760px){.wi-landing .wi-choices,.wi-landing .wi-steps,.wi-landing .wi-featured{grid-template-columns:1fr}}
+</style>
+<main class="wi-landing">
+<section class="page-hero"><div class="wrap">
+<div class="eyebrow">WiHTML · Voor wiskundedocenten</div>
+<h1>Maak je eigen interactieve wiskundeles.</h1>
+<p class="lede">Je bewerkt vragen, uitleg en opgaven direct op de dia. Voeg grafiekonderzoek, stemvragen of oefeningen toe en download een HTML-presentatie die je zonder internet kunt gebruiken.</p>
+<div class="button-row"><a class="button" href="/tools/wihtml/studio/?start=nieuw">Begin met een lege les</a><a class="button secondary" href="/tools/wihtml/bibliotheek/">Bekijk de lesbibliotheek</a><a class="button secondary" href="/tools/wihtml/studio/?start=import">Open je eigen JSON</a></div>
+</div></section>
+<section class="section"><div class="wrap">
+<div class="section-head"><div class="kicker">Kies je startpunt</div><div><h2>Van voorbeeld naar eigen les.</h2><p>Je kunt klein beginnen. Gebruik een lege dia, neem een les uit de bibliotheek als basis of open je eigen bestand.</p></div></div>
+<div class="wi-choices">
+<article class="wi-choice"><div class="wi-index">Zelf beginnen</div><h2>Lege les</h2><p>Start met één lege dia. Kies daarna je werkvormen en de indeling.</p><a href="/tools/wihtml/studio/?start=nieuw">Maak een nieuwe les</a></article>
+<article class="wi-choice"><div class="wi-index">Eerst bekijken</div><h2>Lesbibliotheek</h2><p>Bekijk bestaande lessen. Open er één om te presenteren of gebruik hem als eigen kopie.</p><a href="/tools/wihtml/bibliotheek/">Ga naar de bibliotheek</a></article>
+<article class="wi-choice"><div class="wi-index">Eigen inhoud</div><h2>JSON-bestand</h2><p>Open een WiHTML-lesbestand of een JSON-bestand met inhoud, vragen en opgaven.</p><a href="/tools/wihtml/studio/?start=import">Open een bestand in de studio</a></article>
+</div>
+</div></section>
+<section class="section"><div class="wrap">
+<div class="section-head"><div class="kicker">Zo werkt het</div><div><h2>Van lesidee tot presentatie.</h2><p>Je bepaalt de lesopbouw en de inhoud. WiHTML verzorgt de bediening tijdens het presenteren.</p></div></div>
+<div class="wi-steps">
+<div class="wi-step"><div class="wi-index">01 · Kies</div><h3>Begin met lesinhoud</h3><p>Maak een les, open een voorbeeld of laad een JSON-bestand. Je kunt de volgorde van dia's later wijzigen.</p></div>
+<div class="wi-step"><div class="wi-index">02 · Bewerk</div><h3>Klik op de dia</h3><p>Schrijf direct in vragen en opgaven. Stel vlakverdeling, kleuren en docenttools in.</p></div>
+<div class="wi-step"><div class="wi-index">03 · Controleer en gebruik</div><h3>Test de interacties</h3><p>Bekijk de presentatie en controleer antwoorden en berekeningen. Bewaar JSON om later verder te werken en download HTML voor de les.</p></div>
+</div></div></section>
+<section class="section"><div class="wrap">
+<div class="section-head"><div class="kicker">Uit de bibliotheek</div><div><h2>Bekijk hoe een les werkt.</h2><p>De voorbeelden zijn vrij te gebruiken als startpunt. Je werkt verder in je eigen kopie.</p></div></div>
+<div class="wi-featured">
+<article class="wi-example"><div class="wi-example-art" aria-hidden="true"><span>1,05<sup>t</sup> = 2</span></div><div class="wi-index">5 havo · Grafiekonderzoek</div><h3>Groeifactor onderzoeken</h3><p>Een voorspelling, uitleg en een opgave over verdubbelingstijd.</p><a href="/tools/wihtml/studio/?lesson=groeifactor&amp;preview=1">Bekijk de les</a> · <a href="/tools/wihtml/studio/?lesson=groeifactor">Gebruik als startpunt</a></article>
+<article class="wi-example"><div class="wi-example-art" aria-hidden="true"><span>K = 4 + 2,50x</span></div><div class="wi-index">3 havo · Verbanden</div><h3>Lineaire verbanden</h3><p>Een tarief vergelijken, een tabel onderzoeken en zelf een formule maken.</p><a href="/tools/wihtml/studio/?lesson=lineair&amp;preview=1">Bekijk de les</a> · <a href="/tools/wihtml/studio/?lesson=lineair">Gebruik als startpunt</a></article>
+</div>
+<p class="wi-note"><a href="/tools/wihtml/bibliotheek/">Bekijk alle voorbeelden in de lesbibliotheek</a></p>
+</div></section>
+<section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Bewaren en delen</div><div><h2>Je les blijft op je eigen apparaat.</h2><p>WiHTML bewaart een concept lokaal in je browser. Download ook een JSON-bestand om je les te bewaren of op een ander apparaat verder te gaan. De presentatie exporteer je als zelfstandig HTML-bestand. Er is geen account of publieke upload nodig.</p><p>Controleer zelf je vakinhoud voordat je de les gebruikt. <a href="/tools/wihtml/voorbeeld-lesinhoud.json">Download een JSON-voorbeeld</a> of <a href="/tools/wihtml/voorbeeld/">open de oorspronkelijke complete v9-voorbeeldles</a>.</p><p><a href="https://github.com/E-AI-MODEL/wihtml">Broncode op GitHub</a></p></div></div></section>
+</main>
