@@ -83,12 +83,12 @@ body{background:var(--paper);color:var(--ink)}
     <h1 id="accessHeading">LEIF openen</h1>
     <p class="access-desc">Voer de toegangscode in. Daarna kun je het verhaal lezen, oefeningen bekijken of verder schrijven.</p>
     <form id="accessForm" class="access-form" autocomplete="off">
-      <label for="accessPassword">Wachtwoord</label>
+      <label for="accessPassword">Inlogcode</label>
       <input id="accessPassword" type="password" name="wachtwoord" required autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" aria-describedby="accessError" />
       <button type="submit" class="btn btn-primary">Open LEIF <span aria-hidden="true">→</span></button>
       <p id="accessError" class="access-error" role="alert" hidden>Dit wachtwoord klopt niet. Probeer het opnieuw.</p>
     </form>
-    <p class="access-privacy">Je antwoorden worden niet naar de website gestuurd of automatisch opgeslagen. Bewaar je verslag zelf. Dit eenvoudige wachtwoordscherm is geen beveiligde login.</p>
+    <p class="access-privacy">Met je persoonlijke code kom je in een omgeving waar je antwoorden automatisch worden bewaard. De oude proef met KEI blijft apart beschikbaar en slaat antwoorden niet online op.</p><p class="access-privacy"><a href="/leif/mijn/">Open mijn persoonlijke omgeving</a></p>
   </div>
 </section>
 <div id="appRoot" hidden>
@@ -167,7 +167,7 @@ function renderIntro(){
       <p class="lead">Je kunt beginnen met vragen over jezelf. Heb je je verhaal al geschreven? Lees het terug, bekijk de reactie erop of kies een oefening.</p>
       <p class="intro-support">Je hoeft niet alles achter elkaar te doen. Kies waar je verder wilt.</p>
       <div class="hero-actions">
-        <a class="btn btn-primary" href="/leif/verhaal/">Lees het verhaal <span aria-hidden="true">→</span></a>
+        <a class="btn btn-primary" href="/leif/mijn/">Mijn eigen LEIF-omgeving</a><a class="btn btn-light" href="/leif/verhaal/">Lees het verhaal <span aria-hidden="true">→</span></a>
         <button class="btn btn-light" type="button" id="startBtn">${anyAnswered()?'Verder met mijn vragen':'Beantwoord de vragen'}</button>
         ${anyAnswered()?'<button type="button" class="btn btn-light" id="resumeReport">Mijn antwoorden bekijken</button>':''}
       </div>
@@ -264,6 +264,10 @@ accessForm.addEventListener('submit',function(event){
     document.getElementById('appRoot').hidden=false;
     renderIntro();
     document.getElementById('startBtn').focus({preventScroll:true});
+  }else if(/^[a-f0-9]{48}$/i.test(pw.value.trim())){
+    const privateCode=pw.value.trim().toLowerCase();pw.value='';
+    try{sessionStorage.setItem('leif-personal-access-code-v1',privateCode)}catch(e){}
+    location.assign('/leif/mijn/');
   }else{
     pw.value='';
     err.hidden=false;
