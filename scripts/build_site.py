@@ -2618,24 +2618,17 @@ def build(sources: Path, out: Path) -> None:
     if not wihtml_example_json.is_file():
         raise FileNotFoundError(f"Voorbeeld-JSON ontbreekt: {wihtml_example_json}")
     write(out, "tools/wihtml/voorbeeld-lesinhoud.json", wihtml_example_json.read_text(encoding="utf-8"))
-    wihtml_body = '''<main><section class="page-hero"><div class="wrap">
-    <div class="eyebrow">EAI · Voor docenten</div>
-    <h1>Maak zelf een wiskundeles in HTML.</h1>
-    <p class="lede">Maak of upload je les. Klik daarna op een titel, vraag, antwoord of opgave om die direct op de dia aan te passen. Kies de vlakverdeling, de vormgeving en de docenttools. WiHTML maakt er een zelfstandige HTML-presentatie van met werkende grafieken en vragen.</p>
-    <div class="button-row"><a class="button" href="/tools/wihtml/studio/">Open de lessengenerator</a><a class="button secondary" href="/tools/wihtml/voorbeeld-lesinhoud.json">Bekijk een JSON-voorbeeld</a><a class="button secondary" href="/tools/wihtml/voorbeeld/">Open de volledige voorbeeldles</a><a class="button secondary" href="/nl/onderwijs/">Over leren en AI</a></div>
-    </div></section><section class="section"><div class="wrap">
-    <div class="section-head"><div class="kicker">Zo werkt het</div><div><h2>Je bewerkt de les zelf.</h2><p>Kies een dia en klik op de inhoud. Je ziet direct wat je verandert. Wie meer wil instellen, kan de uitgebreide velden of de HTML- en CSS-editor openen.</p></div></div>
-    <div class="tool-grid">
-    <article class="tool-card"><div class="kicker">Lesopbouw</div><h2>Bepaal de volgorde</h2><p>Kies uit een onderzoekende les, uitleg met oefening of zelfstandig werken. Je kunt ieder onderdeel daarna verplaatsen. De ingelezen inhoud blijft behouden.</p></article>
-    <article class="tool-card"><div class="kicker">Vormgeving</div><h2>Verander de dia direct</h2><p>Schrijf op de dia zelf. Kies één vlak of twee kolommen, met gelijke of ongelijke verdeling. Je kunt kleuren, lettertype en witruimte aanpassen zonder code.</p></article>
-    <article class="tool-card"><div class="kicker">Functionaliteit</div><h2>Kies de docenttools</h2><p>Schakel tekenen, stemmen, timer, spotlicht, docentnotities en andere tools naar keuze in. Download daarna een zelfstandige HTML-les.</p></article>
-    </div></div></section><section class="section"><div class="wrap">
-    <div class="section-head"><div class="kicker">Goed om te weten</div><div><h2>Je les blijft van jou.</h2>
-    <p>Je werkt in je eigen browser. Bewaar je les als JSON om later verder te werken, en download de HTML om hem te presenteren. De website bewaart geen leerlinggegevens of lesbestanden op een server. Sla je bestanden zelf op een veilige plek op.</p>
-    <p>De editor helpt je nadenken over leerlingactiviteit, maar beoordeelt niet automatisch of leerlingen iets hebben geleerd. Controleer je berekeningen en de lesopbouw voordat je presenteert.</p>
-    <p><a href="https://github.com/E-AI-MODEL/wihtml">Bekijk de broncode op GitHub</a></p></div></div>
-    </div></section></main>'''
-    write(out, "tools/wihtml/index.html", doc("WiHTML: maak een wiskundeles in HTML", wihtml_body, "/tools/wihtml/", "tools", "Maak zelf een interactieve wiskundeles met eigen HTML-sjablonen, grafieken en docenttools."))
+    wihtml_dir = Path(__file__).resolve().parent.parent / "content" / "wihtml"
+    for lesson_name in ("lineaire-verbanden", "kansen-twee-worpen"):
+        source = wihtml_dir / "bibliotheek" / (lesson_name + ".json")
+        lesson_data = json.loads(source.read_text(encoding="utf-8"))
+        if not lesson_data.get("slides"):
+            raise ValueError(f"Bibliotheekles mist dia's: {lesson_name}")
+        write(out, "tools/wihtml/bibliotheek/" + lesson_name + ".json", source.read_text(encoding="utf-8"))
+    wihtml_body = (wihtml_dir / "landing.html").read_text(encoding="utf-8")
+    library_body = (wihtml_dir / "library.html").read_text(encoding="utf-8")
+    write(out, "tools/wihtml/index.html", doc("WiHTML: maak je eigen wiskundeles", wihtml_body, "/tools/wihtml/", "tools", "Maak interactieve wiskundelessen, bekijk voorbeelden en werk verder in de Docentstudio."))
+    write(out, "tools/wihtml/bibliotheek/index.html", doc("WiHTML lesbibliotheek", library_body, "/tools/wihtml/bibliotheek/", "tools", "Bekijk WiHTML-voorbeeldlessen en gebruik er een als startpunt."))
     write(out, "tools/prompt-framework/index.html", doc("EAI Prompt Framework", load_content_fragment("prompt-framework-page.html"), "/tools/prompt-framework/", "prompt-framework", "Ontwerp een complete EAI-instructie vanuit doel, menselijke stap, AI-hulp, grenzen en controle."))
     write(out, "model-monitor/index.html", doc("AI (Act) Model Monitor", load_content_fragment("model-monitor-page.html"), "/model-monitor/", "model-monitor", "Vergelijk AI-modellen en landen, bekijk gebruik en incidenten, volg onderwijsontwikkelingen en de EU AI Act, en traceer cijfers naar hun bron."))
     write(out, "eai-tools-modules/index.html", redirect("/tools/"))
@@ -2667,7 +2660,7 @@ def build(sources: Path, out: Path) -> None:
     not_found = '<main><section class="page-hero"><div class="wrap"><div class="eyebrow">404</div><h1>Deze pagina is er niet meer.</h1><p class="lede">De oude Google-site bevatte ook een paar dode links. Ga terug naar de publicaties of tools.</p><div class="button-row"><a class="button" href="/publicaties/">Publicaties</a><a class="button secondary" href="/tools/">Tools</a></div></div></section></main>'
     write(out, "404.html", doc("Niet gevonden", not_found, "/404.html"))
     write(out, "robots.txt", "User-agent: *\nAllow: /\nSitemap: https://eaimodel.nl/sitemap.xml\n")
-    urls = ["/", "/toepassingen/", "/toepassingen/onderwijs-ai/", "/onderwijs/", "/kennis/", "/twee-pijlers/", "/workshop-ai/", "/werkvormen/", "/taalwerkvormen/", "/verdieping/", "/onderbouwing/", "/bronnen/", "/praktijk/", "/publicaties/", "/publicaties/de-vraag-die-we-vergeten/", "/tools/", "/tools/prompt-framework/", "/tools/wihtml/", "/tools/wihtml/studio/", "/tools/wihtml/voorbeeld/", "/model-monitor/", "/over/", "/eaa-model/", "/onderwijsin/", "/onderwijsin/3d/"] + [f"/werkvormen/{item['slug']}/" for item in workforms] + [f"/publicaties/{slug}/" for slug, _, _, _ in PUBLICATIONS] + ["/tools/beyond-explainability/"]
+    urls = ["/", "/toepassingen/", "/toepassingen/onderwijs-ai/", "/onderwijs/", "/kennis/", "/twee-pijlers/", "/workshop-ai/", "/werkvormen/", "/taalwerkvormen/", "/verdieping/", "/onderbouwing/", "/bronnen/", "/praktijk/", "/publicaties/", "/publicaties/de-vraag-die-we-vergeten/", "/tools/", "/tools/prompt-framework/", "/tools/wihtml/", "/tools/wihtml/bibliotheek/", "/tools/wihtml/studio/", "/tools/wihtml/voorbeeld/", "/model-monitor/", "/over/", "/eaa-model/", "/onderwijsin/", "/onderwijsin/3d/"] + [f"/werkvormen/{item['slug']}/" for item in workforms] + [f"/publicaties/{slug}/" for slug, _, _, _ in PUBLICATIONS] + ["/tools/beyond-explainability/"]
     # The bilingual redesign is maintained in nl/ and en/. Preserve it during
     # the legacy article/tool build, including its current home and assets.
     repo_root = Path(__file__).resolve().parent.parent
