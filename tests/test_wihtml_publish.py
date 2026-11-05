@@ -56,6 +56,22 @@ class WiHTMLPublicationTests(unittest.TestCase):
             with self.subTest(marker=marker):
                 self.assertIn(marker, text)
 
+    def test_visual_controls_preserve_other_css(self):
+        text = (BUILD / "tools/wihtml/studio/index.html").read_text(encoding="utf-8")
+        self.assertIn("const setDeclarations=(css,selector,declarations)=>", text)
+        self.assertIn('let css=$("templateCSS").value;', text)
+        self.assertIn("css=setDeclarations(css,'.wi-shell'", text)
+        self.assertIn("css=setDeclarations(css,'.wi-content'", text)
+        self.assertIn("css=setDeclarations(css,'.wi-bottom'", text)
+
+    def test_every_editor_render_saves_after_initial_load(self):
+        text = (BUILD / "tools/wihtml/studio/index.html").read_text(encoding="utf-8")
+        self.assertIn("let draftTrackingReady=false;", text)
+        self.assertIn("if(draftTrackingReady)scheduleDraftSave();", text)
+        self.assertIn("renderEditor();\\ndraftTrackingReady=true;".replace("\\n", "\n"), text)
+        self.assertIn('renderDesigner();scheduleDraftSave();', text)
+        self.assertIn('applyFeatures();scheduleDraftSave();', text)
+
     def test_complete_v9_lesson_is_preserved(self):
         source = ROOT / "content/wihtml/verdubbelen-halveren-v9.html"
         public = BUILD / "tools/wihtml/voorbeeld/index.html"
