@@ -18,6 +18,8 @@ const origin='http://127.0.0.1:'+port;
 const browser=await chromium.launch({headless:true});
 const context=await browser.newContext({viewport:{width:1280,height:900}});
 const page=await context.newPage(), errors=[];
+const demoCode='synthetic-'+('a'.repeat(39));
+await context.addInitScript(code=>{sessionStorage.setItem('leifContinueToken',code)},demoCode);
 page.on('pageerror',e=>errors.push(e.message));
 await page.route('**/functions/v1/leif-demo-session',async route=>{
  const req=route.request(),headers={'access-control-allow-origin':origin,'access-control-allow-methods':'POST,OPTIONS','access-control-allow-headers':'content-type','content-type':'application/json'};
@@ -31,8 +33,6 @@ await page.route('**/functions/v1/leif-demo-session',async route=>{
 });
 try{
  await page.goto(origin+'/leif/continue/');
- await page.locator('#secret').fill('synthetic-'+('a'.repeat(39)));
- await page.locator('#open').click();
  await page.locator('#editor').waitFor({state:'visible',timeout:10000});
  assert.equal(await page.locator('#total').innerText(),'23');
  assert.match(await page.locator('#question h2').innerText(),/zit diezelfde kant je in de weg/);
@@ -60,9 +60,8 @@ try{
   await route.fulfill({status:200,headers,body:JSON.stringify({ok:true,status:'draft',answers})});
  });
  const mobilePage=await mobile.newPage();
+ await mobilePage.addInitScript(code=>{sessionStorage.setItem('leifContinueToken',code)},demoCode);
  await mobilePage.goto(origin+'/leif/continue/');
- await mobilePage.locator('#secret').fill('synthetic-'+('a'.repeat(39)));
- await mobilePage.locator('#open').click();
  await mobilePage.locator('#editor').waitFor({state:'visible',timeout:10000});
  assert.equal(await mobilePage.locator('#total').innerText(),'24');
  await mobilePage.screenshot({path:'test-results/leif-continue-mobile.png',fullPage:true});
