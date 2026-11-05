@@ -366,6 +366,30 @@
  .editor,.design-studio,.design-viewport,.design-paper{width:100%}
  .design-paper .design-columns,.design-paper .design-main,.design-paper .design-body{min-width:0}
 }
+
+/* Antwoordkaarten moeten goed leesbaar blijven in een tweevlaksindeling. */
+.design-paper[data-design-layout="equal"] .design-options,
+.design-paper[data-design-layout="left"] .design-options,
+.design-paper[data-design-layout="right"] .design-options{grid-template-columns:minmax(0,1fr)}
+.design-option{display:grid;grid-template-columns:26px minmax(0,1fr) auto auto;gap:8px;align-items:center}
+.design-option .design-edit-text{overflow-wrap:break-word;word-break:normal;min-width:0;line-height:1.25}
+.design-option button{white-space:nowrap;font-size:11px}
+.design-paper[data-design-layout="equal"] .design-title,
+.design-paper[data-design-layout="left"] .design-title,
+.design-paper[data-design-layout="right"] .design-title{font-size:clamp(21px,2.7vw,40px)}
+.design-viewport{overflow:hidden}
+@media(max-width:760px){
+ .rail-bottom{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:10px!important;margin:10px 0!important;padding:10px 0!important}
+ .rail-bottom #add{width:100%;min-height:44px;display:block;padding:9px 12px;text-align:left;font-size:13px}
+ .rail-import{border-top:0!important;padding:0!important;margin:0!important;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center}
+ .rail-import label{grid-column:1/-1;margin:0}
+ .rail-import input{max-width:100%;font-size:12px}
+ .rail-import button{font-size:12px;padding:8px 10px}
+ .rail-import .hint{grid-column:1/-1;margin:0}
+ .design-option{grid-template-columns:25px minmax(0,1fr) auto auto}
+ .design-option .design-edit-text{font-size:12px;line-height:1.25}
+ .design-paper .design-title{font-size:clamp(20px,4.3vw,30px)}
+}
 </style>
 </head>
 <body>
