@@ -1396,7 +1396,7 @@ function restoreDraft(){
   const next=record.lesson;next.template=checkedTemplate(next.template||TEMPLATE_PRESETS.editorial);
   lesson=next;selected=0;current=0;tableRevealed=0;compareRevealed=0;practiceState={};
   quizSelections={};quizAnswersVisible=false;errorCorrectionVisible=false;
-  applyTemplate();renderEditor();if(guideReady)guideShow({kind:'info'});if($('startDialog').open)$('startDialog').close();msg('Je concept is hersteld. Download JSON voor een eigen kopie.');
+  applyTemplate();renderEditor();if(guideReady)guideShow(guideRemembered(lesson)||{kind:'title'});if($('startDialog').open)$('startDialog').close();msg('Je concept is hersteld. Download JSON voor een eigen kopie.');
  }catch(e){msg('Het concept kon niet worden geopend: '+e.message)}
 }
 
@@ -1670,7 +1670,7 @@ function startBlankLesson(route){
  lesson={id:'les-'+Date.now()+'-'+Math.random().toString(36).slice(2,8),title:'Nieuwe wiskundeles',level:'Wiskunde',goal:'',route:chosen,layout:'single',features:{...FEATURE_DEFAULTS},template:deep(TEMPLATE_PRESETS.editorial),slides};
  selected=0;current=0;paths={};rounds={};revealed=false;tableRevealed=0;compareRevealed=0;practiceState={};quizSelections={};quizAnswersVisible=false;errorCorrectionVisible=false;
  applyTemplate();renderEditor();
- if(guideReady)guideShow({kind:'info'});
+ if(guideReady)guideShow({kind:'title'});
  if($('startDialog').open)$('startDialog').close();
  msg('Nieuwe les geopend. Pas de dia aan of voeg lesdelen toe.');
 }
@@ -1898,7 +1898,7 @@ $("import").onchange=async e=>{
   doc.slides=reorderLessonSlides(doc.slides,doc.route);
   lesson=doc;selected=0;current=0;paths={};rounds={};revealed=false;
   tableRevealed=0;compareRevealed=0;practiceState={};quizSelections={};quizAnswersVisible=false;errorCorrectionVisible=false;
-  applyTemplate();renderEditor();if(guideReady)guideShow({kind:'info'});if($('startDialog').open)$('startDialog').close();
+  applyTemplate();renderEditor();if(guideReady)guideShow({kind:'title'});if($('startDialog').open)$('startDialog').close();
   msg("Ingelezen: "+lesson.slides.length+" lesdelen. Kies de vormgeving en functies, bekijk daarna de les of download HTML.");
  }catch(err){msg("JSON niet ingelezen: "+err.message)}
  finally{e.target.value=""}
@@ -1920,7 +1920,7 @@ async function loadLibraryLesson(key,showPreview=false){
  lesson=next;selected=0;current=0;paths={};rounds={};revealed=false;
  tableRevealed=0;compareRevealed=0;practiceState={};quizSelections={};quizAnswersVisible=false;errorCorrectionVisible=false;
  applyTemplate();renderEditor();
- if(guideReady)guideShow({kind:'info'});
+ if(guideReady)guideShow({kind:'title'});
  if($('startDialog').open)$('startDialog').close();
  msg('Voorbeeld geopend als eigen les. Bewaar JSON om later verder te werken.');
  if(showPreview)$('preview').click();
@@ -1928,6 +1928,10 @@ async function loadLibraryLesson(key,showPreview=false){
 window.addEventListener('load',()=>{
  if(document.documentElement.classList.contains('standalone'))return;
  const params=new URLSearchParams(window.location.search);
+ if(params.get('start')==='nieuw'){
+  startBlankLesson('own');
+  return;
+ }
  const key=params.get('lesson'),valid=Object.prototype.hasOwnProperty.call(WIHTML_LIBRARY_FILES,key||'');
  $('startRestore').hidden=!draftAvailable();
  $('startNoDraft').hidden=draftAvailable();
@@ -2358,15 +2362,39 @@ canvas.addEventListener("pointerdown",e=>{if(!["pen","marker","eraser"].includes
 canvas.addEventListener("pointermove",e=>{if(!drawing||!activePath)return;const [x,y]=svgPoint(e);activePath.setAttribute("d",activePath.getAttribute("d")+" L"+x+" "+y)});
 canvas.addEventListener("pointerup",()=>{if(activePath){(paths[currentSlide().id]??=[]).push(activePath.outerHTML)}drawing=false;activePath=null});
 window.addEventListener("keydown",e=>{if(!stage.classList.contains("show"))return;if(e.key==="Escape"){if(paletteVisible)closeTools();else closeStage()}if(e.key==="ArrowRight")move(1);if(e.key==="ArrowLeft")move(-1);if(e.key.toLowerCase()==="p"&&!e.target.matches("input,textarea")){drawTool=drawTool==="pen"?"":"pen";canvas.classList.toggle("armed",drawTool==="pen")}});
-$("export").onclick=()=>{
+/* Dezelfde offline HTML voor downloaden én voorvertoning. Geen tweede presentatie-engine. */
+function buildStandaloneLessonHTML(){
  save();
  const data=JSON.stringify(lesson).replace(/</g,"\\u003c");
- const source=document.documentElement.outerHTML;
+ const cloned=document.documentElement.cloneNode(true);
+ const preview=cloned.querySelector('#guideResultFrame');
+ if(preview)preview.removeAttribute('srcdoc');
+ const source=cloned.outerHTML;
  const result=source.replace(/const SAMPLE=\{[\s\S]*?\};\s*const \$=/,"const SAMPLE="+data+";\nconst $=");
- if(result===source){msg("Export mislukt: lesgegevens konden niet worden ingevoegd.");return}
+ if(result===source)throw Error("De lesgegevens konden niet worden ingevoegd.");
  const boot='<style>html.standalone>body>header,html.standalone .layout{display:none!important}html.standalone .viewer{display:flex!important}</style><script>document.documentElement.classList.add("standalone");window.addEventListener("load",function(){document.getElementById("preview").click()});<\/script>';
- download("wihtml-"+(lesson.title||"les").toLowerCase().replace(/[^a-z0-9]+/g,"-")+".html",result.slice(0,result.lastIndexOf("</body>"))+boot+result.slice(result.lastIndexOf("</body>")),"text/html;charset=utf-8");
- msg("Zelfstandige HTML opgeslagen.");
+ return result.slice(0,result.lastIndexOf("</body>"))+boot+result.slice(result.lastIndexOf("</body>"));
+}
+let guidePreviewSignature='';
+function guideUpdateLivePreview(){
+ const frame=$('guideResultFrame');if(!frame)return;
+ const signature=JSON.stringify(lesson);
+ if(signature===guidePreviewSignature)return;
+ try{
+  frame.srcdoc=buildStandaloneLessonHTML();
+  guidePreviewSignature=signature;
+ }catch(e){
+  frame.removeAttribute('srcdoc');
+  frame.title='De voorvertoning kon niet worden gemaakt';
+  msg('Voorvertoning niet beschikbaar: '+e.message);
+ }
+}
+$("export").onclick=()=>{
+ try{
+  const html=buildStandaloneLessonHTML();
+  download("wihtml-"+(lesson.title||"les").toLowerCase().replace(/[^a-z0-9]+/g,"-")+".html",html,"text/html;charset=utf-8");
+  msg("Zelfstandige HTML opgeslagen.");
+ }catch(e){msg('Export mislukt: '+e.message)}
 };
 $("preview").title="Bekijk de les op het presentatiescherm";
 $("toolbtn").title="Docentgereedschap";
