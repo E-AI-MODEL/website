@@ -631,6 +631,55 @@
 .wi-existing-draft-actions button{padding:12px 15px}
 @media(max-width:550px){.wi-existing-draft-actions{flex-direction:column}.wi-existing-draft-actions button{width:100%}}
 .design-experiments{margin-top:12px}.design-experiments summary{cursor:pointer;font-weight:700}.design-experiments label{display:grid;font-size:12px;gap:4px;margin:8px 0}.design-experiments textarea{width:100%;min-height:50px;resize:vertical;border:1px solid #cbdad0;border-radius:6px;padding:8px}
+
+/* Compacte werkplek en presentatiemenu's. Ook opgenomen in zelfstandige HTML. */
+.wi-gallery-tools{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin:0 0 11px}
+.wi-gallery-tools input{min-width:170px;flex:1;width:auto!important;font-size:13px;padding:10px!important}
+.wi-gallery-filter{font-size:12px;padding:9px 10px}
+.wi-gallery-filter[aria-pressed="true"]{background:#e4f1e8;border-color:#17695e;color:#17473d;font-weight:700}
+.wi-workform-gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;max-height:min(44dvh,480px);overflow:auto;align-content:start;padding:3px 4px 8px 0;scrollbar-width:thin}
+.wi-workform-card{border:1px solid #d9e1da;border-radius:11px;min-height:116px;padding:10px;text-align:left;background:#fff;display:flex;flex-direction:column;gap:5px;color:#1a3029}
+.wi-workform-card:hover,.wi-workform-card:focus-visible{border-color:#17695e;box-shadow:0 0 0 1px #17695e}
+.wi-workform-card[aria-pressed="true"]{border:2px solid #17695e;background:#eef6f0;padding:9px}
+.wi-workform-art{width:100%;height:42px;border-radius:7px;background:linear-gradient(120deg,#eef4ef,#f9faf7);position:relative;overflow:hidden}
+.wi-workform-art::before{content:"";display:block;height:6px;width:42%;background:#17695e;border-radius:5px;position:absolute;top:10px;left:10px}
+.wi-workform-art::after{content:"";display:block;height:4px;width:70%;background:#bfd0c4;border-radius:5px;position:absolute;top:24px;left:10px}
+.wi-workform-art[data-type="graph"]::before,.wi-workform-art[data-type="mathplot"]::before{height:29px;width:65%;top:7px;background:none;border-bottom:3px solid #17695e;border-radius:0;transform:skewY(-15deg)}
+.wi-workform-art[data-type="question"]::after,.wi-workform-art[data-type="quizset"]::after{height:12px;width:29%;box-shadow:43px 0 #bfd0c4;background:#bfd0c4}
+.wi-workform-card strong{font-size:12px;line-height:1.35}
+.wi-workform-card small{font-size:10px;line-height:1.35;color:#5e7166}
+.wi-workform-fallback{margin:10px 0 0;border:0}
+.wi-workform-fallback summary{font-size:12px;color:#49665a;cursor:pointer}
+.wi-workform-fallback select{margin-top:9px;width:100%}
+#viewer.wi-compact .deck-topbar{position:absolute;top:13px;left:14px;width:auto;max-width:calc(100% - 28px);height:44px;padding:5px 7px 5px 10px;border:1px solid #49616b;border-radius:12px;box-shadow:0 5px 25px #0004;background:#101f2aef;z-index:140}
+#viewer.wi-compact .deck-logo{width:28px;height:28px;font-size:15px}
+#viewer.wi-compact .deck-brand{gap:7px;min-width:0}
+#viewer.wi-compact .deck-brand strong{font-size:12px;max-width:min(40vw,230px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#viewer.wi-compact .deck-brand small{display:none}
+#viewer.wi-compact #deckMenu{color:#fff;background:#253e49;border:1px solid #54707b;border-radius:8px;min-height:31px;padding:5px 9px;font-size:12px;font-weight:700}
+#viewer.wi-compact .deck-buttons{display:none;position:absolute;top:49px;left:0;right:auto;min-width:210px;max-width:min(300px,90vw);padding:9px;flex-direction:column;align-items:stretch;gap:6px;border-radius:11px;background:#172c36;border:1px solid #536a74;box-shadow:0 13px 35px #0006;z-index:170}
+#viewer.wi-compact .deck-buttons.wi-open{display:flex}
+#viewer.wi-compact .deck-buttons button{font-size:12px;text-align:left}
+#viewer.wi-compact .deck-buttons #deckPhase{font-size:11px;padding:4px 7px}
+#viewer.wi-compact .deck-progress{position:absolute;top:0;left:0;right:0;height:3px;width:100%;z-index:125}
+#viewer.wi-compact .viewer-nav{position:absolute;left:50%;bottom:13px;transform:translateX(-50%);width:auto;min-height:44px;border:1px solid #d6ded7;border-radius:13px;padding:5px;gap:5px;background:#fffefbe9;box-shadow:0 7px 35px #0005;z-index:130}
+#viewer.wi-compact .viewer-nav button{min-height:32px;padding:5px 10px}
+#viewer.wi-compact .viewer-nav #close{display:none}
+#viewer.wi-compact .slide{width:min(1600px,calc((100dvh - 34px)*16/9),calc(100vw - 20px));max-height:calc(100dvh - 34px)}
+#viewer.wi-compact .floating{bottom:73px;right:14px;z-index:141}
+#viewer.wi-compact #toolbtn{border-radius:13px;box-shadow:0 5px 24px #0005}
+#viewer.wi-compact .toolpop{width:min(275px,calc(100vw - 30px));max-height:55dvh;overflow-y:auto;padding:8px}
+#viewer.wi-compact .toolpop details{background:#fff;border:1px solid #dce5dc;border-radius:8px;overflow:hidden;margin:0 0 5px}
+#viewer.wi-compact .toolpop details summary{padding:9px 10px;font-size:12px;font-weight:750;cursor:pointer;color:#233e33}
+#viewer.wi-compact .toolpop details button{display:block;width:100%;text-align:left;margin:3px 0}
+@media(max-width:760px){
+ .wi-workform-gallery{grid-template-columns:repeat(2,minmax(0,1fr));max-height:43dvh}
+ #viewer.wi-compact .slide{max-height:calc(100dvh - 24px);width:calc(100vw - 12px)}
+ #viewer.wi-compact .deck-topbar{top:8px;left:7px;max-width:calc(100% - 14px);height:40px}
+ #viewer.wi-compact .viewer-nav{bottom:6px}
+ #viewer.wi-compact .floating{bottom:59px;right:8px}
+}
+
 </style>
 </head>
 <body class="wi-mode-quick">
@@ -644,7 +693,7 @@
  <div class="wi-guide-surface" data-guide-info="goal" hidden><div class="wi-guide-question"><label for="guideGoal">Wat moeten leerlingen aan het einde zelf kunnen?</label><p>Beschrijf één resultaat dat je in de les kunt terugzien. Je hoeft nog geen perfecte formulering te hebben.</p><textarea id="guideGoal" rows="4" placeholder="Bijvoorbeeld: ik kan een groeifactor uit een grafiek aflezen"></textarea></div></div>
  <div class="wi-guide-surface" data-guide-info="route" hidden><div class="wi-guide-question"><label for="guideRoute">Hoe wil je de les opbouwen?</label><p>Je kunt vrij beginnen of een bestaande volgorde kiezen. Alle lesdelen blijven bewerkbaar.</p><select id="guideRoute"><option value="own">Ik bepaal de volgorde zelf</option><option value="discover">Eerst onderzoeken, dan verklaren</option><option value="explain">Uitleg afwisselen met oefenen</option><option value="practice">Zelfstandig oefenen</option></select><p id="guideRouteExplain" class="wi-guide-muted">Begin met één dia en voeg daarna zelf lesdelen toe.</p><button type="button" id="guideApplyRoute">Gebruik deze opbouw</button><p class="wi-guide-muted">Bij een lege les krijg je passende startdia’s. In een bestaande les blijven je eigen dia’s behouden.</p></div></div>
  </div>
- <div id="guideWorkform" class="wi-guide-page" hidden><div class="wi-guide-surface"><div class="wi-guide-question"><label for="guideType">Wat moeten leerlingen op deze dia doen?</label><p>Kies een werkvorm die past bij je vraag. Alle onderdelen kun je later aanpassen.</p><select id="guideType"></select><p id="guideTypeExplain" class="wi-guide-muted"></p></div></div></div>
+ <div id="guideWorkform" class="wi-guide-page" hidden><div class="wi-guide-surface"><div class="wi-guide-question"><label for="guideType">Wat moeten leerlingen op deze dia doen?</label><p>Kies een werkvorm die past bij je vraag. Alle onderdelen kun je later aanpassen.</p><div class="wi-gallery-tools"><button type="button" class="wi-gallery-filter" data-wi-gallery-filter="all" aria-pressed="true">Alle</button><button type="button" class="wi-gallery-filter" data-wi-gallery-filter="math" aria-pressed="false">Wiskunde</button><button type="button" class="wi-gallery-filter" data-wi-gallery-filter="activity" aria-pressed="false">Activiteiten</button><input id="wiGallerySearch" type="search" aria-label="Zoek een onderdeel" placeholder="Zoek een onderdeel"></div><div id="wiWorkformGallery" class="wi-workform-gallery" aria-label="Kies een werkvorm"></div><details class="wi-workform-fallback"><summary>Als lijst bekijken</summary><select id="guideType"></select></details><p id="guideTypeExplain" class="wi-guide-muted"></p></div></div></div>
  <div id="guideSlide" class="wi-guide-page wi-guide-slide" hidden><div class="wi-guide-slide-meta" id="guideSlideMeta"></div><div id="guideSlideMount"></div><div class="wi-guide-slide-buttons"><button id="guideAddSlide" type="button">+ Voeg een dia toe</button><button id="guidePreviewSlide" type="button">Test deze dia</button><details id="guideSlideActions" class="wi-guide-slide-actions"><summary>Dia beheren</summary><div class="wi-guide-slide-control"><button id="guideDuplicateSlide" type="button">Maak een kopie</button><button id="guideMoveSlideUp" type="button" aria-label="Zet dia eerder">Eerder</button><button id="guideMoveSlideDown" type="button" aria-label="Zet dia later">Later</button><button id="guideRemoveSlide" type="button">Verwijderen</button><button id="guideMoreFields" type="button" hidden>Andere instellingen</button></div></details></div></div>
  <div id="guideNotes" class="wi-guide-page" hidden>
  <div class="wi-guide-surface" data-guide-notes="student"><div class="wi-guide-question"><label for="guideStudent">Wat doen leerlingen hier eerst zélf?</label><p>Denk aan voorspellen, uitproberen, verklaren of controleren. Maak duidelijk wat ze doen voordat jij een antwoord laat zien.</p><textarea id="guideStudent" rows="4" placeholder="Bijvoorbeeld: maak eerst zelf een voorspelling en bespreek die met je buur"></textarea></div></div>
@@ -748,7 +797,7 @@
 <p>In deze browser staat een eerder concept. Een nieuwe les vervangt dat concept. Je kunt de oude les eerst hervatten en als JSON bewaren.</p>
 <div class="wi-existing-draft-actions"><button type="button" id="newWithDraftRestore">Ga verder met mijn les</button><button type="button" id="newWithDraftStart" class="primary">Begin een nieuwe les</button></div>
 </dialog>
-<div id="viewer" class="viewer" role="dialog" aria-label="Presentatie" aria-modal="true"><div class="deck-topbar"><div class="deck-brand"><span class="deck-logo">×2</span><strong id="deckTitle">Wiskundeles</strong><small id="deckLevel">Wiskunde</small></div><div class="deck-buttons"><span id="deckPhase">Voorspellen</span><button id="deckOverview" type="button">Dia-overzicht</button><button id="deckTools" type="button">Docenttools</button></div></div><div class="deck-progress"><div id="deckProgress"></div></div><article class="slide"><div id="slidecontent"></div><svg class="draw" id="draw" viewBox="0 0 1200 675" preserveAspectRatio="none"></svg><div class="slide-footer" id="slidefooter"></div></article><div class="viewer-nav"><button id="prev" aria-label="Vorige dia">←</button><span id="position"></span><button id="next" aria-label="Volgende dia">→</button><button id="close" aria-label="Sluit presentatie">Sluiten</button></div><div class="floating"><div id="toolpop" class="toolpop"><button data-tool="pen">Pen aan / uit</button><button data-tool="marker">Markeerstift</button><button data-tool="inkColor">Kleur kiezen</button><button data-tool="eraser">Gum (lijn aanraken)</button><button data-tool="stopPen">Pen wegleggen</button><button data-tool="undo">Laatste lijn weg</button><button data-tool="clear">Wis deze dia</button><button data-tool="vote">Stemmen tellen</button><button data-tool="compare">Stemrondes vergelijken</button><button data-tool="reveal">Antwoord tonen</button><button data-tool="timer">Aftelklok</button><button data-tool="stopwatch">Stopwatch</button><button data-tool="notes">Docentnotities</button><button data-tool="overview">Dia-overzicht</button><button data-tool="names">Leerling kiezen</button><button data-tool="fullscreen">Volledig scherm</button><button data-tool="presenter">Apart docentvenster</button><button data-tool="print">Print les</button><button data-tool="fit">Passend schalen</button><button data-tool="compact">Compacte dia</button><button data-tool="resetView">Herstel weergave</button><button data-tool="white">Wit scherm</button><button data-tool="spotlight">Spotlicht</button><button data-tool="curtain">Afdekken</button><button data-tool="black">Zwart scherm</button></div><button id="toolbtn" aria-label="Open docentgereedschap">✎</button></div></div>
+<div id="viewer" class="viewer wi-compact" role="dialog" aria-label="Presentatie" aria-modal="true"><div class="deck-topbar"><div class="deck-brand"><span class="deck-logo">×2</span><strong id="deckTitle">Wiskundeles</strong><small id="deckLevel">Wiskunde</small></div><button type="button" id="deckMenu" aria-expanded="false" aria-controls="deckExtra">Menu ▾</button><div class="deck-buttons" id="deckExtra"><span id="deckPhase">Voorspellen</span><button id="deckOverview" type="button">Dia-overzicht</button><button id="deckTools" type="button">Docenttools</button><button id="deckExit" type="button">Sluit presentatie</button></div></div><div class="deck-progress"><div id="deckProgress"></div></div><article class="slide"><div id="slidecontent"></div><svg class="draw" id="draw" viewBox="0 0 1200 675" preserveAspectRatio="none"></svg><div class="slide-footer" id="slidefooter"></div></article><div class="viewer-nav"><button id="prev" aria-label="Vorige dia">←</button><span id="position"></span><button id="next" aria-label="Volgende dia">→</button><button id="close" aria-label="Sluit presentatie">Sluiten</button></div><div class="floating"><div id="toolpop" class="toolpop"><details><summary>Schrijven en tekenen</summary><button data-tool="pen">Pen aan / uit</button><button data-tool="marker">Markeerstift</button><button data-tool="inkColor">Kleur kiezen</button><button data-tool="eraser">Gum (lijn aanraken)</button><button data-tool="stopPen">Pen wegleggen</button><button data-tool="undo">Laatste lijn weg</button><button data-tool="clear">Wis deze dia</button></details><details><summary>Vragen en lesactiviteiten</summary><button data-tool="vote">Stemmen tellen</button><button data-tool="compare">Stemrondes vergelijken</button><button data-tool="reveal">Antwoord tonen</button><button data-tool="timer">Aftelklok</button><button data-tool="stopwatch">Stopwatch</button><button data-tool="notes">Docentnotities</button><button data-tool="overview">Dia-overzicht</button><button data-tool="names">Leerling kiezen</button></details><details><summary>Scherm en presentatie</summary><button data-tool="fullscreen">Volledig scherm</button><button data-tool="presenter">Apart docentvenster</button><button data-tool="print">Print les</button><button data-tool="fit">Passend schalen</button><button data-tool="compact">Compacte dia</button><button data-tool="resetView">Herstel weergave</button><button data-tool="white">Wit scherm</button><button data-tool="spotlight">Spotlicht</button><button data-tool="curtain">Afdekken</button><button data-tool="black">Zwart scherm</button></details></div><button id="toolbtn" aria-label="Open docentgereedschap">✎</button></div></div>
 <script>
 const SAMPLE={title:"Verdubbelen en halveren",level:"5 havo · Wiskunde A",goal:"De leerling verklaart en berekent de verdubbelings- en halveringstijd en kan de groeifactor uit de tijd bepalen.",slides:[
 {id:"voorspel",type:"question",phase:"Voorspellen",title:"€ 1.000 wordt € 2.000. Dat duurt 12 jaar.",prompt:"Hoeveel tijd kost de groei van € 2.000 naar € 4.000?",options:["Minder dan 12 jaar","Precies 12 jaar","Meer dan 12 jaar","Dat kun je niet weten"],correct:1,explanation:"Bij dezelfde groeifactor blijft de verdubbelingstijd gelijk.",student:"Kiest eerst zelf en verklaart de keuze.",teacher:"Toont het antwoord pas na het experiment.",later:true},
@@ -1147,6 +1196,49 @@ const GUIDE_ROUTE_HELP={
  explain:'Wissel uitleg af met vragen en oefenmomenten.',
  practice:'Begin met oefenen, bied hulp aan en eindig met een zelfstandige controle.'
 };
+
+let wiGalleryGroup='all';
+const WI_GALLERY_META={
+ text:['Uitleg, tekst of startvraag','activity'],question:['Stemmen en antwoorden later tonen','activity'],
+ graph:['Groeifactor en exponentieel onderzoek','math'],steps:['Uitwerking stap voor stap tonen','activity'],
+ table:['Zelf waarden onderzoeken','math'],practice:['Oefeningen met hulp en uitwerkingen','activity'],
+ compare:['Twee aanpakken naast elkaar','activity'],quizset:['Meerdere korte vragen','activity'],error:['Een fout zoeken en verbeteren','activity']
+};
+function wiRenderGallery(slide){
+ const root=$('wiWorkformGallery');if(!root)return;
+ const needle=($('wiGallerySearch')?.value||'').toLocaleLowerCase('nl').trim();
+ root.innerHTML=Object.entries(TYPES).filter(([id,label])=>{
+  const info=WI_GALLERY_META[id]||['Werkend onderdeel','math'];
+  return (wiGalleryGroup==='all'||info[1]===wiGalleryGroup)&&(!needle||(label+' '+info[0]).toLocaleLowerCase('nl').includes(needle));
+ }).map(([id,label])=>{
+  const info=WI_GALLERY_META[id]||['Werkend onderdeel','math'];
+  return '<button type="button" class="wi-workform-card" data-wi-pick="'+id+'" aria-pressed="'+String(slide?.type===id)+'"><span class="wi-workform-art" data-type="'+id+'"></span><strong>'+esc(label)+'</strong><small>'+esc(info[0])+'</small></button>';
+ }).join('')||'<p class="wi-guide-muted">Geen onderdelen gevonden. Probeer een andere zoekterm.</p>';
+ document.querySelectorAll('[data-wi-gallery-filter]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.wiGalleryFilter===wiGalleryGroup)));
+}
+$('wiWorkformGallery').addEventListener('click',e=>{
+ const b=e.target.closest('[data-wi-pick]');if(!b)return;
+ $('guideType').value=b.dataset.wiPick;
+ $('guideType').dispatchEvent(new Event('change',{bubbles:true}));
+});
+document.querySelectorAll('[data-wi-gallery-filter]').forEach(b=>b.addEventListener('click',()=>{
+ wiGalleryGroup=b.dataset.wiGalleryFilter;wiRenderGallery(lesson.slides[selected]);
+}));
+$('wiGallerySearch').addEventListener('input',()=>wiRenderGallery(lesson.slides[selected]));
+$('deckMenu').addEventListener('click',()=>{
+ const extra=$('deckExtra'),opened=extra.classList.toggle('wi-open');
+ $('deckMenu').setAttribute('aria-expanded',String(opened));
+ $('deckMenu').textContent=opened?'Menu ▴':'Menu ▾';
+});
+$('deckExit').addEventListener('click',()=>$('close').click());
+$('deckExtra').addEventListener('click',e=>{
+ if(e.target.closest('button')&&!e.target.closest('#deckExit')){
+  $('deckExtra').classList.remove('wi-open');
+  $('deckMenu').setAttribute('aria-expanded','false');
+  $('deckMenu').textContent='Menu ▾';
+ }
+});
+
 function guidePages(){
  const pages=[
   {kind:'title',name:'Naam van de les'},
@@ -1296,6 +1388,7 @@ function guideRender(){
   $('guideType').innerHTML=Object.entries(TYPES).map(([key,name])=>'<option value="'+key+'">'+esc(name)+'</option>').join('');
   $('guideType').value=slide.type;
   $('guideTypeExplain').textContent=GUIDE_TYPE_HELP[slide.type]||'';
+  wiRenderGallery(slide);
  }
  if(kind==='slide'){
   $('guideSlideMeta').textContent=(slide?.phase||'Lesdeel')+' · dia '+(selected+1)+' van '+lesson.slides.length;
@@ -2263,9 +2356,9 @@ function graphRender(){
 }
 
 function openStage(){
- applyTemplate();stage.classList.add("show");stage.setAttribute("aria-hidden","false");loadRounds();renderSlide();
+ applyTemplate();$("deckExtra").classList.remove("wi-open");$("deckMenu").setAttribute("aria-expanded","false");$("deckMenu").textContent="Menu ▾";stage.classList.add("show");stage.setAttribute("aria-hidden","false");loadRounds();renderSlide();
 }
-function closeStage(){stage.classList.remove("show");stage.setAttribute("aria-hidden","true");closeTools();stopTimer();stopStopwatch();$("spotlightOverlay")?.remove();$("curtainOverlay")?.remove();$("blackMask")?.remove();$("whiteMask")?.remove();black=false;if(presenterInterval){clearInterval(presenterInterval);presenterInterval=null}}
+function closeStage(){$("deckExtra").classList.remove("wi-open");$("deckMenu").setAttribute("aria-expanded","false");stage.classList.remove("show");stage.setAttribute("aria-hidden","true");closeTools();stopTimer();stopStopwatch();$("spotlightOverlay")?.remove();$("curtainOverlay")?.remove();$("blackMask")?.remove();$("whiteMask")?.remove();black=false;if(presenterInterval){clearInterval(presenterInterval);presenterInterval=null}}
 $("preview").onclick=()=>{save();current=0;revealed=false;stepsVisible=0;tableRevealed=0;compareRevealed=0;practiceState={};quizSelections={};quizAnswersVisible=false;errorCorrectionVisible=false;graphHelp=false;graphLinear=false;graphMarks=false;graphSelectedTime=null;graphMode=0;graphActivePreset=null;openStage()};
 $("close").onclick=closeStage;
 $("prev").onclick=()=>move(-1);$("next").onclick=()=>move(1);
