@@ -6,7 +6,7 @@ const pageUrl={start:'/leif/?leif_voorbeeld=1',kei:'/leif/?leif_voorbeeld=1&deel
 const contentPage=name=>name==='kei'?'start':name;
 const host=window.LeifBeheer;
 const store=new Map();
-let current=null,seen=[],inFlight=false,selecting=true;
+let current=null,seen=[],inFlight=false,selecting=true,activeChoice='start';
 const preview=$('sitePreview'),list=$('siteFieldList'),form=$('siteEditForm'),editor=$('siteEditInput'),status=$('siteEditStatus');
 const make=(tag,txt)=>{const e=document.createElement(tag);if(txt!==undefined)e.textContent=txt;return e};
 const page=()=>contentPage($('sitePage').value);
@@ -91,8 +91,9 @@ async function change(action,extra={}){
  finally{inFlight=false;for(const id of ['siteSave','sitePublish','siteUnpublish'])$(id).disabled=false}
 }
 function choosePage(){
- if(!confirmLeave())return false;
- selecting=true;$('siteMode').textContent='Tekst selecteren';$('siteMode').setAttribute('aria-pressed','true');
+ if(!confirmLeave()){$('sitePage').value=activeChoice;return false}
+ activeChoice=$('sitePage').value;
+ selecting=true;$('siteMode').textContent='Door pagina bladeren';$('siteMode').setAttribute('aria-pressed','true');
  current=null;seen=[];store.clear();form.hidden=true;list.replaceChildren();
  preview.src=pageUrl[$('sitePage').value];
  tell('Kies een tekst in het voorbeeld.');
@@ -110,10 +111,10 @@ $('showPeople').onclick=()=>{
  $('showSiteEditor').setAttribute('aria-pressed','false');$('showPeople').setAttribute('aria-pressed','true');
 };
 $('sitePage').onchange=()=>choosePage();
-$('siteRefresh').onclick=()=>{if(confirmLeave())choosePage()};
+$('siteRefresh').onclick=()=>choosePage();
 $('siteMode').onclick=()=>{
  selecting=!selecting;
- $('siteMode').textContent=selecting?'Tekst selecteren':'Door de pagina bladeren';
+ $('siteMode').textContent=selecting?'Door pagina bladeren':'Tekst selecteren';
  $('siteMode').setAttribute('aria-pressed',String(selecting));
  preview.contentWindow?.postMessage({source:'leif-editor',action:'edit',enabled:selecting},location.origin);
  tell(selecting?'Klik op de tekst die je wilt aanpassen.':'Je kunt nu door de voorbeeldpagina bladeren. Klik nogmaals om tekst te kiezen.');
