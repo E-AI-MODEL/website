@@ -33,6 +33,8 @@ test('drie klikken openen het bestaande beheer zonder aanmelding over te slaan',
 test('iedere tester krijgt een aparte geheime code in dezelfde demosessie',()=>{
   assert.match(backend,/create_tester/);
   assert.match(backend,/list_testers/);
+  assert.match(backend,/get_tester/);
+  assert.match(backend,/leif_demo_sessions\?id=eq/);
   assert.match(backend,/scope\.slug!=="leif"/);
   assert.match(backend,/scope\.role!=="manager"/);
   assert.match(backend,/LEIF-TEST-/);
@@ -40,6 +42,8 @@ test('iedere tester krijgt een aparte geheime code in dezelfde demosessie',()=>{
   assert.match(backend,/tester_name:name/);
   assert.match(admin,/testerForm/);
   assert.match(admin,/loadTesters\(\)/);
+  assert.match(admin,/id="testerAnswers"/);
+  assert.match(admin,/openTester\(person\.id\)/);
   assert.match(admin,/leif\/continue\/\#code=/);
   assert.match(landing,/LEIF-TEST-\[a-f0-9\]/);
   assert.match(personal,/sessionStorage\.getItem\('leifContinueToken'\)/);
