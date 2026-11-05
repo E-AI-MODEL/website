@@ -543,9 +543,16 @@ function updateTemplateVisual(){
    found=true;
    let body=rawBody;
    for(const [property,value] of Object.entries(declarations)){
-    const pattern=new RegExp('(^|;)\\s*'+property+'\\s*:[^;]*','gi');
-    if(pattern.test(body))body=body.replace(pattern,(_,prefix)=>prefix+' '+property+': '+value);
-    else body=body.trimEnd()+(body.trimEnd().endsWith(';')?'':';')+' '+property+': '+value+';';
+    const aliases=property==='background'?['background','background-color']:[property];
+    let matched=false;
+    for(const name of aliases){
+     const pattern=new RegExp('(^|;)\\s*'+name+'\\s*:[^;]*','gi');
+     if(pattern.test(body)){
+      body=body.replace(pattern,(_,prefix)=>prefix+' '+name+': '+value);
+      matched=true;
+     }
+    }
+    if(!matched)body=body.trimEnd()+(body.trimEnd().endsWith(';')?'':';')+' '+property+': '+value+';';
    }
    return selectors+'{'+body+'}';
   });
