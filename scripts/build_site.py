@@ -2616,13 +2616,13 @@ def build(sources: Path, out: Path) -> None:
     write(out, "tools/wihtml/voorbeeld/index.html", full_lesson.read_text(encoding="utf-8"))
     wihtml_body = '''<main><section class="page-hero"><div class="wrap">
     <div class="eyebrow">EAI · Voor docenten</div>
-    <h1>Maak een wiskundeles in HTML.</h1>
-    <p class="lede">Bouw een les met vragen, grafieken en opdrachten. Je bepaalt wanneer leerlingen uitleg krijgen en wat ze zelf moeten uitzoeken. Je hoeft niet te kunnen programmeren.</p>
+    <h1>Maak zelf een wiskundeles in HTML.</h1>
+    <p class="lede">Maak zelf een les met grafieken, onderzoekstabellen, vragen, uitwerkingen en zelfstandige oefeningen. Bepaal welke informatie leerlingen eerst zelf onderzoeken en wanneer je hulp of antwoorden toont. Je hebt geen programmeerkennis nodig.</p>
     <div class="button-row"><a class="button" href="/tools/wihtml/studio/">Open de lessengenerator</a><a class="button secondary" href="/tools/wihtml/voorbeeld/">Open de volledige voorbeeldles</a><a class="button secondary" href="/nl/onderwijs/">Over leren en AI</a></div>
     </div></section><section class="section"><div class="wrap">
-    <div class="section-head"><div class="kicker">Zo werkt het</div><div><h2>Van lesidee naar presentatie.</h2><p>Begin met het voorbeeld over verdubbelen en halveren, of maak een eigen les.</p></div></div>
+    <div class="section-head"><div class="kicker">Zo werkt het</div><div><h2>Van lesidee naar presentatie.</h2><p>Gebruik de complete voorbeeldles over verdubbelen en halveren, of begin met een nieuwe les en voeg je eigen werkvormen toe.</p></div></div>
     <div class="tool-grid">
-    <article class="tool-card"><div class="kicker">Lesinhoud</div><h2>Kies wat leerlingen doen</h2><p>Voeg vragen, uitleg en grafieken toe. Beschrijf per onderdeel wat leerlingen zelf moeten kunnen.</p></article>
+    <article class="tool-card"><div class="kicker">Lesinhoud</div><h2>Kies wat leerlingen doen</h2><p>Kies uit zeven soorten lesonderdelen: van grafiekonderzoek en oefenopgaven tot onderzoekstabellen en vergelijkingsvragen. Beschrijf steeds wat leerlingen zelf doen.</p></article>
     <article class="tool-card"><div class="kicker">Vormgeving</div><h2>Maak je eigen sjabloon</h2><p>Pas de HTML-indeling en CSS aan, bekijk het voorbeeld en hergebruik het ontwerp in andere lessen.</p></article>
     <article class="tool-card"><div class="kicker">Presenteren</div><h2>Geef de les</h2><p>Gebruik compacte docenttools, bewaar klassikale stemrondes en download de HTML-presentatie.</p></article>
     </div></div></section><section class="section"><div class="wrap">
