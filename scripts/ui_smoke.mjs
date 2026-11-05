@@ -183,6 +183,14 @@ try {
   const wiMobile=await wiPage.evaluate(()=>({scroll:document.documentElement.scrollWidth,width:document.documentElement.clientWidth}));
   assert(wiMobile.scroll<=wiMobile.width+1,'Geen horizontaal scrollen op mobiel');
   assert.deepEqual(wiErrors,[],'WiHTML heeft geen browserfouten');
+  const routePage=await wiContext.newPage();
+  await routePage.goto(base+'/tools/wihtml/studio/?start=nieuw',{waitUntil:'load'});
+  for(let n=0;n<3;n++)await routePage.locator('#guideNext').click();
+  await routePage.locator('#guideRoute').selectOption('discover');
+  await routePage.locator('#guideNext').click();
+  assert.equal(await routePage.locator('#items .slide-item').count(),4,'Onderzoekende route maakt vier startdia’s');
+  assert.equal(await routePage.locator('#guideType').inputValue(),'question','Eerste dia is de voorspelling');
+  await routePage.close();
   await wiContext.close();
   const noJS = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 390, height: 844 } });
   const fallback = await noJS.newPage();
