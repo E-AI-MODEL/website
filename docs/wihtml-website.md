@@ -75,3 +75,13 @@ De studio toont bij een gewone opening eerst een keuze: lege les (één dia), ee
 Een eerder opgeslagen lokaal concept wordt niet stilzwijgend vervangen zodra iemand een bibliotheeklink opent. De docent krijgt eerst de keuze tussen dat concept herstellen en het gekozen voorbeeld openen. De startkeuze wordt niet getoond in een zelfstandig geëxporteerde HTML-presentatie. Na het kiezen van een nieuwe les of import werkt de bestaande editor en presentatieruntime zoals voorheen.
 
 De broncode bewaart geen publiek ingezonden lessen. Meer voorbeelden worden voorlopig als beoordeelde JSON-bestanden toegevoegd. Voor publiek inzenden zijn later aparte afspraken over inhoud, rechten, privacy en controle nodig.
+
+## Begeleide lesmaker (november 2026)
+
+De Docentstudio toont na de keuze voor een nieuwe les, een bestaand concept of een bibliotheekvoorbeeld een begeleide reeks schermen. De bestaande lesgegevens blijven de enige bron. De publicatie en de zelfstandige HTML-export gebruiken dezelfde gegevens als voorheen.
+
+De route volgt de werkelijke dia's van de les. Eerst vult de docent de lesnaam, het niveau en het doel in. Daarna komt elke dia afzonderlijk in beeld, met directe bewerking. In **Studio** volgt per dia een apart scherm voor de leerlingactiviteit, docentrol, lesfase en vlakverdeling. In **Snel** slaat de route die verdiepende schermen over. Na de dia's volgen de vormgeving, in Studio ook de docenttools, een controle en het resultaat met een knop om de volledige interactieve HTML te downloaden.
+
+De knoppen **Vorige**, **Akkoord, volgende** en **Alle stappen** werken in beide modi. De bestaande editorfuncties, lesroutes, lokaal bewaren, JSON-import, bibliotheek en offline HTML-export blijven beschikbaar. Uitgebreide velden zijn in Studio bereikbaar in een aparte dialoog, niet als lang formulier onder de dia. Een zelfstandige export opent uitsluitend in de presentatieweergave en toont nooit het bewerkscherm.
+
+De code staat in `content/wihtml/studio.html`. De uitgeschreven stroom wordt getest in `scripts/ui_smoke.mjs`, en de publicatietests controleren de aanwezigheid van alle stappen. Voor productie blijft een eigen UI- en toegankelijkheidscontrole verstandig.
