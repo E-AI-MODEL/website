@@ -20,10 +20,10 @@ GitHub is geschikt voor versiebeheer, broncode, beoordeling en de bouw van een w
 Bronversie waarmee deze route is opgebouwd:
 
 - Repository: `E-AI-MODEL/wihtml`
-- Ontwikkelbranch: `feat/lessengenerator-eai-design`
+- Ontwikkelbranch: `feat/visual-lesson-studio`
 - Bronbestand: `index.html`
-- Bronblob-SHA: `cead1710f5d65aa062c48c76d0f6fe1fc943e456`
-- Git-commit voor studio-implementatie: `4422403675d1d9df717154fb2942bed8e7b150b4`
+- Bronblob-SHA: `361096ed85f7ac9e7f3f931bb28a94fcdb180e4d`
+- Git-commit voor studio-implementatie: staat op de ontwikkelbranch; verifieer de exacte commit bij een volgende synchronisatie
 
 Voor een volgende versie: controleer eerst dat de browsertests in `wihtml` geslaagd zijn. Werk daarna de bronkopie bij met een **volledige commit-SHA**:
 
@@ -52,3 +52,15 @@ De docent kan voor de import een lesroute, vlakverdeling en docenttools kiezen. 
 De vorige export liet te weinig van de oorspronkelijke Docentstudio v9 zien. De nieuwe versie heeft weer aanklikbare antwoordkaarten, drie begripsvragen op een dia, vier grafiekexperimenten, een live formule en waardentabel, herhaalde stemming en vergelijking, foutenanalyse en uitwerkingen per opgave. De presentatie heeft een eigen digibordweergave met navigatie en docenttools.
 
 De WiHTML-browsertest downloadt de HTML uit de editor, opent die opnieuw in Chromium en voert de genoemde handelingen uit. Bij de GitHub Actions-run worden ook screenshots en de gedownloade HTML bewaard. Dit test de technische functies, niet de leskwaliteit op ieder denkbaar scherm.
+
+## Visuele lesbewerking
+
+De docent krijgt nu een grote bewerkbare dia in plaats van een lang formulier. Titel, vraag, antwoord, tabel, oefeningen en uitwerkingen zijn op het voorbeeld te veranderen. Boven de dia kan de docent een werkvorm, vlakverdeling of kopie van het lesdeel kiezen. Dia's zijn in het overzicht te verslepen. Een aparte knop opent de geselecteerde dia in de volledige interactieve presentatie.
+
+De keuze voor een sjabloon begint bij instellingen voor achtergrondkleur, tekstkleur, accent, lettertype en witruimte. Alleen de uitgebreide instellingen tonen de HTML en CSS. Het opgebouwde lesbestand blijft hetzelfde JSON-formaat en de zelfstandige HTML-export gebruikt de bestaande presentatieruntime.
+
+Tijdens het werken wordt een lokaal concept bewaard in de browser. Dit is geen account of cloudopslag. De docent kan het concept na herladen herstellen en blijft verantwoordelijk voor het downloaden van een eigen lesbestand om op een ander apparaat door te gaan.
+
+Dit ontwerp sluit aan bij de eerder gebruikte rustige opbouw van LEIF en het naast elkaar zien van invoer en resultaat in het EAI Prompt Framework. De preview in de editor is geschikt om inhoud te bewerken. De knop 'Bekijk deze dia' dient voor het testen van het daadwerkelijke 16:9-presentatiegedrag.
+
+Chromium-tests controleren directe bewerking, export, mobiel gedrag en herstel van lokaal concept. Die controles zijn nog geen gebruikersonderzoek onder wiskundedocenten.
