@@ -26,3 +26,4 @@ class ToolLaunchTests(unittest.TestCase):
         root=BUILD/'tools/eaistudio/studio';manifest=json.loads((root/'manifest.webmanifest').read_text())
         for icon in manifest['icons']:self.assertTrue((root/icon['src']).is_file())
         for name in ['service-worker.js','icons/apple-touch-icon.png']:self.assertTrue((root/name).is_file())
+        subprocess.run(['node','--check',str(root/'service-worker.js')],check=True,capture_output=True)
