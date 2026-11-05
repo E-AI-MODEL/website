@@ -1,0 +1,123 @@
+{
+  "title": "Lineaire verbanden: helling en startwaarde",
+  "level": "3 havo · Wiskunde",
+  "goal": "De leerling kan de startwaarde en toename per stap uit een tabel aflezen en een formule opstellen.",
+  "slides": [
+    {
+      "id": "start",
+      "type": "text",
+      "phase": "Start",
+      "title": "Wat vertelt een formule?",
+      "prompt": "Een fietser betaalt € 4,00 starttarief en € 2,50 per gereden kilometer.",
+      "body": "De totale kosten bestaan uit een vast bedrag en een bedrag per kilometer. Je gaat onderzoeken hoe dat in een tabel en formule terugkomt.",
+      "student": "Voorspelt wat 0 en 3 kilometer kosten.",
+      "teacher": "Vraag eerst naar de betekenis van de startwaarde."
+    },
+    {
+      "id": "voorspelling",
+      "type": "question",
+      "phase": "Voorspellen",
+      "title": "Wat kost 3 kilometer?",
+      "prompt": "Welke berekening past bij 3 kilometer?",
+      "options": [
+        "3 × 4 + 2,50",
+        "4 + 3 × 2,50",
+        "3 × (4 + 2,50)",
+        "4 × 2,50"
+      ],
+      "correct": 1,
+      "explanation": "Je betaalt één keer € 4,00 en voor drie kilometer 3 × € 2,50. Samen € 11,50.",
+      "student": "Kiest een berekening en legt uit wat ieder getal betekent.",
+      "teacher": "Toon de uitwerking pas na de keuzes.",
+      "later": true
+    },
+    {
+      "id": "tabel",
+      "type": "table",
+      "phase": "Onderzoeken",
+      "title": "Van tabel naar formule",
+      "prompt": "Vul eerst zelf de ontbrekende waarden in en ontdek de regelmaat.",
+      "columnLabels": [
+        "Kilometers",
+        "Kosten (€)"
+      ],
+      "tableRows": [
+        [
+          "0",
+          "4,00"
+        ],
+        [
+          "1",
+          "6,50"
+        ],
+        [
+          "2",
+          "9,00"
+        ],
+        [
+          "3",
+          "11,50"
+        ],
+        [
+          "4",
+          "14,00"
+        ]
+      ],
+      "tableExplanation": "Per kilometer komt er € 2,50 bij. De beginwaarde bij 0 kilometer is € 4,00. K = 4 + 2,50 × x.",
+      "student": "Bepaalt de toename en de beginwaarde zonder de verklaring te openen.",
+      "teacher": "Laat leerlingen eerst een regel formuleren."
+    },
+    {
+      "id": "vergelijk",
+      "type": "compare",
+      "phase": "Verklaren",
+      "title": "Wat doet de startwaarde?",
+      "prompt": "Vergelijk twee ritprijzen.",
+      "compareLabels": [
+        "Tarief A",
+        "Tarief B"
+      ],
+      "compareItems": [
+        [
+          "€ 4 + € 2,50 per km",
+          "€ 1 + € 3,50 per km"
+        ],
+        [
+          "Bij 0 km: € 4",
+          "Bij 0 km: € 1"
+        ],
+        [
+          "Bij 4 km: € 14",
+          "Bij 4 km: € 15"
+        ]
+      ],
+      "compareConclusion": "Bij weinig kilometers is B goedkoper, bij veel kilometers A. Vergelijk de formules bij dezelfde afstand.",
+      "student": "Vergelijkt de kosten en zoekt waar de tarieven elkaar kruisen.",
+      "teacher": "Laat leerlingen uitleggen waarom het goedkoopste tarief kan wisselen."
+    },
+    {
+      "id": "exit",
+      "type": "practice",
+      "phase": "Exit ticket",
+      "title": "Kun je het zelf?",
+      "prompt": "Maak de opgaven zonder hulp en controleer pas daarna.",
+      "tasks": [
+        "Een verhuurder vraagt € 8 vast en € 1,50 per uur. Stel de formule op.",
+        "Bereken de prijs bij 6 uur.",
+        "Welk getal is de startwaarde?"
+      ],
+      "hints": [
+        "Vast bedrag + bedrag per uur × tijd.",
+        "Vul t = 6 in.",
+        "Neem t = 0."
+      ],
+      "solutions": [
+        "P = 8 + 1,50t.",
+        "P = 8 + 9 = € 17.",
+        "De startwaarde is 8."
+      ],
+      "student": "Stelt zelfstandig een formule op en rekent ermee.",
+      "teacher": "Bespreek waar de 8 en 1,50 vandaan komen."
+    }
+  ]
+}

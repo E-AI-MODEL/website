@@ -74,6 +74,52 @@ class WiHTMLPublicationTests(unittest.TestCase):
         self.assertIn('renderDesigner();scheduleDraftSave();', text)
         self.assertIn('applyFeatures();scheduleDraftSave();', text)
 
+    def test_library_and_landing_are_published(self):
+        landing = BUILD / "tools/wihtml/index.html"
+        library = BUILD / "tools/wihtml/bibliotheek/index.html"
+        self.assertTrue(landing.exists())
+        self.assertTrue(library.exists())
+        intro = landing.read_text(encoding="utf-8")
+        catalogue = library.read_text(encoding="utf-8")
+        self.assertIn("Zo werkt het", intro)
+        self.assertIn("/tools/wihtml/bibliotheek/", intro)
+        self.assertIn("/tools/wihtml/studio/?start=nieuw", intro)
+        self.assertIn("/tools/wihtml/studio/?start=import", intro)
+        self.assertIn('id="wi-level"', catalogue)
+        self.assertIn('id="wi-topic"', catalogue)
+        self.assertIn('id="wi-kind"', catalogue)
+        for key in ("groeifactor", "lineair", "kansen"):
+            with self.subTest(lesson=key):
+                self.assertIn("lesson=" + key, catalogue)
+        self.assertIn("/tools/wihtml/voorbeeld/", catalogue)
+
+    def test_curated_library_json_is_an_editable_lesson(self):
+        for name in ("lineaire-verbanden", "kansen-twee-worpen"):
+            source = ROOT / "content/wihtml/bibliotheek" / (name + ".json")
+            published = BUILD / "tools/wihtml/bibliotheek" / (name + ".json")
+            with self.subTest(name=name):
+                self.assertEqual(source.read_bytes(), published.read_bytes())
+                lesson = json.loads(published.read_text(encoding="utf-8"))
+                self.assertTrue(lesson["title"])
+                self.assertTrue(lesson["goal"])
+                self.assertGreaterEqual(len(lesson["slides"]), 3)
+                for slide in lesson["slides"]:
+                    self.assertIn(slide["type"], ("text", "question", "table", "steps", "practice", "compare"))
+                    self.assertTrue(slide.get("student"))
+                    if slide["type"] == "question":
+                        self.assertIn(slide["correct"], range(len(slide["options"])))
+
+    def test_studio_start_does_not_remove_interactions(self):
+        studio = (BUILD / "tools/wihtml/studio/index.html").read_text(encoding="utf-8")
+        for marker in ('id="startDialog"', 'id="startNew"', 'id="startImport"',
+                       'id="startRestore"', 'id="startSelectedLesson"',
+                       'function startBlankLesson(route)', 'function loadLibraryLesson(key,showPreview=false)',
+                       "if(document.documentElement.classList.contains('standalone'))return;",
+                       "if(!draftAvailable()){", "openExample().finally(",
+                       'const WIHTML_LIBRARY_FILES='):
+            with self.subTest(marker=marker):
+                self.assertIn(marker, studio)
+
     def test_complete_v9_lesson_is_preserved(self):
         source = ROOT / "content/wihtml/verdubbelen-halveren-v9.html"
         public = BUILD / "tools/wihtml/voorbeeld/index.html"
@@ -99,6 +145,7 @@ class WiHTMLPublicationTests(unittest.TestCase):
         text = (BUILD / "sitemap.xml").read_text(encoding="utf-8")
         self.assertIn("https://eaimodel.nl/tools/wihtml/</loc>", text)
         self.assertIn("https://eaimodel.nl/tools/wihtml/studio/</loc>", text)
+        self.assertIn("https://eaimodel.nl/tools/wihtml/bibliotheek/</loc>", text)
         self.assertIn("https://eaimodel.nl/tools/wihtml/voorbeeld/</loc>", text)
 
 if __name__ == "__main__":
