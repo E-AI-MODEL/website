@@ -159,6 +159,8 @@ try {
   await exportPage.goto('file://'+exportFile,{waitUntil:'load'});
   await exportPage.locator('#viewer.show').waitFor({state:'visible'});
   assert.equal(await exportPage.locator('#guideFlow').isVisible(),false,'Offline HTML opent alleen als presentatie');
+  assert.equal(await exportPage.evaluate(()=>{toggleBlank();return !!document.getElementById('whiteMask')}),true,'Wit scherm gaat aan');
+  assert.equal(await exportPage.evaluate(()=>{toggleBlank();return !!document.getElementById('whiteMask')}),false,'Wit scherm gaat uit');
   assert.equal(await exportPage.locator('#startDialog').evaluate(el=>el.open),false,'Startscherm ontbreekt bij presenteren');
   await exportPage.close();
   await wiPage.locator('#guideOtherLesson').click();
