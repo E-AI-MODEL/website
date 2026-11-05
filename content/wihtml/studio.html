@@ -625,6 +625,11 @@
  .wi-guide-active .wi-guide-head #guideCounter{font-size:12px;white-space:nowrap}
  .wi-guide-active[data-guide-kind="slide"] .wi-guide-head h1{font-size:21px}
 }
+.wi-existing-draft-dialog{width:min(550px,calc(100vw - 28px));padding:clamp(22px,4vw,35px)}
+.wi-existing-draft-dialog h2{font-size:clamp(23px,3vw,31px)}
+.wi-existing-draft-actions{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:10px;margin-top:22px}
+.wi-existing-draft-actions button{padding:12px 15px}
+@media(max-width:550px){.wi-existing-draft-actions{flex-direction:column}.wi-existing-draft-actions button{width:100%}}
 </style>
 </head>
 <body class="wi-mode-quick">
@@ -736,6 +741,11 @@
 </div>
 <div id="startPending" class="wi-start-card" hidden style="margin-top:14px"><h3>Les uit de bibliotheek</h3><p id="startPendingText">Er staat een voorbeeld voor je klaar.</p><button type="button" class="primary" id="startSelectedLesson">Open dit voorbeeld</button></div>
 <p class="wi-start-hint">Je les staat niet op onze server. Gebruik ‘Bewaar lesbestand’ om een JSON-kopie te downloaden.</p><button type="button" id="startBackToLesson" hidden>Terug naar mijn les</button>
+</dialog>
+<dialog id="newWithDraftDialog" class="wi-start-dialog wi-existing-draft-dialog" aria-labelledby="existingDraftTitle">
+<h2 id="existingDraftTitle">Je hebt nog een les bewaard.</h2>
+<p>In deze browser staat een eerder concept. Een nieuwe les vervangt dat concept. Je kunt de oude les eerst hervatten en als JSON bewaren.</p>
+<div class="wi-existing-draft-actions"><button type="button" id="newWithDraftRestore">Ga verder met mijn les</button><button type="button" id="newWithDraftStart" class="primary">Begin een nieuwe les</button></div>
 </dialog>
 <div id="viewer" class="viewer" role="dialog" aria-label="Presentatie" aria-modal="true"><div class="deck-topbar"><div class="deck-brand"><span class="deck-logo">×2</span><strong id="deckTitle">Wiskundeles</strong><small id="deckLevel">Wiskunde</small></div><div class="deck-buttons"><span id="deckPhase">Voorspellen</span><button id="deckOverview" type="button">Dia-overzicht</button><button id="deckTools" type="button">Docenttools</button></div></div><div class="deck-progress"><div id="deckProgress"></div></div><article class="slide"><div id="slidecontent"></div><svg class="draw" id="draw" viewBox="0 0 1200 675" preserveAspectRatio="none"></svg><div class="slide-footer" id="slidefooter"></div></article><div class="viewer-nav"><button id="prev" aria-label="Vorige dia">←</button><span id="position"></span><button id="next" aria-label="Volgende dia">→</button><button id="close" aria-label="Sluit presentatie">Sluiten</button></div><div class="floating"><div id="toolpop" class="toolpop"><button data-tool="pen">Pen aan / uit</button><button data-tool="marker">Markeerstift</button><button data-tool="inkColor">Kleur kiezen</button><button data-tool="eraser">Gum (lijn aanraken)</button><button data-tool="stopPen">Pen wegleggen</button><button data-tool="undo">Laatste lijn weg</button><button data-tool="clear">Wis deze dia</button><button data-tool="vote">Stemmen tellen</button><button data-tool="compare">Stemrondes vergelijken</button><button data-tool="reveal">Antwoord tonen</button><button data-tool="timer">Aftelklok</button><button data-tool="stopwatch">Stopwatch</button><button data-tool="notes">Docentnotities</button><button data-tool="overview">Dia-overzicht</button><button data-tool="names">Leerling kiezen</button><button data-tool="fullscreen">Volledig scherm</button><button data-tool="presenter">Apart docentvenster</button><button data-tool="print">Print les</button><button data-tool="fit">Passend schalen</button><button data-tool="compact">Compacte dia</button><button data-tool="resetView">Herstel weergave</button><button data-tool="white">Wit scherm</button><button data-tool="spotlight">Spotlicht</button><button data-tool="curtain">Afdekken</button><button data-tool="black">Zwart scherm</button></div><button id="toolbtn" aria-label="Open docentgereedschap">✎</button></div></div>
 <script>
@@ -1423,8 +1433,8 @@ function scheduleDraftSave(){
   }catch(e){$('designSaved').textContent='Opslaan in browser niet mogelijk. Download je lesbestand.'}
  },550);
 }
-function restoreDraft(){
- if(!confirm('Herstel je laatste lokale concept? De huidige les op het scherm wordt vervangen.'))return;
+function restoreDraft(skipConfirmation=false){
+ if(!skipConfirmation&&!confirm('Herstel je laatste lokale concept? De huidige les op het scherm wordt vervangen.'))return;
  try{
   const raw=localStorage.getItem(WIHTML_DRAFT_KEY),record=JSON.parse(raw);
   if(!record||!record.lesson||!Array.isArray(record.lesson.slides)||!record.lesson.slides.length||record.lesson.slides.length>120)throw Error('Geen geldig concept gevonden.');
@@ -1701,8 +1711,8 @@ function review(){
 
 let hasActiveLesson=false;
 function confirmReplacingLesson(action){
- if(!hasActiveLesson)return true;
- return confirm('Je huidige les wordt vervangen '+action+'. Bewaar eerst een JSON-kopie als je deze later nog wilt gebruiken. Doorgaan?');
+ if(!hasActiveLesson&&!draftAvailable())return true;
+ return confirm('Er staat al een les of concept op dit apparaat. Die wordt vervangen '+action+'. Bewaar eerst een JSON-kopie als je dit later nog wilt gebruiken. Doorgaan?');
 }
 function startBlankLesson(route){
  const chosen=ROUTE_TYPES[route]?route:'own';
@@ -1720,7 +1730,15 @@ $('startNew').onclick=()=>{
  startBlankLesson($('startRoute').value);
 };
 $('startImport').onclick=()=>$('import').click();
-$('startRestore').onclick=restoreDraft;
+$('startRestore').onclick=()=>restoreDraft();
+$('newWithDraftRestore').onclick=()=>{
+ $('newWithDraftDialog').close();
+ restoreDraft(true);
+};
+$('newWithDraftStart').onclick=()=>{
+ $('newWithDraftDialog').close();
+ startBlankLesson('own');
+};
 $('startDialog').addEventListener('cancel',e=>e.preventDefault());
 $("newLesson").onclick=()=>{
  if(!confirm("Een nieuwe les starten? Download eerst je huidige JSON-lesbestand als je dit later nodig hebt."))return;
@@ -1974,10 +1992,11 @@ window.addEventListener('load',()=>{
  if(document.documentElement.classList.contains('standalone'))return;
  const params=new URLSearchParams(window.location.search);
  if(params.get('start')==='nieuw'){
-  startBlankLesson('own');
   params.delete('start');
   const query=params.toString();
   history.replaceState(null,'',window.location.pathname+(query?'?'+query:''));
+  if(draftAvailable())$('newWithDraftDialog').showModal();
+  else startBlankLesson('own');
   return;
  }
  const key=params.get('lesson'),valid=Object.prototype.hasOwnProperty.call(WIHTML_LIBRARY_FILES,key||'');
@@ -2449,7 +2468,7 @@ $("toolbtn").title="Docentgereedschap";
 lesson.template=checkedTemplate(lesson.template||TEMPLATE_PRESETS.editorial);
 applyTemplate();
 initDesignControls();
-$('draftRestore').onclick=restoreDraft;
+$('draftRestore').onclick=()=>restoreDraft();
 $('fields').addEventListener('input',event=>{if(event.target.id!=='type'){save();renderDesigner()}});
 ['title','level','goal'].forEach(id=>$(id).addEventListener('input',()=>{save();const footer=$('designCanvas').querySelector('.design-footer');if(footer)footer.textContent=(lesson.level||'Wiskunde')+' · '+(lesson.title||'Nieuwe les')+' · dia '+(selected+1)+' van '+lesson.slides.length}));
 loadRounds();
