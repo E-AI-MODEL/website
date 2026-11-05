@@ -550,6 +550,7 @@ function updateTemplateVisual(){
     }
     body=body.trimEnd()+(body.trimEnd().endsWith(';')?'':';')+' '+property+': '+value+' !important;';
    }
+   body=body.replace(/;(?:\s*;)+/g,';').replace(/^\s*;/,'');
    return selectors+'{'+body+'}';
   });
   return found?updated:updated+'\n'+selector+' { '+Object.entries(declarations).map(([key,value])=>key+': '+value).join('; ')+'; }';
