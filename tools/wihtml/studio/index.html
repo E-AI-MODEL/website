@@ -146,6 +146,106 @@
 /* Zwart scherm bedekt de complete presentatiedia, inclusief sjabloon en voettekst. */
 .black-mask{position:absolute;inset:0;background:#050807;color:#fff;z-index:105;display:block}
 .black-mask button{position:absolute;top:16px;right:16px;color:#fff;background:#202c26;border:1px solid #7b8e80;border-radius:8px;padding:7px 11px;cursor:pointer}
+
+/* V9: actieve begripsvragen en foutenanalyse, zonder vroegtijdige uitwerkingen. */
+.quiz-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:12px 0 0}
+.quiz-card{min-width:0;background:#fff;border:1px solid #d3dfd8;border-radius:12px;padding:15px;box-shadow:0 7px 22px rgba(18,35,41,.05)}
+.quiz-card-header{text-transform:uppercase;letter-spacing:.12em;color:#116e6a;font-size:11px;font-weight:850;margin-bottom:10px}
+.quiz-card h3{font-size:clamp(16px,1.45vw,22px);line-height:1.2;min-height:48px;margin:0 0 12px;letter-spacing:-.02em}
+.quiz-choices{display:grid;gap:7px}
+.quiz-choice{display:flex;align-items:center;gap:9px;padding:8px 10px;background:#fbfcfa;border:1px solid #cfddd6;border-radius:9px;text-align:left;color:#192e3d;font-size:clamp(12px,1.1vw,17px);font-weight:650;min-height:40px}
+.quiz-choice:hover{border-color:#14716c}
+.quiz-choice b{display:grid;place-items:center;background:#e8f0ec;border-radius:5px;width:26px;height:27px;flex:none}
+.quiz-choice.selected{background:#eaf6f0;border-color:#137a71}
+.quiz-choice.right{background:#dcf1e6;border-color:#11816f}
+.quiz-choice.incorrect{background:#fff0e9;border-color:#c7633f}
+.quiz-feedback{font-size:clamp(12px,1.0vw,15px)!important;line-height:1.3;margin:12px 0 0;background:#eff7f2;padding:10px;border-left:3px solid #1c7b70}
+.mistake-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:14px}
+.mistake-panel{padding:clamp(18px,2vw,30px);border-radius:13px;border:1px solid #d3dfd8;background:#fff;min-height:230px}
+.mistake-panel .eyebrow{color:#116e6a}
+.mistake-math{font:normal clamp(24px,3.2vw,45px)/1.3 Georgia,serif!important;white-space:pre-wrap;color:#253c47;margin:12px 0 24px}
+.mistake-question{font-size:clamp(18px,1.7vw,26px)!important;font-weight:700}
+.mistake-answer{font-size:clamp(15px,1.3vw,19px)!important;line-height:1.35;background:#e7f4ea;border-radius:8px;padding:15px;margin-top:18px}
+@media(max-width:800px){.quiz-grid{grid-template-columns:1fr;max-height:53vh;overflow:auto}.mistake-grid{grid-template-columns:1fr;max-height:55vh;overflow:auto}}
+
+/* Vier experimentele onderzoeksvragen uit Docentstudio v9, herbruikbaar voor elke grafiekdia. */
+#viewer .slide[data-type="graph"]{overflow-y:auto}
+#viewer .slide[data-type="graph"] h2{font-size:clamp(25px,3vw,47px);margin:4px 0 12px}
+#viewer .slide[data-type="graph"] .lead{font-size:clamp(16px,1.4vw,22px);margin-bottom:10px}
+#viewer .slide[data-type="graph"] .wi-layout{display:block}
+.graph-tabs{display:flex;flex-wrap:wrap;gap:7px;margin:13px 0 10px}
+.graph-tabs button{padding:8px 11px;border:1px solid #cfddd5;border-radius:8px;background:#f5f8f5;color:#173044;font-size:12px;font-weight:750}
+.graph-tabs button.active{background:#173044;border-color:#173044;color:white}
+.graph-question{background:#f3f8f3;border:1px solid #dce9e0;border-radius:10px;padding:12px 16px;margin-bottom:10px}
+.graph-question-label{color:#116e6a;font-weight:850;text-transform:uppercase;font-size:11px;letter-spacing:.1em}
+.graph-question p{font-size:clamp(16px,1.4vw,23px)!important;font-weight:750;margin:4px 0!important}
+.graph-question small{color:#51685f}
+.graph-lab{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(250px,1fr);gap:14px}
+.graph-plot-panel,.graph-settings-panel{border:1px solid #d8e3da;border-radius:12px;background:#fff;padding:13px;min-width:0}
+.graph-plot-panel .graph{display:block;width:100%;height:auto;max-height:240px}
+.graph-legend{display:flex;gap:15px;font-size:12px;font-weight:750;color:#17695e}
+.graph-legend #graphLinearLegend{color:#c86942}
+.graph-action-row{display:flex;gap:6px;flex-wrap:wrap;margin:7px 0}
+.graph-action-row button{font-size:12px;padding:7px}
+.graph-result{font-size:13px!important;font-weight:750;background:#e9f4ed;border-radius:6px;padding:9px;margin-top:8px}
+.graph-controls{display:grid;gap:8px}
+.graph-controls .ctrl-unit{min-width:0}
+.graph-controls label{display:flex;justify-content:space-between;gap:15px;font-size:13px;font-weight:750}
+.graph-controls input[type=range]{width:100%;accent-color:#147c73}
+.graph-formula{font:normal clamp(18px,1.9vw,27px)/1.2 Georgia,serif;padding:12px;background:#f1f6f0;border-radius:8px}
+.graph-settings-panel .graph-values-wrap{max-height:170px;margin-top:10px;display:block}
+.graph-settings-panel .graph-values{width:100%}
+.graph-polls{display:flex;gap:7px;flex-wrap:wrap;margin:8px 0 3px}
+.graph-polls button{padding:8px 11px;font-size:12px}
+@media(max-width:810px){.graph-lab{grid-template-columns:1fr}.graph-tabs button{flex:1}.graph-plot-panel .graph{max-height:175px}}
+
+/* Geëxporteerde lessen krijgen weer een afzonderlijke digibordweergave, naar Docentstudio v9. */
+#viewer.viewer{display:none;flex-direction:column;justify-content:space-between;align-items:center;padding:0;background:#142530;gap:0}
+#viewer.viewer.show{display:flex}
+#viewer .deck-topbar{flex:none;width:100%;height:57px;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 clamp(18px,3vw,50px);background:#101f2a;color:#f0f6f3;z-index:101}
+#viewer .deck-brand{display:flex;align-items:center;gap:12px;min-width:0}
+#viewer .deck-brand strong{font-size:clamp(14px,1.25vw,21px);font-weight:830;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#viewer .deck-brand small{color:#9fb7c4;font-size:11px;letter-spacing:.07em;white-space:nowrap}
+#viewer .deck-logo{display:grid;place-items:center;background:#dc6b46;border-radius:8px;width:31px;height:31px;color:#fff;font-weight:900;font-size:18px;flex:none}
+#viewer .deck-buttons{display:flex;align-items:center;gap:9px}
+#viewer .deck-buttons span{font-size:12px;color:#b3ccc8}
+#viewer .deck-buttons button{background:#253d4a;border:1px solid #526c78;color:#fff;padding:8px 11px;border-radius:7px;font-weight:700;font-size:12px}
+#viewer .deck-progress{width:100%;flex:none;height:4px;background:#33454b}
+#viewer #deckProgress{height:100%;background:#e16d45;transition:width .2s}
+#viewer .slide{flex:0 1 auto;width:min(1600px,calc((100dvh - 136px)*16/9),calc(100vw - 42px));max-height:calc(100dvh - 136px);height:auto;aspect-ratio:16/9;padding:clamp(24px,3.2vw,56px);overflow-y:auto;scrollbar-gutter:stable;box-shadow:0 25px 60px #0005;border-radius:3px;background:#fcfbf8;color:#182d3d;scroll-behavior:smooth}
+#viewer .slide h2{color:#172d3a;font-weight:860;font-size:clamp(27px,3.7vw,60px);letter-spacing:-.047em;line-height:1.07;margin:6px 0 18px}
+#viewer .slide .eyebrow{color:#0e7773;font-weight:850;letter-spacing:.14em;text-transform:uppercase}
+#viewer .slide .lead{color:#354b59;line-height:1.36}
+#viewer .slide .choices{gap:clamp(9px,1vw,17px);margin-top:15px}
+#viewer .slide .choice{background:white;text-align:left;border:1.5px solid #cfdbd5;padding:clamp(12px,1.5vw,22px);border-radius:12px;color:#182d3d;box-shadow:0 3px 18px #142a3206;font-weight:750;transition:border-color .15s,background-color .15s}
+#viewer .slide .choice:hover{border-color:#168075}
+#viewer .slide .choice.selected{border-color:#168075;background:#eaf7ef}
+#viewer .slide .choice.right{border-color:#15906e;background:#dff2e7}
+#viewer .slide .choice b{background:#1c5264;color:#fff;border-radius:8px;width:38px;height:38px;flex:none}
+#viewer .slide .reveal{background:#e6f4e9;border-left:4px solid #168075}
+#viewer .viewer-nav{position:relative;bottom:auto;left:auto;transform:none;z-index:103;width:100%;min-height:61px;flex:none;border-radius:0;background:#fcfbf8;box-shadow:none;border-top:1px solid #dfe5df;justify-content:flex-end;padding:9px clamp(18px,3vw,50px);gap:11px}
+#viewer .viewer-nav button{font-weight:750;padding:9px 15px;border-radius:8px}
+#viewer .viewer-nav #next{background:#172e3f;color:white}
+#viewer .floating{right:clamp(15px,3vw,45px);bottom:80px}
+#viewer .toolpop{width:210px;max-height:60vh;overflow:auto;gap:5px;border:1px solid #d6e1d9}
+#viewer .toolpop button{font-size:12px}
+#viewer .wi-content{min-height:0}
+.question-actions{display:flex;gap:10px;align-items:center;margin:15px 0;flex-wrap:wrap}
+.question-actions button{background:#e1ece7;color:#163c46;border:1px solid #d0e2d5;border-radius:9px;font-size:13px;font-weight:750;padding:10px 13px}
+.question-actions span{font-size:13px;color:#5b6d68}
+#viewer .slide[data-type="graph"] h2{font-size:clamp(24px,3vw,44px)}
+#viewer .slide[data-type="graph"]{padding:clamp(16px,2.1vw,30px)}
+@media(max-width:760px){
+ #viewer .deck-topbar{height:50px;padding:0 10px}
+ #viewer .deck-brand small,#viewer #deckPhase{display:none}
+ #viewer .deck-buttons button{font-size:11px;padding:7px}
+ #viewer .slide{width:calc(100vw - 14px);max-height:calc(100dvh - 118px);padding:clamp(14px,4vw,24px)}
+ #viewer .viewer-nav{min-height:59px;padding:7px 13px}
+ #viewer .slide .choices{grid-template-columns:1fr}
+ #viewer .slide .choice{padding:10px;min-height:48px}
+ #viewer .slide h2{font-size:clamp(24px,6vw,38px)}
+}
+@media print{#viewer .deck-topbar,#viewer .deck-progress,#viewer .viewer-nav{display:none!important}}
 </style>
 </head>
 <body>
@@ -181,21 +281,22 @@
 <div class="template-actions"><button id="templatePreview">Voorbeeld vernieuwen</button><button id="templateImport">Sjabloon importeren</button><input id="templateFile" class="hide" type="file" accept=".json,.html"><button id="templateDownload">Download HTML-sjabloon</button><button id="templateDownloadJSON">Bewaar als JSON</button><button id="templateApply" class="primary">Gebruik dit sjabloon</button></div>
 </div><div class="template-preview-area"><div class="eyebrow">Voorvertoning</div><iframe id="templateFrame" sandbox="" title="Voorbeeld van het HTML-sjabloon"></iframe><p class="hint">De voorvertoning voert geen scripts uit. In de presentatie blijven de docenttools als overlays bovenop het sjabloon beschikbaar.</p></div></div>
 </dialog>
-<div id="viewer" class="viewer" role="dialog" aria-label="Presentatie" aria-modal="true"><article class="slide"><div id="slidecontent"></div><svg class="draw" id="draw" viewBox="0 0 1200 675" preserveAspectRatio="none"></svg><div class="slide-footer" id="slidefooter"></div></article><div class="viewer-nav"><button id="prev" aria-label="Vorige dia">←</button><span id="position"></span><button id="next" aria-label="Volgende dia">→</button><button id="close" aria-label="Sluit presentatie">Sluiten</button></div><div class="floating"><div id="toolpop" class="toolpop"><button data-tool="pen">Pen aan / uit</button><button data-tool="marker">Markeerstift</button><button data-tool="inkColor">Kleur kiezen</button><button data-tool="eraser">Gum (lijn aanraken)</button><button data-tool="stopPen">Pen wegleggen</button><button data-tool="undo">Laatste lijn weg</button><button data-tool="clear">Wis deze dia</button><button data-tool="vote">Stemmen tellen</button><button data-tool="compare">Stemrondes vergelijken</button><button data-tool="reveal">Antwoord tonen</button><button data-tool="timer">Aftelklok</button><button data-tool="stopwatch">Stopwatch</button><button data-tool="notes">Docentnotities</button><button data-tool="overview">Dia-overzicht</button><button data-tool="names">Leerling kiezen</button><button data-tool="fullscreen">Volledig scherm</button><button data-tool="presenter">Apart docentvenster</button><button data-tool="print">Print les</button><button data-tool="fit">Passend schalen</button><button data-tool="compact">Compacte dia</button><button data-tool="resetView">Herstel weergave</button><button data-tool="white">Wit scherm</button><button data-tool="spotlight">Spotlicht</button><button data-tool="curtain">Afdekken</button><button data-tool="black">Zwart scherm</button></div><button id="toolbtn" aria-label="Open docentgereedschap">✎</button></div></div>
+<div id="viewer" class="viewer" role="dialog" aria-label="Presentatie" aria-modal="true"><div class="deck-topbar"><div class="deck-brand"><span class="deck-logo">×2</span><strong id="deckTitle">Wiskundeles</strong><small id="deckLevel">Wiskunde</small></div><div class="deck-buttons"><span id="deckPhase">Voorspellen</span><button id="deckOverview" type="button">Dia-overzicht</button><button id="deckTools" type="button">Docenttools</button></div></div><div class="deck-progress"><div id="deckProgress"></div></div><article class="slide"><div id="slidecontent"></div><svg class="draw" id="draw" viewBox="0 0 1200 675" preserveAspectRatio="none"></svg><div class="slide-footer" id="slidefooter"></div></article><div class="viewer-nav"><button id="prev" aria-label="Vorige dia">←</button><span id="position"></span><button id="next" aria-label="Volgende dia">→</button><button id="close" aria-label="Sluit presentatie">Sluiten</button></div><div class="floating"><div id="toolpop" class="toolpop"><button data-tool="pen">Pen aan / uit</button><button data-tool="marker">Markeerstift</button><button data-tool="inkColor">Kleur kiezen</button><button data-tool="eraser">Gum (lijn aanraken)</button><button data-tool="stopPen">Pen wegleggen</button><button data-tool="undo">Laatste lijn weg</button><button data-tool="clear">Wis deze dia</button><button data-tool="vote">Stemmen tellen</button><button data-tool="compare">Stemrondes vergelijken</button><button data-tool="reveal">Antwoord tonen</button><button data-tool="timer">Aftelklok</button><button data-tool="stopwatch">Stopwatch</button><button data-tool="notes">Docentnotities</button><button data-tool="overview">Dia-overzicht</button><button data-tool="names">Leerling kiezen</button><button data-tool="fullscreen">Volledig scherm</button><button data-tool="presenter">Apart docentvenster</button><button data-tool="print">Print les</button><button data-tool="fit">Passend schalen</button><button data-tool="compact">Compacte dia</button><button data-tool="resetView">Herstel weergave</button><button data-tool="white">Wit scherm</button><button data-tool="spotlight">Spotlicht</button><button data-tool="curtain">Afdekken</button><button data-tool="black">Zwart scherm</button></div><button id="toolbtn" aria-label="Open docentgereedschap">✎</button></div></div>
 <script>
 const SAMPLE={title:"Verdubbelen en halveren",level:"5 havo · Wiskunde A",goal:"De leerling verklaart en berekent de verdubbelings- en halveringstijd en kan de groeifactor uit de tijd bepalen.",slides:[
 {id:"voorspel",type:"question",phase:"Voorspellen",title:"€ 1.000 wordt € 2.000. Dat duurt 12 jaar.",prompt:"Hoeveel tijd kost de groei van € 2.000 naar € 4.000?",options:["Minder dan 12 jaar","Precies 12 jaar","Meer dan 12 jaar","Dat kun je niet weten"],correct:1,explanation:"Bij dezelfde groeifactor blijft de verdubbelingstijd gelijk.",student:"Kiest eerst zelf en verklaart de keuze.",teacher:"Toont het antwoord pas na het experiment.",later:true},
-{id:"voorkennis",type:"question",phase:"Voorkennis",title:"Welke groeifactor hoort bij 15% afname?",prompt:"De hoeveelheid neemt elk uur met 15% af. Wat is de groeifactor?",options:["0,15","0,85","1,15","−0,15"],correct:1,explanation:"Er blijft 85% over, dus g = 0,85.",student:"Rekent de groeifactor zelf uit.",teacher:"Bespreekt verschillende antwoorden."},
+{id:"voorkennis",type:"quizset",phase:"Voorkennis",title:"Drie vragen over groeifactoren",prompt:"Kies eerst zelf. De uitleg verschijnt pas wanneer je docent die toont.",questions:[{prompt:"Een hoeveelheid groeit 3% per jaar. Wat is g?",options:["0,03","0,30","1,03","1,30"],correct:2,explanation:"100% + 3% = 103%, dus 1,03."},{prompt:"Een hoeveelheid daalt 15% per uur. Wat is g?",options:["0,15","0,85","1,15","−0,15"],correct:1,explanation:"Na een uur blijft 85% over, dus 0,85."},{prompt:"De groeifactor per dag is 1,10. Wat is die per week?",options:["1,17","1,70","1,95","7,70"],correct:2,explanation:"Zeven dagen: 1,10^7 ≈ 1,95."}],student:"Maakt drie keuzes en verklaart die vóór het onthullen.",teacher:"Bespreekt de redeneringen pas nadat iedereen heeft gekozen."},
 {id:"doelen",type:"text",phase:"Lesdoelen",title:"Wat ga je vandaag leren?",prompt:"Uitleggen, berekenen en controleren.",body:"Verdubbelings- en halveringstijd begrijpen. Een tijd berekenen uit een groeifactor. Een groeifactor berekenen uit een gegeven tijd.",student:"Koppelt de doelen aan de openingsvraag.",teacher:"Maakt het doel van de les zichtbaar."},
 {id:"onderzoek",type:"graph",phase:"Onderzoeken",title:"Hoe lang duurt een verdubbeling?",prompt:"Verander de beginwaarde en vergelijk twee opeenvolgende verdubbelingen.",g:Math.pow(2,1/12),b:1000,student:"Voorspelt en onderzoekt het effect van de beginwaarde.",teacher:"Laat hulplijnen pas later zien."},
+{id:"verklaren",type:"compare",phase:"Verklaren",title:"Lineair of exponentieel?",prompt:"Wat blijft gelijk en wat verandert er? Vergelijk beide groeivormen.",compareLabels:["Lineaire groei","Exponentiële groei"],compareItems:[["Er komt iedere periode evenveel bij.","Je vermenigvuldigt iedere periode met dezelfde factor."],["N = b + a × t","N = b × g^t"],["Een volgende verdubbeling duurt steeds langer.","Iedere volgende verdubbeling duurt even lang."]],compareConclusion:"Bij 2b = b × g^T kun je beide kanten delen door b. Er blijft 2 = g^T over. De verdubbelingstijd hangt niet af van de beginwaarde.",student:"Verklaart het verschil in formule, tabel en grafiek.",teacher:"Ontsluiert de vergelijking en conclusie pas na leerlingverklaringen."},
 {id:"voordoen",type:"steps",phase:"Voordoen",title:"Bereken de verdubbelingstijd",prompt:"Spaargeld groeit elk jaar met 5%. Hoe lang duurt verdubbelen?",steps:["Groeifactor: g = 1,05","Los op: 1,05^t = 2","Voer op NumWorks y₁ = 1,05^x en y₂ = 2 in","Het snijpunt ligt bij x ≈ 14,2","De verdubbelingstijd is ongeveer 14,2 jaar."],student:"Voert elke stap zelf uit op de GR.",teacher:"Onthult één stap tegelijk."},
 {id:"samen",type:"steps",phase:"Samen oefenen",title:"Een stad groeit met 8% per jaar",prompt:"Na hoeveel jaar is het aantal inwoners verdubbeld?",steps:["g = 1,08","1,08^t = 2","Voer de vergelijkingen in op NumWorks","t ≈ 9,0 jaar","Controleer de uitkomst."],student:"Vult de stappen in en controleert op de GR.",teacher:"Geeft pas een volgende stap wanneer nodig."},
 {id:"halveren",type:"graph",phase:"Halveren",title:"En als de hoeveelheid afneemt?",prompt:"Onderzoek wat er gebeurt bij g = 0,85. Wanneer is nog de helft over?",g:.85,b:1000,student:"Voorspelt de halveringstijd.",teacher:"Vergelijkt met de verdubbelingsgrafiek."},
 {id:"omgekeerd",type:"steps",phase:"Omgekeerd rekenen",title:"De tijd is bekend. Wat is de groeifactor?",prompt:"Cesium-137 heeft een halveringstijd van 30 jaar. Bereken de procentuele afname per jaar.",steps:["g^30 = 0,5","g = 0,5^(1/30)","g ≈ 0,9772","Afname ≈ 2,28% per jaar"],student:"Bepaalt nu zelf het onbekende grondtal.",teacher:"Bespreekt de betekenis van g."},
 {id:"check",type:"question",phase:"Begripscheck",title:"Na 18 jaar",prompt:"Een hoeveelheid verdubbelt elke 6 jaar. Beginwaarde 500. Wat is de hoeveelheid na 18 jaar?",options:["1.500","2.000","4.000","8.000"],correct:2,explanation:"Drie verdubbelingen: 500 × 2³ = 4.000.",student:"Rekent zelfstandig.",teacher:"Laat eerst iedereen tegelijk stemmen."},
-{id:"oefenen",type:"text",phase:"Oefenen",title:"Nu zelf rekenen",prompt:"Bereken de verdubbelings- of halveringstijd.",body:"1. Een bevolking groeit met 2,5% per jaar. Bereken T.\n2. Een auto verliest jaarlijks 18% van zijn waarde. Bereken de halveringstijd.\n3. Een bacteriecultuur verdubbelt elke 8 dagen. Bereken de groeifactor per dag.",student:"Rekent zelfstandig.",teacher:"Observeert waar leerlingen vastlopen."},
-{id:"fout",type:"question",phase:"Fouten onderzoeken",title:"Wat gaat hier mis?",prompt:"Een leerling gebruikt bij een afname van 15% de vergelijking 0,15^t = 0,5. Welke fout maakt de leerling?",options:["Verkeerde tijdseenheid","Verkeerde groeifactor","Verkeerde beginwaarde","Geen fout"],correct:1,explanation:"De groeifactor is 0,85. De juiste vergelijking is 0,85^t = 0,5.",student:"Verklaart de fout.",teacher:"Vraagt naar de redenering."},
-{id:"exit",type:"text",phase:"Exit ticket",title:"Laat zien wat je kunt",prompt:"Werk zonder hulp.",body:"1. Een hoeveelheid groeit met 30% per uur. Bereken T.\n2. De halveringstijd is 12 jaar. Bereken de jaarlijkse afname in procenten.\n3. Is de verdubbelingstijd afhankelijk van de beginwaarde? Leg uit.",student:"Rekent zonder hulp.",teacher:"Gebruikt de antwoorden om de volgende les voor te bereiden."}
+{id:"oefenen",type:"practice",phase:"Oefenen",title:"Nu zelf rekenen",prompt:"Schrijf eerst je vergelijking en conclusie op. Controleer pas daarna.",tasks:["Een bevolking groeit met 2,5% per jaar. Bereken de verdubbelingstijd.","Een auto verliest 18% van zijn waarde per jaar. Bereken de halveringstijd.","Een bacteriecultuur verdubbelt iedere 8 dagen. Bereken de groeifactor per dag én per week.","Jodium-131 heeft een halveringstijd van 8 dagen. Na hoeveel hele dagen is voor het eerst minder dan 1% over?"],hints:["Gebruik 1,025^t = 2.","De groeifactor is 0,82.","De dagfactor is 2^(1/8). De weekfactor is de zevende macht daarvan.","Los eerst 0,5^(t/8) < 0,01 op. Rond naar boven af."],solutions:["1,025^t = 2. De verdubbelingstijd is ongeveer 28,1 jaar.","0,82^t = 0,5. De halveringstijd is ongeveer 3,5 jaar.","Per dag: 2^(1/8) ≈ 1,0905. Per week: 2^(7/8) ≈ 1,8340.","De grens ligt bij ongeveer 53,15 dagen. Voor het eerst na 54 hele dagen."],student:"Maakt iedere opgave eerst zelfstandig.",teacher:"Onthult hulp of uitwerking alleen als dat nodig is."},
+{id:"fout",type:"error",phase:"Fouten onderzoeken",title:"Wat gaat hier mis?",prompt:"Een hoeveelheid neemt ieder uur met 15% af. Een leerling schrijft:",wrong:"0,15^t = 0,5",challenge:"Welke fout maakt de leerling? Verbeter de vergelijking zelf.",correction:"Er blijft ieder uur 85% over. De juiste groeifactor is 0,85 en dus 0,85^t = 0,5.",student:"Vindt en verbetert de fout vóór het antwoord wordt getoond.",teacher:"Vraagt naar de gebruikte groeifactor."},
+{id:"exit",type:"practice",phase:"Exit ticket",title:"Laat zien wat je kunt",prompt:"Werk zonder overleg of uitgewerkte voorbeelden. Laat je aanpak zien.",tasks:["Een hoeveelheid groeit met 30% per uur. Bereken de verdubbelingstijd.","De halveringstijd is 12 jaar. Bereken de jaarlijkse afname in procenten.","Is de verdubbelingstijd afhankelijk van de beginwaarde? Leg je antwoord uit."],hints:[],solutions:["1,30^t = 2. Dus t ≈ 2,64 uur.","g = 0,5^(1/12) ≈ 0,9439. Afname ≈ 5,61% per jaar.","Nee. Uit 2b = b × g^T volgt 2 = g^T. De beginwaarde valt weg."],student:"Toont eigen aanpak zonder ondersteuning.",teacher:"Onthult de antwoorden pas na het zelfstandig werken."}
 ]};
 
 const $=id=>document.getElementById(id);
@@ -320,7 +421,7 @@ $("templateFile").onchange=async e=>{
  }catch(err){$("templateError").textContent=err.message}finally{e.target.value=""}
 };
 
-const TYPES={text:"Tekst of opdracht",question:"Meerkeuzevraag",graph:"Onderzoek met grafiek",steps:"Uitwerking in stappen",table:"Onderzoekstabel",practice:"Zelfstandig oefenen",compare:"Verklaren en vergelijken"};
+const TYPES={text:"Tekst of opdracht",question:"Meerkeuzevraag",graph:"Onderzoek met grafiek",steps:"Uitwerking in stappen",table:"Onderzoekstabel",practice:"Zelfstandig oefenen",compare:"Verklaren en vergelijken",quizset:"Meerdere begripsvragen",error:"Zoek de fout"};
 
 const LAYOUTS=new Set(["single","equal","left","right"]);
 const FEATURE_DEFAULTS={drawing:true,voting:true,clock:true,focus:true,picker:true,notes:true,printing:true};
@@ -443,7 +544,15 @@ function save(){
  if(nextType==="table"){s.columnLabels=($("f-columnLabels")?.value||"Tijd | Hoeveelheid").split("|").map(x=>x.trim()).slice(0,2);s.tableRows=($("f-tableRows")?.value||"").split("\n").filter(x=>x.trim()).map(x=>x.split("|").map(v=>v.trim()).slice(0,2));s.tableExplanation=$("f-tableExplanation")?.value||""}
  if(nextType==="practice"){s.tasks=($("f-tasks")?.value||"").split("\n").filter(x=>x.trim());s.hints=($("f-hints")?.value||"").split("\n");s.solutions=($("f-solutions")?.value||"").split("\n")}
  if(nextType==="compare"){s.compareLabels=($("f-compareLabels")?.value||"Voor | Na").split("|").map(x=>x.trim()).slice(0,2);s.compareItems=($("f-compareItems")?.value||"").split("\n").filter(x=>x.trim()).map(x=>x.split("|").map(v=>v.trim()).slice(0,2));s.compareConclusion=$("f-compareConclusion")?.value||""}
- if(nextType==="graph"){s.g=Number($("f-g")?.value||1.06);s.b=Number($("f-b")?.value||1000);s.target=Number($("f-target")?.value||2);s.graphExplanation=$("f-graphExplanation")?.value||""}
+ if(nextType==="graph"){
+  s.g=Number($("f-g")?.value||1.06);s.b=Number($("f-b")?.value||1000);s.target=Number($("f-target")?.value||2);s.graphExplanation=$("f-graphExplanation")?.value||"";
+  s.experiments=($("f-experiments")?.value||"").split("\n").filter(row=>row.trim()).map(row=>{
+   const cols=row.split("|").map(v=>v.trim());
+   return {label:cols[0]||"Experiment",question:cols[1]||"",g:Number(cols[2]||s.g),b:Number(cols[3]||s.b),target:Number(cols[4]||s.target),instruction:cols.slice(5).join(" | ")||""};
+  }).slice(0,6);
+ }
+ if(nextType==="quizset"){s.questions=($("f-quizLines")?.value||"").split("\n").filter(x=>x.trim()).map(line=>{const cols=line.split("|").map(x=>x.trim());return {prompt:cols[0]||"",options:cols.slice(1,5),correct:cols[5]&&/^[A-D]$/i.test(cols[5])?cols[5].toUpperCase().charCodeAt(0)-65:-1,explanation:cols.slice(6).join(" | ")||""}})}
+ if(nextType==="error"){s.wrong=$("f-wrong")?.value||"";s.challenge=$("f-challenge")?.value||"";s.correction=$("f-correction")?.value||""}
 }
 function renderEditor(){
  syncSetup();
@@ -458,7 +567,9 @@ function renderEditor(){
  :s.type==="table"?field("columnLabels","Kolomnamen (gescheiden door |)",(s.columnLabels||["Tijd","Hoeveelheid"]).join(" | "))+field("tableRows","Tabelrijen: tijd | waarde, per regel",(s.tableRows||[["0","1000"],["12","2000"]]).map(x=>x.join(" | ")).join("\n"),true)+field("tableExplanation","Uitleg, pas na onderzoek tonen",s.tableExplanation||"",true)
  :s.type==="practice"?field("tasks","Opgaven, één per regel",(s.tasks||["Bereken de verdubbelingstijd."]).join("\n"),true)+field("hints","Hulp per opgave, één per regel",(s.hints||[]).join("\n"),true)+field("solutions","Uitwerkingen per opgave, één per regel",(s.solutions||[]).join("\n"),true)
  :s.type==="compare"?field("compareLabels","Namen van twee kolommen (|)",(s.compareLabels||["Eerst","Na onderzoek"]).join(" | "))+field("compareItems","Vergelijkingen, links | rechts, per regel",(s.compareItems||[["Voorspelling","Nieuwe verklaring"]]).map(x=>x.join(" | ")).join("\n"),true)+field("compareConclusion","Conclusie, pas onthullen",s.compareConclusion||"",true)
- :field("g","Groeifactor",s.g)+field("b","Beginwaarde",s.b)+field("target","Doelfactor (2 voor verdubbelen; 0,5 voor halveren)",s.target??(Number(s.g)<1?.5:2))+field("graphExplanation","Uitleg na onderzoek",s.graphExplanation||"",true));
+ :s.type==="quizset"?field("quizLines","Per regel: vraag | A | B | C | D | juiste letter | uitleg",(s.questions||[]).map(q=>[q.prompt,...(q.options||[]),String.fromCharCode(65+(q.correct??-1)),q.explanation||""].join(" | ")).join("\n"),true)
+ :s.type==="error"?field("wrong","Foutieve redenering of formule",s.wrong||"",true)+field("challenge","Wat moeten leerlingen verklaren?",s.challenge||"",true)+field("correction","Juiste uitwerking, pas na keuze",s.correction||"",true)
+ :field("g","Groeifactor",s.g)+field("b","Beginwaarde",s.b)+field("target","Doelfactor (2 voor verdubbelen; 0,5 voor halveren)",s.target??(Number(s.g)<1?.5:2))+field("graphExplanation","Uitleg na onderzoek",s.graphExplanation||"",true)+field("experiments","Eigen experimenten (optioneel): naam | onderzoeksvraag | groeifactor | beginwaarde | doelfactor | instructie",(s.experiments||[]).map(x=>[x.label,x.question,x.g,x.b,x.target,x.instruction||""].join(" | ")).join("\n"),true));
  $("f-layout").value=LAYOUTS.has(s.layout)?s.layout:"inherit";
  $("type").onchange=()=>{const type=$("type").value;save();lesson.slides[selected].type=type;renderEditor()};
  review();
@@ -466,7 +577,7 @@ function renderEditor(){
 function review(){
  const notes=[];
  if(!lesson.goal?.trim())notes.push("Beschrijf wat leerlingen na deze les zelfstandig kunnen.");
- if(!lesson.slides.some(s=>s.type==="question"))notes.push("Voeg een voorspelling of begripsvraag toe.");
+ if(!lesson.slides.some(s=>["question","quizset"].includes(s.type)))notes.push("Voeg een voorspelling of begripsvraag toe.");
  if(!lesson.slides.some(s=>(s.phase||"").toLowerCase().includes("exit")))notes.push("Maak een afsluiting die leerlingen zonder hulp uitvoeren.");
  for(const [i,s] of lesson.slides.entries()){
   if(!(s.student||"").trim())notes.push("Lesdeel "+(i+1)+": wat doet de leerling?");
@@ -475,6 +586,9 @@ function review(){
   if(s.type==="practice"&&!s.tasks?.length)notes.push("Lesdeel "+(i+1)+": voeg opgaven toe.");
   if(s.type==="compare"&&!s.compareItems?.length)notes.push("Lesdeel "+(i+1)+": voeg vergelijkingen toe.");
   if(s.type==="graph"&&(s.g<=0||s.g===1||s.target<=0))notes.push("Lesdeel "+(i+1)+": controleer groeifactor en doelwaarde.");
+  if(s.type==="graph"&&s.experiments?.some(x=>!Number.isFinite(x.g)||x.g<=0||x.g===1||!Number.isFinite(x.b)||x.b<=0||!Number.isFinite(x.target)||x.target<=0))notes.push("Lesdeel "+(i+1)+": controleer de getallen in de eigen experimenten.");
+  if(s.type==="quizset"&&(!s.questions?.length||s.questions.some(q=>q.options?.length<2||q.options?.length>4)))notes.push("Lesdeel "+(i+1)+": controleer de begripsvragen en antwoorden.");
+  if(s.type==="error"&&(!s.wrong||!s.correction))notes.push("Lesdeel "+(i+1)+": vul de fout en verbetering in.");
  }
  $("review").innerHTML=notes.length?notes.map(t=>'<div class="review-item warn">'+esc(t)+'</div>').join(""):'<div class="review-item">Alle verplichte velden zijn ingevuld. Controleer zelf de wiskunde en de didactische keuzes.</div>';
 }
@@ -487,7 +601,7 @@ $("newLesson").onclick=()=>{
   route:ROUTE_TYPES[route]?route:"own",layout:$("defaultLayout").value,
   features:Object.fromEntries([...document.querySelectorAll("[data-feature]")].map(el=>[el.dataset.feature,el.checked])),
   template:deep(TEMPLATE_PRESETS.editorial),slides:selectedRoute.map(newRouteSlide)};
- selected=0;current=0;paths={};rounds={};tableRevealed=0;compareRevealed=0;practiceState={};
+ selected=0;current=0;paths={};rounds={};tableRevealed=0;compareRevealed=0;practiceState={};quizSelections={};quizAnswersVisible=false;errorCorrectionVisible=false;
  applyTemplate();renderEditor();msg("Nieuwe les gestart met de gekozen opzet. Vul de inhoud aan.");
 };
 
@@ -507,7 +621,9 @@ const TYPE_ALIASES={
  steps:"steps",stappen:"steps",uitwerking:"steps",
  table:"table",tabel:"table",onderzoekstabel:"table",
  practice:"practice",oefenen:"practice",oefeningen:"practice",oefening:"practice",zelfstandig:"practice",
- compare:"compare",vergelijking:"compare",vergelijken:"compare",verklaren:"compare"
+ compare:"compare",vergelijking:"compare",vergelijken:"compare",verklaren:"compare",
+ quizset:"quizset",quizgroep:"quizset",begripsvragen:"quizset",quizvragen:"quizset",
+ error:"error",foutenanalyse:"error",zoekdefout:"error"
 };
 function asText(value){
  if(value===undefined||value===null)return "";
@@ -619,6 +735,19 @@ function normalizeLessonJSON(input){
    item.correct=correct;item.explanation=asText(first(b,["explanation","verklaring","uitleg"],""));
    item.later=Boolean(first(b,["later","laterBespreken","onthulLater"],false));
   }
+  if(type==="quizset"){
+   const questions=first(b,["questions","vragen"],[]);
+   if(!Array.isArray(questions)||!questions.length||questions.length>6)throw Error("Lesdeel "+(index+1)+": gebruik 1 tot 6 begripsvragen.");
+   item.questions=questions.map((q,i)=>{
+    const choices=asList(first(q,["options","antwoorden","keuzes"],[]));
+    if(choices.length<2||choices.length>4)throw Error("Vraag "+(i+1)+": gebruik 2 tot 4 keuzes.");
+    const ans=first(q,["correct","juisteAntwoord","juist"],-1);
+    let correct=typeof ans==="number"?ans:(typeof ans==="string"&&/^[A-D]$/i.test(ans)?ans.toUpperCase().charCodeAt(0)-65:choices.indexOf(ans));
+    if(correct<0||correct>=choices.length)correct=-1;
+    return {prompt:asText(first(q,["prompt","vraag","titel"],"Vraag "+(i+1))),options:choices,correct,explanation:asText(first(q,["explanation","uitleg","verklaring"],""))};
+   });
+  }
+  if(type==="error"){item.wrong=asText(first(b,["wrong","fout","foutieveUitwerking"],""));item.challenge=asText(first(b,["challenge","opdracht","vraag"],item.prompt));item.correction=asText(first(b,["correction","verbetering","uitleg"],""))}
   if(type==="steps")item.steps=asList(first(b,["steps","stappen"],[]));
   if(type==="graph"){
    const g=Number(first(b,["g","groeifactor"],NaN)),base=Number(first(b,["b","beginwaarde"],NaN));
@@ -627,6 +756,15 @@ function normalizeLessonJSON(input){
    item.target=Number(first(b,["target","doelfactor"],g>1?2:.5));
    if(!Number.isFinite(item.target)||item.target<=0)throw Error("Lesdeel "+(index+1)+": de doelfactor moet positief zijn.");
    item.graphExplanation=asText(first(b,["graphExplanation","grafiekUitleg","verklaring"],""));
+   const experiments=first(b,["experiments","experimenten"],undefined);
+   if(experiments!==undefined){
+    if(!Array.isArray(experiments)||experiments.length>6)throw Error("Lesdeel "+(index+1)+": gebruik maximaal 6 experimenten.");
+    item.experiments=experiments.map((x,i)=>{
+     const gg=Number(first(x,["g","groeifactor"],item.g)),bb=Number(first(x,["b","beginwaarde"],item.b)),tt=Number(first(x,["target","doelfactor"],gg>1?2:.5));
+     if(!(gg>0&&gg!==1&&bb>0&&tt>0))throw Error("Experiment "+(i+1)+": controleer groeifactor, beginwaarde en doelwaarde.");
+     return {label:asText(first(x,["label","naam","title"],"Experiment "+(i+1))),question:asText(first(x,["question","vraag"],"")),instruction:asText(first(x,["instruction","instructie"],"")),g:gg,b:bb,target:tt};
+    });
+   }
   }
   if(type==="table"){
    item.columnLabels=twoColumns(first(b,["columnLabels","kolommen"],["Tijd","Waarde"])).slice(0,2);
@@ -680,7 +818,7 @@ $("import").onchange=async e=>{
   doc.route=$("routePreset").value;
   doc.slides=reorderLessonSlides(doc.slides,doc.route);
   lesson=doc;selected=0;current=0;paths={};rounds={};revealed=false;
-  tableRevealed=0;compareRevealed=0;practiceState={};
+  tableRevealed=0;compareRevealed=0;practiceState={};quizSelections={};quizAnswersVisible=false;errorCorrectionVisible=false;
   applyTemplate();renderEditor();
   msg("Ingelezen: "+lesson.slides.length+" lesdelen. Kies de vormgeving en functies, bekijk daarna de les of download HTML.");
  }catch(err){msg("JSON niet ingelezen: "+err.message)}
@@ -695,7 +833,36 @@ function voteRecord(id){return rounds[id]||(rounds[id]={first:null,second:null,d
 function countTotal(values){return values.reduce((a,b)=>a+b,0)}
 
 let tableRevealed=0,compareRevealed=0,practiceState={};
+let quizSelections={},quizAnswersVisible=false,errorCorrectionVisible=false,questionChoices={};
 let graphLinear=false,graphMarks=false,graphSelectedTime=null;
+
+let graphMode=0,graphActivePreset=null;
+function availableExperiments(s){
+ const b=Number(s.b)||1000,g=Number(s.g)||Math.pow(2,1/12),up=g>1;
+ if(Array.isArray(s.experiments)&&s.experiments.length&&s.experiments.every(x=>Number.isFinite(x.g)&&x.g>0&&x.g!==1&&Number.isFinite(x.b)&&x.b>0&&Number.isFinite(x.target)&&x.target>0))return s.experiments.slice(0,6);
+ return [
+ {label:up?"Verdubbelen":"Halveren",question:up?"Duurt de volgende verdubbeling even lang?":"Duurt de volgende halvering even lang?",instruction:"Voorspel eerst. Verander daarna de instellingen en toon pas later meetpunten.",g,b,target:up?2:.5},
+ {label:"Beginwaarde",question:"Wat verandert er als het startbedrag groter wordt?",instruction:"Verander de beginwaarde. Verklaar wat wél en niet verandert.",g,b:Math.min(5000,b*2),target:up?2:.5},
+ {label:"Groeifactor",question:"Wat verandert er als het groeipercentage hoger of lager is?",instruction:"Vergelijk de grafieken en laat leerlingen het verschil verklaren.",g:up?Math.min(1.39,Math.max(1.09,g*1.05)):Math.max(.7,Math.min(.94,g*.94)),b,target:up?2:.5},
+ {label:"Halveren",question:"Hoe lang duurt het totdat nog de helft over is?",instruction:"Wat gebeurt er wanneer de hoeveelheid iedere periode afneemt?",g:Math.pow(.5,1/8),b,target:.5}
+ ];
+}
+function chooseExperiment(index){
+ const s=currentSlide(),list=availableExperiments(s);
+ graphMode=Math.max(0,Math.min(list.length-1,index));
+ graphActivePreset=list[graphMode];
+ graphHelp=false;graphLinear=false;graphMarks=false;graphSelectedTime=null;
+ const g=$("graphG"),b=$("graphB");if(!g||!b)return;
+ g.min=graphActivePreset.g<1?".600":"1.010";g.max=graphActivePreset.g<1?".995":"1.400";g.step=".0001";
+ g.value=graphActivePreset.g;b.value=graphActivePreset.b;
+ $("graphTabs").innerHTML=list.map((v,i)=>'<button type="button" role="tab" aria-selected="'+String(i===graphMode)+'" data-exp="'+i+'" class="'+(i===graphMode?"active":"")+'">'+(i+1)+' · '+esc(v.label||"Experiment")+'</button>').join("");
+ $("graphTabs").querySelectorAll("[data-exp]").forEach(btn=>btn.onclick=()=>chooseExperiment(Number(btn.dataset.exp)));
+ $("graphScenarioTitle").textContent="Experiment "+(graphMode+1)+" / "+(graphActivePreset.label||"Onderzoeken");
+ $("graphScenarioQuestion").textContent=graphActivePreset.question||s.prompt||"Wat valt je op?";
+ $("graphScenarioPrompt").textContent=graphActivePreset.instruction||"Voorspel eerst, controleer daarna.";
+ graphRender();
+}
+
 function tableView(s){
  const names=s.columnLabels||["Tijd","Waarde"],data=s.tableRows||[];
  return '<div class="research-table-wrap"><table class="research-table"><thead><tr><th>'+esc(names[0]||"Tijd")+'</th><th>'+esc(names[1]||"Waarde")+'</th></tr></thead><tbody>'+data.map((r,i)=>'<tr><td>'+esc(r[0]||"")+'</td><td>'+(i<tableRevealed?esc(r[1]||""):'<span class="unknown-value">?</span>')+'</td></tr>').join("")+'</tbody></table></div><div class="learning-controls"><button id="tableNext" class="small">Volgende waarde</button><button id="tableReset" class="small">Tabel weer afdekken</button><button id="tableExplain" class="small">Uitleg tonen</button></div>'+(revealed?'<div class="reveal">'+esc(s.tableExplanation||"")+'</div>':"");
@@ -707,7 +874,33 @@ function compareView(s){
  const labels=s.compareLabels||["Eerst","Na onderzoek"];
  return '<div class="research-table-wrap"><table class="research-table"><thead><tr><th>'+esc(labels[0]||"Eerst")+'</th><th>'+esc(labels[1]||"Later")+'</th></tr></thead><tbody>'+(s.compareItems||[]).map((r,i)=>'<tr><td>'+esc(r[0]||"")+'</td><td>'+(i<compareRevealed?esc(r[1]||""):'<span class="unknown-value">?</span>')+'</td></tr>').join("")+'</tbody></table></div><div class="learning-controls"><button id="compareNext" class="small">Volgende vergelijking</button><button id="compareReset" class="small">Opnieuw</button><button id="compareConclusion" class="small">Conclusie tonen</button></div>'+(revealed?'<div class="reveal">'+esc(s.compareConclusion||"")+'</div>':"");
 }
+
+function quizGroupView(s){
+ const questions=(s.questions||[]).slice(0,6);
+ const cards=questions.map((q,i)=>{
+  const choices=(q.options||[]).map((option,j)=>{
+   const chosen=quizSelections[i]===j;
+   const marked=quizAnswersVisible&&q.correct===j;
+   const cls=(chosen?" selected":"")+(marked?" right":"")+(quizAnswersVisible&&chosen&&q.correct>=0&&q.correct!==j?" incorrect":"");
+   return '<button type="button" class="quiz-choice'+cls+'" data-quiz="'+i+'" data-choice="'+j+'" aria-pressed="'+String(chosen)+'"><b>'+String.fromCharCode(65+j)+'</b><span>'+esc(option)+'</span></button>';
+  }).join("");
+  const feedback=quizAnswersVisible?'<p class="quiz-feedback">'+(q.correct>=0?'<strong>'+String.fromCharCode(65+q.correct)+'</strong> · ':'')+esc(q.explanation||"Bespreek de aanpak met de klas.")+'</p>':"";
+  return '<article class="quiz-card"><div class="quiz-card-header">Vraag '+String.fromCharCode(65+i)+'</div><h3>'+esc(q.prompt||"")+'</h3><div class="quiz-choices">'+choices+'</div>'+feedback+'</article>';
+ }).join("");
+ return '<div class="quiz-grid">'+cards+'</div><div class="learning-controls"><button id="quizRevealAll" type="button" class="small">'+(quizAnswersVisible?"Verberg uitleg":"Toon uitleg na de antwoorden")+'</button><button id="quizReset" type="button" class="small">Wis keuzes</button></div>';
+}
+function mistakeView(s){
+ return '<div class="mistake-grid"><section class="mistake-panel"><div class="eyebrow">Een leerling schrijft</div><p class="mistake-math">'+esc(s.wrong||"")+'</p><p class="mistake-question">'+esc(s.challenge||"Waar gaat dit mis?")+'</p></section><section class="mistake-panel feedback-panel"><div class="eyebrow">Wat zou jij verbeteren?</div><p>Zoek eerst zelf de fout. Schrijf de juiste aanpak op en bespreek je verklaring.</p><button id="errorReveal" type="button" class="small">'+(errorCorrectionVisible?"Verberg uitwerking":"Controleer de uitwerking")+'</button>'+(errorCorrectionVisible?'<p class="mistake-answer">'+esc(s.correction||"")+'</p>':"")+'</section></div>';
+}
 function bindLessonComponents(s){
+ if(s.type==="question"){
+  $("slidecontent").querySelectorAll("[data-answer-index]").forEach(btn=>btn.onclick=()=>{
+   questionChoices[s.id]=Number(btn.dataset.answerIndex);renderSlide();
+  });
+  if(s.later&&$("questionPoll"))$("questionPoll").onclick=()=>renderPoll(s.id);
+  if(!s.later&&$("questionReveal"))$("questionReveal").onclick=()=>{revealed=!revealed;renderSlide()};
+ }
+
  if(s.type==="table"){
   $("tableNext").disabled=tableRevealed>=(s.tableRows||[]).length;
   $("tableNext").onclick=()=>{tableRevealed=Math.min((s.tableRows||[]).length,tableRevealed+1);renderSlide()};
@@ -720,6 +913,15 @@ function bindLessonComponents(s){
   $("compareReset").onclick=()=>{compareRevealed=0;revealed=false;renderSlide()};
   $("compareConclusion").onclick=()=>{revealed=!revealed;renderSlide()};
  }
+ if(s.type==="quizset"){
+  $("slidecontent").querySelectorAll("[data-quiz]").forEach(button=>button.onclick=()=>{
+   quizSelections[Number(button.dataset.quiz)]=Number(button.dataset.choice);
+   renderSlide();
+  });
+  $("quizRevealAll").onclick=()=>{quizAnswersVisible=!quizAnswersVisible;renderSlide()};
+  $("quizReset").onclick=()=>{quizSelections={};quizAnswersVisible=false;renderSlide()};
+ }
+ if(s.type==="error")$("errorReveal").onclick=()=>{errorCorrectionVisible=!errorCorrectionVisible;renderSlide()};
  if(s.type==="practice"){
   $("slidecontent").querySelectorAll("[data-hint]").forEach(b=>b.onclick=()=>{const i=Number(b.dataset.hint);(practiceState[i]??={}).hint=!practiceState[i]?.hint;renderSlide()});
   $("slidecontent").querySelectorAll("[data-solution]").forEach(b=>b.onclick=()=>{const i=Number(b.dataset.solution);(practiceState[i]??={}).solution=!practiceState[i]?.solution;renderSlide()});
@@ -728,14 +930,21 @@ function bindLessonComponents(s){
 
 function renderSlide(){
  const s=currentSlide();if(!s)return;
+ stage.querySelector(".slide").dataset.type=s.type;
+ $("deckTitle").textContent=lesson.title;
+ $("deckLevel").textContent=lesson.level;
+ $("deckPhase").textContent=s.phase||"";
+ $("deckProgress").style.width=((current+1)/lesson.slides.length*100)+"%";
  $("slidecontent").innerHTML='<div class="eyebrow">'+esc(s.phase)+'</div><h2>'+esc(s.title)+'</h2><p class="lead">'+esc(s.prompt||"")+'</p>'+
  (s.type==="text"?'<p class="slide-text">'+esc(s.body||"")+'</p>':"")+
- (s.type==="question"?'<div class="choices">'+(s.options||[]).map((v,i)=>'<div class="choice"><b>'+String.fromCharCode(65+i)+'</b><span>'+esc(v)+'</span></div>').join("")+'</div>':"")+
+ (s.type==="question"?'<div class="choices">'+(s.options||[]).map((v,i)=>'<button type="button" class="choice'+(questionChoices[s.id]===i?" selected":"")+(revealed&&!s.later&&s.correct===i?" right":"")+'" data-answer-index="'+i+'" aria-pressed="'+String(questionChoices[s.id]===i)+'"><b>'+String.fromCharCode(65+i)+'</b><span>'+esc(v)+'</span></button>').join("")+'</div><div class="question-actions">'+(s.later?'<button type="button" id="questionPoll">Tel klasstemmen</button><span>De verklaring volgt na het onderzoek.</span>':'<button type="button" id="questionReveal">'+(revealed?"Verberg antwoord":"Toon antwoord en uitleg")+'</button>')+'</div>':"")+
  (s.type==="steps"?'<div id="stepList" class="step-list"></div><button class="step-next" id="stepNext">Volgende stap tonen</button>':"")+
  (s.type==="table"?tableView(s):"")+
  (s.type==="practice"?practiceView(s):"")+
  (s.type==="compare"?compareView(s):"")+
- (s.type==="graph"?'<svg id="plot" class="graph" viewBox="0 0 820 285" role="img" aria-label="Exponentiële grafiek"></svg><div id="graphControls" class="graph-controls"><div class="ctrl-unit"><label for="graphG">Groeifactor <output id="graphGOut"></output></label><input id="graphG" type="range" min="0.70" max="1.40" step="0.005"></div><div class="ctrl-unit"><label for="graphB">Beginwaarde <output id="graphBOut"></output></label><input id="graphB" type="range" min="500" max="3000" step="100"></div><button id="graphLines" class="small">Hulplijnen</button><button id="graphLinear" class="small" aria-pressed="false">Vergelijk met lineair</button><button id="graphMarks" class="small" aria-pressed="false">Meetpunten</button><button id="graphReset" class="small">Herstel grafiek</button></div><div id="graphResult" class="graph-result"></div><div class="graph-values-wrap"><table class="graph-values"><thead><tr><th>Tijd</th><th>Hoeveelheid</th></tr></thead><tbody id="graphValues"></tbody></table><p id="graphSelected" aria-live="polite"></p></div>':"")+
+ (s.type==="quizset"?quizGroupView(s):"")+
+ (s.type==="error"?mistakeView(s):"")+
+ (s.type==="graph"?'<div class="graph-tabs" id="graphTabs" role="tablist" aria-label="Kies een onderzoek"></div><div class="graph-question"><div class="graph-question-label" id="graphScenarioTitle"></div><p id="graphScenarioQuestion"></p><small id="graphScenarioPrompt"></small></div><div class="graph-lab"><div class="graph-plot-panel"><div class="graph-legend"><span>● Exponentieel</span><span id="graphLinearLegend" hidden>━ Lineair</span></div><svg id="plot" class="graph" viewBox="0 0 820 285" role="img" aria-label="Interactieve grafiek met meetpunten"></svg><div class="graph-action-row"><button id="graphMarks" class="small" aria-pressed="false">Toon meetpunten</button><button id="graphLinear" class="small" aria-pressed="false">Vergelijk met lineair</button><button id="graphLines" class="small" aria-pressed="false">Toon verdubbelings- of halveringstijd</button></div><div id="graphResult" class="graph-result" aria-live="polite"></div></div><div class="graph-settings-panel"><div id="graphControls" class="graph-controls"><div class="ctrl-unit"><label for="graphG">Groeifactor <output id="graphGOut"></output></label><input id="graphG" type="range" min="0.70" max="1.40" step="0.001"></div><div class="ctrl-unit"><label for="graphB">Beginwaarde <output id="graphBOut"></output></label><input id="graphB" type="range" min="250" max="5000" step="50"></div><div class="graph-formula" id="graphFormula"></div><button id="graphReset" class="small">Herstel dit experiment</button></div><div class="graph-values-wrap"><table class="graph-values"><thead><tr><th>Tijd</th><th>Hoeveelheid</th></tr></thead><tbody id="graphValues"></tbody></table><p id="graphSelected" aria-live="polite"></p></div></div></div><div class="graph-polls" id="graphPollActions"><button id="graphPollFirst" class="small">Eerste stemming</button><button id="graphPollSecond" class="small">Stem opnieuw</button><button id="graphPollCompare" class="small">Vergelijk de stemrondes</button></div>':"")+
  (s.type==="question"&&revealed&&!s.later?'<div class="reveal">'+esc(s.explanation||"")+'</div>':"")+
  (s.type==="graph"&&revealed?'<div class="reveal">'+esc(s.graphExplanation||"Bespreek wat de grafiek laat zien.")+'</div>':"");
  arrangeSlide(s);
@@ -749,13 +958,19 @@ function renderSlide(){
  $("draw").classList.toggle("armed",drawTool==="pen");
  $("slidecontent").style.visibility="visible";
  if(s.type==="graph"){
-  const g=$("graphG"),b=$("graphB");g.value=s.g||1.06;b.value=s.b||1000;
+  const g=$("graphG"),b=$("graphB");
   g.oninput=()=>graphRender();b.oninput=()=>graphRender();
   $("graphLines").onclick=()=>{graphHelp=!graphHelp;graphRender()};
   $("graphLinear").onclick=()=>{graphLinear=!graphLinear;graphRender()};
   $("graphMarks").onclick=()=>{graphMarks=!graphMarks;graphRender()};
-  $("graphReset").onclick=()=>{graphHelp=false;graphLinear=false;graphMarks=false;graphSelectedTime=null;g.value=s.g||1.06;b.value=s.b||1000;graphRender()};
-  graphRender();
+  $("graphReset").onclick=()=>chooseExperiment(graphMode);
+  const first=lesson.slides.find(x=>x.type==="question"&&x.later);
+  if(first&&lesson.features?.voting!==false){
+   $("graphPollFirst").onclick=()=>compareVotes(first.id);
+   $("graphPollSecond").onclick=()=>renderPoll(first.id);
+   $("graphPollCompare").onclick=()=>compareVotes(first.id);
+  }else $("graphPollActions").hidden=true;
+  chooseExperiment(graphMode);
  }
  if(s.type==="steps"){
   const all=s.steps||[],list=$("stepList");
@@ -772,7 +987,10 @@ function graphRender(){
  const g=Number($("graphG").value),b=Number($("graphB").value);
  $("graphGOut").textContent=g.toFixed(3).replace(".",",");
  $("graphBOut").textContent=b.toLocaleString("nl-NL");
- const tMax=g>1?Math.min(40,Math.max(12,Math.log(6)/Math.log(g))):40;
+ const factor=Number(graphActivePreset?.target??currentSlide().target??(g>1?2:.5));
+ const reachable=g>0&&g!==1&&factor>0&&((g>1&&factor>1)||(g<1&&factor<1));
+ const T=reachable?Math.log(factor)/Math.log(g):NaN;
+ const tMax=reachable?Math.min(600,Math.max(12,Math.ceil(4*T/5)*5)):40;
  const tValues=Array.from({length:241},(_,i)=>tMax*i/240);
  const exponential=t=>b*Math.pow(g,t),linear=t=>b+b*(g-1)*t;
  const yMax=Math.max(b*2,exponential(tMax)*1.07);
@@ -782,14 +1000,11 @@ function graphRender(){
  const expPath=tValues.map((t,i)=>(i?"L":"M")+X(t).toFixed(1)+","+Y(exponential(t)).toFixed(1)).join(" ");
  const linearPoints=tValues.filter(t=>linear(t)>=0);
  const linearPath=linearPoints.map((t,i)=>(i?"L":"M")+X(t).toFixed(1)+","+Y(linear(t)).toFixed(1)).join(" ");
- const samples=Array.from({length:5},(_,i)=>tMax*i/4);
+ const samples=Array.from({length:5},(_,i)=>reachable?Math.min(tMax,T*i):tMax*i/4);
  let markerSVG="";
  if(graphMarks){
   for(const t of samples){markerSVG+='<circle cx="'+X(t).toFixed(1)+'" cy="'+Y(exponential(t)).toFixed(1)+'" r="5" fill="#17695e" stroke="white" stroke-width="2"/>'}
  }
- const factor=Number(currentSlide().target??(g>1?2:.5));
- const reachable=g>0&&g!==1&&factor>0&&((g>1&&factor>1)||(g<1&&factor<1));
- const T=reachable?Math.log(factor)/Math.log(g):NaN;
  let guides="";
  if(graphHelp&&Number.isFinite(T)&&T>0){
   for(let i=1;i<=3;i++){const t=T*i;if(t>tMax)break;guides+='<line x1="'+X(t)+'" x2="'+X(t)+'" y1="'+Y(exponential(t))+'" y2="257" stroke="#c96746" stroke-dasharray="5 5"/><circle cx="'+X(t)+'" cy="'+Y(exponential(t))+'" r="5" fill="#c96746"/>'}
@@ -806,33 +1021,40 @@ function graphRender(){
  $("graphLines").setAttribute("aria-pressed",String(graphHelp));
  $("graphResult").textContent=graphHelp?(reachable?((factor===2&&g>1)?"Verdubbeling":(factor===.5&&g<1)?"Halvering":"Doelfactor "+factor.toLocaleString("nl-NL"))+": "+T.toFixed(2).replace(".",",")+" tijdseenheden. "+(currentSlide().graphExplanation||""):"De gekozen doelfactor is niet bereikbaar met deze groeifactor."):"Onderzoek eerst wat er verandert in de grafiek en in de tabel.";
  const values=$("graphValues");
- values.innerHTML=samples.map((t,i)=>'<tr><td><button class="graph-time" data-time="'+i+'">'+t.toFixed(1).replace(".",",")+'</button></td><td>'+Math.round(exponential(t)).toLocaleString("nl-NL")+'</td></tr>').join("");
- values.querySelectorAll("[data-time]").forEach(btn=>btn.onclick=()=>{graphSelectedTime=samples[Number(btn.dataset.time)];graphRender()});
+ values.innerHTML=samples.map((t,i)=>'<tr><td><button class="graph-time" data-time="'+i+'">'+(graphMarks?t.toFixed(2).replace(".",","):"?")+'</button></td><td>'+(graphMarks?Math.round(exponential(t)).toLocaleString("nl-NL"):"Nog verborgen")+'</td></tr>').join("");
+ values.querySelectorAll("[data-time]").forEach(btn=>btn.onclick=()=>{if(!graphMarks)return;graphSelectedTime=samples[Number(btn.dataset.time)];graphRender()});
+ $("graphFormula").textContent="N(t) = "+b.toLocaleString("nl-NL")+" × "+g.toFixed(4).replace(".",",")+"ᵗ";
+ $("graphLinearLegend").hidden=!graphLinear;
+ $("graphMarks").textContent=graphMarks?"Verberg meetpunten":"Toon meetpunten";
+ $("graphLinear").textContent=graphLinear?"Verberg lineair":"Vergelijk met lineair";
+ $("graphLines").textContent=graphHelp?"Verberg tijd":"Toon verdubbelings- of halveringstijd";
  const chosen=$("graphSelected");
- chosen.textContent=graphSelectedTime!==null?"Gekozen meetpunt: t = "+graphSelectedTime.toFixed(1).replace(".",",")+", N = "+Math.round(exponential(graphSelectedTime)).toLocaleString("nl-NL"):"Selecteer een tijdstip in de tabel.";
+ chosen.textContent=graphSelectedTime!==null&&graphMarks?"Gekozen meetpunt: t = "+graphSelectedTime.toFixed(1).replace(".",",")+", N = "+Math.round(exponential(graphSelectedTime)).toLocaleString("nl-NL"):"Selecteer een tijdstip in de tabel.";
 }
 
 function openStage(){
  applyTemplate();stage.classList.add("show");stage.setAttribute("aria-hidden","false");loadRounds();renderSlide();
 }
 function closeStage(){stage.classList.remove("show");stage.setAttribute("aria-hidden","true");closeTools();stopTimer();stopStopwatch();$("spotlightOverlay")?.remove();$("curtainOverlay")?.remove();$("blackMask")?.remove();black=false;if(presenterInterval){clearInterval(presenterInterval);presenterInterval=null}}
-$("preview").onclick=()=>{save();current=0;revealed=false;stepsVisible=0;tableRevealed=0;compareRevealed=0;practiceState={};graphHelp=false;graphLinear=false;graphMarks=false;graphSelectedTime=null;openStage()};
+$("preview").onclick=()=>{save();current=0;revealed=false;stepsVisible=0;tableRevealed=0;compareRevealed=0;practiceState={};quizSelections={};quizAnswersVisible=false;errorCorrectionVisible=false;graphHelp=false;graphLinear=false;graphMarks=false;graphSelectedTime=null;graphMode=0;graphActivePreset=null;openStage()};
 $("close").onclick=closeStage;
 $("prev").onclick=()=>move(-1);$("next").onclick=()=>move(1);
-function move(n){if(current+n<0||current+n>=lesson.slides.length)return;tableRevealed=0;compareRevealed=0;practiceState={};$("spotlightOverlay")?.remove();$("curtainOverlay")?.remove();$("blackMask")?.remove();black=false;current+=n;revealed=false;stepsVisible=0;graphHelp=false;graphLinear=false;graphMarks=false;graphSelectedTime=null;drawTool="";canvas.classList.remove("armed");closeTools();renderSlide()}
+function move(n){if(current+n<0||current+n>=lesson.slides.length)return;tableRevealed=0;compareRevealed=0;practiceState={};quizSelections={};quizAnswersVisible=false;errorCorrectionVisible=false;$("spotlightOverlay")?.remove();$("curtainOverlay")?.remove();$("blackMask")?.remove();black=false;current+=n;revealed=false;stepsVisible=0;graphHelp=false;graphLinear=false;graphMarks=false;graphSelectedTime=null;graphMode=0;graphActivePreset=null;drawTool="";canvas.classList.remove("armed");closeTools();renderSlide()}
 function closeTools(){paletteVisible=false;$("toolpop").classList.remove("show");$("pollPanel")?.remove();$("comparePanel")?.remove();$("notesPanel")?.remove();$("timerPanel")?.remove();$("stopwatchPanel")?.remove();$("overviewPanel")?.remove();$("namesPanel")?.remove();pollVisible=false}
 $("toolbtn").onclick=()=>{paletteVisible=!paletteVisible;$("toolpop").classList.toggle("show",paletteVisible)};
+$("deckTools").onclick=()=>$("toolbtn").click();
+$("deckOverview").onclick=openOverview;
 function floatPanel(id,title,body){const el=document.createElement("section");el.id=id;el.className="micro-panel";el.innerHTML='<div class="micro-head"><strong>'+esc(title)+'</strong><button class="small" data-dismiss="'+id+'" aria-label="Sluit '+esc(title)+'">×</button></div>'+body;stage.append(el);el.querySelector("[data-dismiss]").onclick=()=>{el.remove();if(id==="pollPanel")pollVisible=false};return el}
-function renderPoll(){
- $("pollPanel")?.remove();const s=currentSlide(),rec=voteRecord(s.id);
+function renderPoll(pollSlideId){
+ $("pollPanel")?.remove();const s=lesson.slides.find(v=>v.id===pollSlideId)||currentSlide(),rec=voteRecord(s.id);
  const opts=(s.options||["A","B","C","D"]).slice(0,4);
  const buttons=opts.map((v,i)=>'<div class="vote-row"><b>'+String.fromCharCode(65+i)+'</b><span class="vote-label">'+esc(v)+'</span><button class="small" data-minus="'+i+'">−</button><span class="vote-num">'+(rec.draft[i]||0)+'</span><button class="small" data-plus="'+i+'">+</button></div>').join("");
  const el=floatPanel("pollPanel","Stemmen tellen",'<div class="poll-context">'+esc(s.title)+'</div>'+buttons+'<div class="poll-total">Totaal: <b>'+countTotal(rec.draft)+'</b></div><div class="poll-actions"><button class="small" id="saveRound1">Bewaar eerste</button><button class="small" id="saveRound2">Bewaar tweede</button><button class="small" id="compareVotes">Vergelijk</button><button class="small" id="resetDraft">Leeg teller</button></div>');
- const update=()=>{persistRounds();renderPoll()};
+ const update=()=>{persistRounds();renderPoll(s.id)};
  el.querySelectorAll("[data-plus]").forEach(b=>b.onclick=()=>{rec.draft[+b.dataset.plus]=(rec.draft[+b.dataset.plus]||0)+1;update()});
  el.querySelectorAll("[data-minus]").forEach(b=>b.onclick=()=>{let i=+b.dataset.minus;rec.draft[i]=Math.max(0,(rec.draft[i]||0)-1);update()});
- el.querySelector("#saveRound1").onclick=()=>{rec.first=[...rec.draft];persistRounds();renderPoll()};
- el.querySelector("#saveRound2").onclick=()=>{rec.second=[...rec.draft];persistRounds();renderPoll()};
+ el.querySelector("#saveRound1").onclick=()=>{rec.first=[...rec.draft];persistRounds();renderPoll(s.id)};
+ el.querySelector("#saveRound2").onclick=()=>{rec.second=[...rec.draft];persistRounds();renderPoll(s.id)};
  el.querySelector("#compareVotes").onclick=()=>compareVotes(s.id);
  el.querySelector("#resetDraft").onclick=()=>{rec.draft=[0,0,0,0];update()};
 }
@@ -843,7 +1065,7 @@ function compareVotes(id){
  floatPanel("comparePanel","Eerste en tweede stemming",head+'<div class="compare-row compare-head"><b></b><span>Eerst</span><span>Later</span><span>Verschil</span></div>'+rows+'<p class="hint">De aantallen tonen antwoorden van de groep, niet welke individuele leerling van mening veranderde.</p>');
 }
 function togglePoll(){pollVisible=!pollVisible;if(pollVisible)renderPoll();else $("pollPanel")?.remove()}
-function toggleAnswer(){const s=currentSlide();if(s.later){floatPanel("notesPanel","Antwoord nog niet tonen",'<p>De openingsvraag komt terug tijdens het grafiekonderzoek. Laat leerlingen eerst zelf onderzoeken.</p>');return}revealed=!revealed;renderSlide()}
+function toggleAnswer(){const s=currentSlide();if(s.type==="quizset"){quizAnswersVisible=!quizAnswersVisible;renderSlide();return}if(s.type==="error"){errorCorrectionVisible=!errorCorrectionVisible;renderSlide();return}if(s.later){floatPanel("notesPanel","Antwoord nog niet tonen",'<p>De openingsvraag komt terug tijdens het grafiekonderzoek. Laat leerlingen eerst zelf onderzoeken.</p>');return}revealed=!revealed;renderSlide()}
 function undo(){let arr=paths[currentSlide().id]||[];arr.pop();$("draw").innerHTML=arr.join("")}
 function clearDraw(){paths[currentSlide().id]=[];$("draw").innerHTML=""}
 function stopTimer(){clearInterval(timerHandle);timerHandle=null;timerRunning=false}
