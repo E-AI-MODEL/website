@@ -31,6 +31,10 @@ class ReleaseTests(unittest.TestCase):
         continuation_path = self.root / 'leif/continue/index.html'
         continuation_path.parent.mkdir(parents=True, exist_ok=True)
         continuation_path.write_bytes(self.continuation)
+        self.story = b'<!DOCTYPE html><html lang="nl"><title>LEIF | Verhaal</title><body><script id="protected-text">cipher</script></body></html>'
+        story_path = self.root / 'leif/verhaal/index.html'
+        story_path.parent.mkdir(parents=True, exist_ok=True)
+        story_path.write_bytes(self.story)
 
     def test_exact_release_and_all_manifest_routes_pass(self):
         visited = []
@@ -41,10 +45,12 @@ class ReleaseTests(unittest.TestCase):
                 return io.BytesIO(self.leif)
             if path == '/leif/continue/':
                 return io.BytesIO(self.continuation)
+            if path == '/leif/verhaal/':
+                return io.BytesIO(self.story)
             return io.BytesIO(self.current)
         with patch.object(verify_ui, 'urlopen', side_effect=response):
             verify_ui.verify_live('https://example.test', self.manifest, 0, self.root)
-        self.assertEqual(visited, ['/', '/nl/tools/', '/nl/publicaties/', '/en/llmscan/', '/404.html', '/leif/', '/leif/continue/'])
+        self.assertEqual(visited, ['/', '/nl/tools/', '/nl/publicaties/', '/en/llmscan/', '/404.html', '/leif/', '/leif/continue/', '/leif/verhaal/'])
 
     def test_old_html_same_ui_stamp_is_rejected(self):
         stale = self.current.replace(b'Updated content', b'Previous content')
@@ -62,6 +68,20 @@ class ReleaseTests(unittest.TestCase):
             return io.BytesIO(b'404 Not Found' if path == '/leif/' else self.current)
         with patch.object(verify_ui, 'urlopen', side_effect=response):
             with self.assertRaisesRegex(RuntimeError, 'LEIF is missing or out of date'):
+                verify_ui.verify_live('https://example.test', self.manifest, 0, self.root)
+
+    def test_private_reader_missing_online_is_rejected(self):
+        def response(request, **kwargs):
+            path = urlsplit(request.full_url).path
+            if path == '/leif/':
+                return io.BytesIO(self.leif)
+            if path == '/leif/continue/':
+                return io.BytesIO(self.continuation)
+            if path == '/leif/verhaal/':
+                return io.BytesIO(b'404 Not Found')
+            return io.BytesIO(self.current)
+        with patch.object(verify_ui, 'urlopen', side_effect=response):
+            with self.assertRaisesRegex(RuntimeError, 'LEIF personal reader is missing or out of date'):
                 verify_ui.verify_live('https://example.test', self.manifest, 0, self.root)
 
     def test_empty_manifest_is_rejected(self):
