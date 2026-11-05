@@ -407,14 +407,81 @@
 .wi-start-card-featured p{color:#365c4e}
 .wi-start-hint{font-size:13px;margin-top:18px!important}
 @media(max-width:650px){.wi-start-grid{grid-template-columns:1fr}}
+
+/* EAIdeck-inspiratie: weinig keuzes in Snel, volledige instellingen in Studio. */
+.wi-mode-switch{display:flex;gap:3px;align-items:center;background:#e9efeb;border:1px solid #d5e1d9;border-radius:11px;padding:4px;flex:none}
+.wi-mode-switch button{padding:8px 15px;border:0;border-radius:8px;background:transparent;font-size:13px;font-weight:750;min-width:67px}
+.wi-mode-switch button[aria-pressed=true]{background:#fff;color:#116b5c;box-shadow:0 1px 6px #17392b1a}
+.wi-mode-quick .layout{max-width:1720px;grid-template-columns:214px minmax(0,1fr);gap:23px;padding:18px 27px}
+.wi-mode-quick .side{display:none}
+.wi-mode-quick .editor>h1,.wi-mode-quick .editor>.lede,.wi-mode-quick .editor>.eyebrow{display:none}
+.wi-mode-quick .design-studio,.wi-focus .design-studio{max-width:none}
+.wi-mode-quick .design-heading{margin:0 0 12px;gap:10px}
+.wi-mode-quick .design-heading p{display:none}
+.wi-mode-quick .design-footer-actions,.wi-mode-quick .rail-import,.wi-mode-quick .design-advanced{display:none}
+.wi-mode-quick .rail{padding-right:16px;top:14px}
+.wi-mode-quick .rail-bottom{margin-top:12px;padding-top:13px}
+.wi-mode-quick .rail-bottom #add{width:100%;background:#eaf3ee;border:1px solid #b9d6c7;color:#155c4f;font-size:13px;font-weight:750;text-align:left}
+.wi-mode-quick .actions #editTemplate{display:none}
+.wi-mode-quick .design-viewport{padding:clamp(6px,1vw,14px);border-radius:12px}
+.wi-mode-quick .design-paper{padding:clamp(20px,3.5vw,62px)}
+.wi-quick-add{background:#eaf3ee!important;border-color:#a9cec0!important;color:#135b4f!important;font-weight:760}
+.wi-focus .layout{display:block;max-width:1570px;padding:13px 24px}
+.wi-focus .rail,.wi-focus .side,.wi-focus .editor>h1,.wi-focus .editor>.lede,.wi-focus .editor>.eyebrow,.wi-focus .design-advanced{display:none!important}
+.wi-focus .editor{margin:0}
+.wi-focus .design-studio{width:100%}
+.wi-focus .design-viewport{padding:8px}
+#quickFocus[aria-pressed=true]{background:#163b33;color:#fff;border-color:#163b33}
+.wi-insert-dialog{width:min(710px,calc(100vw - 24px));max-height:min(90dvh,790px);overflow-y:auto;padding:0;border:1px solid #d1ded6;border-radius:18px;background:#fcfdfa;color:var(--ink);box-shadow:0 24px 80px #091b1540}
+.wi-insert-dialog::backdrop{background:rgba(10,26,22,.63)}
+.wi-insert-head{display:flex;align-items:start;justify-content:space-between;gap:12px;padding:23px 27px 11px}
+.wi-insert-head h2{margin:5px 0;font-size:clamp(23px,3vw,32px)}
+.wi-insert-head p{margin:3px 0 0;color:#58695e;font-size:14px}
+.wi-insert-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;padding:13px 27px 26px}
+.wi-insert-card{display:grid;gap:5px;padding:15px 16px;text-align:left;min-height:94px;background:#fff;border:1px solid #d7e2da;border-radius:12px;transition:background .15s,border-color .15s}
+.wi-insert-card:hover,.wi-insert-card:focus-visible{background:#f0f7f1;border-color:#88b7a0}
+.wi-insert-card strong{font-size:15px;line-height:1.25}
+.wi-insert-card span{color:#607369;font-size:12px;line-height:1.45}
+.wi-start-dialog{width:min(740px,calc(100vw - 24px));background:#fbfcf9}
+.wi-start-dialog h2{margin:7px 0 9px}
+.wi-start-dialog .wi-start-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.wi-start-dialog .wi-start-card{padding:16px;border-radius:12px}
+.wi-start-dialog .wi-start-card:first-child{grid-column:1/-1;background:#eaf3ee;display:grid;grid-template-columns:minmax(0,1fr) minmax(180px,225px);gap:5px 20px;align-items:center}
+.wi-start-dialog .wi-start-card:first-child h3,.wi-start-dialog .wi-start-card:first-child p{grid-column:1}
+.wi-start-dialog .wi-start-card:first-child label,.wi-start-dialog .wi-start-card:first-child select,.wi-start-dialog .wi-start-card:first-child button{grid-column:2}
+.wi-start-dialog .wi-start-card:first-child label{grid-row:1}
+.wi-start-dialog .wi-start-card:first-child select{grid-row:2}
+.wi-start-dialog .wi-start-card:first-child button{grid-row:3}
+.wi-start-dialog .wi-start-card:first-child p{grid-row:2 / span 2}
+.wi-start-dialog .wi-start-card button{min-height:40px}
+@media(max-width:1000px){.wi-mode-quick .layout{grid-template-columns:192px minmax(0,1fr);gap:14px;padding:14px 16px}}
+@media(max-width:760px){
+ .top{gap:9px}.wi-mode-switch{order:1;margin-left:auto}.top .actions{order:2}
+ .wi-mode-quick .layout,.wi-focus .layout{display:block;padding:9px 12px}
+ .wi-mode-quick .rail{position:static;padding:0 0 10px;border-right:0;border-bottom:1px solid var(--line)}
+ .wi-mode-quick .rail .slide-list{display:flex;overflow-x:auto}
+ .wi-mode-quick .rail .slide-item{flex:0 0 155px}
+ .wi-mode-quick .rail-bottom{margin:8px 0;padding:7px 0}
+ .wi-mode-quick .editor{margin-top:10px}
+ .wi-mode-quick .design-heading h2{font-size:19px}
+ .design-heading-actions{gap:6px}
+ .wi-start-dialog .wi-start-grid{grid-template-columns:1fr}
+ .wi-start-dialog .wi-start-card:first-child{display:block;grid-column:auto}
+ .wi-start-dialog .wi-start-card:first-child h3,.wi-start-dialog .wi-start-card:first-child p,.wi-start-dialog .wi-start-card:first-child label,.wi-start-dialog .wi-start-card:first-child select,.wi-start-dialog .wi-start-card:first-child button{grid-column:auto;grid-row:auto}
+ .wi-start-dialog .wi-start-card:first-child select{width:100%;margin:6px 0 10px}
+ .wi-insert-grid{grid-template-columns:1fr;padding:12px 18px 20px}
+ .wi-insert-head{padding:19px 18px 10px}
+ .wi-insert-card{min-height:70px}
+}
+@media(max-width:420px){.wi-mode-switch button{min-width:56px;padding:7px 11px}.wi-mode-quick .top .actions #newLesson{display:none}}
 </style>
 </head>
-<body>
-<header><div class="top"><div class="brand"><span class="mark">w</span><div><div class="brandname">WiHTML</div><div class="byline">Wiskundelessen maken en presenteren</div></div></div><div class="actions"><button id="newLesson" title="Begin met een lege wiskundeles">Nieuwe les</button><button id="editTemplate" title="Maak je eigen HTML-sjabloon">Sjabloon maken</button><button id="save">Bewaar lesbestand</button><button id="preview">Bekijk presentatie</button><button id="export" class="primary">Download HTML</button></div></div></header>
+<body class="wi-mode-quick">
+<header><div class="top"><div class="brand"><span class="mark">w</span><div><div class="brandname">WiHTML</div><div class="byline">Wiskundelessen maken en presenteren</div></div></div><div class="wi-mode-switch" role="group" aria-label="Werkmodus"><button type="button" id="modeQuick" aria-pressed="true">Snel</button><button type="button" id="modeStudio" aria-pressed="false">Studio</button></div><div class="actions"><button id="newLesson" title="Begin met een lege wiskundeles">Nieuwe les</button><button id="editTemplate" title="Maak je eigen HTML-sjabloon">Sjabloon maken</button><button id="save">Bewaar lesbestand</button><button id="preview">Bekijk presentatie</button><button id="export" class="primary">Download HTML</button></div></div></header>
 <main class="layout"><nav class="rail"><div class="rail-head"><span class="eyebrow">Lesverloop</span><span id="total" class="hint"></span></div><div id="items" class="slide-list"></div><div class="rail-bottom"><button id="add">+ Lesdeel toevoegen</button><div class="rail-import"><label for="import">Upload JSON-lesinhoud</label><input type="file" accept=".json,application/json" id="import"><button id="jsonExample" class="small">Voorbeeld-JSON downloaden</button><button id="draftRestore" class="small" hidden>Herstel mijn laatste concept</button><p class="hint">Je concept wordt alleen in deze browser bewaard. Download JSON om het elders te gebruiken.</p></div></div></nav><section class="editor"><div class="eyebrow">Lesontwerp / Wiskunde</div><h1>Wat gaan leerlingen zelf ontdekken?</h1><p class="lede">Upload je lesinhoud als JSON, kies de opbouw en de vormgeving. WiHTML maakt er een interactieve HTML-les van.</p>
 
 <section class="design-studio" aria-label="Dia direct bewerken">
- <div class="design-heading"><div><span class="eyebrow">Direct bewerken</span><h2 id="designHeading">Bewerk deze dia</h2><p>Klik op de inhoud om die aan te passen. Bekijk deze dia om alle interacties en de volledige vormgeving te testen.</p></div><div class="design-heading-actions"><button id="designImport" type="button">Open JSON-bestand</button><button id="designPreview" class="design-play" type="button">Bekijk deze dia <span aria-hidden="true">↗</span></button></div></div>
+ <div class="design-heading"><div><span class="eyebrow">Direct bewerken</span><h2 id="designHeading">Bewerk deze dia</h2><p>Klik op de inhoud om die aan te passen. Bekijk deze dia om alle interacties en de volledige vormgeving te testen.</p></div><div class="design-heading-actions"><button id="quickAdd" class="wi-quick-add" type="button">+ Voeg een dia toe</button><button id="quickFocus" type="button" aria-pressed="false">Alleen dia</button><button id="designImport" type="button">Open JSON-bestand</button><button id="designPreview" class="design-play" type="button">Bekijk deze dia <span aria-hidden="true">↗</span></button></div></div>
  <div class="design-toolbar">
   <label class="design-type-control" for="designType"><span>Werkvorm</span><select id="designType" aria-label="Werkvorm van deze dia"></select></label>
   <div class="design-layout-group" role="group" aria-label="Verdeling van deze dia">
@@ -447,6 +514,19 @@
  <label><input type="checkbox" data-feature="printing"> Printen</label>
  </div></details>
 </div><div class="editor-block"><div class="form-grid"><div class="field"><label for="title">Les</label><input id="title"></div><div class="field"><label for="level">Niveau</label><input id="level"></div></div><div class="field"><label for="goal">Wat kunnen leerlingen na afloop zelfstandig?</label><textarea id="goal" rows="2"></textarea></div><div class="section-head"><strong id="section-title">Lesdeel</strong><div class="mini-actions"><button class="small" id="up" title="Omhoog">↑</button><button class="small" id="down" title="Omlaag">↓</button><button class="small" id="remove">Verwijder</button></div></div><div id="fields"></div><div class="status" id="status" aria-live="polite"></div></div></details></section><aside class="side"><span class="eyebrow">Ontwerpcheck</span><h2>Wat vraagt deze les?</h2><p class="hint">Deze opmerkingen zijn bedoeld om je les te controleren. Ze zeggen niet of leerlingen geleerd hebben.</p><div id="review"></div><div class="note"><strong>Presentatie en tools</strong>De les gebruikt vaste 16:9-verhoudingen. Het kleine gereedschapspalet verschijnt over de dia en verandert de indeling niet.</div><div class="note"><strong>Bewaren</strong>Je kunt de les als JSON bewaren en later weer inlezen. Stemrondes blijven op deze browser opgeslagen.</div></aside></main>
+<dialog id="quickInsertDialog" class="wi-insert-dialog" aria-labelledby="quickInsertTitle">
+<div class="wi-insert-head"><div><div class="eyebrow">Dia toevoegen</div><h2 id="quickInsertTitle">Wat wil je in deze dia doen?</h2><p>Je kunt alles hierna rechtstreeks op de dia aanpassen.</p></div><button type="button" id="quickInsertClose" aria-label="Sluit dia toevoegen">Sluiten</button></div>
+<div class="wi-insert-grid">
+<button type="button" class="wi-insert-card" data-quick-type="text"><strong>Uitleg of opdracht</strong><span>Een vraag, tekst of instructie.</span></button>
+<button type="button" class="wi-insert-card" data-quick-type="question"><strong>Meerkeuzevraag</strong><span>Laat leerlingen kiezen en toon het antwoord later.</span></button>
+<button type="button" class="wi-insert-card" data-quick-type="graph"><strong>Grafiek onderzoeken</strong><span>Onderzoek de groeifactor en beginwaarde.</span></button>
+<button type="button" class="wi-insert-card" data-quick-type="steps"><strong>Uitleg in stappen</strong><span>Maak een uitwerking die stap voor stap verschijnt.</span></button>
+<button type="button" class="wi-insert-card" data-quick-type="table"><strong>Tabel onderzoeken</strong><span>Ontdek regelmaat in de getallen.</span></button>
+<button type="button" class="wi-insert-card" data-quick-type="practice"><strong>Zelfstandig oefenen</strong><span>Opgaven met hulp en uitwerkingen.</span></button>
+<button type="button" class="wi-insert-card" data-quick-type="compare"><strong>Verklaren en vergelijken</strong><span>Vergelijk twee antwoorden of aanpakken.</span></button>
+<button type="button" class="wi-insert-card" data-quick-type="quizset"><strong>Begripsvragen</strong><span>Een paar korte vragen op één dia.</span></button>
+<button type="button" class="wi-insert-card" data-quick-type="error"><strong>Zoek de fout</strong><span>Laat leerlingen een fout vinden en verbeteren.</span></button>
+</div></dialog>
 <dialog id="templateDialog" aria-labelledby="templateHeading" class="template-dialog">
 <div class="template-title"><div><div class="eyebrow">Eigen sjabloon</div><h2 id="templateHeading">Ontwerp je lespagina</h2><p class="hint">Bepaal de indeling met HTML en de vormgeving met CSS. De lesinhoud en docenttools blijven werken.</p></div><button id="closeTemplate" aria-label="Sluit sjablooneditor">Sluiten</button></div>
 <div class="template-editor">
@@ -808,6 +888,51 @@ function save(){
 }
 
 
+/* De werkmodus verandert geen lesgegevens en komt niet in het JSON-lesbestand. */
+const WIHTML_MODE_KEY='wihtml:docentstudio:modus:v1';
+let workMode='quick';
+function setFocusMode(enabled){
+ document.body.classList.toggle('wi-focus',!!enabled);
+ $('quickFocus').setAttribute('aria-pressed',String(!!enabled));
+ $('quickFocus').textContent=enabled?'Toon dia’s en instellingen':'Alleen dia';
+}
+function setWorkMode(mode,persist=true){
+ workMode=mode==='studio'?'studio':'quick';
+ document.body.classList.toggle('wi-mode-quick',workMode==='quick');
+ document.body.classList.toggle('wi-mode-studio',workMode==='studio');
+ $('modeQuick').setAttribute('aria-pressed',String(workMode==='quick'));
+ $('modeStudio').setAttribute('aria-pressed',String(workMode==='studio'));
+ $('add').textContent=workMode==='quick'?'+ Kies een dia':'+ Lesdeel toevoegen';
+ if(workMode==='studio')setFocusMode(false);
+ if(persist)try{localStorage.setItem(WIHTML_MODE_KEY,workMode)}catch(e){}
+}
+function savedWorkMode(){
+ try{return localStorage.getItem(WIHTML_MODE_KEY)==='studio'?'studio':'quick'}catch(e){return 'quick'}
+}
+$('modeQuick').onclick=()=>setWorkMode('quick');
+$('modeStudio').onclick=()=>setWorkMode('studio');
+$('quickFocus').onclick=()=>setFocusMode(!document.body.classList.contains('wi-focus'));
+function openQuickInsert(){
+ if(!document.documentElement.classList.contains('standalone'))$('quickInsertDialog').showModal();
+}
+$('quickAdd').onclick=openQuickInsert;
+$('quickInsertClose').onclick=()=>$('quickInsertDialog').close();
+document.querySelectorAll('[data-quick-type]').forEach(button=>button.onclick=()=>{
+ const type=button.dataset.quickType;
+ if(!Object.hasOwn(TYPES,type))return;
+ save();
+ const labels={text:'Nieuwe opdracht',question:'Meerkeuzevraag',graph:'Grafiek onderzoeken',steps:'Uitleg in stappen',table:'Tabel onderzoeken',practice:'Zelfstandig oefenen',compare:'Verklaren en vergelijken',quizset:'Begripsvragen',error:'Zoek de fout'};
+ const slide={id:'deel-'+Date.now()+'-'+Math.random().toString(36).slice(2,7),type,phase:'Oefenen',title:labels[type],prompt:'',body:'',student:'',teacher:'',layout:'inherit'};
+ lesson.slides.splice(selected+1,0,slide);
+ selected++;
+ initDesignType(type);
+ renderEditor();
+ $('quickInsertDialog').close();
+ const title=$('designCanvas').querySelector('[data-design-edit="title"]');
+ if(title){title.focus();title.scrollIntoView({block:'nearest'})}
+ msg('Dia toegevoegd. Je kunt de tekst direct aanpassen.');
+});
+
 const WIHTML_DRAFT_KEY='wihtml:docentstudio:concept:v1';
 let draftSaveTimer=null;
 let draftTrackingReady=false;
@@ -1123,7 +1248,7 @@ $("newLesson").onclick=()=>{
  startBlankLesson($("routePreset").value);
 };
 
-$("add").onclick=()=>{save();lesson.slides.splice(selected+1,0,{id:"deel-"+Date.now(),type:"text",phase:"Oefenen",title:"Nieuw lesdeel",prompt:"",body:"",student:"",teacher:""});selected++;renderEditor()};
+$("add").onclick=()=>{if(workMode==='quick'){openQuickInsert();return}save();lesson.slides.splice(selected+1,0,{id:"deel-"+Date.now(),type:"text",phase:"Oefenen",title:"Nieuw lesdeel",prompt:"",body:"",student:"",teacher:""});selected++;renderEditor()};
 $("remove").onclick=()=>{if(lesson.slides.length===1)return;if(!confirm("Dit lesdeel verwijderen?"))return;lesson.slides.splice(selected,1);selected=Math.min(selected,lesson.slides.length-1);renderEditor()};
 $("up").onclick=()=>{save();if(selected>0){[lesson.slides[selected-1],lesson.slides[selected]]=[lesson.slides[selected],lesson.slides[selected-1]];selected--;renderEditor()}};
 $("down").onclick=()=>{save();if(selected<lesson.slides.length-1){[lesson.slides[selected+1],lesson.slides[selected]]=[lesson.slides[selected],lesson.slides[selected+1]];selected++;renderEditor()}};
@@ -1817,6 +1942,7 @@ $('fields').addEventListener('input',event=>{if(event.target.id!=='type'){save()
 ['title','level','goal'].forEach(id=>$(id).addEventListener('input',()=>{save();const footer=$('designCanvas').querySelector('.design-footer');if(footer)footer.textContent=(lesson.level||'Wiskunde')+' · '+(lesson.title||'Nieuwe les')+' · dia '+(selected+1)+' van '+lesson.slides.length}));
 loadRounds();
 renderEditor();
+setWorkMode(savedWorkMode(),false);
 draftTrackingReady=true;
 refreshDraftButton();
 
