@@ -18,5 +18,7 @@ jobs:
         run: node scripts/check-site.mjs
       - name: Verify one KEI login opens the complete LEIF website
         run: node --test tests/test_leif_kei.mjs
+      - name: Verify LEIF reader and corrected text
+        run: node --test tests/test_leif_ereader.mjs
       - name: Verify LEIF reading, spelling edits and Spotify
         run: node --test tests/test_leif_ereader.mjs
