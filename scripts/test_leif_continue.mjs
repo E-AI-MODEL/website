@@ -6,12 +6,19 @@ import { strict as assert } from 'node:assert';
 
 const source=resolve(process.argv[2]||'site-build','leif/continue/index.html');
 const html=readFileSync(source,'utf8');
+const siteCopy=readFileSync(resolve(process.argv[2]||'site-build','leif/tekstbeheer.js'),'utf8');
 const ids=['zichtbaar','observeren','onzichtbaar','sterk','raak','reactie','behoefte','geschiedenis','geleerd','licht','zorggeven','zorgontvangen','zorgvragen','zorggrens','vertrouwen','afstand','vragen','keuzes','denkenhelpt','denkenweg','eigenweg','behouden','veranderen'];
 const answers=Object.fromEntries(ids.map(x=>[x,'Demo antwoord '+x]));
 answers.observeren='Ik kijk en luister eerst';answers.reactie='Het verschilt per situatie';
 answers.zorgvragen='Ik los het liever zelf op';answers.keuzes='Ik analyseer eerst';
 let sent=false,saveCount=0;
-const server=createServer((req,res)=>{res.writeHead(200,{'content-type':'text/html;charset=utf-8'});res.end(html);});
+const server=createServer((req,res)=>{
+ if(req.url?.startsWith('/leif/tekstbeheer.js')){
+  res.writeHead(200,{'content-type':'application/javascript;charset=utf-8'});
+  res.end(siteCopy);return;
+ }
+ res.writeHead(200,{'content-type':'text/html;charset=utf-8'});res.end(html);
+});
 await new Promise(ok=>server.listen(0,'127.0.0.1',ok));
 const port=server.address().port;
 const origin='http://127.0.0.1:'+port;
