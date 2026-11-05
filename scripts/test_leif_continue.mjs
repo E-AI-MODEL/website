@@ -1,22 +1,24 @@
 import { chromium } from 'playwright';
+import { createServer } from 'node:http';
 import { readFileSync, mkdirSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { strict as assert } from 'node:assert';
 
 const source=resolve(process.argv[2]||'site-build','leif/continue/index.html');
 const html=readFileSync(source,'utf8');
-assert.ok(html.includes('id="secret"'),'LEIF vervolgpagina ontbreekt in de websitebuild');
 const ids=['zichtbaar','observeren','onzichtbaar','sterk','raak','reactie','behoefte','geschiedenis','geleerd','licht','zorggeven','zorgontvangen','zorgvragen','zorggrens','vertrouwen','afstand','vragen','keuzes','denkenhelpt','denkenweg','eigenweg','behouden','veranderen'];
 const answers=Object.fromEntries(ids.map(x=>[x,'Demo antwoord '+x]));
 answers.observeren='Ik kijk en luister eerst';answers.reactie='Het verschilt per situatie';
 answers.zorgvragen='Ik los het liever zelf op';answers.keuzes='Ik analyseer eerst';
 let sent=false,saveCount=0;
-const origin='https://leif-local.example';
+const server=createServer((req,res)=>{res.writeHead(200,{'content-type':'text/html;charset=utf-8'});res.end(html);});
+await new Promise(ok=>server.listen(0,'127.0.0.1',ok));
+const port=server.address().port;
+const origin='http://127.0.0.1:'+port;
 const browser=await chromium.launch({headless:true});
-const context=await browser.newContext({viewport:{width:1280,height:900},serviceWorkers:'block'});
+const context=await browser.newContext({viewport:{width:1280,height:900}});
 const page=await context.newPage(), errors=[];
 page.on('pageerror',e=>errors.push(e.message));
-await page.route(origin+'/**',route=>route.fulfill({status:200,contentType:'text/html; charset=utf-8',body:'<!doctype html><html><body>LEIF testcontext</body></html>'}));
 await page.route('**/functions/v1/leif-demo-session',async route=>{
  const req=route.request(),headers={'access-control-allow-origin':origin,'access-control-allow-methods':'POST,OPTIONS','access-control-allow-headers':'content-type','content-type':'application/json'};
  if(req.method()==='OPTIONS'){await route.fulfill({status:200,headers,body:JSON.stringify({ok:true})});return;}
@@ -28,8 +30,7 @@ await page.route('**/functions/v1/leif-demo-session',async route=>{
  await route.fulfill({status:200,headers,body:JSON.stringify(data)});
 });
 try{
- await page.goto(origin+'/test-leif.html',{waitUntil:'commit'});
- await page.setContent(html,{waitUntil:'domcontentloaded'});
+ await page.goto(origin+'/leif/continue/');
  await page.locator('#secret').fill('synthetic-'+('a'.repeat(39)));
  await page.locator('#open').click();
  await page.locator('#editor').waitFor({state:'visible',timeout:10000});
@@ -41,8 +42,7 @@ try{
  assert.equal(answers.schuur,'Een aanvullend demoantwoord.');
  mkdirSync('test-results',{recursive:true});
  await page.screenshot({path:'test-results/leif-continue-desktop.png',fullPage:true});
- await page.reload({waitUntil:'commit'});
- await page.setContent(html,{waitUntil:'domcontentloaded'});
+ await page.reload();
  await page.locator('#editor').waitFor({state:'visible',timeout:10000});
  assert.equal(await page.locator('#total').innerText(),'24');
  assert.match(await page.locator('#question h2').innerText(),/Welk gevoel laat je niet gemakkelijk zien/);
@@ -53,16 +53,14 @@ try{
  await page.locator('#send').click();
  await page.waitForFunction(()=>document.querySelector('#sentMessage')?.textContent?.includes('afgerond'),{timeout:8000});
  assert.ok(sent,'submit action not received');
- const mobile=await browser.newContext({viewport:{width:390,height:844},deviceScaleFactor:1,serviceWorkers:'block'});
-await mobile.route(origin+'/**',route=>route.fulfill({status:200,contentType:'text/html; charset=utf-8',body:'<!doctype html><html><body>LEIF testcontext</body></html>'}));
+ const mobile=await browser.newContext({viewport:{width:390,height:844},deviceScaleFactor:1});
  await mobile.route('**/functions/v1/leif-demo-session',async route=>{
   const req=route.request(),headers={'access-control-allow-origin':origin,'access-control-allow-methods':'POST,OPTIONS','access-control-allow-headers':'content-type','content-type':'application/json'};
   if(req.method()==='OPTIONS'){await route.fulfill({status:200,headers,body:JSON.stringify({ok:true})});return;}
   await route.fulfill({status:200,headers,body:JSON.stringify({ok:true,status:'draft',answers})});
  });
  const mobilePage=await mobile.newPage();
- await mobilePage.goto(origin+'/test-leif.html',{waitUntil:'commit'});
- await mobilePage.setContent(html,{waitUntil:'domcontentloaded'});
+ await mobilePage.goto(origin+'/leif/continue/');
  await mobilePage.locator('#secret').fill('synthetic-'+('a'.repeat(39)));
  await mobilePage.locator('#open').click();
  await mobilePage.locator('#editor').waitFor({state:'visible',timeout:10000});
@@ -73,4 +71,4 @@ await mobile.route(origin+'/**',route=>route.fulfill({status:200,contentType:'te
  await mobile.close();
  assert.deepEqual(errors,[],'page errors');
  console.log('LEIF continuation checks passed: 23 restored, 1 saved, reload, 8 open, submit, mobile.');
-}finally{await context.close();await browser.close();}
+}finally{await context.close();await browser.close();await new Promise(ok=>server.close(ok));}
