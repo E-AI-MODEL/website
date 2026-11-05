@@ -114,7 +114,7 @@ jobs:
           root = Path("site-build")
           problems = []
           for route in ("index.html", "nl/index.html", "nl/onderwijs/index.html",
-                        "nl/onderzoek/index.html", "nl/model-monitor/index.html", "leif/index.html", "leif/continue/index.html"):
+                        "nl/onderzoek/index.html", "nl/model-monitor/index.html", "leif/index.html", "leif/continue/index.html", "leif/verhaal/index.html"):
               if not (root / route).exists():
                   problems.append(f"Missing visitor route: {route}")
           home = root / "nl/index.html"
