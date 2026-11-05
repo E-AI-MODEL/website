@@ -888,6 +888,51 @@ function save(){
 }
 
 
+/* De werkmodus verandert geen lesgegevens en komt niet in het JSON-lesbestand. */
+const WIHTML_MODE_KEY='wihtml:docentstudio:modus:v1';
+let workMode='quick';
+function setFocusMode(enabled){
+ document.body.classList.toggle('wi-focus',!!enabled);
+ $('quickFocus').setAttribute('aria-pressed',String(!!enabled));
+ $('quickFocus').textContent=enabled?'Toon dia’s en instellingen':'Alleen dia';
+}
+function setWorkMode(mode,persist=true){
+ workMode=mode==='studio'?'studio':'quick';
+ document.body.classList.toggle('wi-mode-quick',workMode==='quick');
+ document.body.classList.toggle('wi-mode-studio',workMode==='studio');
+ $('modeQuick').setAttribute('aria-pressed',String(workMode==='quick'));
+ $('modeStudio').setAttribute('aria-pressed',String(workMode==='studio'));
+ $('add').textContent=workMode==='quick'?'+ Kies een dia':'+ Lesdeel toevoegen';
+ if(workMode==='studio')setFocusMode(false);
+ if(persist)try{localStorage.setItem(WIHTML_MODE_KEY,workMode)}catch(e){}
+}
+function savedWorkMode(){
+ try{return localStorage.getItem(WIHTML_MODE_KEY)==='studio'?'studio':'quick'}catch(e){return 'quick'}
+}
+$('modeQuick').onclick=()=>setWorkMode('quick');
+$('modeStudio').onclick=()=>setWorkMode('studio');
+$('quickFocus').onclick=()=>setFocusMode(!document.body.classList.contains('wi-focus'));
+function openQuickInsert(){
+ if(!document.documentElement.classList.contains('standalone'))$('quickInsertDialog').showModal();
+}
+$('quickAdd').onclick=openQuickInsert;
+$('quickInsertClose').onclick=()=>$('quickInsertDialog').close();
+document.querySelectorAll('[data-quick-type]').forEach(button=>button.onclick=()=>{
+ const type=button.dataset.quickType;
+ if(!Object.hasOwn(TYPES,type))return;
+ save();
+ const labels={text:'Nieuwe opdracht',question:'Meerkeuzevraag',graph:'Grafiek onderzoeken',steps:'Uitleg in stappen',table:'Tabel onderzoeken',practice:'Zelfstandig oefenen',compare:'Verklaren en vergelijken',quizset:'Begripsvragen',error:'Zoek de fout'};
+ const slide={id:'deel-'+Date.now()+'-'+Math.random().toString(36).slice(2,7),type,phase:'Oefenen',title:labels[type],prompt:'',body:'',student:'',teacher:'',layout:'inherit'};
+ lesson.slides.splice(selected+1,0,slide);
+ selected++;
+ initDesignType(type);
+ renderEditor();
+ $('quickInsertDialog').close();
+ const title=$('designCanvas').querySelector('[data-design-edit="title"]');
+ if(title){title.focus();title.scrollIntoView({block:'nearest'})}
+ msg('Dia toegevoegd. Je kunt de tekst direct aanpassen.');
+});
+
 const WIHTML_DRAFT_KEY='wihtml:docentstudio:concept:v1';
 let draftSaveTimer=null;
 let draftTrackingReady=false;
@@ -1203,7 +1248,7 @@ $("newLesson").onclick=()=>{
  startBlankLesson($("routePreset").value);
 };
 
-$("add").onclick=()=>{save();lesson.slides.splice(selected+1,0,{id:"deel-"+Date.now(),type:"text",phase:"Oefenen",title:"Nieuw lesdeel",prompt:"",body:"",student:"",teacher:""});selected++;renderEditor()};
+$("add").onclick=()=>{if(workMode==='quick'){openQuickInsert();return}save();lesson.slides.splice(selected+1,0,{id:"deel-"+Date.now(),type:"text",phase:"Oefenen",title:"Nieuw lesdeel",prompt:"",body:"",student:"",teacher:""});selected++;renderEditor()};
 $("remove").onclick=()=>{if(lesson.slides.length===1)return;if(!confirm("Dit lesdeel verwijderen?"))return;lesson.slides.splice(selected,1);selected=Math.min(selected,lesson.slides.length-1);renderEditor()};
 $("up").onclick=()=>{save();if(selected>0){[lesson.slides[selected-1],lesson.slides[selected]]=[lesson.slides[selected],lesson.slides[selected-1]];selected--;renderEditor()}};
 $("down").onclick=()=>{save();if(selected<lesson.slides.length-1){[lesson.slides[selected+1],lesson.slides[selected]]=[lesson.slides[selected],lesson.slides[selected+1]];selected++;renderEditor()}};
@@ -1897,6 +1942,7 @@ $('fields').addEventListener('input',event=>{if(event.target.id!=='type'){save()
 ['title','level','goal'].forEach(id=>$(id).addEventListener('input',()=>{save();const footer=$('designCanvas').querySelector('.design-footer');if(footer)footer.textContent=(lesson.level||'Wiskunde')+' · '+(lesson.title||'Nieuwe les')+' · dia '+(selected+1)+' van '+lesson.slides.length}));
 loadRounds();
 renderEditor();
+setWorkMode(savedWorkMode(),false);
 draftTrackingReady=true;
 refreshDraftButton();
 
