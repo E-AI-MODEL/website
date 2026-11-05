@@ -7,6 +7,7 @@ De website publiceert drie routes:
 - `/tools/wihtml/`: introductie met uitleg voor docenten;
 - `/tools/wihtml/studio/`: de zelfstandige editor;
 - `/tools/wihtml/voorbeeld/`: de complete oorspronkelijke Docentstudio-v9-les, met uitgewerkte interactieve lesinhoud en alle oorspronkelijke docenttools.
+- `/tools/wihtml/voorbeeld-lesinhoud.json`: downloadbaar inhoudsbestand als voorbeeld.
 
 De studio staat als gecontroleerde bronkopie in `content/wihtml/studio.html`. Tijdens de sitebuild kopieert `scripts/build_site.py` deze bron **ongewijzigd** naar de uiteindelijke website. De GitHub Action controleert de kopie en links. De editor draait volledig in de browser en verstuurt geen lesbestanden, HTML-sjablonen of stemgegevens naar GitHub.
 
@@ -21,8 +22,8 @@ Bronversie waarmee deze route is opgebouwd:
 - Repository: `E-AI-MODEL/wihtml`
 - Ontwikkelbranch: `feat/lessengenerator-eai-design`
 - Bronbestand: `index.html`
-- Bronblob-SHA: `4fe5c5d7472d2212f578d1781f866a0493e4f86c`
-- Git-commit voor studio-implementatie: `6af563eac50d833953902fac33e3cbeec61f5d44`
+- Bronblob-SHA: `71daa78cb2db023c060a40b2f3044f8a478074a6`
+- Git-commit voor studio-implementatie: `4de8608463bec76d8592d1e34febe7dba4034e5b`
 
 Voor een volgende versie: controleer eerst dat de browsertests in `wihtml` geslaagd zijn. Werk daarna de bronkopie bij met een **volledige commit-SHA**:
 
@@ -42,4 +43,6 @@ De editor biedt geen server-side AI-generatie, automatische wiskundecontrole of 
 
 ## Compleet voorbeeld en generator
 
-De volledige oorspronkelijke v9-les is als eigen bestand aanwezig in `content/wihtml/verdubbelen-halveren-v9.html` en wordt byte-voor-byte gepubliceerd. De algemene generator heeft inmiddels een uitgebreide docenttoolbox. De algemene generator heeft zeven configureerbare lesonderdelen: tekst, meerkeuze, exponentieel grafiekonderzoek, stapsgewijze uitwerking, onderzoekstabel, zelfstandig oefenen met hints en oplossingen, en verklaren en vergelijken. De docent kan een nieuwe les beginnen met een eigen ID voor stemrondes. De volledige v9-voorbeeldles blijft beschikbaar voor lesinteracties die specifiek voor die les zijn gebouwd. Niet elk gespecialiseerd rekeninstrument uit v9 is één-op-één overgenomen.
+De volledige oorspronkelijke v9-les is als eigen bestand aanwezig in `content/wihtml/verdubbelen-halveren-v9.html` en wordt byte-voor-byte gepubliceerd. De algemene generator heeft inmiddels een uitgebreide docenttoolbox. De algemene generator heeft zeven configureerbare lesonderdelen: tekst, meerkeuze, exponentieel grafiekonderzoek, stapsgewijze uitwerking, onderzoekstabel, zelfstandig oefenen met hints en oplossingen, en verklaren en vergelijken.
+
+De docent kan voor de import een lesroute, vlakverdeling en docenttools kiezen. WiHTML ondersteunt ook JSON zonder dia-indeling: losse `inhoud`, `vragen` en `opgaven` worden omgezet naar lesonderdelen. Een gekozen route ordent de onderdelen zonder ze te verwijderen. Een vlakverdeling kan voor de hele les of per dia gelden; functiekeuzes worden in het zelfstandige lesbestand opgeslagen. De docent kan een nieuwe les beginnen met een eigen ID voor stemrondes. De volledige v9-voorbeeldles blijft beschikbaar voor lesinteracties die specifiek voor die les zijn gebouwd. Niet elk gespecialiseerd rekeninstrument uit v9 is één-op-één overgenomen.
