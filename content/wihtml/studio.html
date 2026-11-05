@@ -2600,8 +2600,9 @@ function toggleBlack(){
  slide.append(mask);black=true;mask.querySelector("button").onclick=()=>{mask.remove();black=false};
 }
 function toggleBlank(){
- $("blackMask")?.remove();$("whiteMask")?.remove();black=false;
- const slide=$("viewer").querySelector(".slide"),old=$("whiteMask");if(old){old.remove();return}
+ $("blackMask")?.remove();black=false;
+ const old=$("whiteMask");if(old){old.remove();return}
+ const slide=$("viewer").querySelector(".slide");
  const b=document.createElement("div");b.id="whiteMask";b.className="white-mask";
  b.innerHTML='<button id="closeWhite" aria-label="Sluit wit scherm">× <span>Sluiten</span></button>';
  slide.append(b);b.querySelector("button").onclick=()=>b.remove()
