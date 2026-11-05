@@ -474,11 +474,122 @@
  .wi-insert-card{min-height:70px}
 }
 @media(max-width:420px){.wi-mode-switch button{min-width:56px;padding:7px 11px}.wi-mode-quick .top .actions #newLesson{display:none}}
+
+/* Begeleide lesmaker: steeds één afgebakende keuze, in beide werkmodi. */
+.wi-guide[hidden],.wi-guide [hidden],.wi-guide-fields-dialog [hidden]{display:none!important}
+.wi-guide-active .layout{display:block;width:100%;max-width:1250px;min-height:calc(100dvh - 83px);padding:22px clamp(14px,3vw,43px);margin:0 auto}
+.wi-guide-active .layout>.rail,.wi-guide-active .layout>.editor,.wi-guide-active .layout>.side{display:none!important}
+.wi-guide-active .top .actions{display:none}
+.wi-guide-active .top{max-width:1250px;padding:14px clamp(14px,3vw,43px)}
+.wi-guide{display:block;margin:auto;width:100%;max-width:1100px}
+.wi-guide-head{display:flex;justify-content:space-between;gap:18px;align-items:start;min-height:104px}
+.wi-guide-head h1{font:normal clamp(25px,3vw,39px)/1.14 Georgia,serif;margin:6px 0 8px;letter-spacing:-.03em}
+.wi-guide-head p{font-size:14px;color:var(--muted);max-width:720px;margin:0 0 11px}
+.wi-guide-counter{font-size:12px;font-weight:750;letter-spacing:.04em;color:var(--accent)}
+.wi-guide-track{display:block;width:100%;height:5px;border-radius:4px;overflow:hidden;appearance:none;border:0;background:#e0e9e3;margin:10px 0 22px}
+.wi-guide-track::-webkit-progress-bar{background:#e0e9e3;border-radius:4px}
+.wi-guide-track::-webkit-progress-value{background:#17695e;border-radius:4px;transition:width .2s}
+.wi-guide-track::-moz-progress-bar{background:#17695e}
+.wi-guide-page{min-height:420px;animation:wi-guide-enter .17s ease-out}
+@keyframes wi-guide-enter{from{opacity:.65;transform:translateX(12px)}to{opacity:1;transform:translateX(0)}}
+.wi-guide-surface{max-width:790px;background:#fff;border:1px solid #dce6de;border-radius:16px;padding:clamp(20px,4vw,37px)}
+.wi-guide-surface h2{font-size:25px;margin:0 0 8px}
+.wi-guide-surface>p{font-size:14px;color:var(--muted);margin-bottom:22px}
+.wi-guide-form{display:grid;gap:19px}
+.wi-guide-form label{display:grid;gap:7px;font-size:13px;font-weight:700;color:#344b3f}
+.wi-guide-form input,.wi-guide-form textarea,.wi-guide-form select{width:100%;max-width:100%;padding:12px 14px;border:1px solid #cbd8cf;border-radius:9px;background:#fff;color:var(--ink);font-size:16px}
+.wi-guide-form textarea{resize:vertical;min-height:98px;line-height:1.5}
+.wi-guide-two{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.wi-guide-muted{font-size:13px;color:#62736a}
+.wi-guide-route{display:flex;align-items:center;flex-wrap:wrap;gap:10px;padding:14px 17px;background:#f0f6f2;border-radius:10px}
+.wi-guide-route select{width:auto;min-width:210px;font-size:13px;padding:9px}
+.wi-guide-foot{display:flex;align-items:center;justify-content:space-between;gap:18px;margin:22px 0 10px;padding:16px 0 8px;border-top:1px solid #dce6de;position:sticky;bottom:0;background:linear-gradient(180deg,rgba(247,247,244,.94),#f7f7f4 32%);z-index:7}
+.wi-guide-foot .wi-guide-forward{display:flex;align-items:center;gap:12px}
+.wi-guide-foot button{min-height:44px;padding:10px 19px;font-size:14px;font-weight:720}
+.wi-guide-foot #guideNext{background:#163c32;color:#fff;border-color:#163c32}
+.wi-guide-foot small{font-size:12px;color:var(--muted)}
+.wi-guide-active .wi-guide-slide .design-studio{max-width:none;margin:0}
+.wi-guide-active .wi-guide-slide .design-heading{display:none!important}
+.wi-guide-active .wi-guide-slide .design-toolbar{background:transparent;border-top:0;margin:0 0 12px}
+.wi-guide-active .wi-guide-slide .design-toolbar-end{display:none}
+.wi-guide-active.wi-mode-quick .wi-guide-slide .design-layout-group{display:none}
+.wi-guide-active .wi-guide-slide .design-viewport{padding:clamp(8px,1.4vw,18px);border-radius:12px}
+.wi-guide-active .wi-guide-slide .design-paper{min-height:350px;padding:clamp(20px,3.5vw,52px);max-width:none}
+.wi-guide-active .wi-guide-slide .design-underbar{margin:10px 4px}
+.wi-guide-active .wi-guide-slide .design-footer-actions{display:none}
+.wi-guide-slide-buttons{display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap;margin-top:15px}
+.wi-guide-slide-buttons button{font-size:13px}
+.wi-guide-slide-control{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.wi-guide-slide-control button:disabled{opacity:.35;cursor:default}
+.wi-guide-slide-meta{font-size:13px;color:#5a6c63;padding:5px 0 10px}
+.wi-guide-choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px;margin:15px 0}
+.wi-guide-choice{padding:18px;border:1px solid #d7e2db;background:#fff;border-radius:12px;text-align:left;display:grid;gap:5px}
+.wi-guide-choice[aria-pressed=true]{background:#e9f3ed;border-color:#17695e}
+.wi-guide-choice strong{font-size:16px}
+.wi-guide-choice span{font-size:12px;color:var(--muted)}
+.wi-guide-tools{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+.wi-guide-tools label{display:flex;align-items:center;gap:10px;font-size:14px;padding:13px;border:1px solid #dae4dc;border-radius:10px;background:#fff}
+.wi-guide-tools input{width:18px;height:18px;accent-color:#17695e}
+.wi-guide-review{display:grid;gap:9px;max-width:850px}
+.wi-guide-check{display:flex;align-items:start;justify-content:space-between;gap:15px;background:#fff;padding:12px 16px;border:1px solid #d9e3db;border-radius:10px;font-size:14px}
+.wi-guide-check button{font-size:12px;white-space:nowrap}
+.wi-guide-warning{border-left:3px solid #b46b43}
+.wi-guide-review-notes{margin-top:10px;padding:13px;border:1px solid #d4dfd7;border-radius:10px;background:#fff}
+.wi-guide-review-notes summary{font-size:14px;font-weight:750;cursor:pointer;color:#475e4f}
+.wi-guide-review-notes>div{max-height:240px;overflow:auto;margin-top:12px;display:grid;gap:7px}
+.wi-guide-complete{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+.wi-guide-final{padding:28px;background:#fff;border:1px solid #d5e2d8;border-radius:17px}
+.wi-guide-final h2{font:normal clamp(25px,3vw,37px)/1.1 Georgia,serif;margin:6px 0 12px}
+.wi-guide-final .wi-guide-final-actions{display:grid;gap:10px;margin-top:19px}
+.wi-guide-final button{font-weight:750}
+.wi-guide-final #guideDownloadHTML{background:#173f34;color:white;border-color:#173f34;padding:15px 18px}
+.wi-guide-final-list{display:grid;gap:8px;max-height:440px;overflow:auto}
+.wi-guide-final-item{display:flex;gap:10px;align-items:start;padding:11px;border-bottom:1px solid #dde5de;font-size:13px;text-align:left;background:#fff}
+.wi-guide-final-item span{font-variant-numeric:tabular-nums;color:var(--accent)}
+.wi-guide-final-item strong{display:block}
+.wi-guide-outline-dialog,.wi-guide-fields-dialog{width:min(780px,calc(100vw - 25px));max-height:90dvh;overflow:auto;border:1px solid #d1ded4;border-radius:16px;padding:22px;background:#f7f7f4;color:var(--ink)}
+.wi-guide-outline-dialog::backdrop,.wi-guide-fields-dialog::backdrop{background:#081b16a6}
+.wi-guide-outline-list{display:grid;gap:4px;margin:15px 0}
+.wi-guide-outline-list button{text-align:left;border:0;background:#fff;padding:12px;display:flex;gap:12px}
+.wi-guide-outline-list button[aria-current=step]{background:#e8f3eb;color:#155949}
+.wi-guide-fields-dialog #advancedFields{border-top:0}
+.wi-guide-fields-dialog #advancedFields>summary{display:none}
+.wi-guide-fields-dialog #advancedFields .lesson-setup{display:none}
+.wi-guide-fields-dialog #advancedFields .editor-block>.form-grid,.wi-guide-fields-dialog #advancedFields .editor-block>.field{display:none}
+.wi-guide-fields-dialog #advancedFields .editor-block{border:0;padding:8px 0;background:transparent}
+.wi-guide-fields-dialog #advancedFields .section-head{display:none}
+@media(max-width:740px){
+ .wi-guide-active .top{flex-direction:row;align-items:center;gap:7px;flex-wrap:wrap}
+ .wi-guide-active .top .brandname{font-size:17px}
+ .wi-guide-active .layout{padding:13px 12px}
+ .wi-guide-head{min-height:95px}
+ .wi-guide-head h1{font-size:25px}
+ .wi-guide-head #guideOutline{padding:8px;font-size:12px}
+ .wi-guide-page{min-height:350px}
+ .wi-guide-two,.wi-guide-choices,.wi-guide-tools,.wi-guide-complete{grid-template-columns:1fr}
+ .wi-guide-foot{margin-top:13px;gap:7px}
+ .wi-guide-foot small{display:none}
+ .wi-guide-foot button{padding:10px 12px}
+ .wi-guide-active .wi-guide-slide .design-viewport{padding:6px}
+ .wi-guide-active .wi-guide-slide .design-paper{min-height:290px;padding:15px}
+}
 </style>
 </head>
 <body class="wi-mode-quick">
 <header><div class="top"><div class="brand"><span class="mark">w</span><div><div class="brandname">WiHTML</div><div class="byline">Wiskundelessen maken en presenteren</div></div></div><div class="wi-mode-switch" role="group" aria-label="Werkmodus"><button type="button" id="modeQuick" aria-pressed="true">Snel</button><button type="button" id="modeStudio" aria-pressed="false">Studio</button></div><div class="actions"><button id="newLesson" title="Begin met een lege wiskundeles">Nieuwe les</button><button id="editTemplate" title="Maak je eigen HTML-sjabloon">Sjabloon maken</button><button id="save">Bewaar lesbestand</button><button id="preview">Bekijk presentatie</button><button id="export" class="primary">Download HTML</button></div></div></header>
-<main class="layout"><nav class="rail"><div class="rail-head"><span class="eyebrow">Lesverloop</span><span id="total" class="hint"></span></div><div id="items" class="slide-list"></div><div class="rail-bottom"><button id="add">+ Lesdeel toevoegen</button><div class="rail-import"><label for="import">Upload JSON-lesinhoud</label><input type="file" accept=".json,application/json" id="import"><button id="jsonExample" class="small">Voorbeeld-JSON downloaden</button><button id="draftRestore" class="small" hidden>Herstel mijn laatste concept</button><p class="hint">Je concept wordt alleen in deze browser bewaard. Download JSON om het elders te gebruiken.</p></div></div></nav><section class="editor"><div class="eyebrow">Lesontwerp / Wiskunde</div><h1>Wat gaan leerlingen zelf ontdekken?</h1><p class="lede">Upload je lesinhoud als JSON, kies de opbouw en de vormgeving. WiHTML maakt er een interactieve HTML-les van.</p>
+<main class="layout"><section class="wi-guide" id="guideFlow" hidden aria-label="Les stap voor stap maken">
+ <div class="wi-guide-head"><div><div id="guideCounter" class="wi-guide-counter">Stap 1</div><h1 id="guideHeading">Vertel iets over je les</h1><p id="guideHelp">Vul alleen in wat je nu weet. Je kunt later terug.</p></div><button type="button" id="guideOtherLesson">Andere les</button><button type="button" id="guideOutline">Alle stappen</button></div>
+ <progress id="guideProgress" class="wi-guide-track" max="100" value="0" aria-label="Voortgang van de les"></progress>
+ <div id="guideInfo" class="wi-guide-page" hidden><div class="wi-guide-surface"><h2>Je les</h2><p>Geef de les een naam en beschrijf wat leerlingen aan het einde zelfstandig moeten kunnen.</p>
+ <div class="wi-guide-form"><div class="wi-guide-two"><label>Naam van de les<input id="guideTitle" autocomplete="off" placeholder="Bijvoorbeeld: Exponentiële groei"></label><label>Niveau<input id="guideLevel" autocomplete="off" placeholder="Bijvoorbeeld: 5 havo"></label></div><label>Wat kunnen leerlingen na de les zelfstandig?<textarea id="guideGoal" rows="3" placeholder="Schrijf hier het doel van je les"></textarea></label><div class="wi-guide-route"><label for="guideRoute">Opbouw</label><select id="guideRoute"><option value="own">Zelf samengesteld</option><option value="discover">Onderzoeken en verklaren</option><option value="explain">Uitleg en oefenen</option><option value="practice">Zelfstandig oefenen</option></select><button type="button" id="guideApplyRoute">Pas volgorde toe</button></div><div class="wi-guide-muted">Een andere opbouw verandert alleen de volgorde van je dia's, niet hun inhoud.</div></div></div></div>
+ <div id="guideSlide" class="wi-guide-page wi-guide-slide" hidden><div class="wi-guide-slide-meta" id="guideSlideMeta"></div><div id="guideSlideMount"></div><div class="wi-guide-slide-buttons"><div class="wi-guide-slide-control"><button id="guideAddSlide" type="button">+ Dia toevoegen</button><button id="guidePreviewSlide" type="button">Bekijk deze dia</button></div><div class="wi-guide-slide-control"><button id="guideDuplicateSlide" type="button">Kopieer dia</button><button id="guideMoveSlideUp" type="button" aria-label="Zet dia eerder" title="Zet dia eerder">↑</button><button id="guideMoveSlideDown" type="button" aria-label="Zet dia later" title="Zet dia later">↓</button><button id="guideRemoveSlide" type="button">Verwijder dia</button></div><button id="guideMoreFields" type="button" hidden>Meer velden voor deze dia</button></div></div>
+ <div id="guideNotes" class="wi-guide-page" hidden><div class="wi-guide-surface"><h2>Wat doen de leerling en de docent?</h2><p>Je vult hier de aanwijzingen voor één dia in. De tekst op de dia heb je zojuist gemaakt.</p><div class="wi-guide-form"><label>Lesfase<input id="guidePhase" placeholder="Bijvoorbeeld: onderzoeken"></label><label>Wat doen de leerlingen zelf?<textarea id="guideStudent" rows="3" placeholder="Wat gaan leerlingen maken, onderzoeken of uitleggen?"></textarea></label><label>Wat doe jij als docent?<textarea id="guideTeacher" rows="3" placeholder="Wat laat je zien, wanneer help je?"></textarea></label><label>Vlakverdeling voor deze dia<select id="guideLayout"><option value="inherit">Gebruik de lesinstelling</option><option value="single">Eén vlak</option><option value="equal">Twee gelijke vlakken</option><option value="left">Links 60%, rechts 40%</option><option value="right">Rechts 60%, links 40%</option></select></label><button type="button" id="guideNotesAdvanced">Bewerk overige velden van deze dia</button></div></div></div>
+ <div id="guideDesign" class="wi-guide-page" hidden><div class="wi-guide-surface"><h2>Kies de vormgeving</h2><p>De kleuren en opmaak gelden voor de hele les. Je kunt dit later nog aanpassen.</p><div class="wi-guide-choices"><button type="button" class="wi-guide-choice" data-guide-theme="editorial" aria-pressed="false"><strong>Rustig en licht</strong><span>Witte achtergrond en donkere tekst</span></button><button type="button" class="wi-guide-choice" data-guide-theme="board" aria-pressed="false"><strong>Donker bord</strong><span>Donkere achtergrond met lichte tekst</span></button></div><button type="button" id="guideDesignMore">Kleuren en sjabloon zelf aanpassen</button></div></div>
+ <div id="guideTools" class="wi-guide-page" hidden><div class="wi-guide-surface"><h2>Welke docenttools wil je gebruiken?</h2><p>Dit gereedschap verschijnt alleen tijdens het presenteren. Je kunt het ook later wijzigen.</p><div id="guideToolChoices" class="wi-guide-tools"></div></div></div>
+ <div id="guideReview" class="wi-guide-page" hidden><div class="wi-guide-surface"><h2>Loop je les nog één keer door</h2><p>Bekijk de volgorde en controleer je vragen, antwoorden en uitleg. Je kunt iedere dia opnieuw openen.</p><div id="guideReviewList" class="wi-guide-review"></div><p class="wi-guide-muted" style="margin-top:19px">WiHTML controleert of onderdelen zijn ingevuld, niet of de wiskunde of je didactische keuzes kloppen.</p><button id="guideReviewPreview" type="button">Bekijk de hele les</button></div></div>
+ <div id="guideResult" class="wi-guide-page" hidden><div class="wi-guide-complete"><div class="wi-guide-final"><div class="eyebrow">Je bent aan het einde</div><h2>Je HTML-les is klaar.</h2><p>Je hebt <strong id="guideResultCount"></strong> gemaakt. Bekijk eerst hoe de les werkt of download meteen de volledige interactieve HTML. Die kun je ook offline gebruiken.</p><div class="wi-guide-final-actions"><button type="button" id="guideResultPreview">Bekijk de HTML-les</button><button type="button" id="guideDownloadHTML">Download je volledige HTML-les</button><button type="button" id="guideDownloadJSON">Bewaar een bewerkbare kopie (JSON)</button></div><p class="wi-guide-muted" style="margin-top:18px">Je browser bewaart ook een lokaal concept. Het JSON-bestand kun je later weer openen om verder te werken.</p></div><div><div class="eyebrow">De volledige les</div><div id="guideResultList" class="wi-guide-final-list"></div></div></div></div>
+ <div class="wi-guide-foot"><button type="button" id="guidePrevious">← Vorige</button><small id="guideFootnote">Je gegevens worden lokaal bewaard.</small><div class="wi-guide-forward"><button type="button" class="primary" id="guideNext">Akkoord, volgende →</button></div></div>
+</section><nav class="rail"><div class="rail-head"><span class="eyebrow">Lesverloop</span><span id="total" class="hint"></span></div><div id="items" class="slide-list"></div><div class="rail-bottom"><button id="add">+ Lesdeel toevoegen</button><div class="rail-import"><label for="import">Upload JSON-lesinhoud</label><input type="file" accept=".json,application/json" id="import"><button id="jsonExample" class="small">Voorbeeld-JSON downloaden</button><button id="draftRestore" class="small" hidden>Herstel mijn laatste concept</button><p class="hint">Je concept wordt alleen in deze browser bewaard. Download JSON om het elders te gebruiken.</p></div></div></nav><section class="editor"><div class="eyebrow">Lesontwerp / Wiskunde</div><h1>Wat gaan leerlingen zelf ontdekken?</h1><p class="lede">Upload je lesinhoud als JSON, kies de opbouw en de vormgeving. WiHTML maakt er een interactieve HTML-les van.</p>
 
 <section class="design-studio" aria-label="Dia direct bewerken">
  <div class="design-heading"><div><span class="eyebrow">Direct bewerken</span><h2 id="designHeading">Bewerk deze dia</h2><p>Klik op de inhoud om die aan te passen. Bekijk deze dia om alle interacties en de volledige vormgeving te testen.</p></div><div class="design-heading-actions"><button id="quickAdd" class="wi-quick-add" type="button">+ Voeg een dia toe</button><button id="quickFocus" type="button" aria-pressed="false">Alleen dia</button><button id="designImport" type="button">Open JSON-bestand</button><button id="designPreview" class="design-play" type="button">Bekijk deze dia <span aria-hidden="true">↗</span></button></div></div>
@@ -514,6 +625,8 @@
  <label><input type="checkbox" data-feature="printing"> Printen</label>
  </div></details>
 </div><div class="editor-block"><div class="form-grid"><div class="field"><label for="title">Les</label><input id="title"></div><div class="field"><label for="level">Niveau</label><input id="level"></div></div><div class="field"><label for="goal">Wat kunnen leerlingen na afloop zelfstandig?</label><textarea id="goal" rows="2"></textarea></div><div class="section-head"><strong id="section-title">Lesdeel</strong><div class="mini-actions"><button class="small" id="up" title="Omhoog">↑</button><button class="small" id="down" title="Omlaag">↓</button><button class="small" id="remove">Verwijder</button></div></div><div id="fields"></div><div class="status" id="status" aria-live="polite"></div></div></details></section><aside class="side"><span class="eyebrow">Ontwerpcheck</span><h2>Wat vraagt deze les?</h2><p class="hint">Deze opmerkingen zijn bedoeld om je les te controleren. Ze zeggen niet of leerlingen geleerd hebben.</p><div id="review"></div><div class="note"><strong>Presentatie en tools</strong>De les gebruikt vaste 16:9-verhoudingen. Het kleine gereedschapspalet verschijnt over de dia en verandert de indeling niet.</div><div class="note"><strong>Bewaren</strong>Je kunt de les als JSON bewaren en later weer inlezen. Stemrondes blijven op deze browser opgeslagen.</div></aside></main>
+<dialog id="guideOutlineDialog" class="wi-guide-outline-dialog" aria-labelledby="guideOutlineTitle"><h2 id="guideOutlineTitle">Alle stappen van je les</h2><p class="hint">Kies een stap om iets terug te kijken of aan te passen.</p><div id="guideOutlineList" class="wi-guide-outline-list"></div><button type="button" id="guideOutlineClose">Sluiten</button></dialog>
+<dialog id="guideFieldsDialog" class="wi-guide-fields-dialog" aria-labelledby="guideFieldsTitle"><h2 id="guideFieldsTitle">Overige velden voor deze dia</h2><p class="hint">De uitgebreide velden horen bij dezelfde dia. Hierna ga je verder waar je was.</p><div id="guideFieldsMount"></div><button type="button" id="guideFieldsClose">Terug naar de les</button></dialog>
 <dialog id="quickInsertDialog" class="wi-insert-dialog" aria-labelledby="quickInsertTitle">
 <div class="wi-insert-head"><div><div class="eyebrow">Dia toevoegen</div><h2 id="quickInsertTitle">Wat wil je in deze dia doen?</h2><p>Je kunt alles hierna rechtstreeks op de dia aanpassen.</p></div><button type="button" id="quickInsertClose" aria-label="Sluit dia toevoegen">Sluiten</button></div>
 <div class="wi-insert-grid">
@@ -561,7 +674,7 @@
 <section class="wi-start-card wi-start-card-featured"><h3>Verder met een concept</h3><p>Een lokaal concept blijft in deze browser beschikbaar. Download JSON voor een eigen kopie.</p><button id="startRestore" type="button" hidden>Herstel mijn concept</button><span id="startNoDraft" class="hint">Er is nog geen bewaard concept.</span></section>
 </div>
 <div id="startPending" class="wi-start-card" hidden style="margin-top:14px"><h3>Les uit de bibliotheek</h3><p id="startPendingText">Er staat een voorbeeld voor je klaar.</p><button type="button" class="primary" id="startSelectedLesson">Open dit voorbeeld</button></div>
-<p class="wi-start-hint">Je les staat niet op onze server. Gebruik ‘Bewaar lesbestand’ om een JSON-kopie te downloaden.</p>
+<p class="wi-start-hint">Je les staat niet op onze server. Gebruik ‘Bewaar lesbestand’ om een JSON-kopie te downloaden.</p><button type="button" id="startBackToLesson" hidden>Terug naar mijn les</button>
 </dialog>
 <div id="viewer" class="viewer" role="dialog" aria-label="Presentatie" aria-modal="true"><div class="deck-topbar"><div class="deck-brand"><span class="deck-logo">×2</span><strong id="deckTitle">Wiskundeles</strong><small id="deckLevel">Wiskunde</small></div><div class="deck-buttons"><span id="deckPhase">Voorspellen</span><button id="deckOverview" type="button">Dia-overzicht</button><button id="deckTools" type="button">Docenttools</button></div></div><div class="deck-progress"><div id="deckProgress"></div></div><article class="slide"><div id="slidecontent"></div><svg class="draw" id="draw" viewBox="0 0 1200 675" preserveAspectRatio="none"></svg><div class="slide-footer" id="slidefooter"></div></article><div class="viewer-nav"><button id="prev" aria-label="Vorige dia">←</button><span id="position"></span><button id="next" aria-label="Volgende dia">→</button><button id="close" aria-label="Sluit presentatie">Sluiten</button></div><div class="floating"><div id="toolpop" class="toolpop"><button data-tool="pen">Pen aan / uit</button><button data-tool="marker">Markeerstift</button><button data-tool="inkColor">Kleur kiezen</button><button data-tool="eraser">Gum (lijn aanraken)</button><button data-tool="stopPen">Pen wegleggen</button><button data-tool="undo">Laatste lijn weg</button><button data-tool="clear">Wis deze dia</button><button data-tool="vote">Stemmen tellen</button><button data-tool="compare">Stemrondes vergelijken</button><button data-tool="reveal">Antwoord tonen</button><button data-tool="timer">Aftelklok</button><button data-tool="stopwatch">Stopwatch</button><button data-tool="notes">Docentnotities</button><button data-tool="overview">Dia-overzicht</button><button data-tool="names">Leerling kiezen</button><button data-tool="fullscreen">Volledig scherm</button><button data-tool="presenter">Apart docentvenster</button><button data-tool="print">Print les</button><button data-tool="fit">Passend schalen</button><button data-tool="compact">Compacte dia</button><button data-tool="resetView">Herstel weergave</button><button data-tool="white">Wit scherm</button><button data-tool="spotlight">Spotlicht</button><button data-tool="curtain">Afdekken</button><button data-tool="black">Zwart scherm</button></div><button id="toolbtn" aria-label="Open docentgereedschap">✎</button></div></div>
 <script>
@@ -905,6 +1018,7 @@ function setWorkMode(mode,persist=true){
  $('add').textContent=workMode==='quick'?'+ Kies een dia':'+ Lesdeel toevoegen';
  if(workMode==='studio')setFocusMode(false);
  if(persist)try{localStorage.setItem(WIHTML_MODE_KEY,workMode)}catch(e){}
+ if(guideReady)guideRender();
 }
 function savedWorkMode(){
  try{return localStorage.getItem(WIHTML_MODE_KEY)==='studio'?'studio':'quick'}catch(e){return 'quick'}
@@ -928,9 +1042,215 @@ document.querySelectorAll('[data-quick-type]').forEach(button=>button.onclick=()
  initDesignType(type);
  renderEditor();
  $('quickInsertDialog').close();
+ if(guideReady)guideShow({kind:'slide',id:slide.id});
  const title=$('designCanvas').querySelector('[data-design-edit="title"]');
  if(title){title.focus();title.scrollIntoView({block:'nearest'})}
  msg('Dia toegevoegd. Je kunt de tekst direct aanpassen.');
+});
+
+
+/* Eén scherm per stap. De bestaande les, editor en export blijven dezelfde gegevens gebruiken. */
+let guideReady=false,guidePage={kind:'info'};
+const GUIDE_LABELS={drawing:'Pen en markeerstift',voting:'Stemmen en vergelijken',clock:'Timer en stopwatch',focus:'Spotlicht en afdekken',picker:'Leerling kiezen',notes:'Docentnotities',printing:'Printen'};
+function guidePages(){
+ const pages=[{kind:'info',name:'Je les'}];
+ for(const slide of lesson.slides){
+  pages.push({kind:'slide',id:slide.id,name:slide.title||'Nieuwe dia'});
+  if(workMode==='studio')pages.push({kind:'notes',id:slide.id,name:'Leerling en docent'});
+ }
+ pages.push({kind:'design',name:'Vormgeving'});
+ if(workMode==='studio')pages.push({kind:'tools',name:'Docenttools'});
+ pages.push({kind:'review',name:'Controleren'},{kind:'result',name:'Je HTML-les'});
+ return pages;
+}
+function guideSame(a,b){return a.kind===b.kind&&(!a.id||a.id===b.id)}
+function guideCurrentIndex(pages){return Math.max(0,pages.findIndex(page=>guideSame(page,guidePage)))}
+function guideUpdateInfo(){
+ $('title').value=$('guideTitle').value;
+ $('level').value=$('guideLevel').value;
+ $('goal').value=$('guideGoal').value;
+ save();scheduleDraftSave();
+}
+function guideUpdateNotes(){
+ const slide=lesson.slides.find(s=>s.id===guidePage.id);if(!slide)return;
+ slide.phase=$('guidePhase').value;
+ slide.student=$('guideStudent').value;
+ slide.teacher=$('guideTeacher').value;
+ slide.layout=$('guideLayout').value;
+ syncDesignForm(slide);
+ if($('f-layout'))$('f-layout').value=slide.layout;
+ renderDesigner();scheduleDraftSave();
+}
+function guideSaveStep(){
+ if(guidePage.kind==='info')guideUpdateInfo();
+ else if(guidePage.kind==='notes')guideUpdateNotes();
+ else save();
+}
+function guideShow(page){
+ if(!guideReady)return;
+ const steps=guidePages();
+ const found=steps.find(p=>guideSame(p,page));
+ guidePage=found||steps[0];
+ const slide=lesson.slides.find(s=>s.id===guidePage.id);
+ if(slide){
+  const i=lesson.slides.indexOf(slide);
+  if(i!==selected){selected=i;renderEditor()}
+ }
+ guideRender();
+}
+function guideMove(delta){
+ guideSaveStep();
+ const pages=guidePages(),position=guideCurrentIndex(pages),next=pages[position+delta];
+ if(next)guideShow(next);
+}
+function guideRender(){
+ if(!guideReady)return;
+ const steps=guidePages();
+ let index=steps.findIndex(p=>guideSame(p,guidePage));
+ if(index<0){
+  guidePage={kind:'slide',id:lesson.slides[selected]?.id};
+  index=steps.findIndex(p=>guideSame(p,guidePage));
+  if(index<0){guidePage=steps[0];index=0}
+ }
+ const slide=lesson.slides.find(s=>s.id===guidePage.id);
+ const pageNames={info:'Vertel iets over je les',slide:'Bewerk dia '+(selected+1),notes:'Leerling en docent bij dia '+(selected+1),design:'Kies de vormgeving',tools:'Kies je docenttools',review:'Controleer je les',result:'Je volledige HTML-les'};
+ const pageHelp={
+  info:'Vul in wat je nu weet. Je kunt altijd terug.',
+  slide:'Klik op de dia om de inhoud aan te passen. Werk aan één dia tegelijk.',
+  notes:'Bedenk wat leerlingen zelf doen en welke hulp je geeft. Deze stap hoort bij de gekozen dia.',
+  design:'Kies hoe je hele les eruitziet. De inhoud verandert niet.',
+  tools:'Geef aan welk gereedschap je tijdens het lesgeven nodig hebt.',
+  review:'Blader nog eens door je dia’s. Pas aan wat je wilt veranderen.',
+  result:'Je kunt de les bekijken, downloaden of later verder bewerken.'
+ };
+ const kind=guidePage.kind;
+ $('guideCounter').textContent='Stap '+(index+1)+' van '+steps.length;
+ $('guideHeading').textContent=pageNames[kind];
+ $('guideHelp').textContent=pageHelp[kind];
+ $('guideProgress').value=Math.round((index+1)/steps.length*100);
+ for(const section of ['Info','Slide','Notes','Design','Tools','Review','Result'])$('guide'+section).hidden=section.toLowerCase()!==kind;
+ $('guidePrevious').disabled=index===0;
+ $('guideNext').hidden=kind==='result';
+ $('guideNext').textContent=index===steps.length-2?'Akkoord, bekijk je HTML-les →':'Akkoord, volgende →';
+ $('guideFootnote').textContent=kind==='slide'?'Dia '+(selected+1)+' van '+lesson.slides.length:'Wijzigingen worden op dit apparaat bewaard';
+ if(kind==='info'){
+  $('guideTitle').value=lesson.title||'';
+  $('guideLevel').value=lesson.level||'';
+  $('guideGoal').value=lesson.goal||'';
+  $('guideRoute').value=lesson.route||'own';
+ }
+ if(kind==='slide'){
+  $('guideSlideMeta').textContent=(slide?.phase||'Lesdeel')+' · dia '+(selected+1)+' van '+lesson.slides.length;
+  $('guideMoreFields').hidden=workMode!=='studio';
+  $('guideMoveSlideUp').disabled=selected===0;
+  $('guideMoveSlideDown').disabled=selected===lesson.slides.length-1;
+  $('guideRemoveSlide').disabled=lesson.slides.length===1;
+ }
+ if(kind==='notes'&&slide){
+  $('guidePhase').value=slide.phase||'';
+  $('guideStudent').value=slide.student||'';
+  $('guideTeacher').value=slide.teacher||'';
+  $('guideLayout').value=slide.layout||'inherit';
+ }
+ if(kind==='design'){
+  for(const b of document.querySelectorAll('[data-guide-theme]'))
+   b.setAttribute('aria-pressed',String(lesson.template?.name===TEMPLATE_PRESETS[b.dataset.guideTheme]?.name));
+ }
+ if(kind==='tools'){
+  $('guideToolChoices').innerHTML=Object.entries(GUIDE_LABELS).map(([id,label])=>'<label><input type="checkbox" data-guide-feature="'+id+'" '+(lesson.features[id]!==false?'checked':'')+'>'+label+'</label>').join('');
+ }
+ if(kind==='review'){
+  review();
+  const notices=[...$('review').querySelectorAll('.review-item')].map(e=>e.textContent);
+  $('guideReviewList').innerHTML=lesson.slides.map((s,i)=>'<div class="wi-guide-check"><div><strong>Dia '+(i+1)+': '+esc(s.title||'Zonder titel')+'</strong><div class="wi-guide-muted">'+esc(s.phase||'Lesdeel')+'</div></div><button type="button" data-guide-slide="'+esc(s.id)+'">Bewerk dia</button></div>').join('')+(notices.length?'<details class="wi-guide-review-notes"><summary>'+notices.length+' aandachtspunt'+(notices.length===1?'':'en')+' bekijken</summary><div>'+notices.map(t=>'<div class="wi-guide-check wi-guide-warning">'+esc(t)+'</div>').join('')+'</div></details>':'');
+ }
+ if(kind==='result'){
+  $('guideResultCount').textContent=lesson.slides.length+' '+(lesson.slides.length===1?'dia':'dia’s');
+  $('guideResultList').innerHTML=lesson.slides.map((s,i)=>'<button type="button" class="wi-guide-final-item" data-guide-slide="'+esc(s.id)+'"><span>'+String(i+1).padStart(2,'0')+'</span><strong>'+esc(s.title||'Nieuwe dia')+'<small class="wi-guide-muted">'+esc(s.phase||'')+'</small></strong></button>').join('');
+ }
+ window.scrollTo({top:0,behavior:'instant'});
+}
+function guideOpenExtra(){
+ guideSaveStep();
+ $('advancedFields').open=true;
+ $('guideFieldsMount').append($('advancedFields'));
+ $('guideFieldsDialog').showModal();
+}
+function guideCloseExtra(){
+ $('guideFieldsDialog').close();
+}
+$('guideFieldsDialog').addEventListener('close',()=>{
+ document.querySelector('.editor').append($('advancedFields'));
+ if(guideReady){save();renderDesigner();scheduleDraftSave()}
+});
+$('guideFieldsClose').onclick=guideCloseExtra;
+$('guideMoreFields').onclick=guideOpenExtra;
+$('guideNotesAdvanced').onclick=guideOpenExtra;
+$('guidePrevious').onclick=()=>guideMove(-1);
+$('guideNext').onclick=()=>guideMove(1);
+$('guideAddSlide').onclick=()=>openQuickInsert();
+$('guidePreviewSlide').onclick=()=>{$('designPreview').click()};
+$('guideDuplicateSlide').onclick=()=>{$('designCopy').click();guideShow({kind:'slide',id:lesson.slides[selected].id})};
+$('guideMoveSlideUp').onclick=()=>{$('designMoveUp').click();guideShow({kind:'slide',id:lesson.slides[selected].id})};
+$('guideMoveSlideDown').onclick=()=>{$('designMoveDown').click();guideShow({kind:'slide',id:lesson.slides[selected].id})};
+$('guideRemoveSlide').onclick=()=>{$('remove').click();guideShow({kind:'slide',id:lesson.slides[selected].id})};
+$('guideOtherLesson').onclick=()=>{
+ guideSaveStep();
+ $('startBackToLesson').hidden=false;
+ $('startRestore').hidden=!draftAvailable();
+ $('startNoDraft').hidden=draftAvailable();
+ $('startDialog').showModal();
+};
+$('startBackToLesson').onclick=()=>{
+ $('startDialog').close();
+ $('startBackToLesson').hidden=true;
+};
+$('guideOutline').onclick=()=>{
+ const pages=guidePages();
+ $('guideOutlineList').innerHTML=pages.map((p,i)=>'<button type="button" data-guide-index="'+i+'" '+(guideSame(p,guidePage)?'aria-current="step"':'')+'><span class="wi-guide-counter">'+String(i+1).padStart(2,'0')+'</span>'+esc(p.name)+'</button>').join('');
+ $('guideOutlineDialog').showModal();
+};
+$('guideOutlineList').onclick=e=>{
+ const button=e.target.closest('[data-guide-index]');if(!button)return;
+ const target=guidePages()[Number(button.dataset.guideIndex)];
+ guideSaveStep();$('guideOutlineDialog').close();if(target)guideShow(target);
+};
+$('guideOutlineClose').onclick=()=>$('guideOutlineDialog').close();
+$('guideReviewList').onclick=e=>{
+ const button=e.target.closest('[data-guide-slide]');if(!button)return;
+ guideSaveStep();guideShow({kind:'slide',id:button.dataset.guideSlide});
+};
+$('guideResultList').onclick=e=>{
+ const button=e.target.closest('[data-guide-slide]');if(!button)return;
+ guideSaveStep();guideShow({kind:'slide',id:button.dataset.guideSlide});
+};
+for(const id of ['guideTitle','guideLevel','guideGoal'])$(id).addEventListener('input',guideUpdateInfo);
+$('guideApplyRoute').onclick=()=>{
+ guideUpdateInfo();$('routePreset').value=$('guideRoute').value;
+ $('applyRoute').click();guideShow({kind:'info'});
+};
+for(const id of ['guidePhase','guideStudent','guideTeacher','guideLayout'])$(id).addEventListener('input',guideUpdateNotes);
+document.querySelectorAll('[data-guide-theme]').forEach(b=>b.onclick=()=>{
+ lesson.template=deep(TEMPLATE_PRESETS[b.dataset.guideTheme]);
+ applyTemplate();renderDesigner();scheduleDraftSave();guideRender();
+});
+$('guideDesignMore').onclick=()=>makeTemplatePanel();
+$('guideToolChoices').onchange=e=>{
+ const input=e.target.closest('[data-guide-feature]');if(!input)return;
+ const original=document.querySelector('[data-feature="'+input.dataset.guideFeature+'"]');
+ if(original){original.checked=input.checked;original.dispatchEvent(new Event('change',{bubbles:true}))}
+};
+$('guideReviewPreview').onclick=()=>$('preview').click();
+$('guideResultPreview').onclick=()=>$('preview').click();
+$('guideDownloadHTML').onclick=()=>$('export').click();
+$('guideDownloadJSON').onclick=()=>$('save').click();
+window.addEventListener('load',()=>{
+ if(document.documentElement.classList.contains('standalone'))return;
+ document.body.classList.add('wi-guide-active');
+ $('guideFlow').hidden=false;
+ guideReady=true;
+ $('guideSlideMount').append(document.querySelector('.design-studio'));
+ guideShow({kind:'info'});
 });
 
 const WIHTML_DRAFT_KEY='wihtml:docentstudio:concept:v1';
@@ -963,7 +1283,7 @@ function restoreDraft(){
   const next=record.lesson;next.template=checkedTemplate(next.template||TEMPLATE_PRESETS.editorial);
   lesson=next;selected=0;current=0;tableRevealed=0;compareRevealed=0;practiceState={};
   quizSelections={};quizAnswersVisible=false;errorCorrectionVisible=false;
-  applyTemplate();renderEditor();if($('startDialog').open)$('startDialog').close();msg('Je concept is hersteld. Download JSON voor een eigen kopie.');
+  applyTemplate();renderEditor();if(guideReady)guideShow({kind:'info'});if($('startDialog').open)$('startDialog').close();msg('Je concept is hersteld. Download JSON voor een eigen kopie.');
  }catch(e){msg('Het concept kon niet worden geopend: '+e.message)}
 }
 
@@ -1209,6 +1529,7 @@ function renderEditor(){
  renderDesigner();
  bindStoryBoard();
  if(draftTrackingReady)scheduleDraftSave();
+ if(guideReady)guideRender();
 }
 function review(){
  const notes=[];
@@ -1236,6 +1557,7 @@ function startBlankLesson(route){
  lesson={id:'les-'+Date.now()+'-'+Math.random().toString(36).slice(2,8),title:'Nieuwe wiskundeles',level:'Wiskunde',goal:'',route:chosen,layout:'single',features:{...FEATURE_DEFAULTS},template:deep(TEMPLATE_PRESETS.editorial),slides};
  selected=0;current=0;paths={};rounds={};revealed=false;tableRevealed=0;compareRevealed=0;practiceState={};quizSelections={};quizAnswersVisible=false;errorCorrectionVisible=false;
  applyTemplate();renderEditor();
+ if(guideReady)guideShow({kind:'info'});
  if($('startDialog').open)$('startDialog').close();
  msg('Nieuwe les geopend. Pas de dia aan of voeg lesdelen toe.');
 }
@@ -1463,7 +1785,7 @@ $("import").onchange=async e=>{
   doc.slides=reorderLessonSlides(doc.slides,doc.route);
   lesson=doc;selected=0;current=0;paths={};rounds={};revealed=false;
   tableRevealed=0;compareRevealed=0;practiceState={};quizSelections={};quizAnswersVisible=false;errorCorrectionVisible=false;
-  applyTemplate();renderEditor();if($('startDialog').open)$('startDialog').close();
+  applyTemplate();renderEditor();if(guideReady)guideShow({kind:'info'});if($('startDialog').open)$('startDialog').close();
   msg("Ingelezen: "+lesson.slides.length+" lesdelen. Kies de vormgeving en functies, bekijk daarna de les of download HTML.");
  }catch(err){msg("JSON niet ingelezen: "+err.message)}
  finally{e.target.value=""}
@@ -1485,6 +1807,7 @@ async function loadLibraryLesson(key,showPreview=false){
  lesson=next;selected=0;current=0;paths={};rounds={};revealed=false;
  tableRevealed=0;compareRevealed=0;practiceState={};quizSelections={};quizAnswersVisible=false;errorCorrectionVisible=false;
  applyTemplate();renderEditor();
+ if(guideReady)guideShow({kind:'info'});
  if($('startDialog').open)$('startDialog').close();
  msg('Voorbeeld geopend als eigen les. Bewaar JSON om later verder te werken.');
  if(showPreview)$('preview').click();
