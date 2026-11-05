@@ -1090,7 +1090,7 @@ document.querySelectorAll('[data-quick-type]').forEach(button=>button.onclick=()
 
 
 /* Begeleide lesroute: de presentatiecode en de lesgegevens blijven ongewijzigd. */
-const WI_GUIDE_POS_KEY='wihtml:guide:positie:v2';
+/* De laatst bezochte stap wordt samen met de les opgeslagen. */
 let guideReady=false,guidePage={kind:'title'};
 const GUIDE_LABELS={drawing:'Pen en markeerstift',voting:'Stemmen en vergelijken',clock:'Timer en stopwatch',focus:'Spotlicht en afdekken',picker:'Leerling kiezen',notes:'Docentnotities',printing:'Printen'};
 const GUIDE_TYPE_HELP={
@@ -1134,16 +1134,19 @@ function guidePages(){
 function guideSame(a,b){return !!a&&!!b&&a.kind===b.kind&&(a.id||'')===(b.id||'')&&(a.step||'')===(b.step||'')}
 function guideCurrentIndex(pages){return Math.max(0,pages.findIndex(page=>guideSame(page,guidePage)))}
 function guideRemember(){
+ if(document.documentElement.classList.contains('standalone'))return;
  try{
-  if(!document.documentElement.classList.contains('standalone')){
-   localStorage.setItem(WI_GUIDE_POS_KEY,JSON.stringify({lessonId:lesson.id,page:guidePage}));
-  }
- }catch(e){}
+  clearTimeout(draftSaveTimer);
+  const record=JSON.stringify({savedAt:Date.now(),lesson,guidePage});
+  if(record.length>900000){msg('Concept te groot voor browseropslag. Download je lesbestand.');return}
+  localStorage.setItem(WIHTML_DRAFT_KEY,record);
+  refreshDraftButton();
+ }catch(e){msg('Opslaan in browser niet mogelijk. Download je lesbestand.')}
 }
 function guideRemembered(lessonData){
  try{
-  const record=JSON.parse(localStorage.getItem(WI_GUIDE_POS_KEY)||'null');
-  return record?.lessonId===lessonData.id ? record.page : null;
+  const record=JSON.parse(localStorage.getItem(WIHTML_DRAFT_KEY)||'null');
+  return record?.lesson?.id===lessonData.id ? record.guidePage||null : null;
  }catch(e){return null}
 }
 function guideUpdateInfo(){
@@ -1390,7 +1393,7 @@ function scheduleDraftSave(){
  clearTimeout(draftSaveTimer);
  draftSaveTimer=setTimeout(()=>{
   try{
-   const value=JSON.stringify({savedAt:Date.now(),lesson});
+   const value=JSON.stringify({savedAt:Date.now(),lesson,guidePage:guideReady?guidePage:null});
    if(value.length>900000){$('designSaved').textContent='Concept te groot voor browseropslag. Download je lesbestand.';return}
    localStorage.setItem(WIHTML_DRAFT_KEY,value);
    $('designSaved').textContent='Concept bewaard in deze browser';
