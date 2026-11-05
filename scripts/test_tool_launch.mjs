@@ -27,7 +27,7 @@ try{
  const fixture=await browser.newPage();fixture.on('pageerror',e=>errors.push(e.message));
  await fixture.route('https://github.com/**',r=>r.fulfill({contentType:'text/html',body:'<!doctype html><html><head><title>E-AI-MODEL/wihtml</title></head><body><main><a href="/E-AI-MODEL/wihtml/blob/main/README.md">README.md</a></main></body></html>'}));
  await fixture.goto('https://github.com/E-AI-MODEL/wihtml');await fixture.evaluate(code);
- await fixture.locator('#__eaimesh_host__').waitFor();await fixture.screenshot({path:join(out,'eaimesh-configuratie.png')});await fixture.close();
+ await fixture.locator('#__eaimesh_host__ .em').waitFor();await fixture.screenshot({path:join(out,'eaimesh-configuratie.png')});await fixture.close();
  await p.goto(base+'/tools/eaistudio/');await p.locator('main a[href="/tools/eaistudio/studio/"]').click();
  await p.locator('[data-key="meta.title"]').waitFor();
  await p.locator('[data-key="meta.title"]').fill('Mijn presentatie\nMet interactie');
