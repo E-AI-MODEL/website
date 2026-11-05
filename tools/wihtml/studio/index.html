@@ -390,6 +390,23 @@
  .design-option .design-edit-text{font-size:12px;line-height:1.25}
  .design-paper .design-title{font-size:clamp(20px,4.3vw,30px)}
 }
+
+/* Startkeuze blijft apart van de editor en de presentatieweergave. */
+.wi-start-dialog{width:min(780px,calc(100vw - 28px));max-height:90vh;overflow:auto;border:1px solid var(--line);border-radius:17px;padding:clamp(20px,4vw,38px);background:var(--paper);color:var(--ink);box-shadow:0 24px 90px #0004}
+.wi-start-dialog::backdrop{background:rgba(11,24,19,.67)}
+.wi-start-dialog h2{font:normal clamp(26px,3vw,39px)/1.15 Georgia,serif;margin:10px 0}
+.wi-start-dialog p{color:var(--muted);margin:0 0 16px}
+.wi-start-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px;margin-top:22px}
+.wi-start-card{padding:20px;border:1px solid var(--line);border-radius:12px;background:#fff}
+.wi-start-card h3{font-size:19px;margin:0 0 6px}
+.wi-start-card p{font-size:14px;line-height:1.55}
+.wi-start-card button,.wi-start-card a{display:inline-block;font-size:14px;font-weight:700}
+.wi-start-card a{padding:9px 0;color:var(--accent)}
+.wi-start-card select{width:100%;border:1px solid var(--line);border-radius:8px;background:#fff;padding:9px;margin:5px 0 12px}
+.wi-start-card-featured{background:#eaf2ee}
+.wi-start-card-featured p{color:#365c4e}
+.wi-start-hint{font-size:13px;margin-top:18px!important}
+@media(max-width:650px){.wi-start-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -452,6 +469,19 @@
 <div id="templateError" role="status" aria-live="polite"></div>
 <div class="template-actions"><button id="templatePreview">Voorbeeld vernieuwen</button><button id="templateImport">Sjabloon importeren</button><input id="templateFile" class="hide" type="file" accept=".json,.html"><button id="templateDownload">Download HTML-sjabloon</button><button id="templateDownloadJSON">Bewaar als JSON</button><button id="templateApply" class="primary">Gebruik dit sjabloon</button></div>
 </div><div class="template-preview-area"><div class="eyebrow">Voorvertoning</div><iframe id="templateFrame" sandbox="" title="Voorbeeld van het HTML-sjabloon"></iframe><p class="hint">De voorvertoning voert geen scripts uit. In de presentatie blijven de docenttools als overlays bovenop het sjabloon beschikbaar.</p></div></div>
+</dialog>
+<dialog id="startDialog" class="wi-start-dialog" aria-labelledby="wiStartTitle">
+<div class="eyebrow">WiHTML · Docentstudio</div>
+<h2 id="wiStartTitle">Waar wil je mee beginnen?</h2>
+<p>Kies een startpunt. Je kunt daarna alles in de les aanpassen.</p>
+<div class="wi-start-grid">
+<section class="wi-start-card"><h3>Nieuwe les</h3><p>Begin met één lege dia of kies een opbouw met oefen- en onderzoeksvragen.</p><label for="startRoute" class="hint">Opbouw van de les</label><select id="startRoute"><option value="own">Leeg beginnen</option><option value="discover">Onderzoeken en verklaren</option><option value="explain">Uitleg en oefenen</option><option value="practice">Zelfstandig oefenen</option></select><button class="primary" type="button" id="startNew">Maak een nieuwe les</button></section>
+<section class="wi-start-card"><h3>Eigen JSON-bestand</h3><p>Open je bestaande WiHTML-les of JSON met lesinhoud, vragen en opgaven.</p><button type="button" id="startImport">Open mijn bestand</button></section>
+<section class="wi-start-card"><h3>Lesbibliotheek</h3><p>Bekijk voorbeelden per onderwerp en leerjaar. Maak daarna je eigen kopie.</p><a href="/tools/wihtml/bibliotheek/">Bekijk de bibliotheek</a></section>
+<section class="wi-start-card wi-start-card-featured"><h3>Verder met een concept</h3><p>Een lokaal concept blijft in deze browser beschikbaar. Download JSON voor een eigen kopie.</p><button id="startRestore" type="button" hidden>Herstel mijn concept</button><span id="startNoDraft" class="hint">Er is nog geen bewaard concept.</span></section>
+</div>
+<div id="startPending" class="wi-start-card" hidden style="margin-top:14px"><h3>Les uit de bibliotheek</h3><p id="startPendingText">Er staat een voorbeeld voor je klaar.</p><button type="button" class="primary" id="startSelectedLesson">Open dit voorbeeld</button></div>
+<p class="wi-start-hint">Je les staat niet op onze server. Gebruik ‘Bewaar lesbestand’ om een JSON-kopie te downloaden.</p>
 </dialog>
 <div id="viewer" class="viewer" role="dialog" aria-label="Presentatie" aria-modal="true"><div class="deck-topbar"><div class="deck-brand"><span class="deck-logo">×2</span><strong id="deckTitle">Wiskundeles</strong><small id="deckLevel">Wiskunde</small></div><div class="deck-buttons"><span id="deckPhase">Voorspellen</span><button id="deckOverview" type="button">Dia-overzicht</button><button id="deckTools" type="button">Docenttools</button></div></div><div class="deck-progress"><div id="deckProgress"></div></div><article class="slide"><div id="slidecontent"></div><svg class="draw" id="draw" viewBox="0 0 1200 675" preserveAspectRatio="none"></svg><div class="slide-footer" id="slidefooter"></div></article><div class="viewer-nav"><button id="prev" aria-label="Vorige dia">←</button><span id="position"></span><button id="next" aria-label="Volgende dia">→</button><button id="close" aria-label="Sluit presentatie">Sluiten</button></div><div class="floating"><div id="toolpop" class="toolpop"><button data-tool="pen">Pen aan / uit</button><button data-tool="marker">Markeerstift</button><button data-tool="inkColor">Kleur kiezen</button><button data-tool="eraser">Gum (lijn aanraken)</button><button data-tool="stopPen">Pen wegleggen</button><button data-tool="undo">Laatste lijn weg</button><button data-tool="clear">Wis deze dia</button><button data-tool="vote">Stemmen tellen</button><button data-tool="compare">Stemrondes vergelijken</button><button data-tool="reveal">Antwoord tonen</button><button data-tool="timer">Aftelklok</button><button data-tool="stopwatch">Stopwatch</button><button data-tool="notes">Docentnotities</button><button data-tool="overview">Dia-overzicht</button><button data-tool="names">Leerling kiezen</button><button data-tool="fullscreen">Volledig scherm</button><button data-tool="presenter">Apart docentvenster</button><button data-tool="print">Print les</button><button data-tool="fit">Passend schalen</button><button data-tool="compact">Compacte dia</button><button data-tool="resetView">Herstel weergave</button><button data-tool="white">Wit scherm</button><button data-tool="spotlight">Spotlicht</button><button data-tool="curtain">Afdekken</button><button data-tool="black">Zwart scherm</button></div><button id="toolbtn" aria-label="Open docentgereedschap">✎</button></div></div>
 <script>
@@ -808,7 +838,7 @@ function restoreDraft(){
   const next=record.lesson;next.template=checkedTemplate(next.template||TEMPLATE_PRESETS.editorial);
   lesson=next;selected=0;current=0;tableRevealed=0;compareRevealed=0;practiceState={};
   quizSelections={};quizAnswersVisible=false;errorCorrectionVisible=false;
-  applyTemplate();renderEditor();msg('Je concept is hersteld. Download JSON voor een eigen kopie.');
+  applyTemplate();renderEditor();if($('startDialog').open)$('startDialog').close();msg('Je concept is hersteld. Download JSON voor een eigen kopie.');
  }catch(e){msg('Het concept kon niet worden geopend: '+e.message)}
 }
 
@@ -1075,15 +1105,22 @@ function review(){
 }
 
 
+function startBlankLesson(route){
+ const chosen=ROUTE_TYPES[route]?route:'own';
+ const slides=chosen==='own'?[{id:'deel-'+Date.now(),type:'text',phase:'Start',title:'Nieuwe dia',prompt:'',body:'',student:'',teacher:'',layout:'inherit'}]:ROUTES[chosen].map(newRouteSlide);
+ lesson={id:'les-'+Date.now()+'-'+Math.random().toString(36).slice(2,8),title:'Nieuwe wiskundeles',level:'Wiskunde',goal:'',route:chosen,layout:'single',features:{...FEATURE_DEFAULTS},template:deep(TEMPLATE_PRESETS.editorial),slides};
+ selected=0;current=0;paths={};rounds={};revealed=false;tableRevealed=0;compareRevealed=0;practiceState={};quizSelections={};quizAnswersVisible=false;errorCorrectionVisible=false;
+ applyTemplate();renderEditor();
+ if($('startDialog').open)$('startDialog').close();
+ msg('Nieuwe les geopend. Pas de dia aan of voeg lesdelen toe.');
+}
+$('startNew').onclick=()=>startBlankLesson($('startRoute').value);
+$('startImport').onclick=()=>$('import').click();
+$('startRestore').onclick=restoreDraft;
+$('startDialog').addEventListener('cancel',e=>e.preventDefault());
 $("newLesson").onclick=()=>{
- if(!confirm("Een nieuwe les starten? Bewaar eerst het huidige JSON-lesbestand als je verder wilt werken."))return;
- const route=$("routePreset").value,selectedRoute=ROUTES[route]||ROUTES.discover;
- lesson={id:"les-"+Date.now()+"-"+Math.random().toString(36).slice(2,8),title:"Nieuwe wiskundeles",level:"5 havo",goal:"",
-  route:ROUTE_TYPES[route]?route:"own",layout:$("defaultLayout").value,
-  features:Object.fromEntries([...document.querySelectorAll("[data-feature]")].map(el=>[el.dataset.feature,el.checked])),
-  template:deep(TEMPLATE_PRESETS.editorial),slides:selectedRoute.map(newRouteSlide)};
- selected=0;current=0;paths={};rounds={};tableRevealed=0;compareRevealed=0;practiceState={};quizSelections={};quizAnswersVisible=false;errorCorrectionVisible=false;
- applyTemplate();renderEditor();msg("Nieuwe les gestart met de gekozen opzet. Vul de inhoud aan.");
+ if(!confirm("Een nieuwe les starten? Download eerst je huidige JSON-lesbestand als je dit later nodig hebt."))return;
+ startBlankLesson($("routePreset").value);
 };
 
 $("add").onclick=()=>{save();lesson.slides.splice(selected+1,0,{id:"deel-"+Date.now(),type:"text",phase:"Oefenen",title:"Nieuw lesdeel",prompt:"",body:"",student:"",teacher:""});selected++;renderEditor()};
@@ -1301,12 +1338,58 @@ $("import").onchange=async e=>{
   doc.slides=reorderLessonSlides(doc.slides,doc.route);
   lesson=doc;selected=0;current=0;paths={};rounds={};revealed=false;
   tableRevealed=0;compareRevealed=0;practiceState={};quizSelections={};quizAnswersVisible=false;errorCorrectionVisible=false;
-  applyTemplate();renderEditor();
+  applyTemplate();renderEditor();if($('startDialog').open)$('startDialog').close();
   msg("Ingelezen: "+lesson.slides.length+" lesdelen. Kies de vormgeving en functies, bekijk daarna de les of download HTML.");
  }catch(err){msg("JSON niet ingelezen: "+err.message)}
  finally{e.target.value=""}
 };
 
+
+const WIHTML_LIBRARY_FILES={
+ groeifactor:'/tools/wihtml/voorbeeld-lesinhoud.json',
+ lineair:'/tools/wihtml/bibliotheek/lineaire-verbanden.json',
+ kansen:'/tools/wihtml/bibliotheek/kansen-twee-worpen.json'
+};
+async function loadLibraryLesson(key,showPreview=false){
+ const url=WIHTML_LIBRARY_FILES[key];
+ if(!url)throw Error('Onbekend bibliotheekvoorbeeld.');
+ const response=await fetch(url,{credentials:'same-origin'});
+ if(!response.ok)throw Error('Voorbeeld kon niet worden geopend ('+response.status+').');
+ const next=normalizeLessonJSON(await response.json());
+ next.id='les-'+Date.now()+'-'+Math.random().toString(36).slice(2,9);
+ lesson=next;selected=0;current=0;paths={};rounds={};revealed=false;
+ tableRevealed=0;compareRevealed=0;practiceState={};quizSelections={};quizAnswersVisible=false;errorCorrectionVisible=false;
+ applyTemplate();renderEditor();
+ if($('startDialog').open)$('startDialog').close();
+ msg('Voorbeeld geopend als eigen les. Bewaar JSON om later verder te werken.');
+ if(showPreview)$('preview').click();
+}
+window.addEventListener('load',()=>{
+ if(document.documentElement.classList.contains('standalone'))return;
+ const params=new URLSearchParams(window.location.search);
+ const key=params.get('lesson'),valid=Object.prototype.hasOwnProperty.call(WIHTML_LIBRARY_FILES,key||'');
+ $('startRestore').hidden=!draftAvailable();
+ $('startNoDraft').hidden=draftAvailable();
+ if(valid){
+  $('startPending').hidden=false;
+  $('startPendingText').textContent='Open het gekozen voorbeeld als eigen kopie. Je kunt daarna alle onderdelen bewerken.';
+  const openExample=()=>loadLibraryLesson(key,params.get('preview')==='1').catch(e=>{
+   $('startPendingText').textContent='Het voorbeeld kon niet worden geladen: '+e.message;
+   msg('Bibliotheekles niet geopend: '+e.message);
+  });
+  $('startSelectedLesson').onclick=openExample;
+  if(!draftAvailable()){
+   $('startPendingText').textContent='Het voorbeeld wordt geopend. Je krijgt een eigen kopie.';
+   $('startSelectedLesson').disabled=true;
+   $('startDialog').showModal();
+   openExample().finally(()=>$('startSelectedLesson').disabled=false);
+   return;
+  }
+ }
+ $('startDialog').showModal();
+ if(params.get('start')==='import')$('startImport').focus();
+ else $('startNew').focus();
+});
 function currentSlide(){return lesson.slides[current]}
 function roundKey(){return "wihtml.v2."+lesson.id}
 function loadRounds(){try{const raw=JSON.parse(localStorage.getItem(roundKey())||"{}");rounds=raw&&typeof raw==="object"?raw:{}}catch(e){rounds={}}}

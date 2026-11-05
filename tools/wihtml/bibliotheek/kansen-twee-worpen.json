@@ -1,0 +1,105 @@
+{
+  "title": "Kansen bij twee worpen",
+  "level": "4 havo · Wiskunde A",
+  "goal": "De leerling kan bij twee onafhankelijke worpen de kans op een combinatie berekenen en verklaren.",
+  "slides": [
+    {
+      "id": "start",
+      "type": "text",
+      "phase": "Start",
+      "title": "Twee keer een munt gooien",
+      "prompt": "Een eerlijke munt laat kop of munt zien.",
+      "body": "Je gooit twee keer. Noteer alle mogelijke uitkomsten voordat je een kans berekent.",
+      "student": "Schrijft KK, KM, MK en MM op.",
+      "teacher": "Vraag of KM en MK dezelfde uitkomst zijn."
+    },
+    {
+      "id": "voorspel",
+      "type": "question",
+      "phase": "Voorspellen",
+      "title": "Hoe groot is de kans op twee keer kop?",
+      "prompt": "Wat is de kans op KK bij twee onafhankelijke worpen?",
+      "options": [
+        "1/2",
+        "1/4",
+        "1/3",
+        "3/4"
+      ],
+      "correct": 1,
+      "explanation": "De kans op kop per worp is 1/2. Voor twee onafhankelijke worpen is dat 1/2 × 1/2 = 1/4.",
+      "student": "Kiest een antwoord en tekent zelf een boomdiagram.",
+      "teacher": "Verberg het antwoord tot de uitkomsten zijn geteld.",
+      "later": true
+    },
+    {
+      "id": "table",
+      "type": "table",
+      "phase": "Onderzoeken",
+      "title": "Alle uitkomsten",
+      "prompt": "Tel hoeveel van de vier mogelijkheden passen bij de gebeurtenis.",
+      "columnLabels": [
+        "Uitkomst",
+        "Aantal keer kop"
+      ],
+      "tableRows": [
+        [
+          "KK",
+          "2"
+        ],
+        [
+          "KM",
+          "1"
+        ],
+        [
+          "MK",
+          "1"
+        ],
+        [
+          "MM",
+          "0"
+        ]
+      ],
+      "tableExplanation": "Er zijn vier even waarschijnlijke uitkomsten. Precies één keer kop gebeurt twee keer: 2/4 = 1/2.",
+      "student": "Telt de gunstige uitkomsten en bepaalt kansen.",
+      "teacher": "Bespreek het verschil tussen twee keer kop en precies één keer kop."
+    },
+    {
+      "id": "steps",
+      "type": "steps",
+      "phase": "Uitleg",
+      "title": "Een kans berekenen",
+      "prompt": "Van mogelijkheden naar kans.",
+      "steps": [
+        "Noteer alle even waarschijnlijke uitkomsten.",
+        "Tel hoeveel uitkomsten gunstig zijn.",
+        "Deel het aantal gunstige uitkomsten door het totale aantal."
+      ],
+      "student": "Legt de aanpak uit met een eigen voorbeeld.",
+      "teacher": "Laat leerlingen eerst de stappen benoemen."
+    },
+    {
+      "id": "exit",
+      "type": "practice",
+      "phase": "Exit ticket",
+      "title": "Twee onafhankelijke worpen",
+      "prompt": "Maak eerst zonder hulp.",
+      "tasks": [
+        "Hoe groot is de kans op precies één keer kop?",
+        "Hoe groot is de kans op minstens één keer kop?",
+        "Hoe groot is de kans op geen enkele keer kop?"
+      ],
+      "hints": [
+        "Zoek KM en MK.",
+        "Tel KK, KM en MK.",
+        "Zoek MM."
+      ],
+      "solutions": [
+        "2/4 = 1/2.",
+        "3/4.",
+        "1/4."
+      ],
+      "student": "Berekent drie kansen en controleert of de uitkomsten logisch zijn.",
+      "teacher": "Laat de vier uitkomsten opnieuw zien bij het nabespreken."
+    }
+  ]
+}
