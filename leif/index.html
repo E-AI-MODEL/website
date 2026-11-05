@@ -123,7 +123,7 @@ body{background:var(--paper);color:var(--ink)}
 
 <header class="app-header">
   <a class="brand" href="#" id="homeLink" aria-label="LEIF startscherm"><span class="leif-logo" aria-hidden="true"><svg viewBox="0 0 48 48" width="38" height="38" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="24" r="21" stroke="currentColor" stroke-opacity=".46" stroke-width="1.2"/><path d="M11 30c6-5 20-5 26 0M15 34c5-3.2 13-3.2 18 0" stroke="currentColor" stroke-opacity=".65" stroke-width="1.5" stroke-linecap="round"/><path d="M21 13v17h9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><div class="brand-text">LEIF</div><div class="brand-tag">Meer dan een profiel</div></div></a>
-  <nav class="header-actions" aria-label="Hoofdnavigatie"><a href="/leif/verhaal/" class="mini-link leif-story-link">Persoonlijk verhaal</a><span class="mini-link optional-header"><span class="status-dot"></span>Privé · geen online opslag</span><button class="mini-link" id="goReport" type="button">Mijn verslag</button></nav>
+  <nav class="header-actions" aria-label="Hoofdnavigatie"><a href="/leif/verhaal/" class="mini-link leif-story-link">Persoonlijk verhaal</a><span class="mini-link optional-header"><span class="status-dot"></span>Privé · geen online opslag</span><button class="mini-link" id="goReport" type="button">Mijn verslag</button><button type="button" id="leaveKei" class="mini-link nonprint">Uitloggen</button></nav>
 </header>
 <main id="view" class="app-shell" aria-live="polite"></main>
 <div id="toast" class="toast" role="status" aria-live="polite"></div>
@@ -275,6 +275,7 @@ function backupAnswers(){saveActiveInput();const payload={format:'leif-antwoorde
 function restoreAnswers(file){if(!file)return;const reader=new FileReader();reader.onload=()=>{try{const data=JSON.parse(String(reader.result));if(data.format!=='leif-antwoorden'||data.version!==1||typeof data.antwoorden!=='object'||!data.antwoorden||Array.isArray(data.antwoorden))throw Error('formaat');if(anyAnswered()&&!confirm('De antwoorden die je nu hebt ingevuld, worden vervangen. Wil je doorgaan?'))return;const imported={};for(const q of flat){const v=data.antwoorden[q.id];if(typeof v==='string')imported[q.id]=v.slice(0,20000);}answers=imported;state.name=typeof data.naam==='string'?data.naam.slice(0,70):'';showToast('Je antwoorden zijn ingelezen.');if(state.page==='report')renderReport();else if(state.page==='questions')renderQuestion();else renderIntro();}catch(e){showToast('Dit bestand kan niet worden ingelezen als LEIF-antwoorden.');}};reader.readAsText(file);}
 function showTools(){saveActiveInput();const existing=el('toolsPanel');if(existing){existing.remove();return;}const box=document.createElement('section');box.id='toolsPanel';box.className='info-card nonprint';box.style.cssText='position:fixed;z-index:70;right:18px;top:75px;width:min(340px,calc(100vw - 36px));box-shadow:var(--shadow)';box.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;gap:12px"><strong>Mijn antwoorden</strong><button class="mini-link" id="closeTools" aria-label="Sluiten">✕</button></div><p style="font-size:13px;color:var(--muted);margin:8px 0 15px">Er wordt niets automatisch opgeslagen. Download een bestand om later verder te gaan. Het bevat persoonlijke informatie.</p><button class="btn btn-light btn-sm" type="button" id="backup" style="width:100%;margin-bottom:8px">Download mijn antwoorden</button><button class="btn btn-light btn-sm" type="button" id="restore" style="width:100%;margin-bottom:8px">Lees antwoorden in</button><button class="btn btn-quiet btn-sm" type="button" id="clear" style="width:100%">Wis antwoorden op dit scherm</button><input id="jsonfile" class="hide" type="file" accept=".json,application/json" aria-label="LEIF antwoordenbestand">`;document.body.appendChild(box);el('closeTools').onclick=()=>box.remove();el('backup').onclick=backupAnswers;el('restore').onclick=()=>el('jsonfile').click();el('jsonfile').onchange=e=>{restoreAnswers(e.target.files?.[0]);box.remove()};el('clear').onclick=()=>{if(confirm('Wil je alle ingevulde antwoorden op dit scherm wissen? Dit kun je niet ongedaan maken.')){answers={};state.name='';state.idx=0;box.remove();showIntro();showToast('Alle ingevulde antwoorden zijn gewist.');}};}
 el('homeLink').addEventListener('click',e=>{e.preventDefault();saveActiveInput();showIntro()});el('goReport').addEventListener('click',showReport);
+el('leaveKei').onclick=()=>{if(anyAnswered()&&!confirm('Niet-opgeslagen antwoorden kunnen verdwijnen. Wil je uitloggen?'))return;sessionStorage.removeItem('leif-kei-session-v1');location.assign('/leif/')};
 // Bewust geen cookies, localStorage, netwerkverzoeken of externe scripts.
 
 // Alleen een eenvoudig toegangsscherm op een openbare, statische pagina.
@@ -285,6 +286,7 @@ const accessForm=document.getElementById('accessForm');
 let quickClicks=0,quickStart=0;
 const codeInput=document.getElementById('accessPassword');
 const adminFields=document.getElementById('adminFields');
+try{const message=sessionStorage.getItem('leif-access-error');if(message){sessionStorage.removeItem('leif-access-error');const error=document.getElementById('accessError');error.textContent=message;error.hidden=false}}catch(e){}
 function showAdminFields(){
  const admin=codeInput.value.trim().toUpperCase()==='VIS';
  adminFields.hidden=!admin;
@@ -370,11 +372,15 @@ try{
 }catch(e){}
 
 // Een KEI-invoer geldt voor alle LEIF-pagina's in hetzelfde browsertabblad.
-try{if(sessionStorage.getItem('leif-kei-session-v1')==='1'){
+try{
+ if(sessionStorage.getItem('leif-kei-session-v1')==='1'){
   document.getElementById('accessGate').hidden=true;
   document.getElementById('appRoot').hidden=false;
   renderIntro();
-}}catch(e){}
+ }else if(sessionStorage.getItem('leif-personal-access-code-v1')){
+  location.replace('/leif/mijn/');
+ }
+}catch(e){}
 
 const toolsBtn=document.createElement('button');toolsBtn.type='button';toolsBtn.className='mini-link nonprint';toolsBtn.textContent='Bewaar / hervat';toolsBtn.setAttribute('aria-label','Antwoorden downloaden, inlezen of wissen');toolsBtn.onclick=showTools;el('goReport').before(toolsBtn);
 </script>
