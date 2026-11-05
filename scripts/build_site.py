@@ -2621,13 +2621,13 @@ def build(sources: Path, out: Path) -> None:
     wihtml_body = '''<main><section class="page-hero"><div class="wrap">
     <div class="eyebrow">EAI · Voor docenten</div>
     <h1>Maak zelf een wiskundeles in HTML.</h1>
-    <p class="lede">Upload een JSON-bestand met je lesinhoud. Kies de lesopbouw, de vlakverdeling en de docentfuncties. WiHTML maakt een HTML-les met aanklikbare vragen, vier grafiekexperimenten, live berekeningen en uitwerkingen op verzoek. Je kunt alles zelf aanpassen voordat je de les gebruikt.</p>
+    <p class="lede">Maak of upload je les. Klik daarna op een titel, vraag, antwoord of opgave om die direct op de dia aan te passen. Kies de vlakverdeling, de vormgeving en de docenttools. WiHTML maakt er een zelfstandige HTML-presentatie van met werkende grafieken en vragen.</p>
     <div class="button-row"><a class="button" href="/tools/wihtml/studio/">Open de lessengenerator</a><a class="button secondary" href="/tools/wihtml/voorbeeld-lesinhoud.json">Bekijk een JSON-voorbeeld</a><a class="button secondary" href="/tools/wihtml/voorbeeld/">Open de volledige voorbeeldles</a><a class="button secondary" href="/nl/onderwijs/">Over leren en AI</a></div>
     </div></section><section class="section"><div class="wrap">
-    <div class="section-head"><div class="kicker">Zo werkt het</div><div><h2>Jij maakt de keuzes.</h2><p>WiHTML zet je JSON-inhoud om naar lesonderdelen. Je bepaalt hoe die onderdelen op het scherm verschijnen en welke hulp je tijdens het lesgeven wilt gebruiken.</p></div></div>
+    <div class="section-head"><div class="kicker">Zo werkt het</div><div><h2>Je bewerkt de les zelf.</h2><p>Kies een dia en klik op de inhoud. Je ziet direct wat je verandert. Wie meer wil instellen, kan de uitgebreide velden of de HTML- en CSS-editor openen.</p></div></div>
     <div class="tool-grid">
     <article class="tool-card"><div class="kicker">Lesopbouw</div><h2>Bepaal de volgorde</h2><p>Kies uit een onderzoekende les, uitleg met oefening of zelfstandig werken. Je kunt ieder onderdeel daarna verplaatsen. De ingelezen inhoud blijft behouden.</p></article>
-    <article class="tool-card"><div class="kicker">Vlakverdeling</div><h2>Richt de dia zelf in</h2><p>Gebruik één groot vlak of twee kolommen, gelijk of ongelijk verdeeld. Kies per dia een andere indeling of maak je eigen HTML/CSS-sjabloon.</p></article>
+    <article class="tool-card"><div class="kicker">Vormgeving</div><h2>Verander de dia direct</h2><p>Schrijf op de dia zelf. Kies één vlak of twee kolommen, met gelijke of ongelijke verdeling. Je kunt kleuren, lettertype en witruimte aanpassen zonder code.</p></article>
     <article class="tool-card"><div class="kicker">Functionaliteit</div><h2>Kies de docenttools</h2><p>Schakel tekenen, stemmen, timer, spotlicht, docentnotities en andere tools naar keuze in. Download daarna een zelfstandige HTML-les.</p></article>
     </div></div></section><section class="section"><div class="wrap">
     <div class="section-head"><div class="kicker">Goed om te weten</div><div><h2>Je les blijft van jou.</h2>

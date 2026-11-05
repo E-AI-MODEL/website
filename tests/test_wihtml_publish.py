@@ -48,7 +48,11 @@ class WiHTMLPublicationTests(unittest.TestCase):
                        'id="jsonExample"', 'normalizeLessonJSON',
                        'quizGroupView', 'mistakeView', 'chooseExperiment',
                        'graphPollSecond', 'id="deckTitle"', 'id="deckProgress"',
-                       'questionChoices', 'data-answer-index'):
+                       'questionChoices', 'data-answer-index',
+                       'id="designCanvas"', 'id="designType"', 'id="advancedFields"',
+                       'id="designPreview"', 'id="designCopy"', 'id="themeBg"',
+                       'id="templateCodeDetails"', 'id="draftRestore"',
+                       'WIHTML_DRAFT_KEY', 'renderDesigner', 'initDesignControls'):
             with self.subTest(marker=marker):
                 self.assertIn(marker, text)
 
