@@ -99,3 +99,11 @@ De laatste schermen gaan over vormgeving, de docenttools (Studio), controle en h
 De browser bewaart de laatst gebruikte stap bij de lokale les. Na het herstellen van een concept wordt die stap heropend wanneer de lesidentificatie overeenkomt. Er is geen cloudopslag. De combinatie van JavaScript, JSON en een HTML-sjabloon blijft in de eigen browser.
 
 De regressietest doorloopt de landingspagina, afzonderlijke stappen, beide modi, een gekozen lesroute, de werkende voorvertoning, de offline export, import en herstel. Die test bewijst technische werking; docenten moeten de begrijpelijkheid en didactische ondersteuning nog in gebruik beoordelen.
+
+## Visuele en gegevenscontrole (5 november 2026)
+
+De Playwright-screenshots van de hele route lieten dubbele vraagkoppen, te veel mobiele bovenbediening, een slecht leesbare diatitel op het donkere bord en een zwevende balk over het HTML-resultaat zien. Dit is in de PR verbeterd. De browsertest controleert nu ook het kleurcontrast van de donkere titel en dat de balk het eindscherm niet bedekt. De afbeeldingen worden bij iedere browsertest als GitHub Actions-artifact opgeslagen.
+
+De docent krijgt bij het vervangen van een geopende les door een nieuwe les of een JSON-import een bevestigingsvraag. Annuleren laat de huidige les ongewijzigd. Een snelle paginaverversing bewaart de laatst ingevoerde lesgegevens en de stap samen.
+
+De screenshots zijn een technische en visuele controle van enkele vastgelegde schermgroottes. De gebruikservaring, wiskundige inhoud en werking op een fysiek digibord zijn daarmee niet definitief gevalideerd.
