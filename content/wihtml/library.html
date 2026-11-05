@@ -1,0 +1,55 @@
+<style>
+.wi-library .wi-filterbar{display:flex;flex-wrap:wrap;align-items:end;gap:16px;margin-bottom:22px}
+.wi-library .wi-filterbar label{font-size:14px;font-weight:700;display:grid;gap:6px}
+.wi-library .wi-filterbar select{min-width:190px;border:1px solid #c5d0c8;border-radius:9px;padding:10px;background:white;color:#202826}
+.wi-library .wi-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.wi-library .wi-card{border:1px solid #d8e2d9;border-radius:14px;background:#fff;padding:22px;min-width:0}
+.wi-library .wi-card[hidden]{display:none}
+.wi-library .wi-card small{font-weight:700;color:#496e5f}
+.wi-library .wi-card h2{margin:10px 0;font-size:clamp(1.25rem,2.5vw,1.7rem)}
+.wi-library .wi-card p{line-height:1.55}
+.wi-library .wi-card-actions{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:18px}
+.wi-library .wi-card-actions a{font-weight:700}
+.wi-library .wi-card-actions a:first-child{background:#17372e;color:white;text-decoration:none;border-radius:9px;padding:10px 14px}
+.wi-library .wi-art{min-height:115px;display:flex;align-items:center;justify-content:center;background:#edf4f0;color:#215c50;border-radius:9px;margin-bottom:16px;font:normal clamp(26px,3.3vw,42px) Georgia,serif}
+.wi-library .wi-art.graph{background:#f1f3f8;color:#405a8e}
+.wi-library .wi-art.kans{background:#f7f0e7;color:#8b5c2c}
+.wi-library .wi-art.v9{background:#eaf2ef;color:#21433c}
+.wi-library .wi-results{font-size:14px;color:#556b5d;margin:0 0 15px}
+.wi-library #wi-no-results[hidden]{display:none}
+@media(max-width:760px){.wi-library .wi-grid{grid-template-columns:1fr}.wi-library .wi-filterbar label{width:100%}.wi-library .wi-filterbar select{width:100%}}
+</style>
+<main class="wi-library">
+<section class="page-hero"><div class="wrap"><div class="eyebrow">WiHTML · Lesbibliotheek</div><h1>Bekijk een les. Maak er je eigen versie van.</h1><p class="lede">Deze voorbeelden laten zien wat je met WiHTML kunt maken. Je kunt een les eerst bekijken, daarna als eigen kopie openen en aanpassen. De volledige originele v9-les is apart beschikbaar.</p><div class="button-row"><a class="button" href="/tools/wihtml/studio/?start=nieuw">Begin met een lege les</a><a class="button secondary" href="/tools/wihtml/">Hoe werkt WiHTML?</a></div></div></section>
+<section class="section"><div class="wrap">
+<div class="wi-filterbar" role="group" aria-label="Filter de voorbeelden">
+<label>Leerjaar en niveau<select id="wi-level"><option value="all">Alle niveaus</option><option value="3h">3 havo</option><option value="4h">4 havo</option><option value="5h">5 havo</option></select></label>
+<label>Onderwerp<select id="wi-topic"><option value="all">Alle onderwerpen</option><option value="groei">Groei</option><option value="verbanden">Verbanden</option><option value="kansen">Kansrekening</option></select></label>
+<label>Soort les<select id="wi-kind"><option value="all">Alle werkvormen</option><option value="onderzoek">Onderzoeken</option><option value="oefenen">Oefenen</option><option value="voorbeeld">Volledige voorbeeldles</option></select></label>
+</div><p class="wi-results" id="wi-results" role="status" aria-live="polite">4 voorbeelden</p>
+<div class="wi-grid" id="wi-library-items">
+<article class="wi-card" data-level="5h" data-topic="groei" data-kind="onderzoek"><div class="wi-art graph" aria-hidden="true">N = b × g<sup>t</sup></div><small>5 havo · Groei · Onderzoeken</small><h2>Groeifactor onderzoeken</h2><p>Beginnende les met een voorspelling, uitleg en een vraag over verdubbelingstijd. Gebaseerd op het bestaande JSON-voorbeeld.</p><div class="wi-card-actions"><a href="/tools/wihtml/studio/?lesson=groeifactor&amp;preview=1">Bekijk de les</a><a href="/tools/wihtml/studio/?lesson=groeifactor">Gebruik als startpunt</a><a href="/tools/wihtml/voorbeeld-lesinhoud.json" download>Download JSON</a></div></article>
+<article class="wi-card" data-level="3h" data-topic="verbanden" data-kind="onderzoek"><div class="wi-art" aria-hidden="true">K = 4 + 2,50x</div><small>3 havo · Verbanden · Onderzoeken</small><h2>Lineaire verbanden</h2><p>Onderzoek een tarief, maak een tabel en stel zelf een formule op. Met vragen en afsluitende opgaven.</p><div class="wi-card-actions"><a href="/tools/wihtml/studio/?lesson=lineair&amp;preview=1">Bekijk de les</a><a href="/tools/wihtml/studio/?lesson=lineair">Gebruik als startpunt</a><a href="/tools/wihtml/bibliotheek/lineaire-verbanden.json" download>Download JSON</a></div></article>
+<article class="wi-card" data-level="4h" data-topic="kansen" data-kind="oefenen"><div class="wi-art kans" aria-hidden="true">P(KK) = ¼</div><small>4 havo · Kansrekening · Oefenen</small><h2>Kansen bij twee worpen</h2><p>Tel de uitkomsten van twee muntworpen. Bereken daarna kansen en controleer je antwoorden.</p><div class="wi-card-actions"><a href="/tools/wihtml/studio/?lesson=kansen&amp;preview=1">Bekijk de les</a><a href="/tools/wihtml/studio/?lesson=kansen">Gebruik als startpunt</a><a href="/tools/wihtml/bibliotheek/kansen-twee-worpen.json" download>Download JSON</a></div></article>
+<article class="wi-card" data-level="5h" data-topic="groei" data-kind="voorbeeld"><div class="wi-art v9" aria-hidden="true">× 2 · ÷ 2</div><small>5 havo · Groei · Complete v9-les</small><h2>Verdubbelen en halveren</h2><p>De oorspronkelijke uitgebreide interactieve voorbeeldles, met grafiekexperimenten, stemrondes en docenttools. Dit is een zelfstandige presentatie, geen bibliotheeksjabloon.</p><div class="wi-card-actions"><a href="/tools/wihtml/voorbeeld/">Open volledige voorbeeldles</a></div></article>
+</div><p id="wi-no-results" hidden>Er zijn geen voorbeelden met deze combinatie. Kies een ander filter.</p>
+<p style="margin-top:25px;max-width:750px">De voorbeelden zijn bedoeld om te bewerken en uit te proberen. Controleer berekeningen en opdrachten voordat je ze in de klas gebruikt. Het delen van eigen lessen door bezoekers is nog niet mogelijk.</p>
+</div></section></main>
+<script>
+(function(){
+ const items=[...document.querySelectorAll('#wi-library-items .wi-card')];
+ const levels=document.getElementById('wi-level'),topics=document.getElementById('wi-topic'),kinds=document.getElementById('wi-kind');
+ const results=document.getElementById('wi-results'),empty=document.getElementById('wi-no-results');
+ function filter(){
+  let total=0;
+  for(const card of items){
+   const visible=(levels.value==='all'||card.dataset.level===levels.value)&&(topics.value==='all'||card.dataset.topic===topics.value)&&(kinds.value==='all'||card.dataset.kind===kinds.value);
+   card.hidden=!visible;if(visible)total++;
+  }
+  results.textContent=total+' '+(total===1?'voorbeeld':'voorbeelden');
+  empty.hidden=total!==0;
+ }
+ for(const input of [levels,topics,kinds])input.addEventListener('change',filter);
+ filter();
+})();
+</script>
