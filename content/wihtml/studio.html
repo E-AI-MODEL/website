@@ -532,6 +532,9 @@
 .wi-guide-check{display:flex;align-items:start;justify-content:space-between;gap:15px;background:#fff;padding:12px 16px;border:1px solid #d9e3db;border-radius:10px;font-size:14px}
 .wi-guide-check button{font-size:12px;white-space:nowrap}
 .wi-guide-warning{border-left:3px solid #b46b43}
+.wi-guide-review-notes{margin-top:10px;padding:13px;border:1px solid #d4dfd7;border-radius:10px;background:#fff}
+.wi-guide-review-notes summary{font-size:14px;font-weight:750;cursor:pointer;color:#475e4f}
+.wi-guide-review-notes>div{max-height:240px;overflow:auto;margin-top:12px;display:grid;gap:7px}
 .wi-guide-complete{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
 .wi-guide-final{padding:28px;background:#fff;border:1px solid #d5e2d8;border-radius:17px}
 .wi-guide-final h2{font:normal clamp(25px,3vw,37px)/1.1 Georgia,serif;margin:6px 0 12px}
@@ -1072,7 +1075,9 @@ function guideUpdateNotes(){
  slide.student=$('guideStudent').value;
  slide.teacher=$('guideTeacher').value;
  slide.layout=$('guideLayout').value;
- syncDesignForm(slide);renderDesigner();scheduleDraftSave();
+ syncDesignForm(slide);
+ if($('f-layout'))$('f-layout').value=slide.layout;
+ renderDesigner();scheduleDraftSave();
 }
 function guideSaveStep(){
  if(guidePage.kind==='info')guideUpdateInfo();
@@ -1152,7 +1157,7 @@ function guideRender(){
  if(kind==='review'){
   review();
   const notices=[...$('review').querySelectorAll('.review-item')].map(e=>e.textContent);
-  $('guideReviewList').innerHTML=lesson.slides.map((s,i)=>'<div class="wi-guide-check"><div><strong>Dia '+(i+1)+': '+esc(s.title||'Zonder titel')+'</strong><div class="wi-guide-muted">'+esc(s.phase||'Lesdeel')+'</div></div><button type="button" data-guide-slide="'+esc(s.id)+'">Bewerk dia</button></div>').join('')+notices.map(t=>'<div class="wi-guide-check wi-guide-warning">'+esc(t)+'</div>').join('');
+  $('guideReviewList').innerHTML=lesson.slides.map((s,i)=>'<div class="wi-guide-check"><div><strong>Dia '+(i+1)+': '+esc(s.title||'Zonder titel')+'</strong><div class="wi-guide-muted">'+esc(s.phase||'Lesdeel')+'</div></div><button type="button" data-guide-slide="'+esc(s.id)+'">Bewerk dia</button></div>').join('')+(notices.length?'<details class="wi-guide-review-notes"><summary>'+notices.length+' aandachtspunt'+(notices.length===1?'':'en')+' bekijken</summary><div>'+notices.map(t=>'<div class="wi-guide-check wi-guide-warning">'+esc(t)+'</div>').join('')+'</div></details>':'');
  }
  if(kind==='result'){
   $('guideResultCount').textContent=lesson.slides.length+' '+(lesson.slides.length===1?'dia':'dia’s');
