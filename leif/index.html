@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light">
 <meta name="robots" content="noindex,nofollow,noarchive">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src https://ngcyfbstajfcfdhlelbz.supabase.co; img-src data:; font-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'unsafe-inline'; connect-src https://ngcyfbstajfcfdhlelbz.supabase.co; img-src data:; font-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="description" content="LEIF. Een persoonlijk reflectiegesprek over de buitenkant, gevoel, geschiedenis, verbinding en verandering. Privé, zonder type of score.">
 <title>LEIF | Meer dan een profiel</title>
 <style>
@@ -94,17 +94,29 @@ body{background:var(--paper);color:var(--ink)}
 .access-extra label{margin-top:12px}
 .access-extra input{letter-spacing:normal;font-size:16px}
 .access-extra[hidden]{display:none}
+
+.access-screen{position:relative;isolation:isolate;overflow:hidden;background:#f9f8f5}
+.access-screen:before,.access-screen:after{content:"";position:absolute;inset:-24%;z-index:-1;pointer-events:none;opacity:.46;filter:blur(52px);background:radial-gradient(ellipse at 34% 39%,#e6eef0 0,transparent 42%),radial-gradient(ellipse at 77% 64%,#eee7df 0,transparent 39%);animation:leifDrift 34s ease-in-out infinite alternate}
+.access-screen:after{opacity:.23;animation-duration:47s;animation-direction:alternate-reverse;transform:scale(1.15)}
+@keyframes leifDrift{from{transform:translate(-1.8%,-1.1%) scale(1)}to{transform:translate(2%,1.8%) scale(1.04)}}
+.access-symbol{width:52px;height:52px;display:grid;place-items:center;color:#405e72;background:#f1f3f2;border-radius:50%}
+.access-brand{margin-bottom:23px;gap:12px}
+.access-card{box-shadow:0 20px 70px rgba(38,57,66,.065);border-color:#e5e9e6}
+.access-card h1{font-size:clamp(31px,4vw,43px);letter-spacing:-.035em}
+.access-desc{line-height:1.84;color:#576a74;max-width:43ch;font-size:15.5px;margin-bottom:25px}
+.access-form .btn{margin-top:15px}
+@media(prefers-reduced-motion:reduce){.access-screen:before,.access-screen:after{animation:none!important}}
 </style>
 </head>
 <body>
 
 <section id="accessGate" class="access-screen" aria-labelledby="accessHeading">
   <div class="access-card">
-    <div class="access-brand"><div class="mark" aria-hidden="true">L.</div><div><span class="access-brand-label">LEIF</span><span class="access-brand-sub">Een persoonlijk gesprek</span></div></div>
-    <h1 id="accessHeading">LEIF openen</h1>
-    <p class="access-desc">Vul je code in om jouw LEIF-omgeving te openen.</p>
+    <div class="access-brand"><span class="access-symbol" aria-hidden="true"><svg viewBox="0 0 44 44" width="43" height="43" fill="none"><circle cx="22" cy="22" r="17.5" stroke="currentColor" opacity=".45"/><path d="M9 28c6-4.5 20-4.5 26 0M12 32c5-2.8 15-2.8 20 0" stroke="currentColor" opacity=".68" stroke-linecap="round" stroke-width="1.4"/><path d="M19 12.5V27h8.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.3"/></svg></span><div><span class="access-brand-label">LEIF</span><span class="access-brand-sub">Een persoonlijk gesprek</span></div></div>
+    <h1 id="accessHeading">Welkom bij LEIF</h1>
+    <p class="access-desc">Wat betekent het om jezelf te kennen? Om te begrijpen waarom je doet wat je doet, hoe anderen je zien en welke leider je voor jezelf en anderen wilt zijn? Daarover gaat LEIF.</p>
     <form id="accessForm" class="access-form" autocomplete="off">
-      <label for="accessPassword">Inlogcode</label>
+      <label for="accessPassword">Jouw toegangscode</label>
       <input id="accessPassword" type="password" name="wachtwoord" required autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" aria-describedby="accessError" />
       <div id="adminFields" class="access-extra" hidden>
         <p class="access-help">Beheerder: log in met je bestaande account.</p>
@@ -113,10 +125,10 @@ body{background:var(--paper);color:var(--ink)}
         <label for="adminPassword">Wachtwoord</label>
         <input id="adminPassword" type="password" autocomplete="current-password" />
       </div>
-      <button type="submit" class="btn btn-primary" id="leifSignIn">Inloggen <span aria-hidden="true">→</span></button>
+      <button type="submit" class="btn btn-primary" id="leifSignIn">Open mijn omgeving <span aria-hidden="true">→</span></button>
       <p id="accessError" class="access-error" role="alert" hidden>Dit wachtwoord klopt niet. Probeer het opnieuw.</p>
     </form>
-    <p class="access-privacy">Je komt met je eigen code direct in jouw omgeving. De bestaande KEI-proef blijft behouden. Vul bij de andere proef alleen testgegevens in.</p>
+    
   </div>
 </section>
 <div id="appRoot" hidden>
@@ -373,7 +385,11 @@ try{
 
 // Een KEI-invoer geldt voor alle LEIF-pagina's in hetzelfde browsertabblad.
 try{
- if(sessionStorage.getItem('leif-kei-session-v1')==='1'){
+ if(window.parent!==window&&new URLSearchParams(location.search).get('leif_voorbeeld')==='1'&&new URLSearchParams(location.search).get('deel')==='kei'){
+   document.getElementById('accessGate').hidden=true;
+   document.getElementById('appRoot').hidden=false;
+   renderIntro();
+ }else if(sessionStorage.getItem('leif-kei-session-v1')==='1'){
   document.getElementById('accessGate').hidden=true;
   document.getElementById('appRoot').hidden=false;
   renderIntro();
@@ -384,5 +400,6 @@ try{
 
 const toolsBtn=document.createElement('button');toolsBtn.type='button';toolsBtn.className='mini-link nonprint';toolsBtn.textContent='Bewaar / hervat';toolsBtn.setAttribute('aria-label','Antwoorden downloaden, inlezen of wissen');toolsBtn.onclick=showTools;el('goReport').before(toolsBtn);
 </script>
+<script src="/leif/tekstbeheer.js" defer></script>
 </body>
 </html>
