@@ -543,7 +543,7 @@ function updateTemplateVisual(){
    found=true;
    let body=rawBody;
    for(const [property,value] of Object.entries(declarations)){
-    const pattern=new RegExp('(^|;)\\s*'+property+'\\s*:[^;]*','i');
+    const pattern=new RegExp('(^|;)\\s*'+property+'\\s*:[^;]*','gi');
     if(pattern.test(body))body=body.replace(pattern,(_,prefix)=>prefix+' '+property+': '+value);
     else body=body.trimEnd()+(body.trimEnd().endsWith(';')?'':';')+' '+property+': '+value+';';
    }
