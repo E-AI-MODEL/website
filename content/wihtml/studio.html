@@ -660,6 +660,8 @@
 .wi-workform-art::after{content:"";display:block;height:4px;width:70%;background:#bfd0c4;border-radius:5px;position:absolute;top:24px;left:10px}
 .wi-workform-art[data-type="graph"]::before,.wi-workform-art[data-type="mathplot"]::before{height:29px;width:65%;top:7px;background:none;border-bottom:3px solid #17695e;border-radius:0;transform:skewY(-15deg)}
 .wi-workform-art[data-type="question"]::after,.wi-workform-art[data-type="quizset"]::after{height:12px;width:29%;box-shadow:43px 0 #bfd0c4;background:#bfd0c4}
+.wi-plot-thumb{width:100%;height:50px;display:block;background:#eef5ef;border-radius:7px}
+.wi-insert-section-title{grid-column:1/-1;margin:3px 0;font-size:12px;color:#536c5a;font-weight:750}
 .wi-workform-card strong{font-size:12px;line-height:1.35}
 .wi-workform-card small{font-size:10px;line-height:1.35;color:#5e7166}
 .wi-workform-fallback{margin:10px 0 0;border:0}
@@ -771,6 +773,12 @@
 <button type="button" class="wi-insert-card" data-quick-type="text"><strong>Uitleg of opdracht</strong><span>Een vraag, tekst of instructie.</span></button>
 <button type="button" class="wi-insert-card" data-quick-type="question"><strong>Meerkeuzevraag</strong><span>Laat leerlingen kiezen en toon het antwoord later.</span></button>
 <button type="button" class="wi-insert-card" data-quick-type="graph"><strong>Grafiek onderzoeken</strong><span>Onderzoek de groeifactor en beginwaarde.</span></button>
+<div class="wi-insert-section-title">Functiegrafieken</div>
+<button type="button" class="wi-insert-card" data-quick-type="mathplot" data-quick-kind="linear"><strong>Lineair verband</strong><span>Helling en startwaarde</span></button>
+<button type="button" class="wi-insert-card" data-quick-type="mathplot" data-quick-kind="quadratic"><strong>Kwadratisch verband</strong><span>Top, snijpunten en vorm</span></button>
+<button type="button" class="wi-insert-card" data-quick-type="mathplot" data-quick-kind="exponential"><strong>Exponentieel verband</strong><span>Beginwaarde en groeifactor</span></button>
+<button type="button" class="wi-insert-card" data-quick-type="mathplot" data-quick-kind="sinusoid"><strong>Sinusoïde</strong><span>Amplitude en frequentie</span></button>
+<div class="wi-insert-section-title">Andere lesactiviteiten</div>
 <button type="button" class="wi-insert-card" data-quick-type="steps"><strong>Uitleg in stappen</strong><span>Maak een uitwerking die stap voor stap verschijnt.</span></button>
 <button type="button" class="wi-insert-card" data-quick-type="table"><strong>Tabel onderzoeken</strong><span>Ontdek regelmaat in de getallen.</span></button>
 <button type="button" class="wi-insert-card" data-quick-type="practice"><strong>Zelfstandig oefenen</strong><span>Opgaven met hulp en uitwerkingen.</span></button>
@@ -1017,6 +1025,17 @@ const WI_PLOT_PRESETS={
  exponential:{name:'Exponentieel verband',help:'Beginwaarde en groeifactor aanpassen',a:2,b:1.5,c:0},
  sinusoid:{name:'Sinusoïde',help:'Amplitude en periode aanpassen',a:2,b:1,c:0}
 };
+
+function wiPlotThumb(kind){
+ const d=WI_PLOT_PRESETS[kind],p={plotKind:kind,plotA:d.a,plotB:d.b,plotC:d.c};
+ const pts=Array.from({length:81},(_,i)=>{const x=-3+i*.075;return wiPlotY(x,p)});
+ const lo=Math.min(...pts),hi=Math.max(...pts),span=Math.max(1,hi-lo);
+ const path=pts.map((y,i)=>(i?'L':'M')+(12+i*1.95).toFixed(2)+' '+(49-(y-lo)/span*37).toFixed(2)).join(' ');
+ return '<svg class="wi-plot-thumb" viewBox="0 0 180 60" role="img" aria-label="Voorbeeld: '+esc(d.name)+'">'+
+ '<path d="M10 49H170M10 8V49" stroke="#b2c9ba" stroke-width="1" fill="none"/>'+
+ '<path d="'+path+'" stroke="#176f62" stroke-width="2.8" fill="none"/></svg>';
+}
+
 function wiPlotConfig(s){
  const k=Object.hasOwn(WI_PLOT_PRESETS,s?.plotKind)?s.plotKind:'linear',d=WI_PLOT_PRESETS[k];
  const num=(name,fallback)=>s?.[name]===undefined?fallback:Number(s[name]);
@@ -1268,11 +1287,15 @@ document.querySelectorAll('[data-quick-type]').forEach(button=>button.onclick=()
  const type=button.dataset.quickType;
  if(!Object.hasOwn(TYPES,type))return;
  save();
- const labels={text:'Nieuwe opdracht',question:'Meerkeuzevraag',graph:'Grafiek onderzoeken',steps:'Uitleg in stappen',table:'Tabel onderzoeken',practice:'Zelfstandig oefenen',compare:'Verklaren en vergelijken',quizset:'Begripsvragen',error:'Zoek de fout'};
+ const labels={text:'Nieuwe opdracht',question:'Meerkeuzevraag',graph:'Grafiek onderzoeken',mathplot:'Functiegrafiek',steps:'Uitleg in stappen',table:'Tabel onderzoeken',practice:'Zelfstandig oefenen',compare:'Verklaren en vergelijken',quizset:'Begripsvragen',error:'Zoek de fout'};
  const slide={id:'deel-'+Date.now()+'-'+Math.random().toString(36).slice(2,7),type,phase:'Oefenen',title:labels[type],prompt:'',body:'',student:'',teacher:'',layout:'inherit'};
  lesson.slides.splice(selected+1,0,slide);
  selected++;
  initDesignType(type);
+ if(type==='mathplot'&&button.dataset.quickKind){
+  const kind=button.dataset.quickKind,d=WI_PLOT_PRESETS[kind];
+  if(d)Object.assign(slide,{plotKind:kind,plotA:d.a,plotB:d.b,plotC:d.c,plotGrid:true,plotPoints:false,title:d.name});
+ }
  renderEditor();
  $('quickInsertDialog').close();
  if(guideReady)guideShow({kind:'slide',id:slide.id});
@@ -1323,7 +1346,7 @@ function wiRenderGallery(slide){
  (!needle||(v.label+' '+v.help).toLocaleLowerCase('nl').includes(needle)))
  .map(v=>'<button type="button" class="wi-workform-card" data-wi-pick="'+v.id+'" data-wi-plot-kind="'+v.kind+
  '" aria-pressed="'+String(slide?.type===v.id&&(v.id!=='mathplot'||wiPlotConfig(slide).plotKind===v.kind))+
- '"><span class="wi-workform-art" data-type="'+v.id+'"></span><strong>'+esc(v.label)+'</strong><small>'+esc(v.help)+'</small></button>')
+ '">'+(v.kind?wiPlotThumb(v.kind):'<span class="wi-workform-art" data-type="'+v.id+'"></span>')+'<strong>'+esc(v.label)+'</strong><small>'+esc(v.help)+'</small></button>')
  .join('')||'<p class="wi-guide-muted">Geen onderdelen gevonden. Probeer een andere zoekterm.</p>';
  document.querySelectorAll('[data-wi-gallery-filter]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.wiGalleryFilter===wiGalleryGroup)));
 }
