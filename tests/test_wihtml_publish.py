@@ -59,6 +59,8 @@ class WiHTMLPublicationTests(unittest.TestCase):
     def test_visual_controls_preserve_other_css(self):
         text = (BUILD / "tools/wihtml/studio/index.html").read_text(encoding="utf-8")
         self.assertIn("const setDeclarations=(css,selector,declarations)=>", text)
+        self.assertIn("selectors.split(',').map(x=>x.trim()).includes(selector)", text)
+        self.assertIn("css.replace(/([^{}]+)", text)
         self.assertIn('let css=$("templateCSS").value;', text)
         self.assertIn("css=setDeclarations(css,'.wi-shell'", text)
         self.assertIn("css=setDeclarations(css,'.wi-content'", text)
