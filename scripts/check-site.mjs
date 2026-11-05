@@ -13,6 +13,8 @@ for (const language of ['en', 'nl']) {
   };
   visit(join(root, language));
 }
+// Deze routes worden door scripts/build_site.py gemaakt en apart getest.
+const generatedRoutes = new Set(["/tools/wihtml/", "/tools/wihtml/studio/"]);
 let errors = 0;
 for (const path of paths) {
   const html = readFileSync(join(root, path), 'utf8');
@@ -31,7 +33,7 @@ for (const path of paths) {
     if (!url.startsWith('/') || url.startsWith('//')) continue;
     const pathname = url.split(/[?#]/)[0];
     const localFile = pathname.endsWith('/') ? pathname.slice(1) + 'index.html' : pathname.slice(1);
-    if (!existsSync(resolve(root, localFile))) fail('broken URL: ' + url);
+    if (!existsSync(resolve(root, localFile)) && !generatedRoutes.has(pathname)) fail('broken URL: ' + url);
   }
 }
 console.log('Checked ' + paths.length + ' bilingual pages. Errors: ' + errors);
