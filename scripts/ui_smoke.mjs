@@ -102,7 +102,8 @@ try {
   assert(await wiPage.locator('[data-guide-info="route"]').isVisible(), 'Lesopbouw heeft eigen scherm');
   await wiPage.locator('#guideNext').click();
   assert(await wiPage.locator('#guideWorkform').isVisible(), 'Werkvorm heeft eigen scherm');
-  await wiPage.locator('#guideType').selectOption('question');
+  assert(await wiPage.locator('#wiWorkformGallery').isVisible(), 'Visuele onderdelenbibliotheek is zichtbaar');
+  await wiPage.locator('#wiWorkformGallery [data-wi-pick="question"]').click();
   assert.equal(await wiPage.locator('#designType').inputValue(), 'question', 'Werkvorm wijzigt de echte les');
   await wiPage.locator('#guideNext').click();
   assert(await wiPage.locator('#guideSlide').isVisible(), 'Daarna pas dia bewerken');
