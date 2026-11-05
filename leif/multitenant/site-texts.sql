@@ -21,7 +21,7 @@ create table if not exists public.leif_site_text_history (
  original_text text not null,
  draft_text text not null,
  published_text text,
- event text not null check (event in ('save','publish','unpublish','restore')),
+ event text not null check (event in ('save','publish','unpublish','restore','create')),
  changed_by uuid,
  changed_at timestamptz not null default now()
 );
@@ -34,3 +34,24 @@ revoke all on public.leif_site_text_history from anon, authenticated;
 revoke all on sequence public.leif_site_text_history_id_seq from anon, authenticated;
 -- Alleen een vastgestelde beheerder mag publiceren; de publieke Edge Function
 -- geeft uitsluitend published_text terug.
+
+create or replace function public.leif_site_text_audit()
+returns trigger language plpgsql security definer set search_path = public as $$
+begin
+ insert into public.leif_site_text_history(
+ page,field_key,revision,original_text,draft_text,published_text,event,changed_by
+ )values(
+ new.page,new.field_key,new.revision,new.original_text,new.draft_text,new.published_text,
+ case when tg_op='INSERT' then 'create'
+      when old.published_text is distinct from new.published_text
+       then case when new.published_text is null then 'unpublish' else 'publish' end
+      else 'save' end,
+ new.changed_by
+ );
+ return new;
+end;
+$$;
+drop trigger if exists leif_site_text_history_trigger on public.leif_site_texts;
+create trigger leif_site_text_history_trigger
+after insert or update on public.leif_site_texts
+for each row execute function public.leif_site_text_audit();
