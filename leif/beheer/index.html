@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src https://ngcyfbstajfcfdhlelbz.supabase.co; img-src 'none'; font-src 'none'; base-uri 'none'; form-action 'none'; object-src 'none'">
+<title>LEIF | Beheer</title>
+<style>
+:root{--paper:#f7f4ef;--white:#fffdfc;--ink:#243746;--muted:#607783;--line:#d9e2e6;--soft:#e8f0f3;--blue:#426c82;--warning:#924232}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.65 system-ui,-apple-system,"Segoe UI",Arial,sans-serif}button,input,textarea,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.5;cursor:not-allowed}button:focus-visible,a:focus-visible,textarea:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #6eabc8;outline-offset:3px}[hidden]{display:none!important}
+a{color:var(--blue)}.mast{background:var(--white);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:9}.mast-inner{max-width:1160px;margin:auto;padding:15px 24px;display:flex;justify-content:space-between;align-items:center;gap:14px}.brand{font-weight:800;font-size:15px;letter-spacing:.14em;text-decoration:none;color:var(--ink)}.brand span{letter-spacing:normal;color:var(--muted);font-size:13px;font-weight:400;margin-left:12px}.actions{display:flex;flex-wrap:wrap;align-items:center;gap:9px}
+main{max-width:1160px;margin:auto;padding:42px 24px 120px}.tag{font-weight:800;color:var(--blue);letter-spacing:.13em;text-transform:uppercase;font-size:11px;margin-bottom:12px}h1,h2,h3{font-family:Georgia,serif;font-weight:400;letter-spacing:-.023em;line-height:1.22}h1{font-size:clamp(37px,5vw,59px);margin:12px 0 18px}h2{font-size:clamp(26px,3vw,36px);margin:10px 0 19px}h3{font-size:23px;margin:8px 0 15px}.sub{color:var(--muted);max-width:67ch}.panel{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:clamp(22px,4vw,36px);margin:18px 0}.login{max-width:520px;margin:7vh auto}.btn{border-radius:10px;min-height:43px;font-size:14px;font-weight:700;background:var(--ink);color:white;border:1px solid var(--ink);padding:9px 16px}.btn.secondary{background:transparent;color:var(--ink);border-color:#b8cbd3}.btn.danger{background:transparent;color:var(--warning);border-color:#e1b6aa}.btn:hover:not(:disabled){filter:brightness(1.08)}.btn.compact{padding:7px 11px;min-height:36px}.field{display:grid;gap:6px;margin:17px 0}.field label{font-size:13px;font-weight:750}.field input,.field textarea,.field select,select{width:100%;min-width:0;border:1px solid #bccdd5;background:white;border-radius:9px;padding:11px 13px;color:var(--ink)}.field textarea{line-height:1.85;resize:vertical;min-height:160px}.field input:focus,.field textarea:focus{border-color:var(--blue)}
+.detail-grid{display:grid;grid-template-columns:290px minmax(0,1fr);gap:26px;margin-top:32px}.list{display:grid;gap:9px;max-height:69vh;overflow-y:auto;padding-right:5px}.person{border:1px solid var(--line);border-radius:10px;padding:15px;background:var(--white);text-align:left;display:grid;gap:3px}.person[data-active=true]{border-color:var(--blue);background:var(--soft)}.person strong{font-size:15px}.person small{font-size:12px;color:var(--muted)}.person .status{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--blue)}
+.notice{background:var(--soft);padding:17px 19px;border-radius:10px;border:1px solid #d2e1e8;margin:18px 0;max-width:76ch}.notice strong{display:block;margin-bottom:6px}.notice p{margin:0;color:#486273;font-size:14px}.newcode{background:#e8f0f3;border:1px solid #bad0dd;border-radius:11px;padding:18px;margin:20px 0}.newcode code{display:block;overflow-wrap:anywhere;background:#fff;padding:12px;border-radius:6px;font-size:13px;margin:8px 0 12px;user-select:all}.newcode p{margin:0;color:var(--muted);font-size:13px}.navtabs{display:flex;flex-wrap:wrap;gap:8px;border-bottom:1px solid var(--line);padding-bottom:12px;margin:25px 0}.navtabs button{padding:9px 12px;background:none;border:1px solid transparent;border-radius:8px;color:var(--muted)}.navtabs button[aria-current=page]{background:var(--soft);border-color:#c6d8df;color:var(--ink);font-weight:700}.toolbar{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0}.meta{color:var(--muted);font-size:13px}.readout{border-top:1px solid var(--line);padding:15px 0;max-width:680px}.readout dt{font-weight:700;font-size:14px}.readout dd{margin:4px 0 0;white-space:pre-wrap;color:#455965}.readonly{padding:14px 0;border-top:1px solid var(--line)}.readonly p{white-space:pre-wrap;line-height:1.85}.empty{padding:32px 0;color:var(--muted)}.save-status{font-size:13px;color:#527786;min-height:22px}.save-status.error{color:#9a473d}.divider{border:0;border-top:1px solid var(--line);margin:25px 0}.warn{color:var(--warning)}.sr-only{position:absolute;left:-9999px}
+@media(max-width:850px){.detail-grid{grid-template-columns:1fr}.list{max-height:300px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}.mast-inner{flex-wrap:wrap}main{padding:28px 18px 90px}}
+</style>
+</head>
+<body>
+<header class="mast"><div class="mast-inner"><a href="/leif/" class="brand">LEIF <span>Beheer</span></a><div class="actions"><span class="meta" id="identity"></span><button id="logout" type="button" class="btn secondary compact" hidden>Uitloggen</button></div></div></header>
+<main>
+<section id="login" class="panel login">
+<div class="tag">Beheerder</div><h1>Jouw LEIF-omgeving</h1>
+<p class="sub">Beheer deelnemers, hun codes en de persoonlijke verhalen die je voor hen schrijft. Hiervoor gebruik je je eigen beheerdersaccount.</p>
+<form id="loginForm">
+<div class="field"><label for="email">E-mailadres</label><input id="email" type="email" autocomplete="username" required></div>
+<div class="field"><label for="password">Wachtwoord</label><input id="password" type="password" autocomplete="current-password" required></div>
+<button id="signIn" class="btn" type="submit">Inloggen als beheerder</button>
+</form>
+<p class="save-status error" id="loginError" role="alert"></p>
+<p class="meta">Deelnemers gebruiken een eigen code. Die code geeft nooit toegang tot dit beheer.</p>
+</section>
+<section id="workspace" hidden>
+<div class="tag">LEIF beheer</div><h1>Deelnemers en verhalen</h1>
+<p class="sub">Je ziet alleen de deelnemers waarvoor je beheerrechten hebt. Deelnemers lezen pas een persoonlijke reactie nadat je die hebt gepubliceerd.</p>
+<div class="toolbar"><label for="tenant">Omgeving</label><select id="tenant" aria-label="Kies een LEIF-omgeving"></select><button id="reload" type="button" class="btn secondary compact">Vernieuwen</button></div>
+<div class="panel" id="newPanel">
+<h2>Nieuwe deelnemer</h2>
+<p class="meta">Vul de naam in en maak een persoonlijke toegangscode. De code wordt één keer getoond. Bewaar of verstuur hem zelf via een veilige weg.</p>
+<form id="inviteForm" class="actions"><div class="field"><label for="newName">Naam</label><input id="newName" maxlength="120" required placeholder="Naam deelnemer"></div><button type="submit" class="btn">Maak deelnemer en code</button></form>
+<div id="codePanel" hidden></div>
+</div>
+<div class="detail-grid">
+<aside aria-label="Deelnemers">
+<div class="actions"><h2>Deelnemers</h2><span id="peopleCount" class="meta"></span></div>
+<div class="list" id="participants"></div>
+</aside>
+<section aria-label="Geselecteerde deelnemer">
+<div id="empty" class="panel empty">Kies links een deelnemer om het verhaal te schrijven of antwoorden te bekijken.</div>
+<div class="panel" id="detail" hidden>
+<div class="tag" id="personStatus">Deelnemer</div><h2 id="personName">Deelnemer</h2>
+<p id="personMeta" class="meta"></p>
+<div class="navtabs" id="tabs">
+<button type="button" data-tab="story" aria-current="page">Verhaal schrijven</button>
+<button type="button" data-tab="answers">Antwoorden lezen</button>
+<button type="button" data-tab="settings">Naam en toegang</button>
+</div>
+<div id="storyTab">
+<p class="sub">Je concept wordt tijdens het schrijven opgeslagen. Met <strong>Publiceren</strong> wordt de tekst zichtbaar in de persoonlijke omgeving van de deelnemer.</p>
+<div class="field"><label for="textIntro">Inleiding</label><textarea id="textIntro" rows="6" placeholder="Een korte, persoonlijke opening."></textarea></div>
+<div class="field"><label for="textOther">Deel 2: de blik van een ander</label><textarea id="textOther" rows="15" placeholder="Wat je de ander wilt meegeven."></textarea></div>
+<div class="field"><label for="textFurther">Deel 3: verder kijken</label><textarea id="textFurther" rows="10" placeholder="Oefeningen, aandachtspunten of vragen om mee verder te gaan."></textarea></div>
+<div class="field"><label for="textClosing">Slotwoord</label><textarea id="textClosing" rows="6" placeholder="Een laatste persoonlijke gedachte."></textarea></div>
+<div class="toolbar">
+<button type="button" id="saveDraft" class="btn">Bewaar concept</button>
+<button type="button" id="publish" class="btn secondary">Publiceer voor deelnemer</button>
+<button type="button" id="unpublish" class="btn secondary">Haal publicatie weg</button>
+</div>
+<p class="save-status" id="storyStatus" role="status" aria-live="polite"></p>
+<div class="notice"><strong>Wat ziet de deelnemer?</strong><p id="publishedStatus">Nog geen tekst gepubliceerd.</p></div>
+</div>
+<div id="answersTab" hidden>
+<h3>Ingevulde antwoorden</h3><p class="meta">Alleen ter voorbereiding van je persoonlijke reactie. Niet iedere vraag hoeft te zijn beantwoord.</p>
+<dl id="answerReadout"></dl>
+</div>
+<div id="settingsTab" hidden>
+<h3>Naam en toegang</h3>
+<div class="field"><label for="editName">Naam deelnemer</label><input id="editName" maxlength="120"></div>
+<div class="toolbar">
+<button type="button" id="saveName" class="btn">Bewaar naam</button>
+<button type="button" id="rotateCode" class="btn secondary">Maak nieuwe toegangscode</button>
+<button type="button" id="revoke" class="btn danger">Trek toegang in</button>
+</div>
+<p class="meta">Een nieuwe code maakt de oude onmiddellijk ongeldig. Het dossier en alle opgeslagen teksten blijven behouden.</p>
+</div>
+</div>
+</section>
+</div>
+</section>
+</main>
+<script>
+'use strict';
+const endpoint='https://ngcyfbstajfcfdhlelbz.supabase.co/functions/v1/leif-admin-console';
+const fields={inleiding:'textIntro',blik_van_een_ander:'textOther',verder_kijken:'textFurther',slotwoord:'textClosing'};
+const E=id=>document.getElementById(id);
+let auth=null,tenants=[],tenant=null,participants=[],selected=null,documentState=null,tab='story',dirty=false,busy=false,storyTimer=null;
+const el=(tag,cls,content)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(content!==undefined)n.textContent=content;return n};
+const show=(id,visible)=>E(id).hidden=!visible;
+const status=(msg,error=false)=>{E('storyStatus').textContent=msg;E('storyStatus').classList.toggle('error',error)};
+function setBusy(on){busy=on;document.querySelectorAll('#detail button,#inviteForm button').forEach(b=>b.disabled=on)}
+function changeTab(name){tab=name;for(const b of E('tabs').querySelectorAll('button'))b.setAttribute('aria-current',b.dataset.tab===name?'page':'false');show('storyTab',name==='story');show('answersTab',name==='answers');show('settingsTab',name==='settings')}
+async function request(action,extra={},retry=true){
+ const payload=JSON.stringify({action,...extra});
+ const response=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json',...(auth?.access_token?{Authorization:'Bearer '+auth.access_token}:{})},credentials:'omit',cache:'no-store',body:payload});
+ const data=await response.json().catch(()=>({error:'server_unavailable'}));
+ if(response.status===401&&retry&&auth?.refresh_token&&action!=='login'&&action!=='refresh'){
+  const refreshed=await request('refresh',{refresh_token:auth.refresh_token},false);
+  auth=refreshed;saveSession();return request(action,extra,false);
+ }
+ if(!response.ok){const err=new Error(data.error||'server_unavailable');err.status=response.status;throw err}
+ return data;
+}
+function saveSession(){try{sessionStorage.setItem('leif-admin-session-v1',JSON.stringify({access_token:auth.access_token,refresh_token:auth.refresh_token,tenants}))}catch{}}
+async function signIn(email,password){
+ const response=await request('login',{email,password},false);
+ auth=response;tenants=response.tenants;saveSession();
+ show('login',false);show('workspace',true);show('logout',true);
+ E('identity').textContent=response.user_email||'Beheerder';
+ E('password').value='';
+ E('tenant').replaceChildren(...tenants.map(t=>{const o=el('option',null,t.name);o.value=t.id;return o}));
+ tenant=tenants[0];E('tenant').value=tenant.id;await loadList();
+}
+async function resumeSession(){
+ let value;try{value=JSON.parse(sessionStorage.getItem('leif-admin-session-v1')||'null')}catch{return}
+ if(!value?.refresh_token)return;
+ try{
+  const newAuth=await request('refresh',{refresh_token:value.refresh_token},false);
+  auth=newAuth;tenants=newAuth.tenants;saveSession();
+  show('login',false);show('workspace',true);show('logout',true);
+  E('identity').textContent=newAuth.user_email||'Beheerder';
+  E('tenant').replaceChildren(...tenants.map(t=>{const o=el('option',null,t.name);o.value=t.id;return o}));
+  tenant=tenants[0];E('tenant').value=tenant.id;await loadList();
+ }catch{sessionStorage.removeItem('leif-admin-session-v1')}
+}
+function canManage(){return tenant?.role==='manager'}
+async function loadList(){
+ const data=await request('list',{tenant_id:tenant.id});participants=data.participants;
+ E('peopleCount').textContent=String(participants.length);
+ E('newPanel').hidden=!canManage();
+ const list=E('participants');list.replaceChildren();
+ for(const p of participants){
+  const b=el('button','person');b.type='button';b.dataset.active=String(p.id===selected?.id);
+  b.append(el('strong',null,p.display_name||'Naam ontbreekt'),el('small',null,p.created_at?new Date(p.created_at).toLocaleDateString('nl-NL'):''),el('span','status',p.state==='revoked'?'Toegang ingetrokken':'Actief'));
+  b.onclick=()=>choosePerson(p.id);list.append(b);
+ }
+ if(!participants.length)list.append(el('p','meta','Nog geen deelnemers.'));
+ if(selected){
+  const found=participants.find(p=>p.id===selected.id);
+  if(found){if(dirty)return;await choosePerson(found.id);return}
+ }
+ selected=null;documentState=null;show('detail',false);show('empty',true);
+}
+function codeVisible(code,name){
+ const panel=E('codePanel');panel.replaceChildren();show('codePanel',true);
+ const block=el('div','newcode');
+ block.append(el('strong',null,'Toegangscode voor '+name));
+ const digits=el('code',null,code);block.append(digits);
+ block.append(el('p',null,'Deze code wordt nu eenmalig getoond. Een nieuwe code maakt de vorige ongeldig.'));
+ const copy=el('button','btn secondary compact','Kopieer code');copy.type='button';
+ copy.onclick=()=>{navigator.clipboard.writeText(code).then(()=>copy.textContent='Gekopieerd').catch(()=>{digits.focus()})};
+ block.append(copy);panel.append(block);
+}
+function readDraft(){const obj={};for(const [key,id] of Object.entries(fields))obj[key]=E(id).value;return obj}
+function confirmDiscard(){return !dirty||confirm('Je hebt nog niet opgeslagen wijzigingen in het verhaal. Wil je die verliezen?')}
+function planStorySave(){clearTimeout(storyTimer);if(dirty)storyTimer=setTimeout(()=>{if(!dirty||!selected)return;if(busy){planStorySave();return}performStory('save_draft',{draft:readDraft()})},1700)}
+async function choosePerson(id){
+ if(selected?.id!==id&&!confirmDiscard())return;
+ clearTimeout(storyTimer);
+ setBusy(true);
+ try{
+  const data=await request('get',{tenant_id:tenant.id,participant_id:id});
+  selected=data.participant;documentState=data.document;dirty=false;
+  show('detail',true);show('empty',false);
+  E('personName').textContent=selected.display_name||'Naam ontbreekt';
+  E('personStatus').textContent=selected.state==='revoked'?'Toegang ingetrokken':'Actief';
+  E('personMeta').textContent='Dossier bijgewerkt: '+(documentState.updated_at?new Date(documentState.updated_at).toLocaleString('nl-NL'):'onbekend')+' · versie '+documentState.revision;
+  E('editName').value=selected.display_name||'';
+  const content=documentState.personal_texts||{};
+  for(const [key,field] of Object.entries(fields))E(field).value=content.draft?.[key]||'';
+  E('publishedStatus').textContent=content.published_at?'Gepubliceerd op '+new Date(content.published_at).toLocaleString('nl-NL')+'.':'Nog geen tekst gepubliceerd.';
+  status('');changeTab(tab);showAnswers();
+  E('participants').querySelectorAll('.person').forEach(b=>b.dataset.active=String(b.textContent?.includes(selected.display_name)||false));
+ }catch(e){status('Dossier openen is niet gelukt. Probeer opnieuw.',true)}
+ finally{setBusy(false)}
+}
+function showAnswers(){
+ const list=E('answerReadout');list.replaceChildren();
+ const items=documentState?.answers||{},keys=Object.keys(items).filter(k=>typeof items[k]==='string'&&items[k].trim());
+ if(!keys.length){list.append(el('p','meta','Er zijn nog geen antwoorden ingevuld.'));return}
+ for(const k of keys){list.append(el('dt',null,k.replace(/_/g,' ')),el('dd','readout',items[k]))}
+}
+async function performStory(action,extra={}){
+ if(!selected||!documentState||busy)return;
+ clearTimeout(storyTimer);
+ const savedDraft=action==='save_draft'?JSON.stringify(extra.draft):null;
+ setBusy(true);status('Opslaan...');
+ try{
+  const r=await request(action,{tenant_id:tenant.id,participant_id:selected.id,revision:documentState.revision,...extra});
+  documentState.revision=r.revision;documentState.personal_texts=r.personal_texts;documentState.updated_at=new Date().toISOString();
+  if(action==='save_draft'){
+   dirty=JSON.stringify(readDraft())!==savedDraft;
+   if(dirty)planStorySave();
+  }
+  const text=action==='save_draft'?'Concept bewaard.':action==='publish_story'?'Verhaal gepubliceerd.':'Publicatie ingetrokken.';
+  status(dirty?'Nog niet opgeslagen':text);E('personMeta').textContent='Dossier bijgewerkt: '+new Date().toLocaleString('nl-NL')+' · versie '+documentState.revision;
+  const p=r.personal_texts;E('publishedStatus').textContent=p?.published_at?'Gepubliceerd op '+new Date(p.published_at).toLocaleString('nl-NL')+'.':'Nog geen tekst gepubliceerd.';
+ }catch(e){status(e.status===409?'Dit dossier is intussen gewijzigd. Kopieer je tekst en open het dossier opnieuw.':'Opslaan is niet gelukt. Je tekst staat nog op dit scherm.',true)}
+ finally{setBusy(false)}
+}
+E('loginForm').onsubmit=async e=>{e.preventDefault();E('signIn').disabled=true;E('loginError').textContent='';try{await signIn(E('email').value,E('password').value)}catch(e){E('loginError').textContent=e.status===403?'Dit account heeft geen LEIF-beheerrechten.':'Inloggen is niet gelukt. Controleer je gegevens.'}finally{E('signIn').disabled=false}};
+E('logout').onclick=()=>{if(!confirmDiscard())return;sessionStorage.removeItem('leif-admin-session-v1');auth=null;tenants=[];tenant=null;selected=null;documentState=null;dirty=false;show('workspace',false);show('detail',false);show('logout',false);show('login',true);E('identity').textContent=''};
+E('tenant').onchange=async()=>{if(!confirmDiscard()){E('tenant').value=tenant.id;return}tenant=tenants.find(t=>t.id===E('tenant').value);selected=null;dirty=false;await loadList()};
+E('reload').onclick=()=>{if(confirmDiscard()){dirty=false;loadList()}};
+E('inviteForm').onsubmit=async e=>{e.preventDefault();const name=E('newName').value.trim();if(!name||!canManage())return;E('inviteForm').querySelector('button').disabled=true;
+ try{const r=await request('invite',{tenant_id:tenant.id,name});E('newName').value='';codeVisible(r.code,name);await loadList();await choosePerson(r.participant)}catch{alert('De deelnemer kon niet worden aangemaakt.')}
+ finally{E('inviteForm').querySelector('button').disabled=false}};
+E('tabs').querySelectorAll('button').forEach(b=>b.onclick=()=>changeTab(b.dataset.tab));
+for(const id of Object.values(fields))E(id).addEventListener('input',()=>{dirty=true;status('Wordt zo opgeslagen...');planStorySave()});
+E('saveDraft').onclick=()=>performStory('save_draft',{draft:readDraft()});
+E('publish').onclick=async()=>{if(dirty){status('Bewaar eerst het concept. Daarna kun je het publiceren.',true);return}
+ if(confirm('Dit verhaal wordt zichtbaar in de persoonlijke omgeving van de deelnemer. Wil je publiceren?'))await performStory('publish_story')};
+E('unpublish').onclick=()=>{if(confirm('Wil je de gepubliceerde tekst tijdelijk onzichtbaar maken? Het concept blijft bewaard.'))performStory('unpublish_story')};
+E('saveName').onclick=async()=>{if(!selected||!canManage()||dirty)return;const name=E('editName').value.trim();if(!name)return;try{await request('rename',{tenant_id:tenant.id,participant_id:selected.id,name});selected.display_name=name;E('personName').textContent=name;await loadList()}catch{alert('De naam kon niet worden opgeslagen.')}};
+E('rotateCode').onclick=async()=>{if(!selected||!canManage())return;if(!confirm('De bestaande code werkt hierna niet meer. Een nieuwe code maken?'))return;try{const r=await request('rotate',{tenant_id:tenant.id,participant_id:selected.id});codeVisible(r.code,selected.display_name||'deelnemer');E('codePanel').scrollIntoView({behavior:'smooth'})}catch{alert('Een nieuwe code maken is niet gelukt.')}};
+E('revoke').onclick=async()=>{if(!selected||!canManage())return;if(!confirm('Toegang intrekken? De gegevens blijven bewaard.'))return;try{await request('revoke',{tenant_id:tenant.id,participant_id:selected.id});await loadList()}catch{alert('Intrekken is niet gelukt.')}};
+window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue=''}});
+resumeSession();
+</script>
+</body></html>
