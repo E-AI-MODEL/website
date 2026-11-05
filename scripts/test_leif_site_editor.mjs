@@ -58,8 +58,8 @@ try {
  await page.locator('#siteSave').click();
  await page.getByText('Concept bewaard.',{exact:true}).waitFor({timeout:10000});
  assert.equal(store.size,1,'Eerste concept opgeslagen');
- await page.locator('#sitePublish').click();
  page.once('dialog',dialog=>dialog.accept());
+ await page.locator('#sitePublish').click();
  await page.getByText('Tekst gepubliceerd.',{exact:true}).waitFor({timeout:10000});
  assert.equal([...store.values()][0].published_text,'Welkom in LEIF');
  await page.locator('#siteRefresh').click();
