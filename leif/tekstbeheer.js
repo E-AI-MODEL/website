@@ -6,7 +6,7 @@ const page=pages[location.pathname.replace(/index\.html$/,'').replace(/\/?$/,'/'
 if(!page)return;
 const api='https://ngcyfbstajfcfdhlelbz.supabase.co/functions/v1/leif-admin-console';
 const editing=new URLSearchParams(location.search).get('leif_voorbeeld')==='1'&&window.parent!==window;
-const exclude='script,style,svg,textarea,select,option,input,code,pre,[contenteditable],[data-leif-locked],#protected-text,#answerReadout,#testerAnswers,#participants,#testerList,#testerDetail,#codePanel,#testerInvite,.reader,.report-page,.reportlist,.personal,.quote-list,.answer-piece,.narrative-copy,.readonly,.readout,.text-answer,.question textarea,.exercise textarea,#welcome,[aria-live],.save-status,.error,.status,.meta#identity';
+const exclude='script,style,svg,textarea,select,option,input,code,pre,[contenteditable],[data-leif-locked],#protected-text,#answerReadout,#testerAnswers,#participants,#testerList,#testerDetail,#codePanel,#testerInvite,.reader,.report-page,.reportlist,.personal,.quote-list,.answer-piece,.narrative-copy,.readonly,.readout,.text-answer,.question textarea,.exercise textarea,#welcome,[role=status],[role=alert],.save-status,.error,.status,.meta#identity';
 const registered=new WeakMap(),known=new Map(),published=new Map(),preview=new Map();
 let scheduled=false, editEnabled=editing;
 const tidy=s=>String(s||'').replace(/\s+/g,' ').trim();
@@ -57,6 +57,7 @@ function post(message){window.parent.postMessage({...message,source:'leif-tekst'
 if(editing){
  // Het voorbeeld mag nooit formulieren versturen, opslag veranderen of antwoorden schrijven.
  document.addEventListener('submit',e=>{e.preventDefault();e.stopImmediatePropagation()},true);
+ document.addEventListener('beforeinput',e=>{e.preventDefault();e.stopImmediatePropagation()},true);
  document.addEventListener('click',e=>{
   if(!editEnabled)return;
   const element=e.target instanceof Element?e.target:null;
