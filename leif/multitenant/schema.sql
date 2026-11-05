@@ -84,3 +84,17 @@ revoke all on function public.leif_document_audit() from public, anon, authentic
 revoke all on function public.leif_initialize_document() from public, anon, authenticated;
 -- Bewust geen publieke RLS-policies. Ook een ingelogde Supabase-gebruiker
 -- krijgt geen rechtstreeks recht op LEIF-dossiers.
+
+-- Beheerrechten horen bij een bestaand Supabase Auth-account.
+-- Beheerders krijgen via de browser nooit rechtstreeks toegang tot tabellen.
+create table if not exists public.leif_admin_memberships (
+  user_id uuid not null references auth.users(id) on delete cascade,
+  tenant_id uuid not null references public.leif_tenants(id) on delete cascade,
+  role text not null default 'editor' check (role in ('editor','manager')),
+  created_at timestamptz not null default now(),
+  primary key (user_id,tenant_id)
+);
+create index if not exists leif_admin_memberships_tenant_idx on public.leif_admin_memberships(tenant_id);
+alter table public.leif_admin_memberships enable row level security;
+revoke all on public.leif_admin_memberships from anon,authenticated;
+-- Er is bewust geen publieke RLS-policy. De server controleert iedere beheeraanvraag.
