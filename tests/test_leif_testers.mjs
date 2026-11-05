@@ -8,7 +8,6 @@ const admin=read('leif/beheer/index.html');
 const personal=read('leif/continue/index.html');
 const backend=read('leif/multitenant/edge-admin-console.ts');
 const demo=read('leif/multitenant/demo-testers.sql');
-const demoApi=read('leif/multitenant/edge-demo-session.ts');
 
 for(const [path,html] of [['leif/index.html',landing],['leif/beheer/index.html',admin],['leif/continue/index.html',personal]]){
   test(path+' heeft geldige JavaScript-syntax',()=>{
@@ -44,5 +43,5 @@ test('iedere tester krijgt een aparte geheime code in dezelfde demosessie',()=>{
   assert.match(admin,/leif\/continue\/\#code=/);
   assert.match(landing,/LEIF-TEST-\[a-f0-9\]/);
   assert.match(personal,/sessionStorage\.getItem\('leifContinueToken'\)/);
-  assert.match(demoApi,/continuation_hash=eq/);
+  assert.match(personal,/leif-demo-session/);
 });
