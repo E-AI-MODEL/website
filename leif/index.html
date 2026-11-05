@@ -385,10 +385,15 @@ try{
 
 // Een KEI-invoer geldt voor alle LEIF-pagina's in hetzelfde browsertabblad.
 try{
- if(window.parent!==window&&new URLSearchParams(location.search).get('leif_voorbeeld')==='1'&&new URLSearchParams(location.search).get('deel')==='kei'){
-   document.getElementById('accessGate').hidden=true;
-   document.getElementById('appRoot').hidden=false;
-   renderIntro();
+ if(window.parent!==window&&new URLSearchParams(location.search).get('leif_voorbeeld')==='1'){
+   if(new URLSearchParams(location.search).get('deel')==='kei'){
+    document.getElementById('accessGate').hidden=true;
+    document.getElementById('appRoot').hidden=false;
+    renderIntro();
+   }else{
+    document.getElementById('accessGate').hidden=false;
+    document.getElementById('appRoot').hidden=true;
+   }
  }else if(sessionStorage.getItem('leif-kei-session-v1')==='1'){
   document.getElementById('accessGate').hidden=true;
   document.getElementById('appRoot').hidden=false;
