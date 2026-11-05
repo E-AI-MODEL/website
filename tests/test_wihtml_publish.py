@@ -45,7 +45,10 @@ class WiHTMLPublicationTests(unittest.TestCase):
                        'id="newLesson"', 'Onderzoekstabel', 'Zelfstandig oefenen',
                        'Verklaren en vergelijken', 'tableView', 'practiceView', 'compareView',
                        'id="defaultLayout"', 'id="routePreset"', 'data-feature="drawing"',
-                       'id="jsonExample"', 'normalizeLessonJSON'):
+                       'id="jsonExample"', 'normalizeLessonJSON',
+                       'quizGroupView', 'mistakeView', 'chooseExperiment',
+                       'graphPollSecond', 'id="deckTitle"', 'id="deckProgress"',
+                       'questionChoices', 'data-answer-index'):
             with self.subTest(marker=marker):
                 self.assertIn(marker, text)
 
