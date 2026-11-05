@@ -1940,6 +1940,9 @@ window.addEventListener('load',()=>{
  const params=new URLSearchParams(window.location.search);
  if(params.get('start')==='nieuw'){
   startBlankLesson('own');
+  params.delete('start');
+  const query=params.toString();
+  history.replaceState(null,'',window.location.pathname+(query?'?'+query:''));
   return;
  }
  const key=params.get('lesson'),valid=Object.prototype.hasOwnProperty.call(WIHTML_LIBRARY_FILES,key||'');
