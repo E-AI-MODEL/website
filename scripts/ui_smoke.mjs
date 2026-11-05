@@ -89,6 +89,7 @@ try {
   assert.equal(await wiPage.locator('#modeQuick').getAttribute('aria-pressed'), 'true', 'Snel is standaard');
   assert.equal(await wiPage.locator('.rail').isVisible(), false, 'Lange editor blijft uit beeld');
   assert(await wiPage.locator('[data-guide-info="title"]').isVisible(), 'Eerst alleen lesnaam');
+  await wiPage.screenshot({path:'test-results/wihtml-stap-naam.png'});
   assert.equal(await wiPage.locator('[data-guide-info="level"]').isVisible(), false, 'Niveau komt later');
   await wiPage.locator('#guideTitle').fill('Mijn eerste begeleide les');
   await wiPage.locator('#guideNext').click();
@@ -105,6 +106,7 @@ try {
   assert.equal(await wiPage.locator('#designType').inputValue(), 'question', 'Werkvorm wijzigt de echte les');
   await wiPage.locator('#guideNext').click();
   assert(await wiPage.locator('#guideSlide').isVisible(), 'Daarna pas dia bewerken');
+  await wiPage.screenshot({path:'test-results/wihtml-stap-dia.png'});
   assert.equal(await wiPage.locator('.design-toolbar').isVisible(), false, 'Technische werkbalk blijft uit beeld');
   const firstTitle = wiPage.locator('#designCanvas [data-design-edit="title"]').first();
   await firstTitle.fill('Eigen eerste dia');
@@ -115,10 +117,12 @@ try {
   });
   await wiPage.locator('#guideNext').click();
   assert(await wiPage.locator('[data-guide-notes="student"]').isVisible(), 'Leerlingactiviteit is ook in Snel zichtbaar');
+  await wiPage.screenshot({path:'test-results/wihtml-stap-leerling.png'});
   await wiPage.locator('#guideStudent').fill('Leerlingen bespreken eerst hun antwoord.');
   await wiPage.locator('#modeStudio').click();
   await wiPage.locator('#guideNext').click();
   assert(await wiPage.locator('[data-guide-notes="teacher"]').isVisible(), 'Docentrol heeft eigen Studio-scherm');
+  await wiPage.screenshot({path:'test-results/wihtml-stap-docent.png'});
   await wiPage.locator('#guideTeacher').fill('Toon pas na bespreking de uitwerking.');
   await wiPage.locator('#guideNext').click();
   assert(await wiPage.locator('[data-guide-notes="layout"]').isVisible(), 'Lesfase en indeling komen later');
@@ -137,6 +141,8 @@ try {
   const liveViewer = wiPage.frameLocator('#guideResultFrame').locator('#viewer.show');
   await liveViewer.waitFor({state:'visible',timeout:15000});
   assert(await wiPage.locator('#guideResultFrame').isVisible(), 'De werkende HTML is direct ingebed');
+  await wiPage.screenshot({path:'test-results/wihtml-eindscherm.png',fullPage:true});
+  await liveViewer.screenshot({path:'test-results/wihtml-live-presentatie.png'});
   await wiPage.locator('#guidePrevious').click();
   assert(await wiPage.locator('#guideReview').isVisible(), 'Teruggaan kan zonder gegevensverlies');
   await wiPage.locator('#guideNext').click();
@@ -183,6 +189,7 @@ try {
   await wiPage.locator('#guideNext').click();
   const wiMobile=await wiPage.evaluate(()=>({scroll:document.documentElement.scrollWidth,width:document.documentElement.clientWidth}));
   assert(wiMobile.scroll<=wiMobile.width+1,'Geen horizontaal scrollen op mobiel');
+  await wiPage.screenshot({path:'test-results/wihtml-mobiel.png'});
   assert.deepEqual(wiErrors,[],'WiHTML heeft geen browserfouten');
   const routePage=await wiContext.newPage();
   await routePage.goto(base+'/tools/wihtml/studio/?start=nieuw',{waitUntil:'load'});
