@@ -35,6 +35,15 @@ main{max-width:1160px;margin:auto;padding:42px 24px 120px}.tag{font-weight:800;c
 <div class="tag">LEIF beheer</div><h1>Deelnemers en verhalen</h1>
 <p class="sub">Je ziet alleen de deelnemers waarvoor je beheerrechten hebt. Deelnemers lezen pas een persoonlijke reactie nadat je die hebt gepubliceerd.</p>
 <div class="toolbar"><label for="tenant">Omgeving</label><select id="tenant" aria-label="Kies een LEIF-omgeving"></select><button id="reload" type="button" class="btn secondary compact">Vernieuwen</button></div>
+<section class="panel" id="testerPanel" hidden>
+<h2>Testers van de LEIF-proef</h2>
+<p class="sub">Voeg iemand toe aan de bestaande proef. Iedere tester krijgt een eigen code om antwoorden te bewaren en later verder te gaan.</p>
+<form id="testerForm" class="actions"><div class="field"><label for="testerName">Naam tester</label><input id="testerName" maxlength="120" required placeholder="Naam tester"></div><button type="submit" class="btn">Voeg tester toe</button></form>
+<p id="testerStatus" class="save-status" role="status" aria-live="polite"></p>
+<div id="testerInvite" hidden></div>
+<h3>Testers</h3>
+<div id="testerList" class="list"></div>
+</section>
 <div class="panel" id="newPanel">
 <h2>Nieuwe deelnemer</h2>
 <p class="meta">Vul de naam in en maak een persoonlijke toegangscode. De code wordt één keer getoond. Bewaar of verstuur hem zelf via een veilige weg.</p>
@@ -119,7 +128,7 @@ async function signIn(email,password){
  E('identity').textContent=response.user_email||'Beheerder';
  E('password').value='';
  E('tenant').replaceChildren(...tenants.map(t=>{const o=el('option',null,t.name);o.value=t.id;return o}));
- tenant=tenants[0];E('tenant').value=tenant.id;await loadList();
+ tenant=tenants[0];E('tenant').value=tenant.id;await loadList();await loadTesters();
 }
 async function resumeSession(){
  let value;try{value=JSON.parse(sessionStorage.getItem('leif-admin-session-v1')||'null')}catch{return}
@@ -130,10 +139,40 @@ async function resumeSession(){
   show('login',false);show('workspace',true);show('logout',true);
   E('identity').textContent=newAuth.user_email||'Beheerder';
   E('tenant').replaceChildren(...tenants.map(t=>{const o=el('option',null,t.name);o.value=t.id;return o}));
-  tenant=tenants[0];E('tenant').value=tenant.id;await loadList();
+  tenant=tenants[0];E('tenant').value=tenant.id;await loadList();await loadTesters();
  }catch{sessionStorage.removeItem('leif-admin-session-v1')}
 }
 function canManage(){return tenant?.role==='manager'}
+async function loadTesters(){
+  E('testerPanel').hidden=!(canManage() && tenant?.slug==='leif');
+  if(E('testerPanel').hidden)return;
+  try{
+    const response=await request('list_testers',{tenant_id:tenant.id});
+    const list=E('testerList');list.replaceChildren();
+    for(const person of response.testers){
+      const item=el('div','person');
+      item.append(el('strong',null,person.tester_name||'Bestaande tester'));
+      const state=person.status==='submitted'?'Afgerond':'Nog bezig';
+      const when=person.created_at?new Date(person.created_at).toLocaleDateString('nl-NL'):'';
+      item.append(el('small',null,state+(when?' · '+when:'')));
+      list.append(item);
+    }
+    if(!response.testers.length)list.append(el('p','meta','Er zijn nog geen testers.'));
+  }catch{E('testerStatus').textContent='De testers konden niet worden geladen.';}
+}
+function showTesterInvite(name,code){
+  const panel=E('testerInvite');panel.replaceChildren();
+  const card=el('div','newcode');
+  card.append(el('strong',null,'Toegang voor '+name));
+  const token=el('code',null,code);card.append(token);
+  const url=location.origin+'/leif/continue/#code='+encodeURIComponent(code);
+  const link=el('a',null,url);link.href=url;link.rel='noopener noreferrer';link.target='_blank';
+  link.style.overflowWrap='anywhere';card.append(link);
+  card.append(el('p',null,'Kopieer de link nu. De code wordt later niet meer getoond.'));
+  const button=el('button','btn secondary compact','Kopieer link');button.type='button';
+  button.onclick=()=>navigator.clipboard.writeText(url).then(()=>button.textContent='Link gekopieerd').catch(()=>button.textContent='Selecteer de link hierboven');
+  card.append(button);panel.append(card);panel.hidden=false;
+}
 async function loadList(){
  const data=await request('list',{tenant_id:tenant.id});participants=data.participants;
  E('peopleCount').textContent=String(participants.length);
@@ -210,8 +249,21 @@ async function performStory(action,extra={}){
 }
 E('loginForm').onsubmit=async e=>{e.preventDefault();E('signIn').disabled=true;E('loginError').textContent='';try{await signIn(E('email').value,E('password').value)}catch(e){E('loginError').textContent=e.status===403?'Dit account heeft geen LEIF-beheerrechten.':'Inloggen is niet gelukt. Controleer je gegevens.'}finally{E('signIn').disabled=false}};
 E('logout').onclick=()=>{if(!confirmDiscard())return;sessionStorage.removeItem('leif-admin-session-v1');auth=null;tenants=[];tenant=null;selected=null;documentState=null;dirty=false;show('workspace',false);show('detail',false);show('logout',false);show('login',true);E('identity').textContent=''};
-E('tenant').onchange=async()=>{if(!confirmDiscard()){E('tenant').value=tenant.id;return}tenant=tenants.find(t=>t.id===E('tenant').value);selected=null;dirty=false;await loadList()};
-E('reload').onclick=()=>{if(confirmDiscard()){dirty=false;loadList()}};
+E('tenant').onchange=async()=>{if(!confirmDiscard()){E('tenant').value=tenant.id;return}tenant=tenants.find(t=>t.id===E('tenant').value);selected=null;dirty=false;E('testerInvite').hidden=true;await loadList();await loadTesters()};
+E('reload').onclick=async()=>{if(confirmDiscard()){dirty=false;await loadList();await loadTesters()}};
+E('testerForm').onsubmit=async e=>{
+ e.preventDefault();
+ const name=E('testerName').value.trim();
+ if(!name||!canManage()||tenant?.slug!=='leif')return;
+ const button=E('testerForm').querySelector('button');button.disabled=true;
+ E('testerStatus').textContent='Toegangscode maken...';
+ try{
+  const result=await request('create_tester',{tenant_id:tenant.id,name});
+  E('testerName').value='';E('testerStatus').textContent='Tester toegevoegd.';
+  showTesterInvite(name,result.code);await loadTesters();
+ }catch{E('testerStatus').textContent='Toevoegen is niet gelukt.';}
+ finally{button.disabled=false;}
+};
 E('inviteForm').onsubmit=async e=>{e.preventDefault();const name=E('newName').value.trim();if(!name||!canManage())return;E('inviteForm').querySelector('button').disabled=true;
  try{const r=await request('invite',{tenant_id:tenant.id,name});E('newName').value='';codeVisible(r.code,name);await loadList();await choosePerson(r.participant)}catch{alert('De deelnemer kon niet worden aangemaakt.')}
  finally{E('inviteForm').querySelector('button').disabled=false}};

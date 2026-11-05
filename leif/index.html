@@ -85,7 +85,7 @@ body{background:var(--paper);color:var(--ink)}
     <form id="accessForm" class="access-form" autocomplete="off">
       <label for="accessPassword">Inlogcode</label>
       <input id="accessPassword" type="password" name="wachtwoord" required autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" aria-describedby="accessError" />
-      <button type="submit" class="btn btn-primary">Open LEIF <span aria-hidden="true">→</span></button>
+      <button type="submit" class="btn btn-primary" id="leifSignIn">Inloggen <span aria-hidden="true">→</span></button>
       <p id="accessError" class="access-error" role="alert" hidden>Dit wachtwoord klopt niet. Probeer het opnieuw.</p>
     </form>
     <p class="access-privacy">Met je persoonlijke code kom je in een omgeving waar je antwoorden automatisch worden bewaard. De oude proef met KEI blijft apart beschikbaar en slaat antwoorden niet online op.</p><p class="access-privacy"><a href="/leif/mijn/">Open mijn persoonlijke omgeving</a> · <a href="/leif/beheer/">LEIF beheren</a></p>
@@ -251,6 +251,16 @@ el('homeLink').addEventListener('click',e=>{e.preventDefault();saveActiveInput()
 // Alleen een eenvoudig toegangsscherm op een openbare, statische pagina.
 // De toegangscode is geen echte beveiliging en beschermt de broncode niet.
 const accessForm=document.getElementById('accessForm');
+// Snelkoppeling naar het bestaande beheer. De beheerderssessie blijft vereist.
+let quickClicks=0,quickStart=0;
+document.getElementById('leifSignIn').addEventListener('click',event=>{
+  if(document.getElementById('accessPassword').value.trim()){quickClicks=0;return}
+  event.preventDefault();
+  const now=Date.now();
+  if(now-quickStart>1800){quickClicks=0;quickStart=now}
+  quickClicks++;
+  if(quickClicks===3)location.assign('/leif/beheer/');
+});
 accessForm.addEventListener('submit',function(event){
   event.preventDefault();
   const pw=document.getElementById('accessPassword');
@@ -264,6 +274,11 @@ accessForm.addEventListener('submit',function(event){
     document.getElementById('appRoot').hidden=false;
     renderIntro();
     document.getElementById('startBtn').focus({preventScroll:true});
+  }else if(/^LEIF-TEST-[a-f0-9]{48}$/i.test(pw.value.trim())){
+    const code='LEIF-TEST-'+pw.value.trim().slice(10).toLowerCase();
+    pw.value='';
+    try{sessionStorage.setItem('leifContinueToken',code)}catch(e){}
+    location.assign('/leif/continue/');
   }else if(/^[a-f0-9]{48}$/i.test(pw.value.trim())){
     const privateCode=pw.value.trim().toLowerCase();pw.value='';
     try{sessionStorage.setItem('leif-personal-access-code-v1',privateCode)}catch(e){}
