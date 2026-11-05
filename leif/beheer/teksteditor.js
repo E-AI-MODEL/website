@@ -6,7 +6,7 @@ const pageUrl={start:'/leif/?leif_voorbeeld=1',kei:'/leif/?leif_voorbeeld=1&deel
 const contentPage=name=>name==='kei'?'start':name;
 const host=window.LeifBeheer;
 const store=new Map();
-let current=null,seen=[],inFlight=false;
+let current=null,seen=[],inFlight=false,selecting=true;
 const preview=$('sitePreview'),list=$('siteFieldList'),form=$('siteEditForm'),editor=$('siteEditInput'),status=$('siteEditStatus');
 const make=(tag,txt)=>{const e=document.createElement(tag);if(txt!==undefined)e.textContent=txt;return e};
 const page=()=>contentPage($('sitePage').value);
@@ -92,6 +92,7 @@ async function change(action,extra={}){
 }
 function choosePage(){
  if(!confirmLeave())return false;
+ selecting=true;$('siteMode').textContent='Tekst selecteren';$('siteMode').setAttribute('aria-pressed','true');
  current=null;seen=[];store.clear();form.hidden=true;list.replaceChildren();
  preview.src=pageUrl[$('sitePage').value];
  tell('Kies een tekst in het voorbeeld.');
@@ -110,6 +111,13 @@ $('showPeople').onclick=()=>{
 };
 $('sitePage').onchange=()=>choosePage();
 $('siteRefresh').onclick=()=>{if(confirmLeave())choosePage()};
+$('siteMode').onclick=()=>{
+ selecting=!selecting;
+ $('siteMode').textContent=selecting?'Tekst selecteren':'Door de pagina bladeren';
+ $('siteMode').setAttribute('aria-pressed',String(selecting));
+ preview.contentWindow?.postMessage({source:'leif-editor',action:'edit',enabled:selecting},location.origin);
+ tell(selecting?'Klik op de tekst die je wilt aanpassen.':'Je kunt nu door de voorbeeldpagina bladeren. Klik nogmaals om tekst te kiezen.');
+};
 $('siteSave').onclick=()=>change('site_save',{text:editor.value});
 $('sitePublish').onclick=()=>{if(confirm('Deze tekst zichtbaar maken op LEIF?'))change('site_publish')};
 $('siteUnpublish').onclick=()=>{if(confirm('De oorspronkelijke tekst weer zichtbaar maken?'))change('site_unpublish')};
