@@ -186,6 +186,12 @@ try {
   assert.deepEqual(wiErrors,[],'WiHTML heeft geen browserfouten');
   const routePage=await wiContext.newPage();
   await routePage.goto(base+'/tools/wihtml/studio/?start=nieuw',{waitUntil:'load'});
+  await routePage.locator('#guideTitle').fill('Onderzoekende les');
+  await routePage.reload({waitUntil:'load'});
+  await routePage.locator('#startDialog').waitFor({state:'visible'});
+  routePage.once('dialog', dialog=>dialog.accept());
+  await routePage.locator('#startRestore').click();
+  assert.equal(await routePage.locator('#guideTitle').inputValue(),'Onderzoekende les','Snel verversen bewaart invoer');
   for(let n=0;n<3;n++)await routePage.locator('#guideNext').click();
   await routePage.locator('#guideRoute').selectOption('discover');
   await routePage.locator('#guideNext').click();
