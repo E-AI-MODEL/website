@@ -32,7 +32,7 @@ test('alle pagina s laden de gepubliceerde redactie',()=>{
  assert.match(frontend,/action:'site_public'/);
  assert.match(frontend,/published_text/);
  assert.doesNotMatch(frontend,/localStorage\.setItem/);
- assert.match(frontend,/textContent/);
+ assert.match(frontend,/nodeValue/);
 });
 test('privégegevens en concepten horen niet in de publieke tekstreactie',()=>{
  assert.match(backend,/if\(input\.action==="site_public"\)/);
