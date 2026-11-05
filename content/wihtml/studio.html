@@ -1041,6 +1041,190 @@ document.querySelectorAll('[data-quick-type]').forEach(button=>button.onclick=()
  msg('Dia toegevoegd. Je kunt de tekst direct aanpassen.');
 });
 
+
+/* Eén scherm per stap. De bestaande les, editor en export blijven dezelfde gegevens gebruiken. */
+let guideReady=false,guidePage={kind:'info'};
+const GUIDE_LABELS={drawing:'Pen en markeerstift',voting:'Stemmen en vergelijken',clock:'Timer en stopwatch',focus:'Spotlicht en afdekken',picker:'Leerling kiezen',notes:'Docentnotities',printing:'Printen'};
+function guidePages(){
+ const pages=[{kind:'info',name:'Je les'}];
+ for(const slide of lesson.slides){
+  pages.push({kind:'slide',id:slide.id,name:slide.title||'Nieuwe dia'});
+  if(workMode==='studio')pages.push({kind:'notes',id:slide.id,name:'Leerling en docent'});
+ }
+ pages.push({kind:'design',name:'Vormgeving'});
+ if(workMode==='studio')pages.push({kind:'tools',name:'Docenttools'});
+ pages.push({kind:'review',name:'Controleren'},{kind:'result',name:'Je HTML-les'});
+ return pages;
+}
+function guideSame(a,b){return a.kind===b.kind&&(!a.id||a.id===b.id)}
+function guideCurrentIndex(pages){return Math.max(0,pages.findIndex(page=>guideSame(page,guidePage)))}
+function guideUpdateInfo(){
+ $('title').value=$('guideTitle').value;
+ $('level').value=$('guideLevel').value;
+ $('goal').value=$('guideGoal').value;
+ save();scheduleDraftSave();
+}
+function guideUpdateNotes(){
+ const slide=lesson.slides.find(s=>s.id===guidePage.id);if(!slide)return;
+ slide.phase=$('guidePhase').value;
+ slide.student=$('guideStudent').value;
+ slide.teacher=$('guideTeacher').value;
+ slide.layout=$('guideLayout').value;
+ syncDesignForm(slide);renderDesigner();scheduleDraftSave();
+}
+function guideSaveStep(){
+ if(guidePage.kind==='info')guideUpdateInfo();
+ else if(guidePage.kind==='notes')guideUpdateNotes();
+ else save();
+}
+function guideShow(page){
+ if(!guideReady)return;
+ const steps=guidePages();
+ const found=steps.find(p=>guideSame(p,page));
+ guidePage=found||steps[0];
+ const slide=lesson.slides.find(s=>s.id===guidePage.id);
+ if(slide){
+  const i=lesson.slides.indexOf(slide);
+  if(i!==selected){selected=i;renderEditor()}
+ }
+ guideRender();
+}
+function guideMove(delta){
+ guideSaveStep();
+ const pages=guidePages(),position=guideCurrentIndex(pages),next=pages[position+delta];
+ if(next)guideShow(next);
+}
+function guideRender(){
+ if(!guideReady)return;
+ const steps=guidePages();
+ let index=steps.findIndex(p=>guideSame(p,guidePage));
+ if(index<0){
+  guidePage={kind:'slide',id:lesson.slides[selected]?.id};
+  index=steps.findIndex(p=>guideSame(p,guidePage));
+  if(index<0){guidePage=steps[0];index=0}
+ }
+ const slide=lesson.slides.find(s=>s.id===guidePage.id);
+ const pageNames={info:'Vertel iets over je les',slide:'Bewerk dia '+(selected+1),notes:'Leerling en docent bij dia '+(selected+1),design:'Kies de vormgeving',tools:'Kies je docenttools',review:'Controleer je les',result:'Je volledige HTML-les'};
+ const pageHelp={
+  info:'Vul in wat je nu weet. Je kunt altijd terug.',
+  slide:'Klik op de dia om de inhoud aan te passen. Werk aan één dia tegelijk.',
+  notes:'Bedenk wat leerlingen zelf doen en welke hulp je geeft. Deze stap hoort bij de gekozen dia.',
+  design:'Kies hoe je hele les eruitziet. De inhoud verandert niet.',
+  tools:'Geef aan welk gereedschap je tijdens het lesgeven nodig hebt.',
+  review:'Blader nog eens door je dia’s. Pas aan wat je wilt veranderen.',
+  result:'Je kunt de les bekijken, downloaden of later verder bewerken.'
+ };
+ const kind=guidePage.kind;
+ $('guideCounter').textContent='Stap '+(index+1)+' van '+steps.length;
+ $('guideHeading').textContent=pageNames[kind];
+ $('guideHelp').textContent=pageHelp[kind];
+ $('guideProgress').value=Math.round((index+1)/steps.length*100);
+ for(const section of ['Info','Slide','Notes','Design','Tools','Review','Result'])$('guide'+section).hidden=section.toLowerCase()!==kind;
+ $('guidePrevious').disabled=index===0;
+ $('guideNext').hidden=kind==='result';
+ $('guideNext').textContent=index===steps.length-2?'Akkoord, bekijk je HTML-les →':'Akkoord, volgende →';
+ $('guideFootnote').textContent=kind==='slide'?'Dia '+(selected+1)+' van '+lesson.slides.length:'Wijzigingen worden op dit apparaat bewaard';
+ if(kind==='info'){
+  $('guideTitle').value=lesson.title||'';
+  $('guideLevel').value=lesson.level||'';
+  $('guideGoal').value=lesson.goal||'';
+  $('guideRoute').value=lesson.route||'own';
+ }
+ if(kind==='slide'){
+  $('guideSlideMeta').textContent=(slide?.phase||'Lesdeel')+' · dia '+(selected+1)+' van '+lesson.slides.length;
+  $('guideMoreFields').hidden=workMode!=='studio';
+ }
+ if(kind==='notes'&&slide){
+  $('guidePhase').value=slide.phase||'';
+  $('guideStudent').value=slide.student||'';
+  $('guideTeacher').value=slide.teacher||'';
+  $('guideLayout').value=slide.layout||'inherit';
+ }
+ if(kind==='design'){
+  for(const b of document.querySelectorAll('[data-guide-theme]'))
+   b.setAttribute('aria-pressed',String(lesson.template?.name===TEMPLATE_PRESETS[b.dataset.guideTheme]?.name));
+ }
+ if(kind==='tools'){
+  $('guideToolChoices').innerHTML=Object.entries(GUIDE_LABELS).map(([id,label])=>'<label><input type="checkbox" data-guide-feature="'+id+'" '+(lesson.features[id]!==false?'checked':'')+'>'+label+'</label>').join('');
+ }
+ if(kind==='review'){
+  review();
+  const notices=[...$('review').querySelectorAll('.review-item')].map(e=>e.textContent);
+  $('guideReviewList').innerHTML=lesson.slides.map((s,i)=>'<div class="wi-guide-check"><div><strong>Dia '+(i+1)+': '+esc(s.title||'Zonder titel')+'</strong><div class="wi-guide-muted">'+esc(s.phase||'Lesdeel')+'</div></div><button type="button" data-guide-slide="'+esc(s.id)+'">Bewerk dia</button></div>').join('')+notices.map(t=>'<div class="wi-guide-check wi-guide-warning">'+esc(t)+'</div>').join('');
+ }
+ if(kind==='result'){
+  $('guideResultCount').textContent=lesson.slides.length+' '+(lesson.slides.length===1?'dia':'dia’s');
+  $('guideResultList').innerHTML=lesson.slides.map((s,i)=>'<button type="button" class="wi-guide-final-item" data-guide-slide="'+esc(s.id)+'"><span>'+String(i+1).padStart(2,'0')+'</span><strong>'+esc(s.title||'Nieuwe dia')+'<small class="wi-guide-muted">'+esc(s.phase||'')+'</small></strong></button>').join('');
+ }
+ window.scrollTo({top:0,behavior:'instant'});
+}
+function guideOpenExtra(){
+ guideSaveStep();
+ $('advancedFields').open=true;
+ $('guideFieldsMount').append($('advancedFields'));
+ $('guideFieldsDialog').showModal();
+}
+function guideCloseExtra(){
+ $('guideFieldsDialog').close();
+}
+$('guideFieldsDialog').addEventListener('close',()=>{
+ document.querySelector('.editor').append($('advancedFields'));
+ if(guideReady){save();renderDesigner();scheduleDraftSave()}
+});
+$('guideFieldsClose').onclick=guideCloseExtra;
+$('guideMoreFields').onclick=guideOpenExtra;
+$('guideNotesAdvanced').onclick=guideOpenExtra;
+$('guidePrevious').onclick=()=>guideMove(-1);
+$('guideNext').onclick=()=>guideMove(1);
+$('guideAddSlide').onclick=()=>openQuickInsert();
+$('guideOutline').onclick=()=>{
+ const pages=guidePages();
+ $('guideOutlineList').innerHTML=pages.map((p,i)=>'<button type="button" data-guide-index="'+i+'" '+(guideSame(p,guidePage)?'aria-current="step"':'')+'><span class="wi-guide-counter">'+String(i+1).padStart(2,'0')+'</span>'+esc(p.name)+'</button>').join('');
+ $('guideOutlineDialog').showModal();
+};
+$('guideOutlineList').onclick=e=>{
+ const button=e.target.closest('[data-guide-index]');if(!button)return;
+ const target=guidePages()[Number(button.dataset.guideIndex)];
+ guideSaveStep();$('guideOutlineDialog').close();if(target)guideShow(target);
+};
+$('guideOutlineClose').onclick=()=>$('guideOutlineDialog').close();
+$('guideReviewList').onclick=e=>{
+ const button=e.target.closest('[data-guide-slide]');if(!button)return;
+ guideSaveStep();guideShow({kind:'slide',id:button.dataset.guideSlide});
+};
+$('guideResultList').onclick=e=>{
+ const button=e.target.closest('[data-guide-slide]');if(!button)return;
+ guideSaveStep();guideShow({kind:'slide',id:button.dataset.guideSlide});
+};
+for(const id of ['guideTitle','guideLevel','guideGoal'])$(id).addEventListener('input',guideUpdateInfo);
+$('guideApplyRoute').onclick=()=>{
+ guideUpdateInfo();$('routePreset').value=$('guideRoute').value;
+ $('applyRoute').click();guideShow({kind:'info'});
+};
+for(const id of ['guidePhase','guideStudent','guideTeacher','guideLayout'])$(id).addEventListener('input',guideUpdateNotes);
+document.querySelectorAll('[data-guide-theme]').forEach(b=>b.onclick=()=>{
+ lesson.template=deep(TEMPLATE_PRESETS[b.dataset.guideTheme]);
+ applyTemplate();renderDesigner();scheduleDraftSave();guideRender();
+});
+$('guideDesignMore').onclick=()=>makeTemplatePanel();
+$('guideToolChoices').onchange=e=>{
+ const input=e.target.closest('[data-guide-feature]');if(!input)return;
+ const original=document.querySelector('[data-feature="'+input.dataset.guideFeature+'"]');
+ if(original){original.checked=input.checked;original.dispatchEvent(new Event('change',{bubbles:true}))}
+};
+$('guideReviewPreview').onclick=()=>$('preview').click();
+$('guideResultPreview').onclick=()=>$('preview').click();
+$('guideDownloadHTML').onclick=()=>$('export').click();
+$('guideDownloadJSON').onclick=()=>$('save').click();
+window.addEventListener('load',()=>{
+ if(document.documentElement.classList.contains('standalone'))return;
+ document.body.classList.add('wi-guide-active');
+ $('guideFlow').hidden=false;
+ guideReady=true;
+ $('guideSlideMount').append(document.querySelector('.design-studio'));
+ guideShow({kind:'info'});
+});
+
 const WIHTML_DRAFT_KEY='wihtml:docentstudio:concept:v1';
 let draftSaveTimer=null;
 let draftTrackingReady=false;
