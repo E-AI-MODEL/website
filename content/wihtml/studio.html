@@ -1739,6 +1739,7 @@ $('newWithDraftStart').onclick=()=>{
  $('newWithDraftDialog').close();
  startBlankLesson('own');
 };
+$('newWithDraftDialog').addEventListener('cancel',event=>event.preventDefault());
 $('startDialog').addEventListener('cancel',e=>e.preventDefault());
 $("newLesson").onclick=()=>{
  if(!confirm("Een nieuwe les starten? Download eerst je huidige JSON-lesbestand als je dit later nodig hebt."))return;
