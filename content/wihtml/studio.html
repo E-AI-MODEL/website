@@ -615,7 +615,7 @@
  <div class="wi-guide-surface" data-guide-info="title"><div class="wi-guide-question"><label for="guideTitle">Hoe heet je les?</label><p>Een werktitel is genoeg. Later kun je de naam aanpassen.</p><input id="guideTitle" autocomplete="off" placeholder="Bijvoorbeeld: Exponentiële groei"></div></div>
  <div class="wi-guide-surface" data-guide-info="level" hidden><div class="wi-guide-question"><label for="guideLevel">Voor welk leerjaar en niveau?</label><p>Dan kun je de uitleg en opdrachten daarop afstemmen.</p><input id="guideLevel" autocomplete="off" placeholder="Bijvoorbeeld: 5 havo"></div></div>
  <div class="wi-guide-surface" data-guide-info="goal" hidden><div class="wi-guide-question"><label for="guideGoal">Wat moeten leerlingen aan het einde zelf kunnen?</label><p>Beschrijf één resultaat dat je in de les kunt terugzien. Je hoeft nog geen perfecte formulering te hebben.</p><textarea id="guideGoal" rows="4" placeholder="Bijvoorbeeld: ik kan een groeifactor uit een grafiek aflezen"></textarea></div></div>
- <div class="wi-guide-surface" data-guide-info="route" hidden><div class="wi-guide-question"><label for="guideRoute">Hoe wil je de les opbouwen?</label><p>Je kunt vrij beginnen of een bestaande volgorde kiezen. Alle lesdelen blijven bewerkbaar.</p><select id="guideRoute"><option value="own">Ik bepaal de volgorde zelf</option><option value="discover">Eerst onderzoeken, dan verklaren</option><option value="explain">Uitleg afwisselen met oefenen</option><option value="practice">Zelfstandig oefenen</option></select><p id="guideRouteExplain" class="wi-guide-muted">Begin met één dia en voeg daarna zelf lesdelen toe.</p><button type="button" id="guideApplyRoute">Gebruik deze opbouw</button><p class="wi-guide-muted">Een andere opbouw verandert alleen de volgorde van je dia's, niet hun inhoud.</p></div></div>
+ <div class="wi-guide-surface" data-guide-info="route" hidden><div class="wi-guide-question"><label for="guideRoute">Hoe wil je de les opbouwen?</label><p>Je kunt vrij beginnen of een bestaande volgorde kiezen. Alle lesdelen blijven bewerkbaar.</p><select id="guideRoute"><option value="own">Ik bepaal de volgorde zelf</option><option value="discover">Eerst onderzoeken, dan verklaren</option><option value="explain">Uitleg afwisselen met oefenen</option><option value="practice">Zelfstandig oefenen</option></select><p id="guideRouteExplain" class="wi-guide-muted">Begin met één dia en voeg daarna zelf lesdelen toe.</p><button type="button" id="guideApplyRoute">Gebruik deze opbouw</button><p class="wi-guide-muted">Bij een lege les krijg je passende startdia’s. In een bestaande les blijven je eigen dia’s behouden.</p></div></div>
  </div>
  <div id="guideWorkform" class="wi-guide-page" hidden><div class="wi-guide-surface"><div class="wi-guide-question"><label for="guideType">Wat moeten leerlingen op deze dia doen?</label><p>Kies een werkvorm die past bij je vraag. Alle onderdelen kun je later aanpassen.</p><select id="guideType"></select><p id="guideTypeExplain" class="wi-guide-muted"></p></div></div></div>
  <div id="guideSlide" class="wi-guide-page wi-guide-slide" hidden><div class="wi-guide-slide-meta" id="guideSlideMeta"></div><div id="guideSlideMount"></div><div class="wi-guide-slide-buttons"><button id="guideAddSlide" type="button">+ Voeg een dia toe</button><button id="guidePreviewSlide" type="button">Test deze dia</button><details id="guideSlideActions" class="wi-guide-slide-actions"><summary>Dia beheren</summary><div class="wi-guide-slide-control"><button id="guideDuplicateSlide" type="button">Maak een kopie</button><button id="guideMoveSlideUp" type="button" aria-label="Zet dia eerder">Eerder</button><button id="guideMoveSlideDown" type="button" aria-label="Zet dia later">Later</button><button id="guideRemoveSlide" type="button">Verwijderen</button><button id="guideMoreFields" type="button" hidden>Andere instellingen</button></div></details></div></div>
@@ -1155,8 +1155,18 @@ function guideUpdateInfo(){
 function guideCommitRoute(){
  const chosen=$('guideRoute').value;
  if(lesson.route!==chosen){
-  $('routePreset').value=chosen;
-  $('applyRoute').click();
+  const first=lesson.slides[0];
+  const untouched=lesson.slides.length===1&&first&&first.type==='text'&&first.title==='Nieuwe dia'&&!first.prompt&&!first.body&&!first.student&&!first.teacher;
+  if(untouched&&ROUTES[chosen]){
+   lesson.slides=ROUTES[chosen].map(newRouteSlide);
+   lesson.route=chosen;
+   selected=0;
+   renderEditor();
+   scheduleDraftSave();
+  }else{
+   $('routePreset').value=chosen;
+   $('applyRoute').click();
+  }
  }
 }
 function guideUpdateNotes(){
