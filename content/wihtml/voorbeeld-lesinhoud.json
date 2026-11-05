@@ -1,0 +1,37 @@
+{
+  "titel": "Groeifactor onderzoeken",
+  "niveau": "5 havo",
+  "leerdoelen": [
+    "De leerling kan een groeifactor bepalen.",
+    "De leerling kan een verdubbelingstijd onderzoeken."
+  ],
+  "inhoud": [
+    {
+      "titel": "Wat is exponentiële groei?",
+      "fase": "Voorkennis",
+      "tekst": "Bij een vaste groeifactor wordt een hoeveelheid ieder tijdvak met hetzelfde getal vermenigvuldigd."
+    }
+  ],
+  "vragen": [
+    {
+      "fase": "Voorspellen",
+      "titel": "Wat verwacht je?",
+      "vraag": "Een bedrag verdubbelt elke 12 jaar. Hoe lang duurt de volgende verdubbeling?",
+      "antwoorden": [
+        "Minder dan 12 jaar",
+        "Precies 12 jaar",
+        "Meer dan 12 jaar"
+      ],
+      "juisteAntwoord": "B",
+      "laterBespreken": true,
+      "leerlingactiviteit": "Kies een antwoord voordat je gaat rekenen."
+    }
+  ],
+  "opgaven": [
+    {
+      "vraag": "Een bedrag groeit met 5% per jaar. Bereken de verdubbelingstijd.",
+      "hint": "Los 1,05^t = 2 op.",
+      "uitwerking": "t ≈ 14,2 jaar."
+    }
+  ]
+}
