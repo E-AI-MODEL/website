@@ -138,6 +138,32 @@ class WiHTMLPublicationTests(unittest.TestCase):
         self.assertIn("if(workMode==='quick'){openQuickInsert();return}", studio)
         self.assertIn("const WIHTML_MODE_KEY='wihtml:docentstudio:modus:v1';", studio)
 
+    def test_guided_flow_reuses_existing_lesson_and_export(self):
+        studio = (BUILD / "tools/wihtml/studio/index.html").read_text(encoding="utf-8")
+        for marker in (
+            'id="guideFlow"', 'id="guideInfo"', 'id="guideSlide"',
+            'id="guideNotes"', 'id="guideDesign"', 'id="guideTools"',
+            'id="guideReview"', 'id="guideResult"',
+            'id="guidePrevious"', 'id="guideNext"', 'id="guideProgress"',
+            'id="guideDownloadHTML"', 'id="guideDownloadJSON"',
+            'id="guideOutlineDialog"', 'id="guideFieldsDialog"',
+            'function guidePages()', 'function guideShow(page)',
+            'function guideMove(delta)', 'function guideRender()',
+            'function guideSaveStep()',
+            "guideShow({kind:'info'})",
+            "if(document.documentElement.classList.contains('standalone'))return;",
+            "guideReady=true;",
+            "guideShow({kind:'slide',id:slide.id});",
+            "if(guideReady)guideRender();",
+        ):
+            with self.subTest(marker=marker):
+                self.assertIn(marker, studio)
+        self.assertIn("pages.push({kind:'slide',id:slide.id", studio)
+        self.assertIn("if(workMode==='studio')pages.push({kind:'notes',id:slide.id", studio)
+        self.assertIn("$('guideDownloadHTML').onclick=()=>$('export').click();", studio)
+        self.assertIn("$('guideDownloadJSON').onclick=()=>$('save').click();", studio)
+        self.assertIn("syncDesignForm(slide);renderDesigner();scheduleDraftSave();", studio)
+
     def test_complete_v9_lesson_is_preserved(self):
         source = ROOT / "content/wihtml/verdubbelen-halveren-v9.html"
         public = BUILD / "tools/wihtml/voorbeeld/index.html"
