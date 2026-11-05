@@ -31,6 +31,13 @@
 .access-form .btn{margin-top:14px;width:100%}.access-error{color:#ae363c;font-size:13px;margin:12px 0 0}.access-privacy{border-top:1px solid var(--line);padding-top:17px;margin:29px 0 0;font-size:12px;color:#68798a;line-height:1.7}
 @media(max-width:620px){.access-screen{padding:18px}.access-card{padding:31px 25px}.access-brand{margin-bottom:28px}}
 @media print{.access-screen{display:none!important}}
+
+/* LEIF 2026: warme basis, rustige kleuren en een eigen woordmerk */
+:root{--ink:#243746;--muted:#5f7281;--blue:#47758e;--deep:#243746;--sky:#e8f0f3;--paper:#f7f4ef;--white:#fffdfc;--line:#d9e2e6;--soft:#eef3f4;--sand:#eee6df;--copper:#d8b7ae;--green:#6f95a3}
+body{background:var(--paper);color:var(--ink)}
+.leif-logo{height:43px;width:43px;display:grid;place-items:center;border-radius:15px;background:#e8f0f3;color:#345d77;border:1px solid #d5e3e9;flex-shrink:0}
+.leif-logo svg{display:block}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 </style>
 </head>
 <body>
@@ -52,7 +59,7 @@
 <div id="appRoot" hidden>
 
 <header class="app-header">
-  <a class="brand" href="#" id="homeLink" aria-label="LEIF startscherm"><div class="mark">L.</div><div><div class="brand-text">LEIF</div><div class="brand-tag">Meer dan een profiel</div></div></a>
+  <a class="brand" href="#" id="homeLink" aria-label="LEIF startscherm"><span class="leif-logo" aria-hidden="true"><svg viewBox="0 0 48 48" width="38" height="38" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="24" r="21" stroke="currentColor" stroke-opacity=".46" stroke-width="1.2"/><path d="M11 30c6-5 20-5 26 0M15 34c5-3.2 13-3.2 18 0" stroke="currentColor" stroke-opacity=".65" stroke-width="1.5" stroke-linecap="round"/><path d="M21 13v17h9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><div class="brand-text">LEIF</div><div class="brand-tag">Meer dan een profiel</div></div></a>
   <nav class="header-actions" aria-label="Hoofdnavigatie"><span class="mini-link optional-header"><span class="status-dot"></span>Privé · geen online opslag</span><button class="mini-link" id="goReport" type="button">Mijn verslag</button></nav>
 </header>
 <main id="view" class="app-shell" aria-live="polite"></main>
