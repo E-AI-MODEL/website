@@ -57,7 +57,7 @@ main{max-width:1160px;margin:auto;padding:42px 24px 120px}.tag{font-weight:800;c
 <button type="button" data-tab="settings">Naam en toegang</button>
 </div>
 <div id="storyTab">
-<p class="sub">Schrijf de teksten in je eigen woorden. Met <strong>Bewaar concept</strong> blijven ze alleen zichtbaar voor beheerders. Met <strong>Publiceren</strong> verschijnen ze in de persoonlijke omgeving van de deelnemer.</p>
+<p class="sub">Je concept wordt tijdens het schrijven opgeslagen. Met <strong>Publiceren</strong> wordt de tekst zichtbaar in de persoonlijke omgeving van de deelnemer.</p>
 <div class="field"><label for="textIntro">Inleiding</label><textarea id="textIntro" rows="6" placeholder="Een korte, persoonlijke opening."></textarea></div>
 <div class="field"><label for="textOther">Deel 2: de blik van een ander</label><textarea id="textOther" rows="15" placeholder="Wat je de ander wilt meegeven."></textarea></div>
 <div class="field"><label for="textFurther">Deel 3: verder kijken</label><textarea id="textFurther" rows="10" placeholder="Oefeningen, aandachtspunten of vragen om mee verder te gaan."></textarea></div>
@@ -94,7 +94,7 @@ main{max-width:1160px;margin:auto;padding:42px 24px 120px}.tag{font-weight:800;c
 const endpoint='https://ngcyfbstajfcfdhlelbz.supabase.co/functions/v1/leif-admin-console';
 const fields={inleiding:'textIntro',blik_van_een_ander:'textOther',verder_kijken:'textFurther',slotwoord:'textClosing'};
 const E=id=>document.getElementById(id);
-let auth=null,tenants=[],tenant=null,participants=[],selected=null,documentState=null,tab='story',dirty=false,busy=false;
+let auth=null,tenants=[],tenant=null,participants=[],selected=null,documentState=null,tab='story',dirty=false,busy=false,storyTimer=null;
 const el=(tag,cls,content)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(content!==undefined)n.textContent=content;return n};
 const show=(id,visible)=>E(id).hidden=!visible;
 const status=(msg,error=false)=>{E('storyStatus').textContent=msg;E('storyStatus').classList.toggle('error',error)};
@@ -163,8 +163,10 @@ function codeVisible(code,name){
 }
 function readDraft(){const obj={};for(const [key,id] of Object.entries(fields))obj[key]=E(id).value;return obj}
 function confirmDiscard(){return !dirty||confirm('Je hebt nog niet opgeslagen wijzigingen in het verhaal. Wil je die verliezen?')}
+function planStorySave(){clearTimeout(storyTimer);if(dirty)storyTimer=setTimeout(()=>{if(!dirty||!selected)return;if(busy){planStorySave();return}performStory('save_draft',{draft:readDraft()})},1700)}
 async function choosePerson(id){
  if(selected?.id!==id&&!confirmDiscard())return;
+ clearTimeout(storyTimer);
  setBusy(true);
  try{
   const data=await request('get',{tenant_id:tenant.id,participant_id:id});
@@ -190,11 +192,16 @@ function showAnswers(){
 }
 async function performStory(action,extra={}){
  if(!selected||!documentState||busy)return;
+ clearTimeout(storyTimer);
+ const savedDraft=action==='save_draft'?JSON.stringify(extra.draft):null;
  setBusy(true);status('Opslaan...');
  try{
   const r=await request(action,{tenant_id:tenant.id,participant_id:selected.id,revision:documentState.revision,...extra});
   documentState.revision=r.revision;documentState.personal_texts=r.personal_texts;documentState.updated_at=new Date().toISOString();
-  if(action==='save_draft')dirty=false;
+  if(action==='save_draft'){
+   dirty=JSON.stringify(readDraft())!==savedDraft;
+   if(dirty)planStorySave();
+  }
   const text=action==='save_draft'?'Concept bewaard.':action==='publish_story'?'Verhaal gepubliceerd.':'Publicatie ingetrokken.';
   status(text);E('personMeta').textContent='Dossier bijgewerkt: '+new Date().toLocaleString('nl-NL')+' · versie '+documentState.revision;
   const p=r.personal_texts;E('publishedStatus').textContent=p?.published_at?'Gepubliceerd op '+new Date(p.published_at).toLocaleString('nl-NL')+'.':'Nog geen tekst gepubliceerd.';
@@ -209,7 +216,7 @@ E('inviteForm').onsubmit=async e=>{e.preventDefault();const name=E('newName').va
  try{const r=await request('invite',{tenant_id:tenant.id,name});E('newName').value='';codeVisible(r.code,name);await loadList();await choosePerson(r.participant)}catch{alert('De deelnemer kon niet worden aangemaakt.')}
  finally{E('inviteForm').querySelector('button').disabled=false}};
 E('tabs').querySelectorAll('button').forEach(b=>b.onclick=()=>changeTab(b.dataset.tab));
-for(const id of Object.values(fields))E(id).addEventListener('input',()=>{dirty=true;status('Nog niet opgeslagen')});
+for(const id of Object.values(fields))E(id).addEventListener('input',()=>{dirty=true;status('Wordt zo opgeslagen...');planStorySave()});
 E('saveDraft').onclick=()=>performStory('save_draft',{draft:readDraft()});
 E('publish').onclick=async()=>{if(dirty){status('Bewaar eerst het concept. Daarna kun je het publiceren.',true);return}
  if(confirm('Dit verhaal wordt zichtbaar in de persoonlijke omgeving van de deelnemer. Wil je publiceren?'))await performStory('publish_story')};
