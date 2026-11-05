@@ -121,6 +121,15 @@ try {
   assert.equal(await wiPage.locator('#items .slide-item').count(), 2, 'Toevoegen maakt een tweede dia');
   assert.equal(await wiPage.locator('#designType').inputValue(), 'question', 'Gekozen werkvorm is actief');
   assert(await wiPage.locator('#guideSlide').isVisible(), 'Nieuwe dia wordt direct getoond');
+  await wiPage.locator('#guideDuplicateSlide').click();
+  assert.equal(await wiPage.locator('#items .slide-item').count(), 3, 'Kopieer dia blijft beschikbaar');
+  await wiPage.locator('#guideMoveSlideUp').click();
+  assert((await wiPage.locator('#guideSlideMeta').innerText()).includes('dia 2 van 3'), 'Dia kan naar voren');
+  await wiPage.locator('#guideMoveSlideDown').click();
+  assert((await wiPage.locator('#guideSlideMeta').innerText()).includes('dia 3 van 3'), 'Dia kan naar achteren');
+  wiPage.once('dialog', dialog => dialog.accept());
+  await wiPage.locator('#guideRemoveSlide').click();
+  assert.equal(await wiPage.locator('#items .slide-item').count(), 2, 'Verwijder dia blijft beschikbaar');
   await wiPage.locator('#modeStudio').click();
   assert.equal(await wiPage.locator('#modeStudio').getAttribute('aria-pressed'), 'true', 'Studio actief');
   await wiPage.locator('#guideNext').click();
