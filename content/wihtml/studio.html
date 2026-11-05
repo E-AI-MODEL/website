@@ -838,7 +838,7 @@ function restoreDraft(){
   const next=record.lesson;next.template=checkedTemplate(next.template||TEMPLATE_PRESETS.editorial);
   lesson=next;selected=0;current=0;tableRevealed=0;compareRevealed=0;practiceState={};
   quizSelections={};quizAnswersVisible=false;errorCorrectionVisible=false;
-  applyTemplate();renderEditor();msg('Je concept is hersteld. Download JSON voor een eigen kopie.');
+  applyTemplate();renderEditor();if($('startDialog').open)$('startDialog').close();msg('Je concept is hersteld. Download JSON voor een eigen kopie.');
  }catch(e){msg('Het concept kon niet worden geopend: '+e.message)}
 }
 
@@ -1105,15 +1105,22 @@ function review(){
 }
 
 
+function startBlankLesson(route){
+ const chosen=ROUTE_TYPES[route]?route:'own';
+ const slides=chosen==='own'?[{id:'deel-'+Date.now(),type:'text',phase:'Start',title:'Nieuwe dia',prompt:'',body:'',student:'',teacher:'',layout:'inherit'}]:ROUTES[chosen].map(newRouteSlide);
+ lesson={id:'les-'+Date.now()+'-'+Math.random().toString(36).slice(2,8),title:'Nieuwe wiskundeles',level:'Wiskunde',goal:'',route:chosen,layout:'single',features:{...FEATURE_DEFAULTS},template:deep(TEMPLATE_PRESETS.editorial),slides};
+ selected=0;current=0;paths={};rounds={};revealed=false;tableRevealed=0;compareRevealed=0;practiceState={};quizSelections={};quizAnswersVisible=false;errorCorrectionVisible=false;
+ applyTemplate();renderEditor();
+ if($('startDialog').open)$('startDialog').close();
+ msg('Nieuwe les geopend. Pas de dia aan of voeg lesdelen toe.');
+}
+$('startNew').onclick=()=>startBlankLesson($('startRoute').value);
+$('startImport').onclick=()=>$('import').click();
+$('startRestore').onclick=restoreDraft;
+$('startDialog').addEventListener('cancel',e=>e.preventDefault());
 $("newLesson").onclick=()=>{
- if(!confirm("Een nieuwe les starten? Bewaar eerst het huidige JSON-lesbestand als je verder wilt werken."))return;
- const route=$("routePreset").value,selectedRoute=ROUTES[route]||ROUTES.discover;
- lesson={id:"les-"+Date.now()+"-"+Math.random().toString(36).slice(2,8),title:"Nieuwe wiskundeles",level:"5 havo",goal:"",
-  route:ROUTE_TYPES[route]?route:"own",layout:$("defaultLayout").value,
-  features:Object.fromEntries([...document.querySelectorAll("[data-feature]")].map(el=>[el.dataset.feature,el.checked])),
-  template:deep(TEMPLATE_PRESETS.editorial),slides:selectedRoute.map(newRouteSlide)};
- selected=0;current=0;paths={};rounds={};tableRevealed=0;compareRevealed=0;practiceState={};quizSelections={};quizAnswersVisible=false;errorCorrectionVisible=false;
- applyTemplate();renderEditor();msg("Nieuwe les gestart met de gekozen opzet. Vul de inhoud aan.");
+ if(!confirm("Een nieuwe les starten? Download eerst je huidige JSON-lesbestand als je dit later nodig hebt."))return;
+ startBlankLesson($("routePreset").value);
 };
 
 $("add").onclick=()=>{save();lesson.slides.splice(selected+1,0,{id:"deel-"+Date.now(),type:"text",phase:"Oefenen",title:"Nieuw lesdeel",prompt:"",body:"",student:"",teacher:""});selected++;renderEditor()};
@@ -1331,12 +1338,48 @@ $("import").onchange=async e=>{
   doc.slides=reorderLessonSlides(doc.slides,doc.route);
   lesson=doc;selected=0;current=0;paths={};rounds={};revealed=false;
   tableRevealed=0;compareRevealed=0;practiceState={};quizSelections={};quizAnswersVisible=false;errorCorrectionVisible=false;
-  applyTemplate();renderEditor();
+  applyTemplate();renderEditor();if($('startDialog').open)$('startDialog').close();
   msg("Ingelezen: "+lesson.slides.length+" lesdelen. Kies de vormgeving en functies, bekijk daarna de les of download HTML.");
  }catch(err){msg("JSON niet ingelezen: "+err.message)}
  finally{e.target.value=""}
 };
 
+
+const WIHTML_LIBRARY_FILES={
+ groeifactor:'/tools/wihtml/voorbeeld-lesinhoud.json',
+ lineair:'/tools/wihtml/bibliotheek/lineaire-verbanden.json',
+ kansen:'/tools/wihtml/bibliotheek/kansen-twee-worpen.json'
+};
+async function loadLibraryLesson(key,showPreview=false){
+ const url=WIHTML_LIBRARY_FILES[key];
+ if(!url)throw Error('Onbekend bibliotheekvoorbeeld.');
+ const response=await fetch(url,{credentials:'same-origin'});
+ if(!response.ok)throw Error('Voorbeeld kon niet worden geopend ('+response.status+').');
+ const next=normalizeLessonJSON(await response.json());
+ next.id='les-'+Date.now()+'-'+Math.random().toString(36).slice(2,9);
+ lesson=next;selected=0;current=0;paths={};rounds={};revealed=false;
+ tableRevealed=0;compareRevealed=0;practiceState={};quizSelections={};quizAnswersVisible=false;errorCorrectionVisible=false;
+ applyTemplate();renderEditor();
+ if($('startDialog').open)$('startDialog').close();
+ msg('Voorbeeld geopend als eigen les. Bewaar JSON om later verder te werken.');
+ if(showPreview)$('preview').click();
+}
+window.addEventListener('load',()=>{
+ if(document.documentElement.classList.contains('standalone'))return;
+ const params=new URLSearchParams(window.location.search);
+ const key=params.get('lesson'),valid=Object.prototype.hasOwnProperty.call(WIHTML_LIBRARY_FILES,key||'');
+ $('startRestore').hidden=!draftAvailable();
+ $('startNoDraft').hidden=draftAvailable();
+ if(valid){
+  $('startPending').hidden=false;
+  $('startPendingText').textContent='Open het gekozen voorbeeld als eigen kopie. Je kunt daarna alle onderdelen bewerken.';
+  $('startSelectedLesson').onclick=()=>loadLibraryLesson(key,params.get('preview')==='1').catch(e=>msg('Bibliotheekles niet geopend: '+e.message));
+  if(!draftAvailable()){loadLibraryLesson(key,params.get('preview')==='1').catch(e=>{$('startDialog').showModal();msg('Bibliotheekles niet geopend: '+e.message)});return;}
+ }
+ $('startDialog').showModal();
+ if(params.get('start')==='import')$('startImport').focus();
+ else $('startNew').focus();
+});
 function currentSlide(){return lesson.slides[current]}
 function roundKey(){return "wihtml.v2."+lesson.id}
 function loadRounds(){try{const raw=JSON.parse(localStorage.getItem(roundKey())||"{}");rounds=raw&&typeof raw==="object"?raw:{}}catch(e){rounds={}}}
