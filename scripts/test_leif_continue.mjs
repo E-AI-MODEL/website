@@ -30,7 +30,7 @@ await page.route('**/functions/v1/leif-demo-session',async route=>{
  await route.fulfill({status:200,headers,body:JSON.stringify(data)});
 });
 try{
- await page.goto(origin+'/leif/continue/');
+ await page.goto(origin+'/leif/continue/',{waitUntil:'domcontentloaded'});
  await page.locator('#secret').fill('synthetic-'+('a'.repeat(39)));
  await page.locator('#open').click();
  await page.locator('#editor').waitFor({state:'visible',timeout:10000});
@@ -42,7 +42,7 @@ try{
  assert.equal(answers.schuur,'Een aanvullend demoantwoord.');
  mkdirSync('test-results',{recursive:true});
  await page.screenshot({path:'test-results/leif-continue-desktop.png',fullPage:true});
- await page.reload();
+ await page.reload({waitUntil:'domcontentloaded'});
  await page.locator('#editor').waitFor({state:'visible',timeout:10000});
  assert.equal(await page.locator('#total').innerText(),'24');
  assert.match(await page.locator('#question h2').innerText(),/Welk gevoel laat je niet gemakkelijk zien/);
@@ -60,7 +60,7 @@ try{
   await route.fulfill({status:200,headers,body:JSON.stringify({ok:true,status:'draft',answers})});
  });
  const mobilePage=await mobile.newPage();
- await mobilePage.goto(origin+'/leif/continue/');
+ await mobilePage.goto(origin+'/leif/continue/',{waitUntil:'domcontentloaded'});
  await mobilePage.locator('#secret').fill('synthetic-'+('a'.repeat(39)));
  await mobilePage.locator('#open').click();
  await mobilePage.locator('#editor').waitFor({state:'visible',timeout:10000});
