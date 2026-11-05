@@ -65,6 +65,19 @@
 .overview-list{display:grid;gap:2px;max-height:min(55vh,420px);overflow:auto}.overview-choice{display:flex;gap:11px;align-items:center;text-align:left;border:0;background:#fff;border-radius:6px;padding:9px;font-size:12px}.overview-choice span{font-variant-numeric:tabular-nums;color:#68736b}.overview-choice.active{background:#eaf2ee}.overview-choice:hover{background:#f0f3ef}
 .picker-label{display:block;font-size:12px;font-weight:650;margin-bottom:8px}.micro-panel #pickerNames{width:100%;border:1px solid #d6ddd6;border-radius:6px;padding:8px;resize:vertical;font:13px/1.5 inherit}.picker-option{font-size:12px;display:flex;gap:7px;align-items:center;margin-top:11px}.picker-actions{display:flex;gap:6px;margin-top:11px}.picker-result{display:block;font:normal 22px/1.3 Georgia,serif;color:#17695e;margin-top:12px;min-height:31px}
 .white-mask{position:absolute;inset:0;background:#fff;z-index:103;display:grid;place-items:center}.white-mask button{position:absolute;right:16px;top:16px;box-shadow:0 5px 22px #0002;border:1px solid #b7c0b8;background:#fff;color:#202826}.white-mask button span{font-size:13px}
+
+.studio-spotlight{position:absolute;inset:0;z-index:102;cursor:crosshair;background:radial-gradient(circle 105px at var(--sx,50%) var(--sy,50%),transparent 0,transparent 98px,rgba(0,0,0,.84) 111px)}
+.studio-curtain{position:absolute;top:0;left:0;right:0;height:78%;z-index:102;background:#182b2b;color:white;display:flex;align-items:center;justify-content:center;overflow:visible}
+.curtain-hint{font-size:14px;opacity:.75}.curtain-grip{position:absolute;bottom:-15px;left:calc(50% - 38px);width:76px;height:30px;background:#f7f7f4;color:#152626;border:1px solid #a3b2aa;display:grid;place-items:center;border-radius:12px;touch-action:none;cursor:ns-resize}
+.mask-close{position:absolute;right:15px;top:14px;border:1px solid #cbd6ce;background:white;color:#21352c;border-radius:8px;padding:6px 10px;font-size:12px;z-index:3;cursor:pointer}
+.studio-spotlight .mask-close{top:20px;right:20px}
+.viewer.studio-fit .slide{width:min(98vw,calc((100dvh - 80px)*16/9))}
+
+.viewer.compact-slide .slide h2{font-size:clamp(28px,3.2vw,48px)}
+.viewer.compact-slide .slide .lead{font-size:clamp(15px,1.55vw,22px)}
+.viewer.compact-slide .slide .choice{min-height:50px;padding:9px 12px}
+.timer-custom{display:flex;gap:7px;align-items:center;font-size:12px}
+.timer-custom input{width:52px;min-width:0;padding:5px 7px;border:1px solid #d3dcd4;border-radius:6px}
 </style>
 </head>
 <body>
@@ -83,7 +96,7 @@
 <div class="template-actions"><button id="templatePreview">Voorbeeld vernieuwen</button><button id="templateImport">Sjabloon importeren</button><input id="templateFile" class="hide" type="file" accept=".json,.html"><button id="templateDownload">Download HTML-sjabloon</button><button id="templateDownloadJSON">Bewaar als JSON</button><button id="templateApply" class="primary">Gebruik dit sjabloon</button></div>
 </div><div class="template-preview-area"><div class="eyebrow">Voorvertoning</div><iframe id="templateFrame" sandbox="" title="Voorbeeld van het HTML-sjabloon"></iframe><p class="hint">De voorvertoning voert geen scripts uit. In de presentatie blijven de docenttools als overlays bovenop het sjabloon beschikbaar.</p></div></div>
 </dialog>
-<div id="viewer" class="viewer" role="dialog" aria-label="Presentatie" aria-modal="true"><article class="slide"><div id="slidecontent"></div><svg class="draw" id="draw" viewBox="0 0 1200 675" preserveAspectRatio="none"></svg><div class="slide-footer" id="slidefooter"></div></article><div class="viewer-nav"><button id="prev" aria-label="Vorige dia">←</button><span id="position"></span><button id="next" aria-label="Volgende dia">→</button><button id="close" aria-label="Sluit presentatie">Sluiten</button></div><div class="floating"><div id="toolpop" class="toolpop"><button data-tool="pen">Pen aan / uit</button><button data-tool="undo">Laatste lijn weg</button><button data-tool="clear">Wis deze dia</button><button data-tool="vote">Stemmen tellen</button><button data-tool="compare">Stemrondes vergelijken</button><button data-tool="reveal">Antwoord tonen</button><button data-tool="timer">Aftelklok</button><button data-tool="notes">Docentnotities</button><button data-tool="overview">Dia-overzicht</button><button data-tool="names">Leerling kiezen</button><button data-tool="fullscreen">Volledig scherm</button><button data-tool="white">Wit scherm</button><button data-tool="black">Zwart scherm</button></div><button id="toolbtn" aria-label="Open docentgereedschap">✎</button></div></div>
+<div id="viewer" class="viewer" role="dialog" aria-label="Presentatie" aria-modal="true"><article class="slide"><div id="slidecontent"></div><svg class="draw" id="draw" viewBox="0 0 1200 675" preserveAspectRatio="none"></svg><div class="slide-footer" id="slidefooter"></div></article><div class="viewer-nav"><button id="prev" aria-label="Vorige dia">←</button><span id="position"></span><button id="next" aria-label="Volgende dia">→</button><button id="close" aria-label="Sluit presentatie">Sluiten</button></div><div class="floating"><div id="toolpop" class="toolpop"><button data-tool="pen">Pen aan / uit</button><button data-tool="marker">Markeerstift</button><button data-tool="inkColor">Kleur kiezen</button><button data-tool="eraser">Gum (lijn aanraken)</button><button data-tool="stopPen">Pen wegleggen</button><button data-tool="undo">Laatste lijn weg</button><button data-tool="clear">Wis deze dia</button><button data-tool="vote">Stemmen tellen</button><button data-tool="compare">Stemrondes vergelijken</button><button data-tool="reveal">Antwoord tonen</button><button data-tool="timer">Aftelklok</button><button data-tool="stopwatch">Stopwatch</button><button data-tool="notes">Docentnotities</button><button data-tool="overview">Dia-overzicht</button><button data-tool="names">Leerling kiezen</button><button data-tool="fullscreen">Volledig scherm</button><button data-tool="presenter">Apart docentvenster</button><button data-tool="print">Print les</button><button data-tool="fit">Passend schalen</button><button data-tool="compact">Compacte dia</button><button data-tool="resetView">Herstel weergave</button><button data-tool="white">Wit scherm</button><button data-tool="spotlight">Spotlicht</button><button data-tool="curtain">Afdekken</button><button data-tool="black">Zwart scherm</button></div><button id="toolbtn" aria-label="Open docentgereedschap">✎</button></div></div>
 <script>
 const SAMPLE={title:"Verdubbelen en halveren",level:"5 havo · Wiskunde A",goal:"De leerling verklaart en berekent de verdubbelings- en halveringstijd en kan de groeifactor uit de tijd bepalen.",slides:[
 {id:"voorspel",type:"question",phase:"Voorspellen",title:"€ 1.000 wordt € 2.000. Dat duurt 12 jaar.",prompt:"Hoeveel tijd kost de groei van € 2.000 naar € 4.000?",options:["Minder dan 12 jaar","Precies 12 jaar","Meer dan 12 jaar","Dat kun je niet weten"],correct:1,explanation:"Bij dezelfde groeifactor blijft de verdubbelingstijd gelijk.",student:"Kiest eerst zelf en verklaart de keuze.",teacher:"Toont het antwoord pas na het experiment.",later:true},
@@ -332,12 +345,12 @@ function graphRender(){
 function openStage(){
  applyTemplate();stage.classList.add("show");stage.setAttribute("aria-hidden","false");loadRounds();renderSlide();
 }
-function closeStage(){stage.classList.remove("show");stage.setAttribute("aria-hidden","true");closeTools();stopTimer()}
+function closeStage(){stage.classList.remove("show");stage.setAttribute("aria-hidden","true");closeTools();stopTimer();stopStopwatch();$("spotlightOverlay")?.remove();$("curtainOverlay")?.remove();if(presenterInterval){clearInterval(presenterInterval);presenterInterval=null}}
 $("preview").onclick=()=>{save();current=0;revealed=false;stepsVisible=0;openStage()};
 $("close").onclick=closeStage;
 $("prev").onclick=()=>move(-1);$("next").onclick=()=>move(1);
-function move(n){if(current+n<0||current+n>=lesson.slides.length)return;current+=n;revealed=false;stepsVisible=0;graphHelp=false;drawTool="";canvas.classList.remove("armed");closeTools();renderSlide()}
-function closeTools(){paletteVisible=false;$("toolpop").classList.remove("show");$("pollPanel")?.remove();$("comparePanel")?.remove();$("notesPanel")?.remove();$("timerPanel")?.remove();pollVisible=false}
+function move(n){if(current+n<0||current+n>=lesson.slides.length)return;$("spotlightOverlay")?.remove();$("curtainOverlay")?.remove();current+=n;revealed=false;stepsVisible=0;graphHelp=false;drawTool="";canvas.classList.remove("armed");closeTools();renderSlide()}
+function closeTools(){paletteVisible=false;$("toolpop").classList.remove("show");$("pollPanel")?.remove();$("comparePanel")?.remove();$("notesPanel")?.remove();$("timerPanel")?.remove();$("stopwatchPanel")?.remove();$("overviewPanel")?.remove();$("namesPanel")?.remove();pollVisible=false}
 $("toolbtn").onclick=()=>{paletteVisible=!paletteVisible;$("toolpop").classList.toggle("show",paletteVisible)};
 function floatPanel(id,title,body){const el=document.createElement("section");el.id=id;el.className="micro-panel";el.innerHTML='<div class="micro-head"><strong>'+esc(title)+'</strong><button class="small" data-dismiss="'+id+'" aria-label="Sluit '+esc(title)+'">×</button></div>'+body;stage.append(el);el.querySelector("[data-dismiss]").onclick=()=>{el.remove();if(id==="pollPanel")pollVisible=false};return el}
 function renderPoll(){
@@ -366,9 +379,9 @@ function clearDraw(){paths[currentSlide().id]=[];$("draw").innerHTML=""}
 function stopTimer(){clearInterval(timerHandle);timerHandle=null;timerRunning=false}
 function timerText(){return String(Math.floor(timerLeft/60)).padStart(2,"0")+":"+String(timerLeft%60).padStart(2,"0")}
 function openTimer(){
- $("timerPanel")?.remove();const el=floatPanel("timerPanel","Aftellen",'<div class="timer-readout" id="timerReadout">'+timerText()+'</div><div class="poll-actions"><button class="small" id="timerOne">1 min</button><button class="small" id="timerTwo">2 min</button><button class="small" id="timerFive">5 min</button><button class="small" id="timerStart">'+(timerRunning?"Pauze":"Start")+'</button></div>');
+ $("timerPanel")?.remove();const el=floatPanel("timerPanel","Aftellen",'<div class="timer-readout" id="timerReadout">'+timerText()+'</div><div class="poll-actions"><button class="small" id="timerHalf">30 sec</button><button class="small" id="timerOne">1 min</button><button class="small" id="timerTwo">2 min</button><button class="small" id="timerFive">5 min</button><label class="timer-custom">Min <input id="timerCustom" inputmode="numeric" type="number" min="1" max="120" value="3"></label><button class="small" id="timerSetCustom">Instellen</button><button class="small" id="timerStart">'+(timerRunning?"Pauze":"Start")+'</button></div>');
  function set(n){stopTimer();timerLeft=n;$("timerReadout").textContent=timerText();$("timerStart").textContent="Start"}
- el.querySelector("#timerOne").onclick=()=>set(60);el.querySelector("#timerTwo").onclick=()=>set(120);el.querySelector("#timerFive").onclick=()=>set(300);
+ el.querySelector("#timerHalf").onclick=()=>set(30);el.querySelector("#timerOne").onclick=()=>set(60);el.querySelector("#timerTwo").onclick=()=>set(120);el.querySelector("#timerFive").onclick=()=>set(300);el.querySelector("#timerSetCustom").onclick=()=>set(Math.max(1,Math.min(120,Number(el.querySelector("#timerCustom").value)||3))*60);
  el.querySelector("#timerStart").onclick=()=>{if(timerRunning){stopTimer();el.querySelector("#timerStart").textContent="Verder";return}timerRunning=true;el.querySelector("#timerStart").textContent="Pauze";timerHandle=setInterval(()=>{timerLeft=Math.max(0,timerLeft-1);const output=$("timerReadout");if(output)output.textContent=timerText();if(timerLeft===0){stopTimer();el.querySelector("#timerStart").textContent="Start"}},1000)};
 }
 
@@ -404,10 +417,92 @@ function toggleFullscreen(){
  stage.requestFullscreen?.().catch(()=>{});
 }
 
+
+let stopwatchStart=0,stopwatchStored=0,stopwatchInterval=null;
+let spotlightOn=false,curtainOn=false,fitMode=false,presenterWindow=null,presenterInterval=null;
+const drawConfig={pen:{stroke:"#c96746",width:4,opacity:1},marker:{stroke:"#f3c745",width:25,opacity:.48}};
+let compactMode=false;
+
+function chooseInkColor(){
+ $("colorPanel")?.remove();
+ const p=floatPanel("colorPanel","Penkleur",'<div class="poll-actions"><button data-color="#c96746">Oranje</button><button data-color="#167d78">Groen</button><button data-color="#173850">Donkerblauw</button><button data-color="#eabf32">Geel</button></div>');
+ p.querySelectorAll("[data-color]").forEach(b=>b.onclick=()=>{drawConfig.pen.stroke=b.dataset.color;p.remove()});
+}
+function toggleCompact(){compactMode=!compactMode;stage.classList.toggle("compact-slide",compactMode)}
+function resetStudioView(){
+ drawTool="";canvas.classList.remove("armed");
+ $("spotlightOverlay")?.remove();$("curtainOverlay")?.remove();$("whiteMask")?.remove();
+ spotlightOn=false;curtainOn=false;black=false;fitMode=false;compactMode=false;
+ stage.classList.remove("studio-fit","compact-slide");
+ $("slidecontent").style.visibility="visible";
+ closeTools();renderSlide();
+}
+
+function setDrawTool(name){drawTool=drawTool===name?"":name;canvas.classList.toggle("armed",!!drawTool)}
+function activateSpotlight(){
+ closeTools();
+ const previous=$("spotlightOverlay");if(previous){previous.remove();spotlightOn=false;return}
+ $("curtainOverlay")?.remove();curtainOn=false;
+ const panel=document.createElement("div");panel.id="spotlightOverlay";panel.className="studio-spotlight";
+ panel.style.setProperty("--sx","50%");panel.style.setProperty("--sy","50%");
+ panel.innerHTML='<button class="mask-close" aria-label="Verwijder spotlicht">× Verwijder</button>';
+ const slide=stage.querySelector(".slide");slide.append(panel);spotlightOn=true;
+ panel.addEventListener("pointermove",e=>{if(e.target.closest("button"))return;const r=panel.getBoundingClientRect();panel.style.setProperty("--sx",((e.clientX-r.left)/r.width*100)+"%");panel.style.setProperty("--sy",((e.clientY-r.top)/r.height*100)+"%")});
+ panel.querySelector("button").onclick=()=>{panel.remove();spotlightOn=false};
+}
+function activateCurtain(){
+ closeTools();
+ const previous=$("curtainOverlay");if(previous){previous.remove();curtainOn=false;return}
+ $("spotlightOverlay")?.remove();spotlightOn=false;
+ const panel=document.createElement("div");panel.id="curtainOverlay";panel.className="studio-curtain";
+ panel.innerHTML='<div class="curtain-hint">Sleep de onderrand om meer te onthullen</div><button class="mask-close" aria-label="Verwijder afdekking">× Verwijder</button><div class="curtain-grip" aria-label="Sleep om te onthullen">≡</div>';
+ stage.querySelector(".slide").append(panel);curtainOn=true;
+ let holding=false;
+ panel.querySelector(".curtain-grip").addEventListener("pointerdown",e=>{holding=true;e.currentTarget.setPointerCapture(e.pointerId)});
+ panel.querySelector(".curtain-grip").addEventListener("pointermove",e=>{if(!holding)return;const r=panel.parentElement.getBoundingClientRect();panel.style.height=Math.min(98,Math.max(8,(e.clientY-r.top)/r.height*100))+"%"});
+ panel.querySelector(".curtain-grip").addEventListener("pointerup",()=>{holding=false});
+ panel.querySelector(".mask-close").onclick=()=>{panel.remove();curtainOn=false}
+}
+function stopwatchText(ms){const sec=Math.floor(ms/1000);return String(Math.floor(sec/60)).padStart(2,"0")+":"+String(sec%60).padStart(2,"0")+"."+String(Math.floor(ms%1000/100))}
+function openStopwatch(){
+ $("stopwatchPanel")?.remove();
+ const p=floatPanel("stopwatchPanel","Stopwatch",'<output class="timer-readout" id="stopwatchReadout"></output><div class="poll-actions"><button id="watchStart">Start</button><button id="watchReset">Reset</button></div>');
+ const output=p.querySelector("#stopwatchReadout");const start=p.querySelector("#watchStart");
+ const display=()=>{output.textContent=stopwatchText(stopwatchStored+(stopwatchStart?Date.now()-stopwatchStart:0))};
+ start.onclick=()=>{if(stopwatchStart){stopwatchStored+=Date.now()-stopwatchStart;stopwatchStart=0;clearInterval(stopwatchInterval);stopwatchInterval=null;start.textContent="Verder"}else{stopwatchStart=Date.now();stopwatchInterval=setInterval(display,60);start.textContent="Pauze"}display()};
+ p.querySelector("#watchReset").onclick=()=>{stopwatchStart=0;stopwatchStored=0;clearInterval(stopwatchInterval);stopwatchInterval=null;start.textContent="Start";display()};
+ display();
+}
+function stopStopwatch(){if(stopwatchStart){stopwatchStored+=Date.now()-stopwatchStart;stopwatchStart=0}clearInterval(stopwatchInterval);stopwatchInterval=null}
+function showPresenter(){
+ if(presenterWindow&&!presenterWindow.closed){presenterWindow.focus();return}
+ presenterWindow=window.open("","wihtml-docent","width=650,height=550");
+ if(!presenterWindow){floatPanel("notesPanel","Docentvenster",'<p>Sta pop-upvensters voor deze website toe.</p>');return}
+ presenterWindow.document.write('<!doctype html><html lang="nl"><meta charset="utf-8"><title>Docentvenster WiHTML</title><style>body{font:16px/1.6 system-ui;margin:24px;background:#f8f8f5;color:#202826}h1{font:32px Georgia,serif}section{background:white;border:1px solid #dde1db;padding:18px;margin:15px 0;border-radius:8px}</style><main id="notes">Docentvenster</main></html>');
+ presenterWindow.document.close();
+ renderPresenter();
+ presenterInterval=setInterval(()=>{if(!presenterWindow||presenterWindow.closed){clearInterval(presenterInterval);presenterInterval=null;return}renderPresenter()},1200);
+}
+function renderPresenter(){
+ if(!presenterWindow||presenterWindow.closed)return;
+ const slide=currentSlide(),root=presenterWindow.document.getElementById("notes");if(!root)return;
+ root.innerHTML='<small>WiHTML · dia '+(current+1)+' van '+lesson.slides.length+'</small><h1>'+esc(slide.title)+'</h1><section><strong>Docent</strong><p>'+esc(slide.teacher||"Geen notities")+'</p></section><section><strong>Leerling</strong><p>'+esc(slide.student||"")+'</p></section><section><strong>Volgende</strong><p>'+esc(lesson.slides[current+1]?.title||"Einde van de les")+'</p></section>'
+}
+function printLesson(){
+ const w=window.open("","wihtml-print","width=800,height=650");
+ if(!w){floatPanel("notesPanel","Printen",'<p>Sta pop-upvensters toe om de les te printen.</p>');return}
+ const html=lesson.slides.map((s,i)=>'<section><h2>'+(i+1)+". "+esc(s.title)+'</h2><p>'+esc(s.prompt||"")+'</p>'+(s.options?'<p>'+s.options.map((x,j)=>String.fromCharCode(65+j)+". "+esc(x)).join("<br>")+'</p>':"")+(s.body?'<p style="white-space:pre-line">'+esc(s.body)+'</p>':"")+'</section>').join("");
+ w.document.write('<!doctype html><html lang="nl"><meta charset="utf-8"><title>'+esc(lesson.title)+'</title><style>body{font:15px/1.5 system-ui;margin:32px}h1,h2{font-family:Georgia,serif}section{break-inside:avoid;border-bottom:1px solid #ddd;padding:15px 0}button{margin:10px}</style><h1>'+esc(lesson.title)+'</h1>'+html+'</html>');w.document.close();w.focus();w.print();
+}
+function setFitMode(){fitMode=!fitMode;stage.classList.toggle("studio-fit",fitMode)}
+
 function openNotes(){floatPanel("notesPanel","Voor de docent",'<p>'+esc(currentSlide().teacher||"Geen notities voor deze dia.")+'</p><p class="hint">Leerling: '+esc(currentSlide().student||"")+'</p>')}
 $("toolpop").querySelectorAll("[data-tool]").forEach(b=>b.onclick=()=>{
  const t=b.dataset.tool;$("toolpop").classList.remove("show");paletteVisible=false;
- if(t==="pen"){drawTool=drawTool==="pen"?"":"pen";$("draw").classList.toggle("armed",drawTool==="pen")}
+ if(t==="pen")setDrawTool("pen");
+ if(t==="marker")setDrawTool("marker");
+ if(t==="eraser")setDrawTool("eraser");
+ if(t==="stopPen"){drawTool="";canvas.classList.remove("armed")}
  if(t==="clear")clearDraw();
  if(t==="vote")togglePoll();
  if(t==="reveal")toggleAnswer();
@@ -415,6 +510,15 @@ $("toolpop").querySelectorAll("[data-tool]").forEach(b=>b.onclick=()=>{
  if(t==="undo")undo();
  if(t==="compare"){const opening=lesson.slides.find(x=>x.later);compareVotes(opening?.id||currentSlide().id)}
  if(t==="timer")openTimer();
+ if(t==="stopwatch")openStopwatch();
+ if(t==="spotlight")activateSpotlight();
+ if(t==="curtain")activateCurtain();
+ if(t==="presenter")showPresenter();
+ if(t==="print")printLesson();
+ if(t==="fit")setFitMode();
+ if(t==="inkColor")chooseInkColor();
+ if(t==="compact")toggleCompact();
+ if(t==="resetView")resetStudioView();
  if(t==="notes")openNotes();
  if(t==="overview")openOverview();
  if(t==="names")openNamePicker();
@@ -423,7 +527,7 @@ $("toolpop").querySelectorAll("[data-tool]").forEach(b=>b.onclick=()=>{
 });
 let drawing=false,activePath=null;
 function svgPoint(e){const r=canvas.getBoundingClientRect();return [(e.clientX-r.left)/r.width*1200,(e.clientY-r.top)/r.height*675]}
-canvas.addEventListener("pointerdown",e=>{if(drawTool!=="pen")return;drawing=true;canvas.setPointerCapture(e.pointerId);const [x,y]=svgPoint(e);activePath=document.createElementNS("http://www.w3.org/2000/svg","path");activePath.setAttribute("d","M"+x+" "+y);activePath.setAttribute("stroke","#c96746");activePath.setAttribute("stroke-width","4");activePath.setAttribute("stroke-linecap","round");activePath.setAttribute("fill","none");canvas.append(activePath)});
+canvas.addEventListener("pointerdown",e=>{if(!["pen","marker","eraser"].includes(drawTool))return;if(drawTool==="eraser"){const box=canvas.getBoundingClientRect();const targetX=(e.clientX-box.left)/box.width*1200,targetY=(e.clientY-box.top)/box.height*675;const list=paths[currentSlide().id]||[];let best=-1,dist=Infinity;list.forEach((markup,i)=>{const tmp=document.createElementNS("http://www.w3.org/2000/svg","svg");tmp.innerHTML=markup;const path=tmp.firstElementChild;if(!path)return;const d=path.getAttribute("d")||"";const pts=[...d.matchAll(/[ML]\s*([\d.]+)[, ]+([\d.]+)/g)];for(const pt of pts){const delta=Math.hypot(+pt[1]-targetX,+pt[2]-targetY);if(delta<dist){dist=delta;best=i}}});if(best>=0&&dist<85){list.splice(best,1);canvas.innerHTML=list.join("")}return}drawing=true;canvas.setPointerCapture(e.pointerId);const [x,y]=svgPoint(e);activePath=document.createElementNS("http://www.w3.org/2000/svg","path");activePath.setAttribute("d","M"+x+" "+y);activePath.setAttribute("stroke",drawConfig[drawTool].stroke);activePath.setAttribute("stroke-width",String(drawConfig[drawTool].width));activePath.setAttribute("opacity",String(drawConfig[drawTool].opacity));activePath.setAttribute("stroke-linecap","round");activePath.setAttribute("fill","none");canvas.append(activePath)});
 canvas.addEventListener("pointermove",e=>{if(!drawing||!activePath)return;const [x,y]=svgPoint(e);activePath.setAttribute("d",activePath.getAttribute("d")+" L"+x+" "+y)});
 canvas.addEventListener("pointerup",()=>{if(activePath){(paths[currentSlide().id]??=[]).push(activePath.outerHTML)}drawing=false;activePath=null});
 window.addEventListener("keydown",e=>{if(!stage.classList.contains("show"))return;if(e.key==="Escape"){if(paletteVisible)closeTools();else closeStage()}if(e.key==="ArrowRight")move(1);if(e.key==="ArrowLeft")move(-1);if(e.key.toLowerCase()==="p"&&!e.target.matches("input,textarea")){drawTool=drawTool==="pen"?"":"pen";canvas.classList.toggle("armed",drawTool==="pen")}});
