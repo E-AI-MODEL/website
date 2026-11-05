@@ -1429,7 +1429,7 @@ function restoreDraft(){
   const raw=localStorage.getItem(WIHTML_DRAFT_KEY),record=JSON.parse(raw);
   if(!record||!record.lesson||!Array.isArray(record.lesson.slides)||!record.lesson.slides.length||record.lesson.slides.length>120)throw Error('Geen geldig concept gevonden.');
   const next=record.lesson;next.template=checkedTemplate(next.template||TEMPLATE_PRESETS.editorial);
-  lesson=next;selected=0;current=0;tableRevealed=0;compareRevealed=0;practiceState={};
+  lesson=next;hasActiveLesson=true;selected=0;current=0;tableRevealed=0;compareRevealed=0;practiceState={};
   quizSelections={};quizAnswersVisible=false;errorCorrectionVisible=false;
   applyTemplate();renderEditor();if(guideReady)guideShow(guideRemembered(lesson)||{kind:'title'});if($('startDialog').open)$('startDialog').close();msg('Je concept is hersteld. Download JSON voor een eigen kopie.');
  }catch(e){msg('Het concept kon niet worden geopend: '+e.message)}
@@ -1699,10 +1699,16 @@ function review(){
 }
 
 
+let hasActiveLesson=false;
+function confirmReplacingLesson(action){
+ if(!hasActiveLesson)return true;
+ return confirm('Je huidige les wordt vervangen '+action+'. Bewaar eerst een JSON-kopie als je deze later nog wilt gebruiken. Doorgaan?');
+}
 function startBlankLesson(route){
  const chosen=ROUTE_TYPES[route]?route:'own';
  const slides=chosen==='own'?[{id:'deel-'+Date.now(),type:'text',phase:'Start',title:'Nieuwe dia',prompt:'',body:'',student:'',teacher:'',layout:'inherit'}]:ROUTES[chosen].map(newRouteSlide);
  lesson={id:'les-'+Date.now()+'-'+Math.random().toString(36).slice(2,8),title:'Nieuwe wiskundeles',level:'Wiskunde',goal:'',route:chosen,layout:'single',features:{...FEATURE_DEFAULTS},template:deep(TEMPLATE_PRESETS.editorial),slides};
+ hasActiveLesson=true;
  selected=0;current=0;paths={};rounds={};revealed=false;tableRevealed=0;compareRevealed=0;practiceState={};quizSelections={};quizAnswersVisible=false;errorCorrectionVisible=false;
  applyTemplate();renderEditor();
  if(guideReady)guideShow({kind:'title'});
@@ -1710,7 +1716,7 @@ function startBlankLesson(route){
  msg('Nieuwe les geopend. Pas de dia aan of voeg lesdelen toe.');
 }
 $('startNew').onclick=()=>{
- if(!$('startBackToLesson').hidden&&!confirm('Je huidige les wordt vervangen. Bewaar eerst een JSON-kopie als je deze later nog wilt gebruiken. Doorgaan?'))return;
+ if(!confirmReplacingLesson('door een nieuwe les'))return;
  startBlankLesson($('startRoute').value);
 };
 $('startImport').onclick=()=>$('import').click();
@@ -1932,10 +1938,10 @@ $("import").onchange=async e=>{
   if(file.size>2_000_000)throw Error("Het bestand is groter dan 2 MB.");
   const content=await file.text();
   const doc=normalizeLessonJSON(JSON.parse(content));
-  if(!$('startBackToLesson').hidden&&!confirm('Je huidige les wordt vervangen door dit bestand. Bewaar eerst een JSON-kopie als je deze later nog wilt gebruiken. Doorgaan?'))return;
+  if(!confirmReplacingLesson('door dit bestand'))return;
   doc.route=$("routePreset").value;
   doc.slides=reorderLessonSlides(doc.slides,doc.route);
-  lesson=doc;selected=0;current=0;paths={};rounds={};revealed=false;
+  lesson=doc;hasActiveLesson=true;selected=0;current=0;paths={};rounds={};revealed=false;
   tableRevealed=0;compareRevealed=0;practiceState={};quizSelections={};quizAnswersVisible=false;errorCorrectionVisible=false;
   applyTemplate();renderEditor();if(guideReady)guideShow({kind:'title'});if($('startDialog').open)$('startDialog').close();
   msg("Ingelezen: "+lesson.slides.length+" lesdelen. Kies de vormgeving en functies, bekijk daarna de les of download HTML.");
@@ -1956,7 +1962,7 @@ async function loadLibraryLesson(key,showPreview=false){
  if(!response.ok)throw Error('Voorbeeld kon niet worden geopend ('+response.status+').');
  const next=normalizeLessonJSON(await response.json());
  next.id='les-'+Date.now()+'-'+Math.random().toString(36).slice(2,9);
- lesson=next;selected=0;current=0;paths={};rounds={};revealed=false;
+ lesson=next;hasActiveLesson=true;selected=0;current=0;paths={};rounds={};revealed=false;
  tableRevealed=0;compareRevealed=0;practiceState={};quizSelections={};quizAnswersVisible=false;errorCorrectionVisible=false;
  applyTemplate();renderEditor();
  if(guideReady)guideShow({kind:'title'});
