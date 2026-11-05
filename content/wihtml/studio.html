@@ -545,7 +545,7 @@ function updateTemplateVisual(){
    for(const [property,value] of Object.entries(declarations)){
     const aliases=property==='background'?['background','background-color']:[property];
     for(const name of aliases){
-     const pattern=new RegExp('(^|;)\\s*'+name+'\\s*:[^;]*;?','gi');
+     const pattern=new RegExp('(^|;)\\s*'+name+'\\s*:[^;]*','gi');
      body=body.replace(pattern,(_,prefix)=>prefix);
     }
     body=body.trimEnd()+(body.trimEnd().endsWith(';')?'':';')+' '+property+': '+value+' !important;';
