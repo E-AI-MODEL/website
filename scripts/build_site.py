@@ -2702,6 +2702,11 @@ def build(sources: Path, out: Path) -> None:
     if not (leif_source / "continue" / "index.html").is_file():
         raise FileNotFoundError(f"Missing LEIF continuation page: {leif_source}")
     shutil.copytree(leif_source, out / "leif", dirs_exist_ok=True)
+    # Backend schema and Edge Function sources stay in GitHub, never on the
+    # public static website. Only the participant/admin HTML is published.
+    private_leif_sources = out / "leif" / "multitenant"
+    if private_leif_sources.is_dir():
+        shutil.rmtree(private_leif_sources)
     items = "".join(f"<url><loc>{BASE_URL}{path}</loc></url>" for path in urls)
     write(out, "sitemap.xml", f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{items}</urlset>')
 
