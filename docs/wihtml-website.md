@@ -21,8 +21,8 @@ Bronversie waarmee deze route is opgebouwd:
 - Repository: `E-AI-MODEL/wihtml`
 - Ontwikkelbranch: `feat/lessengenerator-eai-design`
 - Bronbestand: `index.html`
-- Bronblob-SHA: `b22d6ceac221986c219dd9702b1fad9faa7edc38`
-- Git-commit voor studio-implementatie: `b2685f0517f393c11ab94049a1550722d1d0b4a1`
+- Bronblob-SHA: `4fe5c5d7472d2212f578d1781f866a0493e4f86c`
+- Git-commit voor studio-implementatie: `6af563eac50d833953902fac33e3cbeec61f5d44`
 
 Voor een volgende versie: controleer eerst dat de browsertests in `wihtml` geslaagd zijn. Werk daarna de bronkopie bij met een **volledige commit-SHA**:
 
@@ -42,4 +42,4 @@ De editor biedt geen server-side AI-generatie, automatische wiskundecontrole of 
 
 ## Compleet voorbeeld en generator
 
-De volledige oorspronkelijke v9-les is als eigen bestand aanwezig in `content/wihtml/verdubbelen-halveren-v9.html` en wordt byte-voor-byte gepubliceerd. De algemene generator heeft inmiddels een uitgebreide docenttoolbox. De diep uitgewerkte lesinteracties uit het originele v9-bestand zijn nog niet allemaal beschikbaar als losse, configureerbare bouwstenen voor nieuwe lessen. Houd dit onderscheid zichtbaar bij presentatie van de proefversie.
+De volledige oorspronkelijke v9-les is als eigen bestand aanwezig in `content/wihtml/verdubbelen-halveren-v9.html` en wordt byte-voor-byte gepubliceerd. De algemene generator heeft inmiddels een uitgebreide docenttoolbox. De algemene generator heeft zeven configureerbare lesonderdelen: tekst, meerkeuze, exponentieel grafiekonderzoek, stapsgewijze uitwerking, onderzoekstabel, zelfstandig oefenen met hints en oplossingen, en verklaren en vergelijken. De docent kan een nieuwe les beginnen met een eigen ID voor stemrondes. De volledige v9-voorbeeldles blijft beschikbaar voor lesinteracties die specifiek voor die les zijn gebouwd. Niet elk gespecialiseerd rekeninstrument uit v9 is één-op-één overgenomen.
