@@ -43,6 +43,12 @@ main{max-width:1160px;margin:auto;padding:42px 24px 120px}.tag{font-weight:800;c
 <div id="testerInvite" hidden></div>
 <h3>Testers</h3>
 <div id="testerList" class="list"></div>
+<section id="testerDetail" hidden>
+<hr class="divider">
+<h3 id="testerDetailName">Antwoorden</h3>
+<p class="meta">Dit zijn de antwoorden die de tester heeft opgeslagen. Lege vragen zijn weggelaten.</p>
+<dl id="testerAnswers"></dl>
+</section>
 </section>
 <div class="panel" id="newPanel">
 <h2>Nieuwe deelnemer</h2>
@@ -150,7 +156,8 @@ async function loadTesters(){
     const response=await request('list_testers',{tenant_id:tenant.id});
     const list=E('testerList');list.replaceChildren();
     for(const person of response.testers){
-      const item=el('div','person');
+      const item=el('button','person');item.type='button';
+      item.onclick=()=>openTester(person.id);
       item.append(el('strong',null,person.tester_name||'Bestaande tester'));
       const state=person.status==='submitted'?'Afgerond':'Nog bezig';
       const when=person.created_at?new Date(person.created_at).toLocaleDateString('nl-NL'):'';
@@ -159,6 +166,21 @@ async function loadTesters(){
     }
     if(!response.testers.length)list.append(el('p','meta','Er zijn nog geen testers.'));
   }catch{E('testerStatus').textContent='De testers konden niet worden geladen.';}
+}
+async function openTester(id){
+ E('testerDetail').hidden=false;
+ E('testerDetailName').textContent='Antwoorden laden...';
+ E('testerAnswers').replaceChildren();
+ try{
+  const result=await request('get_tester',{tenant_id:tenant.id,tester_id:id});
+  const person=result.tester;
+  E('testerDetailName').textContent='Antwoorden van '+(person.tester_name||'bestaande tester');
+  const values=Object.entries(person.answers||{}).filter(([,v])=>typeof v==='string'&&v.trim());
+  if(!values.length){E('testerAnswers').append(el('p','meta','Nog geen antwoorden ingevuld.'));return}
+  for(const [key,val] of values){
+   E('testerAnswers').append(el('dt','readout',key.replace(/_/g,' ')),el('dd',null,val));
+  }
+ }catch{E('testerDetailName').textContent='Antwoorden ophalen is niet gelukt.'}
 }
 function showTesterInvite(name,code){
   const panel=E('testerInvite');panel.replaceChildren();
