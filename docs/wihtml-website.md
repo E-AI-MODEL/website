@@ -22,8 +22,8 @@ Bronversie waarmee deze route is opgebouwd:
 - Repository: `E-AI-MODEL/wihtml`
 - Ontwikkelbranch: `feat/lessengenerator-eai-design`
 - Bronbestand: `index.html`
-- Bronblob-SHA: `71daa78cb2db023c060a40b2f3044f8a478074a6`
-- Git-commit voor studio-implementatie: `4de8608463bec76d8592d1e34febe7dba4034e5b`
+- Bronblob-SHA: `782f62f9db11c584e6eba69ea7b5cea8f567df04`
+- Git-commit voor studio-implementatie: `72b14b62c9e666197382b8c63ac84999e06c2087`
 
 Voor een volgende versie: controleer eerst dat de browsertests in `wihtml` geslaagd zijn. Werk daarna de bronkopie bij met een **volledige commit-SHA**:
 
