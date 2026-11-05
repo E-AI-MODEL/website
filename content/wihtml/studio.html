@@ -632,6 +632,20 @@
 @media(max-width:550px){.wi-existing-draft-actions{flex-direction:column}.wi-existing-draft-actions button{width:100%}}
 .design-experiments{margin-top:12px}.design-experiments summary{cursor:pointer;font-weight:700}.design-experiments label{display:grid;font-size:12px;gap:4px;margin:8px 0}.design-experiments textarea{width:100%;min-height:50px;resize:vertical;border:1px solid #cbdad0;border-radius:6px;padding:8px}
 
+
+.wi-plot-edit,.wi-plot-lab{display:grid;gap:8px;min-width:0}
+.wi-plot-chart{width:100%;background:#fff;border:1px solid #d9e4dd;border-radius:9px;overflow:hidden}
+.wi-plot-chart svg{display:block;width:100%;height:auto;max-height:43dvh}
+.wi-plot-formula{font:600 clamp(13px,1.3vw,18px)/1.4 ui-monospace,Consolas,monospace;color:#18584b;overflow-wrap:anywhere}
+.wi-plot-details{border:1px solid #d8e3da;background:#fff;border-radius:9px;padding:0 10px;min-width:0}
+.wi-plot-details summary{padding:10px 0;cursor:pointer;color:#1b6052;font-size:13px;font-weight:700}
+.wi-plot-controls{display:grid;gap:10px;padding:5px 0 13px}
+.wi-plot-inputs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.wi-plot-inputs label{display:grid;gap:4px;min-width:0;font-size:12px}
+.wi-plot-inputs input{width:100%;min-width:0;padding:7px;font-size:13px}
+.wi-plot-flags{display:flex;flex-wrap:wrap;gap:12px;font-size:12px}
+.wi-plot-flags label{display:flex;align-items:center;gap:6px}
+
 /* Compacte werkplek en presentatiemenu's. Ook opgenomen in zelfstandige HTML. */
 .wi-gallery-tools{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin:0 0 11px}
 .wi-gallery-tools input{min-width:170px;flex:1;width:auto!important;font-size:13px;padding:10px!important}
@@ -985,7 +999,92 @@ $("templateFile").onchange=async e=>{
  }catch(err){$("templateError").textContent=err.message}finally{e.target.value=""}
 };
 
-const TYPES={text:"Tekst of opdracht",question:"Meerkeuzevraag",graph:"Onderzoek met grafiek",steps:"Uitwerking in stappen",table:"Onderzoekstabel",practice:"Zelfstandig oefenen",compare:"Verklaren en vergelijken",quizset:"Meerdere begripsvragen",error:"Zoek de fout"};
+const TYPES={text:"Tekst of opdracht",question:"Meerkeuzevraag",graph:"Onderzoek met grafiek",mathplot:"Functiegrafiek",steps:"Uitwerking in stappen",table:"Onderzoekstabel",practice:"Zelfstandig oefenen",compare:"Verklaren en vergelijken",quizset:"Meerdere begripsvragen",error:"Zoek de fout"};
+
+
+/* Herbruikbare functiegrafieken: aparte gegevens, rekenfunctie en presentatie. */
+const WI_PLOT_PRESETS={
+ linear:{name:'Lineair verband',help:'Helling en startgetal aanpassen',a:2,b:1,c:0},
+ quadratic:{name:'Kwadratisch verband',help:'Top en nulpunten onderzoeken',a:1,b:-4,c:3},
+ exponential:{name:'Exponentieel verband',help:'Beginwaarde en groeifactor aanpassen',a:2,b:1.5,c:0},
+ sinusoid:{name:'Sinusoïde',help:'Amplitude en periode aanpassen',a:2,b:1,c:0}
+};
+function wiPlotConfig(s){
+ const k=Object.hasOwn(WI_PLOT_PRESETS,s?.plotKind)?s.plotKind:'linear',d=WI_PLOT_PRESETS[k];
+ const num=(name,fallback)=>s?.[name]===undefined?fallback:Number(s[name]);
+ return {plotKind:k,plotA:num('plotA',d.a),plotB:num('plotB',d.b),plotC:num('plotC',d.c),plotGrid:s?.plotGrid!==false,plotPoints:s?.plotPoints===true};
+}
+function wiPlotValid(p){
+ return ['plotA','plotB','plotC'].every(k=>Number.isFinite(p[k])&&Math.abs(p[k])<=50)
+ &&(p.plotKind!=='exponential'||(p.plotB>=.1&&p.plotB<=5));
+}
+function wiPlotY(x,p){
+ if(p.plotKind==='quadratic')return p.plotA*x*x+p.plotB*x+p.plotC;
+ if(p.plotKind==='exponential')return p.plotA*Math.pow(p.plotB,x)+p.plotC;
+ if(p.plotKind==='sinusoid')return p.plotA*Math.sin(p.plotB*x)+p.plotC;
+ return p.plotA*x+p.plotB;
+}
+function wiPlotFormula(p){
+ const n=v=>Number(v.toFixed(2)).toLocaleString('nl-NL');
+ const tail=v=>(v<0?' − ':' + ')+n(Math.abs(v));
+ if(p.plotKind==='quadratic')return 'y = '+n(p.plotA)+'x²'+tail(p.plotB)+'x'+tail(p.plotC);
+ if(p.plotKind==='exponential')return 'y = '+n(p.plotA)+' × '+n(p.plotB)+'ˣ'+tail(p.plotC);
+ if(p.plotKind==='sinusoid')return 'y = '+n(p.plotA)+' sin('+n(p.plotB)+'x)'+tail(p.plotC);
+ return 'y = '+n(p.plotA)+'x'+tail(p.plotB);
+}
+function wiPlotSVG(p){
+ const L=44,R=580,T=17,B=279,pts=Array.from({length:241},(_,i)=>{const x=-6+i*.05;return [x,wiPlotY(x,p)]});
+ const ys=pts.map(v=>v[1]).filter(Number.isFinite),lo=Math.min(0,...ys),hi=Math.max(0,...ys),pad=Math.max(3,(hi-lo)*.08);
+ const minY=lo-pad,maxY=hi+pad,X=x=>L+(x+6)/12*(R-L),Y=y=>B-(y-minY)/(maxY-minY)*(B-T);
+ const axisY=Math.min(B,Math.max(T,Y(0)));
+ const grid=p.plotGrid?[-6,-4,-2,0,2,4,6].map(x=>'<path d="M'+X(x)+' '+T+'V'+B+'" stroke="#e4ebe5"/>').join('')+
+ Array.from({length:5},(_,i)=>minY+(maxY-minY)*i/4).map(y=>'<path d="M'+L+' '+Y(y)+'H'+R+'" stroke="#e4ebe5"/>').join(''):'';
+ const curve=pts.map((v,i)=>(i?'L':'M')+X(v[0]).toFixed(2)+' '+Y(v[1]).toFixed(2)).join(' ');
+ const dots=p.plotPoints?[-4,-2,0,2,4].map(x=>'<circle cx="'+X(x)+'" cy="'+Y(wiPlotY(x,p))+'" r="4" fill="#c9763d"/>').join(''):'';
+ return '<svg viewBox="0 0 620 309" role="img" aria-label="'+esc(WI_PLOT_PRESETS[p.plotKind].name)+'">'+
+ '<rect width="620" height="309" fill="#fff"/>'+grid+'<path d="M'+L+' '+axisY+'H'+R+' M'+X(0)+' '+T+'V'+B+'" stroke="#667f73" stroke-width="1.5" fill="none"/>'+
+ '<defs><clipPath id="wi-plot-clip"><rect x="'+L+'" y="'+T+'" width="'+(R-L)+'" height="'+(B-T)+'"/></clipPath></defs>'+
+ '<g clip-path="url(#wi-plot-clip)"><path d="'+curve+'" fill="none" stroke="#176f62" stroke-width="3.5"/>'+dots+'</g>'+
+ [-6,-3,3,6].map(x=>'<text x="'+X(x)+'" y="297" text-anchor="middle" font-size="11" fill="#526b5e">'+x+'</text>').join('')+
+ '<text x="'+(R+12)+'" y="'+(axisY-7)+'" font-size="12" fill="#526b5e">x</text><text x="'+(X(0)+7)+'" y="14" font-size="12" fill="#526b5e">y</text></svg>';
+}
+function wiPlotEditor(s){
+ const p=wiPlotConfig(s);
+ return '<div class="wi-plot-edit"><div class="wi-plot-chart" id="wiDesignPlot">'+wiPlotSVG(p)+'</div>'+
+ '<div class="wi-plot-formula" id="wiDesignPlotFormula">'+esc(wiPlotFormula(p))+'</div>'+
+ '<details class="wi-plot-details"><summary>Grafiek aanpassen</summary><div class="wi-plot-controls"><label>Soort verband<select data-design-plot-kind>'+
+ Object.entries(WI_PLOT_PRESETS).map(([k,v])=>'<option value="'+k+'" '+(k===p.plotKind?'selected':'')+'>'+esc(v.name)+'</option>').join('')+'</select></label>'+
+ '<div class="wi-plot-inputs">'+['plotA','plotB','plotC'].map(k=>'<label>'+k.slice(-1).toLowerCase()+'<input type="number" step="0.1" min="'+(k==='plotB'&&p.plotKind==='exponential'?'0.1':'-50')+'" max="'+(k==='plotB'&&p.plotKind==='exponential'?'5':'50')+'" data-design-plot-value="'+k+'" value="'+p[k]+'"></label>').join('')+'</div>'+
+ '<div class="wi-plot-flags"><label><input type="checkbox" data-design-plot-flag="plotGrid" '+(p.plotGrid?'checked':'')+'> Raster</label>'+
+ '<label><input type="checkbox" data-design-plot-flag="plotPoints" '+(p.plotPoints?'checked':'')+'> Meetpunten</label></div></div></details></div>';
+}
+let wiPlotRuntime={};
+function wiPlotView(s){
+ const p=wiPlotRuntime[s.id]||wiPlotConfig(s);
+ return '<section class="wi-plot-lab" id="wiMathPlot"><div id="wiPlotChart" class="wi-plot-chart">'+wiPlotSVG(p)+'</div>'+
+ '<div class="wi-plot-formula" id="wiPlotFormula">'+esc(wiPlotFormula(p))+'</div>'+
+ '<details class="wi-plot-details"><summary>Parameters en meetpunten</summary><div class="wi-plot-controls"><div class="wi-plot-inputs">'+
+ ['plotA','plotB','plotC'].map(k=>'<label>'+k.slice(-1).toLowerCase()+' <output data-wi-plot-out="'+k+'">'+p[k]+'</output><input type="range" data-wi-plot-range="'+k+'" min="'+(k==='plotB'&&p.plotKind==='exponential'?'0.1':'-20')+'" max="'+(k==='plotB'&&p.plotKind==='exponential'?'5':'20')+'" step="0.1" value="'+p[k]+'"></label>').join('')+
+ '</div><div class="wi-plot-flags"><label><input type="checkbox" data-wi-plot-flag="plotGrid" '+(p.plotGrid?'checked':'')+'> Raster</label>'+
+ '<label><input type="checkbox" data-wi-plot-flag="plotPoints" '+(p.plotPoints?'checked':'')+'> Meetpunten</label></div>'+
+ '<button type="button" id="wiPlotReset">Herstel voorbeeld</button></div></details></section>';
+}
+function wiBindPlot(s){
+ const root=$('wiMathPlot');if(!root)return;
+ if(!wiPlotRuntime[s.id])wiPlotRuntime[s.id]=wiPlotConfig(s);
+ const draw=()=>{
+  const p=wiPlotRuntime[s.id];
+  root.querySelector('#wiPlotChart').innerHTML=wiPlotSVG(p);
+  root.querySelector('#wiPlotFormula').textContent=wiPlotFormula(p);
+  root.querySelectorAll('[data-wi-plot-out]').forEach(el=>el.textContent=Number(p[el.dataset.wiPlotOut].toFixed(1)).toLocaleString('nl-NL'));
+  root.querySelectorAll('[data-wi-plot-range]').forEach(el=>el.value=String(p[el.dataset.wiPlotRange]));
+  root.querySelectorAll('[data-wi-plot-flag]').forEach(el=>el.checked=p[el.dataset.wiPlotFlag]);
+ };
+ root.querySelectorAll('[data-wi-plot-range]').forEach(el=>el.addEventListener('input',()=>{wiPlotRuntime[s.id][el.dataset.wiPlotRange]=Number(el.value);draw()}));
+ root.querySelectorAll('[data-wi-plot-flag]').forEach(el=>el.addEventListener('change',()=>{wiPlotRuntime[s.id][el.dataset.wiPlotFlag]=el.checked;draw()}));
+ root.querySelector('#wiPlotReset').onclick=()=>{wiPlotRuntime[s.id]=wiPlotConfig(s);draw()};
+ draw();
+}
 
 const LAYOUTS=new Set(["single","equal","left","right"]);
 const FEATURE_DEFAULTS={drawing:true,voting:true,clock:true,focus:true,picker:true,notes:true,printing:true};
@@ -1183,6 +1282,7 @@ const GUIDE_TYPE_HELP={
  text:'Een uitleg, startvraag of korte opdracht.',
  question:'Leerlingen kiezen een antwoord. Je laat het juiste antwoord pas zien als je dat wilt.',
  graph:'Laat leerlingen een grafiek onderzoeken en voorspellingen toetsen.',
+  mathplot:'Kies een functiegrafiek en verander de parameters.',
  steps:'Toon een uitwerking in stappen, niet alles in één keer.',
  table:'Laat leerlingen een tabel aanvullen en verbanden ontdekken.',
  practice:'Laat leerlingen zelf oefenen. Hints en uitwerkingen kun je later tonen.',
@@ -1880,7 +1980,7 @@ $("save").onclick=()=>{save();download("wihtml-les.json",JSON.stringify(lesson,n
 const TYPE_ALIASES={
  text:"text",tekst:"text",uitleg:"text",opdracht:"text",
  question:"question",meerkeuze:"question",meerkeuzevraag:"question",vraag:"question",poll:"question",
- graph:"graph",grafiek:"graph",grafiekonderzoek:"graph",onderzoek:"graph",
+ graph:"graph",grafiek:"graph",grafiekonderzoek:"graph",onderzoek:"graph",mathplot:"mathplot",functiegrafiek:"mathplot",
  steps:"steps",stappen:"steps",uitwerking:"steps",
  table:"table",tabel:"table",onderzoekstabel:"table",
  practice:"practice",oefenen:"practice",oefeningen:"practice",oefening:"practice",zelfstandig:"practice",
