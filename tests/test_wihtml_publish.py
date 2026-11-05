@@ -70,7 +70,7 @@ class WiHTMLPublicationTests(unittest.TestCase):
         text = (BUILD / "tools/wihtml/studio/index.html").read_text(encoding="utf-8")
         self.assertIn("let draftTrackingReady=false;", text)
         self.assertIn("if(draftTrackingReady)scheduleDraftSave();", text)
-        self.assertIn("renderEditor();\\ndraftTrackingReady=true;".replace("\\n", "\n"), text)
+        self.assertIn("renderEditor();\\nsetWorkMode(savedWorkMode(),false);\\ndraftTrackingReady=true;".replace("\\n", "\n"), text)
         self.assertIn('renderDesigner();scheduleDraftSave();', text)
         self.assertIn('applyFeatures();scheduleDraftSave();', text)
 
@@ -119,6 +119,24 @@ class WiHTMLPublicationTests(unittest.TestCase):
                        'const WIHTML_LIBRARY_FILES='):
             with self.subTest(marker=marker):
                 self.assertIn(marker, studio)
+
+    def test_quick_and_studio_use_one_lesson(self):
+        studio = (BUILD / "tools/wihtml/studio/index.html").read_text(encoding="utf-8")
+        for marker in (
+            'id="modeQuick"', 'id="modeStudio"', 'id="quickFocus"',
+            'id="quickAdd"', 'id="quickInsertDialog"',
+            'data-quick-type="graph"', 'data-quick-type="question"',
+            'data-quick-type="practice"', 'function setWorkMode(mode,persist=true)',
+            'function setFocusMode(enabled)', 'function openQuickInsert()',
+            "setWorkMode(savedWorkMode(),false);",
+            "lesson.slides.splice(selected+1,0,slide);",
+        ):
+            with self.subTest(marker=marker):
+                self.assertIn(marker, studio)
+        self.assertIn("let workMode='quick';", studio)
+        self.assertIn("if(workMode==='studio')setFocusMode(false)", studio)
+        self.assertIn("if(workMode==='quick'){openQuickInsert();return}", studio)
+        self.assertIn("const WIHTML_MODE_KEY='wihtml:docentstudio:modus:v1';", studio)
 
     def test_complete_v9_lesson_is_preserved(self):
         source = ROOT / "content/wihtml/verdubbelen-halveren-v9.html"
