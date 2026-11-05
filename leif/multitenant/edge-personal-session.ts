@@ -68,13 +68,18 @@ Deno.serve(async req=>{
   let body;
   try{body=await req.json()}catch{return reply({error:"invalid_json"},400,origin)}
   if(JSON.stringify(body).length>120000)return reply({error:"request_too_large"},413,origin);
-  if(!plainObject(body)||!["load","save"].includes(body.action)||typeof body.code!=="string"||!/^[a-f0-9]{48}$/.test(body.code))
+  if(!plainObject(body)||!["load","save"].includes(body.action)||typeof body.code!=="string"||!/^(?:[a-f0-9]{48}|lis)$/.test(body.code))
     return reply({error:"invalid_request"},400,origin);
   const service=secretKey();
   if(!service||!projectUrl)return reply({error:"service_unavailable"},503,origin);
   try {
-    const hashed=await hashCode(body.code);
-    const participants=await db("leif_participants?access_hash=eq."+hashed+"&select=id,tenant_id,display_name,state,expires_at","GET",null,service);
+    // LIS is uitsluitend een gedeelde demo-ingang naar het gemarkeerde testdossier.
+    // Normale deelnemers gebruiken hun eigen 48-cijferige toegangscode.
+    const demoCode=body.code==="lis";
+    const lookup=demoCode?
+      "leif_participants?test_alias=eq.LIS&is_demo=eq.true&select=id,tenant_id,display_name,state,expires_at":
+      "leif_participants?access_hash=eq."+await hashCode(body.code)+"&select=id,tenant_id,display_name,state,expires_at";
+    const participants=await db(lookup,"GET",null,service);
     if(!Array.isArray(participants)||participants.length!==1)return reply({error:"access_denied"},404,origin);
     const member=participants[0];
     if(member.state!=="active"||(member.expires_at&&Date.parse(member.expires_at)<Date.now()))return reply({error:"access_denied"},404,origin);

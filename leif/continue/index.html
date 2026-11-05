@@ -56,7 +56,7 @@ body{background:var(--paper)}header{background:rgba(247,244,239,.97)}.card{backg
 <body>
 <header><div class="header-inner"><div class="brand"><span class="leif-logo" aria-hidden="true"><svg viewBox="0 0 44 44" width="34" height="34" xmlns="http://www.w3.org/2000/svg" fill="none"><circle cx="22" cy="22" r="17.5" stroke="currentColor" opacity=".45"/><path d="M9 28c6-4.5 20-4.5 26 0M12 32c5-2.8 15-2.8 20 0" stroke="currentColor" opacity=".68" stroke-linecap="round" stroke-width="1.4"/><path d="M19 12.5V27h8.5" stroke="currentColor" stroke-linejoin="round" stroke-linecap="round" stroke-width="2.3"/></svg></span><div>LEIF <span>Mijn verhaal vervolgen</span></div></div><div id="saveStatus" class="header-status">Persoonlijk concept</div></div></header>
 <main>
-<section id="gate" class="login">
+<section id="gate" class="login" hidden>
 <div class="eyebrow">Verder met jouw verhaal</div><h1>Je hoeft niet opnieuw te beginnen.</h1>
 <p class="lead">Beantwoord de vragen in je eigen tempo. Eerder opgeslagen antwoorden komen vanzelf terug.</p>
 <div class="notice">Dit is een proef. Je antwoorden worden afgeschermd opgeslagen en kunnen door de beheerder worden gelezen. Je hoeft geen vragen in te vullen die je liever overslaat.</div>
@@ -267,6 +267,12 @@ document.addEventListener('visibilitychange',()=>{if(document.visibilityState===
 try{
  const fromLink=new URLSearchParams(location.hash.slice(1)).get('code');
  const previous=sessionStorage.getItem('leifContinueToken');
- if(fromLink||previous)openSession(fromLink||previous).catch(()=>{sessionStorage.removeItem('leifContinueToken');$('error').hidden=false;$('error').textContent='Open je persoonlijke concept met je vervolgcode.';});
-}catch{}
+ if(fromLink||previous){
+  openSession(fromLink||previous).catch(()=>{
+   sessionStorage.removeItem('leifContinueToken');
+   sessionStorage.setItem('leif-access-error','Deze code wordt niet herkend.');
+   location.replace('/leif/');
+  });
+ }else location.replace('/leif/');
+}catch{location.replace('/leif/')}
 </script></body></html>

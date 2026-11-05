@@ -20,7 +20,7 @@ test('beide nieuwe omgevingen hebben leesbare JavaScript-syntax',()=>{
   checkInlineJs(admin,'leif/beheer/index.html');
 });
 test('bestaande LEIF-inhoud en KEI blijven beschikbaar',()=>{
-  assert.match(root,/pw\.value\.trim\(\)\.toUpperCase\(\)==='KEI'/);
+  assert.match(root,/code\.toUpperCase\(\)==='KEI'/);
   assert.match(root,/\/leif\/verhaal\//);
   assert.match(root,/\/leif\/mijn\//);
   assert.doesNotMatch(schema,/drop\s+table\s+(if\s+exists\s+)?(?:public\.)?leif_demo_sessions/i);
@@ -30,7 +30,8 @@ test('deelnemer gebruikt lange persoonlijke code en eigen serverdossier',()=>{
   assert.match(participant,/leif-personal-session/);
   assert.match(participant,/expected_revision/);
   assert.match(participant,/mergeChanges/);
-  assert.match(api,/\^\[a-f0-9\]\{48\}\$/);
+  assert.match(api,/\[a-f0-9\]\{48\}/);
+  assert.match(api,/test_alias=eq\.LIS&is_demo=eq\.true/);
   assert.match(api,/access_hash=eq/);
   assert.match(api,/revision_conflict/);
 });
