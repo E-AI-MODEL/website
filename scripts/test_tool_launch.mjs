@@ -32,10 +32,10 @@ try{
  await p.locator('[data-key="meta.title"]').waitFor();
  await p.locator('[data-key="meta.title"]').fill('Mijn presentatie\nMet interactie');
  await p.locator('[data-key="meta.subtitle"]').fill('Gebouwd op eaimodel.nl');
- await p.locator('[data-page="edit"]').click();await p.screenshot({path:join(out,'eaistudio-bouwen.png')});
- await p.locator('[data-page="play"]').click();await p.locator('[data-player="start"]').click();
+ await p.getByRole('button',{name:'Bouwen',exact:true}).click();await p.screenshot({path:join(out,'eaistudio-bouwen.png')});
+ await p.locator('[data-page="play"]').first().click();await p.locator('[data-player="start"]').click();
  await p.screenshot({path:join(out,'eaistudio-presenteren.png')});
- await p.locator('[data-page="start"]').click();await p.locator('[data-act="export"]').first().click();
+ await p.locator('[data-page="start"]').first().click();await p.locator('[data-act="export"]').first().click();
  const [download]=await Promise.all([p.waitForEvent('download'),p.getByRole('button',{name:'Exporteer presentatie-HTML',exact:true}).click()]);
  const html=join(out,'eaistudio-presentatie.html');await download.saveAs(html);
  const standalone=await browser.newPage();standalone.on('pageerror',e=>errors.push('presentatie: '+e.message));
