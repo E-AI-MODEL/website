@@ -544,15 +544,11 @@ function updateTemplateVisual(){
    let body=rawBody;
    for(const [property,value] of Object.entries(declarations)){
     const aliases=property==='background'?['background','background-color']:[property];
-    let matched=false;
     for(const name of aliases){
-     const pattern=new RegExp('(^|;)\\s*'+name+'\\s*:[^;]*','gi');
-     if(pattern.test(body)){
-      body=body.replace(pattern,(_,prefix)=>prefix+' '+name+': '+value);
-      matched=true;
-     }
+     const pattern=new RegExp('(^|;)\\s*'+name+'\\s*:[^;]*;?','gi');
+     body=body.replace(pattern,(_,prefix)=>prefix);
     }
-    if(!matched)body=body.trimEnd()+(body.trimEnd().endsWith(';')?'':';')+' '+property+': '+value+';';
+    body=body.trimEnd()+(body.trimEnd().endsWith(';')?'':';')+' '+property+': '+value+' !important;';
    }
    return selectors+'{'+body+'}';
   });
