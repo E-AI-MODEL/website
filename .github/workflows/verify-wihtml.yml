@@ -1,0 +1,40 @@
+name: Verify WiHTML editor and offline lesson
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'content/wihtml/**'
+      - 'scripts/test_wihtml_journey.mjs'
+      - 'scripts/build_site.py'
+      - 'scripts/prepare_ui.py'
+      - '.github/workflows/verify-wihtml.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  wihtml:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: pip install beautifulsoup4
+      - run: python scripts/build_site.py --sources content/legacy --out site-build
+      - run: python scripts/prepare_ui.py --root site-build
+      - run: npm install --no-save playwright@1.56.1
+      - run: npx playwright install --with-deps chromium
+      - name: Test lesson route, math plots, menus and offline export
+        run: node scripts/test_wihtml_journey.mjs site-build
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: wihtml-journey-check
+          path: test-results/
