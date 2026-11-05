@@ -227,6 +227,11 @@ function renderReport(area){
  area.append(pageHeading('Mijn verslag','Mijn antwoorden'));
  area.append(node('p','intro','Hier staan de antwoorden die je zelf hebt gegeven. Er worden geen eigenschappen of diagnoses uit afgeleid.'));
  const snap=reportSnapshot();
+ // Bewaar ook het gegenereerde verslag zodra de antwoorden of de naam veranderen.
+ // Vergelijk inhoud zonder generated_at om onnodige nieuwe revisies te voorkomen.
+ if(snap.sections.length && (JSON.stringify(doc.report?.sections||[])!==JSON.stringify(snap.sections)||doc.report?.name!==snap.name||doc.report?.questionnaire_version!==snap.questionnaire_version)){
+   mergeChanges({report:snap});
+ }
  if(!snap.sections.length){area.append(node('p','note','Je hebt nog geen vragen beantwoord.'));area.append(linkButton('Begin met de vragen',()=>goto('questions')));return}
  const list=node('div','reportlist panel reader');
  for(const section of snap.sections){
