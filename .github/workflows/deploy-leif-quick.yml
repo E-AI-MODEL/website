@@ -1,0 +1,79 @@
+name: Publiceer alleen de gewijzigde LEIF-pagina's
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/deploy-leif-quick.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: leif-direct-publish
+  cancel-in-progress: true
+
+jobs:
+  publish-leif:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - name: Haal websitecode op
+        uses: actions/checkout@v4
+
+      - name: Controleer bestaande LEIF-toegang en testers
+        run: node --test tests/test_leif_kei.mjs tests/test_leif_multitenant.mjs tests/test_leif_testers.mjs
+
+      - name: Installeer FTPS-client
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq lftp openssl
+
+      - name: Controleer FTPS-certificaat van de bestaande host
+        env:
+          HOST: ftp.eaimodel.nl
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected="4D:F5:15:4C:F3:11:5E:5B:DD:91:BD:5F:BD:0F:0E:A7:35:71:5C:32"
+          actual="$(openssl s_client -starttls ftp -connect "$HOST:21" -servername "$HOST" </dev/null 2>/dev/null | openssl x509 -noout -fingerprint -sha1 | cut -d= -f2)"
+          test "$actual" = "$expected"
+
+      - name: Publiceer alleen de bestaande LEIF-pagina's
+        env:
+          HOST: ftp.eaimodel.nl
+          FTP_USER: ${{ secrets.THEORY7_FTP_USER }}
+          FTP_PASSWORD: ${{ secrets.THEORY7_FTP_PASSWORD }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          lftp -u "$FTP_USER","$FTP_PASSWORD" "ftp://$HOST:21" <<'EOF'
+          set cmd:fail-exit yes
+          set ftp:ssl-force true
+          set ftp:ssl-protect-data true
+          set ssl:verify-certificate false
+          set net:timeout 20
+          set net:max-retries 1
+          set xfer:use-temp-file yes
+          put leif/index.html -o /leif/index.html
+          put leif/beheer/index.html -o /leif/beheer/index.html
+          put leif/continue/index.html -o /leif/continue/index.html
+          bye
+          EOF
+
+      - name: Controleer de live beheerpagina
+        env:
+          RELEASE: ${{ github.sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          for attempt in 1 2 3 4 5 6; do
+            if curl -fsS --max-time 15 "https://eaimodel.nl/leif/beheer/?release=$RELEASE" | grep -q 'id="testerAnswers"'; then
+              echo "LEIF testerbeheer staat live."
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "De nieuwe LEIF-pagina is nog niet zichtbaar."
+          exit 1
