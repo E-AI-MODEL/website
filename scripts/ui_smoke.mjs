@@ -140,6 +140,10 @@ try {
   assert(await wiPage.locator('#guideResult').innerText().then(t=>t.includes('Je HTML-les is klaar')));
   const liveViewer = wiPage.frameLocator('#guideResultFrame').locator('#viewer.show');
   await liveViewer.waitFor({state:'visible',timeout:15000});
+  const boardTitleColor=await wiPage.frameLocator('#guideResultFrame').locator('.wi-board h2').first().evaluate(el=>getComputedStyle(el).color);
+  assert.equal(boardTitleColor,'rgb(244, 247, 244)','Donker bord toont de diatitel met voldoende lichtcontrast');
+  const footerPosition=await wiPage.locator('.wi-guide-foot').evaluate(el=>getComputedStyle(el).position);
+  assert.equal(footerPosition,'static','Het eindscherm heeft geen zwevende knoppenbalk over de HTML-les');
   assert(await wiPage.locator('#guideResultFrame').isVisible(), 'De werkende HTML is direct ingebed');
   await wiPage.screenshot({path:'test-results/wihtml-eindscherm.png',fullPage:true});
   await liveViewer.screenshot({path:'test-results/wihtml-live-presentatie.png'});
