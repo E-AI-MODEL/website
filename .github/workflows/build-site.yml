@@ -61,7 +61,7 @@ jobs:
         run: python -m unittest discover -s tests -p 'test_home_model.py' -v
 
       - name: Test LEIF en het toevoegen van testers
-        run: node --test tests/test_leif_kei.mjs tests/test_leif_multitenant.mjs tests/test_leif_testers.mjs
+        run: node --test tests/test_leif_kei.mjs tests/test_leif_multitenant.mjs tests/test_leif_testers.mjs tests/test_leif_unified_login.mjs
 
       - name: Build site
         run: |
