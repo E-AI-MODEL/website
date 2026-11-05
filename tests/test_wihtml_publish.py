@@ -162,7 +162,7 @@ class WiHTMLPublicationTests(unittest.TestCase):
         self.assertIn("if(workMode==='studio')pages.push({kind:'notes',id:slide.id", studio)
         self.assertIn("$('guideDownloadHTML').onclick=()=>$('export').click();", studio)
         self.assertIn("$('guideDownloadJSON').onclick=()=>$('save').click();", studio)
-        self.assertIn("syncDesignForm(slide);renderDesigner();scheduleDraftSave();", studio)
+        self.assertIn("if($('f-layout'))$('f-layout').value=slide.layout;", studio)
 
     def test_complete_v9_lesson_is_preserved(self):
         source = ROOT / "content/wihtml/verdubbelen-halveren-v9.html"
