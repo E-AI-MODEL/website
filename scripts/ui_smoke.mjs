@@ -186,6 +186,18 @@ try {
   await wiPage.locator('#startRestore').click();
   assert(await wiPage.locator('[data-guide-info="goal"]').isVisible(), 'Concept hervat op de laatst gebruikte stap');
   assert.equal(await wiPage.locator('#guideTitle').inputValue(),'Tweede les','Lesinhoud bleef behouden');
+  const jsonLessonPath=resolve('site-build/tools/wihtml/bibliotheek/lineaire-verbanden.json');
+  let blockedImports=0;
+  wiPage.once('dialog',dialog=>{blockedImports++;return dialog.dismiss()});
+  await wiPage.locator('#designImport').evaluate(button=>button.click());
+  await wiPage.locator('#import').setInputFiles(jsonLessonPath);
+  assert.equal(blockedImports,1,'JSON via ontwerpknop vraagt toestemming');
+  assert.equal(await wiPage.locator('#title').inputValue(),'Tweede les','Annuleren vanuit ontwerpknop bewaart de les');
+  assert(await wiPage.locator('[data-guide-info="goal"]').isVisible(),'Annuleren behoudt de huidige stap');
+  wiPage.once('dialog',dialog=>{blockedImports++;return dialog.dismiss()});
+  await wiPage.locator('#import').setInputFiles(jsonLessonPath);
+  assert.equal(blockedImports,2,'Rechtstreekse bestandsinvoer vraagt ook toestemming');
+  assert.equal(await wiPage.locator('#title').inputValue(),'Tweede les','Annuleren via bestandsinvoer bewaart inhoud');
   await wiPage.locator('#guideOtherLesson').click();
   await wiPage.locator('#startImport').click();
   wiPage.once('dialog',dialog=>dialog.accept());
