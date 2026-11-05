@@ -60,11 +60,17 @@ Deno.serve(async req=>{
   const scope=memberships.find(t=>t.id===input.tenant_id);
   if(!scope)return send({error:"not_authorized"},403,origin);
 
-  if(input.action==="list_testers" || input.action==="create_tester"){
+  if(input.action==="list_testers" || input.action==="create_tester" || input.action==="get_tester"){
     if(scope.slug!=="leif" || scope.role!=="manager")return send({error:"not_authorized"},403,origin);
     if(input.action==="list_testers"){
       const testers=await database("leif_demo_sessions?select=id,tester_name,status,created_at,updated_at&order=created_at.desc&limit=250","GET",null,service);
       return send({ok:true,testers},200,origin);
+    }
+    if(input.action==="get_tester"){
+      if(!idValid(input.tester_id))return send({error:"invalid_tester"},400,origin);
+      const rows=await database("leif_demo_sessions?id=eq."+encodeURIComponent(input.tester_id)+"&select=id,tester_name,status,answers,updated_at","GET",null,service);
+      if(rows.length!==1)return send({error:"not_found"},404,origin);
+      return send({ok:true,tester:rows[0]},200,origin);
     }
     const name=typeof input.name==="string"?input.name.trim():"";
     if(!name || name.length>120)return send({error:"invalid_name"},400,origin);
