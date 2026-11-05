@@ -519,6 +519,8 @@
 .wi-guide-active .wi-guide-slide .design-footer-actions{display:none}
 .wi-guide-slide-buttons{display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap;margin-top:15px}
 .wi-guide-slide-buttons button{font-size:13px}
+.wi-guide-slide-control{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.wi-guide-slide-control button:disabled{opacity:.35;cursor:default}
 .wi-guide-slide-meta{font-size:13px;color:#5a6c63;padding:5px 0 10px}
 .wi-guide-choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px;margin:15px 0}
 .wi-guide-choice{padding:18px;border:1px solid #d7e2db;background:#fff;border-radius:12px;text-align:left;display:grid;gap:5px}
@@ -580,7 +582,7 @@
  <progress id="guideProgress" class="wi-guide-track" max="100" value="0" aria-label="Voortgang van de les"></progress>
  <div id="guideInfo" class="wi-guide-page" hidden><div class="wi-guide-surface"><h2>Je les</h2><p>Geef de les een naam en beschrijf wat leerlingen aan het einde zelfstandig moeten kunnen.</p>
  <div class="wi-guide-form"><div class="wi-guide-two"><label>Naam van de les<input id="guideTitle" autocomplete="off" placeholder="Bijvoorbeeld: Exponentiële groei"></label><label>Niveau<input id="guideLevel" autocomplete="off" placeholder="Bijvoorbeeld: 5 havo"></label></div><label>Wat kunnen leerlingen na de les zelfstandig?<textarea id="guideGoal" rows="3" placeholder="Schrijf hier het doel van je les"></textarea></label><div class="wi-guide-route"><label for="guideRoute">Opbouw</label><select id="guideRoute"><option value="own">Zelf samengesteld</option><option value="discover">Onderzoeken en verklaren</option><option value="explain">Uitleg en oefenen</option><option value="practice">Zelfstandig oefenen</option></select><button type="button" id="guideApplyRoute">Pas volgorde toe</button></div><div class="wi-guide-muted">Een andere opbouw verandert alleen de volgorde van je dia's, niet hun inhoud.</div></div></div></div>
- <div id="guideSlide" class="wi-guide-page wi-guide-slide" hidden><div class="wi-guide-slide-meta" id="guideSlideMeta"></div><div id="guideSlideMount"></div><div class="wi-guide-slide-buttons"><button id="guideAddSlide" type="button">+ Dia toevoegen</button><button id="guideMoreFields" type="button" hidden>Meer velden voor deze dia</button></div></div>
+ <div id="guideSlide" class="wi-guide-page wi-guide-slide" hidden><div class="wi-guide-slide-meta" id="guideSlideMeta"></div><div id="guideSlideMount"></div><div class="wi-guide-slide-buttons"><div class="wi-guide-slide-control"><button id="guideAddSlide" type="button">+ Dia toevoegen</button><button id="guidePreviewSlide" type="button">Bekijk deze dia</button></div><div class="wi-guide-slide-control"><button id="guideDuplicateSlide" type="button">Kopieer dia</button><button id="guideMoveSlideUp" type="button" aria-label="Zet dia eerder" title="Zet dia eerder">↑</button><button id="guideMoveSlideDown" type="button" aria-label="Zet dia later" title="Zet dia later">↓</button><button id="guideRemoveSlide" type="button">Verwijder dia</button></div><button id="guideMoreFields" type="button" hidden>Meer velden voor deze dia</button></div></div>
  <div id="guideNotes" class="wi-guide-page" hidden><div class="wi-guide-surface"><h2>Wat doen de leerling en de docent?</h2><p>Je vult hier de aanwijzingen voor één dia in. De tekst op de dia heb je zojuist gemaakt.</p><div class="wi-guide-form"><label>Lesfase<input id="guidePhase" placeholder="Bijvoorbeeld: onderzoeken"></label><label>Wat doen de leerlingen zelf?<textarea id="guideStudent" rows="3" placeholder="Wat gaan leerlingen maken, onderzoeken of uitleggen?"></textarea></label><label>Wat doe jij als docent?<textarea id="guideTeacher" rows="3" placeholder="Wat laat je zien, wanneer help je?"></textarea></label><label>Vlakverdeling voor deze dia<select id="guideLayout"><option value="inherit">Gebruik de lesinstelling</option><option value="single">Eén vlak</option><option value="equal">Twee gelijke vlakken</option><option value="left">Links 60%, rechts 40%</option><option value="right">Rechts 60%, links 40%</option></select></label><button type="button" id="guideNotesAdvanced">Bewerk overige velden van deze dia</button></div></div></div>
  <div id="guideDesign" class="wi-guide-page" hidden><div class="wi-guide-surface"><h2>Kies de vormgeving</h2><p>De kleuren en opmaak gelden voor de hele les. Je kunt dit later nog aanpassen.</p><div class="wi-guide-choices"><button type="button" class="wi-guide-choice" data-guide-theme="editorial" aria-pressed="false"><strong>Rustig en licht</strong><span>Witte achtergrond en donkere tekst</span></button><button type="button" class="wi-guide-choice" data-guide-theme="board" aria-pressed="false"><strong>Donker bord</strong><span>Donkere achtergrond met lichte tekst</span></button></div><button type="button" id="guideDesignMore">Kleuren en sjabloon zelf aanpassen</button></div></div>
  <div id="guideTools" class="wi-guide-page" hidden><div class="wi-guide-surface"><h2>Welke docenttools wil je gebruiken?</h2><p>Dit gereedschap verschijnt alleen tijdens het presenteren. Je kunt het ook later wijzigen.</p><div id="guideToolChoices" class="wi-guide-tools"></div></div></div>
@@ -1140,6 +1142,9 @@ function guideRender(){
  if(kind==='slide'){
   $('guideSlideMeta').textContent=(slide?.phase||'Lesdeel')+' · dia '+(selected+1)+' van '+lesson.slides.length;
   $('guideMoreFields').hidden=workMode!=='studio';
+  $('guideMoveSlideUp').disabled=selected===0;
+  $('guideMoveSlideDown').disabled=selected===lesson.slides.length-1;
+  $('guideRemoveSlide').disabled=lesson.slides.length===1;
  }
  if(kind==='notes'&&slide){
   $('guidePhase').value=slide.phase||'';
@@ -1184,6 +1189,11 @@ $('guideNotesAdvanced').onclick=guideOpenExtra;
 $('guidePrevious').onclick=()=>guideMove(-1);
 $('guideNext').onclick=()=>guideMove(1);
 $('guideAddSlide').onclick=()=>openQuickInsert();
+$('guidePreviewSlide').onclick=()=>{$('designPreview').click()};
+$('guideDuplicateSlide').onclick=()=>{$('designCopy').click();guideShow({kind:'slide',id:lesson.slides[selected].id})};
+$('guideMoveSlideUp').onclick=()=>{$('designMoveUp').click();guideShow({kind:'slide',id:lesson.slides[selected].id})};
+$('guideMoveSlideDown').onclick=()=>{$('designMoveDown').click();guideShow({kind:'slide',id:lesson.slides[selected].id})};
+$('guideRemoveSlide').onclick=()=>{$('remove').click();guideShow({kind:'slide',id:lesson.slides[selected].id})};
 $('guideOutline').onclick=()=>{
  const pages=guidePages();
  $('guideOutlineList').innerHTML=pages.map((p,i)=>'<button type="button" data-guide-index="'+i+'" '+(guideSame(p,guidePage)?'aria-current="step"':'')+'><span class="wi-guide-counter">'+String(i+1).padStart(2,'0')+'</span>'+esc(p.name)+'</button>').join('');
