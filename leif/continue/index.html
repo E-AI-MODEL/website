@@ -44,10 +44,17 @@ textarea{width:100%;min-height:175px;margin:16px 0 0;padding:18px;border:1px sol
 footer{font-size:12px;color:var(--muted);padding-top:19px;border-top:1px solid var(--line);margin-top:40px}
 @media(max-width:760px){.header-inner{padding:13px 15px}main{padding:24px 17px 60px}.hero{display:block}.count{text-align:left;margin-top:16px}.work{display:block}.chapters{position:static;display:flex;overflow:auto;margin-bottom:22px;white-space:nowrap}.chapters button{flex:0 0 auto}.options{grid-template-columns:1fr}.actions{align-items:stretch}.question-card{min-height:300px}.code-row{display:block}.code-row button{margin-top:10px;width:100%}}
 @media print{header,.chapters,.actions,.utility,.progress,.notice,.no-print{display:none!important}body{background:#fff}main{max-width:none;padding:0}.entry,.report-section{break-inside:avoid-page}}
+
+/* LEIF: lichte stijl, gezamenlijke beeldtaal */
+:root{--ink:#243746;--blue:#527f94;--muted:#5f7281;--paper:#f7f4ef;--soft:#e8f0f3;--line:#d9e2e6}
+body{background:var(--paper)}header{background:rgba(247,244,239,.97)}.card{background:#fffdfc}
+.brand{display:flex;align-items:center;gap:12px;letter-spacing:.13em;color:var(--ink)}.brand>div{min-width:0}.brand>div>span{display:block;font-size:11px;letter-spacing:0;font-weight:400;color:var(--muted)}
+.brand>.leif-logo{display:grid;width:43px;height:43px;place-items:center;flex:none;background:var(--soft);color:#355d73;border:1px solid #d1e0e5;border-radius:14px}.leif-logo svg{display:block}
+@media(max-width:540px){.brand>div>span{display:none}}
 </style>
 </head>
 <body>
-<header><div class="header-inner"><div class="brand">LEIF <span>Mijn verhaal vervolgen</span></div><div id="saveStatus" class="header-status">Persoonlijk concept</div></div></header>
+<header><div class="header-inner"><div class="brand"><span class="leif-logo" aria-hidden="true"><svg viewBox="0 0 44 44" width="34" height="34" xmlns="http://www.w3.org/2000/svg" fill="none"><circle cx="22" cy="22" r="17.5" stroke="currentColor" opacity=".45"/><path d="M9 28c6-4.5 20-4.5 26 0M12 32c5-2.8 15-2.8 20 0" stroke="currentColor" opacity=".68" stroke-linecap="round" stroke-width="1.4"/><path d="M19 12.5V27h8.5" stroke="currentColor" stroke-linejoin="round" stroke-linecap="round" stroke-width="2.3"/></svg></span><div>LEIF <span>Mijn verhaal vervolgen</span></div></div><div id="saveStatus" class="header-status">Persoonlijk concept</div></div></header>
 <main>
 <section id="gate" class="login">
 <div class="eyebrow">Verder met jouw verhaal</div><h1>Je hoeft niet opnieuw te beginnen.</h1>

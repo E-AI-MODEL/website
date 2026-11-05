@@ -53,6 +53,11 @@ def check(root: Path):
     assert continuation.is_file(), 'LEIF continuation is missing from deployment'
     continuation_html = continuation.read_text(encoding='utf-8')
     assert '<title>LEIF' in continuation_html and 'leif-demo-session' in continuation_html, 'Unexpected LEIF continuation'
+    story = root / 'leif/verhaal/index.html'
+    assert story.is_file(), 'LEIF personal reader is missing from deployment'
+    story_html = story.read_text(encoding='utf-8')
+    assert '<title>LEIF' in story_html and 'id="protected-text"' in story_html, 'LEIF personal content must stay encrypted'
+    assert 'LEIF-PERSONAL-READ-V1' in story_html, 'LEIF reader must verify encrypted data'
     print(f'UI validation passed: {len(manifest["pages"])} pages, {len(manifest["assets"])} fingerprinted assets')
     return manifest
 
@@ -102,6 +107,10 @@ def verify_live(base: str, manifest: dict, timeout: int, root: Path):
             if continuation.exists():
                 expected_continuation = hashlib.sha256(continuation.read_bytes()).hexdigest()
                 assert hashlib.sha256(get('/leif/continue/')).hexdigest() == expected_continuation, 'LEIF continuation is missing or out of date'
+            story = root / 'leif/verhaal/index.html'
+            if story.exists():
+                expected_story = hashlib.sha256(story.read_bytes()).hexdigest()
+                assert hashlib.sha256(get('/leif/verhaal/')).hexdigest() == expected_story, 'LEIF personal reader is missing or out of date'
             for info in manifest['assets'].values():
                 assert hashlib.sha256(get(info['url'])).hexdigest() == info['sha256'], f'Asset mismatch: {info["url"]}'
             print(f'LIVE verified: all {len(expected_html)} prepared HTML files and all asset hashes match UI {manifest["version"]}')
