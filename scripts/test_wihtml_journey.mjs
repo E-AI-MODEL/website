@@ -88,7 +88,12 @@ try{
  await math.locator('#startImport').click();
  await math.locator('#import').setInputFiles({name:'functies.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(mathFixture))});
  await math.waitForFunction(()=>document.querySelector('#title').value==='Functies vergelijken');
- for(let i=0;i<5;i++)await math.locator('#guideNext').click();
+ for(let i=0;i<4;i++)await math.locator('#guideNext').click();
+ assert.equal(await math.locator('body').getAttribute('data-guide-kind'),'workform');
+ await math.locator('#wiGallerySearch').fill('lineair');
+ assert.equal(await math.locator('.wi-workform-card:visible').count(),1);
+ await math.locator('[data-wi-pick="mathplot"][data-wi-plot-kind="linear"]').click();
+ await math.locator('#guideNext').click();
  assert.equal(await math.locator('#designType').inputValue(),'mathplot');
  assert(await math.locator('#wiDesignPlot').isVisible());
  await math.locator('.wi-plot-edit .wi-plot-details summary').click();
