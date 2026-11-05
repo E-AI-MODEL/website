@@ -2480,7 +2480,7 @@ window.addEventListener('pagehide',()=>{
  if(document.documentElement.classList.contains('standalone')||!draftTrackingReady)return;
  try{
   const cached=JSON.parse(localStorage.getItem(WIHTML_DRAFT_KEY)||'null');
-  if($('startDialog').open&&cached?.lesson?.id!==lesson.id)return;
+  if(!hasActiveLesson&&cached?.lesson?.id!==lesson.id)return;
   save();
   const value=JSON.stringify({savedAt:Date.now(),lesson,guidePage:guideReady?guidePage:null});
   if(value.length<=900000)localStorage.setItem(WIHTML_DRAFT_KEY,value);
