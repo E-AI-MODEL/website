@@ -22,8 +22,8 @@ Bronversie waarmee deze route is opgebouwd:
 - Repository: `E-AI-MODEL/wihtml`
 - Ontwikkelbranch: `feat/lessengenerator-eai-design`
 - Bronbestand: `index.html`
-- Bronblob-SHA: `782f62f9db11c584e6eba69ea7b5cea8f567df04`
-- Git-commit voor studio-implementatie: `72b14b62c9e666197382b8c63ac84999e06c2087`
+- Bronblob-SHA: `cead1710f5d65aa062c48c76d0f6fe1fc943e456`
+- Git-commit voor studio-implementatie: `4422403675d1d9df717154fb2942bed8e7b150b4`
 
 Voor een volgende versie: controleer eerst dat de browsertests in `wihtml` geslaagd zijn. Werk daarna de bronkopie bij met een **volledige commit-SHA**:
 
@@ -43,6 +43,12 @@ De editor biedt geen server-side AI-generatie, automatische wiskundecontrole of 
 
 ## Compleet voorbeeld en generator
 
-De volledige oorspronkelijke v9-les is als eigen bestand aanwezig in `content/wihtml/verdubbelen-halveren-v9.html` en wordt byte-voor-byte gepubliceerd. De algemene generator heeft inmiddels een uitgebreide docenttoolbox. De algemene generator heeft zeven configureerbare lesonderdelen: tekst, meerkeuze, exponentieel grafiekonderzoek, stapsgewijze uitwerking, onderzoekstabel, zelfstandig oefenen met hints en oplossingen, en verklaren en vergelijken.
+De volledige oorspronkelijke v9-les is als eigen bestand aanwezig in `content/wihtml/verdubbelen-halveren-v9.html` en wordt byte-voor-byte gepubliceerd. De algemene generator heeft inmiddels een uitgebreide docenttoolbox. De algemene generator heeft negen configureerbare lesonderdelen: tekst, meerkeuze, begripsvragen in groepen, foutenanalyse, grafiekonderzoek met vier experimenten, stapsgewijze uitwerking, onderzoekstabel, zelfstandig oefenen met hulp en oplossingen, en verklaren en vergelijken.
 
 De docent kan voor de import een lesroute, vlakverdeling en docenttools kiezen. WiHTML ondersteunt ook JSON zonder dia-indeling: losse `inhoud`, `vragen` en `opgaven` worden omgezet naar lesonderdelen. Een gekozen route ordent de onderdelen zonder ze te verwijderen. Een vlakverdeling kan voor de hele les of per dia gelden; functiekeuzes worden in het zelfstandige lesbestand opgeslagen. De docent kan een nieuwe les beginnen met een eigen ID voor stemrondes. De volledige v9-voorbeeldles blijft beschikbaar voor lesinteracties die specifiek voor die les zijn gebouwd. Niet elk gespecialiseerd rekeninstrument uit v9 is één-op-één overgenomen.
+
+## Herstel van de interactieve HTML-export
+
+De vorige export liet te weinig van de oorspronkelijke Docentstudio v9 zien. De nieuwe versie heeft weer aanklikbare antwoordkaarten, drie begripsvragen op een dia, vier grafiekexperimenten, een live formule en waardentabel, herhaalde stemming en vergelijking, foutenanalyse en uitwerkingen per opgave. De presentatie heeft een eigen digibordweergave met navigatie en docenttools.
+
+De WiHTML-browsertest downloadt de HTML uit de editor, opent die opnieuw in Chromium en voert de genoemde handelingen uit. Bij de GitHub Actions-run worden ook screenshots en de gedownloade HTML bewaard. Dit test de technische functies, niet de leskwaliteit op ieder denkbaar scherm.
