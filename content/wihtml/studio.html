@@ -1373,8 +1373,18 @@ window.addEventListener('load',()=>{
  if(valid){
   $('startPending').hidden=false;
   $('startPendingText').textContent='Open het gekozen voorbeeld als eigen kopie. Je kunt daarna alle onderdelen bewerken.';
-  $('startSelectedLesson').onclick=()=>loadLibraryLesson(key,params.get('preview')==='1').catch(e=>msg('Bibliotheekles niet geopend: '+e.message));
-  if(!draftAvailable()){loadLibraryLesson(key,params.get('preview')==='1').catch(e=>{$('startDialog').showModal();msg('Bibliotheekles niet geopend: '+e.message)});return;}
+  const openExample=()=>loadLibraryLesson(key,params.get('preview')==='1').catch(e=>{
+   $('startPendingText').textContent='Het voorbeeld kon niet worden geladen: '+e.message;
+   msg('Bibliotheekles niet geopend: '+e.message);
+  });
+  $('startSelectedLesson').onclick=openExample;
+  if(!draftAvailable()){
+   $('startPendingText').textContent='Het voorbeeld wordt geopend. Je krijgt een eigen kopie.';
+   $('startSelectedLesson').disabled=true;
+   $('startDialog').showModal();
+   openExample().finally(()=>$('startSelectedLesson').disabled=false);
+   return;
+  }
  }
  $('startDialog').showModal();
  if(params.get('start')==='import')$('startImport').focus();
