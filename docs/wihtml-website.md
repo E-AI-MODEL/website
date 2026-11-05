@@ -22,7 +22,7 @@ Bronversie waarmee deze route is opgebouwd:
 - Repository: `E-AI-MODEL/wihtml`
 - Ontwikkelbranch: `feat/visual-lesson-studio`
 - Bronbestand: `index.html`
-- Bronblob-SHA: `361096ed85f7ac9e7f3f931bb28a94fcdb180e4d`
+- Bronblob-SHA: `8211ebe9264f5f00452c1612868550e9a7cebb2f`
 - Git-commit voor studio-implementatie: staat op de ontwikkelbranch; verifieer de exacte commit bij een volgende synchronisatie
 
 Voor een volgende versie: controleer eerst dat de browsertests in `wihtml` geslaagd zijn. Werk daarna de bronkopie bij met een **volledige commit-SHA**:
