@@ -36,7 +36,7 @@ test('VIS toont extra controle in hetzelfde inlogscherm',()=>{
  assert.match(beheer,/request\('refresh'/);
 });
 test('geen tweede zichtbaar inlogformulier',()=>{
- for(const html of [reading,personal,continuation,beheer])assert.match(html,/<section id="(?:gate|login)"[^>]*hidden>/);
+ for(const html of [reading,personal,continuation,beheer])assert.match(html,/<section[^>]*id="(?:gate|login)"[^>]*hidden>/);
  assert.match(personal,/else location\.replace\('\/leif\/'\)/);
  assert.match(continuation,/else location\.replace\('\/leif\/'\)/);
  assert.match(beheer,/location\.replace\('\/leif\/\?beheer=1'\)/);
