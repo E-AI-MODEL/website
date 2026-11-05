@@ -67,9 +67,55 @@ try{
  await lesson.locator('#next').click();await lesson.locator('[data-hint="1"]').click();assert.match(await lesson.locator('#slidecontent').innerText(),/Hulp bij twee/);
  for(let i=0;i<4;i++)await lesson.locator('#next').click();
  assert.equal(await lesson.locator('#graphG').inputValue(),'2.2');assert.equal(await lesson.locator('#graphB').inputValue(),'80000');assert.equal(await lesson.locator('#graphPollActions').isVisible(),false);
+ await lesson.locator('.graph-settings-panel details').first().locator('summary').click();
  await lesson.locator('#graphMarks').click();await lesson.locator('#graphLinear').click();await lesson.locator('#graphLines').click();
  assert.match(await lesson.locator('#graphResult').innerText(),/Verdubbeling/);
+ assert.equal(await lesson.locator('#deckTools').isVisible(),false);
+ await lesson.locator('#deckMenu').click();
+ assert.equal(await lesson.locator('#deckTools').isVisible(),true);
+ await lesson.locator('#deckTools').click();
+ assert.equal(await lesson.locator('#deckTools').isVisible(),false);
  await lesson.screenshot({path:join(out,'wihtml-begeleide-grafiek.png')});await lesson.close();
+ // Proef met vier functiegrafieken, parameters en zelfstandige HTML.
+ const math=await browser.newPage({viewport:{width:1440,height:900},acceptDownloads:true});
+ math.on('pageerror',e=>errors.push(e.message));math.on('dialog',d=>d.accept());
+ await math.goto(base+'/tools/wihtml/studio/');
+ const mathFixture={title:'Functies vergelijken',level:'4 vwo',route:'own',
+ slides:Object.entries({linear:[2,1,0],quadratic:[1,-4,3],exponential:[2,1.5,0],sinusoid:[2,1,0]}).map(([kind,[a,b,c]],i)=>({
+ id:'m'+i,type:'mathplot',phase:'Onderzoeken',title:'Onderzoek '+kind,prompt:'Verander de parameters',
+ student:'Bepaal de invloed van de getallen.',plotKind:kind,plotA:a,plotB:b,plotC:c,plotGrid:true,plotPoints:false
+ }))};
+ await math.locator('#startImport').click();
+ await math.locator('#import').setInputFiles({name:'functies.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(mathFixture))});
+ await math.waitForFunction(()=>document.querySelector('#title').value==='Functies vergelijken');
+ for(let i=0;i<5;i++)await math.locator('#guideNext').click();
+ assert.equal(await math.locator('#designType').inputValue(),'mathplot');
+ assert(await math.locator('#wiDesignPlot').isVisible());
+ await math.locator('.wi-plot-edit .wi-plot-details summary').click();
+ await math.locator('[data-design-plot-value="plotA"]').fill('3');
+ const mathJSON=JSON.parse(await fs.readFile(await file(math,math.locator('#save'),'wihtml-functies.json'),'utf8'));
+ assert.equal(mathJSON.slides[0].plotA,3);
+ assert.deepEqual(mathJSON.slides.map(s=>s.plotKind),['linear','quadratic','exponential','sinusoid']);
+ const mathHtml=await file(math,math.locator('#export'),'wihtml-functies-offline.html');
+ const offline=await browser.newPage({viewport:{width:1500,height:850}});
+ offline.on('pageerror',e=>errors.push(e.message));
+ await offline.route(/^https?:/,r=>r.abort());
+ await offline.goto(pathToFileURL(mathHtml).href);
+ await offline.locator('.viewer.show').waitFor();
+ assert.equal(await offline.locator('#wiMathPlot').count(),1);
+ assert.equal(await offline.locator('#deckTools').isVisible(),false);
+ await offline.locator('#wiMathPlot details summary').click();
+ await offline.locator('[data-wi-plot-range="plotB"]').evaluate(el=>{el.value='4';el.dispatchEvent(new Event('input',{bubbles:true}))});
+ assert((await offline.locator('#wiPlotFormula').innerText()).includes('4'));
+ await offline.locator('#wiPlotReset').click();
+ assert((await offline.locator('#wiPlotFormula').innerText()).includes('3x'));
+ for(const expected of ['x²','ˣ','sin(']){
+  await offline.locator('#next').click();
+  assert((await offline.locator('#wiPlotFormula').innerText()).includes(expected));
+ }
+ await offline.screenshot({path:join(out,'wihtml-functiegrafieken-offline.png')});
+ await offline.close();await math.close();
+
  await p.reload();await p.locator('#startRestore').click();
  assert.equal(await p.locator('body').getAttribute('data-guide-kind'),'result');
  await p.setViewportSize({width:390,height:844});await p.screenshot({path:join(out,'wihtml-begeleide-mobiel.png'),fullPage:true});
