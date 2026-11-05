@@ -537,17 +537,19 @@ function updateTemplateVisual(){
  const font=$("themeFont").value==='serif'?'Georgia, serif':$("themeFont").value==='round'?'Trebuchet MS, Arial, sans-serif':'system-ui, sans-serif';
  const pad=$("themeSpace").value==='roomy'?'32px':$("themeSpace").value==='compact'?'8px':'18px';
  const setDeclarations=(css,selector,declarations)=>{
-  const escaped=selector.replace('.', '\\.');
-  const rule=new RegExp('(^|})\\s*('+escaped+')\\s*\\{([^{}]*)\\}','m');
-  const match=css.match(rule);
-  if(!match)return css+'\n'+selector+' { '+Object.entries(declarations).map(([key,value])=>key+': '+value).join('; ')+'; }';
-  let body=match[3];
-  for(const [property,value] of Object.entries(declarations)){
-   const pattern=new RegExp('(^|;)\\s*'+property+'\\s*:[^;]*','i');
-   if(pattern.test(body))body=body.replace(pattern,(_,prefix)=>prefix+' '+property+': '+value);
-   else body=body.trimEnd()+(body.trimEnd().endsWith(';')?'':';')+' '+property+': '+value+';';
-  }
-  return css.slice(0,match.index)+match[1]+match[2]+' {'+body+'}'+css.slice(match.index+match[0].length);
+  let found=false;
+  const updated=css.replace(/([^{}]+)\{([^{}]*)\}/g,(whole,selectors,rawBody)=>{
+   if(!selectors.split(',').map(x=>x.trim()).includes(selector))return whole;
+   found=true;
+   let body=rawBody;
+   for(const [property,value] of Object.entries(declarations)){
+    const pattern=new RegExp('(^|;)\\s*'+property+'\\s*:[^;]*','i');
+    if(pattern.test(body))body=body.replace(pattern,(_,prefix)=>prefix+' '+property+': '+value);
+    else body=body.trimEnd()+(body.trimEnd().endsWith(';')?'':';')+' '+property+': '+value+';';
+   }
+   return selectors+'{'+body+'}';
+  });
+  return found?updated:updated+'\n'+selector+' { '+Object.entries(declarations).map(([key,value])=>key+': '+value).join('; ')+'; }';
  };
  let css=$("templateCSS").value;
  css=setDeclarations(css,'.wi-shell',{'background':bg,'color':textColor,'--accent':accent,'font-family':font,'padding':pad});
