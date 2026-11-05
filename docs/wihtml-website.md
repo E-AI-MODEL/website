@@ -1,0 +1,40 @@
+# WiHTML op eaimodel.nl
+
+WiHTML heeft een eigen GitHub-repository: https://github.com/E-AI-MODEL/wihtml
+
+De website publiceert twee routes:
+
+- `/tools/wihtml/`: introductie met uitleg voor docenten;
+- `/tools/wihtml/studio/`: de zelfstandige editor.
+
+De studio staat als gecontroleerde bronkopie in `content/wihtml/studio.html`. Tijdens de sitebuild kopieert `scripts/build_site.py` deze bron **ongewijzigd** naar de uiteindelijke website. De GitHub Action controleert de kopie en links. De editor draait volledig in de browser en verstuurt geen lesbestanden, HTML-sjablonen of stemgegevens naar GitHub.
+
+## Waarom de studio niet rechtstreeks uit GitHub laadt
+
+GitHub is geschikt voor versiebeheer, broncode, beoordeling en de bouw van een website. Het is geen opslagdienst voor klassikale antwoorden en geen uitvoerende server voor iedere bezoeker. Een lokale kopie voorkomt afhankelijkheid van GitHub tijdens de les en zorgt dat iedere docent dezelfde goedgekeurde versie gebruikt.
+
+## Bijwerken vanuit wihtml
+
+Bronversie waarmee deze route is opgebouwd:
+
+- Repository: `E-AI-MODEL/wihtml`
+- Ontwikkelbranch: `feat/lessengenerator-eai-design`
+- Bronbestand: `index.html`
+- Bronblob-SHA: `61ca6ac20090b2f8ba17d30a5656adcc58fe834f`
+- Git-commit: `9b7b8a31c9e11c553253f6a0b4047b7eb67d3144`
+
+Voor een volgende versie: controleer eerst dat de browsertests in `wihtml` geslaagd zijn. Werk daarna de bronkopie bij met een **volledige commit-SHA**:
+
+```sh
+python scripts/update_wihtml.py --commit <volledige-commit-sha> --write
+python scripts/build_site.py --sources content/legacy --out site-build
+python -m unittest discover -s tests -p test_wihtml_publish.py -v
+```
+
+Werk de commit en blob-SHA hierboven bij. Review de verschillen voordat je de websitebranch laat mergen. De publicatieworkflow zet alleen wijzigingen op `main` online.
+
+## Gegevens en toegang
+
+Er is geen account en geen externe opslag. De docent downloadt de les als JSON voor later bewerken en als HTML voor presenteren. Twee stemrondes worden lokaal in de browser opgeslagen; het betreft groepsaantallen. Bij wissen van browsergegevens of werken op een ander apparaat kunnen de aantallen verdwijnen. Laat docenten geen persoonsgegevens opnemen in sjablonen die zij publiek delen.
+
+De editor biedt geen server-side AI-generatie, automatische wiskundecontrole of gemeenschappelijke lesbibliotheek. Dat zijn afzonderlijke uitbreidingen, met extra beveiliging en opslagafspraken.
