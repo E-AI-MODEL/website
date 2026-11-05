@@ -1300,26 +1300,34 @@ const GUIDE_ROUTE_HELP={
 let wiGalleryGroup='all';
 const WI_GALLERY_META={
  text:['Uitleg, tekst of startvraag','activity'],question:['Stemmen en antwoorden later tonen','activity'],
- graph:['Groeifactor en exponentieel onderzoek','math'],steps:['Uitwerking stap voor stap tonen','activity'],
+ graph:['Groeifactor en exponentieel onderzoek','math'],mathplot:['Bewerkbare functiegrafiek','math'],steps:['Uitwerking stap voor stap tonen','activity'],
  table:['Zelf waarden onderzoeken','math'],practice:['Oefeningen met hulp en uitwerkingen','activity'],
  compare:['Twee aanpakken naast elkaar','activity'],quizset:['Meerdere korte vragen','activity'],error:['Een fout zoeken en verbeteren','activity']
 };
 function wiRenderGallery(slide){
  const root=$('wiWorkformGallery');if(!root)return;
  const needle=($('wiGallerySearch')?.value||'').toLocaleLowerCase('nl').trim();
- root.innerHTML=Object.entries(TYPES).filter(([id,label])=>{
-  const info=WI_GALLERY_META[id]||['Werkend onderdeel','math'];
-  return (wiGalleryGroup==='all'||info[1]===wiGalleryGroup)&&(!needle||(label+' '+info[0]).toLocaleLowerCase('nl').includes(needle));
- }).map(([id,label])=>{
-  const info=WI_GALLERY_META[id]||['Werkend onderdeel','math'];
-  return '<button type="button" class="wi-workform-card" data-wi-pick="'+id+'" aria-pressed="'+String(slide?.type===id)+'"><span class="wi-workform-art" data-type="'+id+'"></span><strong>'+esc(label)+'</strong><small>'+esc(info[0])+'</small></button>';
- }).join('')||'<p class="wi-guide-muted">Geen onderdelen gevonden. Probeer een andere zoekterm.</p>';
+ const choices=Object.entries(TYPES).filter(([id])=>id!=='mathplot').map(([id,label])=>{
+  const info=WI_GALLERY_META[id]||['Bewerkbaar onderdeel','activity'];
+  return {id,label,help:info[0],category:info[1],kind:''};
+ }).concat(Object.entries(WI_PLOT_PRESETS).map(([kind,p])=>({id:'mathplot',label:p.name,help:p.help,category:'math',kind})));
+ root.innerHTML=choices.filter(v=>(wiGalleryGroup==='all'||v.category===wiGalleryGroup)&&
+ (!needle||(v.label+' '+v.help).toLocaleLowerCase('nl').includes(needle)))
+ .map(v=>'<button type="button" class="wi-workform-card" data-wi-pick="'+v.id+'" data-wi-plot-kind="'+v.kind+
+ '" aria-pressed="'+String(slide?.type===v.id&&(v.id!=='mathplot'||wiPlotConfig(slide).plotKind===v.kind))+
+ '"><span class="wi-workform-art" data-type="'+v.id+'"></span><strong>'+esc(v.label)+'</strong><small>'+esc(v.help)+'</small></button>')
+ .join('')||'<p class="wi-guide-muted">Geen onderdelen gevonden. Probeer een andere zoekterm.</p>';
  document.querySelectorAll('[data-wi-gallery-filter]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.wiGalleryFilter===wiGalleryGroup)));
 }
 $('wiWorkformGallery').addEventListener('click',e=>{
  const b=e.target.closest('[data-wi-pick]');if(!b)return;
  $('guideType').value=b.dataset.wiPick;
  $('guideType').dispatchEvent(new Event('change',{bubbles:true}));
+ if(b.dataset.wiPick==='mathplot'&&b.dataset.wiPlotKind){
+  const slide=lesson.slides[selected],kind=b.dataset.wiPlotKind,defaultValues=WI_PLOT_PRESETS[kind];
+  Object.assign(slide,{plotKind:kind,plotA:defaultValues.a,plotB:defaultValues.b,plotC:defaultValues.c,plotGrid:true,plotPoints:false});
+  renderEditor();scheduleDraftSave();
+ }
 });
 document.querySelectorAll('[data-wi-gallery-filter]').forEach(b=>b.addEventListener('click',()=>{
  wiGalleryGroup=b.dataset.wiGalleryFilter;wiRenderGallery(lesson.slides[selected]);
@@ -1699,6 +1707,7 @@ function designBody(s){
  if(s.type==='error'){
   return '<div class="design-row-grid"><div class="design-object"><div class="design-object-title">Leerlingaanpak</div>'+designEdit('wrong',s.wrong,'De foutieve uitwerking','design-object-main','Schrijf hier de foutieve berekening')+'</div><div class="design-object"><div class="design-object-title">Verklaring</div>'+designEdit('challenge',s.challenge,'Opdracht bij de fout','design-content','Wat moeten leerlingen verbeteren?')+'</div></div><div class="design-object"><div class="design-object-title">Later onthullen</div>'+designEdit('correction',s.correction,'Juiste aanpak','design-content','Juiste berekening en uitleg')+'</div>';
  }
+ if(s.type==='mathplot')return wiPlotEditor(s);
  if(s.type==='graph'){
   return '<div class="design-hint">Deze grafiek reageert in de presentatie op de schuifregelaars. Hier stel je de beginwaarden in.</div>'+designGraphSVG(s)+'<div class="design-graph-values">'+[['g','Groeifactor',s.g||1.05],['b','Beginwaarde',s.b||1000],['target','Doelfactor',s.target||2]].map(([key,label,val])=>'<label>'+label+'<input type="number" data-design-number="'+key+'" step="any" min=".001" value="'+esc(val)+'"></label>').join('')+'</div>'+designExperiments(s)+designEdit('graphExplanation',s.graphExplanation,'Uitleg bij grafiek','design-content','Welke verklaring wil je later tonen?');
  }
@@ -1765,7 +1774,7 @@ function renderDesigner(){
  $('designCanvas').dataset.designLayout=effective;
  applyDesignerTheme();
  $('designCanvas').innerHTML='<div class="design-columns">'+intro+body+'</div><div class="design-footer">'+esc(lesson.level||'Wiskunde')+' · '+esc(lesson.title||'Nieuwe les')+' · dia '+(selected+1)+' van '+lesson.slides.length+'</div>';
- $('designHint').textContent=s.type==='graph'?'Stel de getallen in. Test de interactie met Bekijk deze dia.':s.type==='practice'?'Klik op een opgave. Hulp en uitwerking kun je afzonderlijk bewerken.':'Klik op tekst of een onderdeel om het aan te passen.';
+ $('designHint').textContent=s.type==='mathplot'?'Open Grafiek aanpassen voor de waarden; test de schuifregelaars in de presentatie.':s.type==='graph'?'Stel de getallen in. Test de interactie met Bekijk deze dia.':s.type==='practice'?'Klik op een opgave. Hulp en uitwerking kun je afzonderlijk bewerken.':'Klik op tekst of een onderdeel om het aan te passen.';
  $('designSaved').textContent='Direct bewerken';
 }
 function initDesignType(type){
@@ -1777,6 +1786,7 @@ function initDesignType(type){
  if(type==='practice'){s.tasks=s.tasks?.length?s.tasks:['Beschrijf de opgave'];s.hints=s.hints||[];s.solutions=s.solutions||[]}
  if(type==='quizset')s.questions=s.questions?.length?s.questions:[{prompt:'Welke keuze maak je?',options:['A','B','C','D'],correct:-1,explanation:''}];
  if(type==='graph'){s.g=Number(s.g)>0&&s.g!==1?Number(s.g):1.05;s.b=Number(s.b)>0?Number(s.b):1000;s.target=Number(s.target)>0?Number(s.target):2}
+ if(type==='mathplot')Object.assign(s,wiPlotConfig(s));
  if(type==='error'){s.wrong=s.wrong||'0,15^t = 0,5';s.challenge=s.challenge||'Wat is hier fout gegaan?';s.correction=s.correction||''}
 }
 function initDesignControls(){
@@ -1784,6 +1794,14 @@ function initDesignControls(){
  canvas.addEventListener('input',e=>{
   const el=e.target,s=lesson.slides[selected];if(!s)return;
   const value=el.innerText??el.textContent??'';
+  if(el.dataset.designPlotValue){
+   const p=wiPlotConfig(s),key=el.dataset.designPlotValue,value=Number(el.value);p[key]=value;
+   if(!el.value||!wiPlotValid(p)){el.setCustomValidity('Controleer deze waarde. De groeifactor bij exponentieel moet tussen 0,1 en 5 liggen.');el.reportValidity();return;}
+   el.setCustomValidity('');s[key]=value;
+   const chart=$('wiDesignPlot');if(chart)chart.innerHTML=wiPlotSVG(wiPlotConfig(s));
+   const formula=$('wiDesignPlotFormula');if(formula)formula.textContent=wiPlotFormula(wiPlotConfig(s));
+   designChanged();return;
+  }
   if(el.dataset.experiment!==undefined){
    const key=el.dataset.experimentField,index=Number(el.dataset.experiment);
    const number=['g','b','target'].includes(key),val=number?Number(el.value):el.value;
@@ -1813,7 +1831,17 @@ function initDesignControls(){
    designChanged();
   }
  });
- canvas.addEventListener('change',e=>{if(e.target.matches('[data-design-later]')){lesson.slides[selected].later=e.target.checked;if($('f-later'))$('f-later').checked=e.target.checked;designChanged()}});
+ canvas.addEventListener('change',e=>{
+  const el=e.target,s=lesson.slides[selected];
+  if(el.dataset.designPlotKind&&s?.type==='mathplot'){
+   const d=WI_PLOT_PRESETS[el.value];if(!d)return;
+   Object.assign(s,{plotKind:el.value,plotA:d.a,plotB:d.b,plotC:d.c});renderDesigner();designChanged();return;
+  }
+  if(el.dataset.designPlotFlag&&s?.type==='mathplot'){
+   s[el.dataset.designPlotFlag]=el.checked;
+   const chart=$('wiDesignPlot');if(chart)chart.innerHTML=wiPlotSVG(wiPlotConfig(s));designChanged();return;
+  }
+  if(e.target.matches('[data-design-later]')){lesson.slides[selected].later=e.target.checked;if($('f-later'))$('f-later').checked=e.target.checked;designChanged()}});
  canvas.addEventListener('click',e=>{
   const btn=e.target.closest('button[data-design-action]');if(!btn)return;
   const s=lesson.slides[selected],a=btn.dataset.designAction,i=Number(btn.dataset.index);
@@ -1901,6 +1929,7 @@ function renderEditor(){
  :s.type==="practice"?field("tasks","Opgaven, één per regel",(s.tasks||["Bereken de verdubbelingstijd."]).join("\n"),true)+field("hints","Hulp per opgave, één per regel",(s.hints||[]).join("\n"),true)+field("solutions","Uitwerkingen per opgave, één per regel",(s.solutions||[]).join("\n"),true)
  :s.type==="compare"?field("compareLabels","Namen van twee kolommen (|)",(s.compareLabels||["Eerst","Na onderzoek"]).join(" | "))+field("compareItems","Vergelijkingen, links | rechts, per regel",(s.compareItems||[["Voorspelling","Nieuwe verklaring"]]).map(x=>x.join(" | ")).join("\n"),true)+field("compareConclusion","Conclusie, pas onthullen",s.compareConclusion||"",true)
  :s.type==="quizset"?field("quizLines","Per regel: vraag | A | B | C | D | juiste letter | uitleg",quizLines(s.questions),true)
+ :s.type==="mathplot"?'<p class="hint">Klik op de dia en open Grafiek aanpassen. Hier staan je grafiekparameters.</p>'
  :s.type==="error"?field("wrong","Foutieve redenering of formule",s.wrong||"",true)+field("challenge","Wat moeten leerlingen verklaren?",s.challenge||"",true)+field("correction","Juiste uitwerking, pas na keuze",s.correction||"",true)
  :field("g","Groeifactor",s.g)+field("b","Beginwaarde",s.b)+field("target","Doelfactor (2 voor verdubbelen; 0,5 voor halveren)",s.target??(Number(s.g)<1?.5:2))+field("graphExplanation","Uitleg na onderzoek",s.graphExplanation||"",true)+field("experiments","Eigen experimenten (optioneel): naam | onderzoeksvraag | groeifactor | beginwaarde | doelfactor | instructie",(s.experiments||[]).map(x=>[x.label,x.question,x.g,x.b,x.target,x.instruction||""].join(" | ")).join("\n"),true));
  $("f-layout").value=LAYOUTS.has(s.layout)?s.layout:"inherit";
@@ -1922,6 +1951,7 @@ function review(){
   if(s.type==="table"&&!s.tableRows?.length)notes.push("Lesdeel "+(i+1)+": voeg tabelrijen toe.");
   if(s.type==="practice"&&!s.tasks?.length)notes.push("Lesdeel "+(i+1)+": voeg opgaven toe.");
   if(s.type==="compare"&&!s.compareItems?.length)notes.push("Lesdeel "+(i+1)+": voeg vergelijkingen toe.");
+  if(s.type==="mathplot"&&!wiPlotValid(wiPlotConfig(s)))notes.push('Lesdeel '+(i+1)+': controleer de grafiekparameters.');
   if(s.type==="graph"&&(s.g<=0||s.g===1||s.target<=0))notes.push("Lesdeel "+(i+1)+": controleer groeifactor en doelwaarde.");
   if(s.type==="graph"&&s.experiments?.some(x=>!Number.isFinite(x.g)||x.g<=0||x.g===1||!Number.isFinite(x.b)||x.b<=0||!Number.isFinite(x.target)||x.target<=0))notes.push("Lesdeel "+(i+1)+": controleer de getallen in de eigen experimenten.");
   if(s.type==="quizset"&&(!s.questions?.length||s.questions.some(q=>q.options?.length<2||q.options?.length>4)))notes.push("Lesdeel "+(i+1)+": controleer de begripsvragen en antwoorden.");
@@ -2112,6 +2142,13 @@ function normalizeLessonJSON(input){
   }
   if(type==="error"){item.wrong=asText(first(b,["wrong","fout","foutieveUitwerking"],""));item.challenge=asText(first(b,["challenge","opdracht","vraag"],item.prompt));item.correction=asText(first(b,["correction","verbetering","uitleg"],""))}
   if(type==="steps")item.steps=asList(first(b,["steps","stappen"],[]));
+  if(type==="mathplot"){
+   const kind=asText(first(b,["plotKind","grafiektype"],"linear")),d=WI_PLOT_PRESETS[kind];
+   if(!d)throw Error("Lesdeel "+(index+1)+": onbekend grafiektype.");
+   const p={plotKind:kind,plotA:Number(first(b,["plotA","a"],d.a)),plotB:Number(first(b,["plotB","b"],d.b)),plotC:Number(first(b,["plotC","c"],d.c)),plotGrid:first(b,["plotGrid"],true)!==false,plotPoints:first(b,["plotPoints"],false)===true};
+   if(!wiPlotValid(p))throw Error("Lesdeel "+(index+1)+": ongeldige grafiekparameters.");
+   Object.assign(item,p);
+  }
   if(type==="graph"){
    const g=Number(first(b,["g","groeifactor"],NaN)),base=Number(first(b,["b","beginwaarde"],NaN));
    if(!Number.isFinite(g)||g<=0||g===1||!Number.isFinite(base)||base<=0)throw Error("Lesdeel "+(index+1)+": grafiek heeft een positieve beginwaarde en groeifactor anders dan 1 nodig.");
@@ -2316,6 +2353,7 @@ function mistakeView(s){
  return '<div class="mistake-grid"><section class="mistake-panel"><div class="eyebrow">Een leerling schrijft</div><p class="mistake-math">'+esc(s.wrong||"")+'</p><p class="mistake-question">'+esc(s.challenge||"Waar gaat dit mis?")+'</p></section><section class="mistake-panel feedback-panel"><div class="eyebrow">Wat zou jij verbeteren?</div><p>Zoek eerst zelf de fout. Schrijf de juiste aanpak op en bespreek je verklaring.</p><button id="errorReveal" type="button" class="small">'+(errorCorrectionVisible?"Verberg uitwerking":"Controleer de uitwerking")+'</button>'+(errorCorrectionVisible?'<p class="mistake-answer">'+esc(s.correction||"")+'</p>':"")+'</section></div>';
 }
 function bindLessonComponents(s){
+ if(s.type==="mathplot")wiBindPlot(s);
  if(s.type==="question"){
   $("slidecontent").querySelectorAll("[data-answer-index]").forEach(btn=>btn.onclick=()=>{
    questionChoices[s.id]=Number(btn.dataset.answerIndex);renderSlide();
@@ -2367,7 +2405,8 @@ function renderSlide(){
  (s.type==="compare"?compareView(s):"")+
  (s.type==="quizset"?quizGroupView(s):"")+
  (s.type==="error"?mistakeView(s):"")+
- (s.type==="graph"?'<div class="graph-tabs" id="graphTabs" role="tablist" aria-label="Kies een onderzoek"></div><div class="graph-question"><div class="graph-question-label" id="graphScenarioTitle"></div><p id="graphScenarioQuestion"></p><small id="graphScenarioPrompt"></small></div><div class="graph-lab"><div class="graph-plot-panel"><div class="graph-legend"><span>● Exponentieel</span><span id="graphLinearLegend" hidden>━ Lineair</span></div><svg id="plot" class="graph" viewBox="0 0 820 285" role="img" aria-label="Interactieve grafiek met meetpunten"></svg><div class="graph-action-row"><button id="graphMarks" class="small" aria-pressed="false">Toon meetpunten</button><button id="graphLinear" class="small" aria-pressed="false">Vergelijk met lineair</button><button id="graphLines" class="small" aria-pressed="false">Toon verdubbelings- of halveringstijd</button></div><div id="graphResult" class="graph-result" aria-live="polite"></div></div><div class="graph-settings-panel"><div id="graphControls" class="graph-controls"><div class="ctrl-unit"><label for="graphG">Groeifactor <output id="graphGOut"></output></label><input id="graphG" type="range" min="0.70" max="1.40" step="0.001"></div><div class="ctrl-unit"><label for="graphB">Beginwaarde <output id="graphBOut"></output></label><input id="graphB" type="range" min="250" max="5000" step="50"></div><div class="graph-formula" id="graphFormula"></div><button id="graphReset" class="small">Herstel dit experiment</button></div><div class="graph-values-wrap"><table class="graph-values"><thead><tr><th>Tijd</th><th>Hoeveelheid</th></tr></thead><tbody id="graphValues"></tbody></table><p id="graphSelected" aria-live="polite"></p></div></div></div><div class="graph-polls" id="graphPollActions"><button id="graphPollFirst" class="small">Eerste stemming</button><button id="graphPollSecond" class="small">Stem opnieuw</button><button id="graphPollCompare" class="small">Vergelijk de stemrondes</button></div>':"")+
+ (s.type==="mathplot"?wiPlotView(s):"")+
+ (s.type==="graph"?'<div class="graph-tabs" id="graphTabs" role="tablist" aria-label="Kies een onderzoek"></div><div class="graph-question"><div class="graph-question-label" id="graphScenarioTitle"></div><p id="graphScenarioQuestion"></p><small id="graphScenarioPrompt"></small></div><div class="graph-lab"><div class="graph-plot-panel"><div class="graph-legend"><span>● Exponentieel</span><span id="graphLinearLegend" hidden>━ Lineair</span></div><svg id="plot" class="graph" viewBox="0 0 820 285" role="img" aria-label="Interactieve grafiek met meetpunten"></svg><div class="graph-action-row"><button id="graphMarks" class="small" aria-pressed="false">Toon meetpunten</button><button id="graphLinear" class="small" aria-pressed="false">Vergelijk met lineair</button><button id="graphLines" class="small" aria-pressed="false">Toon verdubbelings- of halveringstijd</button></div><div id="graphResult" class="graph-result" aria-live="polite"></div></div><div class="graph-settings-panel"><details class="wi-plot-details"><summary>Parameters instellen</summary><div id="graphControls" class="graph-controls"><div class="ctrl-unit"><label for="graphG">Groeifactor <output id="graphGOut"></output></label><input id="graphG" type="range" min="0.70" max="1.40" step="0.001"></div><div class="ctrl-unit"><label for="graphB">Beginwaarde <output id="graphBOut"></output></label><input id="graphB" type="range" min="250" max="5000" step="50"></div><div class="graph-formula" id="graphFormula"></div><button id="graphReset" class="small">Herstel dit experiment</button></div></details><details class="wi-plot-details"><summary>Meetwaarden bekijken</summary><div class="graph-values-wrap"><table class="graph-values"><thead><tr><th>Tijd</th><th>Hoeveelheid</th></tr></thead><tbody id="graphValues"></tbody></table><p id="graphSelected" aria-live="polite"></p></div></details></div></div><div class="graph-polls" id="graphPollActions"><button id="graphPollFirst" class="small">Eerste stemming</button><button id="graphPollSecond" class="small">Stem opnieuw</button><button id="graphPollCompare" class="small">Vergelijk de stemrondes</button></div>':"")+
  (s.type==="question"&&revealed&&!s.later?'<div class="reveal">'+esc(s.explanation||"")+'</div>':"")+
  (s.type==="graph"&&revealed?'<div class="reveal">'+esc(s.graphExplanation||"Bespreek wat de grafiek laat zien.")+'</div>':"");
  arrangeSlide(s);
@@ -2456,7 +2495,7 @@ function graphRender(){
 }
 
 function openStage(){
- applyTemplate();$("deckExtra").classList.remove("wi-open");$("deckMenu").setAttribute("aria-expanded","false");$("deckMenu").textContent="Menu ▾";stage.classList.add("show");stage.setAttribute("aria-hidden","false");loadRounds();renderSlide();
+ wiPlotRuntime={};applyTemplate();$("deckExtra").classList.remove("wi-open");$("deckMenu").setAttribute("aria-expanded","false");$("deckMenu").textContent="Menu ▾";stage.classList.add("show");stage.setAttribute("aria-hidden","false");loadRounds();renderSlide();
 }
 function closeStage(){$("deckExtra").classList.remove("wi-open");$("deckMenu").setAttribute("aria-expanded","false");stage.classList.remove("show");stage.setAttribute("aria-hidden","true");closeTools();stopTimer();stopStopwatch();$("spotlightOverlay")?.remove();$("curtainOverlay")?.remove();$("blackMask")?.remove();$("whiteMask")?.remove();black=false;if(presenterInterval){clearInterval(presenterInterval);presenterInterval=null}}
 $("preview").onclick=()=>{save();current=0;revealed=false;stepsVisible=0;tableRevealed=0;compareRevealed=0;practiceState={};quizSelections={};quizAnswersVisible=false;errorCorrectionVisible=false;graphHelp=false;graphLinear=false;graphMarks=false;graphSelectedTime=null;graphMode=0;graphActivePreset=null;openStage()};
