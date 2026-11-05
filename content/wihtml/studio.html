@@ -5,7 +5,7 @@
 <title>WiHTML | Wiskundelessen maken</title>
 <style>
 :root{--paper:#f7f7f4;--white:#fff;--ink:#202826;--muted:#5e6b65;--line:#dce2dc;--accent:#17695e;--subtle:#eaf2ee;--warm:#c96746;--shadow:0 16px 48px rgba(24,38,31,.08)}
-*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}button,input,textarea,select{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--accent);outline-offset:3px}button{border:1px solid var(--line);border-radius:9px;padding:10px 13px;background:#fff;color:var(--ink)}button:hover{border-color:var(--accent)}button.primary{background:var(--ink);border-color:var(--ink);color:#fff}button.quiet{border:0;background:transparent}button.small{padding:5px 9px;font-size:13px}button:disabled{opacity:.35;cursor:default}header{background:var(--white);border-bottom:1px solid var(--line)}.top{max-width:1540px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:18px;padding:19px 36px}.brand{display:flex;align-items:center;gap:12px}.mark{display:grid;place-items:center;width:37px;height:37px;background:var(--ink);color:#fff;font-family:Georgia,serif;font-weight:700;font-size:23px;border-radius:7px}.brandname{font-size:20px;font-weight:750;letter-spacing:-.035em}.byline{font-size:12px;color:var(--muted);letter-spacing:.015em}.actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.layout{max-width:1540px;min-height:calc(100vh - 82px);padding:35px 36px;display:grid;grid-template-columns:260px minmax(460px,1fr) 270px;gap:38px;margin:auto}.eyebrow{font-size:11px;font-weight:760;letter-spacing:.15em;text-transform:uppercase;color:var(--accent)}h1{font-family:Georgia,serif;font-weight:400;font-size:clamp(29px,3vw,43px);letter-spacing:-.042em;line-height:1.12;margin:10px 0 17px}h2{font-family:Georgia,serif;font-size:25px;font-weight:400;line-height:1.2;margin:7px 0 16px}p{margin:0 0 17px}.hint{font-size:13px;color:var(--muted)}.rail{border-right:1px solid var(--line);padding-right:20px}.side{border-left:1px solid var(--line);padding-left:22px}.rail-head{display:flex;align-items:center;justify-content:space-between;padding-bottom:16px;border-bottom:1px solid var(--line);margin-bottom:10px}.slide-list{display:grid;gap:2px}.slide-item{width:100%;display:grid;grid-template-columns:26px 1fr;gap:8px;text-align:left;border:0;background:transparent;padding:11px 9px;border-radius:7px;align-items:start}.slide-item.active{background:var(--subtle);color:#164d44}.slide-item .num{color:var(--muted);font-size:12px;font-variant-numeric:tabular-nums;padding-top:3px}.slide-item strong{font-size:13px;font-weight:700;line-height:1.35}.slide-item em{display:block;font-style:normal;font-size:11px;color:var(--muted);margin-top:4px}.rail-bottom{margin-top:19px;border-top:1px solid var(--line);padding-top:17px}.editor{min-width:0}.lede{max-width:650px;color:var(--muted);font-size:15px}.field{margin:19px 0}.field label{display:block;font-size:13px;font-weight:700;margin-bottom:7px}.field input,.field select,.field textarea{width:100%;border:1px solid #cdd6cf;border-radius:8px;background:#fff;color:var(--ink);padding:11px 13px;min-height:44px}.field textarea{resize:vertical;min-height:90px}.field input:focus,.field textarea:focus{border-color:var(--accent)}.editor-block{background:#fff;border:1px solid var(--line);border-radius:12px;padding:25px 27px;box-shadow:0 2px 14px #23372e06}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}.section-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:27px 0 9px;border-top:1px solid var(--line);padding-top:22px}.section-head strong{font-size:14px}.mini-actions{display:flex;gap:7px}.side .note{padding:17px 0;border-bottom:1px solid var(--line);font-size:13px;color:var(--muted)}.side .note strong{display:block;color:var(--ink);font-size:14px;margin-bottom:6px}.review-item{padding:11px 0;border-bottom:1px solid var(--line);font-size:13px}.review-item::before{content:"·";color:var(--accent);margin-right:7px;font-weight:900}.review-item.warn::before{content:"!";color:#a35b3d}.status{font-size:12px;color:var(--accent);margin-top:10px;min-height:20px}footer{padding:22px 36px;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}.viewer{position:fixed;inset:0;background:#101715;display:none;z-index:100;align-items:center;justify-content:center;padding:32px}.viewer.show{display:flex}.slide{width:min(1280px,calc((100vh - 80px)*16/9),calc(100vw - 70px));aspect-ratio:16/9;background:#fff;border-radius:5px;position:relative;padding:clamp(20px,5.5vw,86px);display:flex;flex-direction:column;overflow:hidden}.slide h2{font-size:clamp(30px,4.3vw,68px);margin:8px 0 24px;max-width:1040px}.slide p{font-size:clamp(17px,1.85vw,29px);max-width:950px}.slide .eyebrow{font-size:clamp(10px,1vw,15px)}.choices{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:13px}.choice{border:1px solid #d2dbd6;border-radius:8px;padding:15px 18px;font-size:clamp(15px,1.4vw,23px);display:flex;gap:16px;align-items:center}.choice b{background:var(--ink);color:#fff;min-width:38px;height:38px;display:grid;place-items:center;border-radius:6px}.slide-footer{margin-top:auto;color:#67736c;font-size:13px}.viewer-nav{position:fixed;bottom:13px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:12px;background:#fff;border-radius:14px;padding:7px 10px;box-shadow:var(--shadow);z-index:102}.viewer-nav span{font-size:12px;min-width:48px;text-align:center}.viewer-nav button{padding:5px 10px}.floating{position:fixed;right:19px;bottom:17px;z-index:104}.toolpop{position:absolute;bottom:52px;right:0;display:none;flex-direction:column;gap:7px;padding:9px;width:165px;background:#fff;border-radius:12px;box-shadow:var(--shadow)}.toolpop.show{display:flex}.toolpop button{text-align:left}.toolpop .danger{color:#a44b3c}.vote{position:absolute;right:20px;top:20px;background:#fff;padding:15px;box-shadow:var(--shadow);border:1px solid var(--line);border-radius:10px;z-index:103;width:210px}.vote strong{display:block;margin-bottom:10px}.vote-row{display:flex;align-items:center;gap:9px;margin:6px 0}.vote-row button{padding:4px 9px}.vote-row span{margin-left:auto;font-variant-numeric:tabular-nums}.draw{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:101}.draw.armed{pointer-events:auto;cursor:crosshair}.reveal{padding:15px 20px;background:var(--subtle);border-left:4px solid var(--accent);margin-top:20px;font-size:clamp(15px,1.35vw,21px)}.graph{width:100%;max-height:45%;flex:1}.data-table{display:flex;gap:12px;flex-wrap:wrap}.data-table span{padding:10px 14px;background:var(--subtle);border-radius:5px}.hide{display:none!important}@media(max-width:1140px){.layout{grid-template-columns:210px minmax(0,1fr);gap:24px}.side{grid-column:2;border-left:0;border-top:1px solid var(--line);padding:23px 0 0}}@media(max-width:700px){.top{padding:13px 16px;align-items:flex-start;flex-direction:column}.layout{display:block;padding:20px 16px}.rail{border-right:0;border-bottom:1px solid var(--line);padding:0 0 17px}.slide-list{max-height:200px;overflow:auto}.editor{margin-top:22px}.editor-block{padding:18px}.form-grid{grid-template-columns:1fr}.side{padding:20px 0 0}.slide{width:calc(100vw - 16px);padding:24px}.viewer{padding:8px}.viewer-nav{bottom:7px}.slide h2{font-size:clamp(20px,4vw,36px)}.slide p{font-size:clamp(13px,2vw,18px)}.choice{padding:6px 8px;font-size:12px}.choice b{min-width:21px;height:21px}.floating{right:9px;bottom:8px}}
+[hidden]{display:none!important}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}button,input,textarea,select{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--accent);outline-offset:3px}button{border:1px solid var(--line);border-radius:9px;padding:10px 13px;background:#fff;color:var(--ink)}button:hover{border-color:var(--accent)}button.primary{background:var(--ink);border-color:var(--ink);color:#fff}button.quiet{border:0;background:transparent}button.small{padding:5px 9px;font-size:13px}button:disabled{opacity:.35;cursor:default}header{background:var(--white);border-bottom:1px solid var(--line)}.top{max-width:1540px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:18px;padding:19px 36px}.brand{display:flex;align-items:center;gap:12px}.mark{display:grid;place-items:center;width:37px;height:37px;background:var(--ink);color:#fff;font-family:Georgia,serif;font-weight:700;font-size:23px;border-radius:7px}.brandname{font-size:20px;font-weight:750;letter-spacing:-.035em}.byline{font-size:12px;color:var(--muted);letter-spacing:.015em}.actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.layout{max-width:1540px;min-height:calc(100vh - 82px);padding:35px 36px;display:grid;grid-template-columns:260px minmax(460px,1fr) 270px;gap:38px;margin:auto}.eyebrow{font-size:11px;font-weight:760;letter-spacing:.15em;text-transform:uppercase;color:var(--accent)}h1{font-family:Georgia,serif;font-weight:400;font-size:clamp(29px,3vw,43px);letter-spacing:-.042em;line-height:1.12;margin:10px 0 17px}h2{font-family:Georgia,serif;font-size:25px;font-weight:400;line-height:1.2;margin:7px 0 16px}p{margin:0 0 17px}.hint{font-size:13px;color:var(--muted)}.rail{border-right:1px solid var(--line);padding-right:20px}.side{border-left:1px solid var(--line);padding-left:22px}.rail-head{display:flex;align-items:center;justify-content:space-between;padding-bottom:16px;border-bottom:1px solid var(--line);margin-bottom:10px}.slide-list{display:grid;gap:2px}.slide-item{width:100%;display:grid;grid-template-columns:26px 1fr;gap:8px;text-align:left;border:0;background:transparent;padding:11px 9px;border-radius:7px;align-items:start}.slide-item.active{background:var(--subtle);color:#164d44}.slide-item .num{color:var(--muted);font-size:12px;font-variant-numeric:tabular-nums;padding-top:3px}.slide-item strong{font-size:13px;font-weight:700;line-height:1.35}.slide-item em{display:block;font-style:normal;font-size:11px;color:var(--muted);margin-top:4px}.rail-bottom{margin-top:19px;border-top:1px solid var(--line);padding-top:17px}.editor{min-width:0}.lede{max-width:650px;color:var(--muted);font-size:15px}.field{margin:19px 0}.field label{display:block;font-size:13px;font-weight:700;margin-bottom:7px}.field input,.field select,.field textarea{width:100%;border:1px solid #cdd6cf;border-radius:8px;background:#fff;color:var(--ink);padding:11px 13px;min-height:44px}.field textarea{resize:vertical;min-height:90px}.field input:focus,.field textarea:focus{border-color:var(--accent)}.editor-block{background:#fff;border:1px solid var(--line);border-radius:12px;padding:25px 27px;box-shadow:0 2px 14px #23372e06}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}.section-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:27px 0 9px;border-top:1px solid var(--line);padding-top:22px}.section-head strong{font-size:14px}.mini-actions{display:flex;gap:7px}.side .note{padding:17px 0;border-bottom:1px solid var(--line);font-size:13px;color:var(--muted)}.side .note strong{display:block;color:var(--ink);font-size:14px;margin-bottom:6px}.review-item{padding:11px 0;border-bottom:1px solid var(--line);font-size:13px}.review-item::before{content:"·";color:var(--accent);margin-right:7px;font-weight:900}.review-item.warn::before{content:"!";color:#a35b3d}.status{font-size:12px;color:var(--accent);margin-top:10px;min-height:20px}footer{padding:22px 36px;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}.viewer{position:fixed;inset:0;background:#101715;display:none;z-index:100;align-items:center;justify-content:center;padding:32px}.viewer.show{display:flex}.slide{width:min(1280px,calc((100vh - 80px)*16/9),calc(100vw - 70px));aspect-ratio:16/9;background:#fff;border-radius:5px;position:relative;padding:clamp(20px,5.5vw,86px);display:flex;flex-direction:column;overflow:hidden}.slide h2{font-size:clamp(30px,4.3vw,68px);margin:8px 0 24px;max-width:1040px}.slide p{font-size:clamp(17px,1.85vw,29px);max-width:950px}.slide .eyebrow{font-size:clamp(10px,1vw,15px)}.choices{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:13px}.choice{border:1px solid #d2dbd6;border-radius:8px;padding:15px 18px;font-size:clamp(15px,1.4vw,23px);display:flex;gap:16px;align-items:center}.choice b{background:var(--ink);color:#fff;min-width:38px;height:38px;display:grid;place-items:center;border-radius:6px}.slide-footer{margin-top:auto;color:#67736c;font-size:13px}.viewer-nav{position:fixed;bottom:13px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:12px;background:#fff;border-radius:14px;padding:7px 10px;box-shadow:var(--shadow);z-index:102}.viewer-nav span{font-size:12px;min-width:48px;text-align:center}.viewer-nav button{padding:5px 10px}.floating{position:fixed;right:19px;bottom:17px;z-index:104}.toolpop{position:absolute;bottom:52px;right:0;display:none;flex-direction:column;gap:7px;padding:9px;width:165px;background:#fff;border-radius:12px;box-shadow:var(--shadow)}.toolpop.show{display:flex}.toolpop button{text-align:left}.toolpop .danger{color:#a44b3c}.vote{position:absolute;right:20px;top:20px;background:#fff;padding:15px;box-shadow:var(--shadow);border:1px solid var(--line);border-radius:10px;z-index:103;width:210px}.vote strong{display:block;margin-bottom:10px}.vote-row{display:flex;align-items:center;gap:9px;margin:6px 0}.vote-row button{padding:4px 9px}.vote-row span{margin-left:auto;font-variant-numeric:tabular-nums}.draw{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:101}.draw.armed{pointer-events:auto;cursor:crosshair}.reveal{padding:15px 20px;background:var(--subtle);border-left:4px solid var(--accent);margin-top:20px;font-size:clamp(15px,1.35vw,21px)}.graph{width:100%;max-height:45%;flex:1}.data-table{display:flex;gap:12px;flex-wrap:wrap}.data-table span{padding:10px 14px;background:var(--subtle);border-radius:5px}.hide{display:none!important}@media(max-width:1140px){.layout{grid-template-columns:210px minmax(0,1fr);gap:24px}.side{grid-column:2;border-left:0;border-top:1px solid var(--line);padding:23px 0 0}}@media(max-width:700px){.top{padding:13px 16px;align-items:flex-start;flex-direction:column}.layout{display:block;padding:20px 16px}.rail{border-right:0;border-bottom:1px solid var(--line);padding:0 0 17px}.slide-list{max-height:200px;overflow:auto}.editor{margin-top:22px}.editor-block{padding:18px}.form-grid{grid-template-columns:1fr}.side{padding:20px 0 0}.slide{width:calc(100vw - 16px);padding:24px}.viewer{padding:8px}.viewer-nav{bottom:7px}.slide h2{font-size:clamp(20px,4vw,36px)}.slide p{font-size:clamp(13px,2vw,18px)}.choice{padding:6px 8px;font-size:12px}.choice b{min-width:21px;height:21px}.floating{right:9px;bottom:8px}}
 
 /* De editor blijft stil; de leerlingweergave heeft eigen verhoudingen. */
 .layout{gap:34px}.editor-block{box-shadow:none}.rail{position:sticky;top:22px;align-self:start;max-height:90vh;overflow:auto}
@@ -325,7 +325,7 @@
 .slide-item.dragging{opacity:.45}
 .slide-item.drop-target{box-shadow:inset 0 -3px 0 #147d70}
 @media(max-width:1100px){.layout{grid-template-columns:190px minmax(0,1fr);gap:17px;padding:18px}.side{grid-template-columns:1fr}.side #review{grid-column:1;grid-row:auto}}
-@media(max-width:760px){.layout{display:block;padding:12px 14px}.rail{position:static;max-height:none;padding:0;border-right:0;border-bottom:1px solid var(--line)}.rail .slide-list{display:flex;gap:8px;overflow-x:auto;max-height:none}.rail .slide-item{min-width:180px}.rail-bottom{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0}.rail-import{flex:1}.editor{margin-top:16px}.design-heading{align-items:start}.design-heading p{display:none}.design-toolbar{gap:7px}.design-type-control{min-width:150px}.design-layout-group{order:3;width:100%;justify-content:space-between}.design-layout-group button{flex:1}.design-viewport{padding:7px}.design-paper{min-height:300px;padding:16px}.design-paper .design-title{font-size:clamp(20px,4vw,29px)}.design-paper .design-prompt{font-size:13px}.design-paper[data-design-layout="equal"] .design-columns,.design-paper[data-design-layout="left"] .design-columns,.design-paper[data-design-layout="right"] .design-columns{grid-template-columns:1fr}.design-options{grid-template-columns:1fr}.side{display:block;padding:10px 0}.side #review{display:block}}
+@media(max-width:760px){.design-paper{aspect-ratio:auto;overflow:visible}.layout{display:block;padding:12px 14px}.rail{position:static;max-height:none;padding:0;border-right:0;border-bottom:1px solid var(--line)}.rail .slide-list{display:flex;gap:8px;overflow-x:auto;max-height:none}.rail .slide-item{min-width:180px}.rail-bottom{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0}.rail-import{flex:1}.editor{margin-top:16px}.design-heading{align-items:start}.design-heading p{display:none}.design-toolbar{gap:7px}.design-type-control{min-width:150px}.design-layout-group{order:3;width:100%;justify-content:space-between}.design-layout-group button{flex:1}.design-viewport{padding:7px}.design-paper{min-height:300px;padding:16px}.design-paper .design-title{font-size:clamp(20px,4vw,29px)}.design-paper .design-prompt{font-size:13px}.design-paper[data-design-layout="equal"] .design-columns,.design-paper[data-design-layout="left"] .design-columns,.design-paper[data-design-layout="right"] .design-columns{grid-template-columns:1fr}.design-options{grid-template-columns:1fr}.side{display:block;padding:10px 0}.side #review{display:block}}
 
 .template-design-panel{margin:18px 0 20px;padding:0;border:0}
 .template-design-panel>.eyebrow{font-size:12px}
@@ -630,6 +630,80 @@
 .wi-existing-draft-actions{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:10px;margin-top:22px}
 .wi-existing-draft-actions button{padding:12px 15px}
 @media(max-width:550px){.wi-existing-draft-actions{flex-direction:column}.wi-existing-draft-actions button{width:100%}}
+.design-experiments{margin-top:12px}.design-experiments summary{cursor:pointer;font-weight:700}.design-experiments label{display:grid;font-size:12px;gap:4px;margin:8px 0}.design-experiments textarea{width:100%;min-height:50px;resize:vertical;border:1px solid #cbdad0;border-radius:6px;padding:8px}
+
+
+.wi-plot-edit,.wi-plot-lab{display:grid;gap:8px;min-width:0}
+.wi-plot-chart{width:100%;background:#fff;border:1px solid #d9e4dd;border-radius:9px;overflow:hidden}
+.wi-plot-chart svg{display:block;width:100%;height:auto;max-height:43dvh}
+.wi-plot-formula{font:600 clamp(13px,1.3vw,18px)/1.4 ui-monospace,Consolas,monospace;color:#18584b;overflow-wrap:anywhere}
+.wi-plot-details{border:1px solid #d8e3da;background:#fff;border-radius:9px;padding:0 10px;min-width:0}
+.wi-plot-details summary{padding:10px 0;cursor:pointer;color:#1b6052;font-size:13px;font-weight:700}
+.wi-plot-controls{display:grid;gap:10px;padding:5px 0 13px}
+.wi-plot-inputs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.wi-plot-inputs label{display:grid;gap:4px;min-width:0;font-size:12px}
+.wi-plot-inputs input{width:100%;min-width:0;padding:7px;font-size:13px}
+.wi-plot-flags{display:flex;flex-wrap:wrap;gap:12px;font-size:12px}
+.wi-plot-flags label{display:flex;align-items:center;gap:6px}
+
+/* Compacte werkplek en presentatiemenu's. Ook opgenomen in zelfstandige HTML. */
+.wi-gallery-tools{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin:0 0 11px}
+.wi-gallery-tools input{min-width:170px;flex:1;width:auto!important;font-size:13px;padding:10px!important}
+.wi-gallery-filter{font-size:12px;padding:9px 10px}
+.wi-gallery-filter[aria-pressed="true"]{background:#e4f1e8;border-color:#17695e;color:#17473d;font-weight:700}
+.wi-workform-gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;max-height:min(44dvh,480px);overflow:auto;align-content:start;padding:3px 4px 8px 0;scrollbar-width:thin}
+.wi-workform-card{border:1px solid #d9e1da;border-radius:11px;min-height:116px;padding:10px;text-align:left;background:#fff;display:flex;flex-direction:column;gap:5px;color:#1a3029}
+.wi-workform-card:hover,.wi-workform-card:focus-visible{border-color:#17695e;box-shadow:0 0 0 1px #17695e}
+.wi-workform-card[aria-pressed="true"]{border:2px solid #17695e;background:#eef6f0;padding:9px}
+.wi-workform-art{width:100%;height:42px;border-radius:7px;background:linear-gradient(120deg,#eef4ef,#f9faf7);position:relative;overflow:hidden}
+.wi-workform-art::before{content:"";display:block;height:6px;width:42%;background:#17695e;border-radius:5px;position:absolute;top:10px;left:10px}
+.wi-workform-art::after{content:"";display:block;height:4px;width:70%;background:#bfd0c4;border-radius:5px;position:absolute;top:24px;left:10px}
+.wi-workform-art[data-type="graph"]::before,.wi-workform-art[data-type="mathplot"]::before{height:29px;width:65%;top:7px;background:none;border-bottom:3px solid #17695e;border-radius:0;transform:skewY(-15deg)}
+.wi-workform-art[data-type="question"]::after,.wi-workform-art[data-type="quizset"]::after{height:12px;width:29%;box-shadow:43px 0 #bfd0c4;background:#bfd0c4}
+.wi-plot-thumb{width:100%;height:50px;display:block;background:#eef5ef;border-radius:7px}
+.wi-insert-section-title{grid-column:1/-1;margin:3px 0;font-size:12px;color:#536c5a;font-weight:750}
+.wi-workform-card strong{font-size:12px;line-height:1.35}
+.wi-workform-card small{font-size:10px;line-height:1.35;color:#5e7166}
+.wi-workform-fallback{margin:10px 0 0;border:0}
+.wi-workform-fallback summary{font-size:12px;color:#49665a;cursor:pointer}
+.wi-workform-fallback select{margin-top:9px;width:100%}
+#viewer.wi-compact{justify-content:center}
+#viewer.wi-compact .deck-topbar{position:absolute;top:13px;left:14px;width:auto;max-width:calc(100% - 28px);height:44px;padding:5px 7px 5px 10px;border:1px solid #49616b;border-radius:12px;box-shadow:0 5px 25px #0004;background:#101f2aef;z-index:140}
+#viewer.wi-compact .deck-logo{width:28px;height:28px;font-size:15px}
+#viewer.wi-compact .deck-brand{gap:7px;min-width:0}
+#viewer.wi-compact .deck-brand strong{font-size:12px;max-width:min(40vw,230px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#viewer.wi-compact .deck-brand small{display:none}
+#viewer.wi-compact #deckMenu{color:#fff;background:#253e49;border:1px solid #54707b;border-radius:8px;min-height:31px;padding:5px 9px;font-size:12px;font-weight:700}
+#viewer.wi-compact .deck-buttons{display:none;position:absolute;top:49px;left:0;right:auto;min-width:210px;max-width:min(300px,90vw);padding:9px;flex-direction:column;align-items:stretch;gap:6px;border-radius:11px;background:#172c36;border:1px solid #536a74;box-shadow:0 13px 35px #0006;z-index:170}
+#viewer.wi-compact .deck-buttons.wi-open{display:flex}
+#viewer.wi-compact .deck-buttons button{font-size:12px;text-align:left}
+#viewer.wi-compact .deck-buttons #deckPhase{font-size:11px;padding:4px 7px}
+#viewer.wi-compact .deck-progress{position:absolute;top:0;left:0;right:0;height:3px;width:100%;z-index:125}
+#viewer.wi-compact .viewer-nav{position:absolute;left:50%;bottom:13px;transform:translateX(-50%);width:auto;min-height:44px;border:1px solid #d6ded7;border-radius:13px;padding:5px;gap:5px;background:#fffefbe9;box-shadow:0 7px 35px #0005;z-index:130}
+#viewer.wi-compact .viewer-nav button{min-height:32px;padding:5px 10px}
+#viewer.wi-compact .viewer-nav #close{display:none}
+#viewer.wi-compact .slide{width:min(1600px,calc((100dvh - 34px)*16/9),calc(100vw - 20px));max-height:calc(100dvh - 34px)}
+#viewer.wi-compact .floating{bottom:73px;right:14px;z-index:141}
+#viewer.wi-compact #toolbtn{border-radius:13px;box-shadow:0 5px 24px #0005}
+#viewer.wi-compact .toolpop{width:min(275px,calc(100vw - 30px));max-height:55dvh;overflow-y:auto;padding:8px}
+#viewer.wi-compact .graph-lab{grid-template-columns:minmax(0,1fr);gap:7px}
+#viewer.wi-compact .graph-settings-panel{display:flex;flex-wrap:wrap;gap:7px;padding:0;border:0;background:transparent}
+#viewer.wi-compact .graph-settings-panel details{min-width:min(240px,100%);flex:1}
+#viewer.wi-compact .graph-settings-panel details[open]{flex-basis:100%}
+#viewer.wi-compact .graph-polls{padding:4px 8px 9px}
+#viewer.wi-compact .wi-graph-polls{border:1px solid #dbe6de;background:#fff;border-radius:9px;padding:0 10px;margin:6px 0}
+#viewer.wi-compact .wi-graph-polls summary{padding:8px 0;font-size:12px;font-weight:700;color:#155a4d;cursor:pointer}
+#viewer.wi-compact .toolpop details{background:#fff;border:1px solid #dce5dc;border-radius:8px;overflow:hidden;margin:0 0 5px}
+#viewer.wi-compact .toolpop details summary{padding:9px 10px;font-size:12px;font-weight:750;cursor:pointer;color:#233e33}
+#viewer.wi-compact .toolpop details button{display:block;width:100%;text-align:left;margin:3px 0}
+@media(max-width:760px){
+ .wi-workform-gallery{grid-template-columns:repeat(2,minmax(0,1fr));max-height:43dvh}
+ #viewer.wi-compact .slide{max-height:calc(100dvh - 24px);width:calc(100vw - 12px)}
+ #viewer.wi-compact .deck-topbar{top:8px;left:7px;max-width:calc(100% - 14px);height:40px}
+ #viewer.wi-compact .viewer-nav{bottom:6px}
+ #viewer.wi-compact .floating{bottom:59px;right:8px}
+}
+
 </style>
 </head>
 <body class="wi-mode-quick">
@@ -643,7 +717,7 @@
  <div class="wi-guide-surface" data-guide-info="goal" hidden><div class="wi-guide-question"><label for="guideGoal">Wat moeten leerlingen aan het einde zelf kunnen?</label><p>Beschrijf één resultaat dat je in de les kunt terugzien. Je hoeft nog geen perfecte formulering te hebben.</p><textarea id="guideGoal" rows="4" placeholder="Bijvoorbeeld: ik kan een groeifactor uit een grafiek aflezen"></textarea></div></div>
  <div class="wi-guide-surface" data-guide-info="route" hidden><div class="wi-guide-question"><label for="guideRoute">Hoe wil je de les opbouwen?</label><p>Je kunt vrij beginnen of een bestaande volgorde kiezen. Alle lesdelen blijven bewerkbaar.</p><select id="guideRoute"><option value="own">Ik bepaal de volgorde zelf</option><option value="discover">Eerst onderzoeken, dan verklaren</option><option value="explain">Uitleg afwisselen met oefenen</option><option value="practice">Zelfstandig oefenen</option></select><p id="guideRouteExplain" class="wi-guide-muted">Begin met één dia en voeg daarna zelf lesdelen toe.</p><button type="button" id="guideApplyRoute">Gebruik deze opbouw</button><p class="wi-guide-muted">Bij een lege les krijg je passende startdia’s. In een bestaande les blijven je eigen dia’s behouden.</p></div></div>
  </div>
- <div id="guideWorkform" class="wi-guide-page" hidden><div class="wi-guide-surface"><div class="wi-guide-question"><label for="guideType">Wat moeten leerlingen op deze dia doen?</label><p>Kies een werkvorm die past bij je vraag. Alle onderdelen kun je later aanpassen.</p><select id="guideType"></select><p id="guideTypeExplain" class="wi-guide-muted"></p></div></div></div>
+ <div id="guideWorkform" class="wi-guide-page" hidden><div class="wi-guide-surface"><div class="wi-guide-question"><label for="guideType">Wat moeten leerlingen op deze dia doen?</label><p>Kies een werkvorm die past bij je vraag. Alle onderdelen kun je later aanpassen.</p><div class="wi-gallery-tools"><button type="button" class="wi-gallery-filter" data-wi-gallery-filter="all" aria-pressed="true">Alle</button><button type="button" class="wi-gallery-filter" data-wi-gallery-filter="math" aria-pressed="false">Wiskunde</button><button type="button" class="wi-gallery-filter" data-wi-gallery-filter="activity" aria-pressed="false">Activiteiten</button><input id="wiGallerySearch" type="search" aria-label="Zoek een onderdeel" placeholder="Zoek een onderdeel"></div><div id="wiWorkformGallery" class="wi-workform-gallery" aria-label="Kies een werkvorm"></div><details class="wi-workform-fallback"><summary>Als lijst bekijken</summary><select id="guideType"></select></details><p id="guideTypeExplain" class="wi-guide-muted"></p></div></div></div>
  <div id="guideSlide" class="wi-guide-page wi-guide-slide" hidden><div class="wi-guide-slide-meta" id="guideSlideMeta"></div><div id="guideSlideMount"></div><div class="wi-guide-slide-buttons"><button id="guideAddSlide" type="button">+ Voeg een dia toe</button><button id="guidePreviewSlide" type="button">Test deze dia</button><details id="guideSlideActions" class="wi-guide-slide-actions"><summary>Dia beheren</summary><div class="wi-guide-slide-control"><button id="guideDuplicateSlide" type="button">Maak een kopie</button><button id="guideMoveSlideUp" type="button" aria-label="Zet dia eerder">Eerder</button><button id="guideMoveSlideDown" type="button" aria-label="Zet dia later">Later</button><button id="guideRemoveSlide" type="button">Verwijderen</button><button id="guideMoreFields" type="button" hidden>Andere instellingen</button></div></details></div></div>
  <div id="guideNotes" class="wi-guide-page" hidden>
  <div class="wi-guide-surface" data-guide-notes="student"><div class="wi-guide-question"><label for="guideStudent">Wat doen leerlingen hier eerst zélf?</label><p>Denk aan voorspellen, uitproberen, verklaren of controleren. Maak duidelijk wat ze doen voordat jij een antwoord laat zien.</p><textarea id="guideStudent" rows="4" placeholder="Bijvoorbeeld: maak eerst zelf een voorspelling en bespreek die met je buur"></textarea></div></div>
@@ -667,7 +741,7 @@
    <button type="button" data-design-layout="left" title="Links 60 procent, rechts 40 procent">60 / 40</button>
    <button type="button" data-design-layout="right" title="Links 40 procent, rechts 60 procent">40 / 60</button>
   </div>
-  <div class="design-toolbar-end"><button id="designCopy" type="button" title="Maak een kopie van deze dia">Dupliceer</button><button id="designMoveUp" type="button" title="Zet deze dia één plek eerder">↑</button><button id="designMoveDown" type="button" title="Zet deze dia één plek later">↓</button></div>
+  <div class="design-toolbar-end"><button id="designRemove" type="button">Verwijder dia</button><button id="designCopy" type="button" title="Maak een kopie van deze dia">Dupliceer</button><button id="designMoveUp" type="button" title="Zet deze dia één plek eerder">↑</button><button id="designMoveDown" type="button" title="Zet deze dia één plek later">↓</button></div>
  </div>
  <div class="design-viewport"><div class="design-paper" id="designCanvas" aria-label="Dia-opmaak. Klik op tekst om die te bewerken."></div></div>
  <div class="design-underbar"><p id="designHint">Klik op de tekst om hem aan te passen.</p><span id="designSaved" role="status" aria-live="polite">Klaar om te bewerken</span></div>
@@ -699,6 +773,12 @@
 <button type="button" class="wi-insert-card" data-quick-type="text"><strong>Uitleg of opdracht</strong><span>Een vraag, tekst of instructie.</span></button>
 <button type="button" class="wi-insert-card" data-quick-type="question"><strong>Meerkeuzevraag</strong><span>Laat leerlingen kiezen en toon het antwoord later.</span></button>
 <button type="button" class="wi-insert-card" data-quick-type="graph"><strong>Grafiek onderzoeken</strong><span>Onderzoek de groeifactor en beginwaarde.</span></button>
+<div class="wi-insert-section-title">Functiegrafieken</div>
+<button type="button" class="wi-insert-card" data-quick-type="mathplot" data-quick-kind="linear"><strong>Lineair verband</strong><span>Helling en startwaarde</span></button>
+<button type="button" class="wi-insert-card" data-quick-type="mathplot" data-quick-kind="quadratic"><strong>Kwadratisch verband</strong><span>Top, snijpunten en vorm</span></button>
+<button type="button" class="wi-insert-card" data-quick-type="mathplot" data-quick-kind="exponential"><strong>Exponentieel verband</strong><span>Beginwaarde en groeifactor</span></button>
+<button type="button" class="wi-insert-card" data-quick-type="mathplot" data-quick-kind="sinusoid"><strong>Sinusoïde</strong><span>Amplitude en frequentie</span></button>
+<div class="wi-insert-section-title">Andere lesactiviteiten</div>
 <button type="button" class="wi-insert-card" data-quick-type="steps"><strong>Uitleg in stappen</strong><span>Maak een uitwerking die stap voor stap verschijnt.</span></button>
 <button type="button" class="wi-insert-card" data-quick-type="table"><strong>Tabel onderzoeken</strong><span>Ontdek regelmaat in de getallen.</span></button>
 <button type="button" class="wi-insert-card" data-quick-type="practice"><strong>Zelfstandig oefenen</strong><span>Opgaven met hulp en uitwerkingen.</span></button>
@@ -747,7 +827,7 @@
 <p>In deze browser staat een eerder concept. Een nieuwe les vervangt dat concept. Je kunt de oude les eerst hervatten en als JSON bewaren.</p>
 <div class="wi-existing-draft-actions"><button type="button" id="newWithDraftRestore">Ga verder met mijn les</button><button type="button" id="newWithDraftStart" class="primary">Begin een nieuwe les</button></div>
 </dialog>
-<div id="viewer" class="viewer" role="dialog" aria-label="Presentatie" aria-modal="true"><div class="deck-topbar"><div class="deck-brand"><span class="deck-logo">×2</span><strong id="deckTitle">Wiskundeles</strong><small id="deckLevel">Wiskunde</small></div><div class="deck-buttons"><span id="deckPhase">Voorspellen</span><button id="deckOverview" type="button">Dia-overzicht</button><button id="deckTools" type="button">Docenttools</button></div></div><div class="deck-progress"><div id="deckProgress"></div></div><article class="slide"><div id="slidecontent"></div><svg class="draw" id="draw" viewBox="0 0 1200 675" preserveAspectRatio="none"></svg><div class="slide-footer" id="slidefooter"></div></article><div class="viewer-nav"><button id="prev" aria-label="Vorige dia">←</button><span id="position"></span><button id="next" aria-label="Volgende dia">→</button><button id="close" aria-label="Sluit presentatie">Sluiten</button></div><div class="floating"><div id="toolpop" class="toolpop"><button data-tool="pen">Pen aan / uit</button><button data-tool="marker">Markeerstift</button><button data-tool="inkColor">Kleur kiezen</button><button data-tool="eraser">Gum (lijn aanraken)</button><button data-tool="stopPen">Pen wegleggen</button><button data-tool="undo">Laatste lijn weg</button><button data-tool="clear">Wis deze dia</button><button data-tool="vote">Stemmen tellen</button><button data-tool="compare">Stemrondes vergelijken</button><button data-tool="reveal">Antwoord tonen</button><button data-tool="timer">Aftelklok</button><button data-tool="stopwatch">Stopwatch</button><button data-tool="notes">Docentnotities</button><button data-tool="overview">Dia-overzicht</button><button data-tool="names">Leerling kiezen</button><button data-tool="fullscreen">Volledig scherm</button><button data-tool="presenter">Apart docentvenster</button><button data-tool="print">Print les</button><button data-tool="fit">Passend schalen</button><button data-tool="compact">Compacte dia</button><button data-tool="resetView">Herstel weergave</button><button data-tool="white">Wit scherm</button><button data-tool="spotlight">Spotlicht</button><button data-tool="curtain">Afdekken</button><button data-tool="black">Zwart scherm</button></div><button id="toolbtn" aria-label="Open docentgereedschap">✎</button></div></div>
+<div id="viewer" class="viewer wi-compact" role="dialog" aria-label="Presentatie" aria-modal="true"><div class="deck-topbar"><div class="deck-brand"><span class="deck-logo">×2</span><strong id="deckTitle">Wiskundeles</strong><small id="deckLevel">Wiskunde</small></div><button type="button" id="deckMenu" aria-expanded="false" aria-controls="deckExtra">Menu ▾</button><div class="deck-buttons" id="deckExtra"><span id="deckPhase">Voorspellen</span><button id="deckOverview" type="button">Dia-overzicht</button><button id="deckTools" type="button">Docenttools</button><button id="deckExit" type="button">Sluit presentatie</button></div></div><div class="deck-progress"><div id="deckProgress"></div></div><article class="slide"><div id="slidecontent"></div><svg class="draw" id="draw" viewBox="0 0 1200 675" preserveAspectRatio="none"></svg><div class="slide-footer" id="slidefooter"></div></article><div class="viewer-nav"><button id="prev" aria-label="Vorige dia">←</button><span id="position"></span><button id="next" aria-label="Volgende dia">→</button><button id="close" aria-label="Sluit presentatie">Sluiten</button></div><div class="floating"><div id="toolpop" class="toolpop"><details><summary>Schrijven en tekenen</summary><button data-tool="pen">Pen aan / uit</button><button data-tool="marker">Markeerstift</button><button data-tool="inkColor">Kleur kiezen</button><button data-tool="eraser">Gum (lijn aanraken)</button><button data-tool="stopPen">Pen wegleggen</button><button data-tool="undo">Laatste lijn weg</button><button data-tool="clear">Wis deze dia</button></details><details><summary>Vragen en lesactiviteiten</summary><button data-tool="vote">Stemmen tellen</button><button data-tool="compare">Stemrondes vergelijken</button><button data-tool="reveal">Antwoord tonen</button><button data-tool="timer">Aftelklok</button><button data-tool="stopwatch">Stopwatch</button><button data-tool="notes">Docentnotities</button><button data-tool="overview">Dia-overzicht</button><button data-tool="names">Leerling kiezen</button></details><details><summary>Scherm en presentatie</summary><button data-tool="fullscreen">Volledig scherm</button><button data-tool="presenter">Apart docentvenster</button><button data-tool="print">Print les</button><button data-tool="fit">Passend schalen</button><button data-tool="compact">Compacte dia</button><button data-tool="resetView">Herstel weergave</button><button data-tool="white">Wit scherm</button><button data-tool="spotlight">Spotlicht</button><button data-tool="curtain">Afdekken</button><button data-tool="black">Zwart scherm</button></details></div><button id="toolbtn" aria-label="Open docentgereedschap">✎</button></div></div>
 <script>
 const SAMPLE={title:"Verdubbelen en halveren",level:"5 havo · Wiskunde A",goal:"De leerling verklaart en berekent de verdubbelings- en halveringstijd en kan de groeifactor uit de tijd bepalen.",slides:[
 {id:"voorspel",type:"question",phase:"Voorspellen",title:"€ 1.000 wordt € 2.000. Dat duurt 12 jaar.",prompt:"Hoeveel tijd kost de groei van € 2.000 naar € 4.000?",options:["Minder dan 12 jaar","Precies 12 jaar","Meer dan 12 jaar","Dat kun je niet weten"],correct:1,explanation:"Bij dezelfde groeifactor blijft de verdubbelingstijd gelijk.",student:"Kiest eerst zelf en verklaart de keuze.",teacher:"Toont het antwoord pas na het experiment.",later:true},
@@ -935,7 +1015,103 @@ $("templateFile").onchange=async e=>{
  }catch(err){$("templateError").textContent=err.message}finally{e.target.value=""}
 };
 
-const TYPES={text:"Tekst of opdracht",question:"Meerkeuzevraag",graph:"Onderzoek met grafiek",steps:"Uitwerking in stappen",table:"Onderzoekstabel",practice:"Zelfstandig oefenen",compare:"Verklaren en vergelijken",quizset:"Meerdere begripsvragen",error:"Zoek de fout"};
+const TYPES={text:"Tekst of opdracht",question:"Meerkeuzevraag",graph:"Onderzoek met grafiek",mathplot:"Functiegrafiek",steps:"Uitwerking in stappen",table:"Onderzoekstabel",practice:"Zelfstandig oefenen",compare:"Verklaren en vergelijken",quizset:"Meerdere begripsvragen",error:"Zoek de fout"};
+
+
+/* Herbruikbare functiegrafieken: aparte gegevens, rekenfunctie en presentatie. */
+const WI_PLOT_PRESETS={
+ linear:{name:'Lineair verband',help:'Helling en startgetal aanpassen',a:2,b:1,c:0},
+ quadratic:{name:'Kwadratisch verband',help:'Top en nulpunten onderzoeken',a:1,b:-4,c:3},
+ exponential:{name:'Exponentieel verband',help:'Beginwaarde en groeifactor aanpassen',a:2,b:1.5,c:0},
+ sinusoid:{name:'Sinusoïde',help:'Amplitude en periode aanpassen',a:2,b:1,c:0}
+};
+
+function wiPlotThumb(kind){
+ const d=WI_PLOT_PRESETS[kind],p={plotKind:kind,plotA:d.a,plotB:d.b,plotC:d.c};
+ const pts=Array.from({length:81},(_,i)=>{const x=-3+i*.075;return wiPlotY(x,p)});
+ const lo=Math.min(...pts),hi=Math.max(...pts),span=Math.max(1,hi-lo);
+ const path=pts.map((y,i)=>(i?'L':'M')+(12+i*1.95).toFixed(2)+' '+(49-(y-lo)/span*37).toFixed(2)).join(' ');
+ return '<svg class="wi-plot-thumb" viewBox="0 0 180 60" role="img" aria-label="Voorbeeld: '+esc(d.name)+'">'+
+ '<path d="M10 49H170M10 8V49" stroke="#b2c9ba" stroke-width="1" fill="none"/>'+
+ '<path d="'+path+'" stroke="#176f62" stroke-width="2.8" fill="none"/></svg>';
+}
+
+function wiPlotConfig(s){
+ const k=Object.hasOwn(WI_PLOT_PRESETS,s?.plotKind)?s.plotKind:'linear',d=WI_PLOT_PRESETS[k];
+ const num=(name,fallback)=>s?.[name]===undefined?fallback:Number(s[name]);
+ return {plotKind:k,plotA:num('plotA',d.a),plotB:num('plotB',d.b),plotC:num('plotC',d.c),plotGrid:s?.plotGrid!==false,plotPoints:s?.plotPoints===true};
+}
+function wiPlotValid(p){
+ return ['plotA','plotB','plotC'].every(k=>Number.isFinite(p[k])&&Math.abs(p[k])<=50)
+ &&(p.plotKind!=='exponential'||(p.plotB>=.1&&p.plotB<=5));
+}
+function wiPlotY(x,p){
+ if(p.plotKind==='quadratic')return p.plotA*x*x+p.plotB*x+p.plotC;
+ if(p.plotKind==='exponential')return p.plotA*Math.pow(p.plotB,x)+p.plotC;
+ if(p.plotKind==='sinusoid')return p.plotA*Math.sin(p.plotB*x)+p.plotC;
+ return p.plotA*x+p.plotB;
+}
+function wiPlotFormula(p){
+ const n=v=>Number(v.toFixed(2)).toLocaleString('nl-NL');
+ const tail=v=>(v<0?' − ':' + ')+n(Math.abs(v));
+ if(p.plotKind==='quadratic')return 'y = '+n(p.plotA)+'x²'+tail(p.plotB)+'x'+tail(p.plotC);
+ if(p.plotKind==='exponential')return 'y = '+n(p.plotA)+' × '+n(p.plotB)+'ˣ'+tail(p.plotC);
+ if(p.plotKind==='sinusoid')return 'y = '+n(p.plotA)+' sin('+n(p.plotB)+'x)'+tail(p.plotC);
+ return 'y = '+n(p.plotA)+'x'+tail(p.plotB);
+}
+function wiPlotSVG(p){
+ const L=44,R=580,T=17,B=279,pts=Array.from({length:241},(_,i)=>{const x=-6+i*.05;return [x,wiPlotY(x,p)]});
+ const ys=pts.map(v=>v[1]).filter(Number.isFinite),lo=Math.min(0,...ys),hi=Math.max(0,...ys),pad=Math.max(3,(hi-lo)*.08);
+ const minY=lo-pad,maxY=hi+pad,X=x=>L+(x+6)/12*(R-L),Y=y=>B-(y-minY)/(maxY-minY)*(B-T);
+ const axisY=Math.min(B,Math.max(T,Y(0)));
+ const grid=p.plotGrid?[-6,-4,-2,0,2,4,6].map(x=>'<path d="M'+X(x)+' '+T+'V'+B+'" stroke="#e4ebe5"/>').join('')+
+ Array.from({length:5},(_,i)=>minY+(maxY-minY)*i/4).map(y=>'<path d="M'+L+' '+Y(y)+'H'+R+'" stroke="#e4ebe5"/>').join(''):'';
+ const curve=pts.map((v,i)=>(i?'L':'M')+X(v[0]).toFixed(2)+' '+Y(v[1]).toFixed(2)).join(' ');
+ const dots=p.plotPoints?[-4,-2,0,2,4].map(x=>'<circle cx="'+X(x)+'" cy="'+Y(wiPlotY(x,p))+'" r="4" fill="#c9763d"/>').join(''):'';
+ return '<svg viewBox="0 0 620 309" role="img" aria-label="'+esc(WI_PLOT_PRESETS[p.plotKind].name)+'">'+
+ '<rect width="620" height="309" fill="#fff"/>'+grid+'<path d="M'+L+' '+axisY+'H'+R+' M'+X(0)+' '+T+'V'+B+'" stroke="#667f73" stroke-width="1.5" fill="none"/>'+
+ '<defs><clipPath id="wi-plot-clip"><rect x="'+L+'" y="'+T+'" width="'+(R-L)+'" height="'+(B-T)+'"/></clipPath></defs>'+
+ '<g clip-path="url(#wi-plot-clip)"><path d="'+curve+'" fill="none" stroke="#176f62" stroke-width="3.5"/>'+dots+'</g>'+
+ [-6,-3,3,6].map(x=>'<text x="'+X(x)+'" y="297" text-anchor="middle" font-size="11" fill="#526b5e">'+x+'</text>').join('')+
+ '<text x="'+(R+12)+'" y="'+(axisY-7)+'" font-size="12" fill="#526b5e">x</text><text x="'+(X(0)+7)+'" y="14" font-size="12" fill="#526b5e">y</text></svg>';
+}
+function wiPlotEditor(s){
+ const p=wiPlotConfig(s);
+ return '<div class="wi-plot-edit"><div class="wi-plot-chart" id="wiDesignPlot">'+wiPlotSVG(p)+'</div>'+
+ '<div class="wi-plot-formula" id="wiDesignPlotFormula">'+esc(wiPlotFormula(p))+'</div>'+
+ '<details class="wi-plot-details"><summary>Grafiek aanpassen</summary><div class="wi-plot-controls"><label>Soort verband<select data-design-plot-kind>'+
+ Object.entries(WI_PLOT_PRESETS).map(([k,v])=>'<option value="'+k+'" '+(k===p.plotKind?'selected':'')+'>'+esc(v.name)+'</option>').join('')+'</select></label>'+
+ '<div class="wi-plot-inputs">'+['plotA','plotB','plotC'].map(k=>'<label>'+k.slice(-1).toLowerCase()+'<input type="number" step="0.1" min="'+(k==='plotB'&&p.plotKind==='exponential'?'0.1':'-50')+'" max="'+(k==='plotB'&&p.plotKind==='exponential'?'5':'50')+'" data-design-plot-value="'+k+'" value="'+p[k]+'"></label>').join('')+'</div>'+
+ '<div class="wi-plot-flags"><label><input type="checkbox" data-design-plot-flag="plotGrid" '+(p.plotGrid?'checked':'')+'> Raster</label>'+
+ '<label><input type="checkbox" data-design-plot-flag="plotPoints" '+(p.plotPoints?'checked':'')+'> Meetpunten</label></div></div></details></div>';
+}
+let wiPlotRuntime={};
+function wiPlotView(s){
+ const p=wiPlotRuntime[s.id]||wiPlotConfig(s);
+ return '<section class="wi-plot-lab" id="wiMathPlot"><div id="wiPlotChart" class="wi-plot-chart">'+wiPlotSVG(p)+'</div>'+
+ '<div class="wi-plot-formula" id="wiPlotFormula">'+esc(wiPlotFormula(p))+'</div>'+
+ '<details class="wi-plot-details"><summary>Parameters en meetpunten</summary><div class="wi-plot-controls"><div class="wi-plot-inputs">'+
+ ['plotA','plotB','plotC'].map(k=>'<label>'+k.slice(-1).toLowerCase()+' <output data-wi-plot-out="'+k+'">'+p[k]+'</output><input type="range" data-wi-plot-range="'+k+'" min="'+(k==='plotB'&&p.plotKind==='exponential'?'0.1':'-20')+'" max="'+(k==='plotB'&&p.plotKind==='exponential'?'5':'20')+'" step="0.1" value="'+p[k]+'"></label>').join('')+
+ '</div><div class="wi-plot-flags"><label><input type="checkbox" data-wi-plot-flag="plotGrid" '+(p.plotGrid?'checked':'')+'> Raster</label>'+
+ '<label><input type="checkbox" data-wi-plot-flag="plotPoints" '+(p.plotPoints?'checked':'')+'> Meetpunten</label></div>'+
+ '<button type="button" id="wiPlotReset">Herstel voorbeeld</button></div></details></section>';
+}
+function wiBindPlot(s){
+ const root=$('wiMathPlot');if(!root)return;
+ if(!wiPlotRuntime[s.id])wiPlotRuntime[s.id]=wiPlotConfig(s);
+ const draw=()=>{
+  const p=wiPlotRuntime[s.id];
+  root.querySelector('#wiPlotChart').innerHTML=wiPlotSVG(p);
+  root.querySelector('#wiPlotFormula').textContent=wiPlotFormula(p);
+  root.querySelectorAll('[data-wi-plot-out]').forEach(el=>el.textContent=Number(p[el.dataset.wiPlotOut].toFixed(1)).toLocaleString('nl-NL'));
+  root.querySelectorAll('[data-wi-plot-range]').forEach(el=>el.value=String(p[el.dataset.wiPlotRange]));
+  root.querySelectorAll('[data-wi-plot-flag]').forEach(el=>el.checked=p[el.dataset.wiPlotFlag]);
+ };
+ root.querySelectorAll('[data-wi-plot-range]').forEach(el=>el.addEventListener('input',()=>{wiPlotRuntime[s.id][el.dataset.wiPlotRange]=Number(el.value);draw()}));
+ root.querySelectorAll('[data-wi-plot-flag]').forEach(el=>el.addEventListener('change',()=>{wiPlotRuntime[s.id][el.dataset.wiPlotFlag]=el.checked;draw()}));
+ root.querySelector('#wiPlotReset').onclick=()=>{wiPlotRuntime[s.id]=wiPlotConfig(s);draw()};
+ draw();
+}
 
 const LAYOUTS=new Set(["single","equal","left","right"]);
 const FEATURE_DEFAULTS={drawing:true,voting:true,clock:true,focus:true,picker:true,notes:true,printing:true};
@@ -965,6 +1141,7 @@ function applyFeatures(){
   const group=TOOL_FEATURE[el.dataset.tool];el.hidden=!!group&&lesson.features[group]===false;
  });
  if(!lesson.features.drawing){drawTool="";canvas.classList.remove("armed")}
+ const poll=$('questionPoll');if(poll)poll.hidden=lesson.features.voting===false;
 }
 function arrangeSlide(s){
  const root=$("slidecontent");
@@ -1017,7 +1194,7 @@ $("applyRoute").onclick=()=>{
  const mode=$("routePreset").value;
  lesson.route=ROUTE_TYPES[mode]?mode:"own";
  lesson.slides=reorderLessonSlides(lesson.slides,lesson.route);
- selected=0;renderEditor();
+ selected=0;renderEditor();scheduleDraftSave();
  msg(mode==="own"?"Je bepaalt zelf de volgorde links.":"Lesdelen opnieuw geordend. Alle inhoud is behouden.");
 };
 
@@ -1044,30 +1221,34 @@ function field(k,label,v,multi=false){
  const x=multi?'<textarea id="f-'+k+'" rows="3">'+esc(v)+'</textarea>':'<input id="f-'+k+'" value="'+esc(v)+'">';
  return '<div class="field"><label for="f-'+k+'">'+esc(label)+'</label>'+x+'</div>';
 }
+function quizLines(questions){
+ return (questions||[]).map(q=>[q.prompt,...Array.from({length:4},(_,i)=>q.options?.[i]||''),q.correct>=0?String.fromCharCode(65+q.correct):'',q.explanation||''].join(' | ')).join('\n');
+}
 function save(){
  lesson.title=$("title").value.trim();lesson.level=$("level").value.trim();lesson.goal=$("goal").value.trim();
  const s=lesson.slides[selected];if(!s)return;
- const nextType=$("type")?.value||s.type;
- s.layout=LAYOUTS.has($("f-layout")?.value)?$("f-layout").value:"inherit";
- for(const key of ["phase","title","prompt","student","teacher","body","explanation"]){const node=$("f-"+key);if(node)s[key]=node.value}
- s.type=nextType;
- if(nextType==="question"){
-  s.options=($("f-options")?.value||"").split("\n").map(x=>x.trim()).filter(Boolean);
-  s.correct=Number($("f-correct")?.value||0);s.later=!!$("f-later")?.checked;
+ const dirty=key=>$('f-'+key)?.dataset.dirty==='true';
+ const value=key=>$('f-'+key)?.value||'';
+ if(dirty('layout'))s.layout=LAYOUTS.has(value('layout'))?value('layout'):'inherit';
+ for(const key of ['phase','title','prompt','student','teacher','body','explanation','wrong','challenge','correction','graphExplanation','tableExplanation','compareConclusion'])if(dirty(key))s[key]=value(key);
+ for(const key of ['options','steps','tasks','hints','solutions'])if(dirty(key)){
+  const lines=value(key).split('\n');
+  s[key]=['hints','solutions'].includes(key)?lines:lines.filter(x=>x.trim());
  }
- if(nextType==="steps")s.steps=($("f-steps")?.value||"").split("\n").filter(Boolean);
- if(nextType==="table"){s.columnLabels=($("f-columnLabels")?.value||"Tijd | Hoeveelheid").split("|").map(x=>x.trim()).slice(0,2);s.tableRows=($("f-tableRows")?.value||"").split("\n").filter(x=>x.trim()).map(x=>x.split("|").map(v=>v.trim()).slice(0,2));s.tableExplanation=$("f-tableExplanation")?.value||""}
- if(nextType==="practice"){s.tasks=($("f-tasks")?.value||"").split("\n").filter(x=>x.trim());s.hints=($("f-hints")?.value||"").split("\n");s.solutions=($("f-solutions")?.value||"").split("\n")}
- if(nextType==="compare"){s.compareLabels=($("f-compareLabels")?.value||"Voor | Na").split("|").map(x=>x.trim()).slice(0,2);s.compareItems=($("f-compareItems")?.value||"").split("\n").filter(x=>x.trim()).map(x=>x.split("|").map(v=>v.trim()).slice(0,2));s.compareConclusion=$("f-compareConclusion")?.value||""}
- if(nextType==="graph"){
-  s.g=Number($("f-g")?.value||1.06);s.b=Number($("f-b")?.value||1000);s.target=Number($("f-target")?.value||2);s.graphExplanation=$("f-graphExplanation")?.value||"";
-  s.experiments=($("f-experiments")?.value||"").split("\n").filter(row=>row.trim()).map(row=>{
-   const cols=row.split("|").map(v=>v.trim());
-   return {label:cols[0]||"Experiment",question:cols[1]||"",g:Number(cols[2]||s.g),b:Number(cols[3]||s.b),target:Number(cols[4]||s.target),instruction:cols.slice(5).join(" | ")||""};
-  }).slice(0,6);
- }
- if(nextType==="quizset"){s.questions=($("f-quizLines")?.value||"").split("\n").filter(x=>x.trim()).map(line=>{const cols=line.split("|").map(x=>x.trim());return {prompt:cols[0]||"",options:cols.slice(1,5),correct:cols[5]&&/^[A-D]$/i.test(cols[5])?cols[5].toUpperCase().charCodeAt(0)-65:-1,explanation:cols.slice(6).join(" | ")||""}})}
- if(nextType==="error"){s.wrong=$("f-wrong")?.value||"";s.challenge=$("f-challenge")?.value||"";s.correction=$("f-correction")?.value||""}
+ for(const key of ['columnLabels','compareLabels'])if(dirty(key))s[key]=value(key).split('|').map(x=>x.trim()).slice(0,2);
+ for(const key of ['tableRows','compareItems'])if(dirty(key))s[key]=value(key).split('\n').filter(x=>x.trim()).map(x=>x.split('|').map(v=>v.trim()).slice(0,2));
+ for(const key of ['g','b','target','correct'])if(dirty(key))s[key]=Number(value(key));
+ if(dirty('later'))s.later=$('f-later').checked;
+ if(dirty('experiments'))s.experiments=value('experiments').split('\n').filter(row=>row.trim()).map(row=>{
+  const cols=row.split('|').map(v=>v.trim());
+  return {label:cols[0]||'Experiment',question:cols[1]||'',g:Number(cols[2]||s.g),b:Number(cols[3]||s.b),target:Number(cols[4]||s.target),instruction:cols.slice(5).join(' | ')};
+ }).slice(0,6);
+ if(dirty('quizLines'))s.questions=value('quizLines').split('\n').filter(x=>x.trim()).map(line=>{
+  const cols=line.split('|').map(x=>x.trim()),options=cols.slice(1,5);
+  while(options.length>2&&!options.at(-1))options.pop();
+  return {prompt:cols[0]||'',options,correct:/^[A-D]$/i.test(cols[5]||'')?cols[5].toUpperCase().charCodeAt(0)-65:-1,explanation:cols.slice(6).join(' | ')};
+ });
+ $('fields').querySelectorAll('[data-dirty]').forEach(el=>delete el.dataset.dirty);
  scheduleDraftSave();
 }
 
@@ -1106,11 +1287,15 @@ document.querySelectorAll('[data-quick-type]').forEach(button=>button.onclick=()
  const type=button.dataset.quickType;
  if(!Object.hasOwn(TYPES,type))return;
  save();
- const labels={text:'Nieuwe opdracht',question:'Meerkeuzevraag',graph:'Grafiek onderzoeken',steps:'Uitleg in stappen',table:'Tabel onderzoeken',practice:'Zelfstandig oefenen',compare:'Verklaren en vergelijken',quizset:'Begripsvragen',error:'Zoek de fout'};
+ const labels={text:'Nieuwe opdracht',question:'Meerkeuzevraag',graph:'Grafiek onderzoeken',mathplot:'Functiegrafiek',steps:'Uitleg in stappen',table:'Tabel onderzoeken',practice:'Zelfstandig oefenen',compare:'Verklaren en vergelijken',quizset:'Begripsvragen',error:'Zoek de fout'};
  const slide={id:'deel-'+Date.now()+'-'+Math.random().toString(36).slice(2,7),type,phase:'Oefenen',title:labels[type],prompt:'',body:'',student:'',teacher:'',layout:'inherit'};
  lesson.slides.splice(selected+1,0,slide);
  selected++;
  initDesignType(type);
+ if(type==='mathplot'&&button.dataset.quickKind){
+  const kind=button.dataset.quickKind,d=WI_PLOT_PRESETS[kind];
+  if(d)Object.assign(slide,{plotKind:kind,plotA:d.a,plotB:d.b,plotC:d.c,plotGrid:true,plotPoints:false,title:d.name});
+ }
  renderEditor();
  $('quickInsertDialog').close();
  if(guideReady)guideShow({kind:'slide',id:slide.id});
@@ -1128,6 +1313,7 @@ const GUIDE_TYPE_HELP={
  text:'Een uitleg, startvraag of korte opdracht.',
  question:'Leerlingen kiezen een antwoord. Je laat het juiste antwoord pas zien als je dat wilt.',
  graph:'Laat leerlingen een grafiek onderzoeken en voorspellingen toetsen.',
+  mathplot:'Kies een functiegrafiek en verander de parameters.',
  steps:'Toon een uitwerking in stappen, niet alles in één keer.',
  table:'Laat leerlingen een tabel aanvullen en verbanden ontdekken.',
  practice:'Laat leerlingen zelf oefenen. Hints en uitwerkingen kun je later tonen.',
@@ -1141,6 +1327,57 @@ const GUIDE_ROUTE_HELP={
  explain:'Wissel uitleg af met vragen en oefenmomenten.',
  practice:'Begin met oefenen, bied hulp aan en eindig met een zelfstandige controle.'
 };
+
+let wiGalleryGroup='all';
+const WI_GALLERY_META={
+ text:['Uitleg, tekst of startvraag','activity'],question:['Stemmen en antwoorden later tonen','activity'],
+ graph:['Groeifactor en exponentieel onderzoek','math'],mathplot:['Bewerkbare functiegrafiek','math'],steps:['Uitwerking stap voor stap tonen','activity'],
+ table:['Zelf waarden onderzoeken','math'],practice:['Oefeningen met hulp en uitwerkingen','activity'],
+ compare:['Twee aanpakken naast elkaar','activity'],quizset:['Meerdere korte vragen','activity'],error:['Een fout zoeken en verbeteren','activity']
+};
+function wiRenderGallery(slide){
+ const root=$('wiWorkformGallery');if(!root)return;
+ const needle=($('wiGallerySearch')?.value||'').toLocaleLowerCase('nl').trim();
+ const choices=Object.entries(TYPES).filter(([id])=>id!=='mathplot').map(([id,label])=>{
+  const info=WI_GALLERY_META[id]||['Bewerkbaar onderdeel','activity'];
+  return {id,label,help:info[0],category:info[1],kind:''};
+ }).concat(Object.entries(WI_PLOT_PRESETS).map(([kind,p])=>({id:'mathplot',label:p.name,help:p.help,category:'math',kind})));
+ root.innerHTML=choices.filter(v=>(wiGalleryGroup==='all'||v.category===wiGalleryGroup)&&
+ (!needle||(v.label+' '+v.help).toLocaleLowerCase('nl').includes(needle)))
+ .map(v=>'<button type="button" class="wi-workform-card" data-wi-pick="'+v.id+'" data-wi-plot-kind="'+v.kind+
+ '" aria-pressed="'+String(slide?.type===v.id&&(v.id!=='mathplot'||wiPlotConfig(slide).plotKind===v.kind))+
+ '">'+(v.kind?wiPlotThumb(v.kind):'<span class="wi-workform-art" data-type="'+v.id+'"></span>')+'<strong>'+esc(v.label)+'</strong><small>'+esc(v.help)+'</small></button>')
+ .join('')||'<p class="wi-guide-muted">Geen onderdelen gevonden. Probeer een andere zoekterm.</p>';
+ document.querySelectorAll('[data-wi-gallery-filter]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.wiGalleryFilter===wiGalleryGroup)));
+}
+$('wiWorkformGallery').addEventListener('click',e=>{
+ const b=e.target.closest('[data-wi-pick]');if(!b)return;
+ $('guideType').value=b.dataset.wiPick;
+ $('guideType').dispatchEvent(new Event('change',{bubbles:true}));
+ if(b.dataset.wiPick==='mathplot'&&b.dataset.wiPlotKind){
+  const slide=lesson.slides[selected],kind=b.dataset.wiPlotKind,defaultValues=WI_PLOT_PRESETS[kind];
+  Object.assign(slide,{plotKind:kind,plotA:defaultValues.a,plotB:defaultValues.b,plotC:defaultValues.c,plotGrid:true,plotPoints:false});
+  renderEditor();scheduleDraftSave();
+ }
+});
+document.querySelectorAll('[data-wi-gallery-filter]').forEach(b=>b.addEventListener('click',()=>{
+ wiGalleryGroup=b.dataset.wiGalleryFilter;wiRenderGallery(lesson.slides[selected]);
+}));
+$('wiGallerySearch').addEventListener('input',()=>wiRenderGallery(lesson.slides[selected]));
+$('deckMenu').addEventListener('click',()=>{
+ const extra=$('deckExtra'),opened=extra.classList.toggle('wi-open');
+ $('deckMenu').setAttribute('aria-expanded',String(opened));
+ $('deckMenu').textContent=opened?'Menu ▴':'Menu ▾';
+});
+$('deckExit').addEventListener('click',()=>$('close').click());
+$('deckExtra').addEventListener('click',e=>{
+ if(e.target.closest('button')&&!e.target.closest('#deckExit')){
+  $('deckExtra').classList.remove('wi-open');
+  $('deckMenu').setAttribute('aria-expanded','false');
+  $('deckMenu').textContent='Menu ▾';
+ }
+});
+
 function guidePages(){
  const pages=[
   {kind:'title',name:'Naam van de les'},
@@ -1290,6 +1527,7 @@ function guideRender(){
   $('guideType').innerHTML=Object.entries(TYPES).map(([key,name])=>'<option value="'+key+'">'+esc(name)+'</option>').join('');
   $('guideType').value=slide.type;
   $('guideTypeExplain').textContent=GUIDE_TYPE_HELP[slide.type]||'';
+  wiRenderGallery(slide);
  }
  if(kind==='slide'){
   $('guideSlideMeta').textContent=(slide?.phase||'Lesdeel')+' · dia '+(selected+1)+' van '+lesson.slides.length;
@@ -1420,10 +1658,8 @@ function draftAvailable(){
 function refreshDraftButton(){
  const btn=$('draftRestore');if(btn)btn.hidden=!draftAvailable();
 }
-function scheduleDraftSave(){
+function writeDraft(){
  if(document.documentElement.classList.contains('standalone'))return;
- clearTimeout(draftSaveTimer);
- draftSaveTimer=setTimeout(()=>{
   try{
    const value=JSON.stringify({savedAt:Date.now(),lesson,guidePage:guideReady?guidePage:null});
    if(value.length>900000){$('designSaved').textContent='Concept te groot voor browseropslag. Download je lesbestand.';return}
@@ -1431,7 +1667,10 @@ function scheduleDraftSave(){
    $('designSaved').textContent='Concept bewaard in deze browser';
    refreshDraftButton();
   }catch(e){$('designSaved').textContent='Opslaan in browser niet mogelijk. Download je lesbestand.'}
- },550);
+}
+function scheduleDraftSave(){
+ if(document.documentElement.classList.contains('standalone'))return;
+ clearTimeout(draftSaveTimer);draftSaveTimer=setTimeout(()=>{draftSaveTimer=null;writeDraft()},550);
 }
 function restoreDraft(skipConfirmation=false){
  if(!skipConfirmation&&!confirm('Herstel je laatste lokale concept? De huidige les op het scherm wordt vervangen.'))return;
@@ -1472,11 +1711,14 @@ function designGraphSVG(s){
 function designActionButton(action,index,label){
  return '<button type="button" data-design-action="'+action+'" data-index="'+index+'" aria-label="'+esc(label)+'">'+esc(label)+'</button>';
 }
+function designExperiments(s){
+ return '<details class="design-experiments"><summary>Grafiekexperimenten bewerken</summary>'+availableExperiments(s).map((x,i)=>'<div class="design-object"><div class="design-object-title">Experiment '+(i+1)+'</div>'+['label','question','instruction'].map((key,j)=>'<label>'+['Naam','Onderzoeksvraag','Instructie'][j]+'<textarea data-experiment="'+i+'" data-experiment-field="'+key+'" aria-label="'+['Naam','Onderzoeksvraag','Instructie'][j]+' experiment '+(i+1)+'">'+esc(x[key]||'')+'</textarea></label>').join('')+'<div class="design-graph-values">'+[['g','Groeifactor'],['b','Beginwaarde'],['target','Doelfactor']].map(([key,label])=>'<label>'+label+'<input type="number" step="any" min="0.000001" data-experiment="'+i+'" data-experiment-field="'+key+'" aria-label="'+label+' experiment '+(i+1)+'" value="'+esc(x[key])+'"></label>').join('')+'</div>'+designActionButton('removeExperiment',i,'Verwijder experiment')+'</div>').join('')+(availableExperiments(s).length<6?'<button class="design-add" data-design-action="addExperiment" type="button">+ Experiment toevoegen</button>':'')+'</details>';
+}
 function designBody(s){
  if(s.type==='text')return designEdit('body',s.body,'Tekst op deze dia','design-content','Voeg hier je uitleg of opdracht toe.');
  if(s.type==='question'){
   const options=(s.options||[]).slice(0,4);
-  return '<div class="design-options">'+options.map((v,i)=>'<div class="design-option"><span>'+String.fromCharCode(65+i)+'</span>'+designArrayEdit('options',i,v,'Antwoord '+String.fromCharCode(65+i),'design-edit-text','Antwoord')+designActionButton('setCorrect',i,(s.correct===i?'✓ Juiste':'Juiste'))+designActionButton('removeOption',i,'×')+'</div>').join('')+'</div>'+(options.length<4?'<button class="design-add" data-design-action="addOption" type="button">+ Antwoord toevoegen</button>':'')+'<p class="design-hint">De knop Juiste bepaalt het juiste antwoord. Dat verschijnt pas wanneer je het toont.</p>'+designEdit('explanation',s.explanation,'Uitleg na de vraag','design-content','Uitleg die pas na de vraag verschijnt.');
+  return '<div class="design-options">'+options.map((v,i)=>'<div class="design-option"><span>'+String.fromCharCode(65+i)+'</span>'+designArrayEdit('options',i,v,'Antwoord '+String.fromCharCode(65+i),'design-edit-text','Antwoord')+designActionButton('setCorrect',i,(s.correct===i?'✓ Juiste':'Juiste'))+designActionButton('removeOption',i,'×')+'</div>').join('')+'</div>'+(options.length<4?'<button class="design-add" data-design-action="addOption" type="button">+ Antwoord toevoegen</button>':'')+'<label class="design-hint"><input type="checkbox" data-design-later '+(s.later?'checked':'')+'> Antwoord pas na het grafiekonderzoek bespreken</label><button type="button" class="small" data-design-action="clearCorrect">Geen juist antwoord instellen</button><p class="design-hint">De knop Juiste bepaalt het juiste antwoord. Dat verschijnt pas wanneer je het toont.</p>'+designEdit('explanation',s.explanation,'Uitleg na de vraag','design-content','Uitleg die pas na de vraag verschijnt.');
  }
  if(s.type==='steps'){
   return '<div>'+((s.steps||[]).map((step,i)=>'<div class="design-object"><div class="design-object-title">Stap '+(i+1)+'</div>'+designArrayEdit('steps',i,step,'Stap '+(i+1),'design-object-main','Beschrijf deze stap')+'<div class="design-tiny-actions">'+designActionButton('removeStep',i,'Verwijder')+'</div></div>').join(''))+'</div><button class="design-add" data-design-action="addStep" type="button">+ Stap toevoegen</button>';
@@ -1496,8 +1738,9 @@ function designBody(s){
  if(s.type==='error'){
   return '<div class="design-row-grid"><div class="design-object"><div class="design-object-title">Leerlingaanpak</div>'+designEdit('wrong',s.wrong,'De foutieve uitwerking','design-object-main','Schrijf hier de foutieve berekening')+'</div><div class="design-object"><div class="design-object-title">Verklaring</div>'+designEdit('challenge',s.challenge,'Opdracht bij de fout','design-content','Wat moeten leerlingen verbeteren?')+'</div></div><div class="design-object"><div class="design-object-title">Later onthullen</div>'+designEdit('correction',s.correction,'Juiste aanpak','design-content','Juiste berekening en uitleg')+'</div>';
  }
+ if(s.type==='mathplot')return wiPlotEditor(s);
  if(s.type==='graph'){
-  return '<div class="design-hint">Deze grafiek reageert in de presentatie op de schuifregelaars. Hier stel je de beginwaarden in.</div>'+designGraphSVG(s)+'<div class="design-graph-values">'+[['g','Groeifactor',s.g||1.05],['b','Beginwaarde',s.b||1000],['target','Doelfactor',s.target||2]].map(([key,label,val])=>'<label>'+label+'<input type="number" data-design-number="'+key+'" step="any" min=".001" value="'+esc(val)+'"></label>').join('')+'</div><p class="design-hint">Meerdere experimenten kun je bij Alle velden tonen aanpassen.</p>'+designEdit('graphExplanation',s.graphExplanation,'Uitleg bij grafiek','design-content','Welke verklaring wil je later tonen?');
+  return '<div class="design-hint">Deze grafiek reageert in de presentatie op de schuifregelaars. Hier stel je de beginwaarden in.</div>'+designGraphSVG(s)+'<div class="design-graph-values">'+[['g','Groeifactor',s.g||1.05],['b','Beginwaarde',s.b||1000],['target','Doelfactor',s.target||2]].map(([key,label,val])=>'<label>'+label+'<input type="number" data-design-number="'+key+'" step="any" min=".001" value="'+esc(val)+'"></label>').join('')+'</div>'+designExperiments(s)+designEdit('graphExplanation',s.graphExplanation,'Uitleg bij grafiek','design-content','Welke verklaring wil je later tonen?');
  }
  return '<p class="design-empty">Kies een werkvorm om te beginnen.</p>';
 }
@@ -1518,8 +1761,9 @@ function syncDesignForm(s){
  for(const key of ['g','b','target','correct']){
   const node=$('f-'+key);if(node)node.value=s[key]??'';
  }
+ const experiments=$('f-experiments');if(experiments)experiments.value=(s.experiments||[]).map(x=>[x.label,x.question,x.g,x.b,x.target,x.instruction||''].join(' | ')).join('\n');
  const quiz=$('f-quizLines');
- if(quiz)quiz.value=(s.questions||[]).map(q=>[q.prompt,...(q.options||[]),q.correct>=0?String.fromCharCode(65+q.correct):'',q.explanation||''].join(' | ')).join('\n');
+ if(quiz)quiz.value=quizLines(s.questions);
 }
 function designChanged(){
  const slide=lesson.slides[selected];
@@ -1553,6 +1797,7 @@ function renderDesigner(){
  $('designType').innerHTML=Object.entries(TYPES).map(([key,val])=>'<option value="'+key+'">'+esc(val)+'</option>').join('');
  $('designType').value=s.type;
  document.querySelectorAll('[data-design-layout]').forEach(btn=>btn.setAttribute('aria-pressed',String(effective===btn.dataset.designLayout)));
+ $('designRemove').disabled=lesson.slides.length===1;
  $('designMoveUp').disabled=selected===0;
  $('designMoveDown').disabled=selected===lesson.slides.length-1;
  const intro='<div class="design-main">'+designEdit('phase',s.phase,'Lesfase','design-eyebrow','Bijvoorbeeld: onderzoeken')+designEdit('title',s.title,'Titel van deze dia','design-title','Geef deze dia een titel')+designEdit('prompt',s.prompt,'Vraag of instructie','design-prompt','Welke vraag stel je aan leerlingen?')+'</div>';
@@ -1560,7 +1805,7 @@ function renderDesigner(){
  $('designCanvas').dataset.designLayout=effective;
  applyDesignerTheme();
  $('designCanvas').innerHTML='<div class="design-columns">'+intro+body+'</div><div class="design-footer">'+esc(lesson.level||'Wiskunde')+' · '+esc(lesson.title||'Nieuwe les')+' · dia '+(selected+1)+' van '+lesson.slides.length+'</div>';
- $('designHint').textContent=s.type==='graph'?'Stel de getallen in. Test de interactie met Bekijk deze dia.':s.type==='practice'?'Klik op een opgave. Hulp en uitwerking kun je afzonderlijk bewerken.':'Klik op tekst of een onderdeel om het aan te passen.';
+ $('designHint').textContent=s.type==='mathplot'?'Open Grafiek aanpassen voor de waarden; test de schuifregelaars in de presentatie.':s.type==='graph'?'Stel de getallen in. Test de interactie met Bekijk deze dia.':s.type==='practice'?'Klik op een opgave. Hulp en uitwerking kun je afzonderlijk bewerken.':'Klik op tekst of een onderdeel om het aan te passen.';
  $('designSaved').textContent='Direct bewerken';
 }
 function initDesignType(type){
@@ -1572,6 +1817,7 @@ function initDesignType(type){
  if(type==='practice'){s.tasks=s.tasks?.length?s.tasks:['Beschrijf de opgave'];s.hints=s.hints||[];s.solutions=s.solutions||[]}
  if(type==='quizset')s.questions=s.questions?.length?s.questions:[{prompt:'Welke keuze maak je?',options:['A','B','C','D'],correct:-1,explanation:''}];
  if(type==='graph'){s.g=Number(s.g)>0&&s.g!==1?Number(s.g):1.05;s.b=Number(s.b)>0?Number(s.b):1000;s.target=Number(s.target)>0?Number(s.target):2}
+ if(type==='mathplot')Object.assign(s,wiPlotConfig(s));
  if(type==='error'){s.wrong=s.wrong||'0,15^t = 0,5';s.challenge=s.challenge||'Wat is hier fout gegaan?';s.correction=s.correction||''}
 }
 function initDesignControls(){
@@ -1579,6 +1825,21 @@ function initDesignControls(){
  canvas.addEventListener('input',e=>{
   const el=e.target,s=lesson.slides[selected];if(!s)return;
   const value=el.innerText??el.textContent??'';
+  if(el.dataset.designPlotValue){
+   const p=wiPlotConfig(s),key=el.dataset.designPlotValue,value=Number(el.value);p[key]=value;
+   if(!el.value||!wiPlotValid(p)){el.setCustomValidity('Controleer deze waarde. De groeifactor bij exponentieel moet tussen 0,1 en 5 liggen.');el.reportValidity();return;}
+   el.setCustomValidity('');s[key]=value;
+   const chart=$('wiDesignPlot');if(chart)chart.innerHTML=wiPlotSVG(wiPlotConfig(s));
+   const formula=$('wiDesignPlotFormula');if(formula)formula.textContent=wiPlotFormula(wiPlotConfig(s));
+   designChanged();return;
+  }
+  if(el.dataset.experiment!==undefined){
+   const key=el.dataset.experimentField,index=Number(el.dataset.experiment);
+   const number=['g','b','target'].includes(key),val=number?Number(el.value):el.value;
+   if(number&&(!el.value||!Number.isFinite(val)||val<=0||(key==='g'&&val===1))){el.setCustomValidity('Gebruik een positief getal; de groeifactor mag geen 1 zijn.');el.reportValidity();return}
+   el.setCustomValidity('');s.experiments??=deep(availableExperiments(s));s.experiments[index][key]=val;
+   designChanged();return;
+  }
   if(el.dataset.designEdit){s[el.dataset.designEdit]=value;designChanged();return}
   if(el.dataset.designArray){
    const field=el.dataset.designArray,index=Number(el.dataset.index);s[field]??=[];s[field][index]=value;designChanged();return;
@@ -1595,16 +1856,35 @@ function initDesignControls(){
    designChanged();return;
   }
   if(el.dataset.designNumber){
-   const val=Number(el.value);if(!Number.isFinite(val)||val<=0||(el.dataset.designNumber==='g'&&val===1))return;
+   const val=Number(el.value);if(!el.value||!Number.isFinite(val)||val<=0||(el.dataset.designNumber==='g'&&val===1)){el.setCustomValidity('Gebruik een positief getal; de groeifactor mag geen 1 zijn.');el.reportValidity();return}el.setCustomValidity('');
    s[el.dataset.designNumber]=val;syncDesignForm(s);
    const old=$('designMiniGraph');if(old)old.outerHTML=designGraphSVG(s);
    designChanged();
   }
  });
+ canvas.addEventListener('change',e=>{
+  const el=e.target,s=lesson.slides[selected];
+  if(el.dataset.designPlotKind&&s?.type==='mathplot'){
+   const d=WI_PLOT_PRESETS[el.value];if(!d)return;
+   Object.assign(s,{plotKind:el.value,plotA:d.a,plotB:d.b,plotC:d.c});renderDesigner();designChanged();return;
+  }
+  if(el.dataset.designPlotFlag&&s?.type==='mathplot'){
+   s[el.dataset.designPlotFlag]=el.checked;
+   const chart=$('wiDesignPlot');if(chart)chart.innerHTML=wiPlotSVG(wiPlotConfig(s));designChanged();return;
+  }
+  if(e.target.matches('[data-design-later]')){lesson.slides[selected].later=e.target.checked;if($('f-later'))$('f-later').checked=e.target.checked;designChanged()}});
  canvas.addEventListener('click',e=>{
   const btn=e.target.closest('button[data-design-action]');if(!btn)return;
   const s=lesson.slides[selected],a=btn.dataset.designAction,i=Number(btn.dataset.index);
   if(a==='setCorrect')s.correct=i;
+  if(a==='clearCorrect')s.correct=-1;
+  if(a==='addExperiment'){
+   s.experiments??=deep(availableExperiments(s));
+   if(s.experiments.length<6)s.experiments.push({label:'Nieuw experiment',question:'',instruction:'',g:s.g,b:s.b,target:s.target});
+  }
+  if(a==='removeExperiment'){
+   s.experiments??=deep(availableExperiments(s));if(s.experiments.length>1)s.experiments.splice(i,1);
+  }
   if(a==='removeOption'&&s.options?.length>2){s.options.splice(i,1);if(s.correct===i)s.correct=-1;else if(s.correct>i)s.correct--}
   if(a==='addOption'&&(s.options||[]).length<4)(s.options??=[]).push('Nieuw antwoord');
   if(a==='addStep')(s.steps??=[]).push('Beschrijf deze stap');
@@ -1623,17 +1903,18 @@ function initDesignControls(){
   if(e.key==='Enter'&&['phase','title'].includes(field)){e.preventDefault();e.target.blur()}
  });
  $('designType').addEventListener('change',e=>{
-  save();lesson.slides[selected].type=e.target.value;initDesignType(e.target.value);renderEditor();
+  save();lesson.slides[selected].type=e.target.value;initDesignType(e.target.value);renderEditor();scheduleDraftSave();
  });
  document.querySelectorAll('[data-design-layout]').forEach(btn=>btn.onclick=()=>{
   save();const s=lesson.slides[selected];s.layout=btn.dataset.designLayout;
   if($('f-layout'))$('f-layout').value=s.layout;
   renderDesigner();designChanged();
  });
+ $('designRemove').onclick=()=>$('remove').click();
  $('designCopy').onclick=()=>{
   save();const clone=deep(lesson.slides[selected]);clone.id='deel-'+Date.now()+'-'+Math.random().toString(36).slice(2,8);
   clone.title=(clone.title||'Lesdeel')+' (kopie)';
-  lesson.slides.splice(selected+1,0,clone);selected++;renderEditor();
+  lesson.slides.splice(selected+1,0,clone);selected++;renderEditor();scheduleDraftSave();
  };
  $('designMoveUp').onclick=()=>{if(selected>0)$('up').click()};
  $('designMoveDown').onclick=()=>{if(selected<lesson.slides.length-1)$('down').click()};
@@ -1659,7 +1940,7 @@ function bindStoryBoard(){
    if(!Number.isInteger(dragged)||dragged===dest)return;
    save();const active=lesson.slides[selected]?.id;
    const moved=lesson.slides.splice(dragged,1)[0];lesson.slides.splice(dest,0,moved);
-   selected=lesson.slides.findIndex(x=>x.id===active);renderEditor();
+   selected=lesson.slides.findIndex(x=>x.id===active);renderEditor();scheduleDraftSave();
   });
   item.addEventListener('dragend',()=>{dragged=null;document.querySelectorAll('.drop-target,.dragging').forEach(el=>el.classList.remove('drop-target','dragging'))});
  });
@@ -1678,11 +1959,12 @@ function renderEditor(){
  :s.type==="table"?field("columnLabels","Kolomnamen (gescheiden door |)",(s.columnLabels||["Tijd","Hoeveelheid"]).join(" | "))+field("tableRows","Tabelrijen: tijd | waarde, per regel",(s.tableRows||[["0","1000"],["12","2000"]]).map(x=>x.join(" | ")).join("\n"),true)+field("tableExplanation","Uitleg, pas na onderzoek tonen",s.tableExplanation||"",true)
  :s.type==="practice"?field("tasks","Opgaven, één per regel",(s.tasks||["Bereken de verdubbelingstijd."]).join("\n"),true)+field("hints","Hulp per opgave, één per regel",(s.hints||[]).join("\n"),true)+field("solutions","Uitwerkingen per opgave, één per regel",(s.solutions||[]).join("\n"),true)
  :s.type==="compare"?field("compareLabels","Namen van twee kolommen (|)",(s.compareLabels||["Eerst","Na onderzoek"]).join(" | "))+field("compareItems","Vergelijkingen, links | rechts, per regel",(s.compareItems||[["Voorspelling","Nieuwe verklaring"]]).map(x=>x.join(" | ")).join("\n"),true)+field("compareConclusion","Conclusie, pas onthullen",s.compareConclusion||"",true)
- :s.type==="quizset"?field("quizLines","Per regel: vraag | A | B | C | D | juiste letter | uitleg",(s.questions||[]).map(q=>[q.prompt,...(q.options||[]),String.fromCharCode(65+(q.correct??-1)),q.explanation||""].join(" | ")).join("\n"),true)
+ :s.type==="quizset"?field("quizLines","Per regel: vraag | A | B | C | D | juiste letter | uitleg",quizLines(s.questions),true)
+ :s.type==="mathplot"?'<p class="hint">Klik op de dia en open Grafiek aanpassen. Hier staan je grafiekparameters.</p>'
  :s.type==="error"?field("wrong","Foutieve redenering of formule",s.wrong||"",true)+field("challenge","Wat moeten leerlingen verklaren?",s.challenge||"",true)+field("correction","Juiste uitwerking, pas na keuze",s.correction||"",true)
  :field("g","Groeifactor",s.g)+field("b","Beginwaarde",s.b)+field("target","Doelfactor (2 voor verdubbelen; 0,5 voor halveren)",s.target??(Number(s.g)<1?.5:2))+field("graphExplanation","Uitleg na onderzoek",s.graphExplanation||"",true)+field("experiments","Eigen experimenten (optioneel): naam | onderzoeksvraag | groeifactor | beginwaarde | doelfactor | instructie",(s.experiments||[]).map(x=>[x.label,x.question,x.g,x.b,x.target,x.instruction||""].join(" | ")).join("\n"),true));
  $("f-layout").value=LAYOUTS.has(s.layout)?s.layout:"inherit";
- $("type").onchange=()=>{const type=$("type").value;save();lesson.slides[selected].type=type;initDesignType(type);renderEditor()};
+ $("type").onchange=()=>{const type=$("type").value;save();lesson.slides[selected].type=type;initDesignType(type);renderEditor();scheduleDraftSave()};
  review();
  renderDesigner();
  bindStoryBoard();
@@ -1700,6 +1982,7 @@ function review(){
   if(s.type==="table"&&!s.tableRows?.length)notes.push("Lesdeel "+(i+1)+": voeg tabelrijen toe.");
   if(s.type==="practice"&&!s.tasks?.length)notes.push("Lesdeel "+(i+1)+": voeg opgaven toe.");
   if(s.type==="compare"&&!s.compareItems?.length)notes.push("Lesdeel "+(i+1)+": voeg vergelijkingen toe.");
+  if(s.type==="mathplot"&&!wiPlotValid(wiPlotConfig(s)))notes.push('Lesdeel '+(i+1)+': controleer de grafiekparameters.');
   if(s.type==="graph"&&(s.g<=0||s.g===1||s.target<=0))notes.push("Lesdeel "+(i+1)+": controleer groeifactor en doelwaarde.");
   if(s.type==="graph"&&s.experiments?.some(x=>!Number.isFinite(x.g)||x.g<=0||x.g===1||!Number.isFinite(x.b)||x.b<=0||!Number.isFinite(x.target)||x.target<=0))notes.push("Lesdeel "+(i+1)+": controleer de getallen in de eigen experimenten.");
   if(s.type==="quizset"&&(!s.questions?.length||s.questions.some(q=>q.options?.length<2||q.options?.length>4)))notes.push("Lesdeel "+(i+1)+": controleer de begripsvragen en antwoorden.");
@@ -1758,7 +2041,7 @@ $("save").onclick=()=>{save();download("wihtml-les.json",JSON.stringify(lesson,n
 const TYPE_ALIASES={
  text:"text",tekst:"text",uitleg:"text",opdracht:"text",
  question:"question",meerkeuze:"question",meerkeuzevraag:"question",vraag:"question",poll:"question",
- graph:"graph",grafiek:"graph",grafiekonderzoek:"graph",onderzoek:"graph",
+ graph:"graph",grafiek:"graph",grafiekonderzoek:"graph",onderzoek:"graph",mathplot:"mathplot",functiegrafiek:"mathplot",
  steps:"steps",stappen:"steps",uitwerking:"steps",
  table:"table",tabel:"table",onderzoekstabel:"table",
  practice:"practice",oefenen:"practice",oefeningen:"practice",oefening:"practice",zelfstandig:"practice",
@@ -1873,7 +2156,7 @@ function normalizeLessonJSON(input){
     const letter=answer.toUpperCase().trim();
     correct=/^[A-F]$/.test(letter)?letter.charCodeAt(0)-65:item.options.indexOf(answer);
    }
-   item.correct=correct;item.explanation=asText(first(b,["explanation","verklaring","uitleg"],""));
+   item.correct=correct>=0&&correct<item.options.length?correct:-1;item.explanation=asText(first(b,["explanation","verklaring","uitleg"],""));
    item.later=Boolean(first(b,["later","laterBespreken","onthulLater"],false));
   }
   if(type==="quizset"){
@@ -1884,12 +2167,19 @@ function normalizeLessonJSON(input){
     if(choices.length<2||choices.length>4)throw Error("Vraag "+(i+1)+": gebruik 2 tot 4 keuzes.");
     const ans=first(q,["correct","juisteAntwoord","juist"],-1);
     let correct=typeof ans==="number"?ans:(typeof ans==="string"&&/^[A-D]$/i.test(ans)?ans.toUpperCase().charCodeAt(0)-65:choices.indexOf(ans));
-    if(correct<0||correct>=choices.length)correct=-1;
+    if(!Number.isInteger(correct)||correct<0||correct>=choices.length)correct=-1;
     return {prompt:asText(first(q,["prompt","vraag","titel"],"Vraag "+(i+1))),options:choices,correct,explanation:asText(first(q,["explanation","uitleg","verklaring"],""))};
    });
   }
   if(type==="error"){item.wrong=asText(first(b,["wrong","fout","foutieveUitwerking"],""));item.challenge=asText(first(b,["challenge","opdracht","vraag"],item.prompt));item.correction=asText(first(b,["correction","verbetering","uitleg"],""))}
   if(type==="steps")item.steps=asList(first(b,["steps","stappen"],[]));
+  if(type==="mathplot"){
+   const kind=asText(first(b,["plotKind","grafiektype"],"linear")),d=WI_PLOT_PRESETS[kind];
+   if(!d)throw Error("Lesdeel "+(index+1)+": onbekend grafiektype.");
+   const p={plotKind:kind,plotA:Number(first(b,["plotA","a"],d.a)),plotB:Number(first(b,["plotB","b"],d.b)),plotC:Number(first(b,["plotC","c"],d.c)),plotGrid:first(b,["plotGrid"],true)!==false,plotPoints:first(b,["plotPoints"],false)===true};
+   if(!wiPlotValid(p))throw Error("Lesdeel "+(index+1)+": ongeldige grafiekparameters.");
+   Object.assign(item,p);
+  }
   if(type==="graph"){
    const g=Number(first(b,["g","groeifactor"],NaN)),base=Number(first(b,["b","beginwaarde"],NaN));
    if(!Number.isFinite(g)||g<=0||g===1||!Number.isFinite(base)||base<=0)throw Error("Lesdeel "+(index+1)+": grafiek heeft een positieve beginwaarde en groeifactor anders dan 1 nodig.");
@@ -1902,7 +2192,7 @@ function normalizeLessonJSON(input){
     if(!Array.isArray(experiments)||experiments.length>6)throw Error("Lesdeel "+(index+1)+": gebruik maximaal 6 experimenten.");
     item.experiments=experiments.map((x,i)=>{
      const gg=Number(first(x,["g","groeifactor"],item.g)),bb=Number(first(x,["b","beginwaarde"],item.b)),tt=Number(first(x,["target","doelfactor"],gg>1?2:.5));
-     if(!(gg>0&&gg!==1&&bb>0&&tt>0))throw Error("Experiment "+(i+1)+": controleer groeifactor, beginwaarde en doelwaarde.");
+     if(!([gg,bb,tt].every(Number.isFinite)&&gg>0&&gg!==1&&bb>0&&tt>0))throw Error("Experiment "+(i+1)+": controleer groeifactor, beginwaarde en doelwaarde.");
      return {label:asText(first(x,["label","naam","title"],"Experiment "+(i+1))),question:asText(first(x,["question","vraag"],"")),instruction:asText(first(x,["instruction","instructie"],"")),g:gg,b:bb,target:tt};
     });
    }
@@ -1938,7 +2228,7 @@ function normalizeLessonJSON(input){
   title:asText(first(raw,["title","titel","onderwerp","topic"],"Nieuwe wiskundeles")),
   level:asText(first(raw,["level","niveau","leerjaar"],"Wiskunde")),
   goal:asText(first(raw,["goal","leerdoelen","doelen","objectives"],"")),
-  slides,layout:suppliedLayout||lesson.layout||"single",route:lesson.route||"own",
+  slides,layout:suppliedLayout||lesson.layout||"single",route:["own","discover","explain","practice"].includes(raw.route)?raw.route:lesson.route||"own",
   features:newFeatures,template
  };
 }
@@ -1956,10 +2246,11 @@ $("import").onchange=async e=>{
   msg("JSON wordt ingelezen...");
   if(file.size>2_000_000)throw Error("Het bestand is groter dan 2 MB.");
   const content=await file.text();
-  const doc=normalizeLessonJSON(JSON.parse(content));
+  const input=JSON.parse(content),raw=input?.lesson||input;
+  const doc=normalizeLessonJSON(input);
   if(!confirmReplacingLesson('door dit bestand'))return;
-  doc.route=$("routePreset").value;
-  doc.slides=reorderLessonSlides(doc.slides,doc.route);
+  const savedDeck=Array.isArray(raw?.slides)||Array.isArray(raw?.lesdelen);
+  if(!savedDeck)doc.slides=reorderLessonSlides(doc.slides,doc.route);
   lesson=doc;hasActiveLesson=true;selected=0;current=0;paths={};rounds={};revealed=false;
   tableRevealed=0;compareRevealed=0;practiceState={};quizSelections={};quizAnswersVisible=false;errorCorrectionVisible=false;
   applyTemplate();renderEditor();if(guideReady)guideShow({kind:'title'});if($('startDialog').open)$('startDialog').close();
@@ -2051,7 +2342,9 @@ function chooseExperiment(index){
  graphActivePreset=list[graphMode];
  graphHelp=false;graphLinear=false;graphMarks=false;graphSelectedTime=null;
  const g=$("graphG"),b=$("graphB");if(!g||!b)return;
- g.min=graphActivePreset.g<1?".600":"1.010";g.max=graphActivePreset.g<1?".995":"1.400";g.step=".0001";
+ g.min=String(Math.min(graphActivePreset.g,graphActivePreset.g<1?.6:1.01));
+ g.max=String(Math.max(graphActivePreset.g,graphActivePreset.g<1?.995:1.4));g.step='any';
+ b.min=String(Math.min(250,graphActivePreset.b));b.max=String(Math.max(5000,graphActivePreset.b*2));b.step='any';
  g.value=graphActivePreset.g;b.value=graphActivePreset.b;
  $("graphTabs").innerHTML=list.map((v,i)=>'<button type="button" role="tab" aria-selected="'+String(i===graphMode)+'" data-exp="'+i+'" class="'+(i===graphMode?"active":"")+'">'+(i+1)+' · '+esc(v.label||"Experiment")+'</button>').join("");
  $("graphTabs").querySelectorAll("[data-exp]").forEach(btn=>btn.onclick=()=>chooseExperiment(Number(btn.dataset.exp)));
@@ -2091,6 +2384,7 @@ function mistakeView(s){
  return '<div class="mistake-grid"><section class="mistake-panel"><div class="eyebrow">Een leerling schrijft</div><p class="mistake-math">'+esc(s.wrong||"")+'</p><p class="mistake-question">'+esc(s.challenge||"Waar gaat dit mis?")+'</p></section><section class="mistake-panel feedback-panel"><div class="eyebrow">Wat zou jij verbeteren?</div><p>Zoek eerst zelf de fout. Schrijf de juiste aanpak op en bespreek je verklaring.</p><button id="errorReveal" type="button" class="small">'+(errorCorrectionVisible?"Verberg uitwerking":"Controleer de uitwerking")+'</button>'+(errorCorrectionVisible?'<p class="mistake-answer">'+esc(s.correction||"")+'</p>':"")+'</section></div>';
 }
 function bindLessonComponents(s){
+ if(s.type==="mathplot")wiBindPlot(s);
  if(s.type==="question"){
   $("slidecontent").querySelectorAll("[data-answer-index]").forEach(btn=>btn.onclick=()=>{
    questionChoices[s.id]=Number(btn.dataset.answerIndex);renderSlide();
@@ -2142,7 +2436,8 @@ function renderSlide(){
  (s.type==="compare"?compareView(s):"")+
  (s.type==="quizset"?quizGroupView(s):"")+
  (s.type==="error"?mistakeView(s):"")+
- (s.type==="graph"?'<div class="graph-tabs" id="graphTabs" role="tablist" aria-label="Kies een onderzoek"></div><div class="graph-question"><div class="graph-question-label" id="graphScenarioTitle"></div><p id="graphScenarioQuestion"></p><small id="graphScenarioPrompt"></small></div><div class="graph-lab"><div class="graph-plot-panel"><div class="graph-legend"><span>● Exponentieel</span><span id="graphLinearLegend" hidden>━ Lineair</span></div><svg id="plot" class="graph" viewBox="0 0 820 285" role="img" aria-label="Interactieve grafiek met meetpunten"></svg><div class="graph-action-row"><button id="graphMarks" class="small" aria-pressed="false">Toon meetpunten</button><button id="graphLinear" class="small" aria-pressed="false">Vergelijk met lineair</button><button id="graphLines" class="small" aria-pressed="false">Toon verdubbelings- of halveringstijd</button></div><div id="graphResult" class="graph-result" aria-live="polite"></div></div><div class="graph-settings-panel"><div id="graphControls" class="graph-controls"><div class="ctrl-unit"><label for="graphG">Groeifactor <output id="graphGOut"></output></label><input id="graphG" type="range" min="0.70" max="1.40" step="0.001"></div><div class="ctrl-unit"><label for="graphB">Beginwaarde <output id="graphBOut"></output></label><input id="graphB" type="range" min="250" max="5000" step="50"></div><div class="graph-formula" id="graphFormula"></div><button id="graphReset" class="small">Herstel dit experiment</button></div><div class="graph-values-wrap"><table class="graph-values"><thead><tr><th>Tijd</th><th>Hoeveelheid</th></tr></thead><tbody id="graphValues"></tbody></table><p id="graphSelected" aria-live="polite"></p></div></div></div><div class="graph-polls" id="graphPollActions"><button id="graphPollFirst" class="small">Eerste stemming</button><button id="graphPollSecond" class="small">Stem opnieuw</button><button id="graphPollCompare" class="small">Vergelijk de stemrondes</button></div>':"")+
+ (s.type==="mathplot"?wiPlotView(s):"")+
+ (s.type==="graph"?'<div class="graph-tabs" id="graphTabs" role="tablist" aria-label="Kies een onderzoek"></div><div class="graph-question"><div class="graph-question-label" id="graphScenarioTitle"></div><p id="graphScenarioQuestion"></p><small id="graphScenarioPrompt"></small></div><div class="graph-lab"><div class="graph-plot-panel"><div class="graph-legend"><span>● Exponentieel</span><span id="graphLinearLegend" hidden>━ Lineair</span></div><svg id="plot" class="graph" viewBox="0 0 820 285" role="img" aria-label="Interactieve grafiek met meetpunten"></svg><div class="graph-action-row"><button id="graphMarks" class="small" aria-pressed="false">Toon meetpunten</button><button id="graphLinear" class="small" aria-pressed="false">Vergelijk met lineair</button><button id="graphLines" class="small" aria-pressed="false">Toon verdubbelings- of halveringstijd</button></div><div id="graphResult" class="graph-result" aria-live="polite"></div></div><div class="graph-settings-panel"><details class="wi-plot-details"><summary>Parameters instellen</summary><div id="graphControls" class="graph-controls"><div class="ctrl-unit"><label for="graphG">Groeifactor <output id="graphGOut"></output></label><input id="graphG" type="range" min="0.70" max="1.40" step="0.001"></div><div class="ctrl-unit"><label for="graphB">Beginwaarde <output id="graphBOut"></output></label><input id="graphB" type="range" min="250" max="5000" step="50"></div><div class="graph-formula" id="graphFormula"></div><button id="graphReset" class="small">Herstel dit experiment</button></div></details><details class="wi-plot-details"><summary>Meetwaarden bekijken</summary><div class="graph-values-wrap"><table class="graph-values"><thead><tr><th>Tijd</th><th>Hoeveelheid</th></tr></thead><tbody id="graphValues"></tbody></table><p id="graphSelected" aria-live="polite"></p></div></details></div></div><details id="graphPollDetails" class="wi-graph-polls"><summary>Stemrondes</summary><div class="graph-polls" id="graphPollActions"><button id="graphPollFirst" class="small">Eerste stemming</button><button id="graphPollSecond" class="small">Stem opnieuw</button><button id="graphPollCompare" class="small">Vergelijk de stemrondes</button></div></details>':"")+
  (s.type==="question"&&revealed&&!s.later?'<div class="reveal">'+esc(s.explanation||"")+'</div>':"")+
  (s.type==="graph"&&revealed?'<div class="reveal">'+esc(s.graphExplanation||"Bespreek wat de grafiek laat zien.")+'</div>':"");
  arrangeSlide(s);
@@ -2153,7 +2448,7 @@ function renderSlide(){
  $("position").textContent=(current+1)+" / "+lesson.slides.length;
  $("prev").disabled=current===0;$("next").disabled=current===lesson.slides.length-1;
  $("draw").innerHTML=(paths[s.id]||[]).join("");
- $("draw").classList.toggle("armed",drawTool==="pen");
+ $("draw").classList.toggle("armed",["pen","marker","eraser"].includes(drawTool));
  $("slidecontent").style.visibility="visible";
  if(s.type==="graph"){
   const g=$("graphG"),b=$("graphB");
@@ -2167,7 +2462,7 @@ function renderSlide(){
    $("graphPollFirst").onclick=()=>compareVotes(first.id);
    $("graphPollSecond").onclick=()=>renderPoll(first.id);
    $("graphPollCompare").onclick=()=>compareVotes(first.id);
-  }else $("graphPollActions").hidden=true;
+  }else {$("graphPollActions").hidden=true;$("graphPollDetails").hidden=true}
   chooseExperiment(graphMode);
  }
  if(s.type==="steps"){
@@ -2231,13 +2526,13 @@ function graphRender(){
 }
 
 function openStage(){
- applyTemplate();stage.classList.add("show");stage.setAttribute("aria-hidden","false");loadRounds();renderSlide();
+ wiPlotRuntime={};applyTemplate();$("deckExtra").classList.remove("wi-open");$("deckMenu").setAttribute("aria-expanded","false");$("deckMenu").textContent="Menu ▾";stage.classList.add("show");stage.setAttribute("aria-hidden","false");loadRounds();renderSlide();
 }
-function closeStage(){stage.classList.remove("show");stage.setAttribute("aria-hidden","true");closeTools();stopTimer();stopStopwatch();$("spotlightOverlay")?.remove();$("curtainOverlay")?.remove();$("blackMask")?.remove();black=false;if(presenterInterval){clearInterval(presenterInterval);presenterInterval=null}}
+function closeStage(){$("deckExtra").classList.remove("wi-open");$("deckMenu").setAttribute("aria-expanded","false");stage.classList.remove("show");stage.setAttribute("aria-hidden","true");closeTools();stopTimer();stopStopwatch();$("spotlightOverlay")?.remove();$("curtainOverlay")?.remove();$("blackMask")?.remove();$("whiteMask")?.remove();black=false;if(presenterInterval){clearInterval(presenterInterval);presenterInterval=null}}
 $("preview").onclick=()=>{save();current=0;revealed=false;stepsVisible=0;tableRevealed=0;compareRevealed=0;practiceState={};quizSelections={};quizAnswersVisible=false;errorCorrectionVisible=false;graphHelp=false;graphLinear=false;graphMarks=false;graphSelectedTime=null;graphMode=0;graphActivePreset=null;openStage()};
 $("close").onclick=closeStage;
 $("prev").onclick=()=>move(-1);$("next").onclick=()=>move(1);
-function move(n){if(current+n<0||current+n>=lesson.slides.length)return;tableRevealed=0;compareRevealed=0;practiceState={};quizSelections={};quizAnswersVisible=false;errorCorrectionVisible=false;$("spotlightOverlay")?.remove();$("curtainOverlay")?.remove();$("blackMask")?.remove();black=false;current+=n;revealed=false;stepsVisible=0;graphHelp=false;graphLinear=false;graphMarks=false;graphSelectedTime=null;graphMode=0;graphActivePreset=null;drawTool="";canvas.classList.remove("armed");closeTools();renderSlide()}
+function move(n){if(current+n<0||current+n>=lesson.slides.length)return;tableRevealed=0;compareRevealed=0;practiceState={};quizSelections={};quizAnswersVisible=false;errorCorrectionVisible=false;$("spotlightOverlay")?.remove();$("curtainOverlay")?.remove();$("blackMask")?.remove();$("whiteMask")?.remove();black=false;current+=n;revealed=false;stepsVisible=0;graphHelp=false;graphLinear=false;graphMarks=false;graphSelectedTime=null;graphMode=0;graphActivePreset=null;drawTool="";canvas.classList.remove("armed");closeTools();renderSlide()}
 function closeTools(){paletteVisible=false;$("toolpop").classList.remove("show");$("pollPanel")?.remove();$("comparePanel")?.remove();$("notesPanel")?.remove();$("timerPanel")?.remove();$("stopwatchPanel")?.remove();$("overviewPanel")?.remove();$("namesPanel")?.remove();pollVisible=false}
 $("toolbtn").onclick=()=>{paletteVisible=!paletteVisible;$("toolpop").classList.toggle("show",paletteVisible)};
 $("deckTools").onclick=()=>$("toolbtn").click();
@@ -2280,7 +2575,7 @@ function openOverview(){
  $("overviewPanel")?.remove();
  const rows=lesson.slides.map((s,i)=>'<button class="overview-choice'+(i===current?" active":"")+'" data-go="'+i+'"><span>'+String(i+1).padStart(2,"0")+'</span><b>'+esc(s.title)+'</b></button>').join("");
  const p=floatPanel("overviewPanel","Ga naar een dia",'<div class="overview-list">'+rows+'</div>');
- p.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>{const i=+b.dataset.go;if(i!==current){current=i;revealed=false;stepsVisible=0;drawTool="";canvas.classList.remove("armed");renderSlide()}p.remove()});
+ p.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>{const i=+b.dataset.go;if(i!==current)move(i-current);p.remove()});
 }
 function openNamePicker(){
  $("namesPanel")?.remove();
@@ -2306,7 +2601,8 @@ function toggleBlack(){
 }
 function toggleBlank(){
  $("blackMask")?.remove();black=false;
- const slide=$("viewer").querySelector(".slide"),old=$("whiteMask");if(old){old.remove();return}
+ const old=$("whiteMask");if(old){old.remove();return}
+ const slide=$("viewer").querySelector(".slide");
  const b=document.createElement("div");b.id="whiteMask";b.className="white-mask";
  b.innerHTML='<button id="closeWhite" aria-label="Sluit wit scherm">× <span>Sluiten</span></button>';
  slide.append(b);b.querySelector("button").onclick=()=>b.remove()
@@ -2390,7 +2686,13 @@ function renderPresenter(){
 function printLesson(){
  const w=window.open("","wihtml-print","width=800,height=650");
  if(!w){floatPanel("notesPanel","Printen",'<p>Sta pop-upvensters toe om de les te printen.</p>');return}
- const html=lesson.slides.map((s,i)=>'<section><h2>'+(i+1)+". "+esc(s.title)+'</h2><p>'+esc(s.prompt||"")+'</p>'+(s.options?'<p>'+s.options.map((x,j)=>String.fromCharCode(65+j)+". "+esc(x)).join("<br>")+'</p>':"")+(s.body?'<p style="white-space:pre-line">'+esc(s.body)+'</p>':"")+'</section>').join("");
+ const html=lesson.slides.map((s,i)=>'<section><h2>'+(i+1)+". "+esc(s.title)+'</h2><p>'+esc(s.prompt||"")+'</p>'+(s.options?'<p>'+s.options.map((x,j)=>String.fromCharCode(65+j)+". "+esc(x)).join("<br>")+'</p>':"")+(s.body?'<p style="white-space:pre-line">'+esc(s.body)+'</p>':"")+
+ (s.tasks?'<ol>'+s.tasks.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ol>':'')+
+ (s.steps?'<ol>'+s.steps.map(()=>'<li>................................................................</li>').join('')+'</ol>':'')+
+ (s.questions?s.questions.map(q=>'<p>'+esc(q.prompt)+'</p><ul>'+q.options.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul>').join(''):'')+
+ (s.tableRows||s.compareItems?'<table>'+(s.tableRows||s.compareItems).map(row=>'<tr><td>'+esc(row[0])+'</td><td>........................</td></tr>').join('')+'</table>':'')+
+ (s.type==='error'?'<p>'+esc(s.wrong)+'</p><p>'+esc(s.challenge)+'</p>':'')+
+ (s.type==='graph'?'<p>Beginwaarde: '+esc(s.b)+' · Groeifactor: '+esc(s.g)+'</p>':'')+'</section>').join("");
  w.document.write('<!doctype html><html lang="nl"><meta charset="utf-8"><title>'+esc(lesson.title)+'</title><style>body{font:15px/1.5 system-ui;margin:32px}h1,h2{font-family:Georgia,serif}section{break-inside:avoid;border-bottom:1px solid #ddd;padding:15px 0}button{margin:10px}</style><h1>'+esc(lesson.title)+'</h1>'+html+'</html>');w.document.close();w.focus();w.print();
 }
 function setFitMode(){fitMode=!fitMode;stage.classList.toggle("studio-fit",fitMode)}
@@ -2429,7 +2731,7 @@ function svgPoint(e){const r=canvas.getBoundingClientRect();return [(e.clientX-r
 canvas.addEventListener("pointerdown",e=>{if(!["pen","marker","eraser"].includes(drawTool))return;if(drawTool==="eraser"){const box=canvas.getBoundingClientRect();const targetX=(e.clientX-box.left)/box.width*1200,targetY=(e.clientY-box.top)/box.height*675;const list=paths[currentSlide().id]||[];let best=-1,dist=Infinity;list.forEach((markup,i)=>{const tmp=document.createElementNS("http://www.w3.org/2000/svg","svg");tmp.innerHTML=markup;const path=tmp.firstElementChild;if(!path)return;const d=path.getAttribute("d")||"";const pts=[...d.matchAll(/[ML]\s*([\d.]+)[, ]+([\d.]+)/g)];for(const pt of pts){const delta=Math.hypot(+pt[1]-targetX,+pt[2]-targetY);if(delta<dist){dist=delta;best=i}}});if(best>=0&&dist<85){list.splice(best,1);canvas.innerHTML=list.join("")}return}drawing=true;canvas.setPointerCapture(e.pointerId);const [x,y]=svgPoint(e);activePath=document.createElementNS("http://www.w3.org/2000/svg","path");activePath.setAttribute("d","M"+x+" "+y);activePath.setAttribute("stroke",drawConfig[drawTool].stroke);activePath.setAttribute("stroke-width",String(drawConfig[drawTool].width));activePath.setAttribute("opacity",String(drawConfig[drawTool].opacity));activePath.setAttribute("stroke-linecap","round");activePath.setAttribute("fill","none");canvas.append(activePath)});
 canvas.addEventListener("pointermove",e=>{if(!drawing||!activePath)return;const [x,y]=svgPoint(e);activePath.setAttribute("d",activePath.getAttribute("d")+" L"+x+" "+y)});
 canvas.addEventListener("pointerup",()=>{if(activePath){(paths[currentSlide().id]??=[]).push(activePath.outerHTML)}drawing=false;activePath=null});
-window.addEventListener("keydown",e=>{if(!stage.classList.contains("show"))return;if(e.key==="Escape"){if(paletteVisible)closeTools();else closeStage()}if(e.key==="ArrowRight")move(1);if(e.key==="ArrowLeft")move(-1);if(e.key.toLowerCase()==="p"&&!e.target.matches("input,textarea")){drawTool=drawTool==="pen"?"":"pen";canvas.classList.toggle("armed",drawTool==="pen")}});
+window.addEventListener("keydown",e=>{if(!stage.classList.contains("show"))return;if(e.key==="Escape"){if($("deckExtra").classList.contains("wi-open")){$("deckExtra").classList.remove("wi-open");$("deckMenu").setAttribute("aria-expanded","false");$("deckMenu").textContent="Menu ▾";return;}if(paletteVisible)closeTools();else closeStage()}if(!e.target.matches("input,textarea,select,[contenteditable]")){if(e.key==="ArrowRight")move(1);if(e.key==="ArrowLeft")move(-1);}if(e.key.toLowerCase()==="p"&&lesson.features.drawing!==false&&!e.target.matches("input,textarea,[contenteditable]")){drawTool=drawTool==="pen"?"":"pen";canvas.classList.toggle("armed",drawTool==="pen")}});
 /* Dezelfde offline HTML voor downloaden én voorvertoning. Geen tweede presentatie-engine. */
 function buildStandaloneLessonHTML(){
  save();
@@ -2438,7 +2740,7 @@ function buildStandaloneLessonHTML(){
  const preview=cloned.querySelector('#guideResultFrame');
  if(preview)preview.removeAttribute('srcdoc');
  const source=cloned.outerHTML;
- const result=source.replace(/const SAMPLE=\{[\s\S]*?\};\s*const \$=/,"const SAMPLE="+data+";\nconst $=");
+ const result=source.replace(/const SAMPLE=\{[\s\S]*?\};\s*const \$=/,()=>"const SAMPLE="+data+";\nconst $=");
  if(result===source)throw Error("De lesgegevens konden niet worden ingevoegd.");
  const boot='<style>html.standalone>body>header,html.standalone .layout{display:none!important}html.standalone .viewer{display:flex!important}</style><script>document.documentElement.classList.add("standalone");window.addEventListener("load",function(){document.getElementById("preview").click()});<\/script>';
  return result.slice(0,result.lastIndexOf("</body>"))+boot+result.slice(result.lastIndexOf("</body>"));
@@ -2470,7 +2772,12 @@ lesson.template=checkedTemplate(lesson.template||TEMPLATE_PRESETS.editorial);
 applyTemplate();
 initDesignControls();
 $('draftRestore').onclick=()=>restoreDraft();
-$('fields').addEventListener('input',event=>{if(event.target.id!=='type'){save();renderDesigner()}});
+function saveField(event){
+ if(event.target.id==='type')return;
+ event.target.dataset.dirty='true';save();renderDesigner();
+}
+$('fields').addEventListener('input',saveField);
+$('fields').addEventListener('change',saveField);
 ['title','level','goal'].forEach(id=>$(id).addEventListener('input',()=>{save();const footer=$('designCanvas').querySelector('.design-footer');if(footer)footer.textContent=(lesson.level||'Wiskunde')+' · '+(lesson.title||'Nieuwe les')+' · dia '+(selected+1)+' van '+lesson.slides.length}));
 loadRounds();
 renderEditor();
