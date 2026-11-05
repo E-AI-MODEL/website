@@ -93,10 +93,15 @@ try{
  assert(await math.locator('#wiDesignPlot').isVisible());
  await math.locator('.wi-plot-edit .wi-plot-details summary').click();
  await math.locator('[data-design-plot-value="plotA"]').fill('3');
- const mathJSON=JSON.parse(await fs.readFile(await file(math,math.locator('#save'),'wihtml-functies.json'),'utf8'));
+ for(let step=0;step<30;step++){
+  if(await math.locator('body').getAttribute('data-guide-kind')==='result')break;
+  await math.locator('#guideNext').click();
+ }
+ assert.equal(await math.locator('body').getAttribute('data-guide-kind'),'result');
+ const mathJSON=JSON.parse(await fs.readFile(await file(math,math.locator('#guideDownloadJSON'),'wihtml-functies.json'),'utf8'));
  assert.equal(mathJSON.slides[0].plotA,3);
  assert.deepEqual(mathJSON.slides.map(s=>s.plotKind),['linear','quadratic','exponential','sinusoid']);
- const mathHtml=await file(math,math.locator('#export'),'wihtml-functies-offline.html');
+ const mathHtml=await file(math,math.locator('#guideDownloadHTML'),'wihtml-functies-offline.html');
  const offline=await browser.newPage({viewport:{width:1500,height:850}});
  offline.on('pageerror',e=>errors.push(e.message));
  await offline.route(/^https?:/,r=>r.abort());
