@@ -2614,17 +2614,21 @@ def build(sources: Path, out: Path) -> None:
     if not full_lesson.is_file():
         raise FileNotFoundError(f"Volledige Docentstudio-v9-les ontbreekt: {full_lesson}")
     write(out, "tools/wihtml/voorbeeld/index.html", full_lesson.read_text(encoding="utf-8"))
+    wihtml_example_json = Path(__file__).resolve().parent.parent / "content" / "wihtml" / "voorbeeld-lesinhoud.json"
+    if not wihtml_example_json.is_file():
+        raise FileNotFoundError(f"Voorbeeld-JSON ontbreekt: {wihtml_example_json}")
+    write(out, "tools/wihtml/voorbeeld-lesinhoud.json", wihtml_example_json.read_text(encoding="utf-8"))
     wihtml_body = '''<main><section class="page-hero"><div class="wrap">
     <div class="eyebrow">EAI · Voor docenten</div>
     <h1>Maak zelf een wiskundeles in HTML.</h1>
-    <p class="lede">Maak zelf een les met grafieken, onderzoekstabellen, vragen, uitwerkingen en zelfstandige oefeningen. Bepaal welke informatie leerlingen eerst zelf onderzoeken en wanneer je hulp of antwoorden toont. Je hebt geen programmeerkennis nodig.</p>
-    <div class="button-row"><a class="button" href="/tools/wihtml/studio/">Open de lessengenerator</a><a class="button secondary" href="/tools/wihtml/voorbeeld/">Open de volledige voorbeeldles</a><a class="button secondary" href="/nl/onderwijs/">Over leren en AI</a></div>
+    <p class="lede">Upload een JSON-bestand met je lesinhoud. Kies de volgorde van de les, de verdeling van het scherm en de docentfuncties. WiHTML maakt er een interactieve HTML-presentatie van. Je kunt alles zelf aanpassen voordat je de les gebruikt.</p>
+    <div class="button-row"><a class="button" href="/tools/wihtml/studio/">Open de lessengenerator</a><a class="button secondary" href="/tools/wihtml/voorbeeld-lesinhoud.json">Bekijk een JSON-voorbeeld</a><a class="button secondary" href="/tools/wihtml/voorbeeld/">Open de volledige voorbeeldles</a><a class="button secondary" href="/nl/onderwijs/">Over leren en AI</a></div>
     </div></section><section class="section"><div class="wrap">
-    <div class="section-head"><div class="kicker">Zo werkt het</div><div><h2>Van lesidee naar presentatie.</h2><p>Gebruik de complete voorbeeldles over verdubbelen en halveren, of begin met een nieuwe les en voeg je eigen werkvormen toe.</p></div></div>
+    <div class="section-head"><div class="kicker">Zo werkt het</div><div><h2>Jij maakt de keuzes.</h2><p>WiHTML zet je JSON-inhoud om naar lesonderdelen. Je bepaalt hoe die onderdelen op het scherm verschijnen en welke hulp je tijdens het lesgeven wilt gebruiken.</p></div></div>
     <div class="tool-grid">
-    <article class="tool-card"><div class="kicker">Lesinhoud</div><h2>Kies wat leerlingen doen</h2><p>Kies uit zeven soorten lesonderdelen: van grafiekonderzoek en oefenopgaven tot onderzoekstabellen en vergelijkingsvragen. Beschrijf steeds wat leerlingen zelf doen.</p></article>
-    <article class="tool-card"><div class="kicker">Vormgeving</div><h2>Maak je eigen sjabloon</h2><p>Pas de HTML-indeling en CSS aan, bekijk het voorbeeld en hergebruik het ontwerp in andere lessen.</p></article>
-    <article class="tool-card"><div class="kicker">Presenteren</div><h2>Geef de les</h2><p>Gebruik compacte docenttools, bewaar klassikale stemrondes en download de HTML-presentatie.</p></article>
+    <article class="tool-card"><div class="kicker">Lesopbouw</div><h2>Bepaal de volgorde</h2><p>Kies uit een onderzoekende les, uitleg met oefening of zelfstandig werken. Je kunt ieder onderdeel daarna verplaatsen. De ingelezen inhoud blijft behouden.</p></article>
+    <article class="tool-card"><div class="kicker">Vlakverdeling</div><h2>Richt de dia zelf in</h2><p>Gebruik één groot vlak of twee kolommen, gelijk of ongelijk verdeeld. Kies per dia een andere indeling of maak je eigen HTML/CSS-sjabloon.</p></article>
+    <article class="tool-card"><div class="kicker">Functionaliteit</div><h2>Kies de docenttools</h2><p>Schakel tekenen, stemmen, timer, spotlicht, docentnotities en andere tools naar keuze in. Download daarna een zelfstandige HTML-les.</p></article>
     </div></div></section><section class="section"><div class="wrap">
     <div class="section-head"><div class="kicker">Goed om te weten</div><div><h2>Je les blijft van jou.</h2>
     <p>Je werkt in je eigen browser. Bewaar je les als JSON om later verder te werken, en download de HTML om hem te presenteren. De website bewaart geen leerlinggegevens of lesbestanden op een server. Sla je bestanden zelf op een veilige plek op.</p>
