@@ -96,5 +96,5 @@ create table if not exists public.leif_admin_memberships (
 );
 create index if not exists leif_admin_memberships_tenant_idx on public.leif_admin_memberships(tenant_id);
 alter table public.leif_admin_memberships enable row level security;
-revoke all on public.leif_admin_memberships from anon,authenticated;
+revoke all on public.leif_admin_memberships from anon, authenticated;
 -- Er is bewust geen publieke RLS-policy. De server controleert iedere beheeraanvraag.
