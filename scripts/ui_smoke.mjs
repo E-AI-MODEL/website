@@ -50,7 +50,7 @@ try {
       await page.locator('.eai-site-group').nth(1).locator('summary').click();
       await page.locator('.eai-site-group').nth(3).locator('summary').click();
       assert.equal(await page.locator('.eai-site-group[open]').count(), 1, 'Only one theme may be open');
-      assert.equal(await page.locator('.eai-site-group').nth(3).locator('a:visible').count(), 3);
+      assert.equal(await page.locator('.eai-site-group').nth(3).locator('a:visible').count(), 7);
       await page.keyboard.press('Escape');
       assert.equal(await page.locator('.eai-site-menu').getAttribute('open'), null);
       assert(await page.locator('.eai-site-menu>summary').evaluate(e => e === document.activeElement));
@@ -256,7 +256,7 @@ try {
   await fallback.locator('.eai-site-group').nth(1).locator('summary').click();
   await fallback.locator('.eai-site-group').nth(3).locator('summary').click();
   assert.equal(await fallback.locator('.eai-site-group[open]').count(), 1, 'Native accordion must be exclusive');
-  assert.equal(await fallback.locator('.eai-site-group').nth(3).locator('a:visible').count(), 3);
+  assert.equal(await fallback.locator('.eai-site-group').nth(3).locator('a:visible').count(), 7);
   await noJS.close();
   assert.deepEqual(errors, []);
   writeFileSync('test-results/ui-report.json', JSON.stringify({ results, noJavaScriptMenu: true, homeQuestions: true, languageLinks: true, errors }, null, 2));

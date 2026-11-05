@@ -84,6 +84,18 @@ class ReleaseTests(unittest.TestCase):
             with self.assertRaisesRegex(RuntimeError, 'LEIF personal reader is missing or out of date'):
                 verify_ui.verify_live('https://example.test', self.manifest, 0, self.root)
 
+    def test_standalone_tool_mismatch_is_rejected(self):
+        target = self.root / 'tools/wihtml/studio/index.html'
+        target.parent.mkdir(parents=True)
+        target.write_text('current studio')
+        def response(request, **kwargs):
+            path = urlsplit(request.full_url).path
+            content = {'/leif/': self.leif, '/leif/continue/': self.continuation, '/leif/verhaal/': self.story}.get(path, self.current)
+            return io.BytesIO(content)
+        with patch.object(verify_ui, 'urlopen', side_effect=response):
+            with self.assertRaisesRegex(RuntimeError, 'Tool content mismatch: /tools/wihtml/studio/'):
+                verify_ui.verify_live('https://example.test', self.manifest, 0, self.root)
+
     def test_empty_manifest_is_rejected(self):
         with self.assertRaises(ValueError):
             verify_ui.expected_pages(self.root, {'pages': []})

@@ -5,7 +5,7 @@
 <title>WiHTML | Wiskundelessen maken</title>
 <style>
 :root{--paper:#f7f7f4;--white:#fff;--ink:#202826;--muted:#5e6b65;--line:#dce2dc;--accent:#17695e;--subtle:#eaf2ee;--warm:#c96746;--shadow:0 16px 48px rgba(24,38,31,.08)}
-*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}button,input,textarea,select{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--accent);outline-offset:3px}button{border:1px solid var(--line);border-radius:9px;padding:10px 13px;background:#fff;color:var(--ink)}button:hover{border-color:var(--accent)}button.primary{background:var(--ink);border-color:var(--ink);color:#fff}button.quiet{border:0;background:transparent}button.small{padding:5px 9px;font-size:13px}button:disabled{opacity:.35;cursor:default}header{background:var(--white);border-bottom:1px solid var(--line)}.top{max-width:1540px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:18px;padding:19px 36px}.brand{display:flex;align-items:center;gap:12px}.mark{display:grid;place-items:center;width:37px;height:37px;background:var(--ink);color:#fff;font-family:Georgia,serif;font-weight:700;font-size:23px;border-radius:7px}.brandname{font-size:20px;font-weight:750;letter-spacing:-.035em}.byline{font-size:12px;color:var(--muted);letter-spacing:.015em}.actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.layout{max-width:1540px;min-height:calc(100vh - 82px);padding:35px 36px;display:grid;grid-template-columns:260px minmax(460px,1fr) 270px;gap:38px;margin:auto}.eyebrow{font-size:11px;font-weight:760;letter-spacing:.15em;text-transform:uppercase;color:var(--accent)}h1{font-family:Georgia,serif;font-weight:400;font-size:clamp(29px,3vw,43px);letter-spacing:-.042em;line-height:1.12;margin:10px 0 17px}h2{font-family:Georgia,serif;font-size:25px;font-weight:400;line-height:1.2;margin:7px 0 16px}p{margin:0 0 17px}.hint{font-size:13px;color:var(--muted)}.rail{border-right:1px solid var(--line);padding-right:20px}.side{border-left:1px solid var(--line);padding-left:22px}.rail-head{display:flex;align-items:center;justify-content:space-between;padding-bottom:16px;border-bottom:1px solid var(--line);margin-bottom:10px}.slide-list{display:grid;gap:2px}.slide-item{width:100%;display:grid;grid-template-columns:26px 1fr;gap:8px;text-align:left;border:0;background:transparent;padding:11px 9px;border-radius:7px;align-items:start}.slide-item.active{background:var(--subtle);color:#164d44}.slide-item .num{color:var(--muted);font-size:12px;font-variant-numeric:tabular-nums;padding-top:3px}.slide-item strong{font-size:13px;font-weight:700;line-height:1.35}.slide-item em{display:block;font-style:normal;font-size:11px;color:var(--muted);margin-top:4px}.rail-bottom{margin-top:19px;border-top:1px solid var(--line);padding-top:17px}.editor{min-width:0}.lede{max-width:650px;color:var(--muted);font-size:15px}.field{margin:19px 0}.field label{display:block;font-size:13px;font-weight:700;margin-bottom:7px}.field input,.field select,.field textarea{width:100%;border:1px solid #cdd6cf;border-radius:8px;background:#fff;color:var(--ink);padding:11px 13px;min-height:44px}.field textarea{resize:vertical;min-height:90px}.field input:focus,.field textarea:focus{border-color:var(--accent)}.editor-block{background:#fff;border:1px solid var(--line);border-radius:12px;padding:25px 27px;box-shadow:0 2px 14px #23372e06}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}.section-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:27px 0 9px;border-top:1px solid var(--line);padding-top:22px}.section-head strong{font-size:14px}.mini-actions{display:flex;gap:7px}.side .note{padding:17px 0;border-bottom:1px solid var(--line);font-size:13px;color:var(--muted)}.side .note strong{display:block;color:var(--ink);font-size:14px;margin-bottom:6px}.review-item{padding:11px 0;border-bottom:1px solid var(--line);font-size:13px}.review-item::before{content:"·";color:var(--accent);margin-right:7px;font-weight:900}.review-item.warn::before{content:"!";color:#a35b3d}.status{font-size:12px;color:var(--accent);margin-top:10px;min-height:20px}footer{padding:22px 36px;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}.viewer{position:fixed;inset:0;background:#101715;display:none;z-index:100;align-items:center;justify-content:center;padding:32px}.viewer.show{display:flex}.slide{width:min(1280px,calc((100vh - 80px)*16/9),calc(100vw - 70px));aspect-ratio:16/9;background:#fff;border-radius:5px;position:relative;padding:clamp(20px,5.5vw,86px);display:flex;flex-direction:column;overflow:hidden}.slide h2{font-size:clamp(30px,4.3vw,68px);margin:8px 0 24px;max-width:1040px}.slide p{font-size:clamp(17px,1.85vw,29px);max-width:950px}.slide .eyebrow{font-size:clamp(10px,1vw,15px)}.choices{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:13px}.choice{border:1px solid #d2dbd6;border-radius:8px;padding:15px 18px;font-size:clamp(15px,1.4vw,23px);display:flex;gap:16px;align-items:center}.choice b{background:var(--ink);color:#fff;min-width:38px;height:38px;display:grid;place-items:center;border-radius:6px}.slide-footer{margin-top:auto;color:#67736c;font-size:13px}.viewer-nav{position:fixed;bottom:13px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:12px;background:#fff;border-radius:14px;padding:7px 10px;box-shadow:var(--shadow);z-index:102}.viewer-nav span{font-size:12px;min-width:48px;text-align:center}.viewer-nav button{padding:5px 10px}.floating{position:fixed;right:19px;bottom:17px;z-index:104}.toolpop{position:absolute;bottom:52px;right:0;display:none;flex-direction:column;gap:7px;padding:9px;width:165px;background:#fff;border-radius:12px;box-shadow:var(--shadow)}.toolpop.show{display:flex}.toolpop button{text-align:left}.toolpop .danger{color:#a44b3c}.vote{position:absolute;right:20px;top:20px;background:#fff;padding:15px;box-shadow:var(--shadow);border:1px solid var(--line);border-radius:10px;z-index:103;width:210px}.vote strong{display:block;margin-bottom:10px}.vote-row{display:flex;align-items:center;gap:9px;margin:6px 0}.vote-row button{padding:4px 9px}.vote-row span{margin-left:auto;font-variant-numeric:tabular-nums}.draw{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:101}.draw.armed{pointer-events:auto;cursor:crosshair}.reveal{padding:15px 20px;background:var(--subtle);border-left:4px solid var(--accent);margin-top:20px;font-size:clamp(15px,1.35vw,21px)}.graph{width:100%;max-height:45%;flex:1}.data-table{display:flex;gap:12px;flex-wrap:wrap}.data-table span{padding:10px 14px;background:var(--subtle);border-radius:5px}.hide{display:none!important}@media(max-width:1140px){.layout{grid-template-columns:210px minmax(0,1fr);gap:24px}.side{grid-column:2;border-left:0;border-top:1px solid var(--line);padding:23px 0 0}}@media(max-width:700px){.top{padding:13px 16px;align-items:flex-start;flex-direction:column}.layout{display:block;padding:20px 16px}.rail{border-right:0;border-bottom:1px solid var(--line);padding:0 0 17px}.slide-list{max-height:200px;overflow:auto}.editor{margin-top:22px}.editor-block{padding:18px}.form-grid{grid-template-columns:1fr}.side{padding:20px 0 0}.slide{width:calc(100vw - 16px);padding:24px}.viewer{padding:8px}.viewer-nav{bottom:7px}.slide h2{font-size:clamp(20px,4vw,36px)}.slide p{font-size:clamp(13px,2vw,18px)}.choice{padding:6px 8px;font-size:12px}.choice b{min-width:21px;height:21px}.floating{right:9px;bottom:8px}}
+[hidden]{display:none!important}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}button,input,textarea,select{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--accent);outline-offset:3px}button{border:1px solid var(--line);border-radius:9px;padding:10px 13px;background:#fff;color:var(--ink)}button:hover{border-color:var(--accent)}button.primary{background:var(--ink);border-color:var(--ink);color:#fff}button.quiet{border:0;background:transparent}button.small{padding:5px 9px;font-size:13px}button:disabled{opacity:.35;cursor:default}header{background:var(--white);border-bottom:1px solid var(--line)}.top{max-width:1540px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:18px;padding:19px 36px}.brand{display:flex;align-items:center;gap:12px}.mark{display:grid;place-items:center;width:37px;height:37px;background:var(--ink);color:#fff;font-family:Georgia,serif;font-weight:700;font-size:23px;border-radius:7px}.brandname{font-size:20px;font-weight:750;letter-spacing:-.035em}.byline{font-size:12px;color:var(--muted);letter-spacing:.015em}.actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.layout{max-width:1540px;min-height:calc(100vh - 82px);padding:35px 36px;display:grid;grid-template-columns:260px minmax(460px,1fr) 270px;gap:38px;margin:auto}.eyebrow{font-size:11px;font-weight:760;letter-spacing:.15em;text-transform:uppercase;color:var(--accent)}h1{font-family:Georgia,serif;font-weight:400;font-size:clamp(29px,3vw,43px);letter-spacing:-.042em;line-height:1.12;margin:10px 0 17px}h2{font-family:Georgia,serif;font-size:25px;font-weight:400;line-height:1.2;margin:7px 0 16px}p{margin:0 0 17px}.hint{font-size:13px;color:var(--muted)}.rail{border-right:1px solid var(--line);padding-right:20px}.side{border-left:1px solid var(--line);padding-left:22px}.rail-head{display:flex;align-items:center;justify-content:space-between;padding-bottom:16px;border-bottom:1px solid var(--line);margin-bottom:10px}.slide-list{display:grid;gap:2px}.slide-item{width:100%;display:grid;grid-template-columns:26px 1fr;gap:8px;text-align:left;border:0;background:transparent;padding:11px 9px;border-radius:7px;align-items:start}.slide-item.active{background:var(--subtle);color:#164d44}.slide-item .num{color:var(--muted);font-size:12px;font-variant-numeric:tabular-nums;padding-top:3px}.slide-item strong{font-size:13px;font-weight:700;line-height:1.35}.slide-item em{display:block;font-style:normal;font-size:11px;color:var(--muted);margin-top:4px}.rail-bottom{margin-top:19px;border-top:1px solid var(--line);padding-top:17px}.editor{min-width:0}.lede{max-width:650px;color:var(--muted);font-size:15px}.field{margin:19px 0}.field label{display:block;font-size:13px;font-weight:700;margin-bottom:7px}.field input,.field select,.field textarea{width:100%;border:1px solid #cdd6cf;border-radius:8px;background:#fff;color:var(--ink);padding:11px 13px;min-height:44px}.field textarea{resize:vertical;min-height:90px}.field input:focus,.field textarea:focus{border-color:var(--accent)}.editor-block{background:#fff;border:1px solid var(--line);border-radius:12px;padding:25px 27px;box-shadow:0 2px 14px #23372e06}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}.section-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:27px 0 9px;border-top:1px solid var(--line);padding-top:22px}.section-head strong{font-size:14px}.mini-actions{display:flex;gap:7px}.side .note{padding:17px 0;border-bottom:1px solid var(--line);font-size:13px;color:var(--muted)}.side .note strong{display:block;color:var(--ink);font-size:14px;margin-bottom:6px}.review-item{padding:11px 0;border-bottom:1px solid var(--line);font-size:13px}.review-item::before{content:"·";color:var(--accent);margin-right:7px;font-weight:900}.review-item.warn::before{content:"!";color:#a35b3d}.status{font-size:12px;color:var(--accent);margin-top:10px;min-height:20px}footer{padding:22px 36px;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}.viewer{position:fixed;inset:0;background:#101715;display:none;z-index:100;align-items:center;justify-content:center;padding:32px}.viewer.show{display:flex}.slide{width:min(1280px,calc((100vh - 80px)*16/9),calc(100vw - 70px));aspect-ratio:16/9;background:#fff;border-radius:5px;position:relative;padding:clamp(20px,5.5vw,86px);display:flex;flex-direction:column;overflow:hidden}.slide h2{font-size:clamp(30px,4.3vw,68px);margin:8px 0 24px;max-width:1040px}.slide p{font-size:clamp(17px,1.85vw,29px);max-width:950px}.slide .eyebrow{font-size:clamp(10px,1vw,15px)}.choices{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:13px}.choice{border:1px solid #d2dbd6;border-radius:8px;padding:15px 18px;font-size:clamp(15px,1.4vw,23px);display:flex;gap:16px;align-items:center}.choice b{background:var(--ink);color:#fff;min-width:38px;height:38px;display:grid;place-items:center;border-radius:6px}.slide-footer{margin-top:auto;color:#67736c;font-size:13px}.viewer-nav{position:fixed;bottom:13px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:12px;background:#fff;border-radius:14px;padding:7px 10px;box-shadow:var(--shadow);z-index:102}.viewer-nav span{font-size:12px;min-width:48px;text-align:center}.viewer-nav button{padding:5px 10px}.floating{position:fixed;right:19px;bottom:17px;z-index:104}.toolpop{position:absolute;bottom:52px;right:0;display:none;flex-direction:column;gap:7px;padding:9px;width:165px;background:#fff;border-radius:12px;box-shadow:var(--shadow)}.toolpop.show{display:flex}.toolpop button{text-align:left}.toolpop .danger{color:#a44b3c}.vote{position:absolute;right:20px;top:20px;background:#fff;padding:15px;box-shadow:var(--shadow);border:1px solid var(--line);border-radius:10px;z-index:103;width:210px}.vote strong{display:block;margin-bottom:10px}.vote-row{display:flex;align-items:center;gap:9px;margin:6px 0}.vote-row button{padding:4px 9px}.vote-row span{margin-left:auto;font-variant-numeric:tabular-nums}.draw{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:101}.draw.armed{pointer-events:auto;cursor:crosshair}.reveal{padding:15px 20px;background:var(--subtle);border-left:4px solid var(--accent);margin-top:20px;font-size:clamp(15px,1.35vw,21px)}.graph{width:100%;max-height:45%;flex:1}.data-table{display:flex;gap:12px;flex-wrap:wrap}.data-table span{padding:10px 14px;background:var(--subtle);border-radius:5px}.hide{display:none!important}@media(max-width:1140px){.layout{grid-template-columns:210px minmax(0,1fr);gap:24px}.side{grid-column:2;border-left:0;border-top:1px solid var(--line);padding:23px 0 0}}@media(max-width:700px){.top{padding:13px 16px;align-items:flex-start;flex-direction:column}.layout{display:block;padding:20px 16px}.rail{border-right:0;border-bottom:1px solid var(--line);padding:0 0 17px}.slide-list{max-height:200px;overflow:auto}.editor{margin-top:22px}.editor-block{padding:18px}.form-grid{grid-template-columns:1fr}.side{padding:20px 0 0}.slide{width:calc(100vw - 16px);padding:24px}.viewer{padding:8px}.viewer-nav{bottom:7px}.slide h2{font-size:clamp(20px,4vw,36px)}.slide p{font-size:clamp(13px,2vw,18px)}.choice{padding:6px 8px;font-size:12px}.choice b{min-width:21px;height:21px}.floating{right:9px;bottom:8px}}
 
 /* De editor blijft stil; de leerlingweergave heeft eigen verhoudingen. */
 .layout{gap:34px}.editor-block{box-shadow:none}.rail{position:sticky;top:22px;align-self:start;max-height:90vh;overflow:auto}
@@ -325,7 +325,7 @@
 .slide-item.dragging{opacity:.45}
 .slide-item.drop-target{box-shadow:inset 0 -3px 0 #147d70}
 @media(max-width:1100px){.layout{grid-template-columns:190px minmax(0,1fr);gap:17px;padding:18px}.side{grid-template-columns:1fr}.side #review{grid-column:1;grid-row:auto}}
-@media(max-width:760px){.layout{display:block;padding:12px 14px}.rail{position:static;max-height:none;padding:0;border-right:0;border-bottom:1px solid var(--line)}.rail .slide-list{display:flex;gap:8px;overflow-x:auto;max-height:none}.rail .slide-item{min-width:180px}.rail-bottom{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0}.rail-import{flex:1}.editor{margin-top:16px}.design-heading{align-items:start}.design-heading p{display:none}.design-toolbar{gap:7px}.design-type-control{min-width:150px}.design-layout-group{order:3;width:100%;justify-content:space-between}.design-layout-group button{flex:1}.design-viewport{padding:7px}.design-paper{min-height:300px;padding:16px}.design-paper .design-title{font-size:clamp(20px,4vw,29px)}.design-paper .design-prompt{font-size:13px}.design-paper[data-design-layout="equal"] .design-columns,.design-paper[data-design-layout="left"] .design-columns,.design-paper[data-design-layout="right"] .design-columns{grid-template-columns:1fr}.design-options{grid-template-columns:1fr}.side{display:block;padding:10px 0}.side #review{display:block}}
+@media(max-width:760px){.design-paper{aspect-ratio:auto;overflow:visible}.layout{display:block;padding:12px 14px}.rail{position:static;max-height:none;padding:0;border-right:0;border-bottom:1px solid var(--line)}.rail .slide-list{display:flex;gap:8px;overflow-x:auto;max-height:none}.rail .slide-item{min-width:180px}.rail-bottom{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0}.rail-import{flex:1}.editor{margin-top:16px}.design-heading{align-items:start}.design-heading p{display:none}.design-toolbar{gap:7px}.design-type-control{min-width:150px}.design-layout-group{order:3;width:100%;justify-content:space-between}.design-layout-group button{flex:1}.design-viewport{padding:7px}.design-paper{min-height:300px;padding:16px}.design-paper .design-title{font-size:clamp(20px,4vw,29px)}.design-paper .design-prompt{font-size:13px}.design-paper[data-design-layout="equal"] .design-columns,.design-paper[data-design-layout="left"] .design-columns,.design-paper[data-design-layout="right"] .design-columns{grid-template-columns:1fr}.design-options{grid-template-columns:1fr}.side{display:block;padding:10px 0}.side #review{display:block}}
 
 .template-design-panel{margin:18px 0 20px;padding:0;border:0}
 .template-design-panel>.eyebrow{font-size:12px}
@@ -630,6 +630,7 @@
 .wi-existing-draft-actions{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:10px;margin-top:22px}
 .wi-existing-draft-actions button{padding:12px 15px}
 @media(max-width:550px){.wi-existing-draft-actions{flex-direction:column}.wi-existing-draft-actions button{width:100%}}
+.design-experiments{margin-top:12px}.design-experiments summary{cursor:pointer;font-weight:700}.design-experiments label{display:grid;font-size:12px;gap:4px;margin:8px 0}.design-experiments textarea{width:100%;min-height:50px;resize:vertical;border:1px solid #cbdad0;border-radius:6px;padding:8px}
 </style>
 </head>
 <body class="wi-mode-quick">
@@ -667,7 +668,7 @@
    <button type="button" data-design-layout="left" title="Links 60 procent, rechts 40 procent">60 / 40</button>
    <button type="button" data-design-layout="right" title="Links 40 procent, rechts 60 procent">40 / 60</button>
   </div>
-  <div class="design-toolbar-end"><button id="designCopy" type="button" title="Maak een kopie van deze dia">Dupliceer</button><button id="designMoveUp" type="button" title="Zet deze dia één plek eerder">↑</button><button id="designMoveDown" type="button" title="Zet deze dia één plek later">↓</button></div>
+  <div class="design-toolbar-end"><button id="designRemove" type="button">Verwijder dia</button><button id="designCopy" type="button" title="Maak een kopie van deze dia">Dupliceer</button><button id="designMoveUp" type="button" title="Zet deze dia één plek eerder">↑</button><button id="designMoveDown" type="button" title="Zet deze dia één plek later">↓</button></div>
  </div>
  <div class="design-viewport"><div class="design-paper" id="designCanvas" aria-label="Dia-opmaak. Klik op tekst om die te bewerken."></div></div>
  <div class="design-underbar"><p id="designHint">Klik op de tekst om hem aan te passen.</p><span id="designSaved" role="status" aria-live="polite">Klaar om te bewerken</span></div>
@@ -965,6 +966,7 @@ function applyFeatures(){
   const group=TOOL_FEATURE[el.dataset.tool];el.hidden=!!group&&lesson.features[group]===false;
  });
  if(!lesson.features.drawing){drawTool="";canvas.classList.remove("armed")}
+ const poll=$('questionPoll');if(poll)poll.hidden=lesson.features.voting===false;
 }
 function arrangeSlide(s){
  const root=$("slidecontent");
@@ -1017,7 +1019,7 @@ $("applyRoute").onclick=()=>{
  const mode=$("routePreset").value;
  lesson.route=ROUTE_TYPES[mode]?mode:"own";
  lesson.slides=reorderLessonSlides(lesson.slides,lesson.route);
- selected=0;renderEditor();
+ selected=0;renderEditor();scheduleDraftSave();
  msg(mode==="own"?"Je bepaalt zelf de volgorde links.":"Lesdelen opnieuw geordend. Alle inhoud is behouden.");
 };
 
@@ -1044,30 +1046,34 @@ function field(k,label,v,multi=false){
  const x=multi?'<textarea id="f-'+k+'" rows="3">'+esc(v)+'</textarea>':'<input id="f-'+k+'" value="'+esc(v)+'">';
  return '<div class="field"><label for="f-'+k+'">'+esc(label)+'</label>'+x+'</div>';
 }
+function quizLines(questions){
+ return (questions||[]).map(q=>[q.prompt,...Array.from({length:4},(_,i)=>q.options?.[i]||''),q.correct>=0?String.fromCharCode(65+q.correct):'',q.explanation||''].join(' | ')).join('\n');
+}
 function save(){
  lesson.title=$("title").value.trim();lesson.level=$("level").value.trim();lesson.goal=$("goal").value.trim();
  const s=lesson.slides[selected];if(!s)return;
- const nextType=$("type")?.value||s.type;
- s.layout=LAYOUTS.has($("f-layout")?.value)?$("f-layout").value:"inherit";
- for(const key of ["phase","title","prompt","student","teacher","body","explanation"]){const node=$("f-"+key);if(node)s[key]=node.value}
- s.type=nextType;
- if(nextType==="question"){
-  s.options=($("f-options")?.value||"").split("\n").map(x=>x.trim()).filter(Boolean);
-  s.correct=Number($("f-correct")?.value||0);s.later=!!$("f-later")?.checked;
+ const dirty=key=>$('f-'+key)?.dataset.dirty==='true';
+ const value=key=>$('f-'+key)?.value||'';
+ if(dirty('layout'))s.layout=LAYOUTS.has(value('layout'))?value('layout'):'inherit';
+ for(const key of ['phase','title','prompt','student','teacher','body','explanation','wrong','challenge','correction','graphExplanation','tableExplanation','compareConclusion'])if(dirty(key))s[key]=value(key);
+ for(const key of ['options','steps','tasks','hints','solutions'])if(dirty(key)){
+  const lines=value(key).split('\n');
+  s[key]=['hints','solutions'].includes(key)?lines:lines.filter(x=>x.trim());
  }
- if(nextType==="steps")s.steps=($("f-steps")?.value||"").split("\n").filter(Boolean);
- if(nextType==="table"){s.columnLabels=($("f-columnLabels")?.value||"Tijd | Hoeveelheid").split("|").map(x=>x.trim()).slice(0,2);s.tableRows=($("f-tableRows")?.value||"").split("\n").filter(x=>x.trim()).map(x=>x.split("|").map(v=>v.trim()).slice(0,2));s.tableExplanation=$("f-tableExplanation")?.value||""}
- if(nextType==="practice"){s.tasks=($("f-tasks")?.value||"").split("\n").filter(x=>x.trim());s.hints=($("f-hints")?.value||"").split("\n");s.solutions=($("f-solutions")?.value||"").split("\n")}
- if(nextType==="compare"){s.compareLabels=($("f-compareLabels")?.value||"Voor | Na").split("|").map(x=>x.trim()).slice(0,2);s.compareItems=($("f-compareItems")?.value||"").split("\n").filter(x=>x.trim()).map(x=>x.split("|").map(v=>v.trim()).slice(0,2));s.compareConclusion=$("f-compareConclusion")?.value||""}
- if(nextType==="graph"){
-  s.g=Number($("f-g")?.value||1.06);s.b=Number($("f-b")?.value||1000);s.target=Number($("f-target")?.value||2);s.graphExplanation=$("f-graphExplanation")?.value||"";
-  s.experiments=($("f-experiments")?.value||"").split("\n").filter(row=>row.trim()).map(row=>{
-   const cols=row.split("|").map(v=>v.trim());
-   return {label:cols[0]||"Experiment",question:cols[1]||"",g:Number(cols[2]||s.g),b:Number(cols[3]||s.b),target:Number(cols[4]||s.target),instruction:cols.slice(5).join(" | ")||""};
-  }).slice(0,6);
- }
- if(nextType==="quizset"){s.questions=($("f-quizLines")?.value||"").split("\n").filter(x=>x.trim()).map(line=>{const cols=line.split("|").map(x=>x.trim());return {prompt:cols[0]||"",options:cols.slice(1,5),correct:cols[5]&&/^[A-D]$/i.test(cols[5])?cols[5].toUpperCase().charCodeAt(0)-65:-1,explanation:cols.slice(6).join(" | ")||""}})}
- if(nextType==="error"){s.wrong=$("f-wrong")?.value||"";s.challenge=$("f-challenge")?.value||"";s.correction=$("f-correction")?.value||""}
+ for(const key of ['columnLabels','compareLabels'])if(dirty(key))s[key]=value(key).split('|').map(x=>x.trim()).slice(0,2);
+ for(const key of ['tableRows','compareItems'])if(dirty(key))s[key]=value(key).split('\n').filter(x=>x.trim()).map(x=>x.split('|').map(v=>v.trim()).slice(0,2));
+ for(const key of ['g','b','target','correct'])if(dirty(key))s[key]=Number(value(key));
+ if(dirty('later'))s.later=$('f-later').checked;
+ if(dirty('experiments'))s.experiments=value('experiments').split('\n').filter(row=>row.trim()).map(row=>{
+  const cols=row.split('|').map(v=>v.trim());
+  return {label:cols[0]||'Experiment',question:cols[1]||'',g:Number(cols[2]||s.g),b:Number(cols[3]||s.b),target:Number(cols[4]||s.target),instruction:cols.slice(5).join(' | ')};
+ }).slice(0,6);
+ if(dirty('quizLines'))s.questions=value('quizLines').split('\n').filter(x=>x.trim()).map(line=>{
+  const cols=line.split('|').map(x=>x.trim()),options=cols.slice(1,5);
+  while(options.length>2&&!options.at(-1))options.pop();
+  return {prompt:cols[0]||'',options,correct:/^[A-D]$/i.test(cols[5]||'')?cols[5].toUpperCase().charCodeAt(0)-65:-1,explanation:cols.slice(6).join(' | ')};
+ });
+ $('fields').querySelectorAll('[data-dirty]').forEach(el=>delete el.dataset.dirty);
  scheduleDraftSave();
 }
 
@@ -1420,10 +1426,8 @@ function draftAvailable(){
 function refreshDraftButton(){
  const btn=$('draftRestore');if(btn)btn.hidden=!draftAvailable();
 }
-function scheduleDraftSave(){
+function writeDraft(){
  if(document.documentElement.classList.contains('standalone'))return;
- clearTimeout(draftSaveTimer);
- draftSaveTimer=setTimeout(()=>{
   try{
    const value=JSON.stringify({savedAt:Date.now(),lesson,guidePage:guideReady?guidePage:null});
    if(value.length>900000){$('designSaved').textContent='Concept te groot voor browseropslag. Download je lesbestand.';return}
@@ -1431,7 +1435,10 @@ function scheduleDraftSave(){
    $('designSaved').textContent='Concept bewaard in deze browser';
    refreshDraftButton();
   }catch(e){$('designSaved').textContent='Opslaan in browser niet mogelijk. Download je lesbestand.'}
- },550);
+}
+function scheduleDraftSave(){
+ if(document.documentElement.classList.contains('standalone'))return;
+ clearTimeout(draftSaveTimer);draftSaveTimer=setTimeout(()=>{draftSaveTimer=null;writeDraft()},550);
 }
 function restoreDraft(skipConfirmation=false){
  if(!skipConfirmation&&!confirm('Herstel je laatste lokale concept? De huidige les op het scherm wordt vervangen.'))return;
@@ -1472,11 +1479,14 @@ function designGraphSVG(s){
 function designActionButton(action,index,label){
  return '<button type="button" data-design-action="'+action+'" data-index="'+index+'" aria-label="'+esc(label)+'">'+esc(label)+'</button>';
 }
+function designExperiments(s){
+ return '<details class="design-experiments"><summary>Grafiekexperimenten bewerken</summary>'+availableExperiments(s).map((x,i)=>'<div class="design-object"><div class="design-object-title">Experiment '+(i+1)+'</div>'+['label','question','instruction'].map((key,j)=>'<label>'+['Naam','Onderzoeksvraag','Instructie'][j]+'<textarea data-experiment="'+i+'" data-experiment-field="'+key+'" aria-label="'+['Naam','Onderzoeksvraag','Instructie'][j]+' experiment '+(i+1)+'">'+esc(x[key]||'')+'</textarea></label>').join('')+'<div class="design-graph-values">'+[['g','Groeifactor'],['b','Beginwaarde'],['target','Doelfactor']].map(([key,label])=>'<label>'+label+'<input type="number" step="any" min="0.000001" data-experiment="'+i+'" data-experiment-field="'+key+'" aria-label="'+label+' experiment '+(i+1)+'" value="'+esc(x[key])+'"></label>').join('')+'</div>'+designActionButton('removeExperiment',i,'Verwijder experiment')+'</div>').join('')+(availableExperiments(s).length<6?'<button class="design-add" data-design-action="addExperiment" type="button">+ Experiment toevoegen</button>':'')+'</details>';
+}
 function designBody(s){
  if(s.type==='text')return designEdit('body',s.body,'Tekst op deze dia','design-content','Voeg hier je uitleg of opdracht toe.');
  if(s.type==='question'){
   const options=(s.options||[]).slice(0,4);
-  return '<div class="design-options">'+options.map((v,i)=>'<div class="design-option"><span>'+String.fromCharCode(65+i)+'</span>'+designArrayEdit('options',i,v,'Antwoord '+String.fromCharCode(65+i),'design-edit-text','Antwoord')+designActionButton('setCorrect',i,(s.correct===i?'✓ Juiste':'Juiste'))+designActionButton('removeOption',i,'×')+'</div>').join('')+'</div>'+(options.length<4?'<button class="design-add" data-design-action="addOption" type="button">+ Antwoord toevoegen</button>':'')+'<p class="design-hint">De knop Juiste bepaalt het juiste antwoord. Dat verschijnt pas wanneer je het toont.</p>'+designEdit('explanation',s.explanation,'Uitleg na de vraag','design-content','Uitleg die pas na de vraag verschijnt.');
+  return '<div class="design-options">'+options.map((v,i)=>'<div class="design-option"><span>'+String.fromCharCode(65+i)+'</span>'+designArrayEdit('options',i,v,'Antwoord '+String.fromCharCode(65+i),'design-edit-text','Antwoord')+designActionButton('setCorrect',i,(s.correct===i?'✓ Juiste':'Juiste'))+designActionButton('removeOption',i,'×')+'</div>').join('')+'</div>'+(options.length<4?'<button class="design-add" data-design-action="addOption" type="button">+ Antwoord toevoegen</button>':'')+'<label class="design-hint"><input type="checkbox" data-design-later '+(s.later?'checked':'')+'> Antwoord pas na het grafiekonderzoek bespreken</label><button type="button" class="small" data-design-action="clearCorrect">Geen juist antwoord instellen</button><p class="design-hint">De knop Juiste bepaalt het juiste antwoord. Dat verschijnt pas wanneer je het toont.</p>'+designEdit('explanation',s.explanation,'Uitleg na de vraag','design-content','Uitleg die pas na de vraag verschijnt.');
  }
  if(s.type==='steps'){
   return '<div>'+((s.steps||[]).map((step,i)=>'<div class="design-object"><div class="design-object-title">Stap '+(i+1)+'</div>'+designArrayEdit('steps',i,step,'Stap '+(i+1),'design-object-main','Beschrijf deze stap')+'<div class="design-tiny-actions">'+designActionButton('removeStep',i,'Verwijder')+'</div></div>').join(''))+'</div><button class="design-add" data-design-action="addStep" type="button">+ Stap toevoegen</button>';
@@ -1497,7 +1507,7 @@ function designBody(s){
   return '<div class="design-row-grid"><div class="design-object"><div class="design-object-title">Leerlingaanpak</div>'+designEdit('wrong',s.wrong,'De foutieve uitwerking','design-object-main','Schrijf hier de foutieve berekening')+'</div><div class="design-object"><div class="design-object-title">Verklaring</div>'+designEdit('challenge',s.challenge,'Opdracht bij de fout','design-content','Wat moeten leerlingen verbeteren?')+'</div></div><div class="design-object"><div class="design-object-title">Later onthullen</div>'+designEdit('correction',s.correction,'Juiste aanpak','design-content','Juiste berekening en uitleg')+'</div>';
  }
  if(s.type==='graph'){
-  return '<div class="design-hint">Deze grafiek reageert in de presentatie op de schuifregelaars. Hier stel je de beginwaarden in.</div>'+designGraphSVG(s)+'<div class="design-graph-values">'+[['g','Groeifactor',s.g||1.05],['b','Beginwaarde',s.b||1000],['target','Doelfactor',s.target||2]].map(([key,label,val])=>'<label>'+label+'<input type="number" data-design-number="'+key+'" step="any" min=".001" value="'+esc(val)+'"></label>').join('')+'</div><p class="design-hint">Meerdere experimenten kun je bij Alle velden tonen aanpassen.</p>'+designEdit('graphExplanation',s.graphExplanation,'Uitleg bij grafiek','design-content','Welke verklaring wil je later tonen?');
+  return '<div class="design-hint">Deze grafiek reageert in de presentatie op de schuifregelaars. Hier stel je de beginwaarden in.</div>'+designGraphSVG(s)+'<div class="design-graph-values">'+[['g','Groeifactor',s.g||1.05],['b','Beginwaarde',s.b||1000],['target','Doelfactor',s.target||2]].map(([key,label,val])=>'<label>'+label+'<input type="number" data-design-number="'+key+'" step="any" min=".001" value="'+esc(val)+'"></label>').join('')+'</div>'+designExperiments(s)+designEdit('graphExplanation',s.graphExplanation,'Uitleg bij grafiek','design-content','Welke verklaring wil je later tonen?');
  }
  return '<p class="design-empty">Kies een werkvorm om te beginnen.</p>';
 }
@@ -1518,8 +1528,9 @@ function syncDesignForm(s){
  for(const key of ['g','b','target','correct']){
   const node=$('f-'+key);if(node)node.value=s[key]??'';
  }
+ const experiments=$('f-experiments');if(experiments)experiments.value=(s.experiments||[]).map(x=>[x.label,x.question,x.g,x.b,x.target,x.instruction||''].join(' | ')).join('\n');
  const quiz=$('f-quizLines');
- if(quiz)quiz.value=(s.questions||[]).map(q=>[q.prompt,...(q.options||[]),q.correct>=0?String.fromCharCode(65+q.correct):'',q.explanation||''].join(' | ')).join('\n');
+ if(quiz)quiz.value=quizLines(s.questions);
 }
 function designChanged(){
  const slide=lesson.slides[selected];
@@ -1553,6 +1564,7 @@ function renderDesigner(){
  $('designType').innerHTML=Object.entries(TYPES).map(([key,val])=>'<option value="'+key+'">'+esc(val)+'</option>').join('');
  $('designType').value=s.type;
  document.querySelectorAll('[data-design-layout]').forEach(btn=>btn.setAttribute('aria-pressed',String(effective===btn.dataset.designLayout)));
+ $('designRemove').disabled=lesson.slides.length===1;
  $('designMoveUp').disabled=selected===0;
  $('designMoveDown').disabled=selected===lesson.slides.length-1;
  const intro='<div class="design-main">'+designEdit('phase',s.phase,'Lesfase','design-eyebrow','Bijvoorbeeld: onderzoeken')+designEdit('title',s.title,'Titel van deze dia','design-title','Geef deze dia een titel')+designEdit('prompt',s.prompt,'Vraag of instructie','design-prompt','Welke vraag stel je aan leerlingen?')+'</div>';
@@ -1579,6 +1591,13 @@ function initDesignControls(){
  canvas.addEventListener('input',e=>{
   const el=e.target,s=lesson.slides[selected];if(!s)return;
   const value=el.innerText??el.textContent??'';
+  if(el.dataset.experiment!==undefined){
+   const key=el.dataset.experimentField,index=Number(el.dataset.experiment);
+   const number=['g','b','target'].includes(key),val=number?Number(el.value):el.value;
+   if(number&&(!el.value||!Number.isFinite(val)||val<=0||(key==='g'&&val===1))){el.setCustomValidity('Gebruik een positief getal; de groeifactor mag geen 1 zijn.');el.reportValidity();return}
+   el.setCustomValidity('');s.experiments??=deep(availableExperiments(s));s.experiments[index][key]=val;
+   designChanged();return;
+  }
   if(el.dataset.designEdit){s[el.dataset.designEdit]=value;designChanged();return}
   if(el.dataset.designArray){
    const field=el.dataset.designArray,index=Number(el.dataset.index);s[field]??=[];s[field][index]=value;designChanged();return;
@@ -1595,16 +1614,25 @@ function initDesignControls(){
    designChanged();return;
   }
   if(el.dataset.designNumber){
-   const val=Number(el.value);if(!Number.isFinite(val)||val<=0||(el.dataset.designNumber==='g'&&val===1))return;
+   const val=Number(el.value);if(!el.value||!Number.isFinite(val)||val<=0||(el.dataset.designNumber==='g'&&val===1)){el.setCustomValidity('Gebruik een positief getal; de groeifactor mag geen 1 zijn.');el.reportValidity();return}el.setCustomValidity('');
    s[el.dataset.designNumber]=val;syncDesignForm(s);
    const old=$('designMiniGraph');if(old)old.outerHTML=designGraphSVG(s);
    designChanged();
   }
  });
+ canvas.addEventListener('change',e=>{if(e.target.matches('[data-design-later]')){lesson.slides[selected].later=e.target.checked;if($('f-later'))$('f-later').checked=e.target.checked;designChanged()}});
  canvas.addEventListener('click',e=>{
   const btn=e.target.closest('button[data-design-action]');if(!btn)return;
   const s=lesson.slides[selected],a=btn.dataset.designAction,i=Number(btn.dataset.index);
   if(a==='setCorrect')s.correct=i;
+  if(a==='clearCorrect')s.correct=-1;
+  if(a==='addExperiment'){
+   s.experiments??=deep(availableExperiments(s));
+   if(s.experiments.length<6)s.experiments.push({label:'Nieuw experiment',question:'',instruction:'',g:s.g,b:s.b,target:s.target});
+  }
+  if(a==='removeExperiment'){
+   s.experiments??=deep(availableExperiments(s));if(s.experiments.length>1)s.experiments.splice(i,1);
+  }
   if(a==='removeOption'&&s.options?.length>2){s.options.splice(i,1);if(s.correct===i)s.correct=-1;else if(s.correct>i)s.correct--}
   if(a==='addOption'&&(s.options||[]).length<4)(s.options??=[]).push('Nieuw antwoord');
   if(a==='addStep')(s.steps??=[]).push('Beschrijf deze stap');
@@ -1623,17 +1651,18 @@ function initDesignControls(){
   if(e.key==='Enter'&&['phase','title'].includes(field)){e.preventDefault();e.target.blur()}
  });
  $('designType').addEventListener('change',e=>{
-  save();lesson.slides[selected].type=e.target.value;initDesignType(e.target.value);renderEditor();
+  save();lesson.slides[selected].type=e.target.value;initDesignType(e.target.value);renderEditor();scheduleDraftSave();
  });
  document.querySelectorAll('[data-design-layout]').forEach(btn=>btn.onclick=()=>{
   save();const s=lesson.slides[selected];s.layout=btn.dataset.designLayout;
   if($('f-layout'))$('f-layout').value=s.layout;
   renderDesigner();designChanged();
  });
+ $('designRemove').onclick=()=>$('remove').click();
  $('designCopy').onclick=()=>{
   save();const clone=deep(lesson.slides[selected]);clone.id='deel-'+Date.now()+'-'+Math.random().toString(36).slice(2,8);
   clone.title=(clone.title||'Lesdeel')+' (kopie)';
-  lesson.slides.splice(selected+1,0,clone);selected++;renderEditor();
+  lesson.slides.splice(selected+1,0,clone);selected++;renderEditor();scheduleDraftSave();
  };
  $('designMoveUp').onclick=()=>{if(selected>0)$('up').click()};
  $('designMoveDown').onclick=()=>{if(selected<lesson.slides.length-1)$('down').click()};
@@ -1659,7 +1688,7 @@ function bindStoryBoard(){
    if(!Number.isInteger(dragged)||dragged===dest)return;
    save();const active=lesson.slides[selected]?.id;
    const moved=lesson.slides.splice(dragged,1)[0];lesson.slides.splice(dest,0,moved);
-   selected=lesson.slides.findIndex(x=>x.id===active);renderEditor();
+   selected=lesson.slides.findIndex(x=>x.id===active);renderEditor();scheduleDraftSave();
   });
   item.addEventListener('dragend',()=>{dragged=null;document.querySelectorAll('.drop-target,.dragging').forEach(el=>el.classList.remove('drop-target','dragging'))});
  });
@@ -1678,11 +1707,11 @@ function renderEditor(){
  :s.type==="table"?field("columnLabels","Kolomnamen (gescheiden door |)",(s.columnLabels||["Tijd","Hoeveelheid"]).join(" | "))+field("tableRows","Tabelrijen: tijd | waarde, per regel",(s.tableRows||[["0","1000"],["12","2000"]]).map(x=>x.join(" | ")).join("\n"),true)+field("tableExplanation","Uitleg, pas na onderzoek tonen",s.tableExplanation||"",true)
  :s.type==="practice"?field("tasks","Opgaven, één per regel",(s.tasks||["Bereken de verdubbelingstijd."]).join("\n"),true)+field("hints","Hulp per opgave, één per regel",(s.hints||[]).join("\n"),true)+field("solutions","Uitwerkingen per opgave, één per regel",(s.solutions||[]).join("\n"),true)
  :s.type==="compare"?field("compareLabels","Namen van twee kolommen (|)",(s.compareLabels||["Eerst","Na onderzoek"]).join(" | "))+field("compareItems","Vergelijkingen, links | rechts, per regel",(s.compareItems||[["Voorspelling","Nieuwe verklaring"]]).map(x=>x.join(" | ")).join("\n"),true)+field("compareConclusion","Conclusie, pas onthullen",s.compareConclusion||"",true)
- :s.type==="quizset"?field("quizLines","Per regel: vraag | A | B | C | D | juiste letter | uitleg",(s.questions||[]).map(q=>[q.prompt,...(q.options||[]),String.fromCharCode(65+(q.correct??-1)),q.explanation||""].join(" | ")).join("\n"),true)
+ :s.type==="quizset"?field("quizLines","Per regel: vraag | A | B | C | D | juiste letter | uitleg",quizLines(s.questions),true)
  :s.type==="error"?field("wrong","Foutieve redenering of formule",s.wrong||"",true)+field("challenge","Wat moeten leerlingen verklaren?",s.challenge||"",true)+field("correction","Juiste uitwerking, pas na keuze",s.correction||"",true)
  :field("g","Groeifactor",s.g)+field("b","Beginwaarde",s.b)+field("target","Doelfactor (2 voor verdubbelen; 0,5 voor halveren)",s.target??(Number(s.g)<1?.5:2))+field("graphExplanation","Uitleg na onderzoek",s.graphExplanation||"",true)+field("experiments","Eigen experimenten (optioneel): naam | onderzoeksvraag | groeifactor | beginwaarde | doelfactor | instructie",(s.experiments||[]).map(x=>[x.label,x.question,x.g,x.b,x.target,x.instruction||""].join(" | ")).join("\n"),true));
  $("f-layout").value=LAYOUTS.has(s.layout)?s.layout:"inherit";
- $("type").onchange=()=>{const type=$("type").value;save();lesson.slides[selected].type=type;initDesignType(type);renderEditor()};
+ $("type").onchange=()=>{const type=$("type").value;save();lesson.slides[selected].type=type;initDesignType(type);renderEditor();scheduleDraftSave()};
  review();
  renderDesigner();
  bindStoryBoard();
@@ -1873,7 +1902,7 @@ function normalizeLessonJSON(input){
     const letter=answer.toUpperCase().trim();
     correct=/^[A-F]$/.test(letter)?letter.charCodeAt(0)-65:item.options.indexOf(answer);
    }
-   item.correct=correct;item.explanation=asText(first(b,["explanation","verklaring","uitleg"],""));
+   item.correct=correct>=0&&correct<item.options.length?correct:-1;item.explanation=asText(first(b,["explanation","verklaring","uitleg"],""));
    item.later=Boolean(first(b,["later","laterBespreken","onthulLater"],false));
   }
   if(type==="quizset"){
@@ -1884,7 +1913,7 @@ function normalizeLessonJSON(input){
     if(choices.length<2||choices.length>4)throw Error("Vraag "+(i+1)+": gebruik 2 tot 4 keuzes.");
     const ans=first(q,["correct","juisteAntwoord","juist"],-1);
     let correct=typeof ans==="number"?ans:(typeof ans==="string"&&/^[A-D]$/i.test(ans)?ans.toUpperCase().charCodeAt(0)-65:choices.indexOf(ans));
-    if(correct<0||correct>=choices.length)correct=-1;
+    if(!Number.isInteger(correct)||correct<0||correct>=choices.length)correct=-1;
     return {prompt:asText(first(q,["prompt","vraag","titel"],"Vraag "+(i+1))),options:choices,correct,explanation:asText(first(q,["explanation","uitleg","verklaring"],""))};
    });
   }
@@ -1902,7 +1931,7 @@ function normalizeLessonJSON(input){
     if(!Array.isArray(experiments)||experiments.length>6)throw Error("Lesdeel "+(index+1)+": gebruik maximaal 6 experimenten.");
     item.experiments=experiments.map((x,i)=>{
      const gg=Number(first(x,["g","groeifactor"],item.g)),bb=Number(first(x,["b","beginwaarde"],item.b)),tt=Number(first(x,["target","doelfactor"],gg>1?2:.5));
-     if(!(gg>0&&gg!==1&&bb>0&&tt>0))throw Error("Experiment "+(i+1)+": controleer groeifactor, beginwaarde en doelwaarde.");
+     if(!([gg,bb,tt].every(Number.isFinite)&&gg>0&&gg!==1&&bb>0&&tt>0))throw Error("Experiment "+(i+1)+": controleer groeifactor, beginwaarde en doelwaarde.");
      return {label:asText(first(x,["label","naam","title"],"Experiment "+(i+1))),question:asText(first(x,["question","vraag"],"")),instruction:asText(first(x,["instruction","instructie"],"")),g:gg,b:bb,target:tt};
     });
    }
@@ -1938,7 +1967,7 @@ function normalizeLessonJSON(input){
   title:asText(first(raw,["title","titel","onderwerp","topic"],"Nieuwe wiskundeles")),
   level:asText(first(raw,["level","niveau","leerjaar"],"Wiskunde")),
   goal:asText(first(raw,["goal","leerdoelen","doelen","objectives"],"")),
-  slides,layout:suppliedLayout||lesson.layout||"single",route:lesson.route||"own",
+  slides,layout:suppliedLayout||lesson.layout||"single",route:["own","discover","explain","practice"].includes(raw.route)?raw.route:lesson.route||"own",
   features:newFeatures,template
  };
 }
@@ -1956,10 +1985,11 @@ $("import").onchange=async e=>{
   msg("JSON wordt ingelezen...");
   if(file.size>2_000_000)throw Error("Het bestand is groter dan 2 MB.");
   const content=await file.text();
-  const doc=normalizeLessonJSON(JSON.parse(content));
+  const input=JSON.parse(content),raw=input?.lesson||input;
+  const doc=normalizeLessonJSON(input);
   if(!confirmReplacingLesson('door dit bestand'))return;
-  doc.route=$("routePreset").value;
-  doc.slides=reorderLessonSlides(doc.slides,doc.route);
+  const savedDeck=Array.isArray(raw?.slides)||Array.isArray(raw?.lesdelen);
+  if(!savedDeck)doc.slides=reorderLessonSlides(doc.slides,doc.route);
   lesson=doc;hasActiveLesson=true;selected=0;current=0;paths={};rounds={};revealed=false;
   tableRevealed=0;compareRevealed=0;practiceState={};quizSelections={};quizAnswersVisible=false;errorCorrectionVisible=false;
   applyTemplate();renderEditor();if(guideReady)guideShow({kind:'title'});if($('startDialog').open)$('startDialog').close();
@@ -2051,7 +2081,9 @@ function chooseExperiment(index){
  graphActivePreset=list[graphMode];
  graphHelp=false;graphLinear=false;graphMarks=false;graphSelectedTime=null;
  const g=$("graphG"),b=$("graphB");if(!g||!b)return;
- g.min=graphActivePreset.g<1?".600":"1.010";g.max=graphActivePreset.g<1?".995":"1.400";g.step=".0001";
+ g.min=String(Math.min(graphActivePreset.g,graphActivePreset.g<1?.6:1.01));
+ g.max=String(Math.max(graphActivePreset.g,graphActivePreset.g<1?.995:1.4));g.step='any';
+ b.min=String(Math.min(250,graphActivePreset.b));b.max=String(Math.max(5000,graphActivePreset.b*2));b.step='any';
  g.value=graphActivePreset.g;b.value=graphActivePreset.b;
  $("graphTabs").innerHTML=list.map((v,i)=>'<button type="button" role="tab" aria-selected="'+String(i===graphMode)+'" data-exp="'+i+'" class="'+(i===graphMode?"active":"")+'">'+(i+1)+' · '+esc(v.label||"Experiment")+'</button>').join("");
  $("graphTabs").querySelectorAll("[data-exp]").forEach(btn=>btn.onclick=()=>chooseExperiment(Number(btn.dataset.exp)));
@@ -2153,7 +2185,7 @@ function renderSlide(){
  $("position").textContent=(current+1)+" / "+lesson.slides.length;
  $("prev").disabled=current===0;$("next").disabled=current===lesson.slides.length-1;
  $("draw").innerHTML=(paths[s.id]||[]).join("");
- $("draw").classList.toggle("armed",drawTool==="pen");
+ $("draw").classList.toggle("armed",["pen","marker","eraser"].includes(drawTool));
  $("slidecontent").style.visibility="visible";
  if(s.type==="graph"){
   const g=$("graphG"),b=$("graphB");
@@ -2233,11 +2265,11 @@ function graphRender(){
 function openStage(){
  applyTemplate();stage.classList.add("show");stage.setAttribute("aria-hidden","false");loadRounds();renderSlide();
 }
-function closeStage(){stage.classList.remove("show");stage.setAttribute("aria-hidden","true");closeTools();stopTimer();stopStopwatch();$("spotlightOverlay")?.remove();$("curtainOverlay")?.remove();$("blackMask")?.remove();black=false;if(presenterInterval){clearInterval(presenterInterval);presenterInterval=null}}
+function closeStage(){stage.classList.remove("show");stage.setAttribute("aria-hidden","true");closeTools();stopTimer();stopStopwatch();$("spotlightOverlay")?.remove();$("curtainOverlay")?.remove();$("blackMask")?.remove();$("whiteMask")?.remove();black=false;if(presenterInterval){clearInterval(presenterInterval);presenterInterval=null}}
 $("preview").onclick=()=>{save();current=0;revealed=false;stepsVisible=0;tableRevealed=0;compareRevealed=0;practiceState={};quizSelections={};quizAnswersVisible=false;errorCorrectionVisible=false;graphHelp=false;graphLinear=false;graphMarks=false;graphSelectedTime=null;graphMode=0;graphActivePreset=null;openStage()};
 $("close").onclick=closeStage;
 $("prev").onclick=()=>move(-1);$("next").onclick=()=>move(1);
-function move(n){if(current+n<0||current+n>=lesson.slides.length)return;tableRevealed=0;compareRevealed=0;practiceState={};quizSelections={};quizAnswersVisible=false;errorCorrectionVisible=false;$("spotlightOverlay")?.remove();$("curtainOverlay")?.remove();$("blackMask")?.remove();black=false;current+=n;revealed=false;stepsVisible=0;graphHelp=false;graphLinear=false;graphMarks=false;graphSelectedTime=null;graphMode=0;graphActivePreset=null;drawTool="";canvas.classList.remove("armed");closeTools();renderSlide()}
+function move(n){if(current+n<0||current+n>=lesson.slides.length)return;tableRevealed=0;compareRevealed=0;practiceState={};quizSelections={};quizAnswersVisible=false;errorCorrectionVisible=false;$("spotlightOverlay")?.remove();$("curtainOverlay")?.remove();$("blackMask")?.remove();$("whiteMask")?.remove();black=false;current+=n;revealed=false;stepsVisible=0;graphHelp=false;graphLinear=false;graphMarks=false;graphSelectedTime=null;graphMode=0;graphActivePreset=null;drawTool="";canvas.classList.remove("armed");closeTools();renderSlide()}
 function closeTools(){paletteVisible=false;$("toolpop").classList.remove("show");$("pollPanel")?.remove();$("comparePanel")?.remove();$("notesPanel")?.remove();$("timerPanel")?.remove();$("stopwatchPanel")?.remove();$("overviewPanel")?.remove();$("namesPanel")?.remove();pollVisible=false}
 $("toolbtn").onclick=()=>{paletteVisible=!paletteVisible;$("toolpop").classList.toggle("show",paletteVisible)};
 $("deckTools").onclick=()=>$("toolbtn").click();
@@ -2280,7 +2312,7 @@ function openOverview(){
  $("overviewPanel")?.remove();
  const rows=lesson.slides.map((s,i)=>'<button class="overview-choice'+(i===current?" active":"")+'" data-go="'+i+'"><span>'+String(i+1).padStart(2,"0")+'</span><b>'+esc(s.title)+'</b></button>').join("");
  const p=floatPanel("overviewPanel","Ga naar een dia",'<div class="overview-list">'+rows+'</div>');
- p.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>{const i=+b.dataset.go;if(i!==current){current=i;revealed=false;stepsVisible=0;drawTool="";canvas.classList.remove("armed");renderSlide()}p.remove()});
+ p.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>{const i=+b.dataset.go;if(i!==current)move(i-current);p.remove()});
 }
 function openNamePicker(){
  $("namesPanel")?.remove();
@@ -2305,7 +2337,7 @@ function toggleBlack(){
  slide.append(mask);black=true;mask.querySelector("button").onclick=()=>{mask.remove();black=false};
 }
 function toggleBlank(){
- $("blackMask")?.remove();black=false;
+ $("blackMask")?.remove();$("whiteMask")?.remove();black=false;
  const slide=$("viewer").querySelector(".slide"),old=$("whiteMask");if(old){old.remove();return}
  const b=document.createElement("div");b.id="whiteMask";b.className="white-mask";
  b.innerHTML='<button id="closeWhite" aria-label="Sluit wit scherm">× <span>Sluiten</span></button>';
@@ -2390,7 +2422,13 @@ function renderPresenter(){
 function printLesson(){
  const w=window.open("","wihtml-print","width=800,height=650");
  if(!w){floatPanel("notesPanel","Printen",'<p>Sta pop-upvensters toe om de les te printen.</p>');return}
- const html=lesson.slides.map((s,i)=>'<section><h2>'+(i+1)+". "+esc(s.title)+'</h2><p>'+esc(s.prompt||"")+'</p>'+(s.options?'<p>'+s.options.map((x,j)=>String.fromCharCode(65+j)+". "+esc(x)).join("<br>")+'</p>':"")+(s.body?'<p style="white-space:pre-line">'+esc(s.body)+'</p>':"")+'</section>').join("");
+ const html=lesson.slides.map((s,i)=>'<section><h2>'+(i+1)+". "+esc(s.title)+'</h2><p>'+esc(s.prompt||"")+'</p>'+(s.options?'<p>'+s.options.map((x,j)=>String.fromCharCode(65+j)+". "+esc(x)).join("<br>")+'</p>':"")+(s.body?'<p style="white-space:pre-line">'+esc(s.body)+'</p>':"")+
+ (s.tasks?'<ol>'+s.tasks.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ol>':'')+
+ (s.steps?'<ol>'+s.steps.map(()=>'<li>................................................................</li>').join('')+'</ol>':'')+
+ (s.questions?s.questions.map(q=>'<p>'+esc(q.prompt)+'</p><ul>'+q.options.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul>').join(''):'')+
+ (s.tableRows||s.compareItems?'<table>'+(s.tableRows||s.compareItems).map(row=>'<tr><td>'+esc(row[0])+'</td><td>........................</td></tr>').join('')+'</table>':'')+
+ (s.type==='error'?'<p>'+esc(s.wrong)+'</p><p>'+esc(s.challenge)+'</p>':'')+
+ (s.type==='graph'?'<p>Beginwaarde: '+esc(s.b)+' · Groeifactor: '+esc(s.g)+'</p>':'')+'</section>').join("");
  w.document.write('<!doctype html><html lang="nl"><meta charset="utf-8"><title>'+esc(lesson.title)+'</title><style>body{font:15px/1.5 system-ui;margin:32px}h1,h2{font-family:Georgia,serif}section{break-inside:avoid;border-bottom:1px solid #ddd;padding:15px 0}button{margin:10px}</style><h1>'+esc(lesson.title)+'</h1>'+html+'</html>');w.document.close();w.focus();w.print();
 }
 function setFitMode(){fitMode=!fitMode;stage.classList.toggle("studio-fit",fitMode)}
@@ -2429,7 +2467,7 @@ function svgPoint(e){const r=canvas.getBoundingClientRect();return [(e.clientX-r
 canvas.addEventListener("pointerdown",e=>{if(!["pen","marker","eraser"].includes(drawTool))return;if(drawTool==="eraser"){const box=canvas.getBoundingClientRect();const targetX=(e.clientX-box.left)/box.width*1200,targetY=(e.clientY-box.top)/box.height*675;const list=paths[currentSlide().id]||[];let best=-1,dist=Infinity;list.forEach((markup,i)=>{const tmp=document.createElementNS("http://www.w3.org/2000/svg","svg");tmp.innerHTML=markup;const path=tmp.firstElementChild;if(!path)return;const d=path.getAttribute("d")||"";const pts=[...d.matchAll(/[ML]\s*([\d.]+)[, ]+([\d.]+)/g)];for(const pt of pts){const delta=Math.hypot(+pt[1]-targetX,+pt[2]-targetY);if(delta<dist){dist=delta;best=i}}});if(best>=0&&dist<85){list.splice(best,1);canvas.innerHTML=list.join("")}return}drawing=true;canvas.setPointerCapture(e.pointerId);const [x,y]=svgPoint(e);activePath=document.createElementNS("http://www.w3.org/2000/svg","path");activePath.setAttribute("d","M"+x+" "+y);activePath.setAttribute("stroke",drawConfig[drawTool].stroke);activePath.setAttribute("stroke-width",String(drawConfig[drawTool].width));activePath.setAttribute("opacity",String(drawConfig[drawTool].opacity));activePath.setAttribute("stroke-linecap","round");activePath.setAttribute("fill","none");canvas.append(activePath)});
 canvas.addEventListener("pointermove",e=>{if(!drawing||!activePath)return;const [x,y]=svgPoint(e);activePath.setAttribute("d",activePath.getAttribute("d")+" L"+x+" "+y)});
 canvas.addEventListener("pointerup",()=>{if(activePath){(paths[currentSlide().id]??=[]).push(activePath.outerHTML)}drawing=false;activePath=null});
-window.addEventListener("keydown",e=>{if(!stage.classList.contains("show"))return;if(e.key==="Escape"){if(paletteVisible)closeTools();else closeStage()}if(e.key==="ArrowRight")move(1);if(e.key==="ArrowLeft")move(-1);if(e.key.toLowerCase()==="p"&&!e.target.matches("input,textarea")){drawTool=drawTool==="pen"?"":"pen";canvas.classList.toggle("armed",drawTool==="pen")}});
+window.addEventListener("keydown",e=>{if(!stage.classList.contains("show"))return;if(e.key==="Escape"){if(paletteVisible)closeTools();else closeStage()}if(!e.target.matches("input,textarea,select,[contenteditable]")){if(e.key==="ArrowRight")move(1);if(e.key==="ArrowLeft")move(-1);}if(e.key.toLowerCase()==="p"&&lesson.features.drawing!==false&&!e.target.matches("input,textarea,[contenteditable]")){drawTool=drawTool==="pen"?"":"pen";canvas.classList.toggle("armed",drawTool==="pen")}});
 /* Dezelfde offline HTML voor downloaden én voorvertoning. Geen tweede presentatie-engine. */
 function buildStandaloneLessonHTML(){
  save();
@@ -2438,7 +2476,7 @@ function buildStandaloneLessonHTML(){
  const preview=cloned.querySelector('#guideResultFrame');
  if(preview)preview.removeAttribute('srcdoc');
  const source=cloned.outerHTML;
- const result=source.replace(/const SAMPLE=\{[\s\S]*?\};\s*const \$=/,"const SAMPLE="+data+";\nconst $=");
+ const result=source.replace(/const SAMPLE=\{[\s\S]*?\};\s*const \$=/,()=>"const SAMPLE="+data+";\nconst $=");
  if(result===source)throw Error("De lesgegevens konden niet worden ingevoegd.");
  const boot='<style>html.standalone>body>header,html.standalone .layout{display:none!important}html.standalone .viewer{display:flex!important}</style><script>document.documentElement.classList.add("standalone");window.addEventListener("load",function(){document.getElementById("preview").click()});<\/script>';
  return result.slice(0,result.lastIndexOf("</body>"))+boot+result.slice(result.lastIndexOf("</body>"));
@@ -2470,7 +2508,12 @@ lesson.template=checkedTemplate(lesson.template||TEMPLATE_PRESETS.editorial);
 applyTemplate();
 initDesignControls();
 $('draftRestore').onclick=()=>restoreDraft();
-$('fields').addEventListener('input',event=>{if(event.target.id!=='type'){save();renderDesigner()}});
+function saveField(event){
+ if(event.target.id==='type')return;
+ event.target.dataset.dirty='true';save();renderDesigner();
+}
+$('fields').addEventListener('input',saveField);
+$('fields').addEventListener('change',saveField);
 ['title','level','goal'].forEach(id=>$(id).addEventListener('input',()=>{save();const footer=$('designCanvas').querySelector('.design-footer');if(footer)footer.textContent=(lesson.level||'Wiskunde')+' · '+(lesson.title||'Nieuwe les')+' · dia '+(selected+1)+' van '+lesson.slides.length}));
 loadRounds();
 renderEditor();
