@@ -147,7 +147,7 @@ async function loadList(){
  if(!participants.length)list.append(el('p','meta','Nog geen deelnemers.'));
  if(selected){
   const found=participants.find(p=>p.id===selected.id);
-  if(found){await choosePerson(found.id);return}
+  if(found){if(dirty)return;await choosePerson(found.id);return}
  }
  selected=null;documentState=null;show('detail',false);show('empty',true);
 }
@@ -203,7 +203,7 @@ async function performStory(action,extra={}){
    if(dirty)planStorySave();
   }
   const text=action==='save_draft'?'Concept bewaard.':action==='publish_story'?'Verhaal gepubliceerd.':'Publicatie ingetrokken.';
-  status(text);E('personMeta').textContent='Dossier bijgewerkt: '+new Date().toLocaleString('nl-NL')+' · versie '+documentState.revision;
+  status(dirty?'Nog niet opgeslagen':text);E('personMeta').textContent='Dossier bijgewerkt: '+new Date().toLocaleString('nl-NL')+' · versie '+documentState.revision;
   const p=r.personal_texts;E('publishedStatus').textContent=p?.published_at?'Gepubliceerd op '+new Date(p.published_at).toLocaleString('nl-NL')+'.':'Nog geen tekst gepubliceerd.';
  }catch(e){status(e.status===409?'Dit dossier is intussen gewijzigd. Kopieer je tekst en open het dossier opnieuw.':'Opslaan is niet gelukt. Je tekst staat nog op dit scherm.',true)}
  finally{setBusy(false)}
@@ -221,7 +221,7 @@ E('saveDraft').onclick=()=>performStory('save_draft',{draft:readDraft()});
 E('publish').onclick=async()=>{if(dirty){status('Bewaar eerst het concept. Daarna kun je het publiceren.',true);return}
  if(confirm('Dit verhaal wordt zichtbaar in de persoonlijke omgeving van de deelnemer. Wil je publiceren?'))await performStory('publish_story')};
 E('unpublish').onclick=()=>{if(confirm('Wil je de gepubliceerde tekst tijdelijk onzichtbaar maken? Het concept blijft bewaard.'))performStory('unpublish_story')};
-E('saveName').onclick=async()=>{if(!selected||!canManage())return;const name=E('editName').value.trim();if(!name)return;try{await request('rename',{tenant_id:tenant.id,participant_id:selected.id,name});selected.display_name=name;E('personName').textContent=name;await loadList()}catch{alert('De naam kon niet worden opgeslagen.')}};
+E('saveName').onclick=async()=>{if(!selected||!canManage()||dirty)return;const name=E('editName').value.trim();if(!name)return;try{await request('rename',{tenant_id:tenant.id,participant_id:selected.id,name});selected.display_name=name;E('personName').textContent=name;await loadList()}catch{alert('De naam kon niet worden opgeslagen.')}};
 E('rotateCode').onclick=async()=>{if(!selected||!canManage())return;if(!confirm('De bestaande code werkt hierna niet meer. Een nieuwe code maken?'))return;try{const r=await request('rotate',{tenant_id:tenant.id,participant_id:selected.id});codeVisible(r.code,selected.display_name||'deelnemer');E('codePanel').scrollIntoView({behavior:'smooth'})}catch{alert('Een nieuwe code maken is niet gelukt.')}};
 E('revoke').onclick=async()=>{if(!selected||!canManage())return;if(!confirm('Toegang intrekken? De gegevens blijven bewaard.'))return;try{await request('revoke',{tenant_id:tenant.id,participant_id:selected.id});await loadList()}catch{alert('Intrekken is niet gelukt.')}};
 window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue=''}});
