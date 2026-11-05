@@ -44,7 +44,7 @@ test('an incorrect code does not decrypt the personal story', async () => {
 });
 
 test('the original portal and the personal story share one tab session', () => {
-  assert.match(root, /pw\.value\.trim\(\)\.toUpperCase\(\)==='KEI'/);
+  assert.match(root, /code\.toUpperCase\(\)==='KEI'/);
   assert.match(root, /sessionStorage\.setItem\('leif-kei-session-v1','1'\)/);
   assert.match(root, /href="\/leif\/verhaal\/"/);
   assert.match(reader, /sessionStorage\.getItem\('leif-kei-session-v1'\)==='1'/);
