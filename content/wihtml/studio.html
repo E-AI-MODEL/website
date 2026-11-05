@@ -407,6 +407,73 @@
 .wi-start-card-featured p{color:#365c4e}
 .wi-start-hint{font-size:13px;margin-top:18px!important}
 @media(max-width:650px){.wi-start-grid{grid-template-columns:1fr}}
+
+/* EAIdeck-inspiratie: weinig keuzes in Snel, volledige instellingen in Studio. */
+.wi-mode-switch{display:flex;gap:3px;align-items:center;background:#e9efeb;border:1px solid #d5e1d9;border-radius:11px;padding:4px;flex:none}
+.wi-mode-switch button{padding:8px 15px;border:0;border-radius:8px;background:transparent;font-size:13px;font-weight:750;min-width:67px}
+.wi-mode-switch button[aria-pressed=true]{background:#fff;color:#116b5c;box-shadow:0 1px 6px #17392b1a}
+.wi-mode-quick .layout{max-width:1720px;grid-template-columns:214px minmax(0,1fr);gap:23px;padding:18px 27px}
+.wi-mode-quick .side{display:none}
+.wi-mode-quick .editor>h1,.wi-mode-quick .editor>.lede,.wi-mode-quick .editor>.eyebrow{display:none}
+.wi-mode-quick .design-studio,.wi-focus .design-studio{max-width:none}
+.wi-mode-quick .design-heading{margin:0 0 12px;gap:10px}
+.wi-mode-quick .design-heading p{display:none}
+.wi-mode-quick .design-footer-actions,.wi-mode-quick .rail-import{display:none}
+.wi-mode-quick .rail{padding-right:16px;top:14px}
+.wi-mode-quick .rail-bottom{margin-top:12px;padding-top:13px}
+.wi-mode-quick .rail-bottom #add{width:100%;background:#eaf3ee;border:1px solid #b9d6c7;color:#155c4f;font-size:13px;font-weight:750;text-align:left}
+.wi-mode-quick .actions #editTemplate{display:none}
+.wi-mode-quick .design-viewport{padding:clamp(6px,1vw,14px);border-radius:12px}
+.wi-mode-quick .design-paper{padding:clamp(20px,3.5vw,62px)}
+.wi-quick-add{background:#eaf3ee!important;border-color:#a9cec0!important;color:#135b4f!important;font-weight:760}
+.wi-focus .layout{display:block;max-width:1570px;padding:13px 24px}
+.wi-focus .rail,.wi-focus .side,.wi-focus .editor>h1,.wi-focus .editor>.lede,.wi-focus .editor>.eyebrow,.wi-focus .design-advanced{display:none!important}
+.wi-focus .editor{margin:0}
+.wi-focus .design-studio{width:100%}
+.wi-focus .design-viewport{padding:8px}
+#quickFocus[aria-pressed=true]{background:#163b33;color:#fff;border-color:#163b33}
+.wi-insert-dialog{width:min(710px,calc(100vw - 24px));max-height:min(90dvh,790px);overflow-y:auto;padding:0;border:1px solid #d1ded6;border-radius:18px;background:#fcfdfa;color:var(--ink);box-shadow:0 24px 80px #091b1540}
+.wi-insert-dialog::backdrop{background:rgba(10,26,22,.63)}
+.wi-insert-head{display:flex;align-items:start;justify-content:space-between;gap:12px;padding:23px 27px 11px}
+.wi-insert-head h2{margin:5px 0;font-size:clamp(23px,3vw,32px)}
+.wi-insert-head p{margin:3px 0 0;color:#58695e;font-size:14px}
+.wi-insert-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;padding:13px 27px 26px}
+.wi-insert-card{display:grid;gap:5px;padding:15px 16px;text-align:left;min-height:94px;background:#fff;border:1px solid #d7e2da;border-radius:12px;transition:background .15s,border-color .15s}
+.wi-insert-card:hover,.wi-insert-card:focus-visible{background:#f0f7f1;border-color:#88b7a0}
+.wi-insert-card strong{font-size:15px;line-height:1.25}
+.wi-insert-card span{color:#607369;font-size:12px;line-height:1.45}
+.wi-start-dialog{width:min(740px,calc(100vw - 24px));background:#fbfcf9}
+.wi-start-dialog h2{margin:7px 0 9px}
+.wi-start-dialog .wi-start-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.wi-start-dialog .wi-start-card{padding:16px;border-radius:12px}
+.wi-start-dialog .wi-start-card:first-child{grid-column:1/-1;background:#eaf3ee;display:grid;grid-template-columns:minmax(0,1fr) minmax(180px,225px);gap:5px 20px;align-items:center}
+.wi-start-dialog .wi-start-card:first-child h3,.wi-start-dialog .wi-start-card:first-child p{grid-column:1}
+.wi-start-dialog .wi-start-card:first-child label,.wi-start-dialog .wi-start-card:first-child select,.wi-start-dialog .wi-start-card:first-child button{grid-column:2}
+.wi-start-dialog .wi-start-card:first-child label{grid-row:1}
+.wi-start-dialog .wi-start-card:first-child select{grid-row:2}
+.wi-start-dialog .wi-start-card:first-child button{grid-row:3}
+.wi-start-dialog .wi-start-card:first-child p{grid-row:2 / span 2}
+.wi-start-dialog .wi-start-card button{min-height:40px}
+@media(max-width:1000px){.wi-mode-quick .layout{grid-template-columns:192px minmax(0,1fr);gap:14px;padding:14px 16px}}
+@media(max-width:760px){
+ .top{gap:9px}.wi-mode-switch{order:1;margin-left:auto}.top .actions{order:2}
+ .wi-mode-quick .layout,.wi-focus .layout{display:block;padding:9px 12px}
+ .wi-mode-quick .rail{position:static;padding:0 0 10px;border-right:0;border-bottom:1px solid var(--line)}
+ .wi-mode-quick .rail .slide-list{display:flex;overflow-x:auto}
+ .wi-mode-quick .rail .slide-item{flex:0 0 155px}
+ .wi-mode-quick .rail-bottom{margin:8px 0;padding:7px 0}
+ .wi-mode-quick .editor{margin-top:10px}
+ .wi-mode-quick .design-heading h2{font-size:19px}
+ .design-heading-actions{gap:6px}
+ .wi-start-dialog .wi-start-grid{grid-template-columns:1fr}
+ .wi-start-dialog .wi-start-card:first-child{display:block;grid-column:auto}
+ .wi-start-dialog .wi-start-card:first-child h3,.wi-start-dialog .wi-start-card:first-child p,.wi-start-dialog .wi-start-card:first-child label,.wi-start-dialog .wi-start-card:first-child select,.wi-start-dialog .wi-start-card:first-child button{grid-column:auto;grid-row:auto}
+ .wi-start-dialog .wi-start-card:first-child select{width:100%;margin:6px 0 10px}
+ .wi-insert-grid{grid-template-columns:1fr;padding:12px 18px 20px}
+ .wi-insert-head{padding:19px 18px 10px}
+ .wi-insert-card{min-height:70px}
+}
+@media(max-width:420px){.wi-mode-switch button{min-width:56px;padding:7px 11px}.wi-mode-quick .top .actions #newLesson{display:none}}
 </style>
 </head>
 <body>
