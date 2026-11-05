@@ -59,6 +59,23 @@ Deno.serve(async req=>{
   if(input.action==="session")return send({ok:true,tenants:memberships,user_email:user.email||""},200,origin);
   const scope=memberships.find(t=>t.id===input.tenant_id);
   if(!scope)return send({error:"not_authorized"},403,origin);
+
+  if(input.action==="list_testers" || input.action==="create_tester"){
+    if(scope.slug!=="leif" || scope.role!=="manager")return send({error:"not_authorized"},403,origin);
+    if(input.action==="list_testers"){
+      const testers=await database("leif_demo_sessions?select=id,tester_name,status,created_at,updated_at&order=created_at.desc&limit=250","GET",null,service);
+      return send({ok:true,testers},200,origin);
+    }
+    const name=typeof input.name==="string"?input.name.trim():"";
+    if(!name || name.length>120)return send({error:"invalid_name"},400,origin);
+    const code="LEIF-TEST-"+newCode();
+    const rows=await database("leif_demo_sessions","POST",{
+      continuation_hash:await hash(code),tester_name:name,
+      source_note:"LEIF-proef. Aangemaakt via beheer."
+    },service);
+    if(rows.length!==1)return send({error:"creation_failed"},503,origin);
+    return send({ok:true,code},201,origin);
+  }
   if(input.action==="list"){
    const participants=await database("leif_participants?tenant_id=eq."+scope.id+"&select=id,display_name,state,expires_at,created_at&order=created_at.desc&limit=250","GET",null,service);
    return send({ok:true,participants,role:scope.role},200,origin);
