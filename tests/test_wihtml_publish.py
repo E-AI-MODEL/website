@@ -115,7 +115,7 @@ class WiHTMLPublicationTests(unittest.TestCase):
                        'id="startRestore"', 'id="startSelectedLesson"',
                        'function startBlankLesson(route)', 'function loadLibraryLesson(key,showPreview=false)',
                        "if(document.documentElement.classList.contains('standalone'))return;",
-                       "if(!draftAvailable()){loadLibraryLesson(",
+                       "if(!draftAvailable()){", "openExample().finally(",
                        'const WIHTML_LIBRARY_FILES='):
             with self.subTest(marker=marker):
                 self.assertIn(marker, studio)
