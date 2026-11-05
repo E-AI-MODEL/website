@@ -85,3 +85,25 @@ De route volgt de werkelijke dia's van de les. Eerst vult de docent de lesnaam, 
 De knoppen **Vorige**, **Akkoord, volgende** en **Alle stappen** werken in beide modi. De bestaande editorfuncties, lesroutes, lokaal bewaren, JSON-import, bibliotheek en offline HTML-export blijven beschikbaar. Uitgebreide velden zijn in Studio bereikbaar in een aparte dialoog, niet als lang formulier onder de dia. Een zelfstandige export opent uitsluitend in de presentatieweergave en toont nooit het bewerkscherm.
 
 De code staat in `content/wihtml/studio.html`. De uitgeschreven stroom wordt getest in `scripts/ui_smoke.mjs`, en de publicatietests controleren de aanwezigheid van alle stappen. Voor productie blijft een eigen UI- en toegankelijkheidscontrole verstandig.
+
+## Rustige lesroute
+
+De landingspagina heeft één duidelijke ingang voor een nieuwe les. De link `?start=nieuw` opent meteen de eerste vraag, zonder nogmaals een startscherm. De bibliotheek, JSON-import en het herstellen van een eerder concept blijven bereikbaar via afzonderlijke links. De docent hoeft geen account te maken.
+
+De begeleide lesmaker stelt kleine vragen op aparte schermen. Eerst de naam van de les, dan het niveau, het leerdoel en de opbouw. Een routekeuze op een nog lege les maakt passende startdia's. Op een bestaande les herschikt dezelfde keuze de dia's zonder inhoud te verwijderen.
+
+Vervolgens werk je iedere dia af: werkvorm kiezen, inhoud direct op de dia aanpassen en beschrijven wat leerlingen eerst zelfstandig doen. In **Studio** komen nog twee eigen schermen per dia bij: de hulp en handelingen van de docent, en de lesfase en vlakverdeling. De uitgebreide velden zijn te openen zonder de lesmaker te verlaten. Dia's kopiëren, verplaatsen en verwijderen zitten achter 'Dia beheren', zodat ze bereikbaar blijven zonder steeds zichtbaar te zijn.
+
+De laatste schermen gaan over vormgeving, de docenttools (Studio), controle en het resultaat. Op het resultaatscherm staat de zelfstandige interactieve HTML-presentatie direct als afgeschermde voorvertoning. De knop Download HTML gebruikt precies dezelfde generatiecode. Voor verder bewerken kan de docent een JSON-lesbestand downloaden.
+
+De browser bewaart de laatst gebruikte stap bij de lokale les. Na het herstellen van een concept wordt die stap heropend wanneer de lesidentificatie overeenkomt. Er is geen cloudopslag. De combinatie van JavaScript, JSON en een HTML-sjabloon blijft in de eigen browser.
+
+De regressietest doorloopt de landingspagina, afzonderlijke stappen, beide modi, een gekozen lesroute, de werkende voorvertoning, de offline export, import en herstel. Die test bewijst technische werking; docenten moeten de begrijpelijkheid en didactische ondersteuning nog in gebruik beoordelen.
+
+## Visuele en gegevenscontrole (5 november 2026)
+
+De Playwright-screenshots van de hele route lieten dubbele vraagkoppen, te veel mobiele bovenbediening, een slecht leesbare diatitel op het donkere bord en een zwevende balk over het HTML-resultaat zien. Dit is in de PR verbeterd. De browsertest controleert nu ook het kleurcontrast van de donkere titel en dat de balk het eindscherm niet bedekt. De afbeeldingen worden bij iedere browsertest als GitHub Actions-artifact opgeslagen.
+
+De docent krijgt bij het vervangen van een geopende les door een nieuwe les of een JSON-import een bevestigingsvraag. Annuleren laat de huidige les ongewijzigd. Een snelle paginaverversing bewaart de laatst ingevoerde lesgegevens en de stap samen.
+
+De screenshots zijn een technische en visuele controle van enkele vastgelegde schermgroottes. De gebruikservaring, wiskundige inhoud en werking op een fysiek digibord zijn daarmee niet definitief gevalideerd.
