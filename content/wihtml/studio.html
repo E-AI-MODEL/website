@@ -604,12 +604,33 @@
 .wi-guide-active .wi-guide-complete{max-width:900px;margin:0 auto}
 .wi-guide-active .wi-guide-foot{max-width:1040px;margin-left:auto;margin-right:auto}
 @media(max-width:650px){.wi-guide-active .wi-guide-surface{padding:20px 4px}.wi-guide-active .wi-guide-question>label{font-size:26px}.wi-guide-active .wi-guide-slide-actions{margin-left:0;width:100%}.wi-guide-live iframe{min-height:230px;height:58vw}}
+
+/* Visuele controle: geen dubbele vraagkoppen en minder bediening op mobiel. */
+.wi-guide-active .wi-guide-head{min-height:0;align-items:center}
+.wi-guide-active .wi-guide-head-actions{display:flex;align-items:center;gap:9px;flex:none}
+.wi-guide-active .wi-guide-head-actions button{padding:8px 12px;font-size:13px;white-space:nowrap}
+.wi-guide-active .wi-guide-head h1,.wi-guide-active .wi-guide-head p{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
+.wi-guide-active .wi-guide-head h1:focus{outline:none}
+.wi-guide-active[data-guide-kind="slide"] .wi-guide-head h1{position:static;width:auto;height:auto;overflow:visible;clip-path:none;margin:7px 0}
+.wi-guide-active[data-guide-kind="slide"] .wi-guide-head p{position:static;width:auto;height:auto;overflow:visible;clip-path:none;white-space:normal;margin:0}
+.wi-guide-active[data-guide-kind="result"] .wi-guide-foot{position:static;background:none}
+.wi-guide-active .wi-guide-question>input::placeholder,.wi-guide-active .wi-guide-question>textarea::placeholder{color:#61766b;opacity:1}
+.wi-guide-active #designCanvas [contenteditable="plaintext-only"]:empty::before{color:#61766b}
+#viewer .slide .wi-board h2{color:#f4f7f4}
+#viewer .slide .wi-board .wi-bottom{color:#e4f0e8}
+@media(max-width:650px){
+ .wi-guide-active .wi-guide-head{gap:8px}
+ .wi-guide-active .wi-guide-head-actions{gap:5px}
+ .wi-guide-active .wi-guide-head-actions button{font-size:12px;padding:7px 9px}
+ .wi-guide-active .wi-guide-head #guideCounter{font-size:12px;white-space:nowrap}
+ .wi-guide-active[data-guide-kind="slide"] .wi-guide-head h1{font-size:21px}
+}
 </style>
 </head>
 <body class="wi-mode-quick">
 <header><div class="top"><div class="brand"><span class="mark">w</span><div><div class="brandname">WiHTML</div><div class="byline">Wiskundelessen maken en presenteren</div></div></div><div class="wi-mode-switch" role="group" aria-label="Werkmodus"><button type="button" id="modeQuick" aria-pressed="true">Snel</button><button type="button" id="modeStudio" aria-pressed="false">Studio</button></div><div class="actions"><button id="newLesson" title="Begin met een lege wiskundeles">Nieuwe les</button><button id="editTemplate" title="Maak je eigen HTML-sjabloon">Sjabloon maken</button><button id="save">Bewaar lesbestand</button><button id="preview">Bekijk presentatie</button><button id="export" class="primary">Download HTML</button></div></div></header>
 <main class="layout"><section class="wi-guide" id="guideFlow" hidden aria-label="Les stap voor stap maken">
- <div class="wi-guide-head"><div><div id="guideCounter" class="wi-guide-counter">Stap 1</div><h1 id="guideHeading">Vertel iets over je les</h1><p id="guideHelp">Vul alleen in wat je nu weet. Je kunt later terug.</p></div><button type="button" id="guideOtherLesson">Andere les</button><button type="button" id="guideOutline">Alle stappen</button></div>
+ <div class="wi-guide-head"><div><div id="guideCounter" class="wi-guide-counter">Stap 1</div><h1 id="guideHeading">Vertel iets over je les</h1><p id="guideHelp">Vul alleen in wat je nu weet. Je kunt later terug.</p></div><div class="wi-guide-head-actions"><button type="button" id="guideOtherLesson">Andere les</button><button type="button" id="guideOutline" aria-label="Alle stappen bekijken">Stappen</button></div></div>
  <progress id="guideProgress" class="wi-guide-track" max="100" value="0" aria-label="Voortgang van de les"></progress>
  <div id="guideInfo" class="wi-guide-page" hidden>
  <div class="wi-guide-surface" data-guide-info="title"><div class="wi-guide-question"><label for="guideTitle">Hoe heet je les?</label><p>Een werktitel is genoeg. Later kun je de naam aanpassen.</p><input id="guideTitle" autocomplete="off" placeholder="Bijvoorbeeld: Exponentiële groei"></div></div>
@@ -1219,6 +1240,7 @@ function guideRender(){
  }
  const slide=lesson.slides.find(s=>s.id===guidePage.id);
  const kind=guidePage.kind,step=guidePage.step||'';
+ document.body.dataset.guideKind=kind;
  const labels={
   title:['Welke les maak je?','Een werktitel is voldoende. Je kunt deze later veranderen.'],
   level:['Voor welke klas is de les?','Kies het leerjaar en niveau dat bij je leerlingen past.'],
