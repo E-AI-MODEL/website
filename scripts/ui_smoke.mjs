@@ -85,6 +85,7 @@ try {
   await wiPage.locator('.wi-landing-start a.button').click();
   await wiPage.locator('#guideFlow').waitFor({state:'visible'});
   assert.equal(await wiPage.locator('#startDialog').evaluate(el => el.open), false, 'Landingspagina opent rechtstreeks de nieuwe les');
+  assert.equal(new URL(wiPage.url()).searchParams.has('start'),false,'Een verversing maakt niet opnieuw een lege les');
   assert.equal(await wiPage.locator('#modeQuick').getAttribute('aria-pressed'), 'true', 'Snel is standaard');
   assert.equal(await wiPage.locator('.rail').isVisible(), false, 'Lange editor blijft uit beeld');
   assert(await wiPage.locator('[data-guide-info="title"]').isVisible(), 'Eerst alleen lesnaam');
