@@ -539,7 +539,7 @@ function updateTemplateVisual(){
  const setDeclarations=(css,selector,declarations)=>{
   let found=false;
   const updated=css.replace(/([^{}]+)\{([^{}]*)\}/g,(whole,selectors,rawBody)=>{
-   if(!selectors.split(',').map(x=>x.trim()).includes(selector))return whole;
+   if(!selectors.split(',').some(x=>x.trim().split(/\s+/).pop()===selector))return whole;
    found=true;
    let body=rawBody;
    for(const [property,value] of Object.entries(declarations)){
