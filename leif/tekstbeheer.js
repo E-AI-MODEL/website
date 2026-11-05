@@ -6,7 +6,7 @@ const page=pages[location.pathname.replace(/index\.html$/,'').replace(/\/?$/,'/'
 if(!page)return;
 const api='https://ngcyfbstajfcfdhlelbz.supabase.co/functions/v1/leif-admin-console';
 const editing=new URLSearchParams(location.search).get('leif_voorbeeld')==='1'&&window.parent!==window;
-const exclude='script,style,svg,textarea,select,option,input,code,pre,[contenteditable],[data-leif-locked],#protected-text,#answerReadout,#testerAnswers,#participants,#testerList,#testerDetail,#codePanel,#testerInvite,.reader,.report-page,.reportlist,.personal,.quote-list,.answer-piece,.narrative-copy,.readonly,.readout,.text-answer,.question textarea,.exercise textarea,#welcome,[role=status],[role=alert],.save-status,.error,.status,.meta#identity';
+const exclude='script,style,svg,textarea,select,option,input,code,pre,[contenteditable],[data-leif-locked],#protected-text,#answerReadout,#testerAnswers,#participants,#testerList,#testerDetail,#codePanel,#testerInvite,.reader,.report-page,.reportlist,.report-section,.entry,#reportBody,#detail,#personName,#personMeta,.personal,.quote-list,.answer-piece,.narrative-copy,.readonly,.readout,.text-answer,.question textarea,.exercise textarea,#welcome,[role=status],[role=alert],.save-status,.error,.status,.meta#identity';
 const registered=new WeakMap(),attributeNodes=new WeakMap(),known=new Map(),published=new Map(),preview=new Map();
 let scheduled=false, editEnabled=editing;
 const tidy=s=>String(s||'').replace(/\s+/g,' ').trim();
@@ -40,7 +40,7 @@ function inspect(node){
  return field;
 }
 function inspectAttribute(element,attribute){
- if(!element||element.closest('[data-leif-locked],.report-page,.personal,.reader,.reportlist,.narrative-copy,#answerReadout,#testerAnswers'))return null;
+ if(!element||element.closest('[data-leif-locked],.report-page,.report-section,.entry,#reportBody,#detail,.personal,.reader,.reportlist,.narrative-copy,#answerReadout,#testerAnswers'))return null;
  const raw=element.getAttribute(attribute),original=tidy(raw);
  if(original.length<3||original.length>6000||!/[A-Za-zÀ-ÿ]/.test(original))return null;
  const saved=attributeNodes.get(element)||{};
