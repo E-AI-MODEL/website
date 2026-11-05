@@ -32,6 +32,8 @@ jobs:
       - run: node scripts/ui_smoke.mjs site-build
       - name: Verify LEIF continuation in Chromium
         run: node scripts/test_leif_continue.mjs site-build
+      - name: Verify LEIF text editor in Chromium
+        run: node scripts/test_leif_site_editor.mjs site-build
       - name: Verify LEIF session API rejects unknown private codes
         run: |
           status="$(curl --silent --show-error --max-time 25 --output /tmp/leif-api-check.json --write-out '%{http_code}' --request POST 'https://ngcyfbstajfcfdhlelbz.supabase.co/functions/v1/leif-demo-session' --header 'Content-Type: application/json' --data '{"action":"load","token":"synthetic-invalid-continuation-code-xxxxxxxxxxxxxx"}')"
