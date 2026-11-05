@@ -163,8 +163,8 @@ try {
   await wiPage.locator('#guideNext').click();
   assert(await wiPage.locator('[data-guide-info="goal"]').isVisible(), 'We staan bij het leerdoel');
   await wiPage.waitForFunction(() => {
-    const pos=JSON.parse(localStorage.getItem('wihtml:guide:positie:v2')||'null');
-    return pos?.page?.kind==='goal';
+    const draft=JSON.parse(localStorage.getItem('wihtml:docentstudio:concept:v1')||'null');
+    return draft?.guidePage?.kind==='goal' && draft?.lesson?.title==='Tweede les';
   });
   await wiPage.reload({waitUntil:'load'});
   await wiPage.locator('#startDialog').waitFor({state:'visible'});
