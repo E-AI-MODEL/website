@@ -165,6 +165,10 @@ try {
   await wiPage.locator('#startBackToLesson').click();
   assert(await wiPage.locator('#guideResult').isVisible(), 'Teruggaan bewaart het eindscherm');
   await wiPage.locator('#guideOtherLesson').click();
+  wiPage.once('dialog',dialog=>dialog.dismiss());
+  await wiPage.locator('#startNew').click();
+  assert(await wiPage.locator('#guideResult').isVisible(),'Annuleren bewaart de huidige les');
+  wiPage.once('dialog',dialog=>dialog.accept());
   await wiPage.locator('#startNew').click();
   assert(await wiPage.locator('[data-guide-info="title"]').isVisible(), 'Nieuwe les begint weer bij eerste vraag');
   assert.equal(await wiPage.locator('#items .slide-item').count(),1,'Nieuwe les bevat één dia');
@@ -184,6 +188,7 @@ try {
   assert.equal(await wiPage.locator('#guideTitle').inputValue(),'Tweede les','Lesinhoud bleef behouden');
   await wiPage.locator('#guideOtherLesson').click();
   await wiPage.locator('#startImport').click();
+  wiPage.once('dialog',dialog=>dialog.accept());
   await wiPage.locator('#import').setInputFiles(resolve('site-build/tools/wihtml/bibliotheek/lineaire-verbanden.json'));
   await wiPage.waitForFunction(() => document.getElementById('title')?.value?.startsWith('Lineaire verbanden'));
   assert.equal(await wiPage.locator('#startDialog').evaluate(el=>el.open),false,'Import sluit startkeuzes');
