@@ -25,6 +25,7 @@ create table if not exists public.leif_documents (
   answers jsonb not null default '{}'::jsonb check (jsonb_typeof(answers) = 'object'),
   exercises jsonb not null default '{}'::jsonb check (jsonb_typeof(exercises) = 'object'),
   report jsonb not null default '{}'::jsonb check (jsonb_typeof(report) = 'object'),
+  personal_texts jsonb not null default '{}'::jsonb check (jsonb_typeof(personal_texts) = 'object'),
   position jsonb not null default '{}'::jsonb check (jsonb_typeof(position) = 'object'),
   revision integer not null default 0 check (revision >= 0),
   created_at timestamptz not null default now(),
@@ -49,7 +50,7 @@ begin
   insert into public.leif_document_history(participant_id,revision,snapshot)
   values (new.participant_id, new.revision,
           jsonb_build_object('answers',new.answers,'exercises',new.exercises,
-                             'report',new.report,'position',new.position,
+                             'report',new.report,'personal_texts',new.personal_texts,'position',new.position,
                              'questionnaire_version',new.questionnaire_version));
   return new;
 end;
