@@ -7,7 +7,7 @@ if(!page)return;
 const api='https://ngcyfbstajfcfdhlelbz.supabase.co/functions/v1/leif-admin-console';
 const editing=new URLSearchParams(location.search).get('leif_voorbeeld')==='1'&&window.parent!==window;
 const exclude='script,style,svg,textarea,select,option,input,code,pre,[contenteditable],[data-leif-locked],#protected-text,#answerReadout,#testerAnswers,#participants,#testerList,#testerDetail,#codePanel,#testerInvite,.reader,.report-page,.reportlist,.personal,.quote-list,.answer-piece,.narrative-copy,.readonly,.readout,.text-answer,.question textarea,.exercise textarea,#welcome,[role=status],[role=alert],.save-status,.error,.status,.meta#identity';
-const registered=new WeakMap(),known=new Map(),published=new Map(),preview=new Map();
+const registered=new WeakMap(),attributeNodes=new WeakMap(),known=new Map(),published=new Map(),preview=new Map();
 let scheduled=false, editEnabled=editing;
 const tidy=s=>String(s||'').replace(/\s+/g,' ').trim();
 function hash(str){
@@ -39,9 +39,21 @@ function inspect(node){
  registered.set(node,field);known.set(key,field);
  return field;
 }
+function inspectAttribute(element,attribute){
+ if(!element||element.closest('[data-leif-locked],.report-page,.personal,.reader,.reportlist,.narrative-copy,#answerReadout,#testerAnswers'))return null;
+ const raw=element.getAttribute(attribute),original=tidy(raw);
+ if(original.length<3||original.length>6000||!/[A-Za-zÀ-ÿ]/.test(original))return null;
+ const saved=attributeNodes.get(element)||{};
+ if(saved[attribute])return saved[attribute];
+ const key=hash(page+'|'+locationOf(element.firstChild||element)+'|@'+attribute+'|'+original);
+ const field={key,page,element,attribute,original,raw};
+ saved[attribute]=field;attributeNodes.set(element,saved);known.set(key,field);
+ return field;
+}
 function apply(field){
  const value=preview.has(field.key)?preview.get(field.key):published.get(field.key);
  if(value===undefined)return;
+ if(field.attribute){if(field.element.getAttribute(field.attribute)!==value)field.element.setAttribute(field.attribute,value);return}
  const prefix=(field.raw.match(/^\s*/)||[''])[0],suffix=(field.raw.match(/\s*$/)||[''])[0];
  const target=prefix+value+suffix;
  if(field.node.nodeValue!==target)field.node.nodeValue=target;
@@ -50,6 +62,7 @@ function scan(){
  scheduled=false;
  const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
  let node;while((node=walker.nextNode())){const f=inspect(node);if(f)apply(f)}
+ for(const element of document.querySelectorAll('[placeholder],[title]'))for(const name of ['placeholder','title'])if(element.hasAttribute(name)){const f=inspectAttribute(element,name);if(f)apply(f)}
  if(editing)post({event:'catalog',fields:[...known.values()].map(({key,original})=>({key,original}))});
 }
 function queue(){if(!scheduled){scheduled=true;requestAnimationFrame(scan)}}
@@ -69,6 +82,8 @@ if(editing){
   let field=null,walk=document.createTreeWalker(element,NodeFilter.SHOW_TEXT),node;
   while((node=walk.nextNode())){field=inspect(node);if(field)break}
   if(!field){for(const n of element.childNodes){field=inspect(n);if(field)break}}
+  if(!field&&element.hasAttribute('placeholder'))field=inspectAttribute(element,'placeholder');
+  if(!field&&element.hasAttribute('title'))field=inspectAttribute(element,'title');
   e.preventDefault();e.stopImmediatePropagation();
   if(field)post({event:'selected',key:field.key,original:field.original,text:preview.get(field.key)??published.get(field.key)??field.original});
  },true);
