@@ -91,6 +91,9 @@ try {
   await wiPage.locator('#startDialog').waitFor({ state: 'visible' });
   await wiPage.locator('#startNew').click();
   assert.equal(await wiPage.locator('#items .slide-item').count(), 1, 'Lege les bevat één dia');
+  assert.equal(await wiPage.locator('#modeQuick').getAttribute('aria-pressed'), 'true', 'Snel is de standaardweergave');
+  assert.equal(await wiPage.locator('.side').isVisible(), false, 'Ontwerpcheck is verborgen in Snel');
+  assert(await wiPage.locator('#designCanvas').isVisible(), 'De dia staat direct in beeld');
   const firstTitle = wiPage.locator('#designCanvas [data-design-edit="title"]').first();
   await firstTitle.fill('Eigen eerste dia');
   await wiPage.waitForFunction(() => {
@@ -103,6 +106,26 @@ try {
   wiPage.once('dialog', dialog => dialog.accept());
   await wiPage.locator('#startRestore').click();
   assert.equal(await wiPage.locator('#designCanvas [data-design-edit="title"]').first().innerText(), 'Eigen eerste dia');
+  await wiPage.locator('#quickAdd').click();
+  await wiPage.locator('#quickInsertDialog').waitFor({ state: 'visible' });
+  await wiPage.locator('#quickInsertDialog [data-quick-type="question"]').click();
+  assert.equal(await wiPage.locator('#items .slide-item').count(), 2, 'Snel toevoegen maakt een tweede dia');
+  assert.equal(await wiPage.locator('#designType').inputValue(), 'question', 'Nieuwe dia gebruikt gekozen werkvorm');
+  await wiPage.locator('#quickFocus').click();
+  assert.equal(await wiPage.locator('.rail').isVisible(), false, 'Alleen dia verbergt het dia-overzicht');
+  assert(await wiPage.locator('#designCanvas').isVisible(), 'Dia blijft zichtbaar in focusstand');
+  await wiPage.locator('#quickFocus').click();
+  assert(await wiPage.locator('.rail').isVisible(), 'Dia-overzicht wordt hersteld');
+  await wiPage.locator('#modeStudio').click();
+  assert.equal(await wiPage.locator('#modeStudio').getAttribute('aria-pressed'), 'true');
+  assert(await wiPage.locator('#advancedFields').isVisible(), 'Uitgebreide lesvelden beschikbaar in Studio');
+  await wiPage.locator('#modeQuick').click();
+  assert.equal(await wiPage.locator('#items .slide-item').count(), 2, 'Moduswissel behoudt beide dia’s');
+  assert.equal(await wiPage.locator('#designType').inputValue(), 'question', 'Werkvorm blijft gelijk');
+  await wiPage.waitForFunction(() => JSON.parse(localStorage.getItem('wihtml:docentstudio:concept:v1') || '{}').lesson?.slides?.length === 2);
+  await wiPage.reload({ waitUntil: 'load' });
+  await wiPage.locator('#startDialog').waitFor({ state: 'visible' });
+  assert.equal(await wiPage.locator('#modeQuick').getAttribute('aria-pressed'), 'true', 'Snel blijft gekozen na herladen');
   await wiPage.goto(base + '/tools/wihtml/studio/?lesson=lineair', { waitUntil: 'load' });
   await wiPage.locator('#startDialog').waitFor({ state: 'visible' });
   await wiPage.locator('#startSelectedLesson').click();
@@ -120,6 +143,11 @@ try {
   await exportPage.locator('#viewer.show').waitFor({ state: 'visible' });
   assert.equal(await exportPage.locator('#startDialog').evaluate(el => el.open), false, 'Export opent geen editor-startscherm');
   await exportPage.close();
+  await wiPage.setViewportSize({ width: 390, height: 844 });
+  await wiPage.locator('#modeStudio').click();
+  await wiPage.locator('#modeQuick').click();
+  const wiMobile = await wiPage.evaluate(() => ({ scroll: document.documentElement.scrollWidth, width: document.documentElement.clientWidth }));
+  assert(wiMobile.scroll <= wiMobile.width + 1, 'WiHTML veroorzaakt geen horizontaal scrollen op mobiel');
   assert.deepEqual(wiErrors, [], 'WiHTML heeft geen browserfouten');
   await wiContext.close();
   const noJS = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 390, height: 844 } });
