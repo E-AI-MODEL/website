@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WiHTML | Wiskundelessen maken</title>
+<style>
+:root{--paper:#f7f7f4;--white:#fff;--ink:#202826;--muted:#5e6b65;--line:#dce2dc;--accent:#17695e;--subtle:#eaf2ee;--warm:#c96746;--shadow:0 16px 48px rgba(24,38,31,.08)}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}button,input,textarea,select{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--accent);outline-offset:3px}button{border:1px solid var(--line);border-radius:9px;padding:10px 13px;background:#fff;color:var(--ink)}button:hover{border-color:var(--accent)}button.primary{background:var(--ink);border-color:var(--ink);color:#fff}button.quiet{border:0;background:transparent}button.small{padding:5px 9px;font-size:13px}button:disabled{opacity:.35;cursor:default}header{background:var(--white);border-bottom:1px solid var(--line)}.top{max-width:1540px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:18px;padding:19px 36px}.brand{display:flex;align-items:center;gap:12px}.mark{display:grid;place-items:center;width:37px;height:37px;background:var(--ink);color:#fff;font-family:Georgia,serif;font-weight:700;font-size:23px;border-radius:7px}.brandname{font-size:20px;font-weight:750;letter-spacing:-.035em}.byline{font-size:12px;color:var(--muted);letter-spacing:.015em}.actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.layout{max-width:1540px;min-height:calc(100vh - 82px);padding:35px 36px;display:grid;grid-template-columns:260px minmax(460px,1fr) 270px;gap:38px;margin:auto}.eyebrow{font-size:11px;font-weight:760;letter-spacing:.15em;text-transform:uppercase;color:var(--accent)}h1{font-family:Georgia,serif;font-weight:400;font-size:clamp(29px,3vw,43px);letter-spacing:-.042em;line-height:1.12;margin:10px 0 17px}h2{font-family:Georgia,serif;font-size:25px;font-weight:400;line-height:1.2;margin:7px 0 16px}p{margin:0 0 17px}.hint{font-size:13px;color:var(--muted)}.rail{border-right:1px solid var(--line);padding-right:20px}.side{border-left:1px solid var(--line);padding-left:22px}.rail-head{display:flex;align-items:center;justify-content:space-between;padding-bottom:16px;border-bottom:1px solid var(--line);margin-bottom:10px}.slide-list{display:grid;gap:2px}.slide-item{width:100%;display:grid;grid-template-columns:26px 1fr;gap:8px;text-align:left;border:0;background:transparent;padding:11px 9px;border-radius:7px;align-items:start}.slide-item.active{background:var(--subtle);color:#164d44}.slide-item .num{color:var(--muted);font-size:12px;font-variant-numeric:tabular-nums;padding-top:3px}.slide-item strong{font-size:13px;font-weight:700;line-height:1.35}.slide-item em{display:block;font-style:normal;font-size:11px;color:var(--muted);margin-top:4px}.rail-bottom{margin-top:19px;border-top:1px solid var(--line);padding-top:17px}.editor{min-width:0}.lede{max-width:650px;color:var(--muted);font-size:15px}.field{margin:19px 0}.field label{display:block;font-size:13px;font-weight:700;margin-bottom:7px}.field input,.field select,.field textarea{width:100%;border:1px solid #cdd6cf;border-radius:8px;background:#fff;color:var(--ink);padding:11px 13px;min-height:44px}.field textarea{resize:vertical;min-height:90px}.field input:focus,.field textarea:focus{border-color:var(--accent)}.editor-block{background:#fff;border:1px solid var(--line);border-radius:12px;padding:25px 27px;box-shadow:0 2px 14px #23372e06}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}.section-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:27px 0 9px;border-top:1px solid var(--line);padding-top:22px}.section-head strong{font-size:14px}.mini-actions{display:flex;gap:7px}.side .note{padding:17px 0;border-bottom:1px solid var(--line);font-size:13px;color:var(--muted)}.side .note strong{display:block;color:var(--ink);font-size:14px;margin-bottom:6px}.review-item{padding:11px 0;border-bottom:1px solid var(--line);font-size:13px}.review-item::before{content:"·";color:var(--accent);margin-right:7px;font-weight:900}.review-item.warn::before{content:"!";color:#a35b3d}.status{font-size:12px;color:var(--accent);margin-top:10px;min-height:20px}footer{padding:22px 36px;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}.viewer{position:fixed;inset:0;background:#101715;display:none;z-index:100;align-items:center;justify-content:center;padding:32px}.viewer.show{display:flex}.slide{width:min(1280px,calc((100vh - 80px)*16/9),calc(100vw - 70px));aspect-ratio:16/9;background:#fff;border-radius:5px;position:relative;padding:clamp(20px,5.5vw,86px);display:flex;flex-direction:column;overflow:hidden}.slide h2{font-size:clamp(30px,4.3vw,68px);margin:8px 0 24px;max-width:1040px}.slide p{font-size:clamp(17px,1.85vw,29px);max-width:950px}.slide .eyebrow{font-size:clamp(10px,1vw,15px)}.choices{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:13px}.choice{border:1px solid #d2dbd6;border-radius:8px;padding:15px 18px;font-size:clamp(15px,1.4vw,23px);display:flex;gap:16px;align-items:center}.choice b{background:var(--ink);color:#fff;min-width:38px;height:38px;display:grid;place-items:center;border-radius:6px}.slide-footer{margin-top:auto;color:#67736c;font-size:13px}.viewer-nav{position:fixed;bottom:13px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:12px;background:#fff;border-radius:14px;padding:7px 10px;box-shadow:var(--shadow);z-index:102}.viewer-nav span{font-size:12px;min-width:48px;text-align:center}.viewer-nav button{padding:5px 10px}.floating{position:fixed;right:19px;bottom:17px;z-index:104}.toolpop{position:absolute;bottom:52px;right:0;display:none;flex-direction:column;gap:7px;padding:9px;width:165px;background:#fff;border-radius:12px;box-shadow:var(--shadow)}.toolpop.show{display:flex}.toolpop button{text-align:left}.toolpop .danger{color:#a44b3c}.vote{position:absolute;right:20px;top:20px;background:#fff;padding:15px;box-shadow:var(--shadow);border:1px solid var(--line);border-radius:10px;z-index:103;width:210px}.vote strong{display:block;margin-bottom:10px}.vote-row{display:flex;align-items:center;gap:9px;margin:6px 0}.vote-row button{padding:4px 9px}.vote-row span{margin-left:auto;font-variant-numeric:tabular-nums}.draw{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:101}.draw.armed{pointer-events:auto;cursor:crosshair}.reveal{padding:15px 20px;background:var(--subtle);border-left:4px solid var(--accent);margin-top:20px;font-size:clamp(15px,1.35vw,21px)}.graph{width:100%;max-height:45%;flex:1}.data-table{display:flex;gap:12px;flex-wrap:wrap}.data-table span{padding:10px 14px;background:var(--subtle);border-radius:5px}.hide{display:none!important}@media(max-width:1140px){.layout{grid-template-columns:210px minmax(0,1fr);gap:24px}.side{grid-column:2;border-left:0;border-top:1px solid var(--line);padding:23px 0 0}}@media(max-width:700px){.top{padding:13px 16px;align-items:flex-start;flex-direction:column}.layout{display:block;padding:20px 16px}.rail{border-right:0;border-bottom:1px solid var(--line);padding:0 0 17px}.slide-list{max-height:200px;overflow:auto}.editor{margin-top:22px}.editor-block{padding:18px}.form-grid{grid-template-columns:1fr}.side{padding:20px 0 0}.slide{width:calc(100vw - 16px);padding:24px}.viewer{padding:8px}.viewer-nav{bottom:7px}.slide h2{font-size:clamp(20px,4vw,36px)}.slide p{font-size:clamp(13px,2vw,18px)}.choice{padding:6px 8px;font-size:12px}.choice b{min-width:21px;height:21px}.floating{right:9px;bottom:8px}}
+
+/* De editor blijft stil; de leerlingweergave heeft eigen verhoudingen. */
+.layout{gap:34px}.editor-block{box-shadow:none}.rail{position:sticky;top:22px;align-self:start;max-height:90vh;overflow:auto}
+.slide{box-shadow:0 18px 60px #0002}.slide h2{font-size:clamp(32px,4vw,65px);max-width:1050px;line-height:1.14}
+.slide .lead{font-size:clamp(17px,1.9vw,27px);color:#35453b;line-height:1.48}
+.slide .eyebrow{color:#17695e}.slide-text{white-space:pre-line;line-height:1.6}
+.viewer-nav{background:#fffdfb;opacity:.88;transition:opacity .15s}.viewer-nav:hover{opacity:1}
+.floating{right:16px;bottom:15px}.floating>#toolbtn{border-radius:50%;height:49px;width:49px;font-size:24px;background:#202826;color:white;border-color:#202826;box-shadow:0 5px 20px #0003}
+.toolpop{width:198px;max-height:min(75vh,475px);overflow:auto;gap:0;padding:6px;bottom:59px;background:#fff;border:1px solid #e0e5e0;box-shadow:0 12px 35px #0003}
+.toolpop button{border:0;background:none;padding:9px 11px;font-size:13px;text-align:left;border-radius:6px}.toolpop button:hover{background:#eef2ed}
+.micro-panel{position:fixed;top:80px;right:24px;z-index:103;width:min(340px,calc(100vw - 40px));max-height:calc(100vh - 155px);overflow:auto;background:#fff;border:1px solid #d5ded7;border-radius:12px;box-shadow:0 15px 45px #0003;padding:15px 17px;color:#202826}
+.micro-head{display:flex;justify-content:space-between;align-items:center;gap:10px;border-bottom:1px solid #edf0ec;padding-bottom:9px;margin-bottom:11px}.micro-head strong{font-size:14px}.micro-head button{font-size:20px;line-height:1;padding:2px 8px}
+.poll-context{font-size:12px;color:#657368;margin-bottom:12px}
+.vote-row{display:grid;grid-template-columns:22px minmax(0,1fr) 29px 30px 29px;gap:6px;align-items:center;margin:7px 0}.vote-label{font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.vote-row button{padding:3px 0;font-size:14px}.vote-num{font-variant-numeric:tabular-nums;text-align:center}
+.poll-total{font-size:13px;text-align:right;margin-top:10px}.poll-actions{display:flex;flex-wrap:wrap;gap:6px;padding-top:12px}.poll-actions button{font-size:12px}
+.compare-row{display:grid;grid-template-columns:40px repeat(3,1fr);gap:4px;border-bottom:1px solid #edf0ec;padding:7px 0;text-align:center;font-size:13px}.compare-head{color:#69776d;font-size:11px}.compare-prompt{font-weight:650;font-size:13px}
+.timer-readout{font:600 47px/1.3 ui-monospace,monospace;text-align:center;color:#17695e}
+.choices{margin:14px 0}.choice{background:#fff;display:flex;gap:13px;min-height:66px;box-shadow:none;border-color:#d8e0d9;border-radius:7px}.choice b{flex:none}
+.step-list{display:grid;gap:8px;max-width:95%}.step-list div{font-size:clamp(17px,1.7vw,26px);border-bottom:1px solid #e9eee9;padding:8px 0}.step-next{margin-top:16px;align-self:start}
+.graph{width:100%;height:245px;min-height:160px}.graph-controls{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:6px}.ctrl-unit{display:grid;gap:5px;flex:1;min-width:135px}.ctrl-unit label{font-size:12px;display:flex;justify-content:space-between}.ctrl-unit output{font-variant-numeric:tabular-nums}.ctrl-unit input{width:100%;accent-color:#17695e}.graph-result{font-size:13px;color:#506259;padding-top:10px}
+.reveal{background:#edf3ef;border-left-color:#17695e;font-size:clamp(16px,1.45vw,23px)}.slide-footer{padding-top:12px}
+.viewer .slide{min-height:0}.slide #slidecontent{flex:1;min-height:0;overflow:auto;scrollbar-width:thin}
+@media(max-width:800px){.micro-panel{right:10px;top:16px}.graph-controls{gap:8px}.slide .lead{font-size:14px}.slide h2{font-size:clamp(18px,4vw,38px)}.choice{min-height:30px}.slide #slidecontent{overflow:auto}}
+
+/* Ook op een donker sjabloon blijft het lesmateriaal leesbaar. */
+#viewer .slide .wi-board .lead{color:#e3eae5}
+#viewer .slide .wi-board .eyebrow{color:#99d2c6}
+#viewer .slide .wi-board .slide-text{color:#f4f7f4}
+#viewer .slide .wi-board .graph-result{color:#e3eae5}
+#viewer .slide .wi-board .step-list div{border-bottom-color:#657a6f}
+#viewer .slide .wi-board .choice{background:#fff;color:#202826;border-color:#d8e0d9}
+#viewer .slide .wi-board .wi-bottom{color:#d6e1da}
+
+/* De sjablooneditor is een tijdelijke werkruimte, niet zichtbaar tijdens het lesgeven. */
+.template-dialog{width:min(1220px,calc(100vw - 36px));height:min(92vh,860px);max-height:92vh;border:1px solid var(--line);border-radius:14px;padding:0;background:var(--paper);color:var(--ink);box-shadow:0 25px 100px #0005}
+.template-dialog::backdrop{background:rgba(8,15,12,.65)}
+.template-title{display:flex;justify-content:space-between;gap:20px;padding:23px 30px 15px;border-bottom:1px solid var(--line);background:#fff}
+.template-title h2{margin:5px 0}.template-title p{margin:0}
+.template-editor{display:grid;grid-template-columns:minmax(350px,1fr) minmax(360px,1.1fr);gap:0;height:calc(100% - 135px);overflow:hidden}
+.template-settings{padding:22px 27px;overflow:auto;border-right:1px solid var(--line)}
+.template-settings label{display:block;font-size:13px;font-weight:700;margin:15px 0 6px}
+.template-settings input,.template-settings textarea,.template-settings select{display:block;width:100%;padding:10px 11px;border:1px solid #cbd5cd;border-radius:6px;color:var(--ink);background:#fff}
+.template-settings textarea{font:12px/1.55 ui-monospace,Menlo,Consolas,monospace;resize:vertical;tab-size:2}
+.template-settings code{font-size:12px}
+.template-actions{display:flex;flex-wrap:wrap;gap:7px;margin:15px 0}
+.template-preview-area{padding:27px;overflow:auto;min-width:0;display:flex;flex-direction:column;gap:14px}
+#templateFrame{border:1px solid #d4ded5;border-radius:7px;background:#fff;aspect-ratio:16/9;width:100%;flex:none}
+#templateError{font-size:13px;color:#aa3d27;min-height:1.2em;margin-top:9px}
+#viewer .slide .wi-shell{display:flex;flex-direction:column;flex:1;min-height:0;height:100%;width:100%}
+#viewer .slide .wi-content{flex:1;min-height:0}
+#viewer .slide .wi-bottom{margin-top:auto}
+#viewer .slide .wi-content #slidecontent{height:100%}
+#viewer .slide .wi-bottom #slidefooter{margin-top:0}
+#viewer .slide .wi-shell [data-slot=phase]{font-size:12px}
+@media(max-width:900px){.template-editor{grid-template-columns:1fr;overflow:auto}.template-settings{border-right:0;border-bottom:1px solid var(--line)}.template-preview-area{min-height:290px}.template-title{padding:15px}}
+
+.overview-list{display:grid;gap:2px;max-height:min(55vh,420px);overflow:auto}.overview-choice{display:flex;gap:11px;align-items:center;text-align:left;border:0;background:#fff;border-radius:6px;padding:9px;font-size:12px}.overview-choice span{font-variant-numeric:tabular-nums;color:#68736b}.overview-choice.active{background:#eaf2ee}.overview-choice:hover{background:#f0f3ef}
+.picker-label{display:block;font-size:12px;font-weight:650;margin-bottom:8px}.micro-panel #pickerNames{width:100%;border:1px solid #d6ddd6;border-radius:6px;padding:8px;resize:vertical;font:13px/1.5 inherit}.picker-option{font-size:12px;display:flex;gap:7px;align-items:center;margin-top:11px}.picker-actions{display:flex;gap:6px;margin-top:11px}.picker-result{display:block;font:normal 22px/1.3 Georgia,serif;color:#17695e;margin-top:12px;min-height:31px}
+.white-mask{position:absolute;inset:0;background:#fff;z-index:103;display:grid;place-items:center}.white-mask button{position:absolute;right:16px;top:16px;box-shadow:0 5px 22px #0002;border:1px solid #b7c0b8;background:#fff;color:#202826}.white-mask button span{font-size:13px}
+</style>
+</head>
+<body>
+<header><div class="top"><div class="brand"><span class="mark">w</span><div><div class="brandname">WiHTML</div><div class="byline">Wiskundelessen maken en presenteren</div></div></div><div class="actions"><button id="editTemplate" title="Maak je eigen HTML-sjabloon">Sjabloon maken</button><button id="save">Bewaar lesbestand</button><button id="preview">Bekijk presentatie</button><button id="export" class="primary">Download HTML</button></div></div></header>
+<main class="layout"><nav class="rail"><div class="rail-head"><span class="eyebrow">Lesverloop</span><span id="total" class="hint"></span></div><div id="items" class="slide-list"></div><div class="rail-bottom"><button id="add">+ Lesdeel toevoegen</button><label class="hint" style="display:block;margin-top:13px">Lesbestand openen <input type="file" accept=".json" id="import"></label></div></nav><section class="editor"><div class="eyebrow">Lesontwerp / Wiskunde</div><h1>Wat gaan leerlingen zelf ontdekken?</h1><p class="lede">Bepaal wat leerlingen voorspellen, onderzoeken en uitleggen. De presentatie volgt jouw keuzes. Antwoorden verschijnen pas wanneer jij ze laat zien.</p><div class="editor-block"><div class="form-grid"><div class="field"><label for="title">Les</label><input id="title"></div><div class="field"><label for="level">Niveau</label><input id="level"></div></div><div class="field"><label for="goal">Wat kunnen leerlingen na afloop zelfstandig?</label><textarea id="goal" rows="2"></textarea></div><div class="section-head"><strong id="section-title">Lesdeel</strong><div class="mini-actions"><button class="small" id="up" title="Omhoog">↑</button><button class="small" id="down" title="Omlaag">↓</button><button class="small" id="remove">Verwijder</button></div></div><div id="fields"></div><div class="status" id="status" aria-live="polite"></div></div></section><aside class="side"><span class="eyebrow">Ontwerpcheck</span><h2>Wat vraagt deze les?</h2><p class="hint">Deze opmerkingen zijn bedoeld om je les te controleren. Ze zeggen niet of leerlingen geleerd hebben.</p><div id="review"></div><div class="note"><strong>Presentatie en tools</strong>De les gebruikt vaste 16:9-verhoudingen. Het kleine gereedschapspalet verschijnt over de dia en verandert de indeling niet.</div><div class="note"><strong>Bewaren</strong>Je kunt de les als JSON bewaren en later weer inlezen. Stemrondes blijven op deze browser opgeslagen.</div></aside></main>
+<dialog id="templateDialog" aria-labelledby="templateHeading" class="template-dialog">
+<div class="template-title"><div><div class="eyebrow">Eigen sjabloon</div><h2 id="templateHeading">Ontwerp je lespagina</h2><p class="hint">Bepaal de indeling met HTML en de vormgeving met CSS. De lesinhoud en docenttools blijven werken.</p></div><button id="closeTemplate" aria-label="Sluit sjablooneditor">Sluiten</button></div>
+<div class="template-editor">
+<div class="template-settings">
+<label for="templateName">Naam van het sjabloon</label><input id="templateName" maxlength="90">
+<label for="templatePreset">Begin met een voorbeeld</label><select id="templatePreset"><option value="custom">Huidig sjabloon</option><option value="editorial">Rustig, licht</option><option value="board">Donker bord</option></select>
+<label for="templateHTML">HTML-indeling</label><textarea id="templateHTML" spellcheck="false" rows="11" aria-describedby="templateHelp"></textarea>
+<p id="templateHelp" class="hint">Verplicht: <code>data-slot="content"</code> en <code>data-slot="footer"</code>. Gebruik HTML-elementen en klassen voor de opbouw. Scripts en externe bronnen worden niet toegestaan.</p>
+<label for="templateCSS">CSS voor je sjabloon</label><textarea id="templateCSS" spellcheck="false" rows="12"></textarea>
+<div id="templateError" role="status" aria-live="polite"></div>
+<div class="template-actions"><button id="templatePreview">Voorbeeld vernieuwen</button><button id="templateImport">Sjabloon importeren</button><input id="templateFile" class="hide" type="file" accept=".json,.html"><button id="templateDownload">Download HTML-sjabloon</button><button id="templateDownloadJSON">Bewaar als JSON</button><button id="templateApply" class="primary">Gebruik dit sjabloon</button></div>
+</div><div class="template-preview-area"><div class="eyebrow">Voorvertoning</div><iframe id="templateFrame" sandbox="" title="Voorbeeld van het HTML-sjabloon"></iframe><p class="hint">De voorvertoning voert geen scripts uit. In de presentatie blijven de docenttools als overlays bovenop het sjabloon beschikbaar.</p></div></div>
+</dialog>
+<div id="viewer" class="viewer" role="dialog" aria-label="Presentatie" aria-modal="true"><article class="slide"><div id="slidecontent"></div><svg class="draw" id="draw" viewBox="0 0 1200 675" preserveAspectRatio="none"></svg><div class="slide-footer" id="slidefooter"></div></article><div class="viewer-nav"><button id="prev" aria-label="Vorige dia">←</button><span id="position"></span><button id="next" aria-label="Volgende dia">→</button><button id="close" aria-label="Sluit presentatie">Sluiten</button></div><div class="floating"><div id="toolpop" class="toolpop"><button data-tool="pen">Pen aan / uit</button><button data-tool="undo">Laatste lijn weg</button><button data-tool="clear">Wis deze dia</button><button data-tool="vote">Stemmen tellen</button><button data-tool="compare">Stemrondes vergelijken</button><button data-tool="reveal">Antwoord tonen</button><button data-tool="timer">Aftelklok</button><button data-tool="notes">Docentnotities</button><button data-tool="overview">Dia-overzicht</button><button data-tool="names">Leerling kiezen</button><button data-tool="fullscreen">Volledig scherm</button><button data-tool="white">Wit scherm</button><button data-tool="black">Zwart scherm</button></div><button id="toolbtn" aria-label="Open docentgereedschap">✎</button></div></div>
+<script>
+const SAMPLE={title:"Verdubbelen en halveren",level:"5 havo · Wiskunde A",goal:"De leerling verklaart en berekent de verdubbelings- en halveringstijd en kan de groeifactor uit de tijd bepalen.",slides:[
+{id:"voorspel",type:"question",phase:"Voorspellen",title:"€ 1.000 wordt € 2.000. Dat duurt 12 jaar.",prompt:"Hoeveel tijd kost de groei van € 2.000 naar € 4.000?",options:["Minder dan 12 jaar","Precies 12 jaar","Meer dan 12 jaar","Dat kun je niet weten"],correct:1,explanation:"Bij dezelfde groeifactor blijft de verdubbelingstijd gelijk.",student:"Kiest eerst zelf en verklaart de keuze.",teacher:"Toont het antwoord pas na het experiment.",later:true},
+{id:"voorkennis",type:"question",phase:"Voorkennis",title:"Welke groeifactor hoort bij 15% afname?",prompt:"De hoeveelheid neemt elk uur met 15% af. Wat is de groeifactor?",options:["0,15","0,85","1,15","−0,15"],correct:1,explanation:"Er blijft 85% over, dus g = 0,85.",student:"Rekent de groeifactor zelf uit.",teacher:"Bespreekt verschillende antwoorden."},
+{id:"doelen",type:"text",phase:"Lesdoelen",title:"Wat ga je vandaag leren?",prompt:"Uitleggen, berekenen en controleren.",body:"Verdubbelings- en halveringstijd begrijpen. Een tijd berekenen uit een groeifactor. Een groeifactor berekenen uit een gegeven tijd.",student:"Koppelt de doelen aan de openingsvraag.",teacher:"Maakt het doel van de les zichtbaar."},
+{id:"onderzoek",type:"graph",phase:"Onderzoeken",title:"Hoe lang duurt een verdubbeling?",prompt:"Verander de beginwaarde en vergelijk twee opeenvolgende verdubbelingen.",g:Math.pow(2,1/12),b:1000,student:"Voorspelt en onderzoekt het effect van de beginwaarde.",teacher:"Laat hulplijnen pas later zien."},
+{id:"voordoen",type:"steps",phase:"Voordoen",title:"Bereken de verdubbelingstijd",prompt:"Spaargeld groeit elk jaar met 5%. Hoe lang duurt verdubbelen?",steps:["Groeifactor: g = 1,05","Los op: 1,05^t = 2","Voer op NumWorks y₁ = 1,05^x en y₂ = 2 in","Het snijpunt ligt bij x ≈ 14,2","De verdubbelingstijd is ongeveer 14,2 jaar."],student:"Voert elke stap zelf uit op de GR.",teacher:"Onthult één stap tegelijk."},
+{id:"samen",type:"steps",phase:"Samen oefenen",title:"Een stad groeit met 8% per jaar",prompt:"Na hoeveel jaar is het aantal inwoners verdubbeld?",steps:["g = 1,08","1,08^t = 2","Voer de vergelijkingen in op NumWorks","t ≈ 9,0 jaar","Controleer de uitkomst."],student:"Vult de stappen in en controleert op de GR.",teacher:"Geeft pas een volgende stap wanneer nodig."},
+{id:"halveren",type:"graph",phase:"Halveren",title:"En als de hoeveelheid afneemt?",prompt:"Onderzoek wat er gebeurt bij g = 0,85. Wanneer is nog de helft over?",g:.85,b:1000,student:"Voorspelt de halveringstijd.",teacher:"Vergelijkt met de verdubbelingsgrafiek."},
+{id:"omgekeerd",type:"steps",phase:"Omgekeerd rekenen",title:"De tijd is bekend. Wat is de groeifactor?",prompt:"Cesium-137 heeft een halveringstijd van 30 jaar. Bereken de procentuele afname per jaar.",steps:["g^30 = 0,5","g = 0,5^(1/30)","g ≈ 0,9772","Afname ≈ 2,28% per jaar"],student:"Bepaalt nu zelf het onbekende grondtal.",teacher:"Bespreekt de betekenis van g."},
+{id:"check",type:"question",phase:"Begripscheck",title:"Na 18 jaar",prompt:"Een hoeveelheid verdubbelt elke 6 jaar. Beginwaarde 500. Wat is de hoeveelheid na 18 jaar?",options:["1.500","2.000","4.000","8.000"],correct:2,explanation:"Drie verdubbelingen: 500 × 2³ = 4.000.",student:"Rekent zelfstandig.",teacher:"Laat eerst iedereen tegelijk stemmen."},
+{id:"oefenen",type:"text",phase:"Oefenen",title:"Nu zelf rekenen",prompt:"Bereken de verdubbelings- of halveringstijd.",body:"1. Een bevolking groeit met 2,5% per jaar. Bereken T.\n2. Een auto verliest jaarlijks 18% van zijn waarde. Bereken de halveringstijd.\n3. Een bacteriecultuur verdubbelt elke 8 dagen. Bereken de groeifactor per dag.",student:"Rekent zelfstandig.",teacher:"Observeert waar leerlingen vastlopen."},
+{id:"fout",type:"question",phase:"Fouten onderzoeken",title:"Wat gaat hier mis?",prompt:"Een leerling gebruikt bij een afname van 15% de vergelijking 0,15^t = 0,5. Welke fout maakt de leerling?",options:["Verkeerde tijdseenheid","Verkeerde groeifactor","Verkeerde beginwaarde","Geen fout"],correct:1,explanation:"De groeifactor is 0,85. De juiste vergelijking is 0,85^t = 0,5.",student:"Verklaart de fout.",teacher:"Vraagt naar de redenering."},
+{id:"exit",type:"text",phase:"Exit ticket",title:"Laat zien wat je kunt",prompt:"Werk zonder hulp.",body:"1. Een hoeveelheid groeit met 30% per uur. Bereken T.\n2. De halveringstijd is 12 jaar. Bereken de jaarlijkse afname in procenten.\n3. Is de verdubbelingstijd afhankelijk van de beginwaarde? Leg uit.",student:"Rekent zonder hulp.",teacher:"Gebruikt de antwoorden om de volgende les voor te bereiden."}
+]};
+
+const $=id=>document.getElementById(id);
+const esc=t=>String(t??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const deep=x=>JSON.parse(JSON.stringify(x));
+
+const TEMPLATE_PRESETS={
+ editorial:{
+  name:"Rustig, licht",
+  html:'<div class="wi-shell"><div class="wi-content" data-slot="content"></div><div class="wi-bottom" data-slot="footer"></div></div>',
+  css:'.wi-shell { background: #ffffff; color: #202826; }\n.wi-content { padding: 0; }\n.wi-bottom { border-top: 1px solid #dce2dc; margin-top: 14px; padding-top: 10px; color: #5e6b65; }'
+ },
+ board:{
+  name:"Donker bord",
+  html:'<div class="wi-shell wi-board"><div class="wi-content" data-slot="content"></div><div class="wi-bottom" data-slot="footer"></div></div>',
+  css:'.wi-shell { background: #182a26; color: #f4f7f4; padding: 18px; }\n.wi-content { color: #f4f7f4; }\n.wi-bottom { border-top: 1px solid #62746a; padding-top: 10px; color: #d0dbd3; }'
+ }
+};
+const TEMPLATE_TAGS=new Set(["DIV","SECTION","HEADER","FOOTER","MAIN","ARTICLE","ASIDE","SPAN","P","STRONG","EM","SMALL","HR","H1","H2","H3"]);
+function checkedTemplate(t){
+ if(!t||typeof t.html!=="string"||typeof t.css!=="string")throw Error("Het sjabloon bevat geen HTML en CSS.");
+ if(t.html.length>16000||t.css.length>15000)throw Error("Het sjabloon is te groot.");
+ const parsed=new DOMParser().parseFromString("<main id='templateRoot'>"+t.html+"</main>","text/html");
+ const root=parsed.getElementById("templateRoot");
+ for(const el of [...root.querySelectorAll("*")]){
+  if(!TEMPLATE_TAGS.has(el.tagName))throw Error("Element <"+el.tagName.toLowerCase()+"> is niet toegestaan.");
+  for(const a of [...el.attributes]){
+   if(a.name!=="class"&&a.name!=="data-slot")throw Error("Attribuut '"+a.name+"' is niet toegestaan.");
+   if(a.name==="class"&&!/^[\w\s-]*$/.test(a.value))throw Error("Gebruik eenvoudige klassennamen.");
+   if(a.name==="data-slot"&&!["content","footer","phase"].includes(a.value))throw Error("Onbekende plaatsaanduiding.");
+  }
+ }
+ for(const slot of ["content","footer"])if(root.querySelectorAll('[data-slot="'+slot+'"]').length!==1)throw Error("Gebruik precies één data-slot='"+slot+"'.");
+ if(/<\/?script|@import|@font-face|url\s*\(|expression\s*\(|[<>]|\\u|@|:has\s*\(/i.test(t.css))throw Error("Deze CSS bevat niet-toegestane code.");
+ if((t.css.match(/\{/g)||[]).length!==(t.css.match(/\}/g)||[]).length)throw Error("Controleer de accolades in de CSS.");
+ const rules=t.css.match(/[^{}]+\{[^{}]*\}/g)||[];
+ if(rules.join("").replace(/\s+/g,"")!==t.css.replace(/\s+/g,""))throw Error("CSS bevat tekst buiten regels.");
+ const css=rules.map(rule=>{
+  const i=rule.indexOf("{"),selectors=rule.slice(0,i).trim().split(",").map(x=>x.trim()),body=rule.slice(i+1,-1);
+  if(selectors.some(sel=>!/^\.wi-[\w-]+(?:\s+\.wi-[\w-]+)*$/.test(sel)))throw Error("Gebruik CSS-klassen die beginnen met .wi-");
+  if(/position\s*:|z-index\s*:|pointer-events\s*:|display\s*:\s*none|filter\s*:|content\s*:|transform\s*:/i.test(body))throw Error("Gebruik geen positionering die de bediening kan bedekken.");
+  if(!/^[\w\s:;.,#()%+\-/'"!]*$/.test(body))throw Error("Ongeldige CSS-tekens.");
+  return selectors.map(sel=>"#viewer .slide "+sel).join(", ")+" { "+body+" }";
+ }).join("\n");
+ const cleaned=root.innerHTML;
+ return {name:String(t.name||"Mijn sjabloon").slice(0,90),html:cleaned,css:t.css};
+}
+function makeTemplatePanel(){
+ const current=lesson.template||TEMPLATE_PRESETS.editorial;
+ $("templateName").value=current.name;
+ $("templateHTML").value=current.html;
+ $("templateCSS").value=current.css;
+ $("templatePreset").value="custom";$("templateError").textContent="";
+ previewTemplate();$("templateDialog").showModal();
+}
+function templateDraft(){return {name:$("templateName").value,html:$("templateHTML").value,css:$("templateCSS").value}}
+function previewTemplate(){
+ try{
+  const x=checkedTemplate(templateDraft());
+  const demo=x.html.replace(/<([a-z]+)\s+([^>]*?)data-slot="content"([^>]*)><\/\1>/i,'<div class="wi-content"><div class="eyebrow">Onderzoeken</div><h2>Wanneer verdubbelt een hoeveelheid?</h2><p>Een spaarbedrag groeit van € 1.000 naar € 2.000.</p></div>').replace(/<([a-z]+)\s+([^>]*?)data-slot="footer"([^>]*)><\/\1>/i,'<footer class="wi-bottom">5 havo · Verdubbelen en halveren</footer>').replace(/<([a-z]+)\s+([^>]*?)data-slot="phase"([^>]*)><\/\1>/i,'<span>Onderzoeken</span>');
+  const scoped=x.css.replaceAll("#viewer .slide ","");
+  const doc='<!doctype html><html lang="nl"><meta charset="utf-8"><style>*{box-sizing:border-box}body{margin:0;font:16px/1.5 system-ui,sans-serif}.frame{aspect-ratio:16/9;padding:7%;display:flex;flex-direction:column}.wi-shell{display:flex;flex-direction:column;flex:1;height:100%}.wi-content{flex:1}.wi-bottom{margin-top:auto}h2{font:normal clamp(20px,3vw,40px)/1.16 Georgia,serif}.eyebrow{font-size:12px;letter-spacing:.13em}'+scoped+'</style><div class="frame">'+demo+'</div></html>';
+  $("templateFrame").srcdoc=doc;$("templateError").textContent="";
+ }catch(e){$("templateError").textContent=e.message}
+}
+function scopeTemplateCSS(raw){return raw.replace(/([^{}]+)\{([^{}]*)\}/g,(_,selectors,body)=>selectors.split(",").map(x=>"#viewer .slide "+x.trim()).join(", ")+" {"+body+"}")}
+function applyTemplate(){
+ const wrapper=$("viewer").querySelector(".slide");
+ const contents=$("slidecontent"),footer=$("slidefooter"),ink=$("draw");
+ const x=checkedTemplate(lesson.template||TEMPLATE_PRESETS.editorial);
+ const old=wrapper.querySelector(".wi-shell");if(old)old.remove();
+ const region=document.createElement("div");region.innerHTML=x.html;
+ const shell=region.firstElementChild;
+ if(!shell||region.children.length!==1)throw Error("Gebruik één buitenste HTML-element.");
+ const placeContent=shell.querySelector('[data-slot="content"]'),placeFooter=shell.querySelector('[data-slot="footer"]');
+ placeContent.append(contents);placeFooter.append(footer);
+ wrapper.insertBefore(shell,ink);
+ let style=$("templateStyles");if(!style){style=document.createElement("style");style.id="templateStyles";document.head.append(style)}
+ style.textContent=scopeTemplateCSS(x.css);
+}
+$("editTemplate").onclick=makeTemplatePanel;
+$("closeTemplate").onclick=()=>$("templateDialog").close();
+$("templatePreset").onchange=()=>{
+ const name=$("templatePreset").value;if(!TEMPLATE_PRESETS[name])return;
+ const x=TEMPLATE_PRESETS[name];$("templateName").value=x.name;$("templateHTML").value=x.html;$("templateCSS").value=x.css;previewTemplate()
+};
+$("templatePreview").onclick=previewTemplate;
+$("templateApply").onclick=()=>{
+ try{lesson.template=checkedTemplate(templateDraft());$("templateDialog").close();applyTemplate();msg("Sjabloon toegepast op de les.");}catch(e){$("templateError").textContent=e.message}
+};
+
+$("templateDownload").onclick=()=>{
+ try{
+  const x=checkedTemplate(templateDraft());
+  const file='<!doctype html><html lang="nl"><head><meta charset="utf-8"><title>'+esc(x.name)+'</title><meta name="wihtml-template" content="1"><style id="wihtml-theme">'+x.css+'</style></head><body><template id="wihtml-template">'+x.html+'</template></body></html>';
+  download("wihtml-sjabloon.html",file,"text/html;charset=utf-8");
+  $("templateError").textContent="HTML-sjabloon opgeslagen.";
+ }catch(e){$("templateError").textContent=e.message}
+};
+$("templateDownloadJSON").onclick=()=>{
+ try{download("wihtml-sjabloon.json",JSON.stringify(checkedTemplate(templateDraft()),null,2),"application/json");$("templateError").textContent="JSON-sjabloon opgeslagen."}catch(e){$("templateError").textContent=e.message}
+};
+
+$("templateImport").onclick=()=>$("templateFile").click();
+
+$("templateFile").onchange=async e=>{
+ try{
+  const file=e.target.files[0];if(!file)return;
+  const content=await file.text();
+  let raw;
+  if(file.name.toLowerCase().endsWith(".html")){
+   const page=new DOMParser().parseFromString(content,"text/html");
+   if(!page.querySelector('meta[name="wihtml-template"][content="1"]'))throw Error("Dit is geen WiHTML-sjabloon.");
+   const tpl=page.querySelector("#wihtml-template"),css=page.querySelector("#wihtml-theme");
+   if(!tpl||!css)throw Error("HTML-sjabloon bevat geen indeling of CSS.");
+   raw={name:page.title||"Mijn sjabloon",html:tpl.innerHTML,css:css.textContent};
+  }else raw=JSON.parse(content);
+  const x=checkedTemplate(raw);
+  $("templateName").value=x.name;$("templateHTML").value=x.html;$("templateCSS").value=x.css;previewTemplate();
+  $("templateError").textContent="Sjabloon geopend. Kies 'Gebruik dit sjabloon' om het toe te passen.";
+ }catch(err){$("templateError").textContent=err.message}finally{e.target.value=""}
+};
+
+const TYPES={text:"Tekst of opdracht",question:"Meerkeuzevraag",graph:"Onderzoek met grafiek",steps:"Uitwerking in stappen"};
+let lesson=deep(SAMPLE),selected=0,current=0,revealed=false,stepsVisible=0,drawTool="",paths={},rounds={},pollVisible=false,paletteVisible=false,graphHelp=false,black=false;
+let timerHandle=null,timerLeft=0,timerRunning=false;
+let undoStack=[];
+if(!lesson.id)lesson.id="voorbeeld-verdubbelen-halveren";
+const stage=$("viewer"),canvas=$("draw");
+function msg(s){$("status").textContent=s}
+function field(k,label,v,multi=false){
+ const x=multi?'<textarea id="f-'+k+'" rows="3">'+esc(v)+'</textarea>':'<input id="f-'+k+'" value="'+esc(v)+'">';
+ return '<div class="field"><label for="f-'+k+'">'+esc(label)+'</label>'+x+'</div>';
+}
+function save(){
+ lesson.title=$("title").value.trim();lesson.level=$("level").value.trim();lesson.goal=$("goal").value.trim();
+ const s=lesson.slides[selected];if(!s)return;
+ const nextType=$("type")?.value||s.type;
+ for(const key of ["phase","title","prompt","student","teacher","body","explanation"]){const node=$("f-"+key);if(node)s[key]=node.value}
+ s.type=nextType;
+ if(nextType==="question"){
+  s.options=($("f-options")?.value||"").split("\n").map(x=>x.trim()).filter(Boolean);
+  s.correct=Number($("f-correct")?.value||0);s.later=!!$("f-later")?.checked;
+ }
+ if(nextType==="steps")s.steps=($("f-steps")?.value||"").split("\n").filter(Boolean);
+ if(nextType==="graph"){s.g=Number($("f-g")?.value||1.06);s.b=Number($("f-b")?.value||1000)}
+}
+function renderEditor(){
+ $("title").value=lesson.title;$("level").value=lesson.level;$("goal").value=lesson.goal;
+ $("total").textContent=lesson.slides.length+" delen";
+ $("items").innerHTML=lesson.slides.map((s,i)=>'<button class="slide-item '+(i===selected?'active':'')+'" data-i="'+i+'"><span class="num">'+String(i+1).padStart(2,"0")+'</span><span><strong>'+esc(s.title)+'</strong><em>'+esc(s.phase)+'</em></span></button>').join("");
+ document.querySelectorAll("[data-i]").forEach(b=>b.onclick=()=>{save();selected=Number(b.dataset.i);renderEditor()});
+ const s=lesson.slides[selected];$("section-title").textContent="Lesdeel "+(selected+1);
+ $("fields").innerHTML='<div class="form-grid"><div class="field"><label for="type">Soort</label><select id="type">'+Object.entries(TYPES).map(([k,v])=>'<option value="'+k+'" '+(s.type===k?'selected':'')+'>'+esc(v)+'</option>').join("")+'</select></div><div class="field"><label for="f-phase">Lesfase</label><input id="f-phase" value="'+esc(s.phase)+'"></div></div>'+
+ field("title","Titel",s.title)+field("prompt","Vraag of instructie",s.prompt,true)+field("student","Wat doet de leerling zelf?",s.student,true)+field("teacher","Wat doet de docent?",s.teacher,true)+
+ (s.type==="text"?field("body","Tekst",s.body,true):s.type==="question"?field("options","Antwoorden, één per regel",(s.options||[]).join("\n"),true)+field("correct","Index juiste antwoord (A=0, B=1, C=2, D=3)",s.correct||0)+field("explanation","Verklaring",s.explanation,true)+'<label class="hint"><input id="f-later" type="checkbox" '+(s.later?'checked':'')+'> Antwoord op een latere dia bespreken</label>':s.type==="steps"?field("steps","Stappen, één per regel",(s.steps||[]).join("\n"),true):field("g","Groeifactor",s.g)+field("b","Beginwaarde",s.b));
+ $("type").onchange=()=>{const type=$("type").value;save();lesson.slides[selected].type=type;renderEditor()};
+ review();
+}
+function review(){
+ const notes=[];
+ if(!lesson.goal?.trim())notes.push("Beschrijf wat leerlingen na deze les zelfstandig kunnen.");
+ if(!lesson.slides.some(s=>s.type==="question"))notes.push("Voeg een voorspelling of begripsvraag toe.");
+ if(!lesson.slides.some(s=>(s.phase||"").toLowerCase().includes("exit")))notes.push("Maak een afsluiting die leerlingen zonder hulp uitvoeren.");
+ for(const [i,s] of lesson.slides.entries()){
+  if(!(s.student||"").trim())notes.push("Lesdeel "+(i+1)+": wat doet de leerling?");
+  if(s.type==="question"&&(!s.options?.length||s.correct<0||s.correct>=s.options.length))notes.push("Lesdeel "+(i+1)+": controleer de antwoordopties.");
+ }
+ $("review").innerHTML=notes.length?notes.map(t=>'<div class="review-item warn">'+esc(t)+'</div>').join(""):'<div class="review-item">Alle verplichte velden zijn ingevuld. Controleer zelf de wiskunde en de didactische keuzes.</div>';
+}
+$("add").onclick=()=>{save();lesson.slides.splice(selected+1,0,{id:"deel-"+Date.now(),type:"text",phase:"Oefenen",title:"Nieuw lesdeel",prompt:"",body:"",student:"",teacher:""});selected++;renderEditor()};
+$("remove").onclick=()=>{if(lesson.slides.length===1)return;if(!confirm("Dit lesdeel verwijderen?"))return;lesson.slides.splice(selected,1);selected=Math.min(selected,lesson.slides.length-1);renderEditor()};
+$("up").onclick=()=>{save();if(selected>0){[lesson.slides[selected-1],lesson.slides[selected]]=[lesson.slides[selected],lesson.slides[selected-1]];selected--;renderEditor()}};
+$("down").onclick=()=>{save();if(selected<lesson.slides.length-1){[lesson.slides[selected+1],lesson.slides[selected]]=[lesson.slides[selected],lesson.slides[selected+1]];selected++;renderEditor()}};
+function download(name,content,type){
+ const url=URL.createObjectURL(new Blob([content],{type})),a=document.createElement("a");a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),2500)
+}
+$("save").onclick=()=>{save();download("wihtml-les.json",JSON.stringify(lesson,null,2),"application/json");msg("Lesbestand opgeslagen.")};
+$("import").onchange=async e=>{
+ try{
+  const file=e.target.files[0];if(!file)return;
+  const doc=JSON.parse(await file.text());if(!Array.isArray(doc.slides)||!doc.slides.length)throw Error("Er staan geen lesdelen in dit bestand.");
+  lesson=doc;lesson.id=lesson.id||"les-"+Date.now();lesson.template=checkedTemplate(lesson.template||TEMPLATE_PRESETS.editorial);selected=0;applyTemplate();renderEditor();msg("Lesbestand geopend.");
+ }catch(err){msg("Lesbestand niet geopend: "+err.message)}
+};
+function currentSlide(){return lesson.slides[current]}
+function roundKey(){return "wihtml.v2."+lesson.id}
+function loadRounds(){try{const raw=JSON.parse(localStorage.getItem(roundKey())||"{}");rounds=raw&&typeof raw==="object"?raw:{}}catch(e){rounds={}}}
+function persistRounds(){try{localStorage.setItem(roundKey(),JSON.stringify(rounds))}catch(e){/* opslag kan uitstaan */}}
+function voteRecord(id){return rounds[id]||(rounds[id]={first:null,second:null,draft:[0,0,0,0]})}
+function countTotal(values){return values.reduce((a,b)=>a+b,0)}
+function renderSlide(){
+ const s=currentSlide();if(!s)return;
+ $("slidecontent").innerHTML='<div class="eyebrow">'+esc(s.phase)+'</div><h2>'+esc(s.title)+'</h2><p class="lead">'+esc(s.prompt||"")+'</p>'+
+ (s.type==="text"?'<p class="slide-text">'+esc(s.body||"")+'</p>':"")+
+ (s.type==="question"?'<div class="choices">'+(s.options||[]).map((v,i)=>'<div class="choice"><b>'+String.fromCharCode(65+i)+'</b><span>'+esc(v)+'</span></div>').join("")+'</div>':"")+
+ (s.type==="steps"?'<div id="stepList" class="step-list"></div><button class="step-next" id="stepNext">Volgende stap tonen</button>':"")+
+ (s.type==="graph"?'<svg id="plot" class="graph" viewBox="0 0 820 285" role="img" aria-label="Exponentiële grafiek"></svg><div id="graphControls" class="graph-controls"><div class="ctrl-unit"><label for="graphG">Groeifactor <output id="graphGOut"></output></label><input id="graphG" type="range" min="0.70" max="1.40" step="0.005"></div><div class="ctrl-unit"><label for="graphB">Beginwaarde <output id="graphBOut"></output></label><input id="graphB" type="range" min="500" max="3000" step="100"></div><button id="graphLines" class="small">Hulplijnen</button></div><div id="graphResult" class="graph-result"></div>':"")+
+ (s.type==="question"&&revealed&&!s.later?'<div class="reveal">'+esc(s.explanation||"")+'</div>':"")+
+ (s.type==="graph"&&revealed&&lesson.slides.some(x=>x.later)?'<div class="reveal">De tijd tussen twee opeenvolgende verdubbelingen is even lang. De beginwaarde verandert die tijd niet.</div>':"");
+ $("slidefooter").textContent=lesson.level+"  ·  "+lesson.title;
+ $("position").textContent=(current+1)+" / "+lesson.slides.length;
+ $("prev").disabled=current===0;$("next").disabled=current===lesson.slides.length-1;
+ $("draw").innerHTML=(paths[s.id]||[]).join("");
+ $("draw").classList.toggle("armed",drawTool==="pen");
+ $("slidecontent").style.visibility=black?"hidden":"visible";
+ if(s.type==="graph"){const g=$("graphG"),b=$("graphB");g.value=s.g||1.06;b.value=s.b||1000;g.oninput=()=>graphRender();b.oninput=()=>graphRender();$("graphLines").onclick=()=>{graphHelp=!graphHelp;graphRender()};graphRender()}
+ if(s.type==="steps"){
+  const all=s.steps||[],list=$("stepList");
+  for(let i=0;i<stepsVisible;i++){const el=document.createElement("div");el.textContent=all[i];list.append(el)}
+  $("stepNext").disabled=stepsVisible>=all.length;
+  $("stepNext").onclick=()=>{if(stepsVisible<all.length){stepsVisible++;renderSlide()}};
+ }
+ if(pollVisible)renderPoll();
+}
+function graphRender(){
+ const svg=$("plot");if(!svg)return;
+ const g=Number($("graphG").value),b=Number($("graphB").value);
+ $("graphGOut").textContent=g.toFixed(3).replace(".",",");
+ $("graphBOut").textContent=b.toLocaleString("nl-NL");
+ const maxT=g>1?Math.min(40,Math.max(12,Math.log(6)/Math.log(g))):40;
+ const raw=[];for(let i=0;i<=240;i++){const t=maxT*i/240;raw.push(b*g**t)}
+ const maxY=Math.max(b*2,Math.max(...raw)*1.07),x=t=>48+t/maxT*750,y=n=>257-230*n/maxY;
+ let grid="",path=raw.map((n,i)=>(i===0?"M":"L")+x(maxT*i/240).toFixed(1)+","+y(n).toFixed(1)).join(" ");
+ for(let i=0;i<=4;i++)grid+='<line x1="48" x2="805" y1="'+(257-i*55)+'" y2="'+(257-i*55)+'" stroke="#e5e9e5"/>';
+ let guides="";
+ const T=Math.log(g>=1?2:.5)/Math.log(g);
+ if(graphHelp&&Number.isFinite(T)&&T>0){for(let i=1;i<=3;i++){const t=T*i;if(t>maxT)break;guides+='<line x1="'+x(t)+'" x2="'+x(t)+'" y1="'+y(b*g**t)+'" y2="257" stroke="#c96746" stroke-dasharray="5 5"/><circle cx="'+x(t)+'" cy="'+y(b*g**t)+'" r="5" fill="#c96746"/>'}}
+ svg.innerHTML=grid+'<path d="M48 20 V257 H805" fill="none" stroke="#8d9891" stroke-width="2"/><path d="'+path+'" fill="none" stroke="#17695e" stroke-width="4"/>'+guides+'<text x="52" y="16" fill="#52635a" font-size="14">N = b × gᵗ</text><text x="754" y="278" font-size="12" fill="#52635a">tijd</text>';
+ $("graphResult").textContent=graphHelp?((g>1?"Verdubbeling":"Halvering")+": "+T.toFixed(2).replace(".",",")+" tijdseenheden"):"Wat verandert er aan de tijd als je de beginwaarde wijzigt?";
+}
+function openStage(){
+ applyTemplate();stage.classList.add("show");stage.setAttribute("aria-hidden","false");loadRounds();renderSlide();
+}
+function closeStage(){stage.classList.remove("show");stage.setAttribute("aria-hidden","true");closeTools();stopTimer()}
+$("preview").onclick=()=>{save();current=0;revealed=false;stepsVisible=0;openStage()};
+$("close").onclick=closeStage;
+$("prev").onclick=()=>move(-1);$("next").onclick=()=>move(1);
+function move(n){if(current+n<0||current+n>=lesson.slides.length)return;current+=n;revealed=false;stepsVisible=0;graphHelp=false;drawTool="";canvas.classList.remove("armed");closeTools();renderSlide()}
+function closeTools(){paletteVisible=false;$("toolpop").classList.remove("show");$("pollPanel")?.remove();$("comparePanel")?.remove();$("notesPanel")?.remove();$("timerPanel")?.remove();pollVisible=false}
+$("toolbtn").onclick=()=>{paletteVisible=!paletteVisible;$("toolpop").classList.toggle("show",paletteVisible)};
+function floatPanel(id,title,body){const el=document.createElement("section");el.id=id;el.className="micro-panel";el.innerHTML='<div class="micro-head"><strong>'+esc(title)+'</strong><button class="small" data-dismiss="'+id+'" aria-label="Sluit '+esc(title)+'">×</button></div>'+body;stage.append(el);el.querySelector("[data-dismiss]").onclick=()=>{el.remove();if(id==="pollPanel")pollVisible=false};return el}
+function renderPoll(){
+ $("pollPanel")?.remove();const s=currentSlide(),rec=voteRecord(s.id);
+ const opts=(s.options||["A","B","C","D"]).slice(0,4);
+ const buttons=opts.map((v,i)=>'<div class="vote-row"><b>'+String.fromCharCode(65+i)+'</b><span class="vote-label">'+esc(v)+'</span><button class="small" data-minus="'+i+'">−</button><span class="vote-num">'+(rec.draft[i]||0)+'</span><button class="small" data-plus="'+i+'">+</button></div>').join("");
+ const el=floatPanel("pollPanel","Stemmen tellen",'<div class="poll-context">'+esc(s.title)+'</div>'+buttons+'<div class="poll-total">Totaal: <b>'+countTotal(rec.draft)+'</b></div><div class="poll-actions"><button class="small" id="saveRound1">Bewaar eerste</button><button class="small" id="saveRound2">Bewaar tweede</button><button class="small" id="compareVotes">Vergelijk</button><button class="small" id="resetDraft">Leeg teller</button></div>');
+ const update=()=>{persistRounds();renderPoll()};
+ el.querySelectorAll("[data-plus]").forEach(b=>b.onclick=()=>{rec.draft[+b.dataset.plus]=(rec.draft[+b.dataset.plus]||0)+1;update()});
+ el.querySelectorAll("[data-minus]").forEach(b=>b.onclick=()=>{let i=+b.dataset.minus;rec.draft[i]=Math.max(0,(rec.draft[i]||0)-1);update()});
+ el.querySelector("#saveRound1").onclick=()=>{rec.first=[...rec.draft];persistRounds();renderPoll()};
+ el.querySelector("#saveRound2").onclick=()=>{rec.second=[...rec.draft];persistRounds();renderPoll()};
+ el.querySelector("#compareVotes").onclick=()=>compareVotes(s.id);
+ el.querySelector("#resetDraft").onclick=()=>{rec.draft=[0,0,0,0];update()};
+}
+function compareVotes(id){
+ $("comparePanel")?.remove();const v=voteRecord(id),one=v.first,two=v.second;
+ const head='<p class="compare-prompt">Welke antwoorden zijn veranderd? Hoe verklaar je dat?</p>';
+ const rows=Array.from({length:4},(_,i)=>'<div class="compare-row"><b>'+String.fromCharCode(65+i)+'</b><span>'+(one?one[i]:"–")+'</span><span>'+(two?two[i]:"–")+'</span><span>'+(one&&two?(two[i]-one[i]>0?"+":"")+(two[i]-one[i]):"–")+'</span></div>').join("");
+ floatPanel("comparePanel","Eerste en tweede stemming",head+'<div class="compare-row compare-head"><b></b><span>Eerst</span><span>Later</span><span>Verschil</span></div>'+rows+'<p class="hint">De aantallen tonen antwoorden van de groep, niet welke individuele leerling van mening veranderde.</p>');
+}
+function togglePoll(){pollVisible=!pollVisible;if(pollVisible)renderPoll();else $("pollPanel")?.remove()}
+function toggleAnswer(){const s=currentSlide();if(s.later){floatPanel("notesPanel","Antwoord nog niet tonen",'<p>De openingsvraag komt terug tijdens het grafiekonderzoek. Laat leerlingen eerst zelf onderzoeken.</p>');return}revealed=!revealed;renderSlide()}
+function undo(){let arr=paths[currentSlide().id]||[];arr.pop();$("draw").innerHTML=arr.join("")}
+function clearDraw(){paths[currentSlide().id]=[];$("draw").innerHTML=""}
+function stopTimer(){clearInterval(timerHandle);timerHandle=null;timerRunning=false}
+function timerText(){return String(Math.floor(timerLeft/60)).padStart(2,"0")+":"+String(timerLeft%60).padStart(2,"0")}
+function openTimer(){
+ $("timerPanel")?.remove();const el=floatPanel("timerPanel","Aftellen",'<div class="timer-readout" id="timerReadout">'+timerText()+'</div><div class="poll-actions"><button class="small" id="timerOne">1 min</button><button class="small" id="timerTwo">2 min</button><button class="small" id="timerFive">5 min</button><button class="small" id="timerStart">'+(timerRunning?"Pauze":"Start")+'</button></div>');
+ function set(n){stopTimer();timerLeft=n;$("timerReadout").textContent=timerText();$("timerStart").textContent="Start"}
+ el.querySelector("#timerOne").onclick=()=>set(60);el.querySelector("#timerTwo").onclick=()=>set(120);el.querySelector("#timerFive").onclick=()=>set(300);
+ el.querySelector("#timerStart").onclick=()=>{if(timerRunning){stopTimer();el.querySelector("#timerStart").textContent="Verder";return}timerRunning=true;el.querySelector("#timerStart").textContent="Pauze";timerHandle=setInterval(()=>{timerLeft=Math.max(0,timerLeft-1);const output=$("timerReadout");if(output)output.textContent=timerText();if(timerLeft===0){stopTimer();el.querySelector("#timerStart").textContent="Start"}},1000)};
+}
+
+let usedNames=[];
+function openOverview(){
+ $("overviewPanel")?.remove();
+ const rows=lesson.slides.map((s,i)=>'<button class="overview-choice'+(i===current?" active":"")+'" data-go="'+i+'"><span>'+String(i+1).padStart(2,"0")+'</span><b>'+esc(s.title)+'</b></button>').join("");
+ const p=floatPanel("overviewPanel","Ga naar een dia",'<div class="overview-list">'+rows+'</div>');
+ p.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>{const i=+b.dataset.go;if(i!==current){current=i;revealed=false;stepsVisible=0;drawTool="";canvas.classList.remove("armed");renderSlide()}p.remove()});
+}
+function openNamePicker(){
+ $("namesPanel")?.remove();
+ const p=floatPanel("namesPanel","Leerling kiezen",'<label class="picker-label" for="pickerNames">Eén naam per regel</label><textarea id="pickerNames" rows="5" placeholder="Voeg je namenlijst toe"></textarea><label class="picker-option"><input type="checkbox" id="noRepeat" checked> Geen herhaling</label><div class="picker-actions"><button id="chooseName">Kies leerling</button><button id="resetNames">Begin opnieuw</button></div><output id="nameResult" class="picker-result" aria-live="polite">Nog niemand gekozen</output>');
+ const input=p.querySelector("#pickerNames");input.value=sessionStorage.getItem("wihtml-session-names")||"";
+ input.oninput=()=>{usedNames=[];try{sessionStorage.setItem("wihtml-session-names",input.value)}catch(e){}};
+ p.querySelector("#resetNames").onclick=()=>{usedNames=[];p.querySelector("#nameResult").textContent="De lijst is opnieuw beschikbaar."};
+ p.querySelector("#chooseName").onclick=()=>{
+  const items=[...new Set(input.value.split(/\n/).map(s=>s.trim()).filter(Boolean))];
+  if(!items.length){p.querySelector("#nameResult").textContent="Voer eerst namen in.";return}
+  let options=p.querySelector("#noRepeat").checked?items.filter(n=>!usedNames.includes(n)):items;
+  if(!options.length){p.querySelector("#nameResult").textContent="Iedereen is aan de beurt geweest.";return}
+  const choice=options[Math.floor(Math.random()*options.length)];usedNames.push(choice);p.querySelector("#nameResult").textContent=choice
+ };
+}
+function toggleBlank(){
+ const slide=$("viewer").querySelector(".slide"),old=$("whiteMask");if(old){old.remove();return}
+ const b=document.createElement("div");b.id="whiteMask";b.className="white-mask";
+ b.innerHTML='<button id="closeWhite" aria-label="Sluit wit scherm">× <span>Sluiten</span></button>';
+ slide.append(b);b.querySelector("button").onclick=()=>b.remove()
+}
+function toggleFullscreen(){
+ if(document.fullscreenElement){document.exitFullscreen?.();return}
+ stage.requestFullscreen?.().catch(()=>{});
+}
+
+function openNotes(){floatPanel("notesPanel","Voor de docent",'<p>'+esc(currentSlide().teacher||"Geen notities voor deze dia.")+'</p><p class="hint">Leerling: '+esc(currentSlide().student||"")+'</p>')}
+$("toolpop").querySelectorAll("[data-tool]").forEach(b=>b.onclick=()=>{
+ const t=b.dataset.tool;$("toolpop").classList.remove("show");paletteVisible=false;
+ if(t==="pen"){drawTool=drawTool==="pen"?"":"pen";$("draw").classList.toggle("armed",drawTool==="pen")}
+ if(t==="clear")clearDraw();
+ if(t==="vote")togglePoll();
+ if(t==="reveal")toggleAnswer();
+ if(t==="black"){black=!black;$("slidecontent").style.visibility=black?"hidden":"visible"}
+ if(t==="undo")undo();
+ if(t==="compare"){const opening=lesson.slides.find(x=>x.later);compareVotes(opening?.id||currentSlide().id)}
+ if(t==="timer")openTimer();
+ if(t==="notes")openNotes();
+ if(t==="overview")openOverview();
+ if(t==="names")openNamePicker();
+ if(t==="white")toggleBlank();
+ if(t==="fullscreen")toggleFullscreen();
+});
+let drawing=false,activePath=null;
+function svgPoint(e){const r=canvas.getBoundingClientRect();return [(e.clientX-r.left)/r.width*1200,(e.clientY-r.top)/r.height*675]}
+canvas.addEventListener("pointerdown",e=>{if(drawTool!=="pen")return;drawing=true;canvas.setPointerCapture(e.pointerId);const [x,y]=svgPoint(e);activePath=document.createElementNS("http://www.w3.org/2000/svg","path");activePath.setAttribute("d","M"+x+" "+y);activePath.setAttribute("stroke","#c96746");activePath.setAttribute("stroke-width","4");activePath.setAttribute("stroke-linecap","round");activePath.setAttribute("fill","none");canvas.append(activePath)});
+canvas.addEventListener("pointermove",e=>{if(!drawing||!activePath)return;const [x,y]=svgPoint(e);activePath.setAttribute("d",activePath.getAttribute("d")+" L"+x+" "+y)});
+canvas.addEventListener("pointerup",()=>{if(activePath){(paths[currentSlide().id]??=[]).push(activePath.outerHTML)}drawing=false;activePath=null});
+window.addEventListener("keydown",e=>{if(!stage.classList.contains("show"))return;if(e.key==="Escape"){if(paletteVisible)closeTools();else closeStage()}if(e.key==="ArrowRight")move(1);if(e.key==="ArrowLeft")move(-1);if(e.key.toLowerCase()==="p"&&!e.target.matches("input,textarea")){drawTool=drawTool==="pen"?"":"pen";canvas.classList.toggle("armed",drawTool==="pen")}});
+$("export").onclick=()=>{
+ save();
+ const data=JSON.stringify(lesson).replace(/</g,"\\u003c");
+ const source=document.documentElement.outerHTML;
+ const result=source.replace(/const SAMPLE=\{[\s\S]*?\};\s*const \$=/,"const SAMPLE="+data+";\nconst $=");
+ if(result===source){msg("Export mislukt: lesgegevens konden niet worden ingevoegd.");return}
+ const boot='<style>html.standalone>body>header,html.standalone .layout{display:none!important}html.standalone .viewer{display:flex!important}</style><script>document.documentElement.classList.add("standalone");window.addEventListener("load",function(){document.getElementById("preview").click()});<\/script>';
+ download("wihtml-"+(lesson.title||"les").toLowerCase().replace(/[^a-z0-9]+/g,"-")+".html",result.slice(0,result.lastIndexOf("</body>"))+boot+result.slice(result.lastIndexOf("</body>")),"text/html;charset=utf-8");
+ msg("Zelfstandige HTML opgeslagen.");
+};
+$("preview").title="Bekijk de les op het presentatiescherm";
+$("toolbtn").title="Docentgereedschap";
+lesson.template=checkedTemplate(lesson.template||TEMPLATE_PRESETS.editorial);
+applyTemplate();
+loadRounds();
+renderEditor();
+
+</script>
+</body></html>
