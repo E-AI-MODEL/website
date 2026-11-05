@@ -28,7 +28,7 @@ await page.route('**/functions/v1/leif-demo-session',async route=>{
  await route.fulfill({status:200,headers,body:JSON.stringify(data)});
 });
 try{
- await page.goto(origin+'/leif/continue/',{waitUntil:'commit'});
+ await page.goto(origin+'/test-leif.html',{waitUntil:'commit'});
  await page.setContent(html,{waitUntil:'domcontentloaded'});
  await page.locator('#secret').fill('synthetic-'+('a'.repeat(39)));
  await page.locator('#open').click();
@@ -61,7 +61,7 @@ await mobile.route(origin+'/**',route=>route.fulfill({status:200,contentType:'te
   await route.fulfill({status:200,headers,body:JSON.stringify({ok:true,status:'draft',answers})});
  });
  const mobilePage=await mobile.newPage();
- await mobilePage.goto(origin+'/leif/continue/',{waitUntil:'commit'});
+ await mobilePage.goto(origin+'/test-leif.html',{waitUntil:'commit'});
  await mobilePage.setContent(html,{waitUntil:'domcontentloaded'});
  await mobilePage.locator('#secret').fill('synthetic-'+('a'.repeat(39)));
  await mobilePage.locator('#open').click();
