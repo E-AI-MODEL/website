@@ -536,9 +536,30 @@ function updateTemplateVisual(){
  const bg=$("themeBg").value,textColor=$("themeText").value,accent=$("themeAccent").value;
  const font=$("themeFont").value==='serif'?'Georgia, serif':$("themeFont").value==='round'?'Trebuchet MS, Arial, sans-serif':'system-ui, sans-serif';
  const pad=$("themeSpace").value==='roomy'?'32px':$("themeSpace").value==='compact'?'8px':'18px';
- $("templateCSS").value='.wi-shell { background: '+bg+'; color: '+textColor+'; --accent: '+accent+'; font-family: '+font+'; padding: '+pad+'; }\n'+
-  '.wi-content { background: '+bg+'; color: '+textColor+'; }\n'+
-  '.wi-bottom { border-top: 1px solid '+accent+'; margin-top: 12px; padding-top: 10px; color: '+textColor+'; }';
+ const setDeclarations=(css,selector,declarations)=>{
+  let found=false;
+  const updated=css.replace(/([^{}]+)\{([^{}]*)\}/g,(whole,selectors,rawBody)=>{
+   if(!selectors.split(',').some(x=>x.trim().split(/\s+/).pop()===selector))return whole;
+   found=true;
+   let body=rawBody;
+   for(const [property,value] of Object.entries(declarations)){
+    const aliases=property==='background'?['background','background-color']:[property];
+    for(const name of aliases){
+     const pattern=new RegExp('(^|;)\\s*'+name+'\\s*:[^;]*','gi');
+     body=body.replace(pattern,(_,prefix)=>prefix);
+    }
+    body=body.trimEnd()+(body.trimEnd().endsWith(';')?'':';')+' '+property+': '+value+' !important;';
+   }
+   body=body.replace(/;(?:\s*;)+/g,';').replace(/^\s*;/,'');
+   return selectors+'{'+body+'}';
+  });
+  return found?updated:updated+'\n'+selector+' { '+Object.entries(declarations).map(([key,value])=>key+': '+value).join('; ')+'; }';
+ };
+ let css=$("templateCSS").value;
+ css=setDeclarations(css,'.wi-shell',{'background':bg,'color':textColor,'--accent':accent,'font-family':font,'padding':pad});
+ css=setDeclarations(css,'.wi-content',{'background':bg,'color':textColor});
+ css=setDeclarations(css,'.wi-bottom',{'border-top':'1px solid '+accent,'margin-top':'12px','padding-top':'10px','color':textColor});
+ $("templateCSS").value=css;
  previewTemplate();
 }
 document.querySelectorAll('#themeBg,#themeText,#themeAccent,#themeFont,#themeSpace').forEach(el=>el.addEventListener('input',updateTemplateVisual));
@@ -709,12 +730,12 @@ $("applyRoute").onclick=()=>{
 $("defaultLayout").onchange=()=>{
  lesson.layout=LAYOUTS.has($("defaultLayout").value)?$("defaultLayout").value:"single";
  $("layoutDiagram").dataset.layout=lesson.layout;
- renderDesigner();
+ renderDesigner();scheduleDraftSave();
  msg("Vlakverdeling ingesteld voor de les.");
 };
 document.querySelectorAll("[data-feature]").forEach(el=>el.onchange=()=>{
  lesson.features[el.dataset.feature]=el.checked;
- applyFeatures();
+ applyFeatures();scheduleDraftSave();
  msg("Docentfuncties aangepast.");
 });
 
@@ -759,6 +780,7 @@ function save(){
 
 const WIHTML_DRAFT_KEY='wihtml:docentstudio:concept:v1';
 let draftSaveTimer=null;
+let draftTrackingReady=false;
 function draftAvailable(){
  try{return !!localStorage.getItem(WIHTML_DRAFT_KEY)}catch(e){return false}
 }
@@ -1031,6 +1053,7 @@ function renderEditor(){
  review();
  renderDesigner();
  bindStoryBoard();
+ if(draftTrackingReady)scheduleDraftSave();
 }
 function review(){
  const notes=[];
@@ -1711,6 +1734,7 @@ $('fields').addEventListener('input',event=>{if(event.target.id!=='type'){save()
 ['title','level','goal'].forEach(id=>$(id).addEventListener('input',()=>{save();const footer=$('designCanvas').querySelector('.design-footer');if(footer)footer.textContent=(lesson.level||'Wiskunde')+' · '+(lesson.title||'Nieuwe les')+' · dia '+(selected+1)+' van '+lesson.slides.length}));
 loadRounds();
 renderEditor();
+draftTrackingReady=true;
 refreshDraftButton();
 
 </script>
