@@ -42,6 +42,8 @@ test('privégegevens en concepten horen niet in de publieke tekstreactie',()=>{
  assert.match(frontend,/#protected-text/);
  assert.match(frontend,/#testerAnswers/);
  assert.match(frontend,/\.reportlist/);
+ assert.match(frontend,/\.report-section/);
+ assert.match(frontend,/#detail/);
 });
 test('veilig previewen zonder persoonlijke sessie of schrijven',()=>{
  assert.match(sources[1],/if\(leifPreview\)/);
