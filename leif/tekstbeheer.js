@@ -59,9 +59,13 @@ if(editing){
  document.addEventListener('submit',e=>{e.preventDefault();e.stopImmediatePropagation()},true);
  document.addEventListener('beforeinput',e=>{e.preventDefault();e.stopImmediatePropagation()},true);
  document.addEventListener('click',e=>{
-  if(!editEnabled)return;
   const element=e.target instanceof Element?e.target:null;
   if(!element)return;
+  if(!editEnabled){
+   // Vrij navigeren in de demo, maar nooit de oefenomgeving verlaten.
+   if(element.closest('a[href]')){e.preventDefault();e.stopImmediatePropagation()}
+   return;
+  }
   let field=null,walk=document.createTreeWalker(element,NodeFilter.SHOW_TEXT),node;
   while((node=walk.nextNode())){field=inspect(node);if(field)break}
   if(!field){for(const n of element.childNodes){field=inspect(n);if(field)break}}
