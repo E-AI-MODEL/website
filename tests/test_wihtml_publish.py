@@ -1,6 +1,7 @@
 """Tests voor publicatie van WiHTML op eaimodel.nl."""
 from pathlib import Path
 from html.parser import HTMLParser
+import json
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -32,6 +33,7 @@ class WiHTMLPublicationTests(unittest.TestCase):
         p = LinkParser()
         p.feed(entry.read_text(encoding="utf-8"))
         self.assertIn("/tools/wihtml/studio/", p.links)
+        self.assertIn("/tools/wihtml/voorbeeld-lesinhoud.json", p.links)
         p = LinkParser()
         p.feed(tools.read_text(encoding="utf-8"))
         self.assertIn("/tools/wihtml/", p.links)
@@ -41,7 +43,9 @@ class WiHTMLPublicationTests(unittest.TestCase):
         for marker in ('id="templateDialog"', 'id="export"', 'id="preview"',
                        'id="draw"', 'id="toolpop"', 'id="templateDownload"',
                        'id="newLesson"', 'Onderzoekstabel', 'Zelfstandig oefenen',
-                       'Verklaren en vergelijken', 'tableView', 'practiceView', 'compareView'):
+                       'Verklaren en vergelijken', 'tableView', 'practiceView', 'compareView',
+                       'id="defaultLayout"', 'id="routePreset"', 'data-feature="drawing"',
+                       'id="jsonExample"', 'normalizeLessonJSON'):
             with self.subTest(marker=marker):
                 self.assertIn(marker, text)
 
@@ -55,6 +59,16 @@ class WiHTMLPublicationTests(unittest.TestCase):
         for marker in ("quickMarker", "quickEraser", "toggleSpotlight", "toggleCurtain", "stopwatchToggle", "saveVotes", "compareVotes"):
             with self.subTest(marker=marker):
                 self.assertIn(marker, text)
+
+    def test_json_example_is_published(self):
+        source = ROOT / "content/wihtml/voorbeeld-lesinhoud.json"
+        published = BUILD / "tools/wihtml/voorbeeld-lesinhoud.json"
+        self.assertTrue(source.exists())
+        self.assertTrue(published.exists())
+        self.assertEqual(source.read_bytes(), published.read_bytes())
+        data = json.loads(published.read_text(encoding="utf-8"))
+        self.assertIn("vragen", data)
+        self.assertIn("opgaven", data)
 
     def test_site_has_sitemap_entries(self):
         text = (BUILD / "sitemap.xml").read_text(encoding="utf-8")
