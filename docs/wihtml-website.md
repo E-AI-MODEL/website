@@ -2,10 +2,11 @@
 
 WiHTML heeft een eigen GitHub-repository: https://github.com/E-AI-MODEL/wihtml
 
-De website publiceert twee routes:
+De website publiceert drie routes:
 
 - `/tools/wihtml/`: introductie met uitleg voor docenten;
-- `/tools/wihtml/studio/`: de zelfstandige editor.
+- `/tools/wihtml/studio/`: de zelfstandige editor;
+- `/tools/wihtml/voorbeeld/`: de complete oorspronkelijke Docentstudio-v9-les, met uitgewerkte interactieve lesinhoud en alle oorspronkelijke docenttools.
 
 De studio staat als gecontroleerde bronkopie in `content/wihtml/studio.html`. Tijdens de sitebuild kopieert `scripts/build_site.py` deze bron **ongewijzigd** naar de uiteindelijke website. De GitHub Action controleert de kopie en links. De editor draait volledig in de browser en verstuurt geen lesbestanden, HTML-sjablonen of stemgegevens naar GitHub.
 
@@ -20,8 +21,8 @@ Bronversie waarmee deze route is opgebouwd:
 - Repository: `E-AI-MODEL/wihtml`
 - Ontwikkelbranch: `feat/lessengenerator-eai-design`
 - Bronbestand: `index.html`
-- Bronblob-SHA: `61ca6ac20090b2f8ba17d30a5656adcc58fe834f`
-- Git-commit: `9b7b8a31c9e11c553253f6a0b4047b7eb67d3144`
+- Bronblob-SHA: `b22d6ceac221986c219dd9702b1fad9faa7edc38`
+- Git-commit voor studio-implementatie: `b2685f0517f393c11ab94049a1550722d1d0b4a1`
 
 Voor een volgende versie: controleer eerst dat de browsertests in `wihtml` geslaagd zijn. Werk daarna de bronkopie bij met een **volledige commit-SHA**:
 
@@ -38,3 +39,7 @@ Werk de commit en blob-SHA hierboven bij. Review de verschillen voordat je de we
 Er is geen account en geen externe opslag. De docent downloadt de les als JSON voor later bewerken en als HTML voor presenteren. Twee stemrondes worden lokaal in de browser opgeslagen; het betreft groepsaantallen. Bij wissen van browsergegevens of werken op een ander apparaat kunnen de aantallen verdwijnen. Laat docenten geen persoonsgegevens opnemen in sjablonen die zij publiek delen.
 
 De editor biedt geen server-side AI-generatie, automatische wiskundecontrole of gemeenschappelijke lesbibliotheek. Dat zijn afzonderlijke uitbreidingen, met extra beveiliging en opslagafspraken.
+
+## Compleet voorbeeld en generator
+
+De volledige oorspronkelijke v9-les is als eigen bestand aanwezig in `content/wihtml/verdubbelen-halveren-v9.html` en wordt byte-voor-byte gepubliceerd. De algemene generator heeft inmiddels een uitgebreide docenttoolbox. De diep uitgewerkte lesinteracties uit het originele v9-bestand zijn nog niet allemaal beschikbaar als losse, configureerbare bouwstenen voor nieuwe lessen. Houd dit onderscheid zichtbaar bij presentatie van de proefversie.
