@@ -2,9 +2,10 @@
 
 WiHTML heeft een eigen GitHub-repository: https://github.com/E-AI-MODEL/wihtml
 
-De website publiceert drie routes:
+De website publiceert een uitlegpagina, een bibliotheek en twee werk-/voorbeeldroutes:
 
-- `/tools/wihtml/`: introductie met uitleg voor docenten;
+- `/tools/wihtml/`: uitleg, startkeuzes en voorbeelden voor docenten;
+- `/tools/wihtml/bibliotheek/`: filterbare verzameling voorbeeldlessen met een knop om een eigen kopie te openen;
 - `/tools/wihtml/studio/`: de zelfstandige editor;
 - `/tools/wihtml/voorbeeld/`: de complete oorspronkelijke Docentstudio-v9-les, met uitgewerkte interactieve lesinhoud en alle oorspronkelijke docenttools.
 - `/tools/wihtml/voorbeeld-lesinhoud.json`: downloadbaar inhoudsbestand als voorbeeld.
@@ -39,7 +40,7 @@ Werk de commit en blob-SHA hierboven bij. Review de verschillen voordat je de we
 
 Er is geen account en geen externe opslag. De docent downloadt de les als JSON voor later bewerken en als HTML voor presenteren. Twee stemrondes worden lokaal in de browser opgeslagen; het betreft groepsaantallen. Bij wissen van browsergegevens of werken op een ander apparaat kunnen de aantallen verdwijnen. Laat docenten geen persoonsgegevens opnemen in sjablonen die zij publiek delen.
 
-De editor biedt geen server-side AI-generatie, automatische wiskundecontrole of gemeenschappelijke lesbibliotheek. Dat zijn afzonderlijke uitbreidingen, met extra beveiliging en opslagafspraken.
+De editor biedt geen server-side AI-generatie of automatische wiskundecontrole. De bibliotheek bevat nu een kleine, door ons beheerde verzameling voorbeelden. Docenten kunnen hun eigen kopie maken, maar nog geen lessen publiek uploaden.
 
 ## Compleet voorbeeld en generator
 
@@ -64,3 +65,13 @@ Tijdens het werken wordt een lokaal concept bewaard in de browser. Dit is geen a
 Dit ontwerp sluit aan bij de eerder gebruikte rustige opbouw van LEIF en het naast elkaar zien van invoer en resultaat in het EAI Prompt Framework. De preview in de editor is geschikt om inhoud te bewerken. De knop 'Bekijk deze dia' dient voor het testen van het daadwerkelijke 16:9-presentatiegedrag.
 
 Chromium-tests controleren directe bewerking, export, mobiel gedrag en herstel van lokaal concept. Die controles zijn nog geen gebruikersonderzoek onder wiskundedocenten.
+
+## Landingpagina, bibliotheek en startkeuze (november 2026)
+
+De uitleg staat in `content/wihtml/landing.html`. De bibliotheekpagina staat in `content/wihtml/library.html`. De sitebouw publiceert ook twee bewerkbare voorbeeldlessen uit `content/wihtml/bibliotheek/` als JSON. De eerder gepubliceerde voorbeeld-JSON over groeifactoren blijft bestaan, net als de complete interactieve v9-les.
+
+De studio toont bij een gewone opening eerst een keuze: lege les (één dia), een voorgestelde lesopbouw, eigen JSON importeren, naar de bibliotheek gaan of een lokaal concept herstellen. Een gekozen bibliotheekles wordt op basis van een vaste lijst aan toegestane paden geladen via `?lesson=groeifactor`, `?lesson=lineair` of `?lesson=kansen`. Met `&preview=1` start na het laden de interactieve presentatie. Dit maakt een eigen kopie, zonder het bibliotheekbestand te wijzigen.
+
+Een eerder opgeslagen lokaal concept wordt niet stilzwijgend vervangen zodra iemand een bibliotheeklink opent. De docent krijgt eerst de keuze tussen dat concept herstellen en het gekozen voorbeeld openen. De startkeuze wordt niet getoond in een zelfstandig geëxporteerde HTML-presentatie. Na het kiezen van een nieuwe les of import werkt de bestaande editor en presentatieruntime zoals voorheen.
+
+De broncode bewaart geen publiek ingezonden lessen. Meer voorbeelden worden voorlopig als beoordeelde JSON-bestanden toegevoegd. Voor publiek inzenden zijn later aparte afspraken over inhoud, rechten, privacy en controle nodig.
