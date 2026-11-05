@@ -142,6 +142,10 @@
 .wi-layout:not(.single) .wi-lead-col .lead{font-size:clamp(16px,1.55vw,24px)}
 .wi-layout:not(.single) .research-table-wrap,.wi-layout:not(.single) .practice-list{max-height:42vh}
 @media(max-width:700px){.setup-inside{padding-left:8px}.feature-grid{grid-template-columns:1fr}.wi-layout.equal,.wi-layout.left,.wi-layout.right{grid-template-columns:1fr}.layout-picker{flex-wrap:wrap}.setup-caption{display:none}}
+
+/* Zwart scherm bedekt de complete presentatiedia, inclusief sjabloon en voettekst. */
+.black-mask{position:absolute;inset:0;background:#050807;color:#fff;z-index:105;display:block}
+.black-mask button{position:absolute;top:16px;right:16px;color:#fff;background:#202c26;border:1px solid #7b8e80;border-radius:8px;padding:7px 11px;cursor:pointer}
 </style>
 </head>
 <body>
@@ -216,6 +220,7 @@ function checkedTemplate(t){
  if(t.html.length>16000||t.css.length>15000)throw Error("Het sjabloon is te groot.");
  const parsed=new DOMParser().parseFromString("<main id='templateRoot'>"+t.html+"</main>","text/html");
  const root=parsed.getElementById("templateRoot");
+ if(root.children.length!==1)throw Error("Gebruik precies één buitenste HTML-element voor je sjabloon.");
  for(const el of [...root.querySelectorAll("*")]){
   if(!TEMPLATE_TAGS.has(el.tagName))throw Error("Element <"+el.tagName.toLowerCase()+"> is niet toegestaan.");
   for(const a of [...el.attributes]){
@@ -280,7 +285,7 @@ $("templatePreset").onchange=()=>{
 };
 $("templatePreview").onclick=previewTemplate;
 $("templateApply").onclick=()=>{
- try{lesson.template=checkedTemplate(templateDraft());$("templateDialog").close();applyTemplate();msg("Sjabloon toegepast op de les.");}catch(e){$("templateError").textContent=e.message}
+ try{const next=checkedTemplate(templateDraft());const previous=lesson.template;lesson.template=next;try{applyTemplate()}catch(error){lesson.template=previous;applyTemplate();throw error}$("templateDialog").close();msg("Sjabloon toegepast op de les.");}catch(e){$("templateError").textContent=e.message}
 };
 
 $("templateDownload").onclick=()=>{
@@ -415,7 +420,7 @@ document.querySelectorAll("[data-feature]").forEach(el=>el.onchange=()=>{
 let lesson=deep(SAMPLE),selected=0,current=0,revealed=false,stepsVisible=0,drawTool="",paths={},rounds={},pollVisible=false,paletteVisible=false,graphHelp=false,black=false;
 let timerHandle=null,timerLeft=0,timerRunning=false;
 let undoStack=[];
-if(!lesson.id)lesson.id="voorbeeld-verdubbelen-halveren";
+if(!lesson.id)lesson.id="les-"+Date.now()+"-"+Math.random().toString(36).slice(2,10);
 ensureSettings();
 const stage=$("viewer"),canvas=$("draw");
 function msg(s){$("status").textContent=s}
@@ -734,13 +739,15 @@ function renderSlide(){
  (s.type==="question"&&revealed&&!s.later?'<div class="reveal">'+esc(s.explanation||"")+'</div>':"")+
  (s.type==="graph"&&revealed?'<div class="reveal">'+esc(s.graphExplanation||"Bespreek wat de grafiek laat zien.")+'</div>':"");
  arrangeSlide(s);
+ const phaseSlot=$("viewer").querySelector(".wi-shell [data-slot=\"phase\"]");
+ if(phaseSlot)phaseSlot.textContent=s.phase||"";
  applyFeatures();
  $("slidefooter").textContent=lesson.level+"  ·  "+lesson.title;
  $("position").textContent=(current+1)+" / "+lesson.slides.length;
  $("prev").disabled=current===0;$("next").disabled=current===lesson.slides.length-1;
  $("draw").innerHTML=(paths[s.id]||[]).join("");
  $("draw").classList.toggle("armed",drawTool==="pen");
- $("slidecontent").style.visibility=black?"hidden":"visible";
+ $("slidecontent").style.visibility="visible";
  if(s.type==="graph"){
   const g=$("graphG"),b=$("graphB");g.value=s.g||1.06;b.value=s.b||1000;
   g.oninput=()=>graphRender();b.oninput=()=>graphRender();
@@ -808,11 +815,11 @@ function graphRender(){
 function openStage(){
  applyTemplate();stage.classList.add("show");stage.setAttribute("aria-hidden","false");loadRounds();renderSlide();
 }
-function closeStage(){stage.classList.remove("show");stage.setAttribute("aria-hidden","true");closeTools();stopTimer();stopStopwatch();$("spotlightOverlay")?.remove();$("curtainOverlay")?.remove();if(presenterInterval){clearInterval(presenterInterval);presenterInterval=null}}
+function closeStage(){stage.classList.remove("show");stage.setAttribute("aria-hidden","true");closeTools();stopTimer();stopStopwatch();$("spotlightOverlay")?.remove();$("curtainOverlay")?.remove();$("blackMask")?.remove();black=false;if(presenterInterval){clearInterval(presenterInterval);presenterInterval=null}}
 $("preview").onclick=()=>{save();current=0;revealed=false;stepsVisible=0;tableRevealed=0;compareRevealed=0;practiceState={};graphHelp=false;graphLinear=false;graphMarks=false;graphSelectedTime=null;openStage()};
 $("close").onclick=closeStage;
 $("prev").onclick=()=>move(-1);$("next").onclick=()=>move(1);
-function move(n){if(current+n<0||current+n>=lesson.slides.length)return;tableRevealed=0;compareRevealed=0;practiceState={};$("spotlightOverlay")?.remove();$("curtainOverlay")?.remove();current+=n;revealed=false;stepsVisible=0;graphHelp=false;graphLinear=false;graphMarks=false;graphSelectedTime=null;drawTool="";canvas.classList.remove("armed");closeTools();renderSlide()}
+function move(n){if(current+n<0||current+n>=lesson.slides.length)return;tableRevealed=0;compareRevealed=0;practiceState={};$("spotlightOverlay")?.remove();$("curtainOverlay")?.remove();$("blackMask")?.remove();black=false;current+=n;revealed=false;stepsVisible=0;graphHelp=false;graphLinear=false;graphMarks=false;graphSelectedTime=null;drawTool="";canvas.classList.remove("armed");closeTools();renderSlide()}
 function closeTools(){paletteVisible=false;$("toolpop").classList.remove("show");$("pollPanel")?.remove();$("comparePanel")?.remove();$("notesPanel")?.remove();$("timerPanel")?.remove();$("stopwatchPanel")?.remove();$("overviewPanel")?.remove();$("namesPanel")?.remove();pollVisible=false}
 $("toolbtn").onclick=()=>{paletteVisible=!paletteVisible;$("toolpop").classList.toggle("show",paletteVisible)};
 function floatPanel(id,title,body){const el=document.createElement("section");el.id=id;el.className="micro-panel";el.innerHTML='<div class="micro-head"><strong>'+esc(title)+'</strong><button class="small" data-dismiss="'+id+'" aria-label="Sluit '+esc(title)+'">×</button></div>'+body;stage.append(el);el.querySelector("[data-dismiss]").onclick=()=>{el.remove();if(id==="pollPanel")pollVisible=false};return el}
@@ -869,7 +876,16 @@ function openNamePicker(){
   const choice=options[Math.floor(Math.random()*options.length)];usedNames.push(choice);p.querySelector("#nameResult").textContent=choice
  };
 }
+function toggleBlack(){
+ const slide=$("viewer").querySelector(".slide"),old=$("blackMask");
+ if(old){old.remove();black=false;return}
+ $("whiteMask")?.remove();
+ const mask=document.createElement("div");mask.id="blackMask";mask.className="black-mask";
+ mask.innerHTML='<button id="closeBlack" aria-label="Sluit zwart scherm">× Sluiten</button>';
+ slide.append(mask);black=true;mask.querySelector("button").onclick=()=>{mask.remove();black=false};
+}
 function toggleBlank(){
+ $("blackMask")?.remove();black=false;
  const slide=$("viewer").querySelector(".slide"),old=$("whiteMask");if(old){old.remove();return}
  const b=document.createElement("div");b.id="whiteMask";b.className="white-mask";
  b.innerHTML='<button id="closeWhite" aria-label="Sluit wit scherm">× <span>Sluiten</span></button>';
@@ -894,7 +910,7 @@ function chooseInkColor(){
 function toggleCompact(){compactMode=!compactMode;stage.classList.toggle("compact-slide",compactMode)}
 function resetStudioView(){
  drawTool="";canvas.classList.remove("armed");
- $("spotlightOverlay")?.remove();$("curtainOverlay")?.remove();$("whiteMask")?.remove();
+ $("spotlightOverlay")?.remove();$("curtainOverlay")?.remove();$("whiteMask")?.remove();$("blackMask")?.remove();
  spotlightOn=false;curtainOn=false;black=false;fitMode=false;compactMode=false;
  stage.classList.remove("studio-fit","compact-slide");
  $("slidecontent").style.visibility="visible";
@@ -969,7 +985,7 @@ $("toolpop").querySelectorAll("[data-tool]").forEach(b=>b.onclick=()=>{
  if(t==="clear")clearDraw();
  if(t==="vote")togglePoll();
  if(t==="reveal")toggleAnswer();
- if(t==="black"){black=!black;$("slidecontent").style.visibility=black?"hidden":"visible"}
+ if(t==="black")toggleBlack()
  if(t==="undo")undo();
  if(t==="compare"){const opening=lesson.slides.find(x=>x.later);compareVotes(opening?.id||currentSlide().id)}
  if(t==="timer")openTimer();
