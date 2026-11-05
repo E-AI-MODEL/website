@@ -476,7 +476,7 @@
 @media(max-width:420px){.wi-mode-switch button{min-width:56px;padding:7px 11px}.wi-mode-quick .top .actions #newLesson{display:none}}
 
 /* Begeleide lesmaker: steeds één afgebakende keuze, in beide werkmodi. */
-.wi-guide [hidden],.wi-guide-fields-dialog [hidden]{display:none!important}
+.wi-guide[hidden],.wi-guide [hidden],.wi-guide-fields-dialog [hidden]{display:none!important}
 .wi-guide-active .layout{display:block;width:100%;max-width:1250px;min-height:calc(100dvh - 83px);padding:22px clamp(14px,3vw,43px);margin:0 auto}
 .wi-guide-active .layout>.rail,.wi-guide-active .layout>.editor,.wi-guide-active .layout>.side{display:none!important}
 .wi-guide-active .top .actions{display:none}
@@ -1013,6 +1013,7 @@ function setWorkMode(mode,persist=true){
  $('add').textContent=workMode==='quick'?'+ Kies een dia':'+ Lesdeel toevoegen';
  if(workMode==='studio')setFocusMode(false);
  if(persist)try{localStorage.setItem(WIHTML_MODE_KEY,workMode)}catch(e){}
+ if(guideReady)guideRender();
 }
 function savedWorkMode(){
  try{return localStorage.getItem(WIHTML_MODE_KEY)==='studio'?'studio':'quick'}catch(e){return 'quick'}
@@ -1036,6 +1037,7 @@ document.querySelectorAll('[data-quick-type]').forEach(button=>button.onclick=()
  initDesignType(type);
  renderEditor();
  $('quickInsertDialog').close();
+ if(guideReady)guideShow({kind:'slide',id:slide.id});
  const title=$('designCanvas').querySelector('[data-design-edit="title"]');
  if(title){title.focus();title.scrollIntoView({block:'nearest'})}
  msg('Dia toegevoegd. Je kunt de tekst direct aanpassen.');
@@ -1255,7 +1257,7 @@ function restoreDraft(){
   const next=record.lesson;next.template=checkedTemplate(next.template||TEMPLATE_PRESETS.editorial);
   lesson=next;selected=0;current=0;tableRevealed=0;compareRevealed=0;practiceState={};
   quizSelections={};quizAnswersVisible=false;errorCorrectionVisible=false;
-  applyTemplate();renderEditor();if($('startDialog').open)$('startDialog').close();msg('Je concept is hersteld. Download JSON voor een eigen kopie.');
+  applyTemplate();renderEditor();if(guideReady)guideShow({kind:'info'});if($('startDialog').open)$('startDialog').close();msg('Je concept is hersteld. Download JSON voor een eigen kopie.');
  }catch(e){msg('Het concept kon niet worden geopend: '+e.message)}
 }
 
@@ -1501,6 +1503,7 @@ function renderEditor(){
  renderDesigner();
  bindStoryBoard();
  if(draftTrackingReady)scheduleDraftSave();
+ if(guideReady)guideRender();
 }
 function review(){
  const notes=[];
@@ -1528,6 +1531,7 @@ function startBlankLesson(route){
  lesson={id:'les-'+Date.now()+'-'+Math.random().toString(36).slice(2,8),title:'Nieuwe wiskundeles',level:'Wiskunde',goal:'',route:chosen,layout:'single',features:{...FEATURE_DEFAULTS},template:deep(TEMPLATE_PRESETS.editorial),slides};
  selected=0;current=0;paths={};rounds={};revealed=false;tableRevealed=0;compareRevealed=0;practiceState={};quizSelections={};quizAnswersVisible=false;errorCorrectionVisible=false;
  applyTemplate();renderEditor();
+ if(guideReady)guideShow({kind:'info'});
  if($('startDialog').open)$('startDialog').close();
  msg('Nieuwe les geopend. Pas de dia aan of voeg lesdelen toe.');
 }
@@ -1755,7 +1759,7 @@ $("import").onchange=async e=>{
   doc.slides=reorderLessonSlides(doc.slides,doc.route);
   lesson=doc;selected=0;current=0;paths={};rounds={};revealed=false;
   tableRevealed=0;compareRevealed=0;practiceState={};quizSelections={};quizAnswersVisible=false;errorCorrectionVisible=false;
-  applyTemplate();renderEditor();if($('startDialog').open)$('startDialog').close();
+  applyTemplate();renderEditor();if(guideReady)guideShow({kind:'info'});if($('startDialog').open)$('startDialog').close();
   msg("Ingelezen: "+lesson.slides.length+" lesdelen. Kies de vormgeving en functies, bekijk daarna de les of download HTML.");
  }catch(err){msg("JSON niet ingelezen: "+err.message)}
  finally{e.target.value=""}
@@ -1777,6 +1781,7 @@ async function loadLibraryLesson(key,showPreview=false){
  lesson=next;selected=0;current=0;paths={};rounds={};revealed=false;
  tableRevealed=0;compareRevealed=0;practiceState={};quizSelections={};quizAnswersVisible=false;errorCorrectionVisible=false;
  applyTemplate();renderEditor();
+ if(guideReady)guideShow({kind:'info'});
  if($('startDialog').open)$('startDialog').close();
  msg('Voorbeeld geopend als eigen les. Bewaar JSON om later verder te werken.');
  if(showPreview)$('preview').click();
