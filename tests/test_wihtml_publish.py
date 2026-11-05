@@ -151,7 +151,7 @@ class WiHTMLPublicationTests(unittest.TestCase):
             'function guidePages()', 'function guideShow(page)',
             'function guideMove(delta)', 'function guideRender()',
             'function guideSaveStep()',
-            "guideShow({kind:'info'})",
+            "guideShow({kind:'title'})",
             "if(document.documentElement.classList.contains('standalone'))return;",
             "guideReady=true;",
             "guideShow({kind:'slide',id:slide.id});",
@@ -159,8 +159,17 @@ class WiHTMLPublicationTests(unittest.TestCase):
         ):
             with self.subTest(marker=marker):
                 self.assertIn(marker, studio)
-        self.assertIn("pages.push({kind:'slide',id:slide.id", studio)
-        self.assertIn("if(workMode==='studio')pages.push({kind:'notes',id:slide.id", studio)
+        self.assertIn("pages.push({kind:'workform',id:slide.id", studio)
+        self.assertIn("pages.push({kind:'notes',step:'student',id:slide.id", studio)
+        self.assertIn("pages.push({kind:'notes',step:'teacher',id:slide.id", studio)
+        self.assertIn("pages.push({kind:'notes',step:'layout',id:slide.id", studio)
+        self.assertIn("['title','level','goal','route']", studio)
+        self.assertIn("function guideRemembered(lessonData)", studio)
+        self.assertIn("guideShow(guideRemembered(lesson)||{kind:'title'})", studio)
+        self.assertIn("id=\"guideResultFrame\"", studio)
+        self.assertIn("function buildStandaloneLessonHTML()", studio)
+        self.assertIn("guideUpdateLivePreview();", studio)
+        self.assertIn("if(params.get('start')==='nieuw')", studio)
         self.assertIn("$('guideDownloadHTML').onclick=()=>$('export').click();", studio)
         self.assertIn("$('guideDownloadJSON').onclick=()=>$('save').click();", studio)
         self.assertIn("if($('f-layout'))$('f-layout').value=slide.layout;", studio)
