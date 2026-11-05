@@ -148,7 +148,7 @@ class WiHTMLPublicationTests(unittest.TestCase):
             'id="guideDownloadHTML"', 'id="guideDownloadJSON"',
             'id="guideOutlineDialog"', 'id="guideFieldsDialog"',
             'id="guideOtherLesson"', 'id="startBackToLesson"',
-            'function guidePages()', 'function guideShow(page)',
+            'function guidePages()', 'function guideShow(page,remember=true)',
             'function guideMove(delta)', 'function guideRender()',
             'function guideSaveStep()',
             "guideShow({kind:'title'})",
