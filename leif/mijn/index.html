@@ -23,7 +23,7 @@ main{max-width:1080px;margin:auto;padding:44px 25px 105px}.gate{max-width:490px;
 <body>
 <header><a href="/leif/">LEIF <small>Mijn omgeving</small></a><nav><span id="saveStatus" class="save-status" role="status" aria-live="polite"></span><button class="btn ghost" id="logout" type="button" hidden>Uitloggen</button></nav></header>
 <main>
-<section class="gate" id="login" aria-labelledby="loginHeading">
+<section class="gate" id="login" aria-labelledby="loginHeading" hidden>
 <div class="tag">Persoonlijke toegang</div>
 <h1 id="loginHeading">Welkom bij LEIF</h1>
 <p>Voer je persoonlijke code in. Je antwoorden, oefeningen en verslagen staan in je eigen omgeving. Je kunt later verdergaan.</p>
@@ -36,6 +36,7 @@ main{max-width:1080px;margin:auto;padding:44px 25px 105px}.gate{max-width:490px;
 <small>De code is persoonlijk. Deel haar niet met anderen. De LEIF-beheerder van jouw groep kan je antwoorden en verslagen inzien om je persoonlijke reactie te schrijven. De beheerder kan ook je toegang herstellen of intrekken.</small>
 </section>
 <section id="workspace" hidden>
+<p id="demoLabel" class="tag" hidden>LEIF-proef: gebruik uitsluitend testgegevens. De beheerder kan je antwoorden lezen.</p>
 <div class="spread"><div><div class="tag">Persoonlijke omgeving</div><h1 id="welcome">Mijn LEIF</h1></div></div>
 <nav class="tabs" id="tabs" aria-label="Onderdelen van LEIF">
 <button data-screen="start" aria-current="page">Overzicht</button>
@@ -127,11 +128,12 @@ async function signIn(code){
   sessionStorage.setItem('leif-personal-access-code-v1',accessCode);
   E('accessCode').value='';E('login').hidden=true;E('workspace').hidden=false;E('logout').hidden=false;
   E('welcome').textContent=person.name?'LEIF voor '+person.name:'Mijn LEIF';
+  E('demoLabel').hidden=accessCode!=='lis';
   setStatus('Opgeslagen');render();
  }catch(e){
   accessCode='';sessionStorage.removeItem('leif-personal-access-code-v1');
-  E('loginError').hidden=false;
-  E('loginError').textContent=e.status===404?'De code wordt niet herkend. Controleer de tekens.':'LEIF kan je omgeving nu niet openen. Probeer het opnieuw.';
+  sessionStorage.setItem('leif-access-error',e.status===404?'Code niet herkend.':'Je omgeving kon niet worden geopend.');
+  location.replace('/leif/');
  }finally{E('loginButton').disabled=false}
 }
 function mergeChanges(updates){
@@ -280,14 +282,19 @@ function signOut(){
  }
  sessionStorage.removeItem('leif-personal-access-code-v1');
  accessCode='';doc=null;person=null;pending={};saveTask=null;
- E('workspace').hidden=true;E('login').hidden=false;E('logout').hidden=true;E('content').replaceChildren();setStatus('');E('accessCode').focus();
+ E('workspace').hidden=true;E('logout').hidden=true;E('content').replaceChildren();setStatus('');
+ location.assign('/leif/');
 }
 E('loginForm').addEventListener('submit',e=>{e.preventDefault();signIn(E('accessCode').value)});
 E('logout').onclick=signOut;
 E('tabs').querySelectorAll('button').forEach(b=>b.onclick=()=>goto(b.dataset.screen));
 window.addEventListener('beforeunload',e=>{if(Object.keys(pending).length||saveTask){e.preventDefault();e.returnValue=''}});
 window.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')flush()});
-try{const fromSession=sessionStorage.getItem('leif-personal-access-code-v1');if(fromSession)signIn(fromSession)}catch{}
+try{
+ const fromSession=sessionStorage.getItem('leif-personal-access-code-v1');
+ if(fromSession)signIn(fromSession);
+ else location.replace('/leif/');
+}catch{location.replace('/leif/')}
 </script>
 </body>
 </html>
