@@ -45,7 +45,7 @@ function inspectAttribute(element,attribute){
  if(original.length<3||original.length>6000||!/[A-Za-zÀ-ÿ]/.test(original))return null;
  const saved=attributeNodes.get(element)||{};
  if(saved[attribute])return saved[attribute];
- const key=hash(page+'|'+locationOf(element.firstChild||element)+'|@'+attribute+'|'+original);
+ const key=hash(page+'|'+locationOf({parentElement:element})+'|@'+attribute+'|'+original);
  const field={key,page,element,attribute,original,raw};
  saved[attribute]=field;attributeNodes.set(element,saved);known.set(key,field);
  return field;
