@@ -254,7 +254,8 @@ function renderExercises(area){
 function renderPersonalTexts(area){
  area.append(pageHeading('Persoonlijke reactie','Alleen voor jou'));
  const material=doc.personal_texts||{};
- const published=material.published;
+ // De server geeft uitsluitend de gepubliceerde tekst terug; concepten zijn privé voor beheerders.
+ const published=material;
  const labels={inleiding:'Inleiding',blik_van_een_ander:'Deel 2: de blik van een ander',verder_kijken:'Deel 3: verder kijken',slotwoord:'Slotwoord'};
  const keys=Object.keys(labels).filter(k=>typeof published?.[k]==='string'&&published[k].trim());
  if(!keys.length){area.append(node('p','note','Je persoonlijke reactie is nog niet gepubliceerd. Je kunt je vragen en oefeningen wel gebruiken.'));return}
