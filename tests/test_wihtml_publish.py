@@ -39,7 +39,9 @@ class WiHTMLPublicationTests(unittest.TestCase):
     def test_studio_has_teacher_functions(self):
         text = (BUILD / "tools/wihtml/studio/index.html").read_text(encoding="utf-8")
         for marker in ('id="templateDialog"', 'id="export"', 'id="preview"',
-                       'id="draw"', 'id="toolpop"', 'id="templateDownload"'):
+                       'id="draw"', 'id="toolpop"', 'id="templateDownload"',
+                       'id="newLesson"', 'Onderzoekstabel', 'Zelfstandig oefenen',
+                       'Verklaren en vergelijken', 'tableView', 'practiceView', 'compareView'):
             with self.subTest(marker=marker):
                 self.assertIn(marker, text)
 
