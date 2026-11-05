@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow,noarchive">
 <meta name="referrer" content="no-referrer">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src https://ngcyfbstajfcfdhlelbz.supabase.co; frame-src 'self'; img-src 'none'; font-src 'none'; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'unsafe-inline'; connect-src https://ngcyfbstajfcfdhlelbz.supabase.co; frame-src 'self'; img-src 'none'; font-src 'none'; base-uri 'none'; form-action 'none'; object-src 'none'">
 <title>LEIF | Beheer</title>
 <style>
 :root{--paper:#f7f4ef;--white:#fffdfc;--ink:#243746;--muted:#607783;--line:#d9e2e6;--soft:#e8f0f3;--blue:#426c82;--warning:#924232}
@@ -352,7 +352,12 @@ E('rotateCode').onclick=async()=>{if(!selected||!canManage())return;if(!confirm(
 E('revoke').onclick=async()=>{if(!selected||!canManage())return;if(!confirm('Toegang intrekken? De gegevens blijven bewaard.'))return;try{await request('revoke',{tenant_id:tenant.id,participant_id:selected.id});await loadList()}catch{alert('Intrekken is niet gelukt.')}};
 window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue=''}});
 window.LeifBeheer={request,getTenant:()=>tenant,canManage};
-resumeSession();
+if(window.parent!==window&&new URLSearchParams(location.search).get('leif_voorbeeld')==='1'){
+ E('workspace').hidden=false;E('loading').hidden=true;E('login').hidden=true;
+ E('newPanel').hidden=true;E('testerPanel').hidden=true;
+ E('identity').textContent='Voorbeeld zonder deelnemersgegevens';
+}else resumeSession();
 </script>
 <script src="/leif/beheer/teksteditor.js" defer></script>
+<script src="/leif/tekstbeheer.js" defer></script>
 </body></html>
