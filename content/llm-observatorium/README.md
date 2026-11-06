@@ -1,6 +1,6 @@
 # LLM Observatorium, interactieve 3D-proef
 
-Deze zelfstandige HTML is een herbouw van het eerdere LLM-prototype. Het oorspronkelijke Galactisch Observatorium diende als referentie voor een grote, vrij bestuurbare 3D-wereld, zes onderzoeksmodes, gekoppelde grafieken en een inspector. Dit project wijzigt de Melkwegbron niet.
+Deze zelfstandige HTML is een herbouw van het eerdere LLM-prototype. Het oorspronkelijke Galactisch Observatorium diende als referentie voor een grote, vrij bestuurbare 3D-wereld, zeven onderzoeksmodes, gekoppelde grafieken en een inspector. Dit project wijzigt de Melkwegbron niet.
 
 Open `index.html` in een browser. Er zijn geen externe scripts of accounts nodig.
 
@@ -12,10 +12,21 @@ Open `index.html` in een browser. Er zijn geen externe scripts of accounts nodig
 - Attention: lokale of volledige causale toegang tot eerdere posities
 - Context: relatie tussen beschikbare context en een venster van 128 posities
 - Generatie: kansverdeling met temperatuur en top-p
+- Redenering & kosten: officiële API-gebruiksvelden en een instelbaar kostenexperiment, met vijf gekoppelde tokenstromen. Het openbare voorbeeld gebruikt 75 inputtokens en 1186 outputtokens, inclusief 1024 redeneertokens
 
 De visualisatie draait en zoomt. Op het grote beeld start de knop **Volg een token** een zichtbaar lichtspoor door de lagen. Je kunt pauzeren, per laag verdergaan, een ander woord kiezen of op een routestation klikken. De laag en routerkeuze zijn direct gekoppeld aan de grafiek.
 
 De grafiek heeft nu leesbare waarden en een samenvatting. Klik of tik op een waarde om de laag of expert in de 3D-wereld te selecteren. Op mobiel zijn Modules, Grafiek, Instellen, Leren en Bronnen afzonderlijke panelen. De tokenbediening verdwijnt zodra zo'n paneel openstaat.
+
+## Redenering en kosten
+
+Het officiële OpenAI-gebruiksvoorbeeld laat zien dat redeneertokens binnen de outputtoken-telling vallen. In het observatorium is dat de standaardinstelling. Je kunt input, cache-lezen, cache-schrijven, redeneertokens, overige output en de voorbeeldprijzen afzonderlijk veranderen. De grafiek en de 3D-tokenstromen rekenen mee.
+
+Bronnen:
+- https://developers.openai.com/api/docs/guides/reasoning
+- https://developers.openai.com/api/docs/guides/prompt-caching
+
+**Bewijsgrens:** de 75/1186/1024 zijn een gepubliceerd gebruiksvoorbeeld. De overige tokenverdelingen en tarieven zijn vrij te kiezen scenario's, geen live meting, rekening of weergave van interne redeneerstappen. Het schrijfvoorbeeld gebruikt 1,25× en het leesvoorbeeld 0,1× de standaardinvoerprijs, zoals bij de 30-minutencache van ondersteunde recentere modellen. Bij andere modellen of instellingen kunnen die tarieven afwijken.
 
 ## Herkomst en beperkingen
 
@@ -31,7 +42,7 @@ In deze proef is het ingevoerde voorbeeld opgedeeld in woorden. Het is geen echt
 
 ## Controle
 
-Lokale Chromium-tests zijn uitgevoerd op 320, 390, 768 en 1440 pixels. Getest: zes modules, mobiele paneelbediening, wisselen tussen 120b en 20b, ontbreken van paginascroll en JavaScript-runtimefouten. Een aanvullende Node-syntaxcheck is geslaagd.
+Lokale Chromium-tests zijn uitgevoerd op 320, 390, 768 en 1440 pixels. Getest: zeven modules, mobiele paneelbediening, wisselen tussen 120b en 20b, ontbreken van paginascroll en JavaScript-runtimefouten. Een aanvullende Node-syntaxcheck is geslaagd.
 
 Dit is geen validatie van modelactivaties, wetenschappelijke verklaringskracht of leerwinst.
 
