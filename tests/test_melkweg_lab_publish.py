@@ -48,44 +48,35 @@ class MelkwegLabPublicationTests(unittest.TestCase):
         self.assertTrue(target.is_file())
         self.assertEqual(source.read_bytes(), target.read_bytes())
 
-    def test_child_friendly_navigation_and_planets_exist(self):
+    def test_scientific_observatory_and_planets_are_available(self):
         html = SOURCE.read_text(encoding="utf-8")
         for marker in (
-            "✦ Planeten",
-            "role=\"tablist\"",
-            "data-labtab=\"speel\"",
-            "selectLabTab(activeLabTab)",
-            "V7: mobiele bediening is een observatorium",
-            "Waar zijn wij?",
-            "Jouw avontuur",
-            "solarExplorer",
-            "planet-pick",
+            "MW / 01 | Galactisch Observatorium",
+            "instrument-hud",
+            "instrument-meta",
+            "instrument-controls",
+            "instrumentStats()",
+            "instrumentControls()",
+            "function showAstroInfo(kind)",
+            "function updateAstroPins()",
+            'id="astroSunPin"',
+            'id="astroCenterPin"',
+            'id="labDock"',
+            'id="timeToggle"',
+            'id="solarExplorer"',
+            'id="graphClose"',
+            "Galactische atlas",
+            "ANALYTISCH MODEL",
+            "AFLEIDING / BRONNEN",
             "prefers-reduced-motion",
         ):
             with self.subTest(marker=marker):
                 self.assertIn(marker, html)
-        self.assertEqual(html.count('id="solarEntry"'), 1, "Er moet één planetenknop zijn")
-        self.assertNotIn('class="solar-entry">✦ Reis naar de planeten', html)
-        self.assertIn('Geen tweede label op het canvas', html)
-        # V11 laat de simulatie zelf het volledige mobiele scherm vullen.
-        for marker in (
-            "V11: aanraakbaar sterrenbeeld",
-            'id="astroSunPin"',
-            'id="astroCenterPin"',
-            'id="astroInfo"',
-            'id="timeToggle"',
-            'id="labDock"',
-            'id="labBackdrop"',
-            "function updateAstroPins()",
-            "function showAstroInfo(kind)",
-            "body.time-open .timeline input[type=range]",
-            "body.lab-sheet-open .inspector",
-            "updateAstroPins();",
-        ):
-            with self.subTest(marker=marker):
-                self.assertIn(marker, html)
+        self.assertEqual(html.count('id="solarEntry"'), 1)
+        self.assertNotIn('<section class="quest-card"', html)
+        self.assertNotIn('role="tablist"', html)
         self.assertIn("document.body.classList.toggle('lab-sheet-open',expanded)", html)
-        self.assertNotIn('id="labExpand"', html)
+        self.assertIn("DRAAI · ZOOM · SELECTEER", html)
 
 
 
