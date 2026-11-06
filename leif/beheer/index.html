@@ -29,6 +29,16 @@ main{max-width:1160px;margin:auto;padding:42px 24px 120px}.tag{font-weight:800;c
 .site-edit-history button{margin:4px 0}
 @media(max-width:830px){.site-edit-grid{grid-template-columns:1fr}.site-frame{min-height:440px}.site-edit-side{max-height:none}}
 #accountSettings{scroll-margin-top:110px}#accountSettings summary{cursor:pointer;font-weight:750}
+/* Compact beheer: minder ruimte, meer gegevens zichtbaar. */
+body{font-size:14px;line-height:1.45}main{max-width:1440px;padding:14px 20px 44px}.mast-inner{max-width:1440px;padding:9px 20px}
+#workspace h1{font:650 22px/1.2 system-ui,sans-serif;margin:4px 0}#workspace h2{font:650 18px/1.3 system-ui,sans-serif;margin:5px 0 9px}#workspace h3{font:650 15px/1.3 system-ui,sans-serif;margin:5px 0 8px}
+#workspace .tag{margin:0}#workspace .sub{font-size:12px;margin:5px 0 8px}#workspace .panel{padding:13px;border-radius:8px;margin:9px 0}
+.detail-grid{grid-template-columns:280px minmax(0,1fr);gap:12px;margin-top:10px}.person{padding:8px 10px;border-radius:7px}.list{gap:4px}
+.field{gap:4px;margin:9px 0}.field input,.field textarea,.field select,select{padding:7px 9px}.field textarea{min-height:115px;line-height:1.5}
+.btn{min-height:34px;padding:6px 11px;font-size:12px}.toolbar{margin:9px 0}.navtabs{margin:10px 0}.navtabs button{padding:6px 9px}
+#testerPanel h2,#testerPanel>.sub{display:none}#testerPanel{padding:10px}#testerPanel .field{margin:2px 0}
+#testerList{display:none!important}#testerDetail{grid-column:2}.site-frame{min-height:520px}.site-edit-side{max-height:590px}
+@media(max-width:850px){.detail-grid{grid-template-columns:1fr}#testerDetail{grid-column:auto}}
 </style>
 </head>
 <body>
@@ -40,8 +50,8 @@ main{max-width:1160px;margin:auto;padding:42px 24px 120px}.tag{font-weight:800;c
 <p id="loading" class="meta" role="status">Beheer openen...</p>
 <button id="retrySession" class="btn secondary" type="button" hidden>Opnieuw proberen</button>
 <section id="workspace" hidden>
-<div class="tag">LEIF beheer</div><h1>Deelnemers en verhalen</h1>
-<p class="sub">Je kunt hier deelnemers beheren, hun verhalen schrijven en de teksten van LEIF aanpassen.</p>
+<div class="tag">LEIF / BEHEER</div><h1>Deelnemers en teksten</h1>
+<p class="sub">Alle testende deelnemers staan in één overzicht. Gepubliceerde algemene teksten verschijnen op de aangesloten pagina's.</p>
 <div class="site-edit-toolbar"><button id="showPeople" type="button" class="btn secondary compact" aria-pressed="true">Deelnemers en verhalen</button><button id="showSiteEditor" type="button" class="btn secondary compact" aria-pressed="false">Teksten beheren</button></div>
 <details id="accountSettings" class="panel" data-leif-locked>
 <summary>Mijn beheerinlog</summary>
@@ -96,9 +106,9 @@ main{max-width:1160px;margin:auto;padding:42px 24px 120px}.tag{font-weight:800;c
 <div id="peopleWorkspace">
 <div class="toolbar"><label for="tenant">Omgeving</label><select id="tenant" aria-label="Kies een LEIF-omgeving"></select><button id="reload" type="button" class="btn secondary compact">Vernieuwen</button></div>
 <section class="panel" id="testerPanel" hidden>
-<h2>Testers van de LEIF-proef</h2>
+<h2>Nieuwe deelnemer toevoegen</h2>
 <p class="sub">Voeg iemand toe aan de bestaande proef. Iedere tester krijgt een eigen code om antwoorden te bewaren en later verder te gaan.</p>
-<form id="testerForm" class="actions"><div class="field"><label for="testerName">Naam tester</label><input id="testerName" maxlength="120" required placeholder="Naam tester"></div><button type="submit" class="btn">Voeg tester toe</button></form>
+<form id="testerForm" class="actions"><div class="field"><label for="testerName">Naam deelnemer</label><input id="testerName" maxlength="120" required placeholder="Naam tester"></div><button type="submit" class="btn">Voeg deelnemer toe</button></form>
 <p id="testerStatus" class="save-status" role="status" aria-live="polite"></p>
 <div id="testerInvite" hidden></div>
 <h3>Testers</h3>
@@ -178,6 +188,9 @@ const status=(msg,error=false)=>{E('storyStatus').textContent=msg;E('storyStatus
 function setBusy(on){busy=on;document.querySelectorAll('#detail button,#inviteForm button').forEach(b=>b.disabled=on)}
 function changeTab(name){tab=name;for(const b of E('tabs').querySelectorAll('button'))b.setAttribute('aria-current',b.dataset.tab===name?'page':'false');show('storyTab',name==='story');show('answersTab',name==='answers');show('settingsTab',name==='settings')}
 const adminSession=window.LeifAdminSession;
+// Toon ook antwoorden uit oude proefregistraties in dezelfde werkruimte.
+document.querySelector('.detail-grid')?.append(E('testerDetail'));
+
 async function request(action,extra={}){
  const result=await adminSession.request(action,extra);
  auth=adminSession.read();return result;
@@ -244,6 +257,7 @@ async function loadTesters(){
   try{
     const response=await request('list_testers',{tenant_id:tenant.id});
     const list=E('testerList');list.replaceChildren();
+    const unified=E('participants');
     for(const person of response.testers){
       const item=el('button','person');item.type='button';
       item.onclick=()=>openTester(person.id);
@@ -251,13 +265,16 @@ async function loadTesters(){
       const state=person.status==='submitted'?'Afgerond':'Nog bezig';
       const when=person.created_at?new Date(person.created_at).toLocaleDateString('nl-NL'):'';
       item.append(el('small',null,state+(when?' · '+when:'')));
-      list.append(item);
+      unified.append(item);
     }
-    if(!response.testers.length)list.append(el('p','meta','Er zijn nog geen testers.'));
+    E('peopleCount').textContent=String(participants.length+response.testers.length+1);
   }catch{E('testerStatus').textContent='De testers konden niet worden geladen.';}
 }
 async function openTester(id){
+ if(!confirmDiscard())return;
+ selected=null;documentState=null;show('detail',false);show('empty',false);
  E('testerDetail').hidden=false;
+ E('participants').querySelectorAll('.person').forEach(b=>b.dataset.active='false');
  E('testerDetailName').textContent='Antwoorden laden...';
  E('testerAnswers').replaceChildren();
  try{
@@ -286,7 +303,7 @@ function showTesterInvite(name,code){
 }
 async function loadList(){
  const data=await request('list',{tenant_id:tenant.id});participants=data.participants;
- E('peopleCount').textContent=String(participants.length);
+ E('peopleCount').textContent=String(participants.length+1);
  E('newPanel').hidden=!canManage();
  const list=E('participants');list.replaceChildren();
  for(const p of participants){
@@ -294,12 +311,15 @@ async function loadList(){
   b.append(el('strong',null,p.display_name||'Naam ontbreekt'),el('small',null,p.created_at?new Date(p.created_at).toLocaleDateString('nl-NL'):''),el('span','status',p.state==='revoked'?'Toegang ingetrokken':'Actief'));
   b.onclick=()=>choosePerson(p.id);list.append(b);
  }
- if(!participants.length)list.append(el('p','meta','Nog geen deelnemers.'));
+ const kei=el('button','person');kei.type='button';
+ kei.append(el('strong',null,'KEI'),el('small',null,'Oorspronkelijke lokale proef'),el('span','status','Ingevuld · lokaal'));
+ kei.onclick=()=>{if(!confirmDiscard())return;selected=null;documentState=null;show('detail',false);E('testerDetail').hidden=true;show('empty',true);E('empty').textContent='KEI heeft de bestaande, lokaal versleutelde ingevulde proef. Deze antwoorden zijn niet op de server beschikbaar. Je kunt de oorspronkelijke omgeving via het inlogscherm openen. De inhoud blijft ongewijzigd.';list.querySelectorAll('.person').forEach(b=>b.dataset.active='false');kei.dataset.active='true'};
+ list.prepend(kei);
  if(selected){
   const found=participants.find(p=>p.id===selected.id);
   if(found){if(dirty)return;await choosePerson(found.id);return}
  }
- selected=null;documentState=null;show('detail',false);show('empty',true);
+ selected=null;documentState=null;show('detail',false);show('empty',true);E('testerDetail').hidden=true;
 }
 function codeVisible(code,name){
  const panel=E('codePanel');panel.replaceChildren();show('codePanel',true);
@@ -316,6 +336,7 @@ function confirmDiscard(){return !dirty||confirm('Je hebt nog niet opgeslagen wi
 function planStorySave(){clearTimeout(storyTimer);if(dirty)storyTimer=setTimeout(()=>{if(!dirty||!selected)return;if(busy){planStorySave();return}performStory('save_draft',{draft:readDraft()})},1700)}
 async function choosePerson(id){
  if(selected?.id!==id&&!confirmDiscard())return;
+ E('testerDetail').hidden=true;
  clearTimeout(storyTimer);
  setBusy(true);
  try{
@@ -369,7 +390,7 @@ E('testerForm').onsubmit=async e=>{
  E('testerStatus').textContent='Toegangscode maken...';
  try{
   const result=await request('create_tester',{tenant_id:tenant.id,name});
-  E('testerName').value='';E('testerStatus').textContent='Tester toegevoegd.';
+  E('testerName').value='';E('testerStatus').textContent='Deelnemer toegevoegd.';
   showTesterInvite(name,result.code);await loadTesters();
  }catch{E('testerStatus').textContent='Toevoegen is niet gelukt.';}
  finally{button.disabled=false;}
