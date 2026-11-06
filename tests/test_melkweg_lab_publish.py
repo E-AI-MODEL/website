@@ -67,7 +67,14 @@ class MelkwegLabPublicationTests(unittest.TestCase):
         self.assertEqual(html.count('id="solarEntry"'), 1, "Er moet één planetenknop zijn")
         self.assertNotIn('class="solar-entry">✦ Reis naar de planeten', html)
         self.assertIn('if(!state.running && state.cam.elev>20)', html)
-        self.assertIn('flex:0 0 clamp(177px,27dvh,238px)', html)
+        # De bediening is op telefoons standaard klein, maar blijft uitklapbaar.
+        self.assertIn('V8: compacte bediening op telefoons', html)
+        self.assertIn('height:120px;flex:0 0 120px', html)
+        self.assertIn('body.lab-expanded .inspector', html)
+        self.assertIn('id="labExpand"', html)
+        self.assertIn("setLabPanelExpanded(name!=='proef')", html)
+        self.assertIn("setAttribute('aria-expanded',String(expanded))", html)
+        self.assertIn("window.innerWidth<=850", html)
 
 
 if __name__ == "__main__":
