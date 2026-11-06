@@ -37,6 +37,7 @@ try {
   await mode('dynamics');
   await page.locator('#play').click();
   await dragSky(.58);
+  assert((await page.locator('#toast').innerText()).includes('minder massa'),'Geef na het slepen een uitleg over de ontdekking');
   await page.locator('#labDock').click();
   await page.getByRole('tab',{name:'Verander'}).click();
   assert(Number(await page.locator('#haloMass').inputValue())<.5,'Dragging sky must lower invisible mass');

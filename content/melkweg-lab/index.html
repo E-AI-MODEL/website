@@ -765,7 +765,7 @@ function recordSeen(){
  if(state.observeVT>320)seen.speedHigh=true;
 }
 function checkQuest(){recordSeen();let gained=[];for(let mode of Object.keys(QUESTS)){QUESTS[mode].forEach((q,i)=>{if(!doneQuest[mode].includes(i)&&q.check()){doneQuest[mode].push(i);gained.push({mode,i})}})}
- if(gained.length){persistQuest();let here=gained.find(x=>x.mode===state.mode);if(here)toast('Hé, je hebt iets ontdekt!');}
+ if(gained.length){persistQuest();const here=gained.find(x=>x.mode===state.mode);if(here){const uitleg=QUESTS[here.mode][here.i].done;const zin=uitleg.match(/^[^.!?]+[.!?]?/)?.[0]?.trim()||'Je hebt iets ontdekt.';toast(zin);}}
  const current=QUESTS[state.mode][activeQuest[state.mode]],idx=activeQuest[state.mode],completed=doneQuest[state.mode].includes(idx);
  const result=$('quest-result'),cont=$('inspector-body').querySelector('.quest-continue'),tip=$('quest-tip');if(result)result.hidden=!completed;if(cont)cont.hidden=!completed;if(tip)tip.hidden=completed;
  const count=$('progress-count');if(count)count.textContent=countQuest()+' van 18 dingen ontdekt';const fill=$('progress-fill');if(fill)fill.style.width=countQuest()/18*100+'%';
