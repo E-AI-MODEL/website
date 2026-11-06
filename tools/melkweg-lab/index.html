@@ -1020,6 +1020,19 @@ const touchDistance=()=>{const ps=Array.from(touches.values());return ps.length>
 // Translate the camera to the Sun without changing the galactocentric model.
 project=function(x,y,z){if(state.cam.target==='sun'){let st=.4+vParts(R0).total/R0*KM_MYR*state.time;x-=R0*Math.cos(st);y-=R0*Math.sin(st);}return oldProject(x,y,z)};
 function localPointer(e){const rect=cv.getBoundingClientRect();return {x:e.clientX-rect.left,y:e.clientY-rect.top};}
+// De ster, de sterrenkijker en het sterbeeld zijn zelf vast te pakken.
+function skyObjectHit(x,y){
+ if(state.mode==='stars'){const cx=W*.56,cy=H*.40,rad=clamp(Math.min(W,H)*.16,29,57);if(Math.hypot(x-cx,y-cy)<rad+18)return 'telescope';}
+ if(state.mode==='gaia'){const spread=clamp(63/state.observeD,3,65);if(Math.abs(y-H*.41)<35&&Math.abs(x-W*.51)<spread+27)return 'observedStar';}
+ if(state.mode==='dynamics'){const r=state.focusR,th=state.focusTheta+state.time*vParts(r).total/r*KM_MYR,p=project(r*Math.cos(th),r*Math.sin(th),0);if(Math.hypot(x-p.x,y-p.y)<29)return 'orbitStar';}
+ return null;
+}
+function moveSkyObject(kind,x,y){
+ if(kind==='telescope'){state.limMag=clamp(10+11*x/Math.max(W,1),10,21);if(state.limMag<=12.5)seen.telescopeLow=true;if(state.limMag>=20)seen.telescopeHigh=true;if(seen.telescopeLow&&seen.telescopeHigh)seen.telescopeCompare=true;}
+ if(kind==='observedStar'){state.observeD=clamp(.5+(x/W)*19.5,.5,20);if(state.observeD<2.5)seen.distanceNear=true;if(state.observeD>17)seen.distanceFar=true;}
+ if(kind==='orbitStar'){const c=project(0,0,0),scale=Math.min(W/43,H/29)*state.cam.zoom*(W<851?1.14:1);state.focusR=clamp(Math.hypot(x-c.x,(y-c.y)/Math.max(.25,Math.sin(state.cam.elev*PI/180)))/Math.max(scale,1),.5,20);if(state.focusR<4.5)seen.focusInner=true;}
+ chartDirty=true;updateLiveStats(true);checkQuest();
+}
 function skyTrackMove(track,x){const g=skyTrackGeometry(track),ratio=clamp((x-g.left)/(g.right-g.left),0,1),val=track.min+(track.max-track.min)*ratio;track.set(val);chartDirty=true;
  const field={halo:'haloMass',disk:'diskMass',kijker:'limmag',afstand:'obDist',tempo:'obVt',spiraal:'pitch'}[track.key];
  if(field){const input=$(field),output=$(field+'out');if(input)input.value=String(val);if(output)output.textContent=val.toLocaleString('nl-NL',{maximumFractionDigits:1});}
@@ -1035,13 +1048,14 @@ cv.addEventListener('pointerdown',e=>{
  const p=localPointer(e);
  if(state.mode==='blackhole'){stageHeld={kind:'blackhole'};cv.setPointerCapture(e.pointerId);setBlackHoleFromPointer(p.x,p.y);return;}
  const track=stageTrackHit(p.x,p.y);if(track){stageHeld=track;stageDragStart=p;cv.setPointerCapture(e.pointerId);skyTrackMove(track,p.x);return;}
+ const picked=skyObjectHit(p.x,p.y);if(picked){stageHeld={kind:picked};stageDragStart=p;cv.setPointerCapture(e.pointerId);return;}
  if(state.mode==='structure'&&Math.hypot(p.x-W*.79,p.y-H*.53)<31){state.layer.stellarHalo=!state.layer.stellarHalo;if(!state.layer.stellarHalo)seen.haloStarsOff=true;chartDirty=true;checkQuest();return;}
  if(state.mode==='atlas'&&lastProjectedSun&&Math.hypot(p.x-lastProjectedSun.x,p.y-lastProjectedSun.y)<29){seen.sun=true;checkQuest();openSolar();return;}
  if(e.pointerType==='touch'){touches.set(e.pointerId,{x:e.clientX,y:e.clientY});if(touches.size>1){pinchLast=touchDistance();cv.drag=null;state.mouseDown=false;cv.setPointerCapture(e.pointerId);return;}}
  state.mouseDown=true;cv.classList.add('dragging');cv.setPointerCapture(e.pointerId);cv.drag={x:e.clientX,y:e.clientY,startX:e.clientX,startY:e.clientY,moved:false};
 });
 cv.addEventListener('pointermove',e=>{
- if(stageHeld){const p=localPointer(e);if(stageHeld.kind==='blackhole')setBlackHoleFromPointer(p.x,p.y);else skyTrackMove(stageHeld,p.x);return;}
+ if(stageHeld){const p=localPointer(e);if(stageHeld.kind==='blackhole')setBlackHoleFromPointer(p.x,p.y);else if(stageHeld.kind==='telescope'||stageHeld.kind==='observedStar'||stageHeld.kind==='orbitStar')moveSkyObject(stageHeld.kind,p.x,p.y);else skyTrackMove(stageHeld,p.x);return;}
  if(e.pointerType==='touch'&&touches.has(e.pointerId)){touches.set(e.pointerId,{x:e.clientX,y:e.clientY});if(touches.size>1){const d=touchDistance();if(pinchLast>0)state.cam.zoom=clamp(state.cam.zoom*d/pinchLast,.55,5.5);pinchLast=d;updateLiveStats(true);return;}}
  if(!state.mouseDown||!cv.drag)return;
  const dx=e.clientX-cv.drag.x,dy=e.clientY-cv.drag.y;cv.drag.x=e.clientX;cv.drag.y=e.clientY;
