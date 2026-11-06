@@ -50,6 +50,12 @@ try{
    assert(await page.locator('#pane-speel').isVisible());
    await tabs.getByText('Ontdek meer').click();
    assert(await page.locator('#pane-meer').isVisible());
+   await page.locator('#graphToggle').click();
+   assert.equal(await page.locator('#graphClose').isVisible(),true,'De grafiek heeft geen sluitknop');
+   assert.equal(await page.locator('#labDock').getAttribute('aria-expanded'),'false');
+   await page.locator('#graphClose').click();
+   assert.equal(await page.locator('#graphClose').isVisible(),false,'De grafiek sluit niet');
+   await page.locator('#labDock').click();
    await tabs.getByText('Probeer').click();
    await page.locator('#labDock').click();
    assert.equal(await page.locator('#labDock').getAttribute('aria-expanded'),'false');
