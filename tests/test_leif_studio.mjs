@@ -33,7 +33,8 @@ test('afzonderlijke dossiers krijgen eigen studio-opslag',()=>{
 
 test('deelnemers krijgen uitsluitend gepubliceerde blokken',()=>{
  assert.match(personal,/blocks_published/);
- assert.match(personal,/personal_texts:\{\.\.\.pub,blocks:/);
+ assert.match(personal,/personal_texts:pub/);
+ assert.match(personal,/const pub=\{\.\.\.published,blocks:/);
  assert.match(demo,/blocks_published/);
  assert.doesNotMatch(demo,/personal_texts:row\.personal_texts/);
  assert.match(reader,/const blocks=Array\.isArray\(published\.blocks\)/);
