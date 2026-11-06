@@ -16,6 +16,7 @@ on:
       - 'leif/**'
       - 'tests/test_home_model.py'
       - 'tests/test_science_observatory_publish.py'
+      - 'tests/test_abyss_publish.py'
       - 'scripts/home_model.py'
   push:
     branches:
@@ -32,6 +33,7 @@ on:
       - 'leif/**'
       - 'tests/test_home_model.py'
       - 'tests/test_science_observatory_publish.py'
+      - 'tests/test_abyss_publish.py'
       - 'scripts/home_model.py'
   workflow_dispatch:
 
@@ -71,6 +73,9 @@ jobs:
 
       - name: Check WiHTML pages and reviewed studio copy
         run: python -m unittest discover -s tests -p "test_wihtml_publish.py" -v
+
+      - name: Check ABYSS source and mobile menu
+        run: python -m unittest discover -s tests -p 'test_abyss_publish.py' -v
 
       - name: Check Science Observatory pilot publication
         run: python -m unittest discover -s tests -p 'test_science_observatory_publish.py' -v
