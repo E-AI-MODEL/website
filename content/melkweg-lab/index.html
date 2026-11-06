@@ -662,7 +662,12 @@ html.solar-active,html.solar-active body{overflow:hidden!important;height:100dvh
 .astro-pin[hidden]{display:none!important}
 .astro-pin:before{content:'';position:absolute;left:0;top:calc(50% - 2px);width:4px;height:4px;border-radius:50%;background:#9ccac8;box-shadow:0 0 0 3px #77c3c51a}
 .astro-pin:after{content:'';position:absolute;left:6px;top:50%;width:7px;height:1px;background:#8babb283}
-.astro-pin[data-kind=center]{color:#e1c5a3}.astro-pin[data-kind=center]:before{background:#e2b58a}
+.astro-pin[data-kind=center]{color:#e1c5a3}
+.astro-pin[data-kind=center]:before{background:#e2b58a}
+.astro-pin[data-kind=center] .astro-pin-select,.astro-pin[data-kind=center] .astro-pin-dismiss{transform:translate(22px,-33px)}
+.astro-pin[data-kind=center]:after{left:7px;top:calc(50% - 1px);width:44px;transform:rotate(-50deg);transform-origin:left center;background:#c3ad916b}
+.astro-pin[data-kind=center].is-flipped .astro-pin-select,.astro-pin[data-kind=center].is-flipped .astro-pin-dismiss{transform:translate(-22px,-33px)}
+.astro-pin[data-kind=center].is-flipped:after{left:auto;right:7px;transform:rotate(50deg);transform-origin:right center}
 .astro-pin[data-kind=s2]:before{background:#a8d3ed}
 .astro-pin.is-flipped{transform:translate(calc(-100% + 5px),-50%);flex-direction:row-reverse;padding:0 13px 0 2px}
 .astro-pin.is-flipped:before{left:auto;right:0}
