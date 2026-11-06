@@ -120,6 +120,7 @@ try{
    assert(point,'Avonturenmenu is niet zichtbaar');
    assert(await page.evaluate(({x,y})=>!!document.elementFromPoint(x,y)?.closest('.nav-btn'),{x:point.x+point.width/2,y:point.y+point.height/2}),'Avonturenmenu zit achter een ander vlak');
    await option.click();
+   assert((await page.locator('#scene-title').textContent()).includes('Sterren en selectie'),'De oude kinderlijke moduletitel komt terug');
    assert.equal(await page.locator('#adventureMenuToggle').getAttribute('aria-expanded'),'false');
    await page.locator('#adventureMenuToggle').click();
    await options.first().click();
@@ -133,6 +134,7 @@ try{
    await page.locator('#adventureMenuToggle').click();
    await page.locator('#navigation [data-mode="blackhole"]').click();
    await page.waitForSelector('#astroS2Pin:visible',{timeout:4000});
+   await page.screenshot({path:`test-results/melkweg-lab-v13-s2-${width}.png`});
    await page.locator('#astroS2Pin [data-pin-select="s2"]').click();
    assert((await page.locator('#astroInfoTitle').textContent()).includes('S2'),'S2-meetwaarden moeten openen');
    await page.locator('#astroInfoClose').click();
@@ -148,6 +150,12 @@ try{
    assert(graph&&graph.height>120,'Desktopgrafiek is te klein');
    assert(await page.locator('.instrument-controls .switch').count()>=8,'Desktopmodelcomponenten ontbreken');
    assert(await page.locator('.instrument-meta').isVisible(),'Desktopinstrumenten ontbreken');
+   assert(await page.locator('#astroCenterPin').isVisible(),'Centrumlabel ontbreekt op desktop');
+   await page.locator('#astroCenterPin [data-dismiss-pin="center"]').click();
+   assert(!(await page.locator('#astroCenterPin').isVisible()),'Desktop: kruisje sluit het centrumlabel niet');
+   assert(await page.locator('#astroSunPin').isVisible(),'Desktop: zonlabel hoort te blijven');
+   await page.locator('#resetView').click();
+   await page.waitForSelector('#astroCenterPin:visible',{timeout:4000});
   }
   await page.screenshot({path:`test-results/melkweg-lab-v12-${width}.png`});
   assert.deepEqual(errors,[],'JavaScript-fouten op '+width);
