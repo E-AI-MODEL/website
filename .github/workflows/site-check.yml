@@ -21,4 +21,4 @@ jobs:
       - name: Verify LEIF reader and corrected text
         run: node --test tests/test_leif_ereader.mjs
       - name: Check separate LEIF dossiers, admin rights and codes
-        run: node --test tests/test_leif_multitenant.mjs tests/test_leif_account.mjs tests/test_leif_admin_session.mjs
+        run: node --test tests/test_leif_multitenant.mjs tests/test_leif_account.mjs tests/test_leif_admin_session.mjs tests/test_leif_studio.mjs

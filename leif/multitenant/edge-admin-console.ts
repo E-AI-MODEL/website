@@ -27,6 +27,22 @@ function validText(doc){
  const values=Object.values(doc);
  return values.every(x=>typeof x==="string"&&x.length<=45000)&&JSON.stringify(doc).length<=130000;
 }
+// Losse onderdelen per deelnemer. De oudere verhaalvelden blijven bewaard.
+function validBlocks(value){
+ if(!Array.isArray(value)||value.length>24||JSON.stringify(value).length>130000)return false;
+ const ids=new Set();
+ return value.every(b=>{
+  if(!object(b)||Object.keys(b).some(k=>!["id","type","title","text","spotify_url","visible"].includes(k)))return false;
+  if(typeof b.id!=="string"||!/^[a-z0-9_-]{6,64}$/.test(b.id)||ids.has(b.id))return false;
+  ids.add(b.id);
+  if(!["text","spotify","heading"].includes(b.type)||typeof b.title!=="string"||b.title.length>120||
+     typeof b.text!=="string"||b.text.length>12000||typeof b.visible!=="boolean")return false;
+  if(b.type==="spotify"){
+   if(typeof b.spotify_url!=="string"||!/^https:\/\/open\.spotify\.com\/(?:track|album|playlist)\/[A-Za-z0-9]{22}(?:\?[^#\s]{0,250})?$/.test(b.spotify_url))return false;
+  }else if(b.spotify_url!==undefined&&b.spotify_url!=="")return false;
+  return true;
+ });
+}
 Deno.serve(async req=>{
  const origin=req.headers.get("Origin")||"";
  if(req.method==="OPTIONS")return origins.has(origin)?send({ok:true},200,origin):send({error:"forbidden"},403,origin);
@@ -155,7 +171,7 @@ Deno.serve(async req=>{
     }
     if(input.action==="get_tester"){
       if(!idValid(input.tester_id))return send({error:"invalid_tester"},400,origin);
-      const rows=await database("leif_demo_sessions?id=eq."+encodeURIComponent(input.tester_id)+"&select=id,tester_name,status,answers,updated_at","GET",null,service);
+      const rows=await database("leif_demo_sessions?id=eq."+encodeURIComponent(input.tester_id)+"&select=id,tester_name,status,answers,personal_texts,studio_revision,updated_at","GET",null,service);
       if(rows.length!==1)return send({error:"not_found"},404,origin);
       return send({ok:true,tester:rows[0]},200,origin);
     }
@@ -168,6 +184,28 @@ Deno.serve(async req=>{
     },service);
     if(rows.length!==1)return send({error:"creation_failed"},503,origin);
     return send({ok:true,code},201,origin);
+  }
+  // De oude proef krijgt dezelfde losse onderdelen, zonder de oude antwoorden te migreren.
+  if(["legacy_save_blocks","legacy_publish_blocks","legacy_unpublish_blocks"].includes(input.action)){
+   if(scope.slug!=="leif"||scope.role!=="manager"||!idValid(input.tester_id))return send({error:"not_authorized"},403,origin);
+   const rows=await database("leif_demo_sessions?id=eq."+encodeURIComponent(input.tester_id)+"&select=id,personal_texts,studio_revision","GET",null,service);
+   if(rows.length!==1)return send({error:"not_found"},404,origin);
+   const row=rows[0];
+   if(!Number.isSafeInteger(input.revision)||input.revision!==row.studio_revision)return send({error:"revision_conflict",revision:row.studio_revision},409,origin);
+   const prior=object(row.personal_texts)?row.personal_texts:{},data={...prior};
+   if(input.action==="legacy_save_blocks"){
+    if(!validBlocks(input.blocks))return send({error:"invalid_blocks"},400,origin);
+    data.blocks_draft=input.blocks;data.blocks_draft_saved_at=new Date().toISOString();
+   }else if(input.action==="legacy_publish_blocks"){
+    if(!validBlocks(prior.blocks_draft))return send({error:"invalid_blocks"},400,origin);
+    data.blocks_published=prior.blocks_draft.map(b=>({...b}));
+    data.blocks_published_at=new Date().toISOString();
+   }else{
+    data.blocks_published=[];data.blocks_published_at=null;
+   }
+   const saved=await database("leif_demo_sessions?id=eq."+row.id+"&studio_revision=eq."+row.studio_revision,"PATCH",{personal_texts:data,studio_revision:row.studio_revision+1,updated_at:new Date().toISOString()},service);
+   if(saved.length!==1)return send({error:"revision_conflict"},409,origin);
+   return send({ok:true,revision:saved[0].studio_revision,personal_texts:data},200,origin);
   }
   if(input.action==="list"){
    const participants=await database("leif_participants?tenant_id=eq."+scope.id+"&select=id,display_name,state,expires_at,created_at&order=created_at.desc&limit=250","GET",null,service);
@@ -205,11 +243,22 @@ Deno.serve(async req=>{
   if(documents.length!==1)return send({error:"document_not_found"},404,origin);
   const doc=documents[0];
   if(input.action==="get")return send({ok:true,participant,document:doc},200,origin);
-  if(!["save_draft","publish_story","unpublish_story"].includes(input.action))return send({error:"invalid_action"},400,origin);
+  if(!["save_draft","publish_story","unpublish_story","save_blocks","publish_blocks","unpublish_blocks"].includes(input.action))return send({error:"invalid_action"},400,origin);
   if(!Number.isSafeInteger(input.revision)||input.revision<0||input.revision!==doc.revision)return send({error:"revision_conflict",revision:doc.revision},409,origin);
   const previous=object(doc.personal_texts)?doc.personal_texts:{};
   const data={...previous};
-  if(input.action==="save_draft"){
+  if(input.action==="save_blocks"){
+   if(!validBlocks(input.blocks))return send({error:"invalid_blocks"},400,origin);
+   data.blocks_draft=input.blocks;
+   data.blocks_draft_saved_at=new Date().toISOString();
+  }else if(input.action==="publish_blocks"){
+   if(!validBlocks(previous.blocks_draft))return send({error:"invalid_blocks"},400,origin);
+   data.blocks_published=previous.blocks_draft.map(b=>({...b}));
+   data.blocks_published_at=new Date().toISOString();
+  }else if(input.action==="unpublish_blocks"){
+   data.blocks_published=[];
+   data.blocks_published_at=null;
+  }else if(input.action==="save_draft"){
    if(!validText(input.draft))return send({error:"invalid_text"},400,origin);
    data.draft=input.draft;
    data.draft_saved_at=new Date().toISOString();
