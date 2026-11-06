@@ -364,13 +364,14 @@ accessForm.addEventListener('submit',async event=>{
   try{
    if(sessionStorage.getItem('leif-admin-session-v1')){location.assign('/leif/beheer/');return}
    document.getElementById('leifSignIn').disabled=true;
-   accessNotice.hidden=true;
+   accessNotice.textContent='Bevestig de toegang op je toestel.';
+   accessNotice.hidden=false;
    await window.LeifPasskey.openAdmin();
    pw.value='';
-   accessNotice.textContent='Er is een inloglink naar je beheeradres gestuurd. Open de e-mail om verder te gaan.';
-   accessNotice.hidden=false;
+   accessNotice.hidden=true;
   }catch(e){
-   err.textContent=e.status===429?'Je hebt net al een link aangevraagd. Probeer het over een paar minuten opnieuw.':'De inloglink kon niet worden verzonden. Probeer het later opnieuw.';
+   accessNotice.hidden=true;
+   err.textContent=e.message==='passkey_disabled'||e.message==='passkey_unavailable'?'Face ID is nog niet beschikbaar. Probeer het later opnieuw.':e.message==='no_admin_access'?'Deze passkey heeft geen toegang tot LEIF-beheer.':'Face ID is nog niet gekoppeld of niet bevestigd. Koppel het eerst vanuit een bestaande beheersessie.';
    err.hidden=false;
   }finally{document.getElementById('leifSignIn').disabled=false}
   return;
