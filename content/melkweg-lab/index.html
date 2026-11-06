@@ -544,10 +544,7 @@ function dotLabel(p,label,sub,color='112,228,236',dx=20,dy=-12){
 function drawGalacticCore(){let c=project(0,0,0);let g=ctx.createRadialGradient(c.x,c.y,0,c.x,c.y,Math.max(28,55*state.cam.zoom));g.addColorStop(0,'rgba(255,220,164,.67)');g.addColorStop(.17,'rgba(224,170,126,.23)');g.addColorStop(1,'rgba(235,163,111,0)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(c.x,c.y,55*state.cam.zoom,0,2*PI);ctx.fill();lastProjectedCenter=c;
  let sunTheta=.4+vParts(R0).total/R0*KM_MYR*state.time;let sun=project(R0*Math.cos(sunTheta),R0*Math.sin(sunTheta),.02);lastProjectedSun=sun;if(window.innerWidth<=850){
    ctx.save();ctx.strokeStyle='rgba(119,232,224,.8)';ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(sun.x,sun.y,4.8,0,2*PI);ctx.stroke();ctx.restore();
-   if(!state.running && state.cam.elev>20){
-     const apart=Math.hypot(sun.x-c.x,sun.y-c.y);
-     if(apart>68)dotLabel(sun,'ONZE ZON','','111,227,231',sun.x<W*.62?13:-13,-18);
-   }
+   // De mobiele zon heeft een echte klikbare pin. Geen tweede label op het canvas.
  }else{
    dotLabel(c,'MIDDEN','Hier zit een zwart gat','239,187,128',16,-26);
    dotLabel(sun,'ONZE ZON','De aarde draait om haar heen','111,227,231',18,-28);
