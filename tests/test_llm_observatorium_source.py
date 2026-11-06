@@ -70,6 +70,22 @@ class LlmObservatorySourceTests(unittest.TestCase):
         self.assertIn("Geen uitgelezen modelactivaties", self.html)
         self.assertIn("geen echte token-id", self.html.lower())
 
+    def test_tokenizer_ui_has_real_data_and_explicit_fallback(self):
+        html = self.html
+        for marker in (
+            "o200k_harmony.js",
+            "function tokenizeInput()",
+            "async function loadRealTokenizer()",
+            "function renderTokenPieces()",
+            'id="tokenChips"',
+            'id="tokenId"',
+            "state.tokenStatus='real'",
+            "state.tokenStatus='error'",
+            "tokenSeed=state.promptWords[token]?.id??token",
+            "loadRealTokenizer();",
+        ):
+            self.assertIn(marker, html)
+
     def test_not_publicly_linked_until_review(self):
         # This PR intentionally changes neither the build script nor public navigation.
         build = (ROOT / "scripts" / "build_site.py").read_text(encoding="utf-8")
