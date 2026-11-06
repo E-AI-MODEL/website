@@ -37,4 +37,6 @@
 - Publiceer de bijgewerkte Edge Function `leif-admin-console`.
 - Controleer de Chromium-browsertest en test de eerste publicatie en het herstellen met fictieve tekst.
 - Houd de huidige productiepagina intact tot die controles zijn geslaagd.
-- Een wachtwoordloze, veilige beheerinlog op een nieuw apparaat is nog niet ingericht. VIS uitsluitend als openbare drieletterige toegangscode gebruiken zou privégegevens voor iedere bezoeker toegankelijk maken.
+- VIS vraagt met dezelfde enkele toegangscode een eenmalige link aan voor het bestaande, bevestigde beheeraccount. Supabase stuurt die naar het vaste beheeradres. De link opent de LEIF-startpagina, die het token controleert en alleen na geldige managerrechten naar beheer gaat.
+- Er verschijnen geen e-mail- of wachtwoordvelden op het LEIF-inlogscherm. Alleen VIS invoeren geeft geen toegang tot privégegevens.
+- De Supabase Auth-redirect `https://eaimodel.nl/leif/` moet op de allowlist staan. Controleer dit met een echte ontvangen link voordat de inlogroute als werkend wordt gemeld.
