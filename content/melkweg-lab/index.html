@@ -290,104 +290,112 @@ html.solar-active,html.solar-active body{overflow:hidden!important;height:100dvh
   .stage-head p{display:none}
 }
 
-/* V9: het model is het scherm. Bediening verschijnt alleen als je haar nodig hebt. */
-.lab-dock,.lab-sheet-backdrop,.tools-menu-toggle,.camera-menu-toggle,.graph-close{display:none}
+
+/* V11: aanraakbaar sterrenbeeld. Geen vaste menubalken of kaarten op mobiel. */
+.lab-dock,.lab-sheet-backdrop,.tools-menu-toggle,.camera-menu-toggle,.graph-close,.time-reveal,.mobile-focus-layer,.mobile-object-info,.gesture-nudge{display:none}
 @media(max-width:850px){
- html:not(.solar-active),html:not(.solar-active) body{height:100%;overflow:hidden;overscroll-behavior:none}
- #app,.show-graphs #app{display:block;position:relative;height:100dvh;min-height:0;width:100%;overflow:hidden}
+ html:not(.solar-active),html:not(.solar-active) body{width:100%;height:100%;min-height:0;overflow:hidden;overscroll-behavior:none}
+ #app,.show-graphs #app{position:relative;display:block;width:100%;height:100dvh;min-height:0;overflow:hidden}
  .stage{position:absolute;inset:0;width:100%;height:100%;min-height:0;max-height:none;flex:none;z-index:1;border:0}
- .stage-head,.stage-metrics,.scene-badge,.scene-meta{display:none}
- .sidebar{position:absolute;top:8px;left:8px;right:150px;width:auto;height:43px;min-height:0;flex:none;z-index:46;padding:0;display:block;box-shadow:none;background:transparent;border:0;overflow:visible}
+ .stage:after{background:linear-gradient(180deg,#02071199,transparent 21%,transparent 79%,#02071199)}
+ .stage-head,.stage-metrics,.scene-badge,.scene-meta,.stage-hud-bottom{display:none}
+ .sidebar{position:absolute;top:12px;left:12px;right:auto;z-index:48;width:45px;height:45px;min-height:0;display:block;padding:0;border:0;box-shadow:none;background:transparent;overflow:visible}
  .brand,.sidebar .s-label,.side-end{display:none}
- .adventure-menu-toggle{display:flex;width:100%;height:43px;min-height:43px;max-width:none;padding:5px 8px;border:1px solid #56829a9c;border-radius:13px;background:#071a2ddd;box-shadow:0 6px 24px #02091250;backdrop-filter:blur(14px)}
- .adventure-current-icon{height:27px;width:27px;flex-basis:27px;font-size:16px}
- .adventure-current-lines small{display:none}
- .adventure-current-lines strong{font-size:12px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
- .adventure-menu-chevron{font-size:18px;margin-left:auto}
- .navlist{position:absolute;top:calc(100% + 6px);left:0;right:auto;width:min(346px,calc(100vw - 16px));max-height:calc(100dvh - 76px);padding:8px;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;overflow-y:auto;border-radius:13px;background:#0a1b30f7;border:1px solid #4b748c;box-shadow:0 20px 60px #000a}
- .nav-btn{min-width:0;min-height:78px;padding:8px;gap:6px}
- .nav-btn .nav-icon{height:27px;width:27px;min-width:27px}
- .navcopy b{font-size:11px}
+ .adventure-menu-toggle{display:grid;place-items:center;min-width:0;max-width:none;width:45px;height:45px;min-height:45px;padding:0;border:1px solid #ffffff35;border-radius:50%;background:#061325bb;box-shadow:0 4px 21px #0005;color:#e9faff;backdrop-filter:blur(16px)}
+ .adventure-menu-toggle:before{content:'☰';font:400 20px system-ui;letter-spacing:0}
+ .adventure-current-icon,.adventure-current-lines,.adventure-menu-chevron{display:none}
+ .navlist{position:absolute;top:52px;left:0;right:auto;display:none;width:min(338px,calc(100vw - 24px));max-height:calc(100dvh - 85px);padding:10px;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;overflow:auto;background:#091a2eeF;border:1px solid #426b7d;border-radius:20px;box-shadow:0 20px 60px #000b;backdrop-filter:blur(18px)}
+ .sidebar.menu-open .navlist{display:grid}
+ .nav-btn{min-height:79px;min-width:0;padding:10px 8px;border-radius:13px;background:#11243a;text-align:left}
+ .nav-btn.active{background:#153c49;border:1px solid #64bcb0}
+ .nav-btn .nav-icon{height:26px;min-width:26px;width:26px}
+ .navcopy b{font-size:11px;line-height:1.2}
  .navcopy small{font-size:10px}
- .adventure-backdrop{position:fixed;inset:0;z-index:44;background:#0107126b}
- .topbar{position:absolute;top:8px;right:8px;left:auto;width:auto;height:43px;min-height:43px;z-index:47;padding:0;flex:none;display:flex;border:0;background:transparent;overflow:visible}
- .top-actions{gap:5px;width:auto;justify-content:flex-end}
- .topbar .solar-entry{margin:0;position:static;min-height:42px;height:42px;padding:7px 9px;border-radius:12px;background:#10384adc;border:1px solid #427f8e;color:#cbfff3;font-size:11px;font-weight:750}
+ .adventure-backdrop{position:fixed;inset:0;z-index:45;background:#0009;backdrop-filter:blur(3px)}
+ .topbar{position:absolute;top:12px;right:12px;left:auto;z-index:47;width:auto;height:45px;min-height:45px;display:flex;padding:0;border:0;background:transparent;overflow:visible}
+ .top-actions{gap:8px;width:auto;justify-content:flex-end}
+ .topbar .solar-entry{position:static;display:grid;place-items:center;width:45px;height:45px;min-width:45px;min-height:45px;max-width:none;padding:0;margin:0;border:1px solid #ffffff35;border-radius:50%;background:#061325bb;font-size:0;color:transparent;box-shadow:0 4px 21px #0005;backdrop-filter:blur(16px)}
+ .topbar .solar-entry:before{content:'◎';font:500 26px/1 system-ui;color:#ace7db}
  .topbar .topbtn{display:none}
- .tools-menu-toggle{display:grid;place-items:center;min-height:42px;width:39px;padding:0;border-radius:12px;background:#071a2ddd;border:1px solid #456a84;color:#c7eafa;font-size:25px;line-height:1}
- .topbar.tools-open .topbtn{display:flex;position:absolute;right:0;z-index:3;width:165px;height:39px;padding:0 12px;border-radius:9px;gap:9px;justify-content:flex-start;background:#0c263ddf;border:1px solid #47738a;box-shadow:0 8px 24px #0008}
- .topbar.tools-open #resetView{top:49px}
- .topbar.tools-open #snapshot{top:93px}
- .topbar.tools-open #exportJSON{top:137px}
- .topbar.tools-open .topbtn .btxt{display:inline;font-size:11px}
- .stage-hud-bottom{position:absolute;bottom:114px;left:auto;right:11px;display:block;width:auto;z-index:25;pointer-events:auto}
- .camera-menu-toggle{display:flex;align-items:center;justify-content:center;height:35px;min-width:86px;padding:0 12px;border:1px solid #4b738a;border-radius:12px;background:#071a2de6;color:#d5edf9;font-size:12px;font-weight:700;backdrop-filter:blur(14px);box-shadow:0 7px 22px #0008}
- .camera-controls{display:none;position:absolute;right:0;bottom:42px;width:145px;max-width:none;margin:0;padding:5px;flex-direction:column;gap:3px;background:#0b2137f5;border:1px solid #4c718a;border-radius:13px;box-shadow:0 15px 35px #0009}
- body.camera-menu-open .camera-controls{display:flex}
- .camera-controls .cambtn{display:block;flex:none;min-height:38px;width:100%;padding:10px 12px;text-align:left;font-size:12px;border-radius:8px}
- .camera-controls .cambtn.active{background:#254b62;color:#cbfff2}
- .analytics,.show-graphs .analytics{position:absolute;left:10px;right:10px;bottom:65px;top:auto;z-index:20;width:auto;height:40px;min-height:40px;max-height:none;display:block;overflow:visible;border:0;background:transparent;flex:none}
+ .tools-menu-toggle{display:grid;place-items:center;width:45px;height:45px;min-height:45px;padding:0;border:1px solid #ffffff35;border-radius:50%;background:#061325bb;color:#def2ff;font-size:25px;box-shadow:0 4px 21px #0005;backdrop-filter:blur(16px)}
+ .topbar.tools-open .topbtn{display:flex;position:absolute;right:0;z-index:2;width:166px;height:41px;padding:0 12px;border-radius:12px;gap:10px;background:#0b2338f5;border:1px solid #5c8790}
+ .topbar.tools-open #resetView{top:52px}
+ .topbar.tools-open #snapshot{top:99px}
+ .topbar.tools-open #exportJSON{top:146px}
+ .topbar.tools-open .topbtn .btxt{display:inline;font-size:12px}
+ .analytics,.show-graphs .analytics{position:absolute;bottom:13px;left:13px;right:auto;top:auto;z-index:20;display:block;width:auto;height:47px;min-width:0;min-height:0;max-height:none;padding:0;background:transparent;border:0;overflow:visible}
  .analytics .analytics-head,.analytics .analytics-main{display:none}
- .timeline,.show-graphs .timeline{display:flex;align-items:center;height:40px;padding:0 10px;gap:9px;border:1px solid #405e78;border-radius:15px;background:#07192de6;box-shadow:0 5px 18px #0008;backdrop-filter:blur(12px)}
- .timeline label,.timeline .speed-wrap{display:none}
- .timeline button{width:32px;height:32px;min-height:32px;flex:none;border-radius:10px}
- .timeline input[type=range]{margin:0;flex:1;height:22px;min-width:35px}
- .timeline input[type=range]::-webkit-slider-thumb{width:18px;height:18px}
- .timeline .tvalue{font:600 10px/1.1 system-ui,sans-serif;text-align:right;min-width:82px;max-width:89px;color:#c3d9e8}
- .inspector{position:absolute;left:10px;right:10px;bottom:9px;top:auto;width:auto;height:46px;max-height:none;min-height:0;flex:none;z-index:32;display:block;overflow:visible;border:0;background:transparent;box-shadow:none}
- .inspector .panel-head{display:none}
- .lab-dock{display:flex;align-items:center;gap:9px;width:100%;height:46px;min-height:46px;margin:0;padding:0 12px;color:#e9f8ff;text-align:left;border:1px solid #568c96;border-radius:14px;background:linear-gradient(110deg,#104456e8,#102e45ef);box-shadow:0 6px 24px #0009;backdrop-filter:blur(15px)}
- .lab-dock-icon{display:grid;place-items:center;flex:0 0 27px;width:27px;height:27px;border-radius:9px;background:#a1ead7;color:#0e3440;font-size:17px}
- .lab-dock-title{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:750;font-size:13px}
- .lab-dock-action{color:#b5f6e4;font-size:12px;font-weight:750;white-space:nowrap}
- .inspector .panel-body{display:none}
- body.lab-sheet-open .lab-sheet-backdrop{display:block;position:fixed;inset:0;z-index:60;background:#01091242;backdrop-filter:blur(1px)}
- body.lab-sheet-open .inspector{position:absolute;left:0;right:0;bottom:0;z-index:65;height:min(70dvh,530px);min-height:0;max-height:min(70dvh,530px);display:flex;flex-direction:column;border:1px solid #52768b;border-bottom:0;border-radius:22px 22px 0 0;background:#0b1d30f9;box-shadow:0 -15px 45px #000a;overflow:hidden}
- body.lab-sheet-open .lab-dock{height:51px;flex:0 0 51px;padding:0 17px;border:0;border-radius:0;background:transparent;box-shadow:none}
- body.lab-sheet-open .lab-dock-icon{background:#17364b;color:#8adfce}
- body.lab-sheet-open .lab-dock-action{font-size:20px;font-weight:400}
- body.lab-sheet-open .inspector .panel-body{display:block;flex:1;overflow-y:auto;overscroll-behavior:contain;padding:0 14px 23px;scrollbar-width:thin}
- .lab-tabs{position:sticky;top:0;z-index:3;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;padding:2px 0 10px;background:#0b1d30}
- .lab-tab{font-size:12px;font-weight:700;min-height:38px;border:0;border-radius:10px;background:#132c42;color:#b7cddd}
- .lab-tab.active{background:#a8eadd;color:#0b3340;box-shadow:none}
- .lab-expand{display:none}
- .lab-pane{display:none;padding:7px 0 18px}
- .lab-pane.active{display:block}
- .quest-card{background:transparent;border:0;padding:0;box-shadow:none}
- .quest-top{margin:0 0 8px}
- .quest-kicker{display:inline;color:#8be2d3;font-size:10px}
- .quest-dot{height:10px;width:10px}
- .quest-card h4{font-size:clamp(21px,5.7vw,27px);line-height:1.12;margin:7px 0 10px}
- .quest-card p{display:block;font-size:14px;line-height:1.5;margin:0 0 14px;color:#c5ddeb}
- .quest-controls{display:flex;gap:8px;flex-wrap:wrap}
- .quest-action,.quest-continue{flex:0 1 auto;min-height:42px;padding:9px 14px;border-radius:11px;font-size:13px}
- .quest-finished{display:block;margin-top:10px}
- .quest-tip{display:block;margin-top:11px}
- .discover-progress{display:none}
- .toast{top:59px;bottom:auto;left:50%;right:auto;max-width:min(340px,calc(100vw - 24px));padding:8px 12px;border-radius:10px;transform:translate(-50%,-8px);text-align:center;background:#103046f5;box-shadow:0 9px 28px #0009}
- .toast.show{transform:translate(-50%,0)}
- .kid-controls .subhead{font-size:13px}
- .switchgrid{gap:8px}
- .switch{min-height:42px;font-size:12px}
- .ctrlrow{margin:12px 0 17px}
- body.show-graphs .analytics{height:min(34dvh,275px);min-height:0;bottom:65px;display:flex;flex-direction:column;overflow:hidden;border:1px solid #49758b;border-radius:15px;background:#0c1d30f5}
- body.show-graphs .analytics .analytics-head{display:flex;flex:0 0 34px;padding:0 12px}
+ .timeline,.show-graphs .timeline{display:flex;align-items:center;gap:7px;height:47px;min-height:47px;padding:0;border:0;background:transparent;box-shadow:none}
+ .timeline #play,.timeline #timeToggle{display:grid;place-items:center;width:46px;height:46px;min-width:46px;min-height:46px;padding:0;border:1px solid #ffffff3d;border-radius:50%;background:#061729c9;color:#e1fbff;box-shadow:0 5px 22px #0007;backdrop-filter:blur(16px);font-size:21px}
+ .timeline #timeToggle{font-size:22px;color:#ade7d7}
+ .timeline label,.timeline .speed-wrap,.timeline input[type=range],.timeline .tvalue{display:none}
+ body.time-open .analytics{bottom:73px;left:12px;right:12px;width:auto;height:55px}
+ body.time-open .timeline{height:55px;gap:10px;padding:0 9px;border:1px solid #486c7c;border-radius:17px;background:#091a2feF;box-shadow:0 12px 32px #000a}
+ body.time-open .timeline #play,body.time-open .timeline #timeToggle{width:37px;min-width:37px;height:37px;min-height:37px;border-radius:12px;box-shadow:none;background:#15354b}
+ body.time-open .timeline input[type=range]{display:block;flex:1;min-width:30px;height:28px;margin:0}
+ body.time-open .timeline .tvalue{display:block;min-width:76px;font:600 10px/1.3 system-ui;color:#e3eef8;text-align:right}
+ body.show-graphs .analytics{left:9px;right:9px;bottom:72px;display:flex;flex-direction:column;width:auto;height:min(39dvh,290px);max-height:none;border:1px solid #537f8b;border-radius:18px;background:#081b30f5;overflow:hidden}
+ body.show-graphs .analytics .analytics-head{display:flex;min-height:36px;flex:0 0 36px;padding:0 12px}
  body.show-graphs .analytics .analytics-main{display:grid;flex:1;min-height:0;grid-template-columns:1fr}
  body.show-graphs .analytics .mathbox{display:none}
- body.show-graphs .graph-close{display:grid;place-items:center;position:absolute;top:4px;right:4px;width:28px;height:26px;z-index:8;border:1px solid #4b7c91;border-radius:8px;background:#102a42;color:#e5faff;font-size:19px}
- body.show-graphs .analytics .timeline{flex:0 0 40px;border:0;border-top:1px solid #304b61;border-radius:0;box-shadow:none;background:transparent}
+ body.show-graphs .analytics .timeline{height:46px;min-height:46px;flex:0 0 46px;padding:0 10px;border-top:1px solid #305267}
+ body.show-graphs .graph-close{display:grid;place-items:center;position:absolute;top:4px;right:4px;z-index:10;width:29px;height:28px;border:1px solid #476f82;border-radius:10px;background:#102a40;color:#e5fbfc;font-size:20px}
+ .inspector{position:absolute;bottom:13px;right:13px;left:auto;top:auto;z-index:31;display:block;width:48px;height:48px;min-width:0;min-height:0;max-height:none;flex:none;overflow:visible;background:transparent;border:0;box-shadow:none}
+ .inspector .panel-head,.inspector .panel-body{display:none}
+ .lab-dock{display:grid;place-items:center;width:48px;height:48px;min-height:48px;padding:0;border:1px solid #a3ebda6b;border-radius:50%;background:#163c4bdc;color:#dcfff7;box-shadow:0 5px 25px #0009;backdrop-filter:blur(16px)}
+ .lab-dock-icon{display:grid;place-items:center;width:28px;height:28px;min-width:28px;border:0;border-radius:50%;background:transparent;color:#b5efde;font-size:25px}
+ .lab-dock-title,.lab-dock-action{display:none}
+ body.lab-sheet-open .lab-sheet-backdrop{display:block;position:fixed;inset:0;z-index:60;background:#0105108c;backdrop-filter:blur(4px)}
+ body.lab-sheet-open .inspector{left:0;right:0;bottom:0;z-index:65;display:flex;flex-direction:column;width:100%;height:min(74dvh,560px);max-height:min(74dvh,560px);padding:0 0 max(env(safe-area-inset-bottom,0px),8px);border:1px solid #4b788b;border-bottom:0;border-radius:25px 25px 0 0;background:#0a1c30fb;box-shadow:0 -22px 70px #000d;overflow:hidden}
+ body.lab-sheet-open .lab-dock{display:flex;align-items:center;justify-content:flex-start;gap:10px;width:100%;height:61px;min-height:61px;flex:0 0 61px;padding:0 17px;border:0;border-bottom:1px solid #314a60;border-radius:0;background:transparent;box-shadow:none}
+ body.lab-sheet-open .lab-dock-icon{background:#1a394b;font-size:21px}
+ body.lab-sheet-open .lab-dock-title{display:block;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:750;font-size:15px}
+ body.lab-sheet-open .lab-dock-action{display:block;color:#b9d9e4;font-size:24px}
+ body.lab-sheet-open .inspector .panel-body{display:block;flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;padding:13px 16px 28px;scrollbar-width:thin}
+ .lab-tabs{display:grid;position:sticky;top:-13px;z-index:4;grid-template-columns:repeat(3,minmax(0,1fr));gap:3px;margin:0 0 10px;padding:3px 0 10px;background:#0a1c30}
+ .lab-tab{min-height:42px;padding:7px 2px;border:0;border-radius:10px;font-size:12px;font-weight:750;color:#bbd8e3;background:#112c43}
+ .lab-tab.active{background:#9de5d5;color:#0e3640;border:0;box-shadow:none}
+ .lab-pane{display:none;padding:8px 0 22px}
+ .lab-pane.active{display:block}
+ .quest-card{padding:0;margin:0;background:transparent;border:0;box-shadow:none}
+ .quest-top{margin:0 0 8px}
+ .quest-kicker{font-size:11px;color:#a6e3d9}
+ .quest-dot{width:10px;height:10px}
+ .quest-card h4{font-size:clamp(21px,6vw,27px);line-height:1.15;margin:7px 0 10px}
+ .quest-card p{display:block;font-size:14px;line-height:1.5;margin:0 0 14px}
+ .quest-controls{display:flex;gap:8px;flex-wrap:wrap}
+ .quest-continue{min-height:42px}
+ .quest-finished{display:block;margin-top:10px}
+ .quest-tip{display:block}
+ .discover-progress{display:none}
+ .camera-menu-toggle,.camera-controls,.lab-expand{display:none!important}
+ .mobile-focus-layer{display:block;position:absolute;inset:0;z-index:8;pointer-events:none}
+ .astro-pin{position:absolute;display:flex;align-items:center;gap:7px;min-height:34px;padding:5px 10px 5px 7px;transform:translate(-18px,-50%);border:1px solid #b3ead96b;border-radius:100px;background:#071827c9;color:#e4fff7;font:700 11px/1.1 system-ui;white-space:nowrap;pointer-events:auto;box-shadow:0 4px 18px #0009;backdrop-filter:blur(12px)}
+ .astro-pin:before{content:'';display:block;flex:none;width:9px;height:9px;border-radius:50%;background:#a8f2d6;box-shadow:0 0 0 3px #7bd6c82a,0 0 12px #82f0d5}
+ .astro-pin[data-kind=center]{border-color:#e9c49a70}
+ .astro-pin[data-kind=center]:before{background:#f3c28a;box-shadow:0 0 10px #f5b973}
+ .astro-pin[hidden]{display:none}
+ .mobile-object-info{position:absolute;left:50%;bottom:82px;z-index:42;display:block;width:min(320px,calc(100% - 26px));padding:15px 17px 15px;border:1px solid #70a7a2a8;border-radius:17px;background:linear-gradient(145deg,#112c3ef7,#081929f7);transform:translateX(-50%);box-shadow:0 18px 42px #000c;backdrop-filter:blur(18px)}
+ .mobile-object-info[hidden]{display:none}
+ .mobile-object-info .info-dismiss{position:absolute;right:10px;top:8px;display:grid;place-items:center;width:31px;height:31px;border:0;border-radius:50%;background:#2c4056;color:#e5f8fb;font-size:19px}
+ .mobile-object-info .info-label{display:block;color:#9adacb;font-size:10px;font-weight:750;letter-spacing:.07em;text-transform:uppercase}
+ .mobile-object-info strong{display:block;margin:5px 30px 5px 0;color:#f7fdff;font-size:19px;line-height:1.2}
+ .mobile-object-info p{margin:0;color:#cae1ed;font-size:12px;line-height:1.5}
+ .mobile-object-info .info-go{display:inline-flex;align-items:center;justify-content:center;min-height:37px;margin-top:11px;padding:8px 13px;border:0;border-radius:10px;background:#b0f2dd;color:#103b44;font-size:12px;font-weight:800}
+ .mobile-object-info .info-go[hidden]{display:none}
+ .gesture-nudge{position:absolute;bottom:76px;left:50%;z-index:5;display:block;width:max-content;max-width:calc(100% - 70px);padding:7px 12px;border:1px solid #ffffff18;border-radius:100px;background:#06132588;color:#ccdae4;font:500 11px/1.35 system-ui;transform:translateX(-50%);pointer-events:none;animation:astro-nudge-out 1s 5s both}
+ body.stage-touched .gesture-nudge{display:none}
+ @keyframes astro-nudge-out{to{opacity:0;visibility:hidden}}
+ .toast{top:67px;bottom:auto;left:50%;right:auto;max-width:min(310px,calc(100vw - 90px));padding:8px 11px;border-radius:12px;background:#0d2c3bf3;transform:translate(-50%,-8px);font-size:11px;text-align:center}
+ .toast.show{transform:translate(-50%,0)}
 }
 @media(max-width:370px){
- .sidebar{right:150px}
- .topbar .solar-entry{padding:7px;font-size:10px}
- .tools-menu-toggle{width:36px}
- .camera-menu-toggle{min-width:76px}
- .lab-dock-title{font-size:12px}
+ .navlist{width:min(308px,calc(100vw - 24px))}
+ .topbar .solar-entry,.tools-menu-toggle{width:41px;min-width:41px;height:41px;min-height:41px}
+ .topbar{height:41px;min-height:41px}
+ body.lab-sheet-open .inspector{height:min(79dvh,490px);max-height:min(79dvh,490px)}
 }
-@media(max-height:650px) and (max-width:850px){
- body.lab-sheet-open .inspector{height:min(75dvh,460px);max-height:min(75dvh,460px)}
- .stage-head{display:none}
-}
+@media(prefers-reduced-motion:reduce){.gesture-nudge{animation:none}}
 
 </style>
 </head>
@@ -419,14 +427,14 @@ html.solar-active,html.solar-active body{overflow:hidden!important;height:100dvh
 
   <div class="stage-metrics"><div>PROJECTIE <b id="viewangle">38° / 24°</b></div><div>VENSTER <b id="viewscale">40 kpc</b></div><div id="focuslabel">FOCUS <b id="focusvalue">R = 8,2 kpc</b></div></div>
   <div class="scene-badge" id="scene-badge">● <span>Wetenschappelijk model</span><br>Geen directe opname van buitenaf</div>
-  <div class="stage-hud-bottom"><button class="camera-menu-toggle" id="cameraMenuToggle" type="button" aria-controls="cameraPresets" aria-expanded="false">◉ Bekijk</button><div class="scene-meta"><span id="scale-label">▱ 5 kpc</span><br><strong id="scene-hint">SLEEP OVER DE STERREN OM TE DRAAIEN</strong></div><div class="camera-controls" id="cameraPresets" aria-label="Camera-oriëntatie"><button class="cambtn" data-cam="face">Van boven</button><button class="cambtn active" data-cam="tilt">3D</button><button class="cambtn" data-cam="edge">Van opzij</button><button class="cambtn" data-cam="sun">☉ Zon</button></div></div>
+  <div class="mobile-focus-layer" aria-label="Klikbare plekken in de Melkweg"><button type="button" class="astro-pin" data-kind="center" id="astroCenterPin" aria-label="Bekijk het midden van de Melkweg">Midden</button><button type="button" class="astro-pin" data-kind="sun" id="astroSunPin" aria-label="Ontdek waar onze zon staat">Onze zon</button></div><div class="gesture-nudge" id="gestureNudge">Sleep om te draaien · knijp om te zoomen</div><div class="mobile-object-info" id="astroInfo" role="region" aria-live="polite" aria-label="Meer over deze plek" hidden><button id="astroInfoClose" class="info-dismiss" type="button" aria-label="Sluit informatie">×</button><span class="info-label">Je tikte hier</span><strong id="astroInfoTitle">Ontdekt!</strong><p id="astroInfoText"></p><button class="info-go" id="astroInfoGo" type="button" hidden></button></div><div class="stage-hud-bottom"><button class="camera-menu-toggle" id="cameraMenuToggle" type="button" aria-controls="cameraPresets" aria-expanded="false">◉ Bekijk</button><div class="scene-meta"><span id="scale-label">▱ 5 kpc</span><br><strong id="scene-hint">SLEEP OVER DE STERREN OM TE DRAAIEN</strong></div><div class="camera-controls" id="cameraPresets" aria-label="Camera-oriëntatie"><button class="cambtn" data-cam="face">Van boven</button><button class="cambtn active" data-cam="tilt">3D</button><button class="cambtn" data-cam="edge">Van opzij</button><button class="cambtn" data-cam="sun">☉ Zon</button></div></div>
 </section>
 <section class="analytics" aria-label="Analyse en simulatieklok"><button id="graphClose" class="graph-close" type="button" aria-label="Sluit de grafiek">×</button>
   <div class="analytics-head"><h3 id="plot-title">RADIALE OPPERVLAKTEDICHTHEID</h3><div class="cal-tag" id="plot-tag">MODEL • NIET WAARGENOMEN</div></div>
   <div class="analytics-main"><div class="chartbox"><canvas id="plot" aria-label="Interactieve wetenschappelijke grafiek"></canvas><div id="plotTooltip" class="cursorinfo"></div></div><div class="mathbox"><div class="math-label" id="formula-label">MODEL / SCHIJFPROFIEL</div><div class="formula" id="formula">Σ(R) = Σ₀ exp(−R/R<sub>d</sub>)</div><div class="formula-sub" id="formula-sub">Een exponentiële schijf is een vereenvoudiging. De echte Melkweg heeft asymmetrie, gas, stof en substructuur.</div></div></div>
-  <div class="timeline"><button id="play" aria-label="Animatie afspelen of pauzeren"><span id="playico" class="playico">Ⅱ</span></button><label for="timeslider" id="time-label">GALACTISCHE TIJD</label><input id="timeslider" type="range" min="0" max="500" step="1" value="0" aria-label="Simulatietijd"><span class="tvalue" id="timevalue">+000 Myr</span><div class="speed-wrap"><span>SNELHEID</span><select id="speeds" aria-label="Simulatiesnelheid"><option value="1">1×</option><option value="3">3×</option><option value="9" selected>9×</option><option value="24">24×</option></select></div></div>
+  <div class="timeline"><button id="play" aria-label="Animatie afspelen of pauzeren"><span id="playico" class="playico">Ⅱ</span></button><label for="timeslider" id="time-label">GALACTISCHE TIJD</label><button id="timeToggle" class="time-reveal" type="button" aria-expanded="false" aria-label="Stel de tijd in">◷</button><input id="timeslider" type="range" min="0" max="500" step="1" value="0" aria-label="Simulatietijd"><span class="tvalue" id="timevalue">+000 Myr</span><div class="speed-wrap"><span>SNELHEID</span><select id="speeds" aria-label="Simulatiesnelheid"><option value="1">1×</option><option value="3">3×</option><option value="9" selected>9×</option><option value="24">24×</option></select></div></div>
 </section>
-<aside class="inspector" aria-label="Ontdekken en experimenteren"><button class="lab-dock" type="button" id="labDock" aria-expanded="false" aria-controls="inspector-body"><span class="lab-dock-icon" aria-hidden="true">✦</span><span class="lab-dock-title" id="labDockTitle">Is de Melkweg plat?</span><span class="lab-dock-action" id="labDockAction">Open ›</span></button><div class="panel-head"><div class="section-counter"><span>DIT KUN JE PROBEREN</span><b id="inspector-counter">01 / 06</b></div><h3 id="inspector-title">Galactische morfologie</h3><p id="inspector-lead">Schakel onderdelen in en uit. De ruimtelijke verdeling is synthetisch, niet een ster-voor-sterreconstructie.</p></div><div class="panel-body" id="inspector-body"></div></aside>
+<aside class="inspector" aria-label="Ontdekken en experimenteren"><button class="lab-dock" type="button" id="labDock" aria-label="Open de ontdekproeven" aria-expanded="false" aria-controls="inspector-body"><span class="lab-dock-icon" aria-hidden="true">✦</span><span class="lab-dock-title" id="labDockTitle">Is de Melkweg plat?</span><span class="lab-dock-action" id="labDockAction">Open ›</span></button><div class="panel-head"><div class="section-counter"><span>DIT KUN JE PROBEREN</span><b id="inspector-counter">01 / 06</b></div><h3 id="inspector-title">Galactische morfologie</h3><p id="inspector-lead">Schakel onderdelen in en uit. De ruimtelijke verdeling is synthetisch, niet een ster-voor-sterreconstructie.</p></div><div class="panel-body" id="inspector-body"></div></aside>
 <div class="lab-sheet-backdrop" id="labBackdrop" hidden></div>
 </div>
 
