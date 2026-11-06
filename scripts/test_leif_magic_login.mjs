@@ -67,7 +67,15 @@ try{
  assert.equal(await page.locator('#accessPassword').count(),1);
  await page.locator('#accessPassword').fill('VIS');
  await page.locator('#leifSignIn').click();
- await page.waitForURL('**/leif/beheer/',{timeout:10000});
+ try{
+  await page.waitForURL('**/leif/beheer/',{timeout:10000});
+ }catch(e){
+  const visibleError=await page.locator('#accessError').innerText().catch(()=>'?');
+  const visibleNotice=await page.locator('#accessNotice').innerText().catch(()=>'?');
+  throw new Error('LEIF-aanmelding bleef op '+page.url()+
+   '; fout: '+visibleError+'; melding: '+visibleNotice+
+   '; aanvragen: '+JSON.stringify(requests)+'; browserfouten: '+JSON.stringify(errors),{cause:e});
+ }
  assert.equal(await page.locator('#workspace:visible').count(),1,'Beheer opent met geldige passkey');
  assert(requests.some(r=>r.action==='passkey_signin_start'),'Passkey start ontbreekt');
  assert(requests.some(r=>r.action==='passkey_signin_finish'),'Passkey verificatie ontbreekt');
