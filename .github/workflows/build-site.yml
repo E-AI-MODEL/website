@@ -19,6 +19,8 @@ on:
       - 'tests/test_abyss_publish.py'
       - 'tests/test_llm_observatorium_source.py'
       - 'scripts/home_model.py'
+      - 'tests/test_tool_launch.py'
+      - 'scripts/test_tool_launch.mjs'
   push:
     branches:
       - main
@@ -78,6 +80,9 @@ jobs:
 
       - name: Check site insights, navigation and privacy
         run: python -m unittest discover -s tests -p 'test_site_insights.py' -v
+
+      - name: Check EAIstudio and EAImesh source, public pages and PWA files
+        run: python -m unittest discover -s tests -p 'test_tool_launch.py' -v
 
       - name: Check WiHTML pages and reviewed studio copy
         run: python -m unittest discover -s tests -p "test_wihtml_publish.py" -v
