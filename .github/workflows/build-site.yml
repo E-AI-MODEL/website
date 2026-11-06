@@ -73,6 +73,9 @@ jobs:
         run: |
           python scripts/build_site.py --sources content/legacy --out site-build
 
+      - name: Check site insights, navigation and privacy
+        run: python -m unittest discover -s tests -p 'test_site_insights.py' -v
+
       - name: Check WiHTML pages and reviewed studio copy
         run: python -m unittest discover -s tests -p "test_wihtml_publish.py" -v
 
