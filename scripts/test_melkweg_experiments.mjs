@@ -61,7 +61,7 @@ try {
   // Reset mag niet alleen de camera herstellen.
   await page.locator('#resetView').click();
   await nav('dynamics');
-  assert.equal(await page.locator('#quest-result').isVisible(),true,'Vastgelegde ontdekkingen mogen bij reset niet verdwijnen');
+  assert.equal(await page.locator('#quest-result').getAttribute('hidden'),null,'Vastgelegde ontdekkingen mogen bij reset niet verdwijnen');
   // Zwarte gat: ster langs de baan slepen.
   await nav('blackhole');
   const b=await page.locator('#universe').boundingBox();
