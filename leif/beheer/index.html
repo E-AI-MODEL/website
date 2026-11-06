@@ -304,21 +304,25 @@ async function loadTesters(){
 }
 async function openTester(id){
  if(!confirmDiscard())return;
- selected=null;documentState=null;show('detail',false);show('empty',false);
- E('testerDetail').hidden=false;
+ clearTimeout(storyTimer);selected=null;documentState=null;show('empty',false);
+ E('testerDetail').hidden=true;show('detail',false);
  E('participants').querySelectorAll('.person').forEach(b=>b.dataset.active='false');
- E('testerDetailName').textContent='Antwoorden laden...';
- E('testerAnswers').replaceChildren();
  try{
   const result=await request('get_tester',{tenant_id:tenant.id,tester_id:id});
   const person=result.tester;
-  E('testerDetailName').textContent='Antwoorden van '+(person.tester_name||'deelnemer');
-  const values=Object.entries(person.answers||{}).filter(([,v])=>typeof v==='string'&&v.trim());
-  if(!values.length){E('testerAnswers').append(el('p','meta','Nog geen antwoorden ingevuld.'));return}
-  for(const [key,val] of values){
-   E('testerAnswers').append(el('dt','readout',key.replace(/_/g,' ')),el('dd',null,val));
-  }
- }catch{E('testerDetailName').textContent='Antwoorden ophalen is niet gelukt.'}
+  selected={id:person.id,display_name:person.tester_name||'Deelnemer',legacy:true,state:'active'};
+  documentState={answers:person.answers||{},personal_texts:person.personal_texts||{},revision:person.studio_revision,updated_at:person.updated_at};
+  E('personName').textContent=selected.display_name;
+  E('personStatus').textContent=person.status==='submitted'?'Afgerond':'Nog bezig';
+  E('personMeta').textContent='Bestaande proef · opgeslagen '+(person.updated_at?new Date(person.updated_at).toLocaleString('nl-NL'):'onbekend');
+  E('tabs').querySelector('[data-tab="story"]').hidden=true;
+  E('tabs').querySelector('[data-tab="settings"]').hidden=true;
+  show('detail',true);show('empty',false);changeTab('blocks');showAnswers();
+  window.LeifStudio?.load({participant:selected,document:documentState,tenant_id:tenant.id});
+ }catch{
+  selected=null;documentState=null;show('detail',false);show('empty',true);
+  E('empty').textContent='De gegevens konden niet worden geladen. Controleer of de opslaguitbreiding is uitgevoerd.';
+ }
 }
 function showTesterInvite(name,code){
   const panel=E('testerInvite');panel.replaceChildren();
@@ -374,6 +378,8 @@ async function choosePerson(id){
  try{
   const data=await request('get',{tenant_id:tenant.id,participant_id:id});
   selected=data.participant;documentState=data.document;dirty=false;
+  E('tabs').querySelector('[data-tab="story"]').hidden=false;
+  E('tabs').querySelector('[data-tab="settings"]').hidden=false;
   show('detail',true);show('empty',false);
   E('personName').textContent=selected.display_name||'Naam ontbreekt';
   E('personStatus').textContent=selected.state==='revoked'?'Toegang ingetrokken':'Actief';
