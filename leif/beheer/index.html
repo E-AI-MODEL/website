@@ -34,15 +34,7 @@ main{max-width:1160px;margin:auto;padding:42px 24px 120px}.tag{font-weight:800;c
 <header class="mast"><div class="mast-inner"><a href="/leif/" class="brand">LEIF <span>Beheer</span></a><div class="actions"><span class="meta" id="identity"></span><button id="logout" type="button" class="btn secondary compact" hidden>Uitloggen</button></div></div></header>
 <main>
 <section id="login" class="panel login" hidden>
-<div class="tag">Beheerder</div><h1>Jouw LEIF-omgeving</h1>
-<p class="sub">Beheer deelnemers, hun codes en de persoonlijke verhalen die je voor hen schrijft. Hiervoor gebruik je je eigen beheerdersaccount.</p>
-<form id="loginForm">
-<div class="field"><label for="email">E-mailadres</label><input id="email" type="email" autocomplete="username" required></div>
-<div class="field"><label for="password">Wachtwoord</label><input id="password" type="password" autocomplete="current-password" required></div>
-<button id="signIn" class="btn" type="submit">Inloggen als beheerder</button>
-</form>
-<p class="save-status error" id="loginError" role="alert"></p>
-<p class="meta">Deelnemers gebruiken een eigen code. Die code geeft nooit toegang tot dit beheer.</p>
+<p>Ga terug naar LEIF en vul VIS in om een inloglink te ontvangen.</p>
 </section>
 <p id="loading" class="meta" role="status">Beheer openen...</p>
 <section id="workspace" hidden>
@@ -180,15 +172,6 @@ async function request(action,extra={},retry=true){
  return data;
 }
 function saveSession(){try{sessionStorage.setItem('leif-admin-session-v1',JSON.stringify({access_token:auth.access_token,refresh_token:auth.refresh_token,tenants}))}catch{}}
-async function signIn(email,password){
- const response=await request('login',{email,password},false);
- auth=response;tenants=response.tenants;saveSession();
- show('login',false);show('workspace',true);show('logout',true);E('loading').hidden=true;
- E('identity').textContent=response.user_email||'Beheerder';
- E('password').value='';
- E('tenant').replaceChildren(...tenants.map(t=>{const o=el('option',null,t.name);o.value=t.id;return o}));
- tenant=tenants[0];E('tenant').value=tenant.id;await loadList();await loadTesters();
-}
 async function resumeSession(){
  let value;try{value=JSON.parse(sessionStorage.getItem('leif-admin-session-v1')||'null')}catch{}
  if(!value?.refresh_token){location.replace('/leif/?beheer=1');return;}
@@ -322,7 +305,6 @@ async function performStory(action,extra={}){
  }catch(e){status(e.status===409?'Dit dossier is intussen gewijzigd. Kopieer je tekst en open het dossier opnieuw.':'Opslaan is niet gelukt. Je tekst staat nog op dit scherm.',true)}
  finally{setBusy(false)}
 }
-E('loginForm').onsubmit=async e=>{e.preventDefault();E('signIn').disabled=true;E('loginError').textContent='';try{await signIn(E('email').value,E('password').value)}catch(e){E('loginError').textContent=e.status===403?'Dit account heeft geen LEIF-beheerrechten.':'Inloggen is niet gelukt. Controleer je gegevens.'}finally{E('signIn').disabled=false}};
 E('logout').onclick=()=>{if(!confirmDiscard())return;sessionStorage.removeItem('leif-admin-session-v1');auth=null;tenants=[];tenant=null;selected=null;documentState=null;dirty=false;show('workspace',false);show('detail',false);show('logout',false);E('identity').textContent='';location.assign('/leif/')};
 E('tenant').onchange=async()=>{if(!confirmDiscard()){E('tenant').value=tenant.id;return}tenant=tenants.find(t=>t.id===E('tenant').value);selected=null;dirty=false;E('testerInvite').hidden=true;await loadList();await loadTesters()};
 E('reload').onclick=async()=>{if(confirmDiscard()){dirty=false;await loadList();await loadTesters()}};
