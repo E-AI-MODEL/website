@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#0a1527">
-<meta name="description" content="Draai de Melkweg, verander de zwaartekracht, ontdek sterren en onderzoek een zwart gat. Een interactief ontdeklab voor jonge onderzoekers.">
-<title>Melkweg Lab | Jij ontdekt het heelal</title>
+<meta name="description" content="Interactief galactisch observatorium. Modelprojectie, massamodellen, sterrenbewegingen en meetgrafieken.">
+<title>MW / 01 | Galactisch Observatorium</title>
 <style>
 :root{--bg:#050914;--panel:#0b1220;--panel2:#0c1525;--line:#233149;--muted:#788da8;--txt:#dbe7f7;--hi:#f0f6ff;--cyan:#70e4ec;--amber:#eab979;--purple:#aa9df4;--green:#84d8af;--red:#fc8c93;--sidebar:222px;--right:335px}
 *{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;overflow:hidden}body{font:13px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:.012em;color:var(--txt);background:var(--bg)}button,input{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}a{color:var(--cyan);text-decoration:none}a:hover{text-decoration:underline}::selection{background:#316a77;color:white}
@@ -399,55 +399,310 @@ html.solar-active,html.solar-active body{overflow:hidden!important;height:100dvh
 }
 @media(prefers-reduced-motion:reduce){.gesture-nudge{animation:none}}
 
+
+/* MW / 01: fijne instrumentlijnen uit het oorspronkelijke Galactisch Observatorium. */
+.instrument-meta{display:flex;justify-content:space-between;gap:12px;padding-bottom:13px;margin-bottom:15px;border-bottom:1px solid #23384d;color:#a7d9e6;font:10px/1.45 ui-monospace,SFMono-Regular,monospace;letter-spacing:.07em}
+.instrument-meta span{color:#657e98;white-space:nowrap;font-size:9px}
+.instrument-controls .subhead{font:10px/1.4 ui-monospace,monospace;letter-spacing:.1em;color:#b8d4e5;margin:17px 0 12px}
+.instrument-controls .ctrlgroup{border-top:1px solid #22374d}
+.instrument-controls .switch{font-size:10px;border-radius:4px}
+.instrument-action{display:flex;align-items:center;justify-content:space-between;width:100%;margin-top:15px;padding:10px 11px;background:#101d2d;border:1px solid #31475b;border-radius:4px;color:#a9dbe5;font:10px/1.4 ui-monospace,monospace;letter-spacing:.035em;text-align:left}
+.instrument-action small{color:#718aa1;text-align:right;font:9px/1.3 ui-monospace,monospace;margin-left:10px}
+.instrument-action:hover{background:#152b3f;color:#f4ffff;border-color:#538296}
+.instrument-details{margin-top:13px;border-top:1px solid #26384b}
+.instrument-details summary{cursor:pointer;list-style:none;padding:13px 3px;color:#7f9cb4;font:10px/1.3 ui-monospace,monospace;letter-spacing:.06em}
+.instrument-details summary:after{content:' +';color:#a5dce1}
+.instrument-details[open] summary:after{content:' −'}
+.instrument-details-body{padding-bottom:18px}
+.instrument-note{font:10px/1.5 ui-monospace,monospace;color:#819ab1}
+.instrument-hud{display:none}
+@media(min-width:851px){
+ .inspector .panel-head{padding:17px 18px 13px}
+ .inspector .panel-head h3{font-size:17px;margin:8px 0 0}
+ .inspector .panel-head p{font-size:10px}
+ .inspector .panel-body{padding:15px 17px 28px}
+ .inspector .statgrid{gap:5px}
+ .inspector .stat{border-radius:3px;padding:9px}
+ .inspector .stat strong{font-size:17px}
+ .inspector .ctrlrow input[type=range]{height:2px}
+ .stage-hud-bottom .camera-controls{border-radius:4px;padding:3px}
+ .stage-hud-bottom .cambtn{font:10px ui-monospace,monospace}
+}
+@media(max-width:850px){
+ html,body{background:#050914}
+ .stage #universe{filter:brightness(1.06) contrast(1.03) saturate(.96)}
+ .stage:after{background:linear-gradient(180deg,#020711a8,transparent 18%,transparent 80%,#0207119e);opacity:.9}
+ .instrument-hud{position:absolute;top:66px;left:15px;right:15px;z-index:7;display:block;pointer-events:none;font-family:ui-monospace,SFMono-Regular,monospace}
+ .instrument-hud .hud-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-bottom:7px;border-bottom:1px solid #7189a344;color:#c7d6e7;letter-spacing:.07em;font-size:10px;font-weight:550}
+ .instrument-hud .hud-heading small{color:#7393a9;font-size:9px;letter-spacing:.06em;white-space:nowrap}
+ .instrument-hud .hud-values{display:flex;gap:0;padding-top:7px;justify-content:space-between}
+ .instrument-hud .hud-cell{display:grid;gap:2px;min-width:0;flex:1}
+ .instrument-hud .hud-cell+ .hud-cell{border-left:1px solid #6e87a72b;padding-left:9px}
+ .instrument-hud .hud-cell small{color:#7994af;letter-spacing:.07em;font-size:8px;line-height:1.2;white-space:nowrap}
+ .instrument-hud .hud-cell strong{color:#c6e8eb;font-size:11px;line-height:1.5;font-weight:550;white-space:nowrap}
+ .sidebar{top:12px;left:12px;width:38px;height:38px}
+ .adventure-menu-toggle{width:38px;height:38px;min-height:38px;border-radius:5px;border:1px solid #6b889a77;background:#06132577;box-shadow:none;backdrop-filter:blur(8px)}
+ .adventure-menu-toggle:before{content:'☷';font:22px/1 ui-monospace,monospace;color:#a7d7e0}
+ .topbar{top:12px;right:12px;height:38px;min-height:38px}
+ .top-actions{gap:6px}
+ .topbar .solar-entry,.tools-menu-toggle{width:38px;height:38px;min-width:38px;min-height:38px;border-radius:5px;border:1px solid #6b889a77;background:#06132577;box-shadow:none;backdrop-filter:blur(8px)}
+ .topbar .solar-entry:before{content:'⊙';font:24px/1 ui-monospace,monospace;color:#a7d7e0}
+ .tools-menu-toggle{font-size:21px;color:#a7d7e0}
+ .topbar.tools-open .topbtn{height:35px;width:153px;border-radius:4px;border-color:#46647c;background:#091a2af7}
+ .topbar.tools-open #resetView{top:43px}
+ .topbar.tools-open #snapshot{top:82px}
+ .topbar.tools-open #exportJSON{top:121px}
+ .navlist{top:44px;width:min(332px,calc(100vw - 24px));padding:8px;gap:3px;border-radius:6px;background:#071625f9;border-color:#3d5871}
+ .nav-btn{min-height:58px;padding:8px;border-radius:3px;background:#0c1d2d;border:1px solid transparent;gap:5px}
+ .nav-btn.active{background:#12293a;border-color:#34647a}
+ .nav-btn .nav-icon{width:24px;min-width:24px;height:24px;border-radius:2px;font-size:14px}
+ .navcopy b{font-size:10px;line-height:1.2;font-weight:600}
+ .navcopy small{font-size:9px;line-height:1.2}
+ .navnum{font-size:9px}
+ .astro-pin{background:transparent;border:0;box-shadow:none;backdrop-filter:none;border-radius:0;padding:7px 2px 7px 16px;min-height:35px;color:#bce4df;transform:translate(-5px,-50%);font:600 10px/1 ui-monospace,monospace;letter-spacing:.04em;text-shadow:0 1px 8px #000}
+ .astro-pin:before{width:5px;height:5px;background:#a4d9d1;box-shadow:0 0 0 4px #7bd6c810;position:absolute;left:1px;top:15px}
+ .astro-pin:after{content:'';position:absolute;left:7px;top:17px;width:9px;height:1px;background:#8bbab58c}
+ .astro-pin[data-kind=center]{color:#e7c6a0}
+ .astro-pin[data-kind=center]:before{width:5px;height:5px;box-shadow:0 0 0 4px #deb67b20;background:#e7bd8e}
+ .astro-pin[hidden]{display:none}
+ .gesture-nudge{bottom:63px;border:0;border-radius:0;background:transparent;padding:0;color:#7b9bb0;font:9px ui-monospace,monospace;letter-spacing:.07em}
+ .mobile-object-info{bottom:68px;width:min(315px,calc(100% - 25px));padding:13px 15px;border:1px solid #456a7b;border-radius:5px;background:#091726f7;box-shadow:0 8px 28px #0009;backdrop-filter:blur(8px)}
+ .mobile-object-info .info-label{font:9px ui-monospace,monospace;letter-spacing:.1em;color:#83aebc}
+ .mobile-object-info strong{font:600 16px/1.3 ui-monospace,monospace;color:#e4f3f8;margin:5px 26px 7px 0}
+ .mobile-object-info p{font:11px/1.5 ui-monospace,monospace;color:#a8c5d1}
+ .mobile-object-info .info-go{margin-top:9px;min-height:32px;border:1px solid #3a6575;border-radius:3px;background:#112c3d;color:#a8ecdf;font:10px ui-monospace,monospace;padding:6px 11px}
+ .mobile-object-info .info-dismiss{background:transparent;border:0;color:#9fb9c8;border-radius:0;right:6px;top:5px}
+ .analytics,.show-graphs .analytics{bottom:11px;left:12px;height:35px;min-height:35px}
+ .timeline,.show-graphs .timeline{height:35px;gap:6px}
+ .timeline #play,.timeline #timeToggle{height:35px;min-height:35px;width:35px;min-width:35px;border-radius:4px;border:1px solid #6b889a77;background:#06132577;box-shadow:none;color:#b5d4e0;font-size:16px;backdrop-filter:blur(8px)}
+ body.time-open .analytics{left:10px;right:10px;bottom:58px;height:47px}
+ body.time-open .timeline{height:47px;border:1px solid #3e5e74;border-radius:4px;background:#091625ec;padding:0 8px}
+ body.time-open .timeline #play,body.time-open .timeline #timeToggle{height:30px;min-height:30px;width:30px;min-width:30px;border-radius:3px}
+ body.time-open .timeline .tvalue{font:10px ui-monospace,monospace;min-width:72px}
+ .timeline input[type=range],body.time-open .timeline input[type=range]{height:2px}
+ .timeline input[type=range]::-webkit-slider-thumb{width:11px;height:11px}
+ .inspector{bottom:11px;right:12px;width:35px;height:35px}
+ .lab-dock{height:35px;min-height:35px;width:35px;border:1px solid #6b889a77;border-radius:4px;background:#06132577;box-shadow:none;backdrop-filter:blur(8px)}
+ .lab-dock-icon{width:23px;height:23px;font:19px/1 ui-monospace,monospace;color:#b6dce0}
+ body.lab-sheet-open .lab-sheet-backdrop{background:#0207138a;backdrop-filter:blur(2px)}
+ body.lab-sheet-open .inspector{width:100%;height:min(67dvh,520px);max-height:min(67dvh,520px);padding-bottom:env(safe-area-inset-bottom,0);border:1px solid #47647a;border-radius:8px 8px 0 0;background:#071321fa;box-shadow:0 -15px 30px #000b}
+ body.lab-sheet-open .lab-dock{height:44px;min-height:44px;flex:0 0 44px;padding:0 12px;border:0;border-bottom:1px solid #2b4257;border-radius:0}
+ body.lab-sheet-open .lab-dock-icon{background:transparent;font-size:15px}
+ body.lab-sheet-open .lab-dock-title{font:600 12px ui-monospace,monospace}
+ body.lab-sheet-open .lab-dock-action{font:16px ui-monospace,monospace}
+ body.lab-sheet-open .inspector .panel-body{padding:11px 13px 25px}
+ .inspector .instrument-meta{font-size:9px;margin-bottom:10px;padding-bottom:9px}
+ .inspector .statgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;margin:0 0 14px}
+ .inspector .stat{background:transparent;border:0;border-bottom:1px solid #21364a;border-radius:0;padding:8px 5px 9px}
+ .inspector .stat small{font:8px ui-monospace,monospace;letter-spacing:.045em;color:#6e91a5}
+ .inspector .stat strong{margin-top:4px;color:#e0eff5;font:16px/1.2 ui-monospace,monospace}
+ .inspector .stat strong.amber{color:#e5bb82}
+ .inspector .stat .unit{font-size:9px}
+ .inspector .switchgrid{gap:3px;grid-template-columns:repeat(2,minmax(0,1fr))}
+ .inspector .switch{min-height:34px;padding:7px 8px;background:#0b1e2c;border:1px solid #293d53;border-radius:3px;color:#a9c0d3;font:10px ui-monospace,monospace}
+ .inspector .switch:has(input:checked){background:#102b35;border-color:#3c7782}
+ .inspector .switch input{width:11px;height:11px;border-radius:2px}
+ .inspector .ctrlrow{margin:10px 0 14px}
+ .inspector .ctrlrow .rowhead{font:10px ui-monospace,monospace}
+ .inspector .ctrlrow input[type=range]{height:2px;margin-top:14px}
+ .inspector .ctrlrow input[type=range]::-webkit-slider-thumb{width:11px;height:11px}
+ .inspector .instrument-details summary{font-size:9px}
+ body.show-graphs .analytics{bottom:53px;height:min(36dvh,270px);border-radius:4px;border-color:#3b5871;background:#071321f6}
+ body.show-graphs .analytics .analytics-head{height:29px;min-height:29px;flex-basis:29px}
+ body.show-graphs .analytics .analytics-head h3{font:10px ui-monospace,monospace}
+ body.show-graphs .analytics .timeline{height:37px;min-height:37px;flex-basis:37px;border-top:1px solid #223a50}
+ body.show-graphs .graph-close{height:24px;width:25px;border:1px solid #385368;border-radius:3px;background:#102336;font-size:15px}
+}
+
+
+/* Het zonnestelsel gebruikt dezelfde sobere instrumenttaal. */
+#solarExplorer .solar-shell{background:#07101c}
+#solarExplorer .solar-top{background:#081321;border-bottom:1px solid #2b4055}
+#solarExplorer .solar-back{border:1px solid #314e61;border-radius:4px;background:#112334;color:#afcddd;box-shadow:none;font:10px ui-monospace,monospace}
+#solarExplorer .solar-top-title b{font:600 13px ui-monospace,monospace;letter-spacing:.035em}
+#solarExplorer .solar-top-title small{font:9px ui-monospace,monospace;letter-spacing:.07em}
+#solarExplorer .solar-over strong{font:600 12px ui-monospace,monospace;letter-spacing:.08em}
+#solarExplorer .solar-over span{font:10px ui-monospace,monospace;color:#879eb4}
+#solarExplorer .solar-lower{border:1px solid #2b4760;border-radius:4px;background:#091827dc;box-shadow:none}
+#solarExplorer .solar-clock-top b{font:600 10px ui-monospace,monospace;letter-spacing:.07em}
+#solarExplorer .solar-time-btn{border:1px solid #38576a;border-radius:3px;background:#10263a}
+#solarExplorer .solar-side{background:#0a1523;border-color:#2b4155}
+#solarExplorer .solar-side h3{font:600 10px ui-monospace,monospace;letter-spacing:.1em;color:#b2cddd}
+#solarExplorer .planet-grid{gap:3px}
+#solarExplorer .planet-pick{min-height:48px;border:1px solid #2c4259;border-radius:3px;background:#0f2031;font:10px ui-monospace,monospace}
+#solarExplorer .planet-pick[aria-pressed=true]{border-color:#568c94;background:#163344;box-shadow:none}
+#solarExplorer .planet-dot{width:13px;height:13px}
+#solarExplorer .planet-card{border:1px solid #2a4359;border-radius:4px;background:#0b1c2c;padding:13px;min-height:0}
+#solarExplorer .planet-kicker{color:#85b3c7;font:9px ui-monospace,monospace;letter-spacing:.08em}
+#solarExplorer .planet-card h2{font:650 21px/1.2 ui-sans-serif,system-ui,sans-serif;margin:7px 0}
+#solarExplorer .planet-portrait-wrap{border-radius:3px;background:radial-gradient(circle,#102e46,#071323 80%);height:110px}
+#solarExplorer .planet-facts{gap:2px;margin:9px 0}
+#solarExplorer .planet-facts div{padding:9px 8px;border:0;border-bottom:1px solid #243b4e;border-radius:0;background:transparent}
+#solarExplorer .planet-facts small{font:9px ui-monospace,monospace;color:#7796a8}
+#solarExplorer .planet-facts b{font:600 12px ui-monospace,monospace;color:#d9eaf3}
+#solarExplorer .planet-next{width:auto;min-height:32px;padding:8px 10px;margin-top:10px;background:#102737;border:1px solid #3d6676;border-radius:3px;color:#a4d9d8;font:10px ui-monospace,monospace;box-shadow:none}
+
+
+/* Desktop: herstel de oorspronkelijke rustige verhouding met permanente grafieken. */
+@media(min-width:851px){
+ #app,.show-graphs #app{grid-template-columns:var(--sidebar) minmax(360px,1fr) var(--right);grid-template-rows:63px minmax(320px,1fr) 245px}
+ .topbar{background:#081321;border-bottom:1px solid #24364a}
+ .topbar .breadcrumb{font:10px/1.4 ui-monospace,SFMono-Regular,monospace;letter-spacing:.09em;color:#83a6bb}
+ .topbar .breadcrumb strong{color:#ccdfeb;font-weight:600}
+ .topbar .topbtn,.topbar .solar-entry{height:30px;padding:0 9px;border-radius:4px;font:10px ui-monospace,monospace;background:#102236;box-shadow:none}
+ .topbar .topbtn.primary{background:#123649}
+ .stage-head h2{font-size:clamp(23px,2vw,30px);font-weight:550;line-height:1.12;max-width:300px}
+ .stage-head p{display:none}
+ .stage-head .eyebrow{font:10px ui-monospace,monospace;color:#80aebd}
+ .scene-badge{font:9px/1.5 ui-monospace,monospace;opacity:.7;border-left-width:1px}
+ .scene-meta,.scene-meta strong{font:9px/1.5 ui-monospace,monospace;letter-spacing:0}
+ .camera-controls{padding:3px;border-radius:4px;border-color:#334960;background:#081524bf}
+ .camera-controls .cambtn{font:10px ui-monospace,monospace;border-radius:3px}
+ .inspector{background:#081321;border-left:1px solid #273a4e}
+ .inspector .panel-head{padding:15px 17px 13px}
+ .inspector .panel-head h3{font-size:16px;line-height:1.3;font-weight:600;margin:6px 0 0}
+ .inspector .panel-head p{display:none}
+ .inspector .panel-body{padding:15px 17px 22px}
+ .inspector .statgrid{gap:3px;margin-bottom:15px}
+ .inspector .stat{border-radius:3px;background:#0d1e2e;border-color:#25384d;padding:8px}
+ .inspector .stat small{font:9px ui-monospace,monospace;color:#7a9cb0}
+ .inspector .stat strong{font:17px/1.25 ui-monospace,monospace}
+ .inspector .subhead{font:10px/1.2 ui-monospace,monospace;color:#b7d1de;letter-spacing:.065em;margin:14px 0 9px}
+ .inspector .switchgrid{gap:4px}
+ .inspector .switch{font:10px/1.3 ui-monospace,monospace;border-radius:3px;padding:7px;min-height:32px;background:#0b1c2b;color:#b3cddd;border-color:#2b4055}
+ .inspector .switch:has(input:checked){background:#102a38;border-color:#3b7080;color:#cee8ec}
+ .inspector .switch input{width:12px;height:12px;border-radius:2px;flex:none}
+ .inspector .switch input:checked{box-shadow:inset 0 0 0 3px #173b45}
+ .inspector .ctrlrow .rowhead{font:10px ui-monospace,monospace;color:#c4d6e1}
+ .inspector .ctrlrow output{font:10px ui-monospace,monospace;color:#9cd7d7}
+ .inspector .ctrlrow input[type=range]{appearance:none;height:2px;margin-top:13px;border-radius:1px;background:linear-gradient(90deg,#37677a,#24364d)}
+ .inspector .ctrlrow input[type=range]::-webkit-slider-thumb{appearance:none;width:11px;height:11px;border:2px solid #275364;background:#a5dadd;box-shadow:none}
+ .analytics,.show-graphs .analytics{grid-column:2;grid-row:3;display:grid;height:auto;min-height:0;grid-template-rows:35px minmax(0,1fr) 40px;border-top:1px solid #2a4157;background:#081321;overflow:hidden}
+ .analytics-head,.show-graphs .analytics-head{display:flex;padding:0 15px}
+ .analytics-head h3{font:10px ui-monospace,monospace;letter-spacing:.07em}
+ .analytics-main,.show-graphs .analytics-main{display:grid;grid-template-columns:minmax(220px,1fr) 200px}
+ .show-graphs .mathbox,.analytics .mathbox{display:block;padding:11px 13px;border-left:1px solid #22394d}
+ .math-label{font:9px ui-monospace,monospace;letter-spacing:.07em}
+ .formula{font:12px/1.5 Georgia,serif}
+ .formula-sub{font:9px/1.5 ui-monospace,monospace}
+ .analytics .timeline,.show-graphs .analytics .timeline{height:40px;gap:11px;padding:0 13px;border-top:1px solid #24394f;background:#081321}
+ .analytics .timeline #play{width:28px;height:28px;border-radius:3px;background:#10293c;border:1px solid #32576a;box-shadow:none}
+ .analytics .timeline #timeToggle{display:none}
+ .analytics .timeline label{font:9px ui-monospace,monospace;color:#8faabd}
+ .analytics .timeline input[type=range]{height:2px;flex:1;background:linear-gradient(90deg,#385e75,#26384d)}
+ .analytics .timeline input[type=range]::-webkit-slider-thumb{width:12px;height:12px;border:2px solid #204958;box-shadow:none}
+ .analytics .timeline .tvalue{font:10px ui-monospace,monospace;min-width:92px}
+ .analytics .timeline .speed-wrap{display:flex}
+ .analytics .timeline select{font:10px ui-monospace,monospace;border-radius:3px}
+ .analytics .graph-close{display:none!important}
+ .inspector #graphToggle{display:none}
+ .sidebar .brand{padding:19px 17px}
+ .sidebar .navlist{gap:4px;padding:0 10px}
+ .sidebar .nav-btn{min-height:46px;padding:8px;border-radius:4px;gap:9px}
+ .sidebar .nav-btn.active{background:#132a3b;border-color:#34556c}
+ .sidebar .nav-icon{width:28px;min-width:28px;height:28px;border-radius:3px;font-size:14px}
+ .sidebar .navcopy b{font:600 11px/1.35 ui-sans-serif,system-ui,sans-serif}
+ .sidebar .navcopy small{font:9px/1.4 ui-monospace,monospace}
+}
+
+
+/* Desktop: het model blijft groot, het informatiepaneel is een fijnmazig instrument. */
+@media(min-width:851px){
+ .sidebar .navlist{gap:1px}
+ .sidebar .nav-btn{padding:8px 10px;border-radius:3px;gap:9px}
+ .sidebar .nav-icon{width:24px;min-width:24px;height:24px;border:1px solid #34475d;border-radius:3px;background:#112137;font-size:12px}
+ .sidebar .navcopy b{font-size:11px;font-weight:600}
+ .sidebar .navcopy small{font-size:9px}
+ .sidebar .nav-btn.active{background:#112538;border-color:#2d4c61}
+ .sidebar .brand h1{font-size:13px;letter-spacing:.11em}
+ .topbar .topbtn,.topbar .solar-entry{min-height:30px;height:30px;padding:0 9px;border-radius:3px;border-color:#36526b;background:#101e2edc;font-size:10px;box-shadow:none}
+ .stage-head{top:20px;left:24px}
+ .stage-head .eyebrow{font-size:9px;letter-spacing:.14em;color:#8fb8ce}
+ .stage-head h2{font-size:24px;line-height:1.12;margin:7px 0 0;font-weight:540;max-width:290px}
+ .stage-head p{display:none}
+ .stage-metrics{top:18px;right:20px;gap:3px}
+ .stage-metrics div{font-size:9px}
+ .scene-badge{top:auto;bottom:64px;left:22px;border-left:1px solid #88b3c0a8;font-size:9px;padding:2px 0 2px 9px}
+ .stage-hud-bottom{bottom:13px;left:22px;right:17px}
+ .stage-hud-bottom .scene-meta{font-size:9px;letter-spacing:.02em}
+ .stage-hud-bottom .camera-controls{background:#081626a0;border:1px solid #354e6477;backdrop-filter:blur(7px)}
+ .stage-hud-bottom .cambtn{font-size:9px;padding:6px 10px}
+ .inspector{background:#081322;border-left-color:#263b51}
+ .inspector .panel-head{padding:16px 18px 11px;border-bottom:1px solid #24384f}
+ .inspector .panel-head .section-counter{font-size:9px}
+ .inspector .panel-head h3{font-size:15px;line-height:1.3;margin:7px 0 4px;font-weight:600}
+ .inspector .panel-head p{display:none}
+ .inspector .panel-body{padding:13px 17px 24px}
+ .inspector .instrument-meta{margin-bottom:11px;padding-bottom:9px;font-size:9px}
+ .inspector .statgrid{gap:1px;margin-bottom:16px}
+ .inspector .stat{min-width:0;border:0;border-bottom:1px solid #273b51;border-radius:0;padding:9px 6px;background:transparent}
+ .inspector .stat small{font-size:9px;color:#7b93aa}
+ .inspector .stat strong{font-size:15px;font-family:ui-monospace,SFMono-Regular,monospace;font-weight:550;color:#e3f1f8}
+ .inspector .stat strong.amber{color:#e4bd8f}
+ .inspector .stat .unit{font-size:9px}
+ .inspector .switchgrid{gap:3px}
+ .inspector .switch{min-height:32px;padding:6px 8px;font:10px ui-monospace,monospace;border:1px solid #2a3f54;border-radius:2px;background:#0d1d2c;color:#8faec0}
+ .inspector .switch:has(input:checked){background:#102731;border-color:#326575;color:#cae8ed}
+ .inspector .switch input{width:11px;height:11px;border-radius:1px;border-color:#46677b}
+ .inspector .subhead{margin:14px 0 9px;font-size:9px}
+ .inspector .ctrlgroup{padding-top:10px;margin-top:12px}
+ .inspector .ctrlrow{margin-bottom:12px}
+ .inspector .ctrlrow .rowhead{font-size:10px}
+ .inspector .ctrlrow output{font:10px ui-monospace,monospace}
+ .inspector .ctrlrow input[type=range]{margin-top:11px;height:2px}
+ .inspector .ctrlrow input[type=range]::-webkit-slider-thumb{width:10px;height:10px;box-shadow:0 0 0 2px #1c3c51}
+ .inspector .instrument-action{border-radius:2px;margin-top:10px;padding:9px 10px;font-size:9px}
+}
+
 </style>
 </head>
 <body>
 <div id="app">
 <aside class="sidebar" aria-label="Modules">
-  <div class="brand"><div class="brandmark" aria-hidden="true"><b></b></div><div class="brandtext"><h1>MELKWEG LAB</h1><small>Hier begint jouw ruimtereis</small></div></div>
-  <div class="s-label">Waar wil je heen?</div>
-  <button class="adventure-menu-toggle" id="adventureMenuToggle" type="button" aria-controls="navigation" aria-expanded="false" aria-label="Kies een avontuur">
+  <div class="brand"><div class="brandmark" aria-hidden="true"><b></b></div><div class="brandtext"><h1>MW / 01</h1><small>GALACTISCH OBSERVATORIUM</small></div></div>
+  <div class="s-label">ONDERZOEKSMODULES</div>
+  <button class="adventure-menu-toggle" id="adventureMenuToggle" type="button" aria-controls="navigation" aria-expanded="false" aria-label="Onderzoeksmodule kiezen">
     <span class="adventure-current-icon" id="adventureCurrentIcon" aria-hidden="true">◎</span>
-    <span class="adventure-current-lines"><small>Jouw avontuur</small><strong id="adventureCurrent">Waar zijn wij?</strong></span>
+    <span class="adventure-current-lines"><small>MODULE</small><strong id="adventureCurrent">Galactische atlas</strong></span>
     <span class="adventure-menu-chevron" aria-hidden="true">⌄</span>
   </button>
-  <nav class="navlist" id="navigation" aria-label="Kies een ontdekavontuur">
-   <button class="nav-btn active" data-mode="atlas" aria-pressed="true"><span class="nav-icon">◎</span><span class="navcopy"><b>Waar zijn wij?</b><small>Zoek onze zon</small></span><span class="navnum">01</span></button>
-   <button class="nav-btn" data-mode="dynamics" aria-pressed="false"><span class="nav-icon">∿</span><span class="navcopy"><b>Waarom draaien sterren?</b><small>Verander hun snelheid</small></span><span class="navnum">02</span></button>
-   <button class="nav-btn" data-mode="structure" aria-pressed="false"><span class="nav-icon">≋</span><span class="navcopy"><b>Hoe ziet het eruit?</b><small>Van boven en van opzij</small></span><span class="navnum">03</span></button>
-   <button class="nav-btn" data-mode="stars" aria-pressed="false"><span class="nav-icon">✧</span><span class="navcopy"><b>Welke sterren zie je?</b><small>Pak je sterrenkijker</small></span><span class="navnum">04</span></button>
-   <button class="nav-btn" data-mode="gaia" aria-pressed="false"><span class="nav-icon">⌖</span><span class="navcopy"><b>Hoe ver is ver?</b><small>Speel met afstand</small></span><span class="navnum">05</span></button>
-   <button class="nav-btn" data-mode="blackhole" aria-pressed="false"><span class="nav-icon">◉</span><span class="navcopy"><b>Wat doet een zwart gat?</b><small>Volg een ster</small></span><span class="navnum">06</span></button>
+  <nav class="navlist" id="navigation" aria-label="Onderzoeksmodule">
+   <button class="nav-btn active" data-mode="atlas" aria-pressed="true"><span class="nav-icon">◎</span><span class="navcopy"><b>Galactische atlas</b><small>Ruimtelijke opbouw</small></span><span class="navnum">01</span></button>
+   <button class="nav-btn" data-mode="dynamics" aria-pressed="false"><span class="nav-icon">∿</span><span class="navcopy"><b>Dynamica</b><small>Massa / rotatie</small></span><span class="navnum">02</span></button>
+   <button class="nav-btn" data-mode="structure" aria-pressed="false"><span class="nav-icon">≋</span><span class="navcopy"><b>Schijf &amp; halo</b><small>Morfologie</small></span><span class="navnum">03</span></button>
+   <button class="nav-btn" data-mode="stars" aria-pressed="false"><span class="nav-icon">✧</span><span class="navcopy"><b>Sterpopulaties</b><small>HR / selectie</small></span><span class="navnum">04</span></button>
+   <button class="nav-btn" data-mode="gaia" aria-pressed="false"><span class="nav-icon">⌖</span><span class="navcopy"><b>Meten met Gaia</b><small>Parallax</small></span><span class="navnum">05</span></button>
+   <button class="nav-btn" data-mode="blackhole" aria-pressed="false"><span class="nav-icon">◉</span><span class="navcopy"><b>Sagittarius A*</b><small>S2 / baan</small></span><span class="navnum">06</span></button>
   </nav>
-  <div class="side-end"><div class="live"><span class="led"></span>JE MAG ALLES UITPROBEREN</div><p>Er kan niets stuk. Gewoon proberen!</p><span class="ver">MW-01 / standalone / 06.11.2026</span></div>
+  <div class="side-end"><div class="live"><span class="led"></span>MODEL ACTIEF</div><p>Analytisch model · synthetische sterren</p><span class="ver">MW-01 / standalone / 06.11.2026</span></div>
 </aside>
 <div class="adventure-backdrop" id="adventureBackdrop" aria-hidden="true" hidden></div>
-<header class="topbar"><div class="breadcrumb">JOUW REIS <span class="slash">/</span><strong id="crumb">GALACTISCHE ATLAS</strong></div><div class="top-actions" id="topActions"><button type="button" id="solarEntry" class="solar-entry">✦ Planeten</button><span class="tag"><span class="dot"></span>JOUW ONTDEKLAB</span><button id="toolsMenuToggle" class="tools-menu-toggle" type="button" aria-controls="topActions" aria-expanded="false" aria-label="Meer knoppen" title="Meer knoppen">⋯</button><button id="resetView" class="topbtn" title="Camera en tijd herstellen"><svg viewBox="0 0 24 24"><path d="M3 11a9 9 0 1 1 3 7M3 4v7h7"/></svg><span class="btxt">Begin opnieuw</span></button><button id="exportJSON" class="topbtn" title="Sla het model en de instellingen als JSON op"><svg viewBox="0 0 24 24"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 17v4h16v-4"/></svg><span class="btxt">Model bewaren</span></button><button id="snapshot" class="topbtn primary" title="Exporteer de huidige simulatie als PNG"><svg viewBox="0 0 24 24"><path d="M3 7h4l2-3h6l2 3h4v13H3z"/><circle cx="12" cy="13" r="4"/></svg><span class="btxt">Maak een foto</span></button></div></header>
+<header class="topbar"><div class="breadcrumb">MW / 01 <span class="slash">/</span><strong id="crumb">GALACTISCHE ATLAS</strong></div><div class="top-actions" id="topActions"><button type="button" id="solarEntry" class="solar-entry">PLANETEN</button><span class="tag"><span class="dot"></span>MODEL + BRONNEN</span><button id="toolsMenuToggle" class="tools-menu-toggle" type="button" aria-controls="topActions" aria-expanded="false" aria-label="Meer knoppen" title="Meer knoppen">⋯</button><button id="resetView" class="topbtn" title="Camera en tijd herstellen"><svg viewBox="0 0 24 24"><path d="M3 11a9 9 0 1 1 3 7M3 4v7h7"/></svg><span class="btxt">Herstel beeld</span></button><button id="exportJSON" class="topbtn" title="Sla het model en de instellingen als JSON op"><svg viewBox="0 0 24 24"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 17v4h16v-4"/></svg><span class="btxt">Model JSON</span></button><button id="snapshot" class="topbtn primary" title="Exporteer de huidige simulatie als PNG"><svg viewBox="0 0 24 24"><path d="M3 7h4l2-3h6l2 3h4v13H3z"/><circle cx="12" cy="13" r="4"/></svg><span class="btxt">Afbeelding</span></button></div></header>
 <section class="stage" id="stage" aria-label="Interactieve 3D-weergave van de Melkweg">
-  <canvas id="universe" aria-label="Interactieve Melkweg. Draai de Melkweg met je vinger of sleep de oplichtende punten om iets te veranderen."></canvas>
+  <canvas id="universe" aria-label="Interactief Melkwegmodel. Sleep om te draaien, knijp om te zoomen, selecteer een meetpunt."></canvas><div class="instrument-hud" aria-label="Modelmetingen"><div class="hud-heading"><span id="hudMode">GALACTISCHE ATLAS</span><small>MW / 01 · MODEL</small></div><div class="hud-values"><div class="hud-cell"><small>PROJECTIE</small><strong id="hudProjection">72° / 16°</strong></div><div class="hud-cell"><small>SELECTIE</small><strong id="hudRadius">8,2 kpc</strong></div><div class="hud-cell"><small>SNELHEID</small><strong id="hudSpeed">232 km/s</strong></div></div></div>
   <div class="stage-head"><div class="eyebrow" id="scene-eyebrow">01 / GALACTISCHE ATLAS</div><h2 id="scene-title">De Melkweg,<br>van buiten bekeken</h2><p id="scene-desc">Draai het model, verander het tijdstip en onderzoek hoe de <strong>schijf, balk, halo en spiraalarmen</strong> samenhangen.</p></div>
 
   <div class="stage-metrics"><div>PROJECTIE <b id="viewangle">38° / 24°</b></div><div>VENSTER <b id="viewscale">40 kpc</b></div><div id="focuslabel">FOCUS <b id="focusvalue">R = 8,2 kpc</b></div></div>
   <div class="scene-badge" id="scene-badge">● <span>Wetenschappelijk model</span><br>Geen directe opname van buitenaf</div>
-  <div class="mobile-focus-layer" aria-label="Klikbare plekken in de Melkweg"><button type="button" class="astro-pin" data-kind="center" id="astroCenterPin" aria-label="Bekijk het midden van de Melkweg">Midden</button><button type="button" class="astro-pin" data-kind="sun" id="astroSunPin" aria-label="Ontdek waar onze zon staat">Onze zon</button></div><div class="gesture-nudge" id="gestureNudge">Sleep om te draaien · knijp om te zoomen</div><div class="mobile-object-info" id="astroInfo" role="region" aria-live="polite" aria-label="Meer over deze plek" hidden><button id="astroInfoClose" class="info-dismiss" type="button" aria-label="Sluit informatie">×</button><span class="info-label">Je tikte hier</span><strong id="astroInfoTitle">Ontdekt!</strong><p id="astroInfoText"></p><button class="info-go" id="astroInfoGo" type="button" hidden></button></div><div class="stage-hud-bottom"><button class="camera-menu-toggle" id="cameraMenuToggle" type="button" aria-controls="cameraPresets" aria-expanded="false">◉ Bekijk</button><div class="scene-meta"><span id="scale-label">▱ 5 kpc</span><br><strong id="scene-hint">SLEEP OVER DE STERREN OM TE DRAAIEN</strong></div><div class="camera-controls" id="cameraPresets" aria-label="Camera-oriëntatie"><button class="cambtn" data-cam="face">Van boven</button><button class="cambtn active" data-cam="tilt">3D</button><button class="cambtn" data-cam="edge">Van opzij</button><button class="cambtn" data-cam="sun">☉ Zon</button></div></div>
+  <div class="mobile-focus-layer" aria-label="Meetpunten"><button type="button" class="astro-pin" data-kind="center" id="astroCenterPin" aria-label="Selecteer galactisch centrum">SGR A*</button><button type="button" class="astro-pin" data-kind="sun" id="astroSunPin" aria-label="Selecteer zonpositie">ZON</button></div><div class="gesture-nudge" id="gestureNudge">DRAAI · ZOOM · SELECTEER</div><div class="mobile-object-info" id="astroInfo" role="region" aria-live="polite" aria-label="Meer over deze plek" hidden><button id="astroInfoClose" class="info-dismiss" type="button" aria-label="Sluit informatie">×</button><span class="info-label">Je tikte hier</span><strong id="astroInfoTitle">Ontdekt!</strong><p id="astroInfoText"></p><button class="info-go" id="astroInfoGo" type="button" hidden></button></div><div class="stage-hud-bottom"><button class="camera-menu-toggle" id="cameraMenuToggle" type="button" aria-controls="cameraPresets" aria-expanded="false">◉ Bekijk</button><div class="scene-meta"><span id="scale-label">▱ 5 kpc</span><br><strong id="scene-hint">SLEEP OVER DE STERREN OM TE DRAAIEN</strong></div><div class="camera-controls" id="cameraPresets" aria-label="Camera-oriëntatie"><button class="cambtn" data-cam="face">Van boven</button><button class="cambtn active" data-cam="tilt">3D</button><button class="cambtn" data-cam="edge">Van opzij</button><button class="cambtn" data-cam="sun">☉ Zon</button></div></div>
 </section>
 <section class="analytics" aria-label="Analyse en simulatieklok"><button id="graphClose" class="graph-close" type="button" aria-label="Sluit de grafiek">×</button>
   <div class="analytics-head"><h3 id="plot-title">RADIALE OPPERVLAKTEDICHTHEID</h3><div class="cal-tag" id="plot-tag">MODEL • NIET WAARGENOMEN</div></div>
   <div class="analytics-main"><div class="chartbox"><canvas id="plot" aria-label="Interactieve wetenschappelijke grafiek"></canvas><div id="plotTooltip" class="cursorinfo"></div></div><div class="mathbox"><div class="math-label" id="formula-label">MODEL / SCHIJFPROFIEL</div><div class="formula" id="formula">Σ(R) = Σ₀ exp(−R/R<sub>d</sub>)</div><div class="formula-sub" id="formula-sub">Een exponentiële schijf is een vereenvoudiging. De echte Melkweg heeft asymmetrie, gas, stof en substructuur.</div></div></div>
   <div class="timeline"><button id="play" aria-label="Animatie afspelen of pauzeren"><span id="playico" class="playico">Ⅱ</span></button><label for="timeslider" id="time-label">GALACTISCHE TIJD</label><button id="timeToggle" class="time-reveal" type="button" aria-expanded="false" aria-label="Stel de tijd in">◷</button><input id="timeslider" type="range" min="0" max="500" step="1" value="0" aria-label="Simulatietijd"><span class="tvalue" id="timevalue">+000 Myr</span><div class="speed-wrap"><span>SNELHEID</span><select id="speeds" aria-label="Simulatiesnelheid"><option value="1">1×</option><option value="3">3×</option><option value="9" selected>9×</option><option value="24">24×</option></select></div></div>
 </section>
-<aside class="inspector" aria-label="Ontdekken en experimenteren"><button class="lab-dock" type="button" id="labDock" aria-label="Open de ontdekproeven" aria-expanded="false" aria-controls="inspector-body"><span class="lab-dock-icon" aria-hidden="true">✦</span><span class="lab-dock-title" id="labDockTitle">Is de Melkweg plat?</span><span class="lab-dock-action" id="labDockAction">Open ›</span></button><div class="panel-head"><div class="section-counter"><span>DIT KUN JE PROBEREN</span><b id="inspector-counter">01 / 06</b></div><h3 id="inspector-title">Galactische morfologie</h3><p id="inspector-lead">Schakel onderdelen in en uit. De ruimtelijke verdeling is synthetisch, niet een ster-voor-sterreconstructie.</p></div><div class="panel-body" id="inspector-body"></div></aside>
+<aside class="inspector" aria-label="Modelparameters"><button class="lab-dock" type="button" id="labDock" aria-label="Open parameters" aria-expanded="false" aria-controls="inspector-body"><span class="lab-dock-icon" aria-hidden="true">≡</span><span class="lab-dock-title" id="labDockTitle">Galactische atlas</span><span class="lab-dock-action" id="labDockAction">Open ›</span></button><div class="panel-head"><div class="section-counter"><span>PARAMETERS / INSPECTOR</span><b id="inspector-counter">01 / 06</b></div><h3 id="inspector-title">Galactische morfologie</h3><p id="inspector-lead">Schakel onderdelen in en uit. De ruimtelijke verdeling is synthetisch, niet een ster-voor-sterreconstructie.</p></div><div class="panel-body" id="inspector-body"></div></aside>
 <div class="lab-sheet-backdrop" id="labBackdrop" hidden></div>
 </div>
 
 <section id="solarExplorer" aria-label="Ontdek het zonnestelsel" role="dialog" aria-modal="true" hidden>
  <div class="solar-shell">
-  <header class="solar-top"><button id="backGalaxy" class="solar-back" type="button">← Terug naar de Melkweg</button><div class="solar-top-title"><b>Op bezoek bij de planeten</b><small>Raak een planeet aan en ontdek meer</small></div></header>
+  <header class="solar-top"><button id="backGalaxy" class="solar-back" type="button">← Terug naar de Melkweg</button><div class="solar-top-title"><b>Zonnestelsel</b><small>Banen / omlooptijd</small></div></header>
   <div class="solar-main">
-   <div class="solar-space" id="solarSpace"><canvas id="solarCanvas" aria-label="Bewegend zonnestelsel. Klik op een planeet om haar te ontdekken." tabindex="0"></canvas><div class="solar-over"><strong>Welke planeet kies jij?</strong><span>Klik op een gekleurde bol of kies een naam.</span></div>
-    <div class="solar-lower"><div class="solar-clock-top"><b>Kun jij de tijd vooruitzetten?</b><span id="solarYearLabel" class="solar-year">Jaar 0</span></div><div class="solar-clock-row"><button id="solarPlay" class="solar-time-btn" aria-label="Zet de planeten in beweging">▶</button><input type="range" id="solarTime" min="0" max="40" value="0" step="0.05" aria-label="Hoeveel jaar laat je voorbijgaan?"></div><p class="solar-clock-foot">De aarde doet één rondje in één jaar. Welke planeet is sneller?</p></div>
+   <div class="solar-space" id="solarSpace"><canvas id="solarCanvas" aria-label="Bewegend zonnestelsel. Klik op een planeet om haar te ontdekken." tabindex="0"></canvas><div class="solar-over"><strong>PLANETEN / MODEL</strong><span>Selecteer een planeet.</span></div>
+    <div class="solar-lower"><div class="solar-clock-top"><b>SIMULATIETIJD</b><span id="solarYearLabel" class="solar-year">Jaar 0</span></div><div class="solar-clock-row"><button id="solarPlay" class="solar-time-btn" aria-label="Zet de planeten in beweging">▶</button><input type="range" id="solarTime" min="0" max="40" value="0" step="0.05" aria-label="Hoeveel jaar laat je voorbijgaan?"></div><p class="solar-clock-foot">Aarde: 1 omloop per jaar. Banen zijn schematisch.</p></div>
    </div>
-   <aside class="solar-side" aria-label="Klikbare planeten en uitleg"><h3>Kies een planeet</h3><div class="planet-grid" id="planetChoices"></div><section class="planet-card" id="planetDetail" aria-live="polite"></section><p class="solar-side-note">We hebben de planeten en hun banen groter en dichterbij getekend, zodat je ze kunt zien. De echte afstanden zijn veel groter.</p></aside>
+   <aside class="solar-side" aria-label="Klikbare planeten en uitleg"><h3>PLANETEN</h3><div class="planet-grid" id="planetChoices"></div><section class="planet-card" id="planetDetail" aria-live="polite"></section><p class="solar-side-note">We hebben de planeten en hun banen groter en dichterbij getekend, zodat je ze kunt zien. De echte afstanden zijn veel groter.</p></aside>
   </div>
  </div>
 </section>
@@ -460,12 +715,12 @@ const G=4.30091e-6,KM_MYR=0.001022712165,KPC_LY=3261.5638,R0=8.2,MBH=4.297e6,PI=
 const state={mode:'atlas',running:false,time:0,bhTime:0,speed:9,cam:{yaw:0.39,elev:38,zoom:1},focusR:8.2,focusTheta:0.7,model:{disk:6.8,bulge:1.0,halo:1.12,sigma:35},layer:{disk:true,arms:true,bar:true,bulge:true,stellarHalo:true,darkHalo:false,dust:true,orbit:true,labels:true,warp:true},pitch:12,extinction:1,limMag:18.5,observeD:8.2,observeVT:220,renderCount:0,loopLast:0,mouseDown:false,selectedSource:'Zon'};
 let W=0,H=0,DPR=1,PW=0,PH=0,chartDirty=true,stars=[],dust=[],clusters=[],hrstars=[],lastProjectedSun=null,lastProjectedCenter=null,pxHover=null;
 const MODE={
- atlas:{index:'01',crumb:'GALACTISCHE ATLAS',title:'Hier wonen<br>miljarden sterren',desc:'Draai het model, verander het tijdstip en onderzoek hoe de <strong>schijf, balk, halo en spiraalarmen</strong> samenhangen.',ins:'Galactische morfologie',lead:'Een roterende, gebalkte spiraal met een dunne en dikke sterschijf, een centrale verdikking en een uitgebreide halo.',plot:'WAAR ZITTEN DE MEESTE STERREN?',tag:'EXPONENTIEEL MODEL',formulaLabel:'SCHIJFMODEL',formula:'Σ(R) = Σ₀ exp(−R/R<sub>d</sub>)',formulaSub:'R<sub>d</sub> = 2,6 kpc (gekozen schaal). De sterren zijn stochastisch getrokken; de spiraalarmen zijn een illustratief dichtheidspatroon.'},
- dynamics:{index:'02',crumb:'GALACTISCHE DYNAMICA',title:'Waarom blijven<br>sterren draaien?',desc:'Verander de massa van schijf, verdikking en donkere halo. De <strong>rotatiekromme</strong>, baansnelheden en Toomre-Q worden opnieuw berekend.',ins:'Massamodel & banen',lead:'Drie analytische potentiaalcomponenten bepalen de cirkelbaansnelheid. De deeltjes volgen deze momentane snelheid.',plot:'HOE SNEL DRAAIEN DE STERREN?',tag:'MODEL + LOKAAL MEETPUNT',formulaLabel:'CIRKELBEWEGING',formula:'v<sub>c</sub>²(R) = R ∂Φ/∂R<br>= v<sub>schijf</sub>² + v<sub>bulge</sub>² + v<sub>halo</sub>²',formulaSub:'Schijf: Miyamoto–Nagai. Verdikking: Hernquist. Halo: NFW. De snelheden zijn modeluitkomsten, geen directe Gaia-reconstructie.'},
- structure:{index:'03',crumb:'SCHIJF & HALO',title:'Een schijf<br>vol sterren',desc:'Onderzoek de <strong>verticale verdeling, de balk, de warp en de halo</strong>. Meer dan één sterpopulatie draagt bij aan wat wij zien.',ins:'Verticale structuur',lead:'Jonge sterren, oude sterren en halo-objecten hebben niet dezelfde verdeling of baanstatistiek.',plot:'HOE VER ZITTEN STERREN BOVEN DE SCHIJF?',tag:'ILLUSTRATIEF TWEECOMPONENTENMODEL',formulaLabel:'VERTICALE SCHAAL',formula:'ρ(z) ∝ exp(−|z|/h<sub>dun</sub>) + f exp(−|z|/h<sub>dik</sub>)',formulaSub:'Illustratief: h_dun = 0,30 kpc; h_dik = 0,90 kpc; relatieve normalisatie f = 0,12. Dit is geen fit op Gaia-data.'},
- stars:{index:'04',crumb:'STERPOPULATIES',title:'Hoeveel sterren<br>kun jij zien?',desc:'Verken een synthetisch <strong>Hertzsprung–Russell-diagram</strong>. Verander de schijnbare magnitudelimiet en zie selectie-effecten ontstaan.',ins:'Sterren en selectie',lead:'Een catalogus is nooit een willekeurige steekproef uit alle sterren. Lichtkracht, afstand en extinctie bepalen wat meetbaar is.',plot:'WELKE SOORTEN STERREN ZIE JE?',tag:'SYNTHETISCHE STERREN • SELECTIE',formulaLabel:'FOTOMETRISCHE SELECTIE',formula:'m = M + 5 log₁₀(d / 10 pc) + A',formulaSub:'Benaderingen voor massa, lichtkracht en temperatuur. Het diagram is geen echte Gaia-DR3-catalogus en geen fysisch volledig populatiesynthesemodel.'},
- gaia:{index:'05',crumb:'METEN MET GAIA',title:'Hoe ver weg<br>is die ster?',desc:'Parallax, eigenbeweging en spectra verbinden <strong>waargenomen hoeken en snelheden</strong> aan galactische beweging en afstand.',ins:'Astrometrie & fouten',lead:'De grote afstanden worden niet direct gemeten. We leiden ze af uit hoeken, bewegingen, spectra en aannames.',plot:'HOE VERANDERT DE KLEINE SCHOMMELING?',tag:'MEETRELATIES • SCHEMATISCH',formulaLabel:'ASTROMETRIE',formula:'ϖ [mas] = 1 / d [kpc]<br>v<sub>t</sub> = 4,74047 μ d',formulaSub:'μ in mas/jaar, d in kpc en v_t in km/s. Voor grote relatieve parallaxfouten is d=1/ϖ geen betrouwbare afstandsschatter.'},
- blackhole:{index:'06',crumb:'SAGITTARIUS A*',title:'Een ster vliegt<br>langs een zwart gat',desc:'Volg de S2-ster rond <strong>Sagittarius A*</strong>. Meet haar berekende afstand en snelheid langs een benaderde Keplerbaan.',ins:'Het galactisch centrum',lead:'De S2-baan en de ring rond Sgr A* worden op fundamenteel verschillende schalen gemeten. Hier staan ze bewust apart.',plot:'WANNEER IS S2 HET DICHTSTBIJ?',tag:'BAANSCHETS + GEMETEN SCHAAL',formulaLabel:'TWEE-LICHAMENBENADERING',formula:'P² = 4π² a³ / (GM)<br>r = a(1 − e cos E)',formulaSub:'P ≈ 16 jaar, e ≈ 0,88, a ≈ 1035 AU. E wordt numeriek uit Keplers vergelijking bepaald. Geen volledige relativistische baanintegratie.'}
+ atlas:{index:'01',crumb:'GALACTISCHE ATLAS',title:'De Melkweg<br>als model',desc:'Draai het model, verander het tijdstip en onderzoek hoe de <strong>schijf, balk, halo en spiraalarmen</strong> samenhangen.',ins:'Galactische morfologie',lead:'Een roterende, gebalkte spiraal met een dunne en dikke sterschijf, een centrale verdikking en een uitgebreide halo.',plot:'RADIALE OPPERVLAKTEDICHTHEID',tag:'EXPONENTIEEL MODEL',formulaLabel:'SCHIJFMODEL',formula:'Σ(R) = Σ₀ exp(−R/R<sub>d</sub>)',formulaSub:'R<sub>d</sub> = 2,6 kpc (gekozen schaal). De sterren zijn stochastisch getrokken; de spiraalarmen zijn een illustratief dichtheidspatroon.'},
+ dynamics:{index:'02',crumb:'GALACTISCHE DYNAMICA',title:'Rotatie en<br>zwaartekracht',desc:'Verander de massa van schijf, verdikking en donkere halo. De <strong>rotatiekromme</strong>, baansnelheden en Toomre-Q worden opnieuw berekend.',ins:'Massamodel & banen',lead:'Drie analytische potentiaalcomponenten bepalen de cirkelbaansnelheid. De deeltjes volgen deze momentane snelheid.',plot:'ROTATIEKROMME / MODEL',tag:'MODEL + LOKAAL MEETPUNT',formulaLabel:'CIRKELBEWEGING',formula:'v<sub>c</sub>²(R) = R ∂Φ/∂R<br>= v<sub>schijf</sub>² + v<sub>bulge</sub>² + v<sub>halo</sub>²',formulaSub:'Schijf: Miyamoto–Nagai. Verdikking: Hernquist. Halo: NFW. De snelheden zijn modeluitkomsten, geen directe Gaia-reconstructie.'},
+ structure:{index:'03',crumb:'SCHIJF & HALO',title:'Schijf en<br>sterrenhalo',desc:'Onderzoek de <strong>verticale verdeling, de balk, de warp en de halo</strong>. Meer dan één sterpopulatie draagt bij aan wat wij zien.',ins:'Verticale structuur',lead:'Jonge sterren, oude sterren en halo-objecten hebben niet dezelfde verdeling of baanstatistiek.',plot:'VERTICAAL DICHTHEIDSPROFIEL',tag:'ILLUSTRATIEF TWEECOMPONENTENMODEL',formulaLabel:'VERTICALE SCHAAL',formula:'ρ(z) ∝ exp(−|z|/h<sub>dun</sub>) + f exp(−|z|/h<sub>dik</sub>)',formulaSub:'Illustratief: h_dun = 0,30 kpc; h_dik = 0,90 kpc; relatieve normalisatie f = 0,12. Dit is geen fit op Gaia-data.'},
+ stars:{index:'04',crumb:'STERPOPULATIES',title:'Sterren en<br>selectie',desc:'Verken een synthetisch <strong>Hertzsprung–Russell-diagram</strong>. Verander de schijnbare magnitudelimiet en zie selectie-effecten ontstaan.',ins:'Sterren en selectie',lead:'Een catalogus is nooit een willekeurige steekproef uit alle sterren. Lichtkracht, afstand en extinctie bepalen wat meetbaar is.',plot:'HR-DIAGRAM / SELECTIE',tag:'SYNTHETISCHE STERREN • SELECTIE',formulaLabel:'FOTOMETRISCHE SELECTIE',formula:'m = M + 5 log₁₀(d / 10 pc) + A',formulaSub:'Benaderingen voor massa, lichtkracht en temperatuur. Het diagram is geen echte Gaia-DR3-catalogus en geen fysisch volledig populatiesynthesemodel.'},
+ gaia:{index:'05',crumb:'METEN MET GAIA',title:'Metingen<br>van Gaia',desc:'Parallax, eigenbeweging en spectra verbinden <strong>waargenomen hoeken en snelheden</strong> aan galactische beweging en afstand.',ins:'Astrometrie & fouten',lead:'De grote afstanden worden niet direct gemeten. We leiden ze af uit hoeken, bewegingen, spectra en aannames.',plot:'PARALLAX / AFSTAND',tag:'MEETRELATIES • SCHEMATISCH',formulaLabel:'ASTROMETRIE',formula:'ϖ [mas] = 1 / d [kpc]<br>v<sub>t</sub> = 4,74047 μ d',formulaSub:'μ in mas/jaar, d in kpc en v_t in km/s. Voor grote relatieve parallaxfouten is d=1/ϖ geen betrouwbare afstandsschatter.'},
+ blackhole:{index:'06',crumb:'SAGITTARIUS A*',title:'S2 in baan<br>rond Sgr A*',desc:'Volg de S2-ster rond <strong>Sagittarius A*</strong>. Meet haar berekende afstand en snelheid langs een benaderde Keplerbaan.',ins:'Het galactisch centrum',lead:'De S2-baan en de ring rond Sgr A* worden op fundamenteel verschillende schalen gemeten. Hier staan ze bewust apart.',plot:'S2 / BANEN EN SNELHEID',tag:'BAANSCHETS + GEMETEN SCHAAL',formulaLabel:'TWEE-LICHAMENBENADERING',formula:'P² = 4π² a³ / (GM)<br>r = a(1 − e cos E)',formulaSub:'P ≈ 16 jaar, e ≈ 0,88, a ≈ 1035 AU. E wordt numeriek uit Keplers vergelijking bepaald. Geen volledige relativistische baanintegratie.'}
 };
 function fmt(n,d=1){return Number(n).toLocaleString('nl-NL',{maximumFractionDigits:d,minimumFractionDigits:d})}
 function randgen(seed){let x=seed|0;return()=>{x^=x<<13;x^=x>>>17;x^=x<<5;return((x>>>0)/4294967296)}}
@@ -547,8 +802,8 @@ function drawGalacticCore(){let c=project(0,0,0);let g=ctx.createRadialGradient(
    ctx.save();ctx.strokeStyle='rgba(119,232,224,.8)';ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(sun.x,sun.y,4.8,0,2*PI);ctx.stroke();ctx.restore();
    // De mobiele zon heeft een echte klikbare pin. Geen tweede label op het canvas.
  }else{
-   dotLabel(c,'MIDDEN','Hier zit een zwart gat','239,187,128',16,-26);
-   dotLabel(sun,'ONZE ZON','De aarde draait om haar heen','111,227,231',18,-28);
+   dotLabel(c,'SGR A*','CENTRUM','239,187,128',16,-26);
+   dotLabel(sun,'ZON','R₀ ≈ 8,2 kpc','111,227,231',18,-28);
  }
  if(state.layer.orbit){let focus=project(state.focusR*Math.cos(state.focusTheta),state.focusR*Math.sin(state.focusTheta),0);ctx.setLineDash([4,4]);drawCircle(focus.x,focus.y,8,'#80deed',.8);ctx.setLineDash([]);}}
 // Kleine lichtpunten zijn echte grepen op het sterrenbeeld, geen knoppen die de proef oplossen.
@@ -564,29 +819,44 @@ let stageHover=null,stageHeld=null,stageDragStart=null;
 function skyTrackGeometry(track){const left=W*.18,right=W*.83;return{left,right,y:H*track.y,x:left+(track.get()-track.min)/(track.max-track.min)*(right-left)};}
 function stageTrackHit(x,y){const tracks=touchTracks[state.mode]||[];for(const track of tracks){const g=skyTrackGeometry(track);if(Math.abs(y-g.y)<27 && x>=g.left-30 && x<=g.right+30)return track;}return null;}
 function drawStageOverlay(){
- if(state.mode==='atlas'){
-  if(lastProjectedSun){const p=lastProjectedSun;ctx.save();ctx.setLineDash([3,6]);ctx.strokeStyle='rgba(136,246,226,.75)';ctx.lineWidth=2;ctx.beginPath();ctx.arc(p.x,p.y,11,0,2*PI);ctx.stroke();ctx.restore();}
+ if(state.mode==='atlas'&&lastProjectedSun){
+  const p=lastProjectedSun;ctx.save();ctx.setLineDash([2,5]);ctx.strokeStyle='rgba(117,221,215,.48)';ctx.lineWidth=.8;
+  ctx.beginPath();ctx.arc(p.x,p.y,8,0,2*PI);ctx.stroke();ctx.restore();
  }
  if(state.mode==='dynamics'){
   const r=state.focusR,th=state.focusTheta+state.time*vParts(r).total/r*KM_MYR,p=project(r*Math.cos(th),r*Math.sin(th),0);
-  ctx.save();ctx.beginPath();ctx.arc(p.x,p.y,8,0,2*PI);ctx.fillStyle='#bcfff4';ctx.shadowBlur=18;ctx.shadowColor='#58e1ee';ctx.fill();ctx.shadowBlur=0;
-  ctx.font='700 12px system-ui';ctx.fillStyle='#d9fff6';ctx.textAlign='left';ctx.fillText(Math.round(vParts(r).total)+' km/s',clamp(p.x+12,8,W-104),clamp(p.y-14,105,H*.61));ctx.restore();
+  ctx.save();ctx.beginPath();ctx.arc(p.x,p.y,4,0,2*PI);ctx.fillStyle='#9de6de';ctx.fill();
+  ctx.font='10px ui-monospace,monospace';ctx.fillStyle='#9ac9d4';ctx.textAlign='left';
+  ctx.fillText(fmt(vParts(r).total,0)+' km/s',clamp(p.x+10,7,W-86),clamp(p.y-9,100,H*.66));ctx.restore();
  }
  if(state.mode==='gaia'){
   const spread=clamp(63/state.observeD,3,65),mx=W*.51,my=H*.41;
-  ctx.save();ctx.setLineDash([4,5]);ctx.strokeStyle='#4caec466';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(mx-spread,my);ctx.lineTo(mx+spread,my);ctx.stroke();ctx.setLineDash([]);
-  for(const [i,x] of [mx-spread,mx+spread].entries()){ctx.beginPath();ctx.arc(x,my,6,0,2*PI);ctx.shadowBlur=12;ctx.shadowColor='#a4ffff';ctx.fillStyle=i?'#8aeaf6':'#edcfa8';ctx.fill();}ctx.shadowBlur=0;ctx.font='700 12px system-ui';ctx.textAlign='center';ctx.fillStyle='#c8ebfa';ctx.fillText('Dezelfde ster, vanaf twee plekken bekeken',mx,H*.31);ctx.restore();
+  ctx.save();ctx.setLineDash([3,5]);ctx.strokeStyle='#4caec47a';ctx.lineWidth=.9;ctx.beginPath();
+  ctx.moveTo(mx-spread,my);ctx.lineTo(mx+spread,my);ctx.stroke();ctx.setLineDash([]);
+  for(const [i,x] of [mx-spread,mx+spread].entries()){ctx.beginPath();ctx.arc(x,my,3,0,2*PI);ctx.fillStyle=i?'#87cfe2':'#e3bc88';ctx.fill();}
+  ctx.font='10px ui-monospace,monospace';ctx.textAlign='center';ctx.fillStyle='#90adc1';ctx.fillText('PARALLAX / '+fmt(1/state.observeD,3)+' mas',mx,H*.31);ctx.restore();
  }
  if(state.mode==='stars'){
   const cx=W*.56,cy=H*.40,rad=clamp(Math.min(W,H)*.16,29,57);
-  ctx.save();ctx.beginPath();ctx.arc(cx,cy,rad,0,2*PI);ctx.lineWidth=2.5;ctx.strokeStyle='#a3f7e7';ctx.shadowColor='#4bded5';ctx.shadowBlur=12;ctx.stroke();ctx.shadowBlur=0;ctx.beginPath();ctx.arc(cx,cy,rad*.25,0,2*PI);ctx.strokeStyle='#84cdda99';ctx.lineWidth=1;ctx.stroke();ctx.restore();
+  ctx.save();ctx.beginPath();ctx.arc(cx,cy,rad,0,2*PI);ctx.lineWidth=.9;ctx.strokeStyle='#84d4d69a';ctx.stroke();
+  ctx.beginPath();ctx.arc(cx,cy,rad*.25,0,2*PI);ctx.strokeStyle='#84cdda55';ctx.stroke();ctx.restore();
  }
  if(state.mode==='structure'){
-  const cx=W*.79,cy=H*.53;ctx.save();ctx.beginPath();ctx.arc(cx,cy,15,0,2*PI);ctx.strokeStyle=state.layer.stellarHalo?'#8ef0e2':'#6c7793';ctx.lineWidth=2;ctx.stroke();ctx.font='11px system-ui';ctx.textAlign='right';ctx.fillStyle='#d6f5ef';ctx.fillText('Verre sterren',cx-24,cy+3);ctx.restore();
+  const cx=W*.79,cy=H*.53;
+  ctx.save();ctx.beginPath();ctx.arc(cx,cy,11,0,2*PI);ctx.strokeStyle=state.layer.stellarHalo?'#8bd2c488':'#6c779380';ctx.lineWidth=.8;ctx.stroke();
+  ctx.font='10px ui-monospace,monospace';ctx.textAlign='right';ctx.fillStyle='#a1c7ce';ctx.fillText('HALO',cx-19,cy+3);ctx.restore();
  }
  const tracks=touchTracks[state.mode]||[];
- for(const track of tracks){const g=skyTrackGeometry(track);ctx.save();ctx.fillStyle='#051b2ad6';ctx.fillRect(g.left-19,g.y-33,g.right-g.left+40,51);ctx.font='650 11px system-ui';ctx.fillStyle='#e3f9fc';ctx.textAlign='left';ctx.fillText(track.label,g.left,g.y-15);ctx.strokeStyle='#518a9e';ctx.lineWidth=5;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(g.left,g.y);ctx.lineTo(g.right,g.y);ctx.stroke();ctx.strokeStyle='#91ebd9';ctx.beginPath();ctx.moveTo(g.left,g.y);ctx.lineTo(g.x,g.y);ctx.stroke();ctx.beginPath();ctx.arc(g.x,g.y,10,0,2*PI);ctx.fillStyle='#affbee';ctx.shadowBlur=stageHeld===track?18:9;ctx.shadowColor='#50e3d8';ctx.fill();ctx.shadowBlur=0;
- const value=track.key==='afstand'?Math.round(track.get()*3262).toLocaleString('nl-NL')+' lichtjaar':track.key==='tempo'?Math.round(track.get())+' km/s':track.key==='kijker'?(track.get()<14?'Weinig sterren':track.get()>19?'Heel veel sterren':'Steeds meer sterren'):track.key==='spiraal'?'Nieuwe vorm':Math.round(vParts(state.focusR).total)+' km/s';ctx.fillStyle='#bbf7eb';ctx.textAlign='right';ctx.font='700 11px system-ui';ctx.fillText(value,g.right,g.y-15);ctx.restore();}
+ for(const track of tracks){
+  const g=skyTrackGeometry(track),t=track.get();
+  ctx.save();ctx.font='10px ui-monospace,monospace';ctx.textBaseline='alphabetic';
+  ctx.fillStyle='#a4c6d5';ctx.textAlign='left';ctx.fillText(track.label.toUpperCase(),g.left,g.y-11);
+  ctx.strokeStyle='#5c839a80';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(g.left,g.y);ctx.lineTo(g.right,g.y);ctx.stroke();
+  ctx.strokeStyle='#85ced4';ctx.beginPath();ctx.moveTo(g.left,g.y);ctx.lineTo(g.x,g.y);ctx.stroke();
+  ctx.beginPath();ctx.arc(g.x,g.y,4,0,2*PI);ctx.fillStyle='#b7e9e7';ctx.fill();
+  const value=track.key==='afstand'?fmt(t,1)+' kpc':track.key==='tempo'?fmt(t,0)+' km/s':track.key==='kijker'?fmt(t,1)+' mag':track.key==='spiraal'?fmt(t,0)+'°':fmt(t,2)+' ×';
+  ctx.textAlign='right';ctx.fillStyle='#a9d8d6';ctx.fillText(value,g.right,g.y-11);ctx.restore();
+ }
 }
 function drawGalaxy(){drawBackground();drawDarkHalo();drawGalaxyGrid();drawArms();drawDust();drawStars();drawClusters();drawGalacticCore();drawStageOverlay();updateAstroPins();}
 function kepler(t){const e=.88,a=1035,P=16;const M=(t/P%1)*2*PI;let E=M;for(let i=0;i<9;i++)E-=(E-e*Math.sin(E)-M)/(1-e*Math.cos(E));let x=a*(Math.cos(E)-e),y=a*Math.sqrt(1-e*e)*Math.sin(E),r=a*(1-e*Math.cos(E));let v=29.7847*Math.sqrt(MBH*(2/r-1/a));return {E,M,x,y,r,v};}
@@ -611,14 +881,14 @@ const sourceBlock=()=>`<div class="ctrlgroup"><div class="subhead">ONDERLIGGENDE
 
 const techDetails={
  atlas:[
- ['Hoe weten we hoe de Melkweg eruitziet?',`<p>Onze waarnemer bevindt zich in de schijf. <em>Parallax</em> geeft nabije afstanden; infraroodonderzoek, de 21cm-lijn van neutraal waterstof, CO-emissie en VLBI-parallax van masers traceren structuur door stof heen. Radiale snelheden vragen om een rotatiemodel om afstand uit snelheid af te leiden. Bij de nabije en verre kinematische afstand ontstaan dubbelzinnigheden.</p><p>Een afbeelding van bovenaf is een <em>modelafhankelijke reconstructie</em>. Afstanden, volledige armvormen en het verre deel van de schijf blijven onzeker.</p>`],
+ ['Reconstructie van de Melkweg',`<p>Onze waarnemer bevindt zich in de schijf. <em>Parallax</em> geeft nabije afstanden; infraroodonderzoek, de 21cm-lijn van neutraal waterstof, CO-emissie en VLBI-parallax van masers traceren structuur door stof heen. Radiale snelheden vragen om een rotatiemodel om afstand uit snelheid af te leiden. Bij de nabije en verre kinematische afstand ontstaan dubbelzinnigheden.</p><p>Een afbeelding van bovenaf is een <em>modelafhankelijke reconstructie</em>. Afstanden, volledige armvormen en het verre deel van de schijf blijven onzeker.</p>`],
  ['Spiraalarmen zijn geen vaste sterrenbanen',`<p>De getekende armen volgen φ(R) = φ₀ + ln(R/R<sub>ref</sub>)/tan(i), met een instelbare pitchhoek i. Testdeeltjes bewegen met Ω(R) = v<sub>c</sub>(R)/R; het getekende dichtheidspatroon roteert apart, hier met een gekozen Ω<sub>p</sub> = 25 km/s/kpc.</p><p>Dat onderscheid is bewust: sterren kunnen in en uit een arm bewegen. Een blijvende globale dichtheidsgolf is één hypothese; N-bodymodellen laten ook transiënte, meedraaiende armen en resonante dynamica zien.</p>`],
- ['Wat stelt de visualisatie precies voor?',`<p>Circa 16.000 synthetische sterren in schijf, balk, verdikking en halo, plus gas-/stofaccenten. De massapotentiaal en de getoonde puntverdeling zijn apart gekozen. Het model lost geen Poisson- en botsingsloze Boltzmannvergelijking zelfconsistent op.</p><p>Donkere materie produceert geen licht in deze weergave. Een eventueel getoonde halo-omtrek visualiseert alleen de veronderstelde ruimtelijke omvang van een potentiaalcomponent.</p>`]
+ ['Status van de visualisatie',`<p>Circa 16.000 synthetische sterren in schijf, balk, verdikking en halo, plus gas-/stofaccenten. De massapotentiaal en de getoonde puntverdeling zijn apart gekozen. Het model lost geen Poisson- en botsingsloze Boltzmannvergelijking zelfconsistent op.</p><p>Donkere materie produceert geen licht in deze weergave. Een eventueel getoonde halo-omtrek visualiseert alleen de veronderstelde ruimtelijke omvang van een potentiaalcomponent.</p>`]
  ],
  dynamics:[
  ['Potentiaal: exacte modeldefinities',`<p><em>Schijf (Miyamoto–Nagai)</em>: Φ<sub>d</sub>(R,z) = −GM<sub>d</sub>/√[R²+(a+√(z²+b²))²], met a = 2,6 en b = 0,28 kpc.</p><p><em>Verdikking (Hernquist)</em>: Φ<sub>b</sub>(r) = −GM<sub>b</sub>/(r+a<sub>b</sub>), met a<sub>b</sub> = 0,6 kpc.</p><p><em>NFW-halo</em>: M(&lt;r) = M₂₀₀ f(r/r<sub>s</sub>)/f(c), f(x) = ln(1+x) − x/(1+x), c=10 en R₂₀₀ ≈ 210 (M₂₀₀/10¹² M☉)<sup>1/3</sup> kpc. Hiermee wordt v<sub>h</sub>² = GM(&lt;r)/r berekend.</p><p>De drie bijdragen tellen in <em>v²</em> op, niet in v. G = 4,30091 × 10⁻⁶ kpc (km/s)² M☉⁻¹.</p>`],
  ['Jeans, epicykels en asymmetrische drift',`<p>Voor een cirkelbaan geldt v<sub>c</sub>² = R ∂Φ/∂R. Voor een sterrenpopulatie geldt niet automatisch ⟨v<sub>φ</sub>⟩ = v<sub>c</sub>. Radiale dispersie, dichtheidsgradiënten en de gemengde snelheidsterm in de Jeansvergelijking veroorzaken <em>asymmetrische drift</em>.</p><p>Ω = v<sub>c</sub>/R, κ² = R dΩ²/dR + 4Ω². De hier getoonde Q<sub>⋆</sub> = σ<sub>R</sub>κ/(3,36GΣ) is de Toomre-benadering voor een ideale dunne sterrenplaat. Gas, dikte, meerdere componenten en resonanties worden niet meegenomen.</p>`],
- ['Wat bewijst een vlakke rotatiekromme?',`<p>Een vrijwel vlakke v<sub>c</sub>(R) over een groot bereik is niet verenigbaar met een systeem waarvan vrijwel alle massa sterk centraal is geconcentreerd. Het is een aanwijzing voor een uitgebreide massacomponent in de gebruikte gravitatietheorie.</p><p>De vereenvoudiging M(&lt;R) = Rv²/G is uitsluitend direct toepasbaar op een sferisch symmetrische massaverdeling. Voor een afgeplatte schijf moet de volledige potentiaal worden gebruikt. De opsplitsing in baryonen en halo kent degeneraties.</p>`]
+ ['Betekenis van de rotatiekromme',`<p>Een vrijwel vlakke v<sub>c</sub>(R) over een groot bereik is niet verenigbaar met een systeem waarvan vrijwel alle massa sterk centraal is geconcentreerd. Het is een aanwijzing voor een uitgebreide massacomponent in de gebruikte gravitatietheorie.</p><p>De vereenvoudiging M(&lt;R) = Rv²/G is uitsluitend direct toepasbaar op een sferisch symmetrische massaverdeling. Voor een afgeplatte schijf moet de volledige potentiaal worden gebruikt. De opsplitsing in baryonen en halo kent degeneraties.</p>`]
  ],
  structure:[
  ['Verticale evenwichtsvergelijking',`<p>De verticale structuur hangt samen met drukondersteuning door de snelheidsdispersie en de verticale zwaartekracht: ∂(ρσ<sub>z</sub>²)/∂z ≈ −ρ ∂Φ/∂z in de stationaire, vereenvoudigde Jeansbenadering. Een exponentieel z-profiel is een bruikbare schets, niet de unieke oplossing.</p><p>De dunne en dikke schijf verschillen doorgaans in leeftijd, kinematica en chemische samenstelling. Er is geen universeel scherpe grens tussen beide populaties.</p>`],
@@ -628,7 +898,7 @@ const techDetails={
  stars:[
  ['Van sterfysica naar HR-diagram',`<p>De Stefan–Boltzmannwet verbindt lichtkracht, straal en effectieve temperatuur: L = 4πR<sup>2</sup>σ<sub>SB</sub>T<sub>eff</sub><sup>4</sup>. Massieve hoofdreekssterren zijn gemiddeld warmer en helderder, maar evolutie verplaatst sterren naar onder meer de reuzentak.</p><p>De synthetische populatie gebruikt L ∝ M<sup>3,4</sup> als grove hoofdreeksbenadering. Reuzen worden apart getrokken. Een fysisch volwaardige studie vereist isochronen, IMF, stervormingsgeschiedenis, metalliciteitsverdeling en binaire evolutie.</p>`],
  ['Kleur-magnitude versus HR',`<p>Een werkelijk <em>HR-diagram</em> gebruikt bijvoorbeeld T<sub>eff</sub> en bolometrische lichtkracht. Gaia levert met G, BP en RP onder meer een <em>kleur-magnitudediagram</em>, waarin extinctie en reddening de positie veranderen.</p><p>Voor schijnbare magnitude geldt m−M = 5log₁₀(d/10 pc)+A. Extinctie A hangt af van golflengte én de kijkrichting. De gekozen lineaire extinctie A≈0,27 mag/kpc is slechts een didactische schatting.</p>`],
- ['Waarom catalogi een vertekening hebben',`<p>Een fluxbegrensde waarneming bevat relatief veel heldere sterren uit grote volumes en mist zwakke sterren ver weg. Ook crowding, detectieprobabiliteit, variabiliteit en de eigen selectiefunctie van de spectrograaf spelen een rol.</p><p>De selectiefractie in dit paneel is uitsluitend de fractie van de gegenereerde steekproef die onder de ingestelde magnitudelimiet valt. Een Gaia-selectiefunctie moet apart worden geschat.</p>`]
+ ['Selectie-effecten in catalogi',`<p>Een fluxbegrensde waarneming bevat relatief veel heldere sterren uit grote volumes en mist zwakke sterren ver weg. Ook crowding, detectieprobabiliteit, variabiliteit en de eigen selectiefunctie van de spectrograaf spelen een rol.</p><p>De selectiefractie in dit paneel is uitsluitend de fractie van de gegenereerde steekproef die onder de ingestelde magnitudelimiet valt. Een Gaia-selectiefunctie moet apart worden geschat.</p>`]
  ],
  gaia:[
  ['Parallax is een hoek, geen afstand',`<p>Voor een bron op afstand d geldt idealiter ϖ[mas] = 1/d[kpc]. De meting bevat ruis, systematische nulpuntsafwijkingen en correlaties. Een negatieve gemeten parallax kan fysisch zinvolle informatie bevatten.</p><p>Bij grote fouten is de simpele afstand d = 1/ϖ vertekend. Een Bayesiaanse benadering gebruikt p(d|ϖ) ∝ p(ϖ|d)p(d), inclusief een gerechtvaardigde afstandsprior en selectie-effecten.</p>`],
@@ -731,22 +1001,32 @@ function kidControls(){const m=state.model;
  }
 }
 let activeLabTab='proef';
-function panelHTML(){return `<div class="lab-tabs" role="tablist" aria-label="Kies wat je wilt doen">
- <button class="lab-tab" data-labtab="proef" id="tab-proef" type="button" role="tab" aria-controls="pane-proef" aria-selected="true">Probeer</button>
- <button class="lab-tab" data-labtab="speel" id="tab-speel" type="button" role="tab" aria-controls="pane-speel" aria-selected="false">Verander</button>
- <button class="lab-tab" data-labtab="meer" id="tab-meer" type="button" role="tab" aria-controls="pane-meer" aria-selected="false">Ontdek meer</button></div>
- <section class="lab-pane" data-pane="proef" id="pane-proef" role="tabpanel" aria-labelledby="tab-proef">${discoveryHTML()}</section>
- <section class="lab-pane" data-pane="speel" id="pane-speel" role="tabpanel" aria-labelledby="tab-speel">${miniLab()}<div class="kid-controls">${kidControls()}</div></section>
- <section class="lab-pane" data-pane="meer" id="pane-meer" role="tabpanel" aria-labelledby="tab-meer"><div class="live-fact" aria-live="polite"><b>WAT ZIE JE?</b><p id="live-fact-text">${esc(kidLive())}</p></div>
- <details class="explain-details"><summary>Meer getallen bekijken</summary><div class="explain-body"><div class="statgrid">${kidStats()}</div><p class="kid-description">De sterren en bewegingen zijn nagebouwd. Astronomen gebruiken echte telescopen om te onderzoeken hoe de Melkweg werkt.</p></div></details>
- <button type="button" class="graph-toggle" id="graphToggle" aria-expanded="false">+ Bekijk de geheime grafiek</button>
- <details class="explain-details"><summary>Uitleg en bronnen</summary><div class="explain-body"><p class="kid-description">Dit is een computermodel. Het is geen foto die van buitenaf is gemaakt. De echte sterrenkunde is nog ingewikkelder.</p>${theoryBlock(state.mode)}${sourceBlock()}<div class="explorer-actions"><button class="tinybtn" data-action="export-json">Sla alle gegevens op</button></div></div></details></section>`;}
+
+function instrumentStats(){
+ const R=state.focusR,v=vParts(R),q=kepler(state.bhTime),n=hrstars.filter(s=>s.mag<=state.limMag).length;
+ if(state.mode==='atlas')return metric('ZON / CENTRUM','8,2','kpc',true)+metric('STRAAL / SELECTIE',fmt(R,1),'kpc')+metric('BAANSNELHEID',fmt(v.total,1),'km/s')+metric('STELLAIRE POPULATIE','≈ 10¹¹','sterren');
+ if(state.mode==='dynamics')return metric('v(C) / R',fmt(v.total,1),'km/s',true)+metric('OMLOOPTIJD',fmt(orbitPeriod(R),0),'Myr')+metric('HALOMASSA',fmt(state.model.halo,2),'10¹² M☉')+metric('TOOMRE Q',fmt(toomreQ(R),2),'');
+ if(state.mode==='structure')return metric('DUNNE SCHIJF','0,30','kpc')+metric('DIKKE SCHIJF','0,90','kpc')+metric('PITCHHOEK',state.pitch,'°',true)+metric('R / SELECTIE',fmt(R,1),'kpc');
+ if(state.mode==='stars')return metric('G / LIMIET',fmt(state.limMag,1),'mag',true)+metric('SELECTIE',n.toLocaleString('nl-NL'),'')+metric('STEEKPROEF',hrstars.length.toLocaleString('nl-NL'),'')+metric('AANDEEL',fmt(100*n/hrstars.length,1),'%');
+ if(state.mode==='gaia')return metric('AFSTAND',fmt(state.observeD,1),'kpc',true)+metric('PARALLAX',fmt(1/state.observeD,3),'mas')+metric('EIGENBEWEGING',fmt(state.observeVT/(4.74047*state.observeD),2),'mas/jaar')+metric('v(T)',fmt(state.observeVT,0),'km/s');
+ return metric('MASSA SGR A*','4,297','10⁶ M☉',true)+metric('PERIODE S2','≈ 16','jaar')+metric('AFSTAND S2',Math.round(q.r).toLocaleString('nl-NL'),'AU')+metric('SNELHEID S2',Math.round(q.v).toLocaleString('nl-NL'),'km/s');
+}
+function instrumentControls(){
+ const m=state.model;
+ if(state.mode==='atlas')return `<div class="subhead">COMPONENTEN</div><div class="switchgrid">${layerSwitch('disk','Sterschijf')}${layerSwitch('arms','Spiraalpatroon')}${layerSwitch('bar','Centrale balk')}${layerSwitch('bulge','Verdikking')}${layerSwitch('stellarHalo','Sterrenhalo')}${layerSwitch('darkHalo','Donkere halo')}${layerSwitch('dust','Gas / stof')}${layerSwitch('orbit','Baangrid')}${layerSwitch('labels','Labels')}${layerSwitch('warp','Warp')}</div><div class="ctrlgroup"><div class="subhead">PROJECTIE</div>${range('pitch','Pitchhoek',state.pitch,7,24,1,'°')}${range('extinction','Stofaccent',state.extinction,.2,2,.1,'×')}</div>`;
+ if(state.mode==='dynamics')return `<div class="subhead">MASSAMODEL</div>${range('haloMass','NFW / halo',m.halo,.2,2,.02,' ×10¹² M☉')}${range('diskMass','Schijfmassa',m.disk,2,9,.1,' ×10¹⁰ M☉')}${range('bulgeMass','Verdikking',m.bulge,.2,2.2,.05,' ×10¹⁰ M☉')}${range('sigmaR','Radiale dispersie σR',m.sigma,15,65,1,' km/s')}<button id="resetPhysics" type="button" class="instrument-action">REFERENTIEMODEL HERSTELLEN</button>`;
+ if(state.mode==='structure')return `<div class="subhead">COMPONENTEN / MORFOLOGIE</div><div class="switchgrid">${layerSwitch('disk','Sterschijf')}${layerSwitch('bar','Balk')}${layerSwitch('bulge','Verdikking')}${layerSwitch('stellarHalo','Sterrenhalo')}${layerSwitch('darkHalo','Donkere halo')}${layerSwitch('warp','Warp')}${layerSwitch('dust','Stofzones')}${layerSwitch('orbit','Banen')}</div><div class="ctrlgroup">${range('pitch','Pitchhoek',state.pitch,7,24,1,'°')}</div>`;
+ if(state.mode==='stars')return `<div class="subhead">FOTOMETRISCHE SELECTIE</div>${range('limmag','Magnitudelimiet',state.limMag,10,21,.5,' mag')}<p class="instrument-note">Synthetische sterpopulatie, geen directe Gaia-catalogus.</p>`;
+ if(state.mode==='gaia')return `<div class="subhead">ASTROMETRIE</div>${range('obDist','Afstand',state.observeD,.5,20,.1,' kpc')}${range('obVt','Transversale snelheid',state.observeVT,10,400,5,' km/s')}<p class="instrument-note">ϖ = 1/d. Meetrelaties in een illustratief model.</p>`;
+ return `<div class="subhead">S2 / KEPLERBAAN</div><div class="switchgrid">${layerSwitch('orbit','Baan')}${layerSwitch('labels','Objectlabels')}</div><p class="instrument-note">P ≈ 16 jaar · e ≈ 0,88. Baan en EHT-ring niet op schaal.</p>`;
+}
+function panelHTML(){return `<div class="instrument-meta">MW / 01 · ${MODE[state.mode].crumb}<span>ANALYTISCH MODEL</span></div><div class="statgrid">${instrumentStats()}</div><div class="instrument-controls">${instrumentControls()}</div><button class="instrument-action graph-toggle" id="graphToggle" type="button" aria-expanded="${document.body.classList.contains('show-graphs')}">${document.body.classList.contains('show-graphs')?'−':'↗'} GRAFIEK <small>${MODE[state.mode].plot}</small></button><details class="instrument-details"><summary>AFLEIDING / BRONNEN</summary><div class="instrument-details-body">${theoryBlock(state.mode)}${sourceBlock()}</div></details>`;}
 function setLabPanelExpanded(expanded){
  if(window.innerWidth>850)return;
  document.body.classList.toggle('lab-sheet-open',expanded);
  $('labBackdrop').hidden=!expanded;
  $('labDock').setAttribute('aria-expanded',String(expanded));
- $('labDock').setAttribute('aria-label',expanded?'Sluit het ontdekkingspaneel':'Open het ontdekkingspaneel');
+ $('labDock').setAttribute('aria-label',expanded?'Sluit parameters':'Open parameters');
  $('labDockAction').textContent=expanded?'×':'Open ›';
  if(expanded){closeAstroInfo();document.body.classList.remove('time-open');$('timeToggle').setAttribute('aria-expanded','false');document.body.classList.remove('camera-menu-open');$('cameraMenuToggle').setAttribute('aria-expanded','false');document.querySelector('.topbar').classList.remove('tools-open');$('toolsMenuToggle').setAttribute('aria-expanded','false');}
  requestAnimationFrame(()=>{resize();chartDirty=true;});
@@ -771,7 +1051,7 @@ function recordSeen(){
  if(state.observeD>17)seen.distanceFar=true;
  if(state.observeVT>320)seen.speedHigh=true;
 }
-function checkQuest(){recordSeen();let gained=[];for(let mode of Object.keys(QUESTS)){QUESTS[mode].forEach((q,i)=>{if(!doneQuest[mode].includes(i)&&q.check()){doneQuest[mode].push(i);gained.push({mode,i})}})}
+function checkQuest(){return;}function oldCheckQuest(){recordSeen();let gained=[];for(let mode of Object.keys(QUESTS)){QUESTS[mode].forEach((q,i)=>{if(!doneQuest[mode].includes(i)&&q.check()){doneQuest[mode].push(i);gained.push({mode,i})}})}
  if(gained.length){persistQuest();const here=gained.find(x=>x.mode===state.mode);if(here){const uitleg=QUESTS[here.mode][here.i].done;const zin=uitleg.match(/^[^.!?]+[.!?]?/)?.[0]?.trim()||'Je hebt iets ontdekt.';toast(zin);}}
  const current=QUESTS[state.mode][activeQuest[state.mode]],idx=activeQuest[state.mode],completed=doneQuest[state.mode].includes(idx);
  const result=$('quest-result'),cont=$('inspector-body').querySelector('.quest-continue'),tip=$('quest-tip');if(result)result.hidden=!completed;if(cont)cont.hidden=!completed;if(tip)tip.hidden=completed;
@@ -831,12 +1111,12 @@ document.addEventListener('change',e=>{if(e.target.matches('[data-layer]'))Promi
 document.addEventListener('click',e=>{
  const b=e.target.closest('#graphToggle,#graphClose');if(!b)return;
  const yes=!document.body.classList.contains('show-graphs');document.body.classList.toggle('show-graphs',yes);
- const trigger=$('graphToggle');if(trigger){trigger.setAttribute('aria-expanded',yes?'true':'false');trigger.textContent=yes?'− Verberg de grafiek':'+ Bekijk de geheime grafiek';}
+ const trigger=$('graphToggle');if(trigger){trigger.setAttribute('aria-expanded',yes?'true':'false');trigger.innerHTML=(yes?'−':'↗')+' GRAFIEK <small>'+MODE[state.mode].plot+'</small>';}
  if(yes&&window.innerWidth<=850)setLabPanelExpanded(false);
  requestAnimationFrame(()=>{resize();chartDirty=true;});
 });
 
-function bindPanel(){let html=panelHTML();$('inspector-body').innerHTML=html;document.querySelectorAll('.lab-tab').forEach(b=>b.addEventListener('click',()=>selectLabTab(b.dataset.labtab)));selectLabTab(activeLabTab);$('labDockTitle').textContent=QUESTS[state.mode][activeQuest[state.mode]].title;document.querySelectorAll('[data-layer]').forEach(el=>el.addEventListener('change',()=>{state.layer[el.dataset.layer]=el.checked;chartDirty=true;}));
+function bindPanel(){let html=panelHTML();$('inspector-body').innerHTML=html;$('labDockTitle').textContent=MODE[state.mode].ins;document.querySelectorAll('[data-layer]').forEach(el=>el.addEventListener('change',()=>{state.layer[el.dataset.layer]=el.checked;chartDirty=true;}));
  function input(id,fn,format){let el=$(id);if(!el)return;el.addEventListener('input',()=>{let v=Number(el.value);fn(v);if($(id+'out'))$(id+'out').textContent=format(v);chartDirty=true;updateLiveStats();});}
  input('pitch',v=>{state.pitch=v;updatePitch()},v=>v+'°');input('extinction',v=>state.extinction=v,v=>fmt(v,1)+'×');
  input('haloMass',v=>{state.model.halo=v;recalcOmega()},v=>fmt(v,2)+'×10¹² M☉');
@@ -849,14 +1129,19 @@ function bindPanel(){let html=panelHTML();$('inspector-body').innerHTML=html;doc
  if($('removeHalo'))$('removeHalo').onclick=()=>{state.model.halo=.2;recalcOmega();bindPanel();chartDirty=true;toast('Halo verlaagd tot 0,2 × 10¹² M☉');};
 }
 let lastStatsAt=0;function updateLiveStats(force=false){let now=performance.now();if(!force&&now-lastStatsAt<260)return;lastStatsAt=now;
- if(state.mode==='dynamics'||state.mode==='stars'||state.mode==='gaia'||state.mode==='blackhole'){let wrap=$('inspector-body');let sc=wrap.scrollTop;let f=document.activeElement,id=f&&f.id,activeSlider=!!(f&&f.type==='range');if(!activeSlider){let first=wrap.querySelector('.statgrid');if(first){let temp=document.createElement('div');temp.innerHTML=panelHTML();let n=temp.querySelector('.statgrid');if(n)first.replaceWith(n);}}wrap.scrollTop=sc;}
+ {const first=$('inspector-body').querySelector('.statgrid');if(first)first.innerHTML=instrumentStats();}
  $('viewangle').textContent=state.mode==='blackhole'?'S2 / BAAN':`${Math.round(state.cam.elev)}° / ${Math.round(state.cam.yaw*180/PI)}°`;
  $('viewscale').textContent=state.mode==='blackhole'?'1035 AU':`${Math.round(40/state.cam.zoom)} kpc`;
  $('focusvalue').textContent=state.mode==='blackhole'?'Sgr A*':`R = ${fmt(state.focusR,1)} kpc`;
  $('timevalue').textContent=state.mode==='blackhole'?`${fmt(state.bhTime,1)} jaar`:`${Math.floor(state.time)} miljoen jaar`;
  $('timeslider').value=state.mode==='blackhole'?state.bhTime:state.time;
  $('playico').textContent=state.running?'Ⅱ':'▶';$('play').setAttribute('aria-label',state.running?'Animatie pauzeren':'Animatie afspelen');
- $('scale-label').textContent=state.mode==='blackhole'?'◌ S2: ~2000 AU':`▱ ${fmt(5/state.cam.zoom,1)} kpc`;updateKidLive();}
+ $('scale-label').textContent=state.mode==='blackhole'?'◌ S2: ~2000 AU':`▱ ${fmt(5/state.cam.zoom,1)} kpc`;
+ $('hudMode').textContent=MODE[state.mode].crumb;
+ $('hudProjection').textContent=state.mode==='blackhole'?'S2 / BAAN':Math.round(state.cam.elev)+'° / '+Math.round(state.cam.yaw*180/PI)+'°';
+ $('hudRadius').textContent=state.mode==='blackhole'?fmt(kepler(state.bhTime).r,0)+' AU':fmt(state.focusR,1)+' kpc';
+ $('hudSpeed').textContent=state.mode==='blackhole'?Math.round(kepler(state.bhTime).v)+' km/s':Math.round(vParts(state.focusR).total)+' km/s';
+ }
 function render(){if(state.mode==='blackhole')drawBlackHole();else drawGalaxy();}
 function axisSetup(xmin,xmax,ymin,ymax,xticks,yticks,{xlabel='',ylabel='',reverseX=false}={}){const g={x:56,y:15,w:PW-82,h:PH-46};if(PW<430)g.x=45,g.w=PW-65;g.w=Math.max(50,g.w);g.h=Math.max(60,g.h);pc.fillStyle='#0b1523';pc.fillRect(0,0,PW,PH);pc.font='9px ui-monospace,monospace';pc.lineWidth=1;
  const X=x=>g.x+((reverseX?xmax-x:x-xmin)/(xmax-xmin))*g.w,Y=y=>g.y+g.h-(y-ymin)/(ymax-ymin)*g.h;
@@ -907,9 +1192,9 @@ $('adventureMenuToggle').addEventListener('click',()=>{
 $('adventureBackdrop').addEventListener('click',()=>closeAdventureMenu(true));
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.querySelector('.sidebar').classList.contains('menu-open')){e.preventDefault();closeAdventureMenu(true);}});
 window.addEventListener('resize',()=>{if(window.innerWidth>850)closeAdventureMenu(false)});
-function modeSet(mode){if(!MODE[mode])return;closeAstroInfo();document.body.classList.remove('time-open');$('timeToggle').setAttribute('aria-expanded','false');$('stage').dataset.grabs=['dynamics','structure','stars','gaia'].includes(mode)?'true':'false';activeLabTab='proef';state.mode=mode;$('solarEntry').hidden=mode!=='atlas';state.running=mode==='dynamics'||mode==='blackhole';document.querySelectorAll('.nav-btn').forEach(b=>{let yes=b.dataset.mode===mode;b.classList.toggle('active',yes);b.setAttribute('aria-pressed',yes?'true':'false')});updateAdventureMenu();updateSceneText();kidModeText();bindPanel();$('inspector-body').scrollTop=0;updateLiveStats(true);chartDirty=true;}
+function modeSet(mode){if(!MODE[mode])return;closeAstroInfo();document.body.classList.remove('time-open');$('timeToggle').setAttribute('aria-expanded','false');$('stage').dataset.grabs=['dynamics','structure','stars','gaia'].includes(mode)?'true':'false';activeLabTab='proef';state.mode=mode;$('solarEntry').hidden=mode!=='atlas';state.running=mode==='dynamics'||mode==='blackhole';document.querySelectorAll('.nav-btn').forEach(b=>{let yes=b.dataset.mode===mode;b.classList.toggle('active',yes);b.setAttribute('aria-pressed',yes?'true':'false')});updateAdventureMenu();updateSceneText();bindPanel();$('inspector-body').scrollTop=0;updateLiveStats(true);chartDirty=true;}
 function camSet(mode){state.cam.target=mode==='sun'?'sun':'center';if(mode==='face')Object.assign(state.cam,{elev:90,yaw:0,zoom:1.05});else if(mode==='edge')Object.assign(state.cam,{elev:3,yaw:.33,zoom:1});else if(mode==='sun')Object.assign(state.cam,{elev:66,yaw:.40,zoom:2.65});else Object.assign(state.cam,window.innerWidth<=850?{elev:72,yaw:.28,zoom:1.08}:{elev:38,yaw:.39,zoom:1});document.querySelectorAll('[data-cam]').forEach(b=>b.classList.toggle('active',b.dataset.cam===mode));updateLiveStats(true);}
-function restoreView(){state.time=0;state.bhTime=0;state.running=false;state.pitch=12;state.limMag=18.5;state.observeD=8.2;state.observeVT=220;state.model={disk:6.8,bulge:1.0,halo:1.12,sigma:35};state.focusR=8.2;state.focusTheta=.7;state.layer.arms=true;state.layer.disk=true;state.layer.stellarHalo=true;state.layer.bar=true;state.layer.bulge=true;state.layer.orbit=true;state.layer.labels=true;updatePitch();recalcOmega();camSet('tilt');if(window.innerWidth<=850){state.cam.elev=73;state.cam.yaw=.26;state.cam.zoom=1.08;}chartDirty=true;bindPanel();updateLiveStats(true);toast('Je sterrenkaart staat weer zoals aan het begin');}
+function restoreView(){state.time=0;state.bhTime=0;state.running=false;state.pitch=12;state.limMag=18.5;state.observeD=8.2;state.observeVT=220;state.model={disk:6.8,bulge:1.0,halo:1.12,sigma:35};state.focusR=8.2;state.focusTheta=.7;state.layer.arms=true;state.layer.disk=true;state.layer.stellarHalo=true;state.layer.bar=true;state.layer.bulge=true;state.layer.orbit=true;state.layer.labels=true;updatePitch();recalcOmega();camSet('tilt');if(window.innerWidth<=850){state.cam.elev=73;state.cam.yaw=.26;state.cam.zoom=1.08;}chartDirty=true;bindPanel();updateLiveStats(true);toast('Referentieweergave hersteld');}
 function toast(txt){let x=$('toast');x.textContent=txt;x.classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>x.classList.remove('show'),2200);}
 function save(name,blob){let url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1800);}
 function modelExport(){let data={file:'MW-01 Galactic Observatory',createdAt:new Date().toISOString(),scientificStatus:'Analytical illustrative model; NOT a Gaia star-level reconstruction',units:{mass:'solar masses',distance:'kpc',speed:'km/s',time:'Myr',blackHoleTime:'years'},reference:{sunGalactocentricRadius_kpc:R0,galacticCenterBlackHole_Msun:MBH,GaiaDR3CircularSpeed_km_s:{value:233,uncertainty:7,source:'https://doi.org/10.1051/0004-6361/202346474'}},potential:{disk:{type:'Miyamoto-Nagai',mass_Msun:state.model.disk*1e10,a_kpc:2.6,b_kpc:.28},bulge:{type:'Hernquist',mass_Msun:state.model.bulge*1e10,a_kpc:.6},darkMatterHalo:{type:'NFW',M200_Msun:state.model.halo*1e12,concentration:10,R200_kpc:210*Math.cbrt(state.model.halo),illustrative:true}},dynamics:{selectedRadius_kpc:state.focusR,circularSpeed_km_s:vParts(state.focusR).total,orbitalPeriod_Myr:orbitPeriod(state.focusR),stellarToomreQ_illustrative:toomreQ(state.focusR),sigmaR_km_s:state.model.sigma},visualization:{mode:state.mode,time_Myr:state.time,s2Time_year:state.bhTime,pitch_deg:state.pitch,cam:state.cam,layer:state.layer},sources:['https://www.esa.int/content/view/full/423444','https://www.esa.int/Science_Exploration/Space_Science/Gaia','https://doi.org/10.1051/0004-6361/202346474','https://doi.org/10.1051/0004-6361/202142465','https://eventhorizontelescope.org/publications/first-sagittarius-event-horizon-telescope-results-i-shadow-supermassive-black-hole']};save('MW01-model-'+new Date().toISOString().slice(0,10)+'.json',new Blob([JSON.stringify(data,null,2)],{type:'application/json;charset=utf-8'}));toast('Modelparameters als JSON geëxporteerd');}
@@ -980,7 +1265,7 @@ function closeSolar(){solarOpen=false;solarPlaying=false;$('solarExplorer').hidd
 function selectPlanet(index,scrollToCard=false){solarSelected=index;const p=PLANETS[index];if(!p)return;
  document.querySelectorAll('.planet-pick').forEach((e,i)=>e.setAttribute('aria-pressed',String(i===index)));
  let year=p.years<1?Math.round(p.days)+' dagen':p.years===1?'1 jaar':p.years<2?'bijna 2 jaar':(p.years>=100?Math.round(p.years):p.years.toLocaleString('nl-NL',{maximumFractionDigits:1}))+' jaar';
- $('planetDetail').innerHTML=`<div class="planet-kicker">${p.tag.toUpperCase()}</div><h2>${p.name}</h2><div class="planet-portrait-wrap"><div class="planet-portrait ${p.name==='Saturnus'?'saturn':p.name==='Jupiter'?'jupiter':p.name==='Aarde'?'earth':''}" style="--pc:${p.color};--glow:${p.color}77" role="img" aria-label="Getekende ${p.name}"></div></div><p>${p.line}</p><div class="planet-facts"><div><small>Afstand tot de zon</small><b>${p.million.toLocaleString('nl-NL')} miljoen km</b></div><div><small>Eén rondje om de zon</small><b>${year}</b></div></div><div class="planet-tip">Probeer dit: ${p.challenge}</div><button class="planet-next" type="button" id="planetNext">Bekijk de volgende planeet →</button>`;
+ $('planetDetail').innerHTML=`<div class="planet-kicker">ZONNESTELSEL / BAANMODEL</div><h2>${p.name}</h2><div class="planet-portrait-wrap"><div class="planet-portrait ${p.name==='Saturnus'?'saturn':p.name==='Jupiter'?'jupiter':p.name==='Aarde'?'earth':''}" style="--pc:${p.color};--glow:${p.color}77" role="img" aria-label="Schematische ${p.name}"></div></div><div class="planet-facts"><div><small>BAANSTRAAL</small><b>${p.au.toLocaleString('nl-NL')} AE</b></div><div><small>OMLOOPTIJD</small><b>${year}</b></div><div><small>AFSTAND / ZON</small><b>${p.million.toLocaleString('nl-NL')} mln km</b></div><div><small>DIAMETER / AARDE</small><b>${p.diam.toLocaleString('nl-NL')} ×</b></div></div><button class="planet-next" type="button" id="planetNext">VOLGENDE PLANEET ↗</button>`;
  if(scrollToCard&&window.innerWidth<=740)setTimeout(()=>$('planetDetail').scrollIntoView({behavior:'smooth',block:'start'}),40);
 }
 function updateSolarTime(){ $('solarTime').value=String(solarTime);$('solarYearLabel').textContent=solarTime===0?'Nu':`+ ${solarTime.toLocaleString('nl-NL',{maximumFractionDigits:1})} jaar`;$('solarPlay').textContent=solarPlaying?'Ⅱ':'▶';$('solarPlay').setAttribute('aria-label',solarPlaying?'Pauzeer de planeten':'Laat de planeten bewegen')}
@@ -1103,25 +1388,23 @@ function closeAstroInfo(){
 }
 function showAstroInfo(kind){
  if(window.innerWidth>850)return;
- const title=$('astroInfoTitle'),text=$('astroInfoText'),go=$('astroInfoGo'),label=$('astroInfo').querySelector('.info-label');
+ const title=$('astroInfoTitle'),detail=$('astroInfoText'),go=$('astroInfoGo'),label=$('astroInfo').querySelector('.info-label');
  let route='';
  if(kind==='sun'){
-  label.textContent='Onze plek in de Melkweg';title.textContent='Hier staat onze zon';
-  text.textContent='Eén van de vele sterren, ver van het midden. Onze aarde draait om deze zon.';
-  go.textContent='Reis naar de planeten';route='solar';
-  seen.sun=true;checkQuest();
+  label.textContent='ZON / REFERENTIEPUNT';title.textContent='R₀ = 8,2 kpc';
+  detail.textContent='v(C) ≈ '+fmt(vParts(R0).total,1)+' km/s · T ≈ '+fmt(orbitPeriod(R0),0)+' Myr';
+  go.textContent='PLANETEN ↗';route='solar';
  }else if(kind==='center'){
-  label.textContent='Het midden';title.textContent='Een drukke plek vol sterren';
-  text.textContent='In het midden staat alles veel dichter op elkaar. Daar zit ook het zwarte gat Sagittarius A*.';
-  go.textContent='Volg een ster bij het zwarte gat';route='blackhole';
+  label.textContent='GALACTISCH CENTRUM';title.textContent='Sagittarius A*';
+  detail.textContent='M = 4,297 × 10⁶ M☉ · R = 0 kpc';
+  go.textContent='S2-BAAN ↗';route='blackhole';
  }else{
-  const d=fmt(state.focusR,1);
-  label.textContent='Je hebt een plek aangeraakt';title.textContent=d+' kpc van het midden';
-  text.textContent='Je wijst een plek in ons nagemaakte sterrenstelsel aan. Draai verder en ontdek hoe sterren om het midden bewegen.';
-  go.textContent='Onderzoek de beweging';route='dynamics';
+  const R=state.focusR;
+  label.textContent='MODEL / MEETPUNT';title.textContent='R = '+fmt(R,1)+' kpc';
+  detail.textContent='v(C) = '+fmt(vParts(R).total,1)+' km/s · T = '+fmt(orbitPeriod(R),0)+' Myr';
+  go.textContent='ROTATIEKROMME ↗';route='dynamics';
  }
- astroSelection=route;go.hidden=false;
- $('astroInfo').hidden=false;
+ astroSelection=route;go.hidden=false;$('astroInfo').hidden=false;
  document.body.classList.remove('time-open');$('timeToggle').setAttribute('aria-expanded','false');
 }
 function updateAstroPins(){
@@ -1220,7 +1503,7 @@ cv.addEventListener('pointercancel',e=>{stageHeld=null;stageDragStart=null;touch
 chart.addEventListener('pointermove',e=>{const r=chart.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;if(x<45||x>PW-25||y<12||y>PH-22){$('plotTooltip').style.display='none';return;}let frac=clamp((x-(PW<430?45:56))/(PW<430?PW-65:PW-82),0,1),text='';if(state.mode==='dynamics'){let R=frac*20; text=`R ${fmt(R,1)} kpc · v ${fmt(vParts(Math.max(.1,R)).total,1)} km/s`;}else if(state.mode==='atlas'){let R=frac*20;text=`R ${fmt(R,1)} kpc · Σ/Σ₀ ${fmt(Math.exp(-R/2.6),3)}`;}else if(state.mode==='gaia'){let d=.5+19.5*frac;text=`d ${fmt(d,1)} kpc · ϖ ${fmt(1/d,3)} mas`;}else if(state.mode==='blackhole'){let s=kepler(frac*16);text=`t ${fmt(frac*16,1)} jaar · r ${Math.round(s.r)} AU`;}else if(state.mode==='structure'){let z=-3+frac*6;text=`z ${fmt(z,1)} kpc`;}else{text='HR-diagram · synthetische sterpopulatie';}let tt=$('plotTooltip');tt.textContent=text;tt.style.display='block';tt.style.left=clamp(x+9,6,PW-210)+'px';tt.style.top=clamp(y-34,5,PH-38)+'px';});chart.addEventListener('pointerleave',()=>$('plotTooltip').style.display='none');
 window.addEventListener('keydown',e=>{if(e.target&&['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))return;if(e.code==='Space'){e.preventDefault();state.running=!state.running;updateLiveStats(true);}else if(/^[1-6]$/.test(e.key)){modeSet(Object.keys(MODE)[Number(e.key)-1]);}else if(e.key==='f'||e.key==='F')camSet('face');else if(e.key==='e'||e.key==='E')camSet('edge');else if(e.key==='r'||e.key==='R')restoreView();});
 window.addEventListener('resize',resize);const ro=new ResizeObserver(()=>resize());ro.observe($('stage'));ro.observe(chart.parentElement);
-initStars();resize();modeSet('atlas');if(window.innerWidth<=850){state.cam.elev=73;state.cam.yaw=.26;state.cam.zoom=1.08;}updateLiveStats(true);document.documentElement.dataset.ready='true';requestAnimationFrame(tick);
+initStars();if(window.innerWidth>850)document.body.classList.add('show-graphs');resize();modeSet('atlas');if(window.innerWidth<=850){state.cam.elev=73;state.cam.yaw=.26;state.cam.zoom=1.08;}updateLiveStats(true);document.documentElement.dataset.ready='true';requestAnimationFrame(tick);
 })();
 </script>
 </body>
