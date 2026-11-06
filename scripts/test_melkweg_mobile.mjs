@@ -24,20 +24,23 @@ try{
   await page.goto(origin+'/tools/melkweg-lab/',{waitUntil:'domcontentloaded'});
   await page.waitForFunction(()=>document.documentElement.dataset.ready==='true',{timeout:10000});
   await page.waitForTimeout(180);
-  await page.screenshot({path:`test-results/melkweg-lab-v11-start-${width}.png`});
-  if(width<850)await page.screenshot({path:`test-results/melkweg-lab-v11-start-${width}.png`});
+  await page.screenshot({path:`test-results/melkweg-lab-v12-start-${width}.png`});
+  if(width<850)await page.screenshot({path:`test-results/melkweg-lab-v12-start-${width}.png`});
   const metrics=await page.evaluate(()=>({
    viewport:innerHeight,document:document.documentElement.scrollHeight,
    horizontal:document.documentElement.scrollWidth-innerWidth,
    stage:document.querySelector('.stage').getBoundingClientRect().height,
-   tabVisible:document.querySelector('.lab-tabs').getClientRects().length>0
+   questionCards:document.querySelectorAll('.quest-card').length,
+   hudVisible:getComputedStyle(document.querySelector('.instrument-hud')).display!=='none'
   }));
   assert(metrics.horizontal<=1,'Horizontale overloop op '+width);
   if(width<850){
    assert(metrics.document<=metrics.viewport+1,'Hoofdpagina mag niet scrollen op '+width);
    assert(metrics.stage>=height-1,'Het sterrenbeeld vult het scherm niet op '+width);
-   assert(!metrics.tabVisible,'Tabs horen niet op het beginscherm');
-   assert(!(await page.locator('#pane-proef').isVisible()),'De oude kaart staat nog over het beeld');
+   assert.equal(metrics.questionCards,0,'Er mogen geen ontdekvraagkaarten zijn');
+   assert(metrics.hudVisible,'Technische HUD ontbreekt');
+   assert((await page.locator('#hudMode').textContent()).includes('GALACTISCHE'));
+   assert((await page.locator('#hudRadius').textContent()).includes('kpc'));
    assert(!(await page.locator('#timeslider').isVisible()),'Tijdschuif moet eerst verborgen zijn');
    assert(!(await page.locator('#cameraMenuToggle').isVisible()),'Cameramenu moet verdwijnen');
    const layout=await page.evaluate(()=>{
@@ -61,13 +64,13 @@ try{
    assert(await page.locator('#astroSunPin').isVisible(),'Zon-aanraakpunt moet ook op 320 pixels zichtbaar zijn');
    await page.locator('#astroCenterPin').click();
    assert(await page.locator('#astroInfo').isVisible(),'Tik op het midden toont geen uitleg');
-   assert((await page.locator('#astroInfoText').textContent()).includes('Sagittarius'),'De uitleg is niet gekoppeld aan het midden');
+   assert((await page.locator('#astroInfoTitle').textContent()).includes('Sagittarius'),'De centrumgegevens ontbreken');
    await page.locator('#astroInfoClose').click();
    assert(!(await page.locator('#astroInfo').isVisible()),'De uitleg sluit niet');
    const sun=page.locator('#astroSunPin');
    if(await sun.isVisible()){
     await sun.click();
-    assert((await page.locator('#astroInfoTitle').textContent()).includes('zon'),'Zonkaart ontbreekt');
+    assert((await page.locator('#astroInfoTitle').textContent()).includes('8,2 kpc'),'De zonafstand ontbreekt');
     await page.locator('#astroInfoGo').click();
     assert(await page.locator('#solarExplorer').isVisible(),'Zonkaart opent de planeten niet');
     await page.locator('#backGalaxy').click();
@@ -83,21 +86,18 @@ try{
    assert.notEqual(after,before,'Slepen draait de Melkweg niet');
    assert(await page.evaluate(()=>document.body.classList.contains('stage-touched')),'Het sleephintje verdwijnt niet');
    await page.locator('#labDock').click();
-   assert(await page.locator('#pane-proef').isVisible(),'Het ontdekpaneel opent niet');
-   const tabs=page.getByRole('tab');
-   assert.equal(await tabs.count(),3);
-   await tabs.getByText('Verander').click();
-   assert(await page.locator('#pane-speel').isVisible());
-   await tabs.getByText('Ontdek meer').click();
-   assert(await page.locator('#pane-meer').isVisible());
+   assert(await page.locator('.instrument-meta').isVisible(),'Het modelpaneel opent niet');
+   assert.equal(await page.locator('.instrument-controls .switch').count(),10,'Modelcomponenten ontbreken');
+   assert.equal(await page.locator('.instrument-meta').textContent().then(t=>t.includes('ANALYTISCH MODEL')),true);
+   assert.equal(await page.locator('.lab-tabs').count(),0,'Oude probeer/verander-tabbladen zijn nog aanwezig');
+   assert.equal(await page.locator('.quest-card').count(),0,'Oude ontdekvraag is nog zichtbaar');
    await page.locator('#graphToggle').click();
-   assert(await page.locator('#graphClose').isVisible(),'Grafiek kan niet open');
-   assert(!(await page.locator('#pane-meer').isVisible()),'Grafiek moet sterrenbeeld vrijmaken');
+   assert(await page.locator('#graphClose').isVisible(),'Grafiek opent niet');
    await page.locator('#graphClose').click();
-   assert(!(await page.locator('#graphClose').isVisible()),'Grafiek kan niet dicht');
+   assert(!(await page.locator('#graphClose').isVisible()),'Grafiek sluit niet');
    await page.locator('#labDock').click();
    await page.locator('#labDock').click();
-   assert(!(await page.locator('#pane-proef').isVisible()),'Paneel sluit niet');
+   assert(!(await page.locator('.instrument-meta').isVisible()),'Het instrumentpaneel sluit niet');
    await page.locator('#toolsMenuToggle').click();
    assert(await page.locator('#resetView').isVisible(),'Herstellen ontbreekt in menu');
    await page.locator('#resetView').click();
@@ -121,9 +121,17 @@ try{
    await page.locator('#backGalaxy').click();
    assert(!(await page.locator('#solarExplorer').isVisible()));
   }
-  await page.screenshot({path:`test-results/melkweg-lab-v11-${width}.png`});
+  if(width>=850){
+   assert(await page.locator('.analytics-main').isVisible(),'Desktop moet direct een grafiek tonen');
+   assert(await page.evaluate(()=>document.body.classList.contains('show-graphs')),'Desktopgrafiek staat niet aan');
+   const graph=await page.locator('.analytics-main').boundingBox();
+   assert(graph&&graph.height>120,'Desktopgrafiek is te klein');
+   assert(await page.locator('.instrument-controls .switch').count()>=8,'Desktopmodelcomponenten ontbreken');
+   assert(await page.locator('.instrument-meta').isVisible(),'Desktopinstrumenten ontbreken');
+  }
+  await page.screenshot({path:`test-results/melkweg-lab-v12-${width}.png`});
   assert.deepEqual(errors,[],'JavaScript-fouten op '+width);
   await page.close();
  }
- console.log('Melkweg Lab V11: canvas, touch-pins, uitleg, tijd, menu, grafiek en planeten gecontroleerd op mobiel en desktop.');
+ console.log('Melkweg Lab V12: instrument-HUD, modelwaarden, aanraakpunten, tijd, grafiek, menu, planeten en mobiel canvas gecontroleerd.');
 }finally{if(browser)await browser.close();server.kill();}

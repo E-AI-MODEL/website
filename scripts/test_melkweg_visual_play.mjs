@@ -37,9 +37,9 @@ try {
   await mode('dynamics');
   await page.locator('#play').click();
   await dragSky(.58);
-  assert((await page.locator('#toast').innerText()).includes('minder massa'),'Geef na het slepen een uitleg over de ontdekking');
+  assert.equal((await page.locator('.quest-card').count()),0,'Geen vraagkaarten in observatorium');
+  assert((await page.locator('#hudMode').textContent()).includes('DYNAMICA'),'Het model moet zijn meetmodus tonen');
   await page.locator('#labDock').click();
-  await page.getByRole('tab',{name:'Verander'}).click();
   assert(Number(await page.locator('#haloMass').inputValue())<.5,'Dragging sky must lower invisible mass');
   await page.locator('#labDock').click();
   await dragSky(.70,.19,.81);
@@ -49,7 +49,6 @@ try {
   await mode('stars');
   await dragSky(.70);
   await page.locator('#labDock').click();
-  await page.getByRole('tab',{name:'Verander'}).click();
   assert(Number(await page.locator('#limmag').inputValue())<13,'Sky telescope slider must hide faint stars');
   await page.locator('#labDock').click();
   await dragSky(.70,.19,.81);
@@ -59,7 +58,6 @@ try {
   await mode('gaia');
   await dragSky(.58);
   await page.locator('#labDock').click();
-  await page.getByRole('tab',{name:'Verander'}).click();
   assert(Number(await page.locator('#obDist').inputValue())<3,'Dragging must change distance');
   await page.locator('#labDock').click();
   await dragSky(.58,.19,.81);
@@ -75,7 +73,6 @@ try {
   await page.mouse.up();
   assert.notEqual(await page.locator('#timevalue').innerText(),before,'Drag S2 along its orbit');
   await page.locator('#labDock').click();
-  await page.getByRole('tab',{name:'Ontdek meer'}).click();
   await page.locator('#graphToggle').click();
   assert(await page.locator('.analytics-main').isVisible(),'Mobile graph should open visibly');
   await page.locator('#graphClose').click();
