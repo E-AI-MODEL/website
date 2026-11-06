@@ -514,6 +514,34 @@ html.solar-active,html.solar-active body{overflow:hidden!important;height:100dvh
  body.show-graphs .graph-close{height:24px;width:25px;border:1px solid #385368;border-radius:3px;background:#102336;font-size:15px}
 }
 
+
+/* Het zonnestelsel gebruikt dezelfde sobere instrumenttaal. */
+#solarExplorer .solar-shell{background:#07101c}
+#solarExplorer .solar-top{background:#081321;border-bottom:1px solid #2b4055}
+#solarExplorer .solar-back{border:1px solid #314e61;border-radius:4px;background:#112334;color:#afcddd;box-shadow:none;font:10px ui-monospace,monospace}
+#solarExplorer .solar-top-title b{font:600 13px ui-monospace,monospace;letter-spacing:.035em}
+#solarExplorer .solar-top-title small{font:9px ui-monospace,monospace;letter-spacing:.07em}
+#solarExplorer .solar-over strong{font:600 12px ui-monospace,monospace;letter-spacing:.08em}
+#solarExplorer .solar-over span{font:10px ui-monospace,monospace;color:#879eb4}
+#solarExplorer .solar-lower{border:1px solid #2b4760;border-radius:4px;background:#091827dc;box-shadow:none}
+#solarExplorer .solar-clock-top b{font:600 10px ui-monospace,monospace;letter-spacing:.07em}
+#solarExplorer .solar-time-btn{border:1px solid #38576a;border-radius:3px;background:#10263a}
+#solarExplorer .solar-side{background:#0a1523;border-color:#2b4155}
+#solarExplorer .solar-side h3{font:600 10px ui-monospace,monospace;letter-spacing:.1em;color:#b2cddd}
+#solarExplorer .planet-grid{gap:3px}
+#solarExplorer .planet-pick{min-height:48px;border:1px solid #2c4259;border-radius:3px;background:#0f2031;font:10px ui-monospace,monospace}
+#solarExplorer .planet-pick[aria-pressed=true]{border-color:#568c94;background:#163344;box-shadow:none}
+#solarExplorer .planet-dot{width:13px;height:13px}
+#solarExplorer .planet-card{border:1px solid #2a4359;border-radius:4px;background:#0b1c2c;padding:13px;min-height:0}
+#solarExplorer .planet-kicker{color:#85b3c7;font:9px ui-monospace,monospace;letter-spacing:.08em}
+#solarExplorer .planet-card h2{font:650 21px/1.2 ui-sans-serif,system-ui,sans-serif;margin:7px 0}
+#solarExplorer .planet-portrait-wrap{border-radius:3px;background:radial-gradient(circle,#102e46,#071323 80%);height:110px}
+#solarExplorer .planet-facts{gap:2px;margin:9px 0}
+#solarExplorer .planet-facts div{padding:9px 8px;border:0;border-bottom:1px solid #243b4e;border-radius:0;background:transparent}
+#solarExplorer .planet-facts small{font:9px ui-monospace,monospace;color:#7796a8}
+#solarExplorer .planet-facts b{font:600 12px ui-monospace,monospace;color:#d9eaf3}
+#solarExplorer .planet-next{width:auto;min-height:32px;padding:8px 10px;margin-top:10px;background:#102737;border:1px solid #3d6676;border-radius:3px;color:#a4d9d8;font:10px ui-monospace,monospace;box-shadow:none}
+
 </style>
 </head>
 <body>
@@ -1125,7 +1153,7 @@ function closeSolar(){solarOpen=false;solarPlaying=false;$('solarExplorer').hidd
 function selectPlanet(index,scrollToCard=false){solarSelected=index;const p=PLANETS[index];if(!p)return;
  document.querySelectorAll('.planet-pick').forEach((e,i)=>e.setAttribute('aria-pressed',String(i===index)));
  let year=p.years<1?Math.round(p.days)+' dagen':p.years===1?'1 jaar':p.years<2?'bijna 2 jaar':(p.years>=100?Math.round(p.years):p.years.toLocaleString('nl-NL',{maximumFractionDigits:1}))+' jaar';
- $('planetDetail').innerHTML=`<div class="planet-kicker">${p.tag.toUpperCase()}</div><h2>${p.name}</h2><div class="planet-portrait-wrap"><div class="planet-portrait ${p.name==='Saturnus'?'saturn':p.name==='Jupiter'?'jupiter':p.name==='Aarde'?'earth':''}" style="--pc:${p.color};--glow:${p.color}77" role="img" aria-label="Getekende ${p.name}"></div></div><p>${p.line}</p><div class="planet-facts"><div><small>Afstand tot de zon</small><b>${p.million.toLocaleString('nl-NL')} miljoen km</b></div><div><small>Eén rondje om de zon</small><b>${year}</b></div></div><div class="planet-tip">Probeer dit: ${p.challenge}</div><button class="planet-next" type="button" id="planetNext">Bekijk de volgende planeet →</button>`;
+ $('planetDetail').innerHTML=`<div class="planet-kicker">ZONNESTELSEL / BAANMODEL</div><h2>${p.name}</h2><div class="planet-portrait-wrap"><div class="planet-portrait ${p.name==='Saturnus'?'saturn':p.name==='Jupiter'?'jupiter':p.name==='Aarde'?'earth':''}" style="--pc:${p.color};--glow:${p.color}77" role="img" aria-label="Schematische ${p.name}"></div></div><div class="planet-facts"><div><small>BAANSTRAAL</small><b>${p.au.toLocaleString('nl-NL')} AE</b></div><div><small>OMLOOPTIJD</small><b>${year}</b></div><div><small>AFSTAND / ZON</small><b>${p.million.toLocaleString('nl-NL')} mln km</b></div><div><small>DIAMETER / AARDE</small><b>${p.diam.toLocaleString('nl-NL')} ×</b></div></div><button class="planet-next" type="button" id="planetNext">VOLGENDE PLANEET ↗</button>`;
  if(scrollToCard&&window.innerWidth<=740)setTimeout(()=>$('planetDetail').scrollIntoView({behavior:'smooth',block:'start'}),40);
 }
 function updateSolarTime(){ $('solarTime').value=String(solarTime);$('solarYearLabel').textContent=solarTime===0?'Nu':`+ ${solarTime.toLocaleString('nl-NL',{maximumFractionDigits:1})} jaar`;$('solarPlay').textContent=solarPlaying?'Ⅱ':'▶';$('solarPlay').setAttribute('aria-label',solarPlaying?'Pauzeer de planeten':'Laat de planeten bewegen')}
