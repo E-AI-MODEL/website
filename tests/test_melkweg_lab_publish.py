@@ -55,7 +55,7 @@ class MelkwegLabPublicationTests(unittest.TestCase):
             "role=\"tablist\"",
             "data-labtab=\"speel\"",
             "selectLabTab(activeLabTab)",
-            "mobile explorer layout",
+            "V7: mobiele bediening is een observatorium",
             "Waar zijn wij?",
             "Jouw avontuur",
             "solarExplorer",
