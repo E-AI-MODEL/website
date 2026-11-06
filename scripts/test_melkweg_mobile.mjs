@@ -121,6 +121,14 @@ try{
    await page.locator('#backGalaxy').click();
    assert(!(await page.locator('#solarExplorer').isVisible()));
   }
+  if(width>=850){
+   assert(await page.locator('.analytics-main').isVisible(),'Desktop moet direct een grafiek tonen');
+   assert(await page.evaluate(()=>document.body.classList.contains('show-graphs')),'Desktopgrafiek staat niet aan');
+   const graph=await page.locator('.analytics-main').boundingBox();
+   assert(graph&&graph.height>120,'Desktopgrafiek is te klein');
+   assert(await page.locator('.instrument-controls .switch').count()>=8,'Desktopmodelcomponenten ontbreken');
+   assert(await page.locator('.instrument-meta').isVisible(),'Desktopinstrumenten ontbreken');
+  }
   await page.screenshot({path:`test-results/melkweg-lab-v12-${width}.png`});
   assert.deepEqual(errors,[],'JavaScript-fouten op '+width);
   await page.close();
