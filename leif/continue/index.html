@@ -4,7 +4,7 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light">
 <meta name="robots" content="noindex,nofollow,noarchive"><meta name="referrer" content="no-referrer">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src https://ngcyfbstajfcfdhlelbz.supabase.co; img-src data:; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'unsafe-inline'; connect-src https://ngcyfbstajfcfdhlelbz.supabase.co; img-src data:; base-uri 'none'; form-action 'none'">
 <title>LEIF | Verder met mijn verhaal</title>
 <style>
 :root{--ink:#17283f;--blue:#235b92;--muted:#64788a;--paper:#fbfaf7;--soft:#eff5f7;--line:#dbe4e8}
@@ -136,6 +136,7 @@ const filled=q=>value(q.id).trim().length>0;
 const count=()=>flat.filter(filled).length;
 const endpoint='https://ngcyfbstajfcfdhlelbz.supabase.co/functions/v1/leif-demo-session';
 let token='',key='',answers={},pending={},current=0,saveTimer,activeSave=null;
+const leifPreview=window.parent!==window&&new URLSearchParams(location.search).get('leif_voorbeeld')==='1';
 const setStatus=s=>{$('saveStatus').textContent=s;$('saveDetail').textContent=s;};
 async function api(action,extra={}){
  const r=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},credentials:'omit',cache:'no-store',body:JSON.stringify({action,token,...extra})});
@@ -147,11 +148,13 @@ function persist(){
  try{if(key)localStorage.setItem(key,JSON.stringify(pending));}catch{setStatus('Download een JSON als reservekopie');}
 }
 function change(id,val){
+ if(leifPreview)return;
  if(val===null)delete answers[id];else answers[id]=val;
  pending[id]=val;persist();progress();setStatus('Lokaal bewaard, server volgt');
  clearTimeout(saveTimer);saveTimer=setTimeout(flush,700);
 }
 async function flush(){
+ if(leifPreview)return true;
  if(activeSave)return activeSave;
  const batch={...pending};
  if(!Object.keys(batch).length){setStatus('Op server opgeslagen');return true;}
@@ -265,6 +268,10 @@ $('jsonInput').onchange=async e=>{
 window.addEventListener('pagehide',persist);
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden'){persist();flush();}});
 try{
+ if(leifPreview){
+  $('gate').hidden=true;$('editor').hidden=false;answers={};pending={};current=0;
+  render();setStatus('Voorbeeld zonder persoonlijke antwoorden.');
+ }else{
  const fromLink=new URLSearchParams(location.hash.slice(1)).get('code');
  const previous=sessionStorage.getItem('leifContinueToken');
  if(fromLink||previous){
@@ -274,5 +281,7 @@ try{
    location.replace('/leif/');
   });
  }else location.replace('/leif/');
-}catch{location.replace('/leif/')}
-</script></body></html>
+ }
+}catch{if(!leifPreview)location.replace('/leif/')}
+</script><script src="/leif/tekstbeheer.js" defer></script>
+</body></html>

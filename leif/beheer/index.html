@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow,noarchive">
 <meta name="referrer" content="no-referrer">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src https://ngcyfbstajfcfdhlelbz.supabase.co; img-src 'none'; font-src 'none'; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'unsafe-inline'; connect-src https://ngcyfbstajfcfdhlelbz.supabase.co; frame-src 'self'; img-src 'none'; font-src 'none'; base-uri 'none'; form-action 'none'; object-src 'none'">
 <title>LEIF | Beheer</title>
 <style>
 :root{--paper:#f7f4ef;--white:#fffdfc;--ink:#243746;--muted:#607783;--line:#d9e2e6;--soft:#e8f0f3;--blue:#426c82;--warning:#924232}
@@ -15,26 +15,69 @@ main{max-width:1160px;margin:auto;padding:42px 24px 120px}.tag{font-weight:800;c
 .detail-grid{display:grid;grid-template-columns:290px minmax(0,1fr);gap:26px;margin-top:32px}.list{display:grid;gap:9px;max-height:69vh;overflow-y:auto;padding-right:5px}.person{border:1px solid var(--line);border-radius:10px;padding:15px;background:var(--white);text-align:left;display:grid;gap:3px}.person[data-active=true]{border-color:var(--blue);background:var(--soft)}.person strong{font-size:15px}.person small{font-size:12px;color:var(--muted)}.person .status{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--blue)}
 .notice{background:var(--soft);padding:17px 19px;border-radius:10px;border:1px solid #d2e1e8;margin:18px 0;max-width:76ch}.notice strong{display:block;margin-bottom:6px}.notice p{margin:0;color:#486273;font-size:14px}.newcode{background:#e8f0f3;border:1px solid #bad0dd;border-radius:11px;padding:18px;margin:20px 0}.newcode code{display:block;overflow-wrap:anywhere;background:#fff;padding:12px;border-radius:6px;font-size:13px;margin:8px 0 12px;user-select:all}.newcode p{margin:0;color:var(--muted);font-size:13px}.navtabs{display:flex;flex-wrap:wrap;gap:8px;border-bottom:1px solid var(--line);padding-bottom:12px;margin:25px 0}.navtabs button{padding:9px 12px;background:none;border:1px solid transparent;border-radius:8px;color:var(--muted)}.navtabs button[aria-current=page]{background:var(--soft);border-color:#c6d8df;color:var(--ink);font-weight:700}.toolbar{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0}.meta{color:var(--muted);font-size:13px}.readout{border-top:1px solid var(--line);padding:15px 0;max-width:680px}.readout dt{font-weight:700;font-size:14px}.readout dd{margin:4px 0 0;white-space:pre-wrap;color:#455965}.readonly{padding:14px 0;border-top:1px solid var(--line)}.readonly p{white-space:pre-wrap;line-height:1.85}.empty{padding:32px 0;color:var(--muted)}.save-status{font-size:13px;color:#527786;min-height:22px}.save-status.error{color:#9a473d}.divider{border:0;border-top:1px solid var(--line);margin:25px 0}.warn{color:var(--warning)}.sr-only{position:absolute;left:-9999px}
 @media(max-width:850px){.detail-grid{grid-template-columns:1fr}.list{max-height:300px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}.mast-inner{flex-wrap:wrap}main{padding:28px 18px 90px}}
+
+.site-edit-toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:16px 0}
+.site-edit-grid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(290px,.85fr);gap:18px}
+.site-frame{width:100%;min-height:620px;border:1px solid var(--line);border-radius:14px;background:var(--paper)}
+.site-edit-side{min-width:0;max-height:720px;overflow:auto}
+.site-edit-side .field textarea{width:100%;min-height:150px}
+.site-original{white-space:pre-wrap;color:var(--muted);font-size:13px;overflow-wrap:anywhere}
+.site-edit-list{display:grid;gap:5px;max-height:170px;overflow:auto;margin:12px 0}
+.site-edit-list button{display:block;text-align:left;background:var(--white);border:1px solid var(--line);border-radius:7px;padding:8px;font-size:12px;color:var(--ink);white-space:normal}
+.site-edit-list button[aria-current=true]{background:var(--soft);border-color:var(--blue)}
+.site-edit-status{font-size:13px;color:var(--muted);min-height:22px}
+.site-edit-history button{margin:4px 0}
+@media(max-width:830px){.site-edit-grid{grid-template-columns:1fr}.site-frame{min-height:440px}.site-edit-side{max-height:none}}
 </style>
 </head>
 <body>
 <header class="mast"><div class="mast-inner"><a href="/leif/" class="brand">LEIF <span>Beheer</span></a><div class="actions"><span class="meta" id="identity"></span><button id="logout" type="button" class="btn secondary compact" hidden>Uitloggen</button></div></div></header>
 <main>
 <section id="login" class="panel login" hidden>
-<div class="tag">Beheerder</div><h1>Jouw LEIF-omgeving</h1>
-<p class="sub">Beheer deelnemers, hun codes en de persoonlijke verhalen die je voor hen schrijft. Hiervoor gebruik je je eigen beheerdersaccount.</p>
-<form id="loginForm">
-<div class="field"><label for="email">E-mailadres</label><input id="email" type="email" autocomplete="username" required></div>
-<div class="field"><label for="password">Wachtwoord</label><input id="password" type="password" autocomplete="current-password" required></div>
-<button id="signIn" class="btn" type="submit">Inloggen als beheerder</button>
-</form>
-<p class="save-status error" id="loginError" role="alert"></p>
-<p class="meta">Deelnemers gebruiken een eigen code. Die code geeft nooit toegang tot dit beheer.</p>
+<p>Ga terug naar LEIF en vul VIS in om een inloglink te ontvangen.</p>
 </section>
 <p id="loading" class="meta" role="status">Beheer openen...</p>
 <section id="workspace" hidden>
 <div class="tag">LEIF beheer</div><h1>Deelnemers en verhalen</h1>
-<p class="sub">Je ziet alleen de deelnemers waarvoor je beheerrechten hebt. Deelnemers lezen pas een persoonlijke reactie nadat je die hebt gepubliceerd.</p>
+<p class="sub">Je kunt hier deelnemers beheren, hun verhalen schrijven en de teksten van LEIF aanpassen.</p>
+<div class="site-edit-toolbar"><button id="showPeople" type="button" class="btn secondary compact" aria-pressed="true">Deelnemers en verhalen</button><button id="showSiteEditor" type="button" class="btn secondary compact" aria-pressed="false">Teksten beheren</button></div>
+<section id="siteEditor" class="panel" hidden>
+<h2>Teksten beheren</h2>
+<p class="sub">Kies een pagina en klik op een tekst in het voorbeeld. Je wijzigingen blijven een concept totdat je op Publiceren klikt. Het versleutelde persoonlijke KEI-verhaal is hier niet bewerkbaar.</p>
+<div class="site-edit-toolbar">
+<label for="sitePage">Pagina</label>
+<select id="sitePage" aria-label="Kies een pagina">
+<option value="start">Inloggen</option>
+<option value="kei">KEI startpagina</option>
+<option value="mijn">Persoonlijke omgeving</option>
+<option value="vervolg">Vervolgvragen</option>
+<option value="verhaal">Leesverhaal (alleen openbare tekst)</option>
+<option value="beheer">Beheeromgeving (alleen algemene tekst)</option>
+</select>
+<button type="button" id="siteRefresh" class="btn secondary compact">Voorbeeld opnieuw laden</button>
+<button type="button" id="siteMode" class="btn secondary compact" aria-pressed="true">Door pagina bladeren</button>
+</div>
+<div class="site-edit-grid">
+<iframe id="sitePreview" title="Voorbeeld van LEIF om teksten te kiezen" class="site-frame" referrerpolicy="no-referrer" sandbox="allow-same-origin allow-scripts"></iframe>
+<div class="site-edit-side">
+<h3>Teksten op deze pagina</h3>
+<p class="meta">Klik in het voorbeeld of kies een tekst uit de lijst. Bestaande deelnemersantwoorden worden niet weergegeven.</p>
+<div id="siteFieldList" class="site-edit-list" aria-label="Teksten op pagina"></div>
+<div id="siteEditForm" hidden>
+<div class="field"><label for="siteEditInput">Tekst</label><textarea id="siteEditInput" maxlength="6000" rows="7"></textarea></div>
+<div class="meta">Oorspronkelijk</div><p id="siteOriginal" class="site-original"></p>
+<div class="site-edit-toolbar">
+<button id="siteSave" class="btn" type="button">Bewaar concept</button>
+<button id="sitePublish" class="btn secondary" type="button">Publiceren</button>
+<button id="siteUnpublish" class="btn secondary" type="button">Publicatie terugnemen</button>
+</div>
+<details><summary>Eerdere versies</summary><div id="siteHistory" class="site-edit-history"></div></details>
+</div>
+<p id="siteEditStatus" class="site-edit-status" role="status" aria-live="polite"></p>
+</div>
+</div>
+</section>
+<div id="peopleWorkspace">
 <div class="toolbar"><label for="tenant">Omgeving</label><select id="tenant" aria-label="Kies een LEIF-omgeving"></select><button id="reload" type="button" class="btn secondary compact">Vernieuwen</button></div>
 <section class="panel" id="testerPanel" hidden>
 <h2>Testers van de LEIF-proef</h2>
@@ -103,6 +146,7 @@ main{max-width:1160px;margin:auto;padding:42px 24px 120px}.tag{font-weight:800;c
 </div>
 </section>
 </div>
+</div>
 </section>
 </main>
 <script>
@@ -128,15 +172,6 @@ async function request(action,extra={},retry=true){
  return data;
 }
 function saveSession(){try{sessionStorage.setItem('leif-admin-session-v1',JSON.stringify({access_token:auth.access_token,refresh_token:auth.refresh_token,tenants}))}catch{}}
-async function signIn(email,password){
- const response=await request('login',{email,password},false);
- auth=response;tenants=response.tenants;saveSession();
- show('login',false);show('workspace',true);show('logout',true);E('loading').hidden=true;
- E('identity').textContent=response.user_email||'Beheerder';
- E('password').value='';
- E('tenant').replaceChildren(...tenants.map(t=>{const o=el('option',null,t.name);o.value=t.id;return o}));
- tenant=tenants[0];E('tenant').value=tenant.id;await loadList();await loadTesters();
-}
 async function resumeSession(){
  let value;try{value=JSON.parse(sessionStorage.getItem('leif-admin-session-v1')||'null')}catch{}
  if(!value?.refresh_token){location.replace('/leif/?beheer=1');return;}
@@ -270,7 +305,6 @@ async function performStory(action,extra={}){
  }catch(e){status(e.status===409?'Dit dossier is intussen gewijzigd. Kopieer je tekst en open het dossier opnieuw.':'Opslaan is niet gelukt. Je tekst staat nog op dit scherm.',true)}
  finally{setBusy(false)}
 }
-E('loginForm').onsubmit=async e=>{e.preventDefault();E('signIn').disabled=true;E('loginError').textContent='';try{await signIn(E('email').value,E('password').value)}catch(e){E('loginError').textContent=e.status===403?'Dit account heeft geen LEIF-beheerrechten.':'Inloggen is niet gelukt. Controleer je gegevens.'}finally{E('signIn').disabled=false}};
 E('logout').onclick=()=>{if(!confirmDiscard())return;sessionStorage.removeItem('leif-admin-session-v1');auth=null;tenants=[];tenant=null;selected=null;documentState=null;dirty=false;show('workspace',false);show('detail',false);show('logout',false);E('identity').textContent='';location.assign('/leif/')};
 E('tenant').onchange=async()=>{if(!confirmDiscard()){E('tenant').value=tenant.id;return}tenant=tenants.find(t=>t.id===E('tenant').value);selected=null;dirty=false;E('testerInvite').hidden=true;await loadList();await loadTesters()};
 E('reload').onclick=async()=>{if(confirmDiscard()){dirty=false;await loadList();await loadTesters()}};
@@ -300,6 +334,13 @@ E('saveName').onclick=async()=>{if(!selected||!canManage()||dirty)return;const n
 E('rotateCode').onclick=async()=>{if(!selected||!canManage())return;if(!confirm('De bestaande code werkt hierna niet meer. Een nieuwe code maken?'))return;try{const r=await request('rotate',{tenant_id:tenant.id,participant_id:selected.id});codeVisible(r.code,selected.display_name||'deelnemer');E('codePanel').scrollIntoView({behavior:'smooth'})}catch{alert('Een nieuwe code maken is niet gelukt.')}};
 E('revoke').onclick=async()=>{if(!selected||!canManage())return;if(!confirm('Toegang intrekken? De gegevens blijven bewaard.'))return;try{await request('revoke',{tenant_id:tenant.id,participant_id:selected.id});await loadList()}catch{alert('Intrekken is niet gelukt.')}};
 window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue=''}});
-resumeSession();
+window.LeifBeheer={request,getTenant:()=>tenant,canManage};
+if(window.parent!==window&&new URLSearchParams(location.search).get('leif_voorbeeld')==='1'){
+ E('workspace').hidden=false;E('loading').hidden=true;E('login').hidden=true;
+ E('newPanel').hidden=true;E('testerPanel').hidden=true;
+ E('identity').textContent='Voorbeeld zonder deelnemersgegevens';
+}else resumeSession();
 </script>
+<script src="/leif/beheer/teksteditor.js" defer></script>
+<script src="/leif/tekstbeheer.js" defer></script>
 </body></html>

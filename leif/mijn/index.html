@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow,noarchive">
 <meta name="referrer" content="no-referrer">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src https://ngcyfbstajfcfdhlelbz.supabase.co; img-src 'none'; font-src 'none'; base-uri 'none'; object-src 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'unsafe-inline'; connect-src https://ngcyfbstajfcfdhlelbz.supabase.co; img-src 'none'; font-src 'none'; base-uri 'none'; object-src 'none'; form-action 'none'">
 <title>LEIF | Mijn omgeving</title>
 <style>
 :root{--ink:#243746;--muted:#667986;--blue:#527f94;--paper:#f7f4ef;--white:#fffdfc;--line:#d9e2e6;--soft:#e8f0f3;--shadow:0 10px 32px #2437460b}
@@ -51,6 +51,7 @@ main{max-width:1080px;margin:auto;padding:44px 25px 105px}.gate{max-width:490px;
 <script>
 'use strict';
 const apiEndpoint='https://ngcyfbstajfcfdhlelbz.supabase.co/functions/v1/leif-personal-session';
+const leifPreview=window.parent!==window&&new URLSearchParams(location.search).get('leif_voorbeeld')==='1';
 const chapters = [
  {id:'buitenkant', name:'Wat anderen zien', label:'De buitenkant', intro:'Anderen zien soms vooral je sterke of scherpe kant. Misschien herken je dat, misschien helemaal niet. Jij bepaalt wat daarvan klopt.', desc:'Wat zichtbaar is en wat minder snel wordt opgemerkt.', questions:[
   {id:'zichtbaar',type:'text',title:'Welke indruk krijgen mensen vaak van jou?',hint:'Je hoeft die indruk niet juist te vinden. Het gaat om wat anderen volgens jou opmerken.',placeholder:'Mensen zien vaak iemand die...'},
@@ -137,11 +138,13 @@ async function signIn(code){
  }finally{E('loginButton').disabled=false}
 }
 function mergeChanges(updates){
+ if(leifPreview)return;
  for(const [k,v] of Object.entries(updates)){doc[k]=v;pending[k]=v}
  setStatus('Nog niet opgeslagen');
  clearTimeout(saveTimer);saveTimer=setTimeout(flush,900);
 }
 async function flush(){
+ if(leifPreview)return;
  if(!doc||!Object.keys(pending).length)return;
  if(saveTask)return saveTask;
  clearTimeout(saveTimer);
@@ -291,10 +294,18 @@ E('tabs').querySelectorAll('button').forEach(b=>b.onclick=()=>goto(b.dataset.scr
 window.addEventListener('beforeunload',e=>{if(Object.keys(pending).length||saveTask){e.preventDefault();e.returnValue=''}});
 window.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')flush()});
 try{
- const fromSession=sessionStorage.getItem('leif-personal-access-code-v1');
- if(fromSession)signIn(fromSession);
- else location.replace('/leif/');
-}catch{location.replace('/leif/')}
+ if(leifPreview){
+  doc={answers:{},exercises:{},report:null,position:{screen:'start',question_index:0},personal_texts:{},revision:0};
+  person={name:'Voorbeeld'};pending={};
+  E('login').hidden=true;E('workspace').hidden=false;E('logout').hidden=true;
+  E('welcome').textContent='Mijn LEIF';setStatus('Voorbeeld, zonder persoonlijke gegevens');render();
+ }else{
+  const fromSession=sessionStorage.getItem('leif-personal-access-code-v1');
+  if(fromSession)signIn(fromSession);
+  else location.replace('/leif/');
+ }
+}catch{if(!leifPreview)location.replace('/leif/')}
 </script>
+<script src="/leif/tekstbeheer.js" defer></script>
 </body>
 </html>

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow,noarchive">
 <meta name="referrer" content="no-referrer">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; frame-src https://open.spotify.com; img-src 'none'; font-src 'none'; form-action 'none'; base-uri 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; frame-src https://open.spotify.com; img-src 'none'; font-src 'none'; form-action 'none'; base-uri 'none'">
 <title>LEIF | Persoonlijk verhaal</title>
 <style>
 :root{--navy:#182b47;--blue:#2d608d;--sea:#86a9ad;--ink:#26364b;--muted:#6a7b8e;--paper:#fbfaf8;--line:#dfe5e9;--white:#fff;--soft:#f0f5f7;--shadow:0 10px 32px rgba(24,43,71,.055)}
@@ -204,7 +204,11 @@ async function saveNotes(){try{const obj={format:'leif-private-notes',version:1,
 async function restoreNotes(file){if(!file)return;try{if(file.size>2000000)throw Error('large');const obj=JSON.parse(await file.text());if(obj.format!=='leif-private-notes'||obj.version!==1||typeof obj.encrypted!=='string')throw Error('format');const [a,b]=obj.encrypted.split('.');if(!a||!b)throw Error('format');const iv=decode(a),cipher=decode(b);if(iv.length!==12)throw Error('iv');const k=await crypto.subtle.importKey('raw',sessionKey,'AES-GCM',false,['decrypt']);const raw=await crypto.subtle.decrypt({name:'AES-GCM',iv,additionalData:encoder.encode('LEIF-NOTES-V1')},k,cipher);const saved=JSON.parse(new TextDecoder().decode(raw));const ids=new Set(story.parts[2].sections.flatMap(x=>(x.fields||[]).map(y=>y.id)));if(saved.format!=='leif-private-notes'||!saved.notes||typeof saved.notes!=='object')throw Error('data');for(const [name,value] of Object.entries(saved.notes)){if(ids.has(name)&&typeof value==='string')notes[name]=value.slice(0,30000)}dirty=false;const pos=saved.position||{};if(pos.part>=0&&pos.part<3&&pos.scene>=0&&pos.scene<story.parts[pos.part].sections.length)read(pos.part,pos.scene);else intro(2);alert('Je antwoorden zijn geopend. Je kunt verder waar je gebleven was.');}catch{alert('Dit bestand is niet geldig of hoort bij een andere persoonlijke sleutel.')}}
 E('unlock').onclick=()=>unlock();E('secret').onkeydown=e=>{if(e.key==='Enter')unlock()};E('home').onclick=()=>{if(story)cover()};E('previous').onclick=()=>move(-1);E('next').onclick=()=>move(1);E('save').onclick=saveNotes;E('restore').onclick=()=>E('restoreFile').click();E('restoreFile').onchange=e=>{restoreNotes(e.target.files?.[0]);e.target.value=''};window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue=''}});document.addEventListener('keydown',e=>{if(!story||e.target.closest('input,textarea,button'))return;if(e.key==='ArrowRight')move(1);if(e.key==='ArrowLeft')move(-1)});
 try{
- if(sessionStorage.getItem('leif-kei-session-v1')==='1'){unlock('KEI')}
+ if(window.parent!==window&&new URLSearchParams(location.search).get('leif_voorbeeld')==='1'){
+  E('gate').hidden=false;E('reader').hidden=true;
+  E('headtools').hidden=true;
+ }else if(sessionStorage.getItem('leif-kei-session-v1')==='1'){unlock('KEI')}
  else location.replace('/leif/');
 }catch(e){location.replace('/leif/')}
-</script></body></html>
+</script><script src="/leif/tekstbeheer.js" defer></script>
+</body></html>

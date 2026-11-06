@@ -38,6 +38,27 @@ Deno.serve(async req=>{
  if(!object(input)||JSON.stringify(input).length>180000)return send({error:"invalid_request"},400,origin);
  const service=svc(),key=publicKey();if(!service||!key||!projectUrl)return send({error:"not_configured"},503,origin);
  try{
+
+  // Alleen gepubliceerde algemene websiteteksten. Antwoorden en concepten nooit openbaar.
+  if(input.action==="site_public"){
+   if(typeof input.page!=="string"||!["start","mijn","vervolg","verhaal","beheer"].includes(input.page))return send({error:"invalid_page"},400,origin);
+   const items=await database("leif_site_texts?page=eq."+input.page+"&published_text=not.is.null&select=field_key,published_text&limit=500","GET",null,service);
+   return send({ok:true,items},200,origin);
+  }
+  // VIS is alleen de ingang. Supabase verstuurt een eenmalige link naar het
+  // reeds bevestigde beheerdersaccount. De gebruiker kan geen e-mailadres
+  // of redirect-URL meegeven en er wordt nooit een nieuwe account aangemaakt.
+  if(input.action==="request_magic_link"){
+   const email="vis@emmauscollege.nl";
+   const redirect="https://eaimodel.nl/leif/";
+   try{
+    await authRequest("otp?redirect_to="+encodeURIComponent(redirect),{email,create_user:false},key);
+   }catch(error){
+    if(String(error?.message||"")==="auth_429")return send({error:"too_many_requests"},429,origin);
+    return send({error:"link_unavailable"},503,origin);
+   }
+   return send({ok:true},200,origin);
+  }
   // Beheerders melden zich aan met een bestaand, bevestigd Supabase Auth-account.
   if(input.action==="login"||input.action==="refresh"){
    if(input.action==="login"&&(typeof input.email!=="string"||input.email.length>254||typeof input.password!=="string"||input.password.length>1000))return send({error:"invalid_credentials"},400,origin);
@@ -60,6 +81,53 @@ Deno.serve(async req=>{
   const scope=memberships.find(t=>t.id===input.tenant_id);
   if(!scope)return send({error:"not_authorized"},403,origin);
 
+
+  if(["site_list","site_save","site_publish","site_unpublish","site_history","site_restore"].includes(input.action)){
+   if(scope.slug!=="leif"||scope.role!=="manager")return send({error:"not_authorized"},403,origin);
+   const pages=["start","mijn","vervolg","verhaal","beheer"];
+   if(typeof input.page!=="string"||!pages.includes(input.page))return send({error:"invalid_page"},400,origin);
+   const page=input.page;
+   if(input.action==="site_list"){
+    const items=await database("leif_site_texts?page=eq."+page+"&select=page,field_key,original_text,draft_text,published_text,revision,updated_at,published_at&order=updated_at.desc&limit=500","GET",null,service);
+    return send({ok:true,items},200,origin);
+   }
+   if(typeof input.field_key!=="string"||!/^[0-9a-f]{16}$/.test(input.field_key))return send({error:"invalid_field"},400,origin);
+   const path="leif_site_texts?page=eq."+page+"&field_key=eq."+input.field_key;
+   if(input.action==="site_history"){
+    const items=await database("leif_site_text_history?page=eq."+page+"&field_key=eq."+input.field_key+"&select=id,revision,draft_text,published_text,event,changed_at&order=id.desc&limit=60","GET",null,service);
+    return send({ok:true,items},200,origin);
+   }
+   const rows=await database(path+"&select=page,field_key,original_text,draft_text,published_text,revision,published_at","GET",null,service);
+   const existing=rows[0]||null;
+   if(!Number.isInteger(input.revision)||input.revision<0||input.revision>1000000||input.revision!==(existing?.revision||0))return send({error:"revision_conflict",revision:existing?.revision||0},409,origin);
+   let update;
+   if(input.action==="site_save"){
+    if(typeof input.text!=="string"||input.text.length>6000)return send({error:"invalid_text"},400,origin);
+    if(!existing){
+     if(typeof input.original!=="string"||input.original.trim().length<3||input.original.length>6000)return send({error:"invalid_original"},400,origin);
+     const initial={page,field_key:input.field_key,original_text:input.original,draft_text:input.text,revision:1,changed_by:user.id};
+     try{
+      const created=await database("leif_site_texts","POST",initial,service);
+      if(created.length===1)return send({ok:true,item:created[0]},200,origin);
+     }catch{return send({error:"revision_conflict"},409,origin)}
+     return send({error:"save_failed"},503,origin);
+    }
+    update={draft_text:input.text};
+   }else if(!existing)return send({error:"not_found"},404,origin);
+   else if(input.action==="site_publish"){
+    update={published_text:existing.draft_text,published_at:new Date().toISOString()};
+   }else if(input.action==="site_unpublish"){
+    update={published_text:null,published_at:null};
+   }else if(input.action==="site_restore"){
+    if(!Number.isSafeInteger(input.history_id)||input.history_id<1)return send({error:"invalid_version"},400,origin);
+    const history=await database("leif_site_text_history?id=eq."+input.history_id+"&page=eq."+page+"&field_key=eq."+input.field_key+"&select=draft_text&limit=1","GET",null,service);
+    if(history.length!==1)return send({error:"not_found"},404,origin);
+    update={draft_text:history[0].draft_text};
+   }else return send({error:"invalid_action"},400,origin);
+   const result=await database(path+"&revision=eq."+existing.revision,"PATCH",{...update,revision:existing.revision+1,changed_by:user.id,updated_at:new Date().toISOString()},service);
+   if(result.length!==1)return send({error:"revision_conflict"},409,origin);
+   return send({ok:true,item:result[0]},200,origin);
+  }
   if(input.action==="list_testers" || input.action==="create_tester" || input.action==="get_tester"){
     if(scope.slug!=="leif" || scope.role!=="manager")return send({error:"not_authorized"},403,origin);
     if(input.action==="list_testers"){

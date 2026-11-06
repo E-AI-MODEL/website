@@ -6,18 +6,27 @@ import { strict as assert } from 'node:assert';
 
 const source=resolve(process.argv[2]||'site-build','leif/continue/index.html');
 const html=readFileSync(source,'utf8');
+const siteCopy=readFileSync(resolve(process.argv[2]||'site-build','leif/tekstbeheer.js'),'utf8');
 const ids=['zichtbaar','observeren','onzichtbaar','sterk','raak','reactie','behoefte','geschiedenis','geleerd','licht','zorggeven','zorgontvangen','zorgvragen','zorggrens','vertrouwen','afstand','vragen','keuzes','denkenhelpt','denkenweg','eigenweg','behouden','veranderen'];
 const answers=Object.fromEntries(ids.map(x=>[x,'Demo antwoord '+x]));
 answers.observeren='Ik kijk en luister eerst';answers.reactie='Het verschilt per situatie';
 answers.zorgvragen='Ik los het liever zelf op';answers.keuzes='Ik analyseer eerst';
 let sent=false,saveCount=0;
-const server=createServer((req,res)=>{res.writeHead(200,{'content-type':'text/html;charset=utf-8'});res.end(html);});
+const server=createServer((req,res)=>{
+ if(req.url?.startsWith('/leif/tekstbeheer.js')){
+  res.writeHead(200,{'content-type':'application/javascript;charset=utf-8'});
+  res.end(siteCopy);return;
+ }
+ res.writeHead(200,{'content-type':'text/html;charset=utf-8'});res.end(html);
+});
 await new Promise(ok=>server.listen(0,'127.0.0.1',ok));
 const port=server.address().port;
 const origin='http://127.0.0.1:'+port;
 const browser=await chromium.launch({headless:true});
 const context=await browser.newContext({viewport:{width:1280,height:900}});
 const page=await context.newPage(), errors=[];
+const demoCode='synthetic-'+('a'.repeat(39));
+await context.addInitScript(code=>{sessionStorage.setItem('leifContinueToken',code)},demoCode);
 page.on('pageerror',e=>errors.push(e.message));
 await page.route('**/functions/v1/leif-demo-session',async route=>{
  const req=route.request(),headers={'access-control-allow-origin':origin,'access-control-allow-methods':'POST,OPTIONS','access-control-allow-headers':'content-type','content-type':'application/json'};
@@ -31,8 +40,6 @@ await page.route('**/functions/v1/leif-demo-session',async route=>{
 });
 try{
  await page.goto(origin+'/leif/continue/');
- await page.locator('#secret').fill('synthetic-'+('a'.repeat(39)));
- await page.locator('#open').click();
  await page.locator('#editor').waitFor({state:'visible',timeout:10000});
  assert.equal(await page.locator('#total').innerText(),'23');
  assert.match(await page.locator('#question h2').innerText(),/zit diezelfde kant je in de weg/);
@@ -60,9 +67,8 @@ try{
   await route.fulfill({status:200,headers,body:JSON.stringify({ok:true,status:'draft',answers})});
  });
  const mobilePage=await mobile.newPage();
+ await mobilePage.addInitScript(code=>{sessionStorage.setItem('leifContinueToken',code)},demoCode);
  await mobilePage.goto(origin+'/leif/continue/');
- await mobilePage.locator('#secret').fill('synthetic-'+('a'.repeat(39)));
- await mobilePage.locator('#open').click();
  await mobilePage.locator('#editor').waitFor({state:'visible',timeout:10000});
  assert.equal(await mobilePage.locator('#total').innerText(),'24');
  await mobilePage.screenshot({path:'test-results/leif-continue-mobile.png',fullPage:true});

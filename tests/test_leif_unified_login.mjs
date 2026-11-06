@@ -26,14 +26,16 @@ test('LIS opent Kars via uitsluitend de gemarkeerde demo-alias',()=>{
  assert.match(server,/member\.state!=="active"/);
  assert.match(personal,/id="demoLabel"/);
 });
-test('VIS toont extra controle in hetzelfde inlogscherm',()=>{
- assert.match(main,/id="adminEmail"/);
- assert.match(main,/id="adminPassword"/);
- assert.match(main,/action:'login',email,password/);
- assert.match(main,/t\.role==='manager'&&t\.slug==='leif'/);
+test('VIS gebruikt een beveiligde inloglink zonder wachtwoordformulier',()=>{
+ assert.doesNotMatch(main,/id="adminEmail"|id="adminPassword"/);
+ assert.match(main,/action:'request_magic_link'/);
+ assert.match(main,/action:'session'/);
+ assert.match(main,/completeAdminLink/);
+ assert.match(main,/t\.slug==='leif'&&t\.role==='manager'/);
  assert.match(main,/leif-admin-session-v1/);
  assert.match(main,/quickClicks===3/);
  assert.match(beheer,/request\('refresh'/);
+ assert.doesNotMatch(beheer,/id="password"|id="email"/);
 });
 test('geen tweede zichtbaar inlogformulier',()=>{
  for(const html of [reading,personal,continuation,beheer])assert.match(html,/<section[^>]*id="(?:gate|login)"[^>]*hidden>/);

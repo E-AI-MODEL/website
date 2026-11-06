@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light">
 <meta name="robots" content="noindex,nofollow,noarchive">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src https://ngcyfbstajfcfdhlelbz.supabase.co; img-src data:; font-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'unsafe-inline'; connect-src https://ngcyfbstajfcfdhlelbz.supabase.co; img-src data:; font-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="description" content="LEIF. Een persoonlijk reflectiegesprek over de buitenkant, gevoel, geschiedenis, verbinding en verandering. Privé, zonder type of score.">
 <title>LEIF | Meer dan een profiel</title>
 <style>
@@ -94,29 +94,36 @@ body{background:var(--paper);color:var(--ink)}
 .access-extra label{margin-top:12px}
 .access-extra input{letter-spacing:normal;font-size:16px}
 .access-extra[hidden]{display:none}
+
+.access-screen{position:relative;isolation:isolate;overflow:hidden;background:#f9f8f5}
+.access-screen:before,.access-screen:after{content:"";position:absolute;inset:-24%;z-index:-1;pointer-events:none;opacity:.46;filter:blur(52px);background:radial-gradient(ellipse at 34% 39%,#e6eef0 0,transparent 42%),radial-gradient(ellipse at 77% 64%,#eee7df 0,transparent 39%);animation:leifDrift 34s ease-in-out infinite alternate}
+.access-screen:after{opacity:.23;animation-duration:47s;animation-direction:alternate-reverse;transform:scale(1.15)}
+@keyframes leifDrift{from{transform:translate(-1.8%,-1.1%) scale(1)}to{transform:translate(2%,1.8%) scale(1.04)}}
+.access-symbol{width:52px;height:52px;display:grid;place-items:center;color:#405e72;background:#f1f3f2;border-radius:50%}
+.access-brand{margin-bottom:23px;gap:12px}
+.access-card{box-shadow:0 20px 70px rgba(38,57,66,.065);border-color:#e5e9e6}
+.access-card h1{font-size:clamp(31px,4vw,43px);letter-spacing:-.035em}
+.access-desc{line-height:1.84;color:#576a74;max-width:43ch;font-size:15.5px;margin-bottom:25px}
+.access-form .btn{margin-top:15px}
+@media(prefers-reduced-motion:reduce){.access-screen:before,.access-screen:after{animation:none!important}}
+.access-notice{font-size:13px;line-height:1.6;margin:15px 0 0;color:#4b6875}
 </style>
 </head>
 <body>
 
 <section id="accessGate" class="access-screen" aria-labelledby="accessHeading">
   <div class="access-card">
-    <div class="access-brand"><div class="mark" aria-hidden="true">L.</div><div><span class="access-brand-label">LEIF</span><span class="access-brand-sub">Een persoonlijk gesprek</span></div></div>
-    <h1 id="accessHeading">LEIF openen</h1>
-    <p class="access-desc">Vul je code in om jouw LEIF-omgeving te openen.</p>
+    <div class="access-brand"><span class="access-symbol" aria-hidden="true"><svg viewBox="0 0 44 44" width="43" height="43" fill="none"><circle cx="22" cy="22" r="17.5" stroke="currentColor" opacity=".45"/><path d="M9 28c6-4.5 20-4.5 26 0M12 32c5-2.8 15-2.8 20 0" stroke="currentColor" opacity=".68" stroke-linecap="round" stroke-width="1.4"/><path d="M19 12.5V27h8.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.3"/></svg></span><div><span class="access-brand-label">LEIF</span><span class="access-brand-sub">Een persoonlijk gesprek</span></div></div>
+    <h1 id="accessHeading">Welkom bij LEIF</h1>
+    <p class="access-desc">Wat betekent het om jezelf te kennen? Om te begrijpen waarom je doet wat je doet, hoe anderen je zien en welke leider je voor jezelf en anderen wilt zijn? Daarover gaat LEIF.</p>
     <form id="accessForm" class="access-form" autocomplete="off">
-      <label for="accessPassword">Inlogcode</label>
+      <label for="accessPassword">Jouw toegangscode</label>
       <input id="accessPassword" type="password" name="wachtwoord" required autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" aria-describedby="accessError" />
-      <div id="adminFields" class="access-extra" hidden>
-        <p class="access-help">Beheerder: log in met je bestaande account.</p>
-        <label for="adminEmail">E-mailadres</label>
-        <input id="adminEmail" type="email" autocomplete="username" />
-        <label for="adminPassword">Wachtwoord</label>
-        <input id="adminPassword" type="password" autocomplete="current-password" />
-      </div>
-      <button type="submit" class="btn btn-primary" id="leifSignIn">Inloggen <span aria-hidden="true">→</span></button>
-      <p id="accessError" class="access-error" role="alert" hidden>Dit wachtwoord klopt niet. Probeer het opnieuw.</p>
+      <button type="submit" class="btn btn-primary" id="leifSignIn">Open mijn omgeving <span aria-hidden="true">→</span></button>
+      <p id="accessError" class="access-error" role="alert" hidden>Deze code wordt niet herkend.</p>
+      <p id="accessNotice" class="access-notice" role="status" aria-live="polite" hidden></p>
     </form>
-    <p class="access-privacy">Je komt met je eigen code direct in jouw omgeving. De bestaande KEI-proef blijft behouden. Vul bij de andere proef alleen testgegevens in.</p>
+    
   </div>
 </section>
 <div id="appRoot" hidden>
@@ -285,37 +292,56 @@ const accessForm=document.getElementById('accessForm');
 // VIS gebruikt op ditzelfde scherm het bestaande beveiligde beheerdersaccount.
 let quickClicks=0,quickStart=0;
 const codeInput=document.getElementById('accessPassword');
-const adminFields=document.getElementById('adminFields');
+const accessNotice=document.getElementById('accessNotice');
 try{const message=sessionStorage.getItem('leif-access-error');if(message){sessionStorage.removeItem('leif-access-error');const error=document.getElementById('accessError');error.textContent=message;error.hidden=false}}catch(e){}
-function showAdminFields(){
- const admin=codeInput.value.trim().toUpperCase()==='VIS';
- adminFields.hidden=!admin;
- for(const id of ['adminEmail','adminPassword']){
-   document.getElementById(id).required=admin;
- }
-}
-codeInput.addEventListener('input',showAdminFields);
+// VIS is alleen de ingang; identiteit en beheerrechten worden apart gecontroleerd.
+const leifAdminEndpoint='https://ngcyfbstajfcfdhlelbz.supabase.co/functions/v1/leif-admin-console';
 document.getElementById('leifSignIn').addEventListener('click',event=>{
  if(codeInput.value.trim()){quickClicks=0;return}
  event.preventDefault();
  const now=Date.now();
  if(now-quickStart>1800){quickClicks=0;quickStart=now}
  quickClicks++;
- if(quickClicks===3){codeInput.value='VIS';showAdminFields();document.getElementById('adminEmail').focus()}
+ if(quickClicks===3){codeInput.value='VIS';codeInput.focus()}
 });
-async function adminLogin(){
- const email=document.getElementById('adminEmail').value.trim();
- const password=document.getElementById('adminPassword').value;
- const response=await fetch('https://ngcyfbstajfcfdhlelbz.supabase.co/functions/v1/leif-admin-console',{
+async function requestAdminLink(){
+ const response=await fetch(leifAdminEndpoint,{
   method:'POST',headers:{'Content-Type':'application/json'},credentials:'omit',cache:'no-store',
-  body:JSON.stringify({action:'login',email,password})
+  body:JSON.stringify({action:'request_magic_link'})
  });
  const data=await response.json().catch(()=>({}));
- if(!response.ok||!data.ok||!data.tenants?.some(t=>t.role==='manager'&&t.slug==='leif'))throw Error('admin_denied');
- sessionStorage.setItem('leif-admin-session-v1',JSON.stringify({
-  access_token:data.access_token,refresh_token:data.refresh_token,tenants:data.tenants
- }));
- location.assign('/leif/beheer/');
+ if(!response.ok||!data.ok){const error=new Error(data.error||'link_unavailable');error.status=response.status;throw error}
+}
+async function completeAdminLink(){
+ if(window.parent!==window)return false;
+ const parts=new URLSearchParams(location.hash.slice(1));
+ if(!parts.has('access_token')&&!parts.has('error')&&!parts.has('error_description'))return false;
+ const access=parts.get('access_token'),refresh=parts.get('refresh_token');
+ // De linktokens mogen niet in de adresbalk of browsergeschiedenis blijven staan.
+ history.replaceState(null,'',location.pathname+location.search);
+ const err=document.getElementById('accessError');
+ if(!access||!refresh||parts.get('token_type')?.toLowerCase()!=='bearer'){
+  err.textContent='Deze inloglink is verlopen of kon niet worden geopend. Vul VIS opnieuw in.';
+  err.hidden=false;return true;
+ }
+ const button=document.getElementById('leifSignIn');button.disabled=true;
+ try{
+  const response=await fetch(leifAdminEndpoint,{
+   method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+access},
+   body:JSON.stringify({action:'session'}),credentials:'omit',cache:'no-store'
+  });
+  const data=await response.json().catch(()=>({}));
+  if(!response.ok||!data.ok||!Array.isArray(data.tenants)||
+     !data.tenants.some(t=>t.slug==='leif'&&t.role==='manager'))throw Error('not_manager');
+  sessionStorage.setItem('leif-admin-session-v1',JSON.stringify({
+   access_token:access,refresh_token:refresh,tenants:data.tenants
+  }));
+  location.replace('/leif/beheer/');
+ }catch(e){
+  err.textContent='Deze inloglink kon niet worden bevestigd. Vul VIS opnieuw in.';
+  err.hidden=false;
+ }finally{button.disabled=false}
+ return true;
 }
 accessForm.addEventListener('submit',async event=>{
  event.preventDefault();
@@ -334,13 +360,16 @@ accessForm.addEventListener('submit',async event=>{
   return;
  }
  if(code.toUpperCase()==='VIS'){
-  showAdminFields();
   try{
    if(sessionStorage.getItem('leif-admin-session-v1')){location.assign('/leif/beheer/');return}
    document.getElementById('leifSignIn').disabled=true;
-   await adminLogin();
+   accessNotice.hidden=true;
+   await requestAdminLink();
+   pw.value='';
+   accessNotice.textContent='Er is een inloglink naar je beheeradres gestuurd. Open de e-mail om verder te gaan.';
+   accessNotice.hidden=false;
   }catch(e){
-   err.textContent='Inloggen voor beheer is niet gelukt. Controleer je account.';
+   err.textContent=e.status===429?'Je hebt net al een link aangevraagd. Probeer het over een paar minuten opnieuw.':'De inloglink kon niet worden verzonden. Probeer het later opnieuw.';
    err.hidden=false;
   }finally{document.getElementById('leifSignIn').disabled=false}
   return;
@@ -367,22 +396,37 @@ accessForm.addEventListener('submit',async event=>{
 });
 try{
  if(new URLSearchParams(location.search).has('beheer')){
-  codeInput.value='VIS';showAdminFields();
+  codeInput.value='VIS';
  }
 }catch(e){}
 
+// De terugkeer van een eenmalige inloglink krijgt voorrang op bestaande sessies.
+const incomingAdminLink=location.hash.includes('access_token=')||location.hash.includes('error=')||location.hash.includes('error_description=');
+if(incomingAdminLink)completeAdminLink();
+window.addEventListener('hashchange',()=>completeAdminLink());
+
 // Een KEI-invoer geldt voor alle LEIF-pagina's in hetzelfde browsertabblad.
 try{
- if(sessionStorage.getItem('leif-kei-session-v1')==='1'){
+ if(!incomingAdminLink&&window.parent!==window&&new URLSearchParams(location.search).get('leif_voorbeeld')==='1'){
+   if(new URLSearchParams(location.search).get('deel')==='kei'){
+    document.getElementById('accessGate').hidden=true;
+    document.getElementById('appRoot').hidden=false;
+    renderIntro();
+   }else{
+    document.getElementById('accessGate').hidden=false;
+    document.getElementById('appRoot').hidden=true;
+   }
+ }else if(!incomingAdminLink&&sessionStorage.getItem('leif-kei-session-v1')==='1'){
   document.getElementById('accessGate').hidden=true;
   document.getElementById('appRoot').hidden=false;
   renderIntro();
- }else if(sessionStorage.getItem('leif-personal-access-code-v1')){
+ }else if(!incomingAdminLink&&sessionStorage.getItem('leif-personal-access-code-v1')){
   location.replace('/leif/mijn/');
  }
 }catch(e){}
 
 const toolsBtn=document.createElement('button');toolsBtn.type='button';toolsBtn.className='mini-link nonprint';toolsBtn.textContent='Bewaar / hervat';toolsBtn.setAttribute('aria-label','Antwoorden downloaden, inlezen of wissen');toolsBtn.onclick=showTools;el('goReport').before(toolsBtn);
 </script>
+<script src="/leif/tekstbeheer.js" defer></script>
 </body>
 </html>
