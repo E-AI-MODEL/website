@@ -45,6 +45,20 @@ Deno.serve(async req=>{
    const items=await database("leif_site_texts?page=eq."+input.page+"&published_text=not.is.null&select=field_key,published_text&limit=500","GET",null,service);
    return send({ok:true,items},200,origin);
   }
+  // VIS is alleen de ingang. Supabase verstuurt een eenmalige link naar het
+  // reeds bevestigde beheerdersaccount. De gebruiker kan geen e-mailadres
+  // of redirect-URL meegeven en er wordt nooit een nieuwe account aangemaakt.
+  if(input.action==="request_magic_link"){
+   const email="vis@emmauscollege.nl";
+   const redirect="https://eaimodel.nl/leif/";
+   try{
+    await authRequest("otp?redirect_to="+encodeURIComponent(redirect),{email,create_user:false},key);
+   }catch(error){
+    if(String(error?.message||"")==="auth_429")return send({error:"too_many_requests"},429,origin);
+    return send({error:"link_unavailable"},503,origin);
+   }
+   return send({ok:true},200,origin);
+  }
   // Beheerders melden zich aan met een bestaand, bevestigd Supabase Auth-account.
   if(input.action==="login"||input.action==="refresh"){
    if(input.action==="login"&&(typeof input.email!=="string"||input.email.length>254||typeof input.password!=="string"||input.password.length>1000))return send({error:"invalid_credentials"},400,origin);
