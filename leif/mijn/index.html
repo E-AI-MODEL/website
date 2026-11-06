@@ -18,6 +18,45 @@ main{max-width:1080px;margin:auto;padding:44px 25px 105px}.gate{max-width:490px;
 .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));gap:12px;margin:28px 0}.card{background:#fffdfc;padding:24px;border:1px solid var(--line);border-radius:13px;text-align:left;color:var(--ink);min-height:120px}.card strong{display:block;font-size:17px;margin:4px 0}.card small{color:var(--muted)}.card:hover{border-color:#7299ae}.statline{height:5px;background:#dce6e9;border-radius:99px;overflow:hidden;margin:25px 0}.statline>div{height:100%;background:#729aac}
 .reader{max-width:700px}.reader h2{margin:6px 0 22px}.reader p{font-size:18px;line-height:1.9}.question textarea,.exercise textarea{width:100%;min-height:175px;resize:none;overflow-y:hidden;overflow-wrap:anywhere;border:1px solid #c7d4d9;border-radius:10px;padding:14px;background:white;color:var(--ink);margin-top:12px;line-height:1.7}.choices{display:grid;gap:9px;margin:22px 0}.choices button{text-align:left;background:white;border:1px solid var(--line);padding:12px 15px;border-radius:10px}.choices button[aria-pressed=true]{border:2px solid #4c7895;background:var(--soft)}.stepnav{display:flex;justify-content:space-between;gap:9px;flex-wrap:wrap;margin-top:27px}.note{background:var(--soft);border-radius:11px;padding:13px 16px;margin:20px 0;font-size:14px}.reportlist{display:grid;gap:24px;margin-top:32px}.reportlist article{border-top:1px solid var(--line);padding-top:15px}.reportlist h3{font:400 25px Georgia,serif}.reportlist dl{margin:0}.reportlist dt{font-weight:700;margin-top:15px}.reportlist dd{margin:2px 0 8px;white-space:pre-wrap}.save-status{font-size:12px;color:#456a6e;min-height:20px;text-align:right}.save-status.error{color:#9b3030}.exercise{margin:24px 0 35px}.exercise h3{font:400 24px Georgia,serif;margin:0 0 6px}.personal p{white-space:pre-wrap}.screenreader{position:absolute;left:-9999px}
 @media(max-width:660px){main{padding:25px 18px 90px}header{flex-wrap:wrap;padding:12px 18px}.spread{align-items:flex-start}.tabs{gap:5px}.tabs button{font-size:12px;padding:8px 9px}.reader p{font-size:17px}.panel{padding:20px}}
+
+/* LEIF na het inloggen: weer een rustige, persoonlijke introductie. */
+#workspace .workspace-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 16px;padding:0 0 12px;border-bottom:1px solid var(--line)}
+#workspace .workspace-name{font-size:12px;color:#567082;line-height:1.4;text-align:right}
+#workspace .tabs{margin:0 0 28px}
+#workspace .arrival-hero{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(270px,.85fr);gap:30px;align-items:center;min-height:400px;border:1px solid #d6e1e5;border-radius:22px;padding:clamp(25px,4vw,49px);background:linear-gradient(145deg,#fffefd 0%,#f2f7f6 72%,#edf1ee 100%);overflow:hidden;position:relative}
+#workspace .arrival-copy{position:relative;z-index:1}
+#workspace .arrival-hero h2{font:400 clamp(36px,5vw,62px)/1.08 Georgia,"Times New Roman",serif;letter-spacing:-.045em;margin:15px 0 18px;max-width:680px}
+#workspace .arrival-hero h2 em{font-weight:400;color:#47788b}
+#workspace .arrival-lead{font-size:17px;line-height:1.75;color:#445d6b;max-width:520px;margin:0}
+#workspace .arrival-help{font-size:13px;color:#617786;line-height:1.6;margin:12px 0 0;max-width:520px}
+#workspace .arrival-actions{display:flex;flex-wrap:wrap;gap:9px;align-items:center;margin-top:25px}
+#workspace .arrival-actions .btn{min-height:44px}
+#workspace .arrival-progress{margin-top:22px;max-width:380px;font-size:12px;color:#637984}
+#workspace .arrival-progress .statline{margin:8px 0 0;height:4px;background:#dae4e6}
+#workspace .arrival-art{display:grid;place-items:center;position:relative;min-height:305px;isolation:isolate}
+#workspace .arrival-circle{width:min(78%,305px);aspect-ratio:1;position:relative;border-radius:50%;background:conic-gradient(from 198deg,#527e91 0 20%,#c1d9dc 20% 40%,#e2cbb8 40% 63%,#bdcfc5 63% 79%,#335b74 79% 100%);transform:rotate(-12deg);box-shadow:0 22px 44px #385d6b20}
+#workspace .arrival-circle::before{content:"";position:absolute;inset:19%;background:#f4f7f4;border-radius:50%;box-shadow:inset 0 0 0 1px #2e596019}
+#workspace .arrival-center{position:absolute;inset:29%;display:grid;place-items:center;text-align:center;font:400 clamp(17px,2.1vw,24px)/1.23 Georgia,serif;letter-spacing:-.03em;transform:rotate(12deg)}
+#workspace .arrival-art-label{position:absolute;z-index:2;background:#fffefa;border:1px solid #d6e3e4;box-shadow:0 8px 19px #23475b13;border-radius:10px;padding:7px 11px;color:#3d5f70;font-size:11px;font-weight:650;line-height:1.3}
+#workspace .arrival-art-label.one{top:7%;right:0}
+#workspace .arrival-art-label.two{left:0;top:48%}
+#workspace .arrival-art-label.three{right:0;bottom:8%}
+#workspace .arrival-explore{margin:29px 0 8px}
+#workspace .arrival-explore h3,#workspace .arrival-topics h3{font:400 27px/1.2 Georgia,serif;letter-spacing:-.02em;margin:0 0 8px}
+#workspace .arrival-explore>p,#workspace .arrival-topics>p{font-size:14px;color:#637987;margin:0 0 16px}
+#workspace .arrival-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px}
+#workspace .arrival-card{min-height:133px;border:1px solid var(--line);background:#fffdfc;padding:16px 17px;text-align:left;border-radius:13px;color:var(--ink);display:flex;flex-direction:column;align-items:flex-start;gap:5px}
+#workspace .arrival-card:hover,#workspace .arrival-topic:hover{border-color:#7ea5b2;background:#f1f6f6}
+#workspace .arrival-card small{font-size:10px;letter-spacing:.1em;font-weight:750;color:#5a8290}
+#workspace .arrival-card strong{font:400 21px/1.3 Georgia,serif}
+#workspace .arrival-card span{font-size:12px;line-height:1.5;color:#657987}
+#workspace .arrival-topics{margin:30px 0 0;padding-top:20px;border-top:1px solid var(--line)}
+#workspace .arrival-topic-list{display:flex;flex-wrap:wrap;gap:7px}
+#workspace .arrival-topic{border:1px solid #d5e1e5;border-radius:9px;background:#fffdfc;color:#3d5c6e;font-size:12px;padding:8px 11px;text-align:left}
+#workspace .arrival-topic span{display:block;font-size:10px;color:#81909a;margin-top:2px}
+@media(max-width:840px){#workspace .arrival-hero{grid-template-columns:minmax(0,1fr) minmax(215px,.7fr);gap:12px}#workspace .arrival-art{min-height:255px}}
+@media(max-width:700px){#workspace .arrival-hero{display:flex;flex-direction:column;align-items:stretch;padding:25px 20px 18px;gap:0;border-radius:16px}#workspace .arrival-hero h2{font-size:clamp(35px,9vw,48px);margin:11px 0 14px}#workspace .arrival-lead{font-size:16px;line-height:1.65}#workspace .arrival-art{min-height:218px;margin:12px auto 3px;width:min(100%,340px)}#workspace .arrival-circle{width:206px}#workspace .arrival-center{font-size:19px}#workspace .arrival-art-label{font-size:10px}#workspace .arrival-cards{grid-template-columns:1fr}#workspace .arrival-card{min-height:0;padding:13px 15px}#workspace .arrival-explore{margin-top:24px}#workspace .arrival-explore h3,#workspace .arrival-topics h3{font-size:25px}#workspace .workspace-top{margin-bottom:10px}#workspace .arrival-actions{margin-top:20px}#workspace .arrival-actions .btn{width:100%}}
+
 </style>
 </head>
 <body>
@@ -36,8 +75,7 @@ main{max-width:1080px;margin:auto;padding:44px 25px 105px}.gate{max-width:490px;
 <small>De code is persoonlijk. Deel haar niet met anderen. De LEIF-beheerder van jouw groep kan je antwoorden en verslagen inzien om je persoonlijke reactie te schrijven. De beheerder kan ook je toegang herstellen of intrekken.</small>
 </section>
 <section id="workspace" hidden>
-<p id="demoLabel" class="tag" hidden>LEIF-proef: gebruik uitsluitend testgegevens. De beheerder kan je antwoorden lezen.</p>
-<div class="spread"><div><div class="tag">Persoonlijke omgeving</div><h1 id="welcome">Mijn LEIF</h1></div></div>
+<div class="workspace-top"><span class="tag">LEIF · mijn omgeving</span><span id="welcome" class="workspace-name">Mijn LEIF</span></div>
 <nav class="tabs" id="tabs" aria-label="Onderdelen van LEIF">
 <button data-screen="start" aria-current="page">Overzicht</button>
 <button data-screen="questions">Vragen</button>
@@ -124,12 +162,12 @@ async function signIn(code){
   if(!response.ok||!response.document)throw Error('invalid_document');
   doc=response.document;person=response.participant;
   questionIndex=Math.max(0,Math.min(allQuestions.length-1,doc.position?.question_index||0));
-  screen=['start','questions','report','exercises','story'].includes(doc.position?.screen)?doc.position.screen:'start';
+  // Ieder bezoek begint bij de LEIF-introductie; de vorige vraagpositie blijft bewaard.
+  screen='start';
   pending={};saveError=false;
   sessionStorage.setItem('leif-personal-access-code-v1',accessCode);
   E('accessCode').value='';E('login').hidden=true;E('workspace').hidden=false;E('logout').hidden=false;
   E('welcome').textContent=person.name?'LEIF voor '+person.name:'Mijn LEIF';
-  E('demoLabel').hidden=accessCode!=='lis';
   setStatus('Opgeslagen');render();
  }catch(e){
   accessCode='';sessionStorage.removeItem('leif-personal-access-code-v1');
@@ -174,6 +212,7 @@ function goto(next,idx){
 }
 function render(){
  const area=E('content');area.replaceChildren();
+ E('tabs').hidden=screen==='start';
  E('tabs').querySelectorAll('button').forEach(b=>b.setAttribute('aria-current',b.dataset.screen===screen?'page':'false'));
  if(screen==='start')return renderStart(area);
  if(screen==='questions')return renderQuestion(area);
@@ -182,23 +221,51 @@ function render(){
  if(screen==='story')return renderPersonalTexts(area);
 }
 function renderStart(area){
- area.append(pageHeading('Waar wil je verder?', 'Je gegevens worden automatisch bewaard'));
- area.append(node('p','intro','Je kunt vragen beantwoorden, je verslag lezen of een oefening doen. Bij een volgend bezoek staat alles weer klaar.'));
  const answered=allQuestions.filter(q=>doc.answers?.[q.id]?.trim()).length;
- area.append(node('p','muted',answered+' van '+allQuestions.length+' vragen beantwoord'));
- const track=node('div','statline');const inside=node('div');inside.style.width=String(answered/allQuestions.length*100)+'%';track.append(inside);area.append(track);
- const cards=node('div','cards');
+ const hero=node('section','arrival-hero');
+ const copy=node('div','arrival-copy');
+ copy.append(node('div','tag','LEIF · jouw verhaal'));
+ const title=node('h2');title.append(document.createTextNode('Wat wil je van '),node('em',null,'jezelf'),document.createTextNode(' begrijpen?'));
+ copy.append(title);
+ copy.append(node('p','arrival-lead','Wat anderen aan je zien, vertelt niet het hele verhaal. Hier kun je stilstaan bij wat je bezighoudt, wat je hebt meegemaakt en wat je wilt meenemen.'));
+ copy.append(node('p','arrival-help','Je hoeft niets te bewijzen. Je kiest zelf waar je begint, wat je opschrijft en welke vragen je overslaat.'));
+ const actions=node('div','arrival-actions');
+ actions.append(linkButton(answered?'Verder met mijn vragen':'Begin met mijn vragen',()=>goto('questions',questionIndex)));
+ actions.append(linkButton('Lees mijn verslag',()=>goto('report'),true));
+ copy.append(actions);
+ if(answered){
+  const progress=node('div','arrival-progress');
+  progress.append(node('span',null,answered+' van '+allQuestions.length+' vragen beantwoord. Je kunt verder waar je was.'));
+  const track=node('div','statline');const inside=node('div');inside.style.width=String(answered/allQuestions.length*100)+'%';track.append(inside);progress.append(track);
+  copy.append(progress);
+ }
+ const art=node('div','arrival-art');art.setAttribute('aria-hidden','true');
+ const circle=node('div','arrival-circle');circle.append(node('div','arrival-center','Meer dan één kant'));
+ art.append(circle,node('span','arrival-art-label one','Wat anderen zien'),node('span','arrival-art-label two','Wat je voelt'),node('span','arrival-art-label three','Wat je meeneemt'));
+ hero.append(copy,art);area.append(hero);
+ const explore=node('section','arrival-explore');
+ explore.append(node('h3',null,'Kies waar je verdergaat'),node('p',null,'Je kunt vragen beantwoorden, teruglezen of iets uitproberen. Het hoeft niet in één keer.'));
+ const cards=node('div','arrival-cards');
+ for(const [number,heading,description,target] of [
+  ['01','Mijn vragen','Schrijf in je eigen woorden.',()=>goto('questions',questionIndex)],
+  ['02','Mijn verslag','Lees terug wat je hebt opgeschreven.',()=>goto('report')],
+  ['03','Verder ontdekken','Oefeningen en je persoonlijke reactie.',()=>goto('exercises')]
+ ]){
+  const card=node('button','arrival-card');card.type='button';
+  card.append(node('small',null,number),node('strong',null,heading),node('span',null,description));card.onclick=target;cards.append(card);
+ }
+ explore.append(cards);area.append(explore);
+ const topics=node('section','arrival-topics');
+ topics.append(node('h3',null,'Of begin bij een onderwerp'),node('p',null,'Een vraag kan genoeg zijn om iets op het spoor te komen.'));
+ const topicList=node('div','arrival-topic-list');
  for(const chapter of chapters){
   const index=allQuestions.findIndex(q=>q.chapter.id===chapter.id);
   const complete=chapter.questions.filter(q=>doc.answers?.[q.id]?.trim()).length;
-  const card=node('button','card');card.type='button';
-  card.append(node('small',null,complete+' van '+chapter.questions.length+' beantwoord'),node('strong',null,chapter.name),node('span','muted',chapter.desc));
-  card.onclick=()=>goto('questions',index);cards.append(card);
+  const card=node('button','arrival-topic');card.type='button';
+  card.append(node('strong',null,chapter.name),node('span',null,complete+' van '+chapter.questions.length+' beantwoord'));
+  card.onclick=()=>goto('questions',index);topicList.append(card);
  }
- area.append(cards);
- const buttons=node('div','buttonset');
- buttons.append(linkButton('Mijn verslag',()=>goto('report')),linkButton('Oefeningen',()=>goto('exercises'),true));
- area.append(buttons);
+ topics.append(topicList);area.append(topics);
 }
 function growAnswerBox(t){
  if(!t||!t.isConnected)return;
