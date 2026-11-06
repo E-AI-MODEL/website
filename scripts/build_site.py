@@ -2646,6 +2646,17 @@ def build(sources: Path, out: Path) -> None:
         raise FileNotFoundError(f"ABYSS-bron ontbreekt: {abyss_source}")
     write(out, "tools/abyss/index.html", abyss_source.read_text(encoding="utf-8"))
 
+
+    # EAImesh en EAIstudio zijn zelfstandige HTML-tools.
+    for slug, entry in (("eaimesh", "start"), ("eaistudio", "studio")):
+        base = Path(__file__).resolve().parent.parent / "content" / slug
+        source = base / (entry + ".html")
+        if not source.is_file():
+            raise FileNotFoundError(f"{slug} HTML-bron ontbreekt: {source}")
+        write(out, f"tools/{slug}/{entry}/index.html", source.read_text(encoding="utf-8"))
+        if (base / "pwa").is_dir():
+            shutil.copytree(base / "pwa", out / "tools" / slug / entry, dirs_exist_ok=True)
+
     # WiHTML wordt als een geteste bronkopie uit de eigen GitHub-repository beheerd.
     # De studio gebruikt geen server voor lesgegevens of leerlingantwoorden.
     wihtml_source = Path(__file__).resolve().parent.parent / "content" / "wihtml" / "studio.html"
@@ -2675,6 +2686,9 @@ def build(sources: Path, out: Path) -> None:
     library_body = (wihtml_dir / "library.html").read_text(encoding="utf-8")
     write(out, "tools/wihtml/index.html", doc("WiHTML: maak je eigen wiskundeles", wihtml_body, "/tools/wihtml/", "tools", "Maak interactieve wiskundelessen, bekijk voorbeelden en werk verder in de Docentstudio."))
     write(out, "tools/wihtml/bibliotheek/index.html", doc("WiHTML lesbibliotheek", library_body, "/tools/wihtml/bibliotheek/", "tools", "Bekijk WiHTML-voorbeeldlessen en gebruik er een als startpunt."))
+
+    write(out, "tools/eaistudio/index.html", doc("EAIstudio", '<main><section class="page-hero"><div class="wrap"><div class="eyebrow">Presentaties</div><h1>EAIstudio</h1><p class="lede">Maak dia’s met tekst, animaties, beelden en interactie. Exporteer je presentatie als een zelfstandige HTML.</p><div class="button-row"><a class="button" href="/tools/eaistudio/studio/">Open EAIstudio</a><a class="button secondary" href="/nl/tools/">Alle tools</a></div></div></section></main>', "/tools/eaistudio/", "tools", "Presentaties maken en exporteren in HTML."))
+    write(out, "tools/eaimesh/index.html", doc("EAImesh", '<main><section class="page-hero"><div class="wrap"><div class="eyebrow">Code verkennen</div><h1>EAImesh</h1><p class="lede">Bekijk hoe een openbare GitHub-repository is opgebouwd. Verken bestanden en verbindingen met de zelfstandige EAImesh-tool.</p><div class="button-row"><a class="button" href="/tools/eaimesh/start/">Open EAImesh</a><a class="button secondary" href="/nl/tools/">Alle tools</a></div></div></section></main>', "/tools/eaimesh/", "tools", "GitHub-repositories interactief verkennen."))
     write(out, "tools/prompt-framework/index.html", doc("EAI Prompt Framework", load_content_fragment("prompt-framework-page.html"), "/tools/prompt-framework/", "prompt-framework", "Ontwerp een complete EAI-instructie vanuit doel, menselijke stap, AI-hulp, grenzen en controle."))
     write(out, "model-monitor/index.html", doc("AI (Act) Model Monitor", load_content_fragment("model-monitor-page.html"), "/model-monitor/", "model-monitor", "Vergelijk AI-modellen en landen, bekijk gebruik en incidenten, volg onderwijsontwikkelingen en de EU AI Act, en traceer cijfers naar hun bron."))
     write(out, "eai-tools-modules/index.html", redirect("/tools/"))
@@ -2706,7 +2720,7 @@ def build(sources: Path, out: Path) -> None:
     not_found = '<main><section class="page-hero"><div class="wrap"><div class="eyebrow">404</div><h1>Deze pagina is er niet meer.</h1><p class="lede">De oude Google-site bevatte ook een paar dode links. Ga terug naar de publicaties of tools.</p><div class="button-row"><a class="button" href="/publicaties/">Publicaties</a><a class="button secondary" href="/tools/">Tools</a></div></div></section></main>'
     write(out, "404.html", doc("Niet gevonden", not_found, "/404.html"))
     write(out, "robots.txt", "User-agent: *\nAllow: /\nSitemap: https://eaimodel.nl/sitemap.xml\n")
-    urls = ["/", "/toepassingen/", "/toepassingen/onderwijs-ai/", "/onderwijs/", "/kennis/", "/twee-pijlers/", "/workshop-ai/", "/werkvormen/", "/taalwerkvormen/", "/verdieping/", "/onderbouwing/", "/bronnen/", "/praktijk/", "/publicaties/", "/publicaties/de-vraag-die-we-vergeten/", "/tools/", "/tools/prompt-framework/", "/tools/abyss/", "/tools/melkweg-lab/", "/tools/llm-observatorium/", "/tools/science-observatory/", "/tools/science-observatory/labs/melkweg/", "/tools/science-observatory/labs/gravitatie-banen/", "/tools/science-observatory/labs/natuurkunde/", "/tools/science-observatory/labs/wiskunde-a/", "/tools/science-observatory/labs/wiskunde-b/", "/tools/wihtml/", "/tools/wihtml/bibliotheek/", "/tools/wihtml/studio/", "/tools/wihtml/voorbeeld/", "/model-monitor/", "/over/", "/eaa-model/", "/onderwijsin/", "/onderwijsin/3d/"] + [f"/werkvormen/{item['slug']}/" for item in workforms] + [f"/publicaties/{slug}/" for slug, _, _, _ in PUBLICATIONS] + ["/tools/beyond-explainability/"]
+    urls = ["/", "/toepassingen/", "/toepassingen/onderwijs-ai/", "/onderwijs/", "/kennis/", "/twee-pijlers/", "/workshop-ai/", "/werkvormen/", "/taalwerkvormen/", "/verdieping/", "/onderbouwing/", "/bronnen/", "/praktijk/", "/publicaties/", "/publicaties/de-vraag-die-we-vergeten/", "/tools/", "/tools/prompt-framework/", "/tools/abyss/", "/tools/melkweg-lab/", "/tools/llm-observatorium/", "/tools/science-observatory/", "/tools/science-observatory/labs/melkweg/", "/tools/science-observatory/labs/gravitatie-banen/", "/tools/science-observatory/labs/natuurkunde/", "/tools/science-observatory/labs/wiskunde-a/", "/tools/science-observatory/labs/wiskunde-b/", "/tools/eaimesh/", "/tools/eaimesh/start/", "/tools/eaistudio/", "/tools/eaistudio/studio/", "/tools/wihtml/", "/tools/wihtml/bibliotheek/", "/tools/wihtml/studio/", "/tools/wihtml/voorbeeld/", "/model-monitor/", "/over/", "/eaa-model/", "/onderwijsin/", "/onderwijsin/3d/"] + [f"/werkvormen/{item['slug']}/" for item in workforms] + [f"/publicaties/{slug}/" for slug, _, _, _ in PUBLICATIONS] + ["/tools/beyond-explainability/"]
     # The bilingual redesign is maintained in nl/ and en/. Preserve it during
     # the legacy article/tool build, including its current home and assets.
     repo_root = Path(__file__).resolve().parent.parent
