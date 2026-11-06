@@ -21,7 +21,7 @@ def check(root: Path):
         assert len(soup.select('header.eai-masthead')) == 1, rel
         assert not soup.select('header .eai-links'), rel
         assert len(soup.select('.eai-site-menu')) == 1, rel
-        assert len(soup.select('.eai-site-group')) == 5, rel
+        assert len(soup.select('.eai-site-group')) == 7, rel
         assert len(soup.select('.eai-site-language a')) == 2, rel
         assert len(soup.select('h1')) == 1, rel
         ids = [tag['id'] for tag in soup.select('[id]')]
@@ -111,6 +111,19 @@ def verify_live(base: str, manifest: dict, timeout: int, root: Path):
             if story.exists():
                 expected_story = hashlib.sha256(story.read_bytes()).hexdigest()
                 assert hashlib.sha256(get('/leif/verhaal/')).hexdigest() == expected_story, 'LEIF personal reader is missing or out of date'
+            # Controleer ook de zelfstandige tools die niet door de UI-builder zijn herschreven.
+            for relative in ('tools/eaimesh/start/index.html',
+                             'tools/eaistudio/studio/index.html',
+                             'tools/eaistudio/studio/service-worker.js',
+                             'tools/eaistudio/studio/manifest.webmanifest',
+                             'tools/eaistudio/studio/icons/icon-192.png',
+                             'tools/eaistudio/studio/icons/icon-512.png',
+                             'tools/eaistudio/studio/icons/apple-touch-icon.png'):
+                local = root / relative
+                if not local.is_file():
+                    continue  # Mock release fixtures contain only editorial pages; tool tests enforce completeness.
+                online_path = '/' + relative.removesuffix('index.html')
+                assert hashlib.sha256(get(online_path)).hexdigest() == hashlib.sha256(local.read_bytes()).hexdigest(), f'Tool content mismatch: {online_path}'
             for info in manifest['assets'].values():
                 assert hashlib.sha256(get(info['url'])).hexdigest() == info['sha256'], f'Asset mismatch: {info["url"]}'
             print(f'LIVE verified: all {len(expected_html)} prepared HTML files and all asset hashes match UI {manifest["version"]}')
