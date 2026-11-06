@@ -58,6 +58,7 @@ try{
    await page.locator('#timeToggle').click();
    assert(!(await page.locator('#timeslider').isVisible()),'Tijdschuif sluit niet');
    await page.waitForSelector('#astroCenterPin:visible',{timeout:5000});
+   assert(await page.locator('#astroSunPin').isVisible(),'Zon-aanraakpunt moet ook op 320 pixels zichtbaar zijn');
    await page.locator('#astroCenterPin').click();
    assert(await page.locator('#astroInfo').isVisible(),'Tik op het midden toont geen uitleg');
    assert((await page.locator('#astroInfoText').textContent()).includes('Sagittarius'),'De uitleg is niet gekoppeld aan het midden');
