@@ -1,6 +1,6 @@
 # LEIF-beheer: Face ID via passkeys
 
-Status: **in ontwikkeling, niet gepubliceerd**. De huidige LEIF-productieomgeving blijft ongewijzigd.
+Status: **onvoltooid concept, niet gepubliceerd**. De huidige LEIF-productieomgeving blijft ongewijzigd. De browser- en servercode zijn voorbereid; integratie, authentieke registratie, iPhone-test en beveiligingscontrole ontbreken.
 
 ## Gewenst gedrag
 - De bestaande toegangscode `VIS` selecteert de beheerdersroute, maar is **geen bewijs van identiteit**.
@@ -22,9 +22,9 @@ De eerste koppeling moet plaatsvinden terwijl de bestaande manageridentiteit aan
 
 ## Technische voorbereiding
 - `leif/passkey-client.js` bevat de WebAuthn-stappen in de browser en bewaart geen sleutel.
-- De Supabase Edge Function `leif-admin-console` moet nog vier strikt gecontroleerde acties krijgen voor start/afronding van passkey-registratie en start/afronding van inloggen. Deze acties moeten de Supabase Auth-WebAuthn-endpoints aanroepen en registratie alleen toestaan met een geldig manager-JWT.
+- `leif/multitenant/edge-passkey.ts` bevat vier serveracties voor start en afronding van registratie en aanmelden. Deze controleren de bestaande LEIF-managerrechten. De functie is **niet gedeployed** en de werking is **niet getest op een echt Supabase-project**.
 - De bestaande serverautoriteit bij lezen, opslaan en publiceren van persoonlijke dossiers moet ongewijzigd blijven.
-- Pas na succesvolle tests `VIS` aan om rechtstreeks de passkey-aanmelding aan te bieden. Verwijder de oude methode pas wanneer de eerste passkey is geregistreerd.
+- `leif/passkey-client.js` is op de startpagina geladen, maar de bestaande `VIS`-afhandeling vraagt nog steeds een e-maillink. De verbinding met de passkeyclient is **nog niet gereed**. Pas na veilige accountregistratie, een geslaagde E2E-test en expliciete publicatietoestemming mag de oude route worden verwijderd.
 - De onvoltooide wachtwoordwijzigingen in PR #99 zijn nadrukkelijk **niet** de gewenste oplossing en mogen niet worden samengevoegd.
 
 ## Vereiste tests vóór publicatie
