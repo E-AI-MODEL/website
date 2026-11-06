@@ -403,6 +403,7 @@ try{
 // De terugkeer van een eenmalige inloglink krijgt voorrang op bestaande sessies.
 const incomingAdminLink=location.hash.includes('access_token=')||location.hash.includes('error=')||location.hash.includes('error_description=');
 if(incomingAdminLink)completeAdminLink();
+window.addEventListener('hashchange',()=>completeAdminLink());
 
 // Een KEI-invoer geldt voor alle LEIF-pagina's in hetzelfde browsertabblad.
 try{
