@@ -50,7 +50,7 @@ function renderEditor(){
  if(!b){area.append(mk('p','studio-muted','Voeg links een onderdeel toe.'));return}
  const titleLabel=mk('label',null,'Titel'),title=mk('input');title.maxLength=120;title.value=b.title;
  title.oninput=()=>{b.title=title.value;markDirty()};area.append(titleLabel,title);
- if(b.type!=='heading'||true){
+ {
   const textLabel=mk('label',null,b.type==='spotify'?'Toelichting (optioneel)':'Tekst');
   const content=mk('textarea');content.maxLength=12000;content.rows=8;content.value=b.text;
   content.oninput=()=>{b.text=content.value;markDirty()};area.append(textLabel,content);
@@ -88,7 +88,7 @@ async function operation(action,payload={}){
  if(!participant||busy)return false;
  busy=true;const buttons=$('blocksTab').querySelectorAll('button');buttons.forEach(b=>b.disabled=true);notice('Opslaan...');
  try{
-  const result=await window.LeifBeheer.request(action,{tenant_id:tenantId,participant_id:participant.id,revision,...payload});
+  const result=await window.LeifBeheer.request(participant.legacy?'legacy_'+action:action,{tenant_id:tenantId,...(participant.legacy?{tester_id:participant.id}:{participant_id:participant.id}),revision,...payload});
   updateDocument(result);
   if(action==='save_blocks')dirty=false;
   notice(action==='save_blocks'?'Concept bewaard.':action==='publish_blocks'?'Onderdelen gepubliceerd voor deze deelnemer.':'Publicatie van onderdelen ingetrokken.');
