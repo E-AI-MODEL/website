@@ -34,6 +34,19 @@ class LlmObservatorySourceTests(unittest.TestCase):
         self.assertIn("function openPanel(name)", self.html)
         self.assertIn("function closePanel()", self.html)
 
+    def test_token_journey_and_graph_are_interactive(self):
+        html = self.html
+        for element in ('journeyPanel', 'journeyWhere', 'journeyToken',
+                        'journeyPrev', 'journeyNext', 'journeyPlay',
+                        'journeyFill', 'plotSummary', 'startJourney'):
+            self.assertIn('id="' + element + '"', html)
+        self.assertIn('function drawStream()', html)
+        self.assertIn('function journeyStep(direction)', html)
+        self.assertIn('function selectAtGraph(x)', html)
+        self.assertIn("plot.addEventListener('pointerup'", html)
+        self.assertIn('screenJourney=pts', html)
+        self.assertIn('function updateJourneyUI()', html)
+
     def test_source_and_demo_distinction(self):
         self.assertIn("gpt-oss-120b/blob/main/config.json", self.html)
         self.assertIn("gpt-oss-20b/blob/main/config.json", self.html)
