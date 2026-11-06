@@ -129,11 +129,11 @@
  #app[data-mode="1"] .stage{margin-bottom:calc(62px + env(safe-area-inset-bottom));}
  #app[data-mode="1"] .stage-title p,#app[data-mode="1"] .scene-caption,#app[data-mode="1"] .cam-switch{display:none}
  #app[data-mode="1"] .stage-title h1{font-size:18px}
- #app[data-mode="1"] .layer-inspector-panel{position:fixed;z-index:20;display:flex;left:8px;right:8px;bottom:calc(65px + env(safe-area-inset-bottom));width:auto;height:161px;max-height:43dvh;border:1px solid #34566a;border-radius:6px;background:#081625f3;box-shadow:0 5px 25px #0007;backdrop-filter:blur(9px)}
+ #app[data-mode="1"] .layer-inspector-panel{position:fixed;z-index:20;display:flex;left:8px;right:8px;bottom:calc(65px + env(safe-area-inset-bottom));width:auto;height:194px;max-height:43dvh;border:1px solid #34566a;border-radius:6px;background:#081625f3;box-shadow:0 5px 25px #0007;backdrop-filter:blur(9px)}
  .li-toolbar{height:35px;flex:none;padding:0 9px;gap:8px}.li-heading strong{font-size:12px}.li-model{display:none}
  .li-stepper{max-width:175px;justify-self:end}
- .li-grid{grid-template-columns:1fr 1fr;grid-template-rows:50px minmax(0,1fr);gap:0}
- .li-section{padding:5px 8px}.li-tokens{grid-column:1/-1;border-right:0;border-bottom:1px solid #21394a}
+ .li-grid{grid-template-columns:1fr 1fr;grid-template-rows:51px minmax(0,1fr);gap:0}
+ .li-section{padding:5px 8px;overflow-y:auto}.li-tokens{grid-column:1/-1;border-right:0;border-bottom:1px solid #21394a}
  .li-tokens .li-kicker{display:none}
  .li-token-row{flex-wrap:nowrap;overflow:auto;max-height:none;scrollbar-width:thin;white-space:nowrap;padding:3px 0}
  .li-token{max-width:110px;flex:none;min-height:25px}.li-tokens .li-muted{display:block;font-size:8px;margin-top:1px;white-space:nowrap}
@@ -149,7 +149,7 @@
  #app[data-mode="1"][data-panel="graph"] .li-token-row{flex-wrap:wrap;white-space:normal}
  #app[data-mode="1"][data-panel="graph"] .li-muted{display:block;margin-top:2px}
 }
-@media(max-width:360px){#app[data-mode="1"] .layer-inspector-panel{height:155px}.li-section{padding:5px 6px}.li-expert{gap:2px;grid-template-columns:30px 1fr 26px}}
+@media(max-width:360px){#app[data-mode="1"] .layer-inspector-panel{height:190px}.li-section{padding:5px 6px}.li-expert{gap:2px;grid-template-columns:30px 1fr 26px}}
 </style>
 </head>
 <body>
