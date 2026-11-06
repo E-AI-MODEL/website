@@ -87,7 +87,7 @@ Deno.serve(async req=>{
     const docs=await db(path,"GET",null,service);
     if(!Array.isArray(docs)||docs.length!==1)return reply({error:"document_unavailable"},503,origin);
     const doc=docs[0];
-    if(body.action==="load"){ const texts=doc.personal_texts; const pub=texts&&typeof texts==="object"&&texts.published&&typeof texts.published==="object"?texts.published:{}; return reply({ok:true,participant:{id:member.id,name:member.display_name||""},document:{...doc,personal_texts:{...pub,blocks:Array.isArray(texts?.blocks_published)?texts.blocks_published:[]}}},200,origin); }
+    if(body.action==="load"){ const texts=doc.personal_texts; const published=texts&&typeof texts==="object"&&texts.published&&typeof texts.published==="object"?texts.published:{}; const pub={...published,blocks:Array.isArray(texts?.blocks_published)?texts.blocks_published:[]}; return reply({ok:true,participant:{id:member.id,name:member.display_name||""},document:{...doc,personal_texts:pub}},200,origin); }
     if(!Number.isSafeInteger(body.expected_revision)||body.expected_revision<0||!checkChanges(body.changes))
       return reply({error:"invalid_save"},400,origin);
     if(doc.revision!==body.expected_revision)return reply({error:"revision_conflict",revision:doc.revision},409,origin);
