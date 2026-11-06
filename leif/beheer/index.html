@@ -28,10 +28,11 @@ main{max-width:1160px;margin:auto;padding:42px 24px 120px}.tag{font-weight:800;c
 .site-edit-status{font-size:13px;color:var(--muted);min-height:22px}
 .site-edit-history button{margin:4px 0}
 @media(max-width:830px){.site-edit-grid{grid-template-columns:1fr}.site-frame{min-height:440px}.site-edit-side{max-height:none}}
+#accountSettings{scroll-margin-top:110px}#accountSettings summary{cursor:pointer;font-weight:750}
 </style>
 </head>
 <body>
-<header class="mast"><div class="mast-inner"><a href="/leif/" class="brand">LEIF <span>Beheer</span></a><div class="actions"><span class="meta" id="identity"></span><button id="logout" type="button" class="btn secondary compact" hidden>Uitloggen</button></div></div></header>
+<header class="mast"><div class="mast-inner"><a href="/leif/" class="brand">LEIF <span>Beheer</span></a><div class="actions"><span class="meta" id="identity"></span><button id="openAccount" type="button" class="btn secondary compact" hidden>Mijn beheerinlog</button><button id="logout" type="button" class="btn secondary compact" hidden>Uitloggen</button></div></div></header>
 <main>
 <section id="login" class="panel login" hidden>
 <p><a href="/leif/?beheer=1">Ga naar de beheerinlog</a></p>
@@ -184,7 +185,8 @@ async function request(action,extra={}){
 function accountIdentity(){
  E('identity').textContent=auth?.user_email||'Beheerder';
  E('accountEmail').value=auth?.pending_email||auth?.user_email||'';
- E('accountSettings').hidden=!tenants.some(t=>t.slug==='leif'&&t.role==='manager');
+ const allowed=tenants.some(t=>t.slug==='leif'&&t.role==='manager');
+ E('accountSettings').hidden=!allowed;E('openAccount').hidden=!allowed;
  if(auth?.pending_email)E('accountStatus').textContent='Bevestig '+auth.pending_email+' via de e-mail. Je huidige adres blijft bruikbaar tot de wijziging is bevestigd.';
 }
 async function resumeSession(){
@@ -195,6 +197,7 @@ async function resumeSession(){
   auth=newAuth;tenants=newAuth.tenants;
   show('login',false);show('workspace',true);show('logout',true);E('loading').hidden=true;
   accountIdentity();
+  if(location.hash==='#accountSettings')openAccountSettings();
   E('tenant').replaceChildren(...tenants.map(t=>{const o=el('option',null,t.name);o.value=t.id;return o}));
   tenant=tenants[0];E('tenant').value=tenant.id;await loadList();await loadTesters();
  }catch(error){
@@ -203,6 +206,17 @@ async function resumeSession(){
   E('loading').hidden=false;E('retrySession').hidden=false;
  }
 }
+function openAccountSettings(){
+ if(E('accountSettings').hidden)return;
+ E('accountSettings').open=true;
+ E('accountSettings').scrollIntoView({behavior:'smooth',block:'start'});
+ E('accountEmail').focus({preventScroll:true});
+}
+E('openAccount').onclick=()=>{
+ history.replaceState(null,'',location.pathname+location.search+'#accountSettings');
+ openAccountSettings();
+};
+window.addEventListener('hashchange',()=>{if(location.hash==='#accountSettings')openAccountSettings()});
 E('retrySession').onclick=()=>resumeSession();
 function keepSession(){if(window.parent===window&&document.visibilityState==='visible'&&adminSession.read())adminSession.refresh().catch(()=>{})}
 setInterval(keepSession,60000);

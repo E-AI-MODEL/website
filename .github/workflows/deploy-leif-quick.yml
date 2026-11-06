@@ -56,6 +56,7 @@ jobs:
           set net:timeout 20
           set net:max-retries 1
           set xfer:use-temp-file yes
+          put leif/beheer/.htaccess -o /leif/beheer/.htaccess
           put leif/beheersessie.js -o /leif/beheersessie.js
           put leif/tekstvelden.js -o /leif/tekstvelden.js
           put leif/tekstbeheer.js -o /leif/tekstbeheer.js
