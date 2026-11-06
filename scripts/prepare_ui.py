@@ -25,10 +25,11 @@ def canonical(path: str) -> str:
     return ALIASES.get(path, path)
 
 def groups(en: bool):
+    """Keep the published no-JavaScript menu aligned with the shared browser menu."""
     if en:
         return [
-            ('Explore', [('EAI model', '/en/model/'), ('Education', '/en/education/')]),
-            ('Applications', [('Applications', '/en/applications/'), ('Onderwijs in (NL)', '/onderwijsin/')]),
+            ('Explore', [('The EAI model', '/en/#model'), ('Education', '/en/education/')]),
+            ('Applications', [('All applications', '/en/applications/'), ('Education', '/en/education/')]),
             ('Research', [('Research', '/en/research/'), ('Publications', '/en/publications/')]),
             ('Observatories', [('Milky Way Lab', '/tools/melkweg-lab/'), ('Science Observatory', '/tools/science-observatory/'), ('LLM Observatory', '/tools/llm-observatorium/'), ('ABYSS', '/tools/abyss/')]),
             ('Create', [('WiHTML Studio', '/tools/wihtml/'), ('EAIstudio', '/tools/eaistudio/'), ('EAImesh', '/tools/eaimesh/'), ('Prompt Framework', '/tools/prompt-framework/'), ('Process to prompt', '/tools/van-proces-naar-prompt/')]),
@@ -36,13 +37,13 @@ def groups(en: bool):
             ('About EAI', [('About EAI', '/en/about/'), ('Site insights', '/en/insights/')]),
         ]
     return [
-        ('Ontdekken', [('Het EAI-model', '/nl/model/'), ('EAI in het onderwijs', '/nl/onderwijs/')]),
+        ('Ontdekken', [('Het EAI-model', '/nl/#model'), ('EAI in het onderwijs', '/nl/onderwijs/')]),
         ('Toepassingen', [('Alle toepassingen', '/nl/toepassingen/'), ('Onderwijs in', '/onderwijsin/')]),
         ('Onderzoek', [('Onderzoek', '/nl/onderzoek/'), ('Publicaties', '/nl/publicaties/')]),
-        ('Observatoria', [('Melkweg Lab', '/tools/melkweg-lab/'), ('Science Observatory', '/tools/science-observatory/'), ('LLM Observatorium', '/tools/llm-observatorium/'), ('ABYSS', '/tools/abyss/')]),
+        ('Observatoria', [('Melkweg Lab', '/tools/melkweg-lab/'), ('Science Observatory', '/tools/science-observatory/'), ('LLM Observatorium', '/tools/llm-observatorium/'), ('ABYSS · de oceaan', '/tools/abyss/')]),
         ('Maken & ontwerpen', [('WiHTML Docentstudio', '/tools/wihtml/'), ('EAIstudio', '/tools/eaistudio/'), ('EAImesh', '/tools/eaimesh/'), ('Prompt Framework', '/tools/prompt-framework/'), ('Van proces naar prompt', '/tools/van-proces-naar-prompt/')]),
         ('Tools & monitoren', [('Alle tools', '/nl/tools/'), ('AI Model Monitor', '/nl/model-monitor/'), ('LLMscan', '/nl/llmscan/')]),
-        ('Over EAI', [('Over EAI', '/nl/over/'), ('Website-inzichten', '/nl/insights/')]),
+        ('Over EAI', [('Over EAI en Hans Visser', '/nl/over/'), ('EAI Insights · websitegebruik', '/nl/insights/')]),
     ]
 
 def navigation(soup: BeautifulSoup, path: str, en: bool) -> str:
