@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#0a1527">
-<meta name="description" content="Draai de Melkweg, verander de zwaartekracht, ontdek sterren en onderzoek een zwart gat. Een interactief ontdeklab voor jonge onderzoekers.">
-<title>Melkweg Lab | Jij ontdekt het heelal</title>
+<meta name="description" content="Interactief galactisch observatorium. Modelprojectie, massamodellen, sterrenbewegingen en meetgrafieken.">
+<title>MW / 01 | Galactisch Observatorium</title>
 <style>
 :root{--bg:#050914;--panel:#0b1220;--panel2:#0c1525;--line:#233149;--muted:#788da8;--txt:#dbe7f7;--hi:#f0f6ff;--cyan:#70e4ec;--amber:#eab979;--purple:#aa9df4;--green:#84d8af;--red:#fc8c93;--sidebar:222px;--right:335px}
 *{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;overflow:hidden}body{font:13px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:.012em;color:var(--txt);background:var(--bg)}button,input{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}a{color:var(--cyan);text-decoration:none}a:hover{text-decoration:underline}::selection{background:#316a77;color:white}
@@ -404,50 +404,50 @@ html.solar-active,html.solar-active body{overflow:hidden!important;height:100dvh
 <body>
 <div id="app">
 <aside class="sidebar" aria-label="Modules">
-  <div class="brand"><div class="brandmark" aria-hidden="true"><b></b></div><div class="brandtext"><h1>MELKWEG LAB</h1><small>Hier begint jouw ruimtereis</small></div></div>
-  <div class="s-label">Waar wil je heen?</div>
-  <button class="adventure-menu-toggle" id="adventureMenuToggle" type="button" aria-controls="navigation" aria-expanded="false" aria-label="Kies een avontuur">
+  <div class="brand"><div class="brandmark" aria-hidden="true"><b></b></div><div class="brandtext"><h1>MW / 01</h1><small>GALACTISCH OBSERVATORIUM</small></div></div>
+  <div class="s-label">ONDERZOEKSMODULES</div>
+  <button class="adventure-menu-toggle" id="adventureMenuToggle" type="button" aria-controls="navigation" aria-expanded="false" aria-label="Onderzoeksmodule kiezen">
     <span class="adventure-current-icon" id="adventureCurrentIcon" aria-hidden="true">◎</span>
-    <span class="adventure-current-lines"><small>Jouw avontuur</small><strong id="adventureCurrent">Waar zijn wij?</strong></span>
+    <span class="adventure-current-lines"><small>MODULE</small><strong id="adventureCurrent">Galactische atlas</strong></span>
     <span class="adventure-menu-chevron" aria-hidden="true">⌄</span>
   </button>
-  <nav class="navlist" id="navigation" aria-label="Kies een ontdekavontuur">
-   <button class="nav-btn active" data-mode="atlas" aria-pressed="true"><span class="nav-icon">◎</span><span class="navcopy"><b>Waar zijn wij?</b><small>Zoek onze zon</small></span><span class="navnum">01</span></button>
-   <button class="nav-btn" data-mode="dynamics" aria-pressed="false"><span class="nav-icon">∿</span><span class="navcopy"><b>Waarom draaien sterren?</b><small>Verander hun snelheid</small></span><span class="navnum">02</span></button>
-   <button class="nav-btn" data-mode="structure" aria-pressed="false"><span class="nav-icon">≋</span><span class="navcopy"><b>Hoe ziet het eruit?</b><small>Van boven en van opzij</small></span><span class="navnum">03</span></button>
-   <button class="nav-btn" data-mode="stars" aria-pressed="false"><span class="nav-icon">✧</span><span class="navcopy"><b>Welke sterren zie je?</b><small>Pak je sterrenkijker</small></span><span class="navnum">04</span></button>
-   <button class="nav-btn" data-mode="gaia" aria-pressed="false"><span class="nav-icon">⌖</span><span class="navcopy"><b>Hoe ver is ver?</b><small>Speel met afstand</small></span><span class="navnum">05</span></button>
-   <button class="nav-btn" data-mode="blackhole" aria-pressed="false"><span class="nav-icon">◉</span><span class="navcopy"><b>Wat doet een zwart gat?</b><small>Volg een ster</small></span><span class="navnum">06</span></button>
+  <nav class="navlist" id="navigation" aria-label="Onderzoeksmodule">
+   <button class="nav-btn active" data-mode="atlas" aria-pressed="true"><span class="nav-icon">◎</span><span class="navcopy"><b>Galactische atlas</b><small>Ruimtelijke opbouw</small></span><span class="navnum">01</span></button>
+   <button class="nav-btn" data-mode="dynamics" aria-pressed="false"><span class="nav-icon">∿</span><span class="navcopy"><b>Dynamica</b><small>Massa / rotatie</small></span><span class="navnum">02</span></button>
+   <button class="nav-btn" data-mode="structure" aria-pressed="false"><span class="nav-icon">≋</span><span class="navcopy"><b>Schijf &amp; halo</b><small>Morfologie</small></span><span class="navnum">03</span></button>
+   <button class="nav-btn" data-mode="stars" aria-pressed="false"><span class="nav-icon">✧</span><span class="navcopy"><b>Sterpopulaties</b><small>HR / selectie</small></span><span class="navnum">04</span></button>
+   <button class="nav-btn" data-mode="gaia" aria-pressed="false"><span class="nav-icon">⌖</span><span class="navcopy"><b>Meten met Gaia</b><small>Parallax</small></span><span class="navnum">05</span></button>
+   <button class="nav-btn" data-mode="blackhole" aria-pressed="false"><span class="nav-icon">◉</span><span class="navcopy"><b>Sagittarius A*</b><small>S2 / baan</small></span><span class="navnum">06</span></button>
   </nav>
-  <div class="side-end"><div class="live"><span class="led"></span>JE MAG ALLES UITPROBEREN</div><p>Er kan niets stuk. Gewoon proberen!</p><span class="ver">MW-01 / standalone / 06.11.2026</span></div>
+  <div class="side-end"><div class="live"><span class="led"></span>MODEL ACTIEF</div><p>Analytisch model · synthetische sterren</p><span class="ver">MW-01 / standalone / 06.11.2026</span></div>
 </aside>
 <div class="adventure-backdrop" id="adventureBackdrop" aria-hidden="true" hidden></div>
-<header class="topbar"><div class="breadcrumb">JOUW REIS <span class="slash">/</span><strong id="crumb">GALACTISCHE ATLAS</strong></div><div class="top-actions" id="topActions"><button type="button" id="solarEntry" class="solar-entry">✦ Planeten</button><span class="tag"><span class="dot"></span>JOUW ONTDEKLAB</span><button id="toolsMenuToggle" class="tools-menu-toggle" type="button" aria-controls="topActions" aria-expanded="false" aria-label="Meer knoppen" title="Meer knoppen">⋯</button><button id="resetView" class="topbtn" title="Camera en tijd herstellen"><svg viewBox="0 0 24 24"><path d="M3 11a9 9 0 1 1 3 7M3 4v7h7"/></svg><span class="btxt">Begin opnieuw</span></button><button id="exportJSON" class="topbtn" title="Sla het model en de instellingen als JSON op"><svg viewBox="0 0 24 24"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 17v4h16v-4"/></svg><span class="btxt">Model bewaren</span></button><button id="snapshot" class="topbtn primary" title="Exporteer de huidige simulatie als PNG"><svg viewBox="0 0 24 24"><path d="M3 7h4l2-3h6l2 3h4v13H3z"/><circle cx="12" cy="13" r="4"/></svg><span class="btxt">Maak een foto</span></button></div></header>
+<header class="topbar"><div class="breadcrumb">MW / 01 <span class="slash">/</span><strong id="crumb">GALACTISCHE ATLAS</strong></div><div class="top-actions" id="topActions"><button type="button" id="solarEntry" class="solar-entry">PLANETEN</button><span class="tag"><span class="dot"></span>MODEL + BRONNEN</span><button id="toolsMenuToggle" class="tools-menu-toggle" type="button" aria-controls="topActions" aria-expanded="false" aria-label="Meer knoppen" title="Meer knoppen">⋯</button><button id="resetView" class="topbtn" title="Camera en tijd herstellen"><svg viewBox="0 0 24 24"><path d="M3 11a9 9 0 1 1 3 7M3 4v7h7"/></svg><span class="btxt">Herstel beeld</span></button><button id="exportJSON" class="topbtn" title="Sla het model en de instellingen als JSON op"><svg viewBox="0 0 24 24"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 17v4h16v-4"/></svg><span class="btxt">Model JSON</span></button><button id="snapshot" class="topbtn primary" title="Exporteer de huidige simulatie als PNG"><svg viewBox="0 0 24 24"><path d="M3 7h4l2-3h6l2 3h4v13H3z"/><circle cx="12" cy="13" r="4"/></svg><span class="btxt">Afbeelding</span></button></div></header>
 <section class="stage" id="stage" aria-label="Interactieve 3D-weergave van de Melkweg">
-  <canvas id="universe" aria-label="Interactieve Melkweg. Draai de Melkweg met je vinger of sleep de oplichtende punten om iets te veranderen."></canvas>
+  <canvas id="universe" aria-label="Interactief Melkwegmodel. Sleep om te draaien, knijp om te zoomen, selecteer een meetpunt."></canvas>
   <div class="stage-head"><div class="eyebrow" id="scene-eyebrow">01 / GALACTISCHE ATLAS</div><h2 id="scene-title">De Melkweg,<br>van buiten bekeken</h2><p id="scene-desc">Draai het model, verander het tijdstip en onderzoek hoe de <strong>schijf, balk, halo en spiraalarmen</strong> samenhangen.</p></div>
 
   <div class="stage-metrics"><div>PROJECTIE <b id="viewangle">38° / 24°</b></div><div>VENSTER <b id="viewscale">40 kpc</b></div><div id="focuslabel">FOCUS <b id="focusvalue">R = 8,2 kpc</b></div></div>
   <div class="scene-badge" id="scene-badge">● <span>Wetenschappelijk model</span><br>Geen directe opname van buitenaf</div>
-  <div class="mobile-focus-layer" aria-label="Klikbare plekken in de Melkweg"><button type="button" class="astro-pin" data-kind="center" id="astroCenterPin" aria-label="Bekijk het midden van de Melkweg">Midden</button><button type="button" class="astro-pin" data-kind="sun" id="astroSunPin" aria-label="Ontdek waar onze zon staat">Onze zon</button></div><div class="gesture-nudge" id="gestureNudge">Sleep om te draaien · knijp om te zoomen</div><div class="mobile-object-info" id="astroInfo" role="region" aria-live="polite" aria-label="Meer over deze plek" hidden><button id="astroInfoClose" class="info-dismiss" type="button" aria-label="Sluit informatie">×</button><span class="info-label">Je tikte hier</span><strong id="astroInfoTitle">Ontdekt!</strong><p id="astroInfoText"></p><button class="info-go" id="astroInfoGo" type="button" hidden></button></div><div class="stage-hud-bottom"><button class="camera-menu-toggle" id="cameraMenuToggle" type="button" aria-controls="cameraPresets" aria-expanded="false">◉ Bekijk</button><div class="scene-meta"><span id="scale-label">▱ 5 kpc</span><br><strong id="scene-hint">SLEEP OVER DE STERREN OM TE DRAAIEN</strong></div><div class="camera-controls" id="cameraPresets" aria-label="Camera-oriëntatie"><button class="cambtn" data-cam="face">Van boven</button><button class="cambtn active" data-cam="tilt">3D</button><button class="cambtn" data-cam="edge">Van opzij</button><button class="cambtn" data-cam="sun">☉ Zon</button></div></div>
+  <div class="mobile-focus-layer" aria-label="Meetpunten"><button type="button" class="astro-pin" data-kind="center" id="astroCenterPin" aria-label="Selecteer galactisch centrum">SGR A*</button><button type="button" class="astro-pin" data-kind="sun" id="astroSunPin" aria-label="Selecteer zonpositie">ZON</button></div><div class="gesture-nudge" id="gestureNudge">DRAAI · ZOOM · SELECTEER</div><div class="mobile-object-info" id="astroInfo" role="region" aria-live="polite" aria-label="Meer over deze plek" hidden><button id="astroInfoClose" class="info-dismiss" type="button" aria-label="Sluit informatie">×</button><span class="info-label">Je tikte hier</span><strong id="astroInfoTitle">Ontdekt!</strong><p id="astroInfoText"></p><button class="info-go" id="astroInfoGo" type="button" hidden></button></div><div class="stage-hud-bottom"><button class="camera-menu-toggle" id="cameraMenuToggle" type="button" aria-controls="cameraPresets" aria-expanded="false">◉ Bekijk</button><div class="scene-meta"><span id="scale-label">▱ 5 kpc</span><br><strong id="scene-hint">SLEEP OVER DE STERREN OM TE DRAAIEN</strong></div><div class="camera-controls" id="cameraPresets" aria-label="Camera-oriëntatie"><button class="cambtn" data-cam="face">Van boven</button><button class="cambtn active" data-cam="tilt">3D</button><button class="cambtn" data-cam="edge">Van opzij</button><button class="cambtn" data-cam="sun">☉ Zon</button></div></div>
 </section>
 <section class="analytics" aria-label="Analyse en simulatieklok"><button id="graphClose" class="graph-close" type="button" aria-label="Sluit de grafiek">×</button>
   <div class="analytics-head"><h3 id="plot-title">RADIALE OPPERVLAKTEDICHTHEID</h3><div class="cal-tag" id="plot-tag">MODEL • NIET WAARGENOMEN</div></div>
   <div class="analytics-main"><div class="chartbox"><canvas id="plot" aria-label="Interactieve wetenschappelijke grafiek"></canvas><div id="plotTooltip" class="cursorinfo"></div></div><div class="mathbox"><div class="math-label" id="formula-label">MODEL / SCHIJFPROFIEL</div><div class="formula" id="formula">Σ(R) = Σ₀ exp(−R/R<sub>d</sub>)</div><div class="formula-sub" id="formula-sub">Een exponentiële schijf is een vereenvoudiging. De echte Melkweg heeft asymmetrie, gas, stof en substructuur.</div></div></div>
   <div class="timeline"><button id="play" aria-label="Animatie afspelen of pauzeren"><span id="playico" class="playico">Ⅱ</span></button><label for="timeslider" id="time-label">GALACTISCHE TIJD</label><button id="timeToggle" class="time-reveal" type="button" aria-expanded="false" aria-label="Stel de tijd in">◷</button><input id="timeslider" type="range" min="0" max="500" step="1" value="0" aria-label="Simulatietijd"><span class="tvalue" id="timevalue">+000 Myr</span><div class="speed-wrap"><span>SNELHEID</span><select id="speeds" aria-label="Simulatiesnelheid"><option value="1">1×</option><option value="3">3×</option><option value="9" selected>9×</option><option value="24">24×</option></select></div></div>
 </section>
-<aside class="inspector" aria-label="Ontdekken en experimenteren"><button class="lab-dock" type="button" id="labDock" aria-label="Open de ontdekproeven" aria-expanded="false" aria-controls="inspector-body"><span class="lab-dock-icon" aria-hidden="true">✦</span><span class="lab-dock-title" id="labDockTitle">Is de Melkweg plat?</span><span class="lab-dock-action" id="labDockAction">Open ›</span></button><div class="panel-head"><div class="section-counter"><span>DIT KUN JE PROBEREN</span><b id="inspector-counter">01 / 06</b></div><h3 id="inspector-title">Galactische morfologie</h3><p id="inspector-lead">Schakel onderdelen in en uit. De ruimtelijke verdeling is synthetisch, niet een ster-voor-sterreconstructie.</p></div><div class="panel-body" id="inspector-body"></div></aside>
+<aside class="inspector" aria-label="Modelparameters"><button class="lab-dock" type="button" id="labDock" aria-label="Open parameters" aria-expanded="false" aria-controls="inspector-body"><span class="lab-dock-icon" aria-hidden="true">≡</span><span class="lab-dock-title" id="labDockTitle">Galactische atlas</span><span class="lab-dock-action" id="labDockAction">Open ›</span></button><div class="panel-head"><div class="section-counter"><span>PARAMETERS / INSPECTOR</span><b id="inspector-counter">01 / 06</b></div><h3 id="inspector-title">Galactische morfologie</h3><p id="inspector-lead">Schakel onderdelen in en uit. De ruimtelijke verdeling is synthetisch, niet een ster-voor-sterreconstructie.</p></div><div class="panel-body" id="inspector-body"></div></aside>
 <div class="lab-sheet-backdrop" id="labBackdrop" hidden></div>
 </div>
 
 <section id="solarExplorer" aria-label="Ontdek het zonnestelsel" role="dialog" aria-modal="true" hidden>
  <div class="solar-shell">
-  <header class="solar-top"><button id="backGalaxy" class="solar-back" type="button">← Terug naar de Melkweg</button><div class="solar-top-title"><b>Op bezoek bij de planeten</b><small>Raak een planeet aan en ontdek meer</small></div></header>
+  <header class="solar-top"><button id="backGalaxy" class="solar-back" type="button">← Terug naar de Melkweg</button><div class="solar-top-title"><b>Zonnestelsel</b><small>Banen / omlooptijd</small></div></header>
   <div class="solar-main">
-   <div class="solar-space" id="solarSpace"><canvas id="solarCanvas" aria-label="Bewegend zonnestelsel. Klik op een planeet om haar te ontdekken." tabindex="0"></canvas><div class="solar-over"><strong>Welke planeet kies jij?</strong><span>Klik op een gekleurde bol of kies een naam.</span></div>
-    <div class="solar-lower"><div class="solar-clock-top"><b>Kun jij de tijd vooruitzetten?</b><span id="solarYearLabel" class="solar-year">Jaar 0</span></div><div class="solar-clock-row"><button id="solarPlay" class="solar-time-btn" aria-label="Zet de planeten in beweging">▶</button><input type="range" id="solarTime" min="0" max="40" value="0" step="0.05" aria-label="Hoeveel jaar laat je voorbijgaan?"></div><p class="solar-clock-foot">De aarde doet één rondje in één jaar. Welke planeet is sneller?</p></div>
+   <div class="solar-space" id="solarSpace"><canvas id="solarCanvas" aria-label="Bewegend zonnestelsel. Klik op een planeet om haar te ontdekken." tabindex="0"></canvas><div class="solar-over"><strong>PLANETEN / MODEL</strong><span>Selecteer een planeet.</span></div>
+    <div class="solar-lower"><div class="solar-clock-top"><b>SIMULATIETIJD</b><span id="solarYearLabel" class="solar-year">Jaar 0</span></div><div class="solar-clock-row"><button id="solarPlay" class="solar-time-btn" aria-label="Zet de planeten in beweging">▶</button><input type="range" id="solarTime" min="0" max="40" value="0" step="0.05" aria-label="Hoeveel jaar laat je voorbijgaan?"></div><p class="solar-clock-foot">Aarde: 1 omloop per jaar. Banen zijn schematisch.</p></div>
    </div>
-   <aside class="solar-side" aria-label="Klikbare planeten en uitleg"><h3>Kies een planeet</h3><div class="planet-grid" id="planetChoices"></div><section class="planet-card" id="planetDetail" aria-live="polite"></section><p class="solar-side-note">We hebben de planeten en hun banen groter en dichterbij getekend, zodat je ze kunt zien. De echte afstanden zijn veel groter.</p></aside>
+   <aside class="solar-side" aria-label="Klikbare planeten en uitleg"><h3>PLANETEN</h3><div class="planet-grid" id="planetChoices"></div><section class="planet-card" id="planetDetail" aria-live="polite"></section><p class="solar-side-note">We hebben de planeten en hun banen groter en dichterbij getekend, zodat je ze kunt zien. De echte afstanden zijn veel groter.</p></aside>
   </div>
  </div>
 </section>
@@ -866,7 +866,7 @@ let lastStatsAt=0;function updateLiveStats(force=false){let now=performance.now(
  $('timevalue').textContent=state.mode==='blackhole'?`${fmt(state.bhTime,1)} jaar`:`${Math.floor(state.time)} miljoen jaar`;
  $('timeslider').value=state.mode==='blackhole'?state.bhTime:state.time;
  $('playico').textContent=state.running?'Ⅱ':'▶';$('play').setAttribute('aria-label',state.running?'Animatie pauzeren':'Animatie afspelen');
- $('scale-label').textContent=state.mode==='blackhole'?'◌ S2: ~2000 AU':`▱ ${fmt(5/state.cam.zoom,1)} kpc`;updateKidLive();}
+ $('scale-label').textContent=state.mode==='blackhole'?'◌ S2: ~2000 AU':`▱ ${fmt(5/state.cam.zoom,1)} kpc`;}
 function render(){if(state.mode==='blackhole')drawBlackHole();else drawGalaxy();}
 function axisSetup(xmin,xmax,ymin,ymax,xticks,yticks,{xlabel='',ylabel='',reverseX=false}={}){const g={x:56,y:15,w:PW-82,h:PH-46};if(PW<430)g.x=45,g.w=PW-65;g.w=Math.max(50,g.w);g.h=Math.max(60,g.h);pc.fillStyle='#0b1523';pc.fillRect(0,0,PW,PH);pc.font='9px ui-monospace,monospace';pc.lineWidth=1;
  const X=x=>g.x+((reverseX?xmax-x:x-xmin)/(xmax-xmin))*g.w,Y=y=>g.y+g.h-(y-ymin)/(ymax-ymin)*g.h;
@@ -919,7 +919,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.querySelec
 window.addEventListener('resize',()=>{if(window.innerWidth>850)closeAdventureMenu(false)});
 function modeSet(mode){if(!MODE[mode])return;closeAstroInfo();document.body.classList.remove('time-open');$('timeToggle').setAttribute('aria-expanded','false');$('stage').dataset.grabs=['dynamics','structure','stars','gaia'].includes(mode)?'true':'false';activeLabTab='proef';state.mode=mode;$('solarEntry').hidden=mode!=='atlas';state.running=mode==='dynamics'||mode==='blackhole';document.querySelectorAll('.nav-btn').forEach(b=>{let yes=b.dataset.mode===mode;b.classList.toggle('active',yes);b.setAttribute('aria-pressed',yes?'true':'false')});updateAdventureMenu();updateSceneText();bindPanel();$('inspector-body').scrollTop=0;updateLiveStats(true);chartDirty=true;}
 function camSet(mode){state.cam.target=mode==='sun'?'sun':'center';if(mode==='face')Object.assign(state.cam,{elev:90,yaw:0,zoom:1.05});else if(mode==='edge')Object.assign(state.cam,{elev:3,yaw:.33,zoom:1});else if(mode==='sun')Object.assign(state.cam,{elev:66,yaw:.40,zoom:2.65});else Object.assign(state.cam,window.innerWidth<=850?{elev:72,yaw:.28,zoom:1.08}:{elev:38,yaw:.39,zoom:1});document.querySelectorAll('[data-cam]').forEach(b=>b.classList.toggle('active',b.dataset.cam===mode));updateLiveStats(true);}
-function restoreView(){state.time=0;state.bhTime=0;state.running=false;state.pitch=12;state.limMag=18.5;state.observeD=8.2;state.observeVT=220;state.model={disk:6.8,bulge:1.0,halo:1.12,sigma:35};state.focusR=8.2;state.focusTheta=.7;state.layer.arms=true;state.layer.disk=true;state.layer.stellarHalo=true;state.layer.bar=true;state.layer.bulge=true;state.layer.orbit=true;state.layer.labels=true;updatePitch();recalcOmega();camSet('tilt');if(window.innerWidth<=850){state.cam.elev=73;state.cam.yaw=.26;state.cam.zoom=1.08;}chartDirty=true;bindPanel();updateLiveStats(true);toast('Je sterrenkaart staat weer zoals aan het begin');}
+function restoreView(){state.time=0;state.bhTime=0;state.running=false;state.pitch=12;state.limMag=18.5;state.observeD=8.2;state.observeVT=220;state.model={disk:6.8,bulge:1.0,halo:1.12,sigma:35};state.focusR=8.2;state.focusTheta=.7;state.layer.arms=true;state.layer.disk=true;state.layer.stellarHalo=true;state.layer.bar=true;state.layer.bulge=true;state.layer.orbit=true;state.layer.labels=true;updatePitch();recalcOmega();camSet('tilt');if(window.innerWidth<=850){state.cam.elev=73;state.cam.yaw=.26;state.cam.zoom=1.08;}chartDirty=true;bindPanel();updateLiveStats(true);toast('Referentieweergave hersteld');}
 function toast(txt){let x=$('toast');x.textContent=txt;x.classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>x.classList.remove('show'),2200);}
 function save(name,blob){let url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1800);}
 function modelExport(){let data={file:'MW-01 Galactic Observatory',createdAt:new Date().toISOString(),scientificStatus:'Analytical illustrative model; NOT a Gaia star-level reconstruction',units:{mass:'solar masses',distance:'kpc',speed:'km/s',time:'Myr',blackHoleTime:'years'},reference:{sunGalactocentricRadius_kpc:R0,galacticCenterBlackHole_Msun:MBH,GaiaDR3CircularSpeed_km_s:{value:233,uncertainty:7,source:'https://doi.org/10.1051/0004-6361/202346474'}},potential:{disk:{type:'Miyamoto-Nagai',mass_Msun:state.model.disk*1e10,a_kpc:2.6,b_kpc:.28},bulge:{type:'Hernquist',mass_Msun:state.model.bulge*1e10,a_kpc:.6},darkMatterHalo:{type:'NFW',M200_Msun:state.model.halo*1e12,concentration:10,R200_kpc:210*Math.cbrt(state.model.halo),illustrative:true}},dynamics:{selectedRadius_kpc:state.focusR,circularSpeed_km_s:vParts(state.focusR).total,orbitalPeriod_Myr:orbitPeriod(state.focusR),stellarToomreQ_illustrative:toomreQ(state.focusR),sigmaR_km_s:state.model.sigma},visualization:{mode:state.mode,time_Myr:state.time,s2Time_year:state.bhTime,pitch_deg:state.pitch,cam:state.cam,layer:state.layer},sources:['https://www.esa.int/content/view/full/423444','https://www.esa.int/Science_Exploration/Space_Science/Gaia','https://doi.org/10.1051/0004-6361/202346474','https://doi.org/10.1051/0004-6361/202142465','https://eventhorizontelescope.org/publications/first-sagittarius-event-horizon-telescope-results-i-shadow-supermassive-black-hole']};save('MW01-model-'+new Date().toISOString().slice(0,10)+'.json',new Blob([JSON.stringify(data,null,2)],{type:'application/json;charset=utf-8'}));toast('Modelparameters als JSON geëxporteerd');}
@@ -1113,25 +1113,23 @@ function closeAstroInfo(){
 }
 function showAstroInfo(kind){
  if(window.innerWidth>850)return;
- const title=$('astroInfoTitle'),text=$('astroInfoText'),go=$('astroInfoGo'),label=$('astroInfo').querySelector('.info-label');
+ const title=$('astroInfoTitle'),detail=$('astroInfoText'),go=$('astroInfoGo'),label=$('astroInfo').querySelector('.info-label');
  let route='';
  if(kind==='sun'){
-  label.textContent='Onze plek in de Melkweg';title.textContent='Hier staat onze zon';
-  text.textContent='Eén van de vele sterren, ver van het midden. Onze aarde draait om deze zon.';
-  go.textContent='Reis naar de planeten';route='solar';
-  seen.sun=true;checkQuest();
+  label.textContent='ZON / REFERENTIEPUNT';title.textContent='R₀ = 8,2 kpc';
+  detail.textContent='v(C) ≈ '+fmt(vParts(R0).total,1)+' km/s · T ≈ '+fmt(orbitPeriod(R0),0)+' Myr';
+  go.textContent='PLANETEN ↗';route='solar';
  }else if(kind==='center'){
-  label.textContent='Het midden';title.textContent='Een drukke plek vol sterren';
-  text.textContent='In het midden staat alles veel dichter op elkaar. Daar zit ook het zwarte gat Sagittarius A*.';
-  go.textContent='Volg een ster bij het zwarte gat';route='blackhole';
+  label.textContent='GALACTISCH CENTRUM';title.textContent='Sagittarius A*';
+  detail.textContent='M = 4,297 × 10⁶ M☉ · R = 0 kpc';
+  go.textContent='S2-BAAN ↗';route='blackhole';
  }else{
-  const d=fmt(state.focusR,1);
-  label.textContent='Je hebt een plek aangeraakt';title.textContent=d+' kpc van het midden';
-  text.textContent='Je wijst een plek in ons nagemaakte sterrenstelsel aan. Draai verder en ontdek hoe sterren om het midden bewegen.';
-  go.textContent='Onderzoek de beweging';route='dynamics';
+  const R=state.focusR;
+  label.textContent='MODEL / MEETPUNT';title.textContent='R = '+fmt(R,1)+' kpc';
+  detail.textContent='v(C) = '+fmt(vParts(R).total,1)+' km/s · T = '+fmt(orbitPeriod(R),0)+' Myr';
+  go.textContent='ROTATIEKROMME ↗';route='dynamics';
  }
- astroSelection=route;go.hidden=false;
- $('astroInfo').hidden=false;
+ astroSelection=route;go.hidden=false;$('astroInfo').hidden=false;
  document.body.classList.remove('time-open');$('timeToggle').setAttribute('aria-expanded','false');
 }
 function updateAstroPins(){
