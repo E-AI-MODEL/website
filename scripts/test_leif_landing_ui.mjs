@@ -37,7 +37,7 @@ try{
  await page.screenshot({path:'test-results/leif-landing-desktop.png',fullPage:true});
  await page.getByRole('button',{name:'Verder met mijn vragen'}).click();
  await page.locator('.question:visible').waitFor({timeout:10000});
- assert.match(await page.locator('.question h2').innerText(),/Hoe merk je dat zorgen voor een ander/,'De opgeslagen vraagpositie is verloren');
+ assert.match(await page.locator('.question h2').innerText(),/Waaraan merk jij dat iemand echt voor jou zorgt/,'De opgeslagen vraagpositie is verloren');
  assert.equal(await page.locator('#tabs').isVisible(),true);
  const mobile=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
  mobile.on('pageerror',e=>errors.push(e.message));
