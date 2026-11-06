@@ -16,6 +16,64 @@
 .so-home .so-foot{border-top:1px solid var(--so-line);padding:24px 0 54px;color:var(--so-muted);line-height:1.7}.so-home .so-foot strong{color:#e6f4ff}
 .so-home .so-none{display:none;color:#bfd1de;border:1px dashed #527088;padding:20px;border-radius:8px}
 @media(max-width:720px){.so-home .so-grid{grid-template-columns:1fr}.so-home .so-wrap{padding:0 16px}.so-home .so-head{padding:45px 0 30px}.so-home .so-tools{width:100%}.so-home .so-tools>*{flex:1;min-width:0}.so-home .so-card{min-height:220px;padding:20px}}
+
+/* Science Observatory 1.1: compacte, responsieve startpagina. */
+.so-home{font-size:14px;line-height:1.5}
+.so-home .so-wrap{max-width:1160px;padding-inline:24px}
+.so-home .so-head{padding:34px 0 25px}
+.so-home .so-kicker{font-size:10px;letter-spacing:.11em}
+.so-home h1{font-size:clamp(1.9rem,3.1vw,2.8rem);line-height:1.12;letter-spacing:-.038em;max-width:760px;margin:10px 0 10px}
+.so-home .so-lead{font-size:14px;line-height:1.55;max-width:670px;margin:0}
+.so-home .so-pills{gap:6px;margin:14px 0 0}
+.so-home .so-pill{font-size:10px;padding:5px 9px;letter-spacing:0}
+.so-home .so-collection{padding:26px 0 38px}
+.so-home .so-section-head{align-items:center;gap:14px;margin-bottom:14px}
+.so-home .so-section-head h2{font-size:1.4rem;line-height:1.23;letter-spacing:-.025em;margin:4px 0 0}
+.so-home .so-section-head p{font-size:12px;line-height:1.4;margin:3px 0 0}
+.so-home .so-tools{gap:8px}
+.so-home .so-tools select,.so-home .so-tools input{font-size:12px;min-height:40px;padding:9px 11px;border-radius:6px;max-width:100%}
+.so-home .so-tools select{min-width:154px}.so-home .so-tools input{min-width:180px}
+.so-home .so-grid{gap:12px}
+.so-home .so-card{padding:17px 18px;min-height:175px;gap:9px;border-radius:8px}
+.so-home .so-card-top{gap:9px}
+.so-home .so-id{font-size:10px;letter-spacing:.06em}
+.so-home .so-state{font-size:9px;padding:4px 6px;white-space:nowrap}
+.so-home .so-card h3{font-size:1.25rem;line-height:1.22;letter-spacing:-.025em}
+.so-home .so-card p{font-size:12.5px;line-height:1.48;max-width:640px}
+.so-home .so-open{font-size:12px;line-height:1.2}
+.so-home .so-foot{padding:18px 0 26px;font-size:12px;line-height:1.6}
+.so-home .so-foot p{max-width:930px;margin:0 0 8px}
+@media(max-width:720px){
+  .so-home .so-wrap{padding-inline:15px}
+  .so-home .so-head{padding:20px 0 17px}
+  .so-home .so-kicker{font-size:9px;letter-spacing:.075em}
+  .so-home h1{font-size:clamp(1.48rem,6.3vw,1.85rem);line-height:1.14;margin:8px 0 8px;letter-spacing:-.035em}
+  .so-home .so-lead{font-size:12.5px;line-height:1.52;max-width:100%}
+  .so-home .so-pills{display:none}
+  .so-home .so-collection{padding:18px 0 28px}
+  .so-home .so-section-head{align-items:stretch;gap:11px;margin-bottom:11px}
+  .so-home .so-section-head h2{font-size:1.16rem;margin:3px 0 0}
+  .so-home .so-section-head p{font-size:11px;line-height:1.35}
+  .so-home .so-tools{display:grid;grid-template-columns:minmax(0,0.95fr) minmax(0,1.05fr);width:100%;gap:7px}
+  .so-home .so-tools label{min-width:0;display:block}
+  .so-home .so-tools select,.so-home .so-tools input{width:100%;min-width:0;min-height:42px;padding:9px 9px;font-size:12px}
+  .so-home .so-grid{grid-template-columns:minmax(0,1fr);gap:9px}
+  .so-home .so-card{padding:13px 14px;min-height:0;gap:7px}
+  .so-home .so-card-top{align-items:flex-start}
+  .so-home .so-id{font-size:9px;line-height:1.35}
+  .so-home .so-state{font-size:9px;line-height:1.2}
+  .so-home .so-card h3{font-size:1.1rem;line-height:1.24}
+  .so-home .so-card p{font-size:12px;line-height:1.45;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
+  .so-home .so-open{font-size:11.5px;padding-top:2px}
+  .so-home .so-foot{padding:14px 0 20px;font-size:11px}
+  .banner{padding:8px 15px;font-size:10px;line-height:1.35;letter-spacing:0}
+}
+@media(min-width:721px) and (max-width:980px){
+  .so-home .so-section-head{align-items:flex-start;flex-direction:column}
+  .so-home .so-card{min-height:195px}
+}
+@media(prefers-reduced-motion:reduce){.so-home .so-card{transition:none}}
+
 </style>
 <main id="main-content" class="so-home">
 <section class="so-head"><div class="so-wrap"><div class="so-kicker">EAI / Science Observatory / proefbibliotheek</div>
