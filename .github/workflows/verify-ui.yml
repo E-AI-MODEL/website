@@ -22,6 +22,8 @@ jobs:
       - run: python scripts/build_site.py --sources content/legacy --out site-build
       - run: python scripts/prepare_ui.py --root site-build
       - run: python scripts/verify_ui.py --root site-build
+      - name: Validate EAImesh and EAIstudio sources and routes
+        run: python -m unittest discover -s tests -p 'test_tool_launch.py' -v
       - name: Verify LEIF is published without rewriting answers or access screen
         run: |
           test -s site-build/leif/index.html
@@ -32,6 +34,8 @@ jobs:
         run: npx playwright install chromium
         timeout-minutes: 4
       - run: node scripts/ui_smoke.mjs site-build
+      - name: Check EAImesh and EAIstudio in a real browser
+        run: node scripts/test_tool_launch.mjs site-build
       - name: Verify LLM Observatory tokenizer in Chromium
         run: node scripts/test_llm_observatorium.mjs site-build
       - name: Test Melkweg Lab on phones and desktop
