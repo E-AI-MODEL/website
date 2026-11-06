@@ -66,18 +66,27 @@ class MelkwegLabPublicationTests(unittest.TestCase):
                 self.assertIn(marker, html)
         self.assertEqual(html.count('id="solarEntry"'), 1, "Er moet één planetenknop zijn")
         self.assertNotIn('class="solar-entry">✦ Reis naar de planeten', html)
-        self.assertIn('if(!state.running && state.cam.elev>20)', html)
-        # V9 tekent de Melkweg beeldvullend en toont knoppen pas op aanvraag.
-        self.assertIn('V9: het model is het scherm', html)
-        self.assertIn('id="labDock"', html)
-        self.assertIn('id="labBackdrop"', html)
-        self.assertIn('id="cameraMenuToggle"', html)
-        self.assertIn('id="toolsMenuToggle"', html)
-        self.assertIn('body.lab-sheet-open .inspector', html)
-        self.assertIn('position:absolute;inset:0;width:100%;height:100%', html)
+        self.assertIn('Geen tweede label op het canvas', html)
+        # V11 laat de simulatie zelf het volledige mobiele scherm vullen.
+        for marker in (
+            "V11: aanraakbaar sterrenbeeld",
+            'id="astroSunPin"',
+            'id="astroCenterPin"',
+            'id="astroInfo"',
+            'id="timeToggle"',
+            'id="labDock"',
+            'id="labBackdrop"',
+            "function updateAstroPins()",
+            "function showAstroInfo(kind)",
+            "body.time-open .timeline input[type=range]",
+            "body.lab-sheet-open .inspector",
+            "updateAstroPins();",
+        ):
+            with self.subTest(marker=marker):
+                self.assertIn(marker, html)
         self.assertIn("document.body.classList.toggle('lab-sheet-open',expanded)", html)
-        self.assertIn("selectLabTab(activeLabTab)", html)
         self.assertNotIn('id="labExpand"', html)
+
 
 
 if __name__ == "__main__":
