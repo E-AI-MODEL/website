@@ -58,3 +58,36 @@
 #workspace #studioPreviewBadge{font-size:10px;color:#537080}
 @media(max-width:1150px){#workspace .studio-grid{grid-template-columns:minmax(150px,205px) 1fr}#workspace .studio-preview-pane{grid-column:1/-1}}
 @media(max-width:760px){#workspace .detail-grid{grid-template-columns:1fr}#workspace .studio-grid{grid-template-columns:1fr}#workspace .studio-preview-pane{grid-column:auto}#workspace .list{max-height:180px}main{padding:10px 12px 35px}#workspace .panel{padding:10px}}
+
+/* Dagelijkse beheeracties direct in beeld, overige formulieren pas na een klik. */
+#workspace .workspace-heading{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;border-bottom:1px solid #dbe4e7;padding:0 0 7px;margin-bottom:7px}
+#workspace .workspace-heading h1{font-size:16px;letter-spacing:-.02em;margin:0}
+#workspace .workspace-heading>.site-edit-toolbar{margin:0;gap:5px}
+#workspace .workspace-heading>.site-edit-toolbar .btn{font-size:11px;padding:5px 9px}
+#workspace #accountSettings:not([open]){display:none!important}
+#workspace #accountSettings[open]{max-width:540px;margin:8px 0;padding:12px 15px;border-color:#c8dbe5}
+#workspace #accountSettings[open] summary{font-size:12px}
+#workspace #peopleWorkspace>.toolbar{display:flex;gap:6px;align-items:center;margin:0 0 7px}
+#workspace #peopleWorkspace>.toolbar label{font-size:10px;color:#5e7888}
+#workspace #peopleWorkspace>.toolbar select{width:125px;max-width:36vw;height:30px;padding:4px 6px;font-size:11px}
+#workspace #peopleWorkspace>.toolbar #reload{margin:0}
+#workspace #newPanel{padding:0;margin:0 0 8px;background:transparent;border:0}
+#workspace #newPanel>summary{display:inline-flex;align-items:center;list-style:none;cursor:pointer;border:1px solid #cbdce3;background:#fff;border-radius:7px;padding:5px 10px;font-size:11px;font-weight:650;color:#2c4657;min-height:30px}
+#workspace #newPanel>summary::-webkit-details-marker{display:none}
+#workspace #newPanel[open]{background:#fff;padding:9px 11px 11px;border:1px solid #dce4e7;border-radius:8px}
+#workspace #newPanel[open]>summary{margin-bottom:7px;background:#eaf2f6}
+#workspace #newPanel[open]>.meta{display:block;max-width:70ch;font-size:10px}
+#workspace #newPanel[open] #inviteForm{display:flex;align-items:end;gap:7px;flex-wrap:wrap}
+#workspace #newPanel[open] #inviteForm .field{min-width:180px}
+#workspace #newPanel[open] #inviteForm input{max-width:235px}
+#workspace .detail-grid{margin-top:4px}
+#workspace .detail-grid aside>.actions{gap:7px;margin:0 0 5px}
+#workspace .detail-grid aside h2{margin:0;font-size:12px}
+#workspace .detail-grid aside #peopleCount{font-size:10px}
+#workspace #detail{margin:0}
+#workspace #empty{margin:0;padding:16px}
+#workspace #detail #personName{font-size:16px}
+#workspace #detail #personStatus{font-size:9px}
+#workspace #detail #personMeta{font-size:10px}
+#workspace #detail .navtabs{margin:6px 0 9px;padding:0 0 6px}
+@media(max-width:760px){#workspace .workspace-heading{align-items:flex-start}#workspace #peopleWorkspace>.toolbar{margin-bottom:6px}}
