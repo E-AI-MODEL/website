@@ -309,6 +309,7 @@ function showAdminPassword(){
  adminMode=true;
  adminPasswordGroup.hidden=false;
  accessCodeGroup.hidden=true;
+ codeInput.required=false;
  signInButton.textContent='Inloggen in beheer';
  accessNotice.hidden=true;
  adminPasswordInput.focus();
@@ -317,6 +318,7 @@ function hideAdminPassword(){
  adminMode=false;
  adminPasswordGroup.hidden=true;
  accessCodeGroup.hidden=false;
+ codeInput.required=true;
  adminPasswordInput.value='';
  codeInput.value='';
  signInButton.textContent='Open mijn omgeving';
