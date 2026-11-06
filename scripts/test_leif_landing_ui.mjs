@@ -62,7 +62,8 @@ try{
  await legacy.screenshot({path:'test-results/leif-landing-oud-mobiel.png',fullPage:true});
  await legacy.getByRole('button',{name:'Verder met mijn vragen'}).click();
  assert.equal(await legacy.locator('#editor').isVisible(),true);
- await legacy.locator('#question textarea').waitFor({timeout:10000});
+ await legacy.locator('#question h2').waitFor({timeout:10000});
+ assert.match(await legacy.locator('#question h2').innerText(),/Hoe ben je in een groep/);
  assert.equal(errors.length,0,errors.join('; '));
  console.log('LEIF: warme start op beide deelnemerroutes, geen proefbanner, eerdere vraag blijft bewaard.');
 }finally{if(browser)await browser.close();server.kill();}
