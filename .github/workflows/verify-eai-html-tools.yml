@@ -1,0 +1,47 @@
+name: Verify EAImesh and EAIstudio HTML
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'content/eaimesh/**'
+      - 'content/eaistudio/**'
+      - 'scripts/build_site.py'
+      - 'scripts/test_tool_launch.mjs'
+      - 'tests/test_tool_launch.py'
+      - 'nl/tools/**'
+      - 'en/tools/**'
+      - '.github/workflows/verify-eai-html-tools.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'content/eaimesh/**'
+      - 'content/eaistudio/**'
+      - 'scripts/build_site.py'
+      - '.github/workflows/verify-eai-html-tools.yml'
+permissions:
+  contents: read
+jobs:
+  tools:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: pip install beautifulsoup4
+      - run: python scripts/build_site.py --sources content/legacy --out site-build
+      - name: Verify exact HTML copy, links and app files
+        run: python -m unittest discover -s tests -p 'test_tool_launch.py' -v
+      - run: npm install --no-save playwright@1.56.1
+      - run: npx playwright install chromium
+      - name: Verify real browser interactions and offline export
+        run: node scripts/test_tool_launch.mjs site-build
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: eai-html-tools
+          path: test-results/
