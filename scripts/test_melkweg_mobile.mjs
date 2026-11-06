@@ -120,7 +120,7 @@ try{
    assert(point,'Avonturenmenu is niet zichtbaar');
    assert(await page.evaluate(({x,y})=>!!document.elementFromPoint(x,y)?.closest('.nav-btn'),{x:point.x+point.width/2,y:point.y+point.height/2}),'Avonturenmenu zit achter een ander vlak');
    await option.click();
-   assert((await page.locator('#scene-title').textContent()).includes('Sterren en selectie'),'De oude kinderlijke moduletitel komt terug');
+   assert.equal((await page.locator('#scene-title').innerHTML()).replace(/<br\s*\/?\s*>/gi,' '),'Sterren en selectie','De oude kinderlijke moduletitel komt terug');
    assert.equal(await page.locator('#adventureMenuToggle').getAttribute('aria-expanded'),'false');
    await page.locator('#adventureMenuToggle').click();
    await options.first().click();
