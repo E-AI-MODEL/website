@@ -13,7 +13,9 @@ Open `index.html` in een browser. Er zijn geen externe scripts of accounts nodig
 - Context: relatie tussen beschikbare context en een venster van 128 posities
 - Generatie: kansverdeling met temperatuur en top-p
 
-De visualisatie draait en zoomt. Selecties werken door in de inspector en grafieken. Op mobiel zijn Modules, Grafiek, Instellen, Leren en Bronnen afzonderlijke panelen.
+De visualisatie draait en zoomt. Op het grote beeld start de knop **Volg een token** een zichtbaar lichtspoor door de lagen. Je kunt pauzeren, per laag verdergaan, een ander woord kiezen of op een routestation klikken. De laag en routerkeuze zijn direct gekoppeld aan de grafiek.
+
+De grafiek heeft nu leesbare waarden en een samenvatting. Klik of tik op een waarde om de laag of expert in de 3D-wereld te selecteren. Op mobiel zijn Modules, Grafiek, Instellen, Leren en Bronnen afzonderlijke panelen. De tokenbediening verdwijnt zodra zo'n paneel openstaat.
 
 ## Herkomst en beperkingen
 
