@@ -38,7 +38,7 @@ class LlmObservatorySourceTests(unittest.TestCase):
         self.assertIn("gpt-oss-120b/blob/main/config.json", self.html)
         self.assertIn("gpt-oss-20b/blob/main/config.json", self.html)
         self.assertIn("Geen uitgelezen modelactivaties", self.html)
-        self.assertIn("geen echte token-ID", self.html.lower())
+        self.assertIn("geen echte token-id", self.html.lower())
 
     def test_not_publicly_linked_until_review(self):
         # This PR intentionally changes neither the build script nor public navigation.
