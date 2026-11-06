@@ -89,7 +89,7 @@ Deno.serve(async req=>{
   if(input.action==="update_account"){
    if(scope.slug!=="leif"||scope.role!=="manager")return send({error:"not_authorized"},403,origin);
    const email=typeof input.email==="string"?input.email.trim().toLowerCase():"";
-   if(email.length>254||!/^\S+@\S+\.\S+$/.test(email)||typeof input.password!=="string"||input.password.length<12||input.password.length>1000)return send({error:"invalid_account"},400,origin);
+   if(email.length>254||!/^\S+@\S+\.\S+$/.test(email)||typeof input.password!=="string"||input.password.length<6||input.password.length>1000)return send({error:"invalid_account"},400,origin);
    const attributes={password:input.password};
    if(email!==(user.email||"").toLowerCase())attributes.email=email;
    let updated;
