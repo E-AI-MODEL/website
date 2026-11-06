@@ -7,7 +7,7 @@ ROOT = Path(__file__).resolve().parents[1]
 BUILD = ROOT / "site-build"
 SOURCE = ROOT / "content" / "science-observatory"
 PUBLISHED = BUILD / "tools" / "science-observatory"
-SLUGS = ("melkweg", "natuurkunde", "wiskunde-a", "wiskunde-b")
+SLUGS = ("melkweg", "gravitatie-banen", "natuurkunde", "wiskunde-a", "wiskunde-b")
 
 
 class Anchors(HTMLParser):
@@ -58,13 +58,28 @@ class ObservatoryPublicationTests(unittest.TestCase):
         self.assertFalse((PUBLISHED / "beheer").exists())
         self.assertFalse((PUBLISHED / "BEHEER.html").exists())
         self.assertFalse((PUBLISHED / "STUDIO_INRICHTEN.html").exists())
-        self.assertEqual(len(list((PUBLISHED / "labs").rglob("index.html"))), 4)
+        self.assertEqual(len(list((PUBLISHED / "labs").rglob("index.html"))), len(SLUGS))
 
     def test_reference_and_status_warnings_are_present(self):
         catalog = (PUBLISHED / "index.html").read_text(encoding="utf-8")
         self.assertIn("Galactisch Observatorium", catalog)
         self.assertIn("school-PTA", catalog)
         self.assertIn("Proefmodel", catalog)
+        self.assertIn("Gravitatie &amp; satellietbanen", catalog)
+
+    def test_gravity_has_six_real_research_modes_and_exit_ticket(self):
+        source = (SOURCE / "labs" / "gravitatie-banen.html").read_text(encoding="utf-8")
+        self.assertIn("function kepler(", source)
+        self.assertIn("function transfer(", source)
+        self.assertIn("function escape(", source)
+        self.assertIn("function ground(", source)
+        self.assertIn("function position(", source)
+        self.assertIn("function renderSpace(", source)
+        self.assertIn("function renderChart(", source)
+        self.assertIn("const phaseNames=[", source)
+        self.assertIn("Exit ticket", source)
+        self.assertIn("data-mode=", source)
+
 
 
 if __name__ == "__main__":
