@@ -89,6 +89,62 @@
 .journey-top{margin-bottom:4px}.journey-track{height:3px;margin:6px 0}.journey-controls button{min-height:29px;padding:5px;font-size:10px}
 .journey-data{font-size:10px}.journey-data button{padding:4px 7px}
 @media(max-width:800px){.journey-panel{bottom:45px;width:calc(100% - 22px);padding:7px 9px}.journey-controls button{min-height:30px}}
+
+/* Tokenreis, laag-inspector. Fijne lijnen en een grote, vrije 3D-wereld. */
+#app[data-mode="1"]{grid-template-rows:54px minmax(0,1fr) 192px 0px}
+#app[data-mode="1"] .plot-panel,#app[data-mode="1"] .footer,#app[data-mode="1"] .stage-status,#app[data-mode="1"] .hint{display:none!important}
+#app[data-mode="1"] .stage-title{top:13px;left:17px}
+#app[data-mode="1"] .stage-title h1{font-size:21px;margin:5px 0}
+#app[data-mode="1"] .stage-title p{max-width:310px;font-size:11px}
+#app[data-mode="1"] .scene-caption{opacity:.75}
+.layer-inspector-panel[hidden]{display:none!important}
+.layer-inspector-panel{grid-column:2;grid-row:3;z-index:5;min-width:0;min-height:0;display:flex;flex-direction:column;background:#071625;border-top:1px solid #2a4457;color:#c9e0e7;overflow:hidden}
+.li-toolbar{height:39px;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:12px;padding:0 14px;border-bottom:1px solid #1e3649}
+.li-heading{display:flex;gap:9px;align-items:baseline;white-space:nowrap}.li-heading>span,.li-kicker,.li-model{font:9px ui-monospace,monospace;letter-spacing:.11em;color:#7596a9}
+.li-heading strong{font:14px ui-monospace,monospace;color:#e7f7f9}.li-model{font-size:9px;text-align:right}
+.li-stepper{display:flex;align-items:center;gap:9px;min-width:0;max-width:290px;justify-self:center;width:100%}
+.li-stepper button{height:25px;width:25px;flex:none;border:1px solid #304d60;color:#bde2e8;background:transparent;border-radius:3px;font-size:20px;line-height:1}
+.li-stepper button:disabled{color:#496276;border-color:#1c3445;cursor:default}.li-stepper input{width:100%;min-width:24px;accent-color:#7bbecb}
+.li-grid{display:grid;grid-template-columns:minmax(150px,1.15fr) minmax(160px,1fr) minmax(145px,.95fr);min-height:0;flex:1}
+.li-section{min-width:0;padding:11px 12px 8px;border-right:1px solid #1e3448;overflow:hidden}.li-section:last-child{border:0}
+.li-kicker{display:flex;justify-content:space-between;gap:5px;margin-bottom:10px;white-space:nowrap}.li-kicker span{color:#a8c9d9;letter-spacing:0}
+.li-token-row{display:flex;gap:4px;flex-wrap:wrap;align-content:flex-start;max-height:77px;overflow:auto}
+.li-token{border:1px solid #345267;background:transparent;color:#b6d5df;font:10px/1.25 ui-monospace,monospace;padding:4px 5px;border-radius:3px;max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.li-token.inaccessible{opacity:.32}.li-token.selected{border-color:#f0bd78;color:#ffe1b0;background:#2a2a2c}
+.li-muted{font:9px/1.3 ui-monospace,monospace;color:#839eaf;margin-top:7px}
+.li-attention-track{display:flex;gap:2px;height:25px;align-items:stretch;padding:3px 0}.li-attention-unit{flex:1;min-width:1px;border-bottom:1px solid #30485c;opacity:.3}.li-attention-unit.reachable{opacity:1;background:#214656;border-color:#62b8c3}.li-attention-unit.current{background:#e4b976;border-color:#e4b976}
+.li-detail{display:flex;flex-direction:column;gap:5px;margin-top:8px}.li-detail strong{font-size:11px;font-weight:600;color:#ddedf2}.li-detail span{font:9px/1.4 ui-monospace,monospace;color:#7e9aab}
+.li-expert-list{display:grid;gap:4px}.li-expert{display:grid;grid-template-columns:41px minmax(20px,1fr) 38px;align-items:center;gap:7px;width:100%;background:transparent;border:1px solid transparent;color:#adcbd6;text-align:left;font:10px ui-monospace,monospace;padding:1px 2px;border-radius:2px}
+.li-expert:hover,.li-expert.selected{border-color:#375b6a;color:#f5e0b8}
+.li-expert>i{display:block;height:3px;background:#1d3443}.li-expert>i>i{display:block;height:100%;background:#78c7cb}.li-expert.selected>i>i{background:#f0bf80}.li-expert span:last-child{text-align:right}
+#app[data-mode="1"] .learn-card{display:none}
+@media(max-width:800px){
+ #app[data-mode="1"]{display:flex}
+ #app[data-mode="1"] .footer{display:none!important}
+ #app[data-mode="1"] .stage{margin-bottom:calc(62px + env(safe-area-inset-bottom));}
+ #app[data-mode="1"] .stage-title p,#app[data-mode="1"] .scene-caption,#app[data-mode="1"] .cam-switch{display:none}
+ #app[data-mode="1"] .stage-title h1{font-size:18px}
+ #app[data-mode="1"] .layer-inspector-panel{position:fixed;z-index:20;display:flex;left:8px;right:8px;bottom:calc(65px + env(safe-area-inset-bottom));width:auto;height:161px;max-height:43dvh;border:1px solid #34566a;border-radius:6px;background:#081625f3;box-shadow:0 5px 25px #0007;backdrop-filter:blur(9px)}
+ .li-toolbar{height:35px;flex:none;padding:0 9px;gap:8px}.li-heading strong{font-size:12px}.li-model{display:none}
+ .li-stepper{max-width:175px;justify-self:end}
+ .li-grid{grid-template-columns:1fr 1fr;grid-template-rows:50px minmax(0,1fr);gap:0}
+ .li-section{padding:5px 8px}.li-tokens{grid-column:1/-1;border-right:0;border-bottom:1px solid #21394a}
+ .li-tokens .li-kicker{display:none}
+ .li-token-row{flex-wrap:nowrap;overflow:auto;max-height:none;scrollbar-width:thin;white-space:nowrap;padding:5px 0}
+ .li-token{max-width:110px;flex:none;min-height:25px}.li-tokens .li-muted{display:none}
+ .li-attention{border-right:1px solid #1e3448}.li-kicker{font-size:8px;margin-bottom:5px}
+ .li-attention-track{height:17px}.li-detail{margin-top:4px;gap:2px}.li-detail strong{font-size:10px}.li-detail span{font-size:8px}
+ .li-expert-list{gap:0}.li-expert{font-size:9px;grid-template-columns:33px 1fr 30px;gap:3px;min-height:16px}
+ #app[data-mode="1"][data-panel="settings"] .layer-inspector-panel,
+ #app[data-mode="1"][data-panel="modules"] .layer-inspector-panel,
+ #app[data-mode="1"][data-panel="learn"] .layer-inspector-panel,
+ #app[data-mode="1"][data-panel="sources"] .layer-inspector-panel{visibility:hidden;pointer-events:none}
+ #app[data-mode="1"][data-panel="graph"] .layer-inspector-panel{height:min(45dvh,290px);max-height:45dvh}
+ #app[data-mode="1"][data-panel="graph"] .li-grid{grid-template-rows:83px minmax(0,1fr)}
+ #app[data-mode="1"][data-panel="graph"] .li-token-row{flex-wrap:wrap;white-space:normal}
+ #app[data-mode="1"][data-panel="graph"] .li-muted{display:block;margin-top:2px}
+}
+@media(max-width:360px){#app[data-mode="1"] .layer-inspector-panel{height:155px}.li-section{padding:5px 6px}.li-expert{gap:2px;grid-template-columns:30px 1fr 26px}}
 </style>
 </head>
 <body>
@@ -108,15 +164,36 @@
  <div class="stage-title"><div class="eyebrow" id="eyebrow">01 / MODELSTELSEL</div><h1 id="modeTitle">Een model, van buiten bekeken.</h1><p id="modeDesc">Draai de structuur en kies een laag. Onderzoek wat er gebeurt met de route van een token.</p></div>
  <div class="stage-status"><div>PROJECTIE <b id="camAngle">38 / 26</b></div><div class="desktop-line">MODEL <b id="modelName">gpt-oss-120b</b></div><div>FOCUS <b id="focusLabel">LAAG 18</b></div></div>
  <div class="hint" id="statusHint"><strong>36 lagen / 128 experts per laag</strong><br>De punten tonen geen gemeten activaties.</div>
- <div id="usageStageTag" class="usage-stage-tag" hidden aria-live="polite"></div><button type="button" id="startJourney" class="stage-journey-cta">Volg een token <span>→</span></button><div id="journeyPanel" class="journey-panel" hidden aria-label="Tokenreis">
-  <div class="journey-top"><span class="journey-kicker">TOKENREIS · REKENVOORBEELD</span><strong id="journeyWhere">Laag 1 van 36</strong></div>
-  <div class="journey-data"><button type="button" id="journeyToken" title="Kies het volgende woord">Woord: Waarom ↻</button><span id="journeyExpert">Expert 1 / route 1</span></div>
-  <div class="journey-track" aria-label="Voortgang door de modelstructuur"><div id="journeyFill"></div></div>
-  <div class="journey-controls"><button type="button" id="journeyPrev">← Laag</button><button type="button" class="journey-primary" id="journeyPlay">Pauzeer</button><button type="button" id="journeyNext">Laag →</button></div>
-</div>
-<div class="scene-caption"><span class="em" id="sceneScale">4608 expertposities / 30.000+ lichtpunten</span><span>DRAAI · ZOOM · KIES EEN PUNT OF ROUTESTATION</span></div>
+ <div id="usageStageTag" class="usage-stage-tag" hidden aria-live="polite"></div><button type="button" id="startJourney" class="stage-journey-cta">Onderzoek een token <span>→</span></button><div class="scene-caption"><span class="em" id="sceneScale">4608 expertposities / 30.000+ lichtpunten</span><span>DRAAI · ZOOM · KIES EEN PUNT OF ROUTESTATION</span></div>
  <div class="cam-switch"><button type="button" data-cam="flat">BOVEN</button><button type="button" data-cam="tilt" class="active">3D</button><button type="button" data-cam="edge">ZIJ</button><button type="button" data-cam="focus">FOCUS</button></div>
 </main>
+<section class="layer-inspector-panel" id="layerInspectorPanel" hidden aria-label="Laag onderzoeken">
+  <div class="li-toolbar">
+    <div class="li-heading"><span>LAAG</span><strong id="layerTitle">01 / 36</strong></div>
+    <div class="li-stepper">
+      <button type="button" id="layerPrev" aria-label="Vorige laag">‹</button>
+      <input type="range" id="layerScrub" min="0" max="35" value="0" step="1" aria-label="Kies een modelLaag">
+      <button type="button" id="layerNext" aria-label="Volgende laag">›</button>
+    </div>
+    <span class="li-model" id="layerModelLabel">GPT-OSS-120B</span>
+  </div>
+  <div class="li-grid">
+    <div class="li-section li-tokens">
+      <div class="li-kicker">01 · TOKEN <span id="layerTokenCount">1 / 1</span></div>
+      <div class="li-token-row" id="layerTokenRow" aria-label="Selecteer een token"></div>
+      <div class="li-muted" id="layerTokenStatus">Kies een token.</div>
+    </div>
+    <div class="li-section li-attention">
+      <div class="li-kicker">02 · ATTENTION <span id="layerAttentionBadge">LOKAAL</span></div>
+      <div class="li-attention-track" id="layerAttentionTrack" aria-hidden="true"></div>
+      <div class="li-detail"><strong id="layerAttentionReach">1 positie bereikbaar</strong><span id="layerAttentionExplanation">Bereik, geen aandachtsscores</span></div>
+    </div>
+    <div class="li-section li-experts">
+      <div class="li-kicker">03 · EXPERTS <span>TOP 4 · REKENVOORBEELD</span></div>
+      <div class="li-expert-list" id="layerExpertList" aria-label="Kies een expert"></div>
+    </div>
+  </div>
+</section>
 <section class="plot-panel" id="graphPanel"><div class="mobile-panel-title">GRAFIEK <button class="mobile-close" data-close>Sluiten x</button></div><div class="plot-head"><span id="plotTitle">ACTIVATIEPATRONEN PER LAAG</span><span id="plotSub">BEREKENDE DEMO</span></div><div class="plot-inner"><canvas id="plot" aria-label="Bij het gekozen experiment horende grafiek"></canvas><div class="plot-note" id="plotNote">Tik op de grafiek om een laag of expert te kiezen.</div></div><div class="plot-summary" id="plotSummary" aria-live="polite">Selecteer een laag of expert in de grafiek.</div></section>
 <aside class="inspector" id="inspectorPanel"><div class="mobile-panel-title"><span id="mobileInspectorTitle">INSTELLEN</span><button class="mobile-close" data-close>Sluiten x</button></div><div class="ins-head"><div class="row"><span class="section-label">Parameters / inspector</span><span id="modeCount" class="section-label">01 / 06</span></div><h2 id="insTitle">Onderzoek het model</h2><p id="insDesc">Wijzig een instelling en kijk wat er gebeurt in de 3D-wereld.</p></div>
 <div class="ins-scroll">
@@ -133,7 +210,7 @@ const $=id=>document.getElementById(id), TAU=Math.PI*2;
 const CONFIG={120:{name:'gpt-oss-120b',layers:36,experts:128,top:4,heads:64,kv:8,dim:2880,context:131072,window:128,vocab:201088,billions:116.83,active:5.13},20:{name:'gpt-oss-20b',layers:24,experts:32,top:4,heads:64,kv:8,dim:2880,context:131072,window:128,vocab:201088,billions:20.91,active:3.61}};
 const MODES=[
  {name:'Modelstelsel',sub:'Alle lagen / alle experts',glyph:'&#9673;',title:'Een model, van buiten bekeken.',desc:'Duizenden expertposities vormen een ruimtelijk overzicht. Kies een laag en vergelijk twee open modellen.',ins:'De opbouw van het model',insDesc:'Elke ring staat voor een laag. De plek in de ruimte is gekozen om het model te kunnen onderzoeken.',plot:'ATTENTIONPATROON PER LAAG',note:'Afwisselend laag: lokaal venster / volledige attention.',task:'Vergelijk de modellen. Hoeveel lagen heeft gpt-oss-20b?',options:['24 lagen','36 lagen','128 lagen'],answer:0},
- {name:'Tokenreis',sub:'Echte tokens, voorbeeldroute',glyph:'&#8644;',title:'Volg een token door het model.',desc:'Kies een tokenpositie. Bekijk hoe de voorbeeldroute door de lagen loopt. De selectie blijft zichtbaar.',ins:'De route van een token',insDesc:'De route is berekend om het principe te onderzoeken. Het is geen opgenomen modeluitvoering.',plot:'ROUTESTERKTE PER LAAG',note:'Genormaliseerde demonstratiescores. Geen uitgelezen activaties.',task:'Kies een ander token. Blijft de getekende route precies gelijk?',options:['Ja, elke route is hetzelfde','Nee, de voorbeeldroute verandert'],answer:1},
+ {name:'Tokenreis',sub:'Echte tokens, voorbeeldroute',glyph:'&#8644;',title:'Bekijk een laag van binnen.',desc:'Kies een token en een laag. Bekijk het attention-bereik en de vier geselecteerde experts.',ins:'Token en laag',insDesc:'De token-ID is echt zodra de tokenizer is geladen. Routergewichten zijn berekende voorbeelden.',plot:'LAAG EN TOKEN',note:'Genormaliseerde demonstratiescores. Geen uitgelezen activaties.',task:'Kies een ander token. Blijft de getekende route precies gelijk?',options:['Ja, elke route is hetzelfde','Nee, de voorbeeldroute verandert'],answer:1},
  {name:'Experts',sub:'Vier van de 128',glyph:'&#9649;',title:'Vier experts krijgen werk.',desc:'Zoom in op een laag. De router verdeelt een token over vier geselecteerde experts.',ins:'Experts en router',insDesc:'Een top-4-keuze binnen iedere laag. De berekende scores zijn zichtbaar in de grafiek.',plot:'ROUTERSCORES / EXPERTNUMMER',note:'Top-4 volgt de modelarchitectuur. Getoonde scores zijn een demo.',task:'Hoeveel experts selecteert de router per token in een MoE-laag?',options:['Alle 128','Vier','Eentje'],answer:1},
  {name:'Attention',sub:'Kijken naar eerdere posities',glyph:'&#8780;',title:'Welke posities zijn bereikbaar?',desc:'Zie het verschil tussen volledige attention en een venster van 128 posities. Verander de geselecteerde positie.',ins:'Attention in de tijd',insDesc:'De helft van de lagen gebruikt een schuivend venster. De andere helft volledige causale attention.',plot:'BEREIKBARE POSITIES',note:'Bereik is een architectuurkenmerk; de lijndikte is illustratief.',task:'Mag causale attention naar een token kijken dat nog niet is gegenereerd?',options:['Ja','Nee'],answer:1},
  {name:'Context',sub:'Venster en lange invoer',glyph:'&#9638;',title:'Hoe ver terug kan een laag kijken?',desc:'Verleng de invoer. Bekijk welk deel een lokaal venster direct kan bereiken en wat een volledige attentionlaag ziet.',ins:'Het contextvenster',insDesc:'Verander het aantal tokenposities. De bereikbare gebieden in de 3D-wereld veranderen mee.',plot:'FRACTIE DIRECT BEREIKBAAR',note:'De grafiek toont bereikbare posities; geen gemeten geheugenkwaliteit.',task:'Kan een lokaal venster van 128 posities direct naar alle 4096 vorige posities kijken?',options:['Ja','Nee'],answer:1},
