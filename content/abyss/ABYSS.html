@@ -14,21 +14,69 @@ html[data-theme=day]{color-scheme:light;--bg:#e5f0f5;--panel:#f7fcff;--panel2:#e
 @media(max-width:1000px){:root{--nav:180px;--ins:300px}.brand strong{font-size:14px}.top .mono{display:none}}
 @media(max-width:720px){html,body{overflow:auto}#app{display:flex;flex-direction:column;height:auto;min-height:100dvh;overflow:visible}.side{flex:none;border-right:0;display:block}.brand{padding:8px 13px;border-bottom:0}.mark{width:25px;height:25px;font-size:15px}.brand strong{font-size:12px}.brand small{font-size:8px}.side .sidelabel,.sidebottom{display:none}.modes{padding:4px 10px 9px;display:flex;flex-direction:row;gap:5px;overflow:auto}.mode{flex:0 0 auto;width:auto;padding:7px 8px;gap:6px}.mode b{font-size:9px;padding:5px}.mode strong{font-size:10px;white-space:nowrap}.mode small{display:none}.top{flex:none;min-height:46px;gap:5px;padding:5px 10px}.top .title strong{font-size:10px}.top select{max-width:116px;padding:7px 5px;font-size:10px}.top button{padding:7px;font-size:10px}.live-label{display:none}.stage{flex:none;height:43dvh;min-height:280px}.stageheader{top:10px;left:12px}.stageheader h1{font-size:16px}.stageheader p{font-size:10px;max-width:220px}.stagecontrols{top:10px;right:9px}.stagecontrols button{padding:6px}.stagestats{bottom:11px;left:12px;gap:12px}.stagestats b{font-size:13px}.dataribbon{top:72px;left:12px}.stagehint{display:none}.chartwrap{flex:none;height:180px;padding:10px}.charttitle strong{font-size:10px}.split{display:none}.inspect{flex:none;overflow:visible;border-left:0;border-top:1px solid var(--line)}.inscroll{overflow:visible;padding:12px}.inshead{padding:9px 12px}.metricgrid{grid-template-columns:repeat(4,1fr)}.metric{padding:7px}.metric b{font-size:12px}.metric small{font-size:8px}#app.focus .side,#app.focus .inspect{display:block}#app.focus .inshead,#app.focus .inscroll{display:none}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* Mobiele onderzoekscockpit: 3D voorop, andere delen via menu's. */
+.mobile-dock,.mobile-close{display:none}
+@media(max-width:720px){
+html,body{height:100%;overflow:hidden;overscroll-behavior:none}
+#app{position:relative;display:flex;flex-direction:column;height:100dvh;min-height:0;max-height:100dvh;overflow:hidden}
+.top{order:0;flex:0 0 50px;width:100%;min-height:50px;padding:5px 9px;gap:6px;z-index:5}
+.top .title strong{font-size:11px}
+.top select{max-width:136px;min-width:96px;font-size:11px;padding:7px 4px}
+.top button{padding:7px 6px;min-height:34px}
+.stage{order:1;position:relative;flex:1 1 auto;height:auto;min-height:0;width:100%;margin-bottom:calc(61px + env(safe-area-inset-bottom))}
+.stageheader{top:13px;left:13px;right:93px;max-width:calc(100% - 110px)}
+.stageheader h1{font-size:clamp(16px,4.6vw,20px)}
+.stageheader p{font-size:10px;line-height:1.45;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden}
+.dataribbon{top:105px;left:13px;max-width:calc(100% - 110px)}
+.stagestats{bottom:15px;left:13px;gap:14px}.stagestats b{font-size:15px}
+.stagecontrols{top:13px;right:8px;gap:5px}.stagecontrols button{padding:7px 6px;font-size:9px;min-width:70px}
+.stagehint{display:none}
+.side,.chartwrap,.inspect{position:fixed;inset:auto 8px calc(62px + env(safe-area-inset-bottom)) 8px;width:auto;z-index:30;box-shadow:0 -14px 48px #010a16aa;border:1px solid var(--line);border-radius:13px 13px 8px 8px;background:var(--panel);overflow:hidden;display:none}
+.side{height:min(55dvh,485px);min-height:0;flex-direction:column}
+.side .brand{display:flex;flex:0 0 auto;padding:10px 13px;border-bottom:1px solid var(--line)}
+.side .sidelabel,.sidebottom{display:none}
+.modes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-content:start;flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;padding:11px;gap:7px}
+.mode{width:100%;min-width:0;display:flex;gap:8px;padding:12px 8px;min-height:58px;align-items:center;border:1px solid var(--line);border-radius:7px}
+.mode strong{font-size:11px;white-space:normal;line-height:1.3}.mode small{display:none}.mode b{font-size:10px;padding:6px}
+.chartwrap{height:min(46dvh,395px);min-height:235px;padding:13px 12px;flex-direction:column}
+.charttitle{flex-wrap:wrap;gap:3px;margin-bottom:8px}.charttitle strong{font-size:11px}.charttitle span{font-size:9px}
+#chart{touch-action:none;min-height:100px;flex:1}
+.inspect{height:min(66dvh,560px);min-height:230px;flex-direction:column;overflow:hidden}
+.inshead{flex:0 0 48px;padding:8px 12px;gap:8px}.inshead>span{display:none}
+.inshead strong{font-size:12px;letter-spacing:.04em}.inscroll{min-height:0;flex:1;overflow:auto;overscroll-behavior:contain;padding:13px}
+.inspectgroup{display:none}
+#app[data-mobile-panel="modules"] .side{display:flex}
+#app[data-mobile-panel="chart"] .chartwrap{display:flex}
+#app[data-mobile-panel="settings"] .inspect,#app[data-mobile-panel="measurements"] .inspect,#app[data-mobile-panel="learning"] .inspect{display:flex}
+#app[data-mobile-panel="settings"] .inspectgroup[data-group="settings"],#app[data-mobile-panel="measurements"] .inspectgroup[data-group="measurements"],#app[data-mobile-panel="learning"] .inspectgroup[data-group="learning"]{display:block}
+.metricgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.metric{padding:10px}.metric b{font-size:15px}.metric small{font-size:9px}
+.mobile-close{display:block;margin-left:auto;min-height:32px;border:1px solid var(--line);background:var(--panel2);border-radius:6px;padding:5px 9px;color:var(--hi);font-size:11px}
+.mobile-dock{position:fixed;z-index:40;inset:auto 0 0 0;height:calc(62px + env(safe-area-inset-bottom));padding:3px 6px calc(4px + env(safe-area-inset-bottom));display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:3px;background:var(--panel);border-top:1px solid var(--line)}
+.mobile-dock button{border:1px solid transparent;border-radius:7px;background:transparent;color:var(--muted);padding:4px 1px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1px;font-size:10px;line-height:1.15;min-width:0;touch-action:manipulation}
+.mobile-dock .dock-symbol{font-size:17px;line-height:20px;color:inherit;font-weight:550}
+.mobile-dock button.is-active{background:var(--panel2);border-color:var(--cyan);color:var(--cyan)}
+#app.focus .side,#app.focus .inspect,#app.focus .chartwrap,#app.focus .mobile-dock{display:none!important}
+#app.focus .stage{margin-bottom:0}
+}
+@media(max-width:355px){.mobile-dock button{font-size:9px}.mode strong{font-size:10px}.top select{max-width:115px}.stageheader p{display:none}}
+
 </style></head>
 <body><div id="app">
-<aside class="side"><div class="brand"><div class="mark"><span>∇</span></div><div><strong>ABYSS</strong><small>OCEAN RESEARCH OBSERVATORY</small></div></div><div class="sidelabel">ONDERZOEKSMODULES</div><nav id="modes" class="modes" aria-label="Onderzoeksmodes"></nav><div class="sidebottom">3D-DATA / ZEEBODEM<br>METINGEN / MODELLEN<br>DE WERELD ONDER WATER</div></aside>
+<aside class="side"><div class="brand"><div class="mark"><span>∇</span></div><div><strong>ABYSS</strong><small>OCEAN RESEARCH OBSERVATORY</small></div><button type="button" id="mobileModeClose" class="mobile-close" aria-label="Sluit het onderzoeksmenu">Sluiten ×</button></div><div class="sidelabel">ONDERZOEKSMODULES</div><nav id="modes" class="modes" aria-label="Onderzoeksmodes"></nav><div class="sidebottom">3D-DATA / ZEEBODEM<br>METINGEN / MODELLEN<br>DE WERELD ONDER WATER</div></aside>
 <header class="top"><div class="title"><span class="dot" id="dataDot"></span><strong id="topLabel">Diepteatlas</strong><span class="mono" id="topCoords">11,4° N · 142,2° O</span></div><span class="live-label mono"><span id="sourceStatus">3D-data laden</span></span><select id="region" aria-label="Kies een oceaangebied"><option value="mariana">Marianentrog</option><option value="japan">Japanse trog</option><option value="tonga">Tongatrog</option><option value="ridge">Mid-Atlantische rug</option><option value="hawaii">Hawaï</option><option value="east">Oost-Pacifische rug</option></select><button id="theme" title="Dag / nacht">☀ / ☾</button><button id="focus" title="Vergroot visualisatie">▣</button></header>
 <section class="stage" aria-label="Draaibare 3D-zeebodem"><canvas id="sea3d" aria-label="3D-zeebodem. Sleep om te draaien; gebruik het muiswiel om te zoomen."></canvas><div class="stageheader"><div class="eyebrow" id="eyebrow">01 / 06 · ZEEBODEM</div><h1 id="stageTitle">Een onbekende wereld</h1><p id="stageIntro">Verken het reliëf onder de oceaan. Draai, zoom en verplaats de meetlijn.</p></div><div class="dataribbon"><span class="tag" id="terrainTag">3D / BRON LADEN</span><span class="tag model" id="modelTag">VERTICAAL UITVERGROOT ×8</span></div><div class="stagecontrols"><button id="resetCam">↺ CAMERA</button><button id="modeTop">⌖ BOVEN</button><button id="modeSide">↘ SCHUIN</button></div><div class="stagestats"><div><span id="stat1name">DIEPTE OP MEETPUNT</span><b id="stat1">—</b></div><div><span id="stat2name">GEBIED</span><b id="stat2">Marianentrog</b></div></div><div class="stagehint">SLEEP OM TE DRAAIEN · SCROLL OM TE ZOOMEN<br>SELECTEER EEN PUNT VIA DE GRAFIEK</div></section>
 <section class="chartwrap"><div class="charttitle"><strong id="chartTitle">DIEPTEPROFIEL · WEST ↔ OOST</strong><span id="chartMeta">Dwarsdoorsnede door het geselecteerde gebied</span></div><canvas id="chart" aria-label="Interactieve analysegrafiek"></canvas></section><div class="split" id="split" role="separator" aria-label="Sleep om inspectiepaneel breder of smaller te maken" tabindex="0"></div>
-<aside class="inspect"><div class="inshead"><strong>ONDERZOEK & METINGEN</strong><span>ABYSS / LIVE MODEL</span></div><div class="inscroll"><p class="sectionlabel" id="controlLabel">ONDERZOEKSINSTELLINGEN</p>
+<aside class="inspect" id="mobileInspector" aria-label="Onderzoekspaneel"><div class="inshead"><strong id="inspectorTitle">ONDERZOEK & METINGEN</strong><span>ABYSS / LIVE MODEL</span><button type="button" id="mobileInspectClose" class="mobile-close" aria-label="Sluit dit paneel">Sluiten ×</button></div><div class="inscroll"><section class="inspectgroup" data-group="settings"><p class="sectionlabel" id="controlLabel">ONDERZOEKSINSTELLINGEN</p>
 <div class="control"><div class="controlhead"><label for="probe">Meetpositie langs de zeebodem</label><output id="probeOut">50%</output></div><input id="probe" type="range" min="0" max="100" value="50"></div>
 <div class="control"><div class="controlhead"><label for="depth">Duikdiepte</label><output id="depthOut">1000 m</output></div><input id="depth" type="range" min="0" max="11000" step="50" value="1000"></div>
 <div class="control"><div class="controlhead"><label for="exag">Verticale uitvergroting</label><output id="exagOut">8×</output></div><input id="exag" type="range" min="1" max="16" step="1" value="8"></div>
 <div class="control"><div class="controlhead"><label for="temp">Stromingssnelheid (model)</label><output id="tempOut">0,8 m/s</output></div><input id="temp" type="range" min="0.1" max="2.5" step="0.1" value="0.8"></div>
-<div class="metricgrid"><div class="metric"><small>WATERDRUK (EXTRA)</small><b id="mPressure">—</b></div><div class="metric"><small>LICHT (MODEL)</small><b id="mLight">—</b></div><div class="metric"><small>OP DE BODEM</small><b id="mBottom">—</b></div><div class="metric"><small>SEISMISCHE EVENTS</small><b id="mQuakes">—</b></div></div>
-<p class="sectionlabel">LEERFASE</p><div class="phase-tabs" id="phases"><button data-phase="0" class="active">Voorkennis</button><button data-phase="1">Instructie</button><button data-phase="2">Oefenen</button><button data-phase="3">Exit</button></div><div class="questbox"><h3 id="qTitle">Wat verwacht je?</h3><p id="qText"></p><div class="answerline"><input id="answer" aria-label="Jouw antwoord" type="text" placeholder="Jouw schatting of antwoord"><button id="check">Controleer</button></div><div id="feedback" class="feedback" role="status"></div></div>
+</section><section class="inspectgroup" data-group="measurements"><div class="metricgrid"><div class="metric"><small>WATERDRUK (EXTRA)</small><b id="mPressure">—</b></div><div class="metric"><small>LICHT (MODEL)</small><b id="mLight">—</b></div><div class="metric"><small>OP DE BODEM</small><b id="mBottom">—</b></div><div class="metric"><small>SEISMISCHE EVENTS</small><b id="mQuakes">—</b></div></div>
 <div class="tools"><button id="record">+ MEETPUNT</button><button id="export">↓ DATA JSON</button><button id="snapshot">↓ BEELD PNG</button></div><div id="wmswrap"><img id="wms" alt="GEBCO 2026 kaart van dit oceaangebied"/><div class="wmsnote" id="wmsNote">Kaart van GEBCO 2026, losse bronlaag; 3D gebruikt een andere hoogtebron.</div></div>
-<details open><summary>Data en toelichting</summary><div id="details"><p>De geselecteerde plaats en instellingen veranderen alle gekoppelde metingen.</p></div></details><details><summary>Bronnen en betrouwbaarheid</summary><p><strong>3D-bodem:</strong> AWS Terrain Tiles (Mapzen/Tilezen: een samenstelling van meerdere hoogtebronnen, waaronder bathymetrie). Geen GEBCO_2026-geometrie. <a href="https://registry.opendata.aws/terrain-tiles/" target="_blank" rel="noopener">Bron</a></p><p><strong>GEBCO 2026:</strong> onafhankelijke kaart van diepte en herkomst. De TID-codering onderscheidt onder meer echoloodmetingen, interpolaties en schattingen op basis van satellietzwaartekracht. <a href="https://www.gebco.net/data-products-gridded-bathymetry-data/gebco2026-grid" target="_blank" rel="noopener">Bron</a></p><p><strong>Aardbevingen:</strong> USGS FDSN Event API. Geografische ligging en diepte volgens USGS; aardbevingssymbolen op de kaart tonen locatie en magnitude, niet de exacte driedimensionale hypocentra. <a href="https://earthquake.usgs.gov/fdsnws/event/1/" target="_blank" rel="noopener">Bron</a></p><p><strong>Druk, licht, stroming en tektoniek:</strong> natuurkundige vereenvoudigingen en demonstratiemodellen, geen gemeten lokale waterprofielen. Modellen worden als zodanig gemarkeerd.</p><p><strong>Gebruik:</strong> niet voor navigatie, veiligheidsbesluiten of tsunamiwaarschuwingen.</p></details><details><summary>Mijn meetlogboek</summary><div id="log" class="notice">Nog geen meetpunten.</div></details></div></aside>
+<details open><summary>Data en toelichting</summary><div id="details"><p>De geselecteerde plaats en instellingen veranderen alle gekoppelde metingen.</p></div></details><details><summary>Bronnen en betrouwbaarheid</summary><p><strong>3D-bodem:</strong> AWS Terrain Tiles (Mapzen/Tilezen: een samenstelling van meerdere hoogtebronnen, waaronder bathymetrie). Geen GEBCO_2026-geometrie. <a href="https://registry.opendata.aws/terrain-tiles/" target="_blank" rel="noopener">Bron</a></p><p><strong>GEBCO 2026:</strong> onafhankelijke kaart van diepte en herkomst. De TID-codering onderscheidt onder meer echoloodmetingen, interpolaties en schattingen op basis van satellietzwaartekracht. <a href="https://www.gebco.net/data-products-gridded-bathymetry-data/gebco2026-grid" target="_blank" rel="noopener">Bron</a></p><p><strong>Aardbevingen:</strong> USGS FDSN Event API. Geografische ligging en diepte volgens USGS; aardbevingssymbolen op de kaart tonen locatie en magnitude, niet de exacte driedimensionale hypocentra. <a href="https://earthquake.usgs.gov/fdsnws/event/1/" target="_blank" rel="noopener">Bron</a></p><p><strong>Druk, licht, stroming en tektoniek:</strong> natuurkundige vereenvoudigingen en demonstratiemodellen, geen gemeten lokale waterprofielen. Modellen worden als zodanig gemarkeerd.</p><p><strong>Gebruik:</strong> niet voor navigatie, veiligheidsbesluiten of tsunamiwaarschuwingen.</p></details><details><summary>Mijn meetlogboek</summary><div id="log" class="notice">Nog geen meetpunten.</div></details></section><section class="inspectgroup" data-group="learning"><p class="sectionlabel">LEERFASE</p><div class="phase-tabs" id="phases"><button data-phase="0" class="active">Voorkennis</button><button data-phase="1">Instructie</button><button data-phase="2">Oefenen</button><button data-phase="3">Exit</button></div><div class="questbox"><h3 id="qTitle">Wat verwacht je?</h3><p id="qText"></p><div class="answerline"><input id="answer" aria-label="Jouw antwoord" type="text" placeholder="Jouw schatting of antwoord"><button id="check">Controleer</button></div><div id="feedback" class="feedback" role="status"></div></div>
+</section></div></aside>
+<nav id="mobileDock" class="mobile-dock" aria-label="ABYSS mobiel menu"><button type="button" data-panel="modules" aria-expanded="false" aria-controls="modes"><span class="dock-symbol">▦</span><span>Modules</span></button><button type="button" data-panel="chart" aria-expanded="false" aria-controls="chart"><span class="dock-symbol">∿</span><span>Grafiek</span></button><button type="button" data-panel="settings" aria-expanded="false" aria-controls="mobileInspector"><span class="dock-symbol">☷</span><span>Instellen</span></button><button type="button" data-panel="measurements" aria-expanded="false" aria-controls="mobileInspector"><span class="dock-symbol">◉</span><span>Metingen</span></button><button type="button" data-panel="learning" aria-expanded="false" aria-controls="mobileInspector"><span class="dock-symbol">?</span><span>Leren</span></button></nav>
 </div>
 <script>
 
@@ -47,7 +95,7 @@ const TEXT=[
 const app=$('app'),glCanvas=$('sea3d'),chart=$('chart');let regionKey='mariana',mode=0,phase=0,depth=1000,exag=8,speed=0.8,probe=.5,camera={az:-.58,el:.63,r:19},mesh=null,tiles=new Map(),loading=0,source='demo',quakes=[],quakeState='niet geladen',playing=true,records=[];let prevX=0,prevY=0,drag=false,frame=0,chartHit=null,field=null,chartData=[];
 const localeCoords=(v,n)=>fmt(Math.abs(v),1)+'° '+(v>=0?n[0]:n[1]);
 function setMode(m){mode=m;$('modes').querySelectorAll('button').forEach((b,i)=>b.classList.toggle('active',i===m));$('eyebrow').textContent=String(m+1).padStart(2,'0')+' / 06 · '+MODES[m][0].toUpperCase();$('stageTitle').textContent=TEXT[m].title;$('stageIntro').textContent=TEXT[m].intro;$('chartTitle').textContent=TEXT[m].chart;$('topLabel').textContent=REGIONS[regionKey].name+' · '+MODES[m][0];$('details').innerHTML='<p>'+TEXT[m].details+'</p>';$('wmswrap').style.display=m===5?'block':'none';updateQuestion();updateChart();if(m===2&&quakeState==='niet geladen')loadQuakes();if(m===5)loadWms();}
-function init(){const nav=$('modes');MODES.forEach((m,i)=>{let b=document.createElement('button');b.type='button';b.className='mode';b.innerHTML=`<b>${String(i+1).padStart(2,'0')}</b><span><strong>${m[0]}</strong><small>${m[1]}</small></span>`;b.addEventListener('click',()=>setMode(i));nav.appendChild(b)});setMode(0);bind();setRegion('mariana');requestAnimationFrame(loop);}
+function init(){const nav=$('modes');MODES.forEach((m,i)=>{let b=document.createElement('button');b.type='button';b.className='mode';b.innerHTML=`<b>${String(i+1).padStart(2,'0')}</b><span><strong>${m[0]}</strong><small>${m[1]}</small></span>`;b.addEventListener('click',()=>setMode(i));nav.appendChild(b)});setMode(0);bind();bindMobilePanels();setRegion('mariana');requestAnimationFrame(loop);}
 function setRegion(key){regionKey=key;let reg=REGIONS[key];$('region').value=key;$('topCoords').textContent=localeCoords(reg.lat,['N','Z'])+' · '+localeCoords(reg.lon,['O','W']);$('stat2').textContent=reg.name;$('topLabel').textContent=reg.name+' · '+MODES[mode][0];quakeState='niet geladen';quakes=[];$('mQuakes').textContent='—';$('sourceStatus').textContent='3D-bodem laden';$('dataDot').classList.remove('ok');generateTerrain(false);loadTerrarium();if(mode===2)loadQuakes();if(mode===5)loadWms();updateAll();}
 function topx(p){return (p-.5)*13}function topz(p){return (p-.5)*8.4}function uvInfo(u,v){let r=REGIONS[regionKey];return {lat:r.lat+(v-.5)*4.6,lon:r.lon+(u-.5)*7.4}};
 function demoElev(u,v){let x=(u-.5)*2.7,z=(v-.5)*2.7,k=regionKey;let wave=-3600+540*Math.sin(7*x+1.1)*Math.sin(6*z)+420*Math.sin(x*11-z*4)+280*Math.cos(z*15);if(k==='mariana'||k==='tonga'||k==='japan')return wave-5100*Math.exp(-Math.pow((x+z*.34-.15)/.12,2));if(k==='ridge'||k==='east')return wave+2500*Math.exp(-Math.pow((x-z*.2)/.4,2));if(k==='hawaii')return wave+5400*Math.exp(-Math.pow(x/.25,2)-Math.pow(z/.31,2));return wave;}
@@ -130,6 +178,30 @@ $('record').addEventListener('click',()=>{let p=physics();records.push({tijd:new
 window.addEventListener('resize',updateChart);try{let t=localStorage.getItem('abyssTheme');if(t==='day')document.documentElement.dataset.theme='day'}catch(e){}
 }
 function saveFile(filename,blob){let a=document.createElement('a'),url=URL.createObjectURL(blob);a.href=url;a.download=filename;a.click();setTimeout(()=>URL.revokeObjectURL(url),700)}
+
+function bindMobilePanels(){
+const buttons=[...document.querySelectorAll('#mobileDock [data-panel]')];
+const inspectorTitle=$('inspectorTitle');
+const titles={settings:'INSTELLINGEN',measurements:'METINGEN EN BRONNEN',learning:'ONDERZOEKSVRAGEN'};
+const mobile=()=>window.matchMedia('(max-width:720px)').matches;
+function setPanel(name){
+ const requested=name||'',panel=mobile()?(app.dataset.mobilePanel===requested?'':requested):'';
+ app.dataset.mobilePanel=panel;
+ buttons.forEach(b=>{const active=b.dataset.panel===panel;b.classList.toggle('is-active',active);b.setAttribute('aria-expanded',String(active));});
+ inspectorTitle.textContent=titles[panel]||'ONDERZOEK & METINGEN';
+ if(panel==='chart')requestAnimationFrame(()=>requestAnimationFrame(updateChart));
+}
+for(const button of buttons)button.addEventListener('click',()=>setPanel(button.dataset.panel));
+$('mobileModeClose').addEventListener('click',()=>setPanel(''));
+$('mobileInspectClose').addEventListener('click',()=>setPanel(''));
+$('modes').addEventListener('click',e=>{if(mobile()&&e.target.closest('button.mode'))setPanel('');});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&mobile())setPanel('');});
+window.addEventListener('resize',()=>{if(!mobile())setPanel('');});
+$('focus').addEventListener('click',()=>{if(mobile())setPanel('');});
+window.__abyssMobile={setPanel,get panel(){return app.dataset.mobilePanel||'';}};
+setPanel('');
+}
+
 function loop(){frame++;draw3d();if(frame%12===0){if(mode===4&&playing)probe=(probe+.00075)%1;updateAll()}requestAnimationFrame(loop)}
 window.__abyss={REGIONS,MODES,get mode(){return mode},get terrainSource(){return source},get terrain(){return mesh},get quakes(){return quakes},get pressure(){return physics().P},setRegion,setMode,loadQuakes};init();
 })();
