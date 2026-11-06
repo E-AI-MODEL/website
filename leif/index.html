@@ -117,8 +117,10 @@ body{background:var(--paper);color:var(--ink)}
     <h1 id="accessHeading">Welkom bij LEIF</h1>
     <p class="access-desc">Wat betekent het om jezelf te kennen? Om te begrijpen waarom je doet wat je doet, hoe anderen je zien en welke leider je voor jezelf en anderen wilt zijn? Daarover gaat LEIF.</p>
     <form id="accessForm" class="access-form" autocomplete="off">
-      <label for="accessPassword">Jouw toegangscode</label>
-      <input id="accessPassword" type="password" name="wachtwoord" required autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" aria-describedby="accessError" />
+      <div id="accessCodeGroup">
+        <label for="accessPassword">Jouw toegangscode</label>
+        <input id="accessPassword" type="password" name="wachtwoord" required autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" aria-describedby="accessError" />
+      </div>
       <button type="submit" class="btn btn-primary" id="leifSignIn">Open mijn omgeving <span aria-hidden="true">→</span></button>
       <p id="accessError" class="access-error" role="alert" hidden>Deze code wordt niet herkend.</p>
       <p id="accessNotice" class="access-notice" role="status" aria-live="polite" hidden></p>
@@ -300,11 +302,13 @@ const codeInput=document.getElementById('accessPassword');
 const accessNotice=document.getElementById('accessNotice');
 const adminPasswordInput=document.getElementById('adminPassword');
 const adminPasswordGroup=document.getElementById('adminPasswordGroup');
+const accessCodeGroup=document.getElementById('accessCodeGroup');
 const signInButton=document.getElementById('leifSignIn');
 let adminMode=false;
 function showAdminPassword(){
  adminMode=true;
  adminPasswordGroup.hidden=false;
+ accessCodeGroup.hidden=true;
  signInButton.textContent='Inloggen in beheer';
  accessNotice.hidden=true;
  adminPasswordInput.focus();
@@ -312,6 +316,7 @@ function showAdminPassword(){
 function hideAdminPassword(){
  adminMode=false;
  adminPasswordGroup.hidden=true;
+ accessCodeGroup.hidden=false;
  adminPasswordInput.value='';
  codeInput.value='';
  signInButton.textContent='Open mijn omgeving';
