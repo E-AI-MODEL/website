@@ -1,0 +1,104 @@
+"""Static publication safety checks for the standalone LLM Observatory."""
+from pathlib import Path
+import unittest
+
+ROOT = Path(__file__).resolve().parents[1]
+SOURCE = ROOT / "content" / "llm-observatorium" / "index.html"
+
+
+class LlmObservatorySourceTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.html = SOURCE.read_text(encoding="utf-8")
+
+    def test_standalone_document_and_visualization(self):
+        html = self.html
+        self.assertIn("<!doctype html>", html.lower())
+        self.assertIn('id="universe"', html)
+        self.assertIn('id="plot"', html)
+        self.assertIn("function drawScene()", html)
+        self.assertIn("function project(p)", html)
+        self.assertIn("function rebuildWorld()", html)
+        self.assertIn("requestAnimationFrame(tick)", html)
+
+    def test_six_different_research_modes(self):
+        for name in ("Modelstelsel", "Tokenreis", "Experts", "Attention", "Context", "Generatie"):
+            self.assertIn("name:'" + name + "'", self.html)
+        self.assertIn("function drawAttention()", self.html)
+        self.assertIn("function drawGeneration()", self.html)
+        self.assertIn("function drawPlot()", self.html)
+
+    def test_mobile_navigation_has_five_panels(self):
+        for panel in ("modules", "graph", "settings", "learn", "sources"):
+            self.assertIn('data-panel="' + panel + '"', self.html)
+        self.assertIn("function openPanel(name)", self.html)
+        self.assertIn("function closePanel()", self.html)
+
+    def test_token_journey_and_graph_are_interactive(self):
+        html = self.html
+        for element in ('journeyPanel', 'journeyWhere', 'journeyToken',
+                        'journeyPrev', 'journeyNext', 'journeyPlay',
+                        'journeyFill', 'plotSummary', 'startJourney'):
+            self.assertIn('id="' + element + '"', html)
+        self.assertIn('function drawStream()', html)
+        self.assertIn('function journeyStep(direction)', html)
+        self.assertIn('function selectAtGraph(x)', html)
+        self.assertIn("plot.addEventListener('pointerup'", html)
+        self.assertIn('screenJourney=pts', html)
+        self.assertIn('function updateJourneyUI()', html)
+        self.assertIn('state.follow=true', html)
+        self.assertIn('state.follow=false', html)
+        self.assertIn('function setCameraMatrix()', html)
+
+    def test_reasoning_and_token_costs(self):
+        html = self.html
+        self.assertIn("name:'Redenering & kosten'", html)
+        self.assertIn("function usageBuckets()", html)
+        self.assertIn("function drawUsageWorld()", html)
+        self.assertIn("function drawUsagePlot()", html)
+        self.assertIn("function usageRefresh()", html)
+        self.assertIn("uReason:1024", html)
+        self.assertIn("uOther:162", html)
+        self.assertIn("uInput:75", html)
+        self.assertIn("usageSummary", html)
+        self.assertIn("reasoningLearning", html)
+        self.assertIn("BRON + REKENSOM", html)
+
+    def test_source_and_demo_distinction(self):
+        self.assertIn("gpt-oss-120b/blob/main/config.json", self.html)
+        self.assertIn("gpt-oss-20b/blob/main/config.json", self.html)
+        self.assertIn("Geen uitgelezen modelactivaties", self.html)
+        self.assertIn("geen echte token-id", self.html.lower())
+
+    def test_tokenizer_ui_has_real_data_and_explicit_fallback(self):
+        html = self.html
+        for marker in (
+            "o200k_harmony.js",
+            "function tokenizeInput()",
+            "async function loadRealTokenizer()",
+            "function renderTokenPieces()",
+            'id="tokenChips"',
+            'id="tokenId"',
+            "state.tokenStatus='real'",
+            "state.tokenStatus='error'",
+            "tokenSeed=state.promptWords[token]?.id??token",
+            "loadRealTokenizer();",
+        ):
+            self.assertIn(marker, html)
+
+    def test_published_page_is_exact_source_and_linked_from_tools(self):
+        published = ROOT / "site-build/tools/llm-observatorium/index.html"
+        self.assertTrue(published.is_file(), "Gepubliceerde LLM-pagina ontbreekt")
+        self.assertEqual(SOURCE.read_bytes(), published.read_bytes(),
+                         "Publicatie mag de zelfstandige HTML niet wijzigen")
+        for rel in ("tools/index.html", "nl/tools/index.html"):
+            with self.subTest(page=rel):
+                page = ROOT / "site-build" / rel
+                self.assertTrue(page.is_file())
+                self.assertIn('href="/tools/llm-observatorium/"', page.read_text(encoding="utf-8"))
+        sitemap = (ROOT / "site-build/sitemap.xml").read_text(encoding="utf-8")
+        self.assertIn("/tools/llm-observatorium/", sitemap)
+
+
+if __name__ == "__main__":
+    unittest.main()
