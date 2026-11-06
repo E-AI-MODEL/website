@@ -191,7 +191,7 @@
     <div class="li-section li-attention">
       <div class="li-kicker">02 · ATTENTION <span id="layerAttentionBadge">LOKAAL</span></div>
       <div class="li-attention-track" id="layerAttentionTrack" aria-hidden="true"></div>
-      <div class="li-detail"><strong id="layerAttentionReach">1 positie bereikbaar</strong><span id="layerAttentionExplanation">Bereik, geen aandachtsscores</span></div>
+      <div class="li-detail"><strong id="layerAttentionReach">1 positie bereikbaar</strong><span id="layerAttentionExplanation">Voorbeeldcontext · geen gemeten aandacht</span></div>
     </div>
     <div class="li-section li-experts">
       <div class="li-kicker">03 · EXPERTS <span>TOP 4 · REKENVOORBEELD</span></div>
@@ -528,7 +528,7 @@ function selectLayerToken(index){
 }
 function updateLayerInspector(){
  const el=$('layerInspectorPanel');el.hidden=state.mode!==1;if(state.mode!==1)return;
- const count=words().length,local=state.layer%2===0,from=local?Math.max(0,state.token-cfg.window+1):0;
+ const count=words().length,local=state.layer%2===0,from=0;const span=Math.min(state.contextTokens,cfg.window),reach=local?span:state.contextTokens;
  $('layerTitle').textContent=String(state.layer+1).padStart(2,'0')+' / '+cfg.layers;
  $('layerScrub').max=cfg.layers-1;$('layerScrub').value=state.layer;
  $('layerPrev').disabled=state.layer===0;$('layerNext').disabled=state.layer===cfg.layers-1;
@@ -547,12 +547,12 @@ function updateLayerInspector(){
  });
  $('layerTokenRow').replaceChildren(pieces);
  $('layerAttentionBadge').textContent=local?'LOKAAL':'VOLLEDIG';
- $('layerAttentionReach').textContent=(state.token-from+1)+' / '+(state.token+1)+' posities bereikbaar';
- $('layerAttentionExplanation').textContent=local?'Maximaal 128 posities, inclusief dit token':'Alle voorgaande posities, inclusief dit token';
+ $('layerAttentionReach').textContent=reach.toLocaleString('nl-NL')+' / '+state.contextTokens.toLocaleString('nl-NL')+' posities bereikbaar';
+ $('layerAttentionExplanation').textContent='Voorbeeldcontext · laatste positie · geen gemeten scores';
  const track=document.createDocumentFragment(),n=Math.min(32,Math.max(5,count));
  for(let j=0;j<n;j++){
-  const pos=Math.round(j*Math.max(0,count-1)/Math.max(1,n-1)),unit=document.createElement('i');
-  unit.className='li-attention-unit'+(pos>=from&&pos<=state.token?' reachable':'')+(pos===state.token?' current':'');
+  const pos=Math.round(j*state.contextTokens/Math.max(1,n-1)),unit=document.createElement('i');
+  unit.className='li-attention-unit'+(pos>=state.contextTokens-reach?' reachable':'')+(j===n-1?' current':'');
   track.appendChild(unit);
  }
  $('layerAttentionTrack').replaceChildren(track);
@@ -600,7 +600,7 @@ function makeTask(){
  $('taskText').textContent=mode.desc+' '+mode.note;
 }
 function renderInspector(){const m=state.mode;$('controls').innerHTML='';if(m===0){setStats([['LAGEN',cfg.layers],['EXPERTS / LAAG',cfg.experts],['EXPERTPOSITIES',cfg.layers*cfg.experts],['BREEDTE',cfg.dim,'', 'dimensies']]);addRange('Laag','layer',0,cfg.layers-1,1,'',()=>{state.expert=clamp(state.expert,0,cfg.experts-1)});addRange('Expert','expert',0,cfg.experts-1,1);addCheck('Laat experts zien','showExperts');addCheck('Toon informatiesporen','showTrails');addCheck('Toon lichtveld','showFields')}
-else if(m===1){setStats([]);addInput()}
+else if(m===1){setStats([]);addInput();addRange('Contextposities (voorbeeld)','contextTokens',128,8192,128)}
 else if(m===2){const routes=chooseRoute(state.layer);setStats([['BESCHIKBAAR',cfg.experts],['GEKOZEN',cfg.top],['LAAG',state.layer+1],['HOOGSTE SCORE',(routes[0].p*100).toFixed(1)+'%','demo']]);addRange('Laag','layer',0,cfg.layers-1,1);addRange('Tokenpositie','token',0,Math.max(0,words().length-1),1);addInput()}
 else if(m===3){setStats([['QUERY HEADS',cfg.heads],['KEY / VALUE',cfg.kv],['GROEPEN',cfg.heads/cfg.kv],['LOKAAL VENSTER',cfg.window,'','posities']]);addRange('Laag','layer',0,cfg.layers-1,1);addRange('Invoerposities','contextTokens',128,8192,128);}
 else if(m===4){setStats([['TOTALE CONTEXT',cfg.context.toLocaleString('nl-NL')],['LOKAAL BEREIK',cfg.window],['VOLLEDIGE LAGEN',cfg.layers/2],['LOKALE LAGEN',cfg.layers/2]]);addRange('Invoerposities','contextTokens',128,32768,128);addRange('Laag','layer',0,cfg.layers-1,1)}
@@ -613,7 +613,7 @@ else if(m===6){const d=usageBuckets();setStats([['INVOER',d.input],['UITVOER',d.
  addRange('Invoerprijs per miljoen ($)','uRateIn',.25,15,.25);addRange('Outputprijs per miljoen ($)','uRateOut',.5,60,.5);
  const summary=document.createElement('div');summary.id='usageSummary';summary.className='usage-summary';$('controls').appendChild(summary);usageRefresh();}
  else{let d=logits();setStats([['KANDIDATEN',8],['IN TOP-P',d.keep.length],['TEMPERATUUR',state.temp.toFixed(1)],['TOP-P',state.topP.toFixed(2)]]);addRange('Temperatuur','temp',.2,2,.1,'',()=>{state.temp=+state.temp.toFixed(1)});addRange('Top-p','topP',.3,1,.05)}
-$('reasoningLearning').hidden=m!==6;$('calculationNote').innerHTML=(m===0?'<b>Openbare aantallen.</b> Ruimtelijke plaatsing en lichtpunten zijn illustratief.':m===6?'<b>OpenAI-bronvoorbeeld.</b> 75 invoertokens, 1.186 uitvoertokens, waarvan 1.024 redenering. Redeneertekst van gesloten modellen is niet beschikbaar. Cachetarieven: rekenaanname 0,1× voor lezen en 1,25× voor schrijven. Zelfgekozen voorbeeldprijzen.':m===3||m===4?'<b>Echt patroon.</b> Oneven lagen gebruiken volledige attention; even lagen een venster van 128 posities. De lijnen tonen bereik, geen echte scores.':'<b>Berekend voorbeeld.</b> De gekozen routes en kansen zijn geen uitgelezen gegevens van gpt-oss.')+'<br><a href="#" id="openSources">Bekijk de bronnen</a>';$('openSources').addEventListener('click',e=>{e.preventDefault();openPanel('sources')});makeTask();refreshNumbers()}
+$('reasoningLearning').hidden=m!==6;$('calculationNote').innerHTML=(m===0?'<b>Openbare aantallen.</b> Ruimtelijke plaatsing en lichtpunten zijn illustratief.':m===6?'<b>OpenAI-bronvoorbeeld.</b> 75 invoertokens, 1.186 uitvoertokens, waarvan 1.024 redenering. Redeneertekst van gesloten modellen is niet beschikbaar. Cachetarieven: rekenaanname 0,1× voor lezen en 1,25× voor schrijven. Zelfgekozen voorbeeldprijzen.':m===3||m===4?'<b>Echt patroon.</b> Oneven lagen gebruiken volledige attention; even lagen een venster van 128 posities. De lijnen tonen bereik, geen echte scores.':m===1?'<b>Verschillende gegevens.</b> Tokens komen uit je invoer zodra de tokenizer is geladen. Contextlengte is een instelbaar voorbeeld. Expertroutes en scores zijn berekend, geen modelactivaties.':'<b>Berekend voorbeeld.</b> De gekozen routes en kansen zijn geen uitgelezen gegevens van gpt-oss.')+'<br><a href="#" id="openSources">Bekijk de bronnen</a>';$('openSources').addEventListener('click',e=>{e.preventDefault();openPanel('sources')});makeTask();refreshNumbers()}
 function addInput(){
  const d=document.createElement('div');d.className='control';
  d.innerHTML='<label for="promptText">Typ een zin</label><textarea id="promptText" maxlength="240" spellcheck="false"></textarea><div class="token-meta" id="tokenMeta" aria-live="polite"></div><div class="token-chips" id="tokenChips" aria-label="Kies een token"></div><div class="token-meta" id="tokenId"></div><small class="token-warning">De token-ID&#39;s zijn echt zodra de tokenizer is geladen. De 3D-routes en experts blijven een berekend voorbeeld.</small>';
