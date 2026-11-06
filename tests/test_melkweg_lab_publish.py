@@ -66,7 +66,7 @@ class MelkwegLabPublicationTests(unittest.TestCase):
                 self.assertIn(marker, html)
         self.assertEqual(html.count('id="solarEntry"'), 1, "Er moet één planetenknop zijn")
         self.assertNotIn('class="solar-entry">✦ Reis naar de planeten', html)
-        self.assertIn('if(!state.running && state.cam.elev>20)', html)
+        self.assertIn('Geen tweede label op het canvas', html)
         # V11 laat de simulatie zelf het volledige mobiele scherm vullen.
         for marker in (
             "V11: aanraakbaar sterrenbeeld",
