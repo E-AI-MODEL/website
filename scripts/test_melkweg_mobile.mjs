@@ -50,7 +50,7 @@ try{
    assert(layout.play.y>height-75&&layout.explore.y>height-75,'Onderste iconen staan te hoog');
    await page.locator('#timeToggle').click();
    assert(await page.locator('#timeslider').isVisible(),'Tijdschuif verschijnt niet');
-   await page.locator('#timeslider').fill('270');
+   await page.locator('#timeslider').evaluate(el=>{el.value='270';el.dispatchEvent(new Event('input',{bubbles:true}));});
    assert((await page.locator('#timevalue').textContent()).includes('270'),'Tijdlijn verandert niet');
    await page.locator('#timeToggle').click();
    assert(!(await page.locator('#timeslider').isVisible()),'Tijdschuif sluit niet');
