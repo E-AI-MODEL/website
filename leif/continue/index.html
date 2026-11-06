@@ -4,7 +4,7 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light">
 <meta name="robots" content="noindex,nofollow,noarchive"><meta name="referrer" content="no-referrer">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'unsafe-inline'; connect-src https://ngcyfbstajfcfdhlelbz.supabase.co; img-src data:; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'unsafe-inline'; connect-src https://ngcyfbstajfcfdhlelbz.supabase.co; frame-src https://open.spotify.com; img-src data:; base-uri 'none'; form-action 'none'">
 <title>LEIF | Verder met mijn verhaal</title>
 <style>
 :root{--ink:#17283f;--blue:#235b92;--muted:#64788a;--paper:#fbfaf7;--soft:#eff5f7;--line:#dbe4e8}
@@ -135,7 +135,7 @@ const value=id=>typeof answers[id]==='string'?answers[id]:'';
 const filled=q=>value(q.id).trim().length>0;
 const count=()=>flat.filter(filled).length;
 const endpoint='https://ngcyfbstajfcfdhlelbz.supabase.co/functions/v1/leif-demo-session';
-let token='',key='',answers={},pending={},current=0,saveTimer,activeSave=null;
+let token='',key='',answers={},pending={},personalBlocks=[],current=0,saveTimer,activeSave=null;
 const leifPreview=window.parent!==window&&new URLSearchParams(location.search).get('leif_voorbeeld')==='1';
 const setStatus=s=>{$('saveStatus').textContent=s;$('saveDetail').textContent=s;};
 async function api(action,extra={}){
@@ -174,7 +174,7 @@ async function openSession(t){
  if(token.length<38||token.length>160)throw Error('invalid_code');
  const digest=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(token));
  key='leif-demo-cont-'+Array.from(new Uint8Array(digest)).map(b=>b.toString(16).padStart(2,'0')).join('');
- const data=await api('load');answers={...data.answers};pending={};
+ const data=await api('load');answers={...data.answers};pending={};personalBlocks=Array.isArray(data.personal_texts?.blocks)?data.personal_texts.blocks:[];
  try{const p=JSON.parse(localStorage.getItem(key)||'{}');if(p&&typeof p==='object'&&!Array.isArray(p))pending=p;}catch{}
  for(const [id,v] of Object.entries(pending)){if(v===null)delete answers[id];else if(typeof v==='string')answers[id]=v;}
  try{sessionStorage.setItem('leifContinueToken',token);}catch{}
@@ -223,7 +223,31 @@ function review(){
    const p=document.createElement('p');p.textContent=value(q.id).trim()||'Nog open';if(!filled(q))p.className='missing';
    article.append(title,p);sec.appendChild(article);
   });body.appendChild(sec);
- });scrollTo(0,0);
+ });
+ const blocks=personalBlocks.filter(b=>b&&b.visible===true);
+ if(blocks.length){
+  const section=document.createElement('section');section.className='report-section';
+  const title=document.createElement('h3');title.textContent='Persoonlijke aanvulling';section.append(title);
+  for(const block of blocks){
+   if(!['text','heading','spotify'].includes(block.type))continue;
+   const article=document.createElement('article');article.className='entry';
+   const h=document.createElement('strong');h.textContent=block.title||'Onderdeel';article.append(h);
+   if(typeof block.text==='string'&&block.text){const p=document.createElement('p');p.textContent=block.text;p.style.whiteSpace='pre-wrap';article.append(p)}
+   if(block.type==='spotify'){
+    const m=typeof block.spotify_url==='string'&&block.spotify_url.match(/^https:\/\/open\.spotify\.com\/(track|album|playlist)\/([A-Za-z0-9]{22})(?:\?[^#\s]*)?$/);
+    if(m){
+     const url='https://open.spotify.com/'+m[1]+'/'+m[2];
+     const link=document.createElement('a');link.href=url;link.textContent='Open in Spotify';link.target='_blank';link.rel='noopener noreferrer';
+     const play=document.createElement('button');play.type='button';play.textContent='Laad Spotify-speler';play.className='primary';
+     play.onclick=()=>{const frame=document.createElement('iframe');frame.src='https://open.spotify.com/embed/'+m[1]+'/'+m[2];frame.title='Spotify: '+(block.title||'muziek');frame.loading='lazy';frame.referrerPolicy='strict-origin-when-cross-origin';frame.allow='autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture';frame.style.cssText='display:block;width:100%;height:160px;border:0;border-radius:10px;margin:12px 0';play.replaceWith(frame)};
+     article.append(document.createElement('br'),link,document.createTextNode(' '),play);
+    }
+   }
+   section.append(article);
+  }
+  body.append(section);
+ }
+ scrollTo(0,0);
 }
 function download(){
  const payload={format:'leif-antwoorden',version:1,naam:'',antwoorden:Object.fromEntries(flat.filter(filled).map(q=>[q.id,value(q.id)])),opgeslagen:new Date().toISOString()};
