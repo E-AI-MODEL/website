@@ -14,7 +14,11 @@ for (const language of ['en', 'nl']) {
   visit(join(root, language));
 }
 // Deze routes worden door scripts/build_site.py gemaakt en apart getest.
-const generatedRoutes = new Set(["/tools/wihtml/", "/tools/wihtml/studio/", "/tools/science-observatory/", "/tools/llm-observatorium/", "/tools/abyss/"]);
+const generatedRoutes = new Set(["/tools/wihtml/", "/tools/wihtml/studio/", "/tools/science-observatory/", "/tools/llm-observatorium/", "/tools/abyss/", "/tools/eaimesh/", "/tools/eaimesh/start/", "/tools/eaistudio/", "/tools/eaistudio/studio/"]);
+const generatedSources = [['/tools/eaimesh/', 'content/eaimesh/start.html'], ['/tools/eaistudio/', 'content/eaistudio/studio.html']];
+for (const [route, source] of generatedSources) {
+  if (!existsSync(resolve(root, source))) throw new Error('Missing source for ' + route + ': ' + source);
+}
 let errors = 0;
 for (const path of paths) {
   const html = readFileSync(join(root, path), 'utf8');
