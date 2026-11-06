@@ -29,7 +29,7 @@ function validText(doc){
 }
 // Losse onderdelen per deelnemer. De oudere verhaalvelden blijven bewaard.
 function validBlocks(value){
- if(!Array.isArray(value)||value.length>24)return false;
+ if(!Array.isArray(value)||value.length>24||JSON.stringify(value).length>130000)return false;
  const ids=new Set();
  return value.every(b=>{
   if(!object(b)||Object.keys(b).some(k=>!["id","type","title","text","spotify_url","visible"].includes(k)))return false;
