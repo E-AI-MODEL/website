@@ -34,10 +34,20 @@ try{
    assert(metrics.document<=metrics.viewport+1,'Hoofdpagina scrolt nog bij '+width);
    assert(metrics.stage>200,'Melkweg te klein op '+width);
    assert(metrics.tabVisible,'Mobiele tabs niet zichtbaar');
+   const compact=await page.locator('.inspector').evaluate(el=>el.getBoundingClientRect().height);
+   assert(compact<=125,'Ontdekpaneel is te groot bij '+width);
+   assert.equal(await page.locator('#labExpand').getAttribute('aria-expanded'),'false');
+   await page.locator('#labExpand').click();
+   const expanded=await page.locator('.inspector').evaluate(el=>el.getBoundingClientRect().height);
+   assert(expanded>compact+40,'Ontdekpaneel klapt niet open bij '+width);
+   assert.equal(await page.locator('#labExpand').getAttribute('aria-expanded'),'true');
+   await page.locator('#labExpand').click();
+   assert.equal(await page.locator('#labExpand').getAttribute('aria-expanded'),'false');
    const tabs=page.getByRole('tab');
    assert.equal(await tabs.count(),3);
    await tabs.getByText('Verander').click();
    assert(await page.locator('#pane-speel').isVisible());
+   assert.equal(await page.locator('#labExpand').getAttribute('aria-expanded'),'true');
    await tabs.getByText('Ontdek meer').click();
    assert(await page.locator('#pane-meer').isVisible());
    await tabs.getByText('Probeer').click();
@@ -61,7 +71,7 @@ try{
    await page.locator('#backGalaxy').click();
    assert(!(await page.locator('#solarExplorer').isVisible()));
   }
-  await page.screenshot({path:`test-results/melkweg-lab-v7-${width}.png`});
+  await page.screenshot({path:`test-results/melkweg-lab-v8-${width}.png`});
   assert.deepEqual(errors,[],'JavaScript-fouten op '+width);
   await page.close();
  }
