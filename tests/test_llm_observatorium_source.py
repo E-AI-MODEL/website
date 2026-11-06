@@ -46,9 +46,23 @@ class LlmObservatorySourceTests(unittest.TestCase):
         self.assertIn("plot.addEventListener('pointerup'", html)
         self.assertIn('screenJourney=pts', html)
         self.assertIn('function updateJourneyUI()', html)
-        self.assertIn('state.follow=true', html)
+        self.assertNotIn('state.follow=true', html)
         self.assertIn('state.follow=false', html)
+        self.assertIn('cam.ox=0;cam.oy=0;', html)
+        self.assertIn('state.journey+dt*.52*state.speed', html)
+        self.assertIn('state.journey>=cfg.layers-1', html)
         self.assertIn('function setCameraMatrix()', html)
+
+    def test_each_research_mode_has_its_own_animation(self):
+        for method in ("drawModelScan", "drawStream", "drawRouterSignals",
+                       "drawAttentionSignals", "drawContextWindow",
+                       "drawGenerationSample", "drawUsageWorld"):
+            self.assertIn("function " + method + "()", self.html)
+        for call in ("drawModelScan();", "drawRouterSignals()", "drawAttentionSignals()",
+                     "drawContextWindow()", "drawGenerationSample()", "drawUsageWorld()"):
+            self.assertIn(call, self.html)
+        self.assertIn("state.playing=!window.matchMedia", self.html)
+        self.assertIn("state.playing=false", self.html)
 
     def test_reasoning_and_token_costs(self):
         html = self.html

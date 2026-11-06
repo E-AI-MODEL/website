@@ -14,7 +14,7 @@ Open `index.html` in een browser. Voor echte tokenisatie laadt de pagina eenmaal
 - Generatie: kansverdeling met temperatuur en top-p
 - Redenering & kosten: officiële API-gebruiksvelden en een instelbaar kostenexperiment, met vijf gekoppelde tokenstromen. Het openbare voorbeeld gebruikt 75 inputtokens en 1186 outputtokens, inclusief 1024 redeneertokens
 
-De visualisatie draait en zoomt. Op het grote beeld start de knop **Volg een token** een zichtbaar lichtspoor door de lagen. Je kunt pauzeren, per laag verdergaan, een ander woord kiezen of op een routestation klikken. De laag en routerkeuze zijn direct gekoppeld aan de grafiek.
+De visualisatie draait en zoomt op verzoek. De camera beweegt niet vanzelf. Elk van de zeven onderzoeken heeft een eigen animatie: een laagscan, een rustige tokenroute, routerstromen, bewegende attentionverbindingen, een schuivend contextvenster, een tokenkeuze en vijf tokenkostenstromen. De Tokenreis stopt bij de laatste laag en springt niet terug. Je kunt pauzeren, per laag verdergaan, een ander token kiezen of op een routestation klikken. De bijbehorende grafiek reageert mee.
 
 De grafiek heeft nu leesbare waarden en een samenvatting. Klik of tik op een waarde om de laag of expert in de 3D-wereld te selecteren. Op mobiel zijn Modules, Grafiek, Instellen, Leren en Bronnen afzonderlijke panelen. De tokenbediening verdwijnt zodra zo'n paneel openstaat.
 
@@ -48,4 +48,4 @@ Dit is geen validatie van modelactivaties, wetenschappelijke verklaringskracht o
 
 ## Status
 
-**Concept.** Er is geen publieke route toegevoegd aan de sitebouwer. Eerst de interactieve voorvertoning beoordelen en zo nodig verbeteren. Daarna pas een afzonderlijk besluit over publicatie.
+De hoofdpagina staat op eaimodel.nl. Deze animatieverbetering wordt apart getest in een GitHub-branch en pas na controles gepubliceerd.
