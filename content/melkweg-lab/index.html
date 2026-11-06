@@ -1129,7 +1129,7 @@ function updateAstroPins(){
  const visible=(state.mode==='atlas'||state.mode==='structure')&&!solarOpen&&!document.body.classList.contains('lab-sheet-open');
  const pins=[[$('astroSunPin'),lastProjectedSun],[$('astroCenterPin'),lastProjectedCenter]];
  for(const [el,p] of pins){
-  let ok=!!(visible&&p&&Number.isFinite(p.x)&&Number.isFinite(p.y)&&p.x>=44&&p.x<=W-102&&p.y>=95&&p.y<=H-140);
+  let ok=!!(visible&&p&&Number.isFinite(p.x)&&Number.isFinite(p.y)&&p.x>=44&&p.x<=W-80&&p.y>=95&&p.y<=H-140);
   el.hidden=!ok;
   if(ok){el.style.left=p.x+'px';el.style.top=p.y+'px';}
  }
