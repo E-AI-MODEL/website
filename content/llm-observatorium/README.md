@@ -7,16 +7,16 @@ Open `index.html` in een browser. Voor echte tokenisatie laadt de pagina eenmaal
 ## Onderzoeken
 
 - Modelstelsel: lagen en expertposities in een ruimtelijke structuur, selecteren met de muis of een vinger
-- Tokenreis: reproduceerbare voorbeeldroute door de modelstructuur
+- Tokenreis: kies een token en laag; bekijk het bereik van attention en vier expertroutes naast de 3D-wereld
 - Experts: top-4-routerselectie per laag, met bijbehorende scores
 - Attention: lokale of volledige causale toegang tot eerdere posities
 - Context: relatie tussen beschikbare context en een venster van 128 posities
 - Generatie: kansverdeling met temperatuur en top-p
 - Redenering & kosten: officiële API-gebruiksvelden en een instelbaar kostenexperiment, met vijf gekoppelde tokenstromen. Het openbare voorbeeld gebruikt 75 inputtokens en 1186 outputtokens, inclusief 1024 redeneertokens
 
-De visualisatie draait en zoomt op verzoek. De camera beweegt niet vanzelf. Elk van de zeven onderzoeken heeft een eigen animatie: een laagscan, een rustige tokenroute, routerstromen, bewegende attentionverbindingen, een schuivend contextvenster, een tokenkeuze en vijf tokenkostenstromen. De Tokenreis stopt bij de laatste laag en springt niet terug. Je kunt pauzeren, per laag verdergaan, een ander token kiezen of op een routestation klikken. De bijbehorende grafiek reageert mee.
+De 3D-wereld kun je draaien, zoomen en met een muis of vinger onderzoeken. In Tokenreis staat de selectie stil totdat je zelf een ander token, expert of laag kiest. Onder de 3D-wereld staat een dunne laagstrook met de gekozen tokenpositie, attention-bereik en vier voorbeeldgewichten. De bereikstrook rekent met een instelbare voorbeeldcontext, niet met afgelezen aandachtsscores. Bij een lokaal venster is maximaal 128 posities direct bereikbaar; een volledige attentionlaag kan alle eerdere posities in dit scenario bereiken. De grafiek en de oude afspeelknoppen zijn voor Tokenreis verdwenen. De overige zes onderzoeken behouden hun eigen weergaven.
 
-De grafiek heeft nu leesbare waarden en een samenvatting. Klik of tik op een waarde om de laag of expert in de 3D-wereld te selecteren. Op mobiel zijn Modules, Grafiek, Instellen, Leren en Bronnen afzonderlijke panelen. De tokenbediening verdwijnt zodra zo'n paneel openstaat.
+Op mobiel zie je de laagstrook boven het onderste menu. Details maakt de laagstrook groter. Instellen opent de tekstinvoer en het voorbeeld voor de contextlengte. Andere modules hebben nog een grafiek waar die informatie toevoegt. De vragenquiz is verwijderd; Uitleg bevat nu korte tekst over de gekozen onderzoeksmodus.
 
 ## Redenering en kosten
 
@@ -42,10 +42,10 @@ De tokeninvoer gebruikt, zodra het bibliotheekbestand is geladen, de echte `o200
 
 ## Controle
 
-Lokale Chromium-tests zijn uitgevoerd op 320, 390, 768 en 1440 pixels. Getest: zeven modules, mobiele paneelbediening, wisselen tussen 120b en 20b, ontbreken van paginascroll en JavaScript-runtimefouten. Een aanvullende Node-syntaxcheck is geslaagd.
+De broncodecontrole, sitebuild en JavaScript-syntaxiscontrole voor deze herziening zijn geslaagd. De bijgewerkte Chromium-test controleert de tokenkeuze, de vier experts, laagselectie, het verschil tussen lokale en volledige attention en geen automatische beweging op 390 en 1280 pixels. De testresultaten blijven gekoppeld aan de commit waarop ze zijn uitgevoerd.
 
-Dit is geen validatie van modelactivaties, wetenschappelijke verklaringskracht of leerwinst.
+Dit is geen validatie van echte modelactivaties, wetenschappelijke verklaringskracht of leerwinst.
 
 ## Status
 
-De hoofdpagina staat op eaimodel.nl. Deze animatieverbetering wordt apart getest in een GitHub-branch en pas na controles gepubliceerd.
+Het LLM Observatorium staat op eaimodel.nl. Deze herziening staat als concept in pull request #125. Ze is nog niet op de openbare site gepubliceerd.
