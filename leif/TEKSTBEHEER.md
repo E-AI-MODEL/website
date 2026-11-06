@@ -6,7 +6,7 @@
 - KEI: oorspronkelijke inhoud, leeservaring, oefeningen en de bestaande versleutelde verhaalbron blijven behouden.
 - LIS: bestaande persoonlijke proefomgeving van Kars.
 - Chermaine: bestaande vervolgvragen en antwoorden blijven behouden.
-- VIS: toegang tot het bestaande beheer met managerrechten. Een bestaande, geldige beheersessie geeft direct toegang. Alleen de drie letters VIS zijn niet voldoende om privégegevens veilig beschikbaar te maken.
+- VIS: opent de wachtwoordlogin voor het bestaande beheeraccount met managerrechten. Een bestaande, geldige beheersessie geeft direct toegang. Alleen de drie letters VIS zijn niet voldoende om privégegevens veilig beschikbaar te maken.
 
 ## Vormgeving
 - Eén rustig inlogvlak, zonder losse informatieblokken eromheen.
@@ -37,6 +37,8 @@
 - Publiceer de bijgewerkte Edge Function `leif-admin-console`.
 - Controleer de Chromium-browsertest en test de eerste publicatie en het herstellen met fictieve tekst.
 - Houd de huidige productiepagina intact tot die controles zijn geslaagd.
-- VIS vraagt met dezelfde enkele toegangscode een eenmalige link aan voor het bestaande, bevestigde beheeraccount. Supabase stuurt die naar het vaste beheeradres. De link opent de LEIF-startpagina, die het token controleert en alleen na geldige managerrechten naar beheer gaat.
-- Er verschijnen geen e-mail- of wachtwoordvelden op het LEIF-inlogscherm. Alleen VIS invoeren geeft geen toegang tot privégegevens.
-- De Supabase Auth-redirect `https://eaimodel.nl/leif/` moet op de allowlist staan. Controleer dit met een echte ontvangen link voordat de inlogroute als werkend wordt gemeld.
+- VIS toont het beheerderswachtwoord op hetzelfde startscherm. De server verifieert het bestaande Auth-account en controleert of de gebruiker managerrechten heeft binnen LEIF.
+- Geen e-mailaanvraag of wachttijd bij het gewone inloggen. Alleen VIS invoeren geeft geen toegang tot privégegevens.
+- Een beheerder die het wachtwoord niet meer weet, moet het veilig herstellen via Supabase Auth Admin. De site mag hiervoor geen wachtwoorden of geheime sleutels in JavaScript opslaan.
+- Oude, al verzonden eenmalige inloglinks blijven zolang geldig bruikbaar; nieuwe links zijn niet nodig voor de normale beheerlogin.
+- Voor daadwerkelijke publicatie: browsercontrole op mobiele schermen, fout wachtwoord, ontbrekende managerrechten en een geldige beheersessie.
