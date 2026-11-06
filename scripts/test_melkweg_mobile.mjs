@@ -31,19 +31,55 @@ try{
   }));
   assert(metrics.horizontal<=1,'Horizontale overloop op '+width);
   if(width<850){
-   assert(metrics.document<=metrics.viewport+1,'Hoofdpagina scrolt nog bij '+width);
-   assert(metrics.stage>200,'Melkweg te klein op '+width);
-   assert(metrics.stage>=height-1,'Sterrenbeeld vult het scherm niet op '+width);
-   assert(!metrics.tabVisible,'Tabs horen niet over het sterrenbeeld te liggen');
-   const compact=await page.locator('.inspector').evaluate(el=>el.getBoundingClientRect().height);
-   assert(compact<=52,'Er staat nog een groot vast paneel op '+width);
-   assert(!(await page.locator('#pane-proef').isVisible()),'Ontdekkaart vervuilt de startweergave');
-   assert.equal(await page.locator('#labDock').getAttribute('aria-expanded'),'false');
+   assert(metrics.document<=metrics.viewport+1,'Hoofdpagina mag niet scrollen op '+width);
+   assert(metrics.stage>=height-1,'Het sterrenbeeld vult het scherm niet op '+width);
+   assert(!metrics.tabVisible,'Tabs horen niet op het beginscherm');
+   assert(!(await page.locator('#pane-proef').isVisible()),'De oude kaart staat nog over het beeld');
+   assert(!(await page.locator('#timeslider').isVisible()),'Tijdschuif moet eerst verborgen zijn');
+   assert(!(await page.locator('#cameraMenuToggle').isVisible()),'Cameramenu moet verdwijnen');
+   const layout=await page.evaluate(()=>{
+    const box=sel=>{const r=document.querySelector(sel).getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height}};
+    return {menu:box('#adventureMenuToggle'),planet:box('#solarEntry'),more:box('#toolsMenuToggle'),
+     play:box('#play'),time:box('#timeToggle'),explore:box('#labDock')};
+   });
+   for(const [name,rect] of Object.entries(layout)){
+    assert(rect.w<=52&&rect.h<=52,name+' is geen klein icoon op '+width);
+    assert(rect.x>=0&&rect.x+rect.w<=width+1,name+' staat buiten beeld');
+   }
+   assert(layout.menu.x+layout.menu.w<layout.planet.x-8,'Bovenste iconen overlappen op '+width);
+   assert(layout.play.y>height-75&&layout.explore.y>height-75,'Onderste iconen staan te hoog');
+   await page.locator('#timeToggle').click();
+   assert(await page.locator('#timeslider').isVisible(),'Tijdschuif verschijnt niet');
+   await page.locator('#timeslider').fill('270');
+   assert((await page.locator('#timevalue').textContent()).includes('270'),'Tijdlijn verandert niet');
+   await page.locator('#timeToggle').click();
+   assert(!(await page.locator('#timeslider').isVisible()),'Tijdschuif sluit niet');
+   await page.waitForSelector('#astroCenterPin:visible',{timeout:5000});
+   await page.locator('#astroCenterPin').click();
+   assert(await page.locator('#astroInfo').isVisible(),'Tik op het midden toont geen uitleg');
+   assert((await page.locator('#astroInfoText').textContent()).includes('Sagittarius'),'De uitleg is niet gekoppeld aan het midden');
+   await page.locator('#astroInfoClose').click();
+   assert(!(await page.locator('#astroInfo').isVisible()),'De uitleg sluit niet');
+   const sun=page.locator('#astroSunPin');
+   if(await sun.isVisible()){
+    await sun.click();
+    assert((await page.locator('#astroInfoTitle').textContent()).includes('zon'),'Zonkaart ontbreekt');
+    await page.locator('#astroInfoGo').click();
+    assert(await page.locator('#solarExplorer').isVisible(),'Zonkaart opent de planeten niet');
+    await page.locator('#backGalaxy').click();
+   }
+   const canvas=page.locator('#universe');
+   const before=await page.locator('#viewangle').textContent();
+   const cr=await canvas.boundingBox();
+   await page.mouse.move(cr.x+cr.width*.42,cr.y+cr.height*.37);
+   await page.mouse.down();
+   await page.mouse.move(cr.x+cr.width*.56,cr.y+cr.height*.47,{steps:8});
+   await page.mouse.up();
+   const after=await page.locator('#viewangle').textContent();
+   assert.notEqual(after,before,'Slepen draait de Melkweg niet');
+   assert(await page.evaluate(()=>document.body.classList.contains('stage-touched')),'Het sleephintje verdwijnt niet');
    await page.locator('#labDock').click();
-   const expanded=await page.locator('.inspector').evaluate(el=>el.getBoundingClientRect().height);
-   assert(expanded>compact+150,'Onderpaneel gaat niet open bij '+width);
-   assert(await page.locator('#pane-proef').isVisible());
-   assert.equal(await page.locator('#labDock').getAttribute('aria-expanded'),'true');
+   assert(await page.locator('#pane-proef').isVisible(),'Het ontdekpaneel opent niet');
    const tabs=page.getByRole('tab');
    assert.equal(await tabs.count(),3);
    await tabs.getByText('Verander').click();
@@ -51,31 +87,24 @@ try{
    await tabs.getByText('Ontdek meer').click();
    assert(await page.locator('#pane-meer').isVisible());
    await page.locator('#graphToggle').click();
-   assert.equal(await page.locator('#graphClose').isVisible(),true,'De grafiek heeft geen sluitknop');
-   assert.equal(await page.locator('#labDock').getAttribute('aria-expanded'),'false');
+   assert(await page.locator('#graphClose').isVisible(),'Grafiek kan niet open');
+   assert(!(await page.locator('#pane-meer').isVisible()),'Grafiek moet sterrenbeeld vrijmaken');
    await page.locator('#graphClose').click();
-   assert.equal(await page.locator('#graphClose').isVisible(),false,'De grafiek sluit niet');
+   assert(!(await page.locator('#graphClose').isVisible()),'Grafiek kan niet dicht');
    await page.locator('#labDock').click();
-   await tabs.getByText('Probeer').click();
    await page.locator('#labDock').click();
-   assert.equal(await page.locator('#labDock').getAttribute('aria-expanded'),'false');
-   assert(!(await page.locator('#pane-proef').isVisible()));
-   await page.locator('#cameraMenuToggle').click();
-   assert.equal(await page.locator('#cameraMenuToggle').getAttribute('aria-expanded'),'true');
-   await page.locator('.camera-controls [data-cam="edge"]').click();
-   assert.equal(await page.locator('#cameraMenuToggle').getAttribute('aria-expanded'),'false');
+   assert(!(await page.locator('#pane-proef').isVisible()),'Paneel sluit niet');
    await page.locator('#toolsMenuToggle').click();
-   assert.equal(await page.locator('#toolsMenuToggle').getAttribute('aria-expanded'),'true');
+   assert(await page.locator('#resetView').isVisible(),'Herstellen ontbreekt in menu');
    await page.locator('#resetView').click();
-   assert.equal(await page.locator('#toolsMenuToggle').getAttribute('aria-expanded'),'false');
+   assert(!(await page.locator('#resetView').isVisible()),'Actiemenu sluit niet');
    await page.locator('#adventureMenuToggle').click();
    const options=page.locator('.navlist .nav-btn');
    assert.equal(await options.count(),6);
    const option=options.nth(3);
-   const box=await option.boundingBox();
-   assert(box,'Avonturenmenu verdwenen');
-   const hit=await page.evaluate(({x,y})=>!!document.elementFromPoint(x,y)?.closest('.nav-btn'),{x:box.x+box.width/2,y:box.y+box.height/2});
-   assert(hit,'Avonturenmenu ligt achter ander vlak');
+   const point=await option.boundingBox();
+   assert(point,'Avonturenmenu is niet zichtbaar');
+   assert(await page.evaluate(({x,y})=>!!document.elementFromPoint(x,y)?.closest('.nav-btn'),{x:point.x+point.width/2,y:point.y+point.height/2}),'Avonturenmenu zit achter een ander vlak');
    await option.click();
    assert.equal(await page.locator('#adventureMenuToggle').getAttribute('aria-expanded'),'false');
    await page.locator('#adventureMenuToggle').click();
@@ -88,9 +117,9 @@ try{
    await page.locator('#backGalaxy').click();
    assert(!(await page.locator('#solarExplorer').isVisible()));
   }
-  await page.screenshot({path:`test-results/melkweg-lab-v9-${width}.png`});
+  await page.screenshot({path:`test-results/melkweg-lab-v11-${width}.png`});
   assert.deepEqual(errors,[],'JavaScript-fouten op '+width);
   await page.close();
  }
- console.log('Melkweg Lab V9: schermvullend op 320/390, panelen, camera, menu, tabs en planeten reageren.');
+ console.log('Melkweg Lab V11: canvas, touch-pins, uitleg, tijd, menu, grafiek en planeten gecontroleerd op mobiel en desktop.');
 }finally{if(browser)await browser.close();server.kill();}
