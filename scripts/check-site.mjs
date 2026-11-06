@@ -14,7 +14,7 @@ for (const language of ['en', 'nl']) {
   visit(join(root, language));
 }
 // Deze routes worden door scripts/build_site.py gemaakt en apart getest.
-const generatedRoutes = new Set(["/tools/wihtml/", "/tools/wihtml/studio/"]);
+const generatedRoutes = new Set(["/tools/wihtml/", "/tools/wihtml/studio/", "/tools/science-observatory/"]);
 let errors = 0;
 for (const path of paths) {
   const html = readFileSync(join(root, path), 'utf8');
