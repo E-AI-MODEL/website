@@ -73,7 +73,7 @@ class MelkwegLabPublicationTests(unittest.TestCase):
             with self.subTest(marker=marker):
                 self.assertIn(marker, html)
         self.assertEqual(html.count('id="solarEntry"'), 1)
-        self.assertNotIn('<section class="quest-card"', html)
+        self.assertIn('function panelHTML(){return `<div class="instrument-meta"', html)
         self.assertNotIn('role="tablist"', html)
         self.assertIn("document.body.classList.toggle('lab-sheet-open',expanded)", html)
         self.assertIn("DRAAI · ZOOM · SELECTEER", html)
