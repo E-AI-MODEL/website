@@ -68,14 +68,20 @@ try{
   assert(await numeric(page,'pitch')>20,'Spiraalvorm reageert niet');
 
   await goMode(page,'blackhole');
-  const before=Number(await page.locator('#timeslider').inputValue());
   const bh=await page.locator('#universe').boundingBox();
-  await page.mouse.move(bh.x+bh.width*.2,bh.y+bh.height*.4);
+  // Gebruik de werkelijke getekende S2-baan: van dichtbij het zwarte gat
+  // naar de verre kant van de ellips, op elk formaat.
+  const scale=Math.min(bh.width*.36,bh.height*.43)/1600;
+  const startX=bh.x+bh.width*.53+1035*(1-.88)*.92*scale;
+  const startY=bh.y+bh.height*.555-1035*(1-.88)*.39*.64*scale;
+  const farX=bh.x+bh.width*.53-1035*(1+.88)*.92*scale;
+  const farY=bh.y+bh.height*.555+1035*(1+.88)*.39*.64*scale;
+  await page.mouse.move(startX,startY);
   await page.mouse.down();
-  await page.mouse.move(bh.x+bh.width*.7,bh.y+bh.height*.38,{steps:9});
+  await page.mouse.move(farX,farY,{steps:12});
   await page.mouse.up();
   const after=Number(await page.locator('#timeslider').inputValue());
-  assert(Math.abs(after-before)>.25,'S2 reageert niet op slepen');
+  assert(Math.abs(after-8)<1.25,'S2 komt na slepen niet op de verre baanpositie: '+after);
   await page.getByRole('tab',{name:'Ontdek meer'}).click();
   await page.locator('#graphToggle').click();
   assert(await page.locator('.analytics-main').isVisible(),'Grafiekknop toont niets');
