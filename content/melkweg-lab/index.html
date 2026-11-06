@@ -1065,7 +1065,7 @@ cv.addEventListener('pointermove',e=>{
  document.querySelectorAll('.cambtn').forEach(b=>b.classList.remove('active'));updateLiveStats(true);checkQuest();
 });
 cv.addEventListener('pointerup',e=>{
- if(stageHeld){stageHeld=null;stageDragStart=null;return;}
+ if(stageHeld){stageHeld=null;stageDragStart=null;bindPanel();updateLiveStats(true);checkQuest();return;}
  touches.delete(e.pointerId);if(touches.size<2)pinchLast=0;
  if(!state.mouseDown)return;state.mouseDown=false;cv.classList.remove('dragging');const drag=cv.drag;cv.drag=null;if(!drag||drag.moved)return;
  const rect=cv.getBoundingClientRect();let sx=e.clientX-rect.left-W*.53,sy=e.clientY-rect.top-H*.525,sc=Math.min(W/43,H/29)*state.cam.zoom,er=state.cam.elev*PI/180;
