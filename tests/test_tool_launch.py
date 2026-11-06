@@ -19,9 +19,14 @@ class ToolLaunchTests(unittest.TestCase):
             soup=BeautifulSoup((BUILD/path).read_text(),'html.parser')
             for slug in ['eaimesh','eaistudio','wihtml']:
                 with self.subTest(path=path,slug=slug):self.assertIsNotNone(soup.select_one(f'main a[href="/tools/{slug}/"]'))
-        for path in ['nl/tools/index.html','en/tools/index.html']:
-            soup=BeautifulSoup((BUILD/path).read_text(),'html.parser')
-            for slug in ['eaimesh','eaistudio','wihtml']:self.assertIsNotNone(soup.select_one(f'header a[href="/tools/{slug}/"]'))
+        # The common hamburger links are built by site-refresh.js at runtime.
+        menu=(BUILD/'assets/site-refresh.js').read_text()
+        for slug in ('eaimesh','eaistudio','wihtml'):
+            self.assertIn('/tools/'+slug+'/',menu)
+        for path in ('nl/index.html','index.html'):
+            menu_page=(BUILD/path).read_text()
+            for slug in ('eaimesh','eaistudio'):
+                self.assertIn('/tools/'+slug+'/',menu_page)
     def test_pwa_assets_are_complete(self):
         root=BUILD/'tools/eaistudio/studio';manifest=json.loads((root/'manifest.webmanifest').read_text())
         for icon in manifest['icons']:self.assertTrue((root/icon['src']).is_file())
