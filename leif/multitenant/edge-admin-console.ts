@@ -10,7 +10,7 @@ async function hash(v){const a=new Uint8Array(await crypto.subtle.digest("SHA-25
 function newCode(){return Array.from(crypto.getRandomValues(new Uint8Array(24)),n=>n.toString(16).padStart(2,"0")).join("")}
 function idValid(v){return typeof v==="string"&&/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(v)}
 async function database(path,method,body,service){const headers={"apikey":service,"Content-Type":"application/json","Accept":"application/json"};if(!service.startsWith("sb_secret_"))headers.Authorization="Bearer "+service;if(method!=="GET")headers.Prefer="return=representation";const r=await fetch(projectUrl+"/rest/v1/"+path,{method,headers,body:body?JSON.stringify(body):undefined,cache:"no-store"});if(!r.ok)throw Error("database_"+r.status);return r.json()}
-async function authRequest(route,body,key,token){const headers={"apikey":key,"Content-Type":"application/json"};if(token)headers.Authorization="Bearer "+token;const r=await fetch(projectUrl+"/auth/v1/"+route,{method:body?"POST":"GET",headers,body:body?JSON.stringify(body):undefined,cache:"no-store"});if(!r.ok)throw Error("auth_"+r.status);return r.json()}
+async function authRequest(route,body,key,token,method){const headers={"apikey":key,"Content-Type":"application/json"};if(token)headers.Authorization="Bearer "+token;const r=await fetch(projectUrl+"/auth/v1/"+route,{method:method||(body?"POST":"GET"),headers,body:body?JSON.stringify(body):undefined,cache:"no-store"});if(!r.ok){const error=new Error("auth_"+r.status);error.status=r.status;const data=await r.json().catch(()=>({}));error.code=data.code||data.error_code||"";throw error}return r.status===204?{}:r.json()}
 async function membershipList(userId,service){
  const found=await database("leif_admin_memberships?user_id=eq."+encodeURIComponent(userId)+"&select=tenant_id,role&limit=50","GET",null,service);
  if(!Array.isArray(found)||!found.length)return [];
@@ -69,7 +69,7 @@ Deno.serve(async req=>{
    const user=await authUser(tokens.access_token,key);
    const memberships=user?await membershipList(user.id,service):[];
    if(!memberships.length)return send({error:"no_admin_access"},403,origin);
-   return send({ok:true,access_token:tokens.access_token,refresh_token:tokens.refresh_token,expires_in:tokens.expires_in,user_email:user.email||"",tenants:memberships},200,origin);
+   return send({ok:true,access_token:tokens.access_token,refresh_token:tokens.refresh_token,expires_in:tokens.expires_in,user_email:user.email||"",pending_email:user.new_email||"",tenants:memberships},200,origin);
   }
   const jwt=req.headers.get("Authorization")||"";
   if(!jwt.startsWith("Bearer "))return send({error:"not_authenticated"},401,origin);
@@ -77,12 +77,31 @@ Deno.serve(async req=>{
   if(!user)return send({error:"not_authenticated"},401,origin);
   const memberships=await membershipList(user.id,service);
   if(!memberships.length)return send({error:"not_authorized"},403,origin);
-  if(input.action==="session")return send({ok:true,tenants:memberships,user_email:user.email||""},200,origin);
+  if(input.action==="session")return send({ok:true,tenants:memberships,user_email:user.email||"",pending_email:user.new_email||""},200,origin);
+  if(input.action==="logout"){
+   await authRequest("logout?scope=local",{},key,jwt.slice(7));
+   return send({ok:true},200,origin);
+  }
   const scope=memberships.find(t=>t.id===input.tenant_id);
   if(!scope)return send({error:"not_authorized"},403,origin);
 
 
-  if(["site_list","site_save","site_publish","site_unpublish","site_history","site_restore"].includes(input.action)){
+  if(input.action==="update_account"){
+   if(scope.slug!=="leif"||scope.role!=="manager")return send({error:"not_authorized"},403,origin);
+   const email=typeof input.email==="string"?input.email.trim().toLowerCase():"";
+   if(email.length>254||!/^\S+@\S+\.\S+$/.test(email)||typeof input.password!=="string"||input.password.length<12||input.password.length>1000)return send({error:"invalid_account"},400,origin);
+   const attributes={password:input.password};
+   if(email!==(user.email||"").toLowerCase())attributes.email=email;
+   let updated;
+   try{updated=await authRequest("user?redirect_to="+encodeURIComponent("https://eaimodel.nl/leif/"),attributes,key,jwt.slice(7),"PUT")}
+   catch(error){
+    const codes={weak_password:"weak_password",same_password:"same_password",email_exists:"email_exists",email_address_invalid:"invalid_email",reauthentication_needed:"reauthentication_needed",session_not_found:"not_authenticated"};
+    return send({error:codes[error.code]||"account_update_failed"},error.status===429?429:error.status===401?401:400,origin);
+   }
+   return send({ok:true,user_email:updated.email||user.email||"",pending_email:updated.new_email||"",password_saved:true},200,origin);
+  }
+
+  if(["site_list","site_save","site_apply","site_publish","site_unpublish","site_history","site_restore"].includes(input.action)){
    if(scope.slug!=="leif"||scope.role!=="manager")return send({error:"not_authorized"},403,origin);
    const pages=["start","mijn","vervolg","verhaal","beheer"];
    if(typeof input.page!=="string"||!pages.includes(input.page))return send({error:"invalid_page"},400,origin);
@@ -101,18 +120,18 @@ Deno.serve(async req=>{
    const existing=rows[0]||null;
    if(!Number.isInteger(input.revision)||input.revision<0||input.revision>1000000||input.revision!==(existing?.revision||0))return send({error:"revision_conflict",revision:existing?.revision||0},409,origin);
    let update;
-   if(input.action==="site_save"){
+   if(input.action==="site_save"||input.action==="site_apply"){
     if(typeof input.text!=="string"||input.text.length>6000)return send({error:"invalid_text"},400,origin);
     if(!existing){
      if(typeof input.original!=="string"||input.original.trim().length<3||input.original.length>6000)return send({error:"invalid_original"},400,origin);
-     const initial={page,field_key:input.field_key,original_text:input.original,draft_text:input.text,revision:1,changed_by:user.id};
+     const initial={page,field_key:input.field_key,original_text:input.original,draft_text:input.text,revision:1,changed_by:user.id,...(input.action==="site_apply"?{published_text:input.text,published_at:new Date().toISOString()}:{})};
      try{
       const created=await database("leif_site_texts","POST",initial,service);
       if(created.length===1)return send({ok:true,item:created[0]},200,origin);
      }catch{return send({error:"revision_conflict"},409,origin)}
      return send({error:"save_failed"},503,origin);
     }
-    update={draft_text:input.text};
+    update={draft_text:input.text,...(input.action==="site_apply"?{published_text:input.text,published_at:new Date().toISOString()}:{})};
    }else if(!existing)return send({error:"not_found"},404,origin);
    else if(input.action==="site_publish"){
     update={published_text:existing.draft_text,published_at:new Date().toISOString()};

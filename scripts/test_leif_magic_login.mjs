@@ -1,4 +1,5 @@
 import { chromium } from 'playwright';
+import { get as httpGet } from 'node:http';
 import { spawn } from 'node:child_process';
 import { resolve } from 'node:path';
 import assert from 'node:assert/strict';
@@ -10,9 +11,9 @@ const tokens={access:'eyJ'+('a'.repeat(148)),refresh:'test-refresh-'+('z'.repeat
 const membership={id:'00000000-0000-4000-8000-000000000001',slug:'leif',name:'LEIF',role:'manager'};
 try{
  let ready=false;
- for(let i=0;i<60;i++){try{ready=(await fetch(origin+'/leif/')).ok}catch{}if(ready)break;await new Promise(r=>setTimeout(r,110))}
+ for(let i=0;i<60;i++){try{ready=await new Promise(resolve=>{const r=httpGet(origin+'/leif/',response=>{response.resume();resolve(response.statusCode===200)});r.on('error',()=>resolve(false))})}catch{}if(ready)break;await new Promise(r=>setTimeout(r,110))}
  assert(ready,'LEIF testsite niet bereikbaar');
- browser=await chromium.launch({headless:true});
+ browser=await chromium.launch({headless:true,executablePath:process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH||undefined});
  const page=await browser.newPage({viewport:{width:390,height:844}});
  const errors=[],requests=[];
  page.on('pageerror',error=>errors.push(error.message));
@@ -25,7 +26,8 @@ try{
   let data={ok:true};
   if(input.action==='request_magic_link')data={ok:true};
   else if(input.action==='session')data={ok:true,tenants:manager?[membership]:[],user_email:'test@example.invalid'};
-  else if(input.action==='refresh')data={ok:true,access_token:tokens.access,refresh_token:tokens.refresh,tenants:[membership],user_email:'test@example.invalid'};
+  else if(input.action==='refresh'||input.action==='login')data={ok:true,access_token:tokens.access,refresh_token:tokens.refresh,expires_in:3600,tenants:[membership],user_email:'test@example.invalid'};
+  else if(input.action==='update_account')data={ok:true,user_email:input.email,pending_email:'',password_saved:true};
   else if(input.action==='list')data={ok:true,participants:[]};
   else if(input.action==='list_testers')data={ok:true,testers:[]};
   else if(input.action==='site_public')data={ok:true,items:[]};
@@ -33,11 +35,13 @@ try{
  });
  await page.goto(origin+'/leif/',{waitUntil:'domcontentloaded'});
  assert.equal(await page.locator('#accessPassword').count(),1,'Alleen een toegangscode');
- assert.equal(await page.locator('#adminEmail,#adminPassword').count(),0,'Geen wachtwoord- of e-mailvelden');
+ assert.equal(await page.locator('#adminLoginForm:visible').count(),0,'Beheerformulier pas na VIS');
  await page.locator('#accessPassword').fill('VIS');
  await page.locator('#leifSignIn').click();
- await page.locator('#accessNotice:visible').waitFor({timeout:10000});
- assert.match(await page.locator('#accessNotice').innerText(),/inloglink/);
+ await page.locator('#adminLoginForm:visible').waitFor({timeout:10000});
+ await page.locator('#adminLink').click();
+ await page.locator('#adminLoginNotice:visible').waitFor({timeout:10000});
+ assert.match(await page.locator('#adminLoginNotice').innerText(),/inloglink/);
  const requestLink=requests.find(x=>x.action==='request_magic_link');
  assert(requestLink,'Aanvraag inloglink ontbreekt');
  assert.equal(requestLink.body.email,undefined,'Beheeradres wordt niet door de browser bepaald');
@@ -48,12 +52,38 @@ try{
  assert(requests.some(x=>x.action==='session'&&x.auth==='Bearer '+tokens.access));
  assert.equal(new URL(page.url()).hash,'','Geen toegangstoken in de adresbalk');
  assert.equal(await page.locator('#workspace:visible').count(),1,'Beheer verschijnt na managercontrole');
- await page.evaluate(()=>sessionStorage.removeItem('leif-admin-session-v1'));
+ assert(await page.evaluate(()=>!!localStorage.getItem('leif-admin-session-v1')),'Blijvende sessie opgeslagen');
+ assert.equal(await page.evaluate(()=>sessionStorage.getItem('leif-admin-session-v1')),null,'Oude tabbladsessie overgenomen');
+ await page.locator('#accountSettings summary').click();
+ await page.locator('#accountPassword').fill('synthetic-password-123');
+ await page.locator('#accountRepeat').fill('niet-hetzelfde-123');
+ await page.locator('#saveAccount').click();
+ await page.getByText('De wachtwoorden zijn niet gelijk.',{exact:true}).waitFor();
+ assert(!requests.some(x=>x.action==='update_account'),'Geen wijziging bij ongelijke wachtwoorden');
+ await page.locator('#accountRepeat').fill('synthetic-password-123');
+ await page.locator('#saveAccount').click();
+ await page.getByText(/Je inloggegevens zijn bewaard/).waitFor();
+ assert.equal(await page.locator('#accountPassword').inputValue(),'','Wachtwoord uit formulier gewist');
+ assert(!(await page.evaluate(()=>localStorage.getItem('leif-admin-session-v1'))).includes('synthetic-password'),'Geen wachtwoord in browseropslag');
+ await page.reload();
+ await page.locator('#workspace:visible').waitFor();
+ assert.equal(await page.locator('#identity').innerText(),'test@example.invalid');
+ await page.evaluate(()=>window.LeifAdminSession.clear());
  manager=false;
  await page.goto(origin+'/leif/'+fragment,{waitUntil:'domcontentloaded'});
  await page.locator('#accessError:visible').waitFor({timeout:10000});
  assert.match(await page.locator('#accessError').innerText(),/niet worden bevestigd/);
- assert.equal(await page.evaluate(()=>sessionStorage.getItem('leif-admin-session-v1')),null,'Onbevoegde krijgt geen beheersessie');
+ assert.equal(await page.evaluate(()=>localStorage.getItem('leif-admin-session-v1')),null,'Onbevoegde krijgt geen beheersessie');
+ manager=true;
+ await page.goto(origin+'/leif/?beheer=1');
+ await page.locator('#adminLoginForm:visible').waitFor();
+ await page.locator('#adminLoginEmail').fill('test@example.invalid');
+ await page.locator('#adminLoginPassword').fill('synthetic-password-123');
+ const linksBefore=requests.filter(x=>x.action==='request_magic_link').length;
+ await page.locator('#adminLoginSubmit').click();
+ await page.waitForURL('**/leif/beheer/');
+ await page.locator('#workspace:visible').waitFor();
+ assert.equal(requests.filter(x=>x.action==='request_magic_link').length,linksBefore,'Wachtwoordlogin verstuurt geen mail');
  assert.equal(errors.length,0,'Geen JavaScript-fouten: '+errors.join('; '));
- console.log('LEIF VIS: een toegangscode, e-maillink, managercontrole, geen wachtwoordvelden.');
+ console.log('LEIF VIS: beheerformulier, bestaande e-maillink en managercontrole.');
 }finally{if(browser)await browser.close();server.kill()}

@@ -26,15 +26,15 @@ test('LIS opent Kars via uitsluitend de gemarkeerde demo-alias',()=>{
  assert.match(server,/member\.state!=="active"/);
  assert.match(personal,/id="demoLabel"/);
 });
-test('VIS gebruikt een beveiligde inloglink zonder wachtwoordformulier',()=>{
+test('VIS biedt een beheerlogin en behoudt de bestaande inloglink',()=>{
  assert.doesNotMatch(main,/id="adminEmail"|id="adminPassword"/);
  assert.match(main,/action:'request_magic_link'/);
  assert.match(main,/action:'session'/);
  assert.match(main,/completeAdminLink/);
  assert.match(main,/t\.slug==='leif'&&t\.role==='manager'/);
- assert.match(main,/leif-admin-session-v1/);
+ assert.match(main,/LeifAdminSession/);
  assert.match(main,/quickClicks===3/);
- assert.match(beheer,/request\('refresh'/);
+ assert.match(beheer,/adminSession\.resume\(\)/);
  assert.doesNotMatch(beheer,/id="password"|id="email"/);
 });
 test('geen tweede zichtbaar inlogformulier',()=>{
