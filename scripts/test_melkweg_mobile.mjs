@@ -125,6 +125,19 @@ try{
    await page.locator('#solarEntry').click();
    assert(await page.locator('#solarExplorer').isVisible(),'Planeten niet geopend');
    assert.equal(await page.locator('#planetChoices .planet-pick').count(),8);
+   await page.locator('#planetChoices .planet-pick').nth(2).click(); // Earth
+   const clockBefore=await page.locator('#solarYearLabel').innerText();
+   const sky=await page.locator('#solarCanvas').boundingBox();
+   const cx=sky.width<580?sky.width*.48:sky.width*.49;
+   const cy=sky.height<550?sky.height*.43:sky.height*.52;
+   const rr=Math.max(78,Math.min((sky.width-65)/2,(sky.height-180)/1.09,310))*(.15+.85*Math.pow(2/7,1.04));
+   const ratio=sky.height<490?.39:.53;
+   await page.mouse.move(sky.x+cx+Math.cos(-.67)*rr,sky.y+cy+Math.sin(-.67)*rr*ratio);
+   await page.mouse.down();
+   await page.mouse.move(sky.x+cx-rr*.3,sky.y+cy+rr*ratio*.8,{steps:12});
+   await page.mouse.up();
+   assert.notEqual(await page.locator('#solarYearLabel').innerText(),clockBefore,'Dragging Earth must move time and all planets');
+
    await page.locator('#planetChoices .planet-pick').nth(3).click();
    assert((await page.locator('#planetDetail').textContent()).includes('Mars'));
    await page.locator('#backGalaxy').click();
