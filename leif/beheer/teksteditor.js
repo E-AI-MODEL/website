@@ -17,7 +17,7 @@ function request(action,extra={}){
  return host.request(action,{tenant_id:tenant.id,page:page(),...extra});
 }
 function dirty(){return !!current&&editor.value!==(store.get(current.key)?.draft_text??current.original)}
-function confirmLeave(){return !dirty()||confirm('Deze tekst is nog niet bewaard. Wil je de wijziging laten vervallen?')}
+function confirmLeave(){if(inFlight){tell('Het opslaan loopt nog. Wacht even voordat je verdergaat.');return false}return !dirty()||confirm('Deze tekst is nog niet bewaard. Wil je de wijziging laten vervallen?')}
 function state(){return current?store.get(current.key):null}
 function previewUpdate(key,txt){
  if(typeof txt!=='string')return;
@@ -75,7 +75,7 @@ async function change(action,extra={}){
  if(!current||inFlight)return;
  if(!['site_save','site_apply'].includes(action)&&dirty()){tell('Bewaar eerst het aangepaste concept.');return}
  const key=current.key,original=current.original,existing=state();
- inFlight=true;
+ inFlight=true;editor.disabled=true;$('sitePage').disabled=true;
  for(const id of ['siteApply','siteSave','sitePublish','siteUnpublish'])$(id).disabled=true;
  tell(action==='site_apply'?'Opslaan voor iedereen...':action==='site_save'?'Concept bewaren...':'Wijziging verwerken...');
  try{
@@ -88,7 +88,7 @@ async function change(action,extra={}){
   tell(action==='site_apply'?'Opgeslagen. Deze tekst geldt nu voor iedereen.':action==='site_save'?'Concept bewaard.':action==='site_publish'?'Tekst gepubliceerd.':action==='site_unpublish'?'Publicatie teruggenomen.':'Eerdere versie als concept bewaard.');
   renderCatalog();await loadHistory();
  }catch(e){tell(e.status===409?'Deze tekst is ergens anders gewijzigd. Laad de pagina opnieuw voordat je verdergaat.':'De wijziging kon niet worden bewaard.')}
- finally{inFlight=false;for(const id of ['siteApply','siteSave','sitePublish','siteUnpublish'])$(id).disabled=false}
+ finally{inFlight=false;editor.disabled=false;$('sitePage').disabled=false;for(const id of ['siteApply','siteSave','sitePublish','siteUnpublish'])$(id).disabled=false}
 }
 function choosePage(){
  if(!confirmLeave()){$('sitePage').value=activeChoice;return false}

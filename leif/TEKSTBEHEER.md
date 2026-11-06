@@ -19,7 +19,7 @@
 - Het menu **Teksten beheren** staat in de bestaande beheeromgeving.
 - Kies een pagina, blader door een voorbeeld zonder antwoorden van echte deelnemers en klik op een tekst.
 - Ook algemene vraagteksten en toelichtingen die op de pagina verschijnen kunnen in het voorbeeld worden geselecteerd.
-- Bewaar een concept. Publiceren is een aparte handeling.
+- Met Opslaan voor iedereen wordt de tekst in één serverbewerking bewaard en gepubliceerd. Bewaar concept blijft beschikbaar voor werk dat je nog wilt nakijken.
 - Je kunt een publicatie intrekken en een vorige versie als nieuw concept herstellen.
 - Teksten worden als platte tekst weergegeven. HTML, JavaScript, toegangsrechten en antwoorden kunnen niet vanuit het tekstveld worden aangepast.
 - De versleutelde inhoud van het KEI-verhaal valt buiten deze algemene site-redactie. Het bestaande beheer voor persoonlijke verhalen per deelnemer blijft functioneren.
@@ -32,11 +32,15 @@
 - Bewaren, publiceren, intrekken en herstellen vereisen een gecontroleerde LEIF-beheerderssessie met managerrechten.
 - Iedere wijziging verhoogt de revisie. Een verouderde revisie wordt geweigerd.
 
-## Nog vóór publicatie
-- Voer de migratie `multitenant/site-texts.sql` gecontroleerd uit.
-- Publiceer de bijgewerkte Edge Function `leif-admin-console`.
-- Controleer de Chromium-browsertest en test de eerste publicatie en het herstellen met fictieve tekst.
-- Houd de huidige productiepagina intact tot die controles zijn geslaagd.
-- VIS vraagt met dezelfde enkele toegangscode een eenmalige link aan voor het bestaande, bevestigde beheeraccount. Supabase stuurt die naar het vaste beheeradres. De link opent de LEIF-startpagina, die het token controleert en alleen na geldige managerrechten naar beheer gaat.
-- Er verschijnen geen e-mail- of wachtwoordvelden op het LEIF-inlogscherm. Alleen VIS invoeren geeft geen toegang tot privégegevens.
-- De Supabase Auth-redirect `https://eaimodel.nl/leif/` moet op de allowlist staan. Controleer dit met een echte ontvangen link voordat de inlogroute als werkend wordt gemeld.
+## Beheerinlog
+- Een geldige bestaande tabbladsessie wordt overgenomen in blijvende browseropslag.
+- De website vernieuwt toegangstokens en bewaart een sessie bij verbindingsproblemen. Uitloggen wist de browseropslag en trekt de huidige refreshsessie in.
+- Mijn beheerinlog wijzigt het eigen bestaande Supabase Auth-account. De managerrol en dossiers blijven aan dezelfde gebruiker gekoppeld.
+- De beheerder stelt zelf het e-mailadres en wachtwoord in. Wachtwoorden worden niet door LEIF in browseropslag bewaard. Een ander mailadres vraagt de normale e-mailbevestiging.
+- VIS opent de e-mail/wachtwoordlogin op het bestaande startscherm. De eenmalige link naar het oorspronkelijke beheeradres blijft beschikbaar voor de eerste instelling.
+
+## Vaste teksten bij nieuwe releases
+- De database bewaart de ingevulde en gepubliceerde teksten naast de websitecode.
+- `tekstvelden.js` bevat vaste codes voor bestaande statische tekstvelden. Redactie in de HTML mag die codes niet vervangen.
+- Bij verplaatsen van een veld in de HTML moet zijn bestaande code meeverhuizen naar de nieuwe vindplaats. `scripts/update_leif_text_keys.py` voegt uitsluitend nieuwe velden toe.
+- De browsertest wijzigt de oorspronkelijke welkomsttekst en controleert dat de opgeslagen beheertekst zichtbaar blijft.
