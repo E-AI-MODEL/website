@@ -66,6 +66,24 @@
  #app[data-mode="6"] .stage-title p,#app[data-mode="6"] .stage-status,#app[data-mode="6"] .hint,#app[data-mode="6"] .cam-switch,#app[data-mode="6"] .scene-caption{display:none!important}
  #app[data-mode="6"] .usage-stage-tag{bottom:10px;left:11px;right:auto;max-width:calc(100% - 22px);font-size:10px}
 }
+
+/* Small, quiet controls with fine strokes. */
+:root{--left:184px;--right:278px;--edge:#203449}
+.sidebar{background:#07111e}.logo{min-height:60px;padding:10px 12px}.logo strong{font-size:12px}
+.sidebar .section-label{padding:13px 12px 7px}.mode-list{gap:2px;padding:0 5px}
+.mode-btn{min-height:47px;padding:6px 7px;grid-template-columns:22px 1fr 14px;gap:5px;border-radius:4px}
+.mode-btn .mode-icon{width:21px;height:21px;background:none;border:0;font-size:15px}
+.mode-btn strong{font-size:11px}.mode-btn small{font:9px/1.3 ui-monospace,monospace}.mode-btn.active{background:#0d2234;border-color:#2c5266}
+.stage-title{top:15px;left:17px;max-width:350px}.stage-title h1{font-size:clamp(19px,2vw,27px);margin:6px 0}.stage-title p{font-size:11px;line-height:1.45}
+.ins-head{padding:12px 13px}.ins-head h2{font-size:15px;margin:5px 0}.ins-head p{font-size:11px}.ins-scroll{padding:10px 12px}
+.stat-grid{gap:5px}.stat{padding:8px;background:#0b1b2b;border-radius:3px;border-color:#263e51}.stat strong{font-size:17px}.block-title{margin:16px 0 7px}.control{margin-bottom:10px}
+.control textarea{min-height:52px;resize:none}.token-meta{color:#83cbd4;font:10px/1.5 ui-monospace,monospace;margin:6px 0}
+.token-chips{display:flex;gap:4px;flex-wrap:wrap;max-height:115px;overflow:auto;padding:3px 0}
+.token-chip{border:1px solid #324e63;border-radius:3px;background:#0c1a2b;color:#b7d3e5;padding:4px 6px;font:11px/1.15 ui-monospace,monospace;max-width:100%;overflow-wrap:anywhere}
+.token-chip.active{border-color:#82d9da;background:#123541;color:#f7ffff}.token-chip:hover{border-color:#81afbe}
+.token-warning{display:block;margin:8px 0 0;color:#8faabd;font-size:10px;line-height:1.45}
+@media(max-width:1160px){:root{--left:172px;--right:250px}}
+@media(max-width:800px){.stage-title{top:12px;left:12px;max-width:calc(100% - 125px)}.stage-title h1{font-size:19px}.stage-title p{font-size:10px}.sidebar .mode-list{padding:10px}.sidebar .mode-btn{min-height:54px;grid-template-columns:23px 1fr 13px}.ins-scroll{padding:10px}.token-chips{max-height:95px}}
 </style>
 </head>
 <body>
@@ -110,19 +128,61 @@ const $=id=>document.getElementById(id), TAU=Math.PI*2;
 const CONFIG={120:{name:'gpt-oss-120b',layers:36,experts:128,top:4,heads:64,kv:8,dim:2880,context:131072,window:128,vocab:201088,billions:116.83,active:5.13},20:{name:'gpt-oss-20b',layers:24,experts:32,top:4,heads:64,kv:8,dim:2880,context:131072,window:128,vocab:201088,billions:20.91,active:3.61}};
 const MODES=[
  {name:'Modelstelsel',sub:'Alle lagen / alle experts',glyph:'&#9673;',title:'Een model, van buiten bekeken.',desc:'Duizenden expertposities vormen een ruimtelijk overzicht. Kies een laag en vergelijk twee open modellen.',ins:'De opbouw van het model',insDesc:'Elke ring staat voor een laag. De plek in de ruimte is gekozen om het model te kunnen onderzoeken.',plot:'ATTENTIONPATROON PER LAAG',note:'Afwisselend laag: lokaal venster / volledige attention.',task:'Vergelijk de modellen. Hoeveel lagen heeft gpt-oss-20b?',options:['24 lagen','36 lagen','128 lagen'],answer:0},
- {name:'Tokenreis',sub:'Volg een gekozen token',glyph:'&#8644;',title:'Volg een token door het model.',desc:'Kies een tokenpositie. Bekijk hoe de voorbeeldroute door de lagen loopt. De selectie blijft zichtbaar.',ins:'De route van een token',insDesc:'De route is berekend om het principe te onderzoeken. Het is geen opgenomen modeluitvoering.',plot:'ROUTESTERKTE PER LAAG',note:'Genormaliseerde demonstratiescores. Geen uitgelezen activaties.',task:'Kies een ander token. Blijft de getekende route precies gelijk?',options:['Ja, elke route is hetzelfde','Nee, de voorbeeldroute verandert'],answer:1},
+ {name:'Tokenreis',sub:'Echte tokens, voorbeeldroute',glyph:'&#8644;',title:'Volg een token door het model.',desc:'Kies een tokenpositie. Bekijk hoe de voorbeeldroute door de lagen loopt. De selectie blijft zichtbaar.',ins:'De route van een token',insDesc:'De route is berekend om het principe te onderzoeken. Het is geen opgenomen modeluitvoering.',plot:'ROUTESTERKTE PER LAAG',note:'Genormaliseerde demonstratiescores. Geen uitgelezen activaties.',task:'Kies een ander token. Blijft de getekende route precies gelijk?',options:['Ja, elke route is hetzelfde','Nee, de voorbeeldroute verandert'],answer:1},
  {name:'Experts',sub:'Vier van de 128',glyph:'&#9649;',title:'Vier experts krijgen werk.',desc:'Zoom in op een laag. De router verdeelt een token over vier geselecteerde experts.',ins:'Experts en router',insDesc:'Een top-4-keuze binnen iedere laag. De berekende scores zijn zichtbaar in de grafiek.',plot:'ROUTERSCORES / EXPERTNUMMER',note:'Top-4 volgt de modelarchitectuur. Getoonde scores zijn een demo.',task:'Hoeveel experts selecteert de router per token in een MoE-laag?',options:['Alle 128','Vier','Eentje'],answer:1},
  {name:'Attention',sub:'Kijken naar eerdere posities',glyph:'&#8780;',title:'Welke posities zijn bereikbaar?',desc:'Zie het verschil tussen volledige attention en een venster van 128 posities. Verander de geselecteerde positie.',ins:'Attention in de tijd',insDesc:'De helft van de lagen gebruikt een schuivend venster. De andere helft volledige causale attention.',plot:'BEREIKBARE POSITIES',note:'Bereik is een architectuurkenmerk; de lijndikte is illustratief.',task:'Mag causale attention naar een token kijken dat nog niet is gegenereerd?',options:['Ja','Nee'],answer:1},
  {name:'Context',sub:'Venster en lange invoer',glyph:'&#9638;',title:'Hoe ver terug kan een laag kijken?',desc:'Verleng de invoer. Bekijk welk deel een lokaal venster direct kan bereiken en wat een volledige attentionlaag ziet.',ins:'Het contextvenster',insDesc:'Verander het aantal tokenposities. De bereikbare gebieden in de 3D-wereld veranderen mee.',plot:'FRACTIE DIRECT BEREIKBAAR',note:'De grafiek toont bereikbare posities; geen gemeten geheugenkwaliteit.',task:'Kan een lokaal venster van 128 posities direct naar alle 4096 vorige posities kijken?',options:['Ja','Nee'],answer:1},
  {name:'Generatie',sub:'Kansen en keuzes',glyph:'&#10022;',title:'Het volgende token kiezen.',desc:'Verander temperatuur en top-p. De kansverdeling en de getekende opties reageren direct.',ins:'Het volgende token',insDesc:'Je verandert een berekende kansverdeling, niet de uitvoer van een geladen taalmodel.',plot:'KANS PER KANDIDAAT',note:'Rekendemo met acht kandidaten. Geen logits uit een echte LLM.',task:'Wat doet een hogere temperatuur met deze voorbeeldverdeling?',options:['Maakt haar vlakker','Maakt haar altijd scherper'],answer:0},
  {name:'Redenering & kosten',sub:'Waar gaan tokens heen?',glyph:'&#9678;',title:'Waar gaan de tokens heen?',desc:'Verander de aantallen. Volg hoe invoer, cache, redenering en uitvoer de berekening en kosten veranderen.',ins:'Tokens en kosten',insDesc:'De beginwaarden komen uit een gepubliceerd API-voorbeeld. Wijzigingen zijn jouw eigen scenario.',plot:'KOSTEN PER TOKENSTROOM',note:'Tik op een balk. Prijzen zijn voorbeeldtarieven, geen actuele tarieven.',task:'Een API telt 1024 redeneertokens. Waar komen deze tokens terecht in de facturering?',options:['Bij invoer','Bij uitvoer','Ze tellen niet mee'],answer:1}
 ];
-const state={model:120,mode:0,layer:17,expert:21,token:0,input:'Waarom draait de Melkweg?',promptWords:[],contextTokens:4096,temp:.8,topP:.9,showExperts:true,showFields:true,showTrails:true,showLabels:true,yaw:.35,pitch:.79,zoom:1.07,time:120,playing:true,speed:1,panel:'',journey:0,follow:false,uInput:75,uCached:0,uWrite:0,uReason:1024,uOther:162,uRateIn:1,uRateOut:5,uFocus:3,dirty:true,chartDirty:true};
+const state={model:120,mode:0,layer:17,expert:21,token:0,input:'Waarom draait de Melkweg?',promptWords:[],tokenStatus:'example',contextTokens:4096,temp:.8,topP:.9,showExperts:true,showFields:true,showTrails:true,showLabels:true,yaw:.35,pitch:.79,zoom:1.07,time:120,playing:true,speed:1,panel:'',journey:0,follow:false,uInput:75,uCached:0,uWrite:0,uReason:1024,uOther:162,uRateIn:1,uRateOut:5,uFocus:3,dirty:true,chartDirty:true};
 let cfg=CONFIG[state.model],world=null,routeCache=new Map(),plotMeta=null,screenJourney=[],cam={cy:1,sy:0,cp:1,sp:0,sc:1,ox:0,oy:0},canvas=$('universe'),ct=canvas.getContext('2d',{alpha:false}),plot=$('plot'),pc=plot.getContext('2d'),W=0,H=0,PW=0,PH=0,dpr=1,screenExperts=[],lastTime=0,lastDraw=0,pointer=null,moveDist=0,lastGraph=0;
 const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
 function hash(a,b=0,c=0){let n=(Math.imul((a|0)+1,1664525)^Math.imul((b|0)+11,1013904223)^Math.imul((c|0)+71,374761393))>>>0;n^=n>>>15;n=Math.imul(n,2246822519)>>>0;n^=n>>>13;return(n>>>0)/4294967296}
-function words(){return state.input.trim().split(/\s+/).filter(Boolean).slice(0,18)}
-function chooseRoute(layer,token=state.token){const key=state.model+':'+layer+':'+token;if(routeCache.has(key))return routeCache.get(key);const ranked=[];for(let e=0;e<cfg.experts;e++){const score=1.6*hash(layer+4,e+7,token+93)+.7*Math.sin((e+1)*.071+layer*.63+token*.39)+.2*Math.cos(e*.18-layer*.49);ranked.push({e,score})}ranked.sort((a,b)=>b.score-a.score);const chosen=ranked.slice(0,cfg.top);const exps=chosen.map(x=>Math.exp(x.score*2));const total=exps.reduce((a,b)=>a+b,0);const answer=chosen.map((x,i)=>({e:x.e,p:exps[i]/total,score:x.score}));routeCache.set(key,answer);return answer}
+let tokenizer=null;
+function tokenizeInput(){
+ const input=state.input||' ';
+ if(tokenizer){
+  try{state.promptWords=tokenizer.encode(input).map((id,index)=>({id,text:tokenizer.decode([id]),index}));state.tokenStatus='real';}
+  catch(error){state.promptWords=[];state.tokenStatus='error';}
+ }else{state.promptWords=[];state.tokenStatus='example';}
+ if(!state.promptWords.length){
+  state.promptWords=input.trim().split(/\s+/).filter(Boolean).map((text,index)=>({id:null,text,index}));
+  if(!state.promptWords.length)state.promptWords=[{id:null,text:' ',index:0}];
+ }
+ state.token=clamp(state.token,0,state.promptWords.length-1);
+ routeCache.clear();state.dirty=true;state.chartDirty=true;
+}
+function words(){return state.promptWords.map(t=>t.text)}
+function readableToken(t){return (t||'∅').replace(/ /g,'·').replace(/\n/g,'↵').replace(/\t/g,'⇥')}
+function renderTokenPieces(){
+ const meta=$('tokenMeta'),list=$('tokenChips');if(!meta||!list)return;
+ meta.textContent=state.tokenStatus==='real'?state.promptWords.length+' echte tokens · o200k_harmony':
+ 'Woordvoorbeeld · echte tokenizer '+(state.tokenStatus==='error'?'niet beschikbaar':'wordt geladen');
+ const frag=document.createDocumentFragment();
+ state.promptWords.slice(0,96).forEach((tok,i)=>{
+  const btn=document.createElement('button');btn.type='button';btn.className='token-chip'+(i===state.token?' active':'');
+  btn.textContent=readableToken(tok.text).slice(0,24);btn.title=tok.id===null?'Woordvoorbeeld':('Token-ID '+tok.id);
+  btn.setAttribute('aria-pressed',String(i===state.token));
+  btn.addEventListener('click',()=>{state.token=i;state.journey=0;state.layer=0;state.expert=chooseRoute(0)[0].e;state.playing=false;state.dirty=true;state.chartDirty=true;refreshNumbers();updateJourneyUI()});
+  frag.appendChild(btn);
+ });
+ list.replaceChildren(frag);
+ const current=state.promptWords[state.token];
+ $('tokenId').textContent=current?.id==null?'Geen echte token-ID':('Token-ID '+current.id);
+}
+async function loadRealTokenizer(){
+ try{
+  const module=await import('https://cdn.jsdelivr.net/npm/gpt-tokenizer@4.1.0/esm/encoding/o200k_harmony.js');
+  if(typeof module.encode!=='function'||typeof module.decode!=='function')throw Error('Invalid tokenizer module');
+  tokenizer={encode:module.encode,decode:module.decode};
+ }catch(error){tokenizer=null;}
+ tokenizeInput();
+ if(!tokenizer)state.tokenStatus='error';
+ const range=$('r-token');if(range){range.max=Math.max(0,words().length-1);range.value=state.token}
+ renderTokenPieces();refreshNumbers();updateJourneyUI();
+}
+function chooseRoute(layer,token=state.token){const tokenSeed=state.promptWords[token]?.id??token;const key=state.model+':'+layer+':'+tokenSeed;if(routeCache.has(key))return routeCache.get(key);const ranked=[];for(let e=0;e<cfg.experts;e++){const score=1.6*hash(layer+4,e+7,tokenSeed+93)+.7*Math.sin((e+1)*.071+layer*.63+tokenSeed*.39)+.2*Math.cos(e*.18-layer*.49);ranked.push({e,score})}ranked.sort((a,b)=>b.score-a.score);const chosen=ranked.slice(0,cfg.top);const exps=chosen.map(x=>Math.exp(x.score*2));const total=exps.reduce((a,b)=>a+b,0);const answer=chosen.map((x,i)=>({e:x.e,p:exps[i]/total,score:x.score}));routeCache.set(key,answer);return answer}
 function logits(){let base=[2.35,1.7,1.05,.66,.23,-.19,-.65,-1.16];let weights=base.map(x=>Math.exp(x/state.temp));let sum=weights.reduce((a,b)=>a+b,0);let p=weights.map(x=>x/sum);let order=[...p.keys()].sort((a,b)=>p[b]-p[a]);let used=[],cumulative=0;for(const idx of order){used.push(idx);cumulative+=p[idx];if(cumulative>=state.topP)break}let m=p.map((x,i)=>used.includes(i)?x:0);let k=m.reduce((a,b)=>a+b,0);return {p:p,keep:used,chosen:m.map(x=>x/k),candidates:['leren','denken','taal','vragen','antwoord','onderzoek','model','gegevens']}}
 function rebuildWorld(){routeCache.clear();const cloud=[],experts=[],strings=[],stars=[];const N=cfg.layers;for(let l=0;l<N;l++){const r=.95+l/(N-1)*5.25;const y=.35*Math.sin(l*.24)-.3;const phase=l*.105;for(let e=0;e<cfg.experts;e++){const angle=e/cfg.experts*TAU+phase;const rr=r+.075*Math.sin(e*.17+l*.39);const z=rr*Math.sin(angle),x=rr*Math.cos(angle);experts.push({x,y:y+.35*Math.sin(angle*3+l*.08),z,l,e,angle,r:rr});for(let k=0;k<5;k++){const ix=hash(l,e,k),iy=hash(e,k,l),iz=hash(k,l,e);cloud.push({x:x+(ix-.5)*.28,y:y+(iy-.5)*.47+.35*Math.sin(angle*3+l*.08),z:z+(iz-.5)*.28,l,t:k,c:hash(e,l,k)})}}}
 // The faint cloud is illustrative. Its particles do not stand for individual model weights.
@@ -305,7 +365,7 @@ function updateJourneyUI(){
  if(!shown)return;
  const step=clamp(Math.floor(state.journey),0,cfg.layers-1),route=chooseRoute(step),word=words()[state.token]||'?';
  $('journeyWhere').textContent='Laag '+(step+1)+' / '+cfg.layers;
- $('journeyToken').textContent='Woord '+(state.token+1)+'/'+words().length+': '+word+' ↻';
+ $('journeyToken').textContent='Token '+(state.token+1)+'/'+words().length+': '+readableToken(word)+' ↻';
  $('journeyExpert').textContent='Expert '+(route[0].e+1)+' · '+(route[0].p*100).toFixed(1)+'%';
  $('journeyFill').style.width=(state.journey/Math.max(1,cfg.layers-1)*100).toFixed(1)+'%';
  $('journeyPlay').textContent=state.playing?'Pauzeer':'Afspelen';
@@ -350,12 +410,22 @@ else if(m===6){const d=usageBuckets();setStats([['INVOER',d.input],['UITVOER',d.
  const summary=document.createElement('div');summary.id='usageSummary';summary.className='usage-summary';$('controls').appendChild(summary);usageRefresh();}
  else{let d=logits();setStats([['KANDIDATEN',8],['IN TOP-P',d.keep.length],['TEMPERATUUR',state.temp.toFixed(1)],['TOP-P',state.topP.toFixed(2)]]);addRange('Temperatuur','temp',.2,2,.1,'',()=>{state.temp=+state.temp.toFixed(1)});addRange('Top-p','topP',.3,1,.05)}
 $('reasoningLearning').hidden=m!==6;$('calculationNote').innerHTML=(m===0?'<b>Openbare aantallen.</b> Ruimtelijke plaatsing en lichtpunten zijn illustratief.':m===6?'<b>OpenAI-bronvoorbeeld.</b> 75 invoertokens, 1.186 uitvoertokens, waarvan 1.024 redenering. Redeneertekst van gesloten modellen is niet beschikbaar. Cachetarieven: rekenaanname 0,1× voor lezen en 1,25× voor schrijven. Zelfgekozen voorbeeldprijzen.':m===3||m===4?'<b>Echt patroon.</b> Oneven lagen gebruiken volledige attention; even lagen een venster van 128 posities. De lijnen tonen bereik, geen echte scores.':'<b>Berekend voorbeeld.</b> De gekozen routes en kansen zijn geen uitgelezen gegevens van gpt-oss.')+'<br><a href="#" id="openSources">Bekijk de bronnen</a>';$('openSources').addEventListener('click',e=>{e.preventDefault();openPanel('sources')});makeTask();refreshNumbers()}
-function addInput(){const d=document.createElement('div');d.className='control';d.innerHTML='<label for="promptText">Voorbeeldzin</label><textarea id="promptText" maxlength="240" spellcheck="false"></textarea><small style="color:#7792a8;font-size:10px">Woordposities, geen echte token-ID\'s.</small>';$('controls').appendChild(d);d.querySelector('textarea').value=state.input;d.querySelector('textarea').addEventListener('input',e=>{state.input=e.target.value||' ';state.token=clamp(state.token,0,Math.max(0,words().length-1));state.dirty=true;state.chartDirty=true;refreshNumbers();updateJourneyUI()})}
-function refreshNumbers(){$('focusLabel').textContent='L'+(state.layer+1)+' / E'+(state.expert+1);if(state.mode===2){const x=document.querySelector('#stats .stat:nth-child(4) strong');if(x)x.textContent=(chooseRoute(state.layer)[0].p*100).toFixed(1)+'%'}if(state.mode===5){const data=logits();const s=$('stats');if(s.children[1])s.children[1].querySelector('strong').textContent=data.keep.length}if(state.mode===6)usageRefresh();if(state.mode===1){const s=$('stats');if(s.children[1])s.children[1].querySelector('strong').textContent=state.token+1;if(s.children[2])s.children[2].querySelector('strong').textContent=cfg.top;if(s.children[0])s.children[0].querySelector('strong').textContent=cfg.layers}}
+function addInput(){
+ const d=document.createElement('div');d.className='control';
+ d.innerHTML='<label for="promptText">Typ een zin</label><textarea id="promptText" maxlength="240" spellcheck="false"></textarea><div class="token-meta" id="tokenMeta" aria-live="polite"></div><div class="token-chips" id="tokenChips" aria-label="Kies een token"></div><div class="token-meta" id="tokenId"></div><small class="token-warning">De token-ID's zijn echt zodra de tokenizer is geladen. De 3D-routes en experts blijven een berekend voorbeeld.</small>';
+ $('controls').appendChild(d);d.querySelector('textarea').value=state.input;
+ d.querySelector('textarea').addEventListener('input',e=>{
+  state.input=e.target.value||' ';tokenizeInput();
+  const slider=$('r-token');if(slider){slider.max=Math.max(0,words().length-1);slider.value=state.token;}
+  refreshNumbers();updateJourneyUI();
+ });
+ renderTokenPieces();
+}
+function refreshNumbers(){renderTokenPieces();$('focusLabel').textContent='L'+(state.layer+1)+' / E'+(state.expert+1);if(state.mode===2){const x=document.querySelector('#stats .stat:nth-child(4) strong');if(x)x.textContent=(chooseRoute(state.layer)[0].p*100).toFixed(1)+'%'}if(state.mode===5){const data=logits();const s=$('stats');if(s.children[1])s.children[1].querySelector('strong').textContent=data.keep.length}if(state.mode===6)usageRefresh();if(state.mode===1){const s=$('stats');if(s.children[1])s.children[1].querySelector('strong').textContent=state.token+1;if(s.children[2])s.children[2].querySelector('strong').textContent=cfg.top;if(s.children[0])s.children[0].querySelector('strong').textContent=cfg.layers}}
 function openPanel(name){if(window.matchMedia('(min-width:801px)').matches)return;state.panel=state.panel===name?'':name;$('app').dataset.panel=state.panel;document.querySelectorAll('.mobile-dock button').forEach(b=>{const on=b.dataset.panel===state.panel;b.classList.toggle('active',on);b.setAttribute('aria-expanded',String(on))});$('mobileInspectorTitle').textContent=({settings:'INSTELLEN',learn:'LEREN',sources:'BRONNEN'})[state.panel]||'ONDERZOEKEN';if(state.panel==='graph'){state.chartDirty=true;requestAnimationFrame(()=>requestAnimationFrame(()=>{resize();drawPlot()}))}}
 function closePanel(){state.panel='';$('app').dataset.panel='';document.querySelectorAll('.mobile-dock button').forEach(b=>{b.classList.remove('active');b.setAttribute('aria-expanded','false')})}
 function updateCamera(kind){state.follow=state.mode===1&&kind==='focus';if(kind==='flat'){state.pitch=Math.PI/2-.01;state.yaw=0;state.zoom=1.0}else if(kind==='edge'){state.pitch=.10;state.yaw=.65;state.zoom=1.0}else if(kind==='focus'){state.pitch=.81;state.yaw=.35;state.zoom=state.mode===1?1.25:2.4}else{state.pitch=.79;state.yaw=.35;state.zoom=1.07}document.querySelectorAll('[data-cam]').forEach(x=>x.classList.toggle('active',x.dataset.cam===kind));state.dirty=true}
-function exportSettings(){let data={title:'LLM Observatorium',date:new Date().toISOString(),status:'modelconfig echt; 3D visueel en routes gesimuleerd',source:'https://huggingface.co/openai/gpt-oss-'+state.model+'b/blob/main/config.json',config:cfg,selection:{mode:MODES[state.mode].name,layer:state.layer,expert:state.expert,token:state.token,journeyPosition:state.journey,time:state.time,contextTokens:state.contextTokens,temperature:state.temp,topP:state.topP},routeDemo:chooseRoute(state.layer),distributionDemo:logits()};let blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='LLM_Observatorium_metingen.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),3000)}
+function exportSettings(){let data={title:'LLM Observatorium',date:new Date().toISOString(),status:'modelconfig echt; 3D visueel en routes gesimuleerd',tokenizer:{status:state.tokenStatus,pieces:state.promptWords.map(t=>({id:t.id,text:t.text}))},source:'https://huggingface.co/openai/gpt-oss-'+state.model+'b/blob/main/config.json',config:cfg,selection:{mode:MODES[state.mode].name,layer:state.layer,expert:state.expert,token:state.token,journeyPosition:state.journey,time:state.time,contextTokens:state.contextTokens,temperature:state.temp,topP:state.topP},routeDemo:chooseRoute(state.layer),distributionDemo:logits()};let blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='LLM_Observatorium_metingen.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),3000)}
 function bind(){renderModes();
  $('startJourney').addEventListener('click',()=>setMode(1));
  $('journeyPrev').addEventListener('click',()=>journeyStep(-1));
@@ -374,7 +444,7 @@ for(const eventName of ['pointerup','pointercancel'])canvas.addEventListener(eve
 function tick(now){const dt=clamp((now-lastTime)/1000,0,.06);lastTime=now;if(state.playing){state.time=(state.time+dt*26*state.speed)%1000;state.dirty=true;$('timeSlider').value=state.time;
  if(state.mode===1){state.journey=(state.journey+dt*2.0*state.speed)%cfg.layers;const layer=Math.min(cfg.layers-1,Math.floor(state.journey));if(layer!==state.layer){state.layer=layer;state.expert=chooseRoute(layer)[0].e;state.chartDirty=true;refreshNumbers()}updateJourneyUI();}}
  $('timeText').textContent=Math.floor(state.time);if(state.dirty&&now-lastDraw>(W<650?78:47)){drawScene();lastDraw=now}if(state.chartDirty&&now-lastGraph>70&&($('app').dataset.panel==='graph'||window.innerWidth>800)){drawPlot();lastGraph=now}requestAnimationFrame(tick)}
-rebuildWorld();bind();renderInspector();setMode(0);resize();new ResizeObserver(resize).observe($('stage'));new ResizeObserver(resize).observe($('graphPanel'));requestAnimationFrame(tick);
+tokenizeInput();rebuildWorld();bind();renderInspector();setMode(0);resize();loadRealTokenizer();new ResizeObserver(resize).observe($('stage'));new ResizeObserver(resize).observe($('graphPanel'));requestAnimationFrame(tick);
 </script>
 </body>
 </html>
