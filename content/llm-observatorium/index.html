@@ -299,7 +299,81 @@ function drawUsagePlot(){
  plotMeta={left,gw:w,count:5};state.chartDirty=false;usageRefresh();
 }
 
-function drawScene(){if(W<2||H<2)return;setCameraMatrix();ct.setTransform(dpr,0,0,dpr,0,0);halo();drawRings();drawCloud();drawExperts();if(state.showTrails||state.mode===1)drawStream();if(state.mode===2)drawFocusLayer();if(state.mode===3||state.mode===4)drawAttention();if(state.mode===5)drawGeneration();highlightExpert();if(state.mode===6)drawUsageWorld();const center=project({x:0,y:0,z:0});const grad=ct.createRadialGradient(center.x,center.y,1,center.x,center.y,44);grad.addColorStop(0,'rgba(250,207,140,.75)');grad.addColorStop(.16,'rgba(231,177,116,.36)');grad.addColorStop(1,'rgba(248,183,100,0)');ct.fillStyle=grad;ct.beginPath();ct.arc(center.x,center.y,44,0,TAU);ct.fill();$('camAngle').textContent=Math.round(state.pitch*180/Math.PI)+' / '+Math.round(state.yaw*180/Math.PI);state.dirty=false}
+// Elke modus gebruikt eigen, rustige bewegingen. Dit zijn visuele rekenvoorbeelden.
+function modePhase(span=320){return ((state.time%span)+span)%span/span}
+function drawModelScan(){
+ const t=modePhase(340),v=(1-Math.cos(t*TAU))*.5,r=.95+v*5.25;
+ ct.save();ct.lineWidth=1.1;ct.strokeStyle='rgba(118,234,224,.67)';
+ ct.setLineDash([3,9]);ct.beginPath();
+ for(let j=0;j<=120;j++){const a=j/120*TAU,p=project({x:r*Math.cos(a),y:0,z:r*Math.sin(a)});if(j===0)ct.moveTo(p.x,p.y);else ct.lineTo(p.x,p.y)}
+ ct.stroke();ct.setLineDash([]);
+ for(const offset of [0,Math.PI]){
+  const a=t*TAU+offset,p=project({x:r*Math.cos(a),y:0,z:r*Math.sin(a)});
+  roundDot(p.x,p.y,2.7,'#a4f4eb',.97);
+ }
+ ct.restore();
+}
+function drawRouterSignals(){
+ const chosen=chooseRoute(state.layer),t=modePhase(150),center=project({x:0,y:0,z:0});
+ ct.save();ct.lineCap='round';
+ chosen.forEach((item,i)=>{
+  const expert=world.experts[state.layer*cfg.experts+item.e],p=project(expert);
+  const from={x:center.x+(p.x-center.x)*.58,y:center.y+(p.y-center.y)*.58};
+  ct.strokeStyle=i===0?'rgba(244,198,135,.5)':'rgba(123,215,224,.32)';
+  ct.lineWidth=i===0?1.4:.8;ct.beginPath();ct.moveTo(from.x,from.y);ct.lineTo(p.x,p.y);ct.stroke();
+  const f=(t+i*.25)%1,x=from.x+(p.x-from.x)*f,y=from.y+(p.y-from.y)*f;
+  roundDot(x,y,i===0?3.4:2.4,i===0?'#ffe0ae':'#9cebe8',.96);
+ });
+ ct.restore();
+}
+function drawAttentionSignals(){
+ const n=state.contextTokens,local=state.layer%2===0,count=48;
+ const near=Math.max(1,Math.round(count*Math.min(n,128)/n)),yp=H*.73;
+ const x0=W*.87;
+ ct.save();
+ for(let j=0;j<7;j++){
+  const i=local?Math.max(0,count-2-j%near):Math.round((j+1)*count/9);
+  if(i>=count-1)continue;
+  const x=W*.12+i/(count-1)*W*.75,y=yp+Math.sin(i*.26)*8;
+  const c={x:(x+x0)/2,y:yp-105-(count-i)*2};
+  const t=(modePhase(140)+j/7)%1,z=1-t;
+  const px=z*z*x0+2*z*t*c.x+t*t*x,py=z*z*yp+2*z*t*c.y+t*t*y;
+  roundDot(px,py,j===0?3.1:2.2,local?'#f6c784':'#8cece6',j===0?.96:.7);
+ }
+ ct.restore();
+}
+function drawContextWindow(){
+ const left=W*.13,width=W*.73,y=H*.72,local=state.layer%2===0;
+ const t=(1-Math.cos(modePhase(340)*TAU))*.5;
+ const headX=left+width*(.27+.67*t),windowPx=Math.max(10,width*128/state.contextTokens);
+ ct.save();ct.strokeStyle='rgba(116,173,205,.3)';ct.lineWidth=.8;
+ ct.beginPath();ct.moveTo(left,y);ct.lineTo(left+width,y);ct.stroke();
+ for(let i=0;i<=48;i++){const x=left+i/48*width;ct.strokeStyle='rgba(130,188,213,.26)';ct.beginPath();ct.moveTo(x,y-5);ct.lineTo(x,y+5);ct.stroke()}
+ const x1=local?Math.max(left,headX-windowPx):left,x2=headX;
+ ct.fillStyle=local?'rgba(244,189,104,.16)':'rgba(102,217,225,.12)';
+ ct.fillRect(x1,y-22,Math.max(3,x2-x1),44);
+ ct.strokeStyle=local?'#f3bc77':'#83e4e5';ct.lineWidth=1.2;
+ ct.strokeRect(x1,y-22,Math.max(3,x2-x1),44);
+ roundDot(headX,y,4.5,'#f9dfab',1);
+ ct.font='10px ui-monospace,monospace';ct.fillStyle='#b8d9e7';ct.textAlign='left';
+ ct.fillText(local?'128 POSITIES':'VOLLEDIGE VOORGAANDE CONTEXT',left,y+38);
+ ct.fillStyle='#7799b2';ct.fillText(state.contextTokens.toLocaleString('nl-NL')+' POSITIES',left,y-39);
+ ct.restore();
+}
+function drawGenerationSample(){
+ const d=logits(),slice=Math.floor(state.time/145),t=modePhase(145);
+ const random=hash(slice+21,state.model,state.token+3);
+ let cumulative=0,index=d.keep[d.keep.length-1]??0;
+ for(let i=0;i<d.chosen.length;i++){cumulative+=d.chosen[i];if(random<=cumulative){index=i;break}}
+ if(!state.playing&&Number.isInteger(state.candidate))index=state.candidate;
+ const a=index/8*TAU+.3,r=4.4+d.p[index]*2.5,p=project({x:r*Math.cos(a),y:d.p[index]*3.5,z:r*Math.sin(a)}),center=project({x:0,y:0,z:0});
+ ct.save();ct.strokeStyle='rgba(255,218,152,.72)';ct.lineWidth=1.4;
+ ct.beginPath();ct.moveTo(center.x,center.y);ct.lineTo(p.x,p.y);ct.stroke();
+ const u=t*t*(3-2*t);roundDot(center.x+(p.x-center.x)*u,center.y+(p.y-center.y)*u,4,'#fff0bf',.96);
+ ct.restore();
+}
+
+function drawScene(){if(W<2||H<2)return;setCameraMatrix();ct.setTransform(dpr,0,0,dpr,0,0);halo();drawRings();drawCloud();drawExperts();if(state.showTrails||state.mode===1)drawStream();if(state.mode===0)drawModelScan();if(state.mode===2){drawFocusLayer();drawRouterSignals()}if(state.mode===3){drawAttention();drawAttentionSignals()}if(state.mode===4)drawContextWindow();if(state.mode===5){drawGeneration();drawGenerationSample()}highlightExpert();if(state.mode===6)drawUsageWorld();const center=project({x:0,y:0,z:0});const grad=ct.createRadialGradient(center.x,center.y,1,center.x,center.y,44);grad.addColorStop(0,'rgba(250,207,140,.75)');grad.addColorStop(.16,'rgba(231,177,116,.36)');grad.addColorStop(1,'rgba(248,183,100,0)');ct.fillStyle=grad;ct.beginPath();ct.arc(center.x,center.y,44,0,TAU);ct.fill();$('camAngle').textContent=Math.round(state.pitch*180/Math.PI)+' / '+Math.round(state.yaw*180/Math.PI);state.dirty=false}
 function axis(xmin,xmax,ymin,ymax,xticks,yticks,xLabel=''){const m={l:48,r:17,t:15,b:31},gw=Math.max(30,PW-m.l-m.r),gh=Math.max(40,PH-m.t-m.b),X=x=>m.l+(x-xmin)/(xmax-xmin)*gw,Y=y=>m.t+gh-(y-ymin)/(ymax-ymin)*gh;pc.fillStyle='#081626';pc.fillRect(0,0,PW,PH);pc.strokeStyle='#19354d';pc.lineWidth=.6;pc.font='10px ui-monospace,monospace';pc.fillStyle='#82a5ba';pc.textAlign='right';for(const y of yticks){let yy=Y(y);pc.beginPath();pc.moveTo(m.l,yy);pc.lineTo(PW-m.r,yy);pc.stroke();pc.fillText(typeof y==='number'?y.toFixed(ymax<=1?1:0):y,m.l-6,yy+3)}pc.textAlign='center';for(const x of xticks){pc.fillText(Math.round(x),X(x),PH-14)}pc.fillStyle='#98bdca';pc.fillText(xLabel,PW-58,PH-3);pc.textAlign='left';return {X,Y,m,gw,gh}}
 function linePlot(a,values,color='#7cdee3'){pc.save();pc.strokeStyle=color;pc.lineWidth=1.7;pc.beginPath();values.forEach((v,i)=>{let x=a.X(i),y=a.Y(clamp(v,0,1));if(i===0)pc.moveTo(x,y);else pc.lineTo(x,y)});pc.stroke();pc.restore()}
 function drawPlot(){
