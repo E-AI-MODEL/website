@@ -28,7 +28,9 @@ jobs:
           cmp leif/index.html site-build/leif/index.html
       - run: python -m unittest discover -s tests -p 'test_ui_release.py'
       - run: npm install --no-save playwright@1.56.1
-      - run: npx playwright install --with-deps chromium
+      - name: Install browser for UI tests
+        run: npx playwright install chromium
+        timeout-minutes: 4
       - run: node scripts/ui_smoke.mjs site-build
       - name: Test Melkweg Lab on phones and desktop
         run: node scripts/test_melkweg_mobile.mjs site-build
