@@ -94,6 +94,9 @@ jobs:
       - name: Check Melkweg Lab publication
         run: python -m unittest discover -s tests -p 'test_melkweg_lab_publish.py' -v
 
+      - name: Verify EAIstudio and EAImesh source publication
+        run: python -m unittest discover -s tests -p 'test_tool_launch.py' -v
+
       - name: Validate internal links
         run: |
           python - <<'PY'
