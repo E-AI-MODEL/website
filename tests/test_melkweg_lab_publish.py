@@ -67,14 +67,17 @@ class MelkwegLabPublicationTests(unittest.TestCase):
         self.assertEqual(html.count('id="solarEntry"'), 1, "Er moet één planetenknop zijn")
         self.assertNotIn('class="solar-entry">✦ Reis naar de planeten', html)
         self.assertIn('if(!state.running && state.cam.elev>20)', html)
-        # De bediening is op telefoons standaard klein, maar blijft uitklapbaar.
-        self.assertIn('V8: compacte bediening op telefoons', html)
-        self.assertIn('height:120px;flex:0 0 120px', html)
-        self.assertIn('body.lab-expanded .inspector', html)
-        self.assertIn('id="labExpand"', html)
-        self.assertIn("setLabPanelExpanded(name!=='proef')", html)
-        self.assertIn("setAttribute('aria-expanded',String(expanded))", html)
-        self.assertIn("window.innerWidth<=850", html)
+        # V9 tekent de Melkweg beeldvullend en toont knoppen pas op aanvraag.
+        self.assertIn('V9: het model is het scherm', html)
+        self.assertIn('id="labDock"', html)
+        self.assertIn('id="labBackdrop"', html)
+        self.assertIn('id="cameraMenuToggle"', html)
+        self.assertIn('id="toolsMenuToggle"', html)
+        self.assertIn('body.lab-sheet-open .inspector', html)
+        self.assertIn('position:absolute;inset:0;width:100%;height:100%', html)
+        self.assertIn("document.body.classList.toggle('lab-sheet-open',expanded)", html)
+        self.assertIn("selectLabTab(activeLabTab)", html)
+        self.assertNotIn('id="labExpand"', html)
 
 
 if __name__ == "__main__":

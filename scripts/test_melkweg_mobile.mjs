@@ -27,30 +27,47 @@ try{
    viewport:innerHeight,document:document.documentElement.scrollHeight,
    horizontal:document.documentElement.scrollWidth-innerWidth,
    stage:document.querySelector('.stage').getBoundingClientRect().height,
-   tabVisible:getComputedStyle(document.querySelector('.lab-tabs')).display!=='none'
+   tabVisible:document.querySelector('.lab-tabs').getClientRects().length>0
   }));
   assert(metrics.horizontal<=1,'Horizontale overloop op '+width);
   if(width<850){
    assert(metrics.document<=metrics.viewport+1,'Hoofdpagina scrolt nog bij '+width);
    assert(metrics.stage>200,'Melkweg te klein op '+width);
-   assert(metrics.tabVisible,'Mobiele tabs niet zichtbaar');
+   assert(metrics.stage>=height-1,'Sterrenbeeld vult het scherm niet op '+width);
+   assert(!metrics.tabVisible,'Tabs horen niet over het sterrenbeeld te liggen');
    const compact=await page.locator('.inspector').evaluate(el=>el.getBoundingClientRect().height);
-   assert(compact<=125,'Ontdekpaneel is te groot bij '+width);
-   assert.equal(await page.locator('#labExpand').getAttribute('aria-expanded'),'false');
-   await page.locator('#labExpand').click();
+   assert(compact<=52,'Er staat nog een groot vast paneel op '+width);
+   assert(!(await page.locator('#pane-proef').isVisible()),'Ontdekkaart vervuilt de startweergave');
+   assert.equal(await page.locator('#labDock').getAttribute('aria-expanded'),'false');
+   await page.locator('#labDock').click();
    const expanded=await page.locator('.inspector').evaluate(el=>el.getBoundingClientRect().height);
-   assert(expanded>compact+40,'Ontdekpaneel klapt niet open bij '+width);
-   assert.equal(await page.locator('#labExpand').getAttribute('aria-expanded'),'true');
-   await page.locator('#labExpand').click();
-   assert.equal(await page.locator('#labExpand').getAttribute('aria-expanded'),'false');
+   assert(expanded>compact+150,'Onderpaneel gaat niet open bij '+width);
+   assert(await page.locator('#pane-proef').isVisible());
+   assert.equal(await page.locator('#labDock').getAttribute('aria-expanded'),'true');
    const tabs=page.getByRole('tab');
    assert.equal(await tabs.count(),3);
    await tabs.getByText('Verander').click();
    assert(await page.locator('#pane-speel').isVisible());
-   assert.equal(await page.locator('#labExpand').getAttribute('aria-expanded'),'true');
    await tabs.getByText('Ontdek meer').click();
    assert(await page.locator('#pane-meer').isVisible());
+   await page.locator('#graphToggle').click();
+   assert.equal(await page.locator('#graphClose').isVisible(),true,'De grafiek heeft geen sluitknop');
+   assert.equal(await page.locator('#labDock').getAttribute('aria-expanded'),'false');
+   await page.locator('#graphClose').click();
+   assert.equal(await page.locator('#graphClose').isVisible(),false,'De grafiek sluit niet');
+   await page.locator('#labDock').click();
    await tabs.getByText('Probeer').click();
+   await page.locator('#labDock').click();
+   assert.equal(await page.locator('#labDock').getAttribute('aria-expanded'),'false');
+   assert(!(await page.locator('#pane-proef').isVisible()));
+   await page.locator('#cameraMenuToggle').click();
+   assert.equal(await page.locator('#cameraMenuToggle').getAttribute('aria-expanded'),'true');
+   await page.locator('.camera-controls [data-cam="edge"]').click();
+   assert.equal(await page.locator('#cameraMenuToggle').getAttribute('aria-expanded'),'false');
+   await page.locator('#toolsMenuToggle').click();
+   assert.equal(await page.locator('#toolsMenuToggle').getAttribute('aria-expanded'),'true');
+   await page.locator('#resetView').click();
+   assert.equal(await page.locator('#toolsMenuToggle').getAttribute('aria-expanded'),'false');
    await page.locator('#adventureMenuToggle').click();
    const options=page.locator('.navlist .nav-btn');
    assert.equal(await options.count(),6);
@@ -71,9 +88,9 @@ try{
    await page.locator('#backGalaxy').click();
    assert(!(await page.locator('#solarExplorer').isVisible()));
   }
-  await page.screenshot({path:`test-results/melkweg-lab-v8-${width}.png`});
+  await page.screenshot({path:`test-results/melkweg-lab-v9-${width}.png`});
   assert.deepEqual(errors,[],'JavaScript-fouten op '+width);
   await page.close();
  }
- console.log('Melkweg Lab: mobiel 320/390 en desktop 1440, menu/tabs/planeten en overflow werken.');
+ console.log('Melkweg Lab V9: schermvullend op 320/390, panelen, camera, menu, tabs en planeten reageren.');
 }finally{if(browser)await browser.close();server.kill();}
