@@ -79,6 +79,9 @@ jobs:
       - name: Check site insights, navigation and privacy
         run: python -m unittest discover -s tests -p 'test_site_insights.py' -v
 
+      - name: Check EAImesh and EAIstudio publication
+        run: python -m unittest discover -s tests -p 'test_tool_launch.py' -v
+
       - name: Check WiHTML pages and reviewed studio copy
         run: python -m unittest discover -s tests -p "test_wihtml_publish.py" -v
 
