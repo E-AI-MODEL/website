@@ -82,12 +82,11 @@ try{
   await page.mouse.up();
   const after=Number(await page.locator('#timeslider').inputValue());
   assert(Math.abs(after-8)<1.25,'S2 komt na slepen niet op de verre baanpositie: '+after);
-  await page.getByRole('tab',{name:'Ontdek meer'}).click();
+  if(width<850) await page.getByRole('tab',{name:'Ontdek meer'}).click();
   await page.locator('#graphToggle').click();
   assert(await page.locator('.analytics-main').isVisible(),'Grafiekknop toont niets');
-  if(width<850) await page.locator('#closeGraph').click();
-  else await page.locator('#graphToggle').click();
-  assert(!await page.locator('.analytics-main').isVisible(),'Grafiek sluit niet');
+  if(width<850){await page.locator('#closeGraph').click();assert(!await page.locator('.analytics-main').isVisible(),'Grafiek sluit niet');}
+  else {await page.locator('#graphToggle').click();assert(!(await page.locator('body').evaluate(el=>el.classList.contains('show-graphs'))),'Vergrote grafiek sluit niet');}
   await page.locator('#resetView').click();
   assert(Number(await page.locator('#timeslider').inputValue())===0,'Herstelknop herstelt tijd niet');
 
