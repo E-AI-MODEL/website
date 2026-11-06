@@ -597,6 +597,55 @@ html.solar-active,html.solar-active body{overflow:hidden!important;height:100dvh
  .analytics .graph-close{display:none!important}
 }
 
+
+/* Desktop: het model blijft groot, het informatiepaneel is een fijnmazig instrument. */
+@media(min-width:851px){
+ .sidebar .navlist{gap:1px}
+ .sidebar .nav-btn{padding:8px 10px;border-radius:3px;gap:9px}
+ .sidebar .nav-icon{width:24px;min-width:24px;height:24px;border:1px solid #34475d;border-radius:3px;background:#112137;font-size:12px}
+ .sidebar .navcopy b{font-size:11px;font-weight:600}
+ .sidebar .navcopy small{font-size:9px}
+ .sidebar .nav-btn.active{background:#112538;border-color:#2d4c61}
+ .sidebar .brand h1{font-size:13px;letter-spacing:.11em}
+ .topbar .topbtn,.topbar .solar-entry{min-height:30px;height:30px;padding:0 9px;border-radius:3px;border-color:#36526b;background:#101e2edc;font-size:10px;box-shadow:none}
+ .stage-head{top:20px;left:24px}
+ .stage-head .eyebrow{font-size:9px;letter-spacing:.14em;color:#8fb8ce}
+ .stage-head h2{font-size:24px;line-height:1.12;margin:7px 0 0;font-weight:540;max-width:290px}
+ .stage-head p{display:none}
+ .stage-metrics{top:18px;right:20px;gap:3px}
+ .stage-metrics div{font-size:9px}
+ .scene-badge{top:auto;bottom:64px;left:22px;border-left:1px solid #88b3c0a8;font-size:9px;padding:2px 0 2px 9px}
+ .stage-hud-bottom{bottom:13px;left:22px;right:17px}
+ .stage-hud-bottom .scene-meta{font-size:9px;letter-spacing:.02em}
+ .stage-hud-bottom .camera-controls{background:#081626a0;border:1px solid #354e6477;backdrop-filter:blur(7px)}
+ .stage-hud-bottom .cambtn{font-size:9px;padding:6px 10px}
+ .inspector{background:#081322;border-left-color:#263b51}
+ .inspector .panel-head{padding:16px 18px 11px;border-bottom:1px solid #24384f}
+ .inspector .panel-head .section-counter{font-size:9px}
+ .inspector .panel-head h3{font-size:15px;line-height:1.3;margin:7px 0 4px;font-weight:600}
+ .inspector .panel-head p{display:none}
+ .inspector .panel-body{padding:13px 17px 24px}
+ .inspector .instrument-meta{margin-bottom:11px;padding-bottom:9px;font-size:9px}
+ .inspector .statgrid{gap:1px;margin-bottom:16px}
+ .inspector .stat{min-width:0;border:0;border-bottom:1px solid #273b51;border-radius:0;padding:9px 6px;background:transparent}
+ .inspector .stat small{font-size:9px;color:#7b93aa}
+ .inspector .stat strong{font-size:15px;font-family:ui-monospace,SFMono-Regular,monospace;font-weight:550;color:#e3f1f8}
+ .inspector .stat strong.amber{color:#e4bd8f}
+ .inspector .stat .unit{font-size:9px}
+ .inspector .switchgrid{gap:3px}
+ .inspector .switch{min-height:32px;padding:6px 8px;font:10px ui-monospace,monospace;border:1px solid #2a3f54;border-radius:2px;background:#0d1d2c;color:#8faec0}
+ .inspector .switch:has(input:checked){background:#102731;border-color:#326575;color:#cae8ed}
+ .inspector .switch input{width:11px;height:11px;border-radius:1px;border-color:#46677b}
+ .inspector .subhead{margin:14px 0 9px;font-size:9px}
+ .inspector .ctrlgroup{padding-top:10px;margin-top:12px}
+ .inspector .ctrlrow{margin-bottom:12px}
+ .inspector .ctrlrow .rowhead{font-size:10px}
+ .inspector .ctrlrow output{font:10px ui-monospace,monospace}
+ .inspector .ctrlrow input[type=range]{margin-top:11px;height:2px}
+ .inspector .ctrlrow input[type=range]::-webkit-slider-thumb{width:10px;height:10px;box-shadow:0 0 0 2px #1c3c51}
+ .inspector .instrument-action{border-radius:2px;margin-top:10px;padding:9px 10px;font-size:9px}
+}
+
 </style>
 </head>
 <body>
