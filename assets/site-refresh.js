@@ -135,9 +135,7 @@
 // Count page use in the refreshed public site; private LEIF pages are excluded.
 (function(){
   if(/^\/(leif|houseoftalents|admin)(\/|$)/i.test(location.pathname))return;
-  var t=document.createElement('script');t.src='/assets/site-insights.js';t.defer=true;
-  document.head.appendChild(t);
-  if(!/\/(leif|houseoftalents)\//.test(location.pathname) && !/\/(nl|en)\/insights\//.test(location.pathname)){
+  if(!/\/(nl|en)\/insights\//.test(location.pathname)){
     var script=document.createElement('script');script.src='/assets/site-insights.js';script.defer=true;document.head.appendChild(script);
   }
 })();
