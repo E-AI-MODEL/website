@@ -60,7 +60,7 @@ class MelkwegLabPublicationTests(unittest.TestCase):
         ):
             with self.subTest(marker=marker):
                 self.assertIn(marker, html)
-        self.assertNotIn("Bekijk de planeten</button>", html)
+        self.assertEqual(html.count('id="solarEntry"'), 1, "Er mag maar één vaste reis-knop in het sterrenbeeld staan")
 
 
 if __name__ == "__main__":
