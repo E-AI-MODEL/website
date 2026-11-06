@@ -654,6 +654,40 @@ html.solar-active,html.solar-active body{overflow:hidden!important;height:100dvh
  .inspector .instrument-action{border-radius:2px;margin-top:10px;padding:9px 10px;font-size:9px}
 }
 
+
+/* Objectlabels zijn fijne, onafhankelijke meetpunten met een sluitkruisje. */
+.scene-badge,#scene-hint,.gesture-nudge{display:none!important}
+.mobile-focus-layer{display:block;position:absolute;inset:0;z-index:18;pointer-events:none}
+.astro-pin{position:absolute;display:flex;align-items:center;gap:1px;min-height:30px;padding:0 2px 0 13px;transform:translate(-5px,-50%);border:0;border-radius:0;background:transparent;box-shadow:none;backdrop-filter:none;color:#c3e2df;font:500 10px/1 ui-monospace,SFMono-Regular,monospace;letter-spacing:.06em;text-shadow:0 1px 6px #000d;white-space:nowrap;pointer-events:auto}
+.astro-pin[hidden]{display:none!important}
+.astro-pin:before{content:'';position:absolute;left:0;top:calc(50% - 2px);width:4px;height:4px;border-radius:50%;background:#9ccac8;box-shadow:0 0 0 3px #77c3c51a}
+.astro-pin:after{content:'';position:absolute;left:6px;top:50%;width:7px;height:1px;background:#8babb283}
+.astro-pin[data-kind=center]{color:#e1c5a3}
+.astro-pin[data-kind=center]:before{background:#e2b58a}
+.astro-pin[data-kind=center] .astro-pin-select,.astro-pin[data-kind=center] .astro-pin-dismiss{transform:translate(22px,-33px)}
+.astro-pin[data-kind=center]:after{left:7px;top:calc(50% - 1px);width:44px;transform:rotate(-50deg);transform-origin:left center;background:#c3ad916b}
+.astro-pin[data-kind=center].is-flipped .astro-pin-select,.astro-pin[data-kind=center].is-flipped .astro-pin-dismiss{transform:translate(-22px,-33px)}
+.astro-pin[data-kind=center].is-flipped:after{left:auto;right:7px;transform:rotate(50deg);transform-origin:right center}
+.astro-pin[data-kind=s2]:before{background:#a8d3ed}
+.astro-pin.is-flipped{transform:translate(calc(-100% + 5px),-50%);flex-direction:row-reverse;padding:0 13px 0 2px}
+.astro-pin.is-flipped:before{left:auto;right:0}
+.astro-pin.is-flipped:after{left:auto;right:6px}
+.astro-pin-select{appearance:none;display:inline-flex;align-items:center;min-height:30px;padding:0 3px;border:0;background:transparent;color:inherit;font:inherit;letter-spacing:inherit;cursor:pointer}
+.astro-pin-dismiss{appearance:none;position:relative;display:inline-block;flex:0 0 25px;width:25px;height:30px;padding:0;border:0;background:transparent;color:inherit;opacity:.65;cursor:pointer}
+.astro-pin-dismiss:before,.astro-pin-dismiss:after{content:'';position:absolute;top:14px;left:8px;width:10px;height:1px;background:currentColor;transform:rotate(45deg)}
+.astro-pin-dismiss:after{transform:rotate(-45deg)}
+.astro-pin-dismiss:hover,.astro-pin-dismiss:focus-visible{opacity:1}
+.astro-pin-select:focus-visible,.astro-pin-dismiss:focus-visible{outline:1px solid #97d9d4;outline-offset:-2px}
+.mobile-object-info{display:block;position:absolute;right:20px;left:auto;bottom:20px;z-index:35;width:min(290px,calc(100% - 40px));border:1px solid #3b596c;border-radius:4px;background:#091827f5;box-shadow:0 10px 35px #0008;padding:12px 14px}
+.mobile-object-info[hidden]{display:none!important}
+.mobile-object-info .info-dismiss{background:transparent;border:0;box-shadow:none;border-radius:0;color:#90adbd}
+.mobile-object-info .info-go{border-radius:3px;min-height:31px;background:#112d3a;border:1px solid #3a6976;color:#a8e1dd;font:10px ui-monospace,monospace}
+@media(max-width:850px){
+.mobile-object-info{left:50%;right:auto;bottom:65px;transform:translateX(-50%);width:min(315px,calc(100% - 24px));padding:12px 14px}
+.astro-pin-dismiss{width:26px;flex-basis:26px;height:32px}
+.astro-pin-select{min-height:32px}
+}
+
 </style>
 </head>
 <body>
@@ -684,7 +718,11 @@ html.solar-active,html.solar-active body{overflow:hidden!important;height:100dvh
 
   <div class="stage-metrics"><div>PROJECTIE <b id="viewangle">38° / 24°</b></div><div>VENSTER <b id="viewscale">40 kpc</b></div><div id="focuslabel">FOCUS <b id="focusvalue">R = 8,2 kpc</b></div></div>
   <div class="scene-badge" id="scene-badge">● <span>Wetenschappelijk model</span><br>Geen directe opname van buitenaf</div>
-  <div class="mobile-focus-layer" aria-label="Meetpunten"><button type="button" class="astro-pin" data-kind="center" id="astroCenterPin" aria-label="Selecteer galactisch centrum">SGR A*</button><button type="button" class="astro-pin" data-kind="sun" id="astroSunPin" aria-label="Selecteer zonpositie">ZON</button></div><div class="gesture-nudge" id="gestureNudge">DRAAI · ZOOM · SELECTEER</div><div class="mobile-object-info" id="astroInfo" role="region" aria-live="polite" aria-label="Meer over deze plek" hidden><button id="astroInfoClose" class="info-dismiss" type="button" aria-label="Sluit informatie">×</button><span class="info-label">Je tikte hier</span><strong id="astroInfoTitle">Ontdekt!</strong><p id="astroInfoText"></p><button class="info-go" id="astroInfoGo" type="button" hidden></button></div><div class="stage-hud-bottom"><button class="camera-menu-toggle" id="cameraMenuToggle" type="button" aria-controls="cameraPresets" aria-expanded="false">◉ Bekijk</button><div class="scene-meta"><span id="scale-label">▱ 5 kpc</span><br><strong id="scene-hint">SLEEP OVER DE STERREN OM TE DRAAIEN</strong></div><div class="camera-controls" id="cameraPresets" aria-label="Camera-oriëntatie"><button class="cambtn" data-cam="face">Van boven</button><button class="cambtn active" data-cam="tilt">3D</button><button class="cambtn" data-cam="edge">Van opzij</button><button class="cambtn" data-cam="sun">☉ Zon</button></div></div>
+  <div class="mobile-focus-layer" aria-label="Meetpunten">
+ <div class="astro-pin" data-kind="center" id="astroCenterPin"><button class="astro-pin-select" type="button" data-pin-select="center" aria-label="Gegevens galactisch centrum">SGR A*</button><button class="astro-pin-dismiss" type="button" data-dismiss-pin="center" aria-label="Verberg SGR A*"></button></div>
+ <div class="astro-pin" data-kind="sun" id="astroSunPin"><button class="astro-pin-select" type="button" data-pin-select="sun" aria-label="Gegevens zonpositie">ZON</button><button class="astro-pin-dismiss" type="button" data-dismiss-pin="sun" aria-label="Verberg ZON"></button></div>
+ <div class="astro-pin" data-kind="s2" id="astroS2Pin"><button class="astro-pin-select" type="button" data-pin-select="s2" aria-label="Gegevens ster S2">S2</button><button class="astro-pin-dismiss" type="button" data-dismiss-pin="s2" aria-label="Verberg S2"></button></div>
+ </div><div class="gesture-nudge" id="gestureNudge">DRAAI · ZOOM · SELECTEER</div><div class="mobile-object-info" id="astroInfo" role="region" aria-live="polite" aria-label="Meetpuntgegevens" hidden><button id="astroInfoClose" class="info-dismiss" type="button" aria-label="Sluit informatie">×</button><span class="info-label">Je tikte hier</span><strong id="astroInfoTitle">Ontdekt!</strong><p id="astroInfoText"></p><button class="info-go" id="astroInfoGo" type="button" hidden></button></div><div class="stage-hud-bottom"><button class="camera-menu-toggle" id="cameraMenuToggle" type="button" aria-controls="cameraPresets" aria-expanded="false">◉ Bekijk</button><div class="scene-meta"><span id="scale-label">▱ 5 kpc</span><br><strong id="scene-hint">SLEEP OVER DE STERREN OM TE DRAAIEN</strong></div><div class="camera-controls" id="cameraPresets" aria-label="Camera-oriëntatie"><button class="cambtn" data-cam="face">Van boven</button><button class="cambtn active" data-cam="tilt">3D</button><button class="cambtn" data-cam="edge">Van opzij</button><button class="cambtn" data-cam="sun">☉ Zon</button></div></div>
 </section>
 <section class="analytics" aria-label="Analyse en simulatieklok"><button id="graphClose" class="graph-close" type="button" aria-label="Sluit de grafiek">×</button>
   <div class="analytics-head"><h3 id="plot-title">RADIALE OPPERVLAKTEDICHTHEID</h3><div class="cal-tag" id="plot-tag">MODEL • NIET WAARGENOMEN</div></div>
@@ -700,9 +738,9 @@ html.solar-active,html.solar-active body{overflow:hidden!important;height:100dvh
   <header class="solar-top"><button id="backGalaxy" class="solar-back" type="button">← Terug naar de Melkweg</button><div class="solar-top-title"><b>Zonnestelsel</b><small>Banen / omlooptijd</small></div></header>
   <div class="solar-main">
    <div class="solar-space" id="solarSpace"><canvas id="solarCanvas" aria-label="Bewegend zonnestelsel. Klik op een planeet om haar te ontdekken." tabindex="0"></canvas><div class="solar-over"><strong>PLANETEN / MODEL</strong><span>Selecteer een planeet.</span></div>
-    <div class="solar-lower"><div class="solar-clock-top"><b>SIMULATIETIJD</b><span id="solarYearLabel" class="solar-year">Jaar 0</span></div><div class="solar-clock-row"><button id="solarPlay" class="solar-time-btn" aria-label="Zet de planeten in beweging">▶</button><input type="range" id="solarTime" min="0" max="40" value="0" step="0.05" aria-label="Hoeveel jaar laat je voorbijgaan?"></div><p class="solar-clock-foot">Aarde: 1 omloop per jaar. Banen zijn schematisch.</p></div>
+    <div class="solar-lower"><div class="solar-clock-top"><b>SIMULATIETIJD</b><span id="solarYearLabel" class="solar-year">Jaar 0</span></div><div class="solar-clock-row"><button id="solarPlay" class="solar-time-btn" aria-label="Zet de planeten in beweging">▶</button><input type="range" id="solarTime" min="0" max="40" value="0" step="0.05" aria-label="Hoeveel jaar laat je voorbijgaan?"></div></div>
    </div>
-   <aside class="solar-side" aria-label="Klikbare planeten en uitleg"><h3>PLANETEN</h3><div class="planet-grid" id="planetChoices"></div><section class="planet-card" id="planetDetail" aria-live="polite"></section><p class="solar-side-note">We hebben de planeten en hun banen groter en dichterbij getekend, zodat je ze kunt zien. De echte afstanden zijn veel groter.</p></aside>
+   <aside class="solar-side" aria-label="Klikbare planeten en uitleg"><h3>PLANETEN</h3><div class="planet-grid" id="planetChoices"></div><section class="planet-card" id="planetDetail" aria-live="polite"></section></aside>
   </div>
  </div>
 </section>
@@ -798,13 +836,8 @@ function dotLabel(p,label,sub,color='112,228,236',dx=20,dy=-12){
  if(detail){ctx.fillStyle='#a1bdd1';ctx.font='9px ui-monospace,monospace';ctx.fillText(detail,x,y+14)}ctx.restore();
 }
 function drawGalacticCore(){let c=project(0,0,0);let g=ctx.createRadialGradient(c.x,c.y,0,c.x,c.y,Math.max(28,55*state.cam.zoom));g.addColorStop(0,'rgba(255,220,164,.67)');g.addColorStop(.17,'rgba(224,170,126,.23)');g.addColorStop(1,'rgba(235,163,111,0)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(c.x,c.y,55*state.cam.zoom,0,2*PI);ctx.fill();lastProjectedCenter=c;
- let sunTheta=.4+vParts(R0).total/R0*KM_MYR*state.time;let sun=project(R0*Math.cos(sunTheta),R0*Math.sin(sunTheta),.02);lastProjectedSun=sun;if(window.innerWidth<=850){
-   ctx.save();ctx.strokeStyle='rgba(119,232,224,.8)';ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(sun.x,sun.y,4.8,0,2*PI);ctx.stroke();ctx.restore();
-   // De mobiele zon heeft een echte klikbare pin. Geen tweede label op het canvas.
- }else{
-   dotLabel(c,'SGR A*','CENTRUM','239,187,128',16,-26);
-   dotLabel(sun,'ZON','R₀ ≈ 8,2 kpc','111,227,231',18,-28);
- }
+ let sunTheta=.4+vParts(R0).total/R0*KM_MYR*state.time;let sun=project(R0*Math.cos(sunTheta),R0*Math.sin(sunTheta),.02);lastProjectedSun=sun;
+ ctx.save();ctx.strokeStyle='rgba(119,232,224,.6)';ctx.lineWidth=.8;ctx.beginPath();ctx.arc(sun.x,sun.y,4.5,0,2*PI);ctx.stroke();ctx.restore();
  if(state.layer.orbit){let focus=project(state.focusR*Math.cos(state.focusTheta),state.focusR*Math.sin(state.focusTheta),0);ctx.setLineDash([4,4]);drawCircle(focus.x,focus.y,8,'#80deed',.8);ctx.setLineDash([]);}}
 // Kleine lichtpunten zijn echte grepen op het sterrenbeeld, geen knoppen die de proef oplossen.
 const touchTracks={
@@ -861,19 +894,20 @@ function drawStageOverlay(){
 function drawGalaxy(){drawBackground();drawDarkHalo();drawGalaxyGrid();drawArms();drawDust();drawStars();drawClusters();drawGalacticCore();drawStageOverlay();updateAstroPins();}
 function kepler(t){const e=.88,a=1035,P=16;const M=(t/P%1)*2*PI;let E=M;for(let i=0;i<9;i++)E-=(E-e*Math.sin(E)-M)/(1-e*Math.cos(E));let x=a*(Math.cos(E)-e),y=a*Math.sqrt(1-e*e)*Math.sin(E),r=a*(1-e*Math.cos(E));let v=29.7847*Math.sqrt(MBH*(2/r-1/a));return {E,M,x,y,r,v};}
 function bhProject(x,y){let rad=Math.min(W*.36,H*.43),sc=rad/1600,xx=x*.92+y*.39,yy=(-x*.39+y*.92)*.64;return{x:W*.53+xx*sc,y:H*.555+yy*sc};}
-function drawBlackHole(){$('astroSunPin').hidden=true;$('astroCenterPin').hidden=true;drawBackground();let c={x:W*.53,y:H*.555};
+function drawBlackHole(){drawBackground();let c={x:W*.53,y:H*.555};
+ const ringScale=W<851?clamp(W/230,1.25,1.75):1.1;
+ ctx.save();ctx.translate(c.x,c.y);ctx.scale(ringScale,ringScale);ctx.translate(-c.x,-c.y);
  // Artistic light ring: intentionally not a general-relativistic ray-trace.
  let glow=ctx.createRadialGradient(c.x,c.y,3,c.x,c.y,112);glow.addColorStop(0,'rgba(3,6,13,0)');glow.addColorStop(.18,'rgba(3,6,13,.05)');glow.addColorStop(.33,'rgba(244,169,92,.19)');glow.addColorStop(.60,'rgba(221,103,49,.08)');glow.addColorStop(1,'rgba(237,139,71,0)');ctx.fillStyle=glow;ctx.beginPath();ctx.arc(c.x,c.y,113,0,2*PI);ctx.fill();
  ctx.save();ctx.translate(c.x,c.y);ctx.rotate(-.36);for(let i=0;i<12;i++){ctx.beginPath();ctx.ellipse(0,0,54+i*1.35,23+i*.7,0,0,2*PI);ctx.strokeStyle=`rgba(250,${120+i*7},${67+i*7},${.18-i*.010})`;ctx.lineWidth=3;ctx.stroke();}ctx.restore();
- const core=ctx.createRadialGradient(c.x-7,c.y-8,1,c.x,c.y,31);core.addColorStop(0,'#010309');core.addColorStop(.75,'#02050b');core.addColorStop(1,'#141019');ctx.beginPath();ctx.arc(c.x,c.y,30,0,2*PI);ctx.fillStyle=core;ctx.fill();
+ const core=ctx.createRadialGradient(c.x-7,c.y-8,1,c.x,c.y,31);core.addColorStop(0,'#010309');core.addColorStop(.75,'#02050b');core.addColorStop(1,'#141019');ctx.beginPath();ctx.arc(c.x,c.y,30,0,2*PI);ctx.fillStyle=core;ctx.fill();ctx.restore();
  // The S2 orbit is magnified and is NOT to scale with the displayed EHT ring.
  if(state.layer.orbit){ctx.beginPath();for(let i=0;i<=360;i++){let E=i/360*2*PI,x=1035*(Math.cos(E)-.88),y=1035*Math.sqrt(1-.88*.88)*Math.sin(E),p=bhProject(x,y);if(!i)ctx.moveTo(p.x,p.y);else ctx.lineTo(p.x,p.y);}ctx.setLineDash([6,6]);ctx.strokeStyle='rgba(132,211,227,.49)';ctx.lineWidth=1;ctx.stroke();ctx.setLineDash([]);}
  let o=kepler(state.bhTime),p=bhProject(o.x,o.y);let starGlow=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,27);starGlow.addColorStop(0,'rgba(174,221,255,.8)');starGlow.addColorStop(.16,'rgba(126,197,255,.25)');starGlow.addColorStop(1,'rgba(126,197,255,0)');ctx.beginPath();ctx.arc(p.x,p.y,27,0,2*PI);ctx.fillStyle=starGlow;ctx.fill();ctx.beginPath();ctx.arc(p.x,p.y,4.5,0,2*PI);ctx.fillStyle='#e4f7ff';ctx.fill();
- ctx.strokeStyle='rgba(229,189,139,.38)';ctx.beginPath();ctx.arc(c.x,c.y,39,0,2*PI);ctx.stroke();
- if(W>850)dotLabel(p,'STER S2','Pak en sleep de ster','135,219,255',18,-23);if(W>850)dotLabel(c,'ZWART GAT','Niet op ware grootte','248,174,117',22,-48);
- ctx.save();ctx.font='10px ui-monospace,monospace';ctx.fillStyle='#8fa6bd';ctx.fillText('DE STER DOET ONGEVEER 16 JAAR OVER EEN RONDJE',25,H*.82);ctx.fillText('DIT PLAATJE IS NIET OP WARE GROOTTE',25,H*.82+16);ctx.restore();
+ ctx.strokeStyle='rgba(229,189,139,.38)';ctx.lineWidth=1;ctx.beginPath();ctx.arc(c.x,c.y,39*ringScale,0,2*PI);ctx.stroke();
+ updateAstroPins();
 }
-function updateSceneText(){const m=MODE[state.mode];$('crumb').textContent=m.crumb;$('scene-eyebrow').textContent=`${m.index} / ${m.crumb}`;$('scene-title').innerHTML=m.title;$('scene-desc').innerHTML=m.desc;$('inspector-counter').textContent=m.index+' / 06';$('inspector-title').textContent=m.ins;$('inspector-lead').textContent=m.lead;$('plot-title').textContent=m.plot;$('plot-tag').textContent=m.tag;$('formula-label').textContent=m.formulaLabel;$('formula').innerHTML=m.formula;$('formula-sub').innerHTML=m.formulaSub;$('scene-badge').innerHTML=state.mode==='blackhole'?'● <span>Schematische voorstelling</span><br>Geen relativistische ray-tracing':state.mode==='stars'?'● <span>Synthetische sterpopulatie</span><br>Geen Gaia-catalogus':state.mode==='gaia'?'● <span>Astrometrische relaties</span><br>Waarnemingen zijn afzonderlijk vermeld':'● <span>Analytisch galactisch model</span><br>Geen directe opname van buitenaf';$('scene-hint').textContent=state.mode==='blackhole'?'S2 VOLGT EEN BENADERDE KEPLERBAAN · SCHAAL IS SCHEMATISCH':'SLEEP OVER DE STERREN OM TE DRAAIEN';$('time-label').textContent=state.mode==='blackhole'?'S2-BAANTIJD':'GALACTISCHE TIJD';$('timeslider').max=state.mode==='blackhole'?'16':'500';$('timeslider').step=state.mode==='blackhole'?'.05':'1';$('timeslider').value=state.mode==='blackhole'?state.bhTime:state.time;}
+function updateSceneText(){const m=MODE[state.mode];$('crumb').textContent=m.crumb;$('scene-eyebrow').textContent=`${m.index} / ${m.crumb}`;$('scene-title').innerHTML=m.title;$('scene-desc').innerHTML=m.desc;$('inspector-counter').textContent=m.index+' / 06';$('inspector-title').textContent=m.ins;$('inspector-lead').textContent=m.lead;$('plot-title').textContent=m.plot;$('plot-tag').textContent=m.tag;$('formula-label').textContent=m.formulaLabel;$('formula').innerHTML=m.formula;$('formula-sub').innerHTML=m.formulaSub;$('scene-badge').innerHTML=state.mode==='blackhole'?'● <span>Schematische voorstelling</span><br>Geen relativistische ray-tracing':state.mode==='stars'?'● <span>Synthetische sterpopulatie</span><br>Geen Gaia-catalogus':state.mode==='gaia'?'● <span>Astrometrische relaties</span><br>Waarnemingen zijn afzonderlijk vermeld':'● <span>Analytisch galactisch model</span><br>Geen directe opname van buitenaf';$('scene-hint').textContent=state.mode==='blackhole'?'S2 / KEPLERBAAN':'SLEEP OVER DE STERREN OM TE DRAAIEN';$('time-label').textContent=state.mode==='blackhole'?'S2-BAANTIJD':'GALACTISCHE TIJD';$('timeslider').max=state.mode==='blackhole'?'16':'500';$('timeslider').step=state.mode==='blackhole'?'.05':'1';$('timeslider').value=state.mode==='blackhole'?state.bhTime:state.time;}
 function metric(label,value,unit='',accent=false){return `<div class="stat"><small>${label}</small><strong ${accent?'class="amber"':''}>${value}<span class="unit">${unit}</span></strong></div>`}
 const range=(id,label,value,min,max,step,unit='',help='')=>`<div class="ctrlrow"><div class="rowhead"><label for="${id}">${label}</label><output id="${id}out">${value}${unit}</output></div><input type="range" id="${id}" min="${min}" max="${max}" step="${step}" value="${value}">${help?`<span class="help">${help}</span>`:''}</div>`;
 const layerSwitch=(key,label)=>`<label class="switch"><input type="checkbox" data-layer="${key}" ${state.layer[key]?'checked':''}><span>${label}</span></label>`;
@@ -1018,7 +1052,7 @@ function instrumentControls(){
  if(state.mode==='structure')return `<div class="subhead">COMPONENTEN / MORFOLOGIE</div><div class="switchgrid">${layerSwitch('disk','Sterschijf')}${layerSwitch('bar','Balk')}${layerSwitch('bulge','Verdikking')}${layerSwitch('stellarHalo','Sterrenhalo')}${layerSwitch('darkHalo','Donkere halo')}${layerSwitch('warp','Warp')}${layerSwitch('dust','Stofzones')}${layerSwitch('orbit','Banen')}</div><div class="ctrlgroup">${range('pitch','Pitchhoek',state.pitch,7,24,1,'°')}</div>`;
  if(state.mode==='stars')return `<div class="subhead">FOTOMETRISCHE SELECTIE</div>${range('limmag','Magnitudelimiet',state.limMag,10,21,.5,' mag')}<p class="instrument-note">Synthetische sterpopulatie, geen directe Gaia-catalogus.</p>`;
  if(state.mode==='gaia')return `<div class="subhead">ASTROMETRIE</div>${range('obDist','Afstand',state.observeD,.5,20,.1,' kpc')}${range('obVt','Transversale snelheid',state.observeVT,10,400,5,' km/s')}<p class="instrument-note">ϖ = 1/d. Meetrelaties in een illustratief model.</p>`;
- return `<div class="subhead">S2 / KEPLERBAAN</div><div class="switchgrid">${layerSwitch('orbit','Baan')}${layerSwitch('labels','Objectlabels')}</div><p class="instrument-note">P ≈ 16 jaar · e ≈ 0,88. Baan en EHT-ring niet op schaal.</p>`;
+ return `<div class="subhead">S2 / KEPLERBAAN</div><div class="switchgrid">${layerSwitch('orbit','Baan')}${layerSwitch('labels','Objectlabels')}</div><p class="instrument-note">P ≈ 16 jaar · e ≈ 0,88. </p>`;
 }
 function panelHTML(){return `<div class="instrument-meta">MW / 01 · ${MODE[state.mode].crumb}<span>ANALYTISCH MODEL</span></div><div class="statgrid">${instrumentStats()}</div><div class="instrument-controls">${instrumentControls()}</div><button class="instrument-action graph-toggle" id="graphToggle" type="button" aria-expanded="${document.body.classList.contains('show-graphs')}">${document.body.classList.contains('show-graphs')?'−':'↗'} GRAFIEK <small>${MODE[state.mode].plot}</small></button><details class="instrument-details"><summary>AFLEIDING / BRONNEN</summary><div class="instrument-details-body">${theoryBlock(state.mode)}${sourceBlock()}</div></details>`;}
 function setLabPanelExpanded(expanded){
@@ -1096,18 +1130,7 @@ function runKidAction(action){
  }
  chartDirty=true;bindPanel();updateLiveStats(true);checkQuest();updateKidLive();
 }
-// Behoud de bestaande bediening; hang hier de ontdekacties aan.
-document.addEventListener('click',e=>{
- const q=e.target.closest('[data-quest]');if(q){activeQuest[state.mode]=Number(q.dataset.quest);bindPanel();checkQuest();return;}
- const btn=e.target.closest('[data-action]');if(btn){runKidAction(btn.dataset.action);return;}
- const cam=e.target.closest('[data-cam]');if(cam){const k=cam.dataset.cam;if(k==='face'||k==='edge'||k==='sun')seen[k]=true;Promise.resolve().then(()=>{checkQuest();updateKidLive()});}
- const play=e.target.closest('#play');if(play&&state.mode==='blackhole'&&state.running){seen.bhPlayed=true;Promise.resolve().then(checkQuest)}
- const nav=e.target.closest('[data-mode]');if(nav)Promise.resolve().then(()=>{kidModeText();checkQuest();updateKidLive()});
-});
-document.addEventListener('input',e=>{if(e.target.matches('input[type=range]'))Promise.resolve().then(()=>{checkQuest();updateKidLive()})});
-document.addEventListener('change',e=>{if(e.target.matches('[data-layer]'))Promise.resolve().then(()=>{checkQuest();updateKidLive()})});
-
-
+// Geen oude ontdekvraaglogica op de wetenschappelijke module-navigatie.
 document.addEventListener('click',e=>{
  const b=e.target.closest('#graphToggle,#graphClose');if(!b)return;
  const yes=!document.body.classList.contains('show-graphs');document.body.classList.toggle('show-graphs',yes);
@@ -1116,7 +1139,7 @@ document.addEventListener('click',e=>{
  requestAnimationFrame(()=>{resize();chartDirty=true;});
 });
 
-function bindPanel(){let html=panelHTML();$('inspector-body').innerHTML=html;$('labDockTitle').textContent=MODE[state.mode].ins;document.querySelectorAll('[data-layer]').forEach(el=>el.addEventListener('change',()=>{state.layer[el.dataset.layer]=el.checked;chartDirty=true;}));
+function bindPanel(){let html=panelHTML();$('inspector-body').innerHTML=html;$('labDockTitle').textContent=MODE[state.mode].ins;document.querySelectorAll('[data-layer]').forEach(el=>el.addEventListener('change',()=>{state.layer[el.dataset.layer]=el.checked;if(el.dataset.layer==='labels'&&el.checked)hiddenAstroPins.clear();chartDirty=true;}));
  function input(id,fn,format){let el=$(id);if(!el)return;el.addEventListener('input',()=>{let v=Number(el.value);fn(v);if($(id+'out'))$(id+'out').textContent=format(v);chartDirty=true;updateLiveStats();});}
  input('pitch',v=>{state.pitch=v;updatePitch()},v=>v+'°');input('extinction',v=>state.extinction=v,v=>fmt(v,1)+'×');
  input('haloMass',v=>{state.model.halo=v;recalcOmega()},v=>fmt(v,2)+'×10¹² M☉');
@@ -1194,7 +1217,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.querySelec
 window.addEventListener('resize',()=>{if(window.innerWidth>850)closeAdventureMenu(false)});
 function modeSet(mode){if(!MODE[mode])return;closeAstroInfo();document.body.classList.remove('time-open');$('timeToggle').setAttribute('aria-expanded','false');$('stage').dataset.grabs=['dynamics','structure','stars','gaia'].includes(mode)?'true':'false';activeLabTab='proef';state.mode=mode;$('solarEntry').hidden=mode!=='atlas';state.running=mode==='dynamics'||mode==='blackhole';document.querySelectorAll('.nav-btn').forEach(b=>{let yes=b.dataset.mode===mode;b.classList.toggle('active',yes);b.setAttribute('aria-pressed',yes?'true':'false')});updateAdventureMenu();updateSceneText();bindPanel();$('inspector-body').scrollTop=0;updateLiveStats(true);chartDirty=true;}
 function camSet(mode){state.cam.target=mode==='sun'?'sun':'center';if(mode==='face')Object.assign(state.cam,{elev:90,yaw:0,zoom:1.05});else if(mode==='edge')Object.assign(state.cam,{elev:3,yaw:.33,zoom:1});else if(mode==='sun')Object.assign(state.cam,{elev:66,yaw:.40,zoom:2.65});else Object.assign(state.cam,window.innerWidth<=850?{elev:72,yaw:.28,zoom:1.08}:{elev:38,yaw:.39,zoom:1});document.querySelectorAll('[data-cam]').forEach(b=>b.classList.toggle('active',b.dataset.cam===mode));updateLiveStats(true);}
-function restoreView(){state.time=0;state.bhTime=0;state.running=false;state.pitch=12;state.limMag=18.5;state.observeD=8.2;state.observeVT=220;state.model={disk:6.8,bulge:1.0,halo:1.12,sigma:35};state.focusR=8.2;state.focusTheta=.7;state.layer.arms=true;state.layer.disk=true;state.layer.stellarHalo=true;state.layer.bar=true;state.layer.bulge=true;state.layer.orbit=true;state.layer.labels=true;updatePitch();recalcOmega();camSet('tilt');if(window.innerWidth<=850){state.cam.elev=73;state.cam.yaw=.26;state.cam.zoom=1.08;}chartDirty=true;bindPanel();updateLiveStats(true);toast('Referentieweergave hersteld');}
+function restoreView(){hiddenAstroPins.clear();state.time=0;state.bhTime=0;state.running=false;state.pitch=12;state.limMag=18.5;state.observeD=8.2;state.observeVT=220;state.model={disk:6.8,bulge:1.0,halo:1.12,sigma:35};state.focusR=8.2;state.focusTheta=.7;state.layer.arms=true;state.layer.disk=true;state.layer.stellarHalo=true;state.layer.bar=true;state.layer.bulge=true;state.layer.orbit=true;state.layer.labels=true;updatePitch();recalcOmega();camSet('tilt');if(window.innerWidth<=850){state.cam.elev=73;state.cam.yaw=.26;state.cam.zoom=1.08;}chartDirty=true;bindPanel();updateLiveStats(true);/* Het herstel is direct zichtbaar: geen melding over de simulatie. */}
 function toast(txt){let x=$('toast');x.textContent=txt;x.classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>x.classList.remove('show'),2200);}
 function save(name,blob){let url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1800);}
 function modelExport(){let data={file:'MW-01 Galactic Observatory',createdAt:new Date().toISOString(),scientificStatus:'Analytical illustrative model; NOT a Gaia star-level reconstruction',units:{mass:'solar masses',distance:'kpc',speed:'km/s',time:'Myr',blackHoleTime:'years'},reference:{sunGalactocentricRadius_kpc:R0,galacticCenterBlackHole_Msun:MBH,GaiaDR3CircularSpeed_km_s:{value:233,uncertainty:7,source:'https://doi.org/10.1051/0004-6361/202346474'}},potential:{disk:{type:'Miyamoto-Nagai',mass_Msun:state.model.disk*1e10,a_kpc:2.6,b_kpc:.28},bulge:{type:'Hernquist',mass_Msun:state.model.bulge*1e10,a_kpc:.6},darkMatterHalo:{type:'NFW',M200_Msun:state.model.halo*1e12,concentration:10,R200_kpc:210*Math.cbrt(state.model.halo),illustrative:true}},dynamics:{selectedRadius_kpc:state.focusR,circularSpeed_km_s:vParts(state.focusR).total,orbitalPeriod_Myr:orbitPeriod(state.focusR),stellarToomreQ_illustrative:toomreQ(state.focusR),sigmaR_km_s:state.model.sigma},visualization:{mode:state.mode,time_Myr:state.time,s2Time_year:state.bhTime,pitch_deg:state.pitch,cam:state.cam,layer:state.layer},sources:['https://www.esa.int/content/view/full/423444','https://www.esa.int/Science_Exploration/Space_Science/Gaia','https://doi.org/10.1051/0004-6361/202346474','https://doi.org/10.1051/0004-6361/202142465','https://eventhorizontelescope.org/publications/first-sagittarius-event-horizon-telescope-results-i-shadow-supermassive-black-hole']};save('MW01-model-'+new Date().toISOString().slice(0,10)+'.json',new Blob([JSON.stringify(data,null,2)],{type:'application/json;charset=utf-8'}));toast('Modelparameters als JSON geëxporteerd');}
@@ -1382,12 +1405,18 @@ window.addEventListener('keydown',e=>{
 
 /* Deze bediening wordt alleen op de telefoon gebruikt. De sterposities komen uit de bestaande projectie. */
 let astroSelection=null;
+const hiddenAstroPins=new Set();
+function hideAstroPin(kind){
+ hiddenAstroPins.add(kind);
+ const pin=$('astro'+(kind==='center'?'Center':kind==='sun'?'Sun':'S2')+'Pin');
+ if(pin)pin.hidden=true;
+ closeAstroInfo();
+}
 function closeAstroInfo(){
  const info=$('astroInfo');info.hidden=true;
  astroSelection=null;
 }
 function showAstroInfo(kind){
- if(window.innerWidth>850)return;
  const title=$('astroInfoTitle'),detail=$('astroInfoText'),go=$('astroInfoGo'),label=$('astroInfo').querySelector('.info-label');
  let route='';
  if(kind==='sun'){
@@ -1398,6 +1427,13 @@ function showAstroInfo(kind){
   label.textContent='GALACTISCH CENTRUM';title.textContent='Sagittarius A*';
   detail.textContent='M = 4,297 × 10⁶ M☉ · R = 0 kpc';
   go.textContent='S2-BAAN ↗';route='blackhole';
+ }else if(kind==='s2'){
+  const q=kepler(state.bhTime);
+  label.textContent='STER / S2';title.textContent='S2 · t = '+fmt(state.bhTime,1)+' jaar';
+  detail.textContent='r = '+Math.round(q.r)+' AU · v = '+Math.round(q.v)+' km/s';
+  go.hidden=true;astroSelection=null;
+  $('astroInfo').hidden=false;
+  return;
  }else{
   const R=state.focusR;
   label.textContent='MODEL / MEETPUNT';title.textContent='R = '+fmt(R,1)+' kpc';
@@ -1408,18 +1444,34 @@ function showAstroInfo(kind){
  document.body.classList.remove('time-open');$('timeToggle').setAttribute('aria-expanded','false');
 }
 function updateAstroPins(){
- if(window.innerWidth>850)return;
- const visible=(state.mode==='atlas'||state.mode==='structure')&&!solarOpen&&!document.body.classList.contains('lab-sheet-open');
- const pins=[[$('astroSunPin'),lastProjectedSun],[$('astroCenterPin'),lastProjectedCenter]];
- for(const [el,p] of pins){
-  let ok=!!(visible&&p&&Number.isFinite(p.x)&&Number.isFinite(p.y)&&p.x>=44&&p.x<=W-80&&p.y>=95&&p.y<=H-140);
+ const shown=!solarOpen&&!document.body.classList.contains('lab-sheet-open')&&state.layer.labels;
+ const galaxy=state.mode==='atlas'||state.mode==='structure';
+ const blackhole=state.mode==='blackhole';
+ const q=blackhole?kepler(state.bhTime):null;
+ const s2=blackhole?bhProject(q.x,q.y):null;
+ const pins=[
+  {el:$('astroSunPin'),kind:'sun',p:galaxy?lastProjectedSun:null},
+  {el:$('astroCenterPin'),kind:'center',p:galaxy?lastProjectedCenter:blackhole?{x:W*.53,y:H*.555}:null},
+  {el:$('astroS2Pin'),kind:'s2',p:s2}
+ ];
+ for(const {el,kind,p} of pins){
+  const ok=!!(shown&&!hiddenAstroPins.has(kind)&&p&&Number.isFinite(p.x)&&Number.isFinite(p.y)&&p.x>18&&p.x<W-18&&p.y>60&&p.y<H-58);
   el.hidden=!ok;
-  if(ok){el.style.left=p.x+'px';el.style.top=p.y+'px';}
+  if(!ok)continue;
+  const left=kind==='s2'?p.x+8:p.x;
+  const top=kind==='s2'?p.y-16:p.y;
+  const flipped=left>W-(kind==='center'?105:80);
+  el.classList.toggle('is-flipped',flipped);
+  el.style.left=left+'px';el.style.top=top+'px';
  }
 }
 $('astroInfoClose').addEventListener('click',closeAstroInfo);
-$('astroSunPin').addEventListener('click',()=>showAstroInfo('sun'));
-$('astroCenterPin').addEventListener('click',()=>showAstroInfo('center'));
+document.querySelectorAll('[data-pin-select]').forEach(btn=>btn.addEventListener('click',ev=>{
+ ev.stopPropagation();showAstroInfo(btn.dataset.pinSelect);
+}));
+document.querySelectorAll('[data-dismiss-pin]').forEach(btn=>btn.addEventListener('click',ev=>{
+ ev.stopPropagation();hideAstroPin(btn.dataset.dismissPin);
+}));
 $('astroInfoGo').addEventListener('click',()=>{
  const route=astroSelection;closeAstroInfo();
  if(route==='solar')openSolar();else if(route)modeSet(route);
