@@ -437,6 +437,7 @@ accessForm.addEventListener('submit',async event=>{
 try{
  if(new URLSearchParams(location.search).has('beheer')){
   codeInput.value='VIS';
+  showAdminPassword();
  }
 }catch(e){}
 
