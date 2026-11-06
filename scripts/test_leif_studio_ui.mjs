@@ -64,7 +64,7 @@ try{
  assert.equal(state.kars.personal_texts.blocks_published[0].title,'Alleen voor Kars');
  assert.equal(state.chermaine.personal_texts.blocks_published,undefined);
  await page.getByRole('button',{name:/Chermaine/}).first().click();
- await page.locator('#studioOwner').getByText('Chermaine').waitFor({timeout:10000});
+ await page.waitForFunction(()=>document.querySelector('#studioOwner')?.textContent==='Chermaine',{timeout:10000});
  assert.equal(await page.locator('#studioCount').innerText(),'0 / 24');
  await page.locator('[data-studio-add="text"]').click();
  await page.locator('#studioEditor input[maxlength="120"]').fill('Alleen voor Chermaine');
