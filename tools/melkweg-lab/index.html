@@ -290,57 +290,105 @@ html.solar-active,html.solar-active body{overflow:hidden!important;height:100dvh
   .stage-head p{display:none}
 }
 
-/* V8: compacte bediening op telefoons. Het Melkwegbeeld blijft voorop. */
-.lab-expand{display:none}
+/* V9: het model is het scherm. Bediening verschijnt alleen als je haar nodig hebt. */
+.lab-dock,.lab-sheet-backdrop,.tools-menu-toggle,.camera-menu-toggle,.graph-close{display:none}
 @media(max-width:850px){
-  .stage-hud-bottom{left:8px;right:8px;bottom:6px}
-  .scene-meta{display:none}
-  .camera-controls{display:flex;width:min(100%,350px);margin:0 auto;padding:2px;gap:2px;border-radius:8px;background:#07182ad9;border:1px solid #36526a}
-  .cambtn{flex:1;min-height:29px;padding:5px 4px;font-size:10px;line-height:1.1;border-radius:6px;white-space:nowrap}
-  .analytics,.show-graphs .analytics{height:38px;min-height:38px;flex:0 0 38px}
-  .timeline,.show-graphs .timeline{height:38px;min-height:38px;padding:0 9px;gap:8px}
-  .timeline button{width:28px;height:28px;border-radius:7px}
-  .timeline .tvalue{min-width:76px;font-size:10px}
-  .timeline input[type=range]{height:22px}
-  .inspector{height:120px;flex:0 0 120px;background:#0a192b;border-top:1px solid #27445d}
-  body.lab-expanded .inspector{height:clamp(205px,43dvh,350px);flex:0 0 clamp(205px,43dvh,350px)}
-  .inspector .panel-body{padding:0 10px 7px}
-  .lab-tabs{grid-template-columns:repeat(3,minmax(0,1fr)) 30px;gap:3px;padding:4px 0;border-color:#284158;background:#0a192b}
-  .lab-tab{min-height:29px;padding:4px 3px;border:0;border-radius:6px;background:transparent;color:#b4cbdc;font-size:11px;font-weight:700}
-  .lab-tab.active{background:#193c4d;color:#b0f5e6;border:0;box-shadow:inset 0 -2px #76d9c7}
-  .lab-expand{display:grid;place-items:center;min-height:29px;width:30px;padding:0;border:1px solid #36536a;border-radius:7px;background:#132b40;color:#b9e7ef;font-size:19px;line-height:1}
-  .lab-pane{padding:3px 0}
-  .quest-card{padding:5px 7px;background:transparent;border:0;border-radius:7px;box-shadow:none}
-  .quest-kicker{display:none}
-  .quest-top{margin:0}
-  .quest-dots{gap:5px}
-  .quest-dot{width:7px;height:7px}
-  .quest-card h4{font-size:14px;line-height:1.2;letter-spacing:-.012em;margin:3px 0 5px}
-  .quest-card p{font-size:12px;line-height:1.42;margin:4px 0 9px}
-  .quest-controls{gap:5px}
-  .quest-action,.quest-continue{min-height:30px;width:auto;padding:5px 9px;border-radius:7px;font-size:11px;line-height:1.1}
-  .quest-action{flex:0 0 auto}
-  body:not(.lab-expanded) #pane-proef .quest-card{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:7px;align-items:center}
-  body:not(.lab-expanded) #pane-proef .quest-top{grid-column:1/-1;justify-content:flex-end}
-  body:not(.lab-expanded) #pane-proef .quest-card h4{grid-column:1;margin:2px 0;overflow-wrap:anywhere}
-  body:not(.lab-expanded) #pane-proef .quest-controls{grid-column:2;grid-row:2;flex-wrap:nowrap}
-  body:not(.lab-expanded) #pane-proef .quest-card p,
-  body:not(.lab-expanded) #pane-proef .quest-tip,
-  body:not(.lab-expanded) #pane-proef .quest-finished{display:none}
-  body.lab-expanded .quest-card{padding:9px 10px;background:#13314a}
-  body.lab-expanded .quest-card h4{font-size:17px;margin:6px 0}
-  body.lab-expanded .quest-card p{display:block}
-  body.lab-expanded .quest-action{min-height:36px}
-  body.lab-expanded .quest-finished{display:block}
+ html:not(.solar-active),html:not(.solar-active) body{height:100%;overflow:hidden;overscroll-behavior:none}
+ #app,.show-graphs #app{display:block;position:relative;height:100dvh;min-height:0;width:100%;overflow:hidden}
+ .stage{position:absolute;inset:0;width:100%;height:100%;min-height:0;max-height:none;flex:none;z-index:1;border:0}
+ .stage-head,.stage-metrics,.scene-badge,.scene-meta{display:none}
+ .sidebar{position:absolute;top:8px;left:8px;right:150px;width:auto;height:43px;min-height:0;flex:none;z-index:46;padding:0;display:block;box-shadow:none;background:transparent;border:0;overflow:visible}
+ .brand,.sidebar .s-label,.side-end{display:none}
+ .adventure-menu-toggle{display:flex;width:100%;height:43px;min-height:43px;max-width:none;padding:5px 8px;border:1px solid #56829a9c;border-radius:13px;background:#071a2ddd;box-shadow:0 6px 24px #02091250;backdrop-filter:blur(14px)}
+ .adventure-current-icon{height:27px;width:27px;flex-basis:27px;font-size:16px}
+ .adventure-current-lines small{display:none}
+ .adventure-current-lines strong{font-size:12px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ .adventure-menu-chevron{font-size:18px;margin-left:auto}
+ .navlist{position:absolute;top:calc(100% + 6px);left:0;right:auto;width:min(346px,calc(100vw - 16px));max-height:calc(100dvh - 76px);padding:8px;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;overflow-y:auto;border-radius:13px;background:#0a1b30f7;border:1px solid #4b748c;box-shadow:0 20px 60px #000a}
+ .nav-btn{min-width:0;min-height:78px;padding:8px;gap:6px}
+ .nav-btn .nav-icon{height:27px;width:27px;min-width:27px}
+ .navcopy b{font-size:11px}
+ .navcopy small{font-size:10px}
+ .adventure-backdrop{position:fixed;inset:0;z-index:44;background:#0107126b}
+ .topbar{position:absolute;top:8px;right:8px;left:auto;width:auto;height:43px;min-height:43px;z-index:47;padding:0;flex:none;display:flex;border:0;background:transparent;overflow:visible}
+ .top-actions{gap:5px;width:auto;justify-content:flex-end}
+ .topbar .solar-entry{margin:0;position:static;min-height:42px;height:42px;padding:7px 9px;border-radius:12px;background:#10384adc;border:1px solid #427f8e;color:#cbfff3;font-size:11px;font-weight:750}
+ .topbar .topbtn{display:none}
+ .tools-menu-toggle{display:grid;place-items:center;min-height:42px;width:39px;padding:0;border-radius:12px;background:#071a2ddd;border:1px solid #456a84;color:#c7eafa;font-size:25px;line-height:1}
+ .topbar.tools-open .topbtn{display:flex;position:absolute;right:0;z-index:3;width:165px;height:39px;padding:0 12px;border-radius:9px;gap:9px;justify-content:flex-start;background:#0c263ddf;border:1px solid #47738a;box-shadow:0 8px 24px #0008}
+ .topbar.tools-open #resetView{top:49px}
+ .topbar.tools-open #snapshot{top:93px}
+ .topbar.tools-open #exportJSON{top:137px}
+ .topbar.tools-open .topbtn .btxt{display:inline;font-size:11px}
+ .stage-hud-bottom{position:absolute;bottom:114px;left:auto;right:11px;display:block;width:auto;z-index:25;pointer-events:auto}
+ .camera-menu-toggle{display:flex;align-items:center;justify-content:center;height:35px;min-width:86px;padding:0 12px;border:1px solid #4b738a;border-radius:12px;background:#071a2de6;color:#d5edf9;font-size:12px;font-weight:700;backdrop-filter:blur(14px);box-shadow:0 7px 22px #0008}
+ .camera-controls{display:none;position:absolute;right:0;bottom:42px;width:145px;max-width:none;margin:0;padding:5px;flex-direction:column;gap:3px;background:#0b2137f5;border:1px solid #4c718a;border-radius:13px;box-shadow:0 15px 35px #0009}
+ body.camera-menu-open .camera-controls{display:flex}
+ .camera-controls .cambtn{display:block;flex:none;min-height:38px;width:100%;padding:10px 12px;text-align:left;font-size:12px;border-radius:8px}
+ .camera-controls .cambtn.active{background:#254b62;color:#cbfff2}
+ .analytics,.show-graphs .analytics{position:absolute;left:10px;right:10px;bottom:65px;top:auto;z-index:20;width:auto;height:40px;min-height:40px;max-height:none;display:block;overflow:visible;border:0;background:transparent;flex:none}
+ .analytics .analytics-head,.analytics .analytics-main{display:none}
+ .timeline,.show-graphs .timeline{display:flex;align-items:center;height:40px;padding:0 10px;gap:9px;border:1px solid #405e78;border-radius:15px;background:#07192de6;box-shadow:0 5px 18px #0008;backdrop-filter:blur(12px)}
+ .timeline label,.timeline .speed-wrap{display:none}
+ .timeline button{width:32px;height:32px;min-height:32px;flex:none;border-radius:10px}
+ .timeline input[type=range]{margin:0;flex:1;height:22px;min-width:35px}
+ .timeline input[type=range]::-webkit-slider-thumb{width:18px;height:18px}
+ .timeline .tvalue{font:600 10px/1.1 system-ui,sans-serif;text-align:right;min-width:82px;max-width:89px;color:#c3d9e8}
+ .inspector{position:absolute;left:10px;right:10px;bottom:9px;top:auto;width:auto;height:46px;max-height:none;min-height:0;flex:none;z-index:32;display:block;overflow:visible;border:0;background:transparent;box-shadow:none}
+ .inspector .panel-head{display:none}
+ .lab-dock{display:flex;align-items:center;gap:9px;width:100%;height:46px;min-height:46px;margin:0;padding:0 12px;color:#e9f8ff;text-align:left;border:1px solid #568c96;border-radius:14px;background:linear-gradient(110deg,#104456e8,#102e45ef);box-shadow:0 6px 24px #0009;backdrop-filter:blur(15px)}
+ .lab-dock-icon{display:grid;place-items:center;flex:0 0 27px;width:27px;height:27px;border-radius:9px;background:#a1ead7;color:#0e3440;font-size:17px}
+ .lab-dock-title{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:750;font-size:13px}
+ .lab-dock-action{color:#b5f6e4;font-size:12px;font-weight:750;white-space:nowrap}
+ .inspector .panel-body{display:none}
+ body.lab-sheet-open .lab-sheet-backdrop{display:block;position:fixed;inset:0;z-index:60;background:#01091242;backdrop-filter:blur(1px)}
+ body.lab-sheet-open .inspector{position:absolute;left:0;right:0;bottom:0;z-index:65;height:min(70dvh,530px);min-height:0;max-height:min(70dvh,530px);display:flex;flex-direction:column;border:1px solid #52768b;border-bottom:0;border-radius:22px 22px 0 0;background:#0b1d30f9;box-shadow:0 -15px 45px #000a;overflow:hidden}
+ body.lab-sheet-open .lab-dock{height:51px;flex:0 0 51px;padding:0 17px;border:0;border-radius:0;background:transparent;box-shadow:none}
+ body.lab-sheet-open .lab-dock-icon{background:#17364b;color:#8adfce}
+ body.lab-sheet-open .lab-dock-action{font-size:20px;font-weight:400}
+ body.lab-sheet-open .inspector .panel-body{display:block;flex:1;overflow-y:auto;overscroll-behavior:contain;padding:0 14px 23px;scrollbar-width:thin}
+ .lab-tabs{position:sticky;top:0;z-index:3;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;padding:2px 0 10px;background:#0b1d30}
+ .lab-tab{font-size:12px;font-weight:700;min-height:38px;border:0;border-radius:10px;background:#132c42;color:#b7cddd}
+ .lab-tab.active{background:#a8eadd;color:#0b3340;box-shadow:none}
+ .lab-expand{display:none}
+ .lab-pane{display:none;padding:7px 0 18px}
+ .lab-pane.active{display:block}
+ .quest-card{background:transparent;border:0;padding:0;box-shadow:none}
+ .quest-top{margin:0 0 8px}
+ .quest-kicker{display:inline;color:#8be2d3;font-size:10px}
+ .quest-dot{height:10px;width:10px}
+ .quest-card h4{font-size:clamp(21px,5.7vw,27px);line-height:1.12;margin:7px 0 10px}
+ .quest-card p{display:block;font-size:14px;line-height:1.5;margin:0 0 14px;color:#c5ddeb}
+ .quest-controls{display:flex;gap:8px;flex-wrap:wrap}
+ .quest-action,.quest-continue{flex:0 1 auto;min-height:42px;padding:9px 14px;border-radius:11px;font-size:13px}
+ .quest-finished{display:block;margin-top:10px}
+ .quest-tip{display:block;margin-top:11px}
+ .discover-progress{display:none}
+ .toast{top:59px;bottom:auto;left:50%;right:auto;max-width:min(340px,calc(100vw - 24px));padding:8px 12px;border-radius:10px;transform:translate(-50%,-8px);text-align:center;background:#103046f5;box-shadow:0 9px 28px #0009}
+ .toast.show{transform:translate(-50%,0)}
+ .kid-controls .subhead{font-size:13px}
+ .switchgrid{gap:8px}
+ .switch{min-height:42px;font-size:12px}
+ .ctrlrow{margin:12px 0 17px}
+ body.show-graphs .analytics{height:min(34dvh,275px);min-height:0;bottom:65px;display:flex;flex-direction:column;overflow:hidden;border:1px solid #49758b;border-radius:15px;background:#0c1d30f5}
+ body.show-graphs .analytics .analytics-head{display:flex;flex:0 0 34px;padding:0 12px}
+ body.show-graphs .analytics .analytics-main{display:grid;flex:1;min-height:0;grid-template-columns:1fr}
+ body.show-graphs .analytics .mathbox{display:none}
+ body.show-graphs .graph-close{display:grid;place-items:center;position:absolute;top:4px;right:4px;width:28px;height:26px;z-index:8;border:1px solid #4b7c91;border-radius:8px;background:#102a42;color:#e5faff;font-size:19px}
+ body.show-graphs .analytics .timeline{flex:0 0 40px;border:0;border-top:1px solid #304b61;border-radius:0;box-shadow:none;background:transparent}
 }
 @media(max-width:370px){
-  .inspector{height:120px;flex-basis:120px}
-  body.lab-expanded .inspector{height:clamp(205px,43dvh,350px);flex-basis:clamp(205px,43dvh,350px)}
+ .sidebar{right:150px}
+ .topbar .solar-entry{padding:7px;font-size:10px}
+ .tools-menu-toggle{width:36px}
+ .camera-menu-toggle{min-width:76px}
+ .lab-dock-title{font-size:12px}
 }
 @media(max-height:650px) and (max-width:850px){
-  .inspector{height:113px;flex-basis:113px}
-  body.lab-expanded .inspector{height:min(45dvh,280px);flex-basis:min(45dvh,280px)}
+ body.lab-sheet-open .inspector{height:min(75dvh,460px);max-height:min(75dvh,460px)}
+ .stage-head{display:none}
 }
+
 </style>
 </head>
 <body>
@@ -364,21 +412,22 @@ html.solar-active,html.solar-active body{overflow:hidden!important;height:100dvh
   <div class="side-end"><div class="live"><span class="led"></span>JE MAG ALLES UITPROBEREN</div><p>Er kan niets stuk. Gewoon proberen!</p><span class="ver">MW-01 / standalone / 06.11.2026</span></div>
 </aside>
 <div class="adventure-backdrop" id="adventureBackdrop" aria-hidden="true" hidden></div>
-<header class="topbar"><div class="breadcrumb">JOUW REIS <span class="slash">/</span><strong id="crumb">GALACTISCHE ATLAS</strong></div><div class="top-actions"><button type="button" id="solarEntry" class="solar-entry">✦ Planeten</button><span class="tag"><span class="dot"></span>JOUW ONTDEKLAB</span><button id="resetView" class="topbtn" title="Camera en tijd herstellen"><svg viewBox="0 0 24 24"><path d="M3 11a9 9 0 1 1 3 7M3 4v7h7"/></svg><span class="btxt">Begin opnieuw</span></button><button id="exportJSON" class="topbtn" title="Sla het model en de instellingen als JSON op"><svg viewBox="0 0 24 24"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 17v4h16v-4"/></svg><span class="btxt">Model bewaren</span></button><button id="snapshot" class="topbtn primary" title="Exporteer de huidige simulatie als PNG"><svg viewBox="0 0 24 24"><path d="M3 7h4l2-3h6l2 3h4v13H3z"/><circle cx="12" cy="13" r="4"/></svg><span class="btxt">Maak een foto</span></button></div></header>
+<header class="topbar"><div class="breadcrumb">JOUW REIS <span class="slash">/</span><strong id="crumb">GALACTISCHE ATLAS</strong></div><div class="top-actions" id="topActions"><button type="button" id="solarEntry" class="solar-entry">✦ Planeten</button><span class="tag"><span class="dot"></span>JOUW ONTDEKLAB</span><button id="toolsMenuToggle" class="tools-menu-toggle" type="button" aria-controls="topActions" aria-expanded="false" aria-label="Meer knoppen" title="Meer knoppen">⋯</button><button id="resetView" class="topbtn" title="Camera en tijd herstellen"><svg viewBox="0 0 24 24"><path d="M3 11a9 9 0 1 1 3 7M3 4v7h7"/></svg><span class="btxt">Begin opnieuw</span></button><button id="exportJSON" class="topbtn" title="Sla het model en de instellingen als JSON op"><svg viewBox="0 0 24 24"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 17v4h16v-4"/></svg><span class="btxt">Model bewaren</span></button><button id="snapshot" class="topbtn primary" title="Exporteer de huidige simulatie als PNG"><svg viewBox="0 0 24 24"><path d="M3 7h4l2-3h6l2 3h4v13H3z"/><circle cx="12" cy="13" r="4"/></svg><span class="btxt">Maak een foto</span></button></div></header>
 <section class="stage" id="stage" aria-label="Interactieve 3D-weergave van de Melkweg">
   <canvas id="universe" aria-label="Projectie van het synthetische Melkwegmodel; beweeg de muis om te draaien, scroll om te zoomen"></canvas>
   <div class="stage-head"><div class="eyebrow" id="scene-eyebrow">01 / GALACTISCHE ATLAS</div><h2 id="scene-title">De Melkweg,<br>van buiten bekeken</h2><p id="scene-desc">Draai het model, verander het tijdstip en onderzoek hoe de <strong>schijf, balk, halo en spiraalarmen</strong> samenhangen.</p></div>
 
   <div class="stage-metrics"><div>PROJECTIE <b id="viewangle">38° / 24°</b></div><div>VENSTER <b id="viewscale">40 kpc</b></div><div id="focuslabel">FOCUS <b id="focusvalue">R = 8,2 kpc</b></div></div>
   <div class="scene-badge" id="scene-badge">● <span>Wetenschappelijk model</span><br>Geen directe opname van buitenaf</div>
-  <div class="stage-hud-bottom"><div class="scene-meta"><span id="scale-label">▱ 5 kpc</span><br><strong id="scene-hint">SLEEP OVER DE STERREN OM TE DRAAIEN</strong></div><div class="camera-controls" aria-label="Camera-oriëntatie"><button class="cambtn" data-cam="face">Van boven</button><button class="cambtn active" data-cam="tilt">3D</button><button class="cambtn" data-cam="edge">Van opzij</button><button class="cambtn" data-cam="sun">☉ Zon</button></div></div>
+  <div class="stage-hud-bottom"><button class="camera-menu-toggle" id="cameraMenuToggle" type="button" aria-controls="cameraPresets" aria-expanded="false">◉ Bekijk</button><div class="scene-meta"><span id="scale-label">▱ 5 kpc</span><br><strong id="scene-hint">SLEEP OVER DE STERREN OM TE DRAAIEN</strong></div><div class="camera-controls" id="cameraPresets" aria-label="Camera-oriëntatie"><button class="cambtn" data-cam="face">Van boven</button><button class="cambtn active" data-cam="tilt">3D</button><button class="cambtn" data-cam="edge">Van opzij</button><button class="cambtn" data-cam="sun">☉ Zon</button></div></div>
 </section>
-<section class="analytics" aria-label="Analyse en simulatieklok">
+<section class="analytics" aria-label="Analyse en simulatieklok"><button id="graphClose" class="graph-close" type="button" aria-label="Sluit de grafiek">×</button>
   <div class="analytics-head"><h3 id="plot-title">RADIALE OPPERVLAKTEDICHTHEID</h3><div class="cal-tag" id="plot-tag">MODEL • NIET WAARGENOMEN</div></div>
   <div class="analytics-main"><div class="chartbox"><canvas id="plot" aria-label="Interactieve wetenschappelijke grafiek"></canvas><div id="plotTooltip" class="cursorinfo"></div></div><div class="mathbox"><div class="math-label" id="formula-label">MODEL / SCHIJFPROFIEL</div><div class="formula" id="formula">Σ(R) = Σ₀ exp(−R/R<sub>d</sub>)</div><div class="formula-sub" id="formula-sub">Een exponentiële schijf is een vereenvoudiging. De echte Melkweg heeft asymmetrie, gas, stof en substructuur.</div></div></div>
   <div class="timeline"><button id="play" aria-label="Animatie afspelen of pauzeren"><span id="playico" class="playico">Ⅱ</span></button><label for="timeslider" id="time-label">GALACTISCHE TIJD</label><input id="timeslider" type="range" min="0" max="500" step="1" value="0" aria-label="Simulatietijd"><span class="tvalue" id="timevalue">+000 Myr</span><div class="speed-wrap"><span>SNELHEID</span><select id="speeds" aria-label="Simulatiesnelheid"><option value="1">1×</option><option value="3">3×</option><option value="9" selected>9×</option><option value="24">24×</option></select></div></div>
 </section>
-<aside class="inspector" aria-label="Wetenschappelijk bedieningspaneel"><div class="panel-head"><div class="section-counter"><span>DIT KUN JE PROBEREN</span><b id="inspector-counter">01 / 06</b></div><h3 id="inspector-title">Galactische morfologie</h3><p id="inspector-lead">Schakel onderdelen in en uit. De ruimtelijke verdeling is synthetisch, niet een ster-voor-sterreconstructie.</p></div><div class="panel-body" id="inspector-body"></div></aside>
+<aside class="inspector" aria-label="Ontdekken en experimenteren"><button class="lab-dock" type="button" id="labDock" aria-expanded="false" aria-controls="inspector-body"><span class="lab-dock-icon" aria-hidden="true">✦</span><span class="lab-dock-title" id="labDockTitle">Is de Melkweg plat?</span><span class="lab-dock-action" id="labDockAction">Open ›</span></button><div class="panel-head"><div class="section-counter"><span>DIT KUN JE PROBEREN</span><b id="inspector-counter">01 / 06</b></div><h3 id="inspector-title">Galactische morfologie</h3><p id="inspector-lead">Schakel onderdelen in en uit. De ruimtelijke verdeling is synthetisch, niet een ster-voor-sterreconstructie.</p></div><div class="panel-body" id="inspector-body"></div></aside>
+<div class="lab-sheet-backdrop" id="labBackdrop" hidden></div>
 </div>
 
 <section id="solarExplorer" aria-label="Ontdek het zonnestelsel" role="dialog" aria-modal="true" hidden>
@@ -639,7 +688,7 @@ let activeLabTab='proef';
 function panelHTML(){return `<div class="lab-tabs" role="tablist" aria-label="Kies wat je wilt doen">
  <button class="lab-tab" data-labtab="proef" id="tab-proef" type="button" role="tab" aria-controls="pane-proef" aria-selected="true">Probeer</button>
  <button class="lab-tab" data-labtab="speel" id="tab-speel" type="button" role="tab" aria-controls="pane-speel" aria-selected="false">Verander</button>
- <button class="lab-tab" data-labtab="meer" id="tab-meer" type="button" role="tab" aria-controls="pane-meer" aria-selected="false">Ontdek meer</button><button class="lab-expand" id="labExpand" type="button" aria-expanded="false" aria-label="Toon meer uitleg en knoppen" title="Klap het paneel open">⌃</button></div>
+ <button class="lab-tab" data-labtab="meer" id="tab-meer" type="button" role="tab" aria-controls="pane-meer" aria-selected="false">Ontdek meer</button></div>
  <section class="lab-pane" data-pane="proef" id="pane-proef" role="tabpanel" aria-labelledby="tab-proef">${discoveryHTML()}</section>
  <section class="lab-pane" data-pane="speel" id="pane-speel" role="tabpanel" aria-labelledby="tab-speel">${miniLab()}<div class="kid-controls">${kidControls()}</div></section>
  <section class="lab-pane" data-pane="meer" id="pane-meer" role="tabpanel" aria-labelledby="tab-meer"><div class="live-fact" aria-live="polite"><b>WAT ZIE JE?</b><p id="live-fact-text">${esc(kidLive())}</p></div>
@@ -647,12 +696,16 @@ function panelHTML(){return `<div class="lab-tabs" role="tablist" aria-label="Ki
  <button type="button" class="graph-toggle" id="graphToggle" aria-expanded="false">+ Bekijk de geheime grafiek</button>
  <details class="explain-details"><summary>Uitleg en bronnen</summary><div class="explain-body"><p class="kid-description">Dit is een computermodel. Het is geen foto die van buitenaf is gemaakt. De echte sterrenkunde is nog ingewikkelder.</p>${theoryBlock(state.mode)}${sourceBlock()}<div class="explorer-actions"><button class="tinybtn" data-action="export-json">Sla alle gegevens op</button></div></div></details></section>`;}
 function setLabPanelExpanded(expanded){
- document.body.classList.toggle('lab-expanded',expanded);
- const toggle=$('labExpand');
- if(toggle){toggle.setAttribute('aria-expanded',String(expanded));toggle.setAttribute('aria-label',expanded?'Maak het paneel kleiner':'Toon meer uitleg en knoppen');toggle.title=expanded?'Klap het paneel dicht':'Klap het paneel open';toggle.textContent=expanded?'⌄':'⌃';}
- if(window.innerWidth<=850)requestAnimationFrame(()=>{resize();chartDirty=true;});
+ if(window.innerWidth>850)return;
+ document.body.classList.toggle('lab-sheet-open',expanded);
+ $('labBackdrop').hidden=!expanded;
+ $('labDock').setAttribute('aria-expanded',String(expanded));
+ $('labDock').setAttribute('aria-label',expanded?'Sluit het ontdekkingspaneel':'Open het ontdekkingspaneel');
+ $('labDockAction').textContent=expanded?'×':'Open ›';
+ if(expanded){document.body.classList.remove('camera-menu-open');$('cameraMenuToggle').setAttribute('aria-expanded','false');document.querySelector('.topbar').classList.remove('tools-open');$('toolsMenuToggle').setAttribute('aria-expanded','false');}
+ requestAnimationFrame(()=>{resize();chartDirty=true;});
 }
-function selectLabTab(name){if(!['proef','speel','meer'].includes(name))return;activeLabTab=name;setLabPanelExpanded(name!=='proef');
+function selectLabTab(name){if(!['proef','speel','meer'].includes(name))return;activeLabTab=name;
  document.querySelectorAll('.lab-tab').forEach(b=>{const on=b.dataset.labtab===name;b.classList.toggle('active',on);b.setAttribute('aria-selected',String(on));b.tabIndex=on?0:-1;});
  document.querySelectorAll('.lab-pane').forEach(p=>p.classList.toggle('active',p.dataset.pane===name));
  $('inspector-body').scrollTop=0;
@@ -730,13 +783,14 @@ document.addEventListener('change',e=>{if(e.target.matches('[data-layer]'))Promi
 
 
 document.addEventListener('click',e=>{
- const b=e.target.closest('#graphToggle');if(!b)return;
+ const b=e.target.closest('#graphToggle,#graphClose');if(!b)return;
  const yes=!document.body.classList.contains('show-graphs');document.body.classList.toggle('show-graphs',yes);
- b.setAttribute('aria-expanded',yes?'true':'false');b.textContent=yes?'− Verberg de grafiek':'+ Bekijk de geheime grafiek';
+ const trigger=$('graphToggle');if(trigger){trigger.setAttribute('aria-expanded',yes?'true':'false');trigger.textContent=yes?'− Verberg de grafiek':'+ Bekijk de geheime grafiek';}
+ if(yes&&window.innerWidth<=850)setLabPanelExpanded(false);
  requestAnimationFrame(()=>{resize();chartDirty=true;});
 });
 
-function bindPanel(){let html=panelHTML();$('inspector-body').innerHTML=html;document.querySelectorAll('.lab-tab').forEach(b=>b.addEventListener('click',()=>selectLabTab(b.dataset.labtab)));$('labExpand').addEventListener('click',()=>setLabPanelExpanded(!document.body.classList.contains('lab-expanded')));selectLabTab(activeLabTab);document.querySelectorAll('[data-layer]').forEach(el=>el.addEventListener('change',()=>{state.layer[el.dataset.layer]=el.checked;chartDirty=true;}));
+function bindPanel(){let html=panelHTML();$('inspector-body').innerHTML=html;document.querySelectorAll('.lab-tab').forEach(b=>b.addEventListener('click',()=>selectLabTab(b.dataset.labtab)));selectLabTab(activeLabTab);$('labDockTitle').textContent=QUESTS[state.mode][activeQuest[state.mode]].title;document.querySelectorAll('[data-layer]').forEach(el=>el.addEventListener('change',()=>{state.layer[el.dataset.layer]=el.checked;chartDirty=true;}));
  function input(id,fn,format){let el=$(id);if(!el)return;el.addEventListener('input',()=>{let v=Number(el.value);fn(v);if($(id+'out'))$(id+'out').textContent=format(v);chartDirty=true;updateLiveStats();});}
  input('pitch',v=>{state.pitch=v;updatePitch()},v=>v+'°');input('extinction',v=>state.extinction=v,v=>fmt(v,1)+'×');
  input('haloMass',v=>{state.model.halo=v;recalcOmega()},v=>fmt(v,2)+'×10¹² M☉');
@@ -929,6 +983,52 @@ solarCanvas.addEventListener('click',e=>{let r=solarCanvas.getBoundingClientRect
 solarCanvas.addEventListener('pointermove',e=>{let r=solarCanvas.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;solarCanvas.style.cursor=solarPoints.some(p=>Math.hypot(x-p.x,y-p.y)<Math.max(23,p.pix+13))?'pointer':'crosshair'});
 solarCanvas.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();selectPlanet((solarSelected+1)%PLANETS.length)}});
 window.addEventListener('keydown',e=>{if(e.key==='Escape'&&solarOpen){e.stopPropagation();closeSolar()}});
+
+
+// Mobiel: open een ontdekpaneel op aanvraag en laat het sterrenbeeld vrij.
+$('labDock').addEventListener('click',()=>setLabPanelExpanded(!document.body.classList.contains('lab-sheet-open')));
+$('labBackdrop').addEventListener('click',()=>setLabPanelExpanded(false));
+$('cameraMenuToggle').addEventListener('click',()=>{
+ const expanded=!document.body.classList.contains('camera-menu-open');
+ document.body.classList.toggle('camera-menu-open',expanded);
+ $('cameraMenuToggle').setAttribute('aria-expanded',String(expanded));
+ document.querySelector('.topbar').classList.remove('tools-open');$('toolsMenuToggle').setAttribute('aria-expanded','false');
+});
+$('toolsMenuToggle').addEventListener('click',()=>{
+ const bar=document.querySelector('.topbar'),expanded=!bar.classList.contains('tools-open');
+ bar.classList.toggle('tools-open',expanded);
+ $('toolsMenuToggle').setAttribute('aria-expanded',String(expanded));
+ document.body.classList.remove('camera-menu-open');$('cameraMenuToggle').setAttribute('aria-expanded','false');
+});
+document.addEventListener('click',ev=>{
+ if(ev.target.closest('.camera-controls [data-cam]')){
+  document.body.classList.remove('camera-menu-open');
+  $('cameraMenuToggle').setAttribute('aria-expanded','false');
+ }
+ if(ev.target.closest('.topbar .topbtn')){
+  document.querySelector('.topbar').classList.remove('tools-open');
+  $('toolsMenuToggle').setAttribute('aria-expanded','false');
+ }
+ if(ev.target.closest('[data-mode]') && window.innerWidth<=850){
+  setLabPanelExpanded(false);
+ }
+ if(ev.target.closest('.inspector [data-action]') && window.innerWidth<=850){
+  const action=ev.target.closest('[data-action]').dataset.action;
+  if(!['next-quest','export-json'].includes(action))queueMicrotask(()=>setLabPanelExpanded(false));
+ }
+ if(window.innerWidth<=850 && !ev.target.closest('.stage-hud-bottom,.topbar,.sidebar,.inspector')){
+  document.body.classList.remove('camera-menu-open');
+  $('cameraMenuToggle').setAttribute('aria-expanded','false');
+  document.querySelector('.topbar').classList.remove('tools-open');
+  $('toolsMenuToggle').setAttribute('aria-expanded','false');
+ }
+});
+window.addEventListener('keydown',e=>{
+ if(e.key!=='Escape')return;
+ if(document.body.classList.contains('lab-sheet-open')){setLabPanelExpanded(false);$('labDock').focus();}
+ document.body.classList.remove('camera-menu-open');$('cameraMenuToggle').setAttribute('aria-expanded','false');
+ document.querySelector('.topbar').classList.remove('tools-open');$('toolsMenuToggle').setAttribute('aria-expanded','false');
+});
 
 // UI bindings
 $('navigation').addEventListener('click',ev=>{let b=ev.target.closest('[data-mode]');if(b)modeSet(b.dataset.mode)});
