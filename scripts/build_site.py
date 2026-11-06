@@ -2072,6 +2072,17 @@ NAV_GROUPS = [
         ("/taalwerkvormen/", "TAALwerkvormen"),
         ("/werkvormen/#didactisch-model", "Didactische modellen"),
     ]),
+    ("tools", "Tools", [
+        ("/tools/", "Alle tools"),
+        ("/tools/melkweg-lab/", "Melkweg Lab"),
+        ("/tools/science-observatory/", "Science Observatory"),
+        ("/tools/llm-observatorium/", "LLM Observatorium"),
+        ("/tools/abyss/", "ABYSS"),
+        ("/tools/wihtml/", "WiHTML Docentstudio"),
+        ("/tools/prompt-framework/", "EAI Prompt Framework"),
+        ("/model-monitor/", "AI Model Monitor"),
+        ("/nl/insights/", "Website-inzichten"),
+    ]),
     ("kennis", "Kennis", [
         ("/kennis/", "Overzicht kennis"),
         ("/onderbouwing/", "Onderbouwing"),
@@ -2088,7 +2099,7 @@ def nav(active: str = "") -> str:
         active_key = "toepassingen"
     elif active in {"werkvormen", "taal", "workshop"}:
         active_key = "onderwijs"
-    elif active in {"verdieping", "onderbouwing", "bronnen", "publicaties", "tools", "pijlers"}:
+    elif active in {"verdieping", "onderbouwing", "bronnen", "publicaties", "pijlers"}:
         active_key = "kennis"
 
     desktop_groups = []
@@ -2143,7 +2154,7 @@ def doc(title: str, body: str, canonical_path: str, active: str = "", descriptio
     desc = description or "EAI — Educational AI, leren en eigenaarschap."
     canonical = f"{BASE_URL}{canonical_path}"
     body = body.replace("<main", '<main id="main-content"', 1)
-    return f'<!doctype html><html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{esc(title)} · EAI</title><meta name="description" content="{esc(desc)}"><link rel="canonical" href="{esc(canonical)}"><link rel="icon" href="/assets/eai-logo.svg" type="image/svg+xml"><link rel="stylesheet" href="/assets/site.css"></head><body><a class="skip-link" href="#main-content">Ga naar de inhoud</a>{nav(active)}{body}{footer()}</body></html>'
+    return f'<!doctype html><html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{esc(title)} · EAI</title><meta name="description" content="{esc(desc)}"><link rel="canonical" href="{esc(canonical)}"><link rel="icon" href="/assets/eai-logo.svg" type="image/svg+xml"><link rel="stylesheet" href="/assets/site.css"></head><body><a class="skip-link" href="#main-content">Ga naar de inhoud</a>{nav(active)}{body}{footer()}<script defer src="/assets/site-insights.js"></script></body></html>'
 
 def render_article_fragment(fragment: Path, title: str, canonical_path: str, description: str) -> str:
     body = fragment.read_text(encoding="utf-8")

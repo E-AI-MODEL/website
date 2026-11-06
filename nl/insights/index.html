@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EAI / Website-inzichten</title><meta name="description" content="Dagtotalen, zonder cookies, vaste bezoekerscodes of persoonlijke profielen.">
+<link rel="canonical" href="https://eaimodel.nl/nl/insights/">
+<link rel="alternate" hreflang="en" href="https://eaimodel.nl/en/insights/">
+<link rel="icon" href="/assets/eai-logo.svg" type="image/svg+xml">
+<style>
+:root{color-scheme:light;--paper:#f5f7f6;--ink:#182527;--mute:#647477;--line:#d9e1e0;--bright:#fff;--accent:#315d62}*{box-sizing:border-box}
+html{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--paper);-webkit-font-smoothing:antialiased}
+body{margin:0;min-width:320px}a{color:inherit;text-decoration:none}a:hover{text-decoration:underline;text-underline-offset:4px}
+button{font:inherit;cursor:pointer}.shell{max-width:1280px;padding:0 35px;margin:auto}.bar{border-bottom:1px solid var(--line);background:rgba(255,255,255,.7)}.nav{min-height:65px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+.ident{display:flex;align-items:center;gap:13px;font-size:12px;font-weight:670;letter-spacing:.13em;text-transform:uppercase}.logo{display:grid;place-items:center;border:1px solid #8d9d9a;border-radius:4px;width:29px;height:29px;font-size:11px;letter-spacing:0}
+.links{display:flex;gap:21px;align-items:center;font-size:12px;color:#57686a}.links a{white-space:nowrap}.heading{padding-top:51px;padding-bottom:33px}.overline{font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:#63817f}
+.heading h1{font-size:clamp(27px,3.3vw,43px);line-height:1.16;letter-spacing:-.045em;font-weight:530;margin:14px 0 11px;max-width:850px}.heading p{font-size:14px;line-height:1.65;color:var(--mute);margin:0;max-width:700px}
+.toolbar{display:flex;gap:16px;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);padding:15px 0 20px;flex-wrap:wrap}
+.live{font-size:12px;color:var(--mute)}.live:before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:#74938e;margin-right:8px;vertical-align:2px}
+.days{display:flex;align-items:center;gap:5px}.days-label{font-size:11px;letter-spacing:.1em;text-transform:uppercase;margin-right:8px;color:var(--mute)}
+.days button{border:1px solid transparent;border-radius:3px;background:transparent;padding:8px 11px;color:var(--mute);font-size:12px;min-width:54px}
+.days button[aria-pressed=true]{border-color:#9db4b0;background:#e9f0ee;color:var(--ink)}button:focus-visible,a:focus-visible{outline:2px solid #315d62;outline-offset:3px}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-bottom:1px solid var(--line)}
+.metric{padding:31px 21px 31px 0;border-right:1px solid var(--line);margin:20px 0}.metric:not(:first-child){padding-left:24px}.metric:last-child{border-right:0}
+.metric small{display:block;letter-spacing:.02em;color:var(--mute);font-size:12px}.metric strong{display:block;font-size:clamp(25px,3.4vw,39px);line-height:1.25;letter-spacing:-.04em;font-weight:480;margin-top:12px;font-variant-numeric:tabular-nums}
+.panels{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(270px,1fr);gap:15px;padding:20px 0 0}.panel{border:1px solid var(--line);background:var(--bright);border-radius:5px;min-width:0;padding:24px 26px}
+.panel-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:12px}.panel h2{font-size:14px;letter-spacing:-.01em;font-weight:640;margin:0}.panel .tag{font:11px ui-monospace,SFMono-Regular,Consolas,monospace;color:#758b8a;text-transform:uppercase}
+.chart{width:100%;height:auto;display:block;overflow:visible}.xticks{font-size:12px;color:var(--mute);text-align:right;font-variant-numeric:tabular-nums}
+.panel-stack{display:grid;gap:15px}.rank{padding:10px 0;border-bottom:1px solid #eff2f1}.rank:last-child{border-bottom:0}.rank-top{display:flex;justify-content:space-between;gap:10px;align-items:baseline;font-size:12px}.rank-top span{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;color:#475c5c}.rank-top strong{font-size:12px;font-variant-numeric:tabular-nums;font-weight:560}
+.track{height:2px;margin-top:11px;background:#ecf0ef}.track span{display:block;height:2px;background:#628b85;transition:width .3s ease}.empty{font-size:12px;color:var(--mute);margin:16px 0}
+.footnote{border-top:1px solid var(--line);margin:23px 0 45px;padding:21px 0;display:grid;grid-template-columns:180px 1fr;gap:20px}.footnote h2{font-size:13px;font-weight:650;margin:1px 0}.footnote p{color:var(--mute);margin:0;line-height:1.65;font-size:12px;max-width:850px}
+.bottom{border-top:1px solid var(--line);padding:17px 0 25px;font-size:11px;letter-spacing:.08em;color:var(--mute);display:flex;justify-content:space-between}
+@media(max-width:900px){.panels{grid-template-columns:1fr}.panel-stack{grid-template-columns:1fr 1fr}.metric{padding-right:15px}.metric:not(:first-child){padding-left:16px}}
+@media(max-width:600px){.shell{padding:0 17px}.nav{min-height:57px}.links{gap:12px}.ident{font-size:10px}.links{font-size:11px}.heading{padding:30px 0 21px}.stats{grid-template-columns:1fr 1fr}.metric{margin:0;padding:20px 10px 20px 0!important;border-bottom:1px solid var(--line)}.metric:nth-child(2){padding-left:17px!important;border-right:0}.metric:nth-child(3){border-bottom:0}.metric:last-child{border-bottom:0;padding-left:17px!important}.metric strong{font-size:28px}.panel{padding:20px 15px}.panel-stack{grid-template-columns:1fr}.footnote{grid-template-columns:1fr;gap:6px}.xticks{font-size:11px}}
+@media(prefers-reduced-motion:reduce){.track span{transition:none}}
+</style></head>
+<body><header class="bar"><nav class="shell nav" aria-label="Navigatie"><div class="ident"><a class="logo" href="/nl/" aria-label="EAI">EAI</a><span>DATA / EAI</span></div><div class="links"><a href="/nl/">Terug naar EAI</a><a href="/nl/tools/">Bekijk de tools</a><div class="eai-lang" role="group" aria-label="Kies taal"><a href="/nl/insights/" lang="nl" aria-current="page">NL</a><a href="/en/insights/" lang="en">EN</a></div></div></nav></header>
+<main class="shell"><section class="heading"><span class="overline">EAI · 01 / INSIGHTS</span><h1>Wat bekijken bezoekers op deze site?</h1><p>Dagtotalen, zonder cookies, vaste bezoekerscodes of persoonlijke profielen.</p></section>
+<div class="toolbar"><span id="notice" class="live" role="status" aria-live="polite">Echte metingen ophalen…</span><div class="days" role="group" aria-label="Periode"><span class="days-label">Periode</span><button type="button" data-days="7" aria-pressed="false">7D</button><button type="button" data-days="30" aria-pressed="true">30D</button><button type="button" data-days="90" aria-pressed="false">90D</button></div></div>
+<section class="stats" aria-label="Website-inzichten"><div class="metric"><small>Paginaweergaven</small><strong id="page">—</strong></div><div class="metric"><small>Openingen van tools</small><strong id="opens">—</strong></div><div class="metric"><small>Minimaal 20 sec. gelezen</small><strong id="read">—</strong></div><div class="metric"><small>Mobiele paginaweergaven</small><strong id="mobile">—</strong></div></section>
+<div class="panels"><section class="panel"><div class="panel-head"><h2>Paginaweergaven per dag</h2><span class="tag">UTC / gebeurtenissen</span></div><svg id="trend" class="chart" viewBox="0 0 900 260" role="img" aria-label="Paginaweergaven per dag"></svg><div id="xticks" class="xticks"> </div></section><div class="panel-stack"><section class="panel"><div class="panel-head"><h2>Meest bekeken pagina’s</h2><span class="tag">TOP 06</span></div><div id="popular"></div></section><section class="panel"><div class="panel-head"><h2>Geopende tools</h2><span class="tag">TOP 06</span></div><div id="tools"></div></section></div></div>
+<section class="footnote"><h2>Wat tellen we precies?</h2><p>Een paginaweergave is een geladen pagina, geen unieke bezoeker. Een toolopening is een klik vanuit deze site naar een tool. Langer gelezen betekent dat de pagina minstens 20 seconden zichtbaar was. Geautomatiseerde bezoeken kunnen de aantallen beïnvloeden. We bewaren in de statistiekentabel geen namen, IP-adressen, zoekopdrachten, cookies of vaste bezoekerscodes.</p></section></main><footer class="shell bottom"><span>EAI / INSIGHTS</span><span>© EAI</span></footer>
+<script type="application/json" id="i18n">{"title":"Website-inzichten","intro":"Wat bekijken bezoekers op deze site?","sub":"Dagtotalen, zonder cookies, vaste bezoekerscodes of persoonlijke profielen.","back":"Terug naar EAI","tools":"Bekijk de tools","page":"Paginaweergaven","opens":"Openingen van tools","read":"Minimaal 20 sec. gelezen","mobile":"Mobiele paginaweergaven","trend":"Paginaweergaven per dag","popular":"Meest bekeken pagina’s","used":"Geopende tools","loading":"Echte metingen ophalen…","empty":"Nog geen metingen voor deze periode.","error":"De metingen zijn momenteel niet beschikbaar.","privacy":"Wat tellen we precies?","privacyText":"Een paginaweergave is een geladen pagina, geen unieke bezoeker. Een toolopening is een klik vanuit deze site naar een tool. Langer gelezen betekent dat de pagina minstens 20 seconden zichtbaar was. Geautomatiseerde bezoeken kunnen de aantallen beïnvloeden. We bewaren in de statistiekentabel geen namen, IP-adressen, zoekopdrachten, cookies of vaste bezoekerscodes.","unit":"gebeurtenissen","today":"Bijgewerkt","source":"Echte dagtotalen uit de EAI-statistiekendienst","home":"Homepage","none":"Nog geen gegevens","language":"English","period":"Periode"}</script><script>
+(function(){
+'use strict';
+var I=JSON.parse(document.getElementById('i18n').textContent),locale=document.documentElement.lang==='en'?'en-GB':'nl-NL';
+var service='https://ngcyfbstajfcfdhlelbz.supabase.co/functions/v1/eai-site-insights';
+var current=30;
+var summary=document.getElementById('summary'),notice=document.getElementById('notice');
+var trend=document.getElementById('trend'),xticks=document.getElementById('xticks');
+var nf=new Intl.NumberFormat(locale);
+var titleMap={'/':'Homepage','/nl/':'Homepage','/en/':'Home','/nl/tools/':'Tools','/en/tools/':'Tools','/tools/':'Tools','/tools/melkweg-lab/':'Melkweg Lab','/tools/wihtml/':'WiHTML','/tools/science-observatory/':'Science Observatory','/tools/llm-observatorium/':'LLM Observatorium','/tools/abyss/':'ABYSS','/tools/eaimesh/':'EAImesh','/tools/eaistudio/':'EAIstudio','/nl/insights/':'Website-inzichten','/en/insights/':'Site insights'};
+function nameFor(p){return titleMap[p]||p.replace(/^\/(nl|en)\//,'/').replace(/^\/|\/$/g,'').replaceAll('-',' ')||I.home;}
+function format(n){return nf.format(n);}
+function days(n){
+ var out=[];var now=new Date();var start=new Date(Date.UTC(now.getUTCFullYear(),now.getUTCMonth(),now.getUTCDate()));
+ for(var i=n-1;i>=0;i--){var d=new Date(start);d.setUTCDate(d.getUTCDate()-i);out.push(d.toISOString().slice(0,10));}
+ return out;
+}
+function totals(rows,type){return rows.filter(function(r){return r.event===type;}).reduce(function(a,r){return a+Number(r.count||0);},0);}
+function card(id,value){document.getElementById(id).textContent=value;}
+function ranks(rows,type,id){
+ var sums={};
+ rows.filter(function(r){return r.event===type;}).forEach(function(r){sums[r.path]=(sums[r.path]||0)+Number(r.count||0);});
+ var all=Object.keys(sums).sort(function(a,b){return sums[b]-sums[a];}).slice(0,6),max=Math.max(1,...all.map(function(k){return sums[k];}));
+ var root=document.getElementById(id);root.replaceChildren();
+ if(!all.length){var e=document.createElement('p');e.className='empty';e.textContent=I.none;root.appendChild(e);return;}
+ all.forEach(function(k,i){
+  var item=document.createElement('div');item.className='rank';var top=document.createElement('div');top.className='rank-top';
+  var label=document.createElement('span');label.textContent=String(i+1).padStart(2,'0')+'  '+nameFor(k);
+  var count=document.createElement('strong');count.textContent=format(sums[k]);top.append(label,count);
+  var track=document.createElement('div');track.className='track';var fill=document.createElement('span');fill.style.width=Math.max(2,sums[k]/max*100)+'%';track.appendChild(fill);item.append(top,track);root.appendChild(item);
+ });
+}
+function plot(rows,n){
+ var ds=days(n),map={};
+ rows.filter(function(r){return r.event==='pagina';}).forEach(function(r){map[r.day]=(map[r.day]||0)+Number(r.count||0);});
+ var values=ds.map(function(d){return map[d]||0;});var max=Math.max(1,...values);
+ var W=900,H=260,L=38,R=16,T=20,B=36,cw=W-L-R,ch=H-T-B;
+ function x(i){return L+cw*i/Math.max(1,values.length-1);}
+ function y(v){return T+ch*(1-v/max);}
+ function line(){return values.map(function(v,i){return (i?'L':'M')+x(i).toFixed(1)+' '+y(v).toFixed(1);}).join(' ');}
+ var path=line(),area=path+' L'+x(values.length-1).toFixed(1)+' '+(T+ch)+' L'+L+' '+(T+ch)+' Z';
+ var svg='<defs><linearGradient id="area" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#658d89" stop-opacity=".23"/><stop offset="1" stop-color="#658d89" stop-opacity="0"/></linearGradient></defs>';
+ for(var i=0;i<=4;i++){var yy=T+ch*i/4,lab=Math.round(max*(1-i/4));svg+='<line x1="'+L+'" y1="'+yy+'" x2="'+(W-R)+'" y2="'+yy+'" stroke="#dce4e4" stroke-width="1"/><text x="0" y="'+(yy+4)+'" fill="#667575" font-size="12">'+lab+'</text>';}
+ svg+='<path d="'+area+'" fill="url(#area)"/><path d="'+path+'" fill="none" stroke="#315d62" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>';
+ values.forEach(function(v,i){if(v>0&&(n<=7||i===0||i===values.length-1)){svg+='<circle cx="'+x(i).toFixed(1)+'" cy="'+y(v).toFixed(1)+'" r="3" fill="#315d62"/>'; }});
+ trend.setAttribute('viewBox','0 0 '+W+' '+H);trend.innerHTML=svg;
+ xticks.textContent=new Date(ds[0]+'T00:00:00Z').toLocaleDateString(locale,{day:'numeric',month:'short',timeZone:'UTC'})+'   /   '+new Date(ds[ds.length-1]+'T00:00:00Z').toLocaleDateString(locale,{day:'numeric',month:'short',timeZone:'UTC'});
+}
+async function update(n){
+ current=n;document.querySelectorAll('[data-days]').forEach(function(b){var yes=Number(b.dataset.days)===n;b.setAttribute('aria-pressed',String(yes));});
+ notice.textContent=I.loading;notice.dataset.status='loading';card('page','—');card('opens','—');card('read','—');card('mobile','—');
+ try{
+  var result=await fetch(service+'?days='+n,{cache:'no-store'});
+  if(!result.ok)throw Error('No data');
+  var data=await result.json(),rows=Array.isArray(data.rows)?data.rows:[];
+  var p=totals(rows,'pagina'),o=totals(rows,'tool'),r=totals(rows,'gelezen'),m=rows.filter(function(x){return x.event==='pagina'&&x.device==='mobiel';}).reduce(function(a,x){return a+Number(x.count||0);},0);
+  card('page',format(p));card('opens',format(o));card('read',format(r));card('mobile',p?Math.round(100*m/p)+'%':'—');
+  ranks(rows,'pagina','popular');ranks(rows,'tool','tools');plot(rows,n);
+  notice.textContent=rows.length?I.source:I.empty;notice.dataset.status=rows.length?'ready':'empty';
+ }catch(e){notice.textContent=I.error;notice.dataset.status='error';ranks([],'pagina','popular');ranks([],'tool','tools');plot([],n);}
+}
+document.querySelectorAll('[data-days]').forEach(function(b){b.addEventListener('click',function(){update(Number(b.dataset.days));});});
+update(current);
+})();</script><script src="/assets/site-insights.js" defer></script></body></html>

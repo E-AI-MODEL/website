@@ -69,9 +69,15 @@ jobs:
       - name: Test LEIF en het toevoegen van testers
         run: node --test tests/test_leif_kei.mjs tests/test_leif_multitenant.mjs tests/test_leif_testers.mjs tests/test_leif_unified_login.mjs tests/test_leif_site_texts.mjs
 
+      - name: Check website insights and menu
+        run: python -m unittest discover -s tests -p 'test_site_insights.py' -v
+
       - name: Build site
         run: |
           python scripts/build_site.py --sources content/legacy --out site-build
+
+      - name: Check site insights, navigation and privacy
+        run: python -m unittest discover -s tests -p 'test_site_insights.py' -v
 
       - name: Check WiHTML pages and reviewed studio copy
         run: python -m unittest discover -s tests -p "test_wihtml_publish.py" -v

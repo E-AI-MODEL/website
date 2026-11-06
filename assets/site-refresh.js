@@ -41,14 +41,18 @@
       ['Explore',[['The EAI model','/en/#model'],['Education','/en/education/']]],
       ['Applications',[['All applications','/en/applications/'],['Education','/en/education/']]],
       ['Research',[['Research','/en/research/'],['Publications','/en/publications/']]],
-      ['Tools',[['All tools','/en/tools/'],['Model Monitor','/en/model-monitor/'],['LLMscan','/en/llmscan/']]],
-      ['About EAI',[['About EAI and Hans Visser','/en/about/']]]
+      ['Observatories',[['Milky Way Lab','/tools/melkweg-lab/'],['Science Observatory','/tools/science-observatory/'],['LLM Observatory','/tools/llm-observatorium/'],['ABYSS','/tools/abyss/']]],
+      ['Create',[['WiHTML Studio','/tools/wihtml/'],['Prompt Framework','/tools/prompt-framework/'],['Process to prompt','/tools/van-proces-naar-prompt/']]],
+      ['Tools & monitors',[['All tools','/en/tools/'],['Model Monitor','/en/model-monitor/'],['LLMscan','/en/llmscan/']]],
+      ['About EAI',[['About EAI','/en/about/'],['Site insights','/en/insights/']]]
     ]:[
       ['Ontdekken',[['Het EAI-model','/nl/#model'],['EAI in het onderwijs','/nl/onderwijs/']]],
       ['Toepassingen',[['Alle toepassingen','/nl/toepassingen/'],['Onderwijs in','/onderwijsin/']]],
       ['Onderzoek',[['Onderzoek','/nl/onderzoek/'],['Publicaties','/nl/publicaties/']]],
-      ['Tools',[['Alle tools','/nl/tools/'],['Model Monitor','/nl/model-monitor/'],['LLMscan','/nl/llmscan/']]],
-      ['Over EAI',[['Over EAI en Hans Visser','/nl/over/']]]
+      ['Observatoria',[['Melkweg Lab','/tools/melkweg-lab/'],['Science Observatory','/tools/science-observatory/'],['LLM Observatorium','/tools/llm-observatorium/'],['ABYSS · de oceaan','/tools/abyss/']]],
+      ['Maken & ontwerpen',[['WiHTML Docentstudio','/tools/wihtml/'],['Prompt Framework','/tools/prompt-framework/'],['Van proces naar prompt','/tools/van-proces-naar-prompt/']]],
+      ['Tools & monitoren',[['Alle tools','/nl/tools/'],['AI Model Monitor','/nl/model-monitor/'],['LLMscan','/nl/llmscan/']]],
+      ['Over EAI',[['Over EAI en Hans Visser','/nl/over/'],['EAI Insights · websitegebruik','/nl/insights/']]]
     ];
     var links=header.querySelector('.eai-links');
     var mobile=header.querySelector('.eai-mobile .mobile-nav-panel');
@@ -127,4 +131,11 @@
   document.addEventListener('keydown',function(event){
     if(event.key==='Escape')document.querySelectorAll('.eai-mobile[open]').forEach(function(menu){menu.open=false;});
   });
+})();
+// Count page use in the refreshed public site; private LEIF pages are excluded.
+(function(){
+  if(/^\/(leif|houseoftalents|admin)(\/|$)/i.test(location.pathname))return;
+  if(!/\/(nl|en)\/insights\//.test(location.pathname)){
+    var script=document.createElement('script');script.src='/assets/site-insights.js';script.defer=true;document.head.appendChild(script);
+  }
 })();
