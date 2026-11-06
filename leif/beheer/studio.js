@@ -8,7 +8,7 @@ const songInfo=url=>{const m=String(url||'').match(/^https:\/\/open\.spotify\.co
 const safeCopy=value=>JSON.parse(JSON.stringify(value));
 function notice(message,error=false){const e=$('studioStatus');e.textContent=message;e.classList.toggle('error',error)}
 function freshId(){return 'b'+Array.from(crypto.getRandomValues(new Uint8Array(8)),n=>n.toString(16).padStart(2,'0')).join('')}
-function canLeave(){return !dirty||confirm('Je hebt nog niet opgeslagen persoonlijke onderdelen. Wil je deze wijzigingen verliezen?')}
+function canLeave(){if(busy){notice('Bewaren is nog bezig. Rond dit eerst af.',true);return false}return !dirty||confirm('Je hebt nog niet opgeslagen persoonlijke onderdelen. Wil je deze wijzigingen verliezen?')}
 function loaded({participant:person,document:doc,tenant_id}){
  participant=person;tenantId=tenant_id;revision=doc.revision;
  const state=doc.personal_texts||{};
@@ -86,17 +86,18 @@ function updateDocument(result){revision=result.revision;published=safeCopy(resu
 }
 async function operation(action,payload={}){
  if(!participant||busy)return false;
- busy=true;const buttons=$('blocksTab').querySelectorAll('button');buttons.forEach(b=>b.disabled=true);notice('Opslaan...');
+ const snapshot=action==='save_blocks'?JSON.stringify(payload.blocks):null;
+ busy=true;const controls=$('blocksTab').querySelectorAll('button,input,textarea');controls.forEach(b=>b.disabled=true);notice('Opslaan...');
  try{
   const result=await window.LeifBeheer.request(participant.legacy?'legacy_'+action:action,{tenant_id:tenantId,...(participant.legacy?{tester_id:participant.id}:{participant_id:participant.id}),revision,...payload});
   updateDocument(result);
-  if(action==='save_blocks')dirty=false;
-  notice(action==='save_blocks'?'Concept bewaard.':action==='publish_blocks'?'Onderdelen gepubliceerd voor deze deelnemer.':'Publicatie van onderdelen ingetrokken.');
+  if(action==='save_blocks')dirty=JSON.stringify(blocks)!==snapshot;
+  notice(dirty?'Nieuwere wijzigingen zijn nog niet opgeslagen.':action==='save_blocks'?'Concept bewaard.':action==='publish_blocks'?'Onderdelen gepubliceerd voor deze deelnemer.':'Publicatie van onderdelen ingetrokken.');
   return true;
  }catch(error){
   notice(error.status===409?'Dit dossier is intussen gewijzigd. Kopieer je wijzigingen voordat je opnieuw laadt.':'Bewaren is niet gelukt. Je wijzigingen staan nog op het scherm.',true);
   return false;
- }finally{busy=false;buttons.forEach(b=>b.disabled=false)}
+ }finally{busy=false;controls.forEach(b=>b.disabled=false)}
 }
 async function save(){
  if(blocks.some(b=>b.type==='spotify'&&!songInfo(b.spotify_url))){notice('Controleer de Spotify-links. Gebruik een link naar een nummer, album of afspeellijst.',true);return false}
