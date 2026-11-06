@@ -27,7 +27,7 @@ try{
    viewport:innerHeight,document:document.documentElement.scrollHeight,
    horizontal:document.documentElement.scrollWidth-innerWidth,
    stage:document.querySelector('.stage').getBoundingClientRect().height,
-   tabVisible:getComputedStyle(document.querySelector('.lab-tabs')).display!=='none'
+   tabVisible:document.querySelector('.lab-tabs').getClientRects().length>0
   }));
   assert(metrics.horizontal<=1,'Horizontale overloop op '+width);
   if(width<850){
