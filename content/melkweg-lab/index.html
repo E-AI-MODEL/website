@@ -291,7 +291,7 @@ html.solar-active,html.solar-active body{overflow:hidden!important;height:100dvh
 }
 
 /* V9: het model is het scherm. Bediening verschijnt alleen als je haar nodig hebt. */
-.lab-dock,.lab-sheet-backdrop,.tools-menu-toggle,.camera-menu-toggle{display:none}
+.lab-dock,.lab-sheet-backdrop,.tools-menu-toggle,.camera-menu-toggle,.graph-close{display:none}
 @media(max-width:850px){
  html:not(.solar-active),html:not(.solar-active) body{height:100%;overflow:hidden;overscroll-behavior:none}
  #app,.show-graphs #app{display:block;position:relative;height:100dvh;min-height:0;width:100%;overflow:hidden}
@@ -372,6 +372,7 @@ html.solar-active,html.solar-active body{overflow:hidden!important;height:100dvh
  body.show-graphs .analytics .analytics-head{display:flex;flex:0 0 34px;padding:0 12px}
  body.show-graphs .analytics .analytics-main{display:grid;flex:1;min-height:0;grid-template-columns:1fr}
  body.show-graphs .analytics .mathbox{display:none}
+ body.show-graphs .graph-close{display:grid;place-items:center;position:absolute;top:4px;right:4px;width:28px;height:26px;z-index:8;border:1px solid #4b7c91;border-radius:8px;background:#102a42;color:#e5faff;font-size:19px}
  body.show-graphs .analytics .timeline{flex:0 0 40px;border:0;border-top:1px solid #304b61;border-radius:0;box-shadow:none;background:transparent}
 }
 @media(max-width:370px){
@@ -418,7 +419,7 @@ html.solar-active,html.solar-active body{overflow:hidden!important;height:100dvh
   <div class="scene-badge" id="scene-badge">● <span>Wetenschappelijk model</span><br>Geen directe opname van buitenaf</div>
   <div class="stage-hud-bottom"><button class="camera-menu-toggle" id="cameraMenuToggle" type="button" aria-controls="cameraPresets" aria-expanded="false">◉ Bekijk</button><div class="scene-meta"><span id="scale-label">▱ 5 kpc</span><br><strong id="scene-hint">SLEEP OVER DE STERREN OM TE DRAAIEN</strong></div><div class="camera-controls" id="cameraPresets" aria-label="Camera-oriëntatie"><button class="cambtn" data-cam="face">Van boven</button><button class="cambtn active" data-cam="tilt">3D</button><button class="cambtn" data-cam="edge">Van opzij</button><button class="cambtn" data-cam="sun">☉ Zon</button></div></div>
 </section>
-<section class="analytics" aria-label="Analyse en simulatieklok">
+<section class="analytics" aria-label="Analyse en simulatieklok"><button id="graphClose" class="graph-close" type="button" aria-label="Sluit de grafiek">×</button>
   <div class="analytics-head"><h3 id="plot-title">RADIALE OPPERVLAKTEDICHTHEID</h3><div class="cal-tag" id="plot-tag">MODEL • NIET WAARGENOMEN</div></div>
   <div class="analytics-main"><div class="chartbox"><canvas id="plot" aria-label="Interactieve wetenschappelijke grafiek"></canvas><div id="plotTooltip" class="cursorinfo"></div></div><div class="mathbox"><div class="math-label" id="formula-label">MODEL / SCHIJFPROFIEL</div><div class="formula" id="formula">Σ(R) = Σ₀ exp(−R/R<sub>d</sub>)</div><div class="formula-sub" id="formula-sub">Een exponentiële schijf is een vereenvoudiging. De echte Melkweg heeft asymmetrie, gas, stof en substructuur.</div></div></div>
   <div class="timeline"><button id="play" aria-label="Animatie afspelen of pauzeren"><span id="playico" class="playico">Ⅱ</span></button><label for="timeslider" id="time-label">GALACTISCHE TIJD</label><input id="timeslider" type="range" min="0" max="500" step="1" value="0" aria-label="Simulatietijd"><span class="tvalue" id="timevalue">+000 Myr</span><div class="speed-wrap"><span>SNELHEID</span><select id="speeds" aria-label="Simulatiesnelheid"><option value="1">1×</option><option value="3">3×</option><option value="9" selected>9×</option><option value="24">24×</option></select></div></div>
@@ -780,9 +781,10 @@ document.addEventListener('change',e=>{if(e.target.matches('[data-layer]'))Promi
 
 
 document.addEventListener('click',e=>{
- const b=e.target.closest('#graphToggle');if(!b)return;
+ const b=e.target.closest('#graphToggle,#graphClose');if(!b)return;
  const yes=!document.body.classList.contains('show-graphs');document.body.classList.toggle('show-graphs',yes);
- b.setAttribute('aria-expanded',yes?'true':'false');b.textContent=yes?'− Verberg de grafiek':'+ Bekijk de geheime grafiek';
+ const trigger=$('graphToggle');if(trigger){trigger.setAttribute('aria-expanded',yes?'true':'false');trigger.textContent=yes?'− Verberg de grafiek':'+ Bekijk de geheime grafiek';}
+ if(yes&&window.innerWidth<=850)setLabPanelExpanded(false);
  requestAnimationFrame(()=>{resize();chartDirty=true;});
 });
 
