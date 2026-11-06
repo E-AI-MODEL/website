@@ -256,7 +256,7 @@ try {
   await fallback.locator('.eai-site-group').nth(1).locator('summary').click();
   await fallback.locator('.eai-site-group').nth(3).locator('summary').click();
   assert.equal(await fallback.locator('.eai-site-group[open]').count(), 1, 'Native accordion must be exclusive');
-  assert.equal(await fallback.locator('.eai-site-group').nth(3).locator('a:visible').count(), 3);
+  assert.equal(await fallback.locator('.eai-site-group').nth(3).locator('a:visible').count(), 4);
   await noJS.close();
   assert.deepEqual(errors, []);
   writeFileSync('test-results/ui-report.json', JSON.stringify({ results, noJavaScriptMenu: true, homeQuestions: true, languageLinks: true, errors }, null, 2));
