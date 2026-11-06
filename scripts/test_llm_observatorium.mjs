@@ -40,6 +40,39 @@ try{
   assert.equal(await page.locator('#tokenChips button').count(),tokenState.count);
   await page.locator('#tokenChips button').last().click();
   assert(await page.locator('#tokenId').innerText().then(t=>t.includes('Token-ID')));
+  // Elke module moet ook op een stilstaande camera zichtbaar bewegen.
+  const motion=await page.evaluate(()=>{
+   const checks=[];
+   for(let mode=0;mode<7;mode++){
+    setMode(mode);state.playing=false;
+    state.time=0;state.dirty=true;
+    if(mode===1)state.journey=0;
+    drawScene();
+    const before=canvas.toDataURL('image/png');
+    state.time=75;state.dirty=true;
+    if(mode===1)state.journey=.75;
+    drawScene();
+    const after=canvas.toDataURL('image/png');
+    checks.push({mode,framesDiffer:before!==after,follow:state.follow,cameraX:cam.ox,cameraY:cam.oy});
+   }
+   return checks;
+  });
+  for(const item of motion){
+    assert(item.framesDiffer,'Modus '+item.mode+' blijft stil bij tijdsverloop');
+    assert.equal(item.follow,false,'Modus '+item.mode+' volgt nog een springende camera');
+    assert.equal(item.cameraX,0,'Camera mag niet springen op de X-as');
+    assert.equal(item.cameraY,0,'Camera mag niet springen op de Y-as');
+  }
+  await page.evaluate(()=>{setMode(1);state.journey=3.5;state.layer=3;state.playing=false;});
+  const stopped=await page.evaluate(()=>({time:state.time,journey:state.journey}));
+  await page.waitForTimeout(350);
+  const unchanged=await page.evaluate(()=>({time:state.time,journey:state.journey}));
+  assert.deepEqual(unchanged,stopped,'Pauze moet tijd en tokenpositie vasthouden');
+  await page.evaluate(()=>{state.journey=cfg.layers-0.01;state.layer=cfg.layers-1;state.playing=true;});
+  await page.waitForTimeout(260);
+  const completed=await page.evaluate(()=>({journey:state.journey,playing:state.playing}));
+  assert.equal(completed.journey,await page.evaluate(()=>cfg.layers-1),'Tokenreis eindigt bij de laatste laag');
+  assert.equal(completed.playing,false,'Tokenreis moet stoppen en niet terugspringen');
   assert.equal(errors.length,0,'JavaScript fouten: '+errors.join(' | '));
   await page.close();
  }
