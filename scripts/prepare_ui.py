@@ -26,8 +26,24 @@ def canonical(path: str) -> str:
 
 def groups(en: bool):
     if en:
-        return [('The model', [('The four-step approach', '/en/model/'), ('Background and evidence', '/en/research/')]), ('Education & practice', [('Lesson design and teaching', '/en/education/'), ('Examples in practice', '/en/applications/'), ('Onderwijs in: technical review (NL)', '/onderwijsin/')]), ('Research', [('Studies and sources', '/en/research/'), ('Articles and publications', '/en/publications/')]), ('Tools', [('Choose a tool', '/en/tools/'), ('AI Model Monitor', '/en/model-monitor/'), ('LLMscan: product reviews', '/en/llmscan/')]), ('About EAI', [('Hans Visser and EAI', '/en/about/')])]
-    return [('Het model', [('Werkwijze: vier stappen', '/nl/model/'), ('Waarom deze volgorde?', '/twee-pijlers/')]), ('Onderwijs & praktijk', [('Lesontwerp en werkvormen', '/nl/onderwijs/'), ('Voorbeelden uit de praktijk', '/nl/toepassingen/'), ('Onderwijs in: technische verkenning', '/onderwijsin/')]), ('Onderzoek', [('Onderzoeken en onderbouwing', '/nl/onderzoek/'), ('Artikelen en publicaties', '/nl/publicaties/')]), ('Tools', [('Kies een hulpmiddel', '/nl/tools/'), ('AI Model Monitor', '/nl/model-monitor/'), ('LLMscan: AI-producten', '/nl/llmscan/')]), ('Over EAI', [('Hans Visser en het EAI-model', '/nl/over/')])]
+        return [
+            ('Explore', [('EAI model', '/en/model/'), ('Education', '/en/education/')]),
+            ('Applications', [('Applications', '/en/applications/'), ('Onderwijs in (NL)', '/onderwijsin/')]),
+            ('Research', [('Research', '/en/research/'), ('Publications', '/en/publications/')]),
+            ('Observatories', [('Milky Way Lab', '/tools/melkweg-lab/'), ('Science Observatory', '/tools/science-observatory/'), ('LLM Observatory', '/tools/llm-observatorium/'), ('ABYSS', '/tools/abyss/')]),
+            ('Create', [('WiHTML Studio', '/tools/wihtml/'), ('EAIstudio', '/tools/eaistudio/'), ('EAImesh', '/tools/eaimesh/'), ('Prompt Framework', '/tools/prompt-framework/'), ('Process to prompt', '/tools/van-proces-naar-prompt/')]),
+            ('Tools & monitors', [('All tools', '/en/tools/'), ('Model Monitor', '/en/model-monitor/'), ('LLMscan', '/en/llmscan/')]),
+            ('About EAI', [('About EAI', '/en/about/'), ('Site insights', '/en/insights/')]),
+        ]
+    return [
+        ('Ontdekken', [('Het EAI-model', '/nl/model/'), ('EAI in het onderwijs', '/nl/onderwijs/')]),
+        ('Toepassingen', [('Alle toepassingen', '/nl/toepassingen/'), ('Onderwijs in', '/onderwijsin/')]),
+        ('Onderzoek', [('Onderzoek', '/nl/onderzoek/'), ('Publicaties', '/nl/publicaties/')]),
+        ('Observatoria', [('Melkweg Lab', '/tools/melkweg-lab/'), ('Science Observatory', '/tools/science-observatory/'), ('LLM Observatorium', '/tools/llm-observatorium/'), ('ABYSS', '/tools/abyss/')]),
+        ('Maken & ontwerpen', [('WiHTML Docentstudio', '/tools/wihtml/'), ('EAIstudio', '/tools/eaistudio/'), ('EAImesh', '/tools/eaimesh/'), ('Prompt Framework', '/tools/prompt-framework/'), ('Van proces naar prompt', '/tools/van-proces-naar-prompt/')]),
+        ('Tools & monitoren', [('Alle tools', '/nl/tools/'), ('AI Model Monitor', '/nl/model-monitor/'), ('LLMscan', '/nl/llmscan/')]),
+        ('Over EAI', [('Over EAI', '/nl/over/'), ('Website-inzichten', '/nl/insights/')]),
+    ]
 
 def navigation(soup: BeautifulSoup, path: str, en: bool) -> str:
     home = '/en/' if en else '/nl/'
