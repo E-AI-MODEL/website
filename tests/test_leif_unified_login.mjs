@@ -9,6 +9,8 @@ const personal=get('leif/mijn/index.html');
 const continuation=get('leif/continue/index.html');
 const beheer=get('leif/beheer/index.html');
 const server=get('leif/multitenant/edge-personal-session.ts');
+const passkeyClient=get('leif/passkey-client.js');
+const passkeyServer=get('leif/multitenant/edge-passkey.ts');
 
 test('KEI gebruikt de bestaande pagina en het versleutelde leesverhaal',()=>{
  assert.match(main,/code\.toUpperCase\(\)==='KEI'/);
@@ -26,15 +28,23 @@ test('LIS opent Kars via uitsluitend de gemarkeerde demo-alias',()=>{
  assert.match(server,/member\.state!=="active"/);
  assert.match(personal,/id="demoLabel"/);
 });
-test('VIS gebruikt een beveiligde inloglink zonder wachtwoordformulier',()=>{
+test('VIS gebruikt een passkey zonder wachtwoord of e-mailaanvraag',()=>{
  assert.doesNotMatch(main,/id="adminEmail"|id="adminPassword"/);
- assert.match(main,/action:'request_magic_link'/);
+ assert.match(main,/<script src="\/leif\/passkey-client.js"><\/script>/);
+ assert.match(main,/await window\.LeifPasskey\.openAdmin\(\)/);
+ assert.doesNotMatch(main,/await requestAdminLink\(\)/);
  assert.match(main,/action:'session'/);
  assert.match(main,/completeAdminLink/);
  assert.match(main,/t\.slug==='leif'&&t\.role==='manager'/);
  assert.match(main,/leif-admin-session-v1/);
  assert.match(main,/quickClicks===3/);
  assert.match(beheer,/request\('refresh'/);
+ assert.match(beheer,/id="setupPasskey"/);
+ assert.match(beheer,/window\.LeifPasskey\.register\(auth\.access_token\)/);
+ assert.match(passkeyClient,/passkey_signin_start/);
+ assert.match(passkeyClient,/passkey_register_finish/);
+ assert.match(passkeyServer,/passkey_register_start/);
+ assert.match(passkeyServer,/t\.slug==="leif"&&t\.role==="manager"/);
  assert.doesNotMatch(beheer,/id="password"|id="email"/);
 });
 test('geen tweede zichtbaar inlogformulier',()=>{
@@ -56,4 +66,6 @@ test('inline JavaScript parseert',()=>{
   for(const [,source] of chunks)assert.doesNotThrow(()=>new Function(source),path);
  }
  assert.doesNotThrow(()=>new Function(server));
+ assert.doesNotThrow(()=>new Function(passkeyClient));
+ assert.doesNotThrow(()=>new Function(passkeyServer));
 });

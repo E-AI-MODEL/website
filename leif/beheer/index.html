@@ -31,10 +31,10 @@ main{max-width:1160px;margin:auto;padding:42px 24px 120px}.tag{font-weight:800;c
 </style>
 </head>
 <body>
-<header class="mast"><div class="mast-inner"><a href="/leif/" class="brand">LEIF <span>Beheer</span></a><div class="actions"><span class="meta" id="identity"></span><button id="logout" type="button" class="btn secondary compact" hidden>Uitloggen</button></div></div></header>
+<header class="mast"><div class="mast-inner"><a href="/leif/" class="brand">LEIF <span>Beheer</span></a><div class="actions"><span class="meta" id="identity"></span><button id="setupPasskey" type="button" class="btn secondary compact" hidden>Face ID instellen</button><button id="logout" type="button" class="btn secondary compact" hidden>Uitloggen</button></div></div></header>
 <main>
 <section id="login" class="panel login" hidden>
-<p>Ga terug naar LEIF en vul VIS in om een inloglink te ontvangen.</p>
+<p>Ga terug naar LEIF en vul VIS in om met Face ID aan te melden.</p>
 </section>
 <p id="loading" class="meta" role="status">Beheer openen...</p>
 <section id="workspace" hidden>
@@ -149,6 +149,7 @@ main{max-width:1160px;margin:auto;padding:42px 24px 120px}.tag{font-weight:800;c
 </div>
 </section>
 </main>
+<script src="/leif/passkey-client.js"></script>
 <script>
 'use strict';
 const endpoint='https://ngcyfbstajfcfdhlelbz.supabase.co/functions/v1/leif-admin-console';
@@ -180,6 +181,7 @@ async function resumeSession(){
   auth=newAuth;tenants=newAuth.tenants;saveSession();
   show('login',false);show('workspace',true);show('logout',true);E('loading').hidden=true;
   E('identity').textContent=newAuth.user_email||'Beheerder';
+  E('setupPasskey').hidden=!(window.LeifPasskey?.supported()&&tenants.some(t=>t.slug==='leif'&&t.role==='manager'));
   E('tenant').replaceChildren(...tenants.map(t=>{const o=el('option',null,t.name);o.value=t.id;return o}));
   tenant=tenants[0];E('tenant').value=tenant.id;await loadList();await loadTesters();
  }catch{sessionStorage.removeItem('leif-admin-session-v1');location.replace('/leif/?beheer=1')}
@@ -305,6 +307,16 @@ async function performStory(action,extra={}){
  }catch(e){status(e.status===409?'Dit dossier is intussen gewijzigd. Kopieer je tekst en open het dossier opnieuw.':'Opslaan is niet gelukt. Je tekst staat nog op dit scherm.',true)}
  finally{setBusy(false)}
 }
+E('setupPasskey').onclick=async()=>{
+ if(!auth?.access_token||!tenants.some(t=>t.slug==='leif'&&t.role==='manager'))return;
+ const button=E('setupPasskey');button.disabled=true;
+ try{
+  await window.LeifPasskey.register(auth.access_token);
+  alert('Face ID is gekoppeld. Je kunt voortaan met VIS en Face ID inloggen.');
+ }catch(e){
+  alert(e?.name==='NotAllowedError'?'Registratie geannuleerd.':'Face ID koppelen is niet gelukt. Controleer of passkeys in Supabase zijn ingeschakeld.');
+ }finally{button.disabled=false}
+};
 E('logout').onclick=()=>{if(!confirmDiscard())return;sessionStorage.removeItem('leif-admin-session-v1');auth=null;tenants=[];tenant=null;selected=null;documentState=null;dirty=false;show('workspace',false);show('detail',false);show('logout',false);E('identity').textContent='';location.assign('/leif/')};
 E('tenant').onchange=async()=>{if(!confirmDiscard()){E('tenant').value=tenant.id;return}tenant=tenants.find(t=>t.id===E('tenant').value);selected=null;dirty=false;E('testerInvite').hidden=true;await loadList();await loadTesters()};
 E('reload').onclick=async()=>{if(confirmDiscard()){dirty=false;await loadList();await loadTesters()}};
