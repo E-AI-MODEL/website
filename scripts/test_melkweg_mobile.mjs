@@ -24,7 +24,7 @@ try{
   await page.goto(origin+'/tools/melkweg-lab/',{waitUntil:'domcontentloaded'});
   await page.waitForFunction(()=>document.documentElement.dataset.ready==='true',{timeout:10000});
   await page.waitForTimeout(180);
-  await page.screenshot({path:`test-results/melkweg-lab-v12-start-${width}.png`});
+  await page.screenshot({path:`test-results/melkweg-lab-v13-start-${width}.png`});
   if(width<850)await page.screenshot({path:`test-results/melkweg-lab-v12-start-${width}.png`});
   const metrics=await page.evaluate(()=>({
    viewport:innerHeight,document:document.documentElement.scrollHeight,
@@ -62,14 +62,24 @@ try{
    assert(!(await page.locator('#timeslider').isVisible()),'Tijdschuif sluit niet');
    await page.waitForSelector('#astroCenterPin:visible',{timeout:5000});
    assert(await page.locator('#astroSunPin').isVisible(),'Zon-aanraakpunt moet ook op 320 pixels zichtbaar zijn');
-   await page.locator('#astroCenterPin').click();
+   await page.locator('#astroCenterPin [data-pin-select="center"]').click();
+   assert(!(await page.locator('#astroCenterPin').getAttribute('hidden')),'Galactisch centrum label ontbreekt');
    assert(await page.locator('#astroInfo').isVisible(),'Tik op het midden toont geen uitleg');
    assert((await page.locator('#astroInfoTitle').textContent()).includes('Sagittarius'),'De centrumgegevens ontbreken');
    await page.locator('#astroInfoClose').click();
    assert(!(await page.locator('#astroInfo').isVisible()),'De uitleg sluit niet');
+   await page.locator('#astroCenterPin [data-dismiss-pin="center"]').click();
+   assert(!(await page.locator('#astroCenterPin').isVisible()),'Sluitkruisje verbergt SGR A* niet');
+   assert(await page.locator('#astroSunPin').isVisible(),'Sluiten van SGR A* mag ZON niet verbergen');
+   await page.waitForTimeout(120);
+   assert(!(await page.locator('#astroCenterPin').isVisible()),'Verborgen label verschijnt meteen opnieuw');
+   await page.locator('#toolsMenuToggle').click();
+   await page.locator('#resetView').click();
+   await page.waitForSelector('#astroCenterPin:visible',{timeout:4000});
+   assert(await page.locator('#astroCenterPin').isVisible(),'Herstellen moet verborgen labels terugbrengen');
    const sun=page.locator('#astroSunPin');
    if(await sun.isVisible()){
-    await sun.click();
+    await sun.locator('[data-pin-select="sun"]').click();
     assert((await page.locator('#astroInfoTitle').textContent()).includes('8,2 kpc'),'De zonafstand ontbreekt');
     await page.locator('#astroInfoGo').click();
     assert(await page.locator('#solarExplorer').isVisible(),'Zonkaart opent de planeten niet');
@@ -110,6 +120,7 @@ try{
    assert(point,'Avonturenmenu is niet zichtbaar');
    assert(await page.evaluate(({x,y})=>!!document.elementFromPoint(x,y)?.closest('.nav-btn'),{x:point.x+point.width/2,y:point.y+point.height/2}),'Avonturenmenu zit achter een ander vlak');
    await option.click();
+   assert.equal((await page.locator('#scene-title').innerHTML()).replace(/<br\s*\/?\s*>/gi,' '),'Sterren en selectie','De oude kinderlijke moduletitel komt terug');
    assert.equal(await page.locator('#adventureMenuToggle').getAttribute('aria-expanded'),'false');
    await page.locator('#adventureMenuToggle').click();
    await options.first().click();
@@ -120,6 +131,24 @@ try{
    assert((await page.locator('#planetDetail').textContent()).includes('Mars'));
    await page.locator('#backGalaxy').click();
    assert(!(await page.locator('#solarExplorer').isVisible()));
+   await page.locator('#adventureMenuToggle').click();
+   await page.locator('#navigation [data-mode="blackhole"]').click();
+   await page.waitForSelector('#astroS2Pin:visible',{timeout:4000});
+   await page.waitForTimeout(320);
+   const canvasBrightness=await page.locator('#universe').evaluate(canvas=>{
+    const c=canvas.getContext('2d'),spots=[[.1,.2],[.5,.5],[.7,.55],[.53,.555]],sample=[];
+    for(const [x,y] of spots){const p=c.getImageData(Math.floor(canvas.width*x),Math.floor(canvas.height*y),1,1).data;sample.push([p[0],p[1],p[2],p[3]]);}
+    return sample;
+   });
+   assert(canvasBrightness.some(v=>v[2]>10&&v[3]>0),'Zwartgatweergave is leeg: '+JSON.stringify(canvasBrightness));
+   await page.screenshot({path:`test-results/melkweg-lab-v13-s2-${width}.png`});
+   await page.locator('#astroS2Pin [data-pin-select="s2"]').click();
+   assert((await page.locator('#astroInfoTitle').textContent()).includes('S2'),'S2-meetwaarden moeten openen');
+   await page.locator('#astroInfoClose').click();
+   await page.locator('#astroS2Pin [data-dismiss-pin="s2"]').click();
+   assert(!(await page.locator('#astroS2Pin').isVisible()),'S2 sluitkruisje werkt niet');
+   await page.locator('#adventureMenuToggle').click();
+   await page.locator('#navigation [data-mode="atlas"]').click();
   }
   if(width>=850){
    assert(await page.locator('.analytics-main').isVisible(),'Desktop moet direct een grafiek tonen');
@@ -128,10 +157,16 @@ try{
    assert(graph&&graph.height>120,'Desktopgrafiek is te klein');
    assert(await page.locator('.instrument-controls .switch').count()>=8,'Desktopmodelcomponenten ontbreken');
    assert(await page.locator('.instrument-meta').isVisible(),'Desktopinstrumenten ontbreken');
+   assert(await page.locator('#astroCenterPin').isVisible(),'Centrumlabel ontbreekt op desktop');
+   await page.locator('#astroCenterPin [data-dismiss-pin="center"]').click();
+   assert(!(await page.locator('#astroCenterPin').isVisible()),'Desktop: kruisje sluit het centrumlabel niet');
+   assert(await page.locator('#astroSunPin').isVisible(),'Desktop: zonlabel hoort te blijven');
+   await page.locator('#resetView').click();
+   await page.waitForSelector('#astroCenterPin:visible',{timeout:4000});
   }
   await page.screenshot({path:`test-results/melkweg-lab-v12-${width}.png`});
   assert.deepEqual(errors,[],'JavaScript-fouten op '+width);
   await page.close();
  }
- console.log('Melkweg Lab V12: instrument-HUD, modelwaarden, aanraakpunten, tijd, grafiek, menu, planeten en mobiel canvas gecontroleerd.');
+ console.log('Melkweg Lab V13: haarfijne labels, wegklikken/herstellen, S2, grafiek, planeten en canvas gecontroleerd.');
 }finally{if(browser)await browser.close();server.kill();}

@@ -77,6 +77,15 @@ class MelkwegLabPublicationTests(unittest.TestCase):
         self.assertNotIn('role="tablist"', html)
         self.assertIn("document.body.classList.toggle('lab-sheet-open',expanded)", html)
         self.assertIn("DRAAI · ZOOM · SELECTEER", html)
+        self.assertIn('data-dismiss-pin="center"', html)
+        self.assertIn('data-dismiss-pin="sun"', html)
+        self.assertIn('data-dismiss-pin="s2"', html)
+        self.assertIn("hiddenAstroPins.add(kind)", html)
+        self.assertIn("hiddenAstroPins.clear()", html)
+        self.assertNotIn("DE STER DOET ONGEVEER 16 JAAR", html)
+        self.assertNotIn("DIT PLAATJE IS NIET OP WARE GROOTTE", html)
+        self.assertNotIn("Pak en sleep de ster", html)
+        self.assertNotIn('<p class="solar-side-note">', html)
 
 
 
