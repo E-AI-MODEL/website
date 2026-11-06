@@ -33,6 +33,8 @@ test('VIS opent een wachtwoordlogin zonder verplichte e-maillink',()=>{
  assert.doesNotMatch(main,/action:'request_magic_link'/);
  assert.match(main,/action:'login',email:'vis@emmauscollege.nl',password/);
  assert.match(main,/showAdminPassword\(\)/);
+ assert.match(main,/codeInput\.required=false/);
+ assert.match(main,/codeInput\.required=true/);
  assert.match(main,/action:'session'/);
  assert.match(main,/completeAdminLink/);
  assert.match(main,/t\.slug==='leif'&&t\.role==='manager'/);
