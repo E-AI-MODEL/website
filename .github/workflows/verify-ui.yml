@@ -32,6 +32,8 @@ jobs:
       - run: node scripts/ui_smoke.mjs site-build
       - name: Test Melkweg Lab on phones and desktop
         run: node scripts/test_melkweg_mobile.mjs site-build
+      - name: Test direct visual experiments in Melkweg Lab
+        run: node scripts/test_melkweg_visual_play.mjs site-build
       - name: Verify LEIF continuation in Chromium
         run: node scripts/test_leif_continue.mjs site-build
       - name: Verify LEIF text editor in Chromium
