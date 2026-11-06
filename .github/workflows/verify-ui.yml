@@ -9,7 +9,7 @@ permissions:
 jobs:
   verify:
     runs-on: ubuntu-24.04
-    timeout-minutes: 12
+    timeout-minutes: 18
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -31,6 +31,10 @@ jobs:
       - name: Install browser for UI tests
         run: npx playwright install chromium
         timeout-minutes: 4
+      - name: Verify standalone EAIstudio and EAImesh sources and links
+        run: python -m unittest discover -s tests -p 'test_tool_launch.py' -v
+      - name: Test EAIstudio, EAImesh and offline export in Chromium
+        run: node scripts/test_tool_launch.mjs site-build
       - run: node scripts/ui_smoke.mjs site-build
       - name: Verify LLM Observatory tokenizer in Chromium
         run: node scripts/test_llm_observatorium.mjs site-build
