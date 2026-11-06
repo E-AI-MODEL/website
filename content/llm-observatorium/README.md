@@ -2,7 +2,7 @@
 
 Deze zelfstandige HTML is een herbouw van het eerdere LLM-prototype. Het oorspronkelijke Galactisch Observatorium diende als referentie voor een grote, vrij bestuurbare 3D-wereld, zeven onderzoeksmodes, gekoppelde grafieken en een inspector. Dit project wijzigt de Melkwegbron niet.
 
-Open `index.html` in een browser. Er zijn geen externe scripts of accounts nodig.
+Open `index.html` in een browser. Voor echte tokenisatie laadt de pagina eenmaal `gpt-tokenizer@4.1.0` via jsDelivr. Er is geen account of modelsleutel nodig. Zonder netwerkverbinding blijft de voorbeeldweergave werken, maar zie je geen echte token-ID's.
 
 ## Onderzoeken
 
@@ -38,7 +38,7 @@ De aantallen lagen, experts, attention heads, dimensies, contextposities en voca
 
 De plaats van een expertpunt, het aanvullende lichtveld, de route en de berekende kansen zijn **niet** afkomstig uit opnames van een werkelijk draaiend model. De projectie dient voor onderzoek naar architectuur en rekenprincipes en is geen fysieke afbeelding van modelgewichten. Er wordt geen verborgen GPT-6-architectuur getoond.
 
-In deze proef is het ingevoerde voorbeeld opgedeeld in woorden. Het is geen echte gpt-oss-tokenisatie.
+De tokeninvoer gebruikt, zodra het bibliotheekbestand is geladen, de echte `o200k_harmony`-tokenisatie van gpt-oss. Je kunt tokenstukken aanklikken en het token-ID bekijken. Zonder bibliotheek valt de invoer terug op afzonderlijke woorden en staat er uitdrukkelijk bij dat het geen echte tokenisatie is. De token-ID's zijn niet afkomstig uit een draaiend model; de getekende expertkeuze blijft een berekend voorbeeld. Een individueel token kan slechts een deel van een UTF-8-teken bevatten; de tekstweergave van zulke stukken is niet altijd leesbaar.
 
 ## Controle
 
