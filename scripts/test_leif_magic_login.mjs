@@ -81,6 +81,7 @@ try{
  assert(requests.some(r=>r.action==='passkey_signin_finish'),'Passkey verificatie ontbreekt');
  assert(!requests.some(r=>r.action==='request_magic_link'),'VIS mag geen e-mail versturen');
  await page.locator('#setupPasskey:visible').click();
+ for(let i=0;i<60&&!requests.some(r=>r.action==='passkey_register_finish');i++)await new Promise(ok=>setTimeout(ok,50));
  assert(requests.some(r=>r.action==='passkey_register_start'),'Registratie start ontbreekt');
  assert(requests.some(r=>r.action==='passkey_register_finish'),'Registratie verificatie ontbreekt');
  assert(dialogs.some(t=>t.includes('Face ID is gekoppeld')));
