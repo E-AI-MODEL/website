@@ -32,6 +32,8 @@ jobs:
         run: npx playwright install chromium
         timeout-minutes: 4
       - run: node scripts/ui_smoke.mjs site-build
+      - name: Test EAImesh and EAIstudio end-to-end in Chromium
+        run: node scripts/test_tool_launch.mjs site-build
       - name: Verify LLM Observatory tokenizer in Chromium
         run: node scripts/test_llm_observatorium.mjs site-build
       - name: Test Melkweg Lab on phones and desktop
