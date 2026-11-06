@@ -50,6 +50,20 @@ class LlmObservatorySourceTests(unittest.TestCase):
         self.assertIn('state.follow=false', html)
         self.assertIn('function setCameraMatrix()', html)
 
+    def test_reasoning_and_token_costs(self):
+        html = self.html
+        self.assertIn("name:'Redenering & kosten'", html)
+        self.assertIn("function usageBuckets()", html)
+        self.assertIn("function drawUsageWorld()", html)
+        self.assertIn("function drawUsagePlot()", html)
+        self.assertIn("function usageRefresh()", html)
+        self.assertIn("uReason:1024", html)
+        self.assertIn("uOther:162", html)
+        self.assertIn("uInput:75", html)
+        self.assertIn("usageSummary", html)
+        self.assertIn("reasoningLearning", html)
+        self.assertIn("BRON + REKENSOM", html)
+
     def test_source_and_demo_distinction(self):
         self.assertIn("gpt-oss-120b/blob/main/config.json", self.html)
         self.assertIn("gpt-oss-20b/blob/main/config.json", self.html)
