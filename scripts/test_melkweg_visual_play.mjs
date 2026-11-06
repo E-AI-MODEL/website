@@ -1,0 +1,103 @@
+import assert from 'node:assert/strict';
+import {chromium} from 'playwright';
+import {spawn} from 'node:child_process';
+import {resolve} from 'node:path';
+
+const root=resolve(process.argv[2]||'site-build');
+const origin='http://127.0.0.1:8794';
+const server=spawn('python3',['-m','http.server','8794','--bind','127.0.0.1','--directory',root],{stdio:'ignore'});
+let browser;
+try {
+  let ready=false;
+  for(let i=0;i<80;i++){
+    try {ready=(await fetch(origin+'/tools/melkweg-lab/')).ok;} catch {}
+    if(ready)break;
+    await new Promise(r=>setTimeout(r,100));
+  }
+  assert(ready,'Melkweg Lab is not in the generated site');
+  browser=await chromium.launch({headless:true});
+  const page=await browser.newPage({viewport:{width:390,height:760},isMobile:true,hasTouch:true,deviceScaleFactor:1});
+  const errors=[];
+  page.on('pageerror',e=>errors.push(e.message));
+  await page.goto(origin+'/tools/melkweg-lab/',{waitUntil:'domcontentloaded'});
+  await page.waitForFunction(()=>document.documentElement.dataset.ready==='true',{timeout:12000});
+  const mode=async name=>{
+    await page.locator('#adventureMenuToggle').click();
+    await page.locator('#navigation [data-mode="'+name+'"]').click();
+  };
+  const dragSky=async(y,from=.81,to=.19)=>{
+    const rect=await page.locator('#universe').boundingBox();
+    assert(rect,'Sky canvas missing');
+    const py=rect.y+rect.height*y;
+    await page.mouse.move(rect.x+rect.width*from,py);
+    await page.mouse.down();
+    await page.mouse.move(rect.x+rect.width*to,py,{steps:8});
+    await page.mouse.up();
+  };
+  await mode('dynamics');
+  await page.locator('#play').click();
+  await dragSky(.58);
+  await page.locator('#labDock').click();
+  await page.getByRole('tab',{name:'Verander'}).click();
+  assert(Number(await page.locator('#haloMass').inputValue())<.5,'Dragging sky must lower invisible mass');
+  await page.locator('#labDock').click();
+  await dragSky(.70,.19,.81);
+  await page.locator('#labDock').click();
+  assert(Number(await page.locator('#diskMass').inputValue())>8,'Dragging sky must raise star disk mass');
+  await page.locator('#labDock').click();
+  await mode('stars');
+  await dragSky(.70);
+  await page.locator('#labDock').click();
+  await page.getByRole('tab',{name:'Verander'}).click();
+  assert(Number(await page.locator('#limmag').inputValue())<13,'Sky telescope slider must hide faint stars');
+  await page.locator('#labDock').click();
+  await dragSky(.70,.19,.81);
+  await page.locator('#labDock').click();
+  assert(Number(await page.locator('#limmag').inputValue())>19,'Sky telescope slider must reveal faint stars');
+  await page.locator('#labDock').click();
+  await mode('gaia');
+  await dragSky(.58);
+  await page.locator('#labDock').click();
+  await page.getByRole('tab',{name:'Verander'}).click();
+  assert(Number(await page.locator('#obDist').inputValue())<3,'Dragging must change distance');
+  await page.locator('#labDock').click();
+  await dragSky(.58,.19,.81);
+  await page.locator('#labDock').click();
+  assert(Number(await page.locator('#obDist').inputValue())>17,'Dragging must also increase distance');
+  await page.locator('#labDock').click();
+  await mode('blackhole');
+  const canvas=await page.locator('#universe').boundingBox();
+  const before=await page.locator('#timevalue').innerText();
+  await page.mouse.move(canvas.x+canvas.width*.22,canvas.y+canvas.height*.35);
+  await page.mouse.down();
+  await page.mouse.move(canvas.x+canvas.width*.70,canvas.y+canvas.height*.44,{steps:8});
+  await page.mouse.up();
+  assert.notEqual(await page.locator('#timevalue').innerText(),before,'Drag S2 along its orbit');
+  await page.locator('#labDock').click();
+  await page.getByRole('tab',{name:'Ontdek meer'}).click();
+  await page.locator('#graphToggle').click();
+  assert(await page.locator('.analytics-main').isVisible(),'Mobile graph should open visibly');
+  await page.locator('#graphClose').click();
+  assert(!(await page.locator('.analytics-main').isVisible()),'Mobile graph should close');
+  await mode('atlas');
+  await page.locator('#solarEntry').click();
+  assert.equal(await page.locator('#planetChoices .planet-pick').count(),8);
+  await page.locator('#planetChoices .planet-pick').nth(2).click();
+  const labelBefore=await page.locator('#solarYearLabel').innerText();
+  const sky=await page.locator('#solarCanvas').boundingBox();
+  const cx=sky.width<580?sky.width*.48:sky.width*.49;
+  const cy=sky.height<550?sky.height*.43:sky.height*.52;
+  const radius=Math.max(78,Math.min((sky.width-65)/2,(sky.height-180)/1.09,310))*(.15+.85*Math.pow(2/7,1.04));
+  const ratio=sky.height<490?.39:.53;
+  await page.mouse.move(sky.x+cx+Math.cos(-.67)*radius,sky.y+cy+Math.sin(-.67)*radius*ratio);
+  await page.mouse.down();
+  await page.mouse.move(sky.x+cx-radius*.3,sky.y+cy+radius*ratio*.8,{steps:12});
+  await page.mouse.up();
+  assert.notEqual(await page.locator('#solarYearLabel').innerText(),labelBefore,'Dragging Earth must move solar time');
+  await page.locator('#backGalaxy').click();
+  assert.equal(errors.length,0,'JavaScript errors: '+errors.join('; '));
+  console.log('Melkweg visual: mass, stars, distance, S2, graph and planet drag tested.');
+} finally {
+  if(browser)await browser.close();
+  server.kill();
+}
