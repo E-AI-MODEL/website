@@ -75,7 +75,7 @@ def review(soup: BeautifulSoup, path: str) -> bool:
     """Return whether this normal site page can use the shared site navigation."""
     if not soup.body or soup.find('meta', attrs={'http-equiv':'refresh'}):
         return False
-    if path.startswith(('/houseoftalents/', '/handoff/', '/onderwijsin/3d/', '/onderwijsin/houseoftalents/')):
+    if path.startswith(('/tools/eaistudio/studio/', '/tools/eaimesh/start/', '/tools/wihtml/studio/', '/tools/wihtml/voorbeeld/', '/houseoftalents/', '/handoff/', '/onderwijsin/3d/', '/onderwijsin/houseoftalents/')):
         return False
     for a in soup.find_all('a', href=True):
         if a['href'].rstrip('/') == OLD_PODCAST.rstrip('/'):
