@@ -45,15 +45,14 @@ class LlmObservatorySourceTests(unittest.TestCase):
         for code in ("function updateLayerInspector()", "function selectLayer(index)",
                      "function selectLayerToken(index)", "function drawStream()",
                      "function journeyStep(direction)", "function updateJourneyUI()",
-                     "state.playing=state.mode!==1", "const visibleFrom"):
-            if code == "const visibleFrom":
-                continue
+                     "state.playing=state.mode!==1"):
             self.assertIn(code, html)
         self.assertIn('id="layerTokenCount"', html)
         self.assertIn('id="layerAttentionBadge"', html)
         self.assertIn('id="layerExpertList"', html)
         self.assertIn('#app[data-mode="1"] .plot-panel', html)
-        self.assertIn("state.token-cfg.window+1", html)
+        self.assertIn("span=Math.min(state.contextTokens,cfg.window)", html)
+        self.assertIn("style.setProperty('--reach'", html)
         self.assertIn("for(const route of chooseRoute(state.layer))", html)
         self.assertNotIn('id="journeyPlay"', html)
         self.assertNotIn('id="journeyPrev"', html)
