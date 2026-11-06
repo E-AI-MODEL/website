@@ -24,7 +24,7 @@ try{
   await page.goto(origin+'/tools/melkweg-lab/',{waitUntil:'domcontentloaded'});
   await page.waitForFunction(()=>document.documentElement.dataset.ready==='true',{timeout:10000});
   await page.waitForTimeout(180);
-  await page.screenshot({path:`test-results/melkweg-lab-v12-start-${width}.png`});
+  await page.screenshot({path:`test-results/melkweg-lab-v13-start-${width}.png`});
   if(width<850)await page.screenshot({path:`test-results/melkweg-lab-v12-start-${width}.png`});
   const metrics=await page.evaluate(()=>({
    viewport:innerHeight,document:document.documentElement.scrollHeight,
@@ -62,14 +62,24 @@ try{
    assert(!(await page.locator('#timeslider').isVisible()),'Tijdschuif sluit niet');
    await page.waitForSelector('#astroCenterPin:visible',{timeout:5000});
    assert(await page.locator('#astroSunPin').isVisible(),'Zon-aanraakpunt moet ook op 320 pixels zichtbaar zijn');
-   await page.locator('#astroCenterPin').click();
+   await page.locator('#astroCenterPin [data-pin-select="center"]').click();
+   assert(!(await page.locator('#astroCenterPin').getAttribute('hidden')),'Galactisch centrum label ontbreekt');
    assert(await page.locator('#astroInfo').isVisible(),'Tik op het midden toont geen uitleg');
    assert((await page.locator('#astroInfoTitle').textContent()).includes('Sagittarius'),'De centrumgegevens ontbreken');
    await page.locator('#astroInfoClose').click();
    assert(!(await page.locator('#astroInfo').isVisible()),'De uitleg sluit niet');
+   await page.locator('#astroCenterPin [data-dismiss-pin="center"]').click();
+   assert(!(await page.locator('#astroCenterPin').isVisible()),'Sluitkruisje verbergt SGR A* niet');
+   assert(await page.locator('#astroSunPin').isVisible(),'Sluiten van SGR A* mag ZON niet verbergen');
+   await page.waitForTimeout(120);
+   assert(!(await page.locator('#astroCenterPin').isVisible()),'Verborgen label verschijnt meteen opnieuw');
+   await page.locator('#toolsMenuToggle').click();
+   await page.locator('#resetView').click();
+   await page.waitForSelector('#astroCenterPin:visible',{timeout:4000});
+   assert(await page.locator('#astroCenterPin').isVisible(),'Herstellen moet verborgen labels terugbrengen');
    const sun=page.locator('#astroSunPin');
    if(await sun.isVisible()){
-    await sun.click();
+    await sun.locator('[data-pin-select="sun"]').click();
     assert((await page.locator('#astroInfoTitle').textContent()).includes('8,2 kpc'),'De zonafstand ontbreekt');
     await page.locator('#astroInfoGo').click();
     assert(await page.locator('#solarExplorer').isVisible(),'Zonkaart opent de planeten niet');
@@ -120,6 +130,16 @@ try{
    assert((await page.locator('#planetDetail').textContent()).includes('Mars'));
    await page.locator('#backGalaxy').click();
    assert(!(await page.locator('#solarExplorer').isVisible()));
+   await page.locator('#adventureMenuToggle').click();
+   await page.locator('#navigation [data-mode="blackhole"]').click();
+   await page.waitForSelector('#astroS2Pin:visible',{timeout:4000});
+   await page.locator('#astroS2Pin [data-pin-select="s2"]').click();
+   assert((await page.locator('#astroInfoTitle').textContent()).includes('S2'),'S2-meetwaarden moeten openen');
+   await page.locator('#astroInfoClose').click();
+   await page.locator('#astroS2Pin [data-dismiss-pin="s2"]').click();
+   assert(!(await page.locator('#astroS2Pin').isVisible()),'S2 sluitkruisje werkt niet');
+   await page.locator('#adventureMenuToggle').click();
+   await page.locator('#navigation [data-mode="atlas"]').click();
   }
   if(width>=850){
    assert(await page.locator('.analytics-main').isVisible(),'Desktop moet direct een grafiek tonen');
@@ -133,5 +153,5 @@ try{
   assert.deepEqual(errors,[],'JavaScript-fouten op '+width);
   await page.close();
  }
- console.log('Melkweg Lab V12: instrument-HUD, modelwaarden, aanraakpunten, tijd, grafiek, menu, planeten en mobiel canvas gecontroleerd.');
+ console.log('Melkweg Lab V13: haarfijne labels, wegklikken/herstellen, S2, grafiek, planeten en canvas gecontroleerd.');
 }finally{if(browser)await browser.close();server.kill();}
