@@ -48,11 +48,12 @@ try{
  assert(requests.some(x=>x.action==='session'&&x.auth==='Bearer '+tokens.access));
  assert.equal(new URL(page.url()).hash,'','Geen toegangstoken in de adresbalk');
  assert.equal(await page.locator('#workspace:visible').count(),1,'Beheer verschijnt na managercontrole');
+ await page.evaluate(()=>sessionStorage.removeItem('leif-admin-session-v1'));
  manager=false;
  await page.goto(origin+'/leif/'+fragment,{waitUntil:'domcontentloaded'});
  await page.locator('#accessError:visible').waitFor({timeout:10000});
  assert.match(await page.locator('#accessError').innerText(),/niet worden bevestigd/);
- assert.equal(await page.evaluate(()=>sessionStorage.getItem('leif-admin-session-v1')!==null),true,'Bestaande sessie blijft apart bestaan');
+ assert.equal(await page.evaluate(()=>sessionStorage.getItem('leif-admin-session-v1')),null,'Onbevoegde krijgt geen beheersessie');
  assert.equal(errors.length,0,'Geen JavaScript-fouten: '+errors.join('; '));
  console.log('LEIF VIS: een toegangscode, e-maillink, managercontrole, geen wachtwoordvelden.');
 }finally{if(browser)await browser.close();server.kill()}
