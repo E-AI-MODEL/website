@@ -41,14 +41,18 @@
       ['Explore',[['The EAI model','/en/#model'],['Education','/en/education/']]],
       ['Applications',[['All applications','/en/applications/'],['Education','/en/education/']]],
       ['Research',[['Research','/en/research/'],['Publications','/en/publications/']]],
-      ['Tools',[['All tools','/en/tools/'],['Milky Way Lab','/tools/melkweg-lab/'],['Science Observatory','/tools/science-observatory/'],['LLM Observatory','/tools/llm-observatorium/'],['ABYSS','/tools/abyss/'],['WiHTML','/tools/wihtml/'],['Prompt Framework','/tools/prompt-framework/'],['Model Monitor','/en/model-monitor/'],['LLMscan','/en/llmscan/'],['Site insights','/en/insights/']]],
-      ['About EAI',[['About EAI and Hans Visser','/en/about/']]]
+      ['Observatories',[['Milky Way Lab','/tools/melkweg-lab/'],['Science Observatory','/tools/science-observatory/'],['LLM Observatory','/tools/llm-observatorium/'],['ABYSS','/tools/abyss/']]],
+      ['Create',[['WiHTML Studio','/tools/wihtml/'],['Prompt Framework','/tools/prompt-framework/'],['Process to prompt','/tools/van-proces-naar-prompt/']]],
+      ['Tools & monitors',[['All tools','/en/tools/'],['Model Monitor','/en/model-monitor/'],['LLMscan','/en/llmscan/']]],
+      ['About EAI',[['About EAI','/en/about/'],['Site insights','/en/insights/']]]
     ]:[
       ['Ontdekken',[['Het EAI-model','/nl/#model'],['EAI in het onderwijs','/nl/onderwijs/']]],
       ['Toepassingen',[['Alle toepassingen','/nl/toepassingen/'],['Onderwijs in','/onderwijsin/']]],
       ['Onderzoek',[['Onderzoek','/nl/onderzoek/'],['Publicaties','/nl/publicaties/']]],
-      ['Tools',[['Alle tools','/nl/tools/'],['Melkweg Lab','/tools/melkweg-lab/'],['Science Observatory','/tools/science-observatory/'],['LLM Observatorium','/tools/llm-observatorium/'],['ABYSS','/tools/abyss/'],['WiHTML Docentstudio','/tools/wihtml/'],['EAI Prompt Framework','/tools/prompt-framework/'],['Model Monitor','/nl/model-monitor/'],['LLMscan','/nl/llmscan/'],['Website-inzichten','/nl/insights/']]],
-      ['Over EAI',[['Over EAI en Hans Visser','/nl/over/']]]
+      ['Observatoria',[['Melkweg Lab','/tools/melkweg-lab/'],['Science Observatory','/tools/science-observatory/'],['LLM Observatorium','/tools/llm-observatorium/'],['ABYSS · de oceaan','/tools/abyss/']]],
+      ['Maken & ontwerpen',[['WiHTML Docentstudio','/tools/wihtml/'],['Prompt Framework','/tools/prompt-framework/'],['Van proces naar prompt','/tools/van-proces-naar-prompt/']]],
+      ['Tools & monitoren',[['Alle tools','/nl/tools/'],['AI Model Monitor','/nl/model-monitor/'],['LLMscan','/nl/llmscan/']]],
+      ['Over EAI',[['Over EAI en Hans Visser','/nl/over/'],['EAI Insights · websitegebruik','/nl/insights/']]]
     ];
     var links=header.querySelector('.eai-links');
     var mobile=header.querySelector('.eai-mobile .mobile-nav-panel');
@@ -133,4 +137,7 @@
   if(/^\/(leif|houseoftalents|admin)(\/|$)/i.test(location.pathname))return;
   var t=document.createElement('script');t.src='/assets/site-insights.js';t.defer=true;
   document.head.appendChild(t);
+  if(!/\/(leif|houseoftalents)\//.test(location.pathname) && !/\/(nl|en)\/insights\//.test(location.pathname)){
+    var script=document.createElement('script');script.src='/assets/site-insights.js';script.defer=true;document.head.appendChild(script);
+  }
 })();
