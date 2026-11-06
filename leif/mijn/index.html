@@ -16,7 +16,7 @@ main{max-width:1080px;margin:auto;padding:44px 25px 105px}.gate{max-width:490px;
 .tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:32px}.tabs button{padding:10px 14px;border:1px solid var(--line);border-radius:12px;background:#fffdfc;color:var(--ink);font-size:14px}.tabs button[aria-current=page]{background:#243746;color:white}
 .intro{max-width:670px;color:#526575;font-size:18px;line-height:1.8}.tag{font-size:11px;font-weight:750;text-transform:uppercase;letter-spacing:.17em;color:#517990}.spread{display:flex;align-items:center;justify-content:space-between;gap:16px}.panel{background:#fffdfc;border:1px solid var(--line);border-radius:16px;padding:clamp(22px,4vw,40px);box-shadow:var(--shadow);max-width:780px}
 .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));gap:12px;margin:28px 0}.card{background:#fffdfc;padding:24px;border:1px solid var(--line);border-radius:13px;text-align:left;color:var(--ink);min-height:120px}.card strong{display:block;font-size:17px;margin:4px 0}.card small{color:var(--muted)}.card:hover{border-color:#7299ae}.statline{height:5px;background:#dce6e9;border-radius:99px;overflow:hidden;margin:25px 0}.statline>div{height:100%;background:#729aac}
-.reader{max-width:700px}.reader h2{margin:6px 0 22px}.reader p{font-size:18px;line-height:1.9}.question textarea,.exercise textarea{width:100%;min-height:175px;resize:vertical;border:1px solid #c7d4d9;border-radius:10px;padding:14px;background:white;color:var(--ink);margin-top:12px;line-height:1.7}.choices{display:grid;gap:9px;margin:22px 0}.choices button{text-align:left;background:white;border:1px solid var(--line);padding:12px 15px;border-radius:10px}.choices button[aria-pressed=true]{border:2px solid #4c7895;background:var(--soft)}.stepnav{display:flex;justify-content:space-between;gap:9px;flex-wrap:wrap;margin-top:27px}.note{background:var(--soft);border-radius:11px;padding:13px 16px;margin:20px 0;font-size:14px}.reportlist{display:grid;gap:24px;margin-top:32px}.reportlist article{border-top:1px solid var(--line);padding-top:15px}.reportlist h3{font:400 25px Georgia,serif}.reportlist dl{margin:0}.reportlist dt{font-weight:700;margin-top:15px}.reportlist dd{margin:2px 0 8px;white-space:pre-wrap}.save-status{font-size:12px;color:#456a6e;min-height:20px;text-align:right}.save-status.error{color:#9b3030}.exercise{margin:24px 0 35px}.exercise h3{font:400 24px Georgia,serif;margin:0 0 6px}.personal p{white-space:pre-wrap}.screenreader{position:absolute;left:-9999px}
+.reader{max-width:700px}.reader h2{margin:6px 0 22px}.reader p{font-size:18px;line-height:1.9}.question textarea,.exercise textarea{width:100%;min-height:175px;resize:none;overflow-y:hidden;overflow-wrap:anywhere;border:1px solid #c7d4d9;border-radius:10px;padding:14px;background:white;color:var(--ink);margin-top:12px;line-height:1.7}.choices{display:grid;gap:9px;margin:22px 0}.choices button{text-align:left;background:white;border:1px solid var(--line);padding:12px 15px;border-radius:10px}.choices button[aria-pressed=true]{border:2px solid #4c7895;background:var(--soft)}.stepnav{display:flex;justify-content:space-between;gap:9px;flex-wrap:wrap;margin-top:27px}.note{background:var(--soft);border-radius:11px;padding:13px 16px;margin:20px 0;font-size:14px}.reportlist{display:grid;gap:24px;margin-top:32px}.reportlist article{border-top:1px solid var(--line);padding-top:15px}.reportlist h3{font:400 25px Georgia,serif}.reportlist dl{margin:0}.reportlist dt{font-weight:700;margin-top:15px}.reportlist dd{margin:2px 0 8px;white-space:pre-wrap}.save-status{font-size:12px;color:#456a6e;min-height:20px;text-align:right}.save-status.error{color:#9b3030}.exercise{margin:24px 0 35px}.exercise h3{font:400 24px Georgia,serif;margin:0 0 6px}.personal p{white-space:pre-wrap}.screenreader{position:absolute;left:-9999px}
 @media(max-width:660px){main{padding:25px 18px 90px}header{flex-wrap:wrap;padding:12px 18px}.spread{align-items:flex-start}.tabs{gap:5px}.tabs button{font-size:12px;padding:8px 9px}.reader p{font-size:17px}.panel{padding:20px}}
 </style>
 </head>
@@ -200,13 +200,18 @@ function renderStart(area){
  buttons.append(linkButton('Mijn verslag',()=>goto('report')),linkButton('Oefeningen',()=>goto('exercises'),true));
  area.append(buttons);
 }
+function growAnswerBox(t){
+ if(!t||!t.isConnected)return;
+ t.style.height='auto';
+ t.style.height=Math.max(175,Math.ceil(t.scrollHeight)+2)+'px';
+}
 function renderQuestion(area){
  const q=allQuestions[questionIndex],block=node('div','panel reader question');
  block.append(node('div','tag','Vraag '+(questionIndex+1)+' van '+allQuestions.length+' · '+q.chapter.name),node('h2',null,q.title),node('p','intro',q.hint));
  const count=node('div','statline');const fill=node('div');fill.style.width=String((questionIndex+1)/allQuestions.length*100)+'%';count.append(fill);block.append(count);
  if(q.type==='text'){
   const label=node('label','screenreader','Jouw antwoord');const t=node('textarea');t.setAttribute('aria-label','Jouw antwoord');t.placeholder=q.placeholder||'Jouw antwoord';t.value=doc.answers?.[q.id]||'';
-  t.addEventListener('input',()=>{mergeChanges({answers:{...doc.answers,[q.id]:t.value}})});
+  t.addEventListener('input',()=>{growAnswerBox(t);mergeChanges({answers:{...doc.answers,[q.id]:t.value}})});
   block.append(label,t);
  }else{
   const choices=node('div','choices');
@@ -222,6 +227,7 @@ function renderQuestion(area){
  buttons.append(linkButton('Sla over',()=>goto(questionIndex===allQuestions.length-1?'report':'questions',Math.min(allQuestions.length-1,questionIndex+1)),true));
  buttons.append(linkButton(questionIndex===allQuestions.length-1?'Bekijk mijn verslag':'Volgende',()=>goto(questionIndex===allQuestions.length-1?'report':'questions',Math.min(allQuestions.length-1,questionIndex+1))));
  block.append(buttons);area.append(block);
+ if(q.type==='text')requestAnimationFrame(()=>growAnswerBox(block.querySelector('textarea')));
 }
 function renderQuestionReplacing(){E('content').replaceChildren();renderQuestion(E('content'))}
 function reportSnapshot(){
@@ -257,8 +263,8 @@ function renderExercises(area){
  for(const item of exercises){
   const b=node('section','exercise panel reader');b.append(node('h3',null,item.title),node('p','muted',item.hint));
   const t=node('textarea');t.setAttribute('aria-label',item.title);t.value=doc.exercises?.[item.id]||'';
-  t.addEventListener('input',()=>mergeChanges({exercises:{...doc.exercises,[item.id]:t.value}}));
-  b.append(t);area.append(b);
+  t.addEventListener('input',()=>{growAnswerBox(t);mergeChanges({exercises:{...doc.exercises,[item.id]:t.value}})});
+  b.append(t);area.append(b);requestAnimationFrame(()=>growAnswerBox(t));
  }
 }
 function renderPersonalTexts(area){
