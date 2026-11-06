@@ -23,6 +23,7 @@ try{
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.goto(origin+'/tools/melkweg-lab/',{waitUntil:'domcontentloaded'});
   await page.waitForFunction(()=>document.documentElement.dataset.ready==='true',{timeout:10000});
+  if(width<850)await page.screenshot({path:`test-results/melkweg-lab-v11-start-${width}.png`});
   const metrics=await page.evaluate(()=>({
    viewport:innerHeight,document:document.documentElement.scrollHeight,
    horizontal:document.documentElement.scrollWidth-innerWidth,
