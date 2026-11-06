@@ -7,7 +7,7 @@ const root=resolve(process.argv[2]||'site-build');
 const origin='http://127.0.0.1:8772';
 const server=spawn('python3',['-m','http.server','8772','--bind','127.0.0.1','--directory',root],{stdio:'ignore'});
 let browser;
-const tokens={access:'eyJ'+('a'.repeat(148)),refresh:'test-refresh-'+('z'.repeat(32))};
+const tokens={access_token:'eyJ'+('a'.repeat(148)),refresh_token:'test-refresh-'+('z'.repeat(32))};
 const membership={id:'00000000-0000-4000-8000-000000000001',slug:'leif',name:'LEIF',role:'manager'};
 try{
  let ready=false;
@@ -42,12 +42,12 @@ try{
    if(!manager){status=403;data={error:'no_admin_access'}}
    else data={ok:true,...tokens};
   }else if(input.action==='passkey_register_start'){
-   assert.equal(req.headers().authorization,'Bearer '+tokens.access);
+   assert.equal(req.headers().authorization,'Bearer '+tokens.access_token);
    data={ok:true,challenge_id:'challenge-0123456789',
     options:{challenge:'dGVzdA',user:{id:'dXNlcg',name:'manager@example.invalid',displayName:'Manager'},
      rp:{name:'LEIF'},pubKeyCredParams:[{alg:-7,type:'public-key'}]}};
   }else if(input.action==='passkey_register_finish'){
-   assert.equal(req.headers().authorization,'Bearer '+tokens.access);
+   assert.equal(req.headers().authorization,'Bearer '+tokens.access_token);
   }else{status=400;data={error:'invalid_action'}}
   return route.fulfill({status,headers,body:JSON.stringify(data)});
  });
