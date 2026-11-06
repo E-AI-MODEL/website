@@ -41,13 +41,13 @@
       ['Explore',[['The EAI model','/en/#model'],['Education','/en/education/']]],
       ['Applications',[['All applications','/en/applications/'],['Education','/en/education/']]],
       ['Research',[['Research','/en/research/'],['Publications','/en/publications/']]],
-      ['Tools',[['All tools','/en/tools/'],['Model Monitor','/en/model-monitor/'],['LLMscan','/en/llmscan/']]],
+      ['Tools',[['All tools','/en/tools/'],['Milky Way Lab','/tools/melkweg-lab/'],['Science Observatory','/tools/science-observatory/'],['LLM Observatory','/tools/llm-observatorium/'],['ABYSS','/tools/abyss/'],['WiHTML','/tools/wihtml/'],['Prompt Framework','/tools/prompt-framework/'],['Model Monitor','/en/model-monitor/'],['LLMscan','/en/llmscan/'],['Site insights','/en/insights/']]],
       ['About EAI',[['About EAI and Hans Visser','/en/about/']]]
     ]:[
       ['Ontdekken',[['Het EAI-model','/nl/#model'],['EAI in het onderwijs','/nl/onderwijs/']]],
       ['Toepassingen',[['Alle toepassingen','/nl/toepassingen/'],['Onderwijs in','/onderwijsin/']]],
       ['Onderzoek',[['Onderzoek','/nl/onderzoek/'],['Publicaties','/nl/publicaties/']]],
-      ['Tools',[['Alle tools','/nl/tools/'],['Model Monitor','/nl/model-monitor/'],['LLMscan','/nl/llmscan/']]],
+      ['Tools',[['Alle tools','/nl/tools/'],['Melkweg Lab','/tools/melkweg-lab/'],['Science Observatory','/tools/science-observatory/'],['LLM Observatorium','/tools/llm-observatorium/'],['ABYSS','/tools/abyss/'],['WiHTML Docentstudio','/tools/wihtml/'],['EAI Prompt Framework','/tools/prompt-framework/'],['Model Monitor','/nl/model-monitor/'],['LLMscan','/nl/llmscan/'],['Website-inzichten','/nl/insights/']]],
       ['Over EAI',[['Over EAI en Hans Visser','/nl/over/']]]
     ];
     var links=header.querySelector('.eai-links');
@@ -127,4 +127,10 @@
   document.addEventListener('keydown',function(event){
     if(event.key==='Escape')document.querySelectorAll('.eai-mobile[open]').forEach(function(menu){menu.open=false;});
   });
+})();
+// Count page use in the refreshed public site; private LEIF pages are excluded.
+(function(){
+  if(/^\/(leif|houseoftalents|admin)(\/|$)/i.test(location.pathname))return;
+  var t=document.createElement('script');t.src='/assets/site-insights.js';t.defer=true;
+  document.head.appendChild(t);
 })();
