@@ -399,6 +399,121 @@ html.solar-active,html.solar-active body{overflow:hidden!important;height:100dvh
 }
 @media(prefers-reduced-motion:reduce){.gesture-nudge{animation:none}}
 
+
+/* MW / 01: fijne instrumentlijnen uit het oorspronkelijke Galactisch Observatorium. */
+.instrument-meta{display:flex;justify-content:space-between;gap:12px;padding-bottom:13px;margin-bottom:15px;border-bottom:1px solid #23384d;color:#a7d9e6;font:10px/1.45 ui-monospace,SFMono-Regular,monospace;letter-spacing:.07em}
+.instrument-meta span{color:#657e98;white-space:nowrap;font-size:9px}
+.instrument-controls .subhead{font:10px/1.4 ui-monospace,monospace;letter-spacing:.1em;color:#b8d4e5;margin:17px 0 12px}
+.instrument-controls .ctrlgroup{border-top:1px solid #22374d}
+.instrument-controls .switch{font-size:10px;border-radius:4px}
+.instrument-action{display:flex;align-items:center;justify-content:space-between;width:100%;margin-top:15px;padding:10px 11px;background:#101d2d;border:1px solid #31475b;border-radius:4px;color:#a9dbe5;font:10px/1.4 ui-monospace,monospace;letter-spacing:.035em;text-align:left}
+.instrument-action small{color:#718aa1;text-align:right;font:9px/1.3 ui-monospace,monospace;margin-left:10px}
+.instrument-action:hover{background:#152b3f;color:#f4ffff;border-color:#538296}
+.instrument-details{margin-top:13px;border-top:1px solid #26384b}
+.instrument-details summary{cursor:pointer;list-style:none;padding:13px 3px;color:#7f9cb4;font:10px/1.3 ui-monospace,monospace;letter-spacing:.06em}
+.instrument-details summary:after{content:' +';color:#a5dce1}
+.instrument-details[open] summary:after{content:' −'}
+.instrument-details-body{padding-bottom:18px}
+.instrument-note{font:10px/1.5 ui-monospace,monospace;color:#819ab1}
+.instrument-hud{display:none}
+@media(min-width:851px){
+ .inspector .panel-head{padding:17px 18px 13px}
+ .inspector .panel-head h3{font-size:17px;margin:8px 0 0}
+ .inspector .panel-head p{font-size:10px}
+ .inspector .panel-body{padding:15px 17px 28px}
+ .inspector .statgrid{gap:5px}
+ .inspector .stat{border-radius:3px;padding:9px}
+ .inspector .stat strong{font-size:17px}
+ .inspector .ctrlrow input[type=range]{height:2px}
+ .stage-hud-bottom .camera-controls{border-radius:4px;padding:3px}
+ .stage-hud-bottom .cambtn{font:10px ui-monospace,monospace}
+}
+@media(max-width:850px){
+ html,body{background:#050914}
+ .stage #universe{filter:brightness(1.06) contrast(1.03) saturate(.96)}
+ .stage:after{background:linear-gradient(180deg,#020711a8,transparent 18%,transparent 80%,#0207119e);opacity:.9}
+ .instrument-hud{position:absolute;top:66px;left:15px;right:15px;z-index:7;display:block;pointer-events:none;font-family:ui-monospace,SFMono-Regular,monospace}
+ .instrument-hud .hud-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-bottom:7px;border-bottom:1px solid #7189a344;color:#c7d6e7;letter-spacing:.07em;font-size:10px;font-weight:550}
+ .instrument-hud .hud-heading small{color:#7393a9;font-size:9px;letter-spacing:.06em;white-space:nowrap}
+ .instrument-hud .hud-values{display:flex;gap:0;padding-top:7px;justify-content:space-between}
+ .instrument-hud .hud-cell{display:grid;gap:2px;min-width:0;flex:1}
+ .instrument-hud .hud-cell+ .hud-cell{border-left:1px solid #6e87a72b;padding-left:9px}
+ .instrument-hud .hud-cell small{color:#7994af;letter-spacing:.07em;font-size:8px;line-height:1.2;white-space:nowrap}
+ .instrument-hud .hud-cell strong{color:#c6e8eb;font-size:11px;line-height:1.5;font-weight:550;white-space:nowrap}
+ .sidebar{top:12px;left:12px;width:38px;height:38px}
+ .adventure-menu-toggle{width:38px;height:38px;min-height:38px;border-radius:5px;border:1px solid #6b889a77;background:#06132577;box-shadow:none;backdrop-filter:blur(8px)}
+ .adventure-menu-toggle:before{content:'☷';font:22px/1 ui-monospace,monospace;color:#a7d7e0}
+ .topbar{top:12px;right:12px;height:38px;min-height:38px}
+ .top-actions{gap:6px}
+ .topbar .solar-entry,.tools-menu-toggle{width:38px;height:38px;min-width:38px;min-height:38px;border-radius:5px;border:1px solid #6b889a77;background:#06132577;box-shadow:none;backdrop-filter:blur(8px)}
+ .topbar .solar-entry:before{content:'⊙';font:24px/1 ui-monospace,monospace;color:#a7d7e0}
+ .tools-menu-toggle{font-size:21px;color:#a7d7e0}
+ .topbar.tools-open .topbtn{height:35px;width:153px;border-radius:4px;border-color:#46647c;background:#091a2af7}
+ .topbar.tools-open #resetView{top:43px}
+ .topbar.tools-open #snapshot{top:82px}
+ .topbar.tools-open #exportJSON{top:121px}
+ .navlist{top:44px;width:min(332px,calc(100vw - 24px));padding:8px;gap:3px;border-radius:6px;background:#071625f9;border-color:#3d5871}
+ .nav-btn{min-height:58px;padding:8px;border-radius:3px;background:#0c1d2d;border:1px solid transparent;gap:5px}
+ .nav-btn.active{background:#12293a;border-color:#34647a}
+ .nav-btn .nav-icon{width:24px;min-width:24px;height:24px;border-radius:2px;font-size:14px}
+ .navcopy b{font-size:10px;line-height:1.2;font-weight:600}
+ .navcopy small{font-size:9px;line-height:1.2}
+ .navnum{font-size:9px}
+ .astro-pin{background:transparent;border:0;box-shadow:none;backdrop-filter:none;border-radius:0;padding:7px 2px 7px 16px;min-height:35px;color:#bce4df;transform:translate(-5px,-50%);font:600 10px/1 ui-monospace,monospace;letter-spacing:.04em;text-shadow:0 1px 8px #000}
+ .astro-pin:before{width:5px;height:5px;background:#a4d9d1;box-shadow:0 0 0 4px #7bd6c810;position:absolute;left:1px;top:15px}
+ .astro-pin:after{content:'';position:absolute;left:7px;top:17px;width:9px;height:1px;background:#8bbab58c}
+ .astro-pin[data-kind=center]{color:#e7c6a0}
+ .astro-pin[data-kind=center]:before{width:5px;height:5px;box-shadow:0 0 0 4px #deb67b20;background:#e7bd8e}
+ .astro-pin[hidden]{display:none}
+ .gesture-nudge{bottom:63px;border:0;border-radius:0;background:transparent;padding:0;color:#7b9bb0;font:9px ui-monospace,monospace;letter-spacing:.07em}
+ .mobile-object-info{bottom:68px;width:min(315px,calc(100% - 25px));padding:13px 15px;border:1px solid #456a7b;border-radius:5px;background:#091726f7;box-shadow:0 8px 28px #0009;backdrop-filter:blur(8px)}
+ .mobile-object-info .info-label{font:9px ui-monospace,monospace;letter-spacing:.1em;color:#83aebc}
+ .mobile-object-info strong{font:600 16px/1.3 ui-monospace,monospace;color:#e4f3f8;margin:5px 26px 7px 0}
+ .mobile-object-info p{font:11px/1.5 ui-monospace,monospace;color:#a8c5d1}
+ .mobile-object-info .info-go{margin-top:9px;min-height:32px;border:1px solid #3a6575;border-radius:3px;background:#112c3d;color:#a8ecdf;font:10px ui-monospace,monospace;padding:6px 11px}
+ .mobile-object-info .info-dismiss{background:transparent;border:0;color:#9fb9c8;border-radius:0;right:6px;top:5px}
+ .analytics,.show-graphs .analytics{bottom:11px;left:12px;height:35px;min-height:35px}
+ .timeline,.show-graphs .timeline{height:35px;gap:6px}
+ .timeline #play,.timeline #timeToggle{height:35px;min-height:35px;width:35px;min-width:35px;border-radius:4px;border:1px solid #6b889a77;background:#06132577;box-shadow:none;color:#b5d4e0;font-size:16px;backdrop-filter:blur(8px)}
+ body.time-open .analytics{left:10px;right:10px;bottom:58px;height:47px}
+ body.time-open .timeline{height:47px;border:1px solid #3e5e74;border-radius:4px;background:#091625ec;padding:0 8px}
+ body.time-open .timeline #play,body.time-open .timeline #timeToggle{height:30px;min-height:30px;width:30px;min-width:30px;border-radius:3px}
+ body.time-open .timeline .tvalue{font:10px ui-monospace,monospace;min-width:72px}
+ .timeline input[type=range],body.time-open .timeline input[type=range]{height:2px}
+ .timeline input[type=range]::-webkit-slider-thumb{width:11px;height:11px}
+ .inspector{bottom:11px;right:12px;width:35px;height:35px}
+ .lab-dock{height:35px;min-height:35px;width:35px;border:1px solid #6b889a77;border-radius:4px;background:#06132577;box-shadow:none;backdrop-filter:blur(8px)}
+ .lab-dock-icon{width:23px;height:23px;font:19px/1 ui-monospace,monospace;color:#b6dce0}
+ body.lab-sheet-open .lab-sheet-backdrop{background:#0207138a;backdrop-filter:blur(2px)}
+ body.lab-sheet-open .inspector{width:100%;height:min(67dvh,520px);max-height:min(67dvh,520px);padding-bottom:env(safe-area-inset-bottom,0);border:1px solid #47647a;border-radius:8px 8px 0 0;background:#071321fa;box-shadow:0 -15px 30px #000b}
+ body.lab-sheet-open .lab-dock{height:44px;min-height:44px;flex:0 0 44px;padding:0 12px;border:0;border-bottom:1px solid #2b4257;border-radius:0}
+ body.lab-sheet-open .lab-dock-icon{background:transparent;font-size:15px}
+ body.lab-sheet-open .lab-dock-title{font:600 12px ui-monospace,monospace}
+ body.lab-sheet-open .lab-dock-action{font:16px ui-monospace,monospace}
+ body.lab-sheet-open .inspector .panel-body{padding:11px 13px 25px}
+ .inspector .instrument-meta{font-size:9px;margin-bottom:10px;padding-bottom:9px}
+ .inspector .statgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;margin:0 0 14px}
+ .inspector .stat{background:transparent;border:0;border-bottom:1px solid #21364a;border-radius:0;padding:8px 5px 9px}
+ .inspector .stat small{font:8px ui-monospace,monospace;letter-spacing:.045em;color:#6e91a5}
+ .inspector .stat strong{margin-top:4px;color:#e0eff5;font:16px/1.2 ui-monospace,monospace}
+ .inspector .stat strong.amber{color:#e5bb82}
+ .inspector .stat .unit{font-size:9px}
+ .inspector .switchgrid{gap:3px;grid-template-columns:repeat(2,minmax(0,1fr))}
+ .inspector .switch{min-height:34px;padding:7px 8px;background:#0b1e2c;border:1px solid #293d53;border-radius:3px;color:#a9c0d3;font:10px ui-monospace,monospace}
+ .inspector .switch:has(input:checked){background:#102b35;border-color:#3c7782}
+ .inspector .switch input{width:11px;height:11px;border-radius:2px}
+ .inspector .ctrlrow{margin:10px 0 14px}
+ .inspector .ctrlrow .rowhead{font:10px ui-monospace,monospace}
+ .inspector .ctrlrow input[type=range]{height:2px;margin-top:14px}
+ .inspector .ctrlrow input[type=range]::-webkit-slider-thumb{width:11px;height:11px}
+ .inspector .instrument-details summary{font-size:9px}
+ body.show-graphs .analytics{bottom:53px;height:min(36dvh,270px);border-radius:4px;border-color:#3b5871;background:#071321f6}
+ body.show-graphs .analytics .analytics-head{height:29px;min-height:29px;flex-basis:29px}
+ body.show-graphs .analytics .analytics-head h3{font:10px ui-monospace,monospace}
+ body.show-graphs .analytics .timeline{height:37px;min-height:37px;flex-basis:37px;border-top:1px solid #223a50}
+ body.show-graphs .graph-close{height:24px;width:25px;border:1px solid #385368;border-radius:3px;background:#102336;font-size:15px}
+}
+
 </style>
 </head>
 <body>
@@ -424,7 +539,7 @@ html.solar-active,html.solar-active body{overflow:hidden!important;height:100dvh
 <div class="adventure-backdrop" id="adventureBackdrop" aria-hidden="true" hidden></div>
 <header class="topbar"><div class="breadcrumb">MW / 01 <span class="slash">/</span><strong id="crumb">GALACTISCHE ATLAS</strong></div><div class="top-actions" id="topActions"><button type="button" id="solarEntry" class="solar-entry">PLANETEN</button><span class="tag"><span class="dot"></span>MODEL + BRONNEN</span><button id="toolsMenuToggle" class="tools-menu-toggle" type="button" aria-controls="topActions" aria-expanded="false" aria-label="Meer knoppen" title="Meer knoppen">⋯</button><button id="resetView" class="topbtn" title="Camera en tijd herstellen"><svg viewBox="0 0 24 24"><path d="M3 11a9 9 0 1 1 3 7M3 4v7h7"/></svg><span class="btxt">Herstel beeld</span></button><button id="exportJSON" class="topbtn" title="Sla het model en de instellingen als JSON op"><svg viewBox="0 0 24 24"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 17v4h16v-4"/></svg><span class="btxt">Model JSON</span></button><button id="snapshot" class="topbtn primary" title="Exporteer de huidige simulatie als PNG"><svg viewBox="0 0 24 24"><path d="M3 7h4l2-3h6l2 3h4v13H3z"/><circle cx="12" cy="13" r="4"/></svg><span class="btxt">Afbeelding</span></button></div></header>
 <section class="stage" id="stage" aria-label="Interactieve 3D-weergave van de Melkweg">
-  <canvas id="universe" aria-label="Interactief Melkwegmodel. Sleep om te draaien, knijp om te zoomen, selecteer een meetpunt."></canvas>
+  <canvas id="universe" aria-label="Interactief Melkwegmodel. Sleep om te draaien, knijp om te zoomen, selecteer een meetpunt."></canvas><div class="instrument-hud" aria-label="Modelmetingen"><div class="hud-heading"><span id="hudMode">GALACTISCHE ATLAS</span><small>MW / 01 · MODEL</small></div><div class="hud-values"><div class="hud-cell"><small>PROJECTIE</small><strong id="hudProjection">72° / 16°</strong></div><div class="hud-cell"><small>SELECTIE</small><strong id="hudRadius">8,2 kpc</strong></div><div class="hud-cell"><small>SNELHEID</small><strong id="hudSpeed">232 km/s</strong></div></div></div>
   <div class="stage-head"><div class="eyebrow" id="scene-eyebrow">01 / GALACTISCHE ATLAS</div><h2 id="scene-title">De Melkweg,<br>van buiten bekeken</h2><p id="scene-desc">Draai het model, verander het tijdstip en onderzoek hoe de <strong>schijf, balk, halo en spiraalarmen</strong> samenhangen.</p></div>
 
   <div class="stage-metrics"><div>PROJECTIE <b id="viewangle">38° / 24°</b></div><div>VENSTER <b id="viewscale">40 kpc</b></div><div id="focuslabel">FOCUS <b id="focusvalue">R = 8,2 kpc</b></div></div>
