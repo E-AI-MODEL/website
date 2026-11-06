@@ -1,7 +1,7 @@
 // Passkeys voor LEIF-beheer. Supabase Auth verifieert de handtekening; LEIF controleert de managerrol.
 (()=>{
  'use strict';
- const endpoint='https://ngcyfbstajfcfdhlelbz.supabase.co/functions/v1/leif-admin-console';
+ const endpoint='https://ngcyfbstajfcfdhlelbz.supabase.co/functions/v1/leif-passkey';
  function supported(){
   return window.isSecureContext && typeof window.PublicKeyCredential==='function'
    && typeof navigator.credentials?.get==='function' && typeof navigator.credentials?.create==='function';
