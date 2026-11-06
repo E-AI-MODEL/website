@@ -1,0 +1,40 @@
+<style>
+.so-home{--so-ink:#eaf5ff;--so-muted:#a0b7cb;--so-line:#30455f;--so-bg:#07111f;--so-card:#0f2135;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;background:#07111f;color:var(--so-ink);min-height:100vh}
+.so-home *{box-sizing:border-box}.so-home .so-wrap{max-width:1240px;margin:auto;padding:0 28px}.so-home .so-head{padding:68px 0 45px;background:radial-gradient(ellipse at 78% 24%,#173f5d 0%,#0b1d30 45%,#07111f 78%);border-bottom:1px solid var(--so-line)}
+.so-home .so-kicker{font:700 11px ui-monospace,monospace;letter-spacing:.18em;color:#86e3eb;text-transform:uppercase}
+.so-home h1{font-size:clamp(2.5rem,5vw,4.5rem);letter-spacing:-.055em;line-height:1.07;margin:15px 0 19px;color:#f3fbff;max-width:980px}
+.so-home .so-lead{font-size:1.1rem;line-height:1.75;max-width:730px;color:#b8ccdd}
+.so-home .so-pills{display:flex;gap:9px;flex-wrap:wrap;margin:25px 0 0}.so-home .so-pill{border:1px solid #416078;border-radius:5px;padding:7px 12px;color:#b1dce8;background:#0d2537;font:11px ui-monospace,monospace}
+.so-home .so-collection{padding:40px 0 72px}.so-home .so-section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:23px}
+.so-home .so-section-head h2{font-size:clamp(1.45rem,2.4vw,2rem);letter-spacing:-.035em;color:#f5fbff;margin:7px 0 0}.so-home .so-section-head p{color:#a7bcd0;margin:5px 0 0}
+.so-home .so-tools{display:flex;gap:10px;flex-wrap:wrap}.so-home select,.so-home input{background:#10253a;border:1px solid #38536c;border-radius:6px;color:#e9f5ff;padding:12px 13px;font:13px system-ui;min-width:175px}.so-home input{min-width:240px}.so-home input:focus-visible,.so-home select:focus-visible{outline:2px solid #76dbe9;outline-offset:2px}
+.so-home .so-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.so-home .so-card{display:flex;flex-direction:column;gap:14px;min-height:246px;border:1px solid #2e4a64;border-radius:10px;padding:23px;background:linear-gradient(145deg,#122a42,#0b1a2b);text-decoration:none;color:#ebf6ff;transition:transform .15s,border-color .15s}
+.so-home .so-card:hover,.so-home .so-card:focus-visible{transform:translateY(-3px);border-color:#7cdde6;color:#fff;text-decoration:none}
+.so-home .so-card-top{display:flex;justify-content:space-between;gap:10px;align-items:center}.so-home .so-id{font:700 11px ui-monospace,monospace;color:#7edbe5;letter-spacing:.12em}.so-home .so-state{font:10px ui-monospace,monospace;padding:5px 8px;border-radius:5px;color:#c5d6e5;border:1px solid #43617a}
+.so-home .so-card h3{font-size:1.7rem;letter-spacing:-.04em;margin:0;color:#f7fbff}.so-home .so-card p{font-size:14px;color:#b0c6d9;line-height:1.65;max-width:540px;margin:0}.so-home .so-open{margin-top:auto;color:#82e2eb;font-weight:700;font-size:13px}
+.so-home .so-foot{border-top:1px solid var(--so-line);padding:24px 0 54px;color:var(--so-muted);line-height:1.7}.so-home .so-foot strong{color:#e6f4ff}
+.so-home .so-none{display:none;color:#bfd1de;border:1px dashed #527088;padding:20px;border-radius:8px}
+@media(max-width:720px){.so-home .so-grid{grid-template-columns:1fr}.so-home .so-wrap{padding:0 16px}.so-home .so-head{padding:45px 0 30px}.so-home .so-tools{width:100%}.so-home .so-tools>*{flex:1;min-width:0}.so-home .so-card{min-height:220px;padding:20px}}
+</style>
+<main id="main-content" class="so-home">
+<section class="so-head"><div class="so-wrap"><div class="so-kicker">EAI / Science Observatory / proefbibliotheek</div>
+<h1>Onderzoek de wereld achter de formule.</h1>
+<p class="so-lead">Draai een model, verander de omstandigheden en vergelijk wat er gebeurt. De grafieken, metingen en visualisaties reageren op jouw keuzes. Vier zelfstandige observatoria vormen nu de eerste publieke proefselectie.</p>
+<div class="so-pills"><span class="so-pill">Interactieve simulaties</span><span class="so-pill">Wiskunde A &amp; B</span><span class="so-pill">Natuurkunde</span><span class="so-pill">Vwo-bovenbouw</span></div></div></section>
+<section class="so-collection"><div class="so-wrap">
+<div class="so-section-head"><div><div class="so-kicker">Onderzoeksruimtes</div><h2>Open een observatorium</h2><p>Dit zijn zelfstandige HTML-modellen. Geen account nodig.</p></div>
+<div class="so-tools"><label><span class="sr-only">Selecteer vak</span><select id="so-vak"><option value="all">Alle vakken</option><option value="nf">Natuurkunde</option><option value="wa">Wiskunde A</option><option value="wb">Wiskunde B</option></select></label><label><span class="sr-only">Zoek een onderwerp</span><input id="so-search" type="search" placeholder="Zoek een onderwerp…" autocomplete="off"></label></div></div>
+<div class="so-grid" id="so-cards">
+<a class="so-card" href="/tools/science-observatory/labs/melkweg/" data-vak="nf" data-search="melkweg sterrenstelsel sterrenkunde rotatie donkere materie gravitatie 3d">
+<div class="so-card-top"><span class="so-id">MW / 01 · NATUURKUNDE</span><span class="so-state">Oorspronkelijk model</span></div><h3>Galactisch Observatorium</h3><p>Onderzoek de Melkweg van buiten én van binnen. Zes onderzoeksmodes met ruimtelijke opbouw, dynamica, sterrenpopulaties, Gaia en Sagittarius A*.</p><span class="so-open">Open de Melkweg →</span></a>
+<a class="so-card" href="/tools/science-observatory/labs/natuurkunde/" data-vak="nf" data-search="natuurkunde mechanica golven interferentie experiment 3d">
+<div class="so-card-top"><span class="so-id">NF / 01 · NATUURKUNDE</span><span class="so-state">Proefmodel</span></div><h3>Beweging en golven</h3><p>Onderzoek meerdere mechanische en golfverschijnselen. Verander parameters en vergelijk de uitkomst met een gekoppelde analysegrafiek.</p><span class="so-open">Open natuurkunde →</span></a>
+<a class="so-card" href="/tools/science-observatory/labs/wiskunde-a/" data-vak="wa" data-search="wiskunde a kansverdeling statistiek kans kansen dichtheid regressie">
+<div class="so-card-top"><span class="so-id">WA / 01 · WISKUNDE A</span><span class="so-state">Proefmodel</span></div><h3>Kans en statistiek</h3><p>Vergelijk kansverdelingen, cumulatieve kansen en statistische modellen. Onderzoek de uitwerking van je parameterkeuzes.</p><span class="so-open">Open wiskunde A →</span></a>
+<a class="so-card" href="/tools/science-observatory/labs/wiskunde-b/" data-vak="wb" data-search="wiskunde b afgeleide functies raaklijnen integralen optimalisatie">
+<div class="so-card-top"><span class="so-id">WB / 01 · WISKUNDE B</span><span class="so-state">Proefmodel</span></div><h3>Functies en verandering</h3><p>Onderzoek functies, afgeleiden, raaklijnen en numerieke benaderingen. Verander een model en vergelijk de grafieken direct.</p><span class="so-open">Open wiskunde B →</span></a>
+</div><p class="so-none" id="so-none" role="status">Geen observatoria gevonden. Kies een ander vak of zoekwoord.</p></div></section>
+<section class="so-foot"><div class="so-wrap"><p><strong>Over deze proefversie.</strong> Het Galactisch Observatorium is de technische referentie. De andere drie modellen worden verder verdiept. Niet alle onderwerpen van het landelijke examenprogramma staan hier al als volwaardig observatorium. De verdeling over 5 en 6 vwo is nog niet vastgesteld aan de hand van het school-PTA.</p><p>De visualisaties gebruiken vereenvoudigde modellen en, waar vermeld, synthetische gegevens. Ze zijn bedoeld voor onderzoek en uitleg, niet als vervanging van echte metingen of een volledige vakinhoudelijke beoordeling.</p></div></section>
+</main>
+<script>(()=>{const v=document.getElementById('so-vak'),q=document.getElementById('so-search'),cards=[...document.querySelectorAll('.so-card')],none=document.getElementById('so-none');function update(){let visible=0;for(const card of cards){let ok=(v.value==='all'||card.dataset.vak===v.value)&&card.dataset.search.includes(q.value.trim().toLowerCase());card.hidden=!ok;card.style.display=ok?'flex':'none';if(ok)visible++}none.style.display=visible?'none':'block'}v.addEventListener('change',update);q.addEventListener('input',update);update()})();</script>
