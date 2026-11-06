@@ -1129,7 +1129,7 @@ function bindPanel(){let html=panelHTML();$('inspector-body').innerHTML=html;$('
  if($('removeHalo'))$('removeHalo').onclick=()=>{state.model.halo=.2;recalcOmega();bindPanel();chartDirty=true;toast('Halo verlaagd tot 0,2 × 10¹² M☉');};
 }
 let lastStatsAt=0;function updateLiveStats(force=false){let now=performance.now();if(!force&&now-lastStatsAt<260)return;lastStatsAt=now;
- {let wrap=$('inspector-body');let sc=wrap.scrollTop;let f=document.activeElement,id=f&&f.id,activeSlider=!!(f&&f.type==='range');if(!activeSlider){let first=wrap.querySelector('.statgrid');if(first)first.innerHTML=instrumentStats();}wrap.scrollTop=sc;}
+ {const first=$('inspector-body').querySelector('.statgrid');if(first)first.innerHTML=instrumentStats();}
  $('viewangle').textContent=state.mode==='blackhole'?'S2 / BAAN':`${Math.round(state.cam.elev)}° / ${Math.round(state.cam.yaw*180/PI)}°`;
  $('viewscale').textContent=state.mode==='blackhole'?'1035 AU':`${Math.round(40/state.cam.zoom)} kpc`;
  $('focusvalue').textContent=state.mode==='blackhole'?'Sgr A*':`R = ${fmt(state.focusR,1)} kpc`;
