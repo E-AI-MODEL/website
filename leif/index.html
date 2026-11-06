@@ -123,7 +123,18 @@ body{background:var(--paper);color:var(--ink)}
       <p id="accessError" class="access-error" role="alert" hidden>Deze code wordt niet herkend.</p>
       <p id="accessNotice" class="access-notice" role="status" aria-live="polite" hidden></p>
     </form>
-    
+    <form id="adminLoginForm" class="access-form" hidden data-leif-locked>
+      <h2>Beheer inloggen</h2>
+      <label for="adminLoginEmail">E-mailadres</label>
+      <input id="adminLoginEmail" type="email" name="username" autocomplete="username" maxlength="254" required>
+      <label for="adminLoginPassword">Wachtwoord</label>
+      <input id="adminLoginPassword" type="password" name="password" autocomplete="current-password" maxlength="1000" required>
+      <button id="adminLoginSubmit" type="submit" class="btn btn-primary">Open beheer</button>
+      <p id="adminLoginError" class="access-error" role="alert" hidden></p>
+      <button id="adminLink" type="button" class="mini-link">Eenmalige inloglink aanvragen</button>
+      <p id="adminLoginNotice" class="access-notice" role="status" hidden></p>
+      <button id="adminLoginBack" type="button" class="mini-link">Terug naar toegangscode</button>
+    </form>
   </div>
 </section>
 <div id="appRoot" hidden>
@@ -135,6 +146,7 @@ body{background:var(--paper);color:var(--ink)}
 <main id="view" class="app-shell" aria-live="polite"></main>
 <div id="toast" class="toast" role="status" aria-live="polite"></div>
 </div>
+<script src="/leif/beheersessie.js"></script>
 <script>
 'use strict';
 const chapters = [
@@ -333,9 +345,7 @@ async function completeAdminLink(){
   const data=await response.json().catch(()=>({}));
   if(!response.ok||!data.ok||!Array.isArray(data.tenants)||
      !data.tenants.some(t=>t.slug==='leif'&&t.role==='manager'))throw Error('not_manager');
-  sessionStorage.setItem('leif-admin-session-v1',JSON.stringify({
-   access_token:access,refresh_token:refresh,tenants:data.tenants
-  }));
+  window.LeifAdminSession.save({access_token:access,refresh_token:refresh,tenants:data.tenants,user_email:data.user_email,pending_email:data.pending_email||''});
   location.replace('/leif/beheer/');
  }catch(e){
   err.textContent='Deze inloglink kon niet worden bevestigd. Vul VIS opnieuw in.';
@@ -343,6 +353,27 @@ async function completeAdminLink(){
  }finally{button.disabled=false}
  return true;
 }
+function showAdminLogin(){
+ accessForm.hidden=true;document.getElementById('adminLoginForm').hidden=false;
+ document.getElementById('adminLoginEmail').focus();
+}
+document.getElementById('adminLoginBack').onclick=()=>{document.getElementById('adminLoginForm').hidden=true;accessForm.hidden=false;codeInput.value='';codeInput.focus()};
+document.getElementById('adminLoginForm').onsubmit=async event=>{
+ event.preventDefault();const button=document.getElementById('adminLoginSubmit'),err=document.getElementById('adminLoginError');
+ button.disabled=true;err.hidden=true;
+ try{
+  const data=await window.LeifAdminSession.request('login',{email:document.getElementById('adminLoginEmail').value.trim(),password:document.getElementById('adminLoginPassword').value});
+  if(!data.tenants?.some(t=>t.slug==='leif'&&t.role==='manager'))throw Error('not_manager');
+  window.LeifAdminSession.save(data);document.getElementById('adminLoginPassword').value='';location.assign('/leif/beheer/');
+ }catch{err.textContent='Inloggen is niet gelukt. Controleer je e-mailadres en wachtwoord.';err.hidden=false}
+ finally{button.disabled=false}
+};
+document.getElementById('adminLink').onclick=async()=>{
+ const button=document.getElementById('adminLink'),notice=document.getElementById('adminLoginNotice');button.disabled=true;
+ try{await requestAdminLink();notice.textContent='Er is een inloglink naar je bestaande beheeradres gestuurd.'}
+ catch(error){notice.textContent=error.status===429?'Je hebt net al een link aangevraagd. Probeer het later opnieuw.':'De inloglink kon niet worden verzonden.'}
+ finally{notice.hidden=false;button.disabled=false}
+};
 accessForm.addEventListener('submit',async event=>{
  event.preventDefault();
  const pw=codeInput;
@@ -360,19 +391,8 @@ accessForm.addEventListener('submit',async event=>{
   return;
  }
  if(code.toUpperCase()==='VIS'){
-  try{
-   if(sessionStorage.getItem('leif-admin-session-v1')){location.assign('/leif/beheer/');return}
-   document.getElementById('leifSignIn').disabled=true;
-   accessNotice.hidden=true;
-   await requestAdminLink();
-   pw.value='';
-   accessNotice.textContent='Er is een inloglink naar je beheeradres gestuurd. Open de e-mail om verder te gaan.';
-   accessNotice.hidden=false;
-  }catch(e){
-   err.textContent=e.status===429?'Je hebt net al een link aangevraagd. Probeer het over een paar minuten opnieuw.':'De inloglink kon niet worden verzonden. Probeer het later opnieuw.';
-   err.hidden=false;
-  }finally{document.getElementById('leifSignIn').disabled=false}
-  return;
+  if(window.LeifAdminSession.read()){location.assign('/leif/beheer/');return}
+  showAdminLogin();return;
  }
  if(code.toUpperCase()==='LIS'||/^[a-f0-9]{48}$/i.test(code)){
   const personalCode=code.toUpperCase()==='LIS'?'lis':code.toLowerCase();
@@ -397,6 +417,7 @@ accessForm.addEventListener('submit',async event=>{
 try{
  if(new URLSearchParams(location.search).has('beheer')){
   codeInput.value='VIS';
+  if(window.LeifAdminSession.read())location.replace('/leif/beheer/');else showAdminLogin();
  }
 }catch(e){}
 
@@ -427,6 +448,7 @@ try{
 
 const toolsBtn=document.createElement('button');toolsBtn.type='button';toolsBtn.className='mini-link nonprint';toolsBtn.textContent='Bewaar / hervat';toolsBtn.setAttribute('aria-label','Antwoorden downloaden, inlezen of wissen');toolsBtn.onclick=showTools;el('goReport').before(toolsBtn);
 </script>
+<script src="/leif/tekstvelden.js"></script>
 <script src="/leif/tekstbeheer.js" defer></script>
 </body>
 </html>

@@ -34,16 +34,30 @@ main{max-width:1160px;margin:auto;padding:42px 24px 120px}.tag{font-weight:800;c
 <header class="mast"><div class="mast-inner"><a href="/leif/" class="brand">LEIF <span>Beheer</span></a><div class="actions"><span class="meta" id="identity"></span><button id="logout" type="button" class="btn secondary compact" hidden>Uitloggen</button></div></div></header>
 <main>
 <section id="login" class="panel login" hidden>
-<p>Ga terug naar LEIF en vul VIS in om een inloglink te ontvangen.</p>
+<p><a href="/leif/?beheer=1">Ga naar de beheerinlog</a></p>
 </section>
 <p id="loading" class="meta" role="status">Beheer openen...</p>
+<button id="retrySession" class="btn secondary" type="button" hidden>Opnieuw proberen</button>
 <section id="workspace" hidden>
 <div class="tag">LEIF beheer</div><h1>Deelnemers en verhalen</h1>
 <p class="sub">Je kunt hier deelnemers beheren, hun verhalen schrijven en de teksten van LEIF aanpassen.</p>
 <div class="site-edit-toolbar"><button id="showPeople" type="button" class="btn secondary compact" aria-pressed="true">Deelnemers en verhalen</button><button id="showSiteEditor" type="button" class="btn secondary compact" aria-pressed="false">Teksten beheren</button></div>
+<details id="accountSettings" class="panel" data-leif-locked>
+<summary>Mijn beheerinlog</summary>
+<h2>E-mailadres en wachtwoord</h2>
+<p class="sub">Stel hier je inloggegevens in voor volgende bezoeken. Je blijft op dit apparaat ingelogd totdat je zelf uitlogt of je sessie verloopt.</p>
+<form id="accountForm">
+<div class="field"><label for="accountEmail">E-mailadres</label><input id="accountEmail" type="email" name="username" autocomplete="username" maxlength="254" required></div>
+<div class="field"><label for="accountPassword">Nieuw wachtwoord</label><input id="accountPassword" type="password" name="new-password" autocomplete="new-password" minlength="12" maxlength="1000" required aria-describedby="accountHelp"></div>
+<p id="accountHelp" class="meta">Gebruik minstens 12 tekens. Je wachtwoord wordt niet in deze browser opgeslagen.</p>
+<div class="field"><label for="accountRepeat">Herhaal wachtwoord</label><input id="accountRepeat" type="password" autocomplete="new-password" minlength="12" maxlength="1000" required></div>
+<button id="saveAccount" type="submit" class="btn">Bewaar mijn inloggegevens</button>
+<p id="accountStatus" class="save-status" role="status" aria-live="polite"></p>
+</form>
+</details>
 <section id="siteEditor" class="panel" hidden>
 <h2>Teksten beheren</h2>
-<p class="sub">Kies een pagina en klik op een tekst in het voorbeeld. Je wijzigingen blijven een concept totdat je op Publiceren klikt. Het versleutelde persoonlijke KEI-verhaal is hier niet bewerkbaar.</p>
+<p class="sub">Kies een pagina en klik op een tekst in het voorbeeld. Met Opslaan voor iedereen wordt je wijziging de vaste tekst op LEIF. Je kunt ook eerst een concept bewaren. Het versleutelde persoonlijke KEI-verhaal is hier niet bewerkbaar.</p>
 <div class="site-edit-toolbar">
 <label for="sitePage">Pagina</label>
 <select id="sitePage" aria-label="Kies een pagina">
@@ -67,7 +81,8 @@ main{max-width:1160px;margin:auto;padding:42px 24px 120px}.tag{font-weight:800;c
 <div class="field"><label for="siteEditInput">Tekst</label><textarea id="siteEditInput" maxlength="6000" rows="7"></textarea></div>
 <div class="meta">Oorspronkelijk</div><p id="siteOriginal" class="site-original"></p>
 <div class="site-edit-toolbar">
-<button id="siteSave" class="btn" type="button">Bewaar concept</button>
+<button id="siteApply" class="btn" type="button">Opslaan voor iedereen</button>
+<button id="siteSave" class="btn secondary" type="button">Bewaar concept</button>
 <button id="sitePublish" class="btn secondary" type="button">Publiceren</button>
 <button id="siteUnpublish" class="btn secondary" type="button">Publicatie terugnemen</button>
 </div>
@@ -149,6 +164,7 @@ main{max-width:1160px;margin:auto;padding:42px 24px 120px}.tag{font-weight:800;c
 </div>
 </section>
 </main>
+<script src="/leif/beheersessie.js"></script>
 <script>
 'use strict';
 const endpoint='https://ngcyfbstajfcfdhlelbz.supabase.co/functions/v1/leif-admin-console';
@@ -160,30 +176,53 @@ const show=(id,visible)=>E(id).hidden=!visible;
 const status=(msg,error=false)=>{E('storyStatus').textContent=msg;E('storyStatus').classList.toggle('error',error)};
 function setBusy(on){busy=on;document.querySelectorAll('#detail button,#inviteForm button').forEach(b=>b.disabled=on)}
 function changeTab(name){tab=name;for(const b of E('tabs').querySelectorAll('button'))b.setAttribute('aria-current',b.dataset.tab===name?'page':'false');show('storyTab',name==='story');show('answersTab',name==='answers');show('settingsTab',name==='settings')}
-async function request(action,extra={},retry=true){
- const payload=JSON.stringify({action,...extra});
- const response=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json',...(auth?.access_token?{Authorization:'Bearer '+auth.access_token}:{})},credentials:'omit',cache:'no-store',body:payload});
- const data=await response.json().catch(()=>({error:'server_unavailable'}));
- if(response.status===401&&retry&&auth?.refresh_token&&action!=='login'&&action!=='refresh'){
-  const refreshed=await request('refresh',{refresh_token:auth.refresh_token},false);
-  auth=refreshed;saveSession();return request(action,extra,false);
- }
- if(!response.ok){const err=new Error(data.error||'server_unavailable');err.status=response.status;throw err}
- return data;
+const adminSession=window.LeifAdminSession;
+async function request(action,extra={}){
+ const result=await adminSession.request(action,extra);
+ auth=adminSession.read();return result;
 }
-function saveSession(){try{sessionStorage.setItem('leif-admin-session-v1',JSON.stringify({access_token:auth.access_token,refresh_token:auth.refresh_token,tenants}))}catch{}}
+function accountIdentity(){
+ E('identity').textContent=auth?.user_email||'Beheerder';
+ E('accountEmail').value=auth?.pending_email||auth?.user_email||'';
+ E('accountSettings').hidden=!tenants.some(t=>t.slug==='leif'&&t.role==='manager');
+ if(auth?.pending_email)E('accountStatus').textContent='Bevestig '+auth.pending_email+' via de e-mail. Je huidige adres blijft bruikbaar tot de wijziging is bevestigd.';
+}
 async function resumeSession(){
- let value;try{value=JSON.parse(sessionStorage.getItem('leif-admin-session-v1')||'null')}catch{}
- if(!value?.refresh_token){location.replace('/leif/?beheer=1');return;}
+ E('retrySession').hidden=true;
  try{
-  const newAuth=await request('refresh',{refresh_token:value.refresh_token},false);
-  auth=newAuth;tenants=newAuth.tenants;saveSession();
+  const newAuth=await adminSession.resume();
+  if(!newAuth){location.replace('/leif/?beheer=1');return}
+  auth=newAuth;tenants=newAuth.tenants;
   show('login',false);show('workspace',true);show('logout',true);E('loading').hidden=true;
-  E('identity').textContent=newAuth.user_email||'Beheerder';
+  accountIdentity();
   E('tenant').replaceChildren(...tenants.map(t=>{const o=el('option',null,t.name);o.value=t.id;return o}));
   tenant=tenants[0];E('tenant').value=tenant.id;await loadList();await loadTesters();
- }catch{sessionStorage.removeItem('leif-admin-session-v1');location.replace('/leif/?beheer=1')}
+ }catch(error){
+  if(error.status===401||error.status===403){adminSession.clear();location.replace('/leif/?beheer=1');return}
+  E('loading').textContent='Geen verbinding met beheer. Je sessie is bewaard. Probeer het opnieuw.';
+  E('loading').hidden=false;E('retrySession').hidden=false;
+ }
 }
+E('retrySession').onclick=()=>resumeSession();
+function keepSession(){if(window.parent===window&&document.visibilityState==='visible'&&adminSession.read())adminSession.refresh().catch(()=>{})}
+setInterval(keepSession,60000);
+document.addEventListener('visibilitychange',keepSession);
+E('accountForm').onsubmit=async event=>{
+ event.preventDefault();
+ const password=E('accountPassword').value;
+ if(password!==E('accountRepeat').value){E('accountStatus').textContent='De wachtwoorden zijn niet gelijk.';return}
+ const manager=tenants.find(t=>t.slug==='leif'&&t.role==='manager');if(!manager)return;
+ E('saveAccount').disabled=true;E('accountStatus').textContent='Inloggegevens bewaren...';
+ try{
+  const result=await request('update_account',{tenant_id:manager.id,email:E('accountEmail').value.trim(),password});
+  auth=adminSession.save({...adminSession.read(),user_email:result.user_email,pending_email:result.pending_email||''});
+  E('accountPassword').value='';E('accountRepeat').value='';accountIdentity();
+  E('accountStatus').textContent=result.pending_email?'Je wachtwoord is bewaard. Bevestig de adreswijziging via de e-mail. Je blijft hier ingelogd.':'Je inloggegevens zijn bewaard. Je blijft ingelogd. Volgende keer kun je hiermee beheer openen.';
+ }catch(error){
+  const messages={weak_password:'Kies een sterker wachtwoord van minstens 12 tekens.',same_password:'Dit wachtwoord is al ingesteld. Je kunt het blijven gebruiken.',email_exists:'Dit e-mailadres is al aan een ander account gekoppeld.',reauthentication_needed:'Open een nieuwe inloglink en stel daarna je wachtwoord in.'};
+  E('accountStatus').textContent=messages[error.message]||'Bewaren is niet gelukt. Je huidige inloggegevens en sessie blijven behouden. Probeer het opnieuw.';
+ }finally{E('saveAccount').disabled=false}
+};
 function canManage(){return tenant?.role==='manager'}
 async function loadTesters(){
   E('testerPanel').hidden=!(canManage() && tenant?.slug==='leif');
@@ -305,7 +344,7 @@ async function performStory(action,extra={}){
  }catch(e){status(e.status===409?'Dit dossier is intussen gewijzigd. Kopieer je tekst en open het dossier opnieuw.':'Opslaan is niet gelukt. Je tekst staat nog op dit scherm.',true)}
  finally{setBusy(false)}
 }
-E('logout').onclick=()=>{if(!confirmDiscard())return;sessionStorage.removeItem('leif-admin-session-v1');auth=null;tenants=[];tenant=null;selected=null;documentState=null;dirty=false;show('workspace',false);show('detail',false);show('logout',false);E('identity').textContent='';location.assign('/leif/')};
+E('logout').onclick=async()=>{if(!confirmDiscard())return;E('logout').disabled=true;try{await adminSession.logout()}catch{}auth=null;location.assign('/leif/')};
 E('tenant').onchange=async()=>{if(!confirmDiscard()){E('tenant').value=tenant.id;return}tenant=tenants.find(t=>t.id===E('tenant').value);selected=null;dirty=false;E('testerInvite').hidden=true;await loadList();await loadTesters()};
 E('reload').onclick=async()=>{if(confirmDiscard()){dirty=false;await loadList();await loadTesters()}};
 E('testerForm').onsubmit=async e=>{
@@ -342,5 +381,6 @@ if(window.parent!==window&&new URLSearchParams(location.search).get('leif_voorbe
 }else resumeSession();
 </script>
 <script src="/leif/beheer/teksteditor.js" defer></script>
+<script src="/leif/tekstvelden.js"></script>
 <script src="/leif/tekstbeheer.js" defer></script>
 </body></html>

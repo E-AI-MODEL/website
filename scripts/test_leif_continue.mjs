@@ -13,6 +13,10 @@ answers.observeren='Ik kijk en luister eerst';answers.reactie='Het verschilt per
 answers.zorgvragen='Ik los het liever zelf op';answers.keuzes='Ik analyseer eerst';
 let sent=false,saveCount=0;
 const server=createServer((req,res)=>{
+ if(req.url?.startsWith('/leif/tekstvelden.js')){
+  res.writeHead(200,{'content-type':'application/javascript;charset=utf-8'});
+  res.end(readFileSync(resolve(process.argv[2]||'site-build','leif/tekstvelden.js'),'utf8'));return;
+ }
  if(req.url?.startsWith('/leif/tekstbeheer.js')){
   res.writeHead(200,{'content-type':'application/javascript;charset=utf-8'});
   res.end(siteCopy);return;
