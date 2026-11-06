@@ -23,8 +23,8 @@ Bronversie waarmee deze route is opgebouwd:
 - Repository: `E-AI-MODEL/wihtml`
 - Ontwikkelbranch: `feat/visual-lesson-studio`
 - Bronbestand: `index.html`
-- Bronblob-SHA: `8211ebe9264f5f00452c1612868550e9a7cebb2f`
-- Git-commit voor studio-implementatie: staat op de ontwikkelbranch; verifieer de exacte commit bij een volgende synchronisatie
+- Bronblob-SHA: `3adaf787f37358e36d4eac3125882a853c206d3f`
+- Geteste implementatiecommit na de aanvullende schermcontrole: `a6b6fc916cd65c8c74a406ee554281ea6907c331`; opgenomen in wihtml/main via PR #3 en #4 (laatste merge: `449d9d9ec3d0f883bd190fc5287eaccfe1d87854`)
 
 Voor een volgende versie: controleer eerst dat de browsertests in `wihtml` geslaagd zijn. Werk daarna de bronkopie bij met een **volledige commit-SHA**:
 
@@ -107,3 +107,11 @@ De Playwright-screenshots van de hele route lieten dubbele vraagkoppen, te veel 
 De docent krijgt bij het vervangen van een geopende les door een nieuwe les of een JSON-import een bevestigingsvraag. Annuleren laat de huidige les ongewijzigd. Een snelle paginaverversing bewaart de laatst ingevoerde lesgegevens en de stap samen.
 
 De screenshots zijn een technische en visuele controle van enkele vastgelegde schermgroottes. De gebruikservaring, wiskundige inhoud en werking op een fysiek digibord zijn daarmee niet definitief gevalideerd.
+
+## Aanvullende controle op 5 november 2026
+
+WiHTML-run [42036716440](https://github.com/E-AI-MODEL/wihtml/actions/runs/42036716440) heeft zowel de bestaande v9-browsertest als de uitgebreide gebruikersroute uitgevoerd. Die route controleert negen werkvormen, directe bewerking, echt verslepen, eigen grafiekexperimenten, JSON opslaan en heropenen, eigen vormgeving, offline HTML en conceptherstel. Regeleinden, verticale strepen en lege hulpvelden blijven op dezelfde plek. Opgeslagen lesvolgorde en lesroute blijven behouden. Eigen grafiekwaarden vallen binnen het bereik van de regelaars. Deze proeven gaan over de bronimplementatie. De nieuwere begeleide websitebediening wordt afzonderlijk getest.
+
+De aanvullende run [42037527650](https://github.com/E-AI-MODEL/wihtml/actions/runs/42037527650) slaagt ook. De echte screenshots zijn bekeken. Naar aanleiding daarvan is de mobiele dia-invoer hoger gemaakt en is getest dat uitgeschakelde grafiekstemknoppen ook werkelijk onzichtbaar zijn.
+
+De websitevariant behoudt de latere begeleide lesroute uit PR #90. De gegevensreparaties uit wihtml/main zijn daarop toegepast. De afzonderlijke websiteproef doorloopt die actuele route met alle negen werkvormen en controleert de gegenereerde offline HTML. Het volledige bronbestand is daardoor geen identieke kopie van de eerdere wihtml-commit.
