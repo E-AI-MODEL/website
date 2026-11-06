@@ -42,7 +42,7 @@
       ['Applications',[['All applications','/en/applications/'],['Education','/en/education/']]],
       ['Research',[['Research','/en/research/'],['Publications','/en/publications/']]],
       ['Observatories',[['Milky Way Lab','/tools/melkweg-lab/'],['Science Observatory','/tools/science-observatory/'],['LLM Observatory','/tools/llm-observatorium/'],['ABYSS','/tools/abyss/']]],
-      ['Create',[['WiHTML Studio','/tools/wihtml/'],['Prompt Framework','/tools/prompt-framework/'],['Process to prompt','/tools/van-proces-naar-prompt/']]],
+      ['Create',[['WiHTML Studio','/tools/wihtml/'],['EAIstudio','/tools/eaistudio/'],['EAImesh','/tools/eaimesh/'],['Prompt Framework','/tools/prompt-framework/'],['Process to prompt','/tools/van-proces-naar-prompt/']]],
       ['Tools & monitors',[['All tools','/en/tools/'],['Model Monitor','/en/model-monitor/'],['LLMscan','/en/llmscan/']]],
       ['About EAI',[['About EAI','/en/about/'],['Site insights','/en/insights/']]]
     ]:[
@@ -50,7 +50,7 @@
       ['Toepassingen',[['Alle toepassingen','/nl/toepassingen/'],['Onderwijs in','/onderwijsin/']]],
       ['Onderzoek',[['Onderzoek','/nl/onderzoek/'],['Publicaties','/nl/publicaties/']]],
       ['Observatoria',[['Melkweg Lab','/tools/melkweg-lab/'],['Science Observatory','/tools/science-observatory/'],['LLM Observatorium','/tools/llm-observatorium/'],['ABYSS · de oceaan','/tools/abyss/']]],
-      ['Maken & ontwerpen',[['WiHTML Docentstudio','/tools/wihtml/'],['Prompt Framework','/tools/prompt-framework/'],['Van proces naar prompt','/tools/van-proces-naar-prompt/']]],
+      ['Maken & ontwerpen',[['WiHTML Docentstudio','/tools/wihtml/'],['EAIstudio','/tools/eaistudio/'],['EAImesh','/tools/eaimesh/'],['Prompt Framework','/tools/prompt-framework/'],['Van proces naar prompt','/tools/van-proces-naar-prompt/']]],
       ['Tools & monitoren',[['Alle tools','/nl/tools/'],['AI Model Monitor','/nl/model-monitor/'],['LLMscan','/nl/llmscan/']]],
       ['Over EAI',[['Over EAI en Hans Visser','/nl/over/'],['EAI Insights · websitegebruik','/nl/insights/']]]
     ];
