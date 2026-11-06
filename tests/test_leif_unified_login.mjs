@@ -31,7 +31,7 @@ test('VIS gebruikt een beveiligde inloglink zonder wachtwoordformulier',()=>{
  assert.match(main,/action:'request_magic_link'/);
  assert.match(main,/action:'session'/);
  assert.match(main,/completeAdminLink/);
- assert.match(main,/t\.role==='manager'&&t\.slug==='leif'/);
+ assert.match(main,/t\.slug==='leif'&&t\.role==='manager'/);
  assert.match(main,/leif-admin-session-v1/);
  assert.match(main,/quickClicks===3/);
  assert.match(beheer,/request\('refresh'/);
