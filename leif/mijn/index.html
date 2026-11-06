@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow,noarchive">
 <meta name="referrer" content="no-referrer">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'unsafe-inline'; connect-src https://ngcyfbstajfcfdhlelbz.supabase.co; img-src 'none'; font-src 'none'; base-uri 'none'; object-src 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'unsafe-inline'; connect-src https://ngcyfbstajfcfdhlelbz.supabase.co; img-src 'none'; font-src 'none'; base-uri 'none'; frame-src https://open.spotify.com; object-src 'none'; form-action 'none'">
 <title>LEIF | Mijn omgeving</title>
 <style>
 :root{--ink:#243746;--muted:#667986;--blue:#527f94;--paper:#f7f4ef;--white:#fffdfc;--line:#d9e2e6;--soft:#e8f0f3;--shadow:0 10px 32px #2437460b}
@@ -268,10 +268,30 @@ function renderPersonalTexts(area){
  const published=material;
  const labels={inleiding:'Inleiding',blik_van_een_ander:'Deel 2: de blik van een ander',verder_kijken:'Deel 3: verder kijken',slotwoord:'Slotwoord'};
  const keys=Object.keys(labels).filter(k=>typeof published?.[k]==='string'&&published[k].trim());
- if(!keys.length){area.append(node('p','note','Je persoonlijke reactie is nog niet gepubliceerd. Je kunt je vragen en oefeningen wel gebruiken.'));return}
- const out=node('div','panel reader personal');
- for(const key of keys){out.append(node('h3',null,labels[key]),node('p',null,published[key]))}
- area.append(out);
+ const blocks=Array.isArray(published.blocks)?published.blocks.filter(b=>b&&b.visible===true):[];
+ if(!keys.length&&!blocks.length){area.append(node('p','note','Je persoonlijke reactie is nog niet gepubliceerd. Je kunt je vragen en oefeningen wel gebruiken.'));return}
+ if(keys.length){
+  const out=node('div','panel reader personal');
+  for(const key of keys){out.append(node('h3',null,labels[key]),node('p',null,published[key]))}
+  area.append(out);
+ }
+ for(const block of blocks){
+  if(!['text','heading','spotify'].includes(block.type))continue;
+  const section=node('section','panel reader personal');
+  if(block.title)section.append(node(block.type==='heading'?'h2':'h3',null,block.title));
+  if(block.type==='text'){section.append(node('p',null,block.text||''))}
+  if(block.type==='heading'&&block.text)section.append(node('p',null,block.text));
+  if(block.type==='spotify'){
+   const match=typeof block.spotify_url==='string'&&block.spotify_url.match(/^https:\/\/open\.spotify\.com\/(track|album|playlist)\/([A-Za-z0-9]{22})(?:\?[^#\s]*)?$/);
+   if(!match)continue;
+   if(block.text)section.append(node('p',null,block.text));
+   const open=node('a','btn ghost','Open in Spotify');open.href='https://open.spotify.com/'+match[1]+'/'+match[2];open.target='_blank';open.rel='noopener noreferrer';section.append(open);
+   const play=node('button','btn','Laad Spotify-speler');play.type='button';
+   play.onclick=()=>{const frame=document.createElement('iframe');frame.src='https://open.spotify.com/embed/'+match[1]+'/'+match[2];frame.title='Spotify: '+(block.title||'muziek');frame.loading='lazy';frame.referrerPolicy='strict-origin-when-cross-origin';frame.allow='autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture';frame.style.cssText='border:0;border-radius:12px;width:100%;height:160px;margin-top:12px';play.replaceWith(frame)};
+   section.append(play);
+  }
+  area.append(section);
+ }
 }
 function downloadBackup(){
  const value={format:'leif-persoonlijke-backup',version:1,exported_at:new Date().toISOString(),questionnaire_version:doc.questionnaire_version,answers:doc.answers,exercises:doc.exercises,report:doc.report,position:doc.position};
