@@ -37,9 +37,22 @@ try{
   assert(tokenState.ids.every(Number.isInteger),'Token-ID ontbreekt');
   assert(tokenState.count>=3,'De invoer moet meerdere tokens bevatten');
   assert.equal(tokenState.routeCount,4,'De voorbeeldrouter blijft bereikbaar');
-  assert.equal(await page.locator('#tokenChips button').count(),tokenState.count);
-  await page.locator('#tokenChips button').last().click();
-  assert(await page.locator('#tokenId').innerText().then(t=>t.includes('Token-ID')));
+  if(width<800)await page.locator('.mobile-dock [data-panel="settings"]').click();
+  assert.equal(await page.locator('#layerTokenRow button').count(),tokenState.count);
+  await page.locator('#layerTokenRow button').last().click();
+  assert.equal(await page.locator('#layerTokenRow button.selected').count(),1);
+  assert(await page.locator('#layerTokenStatus').innerText().then(t=>t.includes('Token-ID')));
+  assert.equal(await page.locator('#layerExpertList button').count(),4);
+  await page.locator('#layerExpertList button').last().click();
+  assert.equal(await page.locator('#layerExpertList button.selected').count(),1);
+  await page.locator('#layerNext').click();
+  assert.equal(await page.locator('#layerAttentionBadge').innerText(),'VOLLEDIG');
+  assert.equal(await page.locator('#layerAttentionTrack').evaluate(el=>el.style.getPropertyValue('--reach')),'100.0000%');
+  await page.locator('#layerPrev').click();
+  assert.equal(await page.locator('#layerAttentionBadge').innerText(),'LOKAAL');
+  const localWidth=await page.locator('#layerAttentionTrack').evaluate(el=>parseFloat(el.style.getPropertyValue('--reach')));
+  assert(localWidth>0&&localWidth<4,'Een venster van 128 posities in 4096 moet een smalle strook zijn');
+  assert.equal(await page.locator('#journeyPanel').isVisible(),false,'Grote player mag niet terugkomen');
   // Elke module moet ook op een stilstaande camera zichtbaar bewegen.
   const motion=await page.evaluate(()=>{
    const checks=[];
@@ -63,20 +76,17 @@ try{
     assert.equal(item.cameraX,0,'Camera mag niet springen op de X-as');
     assert.equal(item.cameraY,0,'Camera mag niet springen op de Y-as');
   }
-  await page.evaluate(()=>{setMode(1);state.journey=3.5;state.layer=3;state.playing=false;});
-  const stopped=await page.evaluate(()=>({time:state.time,journey:state.journey}));
+  await page.evaluate(()=>{setMode(1);selectLayer(3);});
+  const stopped=await page.evaluate(()=>({time:state.time,journey:state.journey,layer:state.layer,playing:state.playing}));
   await page.waitForTimeout(350);
-  const unchanged=await page.evaluate(()=>({time:state.time,journey:state.journey}));
-  assert.deepEqual(unchanged,stopped,'Pauze moet tijd en tokenpositie vasthouden');
-  await page.evaluate(()=>{state.journey=cfg.layers-0.01;state.layer=cfg.layers-1;state.playing=true;});
-  await page.waitForTimeout(260);
-  const completed=await page.evaluate(()=>({journey:state.journey,playing:state.playing}));
-  assert.equal(completed.journey,await page.evaluate(()=>cfg.layers-1),'Tokenreis eindigt bij de laatste laag');
-  assert.equal(completed.playing,false,'Tokenreis moet stoppen en niet terugspringen');
+  const unchanged=await page.evaluate(()=>({time:state.time,journey:state.journey,layer:state.layer,playing:state.playing}));
+  assert.deepEqual(unchanged,stopped,'Laagselectie moet stilstaan totdat de gebruiker iets wijzigt');
+  assert.equal(stopped.playing,false,'Tokenreis mag niet vanzelf afspelen');
+  assert.equal(stopped.layer,3,'Een gekozen laag moet geselecteerd blijven');
   assert.equal(errors.length,0,'JavaScript fouten: '+errors.join(' | '));
   await page.close();
  }
- console.log('LLM_BROWSER_OK widths=390,1280 modes=7 tokenizer=real token_ids=valid');
+ console.log('LLM_BROWSER_OK widths=390,1280 modes=7 tokenizer=real layer_inspector=active');
 }finally{
  if(browser)await browser.close();
  server.kill();
