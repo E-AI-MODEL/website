@@ -63,6 +63,65 @@ try{
    assert.equal(await page.locator('#adventureMenuToggle').getAttribute('aria-expanded'),'false');
    await page.locator('#adventureMenuToggle').click();
    await options.first().click();
+
+   // The visual, not an answer button, must drive experiments.
+   const pickMode=async mode=>{
+     await page.locator('#adventureMenuToggle').click();
+     await page.locator('.navlist [data-mode="'+mode+'"]').click();
+   };
+   const dragSky=async (ratioY,from=.81,to=.19)=>{
+     const r=await page.locator('#universe').boundingBox();
+     const y=r.y+r.height*ratioY;
+     await page.mouse.move(r.x+r.width*from,y);
+     await page.mouse.down();
+     await page.mouse.move(r.x+r.width*to,y,{steps:8});
+     await page.mouse.up();
+   };
+   await pickMode('dynamics');
+   await page.locator('#play').click(); // pause so the comparison is steady
+   assert(Number(await page.locator('#haloMass').inputValue())>1);
+   await dragSky(.58);
+   assert(Number(await page.locator('#haloMass').inputValue())<.5,'Dragging the sky must lower invisible mass');
+   assert.equal(await page.locator('#quest-result').evaluate(el=>el.hidden),false,'A touch experiment must complete the quest');
+   await page.locator('#resetView').click();
+   assert(Math.abs(Number(await page.locator('#haloMass').inputValue())-1.12)<.01,'Reset must restore model values');
+
+   await pickMode('stars');
+   await dragSky(.70);
+   assert(Number(await page.locator('#limmag').inputValue())<=12.5,'Telescope reacts to touching the visual');
+   await dragSky(.70,.19,.81);
+   assert(Number(await page.locator('#limmag').inputValue())>=20,'Telescope can be made stronger');
+
+   await pickMode('gaia');
+   await dragSky(.58);
+   assert(Number(await page.locator('#obDist').inputValue())<=2.5,'Moving the sky marker brings the star closer');
+   await dragSky(.58,.19,.81);
+   assert(Number(await page.locator('#obDist').inputValue())>=17,'Moving the sky marker pushes it farther away');
+
+   await pickMode('structure');
+   const stage=await page.locator('#universe').boundingBox();
+   const halo=page.locator('[data-layer="stellarHalo"]');
+   assert(await halo.isChecked());
+   await page.mouse.click(stage.x+stage.width*.79,stage.y+stage.height*.53);
+   assert.equal(await halo.isChecked(),false,'Tapping the distant stars should change the visual and the control');
+
+   await pickMode('blackhole');
+   await page.locator('#play').click();
+   const orbit=await page.locator('#universe').boundingBox();
+   const beforeOrbit=await page.locator('#timevalue').innerText();
+   await page.mouse.move(orbit.x+orbit.width*.20,orbit.y+orbit.height*.38);
+   await page.mouse.down();
+   await page.mouse.move(orbit.x+orbit.width*.77,orbit.y+orbit.height*.55,{steps:9});
+   await page.mouse.up();
+   assert.notEqual(await page.locator('#timevalue').innerText(),beforeOrbit,'Dragging S2 must change its orbit time');
+
+   await page.getByRole('tab',{name:'Ontdek meer'}).click();
+   await page.locator('#graphToggle').click();
+   assert(await page.locator('.analytics-main').isVisible(),'Graph button must open a visible graph on mobile');
+   await page.locator('#closeGraph').click();
+   assert(!(await page.locator('.analytics-main').isVisible()),'Graph close button must work');
+
+   await pickMode('atlas');
    await page.locator('#solarEntry').click();
    assert(await page.locator('#solarExplorer').isVisible(),'Planeten niet geopend');
    assert.equal(await page.locator('#planetChoices .planet-pick').count(),8);
