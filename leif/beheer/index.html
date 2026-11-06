@@ -36,7 +36,7 @@ body{font-size:14px;line-height:1.45}main{max-width:1440px;padding:14px 20px 44p
 .detail-grid{grid-template-columns:280px minmax(0,1fr);gap:12px;margin-top:10px}.person{padding:8px 10px;border-radius:7px}.list{gap:4px}
 .field{gap:4px;margin:9px 0}.field input,.field textarea,.field select,select{padding:7px 9px}.field textarea{min-height:115px;line-height:1.5}
 .btn{min-height:34px;padding:6px 11px;font-size:12px}.toolbar{margin:9px 0}.navtabs{margin:10px 0}.navtabs button{padding:6px 9px}
-#testerPanel h2,#testerPanel>.sub{display:none}#testerPanel{padding:10px}#testerPanel .field{margin:2px 0}
+#testerPanel h2,#testerPanel>.sub{display:none}#testerPanel{display:none!important}#testerPanel{padding:10px}#testerPanel .field{margin:2px 0}
 #testerList{display:none!important}#testerDetail{grid-column:2}.site-frame{min-height:520px}.site-edit-side{max-height:590px}
 @media(max-width:850px){.detail-grid{grid-template-columns:1fr}#testerDetail{grid-column:auto}}
 </style>
@@ -106,7 +106,7 @@ body{font-size:14px;line-height:1.45}main{max-width:1440px;padding:14px 20px 44p
 <div id="peopleWorkspace">
 <div class="toolbar"><label for="tenant">Omgeving</label><select id="tenant" aria-label="Kies een LEIF-omgeving"></select><button id="reload" type="button" class="btn secondary compact">Vernieuwen</button></div>
 <section class="panel" id="testerPanel" hidden>
-<h2>Nieuwe deelnemer toevoegen</h2>
+<h2>Bestaande proefregistratie</h2>
 <p class="sub">Voeg iemand toe aan de bestaande proef. Iedere tester krijgt een eigen code om antwoorden te bewaren en later verder te gaan.</p>
 <form id="testerForm" class="actions"><div class="field"><label for="testerName">Naam deelnemer</label><input id="testerName" maxlength="120" required placeholder="Naam tester"></div><button type="submit" class="btn">Voeg deelnemer toe</button></form>
 <p id="testerStatus" class="save-status" role="status" aria-live="polite"></p>
@@ -264,7 +264,8 @@ async function loadTesters(){
       item.append(el('strong',null,person.tester_name||'Bestaande tester'));
       const state=person.status==='submitted'?'Afgerond':'Nog bezig';
       const when=person.created_at?new Date(person.created_at).toLocaleDateString('nl-NL'):'';
-      item.append(el('small',null,state+(when?' · '+when:'')));
+      item.append(el('small',null,state+' · bestaande proef'+(when?' · '+when:'')));
+      item.append(el('span','status','Deelnemer'));
       unified.append(item);
     }
     E('peopleCount').textContent=String(participants.length+response.testers.length+1);
@@ -280,7 +281,7 @@ async function openTester(id){
  try{
   const result=await request('get_tester',{tenant_id:tenant.id,tester_id:id});
   const person=result.tester;
-  E('testerDetailName').textContent='Antwoorden van '+(person.tester_name||'bestaande tester');
+  E('testerDetailName').textContent='Antwoorden van '+(person.tester_name||'deelnemer');
   const values=Object.entries(person.answers||{}).filter(([,v])=>typeof v==='string'&&v.trim());
   if(!values.length){E('testerAnswers').append(el('p','meta','Nog geen antwoorden ingevuld.'));return}
   for(const [key,val] of values){
@@ -308,7 +309,7 @@ async function loadList(){
  const list=E('participants');list.replaceChildren();
  for(const p of participants){
   const b=el('button','person');b.type='button';b.dataset.active=String(p.id===selected?.id);
-  b.append(el('strong',null,p.display_name||'Naam ontbreekt'),el('small',null,p.created_at?new Date(p.created_at).toLocaleDateString('nl-NL'):''),el('span','status',p.state==='revoked'?'Toegang ingetrokken':'Actief'));
+  b.append(el('strong',null,p.display_name||'Naam ontbreekt'),el('small',null,p.created_at?new Date(p.created_at).toLocaleDateString('nl-NL'):''),el('span','status',p.state==='revoked'?'Toegang ingetrokken':'Deelnemer'));
   b.onclick=()=>choosePerson(p.id);list.append(b);
  }
  const kei=el('button','person');kei.type='button';
