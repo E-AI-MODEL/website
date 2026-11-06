@@ -1021,6 +1021,8 @@ const touchDistance=()=>{const ps=Array.from(touches.values());return ps.length>
 project=function(x,y,z){if(state.cam.target==='sun'){let st=.4+vParts(R0).total/R0*KM_MYR*state.time;x-=R0*Math.cos(st);y-=R0*Math.sin(st);}return oldProject(x,y,z)};
 function localPointer(e){const rect=cv.getBoundingClientRect();return {x:e.clientX-rect.left,y:e.clientY-rect.top};}
 function skyTrackMove(track,x){const g=skyTrackGeometry(track),ratio=clamp((x-g.left)/(g.right-g.left),0,1),val=track.min+(track.max-track.min)*ratio;track.set(val);chartDirty=true;
+ const field={halo:'haloMass',disk:'diskMass',kijker:'limmag',afstand:'obDist',tempo:'obVt',spiraal:'pitch'}[track.key];
+ if(field){const input=$(field),output=$(field+'out');if(input)input.value=String(val);if(output)output.textContent=val.toLocaleString('nl-NL',{maximumFractionDigits:1});}
  if(track.key==='halo'&&val<.5)seen.haloLow=true;
  if(track.key==='disk'&&val>=8.2)seen.diskHigh=true;
  if(track.key==='spiraal'&&val>=21)seen.pitchHigh=true;
