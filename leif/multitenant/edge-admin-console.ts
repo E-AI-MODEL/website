@@ -27,6 +27,22 @@ function validText(doc){
  const values=Object.values(doc);
  return values.every(x=>typeof x==="string"&&x.length<=45000)&&JSON.stringify(doc).length<=130000;
 }
+// Losse onderdelen per deelnemer. De oudere verhaalvelden blijven bewaard.
+function validBlocks(value){
+ if(!Array.isArray(value)||value.length>24)return false;
+ const ids=new Set();
+ return value.every(b=>{
+  if(!object(b)||Object.keys(b).some(k=>!["id","type","title","text","spotify_url","visible"].includes(k)))return false;
+  if(typeof b.id!=="string"||!/^[a-z0-9_-]{6,64}$/.test(b.id)||ids.has(b.id))return false;
+  ids.add(b.id);
+  if(!["text","spotify","heading"].includes(b.type)||typeof b.title!=="string"||b.title.length>120||
+     typeof b.text!=="string"||b.text.length>12000||typeof b.visible!=="boolean")return false;
+  if(b.type==="spotify"){
+   if(typeof b.spotify_url!=="string"||!/^https:\/\/open\.spotify\.com\/(?:track|album|playlist)\/[A-Za-z0-9]{22}(?:\?[^#\s]{0,250})?$/.test(b.spotify_url))return false;
+  }else if(b.spotify_url!==undefined&&b.spotify_url!=="")return false;
+  return true;
+ });
+}
 Deno.serve(async req=>{
  const origin=req.headers.get("Origin")||"";
  if(req.method==="OPTIONS")return origins.has(origin)?send({ok:true},200,origin):send({error:"forbidden"},403,origin);
@@ -205,11 +221,22 @@ Deno.serve(async req=>{
   if(documents.length!==1)return send({error:"document_not_found"},404,origin);
   const doc=documents[0];
   if(input.action==="get")return send({ok:true,participant,document:doc},200,origin);
-  if(!["save_draft","publish_story","unpublish_story"].includes(input.action))return send({error:"invalid_action"},400,origin);
+  if(!["save_draft","publish_story","unpublish_story","save_blocks","publish_blocks","unpublish_blocks"].includes(input.action))return send({error:"invalid_action"},400,origin);
   if(!Number.isSafeInteger(input.revision)||input.revision<0||input.revision!==doc.revision)return send({error:"revision_conflict",revision:doc.revision},409,origin);
   const previous=object(doc.personal_texts)?doc.personal_texts:{};
   const data={...previous};
-  if(input.action==="save_draft"){
+  if(input.action==="save_blocks"){
+   if(!validBlocks(input.blocks))return send({error:"invalid_blocks"},400,origin);
+   data.blocks_draft=input.blocks;
+   data.blocks_draft_saved_at=new Date().toISOString();
+  }else if(input.action==="publish_blocks"){
+   if(!validBlocks(previous.blocks_draft))return send({error:"invalid_blocks"},400,origin);
+   data.blocks_published=previous.blocks_draft.map(b=>({...b}));
+   data.blocks_published_at=new Date().toISOString();
+  }else if(input.action==="unpublish_blocks"){
+   data.blocks_published=[];
+   data.blocks_published_at=null;
+  }else if(input.action==="save_draft"){
    if(!validText(input.draft))return send({error:"invalid_text"},400,origin);
    data.draft=input.draft;
    data.draft_saved_at=new Date().toISOString();
