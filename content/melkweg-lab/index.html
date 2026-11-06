@@ -717,7 +717,7 @@ html.solar-active,html.solar-active body{overflow:hidden!important;height:100dvh
  <div class="astro-pin" data-kind="center" id="astroCenterPin"><button class="astro-pin-select" type="button" data-pin-select="center" aria-label="Gegevens galactisch centrum">SGR A*</button><button class="astro-pin-dismiss" type="button" data-dismiss-pin="center" aria-label="Verberg SGR A*"></button></div>
  <div class="astro-pin" data-kind="sun" id="astroSunPin"><button class="astro-pin-select" type="button" data-pin-select="sun" aria-label="Gegevens zonpositie">ZON</button><button class="astro-pin-dismiss" type="button" data-dismiss-pin="sun" aria-label="Verberg ZON"></button></div>
  <div class="astro-pin" data-kind="s2" id="astroS2Pin"><button class="astro-pin-select" type="button" data-pin-select="s2" aria-label="Gegevens ster S2">S2</button><button class="astro-pin-dismiss" type="button" data-dismiss-pin="s2" aria-label="Verberg S2"></button></div>
- </div><div class="gesture-nudge" id="gestureNudge">DRAAI · ZOOM · SELECTEER</div><div class="mobile-object-info" id="astroInfo" role="region" aria-live="polite" aria-label="Meer over deze plek" hidden><button id="astroInfoClose" class="info-dismiss" type="button" aria-label="Sluit informatie">×</button><span class="info-label">Je tikte hier</span><strong id="astroInfoTitle">Ontdekt!</strong><p id="astroInfoText"></p><button class="info-go" id="astroInfoGo" type="button" hidden></button></div><div class="stage-hud-bottom"><button class="camera-menu-toggle" id="cameraMenuToggle" type="button" aria-controls="cameraPresets" aria-expanded="false">◉ Bekijk</button><div class="scene-meta"><span id="scale-label">▱ 5 kpc</span><br><strong id="scene-hint">SLEEP OVER DE STERREN OM TE DRAAIEN</strong></div><div class="camera-controls" id="cameraPresets" aria-label="Camera-oriëntatie"><button class="cambtn" data-cam="face">Van boven</button><button class="cambtn active" data-cam="tilt">3D</button><button class="cambtn" data-cam="edge">Van opzij</button><button class="cambtn" data-cam="sun">☉ Zon</button></div></div>
+ </div><div class="gesture-nudge" id="gestureNudge">DRAAI · ZOOM · SELECTEER</div><div class="mobile-object-info" id="astroInfo" role="region" aria-live="polite" aria-label="Meetpuntgegevens" hidden><button id="astroInfoClose" class="info-dismiss" type="button" aria-label="Sluit informatie">×</button><span class="info-label">Je tikte hier</span><strong id="astroInfoTitle">Ontdekt!</strong><p id="astroInfoText"></p><button class="info-go" id="astroInfoGo" type="button" hidden></button></div><div class="stage-hud-bottom"><button class="camera-menu-toggle" id="cameraMenuToggle" type="button" aria-controls="cameraPresets" aria-expanded="false">◉ Bekijk</button><div class="scene-meta"><span id="scale-label">▱ 5 kpc</span><br><strong id="scene-hint">SLEEP OVER DE STERREN OM TE DRAAIEN</strong></div><div class="camera-controls" id="cameraPresets" aria-label="Camera-oriëntatie"><button class="cambtn" data-cam="face">Van boven</button><button class="cambtn active" data-cam="tilt">3D</button><button class="cambtn" data-cam="edge">Van opzij</button><button class="cambtn" data-cam="sun">☉ Zon</button></div></div>
 </section>
 <section class="analytics" aria-label="Analyse en simulatieklok"><button id="graphClose" class="graph-close" type="button" aria-label="Sluit de grafiek">×</button>
   <div class="analytics-head"><h3 id="plot-title">RADIALE OPPERVLAKTEDICHTHEID</h3><div class="cal-tag" id="plot-tag">MODEL • NIET WAARGENOMEN</div></div>
@@ -1123,18 +1123,7 @@ function runKidAction(action){
  }
  chartDirty=true;bindPanel();updateLiveStats(true);checkQuest();updateKidLive();
 }
-// Behoud de bestaande bediening; hang hier de ontdekacties aan.
-document.addEventListener('click',e=>{
- const q=e.target.closest('[data-quest]');if(q){activeQuest[state.mode]=Number(q.dataset.quest);bindPanel();checkQuest();return;}
- const btn=e.target.closest('[data-action]');if(btn){runKidAction(btn.dataset.action);return;}
- const cam=e.target.closest('[data-cam]');if(cam){const k=cam.dataset.cam;if(k==='face'||k==='edge'||k==='sun')seen[k]=true;Promise.resolve().then(()=>{checkQuest();updateKidLive()});}
- const play=e.target.closest('#play');if(play&&state.mode==='blackhole'&&state.running){seen.bhPlayed=true;Promise.resolve().then(checkQuest)}
- const nav=e.target.closest('[data-mode]');if(nav)Promise.resolve().then(()=>{kidModeText();checkQuest();updateKidLive()});
-});
-document.addEventListener('input',e=>{if(e.target.matches('input[type=range]'))Promise.resolve().then(()=>{checkQuest();updateKidLive()})});
-document.addEventListener('change',e=>{if(e.target.matches('[data-layer]'))Promise.resolve().then(()=>{checkQuest();updateKidLive()})});
-
-
+// Geen oude ontdekvraaglogica op de wetenschappelijke module-navigatie.
 document.addEventListener('click',e=>{
  const b=e.target.closest('#graphToggle,#graphClose');if(!b)return;
  const yes=!document.body.classList.contains('show-graphs');document.body.classList.toggle('show-graphs',yes);
