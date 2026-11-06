@@ -51,9 +51,7 @@ body{font-size:14px;line-height:1.45}main{max-width:1440px;padding:14px 20px 44p
 <p id="loading" class="meta" role="status">Beheer openen...</p>
 <button id="retrySession" class="btn secondary" type="button" hidden>Opnieuw proberen</button>
 <section id="workspace" hidden>
-<div class="tag">LEIF / BEHEER</div><h1>Deelnemers en teksten</h1>
-<p class="sub">Alle testende deelnemers staan in één overzicht. Gepubliceerde algemene teksten verschijnen op de aangesloten pagina's.</p>
-<div class="site-edit-toolbar"><button id="showPeople" type="button" class="btn secondary compact" aria-pressed="true">Deelnemers en verhalen</button><button id="showSiteEditor" type="button" class="btn secondary compact" aria-pressed="false">Teksten beheren</button></div>
+<div class="workspace-heading"><h1>LEIF Studio</h1><div class="site-edit-toolbar"><button id="showPeople" type="button" class="btn secondary compact" aria-pressed="true">Deelnemers en verhalen</button><button id="showSiteEditor" type="button" class="btn secondary compact" aria-pressed="false">Teksten beheren</button></div></div>
 <details id="accountSettings" class="panel" data-leif-locked>
 <summary>Mijn beheerinlog</summary>
 <h2>E-mailadres en wachtwoord</h2>
@@ -121,12 +119,12 @@ body{font-size:14px;line-height:1.45}main{max-width:1440px;padding:14px 20px 44p
 <dl id="testerAnswers"></dl>
 </section>
 </section>
-<div class="panel" id="newPanel">
-<h2>Nieuwe deelnemer</h2>
+<details class="panel" id="newPanel">
+<summary>+ Nieuwe deelnemer</summary>
 <p class="meta">Vul de naam in en maak een persoonlijke toegangscode. De code wordt één keer getoond. Bewaar of verstuur hem zelf via een veilige weg.</p>
 <form id="inviteForm" class="actions"><div class="field"><label for="newName">Naam</label><input id="newName" maxlength="120" required placeholder="Naam deelnemer"></div><button type="submit" class="btn">Maak deelnemer en code</button></form>
 <div id="codePanel" hidden></div>
-</div>
+</details>
 <div class="detail-grid">
 <aside aria-label="Deelnemers">
 <div class="actions"><h2>Deelnemers</h2><span id="peopleCount" class="meta"></span></div>
