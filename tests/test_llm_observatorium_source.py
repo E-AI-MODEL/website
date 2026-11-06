@@ -46,6 +46,9 @@ class LlmObservatorySourceTests(unittest.TestCase):
         self.assertIn("plot.addEventListener('pointerup'", html)
         self.assertIn('screenJourney=pts', html)
         self.assertIn('function updateJourneyUI()', html)
+        self.assertIn('state.follow=true', html)
+        self.assertIn('state.follow=false', html)
+        self.assertIn('function setCameraMatrix()', html)
 
     def test_source_and_demo_distinction(self):
         self.assertIn("gpt-oss-120b/blob/main/config.json", self.html)
