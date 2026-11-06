@@ -1034,6 +1034,8 @@ function moveSkyObject(kind,x,y){
  chartDirty=true;updateLiveStats(true);checkQuest();
 }
 function skyTrackMove(track,x){const g=skyTrackGeometry(track),ratio=clamp((x-g.left)/(g.right-g.left),0,1),val=track.min+(track.max-track.min)*ratio;track.set(val);chartDirty=true;
+ const id={halo:'haloMass',disk:'diskMass',kijker:'limmag',afstand:'obDist',tempo:'obVt',spiraal:'pitch'}[track.key];
+ const matching=id?$(id):null;if(matching){matching.value=String(val);matching.dispatchEvent(new Event('input',{bubbles:true}));}
  const field={halo:'haloMass',disk:'diskMass',kijker:'limmag',afstand:'obDist',tempo:'obVt',spiraal:'pitch'}[track.key];
  if(field){const input=$(field),output=$(field+'out');if(input)input.value=String(val);if(output)output.textContent=val.toLocaleString('nl-NL',{maximumFractionDigits:1});}
  if(track.key==='halo'&&val<.5)seen.haloLow=true;
@@ -1049,7 +1051,7 @@ cv.addEventListener('pointerdown',e=>{
  if(state.mode==='blackhole'){stageHeld={kind:'blackhole'};cv.setPointerCapture(e.pointerId);setBlackHoleFromPointer(p.x,p.y);return;}
  const track=stageTrackHit(p.x,p.y);if(track){stageHeld=track;stageDragStart=p;cv.setPointerCapture(e.pointerId);skyTrackMove(track,p.x);return;}
  const picked=skyObjectHit(p.x,p.y);if(picked){stageHeld={kind:picked};stageDragStart=p;cv.setPointerCapture(e.pointerId);return;}
- if(state.mode==='structure'&&Math.hypot(p.x-W*.79,p.y-H*.53)<31){state.layer.stellarHalo=!state.layer.stellarHalo;if(!state.layer.stellarHalo)seen.haloStarsOff=true;chartDirty=true;checkQuest();return;}
+ if(state.mode==='structure'&&Math.hypot(p.x-W*.79,p.y-H*.53)<31){state.layer.stellarHalo=!state.layer.stellarHalo;const box=document.querySelector('[data-layer="stellarHalo"]');if(box)box.checked=state.layer.stellarHalo;if(!state.layer.stellarHalo)seen.haloStarsOff=true;chartDirty=true;checkQuest();return;}
  if(state.mode==='atlas'&&lastProjectedSun&&Math.hypot(p.x-lastProjectedSun.x,p.y-lastProjectedSun.y)<29){seen.sun=true;checkQuest();openSolar();return;}
  if(e.pointerType==='touch'){touches.set(e.pointerId,{x:e.clientX,y:e.clientY});if(touches.size>1){pinchLast=touchDistance();cv.drag=null;state.mouseDown=false;cv.setPointerCapture(e.pointerId);return;}}
  state.mouseDown=true;cv.classList.add('dragging');cv.setPointerCapture(e.pointerId);cv.drag={x:e.clientX,y:e.clientY,startX:e.clientX,startY:e.clientY,moved:false};
