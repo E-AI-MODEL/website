@@ -80,6 +80,9 @@ jobs:
       - name: Check Science Observatory pilot publication
         run: python -m unittest discover -s tests -p 'test_science_observatory_publish.py' -v
 
+      - name: Check Melkweg Lab publication
+        run: python -m unittest discover -s tests -p 'test_melkweg_lab_publish.py' -v
+
       - name: Validate internal links
         run: |
           python - <<'PY'
