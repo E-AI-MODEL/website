@@ -50,7 +50,7 @@
       ['Toepassingen',[['Alle toepassingen','/nl/toepassingen/'],['Onderwijs in','/onderwijsin/']]],
       ['Onderzoek',[['Onderzoek','/nl/onderzoek/'],['Publicaties','/nl/publicaties/']]],
       ['Observatoria',[['Melkweg Lab','/tools/melkweg-lab/'],['Science Observatory','/tools/science-observatory/'],['LLM Observatorium','/tools/llm-observatorium/'],['ABYSS · de oceaan','/tools/abyss/']]],
-      ['Maken & ontwerpen',[['WiHTML Docentstudio','/tools/wihtml/'],['Prompt Framework','/tools/prompt-framework/'],['Van proces naar prompt','/tools/van-proces-naar-prompt/']]],
+      ['Maken & ontwerpen',[['WiHTML Docentstudio','/tools/wihtml/'],['EAIstudio','/tools/eaistudio/'],['EAImesh','/tools/eaimesh/'],['Prompt Framework','/tools/prompt-framework/'],['Van proces naar prompt','/tools/van-proces-naar-prompt/']]],
       ['Tools & monitoren',[['Alle tools','/nl/tools/'],['AI Model Monitor','/nl/model-monitor/'],['LLMscan','/nl/llmscan/']]],
       ['Over EAI',[['Over EAI en Hans Visser','/nl/over/'],['EAI Insights · websitegebruik','/nl/insights/']]]
     ];
