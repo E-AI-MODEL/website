@@ -54,7 +54,12 @@ try{
  assert.equal(await page.locator('#workspace:visible').count(),1,'Beheer verschijnt na managercontrole');
  assert(await page.evaluate(()=>!!localStorage.getItem('leif-admin-session-v1')),'Blijvende sessie opgeslagen');
  assert.equal(await page.evaluate(()=>sessionStorage.getItem('leif-admin-session-v1')),null,'Oude tabbladsessie overgenomen');
- await page.locator('#accountSettings summary').click();
+ assert(await page.locator('#openAccount').isVisible(),'Mijn beheerinlog staat in de vaste bovenbalk');
+ await page.evaluate(()=>window.scrollTo(0,document.body.scrollHeight));
+ await page.locator('#openAccount').click();
+ await page.locator('#accountEmail:visible').waitFor();
+ assert.equal(new URL(page.url()).hash,'#accountSettings','Knop opent rechtstreeks de eigen inlog');
+
  await page.locator('#accountPassword').fill('synthetic-password-123');
  await page.locator('#accountRepeat').fill('niet-hetzelfde-123');
  await page.locator('#saveAccount').click();
@@ -83,6 +88,10 @@ try{
  await page.locator('#adminLoginSubmit').click();
  await page.waitForURL('**/leif/beheer/');
  await page.locator('#workspace:visible').waitFor();
+ await page.goto(origin+'/leif/beheer/?versie=inlog2#accountSettings');
+ await page.locator('#accountEmail:visible').waitFor();
+ assert.equal(await page.locator('#accountEmail').inputValue(),'test@example.invalid','Rechtstreekse link behoudt de sessie');
+
  assert.equal(requests.filter(x=>x.action==='request_magic_link').length,linksBefore,'Wachtwoordlogin verstuurt geen mail');
  assert.equal(errors.length,0,'Geen JavaScript-fouten: '+errors.join('; '));
  console.log('LEIF VIS: beheerformulier, bestaande e-maillink en managercontrole.');
