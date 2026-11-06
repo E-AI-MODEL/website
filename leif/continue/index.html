@@ -51,6 +51,30 @@ body{background:var(--paper)}header{background:rgba(247,244,239,.97)}.card{backg
 .brand{display:flex;align-items:center;gap:12px;letter-spacing:.13em;color:var(--ink)}.brand>div{min-width:0}.brand>div>span{display:block;font-size:11px;letter-spacing:0;font-weight:400;color:var(--muted)}
 .brand>.leif-logo{display:grid;width:43px;height:43px;place-items:center;flex:none;background:var(--soft);color:#355d73;border:1px solid #d1e0e5;border-radius:14px}.leif-logo svg{display:block}
 @media(max-width:540px){.brand>div>span{display:none}}
+
+/* Ook de bestaande vervolgroute opent met het verhaal van LEIF. */
+.continue-arrival{max-width:1100px;margin:24px auto 0}
+.continue-arrival-hero{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(230px,.85fr);align-items:center;gap:22px;border-radius:22px;border:1px solid #d4e2e5;background:linear-gradient(140deg,#fffefa,#f2f7f5 70%,#eaf1ee);padding:clamp(24px,4vw,48px);overflow:hidden}
+.continue-arrival .eyebrow{font-size:11px;color:#527e93;letter-spacing:.15em}
+.continue-arrival h1{font:400 clamp(37px,5vw,61px)/1.09 Georgia,serif;letter-spacing:-.04em;margin:13px 0 19px}
+.continue-arrival h1 em{font-weight:400;color:#4c7f91}
+.continue-arrival .arrival-copy{max-width:560px;font-size:17px;line-height:1.73;color:#496171}
+.continue-arrival .arrival-note{font-size:13px;line-height:1.7;color:#667e8a;margin:12px 0 0}
+.continue-arrival .arrival-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:23px}
+.continue-arrival .arrival-actions button{min-height:44px}
+.continue-arrival .arrival-ring-area{min-height:305px;display:grid;place-items:center;position:relative}
+.continue-arrival .arrival-ring{width:285px;height:285px;border-radius:50%;background:conic-gradient(from 195deg,#587f92 0 20%,#c3d9db 20% 42%,#e3cdb8 42% 62%,#bed1c8 62% 80%,#355d75 80% 100%);position:relative;box-shadow:0 22px 42px #35607420;transform:rotate(-12deg)}
+.continue-arrival .arrival-ring::before{content:"";position:absolute;inset:19%;border-radius:50%;background:#f3f7f4}
+.continue-arrival .arrival-ring span{position:absolute;inset:29%;transform:rotate(12deg);display:grid;place-items:center;text-align:center;font:400 23px/1.2 Georgia,serif;color:#354f61}
+.continue-arrival .arrival-floating{position:absolute;background:#fffefa;border:1px solid #d7e4e5;border-radius:10px;box-shadow:0 7px 16px #345b711b;padding:8px 11px;color:#466574;font-size:11px;font-weight:650}
+.continue-arrival .arrival-floating.first{top:5%;right:1%}.continue-arrival .arrival-floating.second{left:0;top:45%}.continue-arrival .arrival-floating.third{right:0;bottom:9%}
+.continue-arrival .arrival-more{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin:18px 0}
+.continue-arrival .arrival-more article{padding:16px 18px;border:1px solid #d7e2e7;background:#fffdfc;border-radius:12px}
+.continue-arrival .arrival-more span{font-size:10px;color:#5b8493;font-weight:800;letter-spacing:.1em}
+.continue-arrival .arrival-more strong{display:block;font:400 21px/1.3 Georgia,serif;margin:6px 0}
+.continue-arrival .arrival-more p{font-size:12px;color:#647988;margin:0;line-height:1.5}
+@media(max-width:720px){.continue-arrival{margin:6px auto}.continue-arrival-hero{display:flex;flex-direction:column;gap:5px;align-items:stretch;padding:25px 20px 17px;border-radius:16px}.continue-arrival h1{font-size:clamp(35px,9vw,48px)}.continue-arrival .arrival-copy{font-size:16px}.continue-arrival .arrival-ring-area{min-height:205px;margin:auto;width:min(100%,320px)}.continue-arrival .arrival-ring{width:200px;height:200px}.continue-arrival .arrival-ring span{font-size:18px}.continue-arrival .arrival-floating{font-size:10px}.continue-arrival .arrival-actions button{width:100%}.continue-arrival .arrival-more{grid-template-columns:1fr}.continue-arrival .arrival-more article{padding:13px 15px}}
+
 </style>
 </head>
 <body>
@@ -63,6 +87,24 @@ body{background:var(--paper)}header{background:rgba(247,244,239,.97)}.card{backg
 <div class="card"><label for="secret"><strong>Persoonlijke vervolgcode</strong></label><p>Gebruik de code die je hebt ontvangen. Die is persoonlijk, dus stuur hem niet zomaar door.</p>
 <div class="code-row"><input id="secret" type="password" autocomplete="off" aria-label="Persoonlijke vervolgcode" placeholder="Vervolgcode"><button id="open" class="primary" type="button">Open mijn concept</button></div>
 <p class="error" id="error" hidden></p></div>
+</section>
+<section id="welcomePhase" class="continue-arrival" hidden aria-labelledby="continueWelcomeHeading">
+ <div class="continue-arrival-hero">
+  <div>
+   <div class="eyebrow">LEIF · jouw verhaal</div>
+   <h1 id="continueWelcomeHeading">Wat wil je van <em>jezelf</em> begrijpen?</h1>
+   <p class="arrival-copy">Wat anderen aan je zien, vertelt niet het hele verhaal. Hier kun je stilstaan bij wat je bezighoudt, wat je hebt meegemaakt en wat je wilt meenemen.</p>
+   <p class="arrival-note">Je hoeft niets te bewijzen. Kies je eigen tempo. Je mag een vraag overslaan en later terugkomen.</p>
+   <div class="arrival-actions"><button type="button" id="beginContinue" class="primary">Verder met mijn vragen</button><button type="button" id="continueReport">Lees mijn antwoorden</button></div>
+   <p id="continueProgress" class="arrival-note"></p>
+  </div>
+  <div class="arrival-ring-area" aria-hidden="true"><div class="arrival-ring"><span>Meer dan één kant</span></div><span class="arrival-floating first">Wat anderen zien</span><span class="arrival-floating second">Wat je voelt</span><span class="arrival-floating third">Wat je meeneemt</span></div>
+ </div>
+ <div class="arrival-more" aria-label="Wat je in LEIF kunt doen">
+  <article><span>01</span><strong>Mijn vragen</strong><p>Schrijf in je eigen woorden.</p></article>
+  <article><span>02</span><strong>Mijn antwoorden</strong><p>Lees terug wat je hebt opgeschreven.</p></article>
+  <article><span>03</span><strong>Verder ontdekken</strong><p>Verken wat je wilt bewaren of veranderen.</p></article>
+ </div>
 </section>
 <section id="editor" hidden>
 <div class="hero"><div><div class="eyebrow">LEIF · persoonlijk gesprek</div><h1>Je verhaal gaat verder.</h1><p class="lead">Je kunt de vragen invullen, eerdere antwoorden aanpassen en vragen overslaan. Je voortgang wordt lokaal en op de server bewaard.</p></div>
@@ -179,8 +221,9 @@ async function openSession(t){
  for(const [id,v] of Object.entries(pending)){if(v===null)delete answers[id];else if(typeof v==='string')answers[id]=v;}
  try{sessionStorage.setItem('leifContinueToken',token);}catch{}
  history.replaceState(null,'',location.pathname);
- $('gate').hidden=true;$('editor').hidden=false;
+ $('gate').hidden=true;$('welcomePhase').hidden=false;$('editor').hidden=true;
  current=firstMissing();render();
+ $('continueProgress').textContent=count()+' van '+flat.length+' vragen beantwoord. Je antwoorden staan nog klaar.';
  setStatus(Object.keys(pending).length?'Lokaal concept hersteld, server volgt':'Concept van server geladen');
  if(Object.keys(pending).length)flush();
 }
@@ -267,6 +310,8 @@ $('open').onclick=async()=>{
  finally{$('open').disabled=false;}
 };
 $('secret').addEventListener('keydown',e=>{if(e.key==='Enter')$('open').click();});
+$('beginContinue').onclick=()=>{$('welcomePhase').hidden=true;$('editor').hidden=false;render();scrollTo(0,0);};
+$('continueReport').onclick=()=>{$('welcomePhase').hidden=true;review();scrollTo(0,0);};
 $('prev').onclick=()=>{current=Math.max(0,current-1);render();};
 $('next').onclick=()=>{if(current===flat.length-1)review();else{current++;render();}};
 $('firstOpen').onclick=()=>{current=firstMissing();render();};
