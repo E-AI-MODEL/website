@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - '.github/workflows/build-site.yml'
+      - '.github/workflows/deploy-theory7.yml'
       - 'scripts/build_site.py'
       - 'content/**'
       - 'nl/**'
@@ -24,6 +25,7 @@ on:
       - main
     paths:
       - '.github/workflows/build-site.yml'
+      - '.github/workflows/deploy-theory7.yml'
       - 'scripts/build_site.py'
       - 'content/**'
       - 'nl/**'
