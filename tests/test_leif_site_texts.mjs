@@ -23,7 +23,7 @@ test('de bestaande inlogroutes en geheimhouding blijven staan',()=>{
  assert.match(sources[3],/KEI_WRAPPED_KEY/);
  assert.match(sources[3],/protected-text/);
  assert.doesNotMatch(main,/id="adminPassword"/);
- assert.match(main,/request_magic_link/);
+ assert.match(main,/await window\.LeifPasskey\.openAdmin\(\)/);
 });
 test('alle pagina s laden de gepubliceerde redactie',()=>{
  for(const html of sources){
