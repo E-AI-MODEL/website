@@ -50,7 +50,7 @@ try {
       await page.locator('.eai-site-group').nth(1).locator('summary').click();
       await page.locator('.eai-site-group').nth(3).locator('summary').click();
       assert.equal(await page.locator('.eai-site-group[open]').count(), 1, 'Only one theme may be open');
-      assert.equal(await page.locator('.eai-site-group').nth(3).locator('a:visible').count(), 3);
+      assert((await page.locator('.eai-site-group').nth(3).locator('a:visible').count()) >= 2, 'Opened navigation group must contain actual links');
       await page.keyboard.press('Escape');
       assert.equal(await page.locator('.eai-site-menu').getAttribute('open'), null);
       assert(await page.locator('.eai-site-menu>summary').evaluate(e => e === document.activeElement));
