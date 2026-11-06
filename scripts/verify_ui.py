@@ -111,6 +111,18 @@ def verify_live(base: str, manifest: dict, timeout: int, root: Path):
             if story.exists():
                 expected_story = hashlib.sha256(story.read_bytes()).hexdigest()
                 assert hashlib.sha256(get('/leif/verhaal/')).hexdigest() == expected_story, 'LEIF personal reader is missing or out of date'
+            # Controleer ook de zelfstandige tools die niet door de UI-builder zijn herschreven.
+            for relative in ('tools/eaimesh/start/index.html',
+                             'tools/eaistudio/studio/index.html',
+                             'tools/eaistudio/studio/service-worker.js',
+                             'tools/eaistudio/studio/manifest.webmanifest',
+                             'tools/eaistudio/studio/icons/icon-192.png',
+                             'tools/eaistudio/studio/icons/icon-512.png',
+                             'tools/eaistudio/studio/icons/apple-touch-icon.png'):
+                local = root / relative
+                assert local.is_file(), f'Tool missing from build: {relative}'
+                online_path = '/' + relative.removesuffix('index.html')
+                assert hashlib.sha256(get(online_path)).hexdigest() == hashlib.sha256(local.read_bytes()).hexdigest(), f'Tool content mismatch: {online_path}'
             for info in manifest['assets'].values():
                 assert hashlib.sha256(get(info['url'])).hexdigest() == info['sha256'], f'Asset mismatch: {info["url"]}'
             print(f'LIVE verified: all {len(expected_html)} prepared HTML files and all asset hashes match UI {manifest["version"]}')
