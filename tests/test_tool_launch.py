@@ -19,9 +19,13 @@ class ToolLaunchTests(unittest.TestCase):
             soup=BeautifulSoup((BUILD/path).read_text(),'html.parser')
             for slug in ['eaimesh','eaistudio','wihtml']:
                 with self.subTest(path=path,slug=slug):self.assertIsNotNone(soup.select_one(f'main a[href="/tools/{slug}/"]'))
-        for path in ['nl/tools/index.html','en/tools/index.html']:
-            soup=BeautifulSoup((BUILD/path).read_text(),'html.parser')
-            for slug in ['eaimesh','eaistudio','wihtml']:self.assertIsNotNone(soup.select_one(f'header a[href="/tools/{slug}/"]'))
+        # On refreshed pages, the hamburger menu is assembled by site-refresh.js.
+        navigation=(ROOT/'assets/site-refresh.js').read_text(encoding='utf-8')
+        for slug in ['eaimesh','eaistudio','wihtml']:
+            self.assertIn(f'/tools/{slug}/',navigation)
+        home=(ROOT/'nl/index.html').read_text(encoding='utf-8')
+        for slug in ['eaimesh','eaistudio','wihtml']:
+            self.assertIn(f'/tools/{slug}/',home)
     def test_pwa_assets_are_complete(self):
         root=BUILD/'tools/eaistudio/studio';manifest=json.loads((root/'manifest.webmanifest').read_text())
         for icon in manifest['icons']:self.assertTrue((root/icon['src']).is_file())
