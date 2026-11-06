@@ -49,9 +49,9 @@ main{max-width:1160px;margin:auto;padding:42px 24px 120px}.tag{font-weight:800;c
 <p class="sub">Stel hier je inloggegevens in voor volgende bezoeken. Je blijft op dit apparaat ingelogd totdat je zelf uitlogt of je sessie verloopt.</p>
 <form id="accountForm">
 <div class="field"><label for="accountEmail">E-mailadres</label><input id="accountEmail" type="email" name="username" autocomplete="username" maxlength="254" required></div>
-<div class="field"><label for="accountPassword">Nieuw wachtwoord</label><input id="accountPassword" type="password" name="new-password" autocomplete="new-password" minlength="12" maxlength="1000" required aria-describedby="accountHelp"></div>
-<p id="accountHelp" class="meta">Gebruik minstens 12 tekens. Je wachtwoord wordt niet in deze browser opgeslagen.</p>
-<div class="field"><label for="accountRepeat">Herhaal wachtwoord</label><input id="accountRepeat" type="password" autocomplete="new-password" minlength="12" maxlength="1000" required></div>
+<div class="field"><label for="accountPassword">Nieuw wachtwoord</label><input id="accountPassword" type="password" name="new-password" autocomplete="new-password" minlength="6" maxlength="1000" required aria-describedby="accountHelp"></div>
+<p id="accountHelp" class="meta">Gebruik minstens 6 tekens. Je wachtwoord wordt niet in deze browser opgeslagen.</p>
+<div class="field"><label for="accountRepeat">Herhaal wachtwoord</label><input id="accountRepeat" type="password" autocomplete="new-password" minlength="6" maxlength="1000" required></div>
 <button id="saveAccount" type="submit" class="btn">Bewaar mijn inloggegevens</button>
 <p id="accountStatus" class="save-status" role="status" aria-live="polite"></p>
 </form>
@@ -233,7 +233,7 @@ E('accountForm').onsubmit=async event=>{
   E('accountPassword').value='';E('accountRepeat').value='';accountIdentity();
   E('accountStatus').textContent=result.pending_email?'Je wachtwoord is bewaard. Bevestig de adreswijziging via de e-mail. Je blijft hier ingelogd.':'Je inloggegevens zijn bewaard. Je blijft ingelogd. Volgende keer kun je hiermee beheer openen.';
  }catch(error){
-  const messages={weak_password:'Kies een sterker wachtwoord van minstens 12 tekens.',same_password:'Dit wachtwoord is al ingesteld. Je kunt het blijven gebruiken.',email_exists:'Dit e-mailadres is al aan een ander account gekoppeld.',reauthentication_needed:'Open een nieuwe inloglink en stel daarna je wachtwoord in.'};
+  const messages={weak_password:'Kies een wachtwoord van minstens 6 tekens.',same_password:'Dit wachtwoord is al ingesteld. Je kunt het blijven gebruiken.',email_exists:'Dit e-mailadres is al aan een ander account gekoppeld.',reauthentication_needed:'Open een nieuwe inloglink en stel daarna je wachtwoord in.'};
   E('accountStatus').textContent=messages[error.message]||'Bewaren is niet gelukt. Je huidige inloggegevens en sessie blijven behouden. Probeer het opnieuw.';
  }finally{E('saveAccount').disabled=false}
 };
