@@ -444,7 +444,7 @@ function updateJourneyUI(){
 }
 function journeyStep(direction){
  if(state.mode!==1)setMode(1);
- state.playing=false;
+ state.playing=false;$('playBtn').textContent='>';
  state.journey=clamp(Math.round(state.journey)+direction,0,cfg.layers-1);
  state.layer=Math.round(state.journey);state.expert=chooseRoute(state.layer)[0].e;
  state.dirty=true;state.chartDirty=true;refreshNumbers();updateJourneyUI();
@@ -453,9 +453,10 @@ function selectAtGraph(x){
  if(!plotMeta||plotMeta.count<1)return;
  const idx=clamp(Math.floor((x-plotMeta.left)/plotMeta.gw*plotMeta.count),0,plotMeta.count-1);
  if(state.mode===6){state.uFocus=idx;state.dirty=true;state.chartDirty=true;usageRefresh();drawPlot();return;}
+ if(state.mode===5){state.candidate=idx;state.playing=false;$('playBtn').textContent='>';state.dirty=true;state.chartDirty=true;drawPlot();return;}
  if(state.mode===2)state.expert=idx;
  else if(state.mode===5)state.candidate=idx;
- else{state.layer=idx;if(state.mode===1){state.journey=idx;state.expert=chooseRoute(idx)[0].e;state.playing=false;}}
+ else{state.layer=idx;if(state.mode===1){state.journey=idx;state.expert=chooseRoute(idx)[0].e;state.playing=false;$('playBtn').textContent='>';}}
  state.dirty=true;state.chartDirty=true;
  refreshNumbers();renderInspector();updateJourneyUI();drawPlot();
 }
@@ -464,7 +465,7 @@ function setMode(index){state.mode=clamp(index,0,MODES.length-1);if(state.mode==
 function changeModel(id){state.model=+id;cfg=CONFIG[state.model];rebuildWorld();$('modelName').textContent=cfg.name;renderInspector();setMode(state.mode)}
 function renderModes(){const symbols=['◎','↣','◈','≋','▤','✧','◉'];$('modes').innerHTML=MODES.map((m,i)=>'<button type="button" class="mode-btn '+(i===state.mode?'active':'')+'" data-mode="'+i+'" aria-pressed="'+(i===state.mode)+'"><span class="mode-icon">'+symbols[i]+'</span><span><strong>'+m.name+'</strong><small>'+m.sub+'</small></span><span class="num">'+String(i+1).padStart(2,'0')+'</span></button>').join('');$('modes').addEventListener('click',e=>{const b=e.target.closest('[data-mode]');if(b)setMode(+b.dataset.mode)})}
 function setStats(items){$('stats').innerHTML=items.map(item=>'<div class="stat"><small>'+item[0]+'</small><strong class="'+(item[2]?'warm':'')+'">'+item[1]+'</strong><span>'+((item[3]||''))+'</span></div>').join('')}
-function addRange(label,key,min,max,step,suffix='',cb){let d=document.createElement('div');d.className='control';d.innerHTML='<label for="r-'+key+'"><span>'+label+'</span><output id="o-'+key+'">'+state[key]+suffix+'</output></label><input id="r-'+key+'" type="range" min="'+min+'" max="'+max+'" step="'+step+'" value="'+state[key]+'">';$('controls').appendChild(d);d.querySelector('input').addEventListener('input',e=>{state[key]=+e.target.value;d.querySelector('output').textContent=state[key]+suffix;if(cb)cb();if(state.mode===1&&key==='layer'){state.journey=state.layer;state.playing=false;state.expert=chooseRoute(state.layer)[0].e;}state.dirty=true;state.chartDirty=true;refreshNumbers();updateJourneyUI()})}
+function addRange(label,key,min,max,step,suffix='',cb){let d=document.createElement('div');d.className='control';d.innerHTML='<label for="r-'+key+'"><span>'+label+'</span><output id="o-'+key+'">'+state[key]+suffix+'</output></label><input id="r-'+key+'" type="range" min="'+min+'" max="'+max+'" step="'+step+'" value="'+state[key]+'">';$('controls').appendChild(d);d.querySelector('input').addEventListener('input',e=>{state[key]=+e.target.value;d.querySelector('output').textContent=state[key]+suffix;if(cb)cb();if(state.mode===1&&key==='layer'){state.journey=state.layer;state.playing=false;$('playBtn').textContent='>';state.expert=chooseRoute(state.layer)[0].e;}state.dirty=true;state.chartDirty=true;refreshNumbers();updateJourneyUI()})}
 function addCheck(label,key){let d=document.createElement('label');d.style.cssText='display:flex;justify-content:space-between;align-items:center;gap:8px;margin:0 0 10px;color:#bdd2df;font-size:11px';d.innerHTML='<span>'+label+'</span><input type="checkbox" '+(state[key]?'checked':'')+'>';d.querySelector('input').addEventListener('change',e=>{state[key]=e.target.checked;state.dirty=true});$('controls').appendChild(d)}
 function makeTask(){const task=MODES[state.mode];$('taskTitle').textContent='Probeer dit';$('taskText').textContent=task.task;$('feedback').textContent='';$('answers').innerHTML='';task.options.forEach((value,i)=>{const b=document.createElement('button');b.type='button';b.textContent=value;b.addEventListener('click',()=>{document.querySelectorAll('#answers button').forEach(k=>k.classList.remove('correct','wrong'));b.classList.add(i===task.answer?'correct':'wrong');$('feedback').textContent=i===task.answer?'Klopt. Bekijk of je dit ook in de visualisatie terugziet.':'Niet helemaal. Verander een instelling en probeer opnieuw.'});$('answers').appendChild(b)})}
 function renderInspector(){const m=state.mode;$('controls').innerHTML='';if(m===0){setStats([['LAGEN',cfg.layers],['EXPERTS / LAAG',cfg.experts],['EXPERTPOSITIES',cfg.layers*cfg.experts],['BREEDTE',cfg.dim,'', 'dimensies']]);addRange('Laag','layer',0,cfg.layers-1,1,'',()=>{state.expert=clamp(state.expert,0,cfg.experts-1)});addRange('Expert','expert',0,cfg.experts-1,1);addCheck('Laat experts zien','showExperts');addCheck('Toon informatiesporen','showTrails');addCheck('Toon lichtveld','showFields')}
@@ -502,10 +503,10 @@ function bind(){renderModes();
  $('startJourney').addEventListener('click',()=>setMode(1));
  $('journeyPrev').addEventListener('click',()=>journeyStep(-1));
  $('journeyNext').addEventListener('click',()=>journeyStep(1));
- $('journeyPlay').addEventListener('click',()=>{state.playing=!state.playing;updateJourneyUI();$('playBtn').textContent=state.playing?'II':'>';});
+ $('journeyPlay').addEventListener('click',()=>{if(!state.playing&&state.journey>=cfg.layers-1){state.journey=0;state.layer=0;}state.playing=!state.playing;updateJourneyUI();$('playBtn').textContent=state.playing?'II':'>';});
  $('journeyToken').addEventListener('click',()=>{state.token=(state.token+1)%words().length;state.journey=0;state.layer=0;state.expert=chooseRoute(0)[0].e;state.dirty=true;state.chartDirty=true;refreshNumbers();updateJourneyUI();});
  plot.addEventListener('pointerup',e=>{const r=plot.getBoundingClientRect();selectAtGraph(e.clientX-r.left)});
- $('modelSelect').addEventListener('change',e=>changeModel(e.target.value));$('resetBtn').addEventListener('click',()=>{state.time=0;state.layer=Math.floor(cfg.layers/2);state.expert=0;updateCamera('tilt');renderInspector()});$('exportBtn').addEventListener('click',exportSettings);$('downloadJson').addEventListener('click',exportSettings);document.querySelectorAll('.mobile-dock button').forEach(b=>b.addEventListener('click',()=>openPanel(b.dataset.panel)));document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',closePanel));document.querySelectorAll('[data-cam]').forEach(b=>b.addEventListener('click',()=>updateCamera(b.dataset.cam)));$('playBtn').addEventListener('click',()=>{state.playing=!state.playing;$('playBtn').textContent=state.playing?'II':'>';});$('timeSlider').addEventListener('input',e=>{state.time=+e.target.value;state.dirty=true});$('speedSelect').addEventListener('change',e=>{state.speed=+e.target.value});document.addEventListener('keydown',e=>{if(e.key==='Escape')closePanel()});window.addEventListener('resize',()=>{resize();if(window.innerWidth>800)closePanel()});canvas.addEventListener('pointerdown',e=>{canvas.setPointerCapture(e.pointerId);pointer={x:e.clientX,y:e.clientY,yaw:state.yaw,pitch:state.pitch};moveDist=0;$('stage').classList.add('dragging')});canvas.addEventListener('pointermove',e=>{if(!pointer||touches.size>1)return;let dx=e.clientX-pointer.x,dy=e.clientY-pointer.y;moveDist=Math.max(moveDist,Math.abs(dx)+Math.abs(dy));if(moveDist>7)state.follow=false;state.yaw=pointer.yaw+dx*.006;state.pitch=clamp(pointer.pitch-dy*.005,.07,Math.PI/2);state.dirty=true});canvas.addEventListener('pointerup',e=>{if(pointer&&moveDist<9){let r=canvas.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top,nearest=null,dist=e.pointerType==='touch'?41:30;
+ $('modelSelect').addEventListener('change',e=>changeModel(e.target.value));$('resetBtn').addEventListener('click',()=>{state.time=0;state.layer=Math.floor(cfg.layers/2);state.expert=0;updateCamera('tilt');renderInspector()});$('exportBtn').addEventListener('click',exportSettings);$('downloadJson').addEventListener('click',exportSettings);document.querySelectorAll('.mobile-dock button').forEach(b=>b.addEventListener('click',()=>openPanel(b.dataset.panel)));document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',closePanel));document.querySelectorAll('[data-cam]').forEach(b=>b.addEventListener('click',()=>updateCamera(b.dataset.cam)));$('playBtn').addEventListener('click',()=>{if(!state.playing&&state.mode===1&&state.journey>=cfg.layers-1){state.journey=0;state.layer=0;}state.playing=!state.playing;$('playBtn').textContent=state.playing?'II':'>';updateJourneyUI();});$('timeSlider').addEventListener('input',e=>{state.time=+e.target.value;state.dirty=true;state.chartDirty=true});$('speedSelect').addEventListener('change',e=>{state.speed=+e.target.value});document.addEventListener('keydown',e=>{if(e.key==='Escape')closePanel()});window.addEventListener('resize',()=>{resize();if(window.innerWidth>800)closePanel()});canvas.addEventListener('pointerdown',e=>{canvas.setPointerCapture(e.pointerId);pointer={x:e.clientX,y:e.clientY,yaw:state.yaw,pitch:state.pitch};moveDist=0;$('stage').classList.add('dragging')});canvas.addEventListener('pointermove',e=>{if(!pointer||touches.size>1)return;let dx=e.clientX-pointer.x,dy=e.clientY-pointer.y;moveDist=Math.max(moveDist,Math.abs(dx)+Math.abs(dy));if(moveDist>7)state.follow=false;state.yaw=pointer.yaw+dx*.006;state.pitch=clamp(pointer.pitch-dy*.005,.07,Math.PI/2);state.dirty=true});canvas.addEventListener('pointerup',e=>{if(pointer&&moveDist<9){let r=canvas.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top,nearest=null,dist=e.pointerType==='touch'?41:30;
  if(state.mode===6){for(const q of usagePoints){if(Math.hypot(q.x-x,q.y-y)<40){state.uFocus=q.idx;state.dirty=true;state.chartDirty=true;usageRefresh();nearest={usage:true};break}}}if(state.mode===1){screenJourney.forEach((p,i)=>{let d=Math.hypot(p.x-x,p.y-y);if(d<dist){nearest={l:i,e:chooseRoute(i)[0].e};dist=d}})}
  if(!nearest){for(const p of screenExperts){let d=Math.hypot(p.x-x,p.y-y);if(d<dist){nearest=p;dist=d}}}
  if(nearest&&!nearest.usage){state.layer=nearest.l;state.expert=nearest.e;if(state.mode===1){state.journey=nearest.l;state.playing=false;}renderInspector();refreshNumbers();updateJourneyUI();state.chartDirty=true;state.dirty=true}}pointer=null;$('stage').classList.remove('dragging')});canvas.addEventListener('wheel',e=>{e.preventDefault();state.zoom=clamp(state.zoom*Math.exp(-e.deltaY*.001),.55,3.8);state.dirty=true},{passive:false});
@@ -513,9 +514,31 @@ const touches=new Map();let pinchStart=0,pinchZoom=1;
 canvas.addEventListener('pointerdown',e=>{if(e.pointerType==='touch'){touches.set(e.pointerId,{x:e.clientX,y:e.clientY});if(touches.size===2){const v=[...touches.values()];pinchStart=Math.hypot(v[0].x-v[1].x,v[0].y-v[1].y);pinchZoom=state.zoom;pointer=null;}}});
 canvas.addEventListener('pointermove',e=>{if(!touches.has(e.pointerId))return;touches.set(e.pointerId,{x:e.clientX,y:e.clientY});if(touches.size>=2&&pinchStart>0){const v=[...touches.values()];const now=Math.hypot(v[0].x-v[1].x,v[0].y-v[1].y);state.zoom=clamp(pinchZoom*now/Math.max(1,pinchStart),.55,3.8);state.dirty=true;}});
 for(const eventName of ['pointerup','pointercancel'])canvas.addEventListener(eventName,e=>{touches.delete(e.pointerId);if(touches.size<2)pinchStart=0;});$('app').addEventListener('touchmove',e=>{if(e.target===canvas)e.preventDefault()},{passive:false})}
-function tick(now){const dt=clamp((now-lastTime)/1000,0,.06);lastTime=now;if(state.playing){state.time=(state.time+dt*26*state.speed)%1000;state.dirty=true;$('timeSlider').value=state.time;
- if(state.mode===1){state.journey=(state.journey+dt*2.0*state.speed)%cfg.layers;const layer=Math.min(cfg.layers-1,Math.floor(state.journey));if(layer!==state.layer){state.layer=layer;state.expert=chooseRoute(layer)[0].e;state.chartDirty=true;refreshNumbers()}updateJourneyUI();}}
- $('timeText').textContent=Math.floor(state.time);if(state.dirty&&now-lastDraw>(W<650?78:47)){drawScene();lastDraw=now}if(state.chartDirty&&now-lastGraph>70&&($('app').dataset.panel==='graph'||window.innerWidth>800)){drawPlot();lastGraph=now}requestAnimationFrame(tick)}
+let lastJourneyUI=0;
+function tick(now){
+ const dt=clamp((now-lastTime)/1000,0,.06);lastTime=now;
+ if(state.playing){
+  state.time=(state.time+dt*26*state.speed)%1000;
+  state.dirty=true;$('timeSlider').value=state.time;
+  if(state.mode===1){
+   // Een laag per circa twee seconden. Stop na de laatste laag, geen terugflits.
+   state.journey=Math.min(cfg.layers-1,state.journey+dt*.52*state.speed);
+   const layer=Math.min(cfg.layers-1,Math.floor(state.journey));
+   if(layer!==state.layer){
+    state.layer=layer;state.expert=chooseRoute(layer)[0].e;
+    state.chartDirty=true;refreshNumbers();
+   }
+   if(now-lastJourneyUI>160){updateJourneyUI();lastJourneyUI=now;}
+   if(state.journey>=cfg.layers-1){
+    state.playing=false;$('playBtn').textContent='>';updateJourneyUI();
+   }
+  }
+ }
+ $('timeText').textContent=Math.floor(state.time);
+ if(state.dirty&&now-lastDraw>(W<650?78:47)){drawScene();lastDraw=now}
+ if(state.chartDirty&&now-lastGraph>70&&($('app').dataset.panel==='graph'||window.innerWidth>800)){drawPlot();lastGraph=now}
+ requestAnimationFrame(tick);
+}
 tokenizeInput();rebuildWorld();bind();renderInspector();setMode(0);resize();loadRealTokenizer();new ResizeObserver(resize).observe($('stage'));new ResizeObserver(resize).observe($('graphPanel'));requestAnimationFrame(tick);
 </script>
 </body>
