@@ -662,8 +662,8 @@ function drawGalacticCore(){let c=project(0,0,0);let g=ctx.createRadialGradient(
    ctx.save();ctx.strokeStyle='rgba(119,232,224,.8)';ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(sun.x,sun.y,4.8,0,2*PI);ctx.stroke();ctx.restore();
    // De mobiele zon heeft een echte klikbare pin. Geen tweede label op het canvas.
  }else{
-   dotLabel(c,'MIDDEN','Hier zit een zwart gat','239,187,128',16,-26);
-   dotLabel(sun,'ONZE ZON','De aarde draait om haar heen','111,227,231',18,-28);
+   dotLabel(c,'SGR A*','CENTRUM','239,187,128',16,-26);
+   dotLabel(sun,'ZON','R₀ ≈ 8,2 kpc','111,227,231',18,-28);
  }
  if(state.layer.orbit){let focus=project(state.focusR*Math.cos(state.focusTheta),state.focusR*Math.sin(state.focusTheta),0);ctx.setLineDash([4,4]);drawCircle(focus.x,focus.y,8,'#80deed',.8);ctx.setLineDash([]);}}
 // Kleine lichtpunten zijn echte grepen op het sterrenbeeld, geen knoppen die de proef oplossen.
@@ -679,29 +679,44 @@ let stageHover=null,stageHeld=null,stageDragStart=null;
 function skyTrackGeometry(track){const left=W*.18,right=W*.83;return{left,right,y:H*track.y,x:left+(track.get()-track.min)/(track.max-track.min)*(right-left)};}
 function stageTrackHit(x,y){const tracks=touchTracks[state.mode]||[];for(const track of tracks){const g=skyTrackGeometry(track);if(Math.abs(y-g.y)<27 && x>=g.left-30 && x<=g.right+30)return track;}return null;}
 function drawStageOverlay(){
- if(state.mode==='atlas'){
-  if(lastProjectedSun){const p=lastProjectedSun;ctx.save();ctx.setLineDash([3,6]);ctx.strokeStyle='rgba(136,246,226,.75)';ctx.lineWidth=2;ctx.beginPath();ctx.arc(p.x,p.y,11,0,2*PI);ctx.stroke();ctx.restore();}
+ if(state.mode==='atlas'&&lastProjectedSun){
+  const p=lastProjectedSun;ctx.save();ctx.setLineDash([2,5]);ctx.strokeStyle='rgba(117,221,215,.48)';ctx.lineWidth=.8;
+  ctx.beginPath();ctx.arc(p.x,p.y,8,0,2*PI);ctx.stroke();ctx.restore();
  }
  if(state.mode==='dynamics'){
   const r=state.focusR,th=state.focusTheta+state.time*vParts(r).total/r*KM_MYR,p=project(r*Math.cos(th),r*Math.sin(th),0);
-  ctx.save();ctx.beginPath();ctx.arc(p.x,p.y,8,0,2*PI);ctx.fillStyle='#bcfff4';ctx.shadowBlur=18;ctx.shadowColor='#58e1ee';ctx.fill();ctx.shadowBlur=0;
-  ctx.font='700 12px system-ui';ctx.fillStyle='#d9fff6';ctx.textAlign='left';ctx.fillText(Math.round(vParts(r).total)+' km/s',clamp(p.x+12,8,W-104),clamp(p.y-14,105,H*.61));ctx.restore();
+  ctx.save();ctx.beginPath();ctx.arc(p.x,p.y,4,0,2*PI);ctx.fillStyle='#9de6de';ctx.fill();
+  ctx.font='10px ui-monospace,monospace';ctx.fillStyle='#9ac9d4';ctx.textAlign='left';
+  ctx.fillText(fmt(vParts(r).total,0)+' km/s',clamp(p.x+10,7,W-86),clamp(p.y-9,100,H*.66));ctx.restore();
  }
  if(state.mode==='gaia'){
   const spread=clamp(63/state.observeD,3,65),mx=W*.51,my=H*.41;
-  ctx.save();ctx.setLineDash([4,5]);ctx.strokeStyle='#4caec466';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(mx-spread,my);ctx.lineTo(mx+spread,my);ctx.stroke();ctx.setLineDash([]);
-  for(const [i,x] of [mx-spread,mx+spread].entries()){ctx.beginPath();ctx.arc(x,my,6,0,2*PI);ctx.shadowBlur=12;ctx.shadowColor='#a4ffff';ctx.fillStyle=i?'#8aeaf6':'#edcfa8';ctx.fill();}ctx.shadowBlur=0;ctx.font='700 12px system-ui';ctx.textAlign='center';ctx.fillStyle='#c8ebfa';ctx.fillText('Dezelfde ster, vanaf twee plekken bekeken',mx,H*.31);ctx.restore();
+  ctx.save();ctx.setLineDash([3,5]);ctx.strokeStyle='#4caec47a';ctx.lineWidth=.9;ctx.beginPath();
+  ctx.moveTo(mx-spread,my);ctx.lineTo(mx+spread,my);ctx.stroke();ctx.setLineDash([]);
+  for(const [i,x] of [mx-spread,mx+spread].entries()){ctx.beginPath();ctx.arc(x,my,3,0,2*PI);ctx.fillStyle=i?'#87cfe2':'#e3bc88';ctx.fill();}
+  ctx.font='10px ui-monospace,monospace';ctx.textAlign='center';ctx.fillStyle='#90adc1';ctx.fillText('PARALLAX / '+fmt(1/state.observeD,3)+' mas',mx,H*.31);ctx.restore();
  }
  if(state.mode==='stars'){
   const cx=W*.56,cy=H*.40,rad=clamp(Math.min(W,H)*.16,29,57);
-  ctx.save();ctx.beginPath();ctx.arc(cx,cy,rad,0,2*PI);ctx.lineWidth=2.5;ctx.strokeStyle='#a3f7e7';ctx.shadowColor='#4bded5';ctx.shadowBlur=12;ctx.stroke();ctx.shadowBlur=0;ctx.beginPath();ctx.arc(cx,cy,rad*.25,0,2*PI);ctx.strokeStyle='#84cdda99';ctx.lineWidth=1;ctx.stroke();ctx.restore();
+  ctx.save();ctx.beginPath();ctx.arc(cx,cy,rad,0,2*PI);ctx.lineWidth=.9;ctx.strokeStyle='#84d4d69a';ctx.stroke();
+  ctx.beginPath();ctx.arc(cx,cy,rad*.25,0,2*PI);ctx.strokeStyle='#84cdda55';ctx.stroke();ctx.restore();
  }
  if(state.mode==='structure'){
-  const cx=W*.79,cy=H*.53;ctx.save();ctx.beginPath();ctx.arc(cx,cy,15,0,2*PI);ctx.strokeStyle=state.layer.stellarHalo?'#8ef0e2':'#6c7793';ctx.lineWidth=2;ctx.stroke();ctx.font='11px system-ui';ctx.textAlign='right';ctx.fillStyle='#d6f5ef';ctx.fillText('Verre sterren',cx-24,cy+3);ctx.restore();
+  const cx=W*.79,cy=H*.53;
+  ctx.save();ctx.beginPath();ctx.arc(cx,cy,11,0,2*PI);ctx.strokeStyle=state.layer.stellarHalo?'#8bd2c488':'#6c779380';ctx.lineWidth=.8;ctx.stroke();
+  ctx.font='10px ui-monospace,monospace';ctx.textAlign='right';ctx.fillStyle='#a1c7ce';ctx.fillText('HALO',cx-19,cy+3);ctx.restore();
  }
  const tracks=touchTracks[state.mode]||[];
- for(const track of tracks){const g=skyTrackGeometry(track);ctx.save();ctx.fillStyle='#051b2ad6';ctx.fillRect(g.left-19,g.y-33,g.right-g.left+40,51);ctx.font='650 11px system-ui';ctx.fillStyle='#e3f9fc';ctx.textAlign='left';ctx.fillText(track.label,g.left,g.y-15);ctx.strokeStyle='#518a9e';ctx.lineWidth=5;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(g.left,g.y);ctx.lineTo(g.right,g.y);ctx.stroke();ctx.strokeStyle='#91ebd9';ctx.beginPath();ctx.moveTo(g.left,g.y);ctx.lineTo(g.x,g.y);ctx.stroke();ctx.beginPath();ctx.arc(g.x,g.y,10,0,2*PI);ctx.fillStyle='#affbee';ctx.shadowBlur=stageHeld===track?18:9;ctx.shadowColor='#50e3d8';ctx.fill();ctx.shadowBlur=0;
- const value=track.key==='afstand'?Math.round(track.get()*3262).toLocaleString('nl-NL')+' lichtjaar':track.key==='tempo'?Math.round(track.get())+' km/s':track.key==='kijker'?(track.get()<14?'Weinig sterren':track.get()>19?'Heel veel sterren':'Steeds meer sterren'):track.key==='spiraal'?'Nieuwe vorm':Math.round(vParts(state.focusR).total)+' km/s';ctx.fillStyle='#bbf7eb';ctx.textAlign='right';ctx.font='700 11px system-ui';ctx.fillText(value,g.right,g.y-15);ctx.restore();}
+ for(const track of tracks){
+  const g=skyTrackGeometry(track),t=track.get();
+  ctx.save();ctx.font='10px ui-monospace,monospace';ctx.textBaseline='alphabetic';
+  ctx.fillStyle='#a4c6d5';ctx.textAlign='left';ctx.fillText(track.label.toUpperCase(),g.left,g.y-11);
+  ctx.strokeStyle='#5c839a80';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(g.left,g.y);ctx.lineTo(g.right,g.y);ctx.stroke();
+  ctx.strokeStyle='#85ced4';ctx.beginPath();ctx.moveTo(g.left,g.y);ctx.lineTo(g.x,g.y);ctx.stroke();
+  ctx.beginPath();ctx.arc(g.x,g.y,4,0,2*PI);ctx.fillStyle='#b7e9e7';ctx.fill();
+  const value=track.key==='afstand'?fmt(t,1)+' kpc':track.key==='tempo'?fmt(t,0)+' km/s':track.key==='kijker'?fmt(t,1)+' mag':track.key==='spiraal'?fmt(t,0)+'°':fmt(t,2)+' ×';
+  ctx.textAlign='right';ctx.fillStyle='#a9d8d6';ctx.fillText(value,g.right,g.y-11);ctx.restore();
+ }
 }
 function drawGalaxy(){drawBackground();drawDarkHalo();drawGalaxyGrid();drawArms();drawDust();drawStars();drawClusters();drawGalacticCore();drawStageOverlay();updateAstroPins();}
 function kepler(t){const e=.88,a=1035,P=16;const M=(t/P%1)*2*PI;let E=M;for(let i=0;i<9;i++)E-=(E-e*Math.sin(E)-M)/(1-e*Math.cos(E));let x=a*(Math.cos(E)-e),y=a*Math.sqrt(1-e*e)*Math.sin(E),r=a*(1-e*Math.cos(E));let v=29.7847*Math.sqrt(MBH*(2/r-1/a));return {E,M,x,y,r,v};}
@@ -896,7 +911,7 @@ function recordSeen(){
  if(state.observeD>17)seen.distanceFar=true;
  if(state.observeVT>320)seen.speedHigh=true;
 }
-function checkQuest(){recordSeen();let gained=[];for(let mode of Object.keys(QUESTS)){QUESTS[mode].forEach((q,i)=>{if(!doneQuest[mode].includes(i)&&q.check()){doneQuest[mode].push(i);gained.push({mode,i})}})}
+function checkQuest(){return;}function oldCheckQuest(){recordSeen();let gained=[];for(let mode of Object.keys(QUESTS)){QUESTS[mode].forEach((q,i)=>{if(!doneQuest[mode].includes(i)&&q.check()){doneQuest[mode].push(i);gained.push({mode,i})}})}
  if(gained.length){persistQuest();const here=gained.find(x=>x.mode===state.mode);if(here){const uitleg=QUESTS[here.mode][here.i].done;const zin=uitleg.match(/^[^.!?]+[.!?]?/)?.[0]?.trim()||'Je hebt iets ontdekt.';toast(zin);}}
  const current=QUESTS[state.mode][activeQuest[state.mode]],idx=activeQuest[state.mode],completed=doneQuest[state.mode].includes(idx);
  const result=$('quest-result'),cont=$('inspector-body').querySelector('.quest-continue'),tip=$('quest-tip');if(result)result.hidden=!completed;if(cont)cont.hidden=!completed;if(tip)tip.hidden=completed;
@@ -974,14 +989,19 @@ function bindPanel(){let html=panelHTML();$('inspector-body').innerHTML=html;$('
  if($('removeHalo'))$('removeHalo').onclick=()=>{state.model.halo=.2;recalcOmega();bindPanel();chartDirty=true;toast('Halo verlaagd tot 0,2 × 10¹² M☉');};
 }
 let lastStatsAt=0;function updateLiveStats(force=false){let now=performance.now();if(!force&&now-lastStatsAt<260)return;lastStatsAt=now;
- if(state.mode==='dynamics'||state.mode==='stars'||state.mode==='gaia'||state.mode==='blackhole'){let wrap=$('inspector-body');let sc=wrap.scrollTop;let f=document.activeElement,id=f&&f.id,activeSlider=!!(f&&f.type==='range');if(!activeSlider){let first=wrap.querySelector('.statgrid');if(first){let temp=document.createElement('div');temp.innerHTML=panelHTML();let n=temp.querySelector('.statgrid');if(n)first.replaceWith(n);}}wrap.scrollTop=sc;}
+ {let wrap=$('inspector-body');let sc=wrap.scrollTop;let f=document.activeElement,id=f&&f.id,activeSlider=!!(f&&f.type==='range');if(!activeSlider){let first=wrap.querySelector('.statgrid');if(first){let temp=document.createElement('div');temp.innerHTML=panelHTML();let n=temp.querySelector('.statgrid');if(n)first.replaceWith(n);}}wrap.scrollTop=sc;}
  $('viewangle').textContent=state.mode==='blackhole'?'S2 / BAAN':`${Math.round(state.cam.elev)}° / ${Math.round(state.cam.yaw*180/PI)}°`;
  $('viewscale').textContent=state.mode==='blackhole'?'1035 AU':`${Math.round(40/state.cam.zoom)} kpc`;
  $('focusvalue').textContent=state.mode==='blackhole'?'Sgr A*':`R = ${fmt(state.focusR,1)} kpc`;
  $('timevalue').textContent=state.mode==='blackhole'?`${fmt(state.bhTime,1)} jaar`:`${Math.floor(state.time)} miljoen jaar`;
  $('timeslider').value=state.mode==='blackhole'?state.bhTime:state.time;
  $('playico').textContent=state.running?'Ⅱ':'▶';$('play').setAttribute('aria-label',state.running?'Animatie pauzeren':'Animatie afspelen');
- $('scale-label').textContent=state.mode==='blackhole'?'◌ S2: ~2000 AU':`▱ ${fmt(5/state.cam.zoom,1)} kpc`;}
+ $('scale-label').textContent=state.mode==='blackhole'?'◌ S2: ~2000 AU':`▱ ${fmt(5/state.cam.zoom,1)} kpc`;
+ $('hudMode').textContent=MODE[state.mode].crumb;
+ $('hudProjection').textContent=state.mode==='blackhole'?'S2 / BAAN':Math.round(state.cam.elev)+'° / '+Math.round(state.cam.yaw*180/PI)+'°';
+ $('hudRadius').textContent=state.mode==='blackhole'?fmt(kepler(state.bhTime).r,0)+' AU':fmt(state.focusR,1)+' kpc';
+ $('hudSpeed').textContent=state.mode==='blackhole'?Math.round(kepler(state.bhTime).v)+' km/s':Math.round(vParts(state.focusR).total)+' km/s';
+ }
 function render(){if(state.mode==='blackhole')drawBlackHole();else drawGalaxy();}
 function axisSetup(xmin,xmax,ymin,ymax,xticks,yticks,{xlabel='',ylabel='',reverseX=false}={}){const g={x:56,y:15,w:PW-82,h:PH-46};if(PW<430)g.x=45,g.w=PW-65;g.w=Math.max(50,g.w);g.h=Math.max(60,g.h);pc.fillStyle='#0b1523';pc.fillRect(0,0,PW,PH);pc.font='9px ui-monospace,monospace';pc.lineWidth=1;
  const X=x=>g.x+((reverseX?xmax-x:x-xmin)/(xmax-xmin))*g.w,Y=y=>g.y+g.h-(y-ymin)/(ymax-ymin)*g.h;
