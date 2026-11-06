@@ -27,7 +27,7 @@ test('afzonderlijke dossiers krijgen eigen studio-opslag',()=>{
  assert.match(admin,/tenant_id=eq\./);
  assert.match(admin,/studio_revision=eq\./);
  assert.match(admin,/revision=eq\./);
- assert.match(admin,/\["save_blocks","publish_blocks","unpublish_blocks"\]/);
+ assert.match(admin,/"save_blocks","publish_blocks","unpublish_blocks"/);
  assert.match(admin,/legacy_save_blocks/);
 });
 
