@@ -134,6 +134,13 @@ try{
    await page.locator('#adventureMenuToggle').click();
    await page.locator('#navigation [data-mode="blackhole"]').click();
    await page.waitForSelector('#astroS2Pin:visible',{timeout:4000});
+   await page.waitForTimeout(320);
+   const canvasBrightness=await page.locator('#universe').evaluate(canvas=>{
+    const c=canvas.getContext('2d'),spots=[[.1,.2],[.5,.5],[.7,.55],[.53,.555]],sample=[];
+    for(const [x,y] of spots){const p=c.getImageData(Math.floor(canvas.width*x),Math.floor(canvas.height*y),1,1).data;sample.push([p[0],p[1],p[2],p[3]]);}
+    return sample;
+   });
+   assert(canvasBrightness.some(v=>v[2]>10&&v[3]>0),'Zwartgatweergave is leeg: '+JSON.stringify(canvasBrightness));
    await page.screenshot({path:`test-results/melkweg-lab-v13-s2-${width}.png`});
    await page.locator('#astroS2Pin [data-pin-select="s2"]').click();
    assert((await page.locator('#astroInfoTitle').textContent()).includes('S2'),'S2-meetwaarden moeten openen');
