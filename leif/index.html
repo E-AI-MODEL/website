@@ -117,11 +117,18 @@ body{background:var(--paper);color:var(--ink)}
     <h1 id="accessHeading">Welkom bij LEIF</h1>
     <p class="access-desc">Wat betekent het om jezelf te kennen? Om te begrijpen waarom je doet wat je doet, hoe anderen je zien en welke leider je voor jezelf en anderen wilt zijn? Daarover gaat LEIF.</p>
     <form id="accessForm" class="access-form" autocomplete="off">
-      <label for="accessPassword">Jouw toegangscode</label>
-      <input id="accessPassword" type="password" name="wachtwoord" required autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" aria-describedby="accessError" />
+      <div id="accessCodeGroup">
+        <label for="accessPassword">Jouw toegangscode</label>
+        <input id="accessPassword" type="password" name="wachtwoord" required autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" aria-describedby="accessError" />
+      </div>
       <button type="submit" class="btn btn-primary" id="leifSignIn">Open mijn omgeving <span aria-hidden="true">→</span></button>
       <p id="accessError" class="access-error" role="alert" hidden>Deze code wordt niet herkend.</p>
       <p id="accessNotice" class="access-notice" role="status" aria-live="polite" hidden></p>
+      <div id="adminPasswordGroup" hidden>
+        <label for="adminPassword">Wachtwoord voor beheer</label>
+        <input id="adminPassword" type="password" autocomplete="current-password" autocorrect="off" spellcheck="false" aria-describedby="accessError" />
+        <button type="button" class="btn btn-light btn-sm" id="adminBack">Andere toegangscode</button>
+      </div>
     </form>
     
   </div>
@@ -289,10 +296,36 @@ el('leaveKei').onclick=()=>{if(anyAnswered()&&!confirm('Niet-opgeslagen antwoord
 // De toegangscode is geen echte beveiliging en beschermt de broncode niet.
 const accessForm=document.getElementById('accessForm');
 // Eén toegangsscherm. KEI behoudt de oude lees- en schrijfroute.
-// VIS gebruikt op ditzelfde scherm het bestaande beveiligde beheerdersaccount.
+// VIS opent de wachtwoordlogin voor het bestaande, gecontroleerde beheerdersaccount.
 let quickClicks=0,quickStart=0;
 const codeInput=document.getElementById('accessPassword');
 const accessNotice=document.getElementById('accessNotice');
+const adminPasswordInput=document.getElementById('adminPassword');
+const adminPasswordGroup=document.getElementById('adminPasswordGroup');
+const accessCodeGroup=document.getElementById('accessCodeGroup');
+const signInButton=document.getElementById('leifSignIn');
+let adminMode=false;
+function showAdminPassword(){
+ adminMode=true;
+ adminPasswordGroup.hidden=false;
+ accessCodeGroup.hidden=true;
+ codeInput.required=false;
+ signInButton.textContent='Inloggen in beheer';
+ accessNotice.hidden=true;
+ adminPasswordInput.focus();
+}
+function hideAdminPassword(){
+ adminMode=false;
+ adminPasswordGroup.hidden=true;
+ accessCodeGroup.hidden=false;
+ codeInput.required=true;
+ adminPasswordInput.value='';
+ codeInput.value='';
+ signInButton.textContent='Open mijn omgeving';
+ const err=document.getElementById('accessError');err.hidden=true;
+ accessNotice.hidden=true;codeInput.focus();
+}
+document.getElementById('adminBack').addEventListener('click',hideAdminPassword);
 try{const message=sessionStorage.getItem('leif-access-error');if(message){sessionStorage.removeItem('leif-access-error');const error=document.getElementById('accessError');error.textContent=message;error.hidden=false}}catch(e){}
 // VIS is alleen de ingang; identiteit en beheerrechten worden apart gecontroleerd.
 const leifAdminEndpoint='https://ngcyfbstajfcfdhlelbz.supabase.co/functions/v1/leif-admin-console';
@@ -304,13 +337,19 @@ document.getElementById('leifSignIn').addEventListener('click',event=>{
  quickClicks++;
  if(quickClicks===3){codeInput.value='VIS';codeInput.focus()}
 });
-async function requestAdminLink(){
+async function loginAdminWithPassword(password){
  const response=await fetch(leifAdminEndpoint,{
   method:'POST',headers:{'Content-Type':'application/json'},credentials:'omit',cache:'no-store',
-  body:JSON.stringify({action:'request_magic_link'})
+  body:JSON.stringify({action:'login',email:'vis@emmauscollege.nl',password})
  });
  const data=await response.json().catch(()=>({}));
- if(!response.ok||!data.ok){const error=new Error(data.error||'link_unavailable');error.status=response.status;throw error}
+ if(!response.ok||!data.ok)throw Error('invalid_credentials');
+ if(!Array.isArray(data.tenants)||!data.tenants.some(t=>t.slug==='leif'&&t.role==='manager'))throw Error('not_manager');
+ if(typeof data.access_token!=='string'||typeof data.refresh_token!=='string')throw Error('invalid_session');
+ sessionStorage.setItem('leif-admin-session-v1',JSON.stringify({
+  access_token:data.access_token,refresh_token:data.refresh_token,tenants:data.tenants
+ }));
+ location.replace('/leif/beheer/');
 }
 async function completeAdminLink(){
  if(window.parent!==window)return false;
@@ -321,7 +360,7 @@ async function completeAdminLink(){
  history.replaceState(null,'',location.pathname+location.search);
  const err=document.getElementById('accessError');
  if(!access||!refresh||parts.get('token_type')?.toLowerCase()!=='bearer'){
-  err.textContent='Deze inloglink is verlopen of kon niet worden geopend. Vul VIS opnieuw in.';
+  err.textContent='Deze aanmelding is verlopen. Meld je aan met VIS en je beheerderswachtwoord.';
   err.hidden=false;return true;
  }
  const button=document.getElementById('leifSignIn');button.disabled=true;
@@ -338,7 +377,7 @@ async function completeAdminLink(){
   }));
   location.replace('/leif/beheer/');
  }catch(e){
-  err.textContent='Deze inloglink kon niet worden bevestigd. Vul VIS opnieuw in.';
+  err.textContent='Deze aanmelding kon niet worden bevestigd. Meld je opnieuw aan met VIS.';
   err.hidden=false;
  }finally{button.disabled=false}
  return true;
@@ -360,18 +399,19 @@ accessForm.addEventListener('submit',async event=>{
   return;
  }
  if(code.toUpperCase()==='VIS'){
+  if(sessionStorage.getItem('leif-admin-session-v1')){location.assign('/leif/beheer/');return}
+  if(!adminMode){showAdminPassword();return}
+  const password=adminPasswordInput.value;
+  if(!password){adminPasswordInput.focus();return}
   try{
-   if(sessionStorage.getItem('leif-admin-session-v1')){location.assign('/leif/beheer/');return}
-   document.getElementById('leifSignIn').disabled=true;
-   accessNotice.hidden=true;
-   await requestAdminLink();
-   pw.value='';
-   accessNotice.textContent='Er is een inloglink naar je beheeradres gestuurd. Open de e-mail om verder te gaan.';
-   accessNotice.hidden=false;
+   signInButton.disabled=true;
+   await loginAdminWithPassword(password);
   }catch(e){
-   err.textContent=e.status===429?'Je hebt net al een link aangevraagd. Probeer het over een paar minuten opnieuw.':'De inloglink kon niet worden verzonden. Probeer het later opnieuw.';
+   adminPasswordInput.value='';
+   err.textContent=e.message==='not_manager'?'Dit account heeft geen toegang tot LEIF-beheer.':'Inloggen mislukt. Controleer je beheerderswachtwoord.';
    err.hidden=false;
-  }finally{document.getElementById('leifSignIn').disabled=false}
+   adminPasswordInput.focus();
+  }finally{signInButton.disabled=false}
   return;
  }
  if(code.toUpperCase()==='LIS'||/^[a-f0-9]{48}$/i.test(code)){
@@ -397,10 +437,11 @@ accessForm.addEventListener('submit',async event=>{
 try{
  if(new URLSearchParams(location.search).has('beheer')){
   codeInput.value='VIS';
+  showAdminPassword();
  }
 }catch(e){}
 
-// De terugkeer van een eenmalige inloglink krijgt voorrang op bestaande sessies.
+// Een eerder afgegeven geldige inloglink kan nog worden verwerkt; nieuwe links zijn niet nodig.
 const incomingAdminLink=location.hash.includes('access_token=')||location.hash.includes('error=')||location.hash.includes('error_description=');
 if(incomingAdminLink)completeAdminLink();
 window.addEventListener('hashchange',()=>completeAdminLink());

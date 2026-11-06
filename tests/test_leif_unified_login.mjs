@@ -26,9 +26,15 @@ test('LIS opent Kars via uitsluitend de gemarkeerde demo-alias',()=>{
  assert.match(server,/member\.state!=="active"/);
  assert.match(personal,/id="demoLabel"/);
 });
-test('VIS gebruikt een beveiligde inloglink zonder wachtwoordformulier',()=>{
- assert.doesNotMatch(main,/id="adminEmail"|id="adminPassword"/);
- assert.match(main,/action:'request_magic_link'/);
+test('VIS opent een wachtwoordlogin zonder verplichte e-maillink',()=>{
+ assert.match(main,/id="adminPasswordGroup" hidden/);
+ assert.match(main,/id="adminPassword" type="password"/);
+ assert.doesNotMatch(main,/id="adminEmail"/);
+ assert.doesNotMatch(main,/action:'request_magic_link'/);
+ assert.match(main,/action:'login',email:'vis@emmauscollege.nl',password/);
+ assert.match(main,/showAdminPassword\(\)/);
+ assert.match(main,/codeInput\.required=false/);
+ assert.match(main,/codeInput\.required=true/);
  assert.match(main,/action:'session'/);
  assert.match(main,/completeAdminLink/);
  assert.match(main,/t\.slug==='leif'&&t\.role==='manager'/);
