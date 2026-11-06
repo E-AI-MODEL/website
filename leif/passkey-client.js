@@ -68,5 +68,13 @@
   if(!credential)throw Error('cancelled');
   return call('passkey_register_finish',{challenge_id:start.challenge_id,credential:encodeCredential(credential,true)},accessToken);
  }
- window.LeifPasskey=Object.freeze({supported,signIn,register});
+ async function openAdmin(){
+  const session=await signIn();
+  if(!session.ok||typeof session.access_token!=='string'||typeof session.refresh_token!=='string')throw Error('invalid_session');
+  sessionStorage.setItem('leif-admin-session-v1',JSON.stringify({
+   access_token:session.access_token,refresh_token:session.refresh_token
+  }));
+  location.replace('/leif/beheer/');
+ }
+ window.LeifPasskey=Object.freeze({supported,signIn,register,openAdmin});
 })();
