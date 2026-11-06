@@ -4,13 +4,13 @@ Dit is de publieke proefbibliotheek voor natuurkunde en wiskunde A/B. De oorspro
 
 ## Onderscheid tussen beheer en publiek
 
-De publieke pagina en vier onderzoeksmodellen bevatten uitsluitend onderzoeks- en leerfuncties. Er staat geen beheeraccount, publicatietoken of opslagservice in. Docentbeheer en broncontrole blijven buiten deze publieksroute.
+De publieke pagina en vijf onderzoeksmodellen bevatten uitsluitend onderzoeks- en leerfuncties. Er staat geen beheeraccount, publicatietoken of opslagservice in. Docentbeheer en broncontrole blijven buiten deze publieksroute.
 
 ## Bestanden
 
 - `landing.html`: bron voor de catalogus op `/tools/science-observatory/`.
 - `labs/melkweg.html`: de oorspronkelijke referentie, inhoudelijk niet gewijzigd.
-- `labs/natuurkunde.html`, `labs/wiskunde-a.html`, `labs/wiskunde-b.html`: bestaande proefmodellen.
+- `labs/gravitatie-banen.html`, `labs/natuurkunde.html`, `labs/wiskunde-a.html`, `labs/wiskunde-b.html`: bestaande proefmodellen.
 - `scripts/build_site.py` neemt de bestanden op in de productiebuild; de uitvoermap `tools/` is geen bron.
 
 ## Grenzen
