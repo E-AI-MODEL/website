@@ -82,7 +82,7 @@ try{
   await page.mouse.up();
   const after=Number(await page.locator('#timeslider').inputValue());
   assert(Math.abs(after-8)<1.25,'S2 komt na slepen niet op de verre baanpositie: '+after);
-  if(width<850) await page.getByRole('tab',{name:'Ontdek meer'}).click();
+  if(width<850){const status=await page.evaluate(()=>({present:!!document.querySelector('#tab-meer'),pane:!!document.querySelector('#pane-meer'),visible:!!document.querySelector('#tab-meer')?.getBoundingClientRect().height}));assert(status.present&&status.pane, 'Ontdek meer ontbreekt op '+width+': '+JSON.stringify(status));await page.locator('#tab-meer').click({timeout:8000});}
   await page.locator('#graphToggle').click();
   assert(await page.locator('.analytics-main').isVisible(),'Grafiekknop toont niets');
   if(width<850){await page.locator('#closeGraph').click();assert(!await page.locator('.analytics-main').isVisible(),'Grafiek sluit niet');}
