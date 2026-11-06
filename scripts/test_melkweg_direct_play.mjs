@@ -79,7 +79,8 @@ try{
   await page.getByRole('tab',{name:'Ontdek meer'}).click();
   await page.locator('#graphToggle').click();
   assert(await page.locator('.analytics-main').isVisible(),'Grafiekknop toont niets');
-  await page.locator('#closeGraph').click();
+  if(width<850) await page.locator('#closeGraph').click();
+  else await page.locator('#graphToggle').click();
   assert(!await page.locator('.analytics-main').isVisible(),'Grafiek sluit niet');
   await page.locator('#resetView').click();
   assert(Number(await page.locator('#timeslider').inputValue())===0,'Herstelknop herstelt tijd niet');
