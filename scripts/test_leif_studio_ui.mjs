@@ -1,0 +1,88 @@
+import { chromium } from 'playwright';
+import { get as httpGet } from 'node:http';
+import { spawn } from 'node:child_process';
+import { resolve } from 'node:path';
+import { mkdirSync } from 'node:fs';
+import assert from 'node:assert/strict';
+const root=resolve(process.argv[2]||'site-build'),origin='http://127.0.0.1:8784';
+const server=spawn('python3',['-m','http.server','8784','--bind','127.0.0.1','--directory',root],{stdio:'ignore'});
+const tenant='00000000-0000-4000-8000-000000000001';
+const kars='00000000-0000-4000-8000-000000000002',chermaine='00000000-0000-4000-8000-000000000003';
+const makeDoc=()=>({revision:0,answers:{},personal_texts:{},updated_at:new Date().toISOString()});
+const state={kars:makeDoc(),chermaine:{...makeDoc(),studio_revision:0}};
+const requests=[],errors=[];
+let browser;
+try{
+ let ready=false;
+ for(let i=0;i<60;i++){
+  ready=await new Promise(done=>{const r=httpGet(origin+'/leif/',res=>{res.resume();done(res.statusCode===200)});r.on('error',()=>done(false))});
+  if(ready)break;await new Promise(r=>setTimeout(r,100));
+ }
+ assert(ready,'LEIF previewserver ontbreekt');
+ browser=await chromium.launch({headless:true,executablePath:process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH||undefined});
+ const page=await browser.newPage({viewport:{width:1440,height:900}});
+ page.on('pageerror',e=>errors.push(e.message));
+ await page.addInitScript(()=>{if(window===window.top&&location.pathname==='/leif/beheer/')sessionStorage.setItem('leif-admin-session-v1',JSON.stringify({refresh_token:'proef-refresh'}))});
+ await page.route('**/functions/v1/leif-admin-console',async route=>{
+  const req=route.request();
+  const headers={'access-control-allow-origin':origin,'access-control-allow-headers':'authorization,content-type','access-control-allow-methods':'POST,OPTIONS','content-type':'application/json'};
+  if(req.method()==='OPTIONS')return route.fulfill({status:200,headers,body:'{}'});
+  const input=JSON.parse(req.postData()||'{}');requests.push({action:input.action,participant_id:input.participant_id,tester_id:input.tester_id});
+  let response={ok:true};
+  if(input.action==='refresh')response={ok:true,access_token:'test-access-token',refresh_token:'proef-refresh',user_email:'vis@example.invalid',tenants:[{id:tenant,slug:'leif',name:'LEIF',role:'manager'}]};
+  else if(input.action==='list')response={ok:true,participants:[{id:kars,display_name:'Kars',state:'active',created_at:'2026-11-05T12:00:00Z'}],role:'manager'};
+  else if(input.action==='list_testers')response={ok:true,testers:[{id:chermaine,tester_name:'Chermaine',status:'draft',created_at:'2026-11-04T12:00:00Z'}]};
+  else if(input.action==='get')response={ok:true,participant:{id:kars,display_name:'Kars',state:'active'},document:state.kars};
+  else if(input.action==='get_tester')response={ok:true,tester:{id:chermaine,tester_name:'Chermaine',status:'draft',answers:{},personal_texts:state.chermaine.personal_texts,studio_revision:state.chermaine.studio_revision,updated_at:state.chermaine.updated_at}};
+  else if(['save_blocks','publish_blocks','unpublish_blocks','legacy_save_blocks','legacy_publish_blocks','legacy_unpublish_blocks'].includes(input.action)){
+   const legacy=input.action.startsWith('legacy_'),name=legacy?'chermaine':'kars',doc=state[name],revision=legacy?doc.studio_revision:doc.revision;
+   assert.equal(input.revision,revision,'Dossier heeft een verkeerde revisie');
+   assert.equal(legacy?input.tester_id:input.participant_id,legacy?chermaine:kars,'Wijziging raakt verkeerd dossier');
+   const personal={...doc.personal_texts};
+   if(input.action.endsWith('save_blocks'))personal.blocks_draft=input.blocks;
+   else if(input.action.endsWith('publish_blocks'))personal.blocks_published=structuredClone(personal.blocks_draft||[]);
+   else personal.blocks_published=[];
+   if(legacy)doc.studio_revision++;else doc.revision++;
+   doc.personal_texts=personal;
+   response={ok:true,revision:legacy?doc.studio_revision:doc.revision,personal_texts:personal};
+  }
+  return route.fulfill({status:200,headers,body:JSON.stringify(response)});
+ });
+ await page.goto(origin+'/leif/beheer/',{waitUntil:'load'});
+ await page.locator('#workspace:visible').waitFor({timeout:10000});
+ await page.getByRole('button',{name:/Kars/}).first().click();
+ await page.locator('#blocksTab:visible').waitFor({timeout:10000});
+ assert.equal(await page.locator('#studioOwner').innerText(),'Kars');
+ await page.locator('[data-studio-add="spotify"]').click();
+ await page.locator('#studioEditor input[type="url"]').fill('https://open.spotify.com/track/0bqZiCxLGqeftnqRKlV1jn');
+ await page.locator('#studioEditor input[maxlength="120"]').fill('Alleen voor Kars');
+ await page.locator('#studioSave').click();
+ await page.getByText('Concept bewaard.',{exact:true}).waitFor({timeout:10000});
+ page.once('dialog',dialog=>dialog.accept());
+ await page.locator('#studioPublish').click();
+ await page.getByText('Onderdelen gepubliceerd voor deze deelnemer.',{exact:true}).waitFor({timeout:10000});
+ assert.equal(state.kars.personal_texts.blocks_published[0].title,'Alleen voor Kars');
+ assert.equal(state.chermaine.personal_texts.blocks_published,undefined);
+ await page.getByRole('button',{name:/Chermaine/}).first().click();
+ await page.locator('#studioOwner').getByText('Chermaine').waitFor({timeout:10000});
+ assert.equal(await page.locator('#studioCount').innerText(),'0 / 24');
+ await page.locator('[data-studio-add="text"]').click();
+ await page.locator('#studioEditor input[maxlength="120"]').fill('Alleen voor Chermaine');
+ await page.locator('#studioEditor textarea').fill('Eigen tekst voor Chermaine');
+ await page.locator('#studioSave').click();
+ await page.getByText('Concept bewaard.',{exact:true}).waitFor({timeout:10000});
+ page.once('dialog',dialog=>dialog.accept());
+ await page.locator('#studioPublish').click();
+ await page.getByText('Onderdelen gepubliceerd voor deze deelnemer.',{exact:true}).waitFor({timeout:10000});
+ assert.equal(state.chermaine.personal_texts.blocks_published[0].title,'Alleen voor Chermaine');
+ assert.equal(state.kars.personal_texts.blocks_published[0].title,'Alleen voor Kars');
+ assert(requests.some(r=>r.action==='legacy_save_blocks'&&r.tester_id===chermaine));
+ assert(requests.some(r=>r.action==='save_blocks'&&r.participant_id===kars));
+ assert.equal(await page.locator('#studioEditor input[maxlength="120"]').evaluate(el=>getComputedStyle(el).fontSize),'12px');
+ mkdirSync('test-results',{recursive:true});
+ await page.screenshot({path:'test-results/leif-studio-desktop.png',fullPage:true});
+ await page.setViewportSize({width:390,height:844});
+ await page.screenshot({path:'test-results/leif-studio-mobile.png',fullPage:true});
+ assert.equal(errors.length,0,'Browserfouten: '+errors.join('; '));
+ console.log('LEIF Studio: Kars en Chermaine onafhankelijk aangepast, opgeslagen en gepubliceerd.');
+}finally{if(browser)await browser.close();server.kill()}
