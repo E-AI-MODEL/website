@@ -86,10 +86,18 @@ class LlmObservatorySourceTests(unittest.TestCase):
         ):
             self.assertIn(marker, html)
 
-    def test_not_publicly_linked_until_review(self):
-        # This PR intentionally changes neither the build script nor public navigation.
-        build = (ROOT / "scripts" / "build_site.py").read_text(encoding="utf-8")
-        self.assertNotIn('tools/llm-observatorium/index.html', build)
+    def test_published_page_is_exact_source_and_linked_from_tools(self):
+        published = ROOT / "site-build/tools/llm-observatorium/index.html"
+        self.assertTrue(published.is_file(), "Gepubliceerde LLM-pagina ontbreekt")
+        self.assertEqual(SOURCE.read_bytes(), published.read_bytes(),
+                         "Publicatie mag de zelfstandige HTML niet wijzigen")
+        for rel in ("tools/index.html", "nl/tools/index.html"):
+            with self.subTest(page=rel):
+                page = ROOT / "site-build" / rel
+                self.assertTrue(page.is_file())
+                self.assertIn('href="/tools/llm-observatorium/"', page.read_text(encoding="utf-8"))
+        sitemap = (ROOT / "site-build/sitemap.xml").read_text(encoding="utf-8")
+        self.assertIn("/tools/llm-observatorium/", sitemap)
 
 
 if __name__ == "__main__":
