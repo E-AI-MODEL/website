@@ -1,5 +1,7 @@
 """Static publication safety checks for the standalone LLM Observatory."""
 from pathlib import Path
+import re
+import subprocess
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -34,24 +36,39 @@ class LlmObservatorySourceTests(unittest.TestCase):
         self.assertIn("function openPanel(name)", self.html)
         self.assertIn("function closePanel()", self.html)
 
-    def test_token_journey_and_graph_are_interactive(self):
+    def test_token_layer_inspector_is_interactive_and_small(self):
         html = self.html
-        for element in ('journeyPanel', 'journeyWhere', 'journeyToken',
-                        'journeyPrev', 'journeyNext', 'journeyPlay',
-                        'journeyFill', 'plotSummary', 'startJourney'):
+        for element in ('layerInspectorPanel', 'layerTitle', 'layerPrev',
+                        'layerNext', 'layerScrub', 'layerTokenRow',
+                        'layerAttentionTrack', 'layerExpertList', 'layerAttentionReach'):
             self.assertIn('id="' + element + '"', html)
-        self.assertIn('function drawStream()', html)
-        self.assertIn('function journeyStep(direction)', html)
-        self.assertIn('function selectAtGraph(x)', html)
-        self.assertIn("plot.addEventListener('pointerup'", html)
-        self.assertIn('screenJourney=pts', html)
-        self.assertIn('function updateJourneyUI()', html)
-        self.assertNotIn('state.follow=true', html)
-        self.assertIn('state.follow=false', html)
-        self.assertIn('cam.ox=0;cam.oy=0;', html)
-        self.assertIn('state.journey+dt*.52*state.speed', html)
-        self.assertIn('state.journey>=cfg.layers-1', html)
-        self.assertIn('function setCameraMatrix()', html)
+        for code in ("function updateLayerInspector()", "function selectLayer(index)",
+                     "function selectLayerToken(index)", "function drawStream()",
+                     "function journeyStep(direction)", "function updateJourneyUI()",
+                     "state.playing=state.mode!==1"):
+            self.assertIn(code, html)
+        self.assertIn('id="layerTokenCount"', html)
+        self.assertIn('id="layerAttentionBadge"', html)
+        self.assertIn('id="layerExpertList"', html)
+        self.assertIn('#app[data-mode="1"] .plot-panel', html)
+        self.assertIn("span=Math.min(state.contextTokens,cfg.window)", html)
+        self.assertIn("style.setProperty('--reach'", html)
+        self.assertIn("for(const route of chooseRoute(state.layer))", html)
+        self.assertNotIn('id="journeyPlay"', html)
+        self.assertNotIn('id="journeyPrev"', html)
+        self.assertNotIn("$('journeyPlay')", html)
+        self.assertNotIn('id="answers"', html)
+        self.assertNotIn('id="feedback"', html)
+        self.assertNotIn('Probeer dit', html)
+        self.assertIn("function makeTask()", html)
+
+    def test_inline_javascript_parses(self):
+        match = re.search(r"<script>\s*(.*?)\s*</script>", self.html, re.S)
+        self.assertIsNotNone(match, "Inline JavaScript ontbreekt")
+        result = subprocess.run(
+            ["node", "--check", "-"], input=match.group(1),
+            encoding="utf-8", capture_output=True, check=False, timeout=20)
+        self.assertEqual(result.returncode, 0, result.stderr)
 
     def test_each_research_mode_has_its_own_animation(self):
         for method in ("drawModelScan", "drawStream", "drawRouterSignals",
@@ -61,7 +78,7 @@ class LlmObservatorySourceTests(unittest.TestCase):
         for call in ("drawModelScan();", "drawRouterSignals()", "drawAttentionSignals()",
                      "drawContextWindow()", "drawGenerationSample()", "drawUsageWorld()"):
             self.assertIn(call, self.html)
-        self.assertIn("state.playing=!window.matchMedia", self.html)
+        self.assertIn("state.playing=state.mode!==1&&!window.matchMedia", self.html)
         self.assertIn("state.playing=false", self.html)
 
     def test_reasoning_and_token_costs(self):
