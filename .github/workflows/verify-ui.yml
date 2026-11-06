@@ -34,7 +34,7 @@ jobs:
         run: node scripts/test_leif_continue.mjs site-build
       - name: Verify LEIF text editor in Chromium
         run: node scripts/test_leif_site_editor.mjs site-build
-      - name: Verify LEIF passwordless manager link in Chromium
+      - name: Verify LEIF password login and manager checks in Chromium
         run: node scripts/test_leif_magic_login.mjs site-build
       - name: Verify LEIF session API rejects unknown private codes
         run: |
