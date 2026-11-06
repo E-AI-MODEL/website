@@ -51,7 +51,11 @@ class MelkwegLabPublicationTests(unittest.TestCase):
     def test_child_friendly_navigation_and_planets_exist(self):
         html = SOURCE.read_text(encoding="utf-8")
         for marker in (
-            "Reis naar de planeten",
+            "✦ Planeten",
+            "role=\"tablist\"",
+            "data-labtab=\"speel\"",
+            "selectLabTab(activeLabTab)",
+            "mobile explorer layout",
             "Waar zijn wij?",
             "Jouw avontuur",
             "solarExplorer",
@@ -60,7 +64,10 @@ class MelkwegLabPublicationTests(unittest.TestCase):
         ):
             with self.subTest(marker=marker):
                 self.assertIn(marker, html)
-        self.assertEqual(html.count('id="solarEntry"'), 1, "Er mag maar één vaste reis-knop in het sterrenbeeld staan")
+        self.assertEqual(html.count('id="solarEntry"'), 1, "Er moet één planetenknop zijn")
+        self.assertNotIn('class="solar-entry">✦ Reis naar de planeten', html)
+        self.assertIn('if(!state.running && state.cam.elev>20)', html)
+        self.assertIn('flex:0 0 clamp(177px,27dvh,238px)', html)
 
 
 if __name__ == "__main__":
