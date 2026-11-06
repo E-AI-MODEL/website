@@ -2,6 +2,7 @@ import { chromium } from 'playwright';
 import { spawn } from 'node:child_process';
 import { resolve } from 'node:path';
 import assert from 'node:assert/strict';
+
 const root=resolve(process.argv[2]||'site-build');
 const origin='http://127.0.0.1:8772';
 const server=spawn('python3',['-m','http.server','8772','--bind','127.0.0.1','--directory',root],{stdio:'ignore'});
@@ -14,46 +15,74 @@ try{
  assert(ready,'LEIF testsite niet bereikbaar');
  browser=await chromium.launch({headless:true});
  const page=await browser.newPage({viewport:{width:390,height:844}});
- const errors=[],requests=[];
+ const errors=[],requests=[],dialogs=[];
  page.on('pageerror',error=>errors.push(error.message));
+ page.on('dialog',async dialog=>{dialogs.push(dialog.message());await dialog.accept()});
  let manager=true;
+ await page.addInitScript(()=>{
+  Object.defineProperty(window,'PublicKeyCredential',{configurable:true,value:function PublicKeyCredential(){}});
+  const fake={id:'test-credential',type:'public-key',
+   toJSON:()=>({id:'test-credential',type:'public-key',rawId:'dGVzdA',
+    response:{clientDataJSON:'dGVzdA',authenticatorData:'dGVzdA',signature:'dGVzdA',attestationObject:'dGVzdA'}})};
+  Object.defineProperty(navigator,'credentials',{configurable:true,value:{
+   get:async()=>fake,create:async()=>fake
+  }});
+ });
+ const headers={'access-control-allow-origin':origin,'access-control-allow-methods':'POST,OPTIONS',
+  'access-control-allow-headers':'content-type,authorization','content-type':'application/json'};
+ await page.route('**/functions/v1/leif-passkey',async route=>{
+  const req=route.request();
+  if(req.method()==='OPTIONS')return route.fulfill({status:200,headers,body:'{}'});
+  const input=JSON.parse(req.postData()||'{}');
+  requests.push({action:input.action,auth:req.headers().authorization});
+  let data={ok:true},status=200;
+  if(input.action==='passkey_signin_start')data={ok:true,challenge_id:'challenge-0123456789',
+   options:{challenge:'dGVzdA',allowCredentials:[],userVerification:'required'}};
+  else if(input.action==='passkey_signin_finish'){
+   if(!manager){status=403;data={error:'no_admin_access'}}
+   else data={ok:true,...tokens};
+  }else if(input.action==='passkey_register_start'){
+   assert.equal(req.headers().authorization,'Bearer '+tokens.access);
+   data={ok:true,challenge_id:'challenge-0123456789',
+    options:{challenge:'dGVzdA',user:{id:'dXNlcg',name:'manager@example.invalid',displayName:'Manager'},
+     rp:{name:'LEIF'},pubKeyCredParams:[{alg:-7,type:'public-key'}]}};
+  }else if(input.action==='passkey_register_finish'){
+   assert.equal(req.headers().authorization,'Bearer '+tokens.access);
+  }else{status=400;data={error:'invalid_action'}}
+  return route.fulfill({status,headers,body:JSON.stringify(data)});
+ });
  await page.route('**/functions/v1/leif-admin-console',async route=>{
-  const request=route.request(),headers={'access-control-allow-origin':origin,'access-control-allow-methods':'POST,OPTIONS','access-control-allow-headers':'content-type,authorization','content-type':'application/json'};
-  if(request.method()==='OPTIONS')return route.fulfill({status:200,headers,body:'{}'});
-  const input=JSON.parse(request.postData()||'{}');
-  requests.push({action:input.action,body:input,auth:request.headers().authorization});
+  const req=route.request();
+  if(req.method()==='OPTIONS')return route.fulfill({status:200,headers,body:'{}'});
+  const input=JSON.parse(req.postData()||'{}');
+  requests.push({action:input.action});
   let data={ok:true};
-  if(input.action==='request_magic_link')data={ok:true};
-  else if(input.action==='session')data={ok:true,tenants:manager?[membership]:[],user_email:'test@example.invalid'};
-  else if(input.action==='refresh')data={ok:true,access_token:tokens.access,refresh_token:tokens.refresh,tenants:[membership],user_email:'test@example.invalid'};
+  if(input.action==='refresh')data={ok:true,...tokens,tenants:[membership],user_email:'manager@example.invalid'};
   else if(input.action==='list')data={ok:true,participants:[]};
   else if(input.action==='list_testers')data={ok:true,testers:[]};
   else if(input.action==='site_public')data={ok:true,items:[]};
   return route.fulfill({status:200,headers,body:JSON.stringify(data)});
  });
  await page.goto(origin+'/leif/',{waitUntil:'domcontentloaded'});
- assert.equal(await page.locator('#accessPassword').count(),1,'Alleen een toegangscode');
- assert.equal(await page.locator('#adminEmail,#adminPassword').count(),0,'Geen wachtwoord- of e-mailvelden');
+ assert.equal(await page.locator('#accessPassword').count(),1);
  await page.locator('#accessPassword').fill('VIS');
  await page.locator('#leifSignIn').click();
- await page.locator('#accessNotice:visible').waitFor({timeout:10000});
- assert.match(await page.locator('#accessNotice').innerText(),/inloglink/);
- const requestLink=requests.find(x=>x.action==='request_magic_link');
- assert(requestLink,'Aanvraag inloglink ontbreekt');
- assert.equal(requestLink.body.email,undefined,'Beheeradres wordt niet door de browser bepaald');
- assert.equal(requestLink.body.redirect,undefined,'Redirect is niet beïnvloedbaar');
- const fragment='#access_token='+encodeURIComponent(tokens.access)+'&refresh_token='+encodeURIComponent(tokens.refresh)+'&token_type=bearer';
- await page.goto(origin+'/leif/'+fragment,{waitUntil:'domcontentloaded'});
  await page.waitForURL('**/leif/beheer/',{timeout:10000});
- assert(requests.some(x=>x.action==='session'&&x.auth==='Bearer '+tokens.access));
- assert.equal(new URL(page.url()).hash,'','Geen toegangstoken in de adresbalk');
- assert.equal(await page.locator('#workspace:visible').count(),1,'Beheer verschijnt na managercontrole');
+ assert.equal(await page.locator('#workspace:visible').count(),1,'Beheer opent met geldige passkey');
+ assert(requests.some(r=>r.action==='passkey_signin_start'),'Passkey start ontbreekt');
+ assert(requests.some(r=>r.action==='passkey_signin_finish'),'Passkey verificatie ontbreekt');
+ assert(!requests.some(r=>r.action==='request_magic_link'),'VIS mag geen e-mail versturen');
+ await page.locator('#setupPasskey:visible').click();
+ assert(requests.some(r=>r.action==='passkey_register_start'),'Registratie start ontbreekt');
+ assert(requests.some(r=>r.action==='passkey_register_finish'),'Registratie verificatie ontbreekt');
+ assert(dialogs.some(t=>t.includes('Face ID is gekoppeld')));
  await page.evaluate(()=>sessionStorage.removeItem('leif-admin-session-v1'));
  manager=false;
- await page.goto(origin+'/leif/'+fragment,{waitUntil:'domcontentloaded'});
+ await page.goto(origin+'/leif/?beheer=1',{waitUntil:'domcontentloaded'});
+ await page.locator('#leifSignIn').click();
  await page.locator('#accessError:visible').waitFor({timeout:10000});
- assert.match(await page.locator('#accessError').innerText(),/niet worden bevestigd/);
- assert.equal(await page.evaluate(()=>sessionStorage.getItem('leif-admin-session-v1')),null,'Onbevoegde krijgt geen beheersessie');
+ assert.match(await page.locator('#accessError').innerText(),/geen toegang/);
+ assert.equal(await page.evaluate(()=>sessionStorage.getItem('leif-admin-session-v1')),null);
  assert.equal(errors.length,0,'Geen JavaScript-fouten: '+errors.join('; '));
- console.log('LEIF VIS: een toegangscode, e-maillink, managercontrole, geen wachtwoordvelden.');
+ console.log('LEIF VIS: WebAuthn-aanmelding, registratie vanuit beheersessie, managercontrole, geen e-mail.');
 }finally{if(browser)await browser.close();server.kill()}
