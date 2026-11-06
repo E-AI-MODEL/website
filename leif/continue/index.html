@@ -33,7 +33,7 @@ p{margin:0 0 17px}.lead{max-width:780px;font-size:18px;color:#516478}
 .chapters button{border:none;background:transparent;padding:10px;text-align:left;font-size:13px;font-weight:650;color:#617485}
 .chapters button.active{background:#e9f1f5;color:#21466c}.chapters .num{display:inline-grid;width:24px;height:24px;place-items:center;border:1px solid #d3dfe3;border-radius:7px;margin-right:8px}
 .question-meta{font-weight:800;letter-spacing:.09em;text-transform:uppercase;font-size:12px;color:var(--blue)}.question-card{min-height:370px}.hint{color:var(--muted);max-width:710px}
-textarea{width:100%;min-height:175px;margin:16px 0 0;padding:18px;border:1px solid #cbd9e0;border-radius:13px;line-height:1.65;resize:vertical;color:var(--ink)}
+textarea{width:100%;min-height:175px;margin:16px 0 0;padding:18px;border:1px solid #cbd9e0;border-radius:13px;line-height:1.65;resize:none;overflow-y:hidden;overflow-wrap:anywhere;color:var(--ink)}
 .options{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:25px}.options button{text-align:left;min-height:61px;font-weight:550}
 .options button.selected{background:#eaf3f8;border:2px solid var(--blue);color:#1b4770;font-weight:800}
 .actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-top:20px}.actions .group{display:flex;gap:8px;flex-wrap:wrap}
@@ -197,6 +197,11 @@ function progress(){
   nav.appendChild(b);
  });
 }
+function growAnswerBox(t){
+ if(!t||!t.isConnected)return;
+ t.style.height='auto';
+ t.style.height=Math.max(175,Math.ceil(t.scrollHeight)+2)+'px';
+}
 function render(){
  const q=flat[current],box=$('question');box.innerHTML='';
  const meta=document.createElement('div');meta.className='question-meta';meta.textContent=q.ch.label+' · vraag '+(current+1)+' van '+flat.length;
@@ -207,7 +212,8 @@ function render(){
   const wrap=document.createElement('div');wrap.className='options';
   q.options.forEach(opt=>{const b=document.createElement('button');b.type='button';b.textContent=opt;b.className=value(q.id)===opt?'selected':'';b.setAttribute('aria-pressed',String(value(q.id)===opt));b.onclick=()=>{change(q.id,opt);render();};wrap.appendChild(b);});box.appendChild(wrap);
  }else{
-  const text=document.createElement('textarea');text.value=value(q.id);text.placeholder=q.placeholder||'Jouw antwoord';text.setAttribute('aria-label','Jouw antwoord');text.addEventListener('input',()=>change(q.id,text.value));box.appendChild(text);
+  const text=document.createElement('textarea');text.value=value(q.id);text.placeholder=q.placeholder||'Jouw antwoord';text.setAttribute('aria-label','Jouw antwoord');text.addEventListener('input',()=>{growAnswerBox(text);change(q.id,text.value)});box.appendChild(text);
+  requestAnimationFrame(()=>growAnswerBox(text));
  }
  $('prev').disabled=current===0;$('next').textContent=current===flat.length-1?'Bekijk het verslag':'Volgende';
  progress();
