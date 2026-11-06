@@ -40,6 +40,7 @@ try{
  });
  await page.goto(origin+'/leif/mijn/',{waitUntil:'domcontentloaded'});
  await page.locator('#workspace:visible').waitFor({timeout:10000});
+ await page.getByRole('button',{name:'Begin met mijn vragen',exact:true}).click();
  const input=page.locator('.question textarea');
  await input.waitFor({timeout:10000});
  const before=await input.evaluate(t=>t.getBoundingClientRect().height);

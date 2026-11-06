@@ -74,9 +74,9 @@ try {
  await page.locator('#siteRefresh').click();
  await frame.locator('#accessHeading').getByText('Dit blijft de vaste tekst').waitFor({timeout:10000});
  await page.locator('#sitePage').selectOption('mijn');
- await frame.getByRole('heading',{name:'Mijn LEIF'}).waitFor({timeout:10000});
+ await frame.getByRole('heading',{name:'Wat wil je van jezelf begrijpen?'}).waitFor({timeout:10000});
  await page.locator('#siteMode').click();
- await frame.getByRole('button',{name:'Vragen',exact:true}).click();
+ await frame.getByRole('button',{name:'Begin met mijn vragen',exact:true}).click();
  await frame.getByText('Welke indruk krijgen mensen vaak van jou?').waitFor({timeout:10000});
  assert.equal(errors.length,0,'Geen JavaScript-fouten: '+errors.join(' ; '));
  mkdirSync('test-results',{recursive:true});

@@ -24,7 +24,9 @@ test('LIS opent Kars via uitsluitend de gemarkeerde demo-alias',()=>{
  assert.match(server,/body\.code==="lis"/);
  assert.match(server,/test_alias=eq\.LIS&is_demo=eq\.true/);
  assert.match(server,/member\.state!=="active"/);
- assert.match(personal,/id="demoLabel"/);
+ assert.doesNotMatch(personal,/id="demoLabel"/);
+ assert.match(personal,/screen='start';/);
+ assert.match(personal,/De LEIF-beheerder van jouw groep kan je antwoorden en verslagen inzien/);
 });
 test('VIS biedt een beheerlogin en behoudt de bestaande inloglink',()=>{
  assert.doesNotMatch(main,/id="adminEmail"|id="adminPassword"/);
