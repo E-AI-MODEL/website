@@ -19,7 +19,8 @@ try{
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.goto(base+'/tools/llm-observatorium/',{waitUntil:'load'});
   await page.locator('#universe').waitFor({state:'visible'});
-  assert.equal(await page.locator('#modes .mode-btn').count(),7,'Zeven onderzoeksmodules');
+  const modesCount=await page.locator('#modes .mode-btn').count();
+  assert.equal(modesCount,7,'Zeven onderzoeksmodules; JS-fouten: '+errors.join(' | '));
   if(width<800)await page.locator('.mobile-dock [data-panel="modules"]').click();
   await page.locator('#modes [data-mode="1"]').click();
   if(width<800)await page.locator('.mobile-dock [data-panel="settings"]').click();
