@@ -31,6 +31,8 @@ jobs:
       - name: Install browser for UI tests
         run: npx playwright install chromium
         timeout-minutes: 4
+      - run: python -m unittest discover -s tests -p test_tool_launch.py -v
+      - run: node scripts/test_tool_launch.mjs site-build
       - run: node scripts/ui_smoke.mjs site-build
       - name: Verify LLM Observatory tokenizer in Chromium
         run: node scripts/test_llm_observatorium.mjs site-build
