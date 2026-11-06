@@ -48,7 +48,7 @@ try {
  await page.locator('#play').click();
  await drag(.58);
  assert((await value('haloMass'))<.5,'Slepen in de kaart verandert de massa niet');
- assert(await page.locator('#quest-result').isVisible(),'Geen ontdekfeedback na eigen handeling');
+ assert((await page.locator('#toast').innerText()).length>18,'Geen betekenisvolle ontdekfeedback na eigen handeling');
  await drag(.70,.19,.81);
  assert((await value('diskMass'))>=8.2,'De tweede massagreep heeft geen effect');
 
