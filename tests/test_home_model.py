@@ -44,7 +44,7 @@ class HomeModelTests(unittest.TestCase):
         for anchor in ('model', 'voorbeeld', 'verhaal', 'verder-lezen', 'beginnen'):
             self.assertIsNotNone(soup.find(id=anchor))
         self.assertEqual(soup.select_one('h1#eh-home-title').get_text(' ', strip=True), 'Wat ons werk ons werk maakt')
-        self.assertIn('onderwijsleerproces', soup.main.get_text(' ', strip=True).lower())
+        self.assertIn('Laat je AI je mail beantwoorden?', soup.main.get_text(' ', strip=True))
         self.assertIsNotNone(soup.select_one('.eh-home-mail'))
         self.assertIsNotNone(soup.select_one('.eh-blog-shelf'))
         self.assertIsNotNone(soup.select_one('a[href="/nl/blog/wat-ons-werk-ons-werk-maakt/"]'))
