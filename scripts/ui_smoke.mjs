@@ -77,7 +77,8 @@ try {
   assert.equal(await page.locator('#eai-blog .eai-reading-feature').count(), 1, 'Blog entry');
   assert.equal(await page.locator('.eh-case-output').count(), 0, 'Old homepage explorer is removed');
   const firstPageText = await page.locator('main').innerText();
-  assert(!/[\\u{1F300}-\\u{1FAFF}\\u2600-\\u27BF]/u.test(firstPageText), 'No emoji in homepage');
+  const emojiRanges = new RegExp('[' + String.fromCodePoint(0x1F300) + '-' + String.fromCodePoint(0x1FAFF) + String.fromCodePoint(0x2600) + '-' + String.fromCodePoint(0x27BF) + ']', 'u');
+  assert(!emojiRanges.test(firstPageText), 'No emoji in homepage');
   await page.goto(base + '/nl/tools/', { waitUntil: 'load' });
   assert.equal(await page.locator('.eai-site-language a[lang="en"]').getAttribute('href'), '/en/tools/');
   assert.equal(await page.locator('.eai-site-language a[lang="nl"]').getAttribute('href'), '/nl/tools/');

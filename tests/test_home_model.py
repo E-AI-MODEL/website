@@ -52,7 +52,7 @@ class HomeModelTests(unittest.TestCase):
         self.assertNotIn('✎', soup.main.get_text())
         # Actual emoji glyphs are banned from editorial and navigation surfaces.
         import re
-        glyphs = re.compile('[\\U0001F300-\\U0001FAFF\\u2600-\\u27BF]')
+        glyphs = re.compile('[' + chr(0x1F300) + '-' + chr(0x1FAFF) + chr(0x2600) + '-' + chr(0x27BF) + ']')
         for rel in ('nl/blog/index.html', 'nl/blog/wat-ons-werk-ons-werk-maakt/index.html'):
             text = (Path(__file__).resolve().parents[1] / rel).read_text(encoding='utf-8')
             self.assertIsNone(glyphs.search(BeautifulSoup(text, 'html.parser').get_text(' ', strip=True)), rel)
