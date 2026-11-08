@@ -41,33 +41,15 @@ class HomeModelTests(unittest.TestCase):
     def test_no_js_content_and_preserved_deep_links(self):
         materialize(self.root)
         soup = BeautifulSoup((self.root / 'nl/index.html').read_text(), 'html.parser')
-        for anchor in ('model', 'voorbeeld', 'verhaal', 'verder-lezen', 'beginnen'):
-            self.assertIsNotNone(soup.find(id=anchor))
+        for anchor in ('model', 'voorbeeld', 'verhaal', 'verder-lezen', 'beginnen', 'schoolafspraken', 'leren-en-toetsen'):
+            self.assertIsNotNone(soup.find(id=anchor), anchor)
         self.assertEqual(soup.select_one('h1#eh-home-title').get_text(' ', strip=True), 'Wat ons werk ons werk maakt')
-        self.assertIn('Laat je AI je mail beantwoorden?', soup.main.get_text(' ', strip=True))
-        self.assertIsNotNone(soup.select_one('.eh-home-mail'))
-        self.assertIsNotNone(soup.select_one('.eh-blog-shelf'))
+        self.assertEqual(len(soup.select('.eai-landing-route')), 4)
+        self.assertEqual(len(soup.select('.eai-landing-reading-grid a')), 3)
         self.assertIsNotNone(soup.select_one('a[href="/nl/blog/wat-ons-werk-ons-werk-maakt/"]'))
-        self.assertIsNotNone(soup.select_one('.eh-responsibilities'))
-        cases = soup.select('details.eh-case-source')
-        self.assertEqual(
-            [case['id'] for case in cases],
-            ['schoolafspraken', 'dagelijks-werk', 'leren-en-toetsen',
-             'toepassing-kiezen', 'ai-begrijpen'],
-        )
-        # Zonder JavaScript blijven alle vijf uitlegkaarten bereikbaar.
-        self.assertTrue(all(case.find('summary') is not None for case in cases))
-        self.assertTrue(all(not case.has_attr('hidden') for case in cases))
-        self.assertEqual(
-            [case['id'] for case in cases if case.has_attr('open')],
-            ['schoolafspraken'],
-        )
-        controls = soup.select_one('.eh-case-controls')
-        output = soup.select_one('.eh-case-output')
-        self.assertIsNotNone(controls)
-        self.assertIsNotNone(output)
-        self.assertTrue(controls.has_attr('hidden'))
-        self.assertTrue(output.has_attr('hidden'))
+        self.assertIsNone(soup.select_one('.eh-case-output'))
+        self.assertIsNone(soup.select_one('details.eh-case-source'))
+        self.assertNotIn('✎', soup.main.get_text())
         model = (self.root / 'nl/model/index.html').read_text()
         self.assertIn('Aan welke stap moet de leerling in deze fase zelf inhoudelijke betekenis geven om tot leren te komen?', model)
         self.assertIn('zonder dat er een nieuw product ontstaat', model)
