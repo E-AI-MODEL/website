@@ -127,7 +127,7 @@ def prepare(root: Path) -> dict:
             classes.append('eai-index-page')
         body['class'] = classes
         body['data-ui-version'] = revision
-        css_pattern = re.compile(r'^/assets/(?:site|site-ui|site-responsive|site-editorial|site-archive|home-model)(?:\.[a-f0-9]{12})?\.css(?:\?.*)?$')
+        css_pattern = re.compile(r'^/assets/(?:site|site-ui|site-responsive|site-redesign|site-editorial|site-archive|home-model)(?:\.[a-f0-9]{12})?\.css(?:\?.*)?$')
         for tag in list(soup.find_all('link', href=True)):
             if css_pattern.match(tag['href']):
                 tag.decompose()
