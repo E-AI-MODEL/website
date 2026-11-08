@@ -45,9 +45,10 @@ class HomeModelTests(unittest.TestCase):
             self.assertIsNotNone(soup.find(id=anchor))
         self.assertEqual(soup.select_one('h1#eh-home-title').get_text(' ', strip=True), 'Wat ons werk ons werk maakt')
         self.assertIn('onderwijsleerproces', soup.main.get_text(' ', strip=True).lower())
-        self.assertIsNotNone(soup.select_one('.eh-intro-question'))
+        self.assertIsNotNone(soup.select_one('.eh-home-mail'))
+        self.assertIsNotNone(soup.select_one('.eh-blog-shelf'))
+        self.assertIsNotNone(soup.select_one('a[href="/nl/blog/wat-ons-werk-ons-werk-maakt/"]'))
         self.assertIsNotNone(soup.select_one('.eh-responsibilities'))
-        self.assertIsNotNone(soup.select_one('a.eh-button[href="#beginnen"]'))
         cases = soup.select('details.eh-case-source')
         self.assertEqual(
             [case['id'] for case in cases],
@@ -71,6 +72,16 @@ class HomeModelTests(unittest.TestCase):
         self.assertIn('Aan welke stap moet de leerling in deze fase zelf inhoudelijke betekenis geven om tot leren te komen?', model)
         self.assertIn('zonder dat er een nieuw product ontstaat', model)
         self.assertNotIn('\u2014', soup.main.get_text())
+
+    def test_blog_pages_and_home_entry(self):
+        root = Path(__file__).resolve().parents[1]
+        landing = BeautifulSoup((root / 'nl/blog/index.html').read_text(encoding='utf-8'), 'html.parser')
+        article = BeautifulSoup((root / 'nl/blog/wat-ons-werk-ons-werk-maakt/index.html').read_text(encoding='utf-8'), 'html.parser')
+        self.assertEqual(landing.h1.get_text(' ', strip=True), 'Wat moeten we samen bespreken over AI?')
+        self.assertEqual(article.h1.get_text(' ', strip=True), 'Wat ons werk ons werk maakt')
+        self.assertIsNotNone(landing.select_one('a[href="/nl/blog/wat-ons-werk-ons-werk-maakt/"]'))
+        self.assertIn('Efficiënt werken betekent', article.get_text(' ', strip=True))
+        self.assertNotIn('—', article.main.get_text())
 
     def test_repeatable_render(self):
         materialize(self.root)

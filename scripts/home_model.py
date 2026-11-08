@@ -15,7 +15,7 @@ ROUTES = (('index.html', 'nl', 'home'), ('nl/index.html', 'nl', 'home'),
           ('en/index.html', 'en', 'home'), ('nl/model/index.html', 'nl', 'model'),
           ('en/model/index.html', 'en', 'model'))
 DESCRIPTIONS = {
- ('nl', 'home'): 'Wat ons werk ons werk maakt. Bespreek wat leerlingen, medewerkers en leidinggevenden zelf blijven doen en leg afspraken vast.',
+ ('nl', 'home'): 'Wat ons werk ons werk maakt. Over menselijke aandacht, vakmanschap en goede afspraken voor AI in onderwijs en werk.',
  ('en', 'home'): 'What does AI take over in learning? Explore a source-comparison example and the four questions of EAI.',
  ('nl', 'model'): 'Proces, fase, kernhandeling en AI: het EAI-model uitgewerkt met een voorbeeld over historische bronnen.',
  ('en', 'model'): 'Process, stage, meaningful action and AI: the EAI model explained through an example with historical sources.',
