@@ -43,6 +43,11 @@ class HomeModelTests(unittest.TestCase):
         soup = BeautifulSoup((self.root / 'nl/index.html').read_text(), 'html.parser')
         for anchor in ('model', 'voorbeeld', 'verhaal', 'verder-lezen', 'beginnen'):
             self.assertIsNotNone(soup.find(id=anchor))
+        self.assertEqual(soup.select_one('h1#eh-home-title').get_text(' ', strip=True), 'Wat ons werk ons werk maakt')
+        self.assertIn('onderwijsleerproces', soup.main.get_text(' ', strip=True).lower())
+        self.assertIsNotNone(soup.select_one('.eh-intro-question'))
+        self.assertIsNotNone(soup.select_one('.eh-responsibilities'))
+        self.assertIsNotNone(soup.select_one('a.eh-button[href="#beginnen"]'))
         cases = soup.select('details.eh-case-source')
         self.assertEqual(
             [case['id'] for case in cases],
