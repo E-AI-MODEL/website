@@ -85,3 +85,13 @@ body.eai-ui.eai-blog .eb-index-feature{gap:55px}
 @media(max-width:900px){body.eai-ui .eai-site-primary{display:none}body.eai-ui .eai-landing-hero>.eai-landing-container{grid-template-columns:1fr;gap:29px}body.eai-ui .eai-landing-question{max-width:740px}body.eai-ui .eai-landing-route-grid{grid-template-columns:repeat(2,minmax(0,1fr))}body.eai-ui .eai-landing-route{min-height:210px;border-bottom:1px solid #e1e8e0}body.eai-ui .eai-landing-reading-grid{grid-template-columns:1fr;gap:21px}}
 @media(max-width:620px){body.eai-ui .eai-site-nav{min-height:62px;padding:0 16px}body.eai-ui .eai-site-controls{gap:4px}body.eai-ui .eai-site-language{padding-left:0;border:0}body.eai-ui .eai-site-language a{min-width:28px}body.eai-ui .eai-site-menu>summary{padding:6px 9px}body.eai-ui .eai-site-menu-panel{right:-1px;top:calc(100% + 9px)}body.eai-ui .eai-landing-container{width:calc(100% - 36px)}body.eai-ui .eai-landing-hero{padding:47px 0 51px}body.eai-ui .eai-landing-hero h1{font-size:clamp(41px,10vw,55px);margin:15px 0 24px}body.eai-ui .eai-landing-hero p{font-size:16px;line-height:1.72}body.eai-ui .eai-landing-hero .eai-landing-lead{font-size:19px}body.eai-ui .eai-landing-actions{gap:15px}body.eai-ui .eai-landing-question{padding:23px 22px}body.eai-ui .eai-landing-routes{padding:48px 0 51px}body.eai-ui .eai-landing-section-head{display:block}body.eai-ui .eai-landing-section-head p{margin-top:12px}body.eai-ui .eai-landing-route-grid{grid-template-columns:1fr}body.eai-ui .eai-landing-route{min-height:0;padding:21px 0 24px;margin:0;border:0;border-bottom:1px solid #dfe6dc;gap:9px}body.eai-ui .eai-route-arrow{position:absolute;right:4px;top:28px}body.eai-ui .eai-landing-route h3{font-size:21px}body.eai-ui .eai-landing-route p{max-width:40ch}body.eai-ui .eai-landing-reading{padding:48px 0}body.eai-ui .eai-landing-end>.eai-landing-container{width:calc(100% - 36px);margin:auto}body.eai-ui .eai-landing-end h2{font-size:30px}body.eai-ui.eai-index-page main h1{font-size:clamp(36px,9vw,45px)}}
 @media(prefers-reduced-motion:reduce){body.eai-ui .eai-site-primary a{transition:none}}
+
+/* Readable cards on narrow screens: a real single column, never two squeezed tiles. */
+@media(max-width:760px){
+  body.eai-ui.eai-index-page .education-choice-grid{grid-template-columns:minmax(0,1fr);gap:12px}
+  body.eai-ui.eai-index-page .education-choice-grid>a{padding:22px;min-width:0}
+  body.eai-ui.eai-index-page .education-choice-grid h3{font-size:clamp(20px,5.3vw,24px);line-height:1.25;overflow-wrap:anywhere;max-width:100%}
+  body.eai-ui.eai-index-page .education-choice-grid p{min-width:0;overflow-wrap:break-word}
+  body.eai-ui.eai-index-page .education-choice-grid b{overflow-wrap:anywhere}
+  body.eai-ui.eai-index-page .knowledge-route{min-width:0}
+}

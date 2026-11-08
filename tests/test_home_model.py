@@ -50,6 +50,14 @@ class HomeModelTests(unittest.TestCase):
         self.assertIsNone(soup.select_one('.eh-case-output'))
         self.assertIsNone(soup.select_one('details.eh-case-source'))
         self.assertNotIn('✎', soup.main.get_text())
+        # Actual emoji glyphs are banned from editorial and navigation surfaces.
+        import re
+        glyphs = re.compile('[\\U0001F300-\\U0001FAFF\\u2600-\\u27BF]')
+        for rel in ('nl/blog/index.html', 'nl/blog/wat-ons-werk-ons-werk-maakt/index.html'):
+            text = (Path(__file__).resolve().parents[1] / rel).read_text(encoding='utf-8')
+            self.assertIsNone(glyphs.search(BeautifulSoup(text, 'html.parser').get_text(' ', strip=True)), rel)
+        self.assertIsNone(glyphs.search(soup.main.get_text(' ', strip=True)), 'homepage')
+
         model = (self.root / 'nl/model/index.html').read_text()
         self.assertIn('Aan welke stap moet de leerling in deze fase zelf inhoudelijke betekenis geven om tot leren te komen?', model)
         self.assertIn('zonder dat er een nieuw product ontstaat', model)

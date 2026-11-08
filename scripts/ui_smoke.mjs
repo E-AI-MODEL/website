@@ -66,13 +66,18 @@ try {
     }
   }
   await page.goto(base + '/', { waitUntil: 'load' });
-  const expectedHomeCases = ['schoolafspraken', 'dagelijks-werk', 'leren-en-toetsen', 'toepassing-kiezen', 'ai-begrijpen'];
-  const homeChoices = page.locator('[data-eh-explorer] .eh-choice');
-  assert.equal(await homeChoices.count(), expectedHomeCases.length, 'Five homepage entry points');
-  for (let i = 0; i < expectedHomeCases.length; i++) {
-    await homeChoices.nth(i).click();
-    assert.equal(await page.locator('[data-eh-explorer]').getAttribute('data-active-case'), expectedHomeCases[i]);
+  // The homepage is editorial now: four direct routes, no exploratory panels.
+  const homeRoutes = page.locator('.eai-landing-route');
+  assert.equal(await homeRoutes.count(), 4, 'Four clear homepage routes');
+  for (const target of ['/nl/model/', '/nl/onderwijs/', '/nl/onderzoek/', '/nl/tools/']) {
+    assert.equal(await homeRoutes.locator('a[href="'+target+'"]').count(), 0, 'Routes themselves are anchors, not nested links');
+    assert.equal(await page.locator('.eai-landing-route[href="'+target+'"]').count(), 1, target);
   }
+  assert.equal(await page.locator('.eai-site-primary a').count(), 6, 'Six main destinations');
+  assert.equal(await page.locator('#eai-blog .eai-reading-feature').count(), 1, 'Blog entry');
+  assert.equal(await page.locator('.eh-case-output').count(), 0, 'Old homepage explorer is removed');
+  const firstPageText = await page.locator('main').innerText();
+  assert(!/[\\u{1F300}-\\u{1FAFF}\\u2600-\\u27BF]/u.test(firstPageText), 'No emoji in homepage');
   await page.goto(base + '/nl/tools/', { waitUntil: 'load' });
   assert.equal(await page.locator('.eai-site-language a[lang="en"]').getAttribute('href'), '/en/tools/');
   assert.equal(await page.locator('.eai-site-language a[lang="nl"]').getAttribute('href'), '/nl/tools/');
@@ -263,7 +268,7 @@ try {
    assert.equal(await fallback.locator('.eai-site-menu-panel a[href="/tools/eaimesh/"]').count(), 1);
   await noJS.close();
   assert.deepEqual(errors, []);
-  writeFileSync('test-results/ui-report.json', JSON.stringify({ results, noJavaScriptMenu: true, homeQuestions: true, languageLinks: true, errors }, null, 2));
+  writeFileSync('test-results/ui-report.json', JSON.stringify({ results, noJavaScriptMenu: true, homeRoutes: true, languageLinks: true, errors }, null, 2));
   console.log(`PASS: ${results.length} page/viewport checks, native no-JS menu, keyboard, homepage questions and language links.`);
 } finally {
   if (browser) await browser.close();
