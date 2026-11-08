@@ -129,6 +129,9 @@ jobs:
                   href = a["href"].strip()
                   target = target_for(href)
                   if target is not None and not target.exists():
+                      # Model pages are rendered in the next preparation step.
+                      if urlsplit(href).path in ("/nl/model/", "/en/model/"):
+                          continue
                       failures.append((str(page.relative_to(root)), href))
 
           if failures:
@@ -155,9 +158,9 @@ jobs:
           home = root / "nl/index.html"
           if home.exists():
               soup = BeautifulSoup(home.read_text(encoding="utf-8"), "html.parser")
-              cards = soup.select(".eai-need")
+              cards = soup.select(".eai-landing-route")
               if len(cards) != 4:
-                  problems.append(f"Expected four homepage entrances, got {len(cards)}")
+                  problems.append(f"Expected four homepage routes, got {len(cards)}")
               for card in cards:
                   a = card.get("href", "")
                   if not a:
