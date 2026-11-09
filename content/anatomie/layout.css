@@ -461,3 +461,48 @@ html,body,#app{height:100%;height:100dvh;overflow:hidden}
 @media(prefers-reduced-motion:reduce){
   .sidebar-systems{transition:none}
 }
+
+/* Zelfstandig 3D-onderzoek: een kleine, direct bruikbare stelselkeuze. */
+.eai-sr-only{
+  position:absolute!important;width:1px;height:1px;padding:0;overflow:hidden;
+  clip:rect(0,0,0,0);white-space:nowrap;border:0;
+}
+.eai-explore{
+  position:absolute;z-index:16;left:clamp(20px,3vw,52px);top:155px;
+  max-width:min(390px,calc(100% - 40px));
+  display:flex;flex-direction:column;align-items:flex-start;gap:9px;
+}
+.eai-explore-label{
+  font:600 10px/1.3 ui-monospace,SFMono-Regular,Menlo,monospace;
+  letter-spacing:.08em;color:#9bbbd0;
+}
+.eai-explore-options{display:flex;gap:5px;flex-wrap:wrap;max-width:100%}
+.eai-explore-options button{
+  border:1px solid #375469;background:#102538e8;color:#bcd4e5;
+  border-radius:5px;min-height:34px;padding:7px 10px;
+  font:550 11px/1.2 Inter,system-ui,sans-serif;
+  cursor:pointer;transition:background .16s,border-color .16s;
+}
+.eai-explore-options button:hover{border-color:#81cdd9;color:#f0fcff;background:#1b3d50}
+.eai-explore-options button.is-active,
+.eai-explore-options button[aria-pressed="true"]{
+  border-color:#79c5d4;background:#205163;color:#f4feff;
+}
+.eai-explore-options button:focus-visible{outline:2px solid #9ae8e9;outline-offset:2px}
+.eai-explore-options button:disabled{cursor:progress;opacity:.55}
+@media(max-width:720px){
+  .eai-explore{
+    top:13px;left:12px;right:12px;max-width:none;gap:7px;
+    pointer-events:auto;
+  }
+  .eai-explore-label{font-size:9px}
+  .eai-explore-options{
+    display:flex;flex-wrap:nowrap;overflow-x:auto;overscroll-behavior-x:contain;
+    max-width:100%;width:100%;scrollbar-width:none;padding-bottom:3px;
+  }
+  .eai-explore-options::-webkit-scrollbar{display:none}
+  .eai-explore-options button{white-space:nowrap;flex:none;min-height:40px;padding:9px 11px;font-size:11px}
+}
+@media(prefers-reduced-motion:reduce){
+  .eai-explore-options button{transition:none}
+}
