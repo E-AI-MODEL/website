@@ -257,6 +257,52 @@ function dutchTermsFor(base) {
         before, "official: entry.official === false ? false : null", 1
     ), encoding="utf-8")
 
+    # First paint must never wait for a GPU precompile. That can take an
+    # unpredictable time on mobile Safari and leaves the loading overlay open.
+    # On touch devices, don't spend startup CPU and memory building the BVH
+    # for every triangle. Basic 3D picking still works without that index.
+    loader_file = source / "src" / "viewer" / "loadModel.js"
+    loader_js = loader_file.read_text(encoding="utf-8")
+    precompile = """  // Compiling before the model joins the scene keeps the first frame after a
+  // load from stalling on shader and buffer upload.
+  if (renderer?.compileAsync) {
+    try {
+      await renderer.compileAsync(model, camera, scene);
+    } catch {
+      // Compilation is an optimisation; a failure must not block the load.
+    }
+  }
+
+"""
+    if loader_js.count(precompile) != 1:
+        raise RuntimeError("Upstream compileAsync phase changed")
+    loader_js = loader_js.replace(precompile, "", 1)
+    before = "  const { scene, renderer, camera } = viewer;"
+    if loader_js.count(before) != 1:
+        raise RuntimeError("Upstream loader variables changed")
+    loader_js = loader_js.replace(before, "  const { scene } = viewer;", 1)
+    before = "  scene.add(model);\\n  modelRoots.set(systemId, model);"
+    if loader_js.count(before) != 1:
+        raise RuntimeError("Upstream model activation changed")
+    loader_js = loader_js.replace(
+        before,
+        "  scene.add(model);\\n  modelRoots.set(systemId, model);\\n"
+        "  viewer.render();",
+        1,
+    )
+    before = "  if (mesh.geometry && !mesh.geometry.boundsTree) {"
+    if loader_js.count(before) != 1:
+        raise RuntimeError("Upstream BVH mesh hook changed")
+    loader_js = loader_js.replace(
+        before,
+        "  // Fast first paint on touch screens. The raycaster falls back to\\n"
+        "  // normal triangle picking without a precomputed BVH.\\n"
+        "  const touchDevice = window.matchMedia?.('(pointer: coarse)').matches;\\n"
+        "  if (!touchDevice && mesh.geometry && !mesh.geometry.boundsTree) {",
+        1,
+    )
+    loader_file.write_text(loader_js, encoding="utf-8")
+
     # Load the local, responsive shortcut interface after the original viewer.
     explore_source = Path(__file__).resolve().parent.parent / "content" / "anatomie" / "explore.js"
     shutil.copyfile(explore_source, source / "src" / "ui" / "eaiExplore.js")
