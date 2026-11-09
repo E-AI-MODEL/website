@@ -6,8 +6,8 @@
   <meta name="description" content="Onderzoek het menselijk lichaam in een interactieve, zelfstandig gehoste 3D-atlas.">
   <title>AN / 01 | Anatomisch Observatorium | EAI</title>
   <link rel="icon" type="image/svg+xml" href="/assets/eai-logo.svg">
-  <script type="module" crossorigin src="/tools/anatomie/assets/index-DLqM8cAg.js"></script>
-  <link rel="stylesheet" crossorigin href="/tools/anatomie/assets/index-CVyfZH6f.css">
+  <script type="module" crossorigin src="/tools/anatomie/assets/index-Bellzu1q.js"></script>
+  <link rel="stylesheet" crossorigin href="/tools/anatomie/assets/index-CM9wV8FJ.css">
 </head>
 <body>
   <div id="app">
@@ -73,17 +73,7 @@
       <!-- 3D Viewer -->
       <section class="viewer-section">
         <div id="viewerContainer" class="viewer-container"><div class="eai-stage-intro" aria-hidden="true"><span class="eai-stage-kicker">ANATOMIE / 3D-ATLAS</span><h2>Menselijke anatomie</h2><p>Draai, zoom en onderzoek ieder onderdeel zelf.</p></div>
-          <nav class="eai-explore" id="eaiExplore" aria-label="Onderzoek een lichaamsstelsel">
-      <span class="eai-explore-label">Begin met een stelsel</span>
-      <div class="eai-explore-options">
-        <button type="button" data-eai-system="skeletal" aria-pressed="true">Skelet</button>
-        <button type="button" data-eai-system="muscular" aria-pressed="false">Spieren</button>
-        <button type="button" data-eai-system="cardiovascular" aria-pressed="false">Hart en vaten</button>
-        <button type="button" data-eai-system="nervous" aria-pressed="false">Zenuwen</button>
-        <button type="button" data-eai-system="visceral" aria-pressed="false">Organen</button>
-      </div>
-      <span class="eai-sr-only" role="status" aria-live="polite" data-eai-explore-status></span>
-    </nav>\n          <canvas id="threeCanvas" tabindex="0" role="application"
+          <canvas id="threeCanvas" tabindex="0" role="application"
                   aria-label="Interactief driedimensionaal menselijk lichaam. Slepen om te draaien, scrollen om te zoomen, klikken om een onderdeel te kiezen."></canvas>
           <div id="loadingOverlay" class="loading-overlay">
             <div class="loading-spinner"></div>
@@ -123,15 +113,7 @@
       </aside>
     </main>
 
-    <!-- Bottom bar - Actions for selected structure -->
-    <footer class="footer-bar" id="footerBar" style="display: none;">
-      <div class="footer-actions">
-        <button class="action-btn" id="footerIsolateBtn">Isolate</button>
-        <button class="action-btn" id="footerHideBtn">Hide</button>
-        <button class="action-btn" id="footerTransparentBtn">Transparent</button>
-        <button class="action-btn secondary" id="footerShowAllBtn">Show all</button>
-      </div>
-    </footer>
+    
 
     <!-- Hulp is pas zichtbaar nadat de bezoeker op ? klikt. -->
     <div class="modal hidden" id="helpModal" role="dialog" aria-labelledby="helpTitle" aria-modal="true">
