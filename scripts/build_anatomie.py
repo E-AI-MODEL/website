@@ -15,6 +15,7 @@ import sys
 import tempfile
 from pathlib import Path
 from anatomie_shell import refit_shell
+from anatomie_refine import refine_anatomy
 from anatomie_ux import apply as apply_anatomy_ux
 
 SOURCE_URL = "https://github.com/nqwrc/3d-anatomy.git"
@@ -516,6 +517,7 @@ def build(destination: Path) -> None:
                 raise RuntimeError(f"Required source file missing: {rel}")
         patch_upstream(source)
         refit_shell(source)
+        refine_anatomy(source)
         apply_anatomy_ux(source)
         command("npm", "ci", "--no-audit", "--no-fund", cwd=source)
         command("npm", "run", "lint", cwd=source)
