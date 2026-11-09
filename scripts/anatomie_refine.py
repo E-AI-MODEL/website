@@ -49,9 +49,6 @@ const adjustedMaterials = new WeakSet();
 const redMuscleMaterials = new WeakMap();
 const translucentFasciaMaterials = new WeakMap();
 
-function isFasciaOrCover(partId) {
-  return /fasci|aponeuros|septum|septa|retinacul|pannicul|sheath|fibrous membrane|iliotibial tract/i.test(partId);
-}
 function isMusclePart(partId) {
   // Het spierstelsel bevat ook pezen, slijmbeurzen en bindweefsel.
   // Die worden anatomisch niet als spierweefsel ingekleurd.
@@ -111,8 +108,9 @@ function fasciaMaterial(original) {
 }
 function anatomicalMaterial(original, systemId, partId) {
   if (systemId === 'muscular') {
-    if (isFasciaOrCover(partId)) return fasciaMaterial(original);
-    if (isMusclePart(partId)) return muscleMaterial(original);
+    // Toon alle echte spieren rood. Bijbehorende fascie, pezen en slijmbeurzen
+    // blijven beschikbaar in het 3D-model maar bedekken de spieren niet.
+    return isMusclePart(partId) ? muscleMaterial(original) : fasciaMaterial(original);
   }
   adjustMaterial(original);
   return original;
