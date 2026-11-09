@@ -65,6 +65,25 @@ try {
     assert(scene.width > 200 && scene.height > 100 && scene.canvasVisible, 'Het 3D-canvas is leeg');
     assert(scene.overflow <= 3, 'Horizontale overloop bij '+width);
     assert(scene.loaded, 'Het skelet ontbreekt in de stelsellijst');
+    const layout = await page.evaluate(() => {
+      const box=el => {const r=el.getBoundingClientRect();return {left:r.left,right:r.right,top:r.top,bottom:r.bottom,width:r.width,height:r.height}};
+      return {
+        viewport:innerWidth,
+        stage:box(document.querySelector('#viewerContainer')),
+        controls:[...document.querySelectorAll('#viewerControls .control-btn')].map(box),
+        attribution:box(document.querySelector('.eai-attribution'))
+      };
+    });
+    assert.equal(layout.controls.length, 5, 'Vijf cameraknoppen moeten beschikbaar zijn');
+    for(const [i,c] of layout.controls.entries()){
+      assert(c.width>20&&c.height>=25, 'Cameraknop '+i+' is te klein');
+      assert(c.left>=layout.stage.left-2&&c.right<=layout.stage.right+2,
+        'Cameraknop '+i+' valt buiten het modelvenster');
+      assert(c.bottom<=layout.stage.bottom+2, 'Cameraknop '+i+' valt onder het modelvenster');
+      const x=Math.min(c.right,layout.attribution.right)-Math.max(c.left,layout.attribution.left);
+      const y=Math.min(c.bottom,layout.attribution.bottom)-Math.max(c.top,layout.attribution.top);
+      assert(x<=0||y<=0, 'Bronvermelding bedekt cameraknop '+i);
+    }
     assert((await page.title()).includes('Anatomisch Observatorium'));
     await page.screenshot({path:'test-results/anatomie-start-'+width+'.png'});
     if (width === 1440) {
