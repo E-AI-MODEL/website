@@ -281,12 +281,12 @@ function dutchTermsFor(base) {
     if loader_js.count(before) != 1:
         raise RuntimeError("Upstream loader variables changed")
     loader_js = loader_js.replace(before, "  const { scene } = viewer;", 1)
-    before = "  scene.add(model);\\n  modelRoots.set(systemId, model);"
+    before = "  scene.add(model);\n  modelRoots.set(systemId, model);"
     if loader_js.count(before) != 1:
         raise RuntimeError("Upstream model activation changed")
     loader_js = loader_js.replace(
         before,
-        "  scene.add(model);\\n  modelRoots.set(systemId, model);\\n"
+        "  scene.add(model);\n  modelRoots.set(systemId, model);\n"
         "  viewer.render();",
         1,
     )
@@ -295,9 +295,9 @@ function dutchTermsFor(base) {
         raise RuntimeError("Upstream BVH mesh hook changed")
     loader_js = loader_js.replace(
         before,
-        "  // Fast first paint on touch screens. The raycaster falls back to\\n"
-        "  // normal triangle picking without a precomputed BVH.\\n"
-        "  const touchDevice = window.matchMedia?.('(pointer: coarse)').matches;\\n"
+        "  // Fast first paint on touch screens. The raycaster falls back to\n"
+        "  // normal triangle picking without a precomputed BVH.\n"
+        "  const touchDevice = window.matchMedia?.('(pointer: coarse)').matches;\n"
         "  if (!touchDevice && mesh.geometry && !mesh.geometry.boundsTree) {",
         1,
     )
