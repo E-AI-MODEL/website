@@ -578,3 +578,142 @@ html,body,#app{height:100%;height:100dvh;overflow:hidden}
   .eai-layer-caption{max-width:62px;font-size:8px}
   .eai-layer-control .depth-slider{height:112px}
 }
+
+/* Informatie is het eerste resultaat van een selectie. Geen dubbele menubalk. */
+.sidebar-info{
+  position:fixed!important;
+  top:70px!important;
+  right:12px!important;
+  bottom:12px!important;
+  left:auto!important;
+  height:auto!important;
+  width:min(390px,calc(100vw - 24px))!important;
+  border:1px solid #304d61;
+  border-radius:10px;
+  background:#0b1929!important;
+  box-shadow:0 20px 60px #0009;
+  z-index:170!important;
+  overflow:hidden;
+  visibility:hidden;
+  pointer-events:none;
+}
+#app.info-open .sidebar-info{
+  visibility:visible;
+  pointer-events:auto;
+}
+.sidebar-info .sidebar-header{
+  padding:17px 20px 13px;
+  border-bottom:1px solid #294053;
+}
+.sidebar-info .sidebar-header h2{
+  font:650 11px/1.3 Inter,system-ui,sans-serif;
+  color:#dbeef4;
+  text-transform:none;
+  letter-spacing:.01em;
+}
+.sidebar-info .sidebar-content{
+  padding:18px 20px 28px;
+  max-height:calc(100% - 54px);
+  overflow:auto;
+  overscroll-behavior:contain;
+}
+.sidebar-info .structure-title h3{
+  font:650 20px/1.27 Inter,system-ui,sans-serif;
+  letter-spacing:-.025em;
+  color:#f2fcff;
+}
+.sidebar-info .structure-latin{font-size:12px;color:#a6c4d5}
+.sidebar-info .structure-tags{display:flex;flex-wrap:wrap;gap:5px;margin:10px 0 4px}
+.eai-fact{padding:15px 0;border-top:1px solid #294456}
+.eai-fact h4{
+  margin:0 0 7px;
+  font:650 10px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;
+  text-transform:uppercase;letter-spacing:.09em;color:#8ce2e3;
+}
+.eai-fact p{
+  margin:0;
+  font:400 13px/1.6 Inter,system-ui,sans-serif;
+  color:#d5e5ed;
+}
+.eai-no-guide{
+  margin:14px 0;
+  font:12px/1.6 Inter,system-ui,sans-serif;
+  color:#afc6d6;
+}
+.eai-details-actions{
+  display:flex;flex-wrap:wrap;gap:7px;
+  padding:14px 0 16px;border-top:1px solid #294456;
+}
+.eai-details-actions button{
+  padding:9px 11px;min-height:39px;
+  border:1px solid #34566d;
+  border-radius:5px;color:#d4e9f2;background:#152b3d;
+  font:550 11px/1.35 Inter,system-ui,sans-serif;
+  cursor:pointer;
+}
+.eai-details-actions button:hover,
+.eai-details-actions button:focus-visible{
+  border-color:#8bd9e1;color:#fff;background:#214456;
+}
+.eai-original-source{border-top:1px solid #294456;padding-top:13px}
+.eai-original-source summary{
+  font:550 11px/1.4 Inter,system-ui,sans-serif;
+  color:#9eb8c9;cursor:pointer;
+}
+.eai-original-source > p{
+  font:11px/1.5 Inter,system-ui,sans-serif;
+  color:#8da6b9;margin:10px 0;
+}
+.eai-original-source .structure-description{
+  font:12px/1.65 Inter,system-ui,sans-serif;
+  color:#b0c7d5;margin-top:9px;
+}
+.callout .callout-name{font-weight:650}
+.callout .callout-close{
+  min-width:30px;min-height:30px;
+  margin-left:8px;
+  border-radius:5px;
+  color:#c3dce8;
+}
+.footer-bar{display:none!important}
+
+/* Alleen stelsels die samen zichtbaar zijn, kunnen transparant worden gemaakt. */
+.eai-layer-control[hidden]{display:none!important}
+.eai-layer-control{width:112px;padding:12px 9px;gap:10px}
+.eai-layer-control .depth-label{
+  writing-mode:horizontal-tb;
+  color:#e0f1f7;
+  letter-spacing:.02em;
+  font:550 10px/1.4 Inter,system-ui,sans-serif;
+  text-transform:none;
+  text-align:center;
+}
+.eai-layer-control .depth-slider{height:148px}
+.eai-layer-caption{
+  font:10px/1.45 Inter,system-ui,sans-serif;
+  color:#a7c3d4;
+  text-align:center;
+  overflow-wrap:anywhere;
+}
+@media(max-width:720px){
+  .sidebar-info{
+    top:auto!important;left:0!important;right:0!important;bottom:0!important;
+    width:100vw!important;height:min(57dvh,570px)!important;
+    border-radius:13px 13px 0 0;
+    border-left:0;border-right:0;border-bottom:0;
+    transform:translateY(110%)!important;
+  }
+  #app.info-open .sidebar-info{transform:translateY(0)!important}
+  .sidebar-info .sidebar-header{padding:12px 17px 10px}
+  .sidebar-info .sidebar-content{
+    max-height:calc(100% - 45px);
+    padding:12px 17px 25px;
+  }
+  .sidebar-info .structure-title h3{font-size:18px}
+  .eai-fact{padding:12px 0}
+  .eai-layer-control{width:92px;left:8px}
+  .eai-layer-control .depth-slider{height:110px}
+}
+@media(prefers-reduced-motion:reduce){
+  .sidebar-info{transition:none}
+}
