@@ -102,7 +102,7 @@ def refine_anatomy(source: Path) -> None:
     js = js[:start] + js[end:].replace(
         "  container.innerHTML = presets + SYSTEM_IDS.map(",
         "  container.innerHTML = SYSTEM_IDS.map(", 1)
-    js, count = re.subn(r"    const icon = SYSTEM_ICONS\\[systemId\\] \\|\\| '[^']+';\\n", "", js, count=1)
+    js, count = re.subn(r"(?m)^    const icon = SYSTEM_ICONS\[systemId\] \|\| '[^']+';\n", "", js, count=1)
     if count != 1:
         raise RuntimeError("Expected exactly one obsolete system icon declaration")
     icon_fragment = '          <span class="system-icon">' + chr(36) + '{icon}</span>\n'
