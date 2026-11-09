@@ -83,3 +83,147 @@ body.eai-ui.eai-onderwijsin #oiApp .eai-source-fold>summary{cursor:pointer;font-
  body.eai-ui.eai-onderwijsin #oiApp .oi-hero h1{font-size:30px!important}
  body.eai-ui.eai-onderwijsin #oiApp .oi-meta{gap:6px 16px}
 }
+
+
+/* EAI editorial article system, 2026-11. All components are static, semantic and reusable.
+   A figure explains a choice. It is never a substitute for the article text. */
+body.eai-blog{--story-text:#253a30;--story-muted:#576c5d;--story-accent:#315d4f;--story-line:#d6e0d5;--story-paper:#fafbf7;--story-tint:#edf3eb;background:var(--story-paper)}
+body.eai-blog .eai-story{background:var(--story-paper);color:var(--story-text);font-family:Inter,ui-sans-serif,system-ui,sans-serif}
+body.eai-blog .eai-story *{box-sizing:border-box;min-width:0}
+body.eai-blog .eai-story-container{width:min(1090px,calc(100% - 48px));margin-inline:auto}
+body.eai-blog .eai-story-breadcrumb{font-size:12px;color:var(--story-muted);display:flex;gap:10px;align-items:center;padding:22px 0 0}
+body.eai-blog .eai-story-breadcrumb a{color:var(--story-accent);text-decoration:none;border-bottom:1px solid #9db5a1}
+body.eai-blog .eai-story-header{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(260px,.67fr);gap:clamp(26px,5vw,72px);align-items:center;padding:clamp(29px,4.4vw,57px) 0 clamp(29px,4vw,49px);border-bottom:1px solid var(--story-line)}
+body.eai-blog .eai-story-eyebrow{font-size:11px;font-weight:650;text-transform:uppercase;letter-spacing:.105em;color:#547863;display:block}
+body.eai-blog .eai-story-header h1{font-size:clamp(38px,4.7vw,61px);line-height:1.075;letter-spacing:-.048em;max-width:16ch;margin:13px 0 19px;color:#1e322a}
+body.eai-blog .eai-story-header .eai-story-lead{font-size:clamp(17px,1.85vw,21px);line-height:1.55;max-width:57ch;margin:0;color:#4b6655}
+body.eai-blog .eai-story-meta{font-size:12px;letter-spacing:.018em;color:#6a8070;margin:21px 0 0}
+body.eai-blog .eai-story-opening{margin:0;background:#eef3ec;border:1px solid #d6e2d6;border-radius:9px;padding:22px 24px}
+body.eai-blog .eai-story-opening figcaption{font-size:14px;font-weight:620;color:#314f3d;margin-bottom:15px}
+body.eai-blog .eai-story-opening-steps{padding:0;margin:0;list-style:none}
+body.eai-blog .eai-story-opening-steps li{display:grid;grid-template-columns:31px 1fr;gap:12px;align-items:center;position:relative;padding:9px 0}
+body.eai-blog .eai-story-opening-steps li:not(:last-child)::after{content:"";position:absolute;left:14px;top:37px;bottom:-9px;border-left:1px solid #9ab5a3}
+body.eai-blog .eai-story-opening-steps li>span{width:29px;height:29px;border:1px solid #9eb7a5;color:#547a61;border-radius:50%;display:grid;place-items:center;font-size:10px;font-weight:650;background:#eef3ec}
+body.eai-blog .eai-story-opening-steps li div small{display:block;font-size:11px;color:#61796a}
+body.eai-blog .eai-story-opening-steps li div strong{display:block;font-size:14px;font-weight:610;line-height:1.4;color:#2d4a39}
+body.eai-blog .eai-story-opening-steps .eai-story-opening-human>span{background:#315d4f;border-color:#315d4f;color:#fff}
+body.eai-blog .eai-story-body{width:min(720px,calc(100% - 48px));max-width:none;margin:0 auto;padding:clamp(25px,4vw,47px) 0 clamp(45px,6vw,70px);font-family:Inter,ui-sans-serif,system-ui,sans-serif}
+body.eai-blog .eai-story-body>p,body.eai-blog .eai-story-chapter>p{font-size:17px;line-height:1.78;letter-spacing:0;color:#33493d;margin:0 0 21px}
+body.eai-blog .eai-story-chapter{margin-top:45px}
+body.eai-blog .eai-story-chapter h2{font-size:clamp(27px,3vw,36px);line-height:1.22;letter-spacing:-.038em;margin:0 0 21px;color:#20392b;font-weight:640}
+body.eai-blog .eai-story-wide{width:min(1030px,calc(100vw - 48px));position:relative;left:50%;transform:translateX(-50%)}
+body.eai-blog .eai-story-visual{margin-top:30px;margin-bottom:35px;max-width:none}
+body.eai-blog .eai-story-visual-heading{display:flex;flex-direction:column;gap:7px;margin:0 0 17px}
+body.eai-blog .eai-story-visual-heading strong{font-size:clamp(20px,2.5vw,27px);line-height:1.2;letter-spacing:-.03em;color:#203f2d;font-weight:650}
+body.eai-blog .eai-story-visual-heading small{font-size:14px;line-height:1.55;color:var(--story-muted)}
+body.eai-blog .eai-story-caption{font-size:12px!important;color:#617b6b!important;line-height:1.55!important;margin:12px 0 0!important}
+body.eai-blog .eai-story-example-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--story-line);border-bottom:1px solid var(--story-line)}
+body.eai-blog .eai-story-example{padding:22px 19px 15px 0;margin-right:20px;border-right:1px solid #e1e8e0}
+body.eai-blog .eai-story-example:last-child{border:0;margin:0;padding-right:0}
+body.eai-blog .eai-story-example-role{font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:650;color:#5b8065}
+body.eai-blog .eai-story-path{display:flex;align-items:stretch;gap:0;flex-wrap:nowrap;margin:16px 0 17px;min-height:49px}
+body.eai-blog .eai-story-path>span,body.eai-blog .eai-story-path>b{position:relative;flex:1;min-width:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:8px 6px;font-size:11px;line-height:1.3;color:#547263;border:1px solid #d8e3d8;background:#f7f9f5;font-weight:500;overflow-wrap:break-word}
+body.eai-blog .eai-story-path>span+*,body.eai-blog .eai-story-path>b+*{border-left:0}
+body.eai-blog .eai-story-path>b.eai-story-human{background:#dcebe0;color:#254b36;border-color:#9bbca6;font-weight:700}
+body.eai-blog .eai-story-example>p{font-size:14px;line-height:1.65;color:#526b58;margin:0}
+body.eai-blog .eai-story-thought{border:0;border-left:2px solid #5e9072;background:transparent;margin:27px 0 38px;padding:7px 0 6px 22px}
+body.eai-blog .eai-story-thought p{font-size:clamp(21px,2.5vw,27px);line-height:1.45;font-weight:570;letter-spacing:-.025em;color:#264435;margin:0}
+body.eai-blog .eai-story-phases{background:#f2f6f0;border:1px solid #d9e4d9;border-radius:9px;padding:clamp(19px,2.7vw,28px)}
+body.eai-blog .eai-story-phase-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;margin:0;padding:0;list-style:none;border-top:1px solid #cadacb}
+body.eai-blog .eai-story-phase-grid li{position:relative;min-height:235px;padding:22px 14px 20px;border-bottom:1px solid #cadacb;border-right:1px solid #cadacb}
+body.eai-blog .eai-story-phase-grid li:last-child{border-right:0}
+body.eai-blog .eai-story-phase-grid li::before{content:"";position:absolute;top:-5px;left:17px;width:8px;height:8px;background:#a4beaa;border-radius:50%}
+body.eai-blog .eai-story-phase-grid li.eai-story-phase-focus{background:#dfece1}
+body.eai-blog .eai-story-phase-grid li.eai-story-phase-focus::before{background:#315d4f;width:10px;height:10px;top:-6px}
+body.eai-blog .eai-story-phase-n{font-size:11px;color:#58866a;font-weight:700}
+body.eai-blog .eai-story-phase-grid h3{font-size:20px;letter-spacing:-.025em;line-height:1.23;margin:8px 0 10px;font-weight:620;color:#24452e}
+body.eai-blog .eai-story-phase-grid .eai-story-phase-task{font-size:13px;line-height:1.48;font-weight:580;color:#415a46;min-height:45px;margin:0 0 12px}
+body.eai-blog .eai-story-phase-roles{border-top:1px solid #cbdcce;padding-top:11px;display:flex;flex-direction:column;gap:7px}
+body.eai-blog .eai-story-phase-roles span{font-size:12px;color:#536e58;line-height:1.45}
+body.eai-blog .eai-story-phase-roles b{color:#2a5435;font-weight:670}
+body.eai-blog .eai-story-mail-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+body.eai-blog .eai-story-mail-card{background:#fbfcf9;border:1px solid #d8e3d8;padding:22px;border-radius:7px;min-height:0}
+body.eai-blog .eai-story-mail-card h3{font-size:clamp(18px,2vw,22px);line-height:1.35;letter-spacing:-.02em;margin:11px 0 17px;max-width:26ch;color:#2c4637}
+body.eai-blog .eai-story-mail-flow{display:flex;flex-direction:column;align-items:flex-start;gap:0}
+body.eai-blog .eai-story-mail-flow>span:first-child{font-size:13px;color:#5c725f;padding:11px 13px;border:1px solid #dce5d9;background:#f4f7f1;max-width:100%}
+body.eai-blog .eai-story-mail-line{height:23px;margin-left:15px;border-left:1px solid #85ab8c}
+body.eai-blog .eai-story-mail-flow strong{font-size:14px;line-height:1.45;color:#254b34;padding:13px 15px;background:#e0ebe0;border:1px solid #a7c8af;font-weight:640;display:block;width:100%}
+body.eai-blog .eai-story-mail-card>p{font-size:14px;line-height:1.6;color:#52675b;margin:16px 0 0}
+body.eai-blog .eai-story-compare{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-top:1px solid var(--story-line);border-bottom:1px solid var(--story-line);margin:26px 0 34px}
+body.eai-blog .eai-story-compare>div{padding:20px 20px 17px 0}
+body.eai-blog .eai-story-compare>div+div{border-left:1px solid var(--story-line);padding-left:24px}
+body.eai-blog .eai-story-compare strong{display:block;font-size:18px;line-height:1.4;color:#294a35;margin:10px 0 7px}
+body.eai-blog .eai-story-compare p{font-size:14px;line-height:1.55;color:#5b725e;margin:0}
+body.eai-blog .eai-story-questions{padding:27px;background:#edf3ed;border:1px solid #ccdfcc;border-radius:8px;margin:29px 0 32px}
+body.eai-blog .eai-story-questions ol{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 22px}
+body.eai-blog .eai-story-questions li{display:grid;grid-template-columns:30px 1fr;gap:12px;padding:16px 0;border-top:1px solid #cedfcf}
+body.eai-blog .eai-story-questions li>span{font-size:11px;font-weight:700;color:#5c8469}
+body.eai-blog .eai-story-questions li b{display:block;font-size:15px;font-weight:650;color:#244631}
+body.eai-blog .eai-story-questions li p{font-size:13px;line-height:1.55;color:#5c715f;margin:7px 0 0}
+body.eai-blog .eai-story-questions-end{font-size:14px;line-height:1.6;color:#456750;margin:12px 0 15px}
+body.eai-blog a.eai-story-cta{display:inline-flex;align-items:center;gap:14px;padding:11px 14px;text-decoration:none;color:white;background:#315d4f;border-radius:5px;font-size:14px;font-weight:620}
+body.eai-blog a.eai-story-cta:hover{background:#254d3e}
+body.eai-blog .eai-story-more{border-top:1px solid var(--story-line);padding:32px 0 70px;background:#f2f5f0}
+body.eai-blog .eai-story-more-head{display:flex;align-items:center;justify-content:space-between;gap:20px}
+body.eai-blog .eai-story-more-head h2{font-size:24px;color:#25432f;margin:0 0 19px}
+body.eai-blog .eai-story-more-head a{color:#315d4f;font-size:14px}
+body.eai-blog .eai-story-more-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+body.eai-blog .eai-story-more-grid a{display:flex;flex-direction:column;gap:9px;min-height:160px;padding:21px 22px;color:#2d4535;text-decoration:none;background:#fbfcf8;border:1px solid #d9e2d7}
+body.eai-blog .eai-story-more-grid a span{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#5e7c66}
+body.eai-blog .eai-story-more-grid a strong{font-size:19px;line-height:1.3;color:#2b4533}
+body.eai-blog .eai-story-more-grid a small{font-size:13px;line-height:1.5;color:#637969}
+body.eai-blog .eai-story-more-grid a:hover strong{text-decoration:underline;text-underline-offset:4px}
+/* Blog index inherits the same compact editorial scale. */
+body.eai-blog .eb-breadcrumb{padding-top:20px}
+body.eai-blog .eb-hero{padding-top:34px;padding-bottom:30px}
+body.eai-blog .eb-hero h1{font-size:clamp(36px,4.2vw,55px);letter-spacing:-.04em;line-height:1.08;margin:0 0 14px}
+body.eai-blog .eb-index-feature{gap:32px}
+@media(max-width:860px){
+body.eai-blog .eai-story-header{grid-template-columns:minmax(0,1fr);gap:19px}
+body.eai-blog .eai-story-opening{max-width:720px}
+body.eai-blog .eai-story-example-grid{grid-template-columns:minmax(0,1fr)}
+body.eai-blog .eai-story-example{border-right:0;border-bottom:1px solid var(--story-line);margin:0;padding:18px 0}
+body.eai-blog .eai-story-example:last-child{border-bottom:0;padding:18px 0}
+body.eai-blog .eai-story-path{max-width:470px}
+body.eai-blog .eai-story-phase-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+body.eai-blog .eai-story-phase-grid li:nth-child(2){border-right:0}
+}
+@media(max-width:620px){
+body.eai-blog .eai-story-container,body.eai-blog .eai-story-body{width:calc(100% - 40px);margin-inline:auto}
+body.eai-blog .eai-story-wide{width:calc(100vw - 40px)}
+body.eai-blog .eai-story-breadcrumb{padding-top:13px}
+body.eai-blog .eai-story-header{padding:27px 0 22px;gap:22px}
+body.eai-blog .eai-story-header h1{font-size:clamp(32px,8.5vw,40px);line-height:1.12;letter-spacing:-.045em;margin:12px 0 14px;max-width:14ch}
+body.eai-blog .eai-story-header .eai-story-lead{font-size:16px;line-height:1.57}
+body.eai-blog .eai-story-meta{margin:14px 0 0}
+body.eai-blog .eai-story-opening{padding:15px 17px}
+body.eai-blog .eai-story-opening figcaption{font-size:13px;margin-bottom:7px}
+body.eai-blog .eai-story-opening-steps li{padding:7px 0}
+body.eai-blog .eai-story-opening-steps li div strong{font-size:13px}
+body.eai-blog .eai-story-body{padding:24px 0 42px}
+body.eai-blog .eai-story-body>p,body.eai-blog .eai-story-chapter>p{font-size:16px;line-height:1.74;margin-bottom:18px}
+body.eai-blog .eai-story-chapter{margin-top:37px}
+body.eai-blog .eai-story-chapter h2{font-size:26px;line-height:1.22;margin-bottom:15px}
+body.eai-blog .eai-story-visual{margin-top:22px;margin-bottom:26px}
+body.eai-blog .eai-story-visual-heading strong{font-size:22px}
+body.eai-blog .eai-story-examples .eai-story-path{max-width:none}
+body.eai-blog .eai-story-path>span,body.eai-blog .eai-story-path>b{font-size:11px;padding:8px 3px}
+body.eai-blog .eai-story-thought{margin:23px 0 30px;padding-left:16px}
+body.eai-blog .eai-story-thought p{font-size:21px}
+body.eai-blog .eai-story-phases{padding:17px}
+body.eai-blog .eai-story-phase-grid{grid-template-columns:minmax(0,1fr)}
+body.eai-blog .eai-story-phase-grid li{padding:16px 15px 16px 19px;min-height:0;border-right:0;display:grid;grid-template-columns:29px minmax(0,1fr);column-gap:10px;align-items:start}
+body.eai-blog .eai-story-phase-grid li::before{left:12px}
+body.eai-blog .eai-story-phase-grid h3{margin:0 0 7px;font-size:18px}
+body.eai-blog .eai-story-phase-grid .eai-story-phase-task{grid-column:2;min-height:0;margin-bottom:10px}
+body.eai-blog .eai-story-phase-grid .eai-story-phase-roles{grid-column:2}
+body.eai-blog .eai-story-mail-grid{grid-template-columns:minmax(0,1fr);gap:12px}
+body.eai-blog .eai-story-mail-card{padding:18px}
+body.eai-blog .eai-story-compare{grid-template-columns:minmax(0,1fr)}
+body.eai-blog .eai-story-compare>div{padding:15px 0}
+body.eai-blog .eai-story-compare>div+div{border-left:0;border-top:1px solid var(--story-line);padding-left:0}
+body.eai-blog .eai-story-questions{padding:20px}
+body.eai-blog .eai-story-questions ol{grid-template-columns:1fr}
+body.eai-blog .eai-story-more-grid{grid-template-columns:1fr}
+body.eai-blog .eai-story-more-head{align-items:start}
+}

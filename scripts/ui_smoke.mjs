@@ -7,7 +7,7 @@ import assert from 'node:assert/strict';
 const root = resolve(process.argv[2] || 'site-build');
 const base = 'http://127.0.0.1:8765';
 const server = spawn('python3', ['-m', 'http.server', '8765', '--bind', '127.0.0.1', '--directory', root], { stdio: 'ignore' });
-const pages = ['/', '/nl/tools/', '/nl/onderwijs/', '/nl/onderzoek/', '/nl/toepassingen/', '/en/', '/en/about/', '/onderwijsin/', '/tools/wihtml/', '/tools/wihtml/bibliotheek/'];
+const pages = ['/', '/nl/blog/', '/nl/blog/wat-ons-werk-ons-werk-maakt/', '/nl/tools/', '/nl/onderwijs/', '/nl/onderzoek/', '/nl/toepassingen/', '/en/', '/en/about/', '/onderwijsin/', '/tools/wihtml/', '/tools/wihtml/bibliotheek/'];
 let browser;
 try {
   let ready = false;
@@ -79,6 +79,23 @@ try {
   const firstPageText = await page.locator('main').innerText();
   const emojiRanges = new RegExp('[' + String.fromCodePoint(0x1F300) + '-' + String.fromCodePoint(0x1FAFF) + String.fromCodePoint(0x2600) + '-' + String.fromCodePoint(0x27BF) + ']', 'u');
   assert(!emojiRanges.test(firstPageText), 'No emoji in homepage');
+  // EAI article diagrams are semantic and usable on small and large screens.
+  await page.goto(base + '/nl/blog/wat-ons-werk-ons-werk-maakt/', { waitUntil: 'load' });
+  assert.equal(await page.locator('.eai-story-example').count(), 3, 'Three professional examples');
+  assert.equal(await page.locator('.eai-story-phase-grid li').count(), 4, 'Four learning moments');
+  assert.equal(await page.locator('.eai-story-mail-card').count(), 2, 'Two contrasting mails');
+  assert.equal(await page.locator('.eai-story-questions li').count(), 4, 'Four team questions');
+  const articleGlyphs = await page.locator('main').innerText();
+  assert(!emojiRanges.test(articleGlyphs), 'No emoji in article');
+  await page.setViewportSize({ width: 390, height: 844 });
+  const storyMeasurements = await page.evaluate(() => {
+    const body = document.querySelector('.eai-story-body').getBoundingClientRect();
+    const viewport = document.documentElement.clientWidth;
+    return { viewport, scrollWidth:document.documentElement.scrollWidth, left:body.left, right:body.right };
+  });
+  assert(storyMeasurements.left >= 15 && storyMeasurements.right <= storyMeasurements.viewport - 15, 'Article needs readable side margins on mobile');
+  assert(storyMeasurements.scrollWidth <= storyMeasurements.viewport + 1, 'Article must not scroll horizontally');
+
   await page.goto(base + '/nl/tools/', { waitUntil: 'load' });
   assert.equal(await page.locator('.eai-site-language a[lang="en"]').getAttribute('href'), '/en/tools/');
   assert.equal(await page.locator('.eai-site-language a[lang="nl"]').getAttribute('href'), '/nl/tools/');

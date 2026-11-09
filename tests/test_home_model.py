@@ -70,7 +70,14 @@ class HomeModelTests(unittest.TestCase):
         self.assertEqual(landing.h1.get_text(' ', strip=True), 'Wat moeten we samen bespreken over AI?')
         self.assertEqual(article.h1.get_text(' ', strip=True), 'Wat ons werk ons werk maakt')
         self.assertIsNotNone(landing.select_one('a[href="/nl/blog/wat-ons-werk-ons-werk-maakt/"]'))
-        self.assertIn('Efficiënt werken betekent', article.get_text(' ', strip=True))
+        self.assertIn('efficiënt', article.get_text(' ', strip=True).lower())
+        self.assertEqual(len(article.select('.eai-story-example')), 3)
+        self.assertEqual(len(article.select('.eai-story-phase-grid li')), 4)
+        self.assertEqual(len(article.select('.eai-story-mail-card')), 2)
+        self.assertEqual(len(article.select('.eai-story-questions li')), 4)
+        self.assertEqual(len(article.select('figure')), 4)
+        self.assertEqual(len(article.select('main h1')), 1)
+        self.assertIn('/assets/site-editorial.css', [a.get('href') for a in article.select('link[rel=stylesheet]')])
         self.assertNotIn('—', article.main.get_text())
 
     def test_repeatable_render(self):
