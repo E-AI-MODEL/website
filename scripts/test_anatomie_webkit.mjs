@@ -126,7 +126,7 @@ try {
   await page.waitForFunction(() => {
     const control = document.querySelector('.depth-control');
     return control && !control.hidden &&
-      control.textContent.includes('Onderdeel voor onderdeel ontleden');
+      control.textContent.includes('Ontleden');
   }, null, {timeout:10000});
 
   const muscleReport = await page.evaluate(() => {
@@ -157,8 +157,18 @@ try {
   assert.equal(muscleReport.transparent, 0, 'De spierweefsels moeten duidelijk en dekkend zijn');
   // De eerdere controles zoomen op botten. Toon voor deze overzichtsfoto
   // eerst het volledige spierstelsel, anders staat alleen een kuit in beeld.
+  // Sluit een eerder geopend stelselmenu en een oude botselectie.
+  // De overzichtsfoto toont zo het echte, onbelemmerde spiermodel.
+  if (await page.locator('#app').evaluate(el => el.classList.contains('systems-open'))) {
+    await page.locator('#systemsToggle').click();
+  }
+  await page.waitForFunction(() => !document.querySelector('#app')?.classList.contains('systems-open'), null, {timeout:4000});
+  const calloutClose = page.locator('[data-callout="close"]').first();
+  if (await calloutClose.isVisible()) await calloutClose.click();
   await page.locator('#frontViewBtn').click();
-  await page.waitForTimeout(650);
+  await page.waitForTimeout(750);
+  const drawerOpen = await page.locator('#app').evaluate(el=>el.classList.contains('systems-open'));
+  assert.equal(drawerOpen, false, 'Stelsellijst mag het model op de screenshot niet afdekken');
   mkdirSync('test-results',{recursive:true});
   await page.screenshot({path:'test-results/anatomie-spieren-rood.png'});
   assert(muscleReport.covered > 15, 'Fascia krijgt nog geen terughoudende weergave');
