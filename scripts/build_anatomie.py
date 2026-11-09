@@ -69,6 +69,21 @@ def patch_upstream(source: Path) -> None:
     js, count = re.subn(r"const SYSTEM_ICONS = \{.*?\};", replacement, js, count=1, flags=re.DOTALL)
     if count != 1:
         raise RuntimeError("Cannot find the system icon map in upstream")
+    # Dutch controls for the EAI edition. Anatomical structure names remain in
+    # their available source languages; their identity is not rewritten.
+    names = {
+        "skeletal: 'Skeletal system'": "skeletal: 'Skelet'",
+        "muscular: 'Muscular system'": "muscular: 'Spieren'",
+        "joints: 'Joints'": "joints: 'Gewrichten'",
+        "cardiovascular: 'Cardiovascular system'": "cardiovascular: 'Hart en bloedvaten'",
+        "lymphatic: 'Lymphoid organs'": "lymphatic: 'Lymfestelsel'",
+        "nervous: 'Nervous system & sense organs'": "nervous: 'Zenuwstelsel'",
+        "visceral: 'Visceral systems'": "visceral: 'Organen'",
+    }
+    for original, translated in names.items():
+        if original not in js:
+            raise RuntimeError(f"Source system label changed: {original}")
+        js = js.replace(original, translated, 1)
     sidebar.write_text(js, encoding="utf-8")
 
     # The detailed part lists stay closed until visitors request them.
@@ -114,6 +129,54 @@ def patch_upstream(source: Path) -> None:
         "      content.style.display = 'block';\n\n      // Building the list here",
         "      content.style.display = group.querySelector('[data-system-expand]')?.getAttribute('aria-expanded') === 'true' ? 'block' : 'none';\n\n      // Building the list here", 1)
     sidebar.write_text(js, encoding="utf-8")
+
+    presets_file = source / "src" / "data" / "presets.js"
+    presets_js = presets_file.read_text(encoding="utf-8")
+    for original, translated in {
+        "en: 'Skeleton, front'": "en: 'Skelet, vooraanzicht'",
+        "en: 'Thigh muscles'": "en: 'Beenspieren'",
+        "en: 'Heart and great vessels'": "en: 'Hart en bloedvaten'",
+    }.items():
+        if original not in presets_js:
+            raise RuntimeError(f"Source preset changed: {original}")
+        presets_js = presets_js.replace(original, translated, 1)
+    presets_file.write_text(presets_js, encoding="utf-8")
+
+    translations_file = source / "src" / "data" / "translations.js"
+    translations_js = translations_file.read_text(encoding="utf-8")
+    translations_js += """
+// EAI edition: Dutch interface; anatomical terminology remains from the source.
+Object.assign(translationsEn, {
+  search_placeholder: 'Zoek een anatomische structuur...',
+  systems: 'Lichaamsstelsels', info: 'Informatie', help: 'Hulp',
+  front_view: 'Voor', side_view: 'Zij', back_view: 'Achter',
+  top_view: 'Boven', reset: 'Herstel',
+  depth: 'Diepte', select_structure: 'Kies een structuur',
+  click_to_select: 'Klik op het 3D-model voor informatie',
+  loading_model: 'Anatomisch model laden...',
+  isolate: 'Isoleer', hide: 'Verberg', transparent: 'Transparant',
+  show_all: 'Toon alles', loading_structure: 'Structuur laden...',
+  no_results: 'Geen resultaten', retry: 'Opnieuw',
+  name: 'Naam', system: 'Stelsel', region: 'Regio',
+  description: 'Beschrijving', functions: 'Functies',
+  origin: 'Oorsprong', insertion: 'Aanhechting',
+  innervation: 'Innervatie', vascularization: 'Doorbloeding',
+  clinical_notes: 'Klinische opmerkingen', parts: 'Onderdelen',
+  help_title: 'Bediening', controls_title: 'Bediening',
+  help_computer: 'Computer', help_touch: 'Aanraken',
+  help_left_drag: 'Slepen', help_right_drag: 'Rechtermuisknop slepen',
+  help_rotate: 'Draaien', help_wheel: 'Scrollen', help_zoom: 'Zoomen',
+  help_pan: 'Verschuiven', help_double_click: 'Dubbelklikken',
+  help_frame: 'In beeld brengen', help_select: 'Selecteren',
+  close: 'Sluiten', help_credits: 'Bronnen en licenties',
+  help_toolbar: 'Kijkrichtingen', help_panels: 'Panelen',
+  action_isolate: 'Isoleer', action_hide: 'Verberg',
+  action_transparent: 'Maak transparant', action_restore: 'Alles tonen',
+  read_more: 'Lees meer op Wikipedia',
+  no_definition: 'Voor deze structuur is geen beschrijving beschikbaar.'
+});
+"""
+    translations_file.write_text(translations_js, encoding="utf-8")
 
     atlas_html = index.read_text(encoding="utf-8")
     viewer_anchor = '<div id="viewerContainer" class="viewer-container">'
