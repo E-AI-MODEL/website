@@ -1,87 +1,187 @@
-// Eén regeling om overlappende stelsels transparanter te maken.
-// Geen fictieve anatomische doorsnede: de GLB-data bevatten geen huidlagen.
+// Ontleden bij een enkel geschikt stelsel; stelsels vergelijken bij meerdere.
+// Ontleden verbergt echte modelstructuren, maar claimt geen klinische laagindeling.
 import { state, subscribe } from '../state/store.js';
-import { getSystemVisibilityState, setSystemTransparency } from '../viewer/visibility.js';
+import {
+  getSystemVisibilityState, setSystemTransparency, setPartTransparency,
+  getPartVisibility, setPartVisibility
+} from '../viewer/visibility.js';
+import { deselectPart } from '../viewer/selection.js';
 
 const ORDER = ['muscular','lymphatic','cardiovascular','visceral','joints','nervous','skeletal'];
-const LABEL = { muscular:'spieren', lymphatic:'lymfestelsel', cardiovascular:'hart en bloedvaten',
-  visceral:'organen', joints:'gewrichten', nervous:'zenuwstelsel', skeletal:'skelet' };
+const LABELS = {
+  muscular:'Spieren', lymphatic:'Lymfestelsel', cardiovascular:'Hart en bloedvaten',
+  visceral:'Organen', joints:'Gewrichten', nervous:'Zenuwstelsel', skeletal:'Skelet'
+};
+const PEELABLE = new Set(['muscular','visceral','cardiovascular','lymphatic']);
+const QUIET_REPRODUCTIVE = [
+  'Corpus cavernosum of penis','Corpus spongiosum of penis',
+  'Glans penis','Testis.l','Testis.r','Epididymis.l','Epididymis.r'
+];
+const OPACITIES = [1, .82, .62, .42, .24];
 
 let wrapper = null;
-let slider = null;
-let status = null;
-let loadedVisible = [];
-let updating = false;
+let shownSystems = [];
+let mode = null;
+let focusSystem = 'skeletal';
+let compareStep = 0;
+let peeled = [];
+let adjusting = false;
+let statusText = '';
 
-function shown() {
-  return ORDER.filter(id => state.loadedSystems.includes(id) && getSystemVisibilityState(id).visible);
+function visibleSystems() {
+  return ORDER.filter(id => state.loadedSystems.includes(id) &&
+    getSystemVisibilityState(id).visible);
 }
-function updateStatus(value) {
-  if (!status) return;
-  if (value === 0) {
-    status.textContent = 'Alle gekozen stelsels zichtbaar';
-    return;
-  }
-  const active = loadedVisible;
-  const n = Math.max(0,Math.min(active.length-2,Math.floor(value / 100 * (active.length-1))));
-  const fading = active.slice(0,n+1).map(id => LABEL[id]).join(', ');
-  status.textContent = fading + ' transparanter. ' + LABEL[active.at(-1)] + ' blijft zichtbaar.';
+
+function restorePeel() {
+  const toRestore = peeled.splice(0);
+  toRestore.reverse().forEach(id => setPartVisibility(id, true));
 }
-function sync() {
-  if (!wrapper || updating) return;
-  loadedVisible = shown();
-  wrapper.hidden = loadedVisible.length < 2;
-  if (wrapper.hidden) {
-    slider.value = '0';
-    if (status) status.textContent = '';
-  } else {
-    updateStatus(Number(slider.value));
-  }
-}
-function apply(value) {
-  if (loadedVisible.length < 2) return;
-  updating = true;
+
+function applyComparison() {
+  if (adjusting || shownSystems.length < 2) return;
+  adjusting = true;
   try {
-    const progress = value / 100 * (loadedVisible.length - 1);
-    loadedVisible.forEach((id,index) => {
-      // Een stelsel blijft zichtbaar; de laatste laag blijft volledig intact.
-      const opacity = index === loadedVisible.length-1 ? 1
-        : Math.max(0.24, Math.min(1, 1 - (progress-index)));
-      setSystemTransparency(id, opacity);
+    const opacity = OPACITIES[compareStep];
+    shownSystems.forEach(id => setSystemTransparency(id, id === focusSystem ? 1 : opacity));
+    // Only quiet in a comparison with another focus. Choosing Organs as focus
+    // restores the original anatomical display; no structures are omitted.
+    if (focusSystem !== 'visceral' && shownSystems.includes('visceral')) {
+      QUIET_REPRODUCTIVE.forEach(id => {
+        if (state.partsData?.[id]) setPartTransparency(id, Math.min(.16, opacity));
+      });
+    }
+  } finally {
+    adjusting = false;
+  }
+}
+
+function render() {
+  if (!wrapper) return;
+  wrapper.hidden = !mode;
+  if (!mode) return;
+
+  if (mode === 'compare') {
+    wrapper.innerHTML = '<span class="depth-label">Stelsels vergelijken</span>' +
+      '<label class="eai-layer-focus" for="eaiFocusSystem">Blijft duidelijk zichtbaar</label>' +
+      '<select id="eaiFocusSystem" aria-label="Stelsel vooraan"></select>' +
+      '<div class="eai-step-row">' +
+      '<button type="button" data-depth-step="-1" aria-label="Andere stelsels duidelijker maken">−</button>' +
+      '<strong class="eai-step-value" aria-live="polite">Stap ' + compareStep + ' van 4</strong>' +
+      '<button type="button" data-depth-step="1" aria-label="Andere stelsels transparanter maken">+</button>' +
+      '</div><p id="eaiDepthStatus" class="eai-depth-status" role="status">' +
+      (compareStep === 0 ? 'Andere stelsels blijven zichtbaar.' :
+      'Andere stelsels op ' + Math.round(OPACITIES[compareStep] * 100) + '% zichtbaarheid.') +
+      '</p>';
+    const select = wrapper.querySelector('#eaiFocusSystem');
+    shownSystems.forEach(id => {
+      const option = document.createElement('option');
+      option.value = id;
+      option.textContent = LABELS[id];
+      select.appendChild(option);
     });
-    updateStatus(value);
-  } finally { updating = false; }
+    select.value = focusSystem;
+  } else {
+    wrapper.innerHTML = '<span class="depth-label">Onderdeel voor onderdeel ontleden</span>' +
+      '<div class="eai-step-row">' +
+      '<button type="button" data-depth-step="-1" aria-label="Laatst verwijderde onderdeel terugzetten"' +
+      (peeled.length ? '' : ' disabled') + '>−</button>' +
+      '<strong class="eai-step-value" aria-live="polite">' + peeled.length + ' weggenomen</strong>' +
+      '<button type="button" data-depth-step="1" aria-label="Gekozen onderdeel wegnemen">+</button>' +
+      '</div><p id="eaiDepthStatus" class="eai-depth-status" role="status">' +
+      (statusText || 'Kies een onderdeel in het model. Met + haal je dat weg en zie je wat erachter ligt.') +
+      '</p>';
+  }
+}
+
+function sync() {
+  if (!wrapper || adjusting) return;
+  const next = visibleSystems();
+  const nextMode = next.length > 1 ? 'compare' :
+    next.length === 1 && PEELABLE.has(next[0]) ? 'peel' : null;
+  if (nextMode !== mode || next.join('|') !== shownSystems.join('|')) {
+    if (peeled.length) restorePeel();
+    compareStep = 0;
+    statusText = '';
+  }
+  shownSystems = next;
+  mode = nextMode;
+  if (mode === 'compare') {
+    if (!shownSystems.includes(focusSystem)) {
+      focusSystem = shownSystems.includes('skeletal') ? 'skeletal' : shownSystems.at(-1);
+    }
+    applyComparison();
+  }
+  render();
 }
 
 export function initDepthSlider() {
   const container = document.getElementById('viewerContainer');
-  if (!container || slider) return wrapper;
+  if (!container || wrapper) return wrapper;
   wrapper = document.createElement('div');
   wrapper.className = 'depth-control eai-layer-control';
   wrapper.hidden = true;
-  wrapper.innerHTML = `<label class="depth-label" for="depthSlider">Stelsels vergelijken</label>
-    <input type="range" id="depthSlider" class="depth-slider" min="0" max="100"
-      value="0" step="5" aria-describedby="eaiDepthStatus">
-    <span id="eaiDepthStatus" class="eai-depth-status" role="status" aria-live="polite"></span>`;
   container.appendChild(wrapper);
-  slider = wrapper.querySelector('#depthSlider');
-  status = wrapper.querySelector('#eaiDepthStatus');
-  slider.addEventListener('input', () => apply(Number(slider.value)));
+  wrapper.addEventListener('click', event => {
+    const button = event.target.closest('[data-depth-step]');
+    if (!button) return;
+    const direction = Number(button.dataset.depthStep);
+    if (mode === 'compare') {
+      compareStep = Math.max(0, Math.min(OPACITIES.length - 1, compareStep + direction));
+      applyComparison();
+      render();
+      return;
+    }
+    if (mode !== 'peel') return;
+    if (direction < 0) {
+      const id = peeled.pop();
+      if (id) setPartVisibility(id, true);
+      statusText = id ? 'Onderdeel teruggezet. Tik op een ander onderdeel om verder te gaan.' : '';
+    } else {
+      const id = state.selectedPart?.id;
+      if (!id || state.partsData?.[id]?.system !== shownSystems[0] ||
+        !getPartVisibility(id).visible) {
+        statusText = 'Tik eerst op een zichtbaar onderdeel van dit stelsel.';
+      } else {
+        // Clearing selection also restores the ghosted surrounding structures.
+        deselectPart();
+        setPartVisibility(id, false);
+        peeled.push(id);
+        statusText = 'Onderdeel weggenomen. Daarachter kun je verder selecteren.';
+      }
+    }
+    render();
+  });
+  wrapper.addEventListener('change', event => {
+    if (event.target.id !== 'eaiFocusSystem') return;
+    focusSystem = event.target.value;
+    applyComparison();
+    render();
+  });
+
   subscribe('systemShown', resetDepthSlider);
   subscribe('systemHidden', resetDepthSlider);
-  subscribe('allPartsRestored', resetDepthSlider);
+  subscribe('allPartsRestored', () => {
+    peeled = [];
+    compareStep = 0;
+    statusText = '';
+    sync();
+  });
   sync();
   return wrapper;
 }
 
+// Used by the existing systems toggle. Restore only the changes made here.
 export function resetDepthSlider() {
-  if (!slider) return;
-  if (!updating) {
-    const wasVisible = loadedVisible;
-    updating = true;
-    try { wasVisible.forEach(id => setSystemTransparency(id, 1)); }
-    finally { updating = false; }
+  if (!wrapper || adjusting) return;
+  adjusting = true;
+  try {
+    restorePeel();
+    shownSystems.forEach(id => setSystemTransparency(id, 1));
+    compareStep = 0;
+    statusText = '';
+  } finally {
+    adjusting = false;
   }
-  slider.value = '0';
   sync();
 }
