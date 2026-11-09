@@ -167,6 +167,14 @@ try {
   if (await calloutClose.isVisible()) await calloutClose.click();
   await page.locator('#frontViewBtn').click();
   await page.waitForTimeout(750);
+  const positions = await page.evaluate(() => ({
+    stage: document.querySelector('#viewerContainer').getBoundingClientRect().toJSON(),
+    control: document.querySelector('.depth-control').getBoundingClientRect().toJSON()
+  }));
+  assert(positions.control.top >= positions.stage.top - 2,
+    'Ontleedbediening verdwijnt onder de bovenbalk op mobiel');
+  assert(positions.control.bottom < positions.stage.bottom,
+    'Ontleedbediening valt buiten het mobiele modelvenster');
   const drawerOpen = await page.locator('#app').evaluate(el=>el.classList.contains('systems-open'));
   assert.equal(drawerOpen, false, 'Stelsellijst mag het model op de screenshot niet afdekken');
   mkdirSync('test-results',{recursive:true});
