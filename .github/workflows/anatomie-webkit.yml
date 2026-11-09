@@ -40,4 +40,4 @@ jobs:
         if: always()
         with:
           name: anatomy-webkit-screenshot
-          path: test-results/anatomie-webkit-mobile.png
+          path: test-results/anatomie-*.png
