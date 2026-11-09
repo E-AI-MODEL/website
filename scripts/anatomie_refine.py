@@ -14,21 +14,21 @@ def refine_anatomy(source: Path) -> None:
     root = Path(__file__).resolve().parent.parent / "content" / "anatomie"
     shutil.copyfile(root / "guide.js", source / "src" / "data" / "eaiGuide.js")
     shutil.copyfile(root / "eaiDetail.js", source / "src" / "ui" / "eaiDetail.js")
-    shutil.copyfile(root / "depth.js", source / "src" / "ui" / "depthSlider.js")
+    shutil.copyfile(root / "depthSlider.js", source / "src" / "ui" / "depthSlider.js")
 
+    # The original build may already omit the old shortcut menu.
     main = source / "src" / "main.js"
     js = main.read_text(encoding="utf-8")
-    js = one(js, "import { initEAIExplore } from './ui/eaiExplore.js';\n", "", "quick-menu import")
-    js = one(js, "      initEAIExplore(viewer);\n", "", "quick-menu call")
+    js = js.replace("import { initEAIExplore } from './ui/eaiExplore.js';\\n", "")
+    js = js.replace("      initEAIExplore(viewer);\\n", "")
     main.write_text(js, encoding="utf-8")
 
     html_file = source / "index.html"
     html = html_file.read_text(encoding="utf-8")
     start = html.find('<nav class="eai-explore"')
     end = html.find('</nav>', start) if start >= 0 else -1
-    if start < 0 or end < 0:
-        raise RuntimeError("Duplicate system shortcut menu missing")
-    html = html[:start] + html[end + len('</nav>'):]
+    if start >= 0 and end >= 0:
+        html = html[:start] + html[end + len('</nav>'):]
     html = html.replace(r'\n          <canvas id="threeCanvas"', '<canvas id="threeCanvas"', 1)
     html, n = re.subn(
         r'<!-- Bottom bar - Actions for selected structure -->[\s\S]*?</footer>',
@@ -75,13 +75,6 @@ def refine_anatomy(source: Path) -> None:
 
 """,
         "", "obsolete footer action launcher")
-    js = one(js,
-        """function showFooterActions() {
-  const footer = document.getElementById('footerBar');
-  if (footer) footer.style.display = 'flex';
-}
-
-""", "", "unused footer function")
     selection.write_text(js, encoding="utf-8")
 
     callout = source / "src" / "ui" / "callout.js"
