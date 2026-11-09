@@ -22,7 +22,7 @@ def refine_anatomy(source: Path) -> None:
     # van een los woord afgeleide anatomische functie.
     synonyms = json.loads((root / "synonyms.nl.json").read_text(encoding="utf-8"))
     names = {
-        key.strip().lower(): values[0].strip()
+        key.strip().lower(): values[0].strip()[0].upper() + values[0].strip()[1:]
         for key, values in synonyms.items()
         if isinstance(values, list) and values and isinstance(values[0], str)
         and values[0].strip()
