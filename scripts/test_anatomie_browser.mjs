@@ -75,11 +75,11 @@ try {
       const cb = page.locator('[data-system-checkbox="visceral"]');
       await cb.waitFor({state:'attached'});
       await cb.check();
-      await page.waitForFunction(() => {
+      await page.waitForFunction(initial => {
         let count=0;
         window.ZAnatomy.viewer.scene.traverse(n=>{if(n.isMesh)count++});
-        return count>300;
-      }, null, {timeout:45000});
+        return count>initial+20;
+      }, scene.meshes, {timeout:45000});
       await page.screenshot({path:'test-results/anatomie-met-organen.png'});
     }
     assert.deepEqual(errors, [], 'JavaScript-fouten: '+errors.join('; '));
