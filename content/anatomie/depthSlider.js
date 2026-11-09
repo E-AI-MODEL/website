@@ -82,7 +82,7 @@ function render() {
     });
     select.value = focusSystem;
   } else {
-    wrapper.innerHTML = '<span class="depth-label">Onderdeel voor onderdeel ontleden</span>' +
+    wrapper.innerHTML = '<span class="depth-label" title="Onderdeel voor onderdeel ontleden">Ontleden</span>' +
       '<div class="eai-step-row">' +
       '<button type="button" data-depth-step="-1" aria-label="Laatst verwijderde onderdeel terugzetten"' +
       (peeled.length ? '' : ' disabled') + '>−</button>' +
