@@ -89,7 +89,7 @@ function render() {
       '<strong class="eai-step-value" aria-live="polite">' + peeled.length + ' weggenomen</strong>' +
       '<button type="button" data-depth-step="1" aria-label="Gekozen onderdeel wegnemen">+</button>' +
       '</div><p id="eaiDepthStatus" class="eai-depth-status" role="status">' +
-      (statusText || 'Kies een onderdeel in het model. Met + haal je dat weg en zie je wat erachter ligt.') +
+      (statusText || 'Kies een onderdeel en tik op +.') +
       '</p>';
   }
 }
