@@ -50,12 +50,6 @@ const ITEMS = {
     location: 'De femurkop vormt met het acetabulum het heupgewricht; distaal vormen de femurcondylen gewrichtsvlakken met tibia en patella.',
     mechanism: 'Via spieraanhechtingen aan onder meer trochanter major, trochanter minor en linea aspera worden bewegingen van heup en knie overgebracht.'
   },
-  'patella': {
-    name: 'Knieschijf',
-    function: 'De knieschijf helpt de strekspieren van het bovenbeen de knie efficiënt te strekken.',
-    location: 'Aan de voorzijde van het kniegewricht, in de pees van de bovenbeenspieren.',
-    mechanism: 'De knieschijf vergroot de hefboomwerking van de strekspieren tijdens het strekken van de knie.'
-  },
   'tibia': {
     name: 'Scheenbeen',
     function: 'Het scheenbeen draagt een groot deel van het lichaamsgewicht van de knie naar de enkel.',
@@ -67,12 +61,6 @@ const ITEMS = {
     function: 'De nervus ischiadicus is de grootste zenuw van de plexus sacralis (wortels L4–S3) en voert motorische en sensibele zenuwvezels voor het been.',
     location: 'Verlaat het bekken meestal onder de m. piriformis, loopt achter door bil en bovenbeen en splitst in de n. tibialis en n. fibularis communis.',
     mechanism: 'Innerveert direct onder meer de hamstrings; via zijn eindtakken worden veel spieren en huidgebieden van onderbeen en voet bereikt.'
-  },
-  'hippocampus': {
-    name: 'Hippocampus',
-    function: 'De hippocampus speelt een grote rol bij het vormen van nieuwe herinneringen en het verwerken van ruimtelijke informatie.',
-    location: 'Diep in de slaapkwab van de hersenen, aan beide zijden.',
-    mechanism: 'De hippocampus werkt samen met andere hersengebieden bij het vastleggen en terugvinden van ervaringen.'
   },
   'ascending aorta': {
     name: 'Opstijgende aorta',
