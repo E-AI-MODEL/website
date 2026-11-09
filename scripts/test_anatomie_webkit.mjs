@@ -98,8 +98,9 @@ try {
   );
   assert.equal(await page.locator('#structureInfo .eai-facts-unverified').count(),1,
     'Nog niet beschreven anatomische onderdelen mogen geen verzonnen functie tonen');
-  assert(await page.locator('#infoSidebar').isVisible(),
-    'De brontekst van het gekozen onderdeel moet op mobiel bereikbaar zijn');
+  // Het paneel heeft een CSS-transitie: wacht tot het na de selectie
+  // daadwerkelijk zichtbaar is, niet alleen tot de titel in de DOM staat.
+  await page.locator('#infoSidebar').waitFor({ state:'visible', timeout:6000 });
   assert.equal(await page.locator('#structureInfo .eai-source-description').count(),1,
     'De bestaande Engelstalige beschrijving moet bij onbekende uitleg toegankelijk blijven');
   await page.locator('#infoToggle').click();
