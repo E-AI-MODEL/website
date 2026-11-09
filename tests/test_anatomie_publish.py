@@ -81,10 +81,12 @@ class AnatomyPublishTests(unittest.TestCase):
         self.assertIn("'anterior cruciate ligament'", guide)
         self.assertIn("'fascia lata'", guide)
         self.assertIn("nervus ischiadicus", guide.lower())
-        builder = (ROOT / "scripts/anatomie_ux.py").read_text(encoding="utf-8")
+        builder = (ROOT / "scripts/anatomie_refine.py").read_text(encoding="utf-8")
         self.assertIn("eaiGuide.js", builder)
         self.assertIn("depthSlider.js", builder)
-        self.assertIn("Toon alleen dit", builder)
+        details = (ROOT / "content/anatomie/eaiDetail.js").read_text(encoding="utf-8")
+        self.assertIn("Toon alleen dit", details)
+        self.assertIn("Verberg dit onderdeel", details)
 
     def test_real_source_meshes_and_decoder_are_local(self):
         for system in SYSTEMS:
