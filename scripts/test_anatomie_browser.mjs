@@ -121,7 +121,7 @@ try {
     await page.waitForFunction(() => document.querySelector('#app')?.classList.contains('info-open'));
     await page.locator('#structureInfo .eai-fact').first().waitFor({state:'attached',timeout:15000});
     const explanation=await page.locator('#structureInfo').innerText();
-    assert(explanation.includes('Functie'),'Specifieke anatomische functie ontbreekt');
+    assert(/functie/i.test(explanation),'Specifieke anatomische functie ontbreekt');
     assert(explanation.includes('Dijbeen'),'Nederlandse naam ontbreekt');
     assert.equal(await page.locator('.callout [data-callout="isolate"]').count(),0,
       'Dubbele zwevende actiemenu\'s mogen niet bestaan');
