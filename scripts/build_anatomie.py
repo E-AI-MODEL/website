@@ -13,6 +13,7 @@ import shutil
 import subprocess
 import tempfile
 from pathlib import Path
+from anatomie_shell import refit_shell
 
 SOURCE_URL = "https://github.com/nqwrc/3d-anatomy.git"
 SOURCE_COMMIT = "8ca3b7421bcfbe88b85859eb1983d5cf79f21749"
@@ -293,6 +294,7 @@ def build(destination: Path) -> None:
             if not (source / rel).is_file():
                 raise RuntimeError(f"Required source file missing: {rel}")
         patch_upstream(source)
+        refit_shell(source)
         command("npm", "ci", "--no-audit", "--no-fund", cwd=source)
         command("npm", "run", "lint", cwd=source)
         command("npm", "run", "build", "--", f"--base={BASE}", cwd=source)

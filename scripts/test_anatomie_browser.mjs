@@ -46,7 +46,12 @@ try {
       app?.viewer?.scene?.traverse(node => { if (node.isMesh && node.visible) count++; });
       return count > 50;
     }, null, {timeout:60000});
-    await page.waitForTimeout(500);
+    await page.waitForFunction(
+      () => window.__EAI_ANATOMY_UI_READY === true
+        && document.querySelectorAll('#systemsList [data-system-checkbox]').length === 7,
+      null, {timeout:30000}
+    );
+    await page.waitForTimeout(150);
     const scene = await page.evaluate(() => {
       const viewer=window.ZAnatomy.viewer,canvas=document.querySelector('#threeCanvas');
       let meshes=0;
@@ -65,6 +70,17 @@ try {
     assert(scene.width > 200 && scene.height > 100 && scene.canvasVisible, 'Het 3D-canvas is leeg');
     assert(scene.overflow <= 3, 'Horizontale overloop bij '+width);
     assert(scene.loaded, 'Het skelet ontbreekt in de stelsellijst');
+    const shell = await page.evaluate(() => ({
+      viewerWidth: document.querySelector('#viewerContainer').getBoundingClientRect().width,
+      viewportWidth: innerWidth,
+      hasLegacyLanguageMenu: !!document.querySelector('#langSelect'),
+      systemsClosed: document.querySelector('#systemsOpen')?.getAttribute('aria-expanded'),
+      helpHidden: document.querySelector('#helpModal')?.classList.contains('hidden')
+    }));
+    assert(shell.viewerWidth >= shell.viewportWidth - 4, '3D-model gebruikt niet de volle schermbreedte');
+    assert(!shell.hasLegacyLanguageMenu, 'Oude EN/IT-taalkeuze is nog zichtbaar');
+    assert.equal(shell.systemsClosed, 'false', 'Stelselpaneel staat niet standaard gesloten');
+    assert(shell.helpHidden, 'Hulptekst staat ongevraagd open');
     const layout = await page.evaluate(() => {
       const box=el => {const r=el.getBoundingClientRect();return {left:r.left,right:r.right,top:r.top,bottom:r.bottom,width:r.width,height:r.height}};
       return {
@@ -96,6 +112,12 @@ try {
       await page.waitForTimeout(400);
       const after = await page.evaluate(() => window.ZAnatomy.viewer.camera.position.toArray());
       assert(after.some((n,i)=>Math.abs(n-scene.camera[i])>.005),'Slepen draait de anatomie niet');
+      await page.locator('#systemsOpen').click();
+      await page.waitForFunction(
+        () => document.querySelector('#app')?.classList.contains('systems-open')
+          && getComputedStyle(document.querySelector('#systemsSidebar')).visibility === 'visible',
+        null, {timeout:7000}
+      );
       const cb = page.locator('[data-system-checkbox="visceral"]');
       await cb.waitFor({state:'attached'});
       await cb.check();
