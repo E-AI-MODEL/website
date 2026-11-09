@@ -88,6 +88,32 @@ class AnatomyPublishTests(unittest.TestCase):
         self.assertIn("Toon alleen dit", details)
         self.assertIn("Verberg dit onderdeel", details)
 
+    def test_existing_dutch_search_names_are_reused_in_selection(self):
+        """Nederlandse zoeknamen worden niet dubbel handmatig beheerd."""
+        import json
+        names = json.loads(
+            (ROOT / "content/anatomie/synonyms.nl.json").read_text(encoding="utf-8")
+        )
+        self.assertGreaterEqual(len(names), 80)
+        self.assertEqual(names["fibula"][0], "kuitbeen")
+        self.assertEqual(names["humerus"][0], "opperarmbeen")
+
+        refine = (ROOT / "scripts/anatomie_refine.py").read_text(encoding="utf-8")
+        detail = (ROOT / "content/anatomie/eaiDetail.js").read_text(encoding="utf-8")
+        self.assertIn('eaiNames.js', refine)
+        self.assertIn('dutchName(baseName)', detail)
+        self.assertIn("Relaties in het 3D-model", detail)
+        self.assertIn("De bestaande Engelstalige beschrijving", detail)
+        self.assertIn("meegeleverde atlasgegevens", detail)
+
+        # Test de werkelijk gebundelde naamfunctie, niet alleen de Python-patch.
+        bundles = list((ATLAS / "assets").glob("*.js"))
+        self.assertTrue(bundles, "Gebundelde 3D-code ontbreekt")
+        combined = "\\n".join(bundle.read_text(encoding="utf-8") for bundle in bundles)
+        self.assertIn("kuitbeen", combined)
+        self.assertIn("opperarmbeen", combined)
+        self.assertIn("Relaties in het 3D-model", combined)
+
     def test_real_source_meshes_and_decoder_are_local(self):
         for system in SYSTEMS:
             with self.subTest(system=system):
