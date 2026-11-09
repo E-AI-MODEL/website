@@ -132,6 +132,27 @@ function setupMesh(mesh, systemId, viewer) {""",
         "shared material refinement")
     loader.write_text(meshes, encoding="utf-8")
 
+    # A compare step at 100% must restore the original material, not force
+    # all anatomical materials to opacity=1. Otherwise transparent fascia
+    # becomes opaque after switching from Compare to one muscular system.
+    visibility = source / "src" / "viewer" / "visibility.js"
+    visibility_js = visibility.read_text(encoding="utf-8")
+    visibility_js = one(visibility_js,
+        """  ownMeshesOf(partId).forEach(mesh => {
+    if (opacity >= 1 && !mesh.userData.ownsMaterial) return;
+
+    ownMaterials(mesh).forEach(mat => {""",
+        """  ownMeshesOf(partId).forEach(mesh => {
+    if (opacity >= 1) {
+      releaseMaterial(mesh, partId);
+      return;
+    }
+
+    ownMaterials(mesh).forEach(mat => {""",
+        "restore source material when comparison ends")
+    visibility.write_text(visibility_js, encoding="utf-8")
+
+
     # Gebruik de bestaande Nederlandse zoektermen ook als getoonde namen.
     # Alleen exacte structuurbenamingen krijgen een label, nooit een op basis
     # van een los woord afgeleide anatomische functie.
