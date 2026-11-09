@@ -20,6 +20,7 @@ jobs:
           node-version: '22'
       - run: pip install beautifulsoup4
       - run: python scripts/build_site.py --sources content/legacy --out site-build
+      - run: python scripts/build_anatomie.py --out site-build/tools/anatomie
       - name: Build self-hosted anatomy before verifying site links
         run: python scripts/build_anatomie.py --out site-build/tools/anatomie
       - run: python scripts/prepare_ui.py --root site-build
