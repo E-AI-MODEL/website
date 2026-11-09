@@ -85,8 +85,8 @@ jobs:
           base = 'https://eaimodel.nl'
           html = urlopen(base + '/tools/anatomie/', timeout=30).read().decode('utf-8')
           for kind, pattern, expected in (
-              ('javascript', r'<script[^>]+src="(/tools/anatomie/assets/[^"]+\\.js)"', ('javascript', 'ecmascript')),
-              ('stylesheet', r'<link[^>]+href="(/tools/anatomie/assets/[^"]+\\.css)"', ('css',)),
+              ('javascript', r'<script[^>]+src="(/tools/anatomie/assets/[^"]+[.]js)"', ('javascript', 'ecmascript')),
+              ('stylesheet', r'<link[^>]+href="(/tools/anatomie/assets/[^"]+[.]css)"', ('css',)),
           ):
               match = re.search(pattern, html)
               assert match, f'Live anatomy {kind} asset link missing'
