@@ -16,7 +16,6 @@ import tempfile
 from pathlib import Path
 from anatomie_shell import refit_shell
 from anatomie_refine import refine_anatomy
-from anatomie_ux import apply as apply_anatomy_ux
 
 SOURCE_URL = "https://github.com/nqwrc/3d-anatomy.git"
 SOURCE_COMMIT = "8ca3b7421bcfbe88b85859eb1983d5cf79f21749"
@@ -349,6 +348,21 @@ function dutchTermsFor(base) {
     )
     scene_file.write_text(scene_js, encoding="utf-8")
 
+    # Load the local, responsive shortcut interface after the original viewer.
+    explore_source = Path(__file__).resolve().parent.parent / "content" / "anatomie" / "explore.js"
+    shutil.copyfile(explore_source, source / "src" / "ui" / "eaiExplore.js")
+    main_file = source / "src" / "main.js"
+    main_js = main_file.read_text(encoding="utf-8")
+    hook = "import { initUI } from './ui/sidebar.js';"
+    if hook not in main_js:
+        raise RuntimeError("Upstream viewer import changed")
+    main_js = main_js.replace(hook, hook + "\nimport { initEAIExplore } from './ui/eaiExplore.js';", 1)
+    hook = "      await initUI(viewer);"
+    if hook not in main_js:
+        raise RuntimeError("Upstream UI initialisation changed")
+    main_js = main_js.replace(hook, hook + "\n      initEAIExplore(viewer);", 1)
+    main_file.write_text(main_js, encoding="utf-8")
+
     # The runtime fetches JSON translations and replaces the JS fallback.
     # Patch that downloaded dictionary too, so the visible UI remains Dutch.
     runtime_en = source / "public" / "data" / "translations" / "en.json"
@@ -448,6 +462,21 @@ function dutchTermsFor(base) {
         '<meta name="description" content="Interactive 3D anatomy atlas built on Z-Anatomy">',
         '<meta name="description" content="Onderzoek het menselijk lichaam in een interactieve, zelfstandig gehoste 3D-atlas.">', 1
     )
+    # Compact teaching entry-points, rendered over the 3D viewer.
+    # Each button opens one of our locally hosted GLB models.
+    explore_markup = """<nav class="eai-explore" id="eaiExplore" aria-label="Onderzoek een lichaamsstelsel">
+      <span class="eai-explore-label">Begin met een stelsel</span>
+      <div class="eai-explore-options">
+        <button type="button" data-eai-system="skeletal" aria-pressed="true">Skelet</button>
+        <button type="button" data-eai-system="muscular" aria-pressed="false">Spieren</button>
+        <button type="button" data-eai-system="cardiovascular" aria-pressed="false">Hart en vaten</button>
+        <button type="button" data-eai-system="nervous" aria-pressed="false">Zenuwen</button>
+        <button type="button" data-eai-system="visceral" aria-pressed="false">Organen</button>
+      </div>
+      <span class="eai-sr-only" role="status" aria-live="polite" data-eai-explore-status></span>
+    </nav>"""
+    assert atlas_html.count('<canvas id="threeCanvas"') == 1
+    atlas_html = atlas_html.replace('<canvas id="threeCanvas"', explore_markup + '\\n          <canvas id="threeCanvas"', 1)
     index.write_text(atlas_html, encoding="utf-8")
 
     style = source / "src" / "styles" / "main.css"
@@ -518,7 +547,6 @@ def build(destination: Path) -> None:
         patch_upstream(source)
         refit_shell(source)
         refine_anatomy(source)
-        apply_anatomy_ux(source)
         command("npm", "ci", "--no-audit", "--no-fund", cwd=source)
         command("npm", "run", "lint", cwd=source)
         command("npm", "run", "build", "--", f"--base={BASE}", cwd=source)
