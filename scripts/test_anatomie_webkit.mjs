@@ -74,8 +74,9 @@ try {
   assert.equal(await page.locator('#structureInfo .eai-detail-actions').count(),1,
     'De selectie heeft niet exact een contextmenu');
   await page.locator('#infoToggle').click();
-  assert(await page.locator('#infoSidebar').isHidden(),
-    'Het informatiepaneel kan niet worden gesloten');
+  await page.locator('#infoSidebar').waitFor({state:'hidden',timeout:5000});
+  assert(!(await page.locator('#app').evaluate(el=>el.classList.contains('info-open'))),
+    'Het informatiepaneel blijft in de geopende toestand staan');
   mkdirSync('test-results',{recursive:true});
   await page.screenshot({path:'test-results/anatomie-webkit-mobile.png'});
   console.log('WebKit toont het skelet zonder laadspinner in '+elapsed+' ms, '+report.triangles+' driehoeken');
