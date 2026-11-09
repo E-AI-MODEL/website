@@ -6,8 +6,8 @@
   <meta name="description" content="Interactive 3D anatomy atlas built on Z-Anatomy">
   <title>AN / 01 | Anatomisch Observatorium | EAI</title>
   <link rel="icon" type="image/svg+xml" href="/assets/eai-logo.svg">
-  <script type="module" crossorigin src="/tools/anatomie/assets/index-hrCH3HUk.js"></script>
-  <link rel="stylesheet" crossorigin href="/tools/anatomie/assets/index-BqMh_rFu.css">
+  <script type="module" crossorigin src="/tools/anatomie/assets/index-Cf4aDi85.js"></script>
+  <link rel="stylesheet" crossorigin href="/tools/anatomie/assets/index-OJR0bV3t.css">
 </head>
 <body>
   <div id="app">
@@ -25,7 +25,7 @@
           <div id="searchResults" class="search-results"></div>
         </div>
       </div>
-      <div class="header-right"><a class="eai-back" href="/tools/">Alle tools</a>
+      <div class="header-right"><a class="eai-back" href="/tools/"><span class="eai-back-full">Alle tools</span><span class="eai-back-small">EAI</span></a>
         <button id="searchOpen" class="btn-icon drawer-open" aria-label="Search" title="Search" aria-expanded="false">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
         </button>
@@ -55,7 +55,7 @@
 
       <!-- 3D Viewer -->
       <section class="viewer-section">
-        <div id="viewerContainer" class="viewer-container">
+        <div id="viewerContainer" class="viewer-container"><div class="eai-stage-intro" aria-hidden="true"><span class="eai-stage-kicker">ANATOMIE / 3D-ATLAS</span><h2>Het menselijk lichaam</h2><p>Draai het model. Kies een stelsel. Klik op een structuur om verder te kijken.</p></div>
           <canvas id="threeCanvas" tabindex="0" role="application"
                   aria-label="3D anatomy viewer. Arrow keys orbit, plus and minus zoom."></canvas>
           <div id="loadingOverlay" class="loading-overlay">
