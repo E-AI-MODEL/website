@@ -88,6 +88,7 @@ try {
   await page.locator('#searchInput').fill('kuitbeen');
   const fibula = page.locator('#searchResults .search-result-item[data-part^="Fibula"]').first();
   await fibula.waitFor({state:'visible',timeout:12000});
+  assert.match(await fibula.innerText(),/Kuitbeen/, 'Ook de zoeklijst moet de bekende Nederlandse naam tonen');
   await fibula.click();
   await page.waitForFunction(
     () => document.querySelector('#structureInfo .structure-title h3')?.textContent?.includes('Kuitbeen'),
