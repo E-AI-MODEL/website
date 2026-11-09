@@ -59,7 +59,7 @@ def apply(source: Path) -> None:
       <section class="eai-fact"><h4>Ligging</h4><p>${escapeHtml(guide.location)}</p></section>
       <section class="eai-fact"><h4>Werking en verbindingen</h4><p>${escapeHtml(guide.mechanism)}</p></section>
     ` : `
-      <p class="eai-no-guide">Voor deze afzonderlijke structuur is nog geen gecontroleerde Nederlandse functiebeschrijving beschikbaar. De oorspronkelijke Engelse tekst staat hieronder, voor zover aanwezig.</p>
+      <p class="eai-no-guide">Voor deze afzonderlijke structuur is nog geen specifieke Nederlandse functiebeschrijving beschikbaar. De oorspronkelijke Engelse tekst staat hieronder, voor zover aanwezig.</p>
     `}
     ${relationMarkup(partData.id, lang)}
     <div class="eai-details-actions" aria-label="Acties voor dit onderdeel">
@@ -127,14 +127,20 @@ function showFooterActions()""",
     )
     script = replace_once(
         script,
-        "  target.innerHTML = `\n    ${escapeHtml(text)}",
-        "  target.innerHTML = `\n    ${escapeHtml(text)}",
-        "preserve source text rendering",
-    ) if False else script
+        """function showFooterActions() {\n  const footer = document.getElementById(\'footerBar\');\n  if (footer) footer.style.display = \'flex\';\n}\n\n""",
+        "",
+        "remove unused footer action handler",
+    )
     selection.write_text(script, encoding="utf-8")
 
     callout = source / "src" / "ui" / "callout.js"
     content = callout.read_text(encoding="utf-8")
+    content = replace_once(
+        content,
+        "import { state, translate } from \'../state/store.js\';",
+        "import { state } from \'../state/store.js\';",
+        "remove unused translated callout buttons",
+    )
     content = replace_once(
         content,
         """      <div class="callout-actions">
