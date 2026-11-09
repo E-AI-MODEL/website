@@ -61,8 +61,10 @@ try {
   // Gebruik dezelfde zoek- en selectieroute als een bezoeker op iPhone.
   await page.locator('#searchOpen').click();
   await page.locator('#searchInput').fill('femur');
-  const choice = page.locator('#searchResults .search-result-item:not(.is-empty)').filter({hasText:/Femur/i}).first();
+  const choice = page.locator('#searchResults .search-result-item[data-part^="Femur"]').first();
   await choice.waitFor({state:'visible',timeout:12000});
+  assert.match(await choice.innerText(),/Dijbeen/,
+    'De bestaande Nederlandse modelnaam moet ook in het zoekresultaat staan');
   await choice.click();
   await page.locator('#structureInfo .eai-fact').first().waitFor({state:'visible',timeout:15000});
   assert(await page.locator('#app').evaluate(el=>el.classList.contains('info-open')),
@@ -82,6 +84,27 @@ try {
   await page.locator('#infoSidebar').waitFor({state:'hidden',timeout:5000});
   assert(!(await page.locator('#app').evaluate(el=>el.classList.contains('info-open'))),
     'Het informatiepaneel blijft in de geopende toestand staan');
+  // Ook zonder handmatig geschreven uitleg moet een bestaande Nederlandse
+  // zoekterm de juiste structuur en originele anatomische bron openen.
+  await page.locator('#searchOpen').click();
+  await page.locator('#searchInput').fill('kuitbeen');
+  const fibula = page.locator('#searchResults .search-result-item[data-part^="Fibula"]').first();
+  await fibula.waitFor({state:'visible',timeout:12000});
+  assert.match(await fibula.innerText(),/Kuitbeen/, 'Ook de zoeklijst moet de bekende Nederlandse naam tonen');
+  await fibula.click();
+  await page.waitForFunction(
+    () => document.querySelector('#structureInfo .structure-title h3')?.textContent?.includes('Kuitbeen'),
+    null, {timeout:15000}
+  );
+  assert.equal(await page.locator('#structureInfo .eai-facts-unverified').count(),1,
+    'Nog niet beschreven anatomische onderdelen mogen geen verzonnen functie tonen');
+  // Het paneel heeft een CSS-transitie: wacht tot het na de selectie
+  // daadwerkelijk zichtbaar is, niet alleen tot de titel in de DOM staat.
+  await page.locator('#infoSidebar').waitFor({ state:'visible', timeout:6000 });
+  assert.equal(await page.locator('#structureInfo .eai-source-description').count(),1,
+    'De bestaande Engelstalige beschrijving moet bij onbekende uitleg toegankelijk blijven');
+  await page.locator('#infoToggle').click();
+  await page.locator('#infoSidebar').waitFor({state:'hidden',timeout:5000});
   mkdirSync('test-results',{recursive:true});
   await page.screenshot({path:'test-results/anatomie-webkit-mobile.png'});
   console.log('WebKit toont het skelet zonder laadspinner in '+elapsed+' ms, '+report.triangles+' driehoeken');

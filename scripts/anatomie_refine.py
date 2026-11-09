@@ -2,6 +2,7 @@
 from __future__ import annotations
 import re
 import shutil
+import json
 from pathlib import Path
 
 def one(s: str, before: str, after: str, label: str) -> str:
@@ -15,6 +16,26 @@ def refine_anatomy(source: Path) -> None:
     shutil.copyfile(root / "guide.js", source / "src" / "data" / "eaiGuide.js")
     shutil.copyfile(root / "eaiDetail.js", source / "src" / "ui" / "eaiDetail.js")
     shutil.copyfile(root / "depthSlider.js", source / "src" / "ui" / "depthSlider.js")
+
+    # Gebruik de bestaande Nederlandse zoektermen ook als getoonde namen.
+    # Alleen exacte structuurbenamingen krijgen een label, nooit een op basis
+    # van een los woord afgeleide anatomische functie.
+    synonyms = json.loads((root / "synonyms.nl.json").read_text(encoding="utf-8"))
+    names = {
+        key.strip().lower(): values[0].strip()[0].upper() + values[0].strip()[1:]
+        for key, values in synonyms.items()
+        if isinstance(values, list) and values and isinstance(values[0], str)
+        and values[0].strip()
+    }
+    (source / "src" / "data" / "eaiNames.js").write_text(
+        "// Exacte Nederlandse namen uit de gecontroleerde zoekwoorden.\n"
+        + "const NAMES = " + json.dumps(names, ensure_ascii=False, sort_keys=True)
+        + ";\nexport function dutchName(base) {\n"
+        + "  const key = String(base || '').replace(/\\.[lr]$/, '').trim().toLowerCase();\n"
+        + "  return Object.prototype.hasOwnProperty.call(NAMES, key) ? NAMES[key] : null;\n"
+        + "}\n",
+        encoding="utf-8"
+    )
 
     # The original build may already omit the old shortcut menu.
     main = source / "src" / "main.js"
@@ -93,7 +114,18 @@ def refine_anatomy(source: Path) -> None:
     sidebar = source / "src" / "ui" / "sidebar.js"
     js = sidebar.read_text(encoding="utf-8")
     js = one(js, "import { PRESETS, applyPreset } from '../data/presets.js';",
-        "import { mountVisibilityReset } from './eaiDetail.js';", "sidebar import")
+        "import { mountVisibilityReset } from './eaiDetail.js';\n"
+        "import { dutchName } from '../data/eaiNames.js';", "sidebar import")
+    # Dezelfde bestaande zoekwoorden verschijnen nu ook in de stelsellijst
+    # en in de zoekresultaten, naast het detailpaneel.
+    js = one(js,
+        "label: (info.name?.[lang] || info.name?.en || base).replace(",
+        "label: (dutchName(base) || info.name?.[lang] || info.name?.en || base).replace(",
+        "Dutch label in systems list")
+    js = one(js,
+        "escapeHtml(row.label)",
+        "escapeHtml(dutchName(row.base) || row.label)",
+        "Dutch label in search results")
     js, n = re.subn(r'const SYSTEM_ICONS = \{[\s\S]*?\};\n\n', '', js, count=1)
     if n != 1:
         raise RuntimeError("System icons section changed")
