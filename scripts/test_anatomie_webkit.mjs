@@ -129,7 +129,31 @@ try {
       control.textContent.includes('Onderdeel voor onderdeel ontleden');
   }, null, {timeout:10000});
 
-  await page.locator('#searchOpen').click();
+  const muscleReport = await page.evaluate(() => {
+    const total = {red:0,notRed:0,transparent:0,neutral:0,covered:0};
+    window.ZAnatomy?.viewer?.scene?.traverse(node => {
+      if (!node.isMesh || !node.visible) return;
+      const materials = Array.isArray(node.material) ? node.material : [node.material];
+      if (node.userData.eaiMuscleMesh) {
+        total.red++;
+        if (!materials.every(mat => mat?.color && mat.color.r > mat.color.g * 1.28 &&
+          mat.color.r > mat.color.b * 1.18)) total.notRed++;
+        if (materials.some(mat => mat.transparent || mat.opacity < .99)) total.transparent++;
+      } else if (node.userData.baseMaterial && node.parent) {
+        total.neutral++;
+        if (materials.some(mat => mat.transparent && mat.opacity < .08)) total.covered++;
+      }
+    });
+    return total;
+  });
+  console.log('SPIERKLEUREN', JSON.stringify(muscleReport));
+  assert(muscleReport.red > 130, 'Te weinig echte spieren zichtbaar bij alleen Spieren');
+  assert.equal(muscleReport.notRed, 0, 'Een spier heeft nog geen rode materiaalweergave');
+  assert.equal(muscleReport.transparent, 0, 'De spierweefsels moeten duidelijk en dekkend zijn');
+  assert(muscleReport.covered > 15, 'Fascia krijgt nog geen terughoudende weergave');
+  mkdirSync('test-results',{recursive:true});
+  await page.screenshot({path:'test-results/anatomie-spieren-rood.png'});
+    await page.locator('#searchOpen').click();
   await page.locator('#searchInput').fill('grote bilspier');
   const gluteus = page.locator('#searchResults .search-result-item[data-part^="Gluteus maximus muscle"]').first();
   await gluteus.waitFor({state:'visible',timeout:10000});
