@@ -114,7 +114,7 @@ def refine_anatomy(source: Path) -> None:
     sidebar = source / "src" / "ui" / "sidebar.js"
     js = sidebar.read_text(encoding="utf-8")
     js = one(js, "import { PRESETS, applyPreset } from '../data/presets.js';",
-        "import { mountVisibilityReset } from './eaiDetail.js';\\n"
+        "import { mountVisibilityReset } from './eaiDetail.js';\n"
         "import { dutchName } from '../data/eaiNames.js';", "sidebar import")
     # Dezelfde bestaande zoekwoorden verschijnen nu ook in de stelsellijst
     # en in de zoekresultaten, naast het detailpaneel.
