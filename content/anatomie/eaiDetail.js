@@ -32,9 +32,13 @@ export function refineAnatomyInfo(partData, deselectPart) {
   const title = panel.querySelector('.structure-title h3');
 
   if (guide?.name && title) {
-    title.textContent = guide.name + (
+    const localName = guide.name + (
       info.side === 'left' ? ' (links)' : info.side === 'right' ? ' (rechts)' : ''
     );
+    title.textContent = localName;
+    // Hetzelfde onderdeel krijgt in de 3D-callout dezelfde Nederlandse naam.
+    const anchoredName = document.querySelector('.callout-name');
+    if (anchoredName) anchoredName.textContent = localName;
   }
 
   const facts = document.createElement('div');
@@ -46,7 +50,7 @@ export function refineAnatomyInfo(partData, deselectPart) {
   } else {
     const notice = document.createElement('p');
     notice.className = 'eai-facts-unverified';
-    notice.textContent = 'Voor dit onderdeel ontbreekt nog een gecontroleerde Nederlandstalige functieomschrijving. De oorspronkelijke bronbeschrijving staat hieronder, indien beschikbaar.';
+    notice.textContent = 'Voor dit onderdeel ontbreekt nog een specifieke Nederlandstalige functieomschrijving. De oorspronkelijke bronbeschrijving staat hieronder, indien beschikbaar.';
     facts.appendChild(notice);
   }
 
