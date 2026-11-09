@@ -11,6 +11,7 @@ import json
 import re
 import shutil
 import subprocess
+import sys
 import tempfile
 from pathlib import Path
 from anatomie_shell import refit_shell
@@ -24,7 +25,13 @@ SYSTEMS = (
 )
 
 def command(*args: str, cwd: Path) -> str:
-    result = subprocess.run(args, cwd=cwd, text=True, capture_output=True, check=True)
+    try:
+        result = subprocess.run(args, cwd=cwd, text=True, capture_output=True, check=True)
+    except subprocess.CalledProcessError as error:
+        print(f"Build step failed: {' '.join(args)}", file=sys.stderr)
+        print(error.stdout or "", file=sys.stderr)
+        print(error.stderr or "", file=sys.stderr)
+        raise
     return result.stdout.strip()
 
 def patch_upstream(source: Path) -> None:
