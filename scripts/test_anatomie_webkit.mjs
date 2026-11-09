@@ -88,7 +88,17 @@ try {
   await page.locator('#searchInput').fill('kuitbeen');
   const fibula = page.locator('#searchResults .search-result-item[data-part^="Fibula"]').first();
   await fibula.waitFor({state:'visible',timeout:12000});
+  const chosenFibula = await fibula.getAttribute('data-part');
   await fibula.click();
+  await page.waitForTimeout(450);
+  const fibulaDebug = await page.evaluate(() => ({
+    title: document.querySelector('#structureInfo .structure-title h3')?.textContent,
+    selected: document.querySelector('.callout-name')?.textContent,
+    bodyText: document.querySelector('#structureInfo')?.textContent?.slice(0,220),
+    infoOpen: document.querySelector('#app')?.classList.contains('info-open'),
+    pageErrors: []
+  }));
+  console.log('FIBULA_DEBUG', JSON.stringify({chosenFibula, ...fibulaDebug}));
   await page.waitForFunction(
     () => document.querySelector('#structureInfo .structure-title h3')?.textContent?.includes('Kuitbeen'),
     null, {timeout:15000}
