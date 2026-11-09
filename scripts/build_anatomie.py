@@ -372,7 +372,7 @@ function dutchTermsFor(base) {
         "systems": "Lichaamsstelsels", "info": "Informatie",
         "front_view": "Voor", "side_view": "Zij",
         "back_view": "Achter", "top_view": "Boven",
-        "reset": "Herstel", "depth": "Diepte",
+        "reset": "Startbeeld", "depth": "Diepte",
         "help": "Hulp", "help_title": "Bediening",
         "loading_model": "Anatomisch model laden...",
         "select_structure": "Kies een anatomische structuur",
