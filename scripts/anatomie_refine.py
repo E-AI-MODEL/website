@@ -102,7 +102,7 @@ def refine_anatomy(source: Path) -> None:
     js = js[:start] + js[end:].replace(
         "  container.innerHTML = presets + SYSTEM_IDS.map(",
         "  container.innerHTML = SYSTEM_IDS.map(", 1)
-    js = one(js, "    const icon = SYSTEM_ICONS[systemId] || '🔬';\n",
+    js = one(js, "    const icon = SYSTEM_ICONS[systemId] || '00';\n",
         "", "system icon variable")
     icon_fragment = '          <span class="system-icon">' + chr(36) + '{icon}</span>\n'
     js = one(js, icon_fragment, '', "system emoji markup")
