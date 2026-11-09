@@ -39,6 +39,7 @@ try {
         remote.push(url);
       }
     });
+    const loadStarted = Date.now();
     await page.goto(base + '/tools/anatomie/', {waitUntil:'domcontentloaded'});
     await page.waitForFunction(() => {
       const app = window.ZAnatomy;
@@ -51,6 +52,12 @@ try {
         && document.querySelectorAll('#systemsList [data-system-checkbox]').length === 7,
       null, {timeout:30000}
     );
+    // Een scene met meshes is niet genoeg: de bezoeker moet echt beeld zien.
+    // De vorige regressie bleef op de laadspinner hangen ondanks een geslaagde build.
+    await page.locator('#loadingOverlay').waitFor({state:'hidden',timeout:7000});
+    const startupMs = Date.now() - loadStarted;
+    console.log('[anatomie] '+width+' px: skelet zichtbaar in '+startupMs+' ms');
+    assert(startupMs < 55000, 'Starten van het skelet duurt te lang ('+startupMs+' ms)');
     await page.waitForTimeout(150);
     const scene = await page.evaluate(() => {
       const viewer=window.ZAnatomy.viewer,canvas=document.querySelector('#threeCanvas');
