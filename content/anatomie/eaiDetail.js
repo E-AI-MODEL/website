@@ -1,6 +1,7 @@
 // Eén informatiepaneel per geselecteerde structuur. Modelacties staan
 // na de anatomische informatie, niet in meerdere zwevende menu's.
 import { anatomyGuide } from '../data/eaiGuide.js';
+import { dutchName } from '../data/eaiNames.js';
 import { isolatePart, hidePart, restoreAllParts } from '../viewer/visibility.js';
 
 const textBlock = (parent, heading, description) => {
@@ -28,11 +29,13 @@ export function refineAnatomyInfo(partData, deselectPart) {
   if (!panel) return;
 
   const info = partData.info || {};
-  const guide = anatomyGuide(info.baseName || partData.id);
+  const baseName = info.baseName || partData.id;
+  const guide = anatomyGuide(baseName);
   const title = panel.querySelector('.structure-title h3');
+  const preferredName = guide?.name || dutchName(baseName);
 
-  if (guide?.name && title) {
-    const localName = guide.name + (
+  if (preferredName && title) {
+    const localName = preferredName + (
       info.side === 'left' ? ' (links)' : info.side === 'right' ? ' (rechts)' : ''
     );
     title.textContent = localName;
@@ -50,12 +53,27 @@ export function refineAnatomyInfo(partData, deselectPart) {
   } else {
     const notice = document.createElement('p');
     notice.className = 'eai-facts-unverified';
-    notice.textContent = 'Voor dit onderdeel ontbreekt nog een specifieke Nederlandstalige functieomschrijving. De oorspronkelijke bronbeschrijving staat hieronder, indien beschikbaar.';
+    notice.textContent = 'Voor dit onderdeel is nog geen afzonderlijke Nederlandse uitleg over functie en ligging beschikbaar. De bestaande Engelstalige beschrijving staat hieronder, indien aanwezig.';
     facts.appendChild(notice);
   }
 
   const header = panel.querySelector('.structure-header');
   header?.insertAdjacentElement('afterend', facts);
+
+  // Het glTF-model geeft ook echte ouder- en kindrelaties. Die zijn
+  // modelstructuur, niet zonder meer een medische functionele verbinding.
+  const relations = panel.querySelector('.structure-relations');
+  if (relations) {
+    const section = document.createElement('section');
+    section.className = 'eai-model-relations';
+    const heading = document.createElement('h4');
+    heading.textContent = 'Relaties in het 3D-model';
+    const note = document.createElement('p');
+    note.textContent = 'Toont de indeling van de modelonderdelen. Selecteer een naam om dat onderdeel te bekijken.';
+    section.append(heading, note, relations);
+    const definitionTarget = panel.querySelector('[data-definition]');
+    definitionTarget?.before(section);
+  }
 
   // Bronbeschrijvingen zijn niet noodzakelijk juist voor elk specifiek
   // onderdeel. Maak ze raadpleegbaar, maar niet de primaire uitleg.
@@ -65,7 +83,7 @@ export function refineAnatomyInfo(partData, deselectPart) {
     source.className = 'eai-source-description';
     source.open = !guide;
     const summary = document.createElement('summary');
-    summary.textContent = 'Oorspronkelijke bronbeschrijving (Engels)';
+    summary.textContent = 'Anatomische beschrijving uit de bron (Engels)';
     definition.replaceWith(source);
     source.append(summary, definition);
   }
