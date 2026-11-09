@@ -90,10 +90,18 @@ export function refineAnatomyInfo(partData, deselectPart) {
 
 export function openAnatomyInfo() {
   const app = document.getElementById('app');
+  // Een selectie sluit de andere overlays. Er is nooit meer dan één
+  // uitschuifpaneel tegelijk actief.
+  if (app?.classList.contains('systems-open')) {
+    document.getElementById('systemsToggle')?.click();
+  }
+  const header = document.querySelector('.header');
+  header?.classList.remove('search-open');
+  document.getElementById('searchOpen')?.setAttribute('aria-expanded','false');
+  app?.classList.add('has-selection');
   if (app && !app.classList.contains('info-open')) {
     document.getElementById('infoOpen')?.click();
   }
-  app?.classList.add('has-selection');
 }
 
 export function closeAnatomyInfo() {
