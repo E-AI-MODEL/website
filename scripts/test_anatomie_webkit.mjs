@@ -96,8 +96,10 @@ try {
     () => document.querySelector('#structureInfo .structure-title h3')?.textContent?.includes('Kuitbeen'),
     null, {timeout:15000}
   );
-  assert(await page.locator('#structureInfo .eai-facts-unverified').isVisible(),
+  assert.equal(await page.locator('#structureInfo .eai-facts-unverified').count(),1,
     'Nog niet beschreven anatomische onderdelen mogen geen verzonnen functie tonen');
+  assert(await page.locator('#infoSidebar').isVisible(),
+    'De brontekst van het gekozen onderdeel moet op mobiel bereikbaar zijn');
   assert.equal(await page.locator('#structureInfo .eai-source-description').count(),1,
     'De bestaande Engelstalige beschrijving moet bij onbekende uitleg toegankelijk blijven');
   await page.locator('#infoToggle').click();
