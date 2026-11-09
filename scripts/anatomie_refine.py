@@ -28,12 +28,12 @@ def refine_anatomy(source: Path) -> None:
         and values[0].strip()
     }
     (source / "src" / "data" / "eaiNames.js").write_text(
-        "// Exacte Nederlandse namen uit de gecontroleerde zoekwoorden.\\n"
+        "// Exacte Nederlandse namen uit de gecontroleerde zoekwoorden.\n"
         + "const NAMES = " + json.dumps(names, ensure_ascii=False, sort_keys=True)
-        + ";\\nexport function dutchName(base) {\\n"
-        + "  const key = String(base || '').replace(/\\.[lr]$/, '').trim().toLowerCase();\\n"
-        + "  return Object.prototype.hasOwnProperty.call(NAMES, key) ? NAMES[key] : null;\\n"
-        + "}\\n",
+        + ";\nexport function dutchName(base) {\n"
+        + "  const key = String(base || '').replace(/\\.[lr]$/, '').trim().toLowerCase();\n"
+        + "  return Object.prototype.hasOwnProperty.call(NAMES, key) ? NAMES[key] : null;\n"
+        + "}\n",
         encoding="utf-8"
     )
 
