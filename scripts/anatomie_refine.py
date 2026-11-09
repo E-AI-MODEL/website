@@ -68,7 +68,7 @@ def refine_anatomy(source: Path) -> None:
         "  hideInfoPanel();\n  hideFooterActions();",
         "  hideInfoPanel();\n  closeAnatomyInfo();\n  hideFooterActions();", "deselect")
     # Some pinned versions no longer include a separate footer helper.
-    js = re.sub(r"function showFooterActions\\(\\) \\{[\\s\\S]*?\\n\\}\\n\\n", "", js, count=1)
+    js = re.sub(r"function showFooterActions\(\) \{[\s\S]*?\n\}\n\n", "", js, count=1)
     selection.write_text(js, encoding="utf-8")
 
     callout = source / "src" / "ui" / "callout.js"
