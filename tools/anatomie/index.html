@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Interactive 3D anatomy atlas built on Z-Anatomy">
+  <title>AN / 01 | Anatomisch Observatorium | EAI</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/eai-logo.svg">
+  <script type="module" crossorigin src="/tools/anatomie/assets/index-hrCH3HUk.js"></script>
+  <link rel="stylesheet" crossorigin href="/tools/anatomie/assets/index-BqMh_rFu.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-left">
+        <button id="systemsOpen" class="btn-icon drawer-open" aria-label="Open systems" title="Systems">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        </button>
+        <h1 class="logo">AN / 01 <span class="eai-app-name">Anatomisch Observatorium</span></h1>
+      </div>
+      <div class="header-center">
+        <div class="search-container">
+          <input type="text" id="searchInput" class="search-input" placeholder="Zoek een anatomische structuur..." autocomplete="off">
+          <div id="searchResults" class="search-results"></div>
+        </div>
+      </div>
+      <div class="header-right"><a class="eai-back" href="/tools/">Alle tools</a>
+        <button id="searchOpen" class="btn-icon drawer-open" aria-label="Search" title="Search" aria-expanded="false">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        </button>
+        <select id="langSelect" class="lang-select" aria-label="Language">
+          <option value="en">EN</option>
+          <option value="it">IT</option>
+        </select>
+        <button id="helpBtn" class="btn-icon" aria-label="Help" title="Help">?</button>
+        <button id="infoOpen" class="btn-icon" aria-label="Open information" title="Information">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main layout -->
+    <main class="main-layout">
+      <!-- Sidebar - Systems -->
+      <aside class="sidebar sidebar-systems" id="systemsSidebar">
+        <div class="sidebar-header">
+          <h2>Lichaamsstelsels</h2>
+          <button class="sidebar-toggle" id="systemsToggle" aria-label="Close systems">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          </button>
+        </div>
+        <div class="sidebar-content" id="systemsList"></div>
+      </aside>
+
+      <!-- 3D Viewer -->
+      <section class="viewer-section">
+        <div id="viewerContainer" class="viewer-container">
+          <canvas id="threeCanvas" tabindex="0" role="application"
+                  aria-label="3D anatomy viewer. Arrow keys orbit, plus and minus zoom."></canvas>
+          <div id="loadingOverlay" class="loading-overlay">
+            <div class="loading-spinner"></div>
+            <span class="loading-text">Anatomisch model laden...</span>
+          </div>
+
+          <!-- Preset views float over the canvas; per-structure actions live on
+               the callout and in the bottom bar, not duplicated here. -->
+          <div class="viewer-controls" id="viewerControls">
+            <button class="control-btn" id="frontViewBtn" title="Vooraanzicht">Voor</button>
+            <button class="control-btn" id="sideViewBtn" title="Zijaanzicht">Zij</button>
+            <button class="control-btn" id="backViewBtn" title="Achteraanzicht">Achter</button>
+            <button class="control-btn" id="topViewBtn" title="Bovenaanzicht">Boven</button>
+            <button class="control-btn" id="resetBtn" title="Beginweergave">Herstel</button>
+          </div>
+        <div class="eai-attribution" aria-label="Modelbronnen">3D-modellen: BodyParts3D en Z-Anatomy <a href="NOTICE.txt">Bronvermelding</a> <a href="LICENSE.txt">Licentie</a></div></div>
+      </section>
+
+      <!-- Sidebar - Info Panel -->
+      <aside class="sidebar sidebar-info" id="infoSidebar">
+        <div class="sidebar-header">
+          <h2>Informatie</h2>
+          <button class="sidebar-toggle" id="infoToggle" aria-label="Close information">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          </button>
+        </div>
+        <div class="sidebar-content" id="infoContent">
+          <div class="info-placeholder">
+            <svg class="placeholder-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            </svg>
+            <p>Kies een anatomische structuur</p>
+            <span class="hint">Klik op een lichaamsdeel voor de details</span>
+          </div>
+          <div id="structureInfo" class="structure-info hidden"></div>
+        </div>
+      </aside>
+    </main>
+
+    <!-- Bottom bar - Actions for selected structure -->
+    <footer class="footer-bar" id="footerBar" style="display: none;">
+      <div class="footer-actions">
+        <button class="action-btn" id="footerIsolateBtn">Isolate</button>
+        <button class="action-btn" id="footerHideBtn">Hide</button>
+        <button class="action-btn" id="footerTransparentBtn">Transparent</button>
+        <button class="action-btn secondary" id="footerShowAllBtn">Show all</button>
+      </div>
+    </footer>
+
+    <!-- Help Modal -->
+    <div class="modal hidden" id="helpModal" role="dialog" aria-labelledby="helpTitle" aria-modal="true">
+      <div class="modal-overlay"></div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="helpTitle" data-i18n="controls_title">Controls</h3>
+          <button class="modal-close" id="helpClose" aria-label="Close">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="help-section">
+            <h4 data-i18n="help_computer">Computer</h4>
+            <ul>
+              <li><kbd data-i18n="help_left_drag">Left drag</kbd> <span data-i18n="help_rotate">Rotate</span></li>
+              <li><kbd data-i18n="help_wheel">Wheel</kbd> <span data-i18n="help_zoom">Zoom</span></li>
+              <li><kbd data-i18n="help_right_drag">Right drag</kbd> <span data-i18n="help_pan">Pan</span></li>
+              <li><kbd data-i18n="help_double_click">Double click</kbd> <span data-i18n="help_frame">Frame structure</span></li>
+            </ul>
+          </div>
+          <div class="help-section">
+            <h4 data-i18n="help_touch">Touch</h4>
+            <ul>
+              <li><kbd data-i18n="help_one_finger">One finger</kbd> <span data-i18n="help_rotate">Rotate</span></li>
+              <li><kbd data-i18n="help_pinch">Pinch</kbd> <span data-i18n="help_zoom">Zoom</span></li>
+              <li><kbd data-i18n="help_two_finger">Two-finger drag</kbd> <span data-i18n="help_pan">Pan</span></li>
+              <li><kbd data-i18n="help_tap">Tap</kbd> <span data-i18n="help_select">Select</span></li>
+            </ul>
+          </div>
+          <div class="help-section">
+            <h4 data-i18n="help_panels">Panels</h4>
+            <ul>
+              <li data-i18n="help_left_panel">Left panel: anatomical systems</li>
+              <li data-i18n="help_right_panel">Right panel: structure details</li>
+              <li data-i18n="help_bottom_bar">Bottom bar: actions on the selection</li>
+              <li data-i18n="help_toolbar">Toolbar: preset views</li>
+            </ul>
+          </div>
+          <div class="help-section">
+            <h4 data-i18n="help_credits">Credits and licences</h4>
+            <ul>
+              <li><a href="https://lifesciencedb.jp/bp3d/" target="_blank" rel="noopener" style="color: var(--accent);">BodyParts3D</a> anatomical models, CC BY-SA 2.1 Japan</li>
+              <li><a href="https://www.z-anatomy.com/" target="_blank" rel="noopener" style="color: var(--accent);">Z-Anatomy</a> model rework, CC BY-SA 4.0</li>
+              <li><a href="https://en.wikipedia.org/wiki/Wikipedia:Copyrights" target="_blank" rel="noopener" style="color: var(--accent);">Wikipedia</a> structure definitions, CC BY-SA 3.0 and GFDL</li>
+              <li>University of Dundee, CAHID: cranial nerves and foramina, CC BY 4.0</li>
+              <li>University of Dundee: inner ear, CC BY-NC-SA 4.0</li>
+              <li>lissiecowley: kidney, CC BY-NC 4.0</li>
+            </ul>
+            <p class="hint" style="margin-top: 12px;">Mixed-licence derivative work, distributed NON-COMMERCIALLY (CC BY-NC-SA 4.0): the NC clause comes from the inner ear and kidney models. Attribution and share-alike are required. See LICENSE and NOTICE in the repository.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
