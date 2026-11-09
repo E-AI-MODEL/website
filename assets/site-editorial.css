@@ -112,7 +112,7 @@ body.eai-blog .eai-story-body>p,body.eai-blog .eai-story-chapter>p{font-size:17p
 body.eai-blog .eai-story-chapter{margin-top:45px}
 body.eai-blog .eai-story-chapter h2{font-size:clamp(27px,3vw,36px);line-height:1.22;letter-spacing:-.038em;margin:0 0 21px;color:#20392b;font-weight:640}
 body.eai-blog .eai-story-wide{width:min(1030px,calc(100vw - 48px));position:relative;left:50%;transform:translateX(-50%)}
-body.eai-blog .eai-story-visual{margin-top:30px;margin-bottom:35px;max-width:none}
+body.eai-blog .eai-story-visual{margin:30px 0 35px;max-width:none}
 body.eai-blog .eai-story-visual-heading{display:flex;flex-direction:column;gap:7px;margin:0 0 17px}
 body.eai-blog .eai-story-visual-heading strong{font-size:clamp(20px,2.5vw,27px);line-height:1.2;letter-spacing:-.03em;color:#203f2d;font-weight:650}
 body.eai-blog .eai-story-visual-heading small{font-size:14px;line-height:1.55;color:var(--story-muted)}
