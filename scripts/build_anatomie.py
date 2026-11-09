@@ -7,6 +7,7 @@ fetches the pinned upstream source, compiles it and copies every asset locally.
 from __future__ import annotations
 
 import argparse
+import json
 import re
 import shutil
 import subprocess
@@ -182,6 +183,34 @@ Object.assign(translationsEn, {
 });
 """
     translations_file.write_text(translations_js, encoding="utf-8")
+
+    # The runtime fetches JSON translations and replaces the JS fallback.
+    # Patch that downloaded dictionary too, so the visible UI remains Dutch.
+    runtime_en = source / "public" / "data" / "translations" / "en.json"
+    runtime_dictionary = json.loads(runtime_en.read_text(encoding="utf-8"))
+    runtime_dictionary.update({
+        "search_placeholder": "Zoek een anatomische structuur...",
+        "systems": "Lichaamsstelsels", "info": "Informatie",
+        "front_view": "Voor", "side_view": "Zij",
+        "back_view": "Achter", "top_view": "Boven",
+        "reset": "Herstel", "depth": "Diepte",
+        "help": "Hulp", "help_title": "Bediening",
+        "loading_model": "Anatomisch model laden...",
+        "select_structure": "Kies een anatomische structuur",
+        "click_to_select": "Klik op een structuur voor informatie",
+        "isolate": "Isoleer", "hide": "Verberg",
+        "transparent": "Transparant", "show_all": "Alles tonen",
+        "name": "Naam", "system": "Stelsel",
+        "region": "Regio", "description": "Beschrijving",
+        "no_results": "Geen resultaten", "retry": "Opnieuw",
+        "action_isolate": "Isoleer", "action_hide": "Verberg",
+        "action_restore": "Alles tonen"
+    })
+    runtime_en.write_text(
+        json.dumps(runtime_dictionary, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
 
     atlas_html = index.read_text(encoding="utf-8")
     viewer_anchor = '<div id="viewerContainer" class="viewer-container">'
