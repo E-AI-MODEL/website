@@ -61,8 +61,10 @@ try {
   // Gebruik dezelfde zoek- en selectieroute als een bezoeker op iPhone.
   await page.locator('#searchOpen').click();
   await page.locator('#searchInput').fill('femur');
-  const choice = page.locator('#searchResults .search-result-item:not(.is-empty)').filter({hasText:/Femur/i}).first();
+  const choice = page.locator('#searchResults .search-result-item[data-part^="Femur"]').first();
   await choice.waitFor({state:'visible',timeout:12000});
+  assert.match(await choice.innerText(),/Dijbeen/,
+    'De bestaande Nederlandse modelnaam moet ook in het zoekresultaat staan');
   await choice.click();
   await page.locator('#structureInfo .eai-fact').first().waitFor({state:'visible',timeout:15000});
   assert(await page.locator('#app').evaluate(el=>el.classList.contains('info-open')),
