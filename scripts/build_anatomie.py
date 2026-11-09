@@ -96,7 +96,7 @@ html,body{max-width:100%;overflow-x:hidden}
 .system-icon{font-family:ui-monospace,SFMono-Regular,Menlo,monospace!important;
   font-size:10px!important;letter-spacing:.03em}
 .viewer-container{background:radial-gradient(ellipse at 50% 40%,#142b40 0%,#07111e 73%)}
-.eai-attribution{position:absolute;z-index:15;left:14px;bottom:9px;pointer-events:auto;
+.eai-attribution{position:absolute;z-index:15;left:14px;bottom:58px;pointer-events:auto;
   background:#0b1828dd;border:1px solid #284053;border-radius:5px;
   padding:5px 8px;color:#9db8cb;font:10px/1.5 ui-monospace,monospace}
 .eai-attribution a{color:#b3e3e9;text-decoration:underline;text-underline-offset:2px;margin-left:8px}
