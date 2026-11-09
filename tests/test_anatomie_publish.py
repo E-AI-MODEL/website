@@ -86,6 +86,19 @@ class AnatomyPublishTests(unittest.TestCase):
         sitemap = (OUT / "sitemap.xml").read_text(encoding="utf-8")
         self.assertIn("<loc>https://eaimodel.nl/tools/anatomie/</loc>", sitemap)
 
+    def test_anatomie_route_not_duplicated_in_menus(self):
+        # The source pages are copied into the website build, while
+        # prepare_ui.py generates the six-group language menus.
+        for rel in ("tools/index.html", "nl/tools/index.html", "nl/index.html"):
+            with self.subTest(page=rel):
+                links = Links()
+                links.feed((OUT / rel).read_text(encoding="utf-8"))
+                self.assertEqual(links.hrefs.count("/tools/anatomie/"), 1,
+                                 f"Dubbele anatomievermelding in {rel}")
+        navigation_source = (ROOT / "scripts" / "prepare_ui.py").read_text(encoding="utf-8")
+        self.assertEqual(navigation_source.count("'/tools/anatomie/'"), 2,
+                         "Er hoort een anatomievermelding per taalmenu te zijn")
+
     def test_build_reproducible_and_repository_local(self):
         source = (ROOT / "scripts" / "build_anatomie.py").read_text(encoding="utf-8")
         self.assertIn("8ca3b7421bcfbe88b85859eb1983d5cf79f21749", source)
