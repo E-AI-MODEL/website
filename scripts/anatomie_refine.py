@@ -14,7 +14,7 @@ def refine_anatomy(source: Path) -> None:
     root = Path(__file__).resolve().parent.parent / "content" / "anatomie"
     shutil.copyfile(root / "guide.js", source / "src" / "data" / "eaiGuide.js")
     shutil.copyfile(root / "eaiDetail.js", source / "src" / "ui" / "eaiDetail.js")
-    shutil.copyfile(root / "depth.js", source / "src" / "ui" / "depthSlider.js")
+    shutil.copyfile(root / "depthSlider.js", source / "src" / "ui" / "depthSlider.js")
 
     # The original build may already omit the old shortcut menu.
     main = source / "src" / "main.js"
@@ -102,8 +102,9 @@ def refine_anatomy(source: Path) -> None:
     js = js[:start] + js[end:].replace(
         "  container.innerHTML = presets + SYSTEM_IDS.map(",
         "  container.innerHTML = SYSTEM_IDS.map(", 1)
-    js = one(js, "    const icon = SYSTEM_ICONS[systemId] || '00';\n",
-        "", "system icon variable")
+    js, count = re.subn(r"    const icon = SYSTEM_ICONS\\[systemId\\] \\|\\| '[^']+';\\n", "", js, count=1)
+    if count != 1:
+        raise RuntimeError("Expected exactly one obsolete system icon declaration")
     icon_fragment = '          <span class="system-icon">' + chr(36) + '{icon}</span>\n'
     js = one(js, icon_fragment, '', "system emoji markup")
     start = js.index("  container.querySelectorAll('[data-preset]').forEach(chip => {")
