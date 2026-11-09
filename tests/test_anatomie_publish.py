@@ -77,6 +77,14 @@ class AnatomyPublishTests(unittest.TestCase):
         data = __import__("json").loads(synonyms.read_text(encoding="utf-8"))
         self.assertIn("dijbeen", data["femur"])
         self.assertIn("knieschijf", data["patella"])
+        guide = (ROOT / "content/anatomie/guide.js").read_text(encoding="utf-8")
+        self.assertIn("'anterior cruciate ligament'", guide)
+        self.assertIn("'fascia lata'", guide)
+        self.assertIn("nervus ischiadicus", guide.lower())
+        builder = (ROOT / "scripts/anatomie_ux.py").read_text(encoding="utf-8")
+        self.assertIn("eaiGuide.js", builder)
+        self.assertIn("depthSlider.js", builder)
+        self.assertIn("Toon alleen dit", builder)
 
     def test_real_source_meshes_and_decoder_are_local(self):
         for system in SYSTEMS:
