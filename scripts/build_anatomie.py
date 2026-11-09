@@ -257,6 +257,96 @@ function dutchTermsFor(base) {
         before, "official: entry.official === false ? false : null", 1
     ), encoding="utf-8")
 
+    # First paint must never wait for a GPU precompile. That can take an
+    # unpredictable time on mobile Safari and leaves the loading overlay open.
+    # On touch devices, don't spend startup CPU and memory building the BVH
+    # for every triangle. Basic 3D picking still works without that index.
+    loader_file = source / "src" / "viewer" / "loadModel.js"
+    loader_js = loader_file.read_text(encoding="utf-8")
+    precompile = """  // Compiling before the model joins the scene keeps the first frame after a
+  // load from stalling on shader and buffer upload.
+  if (renderer?.compileAsync) {
+    try {
+      await renderer.compileAsync(model, camera, scene);
+    } catch {
+      // Compilation is an optimisation; a failure must not block the load.
+    }
+  }
+
+"""
+    if loader_js.count(precompile) != 1:
+        raise RuntimeError("Upstream compileAsync phase changed")
+    loader_js = loader_js.replace(precompile, "", 1)
+    before = "  const { scene, renderer, camera } = viewer;"
+    if loader_js.count(before) != 1:
+        raise RuntimeError("Upstream loader variables changed")
+    loader_js = loader_js.replace(before, "  const { scene } = viewer;", 1)
+    before = "  scene.add(model);\n  modelRoots.set(systemId, model);"
+    if loader_js.count(before) != 1:
+        raise RuntimeError("Upstream model activation changed")
+    loader_js = loader_js.replace(
+        before,
+        "  scene.add(model);\n  modelRoots.set(systemId, model);\n"
+        "  viewer.render();",
+        1,
+    )
+    before = "  if (mesh.geometry && !mesh.geometry.boundsTree) {"
+    if loader_js.count(before) != 1:
+        raise RuntimeError("Upstream BVH mesh hook changed")
+    loader_js = loader_js.replace(
+        before,
+        "  // Fast first paint on touch screens. The raycaster falls back to\n"
+        "  // normal triangle picking without a precomputed BVH.\n"
+        "  const touchDevice = window.matchMedia?.('(pointer: coarse)').matches;\n"
+        "  if (!touchDevice && mesh.geometry && !mesh.geometry.boundsTree) {",
+        1,
+    )
+    loader_file.write_text(loader_js, encoding="utf-8")
+
+    # UI remains responsive when loading a model stalls on a slow connection.
+    # A useful warning is preferable to a spinner with no way out.
+    main_file = source / "src" / "main.js"
+    main_js = main_file.read_text(encoding="utf-8")
+    before = "  const loadingOverlay = document.getElementById('loadingOverlay');"
+    if main_js.count(before) != 1:
+        raise RuntimeError("Upstream loader overlay hook changed")
+    after = """  const loadingOverlay = document.getElementById('loadingOverlay');
+  const loadWarning = setTimeout(() => {
+    if (!loadingOverlay || loadingOverlay.classList.contains('hidden')) return;
+    const label = loadingOverlay.querySelector('.loading-text');
+    if (label) label.textContent = 'Het 3D-model laden duurt langer dan verwacht.';
+    if (!loadingOverlay.querySelector('.eai-retry-model')) {
+      const retry = document.createElement('button');
+      retry.type = 'button';
+      retry.className = 'eai-retry-model';
+      retry.textContent = 'Opnieuw laden';
+      retry.addEventListener('click', () => window.location.reload());
+      loadingOverlay.appendChild(retry);
+    }
+  }, 12000);"""
+    main_js = main_js.replace(before, after, 1)
+    before = "  } finally {\n    if (loadingOverlay) {"
+    if main_js.count(before) != 1:
+        raise RuntimeError("Upstream load cleanup hook changed")
+    main_js = main_js.replace(
+        before,
+        "  } finally {\n    clearTimeout(loadWarning);\n    if (loadingOverlay) {",
+        1,
+    )
+    main_file.write_text(main_js, encoding="utf-8")
+
+    scene_file = source / "src" / "viewer" / "createScene.js"
+    scene_js = scene_file.read_text(encoding="utf-8")
+    old = "renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));"
+    if scene_js.count(old) != 2:
+        raise RuntimeError("Upstream device pixel ratio controls changed")
+    scene_js = scene_js.replace(
+        old,
+        "renderer.setPixelRatio(Math.min(window.devicePixelRatio, "
+        "window.matchMedia?.('(pointer: coarse)').matches ? 1.5 : 2));",
+    )
+    scene_file.write_text(scene_js, encoding="utf-8")
+
     # Load the local, responsive shortcut interface after the original viewer.
     explore_source = Path(__file__).resolve().parent.parent / "content" / "anatomie" / "explore.js"
     shutil.copyfile(explore_source, source / "src" / "ui" / "eaiExplore.js")
