@@ -35,6 +35,8 @@ jobs:
         run: npx playwright install chromium
         timeout-minutes: 4
       - run: python -m unittest discover -s tests -p test_tool_launch.py -v
+      - name: Check anatomical 3D rendering and local organ models
+        run: node scripts/test_anatomie_3d.mjs site-build
       - run: node scripts/test_tool_launch.mjs site-build
       - run: node scripts/ui_smoke.mjs site-build
       - name: Verify anatomical 3D viewer on desktop and mobile
