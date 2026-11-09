@@ -185,6 +185,86 @@ Object.assign(translationsEn, {
 """
     translations_file.write_text(translations_js, encoding="utf-8")
 
+    # Dutch search terms supplement the upstream English and Italian names.
+    # They never replace original mesh identifiers or geometric data.
+    dictionary = Path(__file__).resolve().parent.parent / "content" / "anatomie" / "synonyms.nl.json"
+    dutch_terms = json.loads(dictionary.read_text(encoding="utf-8"))
+    (source / "public" / "data" / "synonyms.nl.json").write_text(
+        json.dumps(dutch_terms, ensure_ascii=False, indent=2) + "\\n", encoding="utf-8"
+    )
+
+    search_file = source / "src" / "utils" / "dataLoader.js"
+    search_js = search_file.read_text(encoding="utf-8")
+    search_js = search_js.replace("let synonyms = {};", "let synonyms = {};\\nlet dutchSynonyms = {};", 1)
+    marker = "  // Z-Anatomy names a muscle"
+    if marker not in search_js:
+        raise RuntimeError("Upstream synonyms hook changed")
+    search_js = search_js.replace(marker, """  try {
+    const response = await fetch(asset('data/synonyms.nl.json'));
+    dutchSynonyms = response.ok ? await response.json() : {};
+  } catch {
+    dutchSynonyms = {};
+  }
+
+""" + marker, 1)
+    marker = "// One row per anatomical structure, not per mesh:"
+    if marker not in search_js:
+        raise RuntimeError("Upstream search index hook changed")
+    search_js = search_js.replace(marker, """// Match a few checked Dutch names and frequent anatomical terms. Keep the
+// original identifiers: the matching rows still point to the genuine GLBs.
+function dutchTermsFor(base) {
+  const found = [];
+  Object.entries(dutchSynonyms).forEach(([english, names]) => {
+    if (base === english || (english.length >= 5 && base.includes(english))) {
+      found.push(...names);
+    }
+  });
+  return [...new Set(found)];
+}
+
+""" + marker, 1)
+    search_js = search_js.replace(
+        "const italian = italianTermsFor(normalise(base));",
+        "const italian = italianTermsFor(normalise(base));\\n      const dutch = dutchTermsFor(normalise(base));", 1
+    )
+    search_js = search_js.replace(
+        "label: base.replace(/^\\((.*)\\)$/, '$1'),",
+        "label: dutchSynonyms[normalise(base)]?.[0] ? `${dutchSynonyms[normalise(base)][0]} (${base.replace(/^\\((.*)\\)$/, '$1')})` : base.replace(/^\\((.*)\\)$/, '$1'),", 1
+    )
+    search_js = search_js.replace(
+        "terms: [normalise(base), ...italian.map(normalise)]",
+        "terms: [normalise(base), ...italian.map(normalise), ...dutch.map(normalise)]", 1
+    )
+    if "dutch.map(normalise)" not in search_js or "const dutch = dutchTermsFor" not in search_js:
+        raise RuntimeError("Dutch search patch incomplete")
+    search_file.write_text(search_js, encoding="utf-8")
+
+    # Only terms that were explicitly marked nonofficial can be displayed as
+    # such. Missing source metadata is unknown, not an official certification.
+    anatomy_file = source / "src" / "data" / "anatomy.js"
+    anatomy_js = anatomy_file.read_text(encoding="utf-8")
+    before = "official: entry.official !== false"
+    if before not in anatomy_js:
+        raise RuntimeError("Upstream terminology flag changed")
+    anatomy_file.write_text(anatomy_js.replace(
+        before, "official: entry.official === false ? false : (entry.la ? true : null)", 1
+    ), encoding="utf-8")
+
+    # Load the local, responsive shortcut interface after the original viewer.
+    explore_source = Path(__file__).resolve().parent.parent / "content" / "anatomie" / "explore.js"
+    shutil.copyfile(explore_source, source / "src" / "ui" / "eaiExplore.js")
+    main_file = source / "src" / "main.js"
+    main_js = main_file.read_text(encoding="utf-8")
+    hook = "import { initUI } from './ui/sidebar.js';"
+    if hook not in main_js:
+        raise RuntimeError("Upstream viewer import changed")
+    main_js = main_js.replace(hook, hook + "\\nimport { initEAIExplore } from './ui/eaiExplore.js';", 1)
+    hook = "      await initUI(viewer);"
+    if hook not in main_js:
+        raise RuntimeError("Upstream UI initialisation changed")
+    main_js = main_js.replace(hook, hook + "\\n      initEAIExplore(viewer);", 1)
+    main_file.write_text(main_js, encoding="utf-8")
+
     # The runtime fetches JSON translations and replaces the JS fallback.
     # Patch that downloaded dictionary too, so the visible UI remains Dutch.
     runtime_en = source / "public" / "data" / "translations" / "en.json"
@@ -207,6 +287,60 @@ Object.assign(translationsEn, {
         "action_isolate": "Isoleer", "action_hide": "Verberg",
         "action_restore": "Alles tonen"
     })
+    runtime_dictionary.update({
+        "system_skeletal": "Skelet", "system_muscular": "Spieren",
+        "system_joints": "Gewrichten", "system_cardiovascular": "Hart en bloedvaten",
+        "system_nervous": "Zenuwstelsel", "system_lymphatic": "Lymfestelsel",
+        "system_visceral": "Organen", "system_respiratory": "Ademhalingsstelsel",
+        "system_digestive": "Spijsverteringsstelsel",
+        "system_urinary": "Urinewegen",
+        "loading_system": "Stelsel laden: {system}",
+        "loading_systems": "Stelsels laden...",
+        "loading_structure": "Structuur laden...",
+        "loading_definition": "Beschrijving ophalen...",
+        "no_data_available": "Geen informatie beschikbaar over deze structuur",
+        "structure_not_found": "Structuur niet gevonden",
+        "error_loading_model": "Het 3D-model kon niet worden geladen",
+        "error_loading_data": "De gegevens konden niet worden geladen",
+        "latin_name": "Latijnse naam", "functions": "Functies",
+        "origin": "Oorsprong", "insertion": "Aanhechting",
+        "innervation": "Zenuwvoorziening", "vascularization": "Doorbloeding",
+        "clinical_notes": "Klinische toelichting", "parts": "Onderdelen",
+        "help_controls": "Bediening", "help_drag_left": "Slepen",
+        "help_rotate": "Draaien", "help_wheel": "Muiswiel",
+        "help_zoom": "Zoomen", "help_drag_right": "Rechts slepen",
+        "help_pan": "Verschuiven", "help_double_click": "Dubbelklikken",
+        "help_approach": "Structuur in beeld",
+        "help_one_finger": "Eén vinger", "help_pinch": "Knijpen om te zoomen",
+        "help_two_fingers": "Twee vingers", "help_tap": "Tikken",
+        "view_front": "Vooraanzicht", "view_back": "Achteraanzicht",
+        "view_left": "Linkerzijaanzicht", "view_right": "Rechterzijaanzicht",
+        "view_top": "Bovenaanzicht", "view_bottom": "Onderaanzicht",
+        "view_full": "Totaalbeeld",
+        "action_transparent": "Maak transparant", "action_search": "Zoeken",
+        "action_restore": "Alles tonen", "action_isolate": "Isoleer",
+        "action_hide": "Verberg", "error": "Fout", "close": "Sluiten",
+        "region_head": "Hoofd", "region_neck": "Hals",
+        "region_thorax": "Borstkas", "region_abdomen": "Buik",
+        "region_upper_limb": "Arm", "region_lower_limb": "Been",
+        "side_left": "Links", "side_right": "Rechts",
+        "help_touch": "Aanraken", "help_panels": "Panelen",
+        "help_credits": "Bronnen en licenties",
+        "help_frame": "Structuur in beeld brengen",
+        "help_select": "Selecteren", "help_left_drag": "Links slepen",
+        "help_right_drag": "Rechts slepen",
+        "help_two_finger": "Met twee vingers verschuiven",
+        "help_left_panel": "Links: lichaamsstelsels",
+        "help_right_panel": "Rechts: informatie over de structuur",
+        "help_bottom_bar": "Onder: acties bij selectie",
+        "help_toolbar": "Kijkrichtingen", "controls_title": "Bediening",
+        "no_definition": "Voor deze structuur is nog geen beschrijving beschikbaar.",
+        "read_more": "Zoek meer op Wikipedia",
+        "non_official": "Niet-officiële term",
+        "non_official_hint": "Niet opgenomen in de oorspronkelijke Terminologia Anatomica",
+        "part_of": "Onderdeel van", "contains": "Bevat",
+        "opaque": "Niet transparant",
+    })
     runtime_en.write_text(
         json.dumps(runtime_dictionary, ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",
@@ -226,6 +360,10 @@ Object.assign(translationsEn, {
     atlas_html = atlas_html.replace('>Alle tools</a>',
         '><span class="eai-back-full">Alle tools</span>'
         '<span class="eai-back-small">EAI</span></a>', 1)
+    atlas_html = atlas_html.replace(
+        '<meta name="description" content="Interactive 3D anatomy atlas built on Z-Anatomy">',
+        '<meta name="description" content="Onderzoek het menselijk lichaam in een interactieve, zelfstandig gehoste 3D-atlas.">', 1
+    )
     index.write_text(atlas_html, encoding="utf-8")
 
     style = source / "src" / "styles" / "main.css"
