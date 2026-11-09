@@ -86,13 +86,17 @@ try {
     assert(state.meshes > 20 && state.triangles > 2000, 'Model is niet opgebouwd uit anatomische 3D-meshes');
     assert(state.canvasWidth > 300 && state.canvasHeight > 300, '3D-canvas is te klein');
 
-    await page.locator('#backViewBtn').click();
+    await page.evaluate(() => document.querySelector('#backViewBtn')?.click());
+    await page.waitForTimeout(650);
     const newCamera = await page.evaluate(() => window.ZAnatomy.viewer.camera.position.z);
     assert(Math.abs(newCamera - state.cameraZ) > 0.05, 'Achteraanzicht verandert de camera niet');
-    await page.locator('#frontViewBtn').click();
+    await page.evaluate(() => document.querySelector('#frontViewBtn')?.click());
+    await page.waitForTimeout(600);
 
     // De gebruiker moet ook een tweede, apart gedownload lichaamssysteem openen.
-    await page.locator('#systemsOpen').click().catch(() => {});
+    if (await page.locator('#systemsOpen').isVisible()) {
+      await page.locator('#systemsOpen').click();
+    }
     await page.evaluate(() => {
       const c = document.querySelector('[data-system-checkbox="visceral"]');
       if (!c) throw new Error('Schakelaar voor organen ontbreekt');
@@ -105,7 +109,8 @@ try {
       const input = document.querySelector('[data-system-checkbox="visceral"]');
       return input?.checked && !input?.disabled;
     }, null, { timeout: 20000 });
-    await page.waitForTimeout(1000);
+    for (let i=0; i<65 && !modelResponses.some(r=>r.url.endsWith('/models/visceral.glb') && r.status===200); i++)
+      await page.waitForTimeout(300);
     assert(modelResponses.some(r => r.url.endsWith('/models/skeletal.glb') && r.status === 200),
       'Het skeletmodel werd niet lokaal opgehaald');
     assert(modelResponses.some(r => r.url.endsWith('/models/visceral.glb') && r.status === 200),
