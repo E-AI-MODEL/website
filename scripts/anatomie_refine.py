@@ -50,12 +50,12 @@ const redMuscleMaterials = new WeakMap();
 const translucentFasciaMaterials = new WeakMap();
 
 function isFasciaOrCover(partId) {
-  return /fasci|aponeuros|septum|septa|retinacul|pannicul|sheath|fibrous membrane/i.test(partId);
+  return /fasci|aponeuros|septum|septa|retinacul|pannicul|sheath|fibrous membrane|iliotibial tract/i.test(partId);
 }
 function isMusclePart(partId) {
   // Het spierstelsel bevat ook pezen, slijmbeurzen en bindweefsel.
   // Die worden anatomisch niet als spierweefsel ingekleurd.
-  return !/fasci|aponeuros|septum|septa|retinacul|pannicul|sheath|fibrous|bursa|tendon|tendin|ligament|synovial|capsule|linea alba|raphe/i.test(partId);
+  return !/fasci|aponeuros|septum|septa|retinacul|pannicul|sheath|fibrous|bursa|tendon|tendin|ligament|synovial|capsule|linea alba|raphe|iliotibial tract|iliopectineal arch|tarsus/i.test(partId);
 }
 function adjustMaterial(material) {
   if (!material || adjustedMaterials.has(material)) return;
@@ -88,6 +88,9 @@ function muscleMaterial(original) {
     if (alreadyRed) c.lerp(new THREE.Color(0xba493b), 0.16);
     else c.set(0xb64236);
   }
+  material.transparent = false;
+  material.opacity = 1;
+  material.depthWrite = true;
   if (typeof material.roughness === 'number') material.roughness = 0.76;
   if (typeof material.metalness === 'number') material.metalness = 0;
   material.needsUpdate = true;
@@ -100,7 +103,7 @@ function fasciaMaterial(original) {
   adjustMaterial(original);
   material = original.clone();
   material.transparent = true;
-  material.opacity = 0.10;
+  material.opacity = 0.035;
   material.depthWrite = false;
   material.needsUpdate = true;
   translucentFasciaMaterials.set(original, material);
