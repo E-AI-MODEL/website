@@ -53,7 +53,7 @@ class AnatomyPublishTests(unittest.TestCase):
             local = OUT / src.lstrip("/")
             self.assertTrue(local.is_file(), f"Script ontbreekt: {src}")
 
-    def test_css_js_and_explorer_are_published_together(self):
+    def test_css_js_and_anatomy_info_are_published_together(self):
         """Voorkom de witte pagina met enorme SVG's door ontbrekende assets."""
         html = (ATLAS / "index.html").read_text(encoding="utf-8")
         assets = re.findall(
@@ -68,14 +68,25 @@ class AnatomyPublishTests(unittest.TestCase):
                 file = OUT / path.lstrip("/")
                 self.assertTrue(file.is_file(), f"Ontbrekend 3D-bestand: {path}")
                 self.assertGreater(file.stat().st_size, 1000, path)
-        self.assertIn('id="eaiExplore"', html)
-        self.assertEqual(html.count('data-eai-system='), 5)
+        self.assertNotIn('id="eaiExplore"', html, "Geen dubbele stelselkeuze")
+        self.assertIn('id="systemsOpen"', html)
+        self.assertIn('id="infoSidebar"', html)
         self.assertEqual(html.count('id="threeCanvas"'), 1)
         synonyms = ATLAS / "data" / "synonyms.nl.json"
         self.assertTrue(synonyms.is_file(), "Nederlandse zoekwoorden ontbreken")
         data = __import__("json").loads(synonyms.read_text(encoding="utf-8"))
         self.assertIn("dijbeen", data["femur"])
         self.assertIn("knieschijf", data["patella"])
+        guide = (ROOT / "content/anatomie/guide.js").read_text(encoding="utf-8")
+        self.assertIn("'anterior cruciate ligament'", guide)
+        self.assertIn("'fascia lata'", guide)
+        self.assertIn("nervus ischiadicus", guide.lower())
+        builder = (ROOT / "scripts/anatomie_refine.py").read_text(encoding="utf-8")
+        self.assertIn("eaiGuide.js", builder)
+        self.assertIn("depthSlider.js", builder)
+        details = (ROOT / "content/anatomie/eaiDetail.js").read_text(encoding="utf-8")
+        self.assertIn("Toon alleen dit", details)
+        self.assertIn("Verberg dit onderdeel", details)
 
     def test_real_source_meshes_and_decoder_are_local(self):
         for system in SYSTEMS:

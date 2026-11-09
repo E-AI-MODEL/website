@@ -462,51 +462,6 @@ html,body,#app{height:100%;height:100dvh;overflow:hidden}
   .sidebar-systems{transition:none}
 }
 
-/* Zelfstandig 3D-onderzoek: een kleine, direct bruikbare stelselkeuze. */
-.eai-sr-only{
-  position:absolute!important;width:1px;height:1px;padding:0;overflow:hidden;
-  clip:rect(0,0,0,0);white-space:nowrap;border:0;
-}
-.eai-explore{
-  position:absolute;z-index:16;left:clamp(20px,3vw,52px);top:155px;
-  max-width:min(390px,calc(100% - 40px));
-  display:flex;flex-direction:column;align-items:flex-start;gap:9px;
-}
-.eai-explore-label{
-  font:600 10px/1.3 ui-monospace,SFMono-Regular,Menlo,monospace;
-  letter-spacing:.08em;color:#9bbbd0;
-}
-.eai-explore-options{display:flex;gap:5px;flex-wrap:wrap;max-width:100%}
-.eai-explore-options button{
-  border:1px solid #375469;background:#102538e8;color:#bcd4e5;
-  border-radius:5px;min-height:34px;padding:7px 10px;
-  font:550 11px/1.2 Inter,system-ui,sans-serif;
-  cursor:pointer;transition:background .16s,border-color .16s;
-}
-.eai-explore-options button:hover{border-color:#81cdd9;color:#f0fcff;background:#1b3d50}
-.eai-explore-options button.is-active,
-.eai-explore-options button[aria-pressed="true"]{
-  border-color:#79c5d4;background:#205163;color:#f4feff;
-}
-.eai-explore-options button:focus-visible{outline:2px solid #9ae8e9;outline-offset:2px}
-.eai-explore-options button:disabled{cursor:progress;opacity:.55}
-@media(max-width:720px){
-  .eai-explore{
-    top:13px;left:12px;right:12px;max-width:none;gap:7px;
-    pointer-events:auto;
-  }
-  .eai-explore-label{font-size:9px}
-  .eai-explore-options{
-    display:flex;flex-wrap:nowrap;overflow-x:auto;overscroll-behavior-x:contain;
-    max-width:100%;width:100%;scrollbar-width:none;padding-bottom:3px;
-  }
-  .eai-explore-options::-webkit-scrollbar{display:none}
-  .eai-explore-options button{white-space:nowrap;flex:none;min-height:40px;padding:9px 11px;font-size:11px}
-}
-@media(prefers-reduced-motion:reduce){
-  .eai-explore-options button{transition:none}
-}
-
 /* Een trage modeldownload mag geen spinner zonder uitweg zijn. */
 .loading-overlay .eai-retry-model{
   margin-top:14px;padding:10px 16px;min-height:44px;
@@ -517,3 +472,375 @@ html,body,#app{height:100%;height:100dvh;overflow:hidden}
 .loading-overlay .eai-retry-model:focus-visible{
   outline:2px solid #a1eaf0;outline-offset:3px;
 }
+
+/* Eén menu voor stelsels, één detailpaneel bij selectie. */
+#footerBar{display:none!important}
+.eai-explore{display:none!important}
+.callout-actions{display:none!important}
+.callout{max-width:min(66vw,260px);gap:8px}
+.callout-name{font-size:12px;line-height:1.4;white-space:normal}
+.callout .callout-close{
+  flex:0 0 auto;min-height:28px;min-width:28px;line-height:1;
+  font-size:17px;margin-left:8px
+}
+.sidebar-info{
+  width:min(400px,calc(100vw - 40px))!important;
+  max-width:none!important;
+  background:#0b1726!important;
+  border-left:1px solid #31485a;
+  z-index:180;
+}
+.sidebar-info .sidebar-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:13px 16px;border-bottom:1px solid #284155;
+}
+.sidebar-info .sidebar-header h2{
+  margin:0;font:600 12px/1.4 Inter,system-ui,sans-serif;color:#c9dfea;
+}
+.sidebar-info .sidebar-content{
+  max-height:calc(100% - 62px);
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  padding:17px 19px 35px;
+}
+.sidebar-info .structure-info .structure-header{margin-bottom:16px}
+.sidebar-info .structure-title h3{
+  font:600 20px/1.25 Inter,system-ui,sans-serif;
+  letter-spacing:-.02em;color:#effaff;
+}
+.sidebar-info .structure-latin{font-size:12px;color:#a7c4d5}
+.eai-fact{margin:0 0 16px}
+.eai-fact h4{
+  margin:0 0 7px;color:#94cbd5;
+  font:650 10px/1.4 ui-monospace,monospace;
+  letter-spacing:.08em;text-transform:uppercase;
+}
+.eai-fact p{
+  margin:0;color:#dae9f3;
+  font:13px/1.65 Inter,system-ui,sans-serif;
+}
+.eai-no-guide{font:12px/1.6 Inter,system-ui,sans-serif;color:#b2c7d5}
+.eai-details-actions{
+  display:flex;flex-wrap:wrap;gap:7px;margin:16px 0 20px;
+  padding-top:15px;border-top:1px solid #284257
+}
+.eai-details-actions button{
+  border:1px solid #426579;background:#162c3e;
+  border-radius:5px;color:#e0eff6;padding:9px 11px;
+  min-height:38px;cursor:pointer;
+  font:550 11px/1.25 Inter,system-ui,sans-serif;
+}
+.eai-details-actions button:focus-visible{outline:2px solid #83d5e2;outline-offset:2px}
+.eai-original-source{border-top:1px solid #263f51;padding-top:12px}
+.eai-original-source summary{
+  cursor:pointer;font:600 11px/1.5 Inter,system-ui,sans-serif;color:#aac9d7;
+}
+.eai-original-source>p{
+  font:11px/1.5 Inter,system-ui,sans-serif;color:#86a8b9;
+}
+.eai-original-source .structure-description{
+  white-space:normal;overflow-wrap:anywhere;
+}
+.structure-item .structure-actions{display:none!important}
+/* De regelaar werkt alleen als minimaal twee stelsels zichtbaar zijn. */
+.depth-control[hidden]{display:none!important}
+.eai-layer-control{
+  gap:8px;padding:12px 9px;max-width:110px;
+}
+.eai-layer-control .depth-label{font-size:9px;letter-spacing:0}
+.eai-layer-caption{
+  display:block;max-width:85px;overflow-wrap:anywhere;
+  font:9px/1.5 ui-monospace,monospace;color:#adc6d7;text-align:center;
+}
+@media(max-width:680px){
+  #infoSidebar{
+    position:fixed!important;
+    top:auto!important;left:0!important;right:0!important;bottom:0!important;
+    width:100%!important;height:min(57dvh,540px)!important;
+    max-height:57dvh!important;
+    border-radius:13px 13px 0 0;
+    border-top:1px solid #426278;border-left:0;
+    transform:translateY(105%)!important;
+    visibility:hidden;pointer-events:none;
+    box-shadow:0 -12px 40px #0009;
+    z-index:300;
+  }
+  #app.info-open #infoSidebar{
+    transform:translateY(0)!important;
+    visibility:visible;pointer-events:auto;
+  }
+  #infoSidebar .sidebar-content{
+    max-height:calc(57dvh - 54px)!important;
+    padding:15px 20px 60px
+  }
+  .callout{max-width:min(57vw,210px)}
+  .eai-layer-control{left:8px;top:56%;padding:7px 5px;max-width:73px}
+  .eai-layer-caption{max-width:62px;font-size:8px}
+  .eai-layer-control .depth-slider{height:112px}
+}
+
+/* Informatie is het eerste resultaat van een selectie. Geen dubbele menubalk. */
+.sidebar-info{
+  position:fixed!important;
+  top:70px!important;
+  right:12px!important;
+  bottom:12px!important;
+  left:auto!important;
+  height:auto!important;
+  width:min(390px,calc(100vw - 24px))!important;
+  border:1px solid #304d61;
+  border-radius:10px;
+  background:#0b1929!important;
+  box-shadow:0 20px 60px #0009;
+  z-index:170!important;
+  overflow:hidden;
+  visibility:hidden;
+  pointer-events:none;
+}
+#app.info-open .sidebar-info{
+  visibility:visible;
+  pointer-events:auto;
+}
+.sidebar-info .sidebar-header{
+  padding:17px 20px 13px;
+  border-bottom:1px solid #294053;
+}
+.sidebar-info .sidebar-header h2{
+  font:650 11px/1.3 Inter,system-ui,sans-serif;
+  color:#dbeef4;
+  text-transform:none;
+  letter-spacing:.01em;
+}
+.sidebar-info .sidebar-content{
+  padding:18px 20px 28px;
+  max-height:calc(100% - 54px);
+  overflow:auto;
+  overscroll-behavior:contain;
+}
+.sidebar-info .structure-title h3{
+  font:650 20px/1.27 Inter,system-ui,sans-serif;
+  letter-spacing:-.025em;
+  color:#f2fcff;
+}
+.sidebar-info .structure-latin{font-size:12px;color:#a6c4d5}
+.sidebar-info .structure-tags{display:flex;flex-wrap:wrap;gap:5px;margin:10px 0 4px}
+.eai-fact{padding:15px 0;border-top:1px solid #294456}
+.eai-fact h4{
+  margin:0 0 7px;
+  font:650 10px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;
+  text-transform:uppercase;letter-spacing:.09em;color:#8ce2e3;
+}
+.eai-fact p{
+  margin:0;
+  font:400 13px/1.6 Inter,system-ui,sans-serif;
+  color:#d5e5ed;
+}
+.eai-no-guide{
+  margin:14px 0;
+  font:12px/1.6 Inter,system-ui,sans-serif;
+  color:#afc6d6;
+}
+.eai-details-actions{
+  display:flex;flex-wrap:wrap;gap:7px;
+  padding:14px 0 16px;border-top:1px solid #294456;
+}
+.eai-details-actions button{
+  padding:9px 11px;min-height:39px;
+  border:1px solid #34566d;
+  border-radius:5px;color:#d4e9f2;background:#152b3d;
+  font:550 11px/1.35 Inter,system-ui,sans-serif;
+  cursor:pointer;
+}
+.eai-details-actions button:hover,
+.eai-details-actions button:focus-visible{
+  border-color:#8bd9e1;color:#fff;background:#214456;
+}
+.eai-original-source{border-top:1px solid #294456;padding-top:13px}
+.eai-original-source summary{
+  font:550 11px/1.4 Inter,system-ui,sans-serif;
+  color:#9eb8c9;cursor:pointer;
+}
+.eai-original-source > p{
+  font:11px/1.5 Inter,system-ui,sans-serif;
+  color:#8da6b9;margin:10px 0;
+}
+.eai-original-source .structure-description{
+  font:12px/1.65 Inter,system-ui,sans-serif;
+  color:#b0c7d5;margin-top:9px;
+}
+.callout .callout-name{font-weight:650}
+.callout .callout-close{
+  min-width:30px;min-height:30px;
+  margin-left:8px;
+  border-radius:5px;
+  color:#c3dce8;
+}
+.footer-bar{display:none!important}
+
+/* Alleen stelsels die samen zichtbaar zijn, kunnen transparant worden gemaakt. */
+.eai-layer-control[hidden]{display:none!important}
+.eai-layer-control{width:112px;padding:12px 9px;gap:10px}
+.eai-layer-control .depth-label{
+  writing-mode:horizontal-tb;
+  color:#e0f1f7;
+  letter-spacing:.02em;
+  font:550 10px/1.4 Inter,system-ui,sans-serif;
+  text-transform:none;
+  text-align:center;
+}
+.eai-layer-control .depth-slider{height:148px}
+.eai-layer-caption{
+  font:10px/1.45 Inter,system-ui,sans-serif;
+  color:#a7c3d4;
+  text-align:center;
+  overflow-wrap:anywhere;
+}
+@media(max-width:720px){
+  .sidebar-info{
+    top:auto!important;left:0!important;right:0!important;bottom:0!important;
+    width:100vw!important;height:min(57dvh,570px)!important;
+    border-radius:13px 13px 0 0;
+    border-left:0;border-right:0;border-bottom:0;
+    transform:translateY(110%)!important;
+  }
+  #app.info-open .sidebar-info{transform:translateY(0)!important}
+  .sidebar-info .sidebar-header{padding:12px 17px 10px}
+  .sidebar-info .sidebar-content{
+    max-height:calc(100% - 45px);
+    padding:12px 17px 25px;
+  }
+  .sidebar-info .structure-title h3{font-size:18px}
+  .eai-fact{padding:12px 0}
+  .eai-layer-control{width:92px;left:8px}
+  .eai-layer-control .depth-slider{height:110px}
+}
+@media(prefers-reduced-motion:reduce){
+  .sidebar-info{transition:none}
+}
+
+
+/* Eén informatiepaneel, zonder tweede actiebalk of overlappende snelmenu's. */
+.eai-explore,#footerBar,.preset-row{display:none!important}
+.sidebar-info{
+  position:fixed!important;top:58px!important;right:0!important;bottom:0!important;
+  width:min(420px,100vw)!important;max-width:none!important;
+  height:auto;z-index:85!important;
+  background:#0c1929!important;border-left:1px solid #355166;
+  box-shadow:-12px 0 38px #0009;
+  transform:translateX(105%)!important;
+  visibility:hidden;pointer-events:none;
+  transition:transform .22s ease,visibility .22s ease;
+}
+#app.info-open .sidebar-info{
+  transform:translateX(0)!important;visibility:visible;pointer-events:auto;
+}
+.sidebar-info .sidebar-header{
+  padding:17px 18px;border-bottom:1px solid #30495b;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.sidebar-info .sidebar-header h2{
+  font:650 12px/1.4 Inter,system-ui,sans-serif;color:#dcecf5;
+}
+.sidebar-info .sidebar-content{padding:16px 19px 28px;overflow-y:auto;overscroll-behavior:contain}
+.sidebar-info .structure-title h3{
+  font:650 20px/1.2 Inter,system-ui,sans-serif;
+  letter-spacing:-.025em;color:#eff8ff;margin-bottom:6px;
+}
+.sidebar-info .structure-latin{font-size:12px;color:#98c7d7}
+.eai-facts{margin:19px 0}
+.eai-fact{margin:0 0 16px}
+.eai-fact h4,.eai-detail-actions h4{
+  font:700 10px/1.45 ui-monospace,SFMono-Regular,Menlo,monospace;
+  text-transform:uppercase;letter-spacing:.09em;color:#8fb9c9;margin-bottom:6px;
+}
+.eai-fact p{
+  color:#dce8f0;font:13px/1.65 Inter,system-ui,sans-serif;
+  margin:0;max-width:62ch;
+}
+.eai-facts-unverified{
+  color:#a9c0d1;font:12px/1.7 Inter,system-ui,sans-serif;
+  border-left:2px solid #5e8499;padding-left:12px;margin:0;
+}
+.eai-source-description{
+  border-top:1px solid #28445a;padding:13px 0;margin:18px 0;
+  font:12px/1.65 Inter,system-ui,sans-serif;color:#b7d1de;
+}
+.eai-source-description summary{cursor:pointer;color:#9fcbdb;font-weight:550}
+.eai-source-description .structure-description{margin-top:13px}
+.eai-detail-actions{border-top:1px solid #28445a;padding-top:16px;margin-top:20px}
+.eai-detail-actions button,.eai-show-all{
+  border:1px solid #41637a;background:#152c3e;color:#e1f2fb;
+  border-radius:5px;min-height:40px;padding:9px 12px;margin:6px 6px 3px 0;
+  font:550 12px/1.35 Inter,system-ui,sans-serif;
+  cursor:pointer;
+}
+.eai-detail-actions button:hover,.eai-show-all:hover{border-color:#8ac6d5;background:#204257}
+.eai-detail-actions button:focus-visible,.eai-show-all:focus-visible{
+  outline:2px solid #a1eaf0;outline-offset:3px;
+}
+.eai-show-all{display:block;width:calc(100% - 16px);margin:0 8px 13px;text-align:center}
+.callout{gap:10px}
+.callout-name{max-width:180px}
+.callout-close{min-width:28px;min-height:28px}
+.depth-control[hidden]{display:none!important}
+.eai-depth-status{
+  display:block;max-width:90px;
+  color:#a8cad8;font:10px/1.4 Inter,system-ui,sans-serif;
+  text-align:center;
+}
+@media(max-width:720px){
+  .sidebar-info{
+    top:auto!important;left:0!important;right:0!important;bottom:0!important;
+    width:100vw!important;height:min(64dvh,590px)!important;
+    border:1px solid #3d5b6e;border-radius:13px 13px 0 0;
+    transform:translateY(106%)!important;
+    box-shadow:0 -20px 65px #000b;
+  }
+  #app.info-open .sidebar-info{transform:translateY(0)!important}
+  .sidebar-info .sidebar-header{padding:11px 17px}
+  .sidebar-info .sidebar-content{padding:14px 17px 30px}
+  .sidebar-info .structure-title h3{font-size:18px}
+  .eai-facts{margin-top:14px}
+  .eai-fact{margin-bottom:11px}
+  .eai-fact p{font-size:12px;line-height:1.55}
+  #app.has-selection #infoOpen{display:inline-flex!important}
+  .callout{
+    max-width:min(250px,65vw);
+    padding:6px 8px;
+  }
+  .callout-name{font-size:11px;max-width:145px}
+  .depth-control{left:7px;padding:7px 5px;gap:5px}
+  .depth-slider{height:135px}
+  .eai-depth-status{max-width:74px;font-size:9px}
+}
+@media(prefers-reduced-motion:reduce){
+  .sidebar-info{transition:none}
+}
+
+/* De enige detailacties en de oorspronkelijke brontekst. */
+.eai-detail-actions{
+  display:flex;flex-wrap:wrap;gap:7px;margin:18px 0 20px;
+  padding-top:15px;border-top:1px solid #284257;
+}
+.eai-detail-actions h4{flex-basis:100%;margin:0 0 4px;font:650 10px/1.4 ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;color:#94cbd5}
+.eai-detail-actions button,.eai-show-all{
+  min-height:38px;padding:9px 11px;
+  border:1px solid #426579;border-radius:5px;
+  background:#162c3e;color:#e0eff6;cursor:pointer;
+  font:550 11px/1.25 Inter,system-ui,sans-serif;
+}
+.eai-detail-actions button:focus-visible,.eai-show-all:focus-visible{outline:2px solid #83d5e2;outline-offset:2px}
+.eai-show-all{display:block;width:calc(100% - 20px);margin:12px 10px 16px}
+.eai-source-description{margin:16px 0;border-top:1px solid #263f51;padding-top:12px}
+.eai-source-description summary{cursor:pointer;font:600 11px/1.5 Inter,system-ui,sans-serif;color:#aac9d7}
+.eai-facts-unverified{font:12px/1.6 Inter,system-ui,sans-serif;color:#b2c7d5}
+.eai-depth-status{display:block;max-width:86px;overflow-wrap:anywhere;font:9px/1.5 ui-monospace,monospace;color:#adc6d7;text-align:center}
+@media(max-width:680px){.eai-depth-status{max-width:65px;font-size:8px}}
+
+/* Eén navigatiepad: onderdelen kiezen in de stelsellijst, bewerken in detail. */
+.sidebar-systems .structure-item .structure-actions{display:none!important}
+#infoOpen{display:none!important}
+#app.has-selection #infoOpen{display:inline-flex!important}
+
+/* Een onderdeel wordt gekozen in de lijst. Acties alleen in het detailpaneel. */
+#systemsSidebar .structure-actions{display:none!important}

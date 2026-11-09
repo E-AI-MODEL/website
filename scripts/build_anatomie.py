@@ -15,6 +15,7 @@ import sys
 import tempfile
 from pathlib import Path
 from anatomie_shell import refit_shell
+from anatomie_refine import refine_anatomy
 
 SOURCE_URL = "https://github.com/nqwrc/3d-anatomy.git"
 SOURCE_COMMIT = "8ca3b7421bcfbe88b85859eb1983d5cf79f21749"
@@ -371,7 +372,7 @@ function dutchTermsFor(base) {
         "systems": "Lichaamsstelsels", "info": "Informatie",
         "front_view": "Voor", "side_view": "Zij",
         "back_view": "Achter", "top_view": "Boven",
-        "reset": "Herstel", "depth": "Diepte",
+        "reset": "Startbeeld", "depth": "Diepte",
         "help": "Hulp", "help_title": "Bediening",
         "loading_model": "Anatomisch model laden...",
         "select_structure": "Kies een anatomische structuur",
@@ -545,6 +546,7 @@ def build(destination: Path) -> None:
                 raise RuntimeError(f"Required source file missing: {rel}")
         patch_upstream(source)
         refit_shell(source)
+        refine_anatomy(source)
         command("npm", "ci", "--no-audit", "--no-fund", cwd=source)
         command("npm", "run", "lint", cwd=source)
         command("npm", "run", "build", "--", f"--base={BASE}", cwd=source)

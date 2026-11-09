@@ -51,6 +51,37 @@ try {
   assert(report.triangles>100, 'WebKit tekent geen anatomische driehoeken');
   assert.deepEqual(errors,[],'JavaScript-fouten: '+errors.join('; '));
   assert.deepEqual(failed,[],'Netwerkfouten: '+failed.join('; '));
+  // Het scherm bevat maar een stelsel: een diepteschuif zou betekenisloos zijn.
+  assert.equal(await page.locator('#eaiExplore').count(),0,'Dubbele stelselkeuze op de viewer');
+  assert.equal(await page.locator('#footerBar').count(),0,'Dubbele actiebalk onder het lichaam');
+  assert.equal(await page.locator('#infoSidebar').count(),1,'Er is precies een informatiepaneel');
+  assert(await page.locator('.depth-control').isHidden(),
+    'Diepteschuif bij een enkel stelsel moet verborgen zijn');
+
+  // Gebruik dezelfde zoek- en selectieroute als een bezoeker op iPhone.
+  await page.locator('#searchOpen').click();
+  await page.locator('#searchInput').fill('femur');
+  const choice = page.locator('#searchResults .search-result-item:not(.is-empty)').filter({hasText:/Femur/i}).first();
+  await choice.waitFor({state:'visible',timeout:12000});
+  await choice.click();
+  await page.locator('#structureInfo .eai-fact').first().waitFor({state:'visible',timeout:15000});
+  assert(await page.locator('#app').evaluate(el=>el.classList.contains('info-open')),
+    'Selectie opent het informatiepaneel niet');
+  assert.match(await page.locator('#structureInfo').innerText(),/Dijbeen|femur/i,
+    'De gekozen structuur heeft geen anatomische toelichting');
+  assert.equal(await page.locator('[data-callout="isolate"]').count(),0,
+    'Contextuele acties staan dubbel in het model');
+  const detailDebug = await page.evaluate(() => ({
+    classes: [...document.querySelectorAll('#structureInfo > *')].map(el => el.className),
+    excerpt: document.getElementById('structureInfo')?.innerText.slice(-320)
+  }));
+  console.log('DETAIL_PANEL_DEBUG', JSON.stringify(detailDebug), 'PAGE_ERRORS', JSON.stringify(errors));
+  assert.equal(await page.locator('#structureInfo .eai-detail-actions').count(),1,
+    'De selectie heeft niet exact een contextmenu');
+  await page.locator('#infoToggle').click();
+  await page.locator('#infoSidebar').waitFor({state:'hidden',timeout:5000});
+  assert(!(await page.locator('#app').evaluate(el=>el.classList.contains('info-open'))),
+    'Het informatiepaneel blijft in de geopende toestand staan');
   mkdirSync('test-results',{recursive:true});
   await page.screenshot({path:'test-results/anatomie-webkit-mobile.png'});
   console.log('WebKit toont het skelet zonder laadspinner in '+elapsed+' ms, '+report.triangles+' driehoeken');
