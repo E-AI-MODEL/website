@@ -71,6 +71,65 @@ def patch_upstream(source: Path) -> None:
         raise RuntimeError("Cannot find the system icon map in upstream")
     sidebar.write_text(js, encoding="utf-8")
 
+    # The detailed part lists stay closed until visitors request them.
+    js = sidebar.read_text(encoding="utf-8")
+    js = js.replace("const SYSTEM_LABELS = {", """const SYSTEM_LABELS = {
+  nl: {
+    skeletal: 'Skelet', muscular: 'Spieren', joints: 'Gewrichten',
+    cardiovascular: 'Hart en bloedvaten', lymphatic: 'Lymfestelsel',
+    nervous: 'Zenuwstelsel', visceral: 'Organen'
+  },""", 1)
+    js = js.replace("const icon = SYSTEM_ICONS[systemId] || '🔬';",
+                    "const icon = SYSTEM_ICONS[systemId] || '00';", 1)
+    old = """        <div class="system-group-content" style="display: ${isVisible ? 'block' : 'none'};"></div>"""
+    new = """        <button type="button" class="eai-parts-toggle" data-system-expand="${systemId}" aria-expanded="false" aria-controls="parts-${systemId}">Bekijk onderdelen <span class="eai-chevron" aria-hidden="true">+</span></button>
+        <div id="parts-${systemId}" class="system-group-content" style="display: none;"></div>"""
+    if old not in js:
+        raise RuntimeError("Source structure list markup changed")
+    js = js.replace(old, new, 1)
+    marker = "  // Add event listeners for system toggles"
+    if marker not in js:
+        raise RuntimeError("Systems event marker missing")
+    addition = """  container.querySelectorAll('[data-system-expand]').forEach(button => {
+    button.addEventListener('click', async () => {
+      const group = button.closest('.system-group');
+      const systemId = button.dataset.systemExpand;
+      const content = group.querySelector('.system-group-content');
+      const open = button.getAttribute('aria-expanded') !== 'true';
+      button.setAttribute('aria-expanded', String(open));
+      button.innerHTML = open
+        ? 'Verberg onderdelen <span class="eai-chevron" aria-hidden="true">−</span>'
+        : 'Bekijk onderdelen <span class="eai-chevron" aria-hidden="true">+</span>';
+      if (open && content.children.length === 0) {
+        await ensureSystemLoaded(systemId, group);
+        if (content.children.length === 0) populateSystemStructures(systemId, content);
+      }
+      content.style.display = open ? 'block' : 'none';
+    });
+  });
+
+"""
+    js = js.replace(marker, addition + marker, 1)
+    js = js.replace(
+        "      content.style.display = 'block';\n\n      // Building the list here",
+        "      content.style.display = group.querySelector('[data-system-expand]')?.getAttribute('aria-expanded') === 'true' ? 'block' : 'none';\n\n      // Building the list here", 1)
+    sidebar.write_text(js, encoding="utf-8")
+
+    atlas_html = index.read_text(encoding="utf-8")
+    viewer_anchor = '<div id="viewerContainer" class="viewer-container">'
+    if viewer_anchor not in atlas_html:
+        raise RuntimeError("Viewer container missing")
+    intro = ('<div class="eai-stage-intro" aria-hidden="true">'
+             '<span class="eai-stage-kicker">ANATOMIE / 3D-ATLAS</span>'
+             '<h2>Het menselijk lichaam</h2>'
+             '<p>Draai het model. Kies een stelsel. '
+             'Klik op een structuur om verder te kijken.</p></div>')
+    atlas_html = atlas_html.replace(viewer_anchor, viewer_anchor + intro, 1)
+    atlas_html = atlas_html.replace('>Alle tools</a>',
+        '><span class="eai-back-full">Alle tools</span>'
+        '<span class="eai-back-small">EAI</span></a>', 1)
+    index.write_text(atlas_html, encoding="utf-8")
+
     style = source / "src" / "styles" / "main.css"
     with style.open("a", encoding="utf-8") as f:
         f.write("""
@@ -118,6 +177,10 @@ html,body{max-width:100%;overflow-x:hidden}
   }
 }
 """)
+
+    layout_file = Path(__file__).resolve().parent.parent / "content" / "anatomie" / "layout.css"
+    with style.open("a", encoding="utf-8") as f:
+        f.write("\\n" + layout_file.read_text(encoding="utf-8"))
 
 def build(destination: Path) -> None:
     if not destination.as_posix().replace("\\", "/").endswith("tools/anatomie"):
