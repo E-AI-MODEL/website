@@ -22,10 +22,16 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Use Node.js 22 for the anatomical 3D atlas
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
       - name: Build and validate the release to publish
         run: |
           pip install beautifulsoup4
           python scripts/build_site.py --sources content/legacy --out site-build
+          python scripts/build_anatomie.py --out site-build/tools/anatomie
+          python -m unittest discover -s tests -p 'test_anatomie_publish.py' -v
           python scripts/prepare_ui.py --root site-build
           python scripts/verify_ui.py --root site-build
       - name: Install FTPS client
@@ -66,3 +72,18 @@ jobs:
           EOF
       - name: Verify live HTML and exact asset hashes
         run: python scripts/verify_ui.py --root site-build --url https://eaimodel.nl --timeout 90
+      - name: Verify live anatomical models
+        run: |
+          python - <<'PY'
+          from urllib.request import urlopen
+          base = 'https://eaimodel.nl/tools/anatomie/'
+          with urlopen(base, timeout=35) as response:
+              assert response.status == 200
+              assert b'Anatomisch Observatorium' in response.read(120000)
+          for system in ('skeletal', 'muscular', 'joints', 'cardiovascular',
+                         'lymphatic', 'nervous', 'visceral'):
+              with urlopen(base + 'models/' + system + '.glb', timeout=40) as response:
+                  assert response.status == 200, system
+                  assert response.read(4) == b'glTF', system
+          print('Online anatomische modellen gecontroleerd')
+          PY
