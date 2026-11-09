@@ -64,7 +64,9 @@ try {
       scene.traverse(n => { if (n.isMesh && n.visible) meshes++; });
       return meshes > 20;
     }, null, { timeout: 40000 });
-    await page.waitForTimeout(450);
+    // The scene is rendered before initUI() binds camera controls.
+    await page.waitForFunction(() => window.__EAI_ANATOMY_UI_READY === true,
+      null, { timeout: 20000 });
     let state = await page.evaluate(() => {
       const v = window.ZAnatomy.viewer;
       let meshes = 0, tris = 0;
@@ -86,12 +88,16 @@ try {
     assert(state.meshes > 20 && state.triangles > 2000, 'Model is niet opgebouwd uit anatomische 3D-meshes');
     assert(state.canvasWidth > 300 && state.canvasHeight > 300, '3D-canvas is te klein');
 
-    await page.evaluate(() => document.querySelector('#backViewBtn')?.click());
-    await page.waitForTimeout(650);
-    const newCamera = await page.evaluate(() => window.ZAnatomy.viewer.camera.position.z);
-    assert(Math.abs(newCamera - state.cameraZ) > 0.05, 'Achteraanzicht verandert de camera niet');
-    await page.evaluate(() => document.querySelector('#frontViewBtn')?.click());
-    await page.waitForTimeout(600);
+    await page.locator('#backViewBtn').click();
+    await page.waitForFunction(
+      originalZ => Math.abs(window.ZAnatomy.viewer.camera.position.z - originalZ) > 0.05,
+      state.cameraZ, { timeout: 12000 }
+    );
+    await page.locator('#frontViewBtn').click();
+    await page.waitForFunction(
+      originalZ => Math.abs(window.ZAnatomy.viewer.camera.position.z - originalZ) < 0.05,
+      state.cameraZ, { timeout: 12000 }
+    );
 
     // De gebruiker moet ook een tweede, apart gedownload lichaamssysteem openen.
     if (await page.locator('#systemsOpen').isVisible()) {

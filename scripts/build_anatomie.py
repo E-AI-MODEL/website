@@ -69,7 +69,134 @@ def patch_upstream(source: Path) -> None:
     js, count = re.subn(r"const SYSTEM_ICONS = \{.*?\};", replacement, js, count=1, flags=re.DOTALL)
     if count != 1:
         raise RuntimeError("Cannot find the system icon map in upstream")
+    # Dutch controls for the EAI edition. Anatomical structure names remain in
+    # their available source languages; their identity is not rewritten.
+    names = {
+        "skeletal: 'Skeletal system'": "skeletal: 'Skelet'",
+        "muscular: 'Muscular system'": "muscular: 'Spieren'",
+        "joints: 'Joints'": "joints: 'Gewrichten'",
+        "cardiovascular: 'Cardiovascular system'": "cardiovascular: 'Hart en bloedvaten'",
+        "lymphatic: 'Lymphoid organs'": "lymphatic: 'Lymfestelsel'",
+        "nervous: 'Nervous system & sense organs'": "nervous: 'Zenuwstelsel'",
+        "visceral: 'Visceral systems'": "visceral: 'Organen'",
+    }
+    for original, translated in names.items():
+        if original not in js:
+            raise RuntimeError(f"Source system label changed: {original}")
+        js = js.replace(original, translated, 1)
     sidebar.write_text(js, encoding="utf-8")
+
+    # The detailed part lists stay closed until visitors request them.
+    js = sidebar.read_text(encoding="utf-8")
+    js = js.replace("const SYSTEM_LABELS = {", """const SYSTEM_LABELS = {
+  nl: {
+    skeletal: 'Skelet', muscular: 'Spieren', joints: 'Gewrichten',
+    cardiovascular: 'Hart en bloedvaten', lymphatic: 'Lymfestelsel',
+    nervous: 'Zenuwstelsel', visceral: 'Organen'
+  },""", 1)
+    js = js.replace("const icon = SYSTEM_ICONS[systemId] || '🔬';",
+                    "const icon = SYSTEM_ICONS[systemId] || '00';", 1)
+    old = """        <div class="system-group-content" style="display: ${isVisible ? 'block' : 'none'};"></div>"""
+    new = """        <button type="button" class="eai-parts-toggle" data-system-expand="${systemId}" aria-expanded="false" aria-controls="parts-${systemId}">Bekijk onderdelen <span class="eai-chevron" aria-hidden="true">+</span></button>
+        <div id="parts-${systemId}" class="system-group-content" style="display: none;"></div>"""
+    if old not in js:
+        raise RuntimeError("Source structure list markup changed")
+    js = js.replace(old, new, 1)
+    marker = "  // Add event listeners for system toggles"
+    if marker not in js:
+        raise RuntimeError("Systems event marker missing")
+    addition = """  container.querySelectorAll('[data-system-expand]').forEach(button => {
+    button.addEventListener('click', async () => {
+      const group = button.closest('.system-group');
+      const systemId = button.dataset.systemExpand;
+      const content = group.querySelector('.system-group-content');
+      const open = button.getAttribute('aria-expanded') !== 'true';
+      button.setAttribute('aria-expanded', String(open));
+      button.innerHTML = open
+        ? 'Verberg onderdelen <span class="eai-chevron" aria-hidden="true">−</span>'
+        : 'Bekijk onderdelen <span class="eai-chevron" aria-hidden="true">+</span>';
+      if (open && content.children.length === 0) {
+        await ensureSystemLoaded(systemId, group);
+        if (content.children.length === 0) populateSystemStructures(systemId, content);
+      }
+      content.style.display = open ? 'block' : 'none';
+    });
+  });
+
+"""
+    js = js.replace(marker, addition + marker, 1)
+    js = js.replace(
+        "      content.style.display = 'block';\n\n      // Building the list here",
+        "      content.style.display = group.querySelector('[data-system-expand]')?.getAttribute('aria-expanded') === 'true' ? 'block' : 'none';\n\n      // Building the list here", 1)
+    # Wait for UI callbacks, not only the first rendered model, in browser tests.
+    ready_marker = "  initDepthSlider();\n}"
+    if ready_marker not in js:
+        raise RuntimeError("Upstream readiness marker changed")
+    js = js.replace(ready_marker, "  initDepthSlider();\n  window.__EAI_ANATOMY_UI_READY = true;\n}", 1)
+    sidebar.write_text(js, encoding="utf-8")
+
+    presets_file = source / "src" / "data" / "presets.js"
+    presets_js = presets_file.read_text(encoding="utf-8")
+    for original, translated in {
+        "en: 'Skeleton, front'": "en: 'Skelet, vooraanzicht'",
+        "en: 'Thigh muscles'": "en: 'Beenspieren'",
+        "en: 'Heart and great vessels'": "en: 'Hart en bloedvaten'",
+    }.items():
+        if original not in presets_js:
+            raise RuntimeError(f"Source preset changed: {original}")
+        presets_js = presets_js.replace(original, translated, 1)
+    presets_file.write_text(presets_js, encoding="utf-8")
+
+    translations_file = source / "src" / "data" / "translations.js"
+    translations_js = translations_file.read_text(encoding="utf-8")
+    translations_js += """
+// EAI edition: Dutch interface; anatomical terminology remains from the source.
+Object.assign(translationsEn, {
+  search_placeholder: 'Zoek een anatomische structuur...',
+  systems: 'Lichaamsstelsels', info: 'Informatie', help: 'Hulp',
+  front_view: 'Voor', side_view: 'Zij', back_view: 'Achter',
+  top_view: 'Boven', reset: 'Herstel',
+  depth: 'Diepte', select_structure: 'Kies een structuur',
+  click_to_select: 'Klik op het 3D-model voor informatie',
+  loading_model: 'Anatomisch model laden...',
+  isolate: 'Isoleer', hide: 'Verberg', transparent: 'Transparant',
+  show_all: 'Toon alles', loading_structure: 'Structuur laden...',
+  no_results: 'Geen resultaten', retry: 'Opnieuw',
+  name: 'Naam', system: 'Stelsel', region: 'Regio',
+  description: 'Beschrijving', functions: 'Functies',
+  origin: 'Oorsprong', insertion: 'Aanhechting',
+  innervation: 'Innervatie', vascularization: 'Doorbloeding',
+  clinical_notes: 'Klinische opmerkingen', parts: 'Onderdelen',
+  help_title: 'Bediening', controls_title: 'Bediening',
+  help_computer: 'Computer', help_touch: 'Aanraken',
+  help_left_drag: 'Slepen', help_right_drag: 'Rechtermuisknop slepen',
+  help_rotate: 'Draaien', help_wheel: 'Scrollen', help_zoom: 'Zoomen',
+  help_pan: 'Verschuiven', help_double_click: 'Dubbelklikken',
+  help_frame: 'In beeld brengen', help_select: 'Selecteren',
+  close: 'Sluiten', help_credits: 'Bronnen en licenties',
+  help_toolbar: 'Kijkrichtingen', help_panels: 'Panelen',
+  action_isolate: 'Isoleer', action_hide: 'Verberg',
+  action_transparent: 'Maak transparant', action_restore: 'Alles tonen',
+  read_more: 'Lees meer op Wikipedia',
+  no_definition: 'Voor deze structuur is geen beschrijving beschikbaar.'
+});
+"""
+    translations_file.write_text(translations_js, encoding="utf-8")
+
+    atlas_html = index.read_text(encoding="utf-8")
+    viewer_anchor = '<div id="viewerContainer" class="viewer-container">'
+    if viewer_anchor not in atlas_html:
+        raise RuntimeError("Viewer container missing")
+    intro = ('<div class="eai-stage-intro" aria-hidden="true">'
+             '<span class="eai-stage-kicker">ANATOMIE / 3D-ATLAS</span>'
+             '<h2>Het menselijk lichaam</h2>'
+             '<p>Draai het model. Kies een stelsel. '
+             'Klik op een structuur om verder te kijken.</p></div>')
+    atlas_html = atlas_html.replace(viewer_anchor, viewer_anchor + intro, 1)
+    atlas_html = atlas_html.replace('>Alle tools</a>',
+        '><span class="eai-back-full">Alle tools</span>'
+        '<span class="eai-back-small">EAI</span></a>', 1)
+    index.write_text(atlas_html, encoding="utf-8")
 
     style = source / "src" / "styles" / "main.css"
     with style.open("a", encoding="utf-8") as f:
@@ -118,6 +245,10 @@ html,body{max-width:100%;overflow-x:hidden}
   }
 }
 """)
+
+    layout_file = Path(__file__).resolve().parent.parent / "content" / "anatomie" / "layout.css"
+    with style.open("a", encoding="utf-8") as f:
+        f.write("\n" + layout_file.read_text(encoding="utf-8"))
 
 def build(destination: Path) -> None:
     if not destination.as_posix().replace("\\", "/").endswith("tools/anatomie"):
