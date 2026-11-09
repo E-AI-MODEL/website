@@ -126,10 +126,61 @@ try {
   await page.waitForFunction(() => {
     const control = document.querySelector('.depth-control');
     return control && !control.hidden &&
-      control.textContent.includes('Onderdeel voor onderdeel ontleden');
+      control.textContent.includes('Ontleden');
   }, null, {timeout:10000});
 
-  await page.locator('#searchOpen').click();
+  const muscleReport = await page.evaluate(() => {
+    const total = {red:0,notRed:0,transparent:0,neutral:0,covered:0,neutralExamples:[]};
+    window.ZAnatomy?.viewer?.scene?.traverse(node => {
+      if (!node.isMesh || !node.visible) return;
+      const materials = Array.isArray(node.material) ? node.material : [node.material];
+      if (node.userData.eaiMuscleMesh) {
+        total.red++;
+        if (!materials.every(mat => mat?.color && mat.color.r > mat.color.g * 1.28 &&
+          mat.color.r > mat.color.b * 1.18)) total.notRed++;
+        if (materials.some(mat => mat.transparent || mat.opacity < .99)) total.transparent++;
+      } else if (node.userData.baseMaterial && node.parent) {
+        total.neutral++;
+        if (materials.some(mat => mat.transparent && mat.opacity < .08)) total.covered++;
+        if (total.neutralExamples.length < 14) total.neutralExamples.push({
+          name: node.name, partId: node.userData.partId || node.parent?.userData?.partId || '',
+          system: node.userData.system || node.parent?.userData?.system || '',
+          mat: materials.map(mat => ({name:mat.name,opacity:mat.opacity,transparent:mat.transparent}))
+        });
+      }
+    });
+    return total;
+  });
+  console.log('SPIERKLEUREN', JSON.stringify(muscleReport));
+  assert(muscleReport.red > 130, 'Te weinig echte spieren zichtbaar bij alleen Spieren');
+  assert.equal(muscleReport.notRed, 0, 'Een spier heeft nog geen rode materiaalweergave');
+  assert.equal(muscleReport.transparent, 0, 'De spierweefsels moeten duidelijk en dekkend zijn');
+  // De eerdere controles zoomen op botten. Toon voor deze overzichtsfoto
+  // eerst het volledige spierstelsel, anders staat alleen een kuit in beeld.
+  // Sluit een eerder geopend stelselmenu en een oude botselectie.
+  // De overzichtsfoto toont zo het echte, onbelemmerde spiermodel.
+  if (await page.locator('#app').evaluate(el => el.classList.contains('systems-open'))) {
+    await page.locator('#systemsToggle').click();
+  }
+  await page.waitForFunction(() => !document.querySelector('#app')?.classList.contains('systems-open'), null, {timeout:4000});
+  const calloutClose = page.locator('[data-callout="close"]').first();
+  if (await calloutClose.isVisible()) await calloutClose.click();
+  await page.locator('#frontViewBtn').click();
+  await page.waitForTimeout(750);
+  const positions = await page.evaluate(() => ({
+    stage: document.querySelector('#viewerContainer').getBoundingClientRect().toJSON(),
+    control: document.querySelector('.depth-control').getBoundingClientRect().toJSON()
+  }));
+  assert(positions.control.top >= positions.stage.top - 2,
+    'Ontleedbediening verdwijnt onder de bovenbalk op mobiel');
+  assert(positions.control.bottom < positions.stage.bottom,
+    'Ontleedbediening valt buiten het mobiele modelvenster');
+  const drawerOpen = await page.locator('#app').evaluate(el=>el.classList.contains('systems-open'));
+  assert.equal(drawerOpen, false, 'Stelsellijst mag het model op de screenshot niet afdekken');
+  mkdirSync('test-results',{recursive:true});
+  await page.screenshot({path:'test-results/anatomie-spieren-rood.png'});
+  assert(muscleReport.covered > 15, 'Fascia krijgt nog geen terughoudende weergave');
+    await page.locator('#searchOpen').click();
   await page.locator('#searchInput').fill('grote bilspier');
   const gluteus = page.locator('#searchResults .search-result-item[data-part^="Gluteus maximus muscle"]').first();
   await gluteus.waitFor({state:'visible',timeout:10000});

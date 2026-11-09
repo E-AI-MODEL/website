@@ -46,13 +46,20 @@ def refine_anatomy(source: Path) -> None:
         """// Shared GLB materials are adjusted once. Every mesh retains the same
 // material identity, so highlight and opacity restoration continue to work.
 const adjustedMaterials = new WeakSet();
+const redMuscleMaterials = new WeakMap();
+const translucentFasciaMaterials = new WeakMap();
+
+function isMusclePart(partId) {
+  // Het spierstelsel bevat ook pezen, slijmbeurzen en bindweefsel.
+  // Die worden anatomisch niet als spierweefsel ingekleurd.
+  return !/fasci|aponeuros|septum|septa|retinacul|pannicul|sheath|fibrous|bursa|tendon|tendin|ligament|synovial|capsule|linea alba|raphe|iliotibial tract|iliopectineal arch|tarsus/i.test(partId);
+}
 function adjustMaterial(material) {
   if (!material || adjustedMaterials.has(material)) return;
   adjustedMaterials.add(material);
   if (material.color) {
     const c = material.color;
-    // Convert only washed-out cyan tissue, fascia and surface materials.
-    // Keep saturated dark-blue veins, red arteries and nerve colors intact.
+    // Neutrale kleurcorrectie voor niet-spierweefsels.
     if (c.b > 0.14 && c.g > c.r * 1.08 && c.b > c.r * 1.18 &&
         c.g > c.b * 0.58 && (c.r + c.g + c.b) > 0.55) {
       c.lerp(new THREE.Color(0xc7bbaa), 0.91);
@@ -66,6 +73,48 @@ function adjustMaterial(material) {
   }
   material.needsUpdate = true;
 }
+function muscleMaterial(original) {
+  let material = redMuscleMaterials.get(original);
+  if (material) return material;
+  material = original.clone();
+  const c = material.color;
+  if (c) {
+    // Echte rode bronmaterialen behouden hun kleurvariatie.
+    // Bleke en blauwige bronmaterialen van spiervolumes worden spierrood.
+    const alreadyRed = c.r > c.g * 1.3 && c.r > c.b * 1.17 && c.r > 0.22;
+    if (alreadyRed) c.lerp(new THREE.Color(0xba493b), 0.16);
+    else c.set(0xb64236);
+  }
+  material.transparent = false;
+  material.opacity = 1;
+  material.depthWrite = true;
+  if (typeof material.roughness === 'number') material.roughness = 0.76;
+  if (typeof material.metalness === 'number') material.metalness = 0;
+  material.needsUpdate = true;
+  redMuscleMaterials.set(original, material);
+  return material;
+}
+function fasciaMaterial(original) {
+  let material = translucentFasciaMaterials.get(original);
+  if (material) return material;
+  adjustMaterial(original);
+  material = original.clone();
+  material.transparent = true;
+  material.opacity = 0.035;
+  material.depthWrite = false;
+  material.needsUpdate = true;
+  translucentFasciaMaterials.set(original, material);
+  return material;
+}
+function anatomicalMaterial(original, systemId, partId) {
+  if (systemId === 'muscular') {
+    // Toon alle echte spieren rood. Bijbehorende fascie, pezen en slijmbeurzen
+    // blijven beschikbaar in het 3D-model maar bedekken de spieren niet.
+    return isMusclePart(partId) ? muscleMaterial(original) : fasciaMaterial(original);
+  }
+  adjustMaterial(original);
+  return original;
+}
 function setupMesh(mesh, systemId, viewer) {""",
         "preserve anatomical colors without pale blue")
     meshes = one(meshes,
@@ -73,11 +122,36 @@ function setupMesh(mesh, systemId, viewer) {""",
     mesh.userData.baseMaterial = mesh.material;
   }""",
         """  if (mesh.material) {
-    (Array.isArray(mesh.material) ? mesh.material : [mesh.material]).forEach(adjustMaterial);
+    const partId = findAncestorPartId(mesh) || '';
+    mesh.userData.eaiMuscleMesh = systemId === 'muscular' && isMusclePart(partId);
+    mesh.material = Array.isArray(mesh.material)
+      ? mesh.material.map(mat => anatomicalMaterial(mat, systemId, partId))
+      : anatomicalMaterial(mesh.material, systemId, partId);
     mesh.userData.baseMaterial = mesh.material;
   }""",
         "shared material refinement")
     loader.write_text(meshes, encoding="utf-8")
+
+    # A compare step at 100% must restore the original material, not force
+    # all anatomical materials to opacity=1. Otherwise transparent fascia
+    # becomes opaque after switching from Compare to one muscular system.
+    visibility = source / "src" / "viewer" / "visibility.js"
+    visibility_js = visibility.read_text(encoding="utf-8")
+    visibility_js = one(visibility_js,
+        """  ownMeshesOf(partId).forEach(mesh => {
+    if (opacity >= 1 && !mesh.userData.ownsMaterial) return;
+
+    ownMaterials(mesh).forEach(mat => {""",
+        """  ownMeshesOf(partId).forEach(mesh => {
+    if (opacity >= 1) {
+      releaseMaterial(mesh, partId);
+      return;
+    }
+
+    ownMaterials(mesh).forEach(mat => {""",
+        "restore source material when comparison ends")
+    visibility.write_text(visibility_js, encoding="utf-8")
+
 
     # Gebruik de bestaande Nederlandse zoektermen ook als getoonde namen.
     # Alleen exacte structuurbenamingen krijgen een label, nooit een op basis

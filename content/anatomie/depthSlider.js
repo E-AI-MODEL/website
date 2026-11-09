@@ -82,14 +82,14 @@ function render() {
     });
     select.value = focusSystem;
   } else {
-    wrapper.innerHTML = '<span class="depth-label">Onderdeel voor onderdeel ontleden</span>' +
+    wrapper.innerHTML = '<span class="depth-label" title="Onderdeel voor onderdeel ontleden">Ontleden</span>' +
       '<div class="eai-step-row">' +
       '<button type="button" data-depth-step="-1" aria-label="Laatst verwijderde onderdeel terugzetten"' +
       (peeled.length ? '' : ' disabled') + '>−</button>' +
       '<strong class="eai-step-value" aria-live="polite">' + peeled.length + ' weggenomen</strong>' +
       '<button type="button" data-depth-step="1" aria-label="Gekozen onderdeel wegnemen">+</button>' +
       '</div><p id="eaiDepthStatus" class="eai-depth-status" role="status">' +
-      (statusText || 'Kies een onderdeel in het model. Met + haal je dat weg en zie je wat erachter ligt.') +
+      (statusText || 'Kies een onderdeel en tik op +.') +
       '</p>';
   }
 }
