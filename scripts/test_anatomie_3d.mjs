@@ -64,12 +64,9 @@ try {
       scene.traverse(n => { if (n.isMesh && n.visible) meshes++; });
       return meshes > 20;
     }, null, { timeout: 40000 });
-    // Meshes can appear before initUI() attaches the camera button listeners.
-    // Wait for the systems menu, which initUI renders before initToolbar().
-    await page.waitForFunction(
-      () => document.querySelectorAll('#systemsList .system-group').length === 7,
-      null, { timeout: 20000 }
-    );
+    // The scene is rendered before initUI() binds camera controls.
+    await page.waitForFunction(() => window.__EAI_ANATOMY_UI_READY === true,
+      null, { timeout: 20000 });
     let state = await page.evaluate(() => {
       const v = window.ZAnatomy.viewer;
       let meshes = 0, tris = 0;
