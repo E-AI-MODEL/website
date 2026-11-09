@@ -14,7 +14,7 @@ def refine_anatomy(source: Path) -> None:
     root = Path(__file__).resolve().parent.parent / "content" / "anatomie"
     shutil.copyfile(root / "guide.js", source / "src" / "data" / "eaiGuide.js")
     shutil.copyfile(root / "eaiDetail.js", source / "src" / "ui" / "eaiDetail.js")
-    shutil.copyfile(root / "depthSlider.js", source / "src" / "ui" / "depthSlider.js")
+    shutil.copyfile(root / "depth.js", source / "src" / "ui" / "depthSlider.js")
 
     # The original build may already omit the old shortcut menu.
     main = source / "src" / "main.js"
