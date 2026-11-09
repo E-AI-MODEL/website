@@ -190,12 +190,12 @@ Object.assign(translationsEn, {
     dictionary = Path(__file__).resolve().parent.parent / "content" / "anatomie" / "synonyms.nl.json"
     dutch_terms = json.loads(dictionary.read_text(encoding="utf-8"))
     (source / "public" / "data" / "synonyms.nl.json").write_text(
-        json.dumps(dutch_terms, ensure_ascii=False, indent=2) + "\\n", encoding="utf-8"
+        json.dumps(dutch_terms, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
 
     search_file = source / "src" / "utils" / "dataLoader.js"
     search_js = search_file.read_text(encoding="utf-8")
-    search_js = search_js.replace("let synonyms = {};", "let synonyms = {};\\nlet dutchSynonyms = {};", 1)
+    search_js = search_js.replace("let synonyms = {};", "let synonyms = {};\nlet dutchSynonyms = {};", 1)
     marker = "  // Z-Anatomy names a muscle"
     if marker not in search_js:
         raise RuntimeError("Upstream synonyms hook changed")
@@ -225,7 +225,7 @@ function dutchTermsFor(base) {
 """ + marker, 1)
     search_js = search_js.replace(
         "const italian = italianTermsFor(normalise(base));",
-        "const italian = italianTermsFor(normalise(base));\\n      const dutch = dutchTermsFor(normalise(base));", 1
+        "const italian = italianTermsFor(normalise(base));\n      const dutch = dutchTermsFor(normalise(base));", 1
     )
     search_js = search_js.replace(
         "label: base.replace(/^\\((.*)\\)$/, '$1'),",
@@ -258,11 +258,11 @@ function dutchTermsFor(base) {
     hook = "import { initUI } from './ui/sidebar.js';"
     if hook not in main_js:
         raise RuntimeError("Upstream viewer import changed")
-    main_js = main_js.replace(hook, hook + "\\nimport { initEAIExplore } from './ui/eaiExplore.js';", 1)
+    main_js = main_js.replace(hook, hook + "\nimport { initEAIExplore } from './ui/eaiExplore.js';", 1)
     hook = "      await initUI(viewer);"
     if hook not in main_js:
         raise RuntimeError("Upstream UI initialisation changed")
-    main_js = main_js.replace(hook, hook + "\\n      initEAIExplore(viewer);", 1)
+    main_js = main_js.replace(hook, hook + "\n      initEAIExplore(viewer);", 1)
     main_file.write_text(main_js, encoding="utf-8")
 
     # The runtime fetches JSON translations and replaces the JS fallback.
@@ -364,6 +364,21 @@ function dutchTermsFor(base) {
         '<meta name="description" content="Interactive 3D anatomy atlas built on Z-Anatomy">',
         '<meta name="description" content="Onderzoek het menselijk lichaam in een interactieve, zelfstandig gehoste 3D-atlas.">', 1
     )
+    # Compact teaching entry-points, rendered over the 3D viewer.
+    # No external request or iframe; each button opens a locally hosted GLB.
+    explore_markup = """<nav class="eai-explore" id="eaiExplore" aria-label="Onderzoek een lichaamsstelsel">
+      <span class="eai-explore-label">Begin met een stelsel</span>
+      <div class="eai-explore-options">
+        <button type="button" data-eai-system="skeletal" aria-pressed="true">Skelet</button>
+        <button type="button" data-eai-system="muscular" aria-pressed="false">Spieren</button>
+        <button type="button" data-eai-system="cardiovascular" aria-pressed="false">Hart en vaten</button>
+        <button type="button" data-eai-system="nervous" aria-pressed="false">Zenuwen</button>
+        <button type="button" data-eai-system="visceral" aria-pressed="false">Organen</button>
+      </div>
+      <span class="eai-sr-only" role="status" aria-live="polite" data-eai-explore-status></span>
+    </nav>"""
+    assert atlas_html.count('<canvas id="threeCanvas"') == 1
+    atlas_html = atlas_html.replace('<canvas id="threeCanvas"', explore_markup + '\\n          <canvas id="threeCanvas"', 1)
     index.write_text(atlas_html, encoding="utf-8")
 
     style = source / "src" / "styles" / "main.css"
