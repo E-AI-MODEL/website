@@ -105,6 +105,44 @@ try {
     'De bestaande Engelstalige beschrijving moet bij onbekende uitleg toegankelijk blijven');
   await page.locator('#infoToggle').click();
   await page.locator('#infoSidebar').waitFor({state:'hidden',timeout:5000});
+  // Bedieningsproef met echte anatomische modellen: meerdere stelsels
+  // vergelijken, daarna binnen één spierstelsel een onderdeel wegnemen.
+  await page.locator('#systemsOpen').click();
+  await page.locator('[data-system-checkbox="muscular"]').check();
+  await page.waitForFunction(() => {
+    const control = document.querySelector('.depth-control');
+    return control && !control.hidden &&
+      control.querySelector('#eaiFocusSystem') &&
+      control.textContent.includes('Stelsels vergelijken');
+  }, null, {timeout:35000});
+  await page.locator('#systemsToggle').click();
+  await page.locator('.depth-control [data-depth-step="1"]').click();
+  assert.match(await page.locator('.depth-control .eai-step-value').innerText(),/Stap 1 van 4/,
+    'Plus verhoogt de vergelijking niet');
+
+  await page.locator('#systemsOpen').click();
+  await page.locator('[data-system-checkbox="skeletal"]').uncheck();
+  await page.locator('#systemsToggle').click();
+  await page.waitForFunction(() => {
+    const control = document.querySelector('.depth-control');
+    return control && !control.hidden &&
+      control.textContent.includes('Onderdeel voor onderdeel ontleden');
+  }, null, {timeout:10000});
+
+  await page.locator('#searchOpen').click();
+  await page.locator('#searchInput').fill('grote bilspier');
+  const gluteus = page.locator('#searchResults .search-result-item[data-part^="Gluteus maximus muscle"]').first();
+  await gluteus.waitFor({state:'visible',timeout:10000});
+  await gluteus.click();
+  await page.locator('#structureInfo .eai-detail-actions').waitFor({state:'visible',timeout:10000});
+  await page.locator('#infoToggle').click();
+  await page.locator('#infoSidebar').waitFor({state:'hidden',timeout:5000});
+  await page.locator('.depth-control [data-depth-step="1"]').click();
+  assert.match(await page.locator('.depth-control .eai-step-value').innerText(),/1 weggenomen/,
+    'Geselecteerde spier is niet weggenomen');
+  await page.locator('.depth-control [data-depth-step="-1"]').click();
+  assert.match(await page.locator('.depth-control .eai-step-value').innerText(),/0 weggenomen/,
+    'Min herstelt de laatst weggenomen spier niet');
   mkdirSync('test-results',{recursive:true});
   await page.screenshot({path:'test-results/anatomie-webkit-mobile.png'});
   console.log('WebKit toont het skelet zonder laadspinner in '+elapsed+' ms, '+report.triangles+' driehoeken');
