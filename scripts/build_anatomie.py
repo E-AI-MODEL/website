@@ -103,6 +103,19 @@ html,body{max-width:100%;overflow-x:hidden}
 @media(max-width:680px){
   .eai-app-name{display:none}.eai-back{padding:5px 7px}
   .eai-attribution{font-size:9px;max-width:80%;line-height:1.35}
+  /* Keep controls usable and credits readable on narrow screens. */
+  .viewer-controls{
+    position:absolute!important;left:50%!important;bottom:49px!important;
+    transform:translateX(-50%)!important;
+    display:flex;flex-wrap:nowrap;gap:3px;padding:5px;
+    width:max-content;max-width:calc(100% - 16px)
+  }
+  .viewer-controls .control-btn{padding:6px 8px;font-size:11px;white-space:nowrap}
+  .eai-attribution{
+    left:50%;bottom:7px;transform:translateX(-50%);
+    max-width:calc(100% - 12px);width:max-content;white-space:nowrap;
+    font-size:8px;line-height:1.2;padding:4px 6px;text-align:center
+  }
 }
 """)
 
