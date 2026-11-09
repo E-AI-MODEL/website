@@ -180,7 +180,7 @@ html,body{max-width:100%;overflow-x:hidden}
 
     layout_file = Path(__file__).resolve().parent.parent / "content" / "anatomie" / "layout.css"
     with style.open("a", encoding="utf-8") as f:
-        f.write("\\n" + layout_file.read_text(encoding="utf-8"))
+        f.write("\n" + layout_file.read_text(encoding="utf-8"))
 
 def build(destination: Path) -> None:
     if not destination.as_posix().replace("\\", "/").endswith("tools/anatomie"):
