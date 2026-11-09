@@ -1,7 +1,6 @@
 // EAI Anatomisch Observatorium: snelle, echte onderzoeksingangen.
 // Dezelfde lokale GLB-modellen en zichtbaarheidscode als de stelsellijst.
 import { state } from '../state/store.js';
-import { SYSTEM_IDS } from '../data/anatomy.js';
 import { loadModel, unloadSystem } from '../viewer/loadModel.js';
 import { showSystem } from '../viewer/visibility.js';
 import { deselectPart } from '../viewer/selection.js';
