@@ -155,6 +155,10 @@ try {
   assert(muscleReport.red > 130, 'Te weinig echte spieren zichtbaar bij alleen Spieren');
   assert.equal(muscleReport.notRed, 0, 'Een spier heeft nog geen rode materiaalweergave');
   assert.equal(muscleReport.transparent, 0, 'De spierweefsels moeten duidelijk en dekkend zijn');
+  // De eerdere controles zoomen op botten. Toon voor deze overzichtsfoto
+  // eerst het volledige spierstelsel, anders staat alleen een kuit in beeld.
+  await page.locator('#frontViewBtn').click();
+  await page.waitForTimeout(650);
   mkdirSync('test-results',{recursive:true});
   await page.screenshot({path:'test-results/anatomie-spieren-rood.png'});
   assert(muscleReport.covered > 15, 'Fascia krijgt nog geen terughoudende weergave');
