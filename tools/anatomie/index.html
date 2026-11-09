@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Interactive 3D anatomy atlas built on Z-Anatomy">
+  <meta name="description" content="Onderzoek het menselijk lichaam in een interactieve, zelfstandig gehoste 3D-atlas.">
   <title>AN / 01 | Anatomisch Observatorium | EAI</title>
   <link rel="icon" type="image/svg+xml" href="/assets/eai-logo.svg">
-  <script type="module" crossorigin src="/tools/anatomie/assets/index-BZOWo8vi.js"></script>
-  <link rel="stylesheet" crossorigin href="/tools/anatomie/assets/index-BzSriGd0.css">
+  <script type="module" crossorigin src="/tools/anatomie/assets/index-D-1yPuDK.js"></script>
+  <link rel="stylesheet" crossorigin href="/tools/anatomie/assets/index-DO9UPP15.css">
 </head>
 <body>
   <div id="app">
@@ -73,7 +73,17 @@
       <!-- 3D Viewer -->
       <section class="viewer-section">
         <div id="viewerContainer" class="viewer-container"><div class="eai-stage-intro" aria-hidden="true"><span class="eai-stage-kicker">ANATOMIE / 3D-ATLAS</span><h2>Menselijke anatomie</h2><p>Draai, zoom en onderzoek ieder onderdeel zelf.</p></div>
-          <canvas id="threeCanvas" tabindex="0" role="application"
+          <nav class="eai-explore" id="eaiExplore" aria-label="Onderzoek een lichaamsstelsel">
+      <span class="eai-explore-label">Begin met een stelsel</span>
+      <div class="eai-explore-options">
+        <button type="button" data-eai-system="skeletal" aria-pressed="true">Skelet</button>
+        <button type="button" data-eai-system="muscular" aria-pressed="false">Spieren</button>
+        <button type="button" data-eai-system="cardiovascular" aria-pressed="false">Hart en vaten</button>
+        <button type="button" data-eai-system="nervous" aria-pressed="false">Zenuwen</button>
+        <button type="button" data-eai-system="visceral" aria-pressed="false">Organen</button>
+      </div>
+      <span class="eai-sr-only" role="status" aria-live="polite" data-eai-explore-status></span>
+    </nav>\n          <canvas id="threeCanvas" tabindex="0" role="application"
                   aria-label="Interactief driedimensionaal menselijk lichaam. Slepen om te draaien, scrollen om te zoomen, klikken om een onderdeel te kiezen."></canvas>
           <div id="loadingOverlay" class="loading-overlay">
             <div class="loading-spinner"></div>
