@@ -114,7 +114,18 @@ def refine_anatomy(source: Path) -> None:
     sidebar = source / "src" / "ui" / "sidebar.js"
     js = sidebar.read_text(encoding="utf-8")
     js = one(js, "import { PRESETS, applyPreset } from '../data/presets.js';",
-        "import { mountVisibilityReset } from './eaiDetail.js';", "sidebar import")
+        "import { mountVisibilityReset } from './eaiDetail.js';\\n"
+        "import { dutchName } from '../data/eaiNames.js';", "sidebar import")
+    # Dezelfde bestaande zoekwoorden verschijnen nu ook in de stelsellijst
+    # en in de zoekresultaten, naast het detailpaneel.
+    js = one(js,
+        "label: (info.name?.[lang] || info.name?.en || base).replace(",
+        "label: (dutchName(base) || info.name?.[lang] || info.name?.en || base).replace(",
+        "Dutch label in systems list")
+    js = one(js,
+        "escapeHtml(row.label)",
+        "escapeHtml(dutchName(row.base) || row.label)",
+        "Dutch label in search results")
     js, n = re.subn(r'const SYSTEM_ICONS = \{[\s\S]*?\};\n\n', '', js, count=1)
     if n != 1:
         raise RuntimeError("System icons section changed")
