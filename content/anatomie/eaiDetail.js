@@ -84,8 +84,11 @@ export function refineAnatomyInfo(partData, deselectPart) {
     source.open = !guide;
     const summary = document.createElement('summary');
     summary.textContent = 'Anatomische beschrijving uit de bron (Engels)';
+    const explanation = document.createElement('p');
+    explanation.className = 'eai-source-note';
+    explanation.textContent = 'Overgenomen uit de meegeleverde atlasgegevens. Deze beschrijving kan algemener zijn dan het gekozen onderdeel.';
     definition.replaceWith(source);
-    source.append(summary, definition);
+    source.append(summary, explanation, definition);
   }
 
   const actions = document.createElement('div');
