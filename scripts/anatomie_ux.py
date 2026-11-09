@@ -1,6 +1,7 @@
 """Aanpassingen aan de gepinde anatomieviewer: één informatiescherm en minder dubbele bediening."""
 from pathlib import Path
 import shutil
+import re
 
 
 def replace_once(source: str, old: str, new: str, what: str) -> str:
@@ -42,6 +43,28 @@ def apply(source: Path) -> None:
         "  // Show footer actions\n  showFooterActions();",
         "  // All structure actions live inside the information panel.",
         "remove duplicate bottom bar",
+    )
+    script = replace_once(
+        script,
+        "  hideFooterActions();",
+        "  // No separate bottom action menu.",
+        "no second action menu on deselect",
+    )
+    script = replace_once(
+        script,
+        """function showFooterActions() {
+  const footer = document.getElementById('footerBar');
+  if (footer) footer.style.display = 'flex';
+}
+
+function hideFooterActions() {
+  const footer = document.getElementById('footerBar');
+  if (footer) footer.style.display = 'none';
+}
+
+""",
+        "",
+        "remove unused footer action functions",
     )
     script = replace_once(
         script,
@@ -143,6 +166,12 @@ function showFooterActions()""",
     )
     content = replace_once(
         content,
+        "import { state, translate } from '../state/store.js';",
+        "import { state } from '../state/store.js';",
+        "remove unused translation import",
+    )
+    content = replace_once(
+        content,
         """      <div class="callout-actions">
         <button type="button" class="callout-btn" data-callout="isolate"></button>
         <button type="button" class="callout-btn" data-callout="hide"></button>
@@ -168,4 +197,10 @@ function showFooterActions()""",
         '<h2>Geselecteerd onderdeel</h2>',
         "information heading",
     )
+    markup, n = re.subn(
+        r'\\s*<!-- Bottom bar - Actions for selected structure -->[\\s\\S]*?</footer>',
+        "", markup, count=1,
+    )
+    if n != 1:
+        raise RuntimeError("Expected one duplicate selection footer")
     html.write_text(markup, encoding="utf-8")
