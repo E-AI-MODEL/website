@@ -17,6 +17,68 @@ def refine_anatomy(source: Path) -> None:
     shutil.copyfile(root / "eaiDetail.js", source / "src" / "ui" / "eaiDetail.js")
     shutil.copyfile(root / "depthSlider.js", source / "src" / "ui" / "depthSlider.js")
 
+    # Remove the blue studio lighting and improve material contrast without
+    # adding heavy postprocessing to a mobile 3D viewer.
+    scene = source / "src" / "viewer" / "createScene.js"
+    rendering = scene.read_text(encoding="utf-8")
+    rendering = one(rendering, "renderer.toneMappingExposure = 1.0;",
+        "renderer.toneMappingExposure = 0.95;", "neutral exposure")
+    rendering = one(rendering,
+        "new THREE.AmbientLight(0xffffff, 0.6)",
+        "new THREE.AmbientLight(0xfff6ec, 0.49)", "lower ambient wash")
+    rendering = one(rendering,
+        "new THREE.DirectionalLight(0xffffff, 1.0)",
+        "new THREE.DirectionalLight(0xfff9f0, 1.35)", "key contrast")
+    rendering = one(rendering,
+        "new THREE.DirectionalLight(0x88aaff, 0.4)",
+        "new THREE.DirectionalLight(0xf0e2d1, 0.35)", "remove blue fill light")
+    rendering = one(rendering,
+        "new THREE.DirectionalLight(0xffffee, 0.3)",
+        "new THREE.DirectionalLight(0xffffff, 0.4)", "neutral edge light")
+    rendering = one(rendering,
+        "new THREE.HemisphereLight(0x88ccff, 0x332211, 0.3)",
+        "new THREE.HemisphereLight(0xf5eadb, 0x39322e, 0.29)", "remove blue ambient")
+    scene.write_text(rendering, encoding="utf-8")
+
+    loader = source / "src" / "viewer" / "loadModel.js"
+    meshes = loader.read_text(encoding="utf-8")
+    meshes = one(meshes, "function setupMesh(mesh, systemId, viewer) {",
+        """// Shared GLB materials are adjusted once. Every mesh retains the same
+// material identity, so highlight and opacity restoration continue to work.
+const adjustedMaterials = new WeakSet();
+function adjustMaterial(material) {
+  if (!material || adjustedMaterials.has(material)) return;
+  adjustedMaterials.add(material);
+  if (material.color) {
+    const c = material.color;
+    // Convert only washed-out cyan tissue, fascia and surface materials.
+    // Keep saturated dark-blue veins, red arteries and nerve colors intact.
+    if (c.b > 0.14 && c.g > c.r * 1.08 && c.b > c.r * 1.18 &&
+        c.g > c.b * 0.58 && (c.r + c.g + c.b) > 0.55) {
+      c.lerp(new THREE.Color(0xc7bbaa), 0.91);
+    }
+  }
+  if (typeof material.roughness === 'number') {
+    material.roughness = Math.min(0.79, Math.max(0.49, material.roughness));
+  }
+  if (typeof material.metalness === 'number') {
+    material.metalness = Math.min(material.metalness, 0.06);
+  }
+  material.needsUpdate = true;
+}
+function setupMesh(mesh, systemId, viewer) {""",
+        "preserve anatomical colors without pale blue")
+    meshes = one(meshes,
+        """  if (mesh.material) {
+    mesh.userData.baseMaterial = mesh.material;
+  }""",
+        """  if (mesh.material) {
+    (Array.isArray(mesh.material) ? mesh.material : [mesh.material]).forEach(adjustMaterial);
+    mesh.userData.baseMaterial = mesh.material;
+  }""",
+        "shared material refinement")
+    loader.write_text(meshes, encoding="utf-8")
+
     # Gebruik de bestaande Nederlandse zoektermen ook als getoonde namen.
     # Alleen exacte structuurbenamingen krijgen een label, nooit een op basis
     # van een los woord afgeleide anatomische functie.
