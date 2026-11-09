@@ -95,6 +95,9 @@ function setupMesh(mesh, systemId, viewer) {""",
         + ";\nexport function dutchName(base) {\n"
         + "  const key = String(base || '').replace(/\\.[lr]$/, '').trim().toLowerCase();\n"
         + "  return Object.prototype.hasOwnProperty.call(NAMES, key) ? NAMES[key] : null;\n"
+        + "}\n"
+        + "export function anatomyName(base, info) {\n"
+        + "  return dutchName(base) || info?.latinName || String(base || '');\n"
         + "}\n",
         encoding="utf-8"
     )
@@ -177,16 +180,16 @@ function setupMesh(mesh, systemId, viewer) {""",
     js = sidebar.read_text(encoding="utf-8")
     js = one(js, "import { PRESETS, applyPreset } from '../data/presets.js';",
         "import { mountVisibilityReset } from './eaiDetail.js';\n"
-        "import { dutchName } from '../data/eaiNames.js';", "sidebar import")
+        "import { anatomyName } from '../data/eaiNames.js';", "sidebar import")
     # Dezelfde bestaande zoekwoorden verschijnen nu ook in de stelsellijst
     # en in de zoekresultaten, naast het detailpaneel.
     js = one(js,
         "label: (info.name?.[lang] || info.name?.en || base).replace(",
-        "label: (dutchName(base) || info.name?.[lang] || info.name?.en || base).replace(",
+        "label: (anatomyName(base, info)).replace(",
         "Dutch label in systems list")
     js = one(js,
         "escapeHtml(row.label)",
-        "escapeHtml(dutchName(row.base) || row.label)",
+        "escapeHtml(anatomyName(row.base, getStructureInfo(target)))",
         "Dutch label in search results")
     js, n = re.subn(r'const SYSTEM_ICONS = \{[\s\S]*?\};\n\n', '', js, count=1)
     if n != 1:
