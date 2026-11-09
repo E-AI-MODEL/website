@@ -110,8 +110,8 @@ class AnatomyPublishTests(unittest.TestCase):
         bundles = list((ATLAS / "assets").glob("*.js"))
         self.assertTrue(bundles, "Gebundelde 3D-code ontbreekt")
         combined = "\\n".join(bundle.read_text(encoding="utf-8") for bundle in bundles)
-        self.assertIn("kuitbeen", combined)
-        self.assertIn("opperarmbeen", combined)
+        self.assertIn("Kuitbeen", combined)
+        self.assertIn("Opperarmbeen", combined)
         self.assertIn("Relaties in het 3D-model", combined)
 
     def test_real_source_meshes_and_decoder_are_local(self):
