@@ -132,9 +132,7 @@ function hideFooterActions() {
     script = replace_once(
         script,
         """  if (structureInfo) structureInfo.classList.add('hidden');
-}
-
-function showFooterActions()""",
+}""",
         """  if (structureInfo) structureInfo.classList.add('hidden');
   const panel = document.getElementById('infoSidebar');
   if (panel) {
@@ -143,16 +141,8 @@ function showFooterActions()""",
     setInert(panel, true);
     document.getElementById('infoOpen')?.setAttribute('aria-expanded', 'false');
   }
-}
-
-function showFooterActions()""",
+}""",
         "hide info on deselection",
-    )
-    script = replace_once(
-        script,
-        """function showFooterActions() {\n  const footer = document.getElementById(\'footerBar\');\n  if (footer) footer.style.display = \'flex\';\n}\n\n""",
-        "",
-        "remove unused footer action handler",
     )
     selection.write_text(script, encoding="utf-8")
 
@@ -163,12 +153,6 @@ function showFooterActions()""",
         "import { state, translate } from \'../state/store.js\';",
         "import { state } from \'../state/store.js\';",
         "remove unused translated callout buttons",
-    )
-    content = replace_once(
-        content,
-        "import { state, translate } from '../state/store.js';",
-        "import { state } from '../state/store.js';",
-        "remove unused translation import",
     )
     content = replace_once(
         content,
@@ -198,7 +182,7 @@ function showFooterActions()""",
         "information heading",
     )
     markup, n = re.subn(
-        r'\\s*<!-- Bottom bar - Actions for selected structure -->[\\s\\S]*?</footer>',
+        r'\s*<!-- Bottom bar - Actions for selected structure -->[\s\S]*?</footer>',
         "", markup, count=1,
     )
     if n != 1:
