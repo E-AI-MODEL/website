@@ -75,6 +75,13 @@ def refine_anatomy(source: Path) -> None:
 
 """,
         "", "obsolete footer action launcher")
+    js = one(js,
+        """function showFooterActions() {
+  const footer = document.getElementById('footerBar');
+  if (footer) footer.style.display = 'flex';
+}
+
+""", "", "unused footer function")
     selection.write_text(js, encoding="utf-8")
 
     callout = source / "src" / "ui" / "callout.js"
