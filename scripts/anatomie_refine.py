@@ -67,14 +67,8 @@ def refine_anatomy(source: Path) -> None:
     js = one(js,
         "  hideInfoPanel();\n  hideFooterActions();",
         "  hideInfoPanel();\n  closeAnatomyInfo();\n  hideFooterActions();", "deselect")
-    js = one(js,
-        """function showFooterActions() {
-  const footer = document.getElementById('footerBar');
-  if (footer) footer.style.display = 'flex';
-}
-
-""",
-        "", "obsolete footer action launcher")
+    # Some pinned versions no longer include a separate footer helper.
+    js = re.sub(r"function showFooterActions\\(\\) \\{[\\s\\S]*?\\n\\}\\n\\n", "", js, count=1)
     selection.write_text(js, encoding="utf-8")
 
     callout = source / "src" / "ui" / "callout.js"
