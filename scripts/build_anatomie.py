@@ -128,6 +128,11 @@ def patch_upstream(source: Path) -> None:
     js = js.replace(
         "      content.style.display = 'block';\n\n      // Building the list here",
         "      content.style.display = group.querySelector('[data-system-expand]')?.getAttribute('aria-expanded') === 'true' ? 'block' : 'none';\n\n      // Building the list here", 1)
+    # Wait for UI callbacks, not only the first rendered model, in browser tests.
+    ready_marker = "  initDepthSlider();\n}"
+    if ready_marker not in js:
+        raise RuntimeError("Upstream readiness marker changed")
+    js = js.replace(ready_marker, "  initDepthSlider();\n  window.__EAI_ANATOMY_UI_READY = true;\n}", 1)
     sidebar.write_text(js, encoding="utf-8")
 
     presets_file = source / "src" / "data" / "presets.js"
