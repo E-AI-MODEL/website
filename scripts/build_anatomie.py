@@ -83,6 +83,9 @@ def patch_upstream(source: Path) -> None:
   --highlight:#ebc189;--highlight-glow:rgba(235,193,137,.35);
 }
 body{background:#07111e;color:var(--fg-primary)}
+html,body{max-width:100%;overflow-x:hidden}
+#app{position:relative;overflow:hidden;max-width:100%;width:100%;min-width:0}
+.main-layout,.viewer-section,.viewer-container{min-width:0}
 .header{background:#0b1828;border-bottom:1px solid #284053}
 .header-left{display:flex;align-items:center;gap:12px}
 .header-left .logo{font-size:13px;font-weight:750;letter-spacing:.11em;color:#98e7ed}
