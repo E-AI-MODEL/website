@@ -92,17 +92,6 @@ def refine_anatomy(source: Path) -> None:
 
     sidebar = source / "src" / "ui" / "sidebar.js"
     js = sidebar.read_text(encoding="utf-8")
-    # Dutch words in the only remaining system menu.
-    for english, dutch in (
-        ("Skeletal system", "Skelet"),
-        ("Muscular system", "Spieren"),
-        ("Joints", "Gewrichten"),
-        ("Cardiovascular system", "Hart en bloedvaten"),
-        ("Lymphoid organs", "Lymfestelsel"),
-        ("Nervous system & sense organs", "Zenuwstelsel en zintuigen"),
-        ("Visceral systems", "Organen"),
-    ):
-        js = one(js, f": '{english}'", f": '{dutch}'", f"Dutch system label {english}")
     js = one(js, "import { PRESETS, applyPreset } from '../data/presets.js';",
         "import { mountVisibilityReset } from './eaiDetail.js';", "sidebar import")
     js, n = re.subn(r'const SYSTEM_ICONS = \{[\s\S]*?\};\n\n', '', js, count=1)
