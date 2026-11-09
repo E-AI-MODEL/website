@@ -20,6 +20,9 @@ jobs:
           node-version: '22'
       - run: pip install beautifulsoup4
       - run: python scripts/build_site.py --sources content/legacy --out site-build
+      - run: python scripts/build_anatomie.py --out site-build/tools/anatomie
+      - name: Build self-hosted anatomy before verifying site links
+        run: python scripts/build_anatomie.py --out site-build/tools/anatomie
       - run: python scripts/prepare_ui.py --root site-build
       - run: python scripts/verify_ui.py --root site-build
       - name: Verify LEIF is published without rewriting answers or access screen
@@ -32,8 +35,12 @@ jobs:
         run: npx playwright install chromium
         timeout-minutes: 4
       - run: python -m unittest discover -s tests -p test_tool_launch.py -v
+      - name: Check anatomical 3D rendering and local organ models
+        run: node scripts/test_anatomie_3d.mjs site-build
       - run: node scripts/test_tool_launch.mjs site-build
       - run: node scripts/ui_smoke.mjs site-build
+      - name: Verify anatomical 3D viewer on desktop and mobile
+        run: node scripts/test_anatomie_browser.mjs site-build
       - name: Verify LLM Observatory tokenizer in Chromium
         run: node scripts/test_llm_observatorium.mjs site-build
       - name: Test Melkweg Lab on phones and desktop

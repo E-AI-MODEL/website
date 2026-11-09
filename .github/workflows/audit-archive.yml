@@ -28,6 +28,7 @@ jobs:
         run: |
           pip install beautifulsoup4
           python scripts/build_site.py --sources content/legacy --out site-build
+          python scripts/build_anatomie.py --out site-build/tools/anatomie
           python scripts/prepare_ui.py --root site-build
           python scripts/verify_ui.py --root site-build
           python -m unittest discover -s tests -p 'test_archive_review.py'

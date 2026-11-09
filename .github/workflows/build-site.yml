@@ -8,6 +8,8 @@ on:
       - '.github/workflows/build-site.yml'
       - '.github/workflows/deploy-theory7.yml'
       - 'scripts/build_site.py'
+      - 'scripts/build_anatomie.py'
+      - 'tests/test_anatomie_publish.py'
       - 'content/**'
       - 'nl/**'
       - 'en/**'
@@ -27,6 +29,8 @@ on:
       - '.github/workflows/build-site.yml'
       - '.github/workflows/deploy-theory7.yml'
       - 'scripts/build_site.py'
+      - 'scripts/build_anatomie.py'
+      - 'tests/test_anatomie_publish.py'
       - 'content/**'
       - 'nl/**'
       - 'en/**'
@@ -51,7 +55,7 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
 
@@ -59,6 +63,11 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+
+      - name: Use Node.js 22 for the 3D atlas and existing JavaScript tests
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
 
       - name: Install build dependencies
         run: |
@@ -77,6 +86,12 @@ jobs:
       - name: Build site
         run: |
           python scripts/build_site.py --sources content/legacy --out site-build
+
+      - name: Build local anatomical 3D models and viewer
+        run: python scripts/build_anatomie.py --out site-build/tools/anatomie
+
+      - name: Verify anatomical atlas, licensing and navigation
+        run: python -m unittest discover -s tests -p 'test_anatomie_publish.py' -v
 
       - name: Check site insights, navigation and privacy
         run: python -m unittest discover -s tests -p 'test_site_insights.py' -v
