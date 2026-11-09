@@ -841,3 +841,6 @@ html,body,#app{height:100%;height:100dvh;overflow:hidden}
 .sidebar-systems .structure-item .structure-actions{display:none!important}
 #infoOpen{display:none!important}
 #app.has-selection #infoOpen{display:inline-flex!important}
+
+/* Een onderdeel wordt gekozen in de lijst. Acties alleen in het detailpaneel. */
+#systemsSidebar .structure-actions{display:none!important}
