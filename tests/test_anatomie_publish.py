@@ -53,6 +53,30 @@ class AnatomyPublishTests(unittest.TestCase):
             local = OUT / src.lstrip("/")
             self.assertTrue(local.is_file(), f"Script ontbreekt: {src}")
 
+    def test_css_js_and_explorer_are_published_together(self):
+        """Voorkom de witte pagina met enorme SVG's door ontbrekende assets."""
+        html = (ATLAS / "index.html").read_text(encoding="utf-8")
+        assets = re.findall(
+            r'(?:src|href)="(/tools/anatomie/assets/[^"]+[.](?:css|js))"',
+            html,
+        )
+        self.assertGreaterEqual(len(assets), 2, "3D-opmaak of scriptlink ontbreekt")
+        self.assertTrue(any(p.endswith(".css") for p in assets))
+        self.assertTrue(any(p.endswith(".js") for p in assets))
+        for path in assets:
+            with self.subTest(path=path):
+                file = OUT / path.lstrip("/")
+                self.assertTrue(file.is_file(), f"Ontbrekend 3D-bestand: {path}")
+                self.assertGreater(file.stat().st_size, 1000, path)
+        self.assertIn('id="eaiExplore"', html)
+        self.assertEqual(html.count('data-eai-system='), 5)
+        self.assertEqual(html.count('id="threeCanvas"'), 1)
+        synonyms = ATLAS / "data" / "synonyms.nl.json"
+        self.assertTrue(synonyms.is_file(), "Nederlandse zoekwoorden ontbreken")
+        data = __import__("json").loads(synonyms.read_text(encoding="utf-8"))
+        self.assertIn("dijbeen", data["femur"])
+        self.assertIn("knieschijf", data["patella"])
+
     def test_real_source_meshes_and_decoder_are_local(self):
         for system in SYSTEMS:
             with self.subTest(system=system):

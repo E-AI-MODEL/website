@@ -1,0 +1,272 @@
+{
+  "femur": [
+    "dijbeen"
+  ],
+  "tibia": [
+    "scheenbeen"
+  ],
+  "fibula": [
+    "kuitbeen"
+  ],
+  "patella": [
+    "knieschijf"
+  ],
+  "humerus": [
+    "opperarmbeen"
+  ],
+  "radius": [
+    "spaakbeen"
+  ],
+  "ulna": [
+    "ellepijp"
+  ],
+  "clavicle": [
+    "sleutelbeen"
+  ],
+  "scapula": [
+    "schouderblad"
+  ],
+  "mandible": [
+    "onderkaak"
+  ],
+  "maxilla": [
+    "bovenkaak"
+  ],
+  "sternum": [
+    "borstbeen"
+  ],
+  "body of sternum": [
+    "borstbeenlichaam"
+  ],
+  "manubrium of sternum": [
+    "borstbeenhandvat"
+  ],
+  "hip bone": [
+    "heupbeen"
+  ],
+  "coccyx": [
+    "staartbeen"
+  ],
+  "atlas (c1)": [
+    "atlaswervel"
+  ],
+  "axis (c2)": [
+    "draaierwervel"
+  ],
+  "calcaneus": [
+    "hielbeen"
+  ],
+  "sacrum": [
+    "heiligbeen"
+  ],
+  "vertebra": [
+    "wervel"
+  ],
+  "costal cartilage": [
+    "ribkraakbeen"
+  ],
+  "rib": [
+    "rib"
+  ],
+  "kidney": [
+    "nier"
+  ],
+  "liver": [
+    "lever"
+  ],
+  "stomach": [
+    "maag"
+  ],
+  "pancreas": [
+    "alvleesklier"
+  ],
+  "spleen": [
+    "milt"
+  ],
+  "gallbladder": [
+    "galblaas"
+  ],
+  "urinary bladder": [
+    "urineblaas"
+  ],
+  "ureter": [
+    "urineleider"
+  ],
+  "oesophagus": [
+    "slokdarm"
+  ],
+  "trachea": [
+    "luchtpijp"
+  ],
+  "diaphragm": [
+    "middenrif"
+  ],
+  "ascending colon": [
+    "opstijgende dikke darm"
+  ],
+  "descending colon": [
+    "dalende dikke darm"
+  ],
+  "transverse colon": [
+    "dwarslopende dikke darm"
+  ],
+  "sigmoid colon": [
+    "sigmoïd"
+  ],
+  "prostate": [
+    "prostaat"
+  ],
+  "testis": [
+    "teelbal"
+  ],
+  "left atrium": [
+    "linkerboezem"
+  ],
+  "right atrium": [
+    "rechterboezem"
+  ],
+  "left ventricle": [
+    "linkerhartkamer"
+  ],
+  "right ventricle": [
+    "rechterhartkamer"
+  ],
+  "ascending aorta": [
+    "opstijgende aorta"
+  ],
+  "abdominal aorta": [
+    "buikaorta"
+  ],
+  "thoracic aorta": [
+    "borstaorta"
+  ],
+  "superior vena cava": [
+    "bovenste holle ader"
+  ],
+  "inferior vena cava": [
+    "onderste holle ader"
+  ],
+  "left coronary artery": [
+    "linker kransslagader"
+  ],
+  "right coronary artery": [
+    "rechter kransslagader"
+  ],
+  "left common carotid artery": [
+    "linker halsslagader"
+  ],
+  "right common carotid artery": [
+    "rechter halsslagader"
+  ],
+  "external carotid artery": [
+    "uitwendige halsslagader"
+  ],
+  "internal carotid artery": [
+    "inwendige halsslagader"
+  ],
+  "femoral artery": [
+    "dijbeenslagader"
+  ],
+  "brachial artery": [
+    "armslagader"
+  ],
+  "sciatic nerve": [
+    "heupzenuw"
+  ],
+  "optic nerve": [
+    "oogzenuw"
+  ],
+  "median nerve": [
+    "middelste armzenuw"
+  ],
+  "ulnar nerve": [
+    "elleboogzenuw"
+  ],
+  "radial nerve": [
+    "spaakbeenzenuw"
+  ],
+  "deltoid muscle": [
+    "deltaspier"
+  ],
+  "gluteus maximus muscle": [
+    "grote bilspier"
+  ],
+  "biceps brachii": [
+    "biceps bovenarm"
+  ],
+  "triceps brachii": [
+    "triceps bovenarm"
+  ],
+  "rectus femoris": [
+    "rechte dijspier"
+  ],
+  "vastus lateralis": [
+    "buitenste brede dijspier"
+  ],
+  "vastus medialis": [
+    "binnenste brede dijspier"
+  ],
+  "gastrocnemius": [
+    "kuitspier"
+  ],
+  "thyroid gland": [
+    "schildklier"
+  ],
+  "thyroid cartilage": [
+    "schildkraakbeen"
+  ],
+  "larynx": [
+    "strottenhoofd"
+  ],
+  "bronchus": [
+    "luchtpijptak"
+  ],
+  "lung": [
+    "long"
+  ],
+  "left lung": [
+    "linkerlong"
+  ],
+  "right lung": [
+    "rechterlong"
+  ],
+  "brain": [
+    "hersenen"
+  ],
+  "midbrain": [
+    "middenhersenen"
+  ],
+  "cerebellum": [
+    "kleine hersenen"
+  ],
+  "cerebrum": [
+    "grote hersenen"
+  ],
+  "spinal cord": [
+    "ruggenmerg"
+  ],
+  "white matter": [
+    "witte stof"
+  ],
+  "hippocampus": [
+    "hippocampus"
+  ],
+  "acetabular labrum": [
+    "kraakbeenring heup"
+  ],
+  "anterior cruciate ligament": [
+    "voorste kruisband"
+  ],
+  "posterior cruciate ligament": [
+    "achterste kruisband"
+  ],
+  "achilles tendon": [
+    "achillespees"
+  ],
+  "urinary": [
+    "urinewegen"
+  ],
+  "visceral": [
+    "organen"
+  ]
+}

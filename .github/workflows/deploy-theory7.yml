@@ -67,11 +67,40 @@ jobs:
           set net:max-retries 1
           set xfer:use-temp-file yes
           mirror -R --verbose site-build/assets/ /assets/
+          # The general exclude-glob assets/ also excludes nested asset folders.
+          # Publish the anatomical viewer's generated JS, CSS and Draco helpers
+          # explicitly, before making its HTML visible to visitors.
+          mirror -R --verbose site-build/tools/anatomie/assets/ /tools/anatomie/assets/
           mirror -R --verbose --exclude-glob assets/ --exclude-glob .git/ --exclude-glob .github/ --exclude-glob .htaccess --exclude-glob cgi-bin/ --exclude-glob .well-known/ site-build/ /
           bye
           EOF
       - name: Verify live HTML and exact asset hashes
         run: python scripts/verify_ui.py --root site-build --url https://eaimodel.nl --timeout 90
+      - name: Verify live anatomy JavaScript and stylesheets
+        run: |
+          python - <<'PY'
+          import re
+          from urllib.request import urlopen
+          from pathlib import Path
+          base = 'https://eaimodel.nl'
+          html = urlopen(base + '/tools/anatomie/', timeout=30).read().decode('utf-8')
+          for kind, pattern, expected in (
+              ('javascript', r'<script[^>]+src="(/tools/anatomie/assets/[^"]+[.]js)"', ('javascript', 'ecmascript')),
+              ('stylesheet', r'<link[^>]+href="(/tools/anatomie/assets/[^"]+[.]css)"', ('css',)),
+          ):
+              match = re.search(pattern, html)
+              assert match, f'Live anatomy {kind} asset link missing'
+              path = match.group(1)
+              local = Path('site-build') / path.lstrip('/')
+              assert local.is_file(), f'Build is missing {path}'
+              with urlopen(base + path, timeout=35) as response:
+                  content = response.read()
+                  ct = response.headers.get('Content-Type', '').lower()
+                  assert response.status == 200, (kind, response.status)
+                  assert any(part in ct for part in expected), (kind, ct)
+                  assert content == local.read_bytes(), (kind, 'Remote content differs')
+              print(f'{kind}: {path} ({len(content)} bytes)')
+          PY
       - name: Verify live anatomical models
         run: |
           python - <<'PY'
