@@ -247,7 +247,7 @@ function dutchTermsFor(base) {
     if before not in anatomy_js:
         raise RuntimeError("Upstream terminology flag changed")
     anatomy_file.write_text(anatomy_js.replace(
-        before, "official: entry.official === false ? false : (entry.la ? true : null)", 1
+        before, "official: entry.official === false ? false : null", 1
     ), encoding="utf-8")
 
     # Load the local, responsive shortcut interface after the original viewer.
