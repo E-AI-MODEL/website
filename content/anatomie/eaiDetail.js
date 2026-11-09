@@ -1,7 +1,7 @@
 // Eén informatiepaneel per geselecteerde structuur. Modelacties staan
 // na de anatomische informatie, niet in meerdere zwevende menu's.
 import { anatomyGuide } from '../data/eaiGuide.js';
-import { dutchName } from '../data/eaiNames.js';
+import { anatomyName } from '../data/eaiNames.js';
 import { isolatePart, hidePart, restoreAllParts } from '../viewer/visibility.js';
 
 const textBlock = (parent, heading, description) => {
@@ -32,13 +32,17 @@ export function refineAnatomyInfo(partData, deselectPart) {
   const baseName = info.baseName || partData.id;
   const guide = anatomyGuide(baseName);
   const title = panel.querySelector('.structure-title h3');
-  const preferredName = guide?.name || dutchName(baseName);
+  const preferredName = guide?.name || anatomyName(baseName, info);
 
   if (preferredName && title) {
     const localName = preferredName + (
       info.side === 'left' ? ' (links)' : info.side === 'right' ? ' (rechts)' : ''
     );
     title.textContent = localName;
+    const latin = panel.querySelector('.structure-latin');
+    if (latin && preferredName.trim().toLowerCase() === latin.textContent.trim().toLowerCase()) {
+      latin.remove();
+    }
     // Hetzelfde onderdeel krijgt in de 3D-callout dezelfde Nederlandse naam.
     const anchoredName = document.querySelector('.callout-name');
     if (anchoredName) anchoredName.textContent = localName;
@@ -53,7 +57,7 @@ export function refineAnatomyInfo(partData, deselectPart) {
   } else {
     const notice = document.createElement('p');
     notice.className = 'eai-facts-unverified';
-    notice.textContent = 'Voor dit onderdeel is nog geen afzonderlijke Nederlandse uitleg over functie en ligging beschikbaar. De bestaande Engelstalige beschrijving staat hieronder, indien aanwezig.';
+    notice.textContent = 'Voor dit onderdeel is nog geen afzonderlijke Nederlandse uitleg over functie en ligging beschikbaar. De oorspronkelijke bronbeschrijving kun je desgewenst uitklappen.';
     facts.appendChild(notice);
   }
 
@@ -81,7 +85,7 @@ export function refineAnatomyInfo(partData, deselectPart) {
   if (definition) {
     const source = document.createElement('details');
     source.className = 'eai-source-description';
-    source.open = !guide;
+    source.open = false;
     const summary = document.createElement('summary');
     summary.textContent = 'Anatomische beschrijving uit de bron (Engels)';
     const explanation = document.createElement('p');
