@@ -119,7 +119,8 @@ try {
     await femurRow.waitFor({state:'visible'});
     await femurRow.click();
     await page.waitForFunction(() => document.querySelector('#app')?.classList.contains('info-open'));
-    const explanation=await page.locator('#infoSidebar').innerText();
+    await page.locator('#structureInfo .eai-fact').first().waitFor({state:'attached',timeout:15000});
+    const explanation=await page.locator('#structureInfo').innerText();
     assert(explanation.includes('Functie'),'Specifieke anatomische functie ontbreekt');
     assert(explanation.includes('Dijbeen'),'Nederlandse naam ontbreekt');
     assert.equal(await page.locator('.callout [data-callout="isolate"]').count(),0,
