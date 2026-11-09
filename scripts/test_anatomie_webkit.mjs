@@ -71,6 +71,11 @@ try {
     'De gekozen structuur heeft geen anatomische toelichting');
   assert.equal(await page.locator('[data-callout="isolate"]').count(),0,
     'Contextuele acties staan dubbel in het model');
+  const detailDebug = await page.evaluate(() => ({
+    classes: [...document.querySelectorAll('#structureInfo > *')].map(el => el.className),
+    excerpt: document.getElementById('structureInfo')?.innerText.slice(-320)
+  }));
+  console.log('DETAIL_PANEL_DEBUG', JSON.stringify(detailDebug), 'PAGE_ERRORS', JSON.stringify(errors));
   assert.equal(await page.locator('#structureInfo .eai-detail-actions').count(),1,
     'De selectie heeft niet exact een contextmenu');
   await page.locator('#infoToggle').click();
