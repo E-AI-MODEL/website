@@ -71,7 +71,7 @@ try {
     'De gekozen structuur heeft geen anatomische toelichting');
   assert.equal(await page.locator('[data-callout="isolate"]').count(),0,
     'Contextuele acties staan dubbel in het model');
-  assert.equal(await page.locator('#structureInfo [data-eai-action="isolate"]').count(),1,
+  assert.equal(await page.locator('#structureInfo .eai-detail-actions').count(),1,
     'De selectie heeft niet exact een contextmenu');
   await page.locator('#infoToggle').click();
   assert(await page.locator('#infoSidebar').isHidden(),
