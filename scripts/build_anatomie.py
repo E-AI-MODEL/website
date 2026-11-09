@@ -365,7 +365,7 @@ function dutchTermsFor(base) {
         '<meta name="description" content="Onderzoek het menselijk lichaam in een interactieve, zelfstandig gehoste 3D-atlas.">', 1
     )
     # Compact teaching entry-points, rendered over the 3D viewer.
-    # No external request or iframe; each button opens a locally hosted GLB.
+    # Each button opens one of our locally hosted GLB models.
     explore_markup = """<nav class="eai-explore" id="eaiExplore" aria-label="Onderzoek een lichaamsstelsel">
       <span class="eai-explore-label">Begin met een stelsel</span>
       <div class="eai-explore-options">
