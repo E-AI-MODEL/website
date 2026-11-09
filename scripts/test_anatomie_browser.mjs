@@ -109,6 +109,26 @@ try {
     }
     assert((await page.title()).includes('Anatomisch Observatorium'));
     await page.screenshot({path:'test-results/anatomie-start-'+width+'.png'});
+    assert.equal(await page.locator('#eaiExplore').count(),0,'Dubbele stelselkeuze mag niet bestaan');
+    assert.equal(await page.locator('#depthSlider').isVisible(),false,
+      'Bij alleen het skelet heeft een stelselschuif geen betekenis');
+    if(width<600) await page.locator('#searchOpen').click();
+    await page.locator('#searchInput').fill('dijbeen');
+    await page.locator('#searchResults .search-result-item').first().waitFor({state:'visible'});
+    const femurRow=page.locator('#searchResults .search-result-item[data-part^="Femur"]').first();
+    await femurRow.waitFor({state:'visible'});
+    await femurRow.click();
+    await page.waitForFunction(() => document.querySelector('#app')?.classList.contains('info-open'));
+    const explanation=await page.locator('#infoSidebar').innerText();
+    assert(explanation.includes('Functie'),'Specifieke anatomische functie ontbreekt');
+    assert(explanation.includes('Dijbeen'),'Nederlandse naam ontbreekt');
+    assert.equal(await page.locator('.callout [data-callout="isolate"]').count(),0,
+      'Dubbele zwevende actiemenu\'s mogen niet bestaan');
+    assert.equal(await page.locator('#footerBar').isVisible(),false,
+      'Dubbele onderste actiebalk moet verdwenen zijn');
+    await page.locator('#infoToggle').click();
+    await page.locator('body').press('Escape');
+
     if (width === 1440) {
       const rect = await page.locator('#threeCanvas').boundingBox();
       assert(rect, 'Canvas ontbreekt');
