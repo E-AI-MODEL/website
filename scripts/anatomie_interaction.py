@@ -26,6 +26,10 @@ def improve_anatomy(source: Path) -> None:
         "  root.querySelector('[data-callout=\"hide\"]').textContent = translate('hide');\n",
         "", "calloutlabels")
     callout = exact(callout, 'aria-label="Chiudi"', 'aria-label="Sluiten"', "callout sluiten")
+    callout = exact(callout,
+        "import { state, translate } from '../state/store.js';",
+        "import { state } from '../state/store.js';",
+        "ongebruikte calloutvertaling")
     callout_file.write_text(callout, encoding="utf-8")
 
     select_file = source / "src/viewer/selection.js"
@@ -85,6 +89,23 @@ def improve_anatomy(source: Path) -> None:
       <div class="structure-description" data-definition>${escapeHtml(translate('loading_definition', lang))}</div>
     </details>""",
         "uitleg en duidelijke bronstatus")
+    js = exact(js,
+        "import { highlightMesh, clearHighlight, ghostAllExcept, clearGhost, isolatePart, hidePart } from './visibility.js';",
+        "import { highlightMesh, clearHighlight, ghostAllExcept, clearGhost } from './visibility.js';",
+        "verwijder ongebruikte acties")
+    js = exact(js,
+        """function showFooterActions() {
+  const footer = document.getElementById('footerBar');
+  if (footer) footer.style.display = 'flex';
+}
+
+function hideFooterActions() {
+  const footer = document.getElementById('footerBar');
+  if (footer) footer.style.display = 'none';
+}
+
+""",
+        "", "dubbele actiebar")
     select_file.write_text(js, encoding="utf-8")
 
     html_file = source / "index.html"
