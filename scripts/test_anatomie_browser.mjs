@@ -32,7 +32,12 @@ try {
     const errors = [], remote = [];
     page.on('pageerror', e => errors.push(e.message));
     page.on('request', request => {
-      if (!request.url().startsWith(base)) remote.push(request.url());
+      // Draco creates blob: workers in this same document. These are local,
+      // in-memory scripts, not external network requests.
+      const url=request.url();
+      if (!url.startsWith(base) && !url.startsWith('blob:'+base+'/')) {
+        remote.push(url);
+      }
     });
     await page.goto(base + '/tools/anatomie/', {waitUntil:'domcontentloaded'});
     await page.waitForFunction(() => {
