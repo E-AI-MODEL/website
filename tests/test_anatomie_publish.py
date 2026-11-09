@@ -101,6 +101,8 @@ class AnatomyPublishTests(unittest.TestCase):
         refine = (ROOT / "scripts/anatomie_refine.py").read_text(encoding="utf-8")
         detail = (ROOT / "content/anatomie/eaiDetail.js").read_text(encoding="utf-8")
         self.assertIn('eaiNames.js', refine)
+        self.assertIn('dutchName(row.base)', refine)
+        self.assertIn('dutchName(base)', refine)
         self.assertIn('dutchName(baseName)', detail)
         self.assertIn("Relaties in het 3D-model", detail)
         self.assertIn("De bestaande Engelstalige beschrijving", detail)
