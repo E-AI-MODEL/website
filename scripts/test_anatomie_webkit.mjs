@@ -55,7 +55,7 @@ try {
   assert.equal(await page.locator('#eaiExplore').count(),0,'Dubbele stelselkeuze op de viewer');
   assert.equal(await page.locator('#footerBar').count(),0,'Dubbele actiebalk onder het lichaam');
   assert.equal(await page.locator('#infoSidebar').count(),1,'Er is precies een informatiepaneel');
-  assert(await page.locator('.eai-layer-control').isHidden(),
+  assert(await page.locator('.depth-control').isHidden(),
     'Diepteschuif bij een enkel stelsel moet verborgen zijn');
 
   // Gebruik dezelfde zoek- en selectieroute als een bezoeker op iPhone.
