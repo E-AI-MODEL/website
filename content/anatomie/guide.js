@@ -1,6 +1,6 @@
-// Korte, handmatig gecontroleerde uitleg voor veelgebruikte structuren.
-// Aanvullend op de bestaande bronbeschrijvingen, niet een automatische
-// afleiding van de Engelse naam. Geen verzonnen functie bij ontbrekende data.
+// Specifieke Nederlandstalige uitleg voor een eerste reeks modelstructuren.
+// Nog niet onafhankelijk klinisch beoordeeld; geen automatische
+// afleiding van de Engelse naam. Geen ingevulde functie bij ontbrekende data.
 const ITEMS = {
   'pleura': {
     name: 'Borstvlies (pleura)',
@@ -190,6 +190,6 @@ const ITEMS = {
 },
 };
 export function anatomyGuide(base) {
-  const key = String(base || '').replace(/\\.[lr]$/, '').trim().toLowerCase();
+  const key = String(base || '').replace(/\.[lr]$/, '').trim().toLowerCase();
   return Object.prototype.hasOwnProperty.call(ITEMS, key) ? ITEMS[key] : null;
 }
