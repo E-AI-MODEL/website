@@ -717,3 +717,102 @@ html,body,#app{height:100%;height:100dvh;overflow:hidden}
 @media(prefers-reduced-motion:reduce){
   .sidebar-info{transition:none}
 }
+
+
+/* Eén informatiepaneel, zonder tweede actiebalk of overlappende snelmenu's. */
+.eai-explore,#footerBar,.preset-row{display:none!important}
+.sidebar-info{
+  position:fixed!important;top:58px!important;right:0!important;bottom:0!important;
+  width:min(420px,100vw)!important;max-width:none!important;
+  height:auto;z-index:85!important;
+  background:#0c1929!important;border-left:1px solid #355166;
+  box-shadow:-12px 0 38px #0009;
+  transform:translateX(105%)!important;
+  visibility:hidden;pointer-events:none;
+  transition:transform .22s ease,visibility .22s ease;
+}
+#app.info-open .sidebar-info{
+  transform:translateX(0)!important;visibility:visible;pointer-events:auto;
+}
+.sidebar-info .sidebar-header{
+  padding:17px 18px;border-bottom:1px solid #30495b;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.sidebar-info .sidebar-header h2{
+  font:650 12px/1.4 Inter,system-ui,sans-serif;color:#dcecf5;
+}
+.sidebar-info .sidebar-content{padding:16px 19px 28px;overflow-y:auto;overscroll-behavior:contain}
+.sidebar-info .structure-title h3{
+  font:650 20px/1.2 Inter,system-ui,sans-serif;
+  letter-spacing:-.025em;color:#eff8ff;margin-bottom:6px;
+}
+.sidebar-info .structure-latin{font-size:12px;color:#98c7d7}
+.eai-facts{margin:19px 0}
+.eai-fact{margin:0 0 16px}
+.eai-fact h4,.eai-detail-actions h4{
+  font:700 10px/1.45 ui-monospace,SFMono-Regular,Menlo,monospace;
+  text-transform:uppercase;letter-spacing:.09em;color:#8fb9c9;margin-bottom:6px;
+}
+.eai-fact p{
+  color:#dce8f0;font:13px/1.65 Inter,system-ui,sans-serif;
+  margin:0;max-width:62ch;
+}
+.eai-facts-unverified{
+  color:#a9c0d1;font:12px/1.7 Inter,system-ui,sans-serif;
+  border-left:2px solid #5e8499;padding-left:12px;margin:0;
+}
+.eai-source-description{
+  border-top:1px solid #28445a;padding:13px 0;margin:18px 0;
+  font:12px/1.65 Inter,system-ui,sans-serif;color:#b7d1de;
+}
+.eai-source-description summary{cursor:pointer;color:#9fcbdb;font-weight:550}
+.eai-source-description .structure-description{margin-top:13px}
+.eai-detail-actions{border-top:1px solid #28445a;padding-top:16px;margin-top:20px}
+.eai-detail-actions button,.eai-show-all{
+  border:1px solid #41637a;background:#152c3e;color:#e1f2fb;
+  border-radius:5px;min-height:40px;padding:9px 12px;margin:6px 6px 3px 0;
+  font:550 12px/1.35 Inter,system-ui,sans-serif;
+  cursor:pointer;
+}
+.eai-detail-actions button:hover,.eai-show-all:hover{border-color:#8ac6d5;background:#204257}
+.eai-detail-actions button:focus-visible,.eai-show-all:focus-visible{
+  outline:2px solid #a1eaf0;outline-offset:3px;
+}
+.eai-show-all{display:block;width:calc(100% - 16px);margin:0 8px 13px;text-align:center}
+.callout{gap:10px}
+.callout-name{max-width:180px}
+.callout-close{min-width:28px;min-height:28px}
+.depth-control[hidden]{display:none!important}
+.eai-depth-status{
+  display:block;max-width:90px;
+  color:#a8cad8;font:10px/1.4 Inter,system-ui,sans-serif;
+  text-align:center;
+}
+@media(max-width:720px){
+  .sidebar-info{
+    top:auto!important;left:0!important;right:0!important;bottom:0!important;
+    width:100vw!important;height:min(64dvh,590px)!important;
+    border:1px solid #3d5b6e;border-radius:13px 13px 0 0;
+    transform:translateY(106%)!important;
+    box-shadow:0 -20px 65px #000b;
+  }
+  #app.info-open .sidebar-info{transform:translateY(0)!important}
+  .sidebar-info .sidebar-header{padding:11px 17px}
+  .sidebar-info .sidebar-content{padding:14px 17px 30px}
+  .sidebar-info .structure-title h3{font-size:18px}
+  .eai-facts{margin-top:14px}
+  .eai-fact{margin-bottom:11px}
+  .eai-fact p{font-size:12px;line-height:1.55}
+  #app.has-selection #infoOpen{display:inline-flex!important}
+  .callout{
+    max-width:min(250px,65vw);
+    padding:6px 8px;
+  }
+  .callout-name{font-size:11px;max-width:145px}
+  .depth-control{left:7px;padding:7px 5px;gap:5px}
+  .depth-slider{height:135px}
+  .eai-depth-status{max-width:74px;font-size:9px}
+}
+@media(prefers-reduced-motion:reduce){
+  .sidebar-info{transition:none}
+}
