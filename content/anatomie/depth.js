@@ -1,6 +1,6 @@
 // Deze modellen zijn losse stelsels, geen echte anatomische doorsneden.
 // Geef alleen een lagenregeling als twee of meer stelsels getoond worden.
-import { state, translate } from '../state/store.js';
+import { state, subscribe } from '../state/store.js';
 import { showSystem, hideSystem, setSystemTransparency } from '../viewer/visibility.js';
 
 const ORDER = ['muscular','lymphatic','cardiovascular','nervous','visceral','joints','skeletal'];
@@ -73,6 +73,7 @@ export function initDepthSlider() {
     // Het laden van het nieuwe GLB loopt na de checkboxwijziging.
     syncAvailability();
   });
+  subscribe('loading', syncAvailability);
   syncAvailability();
   return wrapper;
 }
