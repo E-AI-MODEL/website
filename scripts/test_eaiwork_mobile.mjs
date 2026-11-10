@@ -49,7 +49,7 @@ try{
   if(width===390||width===1440){
    await page.screenshot({path:'test-results/eaiwork-dashboard-'+width+'-overview.png'});
   }
-  await page.locator('[data-action="nav"][data-id="opdrachten"]').click();
+  await page.locator('.sidebar-nav [data-action="nav"][data-id="opdrachten"]').click();
   await page.getByRole('heading',{name:'Opdrachten',exact:true}).waitFor();
   const selected=await page.evaluate(()=>{
    const menu=document.querySelector('.sidebar-nav');
