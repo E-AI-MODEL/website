@@ -356,13 +356,13 @@ function setupMesh(mesh, systemId, viewer) {""",
     js = sidebar.read_text(encoding="utf-8")
     js = one(js,
         "import { setView, resetView } from '../viewer/camera.js';",
-        "import { setView, resetView } from '../viewer/camera.js';\\n"
+        "import { setView, resetView } from '../viewer/camera.js';\n"
         "import { focusSearchResult } from './cameraUX.js';",
         "zoekfocus import")
     js = one(js,
-        "  selectPartById(partId, state.viewer);\\n}",
-        "  selectPartById(partId, state.viewer);\\n"
-        "  await focusSearchResult(partId);\\n}",
+        "  selectPartById(partId, state.viewer);\n}",
+        "  selectPartById(partId, state.viewer);\n"
+        "  await focusSearchResult(partId);\n}",
         "zoekresultaat in beeld")
     js = one(js, "import { PRESETS, applyPreset } from '../data/presets.js';",
         "import { mountVisibilityReset } from './eaiDetail.js';\n"
