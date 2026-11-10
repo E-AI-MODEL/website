@@ -21,6 +21,14 @@ def refine_anatomy(source: Path) -> None:
     # adding heavy postprocessing to a mobile 3D viewer.
     scene = source / "src" / "viewer" / "createScene.js"
     rendering = scene.read_text(encoding="utf-8")
+    # OrbitControls ondersteunt een verplaatsbaar draaipunt tijdens zoomen.
+    # Scrollen volgt de muis, knijpen het midden tussen twee vingers.
+    # Dubbelklikken blijft een anatomisch onderdeel expliciet centreren.
+    rendering = one(rendering,
+        "  controls.enableZoom = true;",
+        "  controls.enableZoom = true;\n"
+        "  controls.zoomToCursor = true;",
+        "zoom naar aanwijzer")
     rendering = one(rendering, "renderer.toneMappingExposure = 1.0;",
         "renderer.toneMappingExposure = 0.95;", "neutral exposure")
     rendering = one(rendering,
