@@ -20,6 +20,12 @@ export function initDragMode(viewer) {
   button.textContent = 'Verplaatsen';
   button.title = 'Verplaats het model omhoog, omlaag of opzij';
   container.appendChild(button);
+  const helpList = document.querySelector('#helpModal .help-section ul');
+  if (helpList) {
+    const help = document.createElement('li');
+    help.textContent = 'Verplaatsen: klik op de knop en sleep omhoog, omlaag of opzij. Met Draaien ga je terug.';
+    helpList.appendChild(help);
+  }
 
   let moving = false;
 
