@@ -7,7 +7,7 @@ Deze dienst bewaart interactieve HTML van bezoekers. De website zelf blijft stat
 - Website: `/tools/html-galerij/`.
 - Publieke API: `GET /api/config`, `GET /api/uploads`, `POST /api/uploads`.
 - Geïsoleerde HTML-weergave: `GET /view/{id}`.
-- Database: D1 voor titel, auteur, bestandsnaam en verwijzing.
+- Database: D1 voor titel, auteur, bestandsnaam en HTML-inhoud.
 - Bestandsopslag: D1 bewaart ook de HTML als tekst.
 - Cloudflare Turnstile tegen automatische uploads.
 - Limiet: 1 MB per bestand, vijf uploads per bezoeker per uur.
@@ -15,7 +15,7 @@ Deze dienst bewaart interactieve HTML van bezoekers. De website zelf blijft stat
 
 ## Eenmalige installatie
 
-1. Maak een Cloudflare D1-database `eai-html-galerij` .
+1. Gebruik de al aangemaakte Cloudflare D1-database `eai-html-galerij`.
 2. Kopieer de D1-database-ID naar `wrangler.toml`.
 3. Voer vanuit deze map uit:
    ```sh
@@ -40,7 +40,7 @@ Publicatie verwijderen uit de galerij:
 ```sql
 UPDATE uploads SET status = 'hidden' WHERE id = 'UPLOAD_ID';
 ```
-Voor definitieve verwijdering moet ook het bijbehorende database-rij worden verwijderd. Door het statusfilter is een verborgen upload niet langer publiek opvraagbaar.
+Voor definitieve verwijdering kun je de bijbehorende rij uit D1 verwijderen. Door het statusfilter is een verborgen upload niet langer publiek opvraagbaar.
 
 ## Beveiliging en grenzen
 
@@ -54,4 +54,4 @@ Voor definitieve verwijdering moet ook het bijbehorende database-rij worden verw
 
 ## Controle
 
-De implementatie is nog niet tegen een echte Cloudflare-omgeving getest. De bestanden maken geen Cloudflare-resources aan. Controleer Workers/D1/D1/Turnstile in een testomgeving voordat de dienst publiek wordt ingeschakeld.
+De implementatie is nog niet tegen een echte Cloudflare-omgeving getest. De bestanden maken geen Cloudflare-resources aan. Controleer Workers/D1/Turnstile in een testomgeving voordat de dienst publiek wordt ingeschakeld.
