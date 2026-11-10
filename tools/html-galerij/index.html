@@ -47,7 +47,7 @@ footer{border-top:1px solid var(--line);padding:25px 0;color:var(--muted);font-s
 <form id="upload-form">
 <div class="fields"><div><label for="author">Jouw naam</label><input id="author" name="author" type="text" maxlength="80" required autocomplete="name" placeholder="Naam van de maker"></div>
 <div><label for="title">Naam van je werk</label><input id="title" name="title" type="text" maxlength="120" required placeholder="Bijv. Interactief zonnestelsel"></div></div>
-<label for="file">HTML-bestand</label><div class="drop" id="drop"><strong>Sleep je .html-bestand hierheen</strong><small>Of selecteer het hieronder. Maximaal 2 MB.</small><input id="file" type="file" name="file" accept=".html,.htm,text/html" required></div>
+<label for="file">HTML-bestand</label><div class="drop" id="drop"><strong>Sleep je .html-bestand hierheen</strong><small>Of selecteer het hieronder. Maximaal 1 MB.</small><input id="file" type="file" name="file" accept=".html,.htm,text/html" required></div>
 <div id="turnstile" aria-label="Controle tegen automatische uploads"></div>
 <p class="hint">Je werk wordt openbaar. Gebruik geen persoonsgegevens, wachtwoorden of geheime sleutels in het bestand. Externe afbeeldingen en scripts moeten zelf bereikbaar blijven.</p>
 <div class="row"><button id="publish" class="primary" type="submit" disabled>Publiceer HTML</button><span id="upload-status" class="status" role="status" aria-live="polite">Verbinding met de uploaddienst controleren…</span></div>
@@ -128,7 +128,7 @@ async function init() {
 }
 form.addEventListener('submit',async(e)=>{
  e.preventDefault();if(!ready)return;
- if(!file.files[0] || file.files[0].size>2*1024*1024){setStatus('Kies een HTML-bestand van maximaal 2 MB.',true);return;}
+ if(!file.files[0] || file.files[0].size>1024*1024){setStatus('Kies een HTML-bestand van maximaal 1 MB.',true);return;}
  const token=window.turnstile.getResponse(widgetId);
  if(!token){setStatus('Bevestig eerst de controle tegen automatische uploads.',true);return;}
  publish.disabled=true;setStatus('HTML publiceren…');
