@@ -108,14 +108,22 @@ class AnatomyPublishTests(unittest.TestCase):
 
         self.assertEqual(names["capitate bone"][0], "kopbeen")
         self.assertEqual(names["arytenoid cartilage"][0], "bekerkraakbeen")
-        self.assertIn("depth-control", (ROOT / "content/anatomie/layout.css").read_text(encoding="utf-8"))
+        # De oude lagenkaart is verwijderd. De stelselselectie en
+        # contextuele onderdeelacties blijven gescheiden van de camera.
+        css = (ROOT / "content/anatomie/layout.css").read_text(encoding="utf-8")
+        self.assertIn(".depth-control.eai-layer-control,.eai-camera-modes{display:none!important}", css)
         depth = (ROOT / "content/anatomie/depthSlider.js").read_text(encoding="utf-8")
-        self.assertIn("Gekozen onderdeel wegnemen", depth)
-        self.assertIn("Blijft duidelijk zichtbaar", depth)
-        self.assertIn("restorePeel()", depth)
+        self.assertIn("initDepthSlider", depth)
+        self.assertIn("resetDepthSlider", depth)
+        self.assertNotIn("Gekozen onderdeel wegnemen", depth)
+        self.assertNotIn("Blijft duidelijk zichtbaar", depth)
+        self.assertNotIn("Stelsels vergelijken", depth)
         self.assertNotIn('type="range"', depth)
-        self.assertIn("setPartVisibility", depth)
-        self.assertIn("0.16", depth.replace(".16", "0.16"))
+        drag = (ROOT / "content/anatomie/dragMode.js").read_text(encoding="utf-8")
+        self.assertIn("THREE.TOUCH.DOLLY_PAN", drag)
+        self.assertIn("canvas.style.touchAction = 'none'", drag)
+        self.assertNotIn("eaiDragMode", drag)
+        self.assertIn("centerOrbitOnSelection", refine)
         self.assertIn("De oorspronkelijke bronbeschrijving", detail)
         self.assertIn("meegeleverde atlasgegevens", detail)
 
