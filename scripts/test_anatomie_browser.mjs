@@ -128,11 +128,21 @@ try {
     await page.locator('#infoSidebar').waitFor({state:'visible',timeout:7000});
     // Een zichtbare drawer kan nog bezig zijn met zijn CSS-overgang.
     // Controleer de echte positie ná de animatie, niet op een vaste frame.
-    await page.waitForFunction(() => {
-      const rect=document.getElementById('infoSidebar')?.getBoundingClientRect();
-      return rect && rect.left>=-2 && rect.right<=innerWidth+2
-        && rect.top>=-2 && rect.bottom<=innerHeight+2;
-    },null,{timeout:7000});
+    try {
+      await page.waitForFunction(() => {
+        const rect=document.getElementById('infoSidebar')?.getBoundingClientRect();
+        return rect && rect.left>=-2 && rect.right<=innerWidth+2
+          && rect.top>=-2 && rect.bottom<=innerHeight+2;
+      },null,{timeout:7000});
+    } catch (error) {
+      const position = await page.evaluate(() => ({
+        viewport:{width:innerWidth,height:innerHeight},
+        sidebar:document.getElementById('infoSidebar')?.getBoundingClientRect().toJSON(),
+        style:getComputedStyle(document.getElementById('infoSidebar')).transform
+      }));
+      console.log('INFO_PANEEL_BUITEN_BEELD',JSON.stringify(position));
+      throw error;
+    }
     const infoSize=await page.locator('#infoSidebar').boundingBox();
     console.log('INFO_PANEEL_POSITIE',JSON.stringify({viewport:width+'x'+height,rect:infoSize}));
     assert(infoSize && (width>720 ? infoSize.width<=345 : infoSize.height<=height*.40),
