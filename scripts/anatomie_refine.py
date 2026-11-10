@@ -18,6 +18,7 @@ def refine_anatomy(source: Path) -> None:
     shutil.copyfile(root / "depthSlider.js", source / "src" / "ui" / "depthSlider.js")
     shutil.copyfile(root / "dragMode.js", source / "src" / "ui" / "dragMode.js")
     shutil.copyfile(root / "cameraUX.js", source / "src" / "ui" / "cameraUX.js")
+    shutil.copyfile(root / "picking.js", source / "src" / "viewer" / "picking.js")
 
     # Remove the blue studio lighting and improve material contrast without
     # adding heavy postprocessing to a mobile 3D viewer.
@@ -277,6 +278,15 @@ function setupMesh(mesh, systemId, viewer) {""",
         "import { highlightMesh, clearHighlight, ghostAllExcept, clearGhost } from './visibility.js';\n"
         "import { refineAnatomyInfo, openAnatomyInfo, closeAnatomyInfo, toggleAnatomyInfo } from '../ui/eaiDetail.js';",
         "selection imports")
+    js = one(js,
+        "import { loadDefinitions } from '../data/anatomy.js';",
+        "import { loadDefinitions } from '../data/anatomy.js';\n"
+        "import { isTouchableAnatomySurface } from './picking.js';",
+        "picking op zichtbare anatomie")
+    js = one(js,
+        "    if (!hit.object.visible) continue;",
+        "    if (!isTouchableAnatomySurface(hit.object)) continue;",
+        "fascia doorlaatbaar voor anatomische selectie")
     js = one(js,
         "import { focusOnMesh } from './camera.js';",
         "import { focusOnMesh } from './camera.js';\n"
