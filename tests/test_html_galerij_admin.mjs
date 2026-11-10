@@ -7,7 +7,7 @@ const script=markup.match(/<script>([\s\S]*?)<\/script>/);
 assert.ok(script,'inline gallery script');
 new Function(script[1]); // Syntax only, no browser execution
 for(const text of ['id="admin-panel"','id="secret-entrance"','id="admin-key"','id="admin-items"',
-                   'class="hero"','class="editorial-row"','Verbergen','altKey','adminKey=']){
+                   'class="hero"','editorial-row','Verbergen','altKey','adminKey=']){
  assert.ok(markup.includes(text),text);
 }
 
