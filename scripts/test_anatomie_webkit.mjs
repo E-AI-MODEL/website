@@ -69,8 +69,11 @@ try {
   await page.locator('#structureInfo .eai-fact').first().waitFor({state:'attached',timeout:15000});
   assert(!(await page.locator('#app').evaluate(el=>el.classList.contains('info-open'))),
     'Een selectie moet eerst alleen het naamlabel tonen');
+  mkdirSync('test-results',{recursive:true});
+  await page.screenshot({path:'test-results/anatomie-naamlabel-mobiel.png'});
   await page.locator('.callout-more').click();
   await page.locator('#infoSidebar').waitFor({state:'visible',timeout:5000});
+  await page.screenshot({path:'test-results/anatomie-uitleg-mobiel.png'});
   assert.equal(await page.locator('.callout-more').getAttribute('aria-expanded'),'true',
     'De knop bij het onderdeel moet tonen dat de uitleg open is');
   const mobilePanel = await page.evaluate(() => {
