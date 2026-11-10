@@ -121,7 +121,7 @@ try {
     await page.locator('#structureInfo .eai-fact').first().waitFor({state:'attached',timeout:15000});
     assert.equal(await page.locator('#app.info-open').count(),0,
       'De toelichting mag niet automatisch openen bij selectie');
-    assert(await page.locator('.callout.is-visible').isVisible(),
+    assert(await page.locator('.callout-layer.is-visible .callout').isVisible(),
       'Het naamlabel met de verbindingslijn blijft zichtbaar');
     await page.screenshot({path:'test-results/anatomie-naamlabel-'+width+'.png'});
     await page.locator('.callout-more').click();
@@ -152,7 +152,7 @@ try {
       'Dubbele onderste actiebalk moet verdwenen zijn');
     await page.locator('#infoToggle').click();
     assert.equal(await page.locator('#app.info-open').count(),0);
-    assert(await page.locator('.callout.is-visible').isVisible(),
+    assert(await page.locator('.callout-layer.is-visible .callout').isVisible(),
       'Inklappen van de uitleg mag de selectie niet wissen');
     await page.locator('body').press('Escape');
 
