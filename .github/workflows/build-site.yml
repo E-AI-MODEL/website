@@ -18,6 +18,7 @@ on:
       - 'houseoftalents/**'
       - 'leif/**'
       - 'tests/test_home_model.py'
+      - 'tests/test_eaiwork_dashboard_publish.py'
       - 'tests/test_science_observatory_publish.py'
       - 'tests/test_abyss_publish.py'
       - 'tests/test_llm_observatorium_source.py'
@@ -82,6 +83,9 @@ jobs:
 
       - name: Check website insights and menu
         run: python -m unittest discover -s tests -p 'test_site_insights.py' -v
+
+      - name: Check EAIwork public demonstration
+        run: python -m unittest discover -s tests -p 'test_eaiwork_dashboard_publish.py' -v
 
       - name: Build site
         run: |
