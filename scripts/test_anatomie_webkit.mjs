@@ -49,6 +49,18 @@ try {
   const elapsed=Date.now()-started;
   assert(report.visible && report.width>200 && report.height>100,'De WebKit-canvas is niet zichtbaar');
   assert(report.triangles>100, 'WebKit tekent geen anatomische driehoeken');
+  const touchControls=await page.evaluate(() => {
+    const controls=window.ZAnatomy.viewer.controls;
+    return {zoomToCursor:controls.zoomToCursor,
+      twoFingerGesture:controls.touches.TWO,zoomEnabled:controls.enableZoom,
+      panEnabled:controls.enablePan,rotateEnabled:controls.enableRotate};
+  });
+  assert.equal(touchControls.zoomToCursor,true,
+    'Zoomen met twee vingers moet naar het midden van het knijpgebaar volgen');
+  assert.equal(typeof touchControls.twoFingerGesture,'number',
+    'De tweevingerbediening van OrbitControls ontbreekt');
+  assert(touchControls.zoomEnabled && touchControls.panEnabled && touchControls.rotateEnabled,
+    'Op mobiel moeten zoomen, verschuiven en draaien beschikbaar blijven');
   assert.deepEqual(errors,[],'JavaScript-fouten: '+errors.join('; '));
   assert.deepEqual(failed,[],'Netwerkfouten: '+failed.join('; '));
   // Het scherm bevat maar een stelsel: een diepteschuif zou betekenisloos zijn.
