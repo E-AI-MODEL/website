@@ -203,7 +203,7 @@ function setupMesh(mesh, systemId, viewer) {""",
     js = one(js,
         "import { highlightMesh, clearHighlight, ghostAllExcept, clearGhost, isolatePart, hidePart } from './visibility.js';",
         "import { highlightMesh, clearHighlight, ghostAllExcept, clearGhost } from './visibility.js';\n"
-        "import { refineAnatomyInfo, openAnatomyInfo, closeAnatomyInfo } from '../ui/eaiDetail.js';",
+        "import { refineAnatomyInfo, openAnatomyInfo, closeAnatomyInfo, toggleAnatomyInfo } from '../ui/eaiDetail.js';",
         "selection imports")
     js = one(js,
         """  showCallout(partId, partData.displayName, {
@@ -212,6 +212,7 @@ function setupMesh(mesh, systemId, viewer) {""",
     close: () => deselectPart()
   });""",
         """  showCallout(partId, partData.displayName, {
+    info: () => toggleAnatomyInfo(),
     close: () => deselectPart()
   });""", "duplicate callout actions")
     js = one(js,
@@ -220,7 +221,7 @@ function setupMesh(mesh, systemId, viewer) {""",
 
   // Show footer actions
   showFooterActions();""",
-        """  // Selecting a structure opens its anatomical details.
+        """  // Selecting a structure updates the details without opening the panel.
   showInfoPanel(partData);
   refineAnatomyInfo(partData, deselectPart);
   openAnatomyInfo();""", "information-first selection")
@@ -241,7 +242,13 @@ function setupMesh(mesh, systemId, viewer) {""",
         <button type="button" class="callout-btn" data-callout="hide"></button>
         <button type="button" class="callout-btn callout-close" data-callout="close" aria-label="Chiudi">&times;</button>
       </div>""",
-        """      <button type="button" class="callout-btn callout-close" data-callout="close" aria-label="Selectie sluiten">&times;</button>""",
+        """      <span class="callout-copy">
+        <span class="callout-more-row">
+          <button type="button" class="callout-more" data-callout="info"
+                  aria-controls="infoSidebar" aria-expanded="false">Meer informatie</button>
+        </span>
+      </span>
+      <button type="button" class="callout-btn callout-close" data-callout="close" aria-label="Selectie sluiten">&times;</button>""",
         "callout markup")
     js = one(js,
         """  root.querySelector('[data-callout="isolate"]').textContent = translate('isolate');
@@ -284,7 +291,14 @@ function setupMesh(mesh, systemId, viewer) {""",
     js = one(js, "  initSystemsSidebar();\n  initToolbar(viewer);",
         "  initSystemsSidebar();\n  mountVisibilityReset();\n  initToolbar(viewer);",
         "single restore action")
+    # De informatieknop op het label en de knop bovenaan openen dezelfde
+    # compacte uitleg; de toegankelijke status blijft op beide gelijk.
+    js = one(js,
+        "    trigger?.setAttribute('aria-expanded', String(open));",
+        "    trigger?.setAttribute('aria-expanded', String(open));\n"
+        "    if (name === 'info') document.querySelector('.callout-more')?.setAttribute('aria-expanded', String(open));",
+        "sync anchored more-info button")
     js = one(js, "  apply('info', false);",
-        "  apply('info', Boolean(state.selectedPart));",
-        "restore selected part")
+        "  apply('info', false);",
+        "info starts closed")
     sidebar.write_text(js, encoding="utf-8")
