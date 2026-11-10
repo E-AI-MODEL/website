@@ -62,19 +62,26 @@ try {
   assert(touchControls.zoomEnabled && touchControls.panEnabled && touchControls.rotateEnabled,
     'Op mobiel moeten zoomen, verschuiven en draaien beschikbaar blijven');
   const mobileDrag=page.locator('#eaiDragMode');
+  const mobileRotate=page.locator('#eaiRotateMode');
+  await mobileRotate.waitFor({state:'visible',timeout:6000});
+  assert.equal(await mobileRotate.getAttribute('aria-pressed'),'true');
+  assert.equal(await mobileRotate.innerText(),'Draaien');
+  assert.equal(await mobileDrag.innerText(),'Verplaatsen');
   await mobileDrag.waitFor({state:'visible',timeout:6000});
   const initialTouch=await page.evaluate(()=>window.ZAnatomy.viewer.controls.touches.ONE);
   const twoFinger=await page.evaluate(()=>window.ZAnatomy.viewer.controls.touches.TWO);
   await mobileDrag.click();
   assert.equal(await mobileDrag.getAttribute('aria-pressed'),'true');
-  assert.equal(await mobileDrag.innerText(),'Draaien');
+  assert.equal(await mobileRotate.getAttribute('aria-pressed'),'false');
+  assert.equal(await mobileDrag.innerText(),'Verplaatsen');
   const movedTouch=await page.evaluate(()=>window.ZAnatomy.viewer.controls.touches.ONE);
   assert.notEqual(movedTouch,initialTouch,
     'Met Verplaatsen moet een vinger het model omhoog en omlaag slepen');
   assert.equal(await page.evaluate(()=>window.ZAnatomy.viewer.controls.touches.TWO),twoFinger,
     'De bestaande knijp- en tweevingsbeweging mag niet veranderen');
-  await mobileDrag.click();
+  await mobileRotate.click();
   assert.equal(await mobileDrag.getAttribute('aria-pressed'),'false');
+  assert.equal(await mobileRotate.getAttribute('aria-pressed'),'true');
   assert.equal(await page.evaluate(()=>window.ZAnatomy.viewer.controls.touches.ONE),initialTouch,
     'Bij Draaien moet de eenvingerrotatie terugkomen');
   assert.deepEqual(errors,[],'JavaScript-fouten: '+errors.join('; '));
@@ -93,8 +100,13 @@ try {
   await choice.waitFor({state:'visible',timeout:12000});
   assert.match(await choice.innerText(),/Dijbeen/,
     'De bestaande Nederlandse modelnaam moet ook in het zoekresultaat staan');
+  const beforeSearch=await page.evaluate(()=>window.ZAnatomy.viewer.controls.target.toArray());
   await choice.click();
   await page.locator('#structureInfo .eai-fact').first().waitFor({state:'attached',timeout:15000});
+  await page.waitForTimeout(750);
+  const afterSearch=await page.evaluate(()=>window.ZAnatomy.viewer.controls.target.toArray());
+  assert(Math.hypot(...afterSearch.map((x,i)=>x-beforeSearch[i]))>.12,
+    'Op mobiel moet zoeken het gekozen bot ook in beeld brengen');
   assert(!(await page.locator('#app').evaluate(el=>el.classList.contains('info-open'))),
     'Een selectie moet eerst alleen het naamlabel tonen');
   mkdirSync('test-results',{recursive:true});
@@ -115,6 +127,13 @@ try {
   });
   assert(mobilePanel.height < mobilePanel.viewport * .40,
     'Informatiepaneel bedekt te veel van het lichaam op mobiel');
+  const safety=await page.evaluate(() => ({
+    selected:document.querySelector('#structureInfo .structure-title')?.textContent,
+    callout:document.querySelector('.callout-layer.is-visible .callout')?.getBoundingClientRect().toJSON(),
+    sheet:document.getElementById('infoSidebar').getBoundingClientRect().toJSON()
+  }));
+  assert(safety.callout && safety.callout.bottom < safety.sheet.top + 12,
+    'Het naamlabel mag niet achter het informatiepaneel verdwijnen');
   assert(mobilePanel.canvasActive,'Het 3D-model moet met geopende uitleg bestuurbaar blijven');
   assert.match(await page.locator('#structureInfo').innerText(),/Dijbeen|femur/i,
     'De gekozen structuur heeft geen anatomische toelichting');

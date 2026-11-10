@@ -17,6 +17,7 @@ def refine_anatomy(source: Path) -> None:
     shutil.copyfile(root / "eaiDetail.js", source / "src" / "ui" / "eaiDetail.js")
     shutil.copyfile(root / "depthSlider.js", source / "src" / "ui" / "depthSlider.js")
     shutil.copyfile(root / "dragMode.js", source / "src" / "ui" / "dragMode.js")
+    shutil.copyfile(root / "cameraUX.js", source / "src" / "ui" / "cameraUX.js")
 
     # Remove the blue studio lighting and improve material contrast without
     # adding heavy postprocessing to a mobile 3D viewer.
@@ -47,7 +48,59 @@ def refine_anatomy(source: Path) -> None:
     rendering = one(rendering,
         "new THREE.HemisphereLight(0x88ccff, 0x332211, 0.3)",
         "new THREE.HemisphereLight(0xf5eadb, 0x39322e, 0.29)", "remove blue ambient")
+    # Shift + pijltjes verschuift het lichaam zonder de kijkrichting te wijzigen.
+    rendering = one(rendering,
+        "    const step = event.shiftKey ? 0.25 : 0.08;",
+        """    if (event.shiftKey && ['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key)) {
+      event.preventDefault();
+      const distance = camera.position.distanceTo(controls.target);
+      const worldStep = 2 * distance * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * 0.08;
+      const x = event.key === 'ArrowLeft' ? 1 : event.key === 'ArrowRight' ? -1 : 0;
+      const y = event.key === 'ArrowUp' ? -1 : event.key === 'ArrowDown' ? 1 : 0;
+      const shift = new THREE.Vector3(x, 0, 0).applyQuaternion(camera.quaternion)
+        .multiplyScalar(worldStep).add(
+          new THREE.Vector3(0, y, 0).applyQuaternion(camera.quaternion).multiplyScalar(worldStep)
+        );
+      camera.position.add(shift);
+      controls.target.add(shift);
+      controls.update();
+      invalidate();
+      return;
+    }
+    const step = 0.08;""", "keyboard verplaatsen")
     scene.write_text(rendering, encoding="utf-8")
+
+    # Beeld passend maken herstelt uitsluitend de camera. Weggenomen lagen
+    # blijven weg; daarvoor bestaat een afzonderlijke knop 'Alles tonen'.
+    camera_path = source / "src" / "viewer" / "camera.js"
+    camera_source = camera_path.read_text(encoding="utf-8")
+    camera_source = one(camera_source,
+        "import { state, setAnimating, setCurrentView, notify } from '../state/store.js';",
+        "import { state, setAnimating, setCurrentView } from '../state/store.js';",
+        "verwijder ongebruikte resetmelding")
+    camera_source = one(camera_source,
+        """export function resetView(viewer, animate = true) {
+  return setView('front', viewer, animate).then(() => {
+    // Show all parts
+    showAllParts();
+    notify('viewReset', true);
+  });
+}""",
+        """export function resetView(viewer, animate = true) {
+  const model = getModelBounds(viewer.scene);
+  if (!model) return Promise.resolve();
+  const { camera, controls } = viewer;
+  // Het actuele perspectief blijft behouden, ook na ontleden of isoleren.
+  const direction = camera.position.clone().sub(controls.target).normalize();
+  const targetPosition = model.center.clone().addScaledVector(direction, model.maxDim * 1.65);
+  if (animate) return animateCamera(camera, controls, targetPosition, model.center);
+  camera.position.copy(targetPosition);
+  controls.target.copy(model.center);
+  controls.update();
+  return Promise.resolve();
+}""",
+        "reset zonder anatomische lagen terugzetten")
+    camera_path.write_text(camera_source, encoding="utf-8")
 
     loader = source / "src" / "viewer" / "loadModel.js"
     meshes = loader.read_text(encoding="utf-8")
@@ -305,6 +358,16 @@ function setupMesh(mesh, systemId, viewer) {""",
 
     sidebar = source / "src" / "ui" / "sidebar.js"
     js = sidebar.read_text(encoding="utf-8")
+    js = one(js,
+        "import { setView, resetView } from '../viewer/camera.js';",
+        "import { setView, resetView } from '../viewer/camera.js';\n"
+        "import { focusSearchResult } from './cameraUX.js';",
+        "zoekfocus import")
+    js = one(js,
+        "  selectPartById(partId, state.viewer);\n}",
+        "  selectPartById(partId, state.viewer);\n"
+        "  await focusSearchResult(partId);\n}",
+        "zoekresultaat in beeld")
     js = one(js, "import { PRESETS, applyPreset } from '../data/presets.js';",
         "import { mountVisibilityReset } from './eaiDetail.js';\n"
         "import { anatomyName } from '../data/eaiNames.js';", "sidebar import")
