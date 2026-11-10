@@ -2,8 +2,8 @@
 <html lang="nl">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Deel je interactieve HTML en bekijk werk van anderen.">
-<title>HTML-galerij | EAI</title>
+<meta name="description" content="Bekijk interactieve HTML-pagina’s van anderen of voeg zelf een bestand toe.">
+<title>Interactieve HTML bekijken en delen | EAI</title>
 <link rel="icon" href="/assets/eai-logo.svg" type="image/svg+xml">
 <style>
 :root{--paper:#f4f0e8;--white:#fffdf8;--ink:#12161d;--muted:#59616d;--line:#d7d0c4;--blue:#143a63;--accent:#17695e}
@@ -40,21 +40,21 @@ footer{border-top:1px solid var(--line);padding:25px 0;color:var(--muted);font-s
 <a class="skip" href="#main">Ga naar inhoud</a>
 <header><nav class="nav"><a class="brand" href="/"><img src="/assets/eai-logo.svg" alt="">EAI</a><div><a href="/tools/">Tools</a><a href="/">Home</a></div></nav></header>
 <main id="main"><div class="wrap">
-<div class="eyebrow">Maken en delen</div><h1>Laat je HTML zien.</h1>
-<p class="lede">Heb je een interactieve pagina, simulatie of les gemaakt? Upload je HTML-bestand. Anderen kunnen het meteen bekijken en gebruiken.</p>
+<div class="eyebrow">HTML-galerij</div><h1>Interactieve HTML bekijken en delen.</h1>
+<p class="lede">Van een interactieve les tot een kleine simulatie: bekijk wat anderen hebben gemaakt of voeg zelf een HTML-bestand toe.</p>
 <section class="panel" aria-labelledby="upload-title">
-<h2 id="upload-title">Deel je HTML</h2>
+<h2 id="upload-title">Voeg een HTML-bestand toe</h2>
 <form id="upload-form">
-<div class="fields"><div><label for="author">Jouw naam</label><input id="author" name="author" type="text" maxlength="80" required autocomplete="name" placeholder="Naam van de maker"></div>
-<div><label for="title">Naam van je werk</label><input id="title" name="title" type="text" maxlength="120" required placeholder="Bijv. Interactief zonnestelsel"></div></div>
+<div class="fields"><div><label for="author">Naam van de maker</label><input id="author" name="author" type="text" maxlength="80" required autocomplete="name" placeholder="Naam van de maker"></div>
+<div><label for="title">Titel van de pagina</label><input id="title" name="title" type="text" maxlength="120" required placeholder="Bijv. Interactief zonnestelsel"></div></div>
 <label for="file">HTML-bestand</label><div class="drop" id="drop"><strong>Sleep je .html-bestand hierheen</strong><small>Of selecteer het hieronder. Maximaal 1 MB.</small><input id="file" type="file" name="file" accept=".html,.htm,text/html" required></div>
 <div id="turnstile" aria-label="Controle tegen automatische uploads"></div>
 <p class="hint">Je werk wordt openbaar. Gebruik geen persoonsgegevens, wachtwoorden of geheime sleutels in het bestand. Externe afbeeldingen en scripts moeten zelf bereikbaar blijven.</p>
-<div class="row"><button id="publish" class="primary" type="submit" disabled>Publiceer HTML</button><span id="upload-status" class="status" role="status" aria-live="polite">Verbinding met de uploaddienst controleren…</span></div>
+<div class="row"><button id="publish" class="primary" type="submit" disabled>Toevoegen aan de galerij</button><span id="upload-status" class="status" role="status" aria-live="polite">Verbinding met de uploaddienst controleren…</span></div>
 </form>
 </section>
 <section aria-labelledby="gallery-title">
-<div class="gallery-head"><div><div class="eyebrow">Door bezoekers gemaakt</div><h2 id="gallery-title">HTML-galerij</h2></div><input id="search" type="search" placeholder="Zoek op naam of titel" aria-label="Zoek in galerij"></div>
+<div class="gallery-head"><div><div class="eyebrow">Gedeelde HTML</div><h2 id="gallery-title">Bekijk de voorbeelden</h2></div><input id="search" type="search" placeholder="Zoek op naam of titel" aria-label="Zoek in galerij"></div>
 <div id="cards" class="cards" aria-live="polite"><p class="empty">Galerij laden…</p></div>
 </section>
 </div></main>
@@ -100,8 +100,8 @@ function render() {
   const h=document.createElement('h3');h.textContent=item.title;
   const by=document.createElement('p');by.textContent='Door '+item.author+' · '+item.filename;
   const actions=document.createElement('div');actions.className='row';
-  const show=document.createElement('a');show.href=api('/view/'+item.id);show.target='_blank';show.rel='noopener noreferrer';show.textContent='Open pagina ↗';
-  const previewButton=document.createElement('button');previewButton.type='button';previewButton.textContent='Bekijk hier';previewButton.addEventListener('click',()=>openUpload(item));
+  const show=document.createElement('a');show.href=api('/view/'+item.id);show.target='_blank';show.rel='noopener noreferrer';show.textContent='Open in nieuw tabblad ↗';
+  const previewButton=document.createElement('button');previewButton.type='button';previewButton.textContent='Voorbeeld bekijken';previewButton.addEventListener('click',()=>openUpload(item));
   actions.append(previewButton,show);body.append(h,by,actions);article.append(preview,body);cards.append(article);
  });
 }
@@ -137,9 +137,9 @@ form.addEventListener('submit',async(e)=>{
   const res=await fetch(api('/api/uploads'),{method:'POST',body:data});
   const body=await res.json().catch(()=>({}));
   if(!res.ok) throw new Error(body.error||'Publiceren mislukt.');
-  setStatus('Gepubliceerd! Je pagina staat nu in de galerij.');
+  setStatus('De pagina is toegevoegd aan de galerij.');
   form.reset();window.turnstile.reset(widgetId);await load();
-  const link=document.createElement('a');link.href=api('/view/'+body.id);link.target='_blank';link.rel='noopener noreferrer';link.textContent='Open je pagina ↗';
+  const link=document.createElement('a');link.href=api('/view/'+body.id);link.target='_blank';link.rel='noopener noreferrer';link.textContent='Open de pagina ↗';
   status.append(' ',link);
  }catch(err){setStatus(err.message||'Publiceren mislukt.',true);window.turnstile.reset(widgetId);}
  finally{publish.disabled=false;}
