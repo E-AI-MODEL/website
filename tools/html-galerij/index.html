@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Deel je interactieve HTML en bekijk werk van anderen.">
+<title>HTML-galerij | EAI</title>
+<link rel="icon" href="/assets/eai-logo.svg" type="image/svg+xml">
+<style>
+:root{--paper:#f4f0e8;--white:#fffdf8;--ink:#12161d;--muted:#59616d;--line:#d7d0c4;--blue:#143a63;--accent:#17695e}
+*{box-sizing:border-box}body{background:var(--paper);color:var(--ink);font:16px/1.55 Inter,system-ui,-apple-system,sans-serif;margin:0}
+a{color:inherit}button,input{font:inherit}button{cursor:pointer}
+.skip{position:absolute;left:-9999px}.skip:focus{left:12px;top:12px;background:white;padding:10px;z-index:10}
+header{border-bottom:1px solid var(--line);background:var(--white)}.nav,.wrap{max-width:1120px;margin:auto;padding:0 26px}
+.nav{min-height:70px;display:flex;align-items:center;gap:15px}.brand{font-weight:800;text-decoration:none;display:flex;gap:12px;align-items:center}.brand img{width:37px;height:37px}.nav>div{margin-left:auto}.nav a{font-size:14px;text-decoration:none;margin-left:14px}.nav a:hover{text-decoration:underline}
+main{padding:65px 0 100px}.eyebrow{font-size:12px;letter-spacing:.13em;text-transform:uppercase;color:var(--accent);font-weight:800}
+h1,h2{font-family:Georgia,serif;letter-spacing:-.04em;font-weight:400}h1{font-size:clamp(40px,6vw,74px);line-height:1.06;margin:16px 0 23px}h2{font-size:30px;margin:0 0 16px}
+.lede{font-size:19px;max-width:680px;color:#3d454d;margin:0 0 48px}
+.panel{background:var(--white);border:1px solid var(--line);padding:30px;border-radius:10px}
+form{display:grid;gap:19px}.fields{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+label{font-size:14px;font-weight:700;display:block;margin-bottom:6px}
+input[type=text],input[type=search]{width:100%;background:white;border:1px solid #bfc7c4;border-radius:6px;padding:12px 13px;color:var(--ink)}
+.drop{border:1.5px dashed #8b9b93;background:#f8f9f5;padding:31px;text-align:center;border-radius:8px;cursor:pointer}
+.drop strong{display:block;margin:0 0 5px}.drop small{display:block;color:var(--muted)}.drop.dragging{background:#e8f3ed;border-color:var(--accent)}
+.drop input{width:min(100%,280px);margin-top:14px}.row{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+button.primary{background:var(--ink);color:white;padding:12px 23px;border-radius:6px;border:1px solid var(--ink);font-weight:700}
+button:disabled{opacity:.5;cursor:not-allowed}.hint{color:var(--muted);font-size:13px;margin:0}.status{font-size:14px;min-height:24px}.status.error{color:#a22c2c}
+.gallery-head{display:flex;align-items:end;justify-content:space-between;gap:22px;margin:65px 0 18px}.gallery-head input{max-width:290px}
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.card{background:var(--white);border:1px solid var(--line);border-radius:9px;overflow:hidden}
+.preview{height:160px;background:#e8eae5;display:grid;place-items:center;color:#64736f;font:700 25px Georgia,serif}
+.card-content{padding:20px}.card h3{margin:0 0 8px;font-size:19px;line-height:1.3}.card p{margin:0 0 13px;color:var(--muted);font-size:13px;overflow-wrap:anywhere}
+.card a{font-size:14px;font-weight:700}.empty{padding:32px;border:1px dashed var(--line);color:var(--muted)}
+dialog{border:0;border-radius:9px;padding:0;width:min(1050px,95vw);max-height:95vh;box-shadow:0 22px 90px #0005}dialog::backdrop{background:#071426bf}
+.dialog-bar{padding:12px 16px;display:flex;align-items:center;gap:15px;border-bottom:1px solid var(--line)}.dialog-bar strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.dialog-bar button{margin-left:auto;border:1px solid var(--line);background:white;border-radius:5px;padding:5px 12px}
+dialog iframe{display:block;width:100%;height:min(78vh,760px);border:0;background:white}
+footer{border-top:1px solid var(--line);padding:25px 0;color:var(--muted);font-size:13px}
+@media(max-width:760px){.fields,.cards{grid-template-columns:1fr}.panel{padding:20px}.gallery-head{display:block}.gallery-head input{max-width:none}.nav>div{margin-left:auto}.nav a{margin-left:8px}.preview{height:110px}}
+</style>
+</head>
+<body class="eai-refresh">
+<a class="skip" href="#main">Ga naar inhoud</a>
+<header><nav class="nav"><a class="brand" href="/"><img src="/assets/eai-logo.svg" alt="">EAI</a><div><a href="/tools/">Tools</a><a href="/">Home</a></div></nav></header>
+<main id="main"><div class="wrap">
+<div class="eyebrow">Maken en delen</div><h1>Laat je HTML zien.</h1>
+<p class="lede">Heb je een interactieve pagina, simulatie of les gemaakt? Upload je HTML-bestand. Anderen kunnen het meteen bekijken en gebruiken.</p>
+<section class="panel" aria-labelledby="upload-title">
+<h2 id="upload-title">Deel je HTML</h2>
+<form id="upload-form">
+<div class="fields"><div><label for="author">Jouw naam</label><input id="author" name="author" type="text" maxlength="80" required autocomplete="name" placeholder="Naam van de maker"></div>
+<div><label for="title">Naam van je werk</label><input id="title" name="title" type="text" maxlength="120" required placeholder="Bijv. Interactief zonnestelsel"></div></div>
+<label for="file">HTML-bestand</label><div class="drop" id="drop"><strong>Sleep je .html-bestand hierheen</strong><small>Of selecteer het hieronder. Maximaal 1 MB.</small><input id="file" type="file" name="file" accept=".html,.htm,text/html" required></div>
+<div id="turnstile" aria-label="Controle tegen automatische uploads"></div>
+<p class="hint">Je werk wordt openbaar. Gebruik geen persoonsgegevens, wachtwoorden of geheime sleutels in het bestand. Externe afbeeldingen en scripts moeten zelf bereikbaar blijven.</p>
+<div class="row"><button id="publish" class="primary" type="submit" disabled>Publiceer HTML</button><span id="upload-status" class="status" role="status" aria-live="polite">Verbinding met de uploaddienst controleren…</span></div>
+</form>
+</section>
+<section aria-labelledby="gallery-title">
+<div class="gallery-head"><div><div class="eyebrow">Door bezoekers gemaakt</div><h2 id="gallery-title">HTML-galerij</h2></div><input id="search" type="search" placeholder="Zoek op naam of titel" aria-label="Zoek in galerij"></div>
+<div id="cards" class="cards" aria-live="polite"><p class="empty">Galerij laden…</p></div>
+</section>
+</div></main>
+<dialog id="viewer"><div class="dialog-bar"><strong id="viewer-title">HTML bekijken</strong><button id="close-viewer" type="button">Sluiten</button></div><iframe id="viewer-frame" title="Voorbeeld van een upload" sandbox="allow-scripts allow-forms allow-modals allow-downloads" referrerpolicy="no-referrer"></iframe></dialog>
+<footer><div class="wrap">EAI · HTML van bezoekers wordt op een apart webadres uitgevoerd.</div></footer>
+<script>
+(() => {
+'use strict';
+const API = 'https://eai-html-galerij.vis-c9d.workers.dev';
+const form = document.querySelector('#upload-form');
+const publish = document.querySelector('#publish');
+const status = document.querySelector('#upload-status');
+const cards = document.querySelector('#cards');
+const search = document.querySelector('#search');
+const file = document.querySelector('#file');
+const drop = document.querySelector('#drop');
+const viewer = document.querySelector('#viewer');
+const frame = document.querySelector('#viewer-frame');
+let uploads = [];
+let ready = false;
+let widgetId = null;
+const setStatus = (message, error = false) => { status.textContent = message; status.classList.toggle('error', error); };
+const api = (path) => API + path;
+function safeId(id) { return /^[0-9]{13}-[a-f0-9-]{36}$/.test(id); }
+function openUpload(item) {
+ if (!safeId(item.id)) return;
+ document.querySelector('#viewer-title').textContent = item.title;
+ frame.src = api('/view/' + item.id);
+ viewer.showModal();
+}
+document.querySelector('#close-viewer').addEventListener('click', () => viewer.close());
+viewer.addEventListener('close', () => { frame.removeAttribute('src'); });
+function render() {
+ cards.replaceChildren();
+ const query = search.value.trim().toLocaleLowerCase('nl');
+ const filtered = uploads.filter(x => (x.title+' '+x.author+' '+x.filename).toLocaleLowerCase('nl').includes(query));
+ if (!filtered.length) { const p=document.createElement('p');p.className='empty';p.textContent=query?'Geen resultaten.':'Er zijn nog geen HTML-bestanden gedeeld.';cards.append(p);return; }
+ filtered.forEach((item) => {
+  if (!safeId(item.id)) return;
+  const article=document.createElement('article');article.className='card';
+  const preview=document.createElement('div');preview.className='preview';preview.textContent='HTML';
+  const body=document.createElement('div');body.className='card-content';
+  const h=document.createElement('h3');h.textContent=item.title;
+  const by=document.createElement('p');by.textContent='Door '+item.author+' · '+item.filename;
+  const actions=document.createElement('div');actions.className='row';
+  const show=document.createElement('a');show.href=api('/view/'+item.id);show.target='_blank';show.rel='noopener noreferrer';show.textContent='Open pagina ↗';
+  const previewButton=document.createElement('button');previewButton.type='button';previewButton.textContent='Bekijk hier';previewButton.addEventListener('click',()=>openUpload(item));
+  actions.append(previewButton,show);body.append(h,by,actions);article.append(preview,body);cards.append(article);
+ });
+}
+search.addEventListener('input',render);
+async function load() {
+ try {
+  const res=await fetch(api('/api/uploads'),{cache:'no-store'});
+  if (!res.ok) throw new Error('Galerij niet beschikbaar');
+  const data=await res.json();
+  uploads=Array.isArray(data.items)?data.items:[];
+  render();
+ } catch { cards.innerHTML='<p class="empty">De galerij is momenteel niet bereikbaar.</p>'; }
+}
+async function init() {
+ try {
+  const res=await fetch(api('/api/config'),{cache:'no-store'});
+  if (!res.ok) throw new Error('Geen uploaddienst');
+  const config=await res.json();
+  if (!config.turnstileSiteKey || !window.turnstile) throw new Error('Uploadfunctie nog niet actief');
+  widgetId=window.turnstile.render('#turnstile',{sitekey:config.turnstileSiteKey});
+  ready=true;publish.disabled=false;setStatus('');
+ } catch { publish.disabled=true;setStatus('Uploaden is nog niet beschikbaar.',true); }
+ load();
+}
+form.addEventListener('submit',async(e)=>{
+ e.preventDefault();if(!ready)return;
+ if(!file.files[0] || file.files[0].size>1024*1024){setStatus('Kies een HTML-bestand van maximaal 1 MB.',true);return;}
+ const token=window.turnstile.getResponse(widgetId);
+ if(!token){setStatus('Bevestig eerst de controle tegen automatische uploads.',true);return;}
+ publish.disabled=true;setStatus('HTML publiceren…');
+ try{
+  const data=new FormData(form);data.set('turnstileToken',token);
+  const res=await fetch(api('/api/uploads'),{method:'POST',body:data});
+  const body=await res.json().catch(()=>({}));
+  if(!res.ok) throw new Error(body.error||'Publiceren mislukt.');
+  setStatus('Gepubliceerd! Je pagina staat nu in de galerij.');
+  form.reset();window.turnstile.reset(widgetId);await load();
+  const link=document.createElement('a');link.href=api('/view/'+body.id);link.target='_blank';link.rel='noopener noreferrer';link.textContent='Open je pagina ↗';
+  status.append(' ',link);
+ }catch(err){setStatus(err.message||'Publiceren mislukt.',true);window.turnstile.reset(widgetId);}
+ finally{publish.disabled=false;}
+});
+['dragenter','dragover'].forEach(type=>drop.addEventListener(type,e=>{e.preventDefault();drop.classList.add('dragging');}));
+['dragleave','drop'].forEach(type=>drop.addEventListener(type,e=>{e.preventDefault();drop.classList.remove('dragging');}));
+drop.addEventListener('drop',e=>{const f=e.dataTransfer.files[0];if(f && /\.html?$/i.test(f.name)){const transfer=new DataTransfer();transfer.items.add(f);file.files=transfer.files;}});
+const challenge=document.createElement('script');challenge.src='https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';challenge.async=true;challenge.onload=init;challenge.onerror=()=>{setStatus('Uploaden is nog niet beschikbaar.',true);load();};document.head.append(challenge);
+})();
+</script>
+</body></html>
