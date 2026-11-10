@@ -7,7 +7,7 @@ class EAIworkPublicDashboardTest(unittest.TestCase):
         source = Path("content/eaiwork-dashboard.html").read_text(encoding="utf-8")
         self.assertIn("EAIwork | Dashboard productdemonstratie", source)
         self.assertIn("ops-connect", source)
-        self.assertIn("127.0.0.1", source)
+        self.assertIn("eigen lokale EAIwork-server", source)
         self.assertNotIn("ghp_", source)
 
     def test_generator_exposes_route(self):
