@@ -7,6 +7,8 @@ class EAIworkPublicDashboardTest(unittest.TestCase):
         source = Path("content/eaiwork-dashboard.html").read_text(encoding="utf-8")
         self.assertIn("EAIwork | Dashboard productdemonstratie", source)
         self.assertIn("ops-connect", source)
+        self.assertIn("registratie:registration", source)
+        self.assertIn(".app{display:block;min-height:100vh;min-height:100dvh}", source)
         self.assertIn("eigen lokale EAIwork-server", source)
         self.assertNotIn("ghp_", source)
 
