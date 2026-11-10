@@ -124,6 +124,12 @@ class AnatomyPublishTests(unittest.TestCase):
         self.assertIn("canvas.style.touchAction = 'none'", drag)
         self.assertNotIn("eaiDragMode", drag)
         self.assertIn("centerOrbitOnSelection", refine)
+        # De vrijwel onzichtbare fascia mag bij klikken niet vóór de spier
+        # worden geselecteerd. Vervaagde spierweefsels blijven wel klikbaar.
+        picking = (ROOT / "content/anatomie/picking.js").read_text(encoding="utf-8")
+        self.assertIn("MIN_PICK_OPACITY = 0.10", picking)
+        self.assertIn("picking.js", refine)
+        self.assertIn("if (!isTouchableAnatomySurface(hit.object)) continue;", refine)
         self.assertIn("De oorspronkelijke bronbeschrijving", detail)
         self.assertIn("meegeleverde atlasgegevens", detail)
 
