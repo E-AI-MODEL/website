@@ -75,6 +75,10 @@ def refine_anatomy(source: Path) -> None:
     camera_path = source / "src" / "viewer" / "camera.js"
     camera_source = camera_path.read_text(encoding="utf-8")
     camera_source = one(camera_source,
+        "import { state, setAnimating, setCurrentView, notify } from '../state/store.js';",
+        "import { state, setAnimating, setCurrentView } from '../state/store.js';",
+        "verwijder ongebruikte resetmelding")
+    camera_source = one(camera_source,
         """export function resetView(viewer, animate = true) {
   return setView('front', viewer, animate).then(() => {
     // Show all parts
