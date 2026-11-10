@@ -86,12 +86,16 @@ async function publish(request, env, extra) {
 async function adminAllowed(request, env) {
   const expected = env.ADMIN_DELETE_KEY || '';
   const supplied = (request.headers.get('Authorization') || '').replace(/^Bearer /i, '');
-  if (expected.length < 32 || supplied.length !== expected.length) return false;
-  const a = new TextEncoder().encode(supplied);
-  const b = new TextEncoder().encode(expected);
-  let difference = 0;
-  for (let i=0; i<a.length; i++) difference |= a[i] ^ b[i];
-  return difference === 0;
+  if (expected.length < 32 || supplied.length < 32 || supplied.length > 256) return false;
+  const encoder = new TextEncoder();
+  const [left,right] = await Promise.all([
+    crypto.subtle.digest('SHA-256',encoder.encode(supplied)),
+    crypto.subtle.digest('SHA-256',encoder.encode(expected))
+  ]);
+  const a=new Uint8Array(left),b=new Uint8Array(right);
+  let difference=0;
+  for(let i=0;i<a.length;i++)difference|=a[i]^b[i];
+  return difference===0;
 }
 async function administrativeAction(request, env, extra, uploadId = null) {
   if (request.headers.get('Origin') !== extra['Access-Control-Allow-Origin'])
