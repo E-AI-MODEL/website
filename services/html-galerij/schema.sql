@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS uploads (
   title TEXT NOT NULL,
   author TEXT NOT NULL,
   filename TEXT NOT NULL,
-  object_key TEXT NOT NULL UNIQUE,
+  html_content TEXT NOT NULL,
   created_at TEXT NOT NULL DEFAULT (datetime('now')),
   status TEXT NOT NULL DEFAULT 'published'
 );
