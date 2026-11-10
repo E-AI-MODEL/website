@@ -19,6 +19,13 @@ export function initDragMode(viewer) {
   // Voorkom dat Safari de pagina verschuift of zoomt in plaats van het model.
   canvas.style.touchAction = 'none';
 
+  const overview = document.getElementById('resetBtn');
+  if (overview) {
+    overview.textContent = 'In beeld';
+    overview.setAttribute('aria-label', 'Zichtbare anatomie passend in beeld brengen');
+    overview.title = 'Maak alle zichtbare onderdelen passend in beeld';
+  }
+
   const help = document.querySelector('#helpModal .help-section ul');
   if (help && !help.querySelector('[data-eai-touch-help]')) {
     const item = document.createElement('li');
