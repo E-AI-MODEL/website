@@ -24,7 +24,7 @@ function htmlHeaders() {
     'Content-Type': 'text/html; charset=utf-8',
     'Content-Security-Policy': "sandbox allow-scripts allow-forms allow-modals allow-downloads; default-src * data: blob: 'unsafe-inline' 'unsafe-eval'; connect-src *; img-src * data: blob:; media-src * data: blob:; frame-ancestors https://eaimodel.nl https://www.eaimodel.nl; base-uri 'none'; form-action *",
     'Cross-Origin-Resource-Policy': 'cross-origin',
-    'Cache-Control': 'public, max-age=3600',
+    'Cache-Control': 'no-store', // Verborgen uploads mogen niet als HTML in een browsercache blijven staan.
   };
 }
 async function visitorKey(request, env) {

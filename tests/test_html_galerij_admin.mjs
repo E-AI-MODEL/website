@@ -58,6 +58,9 @@ r=await worker.fetch(req('/api/admin/session','GET',secret),{DB,ALLOWED_ORIGIN:o
 assert.equal(r.status,401,'missing secret denied');
 r=await worker.fetch(req('/api/admin/session','GET',secret),env);
 assert.equal(r.status,200,'correct credential accepted');
+r=await worker.fetch(new Request(url+'/view/'+id),env);
+assert.equal(r.status,200);
+assert.equal(r.headers.get('Cache-Control'),'no-store','uploaded HTML must not remain cached after deletion');
 r=await worker.fetch(req('/api/admin/uploads/'+id,'DELETE','wrong'),env);
 assert.equal(r.status,401,'wrong password cannot hide');
 assert.equal(status,'published');
