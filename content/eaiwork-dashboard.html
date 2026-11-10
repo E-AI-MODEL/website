@@ -422,7 +422,7 @@ function dashStageCard(label,status,index,target){
  ['blocked','failed','not-verified'].includes(status)?'blocked':
  ['needs-review','review','waiting'].includes(status)?'warn':'pending';
  const text=state==='ready'?'Gereed':state==='blocked'?'Geblokkeerd':state==='warn'?'Aandacht nodig':
- status==='running'?'Bezig':'Wacht';
+ status==='running'?'Bezig':status==='unknown'?'Geen gegevens':'Wacht';
  return '<button class="dash-stage '+state+'" data-action="nav" data-id="'+target+'" title="'+h(label+': '+text)+'">'+
  '<span class="dash-stage-circle">'+(index+1)+'</span><span class="dash-stage-label">'+h(label)+'</span>'+
  '<small>'+h(text)+'</small></button>';
@@ -467,8 +467,9 @@ function compactDashboard(live){
    new Set(tasks.filter(t=>t.state==='running').map(t=>t.worker)).size;
  const workerBlocked=live?workers.filter(w=>['quarantined','disabled'].includes(w.stage)).length:
    workers.filter(w=>['reparatie','geblokkeerd','beperkt'].includes(w.status)).length;
- const workerParts=[{label:'Beschikbaar',count:workerReady,color:'#367c68'},
-  {label:'Bezig',count:live?workerBusy:workers.filter(w=>w.status==='bezig').length,color:'#638f9c'},
+ const ringBusy=live?Math.min(workerReady,workerBusy):workers.filter(w=>w.status==='bezig').length;
+ const workerParts=[{label:'Beschikbaar',count:live?workerReady-ringBusy:workerReady,color:'#367c68'},
+  {label:'Bezig',count:ringBusy,color:'#638f9c'},
   {label:'Aandacht',count:workerBlocked,color:'#d79c50'}];
  const restWorkers=Math.max(0,workers.length-workerParts.reduce((n,p)=>n+p.count,0));
  if(restWorkers)workerParts.push({label:'Overig',count:restWorkers,color:'#bbc9c2'});
@@ -485,15 +486,15 @@ function compactDashboard(live){
  const selectedStatus=live?(s.productionLine?.missions||[]).find(m=>m.id===selected?.plan?.id):null;
  const stageLabels=['Werkplan','Workers','Uitvoering','Controle','Vrijgave'];
  const stageTargets=['planner','workers','uitvoering','kwaliteit','bewijs'];
- const statuses=stageLabels.map((_,i)=>live?(selectedStatus?.stages||[])[i]?.status||'waiting':dashDemoStageStatus(i,selected?.id));
+ const statuses=stageLabels.map((_,i)=>live?(selectedStatus?.stages||[])[i]?.status||'unknown':dashDemoStageStatus(i,selected?.id));
  const taskTotal=tasks.length;
  const headline='<div class="dash-head"><div><span class="dash-eyebrow">EAIwork / werkruimte</span>'+
   '<h1>Werkoverzicht</h1><p>'+(live?'Gegevens uit je lokale EAIwork-server.':
   'Interactieve demonstratie met fictieve opdrachten en metingen.')+'</p></div>'+
   '<div class="dash-head-actions">'+(live?btn('Ververs','ops-connect','primary'):btn('Simuleer ronde','cycle','primary'))+
-  btn(live?'Open uitvoering':'Opdrachten','nav-live','')+'</div></div>';
+  (live?btn('Open uitvoering','nav-live'):btn('Opdrachten','nav','','data-id="opdrachten"'))+'</div></div>';
  const kpis=[
-  ['Opdrachten',missions.length,'In registratie','opdrachten'],
+  ['Opdrachten',missions.length,'In registratie',live?'uitvoering':'opdrachten'],
   ['Taken afgerond',done+' / '+taskTotal,taskTotal?Math.round(done/taskTotal*100)+'% voltooid':'Nog geen taken','uitvoering'],
   ['Workers',workerReady+' / '+workers.length,workerBusy+' met werk bezig','workers'],
   ['Besluiten',attentionCount,attentionCount?'Actie gevraagd':'Geen open besluiten','hitl']
