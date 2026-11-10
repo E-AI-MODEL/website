@@ -19,7 +19,7 @@ class GalleryPublicationTests(unittest.TestCase):
         html = SOURCE.read_text(encoding="utf-8")
         for token in ('id="author"', 'id="title"', 'id="file"', 'id="cards"',
                       'id="search"', 'turnstileToken', 'id="viewer-frame"',
-                      "'error-callback'", "'expired-callback'", "'retry-check'", "checkPassed",
+                      "'error-callback'", "'expired-callback'", "id=\"retry-check\"", "checkPassed",
                       'sandbox="allow-scripts allow-forms allow-modals allow-downloads"',
                       "https://eai-html-galerij.vis-c9d.workers.dev"):
             with self.subTest(token=token):
