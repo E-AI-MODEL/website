@@ -20,13 +20,19 @@ export function initDragMode(viewer) {
       aria-label="Model verplaatsen" aria-pressed="false">Verplaatsen</button>
   `;
   container.appendChild(group);
+  const overview = document.getElementById('resetBtn');
+  if (overview) {
+    overview.textContent = 'In beeld';
+    overview.setAttribute('aria-label', 'Zichtbare onderdelen passend in beeld');
+    overview.title = 'Toon de zichtbare anatomie in het huidige perspectief, zonder verborgen lagen terug te zetten';
+  }
   const rotate = group.querySelector('#eaiRotateMode');
   const pan = group.querySelector('#eaiDragMode');
 
   const helpList = document.querySelector('#helpModal .help-section ul');
   if (helpList) {
     const help = document.createElement('li');
-    help.textContent = 'Draaien of verplaatsen: kies de stand boven het model. Met twee vingers kun je altijd verschuiven en zoomen. Op desktop kan verplaatsen ook met de rechtermuisknop of Shift en slepen.';
+    help.textContent = 'Draaien of verplaatsen: kies de stand boven het model. Met twee vingers kun je altijd verschuiven en zoomen. Op desktop kun je ook rechts slepen of Shift + pijltjestoetsen gebruiken om te verplaatsen.';
     helpList.appendChild(help);
   }
 
