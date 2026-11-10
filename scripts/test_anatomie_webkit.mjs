@@ -99,7 +99,7 @@ try {
   await page.locator('#infoSidebar').waitFor({state:'hidden',timeout:5000});
   assert(!(await page.locator('#app').evaluate(el=>el.classList.contains('info-open'))),
     'Het informatiepaneel blijft in de geopende toestand staan');
-  assert(await page.locator('.callout.is-visible').isVisible(),
+  assert(await page.locator('.callout-layer.is-visible .callout').isVisible(),
     'Sluiten van de uitleg mag de selectie en naamlabel niet wissen');
   assert.equal(await page.locator('.callout-more').getAttribute('aria-expanded'),'false',
     'Informatieknop moet terug naar ingeklapte stand');
@@ -131,7 +131,7 @@ try {
   await page.waitForFunction(() => document.querySelector('#structureInfo .structure-title h3')?.textContent?.includes('Scheenbeen'),null,{timeout:10000});
   assert(await page.locator('#app').evaluate(el=>el.classList.contains('info-open')),
     'De uitleg moet open blijven bij een volgende selectie');
-  assert(await page.locator('.callout.is-visible').isVisible(),
+  assert(await page.locator('.callout-layer.is-visible .callout').isVisible(),
     'Ook de nieuwe selectie houdt zijn naamlabel');
   assert.equal(await page.locator('#structureInfo .eai-source-description').count(),1,
     'De bestaande Engelstalige beschrijving moet bij onbekende uitleg toegankelijk blijven');
