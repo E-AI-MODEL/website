@@ -40,3 +40,12 @@ test('ook meervoudige materialen geven een aanklikbare structuur door', () => {
   onlyFascia.material.push({ transparent:false, opacity:1 });
   assert.equal(isTouchableAnatomySurface(onlyFascia),true);
 });
+
+test('een raycast met fascia voor de grote borstspier selecteert de spier', () => {
+  const hits = [
+    { object: surface(0.035), name: 'Pectoral fascia' },
+    { object: surface(1), name: 'Pectoralis major muscle' }
+  ];
+  const firstClickable = hits.find(hit => isTouchableAnatomySurface(hit.object));
+  assert.equal(firstClickable?.name, 'Pectoralis major muscle');
+});
