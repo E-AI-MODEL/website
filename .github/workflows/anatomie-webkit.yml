@@ -7,6 +7,7 @@ on:
       - 'scripts/anatomie_refine.py'
       - 'scripts/anatomie_shell.py'
       - 'scripts/test_anatomie_webkit.mjs'
+      - 'tests/test_anatomie_picking.mjs'
       - 'content/anatomie/**'
       - '.github/workflows/anatomie-webkit.yml'
   push:
@@ -16,6 +17,7 @@ on:
       - 'scripts/anatomie_refine.py'
       - 'scripts/anatomie_shell.py'
       - 'scripts/test_anatomie_webkit.mjs'
+      - 'tests/test_anatomie_picking.mjs'
       - 'content/anatomie/**'
       - '.github/workflows/anatomie-webkit.yml'
 permissions:
@@ -32,6 +34,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Controleer selectie van transparante fascia
+        run: node --test tests/test_anatomie_picking.mjs
       - run: python scripts/build_anatomie.py --out site-build/tools/anatomie
       - run: npm install --no-save playwright@1.56.1
       - name: Install WebKit and browser dependencies

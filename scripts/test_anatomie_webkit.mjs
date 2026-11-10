@@ -219,6 +219,28 @@ try {
     return total;
   });
   console.log('SPIERKLEUREN', JSON.stringify(muscleReport));
+
+  const pectoralisReport = await page.evaluate(() => {
+    const report = { pectoralis:0, nearInvisibleFascia:0 };
+    window.ZAnatomy.viewer.scene.traverse(mesh => {
+      if (!mesh.isMesh || !mesh.visible) return;
+      const mats = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+      if (mats.some(mat => mat?.transparent && mat.opacity < 0.1)) {
+        report.nearInvisibleFascia++;
+      }
+      let owner = mesh;
+      while (owner && !owner.userData?.partId) owner = owner.parent;
+      if (/pectoralis major/i.test(owner?.userData?.partId || '')) {
+        report.pectoralis++;
+      }
+    });
+    return report;
+  });
+  assert(pectoralisReport.pectoralis > 0,
+    'De echte pectoralis major ontbreekt in het geladen spierstelsel');
+  assert(pectoralisReport.nearInvisibleFascia > 10,
+    'De transparante fascialaag is niet aanwezig in de echte 3D-scène');
+
   assert(muscleReport.red > 130, 'Te weinig echte spieren zichtbaar bij alleen Spieren');
   assert.equal(muscleReport.notRed, 0, 'Een spier heeft nog geen rode materiaalweergave');
   assert.equal(muscleReport.transparent, 0, 'De spierweefsels moeten duidelijk en dekkend zijn');
