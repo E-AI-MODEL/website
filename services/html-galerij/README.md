@@ -27,9 +27,9 @@ Deze dienst bewaart interactieve HTML van bezoekers. De website zelf blijft stat
    npx wrangler secret put TURNSTILE_SECRET
    npx wrangler secret put RATE_LIMIT_SALT
    ```
-6. Activeer via Workers Routes of Custom Domains het webadres `html.eaimodel.nl` voor deze Worker.
+6. Activeer via Workers Routes of Custom Domains het webadres `eai-html-galerij.vis-c9d.workers.dev` voor deze Worker.
 7. Publiceer de Worker met `npx wrangler deploy`.
-8. Controleer `https://html.eaimodel.nl/api/config`, `/api/uploads`, een testupload en de geïsoleerde weergave.
+8. Controleer `https://eai-html-galerij.vis-c9d.workers.dev/api/config`, `/api/uploads`, een testupload en de geïsoleerde weergave.
 9. Publiceer daarna de websitebranch met de HTML-galerij.
 
 De pagina is vóór deze stappen bewust niet bruikbaar voor uploaden. De server weigert uploads zonder Turnstile-credentials.
