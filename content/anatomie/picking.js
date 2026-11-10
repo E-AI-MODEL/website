@@ -1,26 +1,24 @@
-// Een bijna onzichtbare laag mag geen anatomie eronder afvangen.
-// Dit geldt voor de transparante fascia (3.5%) en tijdelijk vervaagde
-// omringende structuren (12%). Ze blijven vindbaar via zoeken en stelsels.
-const MIN_PICK_OPACITY = 0.15;
+// Fascia kan zichtbaar blijven zonder het weefsel erachter af te vangen.
+// De normale fascia is 3,5% dekkend; een tijdelijk vervaagd onderdeel is
+// 12% dekkend en moet gewoon opnieuw geselecteerd kunnen worden.
+const MIN_PICK_OPACITY = 0.10;
 
 function receivesPointer(material) {
-  return Boolean(material) &&
-    material.visible !== false &&
-    !(material.transparent && material.opacity < MIN_PICK_OPACITY);
+  if (!material || material.visible === false) return false;
+  // Bij opacity=0 of een bijna onzichtbaar materiaal wordt de onderliggende
+  // anatomie geselecteerd. Matten van 12% (ghost) blijven selecteerbaar.
+  if (material.transparent && material.opacity < MIN_PICK_OPACITY) return false;
+  return true;
 }
 
 export function isTouchableAnatomySurface(mesh) {
-  if (!mesh || !mesh.isMesh) return false;
+  if (!mesh?.isMesh) return false;
 
-  // Een verborgen stelsel kan meshes hebben met visible=true onder
-  // een verborgen modelroot. Raycasting ziet ze anders alsnog.
+  // Ook een verborgen voorouder maakt het onderdeel onzichtbaar.
   for (let node = mesh; node; node = node.parent) {
     if (node.visible === false) return false;
   }
 
-  const materials = mesh.material;
-  if (Array.isArray(materials)) {
-    return materials.some(receivesPointer);
-  }
-  return receivesPointer(materials);
+  const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+  return materials.some(receivesPointer);
 }
