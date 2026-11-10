@@ -118,8 +118,53 @@ try {
     const femurRow=page.locator('#searchResults .search-result-item[data-part^="Femur"]').first();
     await femurRow.waitFor({state:'visible'});
     await femurRow.click();
-    await page.waitForFunction(() => document.querySelector('#app')?.classList.contains('info-open'));
-    await page.locator('#structureInfo .eai-fact').first().waitFor({state:'visible',timeout:15000});
+    await page.locator('#structureInfo .eai-fact').first().waitFor({state:'attached',timeout:15000});
+    assert.equal(await page.locator('#app.info-open').count(),0,
+      'De toelichting mag niet automatisch openen bij selectie');
+    assert(await page.locator('.callout-layer.is-visible .callout').isVisible(),
+      'Het naamlabel met de verbindingslijn blijft zichtbaar');
+    await page.screenshot({path:'test-results/anatomie-naamlabel-'+width+'.png'});
+    await page.locator('.callout-more').click();
+    await page.locator('#infoSidebar').waitFor({state:'visible',timeout:7000});
+    // Een zichtbare drawer kan nog bezig zijn met zijn CSS-overgang.
+    // Controleer de echte positie ná de animatie, niet op een vaste frame.
+    try {
+      await page.waitForFunction(() => {
+        const rect=document.getElementById('infoSidebar')?.getBoundingClientRect();
+        return rect && rect.left>=-2 && rect.right<=innerWidth+2
+          && rect.top>=-2 && rect.bottom<=innerHeight+2;
+      },null,{timeout:7000});
+    } catch (error) {
+      const position = await page.evaluate(() => ({
+        viewport:{width:innerWidth,height:innerHeight},
+        sidebar:document.getElementById('infoSidebar')?.getBoundingClientRect().toJSON(),
+        style:getComputedStyle(document.getElementById('infoSidebar')).transform
+      }));
+      console.log('INFO_PANEEL_BUITEN_BEELD',JSON.stringify(position));
+      throw error;
+    }
+    const infoSize=await page.locator('#infoSidebar').boundingBox();
+    console.log('INFO_PANEEL_POSITIE',JSON.stringify({viewport:width+'x'+height,rect:infoSize}));
+    assert(infoSize && (width>720 ? infoSize.width<=345 : infoSize.height<=height*.40),
+      'De uitleg moet compact blijven op desktop en telefoon');
+    assert(infoSize.x>=-2 && infoSize.x + infoSize.width <= width+2,
+      'Het informatiepaneel moet volledig binnen de schermbreedte staan');
+    assert(infoSize.y>=-2 && infoSize.y + infoSize.height <= height+2,
+      'Het informatiepaneel moet volledig binnen de schermhoogte staan');
+    await page.screenshot({path:'test-results/anatomie-uitleg-'+width+'.png'});
+    if(width===1440){
+      const rect=await page.locator('#threeCanvas').boundingBox();
+      const cameraBefore=await page.evaluate(()=>window.ZAnatomy.viewer.camera.position.toArray());
+      await page.mouse.move(rect.x+rect.width*.42,rect.y+rect.height*.44);
+      await page.mouse.down();
+      await page.mouse.move(rect.x+rect.width*.54,rect.y+rect.height*.42,{steps:12});
+      await page.mouse.up();
+      await page.waitForTimeout(250);
+      const cameraAfter=await page.evaluate(()=>window.ZAnatomy.viewer.camera.position.toArray());
+      assert(cameraAfter.some((n,i)=>Math.abs(n-cameraBefore[i])>.005),
+        'Het 3D-model moet blijven draaien terwijl uitleg openstaat');
+      assert(await page.locator('#app.info-open').count(),'Draaien mag de uitleg niet sluiten');
+    }
     const explanation=await page.locator('#structureInfo').textContent();
     assert(/functie/i.test(explanation),'Specifieke anatomische functie ontbreekt: '+explanation.slice(0,180));
     assert(explanation.includes('Dijbeen'),'Nederlandse naam ontbreekt');
@@ -128,6 +173,9 @@ try {
     assert.equal(await page.locator('#footerBar').isVisible(),false,
       'Dubbele onderste actiebalk moet verdwenen zijn');
     await page.locator('#infoToggle').click();
+    assert.equal(await page.locator('#app.info-open').count(),0);
+    assert(await page.locator('.callout-layer.is-visible .callout').isVisible(),
+      'Inklappen van de uitleg mag de selectie niet wissen');
     await page.locator('body').press('Escape');
 
     if (width === 1440) {

@@ -956,3 +956,93 @@ html,body,#app{height:100%;height:100dvh;overflow:hidden}
   .depth-control .eai-step-row button{min-width:34px;min-height:34px}
   .depth-control .eai-depth-status{font-size:9px!important;line-height:1.3!important}
 }
+
+
+/* Een selectie blijft zichtbaar. Informatie verschijnt alleen op verzoek. */
+#app:not(.has-selection) #infoOpen{display:none!important}
+#infoSidebar{
+  width:min(332px,calc(100vw - 28px))!important;
+  max-width:332px!important;
+  top:70px!important;
+  right:12px!important;
+  bottom:auto!important;
+  left:auto!important;
+  height:min(72dvh,590px)!important;
+  max-height:calc(100dvh - 82px)!important;
+  border:1px solid #4e5962!important;
+  border-radius:11px!important;
+  box-shadow:0 12px 35px #0007!important;
+}
+#infoSidebar .sidebar-header{
+  min-height:45px;
+  padding:10px 14px!important;
+}
+#infoSidebar .sidebar-content{
+  padding:12px 15px 24px!important;
+  height:calc(100% - 45px);
+  max-height:none!important;
+  overflow-y:auto!important;
+  overscroll-behavior:contain;
+}
+#infoSidebar .structure-title h3{font-size:17px!important;margin:0 0 3px!important}
+#infoSidebar .structure-info .structure-header{margin:0 0 4px!important}
+#infoSidebar .structure-latin{font-size:11px!important;line-height:1.3!important}
+#infoSidebar .structure-tags{margin:5px 0 1px!important;gap:4px!important}
+#infoSidebar .eai-facts{margin:5px 0!important}
+#infoSidebar .eai-fact{padding:6px 0!important;margin:0!important}
+#infoSidebar .eai-fact h4{margin-bottom:3px!important}
+#infoSidebar .eai-fact p{font-size:12px!important;line-height:1.45!important}
+.callout{
+  max-width:min(290px,calc(100vw - 30px))!important;
+  gap:7px!important;
+  align-items:center!important;
+  padding:8px 10px!important;
+}
+.callout-name{line-height:1.35!important;overflow-wrap:anywhere}
+.callout-more{
+  display:block;
+  min-height:26px;
+  max-width:160px;
+  padding:3px 0;
+  border:0;
+  background:none;
+  color:#d7c6ae;
+  font:600 11px/1.35 Inter,system-ui,sans-serif;
+  text-decoration:underline;
+  text-underline-offset:3px;
+  text-align:left;
+  cursor:pointer;
+}
+.callout-more:focus-visible{outline:2px solid #d7c6ae;outline-offset:2px}
+.callout-more[aria-expanded=true]{color:#f3e5d1}
+.callout-more-row{display:block;min-width:0}
+.callout-copy{display:flex;flex-direction:column;min-width:0;gap:2px}
+@media(max-width:720px){
+  #infoSidebar{
+    top:auto!important;
+    right:0!important;
+    bottom:0!important;
+    left:0!important;
+    width:100vw!important;
+    max-width:100vw!important;
+    height:min(34dvh,292px)!important;
+    max-height:34dvh!important;
+    border-radius:13px 13px 0 0!important;
+    border-bottom:0!important;
+    transform:translateY(110%)!important;
+    box-shadow:0 -8px 24px #0008!important;
+  }
+  #app.info-open #infoSidebar{
+    transform:translateY(0)!important;
+    visibility:visible!important;
+    pointer-events:auto!important;
+  }
+  #infoSidebar .sidebar-header{min-height:40px;padding:8px 14px!important}
+  #infoSidebar .sidebar-content{height:calc(100% - 40px);padding:10px 15px 22px!important}
+  .callout{max-width:min(63vw,235px)!important}
+  .callout-name{font-size:11px!important;max-width:180px!important}
+  .callout-more{min-height:26px;font-size:11px}
+}
+@media(max-height:570px) and (max-width:720px){
+  #infoSidebar{height:min(39dvh,220px)!important;max-height:39dvh!important}
+}

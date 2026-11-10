@@ -66,9 +66,28 @@ try {
   assert.match(await choice.innerText(),/Dijbeen/,
     'De bestaande Nederlandse modelnaam moet ook in het zoekresultaat staan');
   await choice.click();
-  await page.locator('#structureInfo .eai-fact').first().waitFor({state:'visible',timeout:15000});
-  assert(await page.locator('#app').evaluate(el=>el.classList.contains('info-open')),
-    'Selectie opent het informatiepaneel niet');
+  await page.locator('#structureInfo .eai-fact').first().waitFor({state:'attached',timeout:15000});
+  assert(!(await page.locator('#app').evaluate(el=>el.classList.contains('info-open'))),
+    'Een selectie moet eerst alleen het naamlabel tonen');
+  mkdirSync('test-results',{recursive:true});
+  await page.screenshot({path:'test-results/anatomie-naamlabel-mobiel.png'});
+  await page.locator('.callout-more').click();
+  await page.locator('#infoSidebar').waitFor({state:'visible',timeout:5000});
+  await page.waitForTimeout(330);
+  const sheetBounds = await page.locator('#infoSidebar').boundingBox();
+  assert(sheetBounds && sheetBounds.y + sheetBounds.height <= 846,
+    'Het hele onderpaneel moet binnen het mobiele scherm staan');
+  await page.screenshot({path:'test-results/anatomie-uitleg-mobiel.png'});
+  assert.equal(await page.locator('.callout-more').getAttribute('aria-expanded'),'true',
+    'De knop bij het onderdeel moet tonen dat de uitleg open is');
+  const mobilePanel = await page.evaluate(() => {
+    const panel = document.getElementById('infoSidebar').getBoundingClientRect();
+    const canvas = document.getElementById('threeCanvas');
+    return {height:panel.height,viewport:window.innerHeight,canvasActive:getComputedStyle(canvas).pointerEvents !== 'none'};
+  });
+  assert(mobilePanel.height < mobilePanel.viewport * .40,
+    'Informatiepaneel bedekt te veel van het lichaam op mobiel');
+  assert(mobilePanel.canvasActive,'Het 3D-model moet met geopende uitleg bestuurbaar blijven');
   assert.match(await page.locator('#structureInfo').innerText(),/Dijbeen|femur/i,
     'De gekozen structuur heeft geen anatomische toelichting');
   assert.equal(await page.locator('[data-callout="isolate"]').count(),0,
@@ -84,6 +103,10 @@ try {
   await page.locator('#infoSidebar').waitFor({state:'hidden',timeout:5000});
   assert(!(await page.locator('#app').evaluate(el=>el.classList.contains('info-open'))),
     'Het informatiepaneel blijft in de geopende toestand staan');
+  assert(await page.locator('.callout-layer.is-visible .callout').isVisible(),
+    'Sluiten van de uitleg mag de selectie en naamlabel niet wissen');
+  assert.equal(await page.locator('.callout-more').getAttribute('aria-expanded'),'false',
+    'Informatieknop moet terug naar ingeklapte stand');
   // Ook zonder handmatig geschreven uitleg moet een bestaande Nederlandse
   // zoekterm de juiste structuur en originele anatomische bron openen.
   await page.locator('#searchOpen').click();
@@ -98,9 +121,22 @@ try {
   );
   assert.equal(await page.locator('#structureInfo .eai-facts-unverified').count(),1,
     'Nog niet beschreven anatomische onderdelen mogen geen verzonnen functie tonen');
-  // Het paneel heeft een CSS-transitie: wacht tot het na de selectie
-  // daadwerkelijk zichtbaar is, niet alleen tot de titel in de DOM staat.
-  await page.locator('#infoSidebar').waitFor({ state:'visible', timeout:6000 });
+  // De nieuwe selectie opent geen groot paneel. De gebruiker opent de uitleg zelf.
+  assert(await page.locator('#infoSidebar').isHidden(), 'Na een nieuwe selectie blijft de uitleg gesloten');
+  await page.locator('#infoOpen').click();
+  await page.locator('#infoSidebar').waitFor({state:'visible',timeout:6000});
+  assert.equal(await page.locator('.callout-more').getAttribute('aria-expanded'),'true');
+  // Ook met open uitleg een ander onderdeel kiezen: de tekst volgt de selectie.
+  await page.locator('#searchOpen').click();
+  await page.locator('#searchInput').fill('scheenbeen');
+  const tibia = page.locator('#searchResults .search-result-item[data-part^="Tibia"]').first();
+  await tibia.waitFor({state:'visible',timeout:12000});
+  await tibia.click();
+  await page.waitForFunction(() => document.querySelector('#structureInfo .structure-title h3')?.textContent?.includes('Scheenbeen'),null,{timeout:10000});
+  assert(await page.locator('#app').evaluate(el=>el.classList.contains('info-open')),
+    'De uitleg moet open blijven bij een volgende selectie');
+  assert(await page.locator('.callout-layer.is-visible .callout').isVisible(),
+    'Ook de nieuwe selectie houdt zijn naamlabel');
   assert.equal(await page.locator('#structureInfo .eai-source-description').count(),1,
     'De bestaande Engelstalige beschrijving moet bij onbekende uitleg toegankelijk blijven');
   await page.locator('#infoToggle').click();
@@ -185,6 +221,7 @@ try {
   const gluteus = page.locator('#searchResults .search-result-item[data-part^="Gluteus maximus muscle"]').first();
   await gluteus.waitFor({state:'visible',timeout:10000});
   await gluteus.click();
+  await page.locator('.callout-more').click();
   await page.locator('#structureInfo .eai-detail-actions').waitFor({state:'visible',timeout:10000});
   await page.locator('#infoToggle').click();
   await page.locator('#infoSidebar').waitFor({state:'hidden',timeout:5000});

@@ -111,22 +111,31 @@ export function refineAnatomyInfo(partData, deselectPart) {
     () => { hidePart(partData.id); deselectPart(); }
   ));
   panel.appendChild(actions);
+
+  // Een nieuw geselecteerd onderdeel vervangt de uitleg in hetzelfde paneel.
+  // De bezoeker begint bij de nieuwe titel, zonder de viewer te verplaatsen.
+  const scrollArea = document.querySelector('#infoSidebar .sidebar-content');
+  if (scrollArea) scrollArea.scrollTop = 0;
 }
 
 export function openAnatomyInfo() {
   const app = document.getElementById('app');
-  // Een selectie sluit de andere overlays. Er is nooit meer dan één
-  // uitschuifpaneel tegelijk actief.
+  // Een selectie geeft eerst alleen het verankerde naamlabel. Een al geopend
+  // paneel blijft open en toont de tekst van de nieuwe structuur.
   if (app?.classList.contains('systems-open')) {
     document.getElementById('systemsToggle')?.click();
   }
   const header = document.querySelector('.header');
   header?.classList.remove('search-open');
-  document.getElementById('searchOpen')?.setAttribute('aria-expanded','false');
+  document.getElementById('searchOpen')?.setAttribute('aria-expanded', 'false');
   app?.classList.add('has-selection');
-  if (app && !app.classList.contains('info-open')) {
-    document.getElementById('infoOpen')?.click();
-  }
+}
+
+export function toggleAnatomyInfo() {
+  const app = document.getElementById('app');
+  if (!app?.classList.contains('has-selection')) return;
+  // De bestaande drawerbediening blijft eigenaar van focus, inert en Escape.
+  document.getElementById('infoOpen')?.click();
 }
 
 export function closeAnatomyInfo() {

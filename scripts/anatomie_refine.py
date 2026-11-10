@@ -203,7 +203,7 @@ function setupMesh(mesh, systemId, viewer) {""",
     js = one(js,
         "import { highlightMesh, clearHighlight, ghostAllExcept, clearGhost, isolatePart, hidePart } from './visibility.js';",
         "import { highlightMesh, clearHighlight, ghostAllExcept, clearGhost } from './visibility.js';\n"
-        "import { refineAnatomyInfo, openAnatomyInfo, closeAnatomyInfo } from '../ui/eaiDetail.js';",
+        "import { refineAnatomyInfo, openAnatomyInfo, closeAnatomyInfo, toggleAnatomyInfo } from '../ui/eaiDetail.js';",
         "selection imports")
     js = one(js,
         """  showCallout(partId, partData.displayName, {
@@ -212,6 +212,7 @@ function setupMesh(mesh, systemId, viewer) {""",
     close: () => deselectPart()
   });""",
         """  showCallout(partId, partData.displayName, {
+    info: () => toggleAnatomyInfo(),
     close: () => deselectPart()
   });""", "duplicate callout actions")
     js = one(js,
@@ -220,7 +221,7 @@ function setupMesh(mesh, systemId, viewer) {""",
 
   // Show footer actions
   showFooterActions();""",
-        """  // Selecting a structure opens its anatomical details.
+        """  // Selecting a structure updates the details without opening the panel.
   showInfoPanel(partData);
   refineAnatomyInfo(partData, deselectPart);
   openAnatomyInfo();""", "information-first selection")
@@ -236,18 +237,51 @@ function setupMesh(mesh, systemId, viewer) {""",
     js = one(js, "import { state, translate } from '../state/store.js';",
         "import { state } from '../state/store.js';", "callout import")
     js = one(js,
-        """      <div class="callout-actions">
+        """      <span class="callout-name"></span>
+      <div class="callout-actions">
         <button type="button" class="callout-btn" data-callout="isolate"></button>
         <button type="button" class="callout-btn" data-callout="hide"></button>
         <button type="button" class="callout-btn callout-close" data-callout="close" aria-label="Chiudi">&times;</button>
       </div>""",
-        """      <button type="button" class="callout-btn callout-close" data-callout="close" aria-label="Selectie sluiten">&times;</button>""",
+        """      <span class="callout-copy">
+        <span class="callout-name"></span>
+        <button type="button" class="callout-more" data-callout="info"
+                aria-controls="infoSidebar" aria-expanded="false">Meer informatie</button>
+      </span>
+      <button type="button" class="callout-btn callout-close" data-callout="close" aria-label="Selectie sluiten">&times;</button>""",
         "callout markup")
     js = one(js,
         """  root.querySelector('[data-callout="isolate"]').textContent = translate('isolate');
   root.querySelector('[data-callout="hide"]').textContent = translate('hide');
 """,
         "", "callout duplicate labels")
+    # Het label blijft bij de structuur, maar schuift niet onder een geopend
+    # informatiepaneel. De lijn blijft aan dezelfde 3D-structuur verbonden.
+    js = one(js,
+        """  labelX = Math.min(Math.max(labelX, EDGE_PADDING), width - box.width - EDGE_PADDING);
+  labelY = Math.min(Math.max(labelY, EDGE_PADDING), height - box.height - EDGE_PADDING);""",
+        """  let maxX = width - box.width - EDGE_PADDING;
+  let maxY = height - box.height - EDGE_PADDING;
+  const panel = document.getElementById('infoSidebar');
+  const app = document.getElementById('app');
+  if (panel && app?.classList.contains('info-open')) {
+    const panelBox = panel.getBoundingClientRect();
+    const canvasBox = canvas.getBoundingClientRect();
+    if (window.matchMedia('(max-width:720px)').matches) {
+      maxY = Math.min(maxY, panelBox.top - canvasBox.top - box.height - EDGE_PADDING);
+    } else {
+      maxX = Math.min(maxX, panelBox.left - canvasBox.left - box.width - EDGE_PADDING);
+    }
+  }
+  labelX = Math.min(Math.max(labelX, EDGE_PADDING), Math.max(EDGE_PADDING, maxX));
+  labelY = Math.min(Math.max(labelY, EDGE_PADDING), Math.max(EDGE_PADDING, maxY));""",
+        "label stays away from panel")
+    js = one(js,
+        "  computeAnchor(partId);\n  root.classList.remove('is-hidden');",
+        "  root.querySelector('.callout-more')?.setAttribute('aria-expanded', String(Boolean(document.getElementById('app')?.classList.contains('info-open'))));\n"
+        "  computeAnchor(partId);\n  root.classList.remove('is-hidden');",
+        "callout expanded state")
+
     callout.write_text(js, encoding="utf-8")
 
     sidebar = source / "src" / "ui" / "sidebar.js"
@@ -284,7 +318,14 @@ function setupMesh(mesh, systemId, viewer) {""",
     js = one(js, "  initSystemsSidebar();\n  initToolbar(viewer);",
         "  initSystemsSidebar();\n  mountVisibilityReset();\n  initToolbar(viewer);",
         "single restore action")
+    # De informatieknop op het label en de knop bovenaan openen dezelfde
+    # compacte uitleg; de toegankelijke status blijft op beide gelijk.
+    js = one(js,
+        "    trigger?.setAttribute('aria-expanded', String(open));",
+        "    trigger?.setAttribute('aria-expanded', String(open));\n"
+        "    if (name === 'info') document.querySelector('.callout-more')?.setAttribute('aria-expanded', String(open));",
+        "sync anchored more-info button")
     js = one(js, "  apply('info', false);",
-        "  apply('info', Boolean(state.selectedPart));",
-        "restore selected part")
+        "  apply('info', false);",
+        "info starts closed")
     sidebar.write_text(js, encoding="utf-8")
