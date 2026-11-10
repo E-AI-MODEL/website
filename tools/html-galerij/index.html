@@ -241,6 +241,87 @@ retryCheck.addEventListener('click',()=>{
  retryCheck.hidden=true;checkHelp.textContent='Controle opnieuw laden…';checkPassed=false;publish.disabled=true;
  try{window.turnstile.reset(widgetId);}catch{retryCheck.hidden=false;checkHelp.textContent='Ververs de pagina en probeer het opnieuw.';}
 });
+
+/* Verborgen ingang: vijf keer op 'HTML-galerij' klikken of Alt+Shift+G.
+   Autorisatie gebeurt uitsluitend op de server, nooit via deze handeling. */
+const adminPanel=document.querySelector('#admin-panel');
+const adminKeyInput=document.querySelector('#admin-key');
+const adminLogin=document.querySelector('#admin-login');
+const adminItems=document.querySelector('#admin-items');
+const adminStatus=document.querySelector('#admin-status');
+let adminKey='';
+let adminUnlocked=false;
+let taps=0;
+let lastTap=0;
+function showAdmin(){
+  adminPanel.showModal();
+  adminKeyInput.focus();
+}
+document.querySelector('#secret-entrance').addEventListener('click',()=>{
+ const now=Date.now(); taps=now-lastTap<1800?taps+1:1;lastTap=now;
+ if(taps>=5){taps=0;showAdmin();}
+});
+document.addEventListener('keydown',event=>{
+ if(event.altKey&&event.shiftKey&&event.key.toLowerCase()==='g'){
+  event.preventDefault();showAdmin();
+ }
+});
+function clearAdmin(){
+ adminKey='';adminUnlocked=false;adminKeyInput.value='';
+ adminItems.replaceChildren();adminLogin.disabled=false;
+ adminKeyInput.disabled=false;adminStatus.textContent='';
+}
+document.querySelector('#close-admin').addEventListener('click',()=>adminPanel.close());
+adminPanel.addEventListener('close',clearAdmin);
+function drawAdminItems(){
+ adminItems.replaceChildren();
+ if(!adminUnlocked)return;
+ if(!uploads.length){
+  const empty=document.createElement('p');empty.textContent='Er staan geen openbare bestanden in de galerij.';adminItems.append(empty);return;
+ }
+ for(const item of uploads){
+  if(!safeId(item.id))continue;
+  const row=document.createElement('div');row.className='admin-item';
+  const details=document.createElement('div');
+  const name=document.createElement('strong');name.textContent=item.title;
+  const author=document.createElement('small');author.textContent='Door '+item.author+' · '+item.filename;
+  details.append(name,author);
+  const remove=document.createElement('button');remove.type='button';remove.textContent='Verbergen';
+  remove.addEventListener('click',async()=>{
+   if(!window.confirm('Wil je "'+item.title+'" uit de openbare galerij verwijderen?'))return;
+   remove.disabled=true;
+   try{
+    const res=await fetch(api('/api/admin/uploads/'+item.id),{
+     method:'DELETE',headers:{'Authorization':'Bearer '+adminKey}
+    });
+    const result=await res.json().catch(()=>({}));
+    if(!res.ok)throw new Error(result.error||'Verwijderen mislukt.');
+    adminStatus.textContent='De pagina is verborgen.';
+    await load();drawAdminItems();
+   }catch(err){adminStatus.textContent=err.message;remove.disabled=false;}
+  });
+  row.append(details,remove);adminItems.append(row);
+ }
+}
+adminLogin.addEventListener('click',async()=>{
+ const candidate=adminKeyInput.value.trim();
+ if(!candidate){adminStatus.textContent='Vul de beheersleutel in.';return;}
+ adminLogin.disabled=true;adminStatus.textContent='Toegang controleren…';
+ try{
+  const res=await fetch(api('/api/admin/session'),{
+   headers:{'Authorization':'Bearer '+candidate},cache:'no-store'
+  });
+  const result=await res.json().catch(()=>({}));
+  if(!res.ok)throw new Error(result.error||'Toegang geweigerd.');
+  adminKey=candidate;adminUnlocked=true;
+  adminKeyInput.value='';adminKeyInput.disabled=true;
+  adminStatus.textContent='Beheer geopend.';drawAdminItems();
+ }catch(err){adminStatus.textContent=err.message;adminLogin.disabled=false;}
+});
+adminKeyInput.addEventListener('keydown',event=>{
+ if(event.key==='Enter'){event.preventDefault();adminLogin.click();}
+});
+
 const challenge=document.createElement('script');challenge.src='https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';challenge.async=true;challenge.onload=init;challenge.onerror=()=>{setStatus('Uploaden is nog niet beschikbaar.',true);load();};document.head.append(challenge);
 })();
 </script>
