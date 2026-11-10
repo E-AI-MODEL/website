@@ -4,6 +4,7 @@ on:
     branches: [main]
     paths:
       - 'scripts/build_anatomie.py'
+      - 'scripts/anatomie_refine.py'
       - 'scripts/anatomie_shell.py'
       - 'scripts/test_anatomie_webkit.mjs'
       - 'content/anatomie/**'
@@ -12,6 +13,7 @@ on:
     branches: [main]
     paths:
       - 'scripts/build_anatomie.py'
+      - 'scripts/anatomie_refine.py'
       - 'scripts/anatomie_shell.py'
       - 'scripts/test_anatomie_webkit.mjs'
       - 'content/anatomie/**'
