@@ -237,16 +237,16 @@ function setupMesh(mesh, systemId, viewer) {""",
     js = one(js, "import { state, translate } from '../state/store.js';",
         "import { state } from '../state/store.js';", "callout import")
     js = one(js,
-        """      <div class="callout-actions">
+        """      <span class="callout-name"></span>
+      <div class="callout-actions">
         <button type="button" class="callout-btn" data-callout="isolate"></button>
         <button type="button" class="callout-btn" data-callout="hide"></button>
         <button type="button" class="callout-btn callout-close" data-callout="close" aria-label="Chiudi">&times;</button>
       </div>""",
         """      <span class="callout-copy">
-        <span class="callout-more-row">
-          <button type="button" class="callout-more" data-callout="info"
-                  aria-controls="infoSidebar" aria-expanded="false">Meer informatie</button>
-        </span>
+        <span class="callout-name"></span>
+        <button type="button" class="callout-more" data-callout="info"
+                aria-controls="infoSidebar" aria-expanded="false">Meer informatie</button>
       </span>
       <button type="button" class="callout-btn callout-close" data-callout="close" aria-label="Selectie sluiten">&times;</button>""",
         "callout markup")
@@ -255,6 +255,33 @@ function setupMesh(mesh, systemId, viewer) {""",
   root.querySelector('[data-callout="hide"]').textContent = translate('hide');
 """,
         "", "callout duplicate labels")
+    # Het label blijft bij de structuur, maar schuift niet onder een geopend
+    # informatiepaneel. De lijn blijft aan dezelfde 3D-structuur verbonden.
+    js = one(js,
+        """  labelX = Math.min(Math.max(labelX, EDGE_PADDING), width - box.width - EDGE_PADDING);
+  labelY = Math.min(Math.max(labelY, EDGE_PADDING), height - box.height - EDGE_PADDING);""",
+        """  let maxX = width - box.width - EDGE_PADDING;
+  let maxY = height - box.height - EDGE_PADDING;
+  const panel = document.getElementById('infoSidebar');
+  const app = document.getElementById('app');
+  if (panel && app?.classList.contains('info-open')) {
+    const panelBox = panel.getBoundingClientRect();
+    const canvasBox = canvas.getBoundingClientRect();
+    if (window.matchMedia('(max-width:720px)').matches) {
+      maxY = Math.min(maxY, panelBox.top - canvasBox.top - box.height - EDGE_PADDING);
+    } else {
+      maxX = Math.min(maxX, panelBox.left - canvasBox.left - box.width - EDGE_PADDING);
+    }
+  }
+  labelX = Math.min(Math.max(labelX, EDGE_PADDING), Math.max(EDGE_PADDING, maxX));
+  labelY = Math.min(Math.max(labelY, EDGE_PADDING), Math.max(EDGE_PADDING, maxY));""",
+        "label stays away from panel")
+    js = one(js,
+        "  computeAnchor(partId);\\n  root.classList.remove('is-hidden');",
+        "  root.querySelector('.callout-more')?.setAttribute('aria-expanded', String(Boolean(document.getElementById('app')?.classList.contains('info-open'))));\\n"
+        "  computeAnchor(partId);\\n  root.classList.remove('is-hidden');",
+        "callout expanded state")
+
     callout.write_text(js, encoding="utf-8")
 
     sidebar = source / "src" / "ui" / "sidebar.js"
