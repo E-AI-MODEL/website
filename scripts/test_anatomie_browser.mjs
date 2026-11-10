@@ -366,11 +366,18 @@ try {
       await hideButton.waitFor({state:'visible'});
       await hideButton.click();
       const isHidden=async()=>page.evaluate(id=>{
-        const meshes=[];
-        window.ZAnatomy.viewer.scene.traverse(node=>{
-          if(node.userData?.partId===id) meshes.push(node);
+        let count=0, hidden=0;
+        window.ZAnatomy.viewer.scene.traverse(mesh=>{
+          if(!mesh.isMesh) return;
+          let owner=mesh;
+          while(owner && !owner.userData?.partId) owner=owner.parent;
+          if(owner?.userData?.partId!==id) return;
+          count++;
+          if(mesh.visible===false) hidden++;
         });
-        return meshes.length>0 && meshes.every(node=>node.visible===false);
+        // De viewer verbergt de eigen meshes, niet de bovenliggende
+        // groep. Anders verdwijnen ook andere anatomische onderdelen.
+        return count>0 && hidden===count;
       },hideId);
       assert(await isHidden(),'Verbergen van een bot moet het uit de weergave halen');
       await page.locator('#resetBtn').click();
