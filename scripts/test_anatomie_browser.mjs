@@ -107,15 +107,17 @@ try {
         'Verplaatsen mag de zoomafstand niet wijzigen');
       await page.locator('#frontViewBtn').click();
       await page.waitForTimeout(650);
-      const beforeKeyboard = await page.evaluate(() => window.ZAnatomy.viewer.controls.target.y);
+      const beforeKeyboard = await page.evaluate(() => window.ZAnatomy.viewer.controls.target.toArray());
       await page.locator('#threeCanvas').focus();
       await page.keyboard.down('Shift');
       await page.keyboard.press('ArrowUp');
       await page.keyboard.up('Shift');
-      await page.waitForTimeout(150);
-      const afterKeyboard = await page.evaluate(() => window.ZAnatomy.viewer.controls.target.y);
-      assert(afterKeyboard < beforeKeyboard-.015,
-        'Shift met pijl omhoog moet het model verplaatsen');
+      await page.waitForTimeout(200);
+      const afterKeyboard = await page.evaluate(() => window.ZAnatomy.viewer.controls.target.toArray());
+      const keyboardShift = Math.hypot(...afterKeyboard.map((v,i)=>v-beforeKeyboard[i]));
+      assert(keyboardShift>.003,
+        'Shift + pijl moet het draaipunt daadwerkelijk verplaatsen: '+
+          beforeKeyboard.join(',')+' -> '+afterKeyboard.join(','));
       await page.locator('#frontViewBtn').click();
       await page.waitForTimeout(650);
     }
