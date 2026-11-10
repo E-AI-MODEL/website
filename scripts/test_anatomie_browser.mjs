@@ -352,6 +352,30 @@ try {
         return count>initial+20;
       }, scene.meshes, {timeout:45000});
       await page.screenshot({path:'test-results/anatomie-met-organen.png'});
+      // In beeld mag nooit het ontleden of verbergen ongedaan maken.
+      await page.locator('#systemsOpen').click();
+      await page.locator('#searchOpen').click();
+      await page.locator('#searchInput').fill('dijbeen');
+      const hideRow=page.locator('#searchResults .search-result-item[data-part^="Femur"]').first();
+      await hideRow.waitFor({state:'visible',timeout:10000});
+      const hideId=await hideRow.getAttribute('data-part');
+      await hideRow.click();
+      await page.locator('.callout-more').click();
+      const hideButton=page.locator('#structureInfo .eai-detail-actions button')
+        .filter({hasText:'Verberg dit onderdeel'});
+      await hideButton.waitFor({state:'visible'});
+      await hideButton.click();
+      const isHidden=async()=>page.evaluate(id=>{
+        const meshes=[];
+        window.ZAnatomy.viewer.scene.traverse(node=>{
+          if(node.userData?.partId===id) meshes.push(node);
+        });
+        return meshes.length>0 && meshes.every(node=>node.visible===false);
+      },hideId);
+      assert(await isHidden(),'Verbergen van een bot moet het uit de weergave halen');
+      await page.locator('#resetBtn').click();
+      await page.waitForTimeout(750);
+      assert(await isHidden(),'In beeld mag een weggehaald bot niet herstellen');
     }
     assert.deepEqual(errors, [], 'JavaScript-fouten: '+errors.join('; '));
     assert.deepEqual(remote, [], 'Er worden nog externe assets geladen: '+remote.join('; '));
