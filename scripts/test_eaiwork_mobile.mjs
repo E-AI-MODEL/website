@@ -25,12 +25,12 @@ try{
   page.on('pageerror',e=>errors.push(e.message));
   await page.route('**/*',route=>route.request().url().startsWith(origin)?route.continue():route.abort());
   await page.goto(origin+'/tools/eaiwork/',{waitUntil:'load'});
-  await page.locator('#view .page-head h1').waitFor();
+  await page.locator('#view .dash-head h1').waitFor();
   const box=await page.evaluate(()=>{
    const rect=sel=>{const v=document.querySelector(sel)?.getBoundingClientRect();return v?{top:v.top,bottom:v.bottom,width:v.width,height:v.height}:null};
    return {
     sidebar:rect('.sidebar'),topbar:rect('#topbar'),view:rect('#view'),
-    title:rect('.page-head h1'),firstCard:rect('#view .card'),
+    title:rect('.dash-head h1'),firstCard:rect('#view .dash-kpi'),
     scrollWidth:document.documentElement.scrollWidth,clientWidth:document.documentElement.clientWidth,
     display:getComputedStyle(document.querySelector('.app')).display,
    };
@@ -46,6 +46,14 @@ try{
   }else{
    assert.equal(box.display,'grid','Desktopzijbalk mag niet verdwijnen');
   }
+  assert.equal(await page.locator('.nav-primary > .nav-item').count(),5,'Hoofdnavigatie is niet compact');
+  assert.equal(await page.locator('.dash-stage').count(),5,'Vijf productiestappen ontbreken');
+  assert.equal(await page.locator('.dash-kpi').count(),4,'Vier statuscijfers ontbreken');
+  assert((await page.locator('.dash-donut').count())>=2,'Voortgangscirkels ontbreken');
+  assert.equal(await page.locator('.dash-barcol').count(),5,'Fasegrafiek ontbreekt');
+  assert.equal(await page.locator('.dash-mission').count(),3,'Demo-opdrachten ontbreken');
+  assert((await page.locator('.dash-legend-row').count())>=3,'Grafieklegenda ontbreekt');
+  assert((await page.locator('.dash-donut-number').first().textContent()).includes('%'),'Ring toont geen echte voortgang');
   if(width===390||width===1440){
    await page.screenshot({path:'test-results/eaiwork-dashboard-'+width+'-overview.png'});
   }
