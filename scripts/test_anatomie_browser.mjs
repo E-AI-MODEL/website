@@ -77,6 +77,70 @@ try {
     assert(scene.width > 200 && scene.height > 100 && scene.canvasVisible, 'Het 3D-canvas is leeg');
     assert(scene.overflow <= 3, 'Horizontale overloop bij '+width);
     assert(scene.loaded, 'Het skelet ontbreekt in de stelsellijst');
+    // De verplaatsstand laat de gebruiker het hele lichaam buiten het midden
+    // slepen, maar verandert in de draaistand geen bestaande knoppen.
+    const dragButton=page.locator('#eaiDragMode');
+    await dragButton.waitFor({state:'visible',timeout:5000});
+    assert.equal(await dragButton.getAttribute('aria-pressed'),'false');
+    const beforeMode=await page.evaluate(() => ({
+      left:window.ZAnatomy.viewer.controls.mouseButtons.LEFT,
+      touch:window.ZAnatomy.viewer.controls.touches.ONE
+    }));
+    await dragButton.click();
+    const panMode=await page.evaluate(() => ({
+      left:window.ZAnatomy.viewer.controls.mouseButtons.LEFT,
+      right:window.ZAnatomy.viewer.controls.mouseButtons.RIGHT,
+      touch:window.ZAnatomy.viewer.controls.touches.ONE,
+      two:window.ZAnatomy.viewer.controls.touches.TWO,
+      cursor:document.querySelector('#threeCanvas').classList.contains('eai-pan-mode')
+    }));
+    assert.equal(await dragButton.getAttribute('aria-pressed'),'true');
+    assert.equal(await dragButton.innerText(),'Draaien');
+    assert.equal(panMode.left,panMode.right,
+      'Met Verplaatsen moet linkermuis slepen het model verschuiven');
+    assert.notEqual(panMode.touch,beforeMode.touch,
+      'Eenvingsbediening moet in Verplaatsen het model verschuiven');
+    assert(panMode.cursor,'De viewer toont de verplaatsstand niet');
+    if(width===1440){
+      const beforePan=await page.evaluate(() => {
+        const {camera,controls}=window.ZAnatomy.viewer;
+        return {target:controls.target.toArray(),
+          position:camera.position.toArray(),
+          distance:camera.position.distanceTo(controls.target)};
+      });
+      const rect=await page.locator('#threeCanvas').boundingBox();
+      await page.mouse.move(rect.x+rect.width*.48,rect.y+rect.height*.44);
+      await page.mouse.down();
+      await page.mouse.move(rect.x+rect.width*.48,
+        rect.y+rect.height*.44+128,{steps:14});
+      await page.mouse.up();
+      await page.waitForTimeout(500);
+      const afterPan=await page.evaluate(() => {
+        const {camera,controls}=window.ZAnatomy.viewer;
+        return {target:controls.target.toArray(),
+          position:camera.position.toArray(),
+          distance:camera.position.distanceTo(controls.target)};
+      });
+      assert(Math.abs(afterPan.target[1]-beforePan.target[1])>.08,
+        'Het model kan niet omhoog of omlaag worden versleept');
+      assert(Math.abs(afterPan.position[1]-beforePan.position[1])>.08,
+        'De camera schuift niet mee met de verplaatsing');
+      assert(Math.abs(afterPan.distance-beforePan.distance)<.05,
+        'Slepen mag het model niet ongewenst in- of uitzoomen');
+    }
+    await dragButton.click();
+    assert.equal(await dragButton.getAttribute('aria-pressed'),'false');
+    assert.equal(await dragButton.innerText(),'Verplaatsen');
+    const restoredMode=await page.evaluate(() => ({
+      left:window.ZAnatomy.viewer.controls.mouseButtons.LEFT,
+      touch:window.ZAnatomy.viewer.controls.touches.ONE
+    }));
+    assert.deepEqual(restoredMode,beforeMode,
+      'Draaien moet linkermuis en eenvingerbediening volledig herstellen');
+    if(width===1440){
+      await page.locator('#frontViewBtn').click();
+      await page.waitForTimeout(800);
+    }
     // De standaardzoom gebruikt voortaan de plaats onder de muis. De
     // verandering van het draaipunt is een echte camerameting, geen UI-label.
     const zoomControls = await page.evaluate(() => {

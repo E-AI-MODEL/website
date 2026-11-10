@@ -16,6 +16,7 @@ def refine_anatomy(source: Path) -> None:
     shutil.copyfile(root / "guide.js", source / "src" / "data" / "eaiGuide.js")
     shutil.copyfile(root / "eaiDetail.js", source / "src" / "ui" / "eaiDetail.js")
     shutil.copyfile(root / "depthSlider.js", source / "src" / "ui" / "depthSlider.js")
+    shutil.copyfile(root / "dragMode.js", source / "src" / "ui" / "dragMode.js")
 
     # Remove the blue studio lighting and improve material contrast without
     # adding heavy postprocessing to a mobile 3D viewer.
@@ -187,6 +188,16 @@ function setupMesh(mesh, systemId, viewer) {""",
     # The original build may already omit the old shortcut menu.
     main = source / "src" / "main.js"
     js = main.read_text(encoding="utf-8")
+    js = one(js,
+        "import { initUI } from './ui/sidebar.js';",
+        "import { initUI } from './ui/sidebar.js';\n"
+        "import { initDragMode } from './ui/dragMode.js';",
+        "import drag mode")
+    js = one(js,
+        "      await initUI(viewer);",
+        "      await initUI(viewer);\n      initDragMode(viewer);",
+        "mount drag mode")
+
     js = js.replace("import { initEAIExplore } from './ui/eaiExplore.js';\\n", "")
     js = js.replace("      initEAIExplore(viewer);\\n", "")
     main.write_text(js, encoding="utf-8")
