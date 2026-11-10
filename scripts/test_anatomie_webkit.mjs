@@ -73,6 +73,10 @@ try {
   await page.screenshot({path:'test-results/anatomie-naamlabel-mobiel.png'});
   await page.locator('.callout-more').click();
   await page.locator('#infoSidebar').waitFor({state:'visible',timeout:5000});
+  await page.waitForTimeout(330);
+  const sheetBounds = await page.locator('#infoSidebar').boundingBox();
+  assert(sheetBounds && sheetBounds.y + sheetBounds.height <= 846,
+    'Het hele onderpaneel moet binnen het mobiele scherm staan');
   await page.screenshot({path:'test-results/anatomie-uitleg-mobiel.png'});
   assert.equal(await page.locator('.callout-more').getAttribute('aria-expanded'),'true',
     'De knop bij het onderdeel moet tonen dat de uitleg open is');
