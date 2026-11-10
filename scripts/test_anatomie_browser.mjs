@@ -80,6 +80,11 @@ try {
     // De verplaatsstand laat de gebruiker het hele lichaam buiten het midden
     // slepen, maar verandert in de draaistand geen bestaande knoppen.
     const dragButton=page.locator('#eaiDragMode');
+    const rotateButton=page.locator('#eaiRotateMode');
+    await rotateButton.waitFor({state:'visible',timeout:5000});
+    assert.equal(await rotateButton.getAttribute('aria-pressed'),'true');
+    assert.equal(await rotateButton.innerText(),'Draaien');
+    assert.equal(await dragButton.innerText(),'Verplaatsen');
     await dragButton.waitFor({state:'visible',timeout:5000});
     assert.equal(await dragButton.getAttribute('aria-pressed'),'false');
     const beforeMode=await page.evaluate(() => ({
@@ -95,7 +100,8 @@ try {
       cursor:document.querySelector('#threeCanvas').classList.contains('eai-pan-mode')
     }));
     assert.equal(await dragButton.getAttribute('aria-pressed'),'true');
-    assert.equal(await dragButton.innerText(),'Draaien');
+    assert.equal(await rotateButton.getAttribute('aria-pressed'),'false');
+    assert.equal(await dragButton.innerText(),'Verplaatsen');
     assert.equal(panMode.left,panMode.right,
       'Met Verplaatsen moet linkermuis slepen het model verschuiven');
     assert.notEqual(panMode.touch,beforeMode.touch,
@@ -128,9 +134,10 @@ try {
       assert(Math.abs(afterPan.distance-beforePan.distance)<.05,
         'Slepen mag het model niet ongewenst in- of uitzoomen');
     }
-    await dragButton.click();
+    await rotateButton.click();
     assert.equal(await dragButton.getAttribute('aria-pressed'),'false');
-    assert.equal(await dragButton.innerText(),'Verplaatsen');
+    assert.equal(await rotateButton.getAttribute('aria-pressed'),'true');
+    assert.equal(await rotateButton.innerText(),'Draaien');
     const restoredMode=await page.evaluate(() => ({
       left:window.ZAnatomy.viewer.controls.mouseButtons.LEFT,
       touch:window.ZAnatomy.viewer.controls.touches.ONE
@@ -140,6 +147,25 @@ try {
     if(width===1440){
       await page.locator('#frontViewBtn').click();
       await page.waitForTimeout(800);
+    }
+    if(width===1440){
+      const prior=await page.evaluate(()=>({
+        y:window.ZAnatomy.viewer.controls.target.y,
+        position:window.ZAnatomy.viewer.camera.position.toArray()
+      }));
+      await page.locator('#threeCanvas').focus();
+      await page.keyboard.down('Shift');
+      await page.keyboard.press('ArrowUp');
+      await page.keyboard.up('Shift');
+      await page.waitForTimeout(130);
+      const shifted=await page.evaluate(()=>({
+        y:window.ZAnatomy.viewer.controls.target.y,
+        position:window.ZAnatomy.viewer.camera.position.toArray()
+      }));
+      assert(shifted.y<prior.y-.015,
+        'Shift + omhoog moet het model zichtbaar omhoog verplaatsen');
+      await page.locator('#frontViewBtn').click();
+      await page.waitForTimeout(650);
     }
     // De standaardzoom gebruikt voortaan de plaats onder de muis. De
     // verandering van het draaipunt is een echte camerameting, geen UI-label.
@@ -211,6 +237,9 @@ try {
       };
     });
     assert.equal(layout.controls.length, 5, 'Vijf cameraknoppen moeten beschikbaar zijn');
+    if(width<=720) for(const [i,c] of layout.controls.entries()) {
+      assert(c.width>=42 && c.height>=42, 'Cameraknop '+i+' heeft een te klein aanraakvlak');
+    }
     for(const [i,c] of layout.controls.entries()){
       assert(c.width>20&&c.height>=25, 'Cameraknop '+i+' is te klein');
       assert(c.left>=layout.stage.left-2&&c.right<=layout.stage.right+2,
@@ -221,6 +250,8 @@ try {
       assert(x<=0||y<=0, 'Bronvermelding bedekt cameraknop '+i);
     }
     assert((await page.title()).includes('Anatomisch Observatorium'));
+    assert.equal(await page.locator('#resetBtn').innerText(),'In beeld',
+      'De cameraknop moet duidelijk van Onderdelen herstellen verschillen');
     await page.screenshot({path:'test-results/anatomie-start-'+width+'.png'});
     assert.equal(await page.locator('#eaiExplore').count(),0,'Dubbele stelselkeuze mag niet bestaan');
     assert.equal(await page.locator('#depthSlider').isVisible(),false,
@@ -230,8 +261,13 @@ try {
     await page.locator('#searchResults .search-result-item').first().waitFor({state:'visible'});
     const femurRow=page.locator('#searchResults .search-result-item[data-part^="Femur"]').first();
     await femurRow.waitFor({state:'visible'});
+    const cameraBeforeSearch=await page.evaluate(() => window.ZAnatomy.viewer.controls.target.toArray());
     await femurRow.click();
     await page.locator('#structureInfo .eai-fact').first().waitFor({state:'attached',timeout:15000});
+    await page.waitForTimeout(720);
+    const cameraAfterSearch=await page.evaluate(() => window.ZAnatomy.viewer.controls.target.toArray());
+    assert(Math.hypot(...cameraAfterSearch.map((x,i)=>x-cameraBeforeSearch[i]))>.12,
+      'Een zoekresultaat moet de camera naar het gekozen bot verplaatsen');
     assert.equal(await page.locator('#app.info-open').count(),0,
       'De toelichting mag niet automatisch openen bij selectie');
     assert(await page.locator('.callout-layer.is-visible .callout').isVisible(),
