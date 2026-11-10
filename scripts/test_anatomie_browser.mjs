@@ -77,6 +77,55 @@ try {
     assert(scene.width > 200 && scene.height > 100 && scene.canvasVisible, 'Het 3D-canvas is leeg');
     assert(scene.overflow <= 3, 'Horizontale overloop bij '+width);
     assert(scene.loaded, 'Het skelet ontbreekt in de stelsellijst');
+    // De standaardzoom gebruikt voortaan de plaats onder de muis. De
+    // verandering van het draaipunt is een echte camerameting, geen UI-label.
+    const zoomControls = await page.evaluate(() => {
+      const c = window.ZAnatomy.viewer.controls;
+      return {zoomToCursor:c.zoomToCursor,pan:c.enablePan,zoom:c.enableZoom,
+        twoFingerGesture:c.touches.TWO};
+    });
+    assert.equal(zoomControls.zoomToCursor, true,
+      'Scrollen en knijpen moeten naar de aangewezen plek zoomen');
+    assert(zoomControls.pan && zoomControls.zoom,
+      'Verslepen en zoomen mogen niet uitgeschakeld worden');
+    assert.equal(typeof zoomControls.twoFingerGesture,'number',
+      'De bestaande tweevingsbediening moet ingesteld blijven');
+
+    if (width === 1440) {
+      const beforeZoom=await page.evaluate(() => {
+        const {camera,controls}=window.ZAnatomy.viewer;
+        return {position:camera.position.toArray(),target:controls.target.toArray(),
+          distance:camera.position.distanceTo(controls.target)};
+      });
+      const wheelCanvas=await page.locator('#threeCanvas').boundingBox();
+      await page.mouse.move(wheelCanvas.x+wheelCanvas.width*.61,
+        wheelCanvas.y+wheelCanvas.height*.47);
+      await page.mouse.wheel(0,-440);
+      await page.waitForTimeout(450);
+      const zoomed=await page.evaluate(() => {
+        const {camera,controls}=window.ZAnatomy.viewer;
+        return {position:camera.position.toArray(),target:controls.target.toArray(),
+          distance:camera.position.distanceTo(controls.target)};
+      });
+      assert(zoomed.distance < beforeZoom.distance*.95,
+        'De muiswielbeweging brengt de camera niet dichter bij het model');
+      assert(Math.hypot(...zoomed.target.map((v,i)=>v-beforeZoom.target[i]))>.002,
+        'Zoomen houdt nog steeds hetzelfde vaste draaipunt');
+      assert(zoomed.target[0]>beforeZoom.target[0]+.001,
+        'Het draaipunt volgt niet de rechts van het midden aangewezen plek');
+
+      await page.locator('#frontViewBtn').click();
+      await page.waitForTimeout(850);
+      const restored=await page.evaluate(() => {
+        const {camera,controls}=window.ZAnatomy.viewer;
+        return {target:controls.target.toArray(),
+          distance:camera.position.distanceTo(controls.target)};
+      });
+      assert(restored.distance>zoomed.distance*1.1,
+        'Voor moet de anatomie weer op een normale afstand tonen');
+      assert(Math.hypot(...restored.target.map((v,i)=>v-beforeZoom.target[i]))<.08,
+        'Voor moet de standaardfocus herstellen na zoomen naar de muis');
+    }
     const shell = await page.evaluate(() => ({
       viewerWidth: document.querySelector('#viewerContainer').getBoundingClientRect().width,
       viewportWidth: innerWidth,
