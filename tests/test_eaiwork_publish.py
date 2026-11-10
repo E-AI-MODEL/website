@@ -9,7 +9,8 @@ class EAIworkPublishTests(unittest.TestCase):
         html = (ROOT / "content/eaiwork-dashboard/index.html").read_text(encoding="utf-8")
         self.assertIn('Source: E-AI-MODEL/EAIwork-/prototypes/dashboard/index.html', html)
         for part in ("Contracten en registratie", "Workerbibliotheek", "Worker Builder", "Menselijke besluiten",
-                     "Voorbeeldopdrachten", "Geen live uitvoering"):
+                     "Voorbeeldopdrachten", "Geen live uitvoering", "Automatische uitvoering",
+                     "automaticConsent", "onExecutionServer"):
             self.assertIn(part, html)
         self.assertNotIn('src="https://', html)
         self.assertNotIn("localStorage.setItem(", html)
