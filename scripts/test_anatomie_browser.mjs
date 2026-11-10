@@ -126,9 +126,14 @@ try {
     await page.screenshot({path:'test-results/anatomie-naamlabel-'+width+'.png'});
     await page.locator('.callout-more').click();
     await page.locator('#infoSidebar').waitFor({state:'visible',timeout:7000});
+    await page.waitForTimeout(330);
     const infoSize=await page.locator('#infoSidebar').boundingBox();
     assert(infoSize && (width>720 ? infoSize.width<=345 : infoSize.height<=height*.40),
       'De uitleg moet compact blijven op desktop en telefoon');
+    assert(infoSize.x>=-2 && infoSize.x + infoSize.width <= width+2,
+      'Het informatiepaneel moet volledig binnen de schermbreedte staan');
+    assert(infoSize.y>=-2 && infoSize.y + infoSize.height <= height+2,
+      'Het informatiepaneel moet volledig binnen de schermhoogte staan');
     await page.screenshot({path:'test-results/anatomie-uitleg-'+width+'.png'});
     if(width===1440){
       const rect=await page.locator('#threeCanvas').boundingBox();
