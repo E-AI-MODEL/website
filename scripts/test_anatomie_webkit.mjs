@@ -61,37 +61,27 @@ try {
     'De tweevingerbediening van OrbitControls ontbreekt');
   assert(touchControls.zoomEnabled && touchControls.panEnabled && touchControls.rotateEnabled,
     'Op mobiel moeten zoomen, verschuiven en draaien beschikbaar blijven');
-  const mobileDrag=page.locator('#eaiDragMode');
-  const mobileRotate=page.locator('#eaiRotateMode');
-  await mobileRotate.waitFor({state:'visible',timeout:6000});
-  assert.equal(await mobileRotate.getAttribute('aria-pressed'),'true');
-  assert.equal(await mobileRotate.innerText(),'Draaien');
-  assert.equal(await mobileDrag.innerText(),'Verplaatsen');
-  await mobileDrag.waitFor({state:'visible',timeout:6000});
-  const initialTouch=await page.evaluate(()=>window.ZAnatomy.viewer.controls.touches.ONE);
-  const twoFinger=await page.evaluate(()=>window.ZAnatomy.viewer.controls.touches.TWO);
-  await mobileDrag.click();
-  assert.equal(await mobileDrag.getAttribute('aria-pressed'),'true');
-  assert.equal(await mobileRotate.getAttribute('aria-pressed'),'false');
-  assert.equal(await mobileDrag.innerText(),'Verplaatsen');
-  const movedTouch=await page.evaluate(()=>window.ZAnatomy.viewer.controls.touches.ONE);
-  assert.notEqual(movedTouch,initialTouch,
-    'Met Verplaatsen moet een vinger het model omhoog en omlaag slepen');
-  assert.equal(await page.evaluate(()=>window.ZAnatomy.viewer.controls.touches.TWO),twoFinger,
-    'De bestaande knijp- en tweevingsbeweging mag niet veranderen');
-  await mobileRotate.click();
-  assert.equal(await mobileDrag.getAttribute('aria-pressed'),'false');
-  assert.equal(await mobileRotate.getAttribute('aria-pressed'),'true');
-  assert.equal(await page.evaluate(()=>window.ZAnatomy.viewer.controls.touches.ONE),initialTouch,
-    'Bij Draaien moet de eenvingerrotatie terugkomen');
+  const directTouch = await page.evaluate(() => {
+    const c=window.ZAnatomy.viewer.controls;
+    return {one:c.touches.ONE,two:c.touches.TWO,
+      pan:c.enablePan,zoom:c.enableZoom,rotate:c.enableRotate,
+      touchAction:getComputedStyle(document.querySelector('#threeCanvas')).touchAction};
+  });
+  assert.notEqual(directTouch.one,directTouch.two,
+    'Een vinger draait en twee vingers verplaatsen of zoomen');
+  assert(directTouch.pan && directTouch.zoom && directTouch.rotate);
+  assert.equal(directTouch.touchAction,'none',
+    'Safari mag de pagina niet scrollen bij een gebaar op het model');
+  assert.equal(await page.locator('#eaiDragMode, #eaiRotateMode, .eai-camera-modes').count(),0,
+    'De extra draaistand- en verplaatsknoppen moeten weg');
   assert.deepEqual(errors,[],'JavaScript-fouten: '+errors.join('; '));
   assert.deepEqual(failed,[],'Netwerkfouten: '+failed.join('; '));
   // Het scherm bevat maar een stelsel: een diepteschuif zou betekenisloos zijn.
   assert.equal(await page.locator('#eaiExplore').count(),0,'Dubbele stelselkeuze op de viewer');
   assert.equal(await page.locator('#footerBar').count(),0,'Dubbele actiebalk onder het lichaam');
   assert.equal(await page.locator('#infoSidebar').count(),1,'Er is precies een informatiepaneel');
-  assert(await page.locator('.depth-control').isHidden(),
-    'Diepteschuif bij een enkel stelsel moet verborgen zijn');
+  assert.equal(await page.locator('.depth-control').count(),0,
+    'Er mag nergens een zwevende lagenkaart zijn');
 
   // Gebruik dezelfde zoek- en selectieroute als een bezoeker op iPhone.
   await page.locator('#searchOpen').click();
@@ -188,29 +178,23 @@ try {
     'De bestaande Engelstalige beschrijving moet bij onbekende uitleg toegankelijk blijven');
   await page.locator('#infoToggle').click();
   await page.locator('#infoSidebar').waitFor({state:'hidden',timeout:5000});
-  // Bedieningsproef met echte anatomische modellen: meerdere stelsels
-  // vergelijken, daarna binnen één spierstelsel een onderdeel wegnemen.
+  // De stelsels blijven via het bestaande filter te kiezen, zonder extra
+  // lagenpaneel over het model.
   await page.locator('#systemsOpen').click();
   await page.locator('[data-system-checkbox="muscular"]').check();
   await page.waitForFunction(() => {
-    const control = document.querySelector('.depth-control');
-    return control && !control.hidden &&
-      control.querySelector('#eaiFocusSystem') &&
-      control.textContent.includes('Stelsels vergelijken');
-  }, null, {timeout:35000});
-  await page.locator('#systemsToggle').click();
-  await page.locator('.depth-control [data-depth-step="1"]').click();
-  assert.match(await page.locator('.depth-control .eai-step-value').innerText(),/Stap 1 van 4/,
-    'Plus verhoogt de vergelijking niet');
-
-  await page.locator('#systemsOpen').click();
+    let count=0;
+    window.ZAnatomy.viewer.scene.traverse(n => {if(n.isMesh && n.userData.eaiMuscleMesh)count++});
+    return count>130;
+  }, null, {timeout:40000});
+  assert.equal(await page.locator('.depth-control').count(),0,
+    'Ook bij meerdere stelsels mag geen lagenkaart verschijnen');
   await page.locator('[data-system-checkbox="skeletal"]').uncheck();
   await page.locator('#systemsToggle').click();
-  await page.waitForFunction(() => {
-    const control = document.querySelector('.depth-control');
-    return control && !control.hidden &&
-      control.textContent.includes('Ontleden');
-  }, null, {timeout:10000});
+  assert.equal(await page.locator('[data-system-checkbox="muscular"]').isChecked(),true);
+  assert.equal(await page.locator('[data-system-checkbox="skeletal"]').isChecked(),false);
+  assert.equal(await page.locator('#app.systems-open').count(),0,
+    'De stelselkeuze moet afsluitbaar blijven');
 
   const muscleReport = await page.evaluate(() => {
     const total = {red:0,notRed:0,transparent:0,neutral:0,covered:0,neutralExamples:[]};
@@ -250,14 +234,14 @@ try {
   if (await calloutClose.isVisible()) await calloutClose.click();
   await page.locator('#frontViewBtn').click();
   await page.waitForTimeout(750);
-  const positions = await page.evaluate(() => ({
-    stage: document.querySelector('#viewerContainer').getBoundingClientRect().toJSON(),
-    control: document.querySelector('.depth-control').getBoundingClientRect().toJSON()
-  }));
-  assert(positions.control.top >= positions.stage.top - 2,
-    'Ontleedbediening verdwijnt onder de bovenbalk op mobiel');
-  assert(positions.control.bottom < positions.stage.bottom,
-    'Ontleedbediening valt buiten het mobiele modelvenster');
+  const viewBar = await page.locator('.viewer-controls').boundingBox();
+  const canvasArea = await page.locator('#viewerContainer').boundingBox();
+  assert(viewBar && canvasArea && viewBar.width<canvasArea.width*.85,
+    'Kijkrichtingen zijn op telefoon niet compact genoeg');
+  assert(viewBar.y>=canvasArea.y && viewBar.y+viewBar.height<=canvasArea.y+canvasArea.height+2,
+    'De compacte kijkrichtingen moeten binnen het modelvenster blijven');
+  assert.equal(await page.locator('.depth-control,.eai-camera-modes').count(),0,
+    'Grote bediening mag de anatomie niet meer bedekken');
   const drawerOpen = await page.locator('#app').evaluate(el=>el.classList.contains('systems-open'));
   assert.equal(drawerOpen, false, 'Stelsellijst mag het model op de screenshot niet afdekken');
   mkdirSync('test-results',{recursive:true});
@@ -272,12 +256,8 @@ try {
   await page.locator('#structureInfo .eai-detail-actions').waitFor({state:'visible',timeout:10000});
   await page.locator('#infoToggle').click();
   await page.locator('#infoSidebar').waitFor({state:'hidden',timeout:5000});
-  await page.locator('.depth-control [data-depth-step="1"]').click();
-  assert.match(await page.locator('.depth-control .eai-step-value').innerText(),/1 weggenomen/,
-    'Geselecteerde spier is niet weggenomen');
-  await page.locator('.depth-control [data-depth-step="-1"]').click();
-  assert.match(await page.locator('.depth-control .eai-step-value').innerText(),/0 weggenomen/,
-    'Min herstelt de laatst weggenomen spier niet');
+  assert.equal(await page.locator('.depth-control').count(),0,
+    'Ook bij een geselecteerde spier mag geen lagenkaart verschijnen');
   mkdirSync('test-results',{recursive:true});
   await page.screenshot({path:'test-results/anatomie-webkit-mobile.png'});
   console.log('WebKit toont het skelet zonder laadspinner in '+elapsed+' ms, '+report.triangles+' driehoeken');

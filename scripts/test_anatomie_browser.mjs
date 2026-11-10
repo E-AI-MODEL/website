@@ -77,93 +77,47 @@ try {
     assert(scene.width > 200 && scene.height > 100 && scene.canvasVisible, 'Het 3D-canvas is leeg');
     assert(scene.overflow <= 3, 'Horizontale overloop bij '+width);
     assert(scene.loaded, 'Het skelet ontbreekt in de stelsellijst');
-    // De verplaatsstand laat de gebruiker het hele lichaam buiten het midden
-    // slepen, maar verandert in de draaistand geen bestaande knoppen.
-    const dragButton=page.locator('#eaiDragMode');
-    const rotateButton=page.locator('#eaiRotateMode');
-    await rotateButton.waitFor({state:'visible',timeout:5000});
-    assert.equal(await rotateButton.getAttribute('aria-pressed'),'true');
-    assert.equal(await rotateButton.innerText(),'Draaien');
-    assert.equal(await dragButton.innerText(),'Verplaatsen');
-    await dragButton.waitFor({state:'visible',timeout:5000});
-    assert.equal(await dragButton.getAttribute('aria-pressed'),'false');
-    const beforeMode=await page.evaluate(() => ({
-      left:window.ZAnatomy.viewer.controls.mouseButtons.LEFT,
-      touch:window.ZAnatomy.viewer.controls.touches.ONE
-    }));
-    await dragButton.click();
-    const panMode=await page.evaluate(() => ({
-      left:window.ZAnatomy.viewer.controls.mouseButtons.LEFT,
-      right:window.ZAnatomy.viewer.controls.mouseButtons.RIGHT,
-      touch:window.ZAnatomy.viewer.controls.touches.ONE,
-      two:window.ZAnatomy.viewer.controls.touches.TWO,
-      cursor:document.querySelector('#threeCanvas').classList.contains('eai-pan-mode')
-    }));
-    assert.equal(await dragButton.getAttribute('aria-pressed'),'true');
-    assert.equal(await rotateButton.getAttribute('aria-pressed'),'false');
-    assert.equal(await dragButton.innerText(),'Verplaatsen');
-    assert.equal(panMode.left,panMode.right,
-      'Met Verplaatsen moet linkermuis slepen het model verschuiven');
-    assert.notEqual(panMode.touch,beforeMode.touch,
-      'Eenvingsbediening moet in Verplaatsen het model verschuiven');
-    assert(panMode.cursor,'De viewer toont de verplaatsstand niet');
-    if(width===1440){
-      const beforePan=await page.evaluate(() => {
-        const {camera,controls}=window.ZAnatomy.viewer;
-        return {target:controls.target.toArray(),
-          position:camera.position.toArray(),
+    // Geen zwevende lagenkaart of keuze tussen draaien en verplaatsen.
+    assert.equal(await page.locator('#eaiDragMode, #eaiRotateMode, .eai-camera-modes, .depth-control').count(), 0,
+      'Modelbediening mag niet als extra panelen over de anatomie liggen');
+    if (width === 1440) {
+      // Rechtermuis verschuift de camera EN het draaipunt zonder de zoom te veranderen.
+      const beforePan = await page.evaluate(() => {
+        const {camera,controls} = window.ZAnatomy.viewer;
+        return {target:controls.target.toArray(), position:camera.position.toArray(),
           distance:camera.position.distanceTo(controls.target)};
       });
-      const rect=await page.locator('#threeCanvas').boundingBox();
-      await page.mouse.move(rect.x+rect.width*.48,rect.y+rect.height*.44);
-      await page.mouse.down();
-      await page.mouse.move(rect.x+rect.width*.48,
-        rect.y+rect.height*.44+128,{steps:14});
-      await page.mouse.up();
-      await page.waitForTimeout(500);
-      const afterPan=await page.evaluate(() => {
-        const {camera,controls}=window.ZAnatomy.viewer;
-        return {target:controls.target.toArray(),
-          position:camera.position.toArray(),
+      const canvasBox = await page.locator('#threeCanvas').boundingBox();
+      await page.mouse.move(canvasBox.x+canvasBox.width*.48, canvasBox.y+canvasBox.height*.44);
+      await page.mouse.down({button:'right'});
+      await page.mouse.move(canvasBox.x+canvasBox.width*.48,
+        canvasBox.y+canvasBox.height*.44+105,{steps:14});
+      await page.mouse.up({button:'right'});
+      await page.waitForTimeout(450);
+      const afterPan = await page.evaluate(() => {
+        const {camera,controls} = window.ZAnatomy.viewer;
+        return {target:controls.target.toArray(),position:camera.position.toArray(),
           distance:camera.position.distanceTo(controls.target)};
       });
-      assert(Math.abs(afterPan.target[1]-beforePan.target[1])>.08,
-        'Het model kan niet omhoog of omlaag worden versleept');
-      assert(Math.abs(afterPan.position[1]-beforePan.position[1])>.08,
-        'De camera schuift niet mee met de verplaatsing');
-      assert(Math.abs(afterPan.distance-beforePan.distance)<.05,
-        'Slepen mag het model niet ongewenst in- of uitzoomen');
-    }
-    await rotateButton.click();
-    assert.equal(await dragButton.getAttribute('aria-pressed'),'false');
-    assert.equal(await rotateButton.getAttribute('aria-pressed'),'true');
-    assert.equal(await rotateButton.innerText(),'Draaien');
-    const restoredMode=await page.evaluate(() => ({
-      left:window.ZAnatomy.viewer.controls.mouseButtons.LEFT,
-      touch:window.ZAnatomy.viewer.controls.touches.ONE
-    }));
-    assert.deepEqual(restoredMode,beforeMode,
-      'Draaien moet linkermuis en eenvingerbediening volledig herstellen');
-    if(width===1440){
+      assert(Math.abs(afterPan.target[1]-beforePan.target[1])>.035,
+        'Rechtermuisknop moet het lichaam kunnen verschuiven');
+      assert(Math.abs(afterPan.position[1]-beforePan.position[1])>.035,
+        'Bij verplaatsen moet de camera meeschuiven');
+      assert(Math.abs(afterPan.distance-beforePan.distance)<.04,
+        'Verplaatsen mag de zoomafstand niet wijzigen');
       await page.locator('#frontViewBtn').click();
-      await page.waitForTimeout(800);
-    }
-    if(width===1440){
-      const prior=await page.evaluate(()=>({
-        y:window.ZAnatomy.viewer.controls.target.y,
-        position:window.ZAnatomy.viewer.camera.position.toArray()
-      }));
+      await page.waitForTimeout(650);
+      const beforeKeyboard = await page.evaluate(() => window.ZAnatomy.viewer.controls.target.toArray());
       await page.locator('#threeCanvas').focus();
       await page.keyboard.down('Shift');
       await page.keyboard.press('ArrowUp');
       await page.keyboard.up('Shift');
-      await page.waitForTimeout(130);
-      const shifted=await page.evaluate(()=>({
-        y:window.ZAnatomy.viewer.controls.target.y,
-        position:window.ZAnatomy.viewer.camera.position.toArray()
-      }));
-      assert(shifted.y<prior.y-.015,
-        'Shift + omhoog moet het model zichtbaar omhoog verplaatsen');
+      await page.waitForTimeout(200);
+      const afterKeyboard = await page.evaluate(() => window.ZAnatomy.viewer.controls.target.toArray());
+      const keyboardShift = Math.hypot(...afterKeyboard.map((v,i)=>v-beforeKeyboard[i]));
+      assert(keyboardShift>.003,
+        'Shift + pijl moet het draaipunt daadwerkelijk verplaatsen: '+
+          beforeKeyboard.join(',')+' -> '+afterKeyboard.join(','));
       await page.locator('#frontViewBtn').click();
       await page.waitForTimeout(650);
     }
@@ -180,6 +134,51 @@ try {
       'Verslepen en zoomen mogen niet uitgeschakeld worden');
     assert.equal(typeof zoomControls.twoFingerGesture,'number',
       'De bestaande tweevingsbediening moet ingesteld blijven');
+
+    if (width === 390) {
+      // Twee echte, gelijktijdige aanraakpunten via Chromium's invoersysteem.
+      // Geen controle van alleen een OrbitControls-instelling.
+      const session = await page.context().newCDPSession(page);
+      const area = await page.locator('#threeCanvas').boundingBox();
+      const x = Math.round(area.x + area.width * .53);
+      const y = Math.round(area.y + area.height * .47);
+      const state = () => page.evaluate(() => {
+        const {camera,controls} = window.ZAnatomy.viewer;
+        return {target:controls.target.toArray(),
+          distance:camera.position.distanceTo(controls.target)};
+      });
+      const start = await state();
+      const send = (type,points) => session.send('Input.dispatchTouchEvent',{
+        type,touchPoints:points.map(([id,px,py])=>({id,x:px,y:py}))
+      });
+      await send('touchStart',[[1,x-36,y],[2,x+36,y]]);
+      for(let i=1;i<=12;i++){
+        await send('touchMove',[[1,x-36,y+i*6],[2,x+36,y+i*6]]);
+        await page.waitForTimeout(12);
+      }
+      await send('touchEnd',[]);
+      await page.waitForTimeout(350);
+      const moved = await state();
+      const delta = Math.hypot(...moved.target.map((n,i)=>n-start.target[i]));
+      assert(delta > .035, 'Twee vingers moeten het lichaam echt kunnen verschuiven');
+      assert(Math.abs(moved.distance-start.distance)<.055,
+        'Twee vingers parallel bewegen mag niet in- of uitzoomen');
+
+      const beforePinch = await state();
+      await send('touchStart',[[3,x-34,y],[4,x+34,y]]);
+      for(let i=1;i<=10;i++){
+        await send('touchMove',[[3,x-34-i*5,y],[4,x+34+i*5,y]]);
+        await page.waitForTimeout(12);
+      }
+      await send('touchEnd',[]);
+      await page.waitForTimeout(350);
+      const afterPinch = await state();
+      assert(Math.abs(afterPinch.distance-beforePinch.distance)>.04,
+        'Knijpen met twee vingers moet de zoomafstand echt veranderen');
+      await session.detach();
+      await page.locator('#frontViewBtn').click();
+      await page.waitForTimeout(650);
+    }
 
     if (width === 1440) {
       const beforeZoom=await page.evaluate(() => {
@@ -254,8 +253,8 @@ try {
       'De cameraknop moet duidelijk van Onderdelen herstellen verschillen');
     await page.screenshot({path:'test-results/anatomie-start-'+width+'.png'});
     assert.equal(await page.locator('#eaiExplore').count(),0,'Dubbele stelselkeuze mag niet bestaan');
-    assert.equal(await page.locator('#depthSlider').isVisible(),false,
-      'Bij alleen het skelet heeft een stelselschuif geen betekenis');
+    assert.equal(await page.locator('.depth-control').count(),0,
+      'De lagenkaart mag niet meer worden aangemaakt');
     if(width<600) await page.locator('#searchOpen').click();
     await page.locator('#searchInput').fill('dijbeen');
     await page.locator('#searchResults .search-result-item').first().waitFor({state:'visible'});

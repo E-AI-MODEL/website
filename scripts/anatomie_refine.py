@@ -278,6 +278,26 @@ function setupMesh(mesh, systemId, viewer) {""",
         "import { refineAnatomyInfo, openAnatomyInfo, closeAnatomyInfo, toggleAnatomyInfo } from '../ui/eaiDetail.js';",
         "selection imports")
     js = one(js,
+        "import { focusOnMesh } from './camera.js';",
+        "import { focusOnMesh } from './camera.js';\n"
+        "import { centerOrbitOnSelection, cancelOrbitCentering } from '../ui/cameraUX.js';",
+        "selectie gebruikt draai- en focuspunt")
+    js = one(js,
+        """  if (structure) {
+    selectPart(structure.userData.partId, viewer);
+  } else {
+    // Clicked on background - deselect""",
+        """  if (structure) {
+    selectPart(structure.userData.partId, viewer);
+    centerOrbitOnSelection(structure, viewer);
+  } else {
+    // Clicked on background - deselect""",
+        "muisklik brengt draaipunt naar structuur")
+    js = one(js,
+        "    focusOnMesh(structure, viewer, true);",
+        "    cancelOrbitCentering();\n    focusOnMesh(structure, viewer, true);",
+        "dubbelklik onderbreekt selectie-animatie")
+    js = one(js,
         """  showCallout(partId, partData.displayName, {
     isolate: id => isolatePart(id),
     hide: id => { hidePart(id); deselectPart(); },
@@ -288,6 +308,17 @@ function setupMesh(mesh, systemId, viewer) {""",
     close: () => deselectPart()
   });""", "duplicate callout actions")
     js = one(js,
+        """  const structure = pickAt({ clientX: touch.clientX, clientY: touch.clientY }, viewer);
+  if (structure) {
+    selectPart(structure.userData.partId, viewer);
+  } else {""",
+        """  const structure = pickAt({ clientX: touch.clientX, clientY: touch.clientY }, viewer);
+  if (structure) {
+    selectPart(structure.userData.partId, viewer);
+    centerOrbitOnSelection(structure, viewer);
+  } else {""",
+        "tik brengt draaipunt naar onderdeel")
+    js = one(js,
         """  // Show info panel
   showInfoPanel(partData);
 
@@ -297,6 +328,10 @@ function setupMesh(mesh, systemId, viewer) {""",
   showInfoPanel(partData);
   refineAnatomyInfo(partData, deselectPart);
   openAnatomyInfo();""", "information-first selection")
+    js = one(js,
+        "export function deselectPart() {\n  if (lastSelectedMesh) {",
+        "export function deselectPart() {\n  cancelOrbitCentering();\n  if (lastSelectedMesh) {",
+        "stop de lopende camerabeweging als een selectie sluit")
     js = one(js,
         "  hideInfoPanel();\n  hideFooterActions();",
         "  hideInfoPanel();\n  closeAnatomyInfo();\n  hideFooterActions();", "deselect")

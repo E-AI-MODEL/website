@@ -93,9 +93,61 @@ export async function focusSearchResult(partId) {
   const viewer=state.viewer;
   const mesh=getMeshRegistry().get(partId);
   if (!viewer || !mesh) return false;
+  cancelOrbitCentering();
   await focusOnMesh(mesh,viewer,true,2.8);
   if (document.getElementById('app')?.classList.contains('info-open')) {
     keepSelectedVisible();
   }
+  return true;
+}
+
+// Een tik op een onderdeel maakt dat onderdeel het draaipunt.
+// De afstand en kijkrichting blijven gelijk. De korte beweging voorkomt
+// een plotselinge sprong van een arm of been naar het schermmidden.
+let orbitFrame = 0;
+let orbitRevision = 0;
+let observedControls = null;
+
+export function cancelOrbitCentering() {
+  orbitRevision++;
+  if (orbitFrame) cancelAnimationFrame(orbitFrame);
+  orbitFrame = 0;
+}
+
+export function centerOrbitOnSelection(mesh, viewer) {
+  if (!mesh || !viewer?.controls || !viewer?.camera) return false;
+  const bounds = new THREE.Box3().setFromObject(mesh);
+  if (bounds.isEmpty()) return false;
+  const { camera, controls } = viewer;
+  if (observedControls !== controls) {
+    observedControls = controls;
+    // Een nieuw gebaar wint altijd van de animatie.
+    controls.addEventListener('start', cancelOrbitCentering);
+  }
+  cancelOrbitCentering();
+  const generation = orbitRevision;
+  const fromTarget = controls.target.clone();
+  const target = bounds.getCenter(new THREE.Vector3());
+  const shift = target.clone().sub(fromTarget);
+  if (shift.lengthSq() < 0.000001) return true;
+  const fromCamera = camera.position.clone();
+  const toCamera = fromCamera.clone().add(shift);
+  const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  const duration = reducedMotion ? 0 : 260;
+  const start = performance.now();
+
+  const draw = now => {
+    if (generation !== orbitRevision) return;
+    const progress = duration ? Math.min((now - start) / duration, 1) : 1;
+    const eased = 1 - Math.pow(1 - progress, 3);
+    camera.position.lerpVectors(fromCamera, toCamera, eased);
+    controls.target.lerpVectors(fromTarget, target, eased);
+    controls.update();
+    viewer.render();
+    if (progress < 1) orbitFrame = requestAnimationFrame(draw);
+    else orbitFrame = 0;
+  };
+  if (!duration) draw(start);
+  else orbitFrame = requestAnimationFrame(draw);
   return true;
 }
