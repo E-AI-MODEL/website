@@ -95,3 +95,12 @@ body.eai-ui.eai-blog .eb-index-feature{gap:55px}
   body.eai-ui.eai-index-page .education-choice-grid b{overflow-wrap:anywhere}
   body.eai-ui.eai-index-page .knowledge-route{min-width:0}
 }
+
+/* Compact upload shortcut in the shared header. */
+body.eai-ui .eai-site-upload{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:36px;padding:7px 11px;border:1px solid #cddbd1;border-radius:7px;background:#f4f8f3;color:#244d3b;text-decoration:none;font-size:12px;font-weight:650;white-space:nowrap;line-height:1.25;transition:background .15s,border-color .15s}
+body.eai-ui .eai-site-upload:hover{background:#e7f1e6;border-color:#86a796}
+body.eai-ui .eai-site-upload:focus-visible{outline:2px solid #315d4f;outline-offset:3px}
+body.eai-ui .eai-site-upload svg{width:16px;height:16px;flex:none}
+@media(max-width:620px){body.eai-ui .eai-site-upload{padding:7px 8px;min-height:35px;font-size:11px;gap:5px}}
+@media(max-width:385px){body.eai-ui .eai-site-upload span{display:none}body.eai-ui .eai-site-upload{min-width:36px}}
+@media(prefers-reduced-motion:reduce){body.eai-ui .eai-site-upload{transition:none}}
