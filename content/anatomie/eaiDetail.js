@@ -2,6 +2,7 @@
 // na de anatomische informatie, niet in meerdere zwevende menu's.
 import { anatomyGuide } from '../data/eaiGuide.js';
 import { anatomyName } from '../data/eaiNames.js';
+import { scheduleSelectionClearance } from './cameraUX.js';
 import { isolatePart, hidePart, restoreAllParts } from '../viewer/visibility.js';
 
 const textBlock = (parent, heading, description) => {
@@ -129,6 +130,7 @@ export function openAnatomyInfo() {
   header?.classList.remove('search-open');
   document.getElementById('searchOpen')?.setAttribute('aria-expanded', 'false');
   app?.classList.add('has-selection');
+  if (app?.classList.contains('info-open')) scheduleSelectionClearance();
 }
 
 export function toggleAnatomyInfo() {
@@ -136,6 +138,7 @@ export function toggleAnatomyInfo() {
   if (!app?.classList.contains('has-selection')) return;
   // De bestaande drawerbediening blijft eigenaar van focus, inert en Escape.
   document.getElementById('infoOpen')?.click();
+  if (app.classList.contains('info-open')) scheduleSelectionClearance();
 }
 
 export function closeAnatomyInfo() {
