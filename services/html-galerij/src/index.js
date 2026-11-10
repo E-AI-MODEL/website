@@ -125,7 +125,7 @@ export default {
       return new Response(null, { status: 204, headers: { ...headers, ...extra, 'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type, Authorization', 'Access-Control-Max-Age': '600' } });
     }
     if (request.method === 'GET' && url.pathname === '/api/admin/session') return administrativeAction(request,env,extra);
-    const remove = url.pathname.match(/^\\/api\\/admin\\/uploads\\/([^/]+)$/);
+    const remove = url.pathname.match(/^\/api\/admin\/uploads\/([^/]+)$/);
     if (request.method === 'DELETE' && remove) return administrativeAction(request,env,extra,remove[1]);
     if (request.method === 'GET' && url.pathname === '/api/config') return json({ turnstileSiteKey: env.TURNSTILE_SITE_KEY || null }, 200, extra);
     if (request.method === 'GET' && url.pathname === '/api/uploads') {
