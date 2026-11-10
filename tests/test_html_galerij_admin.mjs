@@ -6,10 +6,13 @@ const markup=readFileSync(new URL('../tools/html-galerij/index.html',import.meta
 const script=markup.match(/<script>([\s\S]*?)<\/script>/);
 assert.ok(script,'inline gallery script');
 new Function(script[1]); // Syntax only, no browser execution
-for(const text of ['id="admin-panel"','id="secret-entrance"','id="admin-key"','id="admin-items"',
-                   'class="hero"','editorial-row','Verbergen','altKey','adminKey=']){
+for(const text of ['id="secret-entrance"','id="gallery-management-status"',
+                   'class="hero"','editorial-row','card-delete','taps===3',
+                   'deleteMode','removeUpload','window.confirm','adminKey=']){
  assert.ok(markup.includes(text),text);
 }
+assert.ok(!markup.includes('id="admin-panel"'),'no separate admin popup');
+
 
 const id='1762800000000-11111111-1111-4111-8111-111111111111';
 let status='published';
