@@ -277,9 +277,9 @@ function setupMesh(mesh, systemId, viewer) {""",
   labelY = Math.min(Math.max(labelY, EDGE_PADDING), Math.max(EDGE_PADDING, maxY));""",
         "label stays away from panel")
     js = one(js,
-        "  computeAnchor(partId);\\n  root.classList.remove('is-hidden');",
-        "  root.querySelector('.callout-more')?.setAttribute('aria-expanded', String(Boolean(document.getElementById('app')?.classList.contains('info-open'))));\\n"
-        "  computeAnchor(partId);\\n  root.classList.remove('is-hidden');",
+        "  computeAnchor(partId);\n  root.classList.remove('is-hidden');",
+        "  root.querySelector('.callout-more')?.setAttribute('aria-expanded', String(Boolean(document.getElementById('app')?.classList.contains('info-open'))));\n"
+        "  computeAnchor(partId);\n  root.classList.remove('is-hidden');",
         "callout expanded state")
 
     callout.write_text(js, encoding="utf-8")
