@@ -126,8 +126,15 @@ try {
     await page.screenshot({path:'test-results/anatomie-naamlabel-'+width+'.png'});
     await page.locator('.callout-more').click();
     await page.locator('#infoSidebar').waitFor({state:'visible',timeout:7000});
-    await page.waitForTimeout(330);
+    // Een zichtbare drawer kan nog bezig zijn met zijn CSS-overgang.
+    // Controleer de echte positie ná de animatie, niet op een vaste frame.
+    await page.waitForFunction(() => {
+      const rect=document.getElementById('infoSidebar')?.getBoundingClientRect();
+      return rect && rect.left>=-2 && rect.right<=innerWidth+2
+        && rect.top>=-2 && rect.bottom<=innerHeight+2;
+    },null,{timeout:7000});
     const infoSize=await page.locator('#infoSidebar').boundingBox();
+    console.log('INFO_PANEEL_POSITIE',JSON.stringify({viewport:width+'x'+height,rect:infoSize}));
     assert(infoSize && (width>720 ? infoSize.width<=345 : infoSize.height<=height*.40),
       'De uitleg moet compact blijven op desktop en telefoon');
     assert(infoSize.x>=-2 && infoSize.x + infoSize.width <= width+2,
