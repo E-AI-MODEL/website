@@ -144,7 +144,6 @@ const viewer = document.querySelector('#viewer');
 const frame = document.querySelector('#viewer-frame');
 let uploads = [];
 let deleteMode = false;
-let adminKey = "";
 let ready = false;
 let widgetId = null;
 let checkPassed = false;
@@ -245,7 +244,7 @@ retryCheck.addEventListener('click',()=>{
 });
 
 /* Drie keer klikken op het galerijlabel toont verwijderkruisjes.
-   De rode kruisen zijn geen autorisatie. De server controleert de beheersleutel. */
+   Iedereen die de beheerstand ontdekt kan bestanden verbergen. */
 const managementStatus=document.querySelector('#gallery-management-status');
 let taps=0;
 let lastTap=0;
@@ -253,33 +252,16 @@ document.querySelector('#secret-entrance').addEventListener('click',()=>{
  const now=Date.now();taps=(now-lastTap<1800)?taps+1:1;lastTap=now;
  if(taps===3){
   taps=0;deleteMode=!deleteMode;
-  if(!deleteMode)adminKey='';
   managementStatus.textContent=deleteMode?'Beheerstand ingeschakeld. Klik op een rood kruis om een bestand te verwijderen.':'';
   render();
  }
 });
-async function ensureAdmin(){
- if(adminKey)return true;
- const candidate=window.prompt('Voer eenmalig je beheersleutel in om bestanden te verwijderen.');
- if(!candidate)return false;
- try{
-  const res=await fetch(api('/api/admin/session'),{
-   headers:{Authorization:'Bearer '+candidate},cache:'no-store'
-  });
-  if(!res.ok)throw new Error('Beheersleutel niet herkend.');
-  adminKey=candidate;return true;
- }catch(err){
-  managementStatus.textContent=err.message||'Beheer niet beschikbaar.';
-  return false;
- }
-}
 async function removeUpload(item,button){
- if(!await ensureAdmin())return;
  if(!window.confirm('Wil je "'+item.title+'" uit de galerij verwijderen?'))return;
  button.disabled=true;
  try{
   const res=await fetch(api('/api/admin/uploads/'+item.id),{
-   method:'DELETE',headers:{Authorization:'Bearer '+adminKey}
+   method:'DELETE'
   });
   const data=await res.json().catch(()=>({}));
   if(!res.ok)throw new Error(data.error||'Verwijderen mislukt.');
@@ -287,11 +269,9 @@ async function removeUpload(item,button){
   await load();
  }catch(err){
   managementStatus.textContent=err.message||'Verwijderen mislukt.';
-  if(resetsAdmin(err))adminKey='';
   button.disabled=false;
  }
 }
-function resetsAdmin(err){return /sleutel|toegang|401/i.test(String(err.message||''));}
 
 const challenge=document.createElement('script');challenge.src='https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';challenge.async=true;challenge.onload=init;challenge.onerror=()=>{setStatus('Uploaden is nog niet beschikbaar.',true);load();};document.head.append(challenge);
 })();
