@@ -76,6 +76,56 @@
  .task-grid{grid-template-columns:repeat(5,168px);overflow-x:auto;scrollbar-width:thin}
  .footer-note{margin-top:18px;padding-top:13px;line-height:1.5}
 }
+
+/* Compacte EAIwork-bediening; volledige functies blijven onder Meer beschikbaar. */
+:root{--sidebar:208px}
+.nav-short{display:none}
+.nav-primary{display:flex;flex-direction:column;gap:3px}
+.sidebar{padding:16px 12px 12px}
+.sidebar .brand{padding:2px 9px 19px}
+.nav-primary>.nav-item,.nav-more>summary{min-height:38px;padding:8px 10px;font-size:12px}
+.nav-more{position:relative;min-width:0;margin-top:6px;border-top:1px solid var(--line);padding-top:7px}
+.nav-more>summary{display:flex;align-items:center;gap:12px;list-style:none;border-radius:8px;cursor:pointer;color:var(--muted);font-weight:650}
+.nav-more>summary::-webkit-details-marker{display:none}
+.nav-more>summary:hover,.nav-more[open]>summary{background:var(--soft);color:var(--ink)}
+.nav-more>summary svg{width:17px;height:17px;flex:0 0 auto}
+.nav-more-content{display:flex;flex-direction:column;gap:2px;padding:6px 0}
+.nav-more-content .nav-item{min-height:34px;padding:7px 10px;font-size:11px}
+.nav-more-title{margin:9px 10px 3px;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.05em}
+.nav-more-actions{display:flex;gap:6px;flex-wrap:wrap;padding:8px 5px}
+.topbar{height:56px;padding:0 22px}
+.top-location{display:flex;align-items:baseline;gap:12px;min-width:0}
+.top-sub{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:29vw}
+.top-desktop-actions{display:inline-flex;gap:7px}
+.workspace{max-width:1420px;padding:18px 23px 35px}
+.nav-mobile-hint{display:none}
+@media(max-width:850px){
+ .sidebar{overflow:visible;height:auto;padding:9px 12px 7px;z-index:20}
+ .sidebar .brand{padding:0 0 7px;gap:8px}
+ .sidebar .brand-symbol{width:27px;height:27px}
+ .sidebar .brand-name{font-size:16px}
+ .sidebar .brand-tag{display:none}
+ .sidebar-nav{display:block;overflow:visible;max-width:none;padding:0}
+ .nav-primary{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px}
+ .nav-primary>.nav-item,.nav-more>summary{width:100%;height:48px;min-width:0;min-height:0;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:3px;padding:5px 1px;border:1px solid var(--line);border-radius:8px;background:#fff;font-size:9.5px;line-height:1.15;text-align:center}
+ .nav-primary>.nav-item.active{background:var(--lightgreen);border-color:#bfd6c9}
+ .nav-primary>.nav-item svg,.nav-more>summary svg{width:16px;height:16px}
+ .nav-primary .nav-long{display:none}
+ .nav-primary .nav-short{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%;font-weight:670}
+ .nav-more{margin:0;padding:0;border:0;z-index:25}
+ .nav-more>summary{list-style:none}
+ .nav-more-content{position:absolute;right:0;top:calc(100% + 6px);width:min(320px,90vw);max-height:55vh;overflow-y:auto;background:#fff;border:1px solid #b7ccc0;border-radius:10px;box-shadow:0 16px 40px #10251c25;padding:8px;z-index:30}
+ .nav-more-content .nav-item{display:flex;flex-direction:row;justify-content:flex-start;align-items:center;text-align:left;gap:10px;padding:10px;min-height:38px}
+ .nav-more-content .nav-long{display:block}
+ .nav-more-content .nav-short{display:none}
+ .topbar{height:42px;padding:8px 13px;flex-direction:row;align-items:center}
+ .top-title{font-size:12px}
+ .top-sub{display:none}
+ .top-actions{width:auto}
+ .top-actions .pill{font-size:9px;padding:4px 7px}
+ .top-desktop-actions{display:none}
+ .workspace{padding:15px 14px 25px}
+}
 </style>
 </head>
 <body>
@@ -132,9 +182,36 @@ const init=()=>({missions:structuredClone(missionSeed),workers:structuredClone(w
 let s=init();let opsToken='';let opsPollTimer=null;let opsPollBusy=false;const onExecutionServer=()=>location.pathname==='/dashboard';const nav=[['overzicht','Overzicht','overview'],['opdrachten','Opdrachten (demo)','missions'],['uitvoering','Echte uitvoering','play'],['planner','Planner en taken','planner'],['workers','Workerleger','workers'],['bibliotheek','Workerbibliotheek','workers'],['registratie','Contracten en registratie','log'],['builder','Worker Builder','builder'],['kwaliteit','Kwaliteit en drift','quality'],['bewijs','Bewijs en herkomst','file-check'],['hitl','Menselijke besluiten','hitl'],['bronnen','Bronnen en RepoSearch','sources'],['browser','Browser LLM','settings'],['logboek','Logboek','log'],['instellingen','Instellingen','settings']];
 const worker=id=>s.workers.find(w=>w.id===id);const mission=id=>s.missions.find(m=>m.id===id);const task=id=>s.tasks.find(t=>t.id===id);const tasksFor=id=>s.tasks.filter(t=>t.mission===id);const completion=id=>{const t=tasksFor(id);return t.length?Math.round(100*t.filter(t=>t.state==='done').length/t.length):0};const nState=(st)=>s.tasks.filter(t=>t.state===st).length;const badge=(str)=>{const cls={done:'good',afgerond:'good',beschikbaar:'good',active:'good',actief:'good',running:'blue',bezig:'blue',queued:'dim',wachtrij:'dim',gepauzeerd:'dim',review:'warn',beperkt:'warn',monitoren:'warn',reparatie:'warn',open:'warn',blocked:'bad',geblokkeerd:'bad','HITL':'bad',proef:'blue'}[str]||'dim';const tr={done:'Afgerond',running:'Bezig',queued:'Wachtrij',review:'Controle',blocked:'Geblokkeerd'};return `<span class="pill ${cls}"><span class="dot"></span>${esc(tr[str]||str)}</span>`};const btn=(txt,action,cls='',other='')=>`<button class="btn ${cls}" data-action="${esc(action)}" ${other}>${txt}</button>`;const pct=v=>Math.max(0,Math.min(100,v));const prog=v=>`<div class="progress"><span style="width:${pct(v)}%"></span></div>`;const section=(title,body,right='')=>`<section class="card"><div class="card-head"><h2>${title}</h2>${right}</div>${body}</section>`;const todayStamp=()=>new Date().toLocaleTimeString('nl-NL',{hour:'2-digit',minute:'2-digit'});const emit=(type,title,note='')=>s.events.unshift({at:todayStamp(),type,title,note});const h=tag=>esc(tag);
 let navScrollOffset=0;
-function renderShell(){const currentNav=document.querySelector('.sidebar-nav');if(currentNav)navScrollOffset=currentNav.scrollLeft;document.getElementById('sidebar').innerHTML=`<div class="brand"><span class="brand-symbol" aria-hidden="true"><i></i><i></i><i></i><i></i></span><div><div class="brand-name">EAIwork</div><div class="brand-tag">WORK OPERATIONS</div></div></div><nav class="sidebar-nav" aria-label="Hoofdnavigatie">${nav.map(([id,t,ic],i)=>`${[0,5,9,12].includes(i)?`<div class="nav-group">${i===0?'Werkruimte':i===5?'Workerbeheer':i===9?'Onderzoek en controle':'Systeem'}</div>`:''}<button class="nav-item ${s.route===id?'active':''}" data-action="nav" data-id="${id}" ${s.route===id?'aria-current="page"':''}>${ico(ic)}<span>${t}</span>${id==='hitl'&&!s.liveOps&&s.hitl.some(x=>x.status==='open')?`<span class="pill warn" style="margin-left:auto;padding:2px 6px">${s.hitl.filter(x=>x.status==='open').length}</span>`:''}</button>`).join('')}</nav><div class="nav-mobile-hint">Veeg voor meer onderdelen</div><div class="nav-spacer"></div><div class="side-foot"><div><span class="live-dot"></span>${s.liveOps?'Live workerregister verbonden':'Demo, geen actieve backend'}</div><div style="margin-top:6px">Productreferentie · 0.1</div></div>`;
- const newNav=document.querySelector('.sidebar-nav');if(newNav)newNav.scrollLeft=navScrollOffset;
- const m=mission(s.selectedMission);document.getElementById('topbar').innerHTML=`<div><div class="top-title">${h(nav.find(x=>x[0]===s.route)?.[1]||'EAIwork')}</div><div class="top-sub">${s.liveOps?'EAIwork-server':h(m?.title||'Dashboard')} · ${s.liveOps?'Gegevens uit registratie':s.paused?'Simulatie gepauzeerd':'Demo gereed'}</div></div><div class="top-actions"><span class="pill ${s.liveOps?'good':'demo'}">${s.liveOps?'Verbonden met EAIwork-server':'Voorbeeldopdrachten'}</span><span class="pill dim">${s.liveOps?'Echte registratie':'Geen live uitvoering'}</span>${btn(ico('reset')+' Herstellen','reset','small')}${btn(ico('download')+' Export','export','small')}</div>`}
+
+const primaryRoutes=[['overzicht','Overzicht','overview','Home'],['opdrachten','Opdrachten','missions','Taken'],['uitvoering','Uitvoering','play','Run'],['workers','Workers','workers','Team'],['kwaliteit','Controle','shield','Check']];
+const primaryRouteIds=new Set(primaryRoutes.map(r=>r[0]));
+function renderShell(){
+ const other=nav.filter(r=>!primaryRouteIds.has(r[0]));
+ const otherActive=other.some(r=>r[0]===s.route);
+ const link=([id,label,symbol,short])=>'<button class="nav-item '+(s.route===id?'active':'')+
+   '" data-action="nav" data-id="'+id+'" '+(s.route===id?'aria-current="page"':'')+'>'+ico(symbol)+
+   '<span class="nav-long">'+h(label)+'</span><span class="nav-short">'+h(short||label)+'</span></button>';
+ document.getElementById('sidebar').innerHTML=
+   '<div class="brand"><span class="brand-symbol" aria-hidden="true"><i></i><i></i><i></i><i></i></span>'+
+   '<div><div class="brand-name">EAIwork</div><div class="brand-tag">Werkruimte</div></div></div>'+
+   '<nav class="sidebar-nav" aria-label="Hoofdnavigatie"><div class="nav-primary">'+
+   primaryRoutes.map(link).join('')+
+   '<details class="nav-more" '+(otherActive?'open':'')+'><summary>'+ico('planner')+
+   '<span class="nav-long">Meer functies</span><span class="nav-short">Meer</span></summary>'+
+   '<div class="nav-more-content"><p class="nav-more-title">Meer functies</p>'+
+   other.map(link).join('')+'<div class="nav-more-actions">'+btn('Herstellen','reset','small')+
+   btn('Export','export','small')+'</div></div></details></div></nav>'+
+   '<div class="nav-spacer"></div><div class="side-foot"><span class="live-dot"></span>'+
+   (s.liveOps?'Lokale EAIwork-server verbonden':'Demonstratie, geen live server')+'</div>';
+ const selected=mission(s.selectedMission),label=nav.find(r=>r[0]===s.route)?.[1]||'Werkoverzicht';
+ document.getElementById('topbar').innerHTML=
+   '<div class="top-location"><span class="top-title">'+h(label)+'</span>'+
+   '<span class="top-sub">'+(s.liveOps?'Lokale registratie':h(selected?.title||'Werkruimte'))+'</span></div>'+
+   '<div class="top-actions"><span class="pill '+(s.liveOps?'good':'demo')+'">'+
+   (s.liveOps?'Lokale server':'Demonstratie')+'</span>'+
+   '<span class="top-desktop-actions">'+btn('Herstellen','reset','small')+
+   btn('Export','export','small')+'</span></div>';
+}
 function header(title,desc,actions=''){return `<div class="page-head"><div><h1>${title}</h1><p>${desc}</p></div>${actions?`<div class="actionbar">${actions}</div>`:''}</div>`}
 
 function liveProductionLine(){
