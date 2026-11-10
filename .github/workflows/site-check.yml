@@ -14,6 +14,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Check EAIwork dashboard preview contract
+        run: python3 -m unittest discover -s tests -p 'test_eaiwork_publish.py' -v
       - name: Check navigation and page structure
         run: node scripts/check-site.mjs
       - name: Verify one KEI login opens the complete LEIF website
