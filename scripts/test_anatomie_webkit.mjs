@@ -61,6 +61,22 @@ try {
     'De tweevingerbediening van OrbitControls ontbreekt');
   assert(touchControls.zoomEnabled && touchControls.panEnabled && touchControls.rotateEnabled,
     'Op mobiel moeten zoomen, verschuiven en draaien beschikbaar blijven');
+  const mobileDrag=page.locator('#eaiDragMode');
+  await mobileDrag.waitFor({state:'visible',timeout:6000});
+  const initialTouch=await page.evaluate(()=>window.ZAnatomy.viewer.controls.touches.ONE);
+  const twoFinger=await page.evaluate(()=>window.ZAnatomy.viewer.controls.touches.TWO);
+  await mobileDrag.click();
+  assert.equal(await mobileDrag.getAttribute('aria-pressed'),'true');
+  assert.equal(await mobileDrag.innerText(),'Draaien');
+  const movedTouch=await page.evaluate(()=>window.ZAnatomy.viewer.controls.touches.ONE);
+  assert.notEqual(movedTouch,initialTouch,
+    'Met Verplaatsen moet een vinger het model omhoog en omlaag slepen');
+  assert.equal(await page.evaluate(()=>window.ZAnatomy.viewer.controls.touches.TWO),twoFinger,
+    'De bestaande knijp- en tweevingsbeweging mag niet veranderen');
+  await mobileDrag.click();
+  assert.equal(await mobileDrag.getAttribute('aria-pressed'),'false');
+  assert.equal(await page.evaluate(()=>window.ZAnatomy.viewer.controls.touches.ONE),initialTouch,
+    'Bij Draaien moet de eenvingerrotatie terugkomen');
   assert.deepEqual(errors,[],'JavaScript-fouten: '+errors.join('; '));
   assert.deepEqual(failed,[],'Netwerkfouten: '+failed.join('; '));
   // Het scherm bevat maar een stelsel: een diepteschuif zou betekenisloos zijn.
