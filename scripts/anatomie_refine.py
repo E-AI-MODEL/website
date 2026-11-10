@@ -215,6 +215,13 @@ function setupMesh(mesh, systemId, viewer) {""",
     )
     if n != 1:
         raise RuntimeError("Duplicate footer bar missing")
+    # In de hulp staat nu hoe je met ingedrukte muis of vinger
+    # van draaien naar echt verschuiven overschakelt.
+    html = one(html,
+        '<li><kbd data-i18n="help_right_drag">Right drag</kbd> <span data-i18n="help_pan">Pan</span></li>',
+        '<li><kbd data-i18n="help_right_drag">Right drag</kbd> <span data-i18n="help_pan">Pan</span></li>\n'
+        '              <li><kbd>Verplaatsen</kbd> Klik op Verplaatsen en sleep omhoog, omlaag of opzij. Klik op Draaien om terug te gaan.</li>',
+        "help verplaatsen")
     html_file.write_text(html, encoding="utf-8")
 
     selection = source / "src" / "viewer" / "selection.js"
