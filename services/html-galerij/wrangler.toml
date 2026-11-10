@@ -5,7 +5,8 @@ compatibility_date = "2026-11-01"
 [[d1_databases]]
 binding = "DB"
 database_name = "eai-html-galerij"
-database_id = "REPLACE_WITH_D1_DATABASE_ID"
+database_id = "cb4ce71e-c1fc-4a9d-a64c-c83ad94767ec"
 
 [vars]
 ALLOWED_ORIGIN = "https://eaimodel.nl"
+TURNSTILE_SITE_KEY = "0x4AAAAAAF74_E2bGlUmwVmc"
