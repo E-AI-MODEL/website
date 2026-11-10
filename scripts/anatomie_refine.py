@@ -194,8 +194,8 @@ function setupMesh(mesh, systemId, viewer) {""",
         "import { initDragMode } from './ui/dragMode.js';",
         "import drag mode")
     js = one(js,
-        "      await initUI(viewer);\n      initSelection(viewer);",
-        "      await initUI(viewer);\n      initDragMode(viewer);\n      initSelection(viewer);",
+        "      await initUI(viewer);",
+        "      await initUI(viewer);\n      initDragMode(viewer);",
         "mount drag mode")
 
     js = js.replace("import { initEAIExplore } from './ui/eaiExplore.js';\\n", "")
