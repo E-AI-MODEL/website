@@ -114,6 +114,9 @@ jobs:
       - name: Check HTML gallery static publication
         run: python -m unittest discover -s tests -p 'test_html_galerij_publish.py' -v
 
+      - name: Check HTML gallery admin routes and client script
+        run: node tests/test_html_galerij_admin.mjs
+
       - name: Check WiHTML pages and reviewed studio copy
         run: python -m unittest discover -s tests -p "test_wihtml_publish.py" -v
 

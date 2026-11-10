@@ -77,6 +77,48 @@ async function publish(request, env, extra) {
   }
   return json({ id, url: '/view/' + id }, 201, extra);
 }
+
+/**
+ * Beheertoegang via een apart geheim in Cloudflare. De verborgen knop is
+ * uitsluitend een toegang tot het formulier, nooit de autorisatie zelf.
+ * Gebruik een willekeurige sleutel van ten minste 32 tekens.
+ */
+async function adminAllowed(request, env) {
+  const expected = env.ADMIN_DELETE_KEY || '';
+  const supplied = (request.headers.get('Authorization') || '').replace(/^Bearer /i, '');
+  if (expected.length < 32 || supplied.length < 32 || supplied.length > 256) return false;
+  const encoder = new TextEncoder();
+  const [left,right] = await Promise.all([
+    crypto.subtle.digest('SHA-256',encoder.encode(supplied)),
+    crypto.subtle.digest('SHA-256',encoder.encode(expected))
+  ]);
+  const a=new Uint8Array(left),b=new Uint8Array(right);
+  let difference=0;
+  for(let i=0;i<a.length;i++)difference|=a[i]^b[i];
+  return difference===0;
+}
+async function administrativeAction(request, env, extra, uploadId = null) {
+  if (request.headers.get('Origin') !== extra['Access-Control-Allow-Origin'])
+    return error('Niet toegestaan.', 403, extra);
+  if (!env.DB) return error('Database niet beschikbaar.', 503, extra);
+  // Ook foutieve inlogpogingen worden begrensd, zonder geheimen te loggen.
+  const visitor = await visitorKey(request, env);
+  const hour = new Date().toISOString().slice(0,13);
+  const key = 'admin:' + visitor;
+  const attempts = await env.DB.prepare(
+    'INSERT INTO upload_limits(visitor_hash, hour, count) VALUES (?, ?, 1) ON CONFLICT(visitor_hash, hour) DO UPDATE SET count = count + 1 RETURNING count'
+  ).bind(key,hour).first();
+  if ((attempts?.count || 0) > 20) return error('Te veel beheerpogingen. Probeer later opnieuw.',429,extra);
+  if (!await adminAllowed(request, env)) return error('Geen toegang. Controleer de beheersleutel.',401,extra);
+  if (uploadId === null) return json({ok:true},200,extra);
+  if (!validId(uploadId)) return error('Ongeldige pagina.',400,extra);
+  const result = await env.DB.prepare(
+    "UPDATE uploads SET status = 'hidden' WHERE id = ? AND status = 'published'"
+  ).bind(uploadId).run();
+  if ((result.meta?.changes || 0) !== 1) return error('Pagina niet gevonden.',404,extra);
+  return json({ok:true},200,extra);
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -84,8 +126,11 @@ export default {
     const extra = cors(origin, env);
     if (request.method === 'OPTIONS' && url.pathname.startsWith('/api/')) {
       if (!extra['Access-Control-Allow-Origin']) return error('Niet toegestaan.', 403);
-      return new Response(null, { status: 204, headers: { ...headers, ...extra, 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type', 'Access-Control-Max-Age': '600' } });
+      return new Response(null, { status: 204, headers: { ...headers, ...extra, 'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type, Authorization', 'Access-Control-Max-Age': '600' } });
     }
+    if (request.method === 'GET' && url.pathname === '/api/admin/session') return administrativeAction(request,env,extra);
+    const remove = url.pathname.match(/^\/api\/admin\/uploads\/([^/]+)$/);
+    if (request.method === 'DELETE' && remove) return administrativeAction(request,env,extra,remove[1]);
     if (request.method === 'GET' && url.pathname === '/api/config') return json({ turnstileSiteKey: env.TURNSTILE_SITE_KEY || null }, 200, extra);
     if (request.method === 'GET' && url.pathname === '/api/uploads') {
       if (!env.DB) return error('Galerij niet beschikbaar.', 503, extra);
