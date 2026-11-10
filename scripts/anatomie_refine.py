@@ -329,6 +329,10 @@ function setupMesh(mesh, systemId, viewer) {""",
   refineAnatomyInfo(partData, deselectPart);
   openAnatomyInfo();""", "information-first selection")
     js = one(js,
+        "export function deselectPart() {\n  if (lastSelectedMesh) {",
+        "export function deselectPart() {\n  cancelOrbitCentering();\n  if (lastSelectedMesh) {",
+        "stop de lopende camerabeweging als een selectie sluit")
+    js = one(js,
         "  hideInfoPanel();\n  hideFooterActions();",
         "  hideInfoPanel();\n  closeAnatomyInfo();\n  hideFooterActions();", "deselect")
     # Some pinned versions no longer include a separate footer helper.
