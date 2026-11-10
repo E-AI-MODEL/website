@@ -8,6 +8,7 @@ on:
       - '.github/workflows/build-site.yml'
       - '.github/workflows/deploy-theory7.yml'
       - 'scripts/build_site.py'
+      - 'scripts/prepare_ui.py'
       - 'services/html-galerij/**'
       - 'tests/test_html_galerij_publish.py'
       - 'tools/html-galerij/index.html'
@@ -33,6 +34,7 @@ on:
       - '.github/workflows/build-site.yml'
       - '.github/workflows/deploy-theory7.yml'
       - 'scripts/build_site.py'
+      - 'scripts/prepare_ui.py'
       - 'services/html-galerij/**'
       - 'tests/test_html_galerij_publish.py'
       - 'tools/html-galerij/index.html'
@@ -105,6 +107,9 @@ jobs:
 
       - name: Check site insights, navigation and privacy
         run: python -m unittest discover -s tests -p 'test_site_insights.py' -v
+
+      - name: Check HTML upload link in header
+        run: python -m unittest discover -s tests -p 'test_header_upload_link.py' -v
 
       - name: Check HTML gallery static publication
         run: python -m unittest discover -s tests -p 'test_html_galerij_publish.py' -v
