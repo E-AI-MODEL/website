@@ -32,7 +32,7 @@ def groups(en: bool):
             ('Education', [('Lessons and workforms', '/en/education/')]),
             ('Blog', [('Publications', '/en/publications/')]),
             ('Research', [('Evidence and sources', '/en/research/')]),
-            ('Tools', [('All tools', '/en/tools/'), ('Model Monitor', '/en/model-monitor/'), ('LLMscan', '/en/llmscan/'), ('Milky Way Lab', '/tools/melkweg-lab/'), ('Science Observatory', '/tools/science-observatory/'), ('Anatomy Observatory', '/tools/anatomie/'), ('LLM Observatory', '/tools/llm-observatorium/'), ('ABYSS', '/tools/abyss/'), ('WiHTML Studio', '/tools/wihtml/'), ('EAIstudio', '/tools/eaistudio/'), ('EAImesh', '/tools/eaimesh/'), ('Prompt Framework', '/tools/prompt-framework/'), ('Process to prompt', '/tools/van-proces-naar-prompt/')]),
+            ('Tools', [('All tools', '/en/tools/'), ('Model Monitor', '/en/model-monitor/'), ('LLMscan', '/en/llmscan/'), ('Milky Way Lab', '/tools/melkweg-lab/'), ('Science Observatory', '/tools/science-observatory/'), ('Anatomy Observatory', '/tools/anatomie/'), ('LLM Observatory', '/tools/llm-observatorium/'), ('ABYSS', '/tools/abyss/'), ('WiHTML Studio', '/tools/wihtml/'), ('EAIstudio', '/tools/eaistudio/'), ('EAImesh', '/tools/eaimesh/'), ('Prompt Framework', '/tools/prompt-framework/'), ('Process to prompt', '/tools/van-proces-naar-prompt/'), ('Upload HTML', '/tools/html-galerij/')]),
             ('About', [('About EAI', '/en/about/'), ('Site insights', '/en/insights/')]),
         ]
     return [
@@ -40,7 +40,7 @@ def groups(en: bool):
         ('Onderwijs', [('Lessen en werkvormen', '/nl/onderwijs/'), ('Lesvoorbeelden', '/nl/toepassingen/')]),
         ('Blog', [('Nieuwste artikelen', '/nl/blog/'), ('Publicaties en media', '/nl/publicaties/')]),
         ('Onderzoek', [('Onderzoek en bronnen', '/nl/onderzoek/'), ('Bronnenregister', '/bronnen/')]),
-        ('Tools', [('Alle tools', '/nl/tools/'), ('AI Model Monitor', '/nl/model-monitor/'), ('LLMscan', '/nl/llmscan/'), ('Melkweg Lab', '/tools/melkweg-lab/'), ('Science Observatory', '/tools/science-observatory/'), ('Anatomisch Observatorium', '/tools/anatomie/'), ('LLM Observatorium', '/tools/llm-observatorium/'), ('ABYSS', '/tools/abyss/'), ('WiHTML Docentstudio', '/tools/wihtml/'), ('EAIstudio', '/tools/eaistudio/'), ('EAImesh', '/tools/eaimesh/'), ('Prompt Framework', '/tools/prompt-framework/'), ('Van proces naar prompt', '/tools/van-proces-naar-prompt/')]),
+        ('Tools', [('Alle tools', '/nl/tools/'), ('AI Model Monitor', '/nl/model-monitor/'), ('LLMscan', '/nl/llmscan/'), ('Melkweg Lab', '/tools/melkweg-lab/'), ('Science Observatory', '/tools/science-observatory/'), ('Anatomisch Observatorium', '/tools/anatomie/'), ('LLM Observatorium', '/tools/llm-observatorium/'), ('ABYSS', '/tools/abyss/'), ('WiHTML Docentstudio', '/tools/wihtml/'), ('EAIstudio', '/tools/eaistudio/'), ('EAImesh', '/tools/eaimesh/'), ('Prompt Framework', '/tools/prompt-framework/'), ('Van proces naar prompt', '/tools/van-proces-naar-prompt/'), ('HTML uploaden', '/tools/html-galerij/')]),
         ('Over', [('Over EAI', '/nl/over/'), ('Websitegebruik', '/nl/insights/')]),
     ]
 
@@ -72,7 +72,11 @@ def navigation(soup: BeautifulSoup, path: str, en: bool) -> str:
     lang_label = 'Choose language' if en else 'Kies taal'
     menu_heading = 'Navigate' if en else 'Ga naar'
     more_label = 'More' if en else 'Meer'
-    return f'<header class="eai-masthead" data-eai-static-nav><nav class="eai-site-nav" aria-label="{nav_label}"><a class="eai-site-brand" href="{home}" aria-label="EAI home"><img src="/assets/eai-logo.svg" width="32" height="32" alt=""><span>EAI</span></a><div class="eai-site-primary" aria-label="{nav_label}">{"".join(primary)}</div><div class="eai-site-controls"><div class="eai-site-language" role="group" aria-label="{lang_label}">{"".join(language_links)}</div><details class="eai-site-menu"><summary aria-controls="eai-site-menu-panel" aria-label="{more_label}"><svg aria-hidden="true" viewBox="0 0 20 18" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M1 3h18M1 9h18M1 15h18"/></svg><span>{more_label}</span></summary><div class="eai-site-menu-panel" id="eai-site-menu-panel"><span class="eai-menu-heading">{menu_heading}</span>{"".join(menu)}</div></details></div></nav></header>'
+    upload_label = "Upload HTML" if en else "HTML uploaden"
+    upload_button = ('<a class="eai-site-upload" href="/tools/html-galerij/" aria-label="' + upload_label + '">'
+                     '<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4m0 0L7 9m5-5 5 5M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg>'
+                     '<span>' + upload_label + '</span></a>')
+    return f'<header class="eai-masthead" data-eai-static-nav><nav class="eai-site-nav" aria-label="{nav_label}"><a class="eai-site-brand" href="{home}" aria-label="EAI home"><img src="/assets/eai-logo.svg" width="32" height="32" alt=""><span>EAI</span></a><div class="eai-site-primary" aria-label="{nav_label}">{"".join(primary)}</div><div class="eai-site-controls">{upload_button}<div class="eai-site-language" role="group" aria-label="{lang_label}">{"".join(language_links)}</div><details class="eai-site-menu"><summary aria-controls="eai-site-menu-panel" aria-label="{more_label}"><svg aria-hidden="true" viewBox="0 0 20 18" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M1 3h18M1 9h18M1 15h18"/></svg><span>{more_label}</span></summary><div class="eai-site-menu-panel" id="eai-site-menu-panel"><span class="eai-menu-heading">{menu_heading}</span>{"".join(menu)}</div></details></div></nav></header>'
 
 
 def footer(en: bool) -> str:
