@@ -57,25 +57,12 @@ Voor definitieve verwijdering kun je de bijbehorende rij uit D1 verwijderen. Doo
 De implementatie is nog niet tegen een echte Cloudflare-omgeving getest. De bestanden maken geen Cloudflare-resources aan. Controleer Workers/D1/Turnstile in een testomgeving voordat de dienst publiek wordt ingeschakeld.
 
 
-## Verborgen beheer (vanaf deze versie)
+## Verborgen beheer zonder inloggen
 
-Vijf keer kort klikken op het kleine label **HTML-galerij** bovenaan de pagina opent het beheervenster. Het toetsenbordalternatief is **Alt + Shift + G**. Dit is alleen een verborgen ingang, geen beveiliging. Na openen wordt de beheerder om een afzonderlijke geheime sleutel gevraagd.
+Klik drie keer kort op het label **HTML-galerij** bovenaan de pagina. Bij alle bestanden verschijnt een rood kruis. Eén klik op het kruis en de daaropvolgende bevestiging verbergt het bestand. Met nog drie klikken verdwijnen de kruisjes weer.
 
-Voeg in Cloudflare bij **Workers & Pages → eai-html-galerij → Settings → Variables and secrets** een nieuwe secret toe:
+Er is bewust geen wachtwoord of beheersleutel. **Iedere bezoeker die de handeling kent, kan bestanden verbergen.** Ook de DELETE-API is zonder geheim bereikbaar. De inhoud wordt niet definitief uit D1 gewist, maar de status wordt `hidden`: de pagina verdwijnt uit de publieke lijst en het directe adres geeft 404.
 
-- **Key:** `ADMIN_DELETE_KEY`
-- **Type:** Secret
-- **Value:** een zelf gegenereerde willekeurige tekenreeks van minstens 32 tekens, bij voorkeur 48 of meer
+De Cloudflare Worker wordt niet automatisch bijgewerkt via de Theory7-websitepublicatie. Publiceer de huidige code uit `services/html-galerij/src/index.js` afzonderlijk via **Workers & Pages → eai-html-galerij → Edit code → Deploy**. Daarna werkt het rode kruis ook echt.
 
-De geheime sleutel hoort uitsluitend in Cloudflare. Zet deze nooit in de website, GitHub, een screenshot of een chatbericht. Geen opslag in localStorage of cookies. Na het sluiten van het beheerformulier vergeet de pagina de sleutel.
-
-De server heeft twee routes die de sleutel controleren:
-
-- `GET /api/admin/session`: controleert de beheersleutel.
-- `DELETE /api/admin/uploads/{id}`: zet de status van het bestand op `hidden`.
-
-Deze routes accepteren uitsluitend een verzoek vanuit het toegestane website-origin met de geheime sleutel in de `Authorization: Bearer ...` header. De server begrenst beheerpogingen per IP-hash en uur. Zonder de ingestelde secret weigert de server toegang. Verwijderen is een *zachte verwijdering*: de rij blijft in de database staan, maar verdwijnt direct uit de openbare galerij en is niet meer via `/view/{id}` te openen. De beheerder kan hem later via SQL herstellen.
-
-**Belangrijk voor de live site:** de hoofdwebsite wordt vanuit GitHub automatisch gepubliceerd naar Theory7. De Cloudflare Worker wordt níet automatisch bijgewerkt via die route. Na codewijzigingen in `services/html-galerij/src/index.js` moet je de Worker afzonderlijk bijwerken: open **Edit code**, vervang de bestaande code door de actuele inhoud van dit bestand en klik **Deploy**. Pas daarna werkt het beheervenster daadwerkelijk.
-
-Controleer na het uitrollen met één onschuldige testupload of de verwijderknop werkt en de URL `/view/{id}` daarna HTTP 404 teruggeeft. Laat de functie niet als gereed gelden op basis van alleen een groene websitebuild.
+Na het publiceren: test met een onschuldig voorbeeldbestand en controleer dat de lijst en het directe HTML-adres na verbergen niet meer toegankelijk zijn.

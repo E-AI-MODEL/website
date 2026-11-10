@@ -6,10 +6,13 @@ const markup=readFileSync(new URL('../tools/html-galerij/index.html',import.meta
 const script=markup.match(/<script>([\s\S]*?)<\/script>/);
 assert.ok(script,'inline gallery script');
 new Function(script[1]); // Syntax only, no browser execution
-for(const text of ['id="admin-panel"','id="secret-entrance"','id="admin-key"','id="admin-items"',
-                   'class="hero"','editorial-row','Verbergen','altKey','adminKey=']){
+for(const text of ['id="secret-entrance"','id="gallery-management-status"',
+                   'class="hero"','editorial-row','card-delete','taps===3',
+                   'deleteMode','removeUpload','window.confirm']){
  assert.ok(markup.includes(text),text);
 }
+assert.ok(!markup.includes('id="admin-panel"'),'no separate admin popup');
+
 
 const id='1762800000000-11111111-1111-4111-8111-111111111111';
 let status='published';
@@ -39,41 +42,26 @@ const DB={
   }};
  }
 };
-const secret='a'.repeat(48);
-const env={DB,ADMIN_DELETE_KEY:secret,ALLOWED_ORIGIN:'https://eaimodel.nl'};
-const origin='https://eaimodel.nl';
+const env={DB,ALLOWED_ORIGIN:'https://eaimodel.nl'};
 const url='https://eai-html-galerij.vis-c9d.workers.dev';
-const req=(route,method='GET',token=null,from=origin)=>{
- const headers={Origin:from,'CF-Connecting-IP':'203.0.113.9'};
- if(token!==null)headers.Authorization='Bearer '+token;
- return new Request(url+route,{method,headers});
-};
-let r=await worker.fetch(req('/api/admin/session'),env);
-assert.equal(r.status,401,'no credential denied');
-r=await worker.fetch(req('/api/admin/session','GET','incorrect'),env);
-assert.equal(r.status,401,'wrong credential denied');
-r=await worker.fetch(req('/api/admin/session','GET',secret,'https://other.example'),env);
-assert.equal(r.status,403,'wrong origin denied');
-r=await worker.fetch(req('/api/admin/session','GET',secret),{DB,ALLOWED_ORIGIN:origin});
-assert.equal(r.status,401,'missing secret denied');
-r=await worker.fetch(req('/api/admin/session','GET',secret),env);
-assert.equal(r.status,200,'correct credential accepted');
+const req=(route,method='GET',from='https://eaimodel.nl')=>
+ new Request(url+route,{method,headers:{Origin:from}});
+let r=await worker.fetch(req('/api/admin/uploads/'+id,'DELETE','https://other.example'),env);
+assert.equal(r.status,403,'wrong origin is rejected');
+assert.equal(status,'published');
 r=await worker.fetch(new Request(url+'/view/'+id),env);
 assert.equal(r.status,200);
 assert.equal(r.headers.get('Cache-Control'),'no-store','uploaded HTML must not remain cached after deletion');
-r=await worker.fetch(req('/api/admin/uploads/'+id,'DELETE','wrong'),env);
-assert.equal(r.status,401,'wrong password cannot hide');
-assert.equal(status,'published');
-r=await worker.fetch(req('/api/admin/uploads/'+id,'DELETE',secret),env);
-assert.equal(r.status,200,'authenticated soft deletion');
+r=await worker.fetch(req('/api/admin/uploads/'+id,'DELETE'),env);
+assert.equal(r.status,200,'three-click mode can delete without a secret');
 assert.equal(status,'hidden');
 r=await worker.fetch(req('/api/uploads'),env);
 assert.deepEqual((await r.json()).items,[],'hidden entry is absent from public gallery');
 r=await worker.fetch(new Request(url+'/view/'+id),env);
 assert.equal(r.status,404,'hidden HTML is no longer accessible');
-r=await worker.fetch(req('/api/admin/uploads/'+id,'DELETE',secret),env);
+r=await worker.fetch(req('/api/admin/uploads/'+id,'DELETE'),env);
 assert.equal(r.status,404,'repeat delete has no effect');
 r=await worker.fetch(req('/api/admin/uploads/'+id,'OPTIONS'),env);
 assert.equal(r.status,204,'preflight works');
-assert.match(r.headers.get('Access-Control-Allow-Headers')||'',/Authorization/);
-console.log('Gallery UI script parses and admin routes enforce authorization, origin and soft delete');
+assert.match(r.headers.get('Access-Control-Allow-Methods')||'',/DELETE/);
+console.log('Gallery UI script parses; delete route hides HTML without credentials');

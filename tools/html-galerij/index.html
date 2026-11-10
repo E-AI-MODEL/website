@@ -80,13 +80,12 @@ dialog::backdrop{background:#11251dbb}
 .dialog-bar strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .dialog-bar button{margin-left:auto;border:1px solid var(--line);background:white;border-radius:6px;padding:6px 12px}
 dialog iframe{display:block;width:100%;height:min(78vh,760px);border:0;background:white}
-#admin-panel{max-width:530px;padding:25px}#admin-panel h2{font-size:29px}#admin-panel p{font-size:13px;color:var(--muted)}
-#admin-panel .admin-row{display:flex;gap:9px;margin:16px 0}#admin-panel .admin-row input{flex:1}
-#admin-items{max-height:46vh;overflow:auto;display:grid;gap:8px}
-.admin-item{padding:12px 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;align-items:center}
-.admin-item strong{font-size:13px}.admin-item small{font-size:11px;color:var(--muted);display:block}
-.admin-item button{background:#fff;border:1px solid #e8c7c4;border-radius:6px;padding:8px 10px;color:#9b3937;font-size:12px}
-#admin-status{margin:8px 0;min-height:16px;color:#a04640}
+.card{position:relative}
+.card-delete{position:absolute;right:10px;top:10px;z-index:2;width:30px;height:30px;border:1px solid #e2a39d!important;border-radius:50%;background:#fff5f3!important;color:#ad2927!important;font-size:20px!important;font-weight:700!important;line-height:1;text-decoration:none!important;box-shadow:0 2px 7px #24110f18}
+.card-delete:hover{background:#fce4e1!important}
+.card-delete:disabled{opacity:.5}
+#gallery-management-status{font-size:12px;color:#ad2927;min-height:16px;margin-top:8px}
+
 footer{border-top:1px solid var(--line);padding:30px 0;color:#79867b;font-size:12px;background:#fffefb}
 @media(max-width:850px){.hero-inner{grid-template-columns:1fr;gap:32px}.preview-art{display:none}.editorial-row{grid-template-columns:1fr;gap:15px}.section-intro p{max-width:60ch}.cards{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:620px){.nav,.wrap{padding:0 19px}.hero{padding:50px 0 48px}h1{font-size:43px}.lede{font-size:16px}.hero-note{margin-top:25px}.layout-section{padding-top:35px}.panel{padding:21px}.fields,.cards{grid-template-columns:1fr}.gallery-head{display:block}.gallery-head input{max-width:none;margin-top:19px}.gallery-section{padding-top:63px}.preview{height:110px}.nav>div{gap:16px}#admin-panel{padding:18px}}
@@ -122,19 +121,12 @@ footer{border-top:1px solid var(--line);padding:30px 0;color:#79867b;font-size:1
 </div></section>
 <section class="gallery-section" aria-labelledby="gallery-title">
 <div class="gallery-head"><div><div class="eyebrow">De galerij</div><h2 id="gallery-title">Door anderen gemaakt</h2></div><input id="search" type="search" placeholder="Zoek op naam of titel" aria-label="Zoek in galerij"></div>
-<div id="cards" class="cards" aria-live="polite"><p class="empty">Galerij laden…</p></div>
+<div id="gallery-management-status" role="status" aria-live="polite"></div><div id="cards" class="cards" aria-live="polite"><p class="empty">Galerij laden…</p></div>
 </section>
 </div></main>
 <dialog id="viewer"><div class="dialog-bar"><strong id="viewer-title">HTML bekijken</strong><button id="close-viewer" type="button">Sluiten</button></div><iframe id="viewer-frame" title="Voorbeeld van een upload" sandbox="allow-scripts allow-forms allow-modals allow-downloads" referrerpolicy="no-referrer"></iframe></dialog>
 <footer><div class="wrap">EAI · Gedeelde HTML wordt afgeschermd van de hoofdwebsite uitgevoerd.</div></footer>
-<dialog id="admin-panel" aria-labelledby="admin-heading">
-<div class="row" style="justify-content:space-between"><h2 id="admin-heading">Galerij beheren</h2><button type="button" id="close-admin" aria-label="Sluiten">Sluiten</button></div>
-<p>Deze omgeving is alleen toegankelijk met de beheersleutel. Bestanden worden verborgen en zijn daarna niet meer openbaar bereikbaar.</p>
-<label for="admin-key">Beheersleutel</label>
-<div class="admin-row"><input id="admin-key" type="password" autocomplete="off" placeholder="Beheersleutel"><button type="button" class="primary" id="admin-login">Open beheer</button></div>
-<p id="admin-status" role="status" aria-live="polite"></p>
-<div id="admin-items" aria-live="polite"></div>
-</dialog>
+
 <script>
 (() => {
 'use strict';
@@ -151,6 +143,7 @@ const checkHelp = document.querySelector('#check-help');
 const viewer = document.querySelector('#viewer');
 const frame = document.querySelector('#viewer-frame');
 let uploads = [];
+let deleteMode = false;
 let ready = false;
 let widgetId = null;
 let checkPassed = false;
@@ -179,6 +172,14 @@ function render() {
   const by=document.createElement('p');by.textContent='Door '+item.author+' · '+item.filename;
   const actions=document.createElement('div');actions.className='row';
   const show=document.createElement('a');show.href=api('/view/'+item.id);show.target='_blank';show.rel='noopener noreferrer';show.textContent='Open in nieuw tabblad ↗';
+  if(deleteMode){
+   const remove=document.createElement('button');
+   remove.type='button';remove.className='card-delete';remove.textContent='×';
+   remove.setAttribute('aria-label','Verwijder '+item.title);
+   remove.title='Uit de galerij verwijderen';
+   remove.addEventListener('click',()=>removeUpload(item,remove));
+   article.append(remove);
+  }
   const previewButton=document.createElement('button');previewButton.type='button';previewButton.textContent='Voorbeeld bekijken';previewButton.addEventListener('click',()=>openUpload(item));
   actions.append(previewButton,show);body.append(h,by,actions);article.append(preview,body);cards.append(article);
  });
@@ -242,85 +243,35 @@ retryCheck.addEventListener('click',()=>{
  try{window.turnstile.reset(widgetId);}catch{retryCheck.hidden=false;checkHelp.textContent='Ververs de pagina en probeer het opnieuw.';}
 });
 
-/* Verborgen ingang: vijf keer op 'HTML-galerij' klikken of Alt+Shift+G.
-   Autorisatie gebeurt uitsluitend op de server, nooit via deze handeling. */
-const adminPanel=document.querySelector('#admin-panel');
-const adminKeyInput=document.querySelector('#admin-key');
-const adminLogin=document.querySelector('#admin-login');
-const adminItems=document.querySelector('#admin-items');
-const adminStatus=document.querySelector('#admin-status');
-let adminKey='';
-let adminUnlocked=false;
+/* Drie keer klikken op het galerijlabel toont verwijderkruisjes.
+   Iedereen die de beheerstand ontdekt kan bestanden verbergen. */
+const managementStatus=document.querySelector('#gallery-management-status');
 let taps=0;
 let lastTap=0;
-function showAdmin(){
-  adminPanel.showModal();
-  adminKeyInput.focus();
-}
 document.querySelector('#secret-entrance').addEventListener('click',()=>{
- const now=Date.now(); taps=now-lastTap<1800?taps+1:1;lastTap=now;
- if(taps>=5){taps=0;showAdmin();}
-});
-document.addEventListener('keydown',event=>{
- if(event.altKey&&event.shiftKey&&event.key.toLowerCase()==='g'){
-  event.preventDefault();showAdmin();
+ const now=Date.now();taps=(now-lastTap<1800)?taps+1:1;lastTap=now;
+ if(taps===3){
+  taps=0;deleteMode=!deleteMode;
+  managementStatus.textContent=deleteMode?'Beheerstand ingeschakeld. Klik op een rood kruis om een bestand te verwijderen.':'';
+  render();
  }
 });
-function clearAdmin(){
- adminKey='';adminUnlocked=false;adminKeyInput.value='';
- adminItems.replaceChildren();adminLogin.disabled=false;
- adminKeyInput.disabled=false;adminStatus.textContent='';
-}
-document.querySelector('#close-admin').addEventListener('click',()=>adminPanel.close());
-adminPanel.addEventListener('close',clearAdmin);
-function drawAdminItems(){
- adminItems.replaceChildren();
- if(!adminUnlocked)return;
- if(!uploads.length){
-  const empty=document.createElement('p');empty.textContent='Er staan geen openbare bestanden in de galerij.';adminItems.append(empty);return;
- }
- for(const item of uploads){
-  if(!safeId(item.id))continue;
-  const row=document.createElement('div');row.className='admin-item';
-  const details=document.createElement('div');
-  const name=document.createElement('strong');name.textContent=item.title;
-  const author=document.createElement('small');author.textContent='Door '+item.author+' · '+item.filename;
-  details.append(name,author);
-  const remove=document.createElement('button');remove.type='button';remove.textContent='Verbergen';
-  remove.addEventListener('click',async()=>{
-   if(!window.confirm('Wil je "'+item.title+'" uit de openbare galerij verwijderen?'))return;
-   remove.disabled=true;
-   try{
-    const res=await fetch(api('/api/admin/uploads/'+item.id),{
-     method:'DELETE',headers:{'Authorization':'Bearer '+adminKey}
-    });
-    const result=await res.json().catch(()=>({}));
-    if(!res.ok)throw new Error(result.error||'Verwijderen mislukt.');
-    adminStatus.textContent='De pagina is verborgen.';
-    await load();drawAdminItems();
-   }catch(err){adminStatus.textContent=err.message;remove.disabled=false;}
-  });
-  row.append(details,remove);adminItems.append(row);
- }
-}
-adminLogin.addEventListener('click',async()=>{
- const candidate=adminKeyInput.value.trim();
- if(!candidate){adminStatus.textContent='Vul de beheersleutel in.';return;}
- adminLogin.disabled=true;adminStatus.textContent='Toegang controleren…';
+async function removeUpload(item,button){
+ if(!window.confirm('Wil je "'+item.title+'" uit de galerij verwijderen?'))return;
+ button.disabled=true;
  try{
-  const res=await fetch(api('/api/admin/session'),{
-   headers:{'Authorization':'Bearer '+candidate},cache:'no-store'
+  const res=await fetch(api('/api/admin/uploads/'+item.id),{
+   method:'DELETE'
   });
-  const result=await res.json().catch(()=>({}));
-  if(!res.ok)throw new Error(result.error||'Toegang geweigerd.');
-  adminKey=candidate;adminUnlocked=true;
-  adminKeyInput.value='';adminKeyInput.disabled=true;
-  adminStatus.textContent='Beheer geopend.';drawAdminItems();
- }catch(err){adminStatus.textContent=err.message;adminLogin.disabled=false;}
-});
-adminKeyInput.addEventListener('keydown',event=>{
- if(event.key==='Enter'){event.preventDefault();adminLogin.click();}
-});
+  const data=await res.json().catch(()=>({}));
+  if(!res.ok)throw new Error(data.error||'Verwijderen mislukt.');
+  managementStatus.textContent='De pagina is verwijderd uit de openbare galerij.';
+  await load();
+ }catch(err){
+  managementStatus.textContent=err.message||'Verwijderen mislukt.';
+  button.disabled=false;
+ }
+}
 
 const challenge=document.createElement('script');challenge.src='https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';challenge.async=true;challenge.onload=init;challenge.onerror=()=>{setStatus('Uploaden is nog niet beschikbaar.',true);load();};document.head.append(challenge);
 })();
