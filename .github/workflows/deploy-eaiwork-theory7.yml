@@ -1,0 +1,78 @@
+name: Publish EAIwork dashboard to Theory7
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'content/eaiwork-dashboard.html'
+      - '.github/workflows/deploy-eaiwork-theory7.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  publish-dashboard:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify self-contained dashboard source
+        run: |
+          set -euo pipefail
+          test -s content/eaiwork-dashboard.html
+          grep -q 'function compactDashboard(live)' content/eaiwork-dashboard.html
+          grep -q 'function dashRing(' content/eaiwork-dashboard.html
+          grep -q 'registratie:registration' content/eaiwork-dashboard.html
+      - name: Install FTPS client
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lftp openssl
+      - name: Verify Theory7 FTPS certificate
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected="4D:F5:15:4C:F3:11:5E:5B:DD:91:BD:5F:BD:0F:0E:A7:35:71:5C:32"
+          actual="$(openssl s_client -starttls ftp -connect ftp.eaimodel.nl:21 -servername ftp.eaimodel.nl </dev/null 2>/dev/null | openssl x509 -noout -fingerprint -sha1 | cut -d= -f2)"
+          test "$actual" = "$expected"
+      - name: Upload only EAIwork HTML to Theory7
+        shell: bash
+        env:
+          FTP_USER: ${{ secrets.THEORY7_FTP_USER }}
+          FTP_PASSWORD: ${{ secrets.THEORY7_FTP_PASSWORD }}
+        run: |
+          set -euo pipefail
+          lftp -u "$FTP_USER","$FTP_PASSWORD" "ftp://ftp.eaimodel.nl:21" <<'EOF'
+          set cmd:fail-exit yes
+          set ftp:ssl-force true
+          set ftp:ssl-protect-data true
+          set ssl:verify-certificate false
+          set net:timeout 20
+          set net:max-retries 1
+          set xfer:use-temp-file yes
+          put content/eaiwork-dashboard.html -o /tools/eaiwork/index.html
+          bye
+          EOF
+      - name: Verify exact published dashboard bytes
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          from urllib.request import Request, urlopen
+          from urllib.error import URLError
+          import os, time
+          expected=Path('content/eaiwork-dashboard.html').read_bytes()
+          url='https://eaimodel.nl/tools/eaiwork/?v='+os.environ['GITHUB_SHA']
+          for attempt in range(8):
+              try:
+                  with urlopen(Request(url,headers={'Cache-Control':'no-cache'}),timeout=20) as response:
+                      actual=response.read()
+                  if actual==expected:
+                      print(f'Exact public EAIwork dashboard verified ({len(actual)} bytes)')
+                      break
+                  print(f'Public HTML not yet identical ({len(actual)} bytes), attempt {attempt+1}')
+              except (URLError,TimeoutError) as error:
+                  print(f'Public check attempt {attempt+1}: {error}')
+              if attempt==7:
+                  raise SystemExit('Published EAIwork HTML differs from source')
+              time.sleep(3)
+          PY
