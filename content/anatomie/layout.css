@@ -1119,7 +1119,7 @@ html,body,#app{height:100%;height:100dvh;overflow:hidden}
 #threeCanvas{touch-action:none!important}
 @media(max-width:720px){
   .viewer-controls{
-    bottom:calc(16px + env(safe-area-inset-bottom,0px))!important;
+    bottom:calc(34px + env(safe-area-inset-bottom,0px))!important;
     width:max-content!important;
     max-width:calc(100% - 20px)!important;
     padding:2px!important;
