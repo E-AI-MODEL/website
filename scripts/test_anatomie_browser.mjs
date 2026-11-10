@@ -354,7 +354,7 @@ try {
       await page.screenshot({path:'test-results/anatomie-met-organen.png'});
       // In beeld mag nooit het ontleden of verbergen ongedaan maken.
       await page.locator('#systemsOpen').click();
-      await page.locator('#searchOpen').click();
+      // Op desktop is het zoekveld zichtbaar; de zoekknop is alleen mobiel.
       await page.locator('#searchInput').fill('dijbeen');
       const hideRow=page.locator('#searchResults .search-result-item[data-part^="Femur"]').first();
       await hideRow.waitFor({state:'visible',timeout:10000});
