@@ -20,7 +20,7 @@ class GalleryPublicationTests(unittest.TestCase):
         for token in ('id="author"', 'id="title"', 'id="file"', 'id="cards"',
                       'id="search"', 'turnstileToken', 'id="viewer-frame"',
                       'sandbox="allow-scripts allow-forms allow-modals allow-downloads"',
-                      "https://html.eaimodel.nl"):
+                      "https://eai-html-galerij.vis-c9d.workers.dev"):
             with self.subTest(token=token):
                 self.assertIn(token, html)
 
