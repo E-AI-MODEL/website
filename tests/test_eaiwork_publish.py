@@ -8,7 +8,7 @@ class EAIworkPublishTests(unittest.TestCase):
     def test_product_demo_is_versioned_and_explicitly_synthetic(self):
         html = (ROOT / "content/eaiwork-dashboard/index.html").read_text(encoding="utf-8")
         self.assertIn('Source: E-AI-MODEL/EAIwork-/prototypes/dashboard/index.html', html)
-        for part in ("Contracten en registratie", "Worker Builder", "Menselijke besluiten",
+        for part in ("Contracten en registratie", "Workerbibliotheek", "Worker Builder", "Menselijke besluiten",
                      "Voorbeeldopdrachten", "Geen live uitvoering"):
             self.assertIn(part, html)
         self.assertNotIn('src="https://', html)
