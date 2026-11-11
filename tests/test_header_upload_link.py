@@ -13,8 +13,9 @@ class UploadNavigationTests(unittest.TestCase):
         self.assertIn("HTML uploaden", source)
         self.assertIn("Upload HTML", source)
         self.assertIn('class="eai-site-upload"', source)
-        self.assertIn("('HTML uploaden', '/tools/html-galerij/')", source)
-        self.assertIn("('Upload HTML', '/tools/html-galerij/')", source)
+        # De upload staat eenmaal als eigen actie in de kop, niet ook in Tools.
+        self.assertNotIn("('HTML uploaden', '/tools/html-galerij/')", source)
+        self.assertNotIn("('Upload HTML', '/tools/html-galerij/')", source)
 
     def test_small_screen_label_stays_accessible(self):
         css = (ROOT / "assets/site-redesign.css").read_text(encoding="utf-8")
