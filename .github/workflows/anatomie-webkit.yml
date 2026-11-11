@@ -17,6 +17,8 @@ on:
     paths:
       - 'scripts/build_anatomie.py'
       - 'scripts/anatomie_refine.py'
+      - 'scripts/audit_anatomie_content.py'
+      - 'tests/test_anatomie_content_audit.py'
       - 'scripts/anatomie_shell.py'
       - 'scripts/test_anatomie_webkit.mjs'
       - 'tests/test_anatomie_picking.mjs'
