@@ -73,10 +73,32 @@ def audit(root: Path = ROOT):
             unique.add(base)
     flagged = [r for r in rows if r["controle"]]
     keys = {n.lower() for n in unique}
+    all_by_system = {
+        system: {canonical(part).lower() for part in parts}
+        for system, parts in systems.items()
+    }
+    names_by_system = {
+        system: {
+            "structuren": len(keys),
+            "nederlandse_namen": len(keys & names.keys()),
+            "zonder_nederlandse_naam": len(keys - names.keys()),
+        }
+        for system, keys in all_by_system.items()
+    }
+    # Gelijktijdige namen kunnen bewust naar verschillende onderdelen verwijzen.
+    dutch_lookup = {}
+    for key, aliases in names.items():
+        dutch_lookup.setdefault(aliases[0].strip().casefold(), []).append(key)
+    duplicate_labels = {
+        label: sorted(keys)
+        for label, keys in dutch_lookup.items() if len(keys) > 1
+    }
     summary = {
         "modelonderdelen": len(rows),
         "unieke_structuren": len(unique),
         "stelsels": dict(models),
+        "naamdekking_per_stelsel": names_by_system,
+        "gelijke_nederlandse_labels": duplicate_labels,
         "nederlandse_namen_uniek": sum(k in names for k in keys),
         "nederlandse_uitleg_uniek": sum(k in guide_keys for k in keys),
         "bronbeschrijving_uniek": sum(k in definitions for k in unique),
@@ -108,6 +130,15 @@ def write_report(rows, summary, out: Path):
         "| Stelsel | Modelonderdelen |", "|---|---:|",
     ]
     lines.extend(f"| {k} | {v} |" for k, v in summary["stelsels"].items())
+    lines.extend(["", "## Nederlandse namen per stelsel", "",
+                  "| Stelsel | Unieke structuren | Nederlandse namen | Ontbrekend |",
+                  "|---|---:|---:|---:|"])
+    lines.extend(
+        f"| {system} | {stats['structuren']} | {stats['nederlandse_namen']} | {stats['zonder_nederlandse_naam']} |"
+        for system, stats in summary["naamdekking_per_stelsel"].items()
+    )
+    lines.extend(["", f"Identieke Nederlandse labels bij verschillende sleutels: {len(summary['gelijke_nederlandse_labels'])}.",
+                  "Bekijk deze in JSON. Dat is een controlemelding, geen bewijs van een fout."])
     lines.extend(["", "## Meldingen", ""])
     lines.extend(f"- {k}: {v}" for k, v in summary["meldingen_per_soort"].items())
     lines.extend([
