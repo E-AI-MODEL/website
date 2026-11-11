@@ -2765,6 +2765,10 @@ def build(sources: Path, out: Path) -> None:
         relative = page.relative_to(repo_root)
         if relative.parts[0] in {"content", "nl", "en", "site-build"}:
             continue
+        # tools/index.html is generated above from the current Tools catalogue.
+        # The old refreshed output must not overwrite that newly built page.
+        if relative.as_posix() == "tools/index.html":
+            continue
         if 'class="eai-refresh' in page.read_text() or relative.as_posix() == "tools/van-proces-naar-prompt/index.html":
             target = out / relative
             target.parent.mkdir(parents=True, exist_ok=True)
