@@ -51,6 +51,37 @@ export const VALVES=[
   {id:'pulmonary',label:'Longslagaderklep',pos:[-.58,.43,.49],leaflets:3,type:'sem',blood:'blue'},
   {id:'aortic',label:'Aortaklep',pos:[.55,.45,-.04],leaflets:3,type:'sem',blood:'red'}
 ];
+// Fijne oppervlakte-anatomie. Deze takken liggen op het schematische epicard.
+// De ligging is educatief benaderd, niet geschikt voor chirurgische lokalisatie.
+export const CORONARY_DETAILS=[
+  {id:'lad',label:'Voorste tussenkamerslagader',kind:'artery',radius:.018,color:[.78,.26,.24],
+   path:[[.55,.41,.16],[.42,.27,.39],[.23,.03,.53],[.12,-.25,.57],[.025,-.51,.56],[-.035,-.78,.45],[-.12,-1.10,.29]]},
+  {id:'diagonal',label:'Diagonale tak',kind:'artery',radius:.010,color:[.82,.35,.29],
+   path:[[.17,-.10,.57],[.43,-.22,.55],[.68,-.49,.37]]},
+  {id:'rca',label:'Rechterkransslagader',kind:'artery',radius:.017,color:[.74,.28,.27],
+   path:[[.47,.46,.21],[.27,.44,.41],[-.04,.40,.49],[-.30,.25,.50],[-.62,.07,.39],[-.85,-.16,.18]]},
+  {id:'marginal',label:'Rechterrandtak',kind:'artery',radius:.010,color:[.78,.32,.29],
+   path:[[-.67,.04,.36],[-.72,-.22,.38],[-.69,-.45,.30],[-.57,-.69,.22]]},
+  {id:'cardiac_vein',label:'Grote hartader',kind:'vein',radius:.014,color:[.30,.46,.61],
+   path:[[.08,-1.05,.29],[.10,-.72,.49],[.22,-.39,.57],[.31,-.10,.58],[.47,.17,.43]]}
+];
+export const MUSCLE_DETAILS=[
+  // Papillairspieren blijven in de kamers, de chordae zijn dunnere koordjes.
+  {id:'pap_rv_1',kind:'papillary',color:[.81,.45,.39],radius:.052,
+    path:[[-.64,-.77,.50],[-.60,-.58,.58],[-.59,-.39,.57]]},
+  {id:'pap_rv_2',kind:'papillary',color:[.78,.43,.38],radius:.047,
+    path:[[-.25,-.75,.46],[-.30,-.54,.59],[-.32,-.35,.58]]},
+  {id:'pap_lv_1',kind:'papillary',color:[.84,.46,.41],radius:.061,
+    path:[[.19,-.81,.25],[.25,-.58,.30],[.30,-.38,.30]]},
+  {id:'pap_lv_2',kind:'papillary',color:[.82,.43,.40],radius:.061,
+    path:[[.72,-.76,.18],[.65,-.55,.28],[.64,-.37,.29]]}
+];
+export const AURICLES=[
+  {id:'aur_ra',color:[.66,.39,.36],radius:.11,
+   path:[[-.65,.76,.30],[-.84,.78,.34],[-1.03,.64,.31],[-1.08,.43,.27]]},
+  {id:'aur_la',color:[.76,.39,.35],radius:.105,
+   path:[[.54,.84,.12],[.82,.85,.11],[1.01,.70,.13],[1.03,.51,.16]]}
+];
 export const ANATOMY_PARTS={
   ...Object.fromEntries(Object.entries(CHAMBERS).map(([id,v])=>[id,{label:v.label,pos:v.pos,type:'chamber'}])),
   ao:{label:'Aorta',pos:[.42,1.60,-.29],type:'vessel'},
@@ -196,23 +227,30 @@ export function tubeGeometry(path,radius=.10,segments=14){
 // semilunar: three cusps and no chordae tendineae.
 export function leafletGeometry(valve,opening){
   const out=collector(),n=valve.leaflets;
-  const radius=valve.type==='sem'?.18:.23,opens=Math.max(0,Math.min(1,opening));
-  const ydir=valve.type==='sem'?1:-1;
-  for(let i=0;i<n;i++){
-    const start=TAU*i/n,end=TAU*(i+1)/n,mid=(start+end)*.5;
-    const edge1=[radius*Math.cos(start),-.06*Math.sin(start),radius*.70*Math.sin(start)];
-    const edge2=[radius*Math.cos(end),-.06*Math.sin(end),radius*.70*Math.sin(end)];
-    const middle=[radius*Math.cos(mid)*.90,-.06*Math.sin(mid),radius*.65*Math.sin(mid)];
-    const tip=[radius*Math.cos(mid)*(.12+opens*.98),
-      ydir*(.035+opens*(valve.type==='sem'?.20:.27)),
-      .03+radius*Math.sin(mid)*(.10+opens*.75)];
-    const m1=vadd(vmul(edge1,.45),vmul(tip,.55)),m2=vadd(vmul(edge2,.45),vmul(tip,.55));
-    // Curved two-part leaflet with visible fold on the front surface.
-    const normal=vnorm(vcross(vsub(edge2,edge1),vsub(tip,edge1)));
-    triangle(out,edge1,middle,m1,normal,normal,normal);
-    triangle(out,middle,edge2,m2,normal,normal,normal);
-    triangle(out,m1,middle,m2,normal,normal,normal);
-    triangle(out,m1,m2,tip,normal,normal,normal);
+  const r=valve.type==='sem'?.18:.23,opens=Math.max(0,Math.min(1,opening));
+  const direction=valve.type==='sem'?1:-1;
+  const circumferential=12,radial=6;
+  // Geleidelijk gebogen, getesselleerde klepbladen: geen platte driehoeken.
+  // Dezelfde triangulatie wordt bij iedere hartfase opnieuw vervormd.
+  const surface=(leaf,u,v)=>{
+    const angle=TAU*(leaf+u)/n;
+    const edge=r*(1-v);
+    const reach=r*(.08+.73*opens)*v;
+    const radius=edge+reach;
+    const fold=Math.sin(Math.PI*u)*Math.sin(Math.PI*v);
+    const y=direction*(.018+.23*opens*v)+.029*fold*(1-opens*.5);
+    const z=radius*Math.sin(angle)*.76+.022*fold;
+    return [radius*Math.cos(angle),y,z];
+  };
+  for(let leaf=0;leaf<n;leaf++){
+    for(let i=0;i<circumferential;i++)for(let j=0;j<radial;j++){
+      const u=i/circumferential,un=(i+1)/circumferential;
+      const v=j/radial,vn=(j+1)/radial;
+      const a=surface(leaf,u,v),b=surface(leaf,un,v),c=surface(leaf,un,vn),d=surface(leaf,u,vn);
+      const normal=vnorm(vcross(vsub(b,a),vsub(d,a)));
+      triangle(out,a,b,c,normal,normal,normal);
+      triangle(out,a,c,d,normal,normal,normal);
+    }
   }
   return result(out);
 }
