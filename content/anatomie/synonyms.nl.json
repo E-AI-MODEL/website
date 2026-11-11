@@ -1016,11 +1016,17 @@
   "facial nerve (vii)": [
     "aangezichtszenuw"
   ],
+  "facial vein": [
+    "aangezichtsader"
+  ],
   "fascia lata": [
     "dijbeenfascie"
   ],
   "femoral artery": [
     "dijbeenslagader"
+  ],
+  "femoral vein": [
+    "dijbeenader"
   ],
   "femur": [
     "dijbeen"
@@ -1028,8 +1034,14 @@
   "fibula": [
     "kuitbeen"
   ],
+  "fibular artery": [
+    "kuitbeenslagader"
+  ],
   "fibular collateral ligament": [
     "buitenband van de knie"
+  ],
+  "fibular veins": [
+    "kuitbeenaders"
   ],
   "fibularis brevis muscle": [
     "korte kuitbeenspier"
@@ -1054,6 +1066,9 @@
   ],
   "first metatarsal bone": [
     "eerste middenvoetsbeentje"
+  ],
+  "first posterior intercostal artery": [
+    "eerste achterste tussenribslagader"
   ],
   "first rib": [
     "eerste rib"
@@ -1109,6 +1124,12 @@
   "frontal bone": [
     "voorhoofdsbeen"
   ],
+  "frontal branch of superficial temporal artery": [
+    "voorhoofdstaak van de oppervlakkige slaapslagader"
+  ],
+  "frontal branches of callosomarginal artery": [
+    "voorhoofdstaakken van de slagader langs de hersenbalk"
+  ],
   "frontalis muscle": [
     "voorhoofdsspier"
   ],
@@ -1117,6 +1138,12 @@
   ],
   "gastrocnemius": [
     "kuitspier"
+  ],
+  "gastroduodenal artery": [
+    "maag-twaalfvingerige-darmslagader"
+  ],
+  "genicular veins": [
+    "knieaders"
   ],
   "genioglossus muscle": [
     "kin-tongspier"
@@ -1148,11 +1175,29 @@
   "gracilis muscle": [
     "slanke dijspier"
   ],
+  "great cardiac vein": [
+    "grote hartader"
+  ],
+  "great saphenous vein": [
+    "grote oppervlakkige beenader"
+  ],
   "greater omentum": [
     "grote vetschort"
   ],
+  "greater palatine artery": [
+    "grote gehemelteslagader"
+  ],
   "hamate bone": [
     "haakbeen"
+  ],
+  "hemi-azygos vein": [
+    "halfongepaarde ader"
+  ],
+  "hepatic portal vein": [
+    "poortader van de lever"
+  ],
+  "hepatic veins": [
+    "leveraders"
   ],
   "hip bone": [
     "heupbeen"
@@ -1181,8 +1226,17 @@
   "hypothalamus": [
     "hypothalamus"
   ],
+  "ileal branch of ileocolic artery": [
+    "dunne-darmtak van de darm-blindedarmslagader"
+  ],
+  "ileocolic artery": [
+    "darm-blindedarmslagader"
+  ],
   "ileocolic nodes": [
     "lymfeklieren bij de overgang van dunne en dikke darm"
+  ],
+  "iliacus branch of iliolumbar artery": [
+    "darmbeenspierstak van de darmbeen-lendenslagader"
   ],
   "iliacus muscle": [
     "darmbeenspier"
@@ -1199,8 +1253,14 @@
   "iliocostalis thoracis muscle": [
     "borstdeel van de darmbeen-ribspier"
   ],
+  "iliolumbar artery": [
+    "darmbeen-lendenslagader"
+  ],
   "iliolumbar ligament": [
     "band tussen darmbeen en lendenwervels"
+  ],
+  "iliolumbar vein": [
+    "darmbeen-lendenader"
   ],
   "iliopectineal arch": [
     "darmbeen-schaambeenboog"
@@ -1214,14 +1274,29 @@
   "incus": [
     "aambeeld"
   ],
+  "inferior alveolar artery": [
+    "onderste tandkasslagader"
+  ],
+  "inferior basal vein of left lung": [
+    "onderste basale ader van de linkerlong"
+  ],
+  "inferior basal vein of right lung": [
+    "onderste basale ader van de rechterlong"
+  ],
   "inferior deep lateral cervical nodes": [
     "onderste diepe lymfeklieren aan de zijkant van de hals"
   ],
   "inferior diaphragmatic nodes": [
     "onderste middenriflymfeklieren"
   ],
+  "inferior epigastric artery": [
+    "onderste buikwandslagader"
+  ],
   "inferior epigastric nodes": [
     "onderste buikwandlymfeklieren"
+  ],
+  "inferior epigastric vein": [
+    "onderste buikwandader"
   ],
   "inferior extensor retinaculum of ankle": [
     "onderste peesband van de enkelstrekkers"
@@ -1235,14 +1310,41 @@
   "inferior glenohumeral ligament": [
     "onderste band van het schoudergewricht"
   ],
+  "inferior gluteal artery": [
+    "onderste bilslagader"
+  ],
   "inferior gluteal nodes": [
     "onderste billymfeklieren"
+  ],
+  "inferior gluteal veins": [
+    "onderste biladers"
   ],
   "inferior head of lateral pterygoid muscle": [
     "onderste kop van de buitenste vleugelspier"
   ],
+  "inferior labial artery": [
+    "onderste lipslagader"
+  ],
+  "inferior labial veins": [
+    "onderste lipaders"
+  ],
+  "inferior lateral genicular artery": [
+    "onderste buitenste knieslagader"
+  ],
+  "inferior leaflet of right atrioventricular valve": [
+    "onderste klepblad tussen rechterboezem en rechterkamer"
+  ],
+  "inferior lingular artery of left lung": [
+    "onderste lingulaslagader van de linkerlong"
+  ],
   "inferior lingular segmental bronchus of left lung (bv)": [
     "onderste lingulasegmentbronchus van de linkerlong (BV)"
+  ],
+  "inferior lingular vein of left lung": [
+    "onderste lingula-ader van de linkerlong"
+  ],
+  "inferior lobar artery of right lung": [
+    "onderkwabslagader van de rechterlong"
   ],
   "inferior lobe of left lung": [
     "onderkwab van de linkerlong"
@@ -1250,20 +1352,47 @@
   "inferior lobe of right lung": [
     "onderkwab van de rechterlong"
   ],
+  "inferior medial genicular artery": [
+    "onderste binnenste knieslagader"
+  ],
+  "inferior mesenteric artery": [
+    "onderste darmslagader"
+  ],
+  "inferior mesenteric vein": [
+    "onderste darmader"
+  ],
   "inferior nasal concha bone": [
     "onderste neusschelp"
   ],
   "inferior oblique muscle": [
     "onderste schuine oogspier"
   ],
+  "inferior ophthalmic vein": [
+    "onderste oogader"
+  ],
   "inferior pancreatic nodes": [
     "onderste alvleesklierlymfeklieren"
+  ],
+  "inferior pancreaticoduodenal artery": [
+    "onderste slagader van alvleesklier en twaalfvingerige darm"
+  ],
+  "inferior papillary muscle of left ventricle": [
+    "onderste papillairspier van de linkerhartkamer"
+  ],
+  "inferior papillary muscle of right ventricle": [
+    "onderste papillairspier van de rechterhartkamer"
   ],
   "inferior parathyroid gland": [
     "onderste bijschildklier"
   ],
+  "inferior petrosal sinus": [
+    "onderste steenbeenveneuze sinus"
+  ],
   "inferior pharyngeal constrictor": [
     "onderste keelholtesnoerder"
+  ],
+  "inferior phrenic artery": [
+    "onderste middenrifslagader"
   ],
   "inferior pubic ligament": [
     "onderste schaambeenband"
@@ -1271,23 +1400,50 @@
   "inferior rectus muscle": [
     "onderste rechte oogspier"
   ],
+  "inferior sagittal sinus": [
+    "onderste sagittale hersenveneuze sinus"
+  ],
   "inferior subtendinous bursa of biceps femoris muscle": [
     "onderste slijmbeurs onder de pees van de tweehoofdige dijspier"
   ],
   "inferior superficial inguinal nodes": [
     "onderste oppervlakkige lieslymfeklieren"
   ],
+  "inferior suprarenal artery": [
+    "onderste bijnierslagader"
+  ],
   "inferior tarsus": [
     "onderste ooglidplaat"
+  ],
+  "inferior thyroid artery": [
+    "onderste schildklierslagader"
   ],
   "inferior tracheobronchial nodes": [
     "onderste lymfeklieren tussen luchtpijp en bronchiën"
   ],
+  "inferior ulnar collateral artery": [
+    "onderste zijtakslagader bij de ellepijp"
+  ],
+  "inferior vein of left ventricle": [
+    "onderste ader van de linkerhartkamer"
+  ],
+  "inferior vein of left ventricle (//posterior '')": [
+    "achterste onderste ader van de linkerhartkamer (bronlabel nazien)"
+  ],
   "inferior vena cava": [
     "onderste holle ader"
   ],
+  "inferior vena cava (abdominal part)": [
+    "buikdeel van de onderste holle ader"
+  ],
+  "inferior vena cava (thoracic part)": [
+    "borstdeel van de onderste holle ader"
+  ],
   "infra-auricular nodes": [
     "lymfeklieren onder het oor"
+  ],
+  "infra-orbital artery": [
+    "slagader onder de oogkas"
   ],
   "infraclavicular nodes": [
     "lymfeklieren onder het sleutelbeen"
@@ -1303,6 +1459,15 @@
   ],
   "innermost intercostal muscles": [
     "diepste tussenribspieren"
+  ],
+  "insular branches of middle cerebral artery (m2-segment)": [
+    "takken naar het herseneiland van de middelste hersenslagader (M2-segment)"
+  ],
+  "insular branches of middle cerebral artery (m2)": [
+    "takken naar het herseneiland van de middelste hersenslagader (M2)"
+  ],
+  "intercapitular veins of foot": [
+    "aders tussen de koppen van de middenvoetsbeentjes"
   ],
   "interclavicular ligament": [
     "band tussen de sleutelbeenderen"
@@ -1354,6 +1519,21 @@
   ],
   "internal intercostal muscles": [
     "binnenste tussenribspieren"
+  ],
+  "internal jugular vein": [
+    "inwendige halsader"
+  ],
+  "internal pudendal artery": [
+    "inwendige schaamstreekslagader"
+  ],
+  "internal pudendal vein": [
+    "inwendige schaamstreekader"
+  ],
+  "internal thoracic artery": [
+    "inwendige borstslagader"
+  ],
+  "internal thoracic veins": [
+    "inwendige borstaders"
   ],
   "interosseous membrane of forearm": [
     "bindweefselvlies tussen spaakbeen en ellepijp"
@@ -1466,6 +1646,18 @@
   "intrapulmonary nodes": [
     "lymfeklieren binnen in de long"
   ],
+  "intrarenal arteries of left kidney": [
+    "slagaders binnen in de linkernier"
+  ],
+  "intrarenal arteries of right kidney": [
+    "slagaders binnen in de rechternier"
+  ],
+  "intrarenal veins of left kidney": [
+    "aders binnen in de linkernier"
+  ],
+  "intrarenal veins of right kidney": [
+    "aders binnen in de rechternier"
+  ],
   "investing abdominal fascia": [
     "omhullende fascie van de buik"
   ],
@@ -1487,6 +1679,9 @@
   "kidney": [
     "nier"
   ],
+  "lacrimal artery": [
+    "traanklierslagader"
+  ],
   "lacrimal bone": [
     "traanbeen"
   ],
@@ -1502,6 +1697,12 @@
   "lateral axillary nodes": [
     "buitenste oksellymfeklieren"
   ],
+  "lateral basal segmental artery of left lung": [
+    "buitenste basale segmentale slagader van de linkerlong"
+  ],
+  "lateral basal segmental artery of right lung": [
+    "buitenste basale segmentale slagader van de rechterlong"
+  ],
   "lateral basal segmental bronchus of left lung (bix)": [
     "buitenste basale segmentbronchus van de linkerlong (BIX)"
   ],
@@ -1510,6 +1711,12 @@
   ],
   "lateral caval nodes": [
     "lymfeklieren naast de holle ader"
+  ],
+  "lateral circumflex femoral artery": [
+    "buitenste omgaande dijbeenslagader"
+  ],
+  "lateral circumflex femoral veins": [
+    "buitenste omgaande dijbeenaders"
   ],
   "lateral common iliac nodes": [
     "buitenste lymfeklieren bij de gemeenschappelijke bekkenvaten"
@@ -1522,6 +1729,9 @@
   ],
   "lateral femoral intermuscular septum": [
     "buitenste bindweefselschot van het bovenbeen"
+  ],
+  "lateral frontobasal artery": [
+    "buitenste voorhoofd-basis-slagader"
   ],
   "lateral head of flexor hallucis brevis": [
     "buitenste kop van de korte grote-teenbuiger"
@@ -1538,11 +1748,23 @@
   "lateral meniscus": [
     "buitenmeniscus"
   ],
+  "lateral occipital artery": [
+    "buitenste achterhoofdsslagader"
+  ],
   "lateral patellar retinaculum": [
     "buitenste steunband van de knieschijf"
   ],
   "lateral pericardial nodes": [
     "buitenste lymfeklieren bij het hartzakje"
+  ],
+  "lateral plantar artery": [
+    "buitenste voetzoolslagader"
+  ],
+  "lateral plantar veins": [
+    "buitenste voetzooladers"
+  ],
+  "lateral pontine branches of basilar artery": [
+    "buitenste takken van de basilaire slagader naar de hersenbrug"
   ],
   "lateral process of nasal septal cartilage": [
     "zijwaarts uitsteeksel van het neustussenschotkraakbeen"
@@ -1552,6 +1774,12 @@
   ],
   "lateral sacral nodes": [
     "lymfeklieren naast het heiligbeen"
+  ],
+  "lateral sacral veins": [
+    "buitenste heiligbeenaders"
+  ],
+  "lateral segmental artery of right lung": [
+    "buitenste segmentale slagader van de rechterlong"
   ],
   "lateral segmental bronchus of right lung (biv)": [
     "buitenste segmentbronchus van de rechterlong (BIV)"
@@ -1565,11 +1793,23 @@
   "lateral talocalcaneal ligament": [
     "buitenste band tussen sprongbeen en hielbeen"
   ],
+  "lateral tarsal artery": [
+    "buitenste voetwortelslagader"
+  ],
   "lateral temporomandibular ligament": [
     "buitenste band van het kaakgewricht"
   ],
+  "lateral thoracic artery": [
+    "buitenste borstkas-slagader"
+  ],
+  "lateral thoracic vein": [
+    "buitenste borstkasader"
+  ],
   "lateral thyrohyoid ligament": [
     "buitenste band tussen schildkraakbeen en tongbeen"
+  ],
+  "lateral vein of right lung": [
+    "buitenste ader van de rechterlong"
   ],
   "lateral ventricle": [
     "zijventrikel van de hersenen"
@@ -1583,8 +1823,17 @@
   "left anterior lateral segment of liver (iii)": [
     "linker voorste buitenste leversegment (III)"
   ],
+  "left ascending lumbar vein": [
+    "linker opstijgende lendenader"
+  ],
   "left atrium": [
     "linkerboezem"
+  ],
+  "left brachiocephalic vein": [
+    "linker arm-hoofdader"
+  ],
+  "left colic artery": [
+    "linker dikke-darmslagader"
   ],
   "left colic nodes": [
     "lymfeklieren bij het linkerdeel van de dikke darm"
@@ -1595,8 +1844,20 @@
   "left coronary artery": [
     "linker kransslagader"
   ],
+  "left coronary leaflet": [
+    "linker kransvormig klepblad van de aortaklep"
+  ],
+  "left gastric artery": [
+    "linker maagslagader"
+  ],
+  "left gastro-omental vein": [
+    "linker maag-vetschortader"
+  ],
   "left inferior lobar bronchus": [
     "onderkwabbronchus van de linkerlong"
+  ],
+  "left inferior pulmonary vein": [
+    "linker onderste longader"
   ],
   "left lobe of thymus": [
     "linkerdeel van de thymus"
@@ -1622,8 +1883,32 @@
   "left renal vein": [
     "linker nierader"
   ],
+  "left semilunar leaflet of pulmonary valve": [
+    "linker halvemaanvormige klepblad van de longslagaderklep"
+  ],
+  "left subclavian artery": [
+    "linker ondersleutelbeenslagader"
+  ],
+  "left subclavian vein": [
+    "linker ondersleutelbeenader"
+  ],
+  "left subcostal vein": [
+    "linker onderribader"
+  ],
+  "left superior intercostal vein": [
+    "linker bovenste tussenribader"
+  ],
   "left superior lobar bronchus": [
     "bovenkwabbronchus van de linkerlong"
+  ],
+  "left superior pulmonary vein": [
+    "linker bovenste longader"
+  ],
+  "left testicular artery": [
+    "linker teelbalslagader"
+  ],
+  "left testicular vein": [
+    "linker teelbalader"
   ],
   "left ventricle": [
     "linkerhartkamer"
@@ -1661,6 +1946,12 @@
   "linea alba": [
     "witte buiklijn"
   ],
+  "lingual vein": [
+    "tongader"
+  ],
+  "lingular vein of left lung": [
+    "lingula-ader van de linkerlong"
+  ],
   "liver": [
     "lever"
   ],
@@ -1675,6 +1966,9 @@
   ],
   "long plantar ligament": [
     "lange voetzoolband"
+  ],
+  "long posterior ciliary arteries": [
+    "lange achterste straallichaamslagaders van het oog"
   ],
   "longissimus capitis muscle": [
     "lange hoofdspier"
@@ -1711,6 +2005,12 @@
   ],
   "lower second premolar": [
     "tweede kleine kies in de onderkaak"
+  ],
+  "lumbar arteries": [
+    "lendenslagaders"
+  ],
+  "lumbar branch of iliolumbar artery": [
+    "lendentaak van de darmbeen-lendenslagader"
   ],
   "lumbrical muscles of foot": [
     "wormvormige spieren van de voet"
