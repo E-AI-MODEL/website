@@ -1,6 +1,7 @@
 // Hartslaglab: een bestuurbaar vereenvoudigd 3D-model, geen medische patiëntsimulator.
 // Alle grafieken, klepbewegingen, kamerbewegingen en stroomdeeltjes gebruiken dezelfde fase.
 import {PHASES,volume,pressure,mechanics,phaseFor} from './cycle.js';
+import {CHAMBERS,VESSELS,VALVES,ANATOMY_PARTS,FLOW_PATHS,leafletGeometry,chamberGeometry,tubeGeometry,ringGeometry,septumGeometry,muscleRidges,TENDINOUS_CORDS} from './anatomyGeometry.js';
 const $=id=>document.getElementById(id);
 const TAU=Math.PI*2;
 const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
@@ -8,7 +9,7 @@ const lerp=(a,b,t)=>a+(b-a)*t;
 const ease=t=>{t=clamp(t,0,1);return t*t*(3-2*t);};
 const span=(t,a,b)=>ease((t-a)/(b-a));
 const fmt=(v,n=0)=>Number(v).toLocaleString('nl-NL',{minimumFractionDigits:n,maximumFractionDigits:n});
-const state={t:0,playing:!matchMedia('(prefers-reduced-motion: reduce)').matches,speed:1,yaw:-.20,pitch:.08,zoom:5.95,selected:null,showLabels:true,showFlow:true,tab:'phase',rate:75,last:0,drag:null};
+const state={cutaway:true,t:0,playing:!matchMedia('(prefers-reduced-motion: reduce)').matches,speed:1,yaw:-.20,pitch:.08,zoom:5.95,selected:null,showLabels:true,showFlow:true,tab:'phase',rate:75,last:0,drag:null};
 const m4=()=>{
   const o=new Float32Array(16);o[0]=o[5]=o[10]=o[15]=1;return o;
 };
@@ -69,45 +70,6 @@ function tube(path,radius=.095,segments=10){
   }
   return {v:new Float32Array(v),n:new Float32Array(n),count:v.length/3};
 }
-function valveLeaflets(open,semilunar){
-  // Two bendable leaflets. Open: central points move off the ring plane.
-  // The simplified geometry is not a surgical representation of a valve.
-  const v=[],n=[],axis=semilunar?1:-1;
-  for(const side of [-1,1]){
-    const central=[side*open*.15,axis*.32*open,0];
-    for(let j=0;j<12;j++){
-      const t=j/12,u=(j+1)/12,theta1=(side===-1?Math.PI/2:Math.PI*1.5)+Math.PI*t;
-      const theta2=(side===-1?Math.PI/2:Math.PI*1.5)+Math.PI*u;
-      const p=[.30*Math.cos(theta1),0,.30*Math.sin(theta1)];
-      const q=[.30*Math.cos(theta2),0,.30*Math.sin(theta2)];
-      v.push(...central,...p,...q);n.push(0,1,0,0,1,0,0,1,0);
-    }
-  }
-  return {v:new Float32Array(v),n:new Float32Array(n),count:v.length/3};
-}
-const SHAPES={
-  ra:{pos:[-.57,.57,.36],scale:[.43,.39,.35],color:[.30,.66,.84],label:'Rechterboezem'},
-  rv:{pos:[-.37,-.35,.23],scale:[.52,.71,.44],color:[.22,.52,.75],label:'Rechterkamer'},
-  la:{pos:[.50,.56,-.22],scale:[.43,.37,.36],color:[.92,.54,.45],label:'Linkerboezem'},
-  lv:{pos:[.34,-.38,-.24],scale:[.57,.77,.49],color:[.79,.34,.30],label:'Linkerkamer'}
-};
-const VESSELS=[
-  {id:'ao',color:[.90,.45,.37],radius:.145,path:[[.38,.14,-.15],[.59,.47,-.17],[.72,1.18,-.17],[.40,1.57,-.40],[-.12,1.47,-.48],[-.42,1.06,-.55]],label:'Aorta'},
-  {id:'pa',color:[.29,.69,.85],radius:.135,path:[[-.43,.10,.34],[-.69,.53,.42],[-.93,1.13,.33],[-1.31,1.20,.30]],label:'Longslagader'},
-  {id:'svc',color:[.24,.54,.78],radius:.13,path:[[-.83,1.84,.36],[-.75,1.24,.35],[-.59,.70,.35]],label:'Bovenste holle ader'},
-  {id:'ivc',color:[.24,.54,.78],radius:.115,path:[[-.84,-1.52,.36],[-.76,-.71,.42],[-.57,.41,.35]],label:'Onderste holle ader'},
-  {id:'pv',color:[.93,.49,.42],radius:.115,path:[[1.46,.80,-.29],[1.04,.74,-.30],[.61,.60,-.21]],label:'Longaders'}
-];
-const VALVES=[
-  {id:'tricuspid',pos:[-.44,.12,.30],type:'av',label:'Tricuspidalisklep'},
-  {id:'mitral',pos:[.46,.12,-.22],type:'av',label:'Mitralisklep'},
-  {id:'pulmonary',pos:[-.52,.35,.37],type:'sem',label:'Longslagaderklep'},
-  {id:'aortic',pos:[.58,.37,-.17],type:'sem',label:'Aortaklep'}
-];
-const PARTS={
-  ...Object.fromEntries(Object.entries(SHAPES).map(([id,v])=>[id,{pos:v.pos,label:v.label}])),
-  ao:{pos:[.68,1.25,-.20],label:'Aorta'},pa:{pos:[-1.02,1.10,.34],label:'Longslagader'}
-};
 const COLORS={red:[.98,.63,.53],blue:[.47,.82,.98]};
 const canvas=$('heartCanvas'),stage=$('stage');
 let gl,program,pointProgram,meshes={},pv=m4(),loc={},ploc={},particleBuffer;
@@ -123,8 +85,22 @@ function setupModel(){
   for(const k of ['position','normal','pv','model','tint','alpha'])loc[k]=k==='position'||k==='normal'?gl.getAttribLocation(program,k):gl.getUniformLocation(program,k);
   for(const k of ['position','pv','size','tint'])ploc[k]=k==='position'?gl.getAttribLocation(pointProgram,k):gl.getUniformLocation(pointProgram,k);
   meshes.sphere=upload(sphere());
-  meshes.valve=upload(valveLeaflets(false,false));
-  VESSELS.forEach(v=>meshes[v.id]=upload(tube(v.path,v.radius)));
+  meshes.chambers={};
+  for(const [id,part] of Object.entries(CHAMBERS)){
+    const geometry=chamberGeometry(part);
+    meshes.chambers[id]=Object.fromEntries(Object.entries(geometry).map(([name,data])=>[name,upload(data)]));
+  }
+  meshes.septum=upload(septumGeometry());
+  meshes.ridges={};
+  for(const [id,part] of Object.entries(CHAMBERS))
+    meshes.ridges[id]=muscleRidges(part).map(r=>({mesh:upload(tubeGeometry(r.path,r.radius)),color:r.color}));
+  meshes.cords=TENDINOUS_CORDS.map(c=>upload(tubeGeometry(c.path,.008,8)));
+  meshes.vessels={};
+  VESSELS.forEach(v=>{meshes.vessels[v.id]=upload(tubeGeometry(v.path,v.radius));});
+  meshes.valves={};
+  for(const v of VALVES){
+    meshes.valves[v.id]={leaflets:upload(leafletGeometry(v,0)),rim:upload(ringGeometry(v.type==='sem'?.18:.23,.022))};
+  }
   particleBuffer=gl.createBuffer();gl.enable(gl.DEPTH_TEST);gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);gl.clearColor(.035,.076,.118,1);
   canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();gl=null;$('modelUnavailable').hidden=false;},{passive:false});
   canvas.addEventListener('webglcontextrestored',()=>{$('modelUnavailable').hidden=true;setupModel();});
@@ -150,23 +126,14 @@ function pathPoint(path,t){
   for(let i=0;i<lengths.length;i++){if(d<=lengths[i]||i===lengths.length-1)return add(path[i],scl(sub(path[i+1],path[i]),d/(lengths[i]||1)));d-=lengths[i];}
   return path[path.length-1];
 }
-const FLOW_PATHS=[
-  // Terugkeer naar de boezems loopt steeds door. Over de AV-kleppen
-  // tonen we uitsluitend stroming tijdens de vulling.
-  {color:'blue',path:[[-.85,1.7,.38],[-.73,1.05,.38],[-.57,.62,.36]],active:()=>true,n:10},
-  {color:'blue',path:[[-.57,.58,.36],[-.51,.18,.34],[-.37,-.36,.35]],active:m=>m.av,n:12},
-  {color:'blue',path:[[-.30,-.49,.39],[-.51,.22,.41],[-.82,.72,.43],[-1.29,1.17,.30]],active:m=>m.sem,n:13},
-  {color:'red',path:[[1.43,.8,-.27],[.9,.72,-.25],[.52,.59,-.22]],active:()=>true,n:10},
-  {color:'red',path:[[.52,.58,-.22],[.46,.18,-.17],[.32,-.49,-.15]],active:m=>m.av,n:12},
-  {color:'red',path:[[.26,-.55,-.20],[.53,.23,-.13],[.68,1.15,-.12],[.47,1.58,-.35],[-.37,1.12,-.47]],active:m=>m.sem,n:14}
-];
 function drawParticles(m){
   if(!state.showFlow)return;
   const batches={red:[],blue:[]};
   for(const flow of FLOW_PATHS){
-    if(!flow.active(m))continue;
+    const open=flow.channel==='return'||(flow.channel==='av'&&m.av)||(flow.channel==='sem'&&m.sem);
+    if(!open)continue;
     for(let i=0;i<flow.n;i++){
-      const progress=(i/flow.n+state.t*(flow.active(m)&&m.sem?2.5:1.25))%1;
+      const progress=(i/flow.n+state.t*(flow.channel==='sem'?2.5:1.25))%1;
       const point=pathPoint(flow.path,progress);
       batches[flow.color].push(...point);
     }
@@ -190,41 +157,69 @@ function updateViewport(){
 }
 function drawScene(m){
   if(!gl)return;
-  updateViewport();gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
+  updateViewport();
+  gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
   gl.depthMask(true);
-  for(const v of VESSELS)drawMesh(meshes[v.id],m4(),v.color,.96);
-  // Klepbladen bewegen zichtbaar met de open/dicht-status.
-  for(const v of VALVES){
-    const open=v.type==='av'?m.av:m.sem;
-    const leaves=valveLeaflets(open,v.type==='sem');
-    gl.bindBuffer(gl.ARRAY_BUFFER,meshes.valve.vb);gl.bufferSubData(gl.ARRAY_BUFFER,0,leaves.v);
-    gl.bindBuffer(gl.ARRAY_BUFFER,meshes.valve.nb);gl.bufferSubData(gl.ARRAY_BUFFER,0,leaves.n);
-    drawMesh(meshes.valve,modelMatrix(v.pos,[.78,.78,.78]),open?[.75,.91,.85]:[.96,.78,.58],.95);
+  // Vaten achter het zichtbare myocard, maar met een herkenbaar doorlopend verloop.
+  for(const vessel of VESSELS)
+    drawMesh(meshes.vessels[vessel.id],m4(),vessel.color,1);
+
+  // Vier holtes met een echte open voorzijde, spierwand en inwendige bekleding.
+  // De kamergeometrie wordt per hartfase opgeschaald. Dit is een didactische
+  // vervorming en geen simulatie van alle vezelrichtingen van het myocard.
+  for(const [id,part] of Object.entries(CHAMBERS)){
+    const isVentricle=part.kind==='ventricle';
+    const factor=isVentricle?m.ventScale:m.atriumScale;
+    const scale=part.scale.map((v,i)=>v*(i===1?factor:Math.sqrt(factor)));
+    const model=modelMatrix(part.pos,scale);
+    const hit=state.selected===id;
+    if(!state.cutaway){
+      drawMesh(meshes.chambers[id].solid,model,hit?[.98,.68,.56]:part.muscle,1);
+      continue;
+    }
+    drawMesh(meshes.chambers[id].outer,model,hit?[.95,.61,.51]:part.muscle,1);
+    drawMesh(meshes.chambers[id].inner,model,part.blood,1);
+    drawMesh(meshes.chambers[id].rim,model,hit?[1,.78,.62]:[.94,.63,.54],1);
+    for(const ridge of meshes.ridges[id])drawMesh(ridge.mesh,model,ridge.color,.96);
   }
-  // Kamers veranderen daadwerkelijk van 3D-volume. Geen vlakke video.
-  gl.depthMask(false);
-  for(const [id,part] of Object.entries(SHAPES)){
-    const isVentricle=id==='rv'||id==='lv';
-    const scaleFactor=isVentricle?m.ventScale:m.atriumScale;
-    const scale=part.scale.map((v,i)=>v*(i===1?scaleFactor:Math.sqrt(scaleFactor)));
-    const color=state.selected===id?part.color.map(c=>Math.min(1,c*1.35)):part.color;
-    drawMesh(meshes.sphere,modelMatrix(part.pos,scale),color,state.selected===id?.83:.58);
+  if(state.cutaway){
+    drawMesh(meshes.septum,m4(),[.91,.59,.52],1);
+    for(const chord of meshes.cords)drawMesh(chord,m4(),[.96,.85,.70],1);
+    // Klepbladen zijn geen statische stippen: twee bij mitralis, drie bij
+    // tricuspidalis en drie bij elk van de halvemaanvormige kleppen.
+    for(const valve of VALVES){
+      const active=valve.type==='av'?m.av:m.sem;
+      const aperture=valve.type==='av'?m.avOpening:m.semOpening;
+      const mesh=meshes.valves[valve.id].leaflets;
+      const leaves=leafletGeometry(valve,aperture);
+      gl.bindBuffer(gl.ARRAY_BUFFER,mesh.vb);gl.bufferSubData(gl.ARRAY_BUFFER,0,leaves.v);
+      gl.bindBuffer(gl.ARRAY_BUFFER,mesh.nb);gl.bufferSubData(gl.ARRAY_BUFFER,0,leaves.n);
+      drawMesh(meshes.valves[valve.id].rim,modelMatrix(valve.pos,[1,1,1]),[.96,.75,.59],1);
+      drawMesh(mesh,modelMatrix(valve.pos,[1,1,1]),active?[.91,.90,.71]:[.96,.69,.53],1);
+    }
   }
-  gl.depthMask(true);drawParticles(m);
+  gl.depthMask(true);
+  drawParticles(m);
   updateLabels();
 }
 function updateLabels(){
   const w=canvas.clientWidth,h=canvas.clientHeight;
+  const offsets={
+    ra:[-60,-20],rv:[-68,20],la:[54,-22],lv:[65,24],ao:[53,-5],pa:[-60,-8]
+  };
   for(const el of $('labels').children){
-    const part=PARTS[el.dataset.part],position=project(part.pos,pv,w,h);
-    el.style.left=clamp(position[0],48,w-48)+'px';el.style.top=clamp(position[1],33,h-30)+'px';
-    el.hidden=!state.showLabels||position[2]<=0;
+    const part=ANATOMY_PARTS[el.dataset.part];
+    if(!part)continue;
+    const p=project(part.pos,pv,w,h),off=offsets[el.dataset.part]||[0,0];
+    el.style.left=clamp(p[0]+off[0],45,w-45)+'px';
+    el.style.top=clamp(p[1]+off[1],30,h-35)+'px';
+    el.hidden=!state.showLabels||p[2]<=0;
     el.classList.toggle('active',state.selected===el.dataset.part);
   }
 }
 function selectedPartAt(x,y){
-  let best=null,score=50;
-  for(const [id,part] of Object.entries(PARTS)){
+  let best=null,score=55;
+  for(const [id,part] of Object.entries(ANATOMY_PARTS)){
     const p=project(part.pos,pv,canvas.clientWidth,canvas.clientHeight);
     const dist=Math.hypot(p[0]-x,p[1]-y);
     if(p[2]>0&&dist<score){best=id;score=dist;}
@@ -233,8 +228,20 @@ function selectedPartAt(x,y){
 }
 function positionInfo(id){
   state.selected=id;
-  const label=PARTS[id]?.label;
-  $('partInfo').textContent=label?label+' geselecteerd. Volg hoe dit deel tijdens de hartslag verandert.':'Sleep om het hart te draaien. Kies een onderdeel om het te onderzoeken.';
+  const part=ANATOMY_PARTS[id];
+  if(!part){$('partInfo').textContent='Sleep om het hart te draaien. Kies een onderdeel om het te onderzoeken.';return;}
+  if(part.type==='valve'){
+    const v=VALVES.find(v=>v.id===id),m=mechanics(state.t);
+    const open=v.type==='av'?m.av:m.sem;
+    $('partInfo').textContent=part.label+' · '+(open?'open':'gesloten')+'. Let op de klepbladen en de stroomrichting.';
+    return;
+  }
+  const extra=id==='lv'?'De dikke spierwand perst bloed naar de aorta.':
+    id==='rv'?'Deze kamer pompt bloed naar de longslagader.':
+    id==='septum'?'Het tussenschot houdt beide kamers gescheiden.':
+    id==='ao'?'Voert zuurstofrijk bloed naar het lichaam.':
+    id==='pa'?'Voert zuurstofarm bloed naar de longen.':'Volg dit deel tijdens één hartslag.';
+  $('partInfo').textContent=part.label+' · '+extra;
 }
 function drawChart(id,fn,color,max,unit){
   const canvas=$(id),dpr=Math.min(devicePixelRatio||1,2),width=canvas.clientWidth,height=canvas.clientHeight;
@@ -290,6 +297,11 @@ $('nextPhase').addEventListener('click',()=>setTime(PHASES[(phaseFor(state.t)+1)
 $('scrub').addEventListener('input',e=>setTime(Number(e.target.value)/1000,true));
 $('speed').addEventListener('change',e=>{state.speed=Number(e.target.value);});
 $('timeline').querySelectorAll('button').forEach(btn=>btn.addEventListener('click',()=>setTime(PHASES[Number(btn.dataset.phase)].at,true)));
+$('sectionToggle').addEventListener('click',()=>{
+  state.cutaway=!state.cutaway;
+  $('sectionToggle').textContent=state.cutaway?'Doorsnede aan':'Buitenkant aan';
+  $('sectionToggle').setAttribute('aria-pressed',String(state.cutaway));
+});
 $('labelsToggle').addEventListener('click',()=>{state.showLabels=!state.showLabels;$('labelsToggle').textContent=state.showLabels?'Namen aan':'Namen uit';$('labelsToggle').setAttribute('aria-pressed',String(state.showLabels));});
 $('flowToggle').addEventListener('click',()=>{state.showFlow=!state.showFlow;$('flowToggle').textContent=state.showFlow?'Bloedstroom aan':'Bloedstroom uit';$('flowToggle').setAttribute('aria-pressed',String(state.showFlow));});
 $('resetCamera').addEventListener('click',()=>{state.yaw=-.20;state.pitch=.08;state.zoom=5.95;positionInfo(null);});
@@ -341,7 +353,7 @@ canvas.addEventListener('touchend',()=>{state.pinch=null;});
 let resize=new ResizeObserver(()=>{if(gl)render();});resize.observe(stage);
 setupModel();syncPlay();
 window.__EAI_HEART_LAB__={
-  get state(){return {t:state.t,playing:state.playing,speed:state.speed,yaw:state.yaw,zoom:state.zoom,selected:state.selected};},
+  get state(){return {t:state.t,playing:state.playing,speed:state.speed,yaw:state.yaw,zoom:state.zoom,selected:state.selected,cutaway:state.cutaway};},
   get metrics(){return mechanics(state.t);},
   setTime:t=>setTime(t,true),pause:()=>{state.playing=false;syncPlay();},
   get rendererReady(){return Boolean(gl);}
