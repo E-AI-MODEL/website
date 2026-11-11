@@ -14,6 +14,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SIDE = re.compile(r"\.[lr]$")
 PLACEHOLDERS = {"?", "?x", "????????"}
+UNCLEAR_SOURCE_KEYS = {
+    "????????", "?x", "central canal'", "lat_fis-ant-horizont",
+    "lat_fis-ant-vertical", "lat_fis-post", "sulcus interm_prim-jensen",
+}
 TYPO_TOKENS = ("metarcapi", "quatum", "articulareae", "articulariae",
                "metacarpophalnageae", "interphalangelorum", "glenohumerae", "latérales")
 
@@ -56,6 +60,8 @@ def audit(root: Path = ROOT):
             flags = []
             if base.lower() in PLACEHOLDERS or latin.strip().lower() in PLACEHOLDERS:
                 flags.append("placeholder")
+            if base.lower() in UNCLEAR_SOURCE_KEYS:
+                flags.append("bron_naam_onduidelijk")
             if any(t in latin.lower() for t in TYPO_TOKENS):
                 flags.append("latijn_nakijken")
             if base == "Articular capsules of metatarsophalangeal joints" and "glenohum" in latin.lower():
@@ -98,6 +104,7 @@ def audit(root: Path = ROOT):
         "unieke_structuren": len(unique),
         "stelsels": dict(models),
         "naamdekking_per_stelsel": names_by_system,
+        "onduidelijke_bronnamen": sorted(UNCLEAR_SOURCE_KEYS),
         "gelijke_nederlandse_labels": duplicate_labels,
         "nederlandse_namen_uniek": sum(k in names for k in keys),
         "nederlandse_uitleg_uniek": sum(k in guide_keys for k in keys),
