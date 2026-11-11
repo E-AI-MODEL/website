@@ -73,6 +73,7 @@ try {
   const size=await mobile.evaluate(()=>({scroll:document.documentElement.scrollWidth,inner:innerWidth,canvas:document.getElementById('heartCanvas').getBoundingClientRect().width}));
   assert(size.scroll<=size.inner+6,'Mobiele pagina mag niet horizontaal overlopen: '+JSON.stringify(size));
   assert(size.canvas>280,'Hartmodel moet groot genoeg blijven op mobiel');
+  await mobile.evaluate(()=>window.__EAI_HEART_LAB__.setTime(0));
   await mobile.locator('#nextPhase').click();
   const t=await mobile.evaluate(()=>window.__EAI_HEART_LAB__.state.t);
   assert(t>.5&&t<.53,'Fasebediening moet op mobiel werken');
