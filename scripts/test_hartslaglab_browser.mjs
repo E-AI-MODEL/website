@@ -46,6 +46,8 @@ try {
   const atlas=await page.evaluate(()=>window.__EAI_HEART_LAB__.state);
   assert(atlas.atlasReady&&atlas.atlasPartCount>=20,'Het echte atlasmodel moet geladen zijn');
   const outsideFrame=await page.locator('#heartCanvas').screenshot();
+  mkdirSync('test-results',{recursive:true});
+  await page.screenshot({path:'test-results/hartslaglab-'+engine+'-desktop-atlas.png',fullPage:true});
   await page.locator('#sectionToggle').click();
   assert.equal(await page.locator('#sectionToggle').getAttribute('aria-pressed'),'true');
   assert.equal(await page.evaluate(()=>window.__EAI_HEART_LAB__.state.cutaway),true);
