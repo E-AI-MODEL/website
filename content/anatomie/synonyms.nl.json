@@ -1,9 +1,33 @@
 {
+  "(abdominal part of pectoralis major muscle)": [
+    "buikdeel van de grote borstspier"
+  ],
+  "(adductor minimus)": [
+    "kleine aanvoerderspier"
+  ],
+  "(iliopectineal bursa)": [
+    "slijmbeurs tussen darmbeen en schaambeen"
+  ],
+  "(opponens digiti minimi muscle of foot)": [
+    "tegensteller van de kleine teen"
+  ],
   "abdominal aorta": [
     "buikaorta"
   ],
+  "abductor digiti minimi of foot": [
+    "afvoerder van de kleine teen"
+  ],
+  "abductor digiti minimi of hand": [
+    "afvoerder van de pink"
+  ],
   "abductor hallucis": [
     "afvoerder van de grote teen"
+  ],
+  "abductor pollicis brevis": [
+    "korte duimafvoerder"
+  ],
+  "abductor pollicis longus": [
+    "lange duimafvoerder"
   ],
   "accessory pancreatic duct": [
     "bijkomende afvoergang van de alvleesklier"
@@ -38,6 +62,15 @@
   "annular ligament of radius": [
     "ringband van het spaakbeen"
   ],
+  "anserine bursa": [
+    "slijmbeurs bij de ganzenvoet van de knie"
+  ],
+  "antebrachial fascia": [
+    "onderarmfascie"
+  ],
+  "anterior belly of digastric muscle": [
+    "voorste buik van de tweehuikige spier"
+  ],
   "anterior cells of ethmoid bone": [
     "voorste zeefbeencellen"
   ],
@@ -53,8 +86,14 @@
   "anterior horn of spinal cord": [
     "voorhoorn van het ruggenmerg"
   ],
+  "anterior intermuscular septum of leg": [
+    "voorste bindweefselschot van het onderbeen"
+  ],
   "anterior interventricular artery": [
     "voorste slagader tussen de hartkamers"
+  ],
+  "anterior layer of thoracolumbar fascia": [
+    "voorste laag van de borst-lendenfascie"
   ],
   "anterior ligament of fibular head": [
     "voorste band bij de kuitbeenkop"
@@ -149,6 +188,9 @@
   "articular disc of temporomandibular joint": [
     "gewrichtsschijf van het kaakgewricht"
   ],
+  "ary-epiglottic part of oblique arytenoid muscle": [
+    "bekerkraakbeen-strotklepdeel van de schuine bekerkraakbeenspier"
+  ],
   "arytenoid cartilage": [
     "bekerkraakbeen"
   ],
@@ -157,6 +199,9 @@
   ],
   "ascending colon": [
     "opstijgende dikke darm"
+  ],
+  "ascending part of trapezius muscle": [
+    "opstijgend deel van de monnikskapspier"
   ],
   "atlas (c1)": [
     "atlaswervel"
@@ -173,6 +218,9 @@
   "biceps brachii": [
     "biceps bovenarm"
   ],
+  "bicipitoradial bursa": [
+    "slijmbeurs tussen bicepspees en spaakbeen"
+  ],
   "bile duct": [
     "galgang"
   ],
@@ -181,6 +229,9 @@
   ],
   "brachial artery": [
     "armslagader"
+  ],
+  "brachial fascia": [
+    "bovenarmfascie"
   ],
   "brachialis muscle": [
     "opperarmspier"
@@ -193,6 +244,12 @@
   ],
   "bronchus": [
     "luchtpijptak"
+  ],
+  "bucinator": [
+    "wangspier"
+  ],
+  "bursa of piriformis muscle": [
+    "slijmbeurs bij de peervormige spier"
   ],
   "calcaneal tendon": [
     "achillespees"
@@ -230,6 +287,12 @@
   "clavicular part of deltoid muscle": [
     "voorste deel van de deltaspier"
   ],
+  "clavipectoral fascia": [
+    "bindweefselvlies tussen sleutelbeen en borstspieren"
+  ],
+  "coccygeus muscle": [
+    "staartbeenspier"
+  ],
   "coccyx": [
     "staartbeen"
   ],
@@ -245,14 +308,26 @@
   "collateral metatarsophalangeal ligaments": [
     "zijbanden van de gewrichten aan de basis van de tenen"
   ],
+  "common flexor tendon sheath": [
+    "gemeenschappelijke peesschede van de buigspieren"
+  ],
   "common iliac artery": [
     "gemeenschappelijke bekkenslagader"
   ],
   "common iliac vein": [
     "gemeenschappelijke bekkenader"
   ],
+  "common tendinous ring": [
+    "gemeenschappelijke peesring in de oogkas"
+  ],
+  "common tendon sheath of fibularis muscles": [
+    "gemeenschappelijke peesschede van de kuitbeenspieren"
+  ],
   "conoid ligament": [
     "kegelvormige band tussen sleutelbeen en schouderblad"
+  ],
+  "coracobrachial bursa": [
+    "slijmbeurs bij de ravenbek-armspier"
   ],
   "coracobrachialis muscle": [
     "ravenbekarmspier"
@@ -268,6 +343,9 @@
   ],
   "corpus spongiosum of penis": [
     "sponsachtig zwellichaam van de penis"
+  ],
+  "corrugator supercilii": [
+    "wenkbrauwfronser"
   ],
   "costal cartilage": [
     "ribkraakbeen"
@@ -311,6 +389,12 @@
   "cricopharyngeal ligament": [
     "band tussen ringkraakbeen en keelholte"
   ],
+  "cruciform part of fibrous sheath of digit of hand": [
+    "kruisvormig deel van de bindweefselpeesschede van de vinger"
+  ],
+  "crural fascia": [
+    "onderbeenfascie"
+  ],
   "cuboid bone": [
     "kubusbeen"
   ],
@@ -326,6 +410,18 @@
   "deep femoral vein": [
     "diepe dijbeenader"
   ],
+  "deep head of flexor pollicis brevis": [
+    "diepe kop van de korte duimbuiger"
+  ],
+  "deep head of pronator teres": [
+    "diepe kop van de ronde pronatorspier"
+  ],
+  "deep infrapatellar bursa": [
+    "diepe slijmbeurs onder de knieschijf"
+  ],
+  "deep part of masseter": [
+    "diep deel van de kauwspier"
+  ],
   "deep part of tibial collateral ligament": [
     "diepe deel van de binnenste knieband"
   ],
@@ -335,8 +431,20 @@
   "deep transverse metatarsal ligament": [
     "diepe dwarse band tussen middenvoetsbeentjes"
   ],
+  "deltoid fascia": [
+    "bindweefselvlies over de deltaspier"
+  ],
   "deltoid muscle": [
     "deltaspier"
+  ],
+  "depressor anguli oris": [
+    "neertrekker van de mondhoek"
+  ],
+  "depressor labii inferioris": [
+    "neertrekker van de onderlip"
+  ],
+  "depressor septi nasi": [
+    "neertrekker van het neustussenschot"
   ],
   "descending colon": [
     "dalende dikke darm"
@@ -344,8 +452,14 @@
   "descending part of iliofemoral ligament": [
     "dalend deel van de darmbeen-dijbeenband"
   ],
+  "descending part of trapezius muscle": [
+    "dalend deel van de monnikskapspier"
+  ],
   "diaphragm": [
     "middenrif"
+  ],
+  "diaphragmatic fascia": [
+    "middenriffascie"
   ],
   "distal phalanx of fifth finger of foot": [
     "eindkootje van de vijfde teen"
@@ -383,17 +497,29 @@
   "dorsal cuneonavicular ligaments": [
     "banden boven op de voet tussen wigvormige beentjes en scheepvormig been"
   ],
+  "dorsal fascia of hand": [
+    "fascie aan de handrug"
+  ],
   "dorsal intercarpal ligaments": [
     "banden op de handrug tussen handwortelbeentjes"
   ],
   "dorsal intercuneiform ligaments": [
     "banden boven op de voet tussen wigvormige voetwortelbeentjes"
   ],
+  "dorsal interossei muscles of foot": [
+    "tussenbeenspieren boven op de voet"
+  ],
+  "dorsal interossei muscles of hand": [
+    "tussenbeenspieren op de handrug"
+  ],
   "dorsal metacarpal ligaments": [
     "banden op de handrug tussen middenhandsbeentjes"
   ],
   "dorsal metatarsal ligaments": [
     "banden op de voetrug tussen middenvoetsbeentjes"
+  ],
+  "dorsal parts of lateral intertransversarii lumborum muscles": [
+    "achterste delen van de zijwaartse tussen-dwarsuitsteekselspieren van de lendenwervels"
   ],
   "dorsal radiocarpal ligament": [
     "band op de handrug tussen spaakbeen en handwortel"
@@ -419,6 +545,9 @@
   "eleventh rib": [
     "elfde rib"
   ],
+  "epicranial aponeurosis": [
+    "peesplaat over de schedel"
+  ],
   "epididymis": [
     "bijbal"
   ],
@@ -428,11 +557,47 @@
   "ethmoid bone": [
     "zeefbeen"
   ],
+  "extensor carpi radialis brevis": [
+    "korte spaakzijdige polsstrekker"
+  ],
+  "extensor carpi radialis longus": [
+    "lange spaakzijdige polsstrekker"
+  ],
+  "extensor digiti minimi": [
+    "pinkstrekker"
+  ],
   "extensor digitorum": [
     "vingerstrekker"
   ],
+  "extensor digitorum brevis": [
+    "korte teenstrekker"
+  ],
+  "extensor digitorum longus": [
+    "lange teenstrekker"
+  ],
+  "extensor hallucis brevis": [
+    "korte grote-teenstrekker"
+  ],
+  "extensor hallucis longus": [
+    "lange grote-teenstrekker"
+  ],
+  "extensor indicis": [
+    "wijsvingerstrekker"
+  ],
+  "extensor pollicis brevis": [
+    "korte duimstrekker"
+  ],
+  "extensor pollicis longus": [
+    "lange duimstrekker"
+  ],
+  "extensor retinaculum of wrist": [
+    "peesband van de polsstrekkers"
+  ],
   "external abdominal oblique muscle": [
     "buitenste schuine buikspier"
+  ],
+  "external anal sphincter": [
+    "uitwendige kringspier van de anus"
   ],
   "external carotid artery": [
     "uitwendige halsslagader"
@@ -445,6 +610,12 @@
   ],
   "external intercostal membrane": [
     "buitenste bindweefselvlies tussen de ribben"
+  ],
+  "external intercostal muscles": [
+    "buitenste tussenribspieren"
+  ],
+  "external part of thyro-arytenoid muscle": [
+    "buitenste deel van de schild-bekerkraakbeenspier"
   ],
   "facial nerve (vii)": [
     "aangezichtszenuw"
@@ -464,6 +635,15 @@
   "fibular collateral ligament": [
     "buitenband van de knie"
   ],
+  "fibularis brevis muscle": [
+    "korte kuitbeenspier"
+  ],
+  "fibularis longus muscle": [
+    "lange kuitbeenspier"
+  ],
+  "fibularis tertius muscle": [
+    "derde kuitbeenspier"
+  ],
   "fifth metacarpal bone": [
     "vijfde middenhandsbeentje"
   ],
@@ -481,6 +661,36 @@
   ],
   "first rib": [
     "eerste rib"
+  ],
+  "flexor carpi radialis": [
+    "spaakzijdige polsbuiger"
+  ],
+  "flexor digiti minimi of foot": [
+    "buiger van de kleine teen"
+  ],
+  "flexor digiti minimi of hand": [
+    "buiger van de pink"
+  ],
+  "flexor digitorum brevis": [
+    "korte teenbuiger"
+  ],
+  "flexor digitorum longus": [
+    "lange teenbuiger"
+  ],
+  "flexor digitorum profundus": [
+    "diepe vingerbuiger"
+  ],
+  "flexor hallucis longus": [
+    "lange grote-teenbuiger"
+  ],
+  "flexor pollicis longus": [
+    "lange duimbuiger"
+  ],
+  "flexor retinaculum of ankle": [
+    "peesband van de enkelbuigers"
+  ],
+  "flexor retinaculum of wrist": [
+    "peesband van de polsbuigers"
   ],
   "fourth metacarpal bone": [
     "vierde middenhandsbeentje"
@@ -500,11 +710,20 @@
   "frontal bone": [
     "voorhoofdsbeen"
   ],
+  "frontalis muscle": [
+    "voorhoofdsspier"
+  ],
   "gallbladder": [
     "galblaas"
   ],
   "gastrocnemius": [
     "kuitspier"
+  ],
+  "genioglossus muscle": [
+    "kin-tongspier"
+  ],
+  "geniohyoid muscle": [
+    "kin-tongbeenspier"
   ],
   "glans clitoridis": [
     "eikel van de clitoris"
@@ -524,6 +743,9 @@
   "gluteus minimus muscle": [
     "kleine bilspier"
   ],
+  "gracilis muscle": [
+    "slanke dijspier"
+  ],
   "hamate bone": [
     "haakbeen"
   ],
@@ -533,8 +755,20 @@
   "hippocampus": [
     "hippocampus"
   ],
+  "humeral head of extensor carpi ulnaris": [
+    "opperarmbeenkop van de ellepijpszijdige polsstrekker"
+  ],
+  "humeral head of flexor carpi ulnaris": [
+    "opperarmbeenkop van de ellepijpszijdige polsbuiger"
+  ],
+  "humero-ulnar head of flexor digitorum superficialis": [
+    "opperarm-ellepijpskop van de oppervlakkige vingerbuiger"
+  ],
   "humerus": [
     "opperarmbeen"
+  ],
+  "hyoglossus muscle": [
+    "tongbeen-tongspier"
   ],
   "hyoid bone": [
     "tongbeen"
@@ -542,14 +776,50 @@
   "hypothalamus": [
     "hypothalamus"
   ],
+  "iliacus muscle": [
+    "darmbeenspier"
+  ],
+  "iliococcygeus muscle": [
+    "darmbeen-staartbeenspier"
+  ],
+  "iliocostalis colli muscle": [
+    "halsdeel van de darmbeen-ribspier"
+  ],
+  "iliocostalis lumborum muscle": [
+    "lendendeel van de darmbeen-ribspier"
+  ],
+  "iliocostalis thoracis muscle": [
+    "borstdeel van de darmbeen-ribspier"
+  ],
   "iliolumbar ligament": [
     "band tussen darmbeen en lendenwervels"
+  ],
+  "iliopectineal arch": [
+    "darmbeen-schaambeenboog"
+  ],
+  "iliopsoas fascia": [
+    "fascie van de darmbeen-lendenspier"
+  ],
+  "iliotibial tract": [
+    "peesplaat aan de buitenkant van het bovenbeen"
   ],
   "incus": [
     "aambeeld"
   ],
+  "inferior extensor retinaculum of ankle": [
+    "onderste peesband van de enkelstrekkers"
+  ],
+  "inferior fibular retinaculum": [
+    "onderste peesband van de kuitbeenspieren"
+  ],
+  "inferior gemellus muscle": [
+    "onderste tweelingspier van de heup"
+  ],
   "inferior glenohumeral ligament": [
     "onderste band van het schoudergewricht"
+  ],
+  "inferior head of lateral pterygoid muscle": [
+    "onderste kop van de buitenste vleugelspier"
   ],
   "inferior lobe of left lung": [
     "onderkwab van de linkerlong"
@@ -560,17 +830,41 @@
   "inferior nasal concha bone": [
     "onderste neusschelp"
   ],
+  "inferior oblique muscle": [
+    "onderste schuine oogspier"
+  ],
   "inferior parathyroid gland": [
     "onderste bijschildklier"
   ],
+  "inferior pharyngeal constrictor": [
+    "onderste keelholtesnoerder"
+  ],
   "inferior pubic ligament": [
     "onderste schaambeenband"
+  ],
+  "inferior rectus muscle": [
+    "onderste rechte oogspier"
+  ],
+  "inferior subtendinous bursa of biceps femoris muscle": [
+    "onderste slijmbeurs onder de pees van de tweehoofdige dijspier"
+  ],
+  "inferior tarsus": [
+    "onderste ooglidplaat"
   ],
   "inferior vena cava": [
     "onderste holle ader"
   ],
   "infrapatellar fat pad": [
     "vetkussen onder de knieschijf"
+  ],
+  "infraspinatus muscle": [
+    "onderdoornspier van het schouderblad"
+  ],
+  "inguinal ligament": [
+    "liesband"
+  ],
+  "innermost intercostal muscles": [
+    "diepste tussenribspieren"
   ],
   "interclavicular ligament": [
     "band tussen de sleutelbeenderen"
@@ -587,6 +881,12 @@
   "intermediate cuneiform bone": [
     "middelste wigvormige voetwortelbeen"
   ],
+  "intermediate tendon of digastric muscle": [
+    "tussenpees van de tweehuikige spier"
+  ],
+  "intermuscular gluteal bursae": [
+    "slijmbeurzen tussen de bilspieren"
+  ],
   "internal abdominal oblique muscle": [
     "binnenste schuine buikspier"
   ],
@@ -601,6 +901,9 @@
   ],
   "internal intercostal membrane": [
     "binnenste bindweefselvlies tussen de ribben"
+  ],
+  "internal intercostal muscles": [
+    "binnenste tussenribspieren"
   ],
   "interosseous membrane of forearm": [
     "bindweefselvlies tussen spaakbeen en ellepijp"
@@ -619,6 +922,15 @@
   ],
   "intersesamoid ligament": [
     "band tussen sesambeentjes"
+  ],
+  "interspinales colli muscles": [
+    "spieren tussen de doornuitsteeksels in de hals"
+  ],
+  "interspinales lumborum muscles": [
+    "spieren tussen de doornuitsteeksels in de onderrug"
+  ],
+  "interspinales thoracis muscles": [
+    "spieren tussen de doornuitsteeksels in de borststreek"
   ],
   "interspinous ligaments": [
     "banden tussen doornuitsteeksels van de wervels"
@@ -652,6 +964,9 @@
   ],
   "intervertebral disc l4-l5": [
     "tussenwervelschijf L4-L5"
+  ],
+  "intervertebral disc l5-s1": [
+    "tussenwervelschijf L5-S1"
   ],
   "intervertebral disc t1-t2": [
     "tussenwervelschijf T1-T2"
@@ -692,6 +1007,9 @@
   "intra-articular ligament of head of rib": [
     "band binnen het gewricht van de ribkop"
   ],
+  "investing abdominal fascia": [
+    "omhullende fascie van de buik"
+  ],
   "ischiofemoral ligament": [
     "zitbeen-dijbeenband"
   ],
@@ -707,14 +1025,41 @@
   "larynx": [
     "strottenhoofd"
   ],
+  "lateral crico-arytenoid muscle": [
+    "zijwaartse ring-bekerkraakbeenspier"
+  ],
   "lateral cuneiform bone": [
     "buitenste wigvormige voetwortelbeen"
+  ],
+  "lateral femoral intermuscular septum": [
+    "buitenste bindweefselschot van het bovenbeen"
+  ],
+  "lateral head of flexor hallucis brevis": [
+    "buitenste kop van de korte grote-teenbuiger"
+  ],
+  "lateral head of gastrocnemius": [
+    "buitenste kop van de kuitspier"
+  ],
+  "lateral head of triceps brachii": [
+    "buitenste kop van de driehoofdige armspier"
+  ],
+  "lateral intermuscular septum of arm": [
+    "buitenste bindweefselschot van de bovenarm"
   ],
   "lateral meniscus": [
     "buitenmeniscus"
   ],
+  "lateral patellar retinaculum": [
+    "buitenste steunband van de knieschijf"
+  ],
   "lateral process of nasal septal cartilage": [
     "zijwaarts uitsteeksel van het neustussenschotkraakbeen"
+  ],
+  "lateral rectus muscle": [
+    "buitenste rechte oogspier"
+  ],
+  "lateral subtendinous bursa of gastrocnemius muscle": [
+    "buitenste slijmbeurs onder de pees van de kuitspier"
   ],
   "lateral talocalcaneal ligament": [
     "buitenste band tussen sprongbeen en hielbeen"
@@ -727,6 +1072,9 @@
   ],
   "lateral ventricle": [
     "zijventrikel van de hersenen"
+  ],
+  "latissimus dorsi muscle": [
+    "brede rugspier"
   ],
   "left atrium": [
     "linkerboezem"
@@ -758,11 +1106,26 @@
   "left ventricle": [
     "linkerhartkamer"
   ],
+  "levator anguli oris": [
+    "heffer van de mondhoek"
+  ],
+  "levator labii superioris": [
+    "heffer van de bovenlip"
+  ],
+  "levator nasolabialis": [
+    "neus-lipheffer"
+  ],
   "levator palpebrae superioris": [
     "heffer van het bovenooglid"
   ],
   "levator scapulae": [
     "schouderbladheffer"
+  ],
+  "levatores breves costarum": [
+    "korte ribheffers"
+  ],
+  "levatores longi costarum": [
+    "lange ribheffers"
   ],
   "ligament of head of femur": [
     "band van de dijbeenkop"
@@ -776,8 +1139,32 @@
   "liver": [
     "lever"
   ],
+  "long head of biceps brachii": [
+    "lange kop van de tweehoofdige armspier"
+  ],
+  "long head of biceps femoris": [
+    "lange kop van de tweehoofdige dijspier"
+  ],
+  "long head of triceps brachii": [
+    "lange kop van de driehoofdige armspier"
+  ],
   "long plantar ligament": [
     "lange voetzoolband"
+  ],
+  "longissimus capitis muscle": [
+    "lange hoofdspier"
+  ],
+  "longissimus colli muscle": [
+    "lange halsspier"
+  ],
+  "longissimus thoracis muscle": [
+    "lange borstspier van de rug"
+  ],
+  "longus capitis muscle": [
+    "lange diepe voorste hoofdspier"
+  ],
+  "longus colli muscle": [
+    "lange diepe voorste halsspier"
   ],
   "lower canine": [
     "hoektand in de onderkaak"
@@ -800,6 +1187,12 @@
   "lower second premolar": [
     "tweede kleine kies in de onderkaak"
   ],
+  "lumbrical muscles of foot": [
+    "wormvormige spieren van de voet"
+  ],
+  "lumbrical muscles of hand": [
+    "wormvormige spieren van de hand"
+  ],
   "lunate bone": [
     "maanbeen"
   ],
@@ -818,14 +1211,44 @@
   "manubrium of sternum": [
     "borstbeenhandvat"
   ],
+  "masseteric fascia": [
+    "kauwspierfascie"
+  ],
   "maxilla": [
     "bovenkaak"
   ],
   "medial cuneiform bone": [
     "binnenste wigvormige voetwortelbeen"
   ],
+  "medial femoral intermuscular septum": [
+    "binnenste bindweefselschot van het bovenbeen"
+  ],
+  "medial head of flexor hallucis brevis": [
+    "binnenste kop van de korte grote-teenbuiger"
+  ],
+  "medial head of gastrocnemius": [
+    "binnenste kop van de kuitspier"
+  ],
+  "medial head of triceps brachii": [
+    "binnenste kop van de driehoofdige armspier"
+  ],
+  "medial intermuscular septum of arm": [
+    "binnenste bindweefselschot van de bovenarm"
+  ],
   "medial meniscus": [
     "binnenmeniscus"
+  ],
+  "medial patellar retinaculum": [
+    "binnenste steunband van de knieschijf"
+  ],
+  "medial pterygoid muscle": [
+    "binnenste vleugelspier van de kaak"
+  ],
+  "medial rectus muscle": [
+    "binnenste rechte oogspier"
+  ],
+  "medial subtendinous bursa of gastrocnemius muscle": [
+    "binnenste slijmbeurs onder de pees van de kuitspier"
   ],
   "medial talocalcaneal ligament": [
     "binnenste band tussen sprongbeen en hielbeen"
@@ -842,6 +1265,9 @@
   "meniscopatellar ligament": [
     "band tussen meniscus en knieschijf"
   ],
+  "mentalis muscle": [
+    "kinspier"
+  ],
   "metatarsal interosseous ligaments": [
     "banden tussen de middenvoetsbeentjes"
   ],
@@ -856,6 +1282,9 @@
   ],
   "middle glenohumeral ligament": [
     "middelste band van het schoudergewricht"
+  ],
+  "middle layer of thoracolumbar fascia": [
+    "middelste laag van de borst-lendenfascie"
   ],
   "middle lobe of right lung": [
     "middenkwab van de rechterlong"
@@ -884,11 +1313,29 @@
   "middle phalanx of third finger of hand": [
     "middenkootje van de derde vinger"
   ],
+  "middle pharyngeal constrictor": [
+    "middelste keelholtesnoerder"
+  ],
+  "multifidus colli muscle": [
+    "diepe meervoudig gedeelde halsspier"
+  ],
+  "multifidus lumborum muscle": [
+    "diepe meervoudig gedeelde lendenspier"
+  ],
+  "multifidus thoracis muscle": [
+    "diepe meervoudig gedeelde borstspier"
+  ],
+  "mylohyoid muscle": [
+    "kaak-tongbeenspier"
+  ],
   "nasal bone": [
     "neusbeen"
   ],
   "nasal septal cartilage": [
     "neustussenschotkraakbeen"
+  ],
+  "nasalis muscle": [
+    "neusspier"
   ],
   "navicular bone": [
     "scheepvormig voetwortelbeen"
@@ -932,6 +1379,9 @@
   "nucleus pulposus l4-l5": [
     "geleiachtige binnenzijde van tussenwervelschijf L4-L5"
   ],
+  "nucleus pulposus l5-s1": [
+    "geleiachtige binnenzijde van tussenwervelschijf L5-S1"
+  ],
   "nucleus pulposus t1-t2": [
     "geleiachtige binnenzijde van tussenwervelschijf T1-T2"
   ],
@@ -968,8 +1418,23 @@
   "nucleus pulposus t9-t10": [
     "geleiachtige binnenzijde van tussenwervelschijf T9-T10"
   ],
+  "oblique head of adductor hallucis": [
+    "schuine kop van de aanvoerder van de grote teen"
+  ],
+  "oblique head of adductor pollicis": [
+    "schuine kop van de duimaanvoerder"
+  ],
+  "oblique part of cricothyroid muscle": [
+    "schuin deel van de ring-schildkraakbeenspier"
+  ],
   "oblique popliteal ligament": [
     "schuine knieholteband"
+  ],
+  "obliquus inferior capitis muscle": [
+    "onderste schuine hoofdspier"
+  ],
+  "obliquus superior capitis muscle": [
+    "bovenste schuine hoofdspier"
   ],
   "obturator externus": [
     "uitwendige afsluitspier"
@@ -983,8 +1448,20 @@
   "occipital bone": [
     "achterhoofdsbeen"
   ],
+  "occipitalis muscle": [
+    "achterhoofdsspier"
+  ],
   "oesophagus": [
     "slokdarm"
+  ],
+  "omohyoid muscle": [
+    "schouderblad-tongbeenspier"
+  ],
+  "opponens digiti minimi muscle of hand": [
+    "tegensteller van de pink"
+  ],
+  "opponens pollicis muscle": [
+    "tegensteller van de duim"
   ],
   "optic chiasm": [
     "kruising van de oogzenuwen"
@@ -995,14 +1472,29 @@
   "optic nerve (ii)": [
     "oogzenuw"
   ],
+  "orbicularis oris muscle": [
+    "kringspier van de mond"
+  ],
+  "orbital part of orbicularis oculi": [
+    "oogkasdeel van de kringspier rond het oog"
+  ],
   "palatine bone": [
     "gehemeltebeen"
   ],
   "palatine tonsil": [
     "keelamandel"
   ],
+  "palatopharyngeus muscle": [
+    "gehemelte-keelholtespier"
+  ],
+  "palmar aponeurosis": [
+    "peesplaat van de handpalm"
+  ],
   "palmar carpometacarpal ligaments": [
     "banden aan de handpalmzijde tussen handwortel en middenhand"
+  ],
+  "palmar interossei muscles": [
+    "tussenbeenspieren aan de handpalmzijde"
   ],
   "palmar interphalangeal ligaments": [
     "banden aan de handpalmzijde van de vingergewrichten"
@@ -1016,6 +1508,12 @@
   "palmar scaphotriquetral ligament": [
     "band aan de handpalmzijde tussen scheepvormig en driehoekig handwortelbeen"
   ],
+  "palmaris longus muscle": [
+    "lange handpalmspier"
+  ],
+  "palpebral part of orbicularis oculi": [
+    "oogliddeel van de kringspier rond het oog"
+  ],
   "pancreas": [
     "alvleesklier"
   ],
@@ -1025,14 +1523,29 @@
   "patella": [
     "knieschijf"
   ],
+  "pectineus muscle": [
+    "kamspier van het bovenbeen"
+  ],
+  "pectoral fascia": [
+    "borstspierfascie"
+  ],
   "pectoralis minor muscle": [
     "kleine borstspier"
+  ],
+  "piriformis fascia": [
+    "fascie van de peervormige spier"
+  ],
+  "piriformis muscle": [
+    "peervormige spier"
   ],
   "pisiform bone": [
     "erwtbeen"
   ],
   "pisotriquetral ligament": [
     "band tussen erwtbeen en driehoekig handwortelbeen"
+  ],
+  "plantar aponeurosis": [
+    "peesplaat van de voetzool"
   ],
   "plantar calcaneocuboid ligament": [
     "band aan de voetzoolzijde tussen hielbeen en kubusbeen"
@@ -1046,6 +1559,9 @@
   "plantar intercuneiform ligaments": [
     "banden aan de voetzoolzijde tussen wigvormige voetwortelbeentjes"
   ],
+  "plantar interossei muscles": [
+    "tussenbeenspieren aan de voetzoolzijde"
+  ],
   "plantar interphalangeal ligaments": [
     "banden aan de voetzoolzijde van de teengewrichten"
   ],
@@ -1058,11 +1574,26 @@
   "plantar tarsometatarsal ligaments": [
     "banden aan de voetzoolzijde tussen voetwortel en middenvoet"
   ],
+  "plantar tendon sheath of fibularis longus muscle": [
+    "peesschede onder de voet van de lange kuitbeenspier"
+  ],
+  "plantaris muscle": [
+    "kleine kuitspier"
+  ],
   "platysma": [
     "oppervlakkige halsspier"
   ],
+  "popliteal fascia": [
+    "knieholtefascie"
+  ],
   "popliteofibular ligament": [
     "band tussen knieholte en kuitbeenkop"
+  ],
+  "popliteus muscle": [
+    "knieholtespier"
+  ],
+  "posterior belly of digastric muscle": [
+    "achterste buik van de tweehuikige spier"
   ],
   "posterior cells of ethmoid bone": [
     "achterste zeefbeencellen"
@@ -1070,11 +1601,20 @@
   "posterior cerebral artery": [
     "achterste hersenslagader"
   ],
+  "posterior crico-arytenoid muscle": [
+    "achterste ring-bekerkraakbeenspier"
+  ],
   "posterior cruciate ligament": [
     "achterste kruisband"
   ],
   "posterior horn of spinal cord": [
     "achterhoorn van het ruggenmerg"
+  ],
+  "posterior intermuscular septum of leg": [
+    "achterste bindweefselschot van het onderbeen"
+  ],
+  "posterior layer of thoracolumbar fascia": [
+    "achterste laag van de borst-lendenfascie"
   ],
   "posterior ligament of fibular head": [
     "achterste band bij de kuitbeenkop"
@@ -1105,6 +1645,9 @@
   ],
   "posterior tibiotalar ligament": [
     "achterste band tussen scheenbeen en sprongbeen"
+  ],
+  "procerus muscle": [
+    "neuswortelspier"
   ],
   "pronator quadratus": [
     "vierkante pronatorspier"
@@ -1148,11 +1691,29 @@
   "pubic symphysis": [
     "schaambeenvoeg"
   ],
+  "pubo-analis muscle": [
+    "schaambeen-anusspier"
+  ],
+  "pubococcygeus muscle": [
+    "schaambeen-staartbeenspier"
+  ],
   "pubofemoral ligament": [
     "schaambeen-dijbeenband"
   ],
+  "pyramidalis muscle": [
+    "kleine piramidevormige buikspier"
+  ],
   "quadrangular membrane": [
     "vierhoekig membraan van het strottenhoofd"
+  ],
+  "quadratus femoris muscle": [
+    "vierkante dijspier"
+  ],
+  "quadratus lumborum muscle": [
+    "vierkante lendenspier"
+  ],
+  "quadratus plantae muscle": [
+    "vierkante voetzoolspier"
   ],
   "radial collateral ligament": [
     "radiale zijband"
