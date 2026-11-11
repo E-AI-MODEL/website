@@ -410,6 +410,34 @@ function drawChart(id,fn,color,max,unit){
   ctx.fillStyle=color;ctx.beginPath();ctx.arc(mx,my,4.2,0,TAU);ctx.fill();
   ctx.strokeStyle='#0b1828';ctx.lineWidth=1;ctx.stroke();
 }
+function drawMiniTrace(){
+  const strip=$('miniTrace'),width=strip.clientWidth,height=strip.clientHeight;
+  if(width<=10||height<=10)return;
+  const dpr=Math.min(devicePixelRatio||1,2),W=Math.round(width*dpr),H=Math.round(height*dpr);
+  if(strip.width!==W||strip.height!==H){strip.width=W;strip.height=H;}
+  const ctx=strip.getContext('2d');if(!ctx)return;
+  ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,width,height);
+  const x0=8,x1=width-8,y0=6,y1=height-8,w=x1-x0,h=y1-y0;
+  ctx.lineWidth=.7;ctx.strokeStyle='rgba(123,156,166,.2)';
+  for(const t of [0,.52,.64,.70,.93,1]){
+    const x=x0+t*w;ctx.beginPath();ctx.moveTo(x,y0);ctx.lineTo(x,y1);ctx.stroke();
+  }
+  for(const series of [
+    {fn:pressure,normal:v=>v/130,color:'#ed9a80'},
+    {fn:volume,normal:v=>(v-60)/70,color:'#7ecdbb'}
+  ]){
+    ctx.beginPath();ctx.lineWidth=1.45;ctx.strokeStyle=series.color;
+    for(let i=0;i<=150;i++){
+      const t=i/150,x=x0+t*w,y=y1-clamp(series.normal(series.fn(t)),0,1)*h;
+      if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+    const value=series.fn(state.t),x=x0+state.t*w,y=y1-clamp(series.normal(value),0,1)*h;
+    ctx.beginPath();ctx.arc(x,y,2.6,0,TAU);ctx.fillStyle=series.color;ctx.fill();
+  }
+  const cursor=x0+state.t*w;
+  ctx.lineWidth=.8;ctx.strokeStyle='#e2ece7';ctx.setLineDash([3,3]);ctx.beginPath();ctx.moveTo(cursor,y0);ctx.lineTo(cursor,y1);ctx.stroke();ctx.setLineDash([]);
+}
 function display(m){
   const phase=PHASES[m.phase];const prev=Number($('phaseNumber').dataset.index||-1);
   if(prev!==m.phase){
@@ -433,6 +461,10 @@ function display(m){
   $('timeline').querySelectorAll('[data-phase]').forEach(btn=>{const on=Number(btn.dataset.phase)===m.phase;btn.classList.toggle('active',on);btn.setAttribute('aria-pressed',String(on));});
   drawChart('pressureChart',pressure,'#ed9a80',130,'mmHg');
   drawChart('volumeChart',volume,'#7ecdbb',150,'ml');
+  $('miniPressure').textContent=fmt(m.pressure)+' mmHg';
+  $('miniVolume').textContent=fmt(m.volume)+' ml';
+  $('miniTraceTime').textContent=fmt(state.t*60/state.rate,2)+' s';
+  drawMiniTrace();
 }
 function render(){const m=mechanics(state.t);drawScene(m);display(m);}
 function focusActivePhase(){
