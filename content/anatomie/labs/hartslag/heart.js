@@ -79,11 +79,11 @@ function shader(gl,vs,fs){const p=gl.createProgram();gl.attachShader(p,compile(g
 function setupModel(){
   gl=canvas.getContext('webgl',{antialias:true,alpha:false,powerPreference:'default'})||canvas.getContext('experimental-webgl');
   if(!gl){$('modelUnavailable').hidden=false;return false;}
-  program=shader(gl,'attribute vec3 position;attribute vec3 normal;uniform mat4 pv;uniform mat4 model;varying vec3 n;varying vec3 p;void main(){vec4 world=model*vec4(position,1.0);gl_Position=pv*world;n=normalize(mat3(model)*normal);p=world.xyz;}',
-    'precision mediump float;varying vec3 n;varying vec3 p;uniform vec3 tint;uniform float alpha;void main(){vec3 light=normalize(vec3(-.44,.85,1.0));float a=max(dot(normalize(n),light),0.0);float rim=pow(1.0-abs(dot(normalize(n),normalize(vec3(.1,.15,.99)))),2.0);vec3 c=tint*(.33+.63*a)+vec3(.16,.22,.27)*rim;gl_FragColor=vec4(c,alpha);}');
+  program=shader(gl,'attribute vec3 position;attribute vec3 normal;uniform mat4 pv;uniform mat4 model;uniform float pulse;uniform vec3 cutAxis;varying vec3 n;varying vec3 p;varying float front;void main(){vec3 anatomy=position;float weight=1.0-smoothstep(-.9,.62,anatomy.y);anatomy.xz*=1.0-.105*pulse*weight;anatomy.y+=.055*pulse*weight;vec4 world=model*vec4(anatomy,1.0);front=dot(world.xyz,cutAxis);gl_Position=pv*world;n=normalize(mat3(model)*normal);p=world.xyz;}',
+    'precision mediump float;varying vec3 n;varying vec3 p;varying float front;uniform vec3 tint;uniform float alpha;uniform float cutFront;void main(){if(cutFront>.5&&front>.025)discard;vec3 light=normalize(vec3(-.44,.85,1.0));float a=max(dot(normalize(n),light),0.0);float rim=pow(1.0-abs(dot(normalize(n),normalize(vec3(.1,.15,.99)))),2.0);vec3 c=tint*(.35+.65*a)+vec3(.10,.13,.15)*rim;gl_FragColor=vec4(c,alpha);}');
   pointProgram=shader(gl,'attribute vec3 position;uniform mat4 pv;uniform float size;void main(){vec4 clip=pv*vec4(position,1.0);gl_Position=clip;gl_PointSize=size*clamp(5.0/clip.w,.7,2.4);}',
     'precision mediump float;uniform vec3 tint;void main(){vec2 v=gl_PointCoord-vec2(.5);float r=length(v);if(r>.5)discard;float shine=1.0-smoothstep(.10,.50,r);gl_FragColor=vec4(tint,shine*.87);}');
-  for(const k of ['position','normal','pv','model','tint','alpha'])loc[k]=k==='position'||k==='normal'?gl.getAttribLocation(program,k):gl.getUniformLocation(program,k);
+  for(const k of ['position','normal','pv','model','tint','alpha','pulse','cutAxis','cutFront'])loc[k]=k==='position'||k==='normal'?gl.getAttribLocation(program,k):gl.getUniformLocation(program,k);
   for(const k of ['position','pv','size','tint'])ploc[k]=k==='position'?gl.getAttribLocation(pointProgram,k):gl.getUniformLocation(pointProgram,k);
   meshes.sphere=upload(sphere());
   meshes.chambers={};
@@ -117,9 +117,12 @@ function upload(m){
   gl.bindBuffer(gl.ARRAY_BUFFER,nb);gl.bufferData(gl.ARRAY_BUFFER,m.n,gl.STATIC_DRAW);
   return {...m,vb,nb};
 }
-function drawMesh(mesh,model,color,alpha=1){
+function drawMesh(mesh,model,color,alpha=1,pulse=0,cutFront=false){
   gl.useProgram(program);gl.uniformMatrix4fv(loc.pv,false,pv);gl.uniformMatrix4fv(loc.model,false,model);
   gl.uniform3fv(loc.tint,color);gl.uniform1f(loc.alpha,alpha);
+  gl.uniform1f(loc.pulse,pulse);
+  gl.uniform1f(loc.cutFront,cutFront?1:0);
+  gl.uniform3fv(loc.cutAxis,[Math.sin(state.yaw)*Math.cos(state.pitch),Math.sin(state.pitch),Math.cos(state.yaw)*Math.cos(state.pitch)]);
   gl.bindBuffer(gl.ARRAY_BUFFER,mesh.vb);gl.enableVertexAttribArray(loc.position);gl.vertexAttribPointer(loc.position,3,gl.FLOAT,false,0,0);
   gl.bindBuffer(gl.ARRAY_BUFFER,mesh.nb);gl.enableVertexAttribArray(loc.normal);gl.vertexAttribPointer(loc.normal,3,gl.FLOAT,false,0,0);
   gl.drawArrays(gl.TRIANGLES,0,mesh.count);
@@ -201,13 +204,13 @@ async function loadAtlasModels(){
     console.error('Hartslaglab atlasmesh:',atlasError);
   }
 }
-function drawAtlasHeart(m){
+function drawAtlasHeart(m,section=false){
+  // Alle echte atlasdelen gebruiken dezelfde, ruimtelijk doorlopende vervorming.
+  // De extra zichtbare beweging helpt fasen vergelijken; dit is geen biomechanisch model.
+  const pulse=clamp((1-m.ventScale)/.21,0,1);
   for(const part of atlasParts){
-    const factor=part.kind==='chamber'?
-      (part.id==='lv'||part.id==='rv'?1+.08*(m.ventScale-1):1+.08*(m.atriumScale-1)):1;
-    const model=modelMatrix([0,0,0],[factor,factor,factor]);
     const color=state.selected===part.id?[.98,.75,.56]:part.color;
-    drawMesh(part.mesh,model,color,1);
+    drawMesh(part.mesh,m4(),color,1,pulse,section&&part.kind==='chamber');
   }
 }
 function drawScene(m){
@@ -215,20 +218,22 @@ function drawScene(m){
   updateViewport();
   gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
   gl.depthMask(true);
-  if(!state.cutaway&&atlasReady){
-    drawAtlasHeart(m);
-    updateLabels();
-    return;
+  if(atlasReady){
+    drawAtlasHeart(m,state.cutaway);
+    if(!state.cutaway){
+      updateLabels();
+      return;
+    }
   }
   // Vaten achter het zichtbare myocard, maar met een herkenbaar doorlopend verloop.
-  for(const vessel of VESSELS)
+  if(!atlasReady)for(const vessel of VESSELS)
     drawMesh(meshes.vessels[vessel.id],m4(),vessel.color,1);
 
   // Een doorlopende spierwand verbindt de hartkamers tot één orgaan.
   // De brede opening laat de inwendige holtes zichtbaar.
-  drawMesh(meshes.envelope,m4(),[.65,.31,.29],1);
+  if(!atlasReady)drawMesh(meshes.envelope,m4(),[.65,.31,.29],1);
   // Hartoren vormen de gekartelde uitlopers van de boezems.
-  for(const auricle of meshes.auricles)drawMesh(auricle.mesh,m4(),state.selected===auricle.id?[.96,.66,.50]:auricle.color,1);
+  if(!atlasReady)for(const auricle of meshes.auricles)drawMesh(auricle.mesh,m4(),state.selected===auricle.id?[.96,.66,.50]:auricle.color,1);
 
   // Vier holtes met een echte open voorzijde, spierwand en inwendige bekleding.
   // De kamergeometrie wordt per hartfase opgeschaald. Dit is een didactische
@@ -247,7 +252,7 @@ function drawScene(m){
     for(const ridge of meshes.ridges[id])drawMesh(ridge.mesh,model,ridge.color,.96);
   }
   // Kransvaten en de grote hartader liggen op het epicard.
-  for(const vessel of meshes.coronary)drawMesh(vessel.mesh,m4(),state.selected===vessel.id?[.98,.75,.52]:vessel.color,1);
+  if(!atlasReady)for(const vessel of meshes.coronary)drawMesh(vessel.mesh,m4(),state.selected===vessel.id?[.98,.75,.52]:vessel.color,1);
   if(state.cutaway){
     for(const papillary of meshes.papillary)drawMesh(papillary.mesh,m4(),state.selected===papillary.id?[.98,.71,.54]:papillary.color,1);
     drawMesh(meshes.septum,m4(),[.91,.59,.52],1);
