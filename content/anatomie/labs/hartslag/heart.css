@@ -93,3 +93,23 @@
   .stage-wash{background:radial-gradient(ellipse at 50% 80%,transparent 52%,#07121c46 100%)}
   .stage-caption{color:#bed0d6}
 }
+
+/* Smalle telefoons: toon alle vier de zichtinstellingen zonder afgekorte knoptekst. */
+@media(max-width:480px){
+  .topbar{flex-wrap:nowrap;justify-content:space-between;align-items:center;min-height:49px}
+  .crumbs{display:flex;align-items:center;gap:8px;flex-wrap:nowrap;min-width:0}
+  .crumbs .slash,.crumbs a[href="/tools/anatomie/"]{display:none}
+  .crumbs strong{font-size:12px;white-space:nowrap}
+  .topbar-right{width:auto;flex:0 0 auto}
+  .topbar-right .edition,.topbar-right .version{display:none}
+  .back-link{white-space:nowrap;font-size:10px}
+  .view-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));overflow:visible;gap:6px;padding:0}
+  .view-actions .mini-control{min-width:0;min-height:38px;white-space:normal;padding:6px 7px;font-size:11px;line-height:1.15}
+}
+@media(max-width:790px){
+  .timeline button[data-phase="0"]::before{content:"01"}
+  .timeline button[data-phase="1"]::before{content:"02"}
+  .timeline button[data-phase="2"]::before{content:"03"}
+  .timeline button[data-phase="3"]::before{content:"04"}
+  .timeline button[data-phase="4"]::before{content:"05"}
+}
