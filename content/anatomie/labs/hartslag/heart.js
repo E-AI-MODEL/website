@@ -533,6 +533,50 @@ $('checkPrediction').addEventListener('click',()=>{
   $('predictionFeedback').textContent=(correct?'Dat klopt. ':'Dat gebeurt anders. ')+'De AV-kleppen sluiten bij het begin van de kamersamentrekking. De slagaderkleppen openen pas nadat de kamerdruk hoog genoeg is geworden.';
   setTime(.655,true);
 });
+function syncStudy(){
+  const {guess,stage:step}=state.study;
+  for(const button of document.querySelectorAll('[data-guess]')){
+    const chosen=button.dataset.guess===guess;
+    button.setAttribute('aria-pressed',String(chosen));
+  }
+  const action=$('discoveryAction');
+  action.disabled=!guess||step==='watch';
+  action.textContent=step==='watch'?'Kijk naar het hart…':
+    step==='compare'?'Vergelijk je voorspelling':
+    step==='done'?'Nog eens proberen':'Bekijk de beweging';
+}
+document.querySelectorAll('[data-guess]').forEach(button=>button.addEventListener('click',()=>{
+  if(state.study.stage==='watch')return;
+  state.study.guess=button.dataset.guess;
+  state.study.stage='choose';
+  $('discoveryFeedback').textContent='Je voorspelling staat vast. Bekijk nu wat er vlak voor het uitpompen gebeurt.';
+  syncStudy();
+}));
+$('discoveryAction').addEventListener('click',()=>{
+  const study=state.study;
+  if(study.stage==='done'){
+    study.stage='choose';study.guess=null;study.stopAt=null;
+    $('discoveryFeedback').textContent='Kies opnieuw wat je verwacht.';
+    setTime(.58,true);syncStudy();return;
+  }
+  if(!study.guess)return;
+  if(study.stage==='choose'){
+    study.stage='watch';
+    state.cutaway=true;state.showFlow=true;syncViewControls();
+    // Het onderzoek begint vlak voor de AV-kleppen sluiten.
+    setTime(.60,true);
+    state.speed=.25;$('speed').value='.25';
+    study.stopAt=.78;state.playing=true;syncPlay();
+    $('discoveryFeedback').textContent='Kijk naar de kleppen. Wat sluit er, en wat gaat daarna open?';
+  }else if(study.stage==='compare'){
+    const correct=study.guess==='av';
+    $('discoveryFeedback').textContent=(correct?'Je voorspelling klopt. ':'Je voorspelling kwam niet uit. ')+
+      'De AV-kleppen sluiten eerst. De slagaderkleppen openen daarna, zodra de kamerdruk hoog genoeg is. Vergelijk de twee lijnen met de beweging.';
+    study.stage='done';
+    study.stopAt=null;
+  }
+  syncStudy();
+}));
 canvas.addEventListener('pointerdown',e=>{
   if(e.pointerType==='touch'&&e.isPrimary===false)return;
   state.drag={x:e.clientX,y:e.clientY,yaw:state.yaw,pitch:state.pitch,moved:false};
@@ -566,7 +610,7 @@ canvas.addEventListener('touchstart',e=>{if(e.touches.length===2){state.drag=nul
 canvas.addEventListener('touchmove',e=>{if(e.touches.length===2&&state.pinch){const a=e.touches[0],b=e.touches[1],next=Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY);state.zoom=clamp(state.zoom*state.pinch/Math.max(next,1),3.5,9.5);state.pinch=next;}},{passive:true});
 canvas.addEventListener('touchend',()=>{state.pinch=null;});
 let resize=new ResizeObserver(()=>{if(gl)render();});resize.observe(stage);
-setupModel();syncPlay();syncLabelsToggle();syncViewControls();loadAtlasModels();
+setupModel();syncPlay();syncLabelsToggle();syncViewControls();syncStudy();loadAtlasModels();
 window.__EAI_HEART_LAB__={
   get state(){return {t:state.t,playing:state.playing,speed:state.speed,yaw:state.yaw,zoom:state.zoom,selected:state.selected,cutaway:state.cutaway,showLabels:state.showLabels,atlasReady,atlasError,atlasPartCount:atlasParts.length,studyStage:state.study.stage};},
   get metrics(){return mechanics(state.t);},
@@ -576,6 +620,13 @@ window.__EAI_HEART_LAB__={
 function frame(now){
   const dt=state.last?Math.min((now-state.last)/1000,.065):0;state.last=now;
   if(state.playing)state.t=(state.t+dt*state.speed*state.rate/60)%1;
+  if(state.study.stage==='watch'&&state.t>=state.study.stopAt){
+    state.t=state.study.stopAt;
+    state.playing=false;syncPlay();
+    state.study.stage='compare';
+    $('discoveryFeedback').textContent='Welke kleppen zag je sluiten? Vergelijk nu met je voorspelling.';
+    syncStudy();
+  }
   render();requestAnimationFrame(frame);
 }
 requestAnimationFrame(frame);
