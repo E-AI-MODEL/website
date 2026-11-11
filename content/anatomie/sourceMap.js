@@ -55,6 +55,42 @@ const REFERENCES = Object.freeze({
     label: 'OpenStax, 20.2 Bloedstroom',
     url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/20-2-blood-flow-blood-pressure-and-resistance'
   },
+  shoulder: {
+    label: 'OpenStax, 8.1 Schoudergordel',
+    url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/8-1-the-pectoral-girdle'
+  },
+  leg: {
+    label: 'OpenStax, 8.4 Beenderen van het been',
+    url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/8-4-bones-of-the-lower-limb'
+  },
+  upperAirways: {
+    label: 'OpenStax, 22.1 Bouw van de luchtwegen',
+    url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/22-1-organs-and-structures-of-the-respiratory-system'
+  },
+  lungs: {
+    label: 'OpenStax, 22.2 Longen en borstvlies',
+    url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/22-2-the-lungs'
+  },
+  stomach: {
+    label: 'OpenStax, 23.4 De maag',
+    url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/23-4-the-stomach'
+  },
+  digestion: {
+    label: 'OpenStax, 23.5 Dunne en dikke darm',
+    url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/23-5-the-small-and-large-intestines'
+  },
+  digestionOrgans: {
+    label: 'OpenStax, 23.6 Lever, galblaas en alvleesklier',
+    url: 'https://openstax.org/books/anatomy-and-physiology/pages/23-6-accessory-organs-in-digestion-the-liver-pancreas-and-gallbladder'
+  },
+  urine: {
+    label: 'OpenStax, 25.2 Transport en opslag van urine',
+    url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/25-2-gross-anatomy-of-urine-transport'
+  },
+  kidney: {
+    label: 'OpenStax, 25.3 Bouw van de nier',
+    url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/25-3-gross-anatomy-of-the-kidney'
+  },
   lymph: {
     label: 'OpenStax, 21.1 Lymfe- en afweerstelsel',
     url: 'https://openstax.org/books/anatomy-and-physiology/pages/21-1-anatomy-of-the-lymphatic-and-immune-systems'
@@ -91,7 +127,26 @@ const SUPPORTED_GUIDES = Object.freeze({
   'corpus callosum': 'nervous',
   'central sulcus': 'nervous',
   'posterior horn of spinal cord': 'nervous',
-  'spleen': 'lymph'
+  'spleen': 'lymph',
+  'renal pelvis': 'kidney',
+  'kidney': 'kidney',
+  'urinary bladder': 'urine',
+  'ureter': 'urine',
+  'femur': 'leg',
+  'tibia': 'leg',
+  'patella': 'leg',
+  'scapula': 'shoulder',
+  'clavicle': 'shoulder',
+  'pleura': 'lungs',
+  'diaphragm': 'lungs',
+  'trachea': 'upperAirways',
+  'left main bronchus': 'upperAirways',
+  'right main bronchus': 'upperAirways',
+  'liver': 'digestionOrgans',
+  'pancreas': 'digestionOrgans',
+  'pancreatic duct': 'digestionOrgans',
+  'stomach': 'stomach',
+  'duodenum': 'digestion',
 });
 
 const GENERAL_REFERENCES = Object.freeze({
