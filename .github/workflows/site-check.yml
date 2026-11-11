@@ -22,6 +22,8 @@ jobs:
         run: node --test tests/test_science_physics_models.mjs
       - name: Check physics reference values and drawings
         run: node --test tests/test_science_physics_models.mjs
+      - name: Check wave motion and optical models
+        run: node --test tests/test_science_physics_round3.mjs
       - name: Verify one KEI login opens the complete LEIF website
         run: node --test tests/test_leif_kei.mjs
       - name: Verify LEIF reader and corrected text
