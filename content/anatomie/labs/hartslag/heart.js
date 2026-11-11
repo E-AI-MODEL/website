@@ -1,7 +1,7 @@
 // Hartslaglab: een bestuurbaar vereenvoudigd 3D-model, geen medische patiëntsimulator.
 // Alle grafieken, klepbewegingen, kamerbewegingen en stroomdeeltjes gebruiken dezelfde fase.
 import {PHASES,volume,pressure,mechanics,phaseFor} from './cycle.js';
-import {CHAMBERS,VESSELS,VALVES,ANATOMY_PARTS,FLOW_PATHS,leafletGeometry,chamberGeometry,tubeGeometry,ringGeometry,septumGeometry,heartEnvelopeGeometry,muscleRidges,TENDINOUS_CORDS} from './anatomyGeometry.js';
+import {CHAMBERS,VESSELS,VALVES,ANATOMY_PARTS,FLOW_PATHS,leafletGeometry,chamberGeometry,tubeGeometry,ringGeometry,septumGeometry,heartEnvelopeGeometry,muscleRidges,TENDINOUS_CORDS,CORONARY_DETAILS,MUSCLE_DETAILS,AURICLES} from './anatomyGeometry.js';
 const $=id=>document.getElementById(id);
 const TAU=Math.PI*2;
 const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
@@ -95,7 +95,10 @@ function setupModel(){
   meshes.ridges={};
   for(const [id,part] of Object.entries(CHAMBERS))
     meshes.ridges[id]=muscleRidges(part).map(r=>({mesh:upload(tubeGeometry(r.path,r.radius)),color:r.color}));
-  meshes.cords=TENDINOUS_CORDS.map(c=>upload(tubeGeometry(c.path,.008,8)));
+  meshes.cords=TENDINOUS_CORDS.map(c=>upload(tubeGeometry(c.path,.006,8)));
+  meshes.coronary=CORONARY_DETAILS.map(v=>({mesh:upload(tubeGeometry(v.path,v.radius,9)),color:v.color,id:v.id}));
+  meshes.papillary=MUSCLE_DETAILS.map(v=>({mesh:upload(tubeGeometry(v.path,v.radius,14)),color:v.color,id:v.id}));
+  meshes.auricles=AURICLES.map(v=>({mesh:upload(tubeGeometry(v.path,v.radius,13)),color:v.color,id:v.id}));
   meshes.vessels={};
   VESSELS.forEach(v=>{meshes.vessels[v.id]=upload(tubeGeometry(v.path,v.radius));});
   meshes.valves={};
@@ -167,7 +170,9 @@ function drawScene(m){
 
   // Een doorlopende spierwand verbindt de hartkamers tot één orgaan.
   // De brede opening laat de inwendige holtes zichtbaar.
-  drawMesh(meshes.envelope,m4(),[.63,.30,.29],1);
+  drawMesh(meshes.envelope,m4(),[.65,.31,.29],1);
+  // Hartoren vormen de gekartelde uitlopers van de boezems.
+  for(const auricle of meshes.auricles)drawMesh(auricle.mesh,m4(),auricle.color,1);
 
   // Vier holtes met een echte open voorzijde, spierwand en inwendige bekleding.
   // De kamergeometrie wordt per hartfase opgeschaald. Dit is een didactische
@@ -178,16 +183,17 @@ function drawScene(m){
     const scale=part.scale.map((v,i)=>v*(i===1?factor:Math.sqrt(factor)));
     const model=modelMatrix(part.pos,scale);
     const hit=state.selected===id;
-    if(!state.cutaway){
-      drawMesh(meshes.chambers[id].solid,model,hit?[.98,.68,.56]:part.muscle,1);
-      continue;
-    }
+    // Van buiten zie je één hartwand, niet vier losse ellipsoïden.
+    if(!state.cutaway)continue;
     drawMesh(meshes.chambers[id].outer,model,hit?[.95,.61,.51]:part.muscle,1);
     drawMesh(meshes.chambers[id].inner,model,part.blood,1);
     drawMesh(meshes.chambers[id].rim,model,hit?[1,.78,.62]:[.94,.63,.54],1);
     for(const ridge of meshes.ridges[id])drawMesh(ridge.mesh,model,ridge.color,.96);
   }
+  // Kransvaten en de grote hartader liggen op het epicard.
+  for(const vessel of meshes.coronary)drawMesh(vessel.mesh,m4(),vessel.color,1);
   if(state.cutaway){
+    for(const papillary of meshes.papillary)drawMesh(papillary.mesh,m4(),papillary.color,1);
     drawMesh(meshes.septum,m4(),[.91,.59,.52],1);
     for(const chord of meshes.cords)drawMesh(chord,m4(),[.96,.85,.70],1);
     // Klepbladen zijn geen statische stippen: twee bij mitralis, drie bij
@@ -210,7 +216,7 @@ function drawScene(m){
 function updateLabels(){
   const w=canvas.clientWidth,h=canvas.clientHeight;
   const offsets={
-    ra:[-60,-20],rv:[-68,20],la:[54,-22],lv:[65,24],ao:[53,-5],pa:[-60,-8]
+    ra:[-84,-45],rv:[-88,38],la:[85,-40],lv:[91,45],ao:[62,-27],pa:[-74,-24]
   };
   for(const el of $('labels').children){
     const part=ANATOMY_PARTS[el.dataset.part];
