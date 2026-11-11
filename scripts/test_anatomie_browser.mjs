@@ -204,7 +204,15 @@ try {
         'Het draaipunt volgt niet de rechts van het midden aangewezen plek');
 
       await page.locator('#frontViewBtn').click();
-      await page.waitForTimeout(850);
+      // Wacht op de werkelijk herstelde camerapositie, niet op een
+      // aangenomen animatieduur die per machine kan verschillen.
+      await page.waitForFunction(({before,zoomed}) => {
+        const {camera,controls}=window.ZAnatomy.viewer;
+        const target=controls.target.toArray();
+        const distance=camera.position.distanceTo(controls.target);
+        return distance>zoomed.distance*1.1
+          && Math.hypot(...target.map((v,i)=>v-before.target[i]))<.08;
+      }, {before:beforeZoom,zoomed}, {timeout:5500,polling:100});
       const restored=await page.evaluate(() => {
         const {camera,controls}=window.ZAnatomy.viewer;
         return {target:controls.target.toArray(),
@@ -263,7 +271,10 @@ try {
     const cameraBeforeSearch=await page.evaluate(() => window.ZAnatomy.viewer.controls.target.toArray());
     await femurRow.click();
     await page.locator('#structureInfo .eai-fact').first().waitFor({state:'attached',timeout:15000});
-    await page.waitForTimeout(720);
+    await page.waitForFunction(before => {
+      const target=window.ZAnatomy.viewer.controls.target.toArray();
+      return Math.hypot(...target.map((v,i)=>v-before[i]))>.12;
+    }, cameraBeforeSearch, {timeout:5500,polling:100});
     const cameraAfterSearch=await page.evaluate(() => window.ZAnatomy.viewer.controls.target.toArray());
     assert(Math.hypot(...cameraAfterSearch.map((x,i)=>x-cameraBeforeSearch[i]))>.12,
       'Een zoekresultaat moet de camera naar het gekozen bot verplaatsen');
