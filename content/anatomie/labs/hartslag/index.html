@@ -46,15 +46,16 @@
           <div class="viewer-top">
             <span class="view-kicker"><span class="status-dot" aria-hidden="true"></span> LIVE HARTCYCLUS</span>
             <div class="view-actions">
+              <button type="button" class="mini-control" id="sectionToggle" aria-pressed="true" title="Wissel tussen de binnenkant en de buitenkant van het hart">Doorsnede aan</button>
               <button type="button" class="mini-control" id="labelsToggle" aria-pressed="true">Namen aan</button>
               <button type="button" class="mini-control" id="flowToggle" aria-pressed="true">Bloedstroom aan</button>
               <button type="button" class="mini-control" id="resetCamera">Startaanzicht</button>
             </div>
           </div>
           <div class="stage" id="stage">
-            <canvas id="heartCanvas" aria-label="Bestuurbaar driedimensionaal model van een vereenvoudigd, bewegend hart. Sleep om te draaien en scroll of knijp om te zoomen.">Je browser heeft ondersteuning voor WebGL nodig.</canvas>
+            <canvas id="heartCanvas" aria-label="Bestuurbaar driedimensionaal model van een opengewerkt, bewegend hart. Sleep om te draaien en scroll of knijp om te zoomen.">Je browser heeft ondersteuning voor WebGL nodig.</canvas>
             <div class="stage-wash" aria-hidden="true"></div>
-            <div class="stage-caption">3D · Schematische doorsnede · Niet op schaal</div>
+            <div class="stage-caption">3D · Opengewerkte hartkamers · Niet op schaal</div>
             <div class="labels" id="labels" aria-hidden="true">
               <span data-part="ra">Rechterboezem</span><span data-part="rv">Rechterkamer</span>
               <span data-part="la">Linkerboezem</span><span data-part="lv">Linkerkamer</span>
@@ -129,7 +130,7 @@
           <div role="tabpanel" id="tabSources" aria-labelledby="tabSourcesBtn" class="tab-panel" hidden>
             <div class="info-step">OVER HET MODEL</div>
             <h2>Wat laten we zien?</h2>
-            <p class="description">Een bestuurbare, schematische 3D-doorsnede. Kamers, kleppen, stroomdeeltjes en grafieken volgen één gedeelde tijdlijn. De deeltjes zijn geen echte bloedcellen en de vormen zijn niet patiëntspecifiek.</p>
+            <p class="description">Een bestuurbare, schematische 3D-doorsnede. Je ziet spierwanden, het harttussenschot, klepbladen en de grote bloedvaten. De kamers vervormen en de klepbladen bewegen met één gedeelde tijdlijn. Het is geen anatomisch exacte scan, en de deeltjes stellen geen afzonderlijke bloedcellen voor.</p>
             <div class="source-links">
               <a href="https://openstax.org/books/anatomy-and-physiology-2e/pages/19-3-cardiac-cycle" target="_blank" rel="noopener noreferrer">OpenStax · Hartcyclus ↗</a>
               <a href="https://openstax.org/books/anatomy-and-physiology-2e/pages/19-1-heart-anatomy" target="_blank" rel="noopener noreferrer">OpenStax · Bouw van het hart ↗</a>
