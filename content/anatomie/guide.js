@@ -2,6 +2,174 @@
 // Nog niet onafhankelijk klinisch beoordeeld; geen automatische
 // afleiding van de Engelse naam. Geen ingevulde functie bij ontbrekende data.
 const ITEMS = {
+  "vertebra c4": {
+    "name": "Vierde halswervel (C4)",
+    "function": "De vierde halswervel ondersteunt het hoofd en maakt beweging van de nek mogelijk. Samen met andere wervels beschermt hij het ruggenmerg.",
+    "location": "In de hals, tussen de derde en vijfde halswervel.",
+    "mechanism": "Gewrichten en tussenwervelschijven verbinden de wervels. Daardoor kan de nek bewegen zonder dat iedere wervel los staat.",
+    "question": "Draai het model opzij. Waar loopt het ruggenmerg ten opzichte van deze wervel?"
+  },
+  "first rib": {
+    "name": "Eerste rib",
+    "function": "De eerste rib helpt de bovenkant van de borstkas te vormen en te beschermen.",
+    "location": "Bovenaan de borstkas, verbonden met de eerste borstwervel en via kraakbeen met het borstbeen.",
+    "mechanism": "De rib beweegt een beetje mee wanneer de borstkas tijdens het ademen groter en kleiner wordt.",
+    "question": "Wat valt op aan de ligging van de eerste rib ten opzichte van de andere ribben?"
+  },
+  "intervertebral disc c4-c5": {
+    "name": "Tussenwervelschijf C4-C5",
+    "function": "Deze tussenwervelschijf vangt druk op en maakt kleine bewegingen tussen twee halswervels mogelijk.",
+    "location": "Tussen de vierde en vijfde halswervel.",
+    "mechanism": "Een stevige buitenring omgeeft een zachtere, geleiachtige binnenzijde. Samen verdelen ze de druk op de wervelkolom.",
+    "question": "Zoek C4 en C5. Waarom ligt de tussenwervelschijf precies tussen deze botten?"
+  },
+  "nucleus pulposus c4-c5": {
+    "name": "Zachte binnenzijde van tussenwervelschijf C4-C5",
+    "function": "Dit zachte deel helpt druk op de tussenwervelschijf te verdelen.",
+    "location": "Midden in de tussenwervelschijf tussen de vierde en vijfde halswervel.",
+    "mechanism": "Bij belasting vervormt dit deel iets. De stevigere buitenring houdt het binnen de schijf.",
+    "question": "Vergelijk de binnenzijde met de buitenring. Waarom bestaan ze uit verschillend weefsel?"
+  },
+  "tibialis anterior muscle": {
+    "name": "Voorste scheenbeenspier",
+    "function": "Deze spier tilt de voorvoet op en helpt de voet naar binnen te draaien.",
+    "location": "Aan de voorkant van het onderbeen, naast het scheenbeen. De pees loopt naar de binnenzijde van de voet.",
+    "mechanism": "Bij samentrekken trekt de spier via zijn pees aan de voet, waardoor de tenen omhoog bewegen.",
+    "question": "Waarom heb je deze beweging nodig wanneer je loopt?"
+  },
+  "lateral meniscus": {
+    "name": "Buitenmeniscus",
+    "function": "De buitenmeniscus verdeelt druk in de knie en helpt het gewricht stabiel te houden.",
+    "location": "Aan de buitenzijde van het kniegewricht, tussen dijbeen en scheenbeen.",
+    "mechanism": "Het halvemaanvormige kraakbeen vergroot het contact tussen de botten en beweegt een beetje mee bij het buigen.",
+    "question": "Vergelijk de buitenmeniscus met de binnenmeniscus. Wat is hetzelfde aan hun ligging?"
+  },
+  "medial meniscus": {
+    "name": "Binnenmeniscus",
+    "function": "De binnenmeniscus verdeelt druk in de knie en draagt bij aan de stabiliteit.",
+    "location": "Aan de binnenzijde van het kniegewricht, tussen dijbeen en scheenbeen.",
+    "mechanism": "Het stevige, veerkrachtige kraakbeen helpt de belasting over een groter oppervlak te verdelen.",
+    "question": "Waar liggen de menisci ten opzichte van de kruisbanden?"
+  },
+  "femoral artery": {
+    "name": "Dijbeenslagader",
+    "function": "De dijbeenslagader voert zuurstofrijk bloed naar het bovenbeen en via vertakkingen verder naar het been.",
+    "location": "Loopt vanuit de lies door het bovenbeen richting de knie.",
+    "mechanism": "Door de druk die het hart opbouwt stroomt bloed via deze slagader naar kleinere bloedvaten.",
+    "question": "Volg de slagader vanaf de lies. Waarom vertakt hij zich in steeds kleinere vaten?"
+  },
+  "superior vena cava": {
+    "name": "Bovenste holle ader",
+    "function": "De bovenste holle ader brengt zuurstofarm bloed uit het hoofd, de hals en de armen terug naar het hart.",
+    "location": "Boven de rechterboezem van het hart.",
+    "mechanism": "Meerdere grote aders komen hierin samen. Het bloed stroomt daarna de rechterboezem in.",
+    "question": "Volg deze ader naar het hart. In welke boezem komt het bloed terecht?"
+  },
+  "left atrium": {
+    "name": "Linkerboezem",
+    "function": "De linkerboezem ontvangt zuurstofrijk bloed uit de longen.",
+    "location": "Boven de linkerhartkamer, aan de achterzijde van het hart.",
+    "mechanism": "Via de longaders komt bloed binnen. De boezem geeft het vervolgens door aan de linkerkamer.",
+    "question": "Welke bloedvaten komen uit op de linkerboezem?"
+  },
+  "right atrium": {
+    "name": "Rechterboezem",
+    "function": "De rechterboezem ontvangt zuurstofarm bloed uit het lichaam.",
+    "location": "Boven de rechterhartkamer, aan de rechterkant van het hart.",
+    "mechanism": "Bloed uit de holle aders stroomt binnen en gaat via een hartklep naar de rechterkamer.",
+    "question": "Vergelijk de binnenkomende bloedvaten van beide boezems. Welk verschil zie je?"
+  },
+  "optic chiasm": {
+    "name": "Kruising van de oogzenuwen",
+    "function": "Bij deze kruising wisselt een deel van de zenuwvezels uit beide ogen van kant.",
+    "location": "Aan de onderzijde van de hersenen, achter de ogen.",
+    "mechanism": "Vezels uit de binnenste helft van beide netvliezen kruisen. Daardoor kan informatie uit hetzelfde deel van het gezichtsveld samen worden verwerkt.",
+    "question": "Volg de twee oogzenuwen tot aan hun kruising. Waar gaan ze daarna naartoe?"
+  },
+  "cornea": {
+    "name": "Hoornvlies",
+    "function": "Het hoornvlies beschermt de voorkant van het oog en buigt invallend licht af.",
+    "location": "Als doorzichtige laag voor de pupil en de iris.",
+    "mechanism": "Door de gebogen vorm wordt het licht al sterk gebroken voordat het de ooglens bereikt.",
+    "question": "Waarom is het handig dat het hoornvlies doorzichtig is?"
+  },
+  "retina": {
+    "name": "Netvlies",
+    "function": "Het netvlies zet licht om in signalen die de hersenen kunnen verwerken.",
+    "location": "Als dunne laag aan de binnenzijde van de achterkant van het oog.",
+    "mechanism": "Staafjes en kegeltjes reageren op licht. Via zenuwcellen worden signalen naar de oogzenuw doorgegeven.",
+    "question": "Volg de weg van het licht tot aan het netvlies. Welke onderdelen passeert het?"
+  },
+  "central sulcus": {
+    "name": "Centrale hersengroeve",
+    "function": "De centrale groeve is een duidelijke grens tussen twee gebieden van de hersenschors.",
+    "location": "Aan de buitenzijde van beide grotehersenhelften, tussen voorhoofdskwab en wandbeenkwab.",
+    "mechanism": "Vlak vóór de groeve ligt een gebied dat belangrijk is voor bewegen. Vlak erachter ligt een gebied dat lichaamsgevoel verwerkt.",
+    "question": "Zoek de groeve. Welke hersengebieden liggen er direct voor en achter?"
+  },
+  "corpus callosum": {
+    "name": "Hersenbalk",
+    "function": "De hersenbalk verbindt de linker- en rechterhersenhelft zodat informatie tussen beide kan worden doorgegeven.",
+    "location": "Diep in de hersenen, boven de hersenkamers.",
+    "mechanism": "Miljoenen zenuwvezels lopen van de ene hersenhelft naar de andere.",
+    "question": "Bekijk de hersenen van boven en daarna van opzij. Waarom is de hersenbalk van buiten nauwelijks zichtbaar?"
+  },
+  "spleen": {
+    "name": "Milt",
+    "function": "De milt helpt bij het opruimen van oude bloedcellen en speelt een rol bij de afweer.",
+    "location": "Linksboven in de buik, achter de maag en onder het middenrif.",
+    "mechanism": "Bloed stroomt door de milt, waar bepaalde cellen het controleren en oude bloedcellen kunnen opruimen.",
+    "question": "Zoek de milt. Welke andere organen liggen er vlakbij?"
+  },
+  "pancreatic duct": {
+    "name": "Afvoergang van de alvleesklier",
+    "function": "Deze afvoergang brengt alvleeskliersap met verteringsenzymen naar de dunne darm.",
+    "location": "Loopt door de alvleesklier naar de twaalfvingerige darm.",
+    "mechanism": "De enzymen helpen voedingsstoffen in de dunne darm af te breken.",
+    "question": "Volg de afvoergang. Waarom komt het alvleeskliersap juist in de dunne darm terecht?"
+  },
+  "duodenum": {
+    "name": "Twaalfvingerige darm",
+    "function": "Het eerste deel van de dunne darm mengt voedsel uit de maag met gal en alvleeskliersap.",
+    "location": "Direct na de maag, in een bocht om de kop van de alvleesklier.",
+    "mechanism": "De sappen helpen bij de vertering van vetten, eiwitten en koolhydraten.",
+    "question": "Welke afvoerbuizen komen uit bij de twaalfvingerige darm?"
+  },
+  "renal pelvis": {
+    "name": "Nierbekken",
+    "function": "Het nierbekken verzamelt urine voordat die naar de urineleider stroomt.",
+    "location": "Binnen in de nier, aan de kant waar de urineleider vertrekt.",
+    "mechanism": "Urine uit de nierkelken komt samen in het nierbekken en stroomt verder door de urineleider.",
+    "question": "Volg de urine van het nierbekken naar de blaas. Welke structuur verbindt ze?"
+  },
+  "ulnar artery": {
+    "name": "Ellepijpsslagader",
+    "function": "Deze slagader brengt bloed naar de onderarm en de hand.",
+    "location": "Loopt vooral aan de pinkzijde van de onderarm richting de handpalm.",
+    "mechanism": "Hij geeft vertakkingen af en helpt samen met de spaakbeenslagader de hand van bloed te voorzien.",
+    "question": "Vergelijk de ellepijpsslagader met de spaakbeenslagader. Aan welke kant van de onderarm loopt elk vat?"
+  },
+  "femoral vein": {
+    "name": "Dijbeenader",
+    "function": "Deze ader voert bloed uit het been terug in de richting van het hart.",
+    "location": "Loopt door het bovenbeen naar de lies, dicht bij de dijbeenslagader.",
+    "mechanism": "Spierbewegingen en kleppen in de aders helpen het bloed tegen de zwaartekracht in terug te stromen.",
+    "question": "Volg de ader vanaf het bovenbeen naar het bekken. In welke richting stroomt het bloed?"
+  },
+  "anterior axillary nodes": {
+    "name": "Voorste oksellymfeklieren",
+    "function": "Deze lymfeklieren filteren lymfevocht en ondersteunen de afweer.",
+    "location": "Aan de voorzijde van de oksel, bij de borstspieren.",
+    "mechanism": "Lymfevocht stroomt langs afweercellen in de lymfeklieren. Die kunnen ziekteverwekkers herkennen.",
+    "question": "Waar liggen deze lymfeklieren ten opzichte van de bloedvaten in de oksel?"
+  },
+  "basilar artery": {
+    "name": "Basilaire slagader",
+    "function": "De basilaire slagader voert bloed naar delen van de hersenstam en kleine hersenen.",
+    "location": "Aan de voorkant van de hersenbrug.",
+    "mechanism": "De twee wervelslagaders komen samen en vormen deze slagader, die verder vertakt.",
+    "question": "Volg de twee wervelslagaders. Waar komen ze bij elkaar?"
+  },
   'pleura': {
     name: 'Borstvlies (pleura)',
     function: 'Het longvlies (pleura visceralis) bedekt de long; het borstwandvlies (pleura parietalis) bekleedt de borstholte. Samen laten ze de longen met weinig wrijving bewegen.',
