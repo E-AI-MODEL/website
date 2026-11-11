@@ -65,7 +65,9 @@ try{
  await page.locator('#scene').screenshot({path:'test-results/science-worp-390-overzicht.png'});
  await page.setViewportSize({width:320,height:720});
  await page.waitForTimeout(180);
- const small=await page.evaluate(()=>({scroll:document.documentElement.scrollWidth,width:innerWidth,controls:document.querySelector('.aim-row').getBoundingClientRect().right}));
+ const small=await page.evaluate(()=>({scroll:document.documentElement.scrollWidth,width:innerWidth,controls:document.querySelector('.aim-row').getBoundingClientRect().right,offenders:[...document.querySelectorAll('body *')].map(el=>{const r=el.getBoundingClientRect();return{tag:el.tagName,id:el.id,cls:typeof el.className==='string'?el.className.slice(0,75):'',left:r.left,right:r.right,width:r.width}}).filter(o=>o.right>innerWidth+2||o.left< -2).sort((a,b)=>b.right-a.right).slice(0,18)}));
+ console.log('MOBILE-320',JSON.stringify(small));
+ await page.screenshot({path:'test-results/science-worp-320-diagnostic.png'});
  assert(small.scroll<=small.width+1,'Geen horizontale overloop op smalle telefoon');
  assert(small.controls<=small.width,'Fijnregelaars blijven binnen het scherm');
  await page.screenshot({path:'test-results/science-worp-320.png'});
