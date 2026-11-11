@@ -71,6 +71,9 @@ test('een drijvend voorwerp ondervindt precies zijn gewicht aan opwaartse kracht
   const floating = sample('buoyant',{rho:1000,V:10,m:4}).result;
   near(quantity(floating,'Opwaartse kracht'),39.24);
   near(quantity(floating,'Ondergedompeld deel bij drijven'),40);
+  const body = sample('buoyant',{rho:1000,V:10,m:4}).graphicsCalls.find(x=>x[0]==='rect' && x[3]===130 && x[4]===113);
+  assert.ok(body, 'Het drijvende voorwerp moet zichtbaar zijn');
+  near((body[2]+113-230)/113,.4,.015);
   assert.equal(readout(floating,'Drijfgedrag'),'Drijft');
   near(floating.fn(1),39.24);
   const sinking = sample('buoyant',{rho:500,V:10,m:8}).result;
