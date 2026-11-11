@@ -36,6 +36,8 @@ class PublicMenuTests(unittest.TestCase):
                 menu = header.select(".eai-site-menu .eai-site-group")
                 self.assertEqual(len(primary), 6)
                 self.assertEqual(len(menu), 7)
+                main_observatoria = next(a for a in primary if a.get_text(strip=True) == ('Observatories' if en else 'Observatoria'))
+                self.assertEqual(main_observatoria['href'], ('/en/tools/' if en else '/nl/tools/') + '#observatoria')
                 headings = [item.summary.get_text(strip=True) for item in menu]
                 self.assertIn("Observatories" if en else "Observatoria", headings)
                 self.assertIn("About" if en else "Over", headings)
