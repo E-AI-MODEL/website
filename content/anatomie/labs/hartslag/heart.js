@@ -300,6 +300,7 @@ function updateLabels(){
     const side=leftIds.has(id)?'left':'right';
     groups[side].push({el,id,p,connector,wanted:clamp(p[1],54,h-68)});
   }
+  const labelMargin=w>660?Math.min(190,w*.21):13;
   for(const side of ['left','right']){
     const entries=groups[side].sort((a,b)=>a.wanted-b.wanted);
     let y=51;
@@ -316,12 +317,12 @@ function updateLabels(){
     }
     for(const entry of entries){
       const {el,id,p,connector}=entry;
-      el.style.left=(side==='left'?13:w-13)+'px';
+      el.style.left=(side==='left'?labelMargin:w-labelMargin)+'px';
       el.style.top=entry.y+'px';
       el.style.transform=side==='left'?'translateY(-50%)':'translate(-100%,-50%)';
       el.classList.toggle('active',state.selected===id);
       const width=el.offsetWidth;
-      const targetX=side==='left'?13+width+7:w-13-width-7;
+      const targetX=side==='left'?labelMargin+width+7:w-labelMargin-width-7;
       const midX=p[0]+(targetX-p[0])*.57;
       connector.path.setAttribute('d','M '+p[0].toFixed(1)+' '+p[1].toFixed(1)+
         ' L '+midX.toFixed(1)+' '+p[1].toFixed(1)+
