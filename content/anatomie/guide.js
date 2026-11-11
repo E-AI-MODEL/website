@@ -153,7 +153,7 @@ const ITEMS = {
     "name": "Dijbeenader",
     "function": "Deze ader voert bloed uit het been terug in de richting van het hart.",
     "location": "Loopt door het bovenbeen naar de lies, dicht bij de dijbeenslagader.",
-    "mechanism": "Spierbewegingen en kleppen in de aders helpen het bloed tegen de zwaartekracht in terug te stromen.",
+    "mechanism": "De dijbeenader verzamelt bloed uit kleinere aders en gaat bij het bekken over in de uitwendige bekkenader.",
     "question": "Volg de ader vanaf het bovenbeen naar het bekken. In welke richting stroomt het bloed?"
   },
   "anterior axillary nodes": {
@@ -227,8 +227,9 @@ const ITEMS = {
   'sciatic nerve': {
     name: 'Heupzenuw',
     function: 'De grote beenzenuw vervoert signalen tussen het ruggenmerg en delen van het been. Deze signalen sturen spieren aan en geven gevoel door.',
-    location: 'Verlaat het bekken meestal onder de m. piriformis, loopt achter door bil en bovenbeen en splitst in de n. tibialis en n. fibularis communis.',
-    mechanism: 'Innerveert direct onder meer de hamstrings; via zijn eindtakken worden veel spieren en huidgebieden van onderbeen en voet bereikt.'
+    location: 'Loopt vanuit het bekken langs de achterzijde van het bovenbeen.',
+    mechanism: 'De zenuw bevat vezels voor gevoel en beweging en loopt verder via grote zenuwtakken naar het onderbeen en de voet.',
+    question: 'Volg de heupzenuw in het model. Welke twee grote zenuwtakken komen eruit voort?'
   },
   'ascending aorta': {
     name: 'Opstijgende aorta',
@@ -240,13 +241,15 @@ const ITEMS = {
     name: 'Buikaorta',
     function: 'De buikaorta verdeelt zuurstofrijk bloed over organen in de buik, het bekken en de benen.',
     location: 'Voor de wervelkolom in de buikholte.',
-    mechanism: 'Via zijtakken stroomt bloed onder meer naar de nieren en de darmen.'
+    mechanism: 'Via zijtakken stroomt bloed onder meer naar de nieren en de darmen.',
+    question: 'Volg de buikaorta naar beneden. In welke twee grote slagaders splitst hij uiteindelijk?'
   },
   'thoracic aorta': {
     name: 'Borstaorta',
     function: 'Dit deel van de aorta vervoert zuurstofrijk bloed door de borstkas naar de buik.',
     location: 'In de borstholte, vóór en links van de wervelkolom.',
-    mechanism: 'Kleinere zijtakken voorzien onder meer de borstwand en delen van de borstorganen van bloed.'
+    mechanism: 'Kleinere zijtakken voorzien onder meer de borstwand en delen van de borstorganen van bloed.',
+    question: 'Bekijk de borstkas van achteren. Aan welke kant van de wervelkolom ligt de borstaorta?'
   },
   'long head of biceps brachii': {
   "name": "Lange kop van de tweehoofdige armspier",
@@ -405,9 +408,10 @@ const ITEMS = {
 
   'hippocampus': {
   "name": "Hippocampus",
-  "function": "De hippocampus helpt nieuwe herinneringen vast te leggen. Hij speelt ook een rol bij het onthouden van plaatsen en routes.",
-  "location": "Mediaal in de temporaalkwab, aan de vloer van de onderhoorn van de laterale hersenventrikel.",
-  "mechanism": "Communiceert met onder meer de entorhinale cortex en andere onderdelen van het hippocampale geheugennetwerk."
+  "function": "De hippocampus helpt nieuwe ervaringen vast te leggen als herinneringen die je later kunt terughalen.",
+  "location": "Diep in de hersenen, aan de binnenzijde van de slaapkwab.",
+  "mechanism": "De hippocampus en omliggende hersengebieden helpen herinneringen op langere termijn vast te leggen.",
+    question: 'Zoek de hippocampus. Waarom kun je dit deel niet meteen aan de buitenkant zien?'
 },
 };
 export function anatomyGuide(base) {

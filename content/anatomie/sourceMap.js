@@ -1,6 +1,6 @@
 // Anatomie-bronnen voor leerlinggerichte uitleg.
-// Beoordeling: uitsluitend een verwijzing naar de geraadpleegde sectie,
-// geen certificering van iedere Nederlandse formulering of het 3D-model.
+// Status: gerichte verwijzing naar een geraadpleegde anatomiebron,
+// geen onafhankelijke goedkeuring van iedere formulering of de 3D-geometrie.
 // Terminologia Anatomica is een bron voor NAAMGEVING, niet voor fysiologie.
 const REFERENCES = Object.freeze({
   terminology: {
@@ -91,13 +91,49 @@ const REFERENCES = Object.freeze({
     label: 'OpenStax, 25.3 Bouw van de nier',
     url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/25-3-gross-anatomy-of-the-kidney'
   },
+  lowerLimbMuscles: {
+    label: 'OpenStax, 11.6 Spieren van bekken en benen',
+    url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/11-6-appendicular-muscles-of-the-pelvic-girdle-and-lower-limbs'
+  },
+  circulation: {
+    label: 'OpenStax, 20.5 Grote slagaders en aders',
+    url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/20-5-circulatory-pathways'
+  },
+  peripheralNerves: {
+    label: 'OpenStax, 13.4 Zenuwen buiten hersenen en ruggenmerg',
+    url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/13-4-the-peripheral-nervous-system'
+  },
+  hippocampus: {
+    label: 'OpenStax, 16.2 Geheugen en hippocampus',
+    url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/16-2-the-mental-status-exam'
+  },
+  fasciaLata: {
+    label: 'Peabody & Bordoni, Fascia Lata (NCBI Bookshelf)',
+    url: 'https://www.ncbi.nlm.nih.gov/books/NBK557497/'
+  },
+  armMuscles: {
+    label: 'StatPearls, Arm Muscles (NCBI Bookshelf)',
+    url: 'https://www.ncbi.nlm.nih.gov/books/NBK554420/'
+  },
+  facialArtery: {
+    label: 'StatPearls, Facial Artery (NCBI Bookshelf)',
+    url: 'https://www.ncbi.nlm.nih.gov/books/NBK536932/'
+  },
+  axillaryNodes: {
+    label: 'StatPearls, Axillary Lymph Nodes (NCBI Bookshelf)',
+    url: 'https://www.ncbi.nlm.nih.gov/books/NBK559188/'
+  },
+  toeCapsules: {
+    label: 'Elsevier, Metatarsophalangeal Joints',
+    url: 'https://www.elsevier.com/resources/anatomy/connective-tissue/connective-tissue-of-lower-limb-left/metatarsophalangeal-joints-left/19765'
+  },
   lymph: {
     label: 'OpenStax, 21.1 Lymfe- en afweerstelsel',
     url: 'https://openstax.org/books/anatomy-and-physiology/pages/21-1-anatomy-of-the-lymphatic-and-immune-systems'
   }
 });
 
-// Alleen opname als de bronsectie de inhoud van de betreffende uitleg
+// Alleen opname als de bron de inhoud van de betreffende uitleg
 // daadwerkelijk behandelt. Niet alle 62 eigen uitlegteksten staan hierin.
 const SUPPORTED_GUIDES = Object.freeze({
   'vertebra c4': 'vertebrae',
@@ -147,6 +183,21 @@ const SUPPORTED_GUIDES = Object.freeze({
   'pancreatic duct': 'digestionOrgans',
   'stomach': 'stomach',
   'duodenum': 'digestion',
+  'tibialis anterior muscle': 'lowerLimbMuscles',
+  'femoral artery': 'circulation',
+  'ulnar artery': 'circulation',
+  'femoral vein': 'circulation',
+  'basilar artery': 'circulation',
+  'sciatic nerve': 'peripheralNerves',
+  'abdominal aorta': 'circulation',
+  'thoracic aorta': 'circulation',
+  'hippocampus': 'hippocampus',
+  'anterior axillary nodes': 'axillaryNodes',
+  'fascia lata': 'fasciaLata',
+  'long head of biceps brachii': 'armMuscles',
+  'short head of biceps brachii': 'armMuscles',
+  'facial artery': 'facialArtery',
+  'articular capsules of metatarsophalangeal joints': 'toeCapsules',
 });
 
 const GENERAL_REFERENCES = Object.freeze({

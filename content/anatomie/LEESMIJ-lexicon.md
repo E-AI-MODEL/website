@@ -30,7 +30,7 @@ Deze onderdelen krijgen in de interface geen verzonnen anatomische naam. Eerst v
 
 Schrijf voor een leerling van havo 4 of vwo 5. Begin met herkenbare woorden; leg een medische term alleen uit als die nodig is. Verwar een modelhiërarchie niet met een werkelijke anatomische verbinding. Leid een specifieke functie niet uitsluitend af uit een Engelse naam.
 
-Er zijn **62 afzonderlijke Nederlandstalige gidsartikelen** geschreven. Hiervan hebben er nu **47** een gerichte leerboekverwijzing naar de beschreven anatomie. Deze 47 teksten worden als specifieke uitleg getoond. De andere **15** blijven in het bronbestand staan, maar zijn in de atlas voorlopig vervangen door algemene uitleg zolang er geen passende bron aan gekoppeld is. Verder krijgen de **1.574** structuren zonder eigen gidsartikel ook alleen algemene uitleg. Dat maakt samen **1.589** algemene uitlegroutes en **47** specifieke. Zeven bronnamen blijven onbekend. Een koppeling met een leerboeksectie is nog geen onafhankelijke medische eindcontrole; de exacte woordkeuze en 3D-geometrie blijven voor vakinhoudelijke toetsing vatbaar.
+Er zijn **62 afzonderlijke Nederlandstalige gidsartikelen** geschreven. Alle 62 hebben nu een gerichte vakbron gekoppeld. Voor 1.574 herkenbare structuren is alleen algemene uitleg over het type onderdeel beschikbaar. Zeven onduidelijke bronnamen blijven open. Een passende bron verwijst naar het besproken onderwerp, maar bewijst nog niet dat iedere formulering of het 3D-model onafhankelijk medisch is goedgekeurd.
 
 ## Controle vóór een volgende publicatie
 
@@ -51,8 +51,8 @@ De korte type-uitleg staat in `content/anatomie/teaching.js`. Die regels geven a
 
 ## Broncontrole en zichtbaarheid
 
-`content/anatomie/sourceMap.js` koppelt specifiek beschreven structuren aan de geraadpleegde secties van **OpenStax Anatomy and Physiology 2e**. Die bron ondersteunt de anatomische informatie, maar bewijst niet de juistheid van het 3D-mesh of de redactionele vertaling. De andere gidsartikelen zijn niet verdwenen: ze blijven in `guide.js` voor verdere toetsing, maar de leerling ziet alleen algemene uitleg.
+`content/anatomie/sourceMap.js` koppelt alle 62 specifiek beschreven structuren aan passende publicaties van **OpenStax**, **NCBI Bookshelf** of **Elsevier**. De verwijzingen ondersteunen de betreffende anatomie, maar bewijzen niet dat de Nederlandse uitleg of het 3D-model foutloos is. Nieuwe specifiek geschreven teksten mogen pas zichtbaar worden nadat er een passende vakbron aan gekoppeld is.
 
 Voor de internationale terminologie gebruiken we **FIPAT, Terminologia Anatomica 2** als vergelijkingsbron. De huidige Nederlandse namen zijn redactionele vertalingen. We mogen ze niet als officiële FIPAT-termen presenteren. Ook de upstream Latijnse gegevens zijn niet foutloos: de bron verwisselt een teengewricht met de schouder. De Engelse definities komen grotendeels uit Wikipedia en hebben niet altijd dezelfde detaillering als het gekozen modelonderdeel.
 
-De bronlinks staan in het informatiepaneel onder **Herkomst en bronnen**. De algemene uitleg is herkenbaar gelabeld en de oorspronkelijke Engelse definitie blijft uitklapbaar. De tests controleren of bronkoppelingen naar echte structuren verwijzen, niet of een auteur iedere medische claim persoonlijk heeft beoordeeld. `node scripts/test_anatomie_sources.mjs` controleert de nieuwe bronlaag.
+De bronlinks staan in het informatiepaneel onder **Herkomst en bronnen**. De algemene uitleg is herkenbaar gelabeld en de oorspronkelijke Engelse definitie blijft uitklapbaar. De tests controleren of alle gidsartikelen een geldige, gerichte vakbron hebben en naar bestaande modellen verwijzen. Ze bewijzen nog niet dat een inhoudsdeskundige elke afzonderlijke claim persoonlijk heeft beoordeeld. `node scripts/test_anatomie_sources.mjs` controleert de nieuwe bronlaag.
