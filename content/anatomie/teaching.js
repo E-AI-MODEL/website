@@ -130,6 +130,11 @@ const TYPES = {
     general: 'Het hart en de bloedvaten vervoeren bloed door het lichaam. Deze atlas toont de ligging van het gekozen onderdeel, niet de bloedstroom zelf.',
     question: 'Welke bloedvaten of hartdelen liggen direct naast dit onderdeel?'
   },
+  afweerorgaan: {
+    kind: 'Orgaan van het afweersysteem',
+    general: 'De milt, zwezerik en amandelen zijn betrokken bij de afweer, maar hebben verschillende taken. Dit is geen lymfeklier; de werking van het gekozen orgaan vraagt afzonderlijke uitleg.',
+    question: 'Bekijk de ligging van dit orgaan. Welke andere organen en bloedvaten liggen eromheen?'
+  },
   lymfeklier: {
     kind: 'Lymfeklier',
     general: 'Lymfeklieren filteren lymfevocht. Afweercellen kunnen er ziekteverwekkers herkennen en erop reageren.',
@@ -144,6 +149,11 @@ const TYPES = {
     kind: 'Zenuw of zenuwtak',
     general: 'Zenuwen vervoeren signalen tussen het centrale zenuwstelsel en andere delen van het lichaam. Sommige signalen sturen spieren aan; andere geven informatie van zintuigen door.',
     question: 'Volg het verloop van deze zenuw. Naar welk lichaamsdeel loopt hij?'
+  },
+  zenuwvlies: {
+    kind: 'Beschermend vlies rond zenuwweefsel',
+    general: 'De hersenvliezen en vliezen rond het ruggenmerg omgeven kwetsbaar zenuwweefsel. Sommige vormen stevige scheidingen in de schedel.',
+    question: 'Bekijk dit vlies vanuit meerdere richtingen. Welk deel van de hersenen of het ruggenmerg beschermt het?'
   },
   zenuwbaan: {
     kind: 'Zenuwbaan',
@@ -213,9 +223,9 @@ function matches(name, pattern) {
 
 function classFor(name, system) {
   if (system === 'skeletal') {
+    if (matches(name, /\b(cartilage|cartilages)\b/)) return 'kraakbeen';
     if (matches(name, /\b(rib|costal)\b/)) return 'rib';
     if (matches(name, /\b(vertebra|vertebral)\b/)) return 'wervel';
-    if (matches(name, /\b(cartilage|cartilages)\b/)) return 'kraakbeen';
     if (matches(name, /\b(tooth|molar|premolar|incisor|canine)\b/)) return 'tand';
     if (matches(name, /\b(sinus|cavity|meatus)\b/)) return 'holte';
     return 'bot';
@@ -244,10 +254,12 @@ function classFor(name, system) {
     return 'bloedvat';
   }
   if (system === 'lymphatic') {
+    if (matches(name, /\b(spleen|thymus|tonsil)\b/)) return 'afweerorgaan';
     if (matches(name, /\b(duct|vessel|trunk)\b/)) return 'lymfevat';
     return 'lymfeklier';
   }
   if (system === 'nervous') {
+    if (matches(name, /\b(dura|falx|tentorium|meningeal|meninges)\b/)) return 'zenuwvlies';
     if (matches(name, /\b(eyeball|retina|cornea|iris|lens|lacrimal|sclera|cochlea|vestibule|tympanic|vitreous|zonular)\b/)) return 'zintuig';
     if (matches(name, /\b(nerve|nerves|plexus|root|branch)\b/)) return 'zenuw';
     if (matches(name, /\b(tract|fasciculus|commissure|stria)\b/)) return 'zenuwbaan';
