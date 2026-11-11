@@ -577,7 +577,7 @@ $('discoveryAction').addEventListener('click',()=>{
     study.stopAt=null;
   }
   syncStudy();
-}));
+});
 canvas.addEventListener('pointerdown',e=>{
   if(e.pointerType==='touch'&&e.isPrimary===false)return;
   state.drag={x:e.clientX,y:e.clientY,yaw:state.yaw,pitch:state.pitch,moved:false};
