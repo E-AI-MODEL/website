@@ -8,14 +8,41 @@
   "(adductor minimus)": [
     "kleine aanvoerderspier"
   ],
+  "(anterior tibial node)": [
+    "voorste scheenbeenlymfeklier"
+  ],
   "(anteromedial basal segmental bronchus of left lung)": [
     "voorste binnenste basale segmentbronchus van de linkerlong"
+  ],
+  "(fibular node)": [
+    "kuitbeenlymfeklier"
   ],
   "(iliopectineal bursa)": [
     "slijmbeurs tussen darmbeen en schaambeen"
   ],
+  "(intermediate deep inguinal node)": [
+    "middelste diepe lieslymfeklier"
+  ],
+  "(lateral lacunar node)": [
+    "buitenste lymfeklier bij de lacuna"
+  ],
   "(opponens digiti minimi muscle of foot)": [
     "tegensteller van de kleine teen"
+  ],
+  "(posterior tibial node)": [
+    "achterste scheenbeenlymfeklier"
+  ],
+  "(proximal deep inguinal node)": [
+    "bovenste diepe lieslymfeklier"
+  ],
+  "(retropyloric nodes)": [
+    "lymfeklieren achter de maaguitgang"
+  ],
+  "(subpyloric nodes)": [
+    "lymfeklieren onder de maaguitgang"
+  ],
+  "(suprapyloric node)": [
+    "lymfeklier boven de maaguitgang"
   ],
   "abdominal aorta": [
     "buikaorta"
@@ -77,6 +104,9 @@
   "antebrachial fascia": [
     "onderarmfascie"
   ],
+  "anterior axillary nodes": [
+    "voorste oksellymfeklieren"
+  ],
   "anterior basal segmental bronchus of left lung (bviii)": [
     "voorste basale segmentbronchus van de linkerlong (BVIII)"
   ],
@@ -100,6 +130,9 @@
   ],
   "anterior horn of spinal cord": [
     "voorhoorn van het ruggenmerg"
+  ],
+  "anterior inferior jugular nodes": [
+    "voorste onderste halslymfeklieren"
   ],
   "anterior intermuscular septum of leg": [
     "voorste bindweefselschot van het onderbeen"
@@ -152,11 +185,17 @@
   "aortic arch": [
     "aortaboog"
   ],
+  "apical axillary nodes": [
+    "bovenste oksellymfeklieren"
+  ],
   "apical segmental bronchus of right lung (bi)": [
     "topsegmentbronchus van de rechterlong (BI)"
   ],
   "apicoposterior segmental bronchus of left lung (bi+bii)": [
     "top-achtersegmentbronchus van de linkerlong (BI+BII)"
+  ],
+  "appendicular nodes": [
+    "lymfeklieren bij het wormvormig aanhangsel"
   ],
   "arcuate popliteal ligament": [
     "boogvormige knieholteband"
@@ -266,8 +305,14 @@
   "brachial fascia": [
     "bovenarmfascie"
   ],
+  "brachial nodes": [
+    "lymfeklieren van de bovenarm"
+  ],
   "brachialis muscle": [
     "opperarmspier"
+  ],
+  "brachiocephalic nodes": [
+    "lymfeklieren langs de arm-hoofdvaten"
   ],
   "brachioradialis muscle": [
     "opperarms-spaakbeenspier"
@@ -280,6 +325,9 @@
   ],
   "bucinator": [
     "wangspier"
+  ],
+  "bucinator node": [
+    "lymfeklier bij de wangspier"
   ],
   "bursa of piriformis muscle": [
     "slijmbeurs bij de peervormige spier"
@@ -301,6 +349,12 @@
   ],
   "cauda equina": [
     "zenuwbundel onderaan het ruggenmerg"
+  ],
+  "central axillary nodes": [
+    "middelste oksellymfeklieren"
+  ],
+  "central superior mesenteric nodes": [
+    "middelste lymfeklieren langs de bovenste darmslagader"
   ],
   "cerebellum": [
     "kleine hersenen"
@@ -328,6 +382,9 @@
   ],
   "coccyx": [
     "staartbeen"
+  ],
+  "coeliac nodes": [
+    "lymfeklieren rond de buikslagaderstam"
   ],
   "collateral interphalangeal ligaments of foot": [
     "zijbanden van de teengewrichten"
@@ -428,6 +485,9 @@
   "crural fascia": [
     "onderbeenfascie"
   ],
+  "cubital nodes": [
+    "lymfeklieren bij de elleboog"
+  ],
   "cuboid bone": [
     "kubusbeen"
   ],
@@ -436,6 +496,9 @@
   ],
   "cuneometatarsal interosseous ligaments": [
     "banden tussen wigvormige voetwortelbeentjes en middenvoetsbeentjes"
+  ],
+  "cystic node": [
+    "lymfeklier bij de galblaas"
   ],
   "deep femoral artery": [
     "diepe dijbeenslagader"
@@ -457,6 +520,9 @@
   ],
   "deep part of tibial collateral ligament": [
     "diepe deel van de binnenste knieband"
+  ],
+  "deep popliteal nodes": [
+    "diepe knieholte-lymfeklieren"
   ],
   "deep transverse metacarpal ligament": [
     "diepe dwarse band tussen middenhandsbeentjes"
@@ -821,6 +887,9 @@
   "hypothalamus": [
     "hypothalamus"
   ],
+  "ileocolic nodes": [
+    "lymfeklieren bij de overgang van dunne en dikke darm"
+  ],
   "iliacus muscle": [
     "darmbeenspier"
   ],
@@ -851,6 +920,15 @@
   "incus": [
     "aambeeld"
   ],
+  "inferior deep lateral cervical nodes": [
+    "onderste diepe lymfeklieren aan de zijkant van de hals"
+  ],
+  "inferior diaphragmatic nodes": [
+    "onderste middenriflymfeklieren"
+  ],
+  "inferior epigastric nodes": [
+    "onderste buikwandlymfeklieren"
+  ],
   "inferior extensor retinaculum of ankle": [
     "onderste peesband van de enkelstrekkers"
   ],
@@ -862,6 +940,9 @@
   ],
   "inferior glenohumeral ligament": [
     "onderste band van het schoudergewricht"
+  ],
+  "inferior gluteal nodes": [
+    "onderste billymfeklieren"
   ],
   "inferior head of lateral pterygoid muscle": [
     "onderste kop van de buitenste vleugelspier"
@@ -881,6 +962,9 @@
   "inferior oblique muscle": [
     "onderste schuine oogspier"
   ],
+  "inferior pancreatic nodes": [
+    "onderste alvleesklierlymfeklieren"
+  ],
   "inferior parathyroid gland": [
     "onderste bijschildklier"
   ],
@@ -896,11 +980,23 @@
   "inferior subtendinous bursa of biceps femoris muscle": [
     "onderste slijmbeurs onder de pees van de tweehoofdige dijspier"
   ],
+  "inferior superficial inguinal nodes": [
+    "onderste oppervlakkige lieslymfeklieren"
+  ],
   "inferior tarsus": [
     "onderste ooglidplaat"
   ],
+  "inferior tracheobronchial nodes": [
+    "onderste lymfeklieren tussen luchtpijp en bronchiën"
+  ],
   "inferior vena cava": [
     "onderste holle ader"
+  ],
+  "infra-auricular nodes": [
+    "lymfeklieren onder het oor"
+  ],
+  "infraclavicular nodes": [
+    "lymfeklieren onder het sleutelbeen"
   ],
   "infrapatellar fat pad": [
     "vetkussen onder de knieschijf"
@@ -920,14 +1016,26 @@
   "intercornual ligament": [
     "band tussen de hoorntjes van het ringvormige kraakbeen"
   ],
+  "intercostal nodes": [
+    "lymfeklieren tussen de ribben"
+  ],
   "intercuneiform interosseous ligaments": [
     "banden tussen wigvormige voetwortelbeentjes"
   ],
   "intermediate bronchus": [
     "tussenbronchus van de rechterlong"
   ],
+  "intermediate common iliac nodes": [
+    "middelste lymfeklieren bij de gemeenschappelijke bekkenslagader"
+  ],
   "intermediate cuneiform bone": [
     "middelste wigvormige voetwortelbeen"
+  ],
+  "intermediate external iliac nodes": [
+    "middelste lymfeklieren bij de uitwendige bekkenslagader"
+  ],
+  "intermediate lumbar nodes": [
+    "middelste lendenlymfeklieren"
   ],
   "intermediate tendon of digastric muscle": [
     "tussenpees van de tweehuikige spier"
@@ -964,6 +1072,9 @@
   ],
   "interosseous sacro-iliac ligament": [
     "diepe band van het heiligbeen-darmbeengewricht"
+  ],
+  "interpectoral nodes": [
+    "lymfeklieren tussen de borstspieren"
   ],
   "interpubic disc": [
     "gewrichtsschijf tussen de schaambeenderen"
@@ -1055,6 +1166,12 @@
   "intra-articular ligament of head of rib": [
     "band binnen het gewricht van de ribkop"
   ],
+  "intraglandular parotid nodes": [
+    "lymfeklieren in de oorspeekselklier"
+  ],
+  "intrapulmonary nodes": [
+    "lymfeklieren binnen in de long"
+  ],
   "investing abdominal fascia": [
     "omhullende fascie van de buik"
   ],
@@ -1063,6 +1180,15 @@
   ],
   "jejunum": [
     "nuchtere darm"
+  ],
+  "jugulodigastric node": [
+    "lymfeklier onder de kaakhoek"
+  ],
+  "juxta-intestinal mesenteric nodes": [
+    "darmnabije lymfeklieren in het darmscheil"
+  ],
+  "juxta-oesophageal nodes": [
+    "lymfeklieren naast de slokdarm"
   ],
   "kidney": [
     "nier"
@@ -1076,11 +1202,23 @@
   "larynx": [
     "strottenhoofd"
   ],
+  "lateral aortic nodes": [
+    "lymfeklieren naast de aorta"
+  ],
+  "lateral axillary nodes": [
+    "buitenste oksellymfeklieren"
+  ],
   "lateral basal segmental bronchus of left lung (bix)": [
     "buitenste basale segmentbronchus van de linkerlong (BIX)"
   ],
   "lateral basal segmental bronchus of right lung (bix)": [
     "buitenste basale segmentbronchus van de rechterlong (BIX)"
+  ],
+  "lateral caval nodes": [
+    "lymfeklieren naast de holle ader"
+  ],
+  "lateral common iliac nodes": [
+    "buitenste lymfeklieren bij de gemeenschappelijke bekkenvaten"
   ],
   "lateral crico-arytenoid muscle": [
     "zijwaartse ring-bekerkraakbeenspier"
@@ -1109,17 +1247,26 @@
   "lateral patellar retinaculum": [
     "buitenste steunband van de knieschijf"
   ],
+  "lateral pericardial nodes": [
+    "buitenste lymfeklieren bij het hartzakje"
+  ],
   "lateral process of nasal septal cartilage": [
     "zijwaarts uitsteeksel van het neustussenschotkraakbeen"
   ],
   "lateral rectus muscle": [
     "buitenste rechte oogspier"
   ],
+  "lateral sacral nodes": [
+    "lymfeklieren naast het heiligbeen"
+  ],
   "lateral segmental bronchus of right lung (biv)": [
     "buitenste segmentbronchus van de rechterlong (BIV)"
   ],
   "lateral subtendinous bursa of gastrocnemius muscle": [
     "buitenste slijmbeurs onder de pees van de kuitspier"
+  ],
+  "lateral superior jugular node": [
+    "buitenste bovenste halslymfeklier"
   ],
   "lateral talocalcaneal ligament": [
     "buitenste band tussen sprongbeen en hielbeen"
@@ -1133,6 +1280,9 @@
   "lateral ventricle": [
     "zijventrikel van de hersenen"
   ],
+  "lateral vesical nodes": [
+    "lymfeklieren naast de urineblaas"
+  ],
   "latissimus dorsi muscle": [
     "brede rugspier"
   ],
@@ -1141,6 +1291,9 @@
   ],
   "left atrium": [
     "linkerboezem"
+  ],
+  "left colic nodes": [
+    "lymfeklieren bij het linkerdeel van de dikke darm"
   ],
   "left common carotid artery": [
     "linker halsslagader"
@@ -1286,11 +1439,17 @@
   "mandible": [
     "onderkaak"
   ],
+  "mandibular node": [
+    "lymfeklier bij de onderkaak"
+  ],
   "manubrium of sternum": [
     "borstbeenhandvat"
   ],
   "masseteric fascia": [
     "kauwspierfascie"
+  ],
+  "mastoid nodes": [
+    "lymfeklieren achter het oor"
   ],
   "maxilla": [
     "bovenkaak"
@@ -1301,8 +1460,14 @@
   "medial basal segmental bronchus of right lung (bvii)": [
     "binnenste basale segmentbronchus van de rechterlong (BVII)"
   ],
+  "medial common iliac nodes": [
+    "binnenste lymfeklieren bij de gemeenschappelijke bekkenvaten"
+  ],
   "medial cuneiform bone": [
     "binnenste wigvormige voetwortelbeen"
+  ],
+  "medial external iliac nodes": [
+    "binnenste lymfeklieren bij de uitwendige bekkenvaten"
   ],
   "medial femoral intermuscular septum": [
     "binnenste bindweefselschot van het bovenbeen"
@@ -1376,6 +1541,9 @@
   "middle cerebral artery (m1-segment)": [
     "middelste hersenslagader (eerste deel)"
   ],
+  "middle colic nodes": [
+    "lymfeklieren bij het middendeel van de dikke darm"
+  ],
   "middle glenohumeral ligament": [
     "middelste band van het schoudergewricht"
   ],
@@ -1439,6 +1607,9 @@
   "nasalis muscle": [
     "neusspier"
   ],
+  "nasolabial node": [
+    "lymfeklier bij de neus-lipplooi"
+  ],
   "nasopharynx": [
     "neus-keelholte"
   ],
@@ -1450,6 +1621,12 @@
   ],
   "ninth rib": [
     "negende rib"
+  ],
+  "node of arch of azygos vein": [
+    "lymfeklier bij de boog van de ongepaarde ader"
+  ],
+  "node of ligamentum arteriosum": [
+    "lymfeklier bij de slagaderband"
   ],
   "nuchal ligament": [
     "nekband"
@@ -1553,8 +1730,14 @@
   "obturator membrane": [
     "afsluitmembraan in het bekken"
   ],
+  "obturator nodes": [
+    "lymfeklieren bij het afsluitgat in het bekken"
+  ],
   "occipital bone": [
     "achterhoofdsbeen"
+  ],
+  "occipital nodes": [
+    "achterhoofdlymfeklieren"
   ],
   "occipitalis muscle": [
     "achterhoofdsspier"
@@ -1633,6 +1816,21 @@
   ],
   "pancreatic duct": [
     "afvoergang van de alvleesklier"
+  ],
+  "paracolic superior mesenteric nodes": [
+    "lymfeklieren naast de dikke darm bij de bovenste darmslagader"
+  ],
+  "pararectal nodes": [
+    "lymfeklieren naast de endeldarm"
+  ],
+  "parasternal nodes": [
+    "lymfeklieren naast het borstbeen"
+  ],
+  "paratracheal cervical nodes": [
+    "lymfeklieren naast de luchtpijp in de hals"
+  ],
+  "paratracheal thoracic nodes": [
+    "lymfeklieren naast de luchtpijp in de borstkas"
   ],
   "parietal bone": [
     "wandbeen"
@@ -1721,6 +1919,9 @@
   "popliteus muscle": [
     "knieholtespier"
   ],
+  "posterior axillary nodes": [
+    "achterste oksellymfeklieren"
+  ],
   "posterior basal segmental bronchus of left lung (bx)": [
     "achterste basale segmentbronchus van de linkerlong (BX)"
   ],
@@ -1792,6 +1993,33 @@
   ],
   "posterior tibiotalar ligament": [
     "achterste band tussen scheenbeen en sprongbeen"
+  ],
+  "postvesical nodes": [
+    "lymfeklieren achter de urineblaas"
+  ],
+  "pre-aortic nodes": [
+    "lymfeklieren vóór de aorta"
+  ],
+  "pre-auricular nodes": [
+    "lymfeklieren vóór het oor"
+  ],
+  "precaecal nodes": [
+    "lymfeklieren vóór de blindedarm"
+  ],
+  "precaval nodes": [
+    "lymfeklieren vóór de holle ader"
+  ],
+  "prepericardial nodes": [
+    "lymfeklieren vóór het hartzakje"
+  ],
+  "pretracheal nodes": [
+    "lymfeklieren vóór de luchtpijp"
+  ],
+  "prevertebral nodes": [
+    "lymfeklieren vóór de wervelkolom"
+  ],
+  "prevesical nodes": [
+    "lymfeklieren vóór de urineblaas"
   ],
   "procerus muscle": [
     "neuswortelspier"
@@ -1910,6 +2138,18 @@
   "renal pelvis": [
     "nierbekken"
   ],
+  "retro-aortic nodes": [
+    "lymfeklieren achter de aorta"
+  ],
+  "retrocaecal nodes": [
+    "lymfeklieren achter de blindedarm"
+  ],
+  "retrocaval nodes": [
+    "lymfeklieren achter de holle ader"
+  ],
+  "retropharyngeal nodes": [
+    "lymfeklieren achter de keelholte"
+  ],
   "rhomboid major muscle": [
     "grote ruitvormige rugspier"
   ],
@@ -1922,11 +2162,20 @@
   "right atrium": [
     "rechterboezem"
   ],
+  "right colic nodes": [
+    "lymfeklieren bij het rechterdeel van de dikke darm"
+  ],
   "right common carotid artery": [
     "rechter halsslagader"
   ],
   "right coronary artery": [
     "rechter kransslagader"
+  ],
+  "right gastric nodes": [
+    "lymfeklieren aan de rechterzijde van de maag"
+  ],
+  "right gastro-omental nodes": [
+    "lymfeklieren bij de rechter maag-vetschortvaten"
   ],
   "right inferior lobar bronchus": [
     "onderkwabbronchus van de rechterlong"
@@ -2057,6 +2306,9 @@
   "sigmoid colon": [
     "sigmoïd"
   ],
+  "sigmoid nodes": [
+    "lymfeklieren bij de sigmoïde dikke darm"
+  ],
   "sinus of frontal bone": [
     "voorhoofdsholte"
   ],
@@ -2092,6 +2344,9 @@
   ],
   "spleen": [
     "milt"
+  ],
+  "splenic nodes": [
+    "lymfeklieren bij de milt"
   ],
   "splenius capitis muscle": [
     "riemspier van het hoofd"
@@ -2138,6 +2393,9 @@
   "subacromial bursa": [
     "slijmbeurs onder het schouderdak"
   ],
+  "subaortic nodes": [
+    "lymfeklieren onder de aorta"
+  ],
   "subclavius muscle": [
     "ondersleutelbeenspier"
   ],
@@ -2180,6 +2438,12 @@
   "submandibular gland": [
     "onderkaakspeekselklier"
   ],
+  "submandibular nodes": [
+    "lymfeklieren onder de onderkaak"
+  ],
+  "submental nodes": [
+    "lymfeklieren onder de kin"
+  ],
   "subscapularis muscle": [
     "onderschouderbladspier"
   ],
@@ -2213,6 +2477,9 @@
   "subtendinous prepatellar bursa": [
     "slijmbeurs onder de pees vóór de knieschijf"
   ],
+  "superficial anterior cervical nodes": [
+    "oppervlakkige voorste halslymfeklieren"
+  ],
   "superficial head of flexor pollicis brevis": [
     "oppervlakkige kop van de korte duimbuiger"
   ],
@@ -2222,14 +2489,23 @@
   "superficial investing cervical fascia": [
     "oppervlakkige omhullende halsfascie"
   ],
+  "superficial lateral cervical nodes": [
+    "oppervlakkige lymfeklieren aan de zijkant van de hals"
+  ],
   "superficial layer of temporal fascia": [
     "oppervlakkige laag van de slaapfascie"
+  ],
+  "superficial parotid nodes": [
+    "oppervlakkige lymfeklieren bij de oorspeekselklier"
   ],
   "superficial part of masseter": [
     "oppervlakkig deel van de kauwspier"
   ],
   "superficial part of tibial collateral ligament": [
     "oppervlakkige deel van de binnenste knieband"
+  ],
+  "superficial popliteal nodes": [
+    "oppervlakkige knieholte-lymfeklieren"
   ],
   "superficial transverse metacarpal ligament": [
     "oppervlakkige dwarse band tussen middenhandsbeentjes"
@@ -2239,6 +2515,9 @@
   ],
   "superior bursa of biceps femoris muscle": [
     "bovenste slijmbeurs bij de tweehoofdige dijspier"
+  ],
+  "superior diaphragmatic nodes": [
+    "bovenste middenriflymfeklieren"
   ],
   "superior extensor retinaculum of ankle": [
     "bovenste peesband van de enkelstrekkers"
@@ -2251,6 +2530,9 @@
   ],
   "superior glenohumeral ligament": [
     "bovenste band van het schoudergewricht"
+  ],
+  "superior gluteal nodes": [
+    "bovenste billymfeklieren"
   ],
   "superior head of lateral pterygoid muscle": [
     "bovenste kop van de buitenste vleugelspier"
@@ -2266,6 +2548,12 @@
   ],
   "superior oblique muscle": [
     "bovenste schuine oogspier"
+  ],
+  "superior pancreatic nodes": [
+    "bovenste alvleesklierlymfeklieren"
+  ],
+  "superior pancreaticoduodenal nodes": [
+    "bovenste lymfeklieren bij alvleesklier en twaalfvingerige darm"
   ],
   "superior parathyroid gland": [
     "bovenste bijschildklier"
@@ -2288,11 +2576,23 @@
   "superior tarsus": [
     "bovenste ooglidplaat"
   ],
+  "superior tracheobronchial nodes": [
+    "bovenste lymfeklieren tussen luchtpijp en bronchiën"
+  ],
   "superior vena cava": [
     "bovenste holle ader"
   ],
+  "superolateral superficial inguinal nodes": [
+    "bovenste buitenste oppervlakkige lieslymfeklieren"
+  ],
+  "superomedial superficial inguinal nodes": [
+    "bovenste binnenste oppervlakkige lieslymfeklieren"
+  ],
   "supinator": [
     "supinatorspier"
+  ],
+  "supraclavicular nodes": [
+    "lymfeklieren boven het sleutelbeen"
   ],
   "suprapatellar bursa": [
     "slijmbeurs boven de knieschijf"
@@ -2305,6 +2605,9 @@
   ],
   "supraspinous ligament": [
     "band over de doornuitsteeksels van de wervels"
+  ],
+  "supratrochlear nodes": [
+    "lymfeklieren boven de elleboog"
   ],
   "synovial sheaths of digits of hand": [
     "slijmvliespeesschedes van de vingers"
@@ -2401,6 +2704,9 @@
   ],
   "thyroid gland": [
     "schildklier"
+  ],
+  "thyroid nodes": [
+    "lymfeklieren bij de schildklier"
   ],
   "tibia": [
     "scheenbeen"
