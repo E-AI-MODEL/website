@@ -140,7 +140,8 @@
  .workspace.mobile-projectile .inquiry-right{display:none}
  .workspace.mobile-projectile .scene-hud{display:none}
  .workspace.mobile-projectile .scene-bottom .legend{display:none}
- .workspace.mobile-projectile .scene-bottom{height:25px}
+ .workspace.mobile-projectile .scene-bottom{display:none}
+ .workspace.mobile-projectile #openMobileSettings,.workspace.mobile-projectile #focusScene,.workspace.mobile-projectile #resetBtn{display:none!important}
  .workspace.mobile-projectile .mobile-aim:not([hidden]){padding:12px 14px 15px;gap:12px}
  .workspace.mobile-projectile .mobile-aim-head{align-items:center}
  .workspace.mobile-projectile .mobile-aim-head strong{font-size:14px}
@@ -156,6 +157,7 @@
  .workspace.mobile-projectile .analysis-shell{margin-top:11px}
  .workspace.mobile-projectile .research-steps{font-size:11px}
  .workspace.mobile-projectile .scene-lower-tools{font-size:9px}
+ .workspace.mobile-projectile:not(.has-thrown) .analysis-shell{display:none}
 }
 @media(max-width:360px){.workspace.mobile-projectile .aim-adjust{grid-template-columns:62px minmax(0,1fr) 62px;gap:7px}}
 </style></head>
@@ -643,7 +645,7 @@ function researchCopy(id){
  $('hypothesis').placeholder=row.placeholder;
 }
 function resetInquiry(id){
- mission.launched=false;mission.complete=false;mission.tries=0;mission.view='target';mission.shots=[];mission.previousSamples=[];mission.samples=[];mission.probe={x:615,y:194};mission.pointer=null;mission.feedback='';mission.solved=false;
+ mission.launched=false;mission.complete=false;mission.tries=0;mission.view='target';mission.shots=[];$('labSection').classList.remove('has-thrown');mission.previousSamples=[];mission.samples=[];mission.probe={x:615,y:194};mission.pointer=null;mission.feedback='';mission.solved=false;
  $('inquiryAnswer').value='';
  if(['projectile','interference','wheatstone'].includes(id))setPlaying(false);else setPlaying(!matchMedia('(prefers-reduced-motion:reduce)').matches);
  $('inquiryBar').hidden=!['projectile','interference','wheatstone'].includes(id);
@@ -739,6 +741,6 @@ const dbar=$('sceneDivider');let resizingGraph=null;dbar.addEventListener('point
 // Mobile: swipe between graph, comparison, research and explanation without swiping the whole page.
 let swipeStart=null;const panel=$('bottomPanel');panel.addEventListener('touchstart',ev=>{if(ev.touches.length!==1||ev.target.closest('textarea,input'))return;swipeStart={x:ev.touches[0].clientX,y:ev.touches[0].clientY}},{passive:true});panel.addEventListener('touchend',ev=>{if(!swipeStart||innerWidth>720||!ev.changedTouches.length)return;const dx=ev.changedTouches[0].clientX-swipeStart.x,dy=ev.changedTouches[0].clientY-swipeStart.y;swipeStart=null;if(Math.abs(dx)>65&&Math.abs(dx)>Math.abs(dy)*1.5){const tabs=['graph','comparison','research','explain'],index=tabs.indexOf(state.bottom),next=clamp(index+(dx<0?1:-1),0,3);selectBottom(tabs[next])}},{passive:true});
 document.addEventListener('keydown',ev=>{if(ev.key==='Escape'&&focus){$('focusScene').click()}else if(ev.key==='Escape'){closeDrawer()}if(ev.code==='Space'&&!['projectile','wheatstone'].includes(state.id)&&!['INPUT','TEXTAREA','SELECT','BUTTON'].includes(document.activeElement?.tagName)&&!ev.repeat){ev.preventDefault();setPlaying(!state.playing)}});
-const start=byId[location.hash.slice(1)]?location.hash.slice(1):'projectile';loadLab(start);window.addEventListener('hashchange',()=>{const id=location.hash.slice(1);if(byId[id]&&id!==state.id)loadLab(id)});let last=performance.now(),lastRender=0;const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;if(reduce)setPlaying(false);function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;if(state.playing){state.t+=dt*state.speed;if(state.id==='projectile'&&mission.launched&&!mission.complete){const duration=2*state.p.v*Math.sin(rad(state.p.angle))/state.p.g;if(state.t>=duration){state.t=duration;mission.complete=true;mission.tries++;mission.shots.push({range:state.p.v*state.p.v*Math.sin(2*rad(state.p.angle))/state.p.g,angle:state.p.angle,v:state.p.v});setPlaying(false)}}}if(now-lastRender>33){render();lastRender=now}requestAnimationFrame(frame)}requestAnimationFrame(frame)}
+const start=byId[location.hash.slice(1)]?location.hash.slice(1):'projectile';loadLab(start);window.addEventListener('hashchange',()=>{const id=location.hash.slice(1);if(byId[id]&&id!==state.id)loadLab(id)});let last=performance.now(),lastRender=0;const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;if(reduce)setPlaying(false);function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;if(state.playing){state.t+=dt*state.speed;if(state.id==='projectile'&&mission.launched&&!mission.complete){const duration=2*state.p.v*Math.sin(rad(state.p.angle))/state.p.g;if(state.t>=duration){state.t=duration;mission.complete=true;mission.tries++;$('labSection').classList.add('has-thrown');mission.shots.push({range:state.p.v*state.p.v*Math.sin(2*rad(state.p.angle))/state.p.g,angle:state.p.angle,v:state.p.v});setPlaying(false)}}}if(now-lastRender>33){render();lastRender=now}requestAnimationFrame(frame)}requestAnimationFrame(frame)}
 setup();
 </script></body></html>
