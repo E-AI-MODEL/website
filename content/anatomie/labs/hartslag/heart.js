@@ -319,6 +319,8 @@ $('sectionToggle').addEventListener('click',()=>{
   $('sectionToggle').setAttribute('aria-pressed',String(state.cutaway));
 });
 function syncLabelsToggle(){
+  // Verberg de volledige labellaag direct, ook vóór het eerste animatieframe.
+  $('labels').hidden=!state.showLabels;
   $('labelsToggle').textContent=state.showLabels?'Namen verbergen':'Namen tonen';
   $('labelsToggle').setAttribute('aria-pressed',String(state.showLabels));
 }
