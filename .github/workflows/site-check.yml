@@ -28,6 +28,8 @@ jobs:
         run: node --test tests/test_science_physical_graphs.mjs
       - name: Check animation, graph and measurement agreement
         run: node --test tests/test_science_graph_animation_alignment.mjs
+      - name: Check three learning routes and the projectile target
+        run: node --test tests/test_science_inquiry_variants.mjs
       - name: Verify one KEI login opens the complete LEIF website
         run: node --test tests/test_leif_kei.mjs
       - name: Verify LEIF reader and corrected text
