@@ -35,6 +35,7 @@ def refit_shell(source: Path) -> None:
         </div>
       </div>
       <div class="header-right">
+        <a class="eai-lab-link" href="/tools/anatomie/labs/hartslag/" aria-label="Open Hartslaglab: bewegend hart en bloedstroom">Hartslaglab <span aria-hidden="true">↗</span></a>
         <button id="systemsOpen" class="eai-header-button drawer-open" type="button"
                 aria-label="Lichaamsstelsels kiezen" aria-controls="systemsSidebar"
                 aria-expanded="false" title="Lichaamsstelsels kiezen">
