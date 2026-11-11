@@ -39,6 +39,12 @@ def load_sources(root: Path):
 def audit(root: Path = ROOT):
     systems, lexicon, definitions, names, guide_source = load_sources(root)
     guide_keys = set(re.findall(r"""^\s{2}['"]([^'"]+)['"]:\s*\{""", guide_source, re.M))
+    source_map = (root / "content/anatomie/sourceMap.js").read_text(encoding="utf-8")
+    selected = source_map.split("const SUPPORTED_GUIDES = Object.freeze({", 1)[1].split("});", 1)[0]
+    supported_guide_keys = set(re.findall(r"^\s{2}'([^']+)':\s*'[^']+',?$", selected, re.M))
+    if supported_guide_keys - guide_keys:
+        raise ValueError("Een bronverwijzing noemt een gidsartikel dat niet bestaat")
+
     if not isinstance(systems, dict) or not all(isinstance(v, list) for v in systems.values()):
         raise ValueError("Ongeldig systems.json")
     if not isinstance(names, dict) or not all(
@@ -70,7 +76,7 @@ def audit(root: Path = ROOT):
                 flags.append("spaties")
             if dutch and "bronlabel nazien" in dutch[0].lower():
                 flags.append("vertaling_bronlabel_nakijken")
-            level = ("specifieke_uitleg" if base.lower() in guide_keys else
+            level = ("specifieke_uitleg_met_bron" if base.lower() in supported_guide_keys else
                      "algemene_type_uitleg" if dutch else "bron_onduidelijk")
             rows.append({
                 "stelsel": system, "model_id": part, "structuur": base,
@@ -113,12 +119,14 @@ def audit(root: Path = ROOT):
         "gelijke_nederlandse_labels": duplicate_labels,
         "nederlandse_namen_uniek": sum(k in names for k in keys),
         "nederlandse_uitleg_uniek": sum(k in guide_keys for k in keys),
+        "specifieke_uitleg_met_bron": len(supported_guide_keys & keys),
+        "specifieke_uitleg_zonder_bron": sorted((guide_keys - supported_guide_keys) & keys),
         "bronbeschrijving_uniek": sum(k in definitions for k in unique),
         "latijn_uniek": sum(bool(lexicon.get(k, {}).get("la")) for k in unique),
         "uitlegniveau_uniek": {
-            "specifieke_uitleg": sum(k.lower() in guide_keys for k in unique),
+            "specifieke_uitleg": sum(k.lower() in supported_guide_keys for k in unique),
             "algemene_type_uitleg": sum(
-                k.lower() in names and k.lower() not in guide_keys for k in unique
+                k.lower() in names and k.lower() not in supported_guide_keys for k in unique
             ),
             "bron_onduidelijk": sum(k.lower() not in names for k in unique),
         },
@@ -146,7 +154,8 @@ def write_report(rows, summary, out: Path):
         f"- Directe Nederlandse namen: **{summary['nederlandse_namen_uniek']}**",
         f"- Nederlandse uitleg: **{summary['nederlandse_uitleg_uniek']}**",
         f"- Engelse bronbeschrijving: **{summary['bronbeschrijving_uniek']}**",
-        f"- Afzonderlijke Nederlandse uitleg: **{summary['uitlegniveau_uniek']['specifieke_uitleg']}**",
+        f"- Specifieke uitleg met bronverwijzing: **{summary['uitlegniveau_uniek']['specifieke_uitleg']}**",
+        f"- Uitgeschakelde specifieke teksten zonder bron: **{len(summary['specifieke_uitleg_zonder_bron'])}**",
         f"- Algemene uitleg naar type: **{summary['uitlegniveau_uniek']['algemene_type_uitleg']}**",
         f"- Bronnaam onduidelijk: **{summary['uitlegniveau_uniek']['bron_onduidelijk']}**", "",
         "| Stelsel | Modelonderdelen |", "|---|---:|",
