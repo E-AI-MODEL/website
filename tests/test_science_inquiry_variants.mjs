@@ -52,9 +52,14 @@ test('Interferentie: sonde gebruikt de intensiteit uit het gekleurde veld',()=>{
 });
 
 test('Alle drie de onderzoeksroutes hebben verschillende opdrachten in dezelfde interface',()=>{
- for(const term of ['Richt','Schiet','Verbeter','Zoek nul','Bereken','Controleer','Verken','Meet','Verklaar'])assert.ok(html.includes(term),term);
+ for(const term of ['Probeer','Bekijk','Verander','Zoek nul','Bereken','Controleer','Verken','Meet','Verklaar'])assert.ok(html.includes(term),term);
  assert.match(html,/function researchCopy\(id\)/);
  assert.match(html,/\$\('prediction'\)\.textContent=e\.question;researchCopy\(id\)/);
  assert.match(html,/id="inquiryBar"/);
+ assert.match(html,/Kun jij de bal op de mat laten landen\?/);
+ assert.match(html,/function drawLandingMat\(/);
+ assert.match(html,/drawLandingMat\(ctx,targetX,y0,scale\)/);
+ assert.match(html,/Gooi de bal/);
+ assert.match(html,/id="aimFeedback"/);
  assert.match(html,/const directManip=new Set\(\['projectile','pendulum','refraction','circular','lens','interference'\]\)/);
 });

@@ -21,6 +21,10 @@ try{
  await page.locator('#mobileAim').waitFor({state:'visible'});
  assert(await page.locator('#aimFire').isVisible(),'Mobiele schietknop is zichtbaar');
  assert.equal(await page.locator('#inquiryAction').isVisible(),false,'Dubbele schietknop is op mobiel verborgen');
+ assert.equal(await page.locator('#inquiryTitle').innerText(),'Kun jij de bal op de mat laten landen?');
+ assert(await page.locator('#aimFire').innerText().then(t=>t==='Gooi de bal'));
+ assert(await page.locator('#aimFeedback').isHidden(),'Geen resultaat tonen voor de eerste worp');
+ assert(!(await page.locator('.analysis-shell').isVisible()),'Grafieken en onderzoekstabs verschijnen niet voor de eerste poging');
  let v=await page.evaluate(()=>{
   const canvas=document.querySelector('#scene'),frame=projectileMobileFrame(state.p),g=sceneViewport(canvas);
   return {frame,g,play:mission.launched,scroll:document.documentElement.scrollWidth,screen:innerWidth,
@@ -47,12 +51,19 @@ try{
  const moved=await page.evaluate(()=>({angle:state.p.angle,v:state.p.v}));
  assert(Math.abs(moved.angle-45.5)>0.4||Math.abs(moved.v-18)>0.1,'De groene greep verandert de werkelijke instelling');
  await page.locator('#aimFire').click();
+ await page.waitForTimeout(550);
+ const visibleScene=await page.evaluate(()=>{const rect=document.querySelector('#stage').getBoundingClientRect();return{top:rect.top,bottom:rect.bottom,height:rect.height,viewport:innerHeight}});
+ console.log('SCENE-VISIBLE',JSON.stringify(visibleScene));
+ await page.screenshot({path:'test-results/science-worp-vlucht-op-telefoon.png'});
+ assert(visibleScene.top>=55&&visibleScene.bottom<=visibleScene.viewport-10,'Tijdens de worp blijft de hele tekening zichtbaar');
  console.log('SHOT-START',JSON.stringify(await page.evaluate(()=>({playing:state.playing,launched:mission.launched,complete:mission.complete,t:state.t,p:state.p}))),errors);
  await page.waitForTimeout(3600);
  console.log('SHOT-AFTER',JSON.stringify(await page.evaluate(()=>({playing:state.playing,launched:mission.launched,complete:mission.complete,t:state.t,p:state.p,shots:mission.shots.length}))),errors);
  await page.waitForFunction(()=>mission.complete===true,null,{timeout:2500});
- assert.equal(await page.locator('#aimFire').textContent(),'Nieuwe poging');
+ assert.equal(await page.locator('#aimFire').textContent(),'Probeer opnieuw');
  assert.equal(await page.evaluate(()=>mission.shots.length),1,'De eerste landingsplek wordt bewaard');
+ assert(await page.locator('#aimFeedback').isVisible(),'Leerling krijgt feedback bij de bediening');
+ assert(await page.locator('.analysis-shell').isVisible(),'Verdieping is beschikbaar na een poging');
  await page.locator('#scene').screenshot({path:'test-results/science-worp-390-geland.png'});
  await page.locator('#aimFire').click();
  const reset=await page.evaluate(()=>({launched:mission.launched,complete:mission.complete,shots:mission.shots.length}));
@@ -75,6 +86,7 @@ try{
  await page.waitForFunction(()=>state.id==='interference');
  const wave=await page.evaluate(()=>({g:sceneViewport(document.querySelector('#scene')),mobileAimVisible:getComputedStyle(document.querySelector('#mobileAim')).display}));
  assert.equal(wave.g.virtualWidth,1000,'Andere proeven behouden hun eigen projectie');
+ assert(await page.locator('.analysis-shell').isVisible(),'Golvengrafieken blijven zichtbaar');
  assert.equal(wave.mobileAimVisible,'none','Richtknoppen staan niet bij golven');
  await page.locator('#scene').screenshot({path:'test-results/science-interferentie-320.png'});
  assert.deepEqual(errors,[],'Geen JavaScript-fouten op telefoon');

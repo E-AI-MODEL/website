@@ -128,6 +128,38 @@
  .workspace.mobile-projectile .scene-shell{margin-bottom:0;border-radius:9px 9px 0 0}.workspace.mobile-projectile #stage{touch-action:none}.workspace.mobile-projectile .scene-bottom .legend{font-size:9px}
 }
 @media(max-width:480px){.catalog-head #allTopicsBtn{display:none}}
+
+/* Leerlingversie: één herkenbaar doel, gewone woorden en knoppen waarop je kunt mikken. */
+@media(max-width:720px){
+ .workspace.mobile-projectile .scene-shell{margin-top:0}
+ .workspace.mobile-projectile .inquiry-bar{order:1;margin:6px 9px 9px;border:1px solid #315063;border-radius:10px;padding:13px 14px;gap:3px}
+ .workspace.mobile-projectile .scene-shell{order:2}
+ .workspace.mobile-projectile .inquiry-label{font-size:9px}
+ .workspace.mobile-projectile .inquiry-title{font-size:18px;line-height:1.22;letter-spacing:-.02em;margin:4px 0}
+ .workspace.mobile-projectile .inquiry-detail{font-size:12px;line-height:1.4;color:#b0cbd6}
+ .workspace.mobile-projectile .inquiry-right{display:none}
+ .workspace.mobile-projectile .scene-hud{display:none}
+ .workspace.mobile-projectile .scene-bottom .legend{display:none}
+ .workspace.mobile-projectile .scene-bottom{display:none}
+ .workspace.mobile-projectile #openMobileSettings,.workspace.mobile-projectile #focusScene,.workspace.mobile-projectile #resetBtn{display:none!important}
+ .workspace.mobile-projectile .mobile-aim:not([hidden]){padding:12px 14px 15px;gap:12px}
+ .workspace.mobile-projectile .mobile-aim-head{align-items:center}
+ .workspace.mobile-projectile .mobile-aim-head strong{font-size:14px}
+ .workspace.mobile-projectile .aim-help{font-size:12px;line-height:1.35}
+ .workspace.mobile-projectile .aim-row{display:block;min-height:auto}
+ .workspace.mobile-projectile .aim-row label{display:flex;gap:10px;align-items:center;justify-content:space-between;font-size:13px;font-weight:650;margin-bottom:7px}
+ .workspace.mobile-projectile .aim-row output{font-size:12px;font-weight:500;color:#93dcca}
+ .workspace.mobile-projectile .aim-adjust{display:grid;grid-template-columns:69px minmax(0,1fr) 69px;gap:10px;align-items:center}
+ .workspace.mobile-projectile .aim-adjust button{width:100%;min-height:43px;height:43px;font-size:12px;font-weight:650}
+ .workspace.mobile-projectile .aim-adjust input[type=range]{min-height:40px;width:100%;accent-color:#77e7d6}
+ .workspace.mobile-projectile .aim-fire{min-height:52px;font-size:15px}
+ .workspace.mobile-projectile .aim-feedback:not([hidden]){font-size:13px;line-height:1.5;color:#ddf6f0;border-top:1px solid #375566;padding:12px 2px 0;margin:0}
+ .workspace.mobile-projectile .analysis-shell{margin-top:11px}
+ .workspace.mobile-projectile .research-steps{font-size:11px}
+ .workspace.mobile-projectile .scene-lower-tools{font-size:9px}
+ .workspace.mobile-projectile:not(.has-thrown) .analysis-shell{display:none}
+}
+@media(max-width:360px){.workspace.mobile-projectile .aim-adjust{grid-template-columns:62px minmax(0,1fr) 62px;gap:7px}}
 </style></head>
 <body>
 <header class="masthead"><div class="mast-left"><a class="brand" href="/tools/science-observatory/" aria-label="Terug naar Science Observatory"><span class="logo" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><path d="M4 19c4-1 4-12 8-12s4 18 8 18 4-9 8-10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span><span>SCIENCE <b>OBSERVATORY</b></span></a><span class="brand-divider"></span><span class="brand-context">NATUURKUNDE · PROEFVERSIE</span></div><div class="nav-main"><a href="#labSection" class="nav-link active">Proef</a><a href="#topics" class="nav-link">Onderwerpen</a><a href="/tools/science-observatory/" class="nav-link">Andere observatoria</a><a href="/nl/tools/" class="nav-link">Alle tools</a></div><span class="header-status"><span class="live-dot"></span> In ontwikkeling</span></header>
@@ -136,7 +168,22 @@
 <aside class="explorer" id="explorer"><div class="explorer-header"><div class="minor-title">EXPERIMENTEN <span>53</span></div><button id="closeExplorer" class="tiny-btn mobile-only" aria-label="Sluit experimenten">✕</button></div><div class="searchwrap"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg><input id="search" aria-label="Zoek een experiment" placeholder="Zoek een proef..." autocomplete="off"></div><div class="explorer-scroll" id="experimentTree"></div><div class="explorer-footer"><span class="live-dot"></span> 53 interactieve proefmodellen</div></aside>
 <div class="lab-main"><div class="lab-head"><div class="lab-identity"><button class="tool-btn desktop-only" id="toggleExplorer" title="Verberg of toon de experimentenlijst" aria-label="Verberg of toon de experimentenlijst"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16"/></svg></button><button class="tiny-btn mobile-only" id="openExplorer" aria-label="Kies een experiment" title="Experimenten"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><div><div class="lab-breadcrumb" id="labGroup">MECHANICA</div><h2 id="labTitle">Schuine worp</h2></div></div><div class="lab-controls"><button class="tool-btn mobile-only" id="openMobileSettings" title="Open de instellingen" aria-label="Open de instellingen"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/><circle cx="9" cy="7" r="2" fill="#091523"/><circle cx="15" cy="12" r="2" fill="#091523"/><circle cx="10" cy="17" r="2" fill="#091523"/></svg></button><button class="tool-btn desktop-only" id="toggleInspector" title="Verberg of toon instellingen" aria-label="Verberg of toon instellingen"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M15 4v16"/></svg></button><button class="tool-btn" id="focusScene" title="Experiment beeldvullend tonen" aria-label="Schakel focusweergave in of uit"><svg viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M3 16v5h5M21 16v5h-5"/></svg></button><button class="tool-btn" id="resetBtn" title="Begin opnieuw" aria-label="Herstel de proef"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.3-5.7M4 4v5h5"/></svg></button><button class="tool-btn" id="stepBtn" title="Eén stap" aria-label="Een stap vooruit"><svg viewBox="0 0 24 24"><path d="m5 5 10 7-10 7V5ZM19 5v14"/></svg></button><button class="play-btn" id="playBtn" aria-pressed="true"><svg viewBox="0 0 24 24" id="playIcon"><path d="M7 5v14M17 5v14"/></svg><span id="playLabel">Pauze</span></button><select id="speedSelect" class="speed-select" aria-label="Afspeelsnelheid"><option value=".25">0,25×</option><option value=".5">0,5×</option><option value="1" selected>1×</option><option value="2">2×</option><option value="4">4×</option></select></div></div>
 <div id="labError" role="alert" hidden></div><section id="inquiryBar" class="inquiry-bar" aria-label="Onderzoeksopdracht" hidden><div><span class="inquiry-label" id="inquiryKind"></span><h3 class="inquiry-title" id="inquiryTitle"></h3><p class="inquiry-detail" id="inquiryDetail"></p></div><div class="inquiry-right"><span class="inquiry-status" id="inquiryStatus" role="status" aria-live="polite"></span><div class="inquiry-actions"><input id="inquiryAnswer" class="inquiry-answer" inputmode="decimal" aria-label="Geschatte onbekende weerstand in ohm" placeholder="R? in Ω" hidden><button id="inquiryAction" class="inquiry-action" type="button"></button></div></div></section>
-<div class="scene-shell"><div class="scene-hud scene-hud-left"><span class="hud-pip"></span><span id="sceneBadge">LIVE SIMULATIE</span></div><div class="scene-hud scene-hud-right"><span id="sceneMeta">SCHEMATISCH MODEL</span></div><div class="scene-tip" id="sceneTip" hidden></div><div class="canvas-wrap" id="stage"><canvas id="scene" aria-label="Interactieve weergave van de natuurkundeproef"></canvas><div id="sceneCompass" class="scene-compass" hidden>Sleep om te draaien · knijp om in te zoomen</div></div><div class="scene-bottom"><div class="legend"><span><i class="legend-dot cyan"></i> Model</span><span><i class="legend-line gold"></i> Baan / veld</span></div><div class="scene-lower-tools"><span id="timeLabel">t = 0,00 s</span><button class="icon-text" id="cameraReset" hidden title="Camera opnieuw richten">↺ Camera</button></div></div><div class="mobile-aim" id="mobileAim" hidden><div class="mobile-aim-head"><strong>Richt de worp</strong><button type="button" class="aim-view-btn" id="mobileView" aria-pressed="false">Hele baan tonen</button></div><div class="aim-help">Sleep de groene greep, of stel hoek en snelheid precies af.</div><div class="aim-row"><label for="aimAngle">Hoek<output id="aimAngleValue">45,0°</output></label><button type="button" data-aim-key="angle" data-aim-delta="-0.5" aria-label="Hoek een halve graad kleiner">−</button><input id="aimAngle" type="range" min="5" max="85" step="0.5" value="45" aria-label="Afschiet­hoek"><button type="button" data-aim-key="angle" data-aim-delta="0.5" aria-label="Hoek een halve graad groter">+</button></div><div class="aim-row"><label for="aimSpeed">Snelheid<output id="aimSpeedValue">18,00 m/s</output></label><button type="button" data-aim-key="v" data-aim-delta="-0.25" aria-label="Beginsnelheid iets lager">−</button><input id="aimSpeed" type="range" min="5" max="35" step="0.25" value="18" aria-label="Beginsnelheid"><button type="button" data-aim-key="v" data-aim-delta="0.25" aria-label="Beginsnelheid iets hoger">+</button></div><button type="button" id="aimFire" class="aim-fire">Schiet</button></div></div>
+<div class="scene-shell"><div class="scene-hud scene-hud-left"><span class="hud-pip"></span><span id="sceneBadge">LIVE SIMULATIE</span></div><div class="scene-hud scene-hud-right"><span id="sceneMeta">SCHEMATISCH MODEL</span></div><div class="scene-tip" id="sceneTip" hidden></div><div class="canvas-wrap" id="stage"><canvas id="scene" aria-label="Interactieve weergave van de natuurkundeproef"></canvas><div id="sceneCompass" class="scene-compass" hidden>Sleep om te draaien · knijp om in te zoomen</div></div><div class="scene-bottom"><div class="legend"><span><i class="legend-dot cyan"></i> Model</span><span><i class="legend-line gold"></i> Baan / veld</span></div><div class="scene-lower-tools"><span id="timeLabel">t = 0,00 s</span><button class="icon-text" id="cameraReset" hidden title="Camera opnieuw richten">↺ Camera</button></div></div><div class="mobile-aim" id="mobileAim" hidden>
+ <div class="mobile-aim-head"><strong>Richt de bal</strong><button type="button" class="aim-view-btn" id="mobileView" aria-pressed="false">Hele baan zien</button></div>
+ <div class="aim-help">Sleep het groene rondje in de tekening. Of gebruik deze knoppen.</div>
+ <div class="aim-row"><label for="aimAngle">Richting <output id="aimAngleValue">45°</output></label><div class="aim-adjust">
+  <button type="button" data-aim-key="angle" data-aim-delta="-0.5" aria-label="Gooi lager">Lager</button>
+  <input id="aimAngle" type="range" min="5" max="85" step="0.5" value="45" aria-label="Richting van de worp">
+  <button type="button" data-aim-key="angle" data-aim-delta="0.5" aria-label="Gooi hoger">Hoger</button>
+ </div></div>
+ <div class="aim-row"><label for="aimSpeed">Hoe hard? <output id="aimSpeedValue">18,00 m/s</output></label><div class="aim-adjust">
+  <button type="button" data-aim-key="v" data-aim-delta="-0.25" aria-label="Gooi zachter">Zachter</button>
+  <input id="aimSpeed" type="range" min="5" max="35" step="0.25" value="18" aria-label="Hoe hard je de bal weggooit">
+  <button type="button" data-aim-key="v" data-aim-delta="0.25" aria-label="Gooi harder">Harder</button>
+ </div></div>
+ <button type="button" id="aimFire" class="aim-fire">Gooi de bal</button>
+ <p class="aim-feedback" id="aimFeedback" role="status" aria-live="polite" hidden></p>
+ </div></div>
 <div class="drag-divider" id="sceneDivider" role="separator" aria-orientation="horizontal" aria-label="Sleep om de ruimte voor de grafiek te vergroten of te verkleinen" tabindex="0"><i></i></div><div class="analysis-shell"><div class="tab-strip" role="tablist" aria-label="Onderzoek en analyse"><button role="tab" class="tab on" aria-selected="true" data-bottom="graph">Grafiek</button><button role="tab" class="tab" aria-selected="false" data-bottom="comparison">Vergelijken <span id="comparisonBubble" hidden>1</span></button><button role="tab" class="tab" aria-selected="false" data-bottom="research">Onderzoeken</button><button role="tab" class="tab" aria-selected="false" data-bottom="explain">Uitleg</button></div><div class="bottom-panel" id="bottomPanel"><div id="graphPanel" class="tab-body"><div class="graph-top"><div><strong id="plotLabel">Grafiek</strong><span id="graphDomain">Verandering over de proef</span></div><button class="subtle-btn" id="saveGraphBtn">+ Bewaar vergelijking</button></div><div class="graph-frame"><canvas id="plot" aria-label="Grafiek met getekende meetwaarden en assen"></canvas></div></div><div id="comparePanel" class="tab-body" hidden><div class="compare-header"><div><strong>Twee instellingen naast elkaar</strong><p>Bewaar de huidige waarden, pas daarna een instelling aan.</p></div><button class="subtle-btn" id="clearBaseline">Wissen</button></div><div id="comparisonRows" class="compare-data"></div><div id="compareEmpty" class="empty-compare">Nog geen meting bewaard. Klik rechts op <b>Bewaar meting</b>.</div></div><div id="researchPanel" class="tab-body" hidden><div class="research-steps"><div class="step-head"><span>01</span><strong>Voorspel</strong><span>02</span><strong>Onderzoek</strong><span>03</span><strong>Verklaar</strong></div><p id="prediction"></p><textarea id="hypothesis" class="hypothesis" placeholder="Wat denk je dat er gebeurt? Schrijf het op vóór je een instelling verandert." aria-label="Schrijf je voorspelling"></textarea><div class="research-hint">Je voorspelling blijft alleen in deze browser bewaard.</div></div></div><div id="explainPanel" class="tab-body" hidden><div class="explain-layout"><div><div class="minor-title">WAT ZIE JE?</div><p id="explanation"></p></div><div><div class="minor-title">OVER HET MODEL</div><p id="modelNote"></p></div></div></div></div></div>
 </div>
 <aside class="inspector" id="inspector"><div class="inspector-tabs" role="tablist" aria-label="Bediening van de proef"><button data-side="settings" class="inspector-tab on" role="tab" aria-selected="true">Instellen</button><button data-side="values" class="inspector-tab" role="tab" aria-selected="false">Meten</button><button data-side="info" class="inspector-tab" role="tab" aria-selected="false">Info</button><button id="closeMobileSettings" class="tiny-btn mobile-only settings-close" aria-label="Sluit instellingen">Sluiten</button></div><div class="inspector-scroll"><div id="settingsPane" class="side-pane"><div class="side-kicker">VERANDER DE PROEF</div><p class="side-intro" id="intro"></p><div id="controls"></div><div class="side-separator"></div><div class="side-kicker">DIRECT GEMETEN</div><div class="mini-readouts" id="miniReadouts"><div><small id="miniLabel0"></small><b id="miniValue0"></b></div><div><small id="miniLabel1"></small><b id="miniValue1"></b></div></div><button id="baselineBtn" class="save-btn">+ Bewaar meting</button></div><div id="valuesPane" class="side-pane" hidden><div class="side-kicker">LIVE MEETWAARDEN</div><div id="readouts" class="readouts"><div class="readout" id="measure0"><span></span><strong></strong></div><div class="readout" id="measure1"><span></span><strong></strong></div><div class="readout" id="measure2"><span></span><strong></strong></div><div class="readout" id="measure3"><span></span><strong></strong></div></div><button class="save-btn" id="saveValuesBtn">+ Bewaar meting</button><p class="side-hint">De opgeslagen waarden blijven staan als je een schuif verandert.</p></div><div id="infoPane" class="side-pane" hidden><div class="side-kicker">OVER DEZE PROEF</div><p class="side-intro" id="infoDescription"></p><div class="side-separator"></div><div class="side-kicker">GEBRUIKTE VEREENVOUDIGINGEN</div><p class="model-text" id="infoCaveat"></p><button class="save-btn" id="shareBtn">Deel deze proef</button></div></div><div class="inspector-footer"><span class="live-dot"></span> Lokale berekening <span class="footer-chip">OFFLINE</span></div></aside>
@@ -281,7 +328,7 @@ const byId=Object.fromEntries(experiments.map(x=>[x.id,x]));
 const groups=[...new Set(experiments.map(x=>x.group))];
 const state={id:'projectile',p:{},t:0,playing:true,speed:1,group:'',query:'',side:'settings',bottom:'graph',baseline:null,collapse:new Set(),camera:{yaw:.54,pitch:.63,zoom:1},pointer:new Map()};
 const directManip=new Set(['projectile','pendulum','refraction','circular','lens','interference']);
-const directHints={projectile:'Sleep het uiteinde van de richtingspijl',pendulum:'Sleep de slingerbol naar een nieuwe positie',refraction:'Sleep de oranje lichtstraal om de invalshoek te veranderen',circular:'Sleep het voorwerp om de baanstraal te veranderen',lens:'Sleep het voorwerp om afstand en hoogte te veranderen',interference:'Sleep de meetsonde naar de plek die je wilt onderzoeken'};
+const directHints={projectile:'Sleep het groene rondje om de bal te richten',pendulum:'Sleep de slingerbol naar een nieuwe positie',refraction:'Sleep de oranje lichtstraal om de invalshoek te veranderen',circular:'Sleep het voorwerp om de baanstraal te veranderen',lens:'Sleep het voorwerp om afstand en hoogte te veranderen',interference:'Sleep de meetsonde naar de plek die je wilt onderzoeken'};
 const mission={target:24,launched:false,complete:false,tries:0,view:'target',shots:[],previousSamples:[],probe:{x:615,y:194},samples:[],pointer:null,feedback:'',solved:false};
 const special3d=new Set(['kepler1','kepler2','magnetbar','magnetwire','em','bohr','bragg']);
 const groupSymbol=['↗','∿','ϟ','◇','◈','◉','◎','◌','✧'];
@@ -345,61 +392,81 @@ function projectileMobileFrame(p){
  const x0=52,y0=397,length=80+(p.v-5)/30*116;
  return {x0,y0,scale,angle,vx,vy,duration,range,peak,view:mission.view,handle:{x:x0+length*Math.cos(angle),y:y0-length*Math.sin(angle)},targetX:x0+mission.target*scale};
 }
+
+function drawLandingMat(ctx,x,ground,scale,compact=false){
+ const width=Math.max(6,2*scale),left=x-width/2;
+ ctx.save();
+ ctx.fillStyle='#17554f';ctx.fillRect(left,ground-26,width,26);
+ ctx.fillStyle='#76e1c6';ctx.fillRect(left,ground-26,width,4);
+ ctx.strokeStyle='#c2fff0';ctx.lineWidth=1.6;ctx.strokeRect(left,ground-26,width,26);
+ stroke(ctx,[[left,ground-33],[left,ground+3]],'#9ef5da',1.3);
+ stroke(ctx,[[left+width,ground-33],[left+width,ground+3]],'#9ef5da',1.3);
+ ctx.font=compact?'600 15px system-ui':'600 20px system-ui';
+ ctx.fillStyle='#abf3df';ctx.textAlign='center';
+ ctx.fillText('LANDINGSMAT',Math.max(91,Math.min(compact?916:472,x)),compact?ground-60:ground+69);
+ ctx.fillStyle='#9fc6cd';ctx.font=compact?'14px system-ui':'18px system-ui';
+ ctx.fillText('24 meter van de start',Math.max(110,Math.min(compact?900:465,x)),compact?ground-40:ground+93);
+ ctx.restore();
+}
 function projectileMobile(ctx,p,t){
- const frame=projectileMobileFrame(p),{x0,y0,scale,vx,vy,duration,range,peak,handle,targetX}=frame;
- const grid='#28415577',cyan='#7ee8d5',gold='#f6c28b';
+ const f=projectileMobileFrame(p),{x0,y0,scale,vx,vy,duration,range,handle,targetX}=f;
  ctx.fillStyle='#0b1a2b';ctx.fillRect(0,0,560,520);
- ctx.save();ctx.beginPath();ctx.rect(26,37,515,392);ctx.clip();
- for(let m=0;m<=Math.max(200,range+20);m+=5){const x=x0+m*scale;if(x>535)break;stroke(ctx,[[x,48],[x,y0]],grid,m===0?1.5:.75)}
- for(let h=0;h<=120;h+=5){const yy=y0-h*scale;if(yy<47)break;stroke(ctx,[[30,yy],[536,yy]],grid,.7)}
- ctx.fillStyle='#102c3a';ctx.fillRect(27,y0,509,29);
- stroke(ctx,[[29,y0],[536,y0]],'#a8c4cfad',1.4);
- if(mission.launched){
-   const points=[];for(let i=0;i<=130;i++){const tt=duration*i/130;points.push([x0+vx*tt*scale,y0-(vy*tt-.5*p.g*tt*tt)*scale])}
-   stroke(ctx,points,gold,2.1,5);
-   const now=Math.min(t,duration),tip=[x0+vx*now*scale,y0-(vy*now-.5*p.g*now*now)*scale];
-   if(tip[0]<537&&tip[1]>47){circle(ctx,tip[0],tip[1],7,'#88ead9');}
+ ctx.save();ctx.beginPath();ctx.rect(23,31,516,478);ctx.clip();
+ const ground=ctx.createLinearGradient(0,y0,0,451);
+ ground.addColorStop(0,'#153342');ground.addColorStop(1,'#091a2a');
+ ctx.fillStyle=ground;ctx.fillRect(24,y0,515,55);
+ stroke(ctx,[[26,y0],[538,y0]],'#8daebd',1.35);
+ // Subtle height guides give meaning to the otherwise empty flight space.
+ if(scale>6){
+  for(let height=10;height<=35;height+=10){
+   const y=y0-height*scale;if(y<90)break;
+   stroke(ctx,[[32,y],[532,y]],'#29465c7a',1,0,[3,7]);
+   ctx.fillStyle='#789bac';ctx.font='15px system-ui';ctx.fillText(height+' m hoog',37,y-9);
+  }
  }
+ // Metres along the ground, with the target distance as the reference.
+ const majorStep=scale>=8?10:scale>=4?20:50;
+ for(let metre=0;metre<=Math.max(135,range);metre+=majorStep){
+   const x=x0+metre*scale;if(x>534)break;
+   stroke(ctx,[[x,y0],[x,y0+8]],'#66899a91',1);
+   ctx.fillStyle='#91b5c3';ctx.font='17px system-ui';ctx.fillText(metre+' m',Math.max(32,Math.min(493,x-11)),y0+28);
+ }
+ // A mat is a place where the ball lands, not a floating arrow.
+ drawLandingMat(ctx,targetX,y0,scale);
+ // Previous landing points remain as comparison evidence.
  for(const [i,shot] of mission.shots.entries()){
-   const px=x0+shot.range*scale;if(px>536)continue;
-   stroke(ctx,[[px,y0-19],[px,y0+10]],'#e8a679aa',1.25,0,[3,4]);
-   ctx.font='17px system-ui';ctx.fillStyle='#f1b890';ctx.fillText('P'+(i+1),px-8,y0-25);
+   const x=x0+shot.range*scale;if(x>536)continue;
+   stroke(ctx,[[x,y0-25],[x,y0]],'#fac18a',1.6,0,[3,4]);
+   ctx.fillStyle='#f4c595';ctx.font='17px system-ui';ctx.fillText('Worp '+(i+1),x-21,y0-32);
  }
- stroke(ctx,[[targetX,y0],[targetX,y0-45]],cyan,1.4,1,[4,5]);
- stroke(ctx,[[targetX-16,y0-31],[targetX,y0-49],[targetX+16,y0-31]],cyan,2.3,3);
- circle(ctx,targetX,y0-49,3,cyan,false);
- ctx.font='600 20px system-ui';ctx.fillStyle='#bdfff3';
- ctx.fillText('DOEL 24 m',Math.min(450,Math.max(45,targetX-41)),y0-67);
+ if(mission.launched){
+   const points=[];
+   for(let i=0;i<=140;i++){
+     const tt=duration*i/140;
+     points.push([x0+vx*tt*scale,y0-(vy*tt-.5*p.g*tt*tt)*scale]);
+   }
+   stroke(ctx,points,'#ffcc91',2.7,7);
+   const now=Math.min(t,duration),x=x0+vx*now*scale,y=y0-(vy*now-.5*p.g*now*now)*scale;
+   if(x<=539&&y>=25){circle(ctx,x,y,9,'#fff1c6')}
+   if(mission.complete&&x<=537){circle(ctx,x,y0-6,5,Math.abs(range-mission.target)<=1?'#7ceac9':'#ffbd82')}
+ }
+ // A small launch point and a handle that is large enough to grab.
+ ctx.fillStyle='#25465b';ctx.beginPath();ctx.roundRect(x0-17,y0-8,33,12,5);ctx.fill();
+ circle(ctx,x0,y0-15,10,'#ffddaa',false);
  const hx=handle.x,hy=handle.y;
- stroke(ctx,[[x0,y0],[hx,hy]],'#f5c48baa',1.5,2,[5,5]);
- circle(ctx,x0,y0,7,'#f6c48e',false);
- ctx.save();ctx.beginPath();ctx.arc(hx,hy,23,0,TAU);ctx.fillStyle='#3bc9b51b';ctx.fill();ctx.strokeStyle='#a4faef';ctx.lineWidth=1.5;ctx.stroke();ctx.restore();
- circle(ctx,hx,hy,8,cyan);
+ stroke(ctx,[[x0,y0-15],[hx,hy]],'#8ee2d2b8',2,0,[6,5]);
+ ctx.save();ctx.beginPath();ctx.arc(hx,hy,29,0,TAU);
+ ctx.fillStyle='#72ecd01c';ctx.fill();ctx.strokeStyle='#87ead5';ctx.lineWidth=2;ctx.stroke();ctx.restore();
+ circle(ctx,hx,hy,9,'#85eed7');
  ctx.restore();
- ctx.fillStyle='#dcf6f2';ctx.font='600 24px system-ui';ctx.fillText('Richt op het doel',31,35);
- ctx.font='17px system-ui';ctx.fillStyle='#a6c3d1';
- ctx.fillText('Hoek '+fmt(p.angle,1)+'°   ·   v₀ '+fmt(p.v,2)+' m/s',32,57);
- for(let m=0;m<=150;m+=5){
-   const x=x0+m*scale;if(x>530)break;
-   ctx.font='16px system-ui';ctx.fillStyle='#819fb2';ctx.fillText(String(m),x-6,y0+25);
- }
- ctx.fillStyle='#7ca0b4';ctx.font='16px system-ui';ctx.fillText('afstand (m)',430,447);
- ctx.save();ctx.strokeStyle='#6698a44d';ctx.lineWidth=.8;
- for(let h=5;h<=80;h+=5){const yy=y0-h*scale;if(yy<60)break;ctx.fillStyle='#789bab';ctx.font='15px system-ui';ctx.fillText(String(h)+' m',29,yy-5)}
- ctx.restore();
- if(mission.launched&&range>Math.max(41,(532-x0)/scale)){
-   ctx.fillStyle='#f6c597';ctx.font='600 17px system-ui';ctx.textAlign='right';ctx.fillText('De baan loopt verder: '+fmt(range,1)+' m →',530,96);ctx.textAlign='left';
- }
+ ctx.fillStyle='#b9dae3';ctx.font='600 18px system-ui';ctx.fillText('START',31,y0-34);
  if(mission.complete){
-   ctx.fillStyle=Math.abs(range-mission.target)<1?'#8bedcd':'#f9bf91';
-   ctx.font='600 20px system-ui';
-   ctx.fillText('Afwijking '+fmt(Math.abs(range-mission.target),2)+' m',30,481);
- }else{
-   ctx.fillStyle='#8da8bb';ctx.font='17px system-ui';
-   ctx.fillText('Sleep de groene greep om te richten',30,481);
+   const error=Math.abs(range-mission.target);
+   ctx.fillStyle=error<=1?'#8df4d8':'#fac18b';
+   ctx.font='600 20px system-ui';ctx.fillText(error<=1?'Je bal ligt op de mat!':(range>mission.target?'De bal ging te ver.':'De bal kwam te kort.'),31,70);
  }
 }
-function projectilePremium(ctx,p,t){if(isMobileProjectile())return projectileMobile(ctx,p,t);const a=p.angle*PI/180,vx=p.v*Math.cos(a),vy=p.v*Math.sin(a),dur=2*vy/p.g,range=vx*dur,peak=vy**2/(2*p.g);const scale=Math.min(785/Math.max(range,mission.target+4,...mission.shots.map(shot=>shot.range),1),290/Math.max(peak,1)),x0=103,y0=404,curve=[];background(ctx);ctx.fillStyle='#0d2537';ctx.fillRect(0,409,1000,91);stroke(ctx,[[45,405],[950,405]],'#87a2b565',1.15);for(let j=0;j<=10;j++){const x=x0+j*range/10*scale;stroke(ctx,[[x,403],[x,411]],'#678ba85c',1)}for(let j=0;j<=100;j++){let tt=dur*j/100;curve.push([x0+vx*tt*scale,y0-(vy*tt-.5*p.g*tt*tt)*scale])}if(mission.launched)stroke(ctx,curve,'#fac088c6',2.1,11);const tt=mission.launched?Math.min(t,dur):0,x=x0+vx*tt*scale,y=y0-(vy*tt-.5*p.g*tt*tt)*scale;let idx=Math.max(0,Math.floor(tt/dur*100));if(mission.launched)stroke(ctx,curve.slice(0,idx+1),'#f8d6ab',3.6,15);circle(ctx,x,y,8,'#70e6d6');const u=4.7*scale,vyt=vy-p.g*tt,mag=Math.hypot(vx,vyt)||1;const factor=Math.min(112,Math.hypot(vx,vyt)*2.9)/mag;const xx=x+vx*factor,yy=y-vyt*factor;stroke(ctx,[[x,y],[xx,yy]],'#80e7d7',2);const aa=Math.atan2(yy-y,xx-x);stroke(ctx,[[xx-10*Math.cos(aa-.45),yy-10*Math.sin(aa-.45)],[xx,yy],[xx-10*Math.cos(aa+.45),yy-10*Math.sin(aa+.45)]],'#80e7d7',1.5);stroke(ctx,[[x,405],[x,y]],'#9ab7c95a',.9,0,[4,6]);stroke(ctx,[[x0+range*scale/2,y0],[x0+range*scale/2,y0-peak*scale]],'#95adc66b',.9,0,[4,6]);ctx.font='12px system-ui';ctx.fillStyle='#9cb6cb';ctx.fillText('0 m',x0-12,430);for(const [i,shot] of mission.shots.entries()){const px=x0+shot.range*scale;stroke(ctx,[[px,385],[px,415]],'#f7bb8e',1.4,1,[3,4]);ctx.font='12px system-ui';ctx.fillStyle='#f8c89c';ctx.fillText('P'+(i+1),px-6,448)}if(mission.launched)ctx.fillText(fmt(range,1)+' m',Math.min(925,x0+range*scale)-30,430);ctx.fillStyle='#7ce4d4';ctx.fillText('v',xx+9,yy-8);ctx.fillStyle='#b1c6d8';if(mission.launched)ctx.fillText('h = '+fmt(peak,2)+' m',70,80);ctx.fillStyle='#c8d9e8';ctx.font='600 26px system-ui';if(mission.launched)ctx.fillText('x = '+fmt(range,2)+' m',70,119);const aim=80+(p.v-5)/30*125,tx=x0+Math.cos(a)*aim,ty=y0-Math.sin(a)*aim;stroke(ctx,[[x0,y0],[tx,ty]],'#f0cd8a92',1.4,1,[5,6]);ctx.beginPath();ctx.arc(tx,ty,13,0,TAU);ctx.strokeStyle='#bafaf1d2';ctx.lineWidth=1.2;ctx.stroke();circle(ctx,tx,ty,4,'#6cebd7');const targetX=x0+mission.target*scale;stroke(ctx,[[targetX,405],[targetX,349]],'#80e8dc',1.4,1,[4,5]);stroke(ctx,[[targetX-19,382],[targetX,363],[targetX+19,382]],'#80e8dc',2.2);ctx.fillStyle='#9feade';ctx.font='600 14px system-ui';ctx.fillText('DOEL '+mission.target+' m',Math.min(850,targetX-55),333);if(mission.complete){ctx.fillStyle=Math.abs(range-mission.target)<=1?'#88f3cb':'#ffc18b';ctx.font='600 16px system-ui';ctx.fillText('Afwijking '+fmt(Math.abs(range-mission.target),2)+' m',660,85)}}
+function projectilePremium(ctx,p,t){if(isMobileProjectile())return projectileMobile(ctx,p,t);const a=p.angle*PI/180,vx=p.v*Math.cos(a),vy=p.v*Math.sin(a),dur=2*vy/p.g,range=vx*dur,peak=vy**2/(2*p.g);const scale=Math.min(785/Math.max(range,mission.target+4,...mission.shots.map(shot=>shot.range),1),290/Math.max(peak,1)),x0=103,y0=404,curve=[];background(ctx);ctx.fillStyle='#0d2537';ctx.fillRect(0,409,1000,91);stroke(ctx,[[45,405],[950,405]],'#87a2b565',1.15);for(let j=0;j<=10;j++){const x=x0+j*range/10*scale;stroke(ctx,[[x,403],[x,411]],'#678ba85c',1)}for(let j=0;j<=100;j++){let tt=dur*j/100;curve.push([x0+vx*tt*scale,y0-(vy*tt-.5*p.g*tt*tt)*scale])}if(mission.launched)stroke(ctx,curve,'#fac088c6',2.1,11);const tt=mission.launched?Math.min(t,dur):0,x=x0+vx*tt*scale,y=y0-(vy*tt-.5*p.g*tt*tt)*scale;let idx=Math.max(0,Math.floor(tt/dur*100));if(mission.launched)stroke(ctx,curve.slice(0,idx+1),'#f8d6ab',3.6,15);circle(ctx,x,y,8,'#70e6d6');const u=4.7*scale,vyt=vy-p.g*tt,mag=Math.hypot(vx,vyt)||1;const factor=Math.min(112,Math.hypot(vx,vyt)*2.9)/mag;const xx=x+vx*factor,yy=y-vyt*factor;stroke(ctx,[[x,y],[xx,yy]],'#80e7d7',2);const aa=Math.atan2(yy-y,xx-x);stroke(ctx,[[xx-10*Math.cos(aa-.45),yy-10*Math.sin(aa-.45)],[xx,yy],[xx-10*Math.cos(aa+.45),yy-10*Math.sin(aa+.45)]],'#80e7d7',1.5);stroke(ctx,[[x,405],[x,y]],'#9ab7c95a',.9,0,[4,6]);stroke(ctx,[[x0+range*scale/2,y0],[x0+range*scale/2,y0-peak*scale]],'#95adc66b',.9,0,[4,6]);ctx.font='12px system-ui';ctx.fillStyle='#9cb6cb';ctx.fillText('0 m',x0-12,430);for(const [i,shot] of mission.shots.entries()){const px=x0+shot.range*scale;stroke(ctx,[[px,385],[px,415]],'#f7bb8e',1.4,1,[3,4]);ctx.font='12px system-ui';ctx.fillStyle='#f8c89c';ctx.fillText('P'+(i+1),px-6,448)}if(mission.launched)ctx.fillText(fmt(range,1)+' m',Math.min(925,x0+range*scale)-30,430);ctx.fillStyle='#7ce4d4';ctx.fillText('v',xx+9,yy-8);ctx.fillStyle='#b1c6d8';if(mission.launched)ctx.fillText('h = '+fmt(peak,2)+' m',70,80);ctx.fillStyle='#c8d9e8';ctx.font='600 26px system-ui';if(mission.launched)ctx.fillText('x = '+fmt(range,2)+' m',70,119);const aim=80+(p.v-5)/30*125,tx=x0+Math.cos(a)*aim,ty=y0-Math.sin(a)*aim;stroke(ctx,[[x0,y0],[tx,ty]],'#f0cd8a92',1.4,1,[5,6]);ctx.beginPath();ctx.arc(tx,ty,13,0,TAU);ctx.strokeStyle='#bafaf1d2';ctx.lineWidth=1.2;ctx.stroke();circle(ctx,tx,ty,4,'#6cebd7');const targetX=x0+mission.target*scale;drawLandingMat(ctx,targetX,405,scale,true);if(mission.complete){ctx.fillStyle=Math.abs(range-mission.target)<=1?'#88f3cb':'#ffc18b';ctx.font='600 16px system-ui';ctx.fillText(Math.abs(range-mission.target)<=1?'Op de mat!':('Verschil: '+fmt(Math.abs(range-mission.target),1)+' m'),650,85)}}
 function pendulumPremium(ctx,p,t){background(ctx);const per=TAU*Math.sqrt(p.L/p.g),theta=rad(p.amp)*Math.cos(TAU*t/per),r=215*p.L/1.7,rr=Math.min(285,Math.max(65,r)),cx=500,cy=94;for(let j=0;j<6;j++){let a=rad(p.amp)*Math.cos(TAU*(t-j*.2)/per),x=cx+rr*Math.sin(a),y=cy+rr*Math.cos(a);circle(ctx,x,y,11,'#67e5d2',false)}stroke(ctx,[[cx-160,cy],[cx+160,cy]],'#9ca9c1a8',2);for(let j=0;j<8;j++){let a=-rad(p.amp)+j*rad(p.amp)/3.5;const x=cx+(rr+34)*Math.sin(a),y=cy+(rr+34)*Math.cos(a);stroke(ctx,[[cx+(rr+23)*Math.sin(a),cy+(rr+23)*Math.cos(a)],[x,y]],'#55789080',1)}stroke(ctx,[[cx,cy],[cx,cy+rr]],'#5f7c9575',1,0,[4,8]);stroke(ctx,[[cx,cy],[cx+rr*Math.sin(theta),cy+rr*Math.cos(theta)]],'#d0e1ec',2.1,5);circle(ctx,cx,cy,6,'#f0c58f');circle(ctx,cx+rr*Math.sin(theta),cy+rr*Math.cos(theta),20,'#6cebd7');ctx.fillStyle='#9db6c8';ctx.font='13px system-ui';ctx.fillText('T = '+fmt(per,2)+' s',75,82);ctx.font='600 24px system-ui';ctx.fillStyle='#daeaf6';ctx.fillText('α = '+fmt(theta*180/PI,1)+'°',75,116);ctx.beginPath();ctx.arc(cx+rr*Math.sin(theta),cy+rr*Math.cos(theta),28,0,TAU);ctx.strokeStyle='#78dbc85e';ctx.lineWidth=1;ctx.stroke()}
 function refractionPremium(ctx,p,t){background(ctx);ctx.save();const medium=ctx.createLinearGradient(0,245,0,500);medium.addColorStop(0,'#123a4bdf');medium.addColorStop(1,'#17617b7b');ctx.fillStyle=medium;ctx.fillRect(0,250,1000,250);ctx.restore();stroke(ctx,[[70,248],[930,248]],'#91c3d59c',1.4);stroke(ctx,[[500,28],[500,478]],'#a9bcc470',1,0,[6,6]);const i=rad(p.angle),s=p.n1/p.n2*Math.sin(i),total=s>1,r=total?null:Math.asin(s),ox=500,oy=249;const length=295;stroke(ctx,[[ox-length*Math.sin(i),oy-length*Math.cos(i)],[ox,oy]],'#f7b879',2.9,14);stroke(ctx,[[ox,oy],[ox+length*.4*Math.sin(i),oy-length*.4*Math.cos(i)]],'#8daaffcc',1.5,8);if(!total)stroke(ctx,[[ox,oy],[ox+length*Math.sin(r),oy+length*Math.cos(r)]],'#68edcf',2.9,15);for(let j=0;j<5;j++){let f=(j*.20+t*.05)%1;let x=ox-length*f*Math.sin(i),y=oy-length*f*Math.cos(i);stroke(ctx,[[x-10*Math.cos(i),y+10*Math.sin(i)],[x+10*Math.cos(i),y-10*Math.sin(i)]],'#ffcca777',1.1)}circle(ctx,500,249,4,'#eafffa');ctx.fillStyle='#b1cddd';ctx.font='14px system-ui';ctx.fillText('n₁ = '+fmt(p.n1,2),90,90);ctx.fillText('n₂ = '+fmt(p.n2,2),90,345);ctx.fillStyle='#e0eef5';ctx.font='600 23px system-ui';ctx.fillText(total?'Totale terugkaatsing':'Breking van licht',604,84);ctx.beginPath();ctx.arc(ox-length*Math.sin(i),oy-length*Math.cos(i),13,0,TAU);ctx.strokeStyle='#ffd49bdf';ctx.lineWidth=1.25;ctx.stroke()}
 function ohmPremium(ctx,p,t){background(ctx);const I=p.U/p.R;const corners=[[265,158],[735,158],[735,354],[265,354],[265,158]];stroke(ctx,corners,'#93b6c4ce',2.1,3);const wave=[];for(let j=0;j<=12;j++){let x=419+j*13,y=158+(j===0||j===12?0:j%2?13:-13);wave.push([x,y])}stroke(ctx,[[265,158],[405,158]],'#93b6c4ce',2);stroke(ctx,[[575,158],[735,158]],'#93b6c4ce',2);stroke(ctx,[[405,158],...wave,[575,158]],'#ffc18e',3,7);stroke(ctx,[[485,330],[485,377]],'#f0c185',3);stroke(ctx,[[518,342],[518,365]],'#f0c185',2);ctx.font='13px system-ui';ctx.fillStyle='#b3c9d9';ctx.fillText(fmt(p.R,0)+' Ω',481,117);ctx.fillText(fmt(p.U,1)+' V',535,369);for(let k=0;k<23;k++){let s=((k/23+t*I*.025)%1)*1322,x,y;if(s<470){x=265+s;y=158}else if(s<666){x=735;y=158+s-470}else if(s<1136){x=735-(s-666);y=354}else{x=265;y=354-(s-1136)}circle(ctx,x,y,3,'#69e6d2',false)}ctx.font='600 24px system-ui';ctx.fillStyle='#e3effa';ctx.fillText('I = '+fmt(I,2)+' A',90,85)}
@@ -578,7 +645,7 @@ function wheatstoneMission(ctx,p){
 }
 function researchCopy(id){
  const content={
-  projectile:{steps:['Richt','Schiet','Verbeter'],question:'Welke instelling brengt de bal dichter bij het doel?',placeholder:'Waar zal de bal landen? Schrijf eerst je verwachting en reden op.'},
+  projectile:{steps:['Probeer','Bekijk','Verander'],question:'Wat helpt om de bal op de mat te laten landen?',placeholder:'Waar verwacht je dat de bal landt? Waarom denk je dat?'},
   wheatstone:{steps:['Zoek nul','Bereken','Controleer'],question:'Welke onbekende weerstand maakt de brug in evenwicht?',placeholder:'Wat denk je dat de onbekende weerstand is? Schrijf je redenering op.'},
   interference:{steps:['Verken','Meet','Verklaar'],question:'Waar is de trilling het zwakst en waar juist het sterkst?',placeholder:'Waar verwacht je versterking en uitdoving? Waarom?'}
  };
@@ -588,7 +655,7 @@ function researchCopy(id){
  $('hypothesis').placeholder=row.placeholder;
 }
 function resetInquiry(id){
- mission.launched=false;mission.complete=false;mission.tries=0;mission.view='target';mission.shots=[];mission.previousSamples=[];mission.samples=[];mission.probe={x:615,y:194};mission.pointer=null;mission.feedback='';mission.solved=false;
+ mission.launched=false;mission.complete=false;mission.tries=0;mission.view='target';mission.shots=[];$('labSection').classList.remove('has-thrown');mission.previousSamples=[];mission.samples=[];mission.probe={x:615,y:194};mission.pointer=null;mission.feedback='';mission.solved=false;
  $('inquiryAnswer').value='';
  if(['projectile','interference','wheatstone'].includes(id))setPlaying(false);else setPlaying(!matchMedia('(prefers-reduced-motion:reduce)').matches);
  $('inquiryBar').hidden=!['projectile','interference','wheatstone'].includes(id);
@@ -602,11 +669,15 @@ function renderInquiry(){
  $('inquiryAnswer').hidden=id!=='wheatstone';
  if(id==='projectile'){
   const p=state.p,range=p.v*p.v*Math.sin(2*rad(p.angle))/p.g,diff=range-mission.target;
-  kind.textContent='ONTWERPOPDRACHT · BEWEGING';
-  title.textContent='Kun jij het doel op '+mission.target+' meter raken?';
-  detail.textContent='Richt met de pijl of verander snelheid en hoek. Schiet, kijk waar de bal landt en verbeter je volgende poging.';
-  const message=mission.feedback||(mission.complete?(Math.abs(diff)<=1?'Raak! Welke tweede afschiethoek werkt ook?':'De bal landde '+fmt(Math.abs(diff),1)+' m '+(diff>0?'te ver.':'te kort.')+' Wat verander je?'):mission.launched?'De bal is onderweg. Waar komt hij neer?':'De baan is nog niet zichtbaar. Waar denk je dat de bal landt?');if(status.textContent!==message)status.textContent=message;
-  action.textContent=mission.complete?'Nieuwe poging':'Schiet';
+  kind.textContent='SCHUINE WORP';
+  title.textContent='Kun jij de bal op de mat laten landen?';
+  detail.textContent='De mat ligt 24 meter verder. Kies hoe schuin en hoe hard je gooit.';
+  const hit=Math.abs(diff)<=1;
+  const miss=fmt(Math.abs(diff),1).replace('.',',');
+  const message=mission.feedback||(mission.complete?(hit?'Gelukt! Je bal landt op de mat. Kun je dat ook op een andere manier?':diff>0?'Je bal viel '+miss+' meter voorbij de mat. Wat gebeurt er als je minder hard gooit?':'Je bal viel '+miss+' meter vóór de mat. Wat gebeurt er als je harder gooit?'):mission.launched?'Kijk waar de bal neerkomt.':'Probeer eerst maar eens. Je kunt daarna je worp veranderen.');
+  if(status.textContent!==message)status.textContent=message;
+  const feedback=$('aimFeedback');feedback.hidden=!mission.complete;feedback.textContent=mission.complete?message:'';
+  action.textContent=mission.complete?'Probeer opnieuw':'Gooi de bal';
   action.disabled=mission.launched&&!mission.complete;$('aimFire').textContent=action.textContent;$('aimFire').disabled=action.disabled;
   $('labSection').classList.toggle('await-shot',!mission.launched);
  }else if(id==='wheatstone'){
@@ -628,7 +699,7 @@ function renderInquiry(){
 }
 function actInquiry(){
  if(state.id==='projectile'){
-  if(mission.complete){mission.launched=false;mission.complete=false;mission.feedback='';state.t=0;setPlaying(false);render();return;}mission.launched=true;mission.complete=false;mission.feedback='';state.t=0;setPlaying(true);
+  if(mission.complete){mission.launched=false;mission.complete=false;mission.feedback='';state.t=0;setPlaying(false);render();return;}mission.launched=true;mission.complete=false;mission.feedback='';state.t=0;if(isMobileProjectile()){if(projectileMobileFrame(state.p).range>40){mission.view='overview';syncMobileAim()}const stage=$('stage'),rect=stage.getBoundingClientRect(),root=document.documentElement,oldScroll=root.style.scrollBehavior;root.style.scrollBehavior='auto';window.scrollTo(0,Math.max(0,window.scrollY+rect.top-Math.max(75,(innerHeight-rect.height)/2)));root.style.scrollBehavior=oldScroll}setPlaying(true);
  }else if(state.id==='wheatstone'){
   const raw=$('inquiryAnswer').value.trim().replace(',','.');
   const guess=Number(raw);
@@ -652,7 +723,7 @@ function renderCards(){let list=experiments.filter(e=>!state.group||e.group===st
 function setPlaying(yes){state.playing=yes;$('playLabel').textContent=yes?'Pauze':'Start';$('playBtn').setAttribute('aria-pressed',String(yes));$('playIcon').innerHTML=yes?'<path d="M7 5v14M17 5v14"/>':'<path d="m8 5 11 7-11 7Z"/>'}
 function resetCamera(){state.camera={yaw:.54,pitch:.63,zoom:1};render()}
 function closeDrawer(){$('explorer').classList.remove('open');$('inspector').classList.remove('open');$('shade').hidden=true}
-function syncMobileAim(){if(state.id!=='projectile')return;for(const [key,id,out,unit,decimals] of [['angle','aimAngle','aimAngleValue','°',1],['v','aimSpeed','aimSpeedValue',' m/s',2]]){const slider=$(id);if(slider){slider.value=state.p[key];$(out).textContent=fmt(state.p[key],decimals)+unit;}}$('mobileView').textContent=mission.view==='overview'?'Vergroot het doel':'Hele baan tonen';$('mobileView').setAttribute('aria-pressed',String(mission.view==='overview'))}
+function syncMobileAim(){if(state.id!=='projectile')return;for(const [key,id,out,unit,decimals] of [['angle','aimAngle','aimAngleValue','°',1],['v','aimSpeed','aimSpeedValue',' m/s',2]]){const slider=$(id);if(slider){slider.value=state.p[key];$(out).textContent=fmt(state.p[key],decimals)+unit;}}$('mobileView').textContent=mission.view==='overview'?'Terug naar de mat':'Hele baan zien';$('mobileView').setAttribute('aria-pressed',String(mission.view==='overview'))}
 function loadLab(id,scroll=false){const e=byId[id];if(!e)return;state.id=id;state.t=0;state.p=Object.fromEntries(e.controls.map(([key,,,,,def])=>[key,def]));resetInquiry(id);state.baseline=null;$('baselineBtn').textContent='+ Bewaar meting';$('saveValuesBtn').textContent='+ Bewaar meting';$('saveGraphBtn').textContent='+ Bewaar vergelijking';$('comparisonBubble').hidden=true;$('labGroup').textContent=e.group;$('labTitle').textContent=e.title;$('intro').textContent=e.intro;$('infoDescription').textContent=e.explanation;$('infoCaveat').textContent=e.caveat;$('explanation').textContent=e.explanation;$('modelNote').textContent=e.caveat;$('prediction').textContent=e.question;researchCopy(id);$('hypothesis').value=lsGet('science-prediction-'+id)||'';$('sceneMeta').textContent=special3d.has(id)?'3D · DRAAIBAAR MODEL':'2D · INTERACTIEF MODEL';$('sceneBadge').textContent=special3d.has(id)?'RUIMTELIJKE WEERGAVE':'LIVE SIMULATIE';const manualTransport=id==='wheatstone'||id==='projectile';$('stepBtn').hidden=manualTransport;$('playBtn').hidden=manualTransport;$('speedSelect').hidden=manualTransport;$('sceneCompass').hidden=!special3d.has(id);$('sceneTip').hidden=!directManip.has(id);$('sceneTip').textContent=directHints[id]||'';$('cameraReset').hidden=!special3d.has(id);$('stage').classList.toggle('three-dimensional',special3d.has(id));$('stage').classList.toggle('direct-manipulation',directManip.has(id));$('labSection').classList.toggle('mobile-projectile',id==='projectile');$('mobileAim').hidden=id!=='projectile';resetCamera();const visibleControls=e.controls.filter(row=>id!=='wheatstone'||row[0]!=='R3');$('controls').innerHTML=visibleControls.map(([key,label,unit,min,max,value,step])=>`<div class="control"><div class="control-line"><label for="ctrl-${key}">${safe(label)}</label><output id="out-${key}">${safe(fmt(value,3))} ${safe(unit)}</output></div><input type="range" id="ctrl-${key}" min="${min}" max="${max}" step="${step}" value="${value}" aria-label="${safe(label)}"><div class="control-range"><span>${safe(fmt(min,2))}</span><span>${safe(fmt(max,2))}</span></div></div>`).join('');for(const [key,,unit] of visibleControls){$('ctrl-'+key).addEventListener('input',ev=>{state.p[key]=Number(ev.target.value);$('out-'+key).textContent=fmt(state.p[key],3)+' '+unit;state.t=0;mission.feedback='';mission.solved=false;if(id==='projectile'){mission.launched=false;mission.complete=false;setPlaying(false)}if(id==='interference'){if(mission.samples.length)mission.previousSamples=mission.samples.map(row=>({...row}));mission.samples=[]}render()})}syncMobileAim();groupTree();renderCards();selectBottom(['projectile','wheatstone','interference'].includes(id)?'research':state.bottom);render();closeDrawer();if(location.hash.slice(1)!==id)try{history.replaceState(null,'','#'+id)}catch(e){}if(scroll)document.getElementById('labSection').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'instant':'smooth',block:'start'})}
 function setup(){const filters=$('groupFilters');filters.innerHTML=`<button class="filter-chip selected" data-filter="">Alles (53)</button>`+groups.map((g,i)=>`<button class="filter-chip" data-filter="${i}">${safe(g)}</button>`).join('');filters.querySelectorAll('[data-filter]').forEach(btn=>btn.addEventListener('click',()=>{state.group=btn.dataset.filter===''?'':groups[Number(btn.dataset.filter)];filters.querySelectorAll('button').forEach(x=>x.classList.toggle('selected',x===btn));renderCards()}));$('search').addEventListener('input',ev=>{state.query=ev.target.value.toLowerCase().trim();groupTree()});document.querySelectorAll('[data-side]').forEach(btn=>btn.addEventListener('click',()=>selectSide(btn.dataset.side)));document.querySelectorAll('[data-bottom]').forEach(btn=>btn.addEventListener('click',()=>selectBottom(btn.dataset.bottom)));$('openExplorer').addEventListener('click',()=>{$('explorer').classList.add('open');$('shade').hidden=false});$('closeExplorer').addEventListener('click',closeDrawer);$('shade').addEventListener('click',closeDrawer);$('openMobileSettings').onclick=()=>{closeDrawer();selectSide('settings');$('inspector').classList.add('open');$('shade').hidden=false};$('closeMobileSettings').onclick=closeDrawer;$('resetBtn').onclick=()=>loadLab(state.id);$('stepBtn').onclick=()=>{setPlaying(false);state.t+=.05;render()};$('playBtn').onclick=()=>setPlaying(!state.playing);$('speedSelect').addEventListener('change',e=>state.speed=Number(e.target.value));$('baselineBtn').onclick=saveBaseline;$('saveValuesBtn').onclick=saveBaseline;$('saveGraphBtn').onclick=saveBaseline;$('clearBaseline').onclick=()=>{state.baseline=null;$('comparisonBubble').hidden=true;updateComparison();$('baselineBtn').textContent='+ Bewaar meting';$('saveValuesBtn').textContent='+ Bewaar meting';$('saveGraphBtn').textContent='+ Bewaar vergelijking';render()};$('cameraReset').onclick=resetCamera;$('hypothesis').addEventListener('input',()=>lsSet('science-prediction-'+state.id,$('hypothesis').value));$('shareBtn').onclick=async()=>{try{await navigator.clipboard.writeText(location.href);$('shareBtn').textContent='Link gekopieerd';setTimeout(()=>$('shareBtn').textContent='Deel deze proef',1600)}catch(e){window.prompt('Kopieer deze link',location.href)}};$('allTopicsBtn').onclick=()=>{state.group='';filters.querySelectorAll('button').forEach((b,i)=>b.classList.toggle('selected',i===0));renderCards();document.getElementById('topics').scrollIntoView({behavior:'smooth'})};
 $('inquiryAction').addEventListener('click',actInquiry);$('inquiryAnswer').addEventListener('keydown',ev=>{if(ev.key==='Enter')actInquiry()});
@@ -680,6 +751,6 @@ const dbar=$('sceneDivider');let resizingGraph=null;dbar.addEventListener('point
 // Mobile: swipe between graph, comparison, research and explanation without swiping the whole page.
 let swipeStart=null;const panel=$('bottomPanel');panel.addEventListener('touchstart',ev=>{if(ev.touches.length!==1||ev.target.closest('textarea,input'))return;swipeStart={x:ev.touches[0].clientX,y:ev.touches[0].clientY}},{passive:true});panel.addEventListener('touchend',ev=>{if(!swipeStart||innerWidth>720||!ev.changedTouches.length)return;const dx=ev.changedTouches[0].clientX-swipeStart.x,dy=ev.changedTouches[0].clientY-swipeStart.y;swipeStart=null;if(Math.abs(dx)>65&&Math.abs(dx)>Math.abs(dy)*1.5){const tabs=['graph','comparison','research','explain'],index=tabs.indexOf(state.bottom),next=clamp(index+(dx<0?1:-1),0,3);selectBottom(tabs[next])}},{passive:true});
 document.addEventListener('keydown',ev=>{if(ev.key==='Escape'&&focus){$('focusScene').click()}else if(ev.key==='Escape'){closeDrawer()}if(ev.code==='Space'&&!['projectile','wheatstone'].includes(state.id)&&!['INPUT','TEXTAREA','SELECT','BUTTON'].includes(document.activeElement?.tagName)&&!ev.repeat){ev.preventDefault();setPlaying(!state.playing)}});
-const start=byId[location.hash.slice(1)]?location.hash.slice(1):'projectile';loadLab(start);window.addEventListener('hashchange',()=>{const id=location.hash.slice(1);if(byId[id]&&id!==state.id)loadLab(id)});let last=performance.now(),lastRender=0;const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;if(reduce)setPlaying(false);function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;if(state.playing){state.t+=dt*state.speed;if(state.id==='projectile'&&mission.launched&&!mission.complete){const duration=2*state.p.v*Math.sin(rad(state.p.angle))/state.p.g;if(state.t>=duration){state.t=duration;mission.complete=true;mission.tries++;mission.shots.push({range:state.p.v*state.p.v*Math.sin(2*rad(state.p.angle))/state.p.g,angle:state.p.angle,v:state.p.v});setPlaying(false)}}}if(now-lastRender>33){render();lastRender=now}requestAnimationFrame(frame)}requestAnimationFrame(frame)}
+const start=byId[location.hash.slice(1)]?location.hash.slice(1):'projectile';loadLab(start);window.addEventListener('hashchange',()=>{const id=location.hash.slice(1);if(byId[id]&&id!==state.id)loadLab(id)});let last=performance.now(),lastRender=0;const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;if(reduce)setPlaying(false);function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;if(state.playing){state.t+=dt*state.speed;if(state.id==='projectile'&&mission.launched&&!mission.complete){const duration=2*state.p.v*Math.sin(rad(state.p.angle))/state.p.g;if(state.t>=duration){state.t=duration;mission.complete=true;mission.tries++;$('labSection').classList.add('has-thrown');mission.shots.push({range:state.p.v*state.p.v*Math.sin(2*rad(state.p.angle))/state.p.g,angle:state.p.angle,v:state.p.v});setPlaying(false)}}}if(now-lastRender>33){render();lastRender=now}requestAnimationFrame(frame)}requestAnimationFrame(frame)}
 setup();
 </script></body></html>
