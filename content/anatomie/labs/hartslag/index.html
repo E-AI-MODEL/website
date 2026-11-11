@@ -46,14 +46,14 @@
           <div class="viewer-top">
             <span class="view-kicker"><span class="status-dot" aria-hidden="true"></span> LIVE HARTCYCLUS</span>
             <div class="view-actions" role="group" aria-label="Weergave van het hart">
-              <button type="button" class="mini-control" id="sectionToggle" aria-pressed="false" title="Wissel tussen de anatomische buitenkant en de bewegende doorsnede">Buitenkant aan</button>
+              <button type="button" class="mini-control" id="sectionToggle" aria-pressed="false" title="Wissel tussen de anatomische buitenkant en de bewegende doorsnede">Bekijk binnenkant</button>
               <button type="button" class="mini-control" id="labelsToggle" aria-pressed="true">Namen verbergen</button>
-              <button type="button" class="mini-control" id="flowToggle" aria-pressed="true">Bloedstroom verbergen</button>
+              <button type="button" class="mini-control" id="flowToggle" aria-pressed="true" hidden>Bloedstroom verbergen</button>
               <button type="button" class="mini-control" id="resetCamera">Startaanzicht</button>
             </div>
           </div>
           <div class="stage" id="stage">
-            <canvas id="heartCanvas" aria-label="Bestuurbaar driedimensionaal model van een opengewerkt, bewegend hart. Sleep om te draaien en scroll of knijp om te zoomen.">Je browser heeft ondersteuning voor WebGL nodig.</canvas>
+            <canvas id="heartCanvas" aria-label="Bestuurbaar driedimensionaal hartmodel met een anatomische buitenkant en een bewegende doorsnede. Sleep om te draaien en knijp om te zoomen.">Je browser heeft ondersteuning voor WebGL nodig.</canvas>
             <div class="stage-wash" aria-hidden="true"></div>
             <div class="stage-caption" id="modelCaption">3D · Anatomische hartvorm · Atlasmodel</div>
             <svg class="label-leaders" id="labelLeaders" aria-hidden="true"></svg>
@@ -66,11 +66,24 @@
               <strong>De 3D-weergave is niet beschikbaar.</strong>
               <p>De hartfasen en grafieken blijven bruikbaar. Probeer een actuele browser met WebGL.</p>
             </div>
-            <div class="view-legend"><span><i class="dot dot-red"></i> Zuurstofrijk</span><span><i class="dot dot-blue"></i> Zuurstofarm</span></div>
+            <div class="view-legend" id="flowLegend" hidden><span><i class="dot dot-red"></i> Zuurstofrijk</span><span><i class="dot dot-blue"></i> Zuurstofarm</span></div>
           </div>
-          <div class="stage-side-note" id="partInfo" aria-live="polite">Draai het hart met je vinger. Kies Doorsnede om de hartslag van binnen te bekijken.</div>
+          <div class="stage-side-note" id="partInfo" aria-live="polite">Draai het hart met je vinger. Kies Bekijk binnenkant om de hartslag van binnen te onderzoeken.</div>
+          <div class="trace-strip" aria-label="Druk en volume volgen de hartbeweging">
+            <div class="trace-head"><span>DRUK <i class="trace-key pressure"></i><b id="miniPressure">5 mmHg</b></span><span>VOLUME <i class="trace-key volume"></i><b id="miniVolume">60 ml</b></span><span class="trace-time" id="miniTraceTime">0,00 s</span></div>
+            <canvas id="miniTrace" aria-label="Live grafiek van de linkerkamerdruk en het kamervolume, met dezelfde tijd als het hart"></canvas>
+          </div>
+          <div class="discovery-strip" id="discovery">
+            <div class="discovery-header"><span>ONDERZOEKSVRAAG</span><strong>Welke kleppen sluiten als de kamers beginnen samen te trekken?</strong></div>
+            <div class="discovery-choices" role="group" aria-label="Voorspel welke kleppen als eerste sluiten">
+              <button type="button" data-guess="av" aria-pressed="false">AV-kleppen</button>
+              <button type="button" data-guess="artery" aria-pressed="false">Slagaderkleppen</button>
+              <button type="button" data-guess="together" aria-pressed="false">Alle tegelijk</button>
+            </div>
+            <div class="discovery-result"><p id="discoveryFeedback" aria-live="polite">Kies eerst wat je verwacht. Bekijk daarna wat er echt gebeurt.</p><button type="button" id="discoveryAction" disabled>Bekijk de beweging</button></div>
+          </div>
           <div class="transport">
-            <button class="play" type="button" id="play" aria-label="Pauzeer de hartslag">Pauze</button>
+            <button class="play" type="button" id="play" aria-label="Start de hartslag">Start</button>
             <div class="scrub-group">
               <label for="scrub" class="visually-hidden">Tijdstip binnen de hartcyclus</label>
               <input id="scrub" type="range" min="0" max="1000" value="0" step="1" aria-label="Tijd binnen één hartslag">
