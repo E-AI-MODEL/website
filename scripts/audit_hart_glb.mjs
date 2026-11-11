@@ -1,6 +1,6 @@
 // Lees de werkelijke node- en meshstructuur van de bestaande cardiovasculaire atlas.
 // Geen aannames over welk object de hartspier is: namen en bounds eerst controleren.
-import {readFile,mkdir,writeFile} from 'node:fs/promises';
+import {readFile,mkdir,writeFile,copyFile} from 'node:fs/promises';
 import {join} from 'node:path';
 const path='tools/anatomie/models/cardiovascular.glb';
 const data=await readFile(path);
@@ -17,12 +17,16 @@ const meshes=(gltf.meshes||[]).map((x,i)=>({i,name:x.name||'',primitives:x.primi
 const summaries={
   source:path,totalNodes:gltf.nodes?.length||0,totalMeshes:gltf.meshes?.length||0,
   totalBuffers:gltf.buffers?.length||0,
+  extensionsUsed:gltf.extensionsUsed||[],extensionsRequired:gltf.extensionsRequired||[],
+  samplePrimitive:gltf.meshes?.[8]?.primitives?.[0],
   heartNodes:nodes,heartMeshes:meshes,
   sampleNodes:(gltf.nodes||[]).slice(0,35).map((x,i)=>({i,name:x.name,mesh:x.mesh})),
   sampleMeshes:(gltf.meshes||[]).slice(0,35).map((x,i)=>({i,name:x.name}))
 };
 await mkdir('audit-anatomie',{recursive:true});
 await writeFile('audit-anatomie/heart-glb-audit.json',JSON.stringify(summaries,null,2));
+// Tijdelijke controlekopie voor geometrie-inspectie en het voorbereiden van een echte hartmesh.
+await copyFile(path,'audit-anatomie/cardiovascular.glb');
 console.log('Cardiovasculair GLB:',summaries.totalNodes,'nodes,',summaries.totalMeshes,'meshes');
 console.log('HARTNODES:',JSON.stringify(nodes.slice(0,90)));
 console.log('HARTMESHES:',JSON.stringify(meshes.slice(0,90)));
