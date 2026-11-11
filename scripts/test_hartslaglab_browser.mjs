@@ -179,6 +179,13 @@ try {
   const rightHalf=await mobile.locator('#heartCanvas').screenshot();
   await mobile.locator('[data-heart-side="left"]').click();
   assert.equal(await mobile.evaluate(()=>window.__EAI_HEART_LAB__.state.focusSide),'left');
+  assert.equal(await mobile.locator('#detailToggle').getAttribute('aria-pressed'),'false');
+  const simpleHalf=await mobile.locator('#heartCanvas').screenshot();
+  await mobile.locator('#detailToggle').click();
+  assert.equal(await mobile.evaluate(()=>window.__EAI_HEART_LAB__.state.showDetails),true);
+  const detailedHalf=await mobile.locator('#heartCanvas').screenshot();
+  assert.notDeepEqual(simpleHalf,detailedHalf,'Peesdraden en klepdetails moeten zichtbaar veranderen');
+  await mobile.locator('#detailToggle').click();
   const leftHalf=await mobile.locator('#heartCanvas').screenshot();
   assert.notDeepEqual(rightHalf,leftHalf,'De rechter- en linkerharthelft moeten zichtbaar verschillen');
   await mobile.locator('#discoveryAction').click();
