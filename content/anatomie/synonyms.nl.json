@@ -3053,14 +3053,26 @@
   "right coronary artery": [
     "rechter kransslagader"
   ],
+  "right coronary leaflet": [
+    "rechter kransvormig klepblad van de aortaklep"
+  ],
   "right gastric nodes": [
     "lymfeklieren aan de rechterzijde van de maag"
   ],
   "right gastro-omental nodes": [
     "lymfeklieren bij de rechter maag-vetschortvaten"
   ],
+  "right gastro-omental vein": [
+    "rechter maag-vetschortader"
+  ],
   "right inferior lobar bronchus": [
     "onderkwabbronchus van de rechterlong"
+  ],
+  "right inferior pulmonary vein": [
+    "rechter onderste longader"
+  ],
+  "right inferolateral branch of right coronary artery": [
+    "rechter onderste zijtak van de rechter kransslagader"
   ],
   "right lobe of thymus": [
     "rechterdeel van de thymus"
@@ -3080,8 +3092,35 @@
   "right renal vein": [
     "rechter nierader"
   ],
+  "right semilunar leaflet of pulmonary valve": [
+    "rechter halvemaanvormige klepblad van de longslagaderklep"
+  ],
+  "right subclavian artery": [
+    "rechter ondersleutelbeenslagader"
+  ],
+  "right subclavian vein": [
+    "rechter ondersleutelbeenader"
+  ],
+  "right subcostal vein": [
+    "rechter onderribader"
+  ],
+  "right superior intercostal vein": [
+    "rechter bovenste tussenribader"
+  ],
   "right superior lobar bronchus": [
     "bovenkwabbronchus van de rechterlong"
+  ],
+  "right superior phrenic vein": [
+    "rechter bovenste middenrifader"
+  ],
+  "right superior pulmonary vein": [
+    "rechter bovenste longader"
+  ],
+  "right testicular artery": [
+    "rechter teelbalslagader"
+  ],
+  "right testicular vein": [
+    "rechter teelbalader"
   ],
   "right ventricle": [
     "rechterhartkamer"
@@ -3143,6 +3182,9 @@
   "second metatarsal bone": [
     "tweede middenvoetsbeentje"
   ],
+  "second posterior intercostal artery": [
+    "tweede achterste tussenribslagader"
+  ],
   "second rib": [
     "tweede rib"
   ],
@@ -3163,6 +3205,18 @@
   ],
   "semitendinosus muscle": [
     "halfpezige dijspier"
+  ],
+  "septal branches of anterior interventricular artery": [
+    "tussenschottakken van de voorste slagader tussen de hartkamers"
+  ],
+  "septal branches of posterior ethmoidal artery": [
+    "tussenschottakken van de achterste zeefbeenslagader"
+  ],
+  "septal leaflet of right atrioventricular valve": [
+    "tussenschotklepblad tussen rechterboezem en rechterkamer"
+  ],
+  "septal papillary muscle of right ventricle": [
+    "tussenschot-papillairspier van de rechterhartkamer"
   ],
   "serratus anterior muscle": [
     "voorste zaagspier"
@@ -3185,11 +3239,23 @@
   "short head of biceps femoris": [
     "korte kop van de tweehoofdige dijspier"
   ],
+  "short posterior ciliary arteries": [
+    "korte achterste straallichaamslagaders van het oog"
+  ],
+  "sigmoid arteries": [
+    "slagaders van het S-vormige deel van de dikke darm"
+  ],
   "sigmoid colon": [
     "sigmoïd"
   ],
   "sigmoid nodes": [
     "lymfeklieren bij de sigmoïde dikke darm"
+  ],
+  "sigmoid sinus": [
+    "S-vormige hersenveneuze sinus"
+  ],
+  "sigmoid veins": [
+    "aders van het S-vormige deel van de dikke darm"
   ],
   "sinus of frontal bone": [
     "voorhoofdsholte"
@@ -3199,6 +3265,9 @@
   ],
   "sixth rib": [
     "zesde rib"
+  ],
+  "small saphenous vein": [
+    "kleine oppervlakkige beenader"
   ],
   "soft palate": [
     "zachte gehemelte"
@@ -3211,6 +3280,9 @@
   ],
   "sphenomandibular ligament": [
     "wiggenbeen-onderkaakband"
+  ],
+  "spinal branch of iliolumbar artery": [
+    "wervelkolomtak van de darmbeen-lendenslagader"
   ],
   "spinal cord": [
     "ruggenmerg"
@@ -3227,8 +3299,14 @@
   "spleen": [
     "milt"
   ],
+  "splenic artery": [
+    "miltslagader"
+  ],
   "splenic nodes": [
     "lymfeklieren bij de milt"
+  ],
+  "splenic vein": [
+    "miltader"
   ],
   "splenius capitis muscle": [
     "riemspier van het hoofd"
@@ -3260,6 +3338,9 @@
   "straight part of cricothyroid muscle": [
     "recht deel van de ring-schildkraakbeenspier"
   ],
+  "straight sinus": [
+    "rechte hersenveneuze sinus"
+  ],
   "stylohyoid ligament": [
     "band tussen stijluitsteeksel en tongbeen"
   ],
@@ -3280,6 +3361,9 @@
   ],
   "subclavius muscle": [
     "ondersleutelbeenspier"
+  ],
+  "subcostal artery": [
+    "slagader onder de twaalfde rib"
   ],
   "subcutaneous acromial bursa": [
     "onderhuidse slijmbeurs op het schouderdak"
@@ -3323,8 +3407,20 @@
   "submandibular nodes": [
     "lymfeklieren onder de onderkaak"
   ],
+  "submental artery": [
+    "slagader onder de kin"
+  ],
   "submental nodes": [
     "lymfeklieren onder de kin"
+  ],
+  "submental vein": [
+    "ader onder de kin"
+  ],
+  "subscapular artery": [
+    "onderschouderbladslagader"
+  ],
+  "subscapular vein": [
+    "onderschouderbladader"
   ],
   "subscapularis muscle": [
     "onderschouderbladspier"
@@ -3362,6 +3458,21 @@
   "superficial anterior cervical nodes": [
     "oppervlakkige voorste halslymfeklieren"
   ],
+  "superficial branch of medial plantar artery": [
+    "oppervlakkige tak van de binnenste voetzoolslagader"
+  ],
+  "superficial dorsal veins of penis": [
+    "oppervlakkige aders op de rugzijde van de penis"
+  ],
+  "superficial epigastric artery": [
+    "oppervlakkige buikwandslagader"
+  ],
+  "superficial epigastric vein": [
+    "oppervlakkige buikwandader"
+  ],
+  "superficial external pudendal artery": [
+    "oppervlakkige uitwendige schaamstreekslagader"
+  ],
   "superficial head of flexor pollicis brevis": [
     "oppervlakkige kop van de korte duimbuiger"
   ],
@@ -3377,6 +3488,9 @@
   "superficial layer of temporal fascia": [
     "oppervlakkige laag van de slaapfascie"
   ],
+  "superficial palmar arch": [
+    "oppervlakkige slagaderboog van de handpalm"
+  ],
   "superficial parotid nodes": [
     "oppervlakkige lymfeklieren bij de oorspeekselklier"
   ],
@@ -3389,17 +3503,44 @@
   "superficial popliteal nodes": [
     "oppervlakkige knieholte-lymfeklieren"
   ],
+  "superficial temporal artery": [
+    "oppervlakkige slaapslagader"
+  ],
+  "superficial temporal veins": [
+    "oppervlakkige slaapaders"
+  ],
   "superficial transverse metacarpal ligament": [
     "oppervlakkige dwarse band tussen middenhandsbeentjes"
   ],
   "superficial transverse metatarsal ligament": [
     "oppervlakkige dwarse band tussen middenvoetsbeentjes"
   ],
+  "superficial venous palmar arch": [
+    "oppervlakkige aderboog van de handpalm"
+  ],
+  "superior anorectal artery": [
+    "bovenste endeldarmslagader"
+  ],
+  "superior basal vein of left lung": [
+    "bovenste basale ader van de linkerlong"
+  ],
+  "superior basal vein of right lung": [
+    "bovenste basale ader van de rechterlong"
+  ],
   "superior bursa of biceps femoris muscle": [
     "bovenste slijmbeurs bij de tweehoofdige dijspier"
   ],
+  "superior cerebellar artery": [
+    "bovenste slagader van de kleine hersenen"
+  ],
   "superior diaphragmatic nodes": [
     "bovenste middenriflymfeklieren"
+  ],
+  "superior epigastric artery": [
+    "bovenste buikwandslagader"
+  ],
+  "superior epigastric veins": [
+    "bovenste buikwandaders"
   ],
   "superior extensor retinaculum of ankle": [
     "bovenste peesband van de enkelstrekkers"
@@ -3413,14 +3554,38 @@
   "superior glenohumeral ligament": [
     "bovenste band van het schoudergewricht"
   ],
+  "superior gluteal artery": [
+    "bovenste bilslagader"
+  ],
   "superior gluteal nodes": [
     "bovenste billymfeklieren"
+  ],
+  "superior gluteal veins": [
+    "bovenste biladers"
   ],
   "superior head of lateral pterygoid muscle": [
     "bovenste kop van de buitenste vleugelspier"
   ],
+  "superior labial artery": [
+    "bovenste lipslagader"
+  ],
+  "superior labial vein": [
+    "bovenste lipader"
+  ],
+  "superior lateral genicular artery": [
+    "bovenste buitenste knieslagader"
+  ],
+  "superior lingular artery of left lung": [
+    "bovenste lingulaslagader van de linkerlong"
+  ],
   "superior lingular segmental bronchus of left lung (biv)": [
     "bovenste lingulasegmentbronchus van de linkerlong (BIV)"
+  ],
+  "superior lingular vein of left lung": [
+    "bovenste lingula-ader van de linkerlong"
+  ],
+  "superior lobar artery of right lung": [
+    "bovenkwabslagader van de rechterlong"
   ],
   "superior lobe of left lung": [
     "bovenkwab van de linkerlong"
@@ -3428,8 +3593,20 @@
   "superior lobe of right lung": [
     "bovenkwab van de rechterlong"
   ],
+  "superior medial genicular artery": [
+    "bovenste binnenste knieslagader"
+  ],
+  "superior mesenteric artery": [
+    "bovenste darmslagader"
+  ],
+  "superior mesenteric vein": [
+    "bovenste darmader"
+  ],
   "superior oblique muscle": [
     "bovenste schuine oogspier"
+  ],
+  "superior ophthalmic vein": [
+    "bovenste oogader"
   ],
   "superior pancreatic nodes": [
     "bovenste alvleesklierlymfeklieren"
@@ -3440,14 +3617,29 @@
   "superior parathyroid gland": [
     "bovenste bijschildklier"
   ],
+  "superior petrosal sinus": [
+    "bovenste steenbeenveneuze sinus"
+  ],
   "superior pharyngeal constrictor": [
     "bovenste keelholtesnoerder"
+  ],
+  "superior phrenic arteries": [
+    "bovenste middenrifslagaders"
   ],
   "superior pubic ligament": [
     "bovenste schaambeenband"
   ],
   "superior rectus muscle": [
     "bovenste rechte oogspier"
+  ],
+  "superior sagittal sinus": [
+    "bovenste sagittale hersenveneuze sinus"
+  ],
+  "superior segmental artery of left lung": [
+    "bovenste segmentale slagader van de linkerlong"
+  ],
+  "superior segmental artery of right lung": [
+    "bovenste segmentale slagader van de rechterlong"
   ],
   "superior segmental bronchus of left lung (bvi)": [
     "bovenste segmentbronchus van de linkerlong (BVI)"
@@ -3458,8 +3650,20 @@
   "superior tarsus": [
     "bovenste ooglidplaat"
   ],
+  "superior thyroid vein": [
+    "bovenste schildklierader"
+  ],
   "superior tracheobronchial nodes": [
     "bovenste lymfeklieren tussen luchtpijp en bronchiën"
+  ],
+  "superior ulnar collateral artery": [
+    "bovenste zijtakslagader bij de ellepijp"
+  ],
+  "superior vein of left lung": [
+    "bovenste ader van de linkerlong"
+  ],
+  "superior vein of right lung": [
+    "bovenste ader van de rechterlong"
   ],
   "superior vena cava": [
     "bovenste holle ader"
@@ -3473,6 +3677,9 @@
   "supinator": [
     "supinatorspier"
   ],
+  "supra-orbital artery": [
+    "slagader boven de oogkas"
+  ],
   "supraclavicular nodes": [
     "lymfeklieren boven het sleutelbeen"
   ],
@@ -3482,14 +3689,26 @@
   "suprarenal gland": [
     "bijnier"
   ],
+  "suprascapular artery": [
+    "slagader boven het schouderblad"
+  ],
+  "suprascapular vein": [
+    "ader boven het schouderblad"
+  ],
   "supraspinatus muscle": [
     "bovendoornspier van het schouderblad"
   ],
   "supraspinous ligament": [
     "band over de doornuitsteeksels van de wervels"
   ],
+  "supratrochlear artery": [
+    "slagader boven de oogkatrol"
+  ],
   "supratrochlear nodes": [
     "lymfeklieren boven de elleboog"
+  ],
+  "supreme intercostal artery": [
+    "hoogste tussenribslagader"
   ],
   "synovial sheaths of digits of hand": [
     "slijmvliespeesschedes van de vingers"
@@ -3506,8 +3725,14 @@
   "temporal bone": [
     "slaapbeen"
   ],
+  "temporal branches of middle cerebral artery": [
+    "slaaptakken van de middelste hersenslagader"
+  ],
   "temporalis muscle": [
     "slaapspier"
+  ],
+  "temporo-occipital branch": [
+    "slaap-achterhoofdtak"
   ],
   "temporoparietalis muscle": [
     "slaap-wandbeenspier"
@@ -3575,8 +3800,20 @@
   "thoracic aorta": [
     "borstaorta"
   ],
+  "thoraco-acromial artery": [
+    "borst-schouderdakslagader"
+  ],
+  "thoracodorsal artery": [
+    "borst-rugslagader"
+  ],
+  "thoracodorsal vein": [
+    "borst-rugader"
+  ],
   "thyro-epiglottic part of thyro-arytenoid muscle": [
     "schildkraakbeen-strotklepdeel van de schild-bekerkraakbeenspier"
+  ],
+  "thyrocervical trunk": [
+    "schildklier-hals-slagaderstam"
   ],
   "thyrohyoid muscle": [
     "schildkraakbeen-tongbeenspier"
@@ -3620,8 +3857,14 @@
   "transverse arytenoid muscle": [
     "dwarse bekerkraakbeenspier"
   ],
+  "transverse cervical artery": [
+    "dwarse halsslagader"
+  ],
   "transverse colon": [
     "dwarslopende dikke darm"
+  ],
+  "transverse facial artery": [
+    "dwarse aangezichtsslagader"
   ],
   "transverse head of adductor hallucis": [
     "dwarse kop van de aanvoerder van de grote teen"
@@ -3643,6 +3886,9 @@
   ],
   "transverse part of trapezius muscle": [
     "dwars deel van de monnikskapspier"
+  ],
+  "transverse sinus": [
+    "dwarse hersenveneuze sinus"
   ],
   "transverse tibiofibular ligament": [
     "dwarse band tussen scheenbeen en kuitbeen"
@@ -3692,6 +3938,9 @@
   "ulna": [
     "ellepijp"
   ],
+  "ulnar artery": [
+    "ellepijpsslagader"
+  ],
   "ulnar collateral ligament": [
     "ulnaire zijband"
   ],
@@ -3706,6 +3955,9 @@
   ],
   "ulnar nerve": [
     "elleboogzenuw"
+  ],
+  "ulnar veins": [
+    "ellepijp-aders"
   ],
   "ulnocapitate ligament": [
     "band tussen ellepijp en kopbeen"
@@ -3850,6 +4102,12 @@
   ],
   "vertebra t9": [
     "negende borstwervel (T9)"
+  ],
+  "vertebral artery": [
+    "wervelslagader"
+  ],
+  "vertebral vein": [
+    "wervelader"
   ],
   "visceral": [
     "organen"
