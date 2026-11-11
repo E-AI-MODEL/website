@@ -24,7 +24,15 @@ try {
   const page=await browser.newPage({viewport:{width:1400,height:920},deviceScaleFactor:1});
   page.on('pageerror',e=>errors.push(e.message));
   await page.goto(base+'/tools/anatomie/labs/hartslag/',{waitUntil:'domcontentloaded'});
-  await page.waitForFunction(()=>window.__EAI_HEART_LAB__?.rendererReady===true,{timeout:25000});
+  await page.waitForFunction(()=>window.__EAI_HEART_LAB__?.rendererReady===true,{timeout:25000})
+    .catch(async err=>{
+      const debug=await page.evaluate(()=>({
+        api:typeof window.__EAI_HEART_LAB__,state:window.__EAI_HEART_LAB__?.state,
+        missing:[...['heartCanvas','flowLegend','miniTrace','discoveryAction']].filter(id=>!document.getElementById(id)),
+        webgl:!!document.getElementById('heartCanvas')?.getContext('webgl')
+      }));
+      throw new Error('Hartslaglab start niet: '+err.message+'; fouten: '+errors.join(' | ')+'; status: '+JSON.stringify(debug));
+    });
   assert.match(await page.title(),/Hartslaglab/);
   assert.equal(await page.locator('#heartCanvas').count(),1);
   assert.equal(await page.locator('#timeline button').count(),5);
