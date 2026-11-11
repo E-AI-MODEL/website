@@ -162,6 +162,7 @@ function setupModel(){
   for(const k of ['position','normal','pv','model','tint','alpha'])loc[k]=k==='position'||k==='normal'?gl.getAttribLocation(program,k):gl.getUniformLocation(program,k);
   for(const k of ['position','pv','size','tint'])ploc[k]=k==='position'?gl.getAttribLocation(pointProgram,k):gl.getUniformLocation(pointProgram,k);
   meshes.sphere=upload(sphere());
+  meshes.valve=upload(valveLeaflets(false,false));
   VESSELS.forEach(v=>meshes[v.id]=upload(tube(v.path,v.radius)));
   particleBuffer=gl.createBuffer();gl.enable(gl.DEPTH_TEST);gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);gl.clearColor(.035,.076,.118,1);
   canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();gl=null;$('modelUnavailable').hidden=false;},{passive:false});
@@ -189,10 +190,14 @@ function pathPoint(path,t){
   return path[path.length-1];
 }
 const FLOW_PATHS=[
-  {color:'blue',path:[[ -.85,1.7,.38],[-.58,.63,.40],[-.53,.27,.36],[-.37,-.36,.35]],active:()=>true,n:15},
-  {color:'blue',path:[[-.30,-.49,.39],[-.51,.22,.41],[-.82,.72,.43],[-1.29,1.17,.30]],active:m=>m.sem,n:14},
-  {color:'red',path:[[1.43,.8,-.27],[.54,.60,-.22],[.46,.20,-.17],[.32,-.49,-.15]],active:()=>true,n:16},
-  {color:'red',path:[[.26,-.55,-.20],[.53,.23,-.13],[.68,1.15,-.12],[.47,1.58,-.35],[-.37,1.12,-.47]],active:m=>m.sem,n:16}
+  // Terugkeer naar de boezems loopt steeds door. Over de AV-kleppen
+  // tonen we uitsluitend stroming tijdens de vulling.
+  {color:'blue',path:[[-.85,1.7,.38],[-.73,1.05,.38],[-.57,.62,.36]],active:()=>true,n:10},
+  {color:'blue',path:[[-.57,.58,.36],[-.51,.18,.34],[-.37,-.36,.35]],active:m=>m.av,n:12},
+  {color:'blue',path:[[-.30,-.49,.39],[-.51,.22,.41],[-.82,.72,.43],[-1.29,1.17,.30]],active:m=>m.sem,n:13},
+  {color:'red',path:[[1.43,.8,-.27],[.9,.72,-.25],[.52,.59,-.22]],active:()=>true,n:10},
+  {color:'red',path:[[.52,.58,-.22],[.46,.18,-.17],[.32,-.49,-.15]],active:m=>m.av,n:12},
+  {color:'red',path:[[.26,-.55,-.20],[.53,.23,-.13],[.68,1.15,-.12],[.47,1.58,-.35],[-.37,1.12,-.47]],active:m=>m.sem,n:14}
 ];
 function drawParticles(m){
   if(!state.showFlow)return;
@@ -230,9 +235,10 @@ function drawScene(m){
   // Klepbladen bewegen zichtbaar met de open/dicht-status.
   for(const v of VALVES){
     const open=v.type==='av'?m.av:m.sem;
-    const leaves=upload(valveLeaflets(open,v.type==='sem'));
-    drawMesh(leaves,modelMatrix(v.pos,[.78,.78,.78]),open?[.75,.91,.85]:[.96,.78,.58],.95);
-    gl.deleteBuffer(leaves.vb);gl.deleteBuffer(leaves.nb);
+    const leaves=valveLeaflets(open,v.type==='sem');
+    gl.bindBuffer(gl.ARRAY_BUFFER,meshes.valve.vb);gl.bufferSubData(gl.ARRAY_BUFFER,0,leaves.v);
+    gl.bindBuffer(gl.ARRAY_BUFFER,meshes.valve.nb);gl.bufferSubData(gl.ARRAY_BUFFER,0,leaves.n);
+    drawMesh(meshes.valve,modelMatrix(v.pos,[.78,.78,.78]),open?[.75,.91,.85]:[.96,.78,.58],.95);
   }
   // Kamers veranderen daadwerkelijk van 3D-volume. Geen vlakke video.
   gl.depthMask(false);
