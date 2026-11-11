@@ -13,12 +13,14 @@ for(const key of supportedGuideKeys){
   assert(guideKeys.includes(key),'Bron staat bij niet-bestaand gidsartikel '+key);
   assert(unique.has(key),'Bron koppelt aan onbekende 3D-sleutel '+key);
   const s=anatomySourceStatus(key);
-  assert(s.hasSpecific&&s.specific&&s.specific.url.includes('openstax.org/books/anatomy-and-physiology'),'Geen leerboekbron '+key);
+  assert(s.hasSpecific&&s.specific,'Geen vakbron voor '+key);
+  const host=new URL(s.specific.url).hostname.toLowerCase();
+  assert(['openstax.org','www.ncbi.nlm.nih.gov','www.elsevier.com'].includes(host),
+    'Onbekende bronhouder '+key+' ('+host+')');
 }
-assert(supportedGuideKeys.length>=45);
+assert.equal(supportedGuideKeys.length,62,'Ieder specifiek gidsartikel heeft een bronverwijzing nodig');
 const unsourced=guideKeys.filter(k=>!anatomySourceStatus(k).hasSpecific);
-assert(unsourced.length>0, 'Ontbrekende broncontroles mogen niet zonder bewijs verdwijnen');
-assert(!anatomySourceStatus(unsourced[0]).hasSpecific);
+assert.deepEqual(unsourced,[],'Geen specifiek gidsartikel mag zonder passende vakbron staan');
 for(const type of ['bot','spier','band','zintuig','slagader','lymfeklier']) {
   const info=anatomySourceStatus('naam niet specifiek onderbouwd',type);
   assert.equal(info.hasSpecific,false);
