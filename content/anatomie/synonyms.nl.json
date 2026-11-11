@@ -3314,14 +3314,32 @@
   "posterior deep temporal artery": [
     "achterste diepe slaapslagader"
   ],
+  "posterior division of inferior trunk of brachial plexus": [
+    "achterste tak van de onderste zenuwstreng van de armzenuwvlecht"
+  ],
   "posterior division of internal iliac artery": [
     "achterste deel van de inwendige bekkenslagader"
+  ],
+  "posterior division of mandibular nerve": [
+    "achterste tak van de onderkaakszenuw"
+  ],
+  "posterior division of middle trunk of brachial plexus": [
+    "achterste tak van de middelste zenuwstreng van de armzenuwvlecht"
   ],
   "posterior division of retromandibular vein": [
     "achterste tak van de ader achter de onderkaak"
   ],
+  "posterior division of superior trunk of brachial plexus": [
+    "achterste tak van de bovenste zenuwstreng van de armzenuwvlecht"
+  ],
   "posterior ethmoidal artery": [
     "achterste zeefbeenslagader"
+  ],
+  "posterior fasciculus proprius": [
+    "achterste bundel van de korte ruggenmergbanen"
+  ],
+  "posterior femoral cutaneous nerve": [
+    "achterste huidzenuw van het bovenbeen"
   ],
   "posterior horn of spinal cord": [
     "achterhoorn van het ruggenmerg"
@@ -3340,6 +3358,9 @@
   ],
   "posterior interosseous artery": [
     "achterste tussenbeenslagader van de onderarm"
+  ],
+  "posterior interosseous nerve of forearm": [
+    "achterste zenuw tussen spaakbeen en ellepijp"
   ],
   "posterior lateral nasal branches of sphenopalatine artery.": [
     "achterste buitenste neustakken van de wiggenbeen-gehemelteslagader"
@@ -3368,11 +3389,26 @@
   "posterior meniscotibial ligament (medial meniscus)": [
     "achterste band tussen binnenmeniscus en scheenbeen"
   ],
+  "posterior nucleus of vagus nerve": [
+    "achterste zenuwcelgroep van de zwervende zenuw"
+  ],
   "posterior parietal artery": [
     "achterste slagader van de wandbeenkwab"
   ],
+  "posterior quadrangular lobule": [
+    "achterste vierhoekig kwabje van de kleine hersenen"
+  ],
+  "posterior root of posterior femoral cutaneous nerve": [
+    "achterste wortel van de achterste huidzenuw van het bovenbeen"
+  ],
+  "posterior root of spinal nerve": [
+    "achterste wortel van een ruggenmergzenuw"
+  ],
   "posterior sacro-iliac ligament": [
     "achterste band van het heiligbeen-darmbeengewricht"
+  ],
+  "posterior segment of eyeball": [
+    "achterste deel van de oogbol"
   ],
   "posterior segment of liver (i)": [
     "achterste leversegment (I)"
@@ -3388,6 +3424,9 @@
   ],
   "posterior septal branches of sphenopalatine artery": [
     "achterste neustussenschottakken van de wiggenbeen-gehemelteslagader"
+  ],
+  "posterior spinocerebellar tract": [
+    "achterste baan van ruggenmerg naar kleine hersenen"
   ],
   "posterior sternoclavicular ligament": [
     "achterste band tussen borstbeen en sleutelbeen"
@@ -3419,6 +3458,9 @@
   "posterior vein of right lung": [
     "achterste ader van de rechterlong"
   ],
+  "posterolateral tract": [
+    "achterste buitenste baan van het ruggenmerg"
+  ],
   "postvesical nodes": [
     "lymfeklieren achter de urineblaas"
   ],
@@ -3433,6 +3475,18 @@
   ],
   "precaval nodes": [
     "lymfeklieren vóór de holle ader"
+  ],
+  "precentral gyrus": [
+    "hersenwinding vóór de centrale groeve"
+  ],
+  "precentral sulcus (inferior part)*": [
+    "onderste deel van de groeve vóór de centrale hersengroeve (bronlabel nazien)"
+  ],
+  "precentral sulcus (superior part)*": [
+    "bovenste deel van de groeve vóór de centrale hersengroeve (bronlabel nazien)"
+  ],
+  "precuneus": [
+    "voorwig van de wandbeenkwab"
   ],
   "prefrontal artery": [
     "voorhoofdsslagader van de voorste hersenkwab"
@@ -3461,8 +3515,20 @@
   "proper palmar digital arteries": [
     "eigenlijke vingerslagaders aan de handpalmzijde"
   ],
+  "proper palmar digital branches of median nerve": [
+    "eigenlijke vingerzenuwtakken van de middelste armzenuw"
+  ],
+  "proper palmar digital branches of ulnar nerve": [
+    "eigenlijke vingerzenuwtakken van de ellepijpszenuw"
+  ],
   "proper plantar digital arteries": [
     "eigenlijke teenslagaders aan de voetzoolzijde"
+  ],
+  "proper plantar digital branches of lateral plantar nerve": [
+    "eigenlijke teenzenuwtakken van de buitenste voetzoolzenuw"
+  ],
+  "proper plantar digital branches of medial plantar nerve": [
+    "eigenlijke teenzenuwtakken van de binnenste voetzoolzenuw"
   ],
   "prostate": [
     "prostaat"
@@ -3515,11 +3581,23 @@
   "pubofemoral ligament": [
     "schaambeen-dijbeenband"
   ],
+  "pudendal nerve": [
+    "schaamzenuw"
+  ],
   "pulmonary trunk": [
     "longslagaderstam"
   ],
+  "putamen": [
+    "schil van de basale hersenkernen"
+  ],
+  "pyramid of medulla oblongata": [
+    "piramide van het verlengde merg"
+  ],
   "pyramidalis muscle": [
     "kleine piramidevormige buikspier"
+  ],
+  "pyramis of vermis": [
+    "piramidevormig deel van de kleinehersenworm"
   ],
   "quadrangular membrane": [
     "vierhoekig membraan van het strottenhoofd"
@@ -3590,8 +3668,14 @@
   "recurrent interosseous artery": [
     "teruglopende tussenbeenslagader van de onderarm"
   ],
+  "red nucleus": [
+    "rode zenuwcelgroep van de middenhersenen"
+  ],
   "renal pelvis": [
     "nierbekken"
+  ],
+  "retina": [
+    "netvlies"
   ],
   "retro-aortic nodes": [
     "lymfeklieren achter de aorta"
@@ -3716,8 +3800,14 @@
   "risorius muscle": [
     "lachspier"
   ],
+  "roots of brachial plexus": [
+    "zenuwwortels van de armzenuwvlecht"
+  ],
   "rotatores": [
     "korte draaispieren langs de wervelkolom"
+  ],
+  "rubrospinal tract": [
+    "baan van de rode zenuwcelgroep naar het ruggenmerg"
   ],
   "sacrococcygeal symphysis": [
     "voeg tussen heiligbeen en staartbeen"
@@ -3730,6 +3820,9 @@
   ],
   "sacrum": [
     "heiligbeen"
+  ],
+  "saphenous nerve": [
+    "huidzenuw langs de binnenkant van het been"
   ],
   "sartorius muscle": [
     "kleermakersspier"
@@ -3764,6 +3857,9 @@
   "sciatic nerve": [
     "heupzenuw"
   ],
+  "sclera": [
+    "harde oogrok"
+  ],
   "second metacarpal bone": [
     "tweede middenhandsbeentje"
   ],
@@ -3794,6 +3890,9 @@
   "semitendinosus muscle": [
     "halfpezige dijspier"
   ],
+  "sensory root of trigeminal nerve": [
+    "gevoelswortel van de drielingzenuw"
+  ],
   "septal branches of anterior interventricular artery": [
     "tussenschottakken van de voorste slagader tussen de hartkamers"
   ],
@@ -3803,8 +3902,14 @@
   "septal leaflet of right atrioventricular valve": [
     "tussenschotklepblad tussen rechterboezem en rechterkamer"
   ],
+  "septal nuclei": [
+    "zenuwcelgroepen van het hersentussenschot"
+  ],
   "septal papillary muscle of right ventricle": [
     "tussenschot-papillairspier van de rechterhartkamer"
+  ],
+  "septum pellucidum": [
+    "doorzichtig hersentussenschot"
   ],
   "serratus anterior muscle": [
     "voorste zaagspier"
@@ -3875,6 +3980,15 @@
   "spinal cord": [
     "ruggenmerg"
   ],
+  "spinal dura": [
+    "harde ruggenmergvlies"
+  ],
+  "spinal ganglion": [
+    "zenuwknoop bij de achterwortel van het ruggenmerg"
+  ],
+  "spinal reticular process": [
+    "netvormig uitsteeksel in het ruggenmerg"
+  ],
   "spinalis capitis muscle": [
     "doornspier van het hoofd"
   ],
@@ -3883,6 +3997,9 @@
   ],
   "spinalis thoracis muscle": [
     "doornspier van de borststreek"
+  ],
+  "spinotectal tract": [
+    "baan van ruggenmerg naar het dak van de middenhersenen"
   ],
   "spleen": [
     "milt"
@@ -3923,11 +4040,20 @@
   "stomach": [
     "maag"
   ],
+  "straight gyrus (gyrus rectus)": [
+    "rechte hersenwinding"
+  ],
   "straight part of cricothyroid muscle": [
     "recht deel van de ring-schildkraakbeenspier"
   ],
   "straight sinus": [
     "rechte hersenveneuze sinus"
+  ],
+  "stria medullaris thalami": [
+    "zenuwvezelstrook langs de thalamus"
+  ],
+  "stria terminalis": [
+    "eindstreng van zenuwvezels"
   ],
   "stylohyoid ligament": [
     "band tussen stijluitsteeksel en tongbeen"
@@ -3946,6 +4072,9 @@
   ],
   "subaortic nodes": [
     "lymfeklieren onder de aorta"
+  ],
+  "subclavian nerve": [
+    "ondersleutelbeenzenuw"
   ],
   "subclavius muscle": [
     "ondersleutelbeenspier"
@@ -4004,6 +4133,9 @@
   "submental vein": [
     "ader onder de kin"
   ],
+  "subparietal sulcus": [
+    "groeve onder de wandbeenkwab"
+  ],
   "subscapular artery": [
     "onderschouderbladslagader"
   ],
@@ -4049,6 +4181,12 @@
   "superficial branch of medial plantar artery": [
     "oppervlakkige tak van de binnenste voetzoolslagader"
   ],
+  "superficial branch of radial nerve": [
+    "oppervlakkige tak van de spaakbeenzenuw"
+  ],
+  "superficial branch of ulnar nerve": [
+    "oppervlakkige tak van de ellepijpszenuw"
+  ],
   "superficial dorsal veins of penis": [
     "oppervlakkige aders op de rugzijde van de penis"
   ],
@@ -4060,6 +4198,9 @@
   ],
   "superficial external pudendal artery": [
     "oppervlakkige uitwendige schaamstreekslagader"
+  ],
+  "superficial fibular nerve": [
+    "oppervlakkige kuitbeenzenuw"
   ],
   "superficial head of flexor pollicis brevis": [
     "oppervlakkige kop van de korte duimbuiger"
@@ -4121,6 +4262,12 @@
   "superior cerebellar artery": [
     "bovenste slagader van de kleine hersenen"
   ],
+  "superior cerebellar peduncle": [
+    "bovenste verbinding van de kleine hersenen met de hersenstam"
+  ],
+  "superior colliculus": [
+    "bovenste heuvel van de middenhersenen"
+  ],
   "superior diaphragmatic nodes": [
     "bovenste middenriflymfeklieren"
   ],
@@ -4136,6 +4283,12 @@
   "superior fibular retinaculum": [
     "bovenste peesband van de kuitbeenspieren"
   ],
+  "superior frontal gyrus": [
+    "bovenste voorhoofdshersenwinding"
+  ],
+  "superior frontal sulcus": [
+    "bovenste groeve van de voorhoofdskwab"
+  ],
   "superior gemellus muscle": [
     "bovenste tweelingspier van de heup"
   ],
@@ -4144,6 +4297,9 @@
   ],
   "superior gluteal artery": [
     "bovenste bilslagader"
+  ],
+  "superior gluteal nerve": [
+    "bovenste bilzenuw"
   ],
   "superior gluteal nodes": [
     "bovenste billymfeklieren"
@@ -4159,6 +4315,9 @@
   ],
   "superior labial vein": [
     "bovenste lipader"
+  ],
+  "superior lateral brachial cutaneous nerve": [
+    "bovenste buitenste huidzenuw van de bovenarm"
   ],
   "superior lateral genicular artery": [
     "bovenste buitenste knieslagader"
@@ -4193,6 +4352,9 @@
   "superior oblique muscle": [
     "bovenste schuine oogspier"
   ],
+  "superior occipital gyri": [
+    "bovenste achterhoofdshersenwindingen"
+  ],
   "superior ophthalmic vein": [
     "bovenste oogader"
   ],
@@ -4204,6 +4366,9 @@
   ],
   "superior parathyroid gland": [
     "bovenste bijschildklier"
+  ],
+  "superior parietal lobule": [
+    "bovenste deel van de wandbeenkwab"
   ],
   "superior petrosal sinus": [
     "bovenste steenbeenveneuze sinus"
@@ -4223,6 +4388,9 @@
   "superior sagittal sinus": [
     "bovenste sagittale hersenveneuze sinus"
   ],
+  "superior salivatory nucleus": [
+    "bovenste speekselzenuwcelgroep in de hersenstam"
+  ],
   "superior segmental artery of left lung": [
     "bovenste segmentale slagader van de linkerlong"
   ],
@@ -4235,14 +4403,29 @@
   "superior segmental bronchus of right lung (bvi)": [
     "bovenste segmentbronchus van de rechterlong (BVI)"
   ],
+  "superior semilunar lobule": [
+    "bovenste halvemaanvormig kwabje van de kleine hersenen"
+  ],
+  "superior subscapular nerve": [
+    "bovenste zenuw naar de onderschouderbladspier"
+  ],
   "superior tarsus": [
     "bovenste ooglidplaat"
+  ],
+  "superior temporal gyrus (lateral part)": [
+    "buitenste deel van de bovenste slaapkwabwinding"
+  ],
+  "superior temporal sulcus": [
+    "bovenste slaapkwabgroeve"
   ],
   "superior thyroid vein": [
     "bovenste schildklierader"
   ],
   "superior tracheobronchial nodes": [
     "bovenste lymfeklieren tussen luchtpijp en bronchiën"
+  ],
+  "superior trunk of brachial plexus": [
+    "bovenste zenuwstreng van de armzenuwvlecht"
   ],
   "superior ulnar collateral artery": [
     "bovenste zijtakslagader bij de ellepijp"
@@ -4271,6 +4454,9 @@
   "supraclavicular nodes": [
     "lymfeklieren boven het sleutelbeen"
   ],
+  "supramarginal gyrus": [
+    "bovenrandwinding van de wandbeenkwab"
+  ],
   "suprapatellar bursa": [
     "slijmbeurs boven de knieschijf"
   ],
@@ -4279,6 +4465,9 @@
   ],
   "suprascapular artery": [
     "slagader boven het schouderblad"
+  ],
+  "suprascapular nerve": [
+    "zenuw boven het schouderblad"
   ],
   "suprascapular vein": [
     "ader boven het schouderblad"
@@ -4298,6 +4487,21 @@
   "supreme intercostal artery": [
     "hoogste tussenribslagader"
   ],
+  "sural communicating branch of common fibular nerve": [
+    "verbindingszenuw van de kuitbeenzenuw naar de kuitzenuw"
+  ],
+  "sural nerve": [
+    "kuitzenuw"
+  ],
+  "suspensory ligament of eyeball": [
+    "ophangband van de oogbol"
+  ],
+  "sympathetic nerves": [
+    "sympathische zenuwen"
+  ],
+  "sympathetic trunk": [
+    "sympathische grensstreng"
+  ],
   "synovial sheaths of digits of hand": [
     "slijmvliespeesschedes van de vingers"
   ],
@@ -4310,11 +4514,20 @@
   "talus": [
     "sprongbeen"
   ],
+  "tectospinal tract": [
+    "baan van het dak van de middenhersenen naar het ruggenmerg"
+  ],
   "temporal bone": [
     "slaapbeen"
   ],
   "temporal branches of middle cerebral artery": [
     "slaaptakken van de middelste hersenslagader"
+  ],
+  "temporal plane": [
+    "vlak van de slaapkwab"
+  ],
+  "temporal pole": [
+    "voorste punt van de slaapkwab"
   ],
   "temporalis muscle": [
     "slaapspier"
@@ -4361,6 +4574,9 @@
   "tenth rib": [
     "tiende rib"
   ],
+  "tentorium cerebelli": [
+    "tent van de kleine hersenen"
+  ],
   "teres major muscle": [
     "grote ronde schouderspier"
   ],
@@ -4394,6 +4610,9 @@
   "thoracodorsal artery": [
     "borst-rugslagader"
   ],
+  "thoracodorsal nerve": [
+    "borst-rugzenuw"
+  ],
   "thoracodorsal vein": [
     "borst-rugader"
   ],
@@ -4418,6 +4637,9 @@
   "tibia": [
     "scheenbeen"
   ],
+  "tibial nerve": [
+    "scheenbeenzenuw"
+  ],
   "tibialis anterior muscle": [
     "voorste scheenbeenspier"
   ],
@@ -4432,6 +4654,9 @@
   ],
   "tongue": [
     "tong"
+  ],
+  "tonsil of cerebellum": [
+    "amandelvormig deel van de kleine hersenen"
   ],
   "trachea": [
     "luchtpijp"
@@ -4454,6 +4679,9 @@
   "transverse facial artery": [
     "dwarse aangezichtsslagader"
   ],
+  "transverse frontopolar gyrus and sulcus*": [
+    "dwarse hersenwinding en groeve aan de voorste punt van de voorhoofdskwab (bronlabel nazien)"
+  ],
   "transverse head of adductor hallucis": [
     "dwarse kop van de aanvoerder van de grote teen"
   ],
@@ -4469,6 +4697,9 @@
   "transverse ligament of knee": [
     "dwarse band van de knie"
   ],
+  "transverse occipital sulcus": [
+    "dwarse groeve van de achterhoofdskwab"
+  ],
   "transverse part of iliofemoral ligament": [
     "dwars deel van de darmbeen-dijbeenband"
   ],
@@ -4477,6 +4708,9 @@
   ],
   "transverse sinus": [
     "dwarse hersenveneuze sinus"
+  ],
+  "transverse temporal gyri": [
+    "dwarse windingen van de slaapkwab"
   ],
   "transverse tibiofibular ligament": [
     "dwarse band tussen scheenbeen en kuitbeen"
@@ -4496,8 +4730,14 @@
   "trapezoid ligament": [
     "trapeziumvormige band tussen sleutelbeen en schouderblad"
   ],
+  "triangular part of inferior frontal gyrus": [
+    "driehoekig deel van de onderste voorhoofdshersenwinding"
+  ],
   "triceps brachii": [
     "triceps bovenarm"
+  ],
+  "trigeminal nerve (v)": [
+    "vijfde hersenzenuw, drielingzenuw"
   ],
   "triquetrocapitate ligament": [
     "band tussen driehoekig handwortelbeen en kopbeen"
@@ -4520,8 +4760,17 @@
   "trochlea of superior oblique muscle": [
     "peeskatrol van de bovenste schuine oogspier"
   ],
+  "trochlear nerve (iv)": [
+    "vierde hersenzenuw, zenuw naar de bovenste schuine oogspier"
+  ],
+  "tuber of vermis": [
+    "knobbel van de kleinehersenworm"
+  ],
   "twelfth rib": [
     "twaalfde rib"
+  ],
+  "tympanic membrane": [
+    "trommelvlies"
   ],
   "ulna": [
     "ellepijp"
@@ -4591,6 +4840,9 @@
   ],
   "uvula of palate": [
     "huig"
+  ],
+  "uvula of vermis": [
+    "huig van de kleinehersenworm"
   ],
   "vagus nerve (x)": [
     "zwervende zenuw"
@@ -4697,8 +4949,23 @@
   "vertebral vein": [
     "wervelader"
   ],
+  "vestibular nerve": [
+    "evenwichtszenuw"
+  ],
+  "vestibular nuclei": [
+    "evenwichtszenuwcelgroepen van de hersenstam"
+  ],
+  "vestibule": [
+    "voorhof van het binnenoor"
+  ],
+  "vestibulocochlear nerve (viii)": [
+    "achtste hersenzenuw, gehoor- en evenwichtszenuw"
+  ],
   "visceral": [
     "organen"
+  ],
+  "vitreous body": [
+    "glasachtig lichaam van het oog"
   ],
   "vomer": [
     "ploegschaarbeen"
@@ -4706,8 +4973,20 @@
   "white matter": [
     "witte stof"
   ],
+  "white matter of spinal cord": [
+    "witte stof van het ruggenmerg"
+  ],
+  "white matter of telencephalon": [
+    "witte stof van de grote hersenen"
+  ],
+  "wing of central lobule": [
+    "vleugel van het centrale kwabje van de kleine hersenen"
+  ],
   "xiphoid process": [
     "zwaardvormig uitsteeksel"
+  ],
+  "zonular fibres": [
+    "lensophangvezels"
   ],
   "zygomatic bone": [
     "jukbeen"
