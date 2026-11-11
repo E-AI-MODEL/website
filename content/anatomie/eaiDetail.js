@@ -140,8 +140,8 @@ export function refineAnatomyInfo(partData, deselectPart) {
   const explanation = document.createElement('p');
   explanation.className = 'eai-source-note';
   explanation.textContent = guide
-    ? 'De gelinkte leerboeksectie ondersteunt dit onderwerp. De Nederlandse tekst blijft eigen redactie; de bron beoordeelt de gekozen 3D-geometrie niet.'
-    : 'Dit is algemene informatie over een type structuur. De leerboekbron bewijst niet de werking van dit afzonderlijke onderdeel.';
+    ? 'De gekoppelde vakbron behandelt deze anatomische structuur. De Nederlandse tekst blijft eigen redactie; de bron beoordeelt de gekozen 3D-geometrie niet.'
+    : 'Dit is algemene informatie over een type structuur. De genoemde bron bewijst niet de werking van dit afzonderlijke onderdeel.';
   provenance.appendChild(explanation);
   const addSource = (source, label) => {
     if (!source) return;
@@ -152,7 +152,7 @@ export function refineAnatomyInfo(partData, deselectPart) {
     link.textContent = label + ': ' + source.label;
     provenance.appendChild(link);
   };
-  addSource(teachingSource, 'Onderwijsbron');
+  addSource(teachingSource, 'Vakbron');
   const nameNotice = document.createElement('p');
   nameNotice.className = 'eai-source-note';
   nameNotice.textContent = 'Nederlandse namen zijn voor leerlingen vertaald. Ze zijn nog niet allemaal vergeleken met de internationale nomenclatuur.';
