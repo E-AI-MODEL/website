@@ -1,240 +1,168 @@
 {
-  "femur": [
-    "dijbeen"
+  "abdominal aorta": [
+    "buikaorta"
   ],
-  "tibia": [
-    "scheenbeen"
+  "abductor hallucis": [
+    "afvoerder van de grote teen"
   ],
-  "fibula": [
-    "kuitbeen"
+  "accessory pancreatic duct": [
+    "bijkomende afvoergang van de alvleesklier"
   ],
-  "patella": [
-    "knieschijf"
+  "acetabular labrum": [
+    "kraakbeenring heup"
   ],
-  "humerus": [
-    "opperarmbeen"
+  "achilles tendon": [
+    "achillespees"
   ],
-  "radius": [
-    "spaakbeen"
+  "acromial part of deltoid muscle": [
+    "middelste deel van de deltaspier"
   ],
-  "ulna": [
-    "ellepijp"
+  "acromioclavicular ligament": [
+    "band tussen schouderdak en sleutelbeen"
   ],
-  "clavicle": [
-    "sleutelbeen"
+  "adductor brevis": [
+    "korte aanvoerderspier"
   ],
-  "scapula": [
-    "schouderblad"
+  "adductor longus": [
+    "lange aanvoerderspier"
   ],
-  "mandible": [
-    "onderkaak"
+  "adductor magnus": [
+    "grote aanvoerderspier"
   ],
-  "maxilla": [
-    "bovenkaak"
+  "amygdaloid body": [
+    "amygdala"
   ],
-  "sternum": [
-    "borstbeen"
+  "anconeus muscle": [
+    "elleboogspier"
   ],
-  "body of sternum": [
-    "borstbeenlichaam"
+  "annular ligament of radius": [
+    "ringband van het spaakbeen"
   ],
-  "manubrium of sternum": [
-    "borstbeenhandvat"
+  "anterior cells of ethmoid bone": [
+    "voorste zeefbeencellen"
   ],
-  "hip bone": [
-    "heupbeen"
+  "anterior cerebral artery": [
+    "voorste hersenslagader"
   ],
-  "coccyx": [
-    "staartbeen"
+  "anterior commissure": [
+    "voorste hersenverbinding"
   ],
-  "atlas (c1)": [
-    "atlaswervel"
+  "anterior cruciate ligament": [
+    "voorste kruisband"
   ],
-  "axis (c2)": [
-    "draaierwervel"
+  "anterior horn of spinal cord": [
+    "voorhoorn van het ruggenmerg"
   ],
-  "calcaneus": [
-    "hielbeen"
+  "anterior interventricular artery": [
+    "voorste slagader tussen de hartkamers"
   ],
-  "sacrum": [
-    "heiligbeen"
+  "anterior longitudinal ligament": [
+    "voorste lengteband van de wervelkolom"
   ],
-  "vertebra": [
-    "wervel"
+  "anterior tibial artery": [
+    "voorste scheenbeenslagader"
   ],
-  "costal cartilage": [
-    "ribkraakbeen"
+  "anterior tibiofibular ligament": [
+    "voorste band tussen scheenbeen en kuitbeen"
   ],
-  "rib": [
-    "rib"
+  "aortic arch": [
+    "aortaboog"
   ],
-  "kidney": [
-    "nier"
+  "articular capsule of acromioclavicular joint": [
+    "gewrichtskapsel tussen schouderdak en sleutelbeen"
   ],
-  "liver": [
-    "lever"
+  "articular capsule of elbow joint": [
+    "gewrichtskapsel van de elleboog"
   ],
-  "stomach": [
-    "maag"
+  "articular capsule of glenohumeral joint": [
+    "gewrichtskapsel van de schouder"
   ],
-  "pancreas": [
-    "alvleesklier"
+  "articular capsule of hip joint": [
+    "gewrichtskapsel van de heup"
   ],
-  "spleen": [
-    "milt"
+  "articular capsule of knee joint": [
+    "gewrichtskapsel van de knie"
   ],
-  "gallbladder": [
-    "galblaas"
+  "articular capsule of radiocarpal joint": [
+    "gewrichtskapsel van de pols"
   ],
-  "urinary bladder": [
-    "urineblaas"
+  "articular capsule of sternoclavicular joint": [
+    "gewrichtskapsel tussen sleutelbeen en borstbeen"
   ],
-  "ureter": [
-    "urineleider"
+  "articular capsule of temporomandibular joint": [
+    "gewrichtskapsel van het kaakgewricht"
   ],
-  "oesophagus": [
-    "slokdarm"
+  "articular capsules of metacarpophalangeal joints": [
+    "gewrichtskapsels van de knokkels"
   ],
-  "trachea": [
-    "luchtpijp"
+  "articular capsules of metatarsophalangeal joints": [
+    "gewrichtskapsels tussen middenvoetsbeentjes en tenen"
   ],
-  "diaphragm": [
-    "middenrif"
+  "articular disc of acromioclavicular joint": [
+    "gewrichtsschijf bij het schouderdak en sleutelbeen"
   ],
-  "ascending colon": [
-    "opstijgende dikke darm"
+  "articular disc of sternoclavicular joint": [
+    "gewrichtsschijf bij het borstbeen en sleutelbeen"
   ],
-  "descending colon": [
-    "dalende dikke darm"
+  "articular disc of temporomandibular joint": [
+    "gewrichtsschijf van het kaakgewricht"
   ],
-  "transverse colon": [
-    "dwarslopende dikke darm"
-  ],
-  "sigmoid colon": [
-    "sigmoïd"
-  ],
-  "prostate": [
-    "prostaat"
-  ],
-  "testis": [
-    "teelbal"
-  ],
-  "left atrium": [
-    "linkerboezem"
-  ],
-  "right atrium": [
-    "rechterboezem"
-  ],
-  "left ventricle": [
-    "linkerhartkamer"
-  ],
-  "right ventricle": [
-    "rechterhartkamer"
+  "arytenoid cartilage": [
+    "bekerkraakbeen"
   ],
   "ascending aorta": [
     "opstijgende aorta"
   ],
-  "abdominal aorta": [
-    "buikaorta"
+  "ascending colon": [
+    "opstijgende dikke darm"
   ],
-  "thoracic aorta": [
-    "borstaorta"
+  "atlas (c1)": [
+    "atlaswervel"
   ],
-  "superior vena cava": [
-    "bovenste holle ader"
+  "auditory tube": [
+    "buis van Eustachius"
   ],
-  "inferior vena cava": [
-    "onderste holle ader"
+  "axillary nerve": [
+    "okselzenuw"
   ],
-  "left coronary artery": [
-    "linker kransslagader"
-  ],
-  "right coronary artery": [
-    "rechter kransslagader"
-  ],
-  "left common carotid artery": [
-    "linker halsslagader"
-  ],
-  "right common carotid artery": [
-    "rechter halsslagader"
-  ],
-  "external carotid artery": [
-    "uitwendige halsslagader"
-  ],
-  "internal carotid artery": [
-    "inwendige halsslagader"
-  ],
-  "femoral artery": [
-    "dijbeenslagader"
-  ],
-  "brachial artery": [
-    "armslagader"
-  ],
-  "sciatic nerve": [
-    "heupzenuw"
-  ],
-  "optic nerve": [
-    "oogzenuw"
-  ],
-  "median nerve": [
-    "middelste armzenuw"
-  ],
-  "ulnar nerve": [
-    "elleboogzenuw"
-  ],
-  "radial nerve": [
-    "spaakbeenzenuw"
-  ],
-  "deltoid muscle": [
-    "deltaspier"
-  ],
-  "gluteus maximus muscle": [
-    "grote bilspier"
+  "axis (c2)": [
+    "draaierwervel"
   ],
   "biceps brachii": [
     "biceps bovenarm"
   ],
-  "triceps brachii": [
-    "triceps bovenarm"
+  "bile duct": [
+    "galgang"
   ],
-  "rectus femoris": [
-    "rechte dijspier"
+  "body of sternum": [
+    "borstbeenlichaam"
   ],
-  "vastus lateralis": [
-    "buitenste brede dijspier"
+  "brachial artery": [
+    "armslagader"
   ],
-  "vastus medialis": [
-    "binnenste brede dijspier"
+  "brachialis muscle": [
+    "opperarmspier"
   ],
-  "gastrocnemius": [
-    "kuitspier"
-  ],
-  "thyroid gland": [
-    "schildklier"
-  ],
-  "thyroid cartilage": [
-    "schildkraakbeen"
-  ],
-  "larynx": [
-    "strottenhoofd"
-  ],
-  "bronchus": [
-    "luchtpijptak"
-  ],
-  "lung": [
-    "long"
-  ],
-  "left lung": [
-    "linkerlong"
-  ],
-  "right lung": [
-    "rechterlong"
+  "brachioradialis muscle": [
+    "opperarms-spaakbeenspier"
   ],
   "brain": [
     "hersenen"
   ],
-  "midbrain": [
-    "middenhersenen"
+  "bronchus": [
+    "luchtpijptak"
+  ],
+  "calcaneal tendon": [
+    "achillespees"
+  ],
+  "calcaneus": [
+    "hielbeen"
+  ],
+  "capitate bone": [
+    "kopbeen"
+  ],
+  "cauda equina": [
+    "zenuwbundel onderaan het ruggenmerg"
   ],
   "cerebellum": [
     "kleine hersenen"
@@ -242,122 +170,29 @@
   "cerebrum": [
     "grote hersenen"
   ],
-  "spinal cord": [
-    "ruggenmerg"
+  "circumflex artery of heart": [
+    "omlopende kransslagader"
   ],
-  "white matter": [
-    "witte stof"
+  "clavicle": [
+    "sleutelbeen"
   ],
-  "hippocampus": [
-    "hippocampus"
+  "clavicular head of pectoralis major muscle": [
+    "sleutelbeendeel van de grote borstspier"
   ],
-  "acetabular labrum": [
-    "kraakbeenring heup"
+  "clavicular part of deltoid muscle": [
+    "voorste deel van de deltaspier"
   ],
-  "anterior cruciate ligament": [
-    "voorste kruisband"
+  "coccyx": [
+    "staartbeen"
   ],
-  "posterior cruciate ligament": [
-    "achterste kruisband"
+  "common iliac artery": [
+    "gemeenschappelijke bekkenslagader"
   ],
-  "achilles tendon": [
-    "achillespees"
+  "common iliac vein": [
+    "gemeenschappelijke bekkenader"
   ],
-  "urinary": [
-    "urinewegen"
-  ],
-  "visceral": [
-    "organen"
-  ],
-  "anterior cells of ethmoid bone": [
-    "voorste zeefbeencellen"
-  ],
-  "arytenoid cartilage": [
-    "bekerkraakbeen"
-  ],
-  "capitate bone": [
-    "kopbeen"
-  ],
-  "hamate bone": [
-    "haakbeen"
-  ],
-  "lunate bone": [
-    "maanbeen"
-  ],
-  "triquetrum bone": [
-    "driehoeksbeen"
-  ],
-  "pisiform bone": [
-    "erwtbeen"
-  ],
-  "scaphoid bone": [
-    "scheepvormig handwortelbeen"
-  ],
-  "trapezium bone": [
-    "groot veelhoekig handwortelbeen"
-  ],
-  "trapezoid bone": [
-    "klein veelhoekig handwortelbeen"
-  ],
-  "cricoid cartilage": [
-    "ringkraakbeen"
-  ],
-  "hyoid bone": [
-    "tongbeen"
-  ],
-  "frontal bone": [
-    "voorhoofdsbeen"
-  ],
-  "parietal bone": [
-    "wandbeen"
-  ],
-  "temporal bone": [
-    "slaapbeen"
-  ],
-  "occipital bone": [
-    "achterhoofdsbeen"
-  ],
-  "sphenoid bone": [
-    "wiggenbeen"
-  ],
-  "ethmoid bone": [
-    "zeefbeen"
-  ],
-  "nasal septal cartilage": [
-    "neustussenschotkraakbeen"
-  ],
-  "xiphoid process": [
-    "zwaardvormig uitsteeksel"
-  ],
-  "incus": [
-    "aambeeld"
-  ],
-  "malleus": [
-    "hamer"
-  ],
-  "stapes": [
-    "stijgbeugel"
-  ],
-  "vomer": [
-    "ploegschaarbeen"
-  ],
-  "nucleus pulposus": [
-    "geleiachtige tussenwervelschijfkern"
-  ],
-  "ligamenta flava": [
-    "gele banden van de wervelkolom"
-  ],
-  "medial meniscus": [
-    "binnenmeniscus"
-  ],
-  "lateral meniscus": [
-    "buitenmeniscus"
-  ],
-  "annular ligament of radius": [
-    "ringband van het spaakbeen"
-  ],
-  "glans penis": [
-    "eikel"
+  "coracobrachialis muscle": [
+    "ravenbekarmspier"
   ],
   "corpus cavernosum of penis": [
     "zwellichaam van de penis"
@@ -365,56 +200,248 @@
   "corpus spongiosum of penis": [
     "sponsachtig zwellichaam van de penis"
   ],
+  "costal cartilage": [
+    "ribkraakbeen"
+  ],
+  "cricoid cartilage": [
+    "ringkraakbeen"
+  ],
+  "deep femoral artery": [
+    "diepe dijbeenslagader"
+  ],
+  "deep femoral vein": [
+    "diepe dijbeenader"
+  ],
+  "deltoid muscle": [
+    "deltaspier"
+  ],
+  "descending colon": [
+    "dalende dikke darm"
+  ],
+  "diaphragm": [
+    "middenrif"
+  ],
+  "ductus deferens": [
+    "zaadleider"
+  ],
+  "duodenum": [
+    "twaalfvingerige darm"
+  ],
   "epididymis": [
     "bijbal"
   ],
-  "vermis of cerebellum": [
-    "worm van de kleine hersenen"
+  "epiglottis": [
+    "strotklepje"
   ],
-  "thalamus": [
-    "thalamus"
+  "ethmoid bone": [
+    "zeefbeen"
   ],
-  "hypothalamus": [
-    "hypothalamus"
+  "extensor digitorum": [
+    "vingerstrekker"
   ],
-  "rectus femoris muscle": [
-    "rechte dijspier"
+  "external abdominal oblique muscle": [
+    "buitenste schuine buikspier"
   ],
-  "soleus muscle": [
-    "scholspier"
+  "external carotid artery": [
+    "uitwendige halsslagader"
   ],
-  "sartorius muscle": [
-    "kleermakersspier"
+  "external iliac artery": [
+    "uitwendige bekkenslagader"
   ],
-  "glans clitoridis": [
-    "eikel van de clitoris"
+  "external iliac vein": [
+    "uitwendige bekkenader"
   ],
-  "superior parathyroid gland": [
-    "bovenste bijschildklier"
-  ],
-  "inferior parathyroid gland": [
-    "onderste bijschildklier"
-  ],
-  "vermis": [
-    "worm van de kleine hersenen"
-  ],
-  "linea alba": [
-    "witte buiklijn"
+  "facial nerve (vii)": [
+    "aangezichtszenuw"
   ],
   "fascia lata": [
     "dijbeenfascie"
   ],
-  "pronator quadratus": [
-    "vierkante pronatorspier"
+  "femoral artery": [
+    "dijbeenslagader"
   ],
-  "psoas major": [
-    "grote lendenspier"
+  "femur": [
+    "dijbeen"
   ],
-  "platysma": [
-    "oppervlakkige halsspier"
+  "fibula": [
+    "kuitbeen"
   ],
-  "supinator": [
-    "supinatorspier"
+  "fibular collateral ligament": [
+    "buitenband van de knie"
+  ],
+  "fourth ventricle": [
+    "vierde hersenventrikel"
+  ],
+  "frontal bone": [
+    "voorhoofdsbeen"
+  ],
+  "gallbladder": [
+    "galblaas"
+  ],
+  "gastrocnemius": [
+    "kuitspier"
+  ],
+  "glans clitoridis": [
+    "eikel van de clitoris"
+  ],
+  "glans penis": [
+    "eikel"
+  ],
+  "gluteus maximus muscle": [
+    "grote bilspier"
+  ],
+  "gluteus medius muscle": [
+    "middelste bilspier"
+  ],
+  "gluteus minimus muscle": [
+    "kleine bilspier"
+  ],
+  "hamate bone": [
+    "haakbeen"
+  ],
+  "hip bone": [
+    "heupbeen"
+  ],
+  "hippocampus": [
+    "hippocampus"
+  ],
+  "humerus": [
+    "opperarmbeen"
+  ],
+  "hyoid bone": [
+    "tongbeen"
+  ],
+  "hypothalamus": [
+    "hypothalamus"
+  ],
+  "incus": [
+    "aambeeld"
+  ],
+  "inferior lobe of left lung": [
+    "onderkwab van de linkerlong"
+  ],
+  "inferior lobe of right lung": [
+    "onderkwab van de rechterlong"
+  ],
+  "inferior parathyroid gland": [
+    "onderste bijschildklier"
+  ],
+  "inferior vena cava": [
+    "onderste holle ader"
+  ],
+  "intermediate bronchus": [
+    "tussenbronchus van de rechterlong"
+  ],
+  "internal abdominal oblique muscle": [
+    "binnenste schuine buikspier"
+  ],
+  "internal carotid artery": [
+    "inwendige halsslagader"
+  ],
+  "internal iliac artery": [
+    "inwendige bekkenslagader"
+  ],
+  "internal iliac vein": [
+    "inwendige bekkenader"
+  ],
+  "jejunum": [
+    "nuchtere darm"
+  ],
+  "kidney": [
+    "nier"
+  ],
+  "larynx": [
+    "strottenhoofd"
+  ],
+  "lateral meniscus": [
+    "buitenmeniscus"
+  ],
+  "lateral ventricle": [
+    "zijventrikel van de hersenen"
+  ],
+  "left atrium": [
+    "linkerboezem"
+  ],
+  "left common carotid artery": [
+    "linker halsslagader"
+  ],
+  "left coronary artery": [
+    "linker kransslagader"
+  ],
+  "left lobe of thymus": [
+    "linkerdeel van de thymus"
+  ],
+  "left lung": [
+    "linkerlong"
+  ],
+  "left main bronchus": [
+    "linker hoofdbronchus"
+  ],
+  "left pulmonary artery": [
+    "linker longslagader"
+  ],
+  "left renal artery": [
+    "linker nierslagader"
+  ],
+  "left renal vein": [
+    "linker nierader"
+  ],
+  "left ventricle": [
+    "linkerhartkamer"
+  ],
+  "levator palpebrae superioris": [
+    "heffer van het bovenooglid"
+  ],
+  "levator scapulae": [
+    "schouderbladheffer"
+  ],
+  "ligamenta flava": [
+    "gele banden van de wervelkolom"
+  ],
+  "linea alba": [
+    "witte buiklijn"
+  ],
+  "liver": [
+    "lever"
+  ],
+  "lunate bone": [
+    "maanbeen"
+  ],
+  "lung": [
+    "long"
+  ],
+  "malleus": [
+    "hamer"
+  ],
+  "mandible": [
+    "onderkaak"
+  ],
+  "manubrium of sternum": [
+    "borstbeenhandvat"
+  ],
+  "maxilla": [
+    "bovenkaak"
+  ],
+  "medial meniscus": [
+    "binnenmeniscus"
+  ],
+  "median nerve": [
+    "middelste armzenuw"
+  ],
+  "midbrain": [
+    "middenhersenen"
+  ],
+  "middle cerebral artery (m1-segment)": [
+    "middelste hersenslagader (eerste deel)"
+  ],
+  "middle lobe of right lung": [
+    "middenkwab van de rechterlong"
+  ],
+  "nasal septal cartilage": [
+    "neustussenschotkraakbeen"
+  ],
+  "nucleus pulposus": [
+    "geleiachtige tussenwervelschijfkern"
   ],
   "obturator externus": [
     "uitwendige afsluitspier"
@@ -422,28 +449,274 @@
   "obturator internus": [
     "inwendige afsluitspier"
   ],
+  "occipital bone": [
+    "achterhoofdsbeen"
+  ],
+  "oesophagus": [
+    "slokdarm"
+  ],
+  "optic chiasm": [
+    "kruising van de oogzenuwen"
+  ],
+  "optic nerve": [
+    "oogzenuw"
+  ],
+  "optic nerve (ii)": [
+    "oogzenuw"
+  ],
+  "palatine tonsil": [
+    "keelamandel"
+  ],
+  "pancreas": [
+    "alvleesklier"
+  ],
+  "parietal bone": [
+    "wandbeen"
+  ],
+  "patella": [
+    "knieschijf"
+  ],
+  "pectoralis minor muscle": [
+    "kleine borstspier"
+  ],
+  "pisiform bone": [
+    "erwtbeen"
+  ],
+  "platysma": [
+    "oppervlakkige halsspier"
+  ],
+  "posterior cerebral artery": [
+    "achterste hersenslagader"
+  ],
+  "posterior cruciate ligament": [
+    "achterste kruisband"
+  ],
+  "posterior horn of spinal cord": [
+    "achterhoorn van het ruggenmerg"
+  ],
+  "posterior longitudinal ligament": [
+    "achterste lengteband van de wervelkolom"
+  ],
+  "posterior tibial artery": [
+    "achterste scheenbeenslagader"
+  ],
+  "pronator quadratus": [
+    "vierkante pronatorspier"
+  ],
+  "prostate": [
+    "prostaat"
+  ],
+  "psoas major": [
+    "grote lendenspier"
+  ],
+  "radial nerve": [
+    "spaakbeenzenuw"
+  ],
+  "radius": [
+    "spaakbeen"
+  ],
+  "rectus abdominis muscle": [
+    "rechte buikspier"
+  ],
+  "rectus femoris": [
+    "rechte dijspier"
+  ],
+  "rectus femoris muscle": [
+    "rechte dijspier"
+  ],
+  "rib": [
+    "rib"
+  ],
+  "right atrium": [
+    "rechterboezem"
+  ],
+  "right common carotid artery": [
+    "rechter halsslagader"
+  ],
+  "right coronary artery": [
+    "rechter kransslagader"
+  ],
+  "right lobe of thymus": [
+    "rechterdeel van de thymus"
+  ],
+  "right lung": [
+    "rechterlong"
+  ],
+  "right main bronchus": [
+    "rechter hoofdbronchus"
+  ],
+  "right pulmonary artery": [
+    "rechter longslagader"
+  ],
+  "right renal artery": [
+    "rechter nierslagader"
+  ],
+  "right renal vein": [
+    "rechter nierader"
+  ],
+  "right ventricle": [
+    "rechterhartkamer"
+  ],
+  "sacrum": [
+    "heiligbeen"
+  ],
+  "sartorius muscle": [
+    "kleermakersspier"
+  ],
+  "scaphoid bone": [
+    "scheepvormig handwortelbeen"
+  ],
+  "scapula": [
+    "schouderblad"
+  ],
+  "sciatic nerve": [
+    "heupzenuw"
+  ],
+  "sigmoid colon": [
+    "sigmoïd"
+  ],
+  "soleus muscle": [
+    "scholspier"
+  ],
+  "sphenoid bone": [
+    "wiggenbeen"
+  ],
+  "spinal cord": [
+    "ruggenmerg"
+  ],
+  "spleen": [
+    "milt"
+  ],
+  "stapes": [
+    "stijgbeugel"
+  ],
+  "sternocleidomastoid muscle": [
+    "grote halsspier"
+  ],
+  "sternum": [
+    "borstbeen"
+  ],
+  "stomach": [
+    "maag"
+  ],
+  "superior lobe of left lung": [
+    "bovenkwab van de linkerlong"
+  ],
+  "superior lobe of right lung": [
+    "bovenkwab van de rechterlong"
+  ],
+  "superior parathyroid gland": [
+    "bovenste bijschildklier"
+  ],
+  "superior vena cava": [
+    "bovenste holle ader"
+  ],
+  "supinator": [
+    "supinatorspier"
+  ],
+  "temporal bone": [
+    "slaapbeen"
+  ],
   "tensor fasciae latae": [
     "spanner van de dijbeenfascie"
   ],
-  "levator scapulae": [
-    "schouderbladheffer"
+  "testis": [
+    "teelbal"
   ],
-  "adductor longus": [
-    "lange aanvoerderspier"
+  "thalamus": [
+    "thalamus"
   ],
-  "adductor brevis": [
-    "korte aanvoerderspier"
+  "third ventricle": [
+    "derde hersenventrikel"
   ],
-  "adductor magnus": [
-    "grote aanvoerderspier"
+  "thoracic aorta": [
+    "borstaorta"
   ],
-  "abductor hallucis": [
-    "afvoerder van de grote teen"
+  "thyroid cartilage": [
+    "schildkraakbeen"
   ],
-  "levator palpebrae superioris": [
-    "heffer van het bovenooglid"
+  "thyroid gland": [
+    "schildklier"
   ],
-  "extensor digitorum": [
-    "vingerstrekker"
+  "tibia": [
+    "scheenbeen"
+  ],
+  "trachea": [
+    "luchtpijp"
+  ],
+  "transverse colon": [
+    "dwarslopende dikke darm"
+  ],
+  "transversus abdominis muscle": [
+    "dwarse buikspier"
+  ],
+  "trapezium bone": [
+    "groot veelhoekig handwortelbeen"
+  ],
+  "trapezoid bone": [
+    "klein veelhoekig handwortelbeen"
+  ],
+  "triceps brachii": [
+    "triceps bovenarm"
+  ],
+  "triquetrum bone": [
+    "driehoeksbeen"
+  ],
+  "ulna": [
+    "ellepijp"
+  ],
+  "ulnar nerve": [
+    "elleboogzenuw"
+  ],
+  "ureter": [
+    "urineleider"
+  ],
+  "urethra": [
+    "urinebuis"
+  ],
+  "urinary": [
+    "urinewegen"
+  ],
+  "urinary bladder": [
+    "urineblaas"
+  ],
+  "vagus nerve (x)": [
+    "zwervende zenuw"
+  ],
+  "vastus lateralis": [
+    "buitenste brede dijspier"
+  ],
+  "vastus lateralis muscle": [
+    "buitenste brede dijspier"
+  ],
+  "vastus medialis": [
+    "binnenste brede dijspier"
+  ],
+  "vastus medialis muscle": [
+    "binnenste brede dijspier"
+  ],
+  "vermiform appendix": [
+    "wormvormig aanhangsel van de blindedarm"
+  ],
+  "vermis": [
+    "worm van de kleine hersenen"
+  ],
+  "vermis of cerebellum": [
+    "worm van de kleine hersenen"
+  ],
+  "vertebra": [
+    "wervel"
+  ],
+  "visceral": [
+    "organen"
+  ],
+  "vomer": [
+    "ploegschaarbeen"
+  ],
+  "white matter": [
+    "witte stof"
+  ],
+  "xiphoid process": [
+    "zwaardvormig uitsteeksel"
   ]
 }
