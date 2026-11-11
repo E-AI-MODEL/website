@@ -213,21 +213,71 @@ function drawScene(m){
   drawParticles(m);
   updateLabels();
 }
+const labelConnectors=new Map();
 function updateLabels(){
   const w=canvas.clientWidth,h=canvas.clientHeight;
-  const offsets={
-    ra:[-84,-45],rv:[-88,38],la:[85,-40],lv:[91,45],ao:[62,-27],pa:[-74,-24]
-  };
+  if(w<1||h<1)return;
+  const svg=$('labelLeaders');
+  svg.setAttribute('viewBox','0 0 '+w+' '+h);
+  const groups={left:[],right:[]};
+  const leftIds=new Set(['ra','rv','pa']);
   for(const el of $('labels').children){
-    const part=ANATOMY_PARTS[el.dataset.part];
+    const id=el.dataset.part,part=ANATOMY_PARTS[id];
     if(!part)continue;
-    const p=project(part.pos,pv,w,h),off=offsets[el.dataset.part]||[0,0];
-    el.style.left=clamp(p[0]+off[0],45,w-45)+'px';
-    el.style.top=clamp(p[1]+off[1],30,h-35)+'px';
-    el.hidden=!state.showLabels||p[2]<=0;
-    el.classList.toggle('active',state.selected===el.dataset.part);
+    const p=project(part.pos,pv,w,h);
+    const visible=state.showLabels&&p[2]>0&&p[0]>-25&&p[0]<w+25;
+    el.hidden=!visible;
+    let connector=labelConnectors.get(id);
+    if(!connector){
+      const ns='http://www.w3.org/2000/svg';
+      const path=document.createElementNS(ns,'path');
+      const dot=document.createElementNS(ns,'circle');
+      path.classList.add('leader-path');
+      dot.classList.add('leader-dot');
+      svg.append(path,dot);
+      connector={path,dot};
+      labelConnectors.set(id,connector);
+    }
+    connector.path.hidden=connector.dot.hidden=!visible;
+    if(!visible)continue;
+    const side=leftIds.has(id)?'left':'right';
+    groups[side].push({el,id,p,connector,wanted:clamp(p[1],54,h-68)});
+  }
+  for(const side of ['left','right']){
+    const entries=groups[side].sort((a,b)=>a.wanted-b.wanted);
+    let y=51;
+    for(const entry of entries){
+      entry.y=Math.max(y,entry.wanted);
+      y=entry.y+38;
+    }
+    if(entries.length&&y-38>h-62){
+      let difference=y-38-(h-62);
+      for(let i=entries.length-1;i>=0;i--){
+        entries[i].y=Math.max(48,entries[i].y-difference);
+        difference=Math.max(0,(i?entries[i-1].y+38-entries[i].y:0));
+      }
+    }
+    for(const entry of entries){
+      const {el,id,p,connector}=entry;
+      el.style.left=(side==='left'?13:w-13)+'px';
+      el.style.top=entry.y+'px';
+      el.style.transform=side==='left'?'translateY(-50%)':'translate(-100%,-50%)';
+      el.classList.toggle('active',state.selected===id);
+      const width=el.offsetWidth;
+      const targetX=side==='left'?13+width+7:w-13-width-7;
+      const midX=p[0]+(targetX-p[0])*.57;
+      connector.path.setAttribute('d','M '+p[0].toFixed(1)+' '+p[1].toFixed(1)+
+        ' L '+midX.toFixed(1)+' '+p[1].toFixed(1)+
+        ' L '+targetX.toFixed(1)+' '+entry.y.toFixed(1));
+      connector.dot.setAttribute('cx',p[0].toFixed(1));
+      connector.dot.setAttribute('cy',p[1].toFixed(1));
+      connector.dot.setAttribute('r',state.selected===id?'3.2':'2.2');
+      connector.path.classList.toggle('active',state.selected===id);
+      connector.dot.classList.toggle('active',state.selected===id);
+    }
   }
 }
+
 function selectedPartAt(x,y){
   let best=null,score=55;
   for(const [id,part] of Object.entries(ANATOMY_PARTS)){
@@ -332,6 +382,7 @@ $('sectionToggle').addEventListener('click',()=>{
 function syncLabelsToggle(){
   // Verberg de volledige labellaag direct, ook vóór het eerste animatieframe.
   $('labels').hidden=!state.showLabels;
+  $('labelLeaders').hidden=!state.showLabels;
   $('labelsToggle').textContent=state.showLabels?'Namen verbergen':'Namen tonen';
   $('labelsToggle').setAttribute('aria-pressed',String(state.showLabels));
 }
