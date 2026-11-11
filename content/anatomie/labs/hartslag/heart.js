@@ -9,7 +9,7 @@ const lerp=(a,b,t)=>a+(b-a)*t;
 const ease=t=>{t=clamp(t,0,1);return t*t*(3-2*t);};
 const span=(t,a,b)=>ease((t-a)/(b-a));
 const fmt=(v,n=0)=>Number(v).toLocaleString('nl-NL',{minimumFractionDigits:n,maximumFractionDigits:n});
-const state={cutaway:false,t:0,playing:false,speed:1,yaw:-.20,pitch:.08,zoom:5.95,selected:null,showLabels:!matchMedia('(max-width: 790px)').matches,showFlow:true,tab:'phase',rate:75,last:0,drag:null,study:{guess:null,stage:'choose',stopAt:null},focusSide:'left'};
+const state={cutaway:false,t:0,playing:false,speed:1,yaw:-.20,pitch:.08,zoom:5.95,selected:null,showLabels:!matchMedia('(max-width: 790px)').matches,showFlow:true,tab:'phase',rate:75,last:0,drag:null,study:{guess:null,stage:'choose',stopAt:null},focusSide:'left',showDetails:false};
 const m4=()=>{
   const o=new Float32Array(16);o[0]=o[5]=o[10]=o[15]=1;return o;
 };
@@ -258,12 +258,12 @@ function drawScene(m){
   // Kransvaten en de grote hartader liggen op het epicard.
   if(!atlasReady)for(const vessel of meshes.coronary)drawMesh(vessel.mesh,m4(),state.selected===vessel.id?[.98,.75,.52]:vessel.color,1);
   if(state.cutaway){
-    for(const papillary of meshes.papillary){
+    if(!atlasReady||state.showDetails)for(const papillary of meshes.papillary){
       if(atlasReady&&!papillary.id.includes(state.focusSide==='left'?'lv':'rv'))continue;
       drawMesh(papillary.mesh,m4(),state.selected===papillary.id?[.98,.71,.54]:papillary.color,1);
     }
     if(!atlasReady)drawMesh(meshes.septum,m4(),[.91,.59,.52],1);
-    for(const chord of meshes.cords){
+    if(!atlasReady||state.showDetails)for(const chord of meshes.cords){
       if(atlasReady&&chord.ventricle!==(state.focusSide==='left'?'lv':'rv'))continue;
       drawMesh(chord.mesh,m4(),[.96,.85,.70],1);
     }
@@ -278,7 +278,7 @@ function drawScene(m){
       const leaves=leafletGeometry(valve,aperture);
       gl.bindBuffer(gl.ARRAY_BUFFER,mesh.vb);gl.bufferSubData(gl.ARRAY_BUFFER,0,leaves.v);
       gl.bindBuffer(gl.ARRAY_BUFFER,mesh.nb);gl.bufferSubData(gl.ARRAY_BUFFER,0,leaves.n);
-      drawMesh(meshes.valves[valve.id].rim,modelMatrix(valve.pos,[1,1,1]),[.96,.75,.59],1);
+      if(!atlasReady||state.showDetails)drawMesh(meshes.valves[valve.id].rim,modelMatrix(valve.pos,[1,1,1]),[.96,.75,.59],1);
       drawMesh(mesh,modelMatrix(valve.pos,[1,1,1]),active?[.91,.90,.71]:[.96,.69,.53],1);
     }
   }
@@ -509,6 +509,8 @@ function syncViewControls(){
   $('flowToggle').hidden=!state.cutaway;
   $('flowLegend').hidden=!state.cutaway||!state.showFlow;
   $('heartSideControls').hidden=!state.cutaway;
+  $('detailToggle').textContent=state.showDetails?'Klepdetails verbergen':'Klepdetails tonen';
+  $('detailToggle').setAttribute('aria-pressed',String(state.showDetails));
   document.querySelectorAll('[data-heart-side]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.heartSide===state.focusSide)));
   $('modelCaption').textContent=state.cutaway?
     '3D · Bewegende doorsnede · Schematisch':
@@ -518,6 +520,10 @@ $('sectionToggle').addEventListener('click',()=>{
   state.cutaway=!state.cutaway;
   syncViewControls();
   positionInfo(null);
+});
+$('detailToggle').addEventListener('click',()=>{
+  state.showDetails=!state.showDetails;
+  syncViewControls();
 });
 document.querySelectorAll('[data-heart-side]').forEach(button=>button.addEventListener('click',()=>{
   state.focusSide=button.dataset.heartSide;
@@ -636,7 +642,7 @@ canvas.addEventListener('touchend',()=>{state.pinch=null;});
 let resize=new ResizeObserver(()=>{if(gl)render();});resize.observe(stage);
 setupModel();syncPlay();syncLabelsToggle();syncViewControls();syncStudy();loadAtlasModels();
 window.__EAI_HEART_LAB__={
-  get state(){return {t:state.t,playing:state.playing,speed:state.speed,yaw:state.yaw,zoom:state.zoom,selected:state.selected,cutaway:state.cutaway,showLabels:state.showLabels,focusSide:state.focusSide,atlasReady,atlasError,atlasPartCount:atlasParts.length,studyStage:state.study.stage};},
+  get state(){return {t:state.t,playing:state.playing,speed:state.speed,yaw:state.yaw,zoom:state.zoom,selected:state.selected,cutaway:state.cutaway,showLabels:state.showLabels,focusSide:state.focusSide,showDetails:state.showDetails,atlasReady,atlasError,atlasPartCount:atlasParts.length,studyStage:state.study.stage};},
   get metrics(){return mechanics(state.t);},
   setTime:t=>setTime(t,true),pause:()=>{state.playing=false;syncPlay();},
   get rendererReady(){return Boolean(gl)&&(state.cutaway||atlasReady);}
