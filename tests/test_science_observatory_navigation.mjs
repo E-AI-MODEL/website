@@ -13,7 +13,7 @@ test('Science Observatory toont vijf verschillende onderzoeksruimtes', () => {
   assert.match(html, /data-so-filter="nf"/);
   assert.match(html, /data-so-filter="wa"/);
   assert.match(html, /data-so-filter="wb"/);
-  assert.match(html, /Niet alle modellen/);
+  assert.match(html, /niet voor alle modellen/);
 });
 
 test('Natuurkunde is een herkenbare zelfstandige proefversie', () => {
