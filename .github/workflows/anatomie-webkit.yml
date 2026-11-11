@@ -5,6 +5,8 @@ on:
     paths:
       - 'scripts/build_anatomie.py'
       - 'scripts/anatomie_refine.py'
+      - 'scripts/audit_anatomie_content.py'
+      - 'tests/test_anatomie_content_audit.py'
       - 'scripts/anatomie_shell.py'
       - 'scripts/test_anatomie_webkit.mjs'
       - 'tests/test_anatomie_picking.mjs'
@@ -15,6 +17,8 @@ on:
     paths:
       - 'scripts/build_anatomie.py'
       - 'scripts/anatomie_refine.py'
+      - 'scripts/audit_anatomie_content.py'
+      - 'tests/test_anatomie_content_audit.py'
       - 'scripts/anatomie_shell.py'
       - 'scripts/test_anatomie_webkit.mjs'
       - 'tests/test_anatomie_picking.mjs'
@@ -34,6 +38,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Controleer anatomische inhoud en model-ID's
+        run: python -m unittest discover -s tests -p 'test_anatomie_content_audit.py' -v
+      - name: Schrijf volledige anatomie-audit
+        run: python scripts/audit_anatomie_content.py --out audit-anatomie
       - name: Controleer selectie van transparante fascia
         run: node --test tests/test_anatomie_picking.mjs
       - run: python scripts/build_anatomie.py --out site-build/tools/anatomie
@@ -46,4 +54,6 @@ jobs:
         if: always()
         with:
           name: anatomy-webkit-screenshot
-          path: test-results/anatomie-*.png
+          path: |
+            test-results/anatomie-*.png
+            audit-anatomie/*

@@ -96,7 +96,8 @@ const ITEMS = {
   "name": "Voorste kruisband",
   "function": "Beperkt het naar voren schuiven van het scheenbeen ten opzichte van het dijbeen en helpt de draaistabiliteit van de knie bewaken.",
   "location": "Binnen het kniegewricht, van het voorste intercondylaire gebied van de tibia naar de binnenzijde van de laterale femurcondyl.",
-  "mechanism": "Komt onder spanning bij bepaalde schuif- en draaibelastingen; werkt samen met achterste kruisband, kapsel en omliggende spieren."
+  "mechanism": "Komt onder spanning bij bepaalde schuif- en draaibelastingen; werkt samen met achterste kruisband, kapsel en omliggende spieren.",
+  "question": "Bekijk de richting van de band. Welke beweging van het scheenbeen helpt hij tegen te houden?"
 },
   'posterior cruciate ligament': {
   "name": "Achterste kruisband",
@@ -182,6 +183,57 @@ const ITEMS = {
   "location": "Tussen het sternum en het acromion van de scapula.",
   "mechanism": "Vormt het sternoclaviculaire en acromioclaviculaire gewricht; aanhechting voor onder meer m. sternocleidomastoideus en m. pectoralis major."
 },
+
+  'articular capsule of knee joint': {
+    name: 'Gewrichtskapsel van de knie',
+    function: 'Het gewrichtskapsel omsluit het kniegewricht. Het helpt het gewricht bij elkaar te houden.',
+    location: 'Rond het kniegewricht, tussen het dijbeen en het scheenbeen.',
+    mechanism: 'De binnenkant maakt gewrichtsvloeistof. Die zorgt ervoor dat de gewrichtsvlakken soepel langs elkaar bewegen.',
+    question: 'Waarom is een soepel gewrichtskapsel handig bij het buigen van je knie?'
+  },
+  'articular capsule of glenohumeral joint': {
+    name: 'Gewrichtskapsel van de schouder',
+    function: 'Het gewrichtskapsel omsluit het schoudergewricht en helpt de gewrichtskop op zijn plaats te houden.',
+    location: 'Rond de kop van het opperarmbeen en de gewrichtskom van het schouderblad.',
+    mechanism: 'Het kapsel is ruim en laat veel bewegingsvrijheid toe. De spieren rondom de schouder helpen het gewricht stabiel te houden.',
+    question: 'Welke bewegingen kan de schouder maken die bij de knie niet mogelijk zijn?'
+  },
+  'articular capsules of metatarsophalangeal joints': {
+    name: 'Gewrichtskapsels van de teengewrichten',
+    function: 'Deze kapsels omsluiten de gewrichten tussen de middenvoetsbeentjes en de tenen.',
+    location: 'Aan de basis van de tenen.',
+    mechanism: 'Ze helpen de gewrichten bij elkaar te houden en laten de tenen buigen en strekken.',
+    question: 'Bekijk de ligging. Waarom moeten je tenen kunnen buigen bij het lopen?'
+  },
+  'aortic arch': {
+    name: 'Aortaboog',
+    function: 'De aortaboog vervoert zuurstofrijk bloed vanuit het hart naar de rest van het lichaam.',
+    location: 'Boven het hart, tussen de opstijgende en de dalende aorta.',
+    mechanism: 'Vanuit de boog vertrekken grote slagaders naar onder meer het hoofd en de armen.',
+    question: 'Volg de aortaboog. Welke delen van het lichaam krijgen via de aftakkingen bloed?'
+  },
+  'left ventricle': {
+    name: 'Linkerhartkamer',
+    function: 'De linkerhartkamer pompt zuurstofrijk bloed via de aorta naar het lichaam.',
+    location: 'Aan de linkerzijde en onderkant van het hart.',
+    mechanism: 'De spierwand trekt krachtig samen en duwt het bloed door de aortaklep.',
+    question: 'Waarom is de spierwand van de linkerkamer dikker dan die van de rechterkamer?'
+  },
+  'right ventricle': {
+    name: 'Rechterhartkamer',
+    function: 'De rechterhartkamer pompt zuurstofarm bloed naar de longen.',
+    location: 'Voornamelijk aan de voorzijde van het hart.',
+    mechanism: 'Bij samentrekken stroomt het bloed via de longslagader richting de longen.',
+    question: 'Volg de uitgaande slagader. Waar gaat het bloed vanuit de rechterkamer naartoe?'
+  },
+  'optic nerve (ii)': {
+    name: 'Oogzenuw',
+    function: 'De oogzenuw geeft signalen van het netvlies door aan de hersenen.',
+    location: 'Vanuit de achterkant van het oog naar de kruising van de oogzenuwen.',
+    mechanism: 'Zenuwvezels vervoeren elektrische signalen. De hersenen verwerken de informatie tot wat je ziet.',
+    question: 'Volg de oogzenuw vanaf het oog. Waarom is deze verbinding nodig om te kunnen zien?'
+  },
+
   'hippocampus': {
   "name": "Hippocampus",
   "function": "Speelt een grote rol bij het vormen en consolideren van nieuwe episodische herinneringen en bij ruimtelijke navigatie.",
