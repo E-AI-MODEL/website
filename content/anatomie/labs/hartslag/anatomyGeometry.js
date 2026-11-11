@@ -84,6 +84,9 @@ export const AURICLES=[
 ];
 export const ANATOMY_PARTS={
   ...Object.fromEntries(Object.entries(CHAMBERS).map(([id,v])=>[id,{label:v.label,pos:v.pos,type:'chamber'}])),
+  ...Object.fromEntries(CORONARY_DETAILS.map(v=>[v.id,{label:v.label,pos:v.path[Math.floor(v.path.length/2)],type:v.kind}])),
+  ...Object.fromEntries(MUSCLE_DETAILS.map((v,i)=>[v.id,{label:i<2?'Papillairspier rechterkamer':'Papillairspier linkerkamer',pos:v.path[1],type:'papillary'}])),
+  ...Object.fromEntries(AURICLES.map((v,i)=>[v.id,{label:i===0?'Rechter hartoor':'Linker hartoor',pos:v.path[2],type:'auricle'}])),
   ao:{label:'Aorta',pos:[.42,1.60,-.29],type:'vessel'},
   pa:{label:'Longslagader',pos:[-.84,1.10,.52],type:'vessel'},
   tricuspid:{label:'Tricuspidalisklep',pos:VALVES[0].pos,type:'valve'},
