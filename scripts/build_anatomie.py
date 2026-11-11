@@ -565,6 +565,19 @@ def build(destination: Path) -> None:
             if not (lab_source / asset).is_file():
                 raise FileNotFoundError(f"Hartslaglab bronbestand ontbreekt: {asset}")
         shutil.copytree(lab_source, destination / "labs" / "hartslag")
+        # Gebruik de al geïnstalleerde Draco-decoder van de gepinde atlasbuild.
+        # Exporteer afzonderlijke echte hartonderdelen in het bestaande WebGL-formaat.
+        export_script = Path(__file__).resolve().parent / "extract_hart_atlas.mjs"
+        shutil.copyfile(export_script, source / "tools" / "eai-extract-hart.mjs")
+        command(
+            "node", "tools/eai-extract-hart.mjs",
+            str(source / "public" / "models" / "cardiovascular.glb"),
+            str(destination.resolve() / "labs" / "hartslag"),
+            cwd=source,
+        )
+        for generated in ("atlas-heart.json", "atlas-heart.bin"):
+            if not (destination / "labs" / "hartslag" / generated).is_file():
+                raise RuntimeError(f"Hartmesh ontbreekt na export: {generated}")
         shutil.copyfile(source / "LICENSE", destination / "LICENSE.txt")
         shutil.copyfile(source / "NOTICE", destination / "NOTICE.txt")
         (destination / "UPSTREAM_COMMIT.txt").write_text(
