@@ -52,6 +52,15 @@
               <button type="button" class="mini-control" id="resetCamera">Startaanzicht</button>
             </div>
           </div>
+          <div class="discovery-strip" id="discovery">
+            <div class="discovery-header"><span>ONDERZOEKSVRAAG</span><strong>Welke kleppen sluiten als de kamers beginnen samen te trekken?</strong></div>
+            <div class="discovery-choices" role="group" aria-label="Voorspel welke kleppen als eerste sluiten">
+              <button type="button" data-guess="av" aria-pressed="false">AV-kleppen</button>
+              <button type="button" data-guess="artery" aria-pressed="false">Slagaderkleppen</button>
+              <button type="button" data-guess="together" aria-pressed="false">Alle tegelijk</button>
+            </div>
+            <div class="discovery-result"><p id="discoveryFeedback" aria-live="polite">Kies eerst wat je verwacht. Bekijk daarna wat er echt gebeurt.</p><button type="button" id="discoveryAction" disabled>Bekijk de beweging</button></div>
+          </div>
           <div class="stage" id="stage">
             <canvas id="heartCanvas" aria-label="Bestuurbaar driedimensionaal hartmodel met een anatomische buitenkant en een bewegende doorsnede. Sleep om te draaien en knijp om te zoomen.">Je browser heeft ondersteuning voor WebGL nodig.</canvas>
             <div class="stage-wash" aria-hidden="true"></div>
@@ -72,15 +81,6 @@
           <div class="trace-strip" aria-label="Druk en volume volgen de hartbeweging">
             <div class="trace-head"><span>DRUK <i class="trace-key pressure"></i><b id="miniPressure">5 mmHg</b></span><span>VOLUME <i class="trace-key volume"></i><b id="miniVolume">60 ml</b></span><span class="trace-time" id="miniTraceTime">0,00 s</span></div>
             <canvas id="miniTrace" aria-label="Live grafiek van de linkerkamerdruk en het kamervolume, met dezelfde tijd als het hart"></canvas>
-          </div>
-          <div class="discovery-strip" id="discovery">
-            <div class="discovery-header"><span>ONDERZOEKSVRAAG</span><strong>Welke kleppen sluiten als de kamers beginnen samen te trekken?</strong></div>
-            <div class="discovery-choices" role="group" aria-label="Voorspel welke kleppen als eerste sluiten">
-              <button type="button" data-guess="av" aria-pressed="false">AV-kleppen</button>
-              <button type="button" data-guess="artery" aria-pressed="false">Slagaderkleppen</button>
-              <button type="button" data-guess="together" aria-pressed="false">Alle tegelijk</button>
-            </div>
-            <div class="discovery-result"><p id="discoveryFeedback" aria-live="polite">Kies eerst wat je verwacht. Bekijk daarna wat er echt gebeurt.</p><button type="button" id="discoveryAction" disabled>Bekijk de beweging</button></div>
           </div>
           <div class="transport">
             <button class="play" type="button" id="play" aria-label="Start de hartslag">Start</button>
