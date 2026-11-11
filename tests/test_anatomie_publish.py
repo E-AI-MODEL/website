@@ -62,7 +62,7 @@ class AnatomyPublishTests(unittest.TestCase):
         self.assertIn('id="heartCanvas"', source)
         self.assertIn('src="./heart.js"', source)
         self.assertIn('href="./heart.css"', source)
-        self.assertIn("Opengewerkte hartkamers", source)
+        self.assertIn("3D · Anatomische doorsnede", source)
         for name in ("heart.js", "heart.css", "cycle.js", "anatomyGeometry.js"):
             asset = lab / name
             self.assertTrue(asset.is_file(), f"Hartslaglab mist {name}")
