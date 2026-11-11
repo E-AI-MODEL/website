@@ -154,7 +154,7 @@ export function tubeGeometry(path,radius=.10,segments=14){
   for(let i=0;i<points.length-1;i++)for(let j=0;j<segments;j++){
     const A=ring(i,j),B=ring(i+1,j),C=ring(i+1,j+1),D=ring(i,j+1);
     triangle(out,A[0],B[0],C[0],A[1],B[1],C[1]);
-    triangle(out,A,C[0],D[0],A[1],C[1],D[1]);
+    triangle(out,A[0],C[0],D[0],A[1],C[1],D[1]);
   }
   return result(out);
 }
