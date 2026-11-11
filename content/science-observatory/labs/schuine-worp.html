@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#07121d">
+<title>Schuine worp | Science Observatory</title>
+<meta name="description" content="Gooi een bal, verplaats het doel en onderzoek hoek, snelheid en zwaartekracht in één werkruimte.">
+<style>
+:root{color-scheme:dark;--bg:#07121d;--panel:#0b1b28;--border:#264150;--line:#1b3544;--ink:#e9f5f5;--muted:#94aebc;--teal:#90edda;--gold:#edc091}
+*{box-sizing:border-box}html,body{height:100%;margin:0;overflow:hidden}body{background:var(--bg);color:var(--ink);font:13px/1.45 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,input{font:inherit}button{cursor:pointer;color:inherit}button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid var(--teal);outline-offset:3px}button:disabled{opacity:.45;cursor:default}
+a{color:inherit;text-decoration:none}
+.shell{height:100dvh;display:grid;grid-template-rows:57px minmax(0,1fr) 83px;overflow:hidden}
+.top{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);padding:0 clamp(15px,2.3vw,34px);gap:12px;background:#081723}
+.brand{display:flex;align-items:center;gap:12px;min-width:0}.mark{width:29px;height:29px;border:1px solid #347d7f;border-radius:8px;display:grid;place-items:center;color:var(--teal)}
+.mark svg{width:21px;height:21px}.brand-copy{display:flex;flex-direction:column;min-width:0}.overline{color:#7fa5b2;font-size:9px;letter-spacing:.115em;font-weight:650}.brand h1{font-size:15px;line-height:1.3;margin:1px 0 0;font-weight:640;letter-spacing:-.025em}
+.top-right{display:flex;align-items:center;gap:10px;flex-shrink:0}.meta{color:#789ba8;font-size:11px}.ghost{border:1px solid #3a5a67;border-radius:7px;background:#0e2330;padding:8px 12px;font-size:11px;white-space:nowrap}
+.ghost:hover,.small-action:hover{border-color:#7cbbba;background:#14303a}
+.work{display:grid;grid-template-columns:minmax(0,1fr) minmax(242px,285px);min-height:0;overflow:hidden}
+.stage{position:relative;min-height:0;overflow:hidden;background:radial-gradient(ellipse at 46% 40%,#122b3a 0%,#081624 65%,#07111e 100%)}
+.stage canvas{display:block;width:100%;height:100%;touch-action:none;cursor:crosshair}
+.stage-head{position:absolute;top:14px;left:17px;right:17px;display:flex;justify-content:space-between;align-items:flex-start;gap:8px;pointer-events:none}
+.stage-head .eyebrow{font-size:9px;color:#83b0b9;font-weight:670;letter-spacing:.14em}.challenge{font-weight:600;font-size:15px;letter-spacing:-.03em;margin:3px 0;max-width:330px}
+.stage-head .caption{font-size:11px;color:#8cadbc;max-width:400px}
+.scene-tools{display:flex;align-items:center;gap:6px;pointer-events:auto}.seg{display:flex;border:1px solid #325362;border-radius:8px;padding:3px;background:#0b1b28df;backdrop-filter:blur(10px)}
+.seg button{background:transparent;border:0;border-radius:5px;padding:6px 11px;font-size:10px;color:#a2bdc8}
+.seg button[aria-pressed=true]{background:#20404a;color:#e6fff9}
+.view-action{background:#0b1b28e0;border:1px solid #325362;border-radius:7px;padding:9px;font-size:10px;white-space:nowrap}
+.stage-foot{position:absolute;left:16px;right:16px;bottom:14px;display:flex;justify-content:space-between;align-items:center;gap:8px;pointer-events:none}
+.stage-foot span{display:inline-flex;align-items:center;gap:7px;padding:6px 9px;background:#071521cc;border:1px solid #284553;border-radius:6px;font-size:10px;color:#9dbaca;max-width:100%}
+.dot{width:6px;height:6px;display:inline-block;border-radius:50%;background:var(--teal);flex-shrink:0}
+.stage-legend{display:flex;gap:10px;color:#849dad;font-size:10px}
+.legend-line{width:14px;height:1px;background:var(--gold);display:inline-block;vertical-align:middle;margin-right:4px}
+.panel{min-height:0;display:flex;flex-direction:column;border-left:1px solid #294353;background:#091923;padding:18px 16px 12px;gap:13px}
+.panel-head{display:flex;align-items:center;justify-content:space-between;gap:10px}.panel-head strong{font-size:12px;font-weight:650}.panel-head span{font-size:9px;color:#7fa2b0}
+.setting{display:flex;flex-direction:column;gap:8px;padding-bottom:12px;border-bottom:1px solid #1e3947}
+.setting-top{display:flex;justify-content:space-between;gap:8px;align-items:baseline}.setting-top label{font-size:12px;color:#b9cfd7}.number{font-size:15px;font-weight:650;letter-spacing:-.015em;color:#e9fff9;font-variant-numeric:tabular-nums}
+.control-line{display:grid;grid-template-columns:28px minmax(0,1fr) 28px;align-items:center;gap:6px}
+.small-action{width:28px;height:29px;display:grid;place-items:center;border:1px solid #385665;background:#0d2531;border-radius:5px;color:#b9dcd7;font-size:17px}
+input[type=range]{width:100%;margin:0;accent-color:#84e3d2;cursor:pointer;touch-action:pan-x;height:25px}
+.scene-preset{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.scene-preset button{border:1px solid #385463;border-radius:6px;background:#0c2230;padding:9px 4px;color:#94b5bd;font-size:11px}
+.scene-preset button[aria-pressed=true]{background:#153a40;border-color:#75cfbe;color:#d1fff4}
+.subnote{font-size:10px;color:#819dac}.options{display:flex;align-items:center;justify-content:space-between;gap:9px;padding-bottom:1px}
+.options .subnote{margin:0}.pill{border:1px solid #375464;border-radius:6px;padding:6px 8px;background:transparent;font-size:10px;color:#aac5cf}
+.pill[aria-pressed=true]{border-color:#73bdae;color:#c7f5e9}
+.actions{display:grid;grid-template-columns:minmax(0,1fr) 81px;gap:7px}.fire{background:#91e8d6;color:#092026;border:1px solid #91e8d6;font-size:13px;font-weight:730;border-radius:7px;min-height:45px}
+.fire:hover{background:#b6ffee}.reset{border:1px solid #42606e;border-radius:7px;background:transparent;font-size:11px}
+.status{min-height:43px;display:flex;align-items:center;color:#b1ced4;font-size:11px;line-height:1.4}
+.history{margin-top:auto;min-height:0;border-top:1px solid #21404f;padding-top:11px}
+.history-head{display:flex;justify-content:space-between;align-items:center;color:#98bbc6;font-size:10px}.history-head button{font-size:10px;border:0;background:none;color:#8cb6b9;padding:3px}
+.history-items{display:flex;flex-wrap:wrap;gap:5px;padding-top:8px}.history-items button{border:1px solid #385765;background:#0b2531;border-radius:5px;padding:5px 8px;font-size:10px;color:#bfd8df}
+.history-items button:hover{border-color:#91e8d6}.history-empty{font-size:10px;color:#7391a2;margin:6px 0 0}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr)) 200px;border-top:1px solid #284350;background:#091822;min-height:0}
+.metric{padding:11px 20px;border-right:1px solid #1f3a48;min-width:0}.metric small{display:block;color:#86a5b3;font-size:10px}.metric strong{display:block;margin-top:3px;font-size:21px;font-weight:650;line-height:1.2;font-variant-numeric:tabular-nums;letter-spacing:-.04em}.metric strong span{font-size:12px;font-weight:450;color:#91b6bf}.metric.note{background:#0b1c27}
+.metric.note p{font-size:11px;line-height:1.4;margin:3px 0;color:#aac3c9}
+#graphEmpty{display:none}
+@media(min-width:1050px){.work{grid-template-columns:minmax(0,1fr) 310px}.panel{padding:23px 20px;gap:19px}.status{min-height:52px}.stage-head{top:22px;left:26px;right:26px}.challenge{font-size:20px}.stage-head .caption{font-size:12px}.stage-foot{bottom:21px;left:25px;right:25px}}
+@media(max-width:800px){
+ .shell{grid-template-rows:49px minmax(0,1fr) 69px}
+ .top{padding:0 13px}.meta{display:none}.brand h1{font-size:14px}.mark{width:26px;height:26px}.ghost{padding:7px 9px;font-size:10px}
+ .work{display:flex;flex-direction:column}
+ .stage{min-height:0;flex:1 1 auto}
+ .panel{flex:0 0 auto;display:grid;grid-template-columns:1fr 1fr;grid-template-areas:"angle speed" "gravity gravity" "actions actions";gap:10px 13px;padding:11px 13px 10px;border-left:0;border-top:1px solid #2a4858}
+ .panel-head,.options,.history{display:none}
+ .setting{min-width:0;padding-bottom:0;border:0;gap:4px}
+ .setting[data-kind=angle]{grid-area:angle}.setting[data-kind=speed]{grid-area:speed}
+ .setting-top label{font-size:11px}.number{font-size:12px}
+ .control-line{grid-template-columns:23px minmax(0,1fr) 23px;gap:3px}
+ .small-action{height:24px;width:23px;font-size:15px}
+ input[type=range]{height:25px}
+ .setting[data-kind=gravity]{grid-area:gravity;display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:9px;padding:0}
+ .setting[data-kind=gravity] .setting-top{flex:0 0 auto}.setting[data-kind=gravity] .setting-top label{font-size:10px}
+ .setting[data-kind=gravity] .setting-top .number{display:none}
+ .scene-preset{flex:1;max-width:280px}.scene-preset button{font-size:10px;padding:6px 3px}
+ .actions-row{grid-area:actions;display:flex;align-items:center;gap:10px;min-width:0}
+ .actions{grid-template-columns:minmax(0,1fr) 71px;width:min(52%,210px);flex:0 0 auto}
+ .fire{font-size:12px;min-height:39px}.reset{font-size:10px}
+ .status{min-width:0;min-height:0;flex:1;font-size:10px;line-height:1.25}
+ .stage-head{top:12px;left:13px;right:13px}.challenge{font-size:14px;margin-top:2px}.stage-head .caption{font-size:10px}
+ .stage-foot{left:10px;right:10px;bottom:8px}.stage-foot span{font-size:9px;padding:5px 7px}.stage-legend{display:none}
+ .view-action{font-size:9px;padding:7px}
+ .seg button{font-size:10px;padding:5px 8px}
+ .stats{grid-template-columns:repeat(4,minmax(0,1fr));min-height:0}
+ .metric{padding:8px 7px;border-right:1px solid #203b4a}.metric small{font-size:9px}.metric strong{font-size:16px;white-space:nowrap}.metric strong span{font-size:10px}
+ .metric.note{display:none}
+}
+@media(max-width:370px){
+ .shell{grid-template-rows:46px minmax(0,1fr) 66px}
+ .panel{gap:7px;padding:8px 9px}
+ .setting-top label{font-size:10px}.number{font-size:11px}
+ .status{font-size:9px}.actions{width:52%}
+ .stage-head .caption{display:none}
+ .metric{padding:7px 5px}.metric strong{font-size:14px}.metric small{font-size:8px}
+}
+@media(max-height:690px) and (max-width:800px){
+ .shell{grid-template-rows:44px minmax(0,1fr) 59px}
+ .stage-head .caption{display:none}.panel{gap:6px;padding:7px 12px}
+ .setting[data-kind=gravity] .scene-preset button{padding:5px 2px}
+ .actions .fire{min-height:34px}
+ .metric{padding:7px 8px}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="shell">
+ <header class="top">
+  <a class="brand" href="/tools/science-observatory/" aria-label="Naar Science Observatory">
+   <span class="mark" aria-hidden="true"><svg viewBox="0 0 26 26" fill="none"><path d="M2 15c5-1 4-10 8-10s3 16 7 16 3-11 7-13" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span>
+   <span class="brand-copy"><span class="overline">SCIENCE OBSERVATORY / NATUURKUNDE</span><h1>Schuine worp</h1></span>
+  </a>
+  <div class="top-right"><span class="meta">Zonder luchtweerstand</span><a class="ghost" href="/tools/science-observatory/labs/natuurkunde/#interference">Alle 53 proeven</a></div>
+ </header>
+ <main class="work" aria-label="Proef schuine worp">
+  <section class="stage" id="stage" aria-label="Onderzoeksveld">
+   <canvas id="field" aria-label="Baan van de bal. Versleep de groene greep om te richten of sleep de landingsmat om de afstand te veranderen."></canvas>
+   <div class="stage-head"><div><div class="eyebrow">PROEF 01 · BEWEGING</div><div class="challenge">Kun je de bal op de mat krijgen?</div><div class="caption">Versleep de groene greep of verplaats de mat.</div></div>
+    <div class="scene-tools"><div class="seg" role="group" aria-label="Wat wil je bekijken?"><button id="viewField" aria-pressed="true">Baan</button><button id="viewGraph" aria-pressed="false">Grafiek</button></div><button class="view-action" id="fitView" aria-pressed="false">Hele baan</button></div>
+   </div>
+   <div class="stage-foot"><span id="dragHint"><i class="dot"></i> Richt de bal of sleep de mat</span><span class="stage-legend"><span><i class="legend-line"></i> Worp</span> Groen: instellingen</span></div>
+  </section>
+  <aside class="panel" aria-label="Proef instellen">
+   <div class="panel-head"><strong>Verander de worp</strong><span>Ook direct in de tekening</span></div>
+   <div class="setting" data-kind="angle">
+    <div class="setting-top"><label for="angle">Hoek</label><output id="angleValue" class="number">45°</output></div>
+    <div class="control-line"><button type="button" class="small-action" data-key="angle" data-delta="-0.5" aria-label="Hoek iets kleiner">−</button><input id="angle" type="range" min="5" max="85" step=".5" value="45"><button type="button" class="small-action" data-key="angle" data-delta=".5" aria-label="Hoek iets groter">+</button></div>
+   </div>
+   <div class="setting" data-kind="speed">
+    <div class="setting-top"><label for="speed">Beginsnelheid</label><output id="speedValue" class="number">18 m/s</output></div>
+    <div class="control-line"><button type="button" class="small-action" data-key="speed" data-delta="-.25" aria-label="Snelheid iets lager">−</button><input id="speed" type="range" min="5" max="35" step=".25" value="18"><button type="button" class="small-action" data-key="speed" data-delta=".25" aria-label="Snelheid iets hoger">+</button></div>
+   </div>
+   <div class="setting" data-kind="gravity">
+    <div class="setting-top"><label>Zwaartekracht</label><span class="number" id="gravityValue">9,81 m/s²</span></div>
+    <div class="scene-preset" role="group" aria-label="Zwaartekracht kiezen">
+     <button data-g="9.81" aria-pressed="true">Aarde</button>
+     <button data-g="3.71" aria-pressed="false">Mars</button>
+     <button data-g="1.62" aria-pressed="false">Maan</button>
+    </div>
+   </div>
+   <div class="options"><span class="subnote">Mat verplaatsen: sleep in het veld</span><button class="pill" id="forecast" aria-pressed="false">Toon verwachte baan</button></div>
+   <div class="actions-row"><div class="actions"><button type="button" class="fire" id="fire">Gooi de bal</button><button type="button" class="reset" id="reset">Herstel</button></div><div id="status" class="status" role="status" aria-live="polite">Probeer een worp.</div></div>
+   <div class="history"><div class="history-head">Eerdere worpen <button id="clear" type="button">Wissen</button></div><div class="history-items" id="history"><p class="history-empty">Je metingen verschijnen hier.</p></div></div>
+  </aside>
+ </main>
+ <section class="stats" aria-label="Meetwaarden van de laatste worp">
+  <div class="metric"><small>Bereik</small><strong id="statRange">—</strong></div>
+  <div class="metric"><small>Hoogste punt</small><strong id="statHeight">—</strong></div>
+  <div class="metric"><small>Vliegtijd</small><strong id="statTime">—</strong></div>
+  <div class="metric"><small>Afstand tot mat</small><strong id="statError">—</strong></div>
+  <div class="metric note"><small>Meetinformatie</small><p id="measurementNote">Eerst gooien, dan meten. De vorige worp blijft zichtbaar.</p></div>
+ </section>
+</div>
+<script>
+(function(){
+'use strict';
+var $=function(id){return document.getElementById(id);};
+var clamp=function(n,a,b){return Math.min(b,Math.max(a,n));};
+var fmt=function(n,d){return n.toLocaleString('nl-NL',{minimumFractionDigits:d,maximumFractionDigits:d});};
+var rad=function(degrees){return degrees*Math.PI/180;};
+var S={angle:45,speed:18,g:9.81,target:24,view:'field',whole:false,forecast:false,playing:false,t:0,finished:false,trials:[],pointer:null};
+var field=$('field'),ctx=field.getContext('2d'),last=performance.now(),screen=null;
+var reduceMotion=matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+function values(o){
+ var v=o.speed,a=rad(o.angle),gravity=o.g,vx=v*Math.cos(a),vy=v*Math.sin(a),T=2*vy/gravity;
+ return {vx:vx,vy:vy,time:T,range:vx*T,peak:vy*vy/(2*gravity),speed:v,angle:o.angle,g:gravity};
+}
+function position(p,t){return {x:p.vx*t,y:Math.max(0,p.vy*t-.5*p.g*t*t)};}
+function measured(){return S.trials.length?S.trials[S.trials.length-1]:null;}
+function updateLabels(){
+ $('angle').value=S.angle;$('speed').value=S.speed;
+ $('angleValue').textContent=fmt(S.angle,1)+'°';
+ $('speedValue').textContent=fmt(S.speed,2)+' m/s';
+ $('gravityValue').textContent=fmt(S.g,2)+' m/s²';
+ document.querySelectorAll('[data-g]').forEach(function(b){b.setAttribute('aria-pressed',String(Number(b.dataset.g)===S.g));});
+ $('viewField').setAttribute('aria-pressed',String(S.view==='field'));
+ $('viewGraph').setAttribute('aria-pressed',String(S.view==='graph'));
+ $('fitView').textContent=S.whole?'Vergroot doel':'Hele baan';
+ $('fitView').setAttribute('aria-pressed',String(S.whole));
+ $('forecast').setAttribute('aria-pressed',String(S.forecast));
+ $('fire').textContent=S.playing?'In de lucht…':'Gooi de bal';
+ $('fire').disabled=S.playing;
+}
+function explain(){
+ if(S.playing)return 'Kijk waar de bal landt.';
+ var lastTrial=measured();
+ if(!lastTrial)return 'Probeer een worp.';
+ var error=lastTrial.range-lastTrial.target;
+ if(Math.abs(error)<=1)return 'Raak! De bal landde op de mat.';
+ return error>0?'De bal kwam '+fmt(error,1)+' m voorbij de mat.':'De bal kwam '+fmt(-error,1)+' m vóór de mat.';
+}
+function updateStats(){
+ var lastTrial=measured();
+ $('statRange').innerHTML=lastTrial?fmt(lastTrial.range,1)+' <span>m</span>':'—';
+ $('statHeight').innerHTML=lastTrial?fmt(lastTrial.peak,1)+' <span>m</span>':'—';
+ $('statTime').innerHTML=lastTrial?fmt(lastTrial.time,2)+' <span>s</span>':'—';
+ $('statError').innerHTML=lastTrial?fmt(Math.abs(lastTrial.range-lastTrial.target),1)+' <span>m</span>':'—';
+ $('status').textContent=explain();
+ if(lastTrial)$('measurementNote').textContent='Laatste worp: '+fmt(lastTrial.speed,2)+' m/s, '+fmt(lastTrial.angle,1)+'°. Klik op een eerdere worp om die instellingen terug te zetten.';
+ $('dragHint').innerHTML=S.playing?'<i class="dot"></i> De bal is onderweg':S.finished?'<i class="dot"></i> Verander iets en probeer opnieuw':'<i class="dot"></i> Richt de bal of sleep de mat';
+}
+function renderHistory(){
+ var wrap=$('history');wrap.textContent='';
+ if(!S.trials.length){var p=document.createElement('p');p.className='history-empty';p.textContent='Je metingen verschijnen hier.';wrap.appendChild(p);return;}
+ S.trials.slice(-5).forEach(function(t,i){
+  var b=document.createElement('button');b.type='button';
+  b.textContent='#'+(S.trials.indexOf(t)+1)+'  '+fmt(t.range,1)+' m';
+  b.title='Zet de hoek, snelheid en zwaartekracht van deze worp terug';
+  b.addEventListener('click',function(){S.angle=t.angle;S.speed=t.speed;S.g=t.g;S.target=t.target;S.playing=false;S.finished=false;S.t=0;updateLabels();updateStats();});
+  wrap.appendChild(b);
+ });
+}
+function changed(key,value){
+ if(S.playing)return;
+ var ranges={angle:[5,85,.5],speed:[5,35,.25],target:[10,60,.5]};
+ if(ranges[key]){var info=ranges[key];value=clamp(value,info[0],info[1]);value=Math.round(value/info[2])*info[2];}
+ S[key]=value;S.finished=false;S.t=0;
+ updateLabels();updateStats();
+}
+function trial(){
+ if(S.playing)return;
+ S.t=0;S.finished=false;S.playing=true;
+ var predicted=values(S);
+ if(predicted.range>Math.max(S.target+7,37))S.whole=true;
+ updateLabels();updateStats();
+}
+function clearAll(){
+ S.playing=false;S.t=0;S.finished=false;S.trials=[];
+ S.angle=45;S.speed=18;S.g=9.81;S.target=24;S.whole=false;S.view='field';S.forecast=false;
+ updateLabels();updateStats();renderHistory();
+}
+function resize(){
+ var rect=field.getBoundingClientRect(),dpr=Math.min(2,window.devicePixelRatio||1);
+ if(!rect.width||!rect.height)return;
+ var w=Math.max(1,Math.round(rect.width*dpr)),h=Math.max(1,Math.round(rect.height*dpr));
+ if(field.width!==w||field.height!==h){field.width=w;field.height=h;}
+ ctx.setTransform(dpr,0,0,dpr,0,0);screen={w:rect.width,h:rect.height};
+}
+function point(e){
+ var r=field.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top};
+}
+function camera(){
+ var w=screen.w,h=screen.h,now=values(S),lastTrial=measured();
+ var reaches=[S.target+7,38];
+ if(S.whole){reaches.push(now.range+6);S.trials.slice(-5).forEach(function(t){reaches.push(t.range+6);});}
+ var worldX=Math.max.apply(null,reaches),height=Math.max(7,now.peak+3,lastTrial?lastTrial.peak+3:0);
+ var pad={left:w<550?35:53,right:24,top:w<550?91:105,bottom:w<550?50:54};
+ var scale=Math.min((w-pad.left-pad.right)/worldX,(h-pad.top-pad.bottom)/height);
+ scale=Math.max(.2,scale);
+ var ox=pad.left,oy=h-pad.bottom;
+ return {ox:ox,oy:oy,scale:scale,w:w,h:h,now:now,top:pad.top,worldX:worldX};
+}
+function drawLine(x1,y1,x2,y2,color,width,dash){
+ ctx.beginPath();ctx.strokeStyle=color;ctx.lineWidth=width||1;ctx.setLineDash(dash||[]);
+ ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();ctx.setLineDash([]);
+}
+function dot(x,y,r,fill,stroke){
+ ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);if(fill){ctx.fillStyle=fill;ctx.fill();}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=1.5;ctx.stroke();}
+}
+function pathFor(v,c,limit,col,width,dash){
+ var pts=120;
+ ctx.beginPath();ctx.strokeStyle=col;ctx.lineWidth=width;ctx.setLineDash(dash||[]);
+ for(var i=0;i<=pts;i++){
+  var t=v.time*i/pts;
+  if(t>limit)break;
+  var q=position(v,t),x=c.ox+q.x*c.scale,y=c.oy-q.y*c.scale;
+  if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
+ }
+ ctx.stroke();ctx.setLineDash([]);
+}
+function drawScene(c){
+ var w=c.w,h=c.h,ox=c.ox,oy=c.oy,s=c.scale;
+ ctx.clearRect(0,0,w,h);
+ var wash=ctx.createLinearGradient(0,0,0,h);wash.addColorStop(0,'#102535');wash.addColorStop(.56,'#0b1b29');wash.addColorStop(1,'#081521');ctx.fillStyle=wash;ctx.fillRect(0,0,w,h);
+ // Equal scale in metres horizontally and vertically.
+ var step=c.worldX>95?20:c.worldX>55?10:5;
+ for(var m=0;m<=c.worldX;m+=step){
+  var x=ox+m*s;if(x>w-16)break;
+  drawLine(x,c.top,x,oy,'#21425483',.8);
+  ctx.fillStyle='#7898a7';ctx.font='10px system-ui';ctx.fillText(m+' m',x-10,oy+17);
+ }
+ var ystep= c.now.peak>30?20:5;
+ for(var height=ystep;height<=Math.max(c.now.peak+10,12);height+=ystep){
+  var yy=oy-height*s;if(yy<c.top)break;
+  drawLine(ox,yy,w-15,yy,'#26475867',.8,[2,6]);
+  ctx.fillStyle='#628698';ctx.font='10px system-ui';ctx.fillText(height+'m',7,yy-4);
+ }
+ ctx.fillStyle='#102d3a';ctx.fillRect(0,oy,w,h-oy);
+ drawLine(0,oy,w,oy,'#789daead',1.3);
+ // Target mat: two metres wide, precise in world coordinates.
+ var tx=ox+S.target*s,matW=2*s;
+ ctx.fillStyle='#154d47';ctx.fillRect(tx-matW/2,oy-8,matW,8);
+ ctx.fillStyle='#a5f6df';ctx.fillRect(tx-matW/2,oy-8,matW,2);
+ drawLine(tx-matW/2,oy-14,tx-matW/2,oy+3,'#85dec7',1);
+ drawLine(tx+matW/2,oy-14,tx+matW/2,oy+3,'#85dec7',1);
+ ctx.textAlign='center';ctx.font='600 11px system-ui';ctx.fillStyle='#abf4e3';
+ var labX=clamp(tx,59,w-67);
+ ctx.fillText('LANDINGSMAT',labX,oy-28);
+ ctx.font='10px system-ui';ctx.fillStyle='#8cbbc2';ctx.fillText(fmt(S.target,1)+' m',labX,oy-16);
+ ctx.textAlign='left';
+ // Previous throws are faint, measurable traces.
+ S.trials.slice(-5).forEach(function(t,i){
+  pathFor(t,c,t.time,'#8d9dab38',1.1,[4,5]);
+  var lastX=ox+t.range*s;
+  drawLine(lastX,oy-7,lastX,oy+5,'#d4b08a',1);
+  dot(lastX,oy-2,2.5,'#edc091');
+ });
+ // Current throw, or an optional prediction selected by the pupil.
+ var v=values(S);
+ if(S.forecast&&!S.playing){pathFor(v,c,v.time,'#e1bd84a5',1.5,[5,5]);}
+ if(S.playing||S.finished){
+  pathFor(v,c,Math.min(S.t,v.time),'#edc091',2.4,[]);
+  var p=position(v,Math.min(S.t,v.time));
+  dot(ox+p.x*s,oy-p.y*s,6,'#ffe0a9');
+  if(S.playing){
+   drawLine(ox+p.x*s,oy-p.y*s,ox+p.x*s,oy,'#8aa6b255',.85,[3,5]);
+  }
+ }
+ ctx.fillStyle='#2e6470';ctx.beginPath();ctx.roundRect(ox-12,oy-8,24,9,4);ctx.fill();
+ dot(ox,oy-9,6,'#ffe0af');
+ var radius=32+(S.speed-5)/30*66,angle=rad(S.angle);
+ var hx=ox+radius*Math.cos(angle),hy=oy-9-radius*Math.sin(angle);
+ drawLine(ox,oy-9,hx,hy,'#82dfceb6',1.6,[3,4]);
+ dot(hx,hy,19,'#47d6bb12','#7cebd5');
+ dot(hx,hy,5,'#9bf7df');
+ ctx.font='10px system-ui';ctx.fillStyle='#8caab8';ctx.fillText('START',ox-13,oy-30);
+ // Show the apex measurement without clutter, only when observed.
+ if(S.finished||S.playing){
+  var maxX=ox+(v.range/2)*s,maxY=oy-v.peak*s;
+  if(maxY>c.top+20){
+   drawLine(maxX,maxY,maxX,oy,'#719eb058',.9,[3,5]);
+   dot(maxX,maxY,3,'#f5c999');
+  }
+ }
+ screen.handle={x:hx,y:hy};screen.mat={x:tx,y:oy};screen.view=c;
+}
+function drawGraph(c){
+ var w=c.w,h=c.h,p=measured(),rect={left:43,right:w-24,top:104,bottom:h-45};
+ ctx.clearRect(0,0,w,h);
+ ctx.fillStyle='#0b1b2a';ctx.fillRect(0,0,w,h);
+ ctx.font='600 13px system-ui';ctx.fillStyle='#cbe7e5';ctx.fillText('Hoogte tijdens de worp',21,82);
+ if(!p){ctx.fillStyle='#8daeb8';ctx.font='12px system-ui';ctx.fillText('Gooi een bal om de metingen te zien.',21,123);return;}
+ for(var i=0;i<=4;i++){
+  var y=rect.top+(rect.bottom-rect.top)*i/4;
+  drawLine(rect.left,y,rect.right,y,'#33536475',.8,[3,5]);
+  ctx.fillStyle='#779dad';ctx.font='10px system-ui';ctx.fillText(fmt(p.peak*(4-i)/4,1)+' m',5,y+4);
+ }
+ drawLine(rect.left,rect.bottom,rect.right,rect.bottom,'#8ba8b5',1);
+ ctx.fillStyle='#8daeb6';ctx.fillText('0 s',rect.left,rect.bottom+19);
+ ctx.fillText(fmt(p.time,1)+' s',rect.right-26,rect.bottom+19);
+ ctx.strokeStyle='#edc091';ctx.lineWidth=2.4;ctx.beginPath();
+ for(var n=0;n<=120;n++){
+  var t=p.time*n/120,py=position(p,t).y;
+  var x=rect.left+t/p.time*(rect.right-rect.left);
+  var y=rect.bottom-py/Math.max(p.peak,1)*(rect.bottom-rect.top);
+  if(n===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
+ }
+ ctx.stroke();
+ var dotTime=S.playing?Math.min(S.t,p.time):p.time;
+ var ynow=position(p,dotTime).y;
+ dot(rect.left+dotTime/p.time*(rect.right-rect.left),rect.bottom-ynow/Math.max(p.peak,1)*(rect.bottom-rect.top),5,'#fce0af');
+}
+function draw(){
+ if(!screen)return;ctx.setTransform(Math.min(2,devicePixelRatio||1),0,0,Math.min(2,devicePixelRatio||1),0,0);
+ if(S.view==='graph')drawGraph(screen);else drawScene(camera());
+}
+function loop(now){
+ var dt=Math.min(.05,(now-last)/1000);last=now;
+ if(S.playing){
+  var p=values(S),factor=reduceMotion?99:Math.max(1,p.time/3.5);
+  S.t=Math.min(p.time,S.t+dt*factor);
+  if(S.t>=p.time){
+   S.playing=false;S.finished=true;
+   S.trials.push({angle:S.angle,speed:S.speed,g:S.g,target:S.target,range:p.range,peak:p.peak,time:p.time,vx:p.vx,vy:p.vy});
+   if(S.trials.length>20)S.trials.shift();
+   updateLabels();updateStats();renderHistory();
+  }
+ }
+ resize();draw();
+ requestAnimationFrame(loop);
+}
+function grabStart(e){
+ if(S.view!=='field'||S.playing||!screen||!screen.handle)return;
+ var p=point(e),aim=screen.handle,mat=screen.mat,dAim=Math.hypot(p.x-aim.x,p.y-aim.y),dMat=Math.hypot(p.x-mat.x,p.y-(mat.y-8));
+ if(dAim<44){S.pointer='aim';}
+ else if(dMat<44){S.pointer='target';}
+ else return;
+ field.setPointerCapture(e.pointerId);e.preventDefault();
+}
+function grabMove(e){
+ if(!S.pointer||!screen||!screen.view)return;
+ var p=point(e),c=screen.view;
+ if(S.pointer==='aim'){
+  var dx=p.x-c.ox,dy=c.oy-9-p.y,angle=clamp(Math.atan2(Math.max(1,dy),Math.max(1,dx))*180/Math.PI,5,85);
+  var length=Math.hypot(dx,dy),speed=clamp(5+(length-32)*30/66,5,35);
+  S.angle=Math.round(angle*2)/2;S.speed=Math.round(speed*4)/4;
+ }else if(S.pointer==='target'){
+  S.target=clamp(Math.round((p.x-c.ox)/c.scale*2)/2,10,60);
+ }
+ S.finished=false;S.t=0;updateLabels();updateStats();e.preventDefault();
+}
+function grabEnd(e){if(S.pointer){S.pointer=null;if(field.hasPointerCapture(e.pointerId))field.releasePointerCapture(e.pointerId);}}
+field.addEventListener('pointerdown',grabStart);
+field.addEventListener('pointermove',grabMove);
+field.addEventListener('pointerup',grabEnd);
+field.addEventListener('pointercancel',grabEnd);
+$('fire').addEventListener('click',trial);
+$('reset').addEventListener('click',clearAll);
+$('clear').addEventListener('click',function(){S.trials=[];S.finished=false;updateStats();renderHistory();});
+$('viewField').addEventListener('click',function(){S.view='field';updateLabels();});
+$('viewGraph').addEventListener('click',function(){S.view='graph';updateLabels();});
+$('fitView').addEventListener('click',function(){S.whole=!S.whole;updateLabels();});
+$('forecast').addEventListener('click',function(){S.forecast=!S.forecast;updateLabels();});
+document.querySelectorAll('[data-g]').forEach(function(b){b.addEventListener('click',function(){changed('g',Number(b.dataset.g));});});
+document.querySelectorAll('[data-key]').forEach(function(b){b.addEventListener('click',function(){changed(b.dataset.key,S[b.dataset.key]+Number(b.dataset.delta));});});
+['angle','speed'].forEach(function(id){$(id).addEventListener('input',function(e){changed(id,Number(e.target.value));});});
+window.addEventListener('resize',resize);
+window.addEventListener('keydown',function(e){
+ if(e.code==='Space'&&e.target===document.body){e.preventDefault();trial();}
+ if(e.key==='Escape'&&S.view==='graph'){S.view='field';updateLabels();}
+});
+updateLabels();updateStats();renderHistory();requestAnimationFrame(loop);
+window.__physicsStudio={state:S,values:values,position:position,camera:camera,draw:draw,resize:resize,changed:changed,trial:trial};
+})();
+</script>
+</body></html>
