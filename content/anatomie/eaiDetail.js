@@ -1,6 +1,7 @@
 // Eén informatiepaneel per geselecteerde structuur. Modelacties staan
 // na de anatomische informatie, niet in meerdere zwevende menu's.
 import { anatomyGuide } from '../data/eaiGuide.js';
+import { anatomyTeaching } from '../data/eaiTeaching.js';
 import { anatomyName } from '../data/eaiNames.js';
 import { scheduleSelectionClearance } from './cameraUX.js';
 import { isolatePart, hidePart, restoreAllParts } from '../viewer/visibility.js';
@@ -32,6 +33,7 @@ export function refineAnatomyInfo(partData, deselectPart) {
   const info = partData.info || {};
   const baseName = info.baseName || partData.id;
   const guide = anatomyGuide(baseName);
+  const lesson = guide ? null : anatomyTeaching(baseName, info);
   const title = panel.querySelector('.structure-title h3');
   const preferredName = guide?.name || anatomyName(baseName, info);
 
@@ -64,10 +66,18 @@ export function refineAnatomyInfo(partData, deselectPart) {
     textBlock(facts, 'Ligging en verbindingen', guide.location);
     textBlock(facts, 'Werking', guide.mechanism);
     if (guide.question) textBlock(facts, 'Onderzoek in het 3D-model', guide.question);
+  } else if (lesson) {
+    textBlock(facts, 'Wat voor onderdeel is dit?', lesson.kind);
+    textBlock(facts, 'Hoe werkt dit soort onderdeel?', lesson.explanation);
+    textBlock(facts, 'Onderzoek in het 3D-model', lesson.question);
+    const note = document.createElement('p');
+    note.className = 'eai-facts-unverified';
+    note.textContent = 'Dit is algemene uitleg over het type onderdeel. De specifieke werking van dit onderdeel is nog niet afzonderlijk beoordeeld.';
+    facts.appendChild(note);
   } else {
     const notice = document.createElement('p');
     notice.className = 'eai-facts-unverified';
-    notice.textContent = 'Voor dit onderdeel is nog geen afzonderlijke Nederlandse uitleg over functie en ligging beschikbaar. De oorspronkelijke bronbeschrijving kun je desgewenst uitklappen.';
+    notice.textContent = 'De naam van dit onderdeel is nog niet betrouwbaar uit de bron af te leiden. De oorspronkelijke bronbeschrijving kun je desgewenst uitklappen.';
     facts.appendChild(notice);
   }
 
