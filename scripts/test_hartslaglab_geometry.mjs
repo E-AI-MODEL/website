@@ -38,6 +38,18 @@ for(const valve of g.VALVES){
   assert.equal(open.count,closed.count,'Klepvervorming mag het GPU-bufferformaat niet veranderen');
   assert(open.v.some((x,i)=>Math.abs(x-closed.v[i])>.05),'Klepbladen moeten daadwerkelijk bewegen: '+valve.id);
 }
+assert(g.CORONARY_DETAILS.length>=5,'Oppervlakte-anatomie bevat kransarterien en een hartader');
+assert(g.CORONARY_DETAILS.some(x=>x.kind==='vein'),'Hartader ontbreekt');
+assert(g.MUSCLE_DETAILS.filter(x=>x.kind==='papillary').length===4,'Papillairspieren ontbreken');
+assert(g.AURICLES.length===2,'Beide boezemaanhangsels moeten zichtbaar zijn');
+for(const entry of [...g.CORONARY_DETAILS,...g.MUSCLE_DETAILS,...g.AURICLES]){
+  assert(entry.radius>0&&entry.radius<.12,'Detail mag geen grove buis worden: '+entry.id);
+  assert(entry.path.length>=3,'Detail heeft een te korte route: '+entry.id);
+  valid(g.tubeGeometry(entry.path,entry.radius,12),'detail '+entry.id);
+}
+for(const valve of g.VALVES){
+  assert(g.leafletGeometry(valve,0).count>=600,'Klepbladen moeten een gebogen oppervlak tonen');
+}
 valid(g.septumGeometry(),'harttussenschot');
 assert.equal(g.TENDINOUS_CORDS.length,4);
 assert(g.FLOW_PATHS.some(p=>p.channel==='av')&&g.FLOW_PATHS.some(p=>p.channel==='sem'),
