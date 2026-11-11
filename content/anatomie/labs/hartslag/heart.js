@@ -73,7 +73,7 @@ function tube(path,radius=.095,segments=10){
 const COLORS={red:[.98,.63,.53],blue:[.47,.82,.98]};
 const canvas=$('heartCanvas'),stage=$('stage');
 let gl,program,pointProgram,meshes={},pv=m4(),loc={},ploc={},particleBuffer;
-let atlasParts=[],atlasCenters={},atlasReady=false,atlasError=null;
+let atlasParts=[],atlasCenters={},atlasDetails={},atlasReady=false,atlasError=null;
 function compile(gl,type,src){const shader=gl.createShader(type);gl.shaderSource(shader,src);gl.compileShader(shader);if(!gl.getShaderParameter(shader,gl.COMPILE_STATUS))throw new Error(gl.getShaderInfoLog(shader));return shader;}
 function shader(gl,vs,fs){const p=gl.createProgram();gl.attachShader(p,compile(gl,gl.VERTEX_SHADER,vs));gl.attachShader(p,compile(gl,gl.FRAGMENT_SHADER,fs));gl.linkProgram(p);if(!gl.getProgramParameter(p,gl.LINK_STATUS))throw new Error(gl.getProgramInfoLog(p));return p;}
 function setupModel(){
@@ -175,7 +175,7 @@ async function loadAtlasModels(){
     const buffer=await bufferResponse.arrayBuffer();
     if(buffer.byteLength!==manifest.bytes)throw Error('Hartmesh is niet volledig');
     const loaded=[];
-    const centers={};
+    const centers={},details={};
     for(const part of manifest.parts){
       if(!Number.isInteger(part.count)||part.count<=0)throw Error('Ongeldige mesh: '+part.id);
       const size=part.count*3;
@@ -184,8 +184,9 @@ async function loadAtlasModels(){
       if(!Array.isArray(part.center)||part.center.length!==3)throw Error('Meshcentrum ontbreekt');
       loaded.push({id:part.id,kind:part.kind,color:part.color,mesh:upload({v,n,count:part.count})});
       centers[part.id]=part.center;
+      details[part.id]={label:part.label,pos:part.center,type:part.kind};
     }
-    atlasParts=loaded;atlasCenters=centers;atlasReady=true;atlasError=null;
+    atlasParts=loaded;atlasCenters=centers;atlasDetails=details;atlasReady=true;atlasError=null;
     $('modelCaption').textContent='3D · Anatomische hartvorm · Atlasmodel';
     if(!state.cutaway)positionInfo(null);
   }catch(error){
@@ -336,8 +337,9 @@ function updateLabels(){
 
 function selectedPartAt(x,y){
   let best=null,score=55;
-  for(const [id,part] of Object.entries(ANATOMY_PARTS)){
-    const world=!state.cutaway&&atlasCenters[id]?atlasCenters[id]:part.pos;
+  const available=!state.cutaway&&atlasReady?atlasDetails:ANATOMY_PARTS;
+  for(const [id,part] of Object.entries(available)){
+    const world=part.pos;
     const p=project(world,pv,canvas.clientWidth,canvas.clientHeight);
     const dist=Math.hypot(p[0]-x,p[1]-y);
     const limit=['artery','vein','papillary','auricle'].includes(part.type)?27:55;
@@ -347,7 +349,7 @@ function selectedPartAt(x,y){
 }
 function positionInfo(id){
   state.selected=id;
-  const part=ANATOMY_PARTS[id];
+  const part=(!state.cutaway&&atlasReady?atlasDetails:ANATOMY_PARTS)[id];
   if(!part){
     $('partInfo').textContent=state.cutaway?
       'Sleep om het hart te draaien. Tik op een onderdeel om het te onderzoeken.':
@@ -356,6 +358,10 @@ function positionInfo(id){
   }
   if(part.type==='valve'){
     const v=VALVES.find(v=>v.id===id),m=mechanics(state.t);
+    if(!v){
+      $('partInfo').textContent=part.label+' · Onderdeel van de anatomische klep. Bekijk Doorsnede voor de beweging tijdens één hartslag.';
+      return;
+    }
     const open=v.type==='av'?m.av:m.sem;
     $('partInfo').textContent=part.label+' · '+(open?'open':'gesloten')+'. Let op de klepbladen en de stroomrichting.';
     return;
