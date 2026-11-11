@@ -103,7 +103,7 @@ test('Interferentiekaart toont tijdgemiddelde intensiteit en golffronten behoude
   putImageData(im){buffers.push(im)}
  }}}}};
  const snippet=graphics.slice(graphics.indexOf('function wavePower('),graphics.indexOf('function doublePremium('));
- const {interferencePremium:premium,wavePower}=runInNewContext(model+'\n'+snippet+'\n({interferencePremium,wavePower})',{document,background(){},circle(){},stroke(){},fmt(x){return Number(x).toFixed(1)}});
+ const {interferencePremium:premium,wavePower}=runInNewContext(model+'\n'+snippet+'\n({interferencePremium,wavePower})',{document,background(){},circle(){},stroke(){},mission:{probe:{x:615,y:194},samples:[]},fmt(x){return Number(x).toFixed(1)}});
  const arcs=[];
  const ctx={save(){},restore(){},drawImage(){},beginPath(){},arc(...args){arcs.push(args)},stroke(){},fillText(){}};
  premium(ctx,r.p,r.t);
