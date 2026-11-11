@@ -286,6 +286,25 @@ try {
     'Ook bij een geselecteerde spier mag geen lagenkaart verschijnen');
   mkdirSync('test-results',{recursive:true});
   await page.screenshot({path:'test-results/anatomie-webkit-mobile.png'});
+  // De onderzoekslink hoort bij een geselecteerd hartdeel, niet bij spieren of botten.
+  assert.equal(await page.locator('#structureInfo .eai-heart-lab-action').count(),0,
+    'Het Hartslaglab mag niet als ongerelateerde actie bij een bilspier staan');
+  await page.locator('#searchOpen').click();
+  await page.locator('#searchInput').fill('linkerboezem');
+  const atrium = page.locator('#searchResults .search-result-item[data-part^="Left atrium"]').first();
+  await atrium.waitFor({state:'visible',timeout:15000});
+  await atrium.click();
+  await page.waitForFunction(() =>
+    document.querySelector('#structureInfo .structure-title h3')?.textContent?.includes('Linkerboezem'),
+    null, {timeout:20000});
+  await page.locator('.callout-more').click();
+  await page.locator('#infoSidebar').waitFor({state:'visible',timeout:10000});
+  const labLink=page.locator('#structureInfo .eai-heart-lab-action');
+  assert.equal(await labLink.count(),1,'Bij de linkerboezem moet één lablink zichtbaar zijn');
+  assert.equal(await labLink.getAttribute('href'),'/tools/anatomie/labs/hartslag/',
+    'De lablink moet naar de vaste onderzoeksroute wijzen');
+  assert(await labLink.isVisible(),'De Hartslaglab-actie moet in het informatiepaneel staan');
+  await page.screenshot({path:'test-results/anatomie-hart-naar-hartslaglab.png'});
   console.log('WebKit toont het skelet zonder laadspinner in '+elapsed+' ms, '+report.triangles+' driehoeken');
 } finally {
   if (browser) await browser.close();
