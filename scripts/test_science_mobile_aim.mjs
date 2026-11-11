@@ -1,6 +1,6 @@
 // Controls and geometry for the three learning modes on phone-sized screens.
 import assert from 'node:assert/strict';
-import {chromium} from 'playwright';
+import {chromium,webkit} from 'playwright';
 import {spawn} from 'node:child_process';
 import {resolve} from 'node:path';
 import {mkdirSync} from 'node:fs';
@@ -11,7 +11,8 @@ const server=spawn('python3',['-m','http.server',String(port),'--bind','127.0.0.
 let browser;
 try{
  for(let i=0;i<75;i++){try{if((await fetch(base)).ok)break}catch{}await new Promise(r=>setTimeout(r,100))}
- browser=await chromium.launch({headless:true});
+ const browserType=process.argv[3]==='webkit'?webkit:chromium;
+ browser=await browserType.launch({headless:true});
  mkdirSync('test-results',{recursive:true});
  const context=await browser.newContext({viewport:{width:390,height:844},deviceScaleFactor:2,isMobile:true,hasTouch:true});
  const page=await context.newPage(),errors=[];
