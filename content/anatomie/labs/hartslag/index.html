@@ -78,6 +78,11 @@
             <div class="view-legend" id="flowLegend" hidden><span><i class="dot dot-red"></i> Zuurstofrijk</span><span><i class="dot dot-blue"></i> Zuurstofarm</span></div>
           </div>
           <div class="stage-side-note" id="partInfo" aria-live="polite">Draai het hart met je vinger. Kies Bekijk binnenkant om de hartslag van binnen te onderzoeken.</div>
+          <div class="heart-side-controls" id="heartSideControls" role="group" aria-label="Welke harthelft onderzoeken" hidden>
+            <span>BEKIJK DE WERKING VAN</span>
+            <button type="button" data-heart-side="left" aria-pressed="true">Linkerkamer</button>
+            <button type="button" data-heart-side="right" aria-pressed="false">Rechterkamer</button>
+          </div>
           <div class="trace-strip" aria-label="Druk en volume volgen de hartbeweging">
             <div class="trace-head"><span>DRUK <i class="trace-key pressure"></i><b id="miniPressure">5 mmHg</b></span><span>VOLUME <i class="trace-key volume"></i><b id="miniVolume">60 ml</b></span><span class="trace-time" id="miniTraceTime">0,00 s</span></div>
             <canvas id="miniTrace" aria-label="Live grafiek van de linkerkamerdruk en het kamervolume, met dezelfde tijd als het hart"></canvas>
