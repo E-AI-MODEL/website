@@ -9,7 +9,7 @@ const lerp=(a,b,t)=>a+(b-a)*t;
 const ease=t=>{t=clamp(t,0,1);return t*t*(3-2*t);};
 const span=(t,a,b)=>ease((t-a)/(b-a));
 const fmt=(v,n=0)=>Number(v).toLocaleString('nl-NL',{minimumFractionDigits:n,maximumFractionDigits:n});
-const state={cutaway:false,t:0,playing:!matchMedia('(prefers-reduced-motion: reduce)').matches,speed:1,yaw:-.20,pitch:.08,zoom:5.95,selected:null,showLabels:!matchMedia('(max-width: 790px)').matches,showFlow:true,tab:'phase',rate:75,last:0,drag:null};
+const state={cutaway:false,t:0,playing:false,speed:1,yaw:-.20,pitch:.08,zoom:5.95,selected:null,showLabels:!matchMedia('(max-width: 790px)').matches,showFlow:true,tab:'phase',rate:75,last:0,drag:null,study:{guess:null,stage:'choose',stopAt:null}};
 const m4=()=>{
   const o=new Float32Array(16);o[0]=o[5]=o[10]=o[15]=1;return o;
 };
@@ -192,13 +192,13 @@ async function loadAtlasModels(){
     atlasParts=loaded;atlasCenters=centers;atlasDetails=details;atlasReady=true;atlasError=null;
     $('modelCaption').textContent='3D · Anatomische hartvorm · Atlasmodel';
     if(!state.cutaway)positionInfo(null);
+    syncViewControls();
   }catch(error){
     atlasError=String(error.message||error);
     atlasReady=false;
     // Ook zonder het atlasbestand blijft de bewegende doorsnede bruikbaar.
     state.cutaway=true;
-    $('sectionToggle').textContent='Doorsnede aan';
-    $('sectionToggle').setAttribute('aria-pressed','true');
+    syncViewControls();
     $('modelCaption').textContent='3D · Bewegende doorsnede · Schematisch';
     $('partInfo').textContent='Het anatomische buitenmodel kon niet worden geladen. De bewegende doorsnede blijft beschikbaar.';
     console.error('Hartslaglab atlasmesh:',atlasError);
@@ -359,7 +359,7 @@ function positionInfo(id){
   if(!part){
     $('partInfo').textContent=state.cutaway?
       'Sleep om het hart te draaien. Tik op een onderdeel om het te onderzoeken.':
-      'Draai het hart met je vinger. Kies Doorsnede om de hartslag van binnen te bekijken.';
+      'Draai het hart met je vinger. Kies Bekijk binnenkant om de hartslag van binnen te onderzoeken.';
     return;
   }
   if(part.type==='valve'){
@@ -459,13 +459,18 @@ $('nextPhase').addEventListener('click',()=>setTime(PHASES[(phaseFor(state.t)+1)
 $('scrub').addEventListener('input',e=>setTime(Number(e.target.value)/1000,true));
 $('speed').addEventListener('change',e=>{state.speed=Number(e.target.value);});
 $('timeline').querySelectorAll('button').forEach(btn=>btn.addEventListener('click',()=>setTime(PHASES[Number(btn.dataset.phase)].at,true)));
-$('sectionToggle').addEventListener('click',()=>{
-  state.cutaway=!state.cutaway;
-  $('sectionToggle').textContent=state.cutaway?'Doorsnede aan':'Buitenkant aan';
+function syncViewControls(){
+  $('sectionToggle').textContent=state.cutaway?'Bekijk buitenkant':'Bekijk binnenkant';
   $('sectionToggle').setAttribute('aria-pressed',String(state.cutaway));
+  $('flowToggle').hidden=!state.cutaway;
+  $('flowLegend').hidden=!state.cutaway||!state.showFlow;
   $('modelCaption').textContent=state.cutaway?
     '3D · Bewegende doorsnede · Schematisch':
     '3D · Anatomische hartvorm · Atlasmodel';
+}
+$('sectionToggle').addEventListener('click',()=>{
+  state.cutaway=!state.cutaway;
+  syncViewControls();
   positionInfo(null);
 });
 function syncLabelsToggle(){
@@ -480,6 +485,7 @@ $('flowToggle').addEventListener('click',()=>{
   state.showFlow=!state.showFlow;
   $('flowToggle').textContent=state.showFlow?'Bloedstroom verbergen':'Bloedstroom tonen';
   $('flowToggle').setAttribute('aria-pressed',String(state.showFlow));
+  syncViewControls();
 });
 $('resetCamera').addEventListener('click',()=>{state.yaw=-.20;state.pitch=.08;state.zoom=5.95;positionInfo(null);});
 document.querySelectorAll('[data-tab]').forEach(btn=>btn.addEventListener('click',()=>{
@@ -528,9 +534,9 @@ canvas.addEventListener('touchstart',e=>{if(e.touches.length===2){state.drag=nul
 canvas.addEventListener('touchmove',e=>{if(e.touches.length===2&&state.pinch){const a=e.touches[0],b=e.touches[1],next=Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY);state.zoom=clamp(state.zoom*state.pinch/Math.max(next,1),3.5,9.5);state.pinch=next;}},{passive:true});
 canvas.addEventListener('touchend',()=>{state.pinch=null;});
 let resize=new ResizeObserver(()=>{if(gl)render();});resize.observe(stage);
-setupModel();syncPlay();syncLabelsToggle();loadAtlasModels();
+setupModel();syncPlay();syncLabelsToggle();syncViewControls();loadAtlasModels();
 window.__EAI_HEART_LAB__={
-  get state(){return {t:state.t,playing:state.playing,speed:state.speed,yaw:state.yaw,zoom:state.zoom,selected:state.selected,cutaway:state.cutaway,showLabels:state.showLabels,atlasReady,atlasError,atlasPartCount:atlasParts.length};},
+  get state(){return {t:state.t,playing:state.playing,speed:state.speed,yaw:state.yaw,zoom:state.zoom,selected:state.selected,cutaway:state.cutaway,showLabels:state.showLabels,atlasReady,atlasError,atlasPartCount:atlasParts.length,studyStage:state.study.stage};},
   get metrics(){return mechanics(state.t);},
   setTime:t=>setTime(t,true),pause:()=>{state.playing=false;syncPlay();},
   get rendererReady(){return Boolean(gl)&&(state.cutaway||atlasReady);}
