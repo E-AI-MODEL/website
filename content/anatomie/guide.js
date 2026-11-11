@@ -333,12 +333,13 @@ const ITEMS = {
   "location": "Loopt retroperitoneaal van iedere nier naar de achterzijde van de blaas.",
   "mechanism": "Peristaltische samentrekkingen van glad spierweefsel duwen urine richting de blaas."
 },
-  'sternum': {
-  "name": "Borstbeen",
-  "function": "Vormt met de ribben een beschermende en dragende voorzijde van de borstkas.",
-  "location": "Middenvoor op de borstkas, opgebouwd uit manubrium, corpus sterni en processus xiphoideus.",
-  "mechanism": "Via ribkraakbeen verbinden meerdere ribben zich met het borstbeen; er hechten ook spieren aan."
-},
+  'body of sternum': {
+    name: 'Middendeel van het borstbeen',
+    function: 'Dit deel vormt de stevige voorkant van de borstkas. Verschillende ribben zijn er via kraakbeen mee verbonden.',
+    location: 'Middenvoor op de borstkas, tussen het bovenste deel van het borstbeen en het zwaardvormig aanhangsel.',
+    mechanism: 'De verbindingen met de ribben laten de borstkas bij het ademen een beetje bewegen.',
+    question: 'Zoek de ribkraakbenen die op het middendeel aansluiten. Waarom is er kraakbeen tussen rib en borstbeen?'
+  },
   'scapula': {
   "name": "Schouderblad",
   "function": "Biedt aanhechting aan schouder- en rugspieren en vormt met de humeruskop het schoudergewricht.",
