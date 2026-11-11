@@ -173,6 +173,14 @@ try {
   await mobile.waitForFunction(()=>window.__EAI_HEART_LAB__?.state.studyStage==='compare',{timeout:10000});
   assert.equal(await mobile.locator('#sectionToggle').getAttribute('aria-pressed'),'true');
   assert(await mobile.locator('#flowToggle').isVisible());
+  assert(await mobile.locator('#heartSideControls').isVisible());
+  await mobile.locator('[data-heart-side="right"]').click();
+  assert.equal(await mobile.evaluate(()=>window.__EAI_HEART_LAB__.state.focusSide),'right');
+  const rightHalf=await mobile.locator('#heartCanvas').screenshot();
+  await mobile.locator('[data-heart-side="left"]').click();
+  assert.equal(await mobile.evaluate(()=>window.__EAI_HEART_LAB__.state.focusSide),'left');
+  const leftHalf=await mobile.locator('#heartCanvas').screenshot();
+  assert.notDeepEqual(rightHalf,leftHalf,'De rechter- en linkerharthelft moeten zichtbaar verschillen');
   await mobile.locator('#discoveryAction').click();
   assert.match(await mobile.locator('#discoveryFeedback').textContent(),/De AV-kleppen sluiten eerst/);
   assert.equal(await mobile.evaluate(()=>window.__EAI_HEART_LAB__.state.studyStage),'done');
