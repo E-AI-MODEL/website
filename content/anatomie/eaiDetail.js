@@ -41,6 +41,9 @@ export function refineAnatomyInfo(partData, deselectPart) {
     );
     title.textContent = localName;
     const latin = panel.querySelector('.structure-latin');
+    if (latin && preferredName === 'Naam van onderdeel onbekend') {
+      latin.textContent = 'De naam in het bronmodel is niet betrouwbaar vast te stellen';
+    }
     // De bron verwisselt hier het middenvoetsgewricht met het schoudergewricht.
     // Laat een verkeerde Latijnse naam niet als gecontroleerde informatie zien.
     if (latin && baseName === 'Articular capsules of metatarsophalangeal joints') {
