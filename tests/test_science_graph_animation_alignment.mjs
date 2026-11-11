@@ -124,7 +124,7 @@ test('Interferentiekaart en meetlijn gebruiken dezelfde voortplantingsfase',()=>
 
 test('Zwevingen: huidige som staat op het berekende grafiekpunt',()=>{
  for(const t of [0,.28,1.4,2.99]){
-  const r=makeLab('beats',{f1:8,f2:9,A:.6},t),q=(t%3)/3;
+  const r=makeLab('beats',{f1:7.1,f2:7.8,A:.6},t),q=(t%3)/3;
   near(r.data.fn(q),measured(r,'Som op dit moment'),.012);
   const tip=r.events.find(e=>e.type==='dot');
   assert.ok(tip,'Tijdstip niet op grafiek getoond');
