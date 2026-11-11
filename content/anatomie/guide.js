@@ -172,13 +172,13 @@ const ITEMS = {
   },
   'pleura': {
     name: 'Borstvlies (pleura)',
-    function: 'Het longvlies (pleura visceralis) bedekt de long; het borstwandvlies (pleura parietalis) bekleedt de borstholte. Samen laten ze de longen met weinig wrijving bewegen.',
+    function: 'Twee dunne vliezen liggen rond de longen: één direct op de long en één tegen de binnenkant van de borstkas. Ze kunnen soepel langs elkaar bewegen bij het ademen.',
     location: 'De pleura visceralis volgt het longoppervlak en de longgroeven; de pleura parietalis bekleedt de borstwand, het middenrif en het mediastinum.',
     mechanism: 'De pleuraholte bevat een dunne vochtfilm. De druk in deze ruimte helpt de longen ontplooid te houden bij veranderingen in het borstkasvolume.'
   },
   'fascia lata': {
     name: 'Dijbeenfascie (fascia lata)',
-    function: 'De fascia lata is de diepe fascie van het bovenbeen. Zij omgeeft de bovenbeenspieren en verdeelt ze via bindweefselschotten in spiercompartimenten.',
+    function: 'De fascia lata is een stevig bindweefselvlies rond de spieren van het bovenbeen. Het houdt spiergroepen bij elkaar en scheidt ze van elkaar.',
     location: 'Vanaf de bekkenrand rondom het bovenbeen; aan de buitenzijde verdikt tot de tractus iliotibialis, die aanhecht op het scheenbeen.',
     mechanism: 'De fascie vormt compartimenten en draagt spanning over. De tractus iliotibialis ontvangt onder meer trekkracht van de m. tensor fasciae latae en m. gluteus maximus.'
   },
@@ -214,7 +214,7 @@ const ITEMS = {
   },
   'femur': {
     name: 'Dijbeen',
-    function: 'Het femur draagt lichaamsgewicht van het heupgewricht naar het kniegewricht en werkt als hefboom voor de spieren van heup en bovenbeen.',
+    function: 'Het dijbeen draagt veel lichaamsgewicht en verbindt de heup met de knie. Spieren trekken eraan om het been te laten bewegen.',
     location: 'De femurkop vormt met het acetabulum het heupgewricht; distaal vormen de femurcondylen gewrichtsvlakken met tibia en patella.',
     mechanism: 'Via spieraanhechtingen aan onder meer trochanter major, trochanter minor en linea aspera worden bewegingen van heup en knie overgebracht.'
   },
@@ -226,7 +226,7 @@ const ITEMS = {
   },
   'sciatic nerve': {
     name: 'Heupzenuw',
-    function: 'De nervus ischiadicus is de grootste zenuw van de plexus sacralis (wortels L4–S3) en voert motorische en sensibele zenuwvezels voor het been.',
+    function: 'De grote beenzenuw vervoert signalen tussen het ruggenmerg en delen van het been. Deze signalen sturen spieren aan en geven gevoel door.',
     location: 'Verlaat het bekken meestal onder de m. piriformis, loopt achter door bil en bovenbeen en splitst in de n. tibialis en n. fibularis communis.',
     mechanism: 'Innerveert direct onder meer de hamstrings; via zijn eindtakken worden veel spieren en huidgebieden van onderbeen en voet bereikt.'
   },
@@ -250,13 +250,13 @@ const ITEMS = {
   },
   'long head of biceps brachii': {
   "name": "Lange kop van de tweehoofdige armspier",
-  "function": "Draagt bij aan het buigen van de elleboog en het naar buiten draaien van de onderarm (supinatie); helpt ook de schouderkop te stabiliseren.",
+  "function": "Dit deel van de biceps helpt de elleboog te buigen en de onderarm zo te draaien dat de handpalm omhoog wijst. Het helpt ook de schouder te stabiliseren.",
   "location": "Ontspringt aan het tuberculum supraglenoidale van het schouderblad en loopt met zijn pees door de sulcus intertubercularis van de humerus.",
   "mechanism": "Verenigt zich met de korte kop tot de m. biceps brachii. De gezamenlijke eindpees hecht aan op de tuberositas radii."
 },
   'short head of biceps brachii': {
   "name": "Korte kop van de tweehoofdige armspier",
-  "function": "Helpt de elleboog te buigen en de onderarm te supineren; draagt ook bij aan het voorwaarts heffen van de bovenarm.",
+  "function": "Dit deel van de biceps helpt de elleboog te buigen en de handpalm omhoog te draaien. Het helpt ook de bovenarm naar voren te bewegen.",
   "location": "Ontspringt aan de processus coracoideus van het schouderblad, samen met de m. coracobrachialis.",
   "mechanism": "De korte en lange kop komen samen in de spierbuik; de eindpees hecht aan op de tuberositas radii en geeft een bicipitale aponeurose af."
 },
@@ -269,7 +269,7 @@ const ITEMS = {
 },
   'posterior cruciate ligament': {
   "name": "Achterste kruisband",
-  "function": "Beperkt het naar achteren schuiven van de tibia ten opzichte van het femur en ondersteunt de stabiliteit van de knie.",
+  "function": "De achterste kruisband helpt voorkomen dat het scheenbeen te ver naar achteren schuift ten opzichte van het dijbeen.",
   "location": "Binnen het kniegewricht, van het achterste intercondylaire deel van de tibia naar de laterale zijde van de mediale femurcondyl.",
   "mechanism": "Werkt met de voorste kruisband en andere kapselbanden samen om de gewrichtsbeweging te begrenzen."
 },
@@ -305,7 +305,7 @@ const ITEMS = {
 },
   'posterior horn of spinal cord': {
   "name": "Achterhoorn van het ruggenmerg",
-  "function": "Ontvangt en verwerkt sensibele informatie die via de achterwortels van de spinale zenuwen binnenkomt.",
+  "function": "Dit deel van het ruggenmerg ontvangt signalen over gevoel, zoals aanraking, pijn en temperatuur.",
   "location": "Dorsaal in de grijze stof van het ruggenmerg, links en rechts.",
   "mechanism": "Bevat neuronen en circuits die onder meer pijn-, temperatuur- en tastinformatie doorgeven of lokaal beïnvloeden."
 },
@@ -317,7 +317,7 @@ const ITEMS = {
 },
   'patella': {
   "name": "Knieschijf",
-  "function": "Vergroot de momentarm van de quadricepspees, waardoor de knie efficiënter kan worden gestrekt.",
+  "function": "De knieschijf beschermt de voorkant van de knie en zorgt dat de bovenbeenspieren het onderbeen gemakkelijker kunnen strekken.",
   "location": "In de pees van de m. quadriceps femoris, vóór het kniegewricht; verbonden met de tuberositas tibiae via het ligamentum patellae.",
   "mechanism": "Glijdt tijdens kniebuiging en -strekking over de trochlea van het femur."
 },
@@ -342,13 +342,13 @@ const ITEMS = {
   },
   'scapula': {
   "name": "Schouderblad",
-  "function": "Biedt aanhechting aan schouder- en rugspieren en vormt met de humeruskop het schoudergewricht.",
+  "function": "Het schouderblad biedt aanhechting aan spieren en vormt samen met het opperarmbeen het schoudergewricht.",
   "location": "Plat driehoekig bot achter op de borstkas, over ongeveer rib twee tot zeven.",
   "mechanism": "De cavitas glenoidalis ontvangt de humeruskop; beweging van scapula en clavicula vergroot de reikwijdte van de arm."
 },
   'clavicle': {
   "name": "Sleutelbeen",
-  "function": "Houdt de schoudergordel op afstand van de romp en draagt krachten van de arm over naar het axiale skelet.",
+  "function": "Het sleutelbeen houdt de schouder op afstand van de borstkas en geeft krachten van de arm door aan de romp.",
   "location": "Tussen het sternum en het acromion van de scapula.",
   "mechanism": "Vormt het sternoclaviculaire en acromioclaviculaire gewricht; aanhechting voor onder meer m. sternocleidomastoideus en m. pectoralis major."
 },
@@ -405,7 +405,7 @@ const ITEMS = {
 
   'hippocampus': {
   "name": "Hippocampus",
-  "function": "Speelt een grote rol bij het vormen en consolideren van nieuwe episodische herinneringen en bij ruimtelijke navigatie.",
+  "function": "De hippocampus helpt nieuwe herinneringen vast te leggen. Hij speelt ook een rol bij het onthouden van plaatsen en routes.",
   "location": "Mediaal in de temporaalkwab, aan de vloer van de onderhoorn van de laterale hersenventrikel.",
   "mechanism": "Communiceert met onder meer de entorhinale cortex en andere onderdelen van het hippocampale geheugennetwerk."
 },
