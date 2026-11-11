@@ -42,6 +42,16 @@ try {
   assert(!metrics.av&&metrics.sem&&metrics.pressure>90&&metrics.volume<130);
   const pumping=await page.locator('#heartCanvas').screenshot();
   assert.notDeepEqual(filling,pumping,'3D-model moet daadwerkelijk bewegen tussen vulling en uitpompen');
+  assert.equal(await page.locator('#sectionToggle').getAttribute('aria-pressed'),'true');
+  const cutawayFrame=await page.locator('#heartCanvas').screenshot();
+  await page.locator('#sectionToggle').click();
+  assert.equal(await page.locator('#sectionToggle').getAttribute('aria-pressed'),'false');
+  assert.equal(await page.evaluate(()=>window.__EAI_HEART_LAB__.state.cutaway),false);
+  await page.waitForTimeout(90);
+  const outsideFrame=await page.locator('#heartCanvas').screenshot();
+  assert.notDeepEqual(cutawayFrame,outsideFrame,'Een echte doorsnede moet anders zijn dan de buitenkant');
+  await page.locator('#sectionToggle').click();
+  assert.equal(await page.evaluate(()=>window.__EAI_HEART_LAB__.state.cutaway),true);
   const label=await page.locator('#phaseTitle').textContent();
   assert.match(label,/Bloed wordt uitgepompt/);
   await page.locator('#tabExploreBtn').click();
@@ -73,6 +83,7 @@ try {
   const size=await mobile.evaluate(()=>({scroll:document.documentElement.scrollWidth,inner:innerWidth,canvas:document.getElementById('heartCanvas').getBoundingClientRect().width}));
   assert(size.scroll<=size.inner+6,'Mobiele pagina mag niet horizontaal overlopen: '+JSON.stringify(size));
   assert(size.canvas>280,'Hartmodel moet groot genoeg blijven op mobiel');
+  assert.equal(await mobile.locator('#sectionToggle').count(),1,'Doorsnedeknop moet ook op mobiel beschikbaar zijn');
   await mobile.evaluate(()=>window.__EAI_HEART_LAB__.setTime(0));
   await mobile.locator('#nextPhase').click();
   const t=await mobile.evaluate(()=>window.__EAI_HEART_LAB__.state.t);
