@@ -211,3 +211,16 @@
   .discovery-result button{width:100%}
   .trace-head{gap:6px}
 }
+
+/* De eerste telefoonweergave gebruikt één rij voor alleen de werkende knoppen. */
+@media(max-width:480px){
+  .view-actions{display:flex;flex-wrap:nowrap;gap:6px;overflow:visible}
+  .view-actions .mini-control:not([hidden]){flex:1 1 0;min-width:0;padding:6px 3px;font-size:10px;min-height:36px}
+  .view-actions:has(#flowToggle:not([hidden])){flex-wrap:wrap}
+  .view-actions:has(#flowToggle:not([hidden])) .mini-control:not([hidden]){
+    flex:1 1 calc(50% - 6px);
+  }
+  .discovery-strip{padding-top:9px;padding-bottom:10px}
+  .discovery-choices{margin-top:7px}
+  .stage{height:clamp(390px,112vw,470px)}
+}
