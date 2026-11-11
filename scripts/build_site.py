@@ -2072,13 +2072,16 @@ NAV_GROUPS = [
         ("/taalwerkvormen/", "TAALwerkvormen"),
         ("/werkvormen/#didactisch-model", "Didactische modellen"),
     ]),
-    ("tools", "Tools", [
-        ("/tools/", "Alle tools"),
-        ("/tools/melkweg-lab/", "Melkweg Lab"),
+    ("observatoria", "Observatoria", [
         ("/tools/science-observatory/", "Science Observatory"),
+        ("/tools/science-observatory/labs/natuurkunde/", "Natuurkunde · 53 proefmodellen"),
         ("/tools/anatomie/", "Anatomisch Observatorium"),
         ("/tools/llm-observatorium/", "LLM Observatorium"),
         ("/tools/abyss/", "ABYSS"),
+        ("/tools/melkweg-lab/", "Melkweg Lab"),
+    ]),
+    ("tools", "Tools", [
+        ("/tools/", "Alle tools"),
         ("/tools/wihtml/", "WiHTML Docentstudio"),
         ("/tools/prompt-framework/", "EAI Prompt Framework"),
         ("/model-monitor/", "AI Model Monitor"),
@@ -2102,6 +2105,8 @@ def nav(active: str = "") -> str:
         active_key = "onderwijs"
     elif active in {"verdieping", "onderbouwing", "bronnen", "publicaties", "pijlers"}:
         active_key = "kennis"
+    elif active in {"prompt-framework", "model-monitor"}:
+        active_key = "tools"
 
     desktop_groups = []
     mobile_groups = []
@@ -2125,15 +2130,11 @@ def nav(active: str = "") -> str:
         f'<header class="site-header"><nav class="nav" aria-label="Hoofdnavigatie">'
         f'<a class="brand" href="/" aria-label="EAI home"><img src="/assets/eai-logo.svg" alt="EAI"></a>'
         f'<div class="nav-links"><a href="/"{home_current}>EAI</a>{"".join(desktop_groups)}'
-        f'<a href="/tools/prompt-framework/"{prompt_current}>Prompt Framework</a>'
-        f'<a href="/model-monitor/"{monitor_current}>Model Monitor</a>'
         f'<a href="/onderwijsin/">Onderwijs in</a>'
         f'<a href="/over/"{over_current}>Over</a>'
         f'<a class="nav-cta" href="{LINKEDIN}" target="_blank" rel="noopener">LinkedIn ↗</a></div>'
         f'<details class="mobile-nav"><summary>Menu</summary><div class="mobile-nav-panel">'
         f'<a href="/"{home_current}>EAI</a>{"".join(mobile_groups)}'
-        f'<a href="/tools/prompt-framework/"{prompt_current}>Prompt Framework</a>'
-        f'<a href="/model-monitor/"{monitor_current}>Model Monitor</a>'
         f'<a href="/onderwijsin/">Onderwijs in</a>'
         f'<a href="/over/"{over_current}>Over</a>'
         f'<a href="{LINKEDIN}" target="_blank" rel="noopener">LinkedIn ↗</a></div></details>'
@@ -2616,6 +2617,33 @@ def build(sources: Path, out: Path) -> None:
     if not eaiwork_dashboard.is_file():
         raise SystemExit("EAIwork dashboard source missing")
     write(out, "tools/eaiwork/index.html", eaiwork_dashboard.read_text(encoding="utf-8"))
+    # Observatory pages belong under investigating, not under AI instruction design.
+    tools_soup = BeautifulSoup(tools_body, "html.parser")
+    design_section = next((section for section in tools_soup.select("section.section")
+                           if (heading := section.select_one(".section-head h2"))
+                           and heading.get_text(" ", strip=True) == "Wat wil je dat AI hier doet?"), None)
+    if design_section is None:
+        raise ValueError("Ontwerpen-sectie ontbreekt in Tools")
+    observe_names = {"Science Observatory", "Anatomisch Observatorium", "LLM Observatorium", "ABYSS", "Melkweg Lab"}
+    observe_cards = []
+    for card in design_section.select(".tool-grid > .tool-card"):
+        heading = card.find("h2")
+        if heading and heading.get_text(" ", strip=True) in observe_names:
+            observe_cards.append(card.extract())
+    if len(observe_cards) != len(observe_names):
+        raise ValueError("Niet alle observatoria konden worden verplaatst")
+    observatory = BeautifulSoup(
+        '<section class="section" id="observatoria"><div class="wrap">'
+        '<div class="section-head"><div class="kicker">Interactief onderzoeken</div>'
+        '<div><h2>Observatoria en simulaties</h2>'
+        '<p>Onderzoek zelf natuurkunde, anatomie, taalmodellen en de oceaan.</p></div></div>'
+        '<div class="tool-grid"></div></div></section>', "html.parser"
+    ).section
+    grid = observatory.select_one(".tool-grid")
+    for title in ("Science Observatory", "Anatomisch Observatorium", "LLM Observatorium", "ABYSS", "Melkweg Lab"):
+        grid.append(next(card for card in observe_cards if card.h2.get_text(" ", strip=True) == title))
+    design_section.insert_before(observatory)
+    tools_body = str(tools_soup)
     write(out, "tools/index.html", doc("Tools", tools_body, "/tools/", "tools", "EAI-tools voor analyse, ontwerp en mens-AI-taakverdeling."))
     # Science Observatory: alleen de geselecteerde proefmodellen publiceren.
     # tools/ is uitvoer en wordt telkens opnieuw opgebouwd.
@@ -2625,7 +2653,7 @@ def build(sources: Path, out: Path) -> None:
         raise FileNotFoundError(f"Science Observatory catalogusbron ontbreekt: {science_landing}")
     write(out, "tools/science-observatory/index.html",
           doc("Science Observatory", science_landing.read_text(encoding="utf-8"),
-              "/tools/science-observatory/", "tools",
+              "/tools/science-observatory/", "observatoria",
               "Onderzoek natuurkunde en wiskunde met interactieve simulaties."))
     for slug in ("melkweg", "gravitatie-banen", "natuurkunde", "wiskunde-a", "wiskunde-b"):
         source = science_source / "labs" / (slug + ".html")
