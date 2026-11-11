@@ -45,10 +45,10 @@
         <section class="viewer-panel" aria-label="3D-hartmodel">
           <div class="viewer-top">
             <span class="view-kicker"><span class="status-dot" aria-hidden="true"></span> LIVE HARTCYCLUS</span>
-            <div class="view-actions">
+            <div class="view-actions" role="group" aria-label="Weergave van het hart">
               <button type="button" class="mini-control" id="sectionToggle" aria-pressed="true" title="Wissel tussen de binnenkant en de buitenkant van het hart">Doorsnede aan</button>
-              <button type="button" class="mini-control" id="labelsToggle" aria-pressed="true">Namen aan</button>
-              <button type="button" class="mini-control" id="flowToggle" aria-pressed="true">Bloedstroom aan</button>
+              <button type="button" class="mini-control" id="labelsToggle" aria-pressed="true">Namen verbergen</button>
+              <button type="button" class="mini-control" id="flowToggle" aria-pressed="true">Bloedstroom verbergen</button>
               <button type="button" class="mini-control" id="resetCamera">Startaanzicht</button>
             </div>
           </div>
@@ -65,15 +65,15 @@
               <strong>De 3D-weergave is niet beschikbaar.</strong>
               <p>De hartfasen en grafieken blijven bruikbaar. Probeer een actuele browser met WebGL.</p>
             </div>
-            <div class="stage-side-note" id="partInfo" aria-live="polite">Sleep om het hart te draaien. Kies een onderdeel om het te onderzoeken.</div>
             <div class="view-legend"><span><i class="dot dot-red"></i> Zuurstofrijk</span><span><i class="dot dot-blue"></i> Zuurstofarm</span></div>
           </div>
+          <div class="stage-side-note" id="partInfo" aria-live="polite">Sleep om het hart te draaien. Tik op een onderdeel om het te onderzoeken.</div>
           <div class="transport">
             <button class="play" type="button" id="play" aria-label="Pauzeer de hartslag">Pauze</button>
             <button class="transport-btn" type="button" id="prevPhase" aria-label="Vorige hartfase">‹</button>
             <button class="transport-btn" type="button" id="nextPhase" aria-label="Volgende hartfase">›</button>
             <label for="scrub" class="visually-hidden">Tijdstip binnen de hartcyclus</label>
-            <input id="scrub" type="range" min="0" max="1000" value="0" step="1">
+            <input id="scrub" type="range" min="0" max="1000" value="0" step="1" aria-label="Tijd binnen één hartslag">
             <output id="timeOutput" for="scrub">0,00 s</output>
             <label for="speed" class="visually-hidden">Afspeelsnelheid</label>
             <select id="speed" aria-label="Afspeelsnelheid">
@@ -84,7 +84,7 @@
           <div class="timeline" id="timeline" role="group" aria-label="Fasen van de hartcyclus">
             <button type="button" data-phase="0">Vullen</button>
             <button type="button" data-phase="1">Boezems</button>
-            <button type="button" data-phase="2" aria-label="Druk opbouwen: beide klepsoorten zijn gesloten" title="Druk opbouwen, kleppen dicht">Druk stijgt</button>
+            <button type="button" data-phase="2" aria-label="Druk opbouwen: beide klepsoorten zijn gesloten" title="Druk opbouwen, kleppen dicht">Druk opbouwen</button>
             <button type="button" data-phase="3">Uitpompen</button>
             <button type="button" data-phase="4">Ontspannen</button>
           </div>
