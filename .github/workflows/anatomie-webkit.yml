@@ -14,6 +14,7 @@ on:
       - 'scripts/test_hartslaglab_browser.mjs'
       - 'scripts/test_hartslaglab_cycle.mjs'
       - 'scripts/test_hartslaglab_geometry.mjs'
+      - 'scripts/audit_hart_glb.mjs'
       - 'tests/test_anatomie_picking.mjs'
       - 'content/anatomie/**'
       - '.github/workflows/anatomie-webkit.yml'
@@ -31,6 +32,7 @@ on:
       - 'scripts/test_hartslaglab_browser.mjs'
       - 'scripts/test_hartslaglab_cycle.mjs'
       - 'scripts/test_hartslaglab_geometry.mjs'
+      - 'scripts/audit_hart_glb.mjs'
       - 'tests/test_anatomie_picking.mjs'
       - 'content/anatomie/**'
       - '.github/workflows/anatomie-webkit.yml'
@@ -56,6 +58,8 @@ jobs:
         run: node scripts/test_hartslaglab_cycle.mjs
       - name: Controleer open hartkamers, kleppen en bloedvaten
         run: node scripts/test_hartslaglab_geometry.mjs
+      - name: Inspecteer hartstructuren in bestaande 3D-atlas
+        run: node scripts/audit_hart_glb.mjs
       - name: Controleer herkomst van de anatomische uitlegartikelen
         run: node scripts/test_anatomie_sources.mjs
       - name: Controleer Nederlandse uitleg voor alle modelonderdelen
