@@ -6,10 +6,11 @@ import {runInNewContext} from 'node:vm';
 const html=readFileSync(new URL('../content/science-observatory/labs/natuurkunde.html',import.meta.url),'utf8');
 const scripts=[...html.matchAll(/<script[^>]*>([\s\S]*?)<\/script>/g)].map(m=>m[1]);
 const definitions=scripts.find(s=>s.includes('const labSpecs ='));
-const inquiry=scripts.find(s=>s.includes('function wavePower('));
-assert.ok(definitions&&inquiry,'Onderzoeksfuncties en proefbeschrijvingen moeten bestaan');
+const inquiry=scripts.find(s=>s.includes('function bridgeVoltage('));
+const wave=scripts.find(s=>s.includes('function wavePower('));
+assert.ok(definitions&&inquiry&&wave,'Onderzoeksfuncties en proefbeschrijvingen moeten bestaan');
 const specs=runInNewContext(definitions+'\nlabSpecs');
-const snippet=inquiry.slice(inquiry.indexOf('function wavePower('),inquiry.indexOf('function wheatstoneMission('));
+const snippet=wave.slice(wave.indexOf('function wavePower('),wave.indexOf('const waveCanvas='))+'\n'+inquiry.slice(inquiry.indexOf('function bridgeVoltage('),inquiry.indexOf('function wheatstoneMission('));
 const physics=runInNewContext('const TAU=2*Math.PI;const rad=d=>d*Math.PI/180;const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));\n'+snippet+'\n({wavePower,bridgeVoltage})');
 
 test('De volledige bibliotheek van 53 proeven blijft beschikbaar',()=>{
