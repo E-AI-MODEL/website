@@ -218,16 +218,11 @@ Object.assign(translationsEn, {
     marker = "// One row per anatomical structure, not per mesh:"
     if marker not in search_js:
         raise RuntimeError("Upstream search index hook changed")
-    search_js = search_js.replace(marker, """// Match a few checked Dutch names and frequent anatomical terms. Keep the
-// original identifiers: the matching rows still point to the genuine GLBs.
+    search_js = search_js.replace(marker, """// Alleen de naam van dit exacte modelonderdeel telt. Zo levert
+// 'rib' geen zoekresultaten op met willekeurige onderliggende ribstructuren.
 function dutchTermsFor(base) {
-  const found = [];
-  Object.entries(dutchSynonyms).forEach(([english, names]) => {
-    if (base === english || (english.length >= 5 && base.includes(english))) {
-      found.push(...names);
-    }
-  });
-  return [...new Set(found)];
+  const names = dutchSynonyms[base];
+  return Array.isArray(names) ? names : [];
 }
 
 """ + marker, 1)
