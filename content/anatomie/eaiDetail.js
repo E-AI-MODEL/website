@@ -41,6 +41,11 @@ export function refineAnatomyInfo(partData, deselectPart) {
     );
     title.textContent = localName;
     const latin = panel.querySelector('.structure-latin');
+    // De bron verwisselt hier het middenvoetsgewricht met het schoudergewricht.
+    // Laat een verkeerde Latijnse naam niet als gecontroleerde informatie zien.
+    if (latin && baseName === 'Articular capsules of metatarsophalangeal joints') {
+      latin.textContent = 'Latijnse bronvermelding wordt gecontroleerd';
+    }
     if (latin && preferredName.trim().toLowerCase() === latin.textContent.trim().toLowerCase()) {
       latin.remove();
     }
