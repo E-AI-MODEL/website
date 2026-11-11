@@ -26,6 +26,7 @@ test('Schuine worp: doel is haalbaar en zonder schot wordt de baan niet getoond'
  assert.match(html,/if\(mission\.launched\)stroke\(ctx,curve/);
  assert.match(html,/classList\.toggle\('await-shot',!mission\.launched\)/);
  assert.match(html,/if\(state\.t>=duration\)/);
+ assert.match(html,/mission\.shots\.push\(\{range:/);
 });
 
 test('Wheatstone: onbekende blijft verborgen en de brugmeter sluit op de juiste weerstand',()=>{
@@ -46,6 +47,7 @@ test('Interferentie: sonde gebruikt de intensiteit uit het gekleurde veld',()=>{
  assert.ok(far>=0&&far<=1);
  assert.match(html,/const x=i\/ww\*1000,y=j\/hh\*500,power=wavePower\(p,x,y\)/);
  assert.match(html,/mission\.samples\.push\(\{x,y,power\}\)/);
+ assert.match(html,/mission\.previousSamples=mission\.samples\.map/);
  assert.match(html,/mission\.pointer===ev\.pointerId/);
 });
 
