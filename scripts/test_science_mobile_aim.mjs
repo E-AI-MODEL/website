@@ -51,6 +51,10 @@ try{
  const moved=await page.evaluate(()=>({angle:state.p.angle,v:state.p.v}));
  assert(Math.abs(moved.angle-45.5)>0.4||Math.abs(moved.v-18)>0.1,'De groene greep verandert de werkelijke instelling');
  await page.locator('#aimFire').click();
+ await page.waitForTimeout(250);
+ const visibleScene=await page.evaluate(()=>{const rect=document.querySelector('#stage').getBoundingClientRect();return{top:rect.top,bottom:rect.bottom,height:rect.height,viewport:innerHeight}});
+ assert(visibleScene.top>=55&&visibleScene.bottom<=visibleScene.viewport-10,'Tijdens de worp blijft de hele tekening zichtbaar');
+ await page.screenshot({path:'test-results/science-worp-vlucht-op-telefoon.png'});
  console.log('SHOT-START',JSON.stringify(await page.evaluate(()=>({playing:state.playing,launched:mission.launched,complete:mission.complete,t:state.t,p:state.p}))),errors);
  await page.waitForTimeout(3600);
  console.log('SHOT-AFTER',JSON.stringify(await page.evaluate(()=>({playing:state.playing,launched:mission.launched,complete:mission.complete,t:state.t,p:state.p,shots:mission.shots.length}))),errors);
