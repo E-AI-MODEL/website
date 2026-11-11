@@ -8,11 +8,12 @@ import path from 'node:path';
 
 const source=process.argv[2],destination=process.argv[3];
 if(!source||!destination)throw Error('Gebruik: node tools/eai-extract-hart.mjs bron.glb uitvoermap');
+// Hartspier is spierweefsel, dus ook rechts roodbruin. Zuurstofarm bloed krijgt alleen in de stroomlaag blauw.
 const definitions=new Map([
-  ['Left atrium',['la','Linkerboezem','chamber',[.76,.42,.42]]],
-  ['Right atrium',['ra','Rechterboezem','chamber',[.45,.60,.65]]],
-  ['Left ventricle',['lv','Linkerkamer','chamber',[.79,.39,.38]]],
-  ['Right ventricle',['rv','Rechterkamer','chamber',[.49,.55,.60]]],
+  ['Left atrium',['la','Linkerboezem','chamber',[.79,.41,.39]]],
+  ['Right atrium',['ra','Rechterboezem','chamber',[.75,.38,.36]]],
+  ['Left ventricle',['lv','Linkerkamer','chamber',[.84,.40,.37]]],
+  ['Right ventricle',['rv','Rechterkamer','chamber',[.77,.35,.34]]],
   ['Ascending aorta',['ao','Aorta','vessel',[.82,.42,.36]]],
   ['Pulmonary trunk',['pa','Longslagader','vessel',[.34,.58,.73]]],
   ['Left coronary artery',['lca','Linkerkransslagader','artery',[.91,.45,.38]]],
