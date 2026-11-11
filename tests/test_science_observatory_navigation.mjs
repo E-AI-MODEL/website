@@ -13,6 +13,9 @@ test('Science Observatory toont vijf verschillende onderzoeksruimtes', () => {
   assert.match(html, /data-so-filter="nf"/);
   assert.match(html, /data-so-filter="wa"/);
   assert.match(html, /data-so-filter="wb"/);
+  assert.match(html, /placeholder="Zoek onderzoeksruimte…"/);
+  assert.match(html, /junior\.style\.display=show/);
+  assert.match(html, /radioactiviteit/);
   assert.match(html, /niet voor alle modellen/);
 });
 
