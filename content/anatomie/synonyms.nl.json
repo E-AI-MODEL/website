@@ -60,7 +60,7 @@
     "buikaorta"
   ],
   "abducens nerve (vi)": [
-    "zesde hersenzenuw, buitenwaartsvoerende oogzenuw"
+    "zesde hersenzenuw (abducens)"
   ],
   "abductor digiti minimi of foot": [
     "afvoerder van de kleine teen"
@@ -159,7 +159,7 @@
     "voorste basale segmentbronchus van de rechterlong (BVIII)"
   ],
   "anterior belly of digastric muscle": [
-    "voorste buik van de tweehuikige spier"
+    "voorste buik van de tweebuikige spier"
   ],
   "anterior branch of medial antebrachial cutaneous nerve": [
     "voorste tak van de binnenste huidzenuw van de onderarm"
@@ -618,7 +618,7 @@
     "middelste oksellymfeklieren"
   ],
   "central canal": [
-    "centrale kanaal van het ruggenmerg"
+    "centraal kanaal van het ruggenmerg"
   ],
   "central lobule": [
     "centrale kwabje van de kleine hersenen"
@@ -1338,10 +1338,10 @@
     "voorhoofdsbeen"
   ],
   "frontal branch of superficial temporal artery": [
-    "voorhoofdstaak van de oppervlakkige slaapslagader"
+    "voorhoofdstak van de oppervlakkige slaapslagader"
   ],
   "frontal branches of callosomarginal artery": [
-    "voorhoofdstaakken van de slagader langs de hersenbalk"
+    "voorhoofdstakken van de slagader langs de hersenbalk"
   ],
   "frontalis muscle": [
     "voorhoofdsspier"
@@ -2385,7 +2385,7 @@
     "lendenslagaders"
   ],
   "lumbar branch of iliolumbar artery": [
-    "lendentaak van de darmbeen-lendenslagader"
+    "lendentak van de darmbeen-lendenslagader"
   ],
   "lumbar veins": [
     "lendenaders"
@@ -3015,7 +3015,7 @@
     "buitenste oogkasgroeven van de hersenen (bronlabel nazien)"
   ],
   "orbitofrontal branches of anterior cerebral artery": [
-    "oogkas-voorhoofdstaakken van de voorste hersenslagader"
+    "oogkas-voorhoofdstakken van de voorste hersenslagader"
   ],
   "oropharynx": [
     "mond-keelholte"
@@ -3189,7 +3189,7 @@
     "tussenbeenspieren aan de voetzoolzijde"
   ],
   "plantar interphalangeal ligaments": [
-    "banden aan de voetzoolzijde van de teengewrichten"
+    "banden aan de voetzoolzijde tussen de teenkootjes"
   ],
   "plantar metatarsal arteries": [
     "middenvoetslagaders aan de voetzoolzijde"
@@ -3201,7 +3201,7 @@
     "middenvoetaders aan de voetzoolzijde"
   ],
   "plantar metatarsophalangeal ligaments": [
-    "banden aan de voetzoolzijde van de teengewrichten"
+    "banden aan de voetzoolzijde tussen middenvoetsbeentjes en tenen"
   ],
   "plantar tarsometatarsal ligaments": [
     "banden aan de voetzoolzijde tussen voetwortel en middenvoet"
@@ -3270,7 +3270,7 @@
     "achterste basale segmentbronchus van de rechterlong (BX)"
   ],
   "posterior belly of digastric muscle": [
-    "achterste buik van de tweehuikige spier"
+    "achterste buik van de tweebuikige spier"
   ],
   "posterior branch of medial antebrachial cutaneous nerve": [
     "achterste tak van de binnenste huidzenuw van de onderarm"
@@ -3963,7 +3963,7 @@
     "kleine oppervlakkige beenader"
   ],
   "soft palate": [
-    "zachte gehemelte"
+    "zacht gehemelte"
   ],
   "soleus muscle": [
     "scholspier"
