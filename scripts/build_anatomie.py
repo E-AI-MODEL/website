@@ -558,6 +558,13 @@ def build(destination: Path) -> None:
         if destination.exists():
             shutil.rmtree(destination)
         shutil.copytree(dist, destination)
+        # Hartslaglab hoort bij de atlas, maar gebruikt eigen bewegende modellen.
+        # Publiceer vanuit contentbron, niet vanuit handmatig gebouwde tooloutput.
+        lab_source = Path(__file__).resolve().parent.parent / "content" / "anatomie" / "labs" / "hartslag"
+        for asset in ("index.html", "heart.css", "heart.js"):
+            if not (lab_source / asset).is_file():
+                raise FileNotFoundError(f"Hartslaglab bronbestand ontbreekt: {asset}")
+        shutil.copytree(lab_source, destination / "labs" / "hartslag")
         shutil.copyfile(source / "LICENSE", destination / "LICENSE.txt")
         shutil.copyfile(source / "NOTICE", destination / "NOTICE.txt")
         (destination / "UPSTREAM_COMMIT.txt").write_text(
