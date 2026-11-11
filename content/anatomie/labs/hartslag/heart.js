@@ -1,5 +1,6 @@
 // Hartslaglab: een bestuurbaar vereenvoudigd 3D-model, geen medische patiëntsimulator.
 // Alle grafieken, klepbewegingen, kamerbewegingen en stroomdeeltjes gebruiken dezelfde fase.
+import {PHASES,volume,pressure,mechanics,phaseFor} from './cycle.js';
 const $=id=>document.getElementById(id);
 const TAU=Math.PI*2;
 const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
@@ -7,47 +8,7 @@ const lerp=(a,b,t)=>a+(b-a)*t;
 const ease=t=>{t=clamp(t,0,1);return t*t*(3-2*t);};
 const span=(t,a,b)=>ease((t-a)/(b-a));
 const fmt=(v,n=0)=>Number(v).toLocaleString('nl-NL',{minimumFractionDigits:n,maximumFractionDigits:n});
-const PHASES=[
-  {id:'vulling',at:0,end:.52,title:'De kamers vullen zich',
-   text:'Bloed stroomt vanuit de boezems naar de hartkamers. De kleppen tussen boezems en kamers zijn open; de slagaderkleppen blijven dicht.',
-   hint:'Tijdens de vulling neemt het kamervolume toe. Bekijk de groene volumelijn.'},
-  {id:'atria',at:.52,end:.64,title:'De boezems trekken samen',
-   text:'De boezems persen het laatste bloed de kamers in. De AV-kleppen staan nog open. Aan het einde van deze fase zijn de kamers maximaal gevuld.',
-   hint:'Kijk hoe het kamervolume nog iets stijgt. Daarna sluiten de AV-kleppen.'},
-  {id:'isocontractie',at:.64,end:.70,title:'De kamerdruk stijgt',
-   text:'De kamers beginnen samen te trekken. De AV-kleppen sluiten, maar de slagaderkleppen zijn nog dicht. De druk stijgt terwijl het kamervolume gelijk blijft.',
-   hint:'Dit heet isovolumetrische contractie. De druk stijgt al voordat het bloed wordt uitgepompt.'},
-  {id:'ejectie',at:.70,end:.93,title:'Bloed wordt uitgepompt',
-   text:'De druk in de kamers wordt groot genoeg om de slagaderkleppen te openen. Bloed stroomt vanuit de rechterkamer naar de longen en vanuit de linkerkamer naar het lichaam.',
-   hint:'Let op: het kamervolume daalt terwijl de druk hoog is. De AV-kleppen blijven dicht.'},
-  {id:'relaxatie',at:.93,end:1,title:'De kamers ontspannen',
-   text:'De slagaderkleppen sluiten en de kamers ontspannen. Beide klepsoorten zijn kort dicht. De druk daalt voordat de kamers opnieuw gaan vullen.',
-   hint:'Dit heet isovolumetrische relaxatie: de druk daalt, maar het kamervolume blijft nog gelijk.'}
-];
 const state={t:0,playing:!matchMedia('(prefers-reduced-motion: reduce)').matches,speed:1,yaw:-.20,pitch:.08,zoom:5.95,selected:null,showLabels:true,showFlow:true,tab:'phase',rate:75,last:0,drag:null};
-const phaseFor=t=>PHASES.findIndex((p,i)=>t>=p.at&&t<(i===PHASES.length-1?1:p.end));
-function volume(t){
-  if(t<.52)return lerp(60,116,span(t,0,.52));
-  if(t<.64)return lerp(116,130,span(t,.52,.64));
-  if(t<.70)return 130;
-  if(t<.93)return lerp(130,60,span(t,.70,.93));
-  return 60;
-}
-function pressure(t){
-  if(t<.52)return lerp(5,8,span(t,0,.52));
-  if(t<.64)return lerp(8,12,span(t,.52,.64));
-  if(t<.70)return lerp(12,85,span(t,.64,.70));
-  if(t<.76)return lerp(85,120,span(t,.70,.76));
-  if(t<.88)return lerp(120,88,span(t,.76,.88));
-  if(t<.93)return lerp(88,76,span(t,.88,.93));
-  return lerp(76,5,span(t,.93,1));
-}
-function mechanics(t){
-  const volumeFrac=(volume(t)-60)/70;
-  const atriumShrink=t>=.52&&t<.64?1-.16*Math.sin(Math.PI*(t-.52)/.12):1;
-  return {av:t<.64,sem:t>=.70&&t<.93,ventScale:.79+.21*volumeFrac,
-    atriumScale:atriumShrink,pressure:pressure(t),volume:volume(t),phase:phaseFor(t)};
-}
 const m4=()=>{
   const o=new Float32Array(16);o[0]=o[5]=o[10]=o[15]=1;return o;
 };
