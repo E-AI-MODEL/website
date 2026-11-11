@@ -40,6 +40,8 @@ test('Doppler: stilstaande bron staat stil en golfringen volgen geluidssnelheid'
  near(center(sample('doppler',{vs:80},1))-center(sample('doppler',{vs:80},0)),72);
  const firstRing=r=>r.calls.find(x=>x.name==='ring'&&x.args[2]>0).args[2];
  assert.ok(firstRing(sample('doppler',{vs:80,v:360},1))>firstRing(sample('doppler',{vs:80,v:300},1)));
+ assert.ok(firstRing(sample('doppler',{vs:80,v:340,f:220},1))>firstRing(sample('doppler',{vs:80,v:340,f:880},1)), 'Hogere bronfrequentie geeft dichter bij elkaar liggende golffronten');
+ assert.ok(firstRing(sample('doppler',{vs:80,v:340,f:440},1.2))!==firstRing(sample('doppler',{vs:80,v:340,f:440},1.0)), 'Golffronten moeten zichtbaar uitzetten in de tijd');
  const result=sample('doppler',{vs:80,v:340},1);
  near(result.data.fn(0),440);
  near(result.data.fn(1),number(row(result,'Voor de bron')),.05);
