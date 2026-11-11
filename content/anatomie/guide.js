@@ -96,7 +96,8 @@ const ITEMS = {
   "name": "Voorste kruisband",
   "function": "Beperkt het naar voren schuiven van het scheenbeen ten opzichte van het dijbeen en helpt de draaistabiliteit van de knie bewaken.",
   "location": "Binnen het kniegewricht, van het voorste intercondylaire gebied van de tibia naar de binnenzijde van de laterale femurcondyl.",
-  "mechanism": "Komt onder spanning bij bepaalde schuif- en draaibelastingen; werkt samen met achterste kruisband, kapsel en omliggende spieren."
+  "mechanism": "Komt onder spanning bij bepaalde schuif- en draaibelastingen; werkt samen met achterste kruisband, kapsel en omliggende spieren.",
+  "question": "Bekijk de richting van de band. Welke beweging van het scheenbeen helpt hij tegen te houden?"
 },
   'posterior cruciate ligament': {
   "name": "Achterste kruisband",
