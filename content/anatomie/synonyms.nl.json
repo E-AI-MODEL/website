@@ -194,6 +194,9 @@
   "coracobrachialis muscle": [
     "ravenbekarmspier"
   ],
+  "corniculate cartilage": [
+    "hoorntjeskraakbeen"
+  ],
   "corpus cavernosum of penis": [
     "zwellichaam van de penis"
   ],
@@ -203,8 +206,41 @@
   "costal cartilage": [
     "ribkraakbeen"
   ],
+  "costal cartilage of eighth rib": [
+    "ribkraakbeen van de achtste rib"
+  ],
+  "costal cartilage of fifth rib": [
+    "ribkraakbeen van de vijfde rib"
+  ],
+  "costal cartilage of first rib": [
+    "ribkraakbeen van de eerste rib"
+  ],
+  "costal cartilage of fourth rib": [
+    "ribkraakbeen van de vierde rib"
+  ],
+  "costal cartilage of ninth rib": [
+    "ribkraakbeen van de negende rib"
+  ],
+  "costal cartilage of second rib": [
+    "ribkraakbeen van de tweede rib"
+  ],
+  "costal cartilage of seventh rib": [
+    "ribkraakbeen van de zevende rib"
+  ],
+  "costal cartilage of sixth rib": [
+    "ribkraakbeen van de zesde rib"
+  ],
+  "costal cartilage of tenth rib": [
+    "ribkraakbeen van de tiende rib"
+  ],
+  "costal cartilage of third rib": [
+    "ribkraakbeen van de derde rib"
+  ],
   "cricoid cartilage": [
     "ringkraakbeen"
+  ],
+  "cuboid bone": [
+    "kubusbeen"
   ],
   "deep femoral artery": [
     "diepe dijbeenslagader"
@@ -221,11 +257,47 @@
   "diaphragm": [
     "middenrif"
   ],
+  "distal phalanx of fifth finger of foot": [
+    "eindkootje van de vijfde teen"
+  ],
+  "distal phalanx of fifth finger of hand": [
+    "eindkootje van de vijfde vinger"
+  ],
+  "distal phalanx of first finger of foot": [
+    "eindkootje van de grote teen"
+  ],
+  "distal phalanx of first finger of hand": [
+    "eindkootje van de duim"
+  ],
+  "distal phalanx of fourth finger of foot": [
+    "eindkootje van de vierde teen"
+  ],
+  "distal phalanx of fourth finger of hand": [
+    "eindkootje van de vierde vinger"
+  ],
+  "distal phalanx of second finger of foot": [
+    "eindkootje van de tweede teen"
+  ],
+  "distal phalanx of second finger of hand": [
+    "eindkootje van de tweede vinger"
+  ],
+  "distal phalanx of third finger of foot": [
+    "eindkootje van de derde teen"
+  ],
+  "distal phalanx of third finger of hand": [
+    "eindkootje van de derde vinger"
+  ],
   "ductus deferens": [
     "zaadleider"
   ],
   "duodenum": [
     "twaalfvingerige darm"
+  ],
+  "eighth rib": [
+    "achtste rib"
+  ],
+  "eleventh rib": [
+    "elfde rib"
   ],
   "epididymis": [
     "bijbal"
@@ -268,6 +340,33 @@
   ],
   "fibular collateral ligament": [
     "buitenband van de knie"
+  ],
+  "fifth metacarpal bone": [
+    "vijfde middenhandsbeentje"
+  ],
+  "fifth metatarsal bone": [
+    "vijfde middenvoetsbeentje"
+  ],
+  "fifth rib": [
+    "vijfde rib"
+  ],
+  "first metacarpal bone": [
+    "eerste middenhandsbeentje"
+  ],
+  "first metatarsal bone": [
+    "eerste middenvoetsbeentje"
+  ],
+  "first rib": [
+    "eerste rib"
+  ],
+  "fourth metacarpal bone": [
+    "vierde middenhandsbeentje"
+  ],
+  "fourth metatarsal bone": [
+    "vierde middenvoetsbeentje"
+  ],
+  "fourth rib": [
+    "vierde rib"
   ],
   "fourth ventricle": [
     "vierde hersenventrikel"
@@ -323,6 +422,9 @@
   "inferior lobe of right lung": [
     "onderkwab van de rechterlong"
   ],
+  "inferior nasal concha bone": [
+    "onderste neusschelp"
+  ],
   "inferior parathyroid gland": [
     "onderste bijschildklier"
   ],
@@ -331,6 +433,9 @@
   ],
   "intermediate bronchus": [
     "tussenbronchus van de rechterlong"
+  ],
+  "intermediate cuneiform bone": [
+    "middelste wigvormige voetwortelbeen"
   ],
   "internal abdominal oblique muscle": [
     "binnenste schuine buikspier"
@@ -350,11 +455,20 @@
   "kidney": [
     "nier"
   ],
+  "lacrimal bone": [
+    "traanbeen"
+  ],
   "larynx": [
     "strottenhoofd"
   ],
+  "lateral cuneiform bone": [
+    "buitenste wigvormige voetwortelbeen"
+  ],
   "lateral meniscus": [
     "buitenmeniscus"
+  ],
+  "lateral process of nasal septal cartilage": [
+    "zijwaarts uitsteeksel van het neustussenschotkraakbeen"
   ],
   "lateral ventricle": [
     "zijventrikel van de hersenen"
@@ -404,11 +518,35 @@
   "liver": [
     "lever"
   ],
+  "lower canine": [
+    "hoektand in de onderkaak"
+  ],
+  "lower first molar tooth": [
+    "eerste grote kies in de onderkaak"
+  ],
+  "lower first premolar": [
+    "eerste kleine kies in de onderkaak"
+  ],
+  "lower lateral incisor": [
+    "buitenste snijtand in de onderkaak"
+  ],
+  "lower medial incisor": [
+    "binnenste snijtand in de onderkaak"
+  ],
+  "lower second molar tooth": [
+    "tweede grote kies in de onderkaak"
+  ],
+  "lower second premolar": [
+    "tweede kleine kies in de onderkaak"
+  ],
   "lunate bone": [
     "maanbeen"
   ],
   "lung": [
     "long"
+  ],
+  "major alar cartilage": [
+    "groot vleugelkraakbeen van de neus"
   ],
   "malleus": [
     "hamer"
@@ -422,6 +560,9 @@
   "maxilla": [
     "bovenkaak"
   ],
+  "medial cuneiform bone": [
+    "binnenste wigvormige voetwortelbeen"
+  ],
   "medial meniscus": [
     "binnenmeniscus"
   ],
@@ -431,14 +572,50 @@
   "midbrain": [
     "middenhersenen"
   ],
+  "middle cells of ethmoid bone": [
+    "middelste zeefbeencellen"
+  ],
   "middle cerebral artery (m1-segment)": [
     "middelste hersenslagader (eerste deel)"
   ],
   "middle lobe of right lung": [
     "middenkwab van de rechterlong"
   ],
+  "middle phalanx of fifth finger of foot": [
+    "middenkootje van de vijfde teen"
+  ],
+  "middle phalanx of fifth finger of hand": [
+    "middenkootje van de vijfde vinger"
+  ],
+  "middle phalanx of fourth finger of foot": [
+    "middenkootje van de vierde teen"
+  ],
+  "middle phalanx of fourth finger of hand": [
+    "middenkootje van de vierde vinger"
+  ],
+  "middle phalanx of second finger of foot": [
+    "middenkootje van de tweede teen"
+  ],
+  "middle phalanx of second finger of hand": [
+    "middenkootje van de tweede vinger"
+  ],
+  "middle phalanx of third finger of foot": [
+    "middenkootje van de derde teen"
+  ],
+  "middle phalanx of third finger of hand": [
+    "middenkootje van de derde vinger"
+  ],
+  "nasal bone": [
+    "neusbeen"
+  ],
   "nasal septal cartilage": [
     "neustussenschotkraakbeen"
+  ],
+  "navicular bone": [
+    "scheepvormig voetwortelbeen"
+  ],
+  "ninth rib": [
+    "negende rib"
   ],
   "nucleus pulposus": [
     "geleiachtige tussenwervelschijfkern"
@@ -464,6 +641,9 @@
   "optic nerve (ii)": [
     "oogzenuw"
   ],
+  "palatine bone": [
+    "gehemeltebeen"
+  ],
   "palatine tonsil": [
     "keelamandel"
   ],
@@ -485,6 +665,9 @@
   "platysma": [
     "oppervlakkige halsspier"
   ],
+  "posterior cells of ethmoid bone": [
+    "achterste zeefbeencellen"
+  ],
   "posterior cerebral artery": [
     "achterste hersenslagader"
   ],
@@ -505,6 +688,36 @@
   ],
   "prostate": [
     "prostaat"
+  ],
+  "proximal phalanx of fifth finger of foot": [
+    "basiskootje van de vijfde teen"
+  ],
+  "proximal phalanx of fifth finger of hand": [
+    "basiskootje van de vijfde vinger"
+  ],
+  "proximal phalanx of first finger of foot": [
+    "basiskootje van de grote teen"
+  ],
+  "proximal phalanx of first finger of hand": [
+    "basiskootje van de duim"
+  ],
+  "proximal phalanx of fourth finger of foot": [
+    "basiskootje van de vierde teen"
+  ],
+  "proximal phalanx of fourth finger of hand": [
+    "basiskootje van de vierde vinger"
+  ],
+  "proximal phalanx of second finger of foot": [
+    "basiskootje van de tweede teen"
+  ],
+  "proximal phalanx of second finger of hand": [
+    "basiskootje van de tweede vinger"
+  ],
+  "proximal phalanx of third finger of foot": [
+    "basiskootje van de derde teen"
+  ],
+  "proximal phalanx of third finger of hand": [
+    "basiskootje van de derde vinger"
   ],
   "psoas major": [
     "grote lendenspier"
@@ -572,8 +785,32 @@
   "sciatic nerve": [
     "heupzenuw"
   ],
+  "second metacarpal bone": [
+    "tweede middenhandsbeentje"
+  ],
+  "second metatarsal bone": [
+    "tweede middenvoetsbeentje"
+  ],
+  "second rib": [
+    "tweede rib"
+  ],
+  "sesamoid bones of foot": [
+    "sesambeentjes in de voet"
+  ],
+  "seventh rib": [
+    "zevende rib"
+  ],
   "sigmoid colon": [
     "sigmoïd"
+  ],
+  "sinus of frontal bone": [
+    "voorhoofdsholte"
+  ],
+  "sinus of sphenoid bone": [
+    "wiggenbeensholte"
+  ],
+  "sixth rib": [
+    "zesde rib"
   ],
   "soleus muscle": [
     "scholspier"
@@ -614,17 +851,32 @@
   "supinator": [
     "supinatorspier"
   ],
+  "talus": [
+    "sprongbeen"
+  ],
   "temporal bone": [
     "slaapbeen"
   ],
   "tensor fasciae latae": [
     "spanner van de dijbeenfascie"
   ],
+  "tenth rib": [
+    "tiende rib"
+  ],
   "testis": [
     "teelbal"
   ],
   "thalamus": [
     "thalamus"
+  ],
+  "third metacarpal bone": [
+    "derde middenhandsbeentje"
+  ],
+  "third metatarsal bone": [
+    "derde middenvoetsbeentje"
+  ],
+  "third rib": [
+    "derde rib"
   ],
   "third ventricle": [
     "derde hersenventrikel"
@@ -662,11 +914,35 @@
   "triquetrum bone": [
     "driehoeksbeen"
   ],
+  "twelfth rib": [
+    "twaalfde rib"
+  ],
   "ulna": [
     "ellepijp"
   ],
   "ulnar nerve": [
     "elleboogzenuw"
+  ],
+  "upper canine": [
+    "hoektand in de bovenkaak"
+  ],
+  "upper first molar tooth": [
+    "eerste grote kies in de bovenkaak"
+  ],
+  "upper first premolar": [
+    "eerste kleine kies in de bovenkaak"
+  ],
+  "upper lateral incisor": [
+    "buitenste snijtand in de bovenkaak"
+  ],
+  "upper medial incisor": [
+    "binnenste snijtand in de bovenkaak"
+  ],
+  "upper second molar tooth": [
+    "tweede grote kies in de bovenkaak"
+  ],
+  "upper second premolar": [
+    "tweede kleine kies in de bovenkaak"
   ],
   "ureter": [
     "urineleider"
@@ -707,6 +983,72 @@
   "vertebra": [
     "wervel"
   ],
+  "vertebra c3": [
+    "derde halswervel (C3)"
+  ],
+  "vertebra c4": [
+    "vierde halswervel (C4)"
+  ],
+  "vertebra c5": [
+    "vijfde halswervel (C5)"
+  ],
+  "vertebra c6": [
+    "zesde halswervel (C6)"
+  ],
+  "vertebra c7": [
+    "zevende halswervel (C7)"
+  ],
+  "vertebra l1": [
+    "eerste lendenwervel (L1)"
+  ],
+  "vertebra l2": [
+    "tweede lendenwervel (L2)"
+  ],
+  "vertebra l3": [
+    "derde lendenwervel (L3)"
+  ],
+  "vertebra l4": [
+    "vierde lendenwervel (L4)"
+  ],
+  "vertebra l5": [
+    "vijfde lendenwervel (L5)"
+  ],
+  "vertebra t1": [
+    "eerste borstwervel (T1)"
+  ],
+  "vertebra t10": [
+    "tiende borstwervel (T10)"
+  ],
+  "vertebra t11": [
+    "elfde borstwervel (T11)"
+  ],
+  "vertebra t12": [
+    "twaalfde borstwervel (T12)"
+  ],
+  "vertebra t2": [
+    "tweede borstwervel (T2)"
+  ],
+  "vertebra t3": [
+    "derde borstwervel (T3)"
+  ],
+  "vertebra t4": [
+    "vierde borstwervel (T4)"
+  ],
+  "vertebra t5": [
+    "vijfde borstwervel (T5)"
+  ],
+  "vertebra t6": [
+    "zesde borstwervel (T6)"
+  ],
+  "vertebra t7": [
+    "zevende borstwervel (T7)"
+  ],
+  "vertebra t8": [
+    "achtste borstwervel (T8)"
+  ],
+  "vertebra t9": [
+    "negende borstwervel (T9)"
+  ],
   "visceral": [
     "organen"
   ],
@@ -718,5 +1060,8 @@
   ],
   "xiphoid process": [
     "zwaardvormig uitsteeksel"
+  ],
+  "zygomatic bone": [
+    "jukbeen"
   ]
 }
