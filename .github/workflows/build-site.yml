@@ -91,6 +91,8 @@ jobs:
 
       - name: Check website insights and menu
         run: python -m unittest discover -s tests -p 'test_site_insights.py' -v
+      - name: Check compact NL and EN menus
+        run: python -m unittest discover -s tests -p 'test_site_menu_groups.py' -v
 
       - name: Check EAIwork public demonstration
         run: python -m unittest discover -s tests -p 'test_eaiwork_dashboard_publish.py' -v
