@@ -429,7 +429,7 @@ function projectileMobile(ctx,p,t){
  for(let metre=0;metre<=Math.max(135,range);metre+=majorStep){
    const x=x0+metre*scale;if(x>534)break;
    stroke(ctx,[[x,y0],[x,y0+8]],'#66899a91',1);
-   ctx.fillStyle='#91b5c3';ctx.font='17px system-ui';ctx.fillText(metre+' m',x-11,y0+28);
+   ctx.fillStyle='#91b5c3';ctx.font='17px system-ui';ctx.fillText(metre+' m',Math.max(32,Math.min(493,x-11)),y0+28);
  }
  // A mat is a place where the ball lands, not a floating arrow.
  drawLandingMat(ctx,targetX,y0,scale);
