@@ -91,6 +91,22 @@ const REFERENCES = Object.freeze({
     label: 'OpenStax, 25.3 Bouw van de nier',
     url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/25-3-gross-anatomy-of-the-kidney'
   },
+  lowerLimbMuscles: {
+    label: 'OpenStax, 11.6 Spieren van bekken en benen',
+    url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/11-6-appendicular-muscles-of-the-pelvic-girdle-and-lower-limbs'
+  },
+  circulation: {
+    label: 'OpenStax, 20.5 Grote slagaders en aders',
+    url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/20-5-circulatory-pathways'
+  },
+  peripheralNerves: {
+    label: 'OpenStax, 13.4 Zenuwen buiten hersenen en ruggenmerg',
+    url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/13-4-the-peripheral-nervous-system'
+  },
+  hippocampus: {
+    label: 'OpenStax, 16.2 Geheugen en hippocampus',
+    url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/16-2-the-mental-status-exam'
+  },
   lymph: {
     label: 'OpenStax, 21.1 Lymfe- en afweerstelsel',
     url: 'https://openstax.org/books/anatomy-and-physiology/pages/21-1-anatomy-of-the-lymphatic-and-immune-systems'
@@ -147,6 +163,15 @@ const SUPPORTED_GUIDES = Object.freeze({
   'pancreatic duct': 'digestionOrgans',
   'stomach': 'stomach',
   'duodenum': 'digestion',
+  'tibialis anterior muscle': 'lowerLimbMuscles',
+  'femoral artery': 'circulation',
+  'ulnar artery': 'circulation',
+  'femoral vein': 'circulation',
+  'basilar artery': 'circulation',
+  'sciatic nerve': 'peripheralNerves',
+  'abdominal aorta': 'circulation',
+  'thoracic aorta': 'circulation',
+  'hippocampus': 'hippocampus',
 });
 
 const GENERAL_REFERENCES = Object.freeze({
