@@ -109,6 +109,17 @@ try {
   assert(layout.phaseWidths.every(x=>x>=115),'Fasen mogen niet tot afgekorte knoppen krimpen');
   assert(layout.textFits,'Faseteksten moeten volledig leesbaar zijn');
   assert(!layout.hasHorizontalOverflow,'Alleen de fasebalk mag horizontaal scrollen');
+  const settingsLayout=await mobile.evaluate(()=>{
+    const container=document.querySelector('.view-actions').getBoundingClientRect();
+    const buttons=[...document.querySelectorAll('.view-actions button')];
+    const rects=buttons.map(b=>b.getBoundingClientRect());
+    return {count:buttons.length,visible:rects.every(r=>r.left>=container.left-2&&r.right<=container.right+2&&r.width>85),
+      fullLabels:buttons.every(b=>b.scrollWidth<=b.clientWidth+5)};
+  });
+  assert.equal(settingsLayout.count,4,'Alle vier de weergaveknoppen moeten beschikbaar zijn');
+  assert(settingsLayout.visible,'Weergaveknoppen mogen op telefoon niet buiten beeld vallen');
+  assert(settingsLayout.fullLabels,'Knopteksten moeten leesbaar blijven op telefoon');
+
 
   assert.equal(await mobile.locator('#sectionToggle').count(),1,'Doorsnedeknop moet ook op mobiel beschikbaar zijn');
   await mobile.evaluate(()=>window.__EAI_HEART_LAB__.setTime(0));
