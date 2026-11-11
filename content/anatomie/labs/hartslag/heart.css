@@ -86,3 +86,10 @@
 @media(hover:none) and (pointer:coarse){
   .transport button,.transport select,.mini-control,.tabs button{touch-action:manipulation}
 }
+
+/* Op een telefoon geen decoratieve assen achter het anatomische model. */
+@media(max-width:790px){
+  .stage::before,.stage::after{display:none}
+  .stage-wash{background:radial-gradient(ellipse at 50% 80%,transparent 52%,#07121c46 100%)}
+  .stage-caption{color:#bed0d6}
+}
