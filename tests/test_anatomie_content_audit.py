@@ -23,7 +23,7 @@ class AnatomyContentAuditTests(unittest.TestCase):
         })
 
     def test_dutch_names_reference_real_model_keys(self):
-        names = MODULE.load_sources()[3]
+        names = MODULE.load_sources(ROOT)[3]
         models = {row["structuur"].lower() for row in self.rows}
         for key in ("aortic arch", "left ventricle", "optic nerve (ii)",
                     "articular capsules of metatarsophalangeal joints"):
