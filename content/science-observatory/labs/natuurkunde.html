@@ -284,7 +284,71 @@ function doublePremium(ctx,p,t){background(ctx);const x1=205,x2=685,y0=250,gap=4
 function lensPremium(ctx,p,t){background(ctx);const cx=500,cy=258,k=9.2,f=p.f*k,u=p.u*k,v=p.f*p.u/(p.u-p.f),m=-v/p.u;const ox=cx-u,tip=cy-p.h*25;stroke(ctx,[[55,cy],[951,cy]],'#9db7c55a',1.1);const grad=ctx.createLinearGradient(cx-12,0,cx+12,0);grad.addColorStop(0,'#65d4e630');grad.addColorStop(.5,'#87e7f082');grad.addColorStop(1,'#62cddd26');ctx.fillStyle=grad;ctx.beginPath();ctx.ellipse(cx,cy,12,175,0,0,TAU);ctx.fill();ctx.strokeStyle='#8cdef2c0';ctx.lineWidth=1;ctx.stroke();for(const sign of [-1,1]){circle(ctx,cx+sign*f,cy,4,'#fac28e',false);ctx.fillStyle='#d9b58e';ctx.font='12px system-ui';ctx.fillText('F',cx+sign*f-4,cy+23)}stroke(ctx,[[ox,cy],[ox,tip]],'#ffc18b',3,7);stroke(ctx,[[ox-9,tip+12],[ox,tip],[ox+9,tip+12]],'#ffc18b',2);ctx.beginPath();ctx.arc(ox,tip,10,0,TAU);ctx.strokeStyle='#fed1a978';ctx.lineWidth=1.1;ctx.stroke();stroke(ctx,[[ox,tip],[cx,tip]],'#f6c185a9',1.4,3);const slope=(cy-tip)/f,exitY=tip+slope*(951-cx);stroke(ctx,[[cx,tip],[951,exitY]],'#72e9d8',1.55,4);stroke(ctx,[[ox,tip],[cx,cy],[951,cy+(cy-tip)/(cx-ox)*(951-cx)]],'#98b6ff',1.4,4);if(Number.isFinite(v)&&Math.abs(v)<180){const bx=cx+v*k,by=cy-m*p.h*25;if(bx>50&&bx<955&&by>-50&&by<550){if(v<0){stroke(ctx,[[cx,tip],[bx,by]],'#f6c1859c',1.2,0,[5,6]);stroke(ctx,[[cx,cy],[bx,by]],'#98b6ff9c',1.2,0,[5,6]);stroke(ctx,[[bx,cy],[bx,by]],'#78eede',2,0,[4,5])}else{stroke(ctx,[[bx,cy],[bx,by]],'#78eede',2.6,7)}circle(ctx,bx,by,5,'#78eede');ctx.font='12px system-ui';ctx.fillStyle='#c4eee9';ctx.fillText(v<0?'VIRTUEEL BEELD':'REËEL BEELD',Math.max(60,bx+10),Math.max(60,by-7));if(v<0){ctx.fillStyle='#9bbaca';ctx.font='11px system-ui';ctx.fillText('Gestippeld: terugverlengingen, geen lichtstralen',62,463)}}}else{ctx.fillStyle='#e6eefe';ctx.font='13px system-ui';ctx.fillText('BEELD OP GROTE AFSTAND',706,87)}ctx.fillStyle='#f5c48e';ctx.font='12px system-ui';ctx.fillText('VOORWERP',ox-34,Math.max(34,tip-18));ctx.fillStyle='#dce9f6';ctx.font='600 23px system-ui';ctx.fillText('Bolle lens',65,90);ctx.font='13px system-ui';ctx.fillStyle='#8cafc2';ctx.fillText('f = '+fmt(p.f,1)+' cm',65,120)}
 Object.assign(flagship2d,{circular:circularPremium,standing:standingPremium,interference:interferencePremium,double:doublePremium,lens:lensPremium});
 
-const meta={projectile:['Hoogte (m)','Tijd (s)',p=>2*p.v*Math.sin(rad(p.angle))/p.g],pendulum:['Uitwijkhoek (°)','Relatieve tijd',()=>3],ohm:['Stroomsterkte (A)','Spanning (V)',()=>24],kepler1:['Afstand tot ster (AE)','Omloop (deel)',()=>1],kepler2:['Afstand tot ster (AE)','Omloop (deel)',()=>1],refraction:['Brekingshoek (°)','Invalshoek (°)',()=>90],decay:['Kernen','Halveringstijden',()=>6],em:['Veldsterkte (rel.)','Relatieve positie',()=>1],magnetbar:['Relatieve veldsterkte','Relatieve afstand',()=>1],magnetwire:['Magnetische veldsterkte (µT)','Afstand (rel.)',()=>1],bohr:['Energie (eV)','Niveau (rel.)',()=>1]};
+const graphSpecs={
+ acceleration:['Positie (m)','Tijd (s)',p=>[0,8],(p,t)=>((t%8)+8)%8],
+ equilibrium:['Resulterende kracht (N)','Hoek tussen de krachten (°)',p=>[0,180],p=>p.angle],
+ resultant:['Resulterende kracht (N)','Hoek tussen de krachten (°)',p=>[0,180],p=>p.angle],
+ resolution:['Horizontale kracht Fₓ (N)','Hoek met de horizontaal (°)',p=>[0,90],p=>p.angle],
+ pulleys:['Benodigde trekkracht (N)','Aantal dragende touwdelen',p=>[1,6],p=>p.n],
+ lever:['Benodigde tegenkracht (N)','Rechter arm (m)',p=>[.5,4],p=>p.arm2],
+ incline:['Zwaartekracht langs helling (N)','Hellingshoek (°)',p=>[0,60],p=>p.angle],
+ newton2:['Versnelling (m/s²)','Massa (kg)',p=>[1,15],p=>p.m],
+ projectile:['Hoogte (m)','Tijd na lancering (s)',p=>[0,2*p.v*Math.sin(rad(p.angle))/p.g],(p,t)=>{let T=2*p.v*Math.sin(rad(p.angle))/p.g;return T>0?((t%T)+T)%T:0}],
+ collision:['Bewegingsenergie na botsing (J)','Restitutiecoëfficiënt e',p=>[0,1],p=>p.e],
+ cradle:['Hoek buitenste slinger (°)','Trillingsfase (perioden)',p=>[0,2]],
+ circular:['Middelpuntzoekende kracht (N)','Snelheid (m/s)',p=>[1,20],p=>p.v],
+ carousel:['Middelpuntzoekende kracht (N)','Toerental (omw/min)',p=>[2,30],p=>p.rpm],
+ looping:['Normaalkracht bovenin (N)','Snelheid bovenin (m/s)',p=>[2,20],p=>p.v],
+ kepler1:['Afstand tot ster (AE)','Tijd (omloopdeel)',p=>[0,1],(p,t)=>((t/15)%1+1)%1],
+ kepler2:['Afstand tot ster (AE)','Tijd (omloopdeel)',p=>[0,1],(p,t)=>((t/9)%1+1)%1],
+ hydro:['Overdruk (Pa)','Diepte (m)',p=>[0,12],p=>p.depth],
+ buoyant:['Opwaartse kracht (N)','Vloeistofdichtheid (kg/m³)',p=>[500,1500],p=>p.rho],
+ pendulum:['Uitwijkhoek (°)','Tijd (s)',p=>[0,3*TAU*Math.sqrt(p.L/p.g)],(p,t)=>t%(3*TAU*Math.sqrt(p.L/p.g))],
+ spring:['Uitwijking (m)','Tijd (s)',p=>[0,3*TAU*Math.sqrt(p.m/p.k)],(p,t)=>t%(3*TAU*Math.sqrt(p.m/p.k))],
+ coupled:['Hoek slinger 1 (°)','Tijd (s)',p=>[0,5/p.f],(p,t)=>t%(5/p.f)],
+ resonance:['Amplitude­verhouding (rel.)','Aandrijffrequentie (Hz)',p=>[.2,3],p=>p.f],
+ beats:['Gecombineerde uitwijking (rel.)','Tijd (s)',p=>[0,3],(p,t)=>t%3],
+ standing:['Uitwijking / amplitude (rel.)','Positie langs snaar (m)',p=>[0,p.L]],
+ longitudinal:['Drukafwijking (rel.)','Positie langs buis (m)',p=>[0,p.L]],
+ interference:['Som van uitwijkingen (rel.)','Plaats op meetlijn (m)',p=>[-3.5,3.5]],
+ doppler:['Frequentie vóór bron (Hz)','Bronsnelheid (m/s)',p=>[0,p.vs],p=>p.vs],
+ magnetbar:['Veldsterkte (rel.)','Afstand in model (rel.)',p=>[.5,3.5]],
+ magnetwire:['Magnetische veldsterkte (µT)','Afstand tot draad (cm)',p=>[1,15],p=>p.r],
+ lorentz:['Lorentzkracht (nN)','Hoek tussen v en B (°)',p=>[0,90],p=>p.angle],
+ motor:['Indicatief koppel (N·m)','Draaihoek (°)',p=>[0,360],(p,t)=>((t*p.rpm*6)%360+360)%360],
+ generator:['Geïnduceerde spanning (V)','Draaihoek (°)',p=>[0,360],(p,t)=>((t*p.rpm*6)%360+360)%360],
+ ohm:['Stroomsterkte (A)','Spanning (V)',p=>[0,24],p=>p.U],
+ resistors:['Vervangingsweerstand (Ω)','Weerstand R₂ (Ω)',p=>[1,31],p=>p.R2],
+ potentiometer:['Uitgangsspanning (V)','Positie sleepcontact (%)',p=>[0,100],p=>p.position],
+ wheatstone:['Brugspanning (V)','Weerstand R₄ (Ω)',p=>[1,41],p=>p.R4],
+ ac:['Momentane stroom (A)','Tijd (s)',p=>[0,3/p.f],(p,t)=>(t*.12)%(3/p.f)],
+ rlc:['Impedantie (Ω)','Frequentie (Hz)',p=>[10,200],p=>p.f],
+ lc:['Elektrische energie (mJ)','Tijd (s)',p=>[0,2*TAU*Math.sqrt(p.L*.001*p.C*1e-6)],(p,t)=>(t*.02)%(2*TAU*Math.sqrt(p.L*.001*p.C*1e-6))],
+ em:['Elektrisch veld (rel.)','Plaats langs de golf (m)',p=>[0,8]],
+ refraction:['Brekingshoek (°)','Invalshoek (°)',p=>[0,90],p=>p.angle],
+ huygens:['Brekingshoek (°)','Invalshoek (°)',p=>[0,90],p=>p.angle],
+ lens:['Beeldafstand (cm)','Voorwerpsafstand (cm)',p=>[2,32],p=>p.u],
+ telescope:['Absolute hoekvergroting (×)','Brandpuntsafstand oculair (cm)',p=>[2,20],p=>p.fe],
+ double:['Relatieve lichtintensiteit','Afstand vanaf midden (mm)',p=>{let mm=p.lambda*1e-9*p.L/(p.d*1e-3)*1000;return[-4*mm,4*mm]}],
+ single:['Relatieve lichtintensiteit','Afstand vanaf midden (mm)',p=>{let mm=p.lambda*1e-9*p.L/(p.a*1e-3)*1000;return[-4*mm,4*mm]}],
+ gas:['Druk (kPa)',p=>p.mode===2?'Temperatuur (K)':'Volume (L)',p=>p.mode===2?[100,700]:[2,12],p=>p.mode===2?p.T:p.V],
+ dilation:['Lorentzfactor γ','Snelheid v/c',p=>[0,.95],p=>p.beta],
+ photo:['Max. kinetische energie (eV)','Frequentie (PHz)',p=>[.3,1.5],p=>p.f],
+ bohr:['Energieniveau (eV)','Hoofdkwantumgetal n',p=>[1,6],p=>p.n1],
+ chains:['Aantal dochterkernen','Tijd (s)',p=>[0,60],(p,t)=>((t%60)+60)%60],
+ decay:['Verwacht aantal kernen','Tijd (s)',p=>[0,6*p.T],(p,t)=>((t%60)+60)%60],
+ bragg:['Bragghoek (°)','Golflengte (nm)',p=>[.05,.3],p=>p.lambda]
+};
+function graphSpecFor(id,p,t){
+ const def=graphSpecs[id];
+ if(!def)throw new Error('Grafiekbeschrijving ontbreekt: '+id);
+ const [min,max]=def[2](p);
+ if(!Number.isFinite(min)||!Number.isFinite(max)||max<min)throw new Error('Ongeldig grafiekbereik: '+id);
+ const xLabel=typeof def[1]==='function'?def[1](p):def[1];
+ const cursor=def[3]?def[3](p,t):null;
+ return {yLabel:def[0],xLabel,min,max,cursor};
+}
+
 function lineData(fn){const result=[];for(let i=0;i<=240;i++){let y;try{y=fn(i/240)}catch(e){y=NaN}result.push([i/240,Number.isFinite(y)?y:NaN])}return result}
 function chart(info){const canvas=$('plot'),r=canvas.getBoundingClientRect(),d=Math.max(1,Math.min(devicePixelRatio||1,2)),w=Math.max(120,r.width),h=Math.max(90,r.height);if(canvas.width!==Math.round(w*d)||canvas.height!==Math.round(h*d)){canvas.width=w*d;canvas.height=h*d}const ctx=canvas.getContext('2d');ctx.setTransform(d,0,0,d,0,0);ctx.clearRect(0,0,w,h);const data=lineData(info.fn),prior=state.baseline?.id===state.id?state.baseline.series:null,all=[...data,...(prior||[])].map(a=>a[1]).filter(Number.isFinite);if(!all.length)return;let ymin=Math.min(...all),ymax=Math.max(...all);if(ymin===ymax){ymin-=1;ymax+=1}const margin=(ymax-ymin)*.13;ymin-=margin;ymax+=margin;const left=48,right=w-14,top=9,bottom=h-23;const xpt=x=>left+x*(right-left),ypt=y=>bottom-(y-ymin)/(ymax-ymin)*(bottom-top);ctx.font='10px system-ui';ctx.fillStyle='#809bb1';for(let j=0;j<=3;j++){const y=top+(bottom-top)*j/3;ctx.strokeStyle='#54708637';ctx.setLineDash([2,5]);ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(left,y);ctx.lineTo(right,y);ctx.stroke();ctx.setLineDash([]);ctx.fillText(fmt(ymax-(ymax-ymin)*j/3,1),0,y+3)}const domain=meta[state.id]||[info.title,'Relatief proefbereik',()=>100];const max=domain[2](state.p);for(let j=0;j<=4;j++){const x=left+(right-left)*j/4;ctx.fillStyle='#8ba1b3';ctx.fillText(fmt(j/4*max,max>10?0:2),x-4,bottom+14)}ctx.fillText(domain[1],Math.max(left,right-95),h-2);const draw=(points,col,wd,dash=[])=>{ctx.save();ctx.beginPath();ctx.strokeStyle=col;ctx.lineWidth=wd;ctx.setLineDash(dash);let started=false;for(const [x,y] of points){if(!Number.isFinite(y)){started=false;continue}if(!started){ctx.moveTo(xpt(x),ypt(y));started=true}else ctx.lineTo(xpt(x),ypt(y))}ctx.stroke();ctx.restore()};if(prior)draw(prior,'#f4b77b80',1.5,[5,4]);draw(data,'#6be4d5',2.1);$('plotLabel').textContent=domain[0]||info.title;$('graphDomain').textContent=info.title;return data}
 let lastChart=0;
