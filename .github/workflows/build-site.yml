@@ -91,6 +91,8 @@ jobs:
 
       - name: Check website insights and menu
         run: python -m unittest discover -s tests -p 'test_site_insights.py' -v
+      - name: Check compact NL and EN menus
+        run: python -m unittest discover -s tests -p 'test_site_menu_groups.py' -v
 
       - name: Check EAIwork public demonstration
         run: python -m unittest discover -s tests -p 'test_eaiwork_dashboard_publish.py' -v
@@ -128,6 +130,8 @@ jobs:
 
       - name: Check Science Observatory pilot publication
         run: python -m unittest discover -s tests -p 'test_science_observatory_publish.py' -v
+      - name: Check physics reference values and drawings
+        run: node --test tests/test_science_physics_models.mjs
 
       - name: Check Melkweg Lab publication
         run: python -m unittest discover -s tests -p 'test_melkweg_lab_publish.py' -v

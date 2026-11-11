@@ -13,6 +13,9 @@ test('Science Observatory toont vijf verschillende onderzoeksruimtes', () => {
   assert.match(html, /data-so-filter="nf"/);
   assert.match(html, /data-so-filter="wa"/);
   assert.match(html, /data-so-filter="wb"/);
+  assert.match(html, /placeholder="Zoek onderzoeksruimte…"/);
+  assert.match(html, /junior\.style\.display=show/);
+  assert.match(html, /radioactiviteit/);
   assert.match(html, /niet voor alle modellen/);
 });
 
@@ -46,4 +49,19 @@ test('Websitegenerator gebruikt de bronbestanden en aparte observatoriarubriek',
   assert.match(script, /science_source \/ "labs" \/ \(slug \+ "\.html"\)/);
   assert.match(script, /observe_names = \{/);
   assert.match(script, /"observatoria", "Observatoria"/);
+});
+
+test('De publieke hoofdnavigatie heeft observatoria apart van hulpmiddelen', () => {
+  const source = load('scripts/prepare_ui.py');
+  assert.match(source, /\('Observatoria', \[/);
+  assert.match(source, /\('Observatories', \[/);
+  assert.match(source, /'Natuurkunde: 53 proeven'/);
+  assert.match(source, /'Physics: 53 experiments \(Dutch\)'/);
+  const observatoria = source.slice(source.indexOf("('Observatoria', ["), source.indexOf("('Tools', [", source.indexOf("('Observatoria', [")));
+  assert.match(observatoria, /Anatomisch Observatorium/);
+  assert.doesNotMatch(observatoria, /EAI Prompt Framework/);
+  const tools = source.slice(source.indexOf("('Tools', [", source.indexOf("('Observatoria', [")), source.indexOf("('Over', [", source.indexOf("('Observatoria', [")));
+  assert.match(tools, /EAI Prompt Framework/);
+  assert.doesNotMatch(tools, /Anatomisch Observatorium/);
+  assert.equal((source.match(/'\/tools\/anatomie\//g) || []).length, 2);
 });

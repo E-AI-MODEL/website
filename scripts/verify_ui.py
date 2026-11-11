@@ -21,7 +21,7 @@ def check(root: Path):
         assert len(soup.select('header.eai-masthead')) == 1, rel
         assert not soup.select('header .eai-links'), rel
         assert len(soup.select('.eai-site-menu')) == 1, rel
-        assert len(soup.select('.eai-site-group')) == 6, rel
+        assert len(soup.select('.eai-site-group')) == 7, rel
         assert len(soup.select('.eai-site-language a')) == 2, rel
         assert len(soup.select('h1')) == 1, rel
         assert len(soup.select('.eai-site-primary a')) == 6, rel
