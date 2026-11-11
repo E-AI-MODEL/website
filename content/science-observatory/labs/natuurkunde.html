@@ -169,7 +169,7 @@
 <div class="lab-main"><div class="lab-head"><div class="lab-identity"><button class="tool-btn desktop-only" id="toggleExplorer" title="Verberg of toon de experimentenlijst" aria-label="Verberg of toon de experimentenlijst"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16"/></svg></button><button class="tiny-btn mobile-only" id="openExplorer" aria-label="Kies een experiment" title="Experimenten"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><div><div class="lab-breadcrumb" id="labGroup">MECHANICA</div><h2 id="labTitle">Schuine worp</h2></div></div><div class="lab-controls"><button class="tool-btn mobile-only" id="openMobileSettings" title="Open de instellingen" aria-label="Open de instellingen"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/><circle cx="9" cy="7" r="2" fill="#091523"/><circle cx="15" cy="12" r="2" fill="#091523"/><circle cx="10" cy="17" r="2" fill="#091523"/></svg></button><button class="tool-btn desktop-only" id="toggleInspector" title="Verberg of toon instellingen" aria-label="Verberg of toon instellingen"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M15 4v16"/></svg></button><button class="tool-btn" id="focusScene" title="Experiment beeldvullend tonen" aria-label="Schakel focusweergave in of uit"><svg viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M3 16v5h5M21 16v5h-5"/></svg></button><button class="tool-btn" id="resetBtn" title="Begin opnieuw" aria-label="Herstel de proef"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.3-5.7M4 4v5h5"/></svg></button><button class="tool-btn" id="stepBtn" title="Eén stap" aria-label="Een stap vooruit"><svg viewBox="0 0 24 24"><path d="m5 5 10 7-10 7V5ZM19 5v14"/></svg></button><button class="play-btn" id="playBtn" aria-pressed="true"><svg viewBox="0 0 24 24" id="playIcon"><path d="M7 5v14M17 5v14"/></svg><span id="playLabel">Pauze</span></button><select id="speedSelect" class="speed-select" aria-label="Afspeelsnelheid"><option value=".25">0,25×</option><option value=".5">0,5×</option><option value="1" selected>1×</option><option value="2">2×</option><option value="4">4×</option></select></div></div>
 <div id="labError" role="alert" hidden></div><section id="inquiryBar" class="inquiry-bar" aria-label="Onderzoeksopdracht" hidden><div><span class="inquiry-label" id="inquiryKind"></span><h3 class="inquiry-title" id="inquiryTitle"></h3><p class="inquiry-detail" id="inquiryDetail"></p></div><div class="inquiry-right"><span class="inquiry-status" id="inquiryStatus" role="status" aria-live="polite"></span><div class="inquiry-actions"><input id="inquiryAnswer" class="inquiry-answer" inputmode="decimal" aria-label="Geschatte onbekende weerstand in ohm" placeholder="R? in Ω" hidden><button id="inquiryAction" class="inquiry-action" type="button"></button></div></div></section>
 <div class="scene-shell"><div class="scene-hud scene-hud-left"><span class="hud-pip"></span><span id="sceneBadge">LIVE SIMULATIE</span></div><div class="scene-hud scene-hud-right"><span id="sceneMeta">SCHEMATISCH MODEL</span></div><div class="scene-tip" id="sceneTip" hidden></div><div class="canvas-wrap" id="stage"><canvas id="scene" aria-label="Interactieve weergave van de natuurkundeproef"></canvas><div id="sceneCompass" class="scene-compass" hidden>Sleep om te draaien · knijp om in te zoomen</div></div><div class="scene-bottom"><div class="legend"><span><i class="legend-dot cyan"></i> Model</span><span><i class="legend-line gold"></i> Baan / veld</span></div><div class="scene-lower-tools"><span id="timeLabel">t = 0,00 s</span><button class="icon-text" id="cameraReset" hidden title="Camera opnieuw richten">↺ Camera</button></div></div><div class="mobile-aim" id="mobileAim" hidden>
- <div class="mobile-aim-head"><strong>Verander je worp</strong><button type="button" class="aim-view-btn" id="mobileView" aria-pressed="false">Hele baan zien</button></div>
+ <div class="mobile-aim-head"><strong>Richt de bal</strong><button type="button" class="aim-view-btn" id="mobileView" aria-pressed="false">Hele baan zien</button></div>
  <div class="aim-help">Sleep het groene rondje in de tekening. Of gebruik deze knoppen.</div>
  <div class="aim-row"><label for="aimAngle">Richting <output id="aimAngleValue">45°</output></label><div class="aim-adjust">
   <button type="button" data-aim-key="angle" data-aim-delta="-0.5" aria-label="Gooi lager">Lager</button>
@@ -425,10 +425,11 @@ function projectileMobile(ctx,p,t){
   }
  }
  // Metres along the ground, with the target distance as the reference.
- for(let metre=0;metre<=Math.max(135,range);metre+=5){
+ const majorStep=scale>=8?10:scale>=4?20:50;
+ for(let metre=0;metre<=Math.max(135,range);metre+=majorStep){
    const x=x0+metre*scale;if(x>534)break;
    stroke(ctx,[[x,y0],[x,y0+8]],'#66899a91',1);
-   if(metre%10===0){ctx.fillStyle='#91b5c3';ctx.font='17px system-ui';ctx.fillText(metre+' m',x-11,y0+28)}
+   ctx.fillStyle='#91b5c3';ctx.font='17px system-ui';ctx.fillText(metre+' m',x-11,y0+28);
  }
  // A mat is a place where the ball lands, not a floating arrow.
  drawLandingMat(ctx,targetX,y0,scale);
@@ -698,7 +699,7 @@ function renderInquiry(){
 }
 function actInquiry(){
  if(state.id==='projectile'){
-  if(mission.complete){mission.launched=false;mission.complete=false;mission.feedback='';state.t=0;setPlaying(false);render();return;}mission.launched=true;mission.complete=false;mission.feedback='';state.t=0;if(isMobileProjectile()&&projectileMobileFrame(state.p).range>40){mission.view='overview';syncMobileAim()}setPlaying(true);
+  if(mission.complete){mission.launched=false;mission.complete=false;mission.feedback='';state.t=0;setPlaying(false);render();return;}mission.launched=true;mission.complete=false;mission.feedback='';state.t=0;if(isMobileProjectile()){if(projectileMobileFrame(state.p).range>40){mission.view='overview';syncMobileAim()}$('stage').scrollIntoView({block:'center',behavior:'instant'})}setPlaying(true);
  }else if(state.id==='wheatstone'){
   const raw=$('inquiryAnswer').value.trim().replace(',','.');
   const guess=Number(raw);
