@@ -16,10 +16,10 @@ const result=o=>({v:new Float32Array(o.xyz),n:new Float32Array(o.normal),count:o
 const smooth=(p,a,b)=>{const t=Math.max(0,Math.min(1,(p-a)/(b-a)));return t*t*(3-2*t);};
 
 export const CHAMBERS={
-  ra:{label:'Rechterboezem',pos:[-.57,.58,.37],scale:[.49,.41,.39],wall:.14,cut:.79,kind:'atrium',blood:[.15,.39,.59],muscle:[.60,.39,.39]},
-  rv:{label:'Rechterkamer',pos:[-.43,-.34,.22],scale:[.58,.74,.48],wall:.15,cut:.78,kind:'ventricle',blood:[.12,.34,.54],muscle:[.68,.39,.36]},
-  la:{label:'Linkerboezem',pos:[.51,.57,-.18],scale:[.48,.40,.39],wall:.14,cut:.78,kind:'atrium',blood:[.65,.26,.24],muscle:[.70,.44,.39]},
-  lv:{label:'Linkerkamer',pos:[.43,-.39,-.24],scale:[.66,.83,.53],wall:.28,cut:.76,kind:'ventricle',blood:[.60,.21,.18],muscle:[.80,.46,.40]}
+  ra:{label:'Rechterboezem',pos:[-.57,.58,.37],scale:[.49,.41,.39],wall:.14,cut:1.19,kind:'atrium',blood:[.15,.39,.59],muscle:[.60,.39,.39]},
+  rv:{label:'Rechterkamer',pos:[-.43,-.34,.22],scale:[.58,.74,.48],wall:.15,cut:1.29,kind:'ventricle',blood:[.12,.34,.54],muscle:[.68,.39,.36]},
+  la:{label:'Linkerboezem',pos:[.51,.57,-.18],scale:[.48,.40,.39],wall:.14,cut:1.19,kind:'atrium',blood:[.65,.26,.24],muscle:[.70,.44,.39]},
+  lv:{label:'Linkerkamer',pos:[.43,-.39,-.24],scale:[.66,.83,.53],wall:.28,cut:1.32,kind:'ventricle',blood:[.60,.21,.18],muscle:[.80,.46,.40]}
 };
 export const VESSELS=[
   {id:'ao',label:'Aorta',color:[.87,.38,.31],radius:.139,
@@ -88,6 +88,40 @@ function ellipsoidNormal(p,inside){
   const n=vnorm([p[0]*.90,p[1]*.90,p[2]*1.10]);
   return inside?vmul(n,-1):n;
 }
+// Doorlopend myocard rond de onderste hartkamers. De opening maakt de
+// vier aparte holtes zichtbaar, maar de buitenomtrek blijft één orgaan.
+// Onderwijsgeometrie: de vorm is geen scan of patiëntspecifieke anatomie.
+export function heartEnvelopeGeometry(){
+  const out=collector(),rows=68,radial=76;
+  function point(u,angle){
+    const y=-1.40+2.30*u;
+    const bulge=Math.pow(Math.max(.001,Math.sin(Math.PI*(.03+.91*u))),.77);
+    const rx=(1.04+.23*u)*bulge;
+    const rz=.68*bulge;
+    const cx=.11-.17*u;
+    return [cx+rx*Math.cos(angle),y,-.13+rz*Math.sin(angle)];
+  }
+  const open=(u,phi)=>{
+    const y=-1.40+2.30*u;
+    const a=Math.atan2(Math.sin(phi-Math.PI/2),Math.cos(phi-Math.PI/2));
+    const dy=(y+.32)/1.035,da=a/1.26;
+    return Math.sin(phi)>0&&dy*dy+da*da<1;
+  };
+  for(let i=0;i<rows;i++){
+    const u=i/rows,un=(i+1)/rows,mid=(u+un)/2;
+    for(let j=0;j<radial;j++){
+      const a=j*TAU/radial,b=(j+1)*TAU/radial;
+      if(open(mid,(a+b)/2))continue;
+      const A=point(u,a),B=point(un,a),C=point(un,b),D=point(u,b);
+      const normal=angle=>vnorm([Math.cos(angle),.16*(mid-.55),Math.sin(angle)*1.25]);
+      const na=normal(a),nb=normal(b);
+      triangle(out,A,B,C,na,na,nb);
+      triangle(out,A,C,D,na,nb,nb);
+    }
+  }
+  return result(out);
+}
+
 // FRONT FACES OMITTED: pupil can actually see tissue thickness and the cavities.
 export function chamberGeometry(chamber){
   const outer=collector(),inner=collector(),rim=collector(),solid=collector();
@@ -224,7 +258,7 @@ export const TENDINOUS_CORDS=[
 ];
 export function geometryAudit(){
   const rv=chamberGeometry(CHAMBERS.rv),lv=chamberGeometry(CHAMBERS.lv);
-  return {ventricles:2,atria:2,valves:VALVES.length,
+  return {ventricles:2,atria:2,valves:VALVES.length,envelopePolygons:heartEnvelopeGeometry().count,
     avCusps:VALVES.filter(v=>v.type==='av').map(v=>v.leaflets),
     semCusps:VALVES.filter(v=>v.type==='sem').map(v=>v.leaflets),
     leftWall:CHAMBERS.lv.wall,rightWall:CHAMBERS.rv.wall,
