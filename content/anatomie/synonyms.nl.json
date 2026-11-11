@@ -14,6 +14,9 @@
   "(anteromedial basal segmental bronchus of left lung)": [
     "voorste binnenste basale segmentbronchus van de linkerlong"
   ],
+  "(deep branch of transverse cervical artery)": [
+    "diepe tak van de dwarse halsslagader"
+  ],
   "(fibular node)": [
     "kuitbeenlymfeklier"
   ],
@@ -41,8 +44,14 @@
   "(subpyloric nodes)": [
     "lymfeklieren onder de maaguitgang"
   ],
+  "(superficial branch of transverse cervical artery)": [
+    "oppervlakkige tak van de dwarse halsslagader"
+  ],
   "(suprapyloric node)": [
     "lymfeklier boven de maaguitgang"
+  ],
+  "(ulnar recurrent artery)": [
+    "teruglopende ellepijpsslagader"
   ],
   "abdominal aorta": [
     "buikaorta"
@@ -61,6 +70,12 @@
   ],
   "abductor pollicis longus": [
     "lange duimafvoerder"
+  ],
+  "accessory branch of middle meningeal artery": [
+    "bijkomende tak van de middelste hersenvliesslagader"
+  ],
+  "accessory hemi-azygos vein": [
+    "bijkomende halfongepaarde ader"
   ],
   "accessory pancreatic duct": [
     "bijkomende afvoergang van de alvleesklier"
@@ -95,6 +110,12 @@
   "anconeus muscle": [
     "elleboogspier"
   ],
+  "angular artery": [
+    "hoekslagader bij het oog"
+  ],
+  "angular vein": [
+    "hoekader bij het oog"
+  ],
   "annular ligament of radius": [
     "ringband van het spaakbeen"
   ],
@@ -107,6 +128,12 @@
   "anterior axillary nodes": [
     "voorste oksellymfeklieren"
   ],
+  "anterior basal segmental artery of left lung": [
+    "voorste basale segmentale slagader van de linkerlong"
+  ],
+  "anterior basal segmental artery of right lung": [
+    "voorste basale segmentale slagader van de rechterlong"
+  ],
   "anterior basal segmental bronchus of left lung (bviii)": [
     "voorste basale segmentbronchus van de linkerlong (BVIII)"
   ],
@@ -116,29 +143,65 @@
   "anterior belly of digastric muscle": [
     "voorste buik van de tweehuikige spier"
   ],
+  "anterior branch of renal artery": [
+    "voorste tak van de nierslagader"
+  ],
   "anterior cells of ethmoid bone": [
     "voorste zeefbeencellen"
   ],
   "anterior cerebral artery": [
     "voorste hersenslagader"
   ],
+  "anterior circumflex humeral artery": [
+    "voorste slagader rond de kop van het opperarmbeen"
+  ],
+  "anterior circumflex humeral vein": [
+    "voorste ader rond de kop van het opperarmbeen"
+  ],
   "anterior commissure": [
     "voorste hersenverbinding"
+  ],
+  "anterior communicating artery": [
+    "voorste verbindingsslagader van de hersenen"
   ],
   "anterior cruciate ligament": [
     "voorste kruisband"
   ],
+  "anterior deep temporal artery": [
+    "voorste diepe slaapslagader"
+  ],
+  "anterior division of internal iliac artery": [
+    "voorste deel van de inwendige bekkenslagader"
+  ],
+  "anterior division of retromandibular vein": [
+    "voorste tak van de ader achter de onderkaak"
+  ],
+  "anterior ethmoidal artery": [
+    "voorste zeefbeenslagader"
+  ],
   "anterior horn of spinal cord": [
     "voorhoorn van het ruggenmerg"
   ],
+  "anterior inferior cerebellar artery": [
+    "voorste onderste slagader van de kleine hersenen"
+  ],
   "anterior inferior jugular nodes": [
     "voorste onderste halslymfeklieren"
+  ],
+  "anterior inferior pancreaticoduodenal artery": [
+    "voorste onderste slagader van alvleesklier en twaalfvingerige darm"
+  ],
+  "anterior intercavernous sinus": [
+    "voorste verbinding tussen beide holle hersenveneuze sinussen"
   ],
   "anterior intermuscular septum of leg": [
     "voorste bindweefselschot van het onderbeen"
   ],
   "anterior interventricular artery": [
     "voorste slagader tussen de hartkamers"
+  ],
+  "anterior jugular vein": [
+    "voorste halsader"
   ],
   "anterior lateral segment of liver (vi)": [
     "voorste buitenste leversegment (VI)"
@@ -161,8 +224,17 @@
   "anterior meniscotibial ligament (medial meniscus)": [
     "voorste band tussen binnenmeniscus en scheenbeen"
   ],
+  "anterior papillary muscle of right ventricle": [
+    "voorste papillairspier van de rechterhartkamer"
+  ],
   "anterior sacro-iliac ligament": [
     "voorste band van het heiligbeen-darmbeengewricht"
+  ],
+  "anterior segmental artery of left lung": [
+    "voorste segmentale slagader van de linkerlong"
+  ],
+  "anterior segmental artery of right lung": [
+    "voorste segmentale slagader van de rechterlong"
   ],
   "anterior segmental bronchus of left lung (biii)": [
     "voorste segmentbronchus van de linkerlong (BIII)"
@@ -170,17 +242,38 @@
   "anterior segmental bronchus of right lung (biii)": [
     "voorste segmentbronchus van de rechterlong (BIII)"
   ],
+  "anterior semilunar leaflet of pulmonary valve": [
+    "voorste halvemaanvormige klepblad van de longslagaderklep"
+  ],
+  "anterior septal branches of anterior ethmoidal artery": [
+    "voorste tussenschottakken van de voorste zeefbeenslagader"
+  ],
+  "anterior spinal artery": [
+    "voorste ruggenmergslagader"
+  ],
   "anterior sternoclavicular ligament": [
     "voorste band tussen borstbeen en sleutelbeen"
   ],
   "anterior talocalcaneal ligament": [
     "voorste band tussen sprongbeen en hielbeen"
   ],
+  "anterior temporal branch": [
+    "voorste tak naar de slaapstreek"
+  ],
   "anterior tibial artery": [
     "voorste scheenbeenslagader"
   ],
+  "anterior tibial veins": [
+    "voorste scheenbeenaders"
+  ],
   "anterior tibiofibular ligament": [
     "voorste band tussen scheenbeen en kuitbeen"
+  ],
+  "anterior vein of left lung": [
+    "voorste ader van de linkerlong"
+  ],
+  "anterior vein of right lung": [
+    "voorste ader van de rechterlong"
   ],
   "aortic arch": [
     "aortaboog"
@@ -188,17 +281,44 @@
   "apical axillary nodes": [
     "bovenste oksellymfeklieren"
   ],
+  "apical segmental artery of left lung": [
+    "slagader van het topsegment van de linkerlong"
+  ],
+  "apical segmental artery of right lung": [
+    "slagader van het topsegment van de rechterlong"
+  ],
   "apical segmental bronchus of right lung (bi)": [
     "topsegmentbronchus van de rechterlong (BI)"
+  ],
+  "apical vein of right lung": [
+    "ader van het topsegment van de rechterlong"
   ],
   "apicoposterior segmental bronchus of left lung (bi+bii)": [
     "top-achtersegmentbronchus van de linkerlong (BI+BII)"
   ],
+  "apicoposterior vein of left lung": [
+    "ader van het top-achtersegment van de linkerlong"
+  ],
+  "appendicular artery": [
+    "slagader van het wormvormig aanhangsel"
+  ],
   "appendicular nodes": [
     "lymfeklieren bij het wormvormig aanhangsel"
   ],
+  "arcuate artery": [
+    "boogslagader"
+  ],
   "arcuate popliteal ligament": [
     "boogvormige knieholteband"
+  ],
+  "artery of central sulcus": [
+    "slagader van de centrale hersengroeve"
+  ],
+  "artery of precentral sulcus": [
+    "slagader van de groeve vóór de centrale hersengroeve"
+  ],
+  "artery of pterygoid canal": [
+    "slagader in het vleugelbeenkanaal"
   ],
   "articular capsule of acromioclavicular joint": [
     "gewrichtskapsel tussen schouderdak en sleutelbeen"
@@ -269,11 +389,17 @@
   "ascending aorta": [
     "opstijgende aorta"
   ],
+  "ascending branch of left colic artery": [
+    "opstijgende tak van de linker dikke-darmslagader"
+  ],
   "ascending colon": [
     "opstijgende dikke darm"
   ],
   "ascending part of trapezius muscle": [
     "opstijgend deel van de monnikskapspier"
+  ],
+  "ascending pharyngeal artery": [
+    "opstijgende keelholteslagader"
   ],
   "atlas (c1)": [
     "atlaswervel"
@@ -281,17 +407,38 @@
   "auditory tube": [
     "buis van Eustachius"
   ],
+  "axillary artery": [
+    "okselslagader"
+  ],
   "axillary nerve": [
     "okselzenuw"
   ],
+  "axillary vein": [
+    "okselader"
+  ],
   "axis (c2)": [
     "draaierwervel"
+  ],
+  "azygos vein": [
+    "ongepaarde ader"
+  ],
+  "basilar artery": [
+    "basilaire slagader van de hersenen"
+  ],
+  "basilar venous plexus": [
+    "basilair netwerk van aders"
+  ],
+  "basilic vein": [
+    "binnenste oppervlakkige armader"
   ],
   "biceps brachii": [
     "biceps bovenarm"
   ],
   "bicipitoradial bursa": [
     "slijmbeurs tussen bicepspees en spaakbeen"
+  ],
+  "bifurcation of pulmonary trunk": [
+    "splitsing van de longslagaderstam"
   ],
   "bile duct": [
     "galgang"
@@ -308,11 +455,17 @@
   "brachial nodes": [
     "lymfeklieren van de bovenarm"
   ],
+  "brachial veins": [
+    "bovenarmaders"
+  ],
   "brachialis muscle": [
     "opperarmspier"
   ],
   "brachiocephalic nodes": [
     "lymfeklieren langs de arm-hoofdvaten"
+  ],
+  "brachiocephalic trunk": [
+    "arm-hoofdslagaderstam"
   ],
   "brachioradialis muscle": [
     "opperarms-spaakbeenspier"
@@ -320,8 +473,14 @@
   "brain": [
     "hersenen"
   ],
+  "branch to angular gyrus": [
+    "vaattak naar de hoekwinding van de hersenen"
+  ],
   "bronchus": [
     "luchtpijptak"
+  ],
+  "buccal artery": [
+    "wangslagader"
   ],
   "bucinator": [
     "wangspier"
@@ -331,6 +490,12 @@
   ],
   "bursa of piriformis muscle": [
     "slijmbeurs bij de peervormige spier"
+  ],
+  "calcaneal branches of fibular artery": [
+    "hieltakken van de kuitbeenslagader"
+  ],
+  "calcaneal branches of posterior tibial artery": [
+    "hieltakken van de achterste scheenbeenslagader"
   ],
   "calcaneal tendon": [
     "achillespees"
@@ -344,17 +509,29 @@
   "calcaneus": [
     "hielbeen"
   ],
+  "callosomarginal artery": [
+    "slagader langs de rand van de hersenbalk"
+  ],
   "capitate bone": [
     "kopbeen"
   ],
   "cauda equina": [
     "zenuwbundel onderaan het ruggenmerg"
   ],
+  "cavernous sinus": [
+    "sinus cavernosus, veneuze ruimte bij de schedelbasis"
+  ],
   "central axillary nodes": [
     "middelste oksellymfeklieren"
   ],
+  "central retinal artery": [
+    "centrale netvliesslagader"
+  ],
   "central superior mesenteric nodes": [
     "middelste lymfeklieren langs de bovenste darmslagader"
+  ],
+  "cephalic vein": [
+    "buitenste oppervlakkige armader"
   ],
   "cerebellum": [
     "kleine hersenen"
@@ -364,6 +541,12 @@
   ],
   "circumflex artery of heart": [
     "omlopende kransslagader"
+  ],
+  "circumflex scapular artery": [
+    "slagader rond het schouderblad"
+  ],
+  "circumflex scapular vein": [
+    "ader rond het schouderblad"
   ],
   "clavicle": [
     "sleutelbeen"
@@ -386,6 +569,12 @@
   "coeliac nodes": [
     "lymfeklieren rond de buikslagaderstam"
   ],
+  "coeliac trunk": [
+    "buikslagaderstam"
+  ],
+  "colic branch of ileocolic artery": [
+    "dikke-darmtak van de darm-blindedarmslagader"
+  ],
   "collateral interphalangeal ligaments of foot": [
     "zijbanden van de teengewrichten"
   ],
@@ -398,14 +587,29 @@
   "collateral metatarsophalangeal ligaments": [
     "zijbanden van de gewrichten aan de basis van de tenen"
   ],
+  "common facial vein": [
+    "gemeenschappelijke aangezichtsader"
+  ],
   "common flexor tendon sheath": [
     "gemeenschappelijke peesschede van de buigspieren"
+  ],
+  "common hepatic artery": [
+    "gemeenschappelijke leverslagader"
   ],
   "common iliac artery": [
     "gemeenschappelijke bekkenslagader"
   ],
   "common iliac vein": [
     "gemeenschappelijke bekkenader"
+  ],
+  "common interosseous artery": [
+    "gemeenschappelijke tussenbeenslagader van de onderarm"
+  ],
+  "common palmar digital arteries": [
+    "gemeenschappelijke vingerslagaders aan de handpalmzijde"
+  ],
+  "common plantar digital arteries": [
+    "gemeenschappelijke teenslagaders aan de voetzoolzijde"
   ],
   "common tendinous ring": [
     "gemeenschappelijke peesring in de oogkas"
@@ -427,6 +631,9 @@
   ],
   "corniculate cartilage": [
     "hoorntjeskraakbeen"
+  ],
+  "coronary sinus": [
+    "kransadersinus van het hart"
   ],
   "corpus cavernosum of penis": [
     "zwellichaam van de penis"
@@ -470,6 +677,9 @@
   "costal cartilage of third rib": [
     "ribkraakbeen van de derde rib"
   ],
+  "costocervical trunk": [
+    "rib-hals-slagaderstam"
+  ],
   "costotransverse ligament": [
     "band tussen rib en dwarsuitsteeksel van de wervel"
   ],
@@ -500,6 +710,21 @@
   "cystic node": [
     "lymfeklier bij de galblaas"
   ],
+  "deep artery of penis": [
+    "diepe penisslagader"
+  ],
+  "deep brachial artery": [
+    "diepe bovenarmslagader"
+  ],
+  "deep cervical artery": [
+    "diepe halsslagader"
+  ],
+  "deep dorsal vein of penis": [
+    "diepe rugader van de penis"
+  ],
+  "deep external pudendal artery": [
+    "diepe uitwendige schaamstreekslagader"
+  ],
   "deep femoral artery": [
     "diepe dijbeenslagader"
   ],
@@ -515,11 +740,17 @@
   "deep infrapatellar bursa": [
     "diepe slijmbeurs onder de knieschijf"
   ],
+  "deep palmar arch": [
+    "diepe slagaderboog van de handpalm"
+  ],
   "deep part of masseter": [
     "diep deel van de kauwspier"
   ],
   "deep part of tibial collateral ligament": [
     "diepe deel van de binnenste knieband"
+  ],
+  "deep plantar artery": [
+    "diepe voetzoolslagader"
   ],
   "deep popliteal nodes": [
     "diepe knieholte-lymfeklieren"
@@ -529,6 +760,9 @@
   ],
   "deep transverse metatarsal ligament": [
     "diepe dwarse band tussen middenvoetsbeentjes"
+  ],
+  "deep venous palmar arch": [
+    "diepe aderboog van de handpalm"
   ],
   "deltoid fascia": [
     "bindweefselvlies over de deltaspier"
@@ -545,8 +779,17 @@
   "depressor septi nasi": [
     "neertrekker van het neustussenschot"
   ],
+  "descending branch of lateral circumflex femoral artery": [
+    "dalende tak van de buitenste omgaande dijbeenslagader"
+  ],
+  "descending branch of left colic artery": [
+    "dalende tak van de linker dikke-darmslagader"
+  ],
   "descending colon": [
     "dalende dikke darm"
+  ],
+  "descending palatine artery": [
+    "dalende gehemelteslagader"
   ],
   "descending part of iliofemoral ligament": [
     "dalend deel van de darmbeen-dijbeenband"
@@ -559,6 +802,9 @@
   ],
   "diaphragmatic fascia": [
     "middenriffascie"
+  ],
+  "distal lateral striate branches": [
+    "verder gelegen zijtakken naar de gestreepte hersenstructuren"
   ],
   "distal phalanx of fifth finger of foot": [
     "eindkootje van de vijfde teen"
@@ -590,11 +836,32 @@
   "distal phalanx of third finger of hand": [
     "eindkootje van de derde vinger"
   ],
+  "dorsal artery of penis": [
+    "slagader op de rugzijde van de penis"
+  ],
+  "dorsal carpal anastomosis": [
+    "vaatverbinding op de handrug bij de pols"
+  ],
+  "dorsal carpal branch of ulnar artery": [
+    "handrugtak van de ellepijpsslagader"
+  ],
   "dorsal carpometacarpal ligaments": [
     "banden op de handrug tussen handwortel en middenhand"
   ],
   "dorsal cuneonavicular ligaments": [
     "banden boven op de voet tussen wigvormige beentjes en scheepvormig been"
+  ],
+  "dorsal digital arteries of foot": [
+    "teenslagaders aan de voetrug"
+  ],
+  "dorsal digital arteries of hand": [
+    "vingerslagaders aan de handrug"
+  ],
+  "dorsal digital veins of foot": [
+    "teenaders aan de voetrug"
+  ],
+  "dorsal digital veins of hand": [
+    "vingeraders aan de handrug"
   ],
   "dorsal fascia of hand": [
     "fascie aan de handrug"
@@ -611,11 +878,20 @@
   "dorsal interossei muscles of hand": [
     "tussenbeenspieren op de handrug"
   ],
+  "dorsal metacarpal arteries": [
+    "middenhandslagaders aan de handrug"
+  ],
   "dorsal metacarpal ligaments": [
     "banden op de handrug tussen middenhandsbeentjes"
   ],
+  "dorsal metatarsal arteries": [
+    "middenvoetslagaders aan de voetrug"
+  ],
   "dorsal metatarsal ligaments": [
     "banden op de voetrug tussen middenvoetsbeentjes"
+  ],
+  "dorsal metatarsal veins": [
+    "middenvoetaders aan de voetrug"
   ],
   "dorsal parts of lateral intertransversarii lumborum muscles": [
     "achterste delen van de zijwaartse tussen-dwarsuitsteekselspieren van de lendenwervels"
@@ -631,6 +907,15 @@
   ],
   "dorsal ulnocarpal ligament": [
     "band op de handrug tussen ellepijp en handwortel"
+  ],
+  "dorsal venous arch of foot": [
+    "aderboog op de voetrug"
+  ],
+  "dorsal venous network of hand": [
+    "adernetwerk op de handrug"
+  ],
+  "dorsalis pedis artery": [
+    "voetrugslagader"
   ],
   "ductus deferens": [
     "zaadleider"
@@ -716,8 +1001,17 @@
   "external intercostal muscles": [
     "buitenste tussenribspieren"
   ],
+  "external jugular vein": [
+    "uitwendige halsader"
+  ],
   "external part of thyro-arytenoid muscle": [
     "buitenste deel van de schild-bekerkraakbeenspier"
+  ],
+  "external pudendal veins": [
+    "uitwendige schaamstreekaders"
+  ],
+  "facial artery": [
+    "aangezichtsslagader"
   ],
   "facial nerve (vii)": [
     "aangezichtszenuw"
