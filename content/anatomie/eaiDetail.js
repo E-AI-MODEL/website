@@ -165,7 +165,7 @@ export function refineAnatomyInfo(partData, deselectPart) {
 
   // Alleen bij herkenbare hartstructuren: geen lablink bij andere organen
   // of bloedvaten die toevallig in hun uitleg het hart noemen.
-  const heartParts = /^(heart|left atrium|right atrium|left ventricle|right ventricle|interventricular septum|interatrial septum|mitral valve|tricuspid valve|aortic valve|pulmonary valve|papillary muscle|myocardium|cardiac muscle)(?:\\b|$)/i;
+  const heartParts = /^(heart|left atrium|right atrium|left ventricle|right ventricle|interventricular septum|interatrial septum|mitral valve|tricuspid valve|aortic valve|pulmonary valve|papillary muscle|myocardium|cardiac muscle)(?:\b|$)/i;
   if (heartParts.test(String(baseName).trim())) {
     const lab = document.createElement('a');
     lab.className = 'eai-heart-lab-action';
