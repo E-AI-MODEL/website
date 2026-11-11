@@ -9,7 +9,7 @@ const lerp=(a,b,t)=>a+(b-a)*t;
 const ease=t=>{t=clamp(t,0,1);return t*t*(3-2*t);};
 const span=(t,a,b)=>ease((t-a)/(b-a));
 const fmt=(v,n=0)=>Number(v).toLocaleString('nl-NL',{minimumFractionDigits:n,maximumFractionDigits:n});
-const state={cutaway:false,t:0,playing:false,speed:1,yaw:-.20,pitch:.08,zoom:5.95,selected:null,showLabels:!matchMedia('(max-width: 790px)').matches,showFlow:true,tab:'phase',rate:75,last:0,drag:null,study:{guess:null,stage:'choose',stopAt:null}};
+const state={cutaway:false,t:0,playing:false,speed:1,yaw:-.20,pitch:.08,zoom:5.95,selected:null,showLabels:!matchMedia('(max-width: 790px)').matches,showFlow:true,tab:'phase',rate:75,last:0,drag:null,study:{guess:null,stage:'choose',stopAt:null},focusSide:'left'};
 const m4=()=>{
   const o=new Float32Array(16);o[0]=o[5]=o[10]=o[15]=1;return o;
 };
@@ -96,7 +96,7 @@ function setupModel(){
   meshes.ridges={};
   for(const [id,part] of Object.entries(CHAMBERS))
     meshes.ridges[id]=muscleRidges(part).map(r=>({mesh:upload(tubeGeometry(r.path,r.radius)),color:r.color}));
-  meshes.cords=TENDINOUS_CORDS.map(c=>upload(tubeGeometry(c.path,.006,8)));
+  meshes.cords=TENDINOUS_CORDS.map(c=>({mesh:upload(tubeGeometry(c.path,.006,8)),ventricle:c.ventricle}));
   meshes.coronary=CORONARY_DETAILS.map(v=>({mesh:upload(tubeGeometry(v.path,v.radius,9)),color:v.color,id:v.id}));
   meshes.papillary=MUSCLE_DETAILS.map(v=>({mesh:upload(tubeGeometry(v.path,v.radius,14)),color:v.color,id:v.id}));
   meshes.auricles=AURICLES.map(v=>({mesh:upload(tubeGeometry(v.path,v.radius,13)),color:v.color,id:v.id}));
@@ -139,6 +139,7 @@ function drawParticles(m){
   if(!state.showFlow)return;
   const batches={red:[],blue:[]};
   for(const flow of FLOW_PATHS){
+    if(atlasReady&&state.cutaway&&flow.color!==(state.focusSide==='left'?'red':'blue'))continue;
     const open=flow.channel==='return'||(flow.channel==='av'&&m.av)||(flow.channel==='sem'&&m.sem);
     if(!open)continue;
     for(let i=0;i<flow.n;i++){
@@ -210,6 +211,7 @@ function drawAtlasHeart(m,section=false){
   // De extra zichtbare beweging helpt fasen vergelijken; dit is geen biomechanisch model.
   const pulse=clamp((1-m.ventScale)/.21,0,1);
   for(const part of atlasParts){
+    if(section&&part.kind!=='chamber'&&part.id!==(state.focusSide==='left'?'ao':'pa'))continue;
     const color=state.selected===part.id?[.98,.75,.56]:part.color;
     drawMesh(part.mesh,m4(),color,1,pulse,section&&part.kind==='chamber');
   }
@@ -240,6 +242,7 @@ function drawScene(m){
   // De kamergeometrie wordt per hartfase opgeschaald. Dit is een didactische
   // vervorming en geen simulatie van alle vezelrichtingen van het myocard.
   for(const [id,part] of Object.entries(CHAMBERS)){
+    if(atlasReady&&state.cutaway&&(state.focusSide==='left'?!['la','lv'].includes(id):!['ra','rv'].includes(id)))continue;
     const isVentricle=part.kind==='ventricle';
     const factor=isVentricle?m.ventScale:m.atriumScale;
     const scale=part.scale.map((v,i)=>v*(i===1?factor:Math.sqrt(factor)));
@@ -247,20 +250,28 @@ function drawScene(m){
     const hit=state.selected===id;
     // Van buiten zie je één hartwand, niet vier losse ellipsoïden.
     if(!state.cutaway)continue;
-    drawMesh(meshes.chambers[id].outer,model,hit?[.95,.61,.51]:part.muscle,1);
+    if(!atlasReady)drawMesh(meshes.chambers[id].outer,model,hit?[.95,.61,.51]:part.muscle,1);
     drawMesh(meshes.chambers[id].inner,model,part.blood,1);
     drawMesh(meshes.chambers[id].rim,model,hit?[1,.78,.62]:[.94,.63,.54],1);
-    for(const ridge of meshes.ridges[id])drawMesh(ridge.mesh,model,ridge.color,.96);
+    if(!atlasReady)for(const ridge of meshes.ridges[id])drawMesh(ridge.mesh,model,ridge.color,.96);
   }
   // Kransvaten en de grote hartader liggen op het epicard.
   if(!atlasReady)for(const vessel of meshes.coronary)drawMesh(vessel.mesh,m4(),state.selected===vessel.id?[.98,.75,.52]:vessel.color,1);
   if(state.cutaway){
-    for(const papillary of meshes.papillary)drawMesh(papillary.mesh,m4(),state.selected===papillary.id?[.98,.71,.54]:papillary.color,1);
-    drawMesh(meshes.septum,m4(),[.91,.59,.52],1);
-    for(const chord of meshes.cords)drawMesh(chord,m4(),[.96,.85,.70],1);
+    for(const papillary of meshes.papillary){
+      if(atlasReady&&!papillary.id.includes(state.focusSide==='left'?'lv':'rv'))continue;
+      drawMesh(papillary.mesh,m4(),state.selected===papillary.id?[.98,.71,.54]:papillary.color,1);
+    }
+    if(!atlasReady)drawMesh(meshes.septum,m4(),[.91,.59,.52],1);
+    for(const chord of meshes.cords){
+      if(atlasReady&&chord.ventricle!==(state.focusSide==='left'?'lv':'rv'))continue;
+      drawMesh(chord.mesh,m4(),[.96,.85,.70],1);
+    }
     // Klepbladen zijn geen statische stippen: twee bij mitralis, drie bij
     // tricuspidalis en drie bij elk van de halvemaanvormige kleppen.
     for(const valve of VALVES){
+      if(atlasReady&&!((state.focusSide==='left'&&['mitral','aortic'].includes(valve.id))||
+        (state.focusSide==='right'&&['tricuspid','pulmonary'].includes(valve.id))))continue;
       const active=valve.type==='av'?m.av:m.sem;
       const aperture=valve.type==='av'?m.avOpening:m.semOpening;
       const mesh=meshes.valves[valve.id].leaflets;
@@ -497,6 +508,8 @@ function syncViewControls(){
   $('sectionToggle').setAttribute('aria-pressed',String(state.cutaway));
   $('flowToggle').hidden=!state.cutaway;
   $('flowLegend').hidden=!state.cutaway||!state.showFlow;
+  $('heartSideControls').hidden=!state.cutaway;
+  document.querySelectorAll('[data-heart-side]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.heartSide===state.focusSide)));
   $('modelCaption').textContent=state.cutaway?
     '3D · Bewegende doorsnede · Schematisch':
     '3D · Anatomische hartvorm · Atlasmodel';
@@ -506,6 +519,14 @@ $('sectionToggle').addEventListener('click',()=>{
   syncViewControls();
   positionInfo(null);
 });
+document.querySelectorAll('[data-heart-side]').forEach(button=>button.addEventListener('click',()=>{
+  state.focusSide=button.dataset.heartSide;
+  syncViewControls();
+  positionInfo(null);
+  $('partInfo').textContent=state.focusSide==='left'?
+    'Linkerkamer: volg de mitralis- en aortaklep. Vergelijk de beweging met druk en volume.':
+    'Rechterkamer: volg de tricuspidalis- en longslagaderklep. De lijnen onder het hart blijven voorbeeldwaarden van de linkerkamer.';
+}));
 function syncLabelsToggle(){
   // Verberg de volledige labellaag direct, ook vóór het eerste animatieframe.
   $('labels').hidden=!state.showLabels;
@@ -613,7 +634,7 @@ canvas.addEventListener('touchend',()=>{state.pinch=null;});
 let resize=new ResizeObserver(()=>{if(gl)render();});resize.observe(stage);
 setupModel();syncPlay();syncLabelsToggle();syncViewControls();syncStudy();loadAtlasModels();
 window.__EAI_HEART_LAB__={
-  get state(){return {t:state.t,playing:state.playing,speed:state.speed,yaw:state.yaw,zoom:state.zoom,selected:state.selected,cutaway:state.cutaway,showLabels:state.showLabels,atlasReady,atlasError,atlasPartCount:atlasParts.length,studyStage:state.study.stage};},
+  get state(){return {t:state.t,playing:state.playing,speed:state.speed,yaw:state.yaw,zoom:state.zoom,selected:state.selected,cutaway:state.cutaway,showLabels:state.showLabels,focusSide:state.focusSide,atlasReady,atlasError,atlasPartCount:atlasParts.length,studyStage:state.study.stage};},
   get metrics(){return mechanics(state.t);},
   setTime:t=>setTime(t,true),pause:()=>{state.playing=false;syncPlay();},
   get rendererReady(){return Boolean(gl)&&(state.cutaway||atlasReady);}
