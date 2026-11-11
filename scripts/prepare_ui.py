@@ -104,6 +104,8 @@ def navigation(soup: BeautifulSoup, path: str, en: bool) -> str:
         if title in ('About', 'Over'):
             continue
         target = entries[0][1]
+        if title in ('Observatoria', 'Observatories'):
+            target = '/en/tools/#observatoria' if en else '/nl/tools/#observatoria'
         current = ' aria-current="page"' if any(path_here == canonical(item[1]) or (canonical(item[1]) not in ('/nl/', '/en/') and path_here.startswith(canonical(item[1]))) for item in entries) else ''
         primary.append(f'<a href="{html.escape(target, quote=True)}"{current}>{html.escape(title)}</a>')
     nav_label = 'Main navigation' if en else 'Hoofdnavigatie'
