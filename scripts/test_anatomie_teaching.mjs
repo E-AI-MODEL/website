@@ -32,6 +32,13 @@ assert.equal(seen.size,1636);
 assert.equal(covered,2827-[...Object.values(systems).flat()].filter(id=>unresolved.has(id.replace(/\.[lr]$/,'').trim().toLowerCase())).length);
 
 const checks = [
+  ['Costal cartilage of first rib','skeletal','kraakbeen'],
+  ['Infrapatellar fat pad','joints','vetkussen'],
+  ['Left lobe of thymus','lymphatic','afweerorgaan'],
+  ['Palatine tonsil','lymphatic','afweerorgaan'],
+  ['Inferior tarsus','muscular','ooglidplaat'],
+  ['Superficial transverse metacarpal ligament','muscular','band'],
+  ['Cruciform part of fibrous sheath of digit of hand','muscular','peesschede'],
   ['Fifth rib','skeletal','rib'],
   ['Intervertebral disc C4-C5','joints','schijf'],
   ['Nucleus pulposus C4-C5','joints','nucleus'],
@@ -51,4 +58,4 @@ const checks = [
 for(const [name,system,kind] of checks) {
   assert.equal(anatomyTeaching(name,{system}).type,kind,name);
 }
-console.log('Anatomie: '+seen.size+' unieke structuren met passende onderwijsuitleg; '+checks.length+' categorieën steekproefsgewijs gecontroleerd');
+console.log('Anatomie: '+seen.size+' unieke structuren met passende onderwijsuitleg; '+checks.length+' anatomische categoriecontroles uitgevoerd');
