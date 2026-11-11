@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#081321">
+  <meta name="description" content="Onderzoek één hartslag: beweeg het 3D-hart, volg de kleppen en bloedstroom en vergelijk druk en volume.">
+  <link rel="canonical" href="https://eaimodel.nl/tools/anatomie/labs/hartslag/">
+  <title>Hartslaglab | Anatomisch Observatorium | EAI</title>
+  <link rel="stylesheet" href="./heart.css">
+</head>
+<body>
+  <a class="skip-link" href="#onderzoek">Ga naar het onderzoek</a>
+  <div class="app">
+    <header class="topbar">
+      <div class="crumbs">
+        <a class="wordmark" href="/nl/tools/" aria-label="EAI, alle tools">EAI</a>
+        <span class="slash">/</span>
+        <a href="/tools/anatomie/">Anatomisch Observatorium</a>
+        <span class="slash">/</span>
+        <strong>Hartslaglab</strong>
+      </div>
+      <div class="topbar-right">
+        <span class="edition">AN / 02</span>
+        <span class="version">Interactief proefmodel</span>
+        <a class="back-link" href="/tools/anatomie/">Terug naar 3D-atlas <span aria-hidden="true">↗</span></a>
+      </div>
+    </header>
+
+    <main id="onderzoek">
+      <div class="heading">
+        <div>
+          <div class="eyebrow">HART EN BLOEDSOMLOOP / ONDERZOEK 01</div>
+          <h1>Wat gebeurt er tijdens één hartslag?</h1>
+          <p>Laat het hart bewegen. Bekijk wanneer de kleppen openen, volg de stroomrichting en ontdek wat druk en volume vertellen.</p>
+        </div>
+        <div class="heading-metrics" aria-label="Huidige hartgegevens">
+          <div><span>Hartfrequentie</span><strong id="rateMetric">75 <small>/min</small></strong></div>
+          <div><span>Hartcyclus</span><strong id="cycleMetric">0,80 <small>s</small></strong></div>
+          <div><span>Fase</span><strong id="phaseIndex">01 <small>/ 05</small></strong></div>
+        </div>
+      </div>
+
+      <section class="workspace" aria-label="Bewegend hart en onderzoek">
+        <section class="viewer-panel" aria-label="3D-hartmodel">
+          <div class="viewer-top">
+            <span class="view-kicker"><span class="status-dot" aria-hidden="true"></span> LIVE HARTCYCLUS</span>
+            <div class="view-actions">
+              <button type="button" class="mini-control" id="labelsToggle" aria-pressed="true">Namen aan</button>
+              <button type="button" class="mini-control" id="flowToggle" aria-pressed="true">Bloedstroom aan</button>
+              <button type="button" class="mini-control" id="resetCamera">Startaanzicht</button>
+            </div>
+          </div>
+          <div class="stage" id="stage">
+            <canvas id="heartCanvas" aria-label="Bestuurbaar driedimensionaal model van een vereenvoudigd, bewegend hart. Sleep om te draaien en scroll of knijp om te zoomen.">Je browser heeft ondersteuning voor WebGL nodig.</canvas>
+            <div class="stage-wash" aria-hidden="true"></div>
+            <div class="stage-caption">3D · Schematische doorsnede · Niet op schaal</div>
+            <div class="labels" id="labels" aria-hidden="true">
+              <span data-part="ra">Rechterboezem</span><span data-part="rv">Rechterkamer</span>
+              <span data-part="la">Linkerboezem</span><span data-part="lv">Linkerkamer</span>
+              <span data-part="ao">Aorta</span><span data-part="pa">Longslagader</span>
+            </div>
+            <div class="model-unavailable" id="modelUnavailable" hidden>
+              <strong>De 3D-weergave is niet beschikbaar.</strong>
+              <p>De hartfasen en grafieken blijven bruikbaar. Probeer een actuele browser met WebGL.</p>
+            </div>
+            <div class="stage-side-note" id="partInfo" aria-live="polite">Sleep om het hart te draaien. Kies een onderdeel om het te onderzoeken.</div>
+            <div class="view-legend"><span><i class="dot dot-red"></i> Zuurstofrijk</span><span><i class="dot dot-blue"></i> Zuurstofarm</span></div>
+          </div>
+          <div class="transport">
+            <button class="play" type="button" id="play" aria-label="Pauzeer de hartslag">Pauze</button>
+            <button class="transport-btn" type="button" id="prevPhase" aria-label="Vorige hartfase">‹</button>
+            <button class="transport-btn" type="button" id="nextPhase" aria-label="Volgende hartfase">›</button>
+            <label for="scrub" class="visually-hidden">Tijdstip binnen de hartcyclus</label>
+            <input id="scrub" type="range" min="0" max="1000" value="0" step="1">
+            <output id="timeOutput" for="scrub">0,00 s</output>
+            <label for="speed" class="visually-hidden">Afspeelsnelheid</label>
+            <select id="speed" aria-label="Afspeelsnelheid">
+              <option value=".25">0,25×</option><option value=".5">0,5×</option>
+              <option value="1" selected>1×</option><option value="2">2×</option>
+            </select>
+          </div>
+          <div class="timeline" id="timeline" role="group" aria-label="Fasen van de hartcyclus">
+            <button type="button" data-phase="0">Vullen</button>
+            <button type="button" data-phase="1">Boezems</button>
+            <button type="button" data-phase="2">Druk opbouwen</button>
+            <button type="button" data-phase="3">Uitpompen</button>
+            <button type="button" data-phase="4">Ontspannen</button>
+          </div>
+        </section>
+
+        <aside class="info-panel" aria-label="Uitleg en onderzoek">
+          <div class="tabs" role="tablist" aria-label="Informatie bij de simulatie">
+            <button type="button" role="tab" aria-selected="true" aria-controls="tabPhase" id="tabPhaseBtn" data-tab="phase">Deze fase</button>
+            <button type="button" role="tab" aria-selected="false" aria-controls="tabExplore" id="tabExploreBtn" data-tab="explore">Onderzoek</button>
+            <button type="button" role="tab" aria-selected="false" aria-controls="tabSources" id="tabSourcesBtn" data-tab="sources">Bronnen</button>
+          </div>
+          <div role="tabpanel" id="tabPhase" aria-labelledby="tabPhaseBtn" class="tab-panel">
+            <div class="info-step" id="phaseNumber">FASE 01 / 05</div>
+            <h2 id="phaseTitle">De kamers vullen zich</h2>
+            <p class="description" id="phaseText">Bloed stroomt vanuit de boezems naar de kamers. De kleppen tussen boezems en kamers zijn open.</p>
+            <div class="state-grid">
+              <div><span>AV-kleppen</span><strong id="avStatus">Open</strong></div>
+              <div><span>Slagaderkleppen</span><strong id="slStatus">Gesloten</strong></div>
+              <div><span>Linkerkamerdruk</span><strong id="pressureMetric">8 <small>mmHg</small></strong></div>
+              <div><span>Kamervolume</span><strong id="volumeMetric">92 <small>ml</small></strong></div>
+            </div>
+            <div class="notice" id="phaseHint">Onderzoek welke kleppen ervoor zorgen dat het bloed maar één richting op stroomt.</div>
+          </div>
+          <div role="tabpanel" id="tabExplore" aria-labelledby="tabExploreBtn" class="tab-panel" hidden>
+            <div class="info-step">EERST DENKEN, DAN KIJKEN</div>
+            <h2>Welke klep gaat eerst dicht?</h2>
+            <p class="description">Pauzeer de simulatie bij het einde van de boezemsamentrekking en voorspel wat er gebeurt.</p>
+            <fieldset id="predictionChoices">
+              <legend>Kies je voorspelling</legend>
+              <label><input type="radio" name="prediction" value="av"> De kleppen tussen boezems en kamers</label>
+              <label><input type="radio" name="prediction" value="artery"> De kleppen bij de grote slagaders</label>
+              <label><input type="radio" name="prediction" value="together"> Alle kleppen tegelijk</label>
+            </fieldset>
+            <button id="checkPrediction" type="button" class="outline-action">Vergelijk met de beweging</button>
+            <p class="prediction-feedback" id="predictionFeedback" aria-live="polite"></p>
+            <div class="question-list">
+              <h3>Probeer daarna</h3>
+              <p>• Wanneer is het volume van de linkerkamer het grootst?</p>
+              <p>• Begint het uitpompen direct na het sluiten van de AV-kleppen?</p>
+              <p>• Wat verandert er als je de animatie vertraagt?</p>
+            </div>
+          </div>
+          <div role="tabpanel" id="tabSources" aria-labelledby="tabSourcesBtn" class="tab-panel" hidden>
+            <div class="info-step">OVER HET MODEL</div>
+            <h2>Wat laten we zien?</h2>
+            <p class="description">Een bestuurbare, schematische 3D-doorsnede. Kamers, kleppen, stroomdeeltjes en grafieken volgen één gedeelde tijdlijn. De deeltjes zijn geen echte bloedcellen en de vormen zijn niet patiëntspecifiek.</p>
+            <div class="source-links">
+              <a href="https://openstax.org/books/anatomy-and-physiology-2e/pages/19-3-cardiac-cycle" target="_blank" rel="noopener noreferrer">OpenStax · Hartcyclus ↗</a>
+              <a href="https://openstax.org/books/anatomy-and-physiology-2e/pages/19-1-heart-anatomy" target="_blank" rel="noopener noreferrer">OpenStax · Bouw van het hart ↗</a>
+              <a href="/tools/anatomie/">Terug naar de anatomische 3D-atlas ↗</a>
+            </div>
+            <p class="source-note">Druk- en volumecurven zijn vereenvoudigde onderwijsvoorbeelden voor een gezond hart in rust. Dit is geen diagnose- of rekenmodel voor individuele patiënten.</p>
+          </div>
+        </aside>
+      </section>
+
+      <section class="measurements" aria-label="Metingen tijdens de hartcyclus">
+        <div class="section-title"><div><span class="eyebrow">METINGEN</span><h2>Wat gebeurt er in de linkerkamer?</h2></div><p>De verticale lijn volgt dezelfde tijd als de animatie.</p></div>
+        <div class="plots">
+          <div class="plot"><div class="plot-head"><span><i class="plot-line pressure-line"></i> Druk in de linkerkamer</span><strong id="pressureTop">8 <small>mmHg</small></strong></div><canvas id="pressureChart" aria-label="Grafiek van de druk in de linkerkamer tijdens één hartslag"></canvas></div>
+          <div class="plot"><div class="plot-head"><span><i class="plot-line volume-line"></i> Volume in de linkerkamer</span><strong id="volumeTop">92 <small>ml</small></strong></div><canvas id="volumeChart" aria-label="Grafiek van het volume in de linkerkamer tijdens één hartslag"></canvas></div>
+        </div>
+      </section>
+      <footer class="foot"><span>Hartslaglab · Anatomisch Observatorium · havo 4 / vwo 5</span><span>Proefmodel · Vereenvoudigde fysiologie · Geen medische toepassing</span></footer>
+    </main>
+  </div>
+  <script type="module" src="./heart.js"></script>
+</body>
+</html>

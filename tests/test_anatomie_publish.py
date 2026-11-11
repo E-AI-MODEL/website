@@ -53,6 +53,34 @@ class AnatomyPublishTests(unittest.TestCase):
             local = OUT / src.lstrip("/")
             self.assertTrue(local.is_file(), f"Script ontbreekt: {src}")
 
+    def test_hartslaglab_is_published_inside_anatomy(self):
+        lab = ATLAS / "labs" / "hartslag"
+        page = lab / "index.html"
+        self.assertTrue(page.is_file(), "Hartslaglab is geen onderdeel van de sitebuild")
+        source = page.read_text(encoding="utf-8")
+        self.assertIn('href="/tools/anatomie/"', source)
+        self.assertIn('id="heartCanvas"', source)
+        self.assertIn('src="./heart.js"', source)
+        self.assertIn('href="./heart.css"', source)
+        self.assertIn("Schematische doorsnede", source)
+        for name in ("heart.js", "heart.css", "cycle.js"):
+            asset = lab / name
+            self.assertTrue(asset.is_file(), f"Hartslaglab mist {name}")
+            self.assertGreater(asset.stat().st_size, 150)
+        script = (lab / "heart.js").read_text(encoding="utf-8")
+        self.assertIn("getContext('webgl'", script)
+        self.assertIn("from './cycle.js'", script)
+        self.assertIn("requestAnimationFrame(frame)", script)
+        self.assertIn("drawParticles(m)", script)
+        self.assertIn("drawChart('pressureChart'", script)
+        self.assertIn("drawChart('volumeChart'", script)
+        atlas = (ATLAS / "index.html").read_text(encoding="utf-8")
+        self.assertIn('href="/tools/anatomie/labs/hartslag/"', atlas)
+        self.assertIn('eai-lab-link', atlas)
+        self.assertIn('eai-lab-link', (ROOT / "content/anatomie/layout.css").read_text(encoding="utf-8"))
+        site_nav = (ROOT / "scripts/build_site.py").read_text(encoding="utf-8")
+        self.assertIn('("/tools/anatomie/labs/hartslag/", "Hartslaglab', site_nav)
+
     def test_css_js_and_anatomy_info_are_published_together(self):
         """Voorkom de witte pagina met enorme SVG's door ontbrekende assets."""
         html = (ATLAS / "index.html").read_text(encoding="utf-8")

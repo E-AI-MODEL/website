@@ -1156,3 +1156,18 @@ html,body,#app{height:100%;height:100dvh;overflow:hidden}
     opacity:.72;
   }
 }
+
+
+/* Eén vaste ingang naar de bewegende onderzoeksmodule; de atlas blijft de ingang. */
+.header .eai-lab-link{
+  display:inline-flex;align-items:center;gap:6px;white-space:nowrap;
+  border:1px solid #627a82;border-radius:5px;padding:7px 11px;
+  background:#162d3a;color:#e3ece8;text-decoration:none;
+  font-size:11px;font-weight:600;line-height:1.2;
+}
+.header .eai-lab-link:hover{background:#233e4a;border-color:#a8c9c7;color:white}
+.header .eai-lab-link:focus-visible{outline:2px solid #afd7d0;outline-offset:3px}
+@media(max-width:680px){
+ .header .eai-lab-link{padding:6px 7px;font-size:10px}
+ .header .eai-lab-link span{display:none}
+}

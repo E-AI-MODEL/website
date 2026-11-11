@@ -43,6 +43,8 @@ jobs:
         run: node scripts/test_eaiwork_mobile.mjs site-build
       - name: Verify anatomical 3D viewer on desktop and mobile
         run: node scripts/test_anatomie_browser.mjs site-build
+      - name: Verify Hartslaglab WebGL animation and mobile layout
+        run: node scripts/test_hartslaglab_browser.mjs site-build chromium
       - name: Verify LLM Observatory tokenizer in Chromium
         run: node scripts/test_llm_observatorium.mjs site-build
       - name: Test Melkweg Lab on phones and desktop
