@@ -38,3 +38,16 @@ Drie concrete fouten zijn hersteld:
 - De verticale positie van het getekende gewicht van een ideale veer volgt nu ook de ingestelde amplitude.
 
 De controles bewijzen geen volledige natuurkundige validatie van alle situaties. De schema's en grafieken van de andere proeven worden nog per onderwerp inhoudelijk nagezien.
+
+## Natuurkundige controle: vervolgronde
+
+De nieuwe test `tests/test_science_physics_round3.mjs` controleert 53 simulatiemodellen bij minimale, middelste en maximale parameterinstellingen en op drie animatietijdstippen (477 combinaties). Deze test controleert geldige berekende en getekende waarden, geen volledige wetenschappelijke juistheid.
+
+Verder zijn de volgende proeven aangepast:
+
+- **Dopplereffect**: de bron beweegt met de ingestelde snelheid; golfcirkels groeien met de geluidssnelheid en behouden de positie waar ze zijn uitgezonden. De frequentiegrafiek gebruikt nu de ingestelde bronsnelheid.
+- **Bolle lens**: het model onderscheidt werkelijk doorgelaten stralen van gestippelde terugverlengingen bij een virtueel beeld; de grafiek toont voorwerpsafstanden aan beide zijden van het brandpunt.
+- **Lorentzkracht**: bij een snelheid evenwijdig aan het magneetveld toont de projectie geen cirkelbeweging. Het model beschrijft alleen de dwarsprojectie.
+- **Foto-elektrisch effect**: bij een remspanning wordt de anode met een negatieve polariteit getoond ten opzichte van de kathode.
+
+De lens- en Dopplerweergaven blijven schematische onderwijsmodellen. De controle van alle 53 simulaties op fysische nauwkeurigheid, realistische tijdschalen en didactische diepgang is nog niet afgerond.
