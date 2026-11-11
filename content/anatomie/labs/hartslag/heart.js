@@ -1,7 +1,7 @@
 // Hartslaglab: een bestuurbaar vereenvoudigd 3D-model, geen medische patiëntsimulator.
 // Alle grafieken, klepbewegingen, kamerbewegingen en stroomdeeltjes gebruiken dezelfde fase.
 import {PHASES,volume,pressure,mechanics,phaseFor} from './cycle.js';
-import {CHAMBERS,VESSELS,VALVES,ANATOMY_PARTS,FLOW_PATHS,leafletGeometry,chamberGeometry,tubeGeometry,ringGeometry,septumGeometry,muscleRidges,TENDINOUS_CORDS} from './anatomyGeometry.js';
+import {CHAMBERS,VESSELS,VALVES,ANATOMY_PARTS,FLOW_PATHS,leafletGeometry,chamberGeometry,tubeGeometry,ringGeometry,septumGeometry,heartEnvelopeGeometry,muscleRidges,TENDINOUS_CORDS} from './anatomyGeometry.js';
 const $=id=>document.getElementById(id);
 const TAU=Math.PI*2;
 const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
@@ -91,6 +91,7 @@ function setupModel(){
     meshes.chambers[id]=Object.fromEntries(Object.entries(geometry).map(([name,data])=>[name,upload(data)]));
   }
   meshes.septum=upload(septumGeometry());
+  meshes.envelope=upload(heartEnvelopeGeometry());
   meshes.ridges={};
   for(const [id,part] of Object.entries(CHAMBERS))
     meshes.ridges[id]=muscleRidges(part).map(r=>({mesh:upload(tubeGeometry(r.path,r.radius)),color:r.color}));
@@ -163,6 +164,10 @@ function drawScene(m){
   // Vaten achter het zichtbare myocard, maar met een herkenbaar doorlopend verloop.
   for(const vessel of VESSELS)
     drawMesh(meshes.vessels[vessel.id],m4(),vessel.color,1);
+
+  // Een doorlopende spierwand verbindt de hartkamers tot één orgaan.
+  // De brede opening laat de inwendige holtes zichtbaar.
+  drawMesh(meshes.envelope,m4(),[.63,.30,.29],1);
 
   // Vier holtes met een echte open voorzijde, spierwand en inwendige bekleding.
   // De kamergeometrie wordt per hartfase opgeschaald. Dit is een didactische
