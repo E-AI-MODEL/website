@@ -25,6 +25,10 @@ for(const [id,chamber] of Object.entries(g.CHAMBERS)){
   assert(parts.inner.count>3000,'De kamer moet een getekende binnenwand hebben');
   assert(parts.rim.count>=200,'De doorsnede moet zichtbare wanddikte tonen');
 }
+const envelope=g.heartEnvelopeGeometry();
+valid(envelope,'doorlopende hartwand');
+assert(envelope.count>12000,'De hartwand mist detail of de opengewerkte voorzijde');
+assert(g.geometryAudit().envelopePolygons===envelope.count);
 for(const vessel of g.VESSELS)valid(g.tubeGeometry(vessel.path,vessel.radius),vessel.id);
 for(const valve of g.VALVES){
   valid(g.leafletGeometry(valve,0),'klep '+valve.id+' gesloten');
