@@ -1793,6 +1793,12 @@
   "intermediate tendon of digastric muscle": [
     "tussenpees van de tweehuikige spier"
   ],
+  "intermediolateral nucleus": [
+    "tussen-buitenste zenuwcelgroep van het ruggenmerg"
+  ],
+  "intermediomedial nucleus": [
+    "tussen-binnenste zenuwcelgroep van het ruggenmerg"
+  ],
   "intermuscular gluteal bursae": [
     "slijmbeurzen tussen de bilspieren"
   ],
@@ -1843,6 +1849,9 @@
   ],
   "interpectoral nodes": [
     "lymfeklieren tussen de borstspieren"
+  ],
+  "interpeduncular fossa": [
+    "groeve tussen de hersenstelen"
   ],
   "interpubic disc": [
     "gewrichtsschijf tussen de schaambeenderen"
@@ -1937,6 +1946,9 @@
   "intraglandular parotid nodes": [
     "lymfeklieren in de oorspeekselklier"
   ],
+  "intraparietal sulcus": [
+    "groeve binnen de wandbeenkwab"
+  ],
   "intrapulmonary nodes": [
     "lymfeklieren binnen in de long"
   ],
@@ -1954,6 +1966,9 @@
   ],
   "investing abdominal fascia": [
     "omhullende fascie van de buik"
+  ],
+  "iris": [
+    "regenboogvlies"
   ],
   "ischiofemoral ligament": [
     "zitbeen-dijbeenband"
@@ -1979,11 +1994,23 @@
   "lacrimal bone": [
     "traanbeen"
   ],
+  "lacrimal canaliculus": [
+    "traankanaaltje"
+  ],
+  "lacrimal gland": [
+    "traanklier"
+  ],
+  "lacrimal sac": [
+    "traanzak"
+  ],
   "laryngopharynx": [
     "onderste keelholte achter het strottenhoofd"
   ],
   "larynx": [
     "strottenhoofd"
+  ],
+  "lateral antebrachial cutaneous nerve": [
+    "buitenste huidzenuw van de onderarm"
   ],
   "lateral aortic nodes": [
     "lymfeklieren naast de aorta"
@@ -2015,17 +2042,29 @@
   "lateral common iliac nodes": [
     "buitenste lymfeklieren bij de gemeenschappelijke bekkenvaten"
   ],
+  "lateral corticospinal tract": [
+    "buitenste bewegingsbaan van hersenschors naar ruggenmerg"
+  ],
   "lateral crico-arytenoid muscle": [
     "zijwaartse ring-bekerkraakbeenspier"
   ],
   "lateral cuneiform bone": [
     "buitenste wigvormige voetwortelbeen"
   ],
+  "lateral fasciculus proprius": [
+    "buitenste bundel van de korte ruggenmergbanen"
+  ],
+  "lateral femoral cutaneous nerve": [
+    "buitenste huidzenuw van het bovenbeen"
+  ],
   "lateral femoral intermuscular septum": [
     "buitenste bindweefselschot van het bovenbeen"
   ],
   "lateral frontobasal artery": [
     "buitenste voorhoofd-basis-slagader"
+  ],
+  "lateral geniculate body": [
+    "buitenste knielichaam van de thalamus"
   ],
   "lateral head of flexor hallucis brevis": [
     "buitenste kop van de korte grote-teenbuiger"
@@ -2036,6 +2075,9 @@
   "lateral head of triceps brachii": [
     "buitenste kop van de driehoofdige armspier"
   ],
+  "lateral intermediate substance": [
+    "buitenste tussengebied van het ruggenmerg"
+  ],
   "lateral intermuscular septum of arm": [
     "buitenste bindweefselschot van de bovenarm"
   ],
@@ -2045,14 +2087,26 @@
   "lateral occipital artery": [
     "buitenste achterhoofdsslagader"
   ],
+  "lateral occipital gyrus (middle occipital gyrus*)": [
+    "buitenste achterhoofdshersenwinding (bronlabel nazien)"
+  ],
+  "lateral occipitotemporal gyrus": [
+    "buitenste achterhoofd-slaapkwabwinding"
+  ],
   "lateral patellar retinaculum": [
     "buitenste steunband van de knieschijf"
+  ],
+  "lateral pectoral nerve": [
+    "buitenste borstspierzenuw"
   ],
   "lateral pericardial nodes": [
     "buitenste lymfeklieren bij het hartzakje"
   ],
   "lateral plantar artery": [
     "buitenste voetzoolslagader"
+  ],
+  "lateral plantar nerve": [
+    "buitenste voetzoolzenuw"
   ],
   "lateral plantar veins": [
     "buitenste voetzooladers"
@@ -2066,6 +2120,9 @@
   "lateral rectus muscle": [
     "buitenste rechte oogspier"
   ],
+  "lateral reticulospinal tract": [
+    "buitenste baan van de hersenstam naar het ruggenmerg"
+  ],
   "lateral sacral nodes": [
     "lymfeklieren naast het heiligbeen"
   ],
@@ -2077,6 +2134,9 @@
   ],
   "lateral segmental bronchus of right lung (biv)": [
     "buitenste segmentbronchus van de rechterlong (BIV)"
+  ],
+  "lateral spinothalamic tract": [
+    "buitenste baan van ruggenmerg naar thalamus"
   ],
   "lateral subtendinous bursa of gastrocnemius muscle": [
     "buitenste slijmbeurs onder de pees van de kuitspier"
@@ -2110,6 +2170,9 @@
   ],
   "lateral vesical nodes": [
     "lymfeklieren naast de urineblaas"
+  ],
+  "lateral vestibulospinal tract": [
+    "buitenste baan van evenwichtskernen naar ruggenmerg"
   ],
   "latissimus dorsi muscle": [
     "brede rugspier"
@@ -2207,6 +2270,12 @@
   "left ventricle": [
     "linkerhartkamer"
   ],
+  "lens": [
+    "ooglens"
+  ],
+  "lentiform nucleus": [
+    "lensvormige zenuwcelgroep van de basale hersenkernen"
+  ],
   "lesser omentum": [
     "kleine vetschort"
   ],
@@ -2240,8 +2309,17 @@
   "linea alba": [
     "witte buiklijn"
   ],
+  "lingual gyrus": [
+    "tongvormige winding aan de onderkant van de hersenen"
+  ],
+  "lingual nerve": [
+    "tongzenuw"
+  ],
   "lingual vein": [
     "tongader"
+  ],
+  "lingula of cerebellum": [
+    "tongvormig deel van de kleine hersenen"
   ],
   "lingular vein of left lung": [
     "lingula-ader van de linkerlong"
@@ -2263,6 +2341,9 @@
   ],
   "long posterior ciliary arteries": [
     "lange achterste straallichaamslagaders van het oog"
+  ],
+  "long thoracic nerve": [
+    "lange borstkaszenuw"
   ],
   "longissimus capitis muscle": [
     "lange hoofdspier"
@@ -2318,6 +2399,9 @@
   "lunate bone": [
     "maanbeen"
   ],
+  "lunate sulcus": [
+    "halvemaanvormige hersengroeve"
+  ],
   "lung": [
     "long"
   ],
@@ -2326,6 +2410,9 @@
   ],
   "malleus": [
     "hamer"
+  ],
+  "mamillary body": [
+    "tepellichaam van de hypothalamus"
   ],
   "mandible": [
     "onderkaak"
@@ -2351,8 +2438,14 @@
   "maxillary artery": [
     "bovenkaakslagader"
   ],
+  "maxillary nerve": [
+    "bovenkaakzenuw"
+  ],
   "maxillary veins": [
     "bovenkaakaders"
+  ],
+  "medial antebrachial cutaneous nerve": [
+    "binnenste huidzenuw van de onderarm"
   ],
   "medial basal segmental artery of left lung": [
     "binnenste basale segmentale slagader van de linkerlong"
@@ -2366,6 +2459,9 @@
   "medial basal segmental bronchus of right lung (bvii)": [
     "binnenste basale segmentbronchus van de rechterlong (BVII)"
   ],
+  "medial brachial cutaneous nerve": [
+    "binnenste huidzenuw van de bovenarm"
+  ],
   "medial circumflex femoral artery": [
     "binnenste omgaande dijbeenslagader"
   ],
@@ -2375,14 +2471,23 @@
   "medial common iliac nodes": [
     "binnenste lymfeklieren bij de gemeenschappelijke bekkenvaten"
   ],
+  "medial crural cutaneous branches of saphenous nerve": [
+    "binnenste onderbeenhuidtakken van de huidzenuw van het been"
+  ],
   "medial cuneiform bone": [
     "binnenste wigvormige voetwortelbeen"
+  ],
+  "medial dorsal cutaneous nerve of foot": [
+    "binnenste huidzenuw op de voetrug"
   ],
   "medial external iliac nodes": [
     "binnenste lymfeklieren bij de uitwendige bekkenvaten"
   ],
   "medial femoral intermuscular septum": [
     "binnenste bindweefselschot van het bovenbeen"
+  ],
+  "medial geniculate body": [
+    "binnenste knielichaam van de thalamus"
   ],
   "medial head of flexor hallucis brevis": [
     "binnenste kop van de korte grote-teenbuiger"
@@ -2402,11 +2507,20 @@
   "medial occipital artery": [
     "binnenste achterhoofdsslagader"
   ],
+  "medial occipitotemporal gyrus (parahippocampal*)": [
+    "binnenste achterhoofd-slaapkwabwinding (bronlabel nazien)"
+  ],
   "medial patellar retinaculum": [
     "binnenste steunband van de knieschijf"
   ],
+  "medial pectoral nerve": [
+    "binnenste borstspierzenuw"
+  ],
   "medial plantar artery": [
     "binnenste voetzoolslagader"
+  ],
+  "medial plantar nerve": [
+    "binnenste voetzoolzenuw"
   ],
   "medial plantar veins": [
     "binnenste voetzooladers"
@@ -2420,6 +2534,9 @@
   "medial rectus muscle": [
     "binnenste rechte oogspier"
   ],
+  "medial reticulospinal tract": [
+    "binnenste baan van de hersenstam naar het ruggenmerg"
+  ],
   "medial segmental artery of right lung": [
     "binnenste segmentale slagader van de rechterlong"
   ],
@@ -2429,11 +2546,17 @@
   "medial subtendinous bursa of gastrocnemius muscle": [
     "binnenste slijmbeurs onder de pees van de kuitspier"
   ],
+  "medial sural cutaneous nerve": [
+    "binnenste huidzenuw van de kuit"
+  ],
   "medial talocalcaneal ligament": [
     "binnenste band tussen sprongbeen en hielbeen"
   ],
   "medial vein of right lung": [
     "binnenste ader van de rechterlong"
+  ],
+  "medial vestibulospinal tract": [
+    "binnenste baan van evenwichtskernen naar ruggenmerg"
   ],
   "median antebrachial vein": [
     "middelste onderarmader"
@@ -2453,11 +2576,20 @@
   "median thyrohyoid ligament": [
     "middelste band tussen schildkraakbeen en tongbeen"
   ],
+  "medulla oblongata": [
+    "verlengde merg van de hersenstam"
+  ],
+  "meningeal branch of maxillary nerve": [
+    "hersenvliestak van de bovenkaakzenuw"
+  ],
   "meniscopatellar ligament": [
     "band tussen meniscus en knieschijf"
   ],
   "mental branch of inferior alveolar artery": [
     "kintak van de onderste tandkasslagader"
+  ],
+  "mental nerve": [
+    "kinzenuw"
   ],
   "mentalis muscle": [
     "kinspier"
@@ -2503,6 +2635,9 @@
   ],
   "middle collateral artery": [
     "middelste zijslagader"
+  ],
+  "middle frontal gyrus": [
+    "middelste voorhoofdshersenwinding"
   ],
   "middle genicular artery": [
     "middelste knieslagader"
@@ -2552,6 +2687,18 @@
   "middle pharyngeal constrictor": [
     "middelste keelholtesnoerder"
   ],
+  "middle temporal gyrus": [
+    "middelste slaapkwabwinding"
+  ],
+  "middle trunk of brachial plexus": [
+    "middelste zenuwstreng van de armzenuwvlecht"
+  ],
+  "motor nucleus of facial nerve": [
+    "motorische zenuwcelgroep van de aangezichtszenuw"
+  ],
+  "motor root of trigeminal nerve": [
+    "bewegingswortel van de drielingzenuw"
+  ],
   "mucosa of nasal cavity": [
     "slijmvlies van de neusholte"
   ],
@@ -2563,6 +2710,24 @@
   ],
   "multifidus thoracis muscle": [
     "diepe meervoudig gedeelde borstspier"
+  ],
+  "muscular branches of axillary nerve": [
+    "spiertakken van de okselzenuw"
+  ],
+  "muscular branches of deep fibular nerve": [
+    "spiertakken van de diepe kuitbeenzenuw"
+  ],
+  "muscular branches of median nerve": [
+    "spiertakken van de middelste armzenuw"
+  ],
+  "muscular branches of radial nerve": [
+    "spiertakken van de spaakbeenzenuw"
+  ],
+  "muscular branches of ulnar nerve": [
+    "spiertakken van de ellepijpszenuw"
+  ],
+  "musculocutaneous nerve": [
+    "spier-huidzenuw van de bovenarm"
   ],
   "musculophrenic artery": [
     "spier-middenrifslagader"
@@ -2588,11 +2753,23 @@
   "nasolabial node": [
     "lymfeklier bij de neus-lipplooi"
   ],
+  "nasolacrimal duct": [
+    "traan-neusbuis"
+  ],
   "nasopharynx": [
     "neus-keelholte"
   ],
   "navicular bone": [
     "scheepvormig voetwortelbeen"
+  ],
+  "nerve to mylohyoid muscle": [
+    "zenuw naar de kaak-tongbeenspier"
+  ],
+  "nerve to piriformis muscle": [
+    "zenuw naar de peervormige spier"
+  ],
+  "nerve to quadratus femoris muscle": [
+    "zenuw naar de vierkante dijspier"
   ],
   "neurohypophysis": [
     "achterkwab van de hypofyse"
@@ -2606,11 +2783,35 @@
   "node of ligamentum arteriosum": [
     "lymfeklier bij de slagaderband"
   ],
+  "nodule of vermis": [
+    "knobbeltje van de kleinehersenworm"
+  ],
   "non-coronary leaflet": [
     "niet-kransvormig klepblad van de aortaklep"
   ],
   "nuchal ligament": [
     "nekband"
+  ],
+  "nucleus ambiguus": [
+    "motorische zenuwcelgroep in de hersenstam"
+  ],
+  "nucleus of abducens nerve": [
+    "zenuwcelgroep van de zesde hersenzenuw"
+  ],
+  "nucleus of accessory nerve": [
+    "zenuwcelgroep van de elfde hersenzenuw"
+  ],
+  "nucleus of hypoglossal nerve": [
+    "zenuwcelgroep van de twaalfde hersenzenuw"
+  ],
+  "nucleus of oculomotor nerve": [
+    "zenuwcelgroep van de derde hersenzenuw"
+  ],
+  "nucleus of trochlear nerve": [
+    "zenuwcelgroep van de vierde hersenzenuw"
+  ],
+  "nucleus proprius": [
+    "eigen zenuwcelgroep van het ruggenmerg"
   ],
   "nucleus pulposus": [
     "geleiachtige tussenwervelschijfkern"
@@ -2714,6 +2915,9 @@
   "obturator membrane": [
     "afsluitmembraan in het bekken"
   ],
+  "obturator nerve": [
+    "afsluitzenuw van het bekken"
+  ],
   "obturator nodes": [
     "lymfeklieren bij het afsluitgat in het bekken"
   ],
@@ -2726,6 +2930,9 @@
   "occipital nodes": [
     "achterhoofdlymfeklieren"
   ],
+  "occipital pole": [
+    "achterhoofdspunt van de grote hersenen"
+  ],
   "occipital sinus": [
     "achterhoofdssinus van de hersenaders"
   ],
@@ -2735,8 +2942,23 @@
   "occipitalis muscle": [
     "achterhoofdsspier"
   ],
+  "occipitotemporal sulcus (lateral part*)": [
+    "buitenste achterhoofd-slaapkwabgroeve (bronlabel nazien)"
+  ],
+  "oculomotor nerve (iii)": [
+    "derde hersenzenuw, oogbewegingszenuw"
+  ],
   "oesophagus": [
     "slokdarm"
+  ],
+  "olfactory nerve (i)": [
+    "eerste hersenzenuw, reukzenuw"
+  ],
+  "olfactory sulcus": [
+    "reukgroeve aan de onderkant van de hersenen"
+  ],
+  "olive": [
+    "olijf van de verlengde merg"
   ],
   "omental taenia": [
     "lengtespierband aan de zijde van het vetschort"
@@ -2744,8 +2966,14 @@
   "omohyoid muscle": [
     "schouderblad-tongbeenspier"
   ],
+  "opercular part of inferior frontal gyrus": [
+    "dekselgedeelte van de onderste voorhoofdshersenwinding"
+  ],
   "ophthalmic artery": [
     "oogslagader"
+  ],
+  "ophthalmic nerve": [
+    "oogtak van de drielingzenuw"
   ],
   "opponens digiti minimi muscle of hand": [
     "tegensteller van de pink"
@@ -2762,11 +2990,29 @@
   "optic nerve (ii)": [
     "oogzenuw"
   ],
+  "optic tract": [
+    "oogzenuwbaan na de kruising"
+  ],
   "orbicularis oris muscle": [
     "kringspier van de mond"
   ],
+  "orbital gyri": [
+    "oogkaswindingen van de hersenen"
+  ],
+  "orbital gyri (frontomarginal gyrus and sulcus*)": [
+    "oogkaswindingen van de hersenen (bronlabel nazien)"
+  ],
+  "orbital part of  inferior frontal gyrus": [
+    "oogkasgedeelte van de onderste voorhoofdshersenwinding"
+  ],
   "orbital part of orbicularis oculi": [
     "oogkasdeel van de kringspier rond het oog"
+  ],
+  "orbital sulci (h-shaped orbital sulci*)": [
+    "H-vormige groeven aan de onderkant van de voorhoofdskwab"
+  ],
+  "orbital sulci (lateral orbital sulcus*)": [
+    "buitenste oogkasgroeven van de hersenen (bronlabel nazien)"
   ],
   "orbitofrontal branches of anterior cerebral artery": [
     "oogkas-voorhoofdstaakken van de voorste hersenslagader"
@@ -2785,6 +3031,12 @@
   ],
   "palmar aponeurosis": [
     "peesplaat van de handpalm"
+  ],
+  "palmar branch of median nerve": [
+    "handpalmtak van de middelste armzenuw"
+  ],
+  "palmar branch of ulnar nerve": [
+    "handpalmtak van de ellepijpszenuw"
   ],
   "palmar carpal branch of radial artery": [
     "handpalm-handworteltak van de spaakbeenslagader"
@@ -2825,6 +3077,12 @@
   "pancreatic duct": [
     "afvoergang van de alvleesklier"
   ],
+  "paracentral gyrus and sulcus*": [
+    "hersenwinding en groeve naast de centrale groeve (bronlabel nazien)"
+  ],
+  "paracentral sulcus": [
+    "groeve naast de centrale hersengroeve"
+  ],
   "paracolic superior mesenteric nodes": [
     "lymfeklieren naast de dikke darm bij de bovenste darmslagader"
   ],
@@ -2849,6 +3107,9 @@
   "parieto-occipital artery": [
     "wandbeen-achterhoofdsslagader"
   ],
+  "parieto-occipital sulcus": [
+    "groeve tussen wandbeen- en achterhoofdskwab"
+  ],
   "parotid duct": [
     "afvoergang van de oorspeekselklier"
   ],
@@ -2872,6 +3133,9 @@
   ],
   "pectoralis minor muscle": [
     "kleine borstspier"
+  ],
+  "peduncle of flocculus": [
+    "steeltje van het vlokje van de kleine hersenen"
   ],
   "perforating branches of plantar metatarsal arteries": [
     "doorborende takken van de middenvoetslagaders aan de voetzool"
@@ -2957,6 +3221,9 @@
   "pleura": [
     "borstvlies"
   ],
+  "pons": [
+    "hersenbrug"
+  ],
   "popliteal artery": [
     "knieholteslagader"
   ],
@@ -2974,6 +3241,15 @@
   ],
   "postcentral arterial branch": [
     "slagadertak achter de centrale hersengroeve"
+  ],
+  "postcentral gyrus": [
+    "hersenwinding achter de centrale groeve"
+  ],
+  "postcentral sulcus": [
+    "groeve achter de centrale hersengroeve"
+  ],
+  "posterior antebrachial cutaneous nerve": [
+    "achterste huidzenuw van de onderarm"
   ],
   "posterior auricular vein": [
     "ader achter het oor"
@@ -2996,6 +3272,12 @@
   "posterior belly of digastric muscle": [
     "achterste buik van de tweehuikige spier"
   ],
+  "posterior branch of medial antebrachial cutaneous nerve": [
+    "achterste tak van de binnenste huidzenuw van de onderarm"
+  ],
+  "posterior branch of obturator nerve": [
+    "achterste tak van de afsluitzenuw"
+  ],
   "posterior branch of renal artery": [
     "achterste tak van de nierslagader"
   ],
@@ -3011,8 +3293,17 @@
   "posterior circumflex humeral vein": [
     "achterste omgaande opperarmbeenader"
   ],
+  "posterior cochlear nucleus": [
+    "achterste gehoorzenuwcelgroep"
+  ],
+  "posterior commissure": [
+    "achterste hersenverbinding"
+  ],
   "posterior communicating artery": [
     "achterste verbindingsslagader van de hersenen"
+  ],
+  "posterior cord of brachial plexus": [
+    "achterste zenuwbundel van de armzenuwvlecht"
   ],
   "posterior crico-arytenoid muscle": [
     "achterste ring-bekerkraakbeenspier"
