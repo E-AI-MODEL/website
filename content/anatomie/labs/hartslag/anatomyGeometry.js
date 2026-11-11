@@ -123,7 +123,7 @@ function ellipsoidNormal(p,inside){
 // vier aparte holtes zichtbaar, maar de buitenomtrek blijft één orgaan.
 // Onderwijsgeometrie: de vorm is geen scan of patiëntspecifieke anatomie.
 export function heartEnvelopeGeometry(){
-  const out=collector(),rows=68,radial=76;
+  const out=collector(),rows=96,radial=120;
   function point(u,angle){
     const y=-1.40+2.30*u;
     const bulge=Math.pow(Math.max(.001,Math.sin(Math.PI*(.03+.91*u))),.77);
