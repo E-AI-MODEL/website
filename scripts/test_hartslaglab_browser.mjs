@@ -83,6 +83,33 @@ try {
   const size=await mobile.evaluate(()=>({scroll:document.documentElement.scrollWidth,inner:innerWidth,canvas:document.getElementById('heartCanvas').getBoundingClientRect().width}));
   assert(size.scroll<=size.inner+6,'Mobiele pagina mag niet horizontaal overlopen: '+JSON.stringify(size));
   assert(size.canvas>280,'Hartmodel moet groot genoeg blijven op mobiel');
+  // Een compact scherm toont geen zes overlappende labels voor het hart.
+  assert.equal(await mobile.locator('#labelsToggle').getAttribute('aria-pressed'),'false',
+    'Namen moeten op mobiel standaard uit staan');
+  assert(await mobile.locator('#labels [data-part="ra"]').isHidden(),
+    'Hartlabels mogen de aanvankelijke 3D-weergave niet bedekken');
+  await mobile.locator('#labelsToggle').click();
+  assert.equal(await mobile.locator('#labelsToggle').getAttribute('aria-pressed'),'true');
+  await mobile.locator('#labelsToggle').click();
+  assert.equal(await mobile.locator('#labelsToggle').getAttribute('aria-pressed'),'false');
+  const layout=await mobile.evaluate(()=>{
+    const stage=document.getElementById('stage').getBoundingClientRect();
+    const hint=document.getElementById('partInfo').getBoundingClientRect();
+    const timeline=document.getElementById('timeline');
+    const controls=[...timeline.querySelectorAll('button')];
+    return {stageHeight:stage.height,hintBelow:hint.top>=stage.bottom-1,
+      timelineScrollable:timeline.scrollWidth>timeline.clientWidth+20,
+      phaseWidths:controls.map(x=>x.clientWidth),
+      textFits:controls.every(x=>x.scrollWidth<=x.clientWidth+4),
+      hasHorizontalOverflow:document.documentElement.scrollWidth>innerWidth+6};
+  });
+  assert(layout.stageHeight>=400,'Het 3D-model moet op mobiel voldoende hoog blijven');
+  assert(layout.hintBelow,'Uitleg mag niet over de hartkamers liggen');
+  assert(layout.timelineScrollable,'Fasen moeten horizontaal te verkennen zijn');
+  assert(layout.phaseWidths.every(x=>x>=115),'Fasen mogen niet tot afgekorte knoppen krimpen');
+  assert(layout.textFits,'Faseteksten moeten volledig leesbaar zijn');
+  assert(!layout.hasHorizontalOverflow,'Alleen de fasebalk mag horizontaal scrollen');
+
   assert.equal(await mobile.locator('#sectionToggle').count(),1,'Doorsnedeknop moet ook op mobiel beschikbaar zijn');
   await mobile.evaluate(()=>window.__EAI_HEART_LAB__.setTime(0));
   await mobile.locator('#nextPhase').click();
