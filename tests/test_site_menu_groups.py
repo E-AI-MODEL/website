@@ -1,7 +1,10 @@
 """Controleer de werkelijke menugroepen, niet alleen de namen in de broncode."""
 import unittest
 from bs4 import BeautifulSoup
-from scripts.prepare_ui import groups, navigation
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'scripts'))
+from prepare_ui import groups, navigation
 
 
 class PublicMenuTests(unittest.TestCase):
