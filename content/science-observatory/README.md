@@ -61,3 +61,17 @@ Een kleine stip toont de huidige proefinstelling of animatietijd waar die horizo
 De regressietest `tests/test_science_physical_graphs.mjs` controleert alle 53 asbeschrijvingen bij drie parameterinstellingen, een aantal onafhankelijk berekende referentiepunten, veranderlijke meetbereiken, en het omgaan met onderbrekingen zoals totale interne reflectie.
 
 Deze controles zeggen niets over volledige natuurkundige validatie van alle simulaties. De modellen met relatieve weergaven moeten inhoudelijk en didactisch verder worden beoordeeld.
+
+## Grafiek, meting en beweging: vervolgcontrole
+
+De regressietest `tests/test_science_graph_animation_alignment.mjs` controleert op meerdere tijdstippen en instellingen of grafiekwaarden overeenkomen met daadwerkelijk getekende posities, veldsterktes en meetwaarden. Zij is toegevoegd aan zowel de websitecontrole als de productiebuild.
+
+- **Staande golven:** snaarbeweging en momentopname van de grafiek gebruiken dezelfde uitwijking. De uitgebreide scène gebruikt nu ook dezelfde tijdsfactor.
+- **Longitudinale golven:** de grafiek toont de verplaatsing van luchtdeeltjes, niet een ongemeten drukafwijking. Deeltjesposities en grafiek komen overeen.
+- **Wisselstroom:** gemeten stroom, golfvorm en bewegende stip gebruiken dezelfde vertraagde weergavetijd. De grafiek noemt dit expliciet gesimuleerde tijd.
+- **Elektromagnetische golven:** 2D-weergave, ruimtelijke golf en grafiek gebruiken dezelfde fase en golflengte.
+- **Interferentie:** de kleuren van het golfveld en de meetlijn worden met dezelfde som van twee golven berekend.
+- **Zwevingen:** een stip en een actuele meetwaarde laten de som van de twee trillingen op hetzelfde tijdstip zien.
+- **Radioactief verval:** de terugkerende animatie gebruikt dezelfde zes halveringstijden als de grafiek.
+
+De getoonde vertraging van snelle trillingen is een hulpmiddel om hun beweging te kunnen volgen. Het is niet de werkelijke oscillatiefrequentie op het beeldscherm. Deze controle betreft de genoemde modellen en steekproeven, niet een volledige vakinhoudelijke audit van alle 53 proeven.
