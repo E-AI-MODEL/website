@@ -42,16 +42,16 @@ try {
   assert(!metrics.av&&metrics.sem&&metrics.pressure>90&&metrics.volume<130);
   const pumping=await page.locator('#heartCanvas').screenshot();
   assert.notDeepEqual(filling,pumping,'3D-model moet daadwerkelijk bewegen tussen vulling en uitpompen');
-  assert.equal(await page.locator('#sectionToggle').getAttribute('aria-pressed'),'true');
-  const cutawayFrame=await page.locator('#heartCanvas').screenshot();
-  await page.locator('#sectionToggle').click();
   assert.equal(await page.locator('#sectionToggle').getAttribute('aria-pressed'),'false');
-  assert.equal(await page.evaluate(()=>window.__EAI_HEART_LAB__.state.cutaway),false);
-  await page.waitForTimeout(90);
+  const atlas=await page.evaluate(()=>window.__EAI_HEART_LAB__.state);
+  assert(atlas.atlasReady&&atlas.atlasPartCount>=20,'Het echte atlasmodel moet geladen zijn');
   const outsideFrame=await page.locator('#heartCanvas').screenshot();
-  assert.notDeepEqual(cutawayFrame,outsideFrame,'Een echte doorsnede moet anders zijn dan de buitenkant');
   await page.locator('#sectionToggle').click();
+  assert.equal(await page.locator('#sectionToggle').getAttribute('aria-pressed'),'true');
   assert.equal(await page.evaluate(()=>window.__EAI_HEART_LAB__.state.cutaway),true);
+  await page.waitForTimeout(90);
+  const cutawayFrame=await page.locator('#heartCanvas').screenshot();
+  assert.notDeepEqual(cutawayFrame,outsideFrame,'De bewegende doorsnede moet afwijken van de echte anatomische buitenkant');
   const label=await page.locator('#phaseTitle').textContent();
   assert.match(label,/Bloed wordt uitgepompt/);
   await page.locator('#tabExploreBtn').click();
@@ -80,6 +80,8 @@ try {
   mobile.on('pageerror',e=>errors.push(e.message));
   await mobile.goto(base+'/tools/anatomie/labs/hartslag/',{waitUntil:'domcontentloaded'});
   await mobile.waitForFunction(()=>window.__EAI_HEART_LAB__?.rendererReady===true,{timeout:35000});
+  assert(await mobile.evaluate(()=>window.__EAI_HEART_LAB__.state.atlasReady),
+    'Het echte hartmodel moet ook op mobiele WebKit laden');
   const size=await mobile.evaluate(()=>({scroll:document.documentElement.scrollWidth,inner:innerWidth,canvas:document.getElementById('heartCanvas').getBoundingClientRect().width}));
   assert(size.scroll<=size.inner+6,'Mobiele pagina mag niet horizontaal overlopen: '+JSON.stringify(size));
   assert(size.canvas>280,'Hartmodel moet groot genoeg blijven op mobiel');
