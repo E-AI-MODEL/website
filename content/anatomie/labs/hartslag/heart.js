@@ -172,7 +172,7 @@ function drawScene(m){
   // De brede opening laat de inwendige holtes zichtbaar.
   drawMesh(meshes.envelope,m4(),[.65,.31,.29],1);
   // Hartoren vormen de gekartelde uitlopers van de boezems.
-  for(const auricle of meshes.auricles)drawMesh(auricle.mesh,m4(),auricle.color,1);
+  for(const auricle of meshes.auricles)drawMesh(auricle.mesh,m4(),state.selected===auricle.id?[.96,.66,.50]:auricle.color,1);
 
   // Vier holtes met een echte open voorzijde, spierwand en inwendige bekleding.
   // De kamergeometrie wordt per hartfase opgeschaald. Dit is een didactische
@@ -191,9 +191,9 @@ function drawScene(m){
     for(const ridge of meshes.ridges[id])drawMesh(ridge.mesh,model,ridge.color,.96);
   }
   // Kransvaten en de grote hartader liggen op het epicard.
-  for(const vessel of meshes.coronary)drawMesh(vessel.mesh,m4(),vessel.color,1);
+  for(const vessel of meshes.coronary)drawMesh(vessel.mesh,m4(),state.selected===vessel.id?[.98,.75,.52]:vessel.color,1);
   if(state.cutaway){
-    for(const papillary of meshes.papillary)drawMesh(papillary.mesh,m4(),papillary.color,1);
+    for(const papillary of meshes.papillary)drawMesh(papillary.mesh,m4(),state.selected===papillary.id?[.98,.71,.54]:papillary.color,1);
     drawMesh(meshes.septum,m4(),[.91,.59,.52],1);
     for(const chord of meshes.cords)drawMesh(chord,m4(),[.96,.85,.70],1);
     // Klepbladen zijn geen statische stippen: twee bij mitralis, drie bij
@@ -283,7 +283,8 @@ function selectedPartAt(x,y){
   for(const [id,part] of Object.entries(ANATOMY_PARTS)){
     const p=project(part.pos,pv,canvas.clientWidth,canvas.clientHeight);
     const dist=Math.hypot(p[0]-x,p[1]-y);
-    if(p[2]>0&&dist<score){best=id;score=dist;}
+    const limit=['artery','vein','papillary','auricle'].includes(part.type)?27:55;
+    if(p[2]>0&&dist<limit&&dist<score){best=id;score=dist;}
   }
   return best;
 }
@@ -295,6 +296,16 @@ function positionInfo(id){
     const v=VALVES.find(v=>v.id===id),m=mechanics(state.t);
     const open=v.type==='av'?m.av:m.sem;
     $('partInfo').textContent=part.label+' · '+(open?'open':'gesloten')+'. Let op de klepbladen en de stroomrichting.';
+    return;
+  }
+  if(part.type==='artery'||part.type==='vein'||part.type==='papillary'||part.type==='auricle'){
+    const explanation={
+      artery:'Kransslagaders voorzien de hartspier van zuurstofrijk bloed.',
+      vein:'Hartaders voeren zuurstofarm bloed uit de hartspier terug.',
+      papillary:'Deze spier houdt via peesdraden de AV-klepbladen tegen bij het samentrekken.',
+      auricle:'Een uitloper van de boezem. De vorm is hier schematisch weergegeven.'
+    };
+    $('partInfo').textContent=part.label+' · '+explanation[part.type];
     return;
   }
   const extra=id==='lv'?'De dikke spierwand perst bloed naar de aorta.':
