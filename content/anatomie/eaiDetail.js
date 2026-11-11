@@ -140,8 +140,8 @@ export function refineAnatomyInfo(partData, deselectPart) {
   const explanation = document.createElement('p');
   explanation.className = 'eai-source-note';
   explanation.textContent = guide
-    ? 'Leerboekbron bij deze uitleg. De Nederlandse tekst is voor deze atlas geschreven; de bron beoordeelt niet automatisch het 3D-model.'
-    : 'Deze uitleg beschrijft een soort structuur, niet de specifieke werking van dit onderdeel. De gekoppelde bron geeft achtergrond bij die soort.';
+    ? 'De gelinkte leerboeksectie ondersteunt dit onderwerp. De Nederlandse tekst blijft eigen redactie; de bron beoordeelt de gekozen 3D-geometrie niet.'
+    : 'Dit is algemene informatie over een type structuur. De leerboekbron bewijst niet de werking van dit afzonderlijke onderdeel.';
   provenance.appendChild(explanation);
   const addSource = (source, label) => {
     if (!source) return;
@@ -153,7 +153,11 @@ export function refineAnatomyInfo(partData, deselectPart) {
     provenance.appendChild(link);
   };
   addSource(teachingSource, 'Onderwijsbron');
-  addSource(sourceStatus.terminology, 'Naamgeving');
+  const nameNotice = document.createElement('p');
+  nameNotice.className = 'eai-source-note';
+  nameNotice.textContent = 'Nederlandse namen zijn voor leerlingen vertaald. Ze zijn nog niet allemaal vergeleken met de internationale nomenclatuur.';
+  provenance.appendChild(nameNotice);
+  addSource(sourceStatus.terminology, 'Internationale terminologie ter vergelijking');
   addSource(sourceStatus.model, '3D-gegevens');
   const sourceDescription = panel.querySelector('.eai-source-description');
   if (sourceDescription) sourceDescription.after(provenance);
