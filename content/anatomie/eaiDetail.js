@@ -55,6 +55,7 @@ export function refineAnatomyInfo(partData, deselectPart) {
     textBlock(facts, 'Functie', guide.function);
     textBlock(facts, 'Ligging en verbindingen', guide.location);
     textBlock(facts, 'Werking', guide.mechanism);
+    if (guide.question) textBlock(facts, 'Onderzoek in het 3D-model', guide.question);
   } else {
     const notice = document.createElement('p');
     notice.className = 'eai-facts-unverified';
