@@ -699,7 +699,7 @@ function renderInquiry(){
 }
 function actInquiry(){
  if(state.id==='projectile'){
-  if(mission.complete){mission.launched=false;mission.complete=false;mission.feedback='';state.t=0;setPlaying(false);render();return;}mission.launched=true;mission.complete=false;mission.feedback='';state.t=0;if(isMobileProjectile()){if(projectileMobileFrame(state.p).range>40){mission.view='overview';syncMobileAim()}$('stage').scrollIntoView({block:'center',behavior:'auto'})}setPlaying(true);
+  if(mission.complete){mission.launched=false;mission.complete=false;mission.feedback='';state.t=0;setPlaying(false);render();return;}mission.launched=true;mission.complete=false;mission.feedback='';state.t=0;if(isMobileProjectile()){if(projectileMobileFrame(state.p).range>40){mission.view='overview';syncMobileAim()}const stage=$('stage'),rect=stage.getBoundingClientRect(),root=document.documentElement,oldScroll=root.style.scrollBehavior;root.style.scrollBehavior='auto';window.scrollTo(0,Math.max(0,window.scrollY+rect.top-Math.max(75,(innerHeight-rect.height)/2)));root.style.scrollBehavior=oldScroll}setPlaying(true);
  }else if(state.id==='wheatstone'){
   const raw=$('inquiryAnswer').value.trim().replace(',','.');
   const guess=Number(raw);
