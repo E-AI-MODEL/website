@@ -122,7 +122,8 @@ function drawMesh(mesh,model,color,alpha=1,pulse=0,cutFront=false){
   gl.uniform3fv(loc.tint,color);gl.uniform1f(loc.alpha,alpha);
   gl.uniform1f(loc.pulse,pulse);
   gl.uniform1f(loc.cutFront,cutFront?1:0);
-  gl.uniform3fv(loc.cutAxis,[Math.sin(state.yaw)*Math.cos(state.pitch),Math.sin(state.pitch),Math.cos(state.yaw)*Math.cos(state.pitch)]);
+  // Het snijvlak ligt vast aan de anatomische voorzijde, niet aan de draaiende camera.
+  gl.uniform3fv(loc.cutAxis,[0,0,1]);
   gl.bindBuffer(gl.ARRAY_BUFFER,mesh.vb);gl.enableVertexAttribArray(loc.position);gl.vertexAttribPointer(loc.position,3,gl.FLOAT,false,0,0);
   gl.bindBuffer(gl.ARRAY_BUFFER,mesh.nb);gl.enableVertexAttribArray(loc.normal);gl.vertexAttribPointer(loc.normal,3,gl.FLOAT,false,0,0);
   gl.drawArrays(gl.TRIANGLES,0,mesh.count);
