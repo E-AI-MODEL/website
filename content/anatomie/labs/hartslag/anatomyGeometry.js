@@ -53,7 +53,7 @@ export const VALVES=[
 ];
 export const ANATOMY_PARTS={
   ...Object.fromEntries(Object.entries(CHAMBERS).map(([id,v])=>[id,{label:v.label,pos:v.pos,type:'chamber'}])),
-  ao:{label:'Aorta',pos:[.63,1.26,-.18],type:'vessel'},
+  ao:{label:'Aorta',pos:[.42,1.60,-.29],type:'vessel'},
   pa:{label:'Longslagader',pos:[-.84,1.10,.52],type:'vessel'},
   tricuspid:{label:'Tricuspidalisklep',pos:VALVES[0].pos,type:'valve'},
   mitral:{label:'Mitralisklep',pos:VALVES[1].pos,type:'valve'},
