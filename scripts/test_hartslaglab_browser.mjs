@@ -28,6 +28,12 @@ try {
   assert.match(await page.title(),/Hartslaglab/);
   assert.equal(await page.locator('#heartCanvas').count(),1);
   assert.equal(await page.locator('#timeline button').count(),5);
+  assert(await page.locator('#flowToggle').isHidden(),
+    'De bloedstroomknop heeft op de anatomische buitenkant geen functie');
+  assert.equal(await page.locator('#play').textContent(),'Start','De leerling voorspelt voordat het hart gaat bewegen');
+  const compact=page.locator('#miniTrace');
+  assert(await compact.isVisible(),'De grafiek moet direct bij het hart staan');
+  assert((await compact.boundingBox()).width>400,'De compacte grafiek moet leesbaar zijn op desktop');
   await page.evaluate(()=>window.__EAI_HEART_LAB__.setTime(.30));
   await page.waitForTimeout(100);
   const filling=await page.locator('#heartCanvas').screenshot();
@@ -51,6 +57,12 @@ try {
   await page.locator('#sectionToggle').click();
   assert.equal(await page.locator('#sectionToggle').getAttribute('aria-pressed'),'true');
   assert.equal(await page.evaluate(()=>window.__EAI_HEART_LAB__.state.cutaway),true);
+  assert(await page.locator('#flowToggle').isVisible(),
+    'Binnen de doorsnede moet je bloedstroom kunnen aan- en uitzetten');
+  await page.locator('#flowToggle').click();
+  assert.equal(await page.locator('#flowToggle').getAttribute('aria-pressed'),'false');
+  assert(await page.locator('#flowLegend').isHidden());
+  await page.locator('#flowToggle').click();
   await page.waitForTimeout(90);
   const cutawayFrame=await page.locator('#heartCanvas').screenshot();
   assert.notDeepEqual(cutawayFrame,outsideFrame,'De bewegende doorsnede moet afwijken van de echte anatomische buitenkant');
@@ -124,17 +136,38 @@ try {
   assert(!layout.hasHorizontalOverflow,'Alleen de fasebalk mag horizontaal scrollen');
   const settingsLayout=await mobile.evaluate(()=>{
     const container=document.querySelector('.view-actions').getBoundingClientRect();
-    const buttons=[...document.querySelectorAll('.view-actions button')];
+    const all=[...document.querySelectorAll('.view-actions button')];
+    const buttons=all.filter(b=>!b.hidden);
     const rects=buttons.map(b=>b.getBoundingClientRect());
-    return {count:buttons.length,visible:rects.every(r=>r.left>=container.left-2&&r.right<=container.right+2&&r.width>85),
+    return {count:buttons.length,allCount:all.length,
+      visible:rects.every(r=>r.left>=container.left-2&&r.right<=container.right+2&&r.width>85),
       fullLabels:buttons.every(b=>b.scrollWidth<=b.clientWidth+5)};
   });
-  assert.equal(settingsLayout.count,4,'Alle vier de weergaveknoppen moeten beschikbaar zijn');
+  assert.equal(settingsLayout.allCount,4);
+  assert.equal(settingsLayout.count,3,'Bloedstroom is verborgen op het buitenaanzicht');
   assert(settingsLayout.visible,'Weergaveknoppen mogen op telefoon niet buiten beeld vallen');
   assert(settingsLayout.fullLabels,'Knopteksten moeten leesbaar blijven op telefoon');
 
 
   assert.equal(await mobile.locator('#sectionToggle').count(),1,'Doorsnedeknop moet ook op mobiel beschikbaar zijn');
+  assert(await mobile.locator('#miniTrace').isVisible(),'De grafiek moet op mobiel direct onder het hart staan');
+  const mobileView=await mobile.evaluate(()=>{
+    const heart=document.querySelector('#stage').getBoundingClientRect();
+    const trace=document.querySelector('#miniTrace').getBoundingClientRect();
+    const q=document.querySelector('#discovery').getBoundingClientRect();
+    return {questionBefore:q.bottom<=heart.top+1,traceBelow:trace.top>=heart.bottom,traceHeight:trace.height};
+  });
+  assert(mobileView.questionBefore,'De leerling moet de vraag voor de animatie zien');
+  assert(mobileView.traceBelow&&mobileView.traceHeight>=50,'De meetgrafiek hoort direct onder het hart');
+  await mobile.locator('[data-guess="av"]').click();
+  assert.equal(await mobile.locator('[data-guess="av"]').getAttribute('aria-pressed'),'true');
+  await mobile.locator('#discoveryAction').click();
+  await mobile.waitForFunction(()=>window.__EAI_HEART_LAB__?.state.studyStage==='compare',{timeout:10000});
+  assert.equal(await mobile.locator('#sectionToggle').getAttribute('aria-pressed'),'true');
+  assert(await mobile.locator('#flowToggle').isVisible());
+  await mobile.locator('#discoveryAction').click();
+  assert.match(await mobile.locator('#discoveryFeedback').textContent(),/De AV-kleppen sluiten eerst/);
+  assert.equal(await mobile.evaluate(()=>window.__EAI_HEART_LAB__.state.studyStage),'done');
   await mobile.evaluate(()=>window.__EAI_HEART_LAB__.setTime(0));
   await mobile.locator('#nextPhase').click();
   const t=await mobile.evaluate(()=>window.__EAI_HEART_LAB__.state.t);
