@@ -174,8 +174,12 @@ try {
     'De uitleg moet open blijven bij een volgende selectie');
   assert(await page.locator('.callout-layer.is-visible .callout').isVisible(),
     'Ook de nieuwe selectie houdt zijn naamlabel');
-  assert.equal(await page.locator('#structureInfo .eai-source-description').count(),1,
-    'De bestaande Engelstalige beschrijving moet bij onbekende uitleg toegankelijk blijven');
+  assert.equal(await page.locator('#structureInfo .eai-source-description').count(),2,
+    'Zowel de oorspronkelijke beschrijving als de bronverantwoording moet beschikbaar blijven');
+  assert.match(await page.locator('#structureInfo .eai-source-description summary').first().innerText(),
+    /Anatomische beschrijving uit de bron/);
+  assert.match(await page.locator('#structureInfo .eai-source-description summary').last().innerText(),
+    /Herkomst en bronnen/);
   await page.locator('#infoToggle').click();
   await page.locator('#infoSidebar').waitFor({state:'hidden',timeout:5000});
   // De stelsels blijven via het bestaande filter te kiezen, zonder extra

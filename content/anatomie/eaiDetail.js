@@ -2,6 +2,7 @@
 // na de anatomische informatie, niet in meerdere zwevende menu's.
 import { anatomyGuide } from '../data/eaiGuide.js';
 import { anatomyTeaching } from '../data/eaiTeaching.js';
+import { anatomySourceStatus } from '../data/eaiSources.js';
 import { anatomyName } from '../data/eaiNames.js';
 import { scheduleSelectionClearance } from './cameraUX.js';
 import { isolatePart, hidePart, restoreAllParts } from '../viewer/visibility.js';
@@ -32,7 +33,12 @@ export function refineAnatomyInfo(partData, deselectPart) {
 
   const info = partData.info || {};
   const baseName = info.baseName || partData.id;
-  const guide = anatomyGuide(baseName);
+  const sourceStatus = anatomySourceStatus(baseName);
+  const sourceGuide = anatomyGuide(baseName);
+  // Toon afzonderlijke functieclaims alleen wanneer een inhoudelijke
+  // bron over deze structuur is gekoppeld. De overige tekst blijft bewaard
+  // voor redactie, maar wordt niet als gecontroleerde uitleg gepubliceerd.
+  const guide = sourceStatus.hasSpecific ? sourceGuide : null;
   const lesson = guide ? null : anatomyTeaching(baseName, info);
   const title = panel.querySelector('.structure-title h3');
   const preferredName = guide?.name || anatomyName(baseName, info);
@@ -74,6 +80,12 @@ export function refineAnatomyInfo(partData, deselectPart) {
     note.className = 'eai-facts-unverified';
     note.textContent = 'Dit is algemene uitleg over het type onderdeel. De specifieke werking van dit onderdeel is nog niet afzonderlijk beoordeeld.';
     facts.appendChild(note);
+    if (sourceGuide) {
+      const pending = document.createElement('p');
+      pending.className = 'eai-facts-unverified';
+      pending.textContent = 'De afzonderlijke uitleg over deze structuur wordt nog met vakbronnen vergeleken. Tot die tijd zie je hier alleen de algemene uitleg.';
+      facts.appendChild(pending);
+    }
   } else {
     const notice = document.createElement('p');
     notice.className = 'eai-facts-unverified';
@@ -114,6 +126,42 @@ export function refineAnatomyInfo(partData, deselectPart) {
     definition.replaceWith(source);
     source.append(summary, explanation, definition);
   }
+
+  // Bronnen zijn per onderwerp gekoppeld. Het zijn geen automatische
+  // keurmerken voor de juistheid van alle teksten en 3D-geometrie.
+  const teachingSource = guide
+    ? sourceStatus.specific
+    : anatomySourceStatus(baseName, lesson?.type).general;
+  const provenance = document.createElement('details');
+  provenance.className = 'eai-source-description';
+  const provenanceTitle = document.createElement('summary');
+  provenanceTitle.textContent = 'Herkomst en bronnen';
+  provenance.appendChild(provenanceTitle);
+  const explanation = document.createElement('p');
+  explanation.className = 'eai-source-note';
+  explanation.textContent = guide
+    ? 'De gelinkte leerboeksectie ondersteunt dit onderwerp. De Nederlandse tekst blijft eigen redactie; de bron beoordeelt de gekozen 3D-geometrie niet.'
+    : 'Dit is algemene informatie over een type structuur. De leerboekbron bewijst niet de werking van dit afzonderlijke onderdeel.';
+  provenance.appendChild(explanation);
+  const addSource = (source, label) => {
+    if (!source) return;
+    const link = document.createElement('a');
+    link.href = source.url;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.textContent = label + ': ' + source.label;
+    provenance.appendChild(link);
+  };
+  addSource(teachingSource, 'Onderwijsbron');
+  const nameNotice = document.createElement('p');
+  nameNotice.className = 'eai-source-note';
+  nameNotice.textContent = 'Nederlandse namen zijn voor leerlingen vertaald. Ze zijn nog niet allemaal vergeleken met de internationale nomenclatuur.';
+  provenance.appendChild(nameNotice);
+  addSource(sourceStatus.terminology, 'Internationale terminologie ter vergelijking');
+  addSource(sourceStatus.model, '3D-gegevens');
+  const sourceDescription = panel.querySelector('.eai-source-description');
+  if (sourceDescription) sourceDescription.after(provenance);
+  else facts.after(provenance);
 
   const actions = document.createElement('div');
   actions.className = 'eai-detail-actions';
