@@ -229,11 +229,13 @@ function setupMesh(mesh, systemId, viewer) {""",
     (source / "src" / "data" / "eaiNames.js").write_text(
         "// Exacte Nederlandse namen uit de gecontroleerde zoekwoorden.\n"
         + "const NAMES = " + json.dumps(names, ensure_ascii=False, sort_keys=True)
-        + ";\nexport function dutchName(base) {\n"
+        + ";\nconst UNCLEAR = new Set([\"????????\", \"?x\", \"central canal'\", \"lat_fis-ant-horizont\", \"lat_fis-ant-vertical\", \"lat_fis-post\", \"sulcus interm_prim-jensen\"]);\nexport function dutchName(base) {\n"
         + "  const key = String(base || '').replace(/\\.[lr]$/, '').trim().toLowerCase();\n"
         + "  return Object.prototype.hasOwnProperty.call(NAMES, key) ? NAMES[key] : null;\n"
         + "}\n"
         + "export function anatomyName(base, info) {\n"
+        + "  const key = String(base || '').replace(/\\.[lr]$/, '').trim().toLowerCase();\n"
+        + "  if (UNCLEAR.has(key)) return 'Naam van onderdeel onbekend';\n"
         + "  return dutchName(base) || info?.latinName || String(base || '');\n"
         + "}\n",
         encoding="utf-8"
