@@ -1,0 +1,41 @@
+name: Check physics mobile Safari
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'content/science-observatory/labs/natuurkunde.html'
+      - 'scripts/test_science_mobile_aim.mjs'
+      - '.github/workflows/science-webkit.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'content/science-observatory/labs/natuurkunde.html'
+      - 'scripts/test_science_mobile_aim.mjs'
+      - '.github/workflows/science-webkit.yml'
+permissions:
+  contents: read
+jobs:
+  mobile-webkit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 13
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: pip install beautifulsoup4
+      - name: Build observatory and website
+        run: python scripts/build_site.py --sources content/legacy --out site-build
+      - run: npm install --no-save playwright@1.56.1
+      - name: Install Safari engine
+        run: npx playwright install --with-deps webkit
+      - name: Check 390px and 320px physics lab interaction
+        run: node scripts/test_science_mobile_aim.mjs site-build webkit
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: science-mobile-webkit
+          path: test-results/science-*.png
