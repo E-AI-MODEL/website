@@ -232,13 +232,7 @@ const ITEMS = {
     mechanism: 'Zenuwvezels vervoeren elektrische signalen. De hersenen verwerken de informatie tot wat je ziet.',
     question: 'Volg de oogzenuw vanaf het oog. Waarom is deze verbinding nodig om te kunnen zien?'
   },
-  'anterior cruciate ligament': {
-    name: 'Voorste kruisband',
-    function: 'De voorste kruisband helpt voorkomen dat het scheenbeen te ver naar voren schuift ten opzichte van het dijbeen.',
-    location: 'Midden in het kniegewricht, tussen scheenbeen en dijbeen.',
-    mechanism: 'De band komt onder spanning te staan bij bepaalde bewegingen en helpt samen met spieren en andere banden de knie stabiel te houden.',
-    question: 'Bekijk de richting van de band. Welke beweging van het scheenbeen helpt hij tegen te houden?'
-  },
+
   'hippocampus': {
   "name": "Hippocampus",
   "function": "Speelt een grote rol bij het vormen en consolideren van nieuwe episodische herinneringen en bij ruimtelijke navigatie.",
