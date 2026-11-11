@@ -390,61 +390,71 @@ function projectileMobileFrame(p){
  const x0=52,y0=397,length=80+(p.v-5)/30*116;
  return {x0,y0,scale,angle,vx,vy,duration,range,peak,view:mission.view,handle:{x:x0+length*Math.cos(angle),y:y0-length*Math.sin(angle)},targetX:x0+mission.target*scale};
 }
+
+function drawLandingMat(ctx,x,ground,scale,compact=false){
+ const width=Math.max(6,2*scale),left=x-width/2;
+ ctx.save();
+ ctx.fillStyle='#17554f';ctx.fillRect(left,ground-13,width,13);
+ ctx.fillStyle='#76e1c6';ctx.fillRect(left,ground-13,width,3);
+ ctx.strokeStyle='#c2fff0';ctx.lineWidth=1.3;ctx.strokeRect(left,ground-13,width,13);
+ ctx.font=compact?'600 15px system-ui':'600 20px system-ui';
+ ctx.fillStyle='#abf3df';ctx.textAlign='center';
+ ctx.fillText('LANDINGSMAT',Math.max(91,Math.min(compact?916:472,x)),ground-(compact?60:64));
+ ctx.fillStyle='#9fc6cd';ctx.font=compact?'14px system-ui':'18px system-ui';
+ ctx.fillText('24 meter van de start',Math.max(110,Math.min(compact?900:465,x)),ground-(compact?40:41));
+ ctx.restore();
+}
 function projectileMobile(ctx,p,t){
- const frame=projectileMobileFrame(p),{x0,y0,scale,vx,vy,duration,range,peak,handle,targetX}=frame;
- const grid='#28415577',cyan='#7ee8d5',gold='#f6c28b';
+ const f=projectileMobileFrame(p),{x0,y0,scale,vx,vy,duration,range,handle,targetX}=f;
  ctx.fillStyle='#0b1a2b';ctx.fillRect(0,0,560,520);
- ctx.save();ctx.beginPath();ctx.rect(26,37,515,392);ctx.clip();
- for(let m=0;m<=Math.max(200,range+20);m+=5){const x=x0+m*scale;if(x>535)break;stroke(ctx,[[x,48],[x,y0]],grid,m===0?1.5:.75)}
- for(let h=0;h<=120;h+=5){const yy=y0-h*scale;if(yy<47)break;stroke(ctx,[[30,yy],[536,yy]],grid,.7)}
- ctx.fillStyle='#102c3a';ctx.fillRect(27,y0,509,29);
- stroke(ctx,[[29,y0],[536,y0]],'#a8c4cfad',1.4);
- if(mission.launched){
-   const points=[];for(let i=0;i<=130;i++){const tt=duration*i/130;points.push([x0+vx*tt*scale,y0-(vy*tt-.5*p.g*tt*tt)*scale])}
-   stroke(ctx,points,gold,2.1,5);
-   const now=Math.min(t,duration),tip=[x0+vx*now*scale,y0-(vy*now-.5*p.g*now*now)*scale];
-   if(tip[0]<537&&tip[1]>47){circle(ctx,tip[0],tip[1],7,'#88ead9');}
+ ctx.save();ctx.beginPath();ctx.rect(23,31,516,420);ctx.clip();
+ const ground=ctx.createLinearGradient(0,y0,0,451);
+ ground.addColorStop(0,'#153342');ground.addColorStop(1,'#091a2a');
+ ctx.fillStyle=ground;ctx.fillRect(24,y0,515,55);
+ stroke(ctx,[[26,y0],[538,y0]],'#8daebd',1.35);
+ // Metres along the ground, with the target distance as the reference.
+ for(let metre=0;metre<=Math.max(135,range);metre+=5){
+   const x=x0+metre*scale;if(x>534)break;
+   stroke(ctx,[[x,y0],[x,y0+8]],'#66899a91',1);
+   if(metre%10===0){ctx.fillStyle='#91b5c3';ctx.font='17px system-ui';ctx.fillText(metre+' m',x-11,y0+28)}
  }
+ // A mat is a place where the ball lands, not a floating arrow.
+ drawLandingMat(ctx,targetX,y0,scale);
+ // Previous landing points remain as comparison evidence.
  for(const [i,shot] of mission.shots.entries()){
-   const px=x0+shot.range*scale;if(px>536)continue;
-   stroke(ctx,[[px,y0-19],[px,y0+10]],'#e8a679aa',1.25,0,[3,4]);
-   ctx.font='17px system-ui';ctx.fillStyle='#f1b890';ctx.fillText('P'+(i+1),px-8,y0-25);
+   const x=x0+shot.range*scale;if(x>536)continue;
+   stroke(ctx,[[x,y0-25],[x,y0]],'#fac18a',1.6,0,[3,4]);
+   ctx.fillStyle='#f4c595';ctx.font='17px system-ui';ctx.fillText('Worp '+(i+1),x-21,y0-32);
  }
- stroke(ctx,[[targetX,y0],[targetX,y0-45]],cyan,1.4,1,[4,5]);
- stroke(ctx,[[targetX-16,y0-31],[targetX,y0-49],[targetX+16,y0-31]],cyan,2.3,3);
- circle(ctx,targetX,y0-49,3,cyan,false);
- ctx.font='600 20px system-ui';ctx.fillStyle='#bdfff3';
- ctx.fillText('DOEL 24 m',Math.min(450,Math.max(45,targetX-41)),y0-67);
+ if(mission.launched){
+   const points=[];
+   for(let i=0;i<=140;i++){
+     const tt=duration*i/140;
+     points.push([x0+vx*tt*scale,y0-(vy*tt-.5*p.g*tt*tt)*scale]);
+   }
+   stroke(ctx,points,'#ffcc91',2.7,7);
+   const now=Math.min(t,duration),x=x0+vx*now*scale,y=y0-(vy*now-.5*p.g*now*now)*scale;
+   if(x<=539&&y>=25){circle(ctx,x,y,9,'#fff1c6')}
+   if(mission.complete&&x<=537){circle(ctx,x,y0-6,5,Math.abs(range-mission.target)<=1?'#7ceac9':'#ffbd82')}
+ }
+ // A small launch point and a handle that is large enough to grab.
+ ctx.fillStyle='#25465b';ctx.beginPath();ctx.roundRect(x0-17,y0-8,33,12,5);ctx.fill();
+ circle(ctx,x0,y0-15,10,'#ffddaa',false);
  const hx=handle.x,hy=handle.y;
- stroke(ctx,[[x0,y0],[hx,hy]],'#f5c48baa',1.5,2,[5,5]);
- circle(ctx,x0,y0,7,'#f6c48e',false);
- ctx.save();ctx.beginPath();ctx.arc(hx,hy,23,0,TAU);ctx.fillStyle='#3bc9b51b';ctx.fill();ctx.strokeStyle='#a4faef';ctx.lineWidth=1.5;ctx.stroke();ctx.restore();
- circle(ctx,hx,hy,8,cyan);
+ stroke(ctx,[[x0,y0-15],[hx,hy]],'#8ee2d2b8',2,0,[6,5]);
+ ctx.save();ctx.beginPath();ctx.arc(hx,hy,29,0,TAU);
+ ctx.fillStyle='#72ecd01c';ctx.fill();ctx.strokeStyle='#87ead5';ctx.lineWidth=2;ctx.stroke();ctx.restore();
+ circle(ctx,hx,hy,9,'#85eed7');
  ctx.restore();
- ctx.fillStyle='#dcf6f2';ctx.font='600 24px system-ui';ctx.fillText('Richt op het doel',31,35);
- ctx.font='17px system-ui';ctx.fillStyle='#a6c3d1';
- ctx.fillText('Hoek '+fmt(p.angle,1)+'°   ·   v₀ '+fmt(p.v,2)+' m/s',32,57);
- for(let m=0;m<=150;m+=5){
-   const x=x0+m*scale;if(x>530)break;
-   ctx.font='16px system-ui';ctx.fillStyle='#819fb2';ctx.fillText(String(m),x-6,y0+25);
- }
- ctx.fillStyle='#7ca0b4';ctx.font='16px system-ui';ctx.fillText('afstand (m)',430,447);
- ctx.save();ctx.strokeStyle='#6698a44d';ctx.lineWidth=.8;
- for(let h=5;h<=80;h+=5){const yy=y0-h*scale;if(yy<60)break;ctx.fillStyle='#789bab';ctx.font='15px system-ui';ctx.fillText(String(h)+' m',29,yy-5)}
- ctx.restore();
- if(mission.launched&&range>Math.max(41,(532-x0)/scale)){
-   ctx.fillStyle='#f6c597';ctx.font='600 17px system-ui';ctx.textAlign='right';ctx.fillText('De baan loopt verder: '+fmt(range,1)+' m →',530,96);ctx.textAlign='left';
- }
+ ctx.fillStyle='#b9dae3';ctx.font='600 20px system-ui';ctx.fillText('JOUW BAL',34,47);
+ ctx.fillStyle='#95baca';ctx.font='18px system-ui';ctx.fillText('Sleep het groene rondje om te richten',31,491);
  if(mission.complete){
-   ctx.fillStyle=Math.abs(range-mission.target)<1?'#8bedcd':'#f9bf91';
-   ctx.font='600 20px system-ui';
-   ctx.fillText('Afwijking '+fmt(Math.abs(range-mission.target),2)+' m',30,481);
- }else{
-   ctx.fillStyle='#8da8bb';ctx.font='17px system-ui';
-   ctx.fillText('Sleep de groene greep om te richten',30,481);
+   const error=Math.abs(range-mission.target);
+   ctx.fillStyle=error<=1?'#8df4d8':'#fac18b';
+   ctx.font='600 20px system-ui';ctx.fillText(error<=1?'Je bal ligt op de mat!':(range>mission.target?'De bal ging te ver.':'De bal kwam te kort.'),31,70);
  }
 }
-function projectilePremium(ctx,p,t){if(isMobileProjectile())return projectileMobile(ctx,p,t);const a=p.angle*PI/180,vx=p.v*Math.cos(a),vy=p.v*Math.sin(a),dur=2*vy/p.g,range=vx*dur,peak=vy**2/(2*p.g);const scale=Math.min(785/Math.max(range,mission.target+4,...mission.shots.map(shot=>shot.range),1),290/Math.max(peak,1)),x0=103,y0=404,curve=[];background(ctx);ctx.fillStyle='#0d2537';ctx.fillRect(0,409,1000,91);stroke(ctx,[[45,405],[950,405]],'#87a2b565',1.15);for(let j=0;j<=10;j++){const x=x0+j*range/10*scale;stroke(ctx,[[x,403],[x,411]],'#678ba85c',1)}for(let j=0;j<=100;j++){let tt=dur*j/100;curve.push([x0+vx*tt*scale,y0-(vy*tt-.5*p.g*tt*tt)*scale])}if(mission.launched)stroke(ctx,curve,'#fac088c6',2.1,11);const tt=mission.launched?Math.min(t,dur):0,x=x0+vx*tt*scale,y=y0-(vy*tt-.5*p.g*tt*tt)*scale;let idx=Math.max(0,Math.floor(tt/dur*100));if(mission.launched)stroke(ctx,curve.slice(0,idx+1),'#f8d6ab',3.6,15);circle(ctx,x,y,8,'#70e6d6');const u=4.7*scale,vyt=vy-p.g*tt,mag=Math.hypot(vx,vyt)||1;const factor=Math.min(112,Math.hypot(vx,vyt)*2.9)/mag;const xx=x+vx*factor,yy=y-vyt*factor;stroke(ctx,[[x,y],[xx,yy]],'#80e7d7',2);const aa=Math.atan2(yy-y,xx-x);stroke(ctx,[[xx-10*Math.cos(aa-.45),yy-10*Math.sin(aa-.45)],[xx,yy],[xx-10*Math.cos(aa+.45),yy-10*Math.sin(aa+.45)]],'#80e7d7',1.5);stroke(ctx,[[x,405],[x,y]],'#9ab7c95a',.9,0,[4,6]);stroke(ctx,[[x0+range*scale/2,y0],[x0+range*scale/2,y0-peak*scale]],'#95adc66b',.9,0,[4,6]);ctx.font='12px system-ui';ctx.fillStyle='#9cb6cb';ctx.fillText('0 m',x0-12,430);for(const [i,shot] of mission.shots.entries()){const px=x0+shot.range*scale;stroke(ctx,[[px,385],[px,415]],'#f7bb8e',1.4,1,[3,4]);ctx.font='12px system-ui';ctx.fillStyle='#f8c89c';ctx.fillText('P'+(i+1),px-6,448)}if(mission.launched)ctx.fillText(fmt(range,1)+' m',Math.min(925,x0+range*scale)-30,430);ctx.fillStyle='#7ce4d4';ctx.fillText('v',xx+9,yy-8);ctx.fillStyle='#b1c6d8';if(mission.launched)ctx.fillText('h = '+fmt(peak,2)+' m',70,80);ctx.fillStyle='#c8d9e8';ctx.font='600 26px system-ui';if(mission.launched)ctx.fillText('x = '+fmt(range,2)+' m',70,119);const aim=80+(p.v-5)/30*125,tx=x0+Math.cos(a)*aim,ty=y0-Math.sin(a)*aim;stroke(ctx,[[x0,y0],[tx,ty]],'#f0cd8a92',1.4,1,[5,6]);ctx.beginPath();ctx.arc(tx,ty,13,0,TAU);ctx.strokeStyle='#bafaf1d2';ctx.lineWidth=1.2;ctx.stroke();circle(ctx,tx,ty,4,'#6cebd7');const targetX=x0+mission.target*scale;stroke(ctx,[[targetX,405],[targetX,349]],'#80e8dc',1.4,1,[4,5]);stroke(ctx,[[targetX-19,382],[targetX,363],[targetX+19,382]],'#80e8dc',2.2);ctx.fillStyle='#9feade';ctx.font='600 14px system-ui';ctx.fillText('DOEL '+mission.target+' m',Math.min(850,targetX-55),333);if(mission.complete){ctx.fillStyle=Math.abs(range-mission.target)<=1?'#88f3cb':'#ffc18b';ctx.font='600 16px system-ui';ctx.fillText('Afwijking '+fmt(Math.abs(range-mission.target),2)+' m',660,85)}}
+function projectilePremium(ctx,p,t){if(isMobileProjectile())return projectileMobile(ctx,p,t);const a=p.angle*PI/180,vx=p.v*Math.cos(a),vy=p.v*Math.sin(a),dur=2*vy/p.g,range=vx*dur,peak=vy**2/(2*p.g);const scale=Math.min(785/Math.max(range,mission.target+4,...mission.shots.map(shot=>shot.range),1),290/Math.max(peak,1)),x0=103,y0=404,curve=[];background(ctx);ctx.fillStyle='#0d2537';ctx.fillRect(0,409,1000,91);stroke(ctx,[[45,405],[950,405]],'#87a2b565',1.15);for(let j=0;j<=10;j++){const x=x0+j*range/10*scale;stroke(ctx,[[x,403],[x,411]],'#678ba85c',1)}for(let j=0;j<=100;j++){let tt=dur*j/100;curve.push([x0+vx*tt*scale,y0-(vy*tt-.5*p.g*tt*tt)*scale])}if(mission.launched)stroke(ctx,curve,'#fac088c6',2.1,11);const tt=mission.launched?Math.min(t,dur):0,x=x0+vx*tt*scale,y=y0-(vy*tt-.5*p.g*tt*tt)*scale;let idx=Math.max(0,Math.floor(tt/dur*100));if(mission.launched)stroke(ctx,curve.slice(0,idx+1),'#f8d6ab',3.6,15);circle(ctx,x,y,8,'#70e6d6');const u=4.7*scale,vyt=vy-p.g*tt,mag=Math.hypot(vx,vyt)||1;const factor=Math.min(112,Math.hypot(vx,vyt)*2.9)/mag;const xx=x+vx*factor,yy=y-vyt*factor;stroke(ctx,[[x,y],[xx,yy]],'#80e7d7',2);const aa=Math.atan2(yy-y,xx-x);stroke(ctx,[[xx-10*Math.cos(aa-.45),yy-10*Math.sin(aa-.45)],[xx,yy],[xx-10*Math.cos(aa+.45),yy-10*Math.sin(aa+.45)]],'#80e7d7',1.5);stroke(ctx,[[x,405],[x,y]],'#9ab7c95a',.9,0,[4,6]);stroke(ctx,[[x0+range*scale/2,y0],[x0+range*scale/2,y0-peak*scale]],'#95adc66b',.9,0,[4,6]);ctx.font='12px system-ui';ctx.fillStyle='#9cb6cb';ctx.fillText('0 m',x0-12,430);for(const [i,shot] of mission.shots.entries()){const px=x0+shot.range*scale;stroke(ctx,[[px,385],[px,415]],'#f7bb8e',1.4,1,[3,4]);ctx.font='12px system-ui';ctx.fillStyle='#f8c89c';ctx.fillText('P'+(i+1),px-6,448)}if(mission.launched)ctx.fillText(fmt(range,1)+' m',Math.min(925,x0+range*scale)-30,430);ctx.fillStyle='#7ce4d4';ctx.fillText('v',xx+9,yy-8);ctx.fillStyle='#b1c6d8';if(mission.launched)ctx.fillText('h = '+fmt(peak,2)+' m',70,80);ctx.fillStyle='#c8d9e8';ctx.font='600 26px system-ui';if(mission.launched)ctx.fillText('x = '+fmt(range,2)+' m',70,119);const aim=80+(p.v-5)/30*125,tx=x0+Math.cos(a)*aim,ty=y0-Math.sin(a)*aim;stroke(ctx,[[x0,y0],[tx,ty]],'#f0cd8a92',1.4,1,[5,6]);ctx.beginPath();ctx.arc(tx,ty,13,0,TAU);ctx.strokeStyle='#bafaf1d2';ctx.lineWidth=1.2;ctx.stroke();circle(ctx,tx,ty,4,'#6cebd7');const targetX=x0+mission.target*scale;drawLandingMat(ctx,targetX,405,scale,true);if(mission.complete){ctx.fillStyle=Math.abs(range-mission.target)<=1?'#88f3cb':'#ffc18b';ctx.font='600 16px system-ui';ctx.fillText(Math.abs(range-mission.target)<=1?'Op de mat!':('Verschil: '+fmt(Math.abs(range-mission.target),1)+' m'),650,85)}}
 function pendulumPremium(ctx,p,t){background(ctx);const per=TAU*Math.sqrt(p.L/p.g),theta=rad(p.amp)*Math.cos(TAU*t/per),r=215*p.L/1.7,rr=Math.min(285,Math.max(65,r)),cx=500,cy=94;for(let j=0;j<6;j++){let a=rad(p.amp)*Math.cos(TAU*(t-j*.2)/per),x=cx+rr*Math.sin(a),y=cy+rr*Math.cos(a);circle(ctx,x,y,11,'#67e5d2',false)}stroke(ctx,[[cx-160,cy],[cx+160,cy]],'#9ca9c1a8',2);for(let j=0;j<8;j++){let a=-rad(p.amp)+j*rad(p.amp)/3.5;const x=cx+(rr+34)*Math.sin(a),y=cy+(rr+34)*Math.cos(a);stroke(ctx,[[cx+(rr+23)*Math.sin(a),cy+(rr+23)*Math.cos(a)],[x,y]],'#55789080',1)}stroke(ctx,[[cx,cy],[cx,cy+rr]],'#5f7c9575',1,0,[4,8]);stroke(ctx,[[cx,cy],[cx+rr*Math.sin(theta),cy+rr*Math.cos(theta)]],'#d0e1ec',2.1,5);circle(ctx,cx,cy,6,'#f0c58f');circle(ctx,cx+rr*Math.sin(theta),cy+rr*Math.cos(theta),20,'#6cebd7');ctx.fillStyle='#9db6c8';ctx.font='13px system-ui';ctx.fillText('T = '+fmt(per,2)+' s',75,82);ctx.font='600 24px system-ui';ctx.fillStyle='#daeaf6';ctx.fillText('α = '+fmt(theta*180/PI,1)+'°',75,116);ctx.beginPath();ctx.arc(cx+rr*Math.sin(theta),cy+rr*Math.cos(theta),28,0,TAU);ctx.strokeStyle='#78dbc85e';ctx.lineWidth=1;ctx.stroke()}
 function refractionPremium(ctx,p,t){background(ctx);ctx.save();const medium=ctx.createLinearGradient(0,245,0,500);medium.addColorStop(0,'#123a4bdf');medium.addColorStop(1,'#17617b7b');ctx.fillStyle=medium;ctx.fillRect(0,250,1000,250);ctx.restore();stroke(ctx,[[70,248],[930,248]],'#91c3d59c',1.4);stroke(ctx,[[500,28],[500,478]],'#a9bcc470',1,0,[6,6]);const i=rad(p.angle),s=p.n1/p.n2*Math.sin(i),total=s>1,r=total?null:Math.asin(s),ox=500,oy=249;const length=295;stroke(ctx,[[ox-length*Math.sin(i),oy-length*Math.cos(i)],[ox,oy]],'#f7b879',2.9,14);stroke(ctx,[[ox,oy],[ox+length*.4*Math.sin(i),oy-length*.4*Math.cos(i)]],'#8daaffcc',1.5,8);if(!total)stroke(ctx,[[ox,oy],[ox+length*Math.sin(r),oy+length*Math.cos(r)]],'#68edcf',2.9,15);for(let j=0;j<5;j++){let f=(j*.20+t*.05)%1;let x=ox-length*f*Math.sin(i),y=oy-length*f*Math.cos(i);stroke(ctx,[[x-10*Math.cos(i),y+10*Math.sin(i)],[x+10*Math.cos(i),y-10*Math.sin(i)]],'#ffcca777',1.1)}circle(ctx,500,249,4,'#eafffa');ctx.fillStyle='#b1cddd';ctx.font='14px system-ui';ctx.fillText('n₁ = '+fmt(p.n1,2),90,90);ctx.fillText('n₂ = '+fmt(p.n2,2),90,345);ctx.fillStyle='#e0eef5';ctx.font='600 23px system-ui';ctx.fillText(total?'Totale terugkaatsing':'Breking van licht',604,84);ctx.beginPath();ctx.arc(ox-length*Math.sin(i),oy-length*Math.cos(i),13,0,TAU);ctx.strokeStyle='#ffd49bdf';ctx.lineWidth=1.25;ctx.stroke()}
 function ohmPremium(ctx,p,t){background(ctx);const I=p.U/p.R;const corners=[[265,158],[735,158],[735,354],[265,354],[265,158]];stroke(ctx,corners,'#93b6c4ce',2.1,3);const wave=[];for(let j=0;j<=12;j++){let x=419+j*13,y=158+(j===0||j===12?0:j%2?13:-13);wave.push([x,y])}stroke(ctx,[[265,158],[405,158]],'#93b6c4ce',2);stroke(ctx,[[575,158],[735,158]],'#93b6c4ce',2);stroke(ctx,[[405,158],...wave,[575,158]],'#ffc18e',3,7);stroke(ctx,[[485,330],[485,377]],'#f0c185',3);stroke(ctx,[[518,342],[518,365]],'#f0c185',2);ctx.font='13px system-ui';ctx.fillStyle='#b3c9d9';ctx.fillText(fmt(p.R,0)+' Ω',481,117);ctx.fillText(fmt(p.U,1)+' V',535,369);for(let k=0;k<23;k++){let s=((k/23+t*I*.025)%1)*1322,x,y;if(s<470){x=265+s;y=158}else if(s<666){x=735;y=158+s-470}else if(s<1136){x=735-(s-666);y=354}else{x=265;y=354-(s-1136)}circle(ctx,x,y,3,'#69e6d2',false)}ctx.font='600 24px system-ui';ctx.fillStyle='#e3effa';ctx.fillText('I = '+fmt(I,2)+' A',90,85)}
