@@ -128,6 +128,8 @@ jobs:
 
       - name: Check Science Observatory pilot publication
         run: python -m unittest discover -s tests -p 'test_science_observatory_publish.py' -v
+      - name: Check physics reference values and drawings
+        run: node --test tests/test_science_physics_models.mjs
 
       - name: Check Melkweg Lab publication
         run: python -m unittest discover -s tests -p 'test_melkweg_lab_publish.py' -v
