@@ -2,8 +2,14 @@
   "(abdominal part of pectoralis major muscle)": [
     "buikdeel van de grote borstspier"
   ],
+  "(accessory parotid gland)": [
+    "bijkomende oorspeekselklier"
+  ],
   "(adductor minimus)": [
     "kleine aanvoerderspier"
+  ],
+  "(anteromedial basal segmental bronchus of left lung)": [
+    "voorste binnenste basale segmentbronchus van de linkerlong"
   ],
   "(iliopectineal bursa)": [
     "slijmbeurs tussen darmbeen en schaambeen"
@@ -53,6 +59,9 @@
   "adductor magnus": [
     "grote aanvoerderspier"
   ],
+  "adenohypophysis": [
+    "voorkwab van de hypofyse"
+  ],
   "amygdaloid body": [
     "amygdala"
   ],
@@ -67,6 +76,12 @@
   ],
   "antebrachial fascia": [
     "onderarmfascie"
+  ],
+  "anterior basal segmental bronchus of left lung (bviii)": [
+    "voorste basale segmentbronchus van de linkerlong (BVIII)"
+  ],
+  "anterior basal segmental bronchus of right lung (bviii)": [
+    "voorste basale segmentbronchus van de rechterlong (BVIII)"
   ],
   "anterior belly of digastric muscle": [
     "voorste buik van de tweehuikige spier"
@@ -92,6 +107,9 @@
   "anterior interventricular artery": [
     "voorste slagader tussen de hartkamers"
   ],
+  "anterior lateral segment of liver (vi)": [
+    "voorste buitenste leversegment (VI)"
+  ],
   "anterior layer of thoracolumbar fascia": [
     "voorste laag van de borst-lendenfascie"
   ],
@@ -101,6 +119,9 @@
   "anterior longitudinal ligament": [
     "voorste lengteband van de wervelkolom"
   ],
+  "anterior medial segment of liver (v)": [
+    "voorste binnenste leversegment (V)"
+  ],
   "anterior meniscotibial ligament (lateral meniscus)": [
     "voorste band tussen buitenmeniscus en scheenbeen"
   ],
@@ -109,6 +130,12 @@
   ],
   "anterior sacro-iliac ligament": [
     "voorste band van het heiligbeen-darmbeengewricht"
+  ],
+  "anterior segmental bronchus of left lung (biii)": [
+    "voorste segmentbronchus van de linkerlong (BIII)"
+  ],
+  "anterior segmental bronchus of right lung (biii)": [
+    "voorste segmentbronchus van de rechterlong (BIII)"
   ],
   "anterior sternoclavicular ligament": [
     "voorste band tussen borstbeen en sleutelbeen"
@@ -124,6 +151,12 @@
   ],
   "aortic arch": [
     "aortaboog"
+  ],
+  "apical segmental bronchus of right lung (bi)": [
+    "topsegmentbronchus van de rechterlong (BI)"
+  ],
+  "apicoposterior segmental bronchus of left lung (bi+bii)": [
+    "top-achtersegmentbronchus van de linkerlong (BI+BII)"
   ],
   "arcuate popliteal ligament": [
     "boogvormige knieholteband"
@@ -542,6 +575,9 @@
   "eighth rib": [
     "achtste rib"
   ],
+  "ejaculatory duct": [
+    "zaadlozingskanaal"
+  ],
   "eleventh rib": [
     "elfde rib"
   ],
@@ -704,6 +740,9 @@
   "fourth ventricle": [
     "vierde hersenventrikel"
   ],
+  "free taenia": [
+    "vrije lengtespierband van de dikke darm"
+  ],
   "frenula capsulae": [
     "kapselplooien van het gewricht"
   ],
@@ -725,6 +764,9 @@
   "geniohyoid muscle": [
     "kin-tongbeenspier"
   ],
+  "gingiva": [
+    "tandvlees"
+  ],
   "glans clitoridis": [
     "eikel van de clitoris"
   ],
@@ -745,6 +787,9 @@
   ],
   "gracilis muscle": [
     "slanke dijspier"
+  ],
+  "greater omentum": [
+    "grote vetschort"
   ],
   "hamate bone": [
     "haakbeen"
@@ -820,6 +865,9 @@
   ],
   "inferior head of lateral pterygoid muscle": [
     "onderste kop van de buitenste vleugelspier"
+  ],
+  "inferior lingular segmental bronchus of left lung (bv)": [
+    "onderste lingulasegmentbronchus van de linkerlong (BV)"
   ],
   "inferior lobe of left lung": [
     "onderkwab van de linkerlong"
@@ -1022,8 +1070,17 @@
   "lacrimal bone": [
     "traanbeen"
   ],
+  "laryngopharynx": [
+    "onderste keelholte achter het strottenhoofd"
+  ],
   "larynx": [
     "strottenhoofd"
+  ],
+  "lateral basal segmental bronchus of left lung (bix)": [
+    "buitenste basale segmentbronchus van de linkerlong (BIX)"
+  ],
+  "lateral basal segmental bronchus of right lung (bix)": [
+    "buitenste basale segmentbronchus van de rechterlong (BIX)"
   ],
   "lateral crico-arytenoid muscle": [
     "zijwaartse ring-bekerkraakbeenspier"
@@ -1058,6 +1115,9 @@
   "lateral rectus muscle": [
     "buitenste rechte oogspier"
   ],
+  "lateral segmental bronchus of right lung (biv)": [
+    "buitenste segmentbronchus van de rechterlong (BIV)"
+  ],
   "lateral subtendinous bursa of gastrocnemius muscle": [
     "buitenste slijmbeurs onder de pees van de kuitspier"
   ],
@@ -1076,6 +1136,9 @@
   "latissimus dorsi muscle": [
     "brede rugspier"
   ],
+  "left anterior lateral segment of liver (iii)": [
+    "linker voorste buitenste leversegment (III)"
+  ],
   "left atrium": [
     "linkerboezem"
   ],
@@ -1084,6 +1147,9 @@
   ],
   "left coronary artery": [
     "linker kransslagader"
+  ],
+  "left inferior lobar bronchus": [
+    "onderkwabbronchus van de linkerlong"
   ],
   "left lobe of thymus": [
     "linkerdeel van de thymus"
@@ -1094,6 +1160,12 @@
   "left main bronchus": [
     "linker hoofdbronchus"
   ],
+  "left medial segment of liver (iv)": [
+    "linker binnenste leversegment (IV)"
+  ],
+  "left posterior lateral segment of liver (ii)": [
+    "linker achterste buitenste leversegment (II)"
+  ],
   "left pulmonary artery": [
     "linker longslagader"
   ],
@@ -1103,8 +1175,14 @@
   "left renal vein": [
     "linker nierader"
   ],
+  "left superior lobar bronchus": [
+    "bovenkwabbronchus van de linkerlong"
+  ],
   "left ventricle": [
     "linkerhartkamer"
+  ],
+  "lesser omentum": [
+    "kleine vetschort"
   ],
   "levator anguli oris": [
     "heffer van de mondhoek"
@@ -1217,6 +1295,12 @@
   "maxilla": [
     "bovenkaak"
   ],
+  "medial basal segmental bronchus of left lung (bvii)": [
+    "binnenste basale segmentbronchus van de linkerlong (BVII)"
+  ],
+  "medial basal segmental bronchus of right lung (bvii)": [
+    "binnenste basale segmentbronchus van de rechterlong (BVII)"
+  ],
   "medial cuneiform bone": [
     "binnenste wigvormige voetwortelbeen"
   ],
@@ -1247,6 +1331,9 @@
   "medial rectus muscle": [
     "binnenste rechte oogspier"
   ],
+  "medial segmental bronchus of right lung (bv)": [
+    "binnenste segmentbronchus van de rechterlong (BV)"
+  ],
   "medial subtendinous bursa of gastrocnemius muscle": [
     "binnenste slijmbeurs onder de pees van de kuitspier"
   ],
@@ -1268,6 +1355,15 @@
   "mentalis muscle": [
     "kinspier"
   ],
+  "meso-appendix": [
+    "ophangplooi van het wormvormig aanhangsel"
+  ],
+  "mesocolic taenia": [
+    "lengtespierband aan de zijde van het darmscheil"
+  ],
+  "mesocolon": [
+    "darmscheil van de dikke darm"
+  ],
   "metatarsal interosseous ligaments": [
     "banden tussen de middenvoetsbeentjes"
   ],
@@ -1285,6 +1381,9 @@
   ],
   "middle layer of thoracolumbar fascia": [
     "middelste laag van de borst-lendenfascie"
+  ],
+  "middle lobar bronchus": [
+    "middenkwabbronchus van de rechterlong"
   ],
   "middle lobe of right lung": [
     "middenkwab van de rechterlong"
@@ -1316,6 +1415,9 @@
   "middle pharyngeal constrictor": [
     "middelste keelholtesnoerder"
   ],
+  "mucosa of nasal cavity": [
+    "slijmvlies van de neusholte"
+  ],
   "multifidus colli muscle": [
     "diepe meervoudig gedeelde halsspier"
   ],
@@ -1337,8 +1439,14 @@
   "nasalis muscle": [
     "neusspier"
   ],
+  "nasopharynx": [
+    "neus-keelholte"
+  ],
   "navicular bone": [
     "scheepvormig voetwortelbeen"
+  ],
+  "neurohypophysis": [
+    "achterkwab van de hypofyse"
   ],
   "ninth rib": [
     "negende rib"
@@ -1454,6 +1562,9 @@
   "oesophagus": [
     "slokdarm"
   ],
+  "omental taenia": [
+    "lengtespierband aan de zijde van het vetschort"
+  ],
   "omohyoid muscle": [
     "schouderblad-tongbeenspier"
   ],
@@ -1477,6 +1588,9 @@
   ],
   "orbital part of orbicularis oculi": [
     "oogkasdeel van de kringspier rond het oog"
+  ],
+  "oropharynx": [
+    "mond-keelholte"
   ],
   "palatine bone": [
     "gehemeltebeen"
@@ -1517,8 +1631,17 @@
   "pancreas": [
     "alvleesklier"
   ],
+  "pancreatic duct": [
+    "afvoergang van de alvleesklier"
+  ],
   "parietal bone": [
     "wandbeen"
+  ],
+  "parotid duct": [
+    "afvoergang van de oorspeekselklier"
+  ],
+  "parotid gland": [
+    "oorspeekselklier"
   ],
   "patella": [
     "knieschijf"
@@ -1531,6 +1654,9 @@
   ],
   "pectoralis minor muscle": [
     "kleine borstspier"
+  ],
+  "pineal gland": [
+    "pijnappelklier"
   ],
   "piriformis fascia": [
     "fascie van de peervormige spier"
@@ -1583,6 +1709,9 @@
   "platysma": [
     "oppervlakkige halsspier"
   ],
+  "pleura": [
+    "borstvlies"
+  ],
   "popliteal fascia": [
     "knieholtefascie"
   ],
@@ -1591,6 +1720,12 @@
   ],
   "popliteus muscle": [
     "knieholtespier"
+  ],
+  "posterior basal segmental bronchus of left lung (bx)": [
+    "achterste basale segmentbronchus van de linkerlong (BX)"
+  ],
+  "posterior basal segmental bronchus of right lung (bx)": [
+    "achterste basale segmentbronchus van de rechterlong (BX)"
   ],
   "posterior belly of digastric muscle": [
     "achterste buik van de tweehuikige spier"
@@ -1613,6 +1748,9 @@
   "posterior intermuscular septum of leg": [
     "achterste bindweefselschot van het onderbeen"
   ],
+  "posterior lateral segment of liver (vii)": [
+    "achterste buitenste leversegment (VII)"
+  ],
   "posterior layer of thoracolumbar fascia": [
     "achterste laag van de borst-lendenfascie"
   ],
@@ -1622,6 +1760,9 @@
   "posterior longitudinal ligament": [
     "achterste lengteband van de wervelkolom"
   ],
+  "posterior medial segment of liver (viii)": [
+    "achterste binnenste leversegment (VIII)"
+  ],
   "posterior meniscotibial ligament (lateral meniscus)": [
     "achterste band tussen buitenmeniscus en scheenbeen"
   ],
@@ -1630,6 +1771,12 @@
   ],
   "posterior sacro-iliac ligament": [
     "achterste band van het heiligbeen-darmbeengewricht"
+  ],
+  "posterior segment of liver (i)": [
+    "achterste leversegment (I)"
+  ],
+  "posterior segmental bronchus of right lung (bii)": [
+    "achterste segmentbronchus van de rechterlong (BII)"
   ],
   "posterior sternoclavicular ligament": [
     "achterste band tussen borstbeen en sleutelbeen"
@@ -1760,6 +1907,9 @@
   "rectus posterior minor capitis muscle": [
     "kleine achterste rechte hoofdspier"
   ],
+  "renal pelvis": [
+    "nierbekken"
+  ],
   "rhomboid major muscle": [
     "grote ruitvormige rugspier"
   ],
@@ -1778,6 +1928,9 @@
   "right coronary artery": [
     "rechter kransslagader"
   ],
+  "right inferior lobar bronchus": [
+    "onderkwabbronchus van de rechterlong"
+  ],
   "right lobe of thymus": [
     "rechterdeel van de thymus"
   ],
@@ -1795,6 +1948,9 @@
   ],
   "right renal vein": [
     "rechter nierader"
+  ],
+  "right superior lobar bronchus": [
+    "bovenkwabbronchus van de rechterlong"
   ],
   "right ventricle": [
     "rechterhartkamer"
@@ -1865,6 +2021,9 @@
   "semimembranosus muscle": [
     "halfvliezige dijspier"
   ],
+  "seminal gland": [
+    "zaadblaasje"
+  ],
   "semispinalis colli muscle": [
     "halfdoornspier van de hals"
   ],
@@ -1906,6 +2065,9 @@
   ],
   "sixth rib": [
     "zesde rib"
+  ],
+  "soft palate": [
+    "zachte gehemelte"
   ],
   "soleus muscle": [
     "scholspier"
@@ -2009,6 +2171,15 @@
   "subfacial prepatellar bursa": [
     "slijmbeurs onder de fascie vóór de knieschijf"
   ],
+  "sublingual gland": [
+    "ondertongspeekselklier"
+  ],
+  "submandibular duct": [
+    "afvoergang van de onderkaakspeekselklier"
+  ],
+  "submandibular gland": [
+    "onderkaakspeekselklier"
+  ],
   "subscapularis muscle": [
     "onderschouderbladspier"
   ],
@@ -2084,6 +2255,9 @@
   "superior head of lateral pterygoid muscle": [
     "bovenste kop van de buitenste vleugelspier"
   ],
+  "superior lingular segmental bronchus of left lung (biv)": [
+    "bovenste lingulasegmentbronchus van de linkerlong (BIV)"
+  ],
   "superior lobe of left lung": [
     "bovenkwab van de linkerlong"
   ],
@@ -2105,6 +2279,12 @@
   "superior rectus muscle": [
     "bovenste rechte oogspier"
   ],
+  "superior segmental bronchus of left lung (bvi)": [
+    "bovenste segmentbronchus van de linkerlong (BVI)"
+  ],
+  "superior segmental bronchus of right lung (bvi)": [
+    "bovenste segmentbronchus van de rechterlong (BVI)"
+  ],
   "superior tarsus": [
     "bovenste ooglidplaat"
   ],
@@ -2116,6 +2296,9 @@
   ],
   "suprapatellar bursa": [
     "slijmbeurs boven de knieschijf"
+  ],
+  "suprarenal gland": [
+    "bijnier"
   ],
   "supraspinatus muscle": [
     "bovendoornspier van het schouderblad"
@@ -2233,6 +2416,9 @@
   ],
   "tibionavicular ligament": [
     "band tussen scheenbeen en scheepvormig voetwortelbeen"
+  ],
+  "tongue": [
+    "tong"
   ],
   "trachea": [
     "luchtpijp"
@@ -2374,6 +2560,9 @@
   ],
   "urinary bladder": [
     "urineblaas"
+  ],
+  "uvula of palate": [
+    "huig"
   ],
   "vagus nerve (x)": [
     "zwervende zenuw"
