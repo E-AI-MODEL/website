@@ -56,8 +56,26 @@
   "anterior interventricular artery": [
     "voorste slagader tussen de hartkamers"
   ],
+  "anterior ligament of fibular head": [
+    "voorste band bij de kuitbeenkop"
+  ],
   "anterior longitudinal ligament": [
     "voorste lengteband van de wervelkolom"
+  ],
+  "anterior meniscotibial ligament (lateral meniscus)": [
+    "voorste band tussen buitenmeniscus en scheenbeen"
+  ],
+  "anterior meniscotibial ligament (medial meniscus)": [
+    "voorste band tussen binnenmeniscus en scheenbeen"
+  ],
+  "anterior sacro-iliac ligament": [
+    "voorste band van het heiligbeen-darmbeengewricht"
+  ],
+  "anterior sternoclavicular ligament": [
+    "voorste band tussen borstbeen en sleutelbeen"
+  ],
+  "anterior talocalcaneal ligament": [
+    "voorste band tussen sprongbeen en hielbeen"
   ],
   "anterior tibial artery": [
     "voorste scheenbeenslagader"
@@ -67,6 +85,9 @@
   ],
   "aortic arch": [
     "aortaboog"
+  ],
+  "arcuate popliteal ligament": [
+    "boogvormige knieholteband"
   ],
   "articular capsule of acromioclavicular joint": [
     "gewrichtskapsel tussen schouderdak en sleutelbeen"
@@ -80,6 +101,9 @@
   "articular capsule of hip joint": [
     "gewrichtskapsel van de heup"
   ],
+  "articular capsule of interphalangeal joint of great toe": [
+    "gewrichtskapsel van het grote-teengewricht"
+  ],
   "articular capsule of knee joint": [
     "gewrichtskapsel van de knie"
   ],
@@ -89,8 +113,17 @@
   "articular capsule of sternoclavicular joint": [
     "gewrichtskapsel tussen sleutelbeen en borstbeen"
   ],
+  "articular capsule of superior tibiofibular joint": [
+    "gewrichtskapsel van het bovenste scheenbeen-kuitbeengewricht"
+  ],
   "articular capsule of temporomandibular joint": [
     "gewrichtskapsel van het kaakgewricht"
+  ],
+  "articular capsules of distal interphalangeal joints": [
+    "gewrichtskapsels van de eindgewrichten van de vingers"
+  ],
+  "articular capsules of distal interphalangeal joints of foot": [
+    "gewrichtskapsels van de eindgewrichten van de tenen"
   ],
   "articular capsules of metacarpophalangeal joints": [
     "gewrichtskapsels van de knokkels"
@@ -98,8 +131,17 @@
   "articular capsules of metatarsophalangeal joints": [
     "gewrichtskapsels tussen middenvoetsbeentjes en tenen"
   ],
+  "articular capsules of proximal interphalangeal joints": [
+    "gewrichtskapsels van de middelste vingergewrichten"
+  ],
+  "articular capsules of proximal interphalangeal joints of foot": [
+    "gewrichtskapsels van de middelste teengewrichten"
+  ],
   "articular disc of acromioclavicular joint": [
     "gewrichtsschijf bij het schouderdak en sleutelbeen"
+  ],
+  "articular disc of distal radio-ulnar joint": [
+    "gewrichtsschijf tussen spaakbeen en ellepijp bij de pols"
   ],
   "articular disc of sternoclavicular joint": [
     "gewrichtsschijf bij het borstbeen en sleutelbeen"
@@ -155,6 +197,12 @@
   "calcaneal tendon": [
     "achillespees"
   ],
+  "calcaneocuboid ligament": [
+    "band tussen hielbeen en kubusbeen"
+  ],
+  "calcaneonavicular ligament": [
+    "band tussen hielbeen en scheepvormig voetwortelbeen"
+  ],
   "calcaneus": [
     "hielbeen"
   ],
@@ -185,14 +233,32 @@
   "coccyx": [
     "staartbeen"
   ],
+  "collateral interphalangeal ligaments of foot": [
+    "zijbanden van de teengewrichten"
+  ],
+  "collateral interphalangeal ligaments of hand": [
+    "zijbanden van de vingergewrichten"
+  ],
+  "collateral metacarpophalangeal ligaments": [
+    "zijbanden van de knokkelgewrichten"
+  ],
+  "collateral metatarsophalangeal ligaments": [
+    "zijbanden van de gewrichten aan de basis van de tenen"
+  ],
   "common iliac artery": [
     "gemeenschappelijke bekkenslagader"
   ],
   "common iliac vein": [
     "gemeenschappelijke bekkenader"
   ],
+  "conoid ligament": [
+    "kegelvormige band tussen sleutelbeen en schouderblad"
+  ],
   "coracobrachialis muscle": [
     "ravenbekarmspier"
+  ],
+  "coracohumeral ligament": [
+    "band tussen ravenbekuitsteeksel en opperarmbeen"
   ],
   "corniculate cartilage": [
     "hoorntjeskraakbeen"
@@ -236,11 +302,23 @@
   "costal cartilage of third rib": [
     "ribkraakbeen van de derde rib"
   ],
+  "costotransverse ligament": [
+    "band tussen rib en dwarsuitsteeksel van de wervel"
+  ],
   "cricoid cartilage": [
     "ringkraakbeen"
   ],
+  "cricopharyngeal ligament": [
+    "band tussen ringkraakbeen en keelholte"
+  ],
   "cuboid bone": [
     "kubusbeen"
+  ],
+  "cuneocuboid interosseous ligament": [
+    "band tussen wigvormig voetwortelbeen en kubusbeen"
+  ],
+  "cuneometatarsal interosseous ligaments": [
+    "banden tussen wigvormige voetwortelbeentjes en middenvoetsbeentjes"
   ],
   "deep femoral artery": [
     "diepe dijbeenslagader"
@@ -248,11 +326,23 @@
   "deep femoral vein": [
     "diepe dijbeenader"
   ],
+  "deep part of tibial collateral ligament": [
+    "diepe deel van de binnenste knieband"
+  ],
+  "deep transverse metacarpal ligament": [
+    "diepe dwarse band tussen middenhandsbeentjes"
+  ],
+  "deep transverse metatarsal ligament": [
+    "diepe dwarse band tussen middenvoetsbeentjes"
+  ],
   "deltoid muscle": [
     "deltaspier"
   ],
   "descending colon": [
     "dalende dikke darm"
+  ],
+  "descending part of iliofemoral ligament": [
+    "dalend deel van de darmbeen-dijbeenband"
   ],
   "diaphragm": [
     "middenrif"
@@ -286,6 +376,36 @@
   ],
   "distal phalanx of third finger of hand": [
     "eindkootje van de derde vinger"
+  ],
+  "dorsal carpometacarpal ligaments": [
+    "banden op de handrug tussen handwortel en middenhand"
+  ],
+  "dorsal cuneonavicular ligaments": [
+    "banden boven op de voet tussen wigvormige beentjes en scheepvormig been"
+  ],
+  "dorsal intercarpal ligaments": [
+    "banden op de handrug tussen handwortelbeentjes"
+  ],
+  "dorsal intercuneiform ligaments": [
+    "banden boven op de voet tussen wigvormige voetwortelbeentjes"
+  ],
+  "dorsal metacarpal ligaments": [
+    "banden op de handrug tussen middenhandsbeentjes"
+  ],
+  "dorsal metatarsal ligaments": [
+    "banden op de voetrug tussen middenvoetsbeentjes"
+  ],
+  "dorsal radiocarpal ligament": [
+    "band op de handrug tussen spaakbeen en handwortel"
+  ],
+  "dorsal scaphotriquetral ligament": [
+    "band op de handrug tussen scheepvormig en driehoekig handwortelbeen"
+  ],
+  "dorsal tarsometatarsal ligaments": [
+    "banden op de voetrug tussen voetwortel en middenvoet"
+  ],
+  "dorsal ulnocarpal ligament": [
+    "band op de handrug tussen ellepijp en handwortel"
   ],
   "ductus deferens": [
     "zaadleider"
@@ -322,6 +442,9 @@
   ],
   "external iliac vein": [
     "uitwendige bekkenader"
+  ],
+  "external intercostal membrane": [
+    "buitenste bindweefselvlies tussen de ribben"
   ],
   "facial nerve (vii)": [
     "aangezichtszenuw"
@@ -371,6 +494,9 @@
   "fourth ventricle": [
     "vierde hersenventrikel"
   ],
+  "frenula capsulae": [
+    "kapselplooien van het gewricht"
+  ],
   "frontal bone": [
     "voorhoofdsbeen"
   ],
@@ -385,6 +511,9 @@
   ],
   "glans penis": [
     "eikel"
+  ],
+  "glenoid labrum": [
+    "kraakbeenring van de schouderkom"
   ],
   "gluteus maximus muscle": [
     "grote bilspier"
@@ -413,8 +542,14 @@
   "hypothalamus": [
     "hypothalamus"
   ],
+  "iliolumbar ligament": [
+    "band tussen darmbeen en lendenwervels"
+  ],
   "incus": [
     "aambeeld"
+  ],
+  "inferior glenohumeral ligament": [
+    "onderste band van het schoudergewricht"
   ],
   "inferior lobe of left lung": [
     "onderkwab van de linkerlong"
@@ -428,8 +563,23 @@
   "inferior parathyroid gland": [
     "onderste bijschildklier"
   ],
+  "inferior pubic ligament": [
+    "onderste schaambeenband"
+  ],
   "inferior vena cava": [
     "onderste holle ader"
+  ],
+  "infrapatellar fat pad": [
+    "vetkussen onder de knieschijf"
+  ],
+  "interclavicular ligament": [
+    "band tussen de sleutelbeenderen"
+  ],
+  "intercornual ligament": [
+    "band tussen de hoorntjes van het ringvormige kraakbeen"
+  ],
+  "intercuneiform interosseous ligaments": [
+    "banden tussen wigvormige voetwortelbeentjes"
   ],
   "intermediate bronchus": [
     "tussenbronchus van de rechterlong"
@@ -448,6 +598,102 @@
   ],
   "internal iliac vein": [
     "inwendige bekkenader"
+  ],
+  "internal intercostal membrane": [
+    "binnenste bindweefselvlies tussen de ribben"
+  ],
+  "interosseous membrane of forearm": [
+    "bindweefselvlies tussen spaakbeen en ellepijp"
+  ],
+  "interosseous membrane of leg": [
+    "bindweefselvlies tussen scheenbeen en kuitbeen"
+  ],
+  "interosseous metacarpal ligaments": [
+    "banden tussen de middenhandsbeentjes"
+  ],
+  "interosseous sacro-iliac ligament": [
+    "diepe band van het heiligbeen-darmbeengewricht"
+  ],
+  "interpubic disc": [
+    "gewrichtsschijf tussen de schaambeenderen"
+  ],
+  "intersesamoid ligament": [
+    "band tussen sesambeentjes"
+  ],
+  "interspinous ligaments": [
+    "banden tussen doornuitsteeksels van de wervels"
+  ],
+  "intervertebral disc c2-c3": [
+    "tussenwervelschijf C2-C3"
+  ],
+  "intervertebral disc c3-c4": [
+    "tussenwervelschijf C3-C4"
+  ],
+  "intervertebral disc c4-c5": [
+    "tussenwervelschijf C4-C5"
+  ],
+  "intervertebral disc c5-c6": [
+    "tussenwervelschijf C5-C6"
+  ],
+  "intervertebral disc c6-c7": [
+    "tussenwervelschijf C6-C7"
+  ],
+  "intervertebral disc c7-t1": [
+    "tussenwervelschijf C7-T1"
+  ],
+  "intervertebral disc l1-l2": [
+    "tussenwervelschijf L1-L2"
+  ],
+  "intervertebral disc l2-l3": [
+    "tussenwervelschijf L2-L3"
+  ],
+  "intervertebral disc l3-l4": [
+    "tussenwervelschijf L3-L4"
+  ],
+  "intervertebral disc l4-l5": [
+    "tussenwervelschijf L4-L5"
+  ],
+  "intervertebral disc t1-t2": [
+    "tussenwervelschijf T1-T2"
+  ],
+  "intervertebral disc t10-t11": [
+    "tussenwervelschijf T10-T11"
+  ],
+  "intervertebral disc t11-t12": [
+    "tussenwervelschijf T11-T12"
+  ],
+  "intervertebral disc t12-l1": [
+    "tussenwervelschijf T12-L1"
+  ],
+  "intervertebral disc t2-t3": [
+    "tussenwervelschijf T2-T3"
+  ],
+  "intervertebral disc t3-t4": [
+    "tussenwervelschijf T3-T4"
+  ],
+  "intervertebral disc t4-t5": [
+    "tussenwervelschijf T4-T5"
+  ],
+  "intervertebral disc t5-t6": [
+    "tussenwervelschijf T5-T6"
+  ],
+  "intervertebral disc t6-t7": [
+    "tussenwervelschijf T6-T7"
+  ],
+  "intervertebral disc t7-t8": [
+    "tussenwervelschijf T7-T8"
+  ],
+  "intervertebral disc t8-t9": [
+    "tussenwervelschijf T8-T9"
+  ],
+  "intervertebral disc t9-t10": [
+    "tussenwervelschijf T9-T10"
+  ],
+  "intra-articular ligament of head of rib": [
+    "band binnen het gewricht van de ribkop"
+  ],
+  "ischiofemoral ligament": [
+    "zitbeen-dijbeenband"
   ],
   "jejunum": [
     "nuchtere darm"
@@ -469,6 +715,15 @@
   ],
   "lateral process of nasal septal cartilage": [
     "zijwaarts uitsteeksel van het neustussenschotkraakbeen"
+  ],
+  "lateral talocalcaneal ligament": [
+    "buitenste band tussen sprongbeen en hielbeen"
+  ],
+  "lateral temporomandibular ligament": [
+    "buitenste band van het kaakgewricht"
+  ],
+  "lateral thyrohyoid ligament": [
+    "buitenste band tussen schildkraakbeen en tongbeen"
   ],
   "lateral ventricle": [
     "zijventrikel van de hersenen"
@@ -509,6 +764,9 @@
   "levator scapulae": [
     "schouderbladheffer"
   ],
+  "ligament of head of femur": [
+    "band van de dijbeenkop"
+  ],
   "ligamenta flava": [
     "gele banden van de wervelkolom"
   ],
@@ -517,6 +775,9 @@
   ],
   "liver": [
     "lever"
+  ],
+  "long plantar ligament": [
+    "lange voetzoolband"
   ],
   "lower canine": [
     "hoektand in de onderkaak"
@@ -566,8 +827,23 @@
   "medial meniscus": [
     "binnenmeniscus"
   ],
+  "medial talocalcaneal ligament": [
+    "binnenste band tussen sprongbeen en hielbeen"
+  ],
+  "median cricothyroid ligament": [
+    "middelste band tussen ringkraakbeen en schildkraakbeen"
+  ],
   "median nerve": [
     "middelste armzenuw"
+  ],
+  "median thyrohyoid ligament": [
+    "middelste band tussen schildkraakbeen en tongbeen"
+  ],
+  "meniscopatellar ligament": [
+    "band tussen meniscus en knieschijf"
+  ],
+  "metatarsal interosseous ligaments": [
+    "banden tussen de middenvoetsbeentjes"
   ],
   "midbrain": [
     "middenhersenen"
@@ -577,6 +853,9 @@
   ],
   "middle cerebral artery (m1-segment)": [
     "middelste hersenslagader (eerste deel)"
+  ],
+  "middle glenohumeral ligament": [
+    "middelste band van het schoudergewricht"
   ],
   "middle lobe of right lung": [
     "middenkwab van de rechterlong"
@@ -617,14 +896,89 @@
   "ninth rib": [
     "negende rib"
   ],
+  "nuchal ligament": [
+    "nekband"
+  ],
   "nucleus pulposus": [
     "geleiachtige tussenwervelschijfkern"
+  ],
+  "nucleus pulposus c2-c3": [
+    "geleiachtige binnenzijde van tussenwervelschijf C2-C3"
+  ],
+  "nucleus pulposus c3-c4": [
+    "geleiachtige binnenzijde van tussenwervelschijf C3-C4"
+  ],
+  "nucleus pulposus c4-c5": [
+    "geleiachtige binnenzijde van tussenwervelschijf C4-C5"
+  ],
+  "nucleus pulposus c5-c6": [
+    "geleiachtige binnenzijde van tussenwervelschijf C5-C6"
+  ],
+  "nucleus pulposus c6-c7": [
+    "geleiachtige binnenzijde van tussenwervelschijf C6-C7"
+  ],
+  "nucleus pulposus c7-t1": [
+    "geleiachtige binnenzijde van tussenwervelschijf C7-T1"
+  ],
+  "nucleus pulposus l1-l2": [
+    "geleiachtige binnenzijde van tussenwervelschijf L1-L2"
+  ],
+  "nucleus pulposus l2-l3": [
+    "geleiachtige binnenzijde van tussenwervelschijf L2-L3"
+  ],
+  "nucleus pulposus l3-l4": [
+    "geleiachtige binnenzijde van tussenwervelschijf L3-L4"
+  ],
+  "nucleus pulposus l4-l5": [
+    "geleiachtige binnenzijde van tussenwervelschijf L4-L5"
+  ],
+  "nucleus pulposus t1-t2": [
+    "geleiachtige binnenzijde van tussenwervelschijf T1-T2"
+  ],
+  "nucleus pulposus t10-t11": [
+    "geleiachtige binnenzijde van tussenwervelschijf T10-T11"
+  ],
+  "nucleus pulposus t11-t12": [
+    "geleiachtige binnenzijde van tussenwervelschijf T11-T12"
+  ],
+  "nucleus pulposus t12-l1": [
+    "geleiachtige binnenzijde van tussenwervelschijf T12-L1"
+  ],
+  "nucleus pulposus t2-t3": [
+    "geleiachtige binnenzijde van tussenwervelschijf T2-T3"
+  ],
+  "nucleus pulposus t3-t4": [
+    "geleiachtige binnenzijde van tussenwervelschijf T3-T4"
+  ],
+  "nucleus pulposus t4-t5": [
+    "geleiachtige binnenzijde van tussenwervelschijf T4-T5"
+  ],
+  "nucleus pulposus t5-t6": [
+    "geleiachtige binnenzijde van tussenwervelschijf T5-T6"
+  ],
+  "nucleus pulposus t6-t7": [
+    "geleiachtige binnenzijde van tussenwervelschijf T6-T7"
+  ],
+  "nucleus pulposus t7-t8": [
+    "geleiachtige binnenzijde van tussenwervelschijf T7-T8"
+  ],
+  "nucleus pulposus t8-t9": [
+    "geleiachtige binnenzijde van tussenwervelschijf T8-T9"
+  ],
+  "nucleus pulposus t9-t10": [
+    "geleiachtige binnenzijde van tussenwervelschijf T9-T10"
+  ],
+  "oblique popliteal ligament": [
+    "schuine knieholteband"
   ],
   "obturator externus": [
     "uitwendige afsluitspier"
   ],
   "obturator internus": [
     "inwendige afsluitspier"
+  ],
+  "obturator membrane": [
+    "afsluitmembraan in het bekken"
   ],
   "occipital bone": [
     "achterhoofdsbeen"
@@ -647,6 +1001,21 @@
   "palatine tonsil": [
     "keelamandel"
   ],
+  "palmar carpometacarpal ligaments": [
+    "banden aan de handpalmzijde tussen handwortel en middenhand"
+  ],
+  "palmar interphalangeal ligaments": [
+    "banden aan de handpalmzijde van de vingergewrichten"
+  ],
+  "palmar metacarpal ligaments": [
+    "banden aan de handpalmzijde tussen middenhandsbeentjes"
+  ],
+  "palmar radio-ulnar ligament": [
+    "band aan de handpalmzijde tussen spaakbeen en ellepijp"
+  ],
+  "palmar scaphotriquetral ligament": [
+    "band aan de handpalmzijde tussen scheepvormig en driehoekig handwortelbeen"
+  ],
   "pancreas": [
     "alvleesklier"
   ],
@@ -662,8 +1031,38 @@
   "pisiform bone": [
     "erwtbeen"
   ],
+  "pisotriquetral ligament": [
+    "band tussen erwtbeen en driehoekig handwortelbeen"
+  ],
+  "plantar calcaneocuboid ligament": [
+    "band aan de voetzoolzijde tussen hielbeen en kubusbeen"
+  ],
+  "plantar cuneocuboid ligament": [
+    "band aan de voetzoolzijde tussen wigvormig voetwortelbeen en kubusbeen"
+  ],
+  "plantar cuneonavicular ligaments": [
+    "banden aan de voetzoolzijde tussen wigvormige voetwortelbeentjes en scheepvormig been"
+  ],
+  "plantar intercuneiform ligaments": [
+    "banden aan de voetzoolzijde tussen wigvormige voetwortelbeentjes"
+  ],
+  "plantar interphalangeal ligaments": [
+    "banden aan de voetzoolzijde van de teengewrichten"
+  ],
+  "plantar metatarsal ligaments": [
+    "banden aan de voetzoolzijde tussen middenvoetsbeentjes"
+  ],
+  "plantar metatarsophalangeal ligaments": [
+    "banden aan de voetzoolzijde van de teengewrichten"
+  ],
+  "plantar tarsometatarsal ligaments": [
+    "banden aan de voetzoolzijde tussen voetwortel en middenvoet"
+  ],
   "platysma": [
     "oppervlakkige halsspier"
+  ],
+  "popliteofibular ligament": [
+    "band tussen knieholte en kuitbeenkop"
   ],
   "posterior cells of ethmoid bone": [
     "achterste zeefbeencellen"
@@ -677,11 +1076,35 @@
   "posterior horn of spinal cord": [
     "achterhoorn van het ruggenmerg"
   ],
+  "posterior ligament of fibular head": [
+    "achterste band bij de kuitbeenkop"
+  ],
   "posterior longitudinal ligament": [
     "achterste lengteband van de wervelkolom"
   ],
+  "posterior meniscotibial ligament (lateral meniscus)": [
+    "achterste band tussen buitenmeniscus en scheenbeen"
+  ],
+  "posterior meniscotibial ligament (medial meniscus)": [
+    "achterste band tussen binnenmeniscus en scheenbeen"
+  ],
+  "posterior sacro-iliac ligament": [
+    "achterste band van het heiligbeen-darmbeengewricht"
+  ],
+  "posterior sternoclavicular ligament": [
+    "achterste band tussen borstbeen en sleutelbeen"
+  ],
+  "posterior talocalcaneal ligament": [
+    "achterste band tussen sprongbeen en hielbeen"
+  ],
   "posterior tibial artery": [
     "achterste scheenbeenslagader"
+  ],
+  "posterior tibiofibular ligament": [
+    "achterste band tussen scheenbeen en kuitbeen"
+  ],
+  "posterior tibiotalar ligament": [
+    "achterste band tussen scheenbeen en sprongbeen"
   ],
   "pronator quadratus": [
     "vierkante pronatorspier"
@@ -722,8 +1145,32 @@
   "psoas major": [
     "grote lendenspier"
   ],
+  "pubic symphysis": [
+    "schaambeenvoeg"
+  ],
+  "pubofemoral ligament": [
+    "schaambeen-dijbeenband"
+  ],
+  "quadrangular membrane": [
+    "vierhoekig membraan van het strottenhoofd"
+  ],
+  "radial collateral ligament": [
+    "radiale zijband"
+  ],
+  "radial collateral ligament of wrist joint": [
+    "zijband van de pols aan de duimzijde"
+  ],
   "radial nerve": [
     "spaakbeenzenuw"
+  ],
+  "radiate carpal ligament": [
+    "waaiervormige handwortelband"
+  ],
+  "radiate ligament of head of rib": [
+    "straalsgewijs verlopende band van de ribkop"
+  ],
+  "radioscaphocapitate ligament": [
+    "band tussen spaakbeen, scheepvormig en kopvormig handwortelbeen"
   ],
   "radius": [
     "spaakbeen"
@@ -770,6 +1217,15 @@
   "right ventricle": [
     "rechterhartkamer"
   ],
+  "sacrococcygeal symphysis": [
+    "voeg tussen heiligbeen en staartbeen"
+  ],
+  "sacrospinous ligament": [
+    "heiligbeen-doornband"
+  ],
+  "sacrotuberous ligament": [
+    "heiligbeen-knobbelband"
+  ],
   "sacrum": [
     "heiligbeen"
   ],
@@ -778,6 +1234,9 @@
   ],
   "scaphoid bone": [
     "scheepvormig handwortelbeen"
+  ],
+  "scaphotrapeziotrapezoidal ligament": [
+    "band tussen drie handwortelbeentjes bij de duimbasis"
   ],
   "scapula": [
     "schouderblad"
@@ -818,6 +1277,9 @@
   "sphenoid bone": [
     "wiggenbeen"
   ],
+  "sphenomandibular ligament": [
+    "wiggenbeen-onderkaakband"
+  ],
   "spinal cord": [
     "ruggenmerg"
   ],
@@ -836,6 +1298,18 @@
   "stomach": [
     "maag"
   ],
+  "stylohyoid ligament": [
+    "band tussen stijluitsteeksel en tongbeen"
+  ],
+  "stylomandibular ligament": [
+    "band tussen stijluitsteeksel en onderkaak"
+  ],
+  "superficial part of tibial collateral ligament": [
+    "oppervlakkige deel van de binnenste knieband"
+  ],
+  "superior glenohumeral ligament": [
+    "bovenste band van het schoudergewricht"
+  ],
   "superior lobe of left lung": [
     "bovenkwab van de linkerlong"
   ],
@@ -845,11 +1319,23 @@
   "superior parathyroid gland": [
     "bovenste bijschildklier"
   ],
+  "superior pubic ligament": [
+    "bovenste schaambeenband"
+  ],
   "superior vena cava": [
     "bovenste holle ader"
   ],
   "supinator": [
     "supinatorspier"
+  ],
+  "supraspinous ligament": [
+    "band over de doornuitsteeksels van de wervels"
+  ],
+  "talocalcaneal interosseous ligament": [
+    "diepe band tussen sprongbeen en hielbeen"
+  ],
+  "talonavicular ligament": [
+    "band tussen sprongbeen en scheepvormig voetwortelbeen"
   ],
   "talus": [
     "sprongbeen"
@@ -893,11 +1379,32 @@
   "tibia": [
     "scheenbeen"
   ],
+  "tibiocalcaneal ligament": [
+    "band tussen scheenbeen en hielbeen"
+  ],
+  "tibionavicular ligament": [
+    "band tussen scheenbeen en scheepvormig voetwortelbeen"
+  ],
   "trachea": [
     "luchtpijp"
   ],
+  "transverse acetabular ligament": [
+    "dwarse band van de heupkom"
+  ],
   "transverse colon": [
     "dwarslopende dikke darm"
+  ],
+  "transverse humeral ligament": [
+    "dwarse band van het opperarmbeen"
+  ],
+  "transverse ligament of knee": [
+    "dwarse band van de knie"
+  ],
+  "transverse part of iliofemoral ligament": [
+    "dwars deel van de darmbeen-dijbeenband"
+  ],
+  "transverse tibiofibular ligament": [
+    "dwarse band tussen scheenbeen en kuitbeen"
   ],
   "transversus abdominis muscle": [
     "dwarse buikspier"
@@ -908,11 +1415,20 @@
   "trapezoid bone": [
     "klein veelhoekig handwortelbeen"
   ],
+  "trapezoid ligament": [
+    "trapeziumvormige band tussen sleutelbeen en schouderblad"
+  ],
   "triceps brachii": [
     "triceps bovenarm"
   ],
+  "triquetrocapitate ligament": [
+    "band tussen driehoekig handwortelbeen en kopbeen"
+  ],
   "triquetrum bone": [
     "driehoeksbeen"
+  ],
+  "triradiate cartilage": [
+    "Y-vormig groeikraakbeen van de heupkom"
   ],
   "twelfth rib": [
     "twaalfde rib"
@@ -920,8 +1436,23 @@
   "ulna": [
     "ellepijp"
   ],
+  "ulnar collateral ligament": [
+    "ulnaire zijband"
+  ],
+  "ulnar collateral ligament of wrist joint": [
+    "zijband van de pols aan de pinkzijde"
+  ],
   "ulnar nerve": [
     "elleboogzenuw"
+  ],
+  "ulnocapitate ligament": [
+    "band tussen ellepijp en kopbeen"
+  ],
+  "ulnolunate ligament": [
+    "band tussen ellepijp en maanbeen"
+  ],
+  "ulnotriquetral ligament": [
+    "band tussen ellepijp en driehoekig handwortelbeen"
   ],
   "upper canine": [
     "hoektand in de bovenkaak"
