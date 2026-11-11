@@ -15,6 +15,7 @@ def refine_anatomy(source: Path) -> None:
     root = Path(__file__).resolve().parent.parent / "content" / "anatomie"
     shutil.copyfile(root / "guide.js", source / "src" / "data" / "eaiGuide.js")
     shutil.copyfile(root / "teaching.js", source / "src" / "data" / "eaiTeaching.js")
+    shutil.copyfile(root / "sourceMap.js", source / "src" / "data" / "eaiSources.js")
     shutil.copyfile(root / "eaiDetail.js", source / "src" / "ui" / "eaiDetail.js")
     shutil.copyfile(root / "depthSlider.js", source / "src" / "ui" / "depthSlider.js")
     shutil.copyfile(root / "dragMode.js", source / "src" / "ui" / "dragMode.js")
