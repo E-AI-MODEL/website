@@ -9,7 +9,7 @@ const lerp=(a,b,t)=>a+(b-a)*t;
 const ease=t=>{t=clamp(t,0,1);return t*t*(3-2*t);};
 const span=(t,a,b)=>ease((t-a)/(b-a));
 const fmt=(v,n=0)=>Number(v).toLocaleString('nl-NL',{minimumFractionDigits:n,maximumFractionDigits:n});
-const state={cutaway:true,t:0,playing:!matchMedia('(prefers-reduced-motion: reduce)').matches,speed:1,yaw:-.20,pitch:.08,zoom:5.95,selected:null,showLabels:true,showFlow:true,tab:'phase',rate:75,last:0,drag:null};
+const state={cutaway:true,t:0,playing:!matchMedia('(prefers-reduced-motion: reduce)').matches,speed:1,yaw:-.20,pitch:.08,zoom:5.95,selected:null,showLabels:!matchMedia('(max-width: 790px)').matches,showFlow:true,tab:'phase',rate:75,last:0,drag:null};
 const m4=()=>{
   const o=new Float32Array(16);o[0]=o[5]=o[10]=o[15]=1;return o;
 };
@@ -229,7 +229,7 @@ function selectedPartAt(x,y){
 function positionInfo(id){
   state.selected=id;
   const part=ANATOMY_PARTS[id];
-  if(!part){$('partInfo').textContent='Sleep om het hart te draaien. Kies een onderdeel om het te onderzoeken.';return;}
+  if(!part){$('partInfo').textContent='Sleep om het hart te draaien. Tik op een onderdeel om het te onderzoeken.';return;}
   if(part.type==='valve'){
     const v=VALVES.find(v=>v.id===id),m=mechanics(state.t);
     const open=v.type==='av'?m.av:m.sem;
@@ -289,7 +289,23 @@ function display(m){
   drawChart('volumeChart',volume,'#7ecdbb',150,'ml');
 }
 function render(){const m=mechanics(state.t);drawScene(m);display(m);}
-function setTime(t,autopause=false){state.t=(t%1+1)%1;if(autopause)state.playing=false;syncPlay();render();}
+function focusActivePhase(){
+  if(!matchMedia('(max-width: 790px)').matches)return;
+  const bar=$('timeline');
+  const btn=bar.querySelector('[data-phase="'+phaseFor(state.t)+'"]');
+  if(!btn)return;
+  const area=bar.getBoundingClientRect(),item=btn.getBoundingClientRect();
+  if(item.left<area.left+6||item.right>area.right-6){
+    bar.scrollLeft+=item.left-area.left-12;
+  }
+}
+function setTime(t,autopause=false){
+  state.t=(t%1+1)%1;
+  if(autopause)state.playing=false;
+  syncPlay();
+  render();
+  if(autopause)focusActivePhase();
+}
 function syncPlay(){$('play').textContent=state.playing?'Pauze':'Start';$('play').setAttribute('aria-label',state.playing?'Pauzeer de hartslag':'Start de hartslag');}
 $('play').addEventListener('click',()=>{state.playing=!state.playing;syncPlay();});
 $('prevPhase').addEventListener('click',()=>{let i=phaseFor(state.t);if(Math.abs(state.t-PHASES[i].at)<.012)i=(i+PHASES.length-1)%PHASES.length;setTime(PHASES[i].at,true);});
@@ -302,8 +318,16 @@ $('sectionToggle').addEventListener('click',()=>{
   $('sectionToggle').textContent=state.cutaway?'Doorsnede aan':'Buitenkant aan';
   $('sectionToggle').setAttribute('aria-pressed',String(state.cutaway));
 });
-$('labelsToggle').addEventListener('click',()=>{state.showLabels=!state.showLabels;$('labelsToggle').textContent=state.showLabels?'Namen aan':'Namen uit';$('labelsToggle').setAttribute('aria-pressed',String(state.showLabels));});
-$('flowToggle').addEventListener('click',()=>{state.showFlow=!state.showFlow;$('flowToggle').textContent=state.showFlow?'Bloedstroom aan':'Bloedstroom uit';$('flowToggle').setAttribute('aria-pressed',String(state.showFlow));});
+function syncLabelsToggle(){
+  $('labelsToggle').textContent=state.showLabels?'Namen verbergen':'Namen tonen';
+  $('labelsToggle').setAttribute('aria-pressed',String(state.showLabels));
+}
+$('labelsToggle').addEventListener('click',()=>{state.showLabels=!state.showLabels;syncLabelsToggle();updateLabels();});
+$('flowToggle').addEventListener('click',()=>{
+  state.showFlow=!state.showFlow;
+  $('flowToggle').textContent=state.showFlow?'Bloedstroom verbergen':'Bloedstroom tonen';
+  $('flowToggle').setAttribute('aria-pressed',String(state.showFlow));
+});
 $('resetCamera').addEventListener('click',()=>{state.yaw=-.20;state.pitch=.08;state.zoom=5.95;positionInfo(null);});
 document.querySelectorAll('[data-tab]').forEach(btn=>btn.addEventListener('click',()=>{
   state.tab=btn.dataset.tab;
@@ -351,9 +375,9 @@ canvas.addEventListener('touchstart',e=>{if(e.touches.length===2){state.drag=nul
 canvas.addEventListener('touchmove',e=>{if(e.touches.length===2&&state.pinch){const a=e.touches[0],b=e.touches[1],next=Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY);state.zoom=clamp(state.zoom*state.pinch/Math.max(next,1),3.5,9.5);state.pinch=next;}},{passive:true});
 canvas.addEventListener('touchend',()=>{state.pinch=null;});
 let resize=new ResizeObserver(()=>{if(gl)render();});resize.observe(stage);
-setupModel();syncPlay();
+setupModel();syncPlay();syncLabelsToggle();
 window.__EAI_HEART_LAB__={
-  get state(){return {t:state.t,playing:state.playing,speed:state.speed,yaw:state.yaw,zoom:state.zoom,selected:state.selected,cutaway:state.cutaway};},
+  get state(){return {t:state.t,playing:state.playing,speed:state.speed,yaw:state.yaw,zoom:state.zoom,selected:state.selected,cutaway:state.cutaway,showLabels:state.showLabels};},
   get metrics(){return mechanics(state.t);},
   setTime:t=>setTime(t,true),pause:()=>{state.playing=false;syncPlay();},
   get rendererReady(){return Boolean(gl);}
