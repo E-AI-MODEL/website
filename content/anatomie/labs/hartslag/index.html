@@ -46,7 +46,7 @@
           <div class="viewer-top">
             <span class="view-kicker"><span class="status-dot" aria-hidden="true"></span> LIVE HARTCYCLUS</span>
             <div class="view-actions" role="group" aria-label="Weergave van het hart">
-              <button type="button" class="mini-control" id="sectionToggle" aria-pressed="true" title="Wissel tussen de binnenkant en de buitenkant van het hart">Doorsnede aan</button>
+              <button type="button" class="mini-control" id="sectionToggle" aria-pressed="false" title="Wissel tussen de anatomische buitenkant en de bewegende doorsnede">Buitenkant aan</button>
               <button type="button" class="mini-control" id="labelsToggle" aria-pressed="true">Namen verbergen</button>
               <button type="button" class="mini-control" id="flowToggle" aria-pressed="true">Bloedstroom verbergen</button>
               <button type="button" class="mini-control" id="resetCamera">Startaanzicht</button>
@@ -55,7 +55,7 @@
           <div class="stage" id="stage">
             <canvas id="heartCanvas" aria-label="Bestuurbaar driedimensionaal model van een opengewerkt, bewegend hart. Sleep om te draaien en scroll of knijp om te zoomen.">Je browser heeft ondersteuning voor WebGL nodig.</canvas>
             <div class="stage-wash" aria-hidden="true"></div>
-            <div class="stage-caption">3D · Anatomische doorsnede · Niet op schaal</div>
+            <div class="stage-caption" id="modelCaption">3D · Anatomische hartvorm · Atlasmodel</div>
             <svg class="label-leaders" id="labelLeaders" aria-hidden="true"></svg>
             <div class="labels" id="labels" aria-hidden="true">
               <span data-part="ra">Rechterboezem</span><span data-part="rv">Rechterkamer</span>
@@ -68,7 +68,7 @@
             </div>
             <div class="view-legend"><span><i class="dot dot-red"></i> Zuurstofrijk</span><span><i class="dot dot-blue"></i> Zuurstofarm</span></div>
           </div>
-          <div class="stage-side-note" id="partInfo" aria-live="polite">Sleep om het hart te draaien. Tik op een onderdeel om het te onderzoeken.</div>
+          <div class="stage-side-note" id="partInfo" aria-live="polite">Draai het hart met je vinger. Kies Doorsnede om de hartslag van binnen te bekijken.</div>
           <div class="transport">
             <button class="play" type="button" id="play" aria-label="Pauzeer de hartslag">Pauze</button>
             <div class="scrub-group">
@@ -135,13 +135,13 @@
           <div role="tabpanel" id="tabSources" aria-labelledby="tabSourcesBtn" class="tab-panel" hidden>
             <div class="info-step">OVER HET MODEL</div>
             <h2>Wat laten we zien?</h2>
-            <p class="description">Een bestuurbare, schematische 3D-doorsnede. Je ziet spierwanden, het harttussenschot, klepbladen en de grote bloedvaten. De kamers vervormen en de klepbladen bewegen met één gedeelde tijdlijn. Het is geen anatomisch exacte scan, en de deeltjes stellen geen afzonderlijke bloedcellen voor.</p>
+            <p class="description">De buitenkant bestaat uit afzonderlijke 3D-onderdelen uit de bestaande anatomie-atlas. Met Doorsnede bekijk je een vereenvoudigd bewegend binnenmodel. De hartvorm en de doorsnede hebben een verschillende mate van anatomisch detail. De pompbewegingen en bloeddeeltjes zijn onderwijsvoorbeelden, geen medische simulatie.</p>
             <div class="source-links">
               <a href="https://openstax.org/books/anatomy-and-physiology-2e/pages/19-3-cardiac-cycle" target="_blank" rel="noopener noreferrer">OpenStax · Hartcyclus ↗</a>
               <a href="https://openstax.org/books/anatomy-and-physiology-2e/pages/19-1-heart-anatomy" target="_blank" rel="noopener noreferrer">OpenStax · Bouw van het hart ↗</a>
               <a href="/tools/anatomie/">Terug naar de anatomische 3D-atlas ↗</a>
             </div>
-            <p class="source-note">Druk- en volumecurven zijn vereenvoudigde onderwijsvoorbeelden voor een gezond hart in rust. Dit is geen diagnose- of rekenmodel voor individuele patiënten.</p>
+            <p class="source-note">Het atlasmodel is afgeleid van Z-Anatomy/BodyParts3D via nqwrc/3d-anatomy (CC BY-NC-SA 4.0). Druk- en volumecurven zijn onderwijsvoorbeelden, geen gegevens van een patiënt.</p>
           </div>
         </aside>
       </section>
