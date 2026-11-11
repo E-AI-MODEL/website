@@ -163,6 +163,23 @@ export function refineAnatomyInfo(partData, deselectPart) {
   if (sourceDescription) sourceDescription.after(provenance);
   else facts.after(provenance);
 
+  // Alleen bij herkenbare hartstructuren: geen lablink bij andere organen
+  // of bloedvaten die toevallig in hun uitleg het hart noemen.
+  const heartParts = /^(heart|left atrium|right atrium|left ventricle|right ventricle|interventricular septum|interatrial septum|mitral valve|tricuspid valve|aortic valve|pulmonary valve|papillary muscle|myocardium|cardiac muscle)(?:\b|$)/i;
+  if (heartParts.test(String(baseName).trim())) {
+    const lab = document.createElement('a');
+    lab.className = 'eai-heart-lab-action';
+    lab.href = '/tools/anatomie/labs/hartslag/';
+    lab.textContent = 'Onderzoek het kloppende hart';
+    lab.setAttribute('aria-label', 'Open het interactieve Hartslaglab');
+    const labSection = document.createElement('section');
+    labSection.className = 'eai-heart-lab';
+    const labHint = document.createElement('p');
+    labHint.textContent = 'Bekijk hoe hartkamers en kleppen bewegen en hoe het bloed stroomt.';
+    labSection.append(labHint, lab);
+    facts.after(labSection);
+  }
+
   const actions = document.createElement('div');
   actions.className = 'eai-detail-actions';
   const heading = document.createElement('h4');
