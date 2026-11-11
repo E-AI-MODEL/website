@@ -9,6 +9,7 @@ on:
       - 'tests/test_anatomie_content_audit.py'
       - 'scripts/anatomie_shell.py'
       - 'scripts/test_anatomie_webkit.mjs'
+      - 'scripts/test_anatomie_teaching.mjs'
       - 'tests/test_anatomie_picking.mjs'
       - 'content/anatomie/**'
       - '.github/workflows/anatomie-webkit.yml'
@@ -21,6 +22,7 @@ on:
       - 'tests/test_anatomie_content_audit.py'
       - 'scripts/anatomie_shell.py'
       - 'scripts/test_anatomie_webkit.mjs'
+      - 'scripts/test_anatomie_teaching.mjs'
       - 'tests/test_anatomie_picking.mjs'
       - 'content/anatomie/**'
       - '.github/workflows/anatomie-webkit.yml'
@@ -42,6 +44,8 @@ jobs:
         run: python -m unittest discover -s tests -p 'test_anatomie_content_audit.py' -v
       - name: Schrijf volledige anatomie-audit
         run: python scripts/audit_anatomie_content.py --out audit-anatomie
+      - name: Controleer Nederlandse uitleg voor alle modelonderdelen
+        run: node scripts/test_anatomie_teaching.mjs
       - name: Controleer selectie van transparante fascia
         run: node --test tests/test_anatomie_picking.mjs
       - run: python scripts/build_anatomie.py --out site-build/tools/anatomie
