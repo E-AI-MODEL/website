@@ -104,9 +104,16 @@ test('Interferentiekaart en meetlijn gebruiken dezelfde voortplantingsfase',()=>
  }}}}};
  const snippet=graphics.slice(graphics.indexOf('const waveCanvas='),graphics.indexOf('function doublePremium('));
  const premium=runInNewContext(model+'\n'+snippet+'\ninterferencePremium',{document,background(){},circle(){}});
- const ctx={save(){},restore(){},drawImage(){},beginPath(){},arc(){},stroke(){},fillText(){}};
+ const arcs=[];
+ const ctx={save(){},restore(){},drawImage(){},beginPath(){},arc(...args){arcs.push(args)},stroke(){},fillText(){}};
  premium(ctx,r.p,r.t);
  assert.equal(buffers.length,1);
+ assert.equal(arcs.length,18,'Negen golffronten per bron');
+ for(const [idx,shift] of [[0,0],[9,r.p.phase/360]]){
+  const expected=(((.25+r.t*3.1/(2*Math.PI)-shift)*r.p.lambda*70)%620+620)%620;
+  near(arcs[idx][2],expected,1e-6);
+ }
+ assert.ok(arcs[9][2]<arcs[0][2],'Het tweede golffront volgt het ingestelde faseverschil');
  const w=190,h=98;
  for(const [i,j] of [[20,26],[77,43],[95,51],[151,69],[180,97]]){
   const X=(i/w*1000-500)/70,Y=(j/h*500-260)/70;
