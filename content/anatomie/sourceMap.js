@@ -107,6 +107,26 @@ const REFERENCES = Object.freeze({
     label: 'OpenStax, 16.2 Geheugen en hippocampus',
     url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/16-2-the-mental-status-exam'
   },
+  fasciaLata: {
+    label: 'Peabody & Bordoni, Fascia Lata (NCBI Bookshelf)',
+    url: 'https://www.ncbi.nlm.nih.gov/books/NBK557497/'
+  },
+  armMuscles: {
+    label: 'StatPearls, Arm Muscles (NCBI Bookshelf)',
+    url: 'https://www.ncbi.nlm.nih.gov/books/NBK554420/'
+  },
+  facialArtery: {
+    label: 'StatPearls, Facial Artery (NCBI Bookshelf)',
+    url: 'https://www.ncbi.nlm.nih.gov/books/NBK536932/'
+  },
+  axillaryNodes: {
+    label: 'StatPearls, Axillary Lymph Nodes (NCBI Bookshelf)',
+    url: 'https://www.ncbi.nlm.nih.gov/books/NBK559188/'
+  },
+  toeCapsules: {
+    label: 'Elsevier, Metatarsophalangeal Joints',
+    url: 'https://www.elsevier.com/resources/anatomy/connective-tissue/connective-tissue-of-lower-limb-left/metatarsophalangeal-joints-left/19765'
+  },
   lymph: {
     label: 'OpenStax, 21.1 Lymfe- en afweerstelsel',
     url: 'https://openstax.org/books/anatomy-and-physiology/pages/21-1-anatomy-of-the-lymphatic-and-immune-systems'
@@ -172,6 +192,12 @@ const SUPPORTED_GUIDES = Object.freeze({
   'abdominal aorta': 'circulation',
   'thoracic aorta': 'circulation',
   'hippocampus': 'hippocampus',
+  'anterior axillary nodes': 'axillaryNodes',
+  'fascia lata': 'fasciaLata',
+  'long head of biceps brachii': 'armMuscles',
+  'short head of biceps brachii': 'armMuscles',
+  'facial artery': 'facialArtery',
+  'articular capsules of metatarsophalangeal joints': 'toeCapsules',
 });
 
 const GENERAL_REFERENCES = Object.freeze({
