@@ -18,6 +18,8 @@ jobs:
         run: node scripts/check-site.mjs
       - name: Check Science Observatory and observatory navigation
         run: node --test tests/test_science_observatory_navigation.mjs
+      - name: Check physics reference values and drawings
+        run: node --test tests/test_science_physics_models.mjs
       - name: Verify one KEI login opens the complete LEIF website
         run: node --test tests/test_leif_kei.mjs
       - name: Verify LEIF reader and corrected text
