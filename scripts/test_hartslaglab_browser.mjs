@@ -90,6 +90,15 @@ try {
     'Hartlabels mogen de aanvankelijke 3D-weergave niet bedekken');
   await mobile.locator('#labelsToggle').click();
   assert.equal(await mobile.locator('#labelsToggle').getAttribute('aria-pressed'),'true');
+  await mobile.waitForFunction(()=>document.querySelectorAll('#labelLeaders .leader-path:not([hidden])').length>=4);
+  const labelLines=await mobile.evaluate(()=>{
+    const svg=document.getElementById('labelLeaders');
+    const lines=[...svg.querySelectorAll('.leader-path:not([hidden])')];
+    return {visible:!svg.hidden,shown:lines.length,
+      strokes:lines.map(line=>parseFloat(getComputedStyle(line).strokeWidth))};
+  });
+  assert(labelLines.visible&&labelLines.shown>=4,'Een naam hoort met een aanwijslijn aan het model');
+  assert(labelLines.strokes.every(v=>v<=1.1),'Aanwijslijnen mogen niet dik zijn');
   await mobile.locator('#labelsToggle').click();
   assert.equal(await mobile.locator('#labelsToggle').getAttribute('aria-pressed'),'false');
   const layout=await mobile.evaluate(()=>{
