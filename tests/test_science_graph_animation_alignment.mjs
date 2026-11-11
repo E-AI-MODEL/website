@@ -94,7 +94,7 @@ test('Elektromagnetische golf: elektrische veldwaarde en grafiek zijn gelijk',()
  assert.match(graphics,/phase=TAU\*\(s\*8\/p\.lambda-t\*p\.speed\)/);
 });
 
-test('Interferentiekaart en meetlijn gebruiken dezelfde voortplantingsfase',()=>{
+test('Interferentiekaart toont tijdgemiddelde intensiteit en golffronten behouden hun fase',()=>{
  const r=makeLab('interference',{lambda:1.5,distance:2.5,phase:90},.65);
  for(const q of [0,.16,.32,.5,.78,1])near(r.data.fn(q),interferenceProfile(r.p,r.t,(q-.5)*7));
  const buffers=[];
@@ -102,8 +102,8 @@ test('Interferentiekaart en meetlijn gebruiken dezelfde voortplantingsfase',()=>
   createImageData(w,h){return{data:new Uint8ClampedArray(w*h*4)}},
   putImageData(im){buffers.push(im)}
  }}}}};
- const snippet=graphics.slice(graphics.indexOf('const waveCanvas='),graphics.indexOf('function doublePremium('));
- const premium=runInNewContext(model+'\n'+snippet+'\ninterferencePremium',{document,background(){},circle(){}});
+ const snippet=graphics.slice(graphics.indexOf('function wavePower('),graphics.indexOf('function doublePremium('));
+ const {interferencePremium:premium,wavePower}=runInNewContext(model+'\n'+snippet+'\n({interferencePremium,wavePower})',{document,background(){},circle(){},stroke(){},mission:{probe:{x:615,y:194},samples:[],previousSamples:[]},fmt(x){return Number(x).toFixed(1)}});
  const arcs=[];
  const ctx={save(){},restore(){},drawImage(){},beginPath(){},arc(...args){arcs.push(args)},stroke(){},fillText(){}};
  premium(ctx,r.p,r.t);
@@ -117,8 +117,10 @@ test('Interferentiekaart en meetlijn gebruiken dezelfde voortplantingsfase',()=>
  const w=190,h=98;
  for(const [i,j] of [[20,26],[77,43],[95,51],[151,69],[180,97]]){
   const X=(i/w*1000-500)/70,Y=(j/h*500-260)/70;
-  const amplitude=interferenceProfile(r.p,r.t,X,Y),power=(amplitude/2)**2;
-  near(buffers[0].data[(j*w+i)*4],Math.round(11+25*power));
+  const a=Math.hypot(X+r.p.distance/2,Y),b=Math.hypot(X-r.p.distance/2,Y);
+  const expectedIntensity=(1+Math.cos(2*Math.PI*(a-b)/r.p.lambda-r.p.phase*Math.PI/180))/2;
+  near(wavePower(r.p,i/w*1000,j/h*500),expectedIntensity,1e-8);
+  near(buffers[0].data[(j*w+i)*4],Math.round(11+25*expectedIntensity));
  }
 });
 
