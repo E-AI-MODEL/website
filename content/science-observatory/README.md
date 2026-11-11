@@ -51,3 +51,13 @@ Verder zijn de volgende proeven aangepast:
 - **Foto-elektrisch effect**: bij een remspanning wordt de anode met een negatieve polariteit getoond ten opzichte van de kathode.
 
 De lens- en Dopplerweergaven blijven schematische onderwijsmodellen. De controle van alle 53 simulaties op fysische nauwkeurigheid, realistische tijdschalen en didactische diepgang is nog niet afgerond.
+
+## Grafieken en meetwaarden: november 2026
+
+Alle 53 natuurkundeproeven hebben nu een eigen beschrijving van de horizontale en verticale as. De zichtbare assen gebruiken de werkelijke tijd, afstand, hoek, frequentie of andere grootheid van de grafiekfunctie. Bij vereenvoudigde modellen staat expliciet *relatief* of *modelafstand*. Sommige grafieken tonen een parameterstudie, niet een tijdverloop.
+
+Een kleine stip toont de huidige proefinstelling of animatietijd waar die horizontale positie betekenisvol is. Een bewaarde curve wordt bij het vergelijken op haar eigen oorspronkelijke horizontale schaal gehouden. De getoonde schaal bevat beide meetbereiken; er worden geen waarden buiten het oorspronkelijke bereik verzonnen.
+
+De regressietest `tests/test_science_physical_graphs.mjs` controleert alle 53 asbeschrijvingen bij drie parameterinstellingen, een aantal onafhankelijk berekende referentiepunten, veranderlijke meetbereiken, en het omgaan met onderbrekingen zoals totale interne reflectie.
+
+Deze controles zeggen niets over volledige natuurkundige validatie van alle simulaties. De modellen met relatieve weergaven moeten inhoudelijk en didactisch verder worden beoordeeld.
