@@ -224,3 +224,14 @@
   .discovery-choices{margin-top:7px}
   .stage{height:clamp(390px,112vw,470px)}
 }
+
+/* Richt de doorsnede op één harthelft, met dezelfde sobere bediening. */
+.heart-side-controls{display:flex;align-items:center;gap:8px;padding:7px 14px;background:#102433;border-top:1px solid #294451}
+.heart-side-controls span{font:600 9px ui-monospace,monospace;letter-spacing:.07em;color:#b1c6cd;margin-right:6px}
+.heart-side-controls button{border:1px solid #3d5b66;background:transparent;color:#b9cbd1;border-radius:5px;padding:5px 10px;min-height:30px;font-size:11px}
+.heart-side-controls button[aria-pressed="true"]{color:#e9f1ed;border-color:#a3cbbf;background:#21404a}
+@media(max-width:790px){
+  .heart-side-controls{padding:7px 12px;gap:6px;flex-wrap:wrap}
+  .heart-side-controls span{width:100%;font-size:9px}
+  .heart-side-controls button{flex:1;padding:6px 5px;min-height:35px}
+}
