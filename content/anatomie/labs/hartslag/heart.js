@@ -9,7 +9,7 @@ const lerp=(a,b,t)=>a+(b-a)*t;
 const ease=t=>{t=clamp(t,0,1);return t*t*(3-2*t);};
 const span=(t,a,b)=>ease((t-a)/(b-a));
 const fmt=(v,n=0)=>Number(v).toLocaleString('nl-NL',{minimumFractionDigits:n,maximumFractionDigits:n});
-const state={cutaway:true,t:0,playing:!matchMedia('(prefers-reduced-motion: reduce)').matches,speed:1,yaw:-.20,pitch:.08,zoom:5.95,selected:null,showLabels:!matchMedia('(max-width: 790px)').matches,showFlow:true,tab:'phase',rate:75,last:0,drag:null};
+const state={cutaway:false,t:0,playing:!matchMedia('(prefers-reduced-motion: reduce)').matches,speed:1,yaw:-.20,pitch:.08,zoom:5.95,selected:null,showLabels:!matchMedia('(max-width: 790px)').matches,showFlow:true,tab:'phase',rate:75,last:0,drag:null};
 const m4=()=>{
   const o=new Float32Array(16);o[0]=o[5]=o[10]=o[15]=1;return o;
 };
@@ -73,6 +73,7 @@ function tube(path,radius=.095,segments=10){
 const COLORS={red:[.98,.63,.53],blue:[.47,.82,.98]};
 const canvas=$('heartCanvas'),stage=$('stage');
 let gl,program,pointProgram,meshes={},pv=m4(),loc={},ploc={},particleBuffer;
+let atlasParts=[],atlasCenters={},atlasReady=false,atlasError=null;
 function compile(gl,type,src){const shader=gl.createShader(type);gl.shaderSource(shader,src);gl.compileShader(shader);if(!gl.getShaderParameter(shader,gl.COMPILE_STATUS))throw new Error(gl.getShaderInfoLog(shader));return shader;}
 function shader(gl,vs,fs){const p=gl.createProgram();gl.attachShader(p,compile(gl,gl.VERTEX_SHADER,vs));gl.attachShader(p,compile(gl,gl.FRAGMENT_SHADER,fs));gl.linkProgram(p);if(!gl.getProgramParameter(p,gl.LINK_STATUS))throw new Error(gl.getProgramInfoLog(p));return p;}
 function setupModel(){
@@ -107,7 +108,7 @@ function setupModel(){
   }
   particleBuffer=gl.createBuffer();gl.enable(gl.DEPTH_TEST);gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);gl.clearColor(.035,.076,.118,1);
   canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();gl=null;$('modelUnavailable').hidden=false;},{passive:false});
-  canvas.addEventListener('webglcontextrestored',()=>{$('modelUnavailable').hidden=true;setupModel();});
+  canvas.addEventListener('webglcontextrestored',()=>{$('modelUnavailable').hidden=true;atlasReady=false;atlasParts=[];setupModel();loadAtlasModels();});
   return true;
 }
 function upload(m){
@@ -159,11 +160,65 @@ function updateViewport(){
   const eye=[Math.sin(state.yaw)*Math.cos(state.pitch)*state.zoom,Math.sin(state.pitch)*state.zoom+.17,Math.cos(state.yaw)*Math.cos(state.pitch)*state.zoom];
   pv=mul(persp(42*Math.PI/180,Math.max(.5,w/Math.max(h,1)),.1,100),lookAt(eye,[0,.12,0]));
 }
+// De anatomische buitenvorm wordt tijdens de sitebuild uit de bestaande GLB
+// gehaald. De browser heeft geen externe 3D-engine of Draco-decoder nodig.
+async function loadAtlasModels(){
+  if(!gl)return;
+  try{
+    const manifestResponse=await fetch('./atlas-heart.json');
+    if(!manifestResponse.ok)throw Error('Hartmesh-manifest ontbreekt');
+    const manifest=await manifestResponse.json();
+    if(manifest.format!==1||!Array.isArray(manifest.parts)||manifest.parts.length<4)
+      throw Error('Onvolledig hartmesh-manifest');
+    const bufferResponse=await fetch('./atlas-heart.bin');
+    if(!bufferResponse.ok)throw Error('Hartmesh-bestand ontbreekt');
+    const buffer=await bufferResponse.arrayBuffer();
+    if(buffer.byteLength!==manifest.bytes)throw Error('Hartmesh is niet volledig');
+    const loaded=[];
+    const centers={};
+    for(const part of manifest.parts){
+      if(!Number.isInteger(part.count)||part.count<=0)throw Error('Ongeldige mesh: '+part.id);
+      const size=part.count*3;
+      const v=new Float32Array(buffer,part.positionOffset,size);
+      const n=new Float32Array(buffer,part.normalOffset,size);
+      if(!Array.isArray(part.center)||part.center.length!==3)throw Error('Meshcentrum ontbreekt');
+      loaded.push({id:part.id,kind:part.kind,color:part.color,mesh:upload({v,n,count:part.count})});
+      centers[part.id]=part.center;
+    }
+    atlasParts=loaded;atlasCenters=centers;atlasReady=true;atlasError=null;
+    $('modelCaption').textContent='3D · Anatomische hartvorm · Atlasmodel';
+    if(!state.cutaway)positionInfo(null);
+  }catch(error){
+    atlasError=String(error.message||error);
+    atlasReady=false;
+    // Ook zonder het atlasbestand blijft de bewegende doorsnede bruikbaar.
+    state.cutaway=true;
+    $('sectionToggle').textContent='Doorsnede aan';
+    $('sectionToggle').setAttribute('aria-pressed','true');
+    $('modelCaption').textContent='3D · Bewegende doorsnede · Schematisch';
+    $('partInfo').textContent='Het anatomische buitenmodel kon niet worden geladen. De bewegende doorsnede blijft beschikbaar.';
+    console.error('Hartslaglab atlasmesh:',atlasError);
+  }
+}
+function drawAtlasHeart(m){
+  for(const part of atlasParts){
+    const factor=part.kind==='chamber'?
+      (part.id==='lv'||part.id==='rv'?1+.08*(m.ventScale-1):1+.08*(m.atriumScale-1)):1;
+    const model=modelMatrix([0,0,0],[factor,factor,factor]);
+    const color=state.selected===part.id?[.98,.75,.56]:part.color;
+    drawMesh(part.mesh,model,color,1);
+  }
+}
 function drawScene(m){
   if(!gl)return;
   updateViewport();
   gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
   gl.depthMask(true);
+  if(!state.cutaway&&atlasReady){
+    drawAtlasHeart(m);
+    updateLabels();
+    return;
+  }
   // Vaten achter het zichtbare myocard, maar met een herkenbaar doorlopend verloop.
   for(const vessel of VESSELS)
     drawMesh(meshes.vessels[vessel.id],m4(),vessel.color,1);
@@ -224,7 +279,8 @@ function updateLabels(){
   for(const el of $('labels').children){
     const id=el.dataset.part,part=ANATOMY_PARTS[id];
     if(!part)continue;
-    const p=project(part.pos,pv,w,h);
+    const world=!state.cutaway&&atlasCenters[id]?atlasCenters[id]:part.pos;
+    const p=project(world,pv,w,h);
     const visible=state.showLabels&&p[2]>0&&p[0]>-25&&p[0]<w+25;
     el.hidden=!visible;
     let connector=labelConnectors.get(id);
@@ -281,7 +337,8 @@ function updateLabels(){
 function selectedPartAt(x,y){
   let best=null,score=55;
   for(const [id,part] of Object.entries(ANATOMY_PARTS)){
-    const p=project(part.pos,pv,canvas.clientWidth,canvas.clientHeight);
+    const world=!state.cutaway&&atlasCenters[id]?atlasCenters[id]:part.pos;
+    const p=project(world,pv,canvas.clientWidth,canvas.clientHeight);
     const dist=Math.hypot(p[0]-x,p[1]-y);
     const limit=['artery','vein','papillary','auricle'].includes(part.type)?27:55;
     if(p[2]>0&&dist<limit&&dist<score){best=id;score=dist;}
@@ -291,7 +348,12 @@ function selectedPartAt(x,y){
 function positionInfo(id){
   state.selected=id;
   const part=ANATOMY_PARTS[id];
-  if(!part){$('partInfo').textContent='Sleep om het hart te draaien. Tik op een onderdeel om het te onderzoeken.';return;}
+  if(!part){
+    $('partInfo').textContent=state.cutaway?
+      'Sleep om het hart te draaien. Tik op een onderdeel om het te onderzoeken.':
+      'Draai het hart met je vinger. Kies Doorsnede om de hartslag van binnen te bekijken.';
+    return;
+  }
   if(part.type==='valve'){
     const v=VALVES.find(v=>v.id===id),m=mechanics(state.t);
     const open=v.type==='av'?m.av:m.sem;
@@ -389,6 +451,10 @@ $('sectionToggle').addEventListener('click',()=>{
   state.cutaway=!state.cutaway;
   $('sectionToggle').textContent=state.cutaway?'Doorsnede aan':'Buitenkant aan';
   $('sectionToggle').setAttribute('aria-pressed',String(state.cutaway));
+  $('modelCaption').textContent=state.cutaway?
+    '3D · Bewegende doorsnede · Schematisch':
+    '3D · Anatomische hartvorm · Atlasmodel';
+  positionInfo(null);
 });
 function syncLabelsToggle(){
   // Verberg de volledige labellaag direct, ook vóór het eerste animatieframe.
@@ -450,12 +516,12 @@ canvas.addEventListener('touchstart',e=>{if(e.touches.length===2){state.drag=nul
 canvas.addEventListener('touchmove',e=>{if(e.touches.length===2&&state.pinch){const a=e.touches[0],b=e.touches[1],next=Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY);state.zoom=clamp(state.zoom*state.pinch/Math.max(next,1),3.5,9.5);state.pinch=next;}},{passive:true});
 canvas.addEventListener('touchend',()=>{state.pinch=null;});
 let resize=new ResizeObserver(()=>{if(gl)render();});resize.observe(stage);
-setupModel();syncPlay();syncLabelsToggle();
+setupModel();syncPlay();syncLabelsToggle();loadAtlasModels();
 window.__EAI_HEART_LAB__={
-  get state(){return {t:state.t,playing:state.playing,speed:state.speed,yaw:state.yaw,zoom:state.zoom,selected:state.selected,cutaway:state.cutaway,showLabels:state.showLabels};},
+  get state(){return {t:state.t,playing:state.playing,speed:state.speed,yaw:state.yaw,zoom:state.zoom,selected:state.selected,cutaway:state.cutaway,showLabels:state.showLabels,atlasReady,atlasError,atlasPartCount:atlasParts.length};},
   get metrics(){return mechanics(state.t);},
   setTime:t=>setTime(t,true),pause:()=>{state.playing=false;syncPlay();},
-  get rendererReady(){return Boolean(gl);}
+  get rendererReady(){return Boolean(gl)&&(state.cutaway||atlasReady);}
 };
 function frame(now){
   const dt=state.last?Math.min((now-state.last)/1000,.065):0;state.last=now;
