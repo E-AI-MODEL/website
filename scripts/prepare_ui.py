@@ -25,15 +25,31 @@ def canonical(path: str) -> str:
     return ALIASES.get(path, path)
 
 def groups(en: bool):
-    """Six main destinations, with an About link in the complete menu."""
+    """Korte hoofdroutes; observatoria en ontwerptools hebben elk hun eigen plek."""
     if en:
         return [
             ('Model', [('The EAI model', '/en/model/'), ('Applications', '/en/applications/')]),
             ('Education', [('Lessons and workforms', '/en/education/')]),
             ('Blog', [('Publications', '/en/publications/')]),
             ('Research', [('Evidence and sources', '/en/research/')]),
-            ('Observatories', [('Science Observatory', '/tools/science-observatory/'), ('Physics · 53 experiments (Dutch)', '/tools/science-observatory/labs/natuurkunde/'), ('Anatomy Observatory', '/tools/anatomie/'), ('LLM Observatory', '/tools/llm-observatorium/'), ('ABYSS', '/tools/abyss/'), ('Milky Way Lab', '/tools/melkweg-lab/')]),
-            ('Tools', [('All tools', '/en/tools/'), ('Model Monitor', '/en/model-monitor/'), ('LLMscan', '/en/llmscan/'), ('WiHTML Studio', '/tools/wihtml/'), ('EAIstudio', '/tools/eaistudio/'), ('EAImesh', '/tools/eaimesh/'), ('Prompt Framework', '/tools/prompt-framework/'), ('Process to prompt', '/tools/van-proces-naar-prompt/'), ('Upload HTML', '/tools/html-galerij/')]),
+            ('Observatories', [
+                ('Science Observatory', '/tools/science-observatory/'),
+                ('Physics: 53 experiments (Dutch)', '/tools/science-observatory/labs/natuurkunde/'),
+                ('Anatomy Observatory', '/tools/anatomie/'),
+                ('LLM Observatory', '/tools/llm-observatorium/'),
+                ('ABYSS', '/tools/abyss/'),
+                ('Milky Way Lab', '/tools/melkweg-lab/'),
+            ]),
+            ('Tools', [
+                ('All tools', '/en/tools/'),
+                ('Prompt Framework', '/tools/prompt-framework/'),
+                ('WiHTML Studio', '/tools/wihtml/'),
+                ('EAIstudio', '/tools/eaistudio/'),
+                ('EAImesh', '/tools/eaimesh/'),
+                ('Process to prompt', '/tools/van-proces-naar-prompt/'),
+                ('Model Monitor', '/en/model-monitor/'),
+                ('LLMscan', '/en/llmscan/'),
+            ]),
             ('About', [('About EAI', '/en/about/'), ('Site insights', '/en/insights/')]),
         ]
     return [
@@ -41,8 +57,24 @@ def groups(en: bool):
         ('Onderwijs', [('Lessen en werkvormen', '/nl/onderwijs/'), ('Lesvoorbeelden', '/nl/toepassingen/')]),
         ('Blog', [('Nieuwste artikelen', '/nl/blog/'), ('Publicaties en media', '/nl/publicaties/')]),
         ('Onderzoek', [('Onderzoek en bronnen', '/nl/onderzoek/'), ('Bronnenregister', '/bronnen/')]),
-        ('Observatoria', [('Science Observatory', '/tools/science-observatory/'), ('Natuurkunde · 53 proeven', '/tools/science-observatory/labs/natuurkunde/'), ('Anatomisch Observatorium', '/tools/anatomie/'), ('LLM Observatorium', '/tools/llm-observatorium/'), ('ABYSS', '/tools/abyss/'), ('Melkweg Lab', '/tools/melkweg-lab/')]),
-        ('Tools', [('Alle tools', '/nl/tools/'), ('AI Model Monitor', '/nl/model-monitor/'), ('LLMscan', '/nl/llmscan/'), ('WiHTML Docentstudio', '/tools/wihtml/'), ('EAIstudio', '/tools/eaistudio/'), ('EAImesh', '/tools/eaimesh/'), ('Prompt Framework', '/tools/prompt-framework/'), ('Van proces naar prompt', '/tools/van-proces-naar-prompt/'), ('HTML uploaden', '/tools/html-galerij/')]),
+        ('Observatoria', [
+            ('Science Observatory', '/tools/science-observatory/'),
+            ('Natuurkunde: 53 proeven', '/tools/science-observatory/labs/natuurkunde/'),
+            ('Anatomisch Observatorium', '/tools/anatomie/'),
+            ('LLM Observatorium', '/tools/llm-observatorium/'),
+            ('ABYSS', '/tools/abyss/'),
+            ('Melkweg Lab', '/tools/melkweg-lab/'),
+        ]),
+        ('Tools', [
+            ('Alle tools', '/nl/tools/'),
+            ('EAI Prompt Framework', '/tools/prompt-framework/'),
+            ('WiHTML Docentstudio', '/tools/wihtml/'),
+            ('EAIstudio', '/tools/eaistudio/'),
+            ('EAImesh', '/tools/eaimesh/'),
+            ('Van proces naar prompt', '/tools/van-proces-naar-prompt/'),
+            ('AI Model Monitor', '/nl/model-monitor/'),
+            ('LLMscan', '/nl/llmscan/'),
+        ]),
         ('Over', [('Over EAI', '/nl/over/'), ('Websitegebruik', '/nl/insights/')]),
     ]
 
@@ -72,7 +104,7 @@ def navigation(soup: BeautifulSoup, path: str, en: bool) -> str:
         if title in ('About', 'Over'):
             continue
         target = entries[0][1]
-        current = ' aria-current="page"' if path_here == canonical(target) else ''
+        current = ' aria-current="page"' if any(path_here == canonical(item[1]) or (canonical(item[1]) not in ('/nl/', '/en/') and path_here.startswith(canonical(item[1]))) for item in entries) else ''
         primary.append(f'<a href="{html.escape(target, quote=True)}"{current}>{html.escape(title)}</a>')
     nav_label = 'Main navigation' if en else 'Hoofdnavigatie'
     lang_label = 'Choose language' if en else 'Kies taal'
