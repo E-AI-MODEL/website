@@ -6,3 +6,83 @@
   .timeline button{min-height:36px;white-space:normal;overflow:visible;text-overflow:clip;line-height:1.2;font-size:9px;padding:6px 3px}
   .stage-caption{max-width:80%;font-size:9px}
 }
+
+
+/* Onderzoeksstudio: het 3D-model krijgt voorrang op bediening en toelichting. */
+.viewer-panel,.info-panel,.plot{border-color:#253e4b;border-radius:13px}
+.viewer-top{gap:10px}
+.view-actions{min-width:0}
+.mini-control{white-space:nowrap;min-height:34px;padding:7px 10px;border-radius:7px;border-color:#34505f}
+.mini-control:focus-visible{outline:2px solid #b4e3dc;outline-offset:2px}
+.stage{background:radial-gradient(ellipse at 50% 43%,#183342 0%,#0a1a27 65%,#071421 100%)}
+.stage::before{inset:8% 14%;border-color:#48677a25}
+.stage::after{border-left-color:#45647726}
+.stage-side-note{
+  position:static;right:auto;bottom:auto;max-width:none;
+  margin:0;padding:10px 16px;border:0;border-top:1px solid #284250;
+  border-radius:0;background:#0d2230;color:#b8c9d1;font-size:11px;
+  line-height:1.5;min-height:39px;
+}
+.labels span{border:1px solid #56717c79;border-radius:6px;box-shadow:0 3px 12px #07111d80;font-weight:560}
+.transport{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:12px;padding:12px 14px}
+.scrub-group{display:flex;align-items:center;gap:12px;min-width:0}
+.scrub-group input[type=range]{flex:1;min-width:38px}
+.scrub-group output{min-width:50px;text-align:right;white-space:nowrap;font:11px/1.2 ui-monospace,monospace;color:#cbdbe0}
+.transport-tools{display:flex;align-items:center;gap:6px}
+.transport-tools .transport-btn{min-width:38px;min-height:38px}
+.transport-tools select{min-height:38px;background:#142c3a;border:1px solid #375462;border-radius:7px;color:#dfe9e9;padding:6px 9px}
+.play{min-height:38px;min-width:84px;border-radius:7px}
+.timeline{grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;padding:0 14px 14px}
+.timeline button{white-space:normal;text-overflow:clip;min-height:42px;padding:8px 5px;line-height:1.3;font-size:11px;font-weight:530;border:1px solid #2e4b59;border-radius:7px}
+.timeline button.active{background:#b7d9d3;color:#10212b;border-color:#c3e5df}
+.tabs button{min-height:44px}
+@media(max-width:790px){
+  .topbar{gap:9px}
+  .workspace{gap:10px}
+  .heading{padding:22px 0 17px;gap:16px}
+  .heading h1{font-size:clamp(25px,6.2vw,36px)}
+  .heading-metrics{gap:0;border-top:1px solid #29414d;padding-top:12px}
+  .heading-metrics>div{min-width:0;border-left:1px solid #2b4350;padding-left:12px}
+  .heading-metrics>div:first-child{border-left:0;padding-left:0}
+  .heading-metrics strong{font-size:22px}
+  .viewer-top{display:block;padding:12px 12px 10px}
+  .view-kicker{display:block;margin:0 0 10px;font-size:10px;letter-spacing:.09em}
+  .view-actions{display:flex;gap:7px;overflow-x:auto;flex-wrap:nowrap;justify-content:flex-start;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:0 1px 3px}
+  .view-actions::-webkit-scrollbar{display:none}
+  .mini-control{flex:0 0 auto;font-size:11px;min-height:37px}
+  .stage{height:clamp(390px,117vw,590px)}
+  .stage-caption{top:12px;left:12px;font-size:9px;max-width:80%;color:#9cb3c1}
+  .view-legend{left:12px;bottom:12px;font-size:10px;gap:13px}
+  .stage-side-note{padding:10px 12px}
+  .transport{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"play tools" "scrub scrub";gap:10px;padding:12px}
+  .transport .play{grid-area:play;justify-self:start;min-height:40px}
+  .transport-tools{grid-area:tools;justify-self:end}
+  .transport-tools .transport-btn{min-width:40px;min-height:40px}
+  .scrub-group{grid-area:scrub;padding:4px 2px 0}
+  .scrub-group input[type=range]{min-height:24px}
+  .timeline{display:flex;grid-template-columns:none;gap:8px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x proximity;scrollbar-width:thin;scrollbar-color:#3d606c transparent;padding:1px 12px 13px}
+  .timeline button{flex:0 0 132px;min-width:132px;min-height:46px;padding:9px 11px;text-align:left;scroll-snap-align:start;white-space:normal;overflow:visible;font-size:12px;line-height:1.2}
+  .timeline button::before{content:attr(data-phase);display:inline-block;font:600 10px/1.2 ui-monospace,monospace;opacity:.65;margin-right:9px}
+  .tab-panel{min-height:220px}
+  .tabs{padding:0 8px}
+  .tabs button{flex:1;min-width:0;text-align:center;font-size:12px}
+}
+@media(max-width:480px){
+  .topbar{padding:11px 12px}
+  .heading{padding:20px 0 15px}
+  .heading-metrics span{font-size:10px}
+  .heading-metrics strong{font-size:20px}
+  .stage{height:clamp(405px,119vw,490px)}
+  .stage::before{inset:8% 12%}
+  .stage-caption{font-size:9px;letter-spacing:.015em}
+  .stage-side-note{font-size:11px}
+  .labels span{font-size:10px;padding:3px 6px}
+  .transport{gap:8px;padding:10px 12px}
+  .transport-tools select{font-size:11px}
+  .timeline{padding-bottom:12px}
+  .timeline button{flex-basis:125px;min-width:125px}
+  .tab-panel{padding:18px 17px}
+}
+@media(hover:none) and (pointer:coarse){
+  .transport button,.transport select,.mini-control,.tabs button{touch-action:manipulation}
+}
