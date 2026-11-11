@@ -54,6 +54,13 @@ class ObservatoryPublicationTests(unittest.TestCase):
                 parser.feed(page.read_text(encoding="utf-8"))
                 self.assertIn("/tools/science-observatory/", parser.hrefs)
 
+    def test_generated_tools_page_keeps_the_new_observatory_section(self):
+        page = (BUILD / "tools" / "index.html").read_text(encoding="utf-8")
+        self.assertIn("Observatoria en simulaties", page)
+        self.assertIn('id="observatoria"', page)
+        self.assertIn("/tools/science-observatory/", page)
+        self.assertIn("Wat wil je dat AI hier doet?", page)
+
     def test_publication_does_not_include_admin(self):
         self.assertFalse((PUBLISHED / "beheer").exists())
         self.assertFalse((PUBLISHED / "BEHEER.html").exists())
