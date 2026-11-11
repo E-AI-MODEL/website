@@ -30,7 +30,7 @@ Deze onderdelen krijgen in de interface geen verzonnen anatomische naam. Eerst v
 
 Schrijf voor een leerling van havo 4 of vwo 5. Begin met herkenbare woorden; leg een medische term alleen uit als die nodig is. Verwar een modelhiërarchie niet met een werkelijke anatomische verbinding. Leid een specifieke functie niet uitsluitend af uit een Engelse naam.
 
-Er zijn op dit moment 61 afzonderlijke Nederlandse gidsartikelen. De overige onderdelen tonen de Nederlandse naam met de oorspronkelijke Engelse bronbeschrijving als uitklapbare achtergrond. Er is **nog geen volledige inhoudelijke herschrijving** van alle 1.643 structuren uitgevoerd.
+Er zijn nu **62 afzonderlijke Nederlandstalige gidsartikelen** die gekoppeld zijn aan echte modelonderdelen. De overige **1.574 herkenbare onderdelen** krijgen een korte uitleg op basis van het type weefsel of orgaan en een vraag om zelf de ligging te onderzoeken. Die informatie is bewust gemarkeerd als **algemene uitleg**, omdat zij niet de specifieke functie van ieder onderdeel bewijst. Zeven bronnamen blijven onbekend. De originele Engelse bronbeschrijving blijft alleen op verzoek zichtbaar.
 
 ## Controle vóór een volgende publicatie
 
@@ -42,3 +42,9 @@ python scripts/audit_anatomie_content.py --out audit-anatomie
 De audit levert CSV voor broncontrole, JSON voor automatische verwerking en een leesbaar Markdown-overzicht. Controleer zeker gelijke Nederlandse labels die naar verschillende model-ID's verwijzen. Sommige zijn geldige alternatieve bronbenamingen; andere vragen inhoudelijk onderzoek.
 
 De bestaande viewer-, camera-, touch- en WebKit-tests blijven nodig. Een correcte inhoudsaudit bewijst op zichzelf niet dat de 3D-atlas goed werkt.
+
+## Beoordeling van de medische terminologie
+
+FIPAT onderhoudt de internationale anatomische nomenclatuur, met Terminologia Anatomica 2 (2019) als standaard: https://ifaa.net/committees/anatomical-terminology-fipat/fipat-ifaa-terminologies/ . Dit register is een toetsbron, **geen verklaring** dat onze Nederlandse namen al in TA2 gecontroleerd of officieel vertaald zijn. De internationale termen en de 3D-meshkoppelingen zijn verschillende gegevenslagen. Wijzig een fout niet alleen in de gegenereerde publicatiemap.
+
+De korte type-uitleg staat in `content/anatomie/teaching.js`. Die regels geven algemene, controleerbare informatie, geen individuele medische functieclaims. Bij gespecialiseerde onderdelen is de werking nog niet afzonderlijk beschreven. De zeven onduidelijke bron-ID's krijgen geen verzonnen naam of functie. De automatische test `node scripts/test_anatomie_teaching.mjs` controleert de dekking en de indeling.
