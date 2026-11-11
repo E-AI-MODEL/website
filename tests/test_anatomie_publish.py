@@ -63,13 +63,14 @@ class AnatomyPublishTests(unittest.TestCase):
         self.assertIn('src="./heart.js"', source)
         self.assertIn('href="./heart.css"', source)
         self.assertIn("Schematische doorsnede", source)
-        for name in ("heart.js", "heart.css", "cycle.js"):
+        for name in ("heart.js", "heart.css", "cycle.js", "anatomyGeometry.js"):
             asset = lab / name
             self.assertTrue(asset.is_file(), f"Hartslaglab mist {name}")
             self.assertGreater(asset.stat().st_size, 150)
         script = (lab / "heart.js").read_text(encoding="utf-8")
         self.assertIn("getContext('webgl'", script)
         self.assertIn("from './cycle.js'", script)
+        self.assertIn("from './anatomyGeometry.js'", script)
         self.assertIn("requestAnimationFrame(frame)", script)
         self.assertIn("drawParticles(m)", script)
         self.assertIn("drawChart('pressureChart'", script)
