@@ -1,6 +1,6 @@
 // Anatomie-bronnen voor leerlinggerichte uitleg.
-// Beoordeling: uitsluitend een verwijzing naar de geraadpleegde sectie,
-// geen certificering van iedere Nederlandse formulering of het 3D-model.
+// Status: gerichte verwijzing naar een geraadpleegde anatomiebron,
+// geen onafhankelijke goedkeuring van iedere formulering of de 3D-geometrie.
 // Terminologia Anatomica is een bron voor NAAMGEVING, niet voor fysiologie.
 const REFERENCES = Object.freeze({
   terminology: {
@@ -133,7 +133,7 @@ const REFERENCES = Object.freeze({
   }
 });
 
-// Alleen opname als de bronsectie de inhoud van de betreffende uitleg
+// Alleen opname als de bron de inhoud van de betreffende uitleg
 // daadwerkelijk behandelt. Niet alle 62 eigen uitlegteksten staan hierin.
 const SUPPORTED_GUIDES = Object.freeze({
   'vertebra c4': 'vertebrae',
