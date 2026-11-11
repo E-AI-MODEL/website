@@ -70,6 +70,11 @@ const TYPES = {
     general: 'De geleiachtige binnenzijde van een tussenwervelschijf helpt druk te verdelen. Een stevige buitenring houdt het weefsel op zijn plaats.',
     question: 'Waar zit dit deel binnen de schijf? Zoek daarna de omliggende wervels.'
   },
+  vetkussen: {
+    kind: 'Vetkussen in of rond een gewricht',
+    general: 'Een vetkussen vult ruimte op en kan druk dempen tussen structuren in en rond een gewricht. Het is geen gewrichtsband of spier.',
+    question: 'Zoek het vetkussen. Tussen welke andere onderdelen ligt het?'
+  },
   meniscus: {
     kind: 'Meniscus',
     general: 'Een meniscus bestaat uit vezelig kraakbeen. In de knie helpt dit weefsel druk te verdelen en het contact tussen de botten te vergroten.',
@@ -84,6 +89,11 @@ const TYPES = {
     kind: 'Slijmbeurs',
     general: 'Een slijmbeurs is een met vocht gevuld zakje. Het vermindert wrijving tussen bewegende weefsels, bijvoorbeeld tussen een pees en bot.',
     question: 'Zoek de slijmbeurs en de twee structuren ertussen. Waarom kan hier wrijving ontstaan?'
+  },
+  ooglidplaat: {
+    kind: 'Stevige bindweefselplaat van het ooglid',
+    general: 'De ooglidplaat geeft het ooglid vorm en stevigheid. Het is geen spier; de ooglidspieren verzorgen de beweging.',
+    question: 'Zoek de ooglidplaat en de omliggende spieren. Welke delen geven vorm en welke kunnen bewegen?'
   },
   pees: {
     kind: 'Pees of peesplaat',
@@ -232,6 +242,7 @@ function classFor(name, system) {
   }
   if (system === 'joints') {
     if (name.startsWith('nucleus pulposus')) return 'nucleus';
+    if (matches(name, /\b(fat pad)\b/)) return 'vetkussen';
     if (matches(name, /\b(meniscus|menisci)\b/)) return 'meniscus';
     if (matches(name, /\b(capsule|capsules)\b/)) return 'kapsel';
     if (matches(name, /\b(disc|symphysis)\b/)) return 'schijf';
@@ -240,8 +251,10 @@ function classFor(name, system) {
     return 'band';
   }
   if (system === 'muscular') {
+    if (matches(name, /\b(tarsus)\b/)) return 'ooglidplaat';
+    if (matches(name, /\b(ligament|ligaments)\b/)) return 'band';
     if (matches(name, /\b(bursa|bursae)\b/)) return 'slijmbeurs';
-    if (matches(name, /\b(tendon sheath|tendon sheaths|retinaculum|synovial sheath)\b/)) return 'peesschede';
+    if (matches(name, /\b(tendon sheath|tendon sheaths|retinaculum|synovial sheath|fibrous sheath|sheath)\b/)) return 'peesschede';
     if (matches(name, /\b(tendon|aponeurosis|tendinous)\b/)) return 'pees';
     if (matches(name, /\b(fascia|septum|septal|tract)\b/)) return 'fascie';
     return 'spier';
