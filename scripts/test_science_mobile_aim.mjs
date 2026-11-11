@@ -46,7 +46,10 @@ try{
  const moved=await page.evaluate(()=>({angle:state.p.angle,v:state.p.v}));
  assert(Math.abs(moved.angle-45.5)>0.4||Math.abs(moved.v-18)>0.1,'De groene greep verandert de werkelijke instelling');
  await page.locator('#aimFire').click();
- await page.waitForFunction(()=>mission.complete===true,{timeout:13000});
+ console.log('SHOT-START',JSON.stringify(await page.evaluate(()=>({playing:state.playing,launched:mission.launched,complete:mission.complete,t:state.t,p:state.p}))),errors);
+ await page.waitForTimeout(3600);
+ console.log('SHOT-AFTER',JSON.stringify(await page.evaluate(()=>({playing:state.playing,launched:mission.launched,complete:mission.complete,t:state.t,p:state.p,shots:mission.shots.length}))),errors);
+ await page.waitForFunction(()=>mission.complete===true,null,{timeout:2500});
  assert.equal(await page.locator('#aimFire').textContent(),'Nieuwe poging');
  assert.equal(await page.evaluate(()=>mission.shots.length),1,'De eerste landingsplek wordt bewaard');
  await page.locator('#scene').screenshot({path:'test-results/science-worp-390-geland.png'});
