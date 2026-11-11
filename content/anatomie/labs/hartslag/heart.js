@@ -584,7 +584,9 @@ $('discoveryAction').addEventListener('click',()=>{
   if(!study.guess)return;
   if(study.stage==='choose'){
     study.stage='watch';
-    state.cutaway=true;state.showFlow=true;syncViewControls();
+    state.cutaway=true;state.showFlow=true;state.focusSide='left';syncViewControls();
+    positionInfo(null);
+    $('partInfo').textContent='Bekijk de mitralisklep bij de linkerkamer. De aortaklep opent pas daarna.';
     // Het onderzoek begint vlak voor de AV-kleppen sluiten.
     setTime(.60,true);
     state.speed=.25;$('speed').value='.25';
