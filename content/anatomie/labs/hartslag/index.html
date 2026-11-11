@@ -70,16 +70,20 @@
           <div class="stage-side-note" id="partInfo" aria-live="polite">Sleep om het hart te draaien. Tik op een onderdeel om het te onderzoeken.</div>
           <div class="transport">
             <button class="play" type="button" id="play" aria-label="Pauzeer de hartslag">Pauze</button>
-            <button class="transport-btn" type="button" id="prevPhase" aria-label="Vorige hartfase">‹</button>
-            <button class="transport-btn" type="button" id="nextPhase" aria-label="Volgende hartfase">›</button>
-            <label for="scrub" class="visually-hidden">Tijdstip binnen de hartcyclus</label>
-            <input id="scrub" type="range" min="0" max="1000" value="0" step="1" aria-label="Tijd binnen één hartslag">
-            <output id="timeOutput" for="scrub">0,00 s</output>
-            <label for="speed" class="visually-hidden">Afspeelsnelheid</label>
-            <select id="speed" aria-label="Afspeelsnelheid">
-              <option value=".25">0,25×</option><option value=".5">0,5×</option>
-              <option value="1" selected>1×</option><option value="2">2×</option>
-            </select>
+            <div class="scrub-group">
+              <label for="scrub" class="visually-hidden">Tijdstip binnen de hartcyclus</label>
+              <input id="scrub" type="range" min="0" max="1000" value="0" step="1" aria-label="Tijd binnen één hartslag">
+              <output id="timeOutput" for="scrub">0,00 s</output>
+            </div>
+            <div class="transport-tools">
+              <button class="transport-btn" type="button" id="prevPhase" aria-label="Vorige hartfase">‹</button>
+              <button class="transport-btn" type="button" id="nextPhase" aria-label="Volgende hartfase">›</button>
+              <label for="speed" class="visually-hidden">Afspeelsnelheid</label>
+              <select id="speed" aria-label="Afspeelsnelheid">
+                <option value=".25">0,25×</option><option value=".5">0,5×</option>
+                <option value="1" selected>1×</option><option value="2">2×</option>
+              </select>
+            </div>
           </div>
           <div class="timeline" id="timeline" role="group" aria-label="Fasen van de hartcyclus">
             <button type="button" data-phase="0">Vullen</button>
