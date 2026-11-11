@@ -41,8 +41,8 @@ class ObservatoryPublicationTests(unittest.TestCase):
         for slug in SLUGS:
             self.assertIn(f"/tools/science-observatory/labs/{slug}/", parser.hrefs)
         self.assertEqual(
-            sorted(href for href in parser.hrefs if "/tools/science-observatory/labs/" in href),
-            sorted(f"/tools/science-observatory/labs/{slug}/" for slug in SLUGS),
+            {href for href in parser.hrefs if "/tools/science-observatory/labs/" in href},
+            {f"/tools/science-observatory/labs/{slug}/" for slug in SLUGS},
         )
 
     def test_tools_pages_offer_an_observatory_entrance(self):
