@@ -1721,6 +1721,9 @@
   "radial collateral ligament of wrist joint": [
     "zijband van de pols aan de duimzijde"
   ],
+  "radial head of flexor digitorum superficialis": [
+    "spaakbeenkop van de oppervlakkige vingerbuiger"
+  ],
   "radial nerve": [
     "spaakbeenzenuw"
   ],
@@ -1739,11 +1742,29 @@
   "rectus abdominis muscle": [
     "rechte buikspier"
   ],
+  "rectus anterior capitis muscle": [
+    "voorste rechte hoofdspier"
+  ],
   "rectus femoris": [
     "rechte dijspier"
   ],
   "rectus femoris muscle": [
     "rechte dijspier"
+  ],
+  "rectus lateralis capitis muscle": [
+    "zijwaartse rechte hoofdspier"
+  ],
+  "rectus posterior major capitis muscle": [
+    "grote achterste rechte hoofdspier"
+  ],
+  "rectus posterior minor capitis muscle": [
+    "kleine achterste rechte hoofdspier"
+  ],
+  "rhomboid major muscle": [
+    "grote ruitvormige rugspier"
+  ],
+  "rhomboid minor muscle": [
+    "kleine ruitvormige rugspier"
   ],
   "rib": [
     "rib"
@@ -1778,6 +1799,12 @@
   "right ventricle": [
     "rechterhartkamer"
   ],
+  "risorius muscle": [
+    "lachspier"
+  ],
+  "rotatores": [
+    "korte draaispieren langs de wervelkolom"
+  ],
   "sacrococcygeal symphysis": [
     "voeg tussen heiligbeen en staartbeen"
   ],
@@ -1793,6 +1820,15 @@
   "sartorius muscle": [
     "kleermakersspier"
   ],
+  "scalenus anterior muscle": [
+    "voorste scheve halsspier"
+  ],
+  "scalenus medius muscle": [
+    "middelste scheve halsspier"
+  ],
+  "scalenus posterior muscle": [
+    "achterste scheve halsspier"
+  ],
   "scaphoid bone": [
     "scheepvormig handwortelbeen"
   ],
@@ -1801,6 +1837,15 @@
   ],
   "scapula": [
     "schouderblad"
+  ],
+  "scapular spinal part of deltoid muscle": [
+    "achterste deel van de deltaspier"
+  ],
+  "sciatic bursa of gluteus maximus muscle": [
+    "slijmbeurs tussen de grote bilspier en het zitbeen"
+  ],
+  "sciatic bursa of obturator internus": [
+    "slijmbeurs bij de inwendige afsluitspier van de heup"
   ],
   "sciatic nerve": [
     "heupzenuw"
@@ -1814,11 +1859,41 @@
   "second rib": [
     "tweede rib"
   ],
+  "semimembranosus bursa": [
+    "slijmbeurs bij de halfvliezige dijspier"
+  ],
+  "semimembranosus muscle": [
+    "halfvliezige dijspier"
+  ],
+  "semispinalis colli muscle": [
+    "halfdoornspier van de hals"
+  ],
+  "semispinalis thoracis muscle": [
+    "halfdoornspier van de borststreek"
+  ],
+  "semitendinosus muscle": [
+    "halfpezige dijspier"
+  ],
+  "serratus anterior muscle": [
+    "voorste zaagspier"
+  ],
+  "serratus posterior inferior muscle": [
+    "onderste achterste zaagspier"
+  ],
+  "serratus posterior superior muscle": [
+    "bovenste achterste zaagspier"
+  ],
   "sesamoid bones of foot": [
     "sesambeentjes in de voet"
   ],
   "seventh rib": [
     "zevende rib"
+  ],
+  "short head of biceps brachii": [
+    "korte kop van de tweehoofdige armspier"
+  ],
+  "short head of biceps femoris": [
+    "korte kop van de tweehoofdige dijspier"
   ],
   "sigmoid colon": [
     "sigmoïd"
@@ -1844,8 +1919,23 @@
   "spinal cord": [
     "ruggenmerg"
   ],
+  "spinalis capitis muscle": [
+    "doornspier van het hoofd"
+  ],
+  "spinalis colli muscle": [
+    "doornspier van de hals"
+  ],
+  "spinalis thoracis muscle": [
+    "doornspier van de borststreek"
+  ],
   "spleen": [
     "milt"
+  ],
+  "splenius capitis muscle": [
+    "riemspier van het hoofd"
+  ],
+  "splenius colli muscle": [
+    "riemspier van de hals"
   ],
   "stapes": [
     "stijgbeugel"
@@ -1853,23 +1943,146 @@
   "sternocleidomastoid muscle": [
     "grote halsspier"
   ],
+  "sternocostal head of pectoralis major muscle": [
+    "borstbeen-ribdeel van de grote borstspier"
+  ],
+  "sternohyoid muscle": [
+    "borstbeen-tongbeenspier"
+  ],
+  "sternothyroid muscle": [
+    "borstbeen-schildkraakbeenspier"
+  ],
   "sternum": [
     "borstbeen"
   ],
   "stomach": [
     "maag"
   ],
+  "straight part of cricothyroid muscle": [
+    "recht deel van de ring-schildkraakbeenspier"
+  ],
   "stylohyoid ligament": [
     "band tussen stijluitsteeksel en tongbeen"
+  ],
+  "stylohyoid muscle": [
+    "stijluitsteeksel-tongbeenspier"
   ],
   "stylomandibular ligament": [
     "band tussen stijluitsteeksel en onderkaak"
   ],
+  "stylopharyngeus muscle": [
+    "stijluitsteeksel-keelholtespier"
+  ],
+  "subacromial bursa": [
+    "slijmbeurs onder het schouderdak"
+  ],
+  "subclavius muscle": [
+    "ondersleutelbeenspier"
+  ],
+  "subcutaneous acromial bursa": [
+    "onderhuidse slijmbeurs op het schouderdak"
+  ],
+  "subcutaneous bursa of lateral malleolus": [
+    "onderhuidse slijmbeurs bij de buitenenkel"
+  ],
+  "subcutaneous bursa of medial malleolus": [
+    "onderhuidse slijmbeurs bij de binnenenkel"
+  ],
+  "subcutaneous bursa of tuberosity of tibia": [
+    "onderhuidse slijmbeurs bij de knobbel van het scheenbeen"
+  ],
+  "subcutaneous calcaneal bursa": [
+    "onderhuidse slijmbeurs bij het hielbeen"
+  ],
+  "subcutaneous infrapatellar bursa": [
+    "onderhuidse slijmbeurs onder de knieschijf"
+  ],
+  "subcutaneous prepatellar bursa": [
+    "onderhuidse slijmbeurs vóór de knieschijf"
+  ],
+  "subcutaneous trochanteric bursa": [
+    "onderhuidse slijmbeurs bij de grote dijbeenrolheuvel"
+  ],
+  "subdeltoid bursa": [
+    "slijmbeurs onder de deltaspier"
+  ],
+  "subfacial prepatellar bursa": [
+    "slijmbeurs onder de fascie vóór de knieschijf"
+  ],
+  "subscapularis muscle": [
+    "onderschouderbladspier"
+  ],
+  "subtendinous bursa of iliacus muscle": [
+    "slijmbeurs onder de pees van de darmbeenspier"
+  ],
+  "subtendinous bursa of infraspinatus muscle": [
+    "slijmbeurs onder de pees van de onderdoornspier"
+  ],
+  "subtendinous bursa of obturator internus": [
+    "slijmbeurs onder de pees van de inwendige afsluitspier"
+  ],
+  "subtendinous bursa of sartorius muscle": [
+    "slijmbeurs onder de pees van de kleermakersspier"
+  ],
+  "subtendinous bursa of teres major muscle": [
+    "slijmbeurs onder de pees van de grote ronde schouderspier"
+  ],
+  "subtendinous bursa of tibialis anterior": [
+    "slijmbeurs onder de pees van de voorste scheenbeenspier"
+  ],
+  "subtendinous bursa of trapezius muscle": [
+    "slijmbeurs onder de pees van de monnikskapspier"
+  ],
+  "subtendinous bursa of triceps brachii muscle": [
+    "slijmbeurs onder de pees van de driehoofdige armspier"
+  ],
+  "subtendinous calcaneal bursa": [
+    "slijmbeurs tussen achillespees en hielbeen"
+  ],
+  "subtendinous prepatellar bursa": [
+    "slijmbeurs onder de pees vóór de knieschijf"
+  ],
+  "superficial head of flexor pollicis brevis": [
+    "oppervlakkige kop van de korte duimbuiger"
+  ],
+  "superficial head of pronator teres": [
+    "oppervlakkige kop van de ronde pronatorspier"
+  ],
+  "superficial investing cervical fascia": [
+    "oppervlakkige omhullende halsfascie"
+  ],
+  "superficial layer of temporal fascia": [
+    "oppervlakkige laag van de slaapfascie"
+  ],
+  "superficial part of masseter": [
+    "oppervlakkig deel van de kauwspier"
+  ],
   "superficial part of tibial collateral ligament": [
     "oppervlakkige deel van de binnenste knieband"
   ],
+  "superficial transverse metacarpal ligament": [
+    "oppervlakkige dwarse band tussen middenhandsbeentjes"
+  ],
+  "superficial transverse metatarsal ligament": [
+    "oppervlakkige dwarse band tussen middenvoetsbeentjes"
+  ],
+  "superior bursa of biceps femoris muscle": [
+    "bovenste slijmbeurs bij de tweehoofdige dijspier"
+  ],
+  "superior extensor retinaculum of ankle": [
+    "bovenste peesband van de enkelstrekkers"
+  ],
+  "superior fibular retinaculum": [
+    "bovenste peesband van de kuitbeenspieren"
+  ],
+  "superior gemellus muscle": [
+    "bovenste tweelingspier van de heup"
+  ],
   "superior glenohumeral ligament": [
     "bovenste band van het schoudergewricht"
+  ],
+  "superior head of lateral pterygoid muscle": [
+    "bovenste kop van de buitenste vleugelspier"
   ],
   "superior lobe of left lung": [
     "bovenkwab van de linkerlong"
@@ -1877,11 +2090,23 @@
   "superior lobe of right lung": [
     "bovenkwab van de rechterlong"
   ],
+  "superior oblique muscle": [
+    "bovenste schuine oogspier"
+  ],
   "superior parathyroid gland": [
     "bovenste bijschildklier"
   ],
+  "superior pharyngeal constrictor": [
+    "bovenste keelholtesnoerder"
+  ],
   "superior pubic ligament": [
     "bovenste schaambeenband"
+  ],
+  "superior rectus muscle": [
+    "bovenste rechte oogspier"
+  ],
+  "superior tarsus": [
+    "bovenste ooglidplaat"
   ],
   "superior vena cava": [
     "bovenste holle ader"
@@ -1889,8 +2114,17 @@
   "supinator": [
     "supinatorspier"
   ],
+  "suprapatellar bursa": [
+    "slijmbeurs boven de knieschijf"
+  ],
+  "supraspinatus muscle": [
+    "bovendoornspier van het schouderblad"
+  ],
   "supraspinous ligament": [
     "band over de doornuitsteeksels van de wervels"
+  ],
+  "synovial sheaths of digits of hand": [
+    "slijmvliespeesschedes van de vingers"
   ],
   "talocalcaneal interosseous ligament": [
     "diepe band tussen sprongbeen en hielbeen"
@@ -1904,11 +2138,53 @@
   "temporal bone": [
     "slaapbeen"
   ],
+  "temporalis muscle": [
+    "slaapspier"
+  ],
+  "temporoparietalis muscle": [
+    "slaap-wandbeenspier"
+  ],
+  "tendinous arch of levator ani": [
+    "peesboog van de anushefferspier"
+  ],
+  "tendon of extensor digitorum longus": [
+    "pees van de lange teenstrekker"
+  ],
+  "tendon sheath - abd. pollicis longus - ext. pollicis brevis": [
+    "peesschede van lange duimafvoerder en korte duimstrekker"
+  ],
+  "tendon sheath of extensor digitorum and extensor indicis": [
+    "peesschede van vingerstrekker en wijsvingerstrekker"
+  ],
+  "tendon sheath of extensor digitorum longus": [
+    "peesschede van de lange teenstrekker"
+  ],
+  "tendon sheath of extensors carpi radialis": [
+    "peesschede van de spaakzijdige polsstrekkers"
+  ],
+  "tendon sheath of flexor digitorum longus": [
+    "peesschede van de lange teenbuiger"
+  ],
+  "tendon sheath of flexor hallucis longus": [
+    "peesschede van de lange grote-teenbuiger"
+  ],
+  "tendon sheath of tibialis anterior": [
+    "peesschede van de voorste scheenbeenspier"
+  ],
+  "tendon sheath of tibialis posterior muscle": [
+    "peesschede van de achterste scheenbeenspier"
+  ],
   "tensor fasciae latae": [
     "spanner van de dijbeenfascie"
   ],
   "tenth rib": [
     "tiende rib"
+  ],
+  "teres major muscle": [
+    "grote ronde schouderspier"
+  ],
+  "teres minor muscle": [
+    "kleine ronde schouderspier"
   ],
   "testis": [
     "teelbal"
@@ -1931,6 +2207,12 @@
   "thoracic aorta": [
     "borstaorta"
   ],
+  "thyro-epiglottic part of thyro-arytenoid muscle": [
+    "schildkraakbeen-strotklepdeel van de schild-bekerkraakbeenspier"
+  ],
+  "thyrohyoid muscle": [
+    "schildkraakbeen-tongbeenspier"
+  ],
   "thyroid cartilage": [
     "schildkraakbeen"
   ],
@@ -1939,6 +2221,12 @@
   ],
   "tibia": [
     "scheenbeen"
+  ],
+  "tibialis anterior muscle": [
+    "voorste scheenbeenspier"
+  ],
+  "tibialis posterior muscle": [
+    "achterste scheenbeenspier"
   ],
   "tibiocalcaneal ligament": [
     "band tussen scheenbeen en hielbeen"
@@ -1949,14 +2237,29 @@
   "trachea": [
     "luchtpijp"
   ],
+  "transversalis fascia": [
+    "dwarse buikfascie"
+  ],
   "transverse acetabular ligament": [
     "dwarse band van de heupkom"
+  ],
+  "transverse arytenoid muscle": [
+    "dwarse bekerkraakbeenspier"
   ],
   "transverse colon": [
     "dwarslopende dikke darm"
   ],
+  "transverse head of adductor hallucis": [
+    "dwarse kop van de aanvoerder van de grote teen"
+  ],
+  "transverse head of adductor pollicis": [
+    "dwarse kop van de duimaanvoerder"
+  ],
   "transverse humeral ligament": [
     "dwarse band van het opperarmbeen"
+  ],
+  "transverse intermuscular septum of leg": [
+    "dwars bindweefselschot van het onderbeen"
   ],
   "transverse ligament of knee": [
     "dwarse band van de knie"
@@ -1964,11 +2267,17 @@
   "transverse part of iliofemoral ligament": [
     "dwars deel van de darmbeen-dijbeenband"
   ],
+  "transverse part of trapezius muscle": [
+    "dwars deel van de monnikskapspier"
+  ],
   "transverse tibiofibular ligament": [
     "dwarse band tussen scheenbeen en kuitbeen"
   ],
   "transversus abdominis muscle": [
     "dwarse buikspier"
+  ],
+  "transversus thoracis muscle": [
+    "dwarse borstkas-spier"
   ],
   "trapezium bone": [
     "groot veelhoekig handwortelbeen"
@@ -1991,6 +2300,18 @@
   "triradiate cartilage": [
     "Y-vormig groeikraakbeen van de heupkom"
   ],
+  "trochanteric bursa of gluteus maximus muscle": [
+    "slijmbeurs bij de grote dijbeenrolheuvel onder de grote bilspier"
+  ],
+  "trochanteric bursa of gluteus medius muscle": [
+    "slijmbeurs bij de grote dijbeenrolheuvel onder de middelste bilspier"
+  ],
+  "trochanteric bursa of gluteus minimus muscle": [
+    "slijmbeurs bij de grote dijbeenrolheuvel onder de kleine bilspier"
+  ],
+  "trochlea of superior oblique muscle": [
+    "peeskatrol van de bovenste schuine oogspier"
+  ],
   "twelfth rib": [
     "twaalfde rib"
   ],
@@ -2002,6 +2323,12 @@
   ],
   "ulnar collateral ligament of wrist joint": [
     "zijband van de pols aan de pinkzijde"
+  ],
+  "ulnar head of extensor carpi ulnaris": [
+    "ellepijpskop van de ellepijpszijdige polsstrekker"
+  ],
+  "ulnar head of flexor carpi ulnaris": [
+    "ellepijpskop van de ellepijpszijdige polsbuiger"
   ],
   "ulnar nerve": [
     "elleboogzenuw"
@@ -2051,6 +2378,9 @@
   "vagus nerve (x)": [
     "zwervende zenuw"
   ],
+  "vastus intermedius muscle": [
+    "middelste brede dijspier"
+  ],
   "vastus lateralis": [
     "buitenste brede dijspier"
   ],
@@ -2062,6 +2392,9 @@
   ],
   "vastus medialis muscle": [
     "binnenste brede dijspier"
+  ],
+  "ventral parts of lateral intertransversarii lumborum muscles": [
+    "voorste delen van de zijwaartse tussen-dwarsuitsteekselspieren van de lendenwervels"
   ],
   "vermiform appendix": [
     "wormvormig aanhangsel van de blindedarm"
@@ -2155,5 +2488,11 @@
   ],
   "zygomatic bone": [
     "jukbeen"
+  ],
+  "zygomaticus major muscle": [
+    "grote jukbeenspier"
+  ],
+  "zygomaticus minor muscle": [
+    "kleine jukbeenspier"
   ]
 }
