@@ -352,7 +352,7 @@ try{
     await stage.focus();
     await page.keyboard.press('ArrowLeft');
     assert((await page.evaluate(()=>state.camera.yaw))<hoverYaw,id+' draait ook via pijltjestoetsen');
-    await page.keyboard.press('+');
+    await page.keyboard.press('Equal');
     assert((await page.evaluate(()=>state.camera.zoom))>1,id+' kan met toetsenbord zoomen');
     await page.keyboard.press('Home');
     assert(Math.abs((await page.evaluate(()=>state.camera.yaw))-.54)<.001,id+' camerastand wordt hersteld');
