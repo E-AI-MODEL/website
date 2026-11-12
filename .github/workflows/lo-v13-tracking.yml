@@ -1,0 +1,33 @@
+name: LO v13 - onderzoek ruwe wedstrijdtracking
+
+on:
+  push:
+    branches:
+      - research/lo-aanvalslab-v13
+    paths:
+      - 'tools/lo-aanvalslab/calibratie/v13/extract_tracking.py'
+      - '.github/workflows/lo-v13-tracking.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  measure:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Installeer parsers voor oorspronkelijke data
+        run: python -m pip install --disable-pip-version-check openpyxl py7zr
+      - name: Meet de datasets zonder ruwe data te publiceren
+        run: python tools/lo-aanvalslab/calibratie/v13/extract_tracking.py
+      - name: Leg de meetuitkomsten vast in de onderzoeksbranch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add tools/lo-aanvalslab/calibratie/v13/tracking_metrics.json
+          if ! git diff --staged --quiet; then
+            git commit -m 'Record checked sport tracking measurements for LO v13'
+            git push origin HEAD:research/lo-aanvalslab-v13
+          fi
