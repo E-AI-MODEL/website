@@ -1,4 +1,4 @@
-<!doctype html><html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>LO Aanvalslab | Vrijlopen en samenspelen · EAI</title><meta name="description" content="Maak een aanval of verdedigingsplan. Verplaats spelers, kies tactische opdrachten en speel de hele aanval af."><link rel="canonical" href="https://eaimodel.nl/tools/lo-aanvalslab/"><style>
+<!doctype html><html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>LO Aanvalslab | Verdedigen en samenspelen · EAI</title><meta name="description" content="Maak een aanval of verdedigingsplan. Verplaats spelers, kies tactische opdrachten en speel de hele aanval af."><link rel="canonical" href="https://eaimodel.nl/tools/lo-aanvalslab/"><style>
 :root{color-scheme:dark;--bg:#07151c;--surface:#10232b;--line:#29414a;--text:#e9f2f1;--muted:#94abb0;--mint:#5ce0af;--amber:#ffcb79;--red:#fb8190;--blue:#77b9ff}*{box-sizing:border-box}html,body{margin:0;height:100%;font-family:Inter,ui-sans-serif,system-ui,sans-serif;background:var(--bg);color:var(--text)}button{font:inherit;cursor:pointer}.app{height:100dvh;min-height:600px;display:flex;flex-direction:column;gap:11px;padding:14px clamp(13px,2vw,30px);max-width:1700px;margin:auto}.top{display:flex;align-items:center;justify-content:space-between;gap:12px}.brand{display:flex;align-items:center;gap:11px}.mark{width:35px;height:35px;border:1px solid #42816b;border-radius:10px;display:grid;place-items:center;color:var(--mint);font-weight:800}.eyebrow{font-size:10px;letter-spacing:.15em;color:var(--mint);font-weight:750}.brand h1{font-size:clamp(19px,2vw,25px);letter-spacing:-.04em;margin:1px 0 0;font-weight:660}.small{font-size:12px;color:var(--muted)}.btn{border:1px solid #36515b;background:#152d35;color:#e5f2f0;padding:9px 13px;border-radius:9px;font-size:12px;font-weight:650}.btn:hover{border-color:#64b49b}.btn.main{background:#b6f5d7;color:#06221b;border-color:#b6f5d7}.btn:disabled{opacity:.35;cursor:default}.shell{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) 292px;gap:11px}.fieldpane,.side{border:1px solid var(--line);border-radius:15px;background:var(--surface);min-height:0;overflow:hidden}.fieldpane{display:flex;flex-direction:column}.fieldhead{display:flex;align-items:center;justify-content:space-between;padding:12px 15px;gap:10px;border-bottom:1px solid var(--line)}.pill{border-radius:50px;padding:5px 9px;font-size:11px;background:#21483e;color:#b1f5db}.fieldframe{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:12px;background:radial-gradient(ellipse at 45% 55%,#152f33 0%,#0b1f29 76%)}#pitch{width:100%;max-height:100%;height:auto;aspect-ratio:100/65;touch-action:none;user-select:none;overflow:visible}.bottom{border-top:1px solid var(--line);padding:11px 15px;display:flex;align-items:center;gap:10px;justify-content:space-between;flex-wrap:wrap}.bottom .small{max-width:510px}.side{display:flex;flex-direction:column;padding:17px;gap:14px}.side h2{font-size:20px;letter-spacing:-.035em;margin:0}.side h3{font-size:12px;color:var(--muted);margin:0 0 8px;text-transform:uppercase;letter-spacing:.1em}.sep{height:1px;background:var(--line)}.big{font-size:25px;font-weight:750;letter-spacing:-.05em}.stat{display:flex;justify-content:space-between;align-items:center;font-size:12px;gap:10px}.hint{font-size:13px;line-height:1.55;color:#c4d8d8}.grow{flex:1}.progress{height:5px;background:#28434a;border-radius:20px;overflow:hidden}.progress div{height:100%;background:var(--mint);width:0}.events{font-size:12px;line-height:1.55;overflow:auto;min-height:60px;max-height:190px;display:flex;flex-direction:column;gap:6px}.event{border-left:2px solid #45636b;padding-left:8px}.actions{display:flex;gap:7px;flex-wrap:wrap}.veil{position:absolute;inset:0;background:#061218e8;display:grid;place-items:center;z-index:10;padding:22px}.welcome{border:1px solid #325058;background:#10252d;border-radius:18px;padding:clamp(21px,3vw,36px);width:min(660px,100%);box-shadow:0 30px 110px #0008}.welcome h2{font-size:clamp(24px,3vw,34px);line-height:1.17;letter-spacing:-.045em;margin:7px 0 9px}.welcome p{font-size:14px;color:#b0c9cc;line-height:1.6}.choices{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:23px}.choice{background:#162e36;border:1px solid #35515b;border-radius:11px;text-align:left;padding:15px;min-height:124px;color:#eaf7f5}.choice:hover{border-color:var(--mint);background:#193a3b}.choice b{display:block;font-size:16px;margin-bottom:8px}.choice span{color:var(--muted);font-size:12px;line-height:1.45}.hide{display:none!important}.overlay-message{font-size:13px;color:var(--amber)}.timeline{width:100%;accent-color:#b6f5d7}#scrub{display:none;width:100%;margin:0}.chip{font-size:11px;border:1px solid #3c565d;border-radius:30px;padding:5px 9px;color:#b9d7d2}.logo{color:var(--mint)}.foot{font-size:10px;color:#68878c;text-align:right}.setup-tip{color:var(--mint)}@media(max-width:880px){.app{height:auto;min-height:100dvh}.shell{grid-template-columns:1fr}.fieldpane{min-height:440px}.side{min-height:250px}.choices{grid-template-columns:1fr}.choice{min-height:80px}.veil{position:fixed}.foot{display:none}}@media(max-height:650px) and (min-width:881px){.app{min-height:520px;padding-top:7px;padding-bottom:7px}.fieldframe{padding:4px}.side{padding:12px;gap:9px}}
 .intent-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:9px}.intent{border:1px solid #3b5660;background:transparent;color:#cbdedd;border-radius:9px;padding:10px 8px;font-size:12px;text-align:left;cursor:pointer}.intent:hover{border-color:#5ce0af}.intent.active{background:#214e43;border-color:#5ce0af;color:#d7ffec}.side{overflow:auto}.intent-grid .intent:last-child:nth-child(odd){grid-column:span 2}@media(min-width:900px){.side{gap:12px}}
 @media(max-width:880px){
@@ -259,54 +259,271 @@ document.addEventListener('keydown',e=>{
 
 // Aankomsttijd: reactietijd, huidige snelheid en maximale versnelling. Dit is een benadering
 // gebaseerd op de literatuur over pitch control, geen op wedstrijddata getraind model.
-function reachTime(p,target,reactionOverride){const reaction=reactionOverride??p.react;const dx=target.x-(p.x+p.vx*reaction*.65),dy=target.y-(p.y+p.vy*reaction*.65);const metres=Math.hypot(dx,dy)/PX;const v=Math.min(p.speed,Math.hypot(p.vx,p.vy)/PX)*.5;const a=p.accel,tt=(p.speed-v)/a,dd=v*tt+.5*a*tt*tt;return reaction+(metres<=dd?(-v+Math.sqrt(v*v+2*a*metres))/a:tt+(metres-dd)/p.speed)}
-function attemptArrival(p,target){return reachTime(p,target)+(.05+(+p.id[1])*.015)}
-function simulate(){const ps=copy(initial),startMap=Object.fromEntries(initial.map(p=>[p.id,p]));let rng=simSeed;function random(){rng=(Math.imul(rng,1664525)+1013904223)>>>0;return rng/4294967296}
-let holder='a0',ball=ballAt(ps.find(p=>p.id==='a0')),flight=null,loose=null,shot=null,clock=0,cooldown=.3,held=0,pressure=0,terminal=false,outcome='other',passes=0,completed=0,shots=0,intercepts=0,trail=[];frames=[];events=[];const a=()=>ps.filter(p=>p.team==='a'),d=()=>ps.filter(p=>p.team==='d');let b=()=>ps.find(p=>p.id===holder);function log(kind,msg){events.push({time:Math.round(clock*100)/100,kind,msg})}function snapshot(){frames.push({time:clock,players:copy(ps),ball:{...ball},trail:copy(trail)})}log('start','Aanval gestart');snapshot();
-function targetOfAttack(p){const o=startMap[p.id],intent=p.intent,ballOwner=b()||a()[0],advance=clamp(clock,0,5);let tx=p.x,ty=p.y;if(p.id===holder){if(p.id==='a0'&&intent==='bewaar'){tx=p.x+9;ty=p.y}else if(p.id==='a0'&&intent==='zijde'){tx=p.x+85;ty=p.y<325?112:537}else if(p.id==='a0'&&intent==='pas'){tx=p.x+22;ty=p.y}else{tx=p.x+190;ty=p.y+(325-p.y)*.21}return {x:clamp(tx,75,923),y:clamp(ty,82,568),pace:p.id==='a0'?.76:.94}}
-if(intent==='diep'){tx=Math.min(918,o.x+85+advance*35);ty=o.y+(325-o.y)*.05}
-else if(intent==='breed'){tx=Math.min(915,o.x+25+advance*19);ty=o.y<325?108:542}
-else if(intent==='bal'){tx=(ballOwner?.x||340)-62;ty=clamp((ballOwner?.y||325)+(p.id==='a2'?100:-96),94,556)}
-else if(intent==='stil'){tx=o.x+11;ty=o.y}
-else if(intent==='kruis'){tx=Math.min(900,o.x+58+advance*28);ty=650-o.y}
-else if(intent==='ruimte'){tx=Math.min(910,o.x+54+advance*24);ty=clamp(o.y+(o.y<325?-134:134),100,550)}
-if(flight&&flight.target===p.id){tx=flight.end.x;ty=flight.end.y}return {x:clamp(tx,73,929),y:clamp(ty,83,566),pace:intent==='stil'?.25:1}}
-function targetOfDefence(p){const intent=p.intent,idx=+p.id[1],owner=b(),origin=startMap[p.id];const tracked=ps.find(q=>q.id==='a'+idx),off=a();const near=off.reduce((best,q)=>!best||dist(p,q)<dist(p,best)?q:best,null);const ballPos=owner||ball;let tx=p.x,ty=p.y;
-if(intent==='druk'){tx=ballPos.x+12;ty=ballPos.y+6}
-else if(intent==='dek'){const mark=tracked||near;tx=mark.x+35;ty=mark.y+(325-mark.y)*.07}
-else if(intent==='volg'){const mark=tracked||near;tx=mark.x+19;ty=mark.y}
-else if(intent==='lijn'){const pick=off.filter(q=>q.id!==holder).sort((u,v)=>dist(u,p)-dist(v,p))[0]||off[1];tx=ballPos.x*.43+pick.x*.57;ty=ballPos.y*.43+pick.y*.57}
-else if(intent==='zone'){tx=clamp(origin.x+(ballPos.x-origin.x)*.25,480,860);ty=clamp(origin.y+(ballPos.y-origin.y)*.23,115,535)}
-else if(intent==='terug'){tx=Math.max(origin.x,770);ty=clamp(origin.y+(ballPos.y-origin.y)*.15,205,445)}
-if(flight&&clock-flight.startTime>p.react*.82&&intent!=='terug'){
-let best=null;for(let k=1;k<=10;k++){const r=k/10,t=flight.duration*r,loc={x:mix(flight.start.x,flight.end.x,r),y:mix(flight.start.y,flight.end.y,r)};const arrival=reachTime(p,loc,Math.max(0,p.react-(clock-flight.startTime)));if(arrival<=Math.max(.08,flight.duration-flight.elapsed)*r+.12){const value=arrival-.02*r;if(!best||value<best.value)best={point:loc,value}}}if(best){tx=best.point.x;ty=best.point.y}}
-return {x:clamp(tx,73,932),y:clamp(ty,83,568),pace:intent==='terug'?.91:1}}
-function move(p,aim,stepDT){const toward=unit(aim.x-p.x,aim.y-p.y),remaining=Math.hypot(aim.x-p.x,aim.y-p.y);const vmax=p.speed*PX*(aim.pace||1);const desiredSpeed=Math.min(vmax,remaining/Math.max(.19,stepDT));const desx=remaining<6?0:toward.x*desiredSpeed,desy=remaining<6?0:toward.y*desiredSpeed;const vdiff=unit(desx-p.vx,desy-p.vy);const delta=Math.min(p.accel*PX*stepDT,Math.hypot(desx-p.vx,desy-p.vy));p.vx+=vdiff.x*delta;p.vy+=vdiff.y*delta;let speed=Math.hypot(p.vx,p.vy);const maxRun=p.speed*PX;if(speed>maxRun){p.vx*=maxRun/speed;p.vy*=maxRun/speed}p.x=clamp(p.x+p.vx*stepDT,69,931);p.y=clamp(p.y+p.vy*stepDT,76,574)}
-function receiverPrediction(target,travel){const aim=targetOfAttack(target);const speed=target.speed*PX;const dir=unit(aim.x-target.x,aim.y-target.y);const projected=Math.min(speed*travel*.68,dist(target,aim));return {x:clamp(target.x+target.vx*travel*.38+dir.x*projected,73,925),y:clamp(target.y+target.vy*travel*.38+dir.y*projected,86,565)}}
-function passRisk(carrier,to){const from=ballAt(carrier);const rawDist=dist(from,to),travel=Math.max(.24,rawDist/(PX*sportCfg().pass));let target=receiverPrediction(to,travel);const length=dist(from,target);const duration=Math.max(.25,length/(PX*sportCfg().pass));let tight=0,earliest=5;
-for(const defender of d()){let margin=99;for(let k=2;k<=10;k++){const t=k/10*duration;const loc={x:mix(from.x,target.x,k/10),y:mix(from.y,target.y,k/10)};const reach=attemptArrival(defender,loc);margin=Math.min(margin,reach-t)}earliest=Math.min(earliest,margin);if(margin<.12)tight+=1}
-const immediate=d().reduce((m,q)=>Math.min(m,dist(q,to)),1000);const behind=target.x-carrier.x;let quality=behind*.13+Math.min(12,Math.abs(to.y-carrier.y)*.036)+clamp(earliest*65,-110,66)-length*.048;
-if(behind<-55)quality-=12;if(immediate<62)quality-=Math.max(0,62-immediate)*.9;
-const possible=earliest>.14&&immediate>42;return {to,target,quality,earliest,possible,duration,from,near:immediate}}
-function choosePass(carrier){let choices=a().filter(p=>p.id!==holder).map(p=>passRisk(carrier,p)).sort((u,v)=>v.quality-u.quality);return choices.find(c=>c.possible&&c.to.x>carrier.x-90)||choices.find(c=>c.possible)||choices[0]||null}
-function startPass(choice){flight={kind:'pass',target:choice.to.id,start:{...ball},end:{...choice.target},duration:choice.duration,elapsed:0,startTime:clock};holder=null;cooldown=.65;held=0;pressure=0;passes++;log('pass','Pass naar aanvaller '+(+choice.to.id[1]+1))}
-function beginShot(carrier){const from=ballAt(carrier),goal={x:948,y:clamp(325+(random()-.5)*sportCfg().goalY,274,380)};shot={kind:'shot',start:from,end:goal,duration:Math.max(.28,dist(from,goal)/(PX*sportCfg().shot)),elapsed:0};holder=null;shots++;log('shot','Doelpoging door aanvaller '+(+carrier.id[1]+1))}
-function takeover(by){terminal=true;outcome='intercept';intercepts++;holder=null;ball=ballAt(by);log('loss','Balverlies bij verdediger '+(+by.id[1]+1))}
-for(let step=0;step<MAX/DT&&!terminal;step++){clock=Math.round((step+1)*DT*1000)/1000;const defenders=d(),attackers=a();
-// Alle spelers bewegen tegelijkertijd. De snelheid groeit door versnelling, geen directe sprong.
-for(const p of attackers)move(p,targetOfAttack(p),DT);
-for(const p of defenders)move(p,targetOfDefence(p),DT);
-if(flight){flight.elapsed+=DT;const k=clamp(flight.elapsed/flight.duration,0,1);ball={x:mix(flight.start.x,flight.end.x,k),y:mix(flight.start.y,flight.end.y,k)};trail.push({...ball});if(trail.length>18)trail.shift();
-const interceptor=defenders.find(p=>dist(p,ball)<sportCfg().intercept);if(interceptor){takeover(interceptor)}
-else if(k>=1){const receiver=ps.find(q=>q.id===flight.target);if(receiver&&dist(receiver,ball)<sportCfg().receive){holder=receiver.id;completed++;cooldown=.42;held=0;pressure=0;ball=ballAt(receiver);log('receive','Aannemen door aanvaller '+(+receiver.id[1]+1))}else{loose={x:ball.x,y:ball.y,started:clock};log('loose','Bal niet direct aangenomen')}flight=null;trail=[]}}
-else if(shot){shot.elapsed+=DT;const k=clamp(shot.elapsed/shot.duration,0,1);ball={x:mix(shot.start.x,shot.end.x,k),y:mix(shot.start.y,shot.end.y,k)};trail.push({...ball});if(trail.length>18)trail.shift();const block=defenders.find(p=>dist(p,ball)<sportCfg().intercept&&shot.elapsed<shot.duration*.95);if(block){terminal=true;outcome='shotBlocked';log('blocked','Schot geblokkeerd')}else if(k>=1){terminal=true;outcome='shot';log('end','De aanval eindigt met een doelpoging')}}
-else if(loose){ball={x:loose.x,y:loose.y};for(const p of [...attackers,...defenders]){if(dist(p,loose)<31){if(p.team==='a'){holder=p.id;loose=null;held=0;cooldown=.2;log('recovery','Aanvaller herwint de bal')}else takeover(p);break}}if(loose&&clock-loose.started>1.2){const candidates=[...attackers,...defenders].sort((u,v)=>dist(u,loose)-dist(v,loose));if(candidates[0].team==='a'){holder=candidates[0].id;loose=null;held=0;cooldown=.2}else takeover(candidates[0])}}
-else if(holder){const carrier=b();ball=ballAt(carrier);held+=DT;cooldown-=DT;const closest=defenders.reduce((best,p)=>Math.min(best,dist(p,carrier)),9999);if(closest<24)pressure+=DT;else pressure=Math.max(0,pressure-DT*.75);if(pressure>.27&&random()<.27){const tackling=defenders.slice().sort((u,v)=>dist(u,carrier)-dist(v,carrier))[0];takeover(tackling)}
-if(!terminal&&carrier.x>sportCfg().shotX&&Math.abs(carrier.y-325)<sportCfg().shotY&&(held>.38||closest>52)&&cooldown<=0){beginShot(carrier)}
-if(!terminal&&holder&&cooldown<=0){const first=carrier.id==='a0',intent=first?carrier.intent:'pas';const minWait=intent==='pas'?.6:intent==='drijf'?1.65:intent==='bewaar'?1.22:intent==='zijde'?1.15:.95;const urgent=closest<56&&held>.32;const candidate=choosePass(carrier);const canPass=candidate&&(candidate.possible||(closest<38&&candidate.earliest>-.15));if(canPass&&(held>=minWait||urgent)&&candidate.quality>-32){startPass(candidate)}else if(held>3.15&&candidate&&candidate.earliest>-.10&&candidate.near>25){startPass(candidate)} }
+// Sportafhankelijk onderwijsmodel: beweging en balcontact zijn tijdstap-gebaseerd.
+// Parameters zijn plausibele aannames; geen kalibratie op individuele leerlingen.
+function reachTime(p,target,reactionOverride){
+ const reaction=Math.max(0,reactionOverride??p.react);
+ const dx=(target.x-p.x)/PX,dy=(target.y-p.y)/PX,metres=Math.hypot(dx,dy);
+ if(metres<.05)return reaction;
+ const towardX=dx/metres,towardY=dy/metres;
+ const directed=((p.vx||0)*towardX+(p.vy||0)*towardY)/PX;
+ const away=Math.max(0,-directed);
+ const turn=away/Math.max(.1,p.accel);
+ const effectiveDistance=Math.max(0,metres-Math.max(0,directed)*reaction*.45);
+ const v=Math.min(p.speed,Math.max(0,directed)),a=Math.max(.1,p.accel);
+ const accelTime=(p.speed-v)/a,accelDist=v*accelTime+.5*a*accelTime*accelTime;
+ const travel=effectiveDistance<=accelDist?(-v+Math.sqrt(v*v+2*a*effectiveDistance))/a:accelTime+(effectiveDistance-accelDist)/p.speed;
+ return reaction+turn*.7+travel;
 }
-if(!terminal&&clock>=MAX-.001){terminal=true;outcome='other';log('end','De aanval is uitgespeeld')}snapshot()}
-result=outcome;duration=frames.at(-1)?.time||MAX;summary={result,duration,passes,completed,shots,intercepts,events:copy(events)};}
+function attemptArrival(p,target,reaction){return reachTime(p,target,reaction??p.react)+(.06+(+p.id[1])*.015)}
+function simulate(){
+ const ps=copy(initial),startMap=Object.fromEntries(initial.map(p=>[p.id,p]));
+ let rng=simSeed;
+ function random(){rng=(Math.imul(rng,1664525)+1013904223)>>>0;return rng/4294967296}
+ for(const p of ps){if(p.team==='d'){p._reactionLeft=p.react;p._lastAim={x:p.x,y:p.y,pace:1};p._contact=0}}
+ let holder='a0',ball=ballAt(ps.find(p=>p.id==='a0')),flight=null,loose=null,shot=null,clock=0,cooldown=.3,held=0,terminal=false,outcome='other',passes=0,completed=0,shots=0,intercepts=0,trail=[];
+ let leaderId=null,leaderAt=-1,framesBefore=0;
+ frames=[];events=[];
+ const a=()=>ps.filter(p=>p.team==='a'),d=()=>ps.filter(p=>p.team==='d');
+ const b=()=>ps.find(p=>p.id===holder);
+ function log(kind,msg){events.push({time:Math.round(clock*100)/100,kind,msg})}
+ function snapshot(){frames.push({time:clock,players:copy(ps),ball:{...ball},trail:copy(trail)})}
+ function followControlledBall(owner){
+  const aim=ballAt(owner),difference=dist(ball,aim),cap=PX*5.7*DT;
+  if(difference>.0001){const f=Math.min(1,cap/difference);ball={x:mix(ball.x,aim.x,f),y:mix(ball.y,aim.y,f)}}
+ }
+ function targetOfAttack(p){
+  const o=startMap[p.id],intent=p.intent,ballOwner=b()||a()[0],advance=clamp(clock,0,5);
+  let tx=p.x,ty=p.y;
+  if(loose&&!holder){const closest=a().slice().sort((u,v)=>dist(u,ball)-dist(v,ball))[0];if(closest?.id===p.id)return {x:ball.x,y:ball.y,pace:1}}
+  if(p.id===holder){
+   if(p.id==='a0'&&intent==='bewaar'){tx=p.x+9;ty=p.y}
+   else if(p.id==='a0'&&intent==='zijde'){tx=p.x+85;ty=p.y<325?112:537}
+   else if(p.id==='a0'&&intent==='pas'){tx=p.x+22;ty=p.y}
+   else{tx=p.x+190;ty=p.y+(325-p.y)*(p.x>sportCfg().shotX-185?.57:.25)}
+   return {x:clamp(tx,75,923),y:clamp(ty,82,568),pace:p.id==='a0'?.76:.94};
+  }
+  if(intent==='diep'){tx=Math.min(918,o.x+85+advance*35);ty=o.y+(325-o.y)*.05}
+  else if(intent==='breed'){tx=Math.min(915,o.x+25+advance*19);ty=o.y<325?108:542}
+  else if(intent==='bal'){tx=(ballOwner?.x||340)-62;ty=clamp((ballOwner?.y||325)+(p.id==='a2'?100:-96),94,556)}
+  else if(intent==='stil'){tx=o.x+11;ty=o.y}
+  else if(intent==='kruis'){tx=Math.min(900,o.x+58+advance*28);ty=650-o.y}
+  else if(intent==='ruimte'){tx=Math.min(910,o.x+54+advance*24);ty=clamp(o.y+(o.y<325?-134:134),100,550)}
+  if(flight&&flight.target===p.id){tx=flight.end.x;ty=flight.end.y}
+  return {x:clamp(tx,73,929),y:clamp(ty,83,566),pace:intent==='stil'?.25:1};
+ }
+ function pressureLeader(){
+  const defenders=d(),owner=b();if(!owner)return null;
+  if(leaderId&&clock-leaderAt<.35&&defenders.some(p=>p.id===leaderId))return leaderId;
+  const ranked=defenders.map(p=>{
+   const pref={druk:-.42,dek:-.15,volg:-.13,lijn:.18,zone:.40,terug:.55}[p.intent]||0;
+   return {p,score:reachTime(p,ball,Math.max(0,p._reactionLeft||0))+pref}
+  }).sort((u,v)=>u.score-v.score);
+  leaderId=ranked[0]?.p.id||null;leaderAt=clock;return leaderId;
+ }
+ function threatReceiver(p,offball){
+  return offball.slice().sort((u,v)=>{
+   const su=u.x*.34-dist(ball,u)*.09-dist(p,u)*.12;
+   const sv=v.x*.34-dist(ball,v)*.09-dist(p,v)*.12;
+   return sv-su;
+  })[0]||null;
+ }
+ function targetOfDefence(p){
+  const intent=p.intent,owner=b(),origin=startMap[p.id],attackers=a(),off=attackers.filter(q=>q.id!==holder),ballPos=ball;
+  const goalSide=(q,metres=1.7)=>({x:q.x+metres*PX,y:q.y+(325-q.y)*.08});
+  let tx=p.x,ty=p.y;
+  if(loose){const nearest=d().slice().sort((u,v)=>dist(u,ball)-dist(v,ball))[0];if(nearest?.id===p.id)return {x:ball.x,y:ball.y,pace:1}}
+  const primary=pressureLeader()===p.id;
+  const receiver=threatReceiver(p,off);
+  if(primary&&owner&&intent!=='terug'&&intent!=='zone'){
+   if(d().length===1&&off.length){
+    const dangerous=off.slice().sort((u,v)=>v.x-u.x)[0],goalThreat=owner.x>sportCfg().shotX-115;
+    if(intent==='druk'){
+     // Directe druk geeft meer kans op balcontact, maar kan de pass openen.
+     tx=ballPos.x+PX*.25;ty=ballPos.y;
+    }else if(intent==='dek'||intent==='volg'){
+     const q=goalSide(dangerous,intent==='dek'?1.6:.9);tx=q.x;ty=q.y;
+    }else{
+     // Pass afschermen: tussen bal en afspeelpunt blijven, maar bij doelgevaar insluiten.
+     const ratio=goalThreat?.18:.47;
+     tx=ballPos.x+(dangerous.x-ballPos.x)*ratio+PX*.3;
+     ty=ballPos.y+(dangerous.y-ballPos.y)*ratio;
+     if(dist(p,ballPos)<PX*1.4||goalThreat){tx=ballPos.x+PX*1.4;ty=ballPos.y+(325-ballPos.y)*.12}
+    }
+   }else{tx=ballPos.x+PX*.3;ty=ballPos.y}
+  }else if(intent==='dek'||intent==='volg'){
+   const idx=+p.id[1],paired=off.find(q=>q.id==='a'+idx),mark=paired||receiver||owner;
+   if(mark){const side=goalSide(mark,intent==='volg'?.9:1.6);tx=side.x;ty=side.y}
+  }else if(intent==='lijn'||(intent==='druk'&&!primary)){
+   if(receiver){tx=ballPos.x*.47+receiver.x*.53+PX*.15;ty=ballPos.y*.47+receiver.y*.53}
+   else if(owner){tx=owner.x+PX*1.7;ty=owner.y+(325-owner.y)*.2}
+  }else if(intent==='zone'){
+   tx=clamp(origin.x+(ballPos.x-origin.x)*.37,410,860);
+   ty=clamp(origin.y+(ballPos.y-origin.y)*.34,105,545);
+  }else if(intent==='terug'){
+   tx=clamp(Math.max(origin.x,ballPos.x+PX*3.1),440,866);
+   ty=clamp(origin.y*.45+ballPos.y*.55,130,520);
+  }
+  // De verdediger mag na zijn reactietijd vooruitkijken waar de pass terechtkomt.
+  if(flight&&p._reactionLeft<=0&&intent!=='terug'){
+   const remain=flight.duration-flight.elapsed;
+   let best=null;
+   for(let k=1;k<=8;k++){
+    const future=remain*k/8,ratio=clamp((flight.elapsed+future)/flight.duration,0,1);
+    const pos={x:mix(flight.start.x,flight.end.x,ratio),y:mix(flight.start.y,flight.end.y,ratio)};
+    const arrival=reachTime(p,pos,0);
+    if(arrival<=future+.09&&(!best||future<best.future))best={pos,future};
+   }
+   if(best){tx=best.pos.x;ty=best.pos.y}
+  }
+  return {x:clamp(tx,73,932),y:clamp(ty,83,568),pace:intent==='terug'?.88:1};
+ }
+ function move(p,aim,stepDT){
+  const toward=unit(aim.x-p.x,aim.y-p.y),remaining=Math.hypot(aim.x-p.x,aim.y-p.y);
+  const vmax=p.speed*PX*(aim.pace||1),desiredSpeed=Math.min(vmax,remaining/Math.max(.19,stepDT));
+  const desx=remaining<6?0:toward.x*desiredSpeed,desy=remaining<6?0:toward.y*desiredSpeed;
+  const vdiff=unit(desx-p.vx,desy-p.vy),delta=Math.min(p.accel*PX*stepDT,Math.hypot(desx-p.vx,desy-p.vy));
+  p.vx+=vdiff.x*delta;p.vy+=vdiff.y*delta;
+  const speed=Math.hypot(p.vx,p.vy),maxRun=p.speed*PX;
+  if(speed>maxRun){p.vx*=maxRun/speed;p.vy*=maxRun/speed}
+  p.x=clamp(p.x+p.vx*stepDT,69,931);p.y=clamp(p.y+p.vy*stepDT,76,574);
+ }
+ function receiverPrediction(target,travel){
+  const aim=targetOfAttack(target),speed=target.speed*PX,dir=unit(aim.x-target.x,aim.y-target.y);
+  const projected=Math.min(speed*travel*.62,dist(target,aim));
+  return {x:clamp(target.x+target.vx*travel*.32+dir.x*projected,73,925),y:clamp(target.y+target.vy*travel*.32+dir.y*projected,86,565)};
+ }
+ function passRisk(carrier,to){
+  const from=ball,rawDist=dist(from,to),travel=Math.max(.24,rawDist/(PX*sportCfg().pass));
+  const target=receiverPrediction(to,travel),length=dist(from,target),duration=Math.max(.25,length/(PX*sportCfg().pass));
+  let earliest=5;
+  for(const defender of d()){
+   let margin=99;
+   for(let k=2;k<=10;k++){
+    const t=k/10*duration,loc={x:mix(from.x,target.x,k/10),y:mix(from.y,target.y,k/10)};
+    const reach=attemptArrival(defender,loc,defender.react*.85);
+    margin=Math.min(margin,reach-t);
+   }
+   earliest=Math.min(earliest,margin);
+  }
+  const immediate=d().reduce((m,q)=>Math.min(m,dist(q,to)),1000),behind=target.x-carrier.x;
+  let quality=behind*.13+Math.min(12,Math.abs(to.y-carrier.y)*.036)+clamp(earliest*65,-110,66)-length*.048;
+  if(behind<-55)quality-=12;
+  if(immediate<62)quality-=Math.max(0,62-immediate)*.9;
+  return {to,target,quality,earliest,possible:earliest>.1&&immediate>34,duration,from,near:immediate};
+ }
+ function choosePass(carrier){
+  const choices=a().filter(p=>p.id!==holder).map(p=>passRisk(carrier,p)).sort((u,v)=>v.quality-u.quality);
+  return choices.find(c=>c.possible&&c.to.x>carrier.x-90)||choices.find(c=>c.possible)||choices[0]||null;
+ }
+ function startPass(choice){
+  flight={kind:'pass',target:choice.to.id,start:{...ball},end:{...choice.target},duration:choice.duration,elapsed:0,startTime:clock};
+  holder=null;cooldown=.65;held=0;passes++;
+  for(const p of d())p._reactionLeft=Math.max(p._reactionLeft,p.react*.82);
+  log('pass','Pass naar aanvaller '+(+choice.to.id[1]+1));
+ }
+ function beginShot(carrier){
+  const goal={x:948,y:clamp(325+(random()-.5)*sportCfg().goalY,274,380)};
+  shot={kind:'shot',start:{...ball},end:goal,duration:Math.max(.28,dist(ball,goal)/(PX*sportCfg().shot)),elapsed:0};
+  holder=null;shots++;
+  for(const p of d())p._reactionLeft=Math.max(p._reactionLeft,p.react*.55);
+  log('shot','Doelpoging door aanvaller '+(+carrier.id[1]+1));
+ }
+ function takeover(by,kind='loss'){
+  terminal=true;outcome='intercept';intercepts++;holder=null;
+  // Bal blijft op de feitelijke contactplek liggen; geen sprong naar verdediger.
+  log(kind,'Balverlies bij verdediger '+(+by.id[1]+1));
+ }
+ function contactPlayer(people,before,after,radius){
+  let found=null;
+  for(const p of people){
+   const dx=after.x-before.x,dy=after.y-before.y,denom=dx*dx+dy*dy;
+   const t=denom?clamp(((p.x-before.x)*dx+(p.y-before.y)*dy)/denom,0,1):0;
+   const at={x:before.x+t*dx,y:before.y+t*dy},limit=(p._reactionLeft>0?radius*.55:radius);
+   const distance=dist(p,at);
+   if(distance<=limit&&(!found||t<found.t))found={p,at,t,distance};
+  }
+  return found;
+ }
+ log('start','Aanval gestart');snapshot();
+ for(let step=0;step<MAX/DT&&!terminal;step++){
+  clock=Math.round((step+1)*DT*1000)/1000;
+  const defenders=d(),attackers=a();
+  for(const p of attackers)move(p,targetOfAttack(p),DT);
+  for(const p of defenders){
+   const waiting=p._reactionLeft>0;
+   const aim=waiting?p._lastAim:targetOfDefence(p);
+   if(!waiting)p._lastAim=aim;
+   move(p,aim,DT);
+   p._reactionLeft=Math.max(0,p._reactionLeft-DT);
+  }
+  if(flight){
+   flight.elapsed+=DT;
+   const k=clamp(flight.elapsed/flight.duration,0,1),old={...ball};
+   ball={x:mix(flight.start.x,flight.end.x,k),y:mix(flight.start.y,flight.end.y,k)};
+   trail.push({...ball});if(trail.length>18)trail.shift();
+   const hit=contactPlayer(defenders,old,ball,sportCfg().intercept);
+   if(hit){ball=hit.at;takeover(hit.p)}
+   else if(k>=1){
+    const receiver=ps.find(q=>q.id===flight.target);
+    if(receiver&&dist(receiver,ball)<sportCfg().receive){
+     holder=receiver.id;completed++;cooldown=.42;held=0;
+     // De bal wordt pas in volgende tijdstappen rustig onder controle gebracht.
+     log('receive','Aannemen door aanvaller '+(+receiver.id[1]+1));
+    }else{loose={x:ball.x,y:ball.y,started:clock};log('loose','Bal niet direct aangenomen')}
+    flight=null;trail=[];
+   }
+  }else if(shot){
+   shot.elapsed+=DT;
+   const k=clamp(shot.elapsed/shot.duration,0,1),old={...ball};
+   ball={x:mix(shot.start.x,shot.end.x,k),y:mix(shot.start.y,shot.end.y,k)};
+   trail.push({...ball});if(trail.length>18)trail.shift();
+   const hit=contactPlayer(defenders,old,ball,sportCfg().intercept*.95);
+   if(hit&&shot.elapsed<shot.duration*.95){ball=hit.at;terminal=true;outcome='shotBlocked';log('blocked','Schot geblokkeerd')}
+   else if(k>=1){terminal=true;outcome='shot';log('end','De aanval eindigt met een doelpoging')}
+  }else if(loose){
+   ball={x:loose.x,y:loose.y};
+   const contacts=[...attackers,...defenders].filter(p=>dist(p,ball)<PX*.82).sort((u,v)=>dist(u,ball)-dist(v,ball));
+   const player=contacts[0];
+   if(player){
+    if(player.team==='a'){holder=player.id;loose=null;held=0;cooldown=.25;log('recovery','Aanvaller herwint de bal')}
+    else takeover(player);
+   }else if(clock-loose.started>2.1){terminal=true;outcome='other';log('end','De losse bal werd niet bereikt')}
+  }else if(holder){
+   const carrier=b();followControlledBall(carrier);held+=DT;cooldown-=DT;
+   // Verdedigers moeten de bal echt bereiken en enige tijd druk houden.
+   for(const p of defenders){
+    const close=dist(p,ball)<sportCfg().intercept+PX*.30 && dist(p,carrier)<PX*2.1;
+    const approaching=p._reactionLeft<=0&&close;
+    p._contact=approaching?p._contact+DT:Math.max(0,p._contact-DT*2);
+    const moving=Math.hypot(carrier.vx,carrier.vy)/PX;
+    const threshold=(p.intent==='druk'?.35:p.intent==='dek'||p.intent==='volg'?.52:.74)+(moving>2.4?.16:0);
+    if(p._contact>=threshold){takeover(p);break}
+   }
+   const closest=defenders.reduce((best,p)=>Math.min(best,dist(p,carrier)),9999);
+   if(!terminal&&carrier.x>sportCfg().shotX&&Math.abs(carrier.y-325)<sportCfg().shotY&&(held>.46||closest>PX*2.8)&&cooldown<=0){beginShot(carrier)}
+   if(!terminal&&holder&&cooldown<=0){
+    const first=carrier.id==='a0',intent=first?carrier.intent:'pas';
+    const minWait=intent==='pas'?.6:intent==='drijf'?1.65:intent==='bewaar'?1.22:intent==='zijde'?1.15:.95;
+    const urgent=closest<PX*2.9&&held>.32,candidate=choosePass(carrier);
+    const canPass=candidate&&(candidate.possible||(closest<PX*1.8&&candidate.earliest>-.12));
+    // Met vrije ruimte vooruit loopt de baldrager door. Dat voorkomt eindeloos
+    // rondpassen wanneer de verdediging diep terugzakt. 'Passen' bij de
+    // eerste aanvaller blijft wel een bewuste keuze van de leerling.
+    const wantsToDrive=carrier.id!=='a0'||intent==='drijf'||intent==='zijde';
+    const clearRoad=closest>PX*3.8 && carrier.x<sportCfg().shotX-25;
+    const backwardsOnly=!!candidate&&candidate.target.x<carrier.x-PX*2.4;
+    const driveIntoSpace=wantsToDrive&&(clearRoad||(backwardsOnly&&closest>PX*1.5))&&!urgent&&held<5;
+    if(!driveIntoSpace&&canPass&&(held>=minWait||urgent)&&candidate.quality>-32){startPass(candidate)}
+    else if(!driveIntoSpace&&held>3.15&&candidate&&candidate.earliest>-.1&&candidate.near>PX*.9){startPass(candidate)}
+   }
+  }
+  if(!terminal&&clock>=MAX-.001){terminal=true;outcome='other';log('end','De aanval is uitgespeeld')}
+  snapshot();
+ }
+ result=outcome;duration=frames.at(-1)?.time||MAX;
+ summary={result,duration,passes,completed,shots,intercepts,events:copy(events)};
+}
 function frameAt(t){const idx=clamp(Math.round(t/DT),0,frames.length-1);return frames[idx]||{players,ball:ballAt(players[0]),trail:[]}}
 function showFrame(t){const f=frameAt(t);draw(f.players,f.ball,f.trail)}
 function tick(ts){if(state!=='playing')return;if(!last)last=ts;time=Math.min(duration,time+Math.min(.09,(ts-last)/1000)*playbackSpeed);last=ts;showFrame(time);if(time>=duration){finish();return}raf=requestAnimationFrame(tick)}
