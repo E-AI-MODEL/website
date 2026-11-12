@@ -172,6 +172,10 @@ try{
    assert(gas.T>gasBefore.T&&gas.V===gasBefore.V,'Isochore grafiek verandert T en behoudt V');
    await page.locator('#num-mode').selectOption('0');
    assert(await page.locator('#num-V').isVisible(),'Bij constante temperatuur is volume direct verstelbaar');
+   await page.locator('#controls>.more-controls>summary').click();
+   await page.locator('#num-T').fill('300');
+   await page.locator('#num-T').dispatchEvent('change');
+   await page.locator('#controls>.more-controls>summary').click();
    await page.locator('#num-mode').selectOption('1');
    const beforeIsobar=await page.evaluate(()=>({T:state.p.T,V:state.p.V,pressure:8.314*state.p.T/state.p.V}));
    await graphDrag(.62);
