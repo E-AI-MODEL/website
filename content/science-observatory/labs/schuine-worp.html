@@ -300,6 +300,7 @@ function drawScene(c){
  drawLine(tx+matW/2,oy-14,tx+matW/2,oy+3,'#85dec7',1);
  ctx.textAlign='center';ctx.font='600 11px system-ui';ctx.fillStyle='#abf4e3';
  var labX=clamp(tx,59,w-67);
+ ctx.fillStyle='#0d2632dc';ctx.beginPath();ctx.roundRect(labX-51,oy-46,102,39,5);ctx.fill();ctx.fillStyle='#abf4e3';
  ctx.fillText('LANDINGSMAT',labX,oy-28);
  ctx.font='10px system-ui';ctx.fillStyle='#8cbbc2';ctx.fillText(fmt(S.target,1)+' m · sleep',labX,oy-16);
  ctx.textAlign='left';
@@ -323,9 +324,11 @@ function drawScene(c){
  }
  ctx.fillStyle='#2e6470';ctx.beginPath();ctx.roundRect(ox-12,oy-8,24,9,4);ctx.fill();
  dot(ox,oy-9,6,'#ffe0af');
- var radius=32+(S.speed-5)/30*66,angle=rad(S.angle);
+ var radius=52+(S.speed-5)/30*100,angle=rad(S.angle);
  var hx=ox+radius*Math.cos(angle),hy=oy-9-radius*Math.sin(angle);
  drawLine(ox,oy-9,hx,hy,'#82dfceb6',1.6,[3,4]);
+ ctx.beginPath();ctx.arc(ox,oy-9,34,-angle,0);ctx.strokeStyle='#82bcb793';ctx.lineWidth=1;ctx.stroke();
+ ctx.font='600 10px system-ui';ctx.fillStyle='#9bdad4';ctx.fillText(fmt(S.angle,1)+'°',ox+45*Math.cos(angle/2),oy-9-45*Math.sin(angle/2));
  dot(hx,hy,19,'#47d6bb12','#7cebd5');
  dot(hx,hy,5,'#9bf7df');
  ctx.font='10px system-ui';ctx.fillStyle='#8caab8';ctx.fillText('START',ox-13,oy-30);
@@ -435,7 +438,7 @@ function grabMove(e){
  var p=point(e),c=screen.view;
  if(S.pointer==='aim'){
   var dx=p.x-c.ox,dy=c.oy-9-p.y,angle=clamp(Math.atan2(Math.max(1,dy),Math.max(1,dx))*180/Math.PI,5,85);
-  var length=Math.hypot(dx,dy),speed=clamp(5+(length-32)*30/66,5,35);
+  var length=Math.hypot(dx,dy),speed=clamp(5+(length-52)*30/100,5,35);
   S.angle=Math.round(angle*2)/2;S.speed=Math.round(speed*4)/4;
  }else if(S.pointer==='target'){
   S.target=clamp(Math.round((p.x-c.ox)/c.scale*2)/2,10,60);
