@@ -137,7 +137,7 @@ def main():
             ball=page.locator('[data-ball="true"]')
             assert ball.count()==1
             assert ball.get_attribute("data-ball-sport")==str(sport)
-            detail_count=ball.locator("path,polygon,circle").count()
+            detail_count=ball.locator("path,polygon,circle,ellipse").count()
             assert detail_count>=6,(sport,detail_count)
         # Dezelfde simulatie moet met volledige data klaar staan.
         page.select_option("#sportSelect","0")
