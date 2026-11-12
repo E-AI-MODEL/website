@@ -288,8 +288,7 @@ function camera(){
  var worldX=Math.max.apply(null,reaches),height=Math.max(7,now.peak+3,lastTrial?lastTrial.peak+3:0);
  var pad={left:w<550?35:53,right:24,top:w<550?72:105};
  // The field occupies the upper half. Measured height over time stays below it.
- var hasData=S.playing||S.finished||S.trials.length>0;
- var oy=hasData?Math.min(h-Math.min(155,h*.32),Math.max(pad.top+82,h*(w<550?.52:.56))):h-57;
+ var oy=Math.min(h-Math.min(155,h*.32),Math.max(pad.top+82,h*(w<550?.52:.56)));
  var scale=Math.min((w-pad.left-pad.right)/worldX,(oy-pad.top-16)/height);
  scale=Math.max(.2,scale);
  var ox=pad.left;
@@ -313,19 +312,20 @@ function pathFor(v,c,limit,col,width,dash){
  }
  ctx.stroke();ctx.setLineDash([]);
 }
+function tickStep(unitsPerPixel,minPixels){var raw=Math.max(.00001,unitsPerPixel*minPixels),pow=Math.pow(10,Math.floor(Math.log10(raw)));for(const n of [1,2,5,10])if(n*pow>=raw)return n*pow;return 10*pow}
 function drawScene(c){
  var w=c.w,h=c.h,ox=c.ox,oy=c.oy,s=c.scale;
  ctx.clearRect(0,0,w,h);
  var wash=ctx.createLinearGradient(0,0,0,h);wash.addColorStop(0,'#102535');wash.addColorStop(.56,'#0b1b29');wash.addColorStop(1,'#081521');ctx.fillStyle=wash;ctx.fillRect(0,0,w,h);
  ctx.fillStyle='#102d3a';ctx.fillRect(0,oy,w,14);
  // Equal scale in metres horizontally and vertically.
- var step=c.worldX>95?20:c.worldX>55?10:5;
+ var step=tickStep(1/s,59);
  for(var m=0;m<=c.worldX;m+=step){
   var x=ox+m*s;if(x>w-16)break;
   drawLine(x,c.top,x,oy,'#21425483',.8);
   ctx.fillStyle='#7898a7';ctx.font='10px system-ui';ctx.fillText(m+' m',x-10,oy+17);
  }
- var ystep= c.now.peak>30?20:5;
+ var ystep=tickStep(1/s,42);
  for(var height=ystep;height<=Math.max(c.now.peak+10,12);height+=ystep){
   var yy=oy-height*s;if(yy<c.top)break;
   drawLine(ox,yy,w-15,yy,'#26475867',.8,[2,6]);
@@ -336,6 +336,7 @@ function drawScene(c){
  var tx=ox+S.target*s,matW=2*s;
  ctx.fillStyle='#154d47';ctx.fillRect(tx-matW/2,oy-8,matW,8);
  ctx.fillStyle='#a5f6df';ctx.fillRect(tx-matW/2,oy-8,matW,2);
+ if(matW<10){ctx.beginPath();ctx.arc(tx,oy-12,6,0,Math.PI*2);ctx.strokeStyle='#a5f6df';ctx.lineWidth=1;ctx.stroke();}
  drawLine(tx-matW/2,oy-14,tx-matW/2,oy+3,'#85dec7',1);
  drawLine(tx+matW/2,oy-14,tx+matW/2,oy+3,'#85dec7',1);
  // Previous throws are faint, measurable traces.
