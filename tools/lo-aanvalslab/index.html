@@ -616,12 +616,20 @@ function loCoachFeedback(){
  loCoachMomentTime=seen.moment;loCoachFocus=seen.focus;loCoachHighlight=false;
  el('loCoachMoment').classList.toggle('hide',!Number.isFinite(loCoachMomentTime));
  const compare=el('loCoachCompare'),prev=loComparableAttempt;
- const same=prev&&prev.context===loContextKey()&&prev.seed===simSeed&&prev.goal===g[0]&&prev.metric&&seen.metric&&prev.metric.key===seen.metric.key;
+ const oldMetric=prev?.metrics?.[g[0]];
+ const same=prev&&prev.context===loContextKey()&&prev.seed===simSeed&&oldMetric&&seen.metric&&oldMetric.key===seen.metric.key;
  if(same){
-  compare.textContent=g[1]+' · vorige poging: '+loSeconds(prev.metric.value)+' '+prev.metric.unit+', nu: '+loSeconds(seen.metric.value)+' '+seen.metric.unit+'. Zelfde startscenario en rekenregels, geen bewijs voor beter spelen op het veld.';
+  compare.textContent=g[1]+' · vorige poging: '+loSeconds(oldMetric.value)+' '+oldMetric.unit+', nu: '+loSeconds(seen.metric.value)+' '+seen.metric.unit+'. Zelfde startscenario en rekenregels. Dit meet het model, niet het spel van leerlingen in de zaal.';
   compare.classList.remove('hide');
  }else{compare.textContent='';compare.classList.add('hide')}
- loLastAttempt={context:loContextKey(),goal:g[0],seed:simSeed,metric:seen.metric,result:summary.result,run:loRunNumber};
+ // Bewaar elk modelresultaat één keer per speelbeurt, niet opnieuw bij klikken op een chip.
+ if(loLastAttempt?.run!==loRunNumber){
+  const metrics={};
+  for(const goal of [...LO_GOALS[sportIndex].a,...LO_GOALS[sportIndex].d]){
+   if(!(goal[0] in metrics))metrics[goal[0]]=loCoachObservation(goal[0]).metric;
+  }
+  loLastAttempt={context:loContextKey(),seed:simSeed,metrics,result:summary.result,run:loRunNumber};
+ }
 }
 function loDrawCoachFocus(){
  if(!loCoachHighlight||!loCoachFocus||state!=='paused')return;
@@ -1271,8 +1279,10 @@ el('loAnalysis').addEventListener('click',event=>{if(event.target===el('loAnalys
 document.addEventListener('keydown',event=>{
  if(event.key==='Escape'&&!el('loAnalysis').hidden){event.preventDefault();closeLoAnalysis()}
 });
+// De handleiding kan een lokaal spel pauzeren. Een online wedstrijd blijft synchroon doorlopen.
+window.__loHelpPause=()=>{if(state==='playing'&&mode!=='online'){cancelAnimationFrame(raf);state='paused';refresh();return true}return false};
 // Alleen testomgeving: reproductie van spelsituaties zonder UI-animatie.
-window.__loLabTest={run(input,withSeed=1337){initial=copy(input);simSeed=withSeed;simulate();return copy(summary)},getPlayers:()=>copy(players),getFrames:()=>copy(frames),getEvents:()=>copy(events),scenario:index=>{makeScenario(index);return copy(players)},setFormation:index=>{applyFormation(index);makeScenario(scenarioIndex);resetSetup();return copy(players)},setSpeed:speed=>{playbackSpeed=clamp(speed,.5,2);el('playbackSpeed').value=String(playbackSpeed)},getTime:()=>time,reachTime,getConfig:()=>copy(sportCfg()),setZonePlan(key){if(!['zonecompact','zoneschuif','zonelijn'].includes(key))return;for(const p of players)if(p.team==='d')p.intent=key;syncZonePlans();draw()},getIntents:()=>copy(tactics.d),getCoachObservation:key=>copy(loCoachObservation(key)),getCoachState:()=>({sport:sportIndex,role:loGoalRole,goal:loGoalKey,manual:loGoalManual,count:loGoals().length,run:loRunNumber}),coachPreview:()=>{loCoachFeedback();return {observed:el('loCoachObserved').textContent,challenge:el('insight').textContent,moment:loCoachMomentTime,goal:loGoalKey}}};
+window.__loLabTest={run(input,withSeed=1337){initial=copy(input);simSeed=withSeed;simulate();return copy(summary)},getPlayers:()=>copy(players),getFrames:()=>copy(frames),getEvents:()=>copy(events),scenario:index=>{makeScenario(index);return copy(players)},setFormation:index=>{applyFormation(index);makeScenario(scenarioIndex);resetSetup();return copy(players)},setSpeed:speed=>{playbackSpeed=clamp(speed,.5,2);el('playbackSpeed').value=String(playbackSpeed)},getTime:()=>time,reachTime,getConfig:()=>copy(sportCfg()),setZonePlan(key){if(!['zonecompact','zoneschuif','zonelijn'].includes(key))return;for(const p of players)if(p.team==='d')p.intent=key;syncZonePlans();draw()},getIntents:()=>copy(tactics.d),getCoachObservation:key=>copy(loCoachObservation(key)),getCoachState:()=>({sport:sportIndex,role:loGoalRole,goal:loGoalKey,manual:loGoalManual,count:loGoals().length,run:loRunNumber,previous:loLastAttempt?.run??null}),getCompareText:()=>el('loCoachCompare').textContent,coachPreview:()=>{loCoachFeedback();return {observed:el('loCoachObserved').textContent,challenge:el('insight').textContent,moment:loCoachMomentTime,goal:loGoalKey}}};
 })();
 
 </script><script>(()=>{'use strict';
