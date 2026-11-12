@@ -227,6 +227,38 @@ try{
   await page.goto(base+'/tools/science-observatory/labs/natuurkunde/#interference',{waitUntil:'load'});
   await page.waitForFunction(()=>document.querySelector('#labTitle').textContent.toLowerCase().includes('interferentie'));
   assert(await page.locator('#scene').isVisible());
+  // De leerling sleept het driehoekige steunpunt, niet de twee krachtpijlen.
+  await page.goto(base+'/tools/science-observatory/labs/natuurkunde/#lever',{waitUntil:'load'});
+  await page.waitForFunction(()=>document.querySelector('#labTitle').textContent==='De hefboom');
+  const leverStart=await page.evaluate(()=>{
+   const p=state.p,c=document.querySelector('#scene'),r=c.getBoundingClientRect(),g=sceneViewport(c),pivot=p.pivot??510;
+   return {x:r.left+g.left+pivot*g.scale,y:r.top+g.top+350*g.scale,scale:g.scale,pivot,left:pivot-65*p.arm1,right:pivot+65*p.arm2,p:{...p}};
+  });
+  await page.mouse.move(leverStart.x+leverStart.scale*12,leverStart.y);
+  await page.mouse.down();
+  const pressed=await page.evaluate(()=>({pivot:state.p.pivot??510,arm1:state.p.arm1,arm2:state.p.arm2}));
+  assert.equal(pressed.pivot,leverStart.pivot,'Het steunpunt springt niet weg bij aanraken');
+  assert.equal(pressed.arm1,leverStart.p.arm1,'Aanraken zonder slepen verandert de linker arm niet');
+  await page.mouse.move(leverStart.x+leverStart.scale*(65+12),leverStart.y,{steps:10});
+  await page.mouse.up();
+  const leverEnd=await page.evaluate(()=>{
+   const p=state.p,pivot=p.pivot??510,F2=p.F*p.arm1/p.arm2;
+   return {pivot,arm1:p.arm1,arm2:p.arm2,left:pivot-65*p.arm1,right:pivot+65*p.arm2,F2,shown:state.current.readouts[1][1],graphCursor:graphSpecFor(state.id,p,state.t).cursor,numArm2:document.querySelector('#num-arm2').value,numArm1:document.querySelector('#num-arm1').value};
+  });
+  assert(leverEnd.pivot>leverStart.pivot+40,'De leerling kan het driehoekje langs de balk schuiven');
+  assert(leverEnd.arm1>leverStart.p.arm1&&leverEnd.arm2<leverStart.p.arm2,'Beide armen veranderen in de juiste richting');
+  assert(Math.abs(leverEnd.left-leverStart.left)<.02&&Math.abs(leverEnd.right-leverStart.right)<.02,'Beide krachtpijlen blijven op hun eigen plek');
+  assert(Math.abs(leverEnd.arm1+leverEnd.arm2-(leverStart.p.arm1+leverStart.p.arm2))<1e-7,'De totale afstand tussen de krachten blijft gelijk');
+  assert(Math.abs(Number(leverEnd.shown.split(' ')[0].replace(',','.'))-leverEnd.F2)<.02,'De nieuwe tegenkracht voldoet aan F1*r1 = F2*r2');
+  assert.equal(Number(leverEnd.numArm2),leverEnd.arm2,'De instelling voor rechter arm volgt het verslepen');
+  assert.equal(Number(leverEnd.numArm1),leverEnd.arm1,'Ook de uitklapbare instelling voor linker arm volgt mee');
+  assert.equal(leverEnd.graphCursor,leverEnd.arm2,'De grafiek gebruikt de verschoven rechter arm');
+  await page.screenshot({path:'test-results/physics-lever-drag-'+engine.name()+'-'+width+'.png'});
+  await page.locator('#resetBtn').click();
+  const leverReset=await page.evaluate(()=>({pivot:state.p.pivot??510,arm1:state.p.arm1,arm2:state.p.arm2}));
+  assert.equal(leverReset.pivot,510,'Herstel zet het draaipunt terug');
+  assert.equal(leverReset.arm1,2,'Herstel zet de linker arm terug');
+  assert.equal(leverReset.arm2,3,'Herstel zet de rechter arm terug');
   await page.goto(base+'/tools/science-observatory/labs/natuurkunde/#pendulum',{waitUntil:'load'});
   await page.waitForFunction(()=>document.querySelector('#scene').width>0);
   assert.deepEqual(errors,[],'No browser script errors '+width);

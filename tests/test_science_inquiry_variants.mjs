@@ -61,5 +61,7 @@ test('Alle drie de onderzoeksroutes hebben verschillende opdrachten in dezelfde 
  assert.match(html,/drawLandingMat\(ctx,targetX,y0,scale\)/);
  assert.match(html,/Gooi de bal/);
  assert.match(html,/id="aimFeedback"/);
- assert.match(html,/const directManip=new Set\(\['projectile','pendulum','refraction','circular','lens','interference'\]\)/);
+ const handles=html.match(/const directManip=new Set\(\[([^\]]+)\]\)/);
+ assert.ok(handles,'Proeven met bestuurbare onderdelen blijven beschikbaar');
+ for(const id of ['projectile','pendulum','refraction','circular','lens','interference','lever'])assert.ok(handles[1].includes("'"+id+"'"),'Direct slepen blijft mogelijk: '+id);
 });
