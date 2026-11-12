@@ -14,7 +14,8 @@ const rand = (length:number) => {let s='';const bytes=crypto.getRandomValues(new
 const token=()=>Array.from(crypto.getRandomValues(new Uint8Array(32)),b=>b.toString(16).padStart(2,'0')).join('');
 async function digest(s:string){const d=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return Array.from(new Uint8Array(d),b=>b.toString(16).padStart(2,'0')).join('')}
 const intentsA = new Set(['pas','drijf','bewaar','zijde','diep','breed','bal','stil','kruis','ruimte']);
-const intentsD = new Set(['dek','lijn','druk','zone','volg','terug']);
+// Behoud 'zone' voor bestaande kamers; nieuwe kamers kunnen 3 zonevormen opslaan.
+const intentsD = new Set(['dek','lijn','druk','zone','zonecompact','zoneschuif','zonelijn','volg','terug']);
 // Bestaande kamers blijven 4-tegen-4; nieuwe kamers mogen ook in overtal spelen.
 const countsFor=(scenario:number)=>scenario<16?[4,4]:[[2,1],[3,2],[4,3]][Math.floor(((scenario-16)%12)/4)];
 const shape=(raw:unknown,role:'a'|'d',scenario:number)=>{
