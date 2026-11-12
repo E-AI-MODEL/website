@@ -316,6 +316,68 @@ try{
    assert.deepEqual(errors,[],'Geen scriptfouten bij directe bediening');
    await page.screenshot({path:'test-results/physics-touch-hands-on-'+engine.name()+'-'+width+'.png'});
   }
+  // Iedere ruimtelijke proef krijgt dezelfde betrouwbare, bedienbare 3D-weergave.
+  if(width===390||width===1440){
+   await page.evaluate(()=>{loadLab('magnetbar');setPlaying(true)});
+   await page.waitForTimeout(150);
+   assert.equal(await page.locator('#timeLabel').innerText(),'Statisch model','Een veld zonder tijdverloop toont geen lopende t-waarde');
+   const clockWidth=await page.locator('#timeLabel').evaluate(el=>el.getBoundingClientRect().width);
+   await page.evaluate(()=>{loadLab('kepler1');setPlaying(false);state.t=9.94;render()});
+   assert.equal(await page.locator('#timeLabel').innerText(),'t = 9,9 s','Tijd wordt op een tiende afgerond');
+   await page.evaluate(()=>{state.t=10.04;render()});
+   assert.equal(await page.locator('#timeLabel').innerText(),'t = 10,0 s','Tijd blijft leesbaar bij een extra cijfer');
+   const widened=await page.locator('#timeLabel').evaluate(el=>el.getBoundingClientRect().width);
+   assert.equal(widened,clockWidth,'Het klokveld behoudt dezelfde vaste breedte');
+
+   for(const id of ['kepler1','kepler2','magnetbar','magnetwire','em','bohr','bragg']){
+    await page.evaluate(id=>{loadLab(id);setPlaying(true)},id);
+    const stage=page.locator('#stage'),bounds=await stage.boundingBox(),x=bounds.x+bounds.width*.55,y=bounds.y+bounds.height*.5;
+    assert(await stage.evaluate(el=>el.classList.contains('three-dimensional')),id+' heeft een draaibaar model');
+    assert.equal(await stage.evaluate(el=>getComputedStyle(el).touchAction),'none',id+' verhindert ongewenst scrollen tijdens draaien');
+    assert.equal(await stage.getAttribute('tabindex'),'0',id+' is ook met het toetsenbord bereikbaar');
+    await page.mouse.move(x,y);
+    await page.mouse.down();
+    const held=await page.evaluate(()=>({playing:state.playing,captured:state.pointer.size,marker:document.querySelector('#stage').classList.contains('orbit-held'),time:state.t,yaw:state.camera.yaw}));
+    assert(!held.playing&&held.captured===1&&held.marker,id+' blijft vast in de hand en pauzeert');
+    await page.mouse.move(x+75,y-31,{steps:6});
+    const rotated=await page.evaluate(()=>({playing:state.playing,yaw:state.camera.y,pitch:state.camera.pitch,time:state.t}));
+    assert(rotated.yaw>held.yaw+.3,id+' draait zichtbaar mee met de muis');
+    assert(Math.abs(rotated.time-held.time)<.02,id+' laat de proef stilstaan tijdens het onderzoeken');
+    await page.mouse.up();
+    const released=await page.evaluate(()=>({playing:state.playing,count:state.pointer.size,yaw:state.camera.y,marker:document.querySelector('#stage').classList.contains('orbit-held')}));
+    assert(released.playing&&released.count===0&&!released.marker,id+' laat het model los en kan weer afspelen');
+    await page.mouse.move(x+95,y-31);
+    const hoverYaw=await page.evaluate(()=>state.camera.yaw);
+    assert.equal(hoverYaw,released.yaw,id+' draait niet uit zichzelf bij hover');
+    await stage.focus();
+    await page.keyboard.press('ArrowLeft');
+    assert((await page.evaluate(()=>state.camera.yaw))<hoverYaw,id+' draait ook via pijltjestoetsen');
+    await page.keyboard.press('+');
+    assert((await page.evaluate(()=>state.camera.zoom))>1,id+' kan met toetsenbord zoomen');
+    await page.keyboard.press('Home');
+    assert(Math.abs((await page.evaluate(()=>state.camera.yaw))-.54)<.001,id+' camerastand wordt hersteld');
+   }
+
+   if(width===390&&engine.name()==='chromium'){
+    await page.evaluate(()=>{loadLab('bragg');setPlaying(false)});
+    const box=await page.locator('#stage').boundingBox();
+    const midX=Math.round(box.x+box.width*.5),midY=Math.round(box.y+box.height*.5);
+    const cdp=await page.context().newCDPSession(page);
+    const point=(id,x)=>({id,x,y:midY});
+    await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[point(1,midX-24),point(2,midX+24)]});
+    const beforePinch=await page.evaluate(()=>({zoom:state.camera.zoom,pointers:state.pointer.size}));
+    assert.equal(beforePinch.pointers,2,'Twee vingers grijpen samen hetzelfde ruimtelijke model');
+    await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[point(1,midX-56),point(2,midX+56)]});
+    const afterPinch=await page.evaluate(()=>state.camera.zoom);
+    assert(afterPinch>beforePinch.zoom*1.25,'Knijpen met echte touchgebaren vergroot het model');
+    await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+    assert.equal(await page.evaluate(()=>state.pointer.size),0,'Twee aanrakingen worden volledig losgelaten');
+    await cdp.detach();
+   }
+   assert.deepEqual(errors,[],'Alle ruimtelijke modellen blijven zonder scriptfouten bedienbaar');
+   await page.screenshot({path:'test-results/physics-3d-grab-'+engine.name()+'-'+width+'.png'});
+  }
+
   await page.goto(base+'/tools/science-observatory/labs/natuurkunde/#interference',{waitUntil:'load'});
   await page.waitForFunction(()=>document.querySelector('#labTitle').textContent.toLowerCase().includes('interferentie'));
   assert(await page.locator('#scene').isVisible());
