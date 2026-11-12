@@ -24,4 +24,4 @@ jobs:
           python -m pip install playwright
           python -m playwright install --with-deps chromium
       - name: Test spelberekeningen, desktop, mobiel en verborgen analyse
-        run: python tools/lo-aanvalslab/tests/easteregg_browser.py
+        run: python scripts/test_lo_easteregg.py
