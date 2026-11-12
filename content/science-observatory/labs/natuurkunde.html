@@ -318,6 +318,14 @@ body{display:flex;flex-direction:column}
 .graph-expand{margin-left:auto;align-self:center;flex:0 0 auto;height:25px;padding:0 9px;border:1px solid #365263;border-radius:4px;background:#102331;color:#a4dbd3;font-size:10px;white-space:nowrap}
 .graph-expand:hover,.graph-expand[aria-pressed=true]{border-color:#79cebf;background:#173c40;color:#e3fff6}
 @media(max-width:1080px){.graph-expand{display:none}}
+/* Ook op telefoons is een deel van de grafiek meteen zichtbaar.
+   Tik op Grafiek om die verder uit te klappen. Bij de nog niet uitgevoerde worp
+   blijft de grafiek compact, omdat er dan nog geen meting is. */
+@media(max-width:720px){
+ .workspace .analysis-shell:not(.compact-open){height:clamp(124px,19dvh,152px);min-height:0;flex-basis:clamp(124px,19dvh,152px)}
+ .workspace.mobile-projectile:not(.has-thrown) .analysis-shell:not(.compact-open){height:32px;flex-basis:32px}
+ .workspace .analysis-shell:not(.compact-open) .graph-frame{min-height:54px}
+}
 /* Compacte instellingengroepen: de directe knoppen blijven zichtbaar. */
 .lab-brief,.more-controls{border:1px solid #2c4656;border-radius:5px;margin:7px 0;background:#0b1c2a}
 .lab-brief>summary,.more-controls>summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:7px;padding:8px 10px;cursor:pointer;font-size:10px;color:#b6d3da;user-select:none}
