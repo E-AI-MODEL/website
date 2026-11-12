@@ -1056,7 +1056,7 @@ const safe=s=>String(s).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt
 const lsGet=k=>{try{return localStorage.getItem(k)}catch(e){return null}};
 const lsSet=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
 // De simulatie rekent met de precieze tijd; de leesbare klok verspringt slechts per tiende seconde.
-const timeString=t=>fmt(Math.max(0,Math.round(t*10)/10),1)+' s';
+const timeString=t=>Math.max(0,Math.round(t*10)/10).toFixed(1).replace('.',',')+' s';
 const timedLabs=new Set(['acceleration','newton2','projectile','collision','cradle','circular','carousel','looping','kepler1','kepler2','pendulum','spring','coupled','resonance','beats','standing','longitudinal','interference','doppler','motor','generator','ac','lc','em','bohr','chains','decay']);
 function isMobileProjectile(){return state.id==='projectile'&&matchMedia('(max-width:720px)').matches}
 function sceneViewport(canvas){
