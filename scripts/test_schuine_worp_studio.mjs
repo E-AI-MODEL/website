@@ -38,6 +38,7 @@ try{
   assert(await page.locator('#speed').isVisible());
   assert((await page.locator('#statRange').innerText()).includes('—'),'Geen voorspelde waarden voor de eerste worp');
   await page.locator('#field').screenshot({path:'test-results/worp-studio-'+browserType.name()+'-'+viewport.width+'-begin.png'});
+  await page.screenshot({path:'test-results/worp-studio-'+browserType.name()+'-'+viewport.width+'-volledig.png'});
   await page.locator('#fire').click();
   await page.waitForFunction(()=>window.__physicsStudio.state.trials.length===1,null,{timeout:12000});
   const result=await page.evaluate(()=>{
