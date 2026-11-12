@@ -332,10 +332,11 @@ function drawScene(c){
    drawLine(ox+p.x*s,oy-p.y*s,ox+p.x*s,oy,'#8aa6b255',.85,[3,5]);
   }
  }
- ctx.fillStyle='#2e6470';ctx.beginPath();ctx.roundRect(ox-12,oy-8,24,9,4);ctx.fill();
+ var launchY=oy-S.height*s-9;
+ ctx.fillStyle='#2e6470';ctx.beginPath();ctx.roundRect(ox-12,launchY+1,24,9,4);ctx.fill();
  if(S.height>0)drawLine(ox,launchY,ox,oy,'#7396a877',1,[3,5]);
  dot(ox,launchY,6,'#ffe0af');
- var radius=52+(S.speed-5)/30*100,angle=rad(S.angle),launchY=oy-S.height*s-9;
+ var radius=52+(S.speed-5)/30*100,angle=rad(S.angle);
  var hx=ox+radius*Math.cos(angle),hy=launchY-radius*Math.sin(angle);
  drawLine(ox,launchY,hx,hy,'#82dfceb6',1.6,[3,4]);
  ctx.beginPath();ctx.arc(ox,launchY,34,-angle,0);ctx.strokeStyle='#82bcb793';ctx.lineWidth=1;ctx.stroke();
