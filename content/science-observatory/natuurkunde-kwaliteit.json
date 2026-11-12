@@ -1,0 +1,439 @@
+{
+  "versie": 1,
+  "doel": "53 proeven als samenhangend observatorium. Iedere proef wordt op de eigen betekenis en bediening beoordeeld.",
+  "betekenis_status": "browser_drag_test betekent een beschreven browsertest, geen volledig experimenteel of didactisch validatiebewijs. inhoudelijk_gevalideerd is daarom nog overal false.",
+  "aftekenen": "Pas inhoudelijk_gevalideerd aan na een per-proefcontrole van vergelijkingen, uiterste standen, grafiek en onafhankelijke referentieberekening. Pas een afzonderlijke mobiele beeldcontrole en bedieningsproef toe.",
+  "eisen": [
+    "Voorwerp zelf bedienbaar waar zinvol, zonder verspringen",
+    "Alle gerelateerde waarden en grafieken veranderen correct",
+    "Grenzen, discrete toestanden en eenheden kloppen",
+    "Geen ongewenst scrollen op 320 en 390 px",
+    "Fysische claim pas na brongebonden controle"
+  ],
+  "proeven": [
+    {
+      "id": "acceleration",
+      "interaction": "knoppen-grafiek",
+      "browser_drag_test": false,
+      "physics_check": "x = v₀t + ½at²",
+      "verfijning": "Sleep het voertuig om tijd of positie te onderzoeken",
+      "inhoudelijk_gevalideerd": false
+    },
+    {
+      "id": "equilibrium",
+      "interaction": "versleepbaar",
+      "browser_drag_test": true,
+      "physics_check": "ΣF⃗ = 0",
+      "verfijning": "Onderzoek of de derde kracht de andere twee opheft",
+      "inhoudelijk_gevalideerd": false
+    },
+    {
+      "id": "resultant",
+      "interaction": "versleepbaar",
+      "browser_drag_test": true,
+      "physics_check": "R⃗ = F⃗₁ + F⃗₂",
+      "verfijning": "Sleep beide krachtpunten apart en vergelijk de som",
+      "inhoudelijk_gevalideerd": false
+    },
+    {
+      "id": "resolution",
+      "interaction": "versleepbaar",
+      "browser_drag_test": true,
+      "physics_check": "Fₓ = F cos α, Fᵧ = F sin α",
+      "verfijning": "Controleer de lengte van de pijl bij iedere hoek",
+      "inhoudelijk_gevalideerd": false
+    },
+    {
+      "id": "pulleys",
+      "interaction": "knoppen-grafiek",
+      "browser_drag_test": false,
+      "physics_check": "F = mg/n",
+      "verfijning": "Kies het aantal dragende touwdelen in de tekening",
+      "inhoudelijk_gevalideerd": false
+    },
+    {
+      "id": "lever",
+      "interaction": "versleepbaar",
+      "browser_drag_test": true,
+      "physics_check": "F₁r₁ = F₂r₂",
+      "verfijning": "Controleer ook krachtarm en steunpuntafstand aan de uiteinden",
+      "inhoudelijk_gevalideerd": false
+    },
+    {
+      "id": "incline",
+      "interaction": "versleepbaar",
+      "browser_drag_test": true,
+      "physics_check": "F∥ = mg sin α; Fw = μmg cos α",
+      "verfijning": "Test het blok bij steile hoeken en bij verschillende wrijving",
+      "inhoudelijk_gevalideerd": false
+    },
+    {
+      "id": "newton2",
+      "interaction": "knoppen-grafiek",
+      "browser_drag_test": false,
+      "physics_check": "F = ma",
+      "verfijning": "Pak de krachtpijl vast om versnelling te wijzigen",
+      "inhoudelijk_gevalideerd": false
+    },
+    {
+      "id": "projectile",
+      "interaction": "versleepbaar",
+      "browser_drag_test": false,
+      "physics_check": "R = v₀²sin(2α)/g",
+      "verfijning": "Controleer de bereikbaarheid van het mikpunt bij uiterste instellingen",
+      "inhoudelijk_gevalideerd": false
+    },
+    {
+      "id": "collision",
+      "interaction": "knoppen-grafiek",
+      "browser_drag_test": false,
+      "physics_check": "Behoud impuls en ingestelde restitutie",
+      "verfijning": "Sleep beginposities en onderzoek botsingssnelheden",
+      "inhoudelijk_gevalideerd": false
+    },
+    {
+      "id": "cradle",
+      "interaction": "knoppen-grafiek",
+      "browser_drag_test": false,
+      "physics_check": "Impuls en energie voor identieke bollen",
+      "verfijning": "Tik op bollen om het startaantal te kiezen",
+      "inhoudelijk_gevalideerd": false
+    },
+    {
+      "id": "circular",
+      "interaction": "versleepbaar",
+      "browser_drag_test": false,
+      "physics_check": "F = mv²/r",
+      "verfijning": "Controleer straal en snelheid bij ronddraaien",
+      "inhoudelijk_gevalideerd": false
+    },
+    {
+      "id": "carousel",
+      "interaction": "knoppen-grafiek",
+      "browser_drag_test": false,
+      "physics_check": "F = mω²r",
+      "verfijning": "Sleep een zitplaats naar een andere straal",
+      "inhoudelijk_gevalideerd": false
+    },
+    {
+      "id": "looping",
+      "interaction": "knoppen-grafiek",
+      "browser_drag_test": false,
+      "physics_check": "N ≥ 0 bovenin als v²/r ≥ g",
+      "verfijning": "Kies de beginsnelheid met het wagentje",
+      "inhoudelijk_gevalideerd": false
+    },
+    {
+      "id": "kepler1",
+      "interaction": "3d-draaibaar",
+      "browser_drag_test": false,
+      "physics_check": "r₁+r₂ = 2a",
+      "verfijning": "Controleer baan en positie van brandpunten numeriek",
+      "inhoudelijk_gevalideerd": false
+    },
+    {
+      "id": "kepler2",
+      "interaction": "3d-draaibaar",
+      "browser_drag_test": false,
+      "physics_check": "dA/dt constant",
+      "verfijning": "Markeer gelijke tijden en meet de oppervlakken",
+      "inhoudelijk_gevalideerd": false
+    },
+    {
+      "id": "hydro",
+      "interaction": "versleepbaar",
+      "browser_drag_test": true,
+      "physics_check": "Δp = ρgh",
+      "verfijning": "Controleer de sensor bij oppervlak en bodem",
+      "inhoudelijk_gevalideerd": false
+    },
+    {
+      "id": "buoyant",
+      "interaction": "knoppen-grafiek",
+      "browser_drag_test": false,
+      "physics_check": "Fop = ρgVondergedompeld",
+      "verfijning": "Laat de leerling een blok dieper in het water bewegen",
+      "inhoudelijk_gevalideerd": false
+    },
+    {
+      "id": "pendulum",
+      "interaction": "versleepbaar",
+      "browser_drag_test": false,
+      "physics_check": "T ≈ 2π√(L/g)",
+      "verfijning": "Controleer release, periode en kleine-hoekbenadering",
+      "inhoudelijk_gevalideerd": false
+    },
+    {
+      "id": "spring",
+      "interaction": "knoppen-grafiek",
+      "browser_drag_test": false,
+      "physics_check": "T = 2π√(m/k)",
+      "verfijning": "Pak de massa vast, trek uit en laat los",
+      "inhoudelijk_gevalideerd": false
+    },
+    {
+      "id": "coupled",
+      "interaction": "knoppen-grafiek",
+      "browser_drag_test": false,
+      "physics_check": "Modi en zweving bij koppeling",
+      "verfijning": "Sleep één slinger uit evenwicht en volg energie-uitwisseling",
+      "inhoudelijk_gevalideerd": false
+    },
+    {
+      "id": "resonance",
+      "interaction": "knoppen-grafiek",
+      "browser_drag_test": false,
+      "physics_check": "Amplitude versus f/f₀",
+      "verfijning": "Verander de aansturing naast het bewegende blok",
+      "inhoudelijk_gevalideerd": false
+    },
+    {
+      "id": "beats",
+      "interaction": "knoppen-grafiek",
+      "browser_drag_test": false,
+      "physics_check": "fzweving = |f₁−f₂|",
+      "verfijning": "Verander beide frequenties afzonderlijk",
+      "inhoudelijk_gevalideerd": false
+    },
+    {
+      "id": "standing",
+      "interaction": "knoppen-grafiek",
+      "browser_drag_test": false,
+      "physics_check": "f = nv/(2L)",
+      "verfijning": "Trek aan de snaar en kies een trillingsvorm",
+      "inhoudelijk_gevalideerd": false
+    },
+    {
+      "id": "longitudinal",
+      "interaction": "knoppen-grafiek",
+      "browser_drag_test": false,
+      "physics_check": "f = nv/(2L) bij twee gesloten uiteinden",
+      "verfijning": "Verander de buislengte direct aan het uiteinde",
+      "inhoudelijk_gevalideerd": false
+    },
+    {
+      "id": "interference",
+      "interaction": "versleepbaar",
+      "browser_drag_test": false,
+      "physics_check": "Faseverschil en interferentie-intensiteit",
+      "verfijning": "Vergelijk werkelijk gemeten minima en maxima",
+      "inhoudelijk_gevalideerd": false
+    },
+    {
+      "id": "doppler",
+      "interaction": "knoppen-grafiek",
+      "browser_drag_test": false,
+      "physics_check": "fvoor = f·v/(v−vs)",
+      "verfijning": "Sleep de bron en vergelijk gemeten frequenties",
+      "inhoudelijk_gevalideerd": false
+    },
+    {
+      "id": "magnetbar",
+      "interaction": "3d-draaibaar",
+      "browser_drag_test": false,
+      "physics_check": "Veldlijnen kwalitatief, niet automatisch gekalibreerd",
+      "verfijning": "Controleer veldrichting en bronsterkte met meetsonde",
+      "inhoudelijk_gevalideerd": false
+    },
+    {
+      "id": "magnetwire",
+      "interaction": "3d-draaibaar",
+      "browser_drag_test": false,
+      "physics_check": "B = μ₀I/(2πr)",
+      "verfijning": "Sleep de sonde radiaal van de draad",
+      "inhoudelijk_gevalideerd": false
+    },
+    {
+      "id": "lorentz",
+      "interaction": "knoppen-grafiek",
+      "browser_drag_test": false,
+      "physics_check": "F = qvBsin α",
+      "verfijning": "Onderzoek veldrichting, snelheid en baanstraal",
+      "inhoudelijk_gevalideerd": false
+    },
+    {
+      "id": "motor",
+      "interaction": "knoppen-grafiek",
+      "browser_drag_test": false,
+      "physics_check": "Koppel afhankelijk van spoeloriëntatie",
+      "verfijning": "Draai de rotor met de hand naar een bepaalde stand",
+      "inhoudelijk_gevalideerd": false
+    },
+    {
+      "id": "generator",
+      "interaction": "knoppen-grafiek",
+      "browser_drag_test": false,
+      "physics_check": "Uind = −N dΦ/dt",
+      "verfijning": "Draai de winding met de hand en meet de spanning",
+      "inhoudelijk_gevalideerd": false
+    },
+    {
+      "id": "ohm",
+      "interaction": "versleepbaar",
+      "browser_drag_test": true,
+      "physics_check": "I = U/R",
+      "verfijning": "Controleer instelcontact bij R = 1 en R = 30 Ω",
+      "inhoudelijk_gevalideerd": false
+    },
+    {
+      "id": "resistors",
+      "interaction": "knoppen-grafiek",
+      "browser_drag_test": false,
+      "physics_check": "Rserie = R₁+R₂; Rparallel⁻¹ = R₁⁻¹+R₂⁻¹",
+      "verfijning": "Verwissel fysiek serie- en parallelschakeling",
+      "inhoudelijk_gevalideerd": false
+    },
+    {
+      "id": "potentiometer",
+      "interaction": "versleepbaar",
+      "browser_drag_test": true,
+      "physics_check": "Uuit = Uin · positie/100",
+      "verfijning": "Controleer het contact op beide uiteinden",
+      "inhoudelijk_gevalideerd": false
+    },
+    {
+      "id": "wheatstone",
+      "interaction": "versleepbaar",
+      "browser_drag_test": true,
+      "physics_check": "R₁/R₂ = R₃/R₄",
+      "verfijning": "Controleer nulstand en het verborgen R₃",
+      "inhoudelijk_gevalideerd": false
+    },
+    {
+      "id": "ac",
+      "interaction": "knoppen-grafiek",
+      "browser_drag_test": false,
+      "physics_check": "Urms = Û/√2",
+      "verfijning": "Kies frequentie en kijk naar RMS versus momentaan",
+      "inhoudelijk_gevalideerd": false
+    },
+    {
+      "id": "rlc",
+      "interaction": "knoppen-grafiek",
+      "browser_drag_test": false,
+      "physics_check": "Z = √(R²+(ωL−1/ωC)²)",
+      "verfijning": "Maak de componenten afzonderlijk instelbaar op de tekening",
+      "inhoudelijk_gevalideerd": false
+    },
+    {
+      "id": "lc",
+      "interaction": "knoppen-grafiek",
+      "browser_drag_test": false,
+      "physics_check": "ω₀ = 1/√(LC)",
+      "verfijning": "Volg elektrische en magnetische energie apart",
+      "inhoudelijk_gevalideerd": false
+    },
+    {
+      "id": "em",
+      "interaction": "3d-draaibaar",
+      "browser_drag_test": false,
+      "physics_check": "E en B in fase, loodrecht op voortplanting",
+      "verfijning": "Onderzoek de fase van E en B in de 3D-weergave",
+      "inhoudelijk_gevalideerd": false
+    },
+    {
+      "id": "refraction",
+      "interaction": "versleepbaar",
+      "browser_drag_test": false,
+      "physics_check": "n₁sin α = n₂sin β",
+      "verfijning": "Controleer grenshoeken en totale interne reflectie",
+      "inhoudelijk_gevalideerd": false
+    },
+    {
+      "id": "huygens",
+      "interaction": "knoppen-grafiek",
+      "browser_drag_test": false,
+      "physics_check": "sin α/sin β = v₁/v₂",
+      "verfijning": "Sleep de richting van invallende golfvlakken",
+      "inhoudelijk_gevalideerd": false
+    },
+    {
+      "id": "lens",
+      "interaction": "versleepbaar",
+      "browser_drag_test": false,
+      "physics_check": "1/f = 1/u + 1/v",
+      "verfijning": "Controleer virtueel beeld en voorwerp nabij brandpunt",
+      "inhoudelijk_gevalideerd": false
+    },
+    {
+      "id": "telescope",
+      "interaction": "knoppen-grafiek",
+      "browser_drag_test": false,
+      "physics_check": "Vergroting M = −fo/fe; afocale afstand fo+fe",
+      "verfijning": "Versleep het oculair over de optische as",
+      "inhoudelijk_gevalideerd": false
+    },
+    {
+      "id": "double",
+      "interaction": "knoppen-grafiek",
+      "browser_drag_test": false,
+      "physics_check": "Δy = λL/d",
+      "verfijning": "Verplaats spleten of scherm en kijk naar maxima",
+      "inhoudelijk_gevalideerd": false
+    },
+    {
+      "id": "single",
+      "interaction": "knoppen-grafiek",
+      "browser_drag_test": false,
+      "physics_check": "Eerste minimum sin θ = λ/a",
+      "verfijning": "Versleep de spleetbreedte op de tekening",
+      "inhoudelijk_gevalideerd": false
+    },
+    {
+      "id": "gas",
+      "interaction": "versleepbaar",
+      "browser_drag_test": true,
+      "physics_check": "pV = nRT",
+      "verfijning": "Controleer de as, klikpositie en procesbeperkingen",
+      "inhoudelijk_gevalideerd": false
+    },
+    {
+      "id": "dilation",
+      "interaction": "knoppen-grafiek",
+      "browser_drag_test": false,
+      "physics_check": "γ = 1/√(1−β²)",
+      "verfijning": "Onderzoek directe klokbediening en afleesbaarheid",
+      "inhoudelijk_gevalideerd": false
+    },
+    {
+      "id": "photo",
+      "interaction": "knoppen-grafiek",
+      "browser_drag_test": false,
+      "physics_check": "Ekin,max = hf − W",
+      "verfijning": "Verander fotonfrequentie aan de lichtbron",
+      "inhoudelijk_gevalideerd": false
+    },
+    {
+      "id": "bohr",
+      "interaction": "3d-draaibaar",
+      "browser_drag_test": false,
+      "physics_check": "En = −13,6/n² eV",
+      "verfijning": "Tik op niveaus om een overgang te kiezen",
+      "inhoudelijk_gevalideerd": false
+    },
+    {
+      "id": "chains",
+      "interaction": "knoppen-grafiek",
+      "browser_drag_test": false,
+      "physics_check": "Gekoppelde exponentiële vervalwetten",
+      "verfijning": "Kies de tijd op de vervalgrafiek en vergelijk de drie groepen",
+      "inhoudelijk_gevalideerd": false
+    },
+    {
+      "id": "decay",
+      "interaction": "knoppen-grafiek",
+      "browser_drag_test": false,
+      "physics_check": "N(t) = N₀·2^(−t/T½)",
+      "verfijning": "Kies een tijdstip direct op de grafiek",
+      "inhoudelijk_gevalideerd": false
+    },
+    {
+      "id": "bragg",
+      "interaction": "3d-draaibaar",
+      "browser_drag_test": false,
+      "physics_check": "nλ = 2d sin θ",
+      "verfijning": "Draai kristalvlak of invallende bundel",
+      "inhoudelijk_gevalideerd": false
+    }
+  ]
+}
