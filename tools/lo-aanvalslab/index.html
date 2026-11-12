@@ -493,7 +493,7 @@ function loCoachObservation(goal){
  }else if(goal==='shift'){
   const start=(first?.players||[]).filter(p=>p.team==='d'),end=(lastFrame?.players||[]).filter(p=>p.team==='d');
   const dy=start.reduce((sum,p)=>{const later=end.find(q=>q.id===p.id);return sum+(later?later.y-p.y:0)},0)/Math.max(1,start.length)/PX;
-  observation='Het midden van de verdediging verschoof '+loMetres(Math.abs(dy))+' meter '+(dy<0?'omhoog':dy>0?'omlaag':'niet in de breedte')+' in het model.';moment=duration/2;
+  observation=dy===0?'De verdediging verschoof in dit model niet in de breedte.':'Het midden van de verdediging verschoof '+loMetres(Math.abs(dy))+' meter '+(dy<0?'naar boven':'naar beneden')+' op het speelveld.';moment=duration/2;
  }
  return {observation,moment};
 }
@@ -507,7 +507,7 @@ function loCoachFeedback(){
  loCoachMomentTime=seen.moment;
  el('loCoachMoment').classList.toggle('hide',!Number.isFinite(loCoachMomentTime));
  const compare=el('loCoachCompare'),prev=loComparableAttempt;
- if(prev){const now=summary;compare.textContent='Vorige poging: '+prev.passes+' passes, '+prev.shots+' doelpoging(en). Nu: '+now.passes+' passes, '+now.shots+' doelpoging(en). Dit zijn modeluitkomsten, geen oordeel over je spel.';compare.classList.remove('hide')}
+ if(prev){const now=summary;compare.textContent='Vorige poging: '+prev.passes+' passes, '+prev.shots+' '+(prev.shots===1?'doelpoging':'doelpogingen')+'. Nu: '+now.passes+' passes, '+now.shots+' '+(now.shots===1?'doelpoging':'doelpogingen')+'. Dit zijn modeluitkomsten, geen oordeel over je spel.';compare.classList.remove('hide')}
  else{compare.textContent='';compare.classList.add('hide')}
  loLastAttempt={key:[sportIndex,formationIndex,scenarioIndex,mode].join('/'),passes:summary.passes,shots:summary.shots};
 }
@@ -1138,7 +1138,7 @@ document.addEventListener('keydown',event=>{
  if(event.key==='Escape'&&!el('loAnalysis').hidden){event.preventDefault();closeLoAnalysis()}
 });
 // Alleen testomgeving: reproductie van spelsituaties zonder UI-animatie.
-window.__loLabTest={run(input,withSeed=1337){initial=copy(input);simSeed=withSeed;simulate();return copy(summary)},getPlayers:()=>copy(players),getFrames:()=>copy(frames),getEvents:()=>copy(events),scenario:index=>{makeScenario(index);return copy(players)},setFormation:index=>{applyFormation(index);makeScenario(scenarioIndex);resetSetup();return copy(players)},setSpeed:speed=>{playbackSpeed=clamp(speed,.5,2);el('playbackSpeed').value=String(playbackSpeed)},getTime:()=>time,reachTime,getConfig:()=>copy(sportCfg()),setZonePlan(key){if(!['zonecompact','zoneschuif','zonelijn'].includes(key))return;for(const p of players)if(p.team==='d')p.intent=key;syncZonePlans();draw()},getIntents:()=>copy(tactics.d)};
+window.__loLabTest={run(input,withSeed=1337){initial=copy(input);simSeed=withSeed;simulate();return copy(summary)},getPlayers:()=>copy(players),getFrames:()=>copy(frames),getEvents:()=>copy(events),scenario:index=>{makeScenario(index);return copy(players)},setFormation:index=>{applyFormation(index);makeScenario(scenarioIndex);resetSetup();return copy(players)},setSpeed:speed=>{playbackSpeed=clamp(speed,.5,2);el('playbackSpeed').value=String(playbackSpeed)},getTime:()=>time,reachTime,getConfig:()=>copy(sportCfg()),setZonePlan(key){if(!['zonecompact','zoneschuif','zonelijn'].includes(key))return;for(const p of players)if(p.team==='d')p.intent=key;syncZonePlans();draw()},getIntents:()=>copy(tactics.d),getCoachState:()=>({sport:sportIndex,role:loGoalRole,goal:loGoalKey,manual:loGoalManual,count:loGoals().length}),coachPreview:()=>{loCoachFeedback();return {observed:el('loCoachObserved').textContent,challenge:el('insight').textContent,moment:loCoachMomentTime,goal:loGoalKey}}};
 })();
 
 </script><script>(()=>{'use strict';
