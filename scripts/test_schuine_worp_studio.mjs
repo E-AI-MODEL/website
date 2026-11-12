@@ -70,7 +70,7 @@ try{
   assert.equal(await page.locator('#statRange').innerText(),'—');
   const aim=await page.evaluate(()=>{
    const r=document.querySelector('#field').getBoundingClientRect(),s=window.__physicsStudio.state,c=window.__physicsStudio.camera();
-   const radius=32+(s.speed-5)/30*66;
+   const radius=52+(s.speed-5)/30*100;
    return {x:r.left+c.ox+radius*Math.cos(s.angle*Math.PI/180),y:r.top+c.oy-9-radius*Math.sin(s.angle*Math.PI/180)};
   });
   await page.mouse.move(aim.x,aim.y);await page.mouse.down();await page.mouse.move(aim.x+15,aim.y+15,{steps:7});await page.mouse.up();
