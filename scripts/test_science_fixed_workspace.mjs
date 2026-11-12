@@ -53,7 +53,7 @@ try{
    await page.locator('[data-open="wheatstone"]').click();
    await page.waitForFunction(()=>document.querySelector('#labTitle').textContent.toLowerCase().includes('wheatstone'));
    const graphHeight=await page.locator('.analysis-shell').evaluate(el=>el.getBoundingClientRect().height);
-   assert(graphHeight>=120,'Op de telefoon is ook de grafiek van een meetproef zichtbaar zonder extra tik: '+graphHeight);
+   assert(graphHeight>=180,'De grafiek moet op de telefoon leesbaar zijn zonder uitklappen: '+graphHeight);
    await page.waitForFunction(()=>!document.querySelector('#explorer').classList.contains('open'));
    await page.waitForTimeout(270);
   }else{
@@ -281,6 +281,16 @@ try{
     if(id==='incline')assert(data.rows[0][0]==='Langs de helling',id+' helling behoudt krachtmeting');
    }
    await inspectModel('gas');
+   if(width===390){
+    const header=await page.evaluate(()=>{
+     const el=document.querySelector('#labTitle');
+     return {text:el.textContent,full:el.getAttribute('aria-label'),height:el.clientHeight,scrollHeight:el.scrollHeight,graph:document.querySelector('.analysis-shell').getBoundingClientRect().height};
+    });
+    assert.equal(header.text,'Ideaal gas','De mobiele titel mag niet half worden afgekapt');
+    assert.equal(header.full,'Speciale processen in een ideaal gas','De volledige naam blijft toegankelijk');
+    assert(header.scrollHeight<=header.height+1,'De proefnaam past in de beschikbare hoogte');
+    assert(header.graph>=180,'De onderzoeksgrafiek krijgt de vrijgemaakte ruimte');
+   }
    const startIsotherm=await page.evaluate(()=>({...state.p}));
    const movedIsotherm=await grabAndDrag(90,0);
    assert(movedIsotherm.after.V>startIsotherm.V,'Isotherm: meetpunt in de tekening verandert volume');
