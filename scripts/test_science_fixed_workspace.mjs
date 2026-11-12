@@ -344,7 +344,7 @@ try{
     assert(rotated.yaw>held.yaw+.3,id+' draait zichtbaar mee met de muis: '+JSON.stringify({width,held,rotated,x,y}));
     assert(Math.abs(rotated.time-held.time)<.02,id+' laat de proef stilstaan tijdens het onderzoeken');
     await page.mouse.up();
-    const released=await page.evaluate(()=>({playing:state.playing,count:state.pointer.size,yaw:state.camera.y,marker:document.querySelector('#stage').classList.contains('orbit-held')}));
+    const released=await page.evaluate(()=>({playing:state.playing,count:state.pointer.size,yaw:state.camera.yaw,marker:document.querySelector('#stage').classList.contains('orbit-held')}));
     assert(released.playing&&released.count===0&&!released.marker,id+' laat het model los en kan weer afspelen');
     await page.mouse.move(x+95,y-31);
     const hoverYaw=await page.evaluate(()=>state.camera.yaw);
