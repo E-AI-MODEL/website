@@ -4,7 +4,7 @@ on:
     branches: [main]
     paths:
       - 'tools/lo-aanvalslab/index.html'
-      - 'tools/lo-aanvalslab/tests/easteregg_browser.py'
+      - 'scripts/test_lo_easteregg.py'
       - '.github/workflows/lo-easteregg-verify.yml'
   workflow_dispatch:
 permissions:
