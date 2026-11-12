@@ -1,0 +1,88 @@
+name: Publiceer alleen LO Aanvalslab
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'tools/lo-aanvalslab/index.html'
+      - '.github/workflows/deploy-lo-quick.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: lo-quick-publish
+  cancel-in-progress: true
+
+jobs:
+  publish-lo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Controleer de bron van de online duofunctie
+        run: |
+          test -s tools/lo-aanvalslab/index.html
+          grep -q 'startRealtime' tools/lo-aanvalslab/index.html
+          grep -q 'onlineChoice' tools/lo-aanvalslab/index.html
+
+      - name: Installeer FTPS-client
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq lftp openssl
+
+      - name: Controleer het FTPS-certificaat
+        env:
+          HOST: ftp.eaimodel.nl
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected="4D:F5:15:4C:F3:11:5E:5B:DD:91:BD:5F:BD:0F:0E:A7:35:71:5C:32"
+          actual="$(openssl s_client -starttls ftp -connect "$HOST:21" -servername "$HOST" </dev/null 2>/dev/null | openssl x509 -noout -fingerprint -sha1 | cut -d= -f2)"
+          test "$actual" = "$expected"
+
+      - name: Publiceer alleen het LO Aanvalslab
+        env:
+          HOST: ftp.eaimodel.nl
+          FTP_USER: ${{ secrets.THEORY7_FTP_USER }}
+          FTP_PASSWORD: ${{ secrets.THEORY7_FTP_PASSWORD }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          lftp -u "$FTP_USER","$FTP_PASSWORD" "ftp://$HOST:21" <<'EOF'
+          set cmd:fail-exit yes
+          set ftp:ssl-force true
+          set ftp:ssl-protect-data true
+          set ssl:verify-certificate false
+          set net:timeout 20
+          set net:max-retries 1
+          set xfer:use-temp-file yes
+          mkdir -p /tools/lo-aanvalslab
+          put tools/lo-aanvalslab/index.html -o /tools/lo-aanvalslab/index.html
+          bye
+          EOF
+
+      - name: Controleer exacte live HTML
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from urllib.request import urlopen
+          import time,hashlib
+          source=Path('tools/lo-aanvalslab/index.html').read_bytes()
+          expected=hashlib.sha256(source).hexdigest()
+          url='https://eaimodel.nl/tools/lo-aanvalslab/'
+          for attempt in range(8):
+              try:
+                  remote=urlopen(url+'?lo='+str(time.time()),timeout=20).read()
+                  if hashlib.sha256(remote).hexdigest()==expected:
+                      print('LO Aanvalslab live, exacte bron bevestigd')
+                      break
+                  print('Andere inhoud ontvangen; opnieuw controleren')
+              except Exception as error:
+                  print('Nog niet bereikbaar:',error)
+              time.sleep(6)
+          else:
+              raise SystemExit('Live pagina wijkt af van actuele LO-bron')
+          PY
