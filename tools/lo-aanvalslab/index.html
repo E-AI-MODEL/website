@@ -804,7 +804,7 @@ function calculationOfEvent(ev){
  return result+(rows.length?'<ul class="lo-analysis-breakdown">'+rows.join('')+'</ul>':'');
 }
 
-let lastSecretTap=0,analysisPausedPlayback=false;
+let lastSecretTap=-Infinity,analysisPausedPlayback=false;
 function analysisMoment(frameIndex,chosenEvent=null){
  if(!analysisReady||!frames.length)return;
  const index=clamp(Number(frameIndex)||0,0,frames.length-1),frame=frames[index];
@@ -914,7 +914,7 @@ function closeLoAnalysis(){
 }
 el('loSecret').addEventListener('click',()=>{
  const now=performance.now();
- if(now-lastSecretTap<850){lastSecretTap=0;openLoAnalysis()}
+ if(now-lastSecretTap<850){lastSecretTap=-Infinity;openLoAnalysis()}
  else lastSecretTap=now;
 });
 el('loAnalysisClose').addEventListener('click',closeLoAnalysis);
