@@ -224,6 +224,68 @@ try{
    await page.screenshot({path:'test-results/physics-graph-interactions-'+engine.name()+'.png'});
   }
   await page.screenshot({path:'test-results/physics-fixed-'+engine.name()+'-'+width+'.png'});
+
+  if(width===390||width===1440){
+   // Start bij iedere proef op dezelfde manier. Werkelijke pointerevents doorlopen de
+   // geometrie van het model, de regelaar, de meetwaarden en de grafiek.
+   const inspectModel=async id=>{
+    await page.evaluate(id=>loadLab(id),id);
+    return page.evaluate(()=>({...state.p}));
+   };
+   const grabAndDrag=async(dx,dy)=>{
+    const loc=await page.evaluate(()=>{
+     const c=document.querySelector('#scene'),g=sceneViewport(c),r=c.getBoundingClientRect(),pt=modelHandlePoint();
+     return {x:r.left+g.left+pt.x*g.scale,y:r.top+g.top+pt.y*g.scale,scale:g.scale,pt};
+    });
+    assert(loc.pt,'Deze proef moet een eigen bediening in de tekening hebben');
+    await page.mouse.move(loc.x+8*loc.scale,loc.y+5*loc.scale);
+    await page.mouse.down();
+    const began=await page.evaluate(()=>({...state.p}));
+    await page.mouse.move(loc.x+(8+dx)*loc.scale,loc.y+(5+dy)*loc.scale,{steps:8});
+    await page.mouse.up();
+    const after=await page.evaluate(()=>({...state.p}));
+    return {began,after,loc};
+   };
+   const approx=(a,b,tolerance,message)=>assert(Math.abs(a-b)<=tolerance,message+' : '+a+' tegenover '+b);
+   for(const [id,dx,dy,key] of [
+     ['hydro',0,76,'depth'],
+     ['potentiometer',80,0,'position'],
+     ['incline',0,-62,'angle'],
+     ['resolution',43,-18,'F'],
+     ['resultant',38,-21,'F2'],
+     ['equilibrium',35,-20,'F2'],
+     ['ohm',48,0,'R'],
+     ['wheatstone',30,0,'R4']
+   ]){
+    const original=await inspectModel(id),{began,after}=await grabAndDrag(dx,dy);
+    approx(began[key],original[key],.000001,id+' mag niet verspringen bij aanraken');
+    assert(after[key]>began[key],id+' verandert zijn eigen grootheid bij slepen');
+    const data=await page.evaluate(()=>({rows:state.current.readouts,graph:graphSpecFor(state.id,state.p,state.t)}));
+    if(id==='hydro')approx(Number(data.rows[0][1].replace(',','.').split(' ')[0]),after.rho*after.g*after.depth,1,id+' druk volgt rho*g*h');
+    if(id==='potentiometer')approx(Number(data.rows[0][1].replace(',','.').split(' ')[0]),after.U*after.position/100,.03,id+' spanningsdeling');
+    if(id==='ohm')approx(Number(data.rows[0][1].replace(',','.').split(' ')[0]),after.U/after.R,.03,id+' wet van Ohm');
+    if(id==='wheatstone')approx(Number(data.rows[0][1].replace(',','.').split(' ')[0]),await page.evaluate(()=>bridgeVoltage(state.p)),.03,id+' brugspanning');
+    if(id==='resolution')approx(Math.hypot(after.F*Math.cos(after.angle*Math.PI/180),after.F*Math.sin(after.angle*Math.PI/180)),after.F,.0001,id+' vectorcomponenten');
+    if(id==='incline')assert(data.rows[0][0]==='Langs de helling',id+' helling behoudt krachtmeting');
+   }
+   await inspectModel('gas');
+   const startIsotherm=await page.evaluate(()=>({...state.p}));
+   const movedIsotherm=await grabAndDrag(90,0);
+   assert(movedIsotherm.after.V>startIsotherm.V,'Isotherm: meetpunt in de tekening verandert volume');
+   approx(movedIsotherm.after.T,startIsotherm.T,.0001,'Isotherm: temperatuur blijft gelijk');
+   await page.evaluate(()=>state.graphSetters.mode(1));
+   const beforeIsobar=await page.evaluate(()=>({...state.p}));
+   const movedIsobar=await grabAndDrag(50,0);
+   assert(movedIsobar.after.V>beforeIsobar.V&&movedIsobar.after.T>beforeIsobar.T,'Isobaar: T verandert mee met V');
+   approx(8.314*movedIsobar.after.T/movedIsobar.after.V,8.314*beforeIsobar.T/beforeIsobar.V,.03,'Isobaar: druk constant');
+   await page.evaluate(()=>state.graphSetters.mode(2));
+   const beforeIsochoor=await page.evaluate(()=>({...state.p}));
+   const movedIsochoor=await grabAndDrag(0,-45);
+   assert(movedIsochoor.after.T>beforeIsochoor.T,'Isochoor: meetpunt verandert temperatuur');
+   approx(movedIsochoor.after.V,beforeIsochoor.V,.0001,'Isochoor: volume blijft gelijk');
+   assert.deepEqual(errors,[],'Geen scriptfouten bij directe bediening');
+   await page.screenshot({path:'test-results/physics-touch-hands-on-'+engine.name()+'-'+width+'.png'});
+  }
   await page.goto(base+'/tools/science-observatory/labs/natuurkunde/#interference',{waitUntil:'load'});
   await page.waitForFunction(()=>document.querySelector('#labTitle').textContent.toLowerCase().includes('interferentie'));
   assert(await page.locator('#scene').isVisible());
