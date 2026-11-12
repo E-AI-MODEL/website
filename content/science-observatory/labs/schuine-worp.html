@@ -27,7 +27,7 @@ a{color:inherit;text-decoration:none}
 .seg button{background:transparent;border:0;border-radius:5px;padding:6px 11px;font-size:10px;color:#a2bdc8}
 .seg button[aria-pressed=true]{background:#20404a;color:#e6fff9}
 .view-action{background:#0b1b28e0;border:1px solid #325362;border-radius:7px;padding:9px;font-size:10px;white-space:nowrap}
-.stage-foot{position:absolute;left:16px;right:16px;bottom:14px;display:flex;justify-content:space-between;align-items:center;gap:8px;pointer-events:none}
+.stage-foot{display:none}
 .stage-foot span{display:inline-flex;align-items:center;gap:7px;padding:6px 9px;background:#071521cc;border:1px solid #284553;border-radius:6px;font-size:10px;color:#9dbaca;max-width:100%}
 .dot{width:6px;height:6px;display:inline-block;border-radius:50%;background:var(--teal);flex-shrink:0}
 .stage-legend{display:flex;gap:10px;color:#849dad;font-size:10px}
@@ -246,10 +246,12 @@ function camera(){
  var reaches=[S.target+7,38];
  if(S.whole){reaches.push(now.range+6);S.trials.slice(-5).forEach(function(t){reaches.push(t.range+6);});}
  var worldX=Math.max.apply(null,reaches),height=Math.max(7,now.peak+3,lastTrial?lastTrial.peak+3:0);
- var pad={left:w<550?35:53,right:24,top:w<550?91:105,bottom:w<550?50:54};
- var scale=Math.min((w-pad.left-pad.right)/worldX,(h-pad.top-pad.bottom)/height);
+ var pad={left:w<550?35:53,right:24,top:w<550?72:105};
+ // The field occupies the upper half. Measured height over time stays below it.
+ var oy=Math.min(h-Math.min(155,h*.32),Math.max(pad.top+82,h*(w<550?.52:.56)));
+ var scale=Math.min((w-pad.left-pad.right)/worldX,(oy-pad.top-16)/height);
  scale=Math.max(.2,scale);
- var ox=pad.left,oy=h-pad.bottom;
+ var ox=pad.left;
  return {ox:ox,oy:oy,scale:scale,w:w,h:h,now:now,top:pad.top,worldX:worldX};
 }
 function drawLine(x1,y1,x2,y2,color,width,dash){
@@ -287,7 +289,7 @@ function drawScene(c){
   drawLine(ox,yy,w-15,yy,'#26475867',.8,[2,6]);
   ctx.fillStyle='#628698';ctx.font='10px system-ui';ctx.fillText(height+'m',7,yy-4);
  }
- ctx.fillStyle='#102d3a';ctx.fillRect(0,oy,w,h-oy);
+ ctx.fillStyle='#102d3a';ctx.fillRect(0,oy,w,14);
  drawLine(0,oy,w,oy,'#789daead',1.3);
  // Target mat: two metres wide, precise in world coordinates.
  var tx=ox+S.target*s,matW=2*s;
@@ -335,6 +337,42 @@ function drawScene(c){
   }
  }
  screen.handle={x:hx,y:hy};screen.mat={x:tx,y:oy};screen.view=c;
+ drawMiniGraph(c);
+}
+function drawMiniGraph(c){
+ var w=c.w,h=c.h,top=c.oy+26,bottom=h-29,left=c.ox,right=w-24;
+ if(bottom-top<60)return;
+ ctx.fillStyle='#081826';ctx.fillRect(0,c.oy+15,w,h-c.oy-15);
+ drawLine(0,c.oy+15,w,c.oy+15,'#355665',1);
+ ctx.fillStyle='#91b7c2';ctx.font='600 10px system-ui';ctx.fillText('HOOGTE TIJDENS DE WORP',left,top-4);
+ var y0=top+17,y1=bottom-13;
+ drawLine(left,y1,right,y1,'#456575',1);
+ for(var i=1;i<=2;i++){
+  var lineY=y0+(y1-y0)*i/3;
+  drawLine(left,lineY,right,lineY,'#284a5b7d',.8,[3,5]);
+ }
+ var use=(S.playing||S.finished)?values(S):measured();
+ if(!use){
+  ctx.font='11px system-ui';ctx.fillStyle='#789eac';
+  ctx.fillText('Na je worp verschijnt hier de hoogtegrafiek.',left,top+44);
+  return;
+ }
+ var maxHeight=Math.max(1,use.peak),progress=S.playing?Math.min(S.t,use.time):use.time;
+ ctx.beginPath();ctx.strokeStyle='#eac18e';ctx.lineWidth=1.8;
+ var count=120;
+ for(var k=0;k<=count;k++){
+  var t=progress*k/count,py=position(use,t).y;
+  var px=left+(t/use.time)*(right-left);
+  var y=y1-(py/maxHeight)*(y1-y0);
+  if(k===0)ctx.moveTo(px,y);else ctx.lineTo(px,y);
+ }
+ ctx.stroke();
+ var current=position(use,progress),currX=left+progress/use.time*(right-left),currY=y1-current.y/maxHeight*(y1-y0);
+ dot(currX,currY,3.6,'#ffe6bd');
+ ctx.fillStyle='#8ab4be';ctx.font='10px system-ui';
+ ctx.fillText('0 s',left,y1+15);
+ ctx.textAlign='right';ctx.fillText(fmt(use.time,1)+' s',right,y1+15);ctx.textAlign='left';
+ ctx.fillStyle='#93c5cc';ctx.fillText(fmt(use.peak,1)+' m',left+4,y0-4);
 }
 function drawGraph(c){
  var w=c.w,h=c.h,p=measured(),rect={left:43,right:w-24,top:104,bottom:h-45};
