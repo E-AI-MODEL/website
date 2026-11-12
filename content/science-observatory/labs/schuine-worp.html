@@ -421,7 +421,9 @@ function loop(now){
  requestAnimationFrame(loop);
 }
 function grabStart(e){
- if(S.view!=='field'||S.playing||!screen||!screen.handle)return;
+ if(S.view!=='field'||S.playing)return;
+ resize();draw();
+ if(!screen||!screen.handle)return;
  var p=point(e),aim=screen.handle,mat=screen.mat,dAim=Math.hypot(p.x-aim.x,p.y-aim.y),dMat=Math.hypot(p.x-mat.x,p.y-(mat.y-8));
  if(dAim<44){S.pointer='aim';}
  else if(dMat<44){S.pointer='target';}
