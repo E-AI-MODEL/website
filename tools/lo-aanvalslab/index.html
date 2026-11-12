@@ -56,7 +56,62 @@
 .zone-option:focus-visible{outline:2px solid #a9efd0;outline-offset:1px}
 .zone-tip{font-size:10px;color:#91bcb4;line-height:1.36;margin-top:6px}
 @media(max-width:880px){.zone-plans{padding:6px 7px;margin-bottom:6px}.zone-options{gap:3px}.zone-option{padding:5px 3px;font-size:10px}.zone-tip{font-size:9px}}
-</style></head><body class="eai-refresh"><div class="app"><header class="top"><div class="brand"><span class="mark">LO</span><div><div class="eyebrow">TACTISCH SPELLAB</div><h1>Speel het uit.</h1></div></div><div class="top-actions"><label class="sport-label" for="sportSelect">Sport</label><select id="sportSelect" class="sport-select" aria-label="Kies de sport"><option value="0">Voetbal</option><option value="1">Hockey</option><option value="2">Handbal</option><option value="3">Basketbal</option></select><label class="sport-label" for="formationSelect">Teams</label><select id="formationSelect" class="sport-select formation-select" aria-label="Kies het aantal aanvallers en verdedigers"><option value="0">4 tegen 4</option><option value="1">2 tegen 1</option><option value="2">3 tegen 2</option><option value="3">4 tegen 3</option></select><button id="new" class="btn">Nieuwe spelsituatie</button></div></header><div class="shell"><section class="fieldpane"><div class="fieldhead"><span id="stage" class="pill">Voorbereiden</span><span id="stagehelp" class="small">Versleep de spelers van jouw team</span><label class="playback-control" for="playbackSpeed"><span>Tempo</span><select id="playbackSpeed" aria-label="Afspeelsnelheid"><option value="0.5">½×</option><option value="1" selected>1×</option><option value="1.5">1½×</option><option value="2">2×</option></select></label></div><div class="fieldframe"><svg id="pitch" viewBox="0 0 1000 650" role="img" aria-label="Interactief speelveld waarop je spelers kunt verschuiven"></svg></div><div class="bottom"><div><div id="instruction" class="hint">De bal ligt bij aanvaller 1. Maak je opstelling en speel de hele aanval.</div><div id="under" class="small setup-tip">Sleep een speler of tik eerst de speler en daarna zijn plek.</div></div><div class="actions"><button id="reset" class="btn">Beginopstelling</button><button id="primary" class="btn main">Speel de aanval af ▶</button></div></div></section><aside class="side"><div><h3>Jouw opdracht</h3><h2 id="tasktitle">Maak een kans</h2></div><p id="task" class="hint" style="margin:0">Kies waar je spelers beginnen. Welke opstelling levert volgens jou de beste aanval op?</p><div class="sep"></div><div id="prep"><div id="zonePlans" class="zone-plans hide" role="group" aria-label="Kies een vorm van zoneverdediging voor het hele team"><div class="zone-plans-head">Zoneverdediging · heel team</div><div class="zone-options"><button type="button" class="zone-option" data-zone-plan="zonecompact">Compact</button><button type="button" class="zone-option" data-zone-plan="zoneschuif">Meeschuiven</button><button type="button" class="zone-option" data-zone-plan="zonelijn">Passlijnen</button></div><div id="zoneTip" class="zone-tip">Kies een teamvorm of geef elke verdediger apart een opdracht.</div></div><h3>Geselecteerde speler</h3><div id="selected" class="hint">Tik op een speler om zijn opdracht te kiezen.</div><div id="intents" class="intent-grid"></div><p class="small" id="intentHelp">Sleep een speler, of tik de speler en daarna een vrije plek. Met de pijltjestoetsen kun je nauwkeurig schuiven.</p></div><div class="grow"></div><div class="sep"></div><p id="insight" class="hint" style="margin:0">Zet je spelers klaar. Hun opdrachten bepalen hoe ze straks bewegen.</p><div id="after" class="actions hide"><button id="again" class="btn main">Pas plan aan</button><button id="replay" class="btn">Speel opnieuw</button></div></aside></div><div class="foot"><span id="sportFoot">Voetbal</span> · <span id="formationFoot">4 tegen 4</span> · Oefenmodel · vergeleken met openbare wedstrijddata</div></div>
+
+/* Verborgen spelanalyse: alleen openen via 2 tikken op het LO-logo. */
+.lo-secret{font-family:inherit;cursor:pointer;touch-action:manipulation;flex-shrink:0;background:#0b2429;padding:0}
+.lo-secret:focus-visible{outline:2px solid #d6ffed;outline-offset:3px}
+.lo-analysis[hidden]{display:none!important}
+.lo-analysis{position:fixed;inset:0;z-index:55;background:#031016e8;backdrop-filter:blur(7px);display:flex;justify-content:center;align-items:center;padding:clamp(8px,2vw,20px)}
+.lo-analysis-sheet{width:min(990px,100%);height:min(850px,95dvh);min-height:0;display:flex;flex-direction:column;background:#10262e;border:1px solid #40615e;border-radius:15px;box-shadow:0 24px 100px #000b;overflow:hidden}
+.lo-analysis-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 17px;border-bottom:1px solid #304c54;flex-shrink:0}
+.lo-analysis-head .eyebrow{font-size:9px;letter-spacing:.1em;color:#82b7a8}
+.lo-analysis-head h2{margin:3px 0 0;font-size:20px;letter-spacing:-.025em;color:#f0fff9}
+.lo-analysis-close,.lo-analysis-export{background:#17333b;border:1px solid #41615f;border-radius:7px;color:#d8f3ea;cursor:pointer;padding:7px 10px;font-size:11px;font-weight:650}
+.lo-analysis-close:focus-visible,.lo-analysis-export:focus-visible,.lo-math-event:focus-visible{outline:2px solid #bdf5dc;outline-offset:2px}
+.lo-analysis-scroll{padding:15px 18px 24px;overflow-y:auto;overscroll-behavior:contain;min-height:0;color:#d0e6df;font-size:12px}
+.lo-analysis-intro{color:#accbc0;line-height:1.55;margin:0 0 12px}
+.lo-analysis-summary{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.lo-analysis-stat{background:#153138;border:1px solid #30504c;padding:10px 12px;border-radius:9px;min-width:110px;flex:1}
+.lo-analysis-stat span{font-size:10px;color:#9dc4b7;display:block}.lo-analysis-stat b{display:block;font-size:20px;margin-top:3px;font-variant-numeric:tabular-nums;color:#e6fff5}
+.lo-analysis-block{border:1px solid #34515a;border-radius:10px;padding:12px;margin:12px 0;background:#0d2229}
+.lo-analysis-block h3{font-size:13px;color:#f0fff8;margin:0 0 9px;letter-spacing:0}
+.lo-analysis-details{font-size:11px;line-height:1.5;color:#a4c5bf}
+.lo-analysis-scrub{width:100%;accent-color:#78e1b8;cursor:pointer;margin:9px 0}
+.lo-analysis-label{color:#d8f3e7;font-weight:650;display:flex;justify-content:space-between;gap:8px}
+.lo-analysis-cols{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.lo-analysis-table{width:100%;border-collapse:collapse;font-size:11px}
+.lo-analysis-block{min-width:0;max-width:100%;overflow-wrap:anywhere}
+.lo-analysis-table{table-layout:fixed;max-width:100%}
+.lo-analysis-table th,.lo-analysis-table td{overflow-wrap:anywhere;word-break:normal}
+.lo-analysis-cols{grid-template-columns:repeat(2,minmax(0,1fr))}
+.lo-analysis-stat{min-width:0;overflow-wrap:anywhere}
+.lo-analysis-breakdown li{min-width:0;overflow-wrap:anywhere}
+.lo-analysis-breakdown li span{min-width:0}
+
+.lo-analysis-table th{font-weight:600;text-align:left;color:#90b8ae;font-size:10px}
+.lo-analysis-table th,.lo-analysis-table td{border-bottom:1px solid #29444a;padding:6px 5px;vertical-align:top}
+.lo-analysis-table td{font-variant-numeric:tabular-nums}
+.lo-math-event{width:100%;text-align:left;display:flex;gap:10px;padding:8px 6px;border:0;border-bottom:1px solid #2b4850;color:#d8ede6;background:transparent;cursor:pointer;font-size:11px;line-height:1.4}
+.lo-math-event:hover,.lo-math-event.active{background:#183a3b;border-radius:6px}
+.lo-math-event time{color:#8acdb5;flex:0 0 48px;font-variant-numeric:tabular-nums}
+.lo-analysis-breakdown{list-style:none;margin:8px 0 0;padding:0}
+.lo-analysis-breakdown li{display:flex;justify-content:space-between;gap:8px;border-bottom:1px solid #2b454a;padding:5px 0}
+.lo-analysis-breakdown b{font-variant-numeric:tabular-nums;color:#e0f2ea}
+.lo-analysis-detail-note{font-size:10px;color:#91b4af;line-height:1.5;margin:8px 0 0}
+.lo-analysis-source a{color:#88ddbd;text-underline-offset:2px}
+.lo-analysis-source{font-size:11px;line-height:1.55;color:#aaccc1}
+.lo-analysis-source details{margin-top:9px;border-top:1px solid #305056;padding-top:10px}
+.lo-analysis-source summary{cursor:pointer;color:#d0e9dc}
+.lo-analysis-actions{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:14px}
+@media(max-width:620px){
+.lo-analysis{padding:0}.lo-analysis-sheet{width:100%;height:100dvh;max-height:none;border:0;border-radius:0}
+.lo-analysis-head{padding:10px 12px}.lo-analysis-head h2{font-size:17px}
+.lo-analysis-scroll{padding:10px 11px 19px}.lo-analysis-cols{grid-template-columns:minmax(0,1fr);gap:0}
+.lo-analysis-stat{min-width:calc(50% - 6px);padding:8px}.lo-analysis-stat b{font-size:18px}
+.lo-analysis-block{padding:10px;margin:8px 0}.lo-analysis-table{font-size:10px}
+}
+</style></head><body class="eai-refresh"><div class="app"><header class="top"><div class="brand"><button type="button" class="mark lo-secret" id="loSecret" aria-label="LO-logo. Tweemaal tikken voor de berekeningen van het spel" title="LO">LO</button><div><div class="eyebrow">TACTISCH SPELLAB</div><h1>Speel het uit.</h1></div></div><div class="top-actions"><label class="sport-label" for="sportSelect">Sport</label><select id="sportSelect" class="sport-select" aria-label="Kies de sport"><option value="0">Voetbal</option><option value="1">Hockey</option><option value="2">Handbal</option><option value="3">Basketbal</option></select><label class="sport-label" for="formationSelect">Teams</label><select id="formationSelect" class="sport-select formation-select" aria-label="Kies het aantal aanvallers en verdedigers"><option value="0">4 tegen 4</option><option value="1">2 tegen 1</option><option value="2">3 tegen 2</option><option value="3">4 tegen 3</option></select><button id="new" class="btn">Nieuwe spelsituatie</button></div></header><div class="shell"><section class="fieldpane"><div class="fieldhead"><span id="stage" class="pill">Voorbereiden</span><span id="stagehelp" class="small">Versleep de spelers van jouw team</span><label class="playback-control" for="playbackSpeed"><span>Tempo</span><select id="playbackSpeed" aria-label="Afspeelsnelheid"><option value="0.5">½×</option><option value="1" selected>1×</option><option value="1.5">1½×</option><option value="2">2×</option></select></label></div><div class="fieldframe"><svg id="pitch" viewBox="0 0 1000 650" role="img" aria-label="Interactief speelveld waarop je spelers kunt verschuiven"></svg></div><div class="bottom"><div><div id="instruction" class="hint">De bal ligt bij aanvaller 1. Maak je opstelling en speel de hele aanval.</div><div id="under" class="small setup-tip">Sleep een speler of tik eerst de speler en daarna zijn plek.</div></div><div class="actions"><button id="reset" class="btn">Beginopstelling</button><button id="primary" class="btn main">Speel de aanval af ▶</button></div></div></section><aside class="side"><div><h3>Jouw opdracht</h3><h2 id="tasktitle">Maak een kans</h2></div><p id="task" class="hint" style="margin:0">Kies waar je spelers beginnen. Welke opstelling levert volgens jou de beste aanval op?</p><div class="sep"></div><div id="prep"><div id="zonePlans" class="zone-plans hide" role="group" aria-label="Kies een vorm van zoneverdediging voor het hele team"><div class="zone-plans-head">Zoneverdediging · heel team</div><div class="zone-options"><button type="button" class="zone-option" data-zone-plan="zonecompact">Compact</button><button type="button" class="zone-option" data-zone-plan="zoneschuif">Meeschuiven</button><button type="button" class="zone-option" data-zone-plan="zonelijn">Passlijnen</button></div><div id="zoneTip" class="zone-tip">Kies een teamvorm of geef elke verdediger apart een opdracht.</div></div><h3>Geselecteerde speler</h3><div id="selected" class="hint">Tik op een speler om zijn opdracht te kiezen.</div><div id="intents" class="intent-grid"></div><p class="small" id="intentHelp">Sleep een speler, of tik de speler en daarna een vrije plek. Met de pijltjestoetsen kun je nauwkeurig schuiven.</p></div><div class="grow"></div><div class="sep"></div><p id="insight" class="hint" style="margin:0">Zet je spelers klaar. Hun opdrachten bepalen hoe ze straks bewegen.</p><div id="after" class="actions hide"><button id="again" class="btn main">Pas plan aan</button><button id="replay" class="btn">Speel opnieuw</button></div></aside></div><div class="foot"><span id="sportFoot">Voetbal</span> · <span id="formationFoot">4 tegen 4</span> · Oefenmodel · vergeleken met openbare wedstrijddata</div></div>
+<section id="loAnalysis" class="lo-analysis" role="dialog" aria-modal="true" aria-labelledby="loAnalysisTitle" hidden><div class="lo-analysis-sheet"><header class="lo-analysis-head"><div><div class="eyebrow">HET VERHAAL ACHTER DE SIMULATIE</div><h2 id="loAnalysisTitle">Wat berekende het spel?</h2></div><button type="button" class="lo-analysis-close" id="loAnalysisClose">Sluiten ×</button></header><main class="lo-analysis-scroll" id="loAnalysisBody"></main></div></section>
 <details class="source-detail" id="sourceDetail"><summary>Meetbasis en bronnen</summary>
  <div class="source-popover"><strong>Onderzoeksbasis per sport</strong><p>Het Aanvalslab blijft een vereenvoudigd onderwijsmodel. Alleen de genoemde onderdelen zijn aangepast op basis van data of gepubliceerd onderzoek. Geen validatie voor individuele leerlingen.</p>
  <p><b>Voetbal</b> · 2 volledig gevolgde Metrica-wedstrijden, ruim 6 miljoen verplaatsingsmetingen. Gemiddeld 1,77 m/s, 90e percentiel 3,67 m/s, bij balbezit mediane afstand tot dichtstbijzijnde tegenstander 4,88 m. De verdedigersnelheid is voorzichtig bijgesteld. De passkeuze gebruikt daarnaast 84 gecontroleerde PASS-events. Het 3-tegen-2-loopidee is gebaseerd op 279 geobserveerde jeugdpartijtjes. <a href="https://github.com/metrica-sports/sample-data" target="_blank" rel="noopener noreferrer">Metrica</a> · <a href="https://doi.org/10.26582/k.51.1.7" target="_blank" rel="noopener noreferrer">3-tegen-2-onderzoek</a>.</p>
@@ -116,7 +171,7 @@ function applySport(index){sportIndex=Math.max(0,Math.min(3,Number(index)||0));P
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v)),dist=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y), hypot=Math.hypot;
 const copy=v=>JSON.parse(JSON.stringify(v)),unit=(x,y)=>{const m=Math.hypot(x,y)||1;return {x:x/m,y:y/m}},mix=(a,b,t)=>a+(b-a)*t;
 let mode='attack',phase='a',state='setup',players=[],initial=[],scenario=[],frames=[],events=[],time=0,duration=MAX,raf=0,last=0,drag=null,seed=1,result='',selected=null;
-let scenarioIndex=0,simSeed=0,summary={};
+let scenarioIndex=0,simSeed=0,summary={},analysisReady=false;
 function rand(){seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296}
 const scenarios=[
  {name:'Middenveld',a:[[320,320],[485,164],[515,468],[702,314]],d:[[408,275],[585,220],[596,428],[790,344]]},
@@ -284,7 +339,7 @@ function refresh(){
  syncZonePlans();
 }
 
-function resetSetup(){cancelAnimationFrame(raf);state='setup';if(mode!=='online')phase='a';selected=null;players=copy(scenario);el('insight').textContent='Speler 1 begint met de bal. Kies je opstelling en spelersopdrachten.';drawPitch();draw();refresh();choose((mode==='defend'||(mode==='online'&&phase==='d'))?'d0':'a0')}
+function resetSetup(){analysisReady=false;cancelAnimationFrame(raf);state='setup';if(mode!=='online')phase='a';selected=null;players=copy(scenario);el('insight').textContent='Speler 1 begint met de bal. Kies je opstelling en spelersopdrachten.';drawPitch();draw();refresh();choose((mode==='defend'||(mode==='online'&&phase==='d'))?'d0':'a0')}
 function start(){initial=copy(players);simSeed=1337+scenarioIndex*4099+formationIndex*1609;simulate();state='playing';time=0;last=0;el('insight').textContent='De aanval speelt af. Kijk hoe de spelers bewegen.';refresh();showFrame(0);cancelAnimationFrame(raf);raf=requestAnimationFrame(tick)}
 function point(e){
  const matrix=svg.getScreenCTM();
@@ -340,8 +395,8 @@ function simulate(){
  frames=[];events=[];
  const a=()=>ps.filter(p=>p.team==='a'),d=()=>ps.filter(p=>p.team==='d');
  const b=()=>ps.find(p=>p.id===holder);
- function log(kind,msg){events.push({time:Math.round(clock*100)/100,kind,msg})}
- function snapshot(){frames.push({time:clock,players:copy(ps),ball:{...ball},trail:copy(trail)})}
+ function log(kind,msg,detail=null){events.push({time:Math.round(clock*100)/100,kind,msg,...(detail?{detail:copy(detail)}:{})})}
+ function snapshot(){frames.push({time:clock,players:copy(ps),ball:{...ball},trail:copy(trail),holder,ballMode:flight?'pass':shot?'shot':loose?'loose':'controlled',flight:flight?{target:flight.target,elapsed:flight.elapsed,duration:flight.duration}:null})}
  function followControlledBall(owner){
   const aim=ballAt(owner),difference=dist(ball,aim),cap=PX*5.7*DT;
   if(difference>.0001){const f=Math.min(1,cap/difference);ball={x:mix(ball.x,aim.x,f),y:mix(ball.y,aim.y,f)}}
@@ -515,51 +570,58 @@ function simulate(){
    earliest=Math.min(earliest,margin);
   }
   const immediate=d().reduce((m,q)=>Math.min(m,dist(q,to)),1000),behind=target.x-carrier.x;
-  let quality=behind*.13+Math.min(12,Math.abs(to.y-carrier.y)*.036)+clamp(earliest*65,-110,66)-length*.048;
-  if(behind<-55)quality-=12;
-  if(immediate<62)quality-=Math.max(0,62-immediate)*.9;
-  // Metrica: 84 geobserveerde PASS-locatieparen uit twee wedstrijden.
-  // Mediaan 14,60 m op 105 m veld, naar oefenveld omgerekend 6,19 m.
-  // Dit stuurt alleen de voorkeur voor een passafstand; het stelt geen
-  // passsnelheid of onderscheppingskans op basis van deze events vast.
-  if(sportCfg().passReference){
-   const metres=length/PX;
-   quality-=Math.min(21,Math.abs(metres-sportCfg().passReference)*.4);
-  }
-  // Hockey: direct vooruit richting cirkel krijgt voorrang boven nog een
-  // omweg als er een veilige ontvangstmogelijkheid is (Lord et al. 2022).
-  // Een richtingsregel, geen uit velddata afgeleide doelkans.
-  if(sportCfg().circlePassBias&&target.x>sportCfg().shotX-105&&Math.abs(target.y-325)<sportCfg().shotY*.84){
-   quality+=sportCfg().circlePassBias;
-  }
-  // Bij 3 tegen 2 helpt een teruggelegde pass vanaf de flank ruimte voor
-  // het centrum te vinden (Leser et al., 279 jeugdpartijtjes). Dit is geen
-  // claim dat de gepubliceerde doelpercentages voor het model gelden.
-  if(sportIndex===0&&formationIndex===2&&Math.abs(carrier.y-325)>115&&carrier.x>675&&
-     target.x<carrier.x-20&&Math.abs(target.y-325)<108)quality+=18;
-  return {to,target,quality,earliest,possible:earliest>.1&&immediate>34,duration,from,near:immediate};
+  const forward=behind*.13,spread=Math.min(12,Math.abs(to.y-carrier.y)*.036),
+        arrival=clamp(earliest*65,-110,66),lengthPenalty=-length*.048;
+  const backward=behind<-55?-12:0,crowding=immediate<62?-Math.max(0,62-immediate)*.9:0;
+  const passReference=sportCfg().passReference||0;
+  const distancePenalty=passReference?-Math.min(21,Math.abs(length/PX-passReference)*.4):0;
+  const circle=(sportCfg().circlePassBias&&target.x>sportCfg().shotX-105&&Math.abs(target.y-325)<sportCfg().shotY*.84)?sportCfg().circlePassBias:0;
+  const flank=(sportIndex===0&&formationIndex===2&&Math.abs(carrier.y-325)>115&&carrier.x>675&&
+     target.x<carrier.x-20&&Math.abs(target.y-325)<108)?18:0;
+  // Dit is exact de som die de passkeuze bestuurt, geen kans op een doelpunt.
+  const quality=forward+spread+arrival+lengthPenalty+backward+crowding+distancePenalty+circle+flank;
+  const qualityParts={forward,spread,arrival,lengthPenalty,backward,crowding,distancePenalty,circle,flank};
+  return {to,target,quality,qualityParts,earliest,possible:earliest>.1&&immediate>34,
+   duration,from,near:immediate};
  }
  function choosePass(carrier){
   const choices=a().filter(p=>p.id!==holder).map(p=>passRisk(carrier,p)).sort((u,v)=>v.quality-u.quality);
-  return choices.find(c=>c.possible&&c.to.x>carrier.x-90)||choices.find(c=>c.possible)||choices[0]||null;
+  const selected=choices.find(c=>c.possible&&c.to.x>carrier.x-90)||choices.find(c=>c.possible)||choices[0]||null;
+  if(selected)selected.candidates=choices.map(c=>({player:c.to.id,score:c.quality,
+   possible:c.possible,distanceM:dist(c.from,c.target)/PX,arrivalMarginS:c.earliest}));
+  return selected;
  }
  function startPass(choice){
+  const passer=holder;
   flight={kind:'pass',target:choice.to.id,start:{...ball},end:{...choice.target},duration:choice.duration,elapsed:0,startTime:clock};
   holder=null;cooldown=.65;held=0;passes++;
   for(const p of d())p._reactionLeft=Math.max(p._reactionLeft,p.react*.82);
-  log('pass','Pass naar aanvaller '+(+choice.to.id[1]+1));
+  log('pass','Pass naar aanvaller '+(+choice.to.id[1]+1),{
+   from:passer,to:choice.to.id,distanceM:dist(choice.from,choice.target)/PX,
+   durationS:choice.duration,ballSpeedMps:dist(choice.from,choice.target)/PX/choice.duration,
+   minArrivalMarginS:choice.earliest,receiverNearestDefM:choice.near/PX,
+   score:choice.quality,scoreParts:choice.qualityParts,candidates:choice.candidates||[],
+   feasible:choice.possible,receiveRadiusM:sportCfg().receive/PX
+  });
  }
  function beginShot(carrier){
   const goal={x:948,y:clamp(325+(random()-.5)*sportCfg().goalY,274,380)};
   shot={kind:'shot',start:{...ball},end:goal,duration:Math.max(.28,dist(ball,goal)/(PX*sportCfg().shot)),elapsed:0};
   holder=null;shots++;
   for(const p of d())p._reactionLeft=Math.max(p._reactionLeft,p.react*.55);
-  log('shot','Doelpoging door aanvaller '+(+carrier.id[1]+1));
+  log('shot','Doelpoging door aanvaller '+(+carrier.id[1]+1),{
+   player:carrier.id,distanceM:dist(shot.start,shot.end)/PX,
+   durationS:shot.duration,ballSpeedMps:dist(shot.start,shot.end)/PX/shot.duration,
+   nearestDefenderM:d().reduce((m,p)=>Math.min(m,dist(p,carrier)),1000)/PX,
+   shotLineX:sportCfg().shotX/PX,actualX:carrier.x/PX,
+   allowedSideM:sportCfg().shotY/PX,actualSideM:Math.abs(carrier.y-325)/PX,
+   pointY:shot.end.y/PX
+  });
  }
- function takeover(by,kind='loss'){
+ function takeover(by,kind='loss',detail={}){
   terminal=true;outcome='intercept';intercepts++;holder=null;
   // Bal blijft op de feitelijke contactplek liggen; geen sprong naar verdediger.
-  log(kind,'Balverlies bij verdediger '+(+by.id[1]+1));
+  log(kind,'Balverlies bij verdediger '+(+by.id[1]+1),{player:by.id,intent:by.intent,ballDistanceM:dist(by,ball)/PX,...detail});
  }
  function contactPlayer(people,before,after,radius){
   let found=null;
@@ -590,13 +652,15 @@ function simulate(){
    ball={x:mix(flight.start.x,flight.end.x,k),y:mix(flight.start.y,flight.end.y,k)};
    trail.push({...ball});if(trail.length>18)trail.shift();
    const hit=contactPlayer(defenders,old,ball,sportCfg().intercept);
-   if(hit){ball=hit.at;takeover(hit.p)}
+   if(hit){ball=hit.at;takeover(hit.p,'intercept',{ballContactM:hit.distance/PX,limitM:sportCfg().intercept/PX,receiver:flight.target,travelFraction:k})}
    else if(k>=1){
     const receiver=ps.find(q=>q.id===flight.target);
     if(receiver&&dist(receiver,ball)<sportCfg().receive){
      holder=receiver.id;completed++;cooldown=.42;held=0;
      // De bal wordt pas in volgende tijdstappen rustig onder controle gebracht.
-     log('receive','Aannemen door aanvaller '+(+receiver.id[1]+1));
+     log('receive','Aannemen door aanvaller '+(+receiver.id[1]+1),{
+   player:receiver.id,distanceM:dist(receiver,ball)/PX,limitM:sportCfg().receive/PX
+   });
     }else{loose={x:ball.x,y:ball.y,started:clock};log('loose','Bal niet direct aangenomen')}
     flight=null;trail=[];
    }
@@ -606,7 +670,7 @@ function simulate(){
    ball={x:mix(shot.start.x,shot.end.x,k),y:mix(shot.start.y,shot.end.y,k)};
    trail.push({...ball});if(trail.length>18)trail.shift();
    const hit=contactPlayer(defenders,old,ball,sportCfg().intercept*.95);
-   if(hit&&shot.elapsed<shot.duration*.95){ball=hit.at;terminal=true;outcome='shotBlocked';log('blocked','Schot geblokkeerd')}
+   if(hit&&shot.elapsed<shot.duration*.95){ball=hit.at;terminal=true;outcome='shotBlocked';log('blocked','Schot geblokkeerd',{player:hit.p.id,intent:hit.p.intent,ballContactM:hit.distance/PX,limitM:sportCfg().intercept*.95/PX,shotElapsedS:shot.elapsed})}
    else if(k>=1){terminal=true;outcome='shot';log('end','De aanval eindigt met een doelpoging')}
   }else if(loose){
    ball={x:loose.x,y:loose.y};
@@ -625,7 +689,7 @@ function simulate(){
     p._contact=approaching?p._contact+DT:Math.max(0,p._contact-DT*2);
     const moving=Math.hypot(carrier.vx,carrier.vy)/PX;
     const threshold=(p.intent==='druk'?.35:p.intent==='dek'||p.intent==='volg'||p.intent==='zoneschuif'?.52:p.intent==='zonelijn'?.64:.74)+(moving>2.4?.16:0);
-    if(p._contact>=threshold){takeover(p);break}
+    if(p._contact>=threshold){takeover(p,'loss',{contactS:p._contact,requiredContactS:threshold,carrierSpeedMps:moving,reachRadiusM:(sportCfg().intercept+PX*.30)/PX});break}
    }
    const closest=defenders.reduce((best,p)=>Math.min(best,dist(p,carrier)),9999);
    if(!terminal&&carrier.x>sportCfg().shotX&&Math.abs(carrier.y-325)<sportCfg().shotY&&(held>.46||closest>PX*2.8)&&cooldown<=0){beginShot(carrier)}
@@ -649,7 +713,7 @@ function simulate(){
   snapshot();
  }
  result=outcome;duration=frames.at(-1)?.time||MAX;
- summary={result,duration,passes,completed,shots,intercepts,events:copy(events)};
+ summary={result,duration,passes,completed,shots,intercepts,events:copy(events)};analysisReady=true;
 }
 function frameAt(t){const idx=clamp(Math.round(t/DT),0,frames.length-1);return frames[idx]||{players,ball:ballAt(players[0]),trail:[]}}
 function showFrame(t){const f=frameAt(t);draw(f.players,f.ball,f.trail)}
@@ -689,6 +753,183 @@ window.__loOnline={
   getState:()=>state,
   replay(){cancelAnimationFrame(raf);state='playing';time=0;last=0;refresh();showFrame(0);raf=requestAnimationFrame(tick)}
 };
+
+const mathEscape=v=>String(v??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+const mathNum=(v,n=2)=>Number.isFinite(v)?Number(v).toFixed(n):'–';
+const tacticLabels={
+  pas:'Passen',drijf:'Bal meenemen',bewaar:'Bal vasthouden',zijde:'Naar de zijkant',
+  diep:'Diep gaan',breed:'Breed houden',bal:'In de bal',stil:'Blijven staan',
+  kruis:'Kruisen',ruimte:'Ruimte maken',dek:'Man dekken',volg:'Loopactie volgen',
+  druk:'Druk op bal',lijn:'Passlijn sluiten',zone:'Zone bewaken (oud)',
+  zonecompact:'Zone compact',zoneschuif:'Zone meeschuiven',zonelijn:'Zone passlijnen',terug:'Terugzakken'
+};
+const analysisRow=(key,val,unit='')=>'<li><span>'+mathEscape(key)+'</span><b>'+mathNum(val)+(unit?' '+mathEscape(unit):'')+'</b></li>';
+const analysisTitles={shot:'Doelpoging',shotBlocked:'Schot geblokkeerd',intercept:'Balverlies',other:'Geen doelpoging'};
+const analysisSourceLinks=[
+ [['Metrica-tracking','https://github.com/metrica-sports/sample-data'],['Meetmethode','https://github.com/E-AI-MODEL/website/tree/main/tools/lo-aanvalslab/calibratie/v13']],
+ [['Hockey-onderzoek','https://pmc.ncbi.nlm.nih.gov/articles/PMC10108760/'],['Wedstrijdwerkboeken','https://github.com/felicitylord/Hockey-Analysis']],
+ [['Handbalposities','https://zenodo.org/records/12065335'],['Spelfasen','https://pmc.ncbi.nlm.nih.gov/articles/PMC10431627/']],
+ [['SportVU-tracking','https://github.com/sealneaward/nba-movement-data'],['3 tegen 3-onderzoek','https://doi.org/10.1177/17479541211067989']]
+];
+function calculationOfEvent(ev){
+ const d=ev?.detail||{};
+ let result='<strong>'+mathEscape(ev?.msg||'Geen afzonderlijk spelmoment')+'</strong>';
+ if(!ev?.detail)return result+'<p class="lo-analysis-detail-note">Er is op dit tijdstip geen aparte rekenbeslissing vastgelegd. Bekijk de posities en snelheden.</p>';
+ let rows=[];
+ if(ev.kind==='pass'){
+  rows=[analysisRow('Passafstand',d.distanceM,'m'),analysisRow('Balsnelheid',d.ballSpeedMps,'m/s'),
+   analysisRow('Vliegtijd',d.durationS,'s'),analysisRow('Aankomstmarge verdediger',d.minArrivalMarginS,'s'),
+   analysisRow('Dichtste verdediger bij ontvanger',d.receiverNearestDefM,'m'),
+   analysisRow('Passscore (geen kans)',d.score,'pt')];
+  const labels={forward:'Vooruitgang × 0,13',spread:'Breedtebonus',arrival:'Marge × 65, begrensd',
+   lengthPenalty:'Passafstand × −0,048',backward:'Straf terugspelen',crowding:'Druk bij ontvanger',
+   distancePenalty:'Referentieafstand',circle:'Hockey richting cirkel',flank:'Voetbal teruglegpass'};
+  const parts=Object.entries(d.scoreParts||{}).map(([k,v])=>analysisRow(labels[k]||k,v,'pt')).join('');
+  result+='<p class="lo-analysis-detail-note">Een positieve aankomstmarge betekent dat de verdediger een berekend punt op de passlijn later bereikt dan de bal. Deze score is geen slagingspercentage.</p><details class="lo-analysis-source" open><summary>Exacte onderdelen van de passscore</summary><ul class="lo-analysis-breakdown">'+parts+'</ul></details>';
+  if(d.candidates?.length){
+   result+='<details class="lo-analysis-source"><summary>Waarom deze ontvanger? Vergelijk alle opties</summary>'+
+    '<table class="lo-analysis-table"><thead><tr><th>Ontvanger</th><th>Passscore</th><th>Afstand</th><th>Berekend bereikbaar</th></tr></thead><tbody>'+
+    d.candidates.map(c=>'<tr><td>'+mathEscape(c.player)+(c.player===d.to?' · gekozen':'')+'</td><td>'+mathNum(c.score)+'</td><td>'+mathNum(c.distanceM)+' m</td><td>'+(c.possible?'Ja':'Nee')+'</td></tr>').join('')+
+    '</tbody></table><p class="lo-analysis-detail-note">Het model kiest eerst een als bereikbaar beoordeelde optie die niet ver achter de baldrager ligt. Alleen als dat niet kan, neemt het een andere optie.</p></details>';
+  }
+ }else if(ev.kind==='shot'){
+  rows=[analysisRow('Schotafstand',d.distanceM,'m'),analysisRow('Vliegtijd',d.durationS,'s'),
+   analysisRow('Balsnelheid',d.ballSpeedMps,'m/s'),analysisRow('Dichtste verdediger',d.nearestDefenderM,'m'),
+   analysisRow('Positie baldrager (x)',d.actualX,'model-m'),analysisRow('Schotgrens (x)',d.shotLineX,'model-m'),
+   analysisRow('Afstand van het midden',d.actualSideM,'m'),analysisRow('Toegestaan naast het midden',d.allowedSideM,'m')];
+  result+='<p class="lo-analysis-detail-note">Een schot in het model is een doelpoging, geen doelpunt. De schotregel kijkt ook naar bezitduur en de dichtste verdediger.</p>';
+ }else if(ev.kind==='receive'){
+  rows=[analysisRow('Ontvanger tot bal',d.distanceM,'m'),analysisRow('Aannamegrens',d.limitM,'m')];
+ }else if(['intercept','loss','blocked'].includes(ev.kind)){
+  rows=['<li><span>Verdediger</span><b>'+mathEscape(d.player||'–')+'</b></li>'];
+  if(Number.isFinite(d.ballContactM))rows.push(analysisRow('Contactafstand',d.ballContactM,'m'));
+  if(Number.isFinite(d.limitM))rows.push(analysisRow('Bereik voor onderschepping',d.limitM,'m'));
+  if(Number.isFinite(d.contactS))rows.push(analysisRow('Opgebouwde contactduur',d.contactS,'s'));
+  if(Number.isFinite(d.requiredContactS))rows.push(analysisRow('Benodigde contactduur',d.requiredContactS,'s'));
+  if(Number.isFinite(d.carrierSpeedMps))rows.push(analysisRow('Snelheid baldrager',d.carrierSpeedMps,'m/s'));
+  result+='<p class="lo-analysis-detail-note">Dit volgt uit contact met de berekende balbaan of uit de ingestelde tijd voor druk op de bal. Het is geen gemeten onderscheppingskans.</p>';
+ }
+ return result+(rows.length?'<ul class="lo-analysis-breakdown">'+rows.join('')+'</ul>':'');
+}
+
+let lastSecretTap=-Infinity,analysisPausedPlayback=false;
+function analysisMoment(frameIndex,chosenEvent=null){
+ if(!analysisReady||!frames.length)return;
+ const index=clamp(Number(frameIndex)||0,0,frames.length-1),frame=frames[index];
+ const ev=chosenEvent===null?events.slice().reverse().find(e=>e.time<=frame.time+.015):events[chosenEvent];
+ el('loMathScrub').value=String(index);
+ el('loMathTime').textContent=mathNum(frame.time)+' / '+mathNum(duration)+' s';
+ const defenders=frame.players.filter(p=>p.team==='d'),attackers=frame.players.filter(p=>p.team==='a');
+ const nearest=defenders.reduce((acc,p)=>Math.min(acc,dist(p,frame.ball)/PX),9999);
+ const phase={pass:'Pass onderweg',shot:'Schot onderweg',loose:'Losse bal',controlled:'Bal in bezit'}[frame.ballMode]||'Balbeweging';
+ const defRows=defenders.map(p=>{
+  const aim=p._lastAim;
+  return '<tr><td>'+mathEscape(p.id)+'</td><td>'+mathEscape(tacticLabels[p.intent]||p.intent)+'</td><td>'+mathNum(dist(p,frame.ball)/PX)+'</td><td>'+mathNum(hypot(p.vx,p.vy)/PX)+'</td><td>'+mathNum(Math.max(0,p._reactionLeft||0))+'</td><td>'+mathNum(p._contact||0)+'</td><td>'+(aim?mathNum(dist(p,aim)/PX):'–')+'</td></tr>';
+ }).join('');
+ const attackRows=attackers.map(p=>'<tr><td>'+mathEscape(p.id)+(p.id===frame.holder?' · bal':'')+'</td><td>'+mathEscape(tacticLabels[p.intent]||p.intent)+'</td><td>'+mathNum(hypot(p.vx,p.vy)/PX)+'</td><td>'+mathNum(p.x/PX)+'</td><td>'+mathNum(p.y/PX)+'</td></tr>').join('');
+ el('loMathFrame').innerHTML=
+  '<div class="lo-analysis-label"><span>'+mathEscape(phase)+(frame.holder?' · '+mathEscape(frame.holder):'')+'</span><span>Dichtste verdediger '+mathNum(nearest)+' m</span></div>'+
+  '<h3>Verdediging op dit moment</h3><table class="lo-analysis-table"><thead><tr><th>Speler</th><th>Opdracht</th><th>Bal (m)</th><th>Snelheid (m/s)</th><th>Reactie (s)</th><th>Contact (s)</th><th>Naar doelplek (m)</th></tr></thead><tbody>'+defRows+'</tbody></table>'+
+  '<p class="lo-analysis-detail-note">Afstand tot bal, berekende loopsnelheid, resterende reactietijd, opgebouwde contactduur en de afstand tot de laatste doelpositie van de verdediger.</p>'+
+  '<details class="lo-analysis-source"><summary>Ook de aanvallers op dit moment</summary><table class="lo-analysis-table"><thead><tr><th>Speler</th><th>Opdracht</th><th>Snelheid (m/s)</th><th>x</th><th>y</th></tr></thead><tbody>'+attackRows+'</tbody></table><p class="lo-analysis-detail-note">x en y zijn modelcoördinaten in meters, gemeten vanaf de oorsprong van het getekende veld.</p></details>';
+ el('loMathDecision').innerHTML=calculationOfEvent(ev);
+ document.querySelectorAll('.lo-math-event').forEach(b=>b.classList.toggle('active',Number(b.dataset.eventIndex)===events.indexOf(ev)));
+}
+function renderLoAnalysis(){
+ const root=el('loAnalysisBody');
+ if(!analysisReady||!frames.length){
+  root.innerHTML='<p class="lo-analysis-intro">Er is nog geen aanval berekend. Speel eerst een aanval. Tik vervolgens tweemaal op het LO-logo om de berekeningen te bekijken.</p>';
+  return;
+ }
+ const cfg=sportCfg();let distanceBall=0,distanceAttack=0,distanceDefend=0,topBall=0;
+ for(let i=1;i<frames.length;i++){
+  const previous=frames[i-1],current=frames[i],travel=dist(previous.ball,current.ball)/PX;
+  distanceBall+=travel;topBall=Math.max(topBall,travel/DT);
+  for(const p of current.players){
+   const before=previous.players.find(x=>x.id===p.id);if(!before)continue;
+   const moved=dist(p,before)/PX;
+   if(p.team==='a')distanceAttack+=moved;else distanceDefend+=moved;
+  }
+ }
+ const cards=[
+  ['Sport / teams',cfg.name+' · '+formation().name],['Uitkomst',analysisTitles[summary.result]||summary.result],
+  ['Duur',mathNum(summary.duration)+' s'],['Passes / aangenomen',summary.passes+' / '+summary.completed],
+  ['Balafstand',mathNum(distanceBall)+' m'],['Tijdstappen',frames.length]
+ ].map(c=>'<div class="lo-analysis-stat"><span>'+mathEscape(c[0])+'</span><b>'+mathEscape(c[1])+'</b></div>').join('');
+ const startRows=initial.map(p=>'<tr><td>'+mathEscape(p.id)+'</td><td>'+mathEscape(tacticLabels[p.intent]||p.intent)+'</td><td>'+mathNum(p.x/PX)+' / '+mathNum(p.y/PX)+'</td><td>'+mathNum(p.speed)+'</td><td>'+mathNum(p.react)+'</td></tr>').join('');
+ const eventsHtml=events.map((e,i)=>'<button class="lo-math-event" type="button" data-event-index="'+i+'"><time>'+mathNum(e.time)+' s</time><span>'+mathEscape(e.msg)+'</span></button>').join('');
+ const parameters=[
+  ['Rekenstap',DT+' s'],['Pixels per meter',cfg.px],
+  ['Passsnelheid (model)',cfg.pass+' m/s'],['Schotsnelheid (model)',cfg.shot+' m/s'],
+  ['Interceptradius',mathNum(cfg.intercept/PX)+' m'],['Aannameafstand',mathNum(cfg.receive/PX)+' m'],
+  ['Verdedigingssnelheidsfactor',mathNum(cfg.defencePace||1)],
+  ...(cfg.coverPace?[['Dekkingsfactor',mathNum(cfg.coverPace)]]:[]),
+  ['Schotgrens vanaf x',mathNum(cfg.shotX/PX)+' model-m'],
+  ['Schotzone langs midden',mathNum(cfg.shotY/PX)+' m'],
+  ['Simulatie maximaal',MAX+' s'],['Startwaarde',simSeed]
+ ];
+ const sourceHtml=analysisSourceLinks[sportIndex].map(([name,url])=>'<a href="'+mathEscape(url)+'" target="_blank" rel="noopener noreferrer">'+mathEscape(name)+'</a>').join(' · ');
+ root.innerHTML='<p class="lo-analysis-intro">Dit zijn de <b>berekende waarden van de laatst gespeelde aanval</b>. De simulatie bewaart elke 0,05 seconde de spelers en de bal. Schuif door de tijd of tik op een gebeurtenis.</p>'+
+  '<div class="lo-analysis-summary">'+cards+'</div>'+
+  '<section class="lo-analysis-block"><h3>Bekijk één moment</h3><div class="lo-analysis-label"><span>Moment in de aanval</span><span id="loMathTime"></span></div>'+
+  '<input type="range" min="0" max="'+(frames.length-1)+'" step="1" id="loMathScrub" class="lo-analysis-scrub" aria-label="Moment van de spelanalyse" value="0">'+
+  '<div id="loMathFrame"></div></section>'+
+  '<div class="lo-analysis-cols"><section class="lo-analysis-block"><h3>De gebeurtenissen</h3><div>'+eventsHtml+'</div></section>'+
+  '<section class="lo-analysis-block"><h3>De berekening bij dit moment</h3><div class="lo-analysis-details" id="loMathDecision"></div></section></div>'+
+  '<section class="lo-analysis-block"><h3>Afstanden en beweging</h3><ul class="lo-analysis-breakdown">'+
+  analysisRow('Gelopen door alle aanvallers',distanceAttack,'m')+analysisRow('Gelopen door alle verdedigers',distanceDefend,'m')+
+  analysisRow('Afstand afgelegd door de bal',distanceBall,'m')+analysisRow('Hoogste berekende balsnelheid',topBall,'m/s')+
+  '</ul><p class="lo-analysis-detail-note">Afstand = som van √((x₂−x₁)²+(y₂−y₁)²) gedeeld door de schaal in pixels per meter. Dit zijn modelafstanden, geen metingen van leerlingen.</p></section>'+
+  '<div class="lo-analysis-cols"><section class="lo-analysis-block"><h3>Beginopstelling</h3><table class="lo-analysis-table"><thead><tr><th>Speler</th><th>Opdracht</th><th>x / y (model-m)</th><th>Max. m/s</th><th>Reactie s</th></tr></thead><tbody>'+startRows+'</tbody></table></section>'+
+  '<section class="lo-analysis-block"><h3>Gebruikte modelwaarden</h3><ul class="lo-analysis-breakdown">'+parameters.map(p=>'<li><span>'+mathEscape(p[0])+'</span><b>'+mathEscape(p[1])+'</b></li>').join('')+'</ul></section></div>'+
+  '<section class="lo-analysis-block lo-analysis-source"><h3>Waarom doet het model dit?</h3>'+
+  '<p><b>Beweging:</b> iedere 0,05 seconde bewegen spelers naar een doelpositie die hoort bij hun opdracht. Versnelling en maximale snelheid begrenzen de beweging.</p>'+
+  '<p><b>Pass:</b> vooruitgang, breedte, afstand, aankomsttijd van verdedigers en eventuele sportbonussen vormen samen een score. Het model kiest een ontvanger op basis van die score. Bij de betreffende pass staan alle onderdelen hierboven.</p>'+
+  '<p><b>Onderschepping:</b> bij een pass of schot controleert het model de afstand tot de balbaan. Druk op een baldrager vraagt bovendien een minimale contactduur.</p>'+
+  '<p><b>Schot:</b> de baldrager moet in de schotzone zijn. Ook de tijd aan de bal, afstand tot een verdediger en wachttijd tellen mee. Een schot is geen doelpunt.</p>'+
+  '<p><b>Bronnen voor '+mathEscape(cfg.name)+':</b> '+sourceHtml+'.</p>'+
+  '<p>Een deel van de loopsnelheden en keuzes is vergeleken met openbare wedstrijddata. Reactietijden, zones, contactdrempels en veel passkeuzes blijven onderwijsmodelaannames. De cijfers zijn geen voorspelde winstkansen.</p>'+
+  '<div class="lo-analysis-actions"><span class="lo-analysis-detail-note">Alle frames, gebeurtenissen en instellingen van deze aanval kun je bewaren.</span><button id="loMathExport" type="button" class="lo-analysis-export">Bewaar volledige berekening (JSON)</button></div></section>';
+ el('loMathScrub').addEventListener('input',e=>analysisMoment(Number(e.target.value)));
+ document.querySelectorAll('.lo-math-event').forEach(btn=>btn.addEventListener('click',()=>{
+  const i=Number(btn.dataset.eventIndex);analysisMoment(Math.round(events[i].time/DT),i);
+ }));
+ el('loMathExport').addEventListener('click',()=>{
+  const payload={beschrijving:'LO Aanvalslab: berekende speldata, geen leerlingmetingen',
+   sport:cfg.name,spelvorm:formation().name,sportParameters:copy(cfg),startwaarde:simSeed,
+   tijdstapSeconden:DT,beginopstelling:copy(initial),uitkomst:copy(summary),
+   gebeurtenissen:copy(events),beelden:copy(frames)};
+  const url=URL.createObjectURL(new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}));
+  const a=document.createElement('a');a.href=url;a.download='lo-spelanalyse-'+sportIndex+'-'+simSeed+'.json';
+  document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+ });
+ analysisMoment(Math.round((state==='playing'?time:duration)/DT));
+}
+function openLoAnalysis(){
+ if(!el('loAnalysis').hidden)return;
+ analysisPausedPlayback=state==='playing';
+ if(analysisPausedPlayback)cancelAnimationFrame(raf);
+ renderLoAnalysis();
+ el('loAnalysis').hidden=false;el('loAnalysisClose').focus();
+}
+function closeLoAnalysis(){
+ if(el('loAnalysis').hidden)return;
+ el('loAnalysis').hidden=true;el('loSecret').focus();
+ if(analysisPausedPlayback&&state==='playing'){
+  cancelAnimationFrame(raf);last=0;raf=requestAnimationFrame(tick);
+ }
+ analysisPausedPlayback=false;
+}
+el('loSecret').addEventListener('click',()=>{
+ const now=performance.now();
+ if(now-lastSecretTap<850){lastSecretTap=-Infinity;openLoAnalysis()}
+ else lastSecretTap=now;
+});
+el('loAnalysisClose').addEventListener('click',closeLoAnalysis);
+el('loAnalysis').addEventListener('click',event=>{if(event.target===el('loAnalysis'))closeLoAnalysis()});
+document.addEventListener('keydown',event=>{
+ if(event.key==='Escape'&&!el('loAnalysis').hidden){event.preventDefault();closeLoAnalysis()}
+});
 // Alleen testomgeving: reproductie van spelsituaties zonder UI-animatie.
 window.__loLabTest={run(input,withSeed=1337){initial=copy(input);simSeed=withSeed;simulate();return copy(summary)},getPlayers:()=>copy(players),getFrames:()=>copy(frames),getEvents:()=>copy(events),scenario:index=>{makeScenario(index);return copy(players)},setFormation:index=>{applyFormation(index);makeScenario(scenarioIndex);resetSetup();return copy(players)},setSpeed:speed=>{playbackSpeed=clamp(speed,.5,2);el('playbackSpeed').value=String(playbackSpeed)},getTime:()=>time,reachTime,getConfig:()=>copy(sportCfg()),setZonePlan(key){if(!['zonecompact','zoneschuif','zonelijn'].includes(key))return;for(const p of players)if(p.team==='d')p.intent=key;syncZonePlans();draw()},getIntents:()=>copy(tactics.d)};
 })();
