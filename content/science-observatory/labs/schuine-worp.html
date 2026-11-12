@@ -197,6 +197,7 @@ function explain(){
  if(S.playing)return 'Kijk waar de bal landt.';
  var lastTrial=measured();
  if(!lastTrial)return 'Probeer een worp.';
+ if(!S.finished)return 'Nieuwe instelling. Cijfers van je vorige worp.';
  var error=lastTrial.range-lastTrial.target;
  if(Math.abs(error)<=1)return 'Raak! De bal landde op de mat.';
  return error>0?'De bal kwam '+fmt(error,1)+' m voorbij de mat.':'De bal kwam '+fmt(-error,1)+' m vóór de mat.';
