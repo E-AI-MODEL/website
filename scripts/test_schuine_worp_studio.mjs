@@ -57,8 +57,12 @@ try{
   const moon=await page.evaluate(()=>window.__physicsStudio.values(window.__physicsStudio.state));
   assert(moon.range>result.t.range*5,'Zwaartekracht heeft effect op de baan');
   assert((await page.locator('#statRange').innerText()).includes('33,0'),'Oude meetwaarde blijft staan');
-  await page.locator('#forecast').click();
-  assert.equal(await page.locator('#forecast').getAttribute('aria-pressed'),'true');
+  if(!mobile){
+   await page.locator('#forecast').click();
+   assert.equal(await page.locator('#forecast').getAttribute('aria-pressed'),'true');
+  }else{
+   assert(!(await page.locator('#forecast').isVisible()),'Uitgebreide voorspelling blijft buiten de compacte telefoonbediening');
+  }
   await page.locator('#reset').click();
   assert.equal(await page.locator('#statRange').innerText(),'—');
   const aim=await page.evaluate(()=>{
