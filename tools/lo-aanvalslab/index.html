@@ -408,111 +408,245 @@ const LO_GOALS=[
   ['goal','De weg naar de basket afsluiten','Maak de route naar het doel moeilijker.']]}
 ];
 let loGoalRole='a',loGoalManual=false,loGoalKey='open',loCoachMomentTime=null;
-let loLastAttempt=null,loComparableAttempt=null;
+let loLastAttempt=null,loComparableAttempt=null,loRunNumber=0,loCoachFocus=null,loCoachHighlight=false;
 const loAvailableRoles=()=>mode==='free'?['a','d']:mode==='defend'?['d']:mode==='attack'?['a']:[phase];
 const loGoals=()=>LO_GOALS[sportIndex][loGoalRole];
 const loSelectedGoal=()=>loGoals().find(g=>g[0]===loGoalKey)||loGoals()[0];
+const loContextKey=()=>[sportIndex,formationIndex,scenarioIndex,mode,loGoalRole].join('/');
+const loMetres=n=>Number(n).toLocaleString('nl-NL',{maximumFractionDigits:1});
+const loSeconds=n=>Number(n).toLocaleString('nl-NL',{maximumFractionDigits:2});
+const loNumber=id=>id?String(Number(id.slice(1))+1):'';
 function loCoachSuggestedGoal(){
- const roles=loGoals(),loss=events.some(e=>['intercept','loss'].includes(e.kind));
- const pick=loGoalRole==='d'?(loss?'cut':summary.shots?'goal':'press'):(loss?'open':summary.shots?'shot':summary.passes?'after':'run');
- return roles.find(g=>g[0]===pick)?.[0]||roles[0][0];
+ const passes=events.filter(e=>e.kind==='pass'),lastPass=passes.at(-1);
+ const loss=events.some(e=>['intercept','loss'].includes(e.kind));
+ const shot=events.find(e=>e.kind==='shot');
+ const repeat=loComparableAttempt?.result===summary.result;
+ let candidate;
+ if(loGoalRole==='d'){
+  if(shot)candidate=shot.detail?.nearestDefenderM>2.5?'press':'goal';
+  else if(loss)candidate=repeat?'cover':'cut';
+  else if(lastPass)candidate='cut';
+  else candidate='mark';
+ }else{
+  if(lastPass&&lastPass.detail?.minArrivalMarginS<0.06)candidate='open';
+  else if(loss)candidate=repeat?'run':'open';
+  else if(shot)candidate=shot.detail?.nearestDefenderM>2.5?(repeat?'space':'pull'):'shot';
+  else if(!passes.length)candidate=repeat?'space':'run';
+  else candidate=repeat?'depth':'after';
+ }
+ return loGoals().some(g=>g[0]===candidate)?candidate:loGoals()[0][0];
 }
 function loGoalPicker(){
- const roles=loAvailableRoles();if(!roles.includes(loGoalRole)){loGoalRole=roles[0];loGoalManual=false;loGoalKey=loGoals()[0][0]}
+ const roles=loAvailableRoles();
+ if(!roles.includes(loGoalRole)){loGoalRole=roles[0];loGoalManual=false;loGoalKey=LO_GOALS[sportIndex][loGoalRole][0][0]}
  if(!loGoals().some(g=>g[0]===loGoalKey))loGoalKey=loGoals()[0][0];
  const rolesEl=el('loGoalRoles');rolesEl.replaceChildren();
- for(const side of roles)if(roles.length>1){const b=document.createElement('button');b.type='button';b.className='lo-role-chip'+(loGoalRole===side?' active':'');b.textContent=side==='a'?'Aanval':'Verdediging';b.setAttribute('aria-pressed',String(loGoalRole===side));b.onclick=()=>{loGoalRole=side;loGoalKey=loGoals()[0][0];loGoalManual=false;loGoalPicker();if(state==='done')loCoachFeedback();else refresh()};rolesEl.append(b)}
- const container=el('loGoalChips');container.replaceChildren();
+ if(roles.length>1)for(const side of roles){
+  const b=document.createElement('button');b.type='button';b.className='lo-role-chip'+(loGoalRole===side?' active':'');
+  b.textContent=side==='a'?'Aanval':'Verdediging';b.setAttribute('aria-pressed',String(loGoalRole===side));
+  b.onclick=()=>{loGoalRole=side;loGoalKey=loGoals()[0][0];loGoalManual=false;loGoalPicker();if(state==='done')loCoachFeedback();else refresh()};
+  rolesEl.append(b);
+ }
+ const chips=el('loGoalChips');chips.replaceChildren();
  for(const [key,label] of loGoals()){
   const b=document.createElement('button');b.type='button';b.className='lo-goal-chip'+(loGoalKey===key?' active':'');
   b.textContent=label;b.setAttribute('aria-pressed',String(loGoalKey===key));
   b.onclick=()=>{loGoalManual=true;loGoalKey=key;loGoalPicker();if(state==='done')loCoachFeedback();else refresh()};
-  container.append(b);
+  chips.append(b);
  }
- const g=loSelectedGoal();el('loGoalCurrent').textContent=g[1];
- el('loGoalHint').textContent=g[2];
+ const g=loSelectedGoal();
+ el('loGoalCurrent').textContent=g[1];el('loGoalHint').textContent=g[2];
  el('loCoachAuto').classList.toggle('active',!loGoalManual);
  el('loCoachAuto').setAttribute('aria-pressed',String(!loGoalManual));
+ if(state==='setup')refresh();
 }
-function loBeforeAttempt(){const key=[sportIndex,formationIndex,scenarioIndex,mode].join('/');
- loComparableAttempt=loLastAttempt?.key===key?loLastAttempt:null;
+function loBeforeAttempt(){
+ loComparableAttempt=loLastAttempt?.context===loContextKey()?loLastAttempt:null;
+ loCoachHighlight=false;loCoachFocus=null;
+ loRunNumber++;
 }
-function loDistances(frame,team){const ps=(frame?.players||[]).filter(p=>p.team===team);return ps.length>1?(Math.max(...ps.map(p=>p.y))-Math.min(...ps.map(p=>p.y)))/PX:0}
-function loFrameMove(id,t1,t2){const from=frameAt(t1).players.find(p=>p.id===id),to=frameAt(t2).players.find(p=>p.id===id);return from&&to?dist(from,to)/PX:0}
-const loMetres=n=>Number(n).toLocaleString('nl-NL',{maximumFractionDigits:1});
+function loDistanceToSegment(p,a,b){
+ const dx=b.x-a.x,dy=b.y-a.y,den=dx*dx+dy*dy;
+ const t=den?clamp(((p.x-a.x)*dx+(p.y-a.y)*dy)/den,0,1):0;
+ return {metres:dist(p,{x:a.x+t*dx,y:a.y+t*dy})/PX,projection:t};
+}
+// Alleen de geometrie van de aanspeellijn. De verdediger kan nog bewegen;
+// een vrije lijn betekent niet dat de pass in het model of in een wedstrijd lukt.
+function loLaneSample(frame,fromId=null,toId=null){
+ if(!frame)return null;
+ const from=frame.players.find(p=>p.id===(fromId||frame.holder));
+ if(!from||from.team!=='a')return null;
+ const receivers=frame.players.filter(p=>p.team==='a'&&p.id!==from.id&&(!toId||p.id===toId));
+ const defenders=frame.players.filter(p=>p.team==='d');
+ if(!receivers.length||!defenders.length)return null;
+ return receivers.map(to=>{
+   const nearest=defenders.map(p=>({player:p,detail:loDistanceToSegment(p,from,to)})).sort((a,b)=>a.detail.metres-b.detail.metres)[0];
+   return {from:from.id,to:to.id,defender:nearest.player.id,gap:nearest.detail.metres,frameTime:frame.time};
+ }).sort((a,b)=>a.gap-b.gap)[0];
+}
+function loFrameMove(id,t1,t2){
+ const f=frameAt(t1).players.find(p=>p.id===id),s=frameAt(t2).players.find(p=>p.id===id);
+ return f&&s?dist(f,s)/PX:0;
+}
+function loWidth(frame,team){
+ const ps=(frame?.players||[]).filter(p=>p.team===team);
+ return ps.length>1?(Math.max(...ps.map(p=>p.y))-Math.min(...ps.map(p=>p.y)))/PX:0;
+}
 function loCoachObservation(goal){
- const passes=events.filter(e=>e.kind==='pass'),latest=passes.at(-1);
+ const passes=events.filter(e=>e.kind==='pass'),lastPass=passes.at(-1);
  const first=frames[0],lastFrame=frames.at(-1),mid=frames[Math.floor(frames.length/2)];
- const shot=events.find(e=>e.kind==='shot'),loss=events.find(e=>['intercept','loss'].includes(e.kind));
- const passage=passes.find(e=>Number.isFinite(e.detail?.minArrivalMarginS));
- const bounds=frames.length?{start:loDistances(first,'a'),end:loDistances(lastFrame,'a')}:null;
- let moment=latest?.time??null,observation='';
- if(goal==='open'||goal==='pass'||goal==='cut'){
-  moment=passage?.time??loss?.time??null;
-  if(passage){
-    const margin=passage.detail.minArrivalMarginS;
-    observation=margin>0?'Bij een pass bereikte de bal volgens de berekening de ontvangplek eerder dan de verdediger.':'Bij een pass bereikte een verdediger volgens de berekening de balbaan eerder dan de bal.';
-    if(Math.abs(margin)<=0.05)observation='Bij een pass kwamen bal en verdediger volgens het model bijna gelijktijdig bij dezelfde plek.';
-  }else observation=loss?'De verdediging veroverde de bal, maar er is geen pass geregistreerd om een aanspeellijn te beoordelen.':'Er werd geen pass gespeeld. Een open aanspeellijn is hiermee nog niet aangetoond.';
+ const shot=events.find(e=>e.kind==='shot');
+ const firstLoss=events.find(e=>['intercept','loss'].includes(e.kind));
+ const metre=(key,label,value)=>Number.isFinite(value)?{key,label,value,unit:'m'}:null;
+ let observation='',moment=null,metric=null,focus=null;
+ if(['open','pass','cut'].includes(goal)){
+  const ev=passes.find(e=>Number.isFinite(e.detail?.minArrivalMarginS));
+  if(ev){
+   const margin=ev.detail.minArrivalMarginS;
+   observation='De pass naar aanvaller '+loNumber(ev.detail.to)+' had een berekende aankomstmarge van '+loSeconds(margin)+' seconde. ';
+   observation+=margin>0.05?'De bal kon het berekende punt eerder bereiken dan de verdediger.':margin<-.05?'De verdediger kon het berekende punt eerder bereiken dan de bal.':'Bal en verdediger konden het berekende punt vrijwel tegelijk bereiken.';
+   observation+=' Dat is geen garantie voor een gelukte of onderschepte pass.';
+   metric={key:'passmarge',label:'Aankomstmarge',value:margin,unit:'s'};
+   moment=Math.max(0,ev.time-.05);
+   focus={time:moment,from:ev.detail.from,to:ev.detail.to};
+  }else{
+   const sample=loLaneSample(first);
+   if(sample){
+    observation='Bij de start stond verdediger '+loNumber(sample.defender)+' op '+loMetres(sample.gap)+' meter van de lijn tussen de baldrager en aanvaller '+loNumber(sample.to)+'. De bal hoefde deze lijn niet te volgen.';
+    moment=sample.frameTime;metric=metre('lijnafstand','Afstand tot aanspeellijn',sample.gap);
+    focus={time:moment,from:sample.from,to:sample.to,defender:sample.defender};
+   }else observation='Er is nog geen pass of meetbare aanspeellijn om terug te kijken.';
+  }
  }else if(goal==='run'){
-  const moves=initial.filter(p=>p.team==='a'&&p.id!=='a0').map(p=>({p,meters:loFrameMove(p.id,0,duration)})).sort((a,b)=>b.meters-a.meters);
-  observation=moves.length?'Aanvaller '+(+moves[0].p.id[1]+1)+' zonder bal verplaatste zich '+loMetres(moves[0].meters)+' meter in deze simulatie.':'Er is geen aanvaller zonder bal om te volgen.';moment=duration/2;
+  const moves=initial.filter(p=>p.team==='a'&&p.id!=='a0').map(p=>({id:p.id,value:loFrameMove(p.id,0,duration)})).sort((a,b)=>b.value-a.value);
+  if(moves.length){
+    const p=moves[0];observation='Aanvaller '+loNumber(p.id)+' stond aan het einde '+loMetres(p.value)+' meter van zijn startplek. Dat zegt nog niet of hij vrijliep.';
+    metric=metre('verplaatsing','Afstand tot start',p.value);moment=Math.min(duration,Math.max(0.5,duration/2));focus={time:moment,player:p.id};
+  }else observation='Er is geen speler zonder bal om te volgen.';
  }else if(goal==='space'){
-  observation=bounds?'De breedte tussen de aanvallers veranderde van '+loMetres(bounds.start)+' naar '+loMetres(bounds.end)+' meter.':'Er is nog geen aanval om te vergelijken.';moment=duration/2;
+  const a=loWidth(first,'a'),b=loWidth(lastFrame,'a');
+  observation='De aanvallers stonden bij de start '+loMetres(a)+' meter uit elkaar in de breedte; aan het einde '+loMetres(b)+' meter.';
+  metric=metre('aanvalsbreedte','Breedte aan het einde',b);moment=duration/2;
  }else if(goal==='depth'){
-  const start=initial.filter(p=>p.team==='a'),end=(lastFrame?.players||[]).filter(p=>p.team==='a');
-  const startX=Math.max(...start.map(p=>p.x)),endX=Math.max(...end.map(p=>p.x));
-  observation='De voorste aanvaller kwam '+loMetres((endX-startX)/PX)+' meter verder richting doel uit dan bij de start.';moment=duration/2;
+  const atStart=initial.filter(p=>p.team==='a'),atEnd=(lastFrame?.players||[]).filter(p=>p.team==='a');
+  if(atStart.length&&atEnd.length){
+   const movement=(Math.max(...atEnd.map(p=>p.x))-Math.max(...atStart.map(p=>p.x)))/PX;
+   observation='De voorste aanvaller kwam '+loMetres(Math.abs(movement))+' meter '+(movement>=0?'verder richting doel':'verder van het doel')+' dan bij de start.';
+   metric=metre('voorwaartse ruimte','Verschil richting doel',movement);moment=duration/2;
+  }
  }else if(goal==='pull'){
-  const moves=initial.filter(p=>p.team==='d').map(p=>({p,meters:loFrameMove(p.id,0,duration)})).sort((a,b)=>b.meters-a.meters);
-  observation=moves.length?'Verdediger '+(+moves[0].p.id[1]+1)+' verplaatste zich '+loMetres(moves[0].meters)+' meter. Of hij werd gelokt, blijkt niet uit alleen die afstand.':'Er is geen verdediger om te volgen.';moment=duration/2;
+  const moves=initial.filter(p=>p.team==='d').map(p=>({id:p.id,value:loFrameMove(p.id,0,duration)})).sort((a,b)=>b.value-a.value);
+  if(moves.length){
+   const p=moves[0];observation='Verdediger '+loNumber(p.id)+' eindigde '+loMetres(p.value)+' meter van zijn startplek. Of hij werd gelokt, kun je hieruit niet afleiden.';
+   metric=metre('verdediger verplaatst','Afstand tot start',p.value);moment=duration/2;focus={time:moment,player:p.id};
+  }else observation='Er is geen verdediger om te volgen.';
  }else if(goal==='after'){
-  if(latest){const mover=latest.detail?.from,meters=mover?loFrameMove(mover,latest.time,Math.min(duration,latest.time+1.2)):0;
-   observation='Na een pass bewoog de passer '+loMetres(meters)+' meter in de daaropvolgende 1,2 seconde (of tot het einde).';
-   moment=Math.min(duration,latest.time+0.8);
-  }else observation='Er was geen pass, dus ook geen vervolgactie van een passer.'; 
+  if(lastPass){
+   const from=lastPass.detail?.from,until=Math.min(duration,lastPass.time+1.2),m=from?loFrameMove(from,lastPass.time,until):0;
+   observation='Na de laatste pass eindigde de passer '+loMetres(m)+' meter van zijn plek op het passmoment. Er is gekeken tot '+loSeconds(until-lastPass.time)+' seconde na de pass.';
+   metric=metre('doorbewegen','Verplaatsing na de pass',m);moment=until;focus={time:moment,player:from};
+  }else observation='Er werd geen pass gespeeld. We kunnen doorbewegen na de pass nog niet onderzoeken.';
  }else if(goal==='switch'){
-  const crossing=passes.find(e=>{const f=frameAt(e.time);const a=f.players.find(p=>p.id===e.detail?.from),b=f.players.find(p=>p.id===e.detail?.to);return a&&b&&Math.abs(a.y-b.y)>PX*4});
-  observation=crossing?'Een pass ging in het model meer dan vier meter dwars over het veld.':'Er is geen pass van meer dan vier meter dwars over het veld geregistreerd.';moment=crossing?.time??latest?.time??null;
+  const lateral=passes.map(e=>{const f=frameAt(Math.max(0,e.time-.05)),a=f.players.find(p=>p.id===e.detail?.from),b=f.players.find(p=>p.id===e.detail?.to);return a&&b?{value:Math.abs(a.y-b.y)/PX,event:e}:null}).filter(Boolean).sort((a,b)=>b.value-a.value)[0];
+  if(lateral){
+    observation='De grootste zijwaartse afstand bij een pass was '+loMetres(lateral.value)+' meter. Een grote zijwaartse pass is niet automatisch een geslaagde spelverlegging.';
+    moment=lateral.event.time;metric=metre('zijwaartse pass','Zijwaartse afstand',lateral.value);
+    focus={time:moment,from:lateral.event.detail.from,to:lateral.event.detail.to};
+  }else observation='Er werd geen pass gespeeld om een spelverlegging te bekijken.';
  }else if(goal==='shot'||goal==='goal'){
-  observation=shot?'Er ontstond een doelpoging. De dichtstbijzijnde verdediger stond op het schotmoment '+loMetres(shot.detail.nearestDefenderM)+' meter van de schutter.':'Er ontstond geen doelpoging in deze poging.';moment=shot?.time??null;
+  if(shot){
+   const near=shot.detail.nearestDefenderM;
+   observation='Bij de doelpoging stond de dichtstbijzijnde verdediger '+loMetres(near)+' meter van de schutter. Het model registreert een poging, geen doelpunt.';
+   metric=metre('schotdruk','Verdediger bij schot',near);moment=shot.time;focus={time:moment,player:shot.detail.player};
+  }else{
+   observation='Er ontstond geen doelpoging. Kijk of de bal wel vooruitkwam en waar verdedigers ruimte afsloten.';
+   moment=firstLoss?.time??null;
+  }
  }else if(goal==='press'){
-  const snap=frames.find(f=>f.holder&&f.time>=Math.min(duration,1.5))||mid;
-  const owner=snap?.players.find(p=>p.id===snap.holder);
-  const defs=snap?.players.filter(p=>p.team==='d')||[];
-  const closest=owner&&defs.length?Math.min(...defs.map(p=>dist(p,owner)))/PX:null;
-  observation=closest!==null?'Op '+loMetres(snap.time)+' seconde stond de dichtstbijzijnde verdediger '+loMetres(closest)+' meter van de baldrager.':'Er is op dit moment geen baldrager om de druk bij te meten.';moment=snap?.time??null;
+  const snap=frames.find(f=>f.holder?.startsWith('a')&&f.time>=Math.min(duration,1.5))||frames.find(f=>f.holder?.startsWith('a'))||mid;
+  const owner=snap?.players.find(p=>p.id===snap.holder),defs=snap?.players.filter(p=>p.team==='d')||[];
+  if(owner&&defs.length){
+   const ranked=defs.map(p=>({p,meters:dist(p,owner)/PX})).sort((a,b)=>a.meters-b.meters),closest=ranked[0];
+   observation='Op '+loSeconds(snap.time)+' seconde stond verdediger '+loNumber(closest.p.id)+' op '+loMetres(closest.meters)+' meter van de baldrager. Afstand alleen zegt nog niet hoeveel druk de speler ervaart.';
+   metric=metre('afstand baldruk','Verdediger tot baldrager',closest.meters);moment=snap.time;focus={time:moment,from:closest.p.id,to:owner.id};
+  }else observation='Er was geen baldrager met een meetbare verdediger in dit beeld.';
  }else if(goal==='mark'){
-  const snap=mid,attack=snap?.players.find(p=>p.id==='a1'),defs=snap?.players.filter(p=>p.team==='d')||[];
-  const nearest=attack&&defs.length?Math.min(...defs.map(p=>dist(p,attack)))/PX:null;
-  observation=nearest!==null?'Halverwege stond de dichtstbijzijnde verdediger '+loMetres(nearest)+' meter van aanvaller 2.':'Er zijn te weinig spelers om dekking te vergelijken.';moment=snap?.time??null;
+  const receiver=mid?.players.find(p=>p.id==='a1'),defs=mid?.players.filter(p=>p.team==='d')||[];
+  if(receiver&&defs.length){
+   const nearest=defs.map(p=>({p,gap:dist(p,receiver)/PX})).sort((a,b)=>a.gap-b.gap)[0];
+   observation='Halverwege stond verdediger '+loNumber(nearest.p.id)+' op '+loMetres(nearest.gap)+' meter van aanvaller 2. Dichtbij staan is niet hetzelfde als goed dekken.';
+   metric=metre('dekafstand','Afstand tot aanvaller 2',nearest.gap);moment=mid.time;focus={time:moment,from:nearest.p.id,to:receiver.id};
+  }else observation='Er zijn niet genoeg spelers om dekking te vergelijken.';
  }else if(goal==='cover'){
-  const snap=mid,defs=snap?.players.filter(p=>p.team==='d')||[];
-  const nearest=defs.length>1?Math.min(...defs.slice(1).map(p=>dist(defs[0],p)))/PX:null;
-  observation=nearest!==null?'Halverwege stond de dichtstbijzijnde medeverdediger '+loMetres(nearest)+' meter van verdediger 1. Dat bewijst nog geen goede rugdekking.':'Voor rugdekking zijn minstens twee verdedigers nodig.';moment=snap?.time??null;
+  const defs=mid?.players.filter(p=>p.team==='d')||[];
+  if(defs.length>1){
+   const d0=defs.find(p=>p.id==='d0')||defs[0],other=defs.filter(p=>p.id!==d0.id).map(p=>({p,gap:dist(p,d0)/PX})).sort((a,b)=>a.gap-b.gap)[0];
+   observation='Halverwege stond verdediger '+loNumber(other.p.id)+' op '+loMetres(other.gap)+' meter van verdediger '+loNumber(d0.id)+'. De onderlinge afstand bewijst geen rugdekking.';
+   metric=metre('onderlinge dekafstand','Afstand tussen verdedigers',other.gap);moment=mid.time;focus={time:moment,from:other.p.id,to:d0.id};
+  }else observation='Rugdekking vraagt om minstens twee verdedigers. Kies 3 tegen 2 of 4 tegen 3.';
  }else if(goal==='shift'){
-  const start=(first?.players||[]).filter(p=>p.team==='d'),end=(lastFrame?.players||[]).filter(p=>p.team==='d');
-  const dy=start.reduce((sum,p)=>{const later=end.find(q=>q.id===p.id);return sum+(later?later.y-p.y:0)},0)/Math.max(1,start.length)/PX;
-  observation=dy===0?'De verdediging verschoof in dit model niet in de breedte.':'Het midden van de verdediging verschoof '+loMetres(Math.abs(dy))+' meter '+(dy<0?'naar boven':'naar beneden')+' op het speelveld.';moment=duration/2;
+  const before=(first?.players||[]).filter(p=>p.team==='d'),after=(lastFrame?.players||[]).filter(p=>p.team==='d');
+  if(before.length){
+   const dy=before.reduce((sum,p)=>sum+(after.find(q=>q.id===p.id)?.y??p.y)-p.y,0)/before.length/PX;
+   observation=dy===0?'Het gemiddelde van de verdedigende posities verschoof niet in de breedte.':'Het gemiddelde van de verdedigende posities verschoof '+loMetres(Math.abs(dy))+' meter '+(dy<0?'naar boven':'naar beneden')+' op het veld.';
+   metric=metre('verschuiving','Verschuiving van verdediging',dy);moment=duration/2;
+  }
  }
- return {observation,moment};
+ if(!observation)observation='Er is nog geen afzonderlijk meetbaar moment voor dit oefendoel.';
+ return {observation,moment,metric,focus};
+}
+function loCoachChallenge(goal,obs){
+ if(['open','cut','pass'].includes(goal)&&obs.metric?.key==='passmarge'){
+   return goal==='cut'?'Verplaats één verdediger dichter naar de aanspeellijn en kijk wat er met de aankomstmarge gebeurt.':'Laat de ontvanger schuin vrijlopen en onderzoek of de aankomstmarge verandert.';
+ }
+ if(goal==='open'&&obs.metric?.key==='lijnafstand')return 'Verschuif de ontvanger. Kun je de afstand tussen de aanspeellijn en de verdediger vergroten?';
+ if(goal==='run'&&obs.metric?.value<0.75)return 'Geef een aanvaller zonder bal een andere loopactie. Kijk of hij daarna beter aanspeelbaar wordt.';
+ if(goal==='space')return 'Zet twee aanvallers verder uit elkaar. Vergelijk de breedte én wat de verdedigers doen.';
+ if(goal==='after')return 'Geef de passer een andere vervolgactie en kijk waar hij 1 seconde later staat.';
+ if(goal==='cover'&&!obs.metric)return 'Kies 3 tegen 2 of 4 tegen 3 om rugdekking te kunnen onderzoeken.';
+ return loSelectedGoal()[2];
 }
 function loCoachFeedback(){
- if(!analysisReady)return;
+ if(!analysisReady||!frames.length)return;
  if(!loGoalManual){loGoalKey=loCoachSuggestedGoal();loGoalPicker()}
  const g=loSelectedGoal(),seen=loCoachObservation(g[0]);
  el('loCoachObserved').textContent='Wat het model liet zien: '+seen.observation;
  el('loCoachObserved').classList.remove('hide');
- el('insight').textContent='Probeer dit: '+g[2]+' Speel opnieuw en vergelijk.';
- loCoachMomentTime=seen.moment;
+ el('insight').textContent='Nieuwe uitdaging: '+loCoachChallenge(g[0],seen);
+ loCoachMomentTime=seen.moment;loCoachFocus=seen.focus;loCoachHighlight=false;
  el('loCoachMoment').classList.toggle('hide',!Number.isFinite(loCoachMomentTime));
  const compare=el('loCoachCompare'),prev=loComparableAttempt;
- if(prev){const now=summary;compare.textContent='Vorige poging: '+prev.passes+' passes, '+prev.shots+' '+(prev.shots===1?'doelpoging':'doelpogingen')+'. Nu: '+now.passes+' passes, '+now.shots+' '+(now.shots===1?'doelpoging':'doelpogingen')+'. Dit zijn modeluitkomsten, geen oordeel over je spel.';compare.classList.remove('hide')}
- else{compare.textContent='';compare.classList.add('hide')}
- loLastAttempt={key:[sportIndex,formationIndex,scenarioIndex,mode].join('/'),passes:summary.passes,shots:summary.shots};
+ const same=prev&&prev.context===loContextKey()&&prev.seed===simSeed&&prev.goal===g[0]&&prev.metric&&seen.metric&&prev.metric.key===seen.metric.key;
+ if(same){
+  compare.textContent=g[1]+' · vorige poging: '+loSeconds(prev.metric.value)+' '+prev.metric.unit+', nu: '+loSeconds(seen.metric.value)+' '+seen.metric.unit+'. Zelfde startscenario en rekenregels, geen bewijs voor beter spelen op het veld.';
+  compare.classList.remove('hide');
+ }else{compare.textContent='';compare.classList.add('hide')}
+ loLastAttempt={context:loContextKey(),goal:g[0],seed:simSeed,metric:seen.metric,result:summary.result,run:loRunNumber};
 }
-el('loCoachAuto').addEventListener('click',()=>{loGoalManual=false;if(state==='done'){loGoalKey=loCoachSuggestedGoal();loGoalPicker();loCoachFeedback()}else{loGoalKey=loGoals()[0][0];loGoalPicker();refresh()}});
-el('loCoachMoment').addEventListener('click',()=>{if(!Number.isFinite(loCoachMomentTime)||!frames.length)return;cancelAnimationFrame(raf);time=clamp(loCoachMomentTime,0,duration);state='paused';refresh();showFrame(time)});
+function loDrawCoachFocus(){
+ if(!loCoachHighlight||!loCoachFocus||state!=='paused')return;
+ if(Math.abs(time-loCoachMomentTime)>0.11)return;
+ const f=frameAt(time),part=el('traces');
+ const p=loCoachFocus,from=f.players.find(q=>q.id===p.from),to=f.players.find(q=>q.id===p.to);
+ if(from&&to){
+  s('line',{x1:from.x,y1:from.y,x2:to.x,y2:to.y,stroke:'#ffe2a4','stroke-width':2,'stroke-dasharray':'6 7',opacity:.95},part);
+  s('circle',{cx:to.x,cy:to.y,r:29,fill:'none',stroke:'#ffe2a4','stroke-width':2,'stroke-dasharray':'5 5'},part);
+ }
+ const actor=p.player?f.players.find(q=>q.id===p.player):null;
+ if(actor)s('circle',{cx:actor.x,cy:actor.y,r:29,fill:'none',stroke:'#ffe2a4','stroke-width':2.2,'stroke-dasharray':'5 5'},part);
+ const defender=p.defender?f.players.find(q=>q.id===p.defender):null;
+ if(defender)s('circle',{cx:defender.x,cy:defender.y,r:30,fill:'none',stroke:'#ffb2bb','stroke-width':1.7},part);
+}
+el('loCoachAuto').addEventListener('click',()=>{
+ loGoalManual=false;
+ if(state==='done'){loGoalKey=loCoachSuggestedGoal();loGoalPicker();loCoachFeedback()}
+ else{loGoalKey=loGoals()[0][0];loGoalPicker();refresh()}
+});
+el('loCoachMoment').addEventListener('click',()=>{
+ if(!Number.isFinite(loCoachMomentTime)||!frames.length)return;
+ cancelAnimationFrame(raf);time=clamp(loCoachMomentTime,0,duration);
+ state='paused';loCoachHighlight=true;refresh();showFrame(time);
+});
 
 const tactics={a:[['diep','Diep gaan'],['breed','Breed houden'],['bal','In de bal'],['stil','Blijven staan'],['kruis','Kruisen'],['ruimte','Ruimte maken']],d:[['dek','Man dekken'],['lijn','Passlijn sluiten'],['druk','Druk op bal'],['zonecompact','Zone · compact'],['zoneschuif','Zone · schuiven'],['zonelijn','Zone · passlijnen'],['volg','Loopactie volgen'],['terug','Terugzakken']]};
 const carrierTactics=[['pas','Passen'],['drijf','Bal meenemen'],['bewaar','Bal vasthouden'],['zijde','Naar de zijkant']];
@@ -546,7 +680,7 @@ function refresh(){
  syncZonePlans();
 }
 
-function resetSetup(){analysisReady=false;loCoachMomentTime=null;el('loCoachObserved').classList.add('hide');el('loCoachMoment').classList.add('hide');el('loCoachCompare').classList.add('hide');cancelAnimationFrame(raf);state='setup';if(mode!=='online')phase='a';selected=null;players=copy(scenario);el('insight').textContent='Speler 1 begint met de bal. Kies je opstelling en spelersopdrachten.';drawPitch();draw();loGoalPicker();refresh();choose((mode==='defend'||(mode==='online'&&phase==='d'))?'d0':'a0')}
+function resetSetup(){analysisReady=false;loCoachHighlight=false;loCoachFocus=null;loCoachMomentTime=null;el('loCoachObserved').classList.add('hide');el('loCoachMoment').classList.add('hide');el('loCoachCompare').classList.add('hide');cancelAnimationFrame(raf);state='setup';if(mode!=='online')phase='a';selected=null;players=copy(scenario);el('insight').textContent='Speler 1 begint met de bal. Kies je opstelling en spelersopdrachten.';drawPitch();draw();loGoalPicker();refresh();choose((mode==='defend'||(mode==='online'&&phase==='d'))?'d0':'a0')}
 function start(){loBeforeAttempt();initial=copy(players);simSeed=1337+scenarioIndex*4099+formationIndex*1609;simulate();state='playing';time=0;last=0;el('insight').textContent='De aanval speelt af. Kijk hoe de spelers bewegen.';refresh();showFrame(0);cancelAnimationFrame(raf);raf=requestAnimationFrame(tick)}
 function point(e){
  const matrix=svg.getScreenCTM();
@@ -923,15 +1057,15 @@ function simulate(){
  summary={result,duration,passes,completed,shots,intercepts,events:copy(events)};analysisReady=true;
 }
 function frameAt(t){const idx=clamp(Math.round(t/DT),0,frames.length-1);return frames[idx]||{players,ball:ballAt(players[0]),trail:[]}}
-function showFrame(t){const f=frameAt(t);draw(f.players,f.ball,f.trail)}
+function showFrame(t){const f=frameAt(t);draw(f.players,f.ball,f.trail);loDrawCoachFocus()}
 function tick(ts){if(state!=='playing')return;if(!last)last=ts;time=Math.min(duration,time+Math.min(.09,(ts-last)/1000)*playbackSpeed);last=ts;showFrame(time);if(time>=duration){finish();return}raf=requestAnimationFrame(tick)}
 function finish(){cancelAnimationFrame(raf);state='done';refresh();loCoachFeedback()}
 function newGame(){scenarioIndex=(scenarioIndex+1)%scenarios.length;loLastAttempt=null;makeScenario(scenarioIndex);resetSetup();el('welcome').classList.remove('hide')}
 document.querySelectorAll('[data-mode]').forEach(btn=>btn.addEventListener('click',()=>{mode=btn.dataset.mode;loGoalRole=mode==='defend'?'d':'a';loGoalManual=false;loGoalKey=LO_GOALS[sportIndex][loGoalRole][0][0];loLastAttempt=null;el('sportSelect').disabled=false;el('formationSelect').disabled=false;el('welcome').classList.add('hide');resetSetup()}));
 el('primary').addEventListener('click',()=>{if(state==='setup'){if(mode==='duo'&&phase==='a'){phase='d';selected=null;loGoalPicker();refresh();choose('d0');draw();return}start()}else if(state==='playing'){state='paused';cancelAnimationFrame(raf);refresh()}else if(state==='paused'){state='playing';last=0;refresh();raf=requestAnimationFrame(tick)}else if(state==='done'){state='playing';time=0;last=0;refresh();showFrame(0);raf=requestAnimationFrame(tick)}});
 el('reset').addEventListener('click',()=>{const side=(mode==='duo'||mode==='online')?phase:(mode==='free'?'free':mode==='defend'?'d':'a');players=players.map(p=>(side==='free'||p.team===side)?copy(scenario.find(x=>x.id===p.id)):p);choose(selected&&selected[0]===side?selected:side+'0');draw()});
-el('again').addEventListener('click',()=>{players=copy(initial);state='setup';if(mode!=='online')phase='a';selected=null;draw();refresh();choose((mode==='defend'||(mode==='online'&&phase==='d'))?'d0':'a0');el('insight').textContent='Verander één opdracht en speel opnieuw. De coach vergelijkt je volgende poging.'});
-el('replay').addEventListener('click',()=>{state='playing';time=0;last=0;refresh();showFrame(0);raf=requestAnimationFrame(tick)});
+el('again').addEventListener('click',()=>{loCoachHighlight=false;players=copy(initial);state='setup';if(mode!=='online')phase='a';selected=null;draw();refresh();choose((mode==='defend'||(mode==='online'&&phase==='d'))?'d0':'a0');el('insight').textContent='Verander één opdracht en speel opnieuw. De coach vergelijkt je volgende poging.'});
+el('replay').addEventListener('click',()=>{loCoachHighlight=false;state='playing';time=0;last=0;refresh();showFrame(0);raf=requestAnimationFrame(tick)});
 el('new').addEventListener('click',newGame);
 function switchSport(value){if(mode==='online')return;applySport(value);loGoalManual=false;loGoalKey=LO_GOALS[sportIndex][loGoalRole][0][0];loLastAttempt=null;makeScenario(scenarioIndex);resetSetup();}
 function switchFormation(value){if(mode==='online')return;applyFormation(value);loLastAttempt=null;makeScenario(scenarioIndex);resetSetup();}
@@ -1138,7 +1272,7 @@ document.addEventListener('keydown',event=>{
  if(event.key==='Escape'&&!el('loAnalysis').hidden){event.preventDefault();closeLoAnalysis()}
 });
 // Alleen testomgeving: reproductie van spelsituaties zonder UI-animatie.
-window.__loLabTest={run(input,withSeed=1337){initial=copy(input);simSeed=withSeed;simulate();return copy(summary)},getPlayers:()=>copy(players),getFrames:()=>copy(frames),getEvents:()=>copy(events),scenario:index=>{makeScenario(index);return copy(players)},setFormation:index=>{applyFormation(index);makeScenario(scenarioIndex);resetSetup();return copy(players)},setSpeed:speed=>{playbackSpeed=clamp(speed,.5,2);el('playbackSpeed').value=String(playbackSpeed)},getTime:()=>time,reachTime,getConfig:()=>copy(sportCfg()),setZonePlan(key){if(!['zonecompact','zoneschuif','zonelijn'].includes(key))return;for(const p of players)if(p.team==='d')p.intent=key;syncZonePlans();draw()},getIntents:()=>copy(tactics.d),getCoachState:()=>({sport:sportIndex,role:loGoalRole,goal:loGoalKey,manual:loGoalManual,count:loGoals().length}),coachPreview:()=>{loCoachFeedback();return {observed:el('loCoachObserved').textContent,challenge:el('insight').textContent,moment:loCoachMomentTime,goal:loGoalKey}}};
+window.__loLabTest={run(input,withSeed=1337){initial=copy(input);simSeed=withSeed;simulate();return copy(summary)},getPlayers:()=>copy(players),getFrames:()=>copy(frames),getEvents:()=>copy(events),scenario:index=>{makeScenario(index);return copy(players)},setFormation:index=>{applyFormation(index);makeScenario(scenarioIndex);resetSetup();return copy(players)},setSpeed:speed=>{playbackSpeed=clamp(speed,.5,2);el('playbackSpeed').value=String(playbackSpeed)},getTime:()=>time,reachTime,getConfig:()=>copy(sportCfg()),setZonePlan(key){if(!['zonecompact','zoneschuif','zonelijn'].includes(key))return;for(const p of players)if(p.team==='d')p.intent=key;syncZonePlans();draw()},getIntents:()=>copy(tactics.d),getCoachObservation:key=>copy(loCoachObservation(key)),getCoachState:()=>({sport:sportIndex,role:loGoalRole,goal:loGoalKey,manual:loGoalManual,count:loGoals().length,run:loRunNumber}),coachPreview:()=>{loCoachFeedback();return {observed:el('loCoachObserved').textContent,challenge:el('insight').textContent,moment:loCoachMomentTime,goal:loGoalKey}}};
 })();
 
 </script><script>(()=>{'use strict';
