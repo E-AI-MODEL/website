@@ -376,7 +376,7 @@ function drawMiniGraph(c){
  ctx.fillStyle='#93c5cc';ctx.fillText(fmt(use.peak,1)+' m',left+4,y0-4);
 }
 function drawGraph(c){
- var w=c.w,h=c.h,p=measured(),rect={left:43,right:w-24,top:104,bottom:h-45};
+ var w=c.w,h=c.h,p=(S.playing||S.finished)?values(S):measured(),rect={left:43,right:w-24,top:104,bottom:h-45};
  ctx.clearRect(0,0,w,h);
  ctx.fillStyle='#0b1b2a';ctx.fillRect(0,0,w,h);
  ctx.font='600 13px system-ui';ctx.fillStyle='#cbe7e5';ctx.fillText('Hoogte tijdens de worp',21,82);
@@ -391,7 +391,7 @@ function drawGraph(c){
  ctx.fillText(fmt(p.time,1)+' s',rect.right-26,rect.bottom+19);
  ctx.strokeStyle='#edc091';ctx.lineWidth=2.4;ctx.beginPath();
  for(var n=0;n<=120;n++){
-  var t=p.time*n/120,py=position(p,t).y;
+  var t=(S.playing?Math.min(S.t,p.time):p.time)*n/120,py=position(p,t).y;
   var x=rect.left+t/p.time*(rect.right-rect.left);
   var y=rect.bottom-py/Math.max(p.peak,1)*(rect.bottom-rect.top);
   if(n===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
