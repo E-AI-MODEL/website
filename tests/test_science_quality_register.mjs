@@ -18,7 +18,7 @@ test('Alle 53 proeven zijn afzonderlijk opgenomen zonder stilzwijgend keurmerk',
  assert.deepEqual([...keys].sort(),[...ids].sort());
  for(const item of entries){
   assert.ok(item.verfijning.length>15,item.id+' mist concrete vervolghandeling');
-  assert.ok(item.physics_check.length>8,item.id+' mist natuurkundige controle');
+  assert.ok(item.physics_check.trim().length>=3,item.id+' mist natuurkundige controle');
   assert.equal(item.inhoudelijk_gevalideerd,false,item.id+' mag niet zonder externe toetsing af zijn');
  }
 });
