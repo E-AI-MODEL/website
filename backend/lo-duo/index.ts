@@ -6,7 +6,7 @@ const URL = Deno.env.get('SUPABASE_URL')!;
 const KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
 const db = createClient(URL, KEY, {auth:{persistSession:false,autoRefreshToken:false}});
 const ORIGINS = new Set(['https://eaimodel.nl','https://www.eaimodel.nl']);
-const CORS = { 'Access-Control-Allow-Origin': 'https://eaimodel.nl', 'Access-Control-Allow-Headers':'content-type,apikey,authorization', 'Access-Control-Allow-Methods':'POST,OPTIONS', 'Vary':'Origin' };
+const CORS = { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers':'content-type,apikey,authorization', 'Access-Control-Allow-Methods':'POST,OPTIONS', 'Vary':'Origin' };
 const ABC = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 const bad = (message:string,status=400) => Response.json({error:message},{status,headers:CORS});
 const ok = (data:unknown) => Response.json(data,{headers:{...CORS,'Cache-Control':'no-store'}});
@@ -34,7 +34,7 @@ async function getRoom(code:string){if(!/^[A-HJ-NP-Z2-9]{8}$/.test(code))return 
 const access=(room:any,hash:string):'a'|'d'|null=>hash===room.attack_hash?'a':hash===room.defence_hash&&room.defence_hash?'d':null;
 function view(room:any,role:'a'|'d'){
  const both=room.status==='playing';
- return {code:room.code,role,scenario:room.scenario,status:room.status,revision:room.revision,
+ return {code:room.code,roomId:room.id,role,scenario:room.scenario,status:room.status,revision:room.revision,
    mineReady:role==='a'?room.attack_ready:room.defence_ready,otherReady:role==='a'?room.defence_ready:room.attack_ready,
    joined:!!room.defence_hash, ownPlan:role==='a'?room.attack_plan:room.defence_plan,
    // An opponent's strategy must never leave the server before both players confirm.
@@ -46,13 +46,15 @@ Deno.serve(async req=>{
  if(req.method==='OPTIONS')return new Response(null,{headers:CORS});
  if(req.method!=='POST')return bad('Gebruik POST.',405);
  const origin=req.headers.get('origin');if(origin&&!ORIGINS.has(origin))return bad('Onbekende herkomst.',403);
- if(origin&&ORIGINS.has(origin))CORS['Access-Control-Allow-Origin']=origin;
+
  if(Number(req.headers.get('content-length')||0)>12500)return bad('Verzoek te groot.',413);
  let body:any;try{body=await req.json()}catch{return bad('Ongeldige aanvraag.')}
  if(!body||typeof body!=='object')return bad('Ongeldige aanvraag.');
  try{
  const action=body.action;
  if(action==='create'){
+  // Clean up expired class sessions without keeping student plans indefinitely.
+  if(crypto.getRandomValues(new Uint8Array(1))[0]<24) await db.from('lo_duo_rooms').delete().lt('expires_at',new Date().toISOString());
   const scenario=Number(body.scenario||0);if(!Number.isInteger(scenario)||scenario<0||scenario>3)return bad('Ongeldige spelsituatie.');
   for(let i=0;i<7;i++){
    const code=rand(8),secret=token(),attack_hash=await digest(secret);
