@@ -33,7 +33,7 @@ def run():
             const lab=window.__loLabTest;
             const variants=['zonecompact','zoneschuif','zonelijn'];
             let runs=0,invalid=0,different=0,unresponsive=0,maxStep=0,maxPlayer=0;
-            let results={};
+            let results={},byZone={},byFormation={};
             for(let sport=0;sport<4;sport++){
               document.getElementById('sportSelect').value=String(sport);
               document.getElementById('sportSelect').dispatchEvent(new Event('change'));
@@ -49,6 +49,8 @@ def run():
                     const out=lab.run(ps,seed),frames=lab.getFrames();
                     runs++;
                     results[out.result]=(results[out.result]||0)+1;
+                    const z=byZone[variant]||{shot:0,intercept:0,other:0,shotBlocked:0}; z[out.result]=(z[out.result]||0)+1;byZone[variant]=z;
+                    const fm=form+' / '+variant;const ct=byFormation[fm]||{shot:0,intercept:0,other:0,shotBlocked:0};ct[out.result]=(ct[out.result]||0)+1;byFormation[fm]=ct;
                     if(!frames.length||frames.some(f=>!f.players.every(p=>Number.isFinite(p.x)&&Number.isFinite(p.y))))invalid++;
                     for(let i=1;i<frames.length;i++){
                      const a=frames[i-1],b=frames[i],px=[20,21,22,31][sport];
@@ -71,7 +73,7 @@ def run():
                 }
               }
             }
-            return {runs,invalid,different,unresponsive,maxStep,maxPlayer,results};
+            return {runs,invalid,different,unresponsive,maxStep,maxPlayer,results,byZone,byFormation};
         }""")
         print("SIMULATIE",json.dumps(observed,ensure_ascii=False,indent=2))
         assert observed["runs"]==384,observed
