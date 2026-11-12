@@ -68,9 +68,9 @@ class ObservatoryPublicationTests(unittest.TestCase):
         self.assertFalse((PUBLISHED / "STUDIO_INRICHTEN.html").exists())
         self.assertEqual(len(list((PUBLISHED / "labs").rglob("index.html"))), len(PUBLISHED_LABS))
 
-    def test_compact_projectile_has_own_link_and_no_admin(self):
+    def test_compact_projectile_stays_available_without_split_navigation(self):
         source = (SOURCE / "labs" / "natuurkunde.html").read_text(encoding="utf-8")
-        self.assertIn('/tools/science-observatory/labs/schuine-worp/', source)
+        self.assertNotIn('id="projectileStudioLink"', source)
         studio = (PUBLISHED / "labs" / "schuine-worp" / "index.html").read_text(encoding="utf-8")
         self.assertIn('id="statRange"', studio)
         self.assertIn('id="field"', studio)
