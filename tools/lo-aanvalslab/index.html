@@ -387,7 +387,7 @@ function simulate(){
  frames=[];events=[];
  const a=()=>ps.filter(p=>p.team==='a'),d=()=>ps.filter(p=>p.team==='d');
  const b=()=>ps.find(p=>p.id===holder);
- function log(kind,msg){events.push({time:Math.round(clock*100)/100,kind,msg})}
+ function log(kind,msg,detail=null){events.push({time:Math.round(clock*100)/100,kind,msg,...(detail?{detail:copy(detail)}:{})})}
  function snapshot(){frames.push({time:clock,players:copy(ps),ball:{...ball},trail:copy(trail)})}
  function followControlledBall(owner){
   const aim=ballAt(owner),difference=dist(ball,aim),cap=PX*5.7*DT;
@@ -562,51 +562,55 @@ function simulate(){
    earliest=Math.min(earliest,margin);
   }
   const immediate=d().reduce((m,q)=>Math.min(m,dist(q,to)),1000),behind=target.x-carrier.x;
-  let quality=behind*.13+Math.min(12,Math.abs(to.y-carrier.y)*.036)+clamp(earliest*65,-110,66)-length*.048;
-  if(behind<-55)quality-=12;
-  if(immediate<62)quality-=Math.max(0,62-immediate)*.9;
-  // Metrica: 84 geobserveerde PASS-locatieparen uit twee wedstrijden.
-  // Mediaan 14,60 m op 105 m veld, naar oefenveld omgerekend 6,19 m.
-  // Dit stuurt alleen de voorkeur voor een passafstand; het stelt geen
-  // passsnelheid of onderscheppingskans op basis van deze events vast.
-  if(sportCfg().passReference){
-   const metres=length/PX;
-   quality-=Math.min(21,Math.abs(metres-sportCfg().passReference)*.4);
-  }
-  // Hockey: direct vooruit richting cirkel krijgt voorrang boven nog een
-  // omweg als er een veilige ontvangstmogelijkheid is (Lord et al. 2022).
-  // Een richtingsregel, geen uit velddata afgeleide doelkans.
-  if(sportCfg().circlePassBias&&target.x>sportCfg().shotX-105&&Math.abs(target.y-325)<sportCfg().shotY*.84){
-   quality+=sportCfg().circlePassBias;
-  }
-  // Bij 3 tegen 2 helpt een teruggelegde pass vanaf de flank ruimte voor
-  // het centrum te vinden (Leser et al., 279 jeugdpartijtjes). Dit is geen
-  // claim dat de gepubliceerde doelpercentages voor het model gelden.
-  if(sportIndex===0&&formationIndex===2&&Math.abs(carrier.y-325)>115&&carrier.x>675&&
-     target.x<carrier.x-20&&Math.abs(target.y-325)<108)quality+=18;
-  return {to,target,quality,earliest,possible:earliest>.1&&immediate>34,duration,from,near:immediate};
+  const forward=behind*.13,spread=Math.min(12,Math.abs(to.y-carrier.y)*.036),
+        arrival=clamp(earliest*65,-110,66),lengthPenalty=-length*.048;
+  const backward=behind<-55?-12:0,crowding=immediate<62?-Math.max(0,62-immediate)*.9:0;
+  const passReference=sportCfg().passReference||0;
+  const distancePenalty=passReference?-Math.min(21,Math.abs(length/PX-passReference)*.4):0;
+  const circle=(sportCfg().circlePassBias&&target.x>sportCfg().shotX-105&&Math.abs(target.y-325)<sportCfg().shotY*.84)?sportCfg().circlePassBias:0;
+  const flank=(sportIndex===0&&formationIndex===2&&Math.abs(carrier.y-325)>115&&carrier.x>675&&
+     target.x<carrier.x-20&&Math.abs(target.y-325)<108)?18:0;
+  // Dit is exact de som die de passkeuze bestuurt, geen kans op een doelpunt.
+  const quality=forward+spread+arrival+lengthPenalty+backward+crowding+distancePenalty+circle+flank;
+  const qualityParts={forward,spread,arrival,lengthPenalty,backward,crowding,distancePenalty,circle,flank};
+  return {to,target,quality,qualityParts,earliest,possible:earliest>.1&&immediate>34,
+   duration,from,near:immediate};
  }
  function choosePass(carrier){
   const choices=a().filter(p=>p.id!==holder).map(p=>passRisk(carrier,p)).sort((u,v)=>v.quality-u.quality);
   return choices.find(c=>c.possible&&c.to.x>carrier.x-90)||choices.find(c=>c.possible)||choices[0]||null;
  }
  function startPass(choice){
+  const passer=holder;
   flight={kind:'pass',target:choice.to.id,start:{...ball},end:{...choice.target},duration:choice.duration,elapsed:0,startTime:clock};
   holder=null;cooldown=.65;held=0;passes++;
   for(const p of d())p._reactionLeft=Math.max(p._reactionLeft,p.react*.82);
-  log('pass','Pass naar aanvaller '+(+choice.to.id[1]+1));
+  log('pass','Pass naar aanvaller '+(+choice.to.id[1]+1),{
+   from:passer,to:choice.to.id,distanceM:dist(choice.from,choice.target)/PX,
+   durationS:choice.duration,ballSpeedMps:dist(choice.from,choice.target)/PX/choice.duration,
+   minArrivalMarginS:choice.earliest,receiverNearestDefM:choice.near/PX,
+   score:choice.quality,scoreParts:choice.qualityParts,
+   feasible:choice.possible,receiveRadiusM:sportCfg().receive/PX
+  });
  }
  function beginShot(carrier){
   const goal={x:948,y:clamp(325+(random()-.5)*sportCfg().goalY,274,380)};
   shot={kind:'shot',start:{...ball},end:goal,duration:Math.max(.28,dist(ball,goal)/(PX*sportCfg().shot)),elapsed:0};
   holder=null;shots++;
   for(const p of d())p._reactionLeft=Math.max(p._reactionLeft,p.react*.55);
-  log('shot','Doelpoging door aanvaller '+(+carrier.id[1]+1));
+  log('shot','Doelpoging door aanvaller '+(+carrier.id[1]+1),{
+   player:carrier.id,distanceM:dist(shot.start,shot.end)/PX,
+   durationS:shot.duration,ballSpeedMps:dist(shot.start,shot.end)/PX/shot.duration,
+   nearestDefenderM:d().reduce((m,p)=>Math.min(m,dist(p,carrier)),1000)/PX,
+   shotLineX:sportCfg().shotX/PX,actualX:carrier.x/PX,
+   allowedSideM:sportCfg().shotY/PX,actualSideM:Math.abs(carrier.y-325)/PX,
+   pointY:shot.end.y/PX
+  });
  }
- function takeover(by,kind='loss'){
+ function takeover(by,kind='loss',detail={}){
   terminal=true;outcome='intercept';intercepts++;holder=null;
   // Bal blijft op de feitelijke contactplek liggen; geen sprong naar verdediger.
-  log(kind,'Balverlies bij verdediger '+(+by.id[1]+1));
+  log(kind,'Balverlies bij verdediger '+(+by.id[1]+1),{player:by.id,intent:by.intent,ballDistanceM:dist(by,ball)/PX,...detail});
  }
  function contactPlayer(people,before,after,radius){
   let found=null;
@@ -637,13 +641,15 @@ function simulate(){
    ball={x:mix(flight.start.x,flight.end.x,k),y:mix(flight.start.y,flight.end.y,k)};
    trail.push({...ball});if(trail.length>18)trail.shift();
    const hit=contactPlayer(defenders,old,ball,sportCfg().intercept);
-   if(hit){ball=hit.at;takeover(hit.p)}
+   if(hit){ball=hit.at;takeover(hit.p,'intercept',{ballContactM:hit.distance/PX,limitM:sportCfg().intercept/PX,receiver:flight.target,travelFraction:k})}
    else if(k>=1){
     const receiver=ps.find(q=>q.id===flight.target);
     if(receiver&&dist(receiver,ball)<sportCfg().receive){
      holder=receiver.id;completed++;cooldown=.42;held=0;
      // De bal wordt pas in volgende tijdstappen rustig onder controle gebracht.
-     log('receive','Aannemen door aanvaller '+(+receiver.id[1]+1));
+     log('receive','Aannemen door aanvaller '+(+receiver.id[1]+1),{
+   player:receiver.id,distanceM:dist(receiver,ball)/PX,limitM:sportCfg().receive/PX
+   });
     }else{loose={x:ball.x,y:ball.y,started:clock};log('loose','Bal niet direct aangenomen')}
     flight=null;trail=[];
    }
@@ -653,7 +659,7 @@ function simulate(){
    ball={x:mix(shot.start.x,shot.end.x,k),y:mix(shot.start.y,shot.end.y,k)};
    trail.push({...ball});if(trail.length>18)trail.shift();
    const hit=contactPlayer(defenders,old,ball,sportCfg().intercept*.95);
-   if(hit&&shot.elapsed<shot.duration*.95){ball=hit.at;terminal=true;outcome='shotBlocked';log('blocked','Schot geblokkeerd')}
+   if(hit&&shot.elapsed<shot.duration*.95){ball=hit.at;terminal=true;outcome='shotBlocked';log('blocked','Schot geblokkeerd',{player:hit.p.id,intent:hit.p.intent,ballContactM:hit.distance/PX,limitM:sportCfg().intercept*.95/PX,shotElapsedS:shot.elapsed})}
    else if(k>=1){terminal=true;outcome='shot';log('end','De aanval eindigt met een doelpoging')}
   }else if(loose){
    ball={x:loose.x,y:loose.y};
@@ -672,7 +678,7 @@ function simulate(){
     p._contact=approaching?p._contact+DT:Math.max(0,p._contact-DT*2);
     const moving=Math.hypot(carrier.vx,carrier.vy)/PX;
     const threshold=(p.intent==='druk'?.35:p.intent==='dek'||p.intent==='volg'||p.intent==='zoneschuif'?.52:p.intent==='zonelijn'?.64:.74)+(moving>2.4?.16:0);
-    if(p._contact>=threshold){takeover(p);break}
+    if(p._contact>=threshold){takeover(p,'loss',{contactS:p._contact,requiredContactS:threshold,carrierSpeedMps:moving,reachRadiusM:(sportCfg().intercept+PX*.30)/PX});break}
    }
    const closest=defenders.reduce((best,p)=>Math.min(best,dist(p,carrier)),9999);
    if(!terminal&&carrier.x>sportCfg().shotX&&Math.abs(carrier.y-325)<sportCfg().shotY&&(held>.46||closest>PX*2.8)&&cooldown<=0){beginShot(carrier)}
