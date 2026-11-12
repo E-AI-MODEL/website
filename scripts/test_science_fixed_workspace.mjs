@@ -290,6 +290,14 @@ try{
     assert.equal(header.full,'Speciale processen in een ideaal gas','De volledige naam blijft toegankelijk');
     assert(header.scrollHeight<=header.height+1,'De proefnaam past in de beschikbare hoogte');
     assert(header.graph>=180,'De onderzoeksgrafiek krijgt de vrijgemaakte ruimte');
+    const graphFrame=await page.evaluate(()=>{
+     const panel=document.querySelector('#graphPanel'),frame=panel.querySelector('.graph-frame'),canvas=frame.querySelector('canvas');
+     const pr=panel.getBoundingClientRect(),fr=frame.getBoundingClientRect(),cr=canvas.getBoundingClientRect();
+     return {panelBottom:pr.bottom,frameBottom:fr.bottom,canvasBottom:cr.bottom,frameHeight:fr.height};
+    });
+    assert(graphFrame.frameHeight>=90,'De grafiek moet leesbaar blijven in de vaste werkruimte: '+JSON.stringify(graphFrame));
+    assert(graphFrame.frameBottom<=graphFrame.panelBottom+1,'De x-as mag niet onder het grafiekpaneel verdwijnen: '+JSON.stringify(graphFrame));
+    assert(graphFrame.canvasBottom<=graphFrame.panelBottom+1,'De grafiek moet volledig op het scherm passen: '+JSON.stringify(graphFrame));
    }
    const startIsotherm=await page.evaluate(()=>({...state.p}));
    const movedIsotherm=await grabAndDrag(90,0);
