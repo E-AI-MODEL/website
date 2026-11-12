@@ -794,6 +794,125 @@ function calculationOfEvent(ev){
  }
  return result+(rows.length?'<ul class="lo-analysis-breakdown">'+rows.join('')+'</ul>':'');
 }
+
+let lastSecretTap=0,analysisPausedPlayback=false;
+function analysisMoment(frameIndex,chosenEvent=null){
+ if(!analysisReady||!frames.length)return;
+ const index=clamp(Number(frameIndex)||0,0,frames.length-1),frame=frames[index];
+ const ev=chosenEvent===null?events.slice().reverse().find(e=>e.time<=frame.time+.015):events[chosenEvent];
+ el('loMathScrub').value=String(index);
+ el('loMathTime').textContent=mathNum(frame.time)+' / '+mathNum(duration)+' s';
+ const defenders=frame.players.filter(p=>p.team==='d'),attackers=frame.players.filter(p=>p.team==='a');
+ const nearest=defenders.reduce((acc,p)=>Math.min(acc,dist(p,frame.ball)/PX),9999);
+ const phase={pass:'Pass onderweg',shot:'Schot onderweg',loose:'Losse bal',controlled:'Bal in bezit'}[frame.ballMode]||'Balbeweging';
+ const defRows=defenders.map(p=>{
+  const aim=p._lastAim;
+  return '<tr><td>'+mathEscape(p.id)+'</td><td>'+mathEscape(tacticLabels[p.intent]||p.intent)+'</td><td>'+mathNum(dist(p,frame.ball)/PX)+'</td><td>'+mathNum(hypot(p.vx,p.vy)/PX)+'</td><td>'+mathNum(Math.max(0,p._reactionLeft||0))+'</td><td>'+mathNum(p._contact||0)+'</td><td>'+(aim?mathNum(dist(p,aim)/PX):'–')+'</td></tr>';
+ }).join('');
+ const attackRows=attackers.map(p=>'<tr><td>'+mathEscape(p.id)+(p.id===frame.holder?' · bal':'')+'</td><td>'+mathEscape(tacticLabels[p.intent]||p.intent)+'</td><td>'+mathNum(hypot(p.vx,p.vy)/PX)+'</td><td>'+mathNum(p.x/PX)+'</td><td>'+mathNum(p.y/PX)+'</td></tr>').join('');
+ el('loMathFrame').innerHTML=
+  '<div class="lo-analysis-label"><span>'+mathEscape(phase)+(frame.holder?' · '+mathEscape(frame.holder):'')+'</span><span>Dichtste verdediger '+mathNum(nearest)+' m</span></div>'+
+  '<h3>Verdediging op dit moment</h3><table class="lo-analysis-table"><thead><tr><th>Speler</th><th>Opdracht</th><th>Bal (m)</th><th>Snelheid (m/s)</th><th>Reactie (s)</th><th>Contact (s)</th><th>Naar doelplek (m)</th></tr></thead><tbody>'+defRows+'</tbody></table>'+
+  '<p class="lo-analysis-detail-note">Afstand tot bal, berekende loopsnelheid, resterende reactietijd, opgebouwde contactduur en de afstand tot de laatste doelpositie van de verdediger.</p>'+
+  '<details class="lo-analysis-source"><summary>Ook de aanvallers op dit moment</summary><table class="lo-analysis-table"><thead><tr><th>Speler</th><th>Opdracht</th><th>Snelheid (m/s)</th><th>x</th><th>y</th></tr></thead><tbody>'+attackRows+'</tbody></table><p class="lo-analysis-detail-note">x en y zijn modelcoördinaten in meters, gemeten vanaf de oorsprong van het getekende veld.</p></details>';
+ el('loMathDecision').innerHTML=calculationOfEvent(ev);
+ document.querySelectorAll('.lo-math-event').forEach(b=>b.classList.toggle('active',Number(b.dataset.eventIndex)===events.indexOf(ev)));
+}
+function renderLoAnalysis(){
+ const root=el('loAnalysisBody');
+ if(!analysisReady||!frames.length){
+  root.innerHTML='<p class="lo-analysis-intro">Er is nog geen aanval berekend. Speel eerst een aanval. Tik vervolgens tweemaal op het LO-logo om de berekeningen te bekijken.</p>';
+  return;
+ }
+ const cfg=sportCfg();let distanceBall=0,distanceAttack=0,distanceDefend=0,topBall=0;
+ for(let i=1;i<frames.length;i++){
+  const previous=frames[i-1],current=frames[i],travel=dist(previous.ball,current.ball)/PX;
+  distanceBall+=travel;topBall=Math.max(topBall,travel/DT);
+  for(const p of current.players){
+   const before=previous.players.find(x=>x.id===p.id);if(!before)continue;
+   const moved=dist(p,before)/PX;
+   if(p.team==='a')distanceAttack+=moved;else distanceDefend+=moved;
+  }
+ }
+ const cards=[
+  ['Sport / teams',cfg.name+' · '+formation().name],['Uitkomst',analysisTitles[summary.result]||summary.result],
+  ['Duur',mathNum(summary.duration)+' s'],['Passes / aangenomen',summary.passes+' / '+summary.completed],
+  ['Balafstand',mathNum(distanceBall)+' m'],['Tijdstappen',frames.length]
+ ].map(c=>'<div class="lo-analysis-stat"><span>'+mathEscape(c[0])+'</span><b>'+mathEscape(c[1])+'</b></div>').join('');
+ const startRows=initial.map(p=>'<tr><td>'+mathEscape(p.id)+'</td><td>'+mathEscape(tacticLabels[p.intent]||p.intent)+'</td><td>'+mathNum(p.x/PX)+' / '+mathNum(p.y/PX)+'</td><td>'+mathNum(p.speed)+'</td><td>'+mathNum(p.react)+'</td></tr>').join('');
+ const eventsHtml=events.map((e,i)=>'<button class="lo-math-event" type="button" data-event-index="'+i+'"><time>'+mathNum(e.time)+' s</time><span>'+mathEscape(e.msg)+'</span></button>').join('');
+ const parameters=[
+  ['Rekenstap',DT+' s'],['Pixels per meter',cfg.px],
+  ['Passsnelheid (model)',cfg.pass+' m/s'],['Schotsnelheid (model)',cfg.shot+' m/s'],
+  ['Interceptradius',mathNum(cfg.intercept/PX)+' m'],['Aannameafstand',mathNum(cfg.receive/PX)+' m'],
+  ['Verdedigingssnelheidsfactor',mathNum(cfg.defencePace||1)],
+  ...(cfg.coverPace?[['Dekkingsfactor',mathNum(cfg.coverPace)]]:[]),
+  ['Schotgrens vanaf x',mathNum(cfg.shotX/PX)+' model-m'],
+  ['Schotzone langs midden',mathNum(cfg.shotY/PX)+' m'],
+  ['Simulatie maximaal',MAX+' s'],['Startwaarde',simSeed]
+ ];
+ const sourceHtml=analysisSourceLinks[sportIndex].map(([name,url])=>'<a href="'+mathEscape(url)+'" target="_blank" rel="noopener noreferrer">'+mathEscape(name)+'</a>').join(' · ');
+ root.innerHTML='<p class="lo-analysis-intro">Dit zijn de <b>berekende waarden van de laatst gespeelde aanval</b>. De simulatie bewaart elke 0,05 seconde de spelers en de bal. Schuif door de tijd of tik op een gebeurtenis.</p>'+
+  '<div class="lo-analysis-summary">'+cards+'</div>'+
+  '<section class="lo-analysis-block"><h3>Bekijk één moment</h3><div class="lo-analysis-label"><span>Moment in de aanval</span><span id="loMathTime"></span></div>'+
+  '<input type="range" min="0" max="'+(frames.length-1)+'" step="1" id="loMathScrub" class="lo-analysis-scrub" aria-label="Moment van de spelanalyse" value="0">'+
+  '<div id="loMathFrame"></div></section>'+
+  '<div class="lo-analysis-cols"><section class="lo-analysis-block"><h3>De gebeurtenissen</h3><div>'+eventsHtml+'</div></section>'+
+  '<section class="lo-analysis-block"><h3>De berekening bij dit moment</h3><div class="lo-analysis-details" id="loMathDecision"></div></section></div>'+
+  '<section class="lo-analysis-block"><h3>Afstanden en beweging</h3><ul class="lo-analysis-breakdown">'+
+  analysisRow('Gelopen door alle aanvallers',distanceAttack,'m')+analysisRow('Gelopen door alle verdedigers',distanceDefend,'m')+
+  analysisRow('Afstand afgelegd door de bal',distanceBall,'m')+analysisRow('Hoogste berekende balsnelheid',topBall,'m/s')+
+  '</ul><p class="lo-analysis-detail-note">Afstand = som van √((x₂−x₁)²+(y₂−y₁)²) gedeeld door de schaal in pixels per meter. Dit zijn modelafstanden, geen metingen van leerlingen.</p></section>'+
+  '<div class="lo-analysis-cols"><section class="lo-analysis-block"><h3>Beginopstelling</h3><table class="lo-analysis-table"><thead><tr><th>Speler</th><th>Opdracht</th><th>x / y (model-m)</th><th>Max. m/s</th><th>Reactie s</th></tr></thead><tbody>'+startRows+'</tbody></table></section>'+
+  '<section class="lo-analysis-block"><h3>Gebruikte modelwaarden</h3><ul class="lo-analysis-breakdown">'+parameters.map(p=>'<li><span>'+mathEscape(p[0])+'</span><b>'+mathEscape(p[1])+'</b></li>').join('')+'</ul></section></div>'+
+  '<section class="lo-analysis-block lo-analysis-source"><h3>Waarom doet het model dit?</h3>'+
+  '<p><b>Beweging:</b> iedere 0,05 seconde bewegen spelers naar een doelpositie die hoort bij hun opdracht. Versnelling en maximale snelheid begrenzen de beweging.</p>'+
+  '<p><b>Pass:</b> vooruitgang, breedte, afstand, aankomsttijd van verdedigers en eventuele sportbonussen vormen samen een score. Het model kiest een ontvanger op basis van die score. Bij de betreffende pass staan alle onderdelen hierboven.</p>'+
+  '<p><b>Onderschepping:</b> bij een pass of schot controleert het model de afstand tot de balbaan. Druk op een baldrager vraagt bovendien een minimale contactduur.</p>'+
+  '<p><b>Schot:</b> de baldrager moet in de schotzone zijn. Ook de tijd aan de bal, afstand tot een verdediger en wachttijd tellen mee. Een schot is geen doelpunt.</p>'+
+  '<p><b>Bronnen voor '+mathEscape(cfg.name)+':</b> '+sourceHtml+'.</p>'+
+  '<p>Een deel van de loopsnelheden en keuzes is vergeleken met openbare wedstrijddata. Reactietijden, zones, contactdrempels en veel passkeuzes blijven onderwijsmodelaannames. De cijfers zijn geen voorspelde winstkansen.</p>'+
+  '<div class="lo-analysis-actions"><span class="lo-analysis-detail-note">Alle frames, gebeurtenissen en instellingen van deze aanval kun je bewaren.</span><button id="loMathExport" type="button" class="lo-analysis-export">Bewaar volledige berekening (JSON)</button></div></section>';
+ el('loMathScrub').addEventListener('input',e=>analysisMoment(Number(e.target.value)));
+ document.querySelectorAll('.lo-math-event').forEach(btn=>btn.addEventListener('click',()=>{
+  const i=Number(btn.dataset.eventIndex);analysisMoment(Math.round(events[i].time/DT),i);
+ }));
+ el('loMathExport').addEventListener('click',()=>{
+  const payload={beschrijving:'LO Aanvalslab: berekende speldata, geen leerlingmetingen',
+   sport:cfg.name,spelvorm:formation().name,sportParameters:copy(cfg),startwaarde:simSeed,
+   tijdstapSeconden:DT,beginopstelling:copy(initial),uitkomst:copy(summary),
+   gebeurtenissen:copy(events),beelden:copy(frames)};
+  const url=URL.createObjectURL(new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}));
+  const a=document.createElement('a');a.href=url;a.download='lo-spelanalyse-'+sportIndex+'-'+simSeed+'.json';
+  document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+ });
+ analysisMoment(Math.round((state==='playing'?time:duration)/DT));
+}
+function openLoAnalysis(){
+ if(!el('loAnalysis').hidden)return;
+ analysisPausedPlayback=state==='playing';
+ if(analysisPausedPlayback)cancelAnimationFrame(raf);
+ renderLoAnalysis();
+ el('loAnalysis').hidden=false;el('loAnalysisClose').focus();
+}
+function closeLoAnalysis(){
+ if(el('loAnalysis').hidden)return;
+ el('loAnalysis').hidden=true;el('loSecret').focus();
+ if(analysisPausedPlayback&&state==='playing'){
+  cancelAnimationFrame(raf);last=0;raf=requestAnimationFrame(tick);
+ }
+ analysisPausedPlayback=false;
+}
+el('loSecret').addEventListener('click',()=>{
+ const now=performance.now();
+ if(now-lastSecretTap<850){lastSecretTap=0;openLoAnalysis()}
+ else lastSecretTap=now;
+});
+el('loAnalysisClose').addEventListener('click',closeLoAnalysis);
+el('loAnalysis').addEventListener('click',event=>{if(event.target===el('loAnalysis'))closeLoAnalysis()});
+document.addEventListener('keydown',event=>{
+ if(event.key==='Escape'&&!el('loAnalysis').hidden){event.preventDefault();closeLoAnalysis()}
+});
 // Alleen testomgeving: reproductie van spelsituaties zonder UI-animatie.
 window.__loLabTest={run(input,withSeed=1337){initial=copy(input);simSeed=withSeed;simulate();return copy(summary)},getPlayers:()=>copy(players),getFrames:()=>copy(frames),getEvents:()=>copy(events),scenario:index=>{makeScenario(index);return copy(players)},setFormation:index=>{applyFormation(index);makeScenario(scenarioIndex);resetSetup();return copy(players)},setSpeed:speed=>{playbackSpeed=clamp(speed,.5,2);el('playbackSpeed').value=String(playbackSpeed)},getTime:()=>time,reachTime,getConfig:()=>copy(sportCfg()),setZonePlan(key){if(!['zonecompact','zoneschuif','zonelijn'].includes(key))return;for(const p of players)if(p.team==='d')p.intent=key;syncZonePlans();draw()},getIntents:()=>copy(tactics.d)};
 })();
