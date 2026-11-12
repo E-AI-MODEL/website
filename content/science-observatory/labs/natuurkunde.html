@@ -299,6 +299,21 @@ body{display:flex;flex-direction:column}
  .quick-more{border:1px solid #3a6970;color:#96e4d9;border-radius:4px;background:#14333d;font-size:10px;min-height:30px;padding:3px}
  .workspace .analysis-shell{order:4}
 }
+
+/* Compact experiment prompts, never a clipped action or numeric field. */
+@media(max-width:720px){
+ .workspace .inquiry-bar:not([hidden]),.workspace.mobile-projectile .inquiry-bar:not([hidden]){
+  display:flex;flex-direction:column;align-items:stretch;justify-content:center;
+  gap:4px;min-height:0;padding:5px 9px;max-width:100%;overflow:hidden;
+ }
+ .workspace .inquiry-bar>div:first-child{width:100%;min-width:0;flex:0 0 auto}
+ .workspace .inquiry-title{font-size:11px!important;line-height:1.25;max-width:100%}
+ .workspace .inquiry-right,.workspace.mobile-projectile .inquiry-right{display:flex!important;flex:0 0 auto;width:100%!important;align-items:flex-start!important;max-width:100%}
+ .workspace .inquiry-actions,.workspace.mobile-projectile .inquiry-actions{display:flex!important;align-items:center;justify-content:flex-start;width:100%!important;max-width:100%;gap:6px}
+ .workspace .inquiry-answer{height:30px;width:93px;max-width:93px;min-width:0;padding:3px 6px;font-size:12px;flex:0 0 93px}
+ .workspace .inquiry-action{width:auto!important;max-width:calc(100% - 4px);min-height:30px;padding:5px 12px;font-size:11px;line-height:1.25;white-space:normal}
+ .workspace .inquiry-answer:not([hidden])~.inquiry-action{max-width:calc(100% - 100px)}
+}
 </style></head>
 <body>
 <header class="masthead"><div class="mast-left"><a class="brand" href="/tools/science-observatory/" aria-label="Terug naar Science Observatory"><span class="logo" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><path d="M4 19c4-1 4-12 8-12s4 18 8 18 4-9 8-10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span><span>SCIENCE <b>OBSERVATORY</b></span></a><span class="brand-divider"></span><span class="brand-context">NATUURKUNDE · PROEFVERSIE</span></div><div class="nav-main"><a href="#labSection" class="nav-link active">Proef</a><a href="#topics" class="nav-link">Onderwerpen</a><a href="/tools/science-observatory/" class="nav-link">Andere observatoria</a><a href="/nl/tools/" class="nav-link">Alle tools</a></div><span class="header-status"><span class="live-dot"></span> In ontwikkeling</span></header>
@@ -826,7 +841,7 @@ function renderInquiry(){
   title.textContent='Welke weerstand zit er achter het vraagteken?';
   detail.textContent='Verander R4 tot de brugmeter nul aanwijst. Bereken daarna de verborgen waarde en controleer je antwoord.';
   const message=mission.feedback||(mission.solved?'Je berekening klopt. Probeer nu R1 of R2 te veranderen.':balanced?'De brug is in balans. Wat zegt dat over de onbekende weerstand?':'De meter wijkt '+fmt(volts,2)+' V af van nul. Welke kant moet R4 op?');if(status.textContent!==message)status.textContent=message;
-  action.textContent='Controleer schatting';action.disabled=false;
+  action.textContent=innerWidth<=720?'Controleer':'Controleer schatting';action.disabled=false;
  }else{
   const intensity=wavePower(state.p,mission.probe.x,mission.probe.y);
   const low=mission.samples.some(s=>s.power<.12),high=mission.samples.some(s=>s.power>.88);
@@ -834,7 +849,7 @@ function renderInquiry(){
   title.textContent='Waar versterken of doven de golven uit?';
   detail.textContent='Sleep de meetsonde over het veld. Bewaar een bijna stil punt en een punt met sterke trilling. Verander daarna één broninstelling.';
   const message=mission.feedback||(low&&high?'Beide soorten plekken gevonden. Waarom liggen ze juist daar?':mission.previousSamples.length?'Paarse markeringen: oude metingen. Meet opnieuw op dezelfde plekken.':mission.samples.length+' meetpunt(en) bewaard · nu '+fmt(intensity*100,0)+'% relatieve intensiteit.');if(status.textContent!==message)status.textContent=message;
-  action.textContent='Bewaar meetpunt';action.disabled=mission.samples.length>=12;
+  action.textContent=innerWidth<=720?'Bewaar punt':'Bewaar meetpunt';action.disabled=mission.samples.length>=12;
  }
 }
 function actInquiry(){
