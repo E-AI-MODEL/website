@@ -350,6 +350,8 @@ body{display:flex;flex-direction:column}
 .graph-frame{position:relative}
 @media(min-width:721px) and (max-width:1080px){.more-controls .extra-controls{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:720px){.workspace .inspector .more-controls{grid-column:1/-1}.workspace .inspector .more-controls .extra-controls{grid-template-columns:repeat(2,minmax(0,1fr))}}
+#sceneCompass{max-width:calc(100% - 24px);white-space:normal;line-height:1.35;text-align:center}
+@media(max-width:720px){#sceneCompass{padding:5px 8px;bottom:7px;font-size:10px}}
 /* Rustige tijdmeter, ongeacht verandering van het getal. */
 #timeLabel{display:inline-block;width:16ch;min-width:16ch;flex:0 0 16ch;white-space:nowrap;text-align:right;font-variant-numeric:tabular-nums;letter-spacing:0}
 #stage.three-dimensional,#stage.three-dimensional canvas{touch-action:none!important;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
