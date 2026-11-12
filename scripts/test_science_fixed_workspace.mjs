@@ -70,6 +70,13 @@ try{
    assert.equal(await page.locator('#num-v').inputValue(),'20.5');
    if(width===1024){await page.locator('#toggleExplorer').click();assert(await page.locator('#explorer').evaluate(el=>el.classList.contains('open')),'Catalogue opens at tablet width');await page.locator('#closeExplorer').click();}
    if(width===1440){
+    const expand=page.locator('#graphExpand'),initial=await page.locator('.analysis-shell').evaluate(el=>el.getBoundingClientRect().height);
+    await expand.click();
+    const larger=await page.locator('.analysis-shell').evaluate(el=>el.getBoundingClientRect().height);
+    assert(larger>initial+35,'Uitklapknop maakt grafiek groter');
+    await expand.click();
+    const restored=await page.locator('.analysis-shell').evaluate(el=>el.getBoundingClientRect().height);
+    assert(Math.abs(restored-initial)<3,'Uitklapknop herstelt de oorspronkelijke ruimte');
     const divider=page.locator('#sceneDivider'), before=await page.locator('.analysis-shell').evaluate(el=>el.getBoundingClientRect().height),rect=await divider.boundingBox();
     await page.mouse.move(rect.x+rect.width/2,rect.y+rect.height/2);
     await page.mouse.down();
