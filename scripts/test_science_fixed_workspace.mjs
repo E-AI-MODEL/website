@@ -45,6 +45,9 @@ try{
    assert(!(await page.locator('.analysis-shell').evaluate(el=>el.classList.contains('compact-open'))),'Graph closes without scrolling');
    await page.locator('#openExplorer').click();
    assert(await page.locator('#explorer').evaluate(el=>el.classList.contains('open')),'Experiment list opens');
+   await page.locator('#search').fill('wheatstone');
+   assert(await page.locator('[data-open="wheatstone"]').isVisible(),'Zoeken toont een proef uit een gesloten groep');
+   await page.locator('#search').fill('');
    const wheatstoneGroup=page.locator('.group-set').filter({has:page.locator('[data-open="wheatstone"]')}).locator('.group-header');
    if(await wheatstoneGroup.getAttribute('aria-expanded')==='false')await wheatstoneGroup.click();
    await page.locator('[data-open="wheatstone"]').click();
