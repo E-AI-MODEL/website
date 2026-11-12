@@ -11,10 +11,11 @@ Bewerk de bestanden onder `content/anatomie/labs/hartslag/`. `scripts/build_anat
 
 - `index.html`: bediening, teksten, onderzoeken en bronverwijzingen
 - `heart.css`: vormgeving en responsief gedrag
-- `cycle.js`: de enige berekening voor de vijf fasen, de druk, het volume en de klepstanden
+- `cycle.js`: de enige berekening voor de vijf fasen, de druk, het volume en de klepstanden; de klepbladen hebben tussenliggende standen
+- `anatomyGeometry.js`: opengewerkte kamers met spierwand, inwendige holtes, harttussenschot, klepbladen en vertakte bloedvaten
 - `heart.js`: interactieve WebGL-geometrie, klepbladen, stroomdeeltjes, camera en grafieken
 
-Er wordt **geen externe 3D-engine** geladen. Het hart is een zelfgetekend, beweegbaar en vervormbaar WebGL-model. Het is **niet** het stilstaande anatomische GLB-hart uit de atlas. De geometrie is bewust schematisch, zodat de kleppen en binnenruimte onderzoekbaar zijn. Dat is een verschil met een medisch nauwkeurig, anatomisch gevalideerd hartmodel.
+Er wordt **geen externe 3D-engine** geladen. Het hart is een zelfgetekend, beweegbaar en vervormbaar WebGL-model. Het is **niet** het stilstaande anatomische GLB-hart uit de atlas. In de tweede versie kun je van een buitenaanzicht naar een doorsnede schakelen. De kamerwanden hebben echte 3D-dikte; de linkerkamerwand is dikker dan de rechter. Je ziet het tussenschot, de uitgewerkte atrioventriculaire kleppen en de kleppen bij de grote slagaders. De mitralisklep heeft twee klepbladen, de tricuspidalisklep en beide slagaderkleppen hebben er drie. De chordae tendineae worden schematisch weergegeven, alleen bij de AV-kleppen. **Dit blijft een onderwijsmodel**, niet een medisch gevalideerde scan of een biomechanisch rigged hart.
 
 ## Fysiologie
 
@@ -28,6 +29,7 @@ Bronnen: [OpenStax, bouw van het hart](https://openstax.org/books/anatomy-and-ph
 
 ```sh
 node scripts/test_hartslaglab_cycle.mjs
+node scripts/test_hartslaglab_geometry.mjs
 python scripts/build_anatomie.py --out site-build/tools/anatomie
 python -m unittest discover -s tests -p 'test_anatomie_publish.py' -v
 node scripts/test_hartslaglab_browser.mjs site-build chromium

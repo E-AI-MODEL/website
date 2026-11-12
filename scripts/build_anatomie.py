@@ -561,7 +561,7 @@ def build(destination: Path) -> None:
         # Hartslaglab hoort bij de atlas, maar gebruikt eigen bewegende modellen.
         # Publiceer vanuit contentbron, niet vanuit handmatig gebouwde tooloutput.
         lab_source = Path(__file__).resolve().parent.parent / "content" / "anatomie" / "labs" / "hartslag"
-        for asset in ("index.html", "heart.css", "heart.js", "cycle.js"):
+        for asset in ("index.html", "heart.css", "heart.js", "cycle.js", "anatomyGeometry.js"):
             if not (lab_source / asset).is_file():
                 raise FileNotFoundError(f"Hartslaglab bronbestand ontbreekt: {asset}")
         shutil.copytree(lab_source, destination / "labs" / "hartslag")
