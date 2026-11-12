@@ -77,7 +77,7 @@ try{
    const r=document.querySelector('#field').getBoundingClientRect(),c=window.__physicsStudio.camera(),s=window.__physicsStudio.state;
    return {x:r.left+c.ox+s.target*c.scale,y:r.top+c.oy-8};
   });
-  await page.mouse.move(mat.x,mat.y);await page.mouse.down();await page.mouse.move(mat.x+17,mat.y,{steps:6});await page.mouse.up();
+  await page.mouse.move(mat.x,mat.y);await page.mouse.down();await page.mouse.move(mat.x+46,mat.y,{steps:9});await page.mouse.up();
   const target=await page.evaluate(()=>window.__physicsStudio.state.target);
   assert(Math.abs(target-24)>.5,'De landingsmat is versleepbaar');
   assert.deepEqual(errors,[],'Geen JavaScript-fouten');
