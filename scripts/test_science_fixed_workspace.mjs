@@ -45,6 +45,8 @@ try{
    assert(!(await page.locator('.analysis-shell').evaluate(el=>el.classList.contains('compact-open'))),'Graph closes without scrolling');
    await page.locator('#openExplorer').click();
    assert(await page.locator('#explorer').evaluate(el=>el.classList.contains('open')),'Experiment list opens');
+   const wheatstoneGroup=page.locator('.group-set').filter({has:page.locator('[data-open="wheatstone"]')}).locator('.group-header');
+   if(await wheatstoneGroup.getAttribute('aria-expanded')==='false')await wheatstoneGroup.click();
    await page.locator('[data-open="wheatstone"]').click();
    await page.waitForFunction(()=>document.querySelector('#labTitle').textContent.toLowerCase().includes('wheatstone'));
    await page.waitForFunction(()=>!document.querySelector('#explorer').classList.contains('open'));
