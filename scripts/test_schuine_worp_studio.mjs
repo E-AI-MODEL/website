@@ -37,6 +37,8 @@ try{
   assert(await page.locator('#fire').isVisible());
   assert(await page.locator('#angle').isVisible());
   assert(await page.locator('#speed').isVisible());
+  assert(await page.locator('#height').isVisible());
+  assert(await page.locator('#target').isVisible());
   assert((await page.locator('#statRange').innerText()).includes('—'),'Geen voorspelde waarden voor de eerste worp');
   await page.locator('#field').screenshot({path:'test-results/worp-studio-'+browserType.name()+'-'+viewport.width+'-begin.png'});
   await page.screenshot({path:'test-results/worp-studio-'+browserType.name()+'-'+viewport.width+'-volledig.png'});
@@ -55,6 +57,11 @@ try{
   assert.equal(await page.locator('#viewGraph').getAttribute('aria-pressed'),'true');
   await page.locator('#field').screenshot({path:'test-results/worp-studio-'+browserType.name()+'-'+viewport.width+'-grafiek.png'});
   await page.locator('#viewField').click();
+  await page.locator('[data-key="height"][data-delta=".5"]').click();
+  const raised=await page.evaluate(()=>window.__physicsStudio.values(window.__physicsStudio.state));
+  assert(raised.range>result.t.range&&raised.peak>result.t.peak,'Hogere start geeft een groter bereik en hogere top');
+  await page.locator('#target').evaluate(el=>{el.value='29';el.dispatchEvent(new Event('input',{bubbles:true}))});
+  assert.equal(await page.evaluate(()=>window.__physicsStudio.state.target),29,'Mat is via de regelaar te verplaatsen');
   await page.locator('[data-g="1.62"]').click();
   assert.equal(await page.locator('[data-g="1.62"]').getAttribute('aria-pressed'),'true');
   const moon=await page.evaluate(()=>window.__physicsStudio.values(window.__physicsStudio.state));
@@ -68,6 +75,8 @@ try{
   }
   await page.locator('#reset').click();
   assert.equal(await page.locator('#statRange').innerText(),'—');
+  assert.equal(await page.evaluate(()=>window.__physicsStudio.state.height),0);
+  assert.equal(await page.evaluate(()=>window.__physicsStudio.state.target),24);
   const aim=await page.evaluate(()=>{
    const r=document.querySelector('#field').getBoundingClientRect(),s=window.__physicsStudio.state,c=window.__physicsStudio.camera();
    const radius=52+(s.speed-5)/30*100;
