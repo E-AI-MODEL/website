@@ -248,7 +248,8 @@ function camera(){
  var worldX=Math.max.apply(null,reaches),height=Math.max(7,now.peak+3,lastTrial?lastTrial.peak+3:0);
  var pad={left:w<550?35:53,right:24,top:w<550?72:105};
  // The field occupies the upper half. Measured height over time stays below it.
- var oy=Math.min(h-Math.min(155,h*.32),Math.max(pad.top+82,h*(w<550?.52:.56)));
+ var hasData=S.playing||S.finished||S.trials.length>0;
+ var oy=hasData?Math.min(h-Math.min(155,h*.32),Math.max(pad.top+82,h*(w<550?.52:.56))):h-57;
  var scale=Math.min((w-pad.left-pad.right)/worldX,(oy-pad.top-16)/height);
  scale=Math.max(.2,scale);
  var ox=pad.left;
@@ -337,7 +338,7 @@ function drawScene(c){
   }
  }
  screen.handle={x:hx,y:hy};screen.mat={x:tx,y:oy};screen.view=c;
- drawMiniGraph(c);
+ if(S.playing||S.finished||S.trials.length)drawMiniGraph(c);
 }
 function drawMiniGraph(c){
  var w=c.w,h=c.h,top=c.oy+51,bottom=h-29,left=c.ox,right=w-24;
