@@ -163,6 +163,9 @@
 .lo-help-display{border:1px solid #315557;background:#09202a;border-radius:11px;padding:10px;display:flex;flex-direction:column;gap:8px;min-width:0}
 .lo-help-display svg{display:block;width:100%;height:auto;max-height:220px;aspect-ratio:320/185}
 .lo-help-demo-tag{font-size:11px;color:#a8d4c5;min-height:17px}
+.lo-help-demo-controls{display:flex;gap:6px;flex-wrap:wrap;align-items:center;min-height:24px}
+.lo-help-demo-control{font-size:10px;color:#d5ede1;border:1px solid #4a7066;border-radius:7px;padding:5px 8px;background:#15362f}
+.lo-help-demo-control:last-child{background:#254837;color:#d7f8e4;border-color:#588c71}
 .lo-help-words{display:flex;flex-direction:column;gap:8px;min-width:0}
 .lo-help-progress{font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:#8db9ad}
 .lo-help-words h3{font-size:clamp(19px,2vw,24px);letter-spacing:-.035em;margin:0;color:#eaf9f3;line-height:1.22}
@@ -212,6 +215,7 @@
 <circle id="loHelpDemoHalo" cx="94" cy="99" r="22" fill="none" stroke="#e8ffae" stroke-width="1.6" stroke-dasharray="5 5" opacity="0"/>
 </svg>
 <div id="loHelpDemoTag" class="lo-help-demo-tag" aria-live="off">Voorbeeld zonder invloed op je spel</div>
+<div class="lo-help-demo-controls" aria-hidden="true"><span id="loHelpDemoSelected" class="lo-help-demo-control">Aanvaller 1</span><span id="loHelpDemoAction" class="lo-help-demo-control">Speler kiezen</span></div>
 <button type="button" id="loHelpReplay" class="lo-help-open" style="align-self:flex-start">↻ Speel demo opnieuw</button>
 <span class="lo-help-caption">Dit is een bedieningsvoorbeeld. Je eigen spelers en opstellingen blijven hetzelfde.</span>
 </div>
@@ -1522,11 +1526,16 @@ function animate(id,dx,dy,duration=1400){
 function replay(){
  stop();
  const item=lessons[lesson].steps[step],action=item[3],halo=$('loHelpDemoHalo'),path=$('loHelpDemoPath');
+ const selected=action==='task'||action==='coach';
+ halo.setAttribute('cx',selected?'174':'94');halo.setAttribute('cy',selected?'58':'99');
  halo.setAttribute('opacity',action==='select'||action==='drag'||action==='task'||action==='coach'?'.95':'0');
  path.setAttribute('opacity',['play','ball','coach','pause','repeat'].includes(action)?'.92':'0');
+ const indicators={select:['Aanvaller 1','Geselecteerd'],drag:['Aanvaller 1','Verplaatsen'],task:['Aanvaller 2','Diep gaan'],ball:['Aanvaller 1','Passen'],defend:['Verdediger 1','Druk op bal'],play:['Speel de aanval','Tempo 1×'],pause:['Pauzeer','Tempo ½×'],repeat:['Speel opnieuw','Pas plan aan'],coach:['Coach kiest','Spelmoment'],room:['Aanval klaar','Verdediging klaar']};
+ const [a,b]=indicators[action]||['Oefendoel','Zelf proberen'];
+ $('loHelpDemoSelected').textContent=a;$('loHelpDemoAction').textContent=b;
  if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
- if(action==='drag')animate('loHelpDemoMate',36,48);
- if(action==='task')animate('loHelpDemoMate',70,3);
+ if(action==='drag'){animate('loHelpDemoPlayer',36,-26);animate('loHelpDemoBall',36,-26);animate('loHelpDemoHalo',36,-26)}
+ if(action==='task'){animate('loHelpDemoMate',70,3);animate('loHelpDemoHalo',70,3)}
  if(action==='defend')animate('loHelpDemoDef',-58,-38);
  if(action==='ball'||action==='play'||action==='repeat')animate('loHelpDemoBall',106,-50);
  if(action==='pause')animate('loHelpDemoBall',36,-18,1100);
