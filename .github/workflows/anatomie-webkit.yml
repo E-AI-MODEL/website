@@ -13,6 +13,8 @@ on:
       - 'scripts/test_anatomie_sources.mjs'
       - 'scripts/test_hartslaglab_browser.mjs'
       - 'scripts/test_hartslaglab_cycle.mjs'
+      - 'scripts/test_hartslaglab_geometry.mjs'
+      - 'scripts/audit_hart_glb.mjs'
       - 'tests/test_anatomie_picking.mjs'
       - 'content/anatomie/**'
       - '.github/workflows/anatomie-webkit.yml'
@@ -29,6 +31,8 @@ on:
       - 'scripts/test_anatomie_sources.mjs'
       - 'scripts/test_hartslaglab_browser.mjs'
       - 'scripts/test_hartslaglab_cycle.mjs'
+      - 'scripts/test_hartslaglab_geometry.mjs'
+      - 'scripts/audit_hart_glb.mjs'
       - 'tests/test_anatomie_picking.mjs'
       - 'content/anatomie/**'
       - '.github/workflows/anatomie-webkit.yml'
@@ -50,8 +54,14 @@ jobs:
         run: python -m unittest discover -s tests -p 'test_anatomie_content_audit.py' -v
       - name: Schrijf volledige anatomie-audit
         run: python scripts/audit_anatomie_content.py --out audit-anatomie
+      - name: Controleer JavaScript van het Hartslaglab voor de browserstart
+        run: node --check content/anatomie/labs/hartslag/heart.js
       - name: Controleer hartcyclus en kleplogica
         run: node scripts/test_hartslaglab_cycle.mjs
+      - name: Controleer open hartkamers, kleppen en bloedvaten
+        run: node scripts/test_hartslaglab_geometry.mjs
+      - name: Inspecteer hartstructuren in bestaande 3D-atlas
+        run: node scripts/audit_hart_glb.mjs
       - name: Controleer herkomst van de anatomische uitlegartikelen
         run: node scripts/test_anatomie_sources.mjs
       - name: Controleer Nederlandse uitleg voor alle modelonderdelen

@@ -62,14 +62,23 @@ class AnatomyPublishTests(unittest.TestCase):
         self.assertIn('id="heartCanvas"', source)
         self.assertIn('src="./heart.js"', source)
         self.assertIn('href="./heart.css"', source)
-        self.assertIn("Schematische doorsnede", source)
-        for name in ("heart.js", "heart.css", "cycle.js"):
+        self.assertIn("3D · Anatomische hartvorm", source)
+        for name in ("heart.js", "heart.css", "cycle.js", "anatomyGeometry.js"):
             asset = lab / name
             self.assertTrue(asset.is_file(), f"Hartslaglab mist {name}")
             self.assertGreater(asset.stat().st_size, 150)
+        atlas_mesh = lab / "atlas-heart.bin"
+        atlas_manifest = lab / "atlas-heart.json"
+        self.assertTrue(atlas_mesh.is_file(), "De brongebonden hartmesh ontbreekt")
+        self.assertGreater(atlas_mesh.stat().st_size, 10000)
+        self.assertTrue(atlas_manifest.is_file(), "Het hartmesh-manifest ontbreekt")
+        manifest = atlas_manifest.read_text(encoding="utf-8")
+        for part_id in ('"ra"', '"rv"', '"la"', '"lv"'):
+            self.assertIn(part_id, manifest)
         script = (lab / "heart.js").read_text(encoding="utf-8")
         self.assertIn("getContext('webgl'", script)
         self.assertIn("from './cycle.js'", script)
+        self.assertIn("from './anatomyGeometry.js'", script)
         self.assertIn("requestAnimationFrame(frame)", script)
         self.assertIn("drawParticles(m)", script)
         self.assertIn("drawChart('pressureChart'", script)
