@@ -137,10 +137,28 @@ try{
    await graphDrag(.63);
    const pulley=await page.evaluate(()=>({n:state.p.n,discrete:discreteGraphs.has(state.id)}));
    assert(pulley.discrete&&Number.isInteger(pulley.n),'Aantal dragende touwdelen kan alleen geheel zijn');
+   const ropePhysics=await page.evaluate(()=>{
+    const domain=graphSpecFor(state.id,state.p,state.t),q=(state.p.n-domain.min)/(domain.max-domain.min);
+    const observed=Number(state.current.readouts[1][1].split(' ')[0].replace(',','.'));
+    return {graph:state.current.fn(q),observed};
+   });
+   assert(Math.abs(ropePhysics.graph-ropePhysics.observed)<.06,'Grafiekpunt bij heel aantal touwen is dezelfde trekkracht als de meting');
    await selectLab('bohr');
    await graphDrag(.8);
    const bohr=await page.evaluate(()=>({n:state.p.n1,discrete:discreteGraphs.has(state.id)}));
    assert(bohr.discrete&&Number.isInteger(bohr.n)&&bohr.n>=2,'Bohr-niveau blijft een geheel getal');
+   const energy=await page.evaluate(()=>{
+    const domain=graphSpecFor(state.id,state.p,state.t),n=state.p.n1;
+    return {value:state.current.fn((n-domain.min)/(domain.max-domain.min)),expected:-13.6/(n*n)};
+   });
+   assert(Math.abs(energy.value-energy.expected)<1e-9,'Bohr-grafiek gebruikt de energie van een geheel niveau');
+   await selectLab('doppler');
+   const doppler=await page.evaluate(()=>{
+    const d=graphSpecFor(state.id,state.p,state.t),q=(state.p.vs-d.min)/(d.max-d.min);
+    const measured=Number(state.current.readouts[0][1].split(' ')[0].replace(',','.'));
+    return {graph:state.current.fn(q),measured,expected:state.p.f*state.p.v/(state.p.v-state.p.vs)};
+   });
+   assert(Math.abs(doppler.graph-doppler.expected)<1e-8&&Math.abs(doppler.measured-doppler.expected)<.02,'Doppler-grafiek en meetwaarde gebruiken dezelfde snelheid');
    await selectLab('ohm');
    const ohmBefore=await page.evaluate(()=>({...state.p}));
    const rOhm=await page.locator('#plot').boundingBox();
@@ -188,6 +206,11 @@ try{
    await graphDrag(.76);
    const series=await page.evaluate(()=>({p:{...state.p},r:state.current.readouts[0][1]}));
    assert(Math.abs(Number(series.r.split(' ')[0].replace(',','.'))-(series.p.R1+series.p.R2))<.02,'Serie: weerstanden tellen op');
+   const seriesGraph=await page.evaluate(()=>{
+    const d=graphSpecFor(state.id,state.p,state.t),q=(state.p.R2-d.min)/(d.max-d.min);
+    return state.current.fn(q);
+   });
+   assert(Math.abs(seriesGraph-(series.p.R1+series.p.R2))<1e-7,'Grafiek en serieschakeling gebruiken dezelfde waarde voor R2');
    await page.locator('#num-mode').selectOption('1');
    const parallel=await page.evaluate(()=>({p:{...state.p},r:state.current.readouts[0][1]}));
    assert(Math.abs(Number(parallel.r.split(' ')[0].replace(',','.'))-parallel.p.R1*parallel.p.R2/(parallel.p.R1+parallel.p.R2))<.02,'Parallel: vervangingsweerstand volgt parallelformule');
