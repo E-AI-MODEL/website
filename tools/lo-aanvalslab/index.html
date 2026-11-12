@@ -501,7 +501,7 @@ function loCoachFeedback(){
  if(!analysisReady)return;
  if(!loGoalManual){loGoalKey=loCoachSuggestedGoal();loGoalPicker()}
  const g=loSelectedGoal(),seen=loCoachObservation(g[0]);
- el('loCoachObserved').textContent=seen.observation;
+ el('loCoachObserved').textContent='Wat het model liet zien: '+seen.observation;
  el('loCoachObserved').classList.remove('hide');
  el('insight').textContent='Probeer dit: '+g[2]+' Speel opnieuw en vergelijk.';
  loCoachMomentTime=seen.moment;
