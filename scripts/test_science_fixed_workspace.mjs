@@ -234,7 +234,18 @@ try{
    };
    const grabAndDrag=async(dx,dy)=>{
     const loc=await page.evaluate(()=>{
-     const c=document.querySelector('#scene'),g=sceneViewport(c),r=c.getBoundingClientRect(),pt=modelHandlePoint();
+     const c=document.querySelector('#scene'),g=sceneViewport(c),r=c.getBoundingClientRect(),p=state.p,a=p.angle*Math.PI/180;
+     let pt=null;
+     switch(state.id){
+      case 'hydro':pt={x:540,y:105+p.depth/12*300};break;
+      case 'potentiometer':pt={x:340+310*p.position/100,y:197};break;
+      case 'incline':{const len=Math.min(580,330/Math.max(.0001,Math.sin(a)));pt={x:170+len*Math.cos(a),y:400-len*Math.sin(a)};break}
+      case 'resolution':pt={x:325+p.F*Math.cos(a)*13,y:367-p.F*Math.sin(a)*13};break;
+      case 'resultant':case 'equilibrium':pt={x:460+p.F2*Math.cos(a)*12,y:285-p.F2*Math.sin(a)*12};break;
+      case 'ohm':pt={x:432+(p.R-1)/29*136,y:201};break;
+      case 'wheatstone':pt={x:582+(p.R4-1)/39*84,y:398};break;
+      case 'gas':pt={x:110+(p.V-2)/10*740,y:390-210*Math.log10(1+(8.314*p.T/p.V)/100)};break;
+     }
      return {x:r.left+g.left+pt.x*g.scale,y:r.top+g.top+pt.y*g.scale,scale:g.scale,pt};
     });
     assert(loc.pt,'Deze proef moet een eigen bediening in de tekening hebben');
