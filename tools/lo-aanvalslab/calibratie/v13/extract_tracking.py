@@ -143,18 +143,19 @@ def basketball():
     url='https://raw.githubusercontent.com/sealneaward/nba-movement-data/master/data/01.01.2016.CHA.at.TOR.7z'
     archive=fetch(url)
     from tempfile import TemporaryDirectory
-    rows=[];speeds=[];ballclose=[];files=[]
+    speeds=[];ballclose=[];files=[];unique_frames=set()
     with TemporaryDirectory() as tmp:
         inp=Path(tmp)/'sportvu.7z';inp.write_bytes(archive)
         with py7zr.SevenZipFile(inp,'r') as z:
             z.extractall(path=tmp)
         eventfiles=list(Path(tmp).rglob('*.json'));files=[x.name for x in eventfiles]
-        prev={};cnt=0
+        cnt=0
         for file in eventfiles:
             try:obj=json.loads(file.read_text())
             except:continue
             eventblocks=obj.get('events',[]) if isinstance(obj,dict) else (obj if isinstance(obj,list) else [])
             for event in eventblocks:
+                previous=defaultdict(lambda:deque(maxlen=16))
                 for m in event.get('moments',[]):
                     try:
                         quarter=int(m[0]);t=float(m[2]);obj=m[5];b=obj[0];participants=obj[1:]
@@ -166,45 +167,66 @@ def basketball():
                         except:pass
                     if len(cur)<7:continue
                     cnt+=1
+                    stamp=(quarter,round(t*25))
+                    fresh=stamp not in unique_frames
+                    if fresh: unique_frames.add(stamp)
                     for key,xy in cur.items():
-                        history=prev.get(key)
-                        if history:
-                            pt,pq=history
+                        history=previous[key]
+                        if len(history)>=13 and fresh:
+                            pt,pq=history[-13]
                             dt=pt-t
                             if .35<dt<.65:
                                 v=math.dist(xy,pq)/dt
-                                if .05<=v<=10:speeds.append(v)
-                        prev[key]=(t,xy)
-                    try:
-                        ballxy=(float(b[2])*.3048,float(b[3])*.3048)
-                        ballclose.append(min(math.dist(z,ballxy) for z in cur.values()))
-                    except:pass
+                                if .05<=v<=9:speeds.append(v)
+                        history.append((t,xy))
+                    if fresh:
+                        try:
+                            ballxy=(float(b[2])*.3048,float(b[3])*.3048)
+                            ballclose.append(min(math.dist(z,ballxy) for z in cur.values()))
+                        except:pass
     return {'source':'https://github.com/sealneaward/nba-movement-data','game':'2016-01-01 CHA@TOR',
-            'event_files':len(files),'valid_frames':cnt,'sample_frame_speed_mps':stat(speeds),
+            'event_files':len(files),'valid_frames':len(unique_frames),'raw_event_moments':cnt,'sample_frame_speed_mps':stat(speeds),
             'ball_to_nearest_player_m':stat(ballclose),
             'limits':['Één professionele wedstrijd uit 2015/16; 5 tegen 5 geen 3 tegen 2.',
                       'Snelheid omvat aanval én verdediging (geen betrouwbare bezitclassificatie).',
                       'Dubbeltellingen rond moment-overlappen mogelijk; geen directe interceptiekans.']}
 
 def hockey():
-    # Hockey: veldzone-events, geen spelerdraadjes. Analyseer semantisch verantwoord.
+    # De hockeybron bevat gecodeerde balbewegingen / events, geen x/y-tracking van verdedigers.
     import openpyxl
-    pre='https://raw.githubusercontent.com/felicitylord/Hockey-Analysis/main/Raw%20Data/'
+    base='https://raw.githubusercontent.com/felicitylord/Hockey-Analysis/main/'
+    api='https://api.github.com/repos/felicitylord/Hockey-Analysis/git/trees/main?recursive=1'
     from urllib.parse import quote
-    files=['W01 Argentina v Belgium.xlsx','W02 NZ v Netherlands.xlsx','W03 NZ v Belgium.xlsx']
-    previews=[]
-    for name in files:
-        blob=fetch(pre+quote(name))
+    tree=json.loads(fetch(api))['tree']
+    files=[x['path'] for x in tree if x['path'].startswith('Raw Data/') and x['path'].endswith('.xlsx')]
+    categories=defaultdict(int); labels=defaultdict(int);game_stats=[]
+    for file in files:
+        blob=fetch(base+quote(file))
         book=openpyxl.load_workbook(io.BytesIO(blob),read_only=True,data_only=True)
-        sheets=[]
+        rows=0;actions=0
         for sheet in book.worksheets:
-            rows=list(sheet.iter_rows(min_row=1,max_row=9,values_only=True))
-            sheets.append({'name':sheet.title,'rows':sheet.max_row,'columns':sheet.max_column,'head':[[str(c)[:50] if c is not None else '' for c in rr[:14]] for rr in rows[:6]]})
-        previews.append({'file':name,'sheets':sheets});book.close()
+            for row in sheet.iter_rows(min_row=2,values_only=True):
+                cat=str(row[2] or '') if len(row)>2 else ''
+                if not cat:continue
+                rows+=1
+                # Categorieen overlappen; tel geen dubbeltellingen als individuele passes.
+                kind=cat.split(' W ',1)[-1] if ' W ' in cat else cat
+                categories[kind]+=1
+                if 'Game Actions Att' in kind or 'Game Actions Def' in kind:
+                    actions+=1
+                    desc=[str(v).strip().lower() for v in row[5:] if v is not None]
+                    for tag in ['pass','intercept','tackle','turnover','loss','shot','block','press','gain','maintain','circle']:
+                        if tag in desc:labels[tag]+=1
+        game_stats.append({'file':file,'rows':rows,'action_rows':actions})
+        book.close()
     return {'source':'https://github.com/felicitylord/Hockey-Analysis',
-            'sample_file_schema':previews,
-            'limits':['Zone-events betreffen de bal en spelsituatie, geen ruwe 2D-trajecten van verdedigers.',
-                      'Daarom geen afstelling van reactietijd of fysieke onderscheppingsafstand mogelijk.']}
+            'file_count':len(files),'row_count':sum(x['rows'] for x in game_stats),
+            'coded_action_row_count':sum(x['action_rows'] for x in game_stats),
+            'categories':dict(sorted(categories.items(),key=lambda x:-x[1])[:25]),
+            'action_rows_with_descriptor':dict(labels),
+            'limits':['Gecodeerde veldzone-events overlappen per tijdstip; getelde descriptor-rijen zijn geen onafhankelijke passes.',
+                      'Geen volledige x/y-trajecten van verdedigers; contacttijd en intercepties niet direct te fitten.',
+                      'Data over professionele wedstrijden zonder schaalverantwoording voor LO.']}
 
 def main():
     summary={'version':'13','method':'separate sport tracking and source limits','generated_at':time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime()),'sports':{}}
