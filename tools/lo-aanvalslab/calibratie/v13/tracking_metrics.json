@@ -1,0 +1,465 @@
+{
+  "version": "13",
+  "method": "separate sport tracking and source limits",
+  "generated_at": "2026-11-12T13:45:35Z",
+  "sports": {
+    "soccer": {
+      "status": "measured",
+      "source": "https://github.com/metrica-sports/sample-data",
+      "sampling_hz": 25,
+      "files": [
+        {
+          "game": 1,
+          "team": "Home",
+          "frames": 145006,
+          "players": 14,
+          "ball_column": true,
+          "sampled_seconds": 5800.2
+        },
+        {
+          "game": 1,
+          "team": "Away",
+          "frames": 145006,
+          "players": 14,
+          "ball_column": true,
+          "sampled_seconds": 5800.2
+        },
+        {
+          "game": 2,
+          "team": "Home",
+          "frames": 141156,
+          "players": 14,
+          "ball_column": true,
+          "sampled_seconds": 5646.2
+        },
+        {
+          "game": 2,
+          "team": "Away",
+          "frames": 141156,
+          "players": 12,
+          "ball_column": true,
+          "sampled_seconds": 5646.2
+        }
+      ],
+      "outfield_speed_0_6s_mps": {
+        "n": 6096429,
+        "p10": 0.395,
+        "p50": 1.389,
+        "p75": 2.475,
+        "p90": 3.669,
+        "mean": 1.773
+      },
+      "nearest_opponent_to_ball_m_if_possession_proxy": {
+        "n": 12145,
+        "p10": 1.58,
+        "p50": 4.884,
+        "p75": 8.24,
+        "p90": 12.347,
+        "mean": 6.317
+      },
+      "ball_nearest_player_m": {
+        "n": 12233,
+        "p10": 0.034,
+        "p50": 0.147,
+        "p75": 0.617,
+        "p90": 1.74,
+        "mean": 0.488
+      },
+      "limits": [
+        "Snelheden inclusief alle loopfases en keepers; geen maximale sprintsnelheden.",
+        "Bezit afgeleid van balafstand <2.5m, niet gevalideerd met events.",
+        "Volwassen volledig veld en 11 tegen 11: geen directe LO 3 tegen 2 schatting."
+      ]
+    },
+    "handball": {
+      "status": "measured",
+      "source": "https://zenodo.org/records/12065335",
+      "rows": 84690,
+      "possessions": 730,
+      "units": "m/s; 1-second displacement",
+      "defence_mps": {
+        "n": 40257,
+        "p10": 0.251,
+        "p50": 0.797,
+        "p75": 1.373,
+        "p90": 2.654,
+        "mean": 1.139
+      },
+      "attack_mps": {
+        "n": 36607,
+        "p10": 0.315,
+        "p50": 1.157,
+        "p75": 2.001,
+        "p90": 3.182,
+        "mean": 1.467
+      },
+      "limits": [
+        "Alleen één damesamateurteam; overige verdedigers niet gevolgd.",
+        "IDs wisselen per balbezit; alleen opeenvolgende metingen binnen één bezit meegenomen.",
+        "1 Hz onderschat pieksnelheid/versnelling; contact- en reactietijden NIET afleidbaar."
+      ]
+    },
+    "basketball": {
+      "status": "measured",
+      "source": "https://github.com/sealneaward/nba-movement-data",
+      "game": "2016-01-01 CHA@TOR",
+      "event_files": 1,
+      "valid_frames": 211445,
+      "sample_frame_speed_mps": {
+        "n": 184,
+        "p10": 0.07,
+        "p50": 3.966,
+        "p75": 7.145,
+        "p90": 9.206,
+        "mean": 3.968
+      },
+      "ball_to_nearest_player_m": {
+        "n": 211445,
+        "p10": 0.218,
+        "p50": 0.481,
+        "p75": 0.728,
+        "p90": 1.435,
+        "mean": 0.672
+      },
+      "limits": [
+        "Één professionele wedstrijd uit 2015/16; 5 tegen 5 geen 3 tegen 2.",
+        "Snelheid omvat aanval én verdediging (geen betrouwbare bezitclassificatie).",
+        "Dubbeltellingen rond moment-overlappen mogelijk; geen directe interceptiekans."
+      ]
+    },
+    "hockey": {
+      "status": "measured",
+      "source": "https://github.com/felicitylord/Hockey-Analysis",
+      "sample_file_schema": [
+        {
+          "file": "W01 Argentina v Belgium.xlsx",
+          "sheets": [
+            {
+              "name": "W01 Argentina v Belgium",
+              "rows": 3182,
+              "columns": 77,
+              "head": [
+                [
+                  "start time",
+                  "end time",
+                  "category",
+                  "Nth instance",
+                  "# descriptors",
+                  "descriptors...",
+                  "",
+                  "",
+                  "",
+                  "",
+                  "",
+                  "",
+                  "",
+                  ""
+                ],
+                [
+                  "00:00:00:00",
+                  "00:00:31:20",
+                  "Argentina W Attack",
+                  "1",
+                  "34",
+                  "Pass",
+                  "Maintain",
+                  "Pass",
+                  "Maintain",
+                  "Pass",
+                  "Maintain",
+                  "Pass",
+                  "Maintain",
+                  "Pass"
+                ],
+                [
+                  "00:00:00:00",
+                  "00:00:06:84",
+                  "Argentina W D50 Att",
+                  "1",
+                  "11",
+                  "Pass",
+                  "Maintain",
+                  "Pass",
+                  "Maintain",
+                  "Pass",
+                  "Maintain",
+                  "D50 Att",
+                  "Established",
+                  "Drawing"
+                ],
+                [
+                  "00:00:00:00",
+                  "00:00:31:20",
+                  "Argentina W Established Attack",
+                  "1",
+                  "34",
+                  "Pass",
+                  "Maintain",
+                  "Pass",
+                  "Maintain",
+                  "Pass",
+                  "Maintain",
+                  "Pass",
+                  "Maintain",
+                  "Pass"
+                ],
+                [
+                  "00:00:00:00",
+                  "00:00:01:32",
+                  "Argentina W Game Actions Att",
+                  "1",
+                  "7",
+                  "Pass",
+                  "Maintain",
+                  "Drawing",
+                  "Home",
+                  "OPPO Bottom",
+                  "D50 Att",
+                  "Established",
+                  "",
+                  ""
+                ],
+                [
+                  "00:00:00:00",
+                  "00:00:30:64",
+                  "Argentina W Passing Sequence",
+                  "1",
+                  "30",
+                  "23",
+                  "23",
+                  "23",
+                  "30",
+                  "30",
+                  "34",
+                  "34",
+                  "27",
+                  "27"
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          "file": "W02 NZ v Netherlands.xlsx",
+          "sheets": [
+            {
+              "name": "W02 NZ v Netherlands",
+              "rows": 3187,
+              "columns": 55,
+              "head": [
+                [
+                  "start time",
+                  "end time",
+                  "category",
+                  "Nth instance",
+                  "# descriptors",
+                  "descriptors...",
+                  "",
+                  "",
+                  "",
+                  "",
+                  "",
+                  "",
+                  "",
+                  ""
+                ],
+                [
+                  "00:00:00:00",
+                  "00:00:42:20",
+                  "Netherlands W Attack",
+                  "1",
+                  "30",
+                  "Pass",
+                  "Maintain",
+                  "Overhead",
+                  "Gain",
+                  "Sideline",
+                  "Pass",
+                  "Maintain",
+                  "Free Hit",
+                  "Pass"
+                ],
+                [
+                  "00:00:00:00",
+                  "00:00:04:98",
+                  "Netherlands W D50 Att",
+                  "1",
+                  "9",
+                  "Pass",
+                  "Maintain",
+                  "Overhead",
+                  "Gain",
+                  "D50 Att",
+                  "Established",
+                  "Drawing",
+                  "Away",
+                  "OPPO Bottom"
+                ],
+                [
+                  "00:00:00:00",
+                  "00:00:42:20",
+                  "Netherlands W Established Attack",
+                  "1",
+                  "30",
+                  "Pass",
+                  "Maintain",
+                  "Overhead",
+                  "Gain",
+                  "Sideline",
+                  "Pass",
+                  "Maintain",
+                  "Free Hit",
+                  "Pass"
+                ],
+                [
+                  "00:00:00:00",
+                  "00:00:01:26",
+                  "Netherlands W Game Actions Att",
+                  "1",
+                  "7",
+                  "Pass",
+                  "Maintain",
+                  "Drawing",
+                  "Away",
+                  "OPPO Bottom",
+                  "D50 Att",
+                  "Established",
+                  "",
+                  ""
+                ],
+                [
+                  "00:00:00:00",
+                  "00:00:42:77",
+                  "Netherlands W Passing Sequence",
+                  "1",
+                  "22",
+                  "23",
+                  "23",
+                  "23",
+                  "16",
+                  "16",
+                  "11",
+                  "11",
+                  "11",
+                  "11"
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          "file": "W03 NZ v Belgium.xlsx",
+          "sheets": [
+            {
+              "name": "W03 NZ v Belgium",
+              "rows": 3136,
+              "columns": 89,
+              "head": [
+                [
+                  "start time",
+                  "end time",
+                  "category",
+                  "Nth instance",
+                  "# descriptors",
+                  "descriptors...",
+                  "",
+                  "",
+                  "",
+                  "",
+                  "",
+                  "",
+                  "",
+                  ""
+                ],
+                [
+                  "00:00:00:00",
+                  "00:00:22:88",
+                  "Belgium W Attack",
+                  "1",
+                  "26",
+                  "Pass",
+                  "Maintain",
+                  "Overhead",
+                  "Gain",
+                  "Pass",
+                  "Gain",
+                  "Dribble",
+                  "Maintain",
+                  "Free Hit"
+                ],
+                [
+                  "00:00:00:00",
+                  "00:00:05:28",
+                  "Belgium W D50 Att",
+                  "1",
+                  "9",
+                  "Pass",
+                  "Maintain",
+                  "Overhead",
+                  "Gain",
+                  "D50 Att",
+                  "Established",
+                  "Away",
+                  "OPPO Bottom",
+                  "Drawing"
+                ],
+                [
+                  "00:00:00:00",
+                  "00:00:22:88",
+                  "Belgium W Established Attack",
+                  "1",
+                  "26",
+                  "Pass",
+                  "Maintain",
+                  "Overhead",
+                  "Gain",
+                  "Pass",
+                  "Gain",
+                  "Dribble",
+                  "Maintain",
+                  "Free Hit"
+                ],
+                [
+                  "00:00:00:00",
+                  "00:00:01:33",
+                  "Belgium W Game Actions Att",
+                  "1",
+                  "7",
+                  "Pass",
+                  "Maintain",
+                  "Drawing",
+                  "Away",
+                  "OPPO Bottom",
+                  "D50 Att",
+                  "Established",
+                  "",
+                  ""
+                ],
+                [
+                  "00:00:00:00",
+                  "00:00:23:08",
+                  "Belgium W Passing Sequence",
+                  "1",
+                  "22",
+                  "23",
+                  "23",
+                  "23",
+                  "20",
+                  "20",
+                  "19",
+                  "19",
+                  "19",
+                  "19"
+                ]
+              ]
+            }
+          ]
+        }
+      ],
+      "limits": [
+        "Zone-events betreffen de bal en spelsituatie, geen ruwe 2D-trajecten van verdedigers.",
+        "Daarom geen afstelling van reactietijd of fysieke onderscheppingsafstand mogelijk."
+      ]
+    }
+  }
+}
