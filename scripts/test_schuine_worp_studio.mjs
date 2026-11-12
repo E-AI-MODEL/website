@@ -22,6 +22,7 @@ try{
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.goto(base+'/tools/science-observatory/labs/schuine-worp/',{waitUntil:'load'});
   await page.waitForFunction(()=>!!window.__physicsStudio&&document.querySelector('#field').width>0);
+  await page.waitForFunction(()=>{try{return window.__physicsStudio.camera().scale>0}catch{return false}});
   const geometry=await page.evaluate(()=>{
    const stage=document.querySelector('.stage').getBoundingClientRect();
    const panel=document.querySelector('.panel').getBoundingClientRect();
