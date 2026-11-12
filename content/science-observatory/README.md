@@ -22,6 +22,9 @@ De 53 natuurkundeproeven vormen samen één onderzoeksruimte. Verbeter de bestaa
 - Laat de proef en grafiek zo veel mogelijk direct zien. Een proef hoeft niet uit te leggen wat een knop doet voordat de leerling kan beginnen.
 - Laat twee veelgebruikte instellingen direct zien. Zet overige parameters, toelichting en extra uitleg in uitklapbare onderdelen. Verberg geen benodigde handeling.
 - Houd proef, relevante bediening en grafiek binnen één scherm. Vermijd paginascroll. Vergrootbare grafieken en compacte panelen hebben de voorkeur boven kleine, moeilijk leesbare inhoud.
+- Kies de knoppen per proef op basis van het te onderzoeken verschijnsel. Een slinger heeft lengte en uitwijkhoek vooraan, een schakeling spanning en weerstand, een gasproef het gekozen proces en de grootheid die daarbij mag veranderen. Serie/parallel en gasproces zijn gewone keuzelijsten, geen numerieke codes.
+- Een grafiek met een instelbare grootheid op de horizontale as verandert die grootheid bij slepen. Een tijdgrafiek laat de leerling de simulatie op dat tijdstip bekijken. Een grafiek van positie of intensiteit laat een punt aflezen zonder ongemerkt de fysieke parameters te veranderen.
+- Controleer bij gekoppelde grootheden ook de natuurkundige relaties, bijvoorbeeld pV=nRT: bij een isobaar gasproces hoort T mee te veranderen met V zodat de druk constant blijft.
 - Behoud de verschillende natuurkundige eigenschappen per proef en test veranderde metingen, grafieken en bediening afzonderlijk. Een geslaagde schermtest bewijst geen natuurkundige nauwkeurigheid.
 - De losse schuine-worpstudio blijft voorlopig als eerdere proefvariant bestaan, maar is geen tweede hoofdingang naast de gezamenlijke 53 proeven.
 
