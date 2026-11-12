@@ -39,6 +39,8 @@ jobs:
         run: node scripts/test_anatomie_3d.mjs site-build
       - run: node scripts/test_tool_launch.mjs site-build
       - run: node scripts/ui_smoke.mjs site-build
+      - name: Test compacte schuine-worpstudio op telefoons en desktop
+        run: node scripts/test_schuine_worp_studio.mjs site-build chromium
       - name: Test mobiel richten, schaal en schieten in Natuurkunde
         run: node scripts/test_science_mobile_aim.mjs site-build
       - name: Check EAIwork dashboard layout on phones and desktop
