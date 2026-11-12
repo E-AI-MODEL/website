@@ -146,6 +146,8 @@ jobs:
         run: node --test tests/test_science_graph_animation_alignment.mjs
       - name: Check three experiment-specific inquiry methods
         run: node --test tests/test_science_inquiry_variants.mjs
+      - name: Check quality register for all 53 physics experiments
+        run: node --test tests/test_science_quality_register.mjs
 
       - name: Check Melkweg Lab publication
         run: python -m unittest discover -s tests -p 'test_melkweg_lab_publish.py' -v
