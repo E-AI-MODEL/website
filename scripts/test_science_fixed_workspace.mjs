@@ -133,6 +133,14 @@ try{
    };
    await selectLab('resultant');
    assert.equal(await page.locator('#controls>.precision-control').count(),3,'Vectoren hebben drie directe instelbare grootheden');
+   await selectLab('pulleys');
+   await graphDrag(.63);
+   const pulley=await page.evaluate(()=>({n:state.p.n,discrete:discreteGraphs.has(state.id)}));
+   assert(pulley.discrete&&Number.isInteger(pulley.n),'Aantal dragende touwdelen kan alleen geheel zijn');
+   await selectLab('bohr');
+   await graphDrag(.8);
+   const bohr=await page.evaluate(()=>({n:state.p.n1,discrete:discreteGraphs.has(state.id)}));
+   assert(bohr.discrete&&Number.isInteger(bohr.n)&&bohr.n>=2,'Bohr-niveau blijft een geheel getal');
    await selectLab('ohm');
    const ohmBefore=await page.evaluate(()=>({...state.p}));
    const rOhm=await page.locator('#plot').boundingBox();
