@@ -102,6 +102,34 @@ input[type=range]{width:100%;margin:0;accent-color:#84e3d2;cursor:pointer;touch-
  .metric{padding:7px 8px}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important}}
+
+/* Precision first: ordinary numbers and small steps; sliders are optional. */
+.panel{gap:10px;padding:15px 14px 10px}
+.setting{gap:5px;padding-bottom:9px}
+.setting-top{margin-bottom:0}
+.setting-top output{font-size:10px;font-weight:500;color:#829fad}
+.control-line.precision-line{grid-template-columns:26px minmax(0,1fr) 26px 30px;gap:5px}
+.control-line .small-action{width:26px;height:27px;border-radius:4px;border-color:#2d4857;background:#0b1c27;font-size:14px;font-weight:400}
+.precision-value{display:block;width:100%;min-width:0;height:27px;border:1px solid #385767;border-radius:4px;background:#0a1d29;color:#d9f6ef;font-size:12px;text-align:center;font-variant-numeric:tabular-nums;padding:2px 5px;appearance:textfield;-moz-appearance:textfield}
+.precision-value::-webkit-inner-spin-button,.precision-value::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+.precision-value:focus{border-color:#82cfbb;outline:1px solid #82cfbb}
+.range-pop{position:relative;min-width:0}
+.range-pop>summary{display:grid;place-items:center;list-style:none;height:27px;width:30px;border:1px solid #2d4857;border-radius:4px;background:#0a1c27;color:#83b4b9;font-size:19px;line-height:1;cursor:pointer;user-select:none}
+.range-pop>summary::-webkit-details-marker{display:none}
+.range-pop[open]>summary{background:#16413f;color:#ddfff3;border-color:#5cae9f}
+.range-pop input[type=range]{position:absolute;z-index:11;top:34px;right:0;width:clamp(158px,16vw,230px);height:34px;padding:4px 12px;border:1px solid #426b70;border-radius:5px;background:#102734;box-shadow:0 12px 32px #010913bb}
+@media(max-width:800px){
+ .panel{gap:7px;padding:8px 11px}
+ .setting{gap:3px}
+ .setting-top label{font-size:10px}
+ .setting-top output{font-size:9px}
+ .control-line.precision-line{grid-template-columns:24px minmax(0,1fr) 24px 27px;gap:3px}
+ .control-line .small-action{width:24px;height:26px}
+ .precision-value,.range-pop>summary{height:26px;font-size:12px}
+ .range-pop>summary{width:27px;font-size:18px}
+ .range-pop input[type=range]{top:29px;right:-2px}
+}
+@media(max-width:370px){.control-line.precision-line{grid-template-columns:22px minmax(0,1fr) 22px 25px;gap:2px}.control-line .small-action{width:22px}.range-pop>summary{width:25px}}
 </style>
 </head>
 <body>
@@ -125,19 +153,19 @@ input[type=range]{width:100%;margin:0;accent-color:#84e3d2;cursor:pointer;touch-
    <div class="panel-head"><strong>Verander de worp</strong><span>Ook direct in de tekening</span></div>
    <div class="setting" data-kind="angle">
     <div class="setting-top"><label for="angle">Hoek</label><output id="angleValue" class="number">45°</output></div>
-    <div class="control-line"><button type="button" class="small-action" data-key="angle" data-delta="-0.5" aria-label="Hoek iets kleiner">−</button><input id="angle" type="range" min="5" max="85" step=".5" value="45"><button type="button" class="small-action" data-key="angle" data-delta=".5" aria-label="Hoek iets groter">+</button></div>
+    <div class="control-line precision-line"><button type="button" class="small-action" data-key="angle" data-delta="-0.5" aria-label="Hoek iets kleiner">−</button><input class="precision-value" id="edit-angle" type="number" min="5" max="85" step=".5" value="45" inputmode="decimal" aria-label="Hoek direct instellen"><button type="button" class="small-action" data-key="angle" data-delta=".5" aria-label="Hoek iets groter">+</button><details class="range-pop"><summary title="Sleepregelaar openen" aria-label="Sleepregelaar voor Hoek openen">⋯</summary><input id="angle" type="range" min="5" max="85" step=".5" value="45" aria-label="Hoek slepen"></details></div>
    </div>
    <div class="setting" data-kind="speed">
     <div class="setting-top"><label for="speed">Snelheid</label><output id="speedValue" class="number">18 m/s</output></div>
-    <div class="control-line"><button type="button" class="small-action" data-key="speed" data-delta="-.25" aria-label="Snelheid iets lager">−</button><input id="speed" type="range" min="5" max="35" step=".25" value="18"><button type="button" class="small-action" data-key="speed" data-delta=".25" aria-label="Snelheid iets hoger">+</button></div>
+    <div class="control-line precision-line"><button type="button" class="small-action" data-key="speed" data-delta="-.25" aria-label="Snelheid iets lager">−</button><input class="precision-value" id="edit-speed" type="number" min="5" max="35" step=".25" value="18" inputmode="decimal" aria-label="Snelheid direct instellen"><button type="button" class="small-action" data-key="speed" data-delta=".25" aria-label="Snelheid iets hoger">+</button><details class="range-pop"><summary title="Sleepregelaar openen" aria-label="Sleepregelaar voor Snelheid openen">⋯</summary><input id="speed" type="range" min="5" max="35" step=".25" value="18" aria-label="Snelheid slepen"></details></div>
    </div>
    <div class="setting" data-kind="height">
     <div class="setting-top"><label for="height">Starthoogte</label><output id="heightValue" class="number">0,0 m</output></div>
-    <div class="control-line"><button type="button" class="small-action" data-key="height" data-delta="-.5" aria-label="Begin lager">−</button><input id="height" type="range" min="0" max="15" step=".5" value="0"><button type="button" class="small-action" data-key="height" data-delta=".5" aria-label="Begin hoger">+</button></div>
+    <div class="control-line precision-line"><button type="button" class="small-action" data-key="height" data-delta="-.5" aria-label="Begin lager">−</button><input class="precision-value" id="edit-height" type="number" min="0" max="15" step=".5" value="0" inputmode="decimal" aria-label="Starthoogte direct instellen"><button type="button" class="small-action" data-key="height" data-delta=".5" aria-label="Begin hoger">+</button><details class="range-pop"><summary title="Sleepregelaar openen" aria-label="Sleepregelaar voor Starthoogte openen">⋯</summary><input id="height" type="range" min="0" max="15" step=".5" value="0" aria-label="Starthoogte slepen"></details></div>
    </div>
    <div class="setting" data-kind="target">
     <div class="setting-top"><label for="target">Afstand mat</label><output id="targetValue" class="number">24,0 m</output></div>
-    <div class="control-line"><button type="button" class="small-action" data-key="target" data-delta="-.5" aria-label="Mat dichterbij">−</button><input id="target" type="range" min="10" max="60" step=".5" value="24"><button type="button" class="small-action" data-key="target" data-delta=".5" aria-label="Mat verder weg">+</button></div>
+    <div class="control-line precision-line"><button type="button" class="small-action" data-key="target" data-delta="-.5" aria-label="Mat dichterbij">−</button><input class="precision-value" id="edit-target" type="number" min="10" max="60" step=".5" value="24" inputmode="decimal" aria-label="Afstand mat direct instellen"><button type="button" class="small-action" data-key="target" data-delta=".5" aria-label="Mat verder weg">+</button><details class="range-pop"><summary title="Sleepregelaar openen" aria-label="Sleepregelaar voor Afstand mat openen">⋯</summary><input id="target" type="range" min="10" max="60" step=".5" value="24" aria-label="Afstand mat slepen"></details></div>
    </div>
    <div class="setting" data-kind="gravity">
     <div class="setting-top"><label>Zwaartekracht</label><span class="number" id="gravityValue">9,81 m/s²</span></div>
@@ -179,6 +207,7 @@ function position(p,t){return {x:p.vx*t,y:Math.max(0,p.h0+p.vy*t-.5*p.g*t*t)};}
 function measured(){return S.trials.length?S.trials[S.trials.length-1]:null;}
 function updateLabels(){
  $('angle').value=S.angle;$('speed').value=S.speed;$('height').value=S.height;$('target').value=S.target;
+ ['angle','speed','height','target'].forEach(function(id){const el=$('edit-'+id);if(el&&document.activeElement!==el)el.value=S[id];});
  $('angleValue').textContent=fmt(S.angle,1)+'°';
  $('speedValue').textContent=fmt(S.speed,2)+' m/s';
  $('heightValue').textContent=fmt(S.height,1)+' m';
@@ -473,6 +502,7 @@ $('forecast').addEventListener('click',function(){S.forecast=!S.forecast;updateL
 document.querySelectorAll('[data-g]').forEach(function(b){b.addEventListener('click',function(){changed('g',Number(b.dataset.g));});});
 document.querySelectorAll('[data-key]').forEach(function(b){b.addEventListener('click',function(){changed(b.dataset.key,S[b.dataset.key]+Number(b.dataset.delta));});});
 ['angle','speed','height','target'].forEach(function(id){$(id).addEventListener('input',function(e){changed(id,Number(e.target.value));});});
+['angle','speed','height','target'].forEach(function(id){const el=$('edit-'+id);el.addEventListener('change',function(){const v=Number(el.value);if(el.value.trim()&&Number.isFinite(v))changed(id,v);el.value=S[id];});el.addEventListener('keydown',function(ev){if(ev.key==='Enter'){el.blur();}});});
 window.addEventListener('resize',resize);
 window.addEventListener('keydown',function(e){
  if(e.code==='Space'&&e.target===document.body){e.preventDefault();trial();}
