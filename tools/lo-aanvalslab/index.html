@@ -39,7 +39,23 @@
 @media(max-width:880px){.fieldhead .playback-control{margin-left:auto}.playback-control{font-size:10px}.playback-control select{min-width:46px;padding:4px 5px;font-size:11px}.formation-select{min-width:90px;max-width:100px}}
 @media(max-width:560px){.top{flex-wrap:wrap}.brand{flex:0 0 auto}.top-actions{margin-left:auto}.top-actions .sport-select{max-width:99px;padding-right:19px;padding-left:6px;font-size:10px}.top-actions .formation-select{max-width:93px;min-width:0}.fieldhead #stagehelp{display:none}.fieldhead{min-height:33px}}
 @media(max-width:380px){.top{gap:3px}.brand h1{font-size:16px}.mark{width:25px;height:25px}.top-actions{gap:3px}.top-actions .sport-select{max-width:87px}.top-actions .formation-select{max-width:82px;font-size:10px}}
-</style></head><body class="eai-refresh"><div class="app"><header class="top"><div class="brand"><span class="mark">LO</span><div><div class="eyebrow">TACTISCH SPELLAB</div><h1>Speel het uit.</h1></div></div><div class="top-actions"><label class="sport-label" for="sportSelect">Sport</label><select id="sportSelect" class="sport-select" aria-label="Kies de sport"><option value="0">Voetbal</option><option value="1">Hockey</option><option value="2">Handbal</option><option value="3">Basketbal</option></select><label class="sport-label" for="formationSelect">Teams</label><select id="formationSelect" class="sport-select formation-select" aria-label="Kies het aantal aanvallers en verdedigers"><option value="0">4 tegen 4</option><option value="1">2 tegen 1</option><option value="2">3 tegen 2</option><option value="3">4 tegen 3</option></select><button id="new" class="btn">Nieuwe spelsituatie</button></div></header><div class="shell"><section class="fieldpane"><div class="fieldhead"><span id="stage" class="pill">Voorbereiden</span><span id="stagehelp" class="small">Versleep de spelers van jouw team</span><label class="playback-control" for="playbackSpeed"><span>Tempo</span><select id="playbackSpeed" aria-label="Afspeelsnelheid"><option value="0.5">½×</option><option value="1" selected>1×</option><option value="1.5">1½×</option><option value="2">2×</option></select></label></div><div class="fieldframe"><svg id="pitch" viewBox="0 0 1000 650" role="img" aria-label="Interactief speelveld waarop je spelers kunt verschuiven"></svg></div><div class="bottom"><div><div id="instruction" class="hint">De bal ligt bij aanvaller 1. Maak je opstelling en speel de hele aanval.</div><div id="under" class="small setup-tip">Sleep een speler of tik eerst de speler en daarna zijn plek.</div></div><div class="actions"><button id="reset" class="btn">Beginopstelling</button><button id="primary" class="btn main">Speel de aanval af ▶</button></div></div></section><aside class="side"><div><h3>Jouw opdracht</h3><h2 id="tasktitle">Maak een kans</h2></div><p id="task" class="hint" style="margin:0">Kies waar je spelers beginnen. Welke opstelling levert volgens jou de beste aanval op?</p><div class="sep"></div><div id="prep"><h3>Geselecteerde speler</h3><div id="selected" class="hint">Tik op een speler om zijn opdracht te kiezen.</div><div id="intents" class="intent-grid"></div><p class="small" id="intentHelp">Sleep een speler, of tik de speler en daarna een vrije plek. Met de pijltjestoetsen kun je nauwkeurig schuiven.</p></div><div class="grow"></div><div class="sep"></div><p id="insight" class="hint" style="margin:0">Zet je spelers klaar. Hun opdrachten bepalen hoe ze straks bewegen.</p><div id="after" class="actions hide"><button id="again" class="btn main">Pas plan aan</button><button id="replay" class="btn">Speel opnieuw</button></div></aside></div><div class="foot"><span id="sportFoot">Voetbal</span> · <span id="formationFoot">4 tegen 4</span> · Oefenmodel · geschatte loop- en reactietijden</div></div>
+
+.source-detail{position:fixed;right:clamp(10px,2vw,28px);bottom:6px;z-index:7;font-size:10px;color:#7fa69e}
+.source-detail summary{cursor:pointer;list-style:none;text-decoration:underline;text-decoration-color:#41635e;text-underline-offset:2px;padding:3px 5px;border-radius:5px;background:#07151ce9}
+.source-detail summary::-webkit-details-marker{display:none}
+.source-detail summary:hover{color:#b8e8cf}
+.source-popover{position:absolute;right:0;bottom:26px;width:min(380px,calc(100vw - 20px));max-height:min(62dvh,465px);overflow-y:auto;box-shadow:0 12px 45px #000b;border:1px solid #3b6361;border-radius:12px;background:#112830;color:#c5dbd7;text-align:left;padding:14px;font-size:11px;line-height:1.5}
+.source-popover strong{color:#e4f5ec;font-size:12px}.source-popover p{margin:8px 0}.source-popover b{color:#b8f1d9}.source-popover a{color:#89d9c5;text-decoration:underline;text-underline-offset:2px}.source-popover small{color:#86aba7}
+@media(max-width:880px){.source-detail{bottom:2px;right:8px;font-size:9px}.source-popover{bottom:23px;max-height:56dvh}}
+</style></head><body class="eai-refresh"><div class="app"><header class="top"><div class="brand"><span class="mark">LO</span><div><div class="eyebrow">TACTISCH SPELLAB</div><h1>Speel het uit.</h1></div></div><div class="top-actions"><label class="sport-label" for="sportSelect">Sport</label><select id="sportSelect" class="sport-select" aria-label="Kies de sport"><option value="0">Voetbal</option><option value="1">Hockey</option><option value="2">Handbal</option><option value="3">Basketbal</option></select><label class="sport-label" for="formationSelect">Teams</label><select id="formationSelect" class="sport-select formation-select" aria-label="Kies het aantal aanvallers en verdedigers"><option value="0">4 tegen 4</option><option value="1">2 tegen 1</option><option value="2">3 tegen 2</option><option value="3">4 tegen 3</option></select><button id="new" class="btn">Nieuwe spelsituatie</button></div></header><div class="shell"><section class="fieldpane"><div class="fieldhead"><span id="stage" class="pill">Voorbereiden</span><span id="stagehelp" class="small">Versleep de spelers van jouw team</span><label class="playback-control" for="playbackSpeed"><span>Tempo</span><select id="playbackSpeed" aria-label="Afspeelsnelheid"><option value="0.5">½×</option><option value="1" selected>1×</option><option value="1.5">1½×</option><option value="2">2×</option></select></label></div><div class="fieldframe"><svg id="pitch" viewBox="0 0 1000 650" role="img" aria-label="Interactief speelveld waarop je spelers kunt verschuiven"></svg></div><div class="bottom"><div><div id="instruction" class="hint">De bal ligt bij aanvaller 1. Maak je opstelling en speel de hele aanval.</div><div id="under" class="small setup-tip">Sleep een speler of tik eerst de speler en daarna zijn plek.</div></div><div class="actions"><button id="reset" class="btn">Beginopstelling</button><button id="primary" class="btn main">Speel de aanval af ▶</button></div></div></section><aside class="side"><div><h3>Jouw opdracht</h3><h2 id="tasktitle">Maak een kans</h2></div><p id="task" class="hint" style="margin:0">Kies waar je spelers beginnen. Welke opstelling levert volgens jou de beste aanval op?</p><div class="sep"></div><div id="prep"><h3>Geselecteerde speler</h3><div id="selected" class="hint">Tik op een speler om zijn opdracht te kiezen.</div><div id="intents" class="intent-grid"></div><p class="small" id="intentHelp">Sleep een speler, of tik de speler en daarna een vrije plek. Met de pijltjestoetsen kun je nauwkeurig schuiven.</p></div><div class="grow"></div><div class="sep"></div><p id="insight" class="hint" style="margin:0">Zet je spelers klaar. Hun opdrachten bepalen hoe ze straks bewegen.</p><div id="after" class="actions hide"><button id="again" class="btn main">Pas plan aan</button><button id="replay" class="btn">Speel opnieuw</button></div></aside></div><div class="foot"><span id="sportFoot">Voetbal</span> · <span id="formationFoot">4 tegen 4</span> · Oefenmodel · deels aan wedstrijdgegevens getoetst</div></div>
+<details class="source-detail" id="sourceDetail"><summary>Meetbasis en bronnen</summary>
+ <div class="source-popover"><strong>Onderzoeksbasis per sport</strong><p>Het Aanvalslab blijft een vereenvoudigd onderwijsmodel. Alleen de genoemde onderdelen zijn aangepast op basis van data of gepubliceerd onderzoek. Geen validatie voor individuele leerlingen.</p>
+ <p><b>Voetbal</b> · 84 geselecteerde PASS-events uit twee Metrica-wedstrijden. Mediaan 14,60 m, omgerekend 6,19 m naar het kleine veld. Dit beïnvloedt alleen de passkeuze. Het 3-tegen-2-loopidee is gebaseerd op 279 geobserveerde jeugdpartijtjes. <a href="https://github.com/metrica-sports/sample-data" target="_blank" rel="noopener noreferrer">Metrica</a> · <a href="https://doi.org/10.26582/k.51.1.7" target="_blank" rel="noopener noreferrer">3-tegen-2-onderzoek</a>.</p>
+ <p><b>Hockey</b> · De voorkeur voor direct spel richting de cirkel volgt onderzoek naar balverplaatsingen in 131 FIH-wedstrijden. Geen numerieke kalibratie van onderscheppingen. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC10108760/" target="_blank" rel="noopener noreferrer">Lord e.a.</a></p>
+ <p><b>Handbal</b> · Georganiseerde verdedigers verplaatsen zich rustiger; de drukzetter blijft snel. Onderzoek rapporteert 558,8 m per 10 minuten verdediging tegenover 870,3 m per 10 minuten aanval. De gebruikte snelheidsfactor blijft een modelkeuze. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC10431627/" target="_blank" rel="noopener noreferrer">Lefèvre e.a.</a></p>
+ <p><b>Basketbal</b> · Het moment van schieten is afgestemd op een 3-tegen-3-referentie van gemiddeld 5,4 s en 1,4 passes per balbezit; onze 3-tegen-2-test benadert die tijd en het aantal passes, maar is een andere spelvorm. <a href="https://doi.org/10.1177/17479541211067989" target="_blank" rel="noopener noreferrer">Willberg e.a.</a></p>
+ <small>Geen brondata worden naar browsers geladen. Een vergelijking met wedstrijddata bewijst niet dat een model de werkelijkheid voorspelt.</small></div>
+</details>
 <div id="welcome" class="veil"><div class="welcome"><div class="eyebrow">LO · SAMENSPEL & RUIMTE</div><h2>Wie neemt de beslissing?</h2><p>Kies je sport en stel je team op. Versleep de spelers of tik een plek op het veld. Daarna speelt de aanval zichzelf af.</p><div class="sport-choice" role="group" aria-label="Welke sport speel je?"><button type="button" class="sport-chip active" data-sport="0" aria-pressed="true">Voetbal</button><button type="button" class="sport-chip" data-sport="1" aria-pressed="false">Hockey</button><button type="button" class="sport-chip" data-sport="2" aria-pressed="false">Handbal</button><button type="button" class="sport-chip" data-sport="3" aria-pressed="false">Basketbal</button></div><div class="choices"><button class="choice" data-mode="attack"><b>Ik val aan ↗</b><span>Zet je aanvallers neer en geef ze loopacties.</span></button><button class="choice" data-mode="defend"><b>Ik verdedig ◇</b><span>Zet je verdedigers neer en kies hoe ze de aanval afstoppen.</span></button><button class="choice" id="onlineChoice"><b>Wij spelen samen ↔</b><span>Speel met twee apparaten in een eigen online kamer.</span></button><button class="choice" data-mode="free"><b>Vrij opstellen ↕</b><span>Verplaats zelf de aanvallers én de verdedigers.</span></button></div></div></div>
 <section id="onlineLobby" class="lo-lobby" hidden aria-label="Online spelkamer"><div class="lo-lobby-box">
 <div class="eyebrow">LO · ONLINE DUOSPEL</div><h2 id="loLobbyTitle">Samen spelen</h2>
@@ -51,22 +67,23 @@
 <p>Je kunt ondertussen je eigen team neerzetten. Tik op <b>Klaar</b> wanneer je plan af is. Je ziet het andere plan pas als beide leerlingen klaar zijn.</p>
 <div class="lo-lobby-row"><button class="btn main" id="loGoField">Naar mijn speelveld</button></div></div>
 <p id="loError" class="lo-lobby-error" aria-live="polite"></p><button class="btn" id="loClose">Terug</button></div></section>
-<!-- Onderzoeksbasis: Spearman (2018) / Friends of Tracking pitch control;
-Metrica Sports sample data (voorbeeld van tracking en events);
-small-sided games 4v4, Human Movement Science 2014. De huidige parameters
-zijn didactische benaderingen en NIET gekalibreerd op deze databestanden. -->
+<!-- Oefenmodel v12: Metrica PASS-excerpt 84 observaties met berekende mediaan;
+ basketball 3x3 tempo referentie; hockey-passrichting en handbal-dekking
+ literatuurgeinformeerd, niet direct op ruwe tracking gefit.
+ Bronpanel bevat klikbare herkomst en grens van iedere aanpassing. -->
 <script>
 (()=>{'use strict';
 const svg=document.getElementById('pitch'), NS='http://www.w3.org/2000/svg',el=id=>document.getElementById(id);
-// 4-tegen-4 op een trainingsveld van ongeveer 44,5 x 27,5 meter.
-// 20 tekenpixels stellen 1 meter voor. Snelheden zijn modelkeuzes voor een schoolsituatie.
+// Spelafstelling 2026-11: alleen de expliciete sportparameters hieronder zijn
+// met empirische referenties vergeleken. Andere snelheden, reacties en
+// onderscheppingsafstanden blijven oefenmodel-aannames. Zie Bronvermelding.
 let PX=20;
 const DT=.05, MAX=16, ATTACK='a', DEFENCE='d';
 const SPORTS=[
- {name:'Voetbal',ball:'Voetbal',px:20,pass:12.2,shot:16,intercept:21,receive:40,shotX:785,shotY:185,goalY:57},
- {name:'Hockey',ball:'Hockeybal',px:21,pass:15.5,shot:19,intercept:19,receive:37,shotX:775,shotY:155,goalY:47},
- {name:'Handbal',ball:'Handbal',px:22,pass:16,shot:20,intercept:22,receive:39,shotX:745,shotY:180,goalY:48},
- {name:'Basketbal',ball:'Basketbal',px:31,pass:11.5,shot:15,intercept:22,receive:42,shotX:660,shotY:225,goalY:13}
+ {name:'Voetbal',ball:'Voetbal',px:20,pass:12.2,shot:16,intercept:21,receive:40,shotX:785,shotY:185,goalY:57,passReference:6.19},
+ {name:'Hockey',ball:'Hockeybal',px:21,pass:15.5,shot:19,intercept:19,receive:37,shotX:775,shotY:155,goalY:47,circlePassBias:9},
+ {name:'Handbal',ball:'Handbal',px:22,pass:16,shot:20,intercept:22,receive:39,shotX:745,shotY:180,goalY:48,coverPace:.82},
+ {name:'Basketbal',ball:'Basketbal',px:31,pass:11.5,shot:15,intercept:22,receive:42,shotX:785,shotY:225,goalY:13}
 ];
 let sportIndex=0,formationIndex=0,playbackSpeed=1;
 // Het gekozen aantal spelers is onderdeel van de spelsituatie, niet alleen de tekening.
@@ -376,7 +393,13 @@ function simulate(){
    }
    if(best){tx=best.pos.x;ty=best.pos.y}
   }
-  return {x:clamp(tx,73,932),y:clamp(ty,83,568),pace:intent==='terug'?.88:1};
+  // Handbal: bij georganiseerde verdediging minder continu lopen dan in
+  // de aanvallende fase (Lefevre 2023). Drukzetter behoudt de maximale
+  // versnelling; dekking/zone verschuift gecontroleerder. De .82 is een
+  // ontwerpafstelling, niet een direct uit de dataset geschatte coëfficiënt.
+  const holdShape=sportCfg().coverPace&&!primary&&['dek','volg','lijn','zone','terug'].includes(intent);
+  const pace=holdShape?sportCfg().coverPace:intent==='terug'?.88:1;
+  return {x:clamp(tx,73,932),y:clamp(ty,83,568),pace};
  }
  function move(p,aim,stepDT){
   const toward=unit(aim.x-p.x,aim.y-p.y),remaining=Math.hypot(aim.x-p.x,aim.y-p.y);
@@ -410,6 +433,25 @@ function simulate(){
   let quality=behind*.13+Math.min(12,Math.abs(to.y-carrier.y)*.036)+clamp(earliest*65,-110,66)-length*.048;
   if(behind<-55)quality-=12;
   if(immediate<62)quality-=Math.max(0,62-immediate)*.9;
+  // Metrica: 84 geobserveerde PASS-locatieparen uit twee wedstrijden.
+  // Mediaan 14,60 m op 105 m veld, naar oefenveld omgerekend 6,19 m.
+  // Dit stuurt alleen de voorkeur voor een passafstand; het stelt geen
+  // passsnelheid of onderscheppingskans op basis van deze events vast.
+  if(sportCfg().passReference){
+   const metres=length/PX;
+   quality-=Math.min(21,Math.abs(metres-sportCfg().passReference)*.4);
+  }
+  // Hockey: direct vooruit richting cirkel krijgt voorrang boven nog een
+  // omweg als er een veilige ontvangstmogelijkheid is (Lord et al. 2022).
+  // Een richtingsregel, geen uit velddata afgeleide doelkans.
+  if(sportCfg().circlePassBias&&target.x>sportCfg().shotX-105&&Math.abs(target.y-325)<sportCfg().shotY*.84){
+   quality+=sportCfg().circlePassBias;
+  }
+  // Bij 3 tegen 2 helpt een teruggelegde pass vanaf de flank ruimte voor
+  // het centrum te vinden (Leser et al., 279 jeugdpartijtjes). Dit is geen
+  // claim dat de gepubliceerde doelpercentages voor het model gelden.
+  if(sportIndex===0&&formationIndex===2&&Math.abs(carrier.y-325)>115&&carrier.x>675&&
+     target.x<carrier.x-20&&Math.abs(target.y-325)<108)quality+=18;
   return {to,target,quality,earliest,possible:earliest>.1&&immediate>34,duration,from,near:immediate};
  }
  function choosePass(carrier){
