@@ -11,10 +11,17 @@ Bewerk de bestanden onder `content/anatomie/labs/hartslag/`. `scripts/build_anat
 
 - `index.html`: bediening, teksten, onderzoeken en bronverwijzingen
 - `heart.css`: vormgeving en responsief gedrag
-- `cycle.js`: de enige berekening voor de vijf fasen, de druk, het volume en de klepstanden
-- `heart.js`: interactieve WebGL-geometrie, klepbladen, stroomdeeltjes, camera en grafieken
+- `cycle.js`: de enige berekening voor de vijf fasen, de druk, het volume en de klepstanden; de klepbladen hebben tussenliggende standen
+- `anatomyGeometry.js`: opengewerkte kamers met spierwand, inwendige holtes, harttussenschot, klepbladen en vertakte bloedvaten
+- `heart.js`: weergave van brongeometrie, bewegende doorsnede, selecties, stroomdeeltjes, camera en grafieken
+- `scripts/extract_hart_atlas.mjs`: export van afzonderlijke echte hartdelen tijdens de atlasbuild
 
-Er wordt **geen externe 3D-engine** geladen. Het hart is een zelfgetekend, beweegbaar en vervormbaar WebGL-model. Het is **niet** het stilstaande anatomische GLB-hart uit de atlas. De geometrie is bewust schematisch, zodat de kleppen en binnenruimte onderzoekbaar zijn. Dat is een verschil met een medisch nauwkeurig, anatomisch gevalideerd hartmodel.
+De leerling kan twee weergaven van hetzelfde onderwerp gebruiken:
+
+- **Anatomische buitenkant:** echte 3D-onderdelen uit het bestaande cardiovasculaire GLB-bestand van het Anatomisch Observatorium. Het script `scripts/extract_hart_atlas.mjs` gebruikt tijdens de atlasbuild de al geïnstalleerde glTF-Transform- en Draco-decoder om geselecteerde hartstructuren te exporteren naar `atlas-heart.bin` en `atlas-heart.json`. Beide worden lokaal gehost; in de browser is geen extra 3D-engine nodig. Herkomst: Z-Anatomy/BodyParts3D via de gepinde versie van `nqwrc/3d-anatomy`, zie de meegeleverde LICENSE en NOTICE (CC BY-NC-SA 4.0).
+- **Bewegende doorsnede:** zelf opgebouwde, opengewerkte kamers en inwendige klepbladen die met de hartcyclus vervormen. Dit is een **didactisch schema**, niet dezelfde mesh als de echte buitenkant. De mitralisklep heeft twee schematische klepbladen; de tricuspidalisklep en slagaderkleppen hebben er drie. De peesdraden horen alleen bij de AV-kleppen.
+
+Op mobiel staat de weergave van de namen standaard uit. Met 'Namen tonen' verschijnen fijne aanwijslijnen naar de hartdelen. De echte brononderdelen uit de anatomische buitenkant zijn selecteerbaar; aanwijzingen staan naast het model. De beide weergaven delen de tijdlijn, hartfrequentie en grafieken. De kleine uitzetting van de buitenkant is een onderwijseffect en **geen anatomisch gevalideerde hartcontractie**.
 
 ## Fysiologie
 
@@ -28,6 +35,7 @@ Bronnen: [OpenStax, bouw van het hart](https://openstax.org/books/anatomy-and-ph
 
 ```sh
 node scripts/test_hartslaglab_cycle.mjs
+node scripts/test_hartslaglab_geometry.mjs
 python scripts/build_anatomie.py --out site-build/tools/anatomie
 python -m unittest discover -s tests -p 'test_anatomie_publish.py' -v
 node scripts/test_hartslaglab_browser.mjs site-build chromium
