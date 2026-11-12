@@ -64,6 +64,26 @@ def main():
         assert "nog geen aanval" in page.locator("#loAnalysisBody").inner_text()
         page.keyboard.press("Escape")
         assert not page.locator("#loAnalysis").is_visible()
+        # De doelen zijn optionele chips, met andere sporttaal voor elk spel.
+        assert not page.locator("#loGoals").get_attribute("open")
+        page.locator("#loGoals > summary").click()
+        assert page.locator("#loGoalChips button").count()==8
+        for sport,needle in ((0,"Aanspeellijn openen"),(1,"Aanspeelpunt maken"),
+                             (2,"Op tijd instarten"),(3,"Passing lane openen")):
+            page.select_option("#sportSelect",str(sport))
+            assert page.locator("#loGoalChips").get_by_role("button",name=needle).count()==1,(sport,needle)
+            assert page.locator("#loGoalCurrent").inner_text(),sport
+        page.select_option("#sportSelect","0")
+        page.locator("#loGoalRoles").get_by_role("button",name="Verdediging").click()
+        assert page.locator("#loGoalChips").get_by_role("button",name="Rugdekking geven").count()==1
+        assert page.evaluate("window.__loLabTest.getCoachState().role")=="d"
+        page.locator("#loGoalRoles").get_by_role("button",name="Aanval").click()
+        page.locator("#loGoalChips").get_by_role("button",name="Aanspeellijn openen").click()
+        assert page.evaluate("window.__loLabTest.getCoachState().manual") is True
+        assert page.locator("#tasktitle").inner_text()=="Aanspeellijn openen"
+        page.locator("#loCoachAuto").click()
+        assert page.evaluate("window.__loLabTest.getCoachState().manual") is False
+        assert page.locator("#loCoachAuto").get_attribute("aria-pressed")=="true"
         count=assert_rules_unchanged(page,baseline)
         # Dezelfde simulatie moet met volledige data klaar staan.
         page.select_option("#sportSelect","0")
@@ -83,6 +103,14 @@ def main():
         }""")
         assert event_test["passCount"]>0,event_test
         assert event_test["allScoresExact"] and event_test["allTimesExact"] and event_test["allHaveAlternatives"],event_test
+        # De coach verwijst naar werkelijke gebeurtenissen, zonder een overwinning te verzinnen.
+        coach=page.evaluate("window.__loLabTest.coachPreview()")
+        assert coach["observed"] and coach["challenge"],coach
+        assert "model" in coach["observed"].lower() or "bereken" in coach["observed"].lower() or "pass" in coach["observed"].lower(),coach
+        assert "Probeer dit:" in coach["challenge"],coach
+        assert page.locator("#loCoachObserved").is_visible()
+        if coach["moment"] is not None:
+            assert page.locator("#loCoachMoment").is_visible()
         page.locator("#loSecret").click()
         page.locator("#loSecret").click()
         assert page.locator("#loAnalysis").is_visible()
@@ -132,6 +160,14 @@ def main():
             })""")
             assert dims["dialog"]<=dims["viewport"]+1,dims
             assert dims["body"]<=dims["bodyClient"]+3,dims
+            chips=page.evaluate("""()=>({
+              viewport:innerWidth,
+              goalWidth:document.querySelector('#loGoals').getBoundingClientRect().width,
+              chipsScroll:document.querySelector('#loGoalChips').scrollWidth,
+              chipsClient:document.querySelector('#loGoalChips').clientWidth
+            })""")
+            assert chips["goalWidth"]<=chips["viewport"]+1,chips
+            assert chips["chipsScroll"]<=chips["chipsClient"]+2,chips
             page.keyboard.press("Escape")
             assert not page.locator("#loAnalysis").is_visible()
         assert not failures,failures
