@@ -56,7 +56,54 @@
 .zone-option:focus-visible{outline:2px solid #a9efd0;outline-offset:1px}
 .zone-tip{font-size:10px;color:#91bcb4;line-height:1.36;margin-top:6px}
 @media(max-width:880px){.zone-plans{padding:6px 7px;margin-bottom:6px}.zone-options{gap:3px}.zone-option{padding:5px 3px;font-size:10px}.zone-tip{font-size:9px}}
-</style></head><body class="eai-refresh"><div class="app"><header class="top"><div class="brand"><span class="mark">LO</span><div><div class="eyebrow">TACTISCH SPELLAB</div><h1>Speel het uit.</h1></div></div><div class="top-actions"><label class="sport-label" for="sportSelect">Sport</label><select id="sportSelect" class="sport-select" aria-label="Kies de sport"><option value="0">Voetbal</option><option value="1">Hockey</option><option value="2">Handbal</option><option value="3">Basketbal</option></select><label class="sport-label" for="formationSelect">Teams</label><select id="formationSelect" class="sport-select formation-select" aria-label="Kies het aantal aanvallers en verdedigers"><option value="0">4 tegen 4</option><option value="1">2 tegen 1</option><option value="2">3 tegen 2</option><option value="3">4 tegen 3</option></select><button id="new" class="btn">Nieuwe spelsituatie</button></div></header><div class="shell"><section class="fieldpane"><div class="fieldhead"><span id="stage" class="pill">Voorbereiden</span><span id="stagehelp" class="small">Versleep de spelers van jouw team</span><label class="playback-control" for="playbackSpeed"><span>Tempo</span><select id="playbackSpeed" aria-label="Afspeelsnelheid"><option value="0.5">½×</option><option value="1" selected>1×</option><option value="1.5">1½×</option><option value="2">2×</option></select></label></div><div class="fieldframe"><svg id="pitch" viewBox="0 0 1000 650" role="img" aria-label="Interactief speelveld waarop je spelers kunt verschuiven"></svg></div><div class="bottom"><div><div id="instruction" class="hint">De bal ligt bij aanvaller 1. Maak je opstelling en speel de hele aanval.</div><div id="under" class="small setup-tip">Sleep een speler of tik eerst de speler en daarna zijn plek.</div></div><div class="actions"><button id="reset" class="btn">Beginopstelling</button><button id="primary" class="btn main">Speel de aanval af ▶</button></div></div></section><aside class="side"><div><h3>Jouw opdracht</h3><h2 id="tasktitle">Maak een kans</h2></div><p id="task" class="hint" style="margin:0">Kies waar je spelers beginnen. Welke opstelling levert volgens jou de beste aanval op?</p><div class="sep"></div><div id="prep"><div id="zonePlans" class="zone-plans hide" role="group" aria-label="Kies een vorm van zoneverdediging voor het hele team"><div class="zone-plans-head">Zoneverdediging · heel team</div><div class="zone-options"><button type="button" class="zone-option" data-zone-plan="zonecompact">Compact</button><button type="button" class="zone-option" data-zone-plan="zoneschuif">Meeschuiven</button><button type="button" class="zone-option" data-zone-plan="zonelijn">Passlijnen</button></div><div id="zoneTip" class="zone-tip">Kies een teamvorm of geef elke verdediger apart een opdracht.</div></div><h3>Geselecteerde speler</h3><div id="selected" class="hint">Tik op een speler om zijn opdracht te kiezen.</div><div id="intents" class="intent-grid"></div><p class="small" id="intentHelp">Sleep een speler, of tik de speler en daarna een vrije plek. Met de pijltjestoetsen kun je nauwkeurig schuiven.</p></div><div class="grow"></div><div class="sep"></div><p id="insight" class="hint" style="margin:0">Zet je spelers klaar. Hun opdrachten bepalen hoe ze straks bewegen.</p><div id="after" class="actions hide"><button id="again" class="btn main">Pas plan aan</button><button id="replay" class="btn">Speel opnieuw</button></div></aside></div><div class="foot"><span id="sportFoot">Voetbal</span> · <span id="formationFoot">4 tegen 4</span> · Oefenmodel · vergeleken met openbare wedstrijddata</div></div>
+
+/* Verborgen spelanalyse: alleen openen via 2 tikken op het LO-logo. */
+.lo-secret{font-family:inherit;cursor:pointer;touch-action:manipulation;flex-shrink:0}
+.lo-secret:focus-visible{outline:2px solid #d6ffed;outline-offset:3px}
+.lo-analysis[hidden]{display:none!important}
+.lo-analysis{position:fixed;inset:0;z-index:55;background:#031016e8;backdrop-filter:blur(7px);display:flex;justify-content:center;align-items:center;padding:clamp(8px,2vw,20px)}
+.lo-analysis-sheet{width:min(990px,100%);height:min(850px,95dvh);min-height:0;display:flex;flex-direction:column;background:#10262e;border:1px solid #40615e;border-radius:15px;box-shadow:0 24px 100px #000b;overflow:hidden}
+.lo-analysis-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 17px;border-bottom:1px solid #304c54;flex-shrink:0}
+.lo-analysis-head .eyebrow{font-size:9px;letter-spacing:.1em;color:#82b7a8}
+.lo-analysis-head h2{margin:3px 0 0;font-size:20px;letter-spacing:-.025em;color:#f0fff9}
+.lo-analysis-close,.lo-analysis-export{background:#17333b;border:1px solid #41615f;border-radius:7px;color:#d8f3ea;cursor:pointer;padding:7px 10px;font-size:11px;font-weight:650}
+.lo-analysis-close:focus-visible,.lo-analysis-export:focus-visible,.lo-math-event:focus-visible{outline:2px solid #bdf5dc;outline-offset:2px}
+.lo-analysis-scroll{padding:15px 18px 24px;overflow-y:auto;overscroll-behavior:contain;min-height:0;color:#d0e6df;font-size:12px}
+.lo-analysis-intro{color:#accbc0;line-height:1.55;margin:0 0 12px}
+.lo-analysis-summary{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.lo-analysis-stat{background:#153138;border:1px solid #30504c;padding:10px 12px;border-radius:9px;min-width:110px;flex:1}
+.lo-analysis-stat span{font-size:10px;color:#9dc4b7;display:block}.lo-analysis-stat b{display:block;font-size:20px;margin-top:3px;font-variant-numeric:tabular-nums;color:#e6fff5}
+.lo-analysis-block{border:1px solid #34515a;border-radius:10px;padding:12px;margin:12px 0;background:#0d2229}
+.lo-analysis-block h3{font-size:13px;color:#f0fff8;margin:0 0 9px;letter-spacing:0}
+.lo-analysis-details{font-size:11px;line-height:1.5;color:#a4c5bf}
+.lo-analysis-scrub{width:100%;accent-color:#78e1b8;cursor:pointer;margin:9px 0}
+.lo-analysis-label{color:#d8f3e7;font-weight:650;display:flex;justify-content:space-between;gap:8px}
+.lo-analysis-cols{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.lo-analysis-table{width:100%;border-collapse:collapse;font-size:11px}
+.lo-analysis-table th{font-weight:600;text-align:left;color:#90b8ae;font-size:10px}
+.lo-analysis-table th,.lo-analysis-table td{border-bottom:1px solid #29444a;padding:6px 5px;vertical-align:top}
+.lo-analysis-table td{font-variant-numeric:tabular-nums}
+.lo-math-event{width:100%;text-align:left;display:flex;gap:10px;padding:8px 6px;border:0;border-bottom:1px solid #2b4850;color:#d8ede6;background:transparent;cursor:pointer;font-size:11px;line-height:1.4}
+.lo-math-event:hover,.lo-math-event.active{background:#183a3b;border-radius:6px}
+.lo-math-event time{color:#8acdb5;flex:0 0 48px;font-variant-numeric:tabular-nums}
+.lo-analysis-breakdown{list-style:none;margin:8px 0 0;padding:0}
+.lo-analysis-breakdown li{display:flex;justify-content:space-between;gap:8px;border-bottom:1px solid #2b454a;padding:5px 0}
+.lo-analysis-breakdown b{font-variant-numeric:tabular-nums;color:#e0f2ea}
+.lo-analysis-detail-note{font-size:10px;color:#91b4af;line-height:1.5;margin:8px 0 0}
+.lo-analysis-source a{color:#88ddbd;text-underline-offset:2px}
+.lo-analysis-source{font-size:11px;line-height:1.55;color:#aaccc1}
+.lo-analysis-source details{margin-top:9px;border-top:1px solid #305056;padding-top:10px}
+.lo-analysis-source summary{cursor:pointer;color:#d0e9dc}
+.lo-analysis-actions{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:14px}
+@media(max-width:620px){
+.lo-analysis{padding:0}.lo-analysis-sheet{width:100%;height:100dvh;max-height:none;border:0;border-radius:0}
+.lo-analysis-head{padding:10px 12px}.lo-analysis-head h2{font-size:17px}
+.lo-analysis-scroll{padding:10px 11px 19px}.lo-analysis-cols{grid-template-columns:1fr;gap:0}
+.lo-analysis-stat{min-width:calc(50% - 6px);padding:8px}.lo-analysis-stat b{font-size:18px}
+.lo-analysis-block{padding:10px;margin:8px 0}.lo-analysis-table{font-size:10px}
+}
+</style></head><body class="eai-refresh"><div class="app"><header class="top"><div class="brand"><button type="button" class="mark lo-secret" id="loSecret" aria-label="LO-logo. Tweemaal tikken voor de berekeningen van het spel" title="LO">LO</button><div><div class="eyebrow">TACTISCH SPELLAB</div><h1>Speel het uit.</h1></div></div><div class="top-actions"><label class="sport-label" for="sportSelect">Sport</label><select id="sportSelect" class="sport-select" aria-label="Kies de sport"><option value="0">Voetbal</option><option value="1">Hockey</option><option value="2">Handbal</option><option value="3">Basketbal</option></select><label class="sport-label" for="formationSelect">Teams</label><select id="formationSelect" class="sport-select formation-select" aria-label="Kies het aantal aanvallers en verdedigers"><option value="0">4 tegen 4</option><option value="1">2 tegen 1</option><option value="2">3 tegen 2</option><option value="3">4 tegen 3</option></select><button id="new" class="btn">Nieuwe spelsituatie</button></div></header><div class="shell"><section class="fieldpane"><div class="fieldhead"><span id="stage" class="pill">Voorbereiden</span><span id="stagehelp" class="small">Versleep de spelers van jouw team</span><label class="playback-control" for="playbackSpeed"><span>Tempo</span><select id="playbackSpeed" aria-label="Afspeelsnelheid"><option value="0.5">½×</option><option value="1" selected>1×</option><option value="1.5">1½×</option><option value="2">2×</option></select></label></div><div class="fieldframe"><svg id="pitch" viewBox="0 0 1000 650" role="img" aria-label="Interactief speelveld waarop je spelers kunt verschuiven"></svg></div><div class="bottom"><div><div id="instruction" class="hint">De bal ligt bij aanvaller 1. Maak je opstelling en speel de hele aanval.</div><div id="under" class="small setup-tip">Sleep een speler of tik eerst de speler en daarna zijn plek.</div></div><div class="actions"><button id="reset" class="btn">Beginopstelling</button><button id="primary" class="btn main">Speel de aanval af ▶</button></div></div></section><aside class="side"><div><h3>Jouw opdracht</h3><h2 id="tasktitle">Maak een kans</h2></div><p id="task" class="hint" style="margin:0">Kies waar je spelers beginnen. Welke opstelling levert volgens jou de beste aanval op?</p><div class="sep"></div><div id="prep"><div id="zonePlans" class="zone-plans hide" role="group" aria-label="Kies een vorm van zoneverdediging voor het hele team"><div class="zone-plans-head">Zoneverdediging · heel team</div><div class="zone-options"><button type="button" class="zone-option" data-zone-plan="zonecompact">Compact</button><button type="button" class="zone-option" data-zone-plan="zoneschuif">Meeschuiven</button><button type="button" class="zone-option" data-zone-plan="zonelijn">Passlijnen</button></div><div id="zoneTip" class="zone-tip">Kies een teamvorm of geef elke verdediger apart een opdracht.</div></div><h3>Geselecteerde speler</h3><div id="selected" class="hint">Tik op een speler om zijn opdracht te kiezen.</div><div id="intents" class="intent-grid"></div><p class="small" id="intentHelp">Sleep een speler, of tik de speler en daarna een vrije plek. Met de pijltjestoetsen kun je nauwkeurig schuiven.</p></div><div class="grow"></div><div class="sep"></div><p id="insight" class="hint" style="margin:0">Zet je spelers klaar. Hun opdrachten bepalen hoe ze straks bewegen.</p><div id="after" class="actions hide"><button id="again" class="btn main">Pas plan aan</button><button id="replay" class="btn">Speel opnieuw</button></div></aside></div><div class="foot"><span id="sportFoot">Voetbal</span> · <span id="formationFoot">4 tegen 4</span> · Oefenmodel · vergeleken met openbare wedstrijddata</div></div>
+<section id="loAnalysis" class="lo-analysis" role="dialog" aria-modal="true" aria-labelledby="loAnalysisTitle" hidden><div class="lo-analysis-sheet"><header class="lo-analysis-head"><div><div class="eyebrow">HET VERHAAL ACHTER DE SIMULATIE</div><h2 id="loAnalysisTitle">Wat berekende het spel?</h2></div><button type="button" class="lo-analysis-close" id="loAnalysisClose">Sluiten ×</button></header><main class="lo-analysis-scroll" id="loAnalysisBody"></main></div></section>
 <details class="source-detail" id="sourceDetail"><summary>Meetbasis en bronnen</summary>
  <div class="source-popover"><strong>Onderzoeksbasis per sport</strong><p>Het Aanvalslab blijft een vereenvoudigd onderwijsmodel. Alleen de genoemde onderdelen zijn aangepast op basis van data of gepubliceerd onderzoek. Geen validatie voor individuele leerlingen.</p>
  <p><b>Voetbal</b> · 2 volledig gevolgde Metrica-wedstrijden, ruim 6 miljoen verplaatsingsmetingen. Gemiddeld 1,77 m/s, 90e percentiel 3,67 m/s, bij balbezit mediane afstand tot dichtstbijzijnde tegenstander 4,88 m. De verdedigersnelheid is voorzichtig bijgesteld. De passkeuze gebruikt daarnaast 84 gecontroleerde PASS-events. Het 3-tegen-2-loopidee is gebaseerd op 279 geobserveerde jeugdpartijtjes. <a href="https://github.com/metrica-sports/sample-data" target="_blank" rel="noopener noreferrer">Metrica</a> · <a href="https://doi.org/10.26582/k.51.1.7" target="_blank" rel="noopener noreferrer">3-tegen-2-onderzoek</a>.</p>
@@ -116,7 +163,7 @@ function applySport(index){sportIndex=Math.max(0,Math.min(3,Number(index)||0));P
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v)),dist=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y), hypot=Math.hypot;
 const copy=v=>JSON.parse(JSON.stringify(v)),unit=(x,y)=>{const m=Math.hypot(x,y)||1;return {x:x/m,y:y/m}},mix=(a,b,t)=>a+(b-a)*t;
 let mode='attack',phase='a',state='setup',players=[],initial=[],scenario=[],frames=[],events=[],time=0,duration=MAX,raf=0,last=0,drag=null,seed=1,result='',selected=null;
-let scenarioIndex=0,simSeed=0,summary={};
+let scenarioIndex=0,simSeed=0,summary={},analysisReady=false;
 function rand(){seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296}
 const scenarios=[
  {name:'Middenveld',a:[[320,320],[485,164],[515,468],[702,314]],d:[[408,275],[585,220],[596,428],[790,344]]},
@@ -284,7 +331,7 @@ function refresh(){
  syncZonePlans();
 }
 
-function resetSetup(){cancelAnimationFrame(raf);state='setup';if(mode!=='online')phase='a';selected=null;players=copy(scenario);el('insight').textContent='Speler 1 begint met de bal. Kies je opstelling en spelersopdrachten.';drawPitch();draw();refresh();choose((mode==='defend'||(mode==='online'&&phase==='d'))?'d0':'a0')}
+function resetSetup(){analysisReady=false;cancelAnimationFrame(raf);state='setup';if(mode!=='online')phase='a';selected=null;players=copy(scenario);el('insight').textContent='Speler 1 begint met de bal. Kies je opstelling en spelersopdrachten.';drawPitch();draw();refresh();choose((mode==='defend'||(mode==='online'&&phase==='d'))?'d0':'a0')}
 function start(){initial=copy(players);simSeed=1337+scenarioIndex*4099+formationIndex*1609;simulate();state='playing';time=0;last=0;el('insight').textContent='De aanval speelt af. Kijk hoe de spelers bewegen.';refresh();showFrame(0);cancelAnimationFrame(raf);raf=requestAnimationFrame(tick)}
 function point(e){
  const matrix=svg.getScreenCTM();
@@ -649,7 +696,7 @@ function simulate(){
   snapshot();
  }
  result=outcome;duration=frames.at(-1)?.time||MAX;
- summary={result,duration,passes,completed,shots,intercepts,events:copy(events)};
+ summary={result,duration,passes,completed,shots,intercepts,events:copy(events)};analysisReady=true;
 }
 function frameAt(t){const idx=clamp(Math.round(t/DT),0,frames.length-1);return frames[idx]||{players,ball:ballAt(players[0]),trail:[]}}
 function showFrame(t){const f=frameAt(t);draw(f.players,f.ball,f.trail)}
