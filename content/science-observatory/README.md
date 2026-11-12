@@ -20,7 +20,7 @@ De 53 natuurkundeproeven vormen samen één onderzoeksruimte. Verbeter de bestaa
 
 - De leerling kan zelf experimenteren: variabelen veranderen, in het model slepen, grafieken onderzoeken en metingen bewaren of vergelijken.
 - Laat de proef en grafiek zo veel mogelijk direct zien. Een proef hoeft niet uit te leggen wat een knop doet voordat de leerling kan beginnen.
-- Laat twee veelgebruikte instellingen direct zien. Zet overige parameters, toelichting en extra uitleg in uitklapbare onderdelen. Verberg geen benodigde handeling.
+- Laat per proef de twee of drie nodige instellingen direct zien. Zet overige parameters, toelichting en extra uitleg in uitklapbare onderdelen. Op telefoons zijn maximaal twee snelle instellingen zichtbaar; de volledige proefbediening blijft bereikbaar. Verberg geen benodigde handeling.
 - Houd proef, relevante bediening en grafiek binnen één scherm. Vermijd paginascroll. Vergrootbare grafieken en compacte panelen hebben de voorkeur boven kleine, moeilijk leesbare inhoud.
 - Kies de knoppen per proef op basis van het te onderzoeken verschijnsel. Een slinger heeft lengte en uitwijkhoek vooraan, een schakeling spanning en weerstand, een gasproef het gekozen proces en de grootheid die daarbij mag veranderen. Serie/parallel en gasproces zijn gewone keuzelijsten, geen numerieke codes.
 - Een grafiek met een instelbare grootheid op de horizontale as verandert die grootheid bij slepen. Een tijdgrafiek laat de leerling de simulatie op dat tijdstip bekijken. Een grafiek van positie of intensiteit laat een punt aflezen zonder ongemerkt de fysieke parameters te veranderen.
