@@ -364,13 +364,59 @@ function ballAt(p){
  return {x:p.x+22,y:p.y+19};
 }
 function drawBall(pos,parent){
- const radius=window.innerWidth<600?1.19:1;
- const g=s('g',{transform:`translate(${pos.x} ${pos.y}) scale(${radius})`,'aria-label':sportCfg().ball,'data-ball':'true','pointer-events':'none'},parent);
- s('circle',{cx:0,cy:1,r:17,fill:'#061b1d',opacity:.66},g);
- if(sportIndex===1){s('circle',{cx:0,cy:0,r:10,fill:'#edf0a2',stroke:'#fffbd2','stroke-width':2},g);s('path',{d:'M-8 4Q0 7 9 0',stroke:'#c4c77b','stroke-width':1.3,fill:'none'},g)}
- else if(sportIndex===2){s('circle',{cx:0,cy:0,r:12,fill:'#f2d8b5',stroke:'#fff1df','stroke-width':1.8},g);for(const a of [0,60,120])s('line',{x1:-10,y1:0,x2:10,y2:0,transform:`rotate(${a})`,stroke:'#bb7c49','stroke-width':1.6},g)}
- else if(sportIndex===3){s('circle',{cx:0,cy:0,r:13,fill:'#ee9c52',stroke:'#ffd4a6','stroke-width':1.8},g);s('path',{d:'M-13 0H13M0 -13V13M-10 -8Q1 0 -10 8M10 -8Q-1 0 10 8',fill:'none',stroke:'#613823','stroke-width':1.9},g)}
- else {s('circle',{cx:0,cy:0,r:13,fill:'#f8faf9',stroke:'#e6f9ee','stroke-width':2},g);s('path',{d:'M0 -5L5 -2L3 4L-3 4L-5 -2Z',fill:'#15292d'},g);for(const d of ['M-1 -12L-5 -8L-5 -2','M9 -9L5 -2','M11 5L3 4','M-11 5L-3 4','M-5 10L0 12L5 10'])s('path',{d,fill:'none',stroke:'#15292d','stroke-width':1.6,'stroke-linecap':'round'},g)}
+ // Kleine, herkenbare bal per sport. Lijnwerk blijft scherp bij in- en uitzoomen.
+ // De getekende diameter is voor leesbaarheid vergroot; spelberekening blijft gelijk.
+ const mobile=window.innerWidth<600,scale=mobile?1.09:1;
+ const g=s('g',{transform:'translate('+pos.x+' '+pos.y+') scale('+scale+')',
+  'aria-label':sportCfg().ball,'data-ball':'true','data-ball-sport':String(sportIndex),
+  'pointer-events':'none'},parent);
+ const defs=s('defs',{},g);
+ const gradient=s('radialGradient',{id:'loBallGloss',cx:'.31',cy:'.24',r:'.86'},defs);
+ let base='#f8f8ef',light='#ffffff',dark='#d5dad8',radius=12.3;
+ if(sportIndex===1){base='#f4eee0';light='#fff9ed';dark='#b9bcad';radius=8.5}
+ if(sportIndex===2){base='#e8c79f';light='#fff0d4';dark='#a87652';radius=12.2}
+ if(sportIndex===3){base='#dc8648';light='#ffbf7a';dark='#874523';radius=12.9}
+ s('stop',{offset:'0%','stop-color':light},gradient);
+ s('stop',{offset:'64%','stop-color':base},gradient);
+ s('stop',{offset:'100%','stop-color':dark},gradient);
+ s('ellipse',{cx:1.5,cy:radius*.52,rx:radius*.9,ry:radius*.58,fill:'#06191e',opacity:.33},g);
+ s('circle',{cx:0,cy:0,r:radius,fill:'url(#loBallGloss)',stroke:dark,'stroke-width':'.78'},g);
+ if(sportIndex===0){
+  const poly=(cx,cy,r,side,angle,attrs={})=>{
+   const points=Array.from({length:side},(_,i)=>{
+    const a=angle+i*2*Math.PI/side;
+    return (cx+Math.cos(a)*r).toFixed(2)+','+(cy+Math.sin(a)*r).toFixed(2);
+   }).join(' ');
+   s('polygon',{points,...attrs},g);
+  };
+  poly(-.3,.4,5.6,5,-Math.PI/2,{fill:'#314144',stroke:'#1f3133','stroke-width':'.5'});
+  for(const [cx,cy,angle] of [[-9,-5,-1.9],[8.1,-6,.2],[9,7,1.2],[-8.6,7,-2.7],[0,-11,-1.55]]){
+   poly(cx,cy,3.4,5,angle,{fill:'#465357',stroke:'#4c5c60','stroke-width':'.36'});
+  }
+  for(const [x1,y1,x2,y2] of [[-4,-3,-7,-6],[4,-3,6,-6],[5,3,7,6],[-5,3,-7,6],[0,-5,0,-8]]){
+   s('path',{d:'M'+x1+' '+y1+'L'+x2+' '+y2,stroke:'#647176','stroke-width':'.75',fill:'none'},g);
+  }
+ }else if(sportIndex===1){
+  // Kleine witte hockeybal, met fijne reliëfputjes in plaats van een zwaar patroon.
+  for(const [x,y] of [[-4,-2],[-1,-4],[3,-3],[5,0],[1,1],[-3,3],[3,4],[-1,5]]){
+   s('circle',{cx:x,cy:y,r:'.75',fill:'#c6c3b5',opacity:.58},g);
+   s('circle',{cx:x-.25,cy:y-.22,r:'.28',fill:'#fffefa',opacity:.68},g);
+  }
+ }else if(sportIndex===2){
+  // Handbal: zachte leerpanelen, stiksels en rustige kleurverschillen.
+  for(const d of ['M-11 -3Q-3 -8 4 -10','M-10 5Q0 0 10 4','M-2 -11Q1 0 -3 11','M6 -9Q4 0 8 8']){
+   s('path',{d,stroke:'#9c6d52','stroke-width':'.9',opacity:.8,fill:'none','stroke-linecap':'round'},g);
+  }
+  for(const [x,y] of [[-7,-5],[5,-7],[7,6],[-5,8]]){
+   s('circle',{cx:x,cy:y,r:'.42',fill:'#fff3dc',opacity:.8},g);
+  }
+ }else{
+  // Basketbal: gebogen naden volgens de bolling, geen vlak kruis.
+  for(const d of ['M-12.3 0Q0 -2 12.3 0','M0 -12.5Q-1 0 0 12.5','M-9.2 -8.8Q3 -2 9.2 8.8','M9.2 -8.8Q-3 -2 -9.2 8.8']){
+   s('path',{d,stroke:'#693824','stroke-width':'1.05',opacity:.9,fill:'none','stroke-linecap':'round'},g);
+  }
+ }
+ s('ellipse',{cx:-radius*.32,cy:-radius*.42,rx:radius*.36,ry:radius*.18,fill:'#fff',opacity:sportIndex===3?.18:.25,transform:'rotate(-27)'},g);
 }
 
 function drawPitch(){
