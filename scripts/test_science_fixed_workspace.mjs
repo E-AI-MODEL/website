@@ -56,10 +56,10 @@ try{
    const extra=page.locator('#controls>.more-controls');
    if(await extra.count()){
     assert(!(await extra.evaluate(el=>el.open)),'Extra instellingen starten dichtgeklapt');
-    await extra.locator('summary').click();
+    await extra.locator(':scope > summary').click();
     assert(await extra.evaluate(el=>el.open),'Extra instellingen zijn uitklapbaar');
     assert(await extra.locator('input[type=number]').first().isVisible(),'Extra instelwaarde blijft bereikbaar');
-    await extra.locator('summary').click();
+    await extra.locator(':scope > summary').click();
    }
    const inputs=page.locator('.precision-control-row input[type="number"]');
    assert(await inputs.count()>=2,'Number inputs replace bulky sliders');
