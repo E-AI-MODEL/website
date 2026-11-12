@@ -63,6 +63,7 @@ try{
   }
   assert.equal(await page.locator('#num-R3').count(),0,'Hidden Wheatstone resistance remains unknown');
   assert(await page.locator('#num-R4').count()===1,'Other circuit settings remain editable');
+  if(width<=720)assert(await page.locator('#quick-R4').isVisible(),'Balancing resistor appears in the direct mobile controls');
   const actionGeometry=await page.evaluate(()=>{const a=document.querySelector('#inquiryAction').getBoundingClientRect(),r=document.querySelector('#inquiryBar').getBoundingClientRect();return{actionLeft:a.left,actionRight:a.right,barLeft:r.left,barRight:r.right}});
   assert(actionGeometry.actionLeft>=actionGeometry.barLeft-1&&actionGeometry.actionRight<=actionGeometry.barRight+1,'Research action is not clipped: '+JSON.stringify(actionGeometry));
   if(width<=720)assert(!(await page.locator('#explorer').evaluate(el=>el.classList.contains('open'))),'The experiment chooser closes after selection');
