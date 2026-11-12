@@ -1,0 +1,51 @@
+name: Test fixed physics laboratory
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'content/science-observatory/labs/natuurkunde.html'
+      - 'content/science-observatory/labs/schuine-worp.html'
+      - 'scripts/test_science_fixed_workspace.mjs'
+      - 'scripts/test_science_mobile_aim.mjs'
+      - 'scripts/test_schuine_worp_studio.mjs'
+      - '.github/workflows/science-fixed-workspace.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'content/science-observatory/labs/natuurkunde.html'
+      - 'content/science-observatory/labs/schuine-worp.html'
+      - 'scripts/test_science_fixed_workspace.mjs'
+      - 'scripts/test_science_mobile_aim.mjs'
+      - 'scripts/test_schuine_worp_studio.mjs'
+      - '.github/workflows/science-fixed-workspace.yml'
+permissions:
+  contents: read
+jobs:
+  physics-fixed:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install beautifulsoup4
+      - run: python scripts/build_site.py --sources content/legacy --out site-build
+      - run: npm install --no-save playwright@1.56.1
+      - run: npx playwright install --with-deps chromium webkit
+      - name: All 53 labs fixed on screen in Chromium
+        run: node scripts/test_science_fixed_workspace.mjs site-build chromium
+      - name: All 53 labs fixed on screen in Safari
+        run: node scripts/test_science_fixed_workspace.mjs site-build webkit
+      - name: Mobile shooting and scale
+        run: node scripts/test_science_mobile_aim.mjs site-build webkit
+      - name: Compact studio and physics values
+        run: node scripts/test_schuine_worp_studio.mjs site-build chromium
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: fixed-physics-laboratory-screenshots
+          path: test-results/physics-*.png
