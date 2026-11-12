@@ -1164,6 +1164,8 @@ function doublePremium(ctx,p,t){background(ctx);const x1=205,x2=685,y0=250,gap=4
 function lensPremium(ctx,p,t){background(ctx);const cx=500,cy=258,k=9.2,f=p.f*k,u=p.u*k,v=p.f*p.u/(p.u-p.f),m=-v/p.u;const ox=cx-u,tip=cy-p.h*25;stroke(ctx,[[55,cy],[951,cy]],'#9db7c55a',1.1);const grad=ctx.createLinearGradient(cx-12,0,cx+12,0);grad.addColorStop(0,'#65d4e630');grad.addColorStop(.5,'#87e7f082');grad.addColorStop(1,'#62cddd26');ctx.fillStyle=grad;ctx.beginPath();ctx.ellipse(cx,cy,12,175,0,0,TAU);ctx.fill();ctx.strokeStyle='#8cdef2c0';ctx.lineWidth=1;ctx.stroke();for(const sign of [-1,1]){circle(ctx,cx+sign*f,cy,4,'#fac28e',false);ctx.fillStyle='#d9b58e';ctx.font='12px system-ui';ctx.fillText('F',cx+sign*f-4,cy+23)}stroke(ctx,[[ox,cy],[ox,tip]],'#ffc18b',3,7);stroke(ctx,[[ox-9,tip+12],[ox,tip],[ox+9,tip+12]],'#ffc18b',2);ctx.beginPath();ctx.arc(ox,tip,10,0,TAU);ctx.strokeStyle='#fed1a978';ctx.lineWidth=1.1;ctx.stroke();stroke(ctx,[[ox,tip],[cx,tip]],'#f6c185a9',1.4,3);const slope=(cy-tip)/f,exitY=tip+slope*(951-cx);stroke(ctx,[[cx,tip],[951,exitY]],'#72e9d8',1.55,4);stroke(ctx,[[ox,tip],[cx,cy],[951,cy+(cy-tip)/(cx-ox)*(951-cx)]],'#98b6ff',1.4,4);if(Number.isFinite(v)&&Math.abs(v)<180){const bx=cx+v*k,by=cy-m*p.h*25;if(bx>50&&bx<955&&by>-50&&by<550){if(v<0){stroke(ctx,[[cx,tip],[bx,by]],'#f6c1859c',1.2,0,[5,6]);stroke(ctx,[[cx,cy],[bx,by]],'#98b6ff9c',1.2,0,[5,6]);stroke(ctx,[[bx,cy],[bx,by]],'#78eede',2,0,[4,5])}else{stroke(ctx,[[bx,cy],[bx,by]],'#78eede',2.6,7)}circle(ctx,bx,by,5,'#78eede');ctx.font='12px system-ui';ctx.fillStyle='#c4eee9';ctx.fillText(v<0?'VIRTUEEL BEELD':'REËEL BEELD',Math.max(60,bx+10),Math.max(60,by-7));if(v<0){ctx.fillStyle='#9bbaca';ctx.font='11px system-ui';ctx.fillText('Gestippeld: terugverlengingen, geen lichtstralen',62,463)}}}else{ctx.fillStyle='#e6eefe';ctx.font='13px system-ui';ctx.fillText('BEELD OP GROTE AFSTAND',706,87)}ctx.fillStyle='#f5c48e';ctx.font='12px system-ui';ctx.fillText('VOORWERP',ox-34,Math.max(34,tip-18));ctx.fillStyle='#dce9f6';ctx.font='600 23px system-ui';ctx.fillText('Bolle lens',65,90);ctx.font='13px system-ui';ctx.fillStyle='#8cafc2';ctx.fillText('f = '+fmt(p.f,1)+' cm',65,120)}
 Object.assign(flagship2d,{circular:circularPremium,standing:standingPremium,interference:interferencePremium,double:doublePremium,lens:lensPremium,wheatstone:wheatstoneMission});
 
+// Aantal touwen en kwantumgetallen zijn gehele waarden, geen doorlopende grootheden.
+const discreteGraphs=new Set(['pulleys','bohr']);
 const graphSpecs={
  acceleration:['Positie (m)','Tijd (s)',p=>[0,8],(p,t)=>((t%8)+8)%8],
  equilibrium:['Resulterende kracht (N)','Hoek tussen de krachten (°)',p=>[0,180],p=>p.angle],
@@ -1276,8 +1278,21 @@ function chart(info){
   for(const [x,y] of points){if(!Number.isFinite(y)){started=false;continue}if(!started){ctx.moveTo(xpt(x),ypt(y));started=true}else ctx.lineTo(xpt(x),ypt(y))}
   ctx.stroke();ctx.restore();
  };
- if(prior)draw(prior,'#f4b77ba8',1.7,[5,4]);
- draw(data,'#6be4d5',2.1);
+ if(discreteGraphs.has(state.id)){
+  const drawLevels=(fn,ownRange,col)=>{
+   for(let n=Math.ceil(Math.max(visible.min,ownRange.min));n<=Math.floor(Math.min(visible.max,ownRange.max));n++){
+    const ownSpan=ownRange.max-ownRange.min,q=ownSpan?(n-ownRange.min)/ownSpan:0;
+    let value;try{value=fn(q)}catch(_e){value=NaN}
+    if(!Number.isFinite(value))continue;
+    ctx.save();ctx.fillStyle=col;ctx.strokeStyle='#091a26';ctx.lineWidth=1.2;ctx.beginPath();ctx.arc(xpt((n-visible.min)/(visible.max-visible.min)),ypt(value),4.2,0,TAU);ctx.fill();ctx.stroke();ctx.restore();
+   }
+  };
+  if(base)drawLevels(base.fn,oldDomain,'#f4b77b');
+  drawLevels(info.fn,domain,'#6be4d5');
+ }else{
+  if(prior)draw(prior,'#f4b77ba8',1.7,[5,4]);
+  draw(data,'#6be4d5',2.1);
+ }
  if(domain.cursor!=null&&domain.cursor>=domain.min&&domain.cursor<=domain.max){
   const q=(domain.cursor-domain.min)/(domain.max-domain.min),visibleQ=(domain.cursor-visible.min)/(visible.max-visible.min);
   let y;try{y=info.fn(q)}catch(_e){y=NaN}
@@ -1480,6 +1495,10 @@ const dbar=$('sceneDivider');let resizingGraph=null;dbar.addEventListener('point
  const graphAction=(ratio,change=false)=>{
   const guide=interfaceFor(state.id),range=state.graphGestureRange||graphRange(),span=range.max-range.min;
   let q=clamp(ratio,0,1),physical=range.min+q*span;
+  if(discreteGraphs.has(state.id)){
+   const row=byId[state.id].controls.find(r=>r[0]===plotAxisKey(guide));
+   if(row){physical=clamp(Math.round(physical),row[3],row[4]);q=span?clamp((physical-range.min)/span,0,1):0}
+  }
   if(change&&guide.mode==='control'){
    const key=plotAxisKey(guide),row=byId[state.id].controls.find(r=>r[0]===key),setter=state.graphSetters?.[key];
    if(row&&setter){
