@@ -162,6 +162,12 @@ try{
    assert(gas.T>gasBefore.T&&gas.V===gasBefore.V,'Isochore grafiek verandert T en behoudt V');
    await page.locator('#num-mode').selectOption('0');
    assert(await page.locator('#num-V').isVisible(),'Bij constante temperatuur is volume direct verstelbaar');
+   await page.locator('#num-mode').selectOption('1');
+   const beforeIsobar=await page.evaluate(()=>({T:state.p.T,V:state.p.V,pressure:8.314*state.p.T/state.p.V}));
+   await graphDrag(.62);
+   const afterIsobar=await page.evaluate(()=>({T:state.p.T,V:state.p.V,pressure:8.314*state.p.T/state.p.V}));
+   assert(afterIsobar.V>beforeIsobar.V&&afterIsobar.T>beforeIsobar.T,'Bij een isobaar proces stijgt T mee met V');
+   assert(Math.abs(afterIsobar.pressure-beforeIsobar.pressure)<.015,'Druk blijft constant als het volume verandert');
    await selectLab('resistors');
    assert.equal(await page.locator('#num-mode').evaluate(el=>el.tagName),'SELECT','Serie en parallel zijn gewone keuzes');
    await page.locator('#num-mode').selectOption('0');
