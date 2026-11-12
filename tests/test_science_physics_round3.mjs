@@ -44,7 +44,8 @@ test('Doppler: stilstaande bron staat stil en golfringen volgen geluidssnelheid'
  assert.ok(firstRing(sample('doppler',{vs:80,v:340,f:440},1.2))!==firstRing(sample('doppler',{vs:80,v:340,f:440},1.0)), 'Golffronten moeten zichtbaar uitzetten in de tijd');
  const result=sample('doppler',{vs:80,v:340},1);
  near(result.data.fn(0),440);
- near(result.data.fn(1),number(row(result,'Voor de bron')),.05);
+ near(result.data.fn(80/220),number(row(result,'Voor de bron')),.05);
+ near(result.data.fn(1),440*340/(340-220),.05);
 });
 
 test('Bolle lens: reëel omgekeerd, virtueel rechtop en terugverlengingen',()=>{
