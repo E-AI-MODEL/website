@@ -300,7 +300,7 @@ function drawScene(c){
  ctx.textAlign='center';ctx.font='600 11px system-ui';ctx.fillStyle='#abf4e3';
  var labX=clamp(tx,59,w-67);
  ctx.fillText('LANDINGSMAT',labX,oy-28);
- ctx.font='10px system-ui';ctx.fillStyle='#8cbbc2';ctx.fillText(fmt(S.target,1)+' m',labX,oy-16);
+ ctx.font='10px system-ui';ctx.fillStyle='#8cbbc2';ctx.fillText(fmt(S.target,1)+' m · sleep',labX,oy-16);
  ctx.textAlign='left';
  // Previous throws are faint, measurable traces.
  S.trials.slice(-5).forEach(function(t,i){
