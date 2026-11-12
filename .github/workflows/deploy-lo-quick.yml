@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'tools/lo-aanvalslab/index.html'
+      - 'tools/lo-aanvalslab/onderbouwing/index.html'
       - '.github/workflows/deploy-lo-quick.yml'
   workflow_dispatch:
 
@@ -25,6 +26,8 @@ jobs:
       - name: Controleer de bron van de online duofunctie
         run: |
           test -s tools/lo-aanvalslab/index.html
+          test -s tools/lo-aanvalslab/onderbouwing/index.html
+          grep -q 'Wetenschappelijke onderbouwing' tools/lo-aanvalslab/index.html
           grep -q 'startRealtime' tools/lo-aanvalslab/index.html
           grep -q 'onlineChoice' tools/lo-aanvalslab/index.html
 
@@ -60,7 +63,9 @@ jobs:
           set net:max-retries 1
           set xfer:use-temp-file yes
           mkdir -p /tools/lo-aanvalslab
+          mkdir -p /tools/lo-aanvalslab/onderbouwing
           put tools/lo-aanvalslab/index.html -o /tools/lo-aanvalslab/index.html
+          put tools/lo-aanvalslab/onderbouwing/index.html -o /tools/lo-aanvalslab/onderbouwing/index.html
           bye
           EOF
 
@@ -73,16 +78,19 @@ jobs:
           source=Path('tools/lo-aanvalslab/index.html').read_bytes()
           expected=hashlib.sha256(source).hexdigest()
           url='https://eaimodel.nl/tools/lo-aanvalslab/'
+          page=Path('tools/lo-aanvalslab/onderbouwing/index.html').read_bytes()
+          expected_page=hashlib.sha256(page).hexdigest()
           for attempt in range(8):
               try:
                   remote=urlopen(url+'?lo='+str(time.time()),timeout=20).read()
-                  if hashlib.sha256(remote).hexdigest()==expected:
-                      print('LO Aanvalslab live, exacte bron bevestigd')
+                  live_page=urlopen(url+'onderbouwing/?lo='+str(time.time()),timeout=20).read()
+                  if hashlib.sha256(remote).hexdigest()==expected and hashlib.sha256(live_page).hexdigest()==expected_page:
+                      print('LO Aanvalslab en onderbouwing live, exacte bronnen bevestigd')
                       break
                   print('Andere inhoud ontvangen; opnieuw controleren')
               except Exception as error:
                   print('Nog niet bereikbaar:',error)
               time.sleep(6)
           else:
-              raise SystemExit('Live pagina wijkt af van actuele LO-bron')
+              raise SystemExit('Live Aanvalslab of onderbouwing wijkt af van actuele bron')
           PY
