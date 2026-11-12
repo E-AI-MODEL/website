@@ -372,32 +372,62 @@ function drawPitch(){
  s('g',{id:'traces'});s('g',{id:'actors'});
 }
 function canEdit(p){return state==='setup'&&(mode==='free'||((mode==='duo'||mode==='online')?p.team===phase:p.team===(mode==='attack'?'a':'d')))}
+// Looplijn uit dezelfde tijdstap-simulatie als bij afspelen.
+// De oude pijl had eigen, afwijkende doelberekeningen. Die zijn verwijderd.
+// We tonen alleen de eerste 1,25 s, niet de gegarandeerde eindpositie.
+let loArrowTimer=0,loArrowCache=null;
+function loArrowKey(){
+ return [sportIndex,formationIndex,scenarioIndex,JSON.stringify(players.map(p=>[p.id,Math.round(p.x*100)/100,Math.round(p.y*100)/100,p.intent]))].join('|');
+}
+function loCancelArrowTimer(){if(loArrowTimer){clearTimeout(loArrowTimer);loArrowTimer=0}}
+function loPrepareArrowPreview(){
+ if(state!=='setup'||mode==='online')return;
+ const key=loArrowKey();
+ if(loArrowCache?.key===key)return;
+ loCancelArrowTimer();
+ loArrowCache=null; // Nooit een oude pijl laten staan na een verplaatsing.
+ loArrowTimer=setTimeout(()=>{
+  loArrowTimer=0;
+  if(state!=='setup'||mode==='online'||key!==loArrowKey())return;
+  const stored={initial,simSeed,frames,events,summary,result,duration,analysisReady};
+  try{
+   initial=copy(players);
+   simSeed=1337+scenarioIndex*4099+formationIndex*1609;
+   simulate();
+   const picked=frames.filter((f,i)=>f.time<=1.25&&(i%3===0||i===frames.length-1));
+   const tracks={};
+   for(const p of players){
+    tracks[p.id]=picked.map(f=>{const q=f.players.find(z=>z.id===p.id);return q?{x:q.x,y:q.y,t:f.time}:null}).filter(Boolean);
+   }
+   loArrowCache={key,tracks};
+  }catch(e){
+   loArrowCache=null;
+   console.error('Looplijn kon niet worden getoond:',e);
+  }finally{
+   initial=stored.initial;simSeed=stored.simSeed;frames=stored.frames;events=stored.events;
+   summary=stored.summary;result=stored.result;duration=stored.duration;analysisReady=stored.analysisReady;
+  }
+  if(state==='setup'&&key===loArrowKey())draw();
+ },105);
+}
 function previewArrow(p,traces){
- let tx=p.x,ty=p.y;
- if(p.team==='a'){
-  const i=p.intent;
-  if(i==='diep')tx+=115;
-  else if(i==='breed'){tx+=32;ty=p.y<325?115:535;}
-  else if(i==='bal'){const owner=players.find(q=>q.id==='a0');tx=(owner?.x||340)-50;ty=(owner?.y||325)+(p.id==='a2'?90:-90);}
-  else if(i==='kruis'){tx+=80;ty=650-p.y;}
-  else if(i==='ruimte'){tx+=50;ty=p.y<325?Math.max(105,p.y-120):Math.min(545,p.y+120);}
-  else if(i==='drijf'){tx+=120;}else if(i==='zijde'){tx+=90;ty=p.y<325?110:540;}
-  else if(i==='pas'){tx+=45;}
- }else{
-  const a=players.find(q=>q.id==='a'+p.id[1])||players[0];
-  if(['dek','volg'].includes(p.intent)){tx=a.x+35;ty=a.y;}
-  else if(p.intent==='druk'){tx=players[0].x+22;ty=players[0].y;}
-  else if(p.intent==='terug'){tx+=100;}
-  else if(p.intent==='lijn'){tx=(p.x+players[0].x)*.5;ty=(p.y+players[0].y)*.5;}
-   else if(p.intent==='zone'||p.intent==='zonecompact'){tx=Math.max(p.x+35,players[0].x+50);ty=325+(players[0].y-325)*.28+(p.y-325)*.34;}
-   else if(p.intent==='zoneschuif'){tx=players[0].x+34;ty=players[0].y*.67+p.y*.33;}
-   else if(p.intent==='zonelijn'){const from=players[0],rec=players.find(q=>q.id==='a'+(Number(p.id[1])+1))||players.find(q=>q.id==='a1')||from;tx=from.x*.52+rec.x*.48;ty=from.y*.52+rec.y*.48;}
- }
- tx=clamp(tx,70,930);ty=clamp(ty,76,574);
- if(dist(p,{x:tx,y:ty})<26)return;
- const color=p.team==='a'?'#93e8c9':'#ffb4bf';const dx=tx-p.x,dy=ty-p.y,n=Math.hypot(dx,dy)||1;
- s('path',{d:`M${p.x} ${p.y} L${tx} ${ty}`,stroke:color,'stroke-width':1.45,'stroke-dasharray':'5 7',opacity:.72,fill:'none'},traces);
- s('path',{d:`M${tx} ${ty} l${-dx/n*9-dy/n*4} ${-dy/n*9+dx/n*4} M${tx} ${ty} l${-dx/n*9+dy/n*4} ${-dy/n*9-dx/n*4}`,stroke:color,'stroke-width':1.5,opacity:.8,fill:'none'},traces);
+ // Online kent vóór het starten het geheime plan en de seed van het andere team niet.
+ // Daar dus geen richting presenteren als een voorspelling.
+ if(mode==='online')return;
+ if(loArrowCache?.key!==loArrowKey()){loPrepareArrowPreview();return}
+ const track=loArrowCache?.tracks[p.id];
+ if(!track||track.length<2)return;
+ const points=[{x:p.x,y:p.y},...track.slice(1)];
+ const final=points.at(-1),first=points[0];
+ if(dist(first,final)<8)return;
+ const color=p.team==='a'?'#9fe8c9':'#ffb6c0';
+ s('polyline',{points:points.map(q=>q.x.toFixed(2)+','+q.y.toFixed(2)).join(' '),
+  stroke:color,'stroke-width':1.25,'stroke-dasharray':'4 7',
+  'stroke-linecap':'round','stroke-linejoin':'round',opacity:.92,fill:'none','data-preview-arrow':p.id},traces);
+ const prev=points[points.length-2],dx=final.x-prev.x,dy=final.y-prev.y,
+  norm=Math.hypot(dx,dy)||1,ux=dx/norm,uy=dy/norm;
+ s('path',{d:'M'+(final.x-ux*8-uy*3.3)+' '+(final.y-uy*8+ux*3.3)+' L'+final.x+' '+final.y+' L'+(final.x-ux*8+uy*3.3)+' '+(final.y-uy*8-ux*3.3),
+  stroke:color,'stroke-width':1.35,fill:'none','stroke-linecap':'round',opacity:.92},traces);
 }
 
 function draw(actors=players,ball=null,trail=[]){
@@ -767,7 +797,7 @@ function refresh(){
 }
 
 function resetSetup(){analysisReady=false;loCoachHighlight=false;loCoachFocus=null;loCoachMomentTime=null;el('loCoachObserved').classList.add('hide');el('loCoachMoment').classList.add('hide');el('loCoachCompare').classList.add('hide');cancelAnimationFrame(raf);state='setup';if(mode!=='online')phase='a';selected=null;players=copy(scenario);el('insight').textContent='Speler 1 begint met de bal. Kies je opstelling en spelersopdrachten.';drawPitch();draw();loGoalPicker();refresh();choose((mode==='defend'||(mode==='online'&&phase==='d'))?'d0':'a0')}
-function start(){loBeforeAttempt();initial=copy(players);simSeed=1337+scenarioIndex*4099+formationIndex*1609;simulate();state='playing';time=0;last=0;el('insight').textContent='De aanval speelt af. Kijk hoe de spelers bewegen.';refresh();showFrame(0);cancelAnimationFrame(raf);raf=requestAnimationFrame(tick)}
+function start(){loCancelArrowTimer();loBeforeAttempt();initial=copy(players);simSeed=1337+scenarioIndex*4099+formationIndex*1609;simulate();state='playing';time=0;last=0;el('insight').textContent='De aanval speelt af. Kijk hoe de spelers bewegen.';refresh();showFrame(0);cancelAnimationFrame(raf);raf=requestAnimationFrame(tick)}
 function point(e){
  const matrix=svg.getScreenCTM();
  if(matrix){const pt=svg.createSVGPoint();pt.x=e.clientX;pt.y=e.clientY;const local=pt.matrixTransform(matrix.inverse());return {x:clamp(local.x,70,930),y:clamp(local.y,76,574)}}
@@ -1174,7 +1204,7 @@ window.__loOnline={
     cancelAnimationFrame(raf);
     const plan=[...attack,...defence];
     for(const item of plan){const p=players.find(x=>x.id===item.id);if(!p)continue;p.x=item.x;p.y=item.y;p.intent=item.intent}
-    loBeforeAttempt();initial=copy(players);simSeed=seed;simulate();state='playing';time=Math.min(duration,Math.max(0,(Date.now()+clockDelta-Date.parse(startAt))/1000));last=0;
+    loCancelArrowTimer();loBeforeAttempt();initial=copy(players);simSeed=seed;simulate();state='playing';time=Math.min(duration,Math.max(0,(Date.now()+clockDelta-Date.parse(startAt))/1000));last=0;
     refresh();showFrame(time);cancelAnimationFrame(raf);raf=requestAnimationFrame(tick);
   },
   getState:()=>state,
@@ -1360,7 +1390,7 @@ document.addEventListener('keydown',event=>{
 // De handleiding kan een lokaal spel pauzeren. Een online wedstrijd blijft synchroon doorlopen.
 window.__loHelpPause=()=>{if(state==='playing'&&mode!=='online'){cancelAnimationFrame(raf);state='paused';refresh();return true}return false};
 // Alleen testomgeving: reproductie van spelsituaties zonder UI-animatie.
-window.__loLabTest={run(input,withSeed=1337){initial=copy(input);simSeed=withSeed;simulate();return copy(summary)},getPlayers:()=>copy(players),getFrames:()=>copy(frames),getEvents:()=>copy(events),scenario:index=>{makeScenario(index);return copy(players)},setFormation:index=>{applyFormation(index);makeScenario(scenarioIndex);resetSetup();return copy(players)},setSpeed:speed=>{playbackSpeed=clamp(speed,.5,2);el('playbackSpeed').value=String(playbackSpeed)},getTime:()=>time,reachTime,getConfig:()=>copy(sportCfg()),setZonePlan(key){if(!['zonecompact','zoneschuif','zonelijn'].includes(key))return;for(const p of players)if(p.team==='d')p.intent=key;syncZonePlans();draw()},getIntents:()=>copy(tactics.d),getCoachObservation:key=>copy(loCoachObservation(key)),getCoachState:()=>({sport:sportIndex,role:loGoalRole,goal:loGoalKey,manual:loGoalManual,count:loGoals().length,run:loRunNumber,previous:loLastAttempt?.run??null}),getCompareText:()=>el('loCoachCompare').textContent,coachPreview:()=>{loCoachFeedback();return {observed:el('loCoachObserved').textContent,challenge:el('insight').textContent,moment:loCoachMomentTime,goal:loGoalKey}}};
+window.__loLabTest={run(input,withSeed=1337){loCancelArrowTimer();initial=copy(input);simSeed=withSeed;simulate();return copy(summary)},getPlayers:()=>copy(players),getFrames:()=>copy(frames),getEvents:()=>copy(events),scenario:index=>{makeScenario(index);return copy(players)},setFormation:index=>{applyFormation(index);makeScenario(scenarioIndex);resetSetup();return copy(players)},setSpeed:speed=>{playbackSpeed=clamp(speed,.5,2);el('playbackSpeed').value=String(playbackSpeed)},getTime:()=>time,reachTime,getConfig:()=>copy(sportCfg()),setZonePlan(key){if(!['zonecompact','zoneschuif','zonelijn'].includes(key))return;for(const p of players)if(p.team==='d')p.intent=key;syncZonePlans();draw()},getIntents:()=>copy(tactics.d),getArrowPreview:()=>copy({player:selected,track:loArrowCache?.key===loArrowKey()?loArrowCache.tracks[selected]||[]:[],isCurrent:loArrowCache?.key===loArrowKey(),mode}),getCoachObservation:key=>copy(loCoachObservation(key)),getCoachState:()=>({sport:sportIndex,role:loGoalRole,goal:loGoalKey,manual:loGoalManual,count:loGoals().length,run:loRunNumber,previous:loLastAttempt?.run??null}),getCompareText:()=>el('loCoachCompare').textContent,coachPreview:()=>{loCoachFeedback();return {observed:el('loCoachObserved').textContent,challenge:el('insight').textContent,moment:loCoachMomentTime,goal:loGoalKey}}};
 })();
 
 </script><script>(()=>{'use strict';
