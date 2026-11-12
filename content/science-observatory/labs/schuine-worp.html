@@ -21,7 +21,7 @@ a{color:inherit;text-decoration:none}
 .stage{position:relative;min-height:0;overflow:hidden;background:radial-gradient(ellipse at 46% 40%,#122b3a 0%,#081624 65%,#07111e 100%)}
 .stage canvas{display:block;width:100%;height:100%;touch-action:none;cursor:crosshair}
 .stage-head{position:absolute;top:14px;left:17px;right:17px;display:flex;justify-content:space-between;align-items:flex-start;gap:8px;pointer-events:none}
-.stage-head .eyebrow{font-size:9px;color:#83b0b9;font-weight:670;letter-spacing:.14em}.challenge{font-weight:600;font-size:15px;letter-spacing:-.03em;margin:3px 0;max-width:330px}
+.challenge-short{display:none}.stage-head .eyebrow{font-size:9px;color:#83b0b9;font-weight:670;letter-spacing:.14em}.challenge{font-weight:600;font-size:15px;letter-spacing:-.03em;margin:3px 0;max-width:330px}
 .stage-head .caption{font-size:11px;color:#8cadbc;max-width:400px}
 .scene-tools{display:flex;align-items:center;gap:6px;pointer-events:auto}.seg{display:flex;border:1px solid #325362;border-radius:8px;padding:3px;background:#0b1b28df;backdrop-filter:blur(10px)}
 .seg button{background:transparent;border:0;border-radius:5px;padding:6px 11px;font-size:10px;color:#a2bdc8}
@@ -78,9 +78,9 @@ input[type=range]{width:100%;margin:0;accent-color:#84e3d2;cursor:pointer;touch-
  .actions{grid-template-columns:minmax(0,1fr) 71px;width:min(52%,210px);flex:0 0 auto}
  .fire{font-size:12px;min-height:39px}.reset{font-size:10px}
  .status{min-width:0;min-height:0;flex:1;font-size:10px;line-height:1.25}
- .stage-head{top:12px;left:13px;right:13px}.challenge{font-size:14px;margin-top:2px}.stage-head .caption{font-size:10px}
+ .stage-head{top:12px;left:13px;right:13px}.challenge{font-size:14px;margin-top:2px}.stage-head .caption{font-size:10px}.stage-head .eyebrow{display:none}.challenge-wide{display:none}.challenge-short{display:inline}.stage-head .caption{display:none}
  .stage-foot{left:10px;right:10px;bottom:8px}.stage-foot span{font-size:9px;padding:5px 7px}.stage-legend{display:none}
- .view-action{font-size:9px;padding:7px}
+ .view-action{font-size:9px;padding:7px}.stage-head .scene-tools{gap:4px}
  .seg button{font-size:10px;padding:5px 8px}
  .stats{grid-template-columns:repeat(4,minmax(0,1fr));min-height:0}
  .metric{padding:8px 7px;border-right:1px solid #203b4a}.metric small{font-size:9px}.metric strong{font-size:16px;white-space:nowrap}.metric strong span{font-size:10px}
@@ -116,7 +116,7 @@ input[type=range]{width:100%;margin:0;accent-color:#84e3d2;cursor:pointer;touch-
  <main class="work" aria-label="Proef schuine worp">
   <section class="stage" id="stage" aria-label="Onderzoeksveld">
    <canvas id="field" aria-label="Baan van de bal. Versleep de groene greep om te richten of sleep de landingsmat om de afstand te veranderen."></canvas>
-   <div class="stage-head"><div><div class="eyebrow">PROEF 01 · BEWEGING</div><div class="challenge">Kun je de bal op de mat krijgen?</div><div class="caption">Versleep de groene greep of verplaats de mat.</div></div>
+   <div class="stage-head"><div><div class="eyebrow">PROEF 01 · BEWEGING</div><div class="challenge"><span class="challenge-wide">Kun je de bal op de mat krijgen?</span><span class="challenge-short">Raak de mat</span></div><div class="caption">Versleep de groene greep of verplaats de mat.</div></div>
     <div class="scene-tools"><div class="seg" role="group" aria-label="Wat wil je bekijken?"><button id="viewField" aria-pressed="true">Baan</button><button id="viewGraph" aria-pressed="false">Grafiek</button></div><button class="view-action" id="fitView" aria-pressed="false">Hele baan</button></div>
    </div>
    <div class="stage-foot"><span id="dragHint"><i class="dot"></i> Richt de bal of sleep de mat</span><span class="stage-legend"><span><i class="legend-line"></i> Worp</span> Groen: instellingen</span></div>
