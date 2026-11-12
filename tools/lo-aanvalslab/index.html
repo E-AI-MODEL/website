@@ -158,8 +158,9 @@ window.__loLabTest={run(input,withSeed=1337){initial=copy(input);simSeed=withSee
 
 </script><script>(()=>{'use strict';
 const ENDPOINT='https://ngcyfbstajfcfdhlelbz.supabase.co/functions/v1/lo-duo-room';
+const SB_URL='https://ngcyfbstajfcfdhlelbz.supabase.co';const SB_PUBLIC_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5nY3lmYnN0YWpmY2ZkaGxlbGJ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDkwNjI5NDcsImV4cCI6MjA2NDYzODk0N30.MkZRcC_HGNTZW3hUvFiNmHY5Px9FPvRmnzAiKTWi9e4';
 const $=id=>document.getElementById(id), bridge=window.__loOnline;
-let session=null,room=null,dirty=false,busy=false,pending=0,polling=false,launchId='',online=false,pollTimer=0,clockDelta=0;
+let session=null,room=null,dirty=false,busy=false,pending=0,polling=false,launchId='',online=false,pollTimer=0,clockDelta=0,socketOk=false,lastSync=0,activeRoomId='',rtClient=null,rtChannel=null;
 const lobby=$('onlineLobby'),status=$('loRoomState'),error=$('loError');
 function fail(msg){error.textContent=msg||'';if(online)$('insight').textContent=msg||'';}
 function format(){if(!room)return;const label=room.role==='a'?'Aanval':'Verdediging';$('loRoomCode').textContent=room.code;$('loRoomRole').textContent='Jij speelt: '+label;
@@ -191,7 +192,7 @@ async function connect(kind){await withLock(async()=>{if(kind==='join'){
  const code=$('loCodeInput').value.toUpperCase().replace(/[^A-HJ-NP-Z2-9]/g,'');if(code.length!==8)throw Error('Voer de kamercode van 8 tekens in.');
  const result=await api('join',{code});enter(result);
  }else{enter(await api('create'));}})}
-async function sync(){if(!session||polling)return;polling=true;try{const result=await api('get');applyRoom(result.room)}catch(e){if(session)fail('Verbinding met je kamer onderbroken. Er wordt opnieuw geprobeerd.')}finally{polling=false}}
+async function sync(){if(!session||polling)return;polling=true;try{const result=await api('get');applyRoom(result.room)}catch(e){if(session)fail('Verbinding met je kamer onderbroken. Er wordt opnieuw geprobeerd.')}finally{polling=false;lastSync=Date.now()}}
 function applyRoom(data){if(!session||data.code!==session.code)return;
  if(room&&data.revision<room.revision)return;const before=room;room=data;if(data.serverNow)clockDelta=Date.parse(data.serverNow)-Date.now();
  if(data.status==='playing'){
@@ -215,7 +216,23 @@ function applyRoom(data){if(!session||data.code!==session.code)return;
  }
  format();
 }
-function startPolling(){clearInterval(pollTimer);pollTimer=setInterval(sync,1500);document.addEventListener('visibilitychange',()=>{if(!document.hidden)sync()},{passive:true})}
+async function startRealtime(id){
+ if(!id||id===activeRoomId)return;activeRoomId=id;
+ if(rtClient&&rtChannel){try{await rtClient.removeChannel(rtChannel)}catch{}}
+ socketOk=false;
+ try{
+  const {createClient}=await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.78.0/+esm');
+  if(!session||room?.roomId!==id)return;
+  rtClient=createClient(SB_URL,SB_PUBLIC_KEY,{auth:{persistSession:false,autoRefreshToken:false}});
+  rtChannel=rtClient.channel('lo-duo:'+id);
+  rtChannel.on('broadcast',{event:'changed'},()=>sync()).subscribe(status=>{socketOk=status==='SUBSCRIBED';if(socketOk)sync()});
+ }catch{socketOk=false}
+}
+function startPolling(){clearInterval(pollTimer);lastSync=0;startRealtime(room?.roomId);pollTimer=setInterval(()=>{
+ // Realtime sends only a change marker. The actual state is read through the role-authenticated API.
+ if(!socketOk||Date.now()-lastSync>16000)sync();
+},2000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)sync()},{passive:true})}
+
 async function savePlan(){if(!dirty)return;for(let i=0;i<3;i++)try{const reply=await api('save',{plan:bridge.getPlan()});dirty=false;applyRoom(reply.room);return}catch(e){if(i===2||!e.message.includes('elders gewijzigd'))throw e;await sync()}}
 async function primary(){if(!online||!room)return;
  if(room.status==='playing')return; // Let the regular play/pause/replay button do its job.
