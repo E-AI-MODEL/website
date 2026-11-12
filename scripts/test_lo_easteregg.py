@@ -139,6 +139,33 @@ def main():
             assert ball.get_attribute("data-ball-sport")==str(sport)
             detail_count=ball.locator("path,polygon,circle,ellipse").count()
             assert detail_count>=6,(sport,detail_count)
+        # Ook de drie verdedigende zonevormen gebruiken exact dezelfde berekende looplijn.
+        page.select_option("#sportSelect","0")
+        page.select_option("#formationSelect","2")
+        for zone in ("zonecompact","zoneschuif","zonelijn"):
+            assert page.evaluate("""(z)=>{
+              const lab=window.__loLabTest;
+              lab.setZonePlan(z);
+              return lab.selectPreviewPlayer('d0');
+            }""",zone)
+            page.wait_for_function("""()=>{
+              const a=window.__loLabTest.getArrowPreview();
+              return a.isCurrent && a.player==='d0' && a.track.length>2;
+            }""",timeout=20000)
+            comparison=page.evaluate("""()=>{
+              const lab=window.__loLabTest,p=lab.getArrowPreview();
+              const ps=lab.getPlayers();
+              lab.run(ps,1337+2*1609);
+              const frames=lab.getFrames();
+              return {track:p.track,frames:frames.map(f=>({
+                time:f.time,player:f.players.find(q=>q.id==='d0')
+              }))};
+            }""")
+            for sample in comparison["track"]:
+                frame=min(comparison["frames"],key=lambda q:abs(q["time"]-sample["t"]))
+                assert abs(frame["time"]-sample["t"])<.001,(zone,sample,frame)
+                assert abs(frame["player"]["x"]-sample["x"])<.0001,(zone,sample,frame)
+                assert abs(frame["player"]["y"]-sample["y"])<.0001,(zone,sample,frame)
         # Dezelfde simulatie moet met volledige data klaar staan.
         page.select_option("#sportSelect","0")
         page.select_option("#formationSelect","2")
