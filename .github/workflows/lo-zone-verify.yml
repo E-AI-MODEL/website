@@ -1,0 +1,28 @@
+name: LO Aanvalslab - zones en online opdrachten
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'tools/lo-aanvalslab/**'
+      - 'backend/lo-duo/**'
+      - '.github/workflows/lo-zone-verify.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  zones:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: |
+          python -m pip install playwright
+          python -m playwright install --with-deps chromium
+      - name: Controleer zonevormen, doelpogingen en lokale duo-opstelling
+        run: python tools/lo-aanvalslab/tests/zone_movement_browser.py
+      - name: Controleer dat de server nieuwe opdrachten accepteert
+        run: |
+          grep -q "'zonecompact','zoneschuif','zonelijn'" backend/lo-duo/index.ts
