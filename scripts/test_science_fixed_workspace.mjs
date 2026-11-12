@@ -258,6 +258,7 @@ try{
     return {began,after,loc};
    };
    const approx=(a,b,tolerance,message)=>assert(Math.abs(a-b)<=tolerance,message+' : '+a+' tegenover '+b);
+   const parseDutch=value=>Number(String(value).split(' ')[0].replace(/\./g,'').replace(',','.'));
    for(const [id,dx,dy,key] of [
      ['hydro',0,76,'depth'],
      ['potentiometer',80,0,'position'],
@@ -272,10 +273,10 @@ try{
     approx(began[key],original[key],.000001,id+' mag niet verspringen bij aanraken');
     assert(after[key]>began[key],id+' verandert zijn eigen grootheid bij slepen');
     const data=await page.evaluate(()=>({rows:state.current.readouts,graph:graphSpecFor(state.id,state.p,state.t)}));
-    if(id==='hydro')approx(Number(data.rows[0][1].replace(',','.').split(' ')[0]),after.rho*after.g*after.depth,1,id+' druk volgt rho*g*h');
-    if(id==='potentiometer')approx(Number(data.rows[0][1].replace(',','.').split(' ')[0]),after.U*after.position/100,.03,id+' spanningsdeling');
-    if(id==='ohm')approx(Number(data.rows[0][1].replace(',','.').split(' ')[0]),after.U/after.R,.03,id+' wet van Ohm');
-    if(id==='wheatstone')approx(Number(data.rows[0][1].replace(',','.').split(' ')[0]),await page.evaluate(()=>bridgeVoltage(state.p)),.03,id+' brugspanning');
+    if(id==='hydro')approx(parseDutch(data.rows[0][1]),after.rho*after.g*after.depth,1,id+' druk volgt rho*g*h');
+    if(id==='potentiometer')approx(parseDutch(data.rows[0][1]),after.U*after.position/100,.03,id+' spanningsdeling');
+    if(id==='ohm')approx(parseDutch(data.rows[0][1]),after.U/after.R,.03,id+' wet van Ohm');
+    if(id==='wheatstone')approx(parseDutch(data.rows[0][1]),await page.evaluate(()=>bridgeVoltage(state.p)),.03,id+' brugspanning');
     if(id==='resolution')approx(Math.hypot(after.F*Math.cos(after.angle*Math.PI/180),after.F*Math.sin(after.angle*Math.PI/180)),after.F,.0001,id+' vectorcomponenten');
     if(id==='incline')assert(data.rows[0][0]==='Langs de helling',id+' helling behoudt krachtmeting');
    }
