@@ -62,10 +62,10 @@ input[type=range]{width:100%;margin:0;accent-color:#84e3d2;cursor:pointer;touch-
  .top{padding:0 13px}.meta{display:none}.brand h1{font-size:14px}.mark{width:26px;height:26px}.ghost{padding:7px 9px;font-size:10px}
  .work{display:flex;flex-direction:column}
  .stage{min-height:0;flex:1 1 auto}
- .panel{flex:0 0 auto;display:grid;grid-template-columns:1fr 1fr;grid-template-areas:"angle speed" "gravity gravity" "actions actions";gap:10px 13px;padding:11px 13px 10px;border-left:0;border-top:1px solid #2a4858}
+ .panel{flex:0 0 auto;display:grid;grid-template-columns:1fr 1fr;grid-template-areas:"angle speed" "height target" "gravity gravity" "actions actions";gap:10px 13px;padding:11px 13px 10px;border-left:0;border-top:1px solid #2a4858}
  .panel-head,.options,.history{display:none}
  .setting{min-width:0;padding-bottom:0;border:0;gap:4px}
- .setting[data-kind=angle]{grid-area:angle}.setting[data-kind=speed]{grid-area:speed}
+ .setting[data-kind=angle]{grid-area:angle}.setting[data-kind=speed]{grid-area:speed}.setting[data-kind=height]{grid-area:height}.setting[data-kind=target]{grid-area:target}
  .setting-top label{font-size:11px}.number{font-size:12px}
  .control-line{grid-template-columns:23px minmax(0,1fr) 23px;gap:3px}
  .small-action{height:24px;width:23px;font-size:15px}
@@ -131,6 +131,14 @@ input[type=range]{width:100%;margin:0;accent-color:#84e3d2;cursor:pointer;touch-
     <div class="setting-top"><label for="speed">Snelheid</label><output id="speedValue" class="number">18 m/s</output></div>
     <div class="control-line"><button type="button" class="small-action" data-key="speed" data-delta="-.25" aria-label="Snelheid iets lager">−</button><input id="speed" type="range" min="5" max="35" step=".25" value="18"><button type="button" class="small-action" data-key="speed" data-delta=".25" aria-label="Snelheid iets hoger">+</button></div>
    </div>
+   <div class="setting" data-kind="height">
+    <div class="setting-top"><label for="height">Starthoogte</label><output id="heightValue" class="number">0,0 m</output></div>
+    <div class="control-line"><button type="button" class="small-action" data-key="height" data-delta="-.5" aria-label="Begin lager">−</button><input id="height" type="range" min="0" max="15" step=".5" value="0"><button type="button" class="small-action" data-key="height" data-delta=".5" aria-label="Begin hoger">+</button></div>
+   </div>
+   <div class="setting" data-kind="target">
+    <div class="setting-top"><label for="target">Afstand mat</label><output id="targetValue" class="number">24,0 m</output></div>
+    <div class="control-line"><button type="button" class="small-action" data-key="target" data-delta="-.5" aria-label="Mat dichterbij">−</button><input id="target" type="range" min="10" max="60" step=".5" value="24"><button type="button" class="small-action" data-key="target" data-delta=".5" aria-label="Mat verder weg">+</button></div>
+   </div>
    <div class="setting" data-kind="gravity">
     <div class="setting-top"><label>Zwaartekracht</label><span class="number" id="gravityValue">9,81 m/s²</span></div>
     <div class="scene-preset" role="group" aria-label="Zwaartekracht kiezen">
@@ -159,20 +167,22 @@ var $=function(id){return document.getElementById(id);};
 var clamp=function(n,a,b){return Math.min(b,Math.max(a,n));};
 var fmt=function(n,d){return n.toLocaleString('nl-NL',{minimumFractionDigits:d,maximumFractionDigits:d});};
 var rad=function(degrees){return degrees*Math.PI/180;};
-var S={angle:45,speed:18,g:9.81,target:24,view:'field',whole:false,forecast:false,playing:false,t:0,finished:false,trials:[],pointer:null};
+var S={angle:45,speed:18,height:0,g:9.81,target:24,view:'field',whole:false,forecast:false,playing:false,t:0,finished:false,trials:[],pointer:null};
 var field=$('field'),ctx=field.getContext('2d'),last=performance.now(),screen=null;
 var reduceMotion=matchMedia('(prefers-reduced-motion:reduce)').matches;
 
 function values(o){
- var v=o.speed,a=rad(o.angle),gravity=o.g,vx=v*Math.cos(a),vy=v*Math.sin(a),T=2*vy/gravity;
- return {vx:vx,vy:vy,time:T,range:vx*T,peak:vy*vy/(2*gravity),speed:v,angle:o.angle,g:gravity};
+ var v=o.speed,a=rad(o.angle),gravity=o.g,h0=Number(o.height)||0,vx=v*Math.cos(a),vy=v*Math.sin(a),T=(vy+Math.sqrt(vy*vy+2*gravity*h0))/gravity;
+ return {vx:vx,vy:vy,h0:h0,time:T,range:vx*T,peak:h0+vy*vy/(2*gravity),speed:v,angle:o.angle,g:gravity};
 }
-function position(p,t){return {x:p.vx*t,y:Math.max(0,p.vy*t-.5*p.g*t*t)};}
+function position(p,t){return {x:p.vx*t,y:Math.max(0,p.h0+p.vy*t-.5*p.g*t*t)};}
 function measured(){return S.trials.length?S.trials[S.trials.length-1]:null;}
 function updateLabels(){
- $('angle').value=S.angle;$('speed').value=S.speed;
+ $('angle').value=S.angle;$('speed').value=S.speed;$('height').value=S.height;$('target').value=S.target;
  $('angleValue').textContent=fmt(S.angle,1)+'°';
  $('speedValue').textContent=fmt(S.speed,2)+' m/s';
+ $('heightValue').textContent=fmt(S.height,1)+' m';
+ $('targetValue').textContent=fmt(S.target,1)+' m';
  $('gravityValue').textContent=fmt(S.g,2)+' m/s²';
  document.querySelectorAll('[data-g]').forEach(function(b){b.setAttribute('aria-pressed',String(Number(b.dataset.g)===S.g));});
  $('viewField').setAttribute('aria-pressed',String(S.view==='field'));
@@ -208,13 +218,13 @@ function renderHistory(){
   var b=document.createElement('button');b.type='button';
   b.textContent='#'+(S.trials.indexOf(t)+1)+'  '+fmt(t.range,1)+' m';
   b.title='Zet de hoek, snelheid en zwaartekracht van deze worp terug';
-  b.addEventListener('click',function(){S.angle=t.angle;S.speed=t.speed;S.g=t.g;S.target=t.target;S.playing=false;S.finished=false;S.t=0;updateLabels();updateStats();});
+  b.addEventListener('click',function(){S.angle=t.angle;S.speed=t.speed;S.height=t.h0||0;S.g=t.g;S.target=t.target;S.playing=false;S.finished=false;S.t=0;updateLabels();updateStats();});
   wrap.appendChild(b);
  });
 }
 function changed(key,value){
  if(S.playing)return;
- var ranges={angle:[5,85,.5],speed:[5,35,.25],target:[10,60,.5]};
+ var ranges={angle:[5,85,.5],speed:[5,35,.25],target:[10,60,.5],height:[0,15,.5]};
  if(ranges[key]){var info=ranges[key];value=clamp(value,info[0],info[1]);value=Math.round(value/info[2])*info[2];}
  S[key]=value;S.finished=false;S.t=0;
  updateLabels();updateStats();
@@ -228,7 +238,7 @@ function trial(){
 }
 function clearAll(){
  S.playing=false;S.t=0;S.finished=false;S.trials=[];
- S.angle=45;S.speed=18;S.g=9.81;S.target=24;S.whole=false;S.view='field';S.forecast=false;
+ S.angle=45;S.speed=18;S.height=0;S.g=9.81;S.target=24;S.whole=false;S.view='field';S.forecast=false;
  updateLabels();updateStats();renderHistory();
 }
 function resize(){
@@ -323,15 +333,16 @@ function drawScene(c){
   }
  }
  ctx.fillStyle='#2e6470';ctx.beginPath();ctx.roundRect(ox-12,oy-8,24,9,4);ctx.fill();
- dot(ox,oy-9,6,'#ffe0af');
- var radius=52+(S.speed-5)/30*100,angle=rad(S.angle);
- var hx=ox+radius*Math.cos(angle),hy=oy-9-radius*Math.sin(angle);
- drawLine(ox,oy-9,hx,hy,'#82dfceb6',1.6,[3,4]);
- ctx.beginPath();ctx.arc(ox,oy-9,34,-angle,0);ctx.strokeStyle='#82bcb793';ctx.lineWidth=1;ctx.stroke();
- ctx.font='600 10px system-ui';ctx.fillStyle='#9bdad4';ctx.fillText(fmt(S.angle,1)+'°',ox+45*Math.cos(angle/2),oy-9-45*Math.sin(angle/2));
+ if(S.height>0)drawLine(ox,launchY,ox,oy,'#7396a877',1,[3,5]);
+ dot(ox,launchY,6,'#ffe0af');
+ var radius=52+(S.speed-5)/30*100,angle=rad(S.angle),launchY=oy-S.height*s-9;
+ var hx=ox+radius*Math.cos(angle),hy=launchY-radius*Math.sin(angle);
+ drawLine(ox,launchY,hx,hy,'#82dfceb6',1.6,[3,4]);
+ ctx.beginPath();ctx.arc(ox,launchY,34,-angle,0);ctx.strokeStyle='#82bcb793';ctx.lineWidth=1;ctx.stroke();
+ ctx.font='600 10px system-ui';ctx.fillStyle='#9bdad4';ctx.fillText(fmt(S.angle,1)+'°',ox+45*Math.cos(angle/2),launchY-45*Math.sin(angle/2));
  dot(hx,hy,19,'#47d6bb12','#7cebd5');
  dot(hx,hy,5,'#9bf7df');
- ctx.font='10px system-ui';ctx.fillStyle='#8caab8';ctx.fillText('START',ox-13,oy-30);
+ ctx.font='10px system-ui';ctx.fillStyle='#8caab8';ctx.fillText('START',ox-13,launchY-19);
  // Show the apex measurement without clutter, only when observed.
  if(S.finished||S.playing){
   var maxX=ox+(v.range/2)*s,maxY=oy-v.peak*s;
@@ -415,7 +426,7 @@ function loop(now){
   S.t=Math.min(p.time,S.t+dt*factor);
   if(S.t>=p.time){
    S.playing=false;S.finished=true;
-   S.trials.push({angle:S.angle,speed:S.speed,g:S.g,target:S.target,range:p.range,peak:p.peak,time:p.time,vx:p.vx,vy:p.vy});
+   S.trials.push({angle:S.angle,speed:S.speed,h0:S.height,g:S.g,target:S.target,range:p.range,peak:p.peak,time:p.time,vx:p.vx,vy:p.vy});
    if(S.trials.length>20)S.trials.shift();
    updateLabels();updateStats();renderHistory();
   }
@@ -437,7 +448,7 @@ function grabMove(e){
  if(!S.pointer||!screen||!screen.view)return;
  var p=point(e),c=screen.view;
  if(S.pointer==='aim'){
-  var dx=p.x-c.ox,dy=c.oy-9-p.y,angle=clamp(Math.atan2(Math.max(1,dy),Math.max(1,dx))*180/Math.PI,5,85);
+  var dx=p.x-c.ox,dy=c.oy-S.height*c.scale-9-p.y,angle=clamp(Math.atan2(Math.max(1,dy),Math.max(1,dx))*180/Math.PI,5,85);
   var length=Math.hypot(dx,dy),speed=clamp(5+(length-52)*30/100,5,35);
   S.angle=Math.round(angle*2)/2;S.speed=Math.round(speed*4)/4;
  }else if(S.pointer==='target'){
@@ -459,7 +470,7 @@ $('fitView').addEventListener('click',function(){S.whole=!S.whole;updateLabels()
 $('forecast').addEventListener('click',function(){S.forecast=!S.forecast;updateLabels();});
 document.querySelectorAll('[data-g]').forEach(function(b){b.addEventListener('click',function(){changed('g',Number(b.dataset.g));});});
 document.querySelectorAll('[data-key]').forEach(function(b){b.addEventListener('click',function(){changed(b.dataset.key,S[b.dataset.key]+Number(b.dataset.delta));});});
-['angle','speed'].forEach(function(id){$(id).addEventListener('input',function(e){changed(id,Number(e.target.value));});});
+['angle','speed','height','target'].forEach(function(id){$(id).addEventListener('input',function(e){changed(id,Number(e.target.value));});});
 window.addEventListener('resize',resize);
 window.addEventListener('keydown',function(e){
  if(e.code==='Space'&&e.target===document.body){e.preventDefault();trial();}
