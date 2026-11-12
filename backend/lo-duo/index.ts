@@ -55,7 +55,8 @@ Deno.serve(async req=>{
  if(action==='create'){
   // Clean up expired class sessions without keeping student plans indefinitely.
   if(crypto.getRandomValues(new Uint8Array(1))[0]<24) await db.from('lo_duo_rooms').delete().lt('expires_at',new Date().toISOString());
-  const scenario=Number(body.scenario||0);if(!Number.isInteger(scenario)||scenario<0||scenario>3)return bad('Ongeldige spelsituatie.');
+  // 0-3 voetbal, 4-7 hockey, 8-11 handbal, 12-15 basketbal.
+  const scenario=Number(body.scenario||0);if(!Number.isInteger(scenario)||scenario<0||scenario>15)return bad('Ongeldige spelsituatie.');
   for(let i=0;i<7;i++){
    const code=rand(8),secret=token(),attack_hash=await digest(secret);
    const {data,error}=await db.from('lo_duo_rooms').insert({code,attack_hash,scenario}).select(columns).single();
