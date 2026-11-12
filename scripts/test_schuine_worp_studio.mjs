@@ -49,6 +49,7 @@ try{
   assert(Math.abs(result.t.peak-(324*.5)/(2*9.81))<.001,'Het hoogste punt volgt de baanformule');
   assert(!result.playing&&result.stats.includes('m'),'Meetwaarden verschijnen na de worp');
   assert((await page.locator('#status').innerText()).includes('voorbij'),'Terugkoppeling van de eerste worp klopt');
+  await page.screenshot({path:'test-results/worp-studio-'+browserType.name()+'-'+viewport.width+'-na-worp.png'});
   await page.locator('#viewGraph').click();
   assert.equal(await page.locator('#viewGraph').getAttribute('aria-pressed'),'true');
   await page.locator('#field').screenshot({path:'test-results/worp-studio-'+browserType.name()+'-'+viewport.width+'-grafiek.png'});
