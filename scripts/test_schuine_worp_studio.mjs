@@ -16,7 +16,7 @@ try{
  for(let i=0;i<80;i++){try{const response=await fetch(base+'/tools/science-observatory/labs/schuine-worp/');if(response.ok){available=true;break}}catch{}await sleep(120)}
  assert(available,'De compacte studio moet in de publieke uitvoer staan');
  browser=await browserType.launch({headless:true});
- for(const viewport of [{width:390,height:844},{width:320,height:650},{width:1440,height:900}]){
+ for(const viewport of [{width:390,height:844},{width:320,height:650},{width:1024,height:768},{width:1440,height:900},{width:1516,height:817}]){
   const mobile=viewport.width<800;
   const page=await browser.newPage({viewport,deviceScaleFactor:mobile?2:1,isMobile:mobile,hasTouch:mobile});
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
@@ -32,6 +32,15 @@ try{
   assert(geometry.scrollW<=viewport.width+2,'Geen horizontale scroll: '+JSON.stringify(geometry));
   assert(geometry.scrollH<=viewport.height+2,'Geen verticale scroll: '+JSON.stringify(geometry));
   assert(geometry.stageH>175,'Het veld blijft groot genoeg: '+JSON.stringify(geometry));
+  if(!mobile){
+   const bottom=await page.evaluate(()=>{
+    const r=document.querySelector('.stats').getBoundingClientRect();
+    const note=document.querySelector('#measurementNote').getBoundingClientRect();
+    return {statsTop:r.top,statsBottom:r.bottom,noteBottom:note.bottom,viewport:innerHeight};
+   });
+   assert(bottom.statsBottom<=viewport.height+1,'Meetbalk blijft in beeld: '+JSON.stringify(bottom));
+   assert(bottom.noteBottom<=bottom.statsBottom-8,'Meetinformatie heeft ruimte onderaan: '+JSON.stringify(bottom));
+  }
   assert(geometry.panelBottom<=viewport.height+2,'Instellingen blijven in beeld');
   if(mobile)assert(geometry.panelBottom<=geometry.statsTop+1,'Instellingen blijven boven de meetwaarden');
   assert(await page.locator('#fire').isVisible());
@@ -57,6 +66,14 @@ try{
   assert(!result.playing&&result.stats.includes('m'),'Meetwaarden verschijnen na de worp');
   assert((await page.locator('#status').innerText()).includes('voorbij'),'Terugkoppeling van de eerste worp klopt');
   await page.screenshot({path:'test-results/worp-studio-'+browserType.name()+'-'+viewport.width+'-na-worp.png'});
+  if(!mobile){
+   const bottom=await page.evaluate(()=>{
+    const r=document.querySelector('.stats').getBoundingClientRect();
+    const note=document.querySelector('#measurementNote').getBoundingClientRect();
+    return {statsBottom:r.bottom,noteBottom:note.bottom};
+   });
+   assert(bottom.noteBottom<=bottom.statsBottom-8,'Volledige toelichting na de worp blijft in beeld: '+JSON.stringify(bottom));
+  }
   await page.locator('#viewGraph').click();
   assert.equal(await page.locator('#viewGraph').getAttribute('aria-pressed'),'true');
   await page.locator('#field').screenshot({path:'test-results/worp-studio-'+browserType.name()+'-'+viewport.width+'-grafiek.png'});
