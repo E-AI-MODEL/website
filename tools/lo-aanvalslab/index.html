@@ -63,7 +63,8 @@
  <p><b>Hockey</b> · 74 open wedstrijdwerkboeken met 234.806 gecodeerde gebeurtenissen/segmenten verwerkt. De bron bevat géén volledige looptrajecten. De voorkeur voor direct spel richting de cirkel blijft een tactisch geïnformeerde regel, niet een numeriek berekende interceptiekans. <a href="https://github.com/felicitylord/Hockey-Analysis" target="_blank" rel="noopener noreferrer">Open wedstrijdbestanden</a> · <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC10108760/" target="_blank" rel="noopener noreferrer">Lord e.a.</a></p>
  <p><b>Handbal</b> · 84.690 echte spelerposities uit 10 wedstrijden, apart voor aanvallen en verdedigen. Gemeten 1-seconde-verplaatsing: verdediging gemiddeld 1,14 m/s, aanval 1,47 m/s. De dekking krijgt een verhouding van 0,78. Snelle reactietijden zijn hiermee niet gemeten. <a href="https://zenodo.org/records/12065335" target="_blank" rel="noopener noreferrer">Montoliu-data</a> · <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC10431627/" target="_blank" rel="noopener noreferrer">Lefèvre e.a.</a></p>
  <p><b>Basketbal</b> · 57.036 unieke beeldmomenten uit een SportVU-wedstrijd van 2016. Gemiddelde spelersverplaatsing 1,89 m/s en mediaan balafstand tot dichtstbijzijnde speler 0,47 m. De balpositie en verdedigingsloopbeweging zijn hier beperkt op bijgesteld. Eerdere 3-tegen-3-referentie blijft een afzonderlijke vergelijking. <a href="https://github.com/sealneaward/nba-movement-data" target="_blank" rel="noopener noreferrer">SportVU-data</a> · <a href="https://doi.org/10.1177/17479541211067989" target="_blank" rel="noopener noreferrer">Willberg e.a.</a></p>
- <small>Geen ruwe brondata in de browser. De gemeten waarden komen uit seniorenwedstrijden; het blijft een onderwijsmodel zonder onafhankelijke leerlingvalidatie. <a href="https://github.com/E-AI-MODEL/website/tree/research/lo-aanvalslab-v13/tools/lo-aanvalslab/calibratie/v13" target="_blank" rel="noopener noreferrer">Controleer de meetmethode</a>.</small></div>
+ <p><b>Zonevormen</b> · Compact, meeschuiven en passlijnen zijn drie verschillende didactische keuzes. De loopregels zijn aan spelsituaties getoetst, niet afzonderlijk gemeten of gevalideerd met de ruwe wedstrijdtracking.</p>
+ <small>Geen ruwe brondata in de browser. De gemeten waarden komen uit seniorenwedstrijden; het blijft een onderwijsmodel zonder onafhankelijke leerlingvalidatie. <a href="https://github.com/E-AI-MODEL/website/tree/main/tools/lo-aanvalslab/calibratie/v13" target="_blank" rel="noopener noreferrer">Controleer de meetmethode</a>.</small></div>
 </details>
 <div id="welcome" class="veil"><div class="welcome"><div class="eyebrow">LO · SAMENSPEL & RUIMTE</div><h2>Wie neemt de beslissing?</h2><p>Kies je sport en stel je team op. Versleep de spelers of tik een plek op het veld. Daarna speelt de aanval zichzelf af.</p><div class="sport-choice" role="group" aria-label="Welke sport speel je?"><button type="button" class="sport-chip active" data-sport="0" aria-pressed="true">Voetbal</button><button type="button" class="sport-chip" data-sport="1" aria-pressed="false">Hockey</button><button type="button" class="sport-chip" data-sport="2" aria-pressed="false">Handbal</button><button type="button" class="sport-chip" data-sport="3" aria-pressed="false">Basketbal</button></div><div class="choices"><button class="choice" data-mode="attack"><b>Ik val aan ↗</b><span>Zet je aanvallers neer en geef ze loopacties.</span></button><button class="choice" data-mode="defend"><b>Ik verdedig ◇</b><span>Zet je verdedigers neer en kies hoe ze de aanval afstoppen.</span></button><button class="choice" id="onlineChoice"><b>Wij spelen samen ↔</b><span>Speel met twee apparaten in een eigen online kamer.</span></button><button class="choice" data-mode="free"><b>Vrij opstellen ↕</b><span>Verplaats zelf de aanvallers én de verdedigers.</span></button></div></div></div>
 <section id="onlineLobby" class="lo-lobby" hidden aria-label="Online spelkamer"><div class="lo-lobby-box">
@@ -418,10 +419,12 @@ function simulate(){
     const receivers=off.slice().sort((u,v)=>u.y-v.y);
     const best=receivers[Math.min(index,receivers.length-1)]||receiver;
     if(best){
-     // Voorspel een plek op de lijn bal -> ontvanger, niet de actuele ontvangerpositie.
-     const ratio=best.x>ballPos.x+PX*2?.56:.45;
-     tx=ballPos.x+(best.x-ballPos.x)*ratio+PX*.3;
-     ty=ballPos.y+(best.y-ballPos.y)*ratio;
+     // Afdekken aan de balzijde van de ontvanger. Midden in de lijn
+     // staan werkt bij korte passes vaak te laat: de speler kan dan
+     // zowel ontvanger als pass niet meer op tijd bereiken.
+     const ahead=best.x>ballPos.x+PX*1.2;
+     tx=ahead?Math.max(ballPos.x+PX*.55,best.x-PX*1.25):best.x+PX*.55;
+     ty=best.y*.82+ballPos.y*.18;
     }else{
      tx=ballPos.x+PX*2;ty=ballPos.y+(325-ballPos.y)*.15;
     }
