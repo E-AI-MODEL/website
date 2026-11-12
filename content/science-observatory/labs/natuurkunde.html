@@ -163,6 +163,123 @@
 .projectile-studio-link:not([hidden]){display:inline-flex;margin-top:8px;padding:7px 12px;border:1px solid #62caba75;border-radius:6px;color:#b2f5e9;font-size:11px;font-weight:640;text-decoration:none;background:#102c35}
 .projectile-studio-link:hover{background:#18434a;border-color:#83ead7}
 @media(max-width:720px){.workspace.mobile-projectile .projectile-studio-link:not([hidden]){margin-top:7px;padding:9px 12px;font-size:12px}}
+
+/* Fixed viewport for all physics models. The experiment, not the long page, owns the space. */
+html,body{height:100%;overflow:hidden}
+body{display:flex;flex-direction:column}
+.masthead{position:relative;top:auto;height:52px;min-height:52px;flex:0 0 52px;padding:0 clamp(10px,2vw,28px)}
+.page{flex:1 1 auto;min-height:0;width:100%;max-width:none;padding:6px 9px 8px;display:flex;flex-direction:column}
+.intro-head,.catalog-section,.foot{display:none!important}
+.workspace{flex:1 1 auto;min-height:0;max-height:none;height:auto;width:100%;border-radius:8px;grid-template-rows:minmax(0,1fr)}
+.workspace>.lab-main{height:100%;min-height:0;overflow:hidden}
+.workspace>.explorer,.workspace>.inspector{min-height:0;max-height:100%;overflow:hidden}
+.lab-head{height:49px;min-height:49px;padding:5px 14px}
+.lab-identity h2{font-size:15px}
+.lab-breadcrumb{font-size:9px}
+.inquiry-bar:not([hidden]){min-height:0;padding:7px 12px;gap:8px}
+.inquiry-title{font-size:13px;margin:0}
+.inquiry-detail{font-size:10px}
+.inquiry-label{font-size:8px}
+.inquiry-status{font-size:10px}
+.inquiry-action{padding:6px 9px}
+.scene-shell{min-height:0;flex:1 1 0;margin:5px 7px 0;overflow:hidden}
+.canvas-wrap{height:0;min-height:0;flex:1 1 0;overflow:hidden}
+.scene-bottom{height:27px;padding:0 11px}
+.scene-hud{top:8px}
+.scene-tip{bottom:33px;padding:5px 9px;font-size:9px}
+.analysis-shell{height:clamp(130px,23vh,196px);min-height:0;flex:0 0 clamp(130px,23vh,196px);margin-top:4px}
+.tab-strip{height:32px;gap:13px;padding:0 15px}
+.tab{font-size:10px}
+.tab-body{padding:7px 10px 5px}
+.graph-frame{height:calc(100% - 28px);min-height:60px}
+.side-pane{padding:12px 11px}
+.inspector-tabs{height:36px;padding:0 10px;gap:12px}
+.inspector-tab{font-size:10px}
+.side-intro{margin:4px 0 8px;font-size:10px;line-height:1.4}
+.side-kicker{font-size:9px;letter-spacing:.09em}
+.side-separator{margin:9px 0}
+.inspector-scroll{overflow-y:auto;overscroll-behavior:contain}
+.inspector .control{margin:0 0 9px}
+.precision-control>.control-line{display:flex;align-items:baseline;gap:7px;justify-content:space-between;margin-bottom:3px;flex-wrap:nowrap}
+.precision-control .control-line label{font-size:10px;color:#c6d6df}
+.precision-control .control-line output{font-size:9px;color:#88cabb}
+.precision-control-row{display:grid;grid-template-columns:24px minmax(0,1fr) 24px 27px;align-items:center;gap:4px}
+.precision-control-row>button{width:24px;height:27px;border-radius:4px;border:1px solid #304b5e;background:#0c2130;color:#b7d7d7;font-size:15px;font-weight:400}
+.precision-control-row>button:hover{border-color:#75cbbd;color:#fff}
+.precision-control-row>input[type=number]{appearance:textfield;-moz-appearance:textfield;min-width:0;width:100%;height:27px;border-radius:4px;border:1px solid #3b5866;background:#0d2332;color:#e8faf5;text-align:center;font:12px/1.2 ui-monospace,SFMono-Regular,monospace;padding:1px 4px}
+.precision-control-row input[type=number]::-webkit-inner-spin-button,.precision-control-row input[type=number]::-webkit-outer-spin-button{appearance:none;margin:0}
+.range-pop{position:relative}
+.range-pop summary{display:grid;place-items:center;list-style:none;cursor:pointer;width:27px;height:27px;border:1px solid #304b5e;border-radius:4px;background:#0c2130;font-size:17px;line-height:1;color:#9ec6c4;user-select:none}
+.range-pop summary::-webkit-details-marker{display:none}
+.range-pop[open] summary{color:#edfff9;border-color:#71d8ca}
+.precision-control-row .range-pop input[type=range]{position:absolute;z-index:15;right:0;top:31px;width:clamp(160px,15vw,215px);height:36px;min-width:0;border:1px solid #3b6570;background:#112b39;padding:7px 11px;border-radius:5px;box-shadow:0 12px 30px #010711bb;accent-color:var(--a)}
+.mini-readouts{gap:5px;margin:7px 0}
+.mini-readouts>div{min-height:45px;padding:6px 8px}
+.mini-readouts b{font-size:12px;margin-top:2px}
+.save-btn{padding:6px 8px;font-size:10px}
+.inspector-footer,.explorer-footer{padding:8px 10px}
+@media(max-width:1080px) and (min-width:721px){
+ .workspace,.workspace.hide-explorer,.workspace.hide-inspector{display:grid;grid-template-columns:0 minmax(0,1fr) minmax(225px,255px);height:100%;min-height:0;overflow:hidden}
+ .workspace>.explorer{visibility:hidden;pointer-events:none;overflow:hidden}
+ .workspace>.lab-main{grid-column:2;grid-row:1;min-height:0}
+ .workspace>.inspector{grid-column:3;grid-row:1;border-top:0;border-left:1px solid var(--line);overflow:hidden}
+ .inspector-scroll{overflow:auto}
+ .workspace.hide-inspector{grid-template-columns:0 minmax(0,1fr) 0}
+ .workspace.hide-inspector .inspector{visibility:hidden;pointer-events:none}
+ .workspace>.resize-rail{display:none}
+ .workspace .scene-shell{min-height:0}
+ .workspace .analysis-shell{height:clamp(125px,23vh,180px);flex-basis:clamp(125px,23vh,180px)}
+}
+@media(max-width:720px){
+ .masthead{height:42px;min-height:42px;flex-basis:42px}
+ .page{padding:4px}
+ .workspace,.workspace.hide-explorer,.workspace.hide-inspector,.workspace.mobile-projectile{display:block;position:relative;height:100%;max-height:none;min-height:0;overflow:hidden;border-radius:5px}
+ .workspace>.lab-main{display:flex;height:100%;min-height:0;overflow:hidden}
+ .lab-head{height:43px;min-height:43px;flex-shrink:0;padding:4px 8px}
+ .lab-identity h2{font-size:13px}
+ .lab-breadcrumb{font-size:8px}
+ .lab-controls{gap:1px}
+ .lab-controls .tool-btn{height:29px}
+ .workspace .inquiry-bar:not([hidden]){order:1;min-height:0;flex:0 0 auto;margin:0;padding:5px 8px;border-radius:0;border-left:0;border-right:0;display:flex;align-items:center;flex-direction:row;gap:6px}
+ .inquiry-bar>div:first-child{min-width:0;flex:1}
+ .inquiry-title{font-size:12px!important;line-height:1.18}
+ .inquiry-detail,.inquiry-label{display:none}
+ .inquiry-bar .inquiry-right{display:flex;flex:0 0 auto;min-width:0;width:auto;align-items:center;gap:4px}
+ .inquiry-bar .inquiry-status{display:none}
+ .inquiry-bar .inquiry-actions{width:auto}
+ .inquiry-bar .inquiry-action{font-size:11px;min-height:32px;padding:4px 9px;width:auto}
+ .workspace .scene-shell{order:2;flex:1 1 0;min-height:0;margin:3px 3px 0;border-radius:4px;overflow:hidden}
+ .workspace .canvas-wrap,.workspace.mobile-projectile .canvas-wrap{height:0;min-height:0;flex:1 1 0;overflow:hidden}
+ .workspace .scene-bottom{height:24px}
+ .workspace .mobile-aim:not([hidden]){display:none}
+ .workspace.mobile-projectile .inquiry-right{display:flex}
+ .workspace.mobile-projectile .inquiry-actions{display:flex}
+ .workspace.mobile-projectile #openMobileSettings{display:grid!important}
+ .workspace.mobile-projectile #focusScene,.workspace.mobile-projectile #resetBtn{display:grid!important}
+ .workspace .analysis-shell{order:3;display:flex;position:relative;bottom:auto;left:auto;right:auto;height:32px;min-height:32px;flex:0 0 32px;margin:0;overflow:hidden}
+ .workspace .analysis-shell.compact-open{height:min(38dvh,260px);flex-basis:min(38dvh,260px)}
+ .workspace.mobile-projectile:not(.has-thrown) .analysis-shell{display:flex}
+ .workspace .tab-strip{height:32px;gap:11px;overflow-x:auto;flex:0 0 32px}
+ .workspace .tab{font-size:10px}
+ .workspace .bottom-panel{min-height:0;overflow:hidden}
+ .workspace .tab-body{height:100%;min-height:0;max-height:none;padding:8px 10px;overflow:auto}
+ .workspace .graph-frame{height:calc(100% - 27px);min-height:65px}
+ .workspace>.explorer{position:fixed;inset:42px auto 0 0;width:min(315px,88vw);z-index:30;display:flex;visibility:visible;height:auto;max-height:none;overflow:hidden}
+ .workspace>.explorer:not(.open){transform:translateX(-110%);pointer-events:none}
+ .workspace>.inspector{position:fixed;inset:auto 0 0 0;z-index:30;display:none!important;visibility:visible;max-height:78dvh;height:min(78dvh,570px);border:1px solid #426171;border-radius:13px 13px 0 0;overflow:hidden}
+ .workspace>.inspector.open{display:flex!important}
+ .workspace .inspector-scroll{max-height:none;min-height:0;overflow-y:auto}
+ .workspace .inspector #controls{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 14px}
+ .workspace .inspector .control{margin-bottom:6px}
+ .workspace .inspector .side-pane{padding:10px 12px}
+ .workspace .inspector .side-intro{display:none}
+ .workspace .inspector .control-line{margin-bottom:3px}
+ .workspace .inspector .control-range{display:none}
+ .workspace .analysis-shell .tab-body{min-height:0}
+ .workspace .scene-tip{display:none}
+}
+@media(max-width:370px){.workspace .inspector #controls{grid-template-columns:1fr 1fr;gap:5px 8px}.precision-control-row{grid-template-columns:22px minmax(0,1fr) 22px 26px;gap:3px}.precision-control-row>button{width:22px}.precision-control-row .range-pop summary{width:26px}}
+@media(max-height:630px) and (max-width:720px){.workspace .analysis-shell.compact-open{height:min(33dvh,200px);flex-basis:min(33dvh,200px)}.workspace .inquiry-bar:not([hidden]){padding:3px 6px}.workspace .scene-bottom{display:none}}
 </style></head>
 <body>
 <header class="masthead"><div class="mast-left"><a class="brand" href="/tools/science-observatory/" aria-label="Terug naar Science Observatory"><span class="logo" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><path d="M4 19c4-1 4-12 8-12s4 18 8 18 4-9 8-10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span><span>SCIENCE <b>OBSERVATORY</b></span></a><span class="brand-divider"></span><span class="brand-context">NATUURKUNDE · PROEFVERSIE</span></div><div class="nav-main"><a href="#labSection" class="nav-link active">Proef</a><a href="#topics" class="nav-link">Onderwerpen</a><a href="/tools/science-observatory/" class="nav-link">Andere observatoria</a><a href="/nl/tools/" class="nav-link">Alle tools</a></div><span class="header-status"><span class="live-dot"></span> In ontwikkeling</span></header>
@@ -728,8 +845,8 @@ function setPlaying(yes){state.playing=yes;$('playLabel').textContent=yes?'Pauze
 function resetCamera(){state.camera={yaw:.54,pitch:.63,zoom:1};render()}
 function closeDrawer(){$('explorer').classList.remove('open');$('inspector').classList.remove('open');$('shade').hidden=true}
 function syncMobileAim(){if(state.id!=='projectile')return;for(const [key,id,out,unit,decimals] of [['angle','aimAngle','aimAngleValue','°',1],['v','aimSpeed','aimSpeedValue',' m/s',2]]){const slider=$(id);if(slider){slider.value=state.p[key];$(out).textContent=fmt(state.p[key],decimals)+unit;}}$('mobileView').textContent=mission.view==='overview'?'Terug naar de mat':'Hele baan zien';$('mobileView').setAttribute('aria-pressed',String(mission.view==='overview'))}
-function loadLab(id,scroll=false){const e=byId[id];if(!e)return;state.id=id;state.t=0;state.p=Object.fromEntries(e.controls.map(([key,,,,,def])=>[key,def]));resetInquiry(id);state.baseline=null;$('baselineBtn').textContent='+ Bewaar meting';$('saveValuesBtn').textContent='+ Bewaar meting';$('saveGraphBtn').textContent='+ Bewaar vergelijking';$('comparisonBubble').hidden=true;$('labGroup').textContent=e.group;$('labTitle').textContent=e.title;$('intro').textContent=e.intro;$('infoDescription').textContent=e.explanation;$('infoCaveat').textContent=e.caveat;$('explanation').textContent=e.explanation;$('modelNote').textContent=e.caveat;$('prediction').textContent=e.question;researchCopy(id);$('hypothesis').value=lsGet('science-prediction-'+id)||'';$('sceneMeta').textContent=special3d.has(id)?'3D · DRAAIBAAR MODEL':'2D · INTERACTIEF MODEL';$('sceneBadge').textContent=special3d.has(id)?'RUIMTELIJKE WEERGAVE':'LIVE SIMULATIE';const manualTransport=id==='wheatstone'||id==='projectile';$('stepBtn').hidden=manualTransport;$('playBtn').hidden=manualTransport;$('speedSelect').hidden=manualTransport;$('sceneCompass').hidden=!special3d.has(id);$('sceneTip').hidden=!directManip.has(id);$('sceneTip').textContent=directHints[id]||'';$('cameraReset').hidden=!special3d.has(id);$('stage').classList.toggle('three-dimensional',special3d.has(id));$('stage').classList.toggle('direct-manipulation',directManip.has(id));$('labSection').classList.toggle('mobile-projectile',id==='projectile');$('mobileAim').hidden=id!=='projectile';resetCamera();const visibleControls=e.controls.filter(row=>id!=='wheatstone'||row[0]!=='R3');$('controls').innerHTML=visibleControls.map(([key,label,unit,min,max,value,step])=>`<div class="control"><div class="control-line"><label for="ctrl-${key}">${safe(label)}</label><output id="out-${key}">${safe(fmt(value,3))} ${safe(unit)}</output></div><input type="range" id="ctrl-${key}" min="${min}" max="${max}" step="${step}" value="${value}" aria-label="${safe(label)}"><div class="control-range"><span>${safe(fmt(min,2))}</span><span>${safe(fmt(max,2))}</span></div></div>`).join('');for(const [key,,unit] of visibleControls){$('ctrl-'+key).addEventListener('input',ev=>{state.p[key]=Number(ev.target.value);$('out-'+key).textContent=fmt(state.p[key],3)+' '+unit;state.t=0;mission.feedback='';mission.solved=false;if(id==='projectile'){mission.launched=false;mission.complete=false;setPlaying(false)}if(id==='interference'){if(mission.samples.length)mission.previousSamples=mission.samples.map(row=>({...row}));mission.samples=[]}render()})}syncMobileAim();groupTree();renderCards();selectBottom(['projectile','wheatstone','interference'].includes(id)?'research':state.bottom);render();closeDrawer();if(location.hash.slice(1)!==id)try{history.replaceState(null,'','#'+id)}catch(e){}if(scroll)document.getElementById('labSection').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'instant':'smooth',block:'start'})}
-function setup(){const filters=$('groupFilters');filters.innerHTML=`<button class="filter-chip selected" data-filter="">Alles (53)</button>`+groups.map((g,i)=>`<button class="filter-chip" data-filter="${i}">${safe(g)}</button>`).join('');filters.querySelectorAll('[data-filter]').forEach(btn=>btn.addEventListener('click',()=>{state.group=btn.dataset.filter===''?'':groups[Number(btn.dataset.filter)];filters.querySelectorAll('button').forEach(x=>x.classList.toggle('selected',x===btn));renderCards()}));$('search').addEventListener('input',ev=>{state.query=ev.target.value.toLowerCase().trim();groupTree()});document.querySelectorAll('[data-side]').forEach(btn=>btn.addEventListener('click',()=>selectSide(btn.dataset.side)));document.querySelectorAll('[data-bottom]').forEach(btn=>btn.addEventListener('click',()=>selectBottom(btn.dataset.bottom)));$('openExplorer').addEventListener('click',()=>{$('explorer').classList.add('open');$('shade').hidden=false});$('closeExplorer').addEventListener('click',closeDrawer);$('shade').addEventListener('click',closeDrawer);$('openMobileSettings').onclick=()=>{closeDrawer();selectSide('settings');$('inspector').classList.add('open');$('shade').hidden=false};$('closeMobileSettings').onclick=closeDrawer;$('resetBtn').onclick=()=>loadLab(state.id);$('stepBtn').onclick=()=>{setPlaying(false);state.t+=.05;render()};$('playBtn').onclick=()=>setPlaying(!state.playing);$('speedSelect').addEventListener('change',e=>state.speed=Number(e.target.value));$('baselineBtn').onclick=saveBaseline;$('saveValuesBtn').onclick=saveBaseline;$('saveGraphBtn').onclick=saveBaseline;$('clearBaseline').onclick=()=>{state.baseline=null;$('comparisonBubble').hidden=true;updateComparison();$('baselineBtn').textContent='+ Bewaar meting';$('saveValuesBtn').textContent='+ Bewaar meting';$('saveGraphBtn').textContent='+ Bewaar vergelijking';render()};$('cameraReset').onclick=resetCamera;$('hypothesis').addEventListener('input',()=>lsSet('science-prediction-'+state.id,$('hypothesis').value));$('shareBtn').onclick=async()=>{try{await navigator.clipboard.writeText(location.href);$('shareBtn').textContent='Link gekopieerd';setTimeout(()=>$('shareBtn').textContent='Deel deze proef',1600)}catch(e){window.prompt('Kopieer deze link',location.href)}};$('allTopicsBtn').onclick=()=>{state.group='';filters.querySelectorAll('button').forEach((b,i)=>b.classList.toggle('selected',i===0));renderCards();document.getElementById('topics').scrollIntoView({behavior:'smooth'})};
+function loadLab(id,scroll=false){const e=byId[id];if(!e)return;state.id=id;state.t=0;state.p=Object.fromEntries(e.controls.map(([key,,,,,def])=>[key,def]));resetInquiry(id);state.baseline=null;$('baselineBtn').textContent='+ Bewaar meting';$('saveValuesBtn').textContent='+ Bewaar meting';$('saveGraphBtn').textContent='+ Bewaar vergelijking';$('comparisonBubble').hidden=true;$('labGroup').textContent=e.group;$('labTitle').textContent=e.title;$('intro').textContent=e.intro;$('infoDescription').textContent=e.explanation;$('infoCaveat').textContent=e.caveat;$('explanation').textContent=e.explanation;$('modelNote').textContent=e.caveat;$('prediction').textContent=e.question;researchCopy(id);$('hypothesis').value=lsGet('science-prediction-'+id)||'';$('sceneMeta').textContent=special3d.has(id)?'3D · DRAAIBAAR MODEL':'2D · INTERACTIEF MODEL';$('sceneBadge').textContent=special3d.has(id)?'RUIMTELIJKE WEERGAVE':'LIVE SIMULATIE';const manualTransport=id==='wheatstone'||id==='projectile';$('stepBtn').hidden=manualTransport;$('playBtn').hidden=manualTransport;$('speedSelect').hidden=manualTransport;$('sceneCompass').hidden=!special3d.has(id);$('sceneTip').hidden=!directManip.has(id);$('sceneTip').textContent=directHints[id]||'';$('cameraReset').hidden=!special3d.has(id);$('stage').classList.toggle('three-dimensional',special3d.has(id));$('stage').classList.toggle('direct-manipulation',directManip.has(id));$('labSection').classList.toggle('mobile-projectile',id==='projectile');$('mobileAim').hidden=id!=='projectile';resetCamera();const visibleControls=e.controls.filter(row=>id!=='wheatstone'||row[0]!=='R3');$('controls').innerHTML=visibleControls.map(([key,label,unit,min,max,value,step])=>`<div class="control precision-control"><div class="control-line"><label for="num-${key}">${safe(label)}</label><output id="out-${key}">${safe(unit)}</output></div><div class="precision-control-row"><button type="button" data-step-key="${safe(key)}" data-direction="-1" aria-label="${safe(label)} lager">−</button><input id="num-${key}" type="number" inputmode="decimal" min="${min}" max="${max}" step="${step}" value="${value}" aria-label="${safe(label)} instellen"><button type="button" data-step-key="${safe(key)}" data-direction="1" aria-label="${safe(label)} hoger">+</button><details class="range-pop"><summary aria-label="${safe(label)} schuifregelaar openen" title="Schuiven">···</summary><input type="range" id="ctrl-${key}" min="${min}" max="${max}" step="${step}" value="${value}" aria-label="${safe(label)} schuiven"></details></div></div>`).join('');for(const [key,,unit,min,max,,step] of visibleControls){const slider=$('ctrl-'+key),number=$('num-'+key);const applyValue=(raw)=>{if(!Number.isFinite(raw))return;const target=Math.min(max,Math.max(min,Math.round((raw-min)/step)*step+min));state.p[key]=Number(target.toFixed(7));number.value=state.p[key];slider.value=state.p[key];state.t=0;mission.feedback='';mission.solved=false;if(id==='projectile'){mission.launched=false;mission.complete=false;setPlaying(false)}if(id==='interference'){if(mission.samples.length)mission.previousSamples=mission.samples.map(row=>({...row}));mission.samples=[]}render()};slider.addEventListener('input',ev=>applyValue(Number(ev.target.value)));number.addEventListener('change',()=>{if(number.value.trim()!=='')applyValue(Number(number.value));else number.value=state.p[key]});number.addEventListener('keydown',ev=>{if(ev.key==='Enter')number.blur()});document.querySelectorAll('[data-step-key="'+key+'"]').forEach(btn=>btn.addEventListener('click',()=>applyValue(state.p[key]+Number(btn.dataset.direction)*step)))}syncMobileAim();groupTree();renderCards();selectBottom(['projectile','wheatstone','interference'].includes(id)?'research':state.bottom);render();closeDrawer();if(location.hash.slice(1)!==id)try{history.replaceState(null,'','#'+id)}catch(e){}if(scroll){const panel=$('labSection').querySelector('.analysis-shell');panel.classList.remove('compact-open');window.scrollTo({top:0,behavior:'instant'})}}
+function setup(){const filters=$('groupFilters');filters.innerHTML=`<button class="filter-chip selected" data-filter="">Alles (53)</button>`+groups.map((g,i)=>`<button class="filter-chip" data-filter="${i}">${safe(g)}</button>`).join('');filters.querySelectorAll('[data-filter]').forEach(btn=>btn.addEventListener('click',()=>{state.group=btn.dataset.filter===''?'':groups[Number(btn.dataset.filter)];filters.querySelectorAll('button').forEach(x=>x.classList.toggle('selected',x===btn));renderCards()}));$('search').addEventListener('input',ev=>{state.query=ev.target.value.toLowerCase().trim();groupTree()});document.querySelectorAll('[data-side]').forEach(btn=>btn.addEventListener('click',()=>selectSide(btn.dataset.side)));document.querySelectorAll('[data-bottom]').forEach(btn=>btn.addEventListener('click',()=>{if(innerWidth<=720){const panel=$('labSection').querySelector('.analysis-shell');if(state.bottom===btn.dataset.bottom&&panel.classList.contains('compact-open')){panel.classList.remove('compact-open');return}panel.classList.add('compact-open')}selectBottom(btn.dataset.bottom)}));$('openExplorer').addEventListener('click',()=>{$('explorer').classList.add('open');$('shade').hidden=false});$('closeExplorer').addEventListener('click',closeDrawer);$('shade').addEventListener('click',closeDrawer);$('openMobileSettings').onclick=()=>{closeDrawer();selectSide('settings');$('inspector').classList.add('open');$('shade').hidden=false};$('closeMobileSettings').onclick=closeDrawer;$('resetBtn').onclick=()=>loadLab(state.id);$('stepBtn').onclick=()=>{setPlaying(false);state.t+=.05;render()};$('playBtn').onclick=()=>setPlaying(!state.playing);$('speedSelect').addEventListener('change',e=>state.speed=Number(e.target.value));$('baselineBtn').onclick=saveBaseline;$('saveValuesBtn').onclick=saveBaseline;$('saveGraphBtn').onclick=saveBaseline;$('clearBaseline').onclick=()=>{state.baseline=null;$('comparisonBubble').hidden=true;updateComparison();$('baselineBtn').textContent='+ Bewaar meting';$('saveValuesBtn').textContent='+ Bewaar meting';$('saveGraphBtn').textContent='+ Bewaar vergelijking';render()};$('cameraReset').onclick=resetCamera;$('hypothesis').addEventListener('input',()=>lsSet('science-prediction-'+state.id,$('hypothesis').value));$('shareBtn').onclick=async()=>{try{await navigator.clipboard.writeText(location.href);$('shareBtn').textContent='Link gekopieerd';setTimeout(()=>$('shareBtn').textContent='Deel deze proef',1600)}catch(e){window.prompt('Kopieer deze link',location.href)}};$('allTopicsBtn').onclick=()=>{state.group='';filters.querySelectorAll('button').forEach((b,i)=>b.classList.toggle('selected',i===0));renderCards();document.getElementById('topics').scrollIntoView({behavior:'smooth'})};
 $('inquiryAction').addEventListener('click',actInquiry);$('inquiryAnswer').addEventListener('keydown',ev=>{if(ev.key==='Enter')actInquiry()});
 $('aimFire').addEventListener('click',actInquiry);$('mobileView').addEventListener('click',()=>{mission.view=mission.view==='overview'?'target':'overview';syncMobileAim();render()});for(const [id,key] of [['aimAngle','angle'],['aimSpeed','v']])$(id).addEventListener('input',ev=>updateAim(key,Number(ev.target.value)));document.querySelectorAll('[data-aim-key]').forEach(button=>button.addEventListener('click',()=>updateAim(button.dataset.aimKey,state.p[button.dataset.aimKey]+Number(button.dataset.aimDelta))));
 const stage=$('stage');
