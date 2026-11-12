@@ -1,0 +1,73 @@
+name: LO v13 - controle spelsimulatie
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'tools/lo-aanvalslab/**'
+      - '.github/workflows/lo-v13-verify.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  browser-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Installeer browser
+        run: |
+          python -m pip install playwright
+          python -m playwright install --with-deps chromium
+      - name: Controleer sporten, verdedigende tactiek en bewegingen
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from playwright.sync_api import sync_playwright
+          html=Path('tools/lo-aanvalslab/index.html').read_text()
+          with sync_playwright() as p:
+            b=p.chromium.launch(headless=True)
+            tab=b.new_page(viewport={'width':1366,'height':768})
+            errors=[]
+            tab.on('pageerror',lambda e: errors.append(str(e)))
+            tab.set_content(html)
+            results=tab.evaluate("""() => {
+             const lab=window.__loLabTest;
+             let runs=0,failures=[],outcomes={};
+             for(let sport=0;sport<4;sport++){
+              const selector=document.getElementById('sportSelect');
+              selector.value=String(sport);selector.dispatchEvent(new Event('change'));
+              for(let teams=0;teams<4;teams++){
+               lab.setFormation(teams);
+               for(let scenario=0;scenario<4;scenario++){
+                const players=lab.scenario(scenario), a=players.filter(x=>x.team==='a').length,
+                      d=players.filter(x=>x.team==='d').length;
+                if(a!==[4,2,3,4][teams]||d!==[4,1,2,3][teams])failures.push('Wrong player count');
+                const summary=lab.run(players,1337),frames=lab.getFrames();
+                if(frames.length<2)failures.push('Missing animation');
+                for(let i=1;i<frames.length;i++){
+                 const prev=frames[i-1],cur=frames[i];
+                 const step=Math.hypot(cur.ball.x-prev.ball.x,cur.ball.y-prev.ball.y)/[20,21,22,31][sport];
+                 if(step>1.07){failures.push('Ball teleported');break}
+                 for(const player of cur.players){
+                  const v=Math.hypot(player.vx,player.vy)/[20,21,22,31][sport];
+                  if(v>player.speed+.04){failures.push('Speed exceeded');break}
+                 }
+                }
+                outcomes[summary.result]=(outcomes[summary.result]||0)+1;runs++;
+               }
+              }
+             }
+             return {runs,failures,outcomes};
+            }""")
+            print(results)
+            assert not errors,errors
+            assert results['runs']==64,results
+            assert not results['failures'],results
+            b.close()
+          PY
