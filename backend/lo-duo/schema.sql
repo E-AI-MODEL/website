@@ -6,7 +6,7 @@ create table if not exists public.lo_duo_rooms (
  code text not null unique check (code ~ '^[A-HJ-NP-Z2-9]{8}$'),
  attack_hash text not null,
  defence_hash text,
- scenario integer not null default 0 check (scenario between 0 and 15),
+ scenario integer not null default 0 check (scenario between 0 and 63),
  attack_plan jsonb,
  defence_plan jsonb,
  attack_ready boolean not null default false,
