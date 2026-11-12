@@ -2675,6 +2675,14 @@ def build(sources: Path, out: Path) -> None:
         raise FileNotFoundError(f"LO Aanvalslab-bron ontbreekt: {lo_lab_source}")
     write(out, "tools/lo-aanvalslab/index.html", lo_lab_source.read_text(encoding="utf-8"))
 
+    # LO Aanvalslab: bewaar kalibratie en bronverwijzing bij elke herbouw.
+    for source_name in ("README.md", "extract_tracking.py", "tracking_metrics.json"):
+        evidence_path = lo_lab_source.parent / "calibratie" / "v13" / source_name
+        if not evidence_path.is_file():
+            raise FileNotFoundError(f"LO v13 meetbestand ontbreekt: {evidence_path}")
+        write(out, f"tools/lo-aanvalslab/calibratie/v13/{source_name}", evidence_path.read_text(encoding="utf-8"))
+
+
 
     # LLM Observatorium: zelfstandige interactieve HTML, ongewijzigd publiceren.
     llm_source = Path(__file__).resolve().parent.parent / "content" / "llm-observatorium" / "index.html"
