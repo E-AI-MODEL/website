@@ -326,6 +326,11 @@ body{display:flex;flex-direction:column}
  .workspace.mobile-projectile:not(.has-thrown) .analysis-shell:not(.compact-open){height:32px;flex-basis:32px}
  .workspace .analysis-shell:not(.compact-open) .graph-frame{min-height:54px}
 }
+/* Grafiek gebruikt de beschikbare hoogte, ook bij een titel over twee regels. */
+#graphPanel:not([hidden]){display:flex;flex-direction:column;overflow:hidden;min-height:0}
+#graphPanel .graph-top{flex:0 0 auto;min-width:0}
+#graphPanel .graph-top>div{min-width:0}
+#graphPanel .graph-frame{flex:1 1 0;min-height:0;height:auto;overflow:hidden}
 /* Compacte instellingengroepen: de directe knoppen blijven zichtbaar. */
 .lab-brief,.more-controls{border:1px solid #2c4656;border-radius:5px;margin:7px 0;background:#0b1c2a}
 .lab-brief>summary,.more-controls>summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:7px;padding:8px 10px;cursor:pointer;font-size:10px;color:#b6d3da;user-select:none}
