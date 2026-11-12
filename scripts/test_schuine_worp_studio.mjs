@@ -35,13 +35,17 @@ try{
   assert(geometry.panelBottom<=viewport.height+2,'Instellingen blijven in beeld');
   if(mobile)assert(geometry.panelBottom<=geometry.statsTop+1,'Instellingen blijven boven de meetwaarden');
   assert(await page.locator('#fire').isVisible());
-  assert(await page.locator('#angle').isVisible());
-  assert(await page.locator('#speed').isVisible());
-  assert(await page.locator('#height').isVisible());
-  assert(await page.locator('#target').isVisible());
+  assert(await page.locator('#edit-angle').isVisible(),'Directe waarde voor angle is zichtbaar');
+  assert(await page.locator('#edit-speed').isVisible(),'Directe waarde voor speed is zichtbaar');
+  assert(await page.locator('#edit-height').isVisible(),'Directe waarde voor height is zichtbaar');
+  assert(await page.locator('#edit-target').isVisible(),'Directe waarde voor target is zichtbaar');
   assert((await page.locator('#statRange').innerText()).includes('—'),'Geen voorspelde waarden voor de eerste worp');
   await page.locator('#field').screenshot({path:'test-results/worp-studio-'+browserType.name()+'-'+viewport.width+'-begin.png'});
   await page.screenshot({path:'test-results/worp-studio-'+browserType.name()+'-'+viewport.width+'-volledig.png'});
+  assert(!(await page.locator('#angle').isVisible()),'Schuifregelaar is standaard verborgen');
+  await page.locator('.range-pop summary').first().click();
+  assert(await page.locator('#angle').isVisible(),'Schuifregelaar is na uitklappen beschikbaar');
+  await page.locator('.range-pop summary').first().click();
   await page.locator('#fire').click();
   await page.waitForFunction(()=>window.__physicsStudio.state.trials.length===1,null,{timeout:12000});
   const result=await page.evaluate(()=>{
@@ -60,7 +64,7 @@ try{
   await page.locator('[data-key="height"][data-delta=".5"]').click();
   const raised=await page.evaluate(()=>window.__physicsStudio.values(window.__physicsStudio.state));
   assert(raised.range>result.t.range&&raised.peak>result.t.peak,'Hogere start geeft een groter bereik en hogere top');
-  await page.locator('#target').evaluate(el=>{el.value='29';el.dispatchEvent(new Event('input',{bubbles:true}))});
+  await page.locator('#edit-target').fill('29');await page.locator('#edit-target').dispatchEvent('change');
   assert.equal(await page.evaluate(()=>window.__physicsStudio.state.target),29,'Mat is via de regelaar te verplaatsen');
   await page.locator('[data-g="1.62"]').click();
   assert.equal(await page.locator('[data-g="1.62"]').getAttribute('aria-pressed'),'true');
