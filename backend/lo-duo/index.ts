@@ -15,13 +15,16 @@ const token=()=>Array.from(crypto.getRandomValues(new Uint8Array(32)),b=>b.toStr
 async function digest(s:string){const d=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return Array.from(new Uint8Array(d),b=>b.toString(16).padStart(2,'0')).join('')}
 const intentsA = new Set(['pas','drijf','bewaar','zijde','diep','breed','bal','stil','kruis','ruimte']);
 const intentsD = new Set(['dek','lijn','druk','zone','volg','terug']);
-const shape=(raw:unknown,role:'a'|'d')=>{
- if(!Array.isArray(raw)||raw.length!==4)return null;
+// Bestaande kamers blijven 4-tegen-4; nieuwe kamers mogen ook in overtal spelen.
+const countsFor=(scenario:number)=>scenario<16?[4,4]:[[2,1],[3,2],[4,3]][Math.floor(((scenario-16)%12)/4)];
+const shape=(raw:unknown,role:'a'|'d',scenario:number)=>{
+ const counts=countsFor(scenario),expected=counts[role==='a'?0:1];
+ if(!Array.isArray(raw)||raw.length!==expected)return null;
  const seen=new Set();const result=[];
  for(const p of raw){
   if(typeof p!=='object'||!p)return null;
   const {id,x,y,intent}=p as Record<string,unknown>;
-  if(typeof id!=='string'||!new RegExp('^'+role+'[0-3]$').test(id)||seen.has(id))return null;
+  if(typeof id!=='string'||!new RegExp('^'+role+'[0-3]$').test(id)||Number(id[1])>=expected||seen.has(id))return null;
   seen.add(id);
   if(typeof x!=='number'||typeof y!=='number'||!Number.isFinite(x)||!Number.isFinite(y)||x<69||x>931||y<76||y>574)return null;
   if(typeof intent!=='string'||!(role==='d'?intentsD:id==='a0'?new Set(['pas','drijf','bewaar','zijde']):new Set(['diep','breed','bal','stil','kruis','ruimte'])).has(intent))return null;
@@ -56,7 +59,7 @@ Deno.serve(async req=>{
   // Clean up expired class sessions without keeping student plans indefinitely.
   if(crypto.getRandomValues(new Uint8Array(1))[0]<24) await db.from('lo_duo_rooms').delete().lt('expires_at',new Date().toISOString());
   // 0-3 voetbal, 4-7 hockey, 8-11 handbal, 12-15 basketbal.
-  const scenario=Number(body.scenario||0);if(!Number.isInteger(scenario)||scenario<0||scenario>15)return bad('Ongeldige spelsituatie.');
+  const scenario=Number(body.scenario||0);if(!Number.isInteger(scenario)||scenario<0||scenario>63)return bad('Ongeldige spelsituatie.');
   for(let i=0;i<7;i++){
    const code=rand(8),secret=token(),attack_hash=await digest(secret);
    const {data,error}=await db.from('lo_duo_rooms').insert({code,attack_hash,scenario}).select(columns).single();
@@ -81,7 +84,7 @@ Deno.serve(async req=>{
  if(action==='save'){
   if(room.status==='playing')return bad('Deze aanval is al gestart.',409);
   if((role==='a'?room.attack_ready:room.defence_ready))return bad('Je plan staat vast. Kies eerst Bewerken.',409);
-  const plan=shape(body.plan,role);if(!plan)return bad('Ongeldige spelersopstelling.');
+  const plan=shape(body.plan,role,room.scenario);if(!plan)return bad('Ongeldige spelersopstelling.');
   const changes=role==='a'?{attack_plan:plan}:{defence_plan:plan};
   const {data,error}=await db.from('lo_duo_rooms').update(changes).eq('id',room.id).eq('revision',room.revision).select(columns).maybeSingle();
   if(error)throw Error(error.message);
@@ -98,7 +101,7 @@ Deno.serve(async req=>{
  if(action==='ready'){
   if(room.status==='playing')return ok({room:view(room,role)});
   const current=role==='a'?room.attack_plan:room.defence_plan;
-  if(!shape(current,role))return bad('Sla eerst een geldig plan op.');
+  if(!shape(current,role,room.scenario))return bad('Sla eerst een geldig plan op.');
   const otherReady=role==='a'?room.defence_ready:room.attack_ready;
   const changes:any=role==='a'?{attack_ready:true}:{defence_ready:true};
   if(otherReady){changes.status='playing';changes.start_at=new Date(Date.now()+2500).toISOString();changes.seed=1+crypto.getRandomValues(new Uint32Array(1))[0]%10000000;}
