@@ -1588,7 +1588,7 @@ stage.addEventListener('keydown',ev=>{
  else if(ev.key==='ArrowDown')state.camera.pitch=clamp(state.camera.pitch+step,-1.46,1.46);
  else if(ev.key==='+'||ev.key==='=')state.camera.zoom=clamp(state.camera.zoom*1.12,.4,2.3);
  else if(ev.key==='-')state.camera.zoom=clamp(state.camera.zoom/1.12,.4,2.3);
- else if(ev.key==='Home')return resetCamera();
+ else if(ev.key==='Home'){ev.preventDefault();return resetCamera()};
  else return;
  ev.preventDefault();render()
 });
