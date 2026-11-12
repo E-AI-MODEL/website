@@ -388,7 +388,7 @@ function simulate(){
  const a=()=>ps.filter(p=>p.team==='a'),d=()=>ps.filter(p=>p.team==='d');
  const b=()=>ps.find(p=>p.id===holder);
  function log(kind,msg,detail=null){events.push({time:Math.round(clock*100)/100,kind,msg,...(detail?{detail:copy(detail)}:{})})}
- function snapshot(){frames.push({time:clock,players:copy(ps),ball:{...ball},trail:copy(trail)})}
+ function snapshot(){frames.push({time:clock,players:copy(ps),ball:{...ball},trail:copy(trail),holder,ballMode:flight?'pass':shot?'shot':loose?'loose':'controlled',flight:flight?{target:flight.target,elapsed:flight.elapsed,duration:flight.duration}:null})}
  function followControlledBall(owner){
   const aim=ballAt(owner),difference=dist(ball,aim),cap=PX*5.7*DT;
   if(difference>.0001){const f=Math.min(1,cap/difference);ball={x:mix(ball.x,aim.x,f),y:mix(ball.y,aim.y,f)}}
@@ -742,6 +742,58 @@ window.__loOnline={
   getState:()=>state,
   replay(){cancelAnimationFrame(raf);state='playing';time=0;last=0;refresh();showFrame(0);raf=requestAnimationFrame(tick)}
 };
+
+const mathEscape=v=>String(v??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+const mathNum=(v,n=2)=>Number.isFinite(v)?Number(v).toFixed(n):'–';
+const tacticLabels={
+  pas:'Passen',drijf:'Bal meenemen',bewaar:'Bal vasthouden',zijde:'Naar de zijkant',
+  diep:'Diep gaan',breed:'Breed houden',bal:'In de bal',stil:'Blijven staan',
+  kruis:'Kruisen',ruimte:'Ruimte maken',dek:'Man dekken',volg:'Loopactie volgen',
+  druk:'Druk op bal',lijn:'Passlijn sluiten',zone:'Zone bewaken (oud)',
+  zonecompact:'Zone compact',zoneschuif:'Zone meeschuiven',zonelijn:'Zone passlijnen',terug:'Terugzakken'
+};
+const analysisRow=(key,val,unit='')=>'<li><span>'+mathEscape(key)+'</span><b>'+mathNum(val)+(unit?' '+mathEscape(unit):'')+'</b></li>';
+const analysisTitles={shot:'Doelpoging',shotBlocked:'Schot geblokkeerd',intercept:'Balverlies',other:'Geen doelpoging'};
+const analysisSourceLinks=[
+ [['Metrica-tracking','https://github.com/metrica-sports/sample-data'],['Meetmethode','https://github.com/E-AI-MODEL/website/tree/main/tools/lo-aanvalslab/calibratie/v13']],
+ [['Hockey-onderzoek','https://pmc.ncbi.nlm.nih.gov/articles/PMC10108760/'],['Wedstrijdwerkboeken','https://github.com/felicitylord/Hockey-Analysis']],
+ [['Handbalposities','https://zenodo.org/records/12065335'],['Spelfasen','https://pmc.ncbi.nlm.nih.gov/articles/PMC10431627/']],
+ [['SportVU-tracking','https://github.com/sealneaward/nba-movement-data'],['3 tegen 3-onderzoek','https://doi.org/10.1177/17479541211067989']]
+];
+function calculationOfEvent(ev){
+ const d=ev?.detail||{};
+ let result='<strong>'+mathEscape(ev?.msg||'Geen afzonderlijk spelmoment')+'</strong>';
+ if(!ev?.detail)return result+'<p class="lo-analysis-detail-note">Er is op dit tijdstip geen aparte rekenbeslissing vastgelegd. Bekijk de posities en snelheden.</p>';
+ let rows=[];
+ if(ev.kind==='pass'){
+  rows=[analysisRow('Passafstand',d.distanceM,'m'),analysisRow('Balsnelheid',d.ballSpeedMps,'m/s'),
+   analysisRow('Vliegtijd',d.durationS,'s'),analysisRow('Aankomstmarge verdediger',d.minArrivalMarginS,'s'),
+   analysisRow('Dichtste verdediger bij ontvanger',d.receiverNearestDefM,'m'),
+   analysisRow('Passscore (geen kans)',d.score,'pt')];
+  const labels={forward:'Vooruitgang × 0,13',spread:'Breedtebonus',arrival:'Marge × 65, begrensd',
+   lengthPenalty:'Passafstand × −0,048',backward:'Straf terugspelen',crowding:'Druk bij ontvanger',
+   distancePenalty:'Referentieafstand',circle:'Hockey richting cirkel',flank:'Voetbal teruglegpass'};
+  const parts=Object.entries(d.scoreParts||{}).map(([k,v])=>analysisRow(labels[k]||k,v,'pt')).join('');
+  result+='<p class="lo-analysis-detail-note">Een positieve aankomstmarge betekent dat de verdediger een berekend punt op de passlijn later bereikt dan de bal. Deze score is geen slagingspercentage.</p><details class="lo-analysis-source" open><summary>Exacte onderdelen van de passscore</summary><ul class="lo-analysis-breakdown">'+parts+'</ul></details>';
+ }else if(ev.kind==='shot'){
+  rows=[analysisRow('Schotafstand',d.distanceM,'m'),analysisRow('Vliegtijd',d.durationS,'s'),
+   analysisRow('Balsnelheid',d.ballSpeedMps,'m/s'),analysisRow('Dichtste verdediger',d.nearestDefenderM,'m'),
+   analysisRow('Positie baldrager (x)',d.actualX,'model-m'),analysisRow('Schotgrens (x)',d.shotLineX,'model-m'),
+   analysisRow('Afstand van het midden',d.actualSideM,'m'),analysisRow('Toegestaan naast het midden',d.allowedSideM,'m')];
+  result+='<p class="lo-analysis-detail-note">Een schot in het model is een doelpoging, geen doelpunt. De schotregel kijkt ook naar bezitduur en de dichtste verdediger.</p>';
+ }else if(ev.kind==='receive'){
+  rows=[analysisRow('Ontvanger tot bal',d.distanceM,'m'),analysisRow('Aannamegrens',d.limitM,'m')];
+ }else if(['intercept','loss','blocked'].includes(ev.kind)){
+  rows=['<li><span>Verdediger</span><b>'+mathEscape(d.player||'–')+'</b></li>'];
+  if(Number.isFinite(d.ballContactM))rows.push(analysisRow('Contactafstand',d.ballContactM,'m'));
+  if(Number.isFinite(d.limitM))rows.push(analysisRow('Bereik voor onderschepping',d.limitM,'m'));
+  if(Number.isFinite(d.contactS))rows.push(analysisRow('Opgebouwde contactduur',d.contactS,'s'));
+  if(Number.isFinite(d.requiredContactS))rows.push(analysisRow('Benodigde contactduur',d.requiredContactS,'s'));
+  if(Number.isFinite(d.carrierSpeedMps))rows.push(analysisRow('Snelheid baldrager',d.carrierSpeedMps,'m/s'));
+  result+='<p class="lo-analysis-detail-note">Dit volgt uit contact met de berekende balbaan of uit de ingestelde tijd voor druk op de bal. Het is geen gemeten onderscheppingskans.</p>';
+ }
+ return result+(rows.length?'<ul class="lo-analysis-breakdown">'+rows.join('')+'</ul>':'');
+}
 // Alleen testomgeving: reproductie van spelsituaties zonder UI-animatie.
 window.__loLabTest={run(input,withSeed=1337){initial=copy(input);simSeed=withSeed;simulate();return copy(summary)},getPlayers:()=>copy(players),getFrames:()=>copy(frames),getEvents:()=>copy(events),scenario:index=>{makeScenario(index);return copy(players)},setFormation:index=>{applyFormation(index);makeScenario(scenarioIndex);resetSetup();return copy(players)},setSpeed:speed=>{playbackSpeed=clamp(speed,.5,2);el('playbackSpeed').value=String(playbackSpeed)},getTime:()=>time,reachTime,getConfig:()=>copy(sportCfg()),setZonePlan(key){if(!['zonecompact','zoneschuif','zonelijn'].includes(key))return;for(const p of players)if(p.team==='d')p.intent=key;syncZonePlans();draw()},getIntents:()=>copy(tactics.d)};
 })();
