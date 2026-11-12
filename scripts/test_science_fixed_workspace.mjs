@@ -55,7 +55,7 @@ try{
    await page.waitForFunction(()=>!document.querySelector('#explorer').classList.contains('open'));
    await page.waitForTimeout(270);
   }else{
-   assert.equal(await page.locator('#controls>.precision-control').count(),Math.min(2,await page.locator('#controls .precision-control').count()),'Directe knoppen blijven beperkt tot maximaal twee');
+   assert.equal(await page.locator('#controls>.precision-control').count(),await page.evaluate(()=>interfaceFor(state.id).main.length),'Alleen de voor deze proef belangrijke knoppen staan meteen in beeld');
    const extra=page.locator('#controls>.more-controls');
    if(await extra.count()){
     assert(!(await extra.evaluate(el=>el.open)),'Extra instellingen starten dichtgeklapt');
@@ -113,7 +113,7 @@ try{
     for(const lab of experiments){
      const g=labInterfaces[lab.id],keys=lab.controls.map(r=>r[0]);
      if(!g){problems.push(lab.id+': geen bediening');continue}
-     if(g.main.length!==2||new Set(g.main).size!==2||g.main.some(k=>!keys.includes(k)))problems.push(lab.id+': onjuiste hoofdinstellingen');
+     if(g.main.length<2||g.main.length>3||new Set(g.main).size!==g.main.length||g.main.some(k=>!keys.includes(k)))problems.push(lab.id+': onjuiste hoofdinstellingen');
      if(!['time','control','inspect'].includes(g.mode))problems.push(lab.id+': grafiekrol ontbreekt');
      if(g.mode==='control'&&g.axis!=='gas'&&!keys.includes(g.axis))problems.push(lab.id+': grafiek stuurt onbekende grootheid');
      if(g.mode==='time'&&!g.factor)problems.push(lab.id+': tijdschaal ontbreekt');
@@ -131,6 +131,8 @@ try{
     await page.mouse.move(rect.x+rect.width*to,y,{steps:6});
     await page.mouse.up();
    };
+   await selectLab('resultant');
+   assert.equal(await page.locator('#controls>.precision-control').count(),3,'Vectoren hebben drie directe instelbare grootheden');
    await selectLab('ohm');
    const ohmBefore=await page.evaluate(()=>({...state.p}));
    const rOhm=await page.locator('#plot').boundingBox();
