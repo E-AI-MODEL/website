@@ -8,6 +8,7 @@ BUILD = ROOT / "site-build"
 SOURCE = ROOT / "content" / "science-observatory"
 PUBLISHED = BUILD / "tools" / "science-observatory"
 SLUGS = ("melkweg", "gravitatie-banen", "natuurkunde", "wiskunde-a", "wiskunde-b")
+PUBLISHED_LABS = SLUGS + ("schuine-worp",)
 
 
 class Anchors(HTMLParser):
@@ -24,7 +25,7 @@ class Anchors(HTMLParser):
 
 class ObservatoryPublicationTests(unittest.TestCase):
     def test_all_pilot_models_are_exact_source_copies(self):
-        for slug in SLUGS:
+        for slug in PUBLISHED_LABS:
             with self.subTest(slug=slug):
                 source = SOURCE / "labs" / (slug + ".html")
                 target = PUBLISHED / "labs" / slug / "index.html"
@@ -65,7 +66,15 @@ class ObservatoryPublicationTests(unittest.TestCase):
         self.assertFalse((PUBLISHED / "beheer").exists())
         self.assertFalse((PUBLISHED / "BEHEER.html").exists())
         self.assertFalse((PUBLISHED / "STUDIO_INRICHTEN.html").exists())
-        self.assertEqual(len(list((PUBLISHED / "labs").rglob("index.html"))), len(SLUGS))
+        self.assertEqual(len(list((PUBLISHED / "labs").rglob("index.html"))), len(PUBLISHED_LABS))
+
+    def test_compact_projectile_has_own_link_and_no_admin(self):
+        source = (SOURCE / "labs" / "natuurkunde.html").read_text(encoding="utf-8")
+        self.assertIn('/tools/science-observatory/labs/schuine-worp/', source)
+        studio = (PUBLISHED / "labs" / "schuine-worp" / "index.html").read_text(encoding="utf-8")
+        self.assertIn('id="statRange"', studio)
+        self.assertIn('id="field"', studio)
+        self.assertNotIn('id="admin"', studio)
 
     def test_reference_and_status_warnings_are_present(self):
         catalog = (PUBLISHED / "index.html").read_text(encoding="utf-8")
