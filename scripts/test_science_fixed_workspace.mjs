@@ -99,6 +99,11 @@ try{
    await plot.focus();await page.keyboard.press('ArrowRight');
    const shifted=await page.evaluate(()=>state.graphProbe);
    assert(shifted>probe,'Ook met pijltjestoetsen is de grafiek afleesbaar');
+   const wheatstoneCurve=await page.evaluate(()=>{
+    const d=graphSpecFor(state.id,state.p,state.t),q=(state.p.R4-d.min)/(d.max-d.min);
+    return {graph:state.current.fn(q),measured:bridgeVoltage(state.p)};
+   });
+   assert(Math.abs(wheatstoneCurve.graph-wheatstoneCurve.measured)<1e-9,'Grafiek toont dezelfde brugspanning als de meetbrug');
   }
   assert.equal(await page.locator('#num-R3').count(),0,'Hidden Wheatstone resistance remains unknown');
   assert(await page.locator('#num-R4').count()===1,'Other circuit settings remain editable');
