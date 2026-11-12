@@ -56,6 +56,22 @@ def main():
         page.goto(HTML.as_uri(),wait_until="domcontentloaded")
         page.locator('[data-mode="free"]').click()
         baseline.locator('[data-mode="free"]').click()
+        # Bedieningsdemo's zijn apart van de echte opstelling.
+        original=page.evaluate("window.__loLabTest.getPlayers()")
+        assert page.locator("#loHelp").is_hidden()
+        page.locator("#loHelpOpen").click()
+        assert page.locator("#loHelp").is_visible()
+        help_state=page.evaluate("window.__loHelpTest.getState()")
+        assert help_state["chapterCount"]==6 and help_state["stepCount"]==18,help_state
+        assert page.locator("#loHelpTabs button").count()==6
+        page.locator("#loHelpNext").click()
+        assert page.locator("#loHelpStepTitle").inner_text()=="Verplaats een speler"
+        page.locator("#loHelpTabs").get_by_role("button",name="Doelen en coach").click()
+        assert page.locator("#loHelpStepTitle").inner_text()=="Kies een klein doel"
+        page.locator("#loHelpReplay").click()
+        page.keyboard.press("Escape")
+        assert page.locator("#loHelp").is_hidden()
+        assert page.evaluate("window.__loLabTest.getPlayers()")==original
         assert not page.locator("#loAnalysis").is_visible()
         page.locator("#loSecret").click()
         assert not page.locator("#loAnalysis").is_visible()
@@ -107,7 +123,11 @@ def main():
         coach=page.evaluate("window.__loLabTest.coachPreview()")
         assert coach["observed"] and coach["challenge"],coach
         assert "model" in coach["observed"].lower() or "bereken" in coach["observed"].lower() or "pass" in coach["observed"].lower(),coach
-        assert "Probeer dit:" in coach["challenge"],coach
+        assert "Nieuwe uitdaging:" in coach["challenge"],coach
+        prev=page.evaluate("window.__loLabTest.getCoachState().previous")
+        again=page.evaluate("window.__loLabTest.coachPreview()")
+        assert page.evaluate("window.__loLabTest.getCoachState().previous")==prev
+        assert again["challenge"]==coach["challenge"]
         assert page.locator("#loCoachObserved").is_visible()
         if coach["moment"] is not None:
             assert page.locator("#loCoachMoment").is_visible()
@@ -146,6 +166,15 @@ def main():
         page.wait_for_timeout(180)
         resumed=page.evaluate('window.__loLabTest.getTime()')
         assert resumed>still,(held,still,resumed)
+        # Hulp pauzeert een lokale aanval zonder de positie te wijzigen.
+        page.locator("#loHelpOpen").click()
+        assert page.evaluate("window.__loHelpTest.getState().wasPaused") is True
+        paused=page.evaluate("window.__loLabTest.getTime()")
+        page.wait_for_timeout(130)
+        assert paused==page.evaluate("window.__loLabTest.getTime()")
+        page.locator("#loHelpTry").click()
+        assert page.locator("#loHelp").is_hidden()
+        page.locator("#primary").click()
         # Compacte mobiele weergave, keyboardtoegang en twee tikken.
         for width,height in [(390,844),(320,690)]:
             page.set_viewport_size({"width":width,"height":height})
@@ -170,6 +199,18 @@ def main():
             assert chips["chipsScroll"]<=chips["chipsClient"]+2,chips
             page.keyboard.press("Escape")
             assert not page.locator("#loAnalysis").is_visible()
+            page.locator("#loHelpOpen").click()
+            mobile_help=page.evaluate("""()=>({
+              viewport:innerWidth,
+              sheet:document.querySelector('.lo-help-sheet').getBoundingClientRect().width,
+              content:document.querySelector('.lo-help-content').clientWidth,
+              scroll:document.querySelector('.lo-help-content').scrollWidth,
+              demo:document.querySelector('#loHelpDemo').getBoundingClientRect().width
+            })""")
+            assert mobile_help["sheet"]<=mobile_help["viewport"]+1,mobile_help
+            assert mobile_help["scroll"]<=mobile_help["content"]+2,mobile_help
+            assert mobile_help["demo"]<=mobile_help["sheet"],mobile_help
+            page.locator("#loHelpClose").click()
         assert not failures,failures
         print(json.dumps({"baseline_replays":count,"event_test":event_test,
                           "mobile_responsive":True,"modal_pause_resume":True,
