@@ -58,7 +58,7 @@
 @media(max-width:880px){.zone-plans{padding:6px 7px;margin-bottom:6px}.zone-options{gap:3px}.zone-option{padding:5px 3px;font-size:10px}.zone-tip{font-size:9px}}
 
 /* Verborgen spelanalyse: alleen openen via 2 tikken op het LO-logo. */
-.lo-secret{font-family:inherit;cursor:pointer;touch-action:manipulation;flex-shrink:0}
+.lo-secret{font-family:inherit;cursor:pointer;touch-action:manipulation;flex-shrink:0;background:#0b2429;padding:0}
 .lo-secret:focus-visible{outline:2px solid #d6ffed;outline-offset:3px}
 .lo-analysis[hidden]{display:none!important}
 .lo-analysis{position:fixed;inset:0;z-index:55;background:#031016e8;backdrop-filter:blur(7px);display:flex;justify-content:center;align-items:center;padding:clamp(8px,2vw,20px)}
@@ -578,7 +578,10 @@ function simulate(){
  }
  function choosePass(carrier){
   const choices=a().filter(p=>p.id!==holder).map(p=>passRisk(carrier,p)).sort((u,v)=>v.quality-u.quality);
-  return choices.find(c=>c.possible&&c.to.x>carrier.x-90)||choices.find(c=>c.possible)||choices[0]||null;
+  const selected=choices.find(c=>c.possible&&c.to.x>carrier.x-90)||choices.find(c=>c.possible)||choices[0]||null;
+  if(selected)selected.candidates=choices.map(c=>({player:c.to.id,score:c.quality,
+   possible:c.possible,distanceM:dist(c.from,c.target)/PX,arrivalMarginS:c.earliest}));
+  return selected;
  }
  function startPass(choice){
   const passer=holder;
@@ -589,7 +592,7 @@ function simulate(){
    from:passer,to:choice.to.id,distanceM:dist(choice.from,choice.target)/PX,
    durationS:choice.duration,ballSpeedMps:dist(choice.from,choice.target)/PX/choice.duration,
    minArrivalMarginS:choice.earliest,receiverNearestDefM:choice.near/PX,
-   score:choice.quality,scoreParts:choice.qualityParts,
+   score:choice.quality,scoreParts:choice.qualityParts,candidates:choice.candidates||[],
    feasible:choice.possible,receiveRadiusM:sportCfg().receive/PX
   });
  }
@@ -775,6 +778,12 @@ function calculationOfEvent(ev){
    distancePenalty:'Referentieafstand',circle:'Hockey richting cirkel',flank:'Voetbal teruglegpass'};
   const parts=Object.entries(d.scoreParts||{}).map(([k,v])=>analysisRow(labels[k]||k,v,'pt')).join('');
   result+='<p class="lo-analysis-detail-note">Een positieve aankomstmarge betekent dat de verdediger een berekend punt op de passlijn later bereikt dan de bal. Deze score is geen slagingspercentage.</p><details class="lo-analysis-source" open><summary>Exacte onderdelen van de passscore</summary><ul class="lo-analysis-breakdown">'+parts+'</ul></details>';
+  if(d.candidates?.length){
+   result+='<details class="lo-analysis-source"><summary>Waarom deze ontvanger? Vergelijk alle opties</summary>'+
+    '<table class="lo-analysis-table"><thead><tr><th>Ontvanger</th><th>Passscore</th><th>Afstand</th><th>Berekend bereikbaar</th></tr></thead><tbody>'+
+    d.candidates.map(c=>'<tr><td>'+mathEscape(c.player)+(c.player===d.to?' · gekozen':'')+'</td><td>'+mathNum(c.score)+'</td><td>'+mathNum(c.distanceM)+' m</td><td>'+(c.possible?'Ja':'Nee')+'</td></tr>').join('')+
+    '</tbody></table><p class="lo-analysis-detail-note">Het model kiest eerst een als bereikbaar beoordeelde optie die niet ver achter de baldrager ligt. Alleen als dat niet kan, neemt het een andere optie.</p></details>';
+  }
  }else if(ev.kind==='shot'){
   rows=[analysisRow('Schotafstand',d.distanceM,'m'),analysisRow('Vliegtijd',d.durationS,'s'),
    analysisRow('Balsnelheid',d.ballSpeedMps,'m/s'),analysisRow('Dichtste verdediger',d.nearestDefenderM,'m'),
