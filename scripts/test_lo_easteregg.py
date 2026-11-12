@@ -80,6 +80,17 @@ def main():
         assert "nog geen aanval" in page.locator("#loAnalysisBody").inner_text()
         page.keyboard.press("Escape")
         assert not page.locator("#loAnalysis").is_visible()
+        # Bedieningsmenu's moeten onafhankelijk, met één tik open en dicht gaan.
+        assert page.locator("#prep").get_attribute("open") is not None
+        page.locator("#prep > summary").click()
+        assert page.locator("#prep").get_attribute("open") is None
+        page.locator("#prep > summary").click()
+        assert page.locator("#prep").get_attribute("open") is not None
+        assert page.locator("#loCoachPanel").get_attribute("open") is None
+        page.locator("#loCoachPanel > summary").click()
+        assert page.locator("#loCoachPanel").get_attribute("open") is not None
+        page.locator("#loCoachPanel > summary").click()
+        assert page.locator("#loCoachPanel").get_attribute("open") is None
         # De doelen zijn optionele chips, met andere sporttaal voor elk spel.
         assert not page.locator("#loGoals").get_attribute("open")
         page.locator("#loGoals > summary").click()
@@ -101,6 +112,33 @@ def main():
         assert page.evaluate("window.__loLabTest.getCoachState().manual") is False
         assert page.locator("#loCoachAuto").get_attribute("aria-pressed")=="true"
         count=assert_rules_unchanged(page,baseline)
+        # De spelerpijlen komen uit echte 1,25 s-modeltrajecten, niet uit eigen doelen.
+        for sport in range(4):
+            page.select_option("#sportSelect",str(sport))
+            page.select_option("#formationSelect","2")
+            assert page.evaluate("window.__loLabTest.selectPreviewPlayer('a1')")
+            page.wait_for_function("""()=>{
+              const a=window.__loLabTest.getArrowPreview();
+              return a.isCurrent && a.track.length>2
+            }""",timeout=20000)
+            preview=page.evaluate("""()=>{
+              const lab=window.__loLabTest,p=lab.getArrowPreview(),ps=lab.getPlayers();
+              const fs=lab.run(ps,1337+2*1609);const frames=lab.getFrames();
+              return {preview:p,frames:frames.map(f=>({
+                time:f.time,player:f.players.find(q=>q.id==='a1')
+              }))};
+            }""")
+            assert page.locator("#traces [data-preview-arrow='a1']").count()==1,preview
+            for sample in preview["preview"]["track"]:
+                frame=min(preview["frames"],key=lambda q:abs(q["time"]-sample["t"]))
+                assert abs(frame["time"]-sample["t"])<.001,(sport,sample,frame)
+                assert abs(frame["player"]["x"]-sample["x"])<.0001,(sport,sample,frame)
+                assert abs(frame["player"]["y"]-sample["y"])<.0001,(sport,sample,frame)
+            ball=page.locator('[data-ball="true"]')
+            assert ball.count()==1
+            assert ball.get_attribute("data-ball-sport")==str(sport)
+            detail_count=ball.locator("path,polygon,circle").count()
+            assert detail_count>=6,(sport,detail_count)
         # Dezelfde simulatie moet met volledige data klaar staan.
         page.select_option("#sportSelect","0")
         page.select_option("#formationSelect","2")
