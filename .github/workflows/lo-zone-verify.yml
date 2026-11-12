@@ -22,7 +22,7 @@ jobs:
           python -m pip install playwright
           python -m playwright install --with-deps chromium
       - name: Controleer zonevormen, doelpogingen en lokale duo-opstelling
-        run: python tools/lo-aanvalslab/tests/zone_movement_browser.py
+        run: python scripts/test_lo_zone.py
       - name: Controleer dat de server nieuwe opdrachten accepteert
         run: |
           grep -q "'zonecompact','zoneschuif','zonelijn'" backend/lo-duo/index.ts
