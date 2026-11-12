@@ -47,6 +47,8 @@ try{
    assert(await page.locator('#explorer').evaluate(el=>el.classList.contains('open')),'Experiment list opens');
    await page.locator('[data-open="wheatstone"]').click();
    await page.waitForFunction(()=>document.querySelector('#labTitle').textContent.toLowerCase().includes('wheatstone'));
+   await page.waitForFunction(()=>!document.querySelector('#explorer').classList.contains('open'));
+   await page.waitForTimeout(270);
   }else{
    const inputs=page.locator('.precision-control-row input[type="number"]');
    assert(await inputs.count()>=2,'Number inputs replace bulky sliders');
@@ -61,6 +63,9 @@ try{
   }
   assert.equal(await page.locator('#num-R3').count(),0,'Hidden Wheatstone resistance remains unknown');
   assert(await page.locator('#num-R4').count()===1,'Other circuit settings remain editable');
+  const actionGeometry=await page.evaluate(()=>{const a=document.querySelector('#inquiryAction').getBoundingClientRect(),r=document.querySelector('#inquiryBar').getBoundingClientRect();return{actionLeft:a.left,actionRight:a.right,barLeft:r.left,barRight:r.right}});
+  assert(actionGeometry.actionLeft>=actionGeometry.barLeft-1&&actionGeometry.actionRight<=actionGeometry.barRight+1,'Research action is not clipped: '+JSON.stringify(actionGeometry));
+  if(width<=720)assert(!(await page.locator('#explorer').evaluate(el=>el.classList.contains('open'))),'The experiment chooser closes after selection');
   await page.screenshot({path:'test-results/physics-fixed-'+engine.name()+'-'+width+'.png'});
   await page.goto(base+'/tools/science-observatory/labs/natuurkunde/#interference',{waitUntil:'load'});
   await page.waitForFunction(()=>document.querySelector('#labTitle').textContent.toLowerCase().includes('interferentie'));
