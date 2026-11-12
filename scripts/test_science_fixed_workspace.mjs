@@ -340,8 +340,8 @@ try{
     const held=await page.evaluate(()=>({playing:state.playing,captured:state.pointer.size,marker:document.querySelector('#stage').classList.contains('orbit-held'),time:state.t,yaw:state.camera.yaw}));
     assert(!held.playing&&held.captured===1&&held.marker,id+' blijft vast in de hand en pauzeert');
     await page.mouse.move(x+75,y-31,{steps:6});
-    const rotated=await page.evaluate(()=>({playing:state.playing,yaw:state.camera.y,pitch:state.camera.pitch,time:state.t}));
-    assert(rotated.yaw>held.yaw+.3,id+' draait zichtbaar mee met de muis');
+    const rotated=await page.evaluate(()=>({playing:state.playing,yaw:state.camera.yaw,pitch:state.camera.pitch,time:state.t,pointers:state.pointer.size}));
+    assert(rotated.yaw>held.yaw+.3,id+' draait zichtbaar mee met de muis: '+JSON.stringify({width,held,rotated,x,y}));
     assert(Math.abs(rotated.time-held.time)<.02,id+' laat de proef stilstaan tijdens het onderzoeken');
     await page.mouse.up();
     const released=await page.evaluate(()=>({playing:state.playing,count:state.pointer.size,yaw:state.camera.y,marker:document.querySelector('#stage').classList.contains('orbit-held')}));
