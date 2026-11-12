@@ -4,6 +4,7 @@ on:
     branches: [main]
     paths:
       - 'tools/lo-aanvalslab/**'
+      - 'scripts/test_lo_zone.py'
       - 'backend/lo-duo/**'
       - '.github/workflows/lo-zone-verify.yml'
   workflow_dispatch:
