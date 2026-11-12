@@ -418,7 +418,11 @@ function simulate(){
    }else{
     const receivers=off.slice().sort((u,v)=>u.y-v.y);
     const best=receivers[Math.min(index,receivers.length-1)]||receiver;
-    if(best){
+    if(primary&&owner&&defenders.length>1){
+     // Een lijnverdediging zonder druk op de bal laat de baldrager
+     // ongehinderd doorlopen. Eén speler remt af, de rest bewaakt passes.
+     tx=ballPos.x+PX*.95;ty=ballPos.y*.80+325*.20;
+    }else if(best){
      // Afdekken aan de balzijde van de ontvanger. Midden in de lijn
      // staan werkt bij korte passes vaak te laat: de speler kan dan
      // zowel ontvanger als pass niet meer op tijd bereiken.
