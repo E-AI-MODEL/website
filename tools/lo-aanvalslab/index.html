@@ -22,8 +22,20 @@
   .side{max-height:42dvh}.fieldframe{padding:2px}
   .bottom .small{display:none}.bottom .hint{font-size:10px}
 }
+
+.lo-lobby[hidden]{display:none!important}.lo-lobby{position:fixed;inset:0;z-index:20;background:#061218f3;display:grid;place-items:center;padding:16px}.lo-lobby-box{background:#10252d;border:1px solid #36575b;border-radius:16px;width:min(490px,100%);padding:25px;box-shadow:0 30px 120px #000b}.lo-lobby h2{margin:7px 0 13px;font-size:27px;letter-spacing:-.04em}.lo-lobby p{font-size:13px;line-height:1.6;color:#b7ced0}.lo-lobby-form{display:flex;gap:9px;align-items:center;margin-top:13px}.lo-lobby input{min-width:0;flex:1;border:1px solid #45616c;background:#071820;color:#e9f5f0;padding:12px;border-radius:9px;font:700 17px ui-monospace,monospace;letter-spacing:.09em;text-transform:uppercase}.lo-lobby button{flex-shrink:0}.lo-room-head{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.lo-room-head strong{font-size:22px;letter-spacing:.11em}.lo-room-status{padding:9px 11px;border-radius:9px;background:#173b36;color:#c0f7de;font-size:12px}.lo-lobby-error{color:#ffb3b8!important;min-height:17px}.lo-room-badge{font-weight:700;color:#bff5d8}.lo-lobby-row{display:flex;gap:8px;flex-wrap:wrap;margin:15px 0 0}.lo-online-info{font-size:12px;color:#bff5d8}.lo-online-chip{border:1px solid #3a7963;border-radius:16px;padding:4px 9px;color:#bff5d8;font-size:11px}.lo-live-tag{display:flex;align-items:center;gap:6px}
 </style></head><body class="eai-refresh"><div class="app"><header class="top"><div class="brand"><span class="mark">LO</span><div><div class="eyebrow">TACTISCH SPELLAB</div><h1>Speel het uit.</h1></div></div><button id="new" class="btn">Nieuwe spelsituatie</button></header><div class="shell"><section class="fieldpane"><div class="fieldhead"><span id="stage" class="pill">Voorbereiden</span><span id="stagehelp" class="small">Versleep de spelers van jouw team</span></div><div class="fieldframe"><svg id="pitch" viewBox="0 0 1000 650" role="img" aria-label="Interactief speelveld waarop je spelers kunt verschuiven"></svg></div><div class="bottom"><div><div id="instruction" class="hint">De bal ligt bij aanvaller 1. Maak je opstelling en speel de hele aanval.</div><div id="under" class="small setup-tip">De wit-zwarte bal is bij aanvaller 1. Versleep je team.</div></div><div class="actions"><button id="reset" class="btn">Beginopstelling</button><button id="primary" class="btn main">Speel de aanval af ▶</button></div></div></section><aside class="side"><div><h3>Jouw opdracht</h3><h2 id="tasktitle">Maak een kans</h2></div><p id="task" class="hint" style="margin:0">Kies waar je spelers beginnen. Welke opstelling levert volgens jou de beste aanval op?</p><div class="sep"></div><div id="prep"><h3>Geselecteerde speler</h3><div id="selected" class="hint">Tik op een speler om zijn opdracht te kiezen.</div><div id="intents" class="intent-grid"></div><p class="small" id="intentHelp">Sleep een speler naar een plek en kies wat hij tijdens de aanval doet.</p></div><div class="grow"></div><div class="sep"></div><p id="insight" class="hint" style="margin:0">Zet je spelers klaar. Hun opdrachten bepalen hoe ze straks bewegen.</p><div id="after" class="actions hide"><button id="again" class="btn main">Pas plan aan</button><button id="replay" class="btn">Speel opnieuw</button></div></aside></div><div class="foot">Oefenmodel 4 tegen 4 · geschatte loop- en reactietijden · geen voorspelling van echte wedstrijden</div></div>
-<div id="welcome" class="veil"><div class="welcome"><div class="eyebrow">LO · SAMENSPEL & RUIMTE</div><h2>Wie neemt de beslissing?</h2><p>Je krijgt een stilstaand moment uit een aanval. Kies een opstelling en zie hoe het spel zich daarna ontwikkelt. Geen losse instellingen. Jij maakt het plan, de spelers voeren het uit.</p><div class="choices"><button class="choice" data-mode="attack"><b>Ik val aan ↗</b><span>Zet je aanvallers neer en geef ze loopacties.</span></button><button class="choice" data-mode="defend"><b>Ik verdedig ◇</b><span>Zet je verdedigers neer en kies hoe ze de aanval afstoppen.</span></button><button class="choice" data-mode="duo"><b>Wij spelen samen ↔</b><span>Aanval en verdediging maken om de beurt hun eigen plan.</span></button></div></div></div>
+<div id="welcome" class="veil"><div class="welcome"><div class="eyebrow">LO · SAMENSPEL & RUIMTE</div><h2>Wie neemt de beslissing?</h2><p>Je krijgt een stilstaand moment uit een aanval. Kies een opstelling en zie hoe het spel zich daarna ontwikkelt. Geen losse instellingen. Jij maakt het plan, de spelers voeren het uit.</p><div class="choices"><button class="choice" data-mode="attack"><b>Ik val aan ↗</b><span>Zet je aanvallers neer en geef ze loopacties.</span></button><button class="choice" data-mode="defend"><b>Ik verdedig ◇</b><span>Zet je verdedigers neer en kies hoe ze de aanval afstoppen.</span></button><button class="choice" id="onlineChoice"><b>Wij spelen samen ↔</b><span>Speel met twee apparaten in een eigen online kamer.</span></button></div></div></div>
+<section id="onlineLobby" class="lo-lobby" hidden aria-label="Online spelkamer"><div class="lo-lobby-box">
+<div class="eyebrow">LO · ONLINE DUOSPEL</div><h2 id="loLobbyTitle">Samen spelen</h2>
+<div id="loJoinSection"><p>Maak een kamer aan of voer de code van je medespeler in. Iedereen speelt op een eigen scherm.</p>
+<div class="lo-lobby-row"><button class="btn main" id="loCreate">Maak een spelkamer</button></div>
+<div class="lo-lobby-form"><input id="loCodeInput" maxlength="8" inputmode="text" autocapitalize="characters" placeholder="KAMERCODE" aria-label="Kamercode"><button class="btn" id="loJoin">Doe mee</button></div>
+</div><div id="loRoomSection" hidden><div class="lo-room-head"><strong id="loRoomCode"></strong><button class="btn" id="loCopy">Kopieer uitnodiging</button></div>
+<p class="lo-online-info" id="loRoomRole"></p><div class="lo-room-status" id="loRoomState">Wachten op de andere speler...</div>
+<p>Je kunt ondertussen je eigen team neerzetten. Tik op <b>Klaar</b> wanneer je plan af is. Je ziet het andere plan pas als beide leerlingen klaar zijn.</p>
+<div class="lo-lobby-row"><button class="btn main" id="loGoField">Naar mijn speelveld</button></div></div>
+<p id="loError" class="lo-lobby-error" aria-live="polite"></p><button class="btn" id="loClose">Terug</button></div></section>
 <!-- Onderzoeksbasis: Spearman (2018) / Friends of Tracking pitch control;
 Metrica Sports sample data (voorbeeld van tracking en events);
 small-sided games 4v4, Human Movement Science 2014. De huidige parameters
@@ -50,16 +62,16 @@ const s=(tag,attrs={},parent=svg)=>{const n=document.createElementNS(NS,tag);Obj
 function ballAt(p){return {x:p.x+22,y:p.y+19}}
 function drawBall(pos,parent){const g=s('g',{transform:`translate(${pos.x} ${pos.y}) scale(${window.innerWidth<600?1.3:1})`,'aria-label':'Voetbal','data-ball':'true','pointer-events':'none'},parent);s('circle',{cx:0,cy:1,r:17,fill:'#061b1d',opacity:.78},g);s('circle',{cx:0,cy:0,r:13,fill:'#f8faf9',stroke:'#e6f9ee','stroke-width':2},g);s('path',{d:'M0 -5L5 -2L3 4L-3 4L-5 -2Z',fill:'#15292d'},g);for(const d of ['M-1 -12L-5 -8L-5 -2','M9 -9L5 -2','M11 5L3 4','M-11 5L-3 4','M-5 10L0 12L5 10'])s('path',{d,fill:'none',stroke:'#15292d','stroke-width':1.6,'stroke-linecap':'round'},g)}
 function drawPitch(){svg.replaceChildren();s('rect',{x:5,y:5,width:990,height:640,rx:17,fill:'#103a37',stroke:'#35575a','stroke-width':2});for(let i=0;i<10;i++)s('rect',{x:10+i*99,y:8,width:99,height:634,fill:i%2?'#ffffff':'#000000',opacity:.025});s('rect',{x:55,y:50,width:890,height:550,rx:2,fill:'none',stroke:'#80b5aa','stroke-width':2,opacity:.5});s('path',{d:'M500 50V600',stroke:'#80b5aa','stroke-width':2,opacity:.5});s('circle',{cx:500,cy:325,r:82,fill:'none',stroke:'#80b5aa','stroke-width':2,opacity:.5});s('rect',{x:55,y:188,width:145,height:275,fill:'none',stroke:'#80b5aa','stroke-width':2,opacity:.5});s('rect',{x:800,y:188,width:145,height:275,fill:'none',stroke:'#80b5aa','stroke-width':2,opacity:.5});s('rect',{x:945,y:264,width:20,height:122,fill:'#5ce0af',opacity:.23,stroke:'#b6f5d7','stroke-width':2});s('path',{d:'M955 325l-20 -11v22z',fill:'#b6f5d7',opacity:.7});s('text',{x:925,y:632,fill:'#91beb0','font-size':13,'text-anchor':'end'}).textContent='AANVALSRICHTING →';s('g',{id:'traces'});s('g',{id:'actors'})}
-function draw(actors=players,ball=null,trail=[]){const layer=el('actors');layer.replaceChildren();const traces=el('traces');traces.replaceChildren();if(state==='setup'){const owner=actors.find(p=>p.id==='a0');actors.filter(p=>p.team==='a'&&p.id!=='a0').forEach(p=>s('line',{x1:owner.x,y1:owner.y,x2:p.x,y2:p.y,stroke:'#5ce0af','stroke-width':1.35,'stroke-dasharray':'4 9',opacity:.26},traces))}if(trail.length>1){const path=trail.map((p,i)=>(i?'L':'M')+p.x+' '+p.y).join(' ');s('path',{d:path,fill:'none',stroke:'#fff1bc','stroke-width':2.5,opacity:.45,'stroke-dasharray':'5 7'},traces)}for(const p of actors){const can=state==='setup'&&(mode==='duo'?p.team===phase:p.team===(mode==='attack'?'a':'d'));const g=s('g',{'data-id':p.id,style:can?'cursor:grab':'cursor:default'},layer);s('circle',{cx:p.x,cy:p.y,r:24,fill:p.team==='a'?'#123b34':'#3b2633',stroke:p.id===selected?'#fff':(p.team==='a'?'#5ce0af':'#fb8190'),'stroke-width':p.id===selected?5:can?3:2,opacity:can?1:.83},g);s('text',{x:p.x,y:p.y+5,'text-anchor':'middle',fill:'#fff','font-size':15,'font-weight':750,'pointer-events':'none'},g).textContent=(+p.id[1]+1);if(can)s('circle',{cx:p.x,cy:p.y,r:30,fill:'transparent','data-id':p.id},g)}drawBall(ball||ballAt(actors.find(p=>p.id==='a0')),layer)}
+function draw(actors=players,ball=null,trail=[]){const layer=el('actors');layer.replaceChildren();const traces=el('traces');traces.replaceChildren();if(state==='setup'){const owner=actors.find(p=>p.id==='a0');actors.filter(p=>p.team==='a'&&p.id!=='a0').forEach(p=>s('line',{x1:owner.x,y1:owner.y,x2:p.x,y2:p.y,stroke:'#5ce0af','stroke-width':1.35,'stroke-dasharray':'4 9',opacity:.26},traces))}if(trail.length>1){const path=trail.map((p,i)=>(i?'L':'M')+p.x+' '+p.y).join(' ');s('path',{d:path,fill:'none',stroke:'#fff1bc','stroke-width':2.5,opacity:.45,'stroke-dasharray':'5 7'},traces)}for(const p of actors){const can=state==='setup'&&((mode==='duo'||mode==='online')?p.team===phase:p.team===(mode==='attack'?'a':'d'));const g=s('g',{'data-id':p.id,style:can?'cursor:grab':'cursor:default'},layer);s('circle',{cx:p.x,cy:p.y,r:24,fill:p.team==='a'?'#123b34':'#3b2633',stroke:p.id===selected?'#fff':(p.team==='a'?'#5ce0af':'#fb8190'),'stroke-width':p.id===selected?5:can?3:2,opacity:can?1:.83},g);s('text',{x:p.x,y:p.y+5,'text-anchor':'middle',fill:'#fff','font-size':15,'font-weight':750,'pointer-events':'none'},g).textContent=(+p.id[1]+1);if(can)s('circle',{cx:p.x,cy:p.y,r:30,fill:'transparent','data-id':p.id},g)}drawBall(ball||ballAt(actors.find(p=>p.id==='a0')),layer)}
 const tactics={a:[['diep','Diep gaan'],['breed','Breed houden'],['bal','In de bal'],['stil','Blijven staan'],['kruis','Kruisen'],['ruimte','Ruimte maken']],d:[['dek','Man dekken'],['lijn','Passlijn sluiten'],['druk','Druk op bal'],['zone','Zone bewaken'],['volg','Loopactie volgen'],['terug','Terugzakken']]};
 const carrierTactics=[['pas','Passen'],['drijf','Bal meenemen'],['bewaar','Bal vasthouden'],['zijde','Naar de zijkant']];
-function choose(id){const team=mode==='duo'?phase:mode==='attack'?'a':'d',p=players.find(x=>x.id===id);if(!p||p.team!==team||state!=='setup')return;selected=id;const hasBall=id==='a0',opts=hasBall?carrierTactics:tactics[team];el('selected').textContent=(team==='a'?'Aanvaller ':'Verdediger ')+(+id[1]+1)+(hasBall?' · aan de bal':'');el('intents').replaceChildren();opts.forEach(([key,name])=>{const b=document.createElement('button');b.className='intent'+(p.intent===key?' active':'');b.textContent=name;b.setAttribute('aria-pressed',p.intent===key?'true':'false');b.onclick=()=>{p.intent=key;choose(id);draw()};el('intents').append(b)});draw()}
-function refresh(){const side=mode==='duo'?phase:mode==='attack'?'a':'d',pre=state==='setup';el('stage').textContent=pre?(mode==='duo'?(side==='a'?'Duo · aanval':'Duo · verdediging'):(side==='a'?'Aanval':'Verdediging')):state==='playing'?'De aanval loopt':state==='paused'?'Gepauzeerd':'Aanval afgelopen';el('stagehelp').textContent=pre?'Verplaats de '+(side==='a'?'groene aanvallers':'roze verdedigers')+' en kies hun opdracht':'De aanval speelt vanzelf';el('tasktitle').textContent=pre?(side==='a'?'Maak ruimte':'Houd de aanval tegen'):state==='playing'?'Kijk naar de loopacties':'De aanval is afgelopen';el('task').textContent=pre?(side==='a'?'Zet spelers neer. Speler 1 kiest wat hij met de bal doet; de anderen krijgen een loopactie.':'Verplaats verdedigers en geef ze een opdracht. Sluit de afspeelmogelijkheden af.'):'Bekijk wat de afspraken opleveren. Verander één keuze en speel opnieuw.';el('primary').textContent=pre?(mode==='duo'&&side==='a'?'Geef scherm aan verdediging':'Speel de aanval ▶'):state==='playing'?'Pauzeer':state==='paused'?'Verder spelen ▶':'Speel opnieuw ▶';el('reset').classList.toggle('hide',!pre);el('prep').classList.toggle('hide',!pre);el('after').classList.toggle('hide',state!=='done');el('instruction').textContent=pre?(mode==='duo'?(side==='a'?'Aanval: zet je team neer en kies de loopacties.':'Verdediging: stel je team op en kies hoe het verdedigt.'):'Kies spelers en geef ze opdrachten. Speel daarna de volledige aanval af.'):(state==='done'?'Je kunt dezelfde aanval opnieuw bekijken of het plan aanpassen.':'De teams voeren hun opdrachten uit.');el('under').textContent=pre?'Tik op een speler voor zijn opdracht.':'Passes en onderscheppingen worden automatisch berekend.'}
-function resetSetup(){cancelAnimationFrame(raf);state='setup';phase='a';selected=null;players=copy(scenario);el('insight').textContent='Speler 1 begint met de bal. Kies je opstelling en spelersopdrachten.';drawPitch();draw();refresh();choose(mode==='defend'?'d0':'a0')}
+function choose(id){const team=(mode==='duo'||mode==='online')?phase:mode==='attack'?'a':'d',p=players.find(x=>x.id===id);if(!p||p.team!==team||state!=='setup')return;selected=id;const hasBall=id==='a0',opts=hasBall?carrierTactics:tactics[team];el('selected').textContent=(team==='a'?'Aanvaller ':'Verdediger ')+(+id[1]+1)+(hasBall?' · aan de bal':'');el('intents').replaceChildren();opts.forEach(([key,name])=>{const b=document.createElement('button');b.className='intent'+(p.intent===key?' active':'');b.textContent=name;b.setAttribute('aria-pressed',p.intent===key?'true':'false');b.onclick=()=>{p.intent=key;choose(id);draw();if(mode==='online')window.__loOnlineDirty?.()};el('intents').append(b)});draw()}
+function refresh(){const side=(mode==='duo'||mode==='online')?phase:mode==='attack'?'a':'d',pre=state==='setup';el('stage').textContent=pre?((mode==='duo'||mode==='online')?(side==='a'?'Duo · aanval':'Duo · verdediging'):(side==='a'?'Aanval':'Verdediging')):state==='playing'?'De aanval loopt':state==='paused'?'Gepauzeerd':'Aanval afgelopen';el('stagehelp').textContent=pre?'Verplaats de '+(side==='a'?'groene aanvallers':'roze verdedigers')+' en kies hun opdracht':'De aanval speelt vanzelf';el('tasktitle').textContent=pre?(side==='a'?'Maak ruimte':'Houd de aanval tegen'):state==='playing'?'Kijk naar de loopacties':'De aanval is afgelopen';el('task').textContent=pre?(side==='a'?'Zet spelers neer. Speler 1 kiest wat hij met de bal doet; de anderen krijgen een loopactie.':'Verplaats verdedigers en geef ze een opdracht. Sluit de afspeelmogelijkheden af.'):'Bekijk wat de afspraken opleveren. Verander één keuze en speel opnieuw.';el('primary').textContent=pre?(mode==='duo'&&side==='a'?'Geef scherm aan verdediging':'Speel de aanval ▶'):state==='playing'?'Pauzeer':state==='paused'?'Verder spelen ▶':'Speel opnieuw ▶';el('reset').classList.toggle('hide',!pre);el('prep').classList.toggle('hide',!pre);el('after').classList.toggle('hide',state!=='done');el('instruction').textContent=pre?((mode==='duo'||mode==='online')?(side==='a'?'Aanval: zet je team neer en kies de loopacties.':'Verdediging: stel je team op en kies hoe het verdedigt.'):'Kies spelers en geef ze opdrachten. Speel daarna de volledige aanval af.'):(state==='done'?'Je kunt dezelfde aanval opnieuw bekijken of het plan aanpassen.':'De teams voeren hun opdrachten uit.');el('under').textContent=pre?'Tik op een speler voor zijn opdracht.':'Passes en onderscheppingen worden automatisch berekend.'}
+function resetSetup(){cancelAnimationFrame(raf);state='setup';if(mode!=='online')phase='a';selected=null;players=copy(scenario);el('insight').textContent='Speler 1 begint met de bal. Kies je opstelling en spelersopdrachten.';drawPitch();draw();refresh();choose((mode==='defend'||(mode==='online'&&phase==='d'))?'d0':'a0')}
 function start(){initial=copy(players);simSeed=1337+scenarioIndex*4099;simulate();state='playing';time=0;last=0;el('insight').textContent='De aanval speelt af. Kijk hoe de spelers bewegen.';refresh();showFrame(0);cancelAnimationFrame(raf);raf=requestAnimationFrame(tick)}
 function point(e){const r=svg.getBoundingClientRect();return {x:clamp((e.clientX-r.left)*1000/r.width,70,930),y:clamp((e.clientY-r.top)*650/r.height,73,575)}}
-svg.addEventListener('pointerdown',e=>{if(state!=='setup')return;const g=e.target.closest('[data-id]');if(!g)return;const id=g.getAttribute('data-id'),p=players.find(p=>p.id===id);if(!p||p.team!==(mode==='duo'?phase:mode==='attack'?'a':'d'))return;choose(id);drag=id;svg.setPointerCapture(e.pointerId)});
-svg.addEventListener('pointermove',e=>{if(!drag)return;const p=players.find(p=>p.id===drag),v=point(e);p.x=v.x;p.y=v.y;draw()});svg.addEventListener('pointerup',()=>drag=null);svg.addEventListener('pointercancel',()=>drag=null);
+svg.addEventListener('pointerdown',e=>{if(state!=='setup')return;const g=e.target.closest('[data-id]');if(!g)return;const id=g.getAttribute('data-id'),p=players.find(p=>p.id===id);if(!p||p.team!==((mode==='duo'||mode==='online')?phase:mode==='attack'?'a':'d'))return;choose(id);drag=id;svg.setPointerCapture(e.pointerId)});
+svg.addEventListener('pointermove',e=>{if(!drag)return;const p=players.find(p=>p.id===drag),v=point(e);p.x=v.x;p.y=v.y;draw()});svg.addEventListener('pointerup',()=>{if(drag&&mode==='online')window.__loOnlineDirty?.();drag=null});svg.addEventListener('pointercancel',()=>drag=null);
 // Aankomsttijd: reactietijd, huidige snelheid en maximale versnelling. Dit is een benadering
 // gebaseerd op de literatuur over pitch control, geen op wedstrijddata getraind model.
 function reachTime(p,target,reactionOverride){const reaction=reactionOverride??p.react;const dx=target.x-(p.x+p.vx*reaction*.65),dy=target.y-(p.y+p.vy*reaction*.65);const metres=Math.hypot(dx,dy)/PX;const v=Math.min(p.speed,Math.hypot(p.vx,p.vy)/PX)*.5;const a=p.accel,tt=(p.speed-v)/a,dd=v*tt+.5*a*tt*tt;return reaction+(metres<=dd?(-v+Math.sqrt(v*v+2*a*metres))/a:tt+(metres-dd)/p.speed)}
@@ -117,13 +129,122 @@ function finish(){cancelAnimationFrame(raf);state='done';refresh();if(result==='
 function newGame(){scenarioIndex=(scenarioIndex+1)%scenarios.length;makeScenario(scenarioIndex);resetSetup();el('welcome').classList.remove('hide')}
 document.querySelectorAll('[data-mode]').forEach(btn=>btn.addEventListener('click',()=>{mode=btn.dataset.mode;el('welcome').classList.add('hide');resetSetup()}));
 el('primary').addEventListener('click',()=>{if(state==='setup'){if(mode==='duo'&&phase==='a'){phase='d';selected=null;refresh();choose('d0');draw();return}start()}else if(state==='playing'){state='paused';cancelAnimationFrame(raf);refresh()}else if(state==='paused'){state='playing';last=0;refresh();raf=requestAnimationFrame(tick)}else if(state==='done'){state='playing';time=0;last=0;refresh();showFrame(0);raf=requestAnimationFrame(tick)}});
-el('reset').addEventListener('click',()=>{const side=mode==='duo'?phase:(mode==='defend'?'d':'a');players=players.map(p=>p.team===side?copy(scenario.find(x=>x.id===p.id)):p);choose(selected&&selected[0]===side?selected:side+'0');draw()});
-el('again').addEventListener('click',()=>{players=copy(initial);state='setup';phase='a';selected=null;draw();refresh();choose(mode==='defend'?'d0':'a0');el('insight').textContent='Verander één opdracht en speel opnieuw.'});
+el('reset').addEventListener('click',()=>{const side=(mode==='duo'||mode==='online')?phase:(mode==='defend'?'d':'a');players=players.map(p=>p.team===side?copy(scenario.find(x=>x.id===p.id)):p);choose(selected&&selected[0]===side?selected:side+'0');draw()});
+el('again').addEventListener('click',()=>{players=copy(initial);state='setup';if(mode!=='online')phase='a';selected=null;draw();refresh();choose((mode==='defend'||(mode==='online'&&phase==='d'))?'d0':'a0');el('insight').textContent='Verander één opdracht en speel opnieuw.'});
 el('replay').addEventListener('click',()=>{state='playing';time=0;last=0;refresh();showFrame(0);raf=requestAnimationFrame(tick)});
 el('new').addEventListener('click',newGame);
 makeScenario(0);resetSetup();el('welcome').classList.remove('hide');
+// Publieke duo-API: de server bepaalt de rol en het gedeelde startmoment.
+window.__loOnline={
+  open(role,index){cancelAnimationFrame(raf);mode='online';phase=role;scenarioIndex=index;makeScenario(index);resetSetup()},
+  getPlan(){return players.filter(p=>p.team===phase).map(p=>({id:p.id,x:Math.round(p.x*100)/100,y:Math.round(p.y*100)/100,intent:p.intent}))},
+  setPlan(plan){if(!Array.isArray(plan))return;for(const item of plan){const p=players.find(x=>x.id===item.id&&x.team===phase);if(p){p.x=item.x;p.y=item.y;p.intent=item.intent}};draw();},
+  getRole:()=>phase,
+  lock(){drag=null;state='waiting';refresh();draw()},
+  unlock(){state='setup';refresh();draw();choose(phase+'0')},
+  play(attack,defence,seed,startAt,clockDelta=0){
+    cancelAnimationFrame(raf);
+    const plan=[...attack,...defence];
+    for(const item of plan){const p=players.find(x=>x.id===item.id);if(!p)continue;p.x=item.x;p.y=item.y;p.intent=item.intent}
+    initial=copy(players);simSeed=seed;simulate();state='playing';time=Math.min(duration,Math.max(0,(Date.now()+clockDelta-Date.parse(startAt))/1000));last=0;
+    refresh();showFrame(time);cancelAnimationFrame(raf);raf=requestAnimationFrame(tick);
+  },
+  getState:()=>state,
+  replay(){cancelAnimationFrame(raf);state='playing';time=0;last=0;refresh();showFrame(0);raf=requestAnimationFrame(tick)}
+};
 // Alleen testomgeving: reproductie van spelsituaties zonder UI-animatie.
 window.__loLabTest={run(input,withSeed=1337){initial=copy(input);simSeed=withSeed;simulate();return copy(summary)},getPlayers:()=>copy(players),getFrames:()=>copy(frames),getEvents:()=>copy(events),scenario:index=>{makeScenario(index);return copy(players)},reachTime};
 })();
 
+</script><script>(()=>{'use strict';
+const ENDPOINT='https://ngcyfbstajfcfdhlelbz.supabase.co/functions/v1/lo-duo-room';
+const $=id=>document.getElementById(id), bridge=window.__loOnline;
+let session=null,room=null,dirty=false,busy=false,pending=0,polling=false,launchId='',online=false,pollTimer=0,clockDelta=0;
+const lobby=$('onlineLobby'),status=$('loRoomState'),error=$('loError');
+function fail(msg){error.textContent=msg||'';if(online)$('insight').textContent=msg||'';}
+function format(){if(!room)return;const label=room.role==='a'?'Aanval':'Verdediging';$('loRoomCode').textContent=room.code;$('loRoomRole').textContent='Jij speelt: '+label;
+ const text=room.status==='playing'?'De aanval is gestart. Beide apparaten zien hetzelfde spel.':!room.joined?'Kamer aangemaakt. Geef de code aan de verdediger.':room.mineReady?'Jouw plan staat vast. '+(room.otherReady?'De aanval start...':'Wachten op het andere team.'):room.otherReady?'De ander is klaar. Maak jouw plan af.':'Beide teams maken hun plan.';
+ status.textContent=text;
+ $('loLobbyTitle').textContent='Spelkamer '+room.code;
+ if(!online)return;
+ $('stage').textContent=room.status==='playing'?'Samen spelen':room.mineReady?'Plan staat vast':label+' · online';
+ if(room.status!=='playing'){$('instruction').textContent=room.mineReady?'Jouw plan staat vast. Wacht op de andere speler.':'Versleep je team en geef spelers opdrachten. Klik daarna op Klaar.';
+ $('primary').textContent=room.mineReady?'Bewerk plan':'Klaar';$('primary').disabled=busy;}
+ $('new').textContent=room.code+' · Online';
+}
+async function api(action,extra={}){
+ const body=action==='create'?{action,scenario:Math.floor(Math.random()*4)}:action==='join'?{action,code:extra.code}:{action,code:session.code,token:session.token,...extra};
+ const control=new AbortController(),alarm=setTimeout(()=>control.abort(),9000);
+ try{
+  const res=await fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body),signal:control.signal,cache:'no-store'});
+  const data=await res.json().catch(()=>({error:'Ongeldig serverantwoord.'}));
+  if(!res.ok)throw new Error(data.error||'Verbinding met spelkamer mislukt.');
+  return data;
+ }catch(e){if(e.name==='AbortError')throw Error('De server reageert niet. Probeer opnieuw.');throw e;}finally{clearTimeout(alarm)}
+}
+function stash(){if(session){try{localStorage.setItem('lo-duo-'+session.code,session.token);localStorage.setItem('lo-duo-last',session.code)}catch{}const url=new URL(location.href);url.searchParams.set('kamer',session.code);history.replaceState({},'',url.toString())}}
+function openLobby(){lobby.hidden=false;error.textContent='';$('loJoinSection').hidden=!!session;$('loRoomSection').hidden=!session;format();}
+function closeLobby(){lobby.hidden=true;}
+function enter(res,restore=false){session={code:res.room.code,token:res.token||session?.token};room=res.room;online=true;stash();bridge.open(room.role,room.scenario);if(room.ownPlan)bridge.setPlan(room.ownPlan);$('welcome').classList.add('hide');$('loJoinSection').hidden=true;$('loRoomSection').hidden=false;$('loGoField').textContent='Naar mijn speelveld';dirty=false;launchId='';applyRoom(res.room);openLobby();startPolling();if(restore)closeLobby();}
+async function withLock(fn){if(busy)return;busy=true;format();try{await fn();fail('')}catch(e){fail(e.message)}finally{busy=false;format()}}
+async function connect(kind){await withLock(async()=>{if(kind==='join'){
+ const code=$('loCodeInput').value.toUpperCase().replace(/[^A-HJ-NP-Z2-9]/g,'');if(code.length!==8)throw Error('Voer de kamercode van 8 tekens in.');
+ const result=await api('join',{code});enter(result);
+ }else{enter(await api('create'));}})}
+async function sync(){if(!session||polling)return;polling=true;try{const result=await api('get');applyRoom(result.room)}catch(e){if(session)fail('Verbinding met je kamer onderbroken. Er wordt opnieuw geprobeerd.')}finally{polling=false}}
+function applyRoom(data){if(!session||data.code!==session.code)return;
+ if(room&&data.revision<room.revision)return;const before=room;room=data;if(data.serverNow)clockDelta=Date.parse(data.serverNow)-Date.now();
+ if(data.status==='playing'){
+  const id=data.startAt+':'+data.seed;
+  if(id!==launchId){
+   launchId=id;const r=data.role;const attacker=r==='a'?data.ownPlan:data.opponentPlan;const defender=r==='d'?data.ownPlan:data.opponentPlan;
+   if(!attacker||!defender){fail('De gezamenlijke opstelling ontbreekt.');return;}
+   // An authoritative start timestamp keeps two screens on the same timeline.
+   const begin=()=>{if(online&&room?.status==='playing'&&launchId===id){bridge.play(attacker,defender,data.seed,data.startAt,clockDelta);format();}};
+   const wait=Math.max(0,Date.parse(data.startAt)-(Date.now()+clockDelta));if(wait>0)setTimeout(begin,wait);else begin();
+   closeLobby();
+  }
+ }else{
+  launchId='';
+  const isLocked=bridge.getState()==='waiting';
+  if(data.mineReady&&!isLocked)bridge.lock();
+  else if(!data.mineReady&&isLocked){bridge.unlock();if(data.ownPlan)bridge.setPlan(data.ownPlan)}
+  if(before?.status==='playing'&&data.status!=='playing'){
+   bridge.open(data.role,data.scenario);if(data.ownPlan)bridge.setPlan(data.ownPlan);dirty=false;
+  }
+ }
+ format();
+}
+function startPolling(){clearInterval(pollTimer);pollTimer=setInterval(sync,1500);document.addEventListener('visibilitychange',()=>{if(!document.hidden)sync()},{passive:true})}
+async function savePlan(){if(!dirty)return;for(let i=0;i<3;i++)try{const reply=await api('save',{plan:bridge.getPlan()});dirty=false;applyRoom(reply.room);return}catch(e){if(i===2||!e.message.includes('elders gewijzigd'))throw e;await sync()}}
+async function primary(){if(!online||!room)return;
+ if(room.status==='playing')return; // Let the regular play/pause/replay button do its job.
+ await withLock(async()=>{
+  if(room.mineReady){const reply=await api('unready');applyRoom(reply.room)}
+  else{if(dirty)await savePlan();else if(!room.ownPlan){dirty=true;await savePlan()}
+   for(let i=0;i<3;i++)try{const reply=await api('ready');applyRoom(reply.room);return}catch(e){if(i===2||!e.message.includes('gewijzigd'))throw e;await sync()}
+  }
+ });
+}
+async function again(){if(!online||!room||room.status!=='playing')return;await withLock(async()=>{let result=await api('again');applyRoom(result.room)})}
+window.__loOnlineDirty=()=>{if(!online||bridge.getState()!=='setup')return;dirty=true;clearTimeout(pending);pending=setTimeout(()=>{if(!busy&&!room?.mineReady)withLock(savePlan)},750)};
+$('onlineChoice').addEventListener('click',openLobby);
+$('loCreate').addEventListener('click',()=>connect('create'));
+$('loJoin').addEventListener('click',()=>connect('join'));
+$('loCodeInput').addEventListener('keydown',e=>{if(e.key==='Enter')connect('join')});
+$('loClose').addEventListener('click',closeLobby);
+$('loGoField').addEventListener('click',closeLobby);
+$('loCopy').addEventListener('click',async()=>{
+ const url=new URL(location.href);url.searchParams.set('kamer',room.code);
+ try{await navigator.clipboard.writeText(url.toString());$('loCopy').textContent='Link gekopieerd'}catch{$('loCopy').textContent='Code: '+room.code;}
+});
+$('primary').addEventListener('click',e=>{if(online&&room?.status!=='playing'){e.stopImmediatePropagation();e.preventDefault();clearTimeout(pending);primary()}},true);
+$('again').addEventListener('click',e=>{if(online){e.stopImmediatePropagation();e.preventDefault();again()}},true);
+$('reset').addEventListener('click',()=>{if(online){dirty=true;clearTimeout(pending);pending=setTimeout(()=>withLock(savePlan),450)}},false);
+$('new').addEventListener('click',e=>{if(online){e.stopImmediatePropagation();e.preventDefault();openLobby()}},true);
+const linkCode=new URL(location.href).searchParams.get('kamer');if(linkCode){$('loCodeInput').value=linkCode.toUpperCase().trim();openLobby();}
+let lastCode=null;try{lastCode=localStorage.getItem('lo-duo-last')}catch{}
+const restoreCode=(linkCode||lastCode||'').toUpperCase();
+if(restoreCode){let token=null;try{token=localStorage.getItem('lo-duo-'+restoreCode)}catch{}if(token){session={code:restoreCode,token};api('get').then(res=>enter(res,true)).catch(()=>{session=null})}}
+})();
 </script></body></html>
