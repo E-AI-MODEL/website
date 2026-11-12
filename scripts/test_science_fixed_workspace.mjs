@@ -106,6 +106,73 @@ try{
   const actionGeometry=await page.evaluate(()=>{const a=document.querySelector('#inquiryAction').getBoundingClientRect(),r=document.querySelector('#inquiryBar').getBoundingClientRect();return{actionLeft:a.left,actionRight:a.right,barLeft:r.left,barRight:r.right}});
   assert(actionGeometry.actionLeft>=actionGeometry.barLeft-1&&actionGeometry.actionRight<=actionGeometry.barRight+1,'Research action is not clipped: '+JSON.stringify(actionGeometry));
   if(width<=720)assert(!(await page.locator('#explorer').evaluate(el=>el.classList.contains('open'))),'The experiment chooser closes after selection');
+
+  if(width===1440){
+   const uiCheck=await page.evaluate(()=>{
+    const problems=[];
+    for(const lab of experiments){
+     const g=labInterfaces[lab.id],keys=lab.controls.map(r=>r[0]);
+     if(!g){problems.push(lab.id+': geen bediening');continue}
+     if(g.main.length!==2||new Set(g.main).size!==2||g.main.some(k=>!keys.includes(k)))problems.push(lab.id+': onjuiste hoofdinstellingen');
+     if(!['time','control','inspect'].includes(g.mode))problems.push(lab.id+': grafiekrol ontbreekt');
+     if(g.mode==='control'&&g.axis!=='gas'&&!keys.includes(g.axis))problems.push(lab.id+': grafiek stuurt onbekende grootheid');
+     if(g.mode==='time'&&!g.factor)problems.push(lab.id+': tijdschaal ontbreekt');
+     try{const p=Object.fromEntries(lab.controls.map(([k,,,,,v])=>[k,v]));graphSpecFor(lab.id,p,0)}catch(e){problems.push(lab.id+': '+e.message)}
+    }
+    return {count:experiments.length,problems};
+   });
+   assert.equal(uiCheck.count,53,'Alle proeven houden een eigen bedieningsconfiguratie');
+   assert.deepEqual(uiCheck.problems,[],'Grafiek en fysieke bediening kloppen per proef');
+   const selectLab=async id=>{await page.evaluate(id=>loadLab(id),id);assert.equal(await page.locator('#labTitle').innerText(),await page.evaluate(id=>byId[id].title,id));};
+   const graphDrag=async(from,to=from)=>{
+    const rect=await page.locator('#plot').boundingBox(),y=rect.y+rect.height*.5;
+    await page.mouse.move(rect.x+rect.width*from,y);
+    await page.mouse.down();
+    await page.mouse.move(rect.x+rect.width*to,y,{steps:6});
+    await page.mouse.up();
+   };
+   await selectLab('ohm');
+   const ohmBefore=await page.evaluate(()=>({...state.p}));
+   const rOhm=await page.locator('#plot').boundingBox();
+   await page.mouse.move(rOhm.x+rOhm.width*.75,rOhm.y+rOhm.height*.5);
+   assert.equal(await page.evaluate(()=>state.p.U),ohmBefore.U,'Alleen aanwijzen verandert de spanning niet');
+   await graphDrag(.72,.87);
+   const ohm=await page.evaluate(()=>({p:{...state.p},readout:state.current.readouts[0][1]}));
+   assert(ohm.p.U>ohmBefore.U+4&&ohm.p.R===ohmBefore.R,'Slepen verandert alleen de spanning');
+   assert(Math.abs(Number(ohm.readout.split(' ')[0].replace(',','.'))-ohm.p.U/ohm.p.R)<.02,'Stroom volgt de wet van Ohm');
+   await selectLab('pendulum');
+   await graphDrag(.7);
+   const pendulum=await page.evaluate(()=>({t:state.t,playing:state.playing,p:{...state.p},domain:graphSpecFor(state.id,state.p,state.t)}));
+   assert(!pendulum.playing&&pendulum.t>0,'Slepen over tijd stopt de slinger en kiest een tijdstip');
+   const expectedPendulum=.7*(pendulum.domain.max-pendulum.domain.min)+pendulum.domain.min;
+   assert(Math.abs(pendulum.t-expectedPendulum)<.3,'Aflezing en simulatie gebruiken dezelfde tijd');
+   await selectLab('double');
+   const doubleBefore=await page.evaluate(()=>JSON.stringify(state.p));
+   await graphDrag(.68);
+   assert.equal(await page.evaluate(()=>JSON.stringify(state.p)),doubleBefore,'Bij een ruimtelijke intensiteitsgrafiek verandert een meetpunt geen golflengte');
+   assert((await page.locator('#graphDomain').innerText()).includes(':'),'Ruimtelijke meting is afleesbaar');
+   await selectLab('gas');
+   assert.equal(await page.locator('#num-mode').evaluate(el=>el.tagName),'SELECT','Gasproces is een betekenisvolle keuze');
+   await page.locator('#num-mode').selectOption('2');
+   assert(await page.locator('#num-T').isVisible(),'Bij vast volume is temperatuur direct verstelbaar');
+   assert(!(await page.locator('#num-V').isVisible()),'Vast volume staat achter de andere instellingen');
+   const gasBefore=await page.evaluate(()=>({...state.p}));
+   await graphDrag(.78);
+   const gas=await page.evaluate(()=>({...state.p}));
+   assert(gas.T>gasBefore.T&&gas.V===gasBefore.V,'Isochore grafiek verandert T en behoudt V');
+   await page.locator('#num-mode').selectOption('0');
+   assert(await page.locator('#num-V').isVisible(),'Bij constante temperatuur is volume direct verstelbaar');
+   await selectLab('resistors');
+   assert.equal(await page.locator('#num-mode').evaluate(el=>el.tagName),'SELECT','Serie en parallel zijn gewone keuzes');
+   await page.locator('#num-mode').selectOption('0');
+   await graphDrag(.76);
+   const series=await page.evaluate(()=>({p:{...state.p},r:state.current.readouts[0][1]}));
+   assert(Math.abs(Number(series.r.split(' ')[0].replace(',','.'))-(series.p.R1+series.p.R2))<.02,'Serie: weerstanden tellen op');
+   await page.locator('#num-mode').selectOption('1');
+   const parallel=await page.evaluate(()=>({p:{...state.p},r:state.current.readouts[0][1]}));
+   assert(Math.abs(Number(parallel.r.split(' ')[0].replace(',','.'))-parallel.p.R1*parallel.p.R2/(parallel.p.R1+parallel.p.R2))<.02,'Parallel: vervangingsweerstand volgt parallelformule');
+   await page.screenshot({path:'test-results/physics-graph-interactions-'+engine.name()+'.png'});
+  }
   await page.screenshot({path:'test-results/physics-fixed-'+engine.name()+'-'+width+'.png'});
   await page.goto(base+'/tools/science-observatory/labs/natuurkunde/#interference',{waitUntil:'load'});
   await page.waitForFunction(()=>document.querySelector('#labTitle').textContent.toLowerCase().includes('interferentie'));
