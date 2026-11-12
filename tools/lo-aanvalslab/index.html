@@ -47,7 +47,16 @@
 .source-popover{position:absolute;right:0;bottom:26px;width:min(380px,calc(100vw - 20px));max-height:min(62dvh,465px);overflow-y:auto;box-shadow:0 12px 45px #000b;border:1px solid #3b6361;border-radius:12px;background:#112830;color:#c5dbd7;text-align:left;padding:14px;font-size:11px;line-height:1.5}
 .source-popover strong{color:#e4f5ec;font-size:12px}.source-popover p{margin:8px 0}.source-popover b{color:#b8f1d9}.source-popover a{color:#89d9c5;text-decoration:underline;text-underline-offset:2px}.source-popover small{color:#86aba7}
 @media(max-width:880px){.source-detail{bottom:2px;right:8px;font-size:9px}.source-popover{bottom:23px;max-height:56dvh}}
-</style></head><body class="eai-refresh"><div class="app"><header class="top"><div class="brand"><span class="mark">LO</span><div><div class="eyebrow">TACTISCH SPELLAB</div><h1>Speel het uit.</h1></div></div><div class="top-actions"><label class="sport-label" for="sportSelect">Sport</label><select id="sportSelect" class="sport-select" aria-label="Kies de sport"><option value="0">Voetbal</option><option value="1">Hockey</option><option value="2">Handbal</option><option value="3">Basketbal</option></select><label class="sport-label" for="formationSelect">Teams</label><select id="formationSelect" class="sport-select formation-select" aria-label="Kies het aantal aanvallers en verdedigers"><option value="0">4 tegen 4</option><option value="1">2 tegen 1</option><option value="2">3 tegen 2</option><option value="3">4 tegen 3</option></select><button id="new" class="btn">Nieuwe spelsituatie</button></div></header><div class="shell"><section class="fieldpane"><div class="fieldhead"><span id="stage" class="pill">Voorbereiden</span><span id="stagehelp" class="small">Versleep de spelers van jouw team</span><label class="playback-control" for="playbackSpeed"><span>Tempo</span><select id="playbackSpeed" aria-label="Afspeelsnelheid"><option value="0.5">½×</option><option value="1" selected>1×</option><option value="1.5">1½×</option><option value="2">2×</option></select></label></div><div class="fieldframe"><svg id="pitch" viewBox="0 0 1000 650" role="img" aria-label="Interactief speelveld waarop je spelers kunt verschuiven"></svg></div><div class="bottom"><div><div id="instruction" class="hint">De bal ligt bij aanvaller 1. Maak je opstelling en speel de hele aanval.</div><div id="under" class="small setup-tip">Sleep een speler of tik eerst de speler en daarna zijn plek.</div></div><div class="actions"><button id="reset" class="btn">Beginopstelling</button><button id="primary" class="btn main">Speel de aanval af ▶</button></div></div></section><aside class="side"><div><h3>Jouw opdracht</h3><h2 id="tasktitle">Maak een kans</h2></div><p id="task" class="hint" style="margin:0">Kies waar je spelers beginnen. Welke opstelling levert volgens jou de beste aanval op?</p><div class="sep"></div><div id="prep"><h3>Geselecteerde speler</h3><div id="selected" class="hint">Tik op een speler om zijn opdracht te kiezen.</div><div id="intents" class="intent-grid"></div><p class="small" id="intentHelp">Sleep een speler, of tik de speler en daarna een vrije plek. Met de pijltjestoetsen kun je nauwkeurig schuiven.</p></div><div class="grow"></div><div class="sep"></div><p id="insight" class="hint" style="margin:0">Zet je spelers klaar. Hun opdrachten bepalen hoe ze straks bewegen.</p><div id="after" class="actions hide"><button id="again" class="btn main">Pas plan aan</button><button id="replay" class="btn">Speel opnieuw</button></div></aside></div><div class="foot"><span id="sportFoot">Voetbal</span> · <span id="formationFoot">4 tegen 4</span> · Oefenmodel · vergeleken met openbare wedstrijddata</div></div>
+/* Drie eigen zonevormen, compact en alleen zichtbaar wanneer verdedigen mag. */
+.zone-plans{margin:0 0 10px;padding:8px 9px;border:1px solid #345057;border-radius:9px;background:#0a2229}
+.zone-plans-head{font-size:10px;font-weight:700;color:#b5d6cd;letter-spacing:.015em;margin-bottom:6px}
+.zone-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}
+.zone-option{padding:7px 4px;border:1px solid #395760;border-radius:7px;color:#c8dedb;background:transparent;font-size:11px;cursor:pointer;min-width:0}
+.zone-option.active{background:#214e43;border-color:#76c9ad;color:#eafff3}
+.zone-option:focus-visible{outline:2px solid #a9efd0;outline-offset:1px}
+.zone-tip{font-size:10px;color:#91bcb4;line-height:1.36;margin-top:6px}
+@media(max-width:880px){.zone-plans{padding:6px 7px;margin-bottom:6px}.zone-options{gap:3px}.zone-option{padding:5px 3px;font-size:10px}.zone-tip{font-size:9px}}
+</style></head><body class="eai-refresh"><div class="app"><header class="top"><div class="brand"><span class="mark">LO</span><div><div class="eyebrow">TACTISCH SPELLAB</div><h1>Speel het uit.</h1></div></div><div class="top-actions"><label class="sport-label" for="sportSelect">Sport</label><select id="sportSelect" class="sport-select" aria-label="Kies de sport"><option value="0">Voetbal</option><option value="1">Hockey</option><option value="2">Handbal</option><option value="3">Basketbal</option></select><label class="sport-label" for="formationSelect">Teams</label><select id="formationSelect" class="sport-select formation-select" aria-label="Kies het aantal aanvallers en verdedigers"><option value="0">4 tegen 4</option><option value="1">2 tegen 1</option><option value="2">3 tegen 2</option><option value="3">4 tegen 3</option></select><button id="new" class="btn">Nieuwe spelsituatie</button></div></header><div class="shell"><section class="fieldpane"><div class="fieldhead"><span id="stage" class="pill">Voorbereiden</span><span id="stagehelp" class="small">Versleep de spelers van jouw team</span><label class="playback-control" for="playbackSpeed"><span>Tempo</span><select id="playbackSpeed" aria-label="Afspeelsnelheid"><option value="0.5">½×</option><option value="1" selected>1×</option><option value="1.5">1½×</option><option value="2">2×</option></select></label></div><div class="fieldframe"><svg id="pitch" viewBox="0 0 1000 650" role="img" aria-label="Interactief speelveld waarop je spelers kunt verschuiven"></svg></div><div class="bottom"><div><div id="instruction" class="hint">De bal ligt bij aanvaller 1. Maak je opstelling en speel de hele aanval.</div><div id="under" class="small setup-tip">Sleep een speler of tik eerst de speler en daarna zijn plek.</div></div><div class="actions"><button id="reset" class="btn">Beginopstelling</button><button id="primary" class="btn main">Speel de aanval af ▶</button></div></div></section><aside class="side"><div><h3>Jouw opdracht</h3><h2 id="tasktitle">Maak een kans</h2></div><p id="task" class="hint" style="margin:0">Kies waar je spelers beginnen. Welke opstelling levert volgens jou de beste aanval op?</p><div class="sep"></div><div id="prep"><div id="zonePlans" class="zone-plans hide" role="group" aria-label="Kies een vorm van zoneverdediging voor het hele team"><div class="zone-plans-head">Zoneverdediging · heel team</div><div class="zone-options"><button type="button" class="zone-option" data-zone-plan="zonecompact">Compact</button><button type="button" class="zone-option" data-zone-plan="zoneschuif">Meeschuiven</button><button type="button" class="zone-option" data-zone-plan="zonelijn">Passlijnen</button></div><div id="zoneTip" class="zone-tip">Kies een teamvorm of geef elke verdediger apart een opdracht.</div></div><h3>Geselecteerde speler</h3><div id="selected" class="hint">Tik op een speler om zijn opdracht te kiezen.</div><div id="intents" class="intent-grid"></div><p class="small" id="intentHelp">Sleep een speler, of tik de speler en daarna een vrije plek. Met de pijltjestoetsen kun je nauwkeurig schuiven.</p></div><div class="grow"></div><div class="sep"></div><p id="insight" class="hint" style="margin:0">Zet je spelers klaar. Hun opdrachten bepalen hoe ze straks bewegen.</p><div id="after" class="actions hide"><button id="again" class="btn main">Pas plan aan</button><button id="replay" class="btn">Speel opnieuw</button></div></aside></div><div class="foot"><span id="sportFoot">Voetbal</span> · <span id="formationFoot">4 tegen 4</span> · Oefenmodel · vergeleken met openbare wedstrijddata</div></div>
 <details class="source-detail" id="sourceDetail"><summary>Meetbasis en bronnen</summary>
  <div class="source-popover"><strong>Onderzoeksbasis per sport</strong><p>Het Aanvalslab blijft een vereenvoudigd onderwijsmodel. Alleen de genoemde onderdelen zijn aangepast op basis van data of gepubliceerd onderzoek. Geen validatie voor individuele leerlingen.</p>
  <p><b>Voetbal</b> · 2 volledig gevolgde Metrica-wedstrijden, ruim 6 miljoen verplaatsingsmetingen. Gemiddeld 1,77 m/s, 90e percentiel 3,67 m/s, bij balbezit mediane afstand tot dichtstbijzijnde tegenstander 4,88 m. De verdedigersnelheid is voorzichtig bijgesteld. De passkeuze gebruikt daarnaast 84 gecontroleerde PASS-events. Het 3-tegen-2-loopidee is gebaseerd op 279 geobserveerde jeugdpartijtjes. <a href="https://github.com/metrica-sports/sample-data" target="_blank" rel="noopener noreferrer">Metrica</a> · <a href="https://doi.org/10.26582/k.51.1.7" target="_blank" rel="noopener noreferrer">3-tegen-2-onderzoek</a>.</p>
@@ -213,6 +222,9 @@ function previewArrow(p,traces){
   else if(p.intent==='druk'){tx=players[0].x+22;ty=players[0].y;}
   else if(p.intent==='terug'){tx+=100;}
   else if(p.intent==='lijn'){tx=(p.x+players[0].x)*.5;ty=(p.y+players[0].y)*.5;}
+   else if(p.intent==='zone'||p.intent==='zonecompact'){tx=Math.max(p.x+35,players[0].x+50);ty=325+(players[0].y-325)*.28+(p.y-325)*.34;}
+   else if(p.intent==='zoneschuif'){tx=players[0].x+34;ty=players[0].y*.67+p.y*.33;}
+   else if(p.intent==='zonelijn'){const from=players[0],rec=players.find(q=>q.id==='a'+(Number(p.id[1])+1))||players.find(q=>q.id==='a1')||from;tx=from.x*.52+rec.x*.48;ty=from.y*.52+rec.y*.48;}
  }
  tx=clamp(tx,70,930);ty=clamp(ty,76,574);
  if(dist(p,{x:tx,y:ty})<26)return;
@@ -239,9 +251,25 @@ function draw(actors=players,ball=null,trail=[]){
  drawBall(ball||ballAt(actors.find(p=>p.id==='a0')),layer)
 }
 
-const tactics={a:[['diep','Diep gaan'],['breed','Breed houden'],['bal','In de bal'],['stil','Blijven staan'],['kruis','Kruisen'],['ruimte','Ruimte maken']],d:[['dek','Man dekken'],['lijn','Passlijn sluiten'],['druk','Druk op bal'],['zone','Zone bewaken'],['volg','Loopactie volgen'],['terug','Terugzakken']]};
+const tactics={a:[['diep','Diep gaan'],['breed','Breed houden'],['bal','In de bal'],['stil','Blijven staan'],['kruis','Kruisen'],['ruimte','Ruimte maken']],d:[['dek','Man dekken'],['lijn','Passlijn sluiten'],['druk','Druk op bal'],['zonecompact','Zone · compact'],['zoneschuif','Zone · schuiven'],['zonelijn','Zone · passlijnen'],['volg','Loopactie volgen'],['terug','Terugzakken']]};
 const carrierTactics=[['pas','Passen'],['drijf','Bal meenemen'],['bewaar','Bal vasthouden'],['zijde','Naar de zijkant']];
-function choose(id){const team=mode==='free'?id[0]:(mode==='duo'||mode==='online')?phase:mode==='attack'?'a':'d',p=players.find(x=>x.id===id);if(!p||p.team!==team||state!=='setup')return;selected=id;const hasBall=id==='a0',opts=hasBall?carrierTactics:tactics[team];el('selected').textContent=(team==='a'?'Aanvaller ':'Verdediger ')+(+id[1]+1)+(hasBall?' · aan de bal':'');el('intents').replaceChildren();opts.forEach(([key,name])=>{const b=document.createElement('button');b.className='intent'+(p.intent===key?' active':'');b.textContent=name;b.setAttribute('aria-pressed',p.intent===key?'true':'false');b.onclick=()=>{p.intent=key;choose(id);draw();if(mode==='online')window.__loOnlineDirty?.()};el('intents').append(b)});draw()}
+function normalizeZone(key){return key==='zone'?'zonecompact':key}
+function syncZonePlans(){
+ const side=mode==='free'?(selected?.[0]||'a'):(mode==='duo'||mode==='online')?phase:mode==='defend'?'d':'a';
+ const show=state==='setup'&&side==='d';el('zonePlans').classList.toggle('hide',!show);
+ if(!show)return;
+ const defence=players.filter(p=>p.team==='d');const active=defence.length?defence.every(p=>normalizeZone(p.intent)===normalizeZone(defence[0].intent))?normalizeZone(defence[0].intent):'':'';
+ for(const b of document.querySelectorAll('[data-zone-plan]')){const selected=active===b.dataset.zonePlan;b.classList.toggle('active',selected);b.setAttribute('aria-pressed',String(selected))}
+ const descriptions={zonecompact:'Bescherm het midden en houd onderlinge afstand.',zoneschuif:'Schuif mee naar de bal; een verdediger stapt uit.',zonelijn:'Zet spelers in de gevaarlijkste passlijnen.'};
+ el('zoneTip').textContent=descriptions[active]||'Kies een teamvorm of pas elke verdediger apart aan.';
+}
+function choose(id){const team=mode==='free'?id[0]:(mode==='duo'||mode==='online')?phase:mode==='attack'?'a':'d',p=players.find(x=>x.id===id);if(!p||p.team!==team||state!=='setup')return;selected=id;const hasBall=id==='a0',opts=hasBall?carrierTactics:tactics[team];el('selected').textContent=(team==='a'?'Aanvaller ':'Verdediger ')+(+id[1]+1)+(hasBall?' · aan de bal':'');el('intents').replaceChildren();opts.forEach(([key,name])=>{const b=document.createElement('button');b.className='intent'+(normalizeZone(p.intent)===key?' active':'');b.textContent=name;b.setAttribute('aria-pressed',String(normalizeZone(p.intent)===key));b.onclick=()=>{p.intent=key;choose(id);draw();if(mode==='online')window.__loOnlineDirty?.()};el('intents').append(b)});syncZonePlans();draw()}
+document.querySelectorAll('[data-zone-plan]').forEach(b=>b.addEventListener('click',()=>{
+ if(state!=='setup'||!['defend','free','duo','online'].includes(mode)||((mode==='online'||mode==='duo')&&phase!=='d'))return;
+ for(const p of players){if(p.team==='d')p.intent=b.dataset.zonePlan}
+ choose(selected?.startsWith('d')?selected:'d0');draw();
+ if(mode==='online')window.__loOnlineDirty?.();
+}));
 function refresh(){
  const free=mode==='free';const side=free?'free':(mode==='duo'||mode==='online')?phase:mode==='attack'?'a':'d',pre=state==='setup';
  el('stage').textContent=pre?(free?'Vrij opstellen':mode==='duo'||mode==='online'?(side==='a'?'Duo · aanval':'Duo · verdediging'):side==='a'?'Aanval':'Verdediging'):state==='playing'?'De aanval loopt':state==='paused'?'Gepauzeerd':'Aanval afgelopen';
@@ -252,6 +280,7 @@ function refresh(){
  el('reset').classList.toggle('hide',!pre);el('prep').classList.toggle('hide',!pre);el('after').classList.toggle('hide',state!=='done');
  el('instruction').textContent=pre?(free?'Jij bepaalt beide opstellingen. De spelers voeren straks hun opdracht uit.':mode==='duo'||mode==='online'?side==='a'?'Aanval: versleep je team en kies de loopacties.':'Verdediging: stel je team op en kies hoe het verdedigt.':'Tik of sleep spelers naar hun plek en speel de hele aanval af.'):(state==='done'?'Speel opnieuw of verander de opstelling.':'De teams voeren hun opdrachten uit.');
  el('under').textContent=pre?'Sleep een speler of tik eerst de speler en daarna een vrije plek.':'De passes en reacties worden door het model berekend.';
+ syncZonePlans();
 }
 
 function resetSetup(){cancelAnimationFrame(raf);state='setup';if(mode!=='online')phase='a';selected=null;players=copy(scenario);el('insight').textContent='Speler 1 begint met de bal. Kies je opstelling en spelersopdrachten.';drawPitch();draw();refresh();choose((mode==='defend'||(mode==='online'&&phase==='d'))?'d0':'a0')}
@@ -340,7 +369,7 @@ function simulate(){
   const defenders=d(),owner=b();if(!owner)return null;
   if(leaderId&&clock-leaderAt<.35&&defenders.some(p=>p.id===leaderId))return leaderId;
   const ranked=defenders.map(p=>{
-   const pref={druk:-.42,dek:-.15,volg:-.13,lijn:.18,zone:.40,terug:.55}[p.intent]||0;
+   const pref={druk:-.42,dek:-.15,volg:-.13,lijn:.18,zone:.40,zonecompact:.48,zoneschuif:-.02,zonelijn:.22,terug:.55}[p.intent]||0;
    return {p,score:reachTime(p,ball,Math.max(0,p._reactionLeft||0))+pref}
   }).sort((u,v)=>u.score-v.score);
   leaderId=ranked[0]?.p.id||null;leaderAt=clock;return leaderId;
@@ -359,7 +388,46 @@ function simulate(){
   if(loose){const nearest=d().slice().sort((u,v)=>dist(u,ball)-dist(v,ball))[0];if(nearest?.id===p.id)return {x:ball.x,y:ball.y,pace:1}}
   const primary=pressureLeader()===p.id;
   const receiver=threatReceiver(p,off);
-  if(primary&&owner&&intent!=='terug'&&intent!=='zone'){
+  // Zones zijn aparte teamopdrachten. Compact houdt het midden dicht;
+  // schuiven verdeelt druk en rugdekking; passlijnen zoekt een onderscheppingshoek.
+  // Spelers zijn dekkingsspelers in een vereenvoudigd oefenmodel.
+  if(['zonecompact','zoneschuif','zonelijn'].includes(intent)){
+   const defenders=d().slice().sort((u,v)=>startMap[u.id].y-startMap[v.id].y);
+   const index=defenders.findIndex(q=>q.id===p.id),lane=index-(defenders.length-1)/2;
+   const spacing=defenders.length===2?122:defenders.length===3?86:72;
+   if(intent==='zonecompact'){
+    const x=ballPos.x+PX*2.6;
+    tx=clamp(Math.max(origin.x*.36+x*.64,ballPos.x+PX*.6),405,872);
+    ty=clamp(325+(ballPos.y-325)*.27+lane*spacing,137,514);
+    // Bij een enkele verdediger: niet blind naar de bal en ook niet alleen naar de ontvanger.
+    if(defenders.length===1&&receiver){
+     ty=clamp(ty*.50+(receiver.y+ballPos.y)*.25,155,495);
+    }
+   }else if(intent==='zoneschuif'){
+    if(primary&&owner&&defenders.length>1){
+     tx=ballPos.x+PX*.75;ty=ballPos.y+(325-ballPos.y)*.06;
+    }else if(defenders.length===1&&receiver){
+     tx=ballPos.x+(receiver.x-ballPos.x)*.47+PX*.4;
+     ty=ballPos.y+(receiver.y-ballPos.y)*.47;
+    }else{
+     tx=ballPos.x+PX*2.35;
+     ty=325+(ballPos.y-325)*.61+lane*spacing*.74;
+    }
+    tx=clamp(tx,385,898);ty=clamp(ty,104,548);
+   }else{
+    const receivers=off.slice().sort((u,v)=>u.y-v.y);
+    const best=receivers[Math.min(index,receivers.length-1)]||receiver;
+    if(best){
+     // Voorspel een plek op de lijn bal -> ontvanger, niet de actuele ontvangerpositie.
+     const ratio=best.x>ballPos.x+PX*2?.56:.45;
+     tx=ballPos.x+(best.x-ballPos.x)*ratio+PX*.3;
+     ty=ballPos.y+(best.y-ballPos.y)*ratio;
+    }else{
+     tx=ballPos.x+PX*2;ty=ballPos.y+(325-ballPos.y)*.15;
+    }
+    tx=clamp(tx,385,898);ty=clamp(ty,97,558);
+   }
+  }else if(primary&&owner&&intent!=='terug'&&intent!=='zone'){
    if(d().length===1&&off.length){
     const dangerous=off.slice().sort((u,v)=>v.x-u.x)[0],goalThreat=owner.x>sportCfg().shotX-115;
     if(intent==='druk'){
@@ -398,13 +466,13 @@ function simulate(){
     const arrival=reachTime(p,pos,0);
     if(arrival<=future+.09&&(!best||future<best.future))best={pos,future};
    }
-   if(best){tx=best.pos.x;ty=best.pos.y}
+   if(best&&(intent!=='zonecompact'||dist(best.pos,{x:tx,y:ty})<PX*3.1)){tx=best.pos.x;ty=best.pos.y}
   }
   // Handbal: bij georganiseerde verdediging minder continu lopen dan in
   // de aanvallende fase (Lefevre 2023). Drukzetter behoudt de maximale
   // versnelling; dekking/zone verschuift gecontroleerder. De .82 is een
   // ontwerpafstelling, niet een direct uit de dataset geschatte coëfficiënt.
-  const holdShape=sportCfg().coverPace&&!primary&&['dek','volg','lijn','zone','terug'].includes(intent);
+  const holdShape=sportCfg().coverPace&&!primary&&['dek','volg','lijn','zone','zonecompact','zoneschuif','zonelijn','terug'].includes(intent);
   // Voor een kort oefenaanvalsmoment blijft de pieksnelheid bereikbaar,
   // maar de beoogde verplaatsingssnelheid is per sport naar de tracking
   // bijgesteld. Geen 1-op-1 voorspelling van schoolvoetbal of -handbal.
@@ -549,7 +617,7 @@ function simulate(){
     const approaching=p._reactionLeft<=0&&close;
     p._contact=approaching?p._contact+DT:Math.max(0,p._contact-DT*2);
     const moving=Math.hypot(carrier.vx,carrier.vy)/PX;
-    const threshold=(p.intent==='druk'?.35:p.intent==='dek'||p.intent==='volg'?.52:.74)+(moving>2.4?.16:0);
+    const threshold=(p.intent==='druk'?.35:p.intent==='dek'||p.intent==='volg'||p.intent==='zoneschuif'?.52:p.intent==='zonelijn'?.64:.74)+(moving>2.4?.16:0);
     if(p._contact>=threshold){takeover(p);break}
    }
    const closest=defenders.reduce((best,p)=>Math.min(best,dist(p,carrier)),9999);
@@ -615,7 +683,7 @@ window.__loOnline={
   replay(){cancelAnimationFrame(raf);state='playing';time=0;last=0;refresh();showFrame(0);raf=requestAnimationFrame(tick)}
 };
 // Alleen testomgeving: reproductie van spelsituaties zonder UI-animatie.
-window.__loLabTest={run(input,withSeed=1337){initial=copy(input);simSeed=withSeed;simulate();return copy(summary)},getPlayers:()=>copy(players),getFrames:()=>copy(frames),getEvents:()=>copy(events),scenario:index=>{makeScenario(index);return copy(players)},setFormation:index=>{applyFormation(index);makeScenario(scenarioIndex);resetSetup();return copy(players)},setSpeed:speed=>{playbackSpeed=clamp(speed,.5,2);el('playbackSpeed').value=String(playbackSpeed)},getTime:()=>time,reachTime,getConfig:()=>copy(sportCfg())};
+window.__loLabTest={run(input,withSeed=1337){initial=copy(input);simSeed=withSeed;simulate();return copy(summary)},getPlayers:()=>copy(players),getFrames:()=>copy(frames),getEvents:()=>copy(events),scenario:index=>{makeScenario(index);return copy(players)},setFormation:index=>{applyFormation(index);makeScenario(scenarioIndex);resetSetup();return copy(players)},setSpeed:speed=>{playbackSpeed=clamp(speed,.5,2);el('playbackSpeed').value=String(playbackSpeed)},getTime:()=>time,reachTime,getConfig:()=>copy(sportCfg()),setZonePlan(key){if(!['zonecompact','zoneschuif','zonelijn'].includes(key))return;for(const p of players)if(p.team==='d')p.intent=key;syncZonePlans();draw()},getIntents:()=>copy(tactics.d)};
 })();
 
 </script><script>(()=>{'use strict';
