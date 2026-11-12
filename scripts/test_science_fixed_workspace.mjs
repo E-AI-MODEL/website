@@ -52,6 +52,8 @@ try{
    if(await wheatstoneGroup.getAttribute('aria-expanded')==='false')await wheatstoneGroup.click();
    await page.locator('[data-open="wheatstone"]').click();
    await page.waitForFunction(()=>document.querySelector('#labTitle').textContent.toLowerCase().includes('wheatstone'));
+   const graphHeight=await page.locator('.analysis-shell').evaluate(el=>el.getBoundingClientRect().height);
+   assert(graphHeight>=120,'Op de telefoon is ook de grafiek van een meetproef zichtbaar zonder extra tik: '+graphHeight);
    await page.waitForFunction(()=>!document.querySelector('#explorer').classList.contains('open'));
    await page.waitForTimeout(270);
   }else{
