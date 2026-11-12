@@ -340,10 +340,10 @@ function drawScene(c){
  drawMiniGraph(c);
 }
 function drawMiniGraph(c){
- var w=c.w,h=c.h,top=c.oy+26,bottom=h-29,left=c.ox,right=w-24;
+ var w=c.w,h=c.h,top=c.oy+51,bottom=h-29,left=c.ox,right=w-24;
  if(bottom-top<60)return;
- ctx.fillStyle='#081826';ctx.fillRect(0,c.oy+15,w,h-c.oy-15);
- drawLine(0,c.oy+15,w,c.oy+15,'#355665',1);
+ ctx.fillStyle='#081826';ctx.fillRect(0,c.oy+35,w,h-c.oy-35);
+ drawLine(0,c.oy+35,w,c.oy+35,'#355665',1);
  ctx.fillStyle='#91b7c2';ctx.font='600 10px system-ui';ctx.fillText('HOOGTE TIJDENS DE WORP',left,top-4);
  var y0=top+17,y1=bottom-13;
  drawLine(left,y1,right,y1,'#456575',1);
