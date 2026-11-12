@@ -14,6 +14,17 @@ De publieke pagina en vijf onderzoeksmodellen bevatten uitsluitend onderzoeks- e
 - `labs/natuurkunde.html`: natuurkunde V3 met 53 interactieve onderwijsmodellen, een onderzoekswerkruimte met tabbladen en beperkte directe manipulatie/3D-bediening.
 - `scripts/build_site.py` neemt de bestanden op in de productiebuild; de uitvoermap `tools/` is geen bron.
 
+## Ontwerpen vanuit de leerling
+
+De 53 natuurkundeproeven vormen samen één onderzoeksruimte. Verbeter de bestaande proeven per onderwerp in plaats van voor elke verbetering een aparte proefomgeving te openen.
+
+- De leerling kan zelf experimenteren: variabelen veranderen, in het model slepen, grafieken onderzoeken en metingen bewaren of vergelijken.
+- Laat de proef en grafiek zo veel mogelijk direct zien. Een proef hoeft niet uit te leggen wat een knop doet voordat de leerling kan beginnen.
+- Laat twee veelgebruikte instellingen direct zien. Zet overige parameters, toelichting en extra uitleg in uitklapbare onderdelen. Verberg geen benodigde handeling.
+- Houd proef, relevante bediening en grafiek binnen één scherm. Vermijd paginascroll. Vergrootbare grafieken en compacte panelen hebben de voorkeur boven kleine, moeilijk leesbare inhoud.
+- Behoud de verschillende natuurkundige eigenschappen per proef en test veranderde metingen, grafieken en bediening afzonderlijk. Een geslaagde schermtest bewijst geen natuurkundige nauwkeurigheid.
+- De losse schuine-worpstudio blijft voorlopig als eerdere proefvariant bestaan, maar is geen tweede hoofdingang naast de gezamenlijke 53 proeven.
+
 ## Grenzen
 
 De proefmodellen hebben niet allemaal dezelfde wetenschappelijke diepgang. De 53 natuurkundeonderwerpen zijn in deze versie zichtbaar en bedienbaar, maar niet allemaal afzonderlijk inhoudelijk gevalideerd. Het Galactisch Observatorium blijft het referentieniveau voor een rijke onderzoeksomgeving. De officiële eindtermen en schoolse verdeling over vwo 5/6 worden pas definitief gekoppeld na toetsing aan het PTA. De site bewaart geen leerlingantwoorden centraal.
