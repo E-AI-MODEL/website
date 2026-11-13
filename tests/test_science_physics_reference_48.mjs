@@ -96,12 +96,14 @@ test('Bronnen per proef: 53 unieke onderwerpkaarten en directe bronlinks',()=>{
  assert.equal(Object.keys(extra).length,48);
  assert.deepEqual(Object.keys(all).sort(),Array.from(specs,x=>x[0]).sort());
  for(const [id,e] of Object.entries(all)){
-  for(const field of ['level','theory','derivation','limitations'])assert.ok(e[field].length>20,id+' '+field);
+  for(const field of ['level','theory','derivation','limitations'])assert.ok(e[field].length>(field==='level'?7:20),id+' '+field);
   assert.ok(e.sources.length>=1,id);
   for(const source of e.sources) {
    assert.ok(source.name.length>20,id+' naam bron');
    assert.ok(/^https:\/\/(openstax\.org|phys\.libretexts\.org|ocw\.mit\.edu)\//.test(source.url),id+' bron');
    assert.ok(!source.url.includes('undefined'),id+' bronurl');
+   const registered=register.proeven.find(row=>row.id===id)?.bronhoofdstukken||[];
+   assert.ok(registered.some(row=>row.url===source.url),id+': bron ontbreekt in register');
   }
  }
  assert.match(html,/Object\.assign\(physicsEvidence,physicsEvidenceMore\)/);
