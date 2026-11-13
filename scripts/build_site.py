@@ -2625,7 +2625,7 @@ def build(sources: Path, out: Path) -> None:
                            and heading.get_text(" ", strip=True) == "Wat wil je dat AI hier doet?"), None)
     if design_section is None:
         raise ValueError("Ontwerpen-sectie ontbreekt in Tools")
-    observe_names = {"Science Observatory", "Anatomisch Observatorium", "LLM Observatorium", "ABYSS", "Melkweg Lab"}
+    observe_names = {"Interactief onderzoeken", "Anatomie van de mens", "LLM Observatorium", "Galactisch Observatorium: met uitleg"}
     observe_cards = []
     for card in design_section.select(".tool-grid > .tool-card"):
         heading = card.find("h2")
@@ -2637,11 +2637,11 @@ def build(sources: Path, out: Path) -> None:
         '<section class="section" id="observatoria"><div class="wrap">'
         '<div class="section-head"><div class="kicker">Interactief onderzoeken</div>'
         '<div><h2>Observatoria en simulaties</h2>'
-        '<p>Onderzoek zelf natuurkunde, anatomie, taalmodellen en de oceaan.</p></div></div>'
+        '<p>Onderzoek zelf natuurkunde, wiskunde, de Melkweg, anatomie en taalmodellen.</p></div></div>'
         '<div class="tool-grid"></div></div></section>', "html.parser"
     ).section
     grid = observatory.select_one(".tool-grid")
-    for title in ("Science Observatory", "Anatomisch Observatorium", "LLM Observatorium", "ABYSS", "Melkweg Lab"):
+    for title in ("Interactief onderzoeken", "Anatomie van de mens", "LLM Observatorium", "Galactisch Observatorium: met uitleg"):
         grid.append(next(card for card in observe_cards if card.h2.get_text(" ", strip=True) == title))
     design_section.insert_before(observatory)
     tools_body = str(tools_soup)
