@@ -241,8 +241,10 @@ try {
         return {target:controls.target.toArray(),
           distance:camera.position.distanceTo(controls.target)};
       });
-      assert(restored.distance>zoomed.distance*1.1,
-        'Voor moet de anatomie weer op een normale afstand tonen');
+      const distanceError = Math.abs(restored.distance-beforeZoom.distance);
+      assert(distanceError < beforeZoom.distance*.02,
+        'Voor moet de camera herstellen naar de afstand vóór inzoomen: '+
+          beforeZoom.distance+' -> '+zoomed.distance+' -> '+restored.distance);
       assert(Math.hypot(...restored.target.map((v,i)=>v-beforeZoom.target[i]))<.08,
         'Voor moet de standaardfocus herstellen na zoomen naar de muis');
     }
