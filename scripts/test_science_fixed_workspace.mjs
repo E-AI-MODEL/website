@@ -252,7 +252,7 @@ try{
       case 'wheatstone':pt={x:582+(p.R4-1)/39*84,y:398};break;
       case 'gas':pt={x:110+(p.V-2)/10*740,y:390-210*Math.log10(1+(8.314*p.T/p.V)/100)};break;
      }
-     return {x:r.left+g.left+pt.x*g.scale,y:r.top+g.top+pt.y*g.scale,scale:g.scale,pt};
+     return {x:r.left+g.left+(pt.x-g.worldX)*g.scale,y:r.top+g.top+(pt.y-g.worldY)*g.scale,scale:g.scale,pt};
     });
     assert(loc.pt,'Deze proef moet een eigen bediening in de tekening hebben');
     await page.mouse.move(loc.x+8*loc.scale,loc.y+5*loc.scale);
@@ -285,6 +285,36 @@ try{
     if(id==='wheatstone')approx(parseDutch(data.rows[0][1]),await page.evaluate(()=>bridgeVoltage(state.p)),.03,id+' brugspanning');
     if(id==='resolution')approx(Math.hypot(after.F*Math.cos(after.angle*Math.PI/180),after.F*Math.sin(after.angle*Math.PI/180)),after.F,.0001,id+' vectorcomponenten');
     if(id==='incline')assert(data.rows[0][0]==='Langs de helling',id+' helling behoudt krachtmeting');
+   }
+   if(width===390){
+    await inspectModel('resolution');
+    const mobileVector=await page.evaluate(()=>{
+     const canvas=document.querySelector('#scene'),g=sceneViewport(canvas),p=state.p,r=canvas.getBoundingClientRect();
+     const a=p.angle*Math.PI/180,ex=325+p.F*Math.cos(a)*13,ey=367-p.F*Math.sin(a)*13;
+     return {w:r.width,h:r.height,virtualWidth:g.virtualWidth,worldX:g.worldX,scale:g.scale,
+      endX:g.left+(ex-g.worldX)*g.scale,endY:g.top+(ey-g.worldY)*g.scale,
+      playHidden:document.querySelector('#playBtn').hidden,
+      stepHidden:document.querySelector('#stepBtn').hidden,
+      badge:document.querySelector('#sceneBadge').textContent};
+    });
+    assert(mobileVector.virtualWidth<600&&mobileVector.worldX>0,'Krachtenmodel gebruikt een eigen mobiele uitsnede: '+JSON.stringify(mobileVector));
+    assert(mobileVector.scale>.60,'Vectoren krijgen een bruikbare schaal op mobiel: '+JSON.stringify(mobileVector));
+    assert(mobileVector.endX>25&&mobileVector.endX<mobileVector.w-25,'Pijlpunt staat binnen het scherm: '+JSON.stringify(mobileVector));
+    assert(mobileVector.endY>20&&mobileVector.endY<mobileVector.h-25,'Pijlpunt blijft op het canvas: '+JSON.stringify(mobileVector));
+    assert(mobileVector.playHidden&&mobileVector.stepHidden&&mobileVector.badge==='INTERACTIEF MODEL',
+     'Een stilstaand krachtenmodel toont geen afspeelknoppen');
+    assert(await page.locator('#insightMath').isVisible(),'Berekening blijft direct bereikbaar');
+    await page.locator('#insightMath>summary').click();
+    const mathOverlay=await page.evaluate(()=>{
+     const a=document.querySelector('#insightMath').getBoundingClientRect();
+     const b=document.querySelector('#insightPanel').getBoundingClientRect();
+     return {open:document.querySelector('#insightMath').open,width:a.width,panel:b.width};
+    });
+    assert(mathOverlay.open&&mathOverlay.width>mathOverlay.panel*.85,'Berekening gebruikt de beschikbare schermbreedte');
+    await page.locator('#insightMath>summary').click();
+    await page.screenshot({path:'test-results/physics-mobile-vectors-'+engine.name()+'.png'});
+    await inspectModel('lever');
+    assert(!(await page.locator('#playBtn').isHidden()),'Draaiende hefboom houdt de afspeelknop');
    }
    await inspectModel('gas');
    if(width===390){
