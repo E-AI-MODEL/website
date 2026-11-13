@@ -89,11 +89,12 @@ def run():
         page.set_viewport_size({"width":390,"height":844})
         page.reload()
         page.locator('[data-mode="defend"]').click()
-        # De spelerbediening staat direct onder het veld en bedekt het niet.
-        page.locator('[data-lo-mobile-panel="player"]').click()
+        # Op mobiel staan de extra opdrachten in Opdracht, zonder het veld af te dekken.
+        assert not page.locator(".side").is_visible()
+        page.locator("#loCalmTask>summary").click()
         assert page.locator("#prep").get_attribute("open") is not None
         assert not page.locator(".mobile-scrim").is_visible()
-        assert page.locator(".side").bounding_box()["y"] >= page.locator(".fieldpane").bounding_box()["y"] + page.locator(".fieldpane").bounding_box()["height"]
+        assert page.locator("#loCalmTask").bounding_box()["y"] >= page.locator(".fieldpane").bounding_box()["y"] + page.locator(".fieldpane").bounding_box()["height"]
         assert page.locator("#zonePlans").is_visible()
         assert page.locator("#pitch").is_visible()
         assert page.locator("#zonePlans").evaluate("(e) => e.getBoundingClientRect().width > 180")
