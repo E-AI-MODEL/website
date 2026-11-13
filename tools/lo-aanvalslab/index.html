@@ -114,8 +114,152 @@
 .lo-analysis-stat{min-width:calc(50% - 6px);padding:8px}.lo-analysis-stat b{font-size:18px}
 .lo-analysis-block{padding:10px;margin:8px 0}.lo-analysis-table{font-size:10px}
 }
-</style></head><body class="eai-refresh"><div class="app"><header class="top"><div class="brand"><button type="button" class="mark lo-secret" id="loSecret" aria-label="LO-logo. Tweemaal tikken voor de berekeningen van het spel" title="LO">LO</button><div><div class="eyebrow">TACTISCH SPELLAB</div><h1>Speel het uit.</h1></div></div><div class="top-actions"><label class="sport-label" for="sportSelect">Sport</label><select id="sportSelect" class="sport-select" aria-label="Kies de sport"><option value="0">Voetbal</option><option value="1">Hockey</option><option value="2">Handbal</option><option value="3">Basketbal</option></select><label class="sport-label" for="formationSelect">Teams</label><select id="formationSelect" class="sport-select formation-select" aria-label="Kies het aantal aanvallers en verdedigers"><option value="0">4 tegen 4</option><option value="1">2 tegen 1</option><option value="2">3 tegen 2</option><option value="3">4 tegen 3</option></select><button id="new" class="btn">Nieuwe spelsituatie</button></div></header><div class="shell"><section class="fieldpane"><div class="fieldhead"><span id="stage" class="pill">Voorbereiden</span><span id="stagehelp" class="small">Versleep de spelers van jouw team</span><label class="playback-control" for="playbackSpeed"><span>Tempo</span><select id="playbackSpeed" aria-label="Afspeelsnelheid"><option value="0.5">½×</option><option value="1" selected>1×</option><option value="1.5">1½×</option><option value="2">2×</option></select></label></div><div class="fieldframe"><svg id="pitch" viewBox="0 0 1000 650" role="img" aria-label="Interactief speelveld waarop je spelers kunt verschuiven"></svg></div><div class="bottom"><div><div id="instruction" class="hint">De bal ligt bij aanvaller 1. Maak je opstelling en speel de hele aanval.</div><div id="under" class="small setup-tip">Sleep een speler of tik eerst de speler en daarna zijn plek.</div></div><div class="actions"><button id="reset" class="btn">Beginopstelling</button><button id="primary" class="btn main">Speel de aanval af ▶</button></div></div></section><aside class="side"><div><h3>Jouw opdracht</h3><h2 id="tasktitle">Maak een kans</h2></div><p id="task" class="hint" style="margin:0">Kies waar je spelers beginnen. Welke opstelling levert volgens jou de beste aanval op?</p><div class="sep"></div><div id="prep"><div id="zonePlans" class="zone-plans hide" role="group" aria-label="Kies een vorm van zoneverdediging voor het hele team"><div class="zone-plans-head">Zoneverdediging · heel team</div><div class="zone-options"><button type="button" class="zone-option" data-zone-plan="zonecompact">Compact</button><button type="button" class="zone-option" data-zone-plan="zoneschuif">Meeschuiven</button><button type="button" class="zone-option" data-zone-plan="zonelijn">Passlijnen</button></div><div id="zoneTip" class="zone-tip">Kies een teamvorm of geef elke verdediger apart een opdracht.</div></div><h3>Geselecteerde speler</h3><div id="selected" class="hint">Tik op een speler om zijn opdracht te kiezen.</div><div id="intents" class="intent-grid"></div><p class="small" id="intentHelp">Sleep een speler, of tik de speler en daarna een vrije plek. Met de pijltjestoetsen kun je nauwkeurig schuiven.</p></div><div class="grow"></div><div class="sep"></div><p id="insight" class="hint" style="margin:0">Zet je spelers klaar. Hun opdrachten bepalen hoe ze straks bewegen.</p><div id="after" class="actions hide"><button id="again" class="btn main">Pas plan aan</button><button id="replay" class="btn">Speel opnieuw</button></div></aside></div><div class="foot"><span id="sportFoot">Voetbal</span> · <span id="formationFoot">4 tegen 4</span> · Oefenmodel · vergeleken met openbare wedstrijddata</div></div>
+
+/* Kleine, sportspecifieke tactische doelen. Dichtgeklapt blijft het speelveld leidend. */
+.lo-goals{border:1px solid #31514e;border-radius:9px;background:#0d242b;margin:1px 0;flex:0 0 auto}
+.lo-goals>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:7px;padding:8px 9px;min-height:35px;font-size:11px;color:#c4dcd4}
+.lo-goals>summary::-webkit-details-marker{display:none}
+.lo-goals>summary:focus-visible,.lo-goal-chip:focus-visible,.lo-role-chip:focus-visible,.lo-coach-jump:focus-visible{outline:2px solid #b6f5d7;outline-offset:2px}
+.lo-goal-kicker{font-size:9px;color:#8cb6aa;letter-spacing:.045em;text-transform:uppercase}
+.lo-goal-current{min-width:0;flex:1;color:#dcfaed;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lo-goal-arrow{font-size:10px;color:#9fc5b6}
+.lo-goals[open] .lo-goal-arrow{transform:rotate(180deg)}
+.lo-goals-body{border-top:1px solid #294b49;padding:9px;display:grid;gap:8px}
+.lo-goal-controls,.lo-goal-roles,.lo-goal-chips{display:flex;flex-wrap:wrap;gap:5px;align-items:center}
+.lo-goal-controls{justify-content:space-between}
+.lo-goal-chip,.lo-role-chip{border:1px solid #375651;background:#112c32;color:#bfddd4;font-size:10px;line-height:1.18;border-radius:50px;padding:6px 9px;cursor:pointer;max-width:100%;text-align:left}
+.lo-goal-chip:hover,.lo-role-chip:hover{border-color:#82d9b7}
+.lo-goal-chip.active,.lo-role-chip.active{background:#204a3d;border-color:#70dab0;color:#edfff7}
+.lo-goal-chip[aria-pressed=true],.lo-role-chip[aria-pressed=true]{font-weight:700}
+.lo-goal-hint{margin:0;font-size:10px;line-height:1.4;color:#96bcb0}
+.lo-coach-box{border-top:1px solid #31504d;padding-top:8px;display:grid;gap:5px}
+.lo-coach-observed{font-size:10px;line-height:1.36;color:#9bc9b6}
+.lo-coach-compare{font-size:10px;line-height:1.4;color:#b8d8c7;border-left:2px solid #4c9981;padding-left:7px}
+.lo-coach-jump{justify-self:start;border:1px solid #3a6558;background:transparent;color:#b9eed3;border-radius:6px;padding:5px 8px;font-size:10px;cursor:pointer}
+@media(max-width:880px){
+ .lo-goals>summary{padding:6px 8px;min-height:29px;font-size:10px}
+ .lo-goal-kicker{font-size:8px}.lo-goals-body{padding:7px;gap:6px}
+ .lo-goal-chip,.lo-role-chip{padding:5px 8px;font-size:10px}
+ .lo-coach-box{padding-top:6px;gap:4px}
+ .lo-coach-observed,.lo-coach-compare{font-size:10px}
+}
+
+/* Bedieningshulp: korte animaties, apart van het speelveld en zonder nieuwe pagina. */
+.lo-help-open{display:inline-flex;gap:6px;align-items:center;justify-content:center;flex-shrink:0;border:1px solid #35535a;background:#102831;color:#cce8db;border-radius:7px;padding:5px 8px;font-size:10px;cursor:pointer;white-space:nowrap}
+.lo-help-open:hover{border-color:#78c9ac}
+.lo-help-open:focus-visible,.lo-help button:focus-visible{outline:2px solid #b6f5d7;outline-offset:2px}
+.lo-help-mark{display:grid;place-items:center;width:16px;height:16px;border:1px solid #7cb59f;border-radius:50%;font-weight:700;color:#cbf8e4}
+.lo-help[hidden]{display:none!important}
+.lo-help{position:fixed;inset:0;background:#041217e9;backdrop-filter:blur(7px);z-index:70;display:flex;align-items:center;justify-content:center;padding:12px}
+.lo-help-sheet{width:min(910px,100%);max-height:95dvh;min-height:0;background:#0e252d;border:1px solid #44635c;border-radius:14px;box-shadow:0 25px 90px #000b;display:flex;flex-direction:column;overflow:hidden}
+.lo-help-top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 16px;border-bottom:1px solid #2d4d4e}
+.lo-help-top h2{font-size:20px;line-height:1.1;margin:0;color:#e8f8f0}
+.lo-help-top .small{font-size:10px;margin-top:3px;display:block}
+.lo-help-close{border:1px solid #46625b;border-radius:7px;background:#14333b;color:#daeee6;padding:7px 10px;font-size:11px;cursor:pointer}
+.lo-help-tabs{display:flex;align-items:center;gap:5px;overflow-x:auto;padding:9px 12px;border-bottom:1px solid #2d4d4e;scrollbar-width:thin;flex-shrink:0}
+.lo-help-tab{padding:7px 10px;border:1px solid #345357;border-radius:22px;background:#102d36;color:#accdc4;font-size:11px;cursor:pointer;white-space:nowrap}
+.lo-help-tab.active{background:#214b3c;border-color:#78d9b2;color:#ecfff2}
+.lo-help-content{padding:15px;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:16px;overflow-y:auto;min-height:0}
+.lo-help-display{border:1px solid #315557;background:#09202a;border-radius:11px;padding:10px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.lo-help-display svg{display:block;width:100%;height:auto;max-height:220px;aspect-ratio:320/185}
+.lo-help-demo-tag{font-size:11px;color:#a8d4c5;min-height:17px}
+.lo-help-demo-controls{display:flex;gap:6px;flex-wrap:wrap;align-items:center;min-height:24px}
+.lo-help-demo-control{font-size:10px;color:#d5ede1;border:1px solid #4a7066;border-radius:7px;padding:5px 8px;background:#15362f}
+.lo-help-demo-control:last-child{background:#254837;color:#d7f8e4;border-color:#588c71}
+.lo-help-words{display:flex;flex-direction:column;gap:8px;min-width:0}
+.lo-help-progress{font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:#8db9ad}
+.lo-help-words h3{font-size:clamp(19px,2vw,24px);letter-spacing:-.035em;margin:0;color:#eaf9f3;line-height:1.22}
+.lo-help-words p{font-size:13px;line-height:1.56;color:#c7ddda;margin:0}
+.lo-help-tip{font-size:11px;color:#9ecbb9;background:#12342f;border-radius:8px;padding:9px 10px;margin-top:auto;line-height:1.5}
+.lo-help-controls{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:11px 15px;border-top:1px solid #2d4d4e;justify-content:space-between}
+.lo-help-controls .actions{gap:5px}
+.lo-help-controls button{border:1px solid #42605d;color:#e4f4ef;background:#173038;border-radius:7px;padding:7px 10px;font-size:11px;cursor:pointer}
+.lo-help-controls button:disabled{opacity:.35;cursor:default}
+.lo-help-controls button.main{background:#b6f5d7;color:#103129;border-color:#b6f5d7;font-weight:700}
+.lo-help-caption{font-size:10px;color:#84a9a3;line-height:1.3}
+@media(max-width:650px){
+ .lo-help-word{display:none}.lo-help-open{padding:5px 6px}
+ .lo-help-sheet{max-height:100dvh;border-radius:0;width:100%;height:100%;border:0}
+ .lo-help{padding:0}
+ .lo-help-top{padding:10px 12px}.lo-help-top h2{font-size:18px}
+ .lo-help-tabs{padding:7px 10px}
+ .lo-help-content{grid-template-columns:minmax(0,1fr);gap:10px;padding:10px}
+ .lo-help-display svg{max-height:190px}
+ .lo-help-demo-tag{font-size:10px}
+ .lo-help-words{gap:6px}
+ .lo-help-words h3{font-size:19px}
+ .lo-help-words p{font-size:12px}
+ .lo-help-controls{padding:9px 10px}
+ .lo-help-tip{margin-top:5px}
+}
+@media(prefers-reduced-motion:reduce){.lo-help-tab,.lo-help-open{transition:none}}
+
+/* Geen extra schermhoogte: drie onafhankelijke opklapmenu's, fijne randen. */
+.side{gap:7px;padding:12px;scrollbar-width:thin;overscroll-behavior:contain}
+.side .grow{min-height:0}.side .sep{display:none}
+.side h2{font-size:17px;line-height:1.2}.side>div:first-child h3{font-size:9px;margin-bottom:4px}
+.lo-goals,.lo-slim-menu{border:0.8px solid #38544f;background:#0d242b;border-radius:7px;flex:none;margin:0}
+.lo-goals>summary,.lo-slim-menu>summary{min-height:32px;display:flex;align-items:center;gap:7px;padding:7px 9px;cursor:pointer;list-style:none;color:#d6e9e3;font-size:11px;font-weight:650;user-select:none}
+.lo-slim-menu>summary::-webkit-details-marker{display:none}
+.lo-slim-menu>summary::after{content:'';width:6px;height:6px;border-right:1px solid #afd9c6;border-bottom:1px solid #afd9c6;transform:rotate(45deg);margin-left:4px;flex:none}
+.lo-slim-menu[open]>summary::after{transform:rotate(225deg)}
+.lo-slim-menu>summary:focus-visible{outline:2px solid #a8ecd0;outline-offset:2px;border-radius:6px}
+.lo-slim-content{border-top:0.8px solid #36504c;padding:9px;display:grid;gap:6px;min-width:0}
+.lo-slim-value{font-size:10px;font-weight:450;color:#91b6ac;margin-left:auto;white-space:nowrap;max-width:50%;overflow:hidden;text-overflow:ellipsis}
+.lo-goal-arrow{font-size:0;width:6px;height:6px;border-right:1px solid #afd9c6;border-bottom:1px solid #afd9c6;transform:rotate(45deg);flex:none;margin-left:5px}
+.lo-goals[open] .lo-goal-arrow{transform:rotate(225deg)}
+.lo-goals-body{border-top:0.8px solid #36504c;padding:9px;gap:6px}
+.zone-plans{background:#102930;border:0.8px solid #3d5d55;border-radius:7px;margin:0;padding:0}
+.zone-plans>summary{display:flex;align-items:center;justify-content:space-between;gap:8px;list-style:none;padding:6px 8px;margin:0;cursor:pointer;font-size:10px;color:#bdded2}
+.zone-plans>summary::-webkit-details-marker{display:none}
+.zone-plans>summary::after{content:'⌄';color:#a6cdbf;font-size:12px}
+.zone-plans[open]>summary::after{content:'⌃'}
+.zone-options{padding:4px 7px 7px;gap:4px}
+.zone-tip{padding:0 7px 7px;margin:0}
+.intent-grid{margin-top:2px;gap:5px}.intent{padding:7px 8px;border:0.8px solid #3a5754;border-radius:6px;background:transparent;font-size:11px}
+.intent.active{border-color:#80d3b4;background:#1a3c35}
+.zone-option{border-width:.8px;border-radius:6px}.lo-goal-chip,.lo-role-chip,.lo-coach-jump{border-width:.8px}
+.lo-coach-box{border-top:0.8px solid #36504c;padding-top:9px}
+.fieldpane,.side{border-width:0.8px;border-radius:10px}.fieldhead,.bottom{border-color:#36534f}
+.btn,.sport-select,.playback-control select,.lo-help-open{border-width:.8px;border-radius:7px}
+@media(max-width:880px){
+ .side{gap:5px;padding:7px;max-height:36dvh}
+ .side .hint{line-height:1.3}
+ .lo-goals>summary,.lo-slim-menu>summary{min-height:30px;padding:6px 8px;font-size:10px}
+ .lo-slim-content,.lo-goals-body{padding:7px;gap:5px}
+ .intent{padding:6px 7px}
+ .lo-coach-box{padding-top:6px}
+}
+</style></head><body class="eai-refresh"><div class="app"><header class="top"><div class="brand"><button type="button" class="mark lo-secret" id="loSecret" aria-label="LO-logo. Tweemaal tikken voor de berekeningen van het spel" title="LO">LO</button><div><div class="eyebrow">TACTISCH SPELLAB</div><h1>Speel het uit.</h1></div></div><div class="top-actions"><label class="sport-label" for="sportSelect">Sport</label><select id="sportSelect" class="sport-select" aria-label="Kies de sport"><option value="0">Voetbal</option><option value="1">Hockey</option><option value="2">Handbal</option><option value="3">Basketbal</option></select><label class="sport-label" for="formationSelect">Teams</label><select id="formationSelect" class="sport-select formation-select" aria-label="Kies het aantal aanvallers en verdedigers"><option value="0">4 tegen 4</option><option value="1">2 tegen 1</option><option value="2">3 tegen 2</option><option value="3">4 tegen 3</option></select><button id="new" class="btn">Nieuwe spelsituatie</button></div></header><div class="shell"><section class="fieldpane"><div class="fieldhead"><span id="stage" class="pill">Voorbereiden</span><span id="stagehelp" class="small">Versleep de spelers van jouw team</span><label class="playback-control" for="playbackSpeed"><span>Tempo</span><select id="playbackSpeed" aria-label="Afspeelsnelheid"><option value="0.5">½×</option><option value="1" selected>1×</option><option value="1.5">1½×</option><option value="2">2×</option></select></label><button type="button" id="loHelpOpen" class="lo-help-open" aria-haspopup="dialog" aria-controls="loHelp" aria-label="Uitleg en demo's voor het Aanvalslab"><span class="lo-help-mark" aria-hidden="true">?</span><span class="lo-help-word">Uitleg en demo’s</span></button></div><div class="fieldframe"><svg id="pitch" viewBox="0 0 1000 650" tabindex="0" role="img" aria-label="Interactief speelveld. Kies een speler en gebruik de pijltjestoetsen om hem te verplaatsen."></svg></div><div class="bottom"><div><div id="instruction" class="hint">De bal ligt bij aanvaller 1. Maak je opstelling en speel de hele aanval.</div><div id="under" class="small setup-tip">Sleep een speler of tik eerst de speler en daarna zijn plek.</div></div><div class="actions"><button id="reset" class="btn">Beginopstelling</button><button id="primary" class="btn main">Speel de aanval af ▶</button></div></div></section><aside class="side"><div><h3>Jouw opdracht</h3><h2 id="tasktitle">Maak een kans</h2></div><p id="task" class="hint" style="margin:0">Kies waar je spelers beginnen. Welke opstelling levert volgens jou de beste aanval op?</p><details id="loGoals" class="lo-goals"><summary aria-label="Wijzig het tactische oefendoel"><span class="lo-goal-kicker">Oefendoel</span><strong id="loGoalCurrent" class="lo-goal-current">Aanspeellijn openen</strong><span class="lo-goal-arrow" aria-hidden="true">⌄</span></summary><div class="lo-goals-body"><div class="lo-goal-controls"><div id="loGoalRoles" class="lo-goal-roles" role="group" aria-label="Team dat je oefent"></div><button type="button" class="lo-role-chip active" id="loCoachAuto" aria-pressed="true">Coach kiest</button></div><div id="loGoalChips" class="lo-goal-chips" role="group" aria-label="Tactische doelen"></div><p id="loGoalHint" class="lo-goal-hint">Kies een doel of laat de coach meedenken.</p></div></details><div class="sep"></div><details id="prep" class="lo-slim-menu" open><summary><span>Speleropdrachten</span><small class="lo-slim-value" id="loPlayerLabel">Aanvaller 1</small></summary><div class="lo-slim-content"><details id="zonePlans" class="zone-plans hide" open><summary class="zone-plans-head">Zoneverdediging · heel team</summary><div class="zone-options"><button type="button" class="zone-option" data-zone-plan="zonecompact">Compact</button><button type="button" class="zone-option" data-zone-plan="zoneschuif">Meeschuiven</button><button type="button" class="zone-option" data-zone-plan="zonelijn">Passlijnen</button></div><div id="zoneTip" class="zone-tip">Kies een teamvorm of geef elke verdediger apart een opdracht.</div></details><h3>Geselecteerde speler</h3><div id="selected" class="hint">Tik op een speler om zijn opdracht te kiezen.</div><div id="intents" class="intent-grid"></div><p class="small" id="intentHelp">Sleep een speler, of tik de speler en daarna een vrije plek. Met de pijltjestoetsen kun je nauwkeurig schuiven.</p></div></details><div class="grow"></div><details id="loCoachPanel" class="lo-slim-menu lo-coach-menu"><summary><span>Coach en terugkijken</span><small class="lo-slim-value" id="loCoachLabel">Tip</small></summary><div class="lo-slim-content lo-coach-box"><div id="loCoachObserved" class="lo-coach-observed hide" aria-live="polite"></div><p id="insight" class="hint" style="margin:0">Verplaats een speler of geef hem een andere opdracht.</p><div id="loCoachCompare" class="lo-coach-compare hide"></div><button type="button" id="loCoachMoment" class="lo-coach-jump hide">Bekijk spelmoment</button></div></details><div id="after" class="actions hide"><button id="again" class="btn main">Pas plan aan</button><button id="replay" class="btn">Speel opnieuw</button></div></aside></div><div class="foot"><span id="sportFoot">Voetbal</span> · <span id="formationFoot">4 tegen 4</span> · Oefenmodel · vergeleken met openbare wedstrijddata</div></div>
 <section id="loAnalysis" class="lo-analysis" role="dialog" aria-modal="true" aria-labelledby="loAnalysisTitle" hidden><div class="lo-analysis-sheet"><header class="lo-analysis-head"><div><div class="eyebrow">HET VERHAAL ACHTER DE SIMULATIE</div><h2 id="loAnalysisTitle">Wat berekende het spel?</h2></div><button type="button" class="lo-analysis-close" id="loAnalysisClose">Sluiten ×</button></header><main class="lo-analysis-scroll" id="loAnalysisBody"></main></div></section>
+<section id="loHelp" class="lo-help" role="dialog" aria-modal="true" aria-labelledby="loHelpTitle" hidden>
+<div class="lo-help-sheet">
+<header class="lo-help-top"><div><h2 id="loHelpTitle">Zo werkt het Aanvalslab</h2><span class="small">Korte demo's. Je kunt meteen zelf weer spelen.</span></div><button type="button" class="lo-help-close" id="loHelpClose">Sluiten ×</button></header>
+<nav id="loHelpTabs" class="lo-help-tabs" aria-label="Kies een bedieningsdemo"></nav>
+<div class="lo-help-content">
+<div class="lo-help-display">
+<svg id="loHelpDemo" viewBox="0 0 320 185" role="img" aria-label="Geanimeerd voorbeeldveld met aanvallers en verdedigers">
+<rect x="2" y="2" width="316" height="181" rx="9" fill="#103b36" stroke="#41716b" stroke-width="1.4"/>
+<rect x="20" y="16" width="280" height="154" fill="none" stroke="#9bc5b6" stroke-opacity=".47" stroke-width="1.1"/>
+<line x1="160" y1="16" x2="160" y2="170" stroke="#9bc5b6" stroke-opacity=".26"/>
+<rect x="275" y="70" width="25" height="42" rx="2" fill="none" stroke="#9bc5b6" stroke-opacity=".65"/>
+<path d="M298 93l-9 -5v10z" fill="#aff2d0" opacity=".7"/>
+<path id="loHelpDemoPath" d="M94 99L174 58" stroke="#f3d8a4" stroke-width="2" stroke-dasharray="5 5" fill="none" opacity="0"/>
+<g id="loHelpDemoMate"><circle cx="174" cy="58" r="14" fill="#205747" stroke="#86e3be" stroke-width="1.8"/><text x="174" y="62" text-anchor="middle" font-size="12" fill="#eefbf4" font-weight="700">2</text></g>
+<g id="loHelpDemoPlayer"><circle cx="94" cy="99" r="14" fill="#205747" stroke="#86e3be" stroke-width="1.8"/><text x="94" y="103" text-anchor="middle" font-size="12" fill="#eefbf4" font-weight="700">1</text></g>
+<g id="loHelpDemoDef"><circle cx="205" cy="114" r="14" fill="#643940" stroke="#ffabb4" stroke-width="1.8"/><text x="205" y="118" text-anchor="middle" font-size="12" fill="#fff1f0" font-weight="700">1</text></g>
+<g id="loHelpDemoBall"><circle cx="108" cy="112" r="6" fill="#f7fcf7" stroke="#1b3e3a" stroke-width="1.5"/></g>
+<circle id="loHelpDemoHalo" cx="94" cy="99" r="22" fill="none" stroke="#e8ffae" stroke-width="1.6" stroke-dasharray="5 5" opacity="0"/>
+</svg>
+<div id="loHelpDemoTag" class="lo-help-demo-tag" aria-live="off">Voorbeeld zonder invloed op je spel</div>
+<div class="lo-help-demo-controls" aria-hidden="true"><span id="loHelpDemoSelected" class="lo-help-demo-control">Aanvaller 1</span><span id="loHelpDemoAction" class="lo-help-demo-control">Speler kiezen</span></div>
+<button type="button" id="loHelpReplay" class="lo-help-open" style="align-self:flex-start">↻ Speel demo opnieuw</button>
+<span class="lo-help-caption">Dit is een bedieningsvoorbeeld. Je eigen spelers en opstellingen blijven hetzelfde.</span>
+</div>
+<div class="lo-help-words"><span id="loHelpProgress" class="lo-help-progress">1 van 3</span><h3 id="loHelpStepTitle">Een speler kiezen</h3><p id="loHelpStepBody">Tik op de speler die je wilt verplaatsen.</p><div class="lo-help-tip" id="loHelpStepTip">Er verandert niets in je echte opstelling.</div></div>
+</div>
+<footer class="lo-help-controls"><div class="actions"><button type="button" id="loHelpBack">Vorige</button><button type="button" id="loHelpNext" class="main">Volgende stap →</button></div><button type="button" id="loHelpTry">Zelf proberen</button></footer>
+</div></section>
 <div class="lo-footer-links"><a class="lo-evidence-link" href="/tools/lo-aanvalslab/onderbouwing/">Wetenschappelijke onderbouwing</a><details class="source-detail" id="sourceDetail"><summary>Meetbasis en bronnen</summary>
  <div class="source-popover"><strong>Onderzoeksbasis per sport</strong><p>Het Aanvalslab blijft een vereenvoudigd onderwijsmodel. Alleen de genoemde onderdelen zijn aangepast op basis van data of gepubliceerd onderzoek. Geen validatie voor individuele leerlingen.</p>
  <p><b>Voetbal</b> · 2 volledig gevolgde Metrica-wedstrijden, ruim 6 miljoen verplaatsingsmetingen. Gemiddeld 1,77 m/s, 90e percentiel 3,67 m/s, bij balbezit mediane afstand tot dichtstbijzijnde tegenstander 4,88 m. De verdedigersnelheid is voorzichtig bijgesteld. De passkeuze gebruikt daarnaast 84 gecontroleerde PASS-events. Het 3-tegen-2-loopidee is gebaseerd op 279 geobserveerde jeugdpartijtjes. <a href="https://github.com/metrica-sports/sample-data" target="_blank" rel="noopener noreferrer">Metrica</a> · <a href="https://doi.org/10.26582/k.51.1.7" target="_blank" rel="noopener noreferrer">3-tegen-2-onderzoek</a>.</p>
@@ -220,13 +364,59 @@ function ballAt(p){
  return {x:p.x+22,y:p.y+19};
 }
 function drawBall(pos,parent){
- const radius=window.innerWidth<600?1.19:1;
- const g=s('g',{transform:`translate(${pos.x} ${pos.y}) scale(${radius})`,'aria-label':sportCfg().ball,'data-ball':'true','pointer-events':'none'},parent);
- s('circle',{cx:0,cy:1,r:17,fill:'#061b1d',opacity:.66},g);
- if(sportIndex===1){s('circle',{cx:0,cy:0,r:10,fill:'#edf0a2',stroke:'#fffbd2','stroke-width':2},g);s('path',{d:'M-8 4Q0 7 9 0',stroke:'#c4c77b','stroke-width':1.3,fill:'none'},g)}
- else if(sportIndex===2){s('circle',{cx:0,cy:0,r:12,fill:'#f2d8b5',stroke:'#fff1df','stroke-width':1.8},g);for(const a of [0,60,120])s('line',{x1:-10,y1:0,x2:10,y2:0,transform:`rotate(${a})`,stroke:'#bb7c49','stroke-width':1.6},g)}
- else if(sportIndex===3){s('circle',{cx:0,cy:0,r:13,fill:'#ee9c52',stroke:'#ffd4a6','stroke-width':1.8},g);s('path',{d:'M-13 0H13M0 -13V13M-10 -8Q1 0 -10 8M10 -8Q-1 0 10 8',fill:'none',stroke:'#613823','stroke-width':1.9},g)}
- else {s('circle',{cx:0,cy:0,r:13,fill:'#f8faf9',stroke:'#e6f9ee','stroke-width':2},g);s('path',{d:'M0 -5L5 -2L3 4L-3 4L-5 -2Z',fill:'#15292d'},g);for(const d of ['M-1 -12L-5 -8L-5 -2','M9 -9L5 -2','M11 5L3 4','M-11 5L-3 4','M-5 10L0 12L5 10'])s('path',{d,fill:'none',stroke:'#15292d','stroke-width':1.6,'stroke-linecap':'round'},g)}
+ // Kleine, herkenbare bal per sport. Lijnwerk blijft scherp bij in- en uitzoomen.
+ // De getekende diameter is voor leesbaarheid vergroot; spelberekening blijft gelijk.
+ const mobile=window.innerWidth<600,scale=mobile?1.09:1;
+ const g=s('g',{transform:'translate('+pos.x+' '+pos.y+') scale('+scale+')',
+  'aria-label':sportCfg().ball,'data-ball':'true','data-ball-sport':String(sportIndex),
+  'pointer-events':'none'},parent);
+ const defs=s('defs',{},g);
+ const gradient=s('radialGradient',{id:'loBallGloss',cx:'.31',cy:'.24',r:'.86'},defs);
+ let base='#f8f8ef',light='#ffffff',dark='#d5dad8',radius=12.3;
+ if(sportIndex===1){base='#f4eee0';light='#fff9ed';dark='#b9bcad';radius=8.5}
+ if(sportIndex===2){base='#e8c79f';light='#fff0d4';dark='#a87652';radius=12.2}
+ if(sportIndex===3){base='#dc8648';light='#ffbf7a';dark='#874523';radius=12.9}
+ s('stop',{offset:'0%','stop-color':light},gradient);
+ s('stop',{offset:'64%','stop-color':base},gradient);
+ s('stop',{offset:'100%','stop-color':dark},gradient);
+ s('ellipse',{cx:1.5,cy:radius*.52,rx:radius*.9,ry:radius*.58,fill:'#06191e',opacity:.33},g);
+ s('circle',{cx:0,cy:0,r:radius,fill:'url(#loBallGloss)',stroke:dark,'stroke-width':'.78'},g);
+ if(sportIndex===0){
+  const poly=(cx,cy,r,side,angle,attrs={})=>{
+   const points=Array.from({length:side},(_,i)=>{
+    const a=angle+i*2*Math.PI/side;
+    return (cx+Math.cos(a)*r).toFixed(2)+','+(cy+Math.sin(a)*r).toFixed(2);
+   }).join(' ');
+   s('polygon',{points,...attrs},g);
+  };
+  poly(-.3,.4,5.6,5,-Math.PI/2,{fill:'#314144',stroke:'#1f3133','stroke-width':'.5'});
+  for(const [cx,cy,angle] of [[-9,-5,-1.9],[8.1,-6,.2],[9,7,1.2],[-8.6,7,-2.7],[0,-11,-1.55]]){
+   poly(cx,cy,3.4,5,angle,{fill:'#465357',stroke:'#4c5c60','stroke-width':'.36'});
+  }
+  for(const [x1,y1,x2,y2] of [[-4,-3,-7,-6],[4,-3,6,-6],[5,3,7,6],[-5,3,-7,6],[0,-5,0,-8]]){
+   s('path',{d:'M'+x1+' '+y1+'L'+x2+' '+y2,stroke:'#647176','stroke-width':'.75',fill:'none'},g);
+  }
+ }else if(sportIndex===1){
+  // Kleine witte hockeybal, met fijne reliëfputjes in plaats van een zwaar patroon.
+  for(const [x,y] of [[-4,-2],[-1,-4],[3,-3],[5,0],[1,1],[-3,3],[3,4],[-1,5]]){
+   s('circle',{cx:x,cy:y,r:'.75',fill:'#c6c3b5',opacity:.58},g);
+   s('circle',{cx:x-.25,cy:y-.22,r:'.28',fill:'#fffefa',opacity:.68},g);
+  }
+ }else if(sportIndex===2){
+  // Handbal: zachte leerpanelen, stiksels en rustige kleurverschillen.
+  for(const d of ['M-11 -3Q-3 -8 4 -10','M-10 5Q0 0 10 4','M-2 -11Q1 0 -3 11','M6 -9Q4 0 8 8']){
+   s('path',{d,stroke:'#9c6d52','stroke-width':'.9',opacity:.8,fill:'none','stroke-linecap':'round'},g);
+  }
+  for(const [x,y] of [[-7,-5],[5,-7],[7,6],[-5,8]]){
+   s('circle',{cx:x,cy:y,r:'.42',fill:'#fff3dc',opacity:.8},g);
+  }
+ }else{
+  // Basketbal: gebogen naden volgens de bolling, geen vlak kruis.
+  for(const d of ['M-12.3 0Q0 -2 12.3 0','M0 -12.5Q-1 0 0 12.5','M-9.2 -8.8Q3 -2 9.2 8.8','M9.2 -8.8Q-3 -2 -9.2 8.8']){
+   s('path',{d,stroke:'#693824','stroke-width':'1.05',opacity:.9,fill:'none','stroke-linecap':'round'},g);
+  }
+ }
+ s('ellipse',{cx:-radius*.32,cy:-radius*.42,rx:radius*.36,ry:radius*.18,fill:'#fff',opacity:sportIndex===3?.18:.25,transform:'rotate(-27)'},g);
 }
 
 function drawPitch(){
@@ -265,32 +455,62 @@ function drawPitch(){
  s('g',{id:'traces'});s('g',{id:'actors'});
 }
 function canEdit(p){return state==='setup'&&(mode==='free'||((mode==='duo'||mode==='online')?p.team===phase:p.team===(mode==='attack'?'a':'d')))}
+// Looplijn uit dezelfde tijdstap-simulatie als bij afspelen.
+// De oude pijl had eigen, afwijkende doelberekeningen. Die zijn verwijderd.
+// We tonen alleen de eerste 1,25 s, niet de gegarandeerde eindpositie.
+let loArrowTimer=0,loArrowCache=null;
+function loArrowKey(){
+ return [sportIndex,formationIndex,scenarioIndex,JSON.stringify(players.map(p=>[p.id,Math.round(p.x*100)/100,Math.round(p.y*100)/100,p.intent]))].join('|');
+}
+function loCancelArrowTimer(){if(loArrowTimer){clearTimeout(loArrowTimer);loArrowTimer=0}}
+function loPrepareArrowPreview(){
+ if(state!=='setup'||mode==='online')return;
+ const key=loArrowKey();
+ if(loArrowCache?.key===key)return;
+ loCancelArrowTimer();
+ loArrowCache=null; // Nooit een oude pijl laten staan na een verplaatsing.
+ loArrowTimer=setTimeout(()=>{
+  loArrowTimer=0;
+  if(state!=='setup'||mode==='online'||key!==loArrowKey())return;
+  const stored={initial,simSeed,frames,events,summary,result,duration,analysisReady};
+  try{
+   initial=copy(players);
+   simSeed=1337+scenarioIndex*4099+formationIndex*1609;
+   simulate();
+   const picked=frames.filter((f,i)=>f.time<=1.25&&(i%3===0||i===frames.length-1));
+   const tracks={};
+   for(const p of players){
+    tracks[p.id]=picked.map(f=>{const q=f.players.find(z=>z.id===p.id);return q?{x:q.x,y:q.y,t:f.time}:null}).filter(Boolean);
+   }
+   loArrowCache={key,tracks};
+  }catch(e){
+   loArrowCache=null;
+   console.error('Looplijn kon niet worden getoond:',e);
+  }finally{
+   initial=stored.initial;simSeed=stored.simSeed;frames=stored.frames;events=stored.events;
+   summary=stored.summary;result=stored.result;duration=stored.duration;analysisReady=stored.analysisReady;
+  }
+  if(state==='setup'&&key===loArrowKey())draw();
+ },105);
+}
 function previewArrow(p,traces){
- let tx=p.x,ty=p.y;
- if(p.team==='a'){
-  const i=p.intent;
-  if(i==='diep')tx+=115;
-  else if(i==='breed'){tx+=32;ty=p.y<325?115:535;}
-  else if(i==='bal'){const owner=players.find(q=>q.id==='a0');tx=(owner?.x||340)-50;ty=(owner?.y||325)+(p.id==='a2'?90:-90);}
-  else if(i==='kruis'){tx+=80;ty=650-p.y;}
-  else if(i==='ruimte'){tx+=50;ty=p.y<325?Math.max(105,p.y-120):Math.min(545,p.y+120);}
-  else if(i==='drijf'){tx+=120;}else if(i==='zijde'){tx+=90;ty=p.y<325?110:540;}
-  else if(i==='pas'){tx+=45;}
- }else{
-  const a=players.find(q=>q.id==='a'+p.id[1])||players[0];
-  if(['dek','volg'].includes(p.intent)){tx=a.x+35;ty=a.y;}
-  else if(p.intent==='druk'){tx=players[0].x+22;ty=players[0].y;}
-  else if(p.intent==='terug'){tx+=100;}
-  else if(p.intent==='lijn'){tx=(p.x+players[0].x)*.5;ty=(p.y+players[0].y)*.5;}
-   else if(p.intent==='zone'||p.intent==='zonecompact'){tx=Math.max(p.x+35,players[0].x+50);ty=325+(players[0].y-325)*.28+(p.y-325)*.34;}
-   else if(p.intent==='zoneschuif'){tx=players[0].x+34;ty=players[0].y*.67+p.y*.33;}
-   else if(p.intent==='zonelijn'){const from=players[0],rec=players.find(q=>q.id==='a'+(Number(p.id[1])+1))||players.find(q=>q.id==='a1')||from;tx=from.x*.52+rec.x*.48;ty=from.y*.52+rec.y*.48;}
- }
- tx=clamp(tx,70,930);ty=clamp(ty,76,574);
- if(dist(p,{x:tx,y:ty})<26)return;
- const color=p.team==='a'?'#93e8c9':'#ffb4bf';const dx=tx-p.x,dy=ty-p.y,n=Math.hypot(dx,dy)||1;
- s('path',{d:`M${p.x} ${p.y} L${tx} ${ty}`,stroke:color,'stroke-width':1.45,'stroke-dasharray':'5 7',opacity:.72,fill:'none'},traces);
- s('path',{d:`M${tx} ${ty} l${-dx/n*9-dy/n*4} ${-dy/n*9+dx/n*4} M${tx} ${ty} l${-dx/n*9+dy/n*4} ${-dy/n*9-dx/n*4}`,stroke:color,'stroke-width':1.5,opacity:.8,fill:'none'},traces);
+ // Online kent vóór het starten het geheime plan en de seed van het andere team niet.
+ // Daar dus geen richting presenteren als een voorspelling.
+ if(mode==='online')return;
+ if(loArrowCache?.key!==loArrowKey()){loPrepareArrowPreview();return}
+ const track=loArrowCache?.tracks[p.id];
+ if(!track||track.length<2)return;
+ const points=[{x:p.x,y:p.y},...track.slice(1)];
+ const final=points.at(-1),first=points[0];
+ if(dist(first,final)<8)return;
+ const color=p.team==='a'?'#9fe8c9':'#ffb6c0';
+ s('polyline',{points:points.map(q=>q.x.toFixed(2)+','+q.y.toFixed(2)).join(' '),
+  stroke:color,'stroke-width':1.25,'stroke-dasharray':'4 7',
+  'stroke-linecap':'round','stroke-linejoin':'round',opacity:.92,fill:'none','data-preview-arrow':p.id},traces);
+ const prev=points[points.length-2],dx=final.x-prev.x,dy=final.y-prev.y,
+  norm=Math.hypot(dx,dy)||1,ux=dx/norm,uy=dy/norm;
+ s('path',{d:'M'+(final.x-ux*8-uy*3.3)+' '+(final.y-uy*8+ux*3.3)+' L'+final.x+' '+final.y+' L'+(final.x-ux*8+uy*3.3)+' '+(final.y-uy*8-ux*3.3),
+  stroke:color,'stroke-width':1.35,fill:'none','stroke-linecap':'round',opacity:.92},traces);
 }
 
 function draw(actors=players,ball=null,trail=[]){
@@ -311,6 +531,346 @@ function draw(actors=players,ball=null,trail=[]){
  drawBall(ball||ballAt(actors.find(p=>p.id==='a0')),layer)
 }
 
+
+// Tactische doelen: begrippen volgens KNVB Rinus, KNHB, NHV en FIBA/NBB.
+// De labels zijn compacte opdrachten voor leerlingen, geen letterlijke bondstitels.
+// Niet alle doelen zijn al onafhankelijk meetbaar; coaching beschrijft alleen echte modelgegevens.
+const LO_GOALS=[
+ {a:[
+  ['open','Aanspeellijn openen','Zoek een plek waar je zonder verdediger ertussen aangespeeld kunt worden.'],
+  ['run','Vrijlopen','Verander de loopactie van een speler zonder bal.'],
+  ['space','Veld groot maken','Maak met de aanvallers meer breedte.'],
+  ['depth','Diepte maken','Laat één aanvaller verder naar voren bewegen.'],
+  ['pull','Verdediger lokken','Verander de loopactie zodat een verdediger moet kiezen.'],
+  ['pass','Passmoment kiezen','Vergelijk een andere afspeelpositie of balactie.'],
+  ['after','Na de pass doorbewegen','Geef de passer na de pass opnieuw een rol.'],
+  ['shot','Vrije schotpositie zoeken','Zoek een weg naar een schot zonder directe druk.']],
+ d:[
+  ['cut','Aanspeellijn afsluiten','Zet een verdediger tussen de bal en een ontvanger.'],
+  ['press','Druk zetten','Verklein de ruimte voor de balbezitter.'],
+  ['mark','Tegenstander dekken','Blijf bij een aanvaller zonder bal.'],
+  ['cover','Rugdekking geven','Laat een tweede verdediger de eerste ondersteunen.'],
+  ['shift','Samen kantelen','Laat de verdedigers naar de balzijde schuiven.'],
+  ['goal','Doelpoging voorkomen','Bescherm de route naar het doel.']]},
+ {a:[
+  ['open','Aanspeelpunt maken','Kies een plek waar je een pass kunt ontvangen.'],
+  ['run','Vrijlopen en aanbieden','Maak zonder bal ruimte om aangespeeld te worden.'],
+  ['space','Breedte houden','Zorg dat je team niet op één kant samenkomt.'],
+  ['depth','Diepte houden','Zoek ruimte verder in de speelrichting.'],
+  ['switch','Het spel verleggen','Onderzoek een pass naar de andere kant.'],
+  ['after','Na de pass doorbewegen','Speel de bal en kies daarna een nieuwe positie.'],
+  ['shot','Ruimte bij de cirkel zoeken','Probeer de bal dichter bij een schotpositie te krijgen.']],
+ d:[
+  ['cut','Aanspeellijn afsluiten','Ga tussen de bal en een aanvaller staan.'],
+  ['press','De opbouw storen','Zet de balbezitter onder druk.'],
+  ['mark','Een aanvaller dekken','Houd de directe tegenstander in de gaten.'],
+  ['cover','Samen ruimte verkleinen','Zorg dat verdedigers elkaar kunnen helpen.'],
+  ['shift','Naar de balzijde schuiven','Verplaats de verdediging richting de bal.'],
+  ['goal','De cirkel verdedigen','Houd de aanvallers weg uit de schotruimte.']]},
+ {a:[
+  ['open','Een aanspeelpunt maken','Bied je aan buiten het bereik van een verdediger.'],
+  ['run','Op tijd instarten','Verander je loopactie zonder bal.'],
+  ['space','Ruimte tussen verdedigers benutten','Zoek een open plek tussen twee verdedigers.'],
+  ['depth','Richting doel vrijlopen','Beweeg zonder bal naar een betere aanvallende positie.'],
+  ['pull','Een verdediger binden','Dwing een verdediger te kiezen door zelf op te komen.'],
+  ['pass','Op tijd doorspelen','Kies een andere balactie of positie voor de pass.'],
+  ['shot','Vrije schotruimte maken','Zoek ruimte om richting doel af te ronden.']],
+ d:[
+  ['mark','1-op-1 dekken','Blijf tussen je aanvaller en het doel bewegen.'],
+  ['cut','Een pass onderscheppen','Onderzoek welke balweg je kunt bereiken.'],
+  ['press','Druk op de bal zetten','Maak de ruimte voor de balbezitter kleiner.'],
+  ['cover','Een medeverdediger helpen','Schuif naar een plek waar je kunt ondersteunen.'],
+  ['shift','Samen meeschuiven','Stem je positie af op de balzijde.'],
+  ['goal','De weg naar doel sluiten','Voorkom een vrije schotpositie.']]},
+ {a:[
+  ['open','Passing lane openen','Ga naar een plek waar je vrij aangespeeld kunt worden.'],
+  ['run','Vrijlopen met een cut','Snijd zonder bal naar een open plek.'],
+  ['space','Spacing houden','Houd genoeg afstand tussen aanvallers.'],
+  ['depth','Ruimte voor een drive maken','Maak ruimte om met de bal naar de basket te gaan.'],
+  ['pull','Een verdediger meetrekken','Verplaats je om ergens anders ruimte te maken.'],
+  ['after','Na de pass doorsnijden','Onderzoek wat bewegen na een pass verandert.'],
+  ['shot','Een vrije schotpositie maken','Zoek een plaats om onder minder druk te schieten.']],
+ d:[
+  ['cut','Passing lane sluiten','Ga tussen de bal en een medespeler van de balbezitter staan.'],
+  ['press','Balbezitter onder druk zetten','Verklein de ruimte voor de speler met bal.'],
+  ['mark','Man-tegen-man verdedigen','Blijf bij je directe tegenstander.'],
+  ['cover','Helpen vanaf de helpside','Kies een plek waar je een verdediger kunt helpen.'],
+  ['shift','Met de bal meeschuiven','Beweeg als team mee naar de balzijde.'],
+  ['goal','De weg naar de basket afsluiten','Maak de route naar het doel moeilijker.']]}
+];
+let loGoalRole='a',loGoalManual=false,loGoalKey='open',loCoachMomentTime=null;
+let loLastAttempt=null,loComparableAttempt=null,loRunNumber=0,loCoachFocus=null,loCoachHighlight=false;
+const loAvailableRoles=()=>mode==='free'?['a','d']:mode==='defend'?['d']:mode==='attack'?['a']:[phase];
+const loGoals=()=>LO_GOALS[sportIndex][loGoalRole];
+const loSelectedGoal=()=>loGoals().find(g=>g[0]===loGoalKey)||loGoals()[0];
+const loContextKey=()=>[sportIndex,formationIndex,scenarioIndex,mode,loGoalRole].join('/');
+const loMetres=n=>Number(n).toLocaleString('nl-NL',{maximumFractionDigits:1});
+const loSeconds=n=>Number(n).toLocaleString('nl-NL',{maximumFractionDigits:2});
+const loNumber=id=>id?String(Number(id.slice(1))+1):'';
+function loCoachSuggestedGoal(){
+ const passes=events.filter(e=>e.kind==='pass'),lastPass=passes.at(-1);
+ const loss=events.some(e=>['intercept','loss'].includes(e.kind));
+ const shot=events.find(e=>e.kind==='shot');
+ const repeat=loComparableAttempt?.result===summary.result;
+ let candidate;
+ if(loGoalRole==='d'){
+  if(shot)candidate=shot.detail?.nearestDefenderM>2.5?'press':'goal';
+  else if(loss)candidate=repeat?'cover':'cut';
+  else if(lastPass)candidate='cut';
+  else candidate='mark';
+ }else{
+  if(lastPass&&lastPass.detail?.minArrivalMarginS<0.06)candidate='open';
+  else if(loss)candidate=repeat?'run':'open';
+  else if(shot)candidate=shot.detail?.nearestDefenderM>2.5?(repeat?'space':'pull'):'shot';
+  else if(!passes.length)candidate=repeat?'space':'run';
+  else candidate=repeat?'depth':'after';
+ }
+ return loGoals().some(g=>g[0]===candidate)?candidate:loGoals()[0][0];
+}
+function loGoalPicker(){
+ const roles=loAvailableRoles();
+ if(!roles.includes(loGoalRole)){loGoalRole=roles[0];loGoalManual=false;loGoalKey=LO_GOALS[sportIndex][loGoalRole][0][0]}
+ if(!loGoals().some(g=>g[0]===loGoalKey))loGoalKey=loGoals()[0][0];
+ const rolesEl=el('loGoalRoles');rolesEl.replaceChildren();
+ if(roles.length>1)for(const side of roles){
+  const b=document.createElement('button');b.type='button';b.className='lo-role-chip'+(loGoalRole===side?' active':'');
+  b.textContent=side==='a'?'Aanval':'Verdediging';b.setAttribute('aria-pressed',String(loGoalRole===side));
+  b.onclick=()=>{loGoalRole=side;loGoalKey=loGoals()[0][0];loGoalManual=false;loGoalPicker();if(state==='done')loCoachFeedback();else refresh()};
+  rolesEl.append(b);
+ }
+ const chips=el('loGoalChips');chips.replaceChildren();
+ for(const [key,label] of loGoals()){
+  const b=document.createElement('button');b.type='button';b.className='lo-goal-chip'+(loGoalKey===key?' active':'');
+  b.textContent=label;b.setAttribute('aria-pressed',String(loGoalKey===key));
+  b.onclick=()=>{loGoalManual=true;loGoalKey=key;loGoalPicker();if(state==='done')loCoachFeedback();else refresh()};
+  chips.append(b);
+ }
+ const g=loSelectedGoal();
+ el('loGoalCurrent').textContent=g[1];el('loGoalHint').textContent=g[2];
+ el('loCoachAuto').classList.toggle('active',!loGoalManual);
+ el('loCoachAuto').setAttribute('aria-pressed',String(!loGoalManual));
+ if(state==='setup')refresh();
+}
+function loBeforeAttempt(){
+ loComparableAttempt=loLastAttempt?.context===loContextKey()?loLastAttempt:null;
+ loCoachHighlight=false;loCoachFocus=null;
+ loRunNumber++;
+}
+function loDistanceToSegment(p,a,b){
+ const dx=b.x-a.x,dy=b.y-a.y,den=dx*dx+dy*dy;
+ const t=den?clamp(((p.x-a.x)*dx+(p.y-a.y)*dy)/den,0,1):0;
+ return {metres:dist(p,{x:a.x+t*dx,y:a.y+t*dy})/PX,projection:t};
+}
+// Alleen de geometrie van de aanspeellijn. De verdediger kan nog bewegen;
+// een vrije lijn betekent niet dat de pass in het model of in een wedstrijd lukt.
+function loLaneSample(frame,fromId=null,toId=null){
+ if(!frame)return null;
+ const from=frame.players.find(p=>p.id===(fromId||frame.holder));
+ if(!from||from.team!=='a')return null;
+ const receivers=frame.players.filter(p=>p.team==='a'&&p.id!==from.id&&(!toId||p.id===toId));
+ const defenders=frame.players.filter(p=>p.team==='d');
+ if(!receivers.length||!defenders.length)return null;
+ return receivers.map(to=>{
+   const nearest=defenders.map(p=>({player:p,detail:loDistanceToSegment(p,from,to)})).sort((a,b)=>a.detail.metres-b.detail.metres)[0];
+   return {from:from.id,to:to.id,defender:nearest.player.id,gap:nearest.detail.metres,frameTime:frame.time};
+ }).sort((a,b)=>a.gap-b.gap)[0];
+}
+function loFrameMove(id,t1,t2){
+ const f=frameAt(t1).players.find(p=>p.id===id),s=frameAt(t2).players.find(p=>p.id===id);
+ return f&&s?dist(f,s)/PX:0;
+}
+function loWidth(frame,team){
+ const ps=(frame?.players||[]).filter(p=>p.team===team);
+ return ps.length>1?(Math.max(...ps.map(p=>p.y))-Math.min(...ps.map(p=>p.y)))/PX:0;
+}
+function loCoachObservation(goal){
+ const passes=events.filter(e=>e.kind==='pass'),lastPass=passes.at(-1);
+ const first=frames[0],lastFrame=frames.at(-1),mid=frames[Math.floor(frames.length/2)];
+ const shot=events.find(e=>e.kind==='shot');
+ const firstLoss=events.find(e=>['intercept','loss'].includes(e.kind));
+ const metre=(key,label,value)=>Number.isFinite(value)?{key,label,value,unit:'m'}:null;
+ let observation='',moment=null,metric=null,focus=null;
+ if(['open','pass','cut'].includes(goal)){
+  const ev=passes.find(e=>Number.isFinite(e.detail?.minArrivalMarginS));
+  if(ev){
+   const margin=ev.detail.minArrivalMarginS;
+   observation='De pass naar aanvaller '+loNumber(ev.detail.to)+' had een berekende aankomstmarge van '+loSeconds(margin)+' seconde. ';
+   observation+=margin>0.05?'De bal kon het berekende punt eerder bereiken dan de verdediger.':margin<-.05?'De verdediger kon het berekende punt eerder bereiken dan de bal.':'Bal en verdediger konden het berekende punt vrijwel tegelijk bereiken.';
+   observation+=' Dat is geen garantie voor een gelukte of onderschepte pass.';
+   metric={key:'passmarge',label:'Aankomstmarge',value:margin,unit:'s'};
+   moment=Math.max(0,ev.time-.05);
+   focus={time:moment,from:ev.detail.from,to:ev.detail.to};
+  }else{
+   const sample=loLaneSample(first);
+   if(sample){
+    observation='Bij de start stond verdediger '+loNumber(sample.defender)+' op '+loMetres(sample.gap)+' meter van de lijn tussen de baldrager en aanvaller '+loNumber(sample.to)+'. De bal hoefde deze lijn niet te volgen.';
+    moment=sample.frameTime;metric=metre('lijnafstand','Afstand tot aanspeellijn',sample.gap);
+    focus={time:moment,from:sample.from,to:sample.to,defender:sample.defender};
+   }else observation='Er is nog geen pass of meetbare aanspeellijn om terug te kijken.';
+  }
+ }else if(goal==='run'){
+  const moves=initial.filter(p=>p.team==='a'&&p.id!=='a0').map(p=>({id:p.id,value:loFrameMove(p.id,0,duration)})).sort((a,b)=>b.value-a.value);
+  if(moves.length){
+    const p=moves[0];observation='Aanvaller '+loNumber(p.id)+' stond aan het einde '+loMetres(p.value)+' meter van zijn startplek. Dat zegt nog niet of hij vrijliep.';
+    metric=metre('verplaatsing','Afstand tot start',p.value);moment=Math.min(duration,Math.max(0.5,duration/2));focus={time:moment,player:p.id};
+  }else observation='Er is geen speler zonder bal om te volgen.';
+ }else if(goal==='space'){
+  const a=loWidth(first,'a'),b=loWidth(lastFrame,'a');
+  observation='De aanvallers stonden bij de start '+loMetres(a)+' meter uit elkaar in de breedte; aan het einde '+loMetres(b)+' meter.';
+  metric=metre('aanvalsbreedte','Breedte aan het einde',b);moment=duration/2;
+ }else if(goal==='depth'){
+  const atStart=initial.filter(p=>p.team==='a'),atEnd=(lastFrame?.players||[]).filter(p=>p.team==='a');
+  if(atStart.length&&atEnd.length){
+   const movement=(Math.max(...atEnd.map(p=>p.x))-Math.max(...atStart.map(p=>p.x)))/PX;
+   observation='De voorste aanvaller kwam '+loMetres(Math.abs(movement))+' meter '+(movement>=0?'verder richting doel':'verder van het doel')+' dan bij de start.';
+   metric=metre('voorwaartse ruimte','Verschil richting doel',movement);moment=duration/2;
+  }
+ }else if(goal==='pull'){
+  const moves=initial.filter(p=>p.team==='d').map(p=>({id:p.id,value:loFrameMove(p.id,0,duration)})).sort((a,b)=>b.value-a.value);
+  if(moves.length){
+   const p=moves[0];observation='Verdediger '+loNumber(p.id)+' eindigde '+loMetres(p.value)+' meter van zijn startplek. Of hij werd gelokt, kun je hieruit niet afleiden.';
+   metric=metre('verdediger verplaatst','Afstand tot start',p.value);moment=duration/2;focus={time:moment,player:p.id};
+  }else observation='Er is geen verdediger om te volgen.';
+ }else if(goal==='after'){
+  if(lastPass){
+   const from=lastPass.detail?.from,until=Math.min(duration,lastPass.time+1.2),m=from?loFrameMove(from,lastPass.time,until):0;
+   observation='Na de laatste pass eindigde de passer '+loMetres(m)+' meter van zijn plek op het passmoment. Er is gekeken tot '+loSeconds(until-lastPass.time)+' seconde na de pass.';
+   metric=metre('doorbewegen','Verplaatsing na de pass',m);moment=until;focus={time:moment,player:from};
+  }else observation='Er werd geen pass gespeeld. We kunnen doorbewegen na de pass nog niet onderzoeken.';
+ }else if(goal==='switch'){
+  const lateral=passes.map(e=>{const f=frameAt(Math.max(0,e.time-.05)),a=f.players.find(p=>p.id===e.detail?.from),b=f.players.find(p=>p.id===e.detail?.to);return a&&b?{value:Math.abs(a.y-b.y)/PX,event:e}:null}).filter(Boolean).sort((a,b)=>b.value-a.value)[0];
+  if(lateral){
+    observation='De grootste zijwaartse afstand bij een pass was '+loMetres(lateral.value)+' meter. Een grote zijwaartse pass is niet automatisch een geslaagde spelverlegging.';
+    moment=lateral.event.time;metric=metre('zijwaartse pass','Zijwaartse afstand',lateral.value);
+    focus={time:moment,from:lateral.event.detail.from,to:lateral.event.detail.to};
+  }else observation='Er werd geen pass gespeeld om een spelverlegging te bekijken.';
+ }else if(goal==='shot'||goal==='goal'){
+  if(shot){
+   const near=shot.detail.nearestDefenderM;
+   observation='Bij de doelpoging stond de dichtstbijzijnde verdediger '+loMetres(near)+' meter van de schutter. Het model registreert een poging, geen doelpunt.';
+   metric=metre('schotdruk','Verdediger bij schot',near);moment=shot.time;focus={time:moment,player:shot.detail.player};
+  }else{
+   observation='Er ontstond geen doelpoging. Kijk of de bal wel vooruitkwam en waar verdedigers ruimte afsloten.';
+   moment=firstLoss?.time??null;
+  }
+ }else if(goal==='press'){
+  const snap=frames.find(f=>f.holder?.startsWith('a')&&f.time>=Math.min(duration,1.5))||frames.find(f=>f.holder?.startsWith('a'))||mid;
+  const owner=snap?.players.find(p=>p.id===snap.holder),defs=snap?.players.filter(p=>p.team==='d')||[];
+  if(owner&&defs.length){
+   const ranked=defs.map(p=>({p,meters:dist(p,owner)/PX})).sort((a,b)=>a.meters-b.meters),closest=ranked[0];
+   observation='Op '+loSeconds(snap.time)+' seconde stond verdediger '+loNumber(closest.p.id)+' op '+loMetres(closest.meters)+' meter van de baldrager. Afstand alleen zegt nog niet hoeveel druk de speler ervaart.';
+   metric=metre('afstand baldruk','Verdediger tot baldrager',closest.meters);moment=snap.time;focus={time:moment,from:closest.p.id,to:owner.id};
+  }else observation='Er was geen baldrager met een meetbare verdediger in dit beeld.';
+ }else if(goal==='mark'){
+  const receiver=mid?.players.find(p=>p.id==='a1'),defs=mid?.players.filter(p=>p.team==='d')||[];
+  if(receiver&&defs.length){
+   const nearest=defs.map(p=>({p,gap:dist(p,receiver)/PX})).sort((a,b)=>a.gap-b.gap)[0];
+   observation='Halverwege stond verdediger '+loNumber(nearest.p.id)+' op '+loMetres(nearest.gap)+' meter van aanvaller 2. Dichtbij staan is niet hetzelfde als goed dekken.';
+   metric=metre('dekafstand','Afstand tot aanvaller 2',nearest.gap);moment=mid.time;focus={time:moment,from:nearest.p.id,to:receiver.id};
+  }else observation='Er zijn niet genoeg spelers om dekking te vergelijken.';
+ }else if(goal==='cover'){
+  const defs=mid?.players.filter(p=>p.team==='d')||[];
+  if(defs.length>1){
+   const d0=defs.find(p=>p.id==='d0')||defs[0],other=defs.filter(p=>p.id!==d0.id).map(p=>({p,gap:dist(p,d0)/PX})).sort((a,b)=>a.gap-b.gap)[0];
+   observation='Halverwege stond verdediger '+loNumber(other.p.id)+' op '+loMetres(other.gap)+' meter van verdediger '+loNumber(d0.id)+'. De onderlinge afstand bewijst geen rugdekking.';
+   metric=metre('onderlinge dekafstand','Afstand tussen verdedigers',other.gap);moment=mid.time;focus={time:moment,from:other.p.id,to:d0.id};
+  }else observation='Rugdekking vraagt om minstens twee verdedigers. Kies 3 tegen 2 of 4 tegen 3.';
+ }else if(goal==='shift'){
+  const before=(first?.players||[]).filter(p=>p.team==='d'),after=(lastFrame?.players||[]).filter(p=>p.team==='d');
+  if(before.length){
+   const dy=before.reduce((sum,p)=>sum+(after.find(q=>q.id===p.id)?.y??p.y)-p.y,0)/before.length/PX;
+   observation=dy===0?'Het gemiddelde van de verdedigende posities verschoof niet in de breedte.':'Het gemiddelde van de verdedigende posities verschoof '+loMetres(Math.abs(dy))+' meter '+(dy<0?'naar boven':'naar beneden')+' op het veld.';
+   metric=metre('verschuiving','Verschuiving van verdediging',dy);moment=duration/2;
+  }
+ }
+ if(!observation)observation='Er is nog geen afzonderlijk meetbaar moment voor dit oefendoel.';
+ return {observation,moment,metric,focus};
+}
+function loCoachChallenge(goal,obs){
+ if(['open','cut','pass'].includes(goal)&&obs.metric?.key==='passmarge'){
+   return goal==='cut'?'Verplaats één verdediger dichter naar de aanspeellijn en kijk wat er met de aankomstmarge gebeurt.':'Laat de ontvanger schuin vrijlopen en onderzoek of de aankomstmarge verandert.';
+ }
+ if(goal==='open'&&obs.metric?.key==='lijnafstand')return 'Verschuif de ontvanger. Kun je de afstand tussen de aanspeellijn en de verdediger vergroten?';
+ if(goal==='run'&&obs.metric?.value<0.75)return 'Geef een aanvaller zonder bal een andere loopactie. Kijk of hij daarna beter aanspeelbaar wordt.';
+ if(goal==='space')return 'Zet twee aanvallers verder uit elkaar. Vergelijk de breedte én wat de verdedigers doen.';
+ if(goal==='after')return 'Geef de passer een andere vervolgactie en kijk waar hij 1 seconde later staat.';
+ if(goal==='cover'&&!obs.metric)return 'Kies 3 tegen 2 of 4 tegen 3 om rugdekking te kunnen onderzoeken.';
+ return loSelectedGoal()[2];
+}
+// Vergelijk twee pogingen in gewone taal, zonder de uitkomst als beter te beoordelen.
+function loCoachChange(oldMetric,metric){
+ if(!oldMetric||!metric||oldMetric.key!==metric.key||oldMetric.unit!==metric.unit)return '';
+ const delta=metric.value-oldMetric.value,threshold=metric.unit==='s'?.015:.05,amount=loSeconds(Math.abs(delta));
+ if(Math.abs(delta)<threshold)return 'De gemeten waarde veranderde vrijwel niet.';
+ const bigger=delta>0,unit=metric.unit;
+ const observations={
+  passmarge: bigger?'De aankomstmarge werd groter.':'De aankomstmarge werd kleiner.',
+  lijnafstand: bigger?'De verdediger stond verder van deze aanspeellijn.':'De verdediger stond dichter bij deze aanspeellijn.',
+  verplaatsing: bigger?'De speler eindigde verder van zijn startplek.':'De speler eindigde dichter bij zijn startplek.',
+  aanvalsbreedte: bigger?'De aanvallers eindigden met meer breedte.':'De aanvallers eindigden met minder breedte.',
+  'voorwaartse ruimte': bigger?'De voorste aanvaller kwam verder naar voren.':'De voorste aanvaller kwam minder ver naar voren.',
+  'verdediger verplaatst': bigger?'De verdediger eindigde verder van zijn beginplek.':'De verdediger eindigde dichter bij zijn beginplek.',
+  doorbewegen: bigger?'De passer kwam verder van zijn positie na de pass.':'De passer bleef dichter bij zijn positie na de pass.',
+  'zijwaartse pass': bigger?'De grootste zijwaartse pass werd langer.':'De grootste zijwaartse pass werd korter.',
+  schotdruk: bigger?'De dichtstbijzijnde verdediger stond verder van de schutter.':'De dichtstbijzijnde verdediger stond dichter bij de schutter.',
+  'afstand baldruk': bigger?'De verdediger stond verder van de baldrager.':'De verdediger stond dichter bij de baldrager.',
+  dekafstand: bigger?'De verdediger stond verder van de aanvaller.':'De verdediger stond dichter bij de aanvaller.',
+  'onderlinge dekafstand': bigger?'De verdedigers stonden verder van elkaar.':'De verdedigers stonden dichter bij elkaar.',
+  verschuiving: 'Het gemiddelde van de verdedigende posities verschoof in een andere mate.'
+ };
+ return 'Verschil: '+amount+' '+unit+'. '+(observations[metric.key]||'De gemeten waarde veranderde.');
+}
+function loCoachFeedback(){
+ if(!analysisReady||!frames.length)return;
+ el('loCoachPanel').open=true;el('loCoachLabel').textContent='Nieuwe uitdaging';
+ if(!loGoalManual){loGoalKey=loCoachSuggestedGoal();loGoalPicker()}
+ const g=loSelectedGoal(),seen=loCoachObservation(g[0]);
+ el('loCoachObserved').textContent='Wat het model liet zien: '+seen.observation;
+ el('loCoachObserved').classList.remove('hide');
+ el('insight').textContent='Nieuwe uitdaging: '+loCoachChallenge(g[0],seen);
+ loCoachMomentTime=seen.moment;loCoachFocus=seen.focus;loCoachHighlight=false;
+ el('loCoachMoment').classList.toggle('hide',!Number.isFinite(loCoachMomentTime));
+ const compare=el('loCoachCompare'),prev=loComparableAttempt;
+ const oldMetric=prev?.metrics?.[g[0]];
+ const same=prev&&prev.context===loContextKey()&&prev.seed===simSeed&&oldMetric&&seen.metric&&oldMetric.key===seen.metric.key;
+ if(same){
+  compare.textContent=loCoachChange(oldMetric,seen.metric)+' Zelfde startsituatie en rekenregels. Of een keuze beter werkt in een echte wedstrijd, kun je hier niet uit afleiden.';
+  compare.classList.remove('hide');
+ }else{compare.textContent='';compare.classList.add('hide')}
+ // Bewaar elk modelresultaat één keer per speelbeurt, niet opnieuw bij klikken op een chip.
+ if(loLastAttempt?.run!==loRunNumber){
+  const metrics={};
+  for(const goal of [...LO_GOALS[sportIndex].a,...LO_GOALS[sportIndex].d]){
+   if(!(goal[0] in metrics))metrics[goal[0]]=loCoachObservation(goal[0]).metric;
+  }
+  loLastAttempt={context:loContextKey(),seed:simSeed,metrics,result:summary.result,run:loRunNumber};
+ }
+}
+function loDrawCoachFocus(){
+ if(!loCoachHighlight||!loCoachFocus||state!=='paused')return;
+ if(Math.abs(time-loCoachMomentTime)>0.11)return;
+ const f=frameAt(time),part=el('traces');
+ const p=loCoachFocus,from=f.players.find(q=>q.id===p.from),to=f.players.find(q=>q.id===p.to);
+ if(from&&to){
+  s('line',{x1:from.x,y1:from.y,x2:to.x,y2:to.y,stroke:'#ffe2a4','stroke-width':2,'stroke-dasharray':'6 7',opacity:.95},part);
+  s('circle',{cx:to.x,cy:to.y,r:29,fill:'none',stroke:'#ffe2a4','stroke-width':2,'stroke-dasharray':'5 5'},part);
+ }
+ const actor=p.player?f.players.find(q=>q.id===p.player):null;
+ if(actor)s('circle',{cx:actor.x,cy:actor.y,r:29,fill:'none',stroke:'#ffe2a4','stroke-width':2.2,'stroke-dasharray':'5 5'},part);
+ const defender=p.defender?f.players.find(q=>q.id===p.defender):null;
+ if(defender)s('circle',{cx:defender.x,cy:defender.y,r:30,fill:'none',stroke:'#ffb2bb','stroke-width':1.7},part);
+}
+el('loCoachAuto').addEventListener('click',()=>{
+ loGoalManual=false;
+ if(state==='done'){loGoalKey=loCoachSuggestedGoal();loGoalPicker();loCoachFeedback()}
+ else{loGoalKey=loGoals()[0][0];loGoalPicker();refresh()}
+});
+el('loCoachMoment').addEventListener('click',()=>{
+ if(!Number.isFinite(loCoachMomentTime)||!frames.length)return;
+ cancelAnimationFrame(raf);time=clamp(loCoachMomentTime,0,duration);
+ state='paused';loCoachHighlight=true;refresh();showFrame(time);
+});
+
 const tactics={a:[['diep','Diep gaan'],['breed','Breed houden'],['bal','In de bal'],['stil','Blijven staan'],['kruis','Kruisen'],['ruimte','Ruimte maken']],d:[['dek','Man dekken'],['lijn','Passlijn sluiten'],['druk','Druk op bal'],['zonecompact','Zone · compact'],['zoneschuif','Zone · schuiven'],['zonelijn','Zone · passlijnen'],['volg','Loopactie volgen'],['terug','Terugzakken']]};
 const carrierTactics=[['pas','Passen'],['drijf','Bal meenemen'],['bewaar','Bal vasthouden'],['zijde','Naar de zijkant']];
 function normalizeZone(key){return key==='zone'?'zonecompact':key}
@@ -323,7 +883,7 @@ function syncZonePlans(){
  const descriptions={zonecompact:'Bescherm het midden en houd onderlinge afstand.',zoneschuif:'Schuif mee naar de bal; een verdediger stapt uit.',zonelijn:'Zet spelers in de gevaarlijkste passlijnen.'};
  el('zoneTip').textContent=descriptions[active]||'Kies een teamvorm of pas elke verdediger apart aan.';
 }
-function choose(id){const team=mode==='free'?id[0]:(mode==='duo'||mode==='online')?phase:mode==='attack'?'a':'d',p=players.find(x=>x.id===id);if(!p||p.team!==team||state!=='setup')return;selected=id;const hasBall=id==='a0',opts=hasBall?carrierTactics:tactics[team];el('selected').textContent=(team==='a'?'Aanvaller ':'Verdediger ')+(+id[1]+1)+(hasBall?' · aan de bal':'');el('intents').replaceChildren();opts.forEach(([key,name])=>{const b=document.createElement('button');b.className='intent'+(normalizeZone(p.intent)===key?' active':'');b.textContent=name;b.setAttribute('aria-pressed',String(normalizeZone(p.intent)===key));b.onclick=()=>{p.intent=key;choose(id);draw();if(mode==='online')window.__loOnlineDirty?.()};el('intents').append(b)});syncZonePlans();draw()}
+function choose(id){const team=mode==='free'?id[0]:(mode==='duo'||mode==='online')?phase:mode==='attack'?'a':'d',p=players.find(x=>x.id===id);if(!p||p.team!==team||state!=='setup')return;selected=id;const hasBall=id==='a0',opts=hasBall?carrierTactics:tactics[team];el('selected').textContent=(team==='a'?'Aanvaller ':'Verdediger ')+(+id[1]+1)+(hasBall?' · aan de bal':'');el('loPlayerLabel').textContent=(team==='a'?'Aanvaller ':'Verdediger ')+(+id[1]+1);el('intents').replaceChildren();opts.forEach(([key,name])=>{const b=document.createElement('button');b.className='intent'+(normalizeZone(p.intent)===key?' active':'');b.textContent=name;b.setAttribute('aria-pressed',String(normalizeZone(p.intent)===key));b.onclick=()=>{p.intent=key;choose(id);draw();if(mode==='online')window.__loOnlineDirty?.()};el('intents').append(b)});syncZonePlans();draw()}
 document.querySelectorAll('[data-zone-plan]').forEach(b=>b.addEventListener('click',()=>{
  if(state!=='setup'||!['defend','free','duo','online'].includes(mode)||((mode==='online'||mode==='duo')&&phase!=='d'))return;
  for(const p of players){if(p.team==='d')p.intent=b.dataset.zonePlan}
@@ -334,8 +894,8 @@ function refresh(){
  const free=mode==='free';const side=free?'free':(mode==='duo'||mode==='online')?phase:mode==='attack'?'a':'d',pre=state==='setup';
  el('stage').textContent=pre?(free?'Vrij opstellen':mode==='duo'||mode==='online'?(side==='a'?'Duo · aanval':'Duo · verdediging'):side==='a'?'Aanval':'Verdediging'):state==='playing'?'De aanval loopt':state==='paused'?'Gepauzeerd':'Aanval afgelopen';
  el('stagehelp').textContent=pre?(free?'Verplaats beide teams of tik op een nieuwe plek':'Sleep de '+(side==='a'?'groene aanvallers':'roze verdedigers')+' of tik op hun plek'):'De aanval speelt vanzelf';
- el('tasktitle').textContent=pre?(free?'Maak beide plannen':side==='a'?'Maak ruimte':'Houd de aanval tegen'):state==='playing'?'Kijk naar de loopacties':'De aanval is afgelopen';
- el('task').textContent=pre?(free?'Verplaats beide teams. Tik een speler aan en kies wat hij doet. Speler 1 begint met de bal.':side==='a'?'Zet spelers neer. Speler 1 kiest wat hij met de bal doet; de anderen krijgen een loopactie.':'Verplaats verdedigers en geef ze een opdracht. Sluit de afspeelmogelijkheden af.'):'Bekijk wat de afspraken opleveren. Verander één keuze en speel opnieuw.';
+ el('tasktitle').textContent=pre?loSelectedGoal()[1]:state==='playing'?'Kijk naar de loopacties':'De aanval is afgelopen';
+ el('task').textContent=pre?loSelectedGoal()[2]:'Bekijk wat de afspraken opleveren. Verander één keuze en speel opnieuw.';
  el('primary').textContent=pre?(mode==='duo'&&side==='a'?'Geef scherm aan verdediging':'Speel de aanval ▶'):state==='playing'?'Pauzeer':state==='paused'?'Verder spelen ▶':'Speel opnieuw ▶';
  el('reset').classList.toggle('hide',!pre);el('prep').classList.toggle('hide',!pre);el('after').classList.toggle('hide',state!=='done');
  el('instruction').textContent=pre?(free?'Jij bepaalt beide opstellingen. De spelers voeren straks hun opdracht uit.':mode==='duo'||mode==='online'?side==='a'?'Aanval: versleep je team en kies de loopacties.':'Verdediging: stel je team op en kies hoe het verdedigt.':'Tik of sleep spelers naar hun plek en speel de hele aanval af.'):(state==='done'?'Speel opnieuw of verander de opstelling.':'De teams voeren hun opdrachten uit.');
@@ -343,8 +903,8 @@ function refresh(){
  syncZonePlans();
 }
 
-function resetSetup(){analysisReady=false;cancelAnimationFrame(raf);state='setup';if(mode!=='online')phase='a';selected=null;players=copy(scenario);el('insight').textContent='Speler 1 begint met de bal. Kies je opstelling en spelersopdrachten.';drawPitch();draw();refresh();choose((mode==='defend'||(mode==='online'&&phase==='d'))?'d0':'a0')}
-function start(){initial=copy(players);simSeed=1337+scenarioIndex*4099+formationIndex*1609;simulate();state='playing';time=0;last=0;el('insight').textContent='De aanval speelt af. Kijk hoe de spelers bewegen.';refresh();showFrame(0);cancelAnimationFrame(raf);raf=requestAnimationFrame(tick)}
+function resetSetup(){el('prep').open=window.innerWidth>880;el('loCoachPanel').open=false;el('loCoachLabel').textContent='Tip';analysisReady=false;loCoachHighlight=false;loCoachFocus=null;loCoachMomentTime=null;el('loCoachObserved').classList.add('hide');el('loCoachMoment').classList.add('hide');el('loCoachCompare').classList.add('hide');cancelAnimationFrame(raf);state='setup';if(mode!=='online')phase='a';selected=null;players=copy(scenario);el('insight').textContent='Speler 1 begint met de bal. Kies je opstelling en spelersopdrachten.';drawPitch();draw();loGoalPicker();refresh();choose((mode==='defend'||(mode==='online'&&phase==='d'))?'d0':'a0')}
+function start(){loCancelArrowTimer();loBeforeAttempt();initial=copy(players);simSeed=1337+scenarioIndex*4099+formationIndex*1609;simulate();state='playing';time=0;last=0;el('insight').textContent='De aanval speelt af. Kijk hoe de spelers bewegen.';refresh();showFrame(0);cancelAnimationFrame(raf);raf=requestAnimationFrame(tick)}
 function point(e){
  const matrix=svg.getScreenCTM();
  if(matrix){const pt=svg.createSVGPoint();pt.x=e.clientX;pt.y=e.clientY;const local=pt.matrixTransform(matrix.inverse());return {x:clamp(local.x,70,930),y:clamp(local.y,76,574)}}
@@ -352,8 +912,10 @@ function point(e){
 }
 svg.addEventListener('pointerdown',e=>{
  if(state!=='setup')return;
+ // Alleen het veld krijgt de pijltjestoetsen. Een menu kan geen speler verschuiven.
+ svg.focus({preventScroll:true});
  const g=e.target.closest('[data-id]');const id=g?.getAttribute('data-id');
- if(id){const p=players.find(p=>p.id===id);if(!p||!canEdit(p))return;choose(id);drag=id;svg.setPointerCapture(e.pointerId);return;}
+ if(id){const p=players.find(p=>p.id===id);if(!p||!canEdit(p))return;el('prep').open=true;choose(id);drag=id;svg.setPointerCapture(e.pointerId);return;}
  const p=players.find(p=>p.id===selected);if(!p||!canEdit(p))return;
  const v=point(e);p.x=v.x;p.y=v.y;draw();if(mode==='online')window.__loOnlineDirty?.();
 });
@@ -362,7 +924,7 @@ svg.addEventListener('pointerup',()=>{if(drag&&mode==='online')window.__loOnline
 svg.addEventListener('pointercancel',()=>{drag=null});
 document.addEventListener('keydown',e=>{
  if(state!=='setup'||!selected||!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key))return;
- if(e.target.closest('input,select,textarea,[contenteditable=true]'))return;
+ if(document.activeElement!==svg||!el('loHelp').hidden||!el('loAnalysis').hidden||!el('welcome').classList.contains('hide'))return;
  const p=players.find(p=>p.id===selected);if(!p||!canEdit(p))return;e.preventDefault();const step=e.shiftKey?3:12;
  p.x=clamp(p.x+(e.key==='ArrowLeft'?-step:e.key==='ArrowRight'?step:0),70,930);
  p.y=clamp(p.y+(e.key==='ArrowUp'?-step:e.key==='ArrowDown'?step:0),76,574);
@@ -720,18 +1282,18 @@ function simulate(){
  summary={result,duration,passes,completed,shots,intercepts,events:copy(events)};analysisReady=true;
 }
 function frameAt(t){const idx=clamp(Math.round(t/DT),0,frames.length-1);return frames[idx]||{players,ball:ballAt(players[0]),trail:[]}}
-function showFrame(t){const f=frameAt(t);draw(f.players,f.ball,f.trail)}
+function showFrame(t){const f=frameAt(t);draw(f.players,f.ball,f.trail);loDrawCoachFocus()}
 function tick(ts){if(state!=='playing')return;if(!last)last=ts;time=Math.min(duration,time+Math.min(.09,(ts-last)/1000)*playbackSpeed);last=ts;showFrame(time);if(time>=duration){finish();return}raf=requestAnimationFrame(tick)}
-function finish(){cancelAnimationFrame(raf);state='done';refresh();if(result==='intercept')el('insight').textContent='De verdediging wint de bal. Verander een loopactie of verdedigende opdracht.';else if(result==='shot'||result==='shotBlocked')el('insight').textContent=sportIndex===3?'De aanval levert een schot op de basket op. Probeer een andere loopactie.':'De aanval levert een doelpoging op. Probeer een andere loopactie.';else el('insight').textContent='Er ontstond geen doelpoging. Probeer een andere positie of spelersopdracht.'}
-function newGame(){scenarioIndex=(scenarioIndex+1)%scenarios.length;makeScenario(scenarioIndex);resetSetup();el('welcome').classList.remove('hide')}
-document.querySelectorAll('[data-mode]').forEach(btn=>btn.addEventListener('click',()=>{mode=btn.dataset.mode;el('sportSelect').disabled=false;el('formationSelect').disabled=false;el('welcome').classList.add('hide');resetSetup()}));
-el('primary').addEventListener('click',()=>{if(state==='setup'){if(mode==='duo'&&phase==='a'){phase='d';selected=null;refresh();choose('d0');draw();return}start()}else if(state==='playing'){state='paused';cancelAnimationFrame(raf);refresh()}else if(state==='paused'){state='playing';last=0;refresh();raf=requestAnimationFrame(tick)}else if(state==='done'){state='playing';time=0;last=0;refresh();showFrame(0);raf=requestAnimationFrame(tick)}});
+function finish(){cancelAnimationFrame(raf);state='done';el('loCoachPanel').open=true;el('loCoachLabel').textContent='Nieuwe uitdaging';refresh();loCoachFeedback()}
+function newGame(){scenarioIndex=(scenarioIndex+1)%scenarios.length;loLastAttempt=null;makeScenario(scenarioIndex);resetSetup();el('welcome').classList.remove('hide')}
+document.querySelectorAll('[data-mode]').forEach(btn=>btn.addEventListener('click',()=>{mode=btn.dataset.mode;loGoalRole=mode==='defend'?'d':'a';loGoalManual=false;loGoalKey=LO_GOALS[sportIndex][loGoalRole][0][0];loLastAttempt=null;el('sportSelect').disabled=false;el('formationSelect').disabled=false;el('welcome').classList.add('hide');resetSetup()}));
+el('primary').addEventListener('click',()=>{if(state==='setup'){if(mode==='duo'&&phase==='a'){phase='d';selected=null;loGoalPicker();refresh();choose('d0');draw();return}start()}else if(state==='playing'){state='paused';cancelAnimationFrame(raf);refresh()}else if(state==='paused'){state='playing';last=0;refresh();raf=requestAnimationFrame(tick)}else if(state==='done'){state='playing';time=0;last=0;refresh();showFrame(0);raf=requestAnimationFrame(tick)}});
 el('reset').addEventListener('click',()=>{const side=(mode==='duo'||mode==='online')?phase:(mode==='free'?'free':mode==='defend'?'d':'a');players=players.map(p=>(side==='free'||p.team===side)?copy(scenario.find(x=>x.id===p.id)):p);choose(selected&&selected[0]===side?selected:side+'0');draw()});
-el('again').addEventListener('click',()=>{players=copy(initial);state='setup';if(mode!=='online')phase='a';selected=null;draw();refresh();choose((mode==='defend'||(mode==='online'&&phase==='d'))?'d0':'a0');el('insight').textContent='Verander één opdracht en speel opnieuw.'});
-el('replay').addEventListener('click',()=>{state='playing';time=0;last=0;refresh();showFrame(0);raf=requestAnimationFrame(tick)});
+el('again').addEventListener('click',()=>{loCoachHighlight=false;players=copy(initial);state='setup';if(mode!=='online')phase='a';selected=null;draw();refresh();choose((mode==='defend'||(mode==='online'&&phase==='d'))?'d0':'a0');el('insight').textContent='Verander één opdracht en speel opnieuw. De coach vergelijkt je volgende poging.'});
+el('replay').addEventListener('click',()=>{loCoachHighlight=false;state='playing';time=0;last=0;refresh();showFrame(0);raf=requestAnimationFrame(tick)});
 el('new').addEventListener('click',newGame);
-function switchSport(value){if(mode==='online')return;applySport(value);makeScenario(scenarioIndex);resetSetup();}
-function switchFormation(value){if(mode==='online')return;applyFormation(value);makeScenario(scenarioIndex);resetSetup();}
+function switchSport(value){if(mode==='online')return;applySport(value);loGoalManual=false;loGoalKey=LO_GOALS[sportIndex][loGoalRole][0][0];loLastAttempt=null;makeScenario(scenarioIndex);resetSetup();}
+function switchFormation(value){if(mode==='online')return;applyFormation(value);loLastAttempt=null;makeScenario(scenarioIndex);resetSetup();}
 el('sportSelect').addEventListener('change',e=>switchSport(e.target.value));
 el('formationSelect').addEventListener('change',e=>switchFormation(e.target.value));
 el('playbackSpeed').addEventListener('change',e=>{playbackSpeed=clamp(Number(e.target.value)||1,.5,2)});
@@ -751,7 +1313,7 @@ window.__loOnline={
     cancelAnimationFrame(raf);
     const plan=[...attack,...defence];
     for(const item of plan){const p=players.find(x=>x.id===item.id);if(!p)continue;p.x=item.x;p.y=item.y;p.intent=item.intent}
-    initial=copy(players);simSeed=seed;simulate();state='playing';time=Math.min(duration,Math.max(0,(Date.now()+clockDelta-Date.parse(startAt))/1000));last=0;
+    loCancelArrowTimer();loBeforeAttempt();initial=copy(players);simSeed=seed;simulate();state='playing';time=Math.min(duration,Math.max(0,(Date.now()+clockDelta-Date.parse(startAt))/1000));last=0;
     refresh();showFrame(time);cancelAnimationFrame(raf);raf=requestAnimationFrame(tick);
   },
   getState:()=>state,
@@ -934,8 +1496,10 @@ el('loAnalysis').addEventListener('click',event=>{if(event.target===el('loAnalys
 document.addEventListener('keydown',event=>{
  if(event.key==='Escape'&&!el('loAnalysis').hidden){event.preventDefault();closeLoAnalysis()}
 });
+// De handleiding kan een lokaal spel pauzeren. Een online wedstrijd blijft synchroon doorlopen.
+window.__loHelpPause=()=>{if(state==='playing'&&mode!=='online'){cancelAnimationFrame(raf);state='paused';refresh();return true}return false};
 // Alleen testomgeving: reproductie van spelsituaties zonder UI-animatie.
-window.__loLabTest={run(input,withSeed=1337){initial=copy(input);simSeed=withSeed;simulate();return copy(summary)},getPlayers:()=>copy(players),getFrames:()=>copy(frames),getEvents:()=>copy(events),scenario:index=>{makeScenario(index);return copy(players)},setFormation:index=>{applyFormation(index);makeScenario(scenarioIndex);resetSetup();return copy(players)},setSpeed:speed=>{playbackSpeed=clamp(speed,.5,2);el('playbackSpeed').value=String(playbackSpeed)},getTime:()=>time,reachTime,getConfig:()=>copy(sportCfg()),setZonePlan(key){if(!['zonecompact','zoneschuif','zonelijn'].includes(key))return;for(const p of players)if(p.team==='d')p.intent=key;syncZonePlans();draw()},getIntents:()=>copy(tactics.d)};
+window.__loLabTest={run(input,withSeed=1337){loCancelArrowTimer();initial=copy(input);simSeed=withSeed;simulate();return copy(summary)},getPlayers:()=>copy(players),getFrames:()=>copy(frames),getEvents:()=>copy(events),scenario:index=>{makeScenario(index);return copy(players)},setFormation:index=>{applyFormation(index);makeScenario(scenarioIndex);resetSetup();return copy(players)},setSpeed:speed=>{playbackSpeed=clamp(speed,.5,2);el('playbackSpeed').value=String(playbackSpeed)},getTime:()=>time,reachTime,getConfig:()=>copy(sportCfg()),setZonePlan(key){if(!['zonecompact','zoneschuif','zonelijn'].includes(key))return;for(const p of players)if(p.team==='d')p.intent=key;syncZonePlans();draw()},getIntents:()=>copy(tactics.d),selectPreviewPlayer:id=>{if(state!=='setup')return false;choose(id);return selected===id},getArrowPreview:()=>copy({player:selected,track:loArrowCache?.key===loArrowKey()?loArrowCache.tracks[selected]||[]:[],isCurrent:loArrowCache?.key===loArrowKey(),mode}),getCoachObservation:key=>copy(loCoachObservation(key)),getCoachState:()=>({sport:sportIndex,role:loGoalRole,goal:loGoalKey,manual:loGoalManual,count:loGoals().length,run:loRunNumber,previous:loLastAttempt?.run??null}),getCompareText:()=>el('loCoachCompare').textContent,coachPreview:()=>{loCoachFeedback();return {observed:el('loCoachObserved').textContent,challenge:el('insight').textContent,moment:loCoachMomentTime,goal:loGoalKey}}};
 })();
 
 </script><script>(()=>{'use strict';
@@ -1045,5 +1609,122 @@ const linkCode=new URL(location.href).searchParams.get('kamer');if(linkCode){$('
 let lastCode=null;try{lastCode=localStorage.getItem('lo-duo-last')}catch{}
 const restoreCode=(linkCode||lastCode||'').toUpperCase();
 if(restoreCode){let token=null;try{token=localStorage.getItem('lo-duo-'+restoreCode)}catch{}if(token){session={code:restoreCode,token};api('get').then(res=>enter(res,true)).catch(()=>{session=null})}}
+})();
+</script>
+<script>
+(()=>{
+'use strict';
+const doc=document,root=doc.getElementById('loHelp'),$=id=>doc.getElementById(id);
+const lessons=[
+ {id:'plaatsen',title:'Spelers plaatsen',steps:[
+  ['Kies een speler','Tik op een groene aanvaller of roze verdediger. De gekozen speler krijgt een rand.','Je bestuurt alleen het team dat je hebt gekozen.','select','Speler 1 geselecteerd'],
+  ['Verplaats een speler','Sleep de speler naar een andere plek op het veld. Op een aanraakscherm kan dit met je vinger.','De spelers bewegen pas volgens hun opdrachten zodra je de aanval afspeelt.','drag','Speler 1 naar een vrije plek'],
+  ['Precies schuiven','Tik op een speler en daarna op een nieuwe plek. Op een toetsenbord kun je ook de pijltjestoetsen gebruiken.','Je hoeft niet alles met schuifjes in te stellen.','drag','Tik en verplaats']
+ ]},
+ {id:'opdrachten',title:'Spelersopdrachten',steps:[
+  ['Geef een loopactie','Selecteer een speler zonder bal en kies bijvoorbeeld Diep gaan of Breed houden.','De stippellijn op het grote veld laat de bedoelde looprichting zien.','task','Opdracht: diep gaan'],
+  ['Kies wat je met de bal doet','Tik op aanvaller 1. Je kunt passen, de bal meenemen of vasthouden.','Bij het afspelen berekent het model zelf reacties en passkeuzes.','ball','Aanvaller 1 · passen'],
+  ['Laat de verdediging reageren','Kies een verdediger en stel bijvoorbeeld Druk op bal of Dekken in.','In Vrij opstellen mag je beide teams aanpassen.','defend','Verdediger · druk op de bal']
+ ]},
+ {id:'afspelen',title:'Spel afspelen',steps:[
+  ['Start de aanval','Druk op Speel de aanval. De spelers bewegen volgens de ingestelde opdrachten.','Je bestuurt de beginopstelling en opdrachten, niet iedere pass tijdens het afspelen.','play','De aanval wordt afgespeeld'],
+  ['Pauzeer en kijk','Gebruik Pauzeer om een moment terug te zien. Met Tempo kun je langzamer afspelen.','De standaard snelheid is 1×.','pause','De bal staat even stil'],
+  ['Probeer opnieuw','Gebruik Speel opnieuw voor dezelfde poging. Via Pas plan aan kun je één opdracht veranderen.','Je kunt je vorige en nieuwe poging daarna vergelijken.','repeat','Speel dezelfde aanval opnieuw']
+ ]},
+ {id:'coaching',title:'Doelen en coach',steps:[
+  ['Kies een klein doel','Open Oefendoel. Kies bijvoorbeeld Aanspeellijn openen of laat Coach kiest actief.','De taal en doelen verschillen per sport en team.','task','Doel: aanspeellijn openen'],
+  ['Bekijk wat er gebeurde','Na de aanval laat de coach zien wat in het model gemeten of berekend is.','Een berekende afstand bewijst niet dat een speler in een echte wedstrijd goed handelt.','coach','Coach bekijkt het spelmoment'],
+  ['Onderzoek een andere aanpak','De coach geeft een nieuwe uitdaging. Verschuif zelf iets en speel de situatie opnieuw.','De coach verandert nooit jouw opstelling zonder dat jij dat doet.','drag','Jij kiest de nieuwe oplossing']
+ ]},
+ {id:'terugkijken',title:'Terugkijken',steps:[
+  ['Volg de looplijnen','Tijdens het afspelen zie je waar spelers heen bewegen en waar de bal naartoe gaat.','Let op spelers zonder bal: waar ontstond ruimte?','play','Volg de loopacties'],
+  ['Bekijk het spelmoment','Na de aanval kun je met Bekijk spelmoment naar een gekozen moment springen.','Bij sommige doelen is er geen apart meetbaar moment.','coach','Gekozen moment gemarkeerd'],
+  ['Zie de berekeningen','Twee keer op het LO-logo opent het verborgen rekenscherm met gebeurtenissen en modelwaarden.','De berekeningen zijn controleerbaar, maar blijven onderdeel van een vereenvoudigd model.','repeat','LO-logo · twee keer tikken']
+ ]},
+ {id:'samen',title:'Samen spelen',steps:[
+  ['Maak een spelkamer','Kies Wij spelen samen en maak een kamer. Deel de acht tekens met je medespeler.','Ieder gebruikt een eigen apparaat en kiest een eigen team.','room','Kamer: AANVAL + VERDEDIGING'],
+  ['Maak allebei een plan','De aanvaller bepaalt zijn plan, de verdediger zijn verdediging. Beide spelers drukken op Klaar.','Je ziet het andere plan pas zodra beide leerlingen klaar zijn.','defend','Twee plannen tegelijk'],
+  ['Bekijk dezelfde aanval','Zodra beide plannen klaar zijn, start hetzelfde spel op beide apparaten.','Bij een online spel loopt de gezamenlijke klok door wanneer je het hulpmenu opent.','play','Samen spelen · hetzelfde spel']
+ ]}
+];
+let lesson=0,step=0,animations=[],wasPaused=false,returnFocus=null;
+function stop(){for(const a of animations){try{a.cancel()}catch{}}animations=[]}
+function renderTabs(){
+ const tabs=$('loHelpTabs');tabs.replaceChildren();
+ lessons.forEach((item,i)=>{
+  const btn=doc.createElement('button');
+  btn.type='button';btn.className='lo-help-tab'+(i===lesson?' active':'');btn.textContent=item.title;btn.setAttribute('aria-pressed',String(i===lesson));
+  btn.addEventListener('click',()=>select(i,0));tabs.append(btn);
+ });
+}
+function animate(id,dx,dy,duration=1400){
+ const node=$(id);if(!node||!node.animate)return;
+ const motion=node.animate([{transform:'translate(0px, 0px)'},{transform:'translate('+dx+'px, '+dy+'px)'}],{duration,easing:'ease-in-out',fill:'forwards'});
+ animations.push(motion);
+}
+function replay(){
+ stop();
+ const item=lessons[lesson].steps[step],action=item[3],halo=$('loHelpDemoHalo'),path=$('loHelpDemoPath');
+ const selected=action==='task'||action==='coach';
+ halo.setAttribute('cx',selected?'174':'94');halo.setAttribute('cy',selected?'58':'99');
+ halo.setAttribute('opacity',action==='select'||action==='drag'||action==='task'||action==='coach'?'.95':'0');
+ path.setAttribute('opacity',['play','ball','coach','pause','repeat'].includes(action)?'.92':'0');
+ const indicators={select:['Aanvaller 1','Geselecteerd'],drag:['Aanvaller 1','Verplaatsen'],task:['Aanvaller 2','Diep gaan'],ball:['Aanvaller 1','Passen'],defend:['Verdediger 1','Druk op bal'],play:['Speel de aanval','Tempo 1×'],pause:['Pauzeer','Tempo ½×'],repeat:['Speel opnieuw','Pas plan aan'],coach:['Coach kiest','Spelmoment'],room:['Aanval klaar','Verdediging klaar']};
+ const [a,b]=indicators[action]||['Oefendoel','Zelf proberen'];
+ $('loHelpDemoSelected').textContent=a;$('loHelpDemoAction').textContent=b;
+ if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+ if(action==='drag'){animate('loHelpDemoPlayer',36,-26);animate('loHelpDemoBall',36,-26);animate('loHelpDemoHalo',36,-26)}
+ if(action==='task'){animate('loHelpDemoMate',70,3);animate('loHelpDemoHalo',70,3)}
+ if(action==='defend')animate('loHelpDemoDef',-58,-38);
+ if(action==='ball'||action==='play'||action==='repeat')animate('loHelpDemoBall',106,-50);
+ if(action==='pause')animate('loHelpDemoBall',36,-18,1100);
+ if(action==='coach')animate('loHelpDemoDef',-24,-23);
+ if(action==='room'){animate('loHelpDemoMate',28,20);animate('loHelpDemoDef',-20,-8)}
+}
+function render(){
+ const data=lessons[lesson],item=data.steps[step];
+ renderTabs();
+ $('loHelpProgress').textContent='Stap '+(step+1)+' van '+data.steps.length;
+ $('loHelpStepTitle').textContent=item[0];
+ $('loHelpStepBody').textContent=item[1];
+ $('loHelpStepTip').textContent=item[2];
+ $('loHelpDemoTag').textContent=item[4];
+ $('loHelpBack').disabled=step===0&&lesson===0;
+ $('loHelpNext').textContent=step===data.steps.length-1&&lesson===lessons.length-1?'Opnieuw bekijken ↻':'Volgende stap →';
+ replay();
+}
+function select(i,j){lesson=Math.max(0,Math.min(lessons.length-1,i));step=Math.max(0,Math.min(lessons[lesson].steps.length-1,j));render()}
+function next(){if(step<lessons[lesson].steps.length-1)step++;else if(lesson<lessons.length-1){lesson++;step=0}else{lesson=0;step=0}render()}
+function back(){if(step>0)step--;else if(lesson>0){lesson--;step=lessons[lesson].steps.length-1}render()}
+function open(){
+ returnFocus=doc.activeElement;
+ wasPaused=window.__loHelpPause?.()||false;
+ root.hidden=false;
+ render();$('loHelpClose').focus();
+}
+function close(){
+ stop();root.hidden=true;
+ if(returnFocus&&typeof returnFocus.focus==='function')returnFocus.focus();
+ returnFocus=null;
+}
+$('loHelpOpen').addEventListener('click',open);
+$('loHelpClose').addEventListener('click',close);
+$('loHelpTry').addEventListener('click',close);
+$('loHelpNext').addEventListener('click',next);
+$('loHelpBack').addEventListener('click',back);
+$('loHelpReplay').addEventListener('click',replay);
+root.addEventListener('click',e=>{if(e.target===root)close()});
+doc.addEventListener('keydown',e=>{
+ if(root.hidden)return;
+ if(e.key==='Escape'){e.preventDefault();close();return}
+ if(e.key==='Tab'){
+  const focus=[...root.querySelectorAll('button:not(:disabled)')].filter(x=>x.getClientRects().length);
+  if(!focus.length)return;
+  const first=focus[0],last=focus.at(-1);
+  if(e.shiftKey&&doc.activeElement===first){e.preventDefault();last.focus()}
+  else if(!e.shiftKey&&doc.activeElement===last){e.preventDefault();first.focus()}
+ }
+});
+window.__loHelpTest={getState:()=>({open:!root.hidden,lesson:lessons[lesson].id,step,wasPaused,chapterCount:lessons.length,stepCount:lessons.reduce((n,l)=>n+l.steps.length,0)}),open,close,select,next,replay};
 })();
 </script></body></html>
