@@ -1168,8 +1168,13 @@ function simulate(resume=null){
    (preserveDeepest&&p.id===deepest.id?1.05:0);
   const rank=defenders.map(p=>({p,score:pressureScore(p)})).sort((u,v)=>u.score-v.score);
   const incumbent=rank.find(q=>q.p.id===leaderId),best=rank[0];
-  if(!incumbent||!best||(clock-leaderAt>1.05&&incumbent.score>best.score+.64)||
-    (clock-leaderAt>.55&&incumbent.score>best.score+1.35)){
+  // Tijdens een pass behouden de drukzetter en rugdekker hun afspraak.
+  // Rollen pas herverdelen wanneer er nieuw balbezit is, niet halverwege
+  // de balvlucht op basis van de passerende balpositie.
+  const ballInFlight=Boolean(flight||shot);
+  if(!incumbent||!best||(!ballInFlight&&
+    ((clock-leaderAt>1.05&&incumbent.score>best.score+.64)||
+     (clock-leaderAt>.55&&incumbent.score>best.score+1.35)))){
    leaderId=best?.p.id||null;leaderAt=clock;
   }
   // De rugdekker schermt de gevaarlijkste dieptelijn af en blijft indien
@@ -1192,7 +1197,8 @@ function simulate(resume=null){
   const prior=coverCandidates.find(q=>q.p.id===coverId),next=coverCandidates[0];
   const emergency=prior&&next&&prior.p.x<ball.x-PX*1.2&&
      next.p.x>ball.x+PX*.8&&clock-coverAt>.3;
-  if(!prior||!next||emergency||(clock-coverAt>1.05&&prior.score>next.score+.5)){
+  if(!prior||!next||(!ballInFlight&&
+    (emergency||(clock-coverAt>1.05&&prior.score>next.score+.5)))){
    coverId=next?.p.id||null;coverAt=clock;
   }
   const marks={},remaining=defenders.filter(p=>p.id!==leaderId&&p.id!==coverId);
