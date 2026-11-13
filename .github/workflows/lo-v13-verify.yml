@@ -23,10 +23,10 @@ jobs:
         run: |
           python -m pip install playwright
           python -m playwright install --with-deps chromium
-      - name: Controleer startopstellingen in vier sporten en vier spelvormen
-        run: python tools/lo-aanvalslab/tests/test_startopstellingen_browser.py
-      - name: Controleer compacte mobiele spelerbediening
-        run: python tools/lo-aanvalslab/tests/test_mobile_inline_browser.py
+      # De twee oude tests stonden onder een niet-bestaande map en draaiden nooit.
+      # Het volledige 4 x 4 x 4-modelonderzoek staat in de stap hieronder.
+      - name: Controleer echte mobiele bediening op vijf schermen
+        run: python scripts/test_lo_mobile_navigation.py
       - name: Bewaar mobiele proefbeelden
         if: always()
         uses: actions/upload-artifact@v4
