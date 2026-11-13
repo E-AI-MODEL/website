@@ -422,6 +422,7 @@ const clamp=(v,a,b)=>Math.max(a,Math.min(b,v)),dist=(a,b)=>Math.hypot(a.x-b.x,a.
 const copy=v=>JSON.parse(JSON.stringify(v)),unit=(x,y)=>{const m=Math.hypot(x,y)||1;return {x:x/m,y:y/m}},mix=(a,b,t)=>a+(b-a)*t;
 let mode='attack',phase='a',state='setup',players=[],initial=[],scenario=[],frames=[],events=[],time=0,duration=MAX,raf=0,last=0,drag=null,seed=1,result='',selected=null;
 let scenarioIndex=0,simSeed=0,summary={},analysisReady=false;
+let loPauseDraft=null,loBranchHistory=null,loCurrentVersion='variant';
 function rand(){seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296}
 const scenarios=[
  {name:'Middenveld',a:[[320,320],[485,164],[515,468],[702,314]],d:[[408,275],[585,220],[596,428],[790,344]]},
@@ -1053,18 +1054,37 @@ function reachTime(p,target,reactionOverride){
  return reaction+turn*.7+travel;
 }
 function attemptArrival(p,target,reaction){return reachTime(p,target,reaction??p.react)+(.06+(+p.id[1])*.015)}
-function simulate(){
- const ps=copy(initial),startMap=Object.fromEntries(initial.map(p=>[p.id,p]));
- let rng=simSeed;
+function simulate(resume=null){
+ // Herstel na een coach-ingreep ook reactietijd, balvlucht, balbezit, timers en seed.
+ // Een gewone simulatie zonder ingreep volgt precies de bestaande spelregels.
+ const checkpoint=resume?.checkpoint||null,rt=checkpoint?.runtime||{};
+ const ps=copy(checkpoint?checkpoint.players:initial),
+       startMap=Object.fromEntries(initial.map(p=>[p.id,p]));
+ let rng=checkpoint?rt.rng:simSeed;
  function random(){rng=(Math.imul(rng,1664525)+1013904223)>>>0;return rng/4294967296}
- for(const p of ps){if(p.team==='d'){p._reactionLeft=p.react;p._lastAim={x:p.x,y:p.y,pace:1};p._contact=0}}
- let holder='a0',ball=ballAt(ps.find(p=>p.id==='a0')),flight=null,loose=null,shot=null,clock=0,cooldown=.3,held=0,terminal=false,outcome='other',passes=0,completed=0,shots=0,intercepts=0,trail=[];
- let leaderId=null,leaderAt=-1,framesBefore=0;
- frames=[];events=[];
+ if(!checkpoint)for(const p of ps){if(p.team==='d'){p._reactionLeft=p.react;p._lastAim={x:p.x,y:p.y,pace:1};p._contact=0}}
+ let holder=checkpoint?checkpoint.holder:'a0',
+     ball=checkpoint?copy(checkpoint.ball):ballAt(ps.find(p=>p.id==='a0')),
+     flight=rt.flight?copy(rt.flight):null,loose=rt.loose?copy(rt.loose):null,
+     shot=rt.shot?copy(rt.shot):null,clock=checkpoint?checkpoint.time:0,
+     cooldown=checkpoint?rt.cooldown:.3,held=checkpoint?rt.held:0,
+     terminal=false,outcome='other',passes=rt.passes||0,completed=rt.completed||0,
+     shots=rt.shots||0,intercepts=rt.intercepts||0,
+     trail=checkpoint?copy(checkpoint.trail):[];
+ let leaderId=rt.leaderId||null,leaderAt=rt.leaderAt??-1,framesBefore=rt.framesBefore||0;
+ frames=resume?resume.prefixFrames.slice():[];
+ events=resume?copy(resume.prefixEvents):[];
  const a=()=>ps.filter(p=>p.team==='a'),d=()=>ps.filter(p=>p.team==='d');
  const b=()=>ps.find(p=>p.id===holder);
  function log(kind,msg,detail=null){events.push({time:Math.round(clock*100)/100,kind,msg,...(detail?{detail:copy(detail)}:{})})}
- function snapshot(){frames.push({time:clock,players:copy(ps),ball:{...ball},trail:copy(trail),holder,ballMode:flight?'pass':shot?'shot':loose?'loose':'controlled',flight:flight?{target:flight.target,elapsed:flight.elapsed,duration:flight.duration}:null})}
+ function snapshot(){frames.push({
+  time:clock,players:copy(ps),ball:{...ball},trail:copy(trail),holder,
+  ballMode:flight?'pass':shot?'shot':loose?'loose':'controlled',
+  flight:flight?{target:flight.target,elapsed:flight.elapsed,duration:flight.duration}:null,
+  runtime:{rng,flight:flight?copy(flight):null,loose:loose?copy(loose):null,
+   shot:shot?copy(shot):null,cooldown,held,passes,completed,shots,intercepts,
+   leaderId,leaderAt,framesBefore}
+ })}
  function followControlledBall(owner){
   const aim=ballAt(owner),difference=dist(ball,aim),cap=PX*5.7*DT;
   if(difference>.0001){const f=Math.min(1,cap/difference);ball={x:mix(ball.x,aim.x,f),y:mix(ball.y,aim.y,f)}}
@@ -1302,8 +1322,8 @@ function simulate(){
   }
   return found;
  }
- log('start','Aanval gestart');snapshot();
- for(let step=0;step<MAX/DT&&!terminal;step++){
+ if(!checkpoint)log('start','Aanval gestart');snapshot();
+ for(let step=Math.round(clock/DT);step<MAX/DT&&!terminal;step++){
   clock=Math.round((step+1)*DT*1000)/1000;
   const defenders=d(),attackers=a();
   for(const p of attackers)move(p,targetOfAttack(p),DT);
