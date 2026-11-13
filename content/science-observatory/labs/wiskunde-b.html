@@ -331,8 +331,8 @@ function png(){const o=document.createElement('canvas'),a=scene.width/Math.max(1
 
 /* Mobiele bediening via taken. Elke actie opent iets wat de leerling kan doen. */
 const MATH_ACTIONS={
- binom:{scene:'Kies k',params:'Wijzig p',graph:'Cumulatieve kans',hint:'Tik op een balk en kies welke uitkomst je wilt onderzoeken.',order:['k','p','n']},
- normal:{scene:'Kies grens',params:'Wijzig σ',graph:'Kans links van x',hint:'Verschuif de grens. De kans links van de grens verandert mee.',order:['x','mu','sigma']},
+ binom:{scene:'Kies k',params:'Wijzig p',graph:'Cumulatieve kans',hint:'Tik op een balk en kies welke uitkomst je wilt onderzoeken.',order:['p','k','n']},
+ normal:{scene:'Kies grens',params:'Wijzig σ',graph:'Kans links van x',hint:'Verschuif de grens. De kans links van de grens verandert mee.',order:['sigma','x','mu']},
  bayes:{scene:'Vergelijk',params:'Voeg toe',graph:'Na elke meting',hint:'Bekijk hoe nieuwe uitkomsten een verdeling veranderen.',order:['success','failure','alpha','beta']},
  regression:{scene:'Bekijk data',params:'Wijzig ruis',graph:'Bekijk residuen',hint:'Bekijk de punten en de lijn die uit de gegevens wordt berekend.',order:['noise','slope','intercept','n']},
  sampling:{scene:'Bekijk groep',params:'Wijzig kans',graph:'Bekijk kansverschil',hint:'Vergelijk welke deelnemers uit beide groepen in de steekproef komen.',order:['sa','sb']},
@@ -342,7 +342,7 @@ const MATH_ACTIONS={
  integral:{scene:'Rechthoeken',params:'Wijzig grenzen',graph:'Benaderingsfout',hint:'Bekijk de rechthoeken onder de functie en verander het interval.',order:['left','right','steps','a','b']},
  optimum:{scene:'Maximum',params:'Wijzig top',graph:'Top bij drift',hint:'Verschuif het optimale punt en bekijk de nieuwe plaats van de top.',order:['center','drift','a','height']},
  logistic:{scene:'Bekijk groei',params:'Wijzig stap',graph:'Eulerfout',hint:'Vergelijk de groeicurve met de benadering van Euler.',order:['dt','t','r','K','y0']},
- vectors:{scene:'Draai vector',params:'Wijzig lengte',graph:'Lengte per hoek',hint:'Draai de tweede vector. Bekijk hoe de resultante verandert.',order:['theta','u','v']}
+ vectors:{scene:'Draai vector',params:'Wijzig lengte',graph:'Lengte per hoek',hint:'Draai de tweede vector. Bekijk hoe de resultante verandert.',order:['u','v','theta']}
 };
 let paramPage=0,infoPage=0,infoCards=[],mathBaseline=Object.create(null),infoReturn='calc';
 
