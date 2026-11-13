@@ -25,7 +25,9 @@ class LOEvidencePublishTests(unittest.TestCase):
         lab = LAB.read_text(encoding="utf-8")
         reader = LinkReader()
         reader.feed(lab)
-        self.assertEqual(reader.links.count(PATH), 1)
+        # Footer blijft uniek; de docent mag dezelfde onderbouwing in zijn leshulp openen.
+        self.assertEqual(lab.count('class="lo-evidence-link"'), 1)
+        self.assertEqual(reader.links.count(PATH), 2)
         self.assertIn('id="sourceDetail"', lab)
         self.assertIn("Meetbasis en bronnen", lab)
         self.assertIn("Wetenschappelijke onderbouwing", lab)
