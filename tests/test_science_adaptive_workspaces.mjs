@@ -60,7 +60,7 @@ test('De directe bedieningen volgen dezelfde betekenis als de getekende assen',(
   clamp:(n,a,b)=>Math.min(b,Math.max(a,n)),
   format:n=>String(n),styleMetrics:()=>{},dirty:false,Math
  };
- runInNewContext(source+';sceneMove({clientX:230,clientY:140});',context);
+ runInNewContext(source+';sceneMove({clientX:207,clientY:140});',context);
  assert.equal(context.state.parameters.binom.k,10);
  assert.equal(ctrl.value,'10');
  context.M[0]={id:'bayes',kind:'bayes',probe:'success',params:[{id:'success',min:0,max:20,step:1}]};
