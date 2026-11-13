@@ -1,8 +1,9 @@
-name: LO Aanvalslab - zones en online opdrachten
+name: Sport en bewegen - zones en online opdrachten
 on:
   pull_request:
     branches: [main]
     paths:
+      - 'tools/sport-en-bewegen/**'
       - 'tools/lo-aanvalslab/**'
       - 'scripts/test_lo_zone.py'
       - 'backend/lo-duo/**'
