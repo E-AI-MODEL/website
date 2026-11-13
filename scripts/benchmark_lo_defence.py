@@ -87,7 +87,7 @@ JS = r"""({scene,seed})=>{
    trajectoryFingerprint:JSON.stringify(fs.filter((_,i)=>i%12===0).map(f=>[
      f.time,...f.players.filter(p=>p.team==='d').flatMap(p=>[+p.x.toFixed(2),+p.y.toFixed(2)])
    ]))}
-};}"""
+}"""
 
 def summarize(rows):
     result={}
