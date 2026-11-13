@@ -430,6 +430,67 @@ try{
   assert.equal(leverReset.pivot,510,'Herstel zet het draaipunt terug');
   assert.equal(leverReset.arm1,2,'Herstel zet de linker arm terug');
   assert.equal(leverReset.arm2,3,'Herstel zet de rechter arm terug');
+  if(width===1440){
+   // De paneelindeling is onafhankelijk van de gekozen proef.
+   await page.evaluate(()=>{loadLab('resolution');selectBottom('insight')});
+   const measureLayout=()=>page.evaluate(()=>{
+    const el=document.querySelector('#labSection');
+    const px=name=>Number.parseFloat(el.style.getPropertyValue(name));
+    return {
+     explorer:px('--explorer-width'),inspector:px('--inspector-width'),
+     analysis:px('--analysis-height'),insightMath:px('--insight-math-width'),graphMath:px('--graph-math-width')
+    };
+   });
+   const dragDivider=async(id,dx,dy)=>{
+    const box=await page.locator('#'+id).boundingBox();
+    assert.ok(box,'Scheiding ontbreekt: '+id);
+    const x=box.x+box.width/2,y=box.y+box.height/2;
+    await page.mouse.move(x,y);await page.mouse.down();
+    await page.mouse.move(x+dx,y+dy,{steps:8});await page.mouse.up();
+   };
+   const beforeLayout=await measureLayout();
+   await dragDivider('railLeft',58,0);
+   assert((await measureLayout()).explorer>beforeLayout.explorer+35,'Linker zijvak wordt breder');
+   await dragDivider('railRight',-52,0);
+   assert((await measureLayout()).inspector>beforeLayout.inspector+30,'Rechter zijvak wordt breder');
+   await dragDivider('sceneDivider',0,-56);
+   assert((await measureLayout()).analysis>beforeLayout.analysis+35,'Analysevak krijgt extra hoogte');
+   assert(await page.locator('#insightMathDivider').isVisible(),'De grens tussen momentenbalken en berekening is zichtbaar');
+   const insightDividerBefore=await measureLayout();
+   const insightDividerDebugBefore=await page.evaluate(()=>{
+    const item=document.querySelector('#insightMathDivider'),body=item.parentElement,box=item.getBoundingClientRect();
+    return {bodyWidth:body.clientWidth,divider:box.width,dividerHeight:box.height,display:getComputedStyle(item).display,selected:document.querySelector('#insightPanel').hidden};
+   });
+   await dragDivider('insightMathDivider',-35,0);
+   const insightDividerAfter=await measureLayout();
+   const insightDividerDebugAfter=await page.evaluate(()=>{
+    const item=document.querySelector('#insightMathDivider');
+    return {ariaNow:item.getAttribute('aria-valuenow'),ariaMax:item.getAttribute('aria-valuemax'),active:document.querySelector('#insightPanel').hidden};
+   });
+   assert(insightDividerAfter.insightMath>insightDividerBefore.insightMath+20,
+    'Berekening naast meetbalken wordt breder: '+JSON.stringify({before:insightDividerBefore,after:insightDividerAfter,debugBefore:insightDividerDebugBefore,debugAfter:insightDividerDebugAfter}));
+   await page.evaluate(()=>selectBottom('graph'));
+   await page.locator('#mathToggle').click();
+   assert(await page.locator('#graphMathDivider').isVisible(),'Scheiding grafiek en berekening opent');
+   await dragDivider('graphMathDivider',-35,0);
+   assert((await measureLayout()).graphMath>beforeLayout.graphMath+20,'Berekening naast grafiek wordt breder');
+   const savedLayout=await measureLayout();
+   await page.reload({waitUntil:'load'});
+   await page.waitForFunction(()=>document.querySelector('#labTitle').textContent.toLowerCase().includes('vectoren'));
+   const restored=await measureLayout();
+   for(const key of Object.keys(savedLayout))assert(Math.abs(restored[key]-savedLayout[key])<=2,'Instelling blijft na herladen bewaard: '+key);
+   await page.locator('#railLeft').focus();await page.keyboard.press('ArrowRight');
+   assert((await measureLayout()).explorer>=restored.explorer+15,'Scheidingslijn werkt ook met toetsenbord');
+   await page.locator('#resetLayout').click();
+   const resetLayout=await measureLayout();
+   assert.equal(resetLayout.explorer,226,'Herstel zet de experimentenlijst terug');
+   assert.equal(resetLayout.inspector,282,'Herstel zet de instellingen terug');
+   assert.equal(resetLayout.analysis,242,'Herstel zet de hoogte terug');
+   assert.equal(resetLayout.insightMath,220,'Herstel zet de verhouding van de berekening terug');
+   assert.equal(resetLayout.graphMath,220,'Herstel zet de grafiekverhouding terug');
+   assert.deepEqual(errors,[],'Paneelbediening veroorzaakt geen browserfouten');
+   await page.screenshot({path:'test-results/physics-resizable-workspace-'+engine.name()+'-1440.png'});
+  }
   await page.goto(base+'/tools/science-observatory/labs/natuurkunde/#pendulum',{waitUntil:'load'});
   await page.waitForFunction(()=>document.querySelector('#scene').width>0);
   assert.deepEqual(errors,[],'No browser script errors '+width);
