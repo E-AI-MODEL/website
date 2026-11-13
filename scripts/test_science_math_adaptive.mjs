@@ -64,7 +64,7 @@ try{
      await page.locator('#infoNext').click();
      assert.ok(await page.locator('#infoTitle').innerText(),'Next detail page');
      await page.locator('#modeSelect').selectOption('1');
-     await page.waitForFunction(()=>document.querySelector('#modeSelect').value==='1');
+     await page.waitForFunction(()=>document.querySelector('#modeSelect').value==='1'&&document.body.dataset.deckView==='scene');
      assert.equal(await page.locator('body').getAttribute('data-deck-view'),'scene','Changing topic returns to model');
      await page.locator('#modeSelect').selectOption('0');
     }
