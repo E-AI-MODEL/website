@@ -39,7 +39,7 @@ def phone(browser,width,height):
     assert geometry["playHeight"]>=44,geometry
     assert geometry["settingsHeight"]>=44,geometry
     assert all(h>=44 for h in geometry["accordionHeights"]),geometry
-    page.screenshot(path=str(SHOTS/f"{width}x{height}-rust.png"),full_page=True)
+    page.screenshot(path=str(SHOTS/f"{browser.browser_type.name}-{width}x{height}-rust.png"),full_page=True)
     if width==390:
         before=page.evaluate("""() => {
           const player=window.__loLabTest.getPlayers().find(p=>p.id==='a0');
@@ -69,7 +69,7 @@ def phone(browser,width,height):
     assert page.locator("#loCalmTask").get_attribute("open") is not None
     assert page.locator("#intents .intent").count()>=3
     assert page.locator("#loMobileGoalSelect").is_visible()
-    page.screenshot(path=str(SHOTS/f"{width}x{height}-opdracht.png"),full_page=True)
+    page.screenshot(path=str(SHOTS/f"{browser.browser_type.name}-{width}x{height}-opdracht.png"),full_page=True)
 
     page.locator("#loCalmTask>summary").click()
     page.locator("#loCalmSources>summary").click()
@@ -85,7 +85,7 @@ def phone(browser,width,height):
         page.locator("#loCalmAnalysis>summary").click()
         assert page.locator("#loCoachPanel").is_visible()
         assert page.locator("#after").is_visible()
-        page.screenshot(path=str(SHOTS/"390x844-analyse.png"),full_page=True)
+        page.screenshot(path=str(SHOTS/f"{browser.browser_type.name}-390x844-analyse.png"),full_page=True)
     assert not errors,errors
     page.close()
 
@@ -121,7 +121,13 @@ def main():
             desktop(browser)
         finally:
             browser.close()
-    print("Rustige mobiele LO-bediening: vier telefoonformaten, verdediging en desktop gecontroleerd")
+        webkit=p.webkit.launch(headless=True)
+        try:
+            for dims in [(320,568),(390,844)]:
+                phone(webkit,*dims)
+        finally:
+            webkit.close()
+    print("Rustige mobiele LO-bediening: vier Chromium-formaten, twee WebKit-formaten, verdediging en desktop gecontroleerd")
 
 if __name__=="__main__":
     main()
