@@ -56,11 +56,15 @@ test('Het register houdt alle 53 expliciet op niet inhoudelijk gevalideerd',()=>
   assert.equal(x.referentietest,['cradle','magnetbar'].includes(x.id)?'kwalitatieve_modelcheck':'test_toegevoegd',x.id);
  }
 });
-test('Hefboom: krachtmomenten onafhankelijk nagerekend',()=>{
- for(const p of [{F:9,arm1:2,arm2:3},{F:20,arm1:1.5,arm2:2.5},{F:6.4,arm1:3.8,arm2:.8}]){
+test('Hefboom: beide krachten en de momentbalans onafhankelijk nagerekend',()=>{
+ for(const p of [{F:9,F2:6,arm1:2,arm2:3},{F:20,F2:9,arm1:1.5,arm2:2.5},{F:6.4,F2:8,arm1:3.8,arm2:.8}]){
   const r=trial('lever',p);
-  near(measured(r,'Tegenkracht rechts'),p.F*p.arm1/p.arm2);
-  near(r.insight.bars[0][1],r.insight.bars[1][1],1e-10);
+  near(measured(r,'Moment linksom'),p.F*p.arm1);
+  near(measured(r,'Moment rechtsom'),p.F2*p.arm2);
+  near(measured(r,'Netto moment'),p.F2*p.arm2-p.F*p.arm1);
+  near(measured(r,'F₂ voor evenwicht'),p.F*p.arm1/p.arm2);
+  near(r.insight.bars[0][1],p.F*p.arm1,1e-10);
+  near(r.insight.bars[1][1],p.F2*p.arm2,1e-10);
  }
 });
 test('Botsingen: impuls, energie en restitutie',()=>{
