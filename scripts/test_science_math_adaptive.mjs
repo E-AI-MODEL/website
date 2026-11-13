@@ -40,10 +40,12 @@ try{
      assert.ok(await page.locator('#modeSelect').isVisible(),'Native topic select visible');
      assert.ok(geom.dock.bottom<=height+2,'Mobile dock stays inside viewport '+width+': '+JSON.stringify(geom));
      await page.locator('[data-view="graph"]').click();
+     await page.locator('.analytics').waitFor({state:'visible'});
      assert.ok(await page.locator('.analytics').isVisible(),'Graph opens in place');
      const graph=await page.locator('#plotCanvas').boundingBox();
      assert.ok(graph.width>145&&graph.height>90,'Graph has adequate dimensions '+JSON.stringify(graph));
      await page.locator('[data-view="params"]').click();
+     await page.locator('.inspector').waitFor({state:'visible'});
      assert.ok(await page.locator('.inspector').isVisible(),'Settings are an in-viewport layer');
      const visible=await page.locator('#controls>.control:visible').count();
      assert.ok(visible>=1&&visible<=2,'At most two parameter cards visible: '+visible);
@@ -52,10 +54,12 @@ try{
       assert.match(await page.locator('#paramPageText').innerText(),/2 \/ /);
      }
      await page.locator('[data-view="learn"]').click();
+     await page.locator('.phasebox').waitFor({state:'visible'});
      assert.ok(await page.locator('.phasebox').isVisible(),'Learning remains accessible');
      await page.locator('#phasetabs [data-phase="instruction"]').click();
      assert.ok(await page.locator('#phaseinner h4').isVisible(),'Instruction is on-screen');
      await page.locator('[data-view="info"]').click();
+     await page.locator('#infoDesk').waitFor({state:'visible'});
      assert.ok(await page.locator('#infoDesk').isVisible(),'Sources and explanations available');
      await page.locator('#infoNext').click();
      assert.ok(await page.locator('#infoTitle').innerText(),'Next detail page');
