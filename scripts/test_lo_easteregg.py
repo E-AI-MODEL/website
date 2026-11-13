@@ -386,6 +386,55 @@ def main():
             assert mobile_help["scroll"]<=mobile_help["content"]+2,mobile_help
             assert mobile_help["demo"]<=mobile_help["sheet"],mobile_help
             page.locator("#loHelpClose").click()
+        # De coachingreep verandert niet het verleden. Zonder nieuwe opdracht
+        # moet het volledige model exact dezelfde speler- en balbanen behouden.
+        coach_page=browser.new_page(viewport={"width":1200,"height":850})
+        coach_page.on("pageerror",lambda e:failures.append("coach: "+str(e)))
+        coach_page.goto(HTML.as_uri(),wait_until="domcontentloaded")
+        coach_page.locator('[data-mode="free"]').click()
+        coach_page.select_option("#formationSelect","2")
+        coach_page.locator("#primary").click()
+        coach_page.wait_for_timeout(250)
+        coach_page.locator("#primary").click()
+        assert coach_page.locator("#loCoachTransport").is_visible()
+        baseline_frames=coach_page.evaluate("""()=>window.__loLabTest.getFrames().map(f=>[
+          f.time,...f.players.flatMap(p=>[p.x,p.y,p.vx,p.vy]),f.ball.x,f.ball.y
+        ])""")
+        coach_page.locator("#loCoachEdit").click()
+        assert coach_page.locator("#loMidCoach").is_visible()
+        assert coach_page.locator("#loMidCoachSides button").count()==2
+        coach_page.locator("#loMidApply").click()
+        branch_frames=coach_page.evaluate("""()=>window.__loLabTest.getFrames().map(f=>[
+          f.time,...f.players.flatMap(p=>[p.x,p.y,p.vx,p.vy]),f.ball.x,f.ball.y
+        ])""")
+        assert len(baseline_frames)==len(branch_frames),(len(baseline_frames),len(branch_frames))
+        for before,after in zip(baseline_frames,branch_frames):
+            assert len(before)==len(after)
+            assert all(abs(a-b)<1e-7 for a,b in zip(before,after)),(before[0],before[:5],after[:5])
+        coach_page.locator("#primary").click()
+        assert coach_page.locator("#loCoachOriginal").is_visible()
+        coach_page.locator("#loCoachOriginal").click()
+        assert coach_page.locator("#loCoachVariant").is_visible()
+        coach_page.locator("#loCoachVariant").click()
+        coach_page.locator("#loCoachEdit").click()
+        coach_page.locator("#loMidCoachSides").get_by_role("button",name="Verdedigers").click()
+        assert coach_page.locator("#loMidCoachPlayers button").count()==2
+        coach_page.locator("#loMidCoachPlayers").get_by_role("button",name="Verdediger 1").click()
+        coach_page.locator("#loMidCoachActions button").last.click()
+        assert coach_page.locator("#loMidCoachActions [aria-pressed=true]").count()==1
+        coach_page.locator("#loMidApply").click()
+        assert coach_page.evaluate("window.__loLabTest.getFrames().length")>2
+        # Footers blijven binnen het document in plaats van over het veld.
+        for width,height in ((1200,850),(390,844),(320,690)):
+            coach_page.set_viewport_size({"width":width,"height":height})
+            values=coach_page.evaluate("""()=>({
+              vw:innerWidth,fh:document.querySelector('.lo-footer-links').getBoundingClientRect().toJSON(),
+              field:document.querySelector('.fieldpane').getBoundingClientRect().toJSON(),
+              below:document.querySelector('.lo-footer-links').compareDocumentPosition(document.querySelector('.fieldpane'))
+            })""")
+            assert values["fh"]["width"]<=values["vw"]+2,values
+            assert values["fh"]["top"]>=values["field"]["bottom"]-2,values
+        coach_page.close()
         assert not failures,failures
         print(json.dumps({"baseline_replays":count,"event_test":event_test,
                           "mobile_responsive":True,"modal_pause_resume":True,
