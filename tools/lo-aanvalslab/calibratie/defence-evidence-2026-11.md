@@ -25,6 +25,22 @@ Status: **onderzoeks- en proefversie, 13 november 2026**. De nieuwe verdedigings
 - Veldhockey: https://pmc.ncbi.nlm.nih.gov/articles/PMC10108760/
 - Spelvormen en collectief gedrag: https://pmc.ncbi.nlm.nih.gov/articles/PMC4769238/
 
+## Wetenschappelijk onderzoek achter de ontwerpkeuzes
+
+De volgende bronnen helpen bepalen **welke gedragingen** we moeten onderzoeken. Ze leveren niet vanzelf getallen voor het Aanvalslab.
+
+- **Coito e.a. (2022)**: systematisch overzicht van 31 studies over tactische tracking in kleine partijvormen. De analyse benoemt onder meer balans, speelruimte, breedte, lengte en onderlinge afstand. Dit onderbouwt de **keuze van meetvariabelen**, niet de precieze streefwaarden. https://pubmed.ncbi.nlm.nih.gov/33030987/
+- **Fernandes e.a. (2021)**: analyse van verdedigingsgedrag tijdens 32 WK-wedstrijden, met terugkerende patronen van druk op de bal, ondersteuning door de tweede en derde verdediger, en het bewaken van ruimte. Dit onderbouwt **gecoördineerde rollen** als ontwerpprincipe. Het is geen positioneel trackingbestand voor modelafstelling. https://pubmed.ncbi.nlm.nih.gov/34938248/
+- **FIFA Training Centre (2026)**: concrete oefenvormen 2-tegen-2, 2-tegen-3 en 3-tegen-3 met druk zetten, rugdekking en aanspeellijnen beschermen. **Praktijkadvies**, geen gecontroleerde vergelijkingsstudie. https://www.fifatrainingcentre.com/en/practice/talent-coach-programme/zonal-defending/developing-defensive-coordination-in-small-groups.php
+- **Bundesliga-onderzoek naar verdedigingscompactheid (2023/24)**: gegevens uit 153 wedstrijden laten zien dat compactheid van de vijf verdedigers dicht bij de bal zwak samenhangt met succesvolle verdediging, terwijl compactheid van het hele team niet duidelijk onderscheid maakt. **Geen bewijs** dat alle verdedigers altijd dicht bij elkaar moeten staan. https://doi.org/10.1177/17479541231172695
+- **Jeugdvoetbal in kleine partijen (2018)**: onderzoek naar taakvoorwaarden koppelt herkenbare verdedigingsacties aan passlijnen blokkeren, druk zetten, dekking en ruimte bezetten. De ontwerpprincipes zijn bruikbaar voor lesoefeningen, niet als rechtstreeks gemeten parameters. https://pmc.ncbi.nlm.nih.gov/articles/PMC5761879/
+
+### Directe gegevenscontrole, november 2026
+
+Voor **GNSS Football Tactical** zijn de zes openbare U18-bestanden daadwerkelijk door het analyseprogramma gelezen en gecontroleerd. De data gebruiken Excel-datumwaarden; die worden eerst naar seconden omgerekend. De spelers zijn elk tientallen duizenden keren gevolgd, maar vertegenwoordigen slechts zes individuele meetreeksen. Een deel van de opname betreft stilstaan of rust. De bewegingssnelheden zijn daarmee hooguit een onafhankelijke plausibiliteitscontrole. Er zitten **geen verdedigingstaaklabels, balposities of tactische uitkomsten** in deze sample.
+
+De code om de gegevens opnieuw op te halen en na te rekenen staat in `scripts/lo_gnss_reference.py`. Het broncommit is vastgezet op `f70b925c94e54c5be244917803f07da7c55101b4`. Rapportage en log komen uit de GitHub Actions-controle. Niet doen alsof deze zes personen een aparte steekproef van zes wedstrijden zijn.
+
 ## Controleerbare vragen
 
 Deze metingen horen vóór een release te worden uitgevoerd op **onafhankelijke spelsituaties**, niet op een willekeurige verdeling van opeenvolgende frames uit één wedstrijd.
