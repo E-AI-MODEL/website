@@ -132,7 +132,11 @@ try{
    assert.deepEqual(uiCheck.problems,[],'Grafiek en fysieke bediening kloppen per proef');
    const selectLab=async id=>{await page.evaluate(id=>loadLab(id),id);assert.equal(await page.locator('#labTitle').innerText(),await page.evaluate(id=>byId[id].title,id));};
    const graphDrag=async(from,to=from)=>{
-    const rect=await page.locator('#plot').boundingBox(),y=rect.y+rect.height*.5;
+    // De proef mag met een kracht- of energieweergave openen; schakel naar grafiek voor deze test.
+    await page.evaluate(()=>selectBottom('graph'));
+    const rect=await page.locator('#plot').boundingBox();
+    assert(rect,'Grafiek is zichtbaar na wisselen');
+    const y=rect.y+rect.height*.5;
     await page.mouse.move(rect.x+rect.width*from,y);
     await page.mouse.down();
     await page.mouse.move(rect.x+rect.width*to,y,{steps:6});
