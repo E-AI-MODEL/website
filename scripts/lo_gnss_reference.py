@@ -37,7 +37,7 @@ def one_player(pid):
         content=resp.read(4_000_000).decode("utf-8-sig")
     rows=list(csv.DictReader(io.StringIO(content)))
     if not rows:raise ValueError(f"No GNSS rows for ID{pid}")
-    print(f"GNSS ID{pid} headers: {list(rows[0])}")
+    print(f"GNSS ID{pid} headers: {list(rows[0])}; first: {rows[0]}; second: {rows[1] if len(rows)>1 else None}")
     series=[]
     for i,row in enumerate(rows):
         c=coords(row)
