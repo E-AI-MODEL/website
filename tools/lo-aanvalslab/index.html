@@ -440,86 +440,71 @@
  .side #after{display:flex}
 }
 
-/* Mobiel: speelveld boven, opdrachten in een inklapbare schuiflade. */
-.lo-sheet-handle{display:none}
+
+/* Telefoon: veld en speelknop voorop, geen permanent bedieningsmenu. */
 @media(max-width:880px) and (orientation:portrait){
  html,body{height:100%;overflow:hidden;overscroll-behavior:none}
- .app{height:100dvh;max-height:100dvh;min-height:0;gap:6px;overflow:hidden;padding:7px max(9px,env(safe-area-inset-right)) calc(5px + env(safe-area-inset-bottom)) max(9px,env(safe-area-inset-left))}
- .shell{flex:1 1 auto;min-height:0;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-start;gap:0}
- .top{flex:0 0 auto;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:37px 39px;align-items:center;column-gap:8px;row-gap:4px;flex-wrap:nowrap}
- .top .brand{grid-column:1;grid-row:1;min-width:0;gap:7px}
- .top .mark{width:33px;height:33px;flex:0 0 33px;border-radius:10px;font-size:16px}
- .top .brand h1{font-size:17px;white-space:nowrap}
- .top .brand .eyebrow{font-size:8px;letter-spacing:.105em;white-space:nowrap}
- .top-actions{display:contents}
- .top-actions .sport-label{display:none}
- .top-actions #sportSelect{grid-row:2;grid-column:1}
- .top-actions #formationSelect{grid-row:2;grid-column:2}
- .top-actions .sport-select{width:100%;max-width:none;min-width:0;min-height:39px;font-size:12px;padding:8px 30px 8px 12px;background-position:right 12px center;border-radius:10px}
- .top-actions #new{grid-row:1;grid-column:2;justify-self:end;min-width:37px;min-height:35px;padding:5px 10px;font-size:0;border-radius:9px}
- .top-actions #new::after{content:'↻';font-size:22px;line-height:1}
- .fieldpane{flex:0 0 auto;width:100%;height:auto;min-height:0;max-height:none;overflow:hidden;border-radius:13px 13px 0 0;border-bottom:0}
- .fieldhead{min-height:34px;padding:5px 9px;gap:6px}
- .fieldhead #stage{font-size:11px;padding:5px 10px}
- .fieldhead .playback-control{font-size:11px;gap:6px}
- .fieldhead .playback-control select{font-size:12px;min-width:50px;min-height:30px}
- .fieldhead .lo-help-open{min-width:31px;min-height:31px}
- .fieldframe{height:min(calc((100vw - 20px)*.65),34dvh);min-height:0;max-height:none;flex:0 0 auto;padding:3px;background:#0a292b}
- .fieldframe #pitch{width:100%;height:100%;max-height:100%;object-fit:contain;touch-action:none}
- .bottom{flex:0 0 auto;min-height:49px;padding:5px 8px;gap:7px;flex-wrap:nowrap}
- .bottom>div:first-child{display:none}
- .bottom .actions{display:grid;width:100%;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:7px}
- .bottom .actions .btn{min-height:40px;white-space:normal;padding:7px 6px;font-size:12px;border-radius:9px}
- .bottom .actions #primary{font-weight:750;font-size:13px}
- .lo-coach-transport{flex:0 0 auto;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 8px;padding:7px 9px}
- .lo-coach-transport label{grid-column:1/-1;white-space:nowrap;font-size:11px}
- .lo-coach-seek{grid-column:1;min-width:0;max-width:none;width:100%;min-height:25px}
- .lo-coach-transport .btn{min-height:32px;font-size:11px}
- .mobile-controls{flex:0 0 auto;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:20px 42px;gap:2px 3px;margin-top:6px;padding:5px 7px 6px;min-height:75px;width:100%;background:linear-gradient(180deg,#123038,#0d262e);border:1px solid #39635b;border-bottom:0;border-radius:15px 15px 0 0;box-shadow:0 -6px 26px #0002}
- .lo-sheet-handle{grid-column:1/-1;grid-row:1;display:flex;gap:7px;justify-content:center;align-items:center;min-height:20px;width:100%;padding:0;border:0;background:transparent;color:#a4c9be;font-size:10px;letter-spacing:.03em;touch-action:pan-y}
- .lo-sheet-handle::before{content:'';display:block;width:34px;height:4px;border-radius:9px;background:#8eb9b0}
- .lo-sheet-handle:focus-visible{outline:2px solid #b6f5d7;outline-offset:0}
- .mobile-panel-toggle{min-height:42px;font-size:13px;font-weight:650;border-radius:9px;padding:7px 5px}
- .mobile-panel-toggle[aria-expanded=true]{background:#245c4a;color:#ecfff6;box-shadow:inset 0 0 0 1px #75dab2}
- .side,.app[data-mobile-panel="goal"] .side,.app[data-mobile-panel="player"] .side,.app[data-mobile-panel="coach"] .side{position:relative;display:flex;flex:1 1 auto;height:auto;max-height:none;min-height:0;width:100%;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;scrollbar-width:thin;border:1px solid #39635b;border-top:0;border-radius:0 0 15px 15px;background:#0c252b;padding:9px 13px 13px;gap:10px}
- .side #prep,.side #loGoals,.side #loCoachPanel,.side #loMidCoach{flex:none;height:auto;min-height:0;overflow:visible}
- .side .lo-slim-content,.side .lo-goals-body{display:flex;flex-direction:column;height:auto;min-height:0;overflow:visible;gap:8px;padding:0}
- .side #selected{font-size:13px;min-height:20px;max-height:none;line-height:1.35}
- .side .intent-grid{gap:8px;margin-top:4px;overflow:visible}
- .side .intent{min-height:43px;padding:10px 11px;font-size:13px;line-height:1.25;border-radius:9px}
- .lo-mobile-more{min-height:40px;font-size:12px;padding:8px}
- .side .lo-goal-controls{gap:9px}
- .side .lo-role-chip{min-height:39px;padding:8px 10px;font-size:12px}
- .lo-mobile-goal-picker{gap:10px}
- .lo-mobile-goal-picker label{font-size:12px}
- .lo-mobile-goal-picker select{min-height:43px;font-size:13px;border-radius:9px}
- .side #loGoalHint,.side #insight,.side #loCoachObserved,.side .lo-coach-compare{max-height:none;overflow:visible;font-size:13px;line-height:1.45}
- .side #after{flex-wrap:wrap;gap:8px;margin:0}
- .side #after .btn,.side .lo-coach-jump,.side .lo-mid-buttons .btn{min-height:40px;padding:9px 12px;font-size:12px}
- .mobile-task-preview,.app[data-mobile-panel="player"] .mobile-task-preview{min-height:28px;flex:0 0 auto;padding:4px 10px;gap:7px;background:#0c252b;border-left:1px solid #39635b;border-right:1px solid #39635b}
- .mobile-task-kicker{font-size:10px}
- .mobile-task-preview strong{font-size:12px}
- .lo-footer-links{flex:0 0 auto;min-height:15px;font-size:10px;padding:1px 4px 3px}
- .app[data-lo-sheet="closed"] .side,.app[data-lo-sheet="closed"] .mobile-task-preview{display:none!important}
- .app[data-lo-sheet="closed"] .fieldpane{flex:1 1 auto;border-bottom:1px solid #28434a;border-radius:13px}
- .app[data-lo-sheet="closed"] .fieldframe{flex:1 1 auto;height:auto;max-height:none}
- .app[data-lo-sheet="closed"] .mobile-controls{border-bottom:1px solid #39635b;border-radius:15px;margin-top:6px}
- .app[data-lo-sheet="closed"] .lo-sheet-handle::before{background:#b6f5d7}
+ .app{height:100dvh;min-height:0;max-height:100dvh;overflow:hidden;gap:5px;padding:5px max(8px,env(safe-area-inset-right)) calc(4px + env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left))}
+ .shell{position:relative;flex:1 1 auto;min-height:0;display:flex;flex-direction:column;gap:0;overflow:hidden;justify-content:flex-start;isolation:isolate}
+ .top{min-height:0;flex:0 0 auto;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:33px 40px;gap:3px 7px;align-items:center}
+ .top .brand{grid-row:1;grid-column:1;gap:6px;min-width:0}
+ .top .brand h1{font-size:16px;white-space:nowrap}.top .brand .eyebrow{font-size:8px;letter-spacing:.08em;white-space:nowrap}
+ .top .mark{width:30px;height:30px;flex:0 0 30px;font-size:15px}
+ .top-actions{display:contents}.top-actions .sport-label{display:none}
+ .top-actions #sportSelect{grid-column:1;grid-row:2}.top-actions #formationSelect{grid-column:2;grid-row:2}
+ .top-actions .sport-select{height:40px;min-height:40px;width:100%;min-width:0;max-width:none;font-size:13px;padding:7px 30px 7px 11px;border-radius:10px;background-position:right 10px center}
+ .top-actions #new{grid-column:2;grid-row:1;justify-self:end;width:36px;min-height:32px;font-size:0;border-radius:9px;padding:2px}
+ .top-actions #new:after{content:'↻';font-size:22px;line-height:1}
+ .fieldpane,.app[data-lo-sheet="closed"] .fieldpane{flex:1 1 auto;min-height:0;max-height:none;height:auto;display:flex;flex-direction:column;overflow:hidden;border:1px solid #32544e;border-radius:12px;margin:0}
+ .fieldhead{flex:0 0 auto;min-height:34px;padding:5px 8px;gap:5px}
+ .fieldhead .pill{font-size:10px;padding:4px 9px}.fieldhead #stagehelp{display:none}
+ .playback-control{gap:4px;font-size:11px}.playback-control select{min-height:30px;font-size:12px}
+ .lo-help-open{min-width:32px;min-height:31px}
+ .fieldframe,.app[data-lo-sheet="closed"] .fieldframe{flex:1 1 auto;min-height:0;max-height:none;height:auto;width:100%;display:flex;flex-direction:column;align-items:stretch;justify-content:space-around;gap:9px;padding:7px;aspect-ratio:auto}
+ .fieldframe #pitch{display:block;flex:0 1 auto;width:100%;height:auto;min-height:0;max-height:calc(100% - 52px);aspect-ratio:1000/650;object-fit:contain;touch-action:none}
+ .bottom{flex:0 0 auto;min-height:49px;padding:5px 8px}.bottom>div:first-child{display:none}
+ .bottom .actions{display:grid;width:100%;grid-template-columns:minmax(0,1fr) minmax(0,1.5fr);gap:7px}
+ .bottom .actions .btn{min-height:42px;font-size:12px;padding:7px 7px;white-space:normal;line-height:1.22;border-radius:9px}
+ .bottom #primary{font-size:14px;font-weight:750}
+ .lo-coach-transport{flex:0 0 auto;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 7px;padding:7px 9px}
+ .lo-coach-transport label{grid-column:1/-1;font-size:11px}.lo-coach-seek{grid-column:1;min-width:0;max-width:none;width:100%;min-height:29px}
+ .lo-coach-transport .btn{min-height:36px;font-size:11px}
+ .mobile-controls,.app[data-lo-sheet="closed"] .mobile-controls{position:relative;z-index:3;flex:0 0 auto;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:1fr;gap:5px;min-height:56px;height:56px;width:100%;margin:5px 0 0;padding:5px;background:#0f2930;border:1px solid #41685e;border-radius:12px;box-shadow:none}
+ .lo-sheet-handle{display:none!important}
+ .mobile-panel-toggle{min-height:44px;font-size:13px;font-weight:650;border-radius:9px;padding:7px 4px;touch-action:manipulation}
+ .mobile-panel-toggle[aria-expanded="true"]{background:#255e49;border:1px solid #83dcb4;color:#f0fff6;box-shadow:none}
+ .app .shell>.side,.app[data-mobile-panel="goal"] .shell>.side,.app[data-mobile-panel="player"] .shell>.side,.app[data-mobile-panel="coach"] .shell>.side{display:none!important;position:absolute;z-index:4;left:0;right:0;bottom:65px;width:100%;height:auto;max-height:min(45dvh,370px);min-height:0;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;padding:0 12px 12px;background:#102b32;border:1px solid #578a75;border-radius:13px;box-shadow:0 14px 46px #0009;gap:8px;flex:none}
+ .app[data-lo-sheet="open"] .shell>.side{display:flex!important}
+ .app[data-mobile-panel="goal"] .side>.mobile-sheet-head,.app[data-mobile-panel="player"] .side>.mobile-sheet-head,.app[data-mobile-panel="coach"] .side>.mobile-sheet-head{position:sticky;top:0;z-index:3;display:flex!important;align-items:center;justify-content:space-between;gap:8px;min-height:47px;margin:0 -12px 3px;padding:6px 11px;background:#102b32;border-bottom:1px solid #365c52}
+ .app .side>.mobile-sheet-head strong{font-size:14px;color:#e8f8f0}
+ .app .side>.mobile-sheet-head button{display:inline-flex;align-items:center;justify-content:center;min-height:34px;min-width:74px;border:1px solid #436c60;border-radius:8px;background:transparent;color:#c7ead8;font-size:12px}
+ .app .side #prep,.app .side #loGoals,.app .side #loCoachPanel,.app .side #loMidCoach{height:auto;min-height:0;flex:0 0 auto;overflow:visible}
+ .app .side .lo-slim-content,.app .side .lo-goals-body{height:auto;min-height:0;overflow:visible;gap:7px;padding:0}
+ .app .side #selected{font-size:13px;line-height:1.35;min-height:20px;max-height:none;overflow:visible}
+ .app .side .intent-grid{gap:8px;margin:4px 0 0}
+ .app .side .intent{min-height:44px;padding:9px 11px;font-size:13px;line-height:1.25;border-radius:9px}
+ .app .side .lo-mobile-more{min-height:43px;font-size:12px}
+ .app .side .lo-role-chip{min-height:42px;padding:9px 11px;font-size:12px;border-radius:8px}
+ .app .side .lo-mobile-goal-picker{gap:10px}.app .side .lo-mobile-goal-picker label{font-size:12px}
+ .app .side #loMobileGoalSelect{min-height:44px;font-size:13px}
+ .app .side #loGoalHint,.app .side #insight,.app .side #loCoachObserved,.app .side .lo-coach-compare{max-height:none;overflow:visible;font-size:13px;line-height:1.43}
+ .app .side .lo-coach-jump,.app .side #after .btn,.app .side .lo-mid-buttons .btn{min-height:42px;padding:9px 12px;font-size:12px}
+ .app .side #after{margin:0;gap:8px;flex-wrap:wrap}
+ .app .fieldframe .mobile-task-preview,.app[data-mobile-panel="player"] .fieldframe .mobile-task-preview{display:flex!important;flex:0 0 auto;align-items:center;justify-content:center;gap:8px;min-height:42px;width:100%;padding:8px 10px;border:1px solid #396057;border-radius:8px;background:#0d292c;color:#d5eee3}
+ .app .fieldframe .mobile-task-kicker{font-size:9px;font-weight:750;letter-spacing:.06em;color:#93cfb8;white-space:nowrap}
+ .app .fieldframe .mobile-task-preview strong{font-size:12px;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ .app .fieldframe .mobile-task-preview p{display:none}
+ .app .lo-footer-links{flex:0 0 auto;min-height:12px;font-size:10px;line-height:1.2;padding:2px 1px;gap:6px 10px}
 }
-@media(max-width:880px) and (orientation:portrait) and (max-height:720px){
- .app{gap:4px;padding-top:4px}
- .top{grid-template-rows:32px 36px;row-gap:2px}
- .top-actions .sport-select{min-height:36px}
- .fieldhead{min-height:30px}
- .fieldframe{height:min(calc((100vw - 20px)*.65),31dvh)}
- .bottom{min-height:43px}
- .bottom .actions .btn{min-height:36px}
- .mobile-controls{min-height:66px;grid-template-rows:14px 39px;padding:4px 6px}
- .mobile-panel-toggle{min-height:39px}
- .side,.app[data-mobile-panel="goal"] .side,.app[data-mobile-panel="player"] .side,.app[data-mobile-panel="coach"] .side{padding:6px 10px 8px;gap:6px}
- .side .intent{min-height:38px;padding:7px 9px}
+@media(max-width:880px) and (orientation:portrait) and (max-height:640px){
+ .top{grid-template-rows:30px 35px}.top-actions .sport-select{min-height:35px;height:35px}
+ .fieldhead{min-height:29px;padding:3px 7px}.bottom{min-height:43px}
+ .bottom .actions .btn{min-height:38px;font-size:11px}.bottom #primary{font-size:12px}
+ .mobile-controls,.app[data-lo-sheet="closed"] .mobile-controls{min-height:49px;height:49px;margin-top:3px;padding:3px}
+ .mobile-panel-toggle{min-height:42px}
+ .app .shell>.side,.app[data-mobile-panel="goal"] .shell>.side,.app[data-mobile-panel="player"] .shell>.side,.app[data-mobile-panel="coach"] .shell>.side{bottom:55px;max-height:min(48dvh,270px)}
+ .app .lo-footer-links{display:none}
 }
-@media(prefers-reduced-motion:reduce){.mobile-controls,.side{scroll-behavior:auto}}
 </style></head><body class="eai-refresh"><div class="app"><header class="top"><div class="brand"><button type="button" class="mark lo-secret" id="loSecret" aria-label="LO-logo. Tweemaal tikken voor de berekeningen van het spel" title="LO">LO</button><div><div class="eyebrow">TACTISCH SPELLAB</div><h1>Speel het uit.</h1></div></div><div class="top-actions"><label class="sport-label" for="sportSelect">Sport</label><select id="sportSelect" class="sport-select" aria-label="Kies de sport"><option value="0">Voetbal</option><option value="1">Hockey</option><option value="2">Handbal</option><option value="3">Basketbal</option></select><label class="sport-label" for="formationSelect">Teams</label><select id="formationSelect" class="sport-select formation-select" aria-label="Kies het aantal aanvallers en verdedigers"><option value="0">4 tegen 4</option><option value="1">2 tegen 1</option><option value="2">3 tegen 2</option><option value="3">4 tegen 3</option></select><button id="new" class="btn">Nieuwe spelsituatie</button></div></header><div class="shell"><section class="fieldpane"><div class="fieldhead"><span id="stage" class="pill">Voorbereiden</span><span id="stagehelp" class="small">Versleep de spelers van jouw team</span><label class="playback-control" for="playbackSpeed"><span>Tempo</span><select id="playbackSpeed" aria-label="Afspeelsnelheid"><option value="0.5">½×</option><option value="1" selected>1×</option><option value="1.5">1½×</option><option value="2">2×</option></select></label><button type="button" id="loHelpOpen" class="lo-help-open" aria-haspopup="dialog" aria-controls="loHelp" aria-label="Uitleg en demo's voor het Aanvalslab"><span class="lo-help-mark" aria-hidden="true">?</span><span class="lo-help-word">Uitleg en demo’s</span></button></div><div class="fieldframe"><svg id="pitch" viewBox="0 0 1000 650" tabindex="0" role="img" aria-label="Interactief speelveld. Kies een speler en gebruik de pijltjestoetsen om hem te verplaatsen."></svg></div><div class="lo-coach-transport" id="loCoachTransport" hidden>
  <label for="loCoachSeek">Terug naar spelmoment <output id="loCoachTimestamp">0,0 s</output></label>
  <input id="loCoachSeek" class="lo-coach-seek" type="range" min="0" max="0" step="0.05" value="0" aria-label="Kies een eerder spelmoment">
@@ -2428,49 +2413,50 @@ setPanel('player');
 window.__loMobileUI={open:setPanel,close:()=>setPanel('player')};
 })();
 </script><script>
-/* De reken- en spelcode blijft gelijk. Deze code verzorgt alleen de mobiele lade. */
+/* Mobiele actiebalk: alleen het gekozen onderdeel komt in beeld. */
 (()=>{'use strict';
- const app=document.querySelector('.app'),nav=document.getElementById('loMobileControls'),aside=document.querySelector('.shell > .side');
- if(!app||!nav||!aside)return;
- aside.id='loMobileSide';
+ const app=document.querySelector('.app'),nav=document.getElementById('loMobileControls'),side=document.querySelector('.shell>.side');
+ if(!app||!nav||!side)return;
  const mobile=window.matchMedia('(max-width:880px) and (orientation:portrait)');
- const handle=document.createElement('button');
- handle.id='loSheetHandle';handle.className='lo-sheet-handle';handle.type='button';
- handle.setAttribute('aria-controls','loMobileSide');nav.prepend(handle);
- let opened=true;
- function expand(value){
-   opened=!!value;app.dataset.loSheet=opened?'open':'closed';
-   handle.setAttribute('aria-expanded',String(opened));
-   handle.setAttribute('aria-label',opened?'Bediening inklappen':'Bediening uitklappen');
-   handle.textContent=opened?'Bediening':'Open bediening';
+ const tabs=[...nav.querySelectorAll('[data-lo-mobile-panel]')],titles={goal:'Oefening',player:'Speleropdrachten',coach:'Coach en terugkijken'};
+ side.id='loMobileSide';
+ const heading=side.querySelector('.mobile-sheet-head');
+ const preview=document.querySelector('.mobile-task-preview'),fieldframe=document.querySelector('.fieldframe');
+ const anchor=document.createComment('mobile-task-location');if(preview)preview.before(anchor);
+ nav.querySelector('#loSheetHandle')?.remove();
+ let openKind=null;
+ function show(kind){
+  if(!mobile.matches){delete app.dataset.loSheet;heading?.style.removeProperty('display');return}
+  heading?.style.setProperty('display','flex','important');
+  openKind=titles[kind]?kind:null;
+  app.dataset.loSheet=openKind?'open':'closed';
+  tabs.forEach(b=>{const selected=b.dataset.loMobilePanel===openKind;b.setAttribute('aria-expanded',String(selected));b.setAttribute('aria-pressed',String(selected));b.setAttribute('aria-controls','loMobileSide')});
+  if(openKind){app.dataset.mobilePanel=openKind;document.getElementById('loMobilePanelTitle').textContent=titles[openKind];
+   const detail=document.getElementById({goal:'loGoals',player:'prep',coach:'loCoachPanel'}[openKind]);if(detail)detail.open=true;
+   if(openKind==='coach'&&!document.getElementById('loMidCoach').hidden)document.getElementById('loMidCoach').open=true;
+   side.scrollTop=0;
+  }
  }
- handle.addEventListener('click',()=>{if(mobile.matches)expand(!opened)});
- let touchStart=null;
- nav.addEventListener('touchstart',event=>{
-   if(!mobile.matches||!event.touches.length)return;
-   touchStart=event.touches[0].clientY;
- },{passive:true});
- nav.addEventListener('touchend',event=>{
-   if(touchStart===null||!event.changedTouches.length)return;
-   const delta=event.changedTouches[0].clientY-touchStart;touchStart=null;
-   if(Math.abs(delta)>42)expand(delta<0);
- },{passive:true});
- nav.querySelectorAll('[data-lo-mobile-panel]').forEach(button=>button.addEventListener('click',()=>{if(mobile.matches)expand(true)}));
- const primary=document.getElementById('primary');
- primary?.addEventListener('click',()=>{if(mobile.matches&&primary.textContent.trim()==='Pauzeer')expand(false)});
- const after=document.getElementById('after');let wasDone=after&&!after.classList.contains('hide');
- if(after)new MutationObserver(()=>{
-   const done=!after.classList.contains('hide');
-   if(done&&!wasDone&&mobile.matches)expand(true);
-   wasDone=done;
- }).observe(after,{attributes:true,attributeFilter:['class']});
- document.getElementById('loCoachEdit')?.addEventListener('click',()=>{
-   if(!mobile.matches)return;
-   nav.querySelector('[data-lo-mobile-panel="coach"]')?.click();expand(true);
- });
- document.querySelectorAll('[data-mode]').forEach(button=>button.addEventListener('click',()=>{if(mobile.matches)expand(true)}));
- function resize(){if(!mobile.matches){delete app.dataset.loSheet;return}expand(true)}
- mobile.addEventListener?.('change',resize);resize();
- window.__loMobileSheet={expand,isOpen:()=>opened};
+ tabs.forEach(button=>button.addEventListener('click',()=>{const kind=button.dataset.loMobilePanel;show(openKind===kind?null:kind)}));
+ document.getElementById('loMobileClose')?.addEventListener('click',()=>show(null));
+ document.getElementById('pitch')?.addEventListener('pointerdown',()=>{if(openKind)show(null)});
+ document.getElementById('intents')?.addEventListener('click',e=>{if(e.target.closest('.intent'))show(null)});
+ document.getElementById('loMobileGoalSelect')?.addEventListener('change',()=>show(null));
+ document.getElementById('primary')?.addEventListener('click',()=>show(null));
+ document.getElementById('loCoachEdit')?.addEventListener('click',()=>{if(mobile.matches)show('coach')});
+ document.getElementById('loCoachMoment')?.addEventListener('click',()=>show(null));
+ document.getElementById('after')?.addEventListener('click',e=>{if(e.target.closest('#again,#replay'))show(null)});
+ for(const id of ['reset','new'])document.getElementById(id)?.addEventListener('click',()=>show(null));
+ const after=document.getElementById('after');
+ if(after){let previous=!after.classList.contains('hide');new MutationObserver(()=>{const done=!after.classList.contains('hide');if(mobile.matches&&done&&!previous)show('coach');previous=done}).observe(after,{attributes:true,attributeFilter:['class']})}
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&openKind){show(null);e.preventDefault()}});
+ function layout(){if(preview&&fieldframe){if(mobile.matches)fieldframe.append(preview);else anchor.after(preview)}show(null)}
+ mobile.addEventListener?.('change',layout);
+ document.querySelectorAll('[data-mode]').forEach(b=>b.addEventListener('click',()=>show(null)));
+ nav.querySelector('[data-lo-mobile-panel="goal"]').textContent='Oefening';
+ nav.querySelector('[data-lo-mobile-panel="player"]').textContent='Actie';
+ nav.querySelector('[data-lo-mobile-panel="coach"]').textContent='Coach';
+ layout();
+ window.__loMobileSheet={open:show,close:()=>show(null),current:()=>openKind};
 })();
 </script></body></html>
