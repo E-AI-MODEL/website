@@ -691,6 +691,7 @@ html.solar-active,html.solar-active body{overflow:hidden!important;height:100dvh
 
 .guided-question{margin:0 0 14px;padding:14px;border:1px solid #3c6776;border-radius:10px;background:#10283b}.guided-label{font-size:10px;color:#97e5e3;letter-spacing:.06em;font-weight:700}.guided-question h4{font-size:16px;line-height:1.3;margin:8px 0;color:#f2faff}.guided-question p{font-size:12px;line-height:1.5;color:#c7dbe8;margin:0 0 11px}.guided-choices{display:grid;gap:7px}.guided-choices button{text-align:left;background:#142e43;color:#eef6fe;border:1px solid #466378;border-radius:7px;padding:9px 10px;font-size:12px;line-height:1.4}.guided-choices button:hover,.guided-choices button[aria-pressed=true]{border-color:#a7e8de;background:#205064}.guided-feedback{font-size:12px;line-height:1.5;color:#e1e9f6;margin-top:9px}.guided-feedback:empty{display:none}.guided-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.guided-actions button{border:0;background:transparent;color:#98e1e7;font-size:11px;text-decoration:underline;text-underline-offset:3px;padding:3px 0}
 
+.guided-live{border-left:2px solid #6cbac7;padding:7px 9px;margin:10px 0 12px;background:rgba(85,157,175,.09)}.guided-live b{font-size:10px;color:#a6dfdf}.guided-question .guided-live p{margin:3px 0 0;color:#e0f2f6;line-height:1.45;font-size:12px}
 </style>
 </head>
 <body>
@@ -1066,15 +1067,25 @@ stars:{ask:'Wat gebeurt er als je sterrenkijker zwakker wordt?',hint:'Schuif de 
 gaia:{ask:'Welke ster lijkt meer te verschuiven door onze beweging?',hint:'Vergelijk de meting voor een ster dichtbij en een ster ver weg.',choices:['De ster dichtbij','De ster ver weg','Beide verschuiven altijd evenveel'],right:0,why:'Een ster dichtbij lijkt sterker te verschuiven wanneer de aarde van plaats verandert. Dat heet parallax.',camera:null},
 blackhole:{ask:'Waar beweegt ster S2 het snelst?',hint:'Volg de ster langs haar baan en vergelijk de snelheidsmeter.',choices:['Vlak bij het zwarte gat','Ver van het zwarte gat','Overal precies even snel'],right:0,why:'In dit vereenvoudigde baanmodel beweegt S2 het snelst wanneer ze dicht bij het zwarte gat komt.',camera:null}
 };
+function guideLiveLine(){
+ if(state.mode==='atlas')return state.cam.target==='sun'?'Je kijkt naar onze zon. Zij staat in de schijf, niet in het midden.':state.cam.elev<16?'Van opzij zie je een dunne schijf. Bekijk nu ook de spiraal van boven.':state.cam.elev>73?'Van boven zie je de spiraalarmen. Waar zou onze zon staan?':'Draai de Melkweg en zoek onze zon.';
+ if(state.mode==='dynamics'){const v=Math.round(vParts(state.focusR).total);return state.model.halo<.6?'Met minder onzichtbare massa is de snelheid hier '+v+' km per seconde.':state.model.halo>1.5?'Met meer onzichtbare massa is de snelheid hier '+v+' km per seconde.':'De snelheid is hier '+v+' km per seconde. Verander de massa en vergelijk.';}
+ if(state.mode==='structure')return state.cam.elev<16?'Van opzij is de Melkweg een platte schijf met een dikker midden.':state.cam.elev>73?'Van boven zie je een spiraal. Draai nu naar de zijkant.':'Draai de Melkweg naar de zijkant. Wat valt je op?';
+ if(state.mode==='stars')return state.limMag<15?'Met een zwakkere kijker zie je veel zwakke sterren niet.':state.limMag>19?'Je kijker toont nu ook zwakkere sterren.':'Verander de sterkte van de sterrenkijker en tel de lichtjes.';
+ if(state.mode==='gaia')return state.observeD<3?'De ster staat dichtbij. Haar schijnbare verschuiving is groter.':state.observeD>15?'De ster staat ver weg. Haar schijnbare verschuiving is kleiner.':'Verander de afstand en kijk hoe groot de schijnbare verschuiving is.';
+ return 'Ster S2 beweegt hier in het model ongeveer '+Math.round(kepler(state.bhTime).v).toLocaleString('nl-NL')+' km per seconde. Vergelijk twee plekken op de baan.';
+}
+function updateGuideLive(){const el=document.getElementById('guided-observation');if(!el)return;const line=guideLiveLine();if(el.textContent!==line)el.textContent=line;}
+
 let guideAttempts={};
-function guideHTML(){const g=GUIDE[state.mode];if(!g)return '';return '<section class="guided-question" aria-label="Onderzoek met uitleg"><div class="guided-label">ONDERZOEK MET UITLEG</div><h4>'+esc(g.ask)+'</h4><p>Probeer het eerst in het model. Kies daarna wat je hebt ontdekt.</p><div class="guided-choices">'+g.choices.map((x,i)=>'<button type="button" data-guide-choice="'+i+'">'+esc(x)+'</button>').join('')+'</div><div class="guided-feedback" id="guided-feedback" role="status" aria-live="polite"></div><div class="guided-actions">'+(g.camera?'<button type="button" data-guide-camera="'+g.camera+'">Bekijk '+(g.camera==='sun'?'onze zon':'van opzij')+'</button>':'')+'<button type="button" data-guide-hint>Geef me een aanwijzing</button></div></section>'}
+function guideHTML(){const g=GUIDE[state.mode];if(!g)return '';return '<section class="guided-question" aria-label="Onderzoek met uitleg"><div class="guided-label">ONDERZOEK MET UITLEG</div><h4>'+esc(g.ask)+'</h4><div class="guided-live"><b>Dit zie je nu</b><p id="guided-observation">'+esc(guideLiveLine())+'</p></div><p>Probeer iets in het model. Wat denk je dat er gebeurt?</p><div class="guided-choices">'+g.choices.map((x,i)=>'<button type="button" data-guide-choice="'+i+'">'+esc(x)+'</button>').join('')+'</div><div class="guided-feedback" id="guided-feedback" role="status" aria-live="polite"></div><div class="guided-actions">'+(g.camera?'<button type="button" data-guide-camera="'+g.camera+'">Bekijk '+(g.camera==='sun'?'onze zon':'van opzij')+'</button>':'')+'<button type="button" data-guide-hint>Geef me een aanwijzing</button></div></section>'}
 document.addEventListener('click',e=>{const a=e.target.closest('[data-guide-choice],[data-guide-hint],[data-guide-camera]');if(!a)return;const g=GUIDE[state.mode],out=document.getElementById('guided-feedback');if(!g||!out)return;
  if(a.hasAttribute('data-guide-camera')){camSet(a.dataset.guideCamera);out.textContent='Kijk wat er in het model verandert. Wat denk je nu?';return;}
  if(a.hasAttribute('data-guide-hint')){out.textContent=g.hint;return;}
  const pick=Number(a.dataset.guideChoice),correct=pick===g.right;
  a.parentElement.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b===a)));
  guideAttempts[state.mode]=(guideAttempts[state.mode]||0)+1;
- out.textContent=correct?'Dat klopt met dit model. '+g.why:'Probeer nog een keer. '+(guideAttempts[state.mode]>1?g.hint:'Kijk eerst goed naar het model en vergelijk de keuzes.');
+ out.textContent=correct?'Dit antwoord past bij het model. '+g.why+' Probeer zelf nog een andere instelling.':'Kijk nog eens. '+guideLiveLine()+(guideAttempts[state.mode]>1?' '+g.hint:'');
 });
 
 function panelHTML(){return `${guideHTML()}<div class="instrument-meta">MW / 01 · ${MODE[state.mode].crumb}<span>ANALYTISCH MODEL</span></div><div class="statgrid">${instrumentStats()}</div><div class="instrument-controls">${instrumentControls()}</div><button class="instrument-action graph-toggle" id="graphToggle" type="button" aria-expanded="${document.body.classList.contains('show-graphs')}">${document.body.classList.contains('show-graphs')?'−':'↗'} GRAFIEK <small>${MODE[state.mode].plot}</small></button><details class="instrument-details"><summary>AFLEIDING / BRONNEN</summary><div class="instrument-details-body">${theoryBlock(state.mode)}${sourceBlock()}</div></details>`;}
@@ -1187,6 +1198,7 @@ let lastStatsAt=0;function updateLiveStats(force=false){let now=performance.now(
  $('hudProjection').textContent=state.mode==='blackhole'?'S2 / BAAN':Math.round(state.cam.elev)+'° / '+Math.round(state.cam.yaw*180/PI)+'°';
  $('hudRadius').textContent=state.mode==='blackhole'?fmt(kepler(state.bhTime).r,0)+' AU':fmt(state.focusR,1)+' kpc';
  $('hudSpeed').textContent=state.mode==='blackhole'?Math.round(kepler(state.bhTime).v)+' km/s':Math.round(vParts(state.focusR).total)+' km/s';
+ updateGuideLive();
  }
 function render(){if(state.mode==='blackhole')drawBlackHole();else drawGalaxy();}
 function axisSetup(xmin,xmax,ymin,ymax,xticks,yticks,{xlabel='',ylabel='',reverseX=false}={}){const g={x:56,y:15,w:PW-82,h:PH-46};if(PW<430)g.x=45,g.w=PW-65;g.w=Math.max(50,g.w);g.h=Math.max(60,g.h);pc.fillStyle='#0b1523';pc.fillRect(0,0,PW,PH);pc.font='9px ui-monospace,monospace';pc.lineWidth=1;
