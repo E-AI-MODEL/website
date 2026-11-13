@@ -98,3 +98,15 @@ Alle 53 proeven hebben een bewust gekozen tweede weergave en een uitklapbare ber
 Bij 20 proeven opent de tweede ruimte met een passende andere voorstelling (krachten, energie, momenten, weerstanden, spanning, tijd, niveaus of verval). Bij 33 proeven blijft de grafiek het eerste beeld, omdat deze het verloop of een relatie het beste toont. De interactieve grafiek blijft bij alle 53 bereikbaar.
 
 `tests/test_science_physics_insights.mjs` controleert of alle proeven de berekeningsstappen tonen, de gekozen tweede weergave beschikbaar is en of de weergegeven antwoorden bij gewijzigde instellingen uit de meetwaarden komen. `scripts/test_science_fixed_workspace.mjs` opent voor grafiekbediening expliciet het grafiektabblad. De controles vervangen geen afzonderlijke volledige wetenschappelijke of didactische validatie van iedere proef.
+
+## Bronnen en inhoudelijke controle (13 november 2026)
+
+De proeven blijven publieke onderwijsmodellen. Voor vijf onderwerpen is een compacte docentverdieping toegevoegd onder **Zo bereken je dit**: hefboom, elastische/onelastische botsingen, ideaal gas, Bohr-model en radioactieve reeksen. De leerling behoudt de actuele formule, ingevoerde getallen, meetwaarden en simulatie zonder nieuw hoofdmenu.
+
+De docentverdieping vermeldt per proef de natuurkundige relatie, een korte afleiding, de geldigheidsvoorwaarden en **specifieke** bronhoofdstukken. Voor de eerste vier zijn dat onder meer hoofdstukken uit *OpenStax College Physics 2e*. Voor de vervalreeksen is naast OpenStax een college over Batemanvergelijkingen van MIT OpenCourseWare opgenomen. De restitutiecoëfficiënt in de botsingsproef is een aanvullende modelparameter; een bron die impulsbehoud uitlegt, bewijst nog niet de implementatie van die parameter.
+
+Alle 53 proeven hebben in `natuurkunde-kwaliteit.json` expliciet een bronstatus, referentieteststatus en vakdocentstatus. Voor 5 zijn bronlinks geselecteerd en zijn onafhankelijke tests toegevoegd; voor 48 staat de bronselectie nog open. De inhoudelijke aftekening staat bij alle 53 nog op `false`. De bronverwijzingen zijn een controlehulpmiddel, geen automatisch wetenschappelijk keurmerk.
+
+`tests/test_science_physics_evidence.mjs` toetst onafhankelijk de hefboom, impuls/energie bij botsingen, het ideale gas, discrete Bohr-overgangen en de moeder-dochterpopulaties, ook voor bijna gelijke halveringstijden. Bij vervalreeksen gebruikt de implementatie nu `Math.expm1` om numerieke uitval door het aftrekken van vrijwel gelijke exponenten te voorkomen. De eigen onderzoeksgrafiek en de docentverdieping worden afzonderlijk bijgewerkt. `scripts/test_science_fixed_workspace.mjs` test dat de docentverdieping tijdens het verslepen van het steunpunt open blijft.
+
+Vervolg voor de andere proeven: kies per proef een exact bronhoofdstuk, bereken onafhankelijke grensgevallen, controleer formule/grafiek/animatie op overeenstemming, laat een natuurkundedocent de inhoudelijke uitspraak aftekenen en controleer waar nodig begrip bij leerlingen. Pas daarna wordt `inhoudelijk_gevalideerd` voor die proef gewijzigd. Het algemene OpenStax-boek alleen is niet voldoende als bronverwijzing.
