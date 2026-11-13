@@ -113,6 +113,13 @@ body{overscroll-behavior:none}
 }
 @media(prefers-reduced-motion:reduce){#app *{transition:none!important;animation:none!important}}
 
+
+@media(prefers-reduced-motion:no-preference){
+ @keyframes mathViewEnter{from{opacity:.35;transform:translateY(10px)}to{opacity:1;transform:none}}
+ @keyframes mathViewExit{from{opacity:1}to{opacity:0}}
+ ::view-transition-new(root){animation:220ms cubic-bezier(.22,.83,.3,1) both mathViewEnter}
+ ::view-transition-old(root){animation:130ms ease-in both mathViewExit}
+}
 </style></head><body><div id="app">
 <aside class="sidebar"><div class="brand"><div class="brandico">Φ</div><div class="brandtxt"><h1 id="brand-title">OBSERVATORY</h1><small>RESEARCH CONSOLE / PREMIUM</small></div></div><div class="sectionlabel">ONDERZOEKSMODULES</div><nav class="nav" id="nav"></nav><div class="sidefoot"><strong>● MODELBEREKENING ACTIEF</strong><p>Experimenten gebruiken expliciete wiskundige modellen. Geen gemeten data, tenzij aangegeven.</p><span id="versiontext">Science Observatory / v5</span></div></aside>
 <header class="top"><div class="crumb">RESEARCH CONSOLE / <b id="crumb">ONDERZOEK</b></div><div class="grow"></div><button type="button" class="topbtn" id="themeToggle" title="Dag- en nachtweergave"><span class="btnlabel">◐ Weergave</span><span class="mobileicon"> ◐</span></button><button type="button" class="topbtn" id="focusToggle" title="Maak ruimte voor de simulatie">⛶ <span class="btnlabel">Focus</span></button><button type="button" class="topbtn" id="exportModel" title="Modelinstellingen bewaren">↓ <span class="btnlabel">Model JSON</span></button><button type="button" class="topbtn accent" id="exportPNG" title="Simulatie als afbeelding bewaren">▣ <span class="btnlabel">Afbeelding</span></button><a class="topbtn" href="../START_HIER.html" title="Terug naar de serie">← <span class="btnlabel">Serie</span></a></header>
@@ -300,13 +307,18 @@ function renderParamPage(){
 }
 function switchDesk(view){
  if(!$('deckDock'))return;
- document.body.dataset.deckView=view;
- for(const button of $('deckDock').querySelectorAll('button')){
-  const active=button.dataset.view===view;button.setAttribute('aria-pressed',String(active));
- }
- if(view==='params')renderParamPage();
- if(view==='info')rebuildInfoPages();
- dirty=true;
+ const update=()=>{
+  document.body.dataset.deckView=view;
+  for(const button of $('deckDock').querySelectorAll('button')){
+   const active=button.dataset.view===view;button.setAttribute('aria-pressed',String(active));
+  }
+  if(view==='params')renderParamPage();
+  if(view==='info')rebuildInfoPages();
+  dirty=true;
+ };
+ if(isCompactWorkspace()&&document.startViewTransition&&!matchMedia('(prefers-reduced-motion: reduce)').matches){
+  document.startViewTransition(update);
+ }else update();
 }
 function syncAdaptiveWorkspace(view){
  if(!$('deckDock'))return;
