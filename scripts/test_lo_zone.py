@@ -89,10 +89,11 @@ def run():
         page.set_viewport_size({"width":390,"height":844})
         page.reload()
         page.locator('[data-mode="defend"]').click()
-        # Op mobiel blijft dit paneel bewust ingeklapt zodat het veld ruimte houdt.
-        assert page.locator("#prep").get_attribute("open") is None
+        # De spelerbediening staat direct onder het veld en bedekt het niet.
         page.locator('[data-lo-mobile-panel="player"]').click()
         assert page.locator("#prep").get_attribute("open") is not None
+        assert not page.locator(".mobile-scrim").is_visible()
+        assert page.locator(".side").bounding_box()["y"] >= page.locator(".fieldpane").bounding_box()["y"] + page.locator(".fieldpane").bounding_box()["height"]
         assert page.locator("#zonePlans").is_visible()
         assert page.locator("#pitch").is_visible()
         assert page.locator("#zonePlans").evaluate("(e) => e.getBoundingClientRect().width > 180")
