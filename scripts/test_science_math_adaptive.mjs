@@ -89,6 +89,30 @@ try{
      await page.waitForFunction(()=>document.querySelector('#modeSelect').value==='1'&&document.body.dataset.deckView==='scene');
      assert.ok(await page.locator('[data-view="scene"] .action-word').innerText(),'Handeling verandert mee bij onderwerp');
      await page.locator('#modeSelect').selectOption('0');
+     if(width===390){
+      const expectedFirst=slug==='wiskunde-a'?['p','sigma','success','noise','sa','delta']:['x','start','left','center','dt','u'];
+      for(let mode=0;mode<6;mode++){
+       await page.locator('#modeSelect').selectOption(String(mode));
+       await page.waitForFunction(n=>document.querySelector('#modeSelect').value===String(n)&&document.body.dataset.deckView==='scene',mode);
+       await page.locator('[data-view="params"]').click();
+       await page.locator('.inspector').waitFor({state:'visible'});
+       const first=await page.locator('#controls>.control:visible input[data-param]').first().getAttribute('data-param');
+       assert.equal(first,expectedFirst[mode],'De genoemde instelling staat vooraan '+slug+' '+mode);
+       await page.locator('[data-view="calc"]').click();
+       await page.locator('#actionResult').waitFor({state:'visible'});
+       const shown=(await page.locator('#resultNumber').innerText()).split(' ')[0].replaceAll('.','').replace(',','.');
+       const expected=Number(shown);assert.ok(Number.isFinite(expected), 'Een berekening bij '+slug+' '+mode);
+       if(mode===0)await page.screenshot({path:'test-results/math-'+slug+'-calc-'+engineName+'.png'});
+       await page.locator('[data-view="practice"]').click();
+       await page.locator('#practiceAnswer').waitFor({state:'visible'});
+       await page.locator('#practiceAnswer').fill(String(expected));
+       await page.locator('#checkPractice').click();
+       assert.match(await page.locator('#phaseFeedback').innerText(),/berekening klopt/i,'Uitkomst is controleerbaar '+slug+' '+mode);
+       if(mode===0)await page.screenshot({path:'test-results/math-'+slug+'-practice-'+engineName+'.png'});
+      }
+      await page.locator('#modeSelect').selectOption('0');
+      await page.waitForFunction(()=>document.body.dataset.deckView==='scene');
+     }
     }
 
     await page.locator('#scene').waitFor({state:'visible'});
