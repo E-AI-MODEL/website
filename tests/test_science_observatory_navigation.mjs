@@ -64,7 +64,7 @@ test('Websitegenerator gebruikt de bronbestanden en aparte observatoriarubriek',
 
 test('De publieke hoofdnavigatie heeft observatoria apart van hulpmiddelen', () => {
   const source = load('scripts/prepare_ui.py');
-  assert.match(source, /\('Observatoria', \[/);
+  assert.match(source, /\('Onderzoeken', \[/);
   assert.match(source, /\('Observatories', \[/);
   assert.match(source, /'Natuurkundeproeven'/);
   assert.match(source, /'Physics experiments \(Dutch\)'/);
