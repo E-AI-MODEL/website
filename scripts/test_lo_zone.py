@@ -91,7 +91,8 @@ def run():
         page.locator('[data-mode="defend"]').click()
         # De bediening opent pas op aanvraag, als een klein paneel boven de actiebalk.
         assert not page.locator(".side").is_visible()
-        page.locator('[data-lo-mobile-panel="player"]').click()
+        # In het portretontwerp zijn de extra speleropties bereikbaar via Meer.
+        page.locator(".lo-quick-more").click()
         assert page.locator("#prep").get_attribute("open") is not None
         assert not page.locator(".mobile-scrim").is_visible()
         assert page.locator(".side").is_visible()
