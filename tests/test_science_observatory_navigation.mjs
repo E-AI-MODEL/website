@@ -67,7 +67,7 @@ test('De publieke hoofdnavigatie heeft observatoria apart van hulpmiddelen', () 
   assert.match(source, /\('Observatoria', \[/);
   assert.match(source, /\('Observatories', \[/);
   assert.match(source, /'Natuurkundeproeven'/);
-  assert.match(source, /'Physics: 53 experiments \(Dutch\)'/);
+  assert.match(source, /'Physics experiments \(Dutch\)'/);
   const observatoria = source.slice(source.indexOf("('Observatoria', ["), source.indexOf("('Tools', [", source.indexOf("('Observatoria', [")));
   assert.match(observatoria, /Anatomie van de mens/);
   assert.doesNotMatch(observatoria, /EAI Prompt Framework/);
