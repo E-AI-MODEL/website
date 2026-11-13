@@ -3,8 +3,8 @@ on:
   pull_request:
     branches: [main]
     paths:
-      - 'tools/lo-aanvalslab/index.html'
-      - 'tools/lo-aanvalslab/onderbouwing/index.html'
+      - 'tools/sport-en-bewegen/index.html'
+      - 'tools/sport-en-bewegen/onderbouwing/index.html'
       - 'tests/test_lo_evidence_publish.py'
       - 'scripts/test_lo_easteregg.py'
       - '.github/workflows/lo-easteregg-verify.yml'
