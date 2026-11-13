@@ -21,5 +21,9 @@ jobs:
           python-version: '3.12'
       - name: Test de gegevensparser zonder netwerk
         run: python tools/lo-aanvalslab/calibratie/tactics/test_analyze_open_tactics.py
+      - name: Test ruimtemeting uit StatsBomb 360 zonder netwerk
+        run: python tools/lo-aanvalslab/calibratie/tactics/test_analyze_open_football.py
+      - name: Meet passlijnen uit echte voetbalmomenten
+        run: python tools/lo-aanvalslab/calibratie/tactics/analyze_open_football.py
       - name: Lees echte gelabelde handbalbezitten uit Zenodo
         run: python tools/lo-aanvalslab/calibratie/tactics/analyze_open_tactics.py
