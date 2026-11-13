@@ -13,12 +13,12 @@ const specs = runInNewContext(definitionScript + '\nlabSpecs');
 const calls = [];
 const graphics = new Proxy({}, { get(_object, method) { return (...args) => calls.push([method,...args]); } });
 
-function sample(id, change = {}, time = 0) {
+function sample(id, change = {}, time = 0, motion = null) {
   const spec = specs.find(s => s[0] === id);
   assert.ok(spec, 'Onbekende proef: ' + id);
   const defaults = Object.fromEntries(spec[3].map(v => [v[0], v[5]]));
   calls.length = 0;
-  const result = render(id, {...defaults, ...change}, time, graphics);
+  const result = render(id, {...defaults, ...change}, time, graphics, motion);
   return {result, graphicsCalls:[...calls]};
 }
 function readout(result, label) {
@@ -48,6 +48,28 @@ test('53 onderwerpen hebben getoonde waarden en eindige of niet-gedefinieerde gr
     }
   }
 });
+test('hefboom draait volgens het netto moment zonder tegenkracht automatisch aan te passen', () => {
+  const balanced = sample('lever').result;
+  near(quantity(balanced,'Moment linksom'),18);
+  near(quantity(balanced,'Moment rechtsom'),18);
+  near(quantity(balanced,'Netto moment'),0);
+  const leftHeavy = sample('lever',{F:9,F2:6,arm1:3,arm2:2}).result;
+  near(quantity(leftHeavy,'Moment linksom'),27);
+  near(quantity(leftHeavy,'Moment rechtsom'),12);
+  near(quantity(leftHeavy,'Netto moment'),-15);
+  const rightHeavy = sample('lever',{F:9,F2:6,arm1:1,arm2:4}).result;
+  near(quantity(rightHeavy,'Netto moment'),15);
+  const {result,graphicsCalls} = sample('lever',{F:9,F2:6,arm1:3,arm2:2},0,{angle:-.2,omega:0});
+  near(quantity(result,'Netto moment'),-15*Math.cos(.2),.03);
+  near(quantity(result,'Hellingshoek'),-.2*180/Math.PI,.06);
+  const bar = graphicsCalls.find(call=>call[0]==='line'&&call[6]===11);
+  assert.ok(bar,'De balk wordt zichtbaar getekend');
+  assert.ok(bar[2]>bar[4],'Bij een negatieve hoek ligt het linkereinde lager');
+  const physics = runInNewContext(modelScript + '\nleverPhysics');
+  near(physics({F:9,F2:6,arm1:3,arm2:2,I:12}).alpha,-1.25,.00001);
+  near(physics({F:9,F2:6,arm1:2,arm2:3,I:12}).alpha,0,.00001);
+});
+
 test('beweging, hydrostatica en optica gebruiken referentiewaarden', () => {
   near(quantity(sample('acceleration',{v0:3,a:2},2).result,'Positie'),10);
   near(quantity(sample('projectile',{v:20,angle:45,g:10}).result,'Bereik'),40);

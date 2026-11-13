@@ -405,20 +405,25 @@ try{
   assert.equal(pressed.arm1,leverStart.p.arm1,'Aanraken zonder slepen verandert de linker arm niet');
   await page.mouse.move(leverStart.x+leverStart.scale*(65+12),leverStart.y,{steps:10});
   await page.mouse.up();
+  await page.waitForFunction(()=>Math.abs(state.leverMotion?.angle||0)>.15,null,{timeout:5000});
   const leverEnd=await page.evaluate(()=>{
-   const p=state.p,pivot=p.pivot??510,F2=p.F*p.arm1/p.arm2;
-   return {pivot,arm1:p.arm1,arm2:p.arm2,left:pivot-65*p.arm1,right:pivot+65*p.arm2,F2,shown:state.current.readouts[1][1],graphCursor:graphSpecFor(state.id,p,state.t).cursor,numArm2:document.querySelector('#num-arm2').value,numArm1:document.querySelector('#num-arm1').value};
+   setPlaying(false);render(); // Vergelijk de berekening met het getoonde beeld op precies dezelfde hoek.
+   const p=state.p,pivot=p.pivot??510,forces=leverPhysics(p,state.leverMotion.angle,state.leverMotion.omega);
+   return {pivot,arm1:p.arm1,arm2:p.arm2,left:pivot-65*p.arm1,right:pivot+65*p.arm2,F2:p.F2,net:forces.net,angle:state.leverMotion.angle,shown:state.current.readouts.find(row=>row[0]==='Netto moment')?.[1],graphCursor:graphSpecFor(state.id,p,state.t).cursor,numArm2:document.querySelector('#num-arm2').value,numArm1:document.querySelector('#num-arm1').value};
   });
   assert(leverEnd.pivot>leverStart.pivot+40,'De leerling kan het driehoekje langs de balk schuiven');
   assert(leverEnd.arm1>leverStart.p.arm1&&leverEnd.arm2<leverStart.p.arm2,'Beide armen veranderen in de juiste richting');
   assert(Math.abs(leverEnd.left-leverStart.left)<.02&&Math.abs(leverEnd.right-leverStart.right)<.02,'Beide krachtpijlen blijven op hun eigen plek');
   assert(Math.abs(leverEnd.arm1+leverEnd.arm2-(leverStart.p.arm1+leverStart.p.arm2))<1e-7,'De totale afstand tussen de krachten blijft gelijk');
-  assert(Math.abs(Number(leverEnd.shown.split(' ')[0].replace(',','.'))-leverEnd.F2)<.02,'De nieuwe tegenkracht voldoet aan F1*r1 = F2*r2');
+  assert.equal(leverEnd.F2,leverStart.p.F2,'De rechterkracht mag bij verplaatsen van het steunpunt niet automatisch veranderen');
+  assert(leverEnd.net< -1,'Het grotere linkermoment levert een netto moment linksom op');
+  assert(leverEnd.angle< -.15,'De balk draait zichtbaar minstens 8 graden linksom bij groter linkermoment');
+  assert(Math.abs(Number(leverEnd.shown.split(' ')[0].replace(',','.'))-leverEnd.net)<.03,'De getoonde meting volgt het werkelijke netto moment');
   assert.equal(Number(leverEnd.numArm2),leverEnd.arm2,'De instelling voor rechter arm volgt het verslepen');
   assert.equal(Number(leverEnd.numArm1),leverEnd.arm1,'Ook de uitklapbare instelling voor linker arm volgt mee');
   assert.equal(leverEnd.graphCursor,leverEnd.arm2,'De grafiek gebruikt de verschoven rechter arm');
   assert(await page.locator('#insightTeacher').evaluate(el=>el.open),'De bronverdieping blijft open na slepen');
-  assert((await page.locator('#insightMathContent').innerText()).includes('F₂'),'De actuele tegenkracht blijft zichtbaar');
+  assert((await page.locator('#insightMathContent').innerText()).includes('ΣM'),'De actuele momentberekening blijft zichtbaar');
   await page.screenshot({path:'test-results/physics-lever-drag-'+engine.name()+'-'+width+'.png'});
   await page.locator('#resetBtn').click();
   const leverReset=await page.evaluate(()=>({pivot:state.p.pivot??510,arm1:state.p.arm1,arm2:state.p.arm2}));

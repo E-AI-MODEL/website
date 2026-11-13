@@ -114,8 +114,8 @@
       "id": "lever",
       "interaction": "versleepbaar",
       "browser_drag_test": true,
-      "physics_check": "F₁r₁ = F₂r₂",
-      "verfijning": "Controleer ook krachtarm en steunpuntafstand aan de uiteinden",
+      "physics_check": "Mnet = (F₂r₂ − F₁r₁)cos(θ); α = (Mnet − cω)/I",
+      "verfijning": "Controleer de draaiende balk, beide vaste krachten en de hoekbegrenzer; traagheid en demping zijn modelaannames",
       "inhoudelijk_gevalideerd": false,
       "bronstatus": "bronverwijzing_toegevoegd",
       "referentietest": "test_toegevoegd",
@@ -128,6 +128,10 @@
         {
           "titel": "OpenStax College Physics 2e · 9.5 Eenvoudige werktuigen",
           "url": "https://openstax.org/books/college-physics-2e/pages/9-5-simple-machines"
+        },
+        {
+          "titel": "OpenStax College Physics 2e · 10.3 Rotatiedynamica",
+          "url": "https://openstax.org/books/college-physics-2e/pages/10-3-dynamics-of-rotational-motion-rotational-inertia"
         }
       ],
       "beeldteststatus": "vakinhoudelijke_beeldtest_open",
