@@ -4,6 +4,9 @@ on:
     branches: [main]
     paths:
       - 'content/science-observatory/labs/natuurkunde.html'
+      - 'content/science-observatory/labs/wiskunde-a.html'
+      - 'content/science-observatory/labs/wiskunde-b.html'
+      - 'scripts/test_science_math_adaptive.mjs'
       - 'content/science-observatory/labs/schuine-worp.html'
       - 'scripts/test_science_fixed_workspace.mjs'
       - 'scripts/test_science_mobile_aim.mjs'
@@ -13,6 +16,9 @@ on:
     branches: [main]
     paths:
       - 'content/science-observatory/labs/natuurkunde.html'
+      - 'content/science-observatory/labs/wiskunde-a.html'
+      - 'content/science-observatory/labs/wiskunde-b.html'
+      - 'scripts/test_science_math_adaptive.mjs'
       - 'content/science-observatory/labs/schuine-worp.html'
       - 'scripts/test_science_fixed_workspace.mjs'
       - 'scripts/test_science_mobile_aim.mjs'
@@ -42,10 +48,16 @@ jobs:
         run: node scripts/test_science_fixed_workspace.mjs site-build webkit
       - name: Mobile shooting and scale
         run: node scripts/test_science_mobile_aim.mjs site-build webkit
+      - name: Mathematics viewport and navigation in Chromium
+        run: node scripts/test_science_math_adaptive.mjs site-build chromium
+      - name: Mathematics viewport and navigation in Safari
+        run: node scripts/test_science_math_adaptive.mjs site-build webkit
       - name: Compact studio and physics values
         run: node scripts/test_schuine_worp_studio.mjs site-build chromium
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: fixed-physics-laboratory-screenshots
-          path: test-results/physics-*.png
+          path: |
+            test-results/physics-*.png
+            test-results/math-*.png
