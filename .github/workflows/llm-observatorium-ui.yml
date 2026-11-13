@@ -1,0 +1,45 @@
+name: Test Hoe werkt een AI
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'content/llm-observatorium/**'
+      - 'scripts/test_llm_observatorium.mjs'
+      - 'tests/test_llm_observatorium_source.py'
+      - '.github/workflows/llm-observatorium-ui.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'content/llm-observatorium/**'
+      - 'scripts/test_llm_observatorium.mjs'
+      - 'tests/test_llm_observatorium_source.py'
+      - '.github/workflows/llm-observatorium-ui.yml'
+permissions:
+  contents: read
+jobs:
+  llm-browser:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 9
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: pip install beautifulsoup4
+      - name: Build LLM page from source
+        run: python scripts/build_site.py --sources content/legacy --out site-build
+      - run: python scripts/prepare_ui.py --root site-build
+      - name: Validate original model and updated visualization
+        run: python -m unittest discover -s tests -p 'test_llm_observatorium_source.py' -v
+      - run: npm install --no-save playwright@1.56.1
+      - run: npx playwright install --with-deps chromium
+      - name: Seven research views and token interaction
+        run: node scripts/test_llm_observatorium.mjs site-build
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: llm-observatorium-mobile-desktop
+          path: test-results/llm-*.png
