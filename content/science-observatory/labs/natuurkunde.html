@@ -428,7 +428,7 @@ body{display:flex;flex-direction:column}
  #graphPanel.with-math .graph-frame{grid-column:1;grid-row:2;height:100%;min-height:70px;margin:0}
  #graphPanel.with-math #graphMathDivider{grid-column:2;grid-row:2;display:block}
  #graphPanel.with-math .graph-math{grid-column:3;grid-row:2;border-left:0;min-height:0}
- .workspace .panel-splitter{display:block;min-width:13px;position:relative;cursor:col-resize;touch-action:none;outline-offset:-1px}
+ .workspace .panel-splitter{display:block;min-width:13px;position:relative;z-index:14;pointer-events:auto;cursor:col-resize;touch-action:none;outline-offset:-1px}
  .workspace .panel-splitter:before{content:'';position:absolute;left:6px;top:0;bottom:0;width:1px;background:#46687a;transition:background .12s}
  .workspace .panel-splitter:after{content:'';position:absolute;left:5px;top:50%;height:33px;width:3px;transform:translateY(-50%);border-radius:3px;background:#557a87;transition:background .12s}
  .workspace .panel-splitter:hover:before,.workspace .panel-splitter.dragging:before,.workspace .panel-splitter:focus-visible:before,.workspace .panel-splitter:hover:after,.workspace .panel-splitter.dragging:after,.workspace .panel-splitter:focus-visible:after{background:#79e6d9}
