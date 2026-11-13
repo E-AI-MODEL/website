@@ -4,7 +4,7 @@ from pathlib import Path
 from playwright.sync_api import sync_playwright
 
 ROOT=Path(__file__).resolve().parents[1]
-HTML=ROOT/"tools/lo-aanvalslab/index.html"
+HTML=ROOT/"tools/sport-en-bewegen/index.html"
 def assert_rules_unchanged(page,baseline):
     differences=[]
     for sport in range(4):
