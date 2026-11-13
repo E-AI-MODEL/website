@@ -1196,6 +1196,15 @@ function simulate(resume=null){
   }
   planAt=clock;
   planCache={pressure:leaderId,cover:coverId,marks,coverSpot,intercept};
+  // Schrijf de rol voor alle verdedigers tegelijk weg, ook zolang een speler
+  // nog in zijn reactietijd zit. Anders lijkt de oude en nieuwe drukzetter
+  // in hetzelfde frame allebei verantwoordelijk voor de bal.
+  for(const defender of defenders){
+   defender._defenceRole=intercept?.id===defender.id?'intercept':
+      defender.id===leaderId?'press':
+      defender.id===coverId?'cover':
+      marks[defender.id]?'mark':'shape';
+  }
   return planCache;
  }
  function targetOfDefence(p){
