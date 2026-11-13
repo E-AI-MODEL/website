@@ -2235,43 +2235,76 @@ window.__loTeacherStartTrial=trial;
 window.__loTeacherTest={getState:()=>({open:!sheet.hidden,enabled,formation,practice:!$('loTeacherPracticeTip').hidden}),open,close,start,trial,exit};
 })();
 </script><script>
-/* Dezelfde bediening als desktop, maar met een compact mobiel venster. */
+/* De speler blijft zien wat hij verandert; de bediening neemt geen veldruimte in. */
 (()=>{'use strict';
 const app=document.querySelector('.app');
 const mobile=window.matchMedia('(max-width:880px)');
-const panelButtons=[...document.querySelectorAll('[data-lo-mobile-panel]')];
-const title=document.getElementById('loMobilePanelTitle');
-const titles={goal:'Oefendoel',player:'Speleropdrachten',coach:'Coach en terugkijken'};
-function setPanel(kind=''){
- if(!mobile.matches)kind='';
- app.dataset.mobilePanel=kind;
- panelButtons.forEach(button=>button.setAttribute('aria-expanded',String(button.dataset.loMobilePanel===kind)));
+const buttons=[...document.querySelectorAll('[data-lo-mobile-panel]')];
+const titles={goal:'Doel',player:'Speler',coach:'Coach'};
+function setPanel(kind='player'){
+ if(!mobile.matches){delete app.dataset.mobilePanel;kind='';}
+ else if(!titles[kind])kind='player';
+ if(kind)app.dataset.mobilePanel=kind;
+ buttons.forEach(button=>{
+  const selected=button.dataset.loMobilePanel===kind;
+  button.setAttribute('aria-expanded',String(selected));
+  button.setAttribute('aria-pressed',String(selected));
+ });
  if(kind){
-  title.textContent=titles[kind];
-  if(kind==='goal')document.getElementById('loGoals').open=true;
-  if(kind==='player')document.getElementById('prep').open=true;
-  if(kind==='coach')document.getElementById('loCoachPanel').open=true;
-  document.querySelector('.side').scrollTop=0;
+  const panels={goal:'loGoals',player:'prep',coach:'loCoachPanel'};
+  document.getElementById(panels[kind]).open=true;
+  if(kind==='coach'&&document.getElementById('loMidCoach').hidden===false){
+   document.getElementById('loMidCoach').open=true;
+  }
  }
 }
-panelButtons.forEach(button=>button.addEventListener('click',()=>{
- const kind=button.dataset.loMobilePanel;
- setPanel(app.dataset.mobilePanel===kind?'':kind);
-}));
-document.getElementById('loMobileClose').addEventListener('click',()=>setPanel(''));
-document.getElementById('loMobileScrim').addEventListener('click',()=>setPanel(''));
-document.addEventListener('keydown',event=>{if(event.key==='Escape'&&app.dataset.mobilePanel){setPanel('')}});
-if(mobile.addEventListener)mobile.addEventListener('change',()=>setPanel(''));
+buttons.forEach(button=>button.addEventListener('click',()=>setPanel(button.dataset.loMobilePanel)));
+document.getElementById('loMobileClose')?.addEventListener('click',()=>setPanel('player'));
+if(mobile.addEventListener)mobile.addEventListener('change',()=>setPanel('player'));
 const after=document.getElementById('after');
+let wasFinished=!after.classList.contains('hide');
 new MutationObserver(()=>{
- if(mobile.matches&&!after.classList.contains('hide')&&!app.dataset.mobilePanel)setPanel('coach');
+ const finished=!after.classList.contains('hide');
+ if(mobile.matches&&finished&&!wasFinished)setPanel('coach');
+ wasFinished=finished;
 }).observe(after,{attributes:true,attributeFilter:['class']});
+for(const id of ['reset','new','again']){
+ document.getElementById(id)?.addEventListener('click',()=>{if(mobile.matches)setPanel('player')});
+}
 const liveTitle=document.getElementById('tasktitle'),liveText=document.getElementById('task');
 const previewTitle=document.getElementById('loMobileTaskTitle'),previewText=document.getElementById('loMobileTaskText');
-function syncTask(){previewTitle.textContent=liveTitle.textContent;previewText.textContent=liveText.textContent}
+function syncTask(){
+ previewTitle.textContent=liveTitle.textContent;
+ previewText.textContent=liveText.textContent;
+}
 new MutationObserver(syncTask).observe(liveTitle,{childList:true,subtree:true,characterData:true});
 new MutationObserver(syncTask).observe(liveText,{childList:true,subtree:true,characterData:true});
 syncTask();
-window.__loMobileUI={open:setPanel,close:()=>setPanel('')};
+// Gebruik dezelfde knophandeling als de desktopdoelen; er is geen tweede
+// verzameling doelen of afwijkende beslislogica op de telefoon.
+const chips=document.getElementById('loGoalChips');
+const select=document.getElementById('loMobileGoalSelect');
+function syncGoals(){
+ const all=[...chips.querySelectorAll('[data-lo-goal-key]')];
+ const data=all.map(b=>({key:b.dataset.loGoalKey,label:b.textContent.trim()}));
+ const signature=JSON.stringify(data);
+ if(select.dataset.signature!==signature){
+  select.replaceChildren(...data.map(({key,label})=>{
+   const option=document.createElement('option');option.value=key;option.textContent=label;return option;
+  }));
+  select.dataset.signature=signature;
+ }
+ const selected=all.find(b=>b.getAttribute('aria-pressed')==='true')||all.find(b=>b.classList.contains('active'))||all[0];
+ if(selected)select.value=selected.dataset.loGoalKey;
+}
+new MutationObserver(syncGoals).observe(chips,{childList:true,subtree:true,attributes:true,attributeFilter:['class','aria-pressed']});
+select.addEventListener('change',()=>{
+ const key=select.value;
+ const chip=[...chips.querySelectorAll('[data-lo-goal-key]')].find(b=>b.dataset.loGoalKey===key);
+ if(chip)chip.click();
+});
+syncGoals();
+setPanel('player');
+window.__loMobileUI={open:setPanel,close:()=>setPanel('player')};
 })();
 </script></body></html>
