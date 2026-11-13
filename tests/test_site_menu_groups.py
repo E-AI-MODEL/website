@@ -14,7 +14,7 @@ class PublicMenuTests(unittest.TestCase):
                 navigation_groups = groups(en)
                 self.assertEqual(len(navigation_groups), 7)
                 sections = {title: links for title, links in navigation_groups}
-                names = ("Observatories", "Tools") if en else ("Observatoria", "Tools")
+                names = ("Observatories", "Tools") if en else ("Onderzoeken", "Hulpmiddelen")
                 self.assertIn(names[0], sections)
                 labs = dict(sections[names[0]])
                 tools = dict(sections[names[1]])
@@ -36,10 +36,10 @@ class PublicMenuTests(unittest.TestCase):
                 menu = header.select(".eai-site-menu .eai-site-group")
                 self.assertEqual(len(primary), 6)
                 self.assertEqual(len(menu), 7)
-                main_observatoria = next(a for a in primary if a.get_text(strip=True) == ('Observatories' if en else 'Observatoria'))
+                main_observatoria = next(a for a in primary if a.get_text(strip=True) == ('Observatories' if en else 'Onderzoeken'))
                 self.assertEqual(main_observatoria['href'], ('/en/tools/' if en else '/nl/tools/') + '#observatoria')
                 headings = [item.summary.get_text(strip=True) for item in menu]
-                self.assertIn("Observatories" if en else "Observatoria", headings)
+                self.assertIn("Observatories" if en else "Onderzoeken", headings)
                 self.assertIn("About" if en else "Over", headings)
                 self.assertNotIn("About" if en else "Over", [a.get_text(strip=True) for a in primary])
                 for item in menu:

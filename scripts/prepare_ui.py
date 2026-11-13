@@ -39,6 +39,7 @@ def groups(en: bool):
                 ('LLM Observatory', '/tools/llm-observatorium/'),
                 
                 ('Galactic Observatory: guided version', '/tools/melkweg-lab/'),
+                ('Sport and movement', '/tools/sport-en-bewegen/'),
             ]),
             ('Tools', [
                 ('All tools', '/en/tools/'),
@@ -55,18 +56,19 @@ def groups(en: bool):
     return [
         ('Model', [('Het EAI-model', '/nl/model/'), ('Toepassingen', '/nl/toepassingen/')]),
         ('Onderwijs', [('Lessen en werkvormen', '/nl/onderwijs/'), ('Lesvoorbeelden', '/nl/toepassingen/')]),
-        ('Blog', [('Nieuwste artikelen', '/nl/blog/'), ('Publicaties en media', '/nl/publicaties/')]),
+        ('Publicaties', [('Artikelen', '/nl/blog/'), ('Alle publicaties', '/nl/publicaties/')]),
         ('Onderzoek', [('Onderzoek en bronnen', '/nl/onderzoek/'), ('Bronnenregister', '/bronnen/')]),
-        ('Observatoria', [
+        ('Onderzoeken', [
             ('Interactief onderzoeken', '/tools/science-observatory/'),
             ('Natuurkundeproeven', '/tools/science-observatory/labs/natuurkunde/'),
             ('Anatomie van de mens', '/tools/anatomie/'),
             ('LLM Observatorium', '/tools/llm-observatorium/'),
             
-            ('Galactisch Observatorium: met uitleg', '/tools/melkweg-lab/'),
+            ('Galactisch Observatorium met uitleg', '/tools/melkweg-lab/'),
+            ('Sport en bewegen', '/tools/sport-en-bewegen/'),
         ]),
-        ('Tools', [
-            ('Alle tools', '/nl/tools/'),
+        ('Hulpmiddelen', [
+            ('Alle hulpmiddelen', '/nl/tools/'),
             ('EAI Prompt Framework', '/tools/prompt-framework/'),
             ('WiHTML Docentstudio', '/tools/wihtml/'),
             ('EAIstudio', '/tools/eaistudio/'),
@@ -104,7 +106,7 @@ def navigation(soup: BeautifulSoup, path: str, en: bool) -> str:
         if title in ('About', 'Over'):
             continue
         target = entries[0][1]
-        if title in ('Observatoria', 'Observatories'):
+        if title in ('Onderzoeken', 'Observatories'):
             target = '/en/tools/#observatoria' if en else '/nl/tools/#observatoria'
         current = ' aria-current="page"' if any(path_here == canonical(item[1]) or (canonical(item[1]) not in ('/nl/', '/en/') and path_here.startswith(canonical(item[1]))) for item in entries) else ''
         primary.append(f'<a href="{html.escape(target, quote=True)}"{current}>{html.escape(title)}</a>')
@@ -121,7 +123,7 @@ def navigation(soup: BeautifulSoup, path: str, en: bool) -> str:
 
 def footer(en: bool) -> str:
     home = '/en/' if en else '/nl/'
-    links = [('Blog', '/en/publications/'), ('Research', '/en/research/'), ('Tools', '/en/tools/'), ('About', '/en/about/')] if en else [('Model', '/nl/model/'), ('Onderwijs', '/nl/onderwijs/'), ('Blog', '/nl/blog/'), ('Onderzoek', '/nl/onderzoek/'), ('Tools', '/nl/tools/'), ('Over', '/nl/over/')]
+    links = [('Blog', '/en/publications/'), ('Research', '/en/research/'), ('Tools', '/en/tools/'), ('About', '/en/about/')] if en else [('Model', '/nl/model/'), ('Onderwijs', '/nl/onderwijs/'), ('Publicaties', '/nl/blog/'), ('Onderzoek', '/nl/onderzoek/'), ('Hulpmiddelen', '/nl/tools/'), ('Over', '/nl/over/')]
     rendered = ''.join(f'<a href="{u}">{t}</a>' for t, u in links)
     rendered += '<a href="https://nl.linkedin.com/in/hans-visser-92531a105" target="_blank" rel="noopener noreferrer">LinkedIn</a>'
     return f'<footer class="eai-site-footer"><div class="eai-site-footer-inner"><div><a class="eai-site-brand" href="{home}"><img src="/assets/eai-logo.svg" width="32" height="32" alt=""><span>EAI</span></a><p>Hans Visser</p></div><nav aria-label="Footer">{rendered}</nav></div></footer>'

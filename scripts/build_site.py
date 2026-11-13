@@ -2063,26 +2063,27 @@ def esc(value: str) -> str:
 
 NAV_GROUPS = [
     ("toepassingen", "Toepassingen", [
-        ("/toepassingen/", "Overzicht toepassingen"),
-        ("/praktijk/", "Praktijk & demonstrators"),
+        ("/toepassingen/", "Alle toepassingen"),
+        ("/praktijk/", "Voorbeelden uit de praktijk"),
     ]),
     ("onderwijs", "Onderwijs", [
-        ("/onderwijs/", "Overzicht onderwijs"),
+        ("/onderwijs/", "Alle onderwerpen"),
         ("/werkvormen/", "EAI-werkvormen"),
         ("/taalwerkvormen/", "TAALwerkvormen"),
         ("/werkvormen/#didactisch-model", "Didactische modellen"),
     ]),
-    ("observatoria", "Observatoria", [
-        ("/tools/science-observatory/", "Science Observatory"),
-        ("/tools/science-observatory/labs/natuurkunde/", "Natuurkunde · 53 proefmodellen"),
-        ("/tools/anatomie/", "Anatomisch Observatorium"),
-        ("/tools/anatomie/labs/hartslag/", "Hartslaglab · hartcyclus"),
+    ("observatoria", "Onderzoeken", [
+        ("/tools/science-observatory/", "Interactief onderzoeken"),
+        ("/tools/science-observatory/labs/natuurkunde/", "Natuurkunde"),
+        ("/tools/anatomie/", "Anatomie van de mens"),
+        ("/tools/anatomie/labs/hartslag/", "Hart en bloedsomloop"),
         ("/tools/llm-observatorium/", "LLM Observatorium"),
         ("/tools/abyss/", "ABYSS"),
-        ("/tools/melkweg-lab/", "Melkweg Lab"),
+        ("/tools/melkweg-lab/", "De Melkweg met uitleg"),
+        ("/tools/sport-en-bewegen/", "Sport en bewegen"),
     ]),
-    ("tools", "Tools", [
-        ("/tools/", "Alle tools"),
+    ("tools", "Hulpmiddelen", [
+        ("/tools/", "Alle hulpmiddelen"),
         ("/tools/wihtml/", "WiHTML Docentstudio"),
         ("/tools/prompt-framework/", "EAI Prompt Framework"),
         ("/model-monitor/", "AI Model Monitor"),
@@ -2092,8 +2093,8 @@ NAV_GROUPS = [
         ("/kennis/", "Overzicht kennis"),
         ("/onderbouwing/", "Onderbouwing"),
         ("/bronnen/", "Bronnen"),
-        ("/publicaties/", "Publicaties & media"),
-        ("/tools/", "Tools"),
+        ("/publicaties/", "Publicaties"),
+        ("/tools/", "Hulpmiddelen"),
         ("/twee-pijlers/", "Twee pijlers"),
     ]),
 ]
@@ -2609,8 +2610,8 @@ def build(sources: Path, out: Path) -> None:
     write(out, "publicaties/index.html", doc("Publicaties", pubs_body, "/publicaties/", "publicaties", "Artikelen en analyses van EAI over AI, leren en professioneel handelen."))
     write(out, "eai-blog/index.html", redirect("/publicaties/"))
 
-    tools_body = f'''<main><section class="page-hero"><div class="wrap"><div class="eyebrow">Tools</div><h1>Kies een hulpmiddel bij je vraag.</h1><p class="lede">Bepaal wat je wilt bereiken en welke stap, keuze of verantwoordelijkheid bij de mens moet blijven. Met deze tools kun je de taakverdeling onderzoeken en de AI-instructie uitwerken.</p></div></section>
-<section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Begrijpen & analyseren</div><div><h2>Wat gebeurt er met het denkwerk?</h2><p>Gebruik deze toepassingen om een bestaande taak of AI-interactie vanuit het leerproces te bekijken.</p></div></div><div class="tool-grid"><article class="tool-card"><div class="kicker">Analyse</div><h2>EAI Toolanalyse</h2><p>Bekijk een AI-toepassing op leerwaarde en didactische invloed. Gebruik de uitkomst als start van een professionele afweging, niet als automatisch oordeel.</p><a href="https://subtle-churros-4d44d5.netlify.app" target="_blank" rel="noopener">Open EAI Toolanalyse ↗</a></article><article class="tool-card"><div class="kicker">Interactief</div><h2>Act of Learning Game</h2><p>Verken de vraag wie in een concrete situatie het relevante denkwerk uitvoert.</p><a href="https://rainbow-tarsier-a88e9b.netlify.app/" target="_blank" rel="noopener">Open Act of Learning Game ↗</a></article></div></div></section>
+    tools_body = f'''<main><section class="page-hero"><div class="wrap"><div class="eyebrow">Hulpmiddelen</div><h1>Wat wil je onderzoeken of maken?</h1><p class="lede">Bepaal wat je wilt bereiken en welke stap, keuze of verantwoordelijkheid bij de mens moet blijven. Met deze tools kun je de taakverdeling onderzoeken en de AI-instructie uitwerken.</p></div></section>
+<section class="section"><div class="wrap"><div class="section-head"><div class="kicker">AI beoordelen</div><div><h2>Wat gebeurt er met het denkwerk?</h2><p>Gebruik deze toepassingen om een bestaande taak of AI-interactie vanuit het leerproces te bekijken.</p></div></div><div class="tool-grid"><article class="tool-card"><div class="kicker">Analyse</div><h2>EAI Toolanalyse</h2><p>Bekijk een AI-toepassing op leerwaarde en didactische invloed. Gebruik de uitkomst als start van een professionele afweging, niet als automatisch oordeel.</p><a href="https://subtle-churros-4d44d5.netlify.app" target="_blank" rel="noopener">Open EAI Toolanalyse ↗</a></article><article class="tool-card"><div class="kicker">Interactief</div><h2>Act of Learning Game</h2><p>Verken de vraag wie in een concrete situatie het relevante denkwerk uitvoert.</p><a href="https://rainbow-tarsier-a88e9b.netlify.app/" target="_blank" rel="noopener">Open Act of Learning Game ↗</a></article></div></div></section>
 <section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Ontwerpen</div><div><h2>Wat wil je dat AI hier doet?</h2><p>Leg vast welke hulp AI mag geven, wat het moet overlaten en hoe je de uitkomst controleert.</p></div></div><div class="tool-grid"><article class="tool-card"><div class="kicker">3D · Taalmodellen</div><h2>LLM Observatorium</h2><p>Onderzoek hoe taalmodellen werken. Volg tokens, experts en attention in 3D. Verander zelf de instellingen voor context, generatie, redenering en tokenkosten. De expertroutes zijn rekenvoorbeelden.</p><a href="/tools/llm-observatorium/">Open LLM Observatorium →</a></article><article class="tool-card"><div class="kicker">Vanaf 10 jaar · Ontdekkend leren</div><h2>Galactisch Observatorium: met uitleg</h2><p>Draai de Melkweg, reis naar de planeten en onderzoek zelf wat er gebeurt. Klik, schuif en probeer. Zonder account.</p><a href="/tools/melkweg-lab/">Ontdek de Melkweg met uitleg →</a></article><article class="tool-card"><div class="kicker">3D · Menselijk lichaam</div><h2>Anatomie van de mens</h2><p>Draai het menselijk lichaam en onderzoek botten, spieren, organen, bloedvaten en zenuwen in hun onderlinge positie. De modellen zijn afkomstig uit BodyParts3D en Z-Anatomy.</p><a href="/tools/anatomie/">Onderzoek het menselijk lichaam →</a><a href="/tools/anatomie/labs/hartslag/">Onderzoek een bewegende hartslag →</a></article><article class="tool-card"><div class="kicker">Vwo · Onderzoeken</div><h2>Interactief onderzoeken</h2><p>Verken natuurkunde en wiskunde A/B met interactieve modellen, grafieken en onderzoeksvragen. Je vindt er natuurkunde, wiskunde, de Melkweg, anatomie en meer.</p><a href="/tools/science-observatory/">Bekijk alle onderzoeken →</a></article><article class="tool-card"><div class="kicker">Wiskunde · Les maken</div><h2>WiHTML Docentstudio</h2><p>Maak je eigen interactieve wiskundeles. Kies wat leerlingen zelf doen, ontwerp een HTML-sjabloon en download een presentatie die je ook zonder deze website kunt gebruiken.</p><a href="/tools/wihtml/">Maak een HTML-les →</a></article><article class="tool-card tool-card--featured"><div class="kicker">EAI · Instructieontwerp</div><h2>EAI Prompt Framework</h2><p>Leg doel, centrale menselijke stap, toegestane AI-hulp, grenzen, bronnen en een eventuele zelfstandige herneming vast. De tool bouwt daar direct een complete AI-instructie van. Voor onderwijs én andere professionele contexten.</p><a href="/tools/prompt-framework/">Gebruik EAI Prompt Framework →</a></article><article class="tool-card"><div class="kicker">Taal & systeem</div><h2>Prompt Builder · Sturen met taal</h2><p>Bekijk hoe de woorden in een prompt, de meegegeven informatie en de grenzen rond het systeem samen bepalen wat AI uiteindelijk doet. In de tool vind je ook uitleg van de technische termen.</p><a href="https://eai-prompt.lovable.app/" target="_blank" rel="noopener">Open Prompt Builder →</a></article><article class="tool-card"><div class="kicker">Lesontwerp</div><h2>EAI What-If Machine</h2><p>Verken hoe een andere keuze in taak of AI-inzet het ontwerp verandert.</p><a href="https://what-if-lesson-designer.lovable.app/" target="_blank" rel="noopener">Open EAI What-If Machine ↗</a></article></div></div></section>
 <section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Verdiepen</div><div><h2>Werk verder vanuit de publicaties.</h2><p>Deze toolkits horen bij eerdere EAI-publicaties en blijven bruikbaar als verdieping.</p></div></div><div class="tool-grid"><article class="tool-card"><div class="kicker">Toolkit</div><h2>Beyond Explainability</h2><p>Werk praktisch met de ideeën achter Didactic Controllability en Task Density.</p><a href="/tools/beyond-explainability/">Open Beyond Explainability →</a></article><article class="tool-card"><div class="kicker">Toolkit · English</div><h2>The Act of Learning</h2><p>Engelstalige toolkit bij de publicatie over Reverse Scaffolding en zichtbaar leren.</p><a href="https://effortless-fenglisu-71cd58.netlify.app/" target="_blank" rel="noopener">Open The Act of Learning toolkit ↗</a></article></div></div></section></main>'''
     tools_body = tools_body.replace("</main>", '<section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Maken en bekijken</div><div><h2>Werk met je eigen materiaal.</h2><p>Maak een les of presentatie, of bekijk de opbouw van een repository.</p></div></div><div class="tool-grid"><article class="tool-card"><div class="kicker">Presentaties</div><h2>EAIstudio</h2><p>Bouw dia’s met tekst, beeld, animatie en interactie. Pas de huisstijl aan en bepaal wat vanzelf gaat en wat op jouw klik wacht. Je kunt de presentatie als zelfstandige HTML downloaden.</p><a href="/tools/eaistudio/">Open EAIstudio →</a></article><article class="tool-card"><div class="kicker">HTML delen</div><h2>HTML-galerij</h2><p>Deel een eigen interactieve HTML-pagina. Vul je naam en de titel in, upload het bestand en laat anderen ermee werken.</p><a href="/tools/html-galerij/">Bekijk de HTML-galerij →</a></article><article class="tool-card"><div class="kicker">Software · Openbare demonstratie</div><h2>EAIwork</h2><p>Bekijk de productielijn, opdrachten, workers en controlepunten in een interactieve demonstratie. Echte uitvoering draait alleen met een eigen lokale EAIwork-server.</p><a href="/tools/eaiwork/">Open EAIwork-dashboard →</a></article><article class="tool-card"><div class="kicker">Code bekijken</div><h2>EAImesh</h2><p>EAImesh leest een openbare GitHub-repository en maakt de bestanden en hun samenhang zichtbaar. Kies wat je wilt bekijken en hoeveel detail je nodig hebt.</p><a href="/tools/eaimesh/">Open EAImesh →</a></article></div></div></section>' + "</main>")
@@ -2636,16 +2637,24 @@ def build(sources: Path, out: Path) -> None:
     observatory = BeautifulSoup(
         '<section class="section" id="observatoria"><div class="wrap">'
         '<div class="section-head"><div class="kicker">Interactief onderzoeken</div>'
-        '<div><h2>Observatoria en simulaties</h2>'
+        '<div><h2>Onderzoeken en uitproberen</h2>'
         '<p>Onderzoek zelf natuurkunde, wiskunde, de Melkweg, anatomie en taalmodellen.</p></div></div>'
         '<div class="tool-grid"></div></div></section>', "html.parser"
     ).section
     grid = observatory.select_one(".tool-grid")
     for title in ("Interactief onderzoeken", "Anatomie van de mens", "LLM Observatorium", "Galactisch Observatorium: met uitleg"):
         grid.append(next(card for card in observe_cards if card.h2.get_text(" ", strip=True) == title))
+    sport_card = BeautifulSoup(
+        '<article class="tool-card"><div class="kicker">Lichamelijke opvoeding</div>'
+        '<h2>Sport en bewegen</h2>'
+        '<p>Verplaats spelers, kies een tactiek en vergelijk het spelverloop bij aanvallen en verdedigen.</p>'
+        '<a href="/tools/sport-en-bewegen/">Open Sport en bewegen →</a></article>',
+        "html.parser"
+    ).article
+    grid.append(sport_card)
     design_section.insert_before(observatory)
     tools_body = str(tools_soup)
-    write(out, "tools/index.html", doc("Tools", tools_body, "/tools/", "tools", "EAI-tools voor analyse, ontwerp en mens-AI-taakverdeling."))
+    write(out, "tools/index.html", doc("Hulpmiddelen", tools_body, "/tools/", "tools", "EAI-tools voor analyse, ontwerp en mens-AI-taakverdeling."))
     # Science Observatory: alleen de geselecteerde proefmodellen publiceren.
     # tools/ is uitvoer en wordt telkens opnieuw opgebouwd.
     science_source = Path(__file__).resolve().parent.parent / "content" / "science-observatory"
@@ -2669,19 +2678,28 @@ def build(sources: Path, out: Path) -> None:
         raise FileNotFoundError(f"Melkweg Lab-bron ontbreekt: {melkweg_lab_source}")
     write(out, "tools/melkweg-lab/index.html", melkweg_lab_source.read_text(encoding="utf-8"))
 
-    # LO Aanvalslab: zelfstandige multiplayer-HTML, behouden na iedere volledige rebuild.
-    lo_lab_source = Path(__file__).resolve().parent.parent / "tools" / "lo-aanvalslab" / "index.html"
+    # Sport en bewegen: nieuwe publieke route, met oude links die blijven doorverwijzen.
+    lo_source_dir = Path(__file__).resolve().parent.parent / "tools" / "sport-en-bewegen"
+    lo_lab_source = lo_source_dir / "index.html"
     if not lo_lab_source.is_file():
-        raise FileNotFoundError(f"LO Aanvalslab-bron ontbreekt: {lo_lab_source}")
-    write(out, "tools/lo-aanvalslab/index.html", lo_lab_source.read_text(encoding="utf-8"))
+        raise FileNotFoundError(f"Sport en bewegen-bron ontbreekt: {lo_lab_source}")
+    write(out, "tools/sport-en-bewegen/index.html", lo_lab_source.read_text(encoding="utf-8"))
+    lo_evidence = lo_source_dir / "onderbouwing" / "index.html"
+    if not lo_evidence.is_file():
+        raise FileNotFoundError(f"Sport en bewegen-onderbouwing ontbreekt: {lo_evidence}")
+    write(out, "tools/sport-en-bewegen/onderbouwing/index.html", lo_evidence.read_text(encoding="utf-8"))
 
-    # LO Aanvalslab: bewaar kalibratie en bronverwijzing bij elke herbouw.
+    # Behoud oude URL's en bestaande externe links.
+    for legacy_page in ("index.html", "onderbouwing/index.html"):
+        legacy = lo_source_dir.parent / "lo-aanvalslab" / legacy_page
+        write(out, f"tools/lo-aanvalslab/{legacy_page}", legacy.read_text(encoding="utf-8"))
+
+    # Onderzoeksbestanden behouden hun bestaande repo-pad.
     for source_name in ("README.md", "extract_tracking.py", "tracking_metrics.json"):
-        evidence_path = lo_lab_source.parent / "calibratie" / "v13" / source_name
+        evidence_path = lo_source_dir.parent / "lo-aanvalslab" / "calibratie" / "v13" / source_name
         if not evidence_path.is_file():
             raise FileNotFoundError(f"LO v13 meetbestand ontbreekt: {evidence_path}")
         write(out, f"tools/lo-aanvalslab/calibratie/v13/{source_name}", evidence_path.read_text(encoding="utf-8"))
-
 
 
     # LLM Observatorium: zelfstandige interactieve HTML, ongewijzigd publiceren.
@@ -2765,7 +2783,7 @@ def build(sources: Path, out: Path) -> None:
     not_found = '<main><section class="page-hero"><div class="wrap"><div class="eyebrow">404</div><h1>Deze pagina is er niet meer.</h1><p class="lede">De oude Google-site bevatte ook een paar dode links. Ga terug naar de publicaties of tools.</p><div class="button-row"><a class="button" href="/publicaties/">Publicaties</a><a class="button secondary" href="/tools/">Tools</a></div></div></section></main>'
     write(out, "404.html", doc("Niet gevonden", not_found, "/404.html"))
     write(out, "robots.txt", "User-agent: *\nAllow: /\nSitemap: https://eaimodel.nl/sitemap.xml\n")
-    urls = ["/tools/eaimesh/", "/tools/eaimesh/start/", "/tools/eaistudio/", "/tools/eaistudio/studio/", "/", "/toepassingen/", "/toepassingen/onderwijs-ai/", "/onderwijs/", "/kennis/", "/twee-pijlers/", "/workshop-ai/", "/werkvormen/", "/taalwerkvormen/", "/verdieping/", "/onderbouwing/", "/bronnen/", "/praktijk/", "/publicaties/", "/publicaties/de-vraag-die-we-vergeten/", "/tools/", "/tools/prompt-framework/", "/tools/abyss/", "/tools/melkweg-lab/", "/tools/lo-aanvalslab/", "/tools/llm-observatorium/", "/tools/science-observatory/", "/tools/anatomie/", "/tools/anatomie/labs/hartslag/", "/tools/science-observatory/labs/melkweg/", "/tools/science-observatory/labs/gravitatie-banen/", "/tools/science-observatory/labs/natuurkunde/", "/tools/science-observatory/labs/wiskunde-a/", "/tools/science-observatory/labs/wiskunde-b/", "/tools/eaiwork/", "/tools/html-galerij/", "/tools/wihtml/", "/tools/wihtml/bibliotheek/", "/tools/wihtml/studio/", "/tools/wihtml/voorbeeld/", "/model-monitor/", "/over/", "/eaa-model/", "/onderwijsin/", "/onderwijsin/3d/"] + [f"/werkvormen/{item['slug']}/" for item in workforms] + [f"/publicaties/{slug}/" for slug, _, _, _ in PUBLICATIONS] + ["/tools/beyond-explainability/"]
+    urls = ["/tools/eaimesh/", "/tools/eaimesh/start/", "/tools/eaistudio/", "/tools/eaistudio/studio/", "/", "/toepassingen/", "/toepassingen/onderwijs-ai/", "/onderwijs/", "/kennis/", "/twee-pijlers/", "/workshop-ai/", "/werkvormen/", "/taalwerkvormen/", "/verdieping/", "/onderbouwing/", "/bronnen/", "/praktijk/", "/publicaties/", "/publicaties/de-vraag-die-we-vergeten/", "/tools/", "/tools/prompt-framework/", "/tools/abyss/", "/tools/melkweg-lab/", "/tools/sport-en-bewegen/", "/tools/llm-observatorium/", "/tools/science-observatory/", "/tools/anatomie/", "/tools/anatomie/labs/hartslag/", "/tools/science-observatory/labs/melkweg/", "/tools/science-observatory/labs/gravitatie-banen/", "/tools/science-observatory/labs/natuurkunde/", "/tools/science-observatory/labs/wiskunde-a/", "/tools/science-observatory/labs/wiskunde-b/", "/tools/eaiwork/", "/tools/html-galerij/", "/tools/wihtml/", "/tools/wihtml/bibliotheek/", "/tools/wihtml/studio/", "/tools/wihtml/voorbeeld/", "/model-monitor/", "/over/", "/eaa-model/", "/onderwijsin/", "/onderwijsin/3d/"] + [f"/werkvormen/{item['slug']}/" for item in workforms] + [f"/publicaties/{slug}/" for slug, _, _, _ in PUBLICATIONS] + ["/tools/beyond-explainability/"]
     # The bilingual redesign is maintained in nl/ and en/. Preserve it during
     # the legacy article/tool build, including its current home and assets.
     repo_root = Path(__file__).resolve().parent.parent

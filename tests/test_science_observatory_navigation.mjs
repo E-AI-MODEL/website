@@ -13,7 +13,7 @@ test('Startpagina groepeert onderzoeksruimtes in zes herkenbare onderwerpen', ()
   assert.match(html, /\/tools\/melkweg-lab\//);
   assert.match(html, /\/tools\/science-observatory\/labs\/melkweg\//);
   assert.match(html, /\/tools\/anatomie\/labs\/hartslag\//);
-  assert.match(html, /\/tools\/lo-aanvalslab\//);
+  assert.match(html, /\/tools\/sport-en-bewegen\//);
   assert.doesNotMatch(html, /ABYSS|href="\/tools\/abyss\//);
   assert.doesNotMatch(html, /53 proeven|NF \/ 01|Nieuwe proefversie/);
   assert.match(html, /niet alle natuurkundige modellen/i);
@@ -59,19 +59,19 @@ test('Websitegenerator gebruikt de bronbestanden en aparte observatoriarubriek',
   const script = load('scripts/build_site.py');
   assert.match(script, /science_source \/ "labs" \/ \(slug \+ "\.html"\)/);
   assert.match(script, /observe_names = \{/);
-  assert.match(script, /"observatoria", "Observatoria"/);
+  assert.match(script, /"observatoria", "Onderzoeken"/);
 });
 
 test('De publieke hoofdnavigatie heeft observatoria apart van hulpmiddelen', () => {
   const source = load('scripts/prepare_ui.py');
-  assert.match(source, /\('Observatoria', \[/);
+  assert.match(source, /\('Onderzoeken', \[/);
   assert.match(source, /\('Observatories', \[/);
   assert.match(source, /'Natuurkundeproeven'/);
   assert.match(source, /'Physics experiments \(Dutch\)'/);
-  const observatoria = source.slice(source.indexOf("('Observatoria', ["), source.indexOf("('Tools', [", source.indexOf("('Observatoria', [")));
+  const observatoria = source.slice(source.indexOf("('Onderzoeken', ["), source.indexOf("('Hulpmiddelen', [", source.indexOf("('Onderzoeken', [")));
   assert.match(observatoria, /Anatomie van de mens/);
   assert.doesNotMatch(observatoria, /EAI Prompt Framework/);
-  const tools = source.slice(source.indexOf("('Tools', [", source.indexOf("('Observatoria', [")), source.indexOf("('Over', [", source.indexOf("('Observatoria', [")));
+  const tools = source.slice(source.indexOf("('Hulpmiddelen', [", source.indexOf("('Onderzoeken', [")), source.indexOf("('Over', [", source.indexOf("('Onderzoeken', [")));
   assert.match(tools, /EAI Prompt Framework/);
   assert.doesNotMatch(tools, /Anatomie van de mens/);
   assert.equal((source.match(/'\/tools\/anatomie\//g) || []).length, 2);
