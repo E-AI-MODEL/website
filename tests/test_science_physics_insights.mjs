@@ -33,13 +33,17 @@ test('53 proeven blijven aanwezig en 15 krijgen een live berekening',()=>{
   }
  }
 });
-test('hefboom: ingevulde kracht is dezelfde als de gemeten tegenkracht',()=>{
- for(const p of [{F:9,arm1:2,arm2:3},{F:14,arm1:3,arm2:1.5}]){
-  const r=modelAt('lever',p),v=p.F*p.arm1/p.arm2;
-  close(number(r.insight.answer),v);close(measured(r,'Tegenkracht rechts'),v);
-  close(r.insight.bars[0][1],r.insight.bars[1][1],1e-8);
+test('hefboom: metingen volgen beide vaste krachten en het netto moment',()=>{
+ for(const p of [{F:9,F2:6,arm1:2,arm2:3},{F:14,F2:6,arm1:3,arm2:1.5}]){
+  const r=modelAt('lever',p),left=p.F*p.arm1,right=p.F2*p.arm2,net=right-left;
+  close(number(r.insight.answer),net);
+  close(measured(r,'Netto moment'),net);
+  close(r.insight.bars[0][1],left,1e-8);
+  close(r.insight.bars[1][1],right,1e-8);
+  close(measured(r,'F₂ voor evenwicht'),left/p.arm2);
  }
 });
+
 test('botsing: energiebalken volgen impuls en restitutie',()=>{
  for(const e of [0,.5,1]){
   const r=modelAt('collision',{m1:3,m2:5,e});
@@ -101,7 +105,7 @@ test('alle 53 proeven bieden een eigen berekening en passende standaardweergave'
 });
 test('uitkomsten veranderen samen met de ingestelde proefwaarden',()=>{
  const varied=[
-  ['lever',{F:15,arm1:3.5,arm2:1.5},'Tegenkracht rechts'],
+  ['lever',{F:15,F2:6,arm1:3.5,arm2:1.5},'Netto moment'],
   ['ohm',{U:18,R:6},'Stroom'],
   ['newton2',{F:24,m:3},'Versnelling'],
   ['doppler',{f:500,vs:40,v:340},'Voor de bron'],
