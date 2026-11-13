@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Onderzoek en onderwijstools · EAI LLMscan</title><meta name="description" content="Actueel AI-onderwijsonderzoek, onderwijsgerichte AI-toepassingen en de grens van het bewijs.">
+<link rel="canonical" href="https://eaimodel.nl/nl/llmscan/onderzoek/">
+<link rel="stylesheet" href="../site.css">
+<style>
+body{background:#f5f7f8}.research-wrap{max-width:1150px;margin:auto;padding:26px 20px 70px}.research-top{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:28px}.research-top a{color:#234f61;font-weight:700}.research-title{font-size:clamp(2.1rem,5vw,3.9rem);line-height:1.09;letter-spacing:-.045em;margin:16px 0 12px}.research-intro{max-width:66ch;font-size:1.05rem;line-height:1.65;color:#56687a}.research-tabs{display:flex;flex-wrap:wrap;gap:10px;margin:28px 0}.research-tabs button{font:inherit;border:1px solid #cad8df;background:white;border-radius:12px;padding:11px 16px;font-weight:750;cursor:pointer}.research-tabs button[aria-pressed=true]{background:#173446;color:white;border-color:#173446}.research-search{width:100%;font:inherit;font-size:1rem;border:1px solid #bacbd6;border-radius:12px;padding:14px 15px;margin-bottom:18px;background:white}.research-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.research-card{background:white;border:1px solid #d7e0e7;border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:10px}.research-card h2{font-size:1.15rem;margin:0;line-height:1.38}.research-card p{font-size:.96rem;line-height:1.58;margin:0;color:#475c6d}.research-card .research-meta{font-size:.77rem;letter-spacing:.04em;color:#667a89}.research-card a{color:#1c5368;font-weight:700;text-decoration:underline;text-underline-offset:3px}.research-card .research-boundary{border-top:1px solid #e4e9ed;padding-top:11px;margin-top:auto}.research-count{margin:0 0 18px;color:#65798a}.research-note{border-top:1px solid #d7e0e7;margin-top:40px;padding-top:20px;max-width:75ch;line-height:1.65;color:#4b6073}@media(max-width:680px){.research-grid{grid-template-columns:1fr}.research-wrap{padding:16px 14px 50px}.research-top{align-items:flex-start;flex-wrap:wrap}.research-card{padding:16px}}
+</style></head><body><main class="research-wrap" id="main">
+<nav class="research-top" aria-label="Terug en rubrieken"><a href="../">← EAI LLMscan</a><a href="https://eaimodel.nl/nl/">EAI-model.nl</a></nav>
+<div class="eyebrow">EAI LLMscan · bronbeoordelingen</div><h1 class="research-title">Onderzoek en onderwijstools</h1>
+<p class="research-intro">Wat laten onderzoeken over leren met AI zien? En wat doen onderwijsgerichte AI-toepassingen precies? Je vindt hier resultaten, beperkingen en verwijzingen naar de oorspronkelijke bronnen.</p>
+<div class="research-tabs" role="group" aria-label="Wat wil je bekijken?">
+<button type="button" id="show-studies" aria-pressed="true">Onderzoek</button>
+<button type="button" id="show-tools" aria-pressed="false">Onderwijstools</button>
+</div><label for="research-filter">Zoeken op onderwerp, titel of aanbieder</label>
+<input id="research-filter" class="research-search" type="search" placeholder="Zoek in de beoordelingen" autocomplete="off">
+<p class="research-count" id="research-count" aria-live="polite"></p>
+<div class="research-grid" id="research-list"></div>
+<p class="research-note">Broncontrole: 13 november 2026. Een nieuw dossier krijgt pas het label bronanalyse of verdiepte bronanalyse nadat de bijbehorende bronnen daarvoor zijn gecontroleerd. Beschreven productfuncties zijn geen bewijs van leereffect. EAI Core 0.5.4 helpt de rolverdeling te beoordelen, maar is geen zelfstandig effectonderzoek.</p>
+</main><script src="../updates.js"></script><script>
+(()=>{'use strict';const data=window.__LLMSCAN_UPDATES;const list=document.getElementById('research-list'),search=document.getElementById('research-filter'),count=document.getElementById('research-count');let mode='studies';
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const safeUrl=s=>/^https:\/\//.test(s)?s:'#';
+function render(){const arr=(mode==='studies'?data.studies:data.edu).filter(x=>JSON.stringify(x).toLocaleLowerCase('nl').includes(search.value.toLocaleLowerCase('nl').trim()));count.textContent=arr.length+' '+(mode==='studies'?'onderzoeken':'tooldossiers')+' gevonden';
+list.innerHTML=arr.map(x=>mode==='studies'?'<article class="research-card"><div class="research-meta">'+esc(x.type)+' · '+esc(x.date)+' · '+esc(x.subject)+'</div><h2>'+esc(x.author)+'</h2><p>'+esc(x.summary)+'</p><p class="research-boundary"><a href="'+esc(safeUrl(x.url))+'" target="_blank" rel="noopener noreferrer">Bekijk de oorspronkelijke bron ↗</a></p></article>':'<article class="research-card"><div class="research-meta">Functiescan · broncontrole '+esc(data.checked)+'</div><h2>'+esc(x.name)+'</h2><p>'+esc(x.description)+'</p><p class="research-boundary">'+esc(x.evidence)+'</p><a href="'+esc(safeUrl(x.url))+'" target="_blank" rel="noopener noreferrer">Bekijk de toepassing ↗</a></article>').join('')||'<p>Geen treffers. Probeer een andere zoekterm.</p>'}
+for(const [id,k] of [['show-studies','studies'],['show-tools','edu']])document.getElementById(id).addEventListener('click',()=>{mode=k;for(const [id2,key] of [['show-studies','studies'],['show-tools','edu']])document.getElementById(id2).setAttribute('aria-pressed',String(mode===key));render()});
+search.addEventListener('input',render);render()})();
+</script></body></html>
