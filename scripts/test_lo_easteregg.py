@@ -380,6 +380,10 @@ def main():
             assert chips["chipsScroll"]<=chips["chipsClient"]+2,chips
             page.keyboard.press("Escape")
             assert not page.locator("#loAnalysis").is_visible()
+            # De helpknop staat op telefoons in Spelinstellingen.
+            page.wait_for_function("window.__loCalmUI?.getState().active === true")
+            if page.locator("#loCalmSettings").get_attribute("open") is None:
+                page.locator("#loCalmSettings>summary").click()
             page.locator("#loHelpOpen").click()
             mobile_help=page.evaluate("""()=>({
               viewport:innerWidth,
@@ -430,16 +434,24 @@ def main():
         assert coach_page.locator("#loMidCoachActions [aria-pressed=true]").count()==1
         coach_page.locator("#loMidApply").click()
         assert coach_page.evaluate("window.__loLabTest.getFrames().length")>2
-        # Footers blijven binnen het document in plaats van over het veld.
+        # Desktop: bronnen onder het veld. Mobiel: bronnen in hun eigen uitklapvak.
         for width,height in ((1200,850),(390,844),(320,690)):
             coach_page.set_viewport_size({"width":width,"height":height})
-            values=coach_page.evaluate("""()=>({
-              vw:innerWidth,fh:document.querySelector('.lo-footer-links').getBoundingClientRect().toJSON(),
-              field:document.querySelector('.fieldpane').getBoundingClientRect().toJSON(),
-              below:document.querySelector('.lo-footer-links').compareDocumentPosition(document.querySelector('.fieldpane'))
-            })""")
-            assert values["fh"]["width"]<=values["vw"]+2,values
-            assert values["fh"]["top"]>=values["field"]["bottom"]-2,values
+            if width<=880:
+                coach_page.wait_for_function("window.__loCalmUI?.getState().active === true")
+                assert coach_page.locator("#loCalmSources").is_visible()
+                assert not coach_page.locator("#loCalmSources").get_attribute("open")
+                coach_page.locator("#loCalmSources>summary").click()
+                assert coach_page.locator(".lo-calm-body .lo-evidence-link").is_visible()
+                assert coach_page.locator("#pitch").is_visible()
+            else:
+                coach_page.wait_for_function("window.__loCalmUI?.getState().active === false")
+                values=coach_page.evaluate("""()=>({
+                  vw:innerWidth,fh:document.querySelector('.lo-footer-links').getBoundingClientRect().toJSON(),
+                  field:document.querySelector('.fieldpane').getBoundingClientRect().toJSON()
+                })""")
+                assert values["fh"]["width"]<=values["vw"]+2,values
+                assert values["fh"]["top"]>=values["field"]["bottom"]-2,values
         coach_page.close()
         assert not failures,failures
         print(json.dumps({"baseline_replays":count,"event_test":event_test,
