@@ -1,4 +1,4 @@
-<!doctype html><html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#070b15"><title>SCIENCE OBSERVATORY / RESEARCH CONSOLE</title>
+<!doctype html><html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#070b15"><title>Wiskunde A | Onderzoeken</title>
 <style>
 :root{color-scheme:dark;--bg:#050914;--panel:#0b1422;--panel2:#101e30;--line:#283b54;--text:#dfebf9;--hi:#f5fbff;--muted:#8fa8c1;--teal:#6ee3ed;--gold:#e9bd82;--violet:#b6a0f1;--good:#94e1bc;--bad:#ffb5ac;--sidebar:224px;--inspector:360px;--stagebg:#071326;--chartbg:#0b1525;--grid:#273d56;--input:#13243a;--shadow:rgba(0,0,0,.32)}
 html[data-theme=day]{color-scheme:light;--bg:#e9f1f8;--panel:#f6faff;--panel2:#edf5fc;--line:#b2c7d9;--text:#23445f;--hi:#102b42;--muted:#5c768d;--teal:#087f98;--gold:#a76520;--violet:#7055a8;--good:#17724f;--bad:#b63b45;--stagebg:#e8f3fb;--chartbg:#fbfdff;--grid:#bfd3e0;--input:#e3f0f9;--shadow:rgba(24,60,86,.1)}
@@ -15,6 +15,104 @@ body.focus{--inspector:0px}body.focus .inspector,body.focus .divider{display:non
 @media(max-width:810px){html,body{height:auto;overflow:auto}#app{display:flex;flex-direction:column;min-height:100dvh;height:auto}.sidebar{height:57px;flex-direction:row;align-items:center;position:sticky;top:0;z-index:5;order:0}.brand{padding:8px}.nav{display:flex;overflow:auto;flex:1}.nav button{width:40px;min-width:40px;padding:5px;justify-content:center}.top{order:1;height:53px;min-height:53px}.top .crumb{max-width:200px}.topbtn .btnlabel{display:none}.scene{order:2;height:61vh;min-height:430px;flex:none}.sceneinfo{left:14px;top:14px;max-width:240px}.sceneinfo h2{font-size:26px}.sceneinfo p{max-width:215px}.modelnote{right:12px;top:13px}.analytics{order:3;height:260px;flex:none}.inspector{order:4;border-left:0;border-top:1px solid var(--line)}.inspbody{overflow:visible}.divider{display:none}.plotwrap{grid-template-columns:minmax(0,1fr) 180px}body.focus .inspector{display:none}body.focus #app{display:flex}}
 @media(max-width:520px){.scene{height:490px;min-height:490px}.modelnote{display:none}.sceneinfo p{max-width:200px}.plotwrap{grid-template-columns:1fr}.mathbox{display:none}.clock{padding:0 7px;gap:5px}.topbtn{padding:7px}.crumb{letter-spacing:0!important}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important}}
+
+/* Adaptieve wiskundewerkruimte: zelfde modellen, geen eindeloze mobiele pagina. */
+:root{--teal:#80e8c5;--gold:#f2b68c;--line:#304556;--panel:#0d1825;--panel2:#152536;--stagebg:#0a1722}
+body{overscroll-behavior:none}
+#app{min-height:0}
+.scene,.analytics,.inspector{min-height:0}
+.nav button,.topbtn,.hbuttons button{border-radius:11px}
+.nav button.active{background:#80e8c514}
+.scene{background:radial-gradient(ellipse at 71% 28%,#17334169,transparent 55%),#0a1722}
+.inspector{background:linear-gradient(145deg,#152535,#0c1724)}
+.metrics .metric{border-radius:11px}
+.clock{display:none!important}
+.analytics{grid-template-rows:36px minmax(0,1fr)}
+#modeSelect,#deckDock,#infoDesk,#paramPager{display:none}
+[hidden]{display:none!important}
+@media(max-width:810px),(max-height:620px){
+ html,body{height:100%;height:100dvh;overflow:hidden!important;width:100%;margin:0}
+ body.focus #app,#app{display:grid!important;grid-template-columns:minmax(0,1fr)!important;grid-template-rows:53px 43px minmax(0,1fr) 62px!important;height:100dvh!important;max-height:100dvh!important;min-height:0!important;overflow:hidden!important}
+ .sidebar{grid-area:1/1!important;height:53px!important;min-height:0!important;position:relative!important;top:auto!important;display:flex!important;flex-direction:row!important;align-items:center!important;padding:0 12px;order:initial!important;border-bottom:1px solid var(--line);border-right:0;gap:12px}
+ .brand{padding:0!important;border:0;flex:none}.brandico{height:30px;width:30px;font-size:18px}
+ .brandtxt,.sectionlabel,.sidefoot,.sidebar .nav{display:none!important}
+ #modeSelect{display:block;flex:1;min-width:0;height:36px;border:1px solid #466271;border-radius:10px;background:#1a2d3c;color:#ecf7f6;padding:0 13px;font-size:13px;font-weight:600;outline-offset:2px}
+ .top{grid-area:2/1!important;height:43px!important;min-height:43px!important;order:initial!important;padding:0 13px!important;gap:5px;border-bottom:1px solid #294357}
+ .top .crumb{font:11px system-ui,sans-serif;letter-spacing:0!important;max-width:calc(100vw - 140px)!important}
+ .top .crumb b{font-size:12px}
+ #focusToggle,#exportModel,#exportPNG{display:none!important}
+ .topbtn{min-height:32px;padding:6px 10px;font-size:12px}
+ .divider{display:none!important}
+ .scene{grid-area:3/1!important;order:initial!important;height:auto!important;min-height:0!important;display:block;position:relative!important;overflow:hidden!important}
+ .sceneinfo{top:13px;left:17px;max-width:58%;pointer-events:none}
+ .sceneinfo h2{font-size:clamp(16px,4.5vw,23px);line-height:1.12;margin:5px 0}
+ .sceneinfo p,.modelnote{display:none!important}
+ .eyebrow{font-size:9px;letter-spacing:.11em}
+ .scenehud{bottom:14px;left:14px;right:12px;gap:6px}
+ .scenehud>span{display:none}
+ .hbuttons{margin-left:auto}
+ .hbuttons button{min-height:38px;padding:6px 11px;font-size:11px;border-color:#6c99936c}
+ .analytics{grid-area:3/1!important;order:initial!important;height:auto!important;min-height:0!important;display:none!important;grid-template-rows:41px minmax(0,1fr)!important;overflow:hidden!important;background:#0b1725}
+ .analyticshead b{font-size:12px}.analyticshead span{font-size:10px}
+ .plotwrap{grid-template-columns:minmax(0,1fr)!important;min-height:0;overflow:hidden}
+ .plotcanvas{height:100%;min-height:0}.plotcanvas canvas{width:100%;height:100%;display:block}
+ .mathbox{display:none!important}
+ .inspector{grid-area:3/1!important;order:initial!important;display:none!important;min-height:0!important;height:auto!important;max-height:none!important;border:0;border-top:0;overflow:hidden!important;background:#0d1a29}
+ .insphead{padding:12px 16px 10px}
+ .insphead h3{font-size:18px;margin:4px 0}.insphead p{display:none}
+ .inspbody{overflow:hidden!important;min-height:0!important;flex:1;padding:10px 14px!important;display:flex;flex-direction:column;gap:8px}
+ .metrics{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+ .metric{padding:6px 9px!important;min-height:48px}
+ .metric small{font-size:10px}.metric strong{font-size:16px;margin-top:2px}
+ .subhead,#details,#sources,#examInfo,.fold,.info,#measureList,#saveMeasurements,#findingText,.inspbody>label{display:none!important}
+ #controls{display:grid;grid-template-columns:1fr;gap:7px;flex:1;min-height:0;align-content:center}
+ #controls>.control{margin:0;padding:11px 14px;border:1px solid #385369;border-radius:15px;background:#142537;min-width:0}
+ #controls .control label{font-size:12px;font-weight:650}
+ #controls .control output{font-size:12px}
+ #controls .control p{font-size:10px;margin:5px 0 0}
+ #controls .control input{height:24px;margin:3px 0 0;accent-color:var(--teal)}
+ #paramPager{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:42px;flex:none}
+ #paramPager button{min-width:83px;min-height:38px;border-radius:11px;border:1px solid #466875;background:#162f3d;color:#d0f1e6}
+ #paramPager button:disabled{opacity:.3}
+ #paramPageText{font-size:12px;color:#bdcfce}
+ .phasebox{display:none!important}
+ .phaseinner{padding:10px 12px!important;min-height:0;overflow:hidden!important}
+ .phaseinner h4{font-size:13px}.phaseinner p{font-size:11px;line-height:1.35}
+ .phaseinner input,.phaseinner textarea{font-size:13px;padding:6px;min-height:30px}
+ .phaseinner textarea{min-height:42px;height:42px;resize:none}
+ .phaseinner button{min-height:35px;padding:5px 9px;margin:4px 4px 0 0;font-size:11px}
+ .phasetabs button{font-size:10px!important;padding:7px 2px!important}
+ .phasebox .phasetabs{padding:3px}
+ body[data-deck-view=graph] .analytics{display:grid!important}
+ body[data-deck-view=params] .inspector,body[data-deck-view=learn] .inspector{display:flex!important;flex-direction:column}
+ body[data-deck-view=params] .phasebox{display:none!important}
+ body[data-deck-view=learn] .inspbody>.metrics,body[data-deck-view=learn] .inspbody>#controls,body[data-deck-view=learn] #paramPager{display:none!important}
+ body[data-deck-view=learn] .phasebox{display:flex!important;flex-direction:column;flex:1;min-height:0;margin:0}
+ body[data-deck-view=learn] .insphead{padding-bottom:8px}
+ body[data-deck-view=learn] .inspbody{padding:7px 9px!important}
+ body[data-deck-view=info] #infoDesk{display:grid!important}
+ body[data-deck-view=info] .scene{display:none!important}
+ #infoDesk{grid-area:3/1;grid-template-rows:auto minmax(0,1fr) auto;min-height:0;overflow:hidden;padding:clamp(12px,3vh,24px);background:linear-gradient(145deg,#152b3b,#0c1825)}
+ .info-head small{color:var(--teal);letter-spacing:.12em;font-size:10px}.info-head h2{font-size:21px;letter-spacing:-.035em;margin:9px 0}
+ .info-copy{min-height:0;overflow:hidden;display:flex;flex-direction:column;justify-content:center;gap:12px;font-size:13px;line-height:1.55;color:#d6e7e8}
+ .info-copy p{margin:0;color:#d2e4e4}.info-copy a{color:var(--teal);overflow-wrap:anywhere}
+ .info-actions{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+ .info-actions button{background:#163242;border:1px solid #426478;border-radius:11px;color:#e3f4f0;min-height:42px;padding:0 13px;font-size:12px}
+ #infoCounter{margin-left:auto;font-size:11px;color:#b1c6ca}
+ #deckDock{grid-area:4/1;display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;align-items:stretch;padding:6px 7px max(7px,env(safe-area-inset-bottom));border-top:1px solid #4b6e6c55;background:#111f2dec;backdrop-filter:blur(22px);z-index:30;min-height:62px}
+ #deckDock button{background:none;color:#a9bac3;border:1px solid transparent;border-radius:12px;min-width:0;min-height:43px;padding:3px 0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;font-size:clamp(10px,2.8vw,12px);font-weight:550}
+ #deckDock button .glyph{font-size:18px;height:22px;line-height:21px}
+ #deckDock button[aria-pressed=true]{color:var(--teal);background:#80e8c51b;border-color:#80e8c534}
+ body.focus .inspector,body.focus .analytics,body.focus .scene,body.focus .top{grid-column:1}
+}
+@media(max-height:470px){
+ body.focus #app,#app{grid-template-rows:41px 39px minmax(0,1fr) 52px!important}
+ .sidebar{height:41px!important}.top{height:39px!important;min-height:39px!important}
+ #deckDock{min-height:52px;padding:3px 7px}.sceneinfo p{display:none}
+ .insphead{padding:7px 13px}.inspbody{padding:5px 10px!important}.metrics{display:none}
+}
+@media(prefers-reduced-motion:reduce){#app *{transition:none!important;animation:none!important}}
+
 </style></head><body><div id="app">
 <aside class="sidebar"><div class="brand"><div class="brandico">Φ</div><div class="brandtxt"><h1 id="brand-title">OBSERVATORY</h1><small>RESEARCH CONSOLE / PREMIUM</small></div></div><div class="sectionlabel">ONDERZOEKSMODULES</div><nav class="nav" id="nav"></nav><div class="sidefoot"><strong>● MODELBEREKENING ACTIEF</strong><p>Experimenten gebruiken expliciete wiskundige modellen. Geen gemeten data, tenzij aangegeven.</p><span id="versiontext">Science Observatory / v5</span></div></aside>
 <header class="top"><div class="crumb">RESEARCH CONSOLE / <b id="crumb">ONDERZOEK</b></div><div class="grow"></div><button type="button" class="topbtn" id="themeToggle" title="Dag- en nachtweergave"><span class="btnlabel">◐ Weergave</span><span class="mobileicon"> ◐</span></button><button type="button" class="topbtn" id="focusToggle" title="Maak ruimte voor de simulatie">⛶ <span class="btnlabel">Focus</span></button><button type="button" class="topbtn" id="exportModel" title="Modelinstellingen bewaren">↓ <span class="btnlabel">Model JSON</span></button><button type="button" class="topbtn accent" id="exportPNG" title="Simulatie als afbeelding bewaren">▣ <span class="btnlabel">Afbeelding</span></button><a class="topbtn" href="../START_HIER.html" title="Terug naar de serie">← <span class="btnlabel">Serie</span></a></header>
@@ -26,7 +124,7 @@ body.focus{--inspector:0px}body.focus .inspector,body.focus .divider{display:non
 (()=>{'use strict';
 const $=id=>document.getElementById(id),D=JSON.parse($('config').textContent),M=D.modules;
 const COLORS={ink:'#dceaff',muted:'#86a5bc',teal:'#76e4ed',gold:'#e7be83',purple:'#ae9af4',red:'#f19ca4',green:'#8ddbb2',grid:'#263b55'};
-const state={mode:0,phase:'prior',time:0,running:!matchMedia('(prefers-reduced-motion: reduce)').matches,zoom:1,probe:0,parameters:{},answers:{},steps:{},measurements:[],selectedChoice:null,wasDragged:false};
+const state={mode:0,phase:'prior',time:0,running:false,zoom:1,probe:0,parameters:{},answers:{},steps:{},measurements:[],selectedChoice:null,wasDragged:false};
 const scene=$('sceneCanvas'),sc=scene.getContext('2d'),plot=$('plotCanvas'),pc=plot.getContext('2d');
 let w=1,h=1,pw=1,ph=1,dpr=1,dirty=true,frame=0,drag=false;
 for(const m of M){state.parameters[m.id]={};for(const p of m.params)state.parameters[m.id][p.id]=p.value;}
@@ -91,7 +189,7 @@ function metrics(m,p){switch(m.kind){
 let background=()=>{const light=document.documentElement.dataset.theme==='day';return light?{bg:'#eaf4fb',grid:'#c6d9e6',ink:'#24465d',soft:'#6787a2',teal:'#0a91a5',gold:'#a96824',purple:'#8062ba',red:'#b34b58',green:'#21815b'}:{bg:'#071327',grid:'#2b415e',ink:'#dbeaf9',soft:'#8aa6c0',teal:'#75e6ee',gold:'#e9bb80',purple:'#b4a3fa',red:'#f99aa6',green:'#8de3b5'};};
 function fitCanvas(canvas,ctx){let r=canvas.getBoundingClientRect(),ratio=Math.min(devicePixelRatio||1,2);let cw=Math.max(1,r.width),ch=Math.max(1,r.height);if(canvas.width!==Math.round(cw*ratio)||canvas.height!==Math.round(ch*ratio)){canvas.width=Math.round(cw*ratio);canvas.height=Math.round(ch*ratio);}ctx.setTransform(ratio,0,0,ratio,0,0);return[cw,ch];}
 function initDraw(ctx,W,H){const C=background();ctx.clearRect(0,0,W,H);ctx.fillStyle=C.bg;ctx.fillRect(0,0,W,H);const g=ctx.createRadialGradient(W*.5,H*.52,0,W*.5,H*.52,Math.max(W,H)*.7);g.addColorStop(0,document.documentElement.dataset.theme==='day'?'#e0f0fa':'#142744');g.addColorStop(1,C.bg);ctx.fillStyle=g;ctx.fillRect(0,0,W,H);return C;}
-function axis(ctx,W,H,xmin,xmax,ymin,ymax,opts={}){const C=background(),R=opts.rect||{x:52,y:215,w:W-85,h:H-265},xx=x=>R.x+(x-xmin)/(xmax-xmin)*R.w,yy=y=>R.y+R.h-(y-ymin)/(ymax-ymin)*R.h;
+function axis(ctx,W,H,xmin,xmax,ymin,ymax,opts={}){const C=background(),top=Math.min(215,Math.max(54,H*.22)),bottom=Math.min(55,Math.max(28,H*.13)),left=Math.min(52,Math.max(27,W*.11)),R=opts.rect||{x:left,y:top,w:Math.max(60,W-left-30),h:Math.max(54,H-top-bottom)},xx=x=>R.x+(x-xmin)/(xmax-xmin)*R.w,yy=y=>R.y+R.h-(y-ymin)/(ymax-ymin)*R.h;
  ctx.save();ctx.strokeStyle=C.grid;ctx.lineWidth=.7;ctx.fillStyle=C.soft;ctx.font='10px ui-monospace,monospace';ctx.textAlign='center';ctx.textBaseline='top';for(let j=0;j<=5;j++){let x=xmin+(xmax-xmin)*j/5,X=xx(x);ctx.beginPath();ctx.moveTo(X,R.y);ctx.lineTo(X,R.y+R.h);ctx.stroke();ctx.fillText(format(x,1),X,R.y+R.h+6)}ctx.textAlign='right';ctx.textBaseline='middle';for(let j=0;j<=4;j++){let y=ymin+(ymax-ymin)*j/4,Y=yy(y);ctx.beginPath();ctx.moveTo(R.x,Y);ctx.lineTo(R.x+R.w,Y);ctx.stroke();ctx.fillText(format(y,1),R.x-8,Y);}ctx.restore();return {R,X:xx,Y:yy,xmin,xmax,ymin,ymax};}
 function linePlot(ctx,axisObj,fn,color,width=1.9,steps=200,dash=[],fill=false){const C=background(),{R,X,Y,xmin,xmax,ymin,ymax}=axisObj;ctx.save();ctx.beginPath();ctx.rect(R.x,R.y,R.w,R.h);ctx.clip();ctx.beginPath();let active=false;for(let i=0;i<=steps;i++){let x=xmin+(xmax-xmin)*i/steps,y=fn(x);if(!Number.isFinite(y)||y<ymin-5*abs(ymax-ymin)||y>ymax+5*abs(ymax-ymin)){active=false;continue;}if(!active)ctx.moveTo(X(x),Y(y));else ctx.lineTo(X(x),Y(y));active=true;}ctx.strokeStyle=color;ctx.lineWidth=width;ctx.setLineDash(dash);ctx.stroke();ctx.restore();}
 function dot(ctx,x,y,r,color,glow=0){ctx.save();if(glow){ctx.shadowColor=color;ctx.shadowBlur=glow;}ctx.beginPath();ctx.arc(x,y,r,0,2*PI);ctx.fillStyle=color;ctx.fill();ctx.restore();}
@@ -145,7 +243,7 @@ function setMode(ix){state.mode=ix;state.zoom=1;state.phase='prior';state.select
  $('details').innerHTML=m.details.map(([title,body])=>`<details class="fold"><summary>${esc(title)}</summary><div class="foldbody">${body}</div></details>`).join('');$('examInfo').textContent=m.curriculum||'Deze module is een onderzoeksvoorbeeld. De dekking van eindtermen moet nog per vak en leerjaar gecontroleerd worden.';
  $('sources').innerHTML=`<p>Herkomst: analytisch/didactisch model. Geen echte meetserie; modelparameters zijn gekozen en aanpasbaar.</p>`+D.sources.map(s=>`<a href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">${esc(s.label)}</a>`).join('')+`<p>${esc(m.boundary||'De weergegeven relaties gebruiken expliciete vereenvoudigingen. Zie de verdieping voor de grenzen.')}</p>`;
  $('controls').innerHTML=m.params.map(q=>{let v=state.parameters[m.id][q.id];return `<div class="control"><label for="ctrl-${esc(q.id)}"><span>${esc(q.label)}</span><output id="value-${esc(q.id)}">${format(v,2)} ${esc(q.unit||'')}</output></label><input type="range" id="ctrl-${esc(q.id)}" data-param="${esc(q.id)}" min="${q.min}" max="${q.max}" step="${q.step}" value="${v}"><p>${esc(q.help||'')}</p></div>`;}).join('');
- $('controls').querySelectorAll('input').forEach(input=>input.addEventListener('input',()=>{const p=state.parameters[m.id],q=m.params.find(q=>q.id===input.dataset.param);p[q.id]=Number(input.value);$('value-'+q.id).textContent=format(p[q.id],2)+' '+(q.unit||'');styleMetrics();dirty=true;}));styleMetrics();renderPhase();$('measureList').innerHTML='';state.measurements.filter(x=>x.module===m.id).forEach(x=>{let div=document.createElement('p');div.textContent=x.label+' · '+format(x.value,4);$('measureList').append(div);});dirty=true;}
+ $('controls').querySelectorAll('input').forEach(input=>input.addEventListener('input',()=>{const p=state.parameters[m.id],q=m.params.find(q=>q.id===input.dataset.param);p[q.id]=Number(input.value);$('value-'+q.id).textContent=format(p[q.id],2)+' '+(q.unit||'');styleMetrics();dirty=true;}));styleMetrics();renderPhase();$('measureList').innerHTML='';state.measurements.filter(x=>x.module===m.id).forEach(x=>{let div=document.createElement('p');div.textContent=x.label+' · '+format(x.value,4);$('measureList').append(div);});dirty=true;if($('deckDock'))syncAdaptiveWorkspace('scene');}
 function phaseSet(phase){state.phase=phase;$('phasetabs').querySelectorAll('button').forEach(b=>{b.classList.toggle('active',b.dataset.phase===phase)});renderPhase();}
 function challenge(m){let p=state.parameters[m.id],name=m.params.find(v=>v.id===m.exitParam)||m.params[0];let val=p[name.id],newval=clamp(Math.round((val+name.step*7)*100)/100,name.min,name.max);if(Math.abs(newval-val)<1e-7)newval=clamp(val-name.step*5,name.min,name.max);let np={...p,[name.id]:newval};return{p:np,change:name.label+' = '+format(newval,2)+' '+(name.unit||''),expected:target(m,np)};}
 function renderPhase(){let m=M[state.mode],p=state.parameters[m.id],ex=m.exercise||{},html='';let t=state.phase;
@@ -162,6 +260,79 @@ function renderPhase(){let m=M[state.mode],p=state.parameters[m.id],ex=m.exercis
 function dl(filename,data,mime='application/json'){let link=document.createElement('a'),url=URL.createObjectURL(new Blob([data],{type:mime}));link.href=url;link.download=filename;document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1800);}
 function saveJSON(){let m=M[state.mode];dl(D.id+'-'+m.id+'.json',JSON.stringify({project:D.id,module:m.id,date:new Date().toISOString(),parameters:state.parameters[m.id],values:metrics(m,state.parameters[m.id]),measurements:state.measurements.filter(x=>x.module===m.id),note:$('findingText').value,source:'Analytisch onderwijsmodel; geen ruwe meetdata'},null,2));}
 function png(){const o=document.createElement('canvas'),a=scene.width/Math.max(1,devicePixelRatio||1);o.width=scene.width;o.height=scene.height;let c=o.getContext('2d');c.drawImage(scene,0,0);c.setTransform(Math.min(devicePixelRatio||1,2),0,0,Math.min(devicePixelRatio||1,2),0,0);c.fillStyle=document.documentElement.dataset.theme==='day'?'#284155':'#e1f5ff';c.font='600 16px ui-monospace,monospace';c.fillText(D.id.toUpperCase()+' / '+M[state.mode].short.toUpperCase(),18,28);o.toBlob(b=>{if(!b)return;let link=document.createElement('a'),url=URL.createObjectURL(b);link.download=D.id+'-'+M[state.mode].id+'.png';link.href=url;link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);});}
+
+/* Eén mobiel werkvlak. Onderwerpen wisselen zonder de pagina te verschuiven. */
+let paramPage=0, infoPage=0, infoCards=[];
+function isCompactWorkspace(){return matchMedia('(max-width:810px), (max-height:620px)').matches;}
+function storyParts(text,limit=230){
+ const words=String(text||'').trim().split(/\s+/),out=[];let part='';
+ for(const word of words){if(part&&part.length+word.length+1>limit){out.push(part);part='';}part+=(part?' ':'')+word;}
+ if(part)out.push(part);return out.length?out:['Geen toelichting beschikbaar.'];
+}
+function rebuildInfoPages(){
+ const m=M[state.mode];infoCards=[];
+ const add=(title,copy)=>storyParts(copy).forEach((chunk,i)=>infoCards.push({title:title+(i?' · vervolg':''),copy:chunk}));
+ add('Over dit onderwerp',m.desc);
+ add('Model en aannames',(m.formula||'')+'. '+(m.formulaNote||'')+'. '+(m.boundary||''));
+ for(const item of m.details){const box=document.createElement('div');box.innerHTML=item[1];add(item[0],box.textContent);}
+ add('Plaats in het onderwijs',m.curriculum||'Koppeling met syllabus en PTA is nog niet gecontroleerd.');
+ infoCards.push({title:'Bronnen',sources:true});
+ infoPage=0;renderInfoPage();
+}
+function renderInfoPage(){
+ const card=infoCards[infoPage];if(!card)return;
+ $('infoTitle').textContent=card.title;
+ const copy=$('infoCopy');copy.replaceChildren();
+ if(card.sources){
+  const p=document.createElement('p');p.textContent='De getoonde gegevens komen uit een onderwijsmodel, niet uit metingen.';copy.append(p);
+  for(const source of D.sources){const link=document.createElement('a');link.href=source.url;link.textContent=source.label;link.rel='noopener noreferrer';link.target='_blank';copy.append(link);}
+ }else{const p=document.createElement('p');p.textContent=card.copy;copy.append(p);}
+ $('infoCounter').textContent=(infoPage+1)+' / '+infoCards.length;
+ $('infoPrev').disabled=infoPage===0;$('infoNext').disabled=infoPage===infoCards.length-1;
+}
+function renderParamPage(){
+ if(!$('paramPager'))return;
+ const items=Array.from($('controls').children).filter(el=>el.classList.contains('control'));
+ const pages=Math.max(1,Math.ceil(items.length/2));paramPage=Math.max(0,Math.min(paramPage,pages-1));
+ items.forEach((item,i)=>item.hidden=i<paramPage*2||i>=paramPage*2+2);
+ $('paramPageText').textContent='Instellingen '+(paramPage+1)+' / '+pages;
+ $('paramPrev').disabled=paramPage===0;$('paramNext').disabled=paramPage===pages-1;
+}
+function switchDesk(view){
+ if(!$('deckDock'))return;
+ document.body.dataset.deckView=view;
+ for(const button of $('deckDock').querySelectorAll('button')){
+  const active=button.dataset.view===view;button.setAttribute('aria-pressed',String(active));
+ }
+ if(view==='params')renderParamPage();
+ if(view==='info')rebuildInfoPages();
+ dirty=true;
+}
+function syncAdaptiveWorkspace(view){
+ if(!$('deckDock'))return;
+ $('modeSelect').value=String(state.mode);
+ paramPage=0;renderParamPage();
+ switchDesk(view||'scene');
+}
+function setupAdaptiveWorkspace(){
+ const selector=document.createElement('select');selector.id='modeSelect';selector.setAttribute('aria-label','Kies een wiskundeonderwerp');
+ M.forEach((m,i)=>{const o=document.createElement('option');o.value=i;o.textContent=m.short;selector.append(o);});
+ document.querySelector('.sidebar').append(selector);
+ selector.addEventListener('change',()=>setMode(Number(selector.value)));
+ const dock=document.createElement('nav');dock.id='deckDock';dock.setAttribute('aria-label','Werkruimte');
+ [['scene','∿','Onderzoek'],['graph','▥','Grafiek'],['params','≡','Instellen'],['learn','?','Leren'],['info','ⓘ','Meer']].forEach(([view,glyph,title])=>{
+  const b=document.createElement('button');b.type='button';b.dataset.view=view;b.setAttribute('aria-pressed','false');
+  const symbol=document.createElement('span');symbol.className='glyph';symbol.textContent=glyph;
+  const label=document.createElement('span');label.textContent=title;b.append(symbol,label);b.onclick=()=>switchDesk(view);dock.append(b);
+ });$('app').append(dock);
+ const pager=document.createElement('div');pager.id='paramPager';pager.innerHTML='<button type="button" id="paramPrev">Vorige</button><span id="paramPageText"></span><button type="button" id="paramNext">Volgende</button>';
+ $('controls').after(pager);$('paramPrev').onclick=()=>{paramPage--;renderParamPage();};$('paramNext').onclick=()=>{paramPage++;renderParamPage();};
+ const info=document.createElement('section');info.id='infoDesk';info.setAttribute('aria-label','Toelichting en bronnen');
+ info.innerHTML='<div class="info-head"><small>VERDIEPING</small><h2 id="infoTitle"></h2></div><div class="info-copy" id="infoCopy"></div><div class="info-actions"><button id="infoPrev" type="button">Vorige</button><button id="infoNext" type="button">Volgende</button><button id="infoExport" type="button">Bewaar</button><span id="infoCounter"></span></div>';
+ $('app').append(info);$('infoPrev').onclick=()=>{infoPage--;renderInfoPage();};$('infoNext').onclick=()=>{infoPage++;renderInfoPage();};$('infoExport').onclick=saveJSON;
+ syncAdaptiveWorkspace('scene');
+}
+
 function bind(){const nav=$('nav');nav.innerHTML=M.map((m,i)=>`<button data-mode="${i}" type="button" aria-pressed="false"><span class="navico">${esc(m.icon||'∿')}</span><span><b>${esc(m.short)}</b><small>${esc(m.subtitle||m.kind)}</small></span><em>${String(i+1).padStart(2,'0')}</em></button>`).join('');nav.addEventListener('click',e=>{let btn=e.target.closest('[data-mode]');if(btn)setMode(Number(btn.dataset.mode));});$('brand-title').textContent=D.brand||'OBSERVATORY';$('versiontext').textContent=D.id+' / premium v5';
  $('phasetabs').addEventListener('click',e=>{let btn=e.target.closest('[data-phase]');if(btn)phaseSet(btn.dataset.phase);});$('themeToggle').onclick=()=>{let theme=document.documentElement.dataset.theme==='day'?'night':'day';document.documentElement.dataset.theme=theme;$('themeToggle').innerHTML=theme==='day'?'☾ <span class="btnlabel">Nacht</span>':'☼ <span class="btnlabel">Dag</span>';dirty=true;};$('focusToggle').onclick=()=>{document.body.classList.toggle('focus');dirty=true;};$('exportModel').onclick=saveJSON;$('exportPNG').onclick=png;$('saveMeasurements').onclick=saveJSON;
  $('resetButton').onclick=()=>{let m=M[state.mode];for(let v of m.params)state.parameters[m.id][v.id]=v.value;state.time=0;state.zoom=1;setMode(state.mode);};$('measureButton').onclick=()=>{let m=M[state.mode],p=state.parameters[m.id],v=target(m,p);state.measurements.push({module:m.id,label:m.short,parameters:{...p},value:v,time:state.time});let x=document.createElement('p');x.textContent=m.short+' · '+format(v,4)+' (t='+format(state.time,1)+')';$('measureList').appendChild(x);};
@@ -169,8 +340,8 @@ function bind(){const nav=$('nav');nav.innerHTML=M.map((m,i)=>`<button data-mode
  scene.addEventListener('pointerdown',e=>{drag=true;scene.setPointerCapture(e.pointerId);sceneMove(e);});scene.addEventListener('pointermove',e=>{if(drag)sceneMove(e);});scene.addEventListener('pointerup',()=>drag=false);scene.addEventListener('pointercancel',()=>drag=false);
  scene.addEventListener('wheel',e=>{e.preventDefault();state.zoom=clamp(state.zoom*Math.exp(-e.deltaY*.001),.55,2.4);dirty=true;},{passive:false});
  const divider=$('divider');divider.addEventListener('pointerdown',e=>{divider.setPointerCapture(e.pointerId);divider.dataset.drag='1';});divider.addEventListener('pointermove',e=>{if(divider.dataset.drag!=='1')return;let newwidth=clamp(window.innerWidth-e.clientX,270,Math.min(640,window.innerWidth*.62));document.documentElement.style.setProperty('--inspector',newwidth+'px');dirty=true;});divider.addEventListener('pointerup',()=>divider.dataset.drag='0');divider.addEventListener('keydown',e=>{if(e.key==='ArrowLeft'||e.key==='ArrowRight'){let v=parseInt(getComputedStyle(document.documentElement).getPropertyValue('--inspector'))||360;document.documentElement.style.setProperty('--inspector',clamp(v+(e.key==='ArrowLeft'?20:-20),270,640)+'px');e.preventDefault();dirty=true;}});
- window.addEventListener('keydown',e=>{if(['INPUT','TEXTAREA'].includes(e.target?.tagName))return;if(e.code==='Space'){e.preventDefault();state.running=!state.running;$('playButton').textContent=state.running?'Ⅱ':'▶';}if(/^[1-6]$/.test(e.key))setMode(Number(e.key)-1);});window.addEventListener('resize',()=>dirty=true);
- setMode(0);document.documentElement.dataset.ready='true';requestAnimationFrame(tick);}
+ window.addEventListener('keydown',e=>{if(['INPUT','TEXTAREA'].includes(e.target?.tagName))return;if(/^[1-6]$/.test(e.key))setMode(Number(e.key)-1);});window.addEventListener('resize',()=>dirty=true);
+ setMode(0);setupAdaptiveWorkspace();document.documentElement.dataset.ready='true';requestAnimationFrame(tick);}
 function sceneMove(e){let m=M[state.mode];if(!m.probe)return;let par=m.params.find(p=>p.id===m.probe);if(!par)return;let rect=scene.getBoundingClientRect();let frac=clamp((e.clientX-rect.left-50)/Math.max(90,rect.width-85),0,1);let val=par.min+frac*(par.max-par.min),step=par.step||.01;val=clamp(Math.round(val/step)*step,par.min,par.max);state.parameters[m.id][par.id]=Number(val.toFixed(5));let ctrl=$('ctrl-'+par.id);if(ctrl){ctrl.value=val;$('value-'+par.id).textContent=format(val,2)+' '+(par.unit||'');}styleMetrics();dirty=true;}
 function tick(now){if(!frame)frame=now;let dt=Math.min(.08,(now-frame)/1000);frame=now;if(state.running){state.time=(state.time+dt*.7)%20;$('clockRange').value=state.time*5;dirty=true;}$('clockOut').textContent=format(state.time,1);if(dirty&&(!tick.lastDraw||now-tick.lastDraw>=32)){tick.lastDraw=now;render();dirty=false;if(M[state.mode].kind==='orbit')styleMetrics();}requestAnimationFrame(tick);}
 bind();
