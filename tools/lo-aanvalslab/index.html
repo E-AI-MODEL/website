@@ -439,6 +439,108 @@
  .side,.app[data-mobile-panel="goal"] .side,.app[data-mobile-panel="player"] .side,.app[data-mobile-panel="coach"] .side{grid-column:2;grid-row:2;height:100%;max-height:100%;min-height:0;overflow:hidden;align-self:stretch}
  .side #after{display:flex}
 }
+
+/* Mobiel: één rustige veldweergave, uitklapbare details. Geen extra menutabs. */
+.lo-calm-settings,.lo-calm-panels,.lo-calm-quick,.lo-calm-sport-title{display:none}
+@media(max-width:880px) and (orientation:portrait){
+ html,body{height:100%;overflow:hidden;overscroll-behavior:none}
+ .app{height:100dvh;max-height:100dvh;min-height:0;overflow-x:hidden;overflow-y:auto;overscroll-behavior-y:contain;display:block;padding:env(safe-area-inset-top) max(10px,env(safe-area-inset-right)) calc(12px + env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-left))}
+ .top{display:flex;height:57px!important;min-height:57px;align-items:center;gap:9px;margin:0 0 8px}
+ .top .brand{display:flex;flex:1 1 auto;min-width:0;align-items:center;gap:12px}
+ .top .mark{height:40px;width:40px;flex:0 0 40px;font-size:20px;border:0;background:transparent;color:#9de5bd}
+ .top .brand .eyebrow{font-size:10px;letter-spacing:.07em;color:#adcac2}
+ .top .brand h1{display:none}
+ .lo-calm-sport-title{display:block;margin:0;font-size:21px;font-weight:700;line-height:1.1;letter-spacing:-.025em}
+ .top>.top-actions,.mobile-controls,.mobile-task-preview,.mobile-scrim,.shell>.side,.app>.foot,.app>.lo-footer-links{display:none!important}
+ .shell{height:auto!important;max-height:none;min-height:0;flex:0 0 auto;overflow:visible;display:flex;flex-direction:column;gap:7px;align-items:stretch}
+ .fieldpane{flex:0 0 auto;min-height:0;height:auto;max-height:none;width:100%;overflow:visible;border:0;background:transparent;border-radius:0;display:flex;flex-direction:column}
+ .fieldhead{display:none}
+ .fieldframe{flex:0 0 auto;display:flex;align-items:center;justify-content:center;width:100%;height:auto!important;max-height:none;min-height:0;aspect-ratio:auto;padding:0;border-radius:11px;overflow:hidden;background:transparent}
+ .fieldframe #pitch{display:block;flex:none;height:auto!important;width:100%;max-height:none;max-width:100%;aspect-ratio:1000/650;object-fit:contain}
+ .lo-calm-settings,.lo-calm-panels{display:block;min-width:0}
+ .lo-calm-settings{margin-bottom:4px;border:1px solid #3c5960;border-radius:11px;overflow:hidden}
+ .lo-calm-panels{display:flex;flex-direction:column;gap:0;margin-top:2px;border:1px solid #354e56;border-radius:12px;overflow:hidden;background:#10252c}
+ .lo-calm-details{display:block;margin:0;background:#10252c;min-width:0;border:0;color:#eef6f2}
+ .lo-calm-panels>.lo-calm-details+.lo-calm-details{border-top:1px solid #314d55}
+ .lo-calm-details>summary{list-style:none;display:grid;grid-template-columns:34px minmax(0,1fr) 18px;align-items:center;column-gap:10px;width:100%;min-height:54px;padding:7px 11px;cursor:pointer;touch-action:manipulation}
+ .lo-calm-details>summary::-webkit-details-marker{display:none}
+ .lo-calm-details>summary:focus-visible{outline:2px solid #b6f5d7;outline-offset:-3px}
+ .lo-calm-icon{display:grid;place-items:center;width:34px;height:34px;color:#a3c9bc;font-size:20px}
+ .lo-calm-details[data-importance="task"] .lo-calm-icon{color:#9be6b6}
+ .lo-calm-title{display:block;font-size:15px;line-height:1.2;font-weight:700;letter-spacing:-.01em}
+ .lo-calm-subtitle{display:block;margin-top:3px;font-size:12px;line-height:1.25;color:#b4ccc5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ .lo-calm-chevron{justify-self:end;color:#ccded7;font-size:18px;transition:transform .15s}
+ .lo-calm-details[open] .lo-calm-chevron{transform:rotate(180deg)}
+ .lo-calm-body{min-width:0;padding:10px 12px 14px;border-top:1px solid #36555b;background:#102a30}
+ .lo-calm-settings .top-actions{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 9px;align-items:end;margin:0;width:100%;min-width:0}
+ .lo-calm-settings .sport-label{display:block!important;font-size:12px;color:#b6d2c7}
+ .lo-calm-settings .top-actions label[for="sportSelect"]{grid-column:1;grid-row:1}
+ .lo-calm-settings .top-actions #sportSelect{grid-column:1;grid-row:2}
+ .lo-calm-settings .top-actions label[for="formationSelect"]{grid-column:2;grid-row:1}
+ .lo-calm-settings .top-actions #formationSelect{grid-column:2;grid-row:2}
+ .lo-calm-settings .top-actions .sport-select{width:100%;min-width:0;max-width:none;min-height:45px;padding:9px 25px 9px 9px;font-size:14px}
+ .lo-calm-settings .top-actions #new{grid-column:1/-1;grid-row:3;min-height:44px;width:100%;margin-top:6px;font-size:13px!important;text-align:center}
+ .lo-calm-settings .top-actions #new::after{display:none}
+ .lo-calm-settings #reset{display:block!important;width:100%;min-height:44px;margin-top:8px;font-size:13px}
+ .lo-calm-settings .lo-help-open{width:100%;min-height:44px;margin-top:8px;justify-content:center}
+ .lo-calm-quick{display:flex;flex-direction:column;gap:4px;margin:4px 0 6px;width:100%}
+ .lo-calm-quick[hidden]{display:none!important}
+ .lo-calm-quick-name{padding:0 2px;font-size:12px;font-weight:650;color:#b9ddca;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ .lo-calm-quick-buttons{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}
+ .lo-calm-choice{min-height:45px;padding:7px 5px;border:1px solid #456b63;border-radius:9px;background:#17353a;color:#e8f7f0;font:650 13px/1.17 Inter,system-ui,sans-serif;overflow-wrap:anywhere;touch-action:manipulation}
+ .lo-calm-choice.active{background:#b6f5d7;border-color:#b6f5d7;color:#09291f}
+ .lo-calm-choice:focus-visible{outline:2px solid #dcf9eb;outline-offset:2px}
+ .bottom{flex:0 0 auto;display:flex;align-items:stretch;justify-content:stretch;min-height:56px;padding:1px 0 7px;border:0;background:transparent;flex-wrap:nowrap}
+ .bottom>div:first-child{display:none}
+ .bottom .actions{display:flex;align-items:stretch;flex-wrap:nowrap;gap:8px;width:100%}
+ .bottom #reset{display:none!important}
+ .bottom #primary{flex:1 1 auto;min-height:49px;font-size:16px;font-weight:750;line-height:1.2;padding:8px 10px;border-radius:10px;white-space:normal}
+ .bottom .playback-control{display:flex;flex:0 0 72px;align-items:center;justify-content:center;margin:0;border:1px solid #425b60;background:#142b32;border-radius:10px;min-height:48px}
+ .bottom .playback-control span{display:none}
+ .bottom .playback-control select{width:66px;min-width:0;min-height:44px;font-size:14px;font-weight:700;text-align-last:center;padding:5px;color:#eef8f5;background:transparent;border:0}
+ .lo-calm-body #prep,.lo-calm-body #loGoals,.lo-calm-body #loCoachPanel{display:block;height:auto;min-height:0;overflow:visible;margin:0;border:0;background:transparent}
+ .lo-calm-body #prep>summary,.lo-calm-body #loGoals>summary,.lo-calm-body #loCoachPanel>summary{display:none!important}
+ .lo-calm-body .lo-slim-content,.lo-calm-body .lo-goals-body{display:flex;flex-direction:column;gap:8px;padding:4px 0 8px;height:auto;min-height:0;overflow:visible}
+ .lo-calm-body .lo-goal-controls,.lo-calm-body .lo-goal-roles{gap:7px;flex-wrap:wrap}
+ .lo-calm-body .lo-role-chip{min-height:44px;padding:9px 12px;font-size:13px}
+ .lo-calm-body #loGoalChips{display:none}
+ .lo-calm-body .lo-mobile-goal-picker{display:grid;grid-template-columns:1fr;gap:5px}
+ .lo-calm-body .lo-mobile-goal-picker label{font-size:12px}
+ .lo-calm-body .lo-mobile-goal-picker select{min-height:45px;width:100%;font-size:14px;padding:9px}
+ .lo-calm-body #selected{max-height:none;overflow:visible;font-size:13px;line-height:1.45}
+ .lo-calm-body #intents{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+ .lo-calm-body #intents .intent{display:flex;align-items:center;min-height:44px;padding:8px 10px;font-size:13px;line-height:1.2}
+ .lo-calm-body #loMobileMore{display:none!important}
+ .lo-calm-body #intentHelp,.lo-calm-body #loGoalHint,.lo-calm-body #task,.lo-calm-body #insight{max-height:none;overflow:visible;font-size:13px;line-height:1.45}
+ .lo-calm-body .mobile-task h2{font-size:15px;margin:0 0 5px}
+ .lo-calm-body .mobile-task h3{font-size:11px}
+ .lo-calm-body #zonePlans{margin:8px 0;border:1px solid #386058;border-radius:9px;padding:8px}
+ .lo-calm-body .zone-option{min-height:44px;font-size:12px}
+ .lo-calm-body #loCoachTransport{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 9px;padding:7px 0}
+ .lo-calm-body #loCoachTransport[hidden]{display:none!important}
+ .lo-calm-body #loCoachTransport .btn,.lo-calm-body #after .btn,.lo-calm-body .lo-coach-jump{min-height:44px;padding:9px;font-size:13px}
+ .lo-calm-body #loCoachObserved,.lo-calm-body .lo-coach-compare{font-size:13px;line-height:1.5;max-height:none;overflow:visible}
+ .lo-calm-body #loMidCoach{margin:10px 0;border:1px solid #365c54;border-radius:9px}
+ .lo-calm-body #loMidCoach>summary{min-height:44px;padding:9px;font-size:13px}
+ .lo-calm-body #after{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+ .lo-calm-body #after.hide{display:none}
+ .lo-calm-body .lo-footer-links{display:flex!important;position:static;align-items:flex-start;justify-content:flex-start;flex-direction:column;gap:14px;font-size:13px;margin:0;padding:0;min-height:0;width:100%}
+ .lo-calm-body .lo-footer-links a,.lo-calm-body .source-detail summary{font-size:13px;line-height:1.5}
+ .lo-calm-body .source-detail{position:static;width:100%}
+ .lo-calm-body .source-popover{position:static;display:block;max-height:none;overflow:visible;box-shadow:none;width:auto;inset:auto;transform:none;background:#153039;border:1px solid #36575c;padding:12px;margin:8px 0;border-radius:9px;font-size:12px}
+ .lo-calm-body .source-detail:not([open]) .source-popover{display:none}
+}
+@media(max-width:880px) and (orientation:portrait) and (max-height:640px){
+ .app{padding-top:1px}
+ .top{height:46px!important;min-height:46px;margin-bottom:4px}
+ .top .mark{height:33px;width:33px;flex-basis:33px;font-size:17px}
+ .lo-calm-sport-title{font-size:18px}
+ .lo-calm-details>summary{min-height:47px;padding:5px 10px}
+ .lo-calm-choice{min-height:42px;font-size:12px}
+ .bottom{min-height:49px;padding-bottom:3px}
+ .bottom #primary{min-height:44px;font-size:14px}
+}
+@media(prefers-reduced-motion:reduce){.lo-calm-chevron{transition:none}}
 </style></head><body class="eai-refresh"><div class="app"><header class="top"><div class="brand"><button type="button" class="mark lo-secret" id="loSecret" aria-label="LO-logo. Tweemaal tikken voor de berekeningen van het spel" title="LO">LO</button><div><div class="eyebrow">TACTISCH SPELLAB</div><h1>Speel het uit.</h1></div></div><div class="top-actions"><label class="sport-label" for="sportSelect">Sport</label><select id="sportSelect" class="sport-select" aria-label="Kies de sport"><option value="0">Voetbal</option><option value="1">Hockey</option><option value="2">Handbal</option><option value="3">Basketbal</option></select><label class="sport-label" for="formationSelect">Teams</label><select id="formationSelect" class="sport-select formation-select" aria-label="Kies het aantal aanvallers en verdedigers"><option value="0">4 tegen 4</option><option value="1">2 tegen 1</option><option value="2">3 tegen 2</option><option value="3">4 tegen 3</option></select><button id="new" class="btn">Nieuwe spelsituatie</button></div></header><div class="shell"><section class="fieldpane"><div class="fieldhead"><span id="stage" class="pill">Voorbereiden</span><span id="stagehelp" class="small">Versleep de spelers van jouw team</span><label class="playback-control" for="playbackSpeed"><span>Tempo</span><select id="playbackSpeed" aria-label="Afspeelsnelheid"><option value="0.5">½×</option><option value="1" selected>1×</option><option value="1.5">1½×</option><option value="2">2×</option></select></label><button type="button" id="loHelpOpen" class="lo-help-open" aria-haspopup="dialog" aria-controls="loHelp" aria-label="Uitleg en demo's voor het Aanvalslab"><span class="lo-help-mark" aria-hidden="true">?</span><span class="lo-help-word">Uitleg en demo’s</span></button></div><div class="fieldframe"><svg id="pitch" viewBox="0 0 1000 650" tabindex="0" role="img" aria-label="Interactief speelveld. Kies een speler en gebruik de pijltjestoetsen om hem te verplaatsen."></svg></div><div class="lo-coach-transport" id="loCoachTransport" hidden>
  <label for="loCoachSeek">Terug naar spelmoment <output id="loCoachTimestamp">0,0 s</output></label>
  <input id="loCoachSeek" class="lo-coach-seek" type="range" min="0" max="0" step="0.05" value="0" aria-label="Kies een eerder spelmoment">
