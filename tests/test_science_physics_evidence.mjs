@@ -11,7 +11,9 @@ const app=scripts.find(x=>x.includes('const physicsEvidence='));
 assert.ok(model && definitions && app);
 const specs=new Function(definitions+';return labSpecs')();
 const render=new Function(model+';return renderExperiment')();
-const sources=new Function(app+';return physicsEvidence')();
+const evidenceMatch=app.match(/const physicsEvidence=(\{[^\n]+\});/);
+assert.ok(evidenceMatch,'Bronnenoverzicht ontbreekt');
+const sources=JSON.parse(evidenceMatch[1]);
 const gfx=new Proxy({}, {get(){return ()=>{};}});
 const pilot=['lever','collision','gas','bohr','chains'];
 function trial(id,values={},t=0){
