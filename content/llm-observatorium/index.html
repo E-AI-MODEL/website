@@ -156,6 +156,7 @@
 #app:not([data-mode="0"]) .stage-journey-cta{display:none!important}
 #app[data-mode="2"] .cam-switch,#app[data-mode="3"] .cam-switch,#app[data-mode="4"] .cam-switch,#app[data-mode="5"] .cam-switch,#app[data-mode="6"] .cam-switch{display:none!important}
 #app[data-mode="2"] .stage-status,#app[data-mode="3"] .stage-status,#app[data-mode="4"] .stage-status,#app[data-mode="5"] .stage-status,#app[data-mode="6"] .stage-status{display:none!important}
+#app[data-mode="2"] .scene-caption,#app[data-mode="3"] .scene-caption,#app[data-mode="4"] .scene-caption,#app[data-mode="5"] .scene-caption,#app[data-mode="6"] .scene-caption{display:none!important}
 </style>
 </head>
 <body>
@@ -572,6 +573,19 @@ function drawExpertsGrid(){
  }
  ct.fillStyle='#d9ecf1';ct.font='11px ui-monospace,monospace';
  ct.fillText('GEKOZEN: EXPERT '+String(state.expert+1).padStart(3,'0'),left,Math.min(H-12,top+totalH+29));
+ const barTop=top+totalH+54,barWidth=Math.min(172,W*.44);
+ if(barTop+4*21<H-15){
+  ct.fillStyle='#8eacc0';ct.font='10px ui-monospace,monospace';
+  ct.fillText('ROUTERGEWICHTEN · BEREKEND VOORBEELD',left,barTop-13);
+  const routes=chooseRoute(state.layer);
+  routes.forEach((route,i)=>{
+   const y=barTop+i*21;ct.fillStyle='#b2d3df';ct.fillText('E'+String(route.e+1).padStart(3,'0'),left,y+11);
+   ct.fillStyle='#233c51';ct.fillRect(left+52,y+3,barWidth,9);
+   ct.fillStyle=route.e===state.expert?'#f6c789':'#70d6d8';
+   ct.fillRect(left+52,y+3,barWidth*route.p,9);
+   ct.fillStyle='#d0e7eb';ct.fillText((route.p*100).toFixed(1)+'%',left+barWidth+62,y+11);
+  });
+ }
  ct.restore();
 }
 
