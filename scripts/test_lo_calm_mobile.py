@@ -38,7 +38,28 @@ def phone(browser,width,height):
     assert geometry["pitchHeight"]>=180 or height<620,geometry
     assert geometry["playHeight"]>=44,geometry
     assert geometry["settingsHeight"]>=44,geometry
-    assert all(h>=44 for h in geometry["accordionHeights"]),geometry
+    assert all(44<=h<=49 for h in geometry["accordionHeights"]),geometry
+    # Een knop blijft makkelijk aan te tikken, zonder een groot gekleurd vlak.
+    refined=page.evaluate("""() => {
+      const play=document.getElementById('primary');
+      const action=document.querySelector('#loCalmQuickButtons .lo-calm-choice');
+      const icon=document.querySelector('.lo-calm-icon');
+      const summary=document.querySelector('#loCalmTask>summary');
+      return {
+        playWidth:play.getBoundingClientRect().width,
+        playFont:parseFloat(getComputedStyle(play).fontSize),
+        quickHit:action.getBoundingClientRect().height,
+        quickVisualTop:getComputedStyle(action,'::before').top,
+        iconSize:parseFloat(getComputedStyle(icon).fontSize),
+        summaryFont:parseFloat(getComputedStyle(summary.querySelector('.lo-calm-title')).fontSize)
+      };
+    }""")
+    assert refined["playWidth"]<=min(240,width*.72),refined
+    assert 12<=refined["playFont"]<=14,refined
+    assert refined["quickHit"]>=44,refined
+    assert refined["quickVisualTop"]=="5px",refined
+    assert refined["iconSize"]<=16,refined
+    assert 12<=refined["summaryFont"]<=14,refined
     page.screenshot(path=str(SHOTS/f"{browser.browser_type.name}-{width}x{height}-rust.png"),full_page=True)
     if width==390:
         before=page.evaluate("""() => {
