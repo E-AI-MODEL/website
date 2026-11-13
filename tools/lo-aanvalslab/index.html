@@ -1005,7 +1005,7 @@ el('loCoachAuto').addEventListener('click',()=>{
 el('loCoachMoment').addEventListener('click',()=>{
  if(!Number.isFinite(loCoachMomentTime)||!frames.length)return;
  cancelAnimationFrame(raf);time=clamp(loCoachMomentTime,0,duration);
- state='paused';loCoachHighlight=true;refresh();showFrame(time);
+ state='paused';loPauseLimit=time;loCoachHighlight=true;refresh();showFrame(time);
 });
 
 const tactics={a:[['diep','Diep gaan'],['breed','Breed houden'],['bal','In de bal'],['stil','Blijven staan'],['kruis','Kruisen'],['ruimte','Ruimte maken']],d:[['dek','Man dekken'],['lijn','Passlijn sluiten'],['druk','Druk op bal'],['zonecompact','Zone · compact'],['zoneschuif','Zone · schuiven'],['zonelijn','Zone · passlijnen'],['volg','Loopactie volgen'],['terug','Terugzakken']]};
@@ -1528,7 +1528,8 @@ function loCoachTransportRefresh(){
  el('loCoachTimestamp').textContent=loSeconds(time)+' s';
  el('loCoachOriginal').hidden=!loBranchHistory||loCurrentVersion==='origin';
  el('loCoachVariant').hidden=!loBranchHistory||loCurrentVersion==='variant';
- el('loCoachEdit').disabled=!frames.length;
+ el('loCoachEdit').disabled=!frames.length||time>=duration-DT*.5;
+ el('loCoachEdit').title=time>=duration-DT*.5?'Schuif eerst terug naar een moment vóór het einde.':'Geef een speler vanaf dit moment een andere opdracht.';
 }
 el('loCoachEdit').addEventListener('click',loOpenCoach);
 el('loMidCancel').addEventListener('click',loCancelCoach);
@@ -1753,7 +1754,7 @@ document.addEventListener('keydown',event=>{
  if(event.key==='Escape'&&!el('loAnalysis').hidden){event.preventDefault();closeLoAnalysis()}
 });
 // De handleiding kan een lokaal spel pauzeren. Een online wedstrijd blijft synchroon doorlopen.
-window.__loHelpPause=()=>{if(state==='playing'&&mode!=='online'){cancelAnimationFrame(raf);state='paused';refresh();return true}return false};
+window.__loHelpPause=()=>{if(state==='playing'&&mode!=='online'){cancelAnimationFrame(raf);state='paused';loPauseLimit=time;refresh();return true}return false};
 // Alleen testomgeving: reproductie van spelsituaties zonder UI-animatie.
 window.__loLabTest={run(input,withSeed=1337){loCancelArrowTimer();initial=copy(input);simSeed=withSeed;simulate();return copy(summary)},getPlayers:()=>copy(players),getFrames:()=>copy(frames),getEvents:()=>copy(events),scenario:index=>{makeScenario(index);return copy(players)},setFormation:index=>{applyFormation(index);makeScenario(scenarioIndex);resetSetup();return copy(players)},setSpeed:speed=>{playbackSpeed=clamp(speed,.5,2);el('playbackSpeed').value=String(playbackSpeed)},getTime:()=>time,reachTime,getConfig:()=>copy(sportCfg()),setZonePlan(key){if(!['zonecompact','zoneschuif','zonelijn'].includes(key))return;for(const p of players)if(p.team==='d')p.intent=key;syncZonePlans();draw()},getIntents:()=>copy(tactics.d),selectPreviewPlayer:id=>{if(state!=='setup')return false;choose(id);return selected===id},getArrowPreview:()=>copy({player:selected,track:loArrowCache?.key===loArrowKey()?loArrowCache.tracks[selected]||[]:[],isCurrent:loArrowCache?.key===loArrowKey(),mode}),getCoachObservation:key=>copy(loCoachObservation(key)),getCoachState:()=>({sport:sportIndex,role:loGoalRole,goal:loGoalKey,manual:loGoalManual,count:loGoals().length,run:loRunNumber,previous:loLastAttempt?.run??null}),getCompareText:()=>el('loCoachCompare').textContent,coachPreview:()=>{loCoachFeedback();return {observed:el('loCoachObserved').textContent,challenge:el('insight').textContent,moment:loCoachMomentTime,goal:loGoalKey}}};
 })();
@@ -1884,7 +1885,7 @@ const lessons=[
  ]},
  {id:'afspelen',title:'Spel afspelen',steps:[
   ['Start de aanval','Druk op Speel de aanval. De spelers bewegen volgens de ingestelde opdrachten.','Je bestuurt de beginopstelling en opdrachten, niet iedere pass tijdens het afspelen.','play','De aanval wordt afgespeeld'],
-  ['Pauzeer en kijk','Gebruik Pauzeer om een moment terug te zien. Met Tempo kun je langzamer afspelen.','De standaard snelheid is 1×.','pause','De bal staat even stil'],
+  ['Pauzeer en stuur bij','Pauzeer, schuif terug naar een spelmoment en kies Coach · verander actie.','De nieuwe opdracht start vanaf dat moment. De oorspronkelijke aanval blijft beschikbaar.','pause','De bal staat even stil'],
   ['Probeer opnieuw','Gebruik Speel opnieuw voor dezelfde poging. Via Pas plan aan kun je één opdracht veranderen.','Je kunt je vorige en nieuwe poging daarna vergelijken.','repeat','Speel dezelfde aanval opnieuw']
  ]},
  {id:'coaching',title:'Doelen en coach',steps:[
