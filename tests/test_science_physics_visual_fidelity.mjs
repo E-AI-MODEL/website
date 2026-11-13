@@ -57,6 +57,12 @@ test('Newtons wieg: eerst de linker ballen, na een halve periode de rechter',()=
  near(second[0].args[0],370);
  assert.ok(second[4].args[0]>630+90 && second[3].args[0]>565+90,'Rechts ontvangt de impuls');
 });
+test("Newtons wieg met drie ballen: ook de middelste beweegt bij links loslaten",()=>{
+ const left=draw('cradle',{n:3,angle:30},0).calls.filter(c=>c.name==='dot');
+ const right=draw('cradle',{n:3,angle:30},1.4).calls.filter(c=>c.name==='dot');
+ assert.ok(left[2].args[0]<500-90,'Derde bal moet met de linker groep meebewegen');
+ assert.ok(right[2].args[0]>500+90,'Middelste bal moet met de rechter groep meebewegen');
+});
 test('Beide spleetproeven: beeldstrook blijft in mm en verandert mee met instellingen',()=>{
  const cases=[
   ['double',{d:.3,lambda:550,L:1.5},{d:.6,lambda:550,L:1.5}],
