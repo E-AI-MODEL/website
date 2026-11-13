@@ -1,103 +1,76 @@
-<!doctype html><html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Science Observatory · EAI</title><meta name="description" content="Onderzoek natuurkunde en wiskunde met interactieve simulaties."><link rel="canonical" href="https://eaimodel.nl/tools/science-observatory/"><link rel="icon" href="/assets/eai-logo.svg" type="image/svg+xml"><link rel="stylesheet" href="/assets/site.css"></head><body><a class="skip-link" href="#main-content">Ga naar de inhoud</a><header class="site-header"><nav class="nav" aria-label="Hoofdnavigatie"><a class="brand" href="/" aria-label="EAI home"><img src="/assets/eai-logo.svg" alt="EAI"></a><div class="nav-links"><a href="/">EAI</a><details class="nav-group"><summary>Toepassingen</summary><div class="nav-group-panel"><a href="/toepassingen/">Overzicht toepassingen</a><a href="/praktijk/">Praktijk & demonstrators</a></div></details><details class="nav-group"><summary>Onderwijs</summary><div class="nav-group-panel"><a href="/onderwijs/">Overzicht onderwijs</a><a href="/werkvormen/">EAI-werkvormen</a><a href="/taalwerkvormen/">TAALwerkvormen</a><a href="/werkvormen/#didactisch-model">Didactische modellen</a></div></details><details class="nav-group is-current"><summary>Observatoria</summary><div class="nav-group-panel"><a href="/tools/science-observatory/">Science Observatory</a><a href="/tools/science-observatory/labs/natuurkunde/">Natuurkunde · 53 proefmodellen</a><a href="/tools/anatomie/">Anatomisch Observatorium</a><a href="/tools/anatomie/labs/hartslag/">Hartslaglab · hartcyclus</a><a href="/tools/llm-observatorium/">LLM Observatorium</a><a href="/tools/abyss/">ABYSS</a><a href="/tools/melkweg-lab/">Melkweg Lab</a></div></details><details class="nav-group"><summary>Tools</summary><div class="nav-group-panel"><a href="/tools/">Alle tools</a><a href="/tools/wihtml/">WiHTML Docentstudio</a><a href="/tools/prompt-framework/">EAI Prompt Framework</a><a href="/model-monitor/">AI Model Monitor</a><a href="/nl/insights/">Website-inzichten</a></div></details><details class="nav-group"><summary>Kennis</summary><div class="nav-group-panel"><a href="/kennis/">Overzicht kennis</a><a href="/onderbouwing/">Onderbouwing</a><a href="/bronnen/">Bronnen</a><a href="/publicaties/">Publicaties & media</a><a href="/tools/">Tools</a><a href="/twee-pijlers/">Twee pijlers</a></div></details><a href="/onderwijsin/">Onderwijs in</a><a href="/over/">Over</a><a class="nav-cta" href="https://nl.linkedin.com/in/hans-visser-92531a105" target="_blank" rel="noopener">LinkedIn ↗</a></div><details class="mobile-nav"><summary>Menu</summary><div class="mobile-nav-panel"><a href="/">EAI</a><details class="mobile-nav-group"><summary>Toepassingen</summary><div class="mobile-nav-sub"><a href="/toepassingen/">Overzicht toepassingen</a><a href="/praktijk/">Praktijk & demonstrators</a></div></details><details class="mobile-nav-group"><summary>Onderwijs</summary><div class="mobile-nav-sub"><a href="/onderwijs/">Overzicht onderwijs</a><a href="/werkvormen/">EAI-werkvormen</a><a href="/taalwerkvormen/">TAALwerkvormen</a><a href="/werkvormen/#didactisch-model">Didactische modellen</a></div></details><details class="mobile-nav-group is-current"><summary>Observatoria</summary><div class="mobile-nav-sub"><a href="/tools/science-observatory/">Science Observatory</a><a href="/tools/science-observatory/labs/natuurkunde/">Natuurkunde · 53 proefmodellen</a><a href="/tools/anatomie/">Anatomisch Observatorium</a><a href="/tools/anatomie/labs/hartslag/">Hartslaglab · hartcyclus</a><a href="/tools/llm-observatorium/">LLM Observatorium</a><a href="/tools/abyss/">ABYSS</a><a href="/tools/melkweg-lab/">Melkweg Lab</a></div></details><details class="mobile-nav-group"><summary>Tools</summary><div class="mobile-nav-sub"><a href="/tools/">Alle tools</a><a href="/tools/wihtml/">WiHTML Docentstudio</a><a href="/tools/prompt-framework/">EAI Prompt Framework</a><a href="/model-monitor/">AI Model Monitor</a><a href="/nl/insights/">Website-inzichten</a></div></details><details class="mobile-nav-group"><summary>Kennis</summary><div class="mobile-nav-sub"><a href="/kennis/">Overzicht kennis</a><a href="/onderbouwing/">Onderbouwing</a><a href="/bronnen/">Bronnen</a><a href="/publicaties/">Publicaties & media</a><a href="/tools/">Tools</a><a href="/twee-pijlers/">Twee pijlers</a></div></details><a href="/onderwijsin/">Onderwijs in</a><a href="/over/">Over</a><a href="https://nl.linkedin.com/in/hans-visser-92531a105" target="_blank" rel="noopener">LinkedIn ↗</a></div></details></nav></header><style>
-.so-home{--so-ink:#eaf5ff;--so-muted:#a0b7cb;--so-line:#30455f;--so-bg:#07111f;--so-card:#0f2135;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;background:#07111f;color:var(--so-ink);min-height:100vh}
-.so-home *{box-sizing:border-box}.so-home .so-wrap{max-width:1240px;margin:auto;padding:0 28px}.so-home .so-head{padding:68px 0 45px;background:radial-gradient(ellipse at 78% 24%,#173f5d 0%,#0b1d30 45%,#07111f 78%);border-bottom:1px solid var(--so-line)}
-.so-home .so-kicker{font:700 11px ui-monospace,monospace;letter-spacing:.18em;color:#86e3eb;text-transform:uppercase}
-.so-home h1{font-size:clamp(2.5rem,5vw,4.5rem);letter-spacing:-.055em;line-height:1.07;margin:15px 0 19px;color:#f3fbff;max-width:980px}
-.so-home .so-lead{font-size:1.1rem;line-height:1.75;max-width:730px;color:#b8ccdd}
-.so-home .so-pills{display:flex;gap:9px;flex-wrap:wrap;margin:25px 0 0}.so-home .so-pill{border:1px solid #416078;border-radius:5px;padding:7px 12px;color:#b1dce8;background:#0d2537;font:11px ui-monospace,monospace}
-.so-home .so-collection{padding:40px 0 72px}.so-home .so-section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:23px}
-.so-home .so-section-head h2{font-size:clamp(1.45rem,2.4vw,2rem);letter-spacing:-.035em;color:#f5fbff;margin:7px 0 0}.so-home .so-section-head p{color:#a7bcd0;margin:5px 0 0}
-.so-home .so-tools{display:flex;gap:10px;flex-wrap:wrap}.so-home select,.so-home input{background:#10253a;border:1px solid #38536c;border-radius:6px;color:#e9f5ff;padding:12px 13px;font:13px system-ui;min-width:175px}.so-home input{min-width:240px}.so-home input:focus-visible,.so-home select:focus-visible{outline:2px solid #76dbe9;outline-offset:2px}
-.so-home .so-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
-.so-home .so-card{display:flex;flex-direction:column;gap:14px;min-height:246px;border:1px solid #2e4a64;border-radius:10px;padding:23px;background:linear-gradient(145deg,#122a42,#0b1a2b);text-decoration:none;color:#ebf6ff;transition:transform .15s,border-color .15s}
-.so-home .so-card:hover,.so-home .so-card:focus-visible{transform:translateY(-3px);border-color:#7cdde6;color:#fff;text-decoration:none}
-.so-home .so-card-top{display:flex;justify-content:space-between;gap:10px;align-items:center}.so-home .so-id{font:700 11px ui-monospace,monospace;color:#7edbe5;letter-spacing:.12em}.so-home .so-state{font:10px ui-monospace,monospace;padding:5px 8px;border-radius:5px;color:#c5d6e5;border:1px solid #43617a}
-.so-home .so-card h3{font-size:1.7rem;letter-spacing:-.04em;margin:0;color:#f7fbff}.so-home .so-card p{font-size:14px;color:#b0c6d9;line-height:1.65;max-width:540px;margin:0}.so-home .so-open{margin-top:auto;color:#82e2eb;font-weight:700;font-size:13px}
-.so-home .so-foot{border-top:1px solid var(--so-line);padding:24px 0 54px;color:var(--so-muted);line-height:1.7}.so-home .so-foot strong{color:#e6f4ff}
-.so-home .so-none{display:none;color:#bfd1de;border:1px dashed #527088;padding:20px;border-radius:8px}
-@media(max-width:720px){.so-home .so-grid{grid-template-columns:1fr}.so-home .so-wrap{padding:0 16px}.so-home .so-head{padding:45px 0 30px}.so-home .so-tools{width:100%}.so-home .so-tools>*{flex:1;min-width:0}.so-home .so-card{min-height:220px;padding:20px}}
-
-/* Science Observatory 1.1: compacte, responsieve startpagina. */
-.so-home{font-size:14px;line-height:1.5}
-.so-home .so-wrap{max-width:1160px;padding-inline:24px}
-.so-home .so-head{padding:34px 0 25px}
-.so-home .so-kicker{font-size:10px;letter-spacing:.11em}
-.so-home h1{font-size:clamp(1.9rem,3.1vw,2.8rem);line-height:1.12;letter-spacing:-.038em;max-width:760px;margin:10px 0 10px}
-.so-home .so-lead{font-size:14px;line-height:1.55;max-width:670px;margin:0}
-.so-home .so-pills{gap:6px;margin:14px 0 0}
-.so-home .so-pill{font-size:10px;padding:5px 9px;letter-spacing:0}
-.so-home .so-collection{padding:26px 0 38px}
-.so-home .so-section-head{align-items:center;gap:14px;margin-bottom:14px}
-.so-home .so-section-head h2{font-size:1.4rem;line-height:1.23;letter-spacing:-.025em;margin:4px 0 0}
-.so-home .so-section-head p{font-size:12px;line-height:1.4;margin:3px 0 0}
-.so-home .so-tools{gap:8px}
-.so-home .so-tools select,.so-home .so-tools input{font-size:12px;min-height:40px;padding:9px 11px;border-radius:6px;max-width:100%}
-.so-home .so-tools select{min-width:154px}.so-home .so-tools input{min-width:180px}
-.so-home .so-grid{gap:12px}
-.so-home .so-card{padding:17px 18px;min-height:175px;gap:9px;border-radius:8px}
-.so-home .so-card-top{gap:9px}
-.so-home .so-id{font-size:10px;letter-spacing:.06em}
-.so-home .so-state{font-size:9px;padding:4px 6px;white-space:nowrap}
-.so-home .so-card h3{font-size:1.25rem;line-height:1.22;letter-spacing:-.025em}
-.so-home .so-card p{font-size:12.5px;line-height:1.48;max-width:640px}
-.so-home .so-open{font-size:12px;line-height:1.2}
-.so-home .so-foot{padding:18px 0 26px;font-size:12px;line-height:1.6}
-.so-home .so-foot p{max-width:930px;margin:0 0 8px}
-@media(max-width:720px){
-  .so-home .so-wrap{padding-inline:15px}
-  .so-home .so-head{padding:20px 0 17px}
-  .so-home .so-kicker{font-size:9px;letter-spacing:.075em}
-  .so-home h1{font-size:clamp(1.48rem,6.3vw,1.85rem);line-height:1.14;margin:8px 0 8px;letter-spacing:-.035em}
-  .so-home .so-lead{font-size:12.5px;line-height:1.52;max-width:100%}
-  .so-home .so-pills{display:none}
-  .so-home .so-collection{padding:18px 0 28px}
-  .so-home .so-section-head{align-items:stretch;gap:11px;margin-bottom:11px}
-  .so-home .so-section-head h2{font-size:1.16rem;margin:3px 0 0}
-  .so-home .so-section-head p{font-size:11px;line-height:1.35}
-  .so-home .so-tools{display:grid;grid-template-columns:minmax(0,0.95fr) minmax(0,1.05fr);width:100%;gap:7px}
-  .so-home .so-tools label{min-width:0;display:block}
-  .so-home .so-tools select,.so-home .so-tools input{width:100%;min-width:0;min-height:42px;padding:9px 9px;font-size:12px}
-  .so-home .so-grid{grid-template-columns:minmax(0,1fr);gap:9px}
-  .so-home .so-card{padding:13px 14px;min-height:0;gap:7px}
-  .so-home .so-card-top{align-items:flex-start}
-  .so-home .so-id{font-size:9px;line-height:1.35}
-  .so-home .so-state{font-size:9px;line-height:1.2}
-  .so-home .so-card h3{font-size:1.1rem;line-height:1.24}
-  .so-home .so-card p{font-size:12px;line-height:1.45;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
-  .so-home .so-open{font-size:11.5px;padding-top:2px}
-  .so-home .so-foot{padding:14px 0 20px;font-size:11px}
-  .banner{padding:8px 15px;font-size:10px;line-height:1.35;letter-spacing:0}
-}
-@media(min-width:721px) and (max-width:980px){
-  .so-home .so-section-head{align-items:flex-start;flex-direction:column}
-  .so-home .so-card{min-height:195px}
-}
-@media(prefers-reduced-motion:reduce){.so-home .so-card{transition:none}}
-
-.so-home .so-junior{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin:0 0 15px;padding:14px 18px;border:1px solid #528f9a;border-radius:10px;background:#123347}.so-home .so-junior strong{display:block;font-size:16px;color:#ecfbff}.so-home .so-junior p{margin:4px 0 0;font-size:12px;color:#c3dfeb;line-height:1.45}.so-home .so-junior a{color:#d8fff6;font-size:13px;font-weight:750;white-space:nowrap;text-underline-offset:4px}\n.so-home .so-topic-tabs{display:flex;flex-wrap:wrap;gap:5px}.so-home .so-topic-tabs button{background:transparent;color:#a9c5d5;border:1px solid #35516a;border-radius:5px;min-height:40px;padding:9px 12px;font:600 12px system-ui;cursor:pointer}.so-home .so-topic-tabs button:hover,.so-home .so-topic-tabs button[aria-pressed="true"]{color:#edfffb;border-color:#73c9cb;background:#133542}.so-home .so-topic-tabs button:focus-visible{outline:2px solid #79d9dd;outline-offset:2px}.so-home .so-featured{grid-column:1/-1;min-height:175px;background:linear-gradient(110deg,#153549,#0b1928);border-color:#487688}.so-home .so-featured h3{font-size:1.58rem}.so-home .so-featured .so-state{border-color:#5b9b9f;color:#a0f2df}.so-home .so-junior{border-width:1px}.so-home .so-card{border-width:1px}.so-home .so-tools{align-items:center}.so-home .so-tools input{min-width:175px}.so-home .so-featured:hover{border-color:#94e9e7}@media(max-width:720px){.so-home .so-featured{grid-column:auto}.so-home .so-topic-tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:100%}.so-home .so-topic-tabs button{padding:8px 5px}.so-home .so-tools{display:flex;flex-direction:column;align-items:stretch}.so-home .so-tools label{width:100%}.so-home .so-tools input{width:100%}}
+<!doctype html><html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Interactief onderzoeken · EAI</title><meta name="description" content="Onderzoek natuurkunde, wiskunde, de Melkweg, anatomie, AI en sport met interactieve modellen."><link rel="canonical" href="https://eaimodel.nl/tools/science-observatory/"><link rel="icon" href="/assets/eai-logo.svg" type="image/svg+xml"><link rel="stylesheet" href="/assets/site.css"></head><body><a class="skip-link" href="#main-content">Ga naar de inhoud</a><header class="site-header"><nav class="nav" aria-label="Hoofdnavigatie"><a class="brand" href="/" aria-label="EAI home"><img src="/assets/eai-logo.svg" alt="EAI"></a><div class="nav-links"><a href="/">EAI</a><details class="nav-group"><summary>Toepassingen</summary><div class="nav-group-panel"><a href="/toepassingen/">Overzicht toepassingen</a><a href="/praktijk/">Praktijk & demonstrators</a></div></details><details class="nav-group"><summary>Onderwijs</summary><div class="nav-group-panel"><a href="/onderwijs/">Overzicht onderwijs</a><a href="/werkvormen/">EAI-werkvormen</a><a href="/taalwerkvormen/">TAALwerkvormen</a><a href="/werkvormen/#didactisch-model">Didactische modellen</a></div></details><details class="nav-group is-current"><summary>Observatoria</summary><div class="nav-group-panel"><a href="/tools/science-observatory/">Science Observatory</a><a href="/tools/science-observatory/labs/natuurkunde/">Natuurkunde · 53 proefmodellen</a><a href="/tools/anatomie/">Anatomisch Observatorium</a><a href="/tools/anatomie/labs/hartslag/">Hartslaglab · hartcyclus</a><a href="/tools/llm-observatorium/">LLM Observatorium</a><a href="/tools/abyss/">ABYSS</a><a href="/tools/melkweg-lab/">Melkweg Lab</a></div></details><details class="nav-group"><summary>Tools</summary><div class="nav-group-panel"><a href="/tools/">Alle tools</a><a href="/tools/wihtml/">WiHTML Docentstudio</a><a href="/tools/prompt-framework/">EAI Prompt Framework</a><a href="/model-monitor/">AI Model Monitor</a><a href="/nl/insights/">Website-inzichten</a></div></details><details class="nav-group"><summary>Kennis</summary><div class="nav-group-panel"><a href="/kennis/">Overzicht kennis</a><a href="/onderbouwing/">Onderbouwing</a><a href="/bronnen/">Bronnen</a><a href="/publicaties/">Publicaties & media</a><a href="/tools/">Tools</a><a href="/twee-pijlers/">Twee pijlers</a></div></details><a href="/onderwijsin/">Onderwijs in</a><a href="/over/">Over</a><a class="nav-cta" href="https://nl.linkedin.com/in/hans-visser-92531a105" target="_blank" rel="noopener">LinkedIn ↗</a></div><details class="mobile-nav"><summary>Menu</summary><div class="mobile-nav-panel"><a href="/">EAI</a><details class="mobile-nav-group"><summary>Toepassingen</summary><div class="mobile-nav-sub"><a href="/toepassingen/">Overzicht toepassingen</a><a href="/praktijk/">Praktijk & demonstrators</a></div></details><details class="mobile-nav-group"><summary>Onderwijs</summary><div class="mobile-nav-sub"><a href="/onderwijs/">Overzicht onderwijs</a><a href="/werkvormen/">EAI-werkvormen</a><a href="/taalwerkvormen/">TAALwerkvormen</a><a href="/werkvormen/#didactisch-model">Didactische modellen</a></div></details><details class="mobile-nav-group is-current"><summary>Observatoria</summary><div class="mobile-nav-sub"><a href="/tools/science-observatory/">Science Observatory</a><a href="/tools/science-observatory/labs/natuurkunde/">Natuurkunde · 53 proefmodellen</a><a href="/tools/anatomie/">Anatomisch Observatorium</a><a href="/tools/anatomie/labs/hartslag/">Hartslaglab · hartcyclus</a><a href="/tools/llm-observatorium/">LLM Observatorium</a><a href="/tools/abyss/">ABYSS</a><a href="/tools/melkweg-lab/">Melkweg Lab</a></div></details><details class="mobile-nav-group"><summary>Tools</summary><div class="mobile-nav-sub"><a href="/tools/">Alle tools</a><a href="/tools/wihtml/">WiHTML Docentstudio</a><a href="/tools/prompt-framework/">EAI Prompt Framework</a><a href="/model-monitor/">AI Model Monitor</a><a href="/nl/insights/">Website-inzichten</a></div></details><details class="mobile-nav-group"><summary>Kennis</summary><div class="mobile-nav-sub"><a href="/kennis/">Overzicht kennis</a><a href="/onderbouwing/">Onderbouwing</a><a href="/bronnen/">Bronnen</a><a href="/publicaties/">Publicaties & media</a><a href="/tools/">Tools</a><a href="/twee-pijlers/">Twee pijlers</a></div></details><a href="/onderwijsin/">Onderwijs in</a><a href="/over/">Over</a><a href="https://nl.linkedin.com/in/hans-visser-92531a105" target="_blank" rel="noopener">LinkedIn ↗</a></div></details></nav></header><style>
+.so-home{--s-line:#2b4154;--s-ink:#eff7fc;--s-dim:#adc1ce;--s-link:#94dce8;background:#081421;color:var(--s-ink);font:400 15px/1.5 Inter,system-ui,sans-serif;min-height:75vh}
+.so-home *{box-sizing:border-box}
+.so-home .so-wrap{max-width:1160px;margin:auto;padding:0 28px}
+.so-home .so-intro{padding:40px 0 26px;border-bottom:1px solid var(--s-line);background:radial-gradient(ellipse at 85% -45%,#17384b 0%,#081421 58%)}
+.so-home .so-label{font-size:11px;font-weight:700;letter-spacing:.09em;color:#86bac9;text-transform:uppercase}
+.so-home h1{font-size:clamp(34px,4.2vw,52px);letter-spacing:-.047em;line-height:1.07;margin:10px 0 12px;color:#fff;font-weight:720}
+.so-home .so-intro p{max-width:740px;font-size:15px;line-height:1.6;color:#c1d3dd;margin:0}
+.so-home .so-collection{padding:28px 0 38px}
+.so-home .so-section-title{font-size:18px;letter-spacing:-.02em;line-height:1.3;margin:0 0 17px;font-weight:700;color:#edf6fa}
+.so-home .so-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.so-home .so-card{position:relative;min-width:0;display:flex;flex-direction:column;gap:0;border:1px solid var(--s-line);border-radius:10px;min-height:236px;padding:20px;background:linear-gradient(155deg,rgba(24,46,63,.62),rgba(9,23,37,.53));transition:border-color .2s,transform .2s}
+.so-home .so-card:hover{border-color:#68889b;transform:translateY(-2px)}
+.so-home .so-card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+.so-home .so-art{width:56px;height:45px;flex:none;display:block;color:#82b9cf}
+.so-home .so-art svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.so-home .so-art svg .soft{opacity:.3}
+.so-home .so-count{font-size:11px;color:#8daabd;text-align:right;line-height:1.3}
+.so-home h3{font-size:20px;color:#f5fbff;line-height:1.22;letter-spacing:-.025em;margin:0 0 6px;font-weight:700}
+.so-home .so-desc{font-size:13px;color:#afc6d4;line-height:1.48;margin:0 0 15px;min-height:38px}
+.so-home .so-links{margin-top:auto;display:flex;flex-direction:column;gap:0;border-top:1px solid rgba(132,165,184,.23)}
+.so-home .so-links a{display:flex;align-items:center;justify-content:space-between;gap:10px;color:#cfeef4;text-decoration:none;font-size:12.5px;font-weight:600;padding:10px 0;border-bottom:1px solid rgba(132,165,184,.16);transition:color .15s}
+.so-home .so-links a:last-child{border-bottom:0;padding-bottom:0}
+.so-home .so-links a:hover,.so-home .so-links a:focus-visible{color:#fff;text-decoration:underline;text-underline-offset:3px}
+.so-home .so-links a:after{content:"›";font-size:19px;line-height:.7;font-weight:400;color:#76baca}
+.so-home a:focus-visible,.so-home summary:focus-visible{outline:2px solid #8fe2e8;outline-offset:3px;border-radius:3px}
+.so-home .so-foot{border-top:1px solid var(--s-line);padding:15px 0 28px;color:#9fb5c4}
+.so-home .so-foot details{max-width:900px;font-size:12px;line-height:1.6}
+.so-home .so-foot summary{display:inline-block;cursor:pointer;font-size:12px;font-weight:650;color:#c3d4de;text-decoration:underline;text-underline-offset:4px}
+.so-home .so-foot p{margin:9px 0 0;max-width:850px}
+@media(max-width:900px){.so-home .so-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:590px){.so-home .so-wrap{padding:0 17px}.so-home .so-intro{padding:24px 0 20px}.so-home h1{font-size:34px}.so-home .so-intro p{font-size:13px}.so-home .so-collection{padding:22px 0 28px}.so-home .so-grid{grid-template-columns:minmax(0,1fr);gap:10px}.so-home .so-card{min-height:auto;padding:16px}.so-home .so-desc{min-height:auto}.so-home .so-art{width:47px;height:37px}}
+@media(prefers-reduced-motion:reduce){.so-home .so-card,.so-home .so-links a{transition:none}}
 </style>
 <main id="main-content" class="so-home">
-<section class="so-head"><div class="so-wrap"><div class="so-kicker">EAI / Science Observatory / proefbibliotheek</div>
-<h1>Kies wat je wilt onderzoeken.</h1>
-<p class="so-lead">Open een onderzoeksruimte en verander zelf de omstandigheden. De bewegingen, grafieken en meetwaarden reageren op jouw keuzes. Sommige modellen gebruiken vereenvoudigingen; die staan bij de proef vermeld.</p>
-<div class="so-pills"><span class="so-pill">Interactieve simulaties</span><span class="so-pill">Wiskunde A &amp; B</span><span class="so-pill">Natuurkunde</span><span class="so-pill">Vwo-bovenbouw</span><span class="so-pill">Proefversie</span></div></div></section>
+<section class="so-intro"><div class="so-wrap">
+<div class="so-label">EAI / Interactief onderzoeken</div>
+<h1>Hier mag je overal aan zitten.</h1>
+<p>Draai de Melkweg, verander de baan van een satelliet of zet spelers in beweging. Ontdek zelf wat er gebeurt.</p>
+</div></section>
 <section class="so-collection"><div class="so-wrap">
-<div class="so-section-head"><div><div class="so-kicker">Onderzoeksruimtes</div><h2>Open een observatorium</h2><p>Vijf onderzoeksruimtes, elk met een eigen aanpak. Geen account nodig.</p></div>
-<div class="so-tools"><div class="so-topic-tabs" role="group" aria-label="Kies vak"><button type="button" data-so-filter="all" aria-pressed="true">Alles</button><button type="button" data-so-filter="nf" aria-pressed="false">Natuurkunde</button><button type="button" data-so-filter="wa" aria-pressed="false">Wiskunde A</button><button type="button" data-so-filter="wb" aria-pressed="false">Wiskunde B</button></div><label><span class="sr-only">Zoek een onderzoeksruimte</span><input id="so-search" type="search" placeholder="Zoek onderzoeksruimte…" autocomplete="off"></label></div></div>
-<div class="so-junior"><div><strong>Melkweg Lab · Vanaf 10 jaar</strong><p>Een Melkweg om zelf in te spelen. Draai, zoek de zon en klik op de planeten.</p></div><a href="/tools/melkweg-lab/">Open Melkweg Lab →</a></div>
-<div class="so-grid" id="so-cards">
-<a class="so-card so-featured" href="/tools/science-observatory/labs/natuurkunde/" data-vak="nf" data-search="natuurkunde mechanica beweging krachten versnelling Newton botsing projectiel schuine worp cirkelbeweging zwaartekracht hydrostatica drijven vloeistofdruk trillingen golf golven interferentie geluid doppler magnetisme elektrisch elektriciteit weerstand spanning schakeling fotoelektrisch atoom Bohr radioactiviteit verval relativiteit licht lenzen breking diffractie optica thermodynamica gas experiment 3d">
-<div class="so-card-top"><span class="so-id">NF / 01 · NATUURKUNDE · 53 PROEVEN</span><span class="so-state">Nieuwe proefversie</span></div><h3>Natuurkunde: experimenteer zelf</h3><p>Onderzoek 53 natuurkundige proefmodellen: van beweging en golven tot licht, elektriciteit en atoomfysica. Verander grootheden, gebruik waar mogelijk directe bediening en vergelijk metingen.</p><span class="so-open">Open de 53 proeven →</span></a>
-<a class="so-card" href="/tools/science-observatory/labs/melkweg/" data-vak="nf" data-search="melkweg sterrenstelsel sterrenkunde rotatie donkere materie gravitatie 3d">
-<div class="so-card-top"><span class="so-id">MW / 01 · NATUURKUNDE</span><span class="so-state">Oorspronkelijk model</span></div><h3>Galactisch Observatorium</h3><p>Onderzoek de Melkweg van buiten én van binnen. Zes onderzoeksmodes met ruimtelijke opbouw, dynamica, sterrenpopulaties, Gaia en Sagittarius A*.</p><span class="so-open">Open de Melkweg →</span></a>
-<a class="so-card" href="/tools/science-observatory/labs/gravitatie-banen/" data-vak="nf" data-search="gravitatie satellietbanen 3d aarde zwaartekracht hohmann baanwissel ontsnappingssnelheid grondspoor mechanica kepler">
-<div class="so-card-top"><span class="so-id">NF / 02 · NATUURKUNDE</span><span class="so-state">Nieuw observatorium</span></div><h3>Gravitatie &amp; satellietbanen</h3><p>Draai echte ruimtelijke banen, onderzoek het zwaartekrachtveld, bereken een baanwissel en volg de satelliet boven de aarde. Zes gekoppelde onderzoeksmodes.</p><span class="so-open">Open gravitatie →</span></a>
-
-<a class="so-card" href="/tools/science-observatory/labs/wiskunde-a/" data-vak="wa" data-search="wiskunde a kansverdeling statistiek kans kansen dichtheid regressie">
-<div class="so-card-top"><span class="so-id">WA / 01 · WISKUNDE A</span><span class="so-state">Proefmodel</span></div><h3>Kans en statistiek</h3><p>Vergelijk kansverdelingen, cumulatieve kansen en statistische modellen. Onderzoek de uitwerking van je parameterkeuzes.</p><span class="so-open">Open wiskunde A →</span></a>
-<a class="so-card" href="/tools/science-observatory/labs/wiskunde-b/" data-vak="wb" data-search="wiskunde b afgeleide functies raaklijnen integralen optimalisatie">
-<div class="so-card-top"><span class="so-id">WB / 01 · WISKUNDE B</span><span class="so-state">Proefmodel</span></div><h3>Functies en verandering</h3><p>Onderzoek functies, afgeleiden, raaklijnen en numerieke benaderingen. Verander een model en vergelijk de grafieken direct.</p><span class="so-open">Open wiskunde B →</span></a>
-</div><p class="so-none" id="so-none" role="status">Geen observatoria gevonden. Kies een ander vak of zoekwoord.</p></div></section>
-<section class="so-foot"><div class="so-wrap"><p><strong>Over deze proefversie.</strong> Natuurkunde bevat 53 interactieve proefmodellen. De bediening en browserwerking zijn getest; de natuurkundige juistheid is niet voor alle modellen en parametercombinaties afzonderlijk gevalideerd. Het Galactisch Observatorium blijft de referentie voor rijke onderzoeksmogelijkheden. Het landelijke examenprogramma en de verdeling over vwo 5/6 zijn nog niet volledig gekoppeld aan het school-PTA.</p><p>De visualisaties gebruiken vereenvoudigde modellen en, waar vermeld, synthetische gegevens. Ze zijn bedoeld voor onderzoek en uitleg, niet als vervanging van echte metingen of een volledige vakinhoudelijke beoordeling.</p></div></section>
-</main>
-<script>(()=>{const tabs=[...document.querySelectorAll('[data-so-filter]')],q=document.getElementById('so-search'),cards=[...document.querySelectorAll('.so-card')],none=document.getElementById('so-none'),junior=document.querySelector('.so-junior');let filter='all';function update(){let visible=0;for(const card of cards){let ok=(filter==='all'||card.dataset.vak===filter)&&card.dataset.search.includes(q.value.trim().toLowerCase());card.hidden=!ok;card.style.display=ok?'flex':'none';if(ok)visible++}none.style.display=visible?'none':'block';if(junior){const term=q.value.trim().toLowerCase(),show=(filter==='all'||filter==='nf')&&(!term||'melkweg lab sterren planeten zon kinderversie'.includes(term));junior.hidden=!show;junior.style.display=show?'flex':'none'}}tabs.forEach(btn=>btn.addEventListener('click',()=>{filter=btn.dataset.soFilter;tabs.forEach(t=>t.setAttribute('aria-pressed',String(t===btn)));update()}));q.addEventListener('input',update);update()})();</script><footer class="site-footer"><div class="wrap footer-grid"><p style="display:flex;gap:12px;align-items:center"><img src="/assets/eai-logo.svg" alt="" width="42" height="42"><span><strong>EAI</strong> · Hans Visser<br>Menselijk handelen en AI in samenhang.</span></p><p><a href="/">EAI</a> · <a href="/toepassingen/">Toepassingen</a> · <a href="/onderwijs/">Onderwijs</a> · <a href="/kennis/">Kennis</a> · <a href="/tools/prompt-framework/">Prompt Framework</a> · <a href="/model-monitor/">Model Monitor</a> · <a href="/over/">Over</a> · <a href="https://nl.linkedin.com/in/hans-visser-92531a105" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://github.com/E-AI-MODEL" target="_blank" rel="noopener">GitHub</a></p></div></footer><script defer src="/assets/site-insights.js"></script></body></html>
+<h2 class="so-section-title">Wat wil je onderzoeken?</h2>
+<div class="so-grid">
+<article class="so-card">
+<div class="so-card-head"><span class="so-art" aria-hidden="true"><svg viewBox="0 0 62 48"><path class="soft" d="M4 42H58M4 42V5M4 24H58M25 5V42"/><path d="M5 38Q18 5 35 15T58 40"/><circle cx="5" cy="38" r="3"/><circle cx="35" cy="15" r="3"/><circle cx="58" cy="40" r="3"/></svg></span><span class="so-count">Beweging, krachten en meer</span></div>
+<h3>Natuurkunde</h3><p class="so-desc">Onderzoek wat er verandert als je een kracht, snelheid of andere grootheid aanpast.</p>
+<div class="so-links"><a href="/tools/science-observatory/labs/natuurkunde/">Natuurkundeproeven</a><a href="/tools/science-observatory/labs/gravitatie-banen/">Gravitatie en satellietbanen</a></div>
+</article>
+<article class="so-card">
+<div class="so-card-head"><span class="so-art" aria-hidden="true"><svg viewBox="0 0 62 48"><path class="soft" d="M4 42H58M10 4V44M3 25H58M24 5V42M39 5V42"/><path d="M8 40C18 38 20 13 29 10S43 29 56 8"/><path d="M28 40V31H35V40M39 40V24H46V40M50 40V18H57V40"/></svg></span><span class="so-count">Wiskunde A en B</span></div>
+<h3>Wiskunde</h3><p class="so-desc">Speel met kansverdelingen, functies en grafieken. Bekijk meteen het verschil.</p>
+<div class="so-links"><a href="/tools/science-observatory/labs/wiskunde-a/">Kansen en statistiek</a><a href="/tools/science-observatory/labs/wiskunde-b/">Functies en verandering</a></div>
+</article>
+<article class="so-card">
+<div class="so-card-head"><span class="so-art" aria-hidden="true"><svg viewBox="0 0 62 48"><ellipse cx="30" cy="24" rx="27" ry="10" transform="rotate(-27 30 24)" class="soft"/><path d="M8 29C11 11 38 7 45 24S30 42 25 31S31 18 35 24S30 29 30 25"/><circle cx="30" cy="24" r="2.3"/><circle cx="10" cy="17" r="1.2"/><circle cx="49" cy="6" r="1.2"/></svg></span><span class="so-count">Het heelal</span></div>
+<h3>Galactisch Observatorium</h3><p class="so-desc">Onderzoek de Melkweg. Kies zelf hoeveel uitleg je tijdens het ontdekken krijgt.</p>
+<div class="so-links"><a href="/tools/science-observatory/labs/melkweg/">Uitgebreid onderzoeken</a><a href="/tools/melkweg-lab/">Ontdekken met uitleg</a></div>
+</article>
+<article class="so-card">
+<div class="so-card-head"><span class="so-art" aria-hidden="true"><svg viewBox="0 0 62 48"><circle cx="31" cy="7" r="5"/><path d="M25 15Q19 15 18 22L16 36M37 15Q43 15 44 22L46 36M25 15L26 34L23 44M37 15L36 34L39 44M26 20H36M26 33H36"/><path d="M31 25C24 20 22 29 31 34C40 29 38 20 31 25Z"/></svg></span><span class="so-count">Menselijk lichaam</span></div>
+<h3>Anatomie van de mens</h3><p class="so-desc">Draai het lichaam, bekijk organen en stelsels en onderzoek hoe het hart werkt.</p>
+<div class="so-links"><a href="/tools/anatomie/">Het lichaam in 3D</a><a href="/tools/anatomie/labs/hartslag/">Hart en bloedsomloop</a></div>
+</article>
+<article class="so-card">
+<div class="so-card-head"><span class="so-art" aria-hidden="true"><svg viewBox="0 0 62 48"><path class="soft" d="M10 9L29 23L49 8M10 38L29 23L51 39M29 23L29 6M29 23V41"/><circle cx="10" cy="9" r="4"/><circle cx="49" cy="8" r="4"/><circle cx="10" cy="38" r="4"/><circle cx="51" cy="39" r="4"/><circle cx="29" cy="23" r="7"/><circle cx="29" cy="6" r="2"/><circle cx="29" cy="41" r="2"/></svg></span><span class="so-count">Taalmodellen</span></div>
+<h3>Hoe werkt AI?</h3><p class="so-desc">Bekijk hoe een taalmodel tekst verwerkt en hoe instellingen het resultaat veranderen.</p>
+<div class="so-links"><a href="/tools/llm-observatorium/">Onderzoek een taalmodel</a></div>
+</article>
+<article class="so-card">
+<div class="so-card-head"><span class="so-art" aria-hidden="true"><svg viewBox="0 0 62 48"><rect x="4" y="5" width="54" height="38" rx="2" class="soft"/><path class="soft" d="M31 5V43M31 16a8 8 0 010 16M31 16a8 8 0 000 16"/><circle cx="14" cy="15" r="3"/><circle cx="25" cy="29" r="3"/><circle cx="49" cy="24" r="3"/><path d="M16 18L23 26L43 24M38 19L43 24L38 28"/></svg></span><span class="so-count">Lichamelijke opvoeding</span></div>
+<h3>Sport en bewegen</h3><p class="so-desc">Verplaats spelers, kies een aanval of verdediging en bekijk wat er op het veld gebeurt.</p>
+<div class="so-links"><a href="/tools/lo-aanvalslab/">Aanvallen en verdedigen</a></div>
+</article>
+</div></div></section>
+<section class="so-foot"><div class="so-wrap"><details><summary>Over de modellen en hun betrouwbaarheid</summary><p>De onderzoeken gebruiken waar nodig vereenvoudigde modellen of voorbeeldgegevens. Niet alle natuurkundige modellen en instellingen zijn afzonderlijk inhoudelijk gevalideerd. Meetgegevens, aannames en bronnen worden bij de onderzoeken toegelicht. Gebruik ze om te leren en te onderzoeken, niet als vervanging van echte metingen.</p></details></div></section>
+</main><footer class="site-footer"><div class="wrap footer-grid"><p style="display:flex;gap:12px;align-items:center"><img src="/assets/eai-logo.svg" alt="" width="42" height="42"><span><strong>EAI</strong> · Hans Visser<br>Menselijk handelen en AI in samenhang.</span></p><p><a href="/">EAI</a> · <a href="/toepassingen/">Toepassingen</a> · <a href="/onderwijs/">Onderwijs</a> · <a href="/kennis/">Kennis</a> · <a href="/tools/prompt-framework/">Prompt Framework</a> · <a href="/model-monitor/">Model Monitor</a> · <a href="/over/">Over</a> · <a href="https://nl.linkedin.com/in/hans-visser-92531a105" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://github.com/E-AI-MODEL" target="_blank" rel="noopener">GitHub</a></p></div></footer><script defer src="/assets/site-insights.js"></script></body></html>
