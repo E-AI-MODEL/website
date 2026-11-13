@@ -76,12 +76,16 @@ class ObservatoryPublicationTests(unittest.TestCase):
         self.assertIn('id="field"', studio)
         self.assertNotIn('id="admin"', studio)
 
-    def test_reference_and_status_warnings_are_present(self):
+    def test_names_and_model_limits_are_visible_without_internal_labels(self):
         catalog = (PUBLISHED / "index.html").read_text(encoding="utf-8")
         self.assertIn("Galactisch Observatorium", catalog)
-        self.assertIn("school-PTA", catalog)
-        self.assertIn("Proefmodel", catalog)
-        self.assertIn("Gravitatie &amp; satellietbanen", catalog)
+        self.assertIn("Gravitatie en satellietbanen", catalog)
+        self.assertIn("Anatomie van de mens", catalog)
+        self.assertIn("niet alle natuurkundige modellen", catalog.lower())
+        self.assertIn("vereenvoudigde modellen", catalog)
+        self.assertNotIn("NF / 01", catalog)
+        self.assertNotIn("school-PTA", catalog)
+        self.assertNotIn("Nieuwe proefversie", catalog)
 
     def test_gravity_has_six_real_research_modes_and_exit_ticket(self):
         source = (SOURCE / "labs" / "gravitatie-banen.html").read_text(encoding="utf-8")

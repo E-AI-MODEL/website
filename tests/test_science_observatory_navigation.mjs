@@ -4,19 +4,30 @@ import { readFileSync } from 'node:fs';
 
 const load = path => readFileSync(new URL('../' + path, import.meta.url), 'utf8');
 
-test('Science Observatory toont vijf verschillende onderzoeksruimtes', () => {
+test('Startpagina groepeert onderzoeksruimtes in zes herkenbare onderwerpen', () => {
   const html = load('content/science-observatory/landing.html');
-  const cards = [...html.matchAll(/<a class="so-card(?: so-featured)?" href="([^"]+)"/g)];
-  assert.equal(cards.length, 5);
-  assert.equal(new Set(cards.map(m => m[1])).size, 5);
-  assert.match(cards[0][1], /\/labs\/natuurkunde\/$/);
-  assert.match(html, /data-so-filter="nf"/);
-  assert.match(html, /data-so-filter="wa"/);
-  assert.match(html, /data-so-filter="wb"/);
-  assert.match(html, /placeholder="Zoek onderzoeksruimte…"/);
-  assert.match(html, /junior\.style\.display=show/);
-  assert.match(html, /radioactiviteit/);
-  assert.match(html, /niet voor alle modellen/);
+  for (const title of ['Natuurkunde', 'Wiskunde', 'Galactisch Observatorium', 'Anatomie van de mens', 'Hoe werkt AI?', 'Sport en bewegen']) {
+    assert.ok(html.includes('<h3>' + title + '</h3>'), title);
+  }
+  assert.equal((html.match(/class="so-card"/g) || []).length, 6);
+  assert.match(html, /\/tools\/melkweg-lab\//);
+  assert.match(html, /\/tools\/science-observatory\/labs\/melkweg\//);
+  assert.match(html, /\/tools\/anatomie\/labs\/hartslag\//);
+  assert.match(html, /\/tools\/lo-aanvalslab\//);
+  assert.doesNotMatch(html, /ABYSS|href="\/tools\/abyss\//);
+  assert.doesNotMatch(html, /53 proeven|NF \/ 01|Nieuwe proefversie/);
+  assert.match(html, /niet alle natuurkundige modellen/i);
+});
+
+test('Toegankelijke Melkwegversie geeft vragen en feedback zonder 3D-model te vervangen', () => {
+  const html = load('content/melkweg-lab/index.html');
+  assert.match(html, /const GUIDE=\{/);
+  assert.match(html, /data-guide-choice/);
+  assert.match(html, /guideAttempts/);
+  assert.match(html, /function guideHTML/);
+  assert.match(html, /Dat klopt met dit model/);
+  assert.match(html, /function modeSet/);
+  assert.match(html, /function camSet/);
 });
 
 test('Natuurkunde is een herkenbare zelfstandige proefversie', () => {
@@ -40,8 +51,8 @@ test('Nederlands en Engels tonen observatoria apart van ontwerptools', () => {
   assert.match(nl, /id="observatoria"/);
   assert.match(nl, /id="ontwerpen"/);
   assert.match(en, /Interactive observatories/);
-  assert.match(nav, /Natuurkunde · 53 proeven/);
-  assert.match(nav, /Physics · 53 experiments/);
+  assert.match(nav, /Natuurkundeproeven/);
+  assert.match(nav, /Physics experiments/);
 });
 
 test('Websitegenerator gebruikt de bronbestanden en aparte observatoriarubriek', () => {
@@ -55,13 +66,13 @@ test('De publieke hoofdnavigatie heeft observatoria apart van hulpmiddelen', () 
   const source = load('scripts/prepare_ui.py');
   assert.match(source, /\('Observatoria', \[/);
   assert.match(source, /\('Observatories', \[/);
-  assert.match(source, /'Natuurkunde: 53 proeven'/);
-  assert.match(source, /'Physics: 53 experiments \(Dutch\)'/);
+  assert.match(source, /'Natuurkundeproeven'/);
+  assert.match(source, /'Physics experiments \(Dutch\)'/);
   const observatoria = source.slice(source.indexOf("('Observatoria', ["), source.indexOf("('Tools', [", source.indexOf("('Observatoria', [")));
-  assert.match(observatoria, /Anatomisch Observatorium/);
+  assert.match(observatoria, /Anatomie van de mens/);
   assert.doesNotMatch(observatoria, /EAI Prompt Framework/);
   const tools = source.slice(source.indexOf("('Tools', [", source.indexOf("('Observatoria', [")), source.indexOf("('Over', [", source.indexOf("('Observatoria', [")));
   assert.match(tools, /EAI Prompt Framework/);
-  assert.doesNotMatch(tools, /Anatomisch Observatorium/);
+  assert.doesNotMatch(tools, /Anatomie van de mens/);
   assert.equal((source.match(/'\/tools\/anatomie\//g) || []).length, 2);
 });
