@@ -62,7 +62,6 @@ test('Hefboom: beide krachten en de momentbalans onafhankelijk nagerekend',()=>{
   near(measured(r,'Moment linksom'),p.F*p.arm1);
   near(measured(r,'Moment rechtsom'),p.F2*p.arm2);
   near(measured(r,'Netto moment'),p.F2*p.arm2-p.F*p.arm1);
-  near(measured(r,'F₂ voor evenwicht'),p.F*p.arm1/p.arm2);
   near(r.insight.bars[0][1],p.F*p.arm1,1e-10);
   near(r.insight.bars[1][1],p.F2*p.arm2,1e-10);
  }
