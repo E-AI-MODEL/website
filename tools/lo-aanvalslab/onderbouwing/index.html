@@ -74,6 +74,17 @@ footer{border-top:1px solid var(--line);padding:21px 0 32px;color:#829fa3;font-s
 <p class="note">De ruim zes miljoen voetbalverplaatsingsberekeningen zijn geen zes miljoen onafhankelijke spelsituaties: het zijn opeenvolgende metingen uit twee wedstrijden. Bekijk de <a href="https://github.com/E-AI-MODEL/website/tree/main/tools/lo-aanvalslab/calibratie/v13" target="_blank" rel="noopener noreferrer">meetverantwoording en afstelling op GitHub</a> voor de gebruikte waarden en beperkingen.</p>
 </section>
 
+<section id="tactiek" aria-labelledby="tactiek-title">
+<h2 id="tactiek-title">Welke tactische keuzes hebben we onderzocht?</h2>
+<p>Een goede startopstelling is niet automatisch een geslaagde aanval. De baldrager moet een aanspeelroute vinden; verdedigers kunnen die route afsluiten. Het model meet nu ook de kortste afstand van een verdediger tot de <em>hele passbaan</em> en hoelang de aanvaller de bal al heeft voordat hij passt. Dit zijn berekende afstanden en tijden, geen voorspelde succespercentages.</p>
+<p>In <a href="https://doi.org/10.3389/fspor.2022.867743" target="_blank" rel="noopener noreferrer">hockeyonderzoek naar 3-tegen-3</a> is onderzocht hoe de druk op de passroute gedurende balbezit verandert. In <a href="https://doi.org/10.26582/k.51.1.7" target="_blank" rel="noopener noreferrer">voetbalonderzoek naar 279 situaties 3 tegen 2</a> hangt het resultaat onder meer samen met de laatste pass van de zijkant terug naar het midden. En <a href="https://doi.org/10.1177/17479541211021986" target="_blank" rel="noopener noreferrer">basketbalonderzoek bij 45 jonge beginners</a> laat zien dat 3 tegen 2 andere keuzes en fouten oplevert dan 3 tegen 3. Deze onderzoeken geven richtingen voor tactische opdrachten, geen exacte begincoördinaten of garantie op een doelpoging.</p>
+<div class="table-wrap"><table><thead><tr><th scope="col">Open meetbestand</th><th scope="col">Wat we werkelijk lazen</th><th scope="col">Wat de uitkomst wel en niet zegt</th></tr></thead><tbody>
+<tr><td>StatsBomb Open Data, één voetbalwedstrijd</td><td>906 passevents met bruikbare 360-posities. Bij 751 geslaagde passes was de mediane afstand van een zichtbare verdediger tot de passlijn 3,30; bij 155 niet-geslaagde passes 1,39.</td><td>Afstanden zijn StatsBomb-coordinaateenheden, geen meters. Het 360-beeld toont niet alle spelers; de twee groepen verschillen ook in passlengte. Het verband bewijst geen oorzaak.</td></tr>
+<tr><td>Montoliu e.a., open handbaldata</td><td>730 gelabelde balbezitten. Bij gelijke aantallen eindigden 119 van 281 aanvallen in een doelpunt, bij aanvallend overtal 13 van 45.</td><td>Gegevens van volwassenen uit echte wedstrijden. De groepen verschillen in context; dit zijn geen kansen voor onze 3-tegen-2- of 4-tegen-3-simulatie.</td></tr>
+</tbody></table></div>
+<p class="note">De bronbestanden blijven bij de oorspronkelijke aanbieders. De <a href="https://github.com/E-AI-MODEL/website/tree/main/tools/lo-aanvalslab/calibratie/tactics" target="_blank" rel="noopener noreferrer">reproduceerbare analyses en bronverwijzingen staan op GitHub</a>. De beginopstellingen en passscore zijn nog niet rechtstreeks op deze meetreeksen gekalibreerd.</p>
+</section>
+
 <section id="digitaal" aria-labelledby="digitaal-title">
 <h2 id="digitaal-title">3. Werkt een digitale oefenomgeving ook?</h2>
 <p>Onderzoek naar digitale en virtuele sporttraining beschrijft mogelijkheden voor het oefenen van waarneming en tactische beslissingen. Een <a href="https://doi.org/10.1080/1750984X.2025.2484727" target="_blank" rel="noopener noreferrer">review naar VR en beslissen in sport</a> vond weinig studies die de overdracht naar echt sportgedrag maten. Een <a href="https://pubmed.ncbi.nlm.nih.gov/42740001/" target="_blank" rel="noopener noreferrer">review uit 2026 van twintig voetbalonderzoeken</a> vond aanwijzingen voor kortetermijnverbeteringen, maar beperkt bewijs voor blijvend leren en toepassing in volledige wedstrijden.</p>
@@ -116,6 +127,10 @@ footer{border-top:1px solid var(--line);padding:21px 0 32px;color:#829fa3;font-s
 <li><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC10108760/" target="_blank" rel="noopener noreferrer">Lord e.a., analyse van hockeywedstrijden</a>.</li>
 <li><a href="https://doi.org/10.1080/1750984X.2025.2484727" target="_blank" rel="noopener noreferrer">Training decision making in sports using virtual reality: scoping review (2025)</a>.</li>
 <li><a href="https://pubmed.ncbi.nlm.nih.gov/42740001/" target="_blank" rel="noopener noreferrer">Virtual reality sensing technologies in student soccer training: review van 20 studies (2026)</a>.</li>
+<li><a href="https://doi.org/10.3389/fspor.2022.867743" target="_blank" rel="noopener noreferrer">Mizawa e.a., passlijnen en verdedigingsdruk in hockey (2022)</a>.</li>
+<li><a href="https://doi.org/10.1177/17479541211021986" target="_blank" rel="noopener noreferrer">Diniz e.a., basketbal 3 tegen 2 bij jonge beginners (2022)</a>.</li>
+<li><a href="https://github.com/hudl/open-data" target="_blank" rel="noopener noreferrer">StatsBomb Open Data, 360-positiebeelden bij passes</a>.</li>
+<li><a href="https://doi.org/10.5281/zenodo.12065335" target="_blank" rel="noopener noreferrer">Montoliu e.a., open handbalposities en aanvalstypen (2024)</a>.</li>
 <li><a href="https://github.com/E-AI-MODEL/website/tree/main/tools/lo-aanvalslab/calibratie/v13" target="_blank" rel="noopener noreferrer">Eigen meetverantwoording, herkomstbestanden en parameters (GitHub)</a>.</li>
 </ol>
 </section>

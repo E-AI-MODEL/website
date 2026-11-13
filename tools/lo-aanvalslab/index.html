@@ -458,11 +458,12 @@ let mode='attack',phase='a',state='setup',players=[],initial=[],scenario=[],fram
 let scenarioIndex=0,simSeed=0,summary={},analysisReady=false;
 let loPauseDraft=null,loBranchHistory=null,loCurrentVersion='variant';
 function rand(){seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296}
+// Iedere beginopstelling biedt een keuze; de voorste aanvaller staat niet vrij voor doel.
 const scenarios=[
- {name:'Middenveld',a:[[320,320],[485,164],[515,468],[702,314]],d:[[408,275],[585,220],[596,428],[790,344]]},
- {name:'Ruimte aan de zijkant',a:[[325,345],[488,132],[476,463],[690,290]],d:[[420,318],[570,270],[620,392],[780,318]]},
- {name:'Druk op de bal',a:[[340,330],[500,179],[484,462],[695,320]],d:[[426,338],[590,179],[600,450],[760,340]]},
- {name:'Smalle verdediging',a:[[338,325],[485,160],[520,474],[680,329]],d:[[520,300],[613,278],[621,385],[790,320]]},
+ {name:'Middenveld',a:[[320,320],[485,164],[515,468],[590,314]],d:[[408,275],[552,220],[565,428],[657,344]]},
+ {name:'Ruimte aan de zijkant',a:[[325,345],[488,132],[476,463],[575,290]],d:[[420,318],[542,245],[570,400],[646,318]]},
+ {name:'Druk op de bal',a:[[340,330],[500,179],[484,462],[590,320]],d:[[426,338],[545,200],[555,438],[660,340]]},
+ {name:'Smalle verdediging',a:[[338,325],[485,160],[520,474],[575,329]],d:[[480,300],[554,278],[568,385],[647,320]]},
 ];
 function makeScenario(index){const cfg=scenarios[index%scenarios.length];players=[];for(const team of ['a','d'])for(let i=0;i<4;i++){const [x,y]=cfg[team][i];players.push({id:team+i,team,x,y,vx:0,vy:0,speed:team==='a'?(i===0?3.85:4.05):3.95,accel:team==='a'?3.6:3.65,react:.22+(i%3)*.06,intent:team==='a'?(i===0?'pas':['breed','bal','diep'][i-1]):[['dek','zone','zone','terug'],['druk','dek','lijn','zone'],['druk','zone','lijn','terug'],['druk','dek','lijn','zone']][index%scenarios.length][i],energy:1})}// Elk speltype gebruikt echt minder spelers. De ongebruikte spelers zijn niet
 // verborgen, maar ontbreken ook in alle loop-, pass- en verdedigingsberekeningen.
@@ -471,15 +472,22 @@ function makeScenario(index){const cfg=scenarios[index%scenarios.length];players
  // leerlingen niet steeds één identieke oefening krijgen.
  const overtal={
   1:[
-   {a0:[320,330],a1:[497,434],d0:[490,324]},
-   {a0:[340,290],a1:[478,160],d0:[485,280]},
-   {a0:[310,350],a1:[510,466],d0:[425,343]},
-   {a0:[320,330],a1:[540,205],d0:[515,332]}],
+   {a0:[320,330],a1:[485,420],d0:[425,375]},
+   {a0:[340,290],a1:[485,160],d0:[435,230]},
+   {a0:[310,350],a1:[500,455],d0:[425,410]},
+   {a0:[325,330],a1:[510,210],d0:[432,270]}],
   2:[
-   {a0:[318,325],a1:[548,100],a2:[445,402],d0:[511,321],d1:[755,333]},
-   {a0:[318,325],a1:[483,158],a2:[490,478],d0:[488,326],d1:[633,222]},
-   {a0:[318,325],a1:[582,100],a2:[530,320],d0:[622,178],d1:[688,244]},
-   {a0:[318,325],a1:[438,138],a2:[533,535],d0:[641,355],d1:[527,102]}]
+   {a0:[318,325],a1:[490,140],a2:[465,445],d0:[455,260],d1:[545,370]},
+   {a0:[318,325],a1:[490,190],a2:[475,465],d0:[448,250],d1:[530,408]},
+   {a0:[318,325],a1:[535,135],a2:[490,385],d0:[445,255],d1:[560,355]},
+   {a0:[318,325],a1:[445,165],a2:[525,505],d0:[420,260],d1:[500,420]}],
+  // 4 tegen 3 krijgt drie echte verdedigende rollen. Een 4-tegen-4-
+  // opstelling met simpelweg d3 verwijderd gaf a3 soms een vrije schotroute.
+  3:[
+   {a0:[322,330],a1:[460,160],a2:[485,455],a3:[580,315],d0:[412,328],d1:[535,245],d2:[640,360]},
+   {a0:[322,345],a1:[490,150],a2:[485,460],a3:[570,340],d0:[420,330],d1:[550,190],d2:[620,370]},
+   {a0:[330,328],a1:[475,175],a2:[492,465],a3:[590,324],d0:[423,336],d1:[560,265],d2:[625,410]},
+   {a0:[318,325],a1:[490,174],a2:[505,475],a3:[560,323],d0:[430,320],d1:[540,220],d2:[620,395]}]
  };
  const spots=overtal[formationIndex]?.[index%4];
  if(spots)for(const p of players){const xy=spots[p.id];if(xy){p.x=xy[0];p.y=xy[1]}}
@@ -491,6 +499,11 @@ function makeScenario(index){const cfg=scenarios[index%scenarios.length];players
    {a1:'breed',a2:'ruimte',d0:'druk',d1:'lijn'}];
   for(const p of players){if(plans[index%4][p.id])p.intent=plans[index%4][p.id]}
  }
+ // Beginopstellingen zijn bewust uitdagend, zonder doelpunten of passes
+ // kunstmatig onmogelijk te maken. Handmatig verschoven spelers blijven vrij.
+ // Sportafhankelijke veldschaal voorkomt een start direct in de schotzone.
+ const maxStartX=sportCfg().shotX-4.5*PX;
+ for(const p of players){if(p.team==='a'&&p.id!=='a0')p.x=Math.min(p.x,maxStartX)}
  scenario=copy(players);initial=copy(players)}
 const s=(tag,attrs={},parent=svg)=>{const n=document.createElementNS(NS,tag);Object.entries(attrs).forEach(([k,v])=>n.setAttribute(k,v));parent.appendChild(n);return n};
 function ballAt(p){
@@ -1292,6 +1305,15 @@ function simulate(resume=null){
    }
    earliest=Math.min(earliest,margin);
   }
+  // Afstand van iedere verdediger tot de volledige passbaan, niet alleen
+  // tot de ontvanger. Mizawa e.a. (2022) gebruiken een tijd- en ruimte-
+  // afhankelijke drukverdeling bij hockey. Dit is alleen een geometrische
+  // meetwaarde: geen uit het artikel gefitte onderscheppingskans.
+  const laneGap=d().reduce((best,p)=>{
+   const dx=target.x-from.x,dy=target.y-from.y,den=dx*dx+dy*dy;
+   const along=den?clamp(((p.x-from.x)*dx+(p.y-from.y)*dy)/den,0,1):0;
+   return Math.min(best,dist(p,{x:from.x+along*dx,y:from.y+along*dy}));
+  },Infinity);
   const immediate=d().reduce((m,q)=>Math.min(m,dist(q,to)),1000),behind=target.x-carrier.x;
   const forward=behind*.13,spread=Math.min(12,Math.abs(to.y-carrier.y)*.036),
         arrival=clamp(earliest*65,-110,66),lengthPenalty=-length*.048;
@@ -1305,7 +1327,7 @@ function simulate(resume=null){
   const quality=forward+spread+arrival+lengthPenalty+backward+crowding+distancePenalty+circle+flank;
   const qualityParts={forward,spread,arrival,lengthPenalty,backward,crowding,distancePenalty,circle,flank};
   return {to,target,quality,qualityParts,earliest,possible:earliest>.1&&immediate>34,
-   duration,from,near:immediate};
+   duration,from,near:immediate,laneGap};
  }
  function choosePass(carrier){
   const choices=a().filter(p=>p.id!==holder).map(p=>passRisk(carrier,p)).sort((u,v)=>v.quality-u.quality);
@@ -1323,6 +1345,8 @@ function simulate(resume=null){
    from:passer,to:choice.to.id,distanceM:dist(choice.from,choice.target)/PX,
    durationS:choice.duration,ballSpeedMps:dist(choice.from,choice.target)/PX/choice.duration,
    minArrivalMarginS:choice.earliest,receiverNearestDefM:choice.near/PX,
+   passLaneNearestDefM:choice.laneGap/PX,holdBeforePassS:held,
+   flankCutbackPattern:sportIndex===0&&formationIndex===2&&choice.qualityParts.flank>0,
    score:choice.quality,scoreParts:choice.qualityParts,candidates:choice.candidates||[],
    feasible:choice.possible,receiveRadiusM:sportCfg().receive/PX
   });
@@ -1603,6 +1627,8 @@ function calculationOfEvent(ev){
   rows=[analysisRow('Passafstand',d.distanceM,'m'),analysisRow('Balsnelheid',d.ballSpeedMps,'m/s'),
    analysisRow('Vliegtijd',d.durationS,'s'),analysisRow('Aankomstmarge verdediger',d.minArrivalMarginS,'s'),
    analysisRow('Dichtste verdediger bij ontvanger',d.receiverNearestDefM,'m'),
+   analysisRow('Kleinste afstand verdediger tot passlijn',d.passLaneNearestDefM,'m'),
+   analysisRow('Balbezit voor deze pass',d.holdBeforePassS,'s'),
    analysisRow('Passscore (geen kans)',d.score,'pt')];
   const labels={forward:'Vooruitgang × 0,13',spread:'Breedtebonus',arrival:'Marge × 65, begrensd',
    lengthPenalty:'Passafstand × −0,048',backward:'Straf terugspelen',crowding:'Druk bij ontvanger',

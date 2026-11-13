@@ -10,19 +10,25 @@ def assert_rules_unchanged(page,baseline):
     for sport in range(4):
         for form in range(4):
             for scene in range(4):
+                # Vergelijk dezelfde spelers en opdrachten. De startsituaties
+                # mogen bij een nieuwe oefenvariant bewust zijn aangepast.
+                baseline.select_option("#sportSelect",str(sport))
+                baseline.select_option("#formationSelect",str(form))
+                shared_players=baseline.evaluate("(scene)=>window.__loLabTest.scenario(scene)",scene)
                 for seed in [1337,2730]:
                     values=[]
                     for browser_page in [baseline,page]:
                         browser_page.select_option("#sportSelect",str(sport))
                         browser_page.select_option("#formationSelect",str(form))
-                        data=browser_page.evaluate("""({scene,seed})=>{
-                          const lab=window.__loLabTest,ps=lab.scenario(scene),out=lab.run(ps,seed);
+                        data=browser_page.evaluate("""({scene,seed,players})=>{
+                          const lab=window.__loLabTest;lab.scenario(scene);
+                          const ps=players,out=lab.run(ps,seed);
                           const fs=lab.getFrames();
                           return {result:out.result,duration:out.duration,passes:out.passes,
                             completed:out.completed,shots:out.shots,intercepts:out.intercepts,
                             trajectory:fs.map(f=>[f.time,
                              ...f.players.flatMap(p=>[p.x,p.y,p.vx,p.vy]),f.ball.x,f.ball.y])};
-                        }""",{"scene":scene,"seed":seed})
+                        }""",{"scene":scene,"seed":seed,"players":shared_players})
                         values.append(data)
                     left,right=values
                     if {k:v for k,v in left.items() if k!="trajectory"}!={k:v for k,v in right.items() if k!="trajectory"}:
