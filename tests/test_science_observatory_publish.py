@@ -57,7 +57,7 @@ class ObservatoryPublicationTests(unittest.TestCase):
 
     def test_generated_tools_page_keeps_the_new_observatory_section(self):
         page = (BUILD / "tools" / "index.html").read_text(encoding="utf-8")
-        self.assertIn("Observatoria en simulaties", page)
+        self.assertIn("Onderzoeken en uitproberen", page)
         self.assertIn('id="observatoria"', page)
         self.assertIn("/tools/science-observatory/", page)
         self.assertIn("Wat wil je dat AI hier doet?", page)
