@@ -4,7 +4,7 @@ import {readFileSync} from 'node:fs';
 import {runInNewContext} from 'node:vm';
 
 const html=readFileSync(new URL('../content/science-observatory/labs/natuurkunde.html',import.meta.url),'utf8');
-const scripts=[...html.matchAll(/<script[^>]*>([\\s\\S]*?)<\\/script>/g)].map(x=>x[1]);
+const scripts=[...html.matchAll(/<script[^>]*>([\s\S]*?)<\/script>/g)].map(x=>x[1]);
 const definition=scripts.find(x=>x.includes('const labSpecs ='));
 const model=scripts.find(x=>x.includes('function renderExperiment('));
 assert.ok(definition&&model);
@@ -19,7 +19,7 @@ function modelAt(id,changes={},t=0){
  Object.assign(p,changes);
  return renderExperiment(id,p,t,gfx);
 }
-const number=text=>Number(String(text).match(/-?\\d[\\d.,]*/)?.[0].replaceAll('.','').replace(',','.'));
+const number=text=>Number(String(text).match(/-?\d[\d.,]*/)?.[0].replaceAll('.','').replace(',','.'));
 const measured=(r,label)=>number(r.readouts.find(x=>x[0]===label)?.[1]);
 const close=(a,b,eps=.025)=>assert.ok(Math.abs(a-b)<=eps,`${a} != ${b}`);
 
@@ -74,6 +74,6 @@ test('grafiek blijft beschikbaar naast het onderwerpgebonden tweede beeld',()=>{
  assert.match(html,/data-bottom="insight"/);
  assert.match(html,/data-bottom="graph"/);
  assert.match(html,/id="mathToggle"/);
- assert.match(html,/primaryInsightViews=\\{lever:/);
- assert.match(html,/function selectBottom\\(tab\\)/);
+ assert.match(html,/primaryInsightViews=\{lever:/);
+ assert.match(html,/function selectBottom\(tab\)/);
 });
