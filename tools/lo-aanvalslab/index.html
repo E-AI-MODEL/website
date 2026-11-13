@@ -1253,12 +1253,27 @@ function simulate(resume=null){
    y=threat?mix(ball.y,threat.y,blend):ball.y;
   }else if(plan.pressure===p.id&&owner){
    role='press';x=ball.x+PX*.35;y=ball.y;
+   if(defenders.length===2&&p.x>ball.x+PX*1.2){
+    // 3 tegen 2: achteruit lopend druk zetten kan de laatste
+    // doelzijdige positie weggeven. Vertraag de baldrager in plaats
+    // van vanuit grote afstand dwars door de passlijn te lopen.
+    x=Math.max(ball.x+PX*1.1,p.x-PX*.18);
+   }
   }else if(plan.pressure===p.id&&flight){
    // Bij een pass is de drukzetter niet vanzelf de onderschepper.
    // Bewaak zijn zone, zodat hij niet alsnog de bal achternagaat.
    role='screen';x=p.x+PX*.2;y=mix(p.y,325,.11);
   }else if(plan.cover===p.id){
    role='cover';x=plan.coverSpot.x;y=plan.coverSpot.y;
+   // Een doorgespeelde bal naar voren mag een bestaande rugdekker
+   // niet uit zijn verdedigende positie naar de passer terugtrekken.
+   // Bij een pass volgt hij de ontvangende speler, zonder zijn
+   // doelzijdige diepte onnodig te verlaten.
+   if(flight&&flight.end.x>flight.start.x+PX*.8&&
+      p.x>=flight.end.x+PX*.5){
+    x=Math.max(x,p.x-PX*.15);
+    y=mix(plan.coverSpot.y,flight.end.y,.44);
+   }
   }else if(plan.marks[p.id]){
    role='mark';
    const target=ps.find(q=>q.id===plan.marks[p.id]);
