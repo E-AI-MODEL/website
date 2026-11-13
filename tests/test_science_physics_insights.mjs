@@ -74,6 +74,45 @@ test('grafiek blijft beschikbaar naast het onderwerpgebonden tweede beeld',()=>{
  assert.match(html,/data-bottom="insight"/);
  assert.match(html,/data-bottom="graph"/);
  assert.match(html,/id="mathToggle"/);
- assert.match(html,/primaryInsightViews=\{lever:/);
+ assert.match(html,/const labSecondViews=\{/);
  assert.match(html,/function selectBottom\(tab\)/);
+});
+
+test('alle 53 proeven bieden een eigen berekening en passende standaardweergave',()=>{
+ const match=html.match(/const labSecondViews=(\{[^\n]+\});/);
+ assert.ok(match,'Tweede-weergavenoverzicht ontbreekt');
+ const views=JSON.parse(match[1]);
+ assert.deepEqual(Object.keys(views).sort(),labSpecs.map(s=>s[0]).sort());
+ const errors=[];
+ for(const spec of labSpecs){
+  const id=spec[0],p=Object.fromEntries(spec[3].map(r=>[r[0],r[5]]));
+  for(const t of [0,1.31,5.17]){
+   const i=renderExperiment(id,p,t,gfx).insight;
+   if(!i?.title||!i.formula||!i.substitution||!i.answer||!i.note)errors.push(id+': berekening ontbreekt');
+   if(/Niet beschikbaar|undefined|NaN/.test(JSON.stringify(i)))errors.push(id+': ongeldige berekening');
+   if(views[id]!=='graph'){
+    if(!Array.isArray(i.bars)&&!['levels','stack'].includes(i.kind))errors.push(id+': tweede beeld ontbreekt');
+    if(i.bars?.some(r=>!Number.isFinite(r[1])||r[1]<0))errors.push(id+': ongeldige balk');
+   }
+  }
+ }
+ assert.deepEqual(errors,[]);
+ assert.ok(Object.values(views).filter(v=>v!=='graph').length>=20);
+});
+test('uitkomsten veranderen samen met de ingestelde proefwaarden',()=>{
+ const varied=[
+  ['lever',{F:15,arm1:3.5,arm2:1.5},'Tegenkracht rechts'],
+  ['ohm',{U:18,R:6},'Stroom'],
+  ['newton2',{F:24,m:3},'Versnelling'],
+  ['doppler',{f:500,vs:40,v:340},'Voor de bron'],
+  ['refraction',{n1:1.2,n2:1.6,angle:35},'Brekingshoek'],
+  ['rlc',{R:33,L:110,C:80,f:65},'Impedantie'],
+  ['lens',{f:8,u:24,h:3},'Beeldafstand'],
+  ['dilation',{beta:.5,tau:15},'Tijd in ander stelsel'],
+  ['photo',{f:1.2,W:2.5,U:0},'Max. kinetische energie']
+ ];
+ for(const [id,changes,label] of varied){
+  const info=modelAt(id,changes),measured=info.readouts.find(r=>r[0]===label)?.[1];
+  assert.equal(info.insight.answer,measured,id+': uitkomst wijkt af');
+ }
 });
