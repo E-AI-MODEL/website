@@ -9,6 +9,7 @@ on:
       - 'scripts/test_lo_easteregg.py'
       - 'scripts/benchmark_lo_defence.py'
       - 'scripts/lo_gnss_reference.py'
+      - 'scripts/lo_metrica_defence_reference.py'
       - 'scripts/trace_lo_defence.py'
       - '.github/workflows/lo-easteregg-verify.yml'
   workflow_dispatch:
@@ -36,6 +37,8 @@ jobs:
         run: python scripts/benchmark_lo_defence.py
       - name: Traceer de twee verdedigers bij passmomenten
         run: python scripts/trace_lo_defence.py
+      - name: Meet de twee eerste verdedigers in echte Metrica-tracking
+        run: python scripts/lo_metrica_defence_reference.py
       - name: Lees openbaar U18 GNSS-voorbeeld als onafhankelijke bewegingsreferentie
         if: always()
         run: python scripts/lo_gnss_reference.py
