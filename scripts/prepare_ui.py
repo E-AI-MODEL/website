@@ -33,12 +33,12 @@ def groups(en: bool):
             ('Blog', [('Publications', '/en/publications/')]),
             ('Research', [('Evidence and sources', '/en/research/')]),
             ('Observatories', [
-                ('Science Observatory', '/tools/science-observatory/'),
-                ('Physics: 53 experiments (Dutch)', '/tools/science-observatory/labs/natuurkunde/'),
-                ('Anatomy Observatory', '/tools/anatomie/'),
+                ('Interactief onderzoeken', '/tools/science-observatory/'),
+                ('Physics experiments (Dutch)', '/tools/science-observatory/labs/natuurkunde/'),
+                ('Human anatomy', '/tools/anatomie/'),
                 ('LLM Observatory', '/tools/llm-observatorium/'),
-                ('ABYSS', '/tools/abyss/'),
-                ('Milky Way Lab', '/tools/melkweg-lab/'),
+                
+                ('Galactic Observatory: guided version', '/tools/melkweg-lab/'),
             ]),
             ('Tools', [
                 ('All tools', '/en/tools/'),
@@ -58,12 +58,12 @@ def groups(en: bool):
         ('Blog', [('Nieuwste artikelen', '/nl/blog/'), ('Publicaties en media', '/nl/publicaties/')]),
         ('Onderzoek', [('Onderzoek en bronnen', '/nl/onderzoek/'), ('Bronnenregister', '/bronnen/')]),
         ('Observatoria', [
-            ('Science Observatory', '/tools/science-observatory/'),
-            ('Natuurkunde: 53 proeven', '/tools/science-observatory/labs/natuurkunde/'),
-            ('Anatomisch Observatorium', '/tools/anatomie/'),
+            ('Interactief onderzoeken', '/tools/science-observatory/'),
+            ('Natuurkundeproeven', '/tools/science-observatory/labs/natuurkunde/'),
+            ('Anatomie van de mens', '/tools/anatomie/'),
             ('LLM Observatorium', '/tools/llm-observatorium/'),
-            ('ABYSS', '/tools/abyss/'),
-            ('Melkweg Lab', '/tools/melkweg-lab/'),
+            
+            ('Galactisch Observatorium: met uitleg', '/tools/melkweg-lab/'),
         ]),
         ('Tools', [
             ('Alle tools', '/nl/tools/'),
