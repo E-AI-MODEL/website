@@ -151,6 +151,11 @@
 }
 @media(max-width:360px){#app[data-mode="1"] .layer-inspector-panel{height:190px}.li-section{padding:5px 6px}.li-expert{gap:2px;grid-template-columns:30px 1fr 26px}}
 #app:not([data-mode="1"]) #playBtn,#app:not([data-mode="1"]) #clock,#app:not([data-mode="1"]) #timeSlider,#app:not([data-mode="1"]) #timeText,#app:not([data-mode="1"]) #speedSelect{display:none!important}
+
+/* Alleen 3D-onderwerpen tonen een camerabediening. De overige weergaven zijn direct leesbaar. */
+#app:not([data-mode="0"]) .stage-journey-cta{display:none!important}
+#app[data-mode="2"] .cam-switch,#app[data-mode="3"] .cam-switch,#app[data-mode="4"] .cam-switch,#app[data-mode="5"] .cam-switch,#app[data-mode="6"] .cam-switch{display:none!important}
+#app[data-mode="2"] .stage-status,#app[data-mode="3"] .stage-status,#app[data-mode="4"] .stage-status,#app[data-mode="5"] .stage-status,#app[data-mode="6"] .stage-status{display:none!important}
 </style>
 </head>
 <body>
@@ -215,7 +220,7 @@
 const $=id=>document.getElementById(id), TAU=Math.PI*2;
 const CONFIG={120:{name:'gpt-oss-120b',layers:36,experts:128,top:4,heads:64,kv:8,dim:2880,context:131072,window:128,vocab:201088,billions:116.83,active:5.13},20:{name:'gpt-oss-20b',layers:24,experts:32,top:4,heads:64,kv:8,dim:2880,context:131072,window:128,vocab:201088,billions:20.91,active:3.61}};
 const MODES=[
- {name:'Modelstelsel',sub:'Alle lagen / alle experts',glyph:'&#9673;',title:'Een model, van buiten bekeken.',desc:'Bekijk de opeenvolgende lagen. Kies een laag of expert en vergelijk twee open modellen.',ins:'De opbouw van het model',insDesc:'Elk vlak is een modellaag. De kleine vierkantjes stellen expertposities voor. De plaatsing is schematisch.',plot:'ATTENTIONPATROON PER LAAG',note:'Afwisselend laag: lokaal venster / volledige attention.',task:'Vergelijk de modellen. Hoeveel lagen heeft gpt-oss-20b?',options:['24 lagen','36 lagen','128 lagen'],answer:0},
+ {name:'Modelstelsel',sub:'Alle lagen / alle experts',glyph:'&#9673;',title:'Zo is een taalmodel opgebouwd.',desc:'Bekijk de opeenvolgende lagen. Kies een laag of expert en vergelijk twee open modellen.',ins:'De opbouw van het model',insDesc:'Elk vlak is een modellaag. De kleine vierkantjes stellen expertposities voor. De plaatsing is schematisch.',plot:'ATTENTIONPATROON PER LAAG',note:'Afwisselend laag: lokaal venster / volledige attention.',task:'Vergelijk de modellen. Hoeveel lagen heeft gpt-oss-20b?',options:['24 lagen','36 lagen','128 lagen'],answer:0},
  {name:'Tokenreis',sub:'Echte tokens, voorbeeldroute',glyph:'&#8644;',title:'Bekijk een laag van binnen.',desc:'Kies een token en een laag. Bekijk het attention-bereik en de vier geselecteerde experts.',ins:'Token en laag',insDesc:'De token-ID is echt zodra de tokenizer is geladen. Routergewichten zijn berekende voorbeelden.',plot:'LAAG EN TOKEN',note:'Genormaliseerde demonstratiescores. Geen uitgelezen activaties.',task:'Kies een ander token. Blijft de getekende route precies gelijk?',options:['Ja, elke route is hetzelfde','Nee, de voorbeeldroute verandert'],answer:1},
  {name:'Experts',sub:'Vier van de 128',glyph:'&#9649;',title:'Vier experts krijgen werk.',desc:'Zoom in op een laag. De router verdeelt een token over vier geselecteerde experts.',ins:'Experts en router',insDesc:'Een top-4-keuze binnen iedere laag. De berekende scores zijn zichtbaar in de grafiek.',plot:'ROUTERSCORES / EXPERTNUMMER',note:'Top-4 volgt de modelarchitectuur. Getoonde scores zijn een demo.',task:'Hoeveel experts selecteert de router per token in een MoE-laag?',options:['Alle 128','Vier','Eentje'],answer:1},
  {name:'Attention',sub:'Kijken naar eerdere posities',glyph:'&#8780;',title:'Welke posities zijn bereikbaar?',desc:'Zie het verschil tussen volledige attention en een venster van 128 posities. Verander de geselecteerde positie.',ins:'Attention in de tijd',insDesc:'De helft van de lagen gebruikt een schuivend venster. De andere helft volledige causale attention.',plot:'BEREIKBARE POSITIES',note:'Bereik is een architectuurkenmerk; de lijndikte is illustratief.',task:'Mag causale attention naar een token kijken dat nog niet is gegenereerd?',options:['Ja','Nee'],answer:1},
@@ -410,7 +415,7 @@ function drawFocusLayer(){
 }
 function drawAttention(){
  const local=state.layer%2===0,seen=Math.max(1,Math.round(36*Math.min(state.contextTokens,128)/state.contextTokens));
- const count=36,left=W*.10,ww=W*.81,y=H*.64,tile=Math.max(2,(ww/count)-2);
+ const count=36,left=W*.10,ww=W*.81,y=H*.43,tile=Math.max(2,(ww/count)-2);
  ct.save();
  ct.fillStyle='#e4f5f9';ct.font='600 12px system-ui';ct.textAlign='left';
  ct.fillText(local?'Alleen de laatste 128 posities':'Alle eerdere posities',left,H*.30);
@@ -428,7 +433,7 @@ function drawAttention(){
 }
 function drawGeneration(){
  const data=logits(),left=Math.max(16,W*.15),width=W*.70;
- const top=Math.max(24,H*.18),rowH=Math.min(42,Math.max(22,H*.075));
+ const top=Math.max(176,H*.29),rowH=Math.min(42,Math.max(22,H*.063));
  const valueWidth=width*.55;ct.save();
  ct.textAlign='left';ct.font='11px ui-monospace,monospace';
  for(let i=0;i<data.p.length;i++){
@@ -515,8 +520,7 @@ function drawAttentionSignals(){
  // De rechthoekige reeks hierboven toont beschikbaarheid. Geen niet-gemeten signaalanimatie.
 }
 function drawContextWindow(){
- const left=W*.13,width=W*.73,y=H*.72,local=state.layer%2===0;
- const t=clamp(state.contextTokens/cfg.context,0,1);
+ const left=W*.13,width=W*.73,y=H*.48,local=state.layer%2===0;
  const headX=left+width*.94,windowPx=Math.max(10,width*128/state.contextTokens);
  ct.save();ct.strokeStyle='rgba(116,173,205,.3)';ct.lineWidth=.8;
  ct.beginPath();ct.moveTo(left,y);ct.lineTo(left+width,y);ct.stroke();
@@ -545,15 +549,41 @@ function drawGenerationSample(){
  ct.restore();
 }
 
+
+function drawExpertsGrid(){
+ // Eenvoudige roosterweergave van experts in de gekozen laag; geen gemeten activaties.
+ screenExperts=[];
+ const cols=Math.ceil(Math.sqrt(cfg.experts*2)),rows=Math.ceil(cfg.experts/cols),gap=W<650?4:8;
+ const size=Math.max(6,Math.min(W<650?17:24,(W*.82-gap*(cols-1))/cols));
+ const totalW=cols*size+(cols-1)*gap,totalH=rows*size+(rows-1)*gap;
+ const left=(W-totalW)/2,top=Math.max(210,Math.min(H*.37,H-totalH-78));
+ const chosen=chooseRoute(state.layer).map(q=>q.e);
+ ct.save();ct.textAlign='left';ct.font='600 11px ui-monospace,monospace';ct.fillStyle='#bce9ec';
+ ct.fillText('LAAG '+String(state.layer+1).padStart(2,'0')+' / '+cfg.layers+' · '+cfg.experts+' EXPERTS',left,top-27);
+ ct.font='10px ui-monospace,monospace';ct.fillStyle='#8facbd';
+ ct.fillText('VIER GEMARKEERD · TIK OM EEN EXPERT TE KIEZEN',left,top-12);
+ for(let e=0;e<cfg.experts;e++){
+  const col=e%cols,row=Math.floor(e/cols),x=left+col*(size+gap),y=top+row*(size+gap);
+  const isActive=e===state.expert,isChosen=chosen.includes(e);
+  ct.fillStyle=isActive?'#f4c58a':isChosen?'#6ad6d3':'#1b3a50';
+  ct.fillRect(x,y,size,size);
+  if(isActive||isChosen){ct.strokeStyle=isActive?'#fff0cb':'#a9f3ef';ct.lineWidth=1.2;ct.strokeRect(x-.5,y-.5,size+1,size+1)}
+  screenExperts.push({x:x+size/2,y:y+size/2,l:state.layer,e});
+ }
+ ct.fillStyle='#d9ecf1';ct.font='11px ui-monospace,monospace';
+ ct.fillText('GEKOZEN: EXPERT '+String(state.expert+1).padStart(3,'0'),left,Math.min(H-12,top+totalH+29));
+ ct.restore();
+}
+
 function drawScene(){
  if(W<2||H<2)return;setCameraMatrix();ct.setTransform(dpr,0,0,dpr,0,0);halo();
- if(state.mode<=2){
+ if(state.mode<=1){
   drawLayerFrames();drawCloud();drawExperts();
   if(state.showTrails||state.mode===1)drawStream();
   if(state.mode===0)drawModelScan();
-  if(state.mode===2){drawRouterSignals();}
   highlightExpert();
- }else if(state.mode===3){drawAttention();}
+ }else if(state.mode===2){drawExpertsGrid();}
+ else if(state.mode===3){drawAttention();}
  else if(state.mode===4){drawContextWindow();}
  else if(state.mode===5){drawGeneration();}
  else if(state.mode===6){drawUsageWorld();}
@@ -686,7 +716,7 @@ function selectAtGraph(x){
  refreshNumbers();renderInspector();updateJourneyUI();drawPlot();
 }
 
-function setMode(index){state.mode=clamp(index,0,MODES.length-1);if(state.mode===1){state.journey=0;state.layer=0;state.expert=chooseRoute(0)[0].e;state.zoom=1.06;}state.follow=false;state.playing=false;state.time=0;$('playBtn').textContent=state.playing?'II':'>';document.querySelector('[data-cam=focus]').textContent='FOCUS';const m=MODES[state.mode];document.querySelectorAll('.mode-btn').forEach((e,i)=>{e.classList.toggle('active',i===state.mode);e.setAttribute('aria-pressed',String(i===state.mode))});$('app').dataset.mode=String(state.mode);$('graphDockLabel').textContent=state.mode===1?'Details':'Grafiek';$('eyebrow').textContent=String(state.mode+1).padStart(2,'0')+' / '+m.name.toUpperCase();$('modeTitle').textContent=m.title;$('modeDesc').textContent=m.desc;$('insTitle').textContent=m.ins;$('insDesc').textContent=m.insDesc;$('modeCount').textContent=String(state.mode+1).padStart(2,'0')+' / '+String(MODES.length).padStart(2,'0');$('plotTitle').textContent=m.plot;$('plotNote').textContent=m.note;$('dataLabel').textContent=state.mode===0?'CONFIGURATIE':state.mode===6?'BRON + REKENSOM':'CONFIG + DEMO';$('usageStageTag').hidden=state.mode!==6;$('statusHint').innerHTML=state.mode===0?'<strong>'+cfg.layers+' lagen / '+cfg.experts+' experts per laag</strong><br>De punten tonen geen gemeten activaties.':state.mode===6?'<strong>75 invoer / 1186 uitvoer</strong><br>1024 uitvoertokens waren redenering (bronvoorbeeld).':state.mode===2?'<strong>4 experts per token</strong><br>Routes zijn berekende voorbeelden.':'<strong>Gekoppelde berekening</strong><br>Geen uitgelezen modelactivaties.';renderInspector();state.dirty=true;state.chartDirty=true;updateJourneyUI();closePanel()}
+function setMode(index){state.mode=clamp(index,0,MODES.length-1);if(state.mode===1){state.journey=0;state.layer=0;state.expert=chooseRoute(0)[0].e;state.zoom=1.06;}state.follow=false;state.playing=false;state.time=0;$('playBtn').textContent=state.playing?'II':'>';document.querySelector('[data-cam=focus]').textContent='FOCUS';const m=MODES[state.mode];document.querySelectorAll('.mode-btn').forEach((e,i)=>{e.classList.toggle('active',i===state.mode);e.setAttribute('aria-pressed',String(i===state.mode))});$('app').dataset.mode=String(state.mode);$('graphDockLabel').textContent=state.mode===1?'Details':'Grafiek';$('eyebrow').textContent=String(state.mode+1).padStart(2,'0')+' / '+m.name.toUpperCase();$('modeTitle').textContent=m.title;$('modeDesc').textContent=m.desc;$('insTitle').textContent=m.ins;$('insDesc').textContent=m.insDesc;$('modeCount').textContent=String(state.mode+1).padStart(2,'0')+' / '+String(MODES.length).padStart(2,'0');$('plotTitle').textContent=m.plot;$('plotNote').textContent=m.note;$('dataLabel').textContent=state.mode===0?'CONFIGURATIE':state.mode===6?'BRON + REKENSOM':'CONFIG + DEMO';$('usageStageTag').hidden=state.mode!==6;$('statusHint').innerHTML=state.mode===0?'<strong>'+cfg.layers+' lagen / '+cfg.experts+' experts per laag</strong><br>De punten tonen geen gemeten activaties.':state.mode===6?'<strong>75 invoer / 1186 uitvoer</strong><br>1024 uitvoertokens waren redenering (bronvoorbeeld).':state.mode===2?'<strong>Vier experts per token</strong><br>De kleuren tonen een berekende voorbeeldselectie.':state.mode===3?'<strong>Lokaal of volledig bereik</strong><br>Geen gemeten attention-scores.':state.mode===4?'<strong>128 van de vorige posities</strong><br>Vergelijk met volledige context.':state.mode===5?'<strong>Kansen voor het volgende token</strong><br>Uit een berekend voorbeeld.':'<strong>Gekoppelde berekening</strong><br>Geen uitgelezen modelactivaties.';renderInspector();state.dirty=true;state.chartDirty=true;updateJourneyUI();closePanel()}
 function changeModel(id){state.model=+id;cfg=CONFIG[state.model];rebuildWorld();$('modelName').textContent=cfg.name;renderInspector();setMode(state.mode)}
 function renderModes(){const symbols=['▤','↣','▦','≋','▥','▧','▣'];$('modes').innerHTML=MODES.map((m,i)=>'<button type="button" class="mode-btn '+(i===state.mode?'active':'')+'" data-mode="'+i+'" aria-pressed="'+(i===state.mode)+'"><span class="mode-icon">'+symbols[i]+'</span><span><strong>'+m.name+'</strong><small>'+m.sub+'</small></span><span class="num">'+String(i+1).padStart(2,'0')+'</span></button>').join('');$('modes').addEventListener('click',e=>{const b=e.target.closest('[data-mode]');if(b)setMode(+b.dataset.mode)})}
 function setStats(items){$('stats').innerHTML=items.map(item=>'<div class="stat"><small>'+item[0]+'</small><strong class="'+(item[2]?'warm':'')+'">'+item[1]+'</strong><span>'+((item[3]||''))+'</span></div>').join('')}
