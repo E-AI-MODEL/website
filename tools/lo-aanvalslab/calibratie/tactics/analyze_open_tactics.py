@@ -36,6 +36,7 @@ def analyze_zip(data):
             if outcome not in columns:
                 raise ValueError(f"Geen uitkomstkolom: {columns!r}")
             groups = collections.defaultdict(lambda: {"n": 0, "success": 0, "games": set()})
+            attack_context = collections.defaultdict(lambda: {"n": 0, "success": 0})
             ignored = collections.Counter()
             total = 0
             for row in reader:
@@ -51,6 +52,15 @@ def analyze_zip(data):
                 item["n"] += 1
                 item["success"] += int(as_bool(row.get(outcome)))
                 item["games"].add(row.get("game") or "unknown")
+                if phase == "AT":
+                    # Context van hetzelfde balbezit: een tegenaanval of een
+                    # georganiseerde aanval is niet hetzelfde tactische probleem.
+                    # Alleen de letterlijke bronlabels worden meegenomen.
+                    context = (row.get("offense_type") or "onbekend").strip().lower()
+                    organized = (row.get("organized_game") or "onbekend").strip().lower()
+                    subs = attack_context[(situation, context, organized)]
+                    subs["n"] += 1
+                    subs["success"] += int(as_bool(row.get(outcome)))
         values = [
             {"fase": "aanval" if phase == "AT" else "verdediging",
              "situatie": situation,
@@ -66,6 +76,14 @@ def analyze_zip(data):
             "gebruikt": sum(row["bezitten"] for row in values),
             "overgeslagen": dict(ignored),
             "groepen": values,
+            "aanval_per_broncontext": [
+                {"situatie": situation, "aanvalstype": context,
+                 "georganiseerd_label": organized, "bezitten": item["n"],
+                 "doelpunten": item["success"],
+                 "percentage_alleen_bij_tien_of_meer": round(100*item["success"]/item["n"],1)
+                    if item["n"]>=10 else None}
+                for (situation, context, organized),item in sorted(attack_context.items())
+            ],
             "bewijslimiet": "Beschrijvende wedstrijddata. Geen causale conclusie, geen kans voor een schoolsimulatie."
         }
 
