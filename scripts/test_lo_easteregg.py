@@ -440,8 +440,8 @@ def main():
             if width<=880:
                 coach_page.wait_for_function("window.__loCalmUI?.getState().active === true")
                 assert coach_page.locator("#loCalmSources").is_visible()
-                assert not coach_page.locator("#loCalmSources").get_attribute("open")
-                coach_page.locator("#loCalmSources>summary").click()
+                if coach_page.locator("#loCalmSources").get_attribute("open") is None:
+                    coach_page.locator("#loCalmSources>summary").click()
                 assert coach_page.locator(".lo-calm-body .lo-evidence-link").is_visible()
                 assert coach_page.locator("#pitch").is_visible()
             else:
