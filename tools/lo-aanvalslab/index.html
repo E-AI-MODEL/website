@@ -306,14 +306,122 @@
 .lo-mid-players button,.lo-mid-actions button,.lo-mid-sides button{border:.8px solid #476862;border-radius:18px;background:transparent;color:#cde7de;font-size:11px;padding:6px 9px;cursor:pointer}
 .lo-mid-players button[aria-pressed=true],.lo-mid-actions button[aria-pressed=true],.lo-mid-sides button[aria-pressed=true]{background:#265044;border-color:#81daba;color:#f2fff7}
 @media(max-width:880px){.lo-coach-transport{padding:5px 7px;gap:5px}.lo-coach-transport label,.lo-coach-transport .btn{font-size:10px}.lo-coach-seek{min-width:110px;max-width:none}.lo-coach-transport #loCoachEdit{order:4;flex:1}.lo-mid-players button,.lo-mid-actions button{font-size:10px;padding:5px 7px}}
+
+.mobile-task-preview{display:none}
+@media(max-width:880px){
+ .mobile-task-preview{display:flex;flex-direction:column;gap:4px;flex:0 0 auto;min-height:76px;background:#0d242b;border:1px solid #28483f;border-radius:9px;padding:12px 13px}
+ .mobile-task-kicker{font-size:9px;font-weight:700;letter-spacing:.08em;color:#88bfae}
+ .mobile-task-preview strong{font-size:15px;color:#e9f8ec;line-height:1.2}
+ .mobile-task-preview p{margin:0;font-size:11px;line-height:1.45;color:#aac8bf}
+}
+@media(max-width:880px) and (max-height:650px){
+ .mobile-task-preview{min-height:0;padding:8px 10px;gap:2px}
+ .mobile-task-preview strong{font-size:12px}
+ .mobile-task-preview p{display:none}
+}
+@media(max-width:880px) and (orientation:landscape) and (max-height:500px){.mobile-task-preview{display:none}}
+/* Mobiel: het veld blijft zichtbaar, alleen het gekozen bedieningspaneel komt omhoog. */
+.mobile-controls,.mobile-sheet-head,.mobile-scrim{display:none}
+@media(max-width:880px){
+ html,body{height:100%;overflow:hidden;overscroll-behavior:none}
+ .app{height:100dvh;min-height:0;max-height:100dvh;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-start;padding:8px max(8px,env(safe-area-inset-right)) calc(5px + env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left));gap:6px}
+ .top{flex:0 0 auto;min-height:43px;gap:5px}
+ .shell{flex:1 1 auto;display:flex;flex-direction:column;justify-content:flex-start;align-items:stretch;gap:7px;min-height:0;overflow:hidden}
+ .fieldpane{flex:0 0 auto;min-height:0;max-height:calc(100dvh - 154px);height:auto;width:100%;border-radius:9px}
+ .fieldhead{flex:none;min-height:37px;padding:6px 9px}
+ .fieldframe{flex:none;width:100%;height:auto;min-height:0;max-height:calc(100dvh - 252px);aspect-ratio:1000/650;padding:3px;background:#0b272c}
+ .fieldframe #pitch{display:block;width:100%;height:100%;max-height:100%;aspect-ratio:1000/650;object-fit:contain}
+ .bottom{flex:none;padding:7px 9px;gap:6px;min-height:53px;flex-wrap:nowrap}
+ .bottom>div:first-child{min-width:0;flex:1 1 auto}
+ .bottom .hint{font-size:10px;line-height:1.35}
+ .bottom .small{display:none}
+ .bottom .actions{flex:0 0 auto;flex-wrap:nowrap;gap:5px}
+ .bottom .btn{min-height:40px;font-size:11px;padding:7px 10px;white-space:nowrap}
+ .mobile-controls{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;flex:0 0 auto;width:100%}
+ .mobile-panel-toggle{background:#102830;border:1px solid #355850;border-radius:8px;color:#e2f3ea;font-size:12px;font-weight:680;min-height:46px;padding:9px 5px;touch-action:manipulation}
+ .mobile-panel-toggle:focus-visible,.mobile-sheet-close:focus-visible{outline:2px solid #9aecc6;outline-offset:2px}
+ .mobile-panel-toggle[aria-expanded=true]{border-color:#7ddcb6;background:#1c4338}
+ .mobile-scrim{position:fixed;inset:0;background:#020b0fc7;z-index:40;border:0;border-radius:0;width:100%;height:100%;padding:0;cursor:default}
+ .app[data-mobile-panel="goal"] .mobile-scrim,.app[data-mobile-panel="player"] .mobile-scrim,.app[data-mobile-panel="coach"] .mobile-scrim{display:block}
+ .side{display:none;position:fixed;z-index:41;left:0;right:0;bottom:0;width:100%;height:auto;max-height:min(72dvh,550px);min-height:0;overflow-y:auto;overscroll-behavior:contain;border-radius:16px 16px 0 0;border:1px solid #4b786a;border-bottom:0;background:#10262d;box-shadow:0 -14px 60px #0009;gap:10px;padding:10px 14px calc(18px + env(safe-area-inset-bottom))}
+ .app[data-mobile-panel="goal"] .side,.app[data-mobile-panel="player"] .side,.app[data-mobile-panel="coach"] .side{display:flex}
+ .side>.mobile-sheet-head{display:flex;position:sticky;top:-10px;z-index:2;background:#10262d;align-items:center;justify-content:space-between;padding:5px 0 10px;border-bottom:1px solid #395b54;gap:8px}
+ .mobile-sheet-head strong{font-size:15px;color:#e9f9ef}
+ .mobile-sheet-close{border:1px solid #507669;border-radius:8px;background:#183a37;color:#e1f7eb;min-height:40px;padding:8px 12px;font-size:12px;font-weight:650}
+ .app[data-mobile-panel="goal"] .side>:not(.mobile-sheet-head):not(.mobile-task):not(#task):not(#loGoals){display:none!important}
+ .app[data-mobile-panel="player"] .side>:not(.mobile-sheet-head):not(#prep):not(#loTeacherBadge):not(#loTeacherPracticeTip){display:none!important}
+ .app[data-mobile-panel="coach"] .side>:not(.mobile-sheet-head):not(#loMidCoach):not(#loCoachPanel):not(#after){display:none!important}
+ .side .lo-goals>summary,.side .lo-slim-menu>summary{min-height:43px;font-size:12px;padding:10px}
+ .side .lo-goals-body,.side .lo-slim-content{padding:10px;gap:9px}
+ .side .intent{min-height:42px;font-size:12px;padding:9px 10px}
+ .side .zone-option{min-height:40px;font-size:11px}
+ .side .lo-goal-chip,.side .lo-role-chip{min-height:36px;font-size:11px}
+ .side #intentHelp{display:block;font-size:11px}
+ .side h2{font-size:19px}.side h3{font-size:10px}
+ .foot{display:none}
+ .lo-footer-links{position:relative;flex:0 0 auto;align-self:center;justify-content:center;padding:0 0 2px;margin-top:auto;font-size:10px}
+ .lo-evidence-link,.source-detail summary{font-size:10px}
+ .veil{padding:10px;align-items:center;justify-items:center;overflow-y:auto}
+ .welcome{width:min(520px,100%);max-height:calc(100dvh - 20px);border-radius:14px;padding:16px;overflow-y:auto}
+ .welcome h2{font-size:clamp(21px,5vw,28px);margin:5px 0 6px}
+ .welcome p{margin:7px 0;font-size:12px;line-height:1.4}
+ .sport-choice{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;margin:10px 0}
+ .sport-chip{min-height:40px;padding:7px 2px;font-size:11px;white-space:nowrap}
+ .choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:10px}
+ .choice{min-height:92px;padding:12px;display:flex;flex-direction:column;justify-content:center}
+ .choice b{font-size:13px;line-height:1.3;margin-bottom:5px}
+ .choice span{font-size:11px;line-height:1.35}
+ .lo-start-links{margin-top:10px;gap:7px}
+ .lo-start-link{min-height:42px}
+}
+@media(max-width:460px){
+ .top .brand{gap:5px}
+ .top .brand .eyebrow{font-size:8px;letter-spacing:.08em}
+ .top .brand h1{font-size:15px}
+ .top-actions .sport-select{max-width:91px;font-size:10px;min-height:37px}
+ .top-actions .formation-select{max-width:88px}
+ .top-actions .btn{min-height:37px;min-width:36px}
+ .bottom .hint{font-size:9px}
+ .bottom .btn{font-size:10px;padding:7px 8px}
+ .choices{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+ .choice{min-height:90px;padding:9px}
+ .choice b{font-size:12px;margin-bottom:4px}
+ .choice span{font-size:10px}
+ .sport-chip{font-size:10px}
+ .lo-start-link{font-size:11px}
+}
+@media(max-width:880px) and (max-height:650px){
+ .app{gap:4px;padding-top:4px}
+ .top{min-height:35px}
+ .fieldhead{min-height:31px;padding:4px 7px}
+ .fieldpane{max-height:calc(100dvh - 130px)}
+ .fieldframe{aspect-ratio:1000/650;max-height:calc(100dvh - 205px);height:auto;min-height:0}
+ .fieldframe #pitch{height:100%;width:100%;aspect-ratio:1000/650}
+ .bottom{min-height:44px;padding:4px 7px}
+ .bottom .hint{display:none}
+ .bottom>div:first-child{display:none}
+ .bottom .actions{width:100%;justify-content:space-between}
+ .mobile-panel-toggle{min-height:40px}
+ .lo-footer-links{display:none}
+ .welcome{padding:12px;max-height:calc(100dvh - 12px)}
+ .welcome p{display:none}
+ .welcome .choice{min-height:67px}
+ .welcome .choice span{display:none}
+}
+@media(max-width:880px) and (orientation:landscape) and (max-height:500px){
+ .brand .eyebrow{display:none}
+ .top{min-height:32px}
+ .fieldframe{aspect-ratio:auto;height:calc(100dvh - 174px);max-height:calc(100dvh - 174px);min-height:85px}
+ .side{max-height:85dvh}
+}
 </style></head><body class="eai-refresh"><div class="app"><header class="top"><div class="brand"><button type="button" class="mark lo-secret" id="loSecret" aria-label="LO-logo. Tweemaal tikken voor de berekeningen van het spel" title="LO">LO</button><div><div class="eyebrow">TACTISCH SPELLAB</div><h1>Speel het uit.</h1></div></div><div class="top-actions"><label class="sport-label" for="sportSelect">Sport</label><select id="sportSelect" class="sport-select" aria-label="Kies de sport"><option value="0">Voetbal</option><option value="1">Hockey</option><option value="2">Handbal</option><option value="3">Basketbal</option></select><label class="sport-label" for="formationSelect">Teams</label><select id="formationSelect" class="sport-select formation-select" aria-label="Kies het aantal aanvallers en verdedigers"><option value="0">4 tegen 4</option><option value="1">2 tegen 1</option><option value="2">3 tegen 2</option><option value="3">4 tegen 3</option></select><button id="new" class="btn">Nieuwe spelsituatie</button></div></header><div class="shell"><section class="fieldpane"><div class="fieldhead"><span id="stage" class="pill">Voorbereiden</span><span id="stagehelp" class="small">Versleep de spelers van jouw team</span><label class="playback-control" for="playbackSpeed"><span>Tempo</span><select id="playbackSpeed" aria-label="Afspeelsnelheid"><option value="0.5">½×</option><option value="1" selected>1×</option><option value="1.5">1½×</option><option value="2">2×</option></select></label><button type="button" id="loHelpOpen" class="lo-help-open" aria-haspopup="dialog" aria-controls="loHelp" aria-label="Uitleg en demo's voor het Aanvalslab"><span class="lo-help-mark" aria-hidden="true">?</span><span class="lo-help-word">Uitleg en demo’s</span></button></div><div class="fieldframe"><svg id="pitch" viewBox="0 0 1000 650" tabindex="0" role="img" aria-label="Interactief speelveld. Kies een speler en gebruik de pijltjestoetsen om hem te verplaatsen."></svg></div><div class="lo-coach-transport" id="loCoachTransport" hidden>
  <label for="loCoachSeek">Terug naar spelmoment <output id="loCoachTimestamp">0,0 s</output></label>
  <input id="loCoachSeek" class="lo-coach-seek" type="range" min="0" max="0" step="0.05" value="0" aria-label="Kies een eerder spelmoment">
  <button id="loCoachEdit" type="button" class="btn">Coach · verander actie</button>
  <button id="loCoachOriginal" type="button" class="btn" hidden>Oorspronkelijke aanval</button>
  <button id="loCoachVariant" type="button" class="btn" hidden>Aangepaste aanval</button>
- </div><div class="bottom"><div><div id="instruction" class="hint">De bal ligt bij aanvaller 1. Maak je opstelling en speel de hele aanval.</div><div id="under" class="small setup-tip">Sleep een speler of tik eerst de speler en daarna zijn plek.</div></div><div class="actions"><button id="reset" class="btn">Beginopstelling</button><button id="primary" class="btn main">Speel de aanval af ▶</button></div></div></section><aside class="side"><button type="button" id="loTeacherBadge" class="lo-teacher-badge" hidden>Docentweergave · leshulp</button>
-<details id="loTeacherPracticeTip" class="lo-teacher-practice-tip" hidden open><summary id="loTeacherPracticeTitle">Docentproef</summary><p id="loTeacherPracticeBody">Verplaats een speler, speel de situatie af en bekijk de coach.</p></details><div><h3>Jouw opdracht</h3><h2 id="tasktitle">Maak een kans</h2></div><p id="task" class="hint" style="margin:0">Kies waar je spelers beginnen. Welke opstelling levert volgens jou de beste aanval op?</p><details id="loGoals" class="lo-goals"><summary aria-label="Wijzig het tactische oefendoel"><span class="lo-goal-kicker">Oefendoel</span><strong id="loGoalCurrent" class="lo-goal-current">Aanspeellijn openen</strong><span class="lo-goal-arrow" aria-hidden="true">⌄</span></summary><div class="lo-goals-body"><div class="lo-goal-controls"><div id="loGoalRoles" class="lo-goal-roles" role="group" aria-label="Team dat je oefent"></div><button type="button" class="lo-role-chip active" id="loCoachAuto" aria-pressed="true">Coach kiest</button></div><div id="loGoalChips" class="lo-goal-chips" role="group" aria-label="Tactische doelen"></div><p id="loGoalHint" class="lo-goal-hint">Kies een doel of laat de coach meedenken.</p></div></details><div class="sep"></div><details id="prep" class="lo-slim-menu" open><summary><span>Speleropdrachten</span><small class="lo-slim-value" id="loPlayerLabel">Aanvaller 1</small></summary><div class="lo-slim-content"><details id="zonePlans" class="zone-plans hide" open><summary class="zone-plans-head">Zoneverdediging · heel team</summary><div class="zone-options"><button type="button" class="zone-option" data-zone-plan="zonecompact">Compact</button><button type="button" class="zone-option" data-zone-plan="zoneschuif">Meeschuiven</button><button type="button" class="zone-option" data-zone-plan="zonelijn">Passlijnen</button></div><div id="zoneTip" class="zone-tip">Kies een teamvorm of geef elke verdediger apart een opdracht.</div></details><h3>Geselecteerde speler</h3><div id="selected" class="hint">Tik op een speler om zijn opdracht te kiezen.</div><div id="intents" class="intent-grid"></div><p class="small" id="intentHelp">Sleep een speler, of tik de speler en daarna een vrije plek. Met de pijltjestoetsen kun je nauwkeurig schuiven.</p></div></details><div class="grow"></div><details id="loMidCoach" class="lo-slim-menu" hidden>
+ </div><div class="bottom"><div><div id="instruction" class="hint">De bal ligt bij aanvaller 1. Maak je opstelling en speel de hele aanval.</div><div id="under" class="small setup-tip">Sleep een speler of tik eerst de speler en daarna zijn plek.</div></div><div class="actions"><button id="reset" class="btn">Beginopstelling</button><button id="primary" class="btn main">Speel de aanval af ▶</button></div></div></section><nav class="mobile-controls" id="loMobileControls" aria-label="Bediening op telefoon"><button type="button" class="mobile-panel-toggle" data-lo-mobile-panel="goal" aria-expanded="false" aria-controls="loGoals">Oefendoel</button><button type="button" class="mobile-panel-toggle" data-lo-mobile-panel="player" aria-expanded="false" aria-controls="prep">Spelers</button><button type="button" class="mobile-panel-toggle" data-lo-mobile-panel="coach" aria-expanded="false" aria-controls="loCoachPanel">Coach</button></nav><section class="mobile-task-preview" aria-live="polite"><span class="mobile-task-kicker">JOUW OPDRACHT</span><strong id="loMobileTaskTitle">Kies je opstelling</strong><p id="loMobileTaskText">Verplaats je spelers en bekijk wat er gebeurt.</p></section><button type="button" class="mobile-scrim" id="loMobileScrim" aria-label="Sluit het instellingenpaneel" tabindex="-1"></button><aside class="side"><div class="mobile-sheet-head"><strong id="loMobilePanelTitle">Spelers</strong><button type="button" id="loMobileClose" class="mobile-sheet-close">Sluiten ×</button></div><button type="button" id="loTeacherBadge" class="lo-teacher-badge" hidden>Docentweergave · leshulp</button>
+<details id="loTeacherPracticeTip" class="lo-teacher-practice-tip" hidden open><summary id="loTeacherPracticeTitle">Docentproef</summary><p id="loTeacherPracticeBody">Verplaats een speler, speel de situatie af en bekijk de coach.</p></details><div class="mobile-task"><h3>Jouw opdracht</h3><h2 id="tasktitle">Maak een kans</h2></div><p id="task" class="hint" style="margin:0">Kies waar je spelers beginnen. Welke opstelling levert volgens jou de beste aanval op?</p><details id="loGoals" class="lo-goals"><summary aria-label="Wijzig het tactische oefendoel"><span class="lo-goal-kicker">Oefendoel</span><strong id="loGoalCurrent" class="lo-goal-current">Aanspeellijn openen</strong><span class="lo-goal-arrow" aria-hidden="true">⌄</span></summary><div class="lo-goals-body"><div class="lo-goal-controls"><div id="loGoalRoles" class="lo-goal-roles" role="group" aria-label="Team dat je oefent"></div><button type="button" class="lo-role-chip active" id="loCoachAuto" aria-pressed="true">Coach kiest</button></div><div id="loGoalChips" class="lo-goal-chips" role="group" aria-label="Tactische doelen"></div><p id="loGoalHint" class="lo-goal-hint">Kies een doel of laat de coach meedenken.</p></div></details><div class="sep"></div><details id="prep" class="lo-slim-menu" open><summary><span>Speleropdrachten</span><small class="lo-slim-value" id="loPlayerLabel">Aanvaller 1</small></summary><div class="lo-slim-content"><details id="zonePlans" class="zone-plans hide" open><summary class="zone-plans-head">Zoneverdediging · heel team</summary><div class="zone-options"><button type="button" class="zone-option" data-zone-plan="zonecompact">Compact</button><button type="button" class="zone-option" data-zone-plan="zoneschuif">Meeschuiven</button><button type="button" class="zone-option" data-zone-plan="zonelijn">Passlijnen</button></div><div id="zoneTip" class="zone-tip">Kies een teamvorm of geef elke verdediger apart een opdracht.</div></details><h3>Geselecteerde speler</h3><div id="selected" class="hint">Tik op een speler om zijn opdracht te kiezen.</div><div id="intents" class="intent-grid"></div><p class="small" id="intentHelp">Sleep een speler, of tik de speler en daarna een vrije plek. Met de pijltjestoetsen kun je nauwkeurig schuiven.</p></div></details><div class="grow"></div><details id="loMidCoach" class="lo-slim-menu" hidden>
 <summary>Coachingreep · speler en actie kiezen</summary>
 <div class="lo-slim-content">
 <p class="hint" style="margin:0" id="loMidCoachInfo">Wijzig één opdracht. De spelers blijven staan op het gekozen moment.</p>
@@ -676,7 +784,7 @@ function draw(actors=players,ball=null,trail=[]){
   if(active)s('circle',{cx:p.x,cy:p.y,r:29,fill:'none',stroke:'#ecfff8','stroke-width':1.4,opacity:.75,'stroke-dasharray':'6 5'},g);
   s('circle',{cx:p.x,cy:p.y,r:21,fill:p.team==='a'?'#123b34':'#3b2633',stroke:active?'#f2fffb':(p.team==='a'?'#5ce0af':'#fb8190'),'stroke-width':active?3:2.15,opacity:can?1:.85},g);
   s('text',{x:p.x,y:p.y+5,'text-anchor':'middle',fill:'#fff','font-size':15,'font-weight':720,'pointer-events':'none'},g).textContent=(+p.id[1]+1);
-  if(can)s('circle',{cx:p.x,cy:p.y,r:33,fill:'transparent','data-id':p.id},g);
+  if(can)s('circle',{cx:p.x,cy:p.y,r:window.innerWidth<=880?55:33,fill:'transparent','data-id':p.id},g);
  }
  drawBall(ball||ballAt(actors.find(p=>p.id==='a0')),layer)
 }
@@ -2111,5 +2219,45 @@ document.addEventListener('keydown',e=>{
 render();
 window.__loTeacherStartTrial=trial;
 window.__loTeacherTest={getState:()=>({open:!sheet.hidden,enabled,formation,practice:!$('loTeacherPracticeTip').hidden}),open,close,start,trial,exit};
+})();
+</script><script>
+/* Dezelfde bediening als desktop, maar met een compact mobiel venster. */
+(()=>{'use strict';
+const app=document.querySelector('.app');
+const mobile=window.matchMedia('(max-width:880px)');
+const panelButtons=[...document.querySelectorAll('[data-lo-mobile-panel]')];
+const title=document.getElementById('loMobilePanelTitle');
+const titles={goal:'Oefendoel',player:'Speleropdrachten',coach:'Coach en terugkijken'};
+function setPanel(kind=''){
+ if(!mobile.matches)kind='';
+ app.dataset.mobilePanel=kind;
+ panelButtons.forEach(button=>button.setAttribute('aria-expanded',String(button.dataset.loMobilePanel===kind)));
+ if(kind){
+  title.textContent=titles[kind];
+  if(kind==='goal')document.getElementById('loGoals').open=true;
+  if(kind==='player')document.getElementById('prep').open=true;
+  if(kind==='coach')document.getElementById('loCoachPanel').open=true;
+  document.querySelector('.side').scrollTop=0;
+ }
+}
+panelButtons.forEach(button=>button.addEventListener('click',()=>{
+ const kind=button.dataset.loMobilePanel;
+ setPanel(app.dataset.mobilePanel===kind?'':kind);
+}));
+document.getElementById('loMobileClose').addEventListener('click',()=>setPanel(''));
+document.getElementById('loMobileScrim').addEventListener('click',()=>setPanel(''));
+document.addEventListener('keydown',event=>{if(event.key==='Escape'&&app.dataset.mobilePanel){setPanel('')}});
+if(mobile.addEventListener)mobile.addEventListener('change',()=>setPanel(''));
+const after=document.getElementById('after');
+new MutationObserver(()=>{
+ if(mobile.matches&&!after.classList.contains('hide')&&!app.dataset.mobilePanel)setPanel('coach');
+}).observe(after,{attributes:true,attributeFilter:['class']});
+const liveTitle=document.getElementById('tasktitle'),liveText=document.getElementById('task');
+const previewTitle=document.getElementById('loMobileTaskTitle'),previewText=document.getElementById('loMobileTaskText');
+function syncTask(){previewTitle.textContent=liveTitle.textContent;previewText.textContent=liveText.textContent}
+new MutationObserver(syncTask).observe(liveTitle,{childList:true,subtree:true,characterData:true});
+new MutationObserver(syncTask).observe(liveText,{childList:true,subtree:true,characterData:true});
+syncTask();
+window.__loMobileUI={open:setPanel,close:()=>setPanel('')};
 })();
 </script></body></html>
