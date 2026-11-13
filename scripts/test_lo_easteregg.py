@@ -5,41 +5,60 @@ from playwright.sync_api import sync_playwright
 
 ROOT=Path(__file__).resolve().parents[1]
 HTML=ROOT/"tools/lo-aanvalslab/index.html"
-def assert_rules_unchanged(page,baseline):
-    differences=[]
+def assert_defender_model_candidate(page,baseline):
+    """Regressie voor een bewust gewijzigd model; exacte trajectgelijkheid
+    met de oude verdediging zou hier een onjuiste acceptatietest zijn."""
+    import math
+    differences=0
+    invalid=[]
+    evaluated=0
     for sport in range(4):
         for form in range(4):
             for scene in range(4):
-                for seed in [1337,2730]:
-                    values=[]
-                    for browser_page in [baseline,page]:
+                for seed in (1337,2730):
+                    results=[]
+                    for browser_page in (baseline,page):
                         browser_page.select_option("#sportSelect",str(sport))
                         browser_page.select_option("#formationSelect",str(form))
-                        data=browser_page.evaluate("""({scene,seed})=>{
+                        result=browser_page.evaluate("""({scene,seed})=>{
                           const lab=window.__loLabTest,ps=lab.scenario(scene),out=lab.run(ps,seed);
                           const fs=lab.getFrames();
-                          return {result:out.result,duration:out.duration,passes:out.passes,
-                            completed:out.completed,shots:out.shots,intercepts:out.intercepts,
-                            trajectory:fs.map(f=>[f.time,
-                             ...f.players.flatMap(p=>[p.x,p.y,p.vx,p.vy]),f.ball.x,f.ball.y])};
+                          let maxSpeed=0,invalidRole=0,invalidNumber=0;
+                          for(const f of fs){
+                            const defenders=f.players.filter(p=>p.team==='d');
+                            for(const role of ['press','cover','intercept']){
+                              if(defenders.filter(p=>p._defenceRole===role).length>1)invalidRole++;
+                            }
+                            for(const p of f.players){
+                              const values=[p.x,p.y,p.vx,p.vy];
+                              if(values.some(x=>!Number.isFinite(x)))invalidNumber++;
+                              if(p.x<69-1e-4||p.x>931+1e-4||p.y<76-1e-4||p.y>574+1e-4)invalidNumber++;
+                              maxSpeed=Math.max(maxSpeed,Math.hypot(p.vx,p.vy)/lab.getConfig().px);
+                            }
+                          }
+                          return {
+                            result:out.result,duration:out.duration,passes:out.passes,
+                            shots:out.shots,intercepts:out.intercepts,
+                            n:fs.length,maxSpeed,invalidRole,invalidNumber,
+                            first:fs[0].players.map(p=>[p.x,p.y]),
+                            final:fs.at(-1).players.map(p=>[p.x,p.y])
+                          };
                         }""",{"scene":scene,"seed":seed})
-                        values.append(data)
-                    left,right=values
-                    if {k:v for k,v in left.items() if k!="trajectory"}!={k:v for k,v in right.items() if k!="trajectory"}:
-                        differences.append(f"Outcome mismatch {sport}/{form}/{scene}/{seed}: {left['result']} vs {right['result']}")
-                    if len(left['trajectory'])!=len(right['trajectory']):
-                        differences.append(f"Frames mismatch {sport}/{form}/{scene}/{seed}")
-                    else:
-                        for row_a,row_b in zip(left["trajectory"],right["trajectory"]):
-                            if any(abs(a-b)>1e-7 for a,b in zip(row_a,row_b)):
-                                differences.append(f"Player path mismatch {sport}/{form}/{scene}/{seed}")
-                                break
-                    if differences:break
-                if differences:break
-            if differences:break
-        if differences:break
-    assert not differences,differences
-    return 4*4*4*2
+                        results.append(result)
+                    old,new=results
+                    evaluated+=1
+                    if new["n"]<2 or new["invalidRole"] or new["invalidNumber"] or not math.isfinite(new["maxSpeed"]):
+                        invalid.append((sport,form,scene,seed,new))
+                    if new["maxSpeed"]>5.1:
+                        invalid.append(("speed",sport,form,scene,seed,new["maxSpeed"]))
+                    if old!=new:
+                        differences+=1
+    assert not invalid,invalid
+    assert evaluated==128,evaluated
+    assert differences>16,("De nieuwe verdediging wijzigt nauwelijks trajecten",differences)
+    print("LO proefverdediging: ",evaluated," scenario-seed-combinaties;",
+          differences," afwijkend van oud model. Dit is GEEN validatie tegen echte wedstrijden.")
+    return evaluated
 
 def main():
     with sync_playwright() as p:
@@ -221,7 +240,7 @@ def main():
         page.locator("#loCoachAuto").click()
         assert page.evaluate("window.__loLabTest.getCoachState().manual") is False
         assert page.locator("#loCoachAuto").get_attribute("aria-pressed")=="true"
-        count=assert_rules_unchanged(page,baseline)
+        count=assert_defender_model_candidate(page,baseline)
         # De spelerpijlen komen uit echte 1,25 s-modeltrajecten, niet uit eigen doelen.
         for sport in range(4):
             page.select_option("#sportSelect",str(sport))

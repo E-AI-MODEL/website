@@ -7,6 +7,10 @@ on:
       - 'tools/lo-aanvalslab/onderbouwing/index.html'
       - 'tests/test_lo_evidence_publish.py'
       - 'scripts/test_lo_easteregg.py'
+      - 'scripts/benchmark_lo_defence.py'
+      - 'scripts/lo_gnss_reference.py'
+      - 'scripts/lo_metrica_defence_reference.py'
+      - 'scripts/trace_lo_defence.py'
       - '.github/workflows/lo-easteregg-verify.yml'
   workflow_dispatch:
 permissions:
@@ -29,3 +33,18 @@ jobs:
         run: python -m unittest discover -s tests -p 'test_lo_evidence_publish.py' -v
       - name: Test spelberekeningen, desktop, mobiel en verborgen analyse
         run: python scripts/test_lo_easteregg.py
+      - name: Vergelijk verdediging en rolbezetting bij 128 situaties
+        run: python scripts/benchmark_lo_defence.py
+      - name: Traceer de twee verdedigers bij passmomenten
+        run: python scripts/trace_lo_defence.py
+      - name: Meet de twee eerste verdedigers in echte Metrica-tracking
+        run: python scripts/lo_metrica_defence_reference.py
+      - name: Lees openbaar U18 GNSS-voorbeeld als onafhankelijke bewegingsreferentie
+        if: always()
+        run: python scripts/lo_gnss_reference.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: defence-benchmark-${{ github.sha }}
+          path: defence_benchmark_results.json
+          if-no-files-found: ignore
