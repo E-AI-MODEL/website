@@ -12,6 +12,18 @@ Deze map maakt onderscheid tussen **gemeten wedstrijdgegevens**, **onderzochte t
 | Basketbal | [Diniz e.a. 2022](https://doi.org/10.1177/17479541211021986) | 45 beginnende leerlingen, 3v3 versus 3v2 versus neutrale extra speler | Leerlingen laten onderzoeken hoe overtal de passkwaliteit en verdediging beïnvloedt | Groepsverschillen leveren geen exacte 3v2-scoringskans of spelerscoördinaten |
 | Basketbal | [Bredt e.a. 2022](https://doi.org/10.1177/17479541211053638) | Onderzoek naar 4v3 en veldgrootte | Extra aanvaller moet vrijlopen; verdediger kiest baldruk versus hulpverdediging | Geen automatische validatie van de simulatie |
 
+## Werkelijk uitgelezen brondata op 13 november 2026
+
+De onderstaande waarden komen uit **daadwerkelijk uitgevoerde GitHub Actions**, niet uit een verzonnen rekentabel. De scripts staan in deze map. [Run en bronresultaten](https://github.com/E-AI-MODEL/website/actions/workflows/lo-tactics-source.yml).
+
+**Handbal, Zenodo 12065335:** `analyze_open_tactics.py` las 730 balbezitten. Aanval bij gelijk aantal spelers: 119 doelpunten bij 281 bezitten (42,3%); bij aanvallend overtal: 13 bij 45 (28,9%); bij ondertal: 15 bij 33 (45,5%). Dit zijn beschrijvende resultaten uit volwassen wedstrijden. Vooral de kleinere groepen zijn gevoelig voor wedstrijdcontext; lees overtal **niet** als minder effectief of ondertal als beter. `aanval_per_broncontext` splitst deze groepen verder uit naar aanvalstype en georganiseerd spel; percentages verschijnen alleen bij minstens tien situaties.
+
+**Voetbal, StatsBomb Open Data, wedstrijd 3788741:** `analyze_open_football.py` las 1059 passevents, waarvan 906 een 360-frame met zichtbare verdedigers en bruikbare coördinaten hebben. In die deelverzameling zijn 751 passes geslaagd en 155 niet geslaagd. De mediaan van de kortste afstand van een zichtbare verdediger tot de passbaan bedroeg 3,30 (geslaagd) en 1,39 (niet geslaagd), in **StatsBomb 120×80-coordinaateenheden**, niet in meters. Niet-geslaagde passes waren ook langer. Het 360-beeld dekt niet het volledige veld. Geen van deze afstanden is op zichzelf een kans of een voorgeschreven modeldrempel.
+
+**Bestaande modelmeting:** alle 64 standaardscenario's zijn in Chromium doorgerekend met één vaste startwaarde. Bij 35 veranderde het resultaat, het aantal passes of een berekende aankomstmarge na een beperkte aanvallende/verdedigende wijziging. Bij de overige 29 liet déze beperkte set wijzigingen dat effect niet zien. Dat betekent niet dat de scenarios geen keuzes kennen; het laat zien dat de huidige toets nog niet overal een tactisch verschil aantoont. Verdeling: voetbal 10/16, hockey 9/16, handbal 9/16, basketbal 7/16.
+
+Voor iedere nieuwe tactische regel moet duidelijk blijven: welke bron leverde de vorm of het patroon, welke modelwaarde is alleen een keuze van de maker, en welke afwijking kan een leerling zelf veroorzaken? Publiceer geen wetenschappelijk percentage als geschatte scorekans van het spel.
+
 ## Modelregels en bewijslast
 
 - Het model registreert een **doelpoging**, geen gescoord doelpunt. Een simulatie met veel schoten is niet gelijk aan een makkelijke score.
