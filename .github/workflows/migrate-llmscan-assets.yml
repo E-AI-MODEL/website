@@ -1,0 +1,31 @@
+name: Migrate LLMscan images from Sites
+on:
+  push:
+    branches: ['feat/standalone-llmscan-20261113']
+    paths: ['scripts/llmscan_assets.py']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Preserve complete original image catalogue
+        run: python scripts/llmscan_assets.py
+      - name: Commit only complete source migration
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add nl/llmscan/index.html nl/llmscan/app.js nl/llmscan/brands nl/llmscan/catalogue nl/llmscan/icon.svg nl/llmscan/logo.svg
+          if git diff --cached --quiet; then
+            echo "All assets already preserved"
+          else
+            git commit -m "LLMscan: preserve local copies of original imagery"
+            git push
+          fi
