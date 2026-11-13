@@ -434,10 +434,14 @@ try{
   if(width===1440){
    // De paneelindeling is onafhankelijk van de gekozen proef.
    await page.evaluate(()=>{loadLab('resolution');selectBottom('insight')});
-   const measureLayout=()=>page.evaluate(()=>({
-    explorer:panelSize('explorer'),inspector:panelSize('inspector'),
-    analysis:panelSize('analysis'),insightMath:panelSize('insightMath'),graphMath:panelSize('graphMath')
-   }));
+   const measureLayout=()=>page.evaluate(()=>{
+    const el=document.querySelector('#labSection');
+    const px=name=>Number.parseFloat(el.style.getPropertyValue(name));
+    return {
+     explorer:px('--explorer-width'),inspector:px('--inspector-width'),
+     analysis:px('--analysis-height'),insightMath:px('--insight-math-width'),graphMath:px('--graph-math-width')
+    };
+   });
    const dragDivider=async(id,dx,dy)=>{
     const box=await page.locator('#'+id).boundingBox();
     assert.ok(box,'Scheiding ontbreekt: '+id);
