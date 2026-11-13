@@ -28,11 +28,11 @@ try{
     first:world.experts[0],last:world.experts[(cfg.layers-1)*cfg.experts],
     maxY:Math.max(...world.experts.map(p=>Math.abs(p.y))),
     maxZ:Math.max(...world.experts.map(p=>Math.abs(p.z))),
-    layers:cfg.layers,expertCount:world.experts.length
+    layers:cfg.layers,expertsPerLayer:cfg.experts,expertCount:world.experts.length
   }));
   assert(layout.last.x>layout.first.x,'Lagen moeten oplopend geplaatst zijn');
   assert(layout.maxY<1.7&&layout.maxZ<2,'Experts moeten in compacte roosters staan');
-  assert.equal(layout.expertCount,layout.layers*cfg.experts,'Alle experts blijven behouden');
+  assert.equal(layout.expertCount,layout.layers*layout.expertsPerLayer,'Alle experts blijven behouden');
   for(let mode=0;mode<7;mode++){
     await page.evaluate(m=>setMode(m),mode);
     await page.waitForTimeout(120);
