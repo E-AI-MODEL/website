@@ -405,7 +405,7 @@ try{
   assert.equal(pressed.arm1,leverStart.p.arm1,'Aanraken zonder slepen verandert de linker arm niet');
   await page.mouse.move(leverStart.x+leverStart.scale*(65+12),leverStart.y,{steps:10});
   await page.mouse.up();
-  await page.waitForFunction(()=>Math.abs(state.leverMotion?.angle||0)>.012,null,{timeout:5000});
+  await page.waitForFunction(()=>Math.abs(state.leverMotion?.angle||0)>.15,null,{timeout:5000});
   const leverEnd=await page.evaluate(()=>{
    const p=state.p,pivot=p.pivot??510,forces=leverPhysics(p,state.leverMotion.angle,state.leverMotion.omega);
    return {pivot,arm1:p.arm1,arm2:p.arm2,left:pivot-65*p.arm1,right:pivot+65*p.arm2,F2:p.F2,net:forces.net,angle:state.leverMotion.angle,shown:state.current.readouts.find(row=>row[0]==='Netto moment')?.[1],graphCursor:graphSpecFor(state.id,p,state.t).cursor,numArm2:document.querySelector('#num-arm2').value,numArm1:document.querySelector('#num-arm1').value};
@@ -416,7 +416,7 @@ try{
   assert(Math.abs(leverEnd.arm1+leverEnd.arm2-(leverStart.p.arm1+leverStart.p.arm2))<1e-7,'De totale afstand tussen de krachten blijft gelijk');
   assert.equal(leverEnd.F2,leverStart.p.F2,'De rechterkracht mag bij verplaatsen van het steunpunt niet automatisch veranderen');
   assert(leverEnd.net< -1,'Het grotere linkermoment levert een netto moment linksom op');
-  assert(leverEnd.angle< -.012,'De balk draait zichtbaar linksom bij groter linkermoment');
+  assert(leverEnd.angle< -.15,'De balk draait zichtbaar minstens 8 graden linksom bij groter linkermoment');
   assert(Math.abs(Number(leverEnd.shown.split(' ')[0].replace(',','.'))-leverEnd.net)<.03,'De getoonde meting volgt het werkelijke netto moment');
   assert.equal(Number(leverEnd.numArm2),leverEnd.arm2,'De instelling voor rechter arm volgt het verslepen');
   assert.equal(Number(leverEnd.numArm1),leverEnd.arm1,'Ook de uitklapbare instelling voor linker arm volgt mee');
