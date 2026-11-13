@@ -24,6 +24,8 @@ jobs:
         run: node --test tests/test_science_physics_models.mjs
       - name: Check wave motion and optical models
         run: node --test tests/test_science_physics_round3.mjs
+      - name: Check 53 proefspecifieke natuurkundeberekeningen
+        run: node --test tests/test_science_physics_insights.mjs
       - name: Check physical graph axes and comparisons
         run: node --test tests/test_science_physical_graphs.mjs
       - name: Check animation, graph and measurement agreement
