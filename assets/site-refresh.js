@@ -49,7 +49,7 @@
       ['Ontdekken',[['Het EAI-model','/nl/#model'],['EAI in het onderwijs','/nl/onderwijs/']]],
       ['Toepassingen',[['Alle toepassingen','/nl/toepassingen/'],['Onderwijs in','/onderwijsin/']]],
       ['Onderzoek',[['Onderzoek','/nl/onderzoek/'],['Publicaties','/nl/publicaties/']]],
-      ['Observatoria',[['Interactive research','/tools/science-observatory/'],['Natuurkundeproeven','/tools/science-observatory/labs/natuurkunde/'],['Anatomie van de mens','/tools/anatomie/'],['LLM Observatorium','/tools/llm-observatorium/'],['Galactisch Observatorium: met uitleg','/tools/melkweg-lab/']]],
+      ['Observatoria',[['Interactief onderzoeken','/tools/science-observatory/'],['Natuurkundeproeven','/tools/science-observatory/labs/natuurkunde/'],['Anatomie van de mens','/tools/anatomie/'],['LLM Observatorium','/tools/llm-observatorium/'],['Galactisch Observatorium: met uitleg','/tools/melkweg-lab/']]],
       ['Maken & ontwerpen',[['WiHTML Docentstudio','/tools/wihtml/'],['EAIstudio','/tools/eaistudio/'],['EAImesh','/tools/eaimesh/'],['Prompt Framework','/tools/prompt-framework/'],['Van proces naar prompt','/tools/van-proces-naar-prompt/']]],
       ['Tools & monitoren',[['Alle tools','/nl/tools/'],['AI Model Monitor','/nl/model-monitor/'],['LLMscan','/nl/llmscan/']]],
       ['Over EAI',[['Over EAI en Hans Visser','/nl/over/'],['EAI Insights · websitegebruik','/nl/insights/']]]
