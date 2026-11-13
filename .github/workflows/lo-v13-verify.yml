@@ -25,6 +25,8 @@ jobs:
           python -m playwright install --with-deps chromium
       - name: Controleer startopstellingen in vier sporten en vier spelvormen
         run: python tools/lo-aanvalslab/tests/test_startopstellingen_browser.py
+      - name: Controleer mobiele speelvelden en bedieningspanelen
+        run: python tools/lo-aanvalslab/tests/test_mobile_layout_browser.py
       - name: Controleer sporten, verdedigende tactiek en bewegingen
         shell: bash
         run: |
