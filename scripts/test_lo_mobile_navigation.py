@@ -97,6 +97,11 @@ def check_phone(browser, width, height):
         page.wait_for_function("document.querySelector('.app').dataset.loPhase === 'done'", timeout=25000)
         assert page.locator("#loCoachSummary").is_visible()
         assert page.locator("#loMobileCoachTrigger").is_visible()
+        assert not page.locator("#loMobileGoalTrigger").is_visible()
+        # De enige afspeelknop mag niet in de verdwenen resetkolom belanden.
+        button_box = page.locator("#primary").bounding_box()
+        assert button_box and button_box["width"] >= 180, button_box
+        assert page.locator("#primary").inner_text().strip().startswith("Speel opnieuw")
         page.locator("#loCoachSummaryOpen").click()
         assert page.locator(".shell > .side").is_visible()
         assert page.locator("#loMobilePanelTitle").inner_text() == "Coach en terugkijken"
