@@ -15,7 +15,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Fetch recent primary-source candidates
+      - name: Fetch recent Crossref and arXiv candidates
         run: python scripts/llmscan_discover.py --days 7
       - name: Propose discoveries without automatic publication
         uses: peter-evans/create-pull-request@v7
