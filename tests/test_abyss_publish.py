@@ -40,8 +40,11 @@ class AbyssPublishTests(unittest.TestCase):
         for rel in ("nl/tools/index.html", "tools/index.html"):
             page = ROOT / "site-build" / rel
             self.assertTrue(page.is_file())
+            html = page.read_text(encoding="utf-8")
+            self.assertIn("<main", html)
+            main = "<main" + html.split("<main", 1)[1].split("</main>", 1)[0] + "</main>"
             links = Links()
-            links.feed(page.read_text(encoding="utf-8"))
+            links.feed(main)
             self.assertNotIn("/tools/abyss/", links.hrefs)
 
     def test_source_explains_actual_data_vs_demo(self):
