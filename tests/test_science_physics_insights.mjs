@@ -82,7 +82,7 @@ test('alle 53 proeven bieden een eigen berekening en passende standaardweergave'
  const match=html.match(/const labSecondViews=(\{[^\n]+\});/);
  assert.ok(match,'Tweede-weergavenoverzicht ontbreekt');
  const views=JSON.parse(match[1]);
- assert.deepEqual(Object.keys(views).sort(),labSpecs.map(s=>s[0]).sort());
+ assert.deepEqual(Object.keys(views).sort(),Array.from(labSpecs,s=>s[0]).sort());
  const errors=[];
  for(const spec of labSpecs){
   const id=spec[0],p=Object.fromEntries(spec[3].map(r=>[r[0],r[5]]));
