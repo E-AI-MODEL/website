@@ -5,6 +5,7 @@ on:
     paths:
       - 'nl/llmscan/**'
       - 'tests/test_llmscan_standalone.py'
+      - 'scripts/test_llmscan_browser.mjs'
       - '.github/workflows/check-llmscan.yml'
   push:
     branches:
@@ -31,3 +32,9 @@ jobs:
           node --check nl/llmscan/updates.js
       - name: Check original catalogue and research
         run: python -m unittest discover -s tests -p 'test_llmscan_standalone.py' -v
+      - name: Install browser
+        run: |
+          npm install --no-save playwright@1.56.1
+          npx playwright install chromium
+      - name: Test actual LLMscan interaction on phone and desktop
+        run: node scripts/test_llmscan_browser.mjs
