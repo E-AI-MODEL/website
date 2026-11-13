@@ -443,6 +443,11 @@ function drawGeneration(){
  ct.fillText('KANDIDATEN VOOR HET VOLGENDE TOKEN · BEREKEND VOORBEELD',left,Math.min(H-15,top+data.p.length*rowH+17));
  ct.restore();
 }
+// Kleuren en namen zijn vaste labels voor de vijf usagecategorieën.
+const USAGE_LABELS=['Gewone invoer','Cache lezen','Cache schrijven','Redenering','Overige uitvoer'];
+const USAGE_COLORS=['#65c9eb','#77e0bd','#a5a0f3','#f4bd77','#e9ecf8'];
+let usagePoints=[];
+
 function usageBuckets(){
  const total=Math.max(0,state.uInput),cached=Math.min(total,Math.max(0,state.uCached)),write=Math.min(total-cached,Math.max(0,state.uWrite)),other=total-cached-write;
  const tokens=[other,cached,write,Math.max(0,state.uReason),Math.max(0,state.uOther)];
