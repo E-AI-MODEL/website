@@ -399,13 +399,48 @@ body{display:flex;flex-direction:column}
 .teacher-sources a{display:block;color:#86d8ff;text-decoration:underline;text-underline-offset:2px;padding:3px 0;overflow-wrap:anywhere}
 .teacher-warning{color:#96aabc;font-size:10px}
 @media(max-width:720px){.teacher-evidence{font-size:10px}.teacher-evidence-content{padding:3px 0}}
+/* Verplaatsbare scheidingen: de inhoud blijft in beeld en de instellingen zijn lokaal. */
+.panel-splitter{display:none}
+@media(min-width:1081px){
+ .workspace:not(.focus-view){grid-template-columns:minmax(0,var(--explorer-width)) minmax(0,1fr) minmax(0,var(--inspector-width))}
+ .workspace.hide-explorer:not(.focus-view){grid-template-columns:0 minmax(0,1fr) minmax(0,var(--inspector-width))}
+ .workspace.hide-inspector:not(.focus-view){grid-template-columns:minmax(0,var(--explorer-width)) minmax(0,1fr) 0}
+ .workspace.hide-explorer.hide-inspector:not(.focus-view){grid-template-columns:0 minmax(0,1fr) 0}
+ .workspace>.resize-rail{display:flex;width:15px;z-index:10;outline-offset:-2px}
+ .workspace .rail-left{left:calc(var(--explorer-width) - 7.5px)}
+ .workspace .rail-right{right:calc(var(--inspector-width) - 7.5px)}
+ .workspace .resize-rail:before{height:44px;width:3px;background:#4a6b79c2;border-radius:4px;transition:background .12s}
+ .workspace .resize-rail:hover:before,.workspace .resize-rail.dragging:before,.workspace .resize-rail:focus-visible:before{background:#79e6d9}
+ .workspace .drag-divider{height:13px;min-height:13px;display:flex;position:relative;z-index:7}
+ .workspace .drag-divider:before{content:'';position:absolute;left:0;right:0;top:6px;height:1px;background:#3b566a8c}
+ .workspace .drag-divider i{z-index:1;background:#547485;border:1px solid #183345;box-sizing:content-box}
+ .workspace .drag-divider:hover i,.workspace .drag-divider.dragging i,.workspace .drag-divider:focus-visible i{background:#78e9d9}
+ .workspace:not(.focus-view) .analysis-shell{height:var(--analysis-height);flex:0 0 var(--analysis-height);min-height:0;max-height:none;margin-top:0}
+ .workspace .bottom-panel,.workspace .tab-body{min-height:0}
+ .workspace .insight-panel{display:flex;flex-direction:column;min-height:0;overflow:hidden}
+ .workspace .insight-panel .insight-body{flex:1 1 auto;min-height:0;grid-template-columns:minmax(0,1fr) 13px minmax(150px,var(--insight-math-width,220px));gap:0}
+ .workspace .insight-visual{min-height:0;overflow:auto}
+ .workspace .insight-math{max-height:none;min-height:0;overflow:auto;border-left:0}
+ #graphPanel.with-math{grid-template-columns:minmax(0,1fr) 13px minmax(150px,var(--graph-math-width,220px));column-gap:0;grid-template-rows:auto minmax(0,1fr)}
+ .workspace #graphMathDivider{display:none}
+ #graphPanel.with-math .graph-top{grid-column:1/-1}
+ #graphPanel.with-math .graph-frame{grid-column:1;grid-row:2;height:100%;min-height:70px;margin:0}
+ #graphPanel.with-math #graphMathDivider{grid-column:2;grid-row:2;display:block}
+ #graphPanel.with-math .graph-math{grid-column:3;grid-row:2;border-left:0;min-height:0}
+ .workspace .panel-splitter{display:block;min-width:13px;position:relative;z-index:14;pointer-events:auto;cursor:col-resize;touch-action:none;outline-offset:-1px}
+ .workspace .panel-splitter:before{content:'';position:absolute;left:6px;top:0;bottom:0;width:1px;background:#46687a;transition:background .12s}
+ .workspace .panel-splitter:after{content:'';position:absolute;left:5px;top:50%;height:33px;width:3px;transform:translateY(-50%);border-radius:3px;background:#557a87;transition:background .12s}
+ .workspace .panel-splitter:hover:before,.workspace .panel-splitter.dragging:before,.workspace .panel-splitter:focus-visible:before,.workspace .panel-splitter:hover:after,.workspace .panel-splitter.dragging:after,.workspace .panel-splitter:focus-visible:after{background:#79e6d9}
+ .workspace.resizing-panels,.workspace.resizing-panels *{user-select:none!important}
+}
+@media(max-width:1080px){.panel-splitter{display:none!important}}
 </style></head>
 <body>
 <header class="masthead"><div class="mast-left"><a class="brand" href="/tools/science-observatory/" aria-label="Terug naar Science Observatory"><span class="logo" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><path d="M4 19c4-1 4-12 8-12s4 18 8 18 4-9 8-10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span><span>SCIENCE <b>OBSERVATORY</b></span></a><span class="brand-divider"></span><span class="brand-context">NATUURKUNDE · PROEFVERSIE</span></div><div class="nav-main"><a href="#labSection" class="nav-link active">Proef</a><a href="#topics" class="nav-link">Onderwerpen</a><a href="/tools/science-observatory/" class="nav-link">Andere observatoria</a><a href="/nl/tools/" class="nav-link">Alle tools</a></div><span class="header-status"><span class="live-dot"></span> In ontwikkeling</span></header>
 <main class="page"><div class="intro-head"><div class="intro-copy"><div class="kicker">SCIENCE OBSERVATORY <span>/</span> NATUURKUNDE</div><h1>Een proef. Eindeloos veel vragen.</h1><p>Verander een grootheid, sleep in de proef waar dat kan en vergelijk wat er gebeurt. Bij ieder model staan de vereenvoudigingen vermeld.</p></div><div class="intro-stat"><strong>53</strong><span>experimenten</span><i></i><strong>9</strong><span>gebieden</span></div></div>
 <section class="workspace" id="labSection" aria-label="Natuurkundelaboratorium" style="--explorer-width:226px;--inspector-width:282px;--analysis-height:242px"><div class="resize-rail rail-left" id="railLeft" role="separator" tabindex="0" aria-label="Breedte experimentenlijst aanpassen" aria-orientation="vertical"></div><div class="resize-rail rail-right" id="railRight" role="separator" tabindex="0" aria-label="Breedte instellingen aanpassen" aria-orientation="vertical"></div>
 <aside class="explorer" id="explorer"><div class="explorer-header"><div class="minor-title">EXPERIMENTEN <span>53</span></div><button id="closeExplorer" class="tiny-btn mobile-only" aria-label="Sluit experimenten">✕</button></div><div class="searchwrap"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg><input id="search" aria-label="Zoek een experiment" placeholder="Zoek een proef..." autocomplete="off"></div><div class="explorer-scroll" id="experimentTree"></div><div class="explorer-footer"><span class="live-dot"></span> 53 interactieve proefmodellen</div></aside>
-<div class="lab-main"><div class="lab-head"><div class="lab-identity"><button class="tool-btn desktop-only" id="toggleExplorer" title="Verberg of toon de experimentenlijst" aria-label="Verberg of toon de experimentenlijst"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16"/></svg></button><button class="tiny-btn mobile-only" id="openExplorer" aria-label="Kies een experiment" title="Experimenten"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><div><div class="lab-breadcrumb" id="labGroup">MECHANICA</div><h2 id="labTitle">Schuine worp</h2></div></div><div class="lab-controls"><button class="tool-btn mobile-only" id="openMobileSettings" title="Open de instellingen" aria-label="Open de instellingen"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/><circle cx="9" cy="7" r="2" fill="#091523"/><circle cx="15" cy="12" r="2" fill="#091523"/><circle cx="10" cy="17" r="2" fill="#091523"/></svg></button><button class="tool-btn desktop-only" id="toggleInspector" title="Verberg of toon instellingen" aria-label="Verberg of toon instellingen"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M15 4v16"/></svg></button><button class="tool-btn" id="focusScene" title="Experiment beeldvullend tonen" aria-label="Schakel focusweergave in of uit"><svg viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M3 16v5h5M21 16v5h-5"/></svg></button><button class="tool-btn" id="resetBtn" title="Begin opnieuw" aria-label="Herstel de proef"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.3-5.7M4 4v5h5"/></svg></button><button class="tool-btn" id="stepBtn" title="Eén stap" aria-label="Een stap vooruit"><svg viewBox="0 0 24 24"><path d="m5 5 10 7-10 7V5ZM19 5v14"/></svg></button><button class="play-btn" id="playBtn" aria-pressed="true"><svg viewBox="0 0 24 24" id="playIcon"><path d="M7 5v14M17 5v14"/></svg><span id="playLabel">Pauze</span></button><select id="speedSelect" class="speed-select" aria-label="Afspeelsnelheid"><option value=".25">0,25×</option><option value=".5">0,5×</option><option value="1" selected>1×</option><option value="2">2×</option><option value="4">4×</option></select></div></div>
+<div class="lab-main"><div class="lab-head"><div class="lab-identity"><button class="tool-btn desktop-only" id="toggleExplorer" title="Verberg of toon de experimentenlijst" aria-label="Verberg of toon de experimentenlijst"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16"/></svg></button><button class="tiny-btn mobile-only" id="openExplorer" aria-label="Kies een experiment" title="Experimenten"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><div><div class="lab-breadcrumb" id="labGroup">MECHANICA</div><h2 id="labTitle">Schuine worp</h2></div></div><div class="lab-controls"><button class="tool-btn mobile-only" id="openMobileSettings" title="Open de instellingen" aria-label="Open de instellingen"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/><circle cx="9" cy="7" r="2" fill="#091523"/><circle cx="15" cy="12" r="2" fill="#091523"/><circle cx="10" cy="17" r="2" fill="#091523"/></svg></button><button class="tool-btn desktop-only" id="toggleInspector" title="Verberg of toon instellingen" aria-label="Verberg of toon instellingen"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M15 4v16"/></svg></button><button type="button" class="tool-btn desktop-only" id="resetLayout" title="Herstel de indeling van de werkvakken" aria-label="Herstel de indeling van de werkvakken"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16M9 12h12"/></svg></button><button class="tool-btn" id="focusScene" title="Experiment beeldvullend tonen" aria-label="Schakel focusweergave in of uit"><svg viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M3 16v5h5M21 16v5h-5"/></svg></button><button class="tool-btn" id="resetBtn" title="Begin opnieuw" aria-label="Herstel de proef"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.3-5.7M4 4v5h5"/></svg></button><button class="tool-btn" id="stepBtn" title="Eén stap" aria-label="Een stap vooruit"><svg viewBox="0 0 24 24"><path d="m5 5 10 7-10 7V5ZM19 5v14"/></svg></button><button class="play-btn" id="playBtn" aria-pressed="true"><svg viewBox="0 0 24 24" id="playIcon"><path d="M7 5v14M17 5v14"/></svg><span id="playLabel">Pauze</span></button><select id="speedSelect" class="speed-select" aria-label="Afspeelsnelheid"><option value=".25">0,25×</option><option value=".5">0,5×</option><option value="1" selected>1×</option><option value="2">2×</option><option value="4">4×</option></select></div></div>
 <div id="labError" role="alert" hidden></div><section id="inquiryBar" class="inquiry-bar" aria-label="Onderzoeksopdracht" hidden><div><span class="inquiry-label" id="inquiryKind"></span><h3 class="inquiry-title" id="inquiryTitle"></h3><p class="inquiry-detail" id="inquiryDetail"></p></div><div class="inquiry-right"><span class="inquiry-status" id="inquiryStatus" role="status" aria-live="polite"></span><div class="inquiry-actions"><input id="inquiryAnswer" class="inquiry-answer" inputmode="decimal" aria-label="Geschatte onbekende weerstand in ohm" placeholder="R? in Ω" hidden><button id="inquiryAction" class="inquiry-action" type="button"></button></div></div></section>
 <div class="scene-shell"><div class="scene-hud scene-hud-left"><span class="hud-pip"></span><span id="sceneBadge">LIVE SIMULATIE</span></div><div class="scene-hud scene-hud-right"><span id="sceneMeta">SCHEMATISCH MODEL</span></div><div class="scene-tip" id="sceneTip" hidden></div><div class="canvas-wrap" id="stage"><canvas id="scene" aria-label="Interactieve weergave van de natuurkundeproef"></canvas><div id="sceneCompass" class="scene-compass" hidden>Sleep om te draaien · knijp om in te zoomen</div></div><div class="scene-bottom"><div class="legend"><span><i class="legend-dot cyan"></i> Model</span><span><i class="legend-line gold"></i> Baan / veld</span></div><div class="scene-lower-tools"><span id="timeLabel">t = 0,00 s</span><button class="icon-text" id="cameraReset" hidden title="Camera opnieuw richten">↺ Camera</button></div></div><div class="mobile-aim" id="mobileAim" hidden>
  <div class="mobile-aim-head"><strong>Richt de bal</strong><button type="button" class="aim-view-btn" id="mobileView" aria-pressed="false">Hele baan zien</button></div>
@@ -423,7 +458,7 @@ body{display:flex;flex-direction:column}
  <button type="button" id="aimFire" class="aim-fire">Gooi de bal</button>
  <p class="aim-feedback" id="aimFeedback" role="status" aria-live="polite" hidden></p>
  </div></div>
-<div id="mobileQuick" class="mobile-quick" aria-label="Directe instellingen van de proef" hidden></div><div class="drag-divider" id="sceneDivider" role="separator" aria-orientation="horizontal" aria-label="Sleep om de ruimte voor de grafiek te vergroten of te verkleinen" tabindex="0"><i></i></div><div class="analysis-shell"><div class="tab-strip" role="tablist" aria-label="Onderzoek en analyse"><button role="tab" class="tab" id="insightTab" aria-selected="false" data-bottom="insight" hidden>Inzicht</button><button role="tab" class="tab on" aria-selected="true" data-bottom="graph">Grafiek</button><button role="tab" class="tab" aria-selected="false" data-bottom="comparison">Vergelijken <span id="comparisonBubble" hidden>1</span></button><button role="tab" class="tab" aria-selected="false" data-bottom="research">Onderzoeken</button><button role="tab" class="tab" aria-selected="false" data-bottom="explain">Uitleg</button><button type="button" class="graph-expand" id="graphExpand" aria-pressed="false" title="Vergroot of verklein de grafiek">Grafiek groter</button></div><div class="bottom-panel" id="bottomPanel"><div id="insightPanel" class="tab-body insight-panel" hidden><div class="insight-head"><strong id="insightTitle"></strong><span>De actuele waarden van deze proef</span></div><div class="insight-body"><div id="insightVisual" class="insight-visual"></div><details id="insightMath" class="insight-math"><summary>Zo bereken je dit</summary><div id="insightMathContent"></div><details class="teacher-evidence" id="insightTeacher" hidden><summary>Voor docenten · bron en aannames</summary><div id="insightTeacherContent"></div></details></details></div></div><div id="graphPanel" class="tab-body"><div class="graph-top"><div><strong id="plotLabel">Grafiek</strong><span id="graphDomain">Verandering over de proef</span></div><div class="graph-actions"><button class="subtle-btn" id="mathToggle" type="button" aria-expanded="false" hidden>Zo bereken je dit</button><button class="subtle-btn" id="saveGraphBtn">+ Bewaar vergelijking</button></div></div><div class="graph-frame"><canvas id="plot" tabindex="0" aria-label="Interactieve grafiek. Sleep of gebruik de pijltjestoetsen om een meetpunt te kiezen." title="Sleep over de grafiek om waarden af te lezen"></canvas></div><div class="graph-math" id="graphMath" hidden><div id="graphMathContent"></div><details class="teacher-evidence" id="graphTeacher" hidden><summary>Voor docenten · bron en aannames</summary><div id="graphTeacherContent"></div></details></div></div><div id="comparePanel" class="tab-body" hidden><div class="compare-header"><div><strong>Twee instellingen naast elkaar</strong><p>Bewaar de huidige waarden, pas daarna een instelling aan.</p></div><button class="subtle-btn" id="clearBaseline">Wissen</button></div><div id="comparisonRows" class="compare-data"></div><div id="compareEmpty" class="empty-compare">Nog geen meting bewaard. Klik rechts op <b>Bewaar meting</b>.</div></div><div id="researchPanel" class="tab-body" hidden><div class="research-steps"><div class="step-head"><span>01</span><strong>Voorspel</strong><span>02</span><strong>Onderzoek</strong><span>03</span><strong>Verklaar</strong></div><p id="prediction"></p><textarea id="hypothesis" class="hypothesis" placeholder="Wat denk je dat er gebeurt? Schrijf het op vóór je een instelling verandert." aria-label="Schrijf je voorspelling"></textarea><div class="research-hint">Je voorspelling blijft alleen in deze browser bewaard.</div></div></div><div id="explainPanel" class="tab-body" hidden><div class="explain-layout"><div><div class="minor-title">WAT ZIE JE?</div><p id="explanation"></p></div><div><div class="minor-title">OVER HET MODEL</div><p id="modelNote"></p></div></div></div></div></div>
+<div id="mobileQuick" class="mobile-quick" aria-label="Directe instellingen van de proef" hidden></div><div class="drag-divider" id="sceneDivider" role="separator" aria-orientation="horizontal" aria-label="Sleep om de ruimte voor de grafiek te vergroten of te verkleinen" tabindex="0"><i></i></div><div class="analysis-shell"><div class="tab-strip" role="tablist" aria-label="Onderzoek en analyse"><button role="tab" class="tab" id="insightTab" aria-selected="false" data-bottom="insight" hidden>Inzicht</button><button role="tab" class="tab on" aria-selected="true" data-bottom="graph">Grafiek</button><button role="tab" class="tab" aria-selected="false" data-bottom="comparison">Vergelijken <span id="comparisonBubble" hidden>1</span></button><button role="tab" class="tab" aria-selected="false" data-bottom="research">Onderzoeken</button><button role="tab" class="tab" aria-selected="false" data-bottom="explain">Uitleg</button><button type="button" class="graph-expand" id="graphExpand" aria-pressed="false" title="Vergroot of verklein de grafiek">Grafiek groter</button></div><div class="bottom-panel" id="bottomPanel"><div id="insightPanel" class="tab-body insight-panel" hidden><div class="insight-head"><strong id="insightTitle"></strong><span>De actuele waarden van deze proef</span></div><div class="insight-body"><div id="insightVisual" class="insight-visual"></div><div id="insightMathDivider" class="panel-splitter" role="separator" tabindex="0" aria-orientation="vertical" aria-label="Maak de berekening breder of smaller" title="Sleep de rand om de breedte aan te passen · dubbelklik om te herstellen"></div><details id="insightMath" class="insight-math"><summary>Zo bereken je dit</summary><div id="insightMathContent"></div><details class="teacher-evidence" id="insightTeacher" hidden><summary>Voor docenten · bron en aannames</summary><div id="insightTeacherContent"></div></details></details></div></div><div id="graphPanel" class="tab-body"><div class="graph-top"><div><strong id="plotLabel">Grafiek</strong><span id="graphDomain">Verandering over de proef</span></div><div class="graph-actions"><button class="subtle-btn" id="mathToggle" type="button" aria-expanded="false" hidden>Zo bereken je dit</button><button class="subtle-btn" id="saveGraphBtn">+ Bewaar vergelijking</button></div></div><div class="graph-frame"><canvas id="plot" tabindex="0" aria-label="Interactieve grafiek. Sleep of gebruik de pijltjestoetsen om een meetpunt te kiezen." title="Sleep over de grafiek om waarden af te lezen"></canvas></div><div id="graphMathDivider" class="panel-splitter" role="separator" tabindex="0" aria-orientation="vertical" aria-label="Maak de grafiekberekening breder of smaller" title="Sleep de rand om de breedte aan te passen · dubbelklik om te herstellen"></div><div class="graph-math" id="graphMath" hidden><div id="graphMathContent"></div><details class="teacher-evidence" id="graphTeacher" hidden><summary>Voor docenten · bron en aannames</summary><div id="graphTeacherContent"></div></details></div></div><div id="comparePanel" class="tab-body" hidden><div class="compare-header"><div><strong>Twee instellingen naast elkaar</strong><p>Bewaar de huidige waarden, pas daarna een instelling aan.</p></div><button class="subtle-btn" id="clearBaseline">Wissen</button></div><div id="comparisonRows" class="compare-data"></div><div id="compareEmpty" class="empty-compare">Nog geen meting bewaard. Klik rechts op <b>Bewaar meting</b>.</div></div><div id="researchPanel" class="tab-body" hidden><div class="research-steps"><div class="step-head"><span>01</span><strong>Voorspel</strong><span>02</span><strong>Onderzoek</strong><span>03</span><strong>Verklaar</strong></div><p id="prediction"></p><textarea id="hypothesis" class="hypothesis" placeholder="Wat denk je dat er gebeurt? Schrijf het op vóór je een instelling verandert." aria-label="Schrijf je voorspelling"></textarea><div class="research-hint">Je voorspelling blijft alleen in deze browser bewaard.</div></div></div><div id="explainPanel" class="tab-body" hidden><div class="explain-layout"><div><div class="minor-title">WAT ZIE JE?</div><p id="explanation"></p></div><div><div class="minor-title">OVER HET MODEL</div><p id="modelNote"></p></div></div></div></div></div>
 </div>
 <aside class="inspector" id="inspector"><div class="inspector-tabs" role="tablist" aria-label="Bediening van de proef"><button data-side="settings" class="inspector-tab on" role="tab" aria-selected="true">Instellen</button><button data-side="values" class="inspector-tab" role="tab" aria-selected="false">Meten</button><button data-side="info" class="inspector-tab" role="tab" aria-selected="false">Info</button><button id="closeMobileSettings" class="tiny-btn mobile-only settings-close" aria-label="Sluit instellingen">Sluiten</button></div><div class="inspector-scroll"><div id="settingsPane" class="side-pane"><div class="side-kicker" id="controlHeadline">VERANDER DE PROEF</div><details class="lab-brief"><summary>Wat kun je onderzoeken?</summary><p class="side-intro" id="intro"></p></details><div id="controls"></div><div class="side-separator"></div><div class="side-kicker">DIRECT GEMETEN</div><div class="mini-readouts" id="miniReadouts"><div><small id="miniLabel0"></small><b id="miniValue0"></b></div><div><small id="miniLabel1"></small><b id="miniValue1"></b></div></div><button id="baselineBtn" class="save-btn">+ Bewaar meting</button></div><div id="valuesPane" class="side-pane" hidden><div class="side-kicker">LIVE MEETWAARDEN</div><div id="readouts" class="readouts"><div class="readout" id="measure0"><span></span><strong></strong></div><div class="readout" id="measure1"><span></span><strong></strong></div><div class="readout" id="measure2"><span></span><strong></strong></div><div class="readout" id="measure3"><span></span><strong></strong></div></div><button class="save-btn" id="saveValuesBtn">+ Bewaar meting</button><p class="side-hint">De opgeslagen waarden blijven staan als je een schuif verandert.</p></div><div id="infoPane" class="side-pane" hidden><div class="side-kicker">OVER DEZE PROEF</div><p class="side-intro" id="infoDescription"></p><div class="side-separator"></div><div class="side-kicker">GEBRUIKTE VEREENVOUDIGINGEN</div><p class="model-text" id="infoCaveat"></p><button class="save-btn" id="shareBtn">Deel deze proef</button></div></div><div class="inspector-footer"><span class="live-dot"></span> Lokale berekening <span class="footer-chip">OFFLINE</span></div></aside>
 </section>
@@ -1852,24 +1887,155 @@ stage.addEventListener('keydown',ev=>{
 stage.addEventListener('wheel',ev=>{if(!special3d.has(state.id))return;ev.preventDefault();state.camera.zoom=clamp(state.camera.zoom*Math.exp(-ev.deltaY*.0009),.4,2.3);render()},{passive:false});stage.addEventListener('dblclick',()=>{if(special3d.has(state.id))resetCamera()});
 // Give the viewer control over their working area; changes stay on this device.
 const workspace=$('labSection');let focus=false;
-$('toggleExplorer').onclick=()=>{if(innerWidth<=1080){$('explorer').classList.add('open');$('shade').hidden=false;return}workspace.classList.toggle('hide-explorer');$('toggleExplorer').setAttribute('aria-pressed',String(workspace.classList.contains('hide-explorer')));render()};
-$('toggleInspector').onclick=()=>{workspace.classList.toggle('hide-inspector');$('toggleInspector').setAttribute('aria-pressed',String(workspace.classList.contains('hide-inspector')));render()};
-$('focusScene').onclick=()=>{focus=!focus;workspace.classList.toggle('focus-view',focus);$('focusScene').setAttribute('aria-pressed',String(focus));$('focusScene').title=focus?'Sluit focusweergave':'Experiment beeldvullend tonen';workspace.scrollIntoView({behavior:'instant',block:'start'});setTimeout(render,120)};
-function resizeRail(el,name,side,min,max){
- let active=null;
- const widthLimit=()=>Math.max(min,Math.min(max,workspace.clientWidth-420-(side==='left'?(workspace.classList.contains('hide-inspector')?0:parseFloat(getComputedStyle(workspace).getPropertyValue('--inspector-width'))||282):(workspace.classList.contains('hide-explorer')?0:parseFloat(getComputedStyle(workspace).getPropertyValue('--explorer-width'))||226))));
- const setWidth=value=>{workspace.style.setProperty(name,Math.round(clamp(value,min,widthLimit()))+'px');render()};
- el.addEventListener('pointerdown',ev=>{if(innerWidth<1081)return;active=ev.pointerId;el.setPointerCapture(ev.pointerId);el.classList.add('dragging');ev.preventDefault()});
- el.addEventListener('pointermove',ev=>{if(ev.pointerId!==active)return;const rect=workspace.getBoundingClientRect(),distance=side==='left'?ev.clientX-rect.left:rect.right-ev.clientX;setWidth(distance)});
- const end=ev=>{if(ev.pointerId===active){active=null;el.classList.remove('dragging')}};
- el.addEventListener('pointerup',end);el.addEventListener('pointercancel',end);
- el.addEventListener('keydown',ev=>{if(!['ArrowLeft','ArrowRight'].includes(ev.key))return;const old=parseInt(workspace.style.getPropertyValue(name))||(side==='left'?226:282),diff=(ev.key==='ArrowRight'?1:-1)*(side==='left'?1:-1)*16;setWidth(old+diff);ev.preventDefault()});
- window.addEventListener('resize',()=>{if(innerWidth>=1081){const current=parseFloat(workspace.style.getPropertyValue(name));if(current>widthLimit())setWidth(current)}});
+const PANEL_LAYOUT_KEY='eai.physics.workspace.layout.v2';
+const panelDefaults={explorer:226,inspector:282,analysis:242,graphMath:220,insightMath:220};
+const layoutCSS={explorer:'--explorer-width',inspector:'--inspector-width',analysis:'--analysis-height',graphMath:'--graph-math-width',insightMath:'--insight-math-width'};
+const panelSize=(key)=>{const v=parseFloat(workspace.style.getPropertyValue(layoutCSS[key]));return Number.isFinite(v)?v:panelDefaults[key]};
+const setPanelSize=(key,value)=>workspace.style.setProperty(layoutCSS[key],Math.round(value)+'px');
+const panelVisible=side=>!workspace.classList.contains('hide-'+side);
+const minimumScene=()=>Math.min(460,Math.max(340,Math.round(workspace.clientWidth*.33)));
+const panelBounds=side=>{
+ const width=workspace.clientWidth,other=side==='explorer'?'inspector':'explorer';
+ const min=side==='explorer'?145:215,hardMax=side==='explorer'?435:550;
+ const otherUsed=panelVisible(other)?panelSize(other):0;
+ return {min,max:Math.max(min,Math.min(hardMax,width-otherUsed-minimumScene()))};
+};
+const analysisBounds=()=>{
+ const main=workspace.querySelector('.lab-main');
+ const head=main.querySelector('.lab-head').offsetHeight;
+ const inquiry=$('inquiryBar').hidden?0:$('inquiryBar').offsetHeight;
+ const quick=$('mobileQuick').hidden?0:$('mobileQuick').offsetHeight;
+ return {min:140,max:Math.max(140,Math.min(590,main.clientHeight-head-inquiry-quick-175))};
+};
+const mathBounds=(container,minimumLeft,minimumRight)=>{
+ const size=container.clientWidth;
+ return {min:minimumRight,max:Math.max(minimumRight,Math.min(500,size-minimumLeft-13))};
+};
+const currentPanelLayout=()=>({
+ version:2,...Object.fromEntries(Object.keys(layoutCSS).map(k=>[k,panelSize(k)])),
+ hideExplorer:!panelVisible('explorer'),hideInspector:!panelVisible('inspector')
+});
+const savePanelLayout=()=>lsSet(PANEL_LAYOUT_KEY,JSON.stringify(currentPanelLayout()));
+const syncSideButtons=()=>{
+ $('toggleExplorer').setAttribute('aria-pressed',String(!panelVisible('explorer')));
+ $('toggleInspector').setAttribute('aria-pressed',String(!panelVisible('inspector')));
+};
+const drawResized=(()=>{let scheduled=false;return ()=>{if(scheduled)return;scheduled=true;requestAnimationFrame(()=>{scheduled=false;render()})}})();
+function syncGraphExpand(){
+ const expanded=panelSize('analysis')>300,btn=$('graphExpand');
+ btn.setAttribute('aria-pressed',String(expanded));
+ btn.textContent=expanded?'Grafiek kleiner':'Grafiek groter';
 }
-resizeRail($('railLeft'),'--explorer-width','left',150,340);resizeRail($('railRight'),'--inspector-width','right',230,450);
-const graphExpand=$('graphExpand');graphExpand.onclick=()=>{const expand=graphExpand.getAttribute('aria-pressed')!=='true';workspace.style.setProperty('--analysis-height',(expand?352:242)+'px');graphExpand.setAttribute('aria-pressed',String(expand));graphExpand.textContent=expand?'Grafiek kleiner':'Grafiek groter';selectBottom('graph');render()};
-const dbar=$('sceneDivider');let resizingGraph=null;dbar.addEventListener('pointerdown',ev=>{if(innerWidth<1081)return;resizingGraph={id:ev.pointerId,y:ev.clientY,height:parseInt(getComputedStyle(workspace).getPropertyValue('--analysis-height'))||242};dbar.setPointerCapture(ev.pointerId);dbar.classList.add('dragging');ev.preventDefault()});dbar.addEventListener('pointermove',ev=>{if(!resizingGraph||ev.pointerId!==resizingGraph.id)return;workspace.style.setProperty('--analysis-height',clamp(resizingGraph.height+resizingGraph.y-ev.clientY,160,460)+'px');render()});const doneGraph=ev=>{if(resizingGraph&&ev.pointerId===resizingGraph.id){resizingGraph=null;dbar.classList.remove('dragging')}};dbar.addEventListener('pointerup',doneGraph);dbar.addEventListener('pointercancel',doneGraph);dbar.addEventListener('keydown',ev=>{if(!['ArrowUp','ArrowDown'].includes(ev.key))return;const old=parseInt(workspace.style.getPropertyValue('--analysis-height'))||242;workspace.style.setProperty('--analysis-height',clamp(old+(ev.key==='ArrowUp'?20:-20),160,460)+'px');ev.preventDefault();render()});
-
+function fitPanels(){
+ if(innerWidth<=1080||focus)return;
+ const width=workspace.clientWidth,reserve=minimumScene();
+ let explorer=clamp(panelSize('explorer'),145,435),inspector=clamp(panelSize('inspector'),215,550);
+ let excess=Math.max(0,(panelVisible('explorer')?explorer:0)+(panelVisible('inspector')?inspector:0)-(width-reserve));
+ if(excess&&panelVisible('inspector')){
+  const reduction=Math.min(excess,inspector-215);inspector-=reduction;excess-=reduction;
+ }
+ if(excess&&panelVisible('explorer'))explorer-=Math.min(excess,explorer-145);
+ setPanelSize('explorer',explorer);setPanelSize('inspector',inspector);
+ const bounds=analysisBounds();setPanelSize('analysis',clamp(panelSize('analysis'),bounds.min,bounds.max));
+ syncGraphExpand();
+}
+try{
+ const stored=JSON.parse(lsGet(PANEL_LAYOUT_KEY)||'null');
+ if(stored?.version===2){
+  for(const key of Object.keys(layoutCSS))if(Number.isFinite(stored[key]))setPanelSize(key,clamp(stored[key],100,650));
+  workspace.classList.toggle('hide-explorer',stored.hideExplorer===true);
+  workspace.classList.toggle('hide-inspector',stored.hideInspector===true);
+ }
+}catch(_e){}
+syncSideButtons();
+function togglePanelSide(side){
+ if(innerWidth<=1080&&side==='explorer'){$('explorer').classList.add('open');$('shade').hidden=false;return;}
+ workspace.classList.toggle('hide-'+side);
+ syncSideButtons();fitPanels();savePanelLayout();drawResized();
+}
+$('toggleExplorer').onclick=()=>togglePanelSide('explorer');
+$('toggleInspector').onclick=()=>togglePanelSide('inspector');
+$('focusScene').onclick=()=>{
+ focus=!focus;workspace.classList.toggle('focus-view',focus);
+ $('focusScene').setAttribute('aria-pressed',String(focus));
+ $('focusScene').title=focus?'Sluit focusweergave':'Experiment beeldvullend tonen';
+ workspace.scrollIntoView({behavior:'instant',block:'start'});setTimeout(()=>{fitPanels();drawResized()},120);
+};
+function bindPanelDivider(el,{axis='x',direction=1,get,set,bounds,reset,enabled=()=>true}){
+ let pointer=null;
+ const refresh=()=>{
+  const limits=bounds();
+  el.setAttribute('aria-valuemin',String(Math.round(limits.min)));
+  el.setAttribute('aria-valuemax',String(Math.round(limits.max)));
+  el.setAttribute('aria-valuenow',String(Math.round(get())));
+  el.setAttribute('aria-valuetext',Math.round(get())+' pixels');
+ };
+ const apply=value=>{const {min,max}=bounds();set(clamp(value,min,max));refresh();drawResized()};
+ el.addEventListener('pointerdown',ev=>{
+  if(innerWidth<=1080||focus||!enabled()||(ev.pointerType==='mouse'&&ev.button!==0))return;
+  pointer={id:ev.pointerId,start:axis==='x'?ev.clientX:ev.clientY,value:get()};
+  el.setPointerCapture(ev.pointerId);el.classList.add('dragging');workspace.classList.add('resizing-panels');ev.preventDefault();
+ });
+ el.addEventListener('pointermove',ev=>{
+  if(!pointer||ev.pointerId!==pointer.id)return;
+  apply(pointer.value+((axis==='x'?ev.clientX:ev.clientY)-pointer.start)*direction);
+ });
+ const finish=ev=>{
+  if(!pointer||ev.pointerId!==pointer.id)return;
+  pointer=null;el.classList.remove('dragging');workspace.classList.remove('resizing-panels');savePanelLayout();refresh();
+ };
+ el.addEventListener('pointerup',finish);el.addEventListener('pointercancel',finish);el.addEventListener('lostpointercapture',finish);
+ el.addEventListener('keydown',ev=>{
+  if(innerWidth<=1080||focus||!enabled())return;
+  const positive=axis==='x'?'ArrowRight':'ArrowDown';
+  const negative=axis==='x'?'ArrowLeft':'ArrowUp';
+  if(![positive,negative,'Home'].includes(ev.key))return;
+  apply(ev.key==='Home'?reset:get()+(ev.key===positive?1:-1)*direction*(ev.shiftKey?4:16));
+  savePanelLayout();ev.preventDefault();
+ });
+ el.addEventListener('dblclick',ev=>{if(!enabled())return;apply(reset);savePanelLayout();ev.preventDefault()});
+ refresh();return refresh;
+}
+const refreshLeft=bindPanelDivider($('railLeft'),{
+ get:()=>panelSize('explorer'),set:v=>setPanelSize('explorer',v),
+ bounds:()=>panelBounds('explorer'),reset:226,enabled:()=>panelVisible('explorer')
+});
+const refreshRight=bindPanelDivider($('railRight'),{
+ direction:-1,get:()=>panelSize('inspector'),set:v=>setPanelSize('inspector',v),
+ bounds:()=>panelBounds('inspector'),reset:282,enabled:()=>panelVisible('inspector')
+});
+const refreshAnalysis=bindPanelDivider($('sceneDivider'),{
+ axis:'y',direction:-1,get:()=>panelSize('analysis'),
+ set:v=>{setPanelSize('analysis',v);syncGraphExpand()},
+ bounds:analysisBounds,reset:242
+});
+const refreshGraphMath=bindPanelDivider($('graphMathDivider'),{
+ direction:-1,get:()=>panelSize('graphMath'),set:v=>setPanelSize('graphMath',v),
+ bounds:()=>mathBounds($('graphPanel'),150,150),reset:220,
+ enabled:()=>state.bottom==='graph'&&!$('graphMath').hidden
+});
+const refreshInsightMath=bindPanelDivider($('insightMathDivider'),{
+ direction:-1,get:()=>panelSize('insightMath'),set:v=>setPanelSize('insightMath',v),
+ bounds:()=>mathBounds($('insightPanel').querySelector('.insight-body'),160,150),reset:220,
+ enabled:()=>state.bottom==='insight'
+});
+$('graphExpand').onclick=()=>{
+ const more=panelSize('analysis')<=300,range=analysisBounds();
+ setPanelSize('analysis',clamp(more?Math.max(350,panelSize('analysis')+100):242,range.min,range.max));
+ syncGraphExpand();selectBottom('graph');savePanelLayout();drawResized();
+};
+$('resetLayout').onclick=()=>{
+ if(focus){focus=false;workspace.classList.remove('focus-view');$('focusScene').setAttribute('aria-pressed','false');}
+ workspace.classList.remove('hide-explorer','hide-inspector');
+ for(const [key,value] of Object.entries(panelDefaults))setPanelSize(key,value);
+ syncSideButtons();fitPanels();savePanelLayout();drawResized();
+};
+fitPanels();
+if(typeof ResizeObserver!=='undefined'){
+ const observer=new ResizeObserver(()=>{fitPanels();refreshLeft();refreshRight();refreshAnalysis();refreshGraphMath();refreshInsightMath();drawResized()});
+ observer.observe(workspace);observer.observe($('stage'));observer.observe($('bottomPanel'));
+}
+window.addEventListener('resize',()=>{fitPanels();drawResized()});
  // Lees de curve onder je muis of vinger; de grafiek blijft het actieve werkvlak.
  const plot=$('plot');
  const graphRange=()=>{const domain=graphSpecFor(state.id,state.p,state.t),previous=state.baseline?.id===state.id?state.baseline.domain:null;return {min:previous?Math.min(domain.min,previous.min):domain.min,max:previous?Math.max(domain.max,previous.max):domain.max}};
