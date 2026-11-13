@@ -2595,8 +2595,8 @@ document.getElementById('loCoachSummaryOpen')?.addEventListener('click',()=>{clo
 const current=document.getElementById('loGoalCurrent');
 function render(){
  if(!mobile.matches){closeSettings();return}
- const stageText=stage.textContent.trim(),isSetup=/^(Aanval|Verdediging|Vrij opstellen|Duo)/.test(stageText);
- const isDone=/afgelopen/i.test(stageText);
+ const stageText=stage.textContent.trim(),isDone=/afgelopen/i.test(stageText);
+ const isSetup=!isDone&&/^(Aanval|Verdediging|Vrij opstellen|Duo)/.test(stageText);
  const canCoach=isDone||/Gepauzeerd|Coach kiest/i.test(stageText);
  app.dataset.loPhase=isSetup?'setup':isDone?'done':'other';
  const target=current?.textContent?.trim()||'Kies je oefening';
