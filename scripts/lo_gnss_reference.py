@@ -7,7 +7,8 @@ De bronbestanden staan bij Zhang et al. (2025), MIT-code, sample data.
 import csv, io, json, math, statistics, urllib.request
 from datetime import datetime
 
-BASE="https://raw.githubusercontent.com/latilongitude/GNSS_FootballTactical/main/Dataset_A_Positional_data"
+GNSS_COMMIT="f70b925c94e54c5be244917803f07da7c55101b4"
+BASE=f"https://raw.githubusercontent.com/latilongitude/GNSS_FootballTactical/{GNSS_COMMIT}/Dataset_A_Positional_data"
 IDS=range(1,7)
 
 def timestamp(raw,idx):
@@ -62,15 +63,18 @@ def one_player(pid):
         speed=math.hypot(dx,dy)/dt
         if math.isfinite(speed) and speed<20:speeds.append(speed)
     if len(speeds)<25:raise ValueError(f"Speed samples inadequate: {len(speeds)}")
+    active=[v for v in speeds if v>=.7]
     return {"player":pid,"rows":len(series),"speed_samples":len(speeds),"p_mps":percentiles(speeds),
+            "active_speed_samples":len(active),"active_p_mps":percentiles(active),
             "method":"0.5 s 5-frame displacement, raw GNSS without role labels"}
 
 def main():
     players=[one_player(i) for i in IDS]
     print("GNSS_REFERENCE_JSON_BEGIN")
     print(json.dumps({"source":"Zhang et al. 2025: GNSS_FootballTactical U18 sample",
+      "source_commit":GNSS_COMMIT,
       "players":players,
-      "limits":"6 individual traces, not 6 independent matches; no ball or defence roles; displacement includes GNSS noise; not a tactical accuracy benchmark"},ensure_ascii=False,indent=2))
+      "limits":"6 individual traces, not 6 independent matches; no ball or defence roles; displacement includes GNSS noise; sample contains standing/rest periods; active threshold 0.7 m/s is descriptive, not a training threshold; not a tactical accuracy benchmark"},ensure_ascii=False,indent=2))
     print("GNSS_REFERENCE_JSON_END")
 
 if __name__=="__main__":main()
