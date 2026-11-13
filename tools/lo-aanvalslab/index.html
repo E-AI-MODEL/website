@@ -2448,4 +2448,94 @@ if(mobile.matches)document.getElementById('zonePlans').open=false;
 setPanel('player');
 window.__loMobileUI={open:setPanel,close:()=>setPanel('player')};
 })();
+</script><script>
+/* Mobiele indeling: hergebruik de echte bediening, doelen en coach. */
+(()=>{'use strict';
+ const mobile=window.matchMedia('(max-width:880px) and (orientation:portrait)');
+ const app=document.querySelector('.app'),shell=document.querySelector('.shell'),field=document.querySelector('.fieldpane');
+ const top=document.querySelector('.top'),footer=document.querySelector('.lo-footer-links'),bottom=field?.querySelector('.bottom');
+ if(!app||!shell||!field||!top||!bottom)return;
+ const byId=id=>document.getElementById(id),places=new Map();
+ const title=document.createElement('h2');title.id='loCalmSportTitle';title.className='lo-calm-sport-title';
+ top.querySelector('.brand>div')?.append(title);
+ const settings=document.createElement('details');settings.id='loCalmSettings';settings.className='lo-calm-details lo-calm-settings';
+ settings.innerHTML='<summary><span class="lo-calm-icon" aria-hidden="true">☷</span><span><strong class="lo-calm-title">Spelinstellingen</strong><small class="lo-calm-subtitle" id="loCalmSettingsLabel">Voetbal · 4 tegen 4</small></span><span class="lo-calm-chevron" aria-hidden="true">⌄</span></summary><div class="lo-calm-body" id="loCalmSettingsBody"></div>';
+ shell.insertBefore(settings,field);
+ const quick=document.createElement('div');quick.id='loCalmQuick';quick.className='lo-calm-quick';quick.setAttribute('aria-label','Acties voor geselecteerde speler');
+ quick.innerHTML='<span id="loCalmQuickName" class="lo-calm-quick-name"></span><div id="loCalmQuickButtons" class="lo-calm-quick-buttons"></div>';
+ field.insertBefore(quick,bottom);
+ const panels=document.createElement('div');panels.id='loCalmPanels';panels.className='lo-calm-panels';
+ panels.innerHTML='<details id="loCalmTask" class="lo-calm-details" data-importance="task"><summary><span class="lo-calm-icon" aria-hidden="true">◎</span><span><strong class="lo-calm-title">Opdracht</strong><small id="loCalmTaskLabel" class="lo-calm-subtitle">Kies je oefening</small></span><span class="lo-calm-chevron" aria-hidden="true">⌄</span></summary><div class="lo-calm-body" id="loCalmTaskBody"></div></details>'+
+ '<details id="loCalmAnalysis" class="lo-calm-details"><summary><span class="lo-calm-icon" aria-hidden="true">▥</span><span><strong class="lo-calm-title">Analyse</strong><small id="loCalmAnalysisLabel" class="lo-calm-subtitle">Beschikbaar na afspelen</small></span><span class="lo-calm-chevron" aria-hidden="true">⌄</span></summary><div class="lo-calm-body" id="loCalmAnalysisBody"></div></details>'+
+ '<details id="loCalmSources" class="lo-calm-details"><summary><span class="lo-calm-icon" aria-hidden="true">▤</span><span><strong class="lo-calm-title">Bronnen</strong><small class="lo-calm-subtitle">Onderbouwing en spelmodel</small></span><span class="lo-calm-chevron" aria-hidden="true">⌄</span></summary><div class="lo-calm-body" id="loCalmSourcesBody"></div></details>';
+ shell.insertBefore(panels,byId('loMobileControls'));
+ function move(el,target){
+  if(!el||!target)return;
+  if(!places.has(el)){const mark=document.createComment('Terugplaatsing '+(el.id||el.className));el.before(mark);places.set(el,mark)}
+  target.append(el);
+ }
+ function restore(){for(const [el,mark] of places){if(mark.parentNode)mark.after(el)}}
+ function transfer(){
+  const choices=top.querySelector('.top-actions')||byId('loCalmSettingsBody').querySelector('.top-actions');
+  move(choices,byId('loCalmSettingsBody'));
+  move(byId('reset'),byId('loCalmSettingsBody'));
+  move(byId('loHelpOpen'),byId('loCalmSettingsBody'));
+  const task=byId('loCalmTaskBody'),analysis=byId('loCalmAnalysisBody');
+  for(const node of [document.querySelector('.side .mobile-task')||task.querySelector('.mobile-task'),byId('task'),byId('loTeacherBadge'),byId('loTeacherPracticeTip'),byId('loGoals'),byId('prep')])move(node,task);
+  for(const node of [byId('loCoachTransport'),byId('loMidCoach'),byId('loCoachPanel'),byId('after')])move(node,analysis);
+  move(footer,byId('loCalmSourcesBody'));
+  const playback=document.querySelector('.fieldhead .playback-control')||bottom.querySelector('.playback-control');
+  move(playback,bottom.querySelector('.actions'));
+  byId('loGoals').open=true;byId('prep').open=true;
+ }
+ const intents=byId('intents'),selected=byId('selected'),goal=byId('loGoalCurrent');
+ function sync(){
+  if(!mobile.matches)return;
+  const sport=byId('sportSelect'),formation=byId('formationSelect');
+  const stage=byId('stage').textContent.trim(),setup=!byId('prep').classList.contains('hide');
+  const done=!byId('after').classList.contains('hide');
+  title.textContent=sport.selectedOptions?.[0]?.textContent||'Spel';
+  byId('loCalmSettingsLabel').textContent=[sport.selectedOptions?.[0]?.textContent,formation.selectedOptions?.[0]?.textContent,stage].filter(Boolean).join(' · ');
+  byId('loCalmTaskLabel').textContent=goal.textContent.trim()||byId('tasktitle').textContent.trim();
+  byId('loCalmAnalysisLabel').textContent=done?'Bekijk wat er gebeurde':setup?'Beschikbaar na afspelen':stage;
+  quick.hidden=!setup;
+  if(!setup)return;
+  byId('loCalmQuickName').textContent=selected.textContent.trim()||'Tik op een speler';
+  const buttons=byId('loCalmQuickButtons'),orig=[...intents.querySelectorAll('button.intent')];buttons.replaceChildren();
+  for(const btn of orig.slice(0,2)){
+   const proxy=document.createElement('button');proxy.type='button';proxy.className='lo-calm-choice'+(btn.classList.contains('active')?' active':'');
+   proxy.textContent=btn.textContent.trim();proxy.setAttribute('aria-pressed',String(btn.classList.contains('active')));
+   proxy.addEventListener('click',()=>btn.click());buttons.append(proxy);
+  }
+  const more=document.createElement('button');more.type='button';more.className='lo-calm-choice';more.textContent='Meer';more.setAttribute('aria-controls','loCalmTask');
+  more.addEventListener('click',()=>{
+   byId('loCalmTask').open=true;byId('prep').open=true;
+   byId('intents').scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth',block:'nearest'});
+  });buttons.append(more);
+ }
+ let scheduled=false;function requestSync(){
+  if(scheduled)return;scheduled=true;queueMicrotask(()=>{scheduled=false;sync()});
+ }
+ const obs=new MutationObserver(requestSync);
+ for(const el of [byId('stage'),selected,goal,byId('prep'),byId('after'),intents]){
+  if(el)obs.observe(el,{attributes:true,attributeFilter:['class','hidden','aria-pressed'],childList:true,characterData:true,subtree:true});
+ }
+ for(const id of ['sportSelect','formationSelect'])byId(id)?.addEventListener('change',requestSync);
+ for(const id of ['loCalmTask','loCalmAnalysis']){
+  byId(id).addEventListener('toggle',()=>{
+   if(!mobile.matches||!byId(id).open)return;
+   if(id==='loCalmTask'){byId('loGoals').open=true;byId('prep').open=true}
+   if(id==='loCalmAnalysis')byId('loCoachPanel').open=true;
+  });
+ }
+ byId('loCalmSettingsBody').addEventListener('click',e=>{
+  if(e.target.closest('#new,#reset'))settings.open=false;
+ });
+ function layout(){
+  if(mobile.matches){transfer();app.dataset.loCalm='on';sync()}
+  else{restore();delete app.dataset.loCalm}
+ }
+ mobile.addEventListener?.('change',layout);layout();
+ window.__loCalmUI={getState:()=>({active:mobile.matches,settings:settings.open,task:byId('loCalmTask').open,analysis:byId('loCalmAnalysis').open,quickVisible:!quick.hidden}),refresh:sync};
+})();
 </script></body></html>
