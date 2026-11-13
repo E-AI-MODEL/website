@@ -27,11 +27,11 @@ test('Looping: hoeksnelheid volgt v/r en zwaartekracht wijst naar beneden',()=>{
  const {calls,result}=draw('looping',p,t),b=ball(calls);
  assert.ok(b,'Bal ontbreekt');
  const angle=t*p.v/p.r-Math.PI/2;
- near(b[0],500+175*Math.cos(angle));
- near(b[1],252+175*Math.sin(angle));
- near(Math.hypot(b[0]-500,b[1]-252),175);
+ near(b[0],500+(17*p.r)*Math.cos(angle));
+ near(b[1],245+(17*p.r)*Math.sin(angle));
+ near(Math.hypot(b[0]-500,b[1]-245),17*p.r);
  assert.equal(result.readouts.find(x=>x[0]==='Contact bovenin')[1],'Ja');
- const forces=calls.filter(c=>c.name==='arrow'&&c.args[1]===77);
+ const forces=calls.filter(c=>c.name==='arrow'&&c.args[1]===245-17*p.r);
  assert.equal(forces.length,2,'Gewicht en normaalkracht afzonderlijk zichtbaar');
  for(const arrow of forces)assert.ok(arrow.args[3]>arrow.args[1],'Kracht wijst naar beneden bij de top');
  const slow=ball(draw('looping',{v:8,r:6},t).calls);
@@ -42,9 +42,9 @@ test('Looping: te lage snelheid geeft vrije worp en geen fictieve contactkracht'
  const {calls,result}=draw('looping',p,t),b=ball(calls);
  assert.ok(b,'Voorwerp moet zichtbaar blijven');
  assert.equal(result.readouts.find(x=>x[0]==='Contact bovenin')[1],'Nee');
- near(b[0],500+p.v*t*175/p.r);
- near(b[1],252-175+.5*9.81*t*t*175/p.r);
- assert.ok(Math.abs(Math.hypot(b[0]-500,b[1]-252)-175)>5,'Voorwerp mag niet op de baan blijven');
+ near(b[0],500+p.v*t*17);
+ near(b[1],245-17*p.r+.5*9.81*t*t*17);
+ assert.ok(Math.abs(Math.hypot(b[0]-500,b[1]-245)-17*p.r)>5,'Voorwerp mag niet op de baan blijven');
  assert.ok(calls.some(c=>c.name==='txt'&&String(c.args[0]).includes('Geen contact')));
  assert.equal(loopingVisualPosition(p,t).contact,false);
 });
