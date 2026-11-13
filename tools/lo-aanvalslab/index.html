@@ -1029,19 +1029,20 @@ document.querySelectorAll('[data-zone-plan]').forEach(b=>b.addEventListener('cli
 }));
 function refresh(){
  const free=mode==='free';const side=free?'free':(mode==='duo'||mode==='online')?phase:mode==='attack'?'a':'d',pre=state==='setup';
- el('stage').textContent=pre?(free?'Vrij opstellen':mode==='duo'||mode==='online'?(side==='a'?'Duo · aanval':'Duo · verdediging'):side==='a'?'Aanval':'Verdediging'):state==='playing'?'De aanval loopt':state==='paused'?'Gepauzeerd':'Aanval afgelopen';
+ loCoachTransportRefresh();
+ el('stage').textContent=pre?(free?'Vrij opstellen':mode==='duo'||mode==='online'?(side==='a'?'Duo · aanval':'Duo · verdediging'):side==='a'?'Aanval':'Verdediging'):state==='playing'?'De aanval loopt':state==='paused'?'Gepauzeerd':state==='coach'?'Coach kiest een actie':'Aanval afgelopen';
  el('stagehelp').textContent=pre?(free?'Verplaats beide teams of tik op een nieuwe plek':'Sleep de '+(side==='a'?'groene aanvallers':'roze verdedigers')+' of tik op hun plek'):'De aanval speelt vanzelf';
- el('tasktitle').textContent=pre?loSelectedGoal()[1]:state==='playing'?'Kijk naar de loopacties':'De aanval is afgelopen';
+ el('tasktitle').textContent=pre?loSelectedGoal()[1]:state==='playing'?'Kijk naar de loopacties':state==='coach'?'Stuur een speler bij':'De aanval is afgelopen';
  el('task').textContent=pre?loSelectedGoal()[2]:'Bekijk wat de afspraken opleveren. Verander één keuze en speel opnieuw.';
- el('primary').textContent=pre?(mode==='duo'&&side==='a'?'Geef scherm aan verdediging':'Speel de aanval ▶'):state==='playing'?'Pauzeer':state==='paused'?'Verder spelen ▶':'Speel opnieuw ▶';
+ el('primary').textContent=pre?(mode==='duo'&&side==='a'?'Geef scherm aan verdediging':'Speel de aanval ▶'):state==='playing'?'Pauzeer':state==='paused'?'Verder spelen ▶':state==='coach'?'Kies een actie':'Speel opnieuw ▶';
  el('reset').classList.toggle('hide',!pre);el('prep').classList.toggle('hide',!pre);el('after').classList.toggle('hide',state!=='done');
- el('instruction').textContent=pre?(free?'Jij bepaalt beide opstellingen. De spelers voeren straks hun opdracht uit.':mode==='duo'||mode==='online'?side==='a'?'Aanval: versleep je team en kies de loopacties.':'Verdediging: stel je team op en kies hoe het verdedigt.':'Tik of sleep spelers naar hun plek en speel de hele aanval af.'):(state==='done'?'Speel opnieuw of verander de opstelling.':'De teams voeren hun opdrachten uit.');
+ el('instruction').textContent=pre?(free?'Jij bepaalt beide opstellingen. De spelers voeren straks hun opdracht uit.':mode==='duo'||mode==='online'?side==='a'?'Aanval: versleep je team en kies de loopacties.':'Verdediging: stel je team op en kies hoe het verdedigt.':'Tik of sleep spelers naar hun plek en speel de hele aanval af.'):(state==='done'?'Speel opnieuw of verander de opstelling.':state==='coach'?'Kies een andere opdracht en speel vanaf dit moment verder.':'De teams voeren hun opdrachten uit.');
  el('under').textContent=pre?'Sleep een speler of tik eerst de speler en daarna een vrije plek.':'De passes en reacties worden door het model berekend.';
  syncZonePlans();
 }
 
-function resetSetup(){el('prep').open=window.innerWidth>880;el('loCoachPanel').open=false;el('loCoachLabel').textContent='Tip';analysisReady=false;loCoachHighlight=false;loCoachFocus=null;loCoachMomentTime=null;el('loCoachObserved').classList.add('hide');el('loCoachMoment').classList.add('hide');el('loCoachCompare').classList.add('hide');cancelAnimationFrame(raf);state='setup';if(mode!=='online')phase='a';selected=null;players=copy(scenario);el('insight').textContent='Speler 1 begint met de bal. Kies je opstelling en spelersopdrachten.';drawPitch();draw();loGoalPicker();refresh();choose((mode==='defend'||(mode==='online'&&phase==='d'))?'d0':'a0')}
-function start(){loCancelArrowTimer();loBeforeAttempt();initial=copy(players);simSeed=1337+scenarioIndex*4099+formationIndex*1609;simulate();state='playing';time=0;last=0;el('insight').textContent='De aanval speelt af. Kijk hoe de spelers bewegen.';refresh();showFrame(0);cancelAnimationFrame(raf);raf=requestAnimationFrame(tick)}
+function resetSetup(){loResetCoach();el('prep').open=window.innerWidth>880;el('loCoachPanel').open=false;el('loCoachLabel').textContent='Tip';analysisReady=false;loCoachHighlight=false;loCoachFocus=null;loCoachMomentTime=null;el('loCoachObserved').classList.add('hide');el('loCoachMoment').classList.add('hide');el('loCoachCompare').classList.add('hide');cancelAnimationFrame(raf);state='setup';if(mode!=='online')phase='a';selected=null;players=copy(scenario);el('insight').textContent='Speler 1 begint met de bal. Kies je opstelling en spelersopdrachten.';drawPitch();draw();loGoalPicker();refresh();choose((mode==='defend'||(mode==='online'&&phase==='d'))?'d0':'a0')}
+function start(){loResetCoach();loCancelArrowTimer();loBeforeAttempt();initial=copy(players);simSeed=1337+scenarioIndex*4099+formationIndex*1609;simulate();state='playing';time=0;last=0;el('insight').textContent='De aanval speelt af. Kijk hoe de spelers bewegen.';refresh();showFrame(0);cancelAnimationFrame(raf);raf=requestAnimationFrame(tick)}
 function point(e){
  const matrix=svg.getScreenCTM();
  if(matrix){const pt=svg.createSVGPoint();pt.x=e.clientX;pt.y=e.clientY;const local=pt.matrixTransform(matrix.inverse());return {x:clamp(local.x,70,930),y:clamp(local.y,76,574)}}
@@ -1437,16 +1438,115 @@ function simulate(resume=null){
  result=outcome;duration=frames.at(-1)?.time||MAX;
  summary={result,duration,passes,completed,shots,intercepts,events:copy(events)};analysisReady=true;
 }
+
+let loCoachSide='a',loCoachPlayer=null,loPauseLimit=0;
+const loCoachTeams=()=>mode==='attack'?['a']:mode==='defend'?['d']:['a','d'];
+const loCanCoach=()=>mode!=='online'&&['paused','done','coach'].includes(state)&&frames.length>1;
+function loCoachActionsFor(p){
+ if(!p)return [];
+ const ballOwner=loPauseDraft?.checkpoint.holder;
+ if(p.team==='a'&&p.id===ballOwner&&p.id!=='a0')return [];
+ return p.team==='a'&&p.id===ballOwner?carrierTactics:tactics[p.team];
+}
+function loCoachUI(){
+ if(state!=='coach'||!loPauseDraft)return;
+ const snap=loPauseDraft.checkpoint,allowed=loCoachTeams();
+ if(!allowed.includes(loCoachSide))loCoachSide=allowed[0];
+ const sides=el('loMidCoachSides');sides.replaceChildren();
+ if(allowed.length>1)for(const team of allowed){
+  const b=document.createElement('button');b.type='button';b.textContent=team==='a'?'Aanvallers':'Verdedigers';
+  b.setAttribute('aria-pressed',String(loCoachSide===team));
+  b.onclick=()=>{loCoachSide=team;loCoachPlayer=null;loCoachUI()};
+  sides.append(b);
+ }
+ const ps=snap.players.filter(p=>p.team===loCoachSide),playersBox=el('loMidCoachPlayers');playersBox.replaceChildren();
+ if(!ps.some(p=>p.id===loCoachPlayer&&loCoachActionsFor(p).length))loCoachPlayer=ps.find(p=>loCoachActionsFor(p).length)?.id||null;
+ for(const p of ps){
+  const b=document.createElement('button');b.type='button';b.textContent=(p.team==='a'?'Aanvaller ':'Verdediger ')+(+p.id.slice(1)+1);
+  b.setAttribute('aria-pressed',String(loCoachPlayer===p.id));b.disabled=!loCoachActionsFor(p).length;
+  b.onclick=()=>{loCoachPlayer=p.id;loCoachUI()};playersBox.append(b);
+ }
+ const player=ps.find(p=>p.id===loCoachPlayer),box=el('loMidCoachActions');box.replaceChildren();
+ for(const [key,label] of loCoachActionsFor(player)){
+  const b=document.createElement('button');b.type='button';b.textContent=label;
+  b.setAttribute('aria-pressed',String(normalizeZone(player.intent)===key));
+  b.onclick=()=>{player.intent=key;loCoachUI()};box.append(b);
+ }
+ el('loMidCoachInfo').textContent=player?'Op '+loSeconds(snap.time)+' s: verander de opdracht van deze speler. Zijn snelheid en positie blijven behouden.':'Kies een speler zonder bal. Bij een nieuwe balbezitter bepaalt het model zijn balactie.';
+ el('loMidApply').disabled=!player;selected=loCoachPlayer;showFrame(snap.time);
+}
+function loOpenCoach(){
+ if(!loCanCoach()||mode==='online')return false;
+ cancelAnimationFrame(raf);
+ const frame=frames[Math.round(time/DT)]||frames.at(-1);
+ if(!frame?.runtime)return false;
+ loPauseDraft={checkpoint:copy(frame),previous:{frames,events,summary,result,duration},at:frame.time};
+ loCoachSide=loCoachTeams()[0];loCoachPlayer=null;time=frame.time;state='coach';
+ el('loMidCoach').hidden=false;el('loMidCoach').open=true;refresh();loCoachUI();return true;
+}
+function loCancelCoach(){
+ if(!loPauseDraft)return;
+ const p=loPauseDraft.previous;
+ frames=p.frames;events=p.events;summary=p.summary;result=p.result;duration=p.duration;
+ time=loPauseDraft.at;loPauseLimit=time;loPauseDraft=null;selected=null;state='paused';
+ el('loMidCoach').hidden=true;refresh();showFrame(time);
+}
+function loApplyCoach(){
+ if(!loPauseDraft||!loCoachPlayer)return false;
+ const draft=loPauseDraft,previous=draft.previous;
+ const prefixFrames=previous.frames.filter(f=>f.time<draft.at-.001);
+ const prefixEvents=previous.events.filter(e=>e.time<=draft.at+.0001);
+ loBranchHistory={origin:previous,variant:null,at:draft.at,changed:loCoachPlayer};
+ simulate({checkpoint:copy(draft.checkpoint),prefixFrames,prefixEvents});
+ loBranchHistory.variant={frames,events,summary,result,duration};
+ loCurrentVersion='variant';loPauseDraft=null;loCoachPlayer=null;
+ el('loMidCoach').hidden=true;selected=null;time=draft.at;loPauseLimit=time;
+ state='playing';last=0;refresh();showFrame(time);raf=requestAnimationFrame(tick);return true;
+}
+function loSwitchVersion(target){
+ if(!loBranchHistory||loPauseDraft||!['origin','variant'].includes(target))return false;
+ cancelAnimationFrame(raf);
+ const v=loBranchHistory[target];if(!v)return false;
+ frames=v.frames;events=v.events;summary=v.summary;result=v.result;duration=v.duration;
+ loCurrentVersion=target;time=clamp(time,0,duration);loPauseLimit=time;
+ state='paused';refresh();showFrame(time);return true;
+}
+function loCoachSeek(t){
+ if(!['paused','done'].includes(state)||mode==='online')return;
+ const max=state==='done'?duration:loPauseLimit;
+ time=Math.round(clamp(Number(t),0,max)/DT)*DT;state='paused';refresh();showFrame(time);
+}
+function loResetCoach(){
+ loPauseDraft=null;loBranchHistory=null;loCoachPlayer=null;loPauseLimit=0;loCurrentVersion='variant';
+ el('loMidCoach').hidden=true;
+}
+function loCoachTransportRefresh(){
+ const enabled=mode!=='online'&&['paused','done'].includes(state);
+ el('loCoachTransport').hidden=!enabled;if(!enabled)return;
+ const seek=el('loCoachSeek'),max=state==='done'?duration:Math.max(0,loPauseLimit);
+ seek.min=0;seek.max=String(max);seek.value=String(clamp(time,0,max));
+ el('loCoachTimestamp').textContent=loSeconds(time)+' s';
+ el('loCoachOriginal').hidden=!loBranchHistory||loCurrentVersion==='origin';
+ el('loCoachVariant').hidden=!loBranchHistory||loCurrentVersion==='variant';
+ el('loCoachEdit').disabled=!frames.length;
+}
+el('loCoachEdit').addEventListener('click',loOpenCoach);
+el('loMidCancel').addEventListener('click',loCancelCoach);
+el('loMidApply').addEventListener('click',loApplyCoach);
+el('loCoachOriginal').addEventListener('click',()=>loSwitchVersion('origin'));
+el('loCoachVariant').addEventListener('click',()=>loSwitchVersion('variant'));
+el('loCoachSeek').addEventListener('input',e=>loCoachSeek(e.target.value));
+
 function frameAt(t){const idx=clamp(Math.round(t/DT),0,frames.length-1);return frames[idx]||{players,ball:ballAt(players[0]),trail:[]}}
 function showFrame(t){const f=frameAt(t);draw(f.players,f.ball,f.trail);loDrawCoachFocus()}
 function tick(ts){if(state!=='playing')return;if(!last)last=ts;time=Math.min(duration,time+Math.min(.09,(ts-last)/1000)*playbackSpeed);last=ts;showFrame(time);if(time>=duration){finish();return}raf=requestAnimationFrame(tick)}
-function finish(){cancelAnimationFrame(raf);state='done';el('loCoachPanel').open=true;el('loCoachLabel').textContent='Nieuwe uitdaging';refresh();loCoachFeedback()}
-function newGame(){scenarioIndex=(scenarioIndex+1)%scenarios.length;loLastAttempt=null;makeScenario(scenarioIndex);resetSetup();el('welcome').classList.remove('hide')}
+function finish(){cancelAnimationFrame(raf);state='done';loPauseLimit=duration;el('loCoachPanel').open=true;el('loCoachLabel').textContent='Nieuwe uitdaging';refresh();loCoachFeedback()}
+function newGame(){loResetCoach();scenarioIndex=(scenarioIndex+1)%scenarios.length;loLastAttempt=null;makeScenario(scenarioIndex);resetSetup();el('welcome').classList.remove('hide')}
 document.querySelectorAll('[data-mode]').forEach(btn=>btn.addEventListener('click',()=>{mode=btn.dataset.mode;loGoalRole=mode==='defend'?'d':'a';loGoalManual=false;loGoalKey=LO_GOALS[sportIndex][loGoalRole][0][0];loLastAttempt=null;el('sportSelect').disabled=false;el('formationSelect').disabled=false;el('welcome').classList.add('hide');resetSetup()}));
-el('primary').addEventListener('click',()=>{if(state==='setup'){if(mode==='duo'&&phase==='a'){phase='d';selected=null;loGoalPicker();refresh();choose('d0');draw();return}start()}else if(state==='playing'){state='paused';cancelAnimationFrame(raf);refresh()}else if(state==='paused'){state='playing';last=0;refresh();raf=requestAnimationFrame(tick)}else if(state==='done'){state='playing';time=0;last=0;refresh();showFrame(0);raf=requestAnimationFrame(tick)}});
+el('primary').addEventListener('click',()=>{if(state==='setup'){if(mode==='duo'&&phase==='a'){phase='d';selected=null;loGoalPicker();refresh();choose('d0');draw();return}start()}else if(state==='playing'){state='paused';loPauseLimit=time;cancelAnimationFrame(raf);refresh()}else if(state==='paused'){state='playing';last=0;refresh();raf=requestAnimationFrame(tick)}else if(state==='done'){loResetCoach();state='playing';time=0;last=0;refresh();showFrame(0);raf=requestAnimationFrame(tick)}});
 el('reset').addEventListener('click',()=>{const side=(mode==='duo'||mode==='online')?phase:(mode==='free'?'free':mode==='defend'?'d':'a');players=players.map(p=>(side==='free'||p.team===side)?copy(scenario.find(x=>x.id===p.id)):p);choose(selected&&selected[0]===side?selected:side+'0');draw()});
-el('again').addEventListener('click',()=>{loCoachHighlight=false;players=copy(initial);state='setup';if(mode!=='online')phase='a';selected=null;draw();refresh();choose((mode==='defend'||(mode==='online'&&phase==='d'))?'d0':'a0');el('insight').textContent='Verander één opdracht en speel opnieuw. De coach vergelijkt je volgende poging.'});
-el('replay').addEventListener('click',()=>{loCoachHighlight=false;state='playing';time=0;last=0;refresh();showFrame(0);raf=requestAnimationFrame(tick)});
+el('again').addEventListener('click',()=>{loResetCoach();loCoachHighlight=false;players=copy(initial);state='setup';if(mode!=='online')phase='a';selected=null;draw();refresh();choose((mode==='defend'||(mode==='online'&&phase==='d'))?'d0':'a0');el('insight').textContent='Verander één opdracht en speel opnieuw. De coach vergelijkt je volgende poging.'});
+el('replay').addEventListener('click',()=>{loResetCoach();loCoachHighlight=false;state='playing';time=0;last=0;refresh();showFrame(0);raf=requestAnimationFrame(tick)});
 el('new').addEventListener('click',newGame);
 function switchSport(value){if(mode==='online')return;applySport(value);loGoalManual=false;loGoalKey=LO_GOALS[sportIndex][loGoalRole][0][0];loLastAttempt=null;makeScenario(scenarioIndex);resetSetup();}
 function switchFormation(value){if(mode==='online')return;applyFormation(value);loLastAttempt=null;makeScenario(scenarioIndex);resetSetup();}
