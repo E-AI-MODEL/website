@@ -588,6 +588,19 @@
  .lo-calm-choice{min-height:44px;font-size:11.5px}
  .bottom #primary{min-height:44px;font-size:12.5px}
 }
+
+/* Open opdracht: geen dubbele uitleg of decoratieve koppen. */
+@media(max-width:880px) and (orientation:portrait){
+ .lo-calm-body .mobile-task,.lo-calm-body #task,.lo-calm-body #prep h3{display:none!important}
+ .lo-calm-body #loGoalHint{margin:2px 0 6px;font-size:12px;line-height:1.45;color:#accfc0}
+ .lo-calm-body #selected{font-size:12px;color:#b8d6c9}
+ .lo-calm-body #loGoals,.lo-calm-body #prep{padding:0}
+ .lo-calm-body #intents .intent{background:#142e32;border:1px solid rgba(144,199,175,.29);font-size:12px;min-height:44px;font-weight:560}
+ .lo-calm-body #intents .intent.active{background:#255a49;border-color:#78cfa9;color:#ebfff4}
+ .bottom #primary{position:relative;isolation:isolate;background:transparent!important;border:0!important;box-shadow:none!important;color:#08291f!important}
+ .bottom #primary::before{content:"";position:absolute;z-index:-1;inset:5px 0;background:#b3edd0;border:1px solid #b3edd0;border-radius:9px}
+ .bottom #primary:focus-visible{outline:2px solid #d8f7e6;outline-offset:-2px}
+}
 </style></head><body class="eai-refresh"><div class="app"><header class="top"><div class="brand"><button type="button" class="mark lo-secret" id="loSecret" aria-label="LO-logo. Tweemaal tikken voor de berekeningen van het spel" title="LO">LO</button><div><div class="eyebrow">TACTISCH SPELLAB</div><h1>Speel het uit.</h1></div></div><div class="top-actions"><label class="sport-label" for="sportSelect">Sport</label><select id="sportSelect" class="sport-select" aria-label="Kies de sport"><option value="0">Voetbal</option><option value="1">Hockey</option><option value="2">Handbal</option><option value="3">Basketbal</option></select><label class="sport-label" for="formationSelect">Teams</label><select id="formationSelect" class="sport-select formation-select" aria-label="Kies het aantal aanvallers en verdedigers"><option value="0">4 tegen 4</option><option value="1">2 tegen 1</option><option value="2">3 tegen 2</option><option value="3">4 tegen 3</option></select><button id="new" class="btn">Nieuwe spelsituatie</button></div></header><div class="shell"><section class="fieldpane"><div class="fieldhead"><span id="stage" class="pill">Voorbereiden</span><span id="stagehelp" class="small">Versleep de spelers van jouw team</span><label class="playback-control" for="playbackSpeed"><span>Tempo</span><select id="playbackSpeed" aria-label="Afspeelsnelheid"><option value="0.5">½×</option><option value="1" selected>1×</option><option value="1.5">1½×</option><option value="2">2×</option></select></label><button type="button" id="loHelpOpen" class="lo-help-open" aria-haspopup="dialog" aria-controls="loHelp" aria-label="Uitleg en demo's voor het Aanvalslab"><span class="lo-help-mark" aria-hidden="true">?</span><span class="lo-help-word">Uitleg en demo’s</span></button></div><div class="fieldframe"><svg id="pitch" viewBox="0 0 1000 650" tabindex="0" role="img" aria-label="Interactief speelveld. Kies een speler en gebruik de pijltjestoetsen om hem te verplaatsen."></svg></div><div class="lo-coach-transport" id="loCoachTransport" hidden>
  <label for="loCoachSeek">Terug naar spelmoment <output id="loCoachTimestamp">0,0 s</output></label>
  <input id="loCoachSeek" class="lo-coach-seek" type="range" min="0" max="0" step="0.05" value="0" aria-label="Kies een eerder spelmoment">
