@@ -33,7 +33,7 @@ def assert_defender_model_candidate(page,baseline):
                               const values=[p.x,p.y,p.vx,p.vy];
                               if(values.some(x=>!Number.isFinite(x)))invalidNumber++;
                               if(p.x<69-1e-4||p.x>931+1e-4||p.y<76-1e-4||p.y>574+1e-4)invalidNumber++;
-                              maxSpeed=Math.max(maxSpeed,Math.hypot(p.vx,p.vy)/lab.getPX());
+                              maxSpeed=Math.max(maxSpeed,Math.hypot(p.vx,p.vy)/lab.getConfig().px);
                             }
                           }
                           return {
