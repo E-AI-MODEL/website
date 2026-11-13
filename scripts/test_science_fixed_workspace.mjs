@@ -390,6 +390,10 @@ try{
   // De leerling sleept het driehoekige steunpunt, niet de twee krachtpijlen.
   await page.goto(base+'/tools/science-observatory/labs/natuurkunde/#lever',{waitUntil:'load'});
   await page.waitForFunction(()=>document.querySelector('#labTitle').textContent==='De hefboom');
+  // De docentuitleg blijft open terwijl de leerling het steunpunt versleept.
+  assert.equal(await page.locator('#insightTeacher').getAttribute('hidden'),'','De docentverdieping is aanwezig, maar start dicht');
+  await page.evaluate(()=>{document.querySelector('#insightMath').open=true;document.querySelector('#insightTeacher').open=true;});
+  assert((await page.locator('#insightTeacherContent').innerText()).includes('OpenStax'),'De bronverwijzing wordt getoond');
   const leverStart=await page.evaluate(()=>{
    const p=state.p,c=document.querySelector('#scene'),r=c.getBoundingClientRect(),g=sceneViewport(c),pivot=p.pivot??510;
    return {x:r.left+g.left+pivot*g.scale,y:r.top+g.top+350*g.scale,scale:g.scale,pivot,left:pivot-65*p.arm1,right:pivot+65*p.arm2,p:{...p}};
@@ -413,6 +417,8 @@ try{
   assert.equal(Number(leverEnd.numArm2),leverEnd.arm2,'De instelling voor rechter arm volgt het verslepen');
   assert.equal(Number(leverEnd.numArm1),leverEnd.arm1,'Ook de uitklapbare instelling voor linker arm volgt mee');
   assert.equal(leverEnd.graphCursor,leverEnd.arm2,'De grafiek gebruikt de verschoven rechter arm');
+  assert(await page.locator('#insightTeacher').evaluate(el=>el.open),'De bronverdieping blijft open na slepen');
+  assert((await page.locator('#insightMathContent').innerText()).includes('F₂'),'De actuele tegenkracht blijft zichtbaar');
   await page.screenshot({path:'test-results/physics-lever-drag-'+engine.name()+'-'+width+'.png'});
   await page.locator('#resetBtn').click();
   const leverReset=await page.evaluate(()=>({pivot:state.p.pivot??510,arm1:state.p.arm1,arm2:state.p.arm2}));
