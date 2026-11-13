@@ -430,16 +430,22 @@ def main():
         assert coach_page.locator("#loMidCoachActions [aria-pressed=true]").count()==1
         coach_page.locator("#loMidApply").click()
         assert coach_page.evaluate("window.__loLabTest.getFrames().length")>2
-        # Footers blijven binnen het document in plaats van over het veld.
+        # Desktop houdt de bronlinks onder het veld. Op telefoons zijn ze
+        # verborgen om speelruimte te behouden; het veld blijft binnen beeld.
         for width,height in ((1200,850),(390,844),(320,690)):
             coach_page.set_viewport_size({"width":width,"height":height})
             values=coach_page.evaluate("""()=>({
               vw:innerWidth,fh:document.querySelector('.lo-footer-links').getBoundingClientRect().toJSON(),
               field:document.querySelector('.fieldpane').getBoundingClientRect().toJSON(),
-              below:document.querySelector('.lo-footer-links').compareDocumentPosition(document.querySelector('.fieldpane'))
+              fieldViewBox:document.querySelector('#pitch').getAttribute('viewBox')
             })""")
-            assert values["fh"]["width"]<=values["vw"]+2,values
-            assert values["fh"]["top"]>=values["field"]["bottom"]-2,values
+            if width>880:
+                assert values["fh"]["width"]<=values["vw"]+2,values
+                assert values["fh"]["top"]>=values["field"]["bottom"]-2,values
+            else:
+                assert values["fh"]["width"]==0,values
+                assert values["field"]["right"]<=values["vw"]+2,values
+                assert values["fieldViewBox"]=="0 0 650 1000",values
         coach_page.close()
         assert not failures,failures
         print(json.dumps({"baseline_replays":count,"event_test":event_test,
