@@ -41,7 +41,7 @@ def groups(en: bool):
                 ('Galactic Observatory: guided version', '/tools/melkweg-lab/'),
                 ('Sport and movement', '/tools/sport-en-bewegen/'),
             ]),
-            ('Hulpmiddelen', [
+            ('Tools', [
                 ('All tools', '/en/tools/'),
                 ('Prompt Framework', '/tools/prompt-framework/'),
                 ('WiHTML Studio', '/tools/wihtml/'),
