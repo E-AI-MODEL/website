@@ -422,7 +422,7 @@ body{display:flex;flex-direction:column}
  .workspace .insight-panel .insight-body{flex:1 1 auto;min-height:0;grid-template-columns:minmax(0,1fr) 13px minmax(150px,var(--insight-math-width,220px));gap:0}
  .workspace .insight-visual{min-height:0;overflow:auto}
  .workspace .insight-math{max-height:none;min-height:0;overflow:auto;border-left:0}
- #graphPanel.with-math{grid-template-columns:minmax(0,1fr) 13px minmax(165px,var(--graph-math-width,220px));column-gap:0;grid-template-rows:auto minmax(0,1fr)}
+ #graphPanel.with-math{grid-template-columns:minmax(0,1fr) 13px minmax(150px,var(--graph-math-width,220px));column-gap:0;grid-template-rows:auto minmax(0,1fr)}
  .workspace #graphMathDivider{display:none}
  #graphPanel.with-math .graph-top{grid-column:1/-1}
  #graphPanel.with-math .graph-frame{grid-column:1;grid-row:2;height:100%;min-height:70px;margin:0}
@@ -2013,7 +2013,7 @@ const refreshAnalysis=bindPanelDivider($('sceneDivider'),{
 });
 const refreshGraphMath=bindPanelDivider($('graphMathDivider'),{
  direction:-1,get:()=>panelSize('graphMath'),set:v=>setPanelSize('graphMath',v),
- bounds:()=>mathBounds($('graphPanel'),190,165),reset:220,
+ bounds:()=>mathBounds($('graphPanel'),150,150),reset:220,
  enabled:()=>state.bottom==='graph'&&!$('graphMath').hidden
 });
 const refreshInsightMath=bindPanelDivider($('insightMathDivider'),{
