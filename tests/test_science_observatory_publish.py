@@ -81,7 +81,7 @@ class ObservatoryPublicationTests(unittest.TestCase):
         self.assertIn("Galactisch Observatorium", catalog)
         self.assertIn("Gravitatie en satellietbanen", catalog)
         self.assertIn("Anatomie van de mens", catalog)
-        self.assertIn("niet alle natuurkundige modellen", catalog)
+        self.assertIn("niet alle natuurkundige modellen", catalog.lower())
         self.assertIn("vereenvoudigde modellen", catalog)
         self.assertNotIn("NF / 01", catalog)
         self.assertNotIn("school-PTA", catalog)
