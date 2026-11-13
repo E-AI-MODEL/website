@@ -391,7 +391,7 @@ try{
   await page.goto(base+'/tools/science-observatory/labs/natuurkunde/#lever',{waitUntil:'load'});
   await page.waitForFunction(()=>document.querySelector('#labTitle').textContent==='De hefboom');
   // De docentuitleg blijft open terwijl de leerling het steunpunt versleept.
-  assert.equal(await page.locator('#insightTeacher').getAttribute('hidden'),'','De docentverdieping is aanwezig, maar start dicht');
+  assert.equal(await page.locator('#insightTeacher').evaluate(el=>el.open),false,'De docentverdieping start dicht');
   await page.evaluate(()=>{document.querySelector('#insightMath').open=true;document.querySelector('#insightTeacher').open=true;});
   assert((await page.locator('#insightTeacherContent').innerText()).includes('OpenStax'),'De bronverwijzing wordt getoond');
   const leverStart=await page.evaluate(()=>{
