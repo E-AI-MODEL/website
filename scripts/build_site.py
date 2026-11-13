@@ -2063,26 +2063,27 @@ def esc(value: str) -> str:
 
 NAV_GROUPS = [
     ("toepassingen", "Toepassingen", [
-        ("/toepassingen/", "Overzicht toepassingen"),
-        ("/praktijk/", "Praktijk & demonstrators"),
+        ("/toepassingen/", "Alle toepassingen"),
+        ("/praktijk/", "Voorbeelden uit de praktijk"),
     ]),
     ("onderwijs", "Onderwijs", [
-        ("/onderwijs/", "Overzicht onderwijs"),
+        ("/onderwijs/", "Alle onderwerpen"),
         ("/werkvormen/", "EAI-werkvormen"),
         ("/taalwerkvormen/", "TAALwerkvormen"),
         ("/werkvormen/#didactisch-model", "Didactische modellen"),
     ]),
-    ("observatoria", "Observatoria", [
-        ("/tools/science-observatory/", "Science Observatory"),
-        ("/tools/science-observatory/labs/natuurkunde/", "Natuurkunde · 53 proefmodellen"),
-        ("/tools/anatomie/", "Anatomisch Observatorium"),
-        ("/tools/anatomie/labs/hartslag/", "Hartslaglab · hartcyclus"),
+    ("observatoria", "Onderzoeken", [
+        ("/tools/science-observatory/", "Interactief onderzoeken"),
+        ("/tools/science-observatory/labs/natuurkunde/", "Natuurkunde"),
+        ("/tools/anatomie/", "Anatomie van de mens"),
+        ("/tools/anatomie/labs/hartslag/", "Hart en bloedsomloop"),
         ("/tools/llm-observatorium/", "LLM Observatorium"),
         ("/tools/abyss/", "ABYSS"),
-        ("/tools/melkweg-lab/", "Melkweg Lab"),
+        ("/tools/melkweg-lab/", "De Melkweg met uitleg"),
+        ("/tools/sport-en-bewegen/", "Sport en bewegen"),
     ]),
-    ("tools", "Tools", [
-        ("/tools/", "Alle tools"),
+    ("tools", "Hulpmiddelen", [
+        ("/tools/", "Alle hulpmiddelen"),
         ("/tools/wihtml/", "WiHTML Docentstudio"),
         ("/tools/prompt-framework/", "EAI Prompt Framework"),
         ("/model-monitor/", "AI Model Monitor"),
@@ -2092,8 +2093,8 @@ NAV_GROUPS = [
         ("/kennis/", "Overzicht kennis"),
         ("/onderbouwing/", "Onderbouwing"),
         ("/bronnen/", "Bronnen"),
-        ("/publicaties/", "Publicaties & media"),
-        ("/tools/", "Tools"),
+        ("/publicaties/", "Publicaties"),
+        ("/tools/", "Hulpmiddelen"),
         ("/twee-pijlers/", "Twee pijlers"),
     ]),
 ]
@@ -2669,19 +2670,28 @@ def build(sources: Path, out: Path) -> None:
         raise FileNotFoundError(f"Melkweg Lab-bron ontbreekt: {melkweg_lab_source}")
     write(out, "tools/melkweg-lab/index.html", melkweg_lab_source.read_text(encoding="utf-8"))
 
-    # LO Aanvalslab: zelfstandige multiplayer-HTML, behouden na iedere volledige rebuild.
-    lo_lab_source = Path(__file__).resolve().parent.parent / "tools" / "lo-aanvalslab" / "index.html"
+    # Sport en bewegen: nieuwe publieke route, met oude links die blijven doorverwijzen.
+    lo_source_dir = Path(__file__).resolve().parent.parent / "tools" / "sport-en-bewegen"
+    lo_lab_source = lo_source_dir / "index.html"
     if not lo_lab_source.is_file():
-        raise FileNotFoundError(f"LO Aanvalslab-bron ontbreekt: {lo_lab_source}")
-    write(out, "tools/lo-aanvalslab/index.html", lo_lab_source.read_text(encoding="utf-8"))
+        raise FileNotFoundError(f"Sport en bewegen-bron ontbreekt: {lo_lab_source}")
+    write(out, "tools/sport-en-bewegen/index.html", lo_lab_source.read_text(encoding="utf-8"))
+    lo_evidence = lo_source_dir / "onderbouwing" / "index.html"
+    if not lo_evidence.is_file():
+        raise FileNotFoundError(f"Sport en bewegen-onderbouwing ontbreekt: {lo_evidence}")
+    write(out, "tools/sport-en-bewegen/onderbouwing/index.html", lo_evidence.read_text(encoding="utf-8"))
 
-    # LO Aanvalslab: bewaar kalibratie en bronverwijzing bij elke herbouw.
+    # Behoud oude URL's en bestaande externe links.
+    for legacy_page in ("index.html", "onderbouwing/index.html"):
+        legacy = lo_source_dir.parent / "lo-aanvalslab" / legacy_page
+        write(out, f"tools/lo-aanvalslab/{legacy_page}", legacy.read_text(encoding="utf-8"))
+
+    # Onderzoeksbestanden behouden hun bestaande repo-pad.
     for source_name in ("README.md", "extract_tracking.py", "tracking_metrics.json"):
-        evidence_path = lo_lab_source.parent / "calibratie" / "v13" / source_name
+        evidence_path = lo_source_dir.parent / "lo-aanvalslab" / "calibratie" / "v13" / source_name
         if not evidence_path.is_file():
             raise FileNotFoundError(f"LO v13 meetbestand ontbreekt: {evidence_path}")
         write(out, f"tools/lo-aanvalslab/calibratie/v13/{source_name}", evidence_path.read_text(encoding="utf-8"))
-
 
 
     # LLM Observatorium: zelfstandige interactieve HTML, ongewijzigd publiceren.
