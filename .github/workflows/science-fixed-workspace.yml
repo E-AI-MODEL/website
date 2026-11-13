@@ -4,6 +4,9 @@ on:
     branches: [main]
     paths:
       - 'content/science-observatory/labs/natuurkunde.html'
+      - 'content/science-observatory/labs/wiskunde-a.html'
+      - 'content/science-observatory/labs/wiskunde-b.html'
+      - 'scripts/test_science_math_adaptive.mjs'
       - 'content/science-observatory/labs/schuine-worp.html'
       - 'scripts/test_science_fixed_workspace.mjs'
       - 'scripts/test_science_mobile_aim.mjs'
@@ -13,6 +16,9 @@ on:
     branches: [main]
     paths:
       - 'content/science-observatory/labs/natuurkunde.html'
+      - 'content/science-observatory/labs/wiskunde-a.html'
+      - 'content/science-observatory/labs/wiskunde-b.html'
+      - 'scripts/test_science_math_adaptive.mjs'
       - 'content/science-observatory/labs/schuine-worp.html'
       - 'scripts/test_science_fixed_workspace.mjs'
       - 'scripts/test_science_mobile_aim.mjs'
@@ -36,6 +42,10 @@ jobs:
       - run: python scripts/build_site.py --sources content/legacy --out site-build
       - run: npm install --no-save playwright@1.56.1
       - run: npx playwright install --with-deps chromium webkit
+      - name: Mathematics viewport and navigation in Chromium
+        run: node scripts/test_science_math_adaptive.mjs site-build chromium
+      - name: Mathematics viewport and navigation in Safari
+        run: node scripts/test_science_math_adaptive.mjs site-build webkit
       - name: All 53 labs fixed on screen in Chromium
         run: node scripts/test_science_fixed_workspace.mjs site-build chromium
       - name: All 53 labs fixed on screen in Safari
@@ -48,4 +58,6 @@ jobs:
         if: always()
         with:
           name: fixed-physics-laboratory-screenshots
-          path: test-results/physics-*.png
+          path: |
+            test-results/physics-*.png
+            test-results/math-*.png
