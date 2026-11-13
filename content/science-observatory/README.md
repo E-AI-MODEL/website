@@ -110,3 +110,15 @@ De eerste vijf proeven kregen al een afzonderlijke numerieke controle: hefboom, 
 Een formule die overeenkomt met OpenStax bewijst niet dat de animatie fysisch correct is. Bij de uiteindelijke vakdocentreview moeten ook representaties, alternatieve instellingen, grenzen en leerlingbegrip worden bekeken. Het veld `inhoudelijk_gevalideerd` blijft daarom voor alle proeven op `false`. De bronvermelding is een verwijzing, geen keurmerk. Er is geen OpenStax-boektekst overgenomen.
 
 De numerieke vervalreeks gebruikt `Math.expm1` om wegvallende cijfers bij bijna gelijke halveringstijden te voorkomen. Deze correctie is onderdeel van de onafhankelijke test, naast de standaard exponentiële vervalwet.
+
+## Beeldcontrole van natuurkundige modellen (13 november 2026)
+
+Een natuurkundige vergelijking en een geslaagde rekencontrole zijn niet genoeg om een animatie als correct te beoordelen. Bij een aanvullende inspectie zijn drie visuele problemen gecorrigeerd:
+
+- **Looping:** de draaihoek gebruikt nu de ingestelde snelheid en straal (ω = v/r). De cirkelgrootte volgt een vaste 17-px-per-meterweergave. Bovenaan wijzen gewicht en normaalkracht naar het middelpunt; bij te lage snelheid volgt vanaf het bovenste punt een vrije worp. Het model berekent geen volledige aanloop of variërende snelheid langs de hele cirkel.
+- **Newtons wieg:** de getekende beweging begint aan de linkerzijde en draagt de uitwijking over naar evenveel ballen rechts. Ook een groep van drie ballen werkt zonder dubbel aangestuurde middenbol. De contactdynamica blijft een ideale schets.
+- **Licht door één of twee spleten:** de intensiteit op de getekende strook wordt op een *vaste fysieke schaal* van −10 tot +10 mm berekend. Daarmee verandert de strook ook zichtbaar bij een andere golflengte, spleetbreedte, spleetafstand of schermafstand. De grafiek behoudt haar eigen afleesbare x-as; de dubbele-spleetweergave gebruikt ideale smalle spleten zonder diffractieomhullende.
+
+De controle `tests/test_science_physics_visual_fidelity.mjs` onderzoekt de zichtbare coördinaten, krachtenpijlen, beginrichting en intensiteitsverdeling. De tests voor alle 53 formules, grafieken en grenswaarden blijven actief. Dit is *gerichte technische dekking*, geen volledige inhoudelijke goedkeuring.
+
+Voor een vakdocent staat een [controlelijst voor alle 53 proeven](vakdocent-controle-53.md) klaar. Daarin zijn per proef de onderzoeksvraag en de beperking opgenomen, met extra aandachtspunten bij veertien onderwerpen. Ook het register `natuurkunde-kwaliteit.json` onderscheidt nu technische beeldtests van de nog ontbrekende beoordeling door een docent. Alle `inhoudelijk_gevalideerd`-velden blijven `false`.
