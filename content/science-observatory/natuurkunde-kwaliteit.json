@@ -1,5 +1,5 @@
 {
-  "versie": 1,
+  "versie": 2,
   "doel": "53 proeven als samenhangend observatorium. Iedere proef wordt op de eigen betekenis en bediening beoordeeld.",
   "betekenis_status": "browser_drag_test betekent een beschreven browsertest, geen volledig experimenteel of didactisch validatiebewijs. inhoudelijk_gevalideerd is daarom nog overal false.",
   "aftekenen": "Pas inhoudelijk_gevalideerd aan na een per-proefcontrole van vergelijkingen, uiterste standen, grafiek en onafhankelijke referentieberekening. Pas een afzonderlijke mobiele beeldcontrole en bedieningsproef toe.",
@@ -17,7 +17,10 @@
       "browser_drag_test": false,
       "physics_check": "x = v₀t + ½at²",
       "verfijning": "Sleep het voertuig om tijd of positie te onderzoeken",
-      "inhoudelijk_gevalideerd": false
+      "inhoudelijk_gevalideerd": false,
+      "bronstatus": "bronselectie_open",
+      "referentietest": "afzonderlijke_referentietest_open",
+      "vakdocent_nagezien": false
     },
     {
       "id": "equilibrium",
@@ -25,7 +28,10 @@
       "browser_drag_test": true,
       "physics_check": "ΣF⃗ = 0",
       "verfijning": "Onderzoek of de derde kracht de andere twee opheft",
-      "inhoudelijk_gevalideerd": false
+      "inhoudelijk_gevalideerd": false,
+      "bronstatus": "bronselectie_open",
+      "referentietest": "afzonderlijke_referentietest_open",
+      "vakdocent_nagezien": false
     },
     {
       "id": "resultant",
@@ -33,7 +39,10 @@
       "browser_drag_test": true,
       "physics_check": "R⃗ = F⃗₁ + F⃗₂",
       "verfijning": "Sleep beide krachtpunten apart en vergelijk de som",
-      "inhoudelijk_gevalideerd": false
+      "inhoudelijk_gevalideerd": false,
+      "bronstatus": "bronselectie_open",
+      "referentietest": "afzonderlijke_referentietest_open",
+      "vakdocent_nagezien": false
     },
     {
       "id": "resolution",
@@ -41,7 +50,10 @@
       "browser_drag_test": true,
       "physics_check": "Fₓ = F cos α, Fᵧ = F sin α",
       "verfijning": "Controleer de lengte van de pijl bij iedere hoek",
-      "inhoudelijk_gevalideerd": false
+      "inhoudelijk_gevalideerd": false,
+      "bronstatus": "bronselectie_open",
+      "referentietest": "afzonderlijke_referentietest_open",
+      "vakdocent_nagezien": false
     },
     {
       "id": "pulleys",
@@ -49,7 +61,10 @@
       "browser_drag_test": false,
       "physics_check": "F = mg/n",
       "verfijning": "Kies het aantal dragende touwdelen in de tekening",
-      "inhoudelijk_gevalideerd": false
+      "inhoudelijk_gevalideerd": false,
+      "bronstatus": "bronselectie_open",
+      "referentietest": "afzonderlijke_referentietest_open",
+      "vakdocent_nagezien": false
     },
     {
       "id": "lever",
@@ -57,7 +72,10 @@
       "browser_drag_test": true,
       "physics_check": "F₁r₁ = F₂r₂",
       "verfijning": "Controleer ook krachtarm en steunpuntafstand aan de uiteinden",
-      "inhoudelijk_gevalideerd": false
+      "inhoudelijk_gevalideerd": false,
+      "bronstatus": "bronverwijzing_toegevoegd",
+      "referentietest": "test_toegevoegd",
+      "vakdocent_nagezien": false
     },
     {
       "id": "incline",
@@ -65,7 +83,10 @@
       "browser_drag_test": true,
       "physics_check": "F∥ = mg sin α; Fw = μmg cos α",
       "verfijning": "Test het blok bij steile hoeken en bij verschillende wrijving",
-      "inhoudelijk_gevalideerd": false
+      "inhoudelijk_gevalideerd": false,
+      "bronstatus": "bronselectie_open",
+      "referentietest": "afzonderlijke_referentietest_open",
+      "vakdocent_nagezien": false
     },
     {
       "id": "newton2",
@@ -73,7 +94,10 @@
       "browser_drag_test": false,
       "physics_check": "F = ma",
       "verfijning": "Pak de krachtpijl vast om versnelling te wijzigen",
-      "inhoudelijk_gevalideerd": false
+      "inhoudelijk_gevalideerd": false,
+      "bronstatus": "bronselectie_open",
+      "referentietest": "afzonderlijke_referentietest_open",
+      "vakdocent_nagezien": false
     },
     {
       "id": "projectile",
@@ -81,7 +105,10 @@
       "browser_drag_test": false,
       "physics_check": "R = v₀²sin(2α)/g",
       "verfijning": "Controleer de bereikbaarheid van het mikpunt bij uiterste instellingen",
-      "inhoudelijk_gevalideerd": false
+      "inhoudelijk_gevalideerd": false,
+      "bronstatus": "bronselectie_open",
+      "referentietest": "afzonderlijke_referentietest_open",
+      "vakdocent_nagezien": false
     },
     {
       "id": "collision",
@@ -89,7 +116,10 @@
       "browser_drag_test": false,
       "physics_check": "Behoud impuls en ingestelde restitutie",
       "verfijning": "Sleep beginposities en onderzoek botsingssnelheden",
-      "inhoudelijk_gevalideerd": false
+      "inhoudelijk_gevalideerd": false,
+      "bronstatus": "bronverwijzing_toegevoegd",
+      "referentietest": "test_toegevoegd",
+      "vakdocent_nagezien": false
     },
     {
       "id": "cradle",
@@ -97,7 +127,10 @@
       "browser_drag_test": false,
       "physics_check": "Impuls en energie voor identieke bollen",
       "verfijning": "Tik op bollen om het startaantal te kiezen",
-      "inhoudelijk_gevalideerd": false
+      "inhoudelijk_gevalideerd": false,
+      "bronstatus": "bronselectie_open",
+      "referentietest": "afzonderlijke_referentietest_open",
+      "vakdocent_nagezien": false
     },
     {
       "id": "circular",
@@ -105,7 +138,10 @@
       "browser_drag_test": false,
       "physics_check": "F = mv²/r",
       "verfijning": "Controleer straal en snelheid bij ronddraaien",
-      "inhoudelijk_gevalideerd": false
+      "inhoudelijk_gevalideerd": false,
+      "bronstatus": "bronselectie_open",
+      "referentietest": "afzonderlijke_referentietest_open",
+      "vakdocent_nagezien": false
     },
     {
       "id": "carousel",
@@ -113,7 +149,10 @@
       "browser_drag_test": false,
       "physics_check": "F = mω²r",
       "verfijning": "Sleep een zitplaats naar een andere straal",
-      "inhoudelijk_gevalideerd": false
+      "inhoudelijk_gevalideerd": false,
+      "bronstatus": "bronselectie_open",
+      "referentietest": "afzonderlijke_referentietest_open",
+      "vakdocent_nagezien": false
     },
     {
       "id": "looping",
@@ -121,7 +160,10 @@
       "browser_drag_test": false,
       "physics_check": "N ≥ 0 bovenin als v²/r ≥ g",
       "verfijning": "Kies de beginsnelheid met het wagentje",
-      "inhoudelijk_gevalideerd": false
+      "inhoudelijk_gevalideerd": false,
+      "bronstatus": "bronselectie_open",
+      "referentietest": "afzonderlijke_referentietest_open",
+      "vakdocent_nagezien": false
     },
     {
       "id": "kepler1",
@@ -129,7 +171,10 @@
       "browser_drag_test": false,
       "physics_check": "r₁+r₂ = 2a",
       "verfijning": "Controleer baan en positie van brandpunten numeriek",
-      "inhoudelijk_gevalideerd": false
+      "inhoudelijk_gevalideerd": false,
+      "bronstatus": "bronselectie_open",
+      "referentietest": "afzonderlijke_referentietest_open",
+      "vakdocent_nagezien": false
     },
     {
       "id": "kepler2",
@@ -137,7 +182,10 @@
       "browser_drag_test": false,
       "physics_check": "dA/dt constant",
       "verfijning": "Markeer gelijke tijden en meet de oppervlakken",
-      "inhoudelijk_gevalideerd": false
+      "inhoudelijk_gevalideerd": false,
+      "bronstatus": "bronselectie_open",
+      "referentietest": "afzonderlijke_referentietest_open",
+      "vakdocent_nagezien": false
     },
     {
       "id": "hydro",
@@ -145,7 +193,10 @@
       "browser_drag_test": true,
       "physics_check": "Δp = ρgh",
       "verfijning": "Controleer de sensor bij oppervlak en bodem",
-      "inhoudelijk_gevalideerd": false
+      "inhoudelijk_gevalideerd": false,
+      "bronstatus": "bronselectie_open",
+      "referentietest": "afzonderlijke_referentietest_open",
+      "vakdocent_nagezien": false
     },
     {
       "id": "buoyant",
@@ -153,7 +204,10 @@
       "browser_drag_test": false,
       "physics_check": "Fop = ρgVondergedompeld",
       "verfijning": "Laat de leerling een blok dieper in het water bewegen",
-      "inhoudelijk_gevalideerd": false
+      "inhoudelijk_gevalideerd": false,
+      "bronstatus": "bronselectie_open",
+      "referentietest": "afzonderlijke_referentietest_open",
+      "vakdocent_nagezien": false
     },
     {
       "id": "pendulum",
@@ -161,7 +215,10 @@
       "browser_drag_test": false,
       "physics_check": "T ≈ 2π√(L/g)",
       "verfijning": "Controleer release, periode en kleine-hoekbenadering",
-      "inhoudelijk_gevalideerd": false
+      "inhoudelijk_gevalideerd": false,
+      "bronstatus": "bronselectie_open",
+      "referentietest": "afzonderlijke_referentietest_open",
+      "vakdocent_nagezien": false
     },
     {
       "id": "spring",
@@ -169,7 +226,10 @@
       "browser_drag_test": false,
       "physics_check": "T = 2π√(m/k)",
       "verfijning": "Pak de massa vast, trek uit en laat los",
-      "inhoudelijk_gevalideerd": false
+      "inhoudelijk_gevalideerd": false,
+      "bronstatus": "bronselectie_open",
+      "referentietest": "afzonderlijke_referentietest_open",
+      "vakdocent_nagezien": false
     },
     {
       "id": "coupled",
@@ -177,7 +237,10 @@
       "browser_drag_test": false,
       "physics_check": "Modi en zweving bij koppeling",
       "verfijning": "Sleep één slinger uit evenwicht en volg energie-uitwisseling",
-      "inhoudelijk_gevalideerd": false
+      "inhoudelijk_gevalideerd": false,
+      "bronstatus": "bronselectie_open",
+      "referentietest": "afzonderlijke_referentietest_open",
+      "vakdocent_nagezien": false
     },
     {
       "id": "resonance",
@@ -185,7 +248,10 @@
       "browser_drag_test": false,
       "physics_check": "Amplitude versus f/f₀",
       "verfijning": "Verander de aansturing naast het bewegende blok",
-      "inhoudelijk_gevalideerd": false
+      "inhoudelijk_gevalideerd": false,
+      "bronstatus": "bronselectie_open",
+      "referentietest": "afzonderlijke_referentietest_open",
+      "vakdocent_nagezien": false
     },
     {
       "id": "beats",
@@ -193,7 +259,10 @@
       "browser_drag_test": false,
       "physics_check": "fzweving = |f₁−f₂|",
       "verfijning": "Verander beide frequenties afzonderlijk",
-      "inhoudelijk_gevalideerd": false
+      "inhoudelijk_gevalideerd": false,
+      "bronstatus": "bronselectie_open",
+      "referentietest": "afzonderlijke_referentietest_open",
+      "vakdocent_nagezien": false
     },
     {
       "id": "standing",
@@ -201,7 +270,10 @@
       "browser_drag_test": false,
       "physics_check": "f = nv/(2L)",
       "verfijning": "Trek aan de snaar en kies een trillingsvorm",
-      "inhoudelijk_gevalideerd": false
+      "inhoudelijk_gevalideerd": false,
+      "bronstatus": "bronselectie_open",
+      "referentietest": "afzonderlijke_referentietest_open",
+      "vakdocent_nagezien": false
     },
     {
       "id": "longitudinal",
@@ -209,7 +281,10 @@
       "browser_drag_test": false,
       "physics_check": "f = nv/(2L) bij twee gesloten uiteinden",
       "verfijning": "Verander de buislengte direct aan het uiteinde",
-      "inhoudelijk_gevalideerd": false
+      "inhoudelijk_gevalideerd": false,
+      "bronstatus": "bronselectie_open",
+      "referentietest": "afzonderlijke_referentietest_open",
+      "vakdocent_nagezien": false
     },
     {
       "id": "interference",
@@ -217,7 +292,10 @@
       "browser_drag_test": false,
       "physics_check": "Faseverschil en interferentie-intensiteit",
       "verfijning": "Vergelijk werkelijk gemeten minima en maxima",
-      "inhoudelijk_gevalideerd": false
+      "inhoudelijk_gevalideerd": false,
+      "bronstatus": "bronselectie_open",
+      "referentietest": "afzonderlijke_referentietest_open",
+      "vakdocent_nagezien": false
     },
     {
       "id": "doppler",
@@ -225,7 +303,10 @@
       "browser_drag_test": false,
       "physics_check": "fvoor = f·v/(v−vs)",
       "verfijning": "Sleep de bron en vergelijk gemeten frequenties",
-      "inhoudelijk_gevalideerd": false
+      "inhoudelijk_gevalideerd": false,
+      "bronstatus": "bronselectie_open",
+      "referentietest": "afzonderlijke_referentietest_open",
+      "vakdocent_nagezien": false
     },
     {
       "id": "magnetbar",
@@ -233,7 +314,10 @@
       "browser_drag_test": false,
       "physics_check": "Veldlijnen kwalitatief, niet automatisch gekalibreerd",
       "verfijning": "Controleer veldrichting en bronsterkte met meetsonde",
-      "inhoudelijk_gevalideerd": false
+      "inhoudelijk_gevalideerd": false,
+      "bronstatus": "bronselectie_open",
+      "referentietest": "afzonderlijke_referentietest_open",
+      "vakdocent_nagezien": false
     },
     {
       "id": "magnetwire",
@@ -241,7 +325,10 @@
       "browser_drag_test": false,
       "physics_check": "B = μ₀I/(2πr)",
       "verfijning": "Sleep de sonde radiaal van de draad",
-      "inhoudelijk_gevalideerd": false
+      "inhoudelijk_gevalideerd": false,
+      "bronstatus": "bronselectie_open",
+      "referentietest": "afzonderlijke_referentietest_open",
+      "vakdocent_nagezien": false
     },
     {
       "id": "lorentz",
@@ -249,7 +336,10 @@
       "browser_drag_test": false,
       "physics_check": "F = qvBsin α",
       "verfijning": "Onderzoek veldrichting, snelheid en baanstraal",
-      "inhoudelijk_gevalideerd": false
+      "inhoudelijk_gevalideerd": false,
+      "bronstatus": "bronselectie_open",
+      "referentietest": "afzonderlijke_referentietest_open",
+      "vakdocent_nagezien": false
     },
     {
       "id": "motor",
@@ -257,7 +347,10 @@
       "browser_drag_test": false,
       "physics_check": "Koppel afhankelijk van spoeloriëntatie",
       "verfijning": "Draai de rotor met de hand naar een bepaalde stand",
-      "inhoudelijk_gevalideerd": false
+      "inhoudelijk_gevalideerd": false,
+      "bronstatus": "bronselectie_open",
+      "referentietest": "afzonderlijke_referentietest_open",
+      "vakdocent_nagezien": false
     },
     {
       "id": "generator",
@@ -265,7 +358,10 @@
       "browser_drag_test": false,
       "physics_check": "Uind = −N dΦ/dt",
       "verfijning": "Draai de winding met de hand en meet de spanning",
-      "inhoudelijk_gevalideerd": false
+      "inhoudelijk_gevalideerd": false,
+      "bronstatus": "bronselectie_open",
+      "referentietest": "afzonderlijke_referentietest_open",
+      "vakdocent_nagezien": false
     },
     {
       "id": "ohm",
@@ -273,7 +369,10 @@
       "browser_drag_test": true,
       "physics_check": "I = U/R",
       "verfijning": "Controleer instelcontact bij R = 1 en R = 30 Ω",
-      "inhoudelijk_gevalideerd": false
+      "inhoudelijk_gevalideerd": false,
+      "bronstatus": "bronselectie_open",
+      "referentietest": "afzonderlijke_referentietest_open",
+      "vakdocent_nagezien": false
     },
     {
       "id": "resistors",
@@ -281,7 +380,10 @@
       "browser_drag_test": false,
       "physics_check": "Rserie = R₁+R₂; Rparallel⁻¹ = R₁⁻¹+R₂⁻¹",
       "verfijning": "Verwissel fysiek serie- en parallelschakeling",
-      "inhoudelijk_gevalideerd": false
+      "inhoudelijk_gevalideerd": false,
+      "bronstatus": "bronselectie_open",
+      "referentietest": "afzonderlijke_referentietest_open",
+      "vakdocent_nagezien": false
     },
     {
       "id": "potentiometer",
@@ -289,7 +391,10 @@
       "browser_drag_test": true,
       "physics_check": "Uuit = Uin · positie/100",
       "verfijning": "Controleer het contact op beide uiteinden",
-      "inhoudelijk_gevalideerd": false
+      "inhoudelijk_gevalideerd": false,
+      "bronstatus": "bronselectie_open",
+      "referentietest": "afzonderlijke_referentietest_open",
+      "vakdocent_nagezien": false
     },
     {
       "id": "wheatstone",
@@ -297,7 +402,10 @@
       "browser_drag_test": true,
       "physics_check": "R₁/R₂ = R₃/R₄",
       "verfijning": "Controleer nulstand en het verborgen R₃",
-      "inhoudelijk_gevalideerd": false
+      "inhoudelijk_gevalideerd": false,
+      "bronstatus": "bronselectie_open",
+      "referentietest": "afzonderlijke_referentietest_open",
+      "vakdocent_nagezien": false
     },
     {
       "id": "ac",
@@ -305,7 +413,10 @@
       "browser_drag_test": false,
       "physics_check": "Urms = Û/√2",
       "verfijning": "Kies frequentie en kijk naar RMS versus momentaan",
-      "inhoudelijk_gevalideerd": false
+      "inhoudelijk_gevalideerd": false,
+      "bronstatus": "bronselectie_open",
+      "referentietest": "afzonderlijke_referentietest_open",
+      "vakdocent_nagezien": false
     },
     {
       "id": "rlc",
@@ -313,7 +424,10 @@
       "browser_drag_test": false,
       "physics_check": "Z = √(R²+(ωL−1/ωC)²)",
       "verfijning": "Maak de componenten afzonderlijk instelbaar op de tekening",
-      "inhoudelijk_gevalideerd": false
+      "inhoudelijk_gevalideerd": false,
+      "bronstatus": "bronselectie_open",
+      "referentietest": "afzonderlijke_referentietest_open",
+      "vakdocent_nagezien": false
     },
     {
       "id": "lc",
@@ -321,7 +435,10 @@
       "browser_drag_test": false,
       "physics_check": "ω₀ = 1/√(LC)",
       "verfijning": "Volg elektrische en magnetische energie apart",
-      "inhoudelijk_gevalideerd": false
+      "inhoudelijk_gevalideerd": false,
+      "bronstatus": "bronselectie_open",
+      "referentietest": "afzonderlijke_referentietest_open",
+      "vakdocent_nagezien": false
     },
     {
       "id": "em",
@@ -329,7 +446,10 @@
       "browser_drag_test": false,
       "physics_check": "E en B in fase, loodrecht op voortplanting",
       "verfijning": "Onderzoek de fase van E en B in de 3D-weergave",
-      "inhoudelijk_gevalideerd": false
+      "inhoudelijk_gevalideerd": false,
+      "bronstatus": "bronselectie_open",
+      "referentietest": "afzonderlijke_referentietest_open",
+      "vakdocent_nagezien": false
     },
     {
       "id": "refraction",
@@ -337,7 +457,10 @@
       "browser_drag_test": false,
       "physics_check": "n₁sin α = n₂sin β",
       "verfijning": "Controleer grenshoeken en totale interne reflectie",
-      "inhoudelijk_gevalideerd": false
+      "inhoudelijk_gevalideerd": false,
+      "bronstatus": "bronselectie_open",
+      "referentietest": "afzonderlijke_referentietest_open",
+      "vakdocent_nagezien": false
     },
     {
       "id": "huygens",
@@ -345,7 +468,10 @@
       "browser_drag_test": false,
       "physics_check": "sin α/sin β = v₁/v₂",
       "verfijning": "Sleep de richting van invallende golfvlakken",
-      "inhoudelijk_gevalideerd": false
+      "inhoudelijk_gevalideerd": false,
+      "bronstatus": "bronselectie_open",
+      "referentietest": "afzonderlijke_referentietest_open",
+      "vakdocent_nagezien": false
     },
     {
       "id": "lens",
@@ -353,7 +479,10 @@
       "browser_drag_test": false,
       "physics_check": "1/f = 1/u + 1/v",
       "verfijning": "Controleer virtueel beeld en voorwerp nabij brandpunt",
-      "inhoudelijk_gevalideerd": false
+      "inhoudelijk_gevalideerd": false,
+      "bronstatus": "bronselectie_open",
+      "referentietest": "afzonderlijke_referentietest_open",
+      "vakdocent_nagezien": false
     },
     {
       "id": "telescope",
@@ -361,7 +490,10 @@
       "browser_drag_test": false,
       "physics_check": "Vergroting M = −fo/fe; afocale afstand fo+fe",
       "verfijning": "Versleep het oculair over de optische as",
-      "inhoudelijk_gevalideerd": false
+      "inhoudelijk_gevalideerd": false,
+      "bronstatus": "bronselectie_open",
+      "referentietest": "afzonderlijke_referentietest_open",
+      "vakdocent_nagezien": false
     },
     {
       "id": "double",
@@ -369,7 +501,10 @@
       "browser_drag_test": false,
       "physics_check": "Δy = λL/d",
       "verfijning": "Verplaats spleten of scherm en kijk naar maxima",
-      "inhoudelijk_gevalideerd": false
+      "inhoudelijk_gevalideerd": false,
+      "bronstatus": "bronselectie_open",
+      "referentietest": "afzonderlijke_referentietest_open",
+      "vakdocent_nagezien": false
     },
     {
       "id": "single",
@@ -377,7 +512,10 @@
       "browser_drag_test": false,
       "physics_check": "Eerste minimum sin θ = λ/a",
       "verfijning": "Versleep de spleetbreedte op de tekening",
-      "inhoudelijk_gevalideerd": false
+      "inhoudelijk_gevalideerd": false,
+      "bronstatus": "bronselectie_open",
+      "referentietest": "afzonderlijke_referentietest_open",
+      "vakdocent_nagezien": false
     },
     {
       "id": "gas",
@@ -385,7 +523,10 @@
       "browser_drag_test": true,
       "physics_check": "pV = nRT",
       "verfijning": "Controleer de as, klikpositie en procesbeperkingen",
-      "inhoudelijk_gevalideerd": false
+      "inhoudelijk_gevalideerd": false,
+      "bronstatus": "bronverwijzing_toegevoegd",
+      "referentietest": "test_toegevoegd",
+      "vakdocent_nagezien": false
     },
     {
       "id": "dilation",
@@ -393,7 +534,10 @@
       "browser_drag_test": false,
       "physics_check": "γ = 1/√(1−β²)",
       "verfijning": "Onderzoek directe klokbediening en afleesbaarheid",
-      "inhoudelijk_gevalideerd": false
+      "inhoudelijk_gevalideerd": false,
+      "bronstatus": "bronselectie_open",
+      "referentietest": "afzonderlijke_referentietest_open",
+      "vakdocent_nagezien": false
     },
     {
       "id": "photo",
@@ -401,7 +545,10 @@
       "browser_drag_test": false,
       "physics_check": "Ekin,max = hf − W",
       "verfijning": "Verander fotonfrequentie aan de lichtbron",
-      "inhoudelijk_gevalideerd": false
+      "inhoudelijk_gevalideerd": false,
+      "bronstatus": "bronselectie_open",
+      "referentietest": "afzonderlijke_referentietest_open",
+      "vakdocent_nagezien": false
     },
     {
       "id": "bohr",
@@ -409,7 +556,10 @@
       "browser_drag_test": false,
       "physics_check": "En = −13,6/n² eV",
       "verfijning": "Tik op niveaus om een overgang te kiezen",
-      "inhoudelijk_gevalideerd": false
+      "inhoudelijk_gevalideerd": false,
+      "bronstatus": "bronverwijzing_toegevoegd",
+      "referentietest": "test_toegevoegd",
+      "vakdocent_nagezien": false
     },
     {
       "id": "chains",
@@ -417,7 +567,10 @@
       "browser_drag_test": false,
       "physics_check": "Gekoppelde exponentiële vervalwetten",
       "verfijning": "Kies de tijd op de vervalgrafiek en vergelijk de drie groepen",
-      "inhoudelijk_gevalideerd": false
+      "inhoudelijk_gevalideerd": false,
+      "bronstatus": "bronverwijzing_toegevoegd",
+      "referentietest": "test_toegevoegd",
+      "vakdocent_nagezien": false
     },
     {
       "id": "decay",
@@ -425,7 +578,10 @@
       "browser_drag_test": false,
       "physics_check": "N(t) = N₀·2^(−t/T½)",
       "verfijning": "Kies een tijdstip direct op de grafiek",
-      "inhoudelijk_gevalideerd": false
+      "inhoudelijk_gevalideerd": false,
+      "bronstatus": "bronselectie_open",
+      "referentietest": "afzonderlijke_referentietest_open",
+      "vakdocent_nagezien": false
     },
     {
       "id": "bragg",
@@ -433,7 +589,16 @@
       "browser_drag_test": false,
       "physics_check": "nλ = 2d sin θ",
       "verfijning": "Draai kristalvlak of invallende bundel",
-      "inhoudelijk_gevalideerd": false
+      "inhoudelijk_gevalideerd": false,
+      "bronstatus": "bronselectie_open",
+      "referentietest": "afzonderlijke_referentietest_open",
+      "vakdocent_nagezien": false
     }
-  ]
+  ],
+  "broncontrole": {
+    "aanpak": "OpenStax College Physics 2e als basis. University Physics en gerichte aanvullende bronnen alleen voor verdieping of ontbrekende theoretische delen.",
+    "betekenis": "Een gecontroleerd bronhoofdstuk onderbouwt een natuurkundige relatie; het valideert niet automatisch de simulatie, grafiek of bediening.",
+    "status": "De eerste vijf proeven hebben geselecteerde bronnen en onafhankelijke referentietests. De andere 48 wachten op de individuele bronkoppeling.",
+    "aftekening": "Inhoudelijke validatie vereist bevestiging door een vakdocent na vergelijking van formule, eenheden, randgevallen, de grafiek en de animatie."
+  }
 }
