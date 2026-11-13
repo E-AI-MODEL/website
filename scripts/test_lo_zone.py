@@ -89,11 +89,17 @@ def run():
         page.set_viewport_size({"width":390,"height":844})
         page.reload()
         page.locator('[data-mode="defend"]').click()
-        # De spelerbediening staat direct onder het veld en bedekt het niet.
-        page.locator('[data-lo-mobile-panel="player"]').click()
+        # De bediening opent pas op aanvraag, als een klein paneel boven de actiebalk.
+        assert not page.locator(".side").is_visible()
+        # In het portretontwerp zijn de extra speleropties bereikbaar via Meer.
+        page.locator(".lo-quick-more").click()
         assert page.locator("#prep").get_attribute("open") is not None
         assert not page.locator(".mobile-scrim").is_visible()
-        assert page.locator(".side").bounding_box()["y"] >= page.locator(".fieldpane").bounding_box()["y"] + page.locator(".fieldpane").bounding_box()["height"]
+        assert page.locator(".side").is_visible()
+        panel=page.locator(".side").bounding_box()
+        assert not page.locator(".mobile-controls").is_visible()
+        assert panel["height"] <= 0.48 * 844 + 3,panel
+        assert panel["y"] + panel["height"] <= 844 + 1,panel
         assert page.locator("#zonePlans").is_visible()
         assert page.locator("#pitch").is_visible()
         assert page.locator("#zonePlans").evaluate("(e) => e.getBoundingClientRect().width > 180")
