@@ -58,17 +58,23 @@ JS = r"""({scene,seed})=>{
       uniqueMarkErrors+=marks.length-new Set(marks).size;
       markCount+=marks.length;
     }
-    for(const p of ds){
-      const old=prev.players.find(q=>q.id===p.id);
-      if(!old)continue;
-      const velocity=Math.hypot(p.vx,p.vy)/px,prior=Math.hypot(old.vx,old.vy)/px;
-      if(velocity>.9&&prior>.9){
-        modelTurnChecks++;
-        const cos=(p.vx*old.vx+p.vy*old.vy)/(px*px*velocity*prior);
-        if(cos<-.35)reverseTurns++;
+    // Koersomkering over twee vensters van 0,5 s; opeenvolgende
+    // 50 ms-frames zouden door de snelheidslimiet vrijwel nooit omkeren.
+    if(i>=10&&i+10<fs.length&&i%10===0){
+      const earlier=fs[i-10],later=fs[i+10];
+      for(const p of ds){
+        const p0=earlier.players.find(q=>q.id===p.id),p2=later.players.find(q=>q.id===p.id);
+        if(!p0||!p2)continue;
+        const dx1=(p.x-p0.x)/px,dy1=(p.y-p0.y)/px,dx2=(p2.x-p.x)/px,dy2=(p2.y-p.y)/px;
+        const v1=Math.hypot(dx1,dy1)/.5,v2=Math.hypot(dx2,dy2)/.5;
+        if(v1>.65&&v2>.65){
+          modelTurnChecks++;
+          const cos=(dx1*dx2+dy1*dy2)/(Math.hypot(dx1,dy1)*Math.hypot(dx2,dy2));
+          if(cos<-.35)reverseTurns++;
+        }
       }
-      totalActive+=.05;
     }
+    totalActive+=ds.length*.05;
   }
   return {sport:config.name,scene,seed,summary:{result:out.result,passes:out.passes,
    attempts:out.shots,intercepts:out.intercepts,duration:out.duration},
