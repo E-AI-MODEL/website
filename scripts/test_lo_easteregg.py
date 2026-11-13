@@ -434,6 +434,9 @@ def main():
         # verborgen om speelruimte te behouden; het veld blijft binnen beeld.
         for width,height in ((1200,850),(390,844),(320,690)):
             coach_page.set_viewport_size({"width":width,"height":height})
+            # Media-query change callbacks lopen na de viewportwijziging in de eventloop.
+            expected = "0 0 650 1000" if width<=880 else "0 0 1000 650"
+            coach_page.wait_for_function("""expected => document.querySelector('#pitch').getAttribute('viewBox') === expected""", arg=expected)
             values=coach_page.evaluate("""()=>({
               vw:innerWidth,fh:document.querySelector('.lo-footer-links').getBoundingClientRect().toJSON(),
               field:document.querySelector('.fieldpane').getBoundingClientRect().toJSON(),
