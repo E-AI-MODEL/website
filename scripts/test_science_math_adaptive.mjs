@@ -44,7 +44,7 @@ try{
      const graph=await page.locator('#plotCanvas').boundingBox();
      assert.ok(graph.width>145&&graph.height>90,'Graph has adequate dimensions '+JSON.stringify(graph));
      await page.locator('[data-view="params"]').click();
-     assert.ok(await page.locator('#inspector').isVisible(),'Settings are an in-viewport layer');
+     assert.ok(await page.locator('.inspector').isVisible(),'Settings are an in-viewport layer');
      const visible=await page.locator('#controls>.control:visible').count();
      assert.ok(visible>=1&&visible<=2,'At most two parameter cards visible: '+visible);
      if(await page.locator('#paramNext').isEnabled()){
