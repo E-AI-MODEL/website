@@ -1954,7 +1954,7 @@ stage.addEventListener('pointerdown',ev=>{if(state.id==='interference'){stage.se
 stage.addEventListener('pointermove',ev=>{if(state.id==='interference'&&mission.pointer===ev.pointerId){const point=pointOnScene(ev);mission.probe={x:clamp(point.x,32,970),y:clamp(point.y,25,470)};render();return}if(state.drag2d===ev.pointerId){const {x,y}=pointOnScene(ev);change2dPoint(x+(state.dragOffset?.x||0),y+(state.dragOffset?.y||0));ev.preventDefault();return}if(!state.pointer.has(ev.pointerId)||!special3d.has(state.id))return;const old=state.pointer.get(ev.pointerId),dx=ev.clientX-old.x,dy=ev.clientY-old.y;state.pointer.set(ev.pointerId,{x:ev.clientX,y:ev.clientY});if(state.pointer.size===1){state.camera.yaw+=dx*.007;state.camera.pitch=clamp(state.camera.pitch+dy*.006,-1.46,1.46)}else if(state.pointer.size===2){const pts=[...state.pointer.values()],dist=Math.hypot(pts[0].x-pts[1].x,pts[0].y-pts[1].y);if(state.lastPinch>0)state.camera.zoom=clamp(state.camera.zoom*dist/state.lastPinch,.40,2.3);state.lastPinch=dist}ev.preventDefault();render()});
 const stopPointer=ev=>{
  if(mission.pointer===ev.pointerId)mission.pointer=null;
- if(state.drag2d===ev.pointerId){state.drag2d=null;state.dragOffset=null;state.leverDrag=null}
+ if(state.drag2d===ev.pointerId){const releasedLever=state.id==='lever'&&!!state.leverDrag;state.drag2d=null;state.dragOffset=null;state.leverDrag=null;if(releasedLever&&ev.type==='pointerup')setPlaying(true)}
  const wasOrbit=state.pointer.delete(ev.pointerId);
  state.lastPinch=null;
  if(wasOrbit){
