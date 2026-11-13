@@ -390,7 +390,7 @@ body{display:flex;flex-direction:column}
 .graph-math{border-left:1px solid #31475c;padding:3px 8px 0;overflow:auto;min-width:0}
 #graphPanel.with-math .graph-math{grid-column:2}
 @media(max-width:720px){.insight-body{grid-template-columns:minmax(0,1fr) minmax(120px,.7fr);gap:7px}.insight-bar{grid-template-columns:minmax(61px,1fr) minmax(36px,1fr) 55px;font-size:9px;gap:4px}.insight-bar-value{font-size:9px}.insight-math{padding:4px 6px}.graph-actions .subtle-btn{font-size:9px;padding:5px 6px}#graphPanel.with-math{grid-template-columns:minmax(0,1fr) minmax(120px,.8fr)}}
-</style></head>
+.insight-bar-value{overflow:hidden;text-overflow:ellipsis}.tab-strip{overflow-x:auto;scrollbar-width:none}.tab-strip::-webkit-scrollbar{display:none}@media(max-width:720px){.tab-strip{gap:10px;padding:0 10px}.tab{font-size:10px}.insight-head span{display:none}}</style></head>
 <body>
 <header class="masthead"><div class="mast-left"><a class="brand" href="/tools/science-observatory/" aria-label="Terug naar Science Observatory"><span class="logo" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><path d="M4 19c4-1 4-12 8-12s4 18 8 18 4-9 8-10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span><span>SCIENCE <b>OBSERVATORY</b></span></a><span class="brand-divider"></span><span class="brand-context">NATUURKUNDE · PROEFVERSIE</span></div><div class="nav-main"><a href="#labSection" class="nav-link active">Proef</a><a href="#topics" class="nav-link">Onderwerpen</a><a href="/tools/science-observatory/" class="nav-link">Andere observatoria</a><a href="/nl/tools/" class="nav-link">Alle tools</a></div><span class="header-status"><span class="live-dot"></span> In ontwikkeling</span></header>
 <main class="page"><div class="intro-head"><div class="intro-copy"><div class="kicker">SCIENCE OBSERVATORY <span>/</span> NATUURKUNDE</div><h1>Een proef. Eindeloos veel vragen.</h1><p>Verander een grootheid, sleep in de proef waar dat kan en vergelijk wat er gebeurt. Bij ieder model staan de vereenvoudigingen vermeld.</p></div><div class="intro-stat"><strong>53</strong><span>experimenten</span><i></i><strong>9</strong><span>gebieden</span></div></div>
@@ -530,6 +530,27 @@ const physicsStepCatalog={
  photo:['Kinetische energie van het elektron','Ekin,max = max(0; hf−W)','max(0; {photon} eV − {W} eV)','Max. kinetische energie','Beneden de drempelfrequentie komen geen elektronen vrij.'],
  bragg:['Bragghoek','nλ = 2d sinθ','sinθ={order}×{lambda} nm/(2×{d} nm)','Bragghoek','Alleen mogelijk wanneer nλ ≤ 2d.']
 };
+
+function physicsBars(id,p,t,rows,d){
+ const val=label=>{const v=rows.find(r=>r[0]===label)?.[1],match=String(v??'').match(/-?\d[\d.,]*/);
+   return match?Number(match[0].replaceAll('.','').replace(',','.')):NaN;};
+ switch(id){
+ case 'equilibrium':case 'resultant':return [['F₁',p.F1,'N'],['F₂',p.F2,'N'],[id==='equilibrium'?'F₃':'Resultante',Math.hypot(p.F1+p.F2*Math.cos(rad(p.angle)),p.F2*Math.sin(rad(p.angle))),'N']];
+ case 'looping':return [['Gewicht',p.m*9.81,'N'],['Normaalkracht',Math.max(0,p.m*(p.v*p.v/p.r-9.81)),'N']];
+ case 'buoyant':return [['Gewicht',p.m*9.81,'N'],['Opwaarts',Math.min(p.rho*9.81*p.V/1000,p.m*9.81),'N']];
+ case 'doppler':return [['Voor bron',p.f*p.v/(p.v-p.vs),'Hz'],['Achter bron',p.f*p.v/(p.v+p.vs),'Hz']];
+ case 'resistors':return [['R₁',p.R1,'Ω'],['R₂',p.R2,'Ω'],['Samen',p.mode===1?p.R1*p.R2/(p.R1+p.R2):p.R1+p.R2,'Ω']];
+ case 'potentiometer':return [['Ingang',p.U,'V'],['Uitgang',p.U*p.position/100,'V']];
+ case 'wheatstone':return [['Links',d.left,'V'],['Rechts',d.right,'V'],['Verschil',Math.abs(d.left-d.right),'V']];
+ case 'rlc':return [['R',p.R,'Ω'],['Xₗ',d.xl,'Ω'],['Xc',d.xc,'Ω'],['Z',Math.hypot(p.R,d.xl-d.xc),'Ω']];
+ case 'lc':return [['Elektrisch',val('Elektrische energie'),'mJ'],['Magnetisch',val('Magnetische energie'),'mJ'],['Totaal',val('Totale energie'),'mJ']];
+ case 'telescope':return [['Objectief',p.fo,'cm'],['Oculair',p.fe,'cm'],['Lensafstand',p.fo+p.fe,'cm']];
+ case 'dilation':return [['Eigentijd',p.tau,'s'],['Andere stelsel',p.tau/Math.sqrt(1-p.beta*p.beta),'s']];
+ case 'photo':return [['Foton',d.photon,'eV'],['Uittreewerk',p.W,'eV'],['Max. kinetisch',Math.max(0,d.photon-p.W),'eV']];
+ default:return null;
+ }
+}
+
 function physicsInsight(id,p,t,readouts){
  const a=physicsStepCatalog[id];if(!a)return null;
  const read=label=>readouts.find(r=>r[0]===label)?.[1]||'Niet beschikbaar';
@@ -543,12 +564,13 @@ function physicsInsight(id,p,t,readouts){
    const value=Object.prototype.hasOwnProperty.call(d,key)?d[key]:p[key];
    return typeof value==='number'?fmt(value,3):String(value??'?');
  });
- return {title:a[0],formula:a[1],substitution,answer:read(a[3]),note:a[4]};
+ const bars=physicsBars(id,p,t,readouts,d);
+ return {title:a[0],formula:a[1],substitution,answer:read(a[3]),note:a[4],...(bars?{kind:'bars',bars}:{})};
 }
 
 function renderExperiment(id,p,t,G){
  const {line:L,dot:D,rect:R,txt:T,arrow:A,arc:AR,path:P,ellipse:EL,wave:W,poly:POL,ring:RG}=G;
- const say=(arr,title,fn,insight=null)=>{const readouts=arr.map(([k,v])=>[k,String(v)]);return {readouts,title,fn,insight:insight||physicsInsight(id,p,t,readouts)};};
+ const say=(arr,title,fn,insight=null)=>{const readouts=arr.map(([k,v])=>[k,String(v)]);const current=insight||physicsInsight(id,p,t,readouts);if(id==='resolution'&&current){current.kind='bars';current.bars=[['Kracht',p.F,'N'],['Horizontaal',p.F*Math.cos(rad(p.angle)),'N'],['Verticaal',p.F*Math.sin(rad(p.angle)),'N']]}return {readouts,title,fn,insight:current};};
  const n=(a,unit='',digits=2)=>fmt(a,digits)+(unit?' '+unit:'');
  const vector=(x,y,length,angle,color,thick=4)=>A(x,y,x+length*Math.cos(angle),y-length*Math.sin(angle),color,thick);
  const origin=()=>{L(85,390,925,390,C.line,2);L(110,425,110,75,C.line,2)};
@@ -1552,7 +1574,8 @@ function actInquiry(){
 }
 
 
-const primaryInsightViews={lever:'Momenten',incline:'Krachten',collision:'Energie',chains:'Verval',bohr:'Niveaus',pulleys:'Krachten'};
+const labSecondViews={"acceleration":"graph","equilibrium":"Krachten","resultant":"Krachten","resolution":"Componenten","pulleys":"Krachten","lever":"Momenten","incline":"Krachten","newton2":"graph","projectile":"graph","collision":"Energie","cradle":"graph","circular":"graph","carousel":"graph","looping":"Krachten","kepler1":"graph","kepler2":"graph","hydro":"graph","buoyant":"Krachten","pendulum":"graph","spring":"graph","coupled":"graph","resonance":"graph","beats":"graph","standing":"graph","longitudinal":"graph","interference":"graph","doppler":"Frequenties","magnetbar":"graph","magnetwire":"graph","lorentz":"graph","motor":"graph","generator":"graph","ohm":"graph","resistors":"Weerstanden","potentiometer":"Spanning","wheatstone":"Brugspanningen","ac":"graph","rlc":"Impedanties","lc":"Energie","em":"graph","refraction":"graph","huygens":"graph","lens":"graph","telescope":"Lenzen","double":"graph","single":"graph","gas":"graph","dilation":"Tijd","photo":"Energie","bohr":"Niveaus","chains":"Verval","decay":"graph","bragg":"graph"};
+const primaryInsightViews=Object.fromEntries(Object.entries(labSecondViews).filter(([id,type])=>type!=='graph'));
 function mathMarkup(i){
  if(!i)return '';
  return '<div class="math-steps"><strong>'+safe(i.title)+'</strong><code>'+safe(i.formula)+'</code><code>'+safe(i.substitution)+'</code><div class="math-result">'+safe(i.answer)+'</div><small>'+safe(i.note)+'</small></div>';
