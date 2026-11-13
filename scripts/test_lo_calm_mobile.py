@@ -23,6 +23,8 @@ def phone(browser,width,height):
     assert page.locator("#loCalmAnalysis").is_visible()
     assert page.locator("#loCalmSources").is_visible()
     assert not page.locator("#sportSelect").is_visible()
+    # Zichtbare spelers zijn op een telefoon groter dan op desktop.
+    assert float(page.locator("#actors g[data-id='a0'] circle").nth(1).get_attribute("r"))>=32
 
     geometry=page.evaluate("""() => {
       const box=s=>document.querySelector(s).getBoundingClientRect();
@@ -38,6 +40,20 @@ def phone(browser,width,height):
     assert geometry["settingsHeight"]>=44,geometry
     assert all(h>=44 for h in geometry["accordionHeights"]),geometry
     page.screenshot(path=str(SHOTS/f"{width}x{height}-rust.png"),full_page=True)
+    if width==390:
+        before=page.evaluate("""() => {
+          const player=window.__loLabTest.getPlayers().find(p=>p.id==='a0');
+          const svg=document.querySelector('#pitch'),circle=document.querySelector('#actors g[data-id="a0"] circle');
+          const pt=svg.createSVGPoint();pt.x=Number(circle.getAttribute('cx'));pt.y=Number(circle.getAttribute('cy'));
+          const screen=pt.matrixTransform(circle.getScreenCTM());
+          return {x:screen.x,y:screen.y,playerX:player.x};
+        }""")
+        page.mouse.move(before["x"],before["y"])
+        page.mouse.down()
+        page.mouse.move(before["x"]+25,before["y"],steps=6)
+        page.mouse.up()
+        moved=page.evaluate("window.__loLabTest.getPlayers().find(p=>p.id==='a0').x")
+        assert moved>before["playerX"]+25,(before,moved)
 
     page.locator("#loCalmSettings>summary").click()
     assert page.locator("#sportSelect").is_visible()
