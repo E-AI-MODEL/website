@@ -337,10 +337,10 @@ const MATH_ACTIONS={
  regression:{scene:'Bekijk data',params:'Wijzig ruis',graph:'Bekijk residuen',hint:'Bekijk de punten en de lijn die uit de gegevens wordt berekend.',order:['noise','slope','intercept','n']},
  sampling:{scene:'Bekijk groep',params:'Wijzig kans',graph:'Bekijk kansverschil',hint:'Vergelijk welke deelnemers uit beide groepen in de steekproef komen.',order:['sa','sb']},
  testing:{scene:'Vergelijk H₀',params:'Wijzig effect',graph:'Power bij n',hint:'Vergelijk de twee verdelingen bij de gekozen effectgrootte.',order:['delta','n','sigma']},
- polynomial:{scene:'Raakpunt',params:'Wijzig functie',graph:'Bekijk afgeleide',hint:'Sleep het raakpunt. Bekijk hoe de functiewaarde en helling veranderen.',order:['x','a','b','c','d']},
- newton:{scene:'Volg stappen',params:'Wijzig start',graph:'Fout per stap',hint:'Verplaats het beginpunt. De methode kiest daarna nieuwe benaderingen.',order:['start','steps']},
- integral:{scene:'Rechthoeken',params:'Wijzig grenzen',graph:'Benaderingsfout',hint:'Bekijk de rechthoeken onder de functie en verander het interval.',order:['left','right','steps','a','b']},
- optimum:{scene:'Maximum',params:'Wijzig top',graph:'Top bij drift',hint:'Verschuif het optimale punt en bekijk de nieuwe plaats van de top.',order:['center','drift','a','height']},
+ polynomial:{scene:'Sleep punt',params:'Wijzig functie',graph:'Bekijk afgeleide',hint:'Sleep het raakpunt. Bekijk hoe de functiewaarde en helling veranderen.',order:['x','a','b','c','d']},
+ newton:{scene:'Kies start',params:'Wijzig start',graph:'Fout per stap',hint:'Verplaats het beginpunt. De methode kiest daarna nieuwe benaderingen.',order:['start','steps']},
+ integral:{scene:'Bekijk som',params:'Wijzig grenzen',graph:'Benaderingsfout',hint:'Bekijk de rechthoeken onder de functie en verander het interval.',order:['left','right','steps','a','b']},
+ optimum:{scene:'Sleep top',params:'Wijzig top',graph:'Top bij drift',hint:'Verschuif het optimale punt en bekijk de nieuwe plaats van de top.',order:['center','drift','a','height']},
  logistic:{scene:'Bekijk groei',params:'Wijzig stap',graph:'Eulerfout',hint:'Vergelijk de groeicurve met de benadering van Euler.',order:['dt','t','r','K','y0']},
  vectors:{scene:'Draai vector',params:'Wijzig lengte',graph:'Lengte per hoek',hint:'Draai de tweede vector. Bekijk hoe de resultante verandert.',order:['u','v','theta']}
 };
@@ -439,7 +439,7 @@ function updateActionResult(){
  for(const line of actionMathLines(m,p)){const node=document.createElement('p');node.textContent=line;lines.append(node);}
  const last=mathBaseline[m.id],compare=$('comparisonResult');
  if(last){const d=value-last.value;compare.textContent='Verschil met bewaarde uitkomst: '+(d>0?'+':'')+format(d,5)+' (was '+format(last.value,5)+')';}
- else compare.textContent='Bewaar deze uitkomst. Verander een waarde en bekijk het verschil.';
+ else compare.textContent='Kies dit als uitgangspunt. Verander daarna een waarde om het verschil te zien.';
  $('calcModelNote').textContent=m.formulaNote||'Uitkomst volgens het gekozen model.';
 }
 function updateActionLabels(){
@@ -494,7 +494,7 @@ function setupAdaptiveWorkspace(){
  const graphBack=document.createElement('button');graphBack.id='graphReturn';graphBack.type='button';graphBack.textContent='Terug naar model';graphBack.onclick=()=>switchDesk('scene');
  document.querySelector('.analytics').append(graphBack);
  const result=document.createElement('section');result.id='actionResult';result.setAttribute('aria-label','Huidige berekening');
- result.innerHTML='<div class="result-top"><small>HUIDIGE BEREKENING</small><h2 id="resultTitle"></h2></div><div class="result-main"><div class="result-value"><span id="resultName"></span><strong id="resultNumber"></strong></div><div class="result-steps" id="resultSteps"></div><p class="result-note" id="calcModelNote"></p></div><div class="result-actions"><p id="comparisonResult" aria-live="polite"></p><button id="saveComparison" type="button">Bewaar uitkomst</button><button id="showInfoFromCalc" type="button">Aannames en bronnen</button></div>';
+ result.innerHTML='<div class="result-top"><small>HUIDIGE BEREKENING</small><h2 id="resultTitle"></h2></div><div class="result-main"><div class="result-value"><span id="resultName"></span><strong id="resultNumber"></strong></div><div class="result-steps" id="resultSteps"></div><p class="result-note" id="calcModelNote"></p></div><div class="result-actions"><p id="comparisonResult" aria-live="polite"></p><button id="saveComparison" type="button">Vergelijk vanaf hier</button><button id="showInfoFromCalc" type="button">Aannames en bronnen</button></div>';
  $('app').append(result);
  $('saveComparison').onclick=()=>{const m=M[state.mode],values=metrics(m,state.parameters[m.id]);mathBaseline[m.id]={value:Number(values[0][1])};updateActionResult();};
  $('showInfoFromCalc').onclick=()=>{infoReturn='calc';switchDesk('info')};
