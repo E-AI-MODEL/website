@@ -76,7 +76,7 @@ JS = r"""({scene,seed})=>{
     }
     totalActive+=ds.length*.05;
   }
-  return {sport:config.name,scene,seed,summary:{result:out.result,passes:out.passes,
+  return {sport:config.name,formation:Number(document.querySelector("#formationSelect").value),scene,seed,summary:{result:out.result,passes:out.passes,
    attempts:out.shots,intercepts:out.intercepts,duration:out.duration},
    frames:fs.length,defenders:initial.filter(p=>p.team==='d').length,
    roleChanges,earlyRoleChanges,reverseTurns,modelTurnChecks,
@@ -123,6 +123,25 @@ def summarize(rows):
             1000*result[sport]["reverse_turns"]/max(1,result[sport]["turn_checks"]),3)
     return result
 
+def by_formation(rows):
+    result={}
+    for sport in ("Voetbal","Hockey","Handbal","Basketbal"):
+        for form in range(4):
+            subset=[r for r in rows if r["sport"]==sport and r["formation"]==form]
+            vals=lambda name:[r[name] for r in subset if r.get(name) is not None]
+            avg=lambda name:round(statistics.mean(vals(name)),3) if vals(name) else None
+            result[f"{sport}/"+("4v4","2v1","3v2","4v3")[form]]={
+              "n":len(subset),
+              "cover_goal_side":avg("coverGoalSide"),
+              "cover_ball_m":avg("coverDistanceP50"),
+              "pressure_m":avg("pressDistanceP50"),
+              "short_switches":sum(r["earlyRoleChanges"] for r in subset),
+              "reverse_turns":sum(r["reverseTurns"] for r in subset),
+              "shots":sum(r["summary"]["attempts"] for r in subset),
+              "intercepts":sum(r["summary"]["intercepts"] for r in subset)
+            }
+    return result
+
 def main():
     main_html=subprocess.run(
         ["git","show","origin/main:tools/lo-aanvalslab/index.html"],
@@ -155,6 +174,8 @@ def main():
              "n":128,
              "baseline":summarize(old),
              "candidate":summarize(new),
+             "by_formation_old":by_formation(old),
+             "by_formation_new":by_formation(new),
              "changed":sum(a["trajectoryFingerprint"]!=b["trajectoryFingerprint"] for a,b in zip(old,new))}
     print("DEFENCE_BENCHMARK_JSON_BEGIN")
     print(json.dumps(results,ensure_ascii=False,sort_keys=True,indent=2))
