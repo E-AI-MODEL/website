@@ -434,6 +434,64 @@ body{display:flex;flex-direction:column}
  .workspace.resizing-panels,.workspace.resizing-panels *{user-select:none!important}
 }
 @media(max-width:1080px){.panel-splitter{display:none!important}}
+
+/* Mobiel is een eigen werkvlak: minder knoppen, grotere proef, leesbare metingen. */
+@media(max-width:720px){
+ .workspace .lab-head{height:46px;min-height:46px;padding:4px 7px;gap:5px}
+ .workspace .lab-identity{min-width:0;gap:5px}
+ .workspace .lab-identity h2{font-size:13px;line-height:1.12}
+ .workspace .lab-breadcrumb{font-size:8px}
+ .workspace .lab-controls{gap:3px;min-width:0}
+ .workspace .lab-controls .tool-btn{width:34px;min-width:34px;height:34px;min-height:34px}
+ .workspace .lab-controls .play-btn{height:34px;min-height:34px;padding:0 9px;font-size:12px}
+ .workspace .lab-controls .speed-select{height:34px;max-width:62px;padding:0 2px;font-size:11px}
+ .workspace #stepBtn[hidden],.workspace #playBtn[hidden],.workspace #speedSelect[hidden]{display:none!important}
+ .workspace .scene-shell{margin:3px 3px 0;min-height:0;flex:1 1 0}
+ .workspace .scene-hud{top:7px;left:9px;font-size:8px;letter-spacing:.08em}
+ .workspace .scene-bottom{height:25px;min-height:25px;padding:0 8px}
+ .workspace .scene-bottom .legend{gap:9px;font-size:9px}
+ .workspace .scene-lower-tools{font-size:9px}
+ .workspace:not(.mobile-projectile) .analysis-shell:not(.compact-open){
+  height:clamp(185px,26dvh,210px);flex:0 0 clamp(185px,26dvh,210px)
+ }
+ .workspace:not(.mobile-projectile) .analysis-shell.compact-open{
+  height:min(45dvh,320px);flex:0 0 min(45dvh,320px)
+ }
+ .workspace .tab-strip{height:37px;min-height:37px;flex:0 0 37px;gap:0;padding:0 2px;overflow:hidden}
+ .workspace .tab{flex:1 1 0;min-width:0;padding:0 3px;text-align:center;font-size:clamp(9px,2.65vw,11px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ .workspace .tab-body{padding:8px 9px 5px}
+ .workspace .insight-panel:not([hidden]){display:flex;flex-direction:column;min-height:0}
+ .workspace .insight-head{margin-bottom:5px}
+ .workspace .insight-head strong{font-size:12px}
+ .workspace .insight-body{position:relative;min-height:0;flex:1 1 auto;grid-template-columns:minmax(0,1fr) 90px;gap:7px}
+ .workspace .insight-visual{min-width:0;justify-content:space-evenly;gap:6px;overflow:hidden}
+ .workspace .insight-bar{grid-template-columns:minmax(62px,.95fr) minmax(24px,1.4fr) minmax(51px,.8fr);gap:5px;font-size:10px}
+ .workspace .insight-track{height:9px}
+ .workspace .insight-bar-value{font-size:10px}
+ .workspace .insight-math{padding:1px 3px 1px 8px;min-width:0;min-height:0;max-height:none;overflow:hidden}
+ .workspace .insight-math>summary{min-height:36px;display:flex;align-items:center;cursor:pointer;font-size:0;line-height:1.25}
+ .workspace .insight-math>summary:before{content:'Berekening';font-size:11px;color:#91e4d9}
+ .workspace .insight-math[open]{position:absolute;z-index:9;inset:0;padding:8px 11px;border:1px solid #3a6873;border-radius:7px;background:#0b2131;box-shadow:0 10px 24px #030a15d9;overflow:auto}
+ .workspace .insight-math[open]>summary{min-height:27px;margin-bottom:6px}
+ .workspace #graphPanel.with-math{display:flex;flex-direction:column;min-height:0}
+ .workspace #graphPanel.with-math .graph-frame{display:none}
+ .workspace #graphPanel.with-math .graph-math{display:block;flex:1 1 auto;min-height:0;padding:8px 7px;overflow:auto;border-left:0;border-top:1px solid #355064}
+ .workspace #graphPanel.with-math #graphMathDivider{display:none!important}
+ .workspace .mobile-quick:not([hidden]){min-height:59px;grid-template-columns:minmax(0,1fr) minmax(0,1fr) 44px;gap:5px;padding:4px 7px 5px}
+ .workspace .quick-setting{gap:3px}
+ .workspace .quick-setting label{font-size:10px}
+ .workspace .quick-edit{grid-template-columns:29px minmax(0,1fr) 29px;gap:3px}
+ .workspace .quick-edit button,.workspace .quick-edit input{height:33px;font-size:14px;border-radius:5px}
+ .workspace .quick-more{min-height:33px;font-size:11px}
+}
+@media(max-width:360px){
+ .workspace .lab-identity h2{font-size:11px}
+ .workspace .lab-controls{gap:1px}
+ .workspace .lab-controls .tool-btn{width:31px;min-width:31px}
+ .workspace .tab{font-size:9px;padding:0 1px}
+ .workspace .insight-body{grid-template-columns:minmax(0,1fr) 79px;gap:5px}
+ .workspace .insight-math>summary:before{font-size:10px}
+}
 </style></head>
 <body>
 <header class="masthead"><div class="mast-left"><a class="brand" href="/tools/science-observatory/" aria-label="Terug naar Science Observatory"><span class="logo" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><path d="M4 19c4-1 4-12 8-12s4 18 8 18 4-9 8-10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span><span>SCIENCE <b>OBSERVATORY</b></span></a><span class="brand-divider"></span><span class="brand-context">NATUURKUNDE · PROEFVERSIE</span></div><div class="nav-main"><a href="#labSection" class="nav-link active">Proef</a><a href="#topics" class="nav-link">Onderwerpen</a><a href="/tools/science-observatory/" class="nav-link">Andere observatoria</a><a href="/nl/tools/" class="nav-link">Alle tools</a></div><span class="header-status"><span class="live-dot"></span> In ontwikkeling</span></header>
@@ -1306,9 +1364,19 @@ function isMobileProjectile(){return state.id==='projectile'&&matchMedia('(max-w
 function sceneViewport(canvas){
  const r=canvas.getBoundingClientRect(),width=Math.max(1,r.width),height=Math.max(1,r.height);
  const portrait=canvas.id==='scene'&&isMobileProjectile();
- const virtualWidth=portrait?560:1000,virtualHeight=portrait?520:500;
+ // De vectorproeven gebruiken op een telefoon alleen het relevante deel
+ // van het modelvlak. De schaal blijft in beide richtingen gelijk.
+ const mobileVectors=canvas.id==='scene'&&matchMedia('(max-width:720px)').matches;
+ const frame=mobileVectors?(state.id==='resolution'
+  ?{x:210,y:78,width:450,height:360}
+  :state.id==='resultant'||state.id==='equilibrium'
+   ?{x:205,y:0,width:690,height:480}:null):null;
+ const virtualWidth=portrait?560:frame?.width||1000;
+ const virtualHeight=portrait?520:frame?.height||500;
  const scale=Math.min(width/virtualWidth,height/virtualHeight);
- return {width,height,virtualWidth,virtualHeight,scale,left:(width-virtualWidth*scale)/2,top:(height-virtualHeight*scale)/2};
+ return {width,height,virtualWidth,virtualHeight,scale,
+  left:(width-virtualWidth*scale)/2,top:(height-virtualHeight*scale)/2,
+  worldX:frame?.x||0,worldY:frame?.y||0};
 }
 function canvasSetup(canvas){
  const g=sceneViewport(canvas),d=Math.max(1,Math.min(devicePixelRatio||1,2));
@@ -1317,7 +1385,7 @@ function canvasSetup(canvas){
  const ctx=canvas.getContext('2d');
  ctx.setTransform(d,0,0,d,0,0);ctx.clearRect(0,0,g.width,g.height);
  if(canvas.id==='plot'){ctx.setTransform(d*g.width/1000,0,0,d*g.height/500,0,0);return ctx}
- ctx.setTransform(d*g.scale,0,0,d*g.scale,d*g.left,d*g.top);
+ ctx.setTransform(d*g.scale,0,0,d*g.scale,d*(g.left-g.worldX*g.scale),d*(g.top-g.worldY*g.scale));
  return ctx;
 }
 function stroke(ctx,points,col='#65e2d2',width=1.2,glow=0,dash=[]){if(points.length<2)return;ctx.save();ctx.beginPath();ctx.strokeStyle=col;ctx.lineWidth=width;ctx.lineCap='round';ctx.lineJoin='round';ctx.setLineDash(dash);let started=false;for(const [x,y] of points){if(!Number.isFinite(x)||!Number.isFinite(y)){started=false;continue}if(!started){ctx.moveTo(x,y);started=true}else ctx.lineTo(x,y)}if(glow){ctx.shadowColor=col;ctx.shadowBlur=glow}ctx.stroke();ctx.restore()}
@@ -1798,7 +1866,7 @@ function alignGasControls(){
   if(quick)quick.hidden=key!==primary;
  }
 }
-function loadLab(id,scroll=false){const e=byId[id];if(!e)return;state.id=id;updateTeacherEvidence(id);state.t=0;state.pointer.clear();state.orbitResume=false;state.lastPinch=null;$('stage').classList.remove('orbit-held');state.graphProbe=null;state.graphSetters={};state.graphGestureRange=null;state.leverDrag=null;state.leverMotion={angle:0,omega:0};state.p=Object.fromEntries(e.controls.map(([key,,,,,def])=>[key,def]));state.gasPressureRef=id==='gas'?8.314*state.p.T/state.p.V:null;resetInquiry(id);state.baseline=null;$('baselineBtn').textContent='+ Bewaar meting';$('saveValuesBtn').textContent='+ Bewaar meting';$('saveGraphBtn').textContent='+ Bewaar vergelijking';$('comparisonBubble').hidden=true;$('labGroup').textContent=e.group;$('labTitle').textContent=matchMedia('(max-width:720px)').matches?(mobileLabTitles[id]||e.title):e.title;$('labTitle').setAttribute('aria-label',e.title);$('labTitle').title=e.title;$('intro').textContent=e.intro;$('infoDescription').textContent=e.explanation;$('infoCaveat').textContent=e.caveat;$('explanation').textContent=e.explanation;$('modelNote').textContent=e.caveat;$('prediction').textContent=e.question;researchCopy(id);$('hypothesis').value=lsGet('science-prediction-'+id)||'';$('sceneMeta').textContent=special3d.has(id)?'3D · DRAAIBAAR MODEL':'2D · INTERACTIEF MODEL';$('sceneBadge').textContent=special3d.has(id)?'RUIMTELIJKE WEERGAVE':'LIVE SIMULATIE';const manualTransport=id==='wheatstone'||id==='projectile';$('stepBtn').hidden=manualTransport;$('playBtn').hidden=manualTransport;$('speedSelect').hidden=manualTransport;$('sceneCompass').hidden=!special3d.has(id);
+function loadLab(id,scroll=false){const e=byId[id];if(!e)return;state.id=id;updateTeacherEvidence(id);state.t=0;state.pointer.clear();state.orbitResume=false;state.lastPinch=null;$('stage').classList.remove('orbit-held');state.graphProbe=null;state.graphSetters={};state.graphGestureRange=null;state.leverDrag=null;state.leverMotion={angle:0,omega:0};state.p=Object.fromEntries(e.controls.map(([key,,,,,def])=>[key,def]));state.gasPressureRef=id==='gas'?8.314*state.p.T/state.p.V:null;resetInquiry(id);state.baseline=null;$('baselineBtn').textContent='+ Bewaar meting';$('saveValuesBtn').textContent='+ Bewaar meting';$('saveGraphBtn').textContent='+ Bewaar vergelijking';$('comparisonBubble').hidden=true;$('labGroup').textContent=e.group;$('labTitle').textContent=matchMedia('(max-width:720px)').matches?(mobileLabTitles[id]||e.title):e.title;$('labTitle').setAttribute('aria-label',e.title);$('labTitle').title=e.title;$('intro').textContent=e.intro;$('infoDescription').textContent=e.explanation;$('infoCaveat').textContent=e.caveat;$('explanation').textContent=e.explanation;$('modelNote').textContent=e.caveat;$('prediction').textContent=e.question;researchCopy(id);$('hypothesis').value=lsGet('science-prediction-'+id)||'';$('sceneMeta').textContent=special3d.has(id)?'3D · DRAAIBAAR MODEL':'2D · INTERACTIEF MODEL';const hasMotion=timedLabs.has(id)||id==='lever';$('sceneBadge').textContent=special3d.has(id)?'RUIMTELIJKE WEERGAVE':hasMotion?'LIVE SIMULATIE':'INTERACTIEF MODEL';const manualTransport=id==='wheatstone'||id==='projectile';$('stepBtn').hidden=manualTransport||!hasMotion;$('playBtn').hidden=manualTransport||!hasMotion;$('speedSelect').hidden=manualTransport||!hasMotion;setPlaying(hasMotion&&!manualTransport);$('sceneCompass').hidden=!special3d.has(id);
 $('sceneCompass').textContent=spatialHints[id]||'Sleep om te draaien · twee vingers om in te zoomen';
 $('sceneTip').hidden=!directManip.has(id);$('sceneTip').textContent=directHints[id]||'';
 $('stage').tabIndex=special3d.has(id)?0:-1;
@@ -1807,7 +1875,7 @@ function setup(){$('mathToggle').addEventListener('click',()=>{const open=$('gra
 $('inquiryAction').addEventListener('click',actInquiry);$('inquiryAnswer').addEventListener('keydown',ev=>{if(ev.key==='Enter')actInquiry()});
 $('aimFire').addEventListener('click',actInquiry);$('mobileView').addEventListener('click',()=>{mission.view=mission.view==='overview'?'target':'overview';syncMobileAim();render()});for(const [id,key] of [['aimAngle','angle'],['aimSpeed','v']])$(id).addEventListener('input',ev=>updateAim(key,Number(ev.target.value)));document.querySelectorAll('[data-aim-key]').forEach(button=>button.addEventListener('click',()=>updateAim(button.dataset.aimKey,state.p[button.dataset.aimKey]+Number(button.dataset.aimDelta))));
 const stage=$('stage');
-const pointOnScene=ev=>{const canvas=$('scene'),r=canvas.getBoundingClientRect(),g=sceneViewport(canvas);return{x:(ev.clientX-r.left-g.left)/g.scale,y:(ev.clientY-r.top-g.top)/g.scale}};
+const pointOnScene=ev=>{const canvas=$('scene'),r=canvas.getBoundingClientRect(),g=sceneViewport(canvas);return{x:(ev.clientX-r.left-g.left)/g.scale+g.worldX,y:(ev.clientY-r.top-g.top)/g.scale+g.worldY}};
 const within=(a,b,x,y,r=43)=>Math.hypot(a-x,b-y)<=r;
 // De bovenkant van het hellend vlak blijft in het zicht, ook bij steile hoeken.
 const inclineLength=angle=>Math.min(580,330/Math.max(.0001,Math.sin(angle)));
