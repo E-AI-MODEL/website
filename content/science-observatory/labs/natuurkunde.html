@@ -661,8 +661,7 @@ function renderExperiment(id,p,t,G,leverMotion=null){
    ['Moment linksom',n(forces.left,'N·m')],
    ['Moment rechtsom',n(forces.right,'N·m')],
    ['Netto moment',n(forces.net,'N·m')],
-   ['Hellingshoek',n(angle*180/PI,'°',1)],
-   ['F₂ voor evenwicht',n(forces.balance,'N')]
+   ['Hellingshoek',n(angle*180/PI,'°',1)]
   ],'Netto moment bij een andere rechter arm',x=>(p.F2*(.5+3.5*x)-p.F*p.arm1)*Math.cos(angle),{
    kind:'bars',
    title:'Momenten links en rechts',
