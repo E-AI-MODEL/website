@@ -1,6 +1,6 @@
 """Controleer drie zonevormen tegen de echte LO-browsercode.
 
-Run: python tools/lo-aanvalslab/tests/zone_movement_browser.py
+Run: python scripts/test_lo_zone.py
 Vereist: pip install playwright; playwright install chromium
 """
 import json
@@ -8,7 +8,7 @@ from pathlib import Path
 from playwright.sync_api import sync_playwright
 
 ROOT=Path(__file__).resolve().parents[1]
-HTML=ROOT/"tools/lo-aanvalslab/index.html"
+HTML=ROOT/"tools/sport-en-bewegen/index.html"
 def run():
     with sync_playwright() as p:
         browser=p.chromium.launch(headless=True)
