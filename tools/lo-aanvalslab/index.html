@@ -230,7 +230,44 @@
  .intent{padding:6px 7px}
  .lo-coach-box{padding-top:6px}
 }
-</style></head><body class="eai-refresh"><div class="app"><header class="top"><div class="brand"><button type="button" class="mark lo-secret" id="loSecret" aria-label="LO-logo. Tweemaal tikken voor de berekeningen van het spel" title="LO">LO</button><div><div class="eyebrow">TACTISCH SPELLAB</div><h1>Speel het uit.</h1></div></div><div class="top-actions"><label class="sport-label" for="sportSelect">Sport</label><select id="sportSelect" class="sport-select" aria-label="Kies de sport"><option value="0">Voetbal</option><option value="1">Hockey</option><option value="2">Handbal</option><option value="3">Basketbal</option></select><label class="sport-label" for="formationSelect">Teams</label><select id="formationSelect" class="sport-select formation-select" aria-label="Kies het aantal aanvallers en verdedigers"><option value="0">4 tegen 4</option><option value="1">2 tegen 1</option><option value="2">3 tegen 2</option><option value="3">4 tegen 3</option></select><button id="new" class="btn">Nieuwe spelsituatie</button></div></header><div class="shell"><section class="fieldpane"><div class="fieldhead"><span id="stage" class="pill">Voorbereiden</span><span id="stagehelp" class="small">Versleep de spelers van jouw team</span><label class="playback-control" for="playbackSpeed"><span>Tempo</span><select id="playbackSpeed" aria-label="Afspeelsnelheid"><option value="0.5">½×</option><option value="1" selected>1×</option><option value="1.5">1½×</option><option value="2">2×</option></select></label><button type="button" id="loHelpOpen" class="lo-help-open" aria-haspopup="dialog" aria-controls="loHelp" aria-label="Uitleg en demo's voor het Aanvalslab"><span class="lo-help-mark" aria-hidden="true">?</span><span class="lo-help-word">Uitleg en demo’s</span></button></div><div class="fieldframe"><svg id="pitch" viewBox="0 0 1000 650" tabindex="0" role="img" aria-label="Interactief speelveld. Kies een speler en gebruik de pijltjestoetsen om hem te verplaatsen."></svg></div><div class="bottom"><div><div id="instruction" class="hint">De bal ligt bij aanvaller 1. Maak je opstelling en speel de hele aanval.</div><div id="under" class="small setup-tip">Sleep een speler of tik eerst de speler en daarna zijn plek.</div></div><div class="actions"><button id="reset" class="btn">Beginopstelling</button><button id="primary" class="btn main">Speel de aanval af ▶</button></div></div></section><aside class="side"><div><h3>Jouw opdracht</h3><h2 id="tasktitle">Maak een kans</h2></div><p id="task" class="hint" style="margin:0">Kies waar je spelers beginnen. Welke opstelling levert volgens jou de beste aanval op?</p><details id="loGoals" class="lo-goals"><summary aria-label="Wijzig het tactische oefendoel"><span class="lo-goal-kicker">Oefendoel</span><strong id="loGoalCurrent" class="lo-goal-current">Aanspeellijn openen</strong><span class="lo-goal-arrow" aria-hidden="true">⌄</span></summary><div class="lo-goals-body"><div class="lo-goal-controls"><div id="loGoalRoles" class="lo-goal-roles" role="group" aria-label="Team dat je oefent"></div><button type="button" class="lo-role-chip active" id="loCoachAuto" aria-pressed="true">Coach kiest</button></div><div id="loGoalChips" class="lo-goal-chips" role="group" aria-label="Tactische doelen"></div><p id="loGoalHint" class="lo-goal-hint">Kies een doel of laat de coach meedenken.</p></div></details><div class="sep"></div><details id="prep" class="lo-slim-menu" open><summary><span>Speleropdrachten</span><small class="lo-slim-value" id="loPlayerLabel">Aanvaller 1</small></summary><div class="lo-slim-content"><details id="zonePlans" class="zone-plans hide" open><summary class="zone-plans-head">Zoneverdediging · heel team</summary><div class="zone-options"><button type="button" class="zone-option" data-zone-plan="zonecompact">Compact</button><button type="button" class="zone-option" data-zone-plan="zoneschuif">Meeschuiven</button><button type="button" class="zone-option" data-zone-plan="zonelijn">Passlijnen</button></div><div id="zoneTip" class="zone-tip">Kies een teamvorm of geef elke verdediger apart een opdracht.</div></details><h3>Geselecteerde speler</h3><div id="selected" class="hint">Tik op een speler om zijn opdracht te kiezen.</div><div id="intents" class="intent-grid"></div><p class="small" id="intentHelp">Sleep een speler, of tik de speler en daarna een vrije plek. Met de pijltjestoetsen kun je nauwkeurig schuiven.</p></div></details><div class="grow"></div><details id="loCoachPanel" class="lo-slim-menu lo-coach-menu"><summary><span>Coach en terugkijken</span><small class="lo-slim-value" id="loCoachLabel">Tip</small></summary><div class="lo-slim-content lo-coach-box"><div id="loCoachObserved" class="lo-coach-observed hide" aria-live="polite"></div><p id="insight" class="hint" style="margin:0">Verplaats een speler of geef hem een andere opdracht.</p><div id="loCoachCompare" class="lo-coach-compare hide"></div><button type="button" id="loCoachMoment" class="lo-coach-jump hide">Bekijk spelmoment</button></div></details><div id="after" class="actions hide"><button id="again" class="btn main">Pas plan aan</button><button id="replay" class="btn">Speel opnieuw</button></div></aside></div><div class="foot"><span id="sportFoot">Voetbal</span> · <span id="formationFoot">4 tegen 4</span> · Oefenmodel · vergeleken met openbare wedstrijddata</div></div>
+
+/* Twee kleine instaproutes; de vier speelkeuzes blijven het vertrekpunt. */
+.welcome{max-height:calc(100dvh - 32px);overflow-y:auto;overscroll-behavior:contain}
+.lo-start-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}
+.lo-start-link{display:flex;align-items:center;justify-content:center;gap:7px;min-height:43px;padding:9px 8px;border:0.8px solid #496a65;border-radius:9px;background:transparent;color:#d4ebe2;font-size:12px;font-weight:650;cursor:pointer}
+.lo-start-link:hover{border-color:#8bd8b9;background:#183b35}
+.lo-start-link:focus-visible,.lo-teacher button:focus-visible,.lo-teacher-badge:focus-visible{outline:2px solid #beefd9;outline-offset:2px}
+.lo-start-link .lo-icon{color:#8fdfba;font-size:15px;line-height:1}
+.lo-teacher-badge[hidden],.lo-teacher[hidden]{display:none!important}
+.lo-teacher-badge{padding:7px 9px;border:0.8px solid #427565;border-radius:7px;background:#173931;color:#a9eacb;font-size:10px;font-weight:650;text-align:left;flex:0 0 auto;cursor:pointer}
+.lo-teacher{position:fixed;inset:0;z-index:80;background:#041217ef;display:grid;place-items:center;padding:14px}
+.lo-teacher-sheet{width:min(570px,100%);max-height:calc(100dvh - 28px);overflow:auto;overscroll-behavior:contain;background:#10272f;border:0.8px solid #466a64;border-radius:14px;padding:23px;box-shadow:0 18px 65px #0009}
+.lo-teacher-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.lo-teacher h2{margin:5px 0 7px;font-size:clamp(23px,3vw,29px);letter-spacing:-.04em;line-height:1.2}
+.lo-teacher p{font-size:13px;line-height:1.52;color:#b3cfd0;margin:8px 0}
+.lo-teacher-close{background:transparent;border:0.8px solid #4d6a67;color:#cce8e1;border-radius:7px;min-height:31px;padding:5px 9px;cursor:pointer}
+.lo-teacher-label{font-size:11px;font-weight:700;color:#bce5d7;margin:17px 0 8px}
+.lo-teacher-forms{display:flex;gap:7px;flex-wrap:wrap}
+.lo-teacher-form{min-height:36px;background:transparent;border:0.8px solid #466560;border-radius:20px;padding:7px 12px;color:#bcd7d0;font-size:12px;cursor:pointer}
+.lo-teacher-form[aria-pressed=true]{background:#24473d;border-color:#82d9b6;color:#ebfff3}
+.lo-teacher-plan{border-top:0.8px solid #36534f;margin-top:15px;padding-top:12px}
+.lo-teacher-plan h3{font-size:12px;margin:0 0 6px;color:#ddf4e6}
+.lo-teacher-plan p{font-size:12px;margin:6px 0}
+.lo-teacher-plan strong{color:#d8f1e2}
+.lo-teacher-note{font-size:11px!important;color:#95b9b3!important}
+.lo-teacher-actions{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end;margin-top:17px}
+.lo-teacher-actions button{border:0.8px solid #4a6863;border-radius:8px;padding:9px 11px;min-height:36px;background:#16313a;color:#e2f0ea;font-size:12px;cursor:pointer}
+.lo-teacher-actions button.main{background:#b6f5d7;color:#0c2a21;border-color:#b6f5d7;font-weight:750}
+@media(max-width:460px){
+ .welcome{max-height:calc(100dvh - 22px)}
+ .lo-start-links{gap:7px;margin-top:10px}
+ .lo-start-link{font-size:11px;min-height:39px;padding:7px 5px}
+ .lo-teacher{padding:8px}
+ .lo-teacher-sheet{padding:16px;max-height:calc(100dvh - 16px)}
+ .lo-teacher-actions{justify-content:stretch}
+ .lo-teacher-actions button.main{flex:1}
+}
+</style></head><body class="eai-refresh"><div class="app"><header class="top"><div class="brand"><button type="button" class="mark lo-secret" id="loSecret" aria-label="LO-logo. Tweemaal tikken voor de berekeningen van het spel" title="LO">LO</button><div><div class="eyebrow">TACTISCH SPELLAB</div><h1>Speel het uit.</h1></div></div><div class="top-actions"><label class="sport-label" for="sportSelect">Sport</label><select id="sportSelect" class="sport-select" aria-label="Kies de sport"><option value="0">Voetbal</option><option value="1">Hockey</option><option value="2">Handbal</option><option value="3">Basketbal</option></select><label class="sport-label" for="formationSelect">Teams</label><select id="formationSelect" class="sport-select formation-select" aria-label="Kies het aantal aanvallers en verdedigers"><option value="0">4 tegen 4</option><option value="1">2 tegen 1</option><option value="2">3 tegen 2</option><option value="3">4 tegen 3</option></select><button id="new" class="btn">Nieuwe spelsituatie</button></div></header><div class="shell"><section class="fieldpane"><div class="fieldhead"><span id="stage" class="pill">Voorbereiden</span><span id="stagehelp" class="small">Versleep de spelers van jouw team</span><label class="playback-control" for="playbackSpeed"><span>Tempo</span><select id="playbackSpeed" aria-label="Afspeelsnelheid"><option value="0.5">½×</option><option value="1" selected>1×</option><option value="1.5">1½×</option><option value="2">2×</option></select></label><button type="button" id="loHelpOpen" class="lo-help-open" aria-haspopup="dialog" aria-controls="loHelp" aria-label="Uitleg en demo's voor het Aanvalslab"><span class="lo-help-mark" aria-hidden="true">?</span><span class="lo-help-word">Uitleg en demo’s</span></button></div><div class="fieldframe"><svg id="pitch" viewBox="0 0 1000 650" tabindex="0" role="img" aria-label="Interactief speelveld. Kies een speler en gebruik de pijltjestoetsen om hem te verplaatsen."></svg></div><div class="bottom"><div><div id="instruction" class="hint">De bal ligt bij aanvaller 1. Maak je opstelling en speel de hele aanval.</div><div id="under" class="small setup-tip">Sleep een speler of tik eerst de speler en daarna zijn plek.</div></div><div class="actions"><button id="reset" class="btn">Beginopstelling</button><button id="primary" class="btn main">Speel de aanval af ▶</button></div></div></section><aside class="side"><button type="button" id="loTeacherBadge" class="lo-teacher-badge" hidden>Docentweergave · leshulp</button><div><h3>Jouw opdracht</h3><h2 id="tasktitle">Maak een kans</h2></div><p id="task" class="hint" style="margin:0">Kies waar je spelers beginnen. Welke opstelling levert volgens jou de beste aanval op?</p><details id="loGoals" class="lo-goals"><summary aria-label="Wijzig het tactische oefendoel"><span class="lo-goal-kicker">Oefendoel</span><strong id="loGoalCurrent" class="lo-goal-current">Aanspeellijn openen</strong><span class="lo-goal-arrow" aria-hidden="true">⌄</span></summary><div class="lo-goals-body"><div class="lo-goal-controls"><div id="loGoalRoles" class="lo-goal-roles" role="group" aria-label="Team dat je oefent"></div><button type="button" class="lo-role-chip active" id="loCoachAuto" aria-pressed="true">Coach kiest</button></div><div id="loGoalChips" class="lo-goal-chips" role="group" aria-label="Tactische doelen"></div><p id="loGoalHint" class="lo-goal-hint">Kies een doel of laat de coach meedenken.</p></div></details><div class="sep"></div><details id="prep" class="lo-slim-menu" open><summary><span>Speleropdrachten</span><small class="lo-slim-value" id="loPlayerLabel">Aanvaller 1</small></summary><div class="lo-slim-content"><details id="zonePlans" class="zone-plans hide" open><summary class="zone-plans-head">Zoneverdediging · heel team</summary><div class="zone-options"><button type="button" class="zone-option" data-zone-plan="zonecompact">Compact</button><button type="button" class="zone-option" data-zone-plan="zoneschuif">Meeschuiven</button><button type="button" class="zone-option" data-zone-plan="zonelijn">Passlijnen</button></div><div id="zoneTip" class="zone-tip">Kies een teamvorm of geef elke verdediger apart een opdracht.</div></details><h3>Geselecteerde speler</h3><div id="selected" class="hint">Tik op een speler om zijn opdracht te kiezen.</div><div id="intents" class="intent-grid"></div><p class="small" id="intentHelp">Sleep een speler, of tik de speler en daarna een vrije plek. Met de pijltjestoetsen kun je nauwkeurig schuiven.</p></div></details><div class="grow"></div><details id="loCoachPanel" class="lo-slim-menu lo-coach-menu"><summary><span>Coach en terugkijken</span><small class="lo-slim-value" id="loCoachLabel">Tip</small></summary><div class="lo-slim-content lo-coach-box"><div id="loCoachObserved" class="lo-coach-observed hide" aria-live="polite"></div><p id="insight" class="hint" style="margin:0">Verplaats een speler of geef hem een andere opdracht.</p><div id="loCoachCompare" class="lo-coach-compare hide"></div><button type="button" id="loCoachMoment" class="lo-coach-jump hide">Bekijk spelmoment</button></div></details><div id="after" class="actions hide"><button id="again" class="btn main">Pas plan aan</button><button id="replay" class="btn">Speel opnieuw</button></div></aside></div><div class="foot"><span id="sportFoot">Voetbal</span> · <span id="formationFoot">4 tegen 4</span> · Oefenmodel · vergeleken met openbare wedstrijddata</div></div>
 <section id="loAnalysis" class="lo-analysis" role="dialog" aria-modal="true" aria-labelledby="loAnalysisTitle" hidden><div class="lo-analysis-sheet"><header class="lo-analysis-head"><div><div class="eyebrow">HET VERHAAL ACHTER DE SIMULATIE</div><h2 id="loAnalysisTitle">Wat berekende het spel?</h2></div><button type="button" class="lo-analysis-close" id="loAnalysisClose">Sluiten ×</button></header><main class="lo-analysis-scroll" id="loAnalysisBody"></main></div></section>
 <section id="loHelp" class="lo-help" role="dialog" aria-modal="true" aria-labelledby="loHelpTitle" hidden>
 <div class="lo-help-sheet">
@@ -269,7 +306,27 @@
  <p><b>Zonevormen</b> · Compact, meeschuiven en passlijnen zijn drie verschillende didactische keuzes. De loopregels zijn aan spelsituaties getoetst, niet afzonderlijk gemeten of gevalideerd met de ruwe wedstrijdtracking.</p>
  <small>Geen ruwe brondata in de browser. De gemeten waarden komen uit seniorenwedstrijden; het blijft een onderwijsmodel zonder onafhankelijke leerlingvalidatie. <a href="https://github.com/E-AI-MODEL/website/tree/main/tools/lo-aanvalslab/calibratie/v13" target="_blank" rel="noopener noreferrer">Controleer de meetmethode</a>.</small></div>
 </details></div>
-<div id="welcome" class="veil"><div class="welcome"><div class="eyebrow">LO · SAMENSPEL & RUIMTE</div><h2>Wie neemt de beslissing?</h2><p>Kies je sport en stel je team op. Versleep de spelers of tik een plek op het veld. Daarna speelt de aanval zichzelf af.</p><div class="sport-choice" role="group" aria-label="Welke sport speel je?"><button type="button" class="sport-chip active" data-sport="0" aria-pressed="true">Voetbal</button><button type="button" class="sport-chip" data-sport="1" aria-pressed="false">Hockey</button><button type="button" class="sport-chip" data-sport="2" aria-pressed="false">Handbal</button><button type="button" class="sport-chip" data-sport="3" aria-pressed="false">Basketbal</button></div><div class="choices"><button class="choice" data-mode="attack"><b>Ik val aan ↗</b><span>Zet je aanvallers neer en geef ze loopacties.</span></button><button class="choice" data-mode="defend"><b>Ik verdedig ◇</b><span>Zet je verdedigers neer en kies hoe ze de aanval afstoppen.</span></button><button class="choice" id="onlineChoice"><b>Wij spelen samen ↔</b><span>Speel met twee apparaten in een eigen online kamer.</span></button><button class="choice" data-mode="free"><b>Vrij opstellen ↕</b><span>Verplaats zelf de aanvallers én de verdedigers.</span></button></div></div></div>
+<div id="welcome" class="veil"><div class="welcome"><div class="eyebrow">LO · SAMENSPEL & RUIMTE</div><h2>Wie neemt de beslissing?</h2><p>Kies je sport en stel je team op. Versleep de spelers of tik een plek op het veld. Daarna speelt de aanval zichzelf af.</p><div class="sport-choice" role="group" aria-label="Welke sport speel je?"><button type="button" class="sport-chip active" data-sport="0" aria-pressed="true">Voetbal</button><button type="button" class="sport-chip" data-sport="1" aria-pressed="false">Hockey</button><button type="button" class="sport-chip" data-sport="2" aria-pressed="false">Handbal</button><button type="button" class="sport-chip" data-sport="3" aria-pressed="false">Basketbal</button></div><div class="choices"><button class="choice" data-mode="attack"><b>Ik val aan ↗</b><span>Zet je aanvallers neer en geef ze loopacties.</span></button><button class="choice" data-mode="defend"><b>Ik verdedig ◇</b><span>Zet je verdedigers neer en kies hoe ze de aanval afstoppen.</span></button><button class="choice" id="onlineChoice"><b>Wij spelen samen ↔</b><span>Speel met twee apparaten in een eigen online kamer.</span></button><button class="choice" data-mode="free"><b>Vrij opstellen ↕</b><span>Verplaats zelf de aanvallers én de verdedigers.</span></button></div><div class="lo-start-links"><button type="button" id="loWelcomeHelp" class="lo-start-link"><span class="lo-icon" aria-hidden="true">?</span>Eerst uitleg</button><button type="button" id="loWelcomeTeacher" class="lo-start-link"><span class="lo-icon" aria-hidden="true">▤</span>Ik ben docent</button></div></div></div>
+<section id="loTeacher" class="lo-teacher" role="dialog" aria-modal="true" aria-labelledby="loTeacherTitle" hidden>
+<div class="lo-teacher-sheet">
+<div class="lo-teacher-head"><div><div class="eyebrow">LO · VOOR DOCENTEN</div><h2 id="loTeacherTitle">Start met je klas</h2></div><button type="button" id="loTeacherClose" class="lo-teacher-close" aria-label="Sluit docentweergave">Sluiten ×</button></div>
+<p>Laat leerlingen één tactische keuze veranderen, het resultaat bekijken en de situatie vervolgens in de gymzaal uitproberen.</p>
+<div class="lo-teacher-label">Kies een spelvorm</div>
+<div class="lo-teacher-forms" role="group" aria-label="Spelvorm voor de les">
+<button type="button" class="lo-teacher-form" data-lo-teacher-form="1" aria-pressed="false">2 tegen 1</button>
+<button type="button" class="lo-teacher-form" data-lo-teacher-form="2" aria-pressed="true">3 tegen 2</button>
+<button type="button" class="lo-teacher-form" data-lo-teacher-form="3" aria-pressed="false">4 tegen 3</button>
+</div>
+<div class="lo-teacher-plan"><h3>Een eenvoudige lesaanpak</h3>
+<p><strong>Begin met één situatie.</strong> Laat de leerlingen zelf aanvallers en verdedigers plaatsen.</p>
+<p><strong>Laat ze iets veranderen.</strong> Bijvoorbeeld een aanspeellijn openen of rugdekking geven. Speel beide varianten af.</p>
+<p><strong>Probeer het in de zaal.</strong> Bekijk of hun idee ook werkt tegen echte medespelers.</p>
+<p class="lo-teacher-note">Docentweergave op dit apparaat, zonder account of leerlingregistratie. De simulatie blijft een oefenmodel.</p></div>
+<div class="lo-teacher-actions">
+<button type="button" id="loTeacherExit" hidden>Terug naar leerlingweergave</button>
+<button type="button" id="loTeacherTutorial">Bekijk de bediening</button>
+<button type="button" class="main" id="loTeacherStart">Start docentweergave</button>
+</div></div></section>
 <section id="onlineLobby" class="lo-lobby" hidden aria-label="Online spelkamer"><div class="lo-lobby-box">
 <div class="eyebrow">LO · ONLINE DUOSPEL</div><h2 id="loLobbyTitle">Samen spelen</h2>
 <div id="loJoinSection"><p>Maak een kamer voor <strong id="loChosenSport">Voetbal</strong> of voer de code van je medespeler in. Ieder speelt op een eigen scherm.</p>
@@ -1726,5 +1783,64 @@ doc.addEventListener('keydown',e=>{
  }
 });
 window.__loHelpTest={getState:()=>({open:!root.hidden,lesson:lessons[lesson].id,step,wasPaused,chapterCount:lessons.length,stepCount:lessons.reduce((n,l)=>n+l.steps.length,0)}),open,close,select,next,replay};
+})();
+</script>
+<script>
+(()=>{'use strict';
+const $=id=>document.getElementById(id),sheet=$('loTeacher'),badge=$('loTeacherBadge');
+const choices=[...document.querySelectorAll('[data-lo-teacher-form]')];
+let formation=2,enabled=false,returnFocus=null;
+function render(){
+ choices.forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.loTeacherForm)===formation)));
+ $('loTeacherStart').textContent=enabled?'Ga naar het speelveld':'Start docentweergave';
+ $('loTeacherExit').hidden=!enabled;
+ badge.hidden=!enabled;
+}
+function open(){
+ returnFocus=document.activeElement;
+ sheet.hidden=false;render();$('loTeacherClose').focus();
+}
+function close(){
+ sheet.hidden=true;
+ if(returnFocus?.isConnected&&!returnFocus.hidden&&typeof returnFocus.focus==='function')returnFocus.focus();
+ returnFocus=null;
+}
+function start(){
+ // De docent kan zelf beide teams verplaatsen. Dit is geen inlogfunctie.
+ sheet.hidden=true;
+ document.querySelector('#welcome [data-mode="free"]').click();
+ const selector=$('formationSelect');
+ selector.value=String(formation);
+ selector.dispatchEvent(new Event('change',{bubbles:true}));
+ enabled=true;render();
+ $('pitch').focus({preventScroll:true});
+ returnFocus=null;
+}
+function exit(){enabled=false;render();close()}
+$('loWelcomeHelp').addEventListener('click',()=>window.__loHelpTest?.open());
+$('loWelcomeTeacher').addEventListener('click',open);
+badge.addEventListener('click',open);
+$('loTeacherClose').addEventListener('click',close);
+$('loTeacherStart').addEventListener('click',start);
+$('loTeacherExit').addEventListener('click',exit);
+$('loTeacherTutorial').addEventListener('click',()=>{close();window.__loHelpTest?.open()});
+choices.forEach(b=>b.addEventListener('click',()=>{formation=Number(b.dataset.loTeacherForm);render()}));
+// Gewoon leerlingenspel kiezen beëindigt de docentweergave.
+document.querySelectorAll('#welcome [data-mode], #onlineChoice').forEach(btn=>btn.addEventListener('click',()=>{
+ enabled=false;render();
+}));
+sheet.addEventListener('click',e=>{if(e.target===sheet)close()});
+document.addEventListener('keydown',e=>{
+ if(sheet.hidden)return;
+ if(e.key==='Escape'){e.preventDefault();close();return}
+ if(e.key==='Tab'){
+  const btns=[...sheet.querySelectorAll('button:not([hidden]):not(:disabled)')];
+  const first=btns[0],last=btns.at(-1);
+  if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}
+  else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}
+ }
+});
+render();
+window.__loTeacherTest={getState:()=>({open:!sheet.hidden,enabled,formation}),open,close,start,exit};
 })();
 </script></body></html>

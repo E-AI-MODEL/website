@@ -54,8 +54,66 @@ def main():
             check=True,text=True,capture_output=True).stdout
         baseline.set_content(baseline_html,wait_until="domcontentloaded")
         page.goto(HTML.as_uri(),wait_until="domcontentloaded")
+        # Vanaf het beginscherm naar uitleg of docentweergave.
+        assert page.locator("#loWelcomeHelp").is_visible()
+        assert page.locator("#loWelcomeTeacher").is_visible()
+        page.locator("#loWelcomeHelp").click()
+        assert page.locator("#loHelp").is_visible()
+        assert page.locator("#loHelpStepTitle").inner_text()=="Kies een speler"
+        page.locator("#loHelpClose").click()
+        assert page.locator("#welcome").is_visible()
+        page.locator("#loWelcomeTeacher").click()
+        assert page.locator("#loTeacher").is_visible()
+        state=page.evaluate("window.__loTeacherTest.getState()")
+        assert state=={"open":True,"enabled":False,"formation":2},state
+        page.locator('[data-lo-teacher-form="1"]').click()
+        assert page.locator('[data-lo-teacher-form="1"]').get_attribute("aria-pressed")=="true"
+        page.locator('[data-lo-teacher-form="2"]').click()
+        page.locator("#loTeacherTutorial").click()
+        assert page.locator("#loTeacher").is_hidden()
+        assert page.locator("#loHelp").is_visible()
+        page.keyboard.press("Escape")
+        page.locator("#loWelcomeTeacher").click()
+        page.locator("#loTeacherStart").click()
+        assert page.locator("#welcome").is_hidden()
+        assert page.locator("#loTeacher").is_hidden()
+        assert page.locator("#loTeacherBadge").is_visible()
+        assert page.locator("#formationSelect").input_value()=="2"
+        counts=page.evaluate("""()=>({
+          a:window.__loLabTest.getPlayers().filter(p=>p.team==='a').length,
+          d:window.__loLabTest.getPlayers().filter(p=>p.team==='d').length
+        })""")
+        assert counts=={"a":3,"d":2},counts
+        page.locator("#loTeacherBadge").click()
+        assert page.locator("#loTeacher").is_visible()
+        page.locator("#loTeacherExit").click()
+        assert page.locator("#loTeacherBadge").is_hidden()
+        assert page.evaluate("window.__loTeacherTest.getState().enabled") is False
+        # De lesstart is alleen een weergavekeuze; andere speltests starten schoon.
+        page.reload(wait_until="domcontentloaded")
         page.locator('[data-mode="free"]').click()
         baseline.locator('[data-mode="free"]').click()
+        # Op smalle schermen blijven beide extra knoppen binnen het openingsvenster.
+        for width,height in ((390,844),(320,690)):
+            page.set_viewport_size({"width":width,"height":height})
+            page.reload(wait_until="domcontentloaded")
+            bounds=page.evaluate("""()=>({
+              vw:innerWidth,vh:innerHeight,
+              welcome:document.querySelector('.welcome').getBoundingClientRect().toJSON(),
+              help:document.querySelector('#loWelcomeHelp').getBoundingClientRect().toJSON(),
+              teacher:document.querySelector('#loWelcomeTeacher').getBoundingClientRect().toJSON()
+            })""")
+            assert bounds["welcome"]["width"]<=bounds["vw"]+2,bounds
+            assert bounds["welcome"]["height"]<=bounds["vh"]+2,bounds
+            assert bounds["help"]["right"]<=bounds["vw"]+2,bounds
+            assert bounds["teacher"]["right"]<=bounds["vw"]+2,bounds
+            page.locator("#loWelcomeTeacher").click()
+            assert page.locator("#loTeacher").is_visible()
+            page.keyboard.press("Escape")
+            assert page.locator("#loTeacher").is_hidden()
+        page.set_viewport_size({"width":1366,"height":820})
+        page.reload(wait_until="domcontentloaded")
+        page.locator('[data-mode="free"]').click()
         # Bedieningsdemo's zijn apart van de echte opstelling.
         original=page.evaluate("window.__loLabTest.getPlayers()")
         assert page.locator("#loHelp").is_hidden()
