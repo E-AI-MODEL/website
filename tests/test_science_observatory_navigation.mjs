@@ -26,7 +26,7 @@ test('Toegankelijke Melkwegversie geeft vragen en feedback zonder 3D-model te ve
   assert.match(html, /data-guide-choice/);
   assert.match(html, /guideAttempts/);
   assert.match(html, /function guideHTML/);
-  assert.match(html, /Dat klopt met dit model/);
+  assert.match(html, /Dit antwoord past bij het model/);
   assert.match(html, /function modeSet/);
   assert.match(html, /function camSet/);
 });
