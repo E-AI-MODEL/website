@@ -1150,17 +1150,22 @@ function simulate(resume=null){
  // Sportspecifieke doelen voor de onderlinge dekking. Deze afstanden zijn
  // toetsbare ontwerpwaarden, GEEN uit tracking geschatte coëfficiënten.
  const shapeRules=[
-  {coverDepth:3.2,midline:.24,markDepth:1.15,behindPenalty:.35}, // voetbal
-  {coverDepth:2.7,midline:.21,markDepth:1.0,behindPenalty:.38},  // hockey
-  {coverDepth:2.0,midline:.50,markDepth:.75,behindPenalty:.48}, // handbal
-  {coverDepth:1.65,midline:.58,markDepth:.65,behindPenalty:.55} // basketbal
+  {coverDepth:3.2,midline:.24,markDepth:1.15,behindPenalty:.18,lateralM:4.5}, // voetbal
+  {coverDepth:2.7,midline:.21,markDepth:1.0,behindPenalty:.19,lateralM:3.8},  // hockey
+  {coverDepth:2.0,midline:.50,markDepth:.75,behindPenalty:.22,lateralM:3.0}, // handbal
+  {coverDepth:1.65,midline:.58,markDepth:.65,behindPenalty:.24,lateralM:2.8} // basketbal
  ][sportIndex];
  let planAt=-1,planCache=null;
  function planDefence(){
   if(clock===planAt&&planCache)return planCache;
   const defenders=d(),owner=b(),off=a().filter(q=>q.id!==holder);
+  const deepest=defenders.reduce((current,p)=>!current||p.x>current.x?p:current,null);
+  const shallowest=defenders.reduce((current,p)=>!current||p.x<current.x?p:current,null);
+  const preserveDeepest=owner&&defenders.length<=3&&deepest&&shallowest&&
+    deepest.x-shallowest.x>PX*.9;
   const pressureScore=p=>reachTime(p,ball,Math.max(0,p._reactionLeft||0))+
-   ({druk:-.44,dek:-.1,volg:-.1,lijn:.17,zone:.27,zonecompact:.4,zoneschuif:0,zonelijn:.2,terug:.6}[p.intent]||0);
+   ({druk:-.44,dek:-.1,volg:-.1,lijn:.17,zone:.27,zonecompact:.4,zoneschuif:0,zonelijn:.2,terug:.6}[p.intent]||0)+
+   (preserveDeepest&&p.id===deepest.id?1.05:0);
   const rank=defenders.map(p=>({p,score:pressureScore(p)})).sort((u,v)=>u.score-v.score);
   const incumbent=rank.find(q=>q.p.id===leaderId),best=rank[0];
   if(!incumbent||!best||(clock-leaderAt>1.05&&incumbent.score>best.score+.64)||
@@ -1171,15 +1176,18 @@ function simulate(resume=null){
   // bereikbaar aan de doelzijde. Niet alle spelers richting de bal trekken.
   const threatsInFront=off.filter(p=>p.x>ball.x-PX*2).sort((u,v)=>v.x-u.x);
   const mainThreat=threatsInFront[0];
-  const goalSideX=Math.max(ball.x+PX*shapeRules.coverDepth,
-    mainThreat?mainThreat.x+PX*shapeRules.markDepth:ball.x);
+  // Rugdekking beschermt de meters achter de drukzetter, niet automatisch
+  // de verst naar voren staande ontvanger. Andere verdedigers dekken die.
+  const goalSideX=ball.x+PX*shapeRules.coverDepth;
+  const desiredY=ball.y*(.55-shapeRules.midline*.4)+
+    (mainThreat?.y??325)*.3+325*(.15+shapeRules.midline*.4);
   const coverSpot={x:clamp(goalSideX,90,930),
-    y:clamp(ball.y*(.55-shapeRules.midline*.4)+
-      (mainThreat?.y??325)*.3+325*(.15+shapeRules.midline*.4),110,540)};
+    y:clamp(desiredY,ball.y-PX*shapeRules.lateralM,ball.y+PX*shapeRules.lateralM)};
+  coverSpot.y=clamp(coverSpot.y,100,550);
   const coverCandidates=defenders.filter(p=>p.id!==leaderId).map(p=>({
-   p,score:dist(p,coverSpot)/PX*.1+
+   p,score:dist(p,coverSpot)/PX*.16+
      Math.max(0,(ball.x-p.x)/PX)*shapeRules.behindPenalty+
-     (p.intent==='terug'?-.18:0)
+     (p.intent==='terug'?-.14:0)
   })).sort((u,v)=>u.score-v.score);
   const prior=coverCandidates.find(q=>q.p.id===coverId),next=coverCandidates[0];
   const emergency=prior&&next&&prior.p.x<ball.x-PX*1.2&&
