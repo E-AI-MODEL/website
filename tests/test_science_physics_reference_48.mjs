@@ -139,7 +139,7 @@ test('Elke proef blijft renderbaar bij minimum en maximum van zijn bediening',()
    for(const t of [0,1.27]){
     let result;
     assert.doesNotThrow(()=>result=run(id,p,t),id+' limiet '+edge);
-    assert.equal(result.readouts.length,4,id);
+    assert.equal(result.readouts.length,id==='incline'?5:4,id);
     for(const row of result.readouts)assert.ok(!/undefined|NaN/i.test(String(row[1])),id+' '+row[0]);
    }
   }
