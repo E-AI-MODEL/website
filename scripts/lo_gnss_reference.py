@@ -64,9 +64,28 @@ def one_player(pid):
         if math.isfinite(speed) and speed<20:speeds.append(speed)
     if len(speeds)<25:raise ValueError(f"Speed samples inadequate: {len(speeds)}")
     active=[v for v in speeds if v>=.7]
+    # Zelfde koersmeetmethode als de simulatie: twee verplaatsingsvensters
+    # van circa 0,5 s, met controle op stilstand en GNSS-ruis.
+    lat0,lon0=series[0][1],series[0][2]
+    refcos=math.cos(math.radians(lat0))
+    points=[(t,math.radians(lon-lon0)*refcos*6_371_000,
+             math.radians(lat-lat0)*6_371_000) for t,lat,lon in series]
+    turns=checks=0
+    for i in range(5,len(points)-5,5):
+        a,b,c=points[i-5],points[i],points[i+5]
+        dt1,dt2=b[0]-a[0],c[0]-b[0]
+        if not (.3<=dt1<=1.5 and .3<=dt2<=1.5):continue
+        dx1,dy1=b[1]-a[1],b[2]-a[2]
+        dx2,dy2=c[1]-b[1],c[2]-b[2]
+        d1,d2=math.hypot(dx1,dy1),math.hypot(dx2,dy2)
+        if d1/dt1<=.65 or d2/dt2<=.65:continue
+        checks+=1
+        if (dx1*dx2+dy1*dy2)/(d1*d2)<-.35:turns+=1
     return {"player":pid,"rows":len(series),"speed_samples":len(speeds),"p_mps":percentiles(speeds),
             "active_speed_samples":len(active),"active_p_mps":percentiles(active),
-            "method":"0.5 s 5-frame displacement, raw GNSS without role labels"}
+            "turn_checks":checks,"reverse_turns":turns,
+            "turns_per_1000_checks":round(1000*turns/checks,3) if checks else None,
+            "method":"0.5 s displacement and 0.5 s direction-change windows; raw GNSS, no role labels"}
 
 def main():
     players=[one_player(i) for i in IDS]
