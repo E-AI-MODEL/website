@@ -1718,7 +1718,7 @@ function renderLoAnalysis(){
   const i=Number(btn.dataset.eventIndex);analysisMoment(Math.round(events[i].time/DT),i);
  }));
  el('loMathExport').addEventListener('click',()=>{
-  const payload={beschrijving:'LO Aanvalslab: berekende speldata, geen leerlingmetingen',
+  const payload={beschrijving:'Sport en bewegen: berekende speldata, geen leerlingmetingen',
    sport:cfg.name,spelvorm:formation().name,sportParameters:copy(cfg),startwaarde:simSeed,
    tijdstapSeconden:DT,beginopstelling:copy(initial),uitkomst:copy(summary),
    gebeurtenissen:copy(events),beelden:copy(frames)};
@@ -2031,7 +2031,7 @@ function close(){
 }
 function start(practice=false){
  sheet.hidden=true;
- // Gebruik het echte Aanvalslab, geen los oefenmodel. Beide teams mogen worden verplaatst.
+ // Gebruik de bestaande spelomgeving, geen los oefenmodel. Beide teams mogen worden verplaatst.
  document.querySelector('#welcome [data-mode="free"]').click();
  const selector=$('formationSelect');
  selector.value=String(formation);
