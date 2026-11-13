@@ -144,6 +144,8 @@ jobs:
         run: node --test tests/test_science_physics_insights.mjs
       - name: Check physics source references and independent calculations
         run: node --test tests/test_science_physics_evidence.mjs
+      - name: Check independent model references for the other 48 physics labs
+        run: node --test tests/test_science_physics_reference_48.mjs
       - name: Check physical graph axes and comparisons
         run: node --test tests/test_science_physical_graphs.mjs
       - name: Check animation, graph and measurement agreement
