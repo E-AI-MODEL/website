@@ -37,11 +37,20 @@ def main() -> None:
         req = urllib.request.Request(url, headers={"User-Agent": "EAI-LLMscan-Migration/1.0"})
         with urllib.request.urlopen(req, timeout=25) as response:
             mime = response.headers.get("Content-Type", "").split(";")[0]
-            if mime not in {"image/svg+xml", "image/png", "image/webp", "image/x-icon", "image/vnd.microsoft.icon"}:
+            if mime not in {"image/svg+xml", "image/png", "image/webp", "image/x-icon", "image/vnd.microsoft.icon", "application/octet-stream"}:
                 raise ValueError(f"Unexpected MIME type: {relative} / {mime}")
             buf = response.read(MAX_BYTES + 1)
             if not buf or len(buf) > MAX_BYTES:
                 raise ValueError(f"Image missing or too big: {relative}")
+            extension = relative.rsplit(".", 1)[-1].lower()
+            signatures = {
+                "png": buf.startswith(b"\\x89PNG\\r\\n\\x1a\\n"),
+                "webp": buf.startswith(b"RIFF") and buf[8:12] == b"WEBP",
+                "ico": buf.startswith(b"\\x00\\x00\\x01\\x00") or buf.startswith(b"\\x89PNG\\r\\n\\x1a\\n"),
+                "svg": b"<svg" in buf[:2048].lower() and b"</svg>" in buf[-512:].lower(),
+            }
+            if not signatures.get(extension, False):
+                raise ValueError(f"Image content does not match file extension: {relative} / {mime}")
             contents[relative] = buf
     for relative, blob in contents.items():
         target = ROOT / relative
