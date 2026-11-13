@@ -20,7 +20,7 @@ MAX_BYTES = 6_000_000
 def main() -> None:
     seed_js = (ROOT / "catalogue.js").read_text(encoding="utf-8")
     data = json.loads(seed_js.split("window.__LLMSCAN_SEED=", 1)[1].rsplit(";", 1)[0])
-    files: set[str] = {"icon.svg", "logo.svg"}
+    files: set[str] = {"icon.svg", "logo.svg", "classroom-hero.png"}
     files.update(data.get("provider_assets", {}).values())
     for visual in data.get("catalogue_visuals", {}).values():
         if isinstance(visual, dict) and visual.get("path"):
