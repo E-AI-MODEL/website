@@ -17,7 +17,11 @@ def check_phone(browser, width, height):
     assert page.locator("#pitch").is_visible()
     assert page.locator("#primary").is_visible()
     assert not page.locator(".shell > .side").is_visible()
-    assert page.locator('.mobile-task-preview').is_visible()
+    assert not page.locator('.mobile-task-preview').is_visible()
+    assert page.locator("#pitch").get_attribute("viewBox") == "0 0 650 1000"
+    assert page.locator("#loWorld").get_attribute("transform") == "matrix(0 -1 1 0 0 1000)"
+    assert page.locator("#loQuickActions").is_visible()
+    assert page.locator("#loQuickButtons button").count() == 3
     assert page.locator('[data-lo-mobile-panel]').count() == 3
     dimensions = page.evaluate("""() => {
         const r = el => el.getBoundingClientRect();
@@ -32,18 +36,22 @@ def check_phone(browser, width, height):
     }""")
     assert dimensions["scrollX"] <= 2, dimensions
     assert dimensions["scrollY"] <= 2, dimensions
-    assert dimensions["pitchWidth"] > 180 and dimensions["pitchHeight"] > 95, dimensions
+    assert dimensions["pitchWidth"] > 180 and dimensions["pitchHeight"] > 160, dimensions
     assert dimensions["buttonHeight"] >= 38, dimensions
     assert dimensions["buttonBottom"] < dimensions["menuTop"], dimensions
     page.screenshot(path=str(SHOTS / f"{width}x{height}-veld.png"))
 
-    page.locator('[data-lo-mobile-panel="player"]').click()
+    # Meer opent de overige acties zonder dat er drie grote menu's nodig zijn.
+    page.locator(".lo-quick-more").click()
     assert page.locator(".shell > .side").is_visible()
     assert page.locator("#intents .intent").count() >= 2
     assert page.locator("#loMobilePanelTitle").inner_text() == "Speleropdrachten"
     page.screenshot(path=str(SHOTS / f"{width}x{height}-actie.png"))
     page.locator("#intents .intent").first.click()
     assert not page.locator(".shell > .side").is_visible()
+    # Een hoofdactie is direct bereikbaar, zonder een extra paneel.
+    page.locator("#loQuickButtons .lo-quick-choice").first.click()
+    assert page.locator("#loQuickActions").is_visible()
 
     page.locator('[data-lo-mobile-panel="goal"]').click()
     assert page.locator("#loMobileGoalSelect").is_visible()
@@ -55,6 +63,24 @@ def check_phone(browser, width, height):
     assert page.locator("#loMobilePanelTitle").inner_text() == "Coach en terugkijken"
     page.keyboard.press("Escape")
     assert not page.locator(".shell > .side").is_visible()
+    if width == 390:
+        # De getekende richting is verticaal, maar de spelcoordinaten veranderen niet.
+        before = page.evaluate("""() => {
+            const svg=document.querySelector('#pitch'),world=document.querySelector('#loWorld');
+            const c=document.querySelector('#actors [data-id="a0"] circle');
+            const pt=svg.createSVGPoint();
+            pt.x=+c.getAttribute('cx'); pt.y=+c.getAttribute('cy');
+            const screen=pt.matrixTransform(world.getScreenCTM());
+            return {x:screen.x,y:screen.y,worldX:pt.x};
+        }""")
+        page.mouse.move(before["x"], before["y"])
+        page.mouse.down()
+        page.mouse.move(before["x"], before["y"] - 25, steps=5)
+        page.mouse.up()
+        after = page.evaluate("""() => +document.querySelector('#actors [data-id="a0"] circle').getAttribute('cx')""")
+        assert after > before["worldX"] + 10, (before, after)
+    page.locator("#primary").click()
+    assert not page.locator("#loQuickActions").is_visible()
     assert not errors, errors
     page.close()
 
@@ -76,7 +102,7 @@ def main():
             check_desktop(browser)
         finally:
             browser.close()
-    print("LO mobiele actiebalk: vijf telefoonformaten en desktop gecontroleerd")
+    print("LO portretveld en directe speleracties: vijf telefoonformaten en desktop gecontroleerd")
 
 if __name__ == "__main__":
     main()
