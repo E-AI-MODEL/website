@@ -35,9 +35,12 @@ def run_view(page, width, height, sport="defend"):
     pitch = position(page, "#pitch")
     side = position(page, ".side")
     assert 0 < field["y"] < 125, (field, view)
-    assert field["bottom"] <= side["y"], (field, side)
+    if width > height:
+        assert field["right"] <= side["x"], (field,side)
+    else:
+        assert field["bottom"] <= side["y"], (field,side)
+        assert side["height"] < height * .55, (side, view)
     assert side["bottom"] <= height + 3, (side, view)
-    assert side["height"] < height * .55, (side, view)
     assert pitch["height"] > 80, (pitch, view)
     assert pitch["right"] <= width + 2, (pitch, view)
     assert page.locator(".mobile-controls").is_visible()
@@ -78,7 +81,11 @@ def run_view(page, width, height, sport="defend"):
         assert abs(now["y"]-pitch["y"]) <= 3, (kind,pitch,now)
         assert abs(now["height"]-pitch["height"]) <= 3, (kind,pitch,now)
         current=position(page,".side")
-        assert current["y"] >= field["bottom"] and current["bottom"] <= height + 3, current
+        assert current["bottom"] <= height + 3, current
+        if width > height:
+            assert current["x"] >= field["right"], (field,current)
+        else:
+            assert current["y"] >= field["bottom"], (field,current)
         assert current["scroll"] <= current["client"] + 4, (kind, current)
         page.screenshot(path=str(OUT / f"mobile-{width}x{height}-{kind}.png"))
     # Oefendoel is één korte keuzelijst; de achterliggende spelcode blijft dezelfde.
