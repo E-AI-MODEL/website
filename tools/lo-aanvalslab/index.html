@@ -307,6 +307,19 @@
 .lo-mid-players button[aria-pressed=true],.lo-mid-actions button[aria-pressed=true],.lo-mid-sides button[aria-pressed=true]{background:#265044;border-color:#81daba;color:#f2fff7}
 @media(max-width:880px){.lo-coach-transport{padding:5px 7px;gap:5px}.lo-coach-transport label,.lo-coach-transport .btn{font-size:10px}.lo-coach-seek{min-width:110px;max-width:none}.lo-coach-transport #loCoachEdit{order:4;flex:1}.lo-mid-players button,.lo-mid-actions button{font-size:10px;padding:5px 7px}}
 
+.mobile-task-preview{display:none}
+@media(max-width:880px){
+ .mobile-task-preview{display:flex;flex-direction:column;gap:4px;flex:0 0 auto;min-height:76px;background:#0d242b;border:1px solid #28483f;border-radius:9px;padding:12px 13px}
+ .mobile-task-kicker{font-size:9px;font-weight:700;letter-spacing:.08em;color:#88bfae}
+ .mobile-task-preview strong{font-size:15px;color:#e9f8ec;line-height:1.2}
+ .mobile-task-preview p{margin:0;font-size:11px;line-height:1.45;color:#aac8bf}
+}
+@media(max-width:880px) and (max-height:650px){
+ .mobile-task-preview{min-height:0;padding:8px 10px;gap:2px}
+ .mobile-task-preview strong{font-size:12px}
+ .mobile-task-preview p{display:none}
+}
+@media(max-width:880px) and (orientation:landscape) and (max-height:500px){.mobile-task-preview{display:none}}
 /* Mobiel: het veld blijft zichtbaar, alleen het gekozen bedieningspaneel komt omhoog. */
 .mobile-controls,.mobile-sheet-head,.mobile-scrim{display:none}
 @media(max-width:880px){
@@ -407,7 +420,7 @@
  <button id="loCoachEdit" type="button" class="btn">Coach · verander actie</button>
  <button id="loCoachOriginal" type="button" class="btn" hidden>Oorspronkelijke aanval</button>
  <button id="loCoachVariant" type="button" class="btn" hidden>Aangepaste aanval</button>
- </div><div class="bottom"><div><div id="instruction" class="hint">De bal ligt bij aanvaller 1. Maak je opstelling en speel de hele aanval.</div><div id="under" class="small setup-tip">Sleep een speler of tik eerst de speler en daarna zijn plek.</div></div><div class="actions"><button id="reset" class="btn">Beginopstelling</button><button id="primary" class="btn main">Speel de aanval af ▶</button></div></div></section><nav class="mobile-controls" id="loMobileControls" aria-label="Bediening op telefoon"><button type="button" class="mobile-panel-toggle" data-lo-mobile-panel="goal" aria-expanded="false" aria-controls="loGoals">Oefendoel</button><button type="button" class="mobile-panel-toggle" data-lo-mobile-panel="player" aria-expanded="false" aria-controls="prep">Spelers</button><button type="button" class="mobile-panel-toggle" data-lo-mobile-panel="coach" aria-expanded="false" aria-controls="loCoachPanel">Coach</button></nav><button type="button" class="mobile-scrim" id="loMobileScrim" aria-label="Sluit het instellingenpaneel" tabindex="-1"></button><aside class="side"><div class="mobile-sheet-head"><strong id="loMobilePanelTitle">Spelers</strong><button type="button" id="loMobileClose" class="mobile-sheet-close">Sluiten ×</button></div><button type="button" id="loTeacherBadge" class="lo-teacher-badge" hidden>Docentweergave · leshulp</button>
+ </div><div class="bottom"><div><div id="instruction" class="hint">De bal ligt bij aanvaller 1. Maak je opstelling en speel de hele aanval.</div><div id="under" class="small setup-tip">Sleep een speler of tik eerst de speler en daarna zijn plek.</div></div><div class="actions"><button id="reset" class="btn">Beginopstelling</button><button id="primary" class="btn main">Speel de aanval af ▶</button></div></div></section><nav class="mobile-controls" id="loMobileControls" aria-label="Bediening op telefoon"><button type="button" class="mobile-panel-toggle" data-lo-mobile-panel="goal" aria-expanded="false" aria-controls="loGoals">Oefendoel</button><button type="button" class="mobile-panel-toggle" data-lo-mobile-panel="player" aria-expanded="false" aria-controls="prep">Spelers</button><button type="button" class="mobile-panel-toggle" data-lo-mobile-panel="coach" aria-expanded="false" aria-controls="loCoachPanel">Coach</button></nav><section class="mobile-task-preview" aria-live="polite"><span class="mobile-task-kicker">JOUW OPDRACHT</span><strong id="loMobileTaskTitle">Kies je opstelling</strong><p id="loMobileTaskText">Verplaats je spelers en bekijk wat er gebeurt.</p></section><button type="button" class="mobile-scrim" id="loMobileScrim" aria-label="Sluit het instellingenpaneel" tabindex="-1"></button><aside class="side"><div class="mobile-sheet-head"><strong id="loMobilePanelTitle">Spelers</strong><button type="button" id="loMobileClose" class="mobile-sheet-close">Sluiten ×</button></div><button type="button" id="loTeacherBadge" class="lo-teacher-badge" hidden>Docentweergave · leshulp</button>
 <details id="loTeacherPracticeTip" class="lo-teacher-practice-tip" hidden open><summary id="loTeacherPracticeTitle">Docentproef</summary><p id="loTeacherPracticeBody">Verplaats een speler, speel de situatie af en bekijk de coach.</p></details><div class="mobile-task"><h3>Jouw opdracht</h3><h2 id="tasktitle">Maak een kans</h2></div><p id="task" class="hint" style="margin:0">Kies waar je spelers beginnen. Welke opstelling levert volgens jou de beste aanval op?</p><details id="loGoals" class="lo-goals"><summary aria-label="Wijzig het tactische oefendoel"><span class="lo-goal-kicker">Oefendoel</span><strong id="loGoalCurrent" class="lo-goal-current">Aanspeellijn openen</strong><span class="lo-goal-arrow" aria-hidden="true">⌄</span></summary><div class="lo-goals-body"><div class="lo-goal-controls"><div id="loGoalRoles" class="lo-goal-roles" role="group" aria-label="Team dat je oefent"></div><button type="button" class="lo-role-chip active" id="loCoachAuto" aria-pressed="true">Coach kiest</button></div><div id="loGoalChips" class="lo-goal-chips" role="group" aria-label="Tactische doelen"></div><p id="loGoalHint" class="lo-goal-hint">Kies een doel of laat de coach meedenken.</p></div></details><div class="sep"></div><details id="prep" class="lo-slim-menu" open><summary><span>Speleropdrachten</span><small class="lo-slim-value" id="loPlayerLabel">Aanvaller 1</small></summary><div class="lo-slim-content"><details id="zonePlans" class="zone-plans hide" open><summary class="zone-plans-head">Zoneverdediging · heel team</summary><div class="zone-options"><button type="button" class="zone-option" data-zone-plan="zonecompact">Compact</button><button type="button" class="zone-option" data-zone-plan="zoneschuif">Meeschuiven</button><button type="button" class="zone-option" data-zone-plan="zonelijn">Passlijnen</button></div><div id="zoneTip" class="zone-tip">Kies een teamvorm of geef elke verdediger apart een opdracht.</div></details><h3>Geselecteerde speler</h3><div id="selected" class="hint">Tik op een speler om zijn opdracht te kiezen.</div><div id="intents" class="intent-grid"></div><p class="small" id="intentHelp">Sleep een speler, of tik de speler en daarna een vrije plek. Met de pijltjestoetsen kun je nauwkeurig schuiven.</p></div></details><div class="grow"></div><details id="loMidCoach" class="lo-slim-menu" hidden>
 <summary>Coachingreep · speler en actie kiezen</summary>
 <div class="lo-slim-content">
@@ -2239,6 +2252,12 @@ const after=document.getElementById('after');
 new MutationObserver(()=>{
  if(mobile.matches&&!after.classList.contains('hide')&&!app.dataset.mobilePanel)setPanel('coach');
 }).observe(after,{attributes:true,attributeFilter:['class']});
+const liveTitle=document.getElementById('tasktitle'),liveText=document.getElementById('task');
+const previewTitle=document.getElementById('loMobileTaskTitle'),previewText=document.getElementById('loMobileTaskText');
+function syncTask(){previewTitle.textContent=liveTitle.textContent;previewText.textContent=liveText.textContent}
+new MutationObserver(syncTask).observe(liveTitle,{childList:true,subtree:true,characterData:true});
+new MutationObserver(syncTask).observe(liveText,{childList:true,subtree:true,characterData:true});
+syncTask();
 window.__loMobileUI={open:setPanel,close:()=>setPanel('')};
 })();
 </script></body></html>
