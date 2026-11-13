@@ -36,5 +36,17 @@ def main():
      result=page.evaluate(JS,{"scene":scene,"seed":1337})
      print("DEFENCE_TRACE "+json.dumps({"sport":sport,"form":form,"scene":scene,**result},
       ensure_ascii=False,separators=(",",":")))
+     if form==2 and scene==0:
+      flight=[q for q in result["samples"] if q["holder"] is None and .65<=q["t"]<=2]
+      screens={p["id"] for q in flight for p in q["defenders"] if p["role"]=="screen"}
+      assert len(screens)<=1,("drukzetter wisselt midden in balvlucht",sport,screens)
+      # De dieper geplaatste d1 mag een diepe pass niet gaan najagen
+      # richting de passer. Bij een versnelling kan hij kort uitlopen.
+      starter=result["samples"][0]["defenders"][1]["x"]
+      for q in flight:
+       end=next(p["x"] for p in q["defenders"] if p["id"]=="d1")
+       assert end>=starter-2.0*({"0":20,"1":21,"2":22,"3":31}[str(sport)]),(
+        "diepe rugdekker verlaat doelzijde bij pass",sport,q)
+
   browser.close()
 if __name__=="__main__":main()
