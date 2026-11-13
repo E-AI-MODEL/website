@@ -26,7 +26,9 @@
           "titel": "OpenStax College Physics 2e · 2.5 Bewegingsvergelijkingen",
           "url": "https://openstax.org/books/college-physics-2e/pages/2-5-motion-equations-for-constant-acceleration-in-one-dimension"
         }
-      ]
+      ],
+      "beeldteststatus": "vakinhoudelijke_beeldtest_open",
+      "beeld_door_vakdocent_beoordeeld": false
     },
     {
       "id": "equilibrium",
@@ -47,7 +49,9 @@
           "titel": "OpenStax College Physics 2e · 4.3 Tweede wet van Newton",
           "url": "https://openstax.org/books/college-physics-2e/pages/4-3-newtons-second-law-of-motion-concept-of-a-system"
         }
-      ]
+      ],
+      "beeldteststatus": "vakinhoudelijke_beeldtest_open",
+      "beeld_door_vakdocent_beoordeeld": false
     },
     {
       "id": "resultant",
@@ -64,7 +68,9 @@
           "titel": "OpenStax College Physics 2e · 3.3 Vectoren analytisch",
           "url": "https://openstax.org/books/college-physics-2e/pages/3-3-vector-addition-and-subtraction-analytical-methods"
         }
-      ]
+      ],
+      "beeldteststatus": "vakinhoudelijke_beeldtest_open",
+      "beeld_door_vakdocent_beoordeeld": false
     },
     {
       "id": "resolution",
@@ -81,7 +87,9 @@
           "titel": "OpenStax College Physics 2e · 3.3 Vectoren analytisch",
           "url": "https://openstax.org/books/college-physics-2e/pages/3-3-vector-addition-and-subtraction-analytical-methods"
         }
-      ]
+      ],
+      "beeldteststatus": "vakinhoudelijke_beeldtest_open",
+      "beeld_door_vakdocent_beoordeeld": false
     },
     {
       "id": "pulleys",
@@ -98,7 +106,9 @@
           "titel": "OpenStax College Physics 2e · 9.5 Eenvoudige machines",
           "url": "https://openstax.org/books/college-physics-2e/pages/9-5-simple-machines"
         }
-      ]
+      ],
+      "beeldteststatus": "vakinhoudelijke_beeldtest_open",
+      "beeld_door_vakdocent_beoordeeld": false
     },
     {
       "id": "lever",
@@ -119,7 +129,9 @@
           "titel": "OpenStax College Physics 2e · 9.5 Eenvoudige werktuigen",
           "url": "https://openstax.org/books/college-physics-2e/pages/9-5-simple-machines"
         }
-      ]
+      ],
+      "beeldteststatus": "vakinhoudelijke_beeldtest_open",
+      "beeld_door_vakdocent_beoordeeld": false
     },
     {
       "id": "incline",
@@ -140,7 +152,9 @@
           "titel": "OpenStax College Physics 2e · 5.1 Wrijving",
           "url": "https://openstax.org/books/college-physics-2e/pages/5-1-friction"
         }
-      ]
+      ],
+      "beeldteststatus": "vakinhoudelijke_beeldtest_open",
+      "beeld_door_vakdocent_beoordeeld": false
     },
     {
       "id": "newton2",
@@ -157,7 +171,9 @@
           "titel": "OpenStax College Physics 2e · 4.3 Tweede wet van Newton",
           "url": "https://openstax.org/books/college-physics-2e/pages/4-3-newtons-second-law-of-motion-concept-of-a-system"
         }
-      ]
+      ],
+      "beeldteststatus": "vakinhoudelijke_beeldtest_open",
+      "beeld_door_vakdocent_beoordeeld": false
     },
     {
       "id": "projectile",
@@ -174,7 +190,9 @@
           "titel": "OpenStax College Physics 2e · 3.4 Schuine worp",
           "url": "https://openstax.org/books/college-physics-2e/pages/3-4-projectile-motion"
         }
-      ]
+      ],
+      "beeldteststatus": "vakinhoudelijke_beeldtest_open",
+      "beeld_door_vakdocent_beoordeeld": false
     },
     {
       "id": "collision",
@@ -199,7 +217,9 @@
           "titel": "OpenStax College Physics 2e · 8.5 Onelastische botsingen",
           "url": "https://openstax.org/books/college-physics-2e/pages/8-5-inelastic-collisions-in-one-dimension"
         }
-      ]
+      ],
+      "beeldteststatus": "vakinhoudelijke_beeldtest_open",
+      "beeld_door_vakdocent_beoordeeld": false
     },
     {
       "id": "cradle",
@@ -220,7 +240,9 @@
           "titel": "OpenStax College Physics 2e · 8.4 Elastische botsingen",
           "url": "https://openstax.org/books/college-physics-2e/pages/8-4-elastic-collisions-in-one-dimension"
         }
-      ]
+      ],
+      "beeldteststatus": "gerichte_automatische_beeldtest_toegevoegd",
+      "beeld_door_vakdocent_beoordeeld": false
     },
     {
       "id": "circular",
@@ -237,7 +259,9 @@
           "titel": "OpenStax College Physics 2e · 6.3 Middelpuntzoekende kracht",
           "url": "https://openstax.org/books/college-physics-2e/pages/6-3-centripetal-force"
         }
-      ]
+      ],
+      "beeldteststatus": "vakinhoudelijke_beeldtest_open",
+      "beeld_door_vakdocent_beoordeeld": false
     },
     {
       "id": "carousel",
@@ -254,7 +278,9 @@
           "titel": "OpenStax College Physics 2e · 6.3 Middelpuntzoekende kracht",
           "url": "https://openstax.org/books/college-physics-2e/pages/6-3-centripetal-force"
         }
-      ]
+      ],
+      "beeldteststatus": "vakinhoudelijke_beeldtest_open",
+      "beeld_door_vakdocent_beoordeeld": false
     },
     {
       "id": "looping",
@@ -275,7 +301,9 @@
           "titel": "OpenStax College Physics 2e · 4.3 Tweede wet van Newton",
           "url": "https://openstax.org/books/college-physics-2e/pages/4-3-newtons-second-law-of-motion-concept-of-a-system"
         }
-      ]
+      ],
+      "beeldteststatus": "gerichte_automatische_beeldtest_toegevoegd",
+      "beeld_door_vakdocent_beoordeeld": false
     },
     {
       "id": "kepler1",
@@ -296,7 +324,9 @@
           "titel": "OpenStax University Physics · 13.5 Wetten van Kepler",
           "url": "https://openstax.org/books/university-physics-volume-1/pages/13-5-keplers-laws-of-planetary-motion"
         }
-      ]
+      ],
+      "beeldteststatus": "vakinhoudelijke_beeldtest_open",
+      "beeld_door_vakdocent_beoordeeld": false
     },
     {
       "id": "kepler2",
@@ -317,7 +347,9 @@
           "titel": "OpenStax University Physics · 13.5 Wetten van Kepler",
           "url": "https://openstax.org/books/university-physics-volume-1/pages/13-5-keplers-laws-of-planetary-motion"
         }
-      ]
+      ],
+      "beeldteststatus": "vakinhoudelijke_beeldtest_open",
+      "beeld_door_vakdocent_beoordeeld": false
     },
     {
       "id": "hydro",
@@ -334,7 +366,9 @@
           "titel": "OpenStax College Physics 2e · 11.4 Druk en diepte",
           "url": "https://openstax.org/books/college-physics-2e/pages/11-4-variation-of-pressure-with-depth-in-a-fluid"
         }
-      ]
+      ],
+      "beeldteststatus": "vakinhoudelijke_beeldtest_open",
+      "beeld_door_vakdocent_beoordeeld": false
     },
     {
       "id": "buoyant",
@@ -351,7 +385,9 @@
           "titel": "OpenStax College Physics 2e · 11.7 Opwaartse kracht",
           "url": "https://openstax.org/books/college-physics-2e/pages/11-7-archimedes-principle"
         }
-      ]
+      ],
+      "beeldteststatus": "vakinhoudelijke_beeldtest_open",
+      "beeld_door_vakdocent_beoordeeld": false
     },
     {
       "id": "pendulum",
@@ -368,7 +404,9 @@
           "titel": "OpenStax College Physics 2e · 16.4 De slinger",
           "url": "https://openstax.org/books/college-physics-2e/pages/16-4-the-simple-pendulum"
         }
-      ]
+      ],
+      "beeldteststatus": "vakinhoudelijke_beeldtest_open",
+      "beeld_door_vakdocent_beoordeeld": false
     },
     {
       "id": "spring",
@@ -393,7 +431,9 @@
           "titel": "OpenStax College Physics 2e · 16.5 Energie in trilling",
           "url": "https://openstax.org/books/college-physics-2e/pages/16-5-energy-and-the-simple-harmonic-oscillator"
         }
-      ]
+      ],
+      "beeldteststatus": "vakinhoudelijke_beeldtest_open",
+      "beeld_door_vakdocent_beoordeeld": false
     },
     {
       "id": "coupled",
@@ -414,7 +454,9 @@
           "titel": "Physics LibreTexts · 17.2 Twee gekoppelde slingers",
           "url": "https://phys.libretexts.org/Bookshelves/Classical_Mechanics/Graduate_Classical_Mechanics_(Fowler)/17%3A_Small_Oscillations/17.02%3A_Two_Coupled_Pendulums"
         }
-      ]
+      ],
+      "beeldteststatus": "vakinhoudelijke_beeldtest_open",
+      "beeld_door_vakdocent_beoordeeld": false
     },
     {
       "id": "resonance",
@@ -431,7 +473,9 @@
           "titel": "OpenStax College Physics 2e · 16.8 Gedwongen trillingen",
           "url": "https://openstax.org/books/college-physics-2e/pages/16-8-forced-oscillations-and-resonance"
         }
-      ]
+      ],
+      "beeldteststatus": "vakinhoudelijke_beeldtest_open",
+      "beeld_door_vakdocent_beoordeeld": false
     },
     {
       "id": "beats",
@@ -452,7 +496,9 @@
           "titel": "OpenStax College Physics 2e · 17.1 Geluid",
           "url": "https://openstax.org/books/college-physics-2e/pages/17-1-sound"
         }
-      ]
+      ],
+      "beeldteststatus": "vakinhoudelijke_beeldtest_open",
+      "beeld_door_vakdocent_beoordeeld": false
     },
     {
       "id": "standing",
@@ -473,7 +519,9 @@
           "titel": "OpenStax College Physics 2e · 17.5 Staande golven",
           "url": "https://openstax.org/books/college-physics-2e/pages/17-5-sound-interference-and-resonance-standing-waves-in-air-columns"
         }
-      ]
+      ],
+      "beeldteststatus": "vakinhoudelijke_beeldtest_open",
+      "beeld_door_vakdocent_beoordeeld": false
     },
     {
       "id": "longitudinal",
@@ -494,7 +542,9 @@
           "titel": "OpenStax College Physics 2e · 17.5 Staande golven",
           "url": "https://openstax.org/books/college-physics-2e/pages/17-5-sound-interference-and-resonance-standing-waves-in-air-columns"
         }
-      ]
+      ],
+      "beeldteststatus": "vakinhoudelijke_beeldtest_open",
+      "beeld_door_vakdocent_beoordeeld": false
     },
     {
       "id": "interference",
@@ -511,7 +561,9 @@
           "titel": "OpenStax College Physics 2e · 16.10 Superpositie en interferentie",
           "url": "https://openstax.org/books/college-physics-2e/pages/16-10-superposition-and-interference"
         }
-      ]
+      ],
+      "beeldteststatus": "vakinhoudelijke_beeldtest_open",
+      "beeld_door_vakdocent_beoordeeld": false
     },
     {
       "id": "doppler",
@@ -528,7 +580,9 @@
           "titel": "OpenStax College Physics 2e · 17.4 Dopplereffect",
           "url": "https://openstax.org/books/college-physics-2e/pages/17-4-doppler-effect-and-sonic-booms"
         }
-      ]
+      ],
+      "beeldteststatus": "vakinhoudelijke_beeldtest_open",
+      "beeld_door_vakdocent_beoordeeld": false
     },
     {
       "id": "magnetbar",
@@ -545,7 +599,9 @@
           "titel": "OpenStax College Physics 2e · 22.3 Magneetvelden",
           "url": "https://openstax.org/books/college-physics-2e/pages/22-3-magnetic-fields-and-magnetic-field-lines"
         }
-      ]
+      ],
+      "beeldteststatus": "vakinhoudelijke_beeldtest_open",
+      "beeld_door_vakdocent_beoordeeld": false
     },
     {
       "id": "magnetwire",
@@ -562,7 +618,9 @@
           "titel": "OpenStax College Physics 2e · 22.9 Veld door stroom",
           "url": "https://openstax.org/books/college-physics-2e/pages/22-9-magnetic-fields-produced-by-currents-amperes-law"
         }
-      ]
+      ],
+      "beeldteststatus": "vakinhoudelijke_beeldtest_open",
+      "beeld_door_vakdocent_beoordeeld": false
     },
     {
       "id": "lorentz",
@@ -579,7 +637,9 @@
           "titel": "OpenStax College Physics 2e · 22.4 Lorentzkracht",
           "url": "https://openstax.org/books/college-physics-2e/pages/22-4-magnetic-field-strength-force-on-a-moving-charge-in-a-magnetic-field"
         }
-      ]
+      ],
+      "beeldteststatus": "vakinhoudelijke_beeldtest_open",
+      "beeld_door_vakdocent_beoordeeld": false
     },
     {
       "id": "motor",
@@ -596,7 +656,9 @@
           "titel": "OpenStax College Physics 2e · 22.8 Koppel en elektromotor",
           "url": "https://openstax.org/books/college-physics-2e/pages/22-8-torque-on-a-current-loop-motors-and-meters"
         }
-      ]
+      ],
+      "beeldteststatus": "vakinhoudelijke_beeldtest_open",
+      "beeld_door_vakdocent_beoordeeld": false
     },
     {
       "id": "generator",
@@ -617,7 +679,9 @@
           "titel": "OpenStax College Physics 2e · 23.5 Generator",
           "url": "https://openstax.org/books/college-physics-2e/pages/23-5-electric-generators"
         }
-      ]
+      ],
+      "beeldteststatus": "vakinhoudelijke_beeldtest_open",
+      "beeld_door_vakdocent_beoordeeld": false
     },
     {
       "id": "ohm",
@@ -634,7 +698,9 @@
           "titel": "OpenStax College Physics 2e · 20.2 Wet van Ohm",
           "url": "https://openstax.org/books/college-physics-2e/pages/20-2-ohms-law-resistance-and-simple-circuits"
         }
-      ]
+      ],
+      "beeldteststatus": "vakinhoudelijke_beeldtest_open",
+      "beeld_door_vakdocent_beoordeeld": false
     },
     {
       "id": "resistors",
@@ -651,7 +717,9 @@
           "titel": "OpenStax College Physics 2e · 21.1 Serie en parallel",
           "url": "https://openstax.org/books/college-physics-2e/pages/21-1-resistors-in-series-and-parallel"
         }
-      ]
+      ],
+      "beeldteststatus": "vakinhoudelijke_beeldtest_open",
+      "beeld_door_vakdocent_beoordeeld": false
     },
     {
       "id": "potentiometer",
@@ -672,7 +740,9 @@
           "titel": "OpenStax College Physics 2e · 21.3 Wetten van Kirchhoff",
           "url": "https://openstax.org/books/college-physics-2e/pages/21-3-kirchhoffs-rules"
         }
-      ]
+      ],
+      "beeldteststatus": "vakinhoudelijke_beeldtest_open",
+      "beeld_door_vakdocent_beoordeeld": false
     },
     {
       "id": "wheatstone",
@@ -693,7 +763,9 @@
           "titel": "OpenStax College Physics 2e · 21.3 Wetten van Kirchhoff",
           "url": "https://openstax.org/books/college-physics-2e/pages/21-3-kirchhoffs-rules"
         }
-      ]
+      ],
+      "beeldteststatus": "vakinhoudelijke_beeldtest_open",
+      "beeld_door_vakdocent_beoordeeld": false
     },
     {
       "id": "ac",
@@ -714,7 +786,9 @@
           "titel": "OpenStax College Physics 2e · 20.2 Wet van Ohm",
           "url": "https://openstax.org/books/college-physics-2e/pages/20-2-ohms-law-resistance-and-simple-circuits"
         }
-      ]
+      ],
+      "beeldteststatus": "vakinhoudelijke_beeldtest_open",
+      "beeld_door_vakdocent_beoordeeld": false
     },
     {
       "id": "rlc",
@@ -735,7 +809,9 @@
           "titel": "OpenStax College Physics 2e · 23.12 RLC-seriekring",
           "url": "https://openstax.org/books/college-physics-2e/pages/23-12-rlc-series-ac-circuits"
         }
-      ]
+      ],
+      "beeldteststatus": "vakinhoudelijke_beeldtest_open",
+      "beeld_door_vakdocent_beoordeeld": false
     },
     {
       "id": "lc",
@@ -756,7 +832,9 @@
           "titel": "OpenStax College Physics 2e · 23.9 Inductantie",
           "url": "https://openstax.org/books/college-physics-2e/pages/23-9-inductance"
         }
-      ]
+      ],
+      "beeldteststatus": "vakinhoudelijke_beeldtest_open",
+      "beeld_door_vakdocent_beoordeeld": false
     },
     {
       "id": "em",
@@ -777,7 +855,9 @@
           "titel": "OpenStax College Physics 2e · 24.3 Elektromagnetisch spectrum",
           "url": "https://openstax.org/books/college-physics-2e/pages/24-3-the-electromagnetic-spectrum"
         }
-      ]
+      ],
+      "beeldteststatus": "vakinhoudelijke_beeldtest_open",
+      "beeld_door_vakdocent_beoordeeld": false
     },
     {
       "id": "refraction",
@@ -794,7 +874,9 @@
           "titel": "OpenStax College Physics 2e · 25.3 Brekingswet",
           "url": "https://openstax.org/books/college-physics-2e/pages/25-3-the-law-of-refraction"
         }
-      ]
+      ],
+      "beeldteststatus": "vakinhoudelijke_beeldtest_open",
+      "beeld_door_vakdocent_beoordeeld": false
     },
     {
       "id": "huygens",
@@ -815,7 +897,9 @@
           "titel": "OpenStax College Physics 2e · 25.3 Brekingswet",
           "url": "https://openstax.org/books/college-physics-2e/pages/25-3-the-law-of-refraction"
         }
-      ]
+      ],
+      "beeldteststatus": "vakinhoudelijke_beeldtest_open",
+      "beeld_door_vakdocent_beoordeeld": false
     },
     {
       "id": "lens",
@@ -832,7 +916,9 @@
           "titel": "OpenStax College Physics 2e · 25.6 Beeldvorming met lenzen",
           "url": "https://openstax.org/books/college-physics-2e/pages/25-6-image-formation-by-lenses"
         }
-      ]
+      ],
+      "beeldteststatus": "vakinhoudelijke_beeldtest_open",
+      "beeld_door_vakdocent_beoordeeld": false
     },
     {
       "id": "telescope",
@@ -849,7 +935,9 @@
           "titel": "OpenStax College Physics 2e · 26.5 Telescopen",
           "url": "https://openstax.org/books/college-physics-2e/pages/26-5-telescopes"
         }
-      ]
+      ],
+      "beeldteststatus": "vakinhoudelijke_beeldtest_open",
+      "beeld_door_vakdocent_beoordeeld": false
     },
     {
       "id": "double",
@@ -866,7 +954,9 @@
           "titel": "OpenStax College Physics 2e · 27.3 Dubbele spleet",
           "url": "https://openstax.org/books/college-physics-2e/pages/27-3-youngs-double-slit-experiment"
         }
-      ]
+      ],
+      "beeldteststatus": "gerichte_automatische_beeldtest_toegevoegd",
+      "beeld_door_vakdocent_beoordeeld": false
     },
     {
       "id": "single",
@@ -883,7 +973,9 @@
           "titel": "OpenStax College Physics 2e · 27.5 Enkele spleet",
           "url": "https://openstax.org/books/college-physics-2e/pages/27-5-single-slit-diffraction"
         }
-      ]
+      ],
+      "beeldteststatus": "gerichte_automatische_beeldtest_toegevoegd",
+      "beeld_door_vakdocent_beoordeeld": false
     },
     {
       "id": "gas",
@@ -904,7 +996,9 @@
           "titel": "OpenStax College Physics 2e · 15.2 Thermodynamische processen",
           "url": "https://openstax.org/books/college-physics-2e/pages/15-2-the-first-law-of-thermodynamics-and-some-simple-processes"
         }
-      ]
+      ],
+      "beeldteststatus": "vakinhoudelijke_beeldtest_open",
+      "beeld_door_vakdocent_beoordeeld": false
     },
     {
       "id": "dilation",
@@ -921,7 +1015,9 @@
           "titel": "OpenStax College Physics 2e · 28.2 Tijdrek",
           "url": "https://openstax.org/books/college-physics-2e/pages/28-2-simultaneity-and-time-dilation"
         }
-      ]
+      ],
+      "beeldteststatus": "vakinhoudelijke_beeldtest_open",
+      "beeld_door_vakdocent_beoordeeld": false
     },
     {
       "id": "photo",
@@ -938,7 +1034,9 @@
           "titel": "OpenStax College Physics 2e · 29.2 Foto-elektrisch effect",
           "url": "https://openstax.org/books/college-physics-2e/pages/29-2-the-photoelectric-effect"
         }
-      ]
+      ],
+      "beeldteststatus": "vakinhoudelijke_beeldtest_open",
+      "beeld_door_vakdocent_beoordeeld": false
     },
     {
       "id": "bohr",
@@ -955,7 +1053,9 @@
           "titel": "OpenStax College Physics 2e · 30.3 Bohr-model",
           "url": "https://openstax.org/books/college-physics-2e/pages/30-3-bohrs-theory-of-the-hydrogen-atom"
         }
-      ]
+      ],
+      "beeldteststatus": "vakinhoudelijke_beeldtest_open",
+      "beeld_door_vakdocent_beoordeeld": false
     },
     {
       "id": "chains",
@@ -976,7 +1076,9 @@
           "titel": "MIT OpenCourseWare · Radioactive Decay Series, Bateman",
           "url": "https://ocw.mit.edu/courses/12-744-marine-isotope-chemistry-fall-2012/c9d4092797c06068611c0cfb0903a7d9_MIT12_744F12_Lec4.pdf"
         }
-      ]
+      ],
+      "beeldteststatus": "vakinhoudelijke_beeldtest_open",
+      "beeld_door_vakdocent_beoordeeld": false
     },
     {
       "id": "decay",
@@ -993,7 +1095,9 @@
           "titel": "OpenStax College Physics 2e · 31.5 Halveringstijd",
           "url": "https://openstax.org/books/college-physics-2e/pages/31-5-half-life-and-activity"
         }
-      ]
+      ],
+      "beeldteststatus": "vakinhoudelijke_beeldtest_open",
+      "beeld_door_vakdocent_beoordeeld": false
     },
     {
       "id": "bragg",
@@ -1010,7 +1114,9 @@
           "titel": "OpenStax University Physics · 4.6 Röntgendiffractie (Bragg)",
           "url": "https://openstax.org/books/university-physics-volume-3/pages/4-6-x-ray-diffraction"
         }
-      ]
+      ],
+      "beeldteststatus": "vakinhoudelijke_beeldtest_open",
+      "beeld_door_vakdocent_beoordeeld": false
     }
   ],
   "broncontrole": {
@@ -1018,5 +1124,11 @@
     "betekenis": "Een gecontroleerd bronhoofdstuk onderbouwt een natuurkundige relatie; het valideert niet automatisch de simulatie, grafiek of bediening.",
     "status": "Alle 53 proeven hebben specifieke bronverwijzingen. Voor 51 zijn afzonderlijke numerieke rekencontroles toegevoegd; Newtons wieg en het getekende magneetveld hebben alleen kwalitatieve modelchecks. Geen enkele proef is door een vakdocent afgetekend.",
     "aftekening": "Numerieke test of bronverwijzing is geen vakinhoudelijke goedkeuring. Een vakdocent controleert ook modelaannames, natuurkundige juistheid van de animatie, uiterste instellingen en begrip bij leerlingen."
+  },
+  "beeldbeoordeling": {
+    "status": "Eerste gerichte technische beeldcontrole uitgevoerd. Voor vier proeven zijn aanvullende reken-naar-beeldtests vastgelegd. Dit is geen onafhankelijke vakdocentbeoordeling.",
+    "document": "content/science-observatory/vakdocent-controle-53.md",
+    "instructie": "Controleer per proef de animatie, grafiek, berekening, eenheden, uitersten en didactische voorstelling voordat inhoudelijk_gevalideerd op true mag.",
+    "beoordelingsdatum": null
   }
 }
