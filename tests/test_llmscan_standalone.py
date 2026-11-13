@@ -27,6 +27,22 @@ class LLMScanStandaloneTests(unittest.TestCase):
         self.assertIn("function render()", js)
         self.assertIn('href="onderzoek/"', html)
 
+    def test_all_original_images_are_local(self):
+        catalogue = (ROOT / "catalogue.js").read_text(encoding="utf-8")
+        seed = json.loads(catalogue.split("window.__LLMSCAN_SEED=", 1)[1].rsplit(";", 1)[0])
+        assets = {"icon.svg", "logo.svg", "classroom-hero.png"}
+        assets.update(seed.get("provider_assets", {}).values())
+        assets.update(visual["path"] for visual in seed.get("catalogue_visuals", {}).values() if visual.get("path"))
+        for path in sorted(assets):
+            with self.subTest(path=path):
+                file = ROOT / path
+                self.assertTrue(file.is_file(), f"Missing original image: {path}")
+                self.assertGreater(file.stat().st_size, 32, f"Empty image: {path}")
+        html = (ROOT / "index.html").read_text(encoding="utf-8")
+        app = (ROOT / "app.js").read_text(encoding="utf-8")
+        self.assertNotIn("eai-llmscan.werkruimte-s-2100.chatgpt.site/", html)
+        self.assertNotIn("eai-llmscan.werkruimte-s-2100.chatgpt.site/", app)
+
     def test_research_and_tools_are_distinct_records(self):
         content = (ROOT / "updates.js").read_text(encoding="utf-8")
         updates = json.loads(content.split("window.__LLMSCAN_UPDATES=", 1)[1].rsplit(";", 1)[0])
