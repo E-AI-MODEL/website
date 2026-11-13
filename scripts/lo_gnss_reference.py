@@ -15,7 +15,10 @@ def timestamp(raw,idx):
     if not v:return None
     try:return datetime.fromisoformat(v.replace("Z","+00:00")).timestamp()
     except ValueError:pass
-    try:return float(v)
+    try:
+        number=float(v)
+        # Catapult-export bewaart tijden als Excel-seriedagen. Zet om naar seconden.
+        return number*86400 if 20000<number<90000 else number
     except ValueError:return None
 
 def coords(row):
