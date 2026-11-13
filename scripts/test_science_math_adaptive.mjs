@@ -36,38 +36,61 @@ try{
     assert.ok(geom.stage.width>150&&geom.stage.height>100,'Usable graph stage '+slug+' '+width+': '+JSON.stringify(geom));
     assert.equal(await page.locator('#nav button').count(),6,'All six experiments remain available');
     if(compact){
-     assert.ok(await page.locator('#deckDock').isVisible(),'Mobile dock visible');
-     assert.ok(await page.locator('#modeSelect').isVisible(),'Native topic select visible');
-     assert.ok(geom.dock.bottom<=height+2,'Mobile dock stays inside viewport '+width+': '+JSON.stringify(geom));
-     await page.locator('[data-view="graph"]').click();
+     assert.ok(await page.locator('#deckDock').isVisible(),'Actiebalk zichtbaar');
+     assert.equal(await page.locator('#deckDock button').count(),4,'Vier concrete handelingen');
+     assert.ok(await page.locator('#modeSelect').isVisible(),'Onderwerp kiezen');
+     assert.ok(geom.dock.bottom<=height+2,'Actiebalk binnen scherm '+width+': '+JSON.stringify(geom));
+     assert.ok(await page.locator('#graphAction').isVisible(),'Een tweede weergave is bereikbaar vanuit het model');
+     const ctxLabel=await page.locator('[data-view="scene"] .action-word').innerText();
+     assert.ok(ctxLabel&&ctxLabel!=='Onderzoek','De eerste handeling noemt de wiskundige taak');
+     await page.locator('#graphAction').click();
      await page.locator('.analytics').waitFor({state:'visible'});
-     assert.ok(await page.locator('.analytics').isVisible(),'Graph opens in place');
      const graph=await page.locator('#plotCanvas').boundingBox();
-     assert.ok(graph.width>145&&graph.height>90,'Graph has adequate dimensions '+JSON.stringify(graph));
+     assert.ok(graph.width>145&&graph.height>90,'Tweede weergave is zichtbaar: '+JSON.stringify(graph));
+     await page.locator('#graphReturn').click();
+     await page.locator('#scene').waitFor({state:'visible'});
      await page.locator('[data-view="params"]').click();
      await page.locator('.inspector').waitFor({state:'visible'});
-     assert.ok(await page.locator('.inspector').isVisible(),'Settings are an in-viewport layer');
      const visible=await page.locator('#controls>.control:visible').count();
-     assert.ok(visible>=1&&visible<=2,'At most two parameter cards visible: '+visible);
+     assert.ok(visible>=1&&visible<=2,'Maximaal twee instellingen zichtbaar: '+visible);
      if(await page.locator('#paramNext').isEnabled()){
       await page.locator('#paramNext').click();
       assert.match(await page.locator('#paramPageText').innerText(),/2 \/ /);
+      await page.locator('#paramPrev').click();
      }
-     await page.locator('[data-view="learn"]').click();
-     await page.locator('.phasebox').waitFor({state:'visible'});
-     assert.ok(await page.locator('.phasebox').isVisible(),'Learning remains accessible');
-     await page.locator('#phasetabs [data-phase="instruction"]').click();
-     assert.ok(await page.locator('#phaseinner h4').isVisible(),'Instruction is on-screen');
-     await page.locator('[data-view="info"]').click();
+     await page.locator('[data-view="calc"]').click();
+     await page.locator('#actionResult').waitFor({state:'visible'});
+     const beforeResult=await page.locator('#resultNumber').innerText();
+     assert.ok(Number.isFinite(Number(beforeResult.replace(',','.').trim())),'De berekening toont een getal: '+beforeResult);
+     assert.ok(await page.locator('#resultSteps p').count()>=2,'De stappen zijn zichtbaar');
+     await page.locator('#saveComparison').click();
+     await page.locator('[data-view="params"]').click();
+     await page.locator('.inspector').waitFor({state:'visible'});
+     await page.locator('#controls>.control:visible input[type=range]').first().evaluate(el=>{
+       const next=Math.min(Number(el.max),Number(el.value)+Number(el.step)*2);
+       el.value=String(next);el.dispatchEvent(new Event('input',{bubbles:true}));
+     });
+     await page.locator('[data-view="calc"]').click();
+     await page.waitForFunction(()=>document.body.dataset.deckView==='calc');
+     assert.ok((await page.locator('#comparisonResult').innerText()).includes('Verschil'),'Bewaarde waarde is vergeleken met de nieuwe');
+     await page.locator('#showInfoFromCalc').click();
      await page.locator('#infoDesk').waitFor({state:'visible'});
-     assert.ok(await page.locator('#infoDesk').isVisible(),'Sources and explanations available');
      await page.locator('#infoNext').click();
-     assert.ok(await page.locator('#infoTitle').innerText(),'Next detail page');
+     assert.ok(await page.locator('#infoTitle').innerText(),'Concrete modelinformatie');
+     await page.locator('#infoReturn').click();
+     await page.locator('#actionResult').waitFor({state:'visible'});
+     await page.locator('[data-view="practice"]').click();
+     await page.locator('.phasebox').waitFor({state:'visible'});
+     assert.ok(await page.locator('#practiceAnswer').isVisible(),'Een echte berekeningsopgave');
+     await page.locator('#practiceAnswer').fill('geen getal');
+     await page.locator('#checkPractice').click();
+     assert.match(await page.locator('#phaseFeedback').innerText(),/Voer een getal in/);
      await page.locator('#modeSelect').selectOption('1');
      await page.waitForFunction(()=>document.querySelector('#modeSelect').value==='1'&&document.body.dataset.deckView==='scene');
-     assert.equal(await page.locator('body').getAttribute('data-deck-view'),'scene','Changing topic returns to model');
+     assert.ok(await page.locator('[data-view="scene"] .action-word').innerText(),'Handeling verandert mee bij onderwerp');
      await page.locator('#modeSelect').selectOption('0');
     }
+
     await page.locator('#scene').waitFor({state:'visible'});
     const before=await page.evaluate(()=>JSON.parse(document.querySelector('#config').textContent).modules[0].id);
     assert.ok(before);
