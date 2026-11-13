@@ -46,6 +46,9 @@ def test_mobile(page, width, height):
     assert g["pitch"]["right"] <= width + 3, g
     assert g["tools"]["h"] >= 38, g
     assert g["tools"]["bottom"] < height + 3, g
+    if height > 500:
+        assert page.locator(".mobile-task-preview").is_visible()
+        assert page.locator("#loMobileTaskTitle").inner_text() == page.locator("#tasktitle").inner_text()
 
     # De drie panelen gebruiken een eigen compact venster; niet de hele pagina.
     for button, section in [
