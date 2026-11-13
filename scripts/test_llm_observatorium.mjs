@@ -1,9 +1,11 @@
 // Browserproef voor de openbare LLM-HTML, inclusief echte tokeninvoer.
 import { chromium } from 'playwright';
+import { mkdirSync } from 'node:fs';
 import { spawn } from 'node:child_process';
 import assert from 'node:assert/strict';
 const base='http://127.0.0.1:8793';
 const server=spawn('python3',['-m','http.server','8793','--bind','127.0.0.1','--directory',process.argv[2]||'site-build'],{stdio:'ignore'});
+mkdirSync('test-results',{recursive:true});
 let browser;
 try{
  let ready=false;
@@ -33,7 +35,8 @@ try{
   assert.equal(layout.expertCount,layout.layers*cfg.experts,'Alle experts blijven behouden');
   for(let mode=0;mode<7;mode++){
     await page.evaluate(m=>setMode(m),mode);
-    await page.waitForTimeout(80);
+    await page.waitForTimeout(120);
+    if([0,1,2,3,4,5].includes(mode))await page.screenshot({path:'test-results/llm-'+width+'-modus-'+mode+'.png'});
     assert.equal(await page.evaluate(()=>state.playing),false,'Geen automatische beweging in modus '+mode);
     const isPlayerVisible=await page.locator('#playBtn').isVisible();
     assert.equal(isPlayerVisible,false,'Geen nutteloze afspeelbalk in modus '+mode);
