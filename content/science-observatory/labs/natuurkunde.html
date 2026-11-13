@@ -489,9 +489,66 @@ function standingProfile(p,t,u){const freq=Math.round(p.n)*p.v/(2*p.L);return Ma
 function longitudinalProfile(p,t,u){const freq=Math.round(p.n)*p.v/(2*p.L);return Math.sin(Math.round(p.n)*PI*u)*Math.cos(TAU*freq*t*LONGITUDINAL_VIS_SPEED)}
 function electricProfile(p,t,u){return p.E*Math.sin(TAU*(u*8/p.lambda-t*p.speed))}
 function interferenceProfile(p,t,X,Y=0){const r1=Math.hypot(X+p.distance/2,Y),r2=Math.hypot(X-p.distance/2,Y),ph=rad(p.phase);return Math.sin(TAU*r1/p.lambda-t*3.1)+Math.sin(TAU*r2/p.lambda-t*3.1+ph)}
+
+const physicsStepCatalog={
+ equilibrium:['Derde kracht voor evenwicht','R = √(F₁² + F₂² + 2F₁F₂cosα)','√({F1}²+{F2}²+2×{F1}×{F2}×cos({angle}°))','Resultante F₁+F₂','De evenwichtskracht werkt in tegengestelde richting aan de resultante.'],
+ resultant:['Resultante van twee krachten','R = √(F₁² + F₂² + 2F₁F₂cosα)','√({F1}²+{F2}²+2×{F1}×{F2}×cos({angle}°))','Resultante F₁+F₂','Krachten tellen als vectoren op.'],
+ cradle:['Aantal overgedragen bollen','n uit = n in','{n} identieke bollen dragen de beweging over','Losgelaten bollen','Schematische ideale botsing, zonder energieverlies.'],
+ circular:['Middelpuntzoekende kracht','Fₘ = m v²/r','{m} kg × {v}² (m/s)² / {r} m','Middelpuntzoekende kracht','De snelheidsrichting verandert voortdurend.'],
+ looping:['Normaalkracht boven in de looping','N = m(v²/r − g)','{m} kg × ({v}²/{r} − 9,81) m/s²','Normaalkracht bovenin','Bij onvoldoende snelheid verliest het voertuig contact; N wordt dan nul.'],
+ kepler1:['Afstand tot de ster','r = a(1 − e cosE)','{a} AE × (1 − {e} × cos({E} rad))','Afstand tot ster','De Keplervergelijking levert de excentrische anomalie E.'],
+ kepler2:['Afstand in de elliptische baan','r = a(1 − e cosE)','{a} AE × (1 − {e} × cos({E} rad))','Afstand tot ster','De planeet veegt in gelijke tijden gelijke oppervlakken uit.'],
+ buoyant:['Opwaartse kracht','Fₒ = ρgV onder','{rho} kg/m³ × 9,81 m/s² × V onder','Opwaartse kracht','Een drijvend voorwerp verplaatst precies zijn gewicht aan vloeistof.'],
+ pendulum:['Trillingstijd','T = 2π√(L/g)','2π × √({L} m / {g} m/s²)','Trillingstijd','Ideale slinger, benadering voor kleine uitwijkhoeken.'],
+ spring:['Totale energie van de veer','E = ½kA²','½ × {k} N/m × {A}² m²','Totale energie','Het model heeft geen demping.'],
+ coupled:['Hoge eigenfrequentie','f₂ = f₁√(1+2k)','{f} Hz × √(1+2×{k})','Hoge frequentie','Twee gekoppelde slingers hebben twee eigenfrequenties.'],
+ resonance:['Amplitude bij de aandrijving','A/A₀ = 1/√((1−r²)²+(2ζr)²)','r = {f} Hz/{f0} Hz = {ratio}; ζ = {z}','Amplitude­verhouding','De demping beperkt de amplitude rond resonantie.'],
+ beats:['Zwevingsfrequentie','fzweving = |f₁−f₂|','|{f1} Hz − {f2} Hz|','Zwevingsfrequentie','De zweving ontstaat uit de som van twee trillingen.'],
+ standing:['Staande-golffrequentie','f = nv/(2L)','{n} × {v} m/s / (2×{L} m)','Frequentie','De animatie is vertraagd en de uiteinden zijn vast.'],
+ longitudinal:['Frequentie van de longitudinale golf','f = nv/(2L)','{n} × {v} m/s / (2×{L} m)','Frequentie','Vertraagde deeltjesweergave met vaste uiteinden.'],
+ interference:['Interferentie midden tussen bronnen','I/Imax = cos²(Δφ/2)','cos²({phase}° / 2)','Relatieve intensiteit midden tussen bronnen','Twee bronnen met gelijke amplitude. Relatieve intensiteit.'],
+ doppler:['Frequentie vóór de bewegende bron','fvoor = fbron v/(v−vbron)','{f} Hz × {v} m/s / ({v}−{vs}) m/s','Voor de bron','Bewegende bron in stilstaande lucht.'],
+ magnetbar:['Relatieve magnetische veldsterkte','Brel ∝ sterkte/r³','Bij r=1 modelafstand: {strength}/1³','Relatieve sterkte','Geen absolute veldsterkte in tesla.'],
+ magnetwire:['Magneetveld rond rechte draad','B = μ₀I/(2πr)','2×10⁻⁷×{I} A / {distance} m','Veld op meetafstand','Een oneindig lange draad; cm omgerekend naar m.'],
+ lorentz:['Lorentzkracht','F = |q|vB sinα','1 nC × {v} km/s × {B} mT × sin({angle}°)','Lorentzkracht','De baan toont de dwarsprojectie in een homogeen veld.'],
+ motor:['Indicatief motorkoppel','M = IBk|sinθ|','{I} A × {B} T × 0,02 m² × |sin({theta} rad)|','Indicatief koppel','0,02 m² is een gekozen modeloppervlak.'],
+ generator:['Maximale generatorspanning','Umax = NBAω','{N} × {B} T × 0,02 m² × 2π × {rpm}/60 s⁻¹','Max. spanning','Het effectieve windingoppervlak van 0,02 m² is een aanname.'],
+ resistors:['Vervangingsweerstand','Serie R₁+R₂; parallel R₁R₂/(R₁+R₂)','R₁={R1} Ω; R₂={R2} Ω; {modeName}','Vervangingsweerstand','De stroom hoort bij een vaste spanning van 12 V.'],
+ potentiometer:['Uitgangsspanning','Uuit = Uin × positie/100','{U} V × {position}/100','Uitgangsspanning','Onbelaste spanningsdeler.'],
+ wheatstone:['Brugspanning','Ubrug = Ulinks − Urechts','{left} V − {right} V','Brugspanning','De onbekende weerstand blijft verborgen tot de leerling hem berekent.'],
+ ac:['Effectieve stroom','Ieff = Ueff/R','{U} V / {R} Ω','Effectieve stroom','De wisselende stroom wordt vertraagd getekend.'],
+ rlc:['Impedantie van de RLC-kring','Z = √(R²+(Xₗ−Xc)²)','√({R}²+({xl}−{xc})²) Ω','Impedantie','Xₗ = 2πfL; Xc = 1/(2πfC). mH en µF worden omgerekend.'],
+ lc:['Totale energie van de LC-kring','E = ½CU²','½ × {C} µF × {U}² V² (omgerekend naar mJ)','Totale energie','De elektrische en magnetische energie wisselen zonder verliezen.'],
+ em:['Frequentie van een elektromagnetische golf','f = c/λ','299.792.458 m/s / {lambda} m','Frequentie in vacuüm','Animatiesnelheid is niet hetzelfde als voortplantingssnelheid.'],
+ refraction:['Brekingshoek','n₁sin(i) = n₂sin(r)','sin(r)={n1}×sin({angle}°)/{n2}','Brekingshoek','Bij totale reflectie bestaat geen doorgelaten straal.'],
+ huygens:['Brekingshoek','sin(r) = (v₂/v₁)sin(i)','({v2}/{v1}) × sin({angle}°)','Hoek van breking','De golffrequentie blijft hetzelfde.'],
+ lens:['Beeldafstand van de lens','1/f = 1/u + 1/v','1/v=1/{f} cm − 1/{u} cm','Beeldafstand','Negatieve v is virtueel; bij u=f ligt het beeld op oneindig.'],
+ telescope:['Vergroting van de telescoop','|M| = fobjectief/foculair','{fo} cm / {fe} cm','Hoekvergroting','Het negatieve teken duidt een omgekeerd beeld aan.'],
+ double:['Afstand tussen heldere strepen','Δy = λL/d','{lambda} nm × {L} m / {d} mm','Streepafstand','Reken nm en mm eerst om naar meter; kleine-hoekbenadering.'],
+ single:['Breedte hoofdmaximum','breedte = 2λL/a','2 × {lambda} nm × {L} m / {a} mm','Breedte hoofdmaximum','Benadering voor kleine hoeken.'],
+ dilation:['Tijdrek','Δt = γΔτ, γ=1/√(1−β²)','{tau} s / √(1−{beta}²)','Tijd in ander stelsel','De bewegende klok meet de eigentijd.'],
+ photo:['Kinetische energie van het elektron','Ekin,max = max(0; hf−W)','max(0; {photon} eV − {W} eV)','Max. kinetische energie','Beneden de drempelfrequentie komen geen elektronen vrij.'],
+ bragg:['Bragghoek','nλ = 2d sinθ','sinθ={order}×{lambda} nm/(2×{d} nm)','Bragghoek','Alleen mogelijk wanneer nλ ≤ 2d.']
+};
+function physicsInsight(id,p,t,readouts){
+ const a=physicsStepCatalog[id];if(!a)return null;
+ const read=label=>readouts.find(r=>r[0]===label)?.[1]||'Niet beschikbaar';
+ const d={ratio:p.f0?p.f/p.f0:0,distance:p.r?p.r/100:0,theta:t*(p.rpm||0)*TAU/60,
+    modeName:p.mode===1?'parallel':'serie',xl:p.L?TAU*p.f*p.L*.001:0,xc:p.C?1/(TAU*p.f*p.C*1e-6):0,
+    left:p.R1?10*p.R2/(p.R1+p.R2):0,right:p.R3?10*p.R4/(p.R3+p.R4):0,
+    photon:p.f?4.135667696*p.f:0};
+ if(id==='kepler1'||id==='kepler2'){let M=TAU*((t/(id==='kepler2'?9:15))%1),E=M;
+   for(let k=0;k<12;k++)E-=(E-p.e*Math.sin(E)-M)/(1-p.e*Math.cos(E));d.E=E;}
+ const substitution=a[2].replace(/\{(\w+)\}/g,(_,key)=>{
+   const value=Object.prototype.hasOwnProperty.call(d,key)?d[key]:p[key];
+   return typeof value==='number'?fmt(value,3):String(value??'?');
+ });
+ return {title:a[0],formula:a[1],substitution,answer:read(a[3]),note:a[4]};
+}
+
 function renderExperiment(id,p,t,G){
  const {line:L,dot:D,rect:R,txt:T,arrow:A,arc:AR,path:P,ellipse:EL,wave:W,poly:POL,ring:RG}=G;
- const say=(arr,title,fn,insight=null)=>({readouts:arr.map(([k,v])=>[k,String(v)]),title,fn,insight});
+ const say=(arr,title,fn,insight=null)=>{const readouts=arr.map(([k,v])=>[k,String(v)]);return {readouts,title,fn,insight:insight||physicsInsight(id,p,t,readouts)};};
  const n=(a,unit='',digits=2)=>fmt(a,digits)+(unit?' '+unit:'');
  const vector=(x,y,length,angle,color,thick=4)=>A(x,y,x+length*Math.cos(angle),y-length*Math.sin(angle),color,thick);
  const origin=()=>{L(85,390,925,390,C.line,2);L(110,425,110,75,C.line,2)};
