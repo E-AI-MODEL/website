@@ -23,22 +23,34 @@ def check_phone(browser, width, height):
     assert page.locator("#loQuickActions").is_visible()
     assert page.locator("#loQuickButtons button").count() == 3
     assert page.locator('[data-lo-mobile-panel]').count() == 3
+    assert not page.locator("#loMobileControls").is_visible()
+    assert page.locator("#loGameSettingsOpen").is_visible()
+    assert not page.locator("#sportSelect").is_visible()
+    page.locator("#loGameSettingsOpen").click()
+    assert page.locator("#sportSelect").is_visible()
+    assert page.locator("#formationSelect").is_visible()
+    assert page.locator("#new").is_visible()
+    page.locator("#loGameSettingsOpen").click()
+    assert not page.locator("#sportSelect").is_visible()
+    assert page.locator("#loMobileGoalTrigger").is_visible()
+    assert not page.locator("#loMobileCoachTrigger").is_visible()
     dimensions = page.evaluate("""() => {
         const r = el => el.getBoundingClientRect();
         const pitch = r(document.querySelector('#pitch'));
         const action = r(document.querySelector('#primary'));
-        const menu = r(document.querySelector('.mobile-controls'));
+        const top = r(document.querySelector('.top'));
         return {scrollX: document.documentElement.scrollWidth - innerWidth,
                 scrollY: document.documentElement.scrollHeight - innerHeight,
                 pitchWidth: pitch.width, pitchHeight: pitch.height,
-                buttonHeight: action.height, menuHeight: menu.height,
-                buttonBottom: action.bottom, menuTop: menu.top};
+                buttonHeight: action.height, topHeight: top.height,
+                buttonBottom: action.bottom};
     }""")
     assert dimensions["scrollX"] <= 2, dimensions
     assert dimensions["scrollY"] <= 2, dimensions
     assert dimensions["pitchWidth"] > 180 and dimensions["pitchHeight"] > 160, dimensions
     assert dimensions["buttonHeight"] >= 38, dimensions
-    assert dimensions["buttonBottom"] < dimensions["menuTop"], dimensions
+    assert dimensions["buttonBottom"] <= height + 2, dimensions
+    assert dimensions["topHeight"] <= 52, dimensions
     page.screenshot(path=str(SHOTS / f"{width}x{height}-veld.png"))
 
     # Meer opent de overige acties zonder dat er drie grote menu's nodig zijn.
@@ -53,16 +65,13 @@ def check_phone(browser, width, height):
     page.locator("#loQuickButtons .lo-quick-choice").first.click()
     assert page.locator("#loQuickActions").is_visible()
 
-    page.locator('[data-lo-mobile-panel="goal"]').click()
+    page.locator("#loMobileGoalTrigger").click()
     assert page.locator("#loMobileGoalSelect").is_visible()
     page.locator("#loMobileClose").click()
     assert not page.locator(".shell > .side").is_visible()
 
-    page.locator('[data-lo-mobile-panel="coach"]').click()
-    assert page.locator("#loCoachPanel").is_visible()
-    assert page.locator("#loMobilePanelTitle").inner_text() == "Coach en terugkijken"
-    page.keyboard.press("Escape")
-    assert not page.locator(".shell > .side").is_visible()
+    # Coach opent na het spel: niet als een extra permanent menu.
+    assert not page.locator("#loCoachSummary").is_visible()
     if width == 390:
         # De getekende richting is verticaal, maar de spelcoordinaten veranderen niet.
         before = page.evaluate("""() => {
@@ -79,8 +88,20 @@ def check_phone(browser, width, height):
         page.mouse.up()
         after = page.evaluate("""() => +document.querySelector('#actors [data-id="a0"] circle').getAttribute('cx')""")
         assert after > before["worldX"] + 10, (before, after)
+    if width == 390:
+        page.locator("#playbackSpeed").select_option("2")
     page.locator("#primary").click()
     assert not page.locator("#loQuickActions").is_visible()
+    if width == 390:
+        page.wait_for_function("document.querySelector('.app').dataset.loPhase === 'done'", timeout=25000)
+        assert page.locator("#loCoachSummary").is_visible()
+        assert page.locator("#loMobileCoachTrigger").is_visible()
+        page.locator("#loCoachSummaryOpen").click()
+        assert page.locator(".shell > .side").is_visible()
+        assert page.locator("#loMobilePanelTitle").inner_text() == "Coach en terugkijken"
+        page.keyboard.press("Escape")
+        assert not page.locator(".shell > .side").is_visible()
+        page.screenshot(path=str(SHOTS / "390x844-coach.png"))
     assert not errors, errors
     page.close()
 
