@@ -150,6 +150,7 @@
  #app[data-mode="1"][data-panel="graph"] .li-muted{display:block;margin-top:2px}
 }
 @media(max-width:360px){#app[data-mode="1"] .layer-inspector-panel{height:190px}.li-section{padding:5px 6px}.li-expert{gap:2px;grid-template-columns:30px 1fr 26px}}
+#app:not([data-mode="1"]) #playBtn,#app:not([data-mode="1"]) #clock,#app:not([data-mode="1"]) #timeSlider,#app:not([data-mode="1"]) #timeText,#app:not([data-mode="1"]) #speedSelect{display:none!important}
 </style>
 </head>
 <body>
@@ -206,7 +207,7 @@
  <div class="learn-part"><div class="block-title">WAT JE ZIET</div><div id="reasoningLearning" class="reasoning-learning" hidden><b>Wat gebeurt er bij redeneren?</b><p>Een redeneermodel verwerkt de invoer en kan extra tokens genereren voor interne tussenstappen. Die tokens zijn meestal niet leesbaar in de API, maar hun aantal wordt wel bijgehouden.</p><b>Wat kost het?</b><p>Invoer telt als input. Redeneertokens en het uiteindelijke antwoord tellen als output. Hergebruikte invoer kan een ander tarief krijgen. Een toolaanroep kan extra invoer en uitvoer veroorzaken.</p><b>Wat kun je niet zien?</b><p>Dit schema vertelt niet welke gedachten het model had. Het toont tokengebruik en een rekenmodel voor kosten.</p></div><div class="learn-card"><h3 id="taskTitle">Onderzoeksmodus</h3><p id="taskText"></p></div><p class="source-note">De modelafmetingen volgen de openbare configuratie. De routes en kansen zijn voorbeelden. Er worden geen verborgen modelactivaties getoond.</p></div>
  <div class="sources-part"><div class="block-title">GEGEVENS EN GRENZEN</div><div class="source-note"><b>Redenering en tokengebruik</b><p>OpenAI publiceert in een API-voorbeeld 75 invoertokens, 1.186 uitvoertokens en daarbinnen 1.024 redeneertokens. De interne redeneertekst van gesloten modellen is niet zichtbaar. Prijzen en aangepaste aantallen in dit observatorium zijn rekenvoorbeelden, geen factuur.</p><a href="https://developers.openai.com/api/docs/guides/reasoning" target="_blank" rel="noopener">Reasoning en gebruikscijfers</a><br><a href="https://developers.openai.com/api/docs/guides/prompt-caching" target="_blank" rel="noopener">Cache en tokenprijzen</a></div><div class="source-note"><b>Open modelarchitectuur</b><p>De aantallen lagen, experts, heads, dimensies en contextposities zijn afkomstig uit de openbare configuraties van gpt-oss-120b en gpt-oss-20b.</p><p><a href="https://huggingface.co/openai/gpt-oss-120b/blob/main/config.json" target="_blank" rel="noopener">Configuratie 120b</a> · <a href="https://huggingface.co/openai/gpt-oss-20b/blob/main/config.json" target="_blank" rel="noopener">Configuratie 20b</a> · <a href="https://deploymentsafety.openai.com/gpt-oss" target="_blank" rel="noopener">Modelkaart</a></p></div><div class="source-note"><b>Wat de stippen betekenen</b><p>Een expert heeft een eigen positie in de getekende wereld. Extra lichtpunten maken de structuur zichtbaar. Ze zijn geen losse modelparameters. De routes, scores en tokenkansen zijn reproduceerbare rekenvoorbeelden. Er zijn geen activaties of gewichten uit een echte modeluitvoering ingelezen.</p></div><div class="source-note"><b>GPT-6</b><p>Dit observatorium onderzoekt technieken die ook bij moderne taalmodellen van belang zijn. De interne architectuur van GPT-6 is niet openbaar. We tekenen die niet alsof we hem kennen.</p></div><button id="downloadJson" type="button" class="small-btn">Exporteer instellingen</button></div>
 </div></aside>
-<footer class="footer"><button class="play" id="playBtn" aria-label="Animatie pauzeren">II</button><span id="clock">SIMULATIETIJD</span><input id="timeSlider" type="range" min="0" max="1000" value="120" aria-label="Simulatietijd"><span id="timeText" class="time-read">120</span><span class="spacer"></span><span class="footer-tag">SCHEMATISCH · BEREKEND · CONTROLEERBAAR</span><select id="speedSelect" aria-label="Animatiesnelheid"><option value="0.5">0,5x</option><option value="1" selected>1x</option><option value="2">2x</option></select></footer>
+<footer class="footer"><button class="play" id="playBtn" aria-label="Doorloop de tokenroute">&gt;</button><span id="clock">SIMULATIETIJD</span><input id="timeSlider" type="range" min="0" max="1000" value="0" aria-label="Simulatietijd"><span id="timeText" class="time-read">0</span><span class="spacer"></span><span class="footer-tag">SCHEMATISCH · BEREKEND · CONTROLEERBAAR</span><select id="speedSelect" aria-label="Animatiesnelheid"><option value="0.5">0,5x</option><option value="1" selected>1x</option><option value="2">2x</option></select></footer>
 <nav class="mobile-dock" aria-label="Mobiel onderzoeksmenu"><button data-panel="modules"><b>&#9638;</b>Modules</button><button data-panel="graph"><b>&#8767;</b><span id="graphDockLabel">Grafiek</span></button><button data-panel="settings"><b>&#9776;</b>Instellen</button><button data-panel="learn"><b>≡</b>Uitleg</button><button data-panel="sources"><b>&#9678;</b>Bronnen</button></nav>
 </div>
 <script>
@@ -303,8 +304,8 @@ function setCameraMatrix(){
 function project(p){const xx=p.x*cam.cy-p.z*cam.sy,zz=p.x*cam.sy+p.z*cam.cy;const yy=p.y*cam.cp-zz*cam.sp,depth=p.y*cam.sp+zz*cam.cp;const f=1/(1+depth*.033),sc=cam.sc;return {x:W*.515+xx*sc*f+cam.ox,y:H*.54-yy*sc*f+cam.oy,d:depth,s:sc*f}}
 function stroke3(a,b,color,alpha=.5,width=1){const p=project(a),q=project(b);ct.globalAlpha=alpha;ct.strokeStyle=color;ct.lineWidth=width;ct.beginPath();ct.moveTo(p.x,p.y);ct.lineTo(q.x,q.y);ct.stroke();ct.globalAlpha=1}
 function roundDot(x,y,r,color,a){ct.globalAlpha=a;ct.fillStyle=color;ct.beginPath();ct.arc(x,y,r,0,TAU);ct.fill();ct.globalAlpha=1}
-function halo(){const g=ct.createRadialGradient(W*.51,H*.54,5,W*.51,H*.54,Math.max(W,H)*.59);g.addColorStop(0,'#1c3856');g.addColorStop(.35,'#0c2039');g.addColorStop(.72,'#071424');g.addColorStop(1,'#040c17');ct.fillStyle=g;ct.fillRect(0,0,W,H);for(const s of world.stars){ct.globalAlpha=s.alpha;ct.fillStyle='#a2c3e6';ct.fillRect(s.x*W,s.y*H,s.r,s.r)}ct.globalAlpha=1}
-function drawRings(){
+function halo(){const g=ct.createLinearGradient(0,0,W,H);g.addColorStop(0,'#091b2a');g.addColorStop(.5,'#0b1828');g.addColorStop(1,'#060e1b');ct.fillStyle=g;ct.fillRect(0,0,W,H);ct.strokeStyle='rgba(111,163,198,.047)';ct.lineWidth=.65;const d=Math.max(42,Math.min(W,H)/9);for(let x=0;x<W;x+=d){ct.beginPath();ct.moveTo(x,0);ct.lineTo(x,H);ct.stroke()}for(let y=0;y<H;y+=d){ct.beginPath();ct.moveTo(0,y);ct.lineTo(W,y);ct.stroke()}}
+function drawLayerFrames(){
  const h=1.75,z=2.05,N=cfg.layers,focus=state.layer;
  const corners=l=>[{x:layerX(l),y:-h,z:-z},{x:layerX(l),y:-h,z:z},{x:layerX(l),y:h,z:z},{x:layerX(l),y:h,z:-z}];
  ct.save();ct.lineJoin='round';
@@ -543,7 +544,7 @@ function drawGenerationSample(){
 function drawScene(){
  if(W<2||H<2)return;setCameraMatrix();ct.setTransform(dpr,0,0,dpr,0,0);halo();
  if(state.mode<=2){
-  drawRings();drawCloud();drawExperts();
+  drawLayerFrames();drawCloud();drawExperts();
   if(state.showTrails||state.mode===1)drawStream();
   if(state.mode===0)drawModelScan();
   if(state.mode===2){drawFocusLayer();drawRouterSignals();}
