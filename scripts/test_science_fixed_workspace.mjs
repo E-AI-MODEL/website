@@ -457,8 +457,19 @@ try{
    await dragDivider('sceneDivider',0,-56);
    assert((await measureLayout()).analysis>beforeLayout.analysis+35,'Analysevak krijgt extra hoogte');
    assert(await page.locator('#insightMathDivider').isVisible(),'De grens tussen momentenbalken en berekening is zichtbaar');
+   const insightDividerBefore=await measureLayout();
+   const insightDividerDebugBefore=await page.evaluate(()=>{
+    const item=document.querySelector('#insightMathDivider'),body=item.parentElement,box=item.getBoundingClientRect();
+    return {bodyWidth:body.clientWidth,divider:box.width,dividerHeight:box.height,display:getComputedStyle(item).display,selected:document.querySelector('#insightPanel').hidden};
+   });
    await dragDivider('insightMathDivider',-35,0);
-   assert((await measureLayout()).insightMath>beforeLayout.insightMath+20,'Berekening naast meetbalken wordt breder');
+   const insightDividerAfter=await measureLayout();
+   const insightDividerDebugAfter=await page.evaluate(()=>{
+    const item=document.querySelector('#insightMathDivider');
+    return {ariaNow:item.getAttribute('aria-valuenow'),ariaMax:item.getAttribute('aria-valuemax'),active:document.querySelector('#insightPanel').hidden};
+   });
+   assert(insightDividerAfter.insightMath>insightDividerBefore.insightMath+20,
+    'Berekening naast meetbalken wordt breder: '+JSON.stringify({before:insightDividerBefore,after:insightDividerAfter,debugBefore:insightDividerDebugBefore,debugAfter:insightDividerDebugAfter}));
    await page.evaluate(()=>selectBottom('graph'));
    await page.locator('#mathToggle').click();
    assert(await page.locator('#graphMathDivider').isVisible(),'Scheiding grafiek en berekening opent');
