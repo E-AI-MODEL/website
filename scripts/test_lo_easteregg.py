@@ -65,9 +65,17 @@ def main():
         page.locator("#loWelcomeTeacher").click()
         assert page.locator("#loTeacher").is_visible()
         state=page.evaluate("window.__loTeacherTest.getState()")
-        assert state=={"open":True,"enabled":False,"formation":2},state
+        assert state=={"open":True,"enabled":False,"formation":2,"practice":False},state
+        assert "Waarnemen" in page.locator("#loTeacher").inner_text()
+        assert "Kiezen" in page.locator("#loTeacher").inner_text()
+        assert "zelf proberen" in page.locator("#loTeacher").inner_text().lower()
+        assert "rugdekking" in page.locator("#loTeacherFocusTitle").inner_text().lower()
         page.locator('[data-lo-teacher-form="1"]').click()
         assert page.locator('[data-lo-teacher-form="1"]').get_attribute("aria-pressed")=="true"
+        assert "aanspeellijn" in page.locator("#loTeacherFocusGoal").inner_text()
+        page.locator('[data-lo-teacher-form="3"]').click()
+        assert "ruimte" in page.locator("#loTeacherFocusGoal").inner_text()
+        assert "onderlinge" in page.locator("#loTeacher").inner_text()
         page.locator('[data-lo-teacher-form="2"]').click()
         page.locator("#loTeacherTutorial").click()
         assert page.locator("#loTeacher").is_hidden()
@@ -89,6 +97,30 @@ def main():
         page.locator("#loTeacherExit").click()
         assert page.locator("#loTeacherBadge").is_hidden()
         assert page.evaluate("window.__loTeacherTest.getState().enabled") is False
+        # Een echte docentproef opent een bestaand spel met passend tactisch doel.
+        page.reload(wait_until="domcontentloaded")
+        page.locator("#loWelcomeTeacher").click()
+        page.locator('[data-lo-teacher-form="2"]').click()
+        page.locator("#loTeacherPractice").click()
+        assert page.locator("#loTeacher").is_hidden()
+        assert page.locator("#loTeacherPracticeTip").is_visible()
+        assert page.evaluate("window.__loTeacherTest.getState().practice") is True
+        assert page.evaluate("window.__loLabTest.getCoachState().goal")=="cover"
+        assert page.evaluate("window.__loLabTest.getCoachState().role")=="d"
+        assert page.locator("#formationSelect").input_value()=="2"
+        assert page.evaluate("window.__loLabTest.getPlayers().length")==5
+        page.locator("#primary").click()
+        assert page.evaluate("window.__loLabTest.getFrames().length")>2
+        page.reload(wait_until="domcontentloaded")
+        page.locator("#loWelcomeHelp").click()
+        page.locator("#loHelpTabs").get_by_role("button",name="Doelen en coach").click()
+        assert "coach" in page.locator("#loHelpWhy").inner_text().lower()
+        page.locator("#loHelpPractice").click()
+        assert page.locator("#loHelp").is_hidden()
+        assert page.locator("#welcome").is_hidden()
+        assert page.locator("#loTeacherPracticeTip").is_visible()
+        assert page.evaluate("window.__loTeacherTest.getState().practice") is True
+        assert page.evaluate("window.__loLabTest.getCoachState().role")=="d"
         # De lesstart is alleen een weergavekeuze; andere speltests starten schoon.
         page.reload(wait_until="domcontentloaded")
         page.locator('[data-mode="free"]').click()
@@ -109,6 +141,14 @@ def main():
             assert bounds["teacher"]["right"]<=bounds["vw"]+2,bounds
             page.locator("#loWelcomeTeacher").click()
             assert page.locator("#loTeacher").is_visible()
+            modal=page.evaluate("""()=>({
+              w:innerWidth,h:innerHeight,
+              sheet:document.querySelector('.lo-teacher-sheet').getBoundingClientRect().toJSON()
+            })""")
+            assert modal["sheet"]["width"]<=modal["w"]+1,modal
+            assert modal["sheet"]["height"]<=modal["h"]+1,modal
+            page.locator('[data-lo-teacher-form="1"]').click()
+            assert "aanspeellijn" in page.locator("#loTeacherFocusTitle").inner_text()
             page.keyboard.press("Escape")
             assert page.locator("#loTeacher").is_hidden()
         page.set_viewport_size({"width":1366,"height":820})
@@ -122,6 +162,8 @@ def main():
         help_state=page.evaluate("window.__loHelpTest.getState()")
         assert help_state["chapterCount"]==6 and help_state["stepCount"]==18,help_state
         assert page.locator("#loHelpTabs button").count()==6
+        assert page.locator("#loHelpWhy").is_visible()
+        assert page.locator("#loHelpPractice").is_visible()
         page.locator("#loHelpNext").click()
         assert page.locator("#loHelpStepTitle").inner_text()=="Verplaats een speler"
         page.locator("#loHelpTabs").get_by_role("button",name="Doelen en coach").click()
