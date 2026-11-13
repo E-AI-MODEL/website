@@ -90,3 +90,11 @@ De regressietest `tests/test_science_graph_animation_alignment.mjs` controleert 
 - **Radioactief verval:** de terugkerende animatie gebruikt dezelfde zes halveringstijden als de grafiek.
 
 De getoonde vertraging van snelle trillingen is een hulpmiddel om hun beweging te kunnen volgen. Het is niet de werkelijke oscillatiefrequentie op het beeldscherm. Deze controle betreft de genoemde modellen en steekproeven, niet een volledige vakinhoudelijke audit van alle 53 proeven.
+
+## Per proef: tweede weergave en rekenstappen (13 november 2026)
+
+Alle 53 proeven hebben een bewust gekozen tweede weergave en een uitklapbare berekening met de actuele formule, ingevulde waarden, resultaat en modelaannames. De data komen uit dezelfde `renderExperiment`-aanroep als de gemeten waarden, zodat de uitlegregel niet los van de simulatie rekent.
+
+Bij 20 proeven opent de tweede ruimte met een passende andere voorstelling (krachten, energie, momenten, weerstanden, spanning, tijd, niveaus of verval). Bij 33 proeven blijft de grafiek het eerste beeld, omdat deze het verloop of een relatie het beste toont. De interactieve grafiek blijft bij alle 53 bereikbaar.
+
+`tests/test_science_physics_insights.mjs` controleert of alle proeven de berekeningsstappen tonen, de gekozen tweede weergave beschikbaar is en of de weergegeven antwoorden bij gewijzigde instellingen uit de meetwaarden komen. `scripts/test_science_fixed_workspace.mjs` opent voor grafiekbediening expliciet het grafiektabblad. De controles vervangen geen afzonderlijke volledige wetenschappelijke of didactische validatie van iedere proef.
