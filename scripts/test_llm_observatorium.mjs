@@ -21,6 +21,26 @@ try{
   await page.locator('#universe').waitFor({state:'visible'});
   const modesCount=await page.locator('#modes .mode-btn').count();
   assert.equal(modesCount,7,'Zeven onderzoeksmodules; JS-fouten: '+errors.join(' | '));
+  // De lagen staan in een volgorde, niet op concentrische ringen.
+  const layout=await page.evaluate(()=>({
+    first:world.experts[0],last:world.experts[(cfg.layers-1)*cfg.experts],
+    maxY:Math.max(...world.experts.map(p=>Math.abs(p.y))),
+    maxZ:Math.max(...world.experts.map(p=>Math.abs(p.z))),
+    layers:cfg.layers,expertCount:world.experts.length
+  }));
+  assert(layout.last.x>layout.first.x,'Lagen moeten oplopend geplaatst zijn');
+  assert(layout.maxY<1.7&&layout.maxZ<2,'Experts moeten in compacte roosters staan');
+  assert.equal(layout.expertCount,layout.layers*cfg.experts,'Alle experts blijven behouden');
+  for(let mode=0;mode<7;mode++){
+    await page.evaluate(m=>setMode(m),mode);
+    await page.waitForTimeout(80);
+    assert.equal(await page.evaluate(()=>state.playing),false,'Geen automatische beweging in modus '+mode);
+    const isPlayerVisible=await page.locator('#playBtn').isVisible();
+    assert.equal(isPlayerVisible,mode===1,'Afspeelknop alleen voor de tokenroute in modus '+mode);
+  }
+  await page.evaluate(()=>setMode(0));
+  assert.equal(errors.length,0,'Fouten bij omschakelen tussen zeven visualisaties: '+errors.join(' | '));
+
   if(width<800)await page.locator('.mobile-dock [data-panel="modules"]').click();
   await page.locator('#modes [data-mode="1"]').click();
   if(width<800)await page.locator('.mobile-dock [data-panel="settings"]').click();
