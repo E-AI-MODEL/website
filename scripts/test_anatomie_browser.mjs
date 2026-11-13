@@ -8,6 +8,27 @@ import { mkdirSync } from 'node:fs';
 const root = resolve(process.argv[2] || 'site-build');
 const base = 'http://127.0.0.1:8798';
 const server = spawn('python3', ['-m', 'http.server', '8798', '--bind', '127.0.0.1', '--directory', root], {stdio:'ignore'});
+
+// Camera presets animate over several rendered frames. Wait for the real
+// camera position and target to settle, not an assumed wall-clock duration.
+async function waitForCameraSettled(page) {
+  await page.waitForFunction(() => {
+    const viewer = window.ZAnatomy?.viewer;
+    if (!viewer) return false;
+    const state = [...viewer.camera.position.toArray(), ...viewer.controls.target.toArray()];
+    const prior = window.__eaiCameraSample;
+    window.__eaiCameraSample = state;
+    if (!prior) { window.__eaiCameraStill = 0; return false; }
+    const delta = Math.hypot(...state.map((value, index) => value - prior[index]));
+    window.__eaiCameraStill = delta < 1e-5 ? (window.__eaiCameraStill || 0) + 1 : 0;
+    return window.__eaiCameraStill >= 4;
+  }, null, {timeout:10000, polling:90});
+  await page.evaluate(() => {
+    delete window.__eaiCameraSample;
+    delete window.__eaiCameraStill;
+  });
+}
+
 let browser;
 try {
   let ready = false;
@@ -106,20 +127,28 @@ try {
       assert(Math.abs(afterPan.distance-beforePan.distance)<.04,
         'Verplaatsen mag de zoomafstand niet wijzigen');
       await page.locator('#frontViewBtn').click();
-      await page.waitForTimeout(650);
+      await waitForCameraSettled(page);
       const beforeKeyboard = await page.evaluate(() => window.ZAnatomy.viewer.controls.target.toArray());
       await page.locator('#threeCanvas').focus();
       await page.keyboard.down('Shift');
       await page.keyboard.press('ArrowUp');
+      await page.waitForTimeout(80);
+      const firstKeyboard = await page.evaluate(() => window.ZAnatomy.viewer.controls.target.toArray());
+      const firstShift = Math.hypot(...firstKeyboard.map((v,i) => v-beforeKeyboard[i]));
+      assert(firstShift > .0002,
+        'Een toets Shift + pijl moet het draaipunt verplaatsen: '+
+          beforeKeyboard.join(',')+' -> '+firstKeyboard.join(','));
+      // Check that the movement accumulates to a visible displacement.
+      for (let i=0; i<5; i++) await page.keyboard.press('ArrowUp');
       await page.keyboard.up('Shift');
       await page.waitForTimeout(200);
       const afterKeyboard = await page.evaluate(() => window.ZAnatomy.viewer.controls.target.toArray());
       const keyboardShift = Math.hypot(...afterKeyboard.map((v,i)=>v-beforeKeyboard[i]));
       assert(keyboardShift>.003,
-        'Shift + pijl moet het draaipunt daadwerkelijk verplaatsen: '+
+        'Herhaald Shift + pijl moet het draaipunt merkbaar verplaatsen: '+
           beforeKeyboard.join(',')+' -> '+afterKeyboard.join(','));
       await page.locator('#frontViewBtn').click();
-      await page.waitForTimeout(650);
+      await waitForCameraSettled(page);
     }
     // De standaardzoom gebruikt voortaan de plaats onder de muis. De
     // verandering van het draaipunt is een echte camerameting, geen UI-label.
@@ -204,15 +233,9 @@ try {
         'Het draaipunt volgt niet de rechts van het midden aangewezen plek');
 
       await page.locator('#frontViewBtn').click();
-      // Wacht op de werkelijk herstelde camerapositie, niet op een
-      // aangenomen animatieduur die per machine kan verschillen.
-      await page.waitForFunction(({before,zoomed}) => {
-        const {camera,controls}=window.ZAnatomy.viewer;
-        const target=controls.target.toArray();
-        const distance=camera.position.distanceTo(controls.target);
-        return distance>zoomed.distance*1.1
-          && Math.hypot(...target.map((v,i)=>v-before.target[i]))<.08;
-      }, {before:beforeZoom,zoomed}, {timeout:5500,polling:100});
+      await waitForCameraSettled(page);
+      // A settled but incorrect camera must still fail the test.
+
       const restored=await page.evaluate(() => {
         const {camera,controls}=window.ZAnatomy.viewer;
         return {target:controls.target.toArray(),
