@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { runInNewContext } from 'node:vm';
 
 const load = path => readFileSync(new URL('../' + path, import.meta.url), 'utf8');
 
@@ -25,7 +26,7 @@ test('Toegankelijke Melkwegversie geeft vragen en feedback zonder 3D-model te ve
   assert.match(html, /data-guide-choice/);
   assert.match(html, /guideAttempts/);
   assert.match(html, /function guideHTML/);
-  assert.match(html, /Dat klopt met dit model/);
+  assert.match(html, /Dit antwoord past bij het model/);
   assert.match(html, /function modeSet/);
   assert.match(html, /function camSet/);
 });
@@ -76,3 +77,25 @@ test('De publieke hoofdnavigatie heeft observatoria apart van hulpmiddelen', () 
   assert.doesNotMatch(tools, /Anatomie van de mens/);
   assert.equal((source.match(/'\/tools\/anatomie\//g) || []).length, 2);
 });
+
+test('Melkweguitleg verandert met de echte modelinstellingen', () => {
+  const html = load('content/melkweg-lab/index.html');
+  const start = html.indexOf('function guideLiveLine(){');
+  const end = html.indexOf('function updateGuideLive()', start);
+  assert.ok(start >= 0 && end > start);
+  const fn = html.slice(start, end);
+  const context = { state: {mode:'atlas',cam:{target:'center',elev:38}}, vParts:()=>({total:232}) };
+  const description = () => runInNewContext(fn + '\nguideLiveLine()', context);
+  assert.match(description(), /Draai de Melkweg/);
+  context.state.cam.target = 'sun';
+  assert.match(description(), /onze zon/);
+  context.state = {mode:'stars',limMag:12};
+  assert.match(description(), /zwakkere kijker/);
+  context.state.limMag = 21;
+  assert.match(description(), /zwakkere sterren/);
+  context.state = {mode:'dynamics',focusR:8.2,model:{halo:.4}};
+  assert.match(description(), /232 km per seconde/);
+  assert.match(html, /updateGuideLive\(\);/);
+  assert.match(html, /id="guided-observation"/);
+});
+

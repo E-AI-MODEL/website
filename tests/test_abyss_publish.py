@@ -35,13 +35,17 @@ class AbyssPublishTests(unittest.TestCase):
         self.assertIn('id="sea3d"', html)
         self.assertIn('role="status"', html)
 
-    def test_tools_navigation_to_abyss(self):
+    def test_abyss_is_available_but_absent_from_main_overviews(self):
+        self.assertTrue(PUBLIC.is_file(), "Bestaande ABYSS-route blijft bereikbaar")
         for rel in ("nl/tools/index.html", "tools/index.html"):
             page = ROOT / "site-build" / rel
             self.assertTrue(page.is_file())
+            html = page.read_text(encoding="utf-8")
+            self.assertIn("<main", html)
+            main = "<main" + html.split("<main", 1)[1].split("</main>", 1)[0] + "</main>"
             links = Links()
-            links.feed(page.read_text(encoding="utf-8"))
-            self.assertIn("/tools/abyss/", links.hrefs)
+            links.feed(main)
+            self.assertNotIn("/tools/abyss/", links.hrefs)
 
     def test_source_explains_actual_data_vs_demo(self):
         html = SOURCE.read_text(encoding="utf-8")
