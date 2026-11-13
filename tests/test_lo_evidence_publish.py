@@ -4,9 +4,9 @@ from pathlib import Path
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
-LAB = ROOT / "tools/lo-aanvalslab/index.html"
-PAGE = ROOT / "tools/lo-aanvalslab/onderbouwing/index.html"
-PATH = "/tools/lo-aanvalslab/onderbouwing/"
+LAB = ROOT / "tools/sport-en-bewegen/index.html"
+PAGE = ROOT / "tools/sport-en-bewegen/onderbouwing/index.html"
+PATH = "/tools/sport-en-bewegen/onderbouwing/"
 
 class LinkReader(HTMLParser):
     def __init__(self):
@@ -42,16 +42,16 @@ class LOEvidencePublishTests(unittest.TestCase):
         self.assertIn("25 studies", page)
         self.assertIn("1.600 deelnemers", page)
         self.assertIn("Nog niet aangetoond", page)
-        self.assertIn("eaimodel.nl/tools/lo-aanvalslab/onderbouwing/", page)
+        self.assertIn("eaimodel.nl/tools/sport-en-bewegen/onderbouwing/", page)
         self.assertTrue(any("doi.org/" in link for link in reader.links))
-        self.assertIn("/tools/lo-aanvalslab/", reader.links)
+        self.assertIn("/tools/sport-en-bewegen/", reader.links)
 
     def test_deployment_keeps_page(self):
         build = (ROOT / "scripts/build_site.py").read_text(encoding="utf-8")
         self.assertIn('class="eai-refresh', PAGE.read_text(encoding="utf-8"))
         self.assertIn("repo_root.rglob(\"*.html\")", build)
         quick = (ROOT / ".github/workflows/deploy-lo-quick.yml").read_text(encoding="utf-8")
-        self.assertIn("tools/lo-aanvalslab/onderbouwing/index.html", quick)
+        self.assertIn("tools/sport-en-bewegen/onderbouwing/index.html", quick)
 
 if __name__ == "__main__":
     unittest.main()
