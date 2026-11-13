@@ -13,12 +13,12 @@ const specs = runInNewContext(definitionScript + '\nlabSpecs');
 const calls = [];
 const graphics = new Proxy({}, { get(_object, method) { return (...args) => calls.push([method,...args]); } });
 
-function sample(id, change = {}, time = 0) {
+function sample(id, change = {}, time = 0, motion = null) {
   const spec = specs.find(s => s[0] === id);
   assert.ok(spec, 'Onbekende proef: ' + id);
   const defaults = Object.fromEntries(spec[3].map(v => [v[0], v[5]]));
   calls.length = 0;
-  const result = render(id, {...defaults, ...change}, time, graphics);
+  const result = render(id, {...defaults, ...change}, time, graphics, motion);
   return {result, graphicsCalls:[...calls]};
 }
 function readout(result, label) {
