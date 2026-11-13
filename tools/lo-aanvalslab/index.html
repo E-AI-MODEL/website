@@ -382,7 +382,7 @@
  .top{min-height:35px}
  .fieldhead{min-height:31px;padding:4px 7px}
  .fieldpane{max-height:calc(100dvh - 130px)}
- .fieldframe{aspect-ratio:auto;max-height:calc(100dvh - 205px);height:calc(100dvh - 205px);min-height:125px}
+ .fieldframe{aspect-ratio:1000/650;max-height:calc(100dvh - 205px);height:auto;min-height:0}
  .fieldframe #pitch{height:100%;width:100%;aspect-ratio:1000/650}
  .bottom{min-height:44px;padding:4px 7px}
  .bottom .hint{display:none}
@@ -398,7 +398,7 @@
 @media(max-width:880px) and (orientation:landscape) and (max-height:500px){
  .brand .eyebrow{display:none}
  .top{min-height:32px}
- .fieldframe{height:calc(100dvh - 174px);max-height:calc(100dvh - 174px);min-height:85px}
+ .fieldframe{aspect-ratio:auto;height:calc(100dvh - 174px);max-height:calc(100dvh - 174px);min-height:85px}
  .side{max-height:85dvh}
 }
 </style></head><body class="eai-refresh"><div class="app"><header class="top"><div class="brand"><button type="button" class="mark lo-secret" id="loSecret" aria-label="LO-logo. Tweemaal tikken voor de berekeningen van het spel" title="LO">LO</button><div><div class="eyebrow">TACTISCH SPELLAB</div><h1>Speel het uit.</h1></div></div><div class="top-actions"><label class="sport-label" for="sportSelect">Sport</label><select id="sportSelect" class="sport-select" aria-label="Kies de sport"><option value="0">Voetbal</option><option value="1">Hockey</option><option value="2">Handbal</option><option value="3">Basketbal</option></select><label class="sport-label" for="formationSelect">Teams</label><select id="formationSelect" class="sport-select formation-select" aria-label="Kies het aantal aanvallers en verdedigers"><option value="0">4 tegen 4</option><option value="1">2 tegen 1</option><option value="2">3 tegen 2</option><option value="3">4 tegen 3</option></select><button id="new" class="btn">Nieuwe spelsituatie</button></div></header><div class="shell"><section class="fieldpane"><div class="fieldhead"><span id="stage" class="pill">Voorbereiden</span><span id="stagehelp" class="small">Versleep de spelers van jouw team</span><label class="playback-control" for="playbackSpeed"><span>Tempo</span><select id="playbackSpeed" aria-label="Afspeelsnelheid"><option value="0.5">½×</option><option value="1" selected>1×</option><option value="1.5">1½×</option><option value="2">2×</option></select></label><button type="button" id="loHelpOpen" class="lo-help-open" aria-haspopup="dialog" aria-controls="loHelp" aria-label="Uitleg en demo's voor het Aanvalslab"><span class="lo-help-mark" aria-hidden="true">?</span><span class="lo-help-word">Uitleg en demo’s</span></button></div><div class="fieldframe"><svg id="pitch" viewBox="0 0 1000 650" tabindex="0" role="img" aria-label="Interactief speelveld. Kies een speler en gebruik de pijltjestoetsen om hem te verplaatsen."></svg></div><div class="lo-coach-transport" id="loCoachTransport" hidden>
