@@ -1,31 +1,37 @@
 name: Migrate LLMscan images from Sites
 on:
-  push:
-    branches: ['feat/standalone-llmscan-20261113']
-    paths: ['scripts/llmscan_assets.py', '.github/workflows/migrate-llmscan-assets.yml']
+  pull_request:
+    branches: [main]
+    paths:
+      - 'scripts/llmscan_assets.py'
+      - 'nl/llmscan/**'
+      - '.github/workflows/migrate-llmscan-assets.yml'
   workflow_dispatch:
 permissions:
   contents: write
 jobs:
   migrate:
-    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && github.head_ref == 'feat/standalone-llmscan-20261113' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: feat/standalone-llmscan-20261113
           persist-credentials: true
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Preserve complete original image catalogue
+      - name: Save original brand and catalogue imagery locally
         run: python scripts/llmscan_assets.py
-      - name: Commit only complete source migration
+      - name: Commit the complete migration to the PR branch
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add nl/llmscan/index.html nl/llmscan/app.js nl/llmscan/brands nl/llmscan/catalogue nl/llmscan/icon.svg nl/llmscan/logo.svg
           if git diff --cached --quiet; then
-            echo "All assets already preserved"
+            echo "All images are already preserved"
           else
-            git commit -m "LLMscan: preserve local copies of original imagery"
-            git push
+            git commit -m "LLMscan: preserve original brand and catalogue imagery"
+            git push origin HEAD:refs/heads/feat/standalone-llmscan-20261113
           fi
