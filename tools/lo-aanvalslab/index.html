@@ -2259,6 +2259,9 @@ function setPanel(kind='player'){
  }
 }
 buttons.forEach(button=>button.addEventListener('click',()=>setPanel(button.dataset.loMobilePanel)));
+document.querySelectorAll('[data-mode]').forEach(button=>button.addEventListener('click',()=>{
+ if(mobile.matches)queueMicrotask(()=>setPanel('player'));
+}));
 document.getElementById('loMobileClose')?.addEventListener('click',()=>setPanel('player'));
 if(mobile.addEventListener)mobile.addEventListener('change',()=>setPanel('player'));
 const after=document.getElementById('after');
