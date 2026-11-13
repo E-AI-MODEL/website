@@ -121,6 +121,65 @@ body{overscroll-behavior:none}
  ::view-transition-new(root){animation:220ms cubic-bezier(.22,.83,.3,1) both mathViewEnter}
  ::view-transition-old(root){animation:130ms ease-in both mathViewExit}
 }
+
+/* De mobiele knoppen openen handelingen, geen lege schermnamen. */
+#graphAction,#graphReturn,#actionResult,#actionPrompt{display:none}
+@media(max-width:810px),(max-height:620px){
+ #deckDock{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+ #deckDock button{font-size:clamp(11px,3.2vw,13px);gap:2px;line-height:1.15}
+ #deckDock button .glyph{height:20px;line-height:20px;font-size:17px}
+ #deckDock button .action-word{display:block;overflow:hidden;max-width:100%;white-space:nowrap;text-overflow:ellipsis}
+ #graphAction{display:block;position:absolute;right:12px;top:12px;z-index:5;max-width:52%;padding:8px 12px;border:1px solid #80e8c570;border-radius:11px;background:#132a38ed;color:#bdf9e7;font-size:12px;font-weight:600}
+ #actionPrompt{display:block;position:absolute;left:12px;bottom:66px;z-index:2;max-width:min(260px,70%);margin:0;color:#a3c4c5;font-size:11px;line-height:1.3;pointer-events:none}
+ .analytics{position:relative}
+ #graphReturn{display:block;position:absolute;right:8px;top:5px;z-index:3;border:1px solid #6bafa17b;background:#102b34ed;border-radius:9px;color:#c4f5e7;padding:5px 9px;font-size:11px}
+ body[data-deck-view=scene] .scene{display:block!important}
+ body[data-deck-view=graph] .scene,body[data-deck-view=params] .scene,body[data-deck-view=practice] .scene,body[data-deck-view=calc] .scene,body[data-deck-view=info] .scene{display:none!important}
+ body[data-deck-view=graph] .analytics{display:grid!important}
+ body[data-deck-view=params] .inspector,body[data-deck-view=practice] .inspector{display:flex!important;flex-direction:column}
+ body[data-deck-view=practice] .inspector .metrics,body[data-deck-view=practice] .inspector #controls,body[data-deck-view=practice] #paramPager,body[data-deck-view=practice] .inspector .subhead{display:none!important}
+ body[data-deck-view=practice] .inspector .phasebox{display:flex!important;flex:1;min-height:0;flex-direction:column;margin:0;padding:0}
+ body[data-deck-view=practice] .inspector .phasetabs{display:none!important}
+ body[data-deck-view=practice] .inspector .phaseinner{display:flex;flex-direction:column;justify-content:center;min-height:0;height:100%;padding:9px 16px!important;gap:6px}
+ body[data-deck-view=practice] .inspector .phaseinner>*{margin:0}
+ body[data-deck-view=practice] .inspector .phaseinner input{width:100%;min-height:40px}
+ body[data-deck-view=practice] .inspector .phaseinner #checkPractice{margin-top:5px;min-height:40px;border-radius:10px;border:1px solid #6fbea9;color:#c7fae7;background:#173e3a}
+ body[data-deck-view=practice] .insphead{padding:8px 14px}
+ body[data-deck-view=practice] .insphead h3{font-size:16px}
+ body[data-deck-view=practice] .inspbody{padding:4px 8px!important}
+ body[data-deck-view=calc] #actionResult{display:grid!important}
+ #actionResult{grid-area:3/1;grid-template-rows:auto minmax(0,1fr) auto;min-height:0;overflow:hidden;background:linear-gradient(140deg,#152c39,#0b1724);padding:clamp(10px,2.4vh,22px) clamp(14px,3vw,24px);gap:10px}
+ .result-top small{font-size:10px;letter-spacing:.12em;color:var(--teal);font-weight:650}
+ .result-top h2{margin:5px 0 0;font-size:clamp(17px,4vw,24px);line-height:1.16}
+ .result-main{min-height:0;display:flex;flex-direction:column;justify-content:center;gap:clamp(9px,1.8vh,18px)}
+ .result-value{border-left:2px solid var(--teal);padding:7px 13px;display:flex;flex-direction:column;gap:3px;background:linear-gradient(90deg,#80e8c513,transparent)}
+ .result-value span{font-size:12px;color:#b2cdcb}
+ .result-value strong{font-size:clamp(27px,7vw,42px);font-weight:600;line-height:1.2;color:#80e8c5;font-variant-numeric:tabular-nums}
+ .result-steps{display:flex;flex-direction:column;gap:clamp(4px,1vh,12px);min-height:0}
+ .result-steps p{margin:0;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:clamp(10px,2.7vw,13px);line-height:1.4;color:#e1f0ee;overflow-wrap:anywhere}
+ .result-note{font-size:11px;line-height:1.35;margin:0;color:#a6c0c1}
+ .result-actions{border-top:1px solid #3e5e625c;padding-top:8px;display:flex;flex-wrap:wrap;gap:5px 8px;align-items:center}
+ .result-actions p{flex:1 1 100%;color:#bdd3d0;margin:0;font-size:11px;line-height:1.3}
+ .result-actions button{border:1px solid #567d78;border-radius:10px;padding:7px 10px;min-height:36px;background:#153241;color:#d1f7ea;font-size:11px}
+ #infoDesk{display:none}
+ body[data-deck-view=info] #infoDesk{display:grid!important}
+}
+@media(max-height:470px){
+ #actionResult{gap:4px;padding:6px 12px}
+ .result-main{gap:5px}
+ .result-top h2{margin-top:2px;font-size:15px}
+ .result-value{padding:3px 9px}
+ .result-value strong{font-size:25px}
+ .result-steps{gap:3px}
+ .result-steps p{font-size:10px;line-height:1.25}
+ .result-note{display:none}
+ .result-actions{padding-top:5px}
+ .result-actions p{font-size:10px}
+ .result-actions button{min-height:29px;padding:4px 8px}
+ body[data-deck-view=practice] .inspector .phaseinner{gap:4px}
+ body[data-deck-view=practice] .inspector .phaseinner h4{font-size:12px}
+ body[data-deck-view=practice] .inspector .phaseinner p{font-size:10px}
+}
 </style></head><body><div id="app">
 <aside class="sidebar"><div class="brand"><div class="brandico">Φ</div><div class="brandtxt"><h1 id="brand-title">OBSERVATORY</h1><small>RESEARCH CONSOLE / PREMIUM</small></div></div><div class="sectionlabel">ONDERZOEKSMODULES</div><nav class="nav" id="nav"></nav><div class="sidefoot"><strong>● MODELBEREKENING ACTIEF</strong><p>Experimenten gebruiken expliciete wiskundige modellen. Geen gemeten data, tenzij aangegeven.</p><span id="versiontext">Science Observatory / v5</span></div></aside>
 <header class="top"><div class="crumb">RESEARCH CONSOLE / <b id="crumb">ONDERZOEK</b></div><div class="grow"></div><button type="button" class="topbtn" id="themeToggle" title="Dag- en nachtweergave"><span class="btnlabel">◐ Weergave</span><span class="mobileicon"> ◐</span></button><button type="button" class="topbtn" id="focusToggle" title="Maak ruimte voor de simulatie">⛶ <span class="btnlabel">Focus</span></button><button type="button" class="topbtn" id="exportModel" title="Modelinstellingen bewaren">↓ <span class="btnlabel">Model JSON</span></button><button type="button" class="topbtn accent" id="exportPNG" title="Simulatie als afbeelding bewaren">▣ <span class="btnlabel">Afbeelding</span></button><a class="topbtn" href="../START_HIER.html" title="Terug naar de serie">← <span class="btnlabel">Serie</span></a></header>
@@ -245,7 +304,7 @@ function bottomPlot(kind,ctx,W,H,m,p){const C=background();ctx.fillStyle=backgro
  }
 function render(){[w,h]=fitCanvas(scene,sc);[pw,ph]=fitCanvas(plot,pc);const C=initDraw(sc,w,h);const m=M[state.mode],p=state.parameters[m.id];mainPlot(m.kind,sc,w,h,m,p);bottomPlot(m.kind,pc,pw,ph,m,p);}
 function key(){return M[state.mode].id;}
-function styleMetrics(){const m=M[state.mode],p=state.parameters[m.id];const mm=metrics(m,p);$('metrics').innerHTML=mm.slice(0,4).map(([label,v,unit])=>`<div class="metric"><small>${esc(label)}</small><strong>${format(v,abs(v)>100?1:3)}</strong><span>${esc(unit)}</span></div>`).join('');}
+function styleMetrics(){const m=M[state.mode],p=state.parameters[m.id];const mm=metrics(m,p);$('metrics').innerHTML=mm.slice(0,4).map(([label,v,unit])=>`<div class="metric"><small>${esc(label)}</small><strong>${format(v,abs(v)>100?1:3)}</strong><span>${esc(unit)}</span></div>`).join('');if($('actionResult'))updateActionResult();}
 function esc(s){return String(s).replace(/[&<>"']/g,v=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[v]));}
 function setMode(ix){state.mode=ix;state.zoom=1;state.phase='prior';state.selectedChoice=null;$('phasetabs').querySelectorAll('button').forEach(b=>b.classList.toggle('active',b.dataset.phase==='prior'));$('nav').querySelectorAll('button').forEach((b,i)=>{let active=i===ix;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active));});let m=M[ix];$('crumb').textContent=m.short.toUpperCase();$('eyebrow').textContent=String(ix+1).padStart(2,'0')+' / '+m.short.toUpperCase();$('sceneTitle').textContent=m.sceneTitle;$('sceneDescription').textContent=m.desc;$('panelTitle').textContent=m.panelTitle;$('panelLead').textContent=m.panelLead;$('modeCount').textContent=String(ix+1).padStart(2,'0')+' / '+String(M.length).padStart(2,'0');$('plotTitle').textContent=m.chartTitle;$('plotLabel').textContent=m.chartTag||'MODEL • GEEN MEETDATA';$('equation').textContent=m.formula;$('mathCaption').textContent=m.formulaNote;$('scenehint').textContent=m.hint||'SLEEP OM EEN MEETPUNT TE KIEZEN · SCROLL OM TE ZOOMEN';$('finding').textContent=m.finding;
  $('details').innerHTML=m.details.map(([title,body])=>`<details class="fold"><summary>${esc(title)}</summary><div class="foldbody">${body}</div></details>`).join('');$('examInfo').textContent=m.curriculum||'Deze module is een onderzoeksvoorbeeld. De dekking van eindtermen moet nog per vak en leerjaar gecontroleerd worden.';
@@ -269,21 +328,38 @@ function dl(filename,data,mime='application/json'){let link=document.createEleme
 function saveJSON(){let m=M[state.mode];dl(D.id+'-'+m.id+'.json',JSON.stringify({project:D.id,module:m.id,date:new Date().toISOString(),parameters:state.parameters[m.id],values:metrics(m,state.parameters[m.id]),measurements:state.measurements.filter(x=>x.module===m.id),note:$('findingText').value,source:'Analytisch onderwijsmodel; geen ruwe meetdata'},null,2));}
 function png(){const o=document.createElement('canvas'),a=scene.width/Math.max(1,devicePixelRatio||1);o.width=scene.width;o.height=scene.height;let c=o.getContext('2d');c.drawImage(scene,0,0);c.setTransform(Math.min(devicePixelRatio||1,2),0,0,Math.min(devicePixelRatio||1,2),0,0);c.fillStyle=document.documentElement.dataset.theme==='day'?'#284155':'#e1f5ff';c.font='600 16px ui-monospace,monospace';c.fillText(D.id.toUpperCase()+' / '+M[state.mode].short.toUpperCase(),18,28);o.toBlob(b=>{if(!b)return;let link=document.createElement('a'),url=URL.createObjectURL(b);link.download=D.id+'-'+M[state.mode].id+'.png';link.href=url;link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);});}
 
-/* Eén mobiel werkvlak. Onderwerpen wisselen zonder de pagina te verschuiven. */
-let paramPage=0, infoPage=0, infoCards=[];
+
+/* Mobiele bediening via taken. Elke actie opent iets wat de leerling kan doen. */
+const MATH_ACTIONS={
+ binom:{scene:'Kies k',params:'Wijzig p',graph:'Bekijk verdeling',hint:'Tik op een balk en kies welke uitkomst je wilt onderzoeken.',order:['k','p','n']},
+ normal:{scene:'Kies grens',params:'Wijzig σ',graph:'Bekijk kansgebied',hint:'Verschuif de grens. De kans links van de grens verandert mee.',order:['x','mu','sigma']},
+ bayes:{scene:'Vergelijk',params:'Voeg toe',graph:'Voor en na',hint:'Bekijk hoe nieuwe uitkomsten een verdeling veranderen.',order:['success','failure','alpha','beta']},
+ regression:{scene:'Bekijk data',params:'Wijzig ruis',graph:'Bekijk residuen',hint:'Bekijk de punten en de lijn die uit de gegevens wordt berekend.',order:['noise','slope','intercept','n']},
+ sampling:{scene:'Bekijk groep',params:'Wijzig kans',graph:'Bekijk verdeling',hint:'Vergelijk welke deelnemers uit beide groepen in de steekproef komen.',order:['sa','sb']},
+ testing:{scene:'Vergelijk H₀',params:'Wijzig effect',graph:'Bekijk toetsing',hint:'Vergelijk de twee verdelingen bij de gekozen effectgrootte.',order:['delta','n','sigma']},
+ polynomial:{scene:'Raakpunt',params:'Wijzig functie',graph:'Bekijk afgeleide',hint:'Sleep het raakpunt. Bekijk hoe de functiewaarde en helling veranderen.',order:['x','a','b','c','d']},
+ newton:{scene:'Volg stappen',params:'Wijzig start',graph:'Bekijk stappen',hint:'Verplaats het beginpunt. De methode kiest daarna nieuwe benaderingen.',order:['start','steps']},
+ integral:{scene:'Rechthoeken',params:'Wijzig grenzen',graph:'Bekijk fout',hint:'Bekijk de rechthoeken onder de functie en verander het interval.',order:['left','right','steps','a','b']},
+ optimum:{scene:'Maximum',params:'Wijzig top',graph:'Bekijk verloop',hint:'Verschuif het optimale punt en bekijk de nieuwe plaats van de top.',order:['center','drift','a','height']},
+ logistic:{scene:'Bekijk groei',params:'Wijzig stap',graph:'Vergelijk Euler',hint:'Vergelijk de groeicurve met de benadering van Euler.',order:['dt','t','r','K','y0']},
+ vectors:{scene:'Draai vector',params:'Wijzig lengte',graph:'Bekijk som',hint:'Draai de tweede vector. Bekijk hoe de resultante verandert.',order:['theta','u','v']}
+};
+let paramPage=0,infoPage=0,infoCards=[],mathBaseline=Object.create(null),infoReturn='calc';
+
 function isCompactWorkspace(){return matchMedia('(max-width:810px), (max-height:620px)').matches;}
-function storyParts(text,limit=230){
+function storyParts(text,limit=210){
  const words=String(text||'').trim().split(/\s+/),out=[];let part='';
  for(const word of words){if(part&&part.length+word.length+1>limit){out.push(part);part='';}part+=(part?' ':'')+word;}
  if(part)out.push(part);return out.length?out:['Geen toelichting beschikbaar.'];
 }
+function currentTask(){return MATH_ACTIONS[M[state.mode].kind];}
 function rebuildInfoPages(){
  const m=M[state.mode];infoCards=[];
  const add=(title,copy)=>storyParts(copy).forEach((chunk,i)=>infoCards.push({title:title+(i?' · vervolg':''),copy:chunk}));
  add('Over dit onderwerp',m.desc);
- add('Model en aannames',(m.formula||'')+'. '+(m.formulaNote||'')+'. '+(m.boundary||''));
+ add('Formule en aannames',(m.formula||'')+'. '+(m.formulaNote||'')+'. '+(m.boundary||''));
  for(const item of m.details){const box=document.createElement('div');box.innerHTML=item[1];add(item[0],box.textContent);}
- add('Plaats in het onderwijs',m.curriculum||'Koppeling met syllabus en PTA is nog niet gecontroleerd.');
+ add('Plaats in het onderwijs',m.curriculum||'De koppeling met de syllabus en het PTA is nog niet gecontroleerd.');
  infoCards.push({title:'Bronnen',sources:true});
  infoPage=0;renderInfoPage();
 }
@@ -292,7 +368,7 @@ function renderInfoPage(){
  $('infoTitle').textContent=card.title;
  const copy=$('infoCopy');copy.replaceChildren();
  if(card.sources){
-  const p=document.createElement('p');p.textContent='De getoonde gegevens komen uit een onderwijsmodel, niet uit metingen.';copy.append(p);
+  const p=document.createElement('p');p.textContent='Dit zijn berekeningen op basis van een onderwijsmodel, geen echte meetgegevens.';copy.append(p);
   for(const source of D.sources){const link=document.createElement('a');link.href=source.url;link.textContent=source.label;link.rel='noopener noreferrer';link.target='_blank';copy.append(link);}
  }else{const p=document.createElement('p');p.textContent=card.copy;copy.append(p);}
  $('infoCounter').textContent=(infoPage+1)+' / '+infoCards.length;
@@ -300,49 +376,134 @@ function renderInfoPage(){
 }
 function renderParamPage(){
  if(!$('paramPager'))return;
+ const m=M[state.mode],task=currentTask();
  const items=Array.from($('controls').children).filter(el=>el.classList.contains('control'));
+ if(task){items.sort((a,b)=>task.order.indexOf(a.querySelector('input')?.dataset.param)-task.order.indexOf(b.querySelector('input')?.dataset.param));}
+ for(const item of items)$('controls').appendChild(item);
  const pages=Math.max(1,Math.ceil(items.length/2));paramPage=Math.max(0,Math.min(paramPage,pages-1));
- items.forEach((item,i)=>item.hidden=i<paramPage*2||i>=paramPage*2+2);
- $('paramPageText').textContent='Instellingen '+(paramPage+1)+' / '+pages;
+ items.forEach((el,i)=>el.hidden=isCompactWorkspace()&&(i<paramPage*2||i>=paramPage*2+2));
+ $('paramPageText').textContent='Keuze '+(paramPage+1)+' / '+pages;
  $('paramPrev').disabled=paramPage===0;$('paramNext').disabled=paramPage===pages-1;
+}
+function actionMathLines(m,p){
+ const v=(n,d=3)=>format(Number(n),d),result=target(m,p);
+ switch(m.kind){
+  case'binom':return [ 'P(X = k) = C(n,k) × p^k × (1−p)^(n−k)',
+   'C('+p.n+','+p.k+') × '+v(p.p)+'^'+p.k+' × '+v(1-p.p)+'^'+(p.n-p.k), 'P(X = '+p.k+') = '+v(result,5)];
+  case'normal':return ['z = (x − μ) / σ','z = ('+v(p.x)+' − '+v(p.mu)+') / '+v(p.sigma)+' = '+v((p.x-p.mu)/p.sigma),
+   'P(X ≤ '+v(p.x)+') = '+v(result,5)];
+  case'bayes':return ['α nieuw = α + successen = '+v(p.alpha+p.success),
+   'β nieuw = β + mislukkingen = '+v(p.beta+p.failure),
+   'Gemiddelde kans = α nieuw / (α nieuw + β nieuw) = '+v(result,5)];
+  case'regression':{const r=regression(p);return ['De lijn is y = b × x + a',
+   'b = geschatte helling = '+v(r.slope,5),
+   'a = snijpunt met de y-as = '+v(r.intercept,5)+'; RMSE = '+v(r.rmse,4)];}
+  case'sampling':return ['Aandeel groep A na selectie = sA / (sA + sB)',
+   v(p.sa)+' / ('+v(p.sa)+' + '+v(p.sb)+') = '+v(result+.5,5),
+   'Afwijking van 50% = '+v(result,5)];
+  case'testing':{const z=p.delta*Math.sqrt(p.n)/p.sigma;return [
+   'Gestandaardiseerd effect = δ × √n / σ = '+v(z,4),
+   'Kans buiten −1,96 en 1,96 bij dit effect:',
+   'Onderscheidend vermogen = '+v(result,5)];}
+  case'polynomial':{const slope=polyD(p.x,p);return ['f(x) = ax³ + bx² + cx + d',
+   'f('+v(p.x)+') = '+v(result,5),
+   'f′('+v(p.x)+') = 3ax² + 2bx + c = '+v(slope,5)];}
+  case'newton':{const seq=newton(p.start,Math.round(p.steps));return [
+   'x(n+1) = x(n) − (cos(x(n))−x(n)) / (−sin(x(n))−1)',
+   'x₀ = '+v(p.start,5)+'; '+(seq.length>1?'x₁ = '+v(seq[1],5):'geen stap'),
+   'Na '+(seq.length-1)+' stappen: x = '+v(result,6)];}
+  case'integral':{const dx=(p.right-p.left)/p.steps;let sum=0;for(let i=0;i<p.steps;i++){let x=p.left+i*dx;sum+=(p.a*x*x+p.b)*dx;}return [
+   '∫ (ax²+b) dx = [ax³/3 + bx] tussen de grenzen',
+   'Exact = '+v(result,5)+'; linkersom = '+v(sum,5),
+   'Verschil (linkersom − exact) = '+v(sum-result,5)];}
+  case'optimum':return ['f′(x) = −2a(x−c) + b',
+   'x* = c + b/(2a) = '+v(p.center)+' + '+v(p.drift)+' / (2 × '+v(p.a)+')',
+   'Maximum bij x = '+v(result,5)];
+  case'logistic':{const euler=logisticEuler(p.t,p);return [
+   'y′ = r × y × (1 − y/K)',
+   'Exact bij t = '+v(p.t)+': '+v(result,5),
+   'Euler bij Δt = '+v(p.dt)+': '+v(euler,5)+'; fout = '+v(euler-result,5)];}
+  case'vectors':return ['|u+v| = √(u² + v² + 2uv × cosθ)',
+   '√('+v(p.u)+'² + '+v(p.v)+'² + 2 × '+v(p.u)+' × '+v(p.v)+' × cos('+v(p.theta)+'°))',
+   'Lengte van de somvector = '+v(result,5)];
+  default:return [m.formula,'Huidige uitkomst = '+v(result,5)];
+ }
+}
+function updateActionResult(){
+ if(!$('actionResult')||!M[state.mode])return;
+ const m=M[state.mode],p=state.parameters[m.id],values=metrics(m,p),primary=values[0],value=Number(primary[1]);
+ $('resultTitle').textContent=m.short;
+ $('resultName').textContent=primary[0];
+ $('resultNumber').textContent=format(value,Math.abs(value)>=100?2:5)+(primary[2]?' '+primary[2]:'');
+ const lines=$('resultSteps');lines.replaceChildren();
+ for(const line of actionMathLines(m,p)){const node=document.createElement('p');node.textContent=line;lines.append(node);}
+ const last=mathBaseline[m.id],compare=$('comparisonResult');
+ if(last){const d=value-last.value;compare.textContent='Verschil met bewaarde uitkomst: '+(d>0?'+':'')+format(d,5)+' (was '+format(last.value,5)+')';}
+ else compare.textContent='Bewaar deze uitkomst. Verander een waarde en bekijk het verschil.';
+ $('calcModelNote').textContent=m.formulaNote||'Uitkomst volgens het gekozen model.';
+}
+function updateActionLabels(){
+ if(!$('deckDock'))return;
+ const task=currentTask();
+ const words={scene:task.scene,params:task.params,calc:'Bereken',practice:'Opgave'};
+ for(const button of $('deckDock').querySelectorAll('[data-view]')){
+  const name=words[button.dataset.view];button.querySelector('.action-word').textContent=name;
+  button.setAttribute('aria-label',name+(button.dataset.view==='scene'?' in het model':button.dataset.view==='params'?' met de instellingen':button.dataset.view==='calc'?' bij de huidige waarden':': reken zelf en controleer je antwoord'));
+ }
+ $('graphAction').textContent=task.graph;
+ $('actionPrompt').textContent=task.hint;
 }
 function switchDesk(view){
  if(!$('deckDock'))return;
- const update=()=>{
+ const apply=()=>{
   document.body.dataset.deckView=view;
-  for(const button of $('deckDock').querySelectorAll('button')){
+  for(const button of $('deckDock').querySelectorAll('[data-view]')){
    const active=button.dataset.view===view;button.setAttribute('aria-pressed',String(active));
   }
   if(view==='params')renderParamPage();
+  if(view==='calc')updateActionResult();
+  if(view==='practice')phaseSet('practice');
   if(view==='info')rebuildInfoPages();
   dirty=true;
  };
- if(isCompactWorkspace()&&document.startViewTransition&&!matchMedia('(prefers-reduced-motion: reduce)').matches){
-  document.startViewTransition(update);
- }else update();
+ if(isCompactWorkspace()&&document.startViewTransition&&!matchMedia('(prefers-reduced-motion: reduce)').matches)document.startViewTransition(apply);
+ else apply();
 }
 function syncAdaptiveWorkspace(view){
  if(!$('deckDock'))return;
  $('modeSelect').value=String(state.mode);
- paramPage=0;renderParamPage();
+ paramPage=0;renderParamPage();updateActionLabels();updateActionResult();
  switchDesk(view||'scene');
 }
 function setupAdaptiveWorkspace(){
  const selector=document.createElement('select');selector.id='modeSelect';selector.setAttribute('aria-label','Kies een wiskundeonderwerp');
  M.forEach((m,i)=>{const o=document.createElement('option');o.value=i;o.textContent=m.short;selector.append(o);});
- document.querySelector('.sidebar').append(selector);
- selector.addEventListener('change',()=>setMode(Number(selector.value)));
- const dock=document.createElement('nav');dock.id='deckDock';dock.setAttribute('aria-label','Werkruimte');
- [['scene','∿','Onderzoek'],['graph','▥','Grafiek'],['params','≡','Instellen'],['learn','?','Leren'],['info','ⓘ','Meer']].forEach(([view,glyph,title])=>{
+ document.querySelector('.sidebar').append(selector);selector.addEventListener('change',()=>setMode(Number(selector.value)));
+ const dock=document.createElement('nav');dock.id='deckDock';dock.setAttribute('aria-label','Handelingen in dit onderwerp');
+ [['scene','∿'],['params','≡'],['calc','='],['practice','✓']].forEach(([view,glyph])=>{
   const b=document.createElement('button');b.type='button';b.dataset.view=view;b.setAttribute('aria-pressed','false');
   const symbol=document.createElement('span');symbol.className='glyph';symbol.textContent=glyph;
-  const label=document.createElement('span');label.textContent=title;b.append(symbol,label);b.onclick=()=>switchDesk(view);dock.append(b);
+  const label=document.createElement('span');label.className='action-word';b.append(symbol,label);b.onclick=()=>switchDesk(view);dock.append(b);
  });$('app').append(dock);
- const pager=document.createElement('div');pager.id='paramPager';pager.innerHTML='<button type="button" id="paramPrev">Vorige</button><span id="paramPageText"></span><button type="button" id="paramNext">Volgende</button>';
+ const pager=document.createElement('div');pager.id='paramPager';
+ pager.innerHTML='<button type="button" id="paramPrev">Vorige</button><span id="paramPageText"></span><button type="button" id="paramNext">Volgende</button>';
  $('controls').after(pager);$('paramPrev').onclick=()=>{paramPage--;renderParamPage();};$('paramNext').onclick=()=>{paramPage++;renderParamPage();};
- const info=document.createElement('section');info.id='infoDesk';info.setAttribute('aria-label','Toelichting en bronnen');
- info.innerHTML='<div class="info-head"><small>VERDIEPING</small><h2 id="infoTitle"></h2></div><div class="info-copy" id="infoCopy"></div><div class="info-actions"><button id="infoPrev" type="button">Vorige</button><button id="infoNext" type="button">Volgende</button><button id="infoExport" type="button">Bewaar</button><span id="infoCounter"></span></div>';
- $('app').append(info);$('infoPrev').onclick=()=>{infoPage--;renderInfoPage();};$('infoNext').onclick=()=>{infoPage++;renderInfoPage();};$('infoExport').onclick=saveJSON;
+ const graphBtn=document.createElement('button');graphBtn.id='graphAction';graphBtn.type='button';graphBtn.onclick=()=>switchDesk('graph');
+ $('scene').append(graphBtn);
+ const prompt=document.createElement('p');prompt.id='actionPrompt';$('scene').append(prompt);
+ const graphBack=document.createElement('button');graphBack.id='graphReturn';graphBack.type='button';graphBack.textContent='Terug naar model';graphBack.onclick=()=>switchDesk('scene');
+ document.querySelector('.analytics').append(graphBack);
+ const result=document.createElement('section');result.id='actionResult';result.setAttribute('aria-label','Huidige berekening');
+ result.innerHTML='<div class="result-top"><small>HUIDIGE BEREKENING</small><h2 id="resultTitle"></h2></div><div class="result-main"><div class="result-value"><span id="resultName"></span><strong id="resultNumber"></strong></div><div class="result-steps" id="resultSteps"></div><p class="result-note" id="calcModelNote"></p></div><div class="result-actions"><p id="comparisonResult" aria-live="polite"></p><button id="saveComparison" type="button">Bewaar uitkomst</button><button id="showInfoFromCalc" type="button">Aannames en bronnen</button></div>';
+ $('app').append(result);
+ $('saveComparison').onclick=()=>{const m=M[state.mode],values=metrics(m,state.parameters[m.id]);mathBaseline[m.id]={value:Number(values[0][1])};updateActionResult();};
+ $('showInfoFromCalc').onclick=()=>{infoReturn='calc';switchDesk('info')};
+ const info=document.createElement('section');info.id='infoDesk';info.setAttribute('aria-label','Aannames en bronnen');
+ info.innerHTML='<div class="info-head"><small>ACHTERGROND</small><h2 id="infoTitle"></h2></div><div class="info-copy" id="infoCopy"></div><div class="info-actions"><button id="infoPrev" type="button">Vorige</button><button id="infoNext" type="button">Volgende</button><button id="infoReturn" type="button">Terug naar berekening</button><span id="infoCounter"></span></div>';
+ $('app').append(info);
+ $('infoPrev').onclick=()=>{infoPage--;renderInfoPage();};$('infoNext').onclick=()=>{infoPage++;renderInfoPage();};
+ $('infoReturn').onclick=()=>switchDesk(infoReturn);
+ window.addEventListener('resize',()=>{renderParamPage();dirty=true;});
  syncAdaptiveWorkspace('scene');
 }
 
