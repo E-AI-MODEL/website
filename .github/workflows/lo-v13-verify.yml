@@ -4,6 +4,7 @@ on:
     branches: [main]
     paths:
       - 'tools/lo-aanvalslab/**'
+      - 'scripts/test_lo_mobile_navigation.py'
       - '.github/workflows/lo-v13-verify.yml'
   workflow_dispatch:
 
