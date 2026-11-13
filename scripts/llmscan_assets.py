@@ -44,9 +44,9 @@ def main() -> None:
                 raise ValueError(f"Image missing or too big: {relative}")
             extension = relative.rsplit(".", 1)[-1].lower()
             signatures = {
-                "png": buf.startswith(b"\\x89PNG\\r\\n\\x1a\\n"),
+                "png": buf.startswith(bytes.fromhex("89504e470d0a1a0a")),
                 "webp": buf.startswith(b"RIFF") and buf[8:12] == b"WEBP",
-                "ico": buf.startswith(b"\\x00\\x00\\x01\\x00") or buf.startswith(b"\\x89PNG\\r\\n\\x1a\\n"),
+                "ico": buf.startswith(bytes.fromhex("00000100")) or buf.startswith(bytes.fromhex("89504e470d0a1a0a")),
                 "svg": b"<svg" in buf[:2048].lower() and b"</svg>" in buf[-512:].lower(),
             }
             if not signatures.get(extension, False):
