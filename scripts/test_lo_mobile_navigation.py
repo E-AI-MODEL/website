@@ -88,10 +88,11 @@ def check_phone(browser, width, height):
         page.mouse.up()
         after = page.evaluate("""() => +document.querySelector('#actors [data-id="a0"] circle').getAttribute('cx')""")
         assert after > before["worldX"] + 10, (before, after)
-    if width == 390:
-        page.locator("#playbackSpeed").select_option("2")
     page.locator("#primary").click()
     assert not page.locator("#loQuickActions").is_visible()
+    if width == 390:
+        # Tempo verschijnt pas tijdens het afspelen; dat is bewust zo ontworpen.
+        page.locator("#playbackSpeed").select_option("2")
     if width == 390:
         page.wait_for_function("document.querySelector('.app').dataset.loPhase === 'done'", timeout=25000)
         assert page.locator("#loCoachSummary").is_visible()
