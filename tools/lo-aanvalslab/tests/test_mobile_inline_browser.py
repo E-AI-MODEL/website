@@ -48,6 +48,23 @@ def run_view(page, width, height, sport="defend"):
     if height > 500:
         assert page.locator(".mobile-task-preview").is_visible()
         assert page.locator("#loMobileTaskTitle").inner_text().strip()
+    # Vier hoofdkeuzes meteen, overige functies met één knop bereikbaar.
+    more = page.locator("#loMobileMore")
+    assert more.is_visible()
+    assert page.locator("#intents .intent").nth(4).is_hidden()
+    more.click()
+    assert more.get_attribute("aria-expanded") == "true"
+    assert page.locator("#intents .intent").nth(4).is_visible()
+    more.click()
+    assert more.get_attribute("aria-expanded") == "false"
+    assert page.locator("#intents .intent").nth(4).is_hidden()
+    zone = page.locator("#zonePlans")
+    assert zone.is_visible()
+    assert zone.get_attribute("open") is None
+    zone.locator("summary").click()
+    assert zone.get_attribute("open") is not None
+    zone.locator("summary").click()
+    assert zone.get_attribute("open") is None
     page.screenshot(path=str(OUT / f"mobile-{width}x{height}-player.png"))
     # Het zichtbare deel van het speelveld verandert niet bij tabwissels.
     for kind, section in (("goal","#loGoals"),("coach","#loCoachPanel"),("player","#prep")):
