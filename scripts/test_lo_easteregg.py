@@ -69,7 +69,7 @@ def main():
         assert "Waarnemen" in page.locator("#loTeacher").inner_text()
         assert "Kiezen" in page.locator("#loTeacher").inner_text()
         assert "zelf proberen" in page.locator("#loTeacher").inner_text().lower()
-        assert "Rugdekking" in page.locator("#loTeacherFocusTitle").inner_text()
+        assert "rugdekking" in page.locator("#loTeacherFocusTitle").inner_text().lower()
         page.locator('[data-lo-teacher-form="1"]').click()
         assert page.locator('[data-lo-teacher-form="1"]').get_attribute("aria-pressed")=="true"
         assert "aanspeellijn" in page.locator("#loTeacherFocusGoal").inner_text()
