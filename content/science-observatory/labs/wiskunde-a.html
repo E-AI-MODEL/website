@@ -466,7 +466,7 @@ function switchDesk(view){
   if(view==='info')rebuildInfoPages();
   dirty=true;
  };
- if(isCompactWorkspace()&&document.startViewTransition&&!matchMedia('(prefers-reduced-motion: reduce)').matches)document.startViewTransition(apply);
+ if(isCompactWorkspace()&&document.startViewTransition&&!matchMedia('(prefers-reduced-motion: reduce)').matches){const transition=document.startViewTransition(apply);transition.ready.catch(()=>{});transition.finished.catch(()=>{});transition.updateCallbackDone.catch(()=>{});}
  else apply();
 }
 function syncAdaptiveWorkspace(view){
