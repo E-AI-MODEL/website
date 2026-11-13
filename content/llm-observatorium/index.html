@@ -495,17 +495,16 @@ function drawModelScan(){
  ct.restore();
 }
 function drawRouterSignals(){
- const chosen=chooseRoute(state.layer),t=modePhase(150),center=project({x:0,y:0,z:0});
- ct.save();ct.lineCap='round';
+ // De vier verbindingen zijn een illustratie van routerkeuze, geen gemeten activatie.
+ const chosen=chooseRoute(state.layer),gate=project({x:layerX(state.layer)-.3,y:0,z:0});
+ ct.save();ct.lineCap='square';
  chosen.forEach((item,i)=>{
-  const expert=world.experts[state.layer*cfg.experts+item.e],p=project(expert);
-  const from={x:center.x+(p.x-center.x)*.58,y:center.y+(p.y-center.y)*.58};
-  ct.strokeStyle=i===0?'rgba(244,198,135,.5)':'rgba(123,215,224,.32)';
-  ct.lineWidth=i===0?1.4:.8;ct.beginPath();ct.moveTo(from.x,from.y);ct.lineTo(p.x,p.y);ct.stroke();
-  const f=(t+i*.25)%1,x=from.x+(p.x-from.x)*f,y=from.y+(p.y-from.y)*f;
-  roundDot(x,y,i===0?3.4:2.4,i===0?'#ffe0ae':'#9cebe8',.96);
+  const p=project(world.experts[state.layer*cfg.experts+item.e]);
+  ct.strokeStyle=i===0?'rgba(244,198,135,.75)':'rgba(123,215,224,.42)';
+  ct.lineWidth=.8+item.p*2.4;ct.beginPath();ct.moveTo(gate.x,gate.y);ct.lineTo(p.x,p.y);ct.stroke();
+  ct.fillStyle=i===0?'#f4c787':'#83d8df';ct.fillRect(p.x-2.5,p.y-2.5,5,5);
  });
- ct.restore();
+ ct.fillStyle='#f2ce96';ct.fillRect(gate.x-3.5,gate.y-3.5,7,7);ct.restore();
 }
 function drawAttentionSignals(){
  // De rechthoekige reeks hierboven toont beschikbaarheid. Geen niet-gemeten signaalanimatie.
@@ -513,7 +512,7 @@ function drawAttentionSignals(){
 function drawContextWindow(){
  const left=W*.13,width=W*.73,y=H*.72,local=state.layer%2===0;
  const t=clamp(state.contextTokens/cfg.context,0,1);
- const headX=left+width*(.27+.67*t),windowPx=Math.max(10,width*128/state.contextTokens);
+ const headX=left+width*.94,windowPx=Math.max(10,width*128/state.contextTokens);
  ct.save();ct.strokeStyle='rgba(116,173,205,.3)';ct.lineWidth=.8;
  ct.beginPath();ct.moveTo(left,y);ct.lineTo(left+width,y);ct.stroke();
  for(let i=0;i<=48;i++){const x=left+i/48*width;ct.strokeStyle='rgba(130,188,213,.26)';ct.beginPath();ct.moveTo(x,y-5);ct.lineTo(x,y+5);ct.stroke()}
@@ -547,7 +546,7 @@ function drawScene(){
   drawLayerFrames();drawCloud();drawExperts();
   if(state.showTrails||state.mode===1)drawStream();
   if(state.mode===0)drawModelScan();
-  if(state.mode===2){drawFocusLayer();drawRouterSignals();}
+  if(state.mode===2){drawRouterSignals();}
   highlightExpert();
  }else if(state.mode===3){drawAttention();}
  else if(state.mode===4){drawContextWindow();}
@@ -684,7 +683,7 @@ function selectAtGraph(x){
 
 function setMode(index){state.mode=clamp(index,0,MODES.length-1);if(state.mode===1){state.journey=0;state.layer=0;state.expert=chooseRoute(0)[0].e;state.zoom=1.06;}state.follow=false;state.playing=false;state.time=0;$('playBtn').textContent=state.playing?'II':'>';document.querySelector('[data-cam=focus]').textContent='FOCUS';const m=MODES[state.mode];document.querySelectorAll('.mode-btn').forEach((e,i)=>{e.classList.toggle('active',i===state.mode);e.setAttribute('aria-pressed',String(i===state.mode))});$('app').dataset.mode=String(state.mode);$('graphDockLabel').textContent=state.mode===1?'Details':'Grafiek';$('eyebrow').textContent=String(state.mode+1).padStart(2,'0')+' / '+m.name.toUpperCase();$('modeTitle').textContent=m.title;$('modeDesc').textContent=m.desc;$('insTitle').textContent=m.ins;$('insDesc').textContent=m.insDesc;$('modeCount').textContent=String(state.mode+1).padStart(2,'0')+' / '+String(MODES.length).padStart(2,'0');$('plotTitle').textContent=m.plot;$('plotNote').textContent=m.note;$('dataLabel').textContent=state.mode===0?'CONFIGURATIE':state.mode===6?'BRON + REKENSOM':'CONFIG + DEMO';$('usageStageTag').hidden=state.mode!==6;$('statusHint').innerHTML=state.mode===0?'<strong>'+cfg.layers+' lagen / '+cfg.experts+' experts per laag</strong><br>De punten tonen geen gemeten activaties.':state.mode===6?'<strong>75 invoer / 1186 uitvoer</strong><br>1024 uitvoertokens waren redenering (bronvoorbeeld).':state.mode===2?'<strong>4 experts per token</strong><br>Routes zijn berekende voorbeelden.':'<strong>Gekoppelde berekening</strong><br>Geen uitgelezen modelactivaties.';renderInspector();state.dirty=true;state.chartDirty=true;updateJourneyUI();closePanel()}
 function changeModel(id){state.model=+id;cfg=CONFIG[state.model];rebuildWorld();$('modelName').textContent=cfg.name;renderInspector();setMode(state.mode)}
-function renderModes(){const symbols=['◎','↣','◈','≋','▤','✧','◉'];$('modes').innerHTML=MODES.map((m,i)=>'<button type="button" class="mode-btn '+(i===state.mode?'active':'')+'" data-mode="'+i+'" aria-pressed="'+(i===state.mode)+'"><span class="mode-icon">'+symbols[i]+'</span><span><strong>'+m.name+'</strong><small>'+m.sub+'</small></span><span class="num">'+String(i+1).padStart(2,'0')+'</span></button>').join('');$('modes').addEventListener('click',e=>{const b=e.target.closest('[data-mode]');if(b)setMode(+b.dataset.mode)})}
+function renderModes(){const symbols=['▤','↣','▦','≋','▥','▧','▣'];$('modes').innerHTML=MODES.map((m,i)=>'<button type="button" class="mode-btn '+(i===state.mode?'active':'')+'" data-mode="'+i+'" aria-pressed="'+(i===state.mode)+'"><span class="mode-icon">'+symbols[i]+'</span><span><strong>'+m.name+'</strong><small>'+m.sub+'</small></span><span class="num">'+String(i+1).padStart(2,'0')+'</span></button>').join('');$('modes').addEventListener('click',e=>{const b=e.target.closest('[data-mode]');if(b)setMode(+b.dataset.mode)})}
 function setStats(items){$('stats').innerHTML=items.map(item=>'<div class="stat"><small>'+item[0]+'</small><strong class="'+(item[2]?'warm':'')+'">'+item[1]+'</strong><span>'+((item[3]||''))+'</span></div>').join('')}
 function addRange(label,key,min,max,step,suffix='',cb){let d=document.createElement('div');d.className='control';d.innerHTML='<label for="r-'+key+'"><span>'+label+'</span><output id="o-'+key+'">'+state[key]+suffix+'</output></label><input id="r-'+key+'" type="range" min="'+min+'" max="'+max+'" step="'+step+'" value="'+state[key]+'">';$('controls').appendChild(d);d.querySelector('input').addEventListener('input',e=>{state[key]=+e.target.value;d.querySelector('output').textContent=state[key]+suffix;if(cb)cb();if(state.mode===1&&key==='layer'){state.journey=state.layer;state.playing=false;$('playBtn').textContent='>';state.expert=chooseRoute(state.layer)[0].e;}if(state.mode===1&&key==='token'){state.expert=chooseRoute(state.layer)[0].e;}state.dirty=true;state.chartDirty=true;refreshNumbers();updateJourneyUI()})}
 function addCheck(label,key){let d=document.createElement('label');d.style.cssText='display:flex;justify-content:space-between;align-items:center;gap:8px;margin:0 0 10px;color:#bdd2df;font-size:11px';d.innerHTML='<span>'+label+'</span><input type="checkbox" '+(state[key]?'checked':'')+'>';d.querySelector('input').addEventListener('change',e=>{state[key]=e.target.checked;state.dirty=true});$('controls').appendChild(d)}
