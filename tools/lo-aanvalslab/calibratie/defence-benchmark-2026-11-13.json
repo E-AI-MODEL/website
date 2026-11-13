@@ -621,6 +621,83 @@
     "128 deterministische scenario's uit vier sporten en vier verhoudingen, geen 128 onafhankelijke wedstrijden",
     "GNSS bevat zes individuele U18-traces zonder balbezit of verdedigingstaak, uitsluitend beweegcontrole",
     "DFL/Sportec en SkillCorner niet opnieuw met dit model voor tactische kalibratie vergeleken",
-    "Sportspecifieke drempelwaarden in de code zijn voorlopig ontwerpkeuzes"
-  ]
+    "Sportspecifieke drempelwaarden in de code zijn voorlopig ontwerpkeuzes",
+    "Metrica comparison has 4,504 correlated one-second samples across 2 adult matches; closest and second-nearest defenders are proxies, not validated pressure/cover roles; team direction is estimated."
+  ],
+  "metrica_reference": {
+    "source": "https://github.com/metrica-sports/sample-data",
+    "matches": [
+      {
+        "match": 1,
+        "frames_scanned": 145006,
+        "seconds_with_both_teams": 3530,
+        "usable_possession_proxy_seconds": 2307,
+        "closest_defender_to_ball_m": {
+          "n": 2307,
+          "p10": 2.146,
+          "p50": 5.592,
+          "p75": 9.466,
+          "p90": 14.635
+        },
+        "second_defender_to_ball_m": {
+          "n": 2307,
+          "p10": 5.323,
+          "p50": 10.54,
+          "p75": 14.695,
+          "p90": 20.059
+        },
+        "distance_first_second_m": {
+          "n": 2307,
+          "p10": 5.049,
+          "p50": 9.879,
+          "p75": 13.366,
+          "p90": 17.184
+        },
+        "second_nearest_goalside_fraction": 0.7117,
+        "second_goalside_and_within_8m_fraction": 0.2232
+      },
+      {
+        "match": 2,
+        "frames_scanned": 141156,
+        "seconds_with_both_teams": 3335,
+        "usable_possession_proxy_seconds": 2197,
+        "closest_defender_to_ball_m": {
+          "n": 2197,
+          "p10": 2.015,
+          "p50": 5.066,
+          "p75": 8.203,
+          "p90": 11.78
+        },
+        "second_defender_to_ball_m": {
+          "n": 2197,
+          "p10": 4.631,
+          "p50": 9.703,
+          "p75": 13.466,
+          "p90": 17.856
+        },
+        "distance_first_second_m": {
+          "n": 2197,
+          "p10": 4.817,
+          "p50": 9.366,
+          "p75": 12.763,
+          "p90": 15.939
+        },
+        "second_nearest_goalside_fraction": 0.7023,
+        "second_goalside_and_within_8m_fraction": 0.2499
+      }
+    ],
+    "method": "All-player ball tracking, one frame per second, ownership proxy distance<2.5m and 0.75m margin; defending goal orientation estimated from team centroids with >=4m separation; closest and second-closest defenders to ball",
+    "limits": [
+      "Closest and second closest defender are NOT ground-truth press and cover roles",
+      "Team goal orientation estimated, not verified with pitch direction and lineup labels",
+      "Only 2 adult 11v11 matches, includes goalkeepers and tracking occlusions",
+      "One-second samples are correlated within matches, not independent possessions",
+      "These are distribution checks, not a validated target for 3v2 or other sports"
+    ]
+  },
+  "metrica_provenance": {
+    "ci_job": "https://github.com/E-AI-MODEL/website/actions/jobs/131886616585",
+    "source_script": "scripts/lo_metrica_defence_reference.py",
+    "analyzed_utc": "2026-11-13"
+  }
 }
