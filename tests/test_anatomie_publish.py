@@ -88,7 +88,7 @@ class AnatomyPublishTests(unittest.TestCase):
         self.assertIn('eai-lab-link', atlas)
         self.assertIn('eai-lab-link', (ROOT / "content/anatomie/layout.css").read_text(encoding="utf-8"))
         site_nav = (ROOT / "scripts/build_site.py").read_text(encoding="utf-8")
-        self.assertIn('("/tools/anatomie/labs/hartslag/", "Hartslaglab', site_nav)
+        self.assertIn('("/tools/anatomie/labs/hartslag/", "Hart en bloedsomloop', site_nav)
 
     def test_css_js_and_anatomy_info_are_published_together(self):
         """Voorkom de witte pagina met enorme SVG's door ontbrekende assets."""
