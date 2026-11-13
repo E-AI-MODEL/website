@@ -663,14 +663,14 @@ function renderExperiment(id,p,t,G,leverMotion=null){
    ['Netto moment',n(forces.net,'N·m')],
    ['Hellingshoek',n(angle*180/PI,'°',1)],
    ['F₂ voor evenwicht',n(forces.balance,'N')]
-  ],'Benodigde evenwichtskracht bij rechter arm',x=>p.F*p.arm1/(.5+3.5*x),{
+  ],'Netto moment bij een andere rechter arm',x=>(p.F2*(.5+3.5*x)-p.F*p.arm1)*Math.cos(angle),{
    kind:'bars',
    title:'Momenten links en rechts',
    bars:[['Linksom',forces.left,'N·m'],['Rechtsom',forces.right,'N·m']],
    formula:'ΣM = (F₂ × r₂ − F₁ × r₁) × cos(θ)',
    substitution:'('+fmt(p.F2,2)+' N × '+fmt(p.arm2,2)+' m − '+fmt(p.F,2)+' N × '+fmt(p.arm1,2)+' m) × cos('+fmt(angle*180/PI,1)+'°)',
    answer:n(forces.net,'N·m'),
-   note:'Rechtsom positief. De krachten blijven gelijk bij slepen. Voor evenwicht op 0° is F₂ = '+n(forces.balance,'N')+'. Met traagheidsmoment I = '+n(p.I,'kg·m²',0)+' en demping c = 2,5 N·m·s/rad bepaalt dit moment de hoekversnelling. Bij ±28° houdt een aanslag de balk tegen.'
+   note:'Rechtsom positief. De grafiek varieert de rechter arm en houdt de linker arm vast. Tijdens het verslepen van het steunpunt veranderen beide armen. De krachten blijven gelijk. Voor evenwicht op 0° is F₂ = '+n(forces.balance,'N')+'. Met traagheidsmoment I = '+n(p.I,'kg·m²',0)+' en demping c = 2,5 N·m·s/rad bepaalt dit moment de hoekversnelling. Bij ±28° houdt een aanslag de balk tegen.'
   });
  }
  case 'incline':{let a=rad(p.angle),gravity=p.m*9.81*Math.sin(a),normal=p.m*9.81*Math.cos(a),friction=p.mu*normal,accel=Math.max(0,(gravity-friction)/p.m),slide=gravity>friction;let ox=170,oy=400,dist=Math.min(580,330/Math.max(.0001,Math.sin(a))),topx=ox+dist*Math.cos(a),topy=oy-dist*Math.sin(a);POL([[ox,oy],[topx,topy],[topx,oy]],'#1c3549');L(ox,oy,topx,topy,C.b,6);D(topx,topy,11,C.c);RG(topx,topy,20,C.a,2);let pr=.43,px=ox+dist*pr*Math.cos(a),py=oy-dist*pr*Math.sin(a);G.rotRect(px,py-22,90,48,-a,C.c);A(px,py-48,px,py+70,C.d,5);A(px,py-48,px+100*Math.cos(a),py-48-100*Math.sin(a),C.a,4);T('mg',px-43,py+105,C.d,17);T(slide?'Schuift':'Blijft liggen',660,80,slide?C.a:C.c,20);return say([['Langs de helling',n(gravity,'N')],['Max. wrijving',n(friction,'N')],['Versnelling',n(accel,'m/s²')],['Toestand',slide?'Schuift':'Rust']],'Kracht langs de helling tegen hoek',x=>p.m*9.81*Math.sin(x*PI/3),{kind:'bars',title:'Krachten op het hellend vlak',bars:[['Zwaartekracht',p.m*9.81,'N'],['Langs vlak',gravity,'N'],['Normaalkracht',normal,'N'],['Max. wrijving',friction,'N']],formula:'F langs = m × g × sin(α)',substitution:fmt(p.m,2)+' kg × 9,81 m/s² × sin('+fmt(p.angle,1)+'°)',answer:fmt(gravity,2)+' N',note:'Maximale statische wrijving: μ × N = '+fmt(friction,2)+' N. In rust is de werkelijke wrijving precies zo groot als nodig, tot die grens.'})}
@@ -1424,7 +1424,7 @@ const graphSpecs={
  resultant:['Resulterende kracht (N)','Hoek tussen de krachten (°)',p=>[0,180],p=>p.angle],
  resolution:['Horizontale kracht Fₓ (N)','Hoek met de horizontaal (°)',p=>[0,90],p=>p.angle],
  pulleys:['Benodigde trekkracht (N)','Aantal dragende touwdelen',p=>[1,6],p=>p.n],
- lever:['Evenwichtskracht F₂ (N)','Rechter arm (m)',p=>[.5,4],p=>p.arm2],
+ lever:['Netto moment (N·m)','Rechter arm (m)',p=>[.5,4],p=>p.arm2],
  incline:['Zwaartekracht langs helling (N)','Hellingshoek (°)',p=>[0,60],p=>p.angle],
  newton2:['Versnelling (m/s²)','Massa (kg)',p=>[1,15],p=>p.m],
  projectile:['Hoogte (m)','Tijd na lancering (s)',p=>[0,2*p.v*Math.sin(rad(p.angle))/p.g],(p,t)=>{let T=2*p.v*Math.sin(rad(p.angle))/p.g;return T>0?((t%T)+T)%T:0}],
