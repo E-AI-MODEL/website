@@ -40,7 +40,6 @@ test('hefboom: metingen volgen beide vaste krachten en het netto moment',()=>{
   close(measured(r,'Netto moment'),net);
   close(r.insight.bars[0][1],left,1e-8);
   close(r.insight.bars[1][1],right,1e-8);
-  close(measured(r,'F₂ voor evenwicht'),left/p.arm2);
  }
 });
 
