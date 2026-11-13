@@ -94,7 +94,7 @@ try{
    return checks;
   });
   for(const item of motion){
-    assert(item.framesDiffer,'Modus '+item.mode+' blijft stil bij tijdsverloop');
+    if([0,2,3,4,5].includes(item.mode))assert.equal(item.framesDiffer,false,'Statische uitleg verandert niet door een verborgen tijdwaarde, modus '+item.mode);
     assert.equal(item.follow,false,'Modus '+item.mode+' volgt nog een springende camera');
     assert.equal(item.cameraX,0,'Camera mag niet springen op de X-as');
     assert.equal(item.cameraY,0,'Camera mag niet springen op de Y-as');
