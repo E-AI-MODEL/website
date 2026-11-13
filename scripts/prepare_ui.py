@@ -39,8 +39,9 @@ def groups(en: bool):
                 ('LLM Observatory', '/tools/llm-observatorium/'),
                 
                 ('Galactic Observatory: guided version', '/tools/melkweg-lab/'),
+                ('Sport and movement', '/tools/sport-en-bewegen/'),
             ]),
-            ('Tools', [
+            ('Hulpmiddelen', [
                 ('All tools', '/en/tools/'),
                 ('Prompt Framework', '/tools/prompt-framework/'),
                 ('WiHTML Studio', '/tools/wihtml/'),
@@ -55,18 +56,19 @@ def groups(en: bool):
     return [
         ('Model', [('Het EAI-model', '/nl/model/'), ('Toepassingen', '/nl/toepassingen/')]),
         ('Onderwijs', [('Lessen en werkvormen', '/nl/onderwijs/'), ('Lesvoorbeelden', '/nl/toepassingen/')]),
-        ('Blog', [('Nieuwste artikelen', '/nl/blog/'), ('Publicaties en media', '/nl/publicaties/')]),
+        ('Publicaties', [('Artikelen', '/nl/blog/'), ('Alle publicaties', '/nl/publicaties/')]),
         ('Onderzoek', [('Onderzoek en bronnen', '/nl/onderzoek/'), ('Bronnenregister', '/bronnen/')]),
-        ('Observatoria', [
+        ('Onderzoeken', [
             ('Interactief onderzoeken', '/tools/science-observatory/'),
             ('Natuurkundeproeven', '/tools/science-observatory/labs/natuurkunde/'),
             ('Anatomie van de mens', '/tools/anatomie/'),
             ('LLM Observatorium', '/tools/llm-observatorium/'),
             
-            ('Galactisch Observatorium: met uitleg', '/tools/melkweg-lab/'),
+            ('Galactisch Observatorium met uitleg', '/tools/melkweg-lab/'),
+            ('Sport en bewegen', '/tools/sport-en-bewegen/'),
         ]),
-        ('Tools', [
-            ('Alle tools', '/nl/tools/'),
+        ('Hulpmiddelen', [
+            ('Alle hulpmiddelen', '/nl/tools/'),
             ('EAI Prompt Framework', '/tools/prompt-framework/'),
             ('WiHTML Docentstudio', '/tools/wihtml/'),
             ('EAIstudio', '/tools/eaistudio/'),
@@ -104,7 +106,7 @@ def navigation(soup: BeautifulSoup, path: str, en: bool) -> str:
         if title in ('About', 'Over'):
             continue
         target = entries[0][1]
-        if title in ('Observatoria', 'Observatories'):
+        if title in ('Onderzoeken', 'Observatories'):
             target = '/en/tools/#observatoria' if en else '/nl/tools/#observatoria'
         current = ' aria-current="page"' if any(path_here == canonical(item[1]) or (canonical(item[1]) not in ('/nl/', '/en/') and path_here.startswith(canonical(item[1]))) for item in entries) else ''
         primary.append(f'<a href="{html.escape(target, quote=True)}"{current}>{html.escape(title)}</a>')
