@@ -73,6 +73,16 @@ def main():
         assert page.locator("#loHelp").is_hidden()
         assert page.evaluate("window.__loLabTest.getPlayers()")==original
         assert not page.locator("#loAnalysis").is_visible()
+        # Pijltjestoetsen werken alleen wanneer het veld zelf focus heeft.
+        before=page.evaluate("window.__loLabTest.getPlayers()")
+        page.locator("#loHelpOpen").focus()
+        page.keyboard.press("ArrowRight")
+        assert page.evaluate("window.__loLabTest.getPlayers()")==before
+        page.locator("#pitch").focus()
+        page.keyboard.press("ArrowRight")
+        moved=page.evaluate("window.__loLabTest.getPlayers()")
+        assert moved[0]["x"]>before[0]["x"],(before[0],moved[0])
+        page.locator("#reset").click()
         page.locator("#loSecret").click()
         assert not page.locator("#loAnalysis").is_visible()
         page.locator("#loSecret").click()
