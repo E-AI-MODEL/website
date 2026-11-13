@@ -36,7 +36,7 @@ try{
     await page.waitForTimeout(80);
     assert.equal(await page.evaluate(()=>state.playing),false,'Geen automatische beweging in modus '+mode);
     const isPlayerVisible=await page.locator('#playBtn').isVisible();
-    assert.equal(isPlayerVisible,mode===1,'Afspeelknop alleen voor de tokenroute in modus '+mode);
+    assert.equal(isPlayerVisible,false,'Geen nutteloze afspeelbalk in modus '+mode);
   }
   await page.evaluate(()=>setMode(0));
   assert.equal(errors.length,0,'Fouten bij omschakelen tussen zeven visualisaties: '+errors.join(' | '));
