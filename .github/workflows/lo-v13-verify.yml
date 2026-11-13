@@ -25,8 +25,16 @@ jobs:
           python -m playwright install --with-deps chromium
       - name: Controleer startopstellingen in vier sporten en vier spelvormen
         run: python tools/lo-aanvalslab/tests/test_startopstellingen_browser.py
-      - name: Controleer mobiele speelvelden en bedieningspanelen
-        run: python tools/lo-aanvalslab/tests/test_mobile_layout_browser.py
+      - name: Controleer compacte mobiele spelerbediening
+        run: python tools/lo-aanvalslab/tests/test_mobile_inline_browser.py
+      - name: Bewaar mobiele proefbeelden
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sport-en-bewegen-mobile-check
+          path: artifacts/lo-mobile/*.png
+          if-no-files-found: ignore
+          retention-days: 7
       - name: Controleer sporten, verdedigende tactiek en bewegingen
         shell: bash
         run: |
