@@ -1305,6 +1305,15 @@ function simulate(resume=null){
    }
    earliest=Math.min(earliest,margin);
   }
+  // Afstand van iedere verdediger tot de volledige passbaan, niet alleen
+  // tot de ontvanger. Mizawa e.a. (2022) gebruiken een tijd- en ruimte-
+  // afhankelijke drukverdeling bij hockey. Dit is alleen een geometrische
+  // meetwaarde: geen uit het artikel gefitte onderscheppingskans.
+  const laneGap=d().reduce((best,p)=>{
+   const dx=target.x-from.x,dy=target.y-from.y,den=dx*dx+dy*dy;
+   const along=den?clamp(((p.x-from.x)*dx+(p.y-from.y)*dy)/den,0,1):0;
+   return Math.min(best,dist(p,{x:from.x+along*dx,y:from.y+along*dy}));
+  },Infinity);
   const immediate=d().reduce((m,q)=>Math.min(m,dist(q,to)),1000),behind=target.x-carrier.x;
   const forward=behind*.13,spread=Math.min(12,Math.abs(to.y-carrier.y)*.036),
         arrival=clamp(earliest*65,-110,66),lengthPenalty=-length*.048;
@@ -1318,7 +1327,7 @@ function simulate(resume=null){
   const quality=forward+spread+arrival+lengthPenalty+backward+crowding+distancePenalty+circle+flank;
   const qualityParts={forward,spread,arrival,lengthPenalty,backward,crowding,distancePenalty,circle,flank};
   return {to,target,quality,qualityParts,earliest,possible:earliest>.1&&immediate>34,
-   duration,from,near:immediate};
+   duration,from,near:immediate,laneGap};
  }
  function choosePass(carrier){
   const choices=a().filter(p=>p.id!==holder).map(p=>passRisk(carrier,p)).sort((u,v)=>v.quality-u.quality);
@@ -1336,6 +1345,8 @@ function simulate(resume=null){
    from:passer,to:choice.to.id,distanceM:dist(choice.from,choice.target)/PX,
    durationS:choice.duration,ballSpeedMps:dist(choice.from,choice.target)/PX/choice.duration,
    minArrivalMarginS:choice.earliest,receiverNearestDefM:choice.near/PX,
+   passLaneNearestDefM:choice.laneGap/PX,holdBeforePassS:held,
+   flankCutbackPattern:sportIndex===0&&formationIndex===2&&choice.qualityParts.flank>0,
    score:choice.quality,scoreParts:choice.qualityParts,candidates:choice.candidates||[],
    feasible:choice.possible,receiveRadiusM:sportCfg().receive/PX
   });
@@ -1616,6 +1627,8 @@ function calculationOfEvent(ev){
   rows=[analysisRow('Passafstand',d.distanceM,'m'),analysisRow('Balsnelheid',d.ballSpeedMps,'m/s'),
    analysisRow('Vliegtijd',d.durationS,'s'),analysisRow('Aankomstmarge verdediger',d.minArrivalMarginS,'s'),
    analysisRow('Dichtste verdediger bij ontvanger',d.receiverNearestDefM,'m'),
+   analysisRow('Kleinste afstand verdediger tot passlijn',d.passLaneNearestDefM,'m'),
+   analysisRow('Balbezit voor deze pass',d.holdBeforePassS,'s'),
    analysisRow('Passscore (geen kans)',d.score,'pt')];
   const labels={forward:'Vooruitgang × 0,13',spread:'Breedtebonus',arrival:'Marge × 65, begrensd',
    lengthPenalty:'Passafstand × −0,048',backward:'Straf terugspelen',crowding:'Druk bij ontvanger',
