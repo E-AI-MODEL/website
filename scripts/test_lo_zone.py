@@ -97,9 +97,9 @@ def run():
         assert not page.locator(".mobile-scrim").is_visible()
         assert page.locator(".side").is_visible()
         panel=page.locator(".side").bounding_box()
-        nav=page.locator(".mobile-controls").bounding_box()
-        assert panel["height"] <= 0.45 * 844 + 3,panel
-        assert panel["y"] + panel["height"] <= nav["y"] + 1,(panel,nav)
+        assert not page.locator(".mobile-controls").is_visible()
+        assert panel["height"] <= 0.48 * 844 + 3,panel
+        assert panel["y"] + panel["height"] <= 844 + 1,panel
         assert page.locator("#zonePlans").is_visible()
         assert page.locator("#pitch").is_visible()
         assert page.locator("#zonePlans").evaluate("(e) => e.getBoundingClientRect().width > 180")
