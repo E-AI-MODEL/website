@@ -577,6 +577,10 @@
   .app .shell>.side,.app[data-mobile-panel="goal"] .shell>.side,.app[data-mobile-panel="player"] .shell>.side,.app[data-mobile-panel="coach"] .shell>.side{bottom:0;max-height:min(48dvh,365px);border-radius:15px 15px 9px 9px}
   .bottom{flex:0 0 48px!important;min-height:48px!important;max-height:48px;padding:4px 6px}
   .bottom .actions{grid-template-columns:52px minmax(0,1fr);gap:5px;width:100%}
+  /* Zodra Beginopstelling wegvalt, krijgt Speel opnieuw de volle breedte. */
+  .bottom #reset.hide + #primary{grid-column:1/-1;min-width:0;white-space:nowrap}
+  /* Tijdens de uitslag heeft Coach voorrang op de oefenkeuze. */
+  .app[data-lo-phase="done"] .lo-mobile-goal-trigger{display:none!important}
   .bottom #reset{font-size:0!important;min-height:40px;max-height:40px;padding:4px}
   .bottom #reset:before{content:'↺';font-size:23px;line-height:1}
   .bottom #primary{min-height:40px;max-height:40px;font-size:13px}
