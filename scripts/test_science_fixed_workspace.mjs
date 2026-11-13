@@ -92,7 +92,9 @@ try{
    }
    await page.goto(base+'/tools/science-observatory/labs/natuurkunde/#wheatstone',{waitUntil:'load'});
    await page.waitForFunction(()=>document.querySelector('#labTitle').textContent.toLowerCase().includes('wheatstone'));
-   assert.equal(await page.locator('[data-bottom="graph"]').getAttribute('aria-selected'),'true','Nieuwe proef start met grafiek');
+   assert.equal(await page.locator('[data-bottom="insight"]').getAttribute('aria-selected'),'true','De brug opent met een spanningsvergelijking');
+    await page.evaluate(()=>selectBottom('graph'));
+    assert.equal(await page.locator('[data-bottom="graph"]').getAttribute('aria-selected'),'true','De grafiek blijft beschikbaar');
    const plot=page.locator('#plot'),r=await plot.boundingBox();
    await page.mouse.move(r.x+r.width*.5,r.y+r.height*.5);
    const probe=await page.evaluate(()=>state.graphProbe);
