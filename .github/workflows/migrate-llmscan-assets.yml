@@ -2,7 +2,7 @@ name: Migrate LLMscan images from Sites
 on:
   push:
     branches: ['feat/standalone-llmscan-20261113']
-    paths: ['scripts/llmscan_assets.py']
+    paths: ['scripts/llmscan_assets.py', '.github/workflows/migrate-llmscan-assets.yml']
   workflow_dispatch:
 permissions:
   contents: write
