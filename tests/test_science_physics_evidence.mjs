@@ -52,8 +52,8 @@ test('Het register houdt alle 53 expliciet op niet inhoudelijk gevalideerd',()=>
  for(const x of register.proeven){
   assert.equal(x.inhoudelijk_gevalideerd,false,x.id);
   assert.equal(x.vakdocent_nagezien,false,x.id);
-  assert.equal(x.bronstatus,pilot.includes(x.id)?'bronverwijzing_toegevoegd':'bronselectie_open',x.id);
-  assert.equal(x.referentietest,pilot.includes(x.id)?'test_toegevoegd':'afzonderlijke_referentietest_open',x.id);
+  assert.equal(x.bronstatus,'bronverwijzing_toegevoegd',x.id);
+  assert.equal(x.referentietest,['cradle','magnetbar'].includes(x.id)?'kwalitatieve_modelcheck':'test_toegevoegd',x.id);
  }
 });
 test('Hefboom: krachtmomenten onafhankelijk nagerekend',()=>{
