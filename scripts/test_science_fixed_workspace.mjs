@@ -92,7 +92,9 @@ try{
    }
    await page.goto(base+'/tools/science-observatory/labs/natuurkunde/#wheatstone',{waitUntil:'load'});
    await page.waitForFunction(()=>document.querySelector('#labTitle').textContent.toLowerCase().includes('wheatstone'));
-   assert.equal(await page.locator('[data-bottom="graph"]').getAttribute('aria-selected'),'true','Nieuwe proef start met grafiek');
+   assert.equal(await page.locator('[data-bottom="insight"]').getAttribute('aria-selected'),'true','De brug opent met een spanningsvergelijking');
+    await page.evaluate(()=>selectBottom('graph'));
+    assert.equal(await page.locator('[data-bottom="graph"]').getAttribute('aria-selected'),'true','De grafiek blijft beschikbaar');
    const plot=page.locator('#plot'),r=await plot.boundingBox();
    await page.mouse.move(r.x+r.width*.5,r.y+r.height*.5);
    const probe=await page.evaluate(()=>state.graphProbe);
@@ -132,7 +134,11 @@ try{
    assert.deepEqual(uiCheck.problems,[],'Grafiek en fysieke bediening kloppen per proef');
    const selectLab=async id=>{await page.evaluate(id=>loadLab(id),id);assert.equal(await page.locator('#labTitle').innerText(),await page.evaluate(id=>byId[id].title,id));};
    const graphDrag=async(from,to=from)=>{
-    const rect=await page.locator('#plot').boundingBox(),y=rect.y+rect.height*.5;
+    // De proef mag met een kracht- of energieweergave openen; schakel naar grafiek voor deze test.
+    await page.evaluate(()=>selectBottom('graph'));
+    const rect=await page.locator('#plot').boundingBox();
+    assert(rect,'Grafiek is zichtbaar na wisselen');
+    const y=rect.y+rect.height*.5;
     await page.mouse.move(rect.x+rect.width*from,y);
     await page.mouse.down();
     await page.mouse.move(rect.x+rect.width*to,y,{steps:6});
