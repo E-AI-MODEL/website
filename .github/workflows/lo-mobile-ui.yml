@@ -1,0 +1,35 @@
+name: LO mobiele bediening
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'tools/lo-aanvalslab/index.html'
+      - 'scripts/test_lo_mobile_navigation.py'
+      - '.github/workflows/lo-mobile-ui.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  mobile-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Installeer Chromium
+        run: |
+          python -m pip install playwright
+          python -m playwright install --with-deps chromium
+      - name: Test mobiele bediening en desktop
+        run: python scripts/test_lo_mobile_navigation.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lo-mobile-ui-proefbeelden
+          path: artifacts/lo-mobile/*.png
+          if-no-files-found: ignore
