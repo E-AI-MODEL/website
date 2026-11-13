@@ -743,7 +743,7 @@ function loGoalPicker(){
  const chips=el('loGoalChips');chips.replaceChildren();
  for(const [key,label] of loGoals()){
   const b=document.createElement('button');b.type='button';b.className='lo-goal-chip'+(loGoalKey===key?' active':'');
-  b.textContent=label;b.setAttribute('aria-pressed',String(loGoalKey===key));
+  b.textContent=label;b.dataset.loGoalKey=key;b.setAttribute('aria-pressed',String(loGoalKey===key));
   b.onclick=()=>{loGoalManual=true;loGoalKey=key;loGoalPicker();if(state==='done')loCoachFeedback();else refresh()};
   chips.append(b);
  }
@@ -1749,6 +1749,14 @@ const lessons=[
   ['Bekijk dezelfde aanval','Zodra beide plannen klaar zijn, start hetzelfde spel op beide apparaten.','Bij een online spel loopt de gezamenlijke klok door wanneer je het hulpmenu opent.','play','Samen spelen · hetzelfde spel']
  ]}
 ];
+const helpWhy={
+ plaatsen:{why:'De startpositie verandert de mogelijke aanspeellijnen. Leerlingen zien het effect van hun eigen keuze, zonder dat de software vooraf de beste plek aanwijst.',formation:1},
+ opdrachten:{why:'Spelers zonder bal bepalen veel van het samenspel. Door één loopactie of verdedigende opdracht te veranderen, kun je gericht vergelijken.',formation:2},
+ afspelen:{why:'Een simulatie laat zien wat het model met de ingestelde keuzes doet. Door opnieuw te spelen met één wijziging, maak je een verschil zichtbaar zonder dat je al weet wat in de zaal beter werkt.',formation:1},
+ coaching:{why:'Kleine tactische doelen richten de aandacht op wat er tussen spelers gebeurt. De coach helpt kijken, maar kiest geen winnende oplossing.',formation:2},
+ terugkijken:{why:'Terugkijken helpt onderscheid maken tussen wat je zag, wat het model berekende en wat je in de zaal nog moet testen.',formation:3},
+ samen:{why:'Aanvallers en verdedigers maken ieder een eigen plan. De uitkomst maakt de gevolgen van hun keuzes bespreekbaar. Deze proef gebruikt één apparaat, geen online kamer.',formation:2}
+};
 let lesson=0,step=0,animations=[],wasPaused=false,returnFocus=null;
 function stop(){for(const a of animations){try{a.cancel()}catch{}}animations=[]}
 function renderTabs(){
@@ -1790,6 +1798,7 @@ function render(){
  $('loHelpStepTitle').textContent=item[0];
  $('loHelpStepBody').textContent=item[1];
  $('loHelpStepTip').textContent=item[2];
+ $('loHelpWhy').textContent=helpWhy[data.id].why;
  $('loHelpDemoTag').textContent=item[4];
  $('loHelpBack').disabled=step===0&&lesson===0;
  $('loHelpNext').textContent=step===data.steps.length-1&&lesson===lessons.length-1?'Opnieuw bekijken ↻':'Volgende stap →';
@@ -1812,6 +1821,11 @@ function close(){
 $('loHelpOpen').addEventListener('click',open);
 $('loHelpClose').addEventListener('click',close);
 $('loHelpTry').addEventListener('click',close);
+$('loHelpPractice').addEventListener('click',()=>{
+ const form=helpWhy[lessons[lesson].id].formation;
+ close();
+ window.__loTeacherStartTrial?.(form);
+});
 $('loHelpNext').addEventListener('click',next);
 $('loHelpBack').addEventListener('click',back);
 $('loHelpReplay').addEventListener('click',replay);
@@ -1834,12 +1848,22 @@ window.__loHelpTest={getState:()=>({open:!root.hidden,lesson:lessons[lesson].id,
 (()=>{'use strict';
 const $=id=>document.getElementById(id),sheet=$('loTeacher'),badge=$('loTeacherBadge');
 const choices=[...document.querySelectorAll('[data-lo-teacher-form]')];
+const plans={
+ 1:{title:'2 tegen 1 · een aanspeellijn openen',why:'Er is maar één verdediger. De balbezitter moet kiezen tussen zelf ruimte nemen en een medespeler aanspelen. De ander leert vrijlopen buiten de verdedigingslijn.',goal:'een aanspeellijn openen en herkennen wanneer de pass mogelijk is.',observe:'kijkt de leerling naar de verdediger en komt de speler zonder bal op een andere passhoek?',focus:'open',role:'a',tip:'Verplaats aanvaller 2. Speel de aanval af. Verschuif hem daarna naar een andere passhoek en vergelijk.'},
+ 2:{title:'3 tegen 2 · rugdekking geven',why:'Twee verdedigers moeten afspraken maken: wie zet druk, wie beschermt de ruimte erachter? De extra aanvaller maakt afstemmen en meeschuiven zichtbaar.',goal:'druk zetten en rugdekking geven zonder de tweede aanvaller helemaal vrij te laten.',observe:'reageren de verdedigers op elkaar en blijft de aanspeellijn naar een tweede aanvaller afgeschermd?',focus:'cover',role:'d',tip:'Selecteer een verdediger, kies een andere opdracht en verplaats hem. Speel opnieuw en kijk wat de andere verdediger doet.'},
+ 3:{title:'4 tegen 3 · ruimte maken zonder bal',why:'Met meer spelers zijn er verschillende aanspeelroutes. Breedte houden, diepte maken en elkaar ruimte geven worden belangrijker dan één goede pass.',goal:'ruimte creëren met een loopactie zonder bal en een nieuwe aanspeelmogelijkheid herkennen.',observe:'ontstaan er meerdere afspeelmogelijkheden en welke verdedigers worden tot een keuze gedwongen?',focus:'space',role:'a',tip:'Zet twee aanvallers verder uit elkaar. Speel en vergelijk. Verander daarna één loopactie en kijk hoe de dekking reageert.'}
+};
 let formation=2,enabled=false,returnFocus=null;
 function render(){
  choices.forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.loTeacherForm)===formation)));
- $('loTeacherStart').textContent=enabled?'Ga naar het speelveld':'Start docentweergave';
+ $('loTeacherStart').textContent=enabled?'Open vrije opstelling':'Open vrije opstelling';
  $('loTeacherExit').hidden=!enabled;
  badge.hidden=!enabled;
+ const focus=plans[formation];
+ $('loTeacherFocusTitle').textContent=focus.title;
+ $('loTeacherFocusWhy').textContent=focus.why;
+ $('loTeacherFocusGoal').textContent=focus.goal;
+ $('loTeacherFocusObserve').textContent=focus.observe;
 }
 function open(){
  returnFocus=document.activeElement;
@@ -1850,27 +1874,45 @@ function close(){
  if(returnFocus?.isConnected&&!returnFocus.hidden&&typeof returnFocus.focus==='function')returnFocus.focus();
  returnFocus=null;
 }
-function start(){
- // De docent kan zelf beide teams verplaatsen. Dit is geen inlogfunctie.
+function start(practice=false){
  sheet.hidden=true;
+ // Gebruik het echte Aanvalslab, geen los oefenmodel. Beide teams mogen worden verplaatst.
  document.querySelector('#welcome [data-mode="free"]').click();
  const selector=$('formationSelect');
  selector.value=String(formation);
  selector.dispatchEvent(new Event('change',{bubbles:true}));
- enabled=true;render();
+ enabled=true;
+ const tip=$('loTeacherPracticeTip');
+ if(practice){
+  const goal=plans[formation];
+  if(goal.role==='d'){
+    const role=[...$('loGoalRoles').querySelectorAll('button')].find(b=>b.textContent==='Verdediging');
+    role?.click();
+  }
+  const chip=$('loGoalChips').querySelector('[data-lo-goal-key="'+goal.focus+'"]');
+  if(chip)chip.click();
+  $('loTeacherPracticeTitle').textContent='Docentproef · '+goal.title;
+  $('loTeacherPracticeBody').textContent=goal.tip;
+  tip.hidden=false;tip.open=true;
+ }else{tip.hidden=true}
+ render();
  $('pitch').focus({preventScroll:true});
  returnFocus=null;
 }
-function exit(){enabled=false;render();close()}
+function trial(targetFormation=formation){
+ if(Number.isFinite(Number(targetFormation))&&plans[Number(targetFormation)])formation=Number(targetFormation);
+ start(true);
+}
+function exit(){enabled=false;$('loTeacherPracticeTip').hidden=true;render();close()}
 $('loWelcomeHelp').addEventListener('click',()=>window.__loHelpTest?.open());
 $('loWelcomeTeacher').addEventListener('click',open);
 badge.addEventListener('click',open);
 $('loTeacherClose').addEventListener('click',close);
-$('loTeacherStart').addEventListener('click',start);
+$('loTeacherStart').addEventListener('click',()=>start(false));
+$('loTeacherPractice').addEventListener('click',()=>trial());
 $('loTeacherExit').addEventListener('click',exit);
 $('loTeacherTutorial').addEventListener('click',()=>{close();window.__loHelpTest?.open()});
 choices.forEach(b=>b.addEventListener('click',()=>{formation=Number(b.dataset.loTeacherForm);render()}));
-// Gewoon leerlingenspel kiezen beëindigt de docentweergave.
 document.querySelectorAll('#welcome [data-mode], #onlineChoice').forEach(btn=>btn.addEventListener('click',()=>{
  enabled=false;render();
 }));
@@ -1886,6 +1928,7 @@ document.addEventListener('keydown',e=>{
  }
 });
 render();
-window.__loTeacherTest={getState:()=>({open:!sheet.hidden,enabled,formation}),open,close,start,exit};
+window.__loTeacherStartTrial=trial;
+window.__loTeacherTest={getState:()=>({open:!sheet.hidden,enabled,formation,practice:!$('loTeacherPracticeTip').hidden}),open,close,start,trial,exit};
 })();
 </script></body></html>
