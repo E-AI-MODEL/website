@@ -658,7 +658,7 @@ function draw(actors=players,ball=null,trail=[]){
  }
  if(trail.length>1){const path=trail.map((p,i)=>(i?'L':'M')+p.x+' '+p.y).join(' ');s('path',{d:path,fill:'none',stroke:'#fff1bc','stroke-width':2.1,opacity:.47,'stroke-dasharray':'5 7'},traces)}
  for(const p of actors){
-  const can=canEdit(p),active=p.id===selected&&state==='setup';
+  const can=canEdit(p),active=p.id===selected&&(state==='setup'||state==='coach');
   const g=s('g',{'data-id':p.id,style:can?'cursor:grab':'cursor:default',role:'group','aria-label':(p.team==='a'?'Aanvaller ':'Verdediger ')+(+p.id[1]+1)},layer);
   if(active)s('circle',{cx:p.x,cy:p.y,r:29,fill:'none',stroke:'#ecfff8','stroke-width':1.4,opacity:.75,'stroke-dasharray':'6 5'},g);
   s('circle',{cx:p.x,cy:p.y,r:21,fill:p.team==='a'?'#123b34':'#3b2633',stroke:active?'#f2fffb':(p.team==='a'?'#5ce0af':'#fb8190'),'stroke-width':active?3:2.15,opacity:can?1:.85},g);
