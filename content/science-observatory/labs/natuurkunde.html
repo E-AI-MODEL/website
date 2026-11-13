@@ -458,7 +458,7 @@ body{display:flex;flex-direction:column}
   height:min(45dvh,320px);flex:0 0 min(45dvh,320px)
  }
  .workspace .tab-strip{height:37px;min-height:37px;flex:0 0 37px;gap:0;padding:0 2px;overflow:hidden}
- .workspace .tab{flex:1 1 0;min-width:0;padding:0 3px;text-align:center;font-size:clamp(9px,2.65vw,11px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ .workspace .tab{flex:1 1 0;min-width:0;padding:0 3px;text-align:center;font-size:clamp(9px,2.4vw,10px);letter-spacing:-.015em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
  .workspace .tab-body{padding:8px 9px 5px}
  .workspace .insight-panel:not([hidden]){display:flex;flex-direction:column;min-height:0}
  .workspace .insight-head{margin-bottom:5px}
@@ -1368,7 +1368,7 @@ function sceneViewport(canvas){
  // van het modelvlak. De schaal blijft in beide richtingen gelijk.
  const mobileVectors=canvas.id==='scene'&&matchMedia('(max-width:720px)').matches;
  const frame=mobileVectors?(state.id==='resolution'
-  ?{x:210,y:78,width:450,height:360}
+  ?{x:210,y:90,width:450,height:410}
   :state.id==='resultant'||state.id==='equilibrium'
    ?{x:205,y:0,width:690,height:480}:null):null;
  const virtualWidth=portrait?560:frame?.width||1000;
