@@ -41,6 +41,27 @@ Voor **GNSS Football Tactical** zijn de zes openbare U18-bestanden daadwerkelijk
 
 De code om de gegevens opnieuw op te halen en na te rekenen staat in `scripts/lo_gnss_reference.py`. Het broncommit is vastgezet op `f70b925c94e54c5be244917803f07da7c55101b4`. Rapportage en log komen uit de GitHub Actions-controle. Niet doen alsof deze zes personen een aparte steekproef van zes wedstrijden zijn.
 
+## Uitgevoerde meetronde: 13 november 2026
+
+De nieuwe verdediging is in 128 vaste spelsimulaties (vier sporten × vier spelverhoudingen × vier beginsituaties × twee seeds) vergeleken met de gepubliceerde versie. Alle resultaten, ook de ongunstige, staan in [`defence-benchmark-2026-11-13.json`](./defence-benchmark-2026-11-13.json). De broncode voor de herhaling staat in `scripts/benchmark_lo_defence.py`, `scripts/trace_lo_defence.py` en `scripts/lo_gnss_reference.py`.
+
+De gekozen meetwaarde *abrupte koersomkering* vergelijkt twee opeenvolgende bewegingsvensters van een halve seconde, uitsluitend bij spelers die in beide vensters sneller dan 0,65 m/s bewegen. Het gaat om het aantal omkeringen per duizend meetmomenten, niet per duizend spelers of wedstrijden. Ook een echt verdedigende koerswijziging kan terecht zijn.
+
+| Sport | Oud: koersomkeringen / 1.000 | Nieuw: koersomkeringen / 1.000 | Rugdekker doelzijde, nieuw | Specifiek 3v2: doelzijde, nieuw |
+|---|---:|---:|---:|---:|
+| Voetbal | 47,3 | 24,2 | 63% | 43% |
+| Hockey | 29,0 | 14,9 | 53% | 64% |
+| Handbal | 13,4 | 5,2 | 52% | 51% |
+| Basketbal | 34,2 | 28,8 | 58% | 46% |
+
+**Wat verbeterde:** tijdens een balvlucht worden druk en rugdekking niet om de fractie van een seconde opnieuw toegewezen. De verdedigende loopbanen hebben in de geteste voorbeelden minder plotselinge omkeringen. De mandekker blijft meer bij zijn aanvaller. Het model geeft maximaal één onderscheppingspoging tegelijk de voorrang.
+
+**Wat niet vaststaat:** de percentages zijn uit de eigen simulatie afgeleid. Voor een goede rugdekker is 'aan de doelzijde' slechts één voorwaarde. In 3v2 mist het model dat nog in veel situaties. De afstand tussen rugdekker en bal blijft regelmatig groot, en ook het aantal doelpogingen beweegt niet in elke sport dezelfde richting. Deze metingen vormen geen bewijs dat de nieuwe variant echte spelsituaties goed voorspelt.
+
+De zes openbare U18-GNSS-bestanden zijn daadwerkelijk ingelezen: samen 205.517 tijdregistraties, met afzonderlijke snelheidsberekeningen en koersomkeringen. De geobserveerde koersomkeringen per 1.000 actieve meetmomenten lopen bij deze zes spelers van 5,6 tot 18,2. Daarmee hebben we een onafhankelijke controle op de *orde van grootte van bewegen*, maar geen valide vergelijking van verdedigingsgedrag: de U18-traces bevatten geen balposities, teamrollen of labels voor druk, rugdekking en dekking. De zes spelers zijn ook geen onafhankelijke wedstrijdsteekproeven. Een modelcijfer dat toevallig binnen het GNSS-bereik valt, geldt niet als kalibratie.
+
+**Releasebesluit: nog niet publiceren.** De code- en browsertests zijn geslaagd, maar de nieuwe kandidaat is nog niet gecontroleerd op daadwerkelijke verdedigingsrollen met onafhankelijke tracking uit volledige wedstrijden of door een LO-vakdocent op een geblindeerde reeks. De brondata van DFL/Sportec en SkillCorner zijn geïnventariseerd, maar niet met deze kandidaat doorlopen voor tactische kalibratie. Dit blijft een aparte conceptversie, zonder wijziging van de openbare spelregels.
+
 ## Controleerbare vragen
 
 Deze metingen horen vóór een release te worden uitgevoerd op **onafhankelijke spelsituaties**, niet op een willekeurige verdeling van opeenvolgende frames uit één wedstrijd.
