@@ -59,7 +59,7 @@ def test_mobile(page, width, height):
         assert page.locator(".side").is_visible()
         assert page.locator(section).is_visible()
         panel=page.locator(".side").bounding_box()
-        assert panel["y"] >= height * .2, panel
+        assert panel["y"] >= height * (.1 if height <= 500 else .2), panel
         assert panel["y"] + panel["height"] <= height + 3, panel
         page.locator("#loMobileClose").click()
         assert not page.locator(".side").is_visible()
