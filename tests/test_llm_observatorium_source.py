@@ -97,7 +97,7 @@ class LlmObservatorySourceTests(unittest.TestCase):
                        'function guideRender()', 'setupGuide();loadRealTokenizer();'):
             self.assertIn(marker, html)
         self.assertIn("Deze vier kansen zijn uitsluitend een demonstratie.", html)
-        self.assertIn("De stukjes komen van de echte tokenizer zodra die is geladen.", html)
+        self.assertIn("De precieze verdeling wordt geladen.", html)
         self.assertIn("Deze pagina verstuurt je vraag niet naar een AI-model.", html)
         self.assertIn("function drawExpertsGrid()", html)
         self.assertIn("function renderInspector()", html)
