@@ -273,12 +273,12 @@ function drawScene(m){
   // Kransvaten en de grote hartader liggen op het epicard.
   if((!atlasReady||!atlasRich||!state.anatomyView))for(const vessel of meshes.coronary)drawMesh(vessel.mesh,m4(),state.selected===vessel.id?[.98,.75,.52]:vessel.color,1);
   if(state.cutaway){
-    if((!atlasReady||!atlasRich||!state.anatomyView)||state.showDetails)for(const papillary of meshes.papillary){
+    if(!atlasReady||state.showDetails)for(const papillary of meshes.papillary){
       if(atlasReady&&!papillary.id.includes(state.focusSide==='left'?'lv':'rv'))continue;
       drawMesh(papillary.mesh,m4(),state.selected===papillary.id?[.98,.71,.54]:papillary.color,1);
     }
     if((!atlasReady||!atlasRich||!state.anatomyView))drawMesh(meshes.septum,m4(),[.91,.59,.52],1);
-    if((!atlasReady||!atlasRich||!state.anatomyView)||state.showDetails)for(const chord of meshes.cords){
+    if(!atlasReady||state.showDetails)for(const chord of meshes.cords){
       if(atlasReady&&chord.ventricle!==(state.focusSide==='left'?'lv':'rv'))continue;
       drawMesh(chord.mesh,m4(),[.96,.85,.70],1);
     }
@@ -293,7 +293,7 @@ function drawScene(m){
       const leaves=leafletGeometry(valve,aperture);
       gl.bindBuffer(gl.ARRAY_BUFFER,mesh.vb);gl.bufferSubData(gl.ARRAY_BUFFER,0,leaves.v);
       gl.bindBuffer(gl.ARRAY_BUFFER,mesh.nb);gl.bufferSubData(gl.ARRAY_BUFFER,0,leaves.n);
-      if((!atlasReady||!atlasRich||!state.anatomyView)||state.showDetails)drawMesh(meshes.valves[valve.id].rim,modelMatrix(valve.pos,[1,1,1]),[.96,.75,.59],1);
+      if(!atlasReady||state.showDetails)drawMesh(meshes.valves[valve.id].rim,modelMatrix(valve.pos,[1,1,1]),[.96,.75,.59],1);
       drawMesh(mesh,modelMatrix(valve.pos,[1,1,1]),active?[.91,.90,.71]:[.96,.69,.53],1);
     }
   }
