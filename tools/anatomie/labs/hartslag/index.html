@@ -46,7 +46,8 @@
           <div class="viewer-top">
             <span class="view-kicker"><span class="status-dot" aria-hidden="true"></span> LIVE HARTCYCLUS</span>
             <div class="view-actions" role="group" aria-label="Weergave van het hart">
-              <button type="button" class="mini-control" id="sectionToggle" aria-pressed="false" title="Wissel tussen de anatomische buitenkant en de bewegende doorsnede">Bekijk binnenkant</button>
+              <button type="button" class="mini-control" id="sectionToggle" aria-pressed="false" title="Bekijk de anatomische buitenkant of het opengemaakte hart">Bekijk binnenkant</button>
+              <button type="button" class="mini-control" id="mechanicsToggle" aria-pressed="true" title="Schakel tussen echte anatomische structuren en de vereenvoudigde animatie van klepbewegingen" hidden>Bekijk klepbeweging</button>
               <button type="button" class="mini-control" id="labelsToggle" aria-pressed="true">Namen verbergen</button>
               <button type="button" class="mini-control" id="flowToggle" aria-pressed="true" hidden>Bloedstroom verbergen</button>
               <button type="button" class="mini-control" id="resetCamera">Startaanzicht</button>
@@ -62,9 +63,9 @@
             <div class="discovery-result"><p id="discoveryFeedback" aria-live="polite">Kies eerst wat je verwacht. Bekijk daarna wat er echt gebeurt.</p><button type="button" id="discoveryAction" disabled>Bekijk de beweging</button></div>
           </div>
           <div class="stage" id="stage">
-            <canvas id="heartCanvas" aria-label="Bestuurbaar driedimensionaal hartmodel met een anatomische buitenkant en een bewegende doorsnede. Sleep om te draaien en knijp om te zoomen.">Je browser heeft ondersteuning voor WebGL nodig.</canvas>
+            <canvas id="heartCanvas" aria-label="Bestuurbaar 3D-hartmodel met bestaande anatomische structuren en een afzonderlijk, vereenvoudigd werkingsmodel. Sleep om te draaien en knijp om te zoomen.">Je browser heeft ondersteuning voor WebGL nodig.</canvas>
             <div class="stage-wash" aria-hidden="true"></div>
-            <div class="stage-caption" id="modelCaption">3D · Anatomische hartvorm · Atlasmodel</div>
+            <div class="stage-caption" id="modelCaption">Echte 3D-anatomie · BodyParts3D</div>
             <svg class="label-leaders" id="labelLeaders" aria-hidden="true"></svg>
             <div class="labels" id="labels" aria-hidden="true">
               <span data-part="ra">Rechterboezem</span><span data-part="rv">Rechterkamer</span>
@@ -154,13 +155,14 @@
           <div role="tabpanel" id="tabSources" aria-labelledby="tabSourcesBtn" class="tab-panel" hidden>
             <div class="info-step">OVER HET MODEL</div>
             <h2>Wat laten we zien?</h2>
-            <p class="description">De buitenkant bestaat uit afzonderlijke 3D-onderdelen uit de bestaande anatomie-atlas. Met Doorsnede bekijk je een vereenvoudigd bewegend binnenmodel. De hartvorm en de doorsnede hebben een verschillende mate van anatomisch detail. De pompbewegingen en bloeddeeltjes zijn onderwijsvoorbeelden, geen medische simulatie.</p>
+            <p class="description">Het hart is opgebouwd uit echte, benoemde BodyParts3D-structuren, waaronder spierwanden, kleppen en kransvaten. Bij ‘Bekijk binnenkant’ zie je het anatomische model opengemaakt. Met ‘Bekijk klepbeweging’ schakel je naar een vereenvoudigd bewegend werkingsmodel. De pompbeweging en de grafieken zijn onderwijsvoorbeelden, geen patiëntmetingen of medische simulatie.</p>
             <div class="source-links">
               <a href="https://openstax.org/books/anatomy-and-physiology-2e/pages/19-3-cardiac-cycle" target="_blank" rel="noopener noreferrer">OpenStax · Hartcyclus ↗</a>
               <a href="https://openstax.org/books/anatomy-and-physiology-2e/pages/19-1-heart-anatomy" target="_blank" rel="noopener noreferrer">OpenStax · Bouw van het hart ↗</a>
+              <a href="https://dbarchive.biosciencedbc.jp/en/bodyparts3d/lic.html" target="_blank" rel="noopener noreferrer">BodyParts3D · Model en licentie ↗</a>
               <a href="/tools/anatomie/">Terug naar de anatomische 3D-atlas ↗</a>
             </div>
-            <p class="source-note">Het atlasmodel is afgeleid van Z-Anatomy/BodyParts3D via nqwrc/3d-anatomy (CC BY-NC-SA 4.0). Druk- en volumecurven zijn onderwijsvoorbeelden, geen gegevens van een patiënt.</p>
+            <p class="source-note">Het uitgebreidere hartmodel is gebaseerd op BodyParts3D 4.0, © Database Center for Life Science, CC BY 4.0, bewerkt via het open project Niyaz-05/heart-anatomy-lab. De eerdere Z-Anatomy-atlas blijft als terugvalmogelijkheid aanwezig onder de eigen voorwaarden. Zie <a href="./MODEL_SOURCE.md">modelverantwoording</a>. Druk, volume en pompbeweging zijn didactische voorbeelden.</p>
           </div>
         </aside>
       </section>
