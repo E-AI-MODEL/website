@@ -262,7 +262,10 @@ class AnatomyPublishTests(unittest.TestCase):
                 self.assertTrue(f.is_file(), page)
                 parser = Links()
                 parser.feed(f.read_text(encoding="utf-8"))
-                self.assertIn("/tools/anatomie/", parser.hrefs)
+                self.assertIn("/tools/science-observatory/", parser.hrefs,
+                              "De gezamenlijke ingang moet overal bereikbaar blijven")
+                if page != "nl/index.html":
+                    self.assertIn("/tools/anatomie/", parser.hrefs)
         sitemap = (OUT / "sitemap.xml").read_text(encoding="utf-8")
         self.assertIn("<loc>https://eaimodel.nl/tools/anatomie/</loc>", sitemap)
 
@@ -275,7 +278,7 @@ class AnatomyPublishTests(unittest.TestCase):
                 links.feed((OUT / rel).read_text(encoding="utf-8"))
                 # De gegenereerde Tools-pagina heeft één link in de inhoud
                 # en één in elk van de afzonderlijke desktop-/mobiele menu's.
-                expected = 3 if rel == "tools/index.html" else 1
+                expected = 3 if rel == "tools/index.html" else (1 if rel == "nl/tools/index.html" else 0)
                 self.assertEqual(links.hrefs.count("/tools/anatomie/"), expected,
                                  f"Onverwacht aantal anatomievermeldingen in {rel}")
                 if rel == "tools/index.html":
