@@ -278,6 +278,13 @@ function drawAtlasHeart(m,section=false){
       if(part.kind==='space')continue;
       const cutWall=section&&part.kind==='wall';
       let color=part.color;
+      // Subtiele routekleuren op de echte bronvaten helpen de twee
+      // bloedsomlopen herkennen. De kleuren zijn didactisch.
+      if(section&&part.kind==='vessel'){
+        if(['svc','ivc','pa','pa_left','pa_right'].includes(part.id))color=[.34,.57,.72];
+        if(['ao','ao_arch','ao_desc','pv_rs','pv_ri','pv_ls','pv_li'].includes(part.id))
+          color=[.84,.46,.40];
+      }
       let valveMotion=null;
       if(section&&part.kind==='valve'){
         const left=['mitral','aortic'].includes(part.id);
