@@ -4,12 +4,12 @@ import { readFileSync } from 'node:fs';
 
 const load = path => readFileSync(new URL('../' + path, import.meta.url), 'utf8');
 
-test('Zes onderwerpen geven toegang tot alle afzonderlijke onderzoeksmodellen', () => {
+test('Vijf onderwerpen geven toegang tot alle afzonderlijke onderzoeksmodellen', () => {
   const html = load('content/science-observatory/landing.html');
-  for (const title of ['Natuurkunde en wiskunde', 'Galactisch Observatorium', 'De oceaan (ABYSS)', 'Anatomie van de mens', 'Hoe werkt AI?', 'Sport en bewegen']) {
+  for (const title of ['Natuurkunde en wiskunde', 'Galactisch Observatorium', 'Anatomie van de mens', 'Hoe werkt AI?', 'Sport en bewegen']) {
     assert.ok(html.includes('<h3>' + title + '</h3>'), title);
   }
-  assert.equal((html.match(/<article class="so-card(?:\s|")/g) || []).length, 6);
+  assert.equal((html.match(/<article class="so-card(?:\s|")/g) || []).length, 5);
   for (const slug of ['natuurkunde', 'gravitatie-banen', 'wiskunde-a', 'wiskunde-b']) {
     assert.ok(html.includes('/tools/science-observatory/labs/' + slug + '/'), slug);
   }
@@ -17,7 +17,7 @@ test('Zes onderwerpen geven toegang tot alle afzonderlijke onderzoeksmodellen', 
   assert.match(html, /\/tools\/science-observatory\/labs\/melkweg\//);
   assert.match(html, /\/tools\/anatomie\/labs\/hartslag\//);
   assert.match(html, /\/tools\/lo-aanvalslab\//);
-  assert.match(html, /href="\/tools\/abyss\//);
+  assert.doesNotMatch(html, /href="\/tools\/abyss\//);
   assert.doesNotMatch(html, /53 proeven|NF \/ 01|Nieuwe proefversie/);
   assert.match(html, /niet alle natuurkundige modellen/i);
 });
