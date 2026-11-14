@@ -157,6 +157,132 @@
 #app[data-mode="2"] .cam-switch,#app[data-mode="3"] .cam-switch,#app[data-mode="4"] .cam-switch,#app[data-mode="5"] .cam-switch,#app[data-mode="6"] .cam-switch{display:none!important}
 #app[data-mode="2"] .stage-status,#app[data-mode="3"] .stage-status,#app[data-mode="4"] .stage-status,#app[data-mode="5"] .stage-status,#app[data-mode="6"] .stage-status{display:none!important}
 #app[data-mode="2"] .scene-caption,#app[data-mode="3"] .scene-caption,#app[data-mode="4"] .scene-caption,#app[data-mode="5"] .scene-caption,#app[data-mode="6"] .scene-caption{display:none!important}
+
+/* EERST BEGRIJPEN: een toegankelijke ingang voor het bestaande technische observatorium. */
+.ai-guide[hidden]{display:none!important}
+.ai-guide{position:fixed;inset:0;z-index:100;overflow:hidden;background:#06111e;color:#ecf4f6;font:14px/1.45 Inter,system-ui,-apple-system,'Segoe UI',sans-serif}
+.ai-guide *{box-sizing:border-box}
+.ai-guide button,.ai-guide input,.ai-guide textarea{font:inherit}
+.ai-guide button{touch-action:manipulation}
+.ai-guide button:focus-visible,.ai-guide input:focus-visible,.ai-guide textarea:focus-visible{outline:2px solid #82efd1;outline-offset:3px}
+.ai-guide-shell{height:100%;height:100dvh;width:100%;margin:0 auto;max-width:1560px;display:grid;grid-template-rows:84px minmax(0,1fr) 83px;overflow:hidden}
+.ai-guide-head{padding:12px clamp(17px,3vw,47px);display:flex;justify-content:space-between;align-items:center;gap:14px;border-bottom:1px solid #31506870;background:#0a1725}
+.ai-guide-brand{display:flex;align-items:center;gap:15px;min-width:0}
+.ai-guide-mark{display:grid;place-items:center;background:#14352f;color:#85e7c4;border:1px solid #438578;border-radius:12px;font-weight:750;font-size:15px;letter-spacing:.1em;width:45px;height:45px;flex:none}
+.ai-guide-kicker,.ai-guide-stepname,.ai-guide-small{font-size:10px;letter-spacing:.16em;color:#80dbbd;font-weight:750}
+.ai-guide-brand h1{font-size:clamp(16px,1.8vw,22px);font-weight:650;letter-spacing:-.025em;margin:2px 0 0;line-height:1.2}
+.ai-guide-technical{border:1px solid #446576;border-radius:12px;padding:11px 15px;background:#132536;color:#d5e9eb;white-space:nowrap;font-size:12px!important}
+.ai-guide-technical span{color:#87e4c5;padding-left:7px}
+.ai-guide-body{min-height:0;display:grid;grid-template-columns:220px minmax(0,1fr);padding:clamp(10px,2vw,28px);gap:clamp(12px,2vw,32px);overflow:hidden}
+.ai-guide-steps{display:flex;flex-direction:column;gap:6px;padding:18px 14px 12px 0;border-right:1px solid #314d6070;min-height:0}
+.ai-guide-steps button{display:flex;text-align:left;align-items:center;gap:12px;border:1px solid transparent;background:transparent;color:#95b1bb;border-radius:11px;padding:12px 10px;font-size:13px!important;line-height:1.25}
+.ai-guide-steps button span{display:grid;place-items:center;width:27px;height:27px;flex:none;border-radius:8px;border:1px solid #345364;color:#9cbcc7;font-variant-numeric:tabular-nums}
+.ai-guide-steps button[aria-current=step]{background:#15352d;color:#ecfff7;border-color:#438b70;font-weight:650}
+.ai-guide-steps button[aria-current=step] span{background:#88ecc7;border-color:#88ecc7;color:#0d2b21}
+.ai-guide-main{display:grid;grid-template-rows:auto minmax(0,1fr);min-height:0;gap:clamp(10px,2vh,24px);overflow:hidden}
+.ai-guide-intro{padding:5px 1px 0}
+.ai-guide-intro h2{font-size:clamp(25px,3.5vw,43px);font-weight:670;letter-spacing:-.044em;line-height:1.08;margin:7px 0 8px}
+.ai-guide-intro p{margin:0;color:#a9c1c9;font-size:clamp(13px,1.2vw,16px);max-width:750px;line-height:1.45}
+.ai-guide-work{display:grid;grid-template-columns:minmax(0,1.36fr) minmax(245px,.72fr);gap:clamp(10px,1.6vw,24px);min-height:0;overflow:hidden}
+.ai-guide-visual{background:radial-gradient(ellipse at 30% 0%,#14354270,transparent 65%),linear-gradient(145deg,#102331,#081825);border:1px solid #345569;border-radius:21px;min-height:0;overflow:hidden;padding:clamp(14px,2.5vw,33px);display:flex;flex-direction:column;justify-content:center;align-items:stretch;gap:17px}
+.ai-guide-aside{background:#0f202e;border:1px solid #314d5c;border-radius:21px;min-height:0;overflow:hidden;padding:clamp(16px,2.2vw,30px);display:flex;flex-direction:column;justify-content:center;gap:12px}
+.ai-guide-aside>p:not(.ai-guide-boundary){font-size:clamp(14px,1.33vw,18px);line-height:1.53;letter-spacing:-.008em;margin:0}
+.ai-guide-boundary{border-top:1px solid #34515b;padding-top:11px;margin:0;color:#9db7c0;font-size:12px;line-height:1.44}
+.ai-guide-small{color:#8ecbbd}
+#guideInteractive{display:flex;flex-direction:column;gap:10px}
+.ai-guide-question{color:#aec3cd;font-size:11px;text-transform:uppercase;letter-spacing:.14em;font-weight:700}
+.ai-guide-input{resize:none;width:100%;max-height:140px;min-height:100px;color:#f4f8ff;background:#0b1b2b;border:1px solid #5a8492;border-radius:14px;padding:18px;line-height:1.5;font-size:clamp(16px,1.55vw,20px)!important}
+.ai-guide-chat{padding:20px 22px;border-radius:17px 17px 4px 17px;background:#1a3948;border:1px solid #4b7b88;max-width:94%;box-shadow:0 12px 35px #020b1359}
+.ai-guide-chat p{font-size:clamp(17px,2.2vw,26px);margin:4px 0 0;line-height:1.35;overflow-wrap:anywhere}
+.ai-guide-chip-area{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:7px;max-height:100%;overflow:hidden}
+.ai-guide-token{max-width:100%;word-break:break-word;border:1px solid #527c8b;border-radius:9px;background:#15394a;color:#e1f6f4;padding:9px 11px;font-size:clamp(12px,1.3vw,17px)!important;line-height:1.2;min-height:37px}
+.ai-guide-token[aria-pressed=true]{background:#eed0a3;color:#352614;border-color:#eed0a3}
+.ai-guide-token.is-before{background:#174638;border-color:#4da580;color:#bdf5d6}
+.ai-guide-token.is-after{background:#102331;border-color:#2b4a5b;color:#819aaa}
+.ai-guide-token.is-focus{background:#e4c089;border-color:#ffe0ad;color:#2b261c}
+.ai-guide-legend{color:#a4bfc8;font-size:11px;line-height:1.45}
+.ai-guide-mini{font-size:13px;line-height:1.45;color:#b4d4d9}
+.ai-guide-scale{display:grid;grid-template-columns:1fr auto;gap:7px 12px;align-items:center}
+.ai-guide-scale label{color:#cfdee3;font-size:13px}
+.ai-guide-scale output{color:#a4f1ce;font-size:12px;font-variant-numeric:tabular-nums}
+.ai-guide-scale input{grid-column:1/3;width:100%;min-height:30px}
+.ai-guide-barlist{display:flex;flex-direction:column;gap:13px;width:100%}
+.ai-guide-bar{display:grid;grid-template-columns:72px minmax(0,1fr) 45px;align-items:center;gap:10px;color:#dcecef}
+.ai-guide-bar>span{font-size:14px}
+.ai-guide-bar>strong{font-size:12px;font-weight:650;text-align:right;font-variant-numeric:tabular-nums}
+.ai-guide-track{height:17px;border:1px solid #385765;border-radius:8px;background:#132c3d;overflow:hidden}
+.ai-guide-fill{height:100%;border-radius:7px;background:linear-gradient(90deg,#4eaaa4,#8df1c7);transition:width .17s ease}
+.ai-guide-bar:first-child .ai-guide-fill{background:linear-gradient(90deg,#c98a4b,#f3d09b)}
+.ai-guide-answer{font-size:clamp(17px,2.2vw,29px);line-height:1.5;color:#eff8fb;letter-spacing:-.02em}
+.ai-guide-answer strong{color:#9cf2d2;font-weight:650}
+.ai-guide-cta{padding:11px 14px;border:1px solid #659a84;border-radius:11px;background:#1d453b;color:#d5ffed;text-align:center;font-size:13px!important;font-weight:650}
+.ai-guide-cta:disabled{opacity:.5;cursor:default}
+.ai-guide-bottom{border-top:1px solid #32506078;background:#0a1826;display:flex;align-items:center;gap:17px;padding:12px clamp(17px,3vw,47px)}
+.ai-guide-counter{color:#a7c9c5;font-size:13px;min-width:42px;font-variant-numeric:tabular-nums}
+.ai-guide-progress{display:flex;gap:6px;flex:1;max-width:300px}
+.ai-guide-progress i{height:4px;flex:1;border-radius:8px;background:#2d4954}
+.ai-guide-progress i.on{background:#92e5bd}
+.ai-guide-actions{display:flex;gap:8px;align-items:center;margin-left:auto}
+.ai-guide-actions button{min-height:45px;padding:9px 17px;border-radius:12px;border:1px solid #436374;color:#d2e1e8;background:#132537;white-space:nowrap;font-size:13px!important}
+.ai-guide-actions button:disabled{opacity:.28}
+.ai-guide-actions .ai-guide-next{background:#8be8c4;border-color:#8be8c4;color:#0a2c23;font-weight:750}
+#guideReturn{border-color:#52917c;background:#153d33;color:#c4f5df}
+@media(max-width:960px){
+ .ai-guide-body{grid-template-columns:minmax(0,1fr);padding:14px 18px}
+ .ai-guide-steps{display:none}
+ .ai-guide-work{grid-template-columns:minmax(0,1fr) minmax(220px,.8fr)}
+}
+@media(max-width:680px){
+ .ai-guide-shell{grid-template-rows:70px minmax(0,1fr) calc(74px + env(safe-area-inset-bottom,0px))}
+ .ai-guide-head{padding:9px 13px}
+ .ai-guide-mark{width:33px;height:33px;border-radius:10px;font-size:12px}
+ .ai-guide-brand{gap:9px}
+ .ai-guide-brand h1{font-size:clamp(14px,3.65vw,19px)}
+ .ai-guide-kicker{font-size:8px}
+ .ai-guide-technical{padding:9px 9px;font-size:10px!important;max-width:128px;white-space:normal;text-align:center;line-height:1.15}
+ .ai-guide-technical span{display:none}
+ .ai-guide-body{padding:11px;gap:0}
+ .ai-guide-main{gap:9px;grid-template-rows:auto minmax(0,1fr)}
+ .ai-guide-intro{padding:0 4px}
+ .ai-guide-intro h2{font-size:clamp(22px,6vw,29px);margin:4px 0 5px}
+ .ai-guide-intro p{font-size:12px;line-height:1.35}
+ .ai-guide-work{grid-template-columns:1fr;grid-template-rows:minmax(0,1fr) auto;gap:9px}
+ .ai-guide-visual{padding:13px;border-radius:16px;gap:10px}
+ .ai-guide-aside{border-radius:15px;padding:11px 14px;gap:7px}
+ .ai-guide-aside>p:not(.ai-guide-boundary){font-size:12px;line-height:1.4}
+ .ai-guide-small{font-size:9px}
+ .ai-guide-boundary{font-size:10px;padding-top:7px}
+ .ai-guide-chat{padding:13px 15px}
+ .ai-guide-chat p{font-size:18px}
+ .ai-guide-token{font-size:12px!important;padding:7px 8px;min-height:34px}
+ .ai-guide-chip-area{gap:5px}
+ .ai-guide-input{min-height:80px;max-height:110px;font-size:16px!important;padding:12px}
+ .ai-guide-answer{font-size:18px}
+ .ai-guide-barlist{gap:8px}
+ .ai-guide-bar{grid-template-columns:53px minmax(0,1fr) 38px;gap:8px}
+ .ai-guide-bar>span{font-size:12px}
+ .ai-guide-track{height:14px}
+ .ai-guide-bottom{padding:8px 12px calc(8px + env(safe-area-inset-bottom,0px));gap:8px}
+ .ai-guide-actions button{min-height:43px;padding:8px 12px;font-size:12px!important}
+ .ai-guide-progress{max-width:86px}
+}
+@media(max-height:640px){
+ .ai-guide-shell{grid-template-rows:59px minmax(0,1fr) calc(57px + env(safe-area-inset-bottom,0px))}
+ .ai-guide-body{padding:7px}
+ .ai-guide-intro h2{font-size:21px;margin:2px 0 4px}
+ .ai-guide-intro p{font-size:11px}
+ .ai-guide-work{gap:6px}
+ .ai-guide-aside{padding:8px 12px;gap:4px}
+ .ai-guide-aside>p:not(.ai-guide-boundary){font-size:11px;line-height:1.3}
+ .ai-guide-boundary{font-size:9px;padding-top:4px}
+ .ai-guide-visual{padding:8px}
+ .ai-guide-chip-area{gap:4px}
+ .ai-guide-token{padding:5px 7px;min-height:29px;font-size:11px!important}
+ .ai-guide-bottom{padding:6px 10px calc(6px + env(safe-area-inset-bottom,0px))}
+ .ai-guide-actions button{min-height:36px}
+}
+@media(prefers-reduced-motion:reduce){.ai-guide-fill{transition:none!important}}
+
 </style>
 </head>
 <body>
@@ -216,6 +342,25 @@
 <footer class="footer"><button class="play" id="playBtn" aria-label="Doorloop de tokenroute">&gt;</button><span id="clock">SIMULATIETIJD</span><input id="timeSlider" type="range" min="0" max="1000" value="0" aria-label="Simulatietijd"><span id="timeText" class="time-read">0</span><span class="spacer"></span><span class="footer-tag">SCHEMATISCH · BEREKEND · CONTROLEERBAAR</span><select id="speedSelect" aria-label="Animatiesnelheid"><option value="0.5">0,5x</option><option value="1" selected>1x</option><option value="2">2x</option></select></footer>
 <nav class="mobile-dock" aria-label="Mobiel onderzoeksmenu"><button data-panel="modules"><b>&#9638;</b>Modules</button><button data-panel="graph"><b>&#8767;</b><span id="graphDockLabel">Grafiek</span></button><button data-panel="settings"><b>&#9776;</b>Instellen</button><button data-panel="learn"><b>≡</b>Uitleg</button><button data-panel="sources"><b>&#9678;</b>Bronnen</button></nav>
 </div>
+<section id="aiGuide" class="ai-guide" role="dialog" aria-modal="true" aria-labelledby="aiGuideTitle">
+ <div class="ai-guide-shell">
+  <header class="ai-guide-head">
+   <div class="ai-guide-brand"><span class="ai-guide-mark" aria-hidden="true">EAI</span><div><span class="ai-guide-kicker">HOE WERKT EEN AI?</span><h1 id="aiGuideTitle">Van jouw vraag naar een antwoord</h1></div></div>
+   <button type="button" id="guideTechnical" class="ai-guide-technical">Bekijk de techniek <span aria-hidden="true">↗</span></button>
+  </header>
+  <div class="ai-guide-body">
+   <nav class="ai-guide-steps" id="guideSteps" aria-label="Stappen van de uitleg"></nav>
+   <div class="ai-guide-main">
+    <div class="ai-guide-intro"><span id="guideEyebrow" class="ai-guide-stepname">STAP 1 VAN 5</span><h2 id="guideHeading">Je stelt een vraag</h2><p id="guideSubheading"></p></div>
+    <div class="ai-guide-work">
+     <div class="ai-guide-visual" id="guideVisual" aria-label="Voorbeeld van deze stap"></div>
+     <div class="ai-guide-aside"><span class="ai-guide-small">WAT GEBEURT ER?</span><p id="guideExplanation"></p><div id="guideInteractive"></div><p id="guideBoundary" class="ai-guide-boundary"></p></div>
+    </div>
+   </div>
+  </div>
+  <footer class="ai-guide-bottom"><span id="guideCounter" class="ai-guide-counter" aria-live="polite">1 / 5</span><div class="ai-guide-progress" id="guideProgress" aria-hidden="true"></div><div class="ai-guide-actions"><button type="button" id="guidePrev">Vorige</button><button type="button" id="guideNext" class="ai-guide-next">Bekijk de stukjes <span aria-hidden="true">→</span></button></div></footer>
+ </div>
+</section>
 <script>
 'use strict';
 const $=id=>document.getElementById(id), TAU=Math.PI*2;
@@ -274,7 +419,7 @@ async function loadRealTokenizer(){
  tokenizeInput();
  if(!tokenizer)state.tokenStatus='error';
  const range=$('r-token');if(range){range.max=Math.max(0,words().length-1);range.value=state.token}
- renderTokenPieces();refreshNumbers();updateJourneyUI();
+ renderTokenPieces();refreshNumbers();updateJourneyUI();if(typeof guideRender==='function')guideRender();
 }
 function chooseRoute(layer,token=state.token){const tokenSeed=state.promptWords[token]?.id??token;const key=state.model+':'+layer+':'+tokenSeed;if(routeCache.has(key))return routeCache.get(key);const ranked=[];for(let e=0;e<cfg.experts;e++){const score=1.6*hash(layer+4,e+7,tokenSeed+93)+.7*Math.sin((e+1)*.071+layer*.63+tokenSeed*.39)+.2*Math.cos(e*.18-layer*.49);ranked.push({e,score})}ranked.sort((a,b)=>b.score-a.score);const chosen=ranked.slice(0,cfg.top);const exps=chosen.map(x=>Math.exp(x.score*2));const total=exps.reduce((a,b)=>a+b,0);const answer=chosen.map((x,i)=>({e:x.e,p:exps[i]/total,score:x.score}));routeCache.set(key,answer);return answer}
 function logits(){let base=[2.35,1.7,1.05,.66,.23,-.19,-.65,-1.16];let weights=base.map(x=>Math.exp(x/state.temp));let sum=weights.reduce((a,b)=>a+b,0);let p=weights.map(x=>x/sum);let order=[...p.keys()].sort((a,b)=>p[b]-p[a]);let used=[],cumulative=0;for(const idx of order){used.push(idx);cumulative+=p[idx];if(cumulative>=state.topP)break}let m=p.map((x,i)=>used.includes(i)?x:0);let k=m.reduce((a,b)=>a+b,0);return {p:p,keep:used,chosen:m.map(x=>x/k),candidates:['leren','denken','taal','vragen','antwoord','onderzoek','model','gegevens']}}
@@ -811,7 +956,124 @@ function tick(now){
  if(state.chartDirty&&now-lastGraph>70&&($('app').dataset.panel==='graph'||window.innerWidth>800)){drawPlot();lastGraph=now}
  requestAnimationFrame(tick);
 }
-tokenizeInput();rebuildWorld();bind();renderInspector();setMode(0);resize();loadRealTokenizer();new ResizeObserver(resize).observe($('stage'));new ResizeObserver(resize).observe($('graphPanel'));requestAnimationFrame(tick);
+tokenizeInput();rebuildWorld();bind();renderInspector();setMode(0);resize();setupGuide();loadRealTokenizer();new ResizeObserver(resize).observe($('stage'));new ResizeObserver(resize).observe($('graphPanel'));requestAnimationFrame(tick);
+
+/* Toegankelijke route voor beginners. Technische modellen en gegevens blijven intact. */
+const GUIDE_LABELS=['Jouw vraag','Tekst in stukjes','Eerdere tekst','Volgend stukje','Een antwoord'];
+const GUIDE_STEPS=[
+ {title:'Je stelt een vraag',sub:'Alles begint met wat jij typt. Probeer zelf een andere vraag.',explain:'Het model ontvangt de tekst die je invoert. Het ziet niet automatisch wat je bedoelt of welke informatie waar is.',boundary:'Typ iets anders en bekijk bij de volgende stap hoe de tekst wordt verdeeld.'},
+ {title:'AI verdeelt tekst in stukjes',sub:'Die kleine stukjes heten tokens. Het zijn niet altijd hele woorden.',explain:'Het model werkt met token-ID’s: getallen die horen bij stukjes tekst. Tik op een stukje om het bijbehorende ID te bekijken.',boundary:'De stukjes komen van de echte tokenizer zodra die is geladen. Anders tonen we een woordvoorbeeld.'},
+ {title:'Het model gebruikt eerdere tekst',sub:'Een volgend stukje hangt af van wat ervoor staat.',explain:'Kies een stukje. De groene stukjes kwamen eerder. Een taalmodel verwerkt deze eerdere context om de volgende voorspelling te maken.',boundary:'Dit laat de volgorde zien. We meten hier geen echte attention-scores of interne activaties.'},
+ {title:'Het model berekent mogelijkheden',sub:'Er zijn vaak meerdere mogelijke volgende stukjes.',explain:'Bij iedere stap berekent een taalmodel scores voor mogelijke volgende tokens. Kijk wat meer of minder variatie doet met dit kleine rekenvoorbeeld.',boundary:'Deze vier kansen zijn uitsluitend een demonstratie. Ze komen niet van een draaiend AI-model of jouw vraag.'},
+ {title:'Zo ontstaat stukje voor stukje een antwoord',sub:'Het gekozen stukje wordt toegevoegd. Daarna rekent het model verder.',explain:'Klik om het voorbeeldantwoord te laten groeien. Een taalmodel herhaalt dit proces totdat het antwoord klaar is of een stopgrens is bereikt.',boundary:'Het voorbeeldantwoord is vooraf geschreven. Deze pagina verstuurt je vraag niet naar een AI-model.'}
+];
+let guideStep=0,guideBuildCount=1,guideTokenIndex=0;
+const guideEl=id=>document.getElementById(id);
+function guideNode(tag,text,klass){
+ const node=document.createElement(tag);if(text!=null)node.textContent=String(text);if(klass)node.className=klass;return node;
+}
+function guideSetVisible(open){
+ guideEl('aiGuide').hidden=!open;
+ guideEl('app').setAttribute('aria-hidden',String(open));
+ if(open){guideRender();guideEl('guideNext').focus({preventScroll:true});}
+}
+function guideSetStep(n){
+ guideStep=clamp(n,0,GUIDE_STEPS.length-1);
+ guideRender();
+}
+function guideTokenChips(parent,contextMode){
+ const tokens=state.promptWords.slice(0,18);
+ const area=guideNode('div',null,'ai-guide-chip-area');area.setAttribute('aria-label','Stukjes van de ingevoerde tekst');
+ tokens.forEach((token,i)=>{
+  const b=guideNode('button',readableToken(token.text).slice(0,30),'ai-guide-token');
+  b.type='button';b.setAttribute('aria-pressed',String(i===guideTokenIndex));
+  if(contextMode)b.classList.add(i<guideTokenIndex?'is-before':i===guideTokenIndex?'is-focus':'is-after');
+  b.title=token.id==null?'Woordvoorbeeld, geen echte token-ID':'Echt token-ID '+token.id;
+  b.onclick=()=>{guideTokenIndex=i;state.token=i;guideRender()};
+  area.appendChild(b);
+ });
+ parent.appendChild(area);
+ if(state.promptWords.length>tokens.length)parent.append(guideNode('p','+ '+(state.promptWords.length-tokens.length)+' extra stukjes. Maak de tekst korter om ze allemaal te zien.','ai-guide-legend'));
+}
+function guideBarData(){
+ const scores=[2.45,1.50,.82,.24],temperature=clamp(state.temp,.3,1.8);
+ const weights=scores.map(x=>Math.exp(x/temperature)),sum=weights.reduce((a,b)=>a+b,0);
+ return weights.map(v=>v/sum);
+}
+function guideDrawBars(){
+ const visual=guideEl('guideVisual');visual.replaceChildren();
+ visual.appendChild(guideNode('div','DE VOLGENDE WOORDSTUKJES ZIJN EEN REKENVOORBEELD','ai-guide-question'));
+ const bars=guideNode('div',null,'ai-guide-barlist');
+ const data=guideBarData(),labels=['Omdat','De','Het','Dat'];
+ data.forEach((value,i)=>{
+  const row=guideNode('div',null,'ai-guide-bar');row.append(guideNode('span',labels[i]));
+  const track=guideNode('div',null,'ai-guide-track'),fill=guideNode('div',null,'ai-guide-fill');fill.style.width=(value*100).toFixed(1)+'%';track.append(fill);row.append(track,guideNode('strong',(value*100).toFixed(1)+'%'));bars.append(row);
+ });
+ visual.append(bars,guideNode('p','Deze getallen zijn verzonnen om het verschil tussen mogelijke vervolgen te laten zien.','ai-guide-legend'));
+ const out=guideEl('guideTemperatureValue');if(out)out.textContent=state.temp.toFixed(1);
+}
+function guideRender(){
+ const step=GUIDE_STEPS[guideStep],visual=guideEl('guideVisual'),interactive=guideEl('guideInteractive');
+ if(!visual||!interactive)return;
+ guideEl('guideEyebrow').textContent='STAP '+(guideStep+1)+' VAN '+GUIDE_STEPS.length;
+ guideEl('guideHeading').textContent=step.title;guideEl('guideSubheading').textContent=step.sub;
+ guideEl('guideExplanation').textContent=step.explain;guideEl('guideBoundary').textContent=step.boundary;
+ guideEl('guideCounter').textContent=(guideStep+1)+' / '+GUIDE_STEPS.length;
+ guideEl('guidePrev').disabled=guideStep===0;
+ guideEl('guideNext').firstChild.textContent=guideStep===GUIDE_STEPS.length-1?'Bekijk de techniek':guideStep===0?'Bekijk de stukjes':guideStep===1?'Bekijk de context':guideStep===2?'Bekijk de keuzes':'Bouw een antwoord';
+ const stepButtons=guideEl('guideSteps');stepButtons.replaceChildren();
+ GUIDE_LABELS.forEach((title,i)=>{const b=guideNode('button',null);b.type='button';b.append(guideNode('span',i+1),guideNode('strong',title));if(i===guideStep)b.setAttribute('aria-current','step');b.onclick=()=>guideSetStep(i);stepButtons.append(b)});
+ const progress=guideEl('guideProgress');progress.replaceChildren();
+ GUIDE_STEPS.forEach((_,i)=>{const mark=document.createElement('i');if(i<=guideStep)mark.classList.add('on');progress.append(mark)});
+ visual.replaceChildren();interactive.replaceChildren();
+ if(guideStep===0){
+  const prompt=guideNode('div','JOUW VRAAG','ai-guide-question');
+  const box=guideNode('textarea',null,'ai-guide-input');box.id='guidePrompt';box.maxLength=140;box.rows=3;box.setAttribute('aria-label','Jouw vraag aan AI');
+  box.placeholder='Typ een vraag';box.value=state.input;
+  box.addEventListener('input',()=>{state.input=box.value||' ';tokenizeInput();guideTokenIndex=0;});
+  visual.append(prompt,box);
+  interactive.append(guideNode('p','Probeer bijvoorbeeld: Waarom is de lucht blauw?','ai-guide-mini'));
+ }else if(guideStep===1){
+  visual.append(guideNode('div','KLIK OP EEN STUKJE','ai-guide-question'));
+  guideTokenIndex=clamp(guideTokenIndex,0,state.promptWords.length-1);guideTokenChips(visual,false);
+  visual.append(guideNode('div',state.tokenStatus==='real'?'Echte tokenindeling met o200k_harmony':'Voorbeeld op woordniveau. De echte tokenizer is nog niet geladen.','ai-guide-legend'));
+  const token=state.promptWords[guideTokenIndex]||{};
+  interactive.append(guideNode('p',state.promptWords.length+' stukjes in deze invoer.','ai-guide-mini'));
+  interactive.append(guideNode('p',token.id==null?'Dit stukje heeft nog geen echt token-ID.':'Gekozen stukje: token-ID '+token.id,'ai-guide-mini'));
+ }else if(guideStep===2){
+  visual.append(guideNode('div','GROEN: AL GELEZEN  ·  GOUD: GEKOZEN','ai-guide-question'));
+  guideTokenIndex=clamp(guideTokenIndex,0,state.promptWords.length-1);guideTokenChips(visual,true);
+  visual.append(guideNode('p','Tekst rechts van het gekozen stukje hoort op dat moment nog niet bij de eerdere context.','ai-guide-legend'));
+  interactive.append(guideNode('p','Je kunt op een ander stukje tikken om de grens te verplaatsen.','ai-guide-mini'));
+ }else if(guideStep===3){
+  const label=guideNode('label','Variatie in het rekenvoorbeeld');
+  label.htmlFor='guideTemperature';
+  const scale=guideNode('div',null,'ai-guide-scale'),out=guideNode('output',state.temp.toFixed(1));out.id='guideTemperatureValue';
+  const input=document.createElement('input');input.type='range';input.id='guideTemperature';input.min='.3';input.max='1.8';input.step='.1';input.value=String(state.temp);
+  input.oninput=()=>{state.temp=+input.value;guideDrawBars()};
+  scale.append(label,out,input);interactive.append(scale);
+  guideDrawBars();
+ }else{
+  const parts=['De lucht lijkt blauw','omdat moleculen in de atmosfeer','blauw licht sterker verstrooien.'];
+  guideBuildCount=clamp(guideBuildCount,1,parts.length);
+  visual.append(guideNode('div','VOORBEELD BIJ: WAAROM IS DE LUCHT BLAUW?','ai-guide-question'));
+  const answer=guideNode('div',null,'ai-guide-answer');
+  parts.slice(0,guideBuildCount).forEach((part,i)=>answer.append(guideNode('strong',part+(i<guideBuildCount-1?' ':''))));
+  if(guideBuildCount<parts.length)answer.append(guideNode('span',' …'));
+  visual.append(answer);
+  const button=guideNode('button',guideBuildCount<parts.length?'Laat het volgende stukje zien':'Begin opnieuw','ai-guide-cta');button.type='button';button.onclick=()=>{guideBuildCount=guideBuildCount<parts.length?guideBuildCount+1:1;guideRender()};
+  interactive.append(button);
+ }
+}
+function setupGuide(){
+ const back=guideNode('button','Uitleg in 5 stappen','tool-btn');back.id='guideReturn';back.type='button';back.onclick=()=>guideSetVisible(true);
+ document.querySelector('.top-actions').prepend(back);
+ guideEl('guideTechnical').onclick=()=>guideSetVisible(false);
+ guideEl('guidePrev').onclick=()=>guideSetStep(guideStep-1);
+ guideEl('guideNext').onclick=()=>guideStep===GUIDE_STEPS.length-1?guideSetVisible(false):guideSetStep(guideStep+1);
+ guideRender();
+}
+
 </script>
 </body>
 </html>
