@@ -31,7 +31,7 @@ main{padding-bottom:95px}.intro{padding:70px 0 24px;max-width:740px}.eyebrow{fon
 <nav aria-label="Navigatie"><a href="/">Startpagina</a><a href="/nl/onderzoek/">Onderzoek</a></nav>
 </div></header>
 <main id="inhoud" class="shell">
-<header class="intro"><p class="eyebrow">Openbare gegevens</p><h1>Hoe wordt deze website bezocht?</h1><p class="lede">Een overzicht van het bezoek aan eaimodel.nl. De cijfers komen uit Cloudflare Web Analytics en worden periodiek bijgewerkt.</p></header>
+<header class="intro"><p class="eyebrow">Openbare gegevens</p><h1>Hoe wordt deze website bezocht?</h1><p class="lede" id="lede">Een overzicht van het bezoek aan eaimodel.nl. De cijfers komen uit Cloudflare Web Analytics en worden periodiek bijgewerkt.</p></header>
 <div class="demo-note" id="demo-note" hidden role="status"><strong>Voorbeeldgegevens, geen echte bezoekers.</strong> Je bekijkt de vormgeving met 500 fictieve bezoeken en 143 fictieve unieke bezoekers. Deze cijfers komen niet uit Cloudflare. <a href="/statistieken/">Terug naar echte cijfers</a>.</div>
 <div class="toolbar"><div class="status" role="status" aria-live="polite"><span class="dot" id="status-dot"></span><span id="status">Gegevens ophalen…</span></div><div class="toolbar-right"><a class="demo-link" id="demo-toggle" href="/statistieken/?demo=1">Bekijk voorbeeld</a><div class="period" role="group" aria-label="Kies een periode"><button type="button" data-days="7" aria-pressed="false">7 dagen</button><button type="button" data-days="30" aria-pressed="true">30 dagen</button></div></div></div>
 <div class="kpis" aria-label="Bezoek in cijfers">
@@ -72,6 +72,7 @@ main{padding-bottom:95px}.intro{padding:70px 0 24px;max-width:740px}.eyebrow{fon
     el("demo-toggle").href="/statistieken/";
     el("demo-toggle").textContent="Bekijk echte cijfers";
     document.title="Voorbeeld · Bezoekersstatistieken | EAI";
+    el("lede").textContent="Een proef van het bezoekersdashboard, met volledig verzonnen getallen. De echte statistieken blijven apart.";
   }
   var number=new Intl.NumberFormat("nl-NL");
   var decimal=new Intl.NumberFormat("nl-NL",{minimumFractionDigits:1,maximumFractionDigits:1});
@@ -157,7 +158,7 @@ main{padding-bottom:95px}.intro{padding:70px 0 24px;max-width:740px}.eyebrow{fon
     var data=info.daily.slice(-selected);var views=data.reduce(function(sum,row){return sum+row.views;},0);var visits=data.reduce(function(sum,row){return sum+row.visits;},0);
     var pm=(info.period_metrics||{})[String(selected)]||{};
     kpi("visits",visits);kpi("views",views);
-    kpi("ratio",visits?Number((views/visits).toFixed(1)):null);
+    el("ratio").textContent=visits?decimal.format(views/visits):"—";
     kpi("unique",pm.unique_visitors??(selected===30?info.unique_visitors:null),null,"unique-note");
     kpi("bounce",pm.bounce_rate??(selected===30?info.bounce_rate:null),"%","bounce-note");
     kpi("clicks",pm.clicks??(selected===30?info.clicks:null),null,"clicks-note");
