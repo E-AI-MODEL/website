@@ -1,0 +1,91 @@
+name: Publish Zhang Review
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/deploy-zhang-review-rapid.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: review-zhang-publication
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check source files
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          for code,route in [('nl','nl/onderzoek/zhang-genai-taal'),('en','en/research/zhang-genai-language')]:
+              path = Path(f'assets/research/zhang-genai-l2-review-{code}-2026.pdf')
+              assert path.is_file() and path.stat().st_size > 500000 and path.read_bytes().startswith(b'%PDF-')
+              assert path.name in Path(route, 'index.html').read_text()
+          PY
+      - name: Install FTPS
+        run: sudo apt-get update && sudo apt-get install -y lftp openssl
+      - name: Verify FTP certificate
+        run: |
+          set -euo pipefail
+          actual="$(openssl s_client -starttls ftp -connect ftp.eaimodel.nl:21 -servername ftp.eaimodel.nl </dev/null 2>/dev/null | openssl x509 -noout -fingerprint -sha1 | cut -d= -f2)"
+          test "$actual" = '4D:F5:15:4C:F3:11:5E:5B:DD:91:BD:5F:BD:0F:0E:A7:35:71:5C:32'
+      - name: Publish review files
+        env:
+          FTP_USER: ${{ secrets.THEORY7_FTP_USER }}
+          FTP_PASSWORD: ${{ secrets.THEORY7_FTP_PASSWORD }}
+        run: |
+          set -euo pipefail
+          lftp -u "$FTP_USER","$FTP_PASSWORD" ftp://ftp.eaimodel.nl:21 <<'EOF'
+          set cmd:fail-exit yes
+          set ftp:ssl-force true
+          set ftp:ssl-protect-data true
+          set ssl:verify-certificate false
+          set net:timeout 20
+          set net:max-retries 1
+          set xfer:use-temp-file yes
+          mkdir -p /assets/research
+          mkdir -p /nl/onderzoek/zhang-genai-taal
+          mkdir -p /en/research/zhang-genai-language
+          put -O /assets/research/ assets/research/zhang-genai-l2-review-nl-2026.pdf
+          put -O /assets/research/ assets/research/zhang-genai-l2-review-en-2026.pdf
+          put -O /assets/ assets/site-refresh.js
+          put -O /nl/onderzoek/zhang-genai-taal/ nl/onderzoek/zhang-genai-taal/index.html
+          put -O /en/research/zhang-genai-language/ en/research/zhang-genai-language/index.html
+          put -O /nl/onderzoek/ nl/onderzoek/index.html
+          put -O /en/research/ en/research/index.html
+          put -O /nl/publicaties/ nl/publicaties/index.html
+          put -O /en/publications/ en/publications/index.html
+          bye
+          EOF
+      - name: Verify public pages
+        run: |
+          python - <<'PY'
+          from urllib.request import urlopen, Request
+          from time import sleep
+          checks={
+              '/nl/onderzoek/zhang-genai-taal/':b'zhang-genai-l2-review-nl-2026.pdf',
+              '/en/research/zhang-genai-language/':b'zhang-genai-l2-review-en-2026.pdf',
+              '/nl/onderzoek/':b'zhang-genai-taal',
+              '/en/research/':b'zhang-genai-language',
+              '/assets/research/zhang-genai-l2-review-nl-2026.pdf':b'%PDF-',
+              '/assets/research/zhang-genai-l2-review-en-2026.pdf':b'%PDF-',
+          }
+          for path,expect in checks.items():
+              problem=None
+              for i in range(4):
+                  try:
+                      req=Request('https://eaimodel.nl'+path+'?review=20261114',headers={'Cache-Control':'no-cache'})
+                      with urlopen(req,timeout=30) as res:
+                          data=res.read()
+                          assert res.status==200
+                          assert data.startswith(expect) if path.endswith('.pdf') else expect in data
+                      print('LIVE:',path,len(data),'bytes')
+                      problem=None
+                      break
+                  except Exception as exc:
+                      problem=str(exc)
+                      if i!=3:sleep(5)
+              if problem:raise RuntimeError(path+': '+problem)
+          PY
