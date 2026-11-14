@@ -60,6 +60,61 @@ try{
   await page.locator('#guideTechnical').click();
   assert.equal(await page.locator('#aiGuide').isVisible(),false,'De bestaande technische werkruimte kan open');
   assert.equal(await page.locator('#guideReturn').isVisible(),true,'De uitleg blijft bereikbaar');
+
+  // De opbouw is een automatische, pauzeerbare uitleg. Het oude 3D-model is optioneel.
+  await page.locator('#modelStory').waitFor({state:'visible'});
+  const started=await page.evaluate(()=>({
+    mode:state.mode,view:document.querySelector('#app').dataset.storyView,
+    playing:storyState.playing,phase:storyState.phase
+  }));
+  assert.equal(started.mode,0);
+  assert.equal(started.view,'animation','De eerste technische weergave opent met de animatie');
+  assert.equal(started.playing,true,'De uitleg begint vanzelf');
+  if(width>800){
+   assert.equal(await page.locator('#inspectorPanel').isVisible(),false,'Geen technische regelaars over de uitleg');
+   assert.equal(await page.locator('#graphPanel').isVisible(),false,'Geen tweede grafiek onder de uitleg');
+  }
+  await page.screenshot({path:'test-results/llm-story-'+width+'-vraag.png'});
+  await page.evaluate(()=>storyAdvance(STORY_PHASES[0].duration+.08));
+  assert.equal(await page.evaluate(()=>storyState.phase),1,'De animatie gaat zonder tik vanzelf naar de volgende stap');
+  await page.evaluate(()=>storyRestart());
+  await page.locator('#storyPause').click();
+  assert.equal(await page.evaluate(()=>storyState.playing),false,'Pauze stopt de animatie');
+  await page.evaluate(()=>{storySetPhase(1);storyPaint(.8)});
+  assert(await page.locator('.story-token.is-shown').count()>0,'De tekst wordt zichtbaar in stukjes verdeeld');
+  await page.screenshot({path:'test-results/llm-story-'+width+'-stukjes.png'});
+  await page.evaluate(()=>{storySetPhase(2);storyPaint(.55)});
+  assert.equal(await page.locator('.story-layer').count(),36,'Het gekozen gpt-oss-120b toont zijn 36 lagen');
+  assert(await page.locator('.story-layer.is-done').count()>0,'Lagen lichten achtereenvolgens op');
+  await page.screenshot({path:'test-results/llm-story-'+width+'-lagen.png'});
+  await page.evaluate(()=>{storySetPhase(3);storyPaint(.8)});
+  assert.equal(await page.locator('.story-prob-row').count(),4,'Het kansvoorbeeld toont vier balken');
+  await page.screenshot({path:'test-results/llm-story-'+width+'-kansen.png'});
+  await page.evaluate(()=>{storySetPhase(4);storyPaint(.85)});
+  assert.match(await page.locator('#storyAnswer').innerText(),/De lucht lijkt blauw/);
+  await page.screenshot({path:'test-results/llm-story-'+width+'-antwoord.png'});
+  const sceneGeometry=await page.evaluate(()=>({
+    viewportWidth:innerWidth,viewportHeight:innerHeight,
+    stage:document.querySelector('#stage').getBoundingClientRect().toJSON(),
+    heading:document.querySelector('.story-copy').getBoundingClientRect().toJSON(),
+    board:document.querySelector('#storyBoard').getBoundingClientRect().toJSON(),
+    bottom:document.querySelector('.story-bottom').getBoundingClientRect().toJSON(),
+    scrollWidth:document.documentElement.scrollWidth,scrollHeight:document.documentElement.scrollHeight
+  }));
+  assert(sceneGeometry.board.width>190&&sceneGeometry.board.height>80,'De animatie moet zichtbaar zijn: '+JSON.stringify(sceneGeometry));
+  assert(sceneGeometry.bottom.bottom<=sceneGeometry.stage.bottom+2,'Bediening blijft binnen de werkruimte: '+JSON.stringify(sceneGeometry));
+  assert(sceneGeometry.scrollWidth<=width+2&&sceneGeometry.scrollHeight<=820+2,'Geen paginaschuif: '+JSON.stringify(sceneGeometry));
+  await page.locator('#story3d').click();
+  assert.equal(await page.locator('#modelStory').isVisible(),false,'Het oude 3D-model kan worden geopend');
+  if(width>800){
+   assert.equal(await page.locator('#inspectorPanel').isVisible(),true,'De technische regelaars keren terug bij 3D');
+   assert.equal(await page.locator('#graphPanel').isVisible(),true,'De technische grafiek keert terug bij 3D');
+  }
+  await page.locator('#storyBack3d').click();
+  assert.equal(await page.locator('#modelStory').isVisible(),true,'Animatie is terug te openen');
+  await page.locator('#storyReplay').click();
+  assert.equal(await page.evaluate(()=>storyState.phase),0,'Opnieuw begint bij de vraag');
+
   await page.locator('#guideReturn').click();
   assert.equal(await page.locator('#aiGuide').isVisible(),true,'Je kunt de uitleg opnieuw openen');
   await page.locator('#guideTechnical').click();
@@ -183,8 +238,23 @@ try{
     await page.screenshot({path:'test-results/llm-guide-'+width+'-stap-'+(step+1)+'.png'});
     if(step<4)await page.locator('#guideNext').click();
    }
+   await page.locator('#guideTechnical').click();
+   await page.locator('#modelStory').waitFor({state:'visible'});
+   const storyFits=await page.evaluate(()=>({
+     stage:document.querySelector('#stage').getBoundingClientRect().toJSON(),
+     board:document.querySelector('#storyBoard').getBoundingClientRect().toJSON(),
+     bottom:document.querySelector('.story-bottom').getBoundingClientRect().toJSON(),
+     scrollWidth:document.documentElement.scrollWidth,scrollHeight:document.documentElement.scrollHeight
+   }));
+   assert(storyFits.board.width>175&&storyFits.board.height>55,'Animatie zichtbaar op '+width+': '+JSON.stringify(storyFits));
+   assert(storyFits.bottom.bottom<=storyFits.stage.bottom+2,'Animatiebediening niet afgesneden: '+JSON.stringify(storyFits));
+   assert(storyFits.scrollWidth<=width+2&&storyFits.scrollHeight<=height+2,'Geen scroll in animatie op '+width);
+   for(let part=0;part<5;part++){
+     await page.evaluate(n=>{storySetPhase(n);storyPaint(.6)},part);
+     await page.screenshot({path:'test-results/llm-story-'+width+'-stap-'+(part+1)+'.png'});
+   }
+   await page.locator('#storyPause').click();
    if(width===320){
-    await page.locator('#guideTechnical').click();
     await page.locator('#aiGuide').waitFor({state:'hidden'});
     for(let i=0;i<7;i++){
      await page.evaluate(index=>setMode(index),i);
@@ -207,6 +277,19 @@ try{
    }
    assert.deepEqual(errors,[],'Geen JavaScript-fout bij kleine en liggende weergave');
   }finally{await page.close();}
+ }
+
+ // Minder beweging: alle vijf stappen zijn tegelijk als stilstaand overzicht te lezen.
+ {
+  const reduced=await browser.newPage({viewport:{width:390,height:820},reducedMotion:'reduce'});
+  try{
+   await reduced.goto(base+'/tools/llm-observatorium/',{waitUntil:'load'});
+   await reduced.locator('#guideTechnical').click();
+   await reduced.locator('#modelStory').waitFor({state:'visible'});
+   assert.equal(await reduced.evaluate(()=>storyState.playing),false);
+   assert.equal(await reduced.locator('.story-summary-row').count(),5);
+   await reduced.screenshot({path:'test-results/llm-story-390-minder-beweging.png'});
+  }finally{await reduced.close()}
  }
  console.log('LLM_BROWSER_OK widths=390,1280 modes=7 tokenizer=real layer_inspector=active');
 }finally{
