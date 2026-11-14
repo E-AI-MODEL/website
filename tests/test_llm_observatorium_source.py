@@ -88,7 +88,7 @@ class LlmObservatorySourceTests(unittest.TestCase):
 
     def test_beginner_guide_keeps_research_features_available(self):
         html = self.html
-        for marker in ('id="aiGuide"', 'id="guidePrompt"', 'id="guideVisual"',
+        for marker in ('id="aiGuide"', "box.id='guidePrompt'", 'id="guideVisual"',
                        'id="guideInteractive"', 'id="guideTechnical"',
                        'id="guideNext"', 'id="guidePrev"',
                        'function setupGuide()', 'function guideSetVisible(open)',
