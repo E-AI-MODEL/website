@@ -2,7 +2,14 @@ name: Publish Zhang Review
 on:
   push:
     branches: [main]
-    paths: ['.github/workflows/deploy-zhang-review-rapid.yml']
+    paths:
+      - '.github/workflows/deploy-zhang-review-rapid.yml'
+      - 'nl/onderzoek/zhang-genai-taal/**'
+      - 'en/research/zhang-genai-language/**'
+      - 'nl/onderzoek/index.html'
+      - 'en/research/index.html'
+      - 'nl/publicaties/index.html'
+      - 'en/publications/index.html'
   workflow_dispatch:
 permissions:
   contents: read
@@ -81,6 +88,10 @@ jobs:
                           data=res.read()
                           assert res.status==200
                           assert data.startswith(expect) if path.endswith('.pdf') else expect in data
+                          if path == '/nl/onderzoek/zhang-genai-taal/':
+                              assert b'Helpt AI bij het leren van een taal?' in data, 'Outdated Dutch copy'
+                          if path == '/en/research/zhang-genai-language/':
+                              assert b'Does AI help students learn another language?' in data, 'Outdated English copy'
                       print('LIVE:',path,len(data),'bytes')
                       problem=None
                       break
