@@ -151,6 +151,7 @@ try{
     assert.equal(isPlayerVisible,false,'Geen nutteloze afspeelbalk in modus '+mode);
   }
   await page.evaluate(()=>setMode(0));
+  if(width<800)await page.locator('#story3d').click();
   assert.equal(errors.length,0,'Fouten bij omschakelen tussen zeven visualisaties: '+errors.join(' | '));
 
   if(width<800)await page.locator('.mobile-dock [data-panel="modules"]').click();
