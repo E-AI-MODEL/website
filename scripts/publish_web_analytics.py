@@ -15,6 +15,8 @@ import urllib.request
 from collections import Counter, defaultdict
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
+from urllib.parse import urlsplit
+from xml.etree import ElementTree
 
 API = "https://api.cloudflare.com/client/v4/graphql"
 PUBLIC_HOSTS = {"eaimodel.nl", "www.eaimodel.nl"}
@@ -68,6 +70,27 @@ def number(value: object) -> int:
     return int(value)
 
 
+def approved_paths() -> set[str]:
+    """Restrict public rankings to pages declared in the site's public sitemap."""
+    sitemap = Path(__file__).resolve().parent.parent / "sitemap.xml"
+    if not sitemap.is_file():
+        raise RuntimeError("Gepubliceerde sitemap ontbreekt")
+    try:
+        root = ElementTree.parse(sitemap).getroot()
+    except ElementTree.ParseError as exc:
+        raise RuntimeError("Ongeldige sitemap") from exc
+    result = set()
+    for entry in root.findall(".//{*}loc"):
+        url = urlsplit(entry.text or "")
+        if url.hostname in PUBLIC_HOSTS and not url.query and not url.fragment:
+            path = url.path or "/"
+            result.add(path if path.endswith("/") else path + "/")
+    return result
+
+
+PUBLIC_PATHS = approved_paths()
+
+
 def public_path(value: object) -> str | None:
     if not isinstance(value, str) or len(value) > 120:
         return None
@@ -82,7 +105,8 @@ def public_path(value: object) -> str | None:
         return None
     if any(len(seg) > 55 for seg in segments):
         return None
-    return value if value.endswith("/") else value + "/"
+    normalized = value if value.endswith("/") else value + "/"
+    return normalized if normalized in PUBLIC_PATHS else None
 
 
 def summarize(data: dict, start: datetime, end: datetime) -> dict:
@@ -131,7 +155,18 @@ def summarize(data: dict, start: datetime, end: datetime) -> dict:
         host = host.lower().strip().rstrip(".")
         if host in PUBLIC_HOSTS or not re.fullmatch(r"[a-z0-9][a-z0-9.-]{1,100}", host):
             continue
-        sources[host] += number(row["count"])
+        if any(name in host for name in ("google.", "bing.", "duckduckgo.", "ecosia.", "startpage.", "brave.com", "yahoo.")):
+            group = "Zoekmachines"
+        elif any(name in host for name in ("linkedin.", "instagram.", "facebook.", "reddit.", "youtube.", "twitter.", "x.com", "t.co", "threads.")):
+            group = "Sociale media"
+        elif any(name in host for name in ("chatgpt.", "openai.", "perplexity.", "claude.ai", "gemini.google.", "copilot.microsoft.")):
+            group = "AI-assistenten"
+        else:
+            group = "Andere websites"
+        sources[group] += number(row["count"])
+
+    if not counts:
+        raise ValueError("Cloudflare leverde geen meetgegevens voor eaimodel.nl. Controleer site-tag en Web Analytics.")
 
     series = []
     cursor = start.date()
@@ -148,11 +183,12 @@ def summarize(data: dict, start: datetime, end: datetime) -> dict:
         "visits": sum(day["visits"] for day in series),
         "daily": series,
         "pages": [{"path": path, "views": views} for path, views in pages.most_common(10) if views >= 5],
-        "referrers": [{"host": host, "views": views} for host, views in sources.most_common(8) if views >= 5],
+        "referrers": [{"host": host, "views": views} for host, views in sources.most_common() if views >= 5],
         "notes": [
             "Bezoeken zijn geen unieke personen.",
             "Cloudflare Web Analytics meet geladen pagina's in browsers met JavaScript; cijfers kunnen door steekproeven afwijken.",
-            "Bouncepercentage en interacties binnen een simulatie worden hier niet gemeten."
+            "Bouncepercentage en interacties binnen een simulatie worden hier niet gemeten.",
+            "Verwijzers zijn samengevoegd tot brede categorieën en tellen alleen bezoeken met een bekende verwijzer."
         ],
     }
 
