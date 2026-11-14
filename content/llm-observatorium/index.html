@@ -308,6 +308,41 @@
 
 
 @media(max-height:470px){.ai-guide-visual{gap:4px}.ai-guide-barlist{gap:5px}.ai-guide-visual .ai-guide-question{font-size:9px}}
+
+/* Rustige bediening: dunne omlijning en normaal leesgewicht, zonder kleinere raakvlakken. */
+.ai-guide .ai-guide-technical,
+.ai-guide .ai-guide-steps button,
+.ai-guide .ai-guide-actions button,
+.ai-guide .ai-guide-cta,
+.ai-guide .ai-guide-token{
+  border-width:1px;
+  font-weight:450!important;
+  letter-spacing:0;
+  box-shadow:none;
+}
+.ai-guide .ai-guide-technical{background:transparent;border-color:#577b87;color:#e1edf1}
+.ai-guide .ai-guide-steps button{font-weight:450!important;color:#bfced5}
+.ai-guide .ai-guide-steps button strong{font-weight:480}
+.ai-guide .ai-guide-steps button[aria-current=step]{background:#123029;border-color:#6aac96;color:#edfdf6;font-weight:480!important}
+.ai-guide .ai-guide-steps button[aria-current=step] span{background:#1c4a3e;border-color:#80d8b7;color:#d8ffee}
+.ai-guide .ai-guide-actions button{background:transparent;border-color:#54717f;color:#e0edf1}
+.ai-guide .ai-guide-actions .ai-guide-next{background:#193b33;border-color:#81d6b6;color:#e3fff3;font-weight:500!important}
+.ai-guide .ai-guide-cta{background:#17392f;border-color:#76c6a7;color:#e4fff1;font-weight:500!important}
+.ai-guide .ai-guide-token{background:#102b39;border-color:#5a8490;color:#e1f2f3}
+.ai-guide .ai-guide-token[aria-pressed=true],
+.ai-guide .ai-guide-token.is-focus{background:#343629;border-color:#e3c78d;color:#ffebba}
+.ai-guide .ai-guide-token.is-before{background:#16382f;border-color:#60b394;color:#e1ffed}
+.ai-guide .ai-guide-token.is-after{background:#0d1f2a;border-color:#3d5a68;color:#b3c9d1}
+.ai-guide .ai-guide-brand h1{font-weight:550}
+.ai-guide .ai-guide-intro h2{font-weight:530}
+.ai-guide .ai-guide-kicker,
+.ai-guide .ai-guide-stepname,
+.ai-guide .ai-guide-small,
+.ai-guide .ai-guide-question{font-weight:550}
+.ai-guide .ai-guide-bar>strong,
+.ai-guide .ai-guide-answer strong{font-weight:500}
+.ai-guide button:focus-visible{outline:2px solid #a5eed5;outline-offset:2px}
+
 </style>
 </head>
 <body>
