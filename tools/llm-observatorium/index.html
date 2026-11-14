@@ -523,6 +523,19 @@
 .v-flow-svg #vFlowMarker{transition:cy .08s linear}
 @media(max-height:650px){.v-flow-svg{max-height:100%}}
 
+
+/* De terugknop hoort bij de 3D-werkruimte, niet bij de scrollende animatie. */
+@media(max-width:800px){
+ #app[data-mode="0"][data-story-view="model"] #storyBack3d{
+  position:fixed!important;
+  top:auto!important;
+  left:13px!important;
+  right:auto!important;
+  bottom:calc(74px + env(safe-area-inset-bottom))!important;
+  z-index:40;
+ }
+ #app[data-panel]:not([data-panel=""]) #storyBack3d{display:none!important}
+}
 </style>
 </head>
 <body>

@@ -57,6 +57,12 @@ try {
      await page.locator('.mobile-dock [data-panel="'+panel+'"]').click();
     }
    }
+   if(width<=800){
+    const back=await page.locator('#storyBack3d').boundingBox();
+    assert(back&&back.y>=47&&back.y+back.height<=height-60,
+     'De animatieknop moet tussen boven- en ondermenu passen: '+JSON.stringify(back));
+    assert.equal(await page.locator('#storyBack3d').evaluate(e=>getComputedStyle(e).position),'fixed');
+   }
    await page.locator('#storyBack3d').click();
    assert.equal(await page.locator('#modelStory').isVisible(),true,'Terug naar het verhaal');
    assert.deepEqual(errors,[],'JavaScript-fouten bij WebKit: '+errors.join(' / '));
