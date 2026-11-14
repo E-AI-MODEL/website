@@ -9,7 +9,7 @@ const lerp=(a,b,t)=>a+(b-a)*t;
 const ease=t=>{t=clamp(t,0,1);return t*t*(3-2*t);};
 const span=(t,a,b)=>ease((t-a)/(b-a));
 const fmt=(v,n=0)=>Number(v).toLocaleString('nl-NL',{minimumFractionDigits:n,maximumFractionDigits:n});
-const state={cutaway:false,t:0,playing:false,speed:1,yaw:-.20,pitch:.08,zoom:5.95,selected:null,showLabels:!matchMedia('(max-width: 790px)').matches,showFlow:true,tab:'phase',rate:75,last:0,drag:null,study:{guess:null,stage:'choose',stopAt:null},focusSide:'left',showDetails:false};
+const state={cutaway:false,t:0,playing:false,speed:1,yaw:-.20,pitch:.08,zoom:5.95,selected:null,showLabels:!matchMedia('(max-width: 790px)').matches,showFlow:true,tab:'phase',rate:75,last:0,drag:null,study:{guess:null,stage:'choose',stopAt:null},focusSide:'left',showDetails:false,anatomyView:false};
 const m4=()=>{
   const o=new Float32Array(16);o[0]=o[5]=o[10]=o[15]=1;return o;
 };
@@ -73,17 +73,20 @@ function tube(path,radius=.095,segments=10){
 const COLORS={red:[.98,.63,.53],blue:[.47,.82,.98]};
 const canvas=$('heartCanvas'),stage=$('stage');
 let gl,program,pointProgram,meshes={},pv=m4(),loc={},ploc={},particleBuffer;
-let atlasParts=[],atlasCenters={},atlasDetails={},atlasReady=false,atlasError=null;
+let atlasParts=[],atlasCenters={},atlasDetails={},atlasReady=false,atlasRich=false,atlasError=null;
 function compile(gl,type,src){const shader=gl.createShader(type);gl.shaderSource(shader,src);gl.compileShader(shader);if(!gl.getShaderParameter(shader,gl.COMPILE_STATUS))throw new Error(gl.getShaderInfoLog(shader));return shader;}
 function shader(gl,vs,fs){const p=gl.createProgram();gl.attachShader(p,compile(gl,gl.VERTEX_SHADER,vs));gl.attachShader(p,compile(gl,gl.FRAGMENT_SHADER,fs));gl.linkProgram(p);if(!gl.getProgramParameter(p,gl.LINK_STATUS))throw new Error(gl.getProgramInfoLog(p));return p;}
 function setupModel(){
   gl=canvas.getContext('webgl',{antialias:true,alpha:false,powerPreference:'default'})||canvas.getContext('experimental-webgl');
   if(!gl){$('modelUnavailable').hidden=false;return false;}
-  program=shader(gl,'attribute vec3 position;attribute vec3 normal;uniform mat4 pv;uniform mat4 model;uniform float pulse;uniform vec3 cutAxis;varying vec3 n;varying vec3 p;varying float front;void main(){vec3 anatomy=position;float weight=1.0-smoothstep(-.9,.62,anatomy.y);anatomy.xz*=1.0-.105*pulse*weight;anatomy.y+=.055*pulse*weight;vec4 world=model*vec4(anatomy,1.0);front=dot(world.xyz,cutAxis);gl_Position=pv*world;n=normalize(mat3(model)*normal);p=world.xyz;}',
-    'precision mediump float;varying vec3 n;varying vec3 p;varying float front;uniform vec3 tint;uniform float alpha;uniform float cutFront;void main(){if(cutFront>.5&&front>.025)discard;vec3 light=normalize(vec3(-.44,.85,1.0));float a=max(dot(normalize(n),light),0.0);float rim=pow(1.0-abs(dot(normalize(n),normalize(vec3(.1,.15,.99)))),2.0);vec3 c=tint*(.35+.65*a)+vec3(.10,.13,.15)*rim;gl_FragColor=vec4(c,alpha);}');
+  // Uit de bron-GLB komen ook per-vertex schaduw, weefselvariatie en vetmaskers.
+  // Op oudere/procedurele meshes blijft dit attribuut neutraal.
+  program=shader(gl,
+    'attribute vec3 position;attribute vec3 normal;attribute vec3 tissue;uniform mat4 pv;uniform mat4 model;uniform float pulse;uniform vec3 cutAxis;varying vec3 n;varying vec3 p;varying vec3 tissueData;varying float front;void main(){vec3 anatomy=position;float weight=1.0-smoothstep(-.9,.62,anatomy.y);anatomy.xz*=1.0-.080*pulse*weight;anatomy.y+=.037*pulse*weight;vec4 world=model*vec4(anatomy,1.0);front=dot(world.xyz,cutAxis);gl_Position=pv*world;n=normalize(mat3(model)*normal);p=world.xyz;tissueData=tissue;}',
+    'precision mediump float;varying vec3 n;varying vec3 p;varying vec3 tissueData;varying float front;uniform vec3 tint;uniform float alpha;uniform float cutFront;void main(){if(cutFront>.5&&front>.025)discard;vec3 normal=normalize(n);vec3 light=normalize(vec3(-.47,.83,1.0));vec3 fill=normalize(vec3(.50,.18,-.8));float direct=max(dot(normal,light),0.0);float soft=max(dot(normal,fill),0.0);float ao=mix(.48,1.0,clamp(tissueData.r,0.0,1.0));float mottle=mix(.91,1.07,clamp(tissueData.g,0.0,1.0));vec3 base=mix(tint,vec3(.93,.71,.43),clamp(tissueData.b,0.0,1.0)*.70);vec3 color=base*(.31+.62*direct+.12*soft)*ao*mottle;float rim=pow(1.0-abs(dot(normal,normalize(vec3(0.,.15,1.)))),2.0);color+=tint*rim*.10;float spec=pow(max(dot(reflect(-light,normal),vec3(0.,0.,1.)),0.0),28.0);color+=vec3(.92,.68,.61)*spec*.15*ao;gl_FragColor=vec4(color,alpha);}');
   pointProgram=shader(gl,'attribute vec3 position;uniform mat4 pv;uniform float size;void main(){vec4 clip=pv*vec4(position,1.0);gl_Position=clip;gl_PointSize=size*clamp(5.0/clip.w,.7,2.4);}',
     'precision mediump float;uniform vec3 tint;void main(){vec2 v=gl_PointCoord-vec2(.5);float r=length(v);if(r>.5)discard;float shine=1.0-smoothstep(.10,.50,r);gl_FragColor=vec4(tint,shine*.87);}');
-  for(const k of ['position','normal','pv','model','tint','alpha','pulse','cutAxis','cutFront'])loc[k]=k==='position'||k==='normal'?gl.getAttribLocation(program,k):gl.getUniformLocation(program,k);
+  for(const k of ['position','normal','tissue','pv','model','tint','alpha','pulse','cutAxis','cutFront'])loc[k]=['position','normal','tissue'].includes(k)?gl.getAttribLocation(program,k):gl.getUniformLocation(program,k);
   for(const k of ['position','pv','size','tint'])ploc[k]=k==='position'?gl.getAttribLocation(pointProgram,k):gl.getUniformLocation(pointProgram,k);
   meshes.sphere=upload(sphere());
   meshes.chambers={};
@@ -115,7 +118,9 @@ function upload(m){
   const vb=gl.createBuffer(),nb=gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER,vb);gl.bufferData(gl.ARRAY_BUFFER,m.v,gl.STATIC_DRAW);
   gl.bindBuffer(gl.ARRAY_BUFFER,nb);gl.bufferData(gl.ARRAY_BUFFER,m.n,gl.STATIC_DRAW);
-  return {...m,vb,nb};
+  let tb=null;
+  if(m.t){tb=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,tb);gl.bufferData(gl.ARRAY_BUFFER,m.t,gl.STATIC_DRAW);}
+  return {...m,vb,nb,tb};
 }
 function drawMesh(mesh,model,color,alpha=1,pulse=0,cutFront=false){
   gl.useProgram(program);gl.uniformMatrix4fv(loc.pv,false,pv);gl.uniformMatrix4fv(loc.model,false,model);
@@ -126,6 +131,8 @@ function drawMesh(mesh,model,color,alpha=1,pulse=0,cutFront=false){
   gl.uniform3fv(loc.cutAxis,[0,0,1]);
   gl.bindBuffer(gl.ARRAY_BUFFER,mesh.vb);gl.enableVertexAttribArray(loc.position);gl.vertexAttribPointer(loc.position,3,gl.FLOAT,false,0,0);
   gl.bindBuffer(gl.ARRAY_BUFFER,mesh.nb);gl.enableVertexAttribArray(loc.normal);gl.vertexAttribPointer(loc.normal,3,gl.FLOAT,false,0,0);
+  if(mesh.tb){gl.bindBuffer(gl.ARRAY_BUFFER,mesh.tb);gl.enableVertexAttribArray(loc.tissue);gl.vertexAttribPointer(loc.tissue,3,gl.FLOAT,false,0,0);}
+  else{gl.disableVertexAttribArray(loc.tissue);gl.vertexAttrib3f(loc.tissue,1,.5,0);}
   gl.drawArrays(gl.TRIANGLES,0,mesh.count);
 }
 function pathPoint(path,t){
