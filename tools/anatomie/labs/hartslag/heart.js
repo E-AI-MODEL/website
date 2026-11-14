@@ -1,8 +1,8 @@
 // Hartslaglab: BodyParts3D als anatomische basis, met didactisch benaderde beweging.
 // Alleen als de anatomische atlas ontbreekt gebruiken we het oude schematische model.
 // Alle grafieken, klepbewegingen, kamerbewegingen en stroomdeeltjes gebruiken dezelfde fase.
-import {PHASES,volume,pressure,mechanics,phaseFor} from './cycle.js?v=15f68e878286';
-import {CHAMBERS,VESSELS,VALVES,ANATOMY_PARTS,FLOW_PATHS,leafletGeometry,chamberGeometry,tubeGeometry,ringGeometry,septumGeometry,heartEnvelopeGeometry,muscleRidges,TENDINOUS_CORDS,CORONARY_DETAILS,MUSCLE_DETAILS,AURICLES} from './anatomyGeometry.js?v=15f68e878286';
+import {PHASES,volume,pressure,mechanics,phaseFor} from './cycle.js?v=f13e706902f3';
+import {CHAMBERS,VESSELS,VALVES,ANATOMY_PARTS,FLOW_PATHS,leafletGeometry,chamberGeometry,tubeGeometry,ringGeometry,septumGeometry,heartEnvelopeGeometry,muscleRidges,TENDINOUS_CORDS,CORONARY_DETAILS,MUSCLE_DETAILS,AURICLES} from './anatomyGeometry.js?v=f13e706902f3';
 const $=id=>document.getElementById(id);
 const TAU=Math.PI*2;
 const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
@@ -216,12 +216,12 @@ async function loadAtlasModels(){
   const failures=[];
   for(const [name,isRich] of [['atlas-heart-rich',true],['atlas-heart',false]]){
     try{
-      const response=await fetch('./'+name+'.json?v=15f68e878286');
+      const response=await fetch('./'+name+'.json?v=f13e706902f3');
       if(!response.ok)throw Error(name+'-manifest ontbreekt: '+response.status);
       const manifest=await response.json();
       if(manifest.format!==(isRich?2:1)||!Array.isArray(manifest.parts)||manifest.parts.length<(isRich?34:4))
         throw Error('Onvolledig anatomisch model: '+name);
-      const data=await fetch('./'+name+'.bin?v=15f68e878286');
+      const data=await fetch('./'+name+'.bin?v=f13e706902f3');
       if(!data.ok)throw Error('Hartmesh ontbreekt: '+name);
       const buffer=await data.arrayBuffer();
       if(buffer.byteLength!==manifest.bytes)throw Error('Hartmesh-bestand is niet volledig');
