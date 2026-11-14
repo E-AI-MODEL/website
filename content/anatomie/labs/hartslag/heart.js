@@ -230,6 +230,67 @@ function drawParticles(m){
   }
   gl.depthMask(true);gl.enable(gl.DEPTH_TEST);
 }
+// Dunne kleurbanen en richtingpijlen worden op de 3D-bronpunten geprojecteerd.
+// De camera, zoom en pan sturen deze lijnen mee; ze blokkeren aanrakingen nooit.
+const flowOverlay=$('flowOverlay');
+const svgNS='http://www.w3.org/2000/svg';
+let flowVisuals=[],flowVisualKey='';
+function svgElement(name){return document.createElementNS(svgNS,name);}
+function prepareFlowOverlay(){
+  flowOverlay.replaceChildren();
+  flowVisuals=atlasFlowPaths.map(flow=>{
+    const bed=svgElement('path'),pulse=svgElement('path'),arrow=svgElement('path');
+    const color=flow.color==='blue'?'#84d5fa':'#ffa590';
+    for(const p of [bed,pulse]){
+      p.setAttribute('fill','none');
+      p.setAttribute('stroke',color);
+      p.setAttribute('stroke-linecap','round');
+      p.setAttribute('stroke-linejoin','round');
+    }
+    bed.setAttribute('stroke-width','5');
+    pulse.setAttribute('stroke-width','2.2');
+    pulse.setAttribute('stroke-dasharray','5 10');
+    arrow.setAttribute('fill',color);
+    flowOverlay.append(bed,pulse,arrow);
+    return {flow,bed,pulse,arrow};
+  });
+  flowVisualKey='';
+}
+function updateFlowOverlay(m){
+  if(!atlasRich||!state.cutaway||!state.showFlow||!atlasFlowPaths.length){
+    flowOverlay.hidden=true;
+    return;
+  }
+  flowOverlay.hidden=false;
+  if(flowVisuals.length!==atlasFlowPaths.length)prepareFlowOverlay();
+  const w=Math.max(1,canvas.clientWidth),h=Math.max(1,canvas.clientHeight);
+  const view=[w,h,state.yaw,state.pitch,state.zoom,...state.pan].join(':');
+  if(view!==flowVisualKey){
+    flowOverlay.setAttribute('viewBox','0 0 '+w+' '+h);
+    for(const {flow,bed,pulse,arrow} of flowVisuals){
+      const points=flow.curve.map(p=>project(p,pv,w,h));
+      const d=points.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' ');
+      bed.setAttribute('d',d);pulse.setAttribute('d',d);
+      const tip=points[Math.floor(points.length*.70)];
+      const before=points[Math.floor(points.length*.64)];
+      const length=Math.hypot(tip[0]-before[0],tip[1]-before[1])||1;
+      const ux=(tip[0]-before[0])/length,uy=(tip[1]-before[1])/length;
+      const back=[tip[0]-ux*9,tip[1]-uy*9];
+      arrow.setAttribute('d','M '+tip[0].toFixed(1)+' '+tip[1].toFixed(1)+
+        ' L '+(back[0]-uy*3.8).toFixed(1)+' '+(back[1]+ux*3.8).toFixed(1)+
+        ' L '+(back[0]+uy*3.8).toFixed(1)+' '+(back[1]-ux*3.8).toFixed(1)+' Z');
+    }
+    flowVisualKey=view;
+  }
+  for(const {flow,bed,pulse,arrow} of flowVisuals){
+    const side=state.focusSide==='both'||flow.color===(state.focusSide==='left'?'red':'blue');
+    const active=side&&flowIsActive(flow,m);
+    bed.style.opacity=active?'0.24':'0';
+    pulse.style.opacity=active?'0.85':'0';
+    arrow.style.opacity=active?'0.9':'0';
+    pulse.style.strokeDashoffset=String(-state.t*(flow.channel==='sem'?175:95));
+  }
+}
 function updateViewport(){
   const w=Math.round(canvas.clientWidth*Math.min(devicePixelRatio||1,2)),h=Math.round(canvas.clientHeight*Math.min(devicePixelRatio||1,2));
   if(canvas.width!==w||canvas.height!==h){canvas.width=w;canvas.height=h;}
@@ -280,6 +341,7 @@ async function loadAtlasModels(){
       atlasParts=loaded;atlasCenters=centers;atlasDetails=details;
       atlasReady=true;atlasRich=isRich;atlasError=null;
       atlasFlowPaths=isRich?makeAtlasFlowPaths(centers):[];
+      flowVisuals=[];flowVisualKey='';
       if(state.cutaway)state.anatomyView=isRich;
       syncLayerControls();
       if(isRich){
@@ -422,6 +484,7 @@ function drawScene(m){
     drawAtlasHeart(m,state.cutaway);
     drawAtlasExterior(m,state.cutaway);
     if(state.cutaway)drawParticles(m);
+    updateFlowOverlay(m);
     updateLabels();
     return;
   }
@@ -481,6 +544,7 @@ function drawScene(m){
   }
   gl.depthMask(true);
   drawParticles(m);
+  updateFlowOverlay(m);
   updateLabels();
 }
 const labelConnectors=new Map();
@@ -1036,6 +1100,10 @@ window.__EAI_HEART_LAB__={
   get motion(){return {playbackSeconds:60/state.rate/state.speed,
     valveParts:atlasParts.filter(p=>p.kind==='valve').map(p=>p.id),
     flowRoutes:atlasFlowPaths.length};},
+  get flowPreview(){return atlasFlowPaths.map(f=>({
+    color:f.color,channel:f.channel,ids:f.ids,points:f.curve.length,
+    active:flowIsActive(f,mechanics(state.t))
+  }));},
   setTime:t=>setTime(t,true),pause:()=>{state.playing=false;syncPlay();},
   get rendererReady(){return Boolean(gl)&&(state.cutaway||atlasReady);}
 };
