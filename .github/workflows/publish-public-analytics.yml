@@ -52,3 +52,64 @@ jobs:
           git commit -m "data: refresh public Cloudflare Web Analytics"
           git pull --rebase origin main
           git push origin HEAD:main
+
+      - name: Verify Theory7 FTPS certificate
+        if: success()
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq lftp openssl
+          expected="4D:F5:15:4C:F3:11:5E:5B:DD:91:BD:5F:BD:0F:0E:A7:35:71:5C:32"
+          actual="$(openssl s_client -starttls ftp -connect ftp.eaimodel.nl:21 -servername ftp.eaimodel.nl </dev/null 2>/dev/null | openssl x509 -noout -fingerprint -sha1 | cut -d= -f2)"
+          if [ "$actual" != "$expected" ]; then
+            echo "::error::Theory7 FTPS-certificaat komt niet overeen. Geen upload uitgevoerd."
+            exit 1
+          fi
+
+      - name: Publish only the public statistics JSON to Theory7
+        env:
+          FTP_USER: ${{ secrets.THEORY7_FTP_USER }}
+          FTP_PASSWORD: ${{ secrets.THEORY7_FTP_PASSWORD }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s statistieken/data.json
+          test -n "$FTP_USER"
+          test -n "$FTP_PASSWORD"
+          lftp -u "$FTP_USER","$FTP_PASSWORD" "ftp://ftp.eaimodel.nl:21" <<'EOF'
+          set cmd:fail-exit yes
+          set ftp:ssl-force true
+          set ftp:ssl-protect-data true
+          set ssl:verify-certificate false
+          set net:timeout 20
+          set net:max-retries 1
+          set xfer:use-temp-file yes
+          mkdir -p /statistieken
+          put statistieken/data.json -o /statistieken/data.json
+          bye
+          EOF
+
+      - name: Verify the public dataset on Theory7
+        run: |
+          python - <<'PY'
+          import json
+          import time
+          from pathlib import Path
+          from urllib.request import Request, urlopen
+          from urllib.error import URLError
+          expected = json.loads(Path('statistieken/data.json').read_text(encoding='utf-8'))
+          url = 'https://eaimodel.nl/statistieken/data.json?verify=' + '${{ github.run_id }}'
+          for attempt in range(6):
+              try:
+                  with urlopen(Request(url, headers={'Cache-Control': 'no-cache'}), timeout=25) as response:
+                      published = json.loads(response.read(2_000_000))
+                  if published == expected:
+                      print('De echte Cloudflare-totalen staan op Theory7.')
+                      break
+              except (URLError, ValueError, TimeoutError) as error:
+                  print(f'Openbare JSON nog niet bevestigd ({attempt + 1}/6): {type(error).__name__}')
+              if attempt == 5:
+                  raise SystemExit('Theory7-publicatie wijkt af van de Cloudflare-snapshot')
+              time.sleep(8)
+          PY
