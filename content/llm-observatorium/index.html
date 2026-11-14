@@ -374,7 +374,7 @@ const MODES=[
  {name:'Generatie',sub:'Kansen en keuzes',glyph:'&#10022;',title:'Het volgende token kiezen.',desc:'Verander temperatuur en top-p. De kansverdeling en de getekende opties reageren direct.',ins:'Het volgende token',insDesc:'Je verandert een berekende kansverdeling, niet de uitvoer van een geladen taalmodel.',plot:'KANS PER KANDIDAAT',note:'Rekendemo met acht kandidaten. Geen logits uit een echte LLM.',task:'Wat doet een hogere temperatuur met deze voorbeeldverdeling?',options:['Maakt haar vlakker','Maakt haar altijd scherper'],answer:0},
  {name:'Redenering & kosten',sub:'Waar gaan tokens heen?',glyph:'&#9678;',title:'Waar gaan de tokens heen?',desc:'Verander de aantallen. Volg hoe invoer, cache, redenering en uitvoer de berekening en kosten veranderen.',ins:'Tokens en kosten',insDesc:'De beginwaarden komen uit een gepubliceerd API-voorbeeld. Wijzigingen zijn jouw eigen scenario.',plot:'KOSTEN PER TOKENSTROOM',note:'Tik op een balk. Prijzen zijn voorbeeldtarieven, geen actuele tarieven.',task:'Een API telt 1024 redeneertokens. Waar komen deze tokens terecht in de facturering?',options:['Bij invoer','Bij uitvoer','Ze tellen niet mee'],answer:1}
 ];
-const state={model:120,mode:0,layer:17,expert:21,token:0,input:'Waarom draait de Melkweg?',promptWords:[],tokenStatus:'example',contextTokens:4096,temp:.8,topP:.9,showExperts:true,showFields:true,showTrails:true,showLabels:true,yaw:.35,pitch:.79,zoom:1.07,time:120,playing:false,speed:1,panel:'',journey:0,follow:false,uInput:75,uCached:0,uWrite:0,uReason:1024,uOther:162,uRateIn:1,uRateOut:5,uFocus:3,dirty:true,chartDirty:true};
+const state={model:120,mode:0,layer:17,expert:21,token:0,input:'Waarom is de lucht blauw?',promptWords:[],tokenStatus:'example',contextTokens:4096,temp:.8,topP:.9,showExperts:true,showFields:true,showTrails:true,showLabels:true,yaw:.35,pitch:.79,zoom:1.07,time:120,playing:false,speed:1,panel:'',journey:0,follow:false,uInput:75,uCached:0,uWrite:0,uReason:1024,uOther:162,uRateIn:1,uRateOut:5,uFocus:3,dirty:true,chartDirty:true};
 let cfg=CONFIG[state.model],world=null,routeCache=new Map(),plotMeta=null,screenJourney=[],cam={cy:1,sy:0,cp:1,sp:0,sc:1,ox:0,oy:0},canvas=$('universe'),ct=canvas.getContext('2d',{alpha:false}),plot=$('plot'),pc=plot.getContext('2d'),W=0,H=0,PW=0,PH=0,dpr=1,screenExperts=[],lastTime=0,lastDraw=0,pointer=null,moveDist=0,lastGraph=0;
 const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
 function hash(a,b=0,c=0){let n=(Math.imul((a|0)+1,1664525)^Math.imul((b|0)+11,1013904223)^Math.imul((c|0)+71,374761393))>>>0;n^=n>>>15;n=Math.imul(n,2246822519)>>>0;n^=n>>>13;return(n>>>0)/4294967296}
@@ -965,7 +965,7 @@ const GUIDE_STEPS=[
  {title:'AI verdeelt tekst in stukjes',sub:'Die kleine stukjes heten tokens. Het zijn niet altijd hele woorden.',explain:'Het model werkt met token-ID’s: getallen die horen bij stukjes tekst. Tik op een stukje om het bijbehorende ID te bekijken.',boundary:'De stukjes komen van de echte tokenizer zodra die is geladen. Anders tonen we een woordvoorbeeld.'},
  {title:'Het model gebruikt eerdere tekst',sub:'Een volgend stukje hangt af van wat ervoor staat.',explain:'Kies een stukje. De groene stukjes kwamen eerder. Een taalmodel verwerkt deze eerdere context om de volgende voorspelling te maken.',boundary:'Dit laat de volgorde zien. We meten hier geen echte attention-scores of interne activaties.'},
  {title:'Het model berekent mogelijkheden',sub:'Er zijn vaak meerdere mogelijke volgende stukjes.',explain:'Bij iedere stap berekent een taalmodel scores voor mogelijke volgende tokens. Kijk wat meer of minder variatie doet met dit kleine rekenvoorbeeld.',boundary:'Deze vier kansen zijn uitsluitend een demonstratie. Ze komen niet van een draaiend AI-model of jouw vraag.'},
- {title:'Zo ontstaat stukje voor stukje een antwoord',sub:'Het gekozen stukje wordt toegevoegd. Daarna rekent het model verder.',explain:'Klik om het voorbeeldantwoord te laten groeien. Een taalmodel herhaalt dit proces totdat het antwoord klaar is of een stopgrens is bereikt.',boundary:'Het voorbeeldantwoord is vooraf geschreven. Deze pagina verstuurt je vraag niet naar een AI-model.'}
+ {title:'Zo ontstaat stukje voor stukje een antwoord',sub:'Het gekozen stukje wordt toegevoegd. Daarna rekent het model verder.',explain:'Klik om het voorbeeldantwoord te laten groeien. Een taalmodel herhaalt dit proces totdat het antwoord klaar is of een stopgrens is bereikt. Het controleert niet vanzelf of het antwoord waar is.',boundary:'Het voorbeeldantwoord is vooraf geschreven. Deze pagina verstuurt je vraag niet naar een AI-model.'}
 ];
 let guideStep=0,guideBuildCount=1,guideTokenIndex=0;
 const guideEl=id=>document.getElementById(id);
@@ -978,7 +978,9 @@ function guideSetVisible(open){
  if(open){guideRender();guideEl('guideNext').focus({preventScroll:true});}
 }
 function guideSetStep(n){
+ const previous=guideStep;
  guideStep=clamp(n,0,GUIDE_STEPS.length-1);
+ if(guideStep===2&&previous!==2)guideTokenIndex=Math.max(0,state.promptWords.length-1);
  guideRender();
 }
 function guideTokenChips(parent,contextMode){
