@@ -45,7 +45,7 @@ try{
   await page.locator('#guideNext').click();
   assert(await page.locator('#guideTemperature').isVisible(),'Variatie is daadwerkelijk instelbaar');
   const probsBefore=await page.locator('.ai-guide-bar strong').allInnerTexts();
-  await page.locator('#guideTemperature').fill('1.7');
+  await page.locator('#guideTemperature').evaluate(el=>{el.value='1.7';el.dispatchEvent(new Event('input',{bubbles:true}))});
   const probsAfter=await page.locator('.ai-guide-bar strong').allInnerTexts();
   assert.notDeepEqual(probsBefore,probsAfter,'Rekenvoorbeeld reageert op slider');
   await page.screenshot({path:'test-results/llm-guide-'+width+'-kansen.png'});
