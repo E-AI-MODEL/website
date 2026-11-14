@@ -4,12 +4,15 @@ import { readFileSync } from 'node:fs';
 
 const load = path => readFileSync(new URL('../' + path, import.meta.url), 'utf8');
 
-test('Startpagina groepeert onderzoeksruimtes in zeven herkenbare onderwerpen', () => {
+test('Zes onderwerpen geven toegang tot alle afzonderlijke onderzoeksmodellen', () => {
   const html = load('content/science-observatory/landing.html');
-  for (const title of ['Natuurkunde', 'Wiskunde', 'Galactisch Observatorium', 'Anatomie van de mens', 'Hoe werkt AI?', 'Sport en bewegen', 'De oceaan (ABYSS)']) {
+  for (const title of ['Natuurkunde en wiskunde', 'Galactisch Observatorium', 'De oceaan (ABYSS)', 'Anatomie van de mens', 'Hoe werkt AI?', 'Sport en bewegen']) {
     assert.ok(html.includes('<h3>' + title + '</h3>'), title);
   }
-  assert.equal((html.match(/class="so-card"/g) || []).length, 7);
+  assert.equal((html.match(/<article class="so-card(?:\\s|")/g) || []).length, 6);
+  for (const slug of ['natuurkunde', 'gravitatie-banen', 'wiskunde-a', 'wiskunde-b']) {
+    assert.ok(html.includes('/tools/science-observatory/labs/' + slug + '/'), slug);
+  }
   assert.match(html, /\/tools\/melkweg-lab\//);
   assert.match(html, /\/tools\/science-observatory\/labs\/melkweg\//);
   assert.match(html, /\/tools\/anatomie\/labs\/hartslag\//);
@@ -67,7 +70,7 @@ test('De publieke hoofdnavigatie bundelt interactieve HTML achter een enkele ing
   assert.match(source, /\('Zelf aan de slag', \[/);
   assert.match(source, /\('Try it yourself', \[/);
   assert.match(source, /'Onderzoeken', '\/tools\/science-observatory\/'/);
-  assert.match(source, /'Iets maken', '\/nl\/tools\/#maken'/);
+  assert.match(source, /'Iets maken', '\/nl\/tools\/#ontwerpen'/);
   assert.doesNotMatch(source, /\('Observatoria', \[/);
   assert.doesNotMatch(source, /\('Observatories', \[/);
 });
