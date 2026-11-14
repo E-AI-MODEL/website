@@ -610,13 +610,6 @@ function drawMiniTrace(){
   const cursor=x0+state.t*w;
   ctx.lineWidth=.8;ctx.strokeStyle='#e2ece7';ctx.setLineDash([3,3]);ctx.beginPath();ctx.moveTo(cursor,y0);ctx.lineTo(cursor,y1);ctx.stroke();ctx.setLineDash([]);
 }
-const STORY_PHASES=[
-  {text:'Via de aders komt bloed in beide boezems. Het stroomt door de open AV-kleppen naar de kamers.',route:'Boezems → kamers'},
-  {text:'De boezems trekken samen. Het laatste bloed gaat door de open AV-kleppen naar de kamers.',route:'Boezems → kamers'},
-  {text:'De kamers beginnen samen te trekken. Alle kleppen zijn even dicht: de druk stijgt, maar er gaat nog geen bloed naar buiten.',route:'Kleppen dicht · druk stijgt'},
-  {text:'De druk opent de slagaderkleppen. Rechts gaat bloed naar de longen, links naar de rest van het lichaam.',route:'Rechts → longen · links → lichaam'},
-  {text:'De slagaderkleppen sluiten. De kamers ontspannen en de druk daalt; daarna kunnen ze weer vullen.',route:'Kleppen dicht · druk daalt'}
-];
 function display(m){
   const phase=PHASES[m.phase];const prev=Number($('phaseNumber').dataset.index||-1);
   if(prev!==m.phase){
