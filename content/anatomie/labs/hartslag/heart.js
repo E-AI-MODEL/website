@@ -11,7 +11,7 @@ const ease=t=>{t=clamp(t,0,1);return t*t*(3-2*t);};
 const span=(t,a,b)=>ease((t-a)/(b-a));
 const fmt=(v,n=0)=>Number(v).toLocaleString('nl-NL',{minimumFractionDigits:n,maximumFractionDigits:n});
 const state={cutaway:true,t:0,playing:false,speed:.25,yaw:-.20,pitch:.08,zoom:5.95,selected:null,showLabels:false,showFlow:true,tab:'phase',rate:75,last:0,drag:null,study:{guess:null,stage:'choose',stopAt:null},focusSide:'both',showDetails:false,anatomyView:false,userPaused:false,mode:'watch',guideStep:0};
-const layerVisibility={wall:true,valve:true,vessel:true,coronary:true,papillary:true};
+const layerVisibility={outer:true,wall:true,valve:true,vessel:true,coronary:true,papillary:true};
 function layerForKind(kind){return kind==='artery'||kind==='vein'?'coronary':kind;}
 function isLayerVisible(part){return layerVisibility[layerForKind(part.kind)]!==false;}
 function syncLayerControls(){
@@ -315,7 +315,9 @@ function drawAtlasHeart(m,section=false){
   for(const part of atlasParts){
     if(atlasRich){
       // Bloedruimtes zijn lege ruimtes, geen extra spierwand.
-      if(part.kind==='space'||!isLayerVisible(part))continue;
+      // Binnen: een open snijvlak. Buiten: dezelfde volledige bronwand
+      // wordt in een aparte laag getekend, zodat de knoppen onafhankelijk zijn.
+      if(part.kind==='space'||!isLayerVisible(part)||(!section&&part.kind==='wall'))continue;
       const cutWall=section&&part.kind==='wall';
       let color=part.color;
       // Subtiele routekleuren op de echte bronvaten helpen de twee
@@ -358,6 +360,29 @@ function drawAtlasHeart(m,section=false){
     drawMesh(part.mesh,m4(),color,1,pulse,section&&part.kind==='chamber');
   }
 }
+// De drie bestaande BodyParts3D-wandmeshes vormen samen de buitenkant.
+function drawAtlasExterior(m,section=false){
+  if(!atlasRich||!layerVisibility.outer)return;
+  const opacity=section?(state.mode==='steps'?.23:.31):1;
+  const pulse=clamp((1-m.ventScale)/.21,0,1);
+  if(section){
+    // Alleen de voorste wand licht door: de achterkant hoeft niet als een
+    // tweede laag over de kleppen en kamers getekend te worden.
+    gl.depthMask(false);
+    gl.enable(gl.CULL_FACE);
+    gl.cullFace(gl.BACK);
+  }
+  for(const part of atlasParts){
+    if(part.kind!=='wall')continue;
+    const atrial=['ra_wall','la_wall'].includes(part.id);
+    const beat=atrial?clamp((1-m.atriumScale)/.16,0,1):pulse;
+    drawMesh(part.mesh,m4(),part.color,opacity,beat,false,null,atrial?1:0);
+  }
+  if(section){
+    gl.disable(gl.CULL_FACE);
+    gl.depthMask(true);
+  }
+}
 function drawScene(m){
   if(!gl)return;
   updateViewport();
@@ -365,6 +390,7 @@ function drawScene(m){
   gl.depthMask(true);
   if(atlasReady&&(!state.cutaway||state.anatomyView)){
     drawAtlasHeart(m,state.cutaway);
+    drawAtlasExterior(m,state.cutaway);
     if(state.cutaway)drawParticles(m);
     updateLabels();
     return;
