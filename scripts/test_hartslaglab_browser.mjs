@@ -41,7 +41,13 @@ try {
   assert.equal(await page.locator('#moreTools').getAttribute('open'),null,'Extra functies staan in één gesloten menu');
   assert.equal(await page.locator('#quickMeasurements').getAttribute('open'),null,'Grafieken nemen niet standaard ruimte in');
   assert(await page.locator('#miniTrace').isHidden(),'De compacte grafiek is op aanvraag zichtbaar');
-  assert(await page.locator('#storyTitle').isVisible(),'De faseuitleg blijft in beeld');
+  assert(await page.locator('#storyTitle').isVisible(),'De uitleg blijft in beeld');
+  assert.equal(await page.locator('#storyTitle').textContent(),'Volg de bloedstroom');
+  assert.equal((await state(page)).mode,'watch');
+  assert(await page.locator('#guideStart').isVisible(),'Stapsgewijze uitleg is direct bereikbaar');
+  assert(await page.locator('#exploreStart').isVisible(),'Vrij onderzoeken is direct bereikbaar');
+  assert(await page.locator('#guideNavigation').isHidden(),'Stapknoppen zijn pas zichtbaar in de uitleg');
+  assert(await page.locator('#storyStatus').isHidden(),'De snelle klepstanden staan niet in de gewone loop');
   assert.equal(await page.locator('#storySteps').count(),0,'Geen dubbele fasennavigatie');
   assert.equal(await page.locator('#storyProgress').count(),0,'Eén tijdlijn is voldoende');
   assert(!await page.locator('#layerMenu [data-layer]').first().isVisible(),'De keuze staat achter Lagen');
@@ -56,28 +62,68 @@ try {
   await page.locator('#play').click();
   assert.equal((await state(page)).playing,false,'Pauzeknop stopt het hart');
   await setTime(page,.30);
-  assert.match(await page.locator('#storyTitle').textContent(),/vullen/i);
-  assert.match(await page.locator('#storyRoute').textContent(),/Boezems/);
-  assert.match(await page.locator('#storyAV').textContent(),/open/);
-  assert.match(await page.locator('#storySL').textContent(),/dicht/);
+  assert.equal(await page.locator('#storyTitle').textContent(),'Volg de bloedstroom',
+    'De tekst moet tijdens de gewone hartslag leesbaar blijven');
+  assert(await page.locator('#storyStatus').isHidden(),'Klepstanden zijn voor de uitleg per stap');
   let metrics=await page.evaluate(()=>window.__EAI_HEART_LAB__.metrics);
   assert(metrics.av&&!metrics.sem&&metrics.pressure<20);
   const filling=await page.locator('#heartCanvas').screenshot();
   await setTime(page,.67);
-  assert.match(await page.locator('#storyTitle').textContent(),/druk/i);
-  assert.match(await page.locator('#storyRoute').textContent(),/druk stijgt/i);
+  assert.equal(await page.locator('#storyTitle').textContent(),'Volg de bloedstroom',
+    'De uitleg mag niet in 0,19 seconde verspringen');
   metrics=await page.evaluate(()=>window.__EAI_HEART_LAB__.metrics);
   assert(!metrics.av&&!metrics.sem&&metrics.volume===130);
   await setTime(page,.8);
-  assert.match(await page.locator('#storyTitle').textContent(),/uitgepompt/i);
-  assert.match(await page.locator('#storyRoute').textContent(),/longen/i);
-  assert.match(await page.locator('#storySL').textContent(),/open/);
+  assert.equal(await page.locator('#storyTitle').textContent(),'Volg de bloedstroom');
   metrics=await page.evaluate(()=>window.__EAI_HEART_LAB__.metrics);
   assert(metrics.sem&&!metrics.av&&metrics.pressure>90);
   const pumping=await page.locator('#heartCanvas').screenshot();
   assert.notDeepEqual(filling,pumping,'Anatomisch hart moet mee bewegen met de fase');
   const progressed=await page.locator('#scrub').inputValue();
   assert(Math.abs(Number(progressed)-800)<=1,'De tijdlijn volgt de fase zonder tweede voortgangsbalk');
+
+  // Bij vijf stopmomenten is er tijd om de uitleg rustig te lezen.
+  const guide=await page.evaluate(()=>window.__EAI_HEART_LAB__.guide);
+  assert.equal(guide.length,5,'Vijf verschillende leermomenten');
+  await page.locator('#guideStart').click();
+  let stepState=await state(page);
+  assert.equal(stepState.mode,'steps');
+  assert.equal(stepState.guideStep,0);
+  assert.equal(stepState.playing,false);
+  assert(Math.abs(stepState.t-guide[0].at)<.001);
+  assert(await page.locator('#transport').isHidden(),'Tijdschuif maakt plaats voor stappen');
+  assert(await page.locator('#storyStatus').isVisible());
+  assert.match(await page.locator('#guidedFocus').textContent(),/Kleppen tussen boezems/);
+  assert(await page.locator('#guidePrevious').isDisabled());
+  const firstFrame=await page.locator('#heartCanvas').screenshot();
+  for(let i=1;i<5;i++){
+    await page.locator('#guideNext').click();
+    stepState=await state(page);
+    assert.equal(stepState.mode,'steps');
+    assert.equal(stepState.guideStep,i);
+    assert(!stepState.playing,'De leermodus speelt niet automatisch door');
+    assert(Math.abs(stepState.t-guide[i].at)<.001,'De fase hoort bij de bronberekening');
+    assert.equal(await page.locator('#storyTitle').textContent(),guide[i].title);
+  }
+  assert.match(await page.locator('#storyText').textContent(),/kamers ontspannen/i);
+  assert.notDeepEqual(firstFrame,await page.locator('#heartCanvas').screenshot(),
+    'De begeleide kleuren en anatomische beweging veranderen per fase');
+  mkdirSync('test-results',{recursive:true});
+  await page.screenshot({path:'test-results/hartslaglab-'+engine+'-stap-5.png',fullPage:true});
+  await page.locator('#guideNext').click();
+  assert.equal((await state(page)).guideStep,0,'De stapweergave kan opnieuw beginnen');
+  await page.locator('#guideExit').click();
+  assert.equal((await state(page)).mode,'watch');
+  assert(await page.locator('#guideNavigation').isHidden());
+  assert.equal(await page.locator('#storyTitle').textContent(),'Volg de bloedstroom');
+  await page.locator('#exploreStart').click();
+  assert.equal((await state(page)).mode,'explore');
+  assert.equal((await state(page)).playing,false);
+  assert.match(await page.locator('#storyText').textContent(),/Sleep om het hart te draaien/);
+  await page.locator('#exploreStart').click();
+  assert.equal((await state(page)).mode,'watch');
+  assert.equal((await state(page)).playing,true);
+  await page.locator('#play').click();
 
   // Bewijs dat afspelen doorloopt over de overgang 100% -> 0%.
   await setTime(page,.98);
@@ -166,7 +212,9 @@ try {
   assert(m0.cutaway&&m0.anatomyView&&m0.focusSide==='both','Mobiel begint met beide harthelften');
   assert(await mobile.locator('#atlasLoading').isHidden());
   assert(await mobile.locator('#play').isVisible(),'Start en pauze direct bereikbaar');
-  assert(await mobile.locator('#storyTitle').isVisible(),'Leerling ziet de hartfase zonder tabblad');
+  assert(await mobile.locator('#storyTitle').isVisible(),'Leerling ziet het doel zonder tabblad');
+  assert.equal(await mobile.locator('#storyTitle').textContent(),'Volg de bloedstroom');
+  assert(await mobile.locator('#guideStart').isVisible(),'De uitleg per stap is direct bereikbaar');
   assert(await mobile.locator('#layerMenu').isVisible(),'Lagen is direct beschikbaar op mobiel');
   assert(!await mobile.locator('[data-layer="wall"]').isVisible(),'De lagen staan niet standaard in beeld');
   assert(await mobile.locator('#quickMeasurements > summary').isVisible(),'Druk en volume blijven opvraagbaar');
@@ -178,13 +226,20 @@ try {
     const play=document.querySelector('#play').getBoundingClientRect();
     const text=document.querySelector('.phase-story').getBoundingClientRect();
     return {scroll:document.documentElement.scrollWidth,inner:innerWidth,
-      stageHeight:heart.height,playAbove:play.bottom<=heart.top+2,
+      stageHeight:heart.height,playBelow:play.top>=text.bottom-2,
       storyBelow:text.top>=heart.bottom-2};
   });
   assert(layout.scroll<=layout.inner+6,'Geen horizontale overflow op mobiel: '+JSON.stringify(layout));
   assert(layout.stageHeight>=350,'Hartmodel groot genoeg op telefoon');
-  assert(layout.playAbove&&layout.storyBelow,'Afspelen boven het hart, uitleg er direct onder');
+  assert(layout.playBelow&&layout.storyBelow,'Het hart staat eerst, met uitleg en bediening eronder');
   await mobile.screenshot({path:'test-results/hartslaglab-'+engine+'-mobile.png',fullPage:true});
+  await mobile.locator('#guideStart').click();
+  assert.equal((await state(mobile)).mode,'steps','De leermodus werkt met aanraking');
+  assert(await mobile.locator('#guideNext').isVisible(),'Volgende stap staat direct bij de tekst');
+  await mobile.locator('#guideNext').click();
+  assert.equal((await state(mobile)).guideStep,1);
+  await mobile.locator('#guideExit').click();
+  assert.equal((await state(mobile)).mode,'watch');
   await mobile.locator('#play').click();
   assert.equal((await state(mobile)).playing,false,'Pauzeren werkt met aanraking');
   await mobile.locator('#layerMenu > summary').click();
