@@ -106,10 +106,13 @@ try {
   await page.locator('#flowToggle').click();
   assert.equal((await state(page)).showFlow,false);
   await page.locator('#flowToggle').click();
+  // Bij openen van opties scrolt de pagina; meet opnieuw waar het canvas staat.
+  await page.locator('#heartCanvas').scrollIntoViewIfNeeded();
+  const dragBox=await page.locator('#heartCanvas').boundingBox();
   const before=await state(page);
-  await page.mouse.move(box.x+box.width*.48,box.y+box.height*.52);
+  await page.mouse.move(dragBox.x+dragBox.width*.48,dragBox.y+dragBox.height*.52);
   await page.mouse.down();
-  await page.mouse.move(box.x+box.width*.76,box.y+box.height*.52,{steps:8});
+  await page.mouse.move(dragBox.x+dragBox.width*.76,dragBox.y+dragBox.height*.52,{steps:8});
   await page.mouse.up();
   assert(Math.abs((await state(page)).yaw-before.yaw)>.1,'Het hart is draaibaar');
   await page.locator('#resetCamera').click();
