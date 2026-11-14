@@ -58,12 +58,24 @@ try {
   await page.locator('#quickMeasurements > summary').click();
   const motion=await page.evaluate(()=>window.__EAI_HEART_LAB__.motion);
   assert.equal(motion.valveParts.length,4,'Alle vier echte klepmeshes beschikbaar');
-  assert.equal(motion.flowRoutes,6,'Beide bloedroutes aanwezig');
+  assert.equal(motion.flowRoutes,11,'Beide bloedroutes en veneuze vertakkingen aanwezig');
+  const paths=await page.evaluate(()=>window.__EAI_HEART_LAB__.flowPreview);
+  assert.equal(paths.length,11);
+  assert.equal(paths.filter(p=>p.channel==='return').length,6);
+  assert.equal(paths.filter(p=>p.channel==='av').length,2);
+  assert.equal(paths.filter(p=>p.channel==='sem').length,3);
+  assert(paths.every(p=>p.points>=30),'De bronroutes moeten vloeiende lijnen hebben');
   assert(Math.abs(motion.playbackSeconds-3.2)<.01,'Standaard 3,2 seconden per hartslag');
   assert.equal(initial.playing,true,'De doorlopende animatie start vanzelf zonder verminderde-bewegingsvoorkeur');
   await page.locator('#play').click();
   assert.equal((await state(page)).playing,false,'Pauzeknop stopt het hart');
   await setTime(page,.30);
+  assert.equal(await page.locator('#flowOverlay path').count(),33,
+    'Elf routes krijgen elk een basislijn, bewegende lijn en richtingspijl');
+  assert.equal(await page.locator('#flowOverlay').isHidden(),false);
+  const fillingFlow=await page.evaluate(()=>window.__EAI_HEART_LAB__.flowPreview);
+  assert.equal(fillingFlow.filter(p=>p.active).length,8,
+    'Tijdens het vullen lopen zes aanvoerroutes en twee AV-routes');
   assert.equal(await page.locator('#storyTitle').textContent(),'Volg de bloedstroom',
     'De tekst moet tijdens de gewone hartslag leesbaar blijven');
   assert(await page.locator('#storyStatus').isHidden(),'Klepstanden zijn voor de uitleg per stap');
@@ -71,11 +83,17 @@ try {
   assert(metrics.av&&!metrics.sem&&metrics.pressure<20);
   const filling=await page.locator('#heartCanvas').screenshot();
   await setTime(page,.67);
+  const pressureFlow=await page.evaluate(()=>window.__EAI_HEART_LAB__.flowPreview);
+  assert.equal(pressureFlow.filter(p=>p.active).length,6,
+    'Met gesloten kleppen lopen er geen stroomdeeltjes door AV- of slagaderkleppen');
   assert.equal(await page.locator('#storyTitle').textContent(),'Volg de bloedstroom',
     'De uitleg mag niet in 0,19 seconde verspringen');
   metrics=await page.evaluate(()=>window.__EAI_HEART_LAB__.metrics);
   assert(!metrics.av&&!metrics.sem&&metrics.volume===130);
   await setTime(page,.8);
+  const ejectionFlow=await page.evaluate(()=>window.__EAI_HEART_LAB__.flowPreview);
+  assert.equal(ejectionFlow.filter(p=>p.active).length,9,
+    'Tijdens het uitpompen zijn de uitgaande slagaderroutes zichtbaar');
   assert.equal(await page.locator('#storyTitle').textContent(),'Volg de bloedstroom');
   metrics=await page.evaluate(()=>window.__EAI_HEART_LAB__.metrics);
   assert(metrics.sem&&!metrics.av&&metrics.pressure>90);
@@ -186,7 +204,9 @@ try {
   assert.equal((await state(page)).layers.outer,true,'Herstellen zet de buitenlaag weer aan');
   await page.locator('[data-layer="flow"]').click();
   assert.equal((await state(page)).showFlow,false,'Stroomrichting kan uit');
+  assert(await page.locator('#flowOverlay').isHidden(),'Ook de bloedstroombanen moeten verdwijnen');
   await page.locator('[data-layer="flow"]').click();
+  assert(await page.locator('#flowOverlay').isVisible(),'De stroomweergave komt terug');
   await page.locator('#layerMenu > summary').click();
   await page.locator('#moreTools > summary').click();
   await page.locator('#heartOptions > summary').click();
@@ -225,11 +245,29 @@ try {
   const before=await state(page);
   await page.mouse.move(dragBox.x+dragBox.width*.48,dragBox.y+dragBox.height*.52);
   await page.mouse.down();
+  const projectedBefore=await page.locator('#flowOverlay path').first().getAttribute('d');
   await page.mouse.move(dragBox.x+dragBox.width*.76,dragBox.y+dragBox.height*.52,{steps:8});
   await page.mouse.up();
   assert(Math.abs((await state(page)).yaw-before.yaw)>.1,'Het hart is draaibaar');
+  await page.waitForTimeout(80);
+  assert.notEqual(await page.locator('#flowOverlay path').first().getAttribute('d'),projectedBefore,
+    'De bloedstroombanen draaien mee met het echte 3D-hart');
+  const panBefore=(await state(page)).pan;
+  const flowBeforePan=await page.locator('#flowOverlay path').first().getAttribute('d');
+  await page.mouse.move(dragBox.x+dragBox.width*.48,dragBox.y+dragBox.height*.5);
+  await page.keyboard.down('Shift');
+  await page.mouse.down();
+  await page.mouse.move(dragBox.x+dragBox.width*.64,dragBox.y+dragBox.height*.57,{steps:6});
+  await page.mouse.up();
+  await page.keyboard.up('Shift');
+  assert(Math.hypot(...(await state(page)).pan.map((v,i)=>v-panBefore[i]))>.05,
+    'Shift-slepen verplaatst het hart in plaats van te draaien');
+  await page.waitForTimeout(80);
+  assert.notEqual(await page.locator('#flowOverlay path').first().getAttribute('d'),flowBeforePan,
+    'Ook bij verschuiven blijven de routes aan het hart gekoppeld');
   await page.locator('#resetCamera').click();
   assert(Math.abs((await state(page)).yaw+.2)<.005);
+  assert(Math.hypot(...(await state(page)).pan)<.001,'Startaanzicht herstelt ook de verschuiving');
 
   await page.locator('#explainMore summary').click();
   await page.locator('#tabSourcesBtn').click();
@@ -248,6 +286,28 @@ try {
   assert(await mobile.locator('#storyTitle').isVisible(),'Leerling ziet het doel zonder tabblad');
   assert.equal(await mobile.locator('#storyTitle').textContent(),'Volg de bloedstroom');
   assert(await mobile.locator('#guideStart').isVisible(),'De uitleg per stap is direct bereikbaar');
+  const pinch=await mobile.evaluate(()=>{
+    const canvas=document.querySelector('#heartCanvas');
+    const sample=()=>window.__EAI_HEART_LAB__.state;
+    const send=(name,id,x,y)=>canvas.dispatchEvent(new PointerEvent(name,{
+      pointerId:id,pointerType:'touch',isPrimary:id===71,buttons:1,
+      clientX:x,clientY:y,bubbles:true,cancelable:true
+    }));
+    const before=sample();
+    send('pointerdown',71,105,240);
+    send('pointerdown',72,225,240);
+    send('pointermove',71,92,248);
+    send('pointermove',72,258,252);
+    const after=sample();
+    send('pointerup',71,92,248);
+    send('pointerup',72,258,252);
+    return {before,after};
+  });
+  assert(pinch.after.zoom<pinch.before.zoom-.08,'Uit elkaar bewegen van vingers zoomt in');
+  assert(Math.hypot(...pinch.after.pan.map((v,i)=>v-pinch.before.pan[i]))>.01,
+    'Twee vingers kunnen het hart verschuiven');
+  assert(Math.abs(pinch.after.yaw-pinch.before.yaw)<.001,
+    'Een pinch mag het hart niet onbedoeld draaien');
   assert(await mobile.locator('#layerMenu').isVisible(),'Lagen is direct beschikbaar op mobiel');
   assert(!await mobile.locator('[data-layer="wall"]').isVisible(),'De lagen staan niet standaard in beeld');
   assert(await mobile.locator('#quickMeasurements > summary').isVisible(),'Druk en volume blijven opvraagbaar');

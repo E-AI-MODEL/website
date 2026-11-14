@@ -48,8 +48,9 @@
             <span class="loop-label" id="loopLabel">Het hart klopt steeds opnieuw</span>
           </div>
           <div class="stage" id="stage">
-            <canvas id="heartCanvas" aria-label="Bestuurbaar 3D-hartmodel uit BodyParts3D. De hartkleppen bewegen volgens een vereenvoudigd onderwijsmodel. Sleep om te draaien en knijp om te zoomen.">Je browser heeft ondersteuning voor WebGL nodig.</canvas>
+            <canvas id="heartCanvas" aria-label="Draaibaar 3D-hartmodel. Sleep met één vinger om te draaien. Gebruik twee vingers om in te zoomen of het hart te verplaatsen. Op een computer kun je ook met Shift en slepen verplaatsen.">Je browser heeft ondersteuning voor WebGL nodig.</canvas>
             <div class="stage-wash" aria-hidden="true"></div>
+            <svg class="flow-overlay" id="flowOverlay" aria-hidden="true" focusable="false" hidden></svg>
             <p class="guided-focus" id="guidedFocus" hidden></p>
             <details class="layer-menu" id="layerMenu" hidden>
               <summary aria-label="Kies welke onderdelen van het hart zichtbaar zijn">Lagen <span aria-hidden="true">⌄</span></summary>
