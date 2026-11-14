@@ -105,7 +105,7 @@ class LlmObservatorySourceTests(unittest.TestCase):
     def test_explanations_start_with_a_clear_action(self):
         html = self.html
         for passage in (
-            "Elke laag bewerkt de tekst verder.",
+            "Elke laag verwerkt de tekst verder.",
             "Een expert is een klein rekennetwerk, geen persoon.",
             "AI verdeelt tekst in kleine stukjes: tokens.",
             "De kleuren tonen de volgorde.",
