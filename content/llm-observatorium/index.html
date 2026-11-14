@@ -1023,7 +1023,7 @@ function guideDrawBars(){
   const row=guideNode('div',null,'ai-guide-bar');row.append(guideNode('span',labels[i]));
   const track=guideNode('div',null,'ai-guide-track'),fill=guideNode('div',null,'ai-guide-fill');fill.style.width=(value*100).toFixed(1)+'%';track.append(fill);row.append(track,guideNode('strong',(value*100).toFixed(1)+'%'));bars.append(row);
  });
- visual.append(bars,guideNode('p','Deze getallen zijn verzonnen om het verschil tussen mogelijke vervolgen te laten zien.','ai-guide-legend'));
+ visual.append(bars);
  const out=guideEl('guideTemperatureValue');if(out)out.textContent=state.temp.toFixed(1);
 }
 function guideRender(){
