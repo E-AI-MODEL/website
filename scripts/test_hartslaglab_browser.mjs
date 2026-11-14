@@ -194,6 +194,8 @@ try {
   await exterior.click();
   assert.notDeepEqual(outsideFrame,await page.locator('#heartCanvas').screenshot(),
     'Zonder Buitenlaag moet de gesloten orgaanwand verdwijnen');
+  assert.equal(await page.evaluate(()=>window.__EAI_HEART_LAB__.hitTargets.some(p=>p.id==='ra_wall')),false,
+    'Een uitgezette buitenwand mag van buiten niet aanklikbaar blijven');
   await exterior.click();
   await page.locator('#layerMenu > summary').click();
   await page.locator('#sectionToggle').click();
