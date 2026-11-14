@@ -35,7 +35,7 @@ test('dashboard labels comparison periods and summary periods separately', () =>
   assert.match(html, /Afgelopen 7 kalenderdagen/);
   assert.match(html, /Afgelopen 30 kalenderdagen/);
   assert.match(html, /Meest bekeken pagina's \(30 dagen\)/);
-  assert.match(html, /Waar komt bezoek vandaan\\? \\(30 dagen\\)/);
+  assert.ok(html.includes("Waar komt bezoek vandaan? (30 dagen)"));
 });
 
 test('demo mode stays isolated and its fictitious values add up', () => {
@@ -54,6 +54,6 @@ test('demo mode stays isolated and its fictitious values add up', () => {
   assert.equal(demo.period_metrics["30"].clicks, demo.clicks);
   assert.match(demo.source, /Fictieve voorbeeldgegevens/);
   assert.match(html, /Voorbeeldgegevens, geen echte bezoekers/);
-  assert.match(html, /new URLSearchParams\\(window.location.search\\).get\\("demo"\\)==="1"/);
-  assert.doesNotMatch(html, /Authorization:\\s*Bearer|CLOUDFLARE_ANALYTICS_TOKEN/);
+  assert.ok(html.includes('new URLSearchParams(window.location.search).get("demo")==="1"'));
+  assert.doesNotMatch(html, /CLOUDFLARE_ANALYTICS_TOKEN|Authorization:\s*Bearer/);
 });
