@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "source": "Cloudflare Web Analytics (RUM)",
-  "updated_at": "2026-11-14T15:48:51+00:00",
+  "updated_at": "2026-11-14T22:32:42+00:00",
   "period": {
     "from": "2026-10-16",
     "through": "2026-11-14"
@@ -162,8 +162,9 @@
   ],
   "pages": [
     {
-      "path": "/",
-      "views": 10
+      "path": "/statistieken/",
+      "views": 10,
+      "visits": 10
     }
   ],
   "referrers": [],
