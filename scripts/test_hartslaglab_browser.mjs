@@ -208,6 +208,7 @@ try {
   assert.notDeepEqual(right,left,'Harthelften verschillen');
   await mobile.locator('[data-heart-side="both"]').click();
   assert.equal((await state(mobile)).focusSide,'both','Beide bloedroutes kunnen terugkomen');
+  await setTime(mobile,0);
   await mobile.locator('#nextPhase').click();
   const next=(await state(mobile)).t;
   assert(next>=.52&&next<.53,'Fasebediening blijft beschikbaar');
