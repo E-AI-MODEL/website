@@ -416,3 +416,47 @@
  .transport .scrub-group{grid-area:scrub}
 }
 @media(prefers-reduced-motion:reduce){.layer-menu summary span{transition:none}}
+
+
+/* De eerste handeling is kijken. Lezen en navigeren gaan in het eigen tempo. */
+.guided-focus{position:absolute;top:10px;left:11px;z-index:4;max-width:min(64%,310px);padding:7px 10px;margin:0;background:#09212ee8;border:1px solid #59767a;border-radius:5px;color:#e6f1e4;font-size:11px;line-height:1.4;pointer-events:none}
+.learning-choices{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.learning-choices button,.guide-navigation button{border:1px solid #587b83;border-radius:6px;font-size:12px;font-weight:520;min-height:41px;padding:9px 13px;background:transparent;color:#d1e3e2}
+.learning-choices .learning-primary,.guide-navigation .guide-primary{background:#bbd9d4;border-color:#bbd9d4;color:#112936;font-weight:600}
+.learning-choices .learning-secondary[aria-pressed="true"]{background:#1a4045;border-color:#74aba8;color:#e8f5f3}
+.guide-navigation{display:flex;align-items:center;flex-wrap:wrap;gap:7px;margin-top:12px}
+.guide-navigation button{min-width:83px}
+.guide-navigation .guide-primary{min-width:122px}
+.guide-navigation .guide-exit{margin-left:auto;border:0;background:transparent;color:#a7c3ce;min-width:0;font-size:11px}
+.guide-navigation button:disabled{opacity:.4;cursor:default}
+#guideCount{color:#a7c5cb;font-size:11px;font-variant-numeric:tabular-nums;margin:0 6px}
+.phase-story{padding-bottom:14px}
+.phase-story .story-head strong{font-size:16px}
+.phase-story p{margin-top:7px;line-height:1.6}
+.phase-story .story-status:not([hidden]){margin-top:8px;margin-bottom:8px}
+.phase-story .story-number[hidden],.guided-focus[hidden],.learning-choices[hidden],.guide-navigation[hidden],#transport[hidden]{display:none!important}
+#transport{border-bottom:0}
+@media(max-width:790px){
+ .guided-focus{top:9px;left:9px;max-width:calc(100% - 108px);font-size:10px;padding:6px 8px}
+ .phase-story{padding:13px 12px 12px}
+ .phase-story .story-head strong{font-size:15px}
+ .phase-story p{font-size:12px;line-height:1.5;max-width:38rem}
+ .learning-choices{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.85fr);gap:7px;margin-top:11px}
+ .learning-choices button{min-width:0;padding:9px 7px;font-size:11px;min-height:42px;white-space:normal}
+ .guide-navigation{display:grid;grid-template-columns:auto 1fr auto;gap:6px}
+ .guide-navigation button{min-width:0;min-height:40px;padding:8px 10px;font-size:11px}
+ .guide-navigation #guideCount{text-align:center;margin:0;font-size:10px}
+ .guide-navigation #guidePrevious{grid-column:1}
+ .guide-navigation #guideNext{grid-column:3}
+ .guide-navigation .guide-exit{grid-column:1 / -1;justify-self:center;min-height:32px;padding:5px 8px;margin-top:0}
+ .phase-story .story-status{gap:6px}
+ .phase-story .story-route{width:100%}
+ #transport{padding:9px 12px 10px}
+}
+@media(max-width:355px){
+ .learning-choices{grid-template-columns:1fr}
+ .guided-focus{max-width:calc(100% - 105px)}
+}
+
+/* Bronvermelding hoort bij de bronuitleg, niet over het bewegende model. */
+.stage-caption{display:none}

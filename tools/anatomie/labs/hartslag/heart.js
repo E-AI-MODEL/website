@@ -1,8 +1,8 @@
 // Hartslaglab: BodyParts3D als anatomische basis, met didactisch benaderde beweging.
 // Alleen als de anatomische atlas ontbreekt gebruiken we het oude schematische model.
 // Alle grafieken, klepbewegingen, kamerbewegingen en stroomdeeltjes gebruiken dezelfde fase.
-import {PHASES,volume,pressure,mechanics,phaseFor} from './cycle.js?v=f13e706902f3';
-import {CHAMBERS,VESSELS,VALVES,ANATOMY_PARTS,FLOW_PATHS,leafletGeometry,chamberGeometry,tubeGeometry,ringGeometry,septumGeometry,heartEnvelopeGeometry,muscleRidges,TENDINOUS_CORDS,CORONARY_DETAILS,MUSCLE_DETAILS,AURICLES} from './anatomyGeometry.js?v=f13e706902f3';
+import {PHASES,volume,pressure,mechanics,phaseFor} from './cycle.js?v=ea73248c89f1';
+import {CHAMBERS,VESSELS,VALVES,ANATOMY_PARTS,FLOW_PATHS,leafletGeometry,chamberGeometry,tubeGeometry,ringGeometry,septumGeometry,heartEnvelopeGeometry,muscleRidges,TENDINOUS_CORDS,CORONARY_DETAILS,MUSCLE_DETAILS,AURICLES} from './anatomyGeometry.js?v=ea73248c89f1';
 const $=id=>document.getElementById(id);
 const TAU=Math.PI*2;
 const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
@@ -10,7 +10,7 @@ const lerp=(a,b,t)=>a+(b-a)*t;
 const ease=t=>{t=clamp(t,0,1);return t*t*(3-2*t);};
 const span=(t,a,b)=>ease((t-a)/(b-a));
 const fmt=(v,n=0)=>Number(v).toLocaleString('nl-NL',{minimumFractionDigits:n,maximumFractionDigits:n});
-const state={cutaway:true,t:0,playing:false,speed:.25,yaw:-.20,pitch:.08,zoom:5.95,selected:null,showLabels:false,showFlow:true,tab:'phase',rate:75,last:0,drag:null,study:{guess:null,stage:'choose',stopAt:null},focusSide:'both',showDetails:false,anatomyView:false,userPaused:false};
+const state={cutaway:true,t:0,playing:false,speed:.25,yaw:-.20,pitch:.08,zoom:5.95,selected:null,showLabels:false,showFlow:true,tab:'phase',rate:75,last:0,drag:null,study:{guess:null,stage:'choose',stopAt:null},focusSide:'both',showDetails:false,anatomyView:false,userPaused:false,mode:'watch',guideStep:0};
 const layerVisibility={wall:true,valve:true,vessel:true,coronary:true,papillary:true};
 function layerForKind(kind){return kind==='artery'||kind==='vein'?'coronary':kind;}
 function isLayerVisible(part){return layerVisibility[layerForKind(part.kind)]!==false;}
@@ -216,12 +216,12 @@ async function loadAtlasModels(){
   const failures=[];
   for(const [name,isRich] of [['atlas-heart-rich',true],['atlas-heart',false]]){
     try{
-      const response=await fetch('./'+name+'.json?v=f13e706902f3');
+      const response=await fetch('./'+name+'.json?v=ea73248c89f1');
       if(!response.ok)throw Error(name+'-manifest ontbreekt: '+response.status);
       const manifest=await response.json();
       if(manifest.format!==(isRich?2:1)||!Array.isArray(manifest.parts)||manifest.parts.length<(isRich?34:4))
         throw Error('Onvolledig anatomisch model: '+name);
-      const data=await fetch('./'+name+'.bin?v=f13e706902f3');
+      const data=await fetch('./'+name+'.bin?v=ea73248c89f1');
       if(!data.ok)throw Error('Hartmesh ontbreekt: '+name);
       const buffer=await data.arrayBuffer();
       if(buffer.byteLength!==manifest.bytes)throw Error('Hartmesh-bestand is niet volledig');
@@ -259,7 +259,7 @@ async function loadAtlasModels(){
         $('atlasLoading').hidden=true;
         $('play').disabled=false;
         // Een echte loop start zodra de atlas geladen is. Respecteer minder beweging.
-        if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&!state.userPaused)
+        if(state.mode==='watch'&&!matchMedia('(prefers-reduced-motion: reduce)').matches&&!state.userPaused)
           state.playing=true;
         syncPlay();
       }else{
@@ -286,6 +286,30 @@ async function loadAtlasModels(){
   $('partInfo').textContent='De anatomische 3D-bronnen konden niet worden geladen. Het schematische werkingsmodel blijft bruikbaar.';
   console.error('Hartslaglab bronmodellen:',atlasError);
 }
+// Stopmomenten horen bij dezelfde berekening als de doorlopende hartslag.
+const GUIDED_STEPS=[
+  {at:.30,title:'Het hart vult zich',
+   text:'Bloed komt via de aders in de boezems. Het stroomt door de open kleppen naar de kamers.',
+   route:'Boezems → kamers',focusLabel:'Kleppen tussen boezems en kamers',
+   focus:['mitral','tricuspid','svc','ivc','pv_ls','pv_rs','pv_li','pv_ri']},
+  {at:.58,title:'De boezems knijpen samen',
+   text:'De boezems geven het laatste bloed een zetje naar de kamers. De kleppen ertussen zijn nog open.',
+   route:'Boezems → kamers',focusLabel:'Boezemwanden',
+   focus:['ra_wall','la_wall','mitral','tricuspid']},
+  {at:.675,title:'De kamers bouwen druk op',
+   text:'De kleppen naar de boezems zijn dicht. De andere kleppen zijn ook nog dicht. De druk stijgt, maar het bloed blijft even in de kamers.',
+   route:'Alle kleppen dicht · druk stijgt',focusLabel:'De vier gesloten hartkleppen',
+   focus:['mitral','tricuspid','aortic','pulmonary','ventricular_wall']},
+  {at:.82,title:'Het hart pompt bloed weg',
+   text:'De slagaderkleppen zijn open. Rechts stroomt bloed naar de longen, links naar de rest van het lichaam.',
+   route:'Rechts → longen · links → lichaam',focusLabel:'Slagaderkleppen en grote bloedvaten',
+   focus:['aortic','pulmonary','ao','ao_arch','pa','pa_left','pa_right']},
+  {at:.965,title:'Het hart ontspant',
+   text:'De slagaderkleppen zijn dicht. De kamers ontspannen en de druk daalt, voordat het hart weer gaat vullen.',
+   route:'Kleppen dicht · druk daalt',focusLabel:'Slagaderkleppen en kamerwand',
+   focus:['aortic','pulmonary','ventricular_wall']}
+];
+function guideFocusOn(part){return state.mode==='steps'&&GUIDED_STEPS[state.guideStep].focus.includes(part.id);}
 function drawAtlasHeart(m,section=false){
   const pulse=clamp((1-m.ventScale)/.21,0,1);
   for(const part of atlasParts){
@@ -312,6 +336,13 @@ function drawAtlasHeart(m,section=false){
           center:part.center,radius:part.valveRadius,opening,
           axis:['mitral','tricuspid'].includes(part.id)?[0,-1,0]:[0,1,0]
         };
+      }
+      if(state.mode==='steps'){
+        if(guideFocusOn(part)){
+          color=part.kind==='vessel'?color.map(c=>Math.min(1,c*.75+.25)):[1,.91,.59];
+        }else{
+          color=color.map(c=>c*.77);
+        }
       }
       if(state.selected===part.id)color=[1,.86,.60];
       // De atlasvorm blijft het zichtbare model; de klepbeweging is een
@@ -579,13 +610,6 @@ function drawMiniTrace(){
   const cursor=x0+state.t*w;
   ctx.lineWidth=.8;ctx.strokeStyle='#e2ece7';ctx.setLineDash([3,3]);ctx.beginPath();ctx.moveTo(cursor,y0);ctx.lineTo(cursor,y1);ctx.stroke();ctx.setLineDash([]);
 }
-const STORY_PHASES=[
-  {text:'Via de aders komt bloed in beide boezems. Het stroomt door de open AV-kleppen naar de kamers.',route:'Boezems → kamers'},
-  {text:'De boezems trekken samen. Het laatste bloed gaat door de open AV-kleppen naar de kamers.',route:'Boezems → kamers'},
-  {text:'De kamers beginnen samen te trekken. Alle kleppen zijn even dicht: de druk stijgt, maar er gaat nog geen bloed naar buiten.',route:'Kleppen dicht · druk stijgt'},
-  {text:'De druk opent de slagaderkleppen. Rechts gaat bloed naar de longen, links naar de rest van het lichaam.',route:'Rechts → longen · links → lichaam'},
-  {text:'De slagaderkleppen sluiten. De kamers ontspannen en de druk daalt; daarna kunnen ze weer vullen.',route:'Kleppen dicht · druk daalt'}
-];
 function display(m){
   const phase=PHASES[m.phase];const prev=Number($('phaseNumber').dataset.index||-1);
   if(prev!==m.phase){
@@ -594,10 +618,6 @@ function display(m){
     $('phaseTitle').textContent=phase.title;
     $('phaseText').textContent=phase.text;
     $('phaseHint').textContent=phase.hint;
-    $('storyNumber').textContent=String(m.phase+1).padStart(2,'0')+' / 05';
-    $('storyTitle').textContent=phase.title;
-    $('storyText').textContent=STORY_PHASES[m.phase].text;
-    $('storyRoute').textContent=STORY_PHASES[m.phase].route;
   }
   $('storyAV').textContent='AV-kleppen '+(m.av?'open':'dicht');
   $('storySL').textContent='Slagaderkleppen '+(m.sem?'open':'dicht');
@@ -645,8 +665,70 @@ function setTime(t,autopause=false){
 function syncPlay(){
   $('play').textContent=state.playing?'Pauzeer':'Start hartslag';
   $('play').setAttribute('aria-label',state.playing?'Pauzeer de doorlopende hartslag':'Start de doorlopende hartslag');
-  $('loopLabel').textContent=state.playing?'De hartslag herhaalt zich':'Hartslag gepauzeerd';
+  $('loopLabel').textContent=state.mode==='steps'?'Bekijk elke stap rustig':
+    state.mode==='explore'?'Draai en onderzoek het hart':
+    state.playing?'Het hart klopt steeds opnieuw':'Hartslag gepauzeerd';
 }
+function syncLearningMode(){
+  const guided=state.mode==='steps';
+  const exploring=state.mode==='explore';
+  $('storyNumber').hidden=!guided;
+  $('storyStatus').hidden=!guided;
+  $('guideNavigation').hidden=!guided;
+  $('learningChoices').hidden=guided;
+  $('guidedFocus').hidden=!guided;
+  $('transport').hidden=guided;
+  $('exploreStart').setAttribute('aria-pressed',String(exploring));
+  $('exploreStart').textContent=exploring?'Terug naar hartslag':'Zelf onderzoeken';
+  if(guided){
+    const step=GUIDED_STEPS[state.guideStep];
+    $('storyNumber').textContent=String(state.guideStep+1).padStart(2,'0')+' / 05';
+    $('storyTitle').textContent=step.title;
+    $('storyText').textContent=step.text;
+    $('storyRoute').textContent=step.route;
+    $('guidedFocus').textContent='Kijk naar: '+step.focusLabel;
+    $('guideCount').textContent='Stap '+(state.guideStep+1)+' van 5';
+    $('guidePrevious').disabled=state.guideStep===0;
+    $('guideNext').textContent=state.guideStep===4?'Bekijk opnieuw':'Volgende stap';
+  }else{
+    $('storyTitle').textContent=exploring?'Onderzoek het hart zelf':'Volg de bloedstroom';
+    $('storyText').textContent=exploring?
+      'Sleep om het hart te draaien. Tik op een onderdeel voor de naam, of open Lagen om onderdelen te verbergen.':
+      'Blauw bloed stroomt vanuit het lichaam naar de longen. Rood bloed stroomt vanuit de longen naar het lichaam. Kijk welke kleppen open- en dichtgaan.';
+  }
+  syncPlay();
+}
+function selectGuideStep(index){
+  state.mode='steps';
+  state.guideStep=(index+GUIDED_STEPS.length)%GUIDED_STEPS.length;
+  state.playing=false;state.userPaused=true;
+  state.cutaway=true;state.anatomyView=atlasRich;state.focusSide='both';
+  // Toon de bronstructuren; uitleg mag niet verwijzen naar verborgen onderdelen.
+  Object.keys(layerVisibility).forEach(k=>{layerVisibility[k]=true;});
+  state.showFlow=true;
+  state.t=GUIDED_STEPS[state.guideStep].at;
+  positionInfo(null);
+  syncLayerControls();
+  syncViewControls();
+  syncLearningMode();
+  render();
+}
+function returnToWatch(){
+  state.mode='watch';
+  state.playing=atlasRich&&!matchMedia('(prefers-reduced-motion: reduce)').matches;
+  state.userPaused=!state.playing;
+  syncLearningMode();
+  render();
+}
+$('guideStart').addEventListener('click',()=>selectGuideStep(0));
+$('guidePrevious').addEventListener('click',()=>selectGuideStep(state.guideStep-1));
+$('guideNext').addEventListener('click',()=>selectGuideStep(state.guideStep+1));
+$('guideExit').addEventListener('click',returnToWatch);
+$('exploreStart').addEventListener('click',()=>{
+  if(state.mode==='explore'){returnToWatch();return;}
+  state.mode='explore';state.playing=false;state.userPaused=true;
+  syncLearningMode();render();
+});
 $('play').addEventListener('click',()=>{
   if(!atlasRich)return;
   state.playing=!state.playing;
@@ -764,7 +846,9 @@ $('discoveryAction').addEventListener('click',()=>{
   if(!study.guess)return;
   if(study.stage==='choose'){
     study.stage='watch';
+    state.mode='explore';
     state.cutaway=true;state.anatomyView=atlasRich;state.showFlow=true;state.focusSide='left';
+    syncLearningMode();
     state.yaw=-.20;state.pitch=.08;
     state.zoom=matchMedia('(max-width: 790px)').matches?6.65:5.4;
     syncViewControls();
@@ -817,9 +901,9 @@ canvas.addEventListener('touchstart',e=>{if(e.touches.length===2){state.drag=nul
 canvas.addEventListener('touchmove',e=>{if(e.touches.length===2&&state.pinch){const a=e.touches[0],b=e.touches[1],next=Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY);state.zoom=clamp(state.zoom*state.pinch/Math.max(next,1),3.5,9.5);state.pinch=next;}},{passive:true});
 canvas.addEventListener('touchend',()=>{state.pinch=null;});
 let resize=new ResizeObserver(()=>{if(gl)render();});resize.observe(stage);
-setupModel();syncPlay();syncLabelsToggle();syncViewControls();syncStudy();loadAtlasModels();
+setupModel();syncLearningMode();syncLabelsToggle();syncViewControls();syncStudy();loadAtlasModels();
 window.__EAI_HEART_LAB__={
-  get state(){return {t:state.t,playing:state.playing,speed:state.speed,yaw:state.yaw,zoom:state.zoom,selected:state.selected,cutaway:state.cutaway,showLabels:state.showLabels,showFlow:state.showFlow,focusSide:state.focusSide,showDetails:state.showDetails,atlasReady,atlasRich,anatomyView:state.anatomyView,atlasError,atlasPartCount:atlasParts.length,studyStage:state.study.stage,layers:{...layerVisibility,flow:state.showFlow,labels:state.showLabels}};},
+  get state(){return {t:state.t,playing:state.playing,speed:state.speed,yaw:state.yaw,zoom:state.zoom,selected:state.selected,cutaway:state.cutaway,showLabels:state.showLabels,showFlow:state.showFlow,focusSide:state.focusSide,showDetails:state.showDetails,atlasReady,atlasRich,anatomyView:state.anatomyView,atlasError,atlasPartCount:atlasParts.length,studyStage:state.study.stage,mode:state.mode,guideStep:state.guideStep,layers:{...layerVisibility,flow:state.showFlow,labels:state.showLabels}};},
   get visibleAtlasPartIds(){return atlasParts.filter(part=>part.kind!=='space'&&isLayerVisible(part)).map(part=>part.id);},
   // Debugbare projectiepunten voor een echte browserklik in de regressietest.
   get hitTargets(){return Object.entries(selectableParts()).map(([id,part])=>{
@@ -827,6 +911,7 @@ window.__EAI_HEART_LAB__={
     return {id,type:part.type,x,y,visible:depth>0&&x>=0&&y>=0&&x<=canvas.clientWidth&&y<=canvas.clientHeight};
   });},
   get metrics(){return mechanics(state.t);},
+  get guide(){return GUIDED_STEPS.map(step=>({at:step.at,title:step.title,focus:step.focus}));},
   get motion(){return {playbackSeconds:60/state.rate/state.speed,
     valveParts:atlasParts.filter(p=>p.kind==='valve').map(p=>p.id),
     flowRoutes:atlasFlowPaths.length};},

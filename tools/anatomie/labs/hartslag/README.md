@@ -29,6 +29,14 @@ Het 3D-hart heeft een compacte knop **Lagen**. Je kunt de hartspierwand, hartkle
 
 Op mobiel staan namen standaard uit. De stroomrichting is een optionele indicator over de anatomie; aangezette namen krijgen dunne aanwijslijnen. **Druk en volume** staat als compacte meetregel onder de animatie, met een uitklapbare grafiek. Instellingen, opdrachten, uitleg, bronnen en grotere grafieken zitten samen onder **Onderzoek en instellingen**. Daardoor blijft het eerste scherm gericht op het bewegende hart en de actuele fase. De anatomische onderdelen zijn aanwijsbaar en selecteerbaar. Alle drie de weergaven delen de tijdlijn, hartfrequentie en grafieken. De beperkte uitzetting van de bronmesh is een onderwijseffect en **geen anatomisch gevalideerde hartcontractie**.
 
+## Leren met de animatie
+
+De eerste weergave laat het anatomische hart doorlopend kloppen, met een vaste uitleg die niet elke fractie van een seconde verspringt. De leerling kan de bloedstroom volgen zonder voortdurend nieuwe tekst te hoeven lezen. De start-/pauzeknop en de tijdschuif staan onder de uitleg.
+
+Met **Bekijk stap voor stap** bekijkt de leerling de vijf hartfasen in eigen tempo. De simulatie stopt op een passend tijdstip per fase; de betrokken structuren worden uitgelicht en één korte uitleg verschijnt onder het model. Met **Vorige** en **Volgende stap** bepaalt de leerling wanneer het beeld verandert. De hartkleppen en meetwaarden gebruiken nog steeds dezelfde vereenvoudigde faseberekening. **Terug naar hartslag** hervat de doorlopende weergave.
+
+**Zelf onderzoeken** zet de beweging stil zodat leerlingen het model kunnen draaien, onderdelen aanraken en de knop **Lagen** gebruiken. Onder **Onderzoek en instellingen** blijven de onderzoeksvraag, bronnen, uitgebreide grafieken en de overige bediening beschikbaar. Dit is een interfacekeuze voor begrijpelijkheid, geen claim dat leerwinst met leerlingen is aangetoond.
+
 ## Fysiologie
 
 Een fysiologische cyclus duurt in het voorbeeld 0,80 s (75 slagen/min). Voor het bekijken speelt de website standaard op 0,25× snelheid, zodat een volledige slag 3,2 seconden op het scherm duurt. Het kleponderzoek toont het relevante deel nog langzamer. De vijf fasen zijn: vulling, boezemsamentrekking, isovolumetrische contractie, uitpompen en isovolumetrische relaxatie. De AV-kleppen zijn open tijdens de vulling; de slagaderkleppen tijdens het uitpompen. Tussen beide liggen korte fasen waarin alle kleppen dicht zijn. Bij de isovolumetrische fasen is het kamervolume constant.
