@@ -28,6 +28,7 @@
 .so-home .so-foot details{max-width:900px;font-size:12px;line-height:1.6}
 .so-home .so-foot summary{display:inline-block;cursor:pointer;font-size:12px;font-weight:650;color:#c3d4de;text-decoration:underline;text-underline-offset:4px}
 .so-home .so-foot p{margin:9px 0 0;max-width:850px}
+@media(min-width:590px){.so-home .so-links--pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:12px}}
 @media(max-width:900px){.so-home .so-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:590px){.so-home .so-wrap{padding:0 17px}.so-home .so-intro{padding:24px 0 20px}.so-home h1{font-size:34px}.so-home .so-intro p{font-size:13px}.so-home .so-collection{padding:22px 0 28px}.so-home .so-grid{grid-template-columns:minmax(0,1fr);gap:10px}.so-home .so-card{min-height:auto;padding:16px}.so-home .so-desc{min-height:auto}.so-home .so-art{width:47px;height:37px}}
 @media(prefers-reduced-motion:reduce){.so-home .so-card,.so-home .so-links a{transition:none}}
@@ -41,15 +42,10 @@
 <section class="so-collection"><div class="so-wrap">
 <h2 class="so-section-title">Kies een onderwerp</h2>
 <div class="so-grid">
-<article class="so-card">
-<div class="so-card-head"><span class="so-art" aria-hidden="true"><svg viewBox="0 0 62 48"><path class="soft" d="M4 42H58M4 42V5M4 24H58M25 5V42"/><path d="M5 38Q18 5 35 15T58 40"/><circle cx="5" cy="38" r="3"/><circle cx="35" cy="15" r="3"/><circle cx="58" cy="40" r="3"/></svg></span><span class="so-count">Beweging, krachten en meer</span></div>
-<h3>Natuurkunde</h3><p class="so-desc">Onderzoek wat er verandert als je een kracht, snelheid of andere grootheid aanpast.</p>
-<div class="so-links"><a href="/tools/science-observatory/labs/natuurkunde/">Bekijk de proeven</a><a href="/tools/science-observatory/labs/gravitatie-banen/">Onderzoek satellietbanen</a></div>
-</article>
-<article class="so-card">
-<div class="so-card-head"><span class="so-art" aria-hidden="true"><svg viewBox="0 0 62 48"><path class="soft" d="M4 42H58M10 4V44M3 25H58M24 5V42M39 5V42"/><path d="M8 40C18 38 20 13 29 10S43 29 56 8"/><path d="M28 40V31H35V40M39 40V24H46V40M50 40V18H57V40"/></svg></span><span class="so-count">Wiskunde A en B</span></div>
-<h3>Wiskunde</h3><p class="so-desc">Speel met kansverdelingen, functies en grafieken. Bekijk meteen het verschil.</p>
-<div class="so-links"><a href="/tools/science-observatory/labs/wiskunde-a/">Kansen en statistiek</a><a href="/tools/science-observatory/labs/wiskunde-b/">Functies en grafieken</a></div>
+<article class="so-card so-card--combined">
+<div class="so-card-head"><span class="so-art" aria-hidden="true"><svg viewBox="0 0 62 48"><path class="soft" d="M4 42H58M4 42V5M4 24H58M25 5V42"/><path d="M5 38Q18 5 35 15T58 40"/><circle cx="5" cy="38" r="3"/><circle cx="35" cy="15" r="3"/><circle cx="58" cy="40" r="3"/></svg></span><span class="so-count">Proeven, functies en grafieken</span></div>
+<h3>Natuurkunde en wiskunde</h3><p class="so-desc">Verander krachten, kansen of functies en vergelijk wat er in het model gebeurt.</p>
+<div class="so-links so-links--pair"><a href="/tools/science-observatory/labs/natuurkunde/">Natuurkundeproeven</a><a href="/tools/science-observatory/labs/wiskunde-a/">Wiskunde A</a><a href="/tools/science-observatory/labs/gravitatie-banen/">Gravitatie en banen</a><a href="/tools/science-observatory/labs/wiskunde-b/">Wiskunde B</a></div>
 </article>
 <article class="so-card">
 <div class="so-card-head"><span class="so-art" aria-hidden="true"><svg viewBox="0 0 62 48"><ellipse cx="30" cy="24" rx="27" ry="10" transform="rotate(-27 30 24)" class="soft"/><path d="M8 29C11 11 38 7 45 24S30 42 25 31S31 18 35 24S30 29 30 25"/><circle cx="30" cy="24" r="2.3"/><circle cx="10" cy="17" r="1.2"/><circle cx="49" cy="6" r="1.2"/></svg></span><span class="so-count">Het heelal</span></div>
