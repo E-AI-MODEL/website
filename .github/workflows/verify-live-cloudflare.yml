@@ -25,12 +25,13 @@ jobs:
           import time
           from urllib.request import Request, urlopen
           from urllib.error import HTTPError, URLError
-          from scripts.build_site import CLOUDFLARE_PUBLIC_BEACON
+          from pathlib import Path
+          cloudflare_source = Path('scripts/build_site.py').read_text(encoding='utf-8')
 
           expected_url = "https://static.cloudflareinsights.com/beacon.min.js"
           expected_token = "1aa5d5810d5a48e7bb8e5b2bac573e74"
-          assert expected_url in CLOUDFLARE_PUBLIC_BEACON
-          assert expected_token in CLOUDFLARE_PUBLIC_BEACON
+          assert expected_url in cloudflare_source
+          assert expected_token in cloudflare_source
 
           problems = []
           for domain, path in (
