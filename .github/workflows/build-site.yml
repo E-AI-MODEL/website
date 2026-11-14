@@ -10,6 +10,7 @@ on:
       - 'statistieken/**'
       - 'scripts/publish_web_analytics.py'
       - 'tests/test_public_analytics.py'
+      - 'tests/test_public_analytics_ui.mjs'
       - '.github/workflows/deploy-theory7.yml'
       - 'scripts/build_site.py'
       - 'scripts/prepare_ui.py'
@@ -41,6 +42,7 @@ on:
       - 'statistieken/**'
       - 'scripts/publish_web_analytics.py'
       - 'tests/test_public_analytics.py'
+      - 'tests/test_public_analytics_ui.mjs'
       - '.github/workflows/deploy-theory7.yml'
       - 'scripts/build_site.py'
       - 'scripts/prepare_ui.py'
@@ -101,6 +103,9 @@ jobs:
 
       - name: Check published analytics totals and privacy
         run: python -m unittest discover -s tests -p 'test_public_analytics.py' -v
+
+      - name: Check public dashboard JavaScript and labels
+        run: node --test tests/test_public_analytics_ui.mjs
 
       - name: Check website insights and menu
         run: python -m unittest discover -s tests -p 'test_site_insights.py' -v
@@ -228,7 +233,7 @@ jobs:
 
           root = Path("site-build")
           problems = []
-          for route in ("index.html", "nl/index.html", "nl/onderwijs/index.html",
+          for route in ("index.html", "nl/index.html", "statistieken/index.html", "nl/onderwijs/index.html",
                         "nl/onderzoek/index.html", "nl/model-monitor/index.html", "leif/index.html", "leif/continue/index.html", "leif/verhaal/index.html", "tools/wihtml/index.html", "tools/wihtml/studio/index.html"):
               if not (root / route).exists():
                   problems.append(f"Missing visitor route: {route}")
