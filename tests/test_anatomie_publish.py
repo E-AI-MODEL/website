@@ -278,9 +278,15 @@ class AnatomyPublishTests(unittest.TestCase):
                 links.feed((OUT / rel).read_text(encoding="utf-8"))
                 # De gegenereerde Tools-pagina heeft één link in de inhoud
                 # en één in elk van de afzonderlijke desktop-/mobiele menu's.
-                expected = 3 if rel == "tools/index.html" else (1 if rel == "nl/tools/index.html" else 0)
-                self.assertEqual(links.hrefs.count("/tools/anatomie/"), expected,
-                                 f"Onverwacht aantal anatomievermeldingen in {rel}")
+                count = links.hrefs.count("/tools/anatomie/")
+                if rel == "nl/index.html":
+                    # Voor prepare_ui bevat de opgeslagen homepage nog de oude menulink.
+                    # Na de UI-build staat anatomie alleen onder Interactief onderzoeken.
+                    self.assertIn(count, (0, 1), "Anatomie staat dubbel op de homepage")
+                else:
+                    expected = 3 if rel == "tools/index.html" else 1
+                    self.assertEqual(count, expected,
+                                     f"Onverwacht aantal anatomievermeldingen in {rel}")
                 if rel == "tools/index.html":
                     from bs4 import BeautifulSoup
                     soup = BeautifulSoup((OUT / rel).read_text(encoding="utf-8"), "html.parser")
