@@ -36,6 +36,27 @@ class CloudflareBeaconTest(unittest.TestCase):
                     self.assertRegex(html, r"data-cf-beacon='\{\"token\":\"[a-f0-9]{32}\"\}'")
 
     def test_missing_routes_do_not_create_files(self):
+    def test_exact_source_pages_remain_unchanged(self):
+        with TemporaryDirectory() as root:
+            out = Path(root)
+            paths = [
+                "/tools/wihtml/studio/", "/tools/wihtml/voorbeeld/",
+                "/tools/abyss/", "/tools/melkweg-lab/",
+                "/tools/llm-observatorium/", "/tools/eaimesh/start/",
+                "/tools/eaistudio/studio/",
+                "/tools/science-observatory/labs/wiskunde-a/",
+            ]
+            for path in paths:
+                page = out / path.lstrip("/") / "index.html"
+                page.parent.mkdir(parents=True, exist_ok=True)
+                page.write_text("<html><head></head><body>Exact original</body></html>", encoding="utf-8")
+            add_cloudflare_beacon_to_public_routes(out, paths)
+            for path in paths:
+                self.assertEqual(
+                    (out / path.lstrip("/") / "index.html").read_text(encoding="utf-8"),
+                    "<html><head></head><body>Exact original</body></html>", path,
+                )
+
         with TemporaryDirectory() as root:
             out = Path(root)
             add_cloudflare_beacon_to_public_routes(out, ["/not-found/", "/leif/continue/"])
