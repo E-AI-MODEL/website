@@ -133,7 +133,7 @@ class LlmObservatorySourceTests(unittest.TestCase):
     def test_source_and_demo_distinction(self):
         self.assertIn("gpt-oss-120b/blob/main/config.json", self.html)
         self.assertIn("gpt-oss-20b/blob/main/config.json", self.html)
-        self.assertIn("Geen uitgelezen modelactivaties", self.html)
+        self.assertIn("geen metingen uit een draaiend model", self.html)
         self.assertIn("geen echte token-id", self.html.lower())
 
     def test_tokenizer_ui_has_real_data_and_explicit_fallback(self):
