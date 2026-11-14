@@ -50,9 +50,9 @@ try {
       await page.locator('.eai-site-group').nth(1).locator('summary').click();
       await page.locator('.eai-site-group').nth(4).locator('summary').click();
       assert.equal(await page.locator('.eai-site-group[open]').count(), 1, 'Only one theme may be open');
-      assert((await page.locator('.eai-site-group').nth(4).locator('a:visible').count()) >= 5, 'Not all creation tools are visible');
-      assert.equal(await page.locator('.eai-site-menu-panel a[href="/tools/eaistudio/"]').count(), 1);
-      assert.equal(await page.locator('.eai-site-menu-panel a[href="/tools/eaimesh/"]').count(), 1);
+      assert.equal(await page.locator('.eai-site-group').nth(4).locator('a:visible').count(), 4, 'Four useful routes in the task menu');
+      assert.equal(await page.locator('.eai-site-menu-panel a[href="/tools/science-observatory/"]').count(), 1);
+      assert.equal(await page.locator('.eai-site-menu-panel a[href="/tools/anatomie/"]').count(), 0);
       await page.keyboard.press('Escape');
       assert.equal(await page.locator('.eai-site-menu').getAttribute('open'), null);
       assert(await page.locator('.eai-site-menu>summary').evaluate(e => e === document.activeElement));
@@ -73,7 +73,7 @@ try {
     assert.equal(await homeRoutes.locator('a[href="'+target+'"]').count(), 0, 'Routes themselves are anchors, not nested links');
     assert.equal(await page.locator('.eai-landing-route[href="'+target+'"]').count(), 1, target);
   }
-  assert.equal(await page.locator('.eai-site-primary a').count(), 6, 'Six main destinations');
+  assert.equal(await page.locator('.eai-site-primary a').count(), 5, 'Five main destinations');
   assert.equal(await page.locator('#eai-blog .eai-reading-feature').count(), 1, 'Blog entry');
   assert.equal(await page.locator('.eh-case-output').count(), 0, 'Old homepage explorer is removed');
   const firstPageText = await page.locator('main').innerText();
@@ -281,9 +281,9 @@ try {
   await fallback.locator('.eai-site-group').nth(1).locator('summary').click();
   await fallback.locator('.eai-site-group').nth(4).locator('summary').click();
   assert.equal(await fallback.locator('.eai-site-group[open]').count(), 1, 'Native accordion must be exclusive');
-  assert((await fallback.locator('.eai-site-group').nth(4).locator('a:visible').count()) >= 5, 'No-JS creation menu is incomplete');
-   assert.equal(await fallback.locator('.eai-site-menu-panel a[href="/tools/eaistudio/"]').count(), 1);
-   assert.equal(await fallback.locator('.eai-site-menu-panel a[href="/tools/eaimesh/"]').count(), 1);
+  assert.equal(await fallback.locator('.eai-site-group').nth(4).locator('a:visible').count(), 4, 'Four useful routes also without JavaScript');
+   assert.equal(await fallback.locator('.eai-site-menu-panel a[href="/tools/science-observatory/"]').count(), 1);
+   assert.equal(await fallback.locator('.eai-site-menu-panel a[href="/tools/anatomie/"]').count(), 0);
   await noJS.close();
   assert.deepEqual(errors, []);
   writeFileSync('test-results/ui-report.json', JSON.stringify({ results, noJavaScriptMenu: true, homeRoutes: true, languageLinks: true, errors }, null, 2));
