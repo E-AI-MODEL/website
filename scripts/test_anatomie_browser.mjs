@@ -29,6 +29,25 @@ async function waitForCameraSettled(page) {
   });
 }
 
+
+/**
+ * Controleer de werkelijk herstelde camerapositie en het draaipunt. Alleen
+ * wachten totdat opeenvolgende frames gelijk zijn leverde schijnsuccessen op:
+ * de animatie kan dan nog niet begonnen zijn.
+ */
+async function waitForCameraRestored(page, before) {
+  await page.waitForFunction(({distance, target}) => {
+    const viewer = window.ZAnatomy?.viewer;
+    if (!viewer) return false;
+    const {camera, controls} = viewer;
+    const actualDistance = camera.position.distanceTo(controls.target);
+    const actualTarget = controls.target.toArray();
+    return Math.abs(actualDistance - distance) < distance * .02
+      && Math.hypot(...actualTarget.map((v, i) => v - target[i])) < .08;
+  }, {distance: before.distance, target: before.target}, {timeout:12000, polling:80});
+  await waitForCameraSettled(page);
+}
+
 let browser;
 try {
   let ready = false;
@@ -127,7 +146,7 @@ try {
       assert(Math.abs(afterPan.distance-beforePan.distance)<.04,
         'Verplaatsen mag de zoomafstand niet wijzigen');
       await page.locator('#frontViewBtn').click();
-      await waitForCameraSettled(page);
+      await waitForCameraRestored(page, beforePan);
       const beforeKeyboard = await page.evaluate(() => window.ZAnatomy.viewer.controls.target.toArray());
       await page.locator('#threeCanvas').focus();
       await page.keyboard.down('Shift');
@@ -148,7 +167,7 @@ try {
         'Herhaald Shift + pijl moet het draaipunt merkbaar verplaatsen: '+
           beforeKeyboard.join(',')+' -> '+afterKeyboard.join(','));
       await page.locator('#frontViewBtn').click();
-      await waitForCameraSettled(page);
+      await waitForCameraRestored(page, beforePan);
     }
     // De standaardzoom gebruikt voortaan de plaats onder de muis. De
     // verandering van het draaipunt is een echte camerameting, geen UI-label.
@@ -233,8 +252,8 @@ try {
         'Het draaipunt volgt niet de rechts van het midden aangewezen plek');
 
       await page.locator('#frontViewBtn').click();
-      await waitForCameraSettled(page);
-      // A settled but incorrect camera must still fail the test.
+      await waitForCameraRestored(page, beforeZoom);
+      // Een klik is pas geslaagd als afstand en draaipunt echt hersteld zijn.
 
       const restored=await page.evaluate(() => {
         const {camera,controls}=window.ZAnatomy.viewer;
