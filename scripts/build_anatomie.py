@@ -7,6 +7,7 @@ fetches the pinned upstream source, compiles it and copies every asset locally.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import re
 import shutil
@@ -565,6 +566,30 @@ def build(destination: Path) -> None:
             if not (lab_source / asset).is_file():
                 raise FileNotFoundError(f"Hartslaglab bronbestand ontbreekt: {asset}")
         shutil.copytree(lab_source, destination / "labs" / "hartslag")
+        # Versienummers voorkomen dat Safari de nieuwe HTML met oude 3D-code combineert.
+        lab_output = destination / "labs" / "hartslag"
+        hasher = hashlib.sha256()
+        for asset in ("index.html", "heart.css", "heart.js", "cycle.js", "anatomyGeometry.js"):
+            hasher.update(asset.encode("ascii") + b"\\0")
+            hasher.update((lab_source / asset).read_bytes())
+        release = hasher.hexdigest()[:12]
+        marker = "__EAI_HEART_RELEASE__"
+        for asset in ("index.html", "heart.js"):
+            file = lab_output / asset
+            text = file.read_text(encoding="utf-8")
+            if marker not in text:
+                raise RuntimeError(f"Hartslaglab-versie ontbreekt in {asset}")
+            file.write_text(text.replace(marker, release), encoding="utf-8")
+        # Ook de link vanuit de anatomie-atlas opent een nieuwe documentversie.
+        atlas_index = destination / "index.html"
+        text = atlas_index.read_text(encoding="utf-8")
+        old_link = 'href="/tools/anatomie/labs/hartslag/"'
+        if old_link not in text:
+            raise RuntimeError("Hartslaglab-link ontbreekt in anatomie-atlas")
+        atlas_index.write_text(text.replace(
+            old_link, f'href="/tools/anatomie/labs/hartslag/?v={release}"'
+        ), encoding="utf-8")
+        print(f"Hartslaglab releaseversie: {release}")
         # Gebruik de al geïnstalleerde Draco-decoder van de gepinde atlasbuild.
         # Exporteer afzonderlijke echte hartonderdelen in het bestaande WebGL-formaat.
         export_script = Path(__file__).resolve().parent / "extract_hart_atlas.mjs"
