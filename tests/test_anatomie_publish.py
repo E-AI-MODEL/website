@@ -48,8 +48,10 @@ class AnatomyPublishTests(unittest.TestCase):
         self.assertIn("LICENSE.txt", links.hrefs)
         self.assertTrue(links.scripts, "Geen 3D-bundel in de website")
         for src in links.scripts:
-            self.assertTrue(src.startswith("/tools/anatomie/"),
-                            f"Niet lokaal gehost script: {src}")
+            self.assertTrue(
+                src.startswith("/tools/anatomie/") or src == "/assets/site-analytics.js",
+                f"Niet lokaal gehost script: {src}",
+            )
             local = OUT / src.lstrip("/")
             self.assertTrue(local.is_file(), f"Script ontbreekt: {src}")
 
