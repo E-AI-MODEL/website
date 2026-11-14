@@ -221,7 +221,7 @@ def fetch() -> dict:
         detail = exc.read(2048).decode("utf-8", "replace")
         for private_value in (token, account, site):
             detail = detail.replace(private_value, "[redacted]")
-        detail = re.sub(r"[^\\x20-\\x7e]", " ", detail)
+        detail = "".join(ch if " " <= ch <= "~" else " " for ch in detail)
         raise ValueError(f"Cloudflare API HTTP {exc.code}: {detail[:550]}") from None
     return summarize(raw, start, end)
 
