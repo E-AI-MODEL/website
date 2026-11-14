@@ -28,7 +28,11 @@ test('public page never contains an API secret, account token, or fake count', (
   assert.match(html, /id="bounce"/);
   assert.match(html, /id="clicks"/);
   assert.match(html, /Nog geen bezoekersgegevens beschikbaar/);
-  assert.match(html, /Cloudflare meet geen unieke personen, bouncepercentage of knopklikken/i);
+  assert.match(html, /Cloudflare levert paginaweergaven en bezoeken/);
+  assert.match(html, /statistieken\/collect\.php/);
+  assert.match(html, /site-analytics\.js/);
+  assert.match(html, /id="analytics-optout"/);
+  assert.match(html, /function mergeCollected\(extra\)/);
 });
 
 test('dashboard labels comparison periods and summary periods separately', () => {
@@ -52,8 +56,9 @@ test('demo mode stays isolated and its fictitious values add up', () => {
   assert.equal(demo.click_targets.reduce((n, x) => n + x.clicks, 0), demo.clicks);
   assert.equal(demo.period_metrics["30"].unique_visitors, 143);
   assert.equal(demo.period_metrics["30"].clicks, demo.clicks);
-  assert.match(demo.source, /Fictieve voorbeeldgegevens/);
-  assert.match(html, /Voorbeeldgegevens, geen echte bezoekers/);
+  assert.equal(demo.source, "Voorbeeld");
+  assert.match(html, /<strong>Voorbeeld<\/strong>/);
+  assert.doesNotMatch(html, /fictieve bezoekers|fictieve getallen|gegevens zijn verzonnen/i);
   assert.ok(html.includes('new URLSearchParams(window.location.search).get("demo")==="1"'));
   assert.doesNotMatch(html, /CLOUDFLARE_ANALYTICS_TOKEN|Authorization:\s*Bearer/);
 });
