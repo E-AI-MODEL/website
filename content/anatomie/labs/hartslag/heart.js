@@ -762,14 +762,17 @@ function display(m){
   $('scrub').value=Math.round(state.t*1000);
   $('scrub').style.setProperty('--progress',(state.t*100).toFixed(1)+'%');
   $('timeline').querySelectorAll('[data-phase]').forEach(btn=>{const on=Number(btn.dataset.phase)===m.phase;btn.classList.toggle('active',on);btn.setAttribute('aria-pressed',String(on));});
-  drawChart('pressureChart',pressure,'#ed9a80',130,'mmHg');
-  drawChart('volumeChart',volume,'#7ecdbb',150,'ml');
+  // Verborgen grafieken hoeven op mobiel niet ieder animatieframe te tekenen.
+  if($('moreTools').open&&document.querySelector('.more-tools .measurements')?.open){
+    drawChart('pressureChart',pressure,'#ed9a80',130,'mmHg');
+    drawChart('volumeChart',volume,'#7ecdbb',150,'ml');
+  }
   $('miniPressure').textContent=fmt(m.pressure)+' mmHg';
   $('miniVolume').textContent=fmt(m.volume)+' ml';
   $('miniTraceTime').textContent=fmt(state.t*60/state.rate,2)+' s';
   $('playbackDuration').textContent='Afspelen: '+fmt(60/state.rate/state.speed,1)+
     ' s per hartslag. De hartcyclus zelf duurt '+fmt(60/state.rate,2)+' s.';
-  drawMiniTrace();
+  if($('quickMeasurements').open)drawMiniTrace();
 }
 function render(){const m=mechanics(state.t);drawScene(m);display(m);}
 function focusActivePhase(){
