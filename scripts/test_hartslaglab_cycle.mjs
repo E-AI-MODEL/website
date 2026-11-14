@@ -20,6 +20,14 @@ assert.equal(mechanics(.66).av,false);
 assert.equal(mechanics(.66).sem,false);
 assert.equal(mechanics(.8).sem,true);
 assert.equal(mechanics(.96).sem,false);
+assert(mechanics(.60).avOpening>0&&mechanics(.60).avOpening<1,
+  'Sluitende AV-klep heeft een tussenstand');
+assert.equal(mechanics(.64).avOpening,0,'De AV-klep is dicht bij de kamercontractie');
+assert(mechanics(.73).semOpening>0&&mechanics(.73).semOpening<1,
+  'Openende slagaderklep heeft een tussenstand');
+assert.equal(mechanics(.80).semOpening,1,'De slagaderklep is volledig open bij uitpompen');
+assert(mechanics(.90).semOpening>0&&mechanics(.90).semOpening<1,
+  'Sluitende slagaderklep heeft een tussenstand');
 assert(Math.abs(volume(.6)-volume(.65))<14);
 assert.equal(volume(.65),volume(.69),'Bij gesloten kleppen mag het volume niet veranderen');
 assert.equal(volume(.94),volume(.98),'Tijdens isovolumetrische relaxatie blijft het volume constant');
