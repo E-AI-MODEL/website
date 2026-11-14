@@ -45,7 +45,7 @@ def groups(en: bool):
             ]),
             ('Try it yourself', [
                 ('Explore interactive models', '/tools/science-observatory/'),
-                ('Evaluate AI tools (Dutch)', '/nl/tools/#beoordelen'),
+                ('Review AI products', '/en/llmscan/'),
                 ('Make something', '/en/tools/#maken'),
                 ('All tools', '/en/tools/'),
             ]),
@@ -74,7 +74,7 @@ def groups(en: bool):
         ('Zelf aan de slag', [
             ('Onderzoeken', '/tools/science-observatory/'),
             ('AI beoordelen', '/nl/tools/#beoordelen'),
-            ('Iets maken', '/nl/tools/#maken'),
+            ('Iets maken', '/nl/tools/#ontwerpen'),
             ('Alle hulpmiddelen', '/nl/tools/'),
         ]),
         ('Over EAI', [
@@ -97,7 +97,7 @@ def navigation(soup: BeautifulSoup, path: str, en: bool) -> str:
         language_links.append(f'<a href="{html.escape(target, quote=True)}" lang="{language}" hreflang="{language}"{current} data-preserve-hash>{language.upper()}</a>')
     menu = []
     for title, entries in groups(en):
-        active = (title in ('Zelf aan de slag', 'Try it yourself') and (path_here.startswith('/tools/') or path_here in ('/nl/tools/', '/en/tools/'))) or any((path_here == canonical(target) or path_here.startswith(canonical(target))) and canonical(target) not in ('/nl/', '/en/') for _, target in entries)
+        active = (title in ('Zelf aan de slag', 'Try it yourself') and (path_here.startswith('/tools/') or path_here in ('/nl/tools/', '/en/tools/', '/nl/model-monitor/', '/en/model-monitor/', '/nl/llmscan/', '/en/llmscan/'))) or any((path_here == canonical(target) or path_here.startswith(canonical(target))) and canonical(target) not in ('/nl/', '/en/') for _, target in entries)
         active_cls = ' is-current' if active else ''
         links = ''.join(f'<a href="{html.escape(target, quote=True)}"' + (' aria-current="page"' if path_here == canonical(target) else '') + f'>{html.escape(label)}</a>' for label, target in entries)
         menu.append(f'<details class="eai-site-group{active_cls}" name="eai-navigation-theme"><summary>{html.escape(title)}</summary><div class="eai-site-group-links">{links}</div></details>')
@@ -110,7 +110,7 @@ def navigation(soup: BeautifulSoup, path: str, en: bool) -> str:
         target = entries[0][1]
         if title in ('Zelf aan de slag', 'Try it yourself'):
             target = '/en/tools/' if en else '/nl/tools/'
-        current = ' aria-current="page"' if (title in ('Zelf aan de slag', 'Try it yourself') and (path_here.startswith('/tools/') or path_here in ('/nl/tools/', '/en/tools/'))) or any(path_here == canonical(item[1]) or (canonical(item[1]) not in ('/nl/', '/en/') and path_here.startswith(canonical(item[1]))) for item in entries) else ''
+        current = ' aria-current="page"' if (title in ('Zelf aan de slag', 'Try it yourself') and (path_here.startswith('/tools/') or path_here in ('/nl/tools/', '/en/tools/', '/nl/model-monitor/', '/en/model-monitor/', '/nl/llmscan/', '/en/llmscan/'))) or any(path_here == canonical(item[1]) or (canonical(item[1]) not in ('/nl/', '/en/') and path_here.startswith(canonical(item[1]))) for item in entries) else ''
         primary.append(f'<a href="{html.escape(target, quote=True)}"{current}>{html.escape(title)}</a>')
     nav_label = 'Main navigation' if en else 'Hoofdnavigatie'
     lang_label = 'Choose language' if en else 'Kies taal'
