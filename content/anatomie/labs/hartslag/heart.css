@@ -457,3 +457,6 @@
  .learning-choices{grid-template-columns:1fr}
  .guided-focus{max-width:calc(100% - 105px)}
 }
+
+/* Bronvermelding hoort bij de bronuitleg, niet over het bewegende model. */
+.stage-caption{display:none}
