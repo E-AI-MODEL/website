@@ -6,6 +6,10 @@ on:
       - main
     paths:
       - '.github/workflows/build-site.yml'
+      - '.github/workflows/publish-public-analytics.yml'
+      - 'statistieken/**'
+      - 'scripts/publish_web_analytics.py'
+      - 'tests/test_public_analytics.py'
       - '.github/workflows/deploy-theory7.yml'
       - 'scripts/build_site.py'
       - 'scripts/prepare_ui.py'
@@ -33,6 +37,10 @@ on:
       - main
     paths:
       - '.github/workflows/build-site.yml'
+      - '.github/workflows/publish-public-analytics.yml'
+      - 'statistieken/**'
+      - 'scripts/publish_web_analytics.py'
+      - 'tests/test_public_analytics.py'
       - '.github/workflows/deploy-theory7.yml'
       - 'scripts/build_site.py'
       - 'scripts/prepare_ui.py'
@@ -90,6 +98,9 @@ jobs:
 
       - name: Test LEIF en het toevoegen van testers
         run: node --test tests/test_leif_kei.mjs tests/test_leif_multitenant.mjs tests/test_leif_testers.mjs tests/test_leif_unified_login.mjs tests/test_leif_site_texts.mjs
+
+      - name: Check published analytics totals and privacy
+        run: python -m unittest discover -s tests -p 'test_public_analytics.py' -v
 
       - name: Check website insights and menu
         run: python -m unittest discover -s tests -p 'test_site_insights.py' -v
@@ -285,10 +296,11 @@ jobs:
           cp -R site-build/toepassingen .
           cp -R site-build/onderwijs .
           cp -R site-build/kennis .
+          cp -R site-build/statistieken .
           cp site-build/index.html site-build/404.html site-build/robots.txt site-build/sitemap.xml .
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add index.html 404.html robots.txt sitemap.xml assets publicaties tools model-monitor eai-blog eai-tools-modules eaa-model onderwijsin houseoftalents twee-pijlers workshop-ai werkvormen taalwerkvormen onderbouwing bronnen praktijk over verdieping toepassingen onderwijs kennis
+          git add index.html 404.html robots.txt sitemap.xml assets publicaties tools model-monitor eai-blog eai-tools-modules eaa-model onderwijsin houseoftalents twee-pijlers workshop-ai werkvormen taalwerkvormen onderbouwing bronnen praktijk over verdieping toepassingen onderwijs kennis statistieken
           if ! git diff --cached --quiet; then
             git commit -m "build: refresh EAI site"
             git push origin HEAD:main
