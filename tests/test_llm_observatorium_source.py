@@ -24,7 +24,7 @@ class LlmObservatorySourceTests(unittest.TestCase):
         self.assertIn("requestAnimationFrame(tick)", html)
 
     def test_six_different_research_modes(self):
-        for name in ("Modelstelsel", "Tokenreis", "Experts", "Attention", "Context", "Generatie"):
+        for name in ("Opbouw", "Tekststukjes", "Experts", "Eerdere tekst", "Hoeveel tekst?", "Volgend stukje"):
             self.assertIn("name:'" + name + "'", self.html)
         self.assertIn("function drawAttention()", self.html)
         self.assertIn("function drawGeneration()", self.html)
@@ -83,7 +83,7 @@ class LlmObservatorySourceTests(unittest.TestCase):
         self.assertIn("function highlightExpert()", self.html)
         self.assertIn("SCHEMATISCH BEREIK, GEEN GEMETEN", self.html)
         self.assertNotIn("Elke ring staat voor een laag.", self.html)
-        self.assertIn("Elk vlak is een modellaag.", self.html)
+        self.assertIn("Een laag is een stap in de berekening.", self.html)
 
 
     def test_beginner_guide_keeps_research_features_available(self):
@@ -96,15 +96,29 @@ class LlmObservatorySourceTests(unittest.TestCase):
                        'function guideBarData()', 'function guideDrawBars()',
                        'function guideRender()', 'setupGuide();loadRealTokenizer();'):
             self.assertIn(marker, html)
-        self.assertIn("Deze vier kansen zijn uitsluitend een demonstratie.", html)
-        self.assertIn("De precieze verdeling wordt geladen.", html)
-        self.assertIn("Deze pagina verstuurt je vraag niet naar een AI-model.", html)
+        self.assertIn("Dit zijn voorbeeldkansen. Er is niets berekend voor jouw vraag.", html)
+        self.assertIn("Zonder de echte tokenizer zie je een woordvoorbeeld", html)
+        self.assertIn("zonder iets te versturen.", html)
         self.assertIn("function drawExpertsGrid()", html)
         self.assertIn("function renderInspector()", html)
 
+    def test_explanations_start_with_a_clear_action(self):
+        html = self.html
+        for passage in (
+            "Elke laag verwerkt de tekst verder.",
+            "Een expert is een klein rekennetwerk, geen persoon.",
+            "AI verdeelt tekst in kleine stukjes: tokens.",
+            "De kleuren tonen de volgorde.",
+            "Elke balk is een mogelijk volgend stukje tekst.",
+            "Een taalmodel maakt een antwoord niet in één keer",
+            "Deze route is een voorbeeld, geen live meting.",
+            "Dit zijn verzonnen rekenvoorbeelden.",
+        ):
+            self.assertIn(passage, html)
+
     def test_reasoning_and_token_costs(self):
         html = self.html
-        self.assertIn("name:'Redenering & kosten'", html)
+        self.assertIn("name:'Kosten'", html)
         self.assertIn("function usageBuckets()", html)
         self.assertIn("function drawUsageWorld()", html)
         self.assertIn("function drawUsagePlot()", html)
@@ -119,7 +133,7 @@ class LlmObservatorySourceTests(unittest.TestCase):
     def test_source_and_demo_distinction(self):
         self.assertIn("gpt-oss-120b/blob/main/config.json", self.html)
         self.assertIn("gpt-oss-20b/blob/main/config.json", self.html)
-        self.assertIn("Geen uitgelezen modelactivaties", self.html)
+        self.assertIn("geen metingen uit een draaiend model", self.html)
         self.assertIn("geen echte token-id", self.html.lower())
 
     def test_tokenizer_ui_has_real_data_and_explicit_fallback(self):
