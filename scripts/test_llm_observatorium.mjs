@@ -183,6 +183,22 @@ try{
     await page.screenshot({path:'test-results/llm-guide-'+width+'-stap-'+(step+1)+'.png'});
     if(step<4)await page.locator('#guideNext').click();
    }
+   if(width===320){
+    await page.locator('#guideTechnical').click();
+    await page.locator('#aiGuide').waitFor({state:'hidden'});
+    for(let i=0;i<7;i++){
+     await page.evaluate(index=>setMode(index),i);
+     const view=await page.evaluate(()=>({
+      label:document.querySelector('#modeTitle').textContent,
+      desc:document.querySelector('#modeDesc').textContent,
+      shown:document.querySelector('#modeDesc').clientHeight,
+      full:document.querySelector('#modeDesc').scrollHeight
+     }));
+     assert.ok(view.desc.length>28,'Onderwerp '+i+' moet een zinvolle uitleg hebben');
+     assert.ok(view.full<=view.shown+3,'Mobiele uitleg is afgesneden: '+JSON.stringify(view));
+     if(i===0||i===2||i===5)await page.screenshot({path:'test-results/llm-technical-'+width+'-modus-'+i+'.png'});
+    }
+   }
    assert.deepEqual(errors,[],'Geen JavaScript-fout bij kleine en liggende weergave');
   }finally{await page.close();}
  }
