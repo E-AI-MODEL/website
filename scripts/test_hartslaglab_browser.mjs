@@ -71,6 +71,24 @@ try {
     'Schematische bloedstroom hoort niet over echte anatomie heen');
   const innerAnatomy=await page.locator('#heartCanvas').screenshot();
   assert.notDeepEqual(innerAnatomy,outsideFrame,'Het open anatomische hart moet afwijken van de buitenkant');
+  // Controleer een echte klik in de opengemaakte atlas. Een louter bestaande
+  // mesh of een muisklik op het oude schema is onvoldoende.
+  const hitTargets=await page.evaluate(()=>window.__EAI_HEART_LAB__.hitTargets);
+  assert(hitTargets.some(p=>p.id==='mitral'&&p.type==='valve'),
+    'De mitralisklep moet in het echte binnenaanzicht selecteerbaar zijn');
+  assert(!hitTargets.some(p=>['la','ra','lv','rv'].includes(p.id)),
+    'Onzichtbare bloedruimtes mogen geen klikdoel vormen');
+  const valveTarget=hitTargets.find(p=>p.id==='mitral'&&p.visible)
+    ||hitTargets.find(p=>p.id==='aortic'&&p.visible)
+    ||hitTargets.find(p=>p.type==='valve'&&p.visible);
+  assert(valveTarget,'Geen anatomische klep bereikbaar in de huidige camerastand');
+  const viewRect=await page.locator('#heartCanvas').boundingBox();
+  assert(viewRect,'De hartweergave heeft geen klikvlak');
+  await page.mouse.click(viewRect.x+valveTarget.x,viewRect.y+valveTarget.y);
+  assert.equal(await page.evaluate(()=>window.__EAI_HEART_LAB__.state.selected),valveTarget.id,
+    'Aanklikken van een echte klep mag niet het oude schematische onderdeel kiezen');
+  assert.match(await page.locator('#partInfo').textContent(),/echte anatomische vorm/i,
+    'De uitleg moet duidelijk maken dat de 3D-klep niet mechanisch wordt geopend');
   await page.locator('#mechanicsToggle').click();
   assert.equal(await page.evaluate(()=>window.__EAI_HEART_LAB__.state.anatomyView),false);
   assert(await page.locator('#flowToggle').isVisible(),
