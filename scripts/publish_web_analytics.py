@@ -31,7 +31,7 @@ PUBLIC_PREFIXES = {
     "statistieken", "twee-pijlers", "workshop-ai", "eaa-model",
 }
 QUERY = """
-query PublicAnalytics($account: String!, $site: String!, $start: Time!, $end: Time!) {
+query PublicAnalytics($account: string!, $site: string!, $start: Time!, $end: Time!) {
   viewer {
     accounts(filter: { accountTag: $account }) {
       daily: rumPageloadEventsAdaptiveGroups(
@@ -212,8 +212,17 @@ def fetch() -> dict:
         "Content-Type": "application/json",
         "User-Agent": "EAI-public-analytics/1.0",
     }, method="POST")
-    with urllib.request.urlopen(req, timeout=25) as response:
-        raw = json.loads(response.read(2_000_000).decode("utf-8"))
+    try:
+        with urllib.request.urlopen(req, timeout=25) as response:
+            raw = json.loads(response.read(2_000_000).decode("utf-8"))
+    except urllib.error.HTTPError as exc:
+        # Never emit the request, Authorization header, or the bearer token.
+        # A bounded upstream error message helps distinguish GraphQL syntax from missing data.
+        detail = exc.read(2048).decode("utf-8", "replace")
+        for private_value in (token, account, site):
+            detail = detail.replace(private_value, "[redacted]")
+        detail = "".join(ch if " " <= ch <= "~" else " " for ch in detail)
+        raise ValueError(f"Cloudflare API HTTP {exc.code}: {detail[:550]}") from None
     return summarize(raw, start, end)
 
 
