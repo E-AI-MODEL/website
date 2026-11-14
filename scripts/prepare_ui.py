@@ -45,7 +45,7 @@ def groups(en: bool):
             ]),
             ('Try it yourself', [
                 ('Explore interactive models', '/tools/science-observatory/'),
-                ('Evaluate AI tools', '/en/tools/#beoordelen'),
+                ('Evaluate AI tools (Dutch)', '/nl/tools/#beoordelen'),
                 ('Make something', '/en/tools/#maken'),
                 ('All tools', '/en/tools/'),
             ]),
