@@ -163,20 +163,49 @@ function pathPoint(path,t){
   for(let i=0;i<lengths.length;i++){if(d<=lengths[i]||i===lengths.length-1)return add(path[i],scl(sub(path[i+1],path[i]),d/(lengths[i]||1)));d-=lengths[i];}
   return path[path.length-1];
 }
-// De lijnen volgen middens van de echte bloedruimtes en kleppen.
-// De route toont richting, geen gemeten stroomlijn of snelheid.
+// Gebogen kijkroutes door de brononderdelen. Dit zijn onderwijsroutes,
+// geen gemeten bloedbanen of uitspraken over exacte stroomhoeveelheden.
+function splineAt(points,fraction){
+  const position=clamp(fraction,0,1)*(points.length-1);
+  const i=Math.min(points.length-2,Math.floor(position));
+  const t=position-i,t2=t*t,t3=t2*t;
+  const p0=points[Math.max(i-1,0)],p1=points[i],p2=points[i+1],p3=points[Math.min(i+2,points.length-1)];
+  return p1.map((v,j)=>{
+    const m1=(p2[j]-p0[j])*.38,m2=(p3[j]-p1[j])*.38;
+    return (2*t3-3*t2+1)*v+(t3-2*t2+t)*m1+
+      (-2*t3+3*t2)*p2[j]+(t3-t2)*m2;
+  });
+}
+function sampleFlow(flow,fraction){
+  const positions=flow.curve||flow.path;
+  if(positions.length===1)return positions[0];
+  const i=clamp(fraction,0,.999999)*(positions.length-1);
+  const k=Math.floor(i);
+  return add(positions[k],scl(sub(positions[k+1],positions[k]),i-k));
+}
 function makeAtlasFlowPaths(centers){
   const specs=[
-    ['blue','return',['svc','ra'],11],
-    ['blue','av',['ra','tricuspid','rv'],13],
-    ['blue','sem',['rv','pulmonary','pa','pa_right'],12],
-    ['red','return',['pv_ls','la'],11],
-    ['red','av',['la','mitral','lv'],13],
-    ['red','sem',['lv','aortic','ao','ao_arch'],12]
+    ['blue','return',['svc','ra'],22],
+    ['blue','return',['ivc','ra'],20],
+    ['blue','av',['ra','tricuspid','rv'],28],
+    ['blue','sem',['rv','pulmonary','pa','pa_left'],23],
+    ['blue','sem',['rv','pulmonary','pa','pa_right'],23],
+    ['red','return',['pv_ls','la'],19],
+    ['red','return',['pv_li','la'],19],
+    ['red','return',['pv_rs','la'],19],
+    ['red','return',['pv_ri','la'],19],
+    ['red','av',['la','mitral','lv'],28],
+    ['red','sem',['lv','aortic','ao','ao_arch','ao_desc'],26]
   ];
-  return specs.map(([color,channel,ids,n])=>({
-    color,channel,n,path:ids.map(id=>centers[id]).filter(Boolean)
-  })).filter(route=>route.path.length>=2);
+  return specs.map(([color,channel,ids,n])=>{
+    const path=ids.map(id=>centers[id]).filter(Boolean);
+    return {color,channel,n,path,ids,
+      curve:path.length>=2?Array.from({length:37},(_,i)=>splineAt(path,i/36)):[]};
+  }).filter(route=>route.path.length>=2);
+}
+function flowIsActive(flow,m){
+  return flow.channel==='return'||(flow.channel==='av'&&m.av)||
+    (flow.channel==='sem'&&m.sem);
 }
 function drawParticles(m){
   if(!state.showFlow)return;
@@ -184,16 +213,15 @@ function drawParticles(m){
   const routes=atlasRich&&state.cutaway?atlasFlowPaths:FLOW_PATHS;
   for(const flow of routes){
     if(atlasReady&&state.cutaway&&state.focusSide!=='both'&&flow.color!==(state.focusSide==='left'?'red':'blue'))continue;
-    const open=flow.channel==='return'||(flow.channel==='av'&&m.av)||(flow.channel==='sem'&&m.sem);
-    if(!open)continue;
+    if(!flowIsActive(flow,m))continue;
     for(let i=0;i<flow.n;i++){
-      const progress=(i/flow.n+state.t*(flow.channel==='sem'?2.5:1.25))%1;
-      const point=pathPoint(flow.path,progress);
+      const progress=(i/flow.n+state.t*(flow.channel==='sem'?2.35:1.2))%1;
+      const point=flow.curve?sampleFlow(flow,progress):pathPoint(flow.path,progress);
       batches[flow.color].push(...point);
     }
   }
   gl.disable(gl.DEPTH_TEST);gl.depthMask(false);gl.useProgram(pointProgram);
-  gl.uniformMatrix4fv(ploc.pv,false,pv);gl.uniform1f(ploc.size,(atlasRich?4.4:7.5)*Math.min(devicePixelRatio||1,2));
+  gl.uniformMatrix4fv(ploc.pv,false,pv);gl.uniform1f(ploc.size,(atlasRich?5.0:7.5)*Math.min(devicePixelRatio||1,2));
   for(const name of ['blue','red']){
     const arr=batches[name];if(!arr.length)continue;
     gl.bindBuffer(gl.ARRAY_BUFFER,particleBuffer);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(arr),gl.DYNAMIC_DRAW);
