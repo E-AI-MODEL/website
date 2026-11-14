@@ -32,7 +32,7 @@
         <div>
           <div class="eyebrow">HART EN BLOEDSOMLOOP / ONDERZOEK 01</div>
           <h1>Wat gebeurt er tijdens één hartslag?</h1>
-          <p>Volg hoe het bloed door het hart gaat, wanneer de kleppen openen en hoe de kamers het bloed wegpompen.</p>
+          <p>Bekijk de bloedstroom. Volg daarna in je eigen tempo wat er tijdens een hartslag gebeurt.</p>
         </div>
         <div class="heading-metrics" aria-label="Huidige hartgegevens">
           <div><span>Hartfrequentie</span><strong id="rateMetric">75 <small>/min</small></strong></div>
@@ -45,19 +45,12 @@
         <section class="viewer-panel" aria-label="3D-hartmodel">
           <div class="viewer-top">
             <span class="view-kicker"><span class="status-dot" aria-hidden="true"></span> HART IN BEWEGING</span>
-            <span class="loop-label" id="loopLabel">Eén hartslag, steeds opnieuw</span>
-          </div>
-          <div class="transport">
-            <button class="play" type="button" id="play" aria-label="Start de doorlopende hartslag" disabled>Start hartslag</button>
-            <div class="scrub-group">
-              <label for="scrub" class="visually-hidden">Tijdstip binnen de hartcyclus</label>
-              <input id="scrub" type="range" min="0" max="1000" value="0" step="1" aria-label="Ga naar een moment in de hartslag">
-              <output id="timeOutput" for="scrub">0,00 s</output>
-            </div>
+            <span class="loop-label" id="loopLabel">Het hart klopt steeds opnieuw</span>
           </div>
           <div class="stage" id="stage">
             <canvas id="heartCanvas" aria-label="Bestuurbaar 3D-hartmodel uit BodyParts3D. De hartkleppen bewegen volgens een vereenvoudigd onderwijsmodel. Sleep om te draaien en knijp om te zoomen.">Je browser heeft ondersteuning voor WebGL nodig.</canvas>
             <div class="stage-wash" aria-hidden="true"></div>
+            <p class="guided-focus" id="guidedFocus" hidden></p>
             <details class="layer-menu" id="layerMenu" hidden>
               <summary aria-label="Kies welke onderdelen van het hart zichtbaar zijn">Lagen <span aria-hidden="true">⌄</span></summary>
               <div class="layer-menu-panel" role="group" aria-label="Onderdelen tonen of verbergen">
@@ -85,15 +78,33 @@
             </div>
             <div class="view-legend" id="flowLegend" hidden><span><i class="dot dot-red"></i> Zuurstofrijk</span><span><i class="dot dot-blue"></i> Zuurstofarm</span><span class="flow-qualification">Richting bij benadering</span></div>
           </div>
-          <section class="phase-story" aria-label="Wat gebeurt er nu?">
-            <div class="story-head"><span class="story-number" id="storyNumber">01 / 05</span><strong id="storyTitle">De kamers vullen zich</strong></div>
-            <p id="storyText">Bloed stroomt vanuit de boezems de kamers in. De kleppen ertussen staan open.</p>
-            <div class="story-status">
+          <section class="phase-story" aria-label="Zo werkt het hart">
+            <div class="story-head"><span class="story-number" id="storyNumber" hidden>01 / 05</span><strong id="storyTitle" aria-live="polite">Volg de bloedstroom</strong></div>
+            <p id="storyText">Blauw bloed stroomt vanuit het lichaam naar de longen. Rood bloed stroomt vanuit de longen naar het lichaam. Kijk welke kleppen open- en dichtgaan.</p>
+            <div class="story-status" id="storyStatus" hidden>
               <span id="storyAV" class="story-valve">AV-kleppen open</span>
               <span id="storySL" class="story-valve">Slagaderkleppen dicht</span>
               <span id="storyRoute" class="story-route">Boezems → kamers</span>
             </div>
+            <div class="learning-choices" id="learningChoices">
+              <button type="button" id="guideStart" class="learning-primary">Bekijk stap voor stap</button>
+              <button type="button" id="exploreStart" class="learning-secondary" aria-pressed="false">Zelf onderzoeken</button>
+            </div>
+            <div class="guide-navigation" id="guideNavigation" hidden>
+              <button type="button" id="guidePrevious" class="guide-secondary">Vorige</button>
+              <span id="guideCount" role="status">Stap 1 van 5</span>
+              <button type="button" id="guideNext" class="guide-primary">Volgende stap</button>
+              <button type="button" id="guideExit" class="guide-exit">Terug naar hartslag</button>
+            </div>
           </section>
+          <div class="transport" id="transport">
+            <button class="play" type="button" id="play" aria-label="Start de doorlopende hartslag" disabled>Start hartslag</button>
+            <div class="scrub-group">
+              <label for="scrub" class="visually-hidden">Tijdstip binnen de hartcyclus</label>
+              <input id="scrub" type="range" min="0" max="1000" value="0" step="1" aria-label="Ga naar een moment in de hartslag">
+              <output id="timeOutput" for="scrub">0,00 s</output>
+            </div>
+          </div>
           <div class="stage-side-note" id="partInfo" aria-live="polite" hidden>Raak een onderdeel van het hart aan om er meer over te lezen.</div>
           <details class="quick-measurements" id="quickMeasurements">
             <summary><span>Druk en volume</span><span class="quick-values"><b id="miniPressure">5 mmHg</b><b id="miniVolume">60 ml</b><span id="miniTraceTime">0,00 s</span></span></summary>
