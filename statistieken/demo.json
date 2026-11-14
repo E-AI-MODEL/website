@@ -1,0 +1,312 @@
+{
+  "schema": 1,
+  "demo": true,
+  "source": "Voorbeeld",
+  "updated_at": "2026-11-14T16:00:00Z",
+  "period": {
+    "from": "2026-10-16",
+    "through": "2026-11-14"
+  },
+  "views": 870,
+  "visits": 500,
+  "unique_visitors": 143,
+  "bounce_rate": 42.8,
+  "clicks": 670,
+  "period_metrics": {
+    "7": {
+      "unique_visitors": 52,
+      "bounce_rate": 39.1,
+      "clicks": 240
+    },
+    "30": {
+      "unique_visitors": 143,
+      "bounce_rate": 42.8,
+      "clicks": 670
+    }
+  },
+  "daily": [
+    {
+      "date": "2026-10-16",
+      "visits": 7,
+      "views": 11
+    },
+    {
+      "date": "2026-10-17",
+      "visits": 17,
+      "views": 29
+    },
+    {
+      "date": "2026-10-18",
+      "visits": 12,
+      "views": 21
+    },
+    {
+      "date": "2026-10-19",
+      "visits": 8,
+      "views": 13
+    },
+    {
+      "date": "2026-10-20",
+      "visits": 18,
+      "views": 31
+    },
+    {
+      "date": "2026-10-21",
+      "visits": 13,
+      "views": 23
+    },
+    {
+      "date": "2026-10-22",
+      "visits": 8,
+      "views": 15
+    },
+    {
+      "date": "2026-10-23",
+      "visits": 19,
+      "views": 33
+    },
+    {
+      "date": "2026-10-24",
+      "visits": 14,
+      "views": 25
+    },
+    {
+      "date": "2026-10-25",
+      "visits": 9,
+      "views": 16
+    },
+    {
+      "date": "2026-10-26",
+      "visits": 20,
+      "views": 34
+    },
+    {
+      "date": "2026-10-27",
+      "visits": 15,
+      "views": 26
+    },
+    {
+      "date": "2026-10-28",
+      "visits": 10,
+      "views": 18
+    },
+    {
+      "date": "2026-10-29",
+      "visits": 21,
+      "views": 36
+    },
+    {
+      "date": "2026-10-30",
+      "visits": 16,
+      "views": 28
+    },
+    {
+      "date": "2026-10-31",
+      "visits": 11,
+      "views": 20
+    },
+    {
+      "date": "2026-11-01",
+      "visits": 7,
+      "views": 11
+    },
+    {
+      "date": "2026-11-02",
+      "visits": 17,
+      "views": 29
+    },
+    {
+      "date": "2026-11-03",
+      "visits": 12,
+      "views": 21
+    },
+    {
+      "date": "2026-11-04",
+      "visits": 7,
+      "views": 13
+    },
+    {
+      "date": "2026-11-05",
+      "visits": 18,
+      "views": 31
+    },
+    {
+      "date": "2026-11-06",
+      "visits": 13,
+      "views": 23
+    },
+    {
+      "date": "2026-11-07",
+      "visits": 8,
+      "views": 15
+    },
+    {
+      "date": "2026-11-08",
+      "visits": 32,
+      "views": 56
+    },
+    {
+      "date": "2026-11-09",
+      "visits": 27,
+      "views": 47
+    },
+    {
+      "date": "2026-11-10",
+      "visits": 23,
+      "views": 39
+    },
+    {
+      "date": "2026-11-11",
+      "visits": 33,
+      "views": 57
+    },
+    {
+      "date": "2026-11-12",
+      "visits": 28,
+      "views": 49
+    },
+    {
+      "date": "2026-11-13",
+      "visits": 23,
+      "views": 41
+    },
+    {
+      "date": "2026-11-14",
+      "visits": 34,
+      "views": 59
+    }
+  ],
+  "pages": [
+    {
+      "path": "/nl/",
+      "views": 240,
+      "visits": 147,
+      "clicks": 158,
+      "bounce_rate": 43.5
+    },
+    {
+      "path": "/tools/anatomie/",
+      "views": 180,
+      "visits": 123,
+      "clicks": 190,
+      "bounce_rate": 28.9
+    },
+    {
+      "path": "/tools/llm-observatorium/",
+      "views": 160,
+      "visits": 94,
+      "clicks": 147,
+      "bounce_rate": 34.2
+    },
+    {
+      "path": "/tools/science-observatory/",
+      "views": 120,
+      "visits": 72,
+      "clicks": 93,
+      "bounce_rate": 30.6
+    },
+    {
+      "path": "/model-monitor/",
+      "views": 95,
+      "visits": 43,
+      "clicks": 51,
+      "bounce_rate": 41.8
+    },
+    {
+      "path": "/statistieken/",
+      "views": 75,
+      "visits": 21,
+      "clicks": 31,
+      "bounce_rate": 56
+    }
+  ],
+  "click_targets": [
+    {
+      "page": "/nl/",
+      "label": "Open een proef",
+      "clicks": 103
+    },
+    {
+      "page": "/nl/",
+      "label": "Bekijk hoe AI werkt",
+      "clicks": 55
+    },
+    {
+      "page": "/tools/anatomie/",
+      "label": "Kies lichaamsstelsel",
+      "clicks": 86
+    },
+    {
+      "page": "/tools/anatomie/",
+      "label": "Draai 3D-model",
+      "clicks": 66
+    },
+    {
+      "page": "/tools/anatomie/",
+      "label": "Bekijk onderdelen",
+      "clicks": 38
+    },
+    {
+      "page": "/tools/llm-observatorium/",
+      "label": "Start animatie",
+      "clicks": 81
+    },
+    {
+      "page": "/tools/llm-observatorium/",
+      "label": "Bekijk het 3D-model",
+      "clicks": 66
+    },
+    {
+      "page": "/tools/science-observatory/",
+      "label": "Start een proef",
+      "clicks": 67
+    },
+    {
+      "page": "/tools/science-observatory/",
+      "label": "Pas een instelling aan",
+      "clicks": 26
+    },
+    {
+      "page": "/model-monitor/",
+      "label": "Vergelijk modellen",
+      "clicks": 31
+    },
+    {
+      "page": "/model-monitor/",
+      "label": "Bekijk een model",
+      "clicks": 20
+    },
+    {
+      "page": "/statistieken/",
+      "label": "Bekijk 7 dagen",
+      "clicks": 18
+    },
+    {
+      "page": "/statistieken/",
+      "label": "Bekijk 30 dagen",
+      "clicks": 13
+    }
+  ],
+  "referrers": [
+    {
+      "host": "Zoekmachines",
+      "views": 231
+    },
+    {
+      "host": "Sociale media",
+      "views": 94
+    },
+    {
+      "host": "AI-assistenten",
+      "views": 78
+    },
+    {
+      "host": "Andere websites",
+      "views": 47
+    }
+  ],
+  "notes": [
+    "Voorbeeldweergave, los van de gegevensverzameling.",
+    "Live gegevens staan in de gewone weergave."
+  ]
+}

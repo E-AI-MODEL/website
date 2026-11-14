@@ -4,7 +4,7 @@ import unittest
 from pathlib import Path
 
 from scripts.build_site import (
-    CLOUDFLARE_PUBLIC_BEACON, CLOUDFLARE_ANALYTICS_EXCLUDED,
+    CLOUDFLARE_PUBLIC_BEACON, EAI_FIRST_PARTY_TRACKER, CLOUDFLARE_ANALYTICS_EXCLUDED,
     add_cloudflare_beacon_to_public_routes,
 )
 from tempfile import TemporaryDirectory
@@ -15,6 +15,7 @@ class CloudflareBeaconTest(unittest.TestCase):
         self.assertIn("https://static.cloudflareinsights.com/beacon.min.js", CLOUDFLARE_PUBLIC_BEACON)
         self.assertIn('data-cf-beacon=\'{"token":', CLOUDFLARE_PUBLIC_BEACON)
         self.assertNotIn("CLOUDFLARE_ANALYTICS_TOKEN", CLOUDFLARE_PUBLIC_BEACON)
+        self.assertIn("/assets/site-analytics.js", EAI_FIRST_PARTY_TRACKER)
 
     def test_only_public_routes_and_idempotent_insertion(self):
         with TemporaryDirectory() as root:
@@ -31,6 +32,7 @@ class CloudflareBeaconTest(unittest.TestCase):
                 html = (out / path.lstrip("/") / "index.html").read_text(encoding="utf-8")
                 private = any(seg in CLOUDFLARE_ANALYTICS_EXCLUDED for seg in path.lower().split("/") if seg)
                 self.assertEqual(html.count("static.cloudflareinsights.com/beacon.min.js"), 0 if private else 1, path)
+                self.assertEqual(html.count("/assets/site-analytics.js"), 0 if private else 1, path)
                 self.assertEqual(html.count("</head>"), 1, path)
                 if not private:
                     self.assertRegex(html, r"data-cf-beacon='\{\"token\":\"[a-f0-9]{32}\"\}'")

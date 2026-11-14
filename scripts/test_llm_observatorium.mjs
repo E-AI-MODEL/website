@@ -23,6 +23,10 @@ try{
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.goto(base+'/tools/llm-observatorium/',{waitUntil:'load'});
   await page.locator('#universe').waitFor({state:'visible'});
+  await page.locator('#modelStory').waitFor({state:'visible'});
+  assert.equal(await page.locator('#aiGuide').isVisible(),false,'De animatie opent direct');
+  if(width<800)assert.equal(await page.locator('.mobile-dock').isVisible(),false,'Geen technisch menu boven de animatie');
+  await page.locator('#guideReturn').click();
   await page.locator('#aiGuide').waitFor({state:'visible'});
   assert.match(await page.locator('#aiGuideTitle').innerText(),/Van jouw vraag naar een antwoord/);
   assert.equal(await page.locator('#guideSteps button').count(),5);
@@ -81,17 +85,17 @@ try{
   await page.locator('#storyPause').click();
   assert.equal(await page.evaluate(()=>storyState.playing),false,'Pauze stopt de animatie');
   await page.evaluate(()=>{storySetPhase(1);storyPaint(.8)});
-  assert(await page.locator('.story-token.is-shown').count()>0,'De tekst wordt zichtbaar in stukjes verdeeld');
+  assert(await page.locator('#vTokens .v-token').count()>0,'De tekst wordt zichtbaar in stukjes verdeeld');
   await page.screenshot({path:'test-results/llm-story-'+width+'-stukjes.png'});
   await page.evaluate(()=>{storySetPhase(2);storyPaint(.55)});
-  assert.equal(await page.locator('.story-layer').count(),36,'Het gekozen gpt-oss-120b toont zijn 36 lagen');
-  assert(await page.locator('.story-layer.is-done').count()>0,'Lagen lichten achtereenvolgens op');
+  assert.equal(await page.locator('#vSteps rect').count(),36,'Het gekozen gpt-oss-120b toont zijn 36 lagen');
+  assert(await page.locator('#vSteps rect[fill="#75bba9"]').count()>0,'Lagen lichten achtereenvolgens op');
   await page.screenshot({path:'test-results/llm-story-'+width+'-lagen.png'});
   await page.evaluate(()=>{storySetPhase(3);storyPaint(.8)});
-  assert.equal(await page.locator('.story-prob-row').count(),4,'Het kansvoorbeeld toont vier balken');
+  assert.equal(await page.locator('#vScores .v-score').count(),4,'Het kansvoorbeeld toont vier balken');
   await page.screenshot({path:'test-results/llm-story-'+width+'-kansen.png'});
   await page.evaluate(()=>{storySetPhase(4);storyPaint(.85)});
-  assert.match(await page.locator('#storyAnswer').innerText(),/De lucht lijkt blauw/);
+  assert.match((await page.locator('#vAnswer span').allTextContents()).join(' '),/De lucht lijkt blauw/);
   await page.screenshot({path:'test-results/llm-story-'+width+'-antwoord.png'});
   const sceneGeometry=await page.evaluate(()=>({
     viewportWidth:innerWidth,viewportHeight:innerHeight,
@@ -105,6 +109,13 @@ try{
   assert(sceneGeometry.bottom.bottom<=sceneGeometry.stage.bottom+2,'Bediening blijft binnen de werkruimte: '+JSON.stringify(sceneGeometry));
   assert(sceneGeometry.scrollWidth<=width+2&&sceneGeometry.scrollHeight<=820+2,'Geen paginaschuif: '+JSON.stringify(sceneGeometry));
   await page.locator('#story3d').click();
+  if(width<800){
+   assert.equal(await page.locator('.mobile-dock').isVisible(),true,'De technische bediening keert terug');
+   await page.locator('.mobile-dock [data-panel="graph"]').click();
+   const graph=await page.locator('#graphPanel').boundingBox();
+   assert(graph&&graph.y>=47&&graph.height>=300,'Grafiek opent als eigen scherm');
+   await page.locator('.mobile-dock [data-panel="graph"]').click();
+  }
   assert.equal(await page.locator('#modelStory').isVisible(),false,'Het oude 3D-model kan worden geopend');
   if(width>800){
    assert.equal(await page.locator('#inspectorPanel').isVisible(),true,'De technische regelaars keren terug bij 3D');
@@ -140,6 +151,7 @@ try{
     assert.equal(isPlayerVisible,false,'Geen nutteloze afspeelbalk in modus '+mode);
   }
   await page.evaluate(()=>setMode(0));
+  if(width<800)await page.locator('#story3d').click();
   assert.equal(errors.length,0,'Fouten bij omschakelen tussen zeven visualisaties: '+errors.join(' | '));
 
   if(width<800)await page.locator('.mobile-dock [data-panel="modules"]').click();
@@ -213,6 +225,8 @@ try{
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
   try{
    await page.goto(base+'/tools/llm-observatorium/',{waitUntil:'load'});
+   await page.locator('#modelStory').waitFor({state:'visible'});
+   await page.locator('#guideReturn').click();
    await page.locator('#aiGuide').waitFor({state:'visible'});
    for(let step=0;step<5;step++){
     const geometry=await page.evaluate(()=>({
@@ -284,7 +298,6 @@ try{
   const reduced=await browser.newPage({viewport:{width:390,height:820},reducedMotion:'reduce'});
   try{
    await reduced.goto(base+'/tools/llm-observatorium/',{waitUntil:'load'});
-   await reduced.locator('#guideTechnical').click();
    await reduced.locator('#modelStory').waitFor({state:'visible'});
    assert.equal(await reduced.evaluate(()=>storyState.playing),false);
    assert.equal(await reduced.locator('.story-summary-row').count(),5);

@@ -29,7 +29,14 @@ try {
   page.setDefaultTimeout(65000);
   const errors=[], failed=[];
   page.on('pageerror',e=>errors.push(e.message));
-  page.on('requestfailed',request=>failed.push(request.url()+' '+request.failure()?.errorText));
+  page.on('requestfailed',request=>{
+    const url=request.url();
+    const reason=request.failure()?.errorText||'';
+    // WebKit kan de niet-essentiële analyticsaanvraag afbreken bij
+    // het laden van een zware 3D-scène. Echte netwerkfouten blijven fouten.
+    if(url.endsWith('/assets/site-analytics.js')&&reason==='Load request cancelled')return;
+    failed.push(url+' '+reason);
+  });
   const started=Date.now();
   await page.goto(base+'/tools/anatomie/',{waitUntil:'domcontentloaded'});
   await page.waitForFunction(()=>{

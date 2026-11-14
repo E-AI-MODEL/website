@@ -344,3 +344,126 @@
 @media(prefers-reduced-motion:reduce){
  .story-progress span{transition:none}
 }
+
+
+/* Anatomische lagen horen bij het hart, niet in een rij extra grote knoppen. */
+.layer-menu{position:absolute;right:11px;top:11px;z-index:8;width:max-content;max-width:calc(100% - 22px);color:#e9f0f1}
+.layer-menu summary{display:flex;align-items:center;justify-content:center;gap:9px;list-style:none;cursor:pointer;min-height:36px;min-width:86px;padding:7px 12px;border:1px solid #60818b;border-radius:7px;background:#0b2433e8;backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px);font-size:12px;font-weight:540;line-height:1.2}
+.layer-menu summary::-webkit-details-marker{display:none}
+.layer-menu[open] summary{background:#163845;border-color:#8cbab7}
+.layer-menu summary span{font-size:15px;line-height:1;color:#a7c1c8;transition:transform .2s}
+.layer-menu[open] summary span{transform:rotate(180deg)}
+.layer-menu-panel{position:absolute;top:calc(100% + 5px);right:0;width:min(275px,calc(100vw - 30px));max-height:min(310px,calc(100dvh - 170px));overflow:auto;overscroll-behavior:contain;padding:7px;background:#0d2533f7;border:1px solid #446370;border-radius:8px;box-shadow:0 10px 25px #0006;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.layer-switch{display:flex;justify-content:space-between;align-items:center;width:100%;gap:10px;min-height:35px;padding:7px 9px;border:0;border-radius:4px;text-align:left;background:transparent;color:#d5e6e8;font-size:11px;font-weight:470}
+.layer-switch:hover,.layer-switch:focus-visible{background:#1d3b48}
+.layer-switch[aria-pressed="false"]{color:#92a8b2}
+.layer-state{font-size:10px;font-weight:540;border:1px solid #537872;border-radius:50px;padding:2px 7px;min-width:39px;text-align:center;color:#c6e9de}
+.layer-switch[aria-pressed="false"] .layer-state{border-color:#435663;color:#95a8b3}
+.layers-reset{display:block;width:100%;text-align:left;border:0;border-top:1px solid #36515e;border-radius:0;background:transparent;color:#c7dcda;font-size:11px;min-height:36px;margin-top:4px;padding:8px 9px}
+.layers-reset:hover{color:#fff}
+
+/* Druk en volume staan niet langer standaard als tweede grafiek onder het hart. */
+.quick-measurements{margin:0;background:#0b2030;border-top:1px solid #284654}
+.quick-measurements>summary{display:flex;align-items:center;gap:10px;justify-content:space-between;min-height:41px;padding:8px 15px;cursor:pointer;color:#c3d8dc;font-size:11px;font-weight:540;list-style:none}
+.quick-measurements>summary::-webkit-details-marker{display:none}
+.quick-measurements>summary:before{content:"▸";font-size:10px;color:#a2c1c6}
+.quick-measurements[open]>summary:before{content:"▾"}
+.quick-values{display:flex;gap:13px;align-items:center;justify-content:flex-end;flex:1;font-variant-numeric:tabular-nums}
+.quick-values b{font-size:10px;font-weight:530;color:#d4e6e7}
+.quick-values span{font-size:9px;font-weight:450;color:#aac2cc}
+.quick-measurements .trace-strip{padding:8px 15px;border-bottom:0;border-top:1px solid #284654}
+.quick-measurements .trace-head{color:#b6cbd3}
+.quick-measurements .trace-strip canvas{height:68px}
+
+/* De extra mogelijkheden staan samen in één inklapbaar deel onder de kijker. */
+.more-tools{margin:12px 0 0;border:1px solid #2d4653;background:#0b1d2b;border-radius:9px;overflow:hidden}
+.more-tools>summary{display:flex;align-items:center;gap:12px;min-height:45px;padding:10px 15px;cursor:pointer;list-style:none;font-size:12px;font-weight:550;color:#d6e5e6}
+.more-tools>summary::-webkit-details-marker{display:none}
+.more-tools>summary:before{content:"▸";font-size:11px;color:#adc9ca}
+.more-tools[open]>summary:before{content:"▾"}
+.more-hint{margin-left:auto;color:#93aeba;font-size:10px;font-weight:440}
+.more-tools-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:0 10px 11px;border-top:1px solid #274352}
+.more-tools-grid>.heart-options,.more-tools-grid>.study-details,.more-tools-grid>.info-panel,.more-tools-grid>.measurements{margin:10px 0 0;min-width:0;border:1px solid #2b4651;border-radius:6px;background:#0e2231}
+.more-tools-grid>.info-panel{align-self:start}
+.more-tools-grid>.measurements{margin-top:10px}
+.more-tools-grid .heart-options>summary,.more-tools-grid .study-details>summary,.more-tools-grid .explain-more>summary,.more-tools-grid .measurements>summary{min-height:40px;padding:10px 12px;font-size:11px;font-weight:540}
+.more-tools-grid .explain-more{margin:0;border:0;background:transparent}
+.more-tools-grid .measurements .section-title{align-items:flex-start}
+.more-tools-grid .measurements .plots{grid-template-columns:1fr;gap:9px}
+.more-tools-grid .measurements .plot canvas{height:135px}
+
+/* De focus blijft op het bewegende hart. */
+.story-status{margin-bottom:5px}
+.story-route{color:#a5c4d0}
+.transport{grid-template-columns:auto minmax(140px,1fr)}
+.scrub-group{grid-area:auto}
+@media(max-width:790px){
+ .layer-menu{right:9px;top:9px}
+ .layer-menu summary{min-width:79px;min-height:34px;padding:6px 10px;font-size:11px}
+ .layer-menu-panel{max-height:302px;width:min(258px,calc(100vw - 25px))}
+ #modelCaption{display:none}
+ .more-hint{display:none}
+ .quick-measurements>summary{padding:8px 11px;min-height:40px;gap:8px}
+ .quick-values{gap:9px}
+ .quick-values b{font-size:10px}
+ .quick-values span{font-size:9px}
+ .more-tools>summary{padding:10px 12px;min-height:42px}
+ .more-hint{font-size:9px;line-height:1.3;text-align:right;max-width:52%}
+ .more-tools-grid{grid-template-columns:1fr;gap:2px;padding:0 7px 8px}
+ .more-tools-grid>.heart-options,.more-tools-grid>.study-details,.more-tools-grid>.info-panel,.more-tools-grid>.measurements{margin-top:7px}
+ .transport{grid-template-columns:auto minmax(0,1fr);grid-template-areas:"play play" "scrub scrub";gap:5px 10px}
+ .transport .play{grid-area:play}
+ .transport .scrub-group{grid-area:scrub}
+}
+@media(prefers-reduced-motion:reduce){.layer-menu summary span{transition:none}}
+
+
+/* De eerste handeling is kijken. Lezen en navigeren gaan in het eigen tempo. */
+.guided-focus{position:absolute;top:10px;left:11px;z-index:4;max-width:min(64%,310px);padding:7px 10px;margin:0;background:#09212ee8;border:1px solid #59767a;border-radius:5px;color:#e6f1e4;font-size:11px;line-height:1.4;pointer-events:none}
+.learning-choices{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.learning-choices button,.guide-navigation button{border:1px solid #587b83;border-radius:6px;font-size:12px;font-weight:520;min-height:41px;padding:9px 13px;background:transparent;color:#d1e3e2}
+.learning-choices .learning-primary,.guide-navigation .guide-primary{background:#bbd9d4;border-color:#bbd9d4;color:#112936;font-weight:600}
+.learning-choices .learning-secondary[aria-pressed="true"]{background:#1a4045;border-color:#74aba8;color:#e8f5f3}
+.guide-navigation{display:flex;align-items:center;flex-wrap:wrap;gap:7px;margin-top:12px}
+.guide-navigation button{min-width:83px}
+.guide-navigation .guide-primary{min-width:122px}
+.guide-navigation .guide-exit{margin-left:auto;border:0;background:transparent;color:#a7c3ce;min-width:0;font-size:11px}
+.guide-navigation button:disabled{opacity:.4;cursor:default}
+#guideCount{color:#a7c5cb;font-size:11px;font-variant-numeric:tabular-nums;margin:0 6px}
+.phase-story{padding-bottom:14px}
+.phase-story .story-head strong{font-size:16px}
+.phase-story p{margin-top:7px;line-height:1.6}
+.phase-story .story-status:not([hidden]){margin-top:8px;margin-bottom:8px}
+.phase-story .story-number[hidden],.guided-focus[hidden],.learning-choices[hidden],.guide-navigation[hidden],#transport[hidden]{display:none!important}
+#transport{border-bottom:0}
+@media(max-width:790px){
+ .guided-focus{top:9px;left:9px;max-width:calc(100% - 108px);font-size:10px;padding:6px 8px}
+ .phase-story{padding:13px 12px 12px}
+ .phase-story .story-head strong{font-size:15px}
+ .phase-story p{font-size:12px;line-height:1.5;max-width:38rem}
+ .learning-choices{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.85fr);gap:7px;margin-top:11px}
+ .learning-choices button{min-width:0;padding:9px 7px;font-size:11px;min-height:42px;white-space:normal}
+ .guide-navigation{display:grid;grid-template-columns:auto 1fr auto;gap:6px}
+ .guide-navigation button{min-width:0;min-height:40px;padding:8px 10px;font-size:11px}
+ .guide-navigation #guideCount{text-align:center;margin:0;font-size:10px}
+ .guide-navigation #guidePrevious{grid-column:1}
+ .guide-navigation #guideNext{grid-column:3}
+ .guide-navigation .guide-exit{grid-column:1 / -1;justify-self:center;min-height:32px;padding:5px 8px;margin-top:0}
+ .phase-story .story-status{gap:6px}
+ .phase-story .story-route{width:100%}
+ #transport{padding:9px 12px 10px}
+}
+@media(max-width:355px){
+ .learning-choices{grid-template-columns:1fr}
+ .guided-focus{max-width:calc(100% - 105px)}
+}
+
+/* Bronvermelding hoort bij de bronuitleg, niet over het bewegende model. */
+.stage-caption{display:none}
+
+/* Het iets langere lagenmenu toont ook op een telefoon de herstelknop. */
+@media(max-width:790px){
+ .layer-menu-panel{max-height:min(340px,calc(100dvh - 160px))}
+ .layer-menu .layer-switch{min-height:32px;padding:6px 9px}
+ .layer-menu .layers-reset{min-height:34px;padding:7px 9px}
+}

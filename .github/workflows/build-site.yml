@@ -12,6 +12,7 @@ on:
       - 'tests/test_public_analytics.py'
       - 'tests/test_public_analytics_ui.mjs'
       - 'tests/test_cloudflare_beacon.py'
+      - 'tests/test_first_party_analytics.py'
       - '.github/workflows/deploy-theory7.yml'
       - 'scripts/build_site.py'
       - 'scripts/prepare_ui.py'
@@ -47,6 +48,7 @@ on:
       - 'tests/test_public_analytics.py'
       - 'tests/test_public_analytics_ui.mjs'
       - 'tests/test_cloudflare_beacon.py'
+      - 'tests/test_first_party_analytics.py'
       - '.github/workflows/deploy-theory7.yml'
       - 'scripts/build_site.py'
       - 'scripts/prepare_ui.py'
@@ -110,6 +112,12 @@ jobs:
       - name: Verify Cloudflare beacon on public sitemap pages
         run: python -m unittest discover -s tests -p 'test_cloudflare_beacon.py' -v
 
+      - name: Check first-party clicks and session privacy
+        run: |
+          php -l statistieken/collect.php
+          node --check assets/site-analytics.js
+          python -m unittest discover -s tests -p 'test_first_party_analytics.py' -v
+
       - name: Check published analytics totals and privacy
         run: python -m unittest discover -s tests -p 'test_public_analytics.py' -v
 
@@ -127,6 +135,10 @@ jobs:
       - name: Build site
         run: |
           python scripts/build_site.py --sources content/legacy --out site-build
+          test -s site-build/statistieken/demo.json
+          test -s site-build/statistieken/collect.php
+          test -s site-build/assets/site-analytics.js
+          test ! -e site-build/statistieken/data.json
 
       - name: Build local anatomical 3D models and viewer
         run: python scripts/build_anatomie.py --out site-build/tools/anatomie

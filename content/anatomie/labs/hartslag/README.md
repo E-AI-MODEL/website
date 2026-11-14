@@ -25,7 +25,17 @@ De leerling kan drie samenhangende weergaven gebruiken:
 
 De bestaande buitenkant van Z-Anatomy/BodyParts3D blijft als terugvalbestand aanwezig. De oorspronkelijke schematische klepanimatie wordt alleen getoond als het uitgebreide anatomische model niet beschikbaar is. De terugvalbron wordt niet hergebruikt onder de CC BY 4.0-voorwaarden van het nieuwe model; de eigen upstreamlicentie en bronvermelding blijven gelden.
 
-Op mobiel staat de weergave van namen standaard uit. De weergave van de stroomrichting is optioneel en ligt als indicator over de anatomie. Met 'Namen tonen' verschijnen aanwijslijnen. De anatomische onderdelen zijn aanwijsbaar en selecteerbaar. Alle drie de weergaven delen de tijdlijn, hartfrequentie en grafieken. De beperkte uitzetting van de bronmesh is een onderwijseffect en **geen anatomisch gevalideerde hartcontractie**.
+Het 3D-hart heeft een compacte knop **Lagen**. De **Buitenlaag** toont de volledige orgaanvorm met dezelfde drie BodyParts3D-wandmeshes. In het binnenaanzicht is die laag halfdoorzichtig, zodat de kleppen, hartkamers en bloedstroom zichtbaar blijven. Via **Bekijk buitenkant** zie je dezelfde wand ondoorzichtig. De aparte optie **Hartwand in doorsnede** blijft de opengewerkte hartwand aan- en uitzetten. Zo kan een leerling de buitenkant vergelijken met de binnenkant zonder van 3D-model te wisselen. Hartkleppen, grote bloedvaten, kransvaten en papillairspieren zijn eveneens afzonderlijk te tonen of te verbergen. De getoonde onderdelen blijven de oorspronkelijke BodyParts3D-meshes; verbergen maakt een onderdeel ook niet-selecteerbaar. Stroomrichting en namen staan in hetzelfde menu, met een knop om de standaardweergave te herstellen. De hartslag loopt gewoon door tijdens het wisselen van lagen.
+
+Op mobiel staan namen standaard uit. De stroomrichting is een optionele indicator over de anatomie; aangezette namen krijgen dunne aanwijslijnen. **Druk en volume** staat als compacte meetregel onder de animatie, met een uitklapbare grafiek. Instellingen, opdrachten, uitleg, bronnen en grotere grafieken zitten samen onder **Onderzoek en instellingen**. Daardoor blijft het eerste scherm gericht op het bewegende hart en de actuele fase. De anatomische onderdelen zijn aanwijsbaar en selecteerbaar. Alle drie de weergaven delen de tijdlijn, hartfrequentie en grafieken. De beperkte uitzetting van de bronmesh is een onderwijseffect en **geen anatomisch gevalideerde hartcontractie**.
+
+## Leren met de animatie
+
+De eerste weergave laat het anatomische hart doorlopend kloppen, met een vaste uitleg die niet elke fractie van een seconde verspringt. De leerling kan de bloedstroom volgen zonder voortdurend nieuwe tekst te hoeven lezen. De start-/pauzeknop en de tijdschuif staan onder de uitleg.
+
+Met **Bekijk stap voor stap** bekijkt de leerling de vijf hartfasen in eigen tempo. De simulatie stopt op een passend tijdstip per fase; de betrokken structuren worden uitgelicht en één korte uitleg verschijnt onder het model. Met **Vorige** en **Volgende stap** bepaalt de leerling wanneer het beeld verandert. De hartkleppen en meetwaarden gebruiken nog steeds dezelfde vereenvoudigde faseberekening. **Terug naar hartslag** hervat de doorlopende weergave.
+
+**Zelf onderzoeken** zet de beweging stil zodat leerlingen het model kunnen draaien, onderdelen aanraken en de knop **Lagen** gebruiken. Onder **Onderzoek en instellingen** blijven de onderzoeksvraag, bronnen, uitgebreide grafieken en de overige bediening beschikbaar. Dit is een interfacekeuze voor begrijpelijkheid, geen claim dat leerwinst met leerlingen is aangetoond.
 
 ## Fysiologie
 

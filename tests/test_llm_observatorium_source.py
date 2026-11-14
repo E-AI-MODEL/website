@@ -116,6 +116,17 @@ class LlmObservatorySourceTests(unittest.TestCase):
         ):
             self.assertIn(passage, html)
 
+    def test_visual_first_story_and_mobile_panels(self):
+        html = self.html
+        self.assertIn('id="aiGuide" class="ai-guide" hidden', html)
+        self.assertIn("guideNode('button','Zelf proberen'", html)
+        self.assertIn("function visualSetScene(id)", html)
+        self.assertIn("v-flow-svg", html)
+        self.assertIn("v-score-list", html)
+        self.assertIn("v-answer", html)
+        self.assertIn("function storyOpen(){", html)
+        self.assertIn('#app[data-panel]:not([data-panel=""])', html)
+
     def test_reasoning_and_token_costs(self):
         html = self.html
         self.assertIn("name:'Kosten'", html)
