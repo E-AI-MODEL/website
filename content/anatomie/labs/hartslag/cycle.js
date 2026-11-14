@@ -47,8 +47,10 @@ export function mechanics(t){
   const av=t<.64,sem=t>=.70&&t<.93;
   // Continuous leaflet motion prevents the valve geometry from teleporting
   // between open and closed poses. Logical valve status stays phase-bound.
-  const avOpening=t<.025?span(t,0,.025):t<.628?1:t<.64?1-span(t,.628,.64):0;
-  const semOpening=t<.70?0:t<.716?span(t,.70,.716):t<.918?1:t<.93?1-span(t,.918,.93):0;
+  // De opening en sluiting krijgen in dit onderwijsmodel meerdere zichtbare
+  // tussenstanden. Dit is geen meting van de klepbeweging in milliseconden.
+  const avOpening=t<.06?span(t,0,.06):t<.56?1:t<.64?1-span(t,.56,.64):0;
+  const semOpening=t<.70?0:t<.77?span(t,.70,.77):t<.86?1:t<.93?1-span(t,.86,.93):0;
   return {av,sem,avOpening,semOpening,ventScale:.79+.21*volumeFrac,
     atriumScale:atriumShrink,pressure:pressure(t),volume:volume(t),phase:phaseFor(t)};
 }
