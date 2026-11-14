@@ -2827,6 +2827,19 @@ CLOUDFLARE_PUBLIC_BEACON = (
     '<script defer src="https://static.cloudflareinsights.com/beacon.min.js" '
     'data-cf-beacon=\'{"token":"1aa5d5810d5a48e7bb8e5b2bac573e74"}\'></script>'
 )
+# These are reviewed standalone HTML files whose publication tests require exact bytes.
+# They may get RUM later through an explicit, separately tested source change.
+CLOUDFLARE_EXACT_SOURCE_ROUTES = {
+    "/tools/wihtml/studio/",
+    "/tools/wihtml/voorbeeld/",
+    "/tools/abyss/",
+    "/tools/melkweg-lab/",
+    "/tools/llm-observatorium/",
+    "/tools/eaimesh/start/",
+    "/tools/eaistudio/studio/",
+}
+
+
 CLOUDFLARE_ANALYTICS_EXCLUDED = {
     "leif", "houseoftalents", "admin", "beheer", "login", "logout",
     "auth", "private", "backoffice", "account", "accounts", "profile",
@@ -2842,6 +2855,8 @@ def add_cloudflare_beacon_to_public_routes(out: Path, public_urls: list[str]) ->
     """
     for route in set(public_urls):
         if not route.startswith("/") or not route.endswith("/") or ".." in route:
+            continue
+        if route in CLOUDFLARE_EXACT_SOURCE_ROUTES or route.startswith("/tools/science-observatory/labs/"):
             continue
         segments = [part for part in route.split("/") if part]
         if any(part.casefold() in CLOUDFLARE_ANALYTICS_EXCLUDED for part in segments):
