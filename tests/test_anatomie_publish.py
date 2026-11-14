@@ -63,7 +63,7 @@ class AnatomyPublishTests(unittest.TestCase):
         self.assertIn('href="/tools/anatomie/"', source)
         self.assertIn('id="heartCanvas"', source)
         self.assertIn('id="flowOverlay"', source)
-        self.assertIn('Twee vingers', source)
+        self.assertIn('Gebruik twee vingers', source)
         import re
         revision = re.search(r'src="./heart[.]js[?]v=([0-9a-f]{12})"', source)
         self.assertIsNotNone(revision, "Heart JavaScript moet een echte versie hebben")
