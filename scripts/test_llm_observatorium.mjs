@@ -88,8 +88,8 @@ try{
   assert(await page.locator('#vTokens .v-token').count()>0,'De tekst wordt zichtbaar in stukjes verdeeld');
   await page.screenshot({path:'test-results/llm-story-'+width+'-stukjes.png'});
   await page.evaluate(()=>{storySetPhase(2);storyPaint(.55)});
-  assert.equal(await page.locator('#vSteps i').count(),36,'Het gekozen gpt-oss-120b toont zijn 36 lagen');
-  assert(await page.locator('#vSteps i.done').count()>0,'Lagen lichten achtereenvolgens op');
+  assert.equal(await page.locator('#vSteps rect').count(),36,'Het gekozen gpt-oss-120b toont zijn 36 lagen');
+  assert(await page.locator('#vSteps rect[fill="#75bba9"]').count()>0,'Lagen lichten achtereenvolgens op');
   await page.screenshot({path:'test-results/llm-story-'+width+'-lagen.png'});
   await page.evaluate(()=>{storySetPhase(3);storyPaint(.8)});
   assert.equal(await page.locator('#vScores .v-score').count(),4,'Het kansvoorbeeld toont vier balken');

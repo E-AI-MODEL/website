@@ -517,6 +517,12 @@
 .story-timeline .story-time-item:focus-visible{outline:2px solid #91e7c7;outline-offset:3px}
 .story-timeline .story-time-item:disabled{cursor:default}
 
+.v-flow-svg{display:block;width:100%;height:100%;max-width:630px;max-height:100%;overflow:visible;flex:1 1 auto;min-height:0;filter:drop-shadow(0 7px 15px #06132199)}
+.v-flow-svg .v-plane{transition:opacity .18s}
+.v-flow-svg #vGoldExperts{pointer-events:none}
+.v-flow-svg #vFlowMarker{transition:cy .08s linear}
+@media(max-height:650px){.v-flow-svg{max-height:100%}}
+
 </style>
 </head>
 <body>
@@ -1212,6 +1218,34 @@ function visualCodeBars(values){return '<div class="v-numerics">'+values.map(n=>
 function visualArrow(){return '<div class="v-arrow"><i class="v-signal"></i></div>';}
 function visualMachine(){return '<div class="v-machine"><span class="v-label">TAALMODEL</span><div class="v-layers-sketch">'+Array.from({length:10},(_,i)=>'<i'+(i===3?' class="is-hot"':'')+'></i>').join('')+'</div></div>';}
 function visualSetScene(id){const board=$('storyBoard');board.innerHTML='';const scene=storyEl('div',null,'v-scene');scene.dataset.scene=String(id);board.append(scene);return scene;}
+function visualLayerMachine(){
+ const planes=Array.from({length:6},(_,i)=>{
+  const y=145+i*39;
+  const dots=Array.from({length:24},(_,k)=>{const x=78+(k%12)*18.5,dy=Math.floor(k/12)*8;return `<circle cx="${x}" cy="${y+13+dy}" r="1.8" fill="#67a6af" opacity=".62"/>`}).join('');
+  return `<g class="v-plane" data-plane="${i}"><path class="v-plane-face" d="M70 ${y} L275 ${y} L301 ${y+33} L44 ${y+33} Z" fill="#153747" fill-opacity=".48" stroke="#588998" stroke-width="1"/>${dots}</g>`;
+ }).join('');
+ const chips=Array.from({length:4},(_,i)=>`<g><rect x="${24+i*80}" y="18" width="73" height="30" rx="6" fill="${i===3?'#433b2d':'#193c49'}" stroke="${i===3?'#dfba79':'#618991'}"/><text id="vSvgWord${i}" x="${60+i*80}" y="37" text-anchor="middle" font-size="11" font-family="system-ui" fill="${i===3?'#ffe5b5':'#ddf3f2'}"></text></g>`).join('');
+ const arcs=Array.from({length:4},(_,i)=>`<path d="M${60+i*80} 49 Q${80+i*36} 79 180 111" fill="none" stroke="${i===3?'#e8c18a':'#6dbbad'}" stroke-opacity="${i===3?'.94':'.52'}" stroke-width="${i===3?'2':'1.15'}"/>`).join('');
+ const bars=Array.from({length:11},(_,i)=>`<rect data-bar="${i}" x="${97+i*16}" y="399" width="9" height="12" rx="2" fill="#66bdb6"/>`).join('');
+ return `<svg class="v-flow-svg" viewBox="0 0 360 450" role="img" aria-label="Een tekststukje gebruikt eerdere tekst, gaat door modellagen, activeert vier kleine rekennetwerken en verandert steeds in nieuwe getallen" xmlns="http://www.w3.org/2000/svg">
+ <defs><linearGradient id="vPulse" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a3ffe0"/><stop offset="1" stop-color="#6bd1cb"/></linearGradient><filter id="vGlow" x="-150%" y="-150%" width="400%" height="400%"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+ ${chips}
+ ${arcs}
+ <circle cx="180" cy="111" r="7" fill="#e9c38b" filter="url(#vGlow)"/>
+ <text x="180" y="82" text-anchor="middle" font-family="system-ui" font-size="10" fill="#a6c9c9">EERDERE TEKST</text>
+ <path d="M180 117 L180 373" stroke="#66adad" stroke-width="1.5" stroke-dasharray="3 7" opacity=".75"/>
+ ${planes}
+ <g id="vBranches" fill="none" stroke="#eac18a" stroke-width="1.7" stroke-linecap="round"/>
+ <g id="vGoldExperts" fill="#f4c789" filter="url(#vGlow)">${Array.from({length:4},(_,i)=>`<circle cx="${[104,144,211,252][i]}" cy="145" r="4"/>`).join('')}</g>
+ <circle id="vFlowMarker" cx="180" cy="117" r="5" fill="url(#vPulse)" stroke="#d2f8dc" stroke-width="1.2" filter="url(#vGlow)"/>
+ <text x="16" y="366" font-size="10" font-family="system-ui" fill="#aed8d6">4 VAN ${cfg.experts} REKENNETWERKEN</text>
+ <text x="19" y="400" font-size="10" font-family="system-ui" fill="#94b7bf">NIEUWE</text>
+ <text x="19" y="413" font-size="10" font-family="system-ui" fill="#94b7bf">GETALLEN</text>
+ ${bars}
+ <g id="vSteps">${Array.from({length:cfg.layers},(_,i)=>`<rect x="${22+i*(316/cfg.layers)}" y="433" width="${Math.max(3,316/cfg.layers-3)}" height="7" rx="1" fill="#234a56"/>`).join('')}</g>
+ <text id="vCurrentLayer" x="340" y="423" text-anchor="end" fill="#eac18a" font-family="monospace" font-size="11">1 / ${cfg.layers}</text>
+ </svg>`;
+}
 function storySetPhase(index){
  storyState.phase=index;storyState.elapsed=0;storyState.lastPaint=-1;
  const data=STORY_PHASES[index];$('storyKicker').textContent='ZO WERKT EEN TAALMODEL  ·  '+(index+1)+' / 5';$('storyHeading').textContent=data.title;$('storyDescription').textContent=data.text;
@@ -1226,9 +1260,11 @@ function storySetPhase(index){
   const items=state.promptWords.slice(0,10);for(const p of items)$('vTokens').append(storyEl('span',readableToken(p.text).slice(0,18),'v-token'));
  }
  if(index===2){
-  scene.innerHTML='<div class="v-wordline" id="vInputTokens"></div>'+visualArrow()+'<div class="v-process"><div class="v-process-col"><div class="v-label">EERDERE TEKST</div><div class="v-attention"><i>1</i><i>2</i><i>3</i><i>4</i></div></div><div class="v-process-col"><div class="v-label">4 VAN '+cfg.experts+' REKENNETWERKEN</div><div class="v-expert-grid" id="vExperts"></div></div></div><div class="v-transform"><div>'+visualCodeBars([28,45,81,34,62,24,42,71])+'</div><span class="v-swap">→</span><div>'+visualCodeBars([75,21,51,84,33,69,40,57])+'</div></div><div class="v-stepcount" id="vSteps"></div><div class="v-countline"><span>LAAG 1</span><strong id="vCurrentLayer">LAAG 1 / '+cfg.layers+'</strong><span>LAAG '+cfg.layers+'</span></div>';
-  const ts=state.promptWords.slice(0,4);for(const p of ts)$('vInputTokens').append(storyEl('span',readableToken(p.text).slice(0,12),'v-token'));
-  for(let i=0;i<cfg.experts;i++)$('vExperts').append(storyEl('i',null,''));for(let i=0;i<cfg.layers;i++)$('vSteps').append(storyEl('i',null,''));$('vSteps').style.gridTemplateColumns='repeat('+cfg.layers+',minmax(0,1fr))';
+  scene.innerHTML=visualLayerMachine();
+  for(let i=0;i<4;i++){
+   const piece=state.promptWords[i];
+   const el=$('vSvgWord'+i);if(el)el.textContent=piece?readableToken(piece.text).slice(0,10):'·';
+  }
  }
  if(index===3){
   scene.innerHTML='<span class="v-label">MOGELIJKE VOLGENDE STUKJES  ·  VOORBEELD</span><div class="v-score-list" id="vScores"></div>'+visualArrow()+'<div class="v-picked" id="vChoice">De</div>';
@@ -1244,7 +1280,17 @@ function storyPaint(progress){
  const t=Math.max(0,Math.min(1,progress)),phase=storyState.phase,scene=$('storyBoard');
  if(phase===0){const question=$('vQuestion');question.style.opacity=String(Math.max(.08,Math.min(1,t*3)));question.style.transform='translateY('+((1-t)*13).toFixed(0)+'px)';const signal=scene.querySelector('.v-signal');signal.style.opacity=String(t>.2&&t<.9?1:0);signal.style.transform='translateY('+Math.min(25,Math.max(0,(t-.2)/.7*35)).toFixed(1)+'px)';scene.querySelectorAll('.v-layers-sketch i').forEach((el,i)=>el.classList.toggle('is-hot',i===Math.min(9,Math.floor(t*10))));}
  if(phase===1){scene.querySelectorAll('.v-token').forEach((el,i,a)=>{const show=t*1.35>(i+.6)/a.length;el.style.opacity=show?'1':'.08';el.style.transform=show?'translateY(0)':'translateY(-14px)';});scene.querySelectorAll('.v-numerics span').forEach((el,i)=>el.style.opacity=t>.65?'1':'.12');}
- if(phase===2){const layer=Math.min(cfg.layers-1,Math.floor(t*cfg.layers));$('vCurrentLayer').textContent='LAAG '+(layer+1)+' / '+cfg.layers;scene.querySelectorAll('#vSteps i').forEach((el,i)=>{el.classList.toggle('done',i<layer);el.classList.toggle('active',i===layer)});const grid=scene.querySelectorAll('#vExperts i');const picked=[(layer*13+5)%cfg.experts,(layer*13+26)%cfg.experts,(layer*13+54)%cfg.experts,(layer*13+89)%cfg.experts];grid.forEach((el,i)=>el.classList.toggle('active',picked.includes(i)));const bars=scene.querySelectorAll('.v-transform > div:last-child .v-numerics span');bars.forEach((el,i)=>el.style.height=(23+((i*19+layer*11)%67))+'%');}
+ if(phase===2){
+  const current=Math.min(cfg.layers-1,Math.floor(t*cfg.layers)),plane=Math.min(5,Math.floor(t*6)),y=145+plane*39;
+  $('vCurrentLayer').textContent=(current+1)+' / '+cfg.layers;
+  scene.querySelectorAll('#vSteps rect').forEach((e,i)=>e.setAttribute('fill',i===current?'#f3cb8e':i<current?'#75bba9':'#234a56'));
+  scene.querySelectorAll('.v-plane').forEach((e,i)=>{const hot=i===plane; e.querySelector('.v-plane-face').setAttribute('stroke',hot?'#f1c18a':'#588998');e.querySelector('.v-plane-face').setAttribute('fill-opacity',hot?'.85':'.48');});
+  const signal=$('vFlowMarker');signal.setAttribute('cy',String(117+t*256));
+  const xcoords=[104,144,211,252];scene.querySelectorAll('#vGoldExperts circle').forEach((el,i)=>{el.setAttribute('cx',String(xcoords[i]));el.setAttribute('cy',String(y+16));});
+  const branches=$('vBranches');branches.replaceChildren();
+  for(let i=0;i<4;i++){const p=document.createElementNS('http://www.w3.org/2000/svg','path');p.setAttribute('d',`M180 ${y+14} Q${(180+xcoords[i])/2} ${y-1} ${xcoords[i]} ${y+16}`);branches.append(p);}
+  scene.querySelectorAll('[data-bar]').forEach((el,i)=>{const height=8+((i*17+current*13)%37);el.setAttribute('y',String(417-height));el.setAttribute('height',String(height));el.setAttribute('fill',i===current%11?'#f2c48b':'#70bbb6');});
+ }
  if(phase===3){scene.querySelectorAll('.v-score .fill').forEach(el=>el.style.width=(Number(el.dataset.percent)*Math.min(1,t*1.4))+'%');const choose=$('vChoice');choose.style.opacity=String(Math.max(0,Math.min(1,(t-.65)*5)));choose.style.transform=t>.65?'scale(1)':'scale(.93)';}
  if(phase===4){const words=scene.querySelectorAll('#vAnswer span');words.forEach((el,i)=>{const shown=t*words.length>=i+.45;el.style.opacity=shown?'1':'0';el.style.transform=shown?'translateY(0)':'translateY(7px)'});scene.querySelectorAll('.v-layers-sketch i').forEach((el,i)=>el.classList.toggle('is-hot',i===Math.floor(t*words.length*2)%10));}
  document.querySelectorAll('#storyTimeline .story-time-item').forEach((el,i)=>{el.classList.toggle('is-current',i===phase);el.querySelector('.bar>span').style.width=(i<phase?100:i===phase?t*100:0)+'%'});

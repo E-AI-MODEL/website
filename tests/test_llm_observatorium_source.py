@@ -121,7 +121,7 @@ class LlmObservatorySourceTests(unittest.TestCase):
         self.assertIn('id="aiGuide" class="ai-guide" hidden', html)
         self.assertIn("guideNode('button','Zelf proberen'", html)
         self.assertIn("function visualSetScene(id)", html)
-        self.assertIn("v-expert-grid", html)
+        self.assertIn("v-flow-svg", html)
         self.assertIn("v-score-list", html)
         self.assertIn("v-answer", html)
         self.assertIn("function storyOpen(){", html)
