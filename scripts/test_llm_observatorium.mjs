@@ -188,14 +188,19 @@ try{
     await page.locator('#aiGuide').waitFor({state:'hidden'});
     for(let i=0;i<7;i++){
      await page.evaluate(index=>setMode(index),i);
+     await page.waitForTimeout(90);
      const view=await page.evaluate(()=>({
       label:document.querySelector('#modeTitle').textContent,
       desc:document.querySelector('#modeDesc').textContent,
       shown:document.querySelector('#modeDesc').clientHeight,
-      full:document.querySelector('#modeDesc').scrollHeight
+      full:document.querySelector('#modeDesc').scrollHeight,
+      titleBottom:document.querySelector('.stage-title').getBoundingClientRect().bottom,
+      hintTop:document.querySelector('#statusHint').getBoundingClientRect().top,
+      caption:document.querySelector('.scene-caption').getBoundingClientRect().toJSON()
      }));
      assert.ok(view.desc.length>28,'Onderwerp '+i+' moet een zinvolle uitleg hebben');
      assert.ok(view.full<=view.shown+3,'Mobiele uitleg is afgesneden: '+JSON.stringify(view));
+     assert.ok(view.titleBottom<=view.hintTop+3,'Titel en uitleg mogen niet over elkaar vallen: '+JSON.stringify(view));
      if(i===0||i===2||i===5)await page.screenshot({path:'test-results/llm-technical-'+width+'-modus-'+i+'.png'});
     }
    }
