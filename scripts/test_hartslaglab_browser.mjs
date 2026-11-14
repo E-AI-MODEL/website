@@ -39,6 +39,12 @@ try {
   assert(await page.locator('#flowToggle').isHidden(),
     'De bloedstroomknop heeft op de anatomische buitenkant geen functie');
   assert.equal(await page.locator('#play').textContent(),'Start','De leerling voorspelt voordat het hart gaat bewegen');
+  const initialMotion=await page.evaluate(()=>window.__EAI_HEART_LAB__.motion);
+  assert(Math.abs(initialMotion.playbackSeconds-3.2)<.01,
+    'Een volledige hartslag hoort bij 0,25x snelheid 3,2 seconden te duren');
+  assert.equal(await page.locator('#speed').inputValue(),'.25',
+    'De getoonde snelheid moet overeenkomen met de echte afspeelsnelheid');
+  assert.match(await page.locator('#playbackDuration').textContent(),/3,2 s per hartslag/);
   const compact=page.locator('#miniTrace');
   assert(await compact.isVisible(),'De grafiek moet direct bij het hart staan');
   assert((await compact.boundingBox()).width>400,'De compacte grafiek moet leesbaar zijn op desktop');
@@ -67,8 +73,8 @@ try {
   assert.equal(await page.evaluate(()=>window.__EAI_HEART_LAB__.state.cutaway),true);
   assert(await page.evaluate(()=>window.__EAI_HEART_LAB__.state.anatomyView),
     'Het opengemaakte hart moet echte anatomische structuren tonen');
-  assert(await page.locator('#flowToggle').isHidden(),
-    'Schematische bloedstroom hoort niet over echte anatomie heen');
+  assert(await page.locator('#flowToggle').isVisible(),
+    'Ook bij echte anatomie moet de benaderde stroomrichting aan en uit kunnen');
   const innerAnatomy=await page.locator('#heartCanvas').screenshot();
   assert.notDeepEqual(innerAnatomy,outsideFrame,'Het open anatomische hart moet afwijken van de buitenkant');
   await page.screenshot({path:'test-results/hartslaglab-'+engine+'-desktop-vanbinnen.png',fullPage:true});
@@ -88,10 +94,11 @@ try {
   await page.mouse.click(viewRect.x+valveTarget.x,viewRect.y+valveTarget.y);
   assert.equal(await page.evaluate(()=>window.__EAI_HEART_LAB__.state.selected),valveTarget.id,
     'Aanklikken van een echte klep mag niet het oude schematische onderdeel kiezen');
-  assert.match(await page.locator('#partInfo').textContent(),/echte anatomische vorm/i,
-    'De uitleg moet duidelijk maken dat de 3D-klep niet mechanisch wordt geopend');
-  await page.locator('#mechanicsToggle').click();
-  assert.equal(await page.evaluate(()=>window.__EAI_HEART_LAB__.state.anatomyView),false);
+  assert.match(await page.locator('#partInfo').textContent(),/beweging is vereenvoudigd/i,
+    'De uitleg moet de anatomische herkomst en beperking van de klepbeweging benoemen');
+  assert.equal(await page.locator('#mechanicsToggle').count(),0,
+    'De leerling mag niet terugvallen naar het oude grove model');
+  assert.equal(await page.evaluate(()=>window.__EAI_HEART_LAB__.state.anatomyView),true);
   assert(await page.locator('#flowToggle').isVisible(),
     'Bij de klepbeweging moet je de schematische stroomrichting kunnen schakelen');
   await page.locator('#flowToggle').click();
@@ -178,7 +185,7 @@ try {
       visible:rects.every(r=>r.left>=container.left-2&&r.right<=container.right+2&&r.width>85),
       fullLabels:buttons.every(b=>b.scrollWidth<=b.clientWidth+5)};
   });
-  assert.equal(settingsLayout.allCount,5);
+  assert.equal(settingsLayout.allCount,4);
   assert.equal(settingsLayout.count,3,'Bloedstroom is verborgen op het buitenaanzicht');
   assert(settingsLayout.visible,'Weergaveknoppen mogen op telefoon niet buiten beeld vallen');
   assert(settingsLayout.fullLabels,'Knopteksten moeten leesbaar blijven op telefoon');
@@ -197,7 +204,14 @@ try {
   await mobile.locator('[data-guess="av"]').click();
   assert.equal(await mobile.locator('[data-guess="av"]').getAttribute('aria-pressed'),'true');
   await mobile.locator('#discoveryAction').click();
-  await mobile.waitForFunction(()=>window.__EAI_HEART_LAB__?.state.studyStage==='compare',{timeout:10000});
+  assert.equal(await mobile.evaluate(()=>window.__EAI_HEART_LAB__.state.anatomyView),true,
+    'De onderzoeksanimatie moet de echte anatomische mesh behouden');
+  const guidedMotion=await mobile.evaluate(()=>window.__EAI_HEART_LAB__.motion);
+  assert(guidedMotion.valveParts.length===4&&guidedMotion.flowRoutes===6,
+    'Vier anatomische klepmeshes en zes gekoppelde stroomroutes moeten beschikbaar zijn');
+  assert(guidedMotion.playbackSeconds>=7.5,
+    'De begeleide fase moet zichtbaar vertraagd worden');
+  await mobile.waitForFunction(()=>window.__EAI_HEART_LAB__?.state.studyStage==='compare',{timeout:20000});
   assert.equal(await mobile.locator('#sectionToggle').getAttribute('aria-pressed'),'true');
   assert(await mobile.locator('#flowToggle').isVisible());
   assert(await mobile.locator('#heartSideControls').isVisible());

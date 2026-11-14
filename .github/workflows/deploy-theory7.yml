@@ -114,7 +114,8 @@ jobs:
           with urlopen('https://eaimodel.nl/' + relative, timeout=35) as response:
               page = response.read().decode('utf-8')
               assert response.status == 200
-              assert 'id="mechanicsToggle"' in page
+              assert 'id="mechanicsToggle"' not in page
+              assert 'id="playbackDuration"' in page
 
           manifest = json.loads((local / 'atlas-heart-rich.json').read_text(encoding='utf-8'))
           assert manifest['sourceMeshCount'] == 34
