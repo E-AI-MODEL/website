@@ -25,7 +25,9 @@ De leerling kan drie samenhangende weergaven gebruiken:
 
 De bestaande buitenkant van Z-Anatomy/BodyParts3D blijft als terugvalbestand aanwezig. De oorspronkelijke schematische klepanimatie wordt alleen getoond als het uitgebreide anatomische model niet beschikbaar is. De terugvalbron wordt niet hergebruikt onder de CC BY 4.0-voorwaarden van het nieuwe model; de eigen upstreamlicentie en bronvermelding blijven gelden.
 
-Op mobiel staat de weergave van namen standaard uit. De weergave van de stroomrichting is optioneel en ligt als indicator over de anatomie. Met 'Namen tonen' verschijnen aanwijslijnen. De anatomische onderdelen zijn aanwijsbaar en selecteerbaar. Alle drie de weergaven delen de tijdlijn, hartfrequentie en grafieken. De beperkte uitzetting van de bronmesh is een onderwijseffect en **geen anatomisch gevalideerde hartcontractie**.
+Het 3D-hart heeft een compacte knop **Lagen**. Je kunt de hartspierwand, hartkleppen, grote bloedvaten, kransvaten en papillairspieren afzonderlijk tonen of verbergen. De getoonde onderdelen blijven de oorspronkelijke BodyParts3D-meshes; verbergen maakt een onderdeel ook niet-selecteerbaar. Stroomrichting en namen staan in hetzelfde menu, met een knop om de standaardweergave te herstellen. De hartslag loopt gewoon door tijdens het wisselen van lagen.
+
+Op mobiel staan namen standaard uit. De stroomrichting is een optionele indicator over de anatomie; aangezette namen krijgen dunne aanwijslijnen. **Druk en volume** staat als compacte meetregel onder de animatie, met een uitklapbare grafiek. Instellingen, opdrachten, uitleg, bronnen en grotere grafieken zitten samen onder **Onderzoek en instellingen**. Daardoor blijft het eerste scherm gericht op het bewegende hart en de actuele fase. De anatomische onderdelen zijn aanwijsbaar en selecteerbaar. Alle drie de weergaven delen de tijdlijn, hartfrequentie en grafieken. De beperkte uitzetting van de bronmesh is een onderwijseffect en **geen anatomisch gevalideerde hartcontractie**.
 
 ## Fysiologie
 

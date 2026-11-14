@@ -1,8 +1,8 @@
 // Hartslaglab: BodyParts3D als anatomische basis, met didactisch benaderde beweging.
 // Alleen als de anatomische atlas ontbreekt gebruiken we het oude schematische model.
 // Alle grafieken, klepbewegingen, kamerbewegingen en stroomdeeltjes gebruiken dezelfde fase.
-import {PHASES,volume,pressure,mechanics,phaseFor} from './cycle.js?v=4667d52b448b';
-import {CHAMBERS,VESSELS,VALVES,ANATOMY_PARTS,FLOW_PATHS,leafletGeometry,chamberGeometry,tubeGeometry,ringGeometry,septumGeometry,heartEnvelopeGeometry,muscleRidges,TENDINOUS_CORDS,CORONARY_DETAILS,MUSCLE_DETAILS,AURICLES} from './anatomyGeometry.js?v=4667d52b448b';
+import {PHASES,volume,pressure,mechanics,phaseFor} from './cycle.js?v=15f68e878286';
+import {CHAMBERS,VESSELS,VALVES,ANATOMY_PARTS,FLOW_PATHS,leafletGeometry,chamberGeometry,tubeGeometry,ringGeometry,septumGeometry,heartEnvelopeGeometry,muscleRidges,TENDINOUS_CORDS,CORONARY_DETAILS,MUSCLE_DETAILS,AURICLES} from './anatomyGeometry.js?v=15f68e878286';
 const $=id=>document.getElementById(id);
 const TAU=Math.PI*2;
 const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
@@ -11,6 +11,20 @@ const ease=t=>{t=clamp(t,0,1);return t*t*(3-2*t);};
 const span=(t,a,b)=>ease((t-a)/(b-a));
 const fmt=(v,n=0)=>Number(v).toLocaleString('nl-NL',{minimumFractionDigits:n,maximumFractionDigits:n});
 const state={cutaway:true,t:0,playing:false,speed:.25,yaw:-.20,pitch:.08,zoom:5.95,selected:null,showLabels:false,showFlow:true,tab:'phase',rate:75,last:0,drag:null,study:{guess:null,stage:'choose',stopAt:null},focusSide:'both',showDetails:false,anatomyView:false,userPaused:false};
+const layerVisibility={wall:true,valve:true,vessel:true,coronary:true,papillary:true};
+function layerForKind(kind){return kind==='artery'||kind==='vein'?'coronary':kind;}
+function isLayerVisible(part){return layerVisibility[layerForKind(part.kind)]!==false;}
+function syncLayerControls(){
+  $('layerMenu').hidden=!atlasRich;
+  if(!atlasRich)$('layerMenu').open=false;
+  document.querySelectorAll('[data-layer]').forEach(button=>{
+    const layer=button.dataset.layer;
+    const active=layer==='flow'?state.showFlow:
+      layer==='labels'?state.showLabels:layerVisibility[layer];
+    button.setAttribute('aria-pressed',String(active));
+    button.querySelector('.layer-state').textContent=active?'Aan':'Uit';
+  });
+}
 const m4=()=>{
   const o=new Float32Array(16);o[0]=o[5]=o[10]=o[15]=1;return o;
 };
@@ -202,12 +216,12 @@ async function loadAtlasModels(){
   const failures=[];
   for(const [name,isRich] of [['atlas-heart-rich',true],['atlas-heart',false]]){
     try{
-      const response=await fetch('./'+name+'.json?v=4667d52b448b');
+      const response=await fetch('./'+name+'.json?v=15f68e878286');
       if(!response.ok)throw Error(name+'-manifest ontbreekt: '+response.status);
       const manifest=await response.json();
       if(manifest.format!==(isRich?2:1)||!Array.isArray(manifest.parts)||manifest.parts.length<(isRich?34:4))
         throw Error('Onvolledig anatomisch model: '+name);
-      const data=await fetch('./'+name+'.bin?v=4667d52b448b');
+      const data=await fetch('./'+name+'.bin?v=15f68e878286');
       if(!data.ok)throw Error('Hartmesh ontbreekt: '+name);
       const buffer=await data.arrayBuffer();
       if(buffer.byteLength!==manifest.bytes)throw Error('Hartmesh-bestand is niet volledig');
@@ -237,6 +251,7 @@ async function loadAtlasModels(){
       atlasReady=true;atlasRich=isRich;atlasError=null;
       atlasFlowPaths=isRich?makeAtlasFlowPaths(centers):[];
       if(state.cutaway)state.anatomyView=isRich;
+      syncLayerControls();
       if(isRich){
         state.cutaway=true;
         state.anatomyView=true;
@@ -260,6 +275,7 @@ async function loadAtlasModels(){
     }catch(error){failures.push(name+': '+String(error.message||error));}
   }
   atlasError=failures.join(' | ');atlasReady=false;atlasRich=false;atlasFlowPaths=[];
+  syncLayerControls();
   $('atlasLoading').hidden=false;
   $('atlasLoading').textContent='De gedetailleerde hartanatomie kan niet worden geladen. Ververs de pagina om opnieuw te proberen.';
   $('play').disabled=true;
@@ -275,7 +291,7 @@ function drawAtlasHeart(m,section=false){
   for(const part of atlasParts){
     if(atlasRich){
       // Bloedruimtes zijn lege ruimtes, geen extra spierwand.
-      if(part.kind==='space')continue;
+      if(part.kind==='space'||!isLayerVisible(part))continue;
       const cutWall=section&&part.kind==='wall';
       let color=part.color;
       // Subtiele routekleuren op de echte bronvaten helpen de twee
@@ -393,7 +409,8 @@ function updateLabels(){
     if(!part)continue;
     const world=(!state.cutaway||state.anatomyView)&&atlasCenters[id]?atlasCenters[id]:part.pos;
     const p=project(world,pv,w,h);
-    const visible=state.showLabels&&p[2]>0&&p[0]>-25&&p[0]<w+25;
+    const visibleLayer=['ra','rv','la','lv'].includes(id)?layerVisibility.wall:layerVisibility.vessel;
+    const visible=state.showLabels&&visibleLayer&&p[2]>0&&p[0]>-25&&p[0]<w+25;
     el.hidden=!visible;
     let connector=labelConnectors.get(id);
     if(!connector){
@@ -455,7 +472,8 @@ function anatomicalAtlasVisible(){
 function selectableParts(){
   if(!anatomicalAtlasVisible())return ANATOMY_PARTS;
   if(!atlasRich)return atlasDetails;
-  return Object.fromEntries(Object.entries(atlasDetails).filter(([,part])=>part.type!=='space'));
+  return Object.fromEntries(Object.entries(atlasDetails).filter(([,part])=>
+    part.type!=='space'&&layerVisibility[layerForKind(part.type)]!==false));
 }
 function selectedPartAt(x,y){
   let best=null,score=55;
@@ -585,10 +603,6 @@ function display(m){
   $('storySL').textContent='Slagaderkleppen '+(m.sem?'open':'dicht');
   $('storyAV').classList.toggle('open',m.av);
   $('storySL').classList.toggle('open',m.sem);
-  $('storyProgress').style.width=(state.t*100).toFixed(2)+'%';
-  $('storySteps').querySelectorAll('[data-story-phase]').forEach(el=>{
-    el.classList.toggle('active',Number(el.dataset.storyPhase)===m.phase);
-  });
   $('phaseIndex').innerHTML=String(m.phase+1).padStart(2,'0')+' <small>/ 05</small>';
   $('avStatus').textContent=m.av?'Open':'Gesloten';
   $('slStatus').textContent=m.sem?'Open':'Gesloten';
@@ -632,7 +646,6 @@ function syncPlay(){
   $('play').textContent=state.playing?'Pauzeer':'Start hartslag';
   $('play').setAttribute('aria-label',state.playing?'Pauzeer de doorlopende hartslag':'Start de doorlopende hartslag');
   $('loopLabel').textContent=state.playing?'De hartslag herhaalt zich':'Hartslag gepauzeerd';
-  $('loopNotice').textContent=state.playing?'Speelt steeds opnieuw af':'Druk op start om te kijken';
 }
 $('play').addEventListener('click',()=>{
   if(!atlasRich)return;
@@ -680,18 +693,33 @@ document.querySelectorAll('[data-heart-side]').forEach(button=>button.addEventLi
     'Rechterkamer: volg de tricuspidalis- en longslagaderklep. De lijnen onder het hart blijven voorbeeldwaarden van de linkerkamer.';
 }));
 function syncLabelsToggle(){
-  // Verberg de volledige labellaag direct, ook vóór het eerste animatieframe.
+  // Verberg de volledige naamlaag direct, ook vóór het eerste animatieframe.
   $('labels').hidden=!state.showLabels;
   $('labelLeaders').hidden=!state.showLabels;
-  $('labelsToggle').textContent=state.showLabels?'Namen verbergen':'Namen tonen';
-  $('labelsToggle').setAttribute('aria-pressed',String(state.showLabels));
+  syncLayerControls();
 }
-$('labelsToggle').addEventListener('click',()=>{state.showLabels=!state.showLabels;syncLabelsToggle();updateLabels();});
-$('flowToggle').addEventListener('click',()=>{
-  state.showFlow=!state.showFlow;
-  $('flowToggle').textContent=state.showFlow?'Stroomrichting verbergen':'Stroomrichting tonen';
-  $('flowToggle').setAttribute('aria-pressed',String(state.showFlow));
+document.querySelectorAll('[data-layer]').forEach(button=>button.addEventListener('click',()=>{
+  const layer=button.dataset.layer;
+  if(layer==='flow')state.showFlow=!state.showFlow;
+  else if(layer==='labels')state.showLabels=!state.showLabels;
+  else layerVisibility[layer]=!layerVisibility[layer];
+  positionInfo(null);
+  syncLabelsToggle();
   syncViewControls();
+  updateLabels();
+}));
+$('resetLayers').addEventListener('click',()=>{
+  Object.keys(layerVisibility).forEach(layer=>{layerVisibility[layer]=true;});
+  state.showFlow=true;
+  state.showLabels=false;
+  positionInfo(null);
+  syncLabelsToggle();
+  syncViewControls();
+  updateLabels();
+});
+$('layerMenu').addEventListener('toggle',()=>{
+  // Een open laagmenu blijft op mobiel binnen het hartvenster.
+  $('layerMenu').classList.toggle('is-open',$('layerMenu').open);
 });
 $('resetCamera').addEventListener('click',()=>{state.yaw=-.20;state.pitch=.08;state.zoom=5.95;positionInfo(null);});
 document.querySelectorAll('[data-tab]').forEach(btn=>btn.addEventListener('click',()=>{
@@ -791,7 +819,8 @@ canvas.addEventListener('touchend',()=>{state.pinch=null;});
 let resize=new ResizeObserver(()=>{if(gl)render();});resize.observe(stage);
 setupModel();syncPlay();syncLabelsToggle();syncViewControls();syncStudy();loadAtlasModels();
 window.__EAI_HEART_LAB__={
-  get state(){return {t:state.t,playing:state.playing,speed:state.speed,yaw:state.yaw,zoom:state.zoom,selected:state.selected,cutaway:state.cutaway,showLabels:state.showLabels,showFlow:state.showFlow,focusSide:state.focusSide,showDetails:state.showDetails,atlasReady,atlasRich,anatomyView:state.anatomyView,atlasError,atlasPartCount:atlasParts.length,studyStage:state.study.stage};},
+  get state(){return {t:state.t,playing:state.playing,speed:state.speed,yaw:state.yaw,zoom:state.zoom,selected:state.selected,cutaway:state.cutaway,showLabels:state.showLabels,showFlow:state.showFlow,focusSide:state.focusSide,showDetails:state.showDetails,atlasReady,atlasRich,anatomyView:state.anatomyView,atlasError,atlasPartCount:atlasParts.length,studyStage:state.study.stage,layers:{...layerVisibility,flow:state.showFlow,labels:state.showLabels}};},
+  get visibleAtlasPartIds(){return atlasParts.filter(part=>part.kind!=='space'&&isLayerVisible(part)).map(part=>part.id);},
   // Debugbare projectiepunten voor een echte browserklik in de regressietest.
   get hitTargets(){return Object.entries(selectableParts()).map(([id,part])=>{
     const [x,y,depth]=project(part.pos,pv,canvas.clientWidth,canvas.clientHeight);
