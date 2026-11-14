@@ -40,8 +40,8 @@ main{padding-bottom:95px}.intro{padding:70px 0 24px;max-width:740px}.eyebrow{fon
 </div>
 <section class="panel trend" aria-labelledby="chart-title"><div class="panel-head"><div><h2 id="chart-title">Bezoeken per dag</h2><p id="chart-caption">De ontwikkeling over de gekozen periode</p></div></div><div id="chart-content"><div class="empty">Bezoekgegevens worden geladen.</div></div></section>
 <div class="grid">
-<section class="panel" aria-labelledby="pages-title"><div class="panel-head"><div><h2 id="pages-title">Meest bekeken pagina's</h2><p>Paginaweergaven in de gekozen periode</p></div></div><div id="pages"><p class="note">Nog geen gegevens.</p></div></section>
-<section class="panel" aria-labelledby="sources-title"><div class="panel-head"><div><h2 id="sources-title">Waar komt bezoek vandaan?</h2><p>Verwijzende websites, zonder rechtstreekse bezoeken</p></div></div><div id="sources"><p class="note">Nog geen gegevens.</p></div></section>
+<section class="panel" aria-labelledby="pages-title"><div class="panel-head"><div><h2 id="pages-title">Meest bekeken pagina's</h2><p>Paginaweergaven over 30 dagen</p></div></div><div id="pages"><p class="note">Nog geen gegevens.</p></div></section>
+<section class="panel" aria-labelledby="sources-title"><div class="panel-head"><div><h2 id="sources-title">Waar komt bezoek vandaan?</h2><p>Verwijzingen over 30 dagen; rechtstreekse bezoeken ontbreken</p></div></div><div id="sources"><p class="note">Nog geen gegevens.</p></div></section>
 </div>
 <section class="details" aria-labelledby="about-title"><h2 id="about-title">Wat meten we precies?</h2><div><p>Cloudflare Web Analytics telt paginaladingen vanuit webbrowsers. Bezoeken zijn geen unieke personen. Door steekproeven, blokkeringen en browserinstellingen kunnen aantallen afwijken van het werkelijke bezoek.</p><p>De cijfers zeggen niet of iemand iets heeft geleerd of een tool goed heeft gebruikt. Het bouncepercentage en handelingen binnen interactieve simulaties worden hier niet gemeten. Alleen samengevatte gegevens staan openbaar; er zijn geen bezoekersnamen, IP-adressen of individuele sessies zichtbaar.</p><p>Bron: <a href="https://developers.cloudflare.com/web-analytics/about/" target="_blank" rel="noopener noreferrer">Cloudflare Web Analytics</a>.</p></div></section>
 </main>
@@ -90,8 +90,9 @@ main{padding-bottom:95px}.intro{padding:70px 0 24px;max-width:740px}.eyebrow{fon
     text(el("chart-caption"),selected===7?"Afgelopen 7 kalenderdagen":"Afgelopen 30 kalenderdagen");
     chart(data);
     // Page and source rankings in a snapshot cover the full 30-day period.
-    var full=selected===30;el("pages-title").textContent=full?"Meest bekeken pagina's":"Meest bekeken pagina's (30 dagen)";
-    el("sources-title").textContent=full?"Waar komt bezoek vandaan?":"Herkomst van bezoek (30 dagen)";
+    // The snapshot only supplies one 30-day breakdown, regardless of chart selection.
+    el("pages-title").textContent="Meest bekeken pagina's (30 dagen)";
+    el("sources-title").textContent="Waar komt bezoek vandaan? (30 dagen)";
     ranks("pages",info.pages||[],"page");ranks("sources",info.referrers||[],"source");
     status("Bijgewerkt op "+fmtTime(info.updated_at)+" · Cloudflare Web Analytics",true);
   }
