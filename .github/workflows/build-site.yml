@@ -11,6 +11,7 @@ on:
       - 'scripts/publish_web_analytics.py'
       - 'tests/test_public_analytics.py'
       - 'tests/test_public_analytics_ui.mjs'
+      - 'tests/test_cloudflare_beacon.py'
       - '.github/workflows/deploy-theory7.yml'
       - 'scripts/build_site.py'
       - 'scripts/prepare_ui.py'
@@ -45,6 +46,7 @@ on:
       - 'scripts/publish_web_analytics.py'
       - 'tests/test_public_analytics.py'
       - 'tests/test_public_analytics_ui.mjs'
+      - 'tests/test_cloudflare_beacon.py'
       - '.github/workflows/deploy-theory7.yml'
       - 'scripts/build_site.py'
       - 'scripts/prepare_ui.py'
@@ -104,6 +106,9 @@ jobs:
 
       - name: Test LEIF en het toevoegen van testers
         run: node --test tests/test_leif_kei.mjs tests/test_leif_multitenant.mjs tests/test_leif_testers.mjs tests/test_leif_unified_login.mjs tests/test_leif_site_texts.mjs
+
+      - name: Verify Cloudflare beacon on public sitemap pages
+        run: python -m unittest discover -s tests -p 'test_cloudflare_beacon.py' -v
 
       - name: Check published analytics totals and privacy
         run: python -m unittest discover -s tests -p 'test_public_analytics.py' -v
