@@ -94,9 +94,11 @@ try {
   const beforeLayers=await page.locator('#heartCanvas').screenshot();
   await page.locator('#layerMenu > summary').click();
   assert(await page.locator('[data-layer="wall"]').isVisible(),'Lagen kunnen direct worden gekozen');
+  await page.locator('#stage').screenshot({path:'test-results/hartslaglab-'+engine+'-desktop-lagen.png'});
   assert.equal(await page.locator('#layerMenu .layer-switch').count(),7);
   for(const [layer,count,id] of [
-    ['wall',3,'ra_wall'],['valve',4,'mitral'],['papillary',2,'pap_lv']
+    ['wall',3,'ra_wall'],['valve',4,'mitral'],['papillary',2,'pap_lv'],
+    ['vessel',12,'ao'],['coronary',9,'lca']
   ]){
     const button=page.locator('[data-layer="'+layer+'"]');
     await button.click();
@@ -187,6 +189,7 @@ try {
   assert.equal((await state(mobile)).playing,false,'Pauzeren werkt met aanraking');
   await mobile.locator('#layerMenu > summary').click();
   assert(await mobile.locator('[data-layer="valve"]').isVisible(),'Mobiele lagen zijn bereikbaar');
+  await mobile.locator('#stage').screenshot({path:'test-results/hartslaglab-'+engine+'-mobile-lagen.png'});
   await mobile.locator('[data-layer="valve"]').click();
   assert.equal((await state(mobile)).layers.valve,false,'Hartkleppen kunnen verborgen worden');
   await mobile.locator('[data-layer="valve"]').click();
