@@ -71,6 +71,9 @@ try{
   assert.equal(started.view,'animation','De eerste technische weergave opent met de animatie');
   assert.equal(started.playing,true,'De uitleg begint vanzelf');
   await page.screenshot({path:'test-results/llm-story-'+width+'-vraag.png'});
+  await page.evaluate(()=>storyAdvance(STORY_PHASES[0].duration+.08));
+  assert.equal(await page.evaluate(()=>storyState.phase),1,'De animatie gaat zonder tik vanzelf naar de volgende stap');
+  await page.evaluate(()=>storyRestart());
   await page.locator('#storyPause').click();
   assert.equal(await page.evaluate(()=>storyState.playing),false,'Pauze stopt de animatie');
   await page.evaluate(()=>{storySetPhase(1);storyPaint(.8)});
