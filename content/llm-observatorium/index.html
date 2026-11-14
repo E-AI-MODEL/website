@@ -959,8 +959,8 @@ function tick(now){
 /* Toegankelijke route voor beginners. Technische modellen en gegevens blijven intact. */
 const GUIDE_LABELS=['Jouw vraag','Tekst in stukjes','Eerdere tekst','Volgend stukje','Een antwoord'];
 const GUIDE_STEPS=[
- {title:'Je stelt een vraag',sub:'Alles begint met wat jij typt. Probeer zelf een andere vraag.',explain:'Het model ontvangt de tekst die je invoert. Het ziet niet automatisch wat je bedoelt of welke informatie waar is.',boundary:'Typ iets anders en bekijk bij de volgende stap hoe de tekst wordt verdeeld.'},
- {title:'AI verdeelt tekst in stukjes',sub:'Die kleine stukjes heten tokens. Het zijn niet altijd hele woorden.',explain:'Het model werkt met token-ID’s: getallen die horen bij stukjes tekst. Tik op een stukje om het bijbehorende ID te bekijken.',boundary:'De stukjes komen van de echte tokenizer zodra die is geladen. Anders tonen we een woordvoorbeeld.'},
+ {title:'Je stelt een vraag',sub:'Alles begint met wat jij typt. Probeer zelf een andere vraag.',explain:'De AI krijgt jouw tekst. Het programma kan niet in je hoofd kijken en controleert niet vanzelf of iets waar is.',boundary:'Typ iets anders en bekijk bij de volgende stap hoe de tekst wordt verdeeld.'},
+ {title:'AI verdeelt tekst in stukjes',sub:'Die kleine stukjes heten tokens. Het zijn niet altijd hele woorden.',explain:'De AI geeft elk stukje tekst een nummer. Tik op zo’n stukje om te zien welk nummer erbij hoort.',boundary:'De precieze verdeling wordt geladen. Lukt dat niet, dan laten we een eenvoudig woordvoorbeeld zien.'},
  {title:'Het model gebruikt eerdere tekst',sub:'Een volgend stukje hangt af van wat ervoor staat.',explain:'Kies een stukje. De groene stukjes kwamen eerder. Een taalmodel verwerkt deze eerdere context om de volgende voorspelling te maken.',boundary:'Dit laat de volgorde zien. We meten hier geen echte attention-scores of interne activaties.'},
  {title:'Het model berekent mogelijkheden',sub:'Er zijn vaak meerdere mogelijke volgende stukjes.',explain:'Bij iedere stap berekent een taalmodel scores voor mogelijke volgende tokens. Kijk wat meer of minder variatie doet met dit kleine rekenvoorbeeld.',boundary:'Deze vier kansen zijn uitsluitend een demonstratie. Ze komen niet van een draaiend AI-model of jouw vraag.'},
  {title:'Zo ontstaat stukje voor stukje een antwoord',sub:'Het gekozen stukje wordt toegevoegd. Daarna rekent het model verder.',explain:'Klik om het voorbeeldantwoord te laten groeien. Een taalmodel herhaalt dit proces totdat het antwoord klaar is of een stopgrens is bereikt. Het controleert niet vanzelf of het antwoord waar is.',boundary:'Het voorbeeldantwoord is vooraf geschreven. Deze pagina verstuurt je vraag niet naar een AI-model.'}
@@ -1036,10 +1036,10 @@ function guideRender(){
  }else if(guideStep===1){
   visual.append(guideNode('div','KLIK OP EEN STUKJE','ai-guide-question'));
   guideTokenIndex=clamp(guideTokenIndex,0,state.promptWords.length-1);guideTokenChips(visual,false);
-  visual.append(guideNode('div',state.tokenStatus==='real'?'Echte tokenindeling met o200k_harmony':'Voorbeeld op woordniveau. De echte tokenizer is nog niet geladen.','ai-guide-legend'));
+  visual.append(guideNode('div',state.tokenStatus==='real'?'De tekst is echt in tokens verdeeld.':'Dit is een woordvoorbeeld. De precieze verdeling is nog niet geladen.','ai-guide-legend'));
   const token=state.promptWords[guideTokenIndex]||{};
   interactive.append(guideNode('p',state.promptWords.length+' stukjes in deze invoer.','ai-guide-mini'));
-  interactive.append(guideNode('p',token.id==null?'Dit stukje heeft nog geen echt token-ID.':'Gekozen stukje: token-ID '+token.id,'ai-guide-mini'));
+  interactive.append(guideNode('p',token.id==null?'Bij dit voorbeeld hoort nog geen echt tokennummer.':'Gekozen stukje: nummer '+token.id,'ai-guide-mini'));
  }else if(guideStep===2){
   visual.append(guideNode('div','GROEN: AL GELEZEN  ·  GOUD: GEKOZEN','ai-guide-question'));
   guideTokenIndex=clamp(guideTokenIndex,0,state.promptWords.length-1);guideTokenChips(visual,true);
