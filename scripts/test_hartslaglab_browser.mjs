@@ -34,6 +34,8 @@ try {
   assert(initial.cutaway&&initial.anatomyView&&initial.atlasPartCount===34,'Het echte hart opent vanbinnen');
   assert.equal(initial.focusSide,'both','De rode en blauwe bloedsomloop horen samen in beeld');
   assert(initial.showFlow,'Bloedstroom hoort standaard zichtbaar te zijn');
+  assert.equal(initial.layers.outer,true,'De doorzichtige buitenkant staat standaard aan');
+  assert.equal(initial.layers.wall,true,'De opengewerkte hartwand blijft beschikbaar');
   assert(await page.locator('#atlasLoading').isHidden(),'Het laadscherm mag de anatomie niet bedekken');
   assert(await page.locator('#play').isEnabled(),'De animatie start alleen als de rijke atlas geladen is');
   assert(await page.locator('#layerMenu').isVisible(),'Lagen staat direct bij het hart');
@@ -141,7 +143,19 @@ try {
   await page.locator('#layerMenu > summary').click();
   assert(await page.locator('[data-layer="wall"]').isVisible(),'Lagen kunnen direct worden gekozen');
   await page.locator('#stage').screenshot({path:'test-results/hartslaglab-'+engine+'-desktop-lagen.png'});
-  assert.equal(await page.locator('#layerMenu .layer-switch').count(),7);
+  assert.equal(await page.locator('#layerMenu .layer-switch').count(),8);
+  assert.equal(await page.locator('[data-layer="outer"] .layer-state').textContent(),'Aan');
+  const exterior=page.locator('[data-layer="outer"]');
+  await exterior.click();
+  assert.equal((await state(page)).layers.outer,false);
+  assert.equal((await state(page)).layers.wall,true,
+    'De opengewerkte hartwand mag niet verdwijnen met de buitenlaag');
+  const withoutExterior=await page.locator('#heartCanvas').screenshot();
+  assert.notDeepEqual(beforeLayers,withoutExterior,
+    'De buitenlaag moet echte beeldpunten veranderen');
+  await exterior.click();
+  assert.equal((await state(page)).layers.outer,true);
+  await page.locator('#heartCanvas').screenshot({path:'test-results/hartslaglab-'+engine+'-met-buitenlaag.png'});
   for(const [layer,count,id] of [
     ['wall',3,'ra_wall'],['valve',4,'mitral'],['papillary',2,'pap_lv'],
     ['vessel',12,'ao'],['coronary',9,'lca']
@@ -151,8 +165,11 @@ try {
     assert.equal(await button.getAttribute('aria-pressed'),'false','Layerstatus volgt '+layer);
     const ids=await page.evaluate(()=>window.__EAI_HEART_LAB__.visibleAtlasPartIds);
     assert(!ids.includes(id),'Verborgen '+layer+' mag niet getekend worden');
-    assert.equal(await page.evaluate(targetId=>window.__EAI_HEART_LAB__.hitTargets.some(p=>p.id===targetId),id),false,
-      'Verborgen '+layer+' mag niet aanklikbaar blijven');
+    const stillSelectable=await page.evaluate(targetId=>
+      window.__EAI_HEART_LAB__.hitTargets.some(p=>p.id===targetId),id);
+    assert.equal(stillSelectable,layer==='wall',
+      layer==='wall'?'De wand blijft via de zichtbare Buitenlaag selecteerbaar':
+        'Verborgen '+layer+' mag niet aanklikbaar blijven');
     assert.equal(initialIds.length-ids.length,count,'De atlaslaag moet het verwachte aantal meshes verbergen');
     await button.click();
   }
@@ -160,8 +177,13 @@ try {
   await noWallButton.click();
   assert.notDeepEqual(beforeLayers,await page.locator('#heartCanvas').screenshot(),
     'Lagen moeten het 3D-model echt veranderen');
+  await exterior.click();
+  assert.equal(await page.evaluate(()=>window.__EAI_HEART_LAB__.hitTargets.some(p=>p.id==='ra_wall')),false,
+    'Zonder beide wandlagen hoort de wand niet aanklikbaar te zijn');
+  await exterior.click();
   await page.locator('#resetLayers').click();
   assert.equal((await page.evaluate(()=>window.__EAI_HEART_LAB__.visibleAtlasPartIds)).length,30);
+  assert.equal((await state(page)).layers.outer,true,'Herstellen zet de buitenlaag weer aan');
   await page.locator('[data-layer="flow"]').click();
   assert.equal((await state(page)).showFlow,false,'Stroomrichting kan uit');
   await page.locator('[data-layer="flow"]').click();
@@ -175,6 +197,14 @@ try {
   assert.equal((await state(page)).cutaway,false,'Buitenaanzicht blijft beschikbaar');
   const outsideFrame=await page.locator('#heartCanvas').screenshot();
   assert.notDeepEqual(insideFrame,outsideFrame,'Binnenkant en buitenkant zijn andere beelden');
+  await page.locator('#layerMenu > summary').click();
+  await exterior.click();
+  assert.notDeepEqual(outsideFrame,await page.locator('#heartCanvas').screenshot(),
+    'Zonder Buitenlaag moet de gesloten orgaanwand verdwijnen');
+  assert.equal(await page.evaluate(()=>window.__EAI_HEART_LAB__.hitTargets.some(p=>p.id==='ra_wall')),false,
+    'Een uitgezette buitenwand mag van buiten niet aanklikbaar blijven');
+  await exterior.click();
+  await page.locator('#layerMenu > summary').click();
   await page.locator('#sectionToggle').click();
   assert((await state(page)).anatomyView,'Het binnenaanzicht blijft echte anatomie');
   // De instellingen staan nu onder het hart. Scroll vóór de aanraakproef
@@ -247,7 +277,13 @@ try {
   assert.equal((await state(mobile)).playing,false,'Pauzeren werkt met aanraking');
   await mobile.locator('#layerMenu > summary').click();
   assert(await mobile.locator('[data-layer="valve"]').isVisible(),'Mobiele lagen zijn bereikbaar');
+  assert(await mobile.locator('[data-layer="outer"]').isVisible(),'Buitenlaag staat in het mobiele lagenmenu');
   await mobile.locator('#stage').screenshot({path:'test-results/hartslaglab-'+engine+'-mobile-lagen.png'});
+  await mobile.locator('#play').scrollIntoViewIfNeeded();
+  await mobile.locator('[data-layer="outer"]').click();
+  assert.equal((await state(mobile)).layers.outer,false);
+  await mobile.locator('[data-layer="outer"]').click();
+  assert.equal((await state(mobile)).layers.outer,true);
   await mobile.locator('[data-layer="valve"]').click();
   assert.equal((await state(mobile)).layers.valve,false,'Hartkleppen kunnen verborgen worden');
   await mobile.locator('[data-layer="valve"]').click();

@@ -460,3 +460,10 @@
 
 /* Bronvermelding hoort bij de bronuitleg, niet over het bewegende model. */
 .stage-caption{display:none}
+
+/* Het iets langere lagenmenu toont ook op een telefoon de herstelknop. */
+@media(max-width:790px){
+ .layer-menu-panel{max-height:min(340px,calc(100dvh - 160px))}
+ .layer-menu .layer-switch{min-height:32px;padding:6px 9px}
+ .layer-menu .layers-reset{min-height:34px;padding:7px 9px}
+}
