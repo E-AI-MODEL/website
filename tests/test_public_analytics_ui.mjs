@@ -20,14 +20,40 @@ test('public dashboard is real HTML with a working JavaScript program', () => {
 
 test('public page never contains an API secret, account token, or fake count', () => {
   assert.doesNotMatch(html, /CLOUDFLARE_ANALYTICS_TOKEN|Authorization:\s*Bearer|CLOUDFLARE_ACCOUNT_ID/);
-  assert.match(html, /fetch\("\/statistieken\/data\.json"/);
+  assert.match(html, /fetch\(demo\?"\/statistieken\/demo\.json":"\/statistieken\/data\.json"/);
+  assert.match(html, /Boolean\(data\.demo\)!==demo/);
+  assert.match(html, /id="demo-note"/);
+  assert.match(html, /id="page-select"/);
+  assert.match(html, /id="unique"/);
+  assert.match(html, /id="bounce"/);
+  assert.match(html, /id="clicks"/);
   assert.match(html, /Nog geen bezoekersgegevens beschikbaar/);
-  assert.match(html, /bouncepercentage en handelingen binnen interactieve simulaties worden hier niet gemeten/i);
+  assert.match(html, /Cloudflare meet geen unieke personen, bouncepercentage of knopklikken/i);
 });
 
 test('dashboard labels comparison periods and summary periods separately', () => {
   assert.match(html, /Afgelopen 7 kalenderdagen/);
   assert.match(html, /Afgelopen 30 kalenderdagen/);
   assert.match(html, /Meest bekeken pagina's \(30 dagen\)/);
-  assert.match(html, /Waar komt bezoek vandaan\? \(30 dagen\)/);
+  assert.match(html, /Waar komt bezoek vandaan\\? \\(30 dagen\\)/);
+});
+
+test('demo mode stays isolated and its fictitious values add up', () => {
+  const demo = JSON.parse(fs.readFileSync('statistieken/demo.json', 'utf8'));
+  assert.equal(demo.schema, 1);
+  assert.equal(demo.demo, true);
+  assert.equal(demo.visits, 500);
+  assert.equal(demo.unique_visitors, 143);
+  assert.equal(demo.daily.length, 30);
+  assert.equal(demo.daily.reduce((n, x) => n + x.visits, 0), 500);
+  assert.equal(demo.daily.reduce((n, x) => n + x.views, 0), demo.views);
+  assert.equal(demo.pages.reduce((n, x) => n + x.views, 0), demo.views);
+  assert.equal(demo.pages.reduce((n, x) => n + x.clicks, 0), demo.clicks);
+  assert.equal(demo.click_targets.reduce((n, x) => n + x.clicks, 0), demo.clicks);
+  assert.equal(demo.period_metrics["30"].unique_visitors, 143);
+  assert.equal(demo.period_metrics["30"].clicks, demo.clicks);
+  assert.match(demo.source, /Fictieve voorbeeldgegevens/);
+  assert.match(html, /Voorbeeldgegevens, geen echte bezoekers/);
+  assert.match(html, /new URLSearchParams\\(window.location.search\\).get\\("demo"\\)==="1"/);
+  assert.doesNotMatch(html, /Authorization:\\s*Bearer|CLOUDFLARE_ANALYTICS_TOKEN/);
 });
