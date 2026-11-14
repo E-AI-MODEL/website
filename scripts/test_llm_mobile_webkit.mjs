@@ -50,6 +50,8 @@ try {
      await page.locator('.mobile-dock [data-panel="'+panel+'"]').click();
      const el=panel==='graph'?'#graphPanel':'#inspectorPanel';
      const box=await page.locator(el).boundingBox();
+     const position=await page.locator(el).evaluate(node=>getComputedStyle(node).position);
+     assert.equal(position,'fixed','Mobiel paneel moet vast aan het scherm zitten: '+panel);
      assert(box&&box.x>=-2&&box.width<=width+2&&box.y>=45&&box.y+box.height<=height-56,
       'Een paneel bedekt de mobiele bediening: '+panel+' '+JSON.stringify(box));
      await page.locator('.mobile-dock [data-panel="'+panel+'"]').click();

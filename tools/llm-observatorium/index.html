@@ -474,7 +474,7 @@
 @media(max-width:800px){
  #app[data-panel]:not([data-panel=""]) .inspector,
  #app[data-panel]:not([data-panel=""]) .plot-panel,
- #app[data-panel]:not([data-panel=""]) .sidebar{top:49px;left:0;right:0;bottom:calc(62px + env(safe-area-inset-bottom));height:auto!important;max-height:none!important;border:none;border-radius:0;box-shadow:none;background:#0a1829}
+ #app[data-panel]:not([data-panel=""]) .sidebar{position:fixed!important;top:49px;left:0;right:0;bottom:calc(62px + env(safe-area-inset-bottom));height:auto!important;min-height:0!important;max-height:none!important;border:none;border-radius:0;box-shadow:none;background:#0a1829}
  #app[data-panel]:not([data-panel=""]) .layer-inspector-panel{visibility:hidden!important;pointer-events:none!important}
 }
 @media (min-width:801px) and (max-height:560px){
