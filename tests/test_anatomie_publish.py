@@ -48,8 +48,10 @@ class AnatomyPublishTests(unittest.TestCase):
         self.assertIn("LICENSE.txt", links.hrefs)
         self.assertTrue(links.scripts, "Geen 3D-bundel in de website")
         for src in links.scripts:
-            self.assertTrue(src.startswith("/tools/anatomie/"),
-                            f"Niet lokaal gehost script: {src}")
+            self.assertTrue(
+                src.startswith("/tools/anatomie/") or src == "/assets/site-analytics.js",
+                f"Niet lokaal gehost script: {src}",
+            )
             local = OUT / src.lstrip("/")
             self.assertTrue(local.is_file(), f"Script ontbreekt: {src}")
 
@@ -67,7 +69,18 @@ class AnatomyPublishTests(unittest.TestCase):
         self.assertIn(f'href="./heart.css?v={release}"', source)
         self.assertIn('class="phase-story"', source)
         self.assertIn('id="heartOptions"', source)
-        self.assertIn('id="storyProgress"', source)
+        self.assertIn('id="layerMenu"', source)
+        self.assertIn('id="quickMeasurements"', source)
+        self.assertIn('id="moreTools"', source)
+        self.assertNotIn('id="storyProgress"', source)
+        self.assertNotIn('id="storySteps"', source)
+        self.assertEqual(source.count('id="flowToggle"'), 1)
+        self.assertEqual(source.count('id="labelsToggle"'), 1)
+        self.assertEqual(source.count('class="layer-switch"'), 8)
+        self.assertIn('data-layer="outer"', source)
+        self.assertIn('Hartwand in doorsnede', source)
+        self.assertIn('data-layer="valve"', source)
+        self.assertIn('data-layer="coronary"', source)
         self.assertIn('id="atlasLoading"', source)
         self.assertIn("Echte 3D-anatomie · BodyParts3D", source)
         self.assertNotIn('id="mechanicsToggle"', source,
@@ -106,7 +119,18 @@ class AnatomyPublishTests(unittest.TestCase):
         self.assertIn(f"from './cycle.js?v={release}'", script)
         self.assertIn(f"from './anatomyGeometry.js?v={release}'", script)
         self.assertIn(f"atlas-heart-rich',true", script)
-        self.assertIn("const STORY_PHASES", script)
+        self.assertIn("const GUIDED_STEPS", script)
+        self.assertIn("function selectGuideStep(index)", script)
+        self.assertIn("function syncLearningMode()", script)
+        self.assertNotIn("const STORY_PHASES", script)
+        self.assertIn('id="guideStart"', source)
+        self.assertIn('id="guideNext"', source)
+        self.assertIn('id="guideExit"', source)
+        self.assertIn('id="exploreStart"', source)
+        self.assertIn("function isLayerVisible(part)", script)
+        self.assertIn("function drawAtlasExterior(m,section=false)", script)
+        self.assertIn("drawAtlasExterior(m,state.cutaway);", script)
+        self.assertIn("if(part.kind==='space'||!isLayerVisible(part)||(!section&&part.kind==='wall'))continue;", script)
         self.assertIn("state.focusSide='both'", script)
         self.assertIn("requestAnimationFrame(frame)", script)
         self.assertIn("drawParticles(m)", script)
