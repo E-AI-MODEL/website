@@ -71,6 +71,7 @@ try {
     'Schematische bloedstroom hoort niet over echte anatomie heen');
   const innerAnatomy=await page.locator('#heartCanvas').screenshot();
   assert.notDeepEqual(innerAnatomy,outsideFrame,'Het open anatomische hart moet afwijken van de buitenkant');
+  await page.screenshot({path:'test-results/hartslaglab-'+engine+'-desktop-vanbinnen.png',fullPage:true});
   // Controleer een echte klik in de opengemaakte atlas. Een louter bestaande
   // mesh of een muisklik op het oude schema is onvoldoende.
   const hitTargets=await page.evaluate(()=>window.__EAI_HEART_LAB__.hitTargets);
