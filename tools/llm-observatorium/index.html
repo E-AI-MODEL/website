@@ -536,6 +536,24 @@
  }
  #app[data-panel]:not([data-panel=""]) #storyBack3d{display:none!important}
 }
+
+/* Liggend: het 3D-model krijgt hoogte; de grafiek neemt niet de helft van het scherm in. */
+@media(min-width:801px) and (max-height:560px){
+ #app[data-mode="0"][data-story-view="model"]{
+  display:grid;
+  grid-template-columns:var(--left) minmax(0,1fr) 0px;
+  grid-template-rows:54px minmax(0,1fr) 0px 0px;
+ }
+ #app[data-mode="0"][data-story-view="model"] .inspector,
+ #app[data-mode="0"][data-story-view="model"] .plot-panel,
+ #app[data-mode="0"][data-story-view="model"] .footer{display:none!important}
+ #app[data-mode="0"][data-story-view="model"] .stage{
+  grid-column:2;grid-row:2;min-height:0;min-width:0;margin:0
+ }
+ #app[data-mode="0"][data-story-view="model"] #storyBack3d{
+  position:absolute;top:auto;left:13px;bottom:12px;z-index:30
+ }
+}
 </style>
 </head>
 <body>

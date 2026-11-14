@@ -45,6 +45,11 @@ try {
    }
    await page.locator('#story3d').click();
    assert.equal(await page.locator('#modelStory').isVisible(),false,'3D blijft bereikbaar');
+   if(width>800&&height<560){
+    const technicalStage=await page.locator('#stage').boundingBox();
+    assert(technicalStage&&technicalStage.height>200,
+     'Liggend moet het model genoeg hoogte krijgen: '+JSON.stringify(technicalStage));
+   }
    if(width<=800){
     for(const panel of ['graph','settings','learn']){
      await page.locator('.mobile-dock [data-panel="'+panel+'"]').click();
