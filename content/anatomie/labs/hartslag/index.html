@@ -47,6 +47,15 @@
             <span class="view-kicker"><span class="status-dot" aria-hidden="true"></span> HART IN BEWEGING</span>
             <span class="loop-label" id="loopLabel">Eén hartslag, steeds opnieuw</span>
           </div>
+          <div class="transport">
+            <button class="play" type="button" id="play" aria-label="Start de doorlopende hartslag">Start hartslag</button>
+            <span class="loop-notice" id="loopNotice">Speelt steeds opnieuw af</span>
+            <div class="scrub-group">
+              <label for="scrub" class="visually-hidden">Tijdstip binnen de hartcyclus</label>
+              <input id="scrub" type="range" min="0" max="1000" value="0" step="1" aria-label="Ga naar een moment in de hartslag">
+              <output id="timeOutput" for="scrub">0,00 s</output>
+            </div>
+          </div>
           <div class="stage" id="stage">
             <canvas id="heartCanvas" aria-label="Bestuurbaar 3D-hartmodel uit BodyParts3D. De hartkleppen bewegen volgens een vereenvoudigd onderwijsmodel. Sleep om te draaien en knijp om te zoomen.">Je browser heeft ondersteuning voor WebGL nodig.</canvas>
             <div class="stage-wash" aria-hidden="true"></div>
@@ -82,15 +91,6 @@
             <div class="trace-head"><span>DRUK <i class="trace-key pressure"></i><b id="miniPressure">5 mmHg</b></span><span>VOLUME <i class="trace-key volume"></i><b id="miniVolume">60 ml</b></span><span class="trace-time" id="miniTraceTime">0,00 s</span></div>
             <canvas id="miniTrace" aria-label="Live grafiek van de linkerkamerdruk en het kamervolume, met dezelfde tijd als het hart"></canvas>
           </div>
-          <div class="transport">
-            <button class="play" type="button" id="play" aria-label="Start de doorlopende hartslag">Start hartslag</button>
-            <span class="loop-notice" id="loopNotice">Speelt steeds opnieuw af</span>
-            <div class="scrub-group">
-              <label for="scrub" class="visually-hidden">Tijdstip binnen de hartcyclus</label>
-              <input id="scrub" type="range" min="0" max="1000" value="0" step="1" aria-label="Ga naar een moment in de hartslag">
-              <output id="timeOutput" for="scrub">0,00 s</output>
-            </div>
-          </div>
           <details id="heartOptions" class="heart-options">
             <summary>Weergave en snelheid</summary>
             <div class="heart-options-content">
@@ -102,7 +102,8 @@
               </div>
               <div class="heart-side-controls" id="heartSideControls" role="group" aria-label="Welke harthelft onderzoeken" hidden>
             <span>BEKIJK DE WERKING VAN</span>
-            <button type="button" data-heart-side="left" aria-pressed="true">Linkerkamer</button>
+            <button type="button" data-heart-side="both" aria-pressed="true">Beide kanten</button>
+            <button type="button" data-heart-side="left" aria-pressed="false">Linkerkamer</button>
             <button type="button" data-heart-side="right" aria-pressed="false">Rechterkamer</button>
             <button type="button" id="detailToggle" aria-pressed="false">Kleppen uitlichten</button>
           </div>
