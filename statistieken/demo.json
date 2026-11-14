@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "demo": true,
-  "source": "Fictieve voorbeeldgegevens; geen echte websitebezoeken",
+  "source": "Voorbeeld",
   "updated_at": "2026-11-14T16:00:00Z",
   "period": {
     "from": "2026-10-16",
@@ -306,7 +306,7 @@
     }
   ],
   "notes": [
-    "Alle getallen zijn verzonnen. Deze voorbeeldstand meet en verstuurt geen bezoeken.",
-    "De echte Cloudflare-statistieken worden uitsluitend in de gewone weergave getoond."
+    "Voorbeeldweergave, los van de gegevensverzameling.",
+    "Live gegevens staan in de gewone weergave."
   ]
 }
