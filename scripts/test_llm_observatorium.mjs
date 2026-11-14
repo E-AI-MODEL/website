@@ -1,9 +1,11 @@
 // Browserproef voor de openbare LLM-HTML, inclusief echte tokeninvoer.
 import { chromium } from 'playwright';
+import { mkdirSync } from 'node:fs';
 import { spawn } from 'node:child_process';
 import assert from 'node:assert/strict';
 const base='http://127.0.0.1:8793';
 const server=spawn('python3',['-m','http.server','8793','--bind','127.0.0.1','--directory',process.argv[2]||'site-build'],{stdio:'ignore'});
+mkdirSync('test-results',{recursive:true});
 let browser;
 try{
  let ready=false;
@@ -21,6 +23,27 @@ try{
   await page.locator('#universe').waitFor({state:'visible'});
   const modesCount=await page.locator('#modes .mode-btn').count();
   assert.equal(modesCount,7,'Zeven onderzoeksmodules; JS-fouten: '+errors.join(' | '));
+  // De lagen staan in een volgorde, niet op concentrische ringen.
+  const layout=await page.evaluate(()=>({
+    first:world.experts[0],last:world.experts[(cfg.layers-1)*cfg.experts],
+    maxY:Math.max(...world.experts.map(p=>Math.abs(p.y))),
+    maxZ:Math.max(...world.experts.map(p=>Math.abs(p.z))),
+    layers:cfg.layers,expertsPerLayer:cfg.experts,expertCount:world.experts.length
+  }));
+  assert(layout.last.x>layout.first.x,'Lagen moeten oplopend geplaatst zijn');
+  assert(layout.maxY<1.7&&layout.maxZ<2,'Experts moeten in compacte roosters staan');
+  assert.equal(layout.expertCount,layout.layers*layout.expertsPerLayer,'Alle experts blijven behouden');
+  for(let mode=0;mode<7;mode++){
+    await page.evaluate(m=>setMode(m),mode);
+    await page.waitForTimeout(120);
+    if([0,1,2,3,4,5].includes(mode))await page.screenshot({path:'test-results/llm-'+width+'-modus-'+mode+'.png'});
+    assert.equal(await page.evaluate(()=>state.playing),false,'Geen automatische beweging in modus '+mode);
+    const isPlayerVisible=await page.locator('#playBtn').isVisible();
+    assert.equal(isPlayerVisible,false,'Geen nutteloze afspeelbalk in modus '+mode);
+  }
+  await page.evaluate(()=>setMode(0));
+  assert.equal(errors.length,0,'Fouten bij omschakelen tussen zeven visualisaties: '+errors.join(' | '));
+
   if(width<800)await page.locator('.mobile-dock [data-panel="modules"]').click();
   await page.locator('#modes [data-mode="1"]').click();
   if(width<800)await page.locator('.mobile-dock [data-panel="settings"]').click();
@@ -71,7 +94,7 @@ try{
    return checks;
   });
   for(const item of motion){
-    assert(item.framesDiffer,'Modus '+item.mode+' blijft stil bij tijdsverloop');
+    if([0,2,3,4,5].includes(item.mode))assert.equal(item.framesDiffer,false,'Statische uitleg verandert niet door een verborgen tijdwaarde, modus '+item.mode);
     assert.equal(item.follow,false,'Modus '+item.mode+' volgt nog een springende camera');
     assert.equal(item.cameraX,0,'Camera mag niet springen op de X-as');
     assert.equal(item.cameraY,0,'Camera mag niet springen op de Y-as');

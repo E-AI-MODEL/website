@@ -45,7 +45,7 @@ class LlmObservatorySourceTests(unittest.TestCase):
         for code in ("function updateLayerInspector()", "function selectLayer(index)",
                      "function selectLayerToken(index)", "function drawStream()",
                      "function journeyStep(direction)", "function updateJourneyUI()",
-                     "state.playing=state.mode!==1"):
+                     "state.playing=false"):
             self.assertIn(code, html)
         self.assertIn('id="layerTokenCount"', html)
         self.assertIn('id="layerAttentionBadge"', html)
@@ -70,16 +70,21 @@ class LlmObservatorySourceTests(unittest.TestCase):
             encoding="utf-8", capture_output=True, check=False, timeout=20)
         self.assertEqual(result.returncode, 0, result.stderr)
 
-    def test_each_research_mode_has_its_own_animation(self):
+    def test_views_have_distinct_purpose_and_no_automatic_playback(self):
         for method in ("drawModelScan", "drawStream", "drawRouterSignals",
-                       "drawAttentionSignals", "drawContextWindow",
-                       "drawGenerationSample", "drawUsageWorld"):
+                       "drawAttention", "drawContextWindow",
+                       "drawGeneration", "drawUsageWorld"):
             self.assertIn("function " + method + "()", self.html)
-        for call in ("drawModelScan();", "drawRouterSignals()", "drawAttentionSignals()",
-                     "drawContextWindow()", "drawGenerationSample()", "drawUsageWorld()"):
-            self.assertIn(call, self.html)
-        self.assertIn("state.playing=state.mode!==1&&!window.matchMedia", self.html)
         self.assertIn("state.playing=false", self.html)
+        self.assertNotIn("state.playing=state.mode!==1", self.html)
+        self.assertIn("function layerX(layer)", self.html)
+        self.assertIn("function expertGrid(expert)", self.html)
+        self.assertIn("const points=corners(l).map(project)", self.html)
+        self.assertIn("function highlightExpert()", self.html)
+        self.assertIn("SCHEMATISCH BEREIK, GEEN GEMETEN", self.html)
+        self.assertNotIn("Elke ring staat voor een laag.", self.html)
+        self.assertIn("Elk vlak is een modellaag.", self.html)
+
 
     def test_reasoning_and_token_costs(self):
         html = self.html
