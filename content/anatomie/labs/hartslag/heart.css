@@ -400,7 +400,9 @@
 @media(max-width:790px){
  .layer-menu{right:9px;top:9px}
  .layer-menu summary{min-width:79px;min-height:34px;padding:6px 10px;font-size:11px}
- .layer-menu-panel{max-height:260px;width:min(258px,calc(100vw - 25px))}
+ .layer-menu-panel{max-height:302px;width:min(258px,calc(100vw - 25px))}
+ #modelCaption{display:none}
+ .more-hint{display:none}
  .quick-measurements>summary{padding:8px 11px;min-height:40px;gap:8px}
  .quick-values{gap:9px}
  .quick-values b{font-size:10px}
