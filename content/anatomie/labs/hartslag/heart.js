@@ -176,48 +176,58 @@ function updateViewport(){
 // gehaald. De browser heeft geen externe 3D-engine of Draco-decoder nodig.
 async function loadAtlasModels(){
   if(!gl)return;
-  try{
-    const manifestResponse=await fetch('./atlas-heart.json');
-    if(!manifestResponse.ok)throw Error('Hartmesh-manifest ontbreekt');
-    const manifest=await manifestResponse.json();
-    if(manifest.format!==1||!Array.isArray(manifest.parts)||manifest.parts.length<4)
-      throw Error('Onvolledig hartmesh-manifest');
-    const bufferResponse=await fetch('./atlas-heart.bin');
-    if(!bufferResponse.ok)throw Error('Hartmesh-bestand ontbreekt');
-    const buffer=await bufferResponse.arrayBuffer();
-    if(buffer.byteLength!==manifest.bytes)throw Error('Hartmesh is niet volledig');
-    const loaded=[];
-    const centers={},details={};
-    for(const part of manifest.parts){
-      if(!Number.isInteger(part.count)||part.count<=0)throw Error('Ongeldige mesh: '+part.id);
-      const size=part.count*3;
-      const v=new Float32Array(buffer,part.positionOffset,size);
-      const n=new Float32Array(buffer,part.normalOffset,size);
-      if(!Array.isArray(part.center)||part.center.length!==3)throw Error('Meshcentrum ontbreekt');
-      loaded.push({id:part.id,kind:part.kind,color:part.color,mesh:upload({v,n,count:part.count})});
-      centers[part.id]=part.center;
-      details[part.id]={label:part.label,pos:part.center,type:part.kind};
-    }
-    atlasParts=loaded;atlasCenters=centers;atlasDetails=details;atlasReady=true;atlasError=null;
-    $('modelCaption').textContent='3D · Anatomische hartvorm · Atlasmodel';
-    if(!state.cutaway)positionInfo(null);
-    syncViewControls();
-  }catch(error){
-    atlasError=String(error.message||error);
-    atlasReady=false;
-    // Ook zonder het atlasbestand blijft de bewegende doorsnede bruikbaar.
-    state.cutaway=true;
-    syncViewControls();
-    $('modelCaption').textContent='3D · Bewegende doorsnede · Schematisch';
-    $('partInfo').textContent='Het anatomische buitenmodel kon niet worden geladen. De bewegende doorsnede blijft beschikbaar.';
-    console.error('Hartslaglab atlasmesh:',atlasError);
+  const failures=[];
+  for(const [name,isRich] of [['atlas-heart-rich',true],['atlas-heart',false]]){
+    try{
+      const response=await fetch('./'+name+'.json');
+      if(!response.ok)throw Error(name+'-manifest ontbreekt: '+response.status);
+      const manifest=await response.json();
+      if(manifest.format!==(isRich?2:1)||!Array.isArray(manifest.parts)||manifest.parts.length<(isRich?34:4))
+        throw Error('Onvolledig anatomisch model: '+name);
+      const data=await fetch('./'+name+'.bin');
+      if(!data.ok)throw Error('Hartmesh ontbreekt: '+name);
+      const buffer=await data.arrayBuffer();
+      if(buffer.byteLength!==manifest.bytes)throw Error('Hartmesh-bestand is niet volledig');
+      const loaded=[],centers={},details={},known=new Set();
+      for(const part of manifest.parts){
+        if(!Number.isInteger(part.count)||part.count<=0||known.has(part.id))throw Error('Ongeldige mesh: '+part.id);
+        known.add(part.id);
+        const size=part.count*3;
+        if(!Array.isArray(part.center)||part.center.length!==3)throw Error('Meshcentrum ontbreekt: '+part.id);
+        const v=new Float32Array(buffer,part.positionOffset,size);
+        const n=new Float32Array(buffer,part.normalOffset,size);
+        const t=isRich?new Float32Array(buffer,part.tissueOffset,size):null;
+        loaded.push({id:part.id,kind:part.kind,color:part.color,mesh:upload({v,n,t,count:part.count})});
+        centers[part.id]=part.center;
+        details[part.id]={label:part.label,pos:part.center,type:part.kind};
+      }
+      atlasParts=loaded;atlasCenters=centers;atlasDetails=details;atlasReady=true;atlasRich=isRich;atlasError=null;
+      $('modelCaption').textContent=isRich?
+        'Echte 3D-anatomie · BodyParts3D · 34 structuren':'3D · Anatomische hartvorm · Atlasmodel';
+      if(!state.cutaway)positionInfo(null);
+      syncViewControls();
+      return;
+    }catch(error){failures.push(name+': '+String(error.message||error));}
   }
+  atlasError=failures.join(' | ');atlasReady=false;atlasRich=false;
+  state.cutaway=true;state.anatomyView=false;
+  syncViewControls();
+  $('modelCaption').textContent='3D · Bewegende doorsnede · Schematisch';
+  $('partInfo').textContent='De anatomische 3D-bronnen konden niet worden geladen. Het schematische werkingsmodel blijft bruikbaar.';
+  console.error('Hartslaglab bronmodellen:',atlasError);
 }
 function drawAtlasHeart(m,section=false){
-  // Alle echte atlasdelen gebruiken dezelfde, ruimtelijk doorlopende vervorming.
-  // De extra zichtbare beweging helpt fasen vergelijken; dit is geen biomechanisch model.
   const pulse=clamp((1-m.ventScale)/.21,0,1);
   for(const part of atlasParts){
+    if(atlasRich){
+      // Een bloedruimtemesh is de vorm van een holte, geen extra spierwand.
+      // Laat de holtes alleen via de weggesneden myocardwand zien.
+      if(part.kind==='space')continue;
+      const cutWall=section&&part.kind==='wall';
+      const color=state.selected===part.id?[.98,.75,.56]:part.color;
+      drawMesh(part.mesh,m4(),color,1,pulse,cutWall);
+      continue;
+    }
     if(section&&part.kind!=='chamber'&&part.id!==(state.focusSide==='left'?'ao':'pa'))continue;
     const color=state.selected===part.id?[.98,.75,.56]:part.color;
     drawMesh(part.mesh,m4(),color,1,pulse,section&&part.kind==='chamber');
@@ -228,22 +238,20 @@ function drawScene(m){
   updateViewport();
   gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
   gl.depthMask(true);
-  if(atlasReady){
+  if(atlasReady&&(!state.cutaway||state.anatomyView)){
     drawAtlasHeart(m,state.cutaway);
-    if(!state.cutaway){
-      updateLabels();
-      return;
-    }
+    updateLabels();
+    return;
   }
   // Vaten achter het zichtbare myocard, maar met een herkenbaar doorlopend verloop.
-  if(!atlasReady)for(const vessel of VESSELS)
+  if((!atlasReady||!atlasRich||!state.anatomyView))for(const vessel of VESSELS)
     drawMesh(meshes.vessels[vessel.id],m4(),vessel.color,1);
 
   // Een doorlopende spierwand verbindt de hartkamers tot één orgaan.
   // De brede opening laat de inwendige holtes zichtbaar.
-  if(!atlasReady)drawMesh(meshes.envelope,m4(),[.65,.31,.29],1);
+  if((!atlasReady||!atlasRich||!state.anatomyView))drawMesh(meshes.envelope,m4(),[.65,.31,.29],1);
   // Hartoren vormen de gekartelde uitlopers van de boezems.
-  if(!atlasReady)for(const auricle of meshes.auricles)drawMesh(auricle.mesh,m4(),state.selected===auricle.id?[.96,.66,.50]:auricle.color,1);
+  if((!atlasReady||!atlasRich||!state.anatomyView))for(const auricle of meshes.auricles)drawMesh(auricle.mesh,m4(),state.selected===auricle.id?[.96,.66,.50]:auricle.color,1);
 
   // Vier holtes met een echte open voorzijde, spierwand en inwendige bekleding.
   // De kamergeometrie wordt per hartfase opgeschaald. Dit is een didactische
@@ -257,20 +265,20 @@ function drawScene(m){
     const hit=state.selected===id;
     // Van buiten zie je één hartwand, niet vier losse ellipsoïden.
     if(!state.cutaway)continue;
-    if(!atlasReady)drawMesh(meshes.chambers[id].outer,model,hit?[.95,.61,.51]:part.muscle,1);
+    if((!atlasReady||!atlasRich||!state.anatomyView))drawMesh(meshes.chambers[id].outer,model,hit?[.95,.61,.51]:part.muscle,1);
     drawMesh(meshes.chambers[id].inner,model,part.blood,1);
     drawMesh(meshes.chambers[id].rim,model,hit?[1,.78,.62]:[.94,.63,.54],1);
-    if(!atlasReady)for(const ridge of meshes.ridges[id])drawMesh(ridge.mesh,model,ridge.color,.96);
+    if((!atlasReady||!atlasRich||!state.anatomyView))for(const ridge of meshes.ridges[id])drawMesh(ridge.mesh,model,ridge.color,.96);
   }
   // Kransvaten en de grote hartader liggen op het epicard.
-  if(!atlasReady)for(const vessel of meshes.coronary)drawMesh(vessel.mesh,m4(),state.selected===vessel.id?[.98,.75,.52]:vessel.color,1);
+  if((!atlasReady||!atlasRich||!state.anatomyView))for(const vessel of meshes.coronary)drawMesh(vessel.mesh,m4(),state.selected===vessel.id?[.98,.75,.52]:vessel.color,1);
   if(state.cutaway){
-    if(!atlasReady||state.showDetails)for(const papillary of meshes.papillary){
+    if((!atlasReady||!atlasRich||!state.anatomyView)||state.showDetails)for(const papillary of meshes.papillary){
       if(atlasReady&&!papillary.id.includes(state.focusSide==='left'?'lv':'rv'))continue;
       drawMesh(papillary.mesh,m4(),state.selected===papillary.id?[.98,.71,.54]:papillary.color,1);
     }
-    if(!atlasReady)drawMesh(meshes.septum,m4(),[.91,.59,.52],1);
-    if(!atlasReady||state.showDetails)for(const chord of meshes.cords){
+    if((!atlasReady||!atlasRich||!state.anatomyView))drawMesh(meshes.septum,m4(),[.91,.59,.52],1);
+    if((!atlasReady||!atlasRich||!state.anatomyView)||state.showDetails)for(const chord of meshes.cords){
       if(atlasReady&&chord.ventricle!==(state.focusSide==='left'?'lv':'rv'))continue;
       drawMesh(chord.mesh,m4(),[.96,.85,.70],1);
     }
@@ -285,7 +293,7 @@ function drawScene(m){
       const leaves=leafletGeometry(valve,aperture);
       gl.bindBuffer(gl.ARRAY_BUFFER,mesh.vb);gl.bufferSubData(gl.ARRAY_BUFFER,0,leaves.v);
       gl.bindBuffer(gl.ARRAY_BUFFER,mesh.nb);gl.bufferSubData(gl.ARRAY_BUFFER,0,leaves.n);
-      if(!atlasReady||state.showDetails)drawMesh(meshes.valves[valve.id].rim,modelMatrix(valve.pos,[1,1,1]),[.96,.75,.59],1);
+      if((!atlasReady||!atlasRich||!state.anatomyView)||state.showDetails)drawMesh(meshes.valves[valve.id].rim,modelMatrix(valve.pos,[1,1,1]),[.96,.75,.59],1);
       drawMesh(mesh,modelMatrix(valve.pos,[1,1,1]),active?[.91,.90,.71]:[.96,.69,.53],1);
     }
   }
@@ -304,7 +312,7 @@ function updateLabels(){
   for(const el of $('labels').children){
     const id=el.dataset.part,part=ANATOMY_PARTS[id];
     if(!part)continue;
-    const world=!state.cutaway&&atlasCenters[id]?atlasCenters[id]:part.pos;
+    const world=(!state.cutaway||state.anatomyView)&&atlasCenters[id]?atlasCenters[id]:part.pos;
     const p=project(world,pv,w,h);
     const visible=state.showLabels&&p[2]>0&&p[0]>-25&&p[0]<w+25;
     el.hidden=!visible;
@@ -513,18 +521,29 @@ $('timeline').querySelectorAll('button').forEach(btn=>btn.addEventListener('clic
 function syncViewControls(){
   $('sectionToggle').textContent=state.cutaway?'Bekijk buitenkant':'Bekijk binnenkant';
   $('sectionToggle').setAttribute('aria-pressed',String(state.cutaway));
-  $('flowToggle').hidden=!state.cutaway;
-  $('flowLegend').hidden=!state.cutaway||!state.showFlow;
-  $('heartSideControls').hidden=!state.cutaway;
+  const schematic=state.cutaway&&!state.anatomyView;
+  $('flowToggle').hidden=!schematic;
+  $('flowLegend').hidden=!schematic||!state.showFlow;
+  $('heartSideControls').hidden=!schematic;
+  $('mechanicsToggle').hidden=!state.cutaway||!atlasRich;
+  $('mechanicsToggle').textContent=state.anatomyView?'Bekijk klepbeweging':'Bekijk echte anatomie';
+  $('mechanicsToggle').setAttribute('aria-pressed',String(state.anatomyView));
   $('detailToggle').textContent=state.showDetails?'Klepdetails verbergen':'Klepdetails tonen';
   $('detailToggle').setAttribute('aria-pressed',String(state.showDetails));
   document.querySelectorAll('[data-heart-side]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.heartSide===state.focusSide)));
   $('modelCaption').textContent=state.cutaway?
-    '3D · Bewegende doorsnede · Schematisch':
-    '3D · Anatomische hartvorm · Atlasmodel';
+    state.anatomyView?'Echte anatomie · Binnenaanzicht · Kleppen en spierwanden':
+      '3D · Klepbeweging · Vereenvoudigd werkingsmodel':
+    atlasRich?'Echte 3D-anatomie · BodyParts3D · 34 structuren':'3D · Anatomische hartvorm · Atlasmodel';
 }
 $('sectionToggle').addEventListener('click',()=>{
   state.cutaway=!state.cutaway;
+  state.anatomyView=state.cutaway&&atlasRich;
+  syncViewControls();
+  positionInfo(null);
+});
+$('mechanicsToggle').addEventListener('click',()=>{
+  state.anatomyView=!state.anatomyView;
   syncViewControls();
   positionInfo(null);
 });
@@ -597,7 +616,7 @@ $('discoveryAction').addEventListener('click',()=>{
   if(!study.guess)return;
   if(study.stage==='choose'){
     study.stage='watch';
-    state.cutaway=true;state.showFlow=true;state.focusSide='left';syncViewControls();
+    state.cutaway=true;state.anatomyView=false;state.showFlow=true;state.focusSide='left';syncViewControls();
     positionInfo(null);
     $('partInfo').textContent='Bekijk de mitralisklep bij de linkerkamer. De aortaklep opent pas daarna.';
     // Het onderzoek begint vlak voor de AV-kleppen sluiten.
@@ -649,7 +668,7 @@ canvas.addEventListener('touchend',()=>{state.pinch=null;});
 let resize=new ResizeObserver(()=>{if(gl)render();});resize.observe(stage);
 setupModel();syncPlay();syncLabelsToggle();syncViewControls();syncStudy();loadAtlasModels();
 window.__EAI_HEART_LAB__={
-  get state(){return {t:state.t,playing:state.playing,speed:state.speed,yaw:state.yaw,zoom:state.zoom,selected:state.selected,cutaway:state.cutaway,showLabels:state.showLabels,focusSide:state.focusSide,showDetails:state.showDetails,atlasReady,atlasError,atlasPartCount:atlasParts.length,studyStage:state.study.stage};},
+  get state(){return {t:state.t,playing:state.playing,speed:state.speed,yaw:state.yaw,zoom:state.zoom,selected:state.selected,cutaway:state.cutaway,showLabels:state.showLabels,focusSide:state.focusSide,showDetails:state.showDetails,atlasReady,atlasRich,anatomyView:state.anatomyView,atlasError,atlasPartCount:atlasParts.length,studyStage:state.study.stage};},
   get metrics(){return mechanics(state.t);},
   setTime:t=>setTime(t,true),pause:()=>{state.playing=false;syncPlay();},
   get rendererReady(){return Boolean(gl)&&(state.cutaway||atlasReady);}
