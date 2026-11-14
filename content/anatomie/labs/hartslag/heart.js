@@ -683,6 +683,11 @@ let resize=new ResizeObserver(()=>{if(gl)render();});resize.observe(stage);
 setupModel();syncPlay();syncLabelsToggle();syncViewControls();syncStudy();loadAtlasModels();
 window.__EAI_HEART_LAB__={
   get state(){return {t:state.t,playing:state.playing,speed:state.speed,yaw:state.yaw,zoom:state.zoom,selected:state.selected,cutaway:state.cutaway,showLabels:state.showLabels,focusSide:state.focusSide,showDetails:state.showDetails,atlasReady,atlasRich,anatomyView:state.anatomyView,atlasError,atlasPartCount:atlasParts.length,studyStage:state.study.stage};},
+  // Debugbare projectiepunten voor een echte browserklik in de regressietest.
+  get hitTargets(){return Object.entries(selectableParts()).map(([id,part])=>{
+    const [x,y,depth]=project(part.pos,pv,canvas.clientWidth,canvas.clientHeight);
+    return {id,type:part.type,x,y,visible:depth>0&&x>=0&&y>=0&&x<=canvas.clientWidth&&y<=canvas.clientHeight};
+  });},
   get metrics(){return mechanics(state.t);},
   setTime:t=>setTime(t,true),pause:()=>{state.playing=false;syncPlay();},
   get rendererReady(){return Boolean(gl)&&(state.cutaway||atlasReady);}
