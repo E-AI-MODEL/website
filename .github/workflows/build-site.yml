@@ -305,11 +305,13 @@ jobs:
           cp -R site-build/toepassingen .
           cp -R site-build/onderwijs .
           cp -R site-build/kennis .
+          cp -R site-build/nl .
+          cp -R site-build/en .
           cp -R site-build/statistieken .
           cp site-build/index.html site-build/404.html site-build/robots.txt site-build/sitemap.xml .
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add index.html 404.html robots.txt sitemap.xml assets publicaties tools model-monitor eai-blog eai-tools-modules eaa-model onderwijsin houseoftalents twee-pijlers workshop-ai werkvormen taalwerkvormen onderbouwing bronnen praktijk over verdieping toepassingen onderwijs kennis statistieken
+          git add index.html 404.html robots.txt sitemap.xml assets publicaties tools model-monitor eai-blog eai-tools-modules eaa-model onderwijsin houseoftalents twee-pijlers workshop-ai werkvormen taalwerkvormen onderbouwing bronnen praktijk over verdieping toepassingen onderwijs kennis statistieken nl en
           if ! git diff --cached --quiet; then
             git commit -m "build: refresh EAI site"
             git push origin HEAD:main
