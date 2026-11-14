@@ -2795,6 +2795,10 @@ def build(sources: Path, out: Path) -> None:
     if demo_source.is_file():
         (out / "statistieken").mkdir(parents=True, exist_ok=True)
         shutil.copyfile(demo_source, out / "statistieken" / "demo.json")
+    collector = repo_root / "statistieken" / "collect.php"
+    if collector.is_file():
+        (out / "statistieken").mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(collector, out / "statistieken" / "collect.php")
     # Shared styles and behavior belong to the bilingual redesign as well.
     if (repo_root / "nl").is_dir():
         shutil.copytree(repo_root / "assets", out / "assets", dirs_exist_ok=True)
@@ -2833,6 +2837,7 @@ CLOUDFLARE_PUBLIC_BEACON = (
     '<script defer src="https://static.cloudflareinsights.com/beacon.min.js" '
     'data-cf-beacon=\'{"token":"1aa5d5810d5a48e7bb8e5b2bac573e74"}\'></script>'
 )
+EAI_FIRST_PARTY_TRACKER = '<script defer src="/assets/site-analytics.js"></script>'
 # These are reviewed standalone HTML files whose publication tests require exact bytes.
 # They may get RUM later through an explicit, separately tested source change.
 CLOUDFLARE_EXACT_SOURCE_ROUTES = {
@@ -2871,10 +2876,15 @@ def add_cloudflare_beacon_to_public_routes(out: Path, public_urls: list[str]) ->
         if not page.is_file():
             continue
         html = page.read_text(encoding="utf-8")
-        if "static.cloudflareinsights.com/beacon.min.js" in html:
+        scripts = ""
+        if "static.cloudflareinsights.com/beacon.min.js" not in html:
+            scripts += CLOUDFLARE_PUBLIC_BEACON
+        if "/assets/site-analytics.js" not in html:
+            scripts += EAI_FIRST_PARTY_TRACKER
+        if not scripts:
             continue
         revised, changed = re.subn(
-            r"</head\s*>", lambda match: CLOUDFLARE_PUBLIC_BEACON + match.group(0),
+            r"</head\s*>", lambda match: scripts + match.group(0),
             html, count=1, flags=re.I,
         )
         if changed:
