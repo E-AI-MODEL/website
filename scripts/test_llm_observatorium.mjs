@@ -161,13 +161,19 @@ try{
     const geometry=await page.evaluate(()=>({
       width:innerWidth,height:innerHeight,scrollWidth:document.documentElement.scrollWidth,scrollHeight:document.documentElement.scrollHeight,
       visual:document.querySelector('#guideVisual').getBoundingClientRect().toJSON(),
+      visualScroll:document.querySelector('#guideVisual').scrollHeight,
+      visualClient:document.querySelector('#guideVisual').clientHeight,
       aside:document.querySelector('.ai-guide-aside').getBoundingClientRect().toJSON(),
+      asideScroll:document.querySelector('.ai-guide-aside').scrollHeight,
+      asideClient:document.querySelector('.ai-guide-aside').clientHeight,
       button:document.querySelector('#guideNext').getBoundingClientRect().toJSON()
     }));
     assert(geometry.scrollWidth<=width+2&&geometry.scrollHeight<=height+2,
       'Geen paginascroll '+width+' stap '+step+': '+JSON.stringify(geometry));
     assert(geometry.visual.width>125&&geometry.visual.height>80,
       'Visualisatie niet bruikbaar '+width+' stap '+step+': '+JSON.stringify(geometry));
+    assert(geometry.visualScroll<=geometry.visualClient+3,'Geen verborgen grafiektekst '+width+' stap '+step+': '+JSON.stringify(geometry));
+    assert(geometry.asideScroll<=geometry.asideClient+3,'Geen verborgen uitleg '+width+' stap '+step+': '+JSON.stringify(geometry));
     assert(geometry.aside.height>55&&geometry.aside.bottom<=height-40,
       'Uitleg binnen venster '+width+' stap '+step+': '+JSON.stringify(geometry));
     assert(geometry.button.right<=width+2&&geometry.button.bottom<=height+2,
