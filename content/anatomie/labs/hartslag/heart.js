@@ -10,7 +10,7 @@ const lerp=(a,b,t)=>a+(b-a)*t;
 const ease=t=>{t=clamp(t,0,1);return t*t*(3-2*t);};
 const span=(t,a,b)=>ease((t-a)/(b-a));
 const fmt=(v,n=0)=>Number(v).toLocaleString('nl-NL',{minimumFractionDigits:n,maximumFractionDigits:n});
-const state={cutaway:true,t:0,playing:false,speed:.25,yaw:-.20,pitch:.08,zoom:5.95,selected:null,showLabels:false,showFlow:true,tab:'phase',rate:75,last:0,drag:null,study:{guess:null,stage:'choose',stopAt:null},focusSide:'both',showDetails:false,anatomyView:false,userPaused:false,mode:'watch',guideStep:0};
+const state={cutaway:true,t:0,playing:false,speed:.25,yaw:-.20,pitch:.08,zoom:5.95,pan:[0,0,0],selected:null,showLabels:false,showFlow:true,tab:'phase',rate:75,last:0,drag:null,study:{guess:null,stage:'choose',stopAt:null},focusSide:'both',showDetails:false,anatomyView:false,userPaused:false,mode:'watch',guideStep:0};
 const layerVisibility={outer:true,wall:true,valve:true,vessel:true,coronary:true,papillary:true};
 function layerForKind(kind){return kind==='artery'||kind==='vein'?'coronary':kind;}
 function isLayerVisible(part){return layerVisibility[layerForKind(part.kind)]!==false;}
@@ -206,8 +206,10 @@ function updateViewport(){
   const w=Math.round(canvas.clientWidth*Math.min(devicePixelRatio||1,2)),h=Math.round(canvas.clientHeight*Math.min(devicePixelRatio||1,2));
   if(canvas.width!==w||canvas.height!==h){canvas.width=w;canvas.height=h;}
   if(gl)gl.viewport(0,0,w,h);
-  const eye=[Math.sin(state.yaw)*Math.cos(state.pitch)*state.zoom,Math.sin(state.pitch)*state.zoom+.17,Math.cos(state.yaw)*Math.cos(state.pitch)*state.zoom];
-  pv=mul(persp(42*Math.PI/180,Math.max(.5,w/Math.max(h,1)),.1,100),lookAt(eye,[0,.12,0]));
+  const center=add([0,.12,0],state.pan);
+  const eye=add(center,[Math.sin(state.yaw)*Math.cos(state.pitch)*state.zoom,
+    Math.sin(state.pitch)*state.zoom,Math.cos(state.yaw)*Math.cos(state.pitch)*state.zoom]);
+  pv=mul(persp(42*Math.PI/180,Math.max(.5,w/Math.max(h,1)),.1,100),lookAt(eye,center));
 }
 // De anatomische buitenvorm wordt tijdens de sitebuild uit de bestaande GLB
 // gehaald. De browser heeft geen externe 3D-engine of Draco-decoder nodig.
@@ -835,7 +837,7 @@ $('layerMenu').addEventListener('toggle',()=>{
   // Een open laagmenu blijft op mobiel binnen het hartvenster.
   $('layerMenu').classList.toggle('is-open',$('layerMenu').open);
 });
-$('resetCamera').addEventListener('click',()=>{state.yaw=-.20;state.pitch=.08;state.zoom=5.95;positionInfo(null);});
+$('resetCamera').addEventListener('click',()=>{state.yaw=-.20;state.pitch=.08;state.zoom=5.95;state.pan=[0,0,0];positionInfo(null);});
 document.querySelectorAll('[data-tab]').forEach(btn=>btn.addEventListener('click',()=>{
   state.tab=btn.dataset.tab;
   for(const tab of document.querySelectorAll('[data-tab]')){const active=tab===btn;tab.setAttribute('aria-selected',String(active));tab.tabIndex=active?0:-1;}
@@ -900,42 +902,101 @@ $('discoveryAction').addEventListener('click',()=>{
   }
   syncStudy();
 });
+// Pointer Events verwerken één en twee vingers, muis en pen op dezelfde manier.
+// Zo stuurt een pinch nooit per ongeluk ook de draaiing aan.
+const pointers=new Map();
+let gesture=null;
+const pointerDistance=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
+const pointerCenter=(a,b)=>({x:(a.x+b.x)/2,y:(a.y+b.y)/2});
+function cameraPan(dx,dy){
+  const worldPerPixel=2*Math.tan(42*Math.PI/360)*state.zoom/Math.max(canvas.clientHeight,1);
+  const right=[Math.cos(state.yaw),0,-Math.sin(state.yaw)];
+  const up=[-Math.sin(state.yaw)*Math.sin(state.pitch),Math.cos(state.pitch),
+    -Math.cos(state.yaw)*Math.sin(state.pitch)];
+  const move=add(scl(right,-dx*worldPerPixel),scl(up,dy*worldPerPixel));
+  const next=add(state.pan,move);
+  const length=Math.hypot(...next);
+  state.pan=length>2.1?scl(next,2.1/length):next;
+}
+function resetGesture(){
+  const points=[...pointers.values()];
+  if(points.length>=2){
+    const a=points[0],b=points[1];
+    gesture={mode:'pinch',center:pointerCenter(a,b),distance:Math.max(pointerDistance(a,b),1),
+      moved:true};
+  }else if(points.length===1){
+    const point=points[0];
+    gesture={mode:point.pan?'pan':'orbit',last:{...point},start:{...point},moved:false};
+  }else gesture=null;
+}
 canvas.addEventListener('pointerdown',e=>{
-  if(e.pointerType==='touch'&&e.isPrimary===false)return;
-  state.drag={x:e.clientX,y:e.clientY,yaw:state.yaw,pitch:state.pitch,moved:false};
+  if(e.pointerType==='mouse'&&e.button!==0&&e.button!==2)return;
+  e.preventDefault();
+  pointers.set(e.pointerId,{x:e.clientX,y:e.clientY,
+    pan:e.pointerType==='mouse'&&(e.shiftKey||e.button===2)});
   canvas.setPointerCapture?.(e.pointerId);
+  resetGesture();
 });
 canvas.addEventListener('pointermove',e=>{
-  if(!state.drag)return;
-  const dx=e.clientX-state.drag.x,dy=e.clientY-state.drag.y;
-  if(Math.hypot(dx,dy)>5)state.drag.moved=true;
-  state.yaw=state.drag.yaw+dx*.008;
-  state.pitch=clamp(state.drag.pitch+dy*.007,-1.1,1.1);
+  if(!pointers.has(e.pointerId)||!gesture)return;
+  e.preventDefault();
+  const prior=pointers.get(e.pointerId);
+  pointers.set(e.pointerId,{...prior,x:e.clientX,y:e.clientY});
+  if(pointers.size>=2){
+    const [a,b]=[...pointers.values()];
+    const center=pointerCenter(a,b);
+    const distance=Math.max(pointerDistance(a,b),1);
+    if(gesture.mode!=='pinch')resetGesture();
+    else{
+      cameraPan(center.x-gesture.center.x,center.y-gesture.center.y);
+      state.zoom=clamp(state.zoom*gesture.distance/distance,3.5,9.5);
+      gesture.center=center;gesture.distance=distance;
+    }
+    return;
+  }
+  if(gesture.mode!=='orbit'&&gesture.mode!=='pan')resetGesture();
+  const dx=e.clientX-gesture.last.x,dy=e.clientY-gesture.last.y;
+  if(Math.hypot(e.clientX-gesture.start.x,e.clientY-gesture.start.y)>5)gesture.moved=true;
+  if(gesture.mode==='pan')cameraPan(dx,dy);
+  else{
+    state.yaw+=dx*.008;
+    state.pitch=clamp(state.pitch+dy*.007,-1.1,1.1);
+  }
+  gesture.last={...pointers.get(e.pointerId)};
 });
 canvas.addEventListener('pointerup',e=>{
-  if(!state.drag)return;
-  if(!state.drag.moved){const r=canvas.getBoundingClientRect();positionInfo(selectedPartAt(e.clientX-r.left,e.clientY-r.top));}
-  state.drag=null;
-});
-canvas.addEventListener('pointercancel',()=>{state.drag=null;});
-canvas.addEventListener('wheel',e=>{e.preventDefault();state.zoom=clamp(state.zoom*Math.exp(e.deltaY*.001),3.5,9.5);},{passive:false});
-canvas.addEventListener('keydown',e=>{
-  if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key)){
-    e.preventDefault();
-    if(e.key==='ArrowLeft')state.yaw-=.12;
-    if(e.key==='ArrowRight')state.yaw+=.12;
-    if(e.key==='ArrowUp')state.pitch=clamp(state.pitch-.1,-1.1,1.1);
-    if(e.key==='ArrowDown')state.pitch=clamp(state.pitch+.1,-1.1,1.1);
+  if(!pointers.has(e.pointerId))return;
+  const selected=pointers.size===1&&gesture?.mode==='orbit'&&!gesture.moved&&
+    Math.hypot(e.clientX-gesture.start.x,e.clientY-gesture.start.y)<=5;
+  pointers.delete(e.pointerId);
+  if(selected){
+    const r=canvas.getBoundingClientRect();
+    positionInfo(selectedPartAt(e.clientX-r.left,e.clientY-r.top));
   }
+  resetGesture();
+});
+canvas.addEventListener('pointercancel',e=>{pointers.delete(e.pointerId);resetGesture();});
+canvas.addEventListener('lostpointercapture',e=>{pointers.delete(e.pointerId);resetGesture();});
+canvas.addEventListener('contextmenu',e=>e.preventDefault());
+canvas.addEventListener('wheel',e=>{
+  e.preventDefault();
+  state.zoom=clamp(state.zoom*Math.exp(e.deltaY*.001),3.5,9.5);
+},{passive:false});
+canvas.addEventListener('keydown',e=>{
+  const directions={ArrowLeft:[-1,0],ArrowRight:[1,0],ArrowUp:[0,-1],ArrowDown:[0,1]};
+  if(directions[e.key]){
+    e.preventDefault();
+    const [dx,dy]=directions[e.key];
+    if(e.shiftKey)cameraPan(dx*32,dy*32);
+    else{state.yaw+=dx*.12;state.pitch=clamp(state.pitch+dy*.12,-1.1,1.1);}
+  }else if(e.key==='+'||e.key==='='){e.preventDefault();state.zoom=clamp(state.zoom*.87,3.5,9.5);}
+  else if(e.key==='-'){e.preventDefault();state.zoom=clamp(state.zoom*1.13,3.5,9.5);}
 });
 canvas.tabIndex=0;
-canvas.addEventListener('touchstart',e=>{if(e.touches.length===2){state.drag=null;const a=e.touches[0],b=e.touches[1];state.pinch=Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY);}}, {passive:true});
-canvas.addEventListener('touchmove',e=>{if(e.touches.length===2&&state.pinch){const a=e.touches[0],b=e.touches[1],next=Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY);state.zoom=clamp(state.zoom*state.pinch/Math.max(next,1),3.5,9.5);state.pinch=next;}},{passive:true});
-canvas.addEventListener('touchend',()=>{state.pinch=null;});
 let resize=new ResizeObserver(()=>{if(gl)render();});resize.observe(stage);
 setupModel();syncLearningMode();syncLabelsToggle();syncViewControls();syncStudy();loadAtlasModels();
 window.__EAI_HEART_LAB__={
-  get state(){return {t:state.t,playing:state.playing,speed:state.speed,yaw:state.yaw,zoom:state.zoom,selected:state.selected,cutaway:state.cutaway,showLabels:state.showLabels,showFlow:state.showFlow,focusSide:state.focusSide,showDetails:state.showDetails,atlasReady,atlasRich,anatomyView:state.anatomyView,atlasError,atlasPartCount:atlasParts.length,studyStage:state.study.stage,mode:state.mode,guideStep:state.guideStep,layers:{...layerVisibility,flow:state.showFlow,labels:state.showLabels}};},
+  get state(){return {t:state.t,playing:state.playing,speed:state.speed,yaw:state.yaw,pitch:state.pitch,zoom:state.zoom,pan:[...state.pan],selected:state.selected,cutaway:state.cutaway,showLabels:state.showLabels,showFlow:state.showFlow,focusSide:state.focusSide,showDetails:state.showDetails,atlasReady,atlasRich,anatomyView:state.anatomyView,atlasError,atlasPartCount:atlasParts.length,studyStage:state.study.stage,mode:state.mode,guideStep:state.guideStep,layers:{...layerVisibility,flow:state.showFlow,labels:state.showLabels}};},
   get visibleAtlasPartIds(){return atlasParts.filter(part=>part.kind!=='space'&&isLayerVisible(part)).map(part=>part.id);},
   // Debugbare projectiepunten voor een echte browserklik in de regressietest.
   get hitTargets(){return Object.entries(selectableParts()).map(([id,part])=>{
