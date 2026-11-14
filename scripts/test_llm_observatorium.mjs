@@ -150,6 +150,34 @@ try{
   assert.equal(errors.length,0,'JavaScript fouten: '+errors.join(' | '));
   await page.close();
  }
+
+ for(const [width,height] of [[320,568],[844,390]]){
+  const page=await browser.newPage({viewport:{width,height}});
+  const errors=[];page.on('pageerror',e=>errors.push(e.message));
+  try{
+   await page.goto(base+'/tools/llm-observatorium/',{waitUntil:'load'});
+   await page.locator('#aiGuide').waitFor({state:'visible'});
+   for(let step=0;step<5;step++){
+    const geometry=await page.evaluate(()=>({
+      width:innerWidth,height:innerHeight,scrollWidth:document.documentElement.scrollWidth,scrollHeight:document.documentElement.scrollHeight,
+      visual:document.querySelector('#guideVisual').getBoundingClientRect().toJSON(),
+      aside:document.querySelector('.ai-guide-aside').getBoundingClientRect().toJSON(),
+      button:document.querySelector('#guideNext').getBoundingClientRect().toJSON()
+    }));
+    assert(geometry.scrollWidth<=width+2&&geometry.scrollHeight<=height+2,
+      'Geen paginascroll '+width+' stap '+step+': '+JSON.stringify(geometry));
+    assert(geometry.visual.width>125&&geometry.visual.height>80,
+      'Visualisatie niet bruikbaar '+width+' stap '+step+': '+JSON.stringify(geometry));
+    assert(geometry.aside.height>55&&geometry.aside.bottom<=height-40,
+      'Uitleg binnen venster '+width+' stap '+step+': '+JSON.stringify(geometry));
+    assert(geometry.button.right<=width+2&&geometry.button.bottom<=height+2,
+      'Volgende knop zichtbaar '+width+' stap '+step+': '+JSON.stringify(geometry));
+    await page.screenshot({path:'test-results/llm-guide-'+width+'-stap-'+(step+1)+'.png'});
+    if(step<4)await page.locator('#guideNext').click();
+   }
+   assert.deepEqual(errors,[],'Geen JavaScript-fout bij kleine en liggende weergave');
+  }finally{await page.close();}
+ }
  console.log('LLM_BROWSER_OK widths=390,1280 modes=7 tokenizer=real layer_inspector=active');
 }finally{
  if(browser)await browser.close();
