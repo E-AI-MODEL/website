@@ -98,7 +98,7 @@ class LlmObservatorySourceTests(unittest.TestCase):
             self.assertIn(marker, html)
         self.assertIn("Dit zijn voorbeeldkansen. Er is niets berekend voor jouw vraag.", html)
         self.assertIn("Zonder de echte tokenizer zie je een woordvoorbeeld", html)
-        self.assertIn("Op deze pagina wordt je vraag niet naar een echt model verstuurd.", html)
+        self.assertIn("zonder iets te versturen.", html)
         self.assertIn("function drawExpertsGrid()", html)
         self.assertIn("function renderInspector()", html)
 
