@@ -240,16 +240,16 @@ function prepareFlowOverlay(){
   flowOverlay.replaceChildren();
   flowVisuals=atlasFlowPaths.map(flow=>{
     const bed=svgElement('path'),pulse=svgElement('path'),arrow=svgElement('path');
-    const color=flow.color==='blue'?'#84d5fa':'#ffa590';
+    const color=flow.color==='blue'?'#75ddff':'#ffbdad';
     for(const p of [bed,pulse]){
       p.setAttribute('fill','none');
       p.setAttribute('stroke',color);
       p.setAttribute('stroke-linecap','round');
       p.setAttribute('stroke-linejoin','round');
     }
-    bed.setAttribute('stroke-width','5');
-    pulse.setAttribute('stroke-width','2.2');
-    pulse.setAttribute('stroke-dasharray','5 10');
+    bed.setAttribute('stroke-width','7');
+    pulse.setAttribute('stroke-width','3.0');
+    pulse.setAttribute('stroke-dasharray','7 11');
     arrow.setAttribute('fill',color);
     flowOverlay.append(bed,pulse,arrow);
     return {flow,bed,pulse,arrow};
@@ -275,19 +275,20 @@ function updateFlowOverlay(m){
       const before=points[Math.floor(points.length*.64)];
       const length=Math.hypot(tip[0]-before[0],tip[1]-before[1])||1;
       const ux=(tip[0]-before[0])/length,uy=(tip[1]-before[1])/length;
-      const back=[tip[0]-ux*9,tip[1]-uy*9];
+      const back=[tip[0]-ux*12,tip[1]-uy*12];
       arrow.setAttribute('d','M '+tip[0].toFixed(1)+' '+tip[1].toFixed(1)+
-        ' L '+(back[0]-uy*3.8).toFixed(1)+' '+(back[1]+ux*3.8).toFixed(1)+
-        ' L '+(back[0]+uy*3.8).toFixed(1)+' '+(back[1]-ux*3.8).toFixed(1)+' Z');
+        ' L '+(back[0]-uy*4.8).toFixed(1)+' '+(back[1]+ux*4.8).toFixed(1)+
+        ' L '+(back[0]+uy*4.8).toFixed(1)+' '+(back[1]-ux*4.8).toFixed(1)+' Z');
     }
     flowVisualKey=view;
   }
   for(const {flow,bed,pulse,arrow} of flowVisuals){
     const side=state.focusSide==='both'||flow.color===(state.focusSide==='left'?'red':'blue');
     const active=side&&flowIsActive(flow,m);
-    bed.style.opacity=active?'0.24':'0';
-    pulse.style.opacity=active?'0.85':'0';
-    arrow.style.opacity=active?'0.9':'0';
+    const entering=flow.channel==='return';
+    bed.style.opacity=active?(entering?'0.15':'0.26'):'0';
+    pulse.style.opacity=active?(entering?'0.65':'0.96'):'0';
+    arrow.style.opacity=active?(entering?'0.72':'0.98'):'0';
     pulse.style.strokeDashoffset=String(-state.t*(flow.channel==='sem'?175:95));
   }
 }
