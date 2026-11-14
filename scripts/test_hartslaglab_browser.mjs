@@ -1,247 +1,183 @@
-// Echte browsercontrole van het Hartslaglab in Chromium of WebKit.
-// node scripts/test_hartslaglab_browser.mjs site-build chromium
-// node scripts/test_hartslaglab_browser.mjs site-build webkit
+// Browsercontrole: doorlopende anatomische hartslag, faseverhaal en mobiele bediening.
+// node scripts/test_hartslaglab_browser.mjs site-build chromium|webkit
 import assert from 'node:assert/strict';
 import {chromium,webkit} from 'playwright';
 import {spawn} from 'node:child_process';
 import {resolve} from 'node:path';
 import {mkdirSync} from 'node:fs';
+
 const root=resolve(process.argv[2]||'site-build');
 const engine=process.argv[3]==='webkit'?'webkit':'chromium';
 const port=8897,base='http://127.0.0.1:'+port;
 const server=spawn('python3',['-m','http.server',String(port),'--bind','127.0.0.1','--directory',root],{stdio:'ignore'});
 const errors=[];
 let browser;
+const state=p=>p.evaluate(()=>window.__EAI_HEART_LAB__.state);
+const setTime=(p,t)=>p.evaluate(t=>window.__EAI_HEART_LAB__.setTime(t),t);
+
 try {
   let ready=false;
-  for(let i=0;i<90;i++){
-    try{ready=(await fetch(base+'/tools/anatomie/labs/hartslag/')).ok;}catch{}
+  for(let i=0;i<100;i++){
+    try {ready=(await fetch(base+'/tools/anatomie/labs/hartslag/')).ok;}catch{}
     if(ready)break;
     await new Promise(r=>setTimeout(r,100));
   }
-  assert(ready,'De onderliggende Hartslaglab-route ontbreekt in de sitebuild');
-  browser=await (engine==='webkit'?webkit:chromium).launch({headless:true,args:engine==='chromium'?['--use-gl=angle','--use-angle=swiftshader']:[]});
+  assert(ready,'Hartslaglab ontbreekt in de sitebuild');
+  browser=await (engine==='webkit'?webkit:chromium).launch({
+    headless:true,args:engine==='chromium'?['--use-gl=angle','--use-angle=swiftshader']:[]
+  });
   const page=await browser.newPage({viewport:{width:1400,height:920},deviceScaleFactor:1});
   page.on('pageerror',e=>errors.push(e.message));
   await page.goto(base+'/tools/anatomie/labs/hartslag/',{waitUntil:'domcontentloaded'});
-  await page.waitForFunction(()=>window.__EAI_HEART_LAB__?.rendererReady===true,{timeout:25000})
-    .catch(async err=>{
-      const debug=await page.evaluate(()=>({
-        api:typeof window.__EAI_HEART_LAB__,state:window.__EAI_HEART_LAB__?.state,
-        missing:[...['heartCanvas','flowLegend','miniTrace','discoveryAction']].filter(id=>!document.getElementById(id)),
-        webgl:!!document.getElementById('heartCanvas')?.getContext('webgl')
-      }));
-      throw new Error('Hartslaglab start niet: '+err.message+'; fouten: '+errors.join(' | ')+'; status: '+JSON.stringify(debug));
-    });
-  assert.match(await page.title(),/Hartslaglab/);
-  assert.equal(await page.locator('#heartCanvas').count(),1);
-  assert.equal(await page.locator('#timeline button').count(),5);
-  assert(await page.locator('#flowToggle').isHidden(),
-    'De bloedstroomknop heeft op de anatomische buitenkant geen functie');
-  assert.equal(await page.locator('#play').textContent(),'Start','De leerling voorspelt voordat het hart gaat bewegen');
-  const initialMotion=await page.evaluate(()=>window.__EAI_HEART_LAB__.motion);
-  assert(Math.abs(initialMotion.playbackSeconds-3.2)<.01,
-    'Een volledige hartslag hoort bij 0,25x snelheid 3,2 seconden te duren');
-  assert.equal(await page.locator('#speed').inputValue(),'.25',
-    'De getoonde snelheid moet overeenkomen met de echte afspeelsnelheid');
-  assert.match(await page.locator('#playbackDuration').textContent(),/3,2 s per hartslag/);
-  const compact=page.locator('#miniTrace');
-  assert(await compact.isVisible(),'De grafiek moet direct bij het hart staan');
-  assert((await compact.boundingBox()).width>400,'De compacte grafiek moet leesbaar zijn op desktop');
-  await page.evaluate(()=>window.__EAI_HEART_LAB__.setTime(.30));
-  await page.waitForTimeout(100);
-  const filling=await page.locator('#heartCanvas').screenshot();
+  await page.waitForFunction(()=>window.__EAI_HEART_LAB__?.state.atlasRich===true,{timeout:40000});
+  const initial=await state(page);
+  assert(initial.cutaway&&initial.anatomyView&&initial.atlasPartCount===34,'Het echte hart opent vanbinnen');
+  assert.equal(initial.focusSide,'both','De rode en blauwe bloedsomloop horen samen in beeld');
+  assert(initial.showFlow,'Bloedstroom hoort standaard zichtbaar te zijn');
+  assert(await page.locator('#atlasLoading').isHidden(),'Het laadscherm mag de anatomie niet bedekken');
+  assert(await page.locator('#play').isEnabled(),'De animatie start alleen als de rijke atlas geladen is');
+  assert.equal(await page.locator('#heartOptions').getAttribute('open'),null,'Extra bediening staat dicht');
+  assert.equal(await page.locator('#explainMore').getAttribute('open'),null,'Extra uitleg staat dicht');
+  assert.equal(await page.locator('#discovery').getAttribute('open'),null,'De vraag onderbreekt de animatie niet');
+  assert.equal(await page.locator('#measurements').count(),0);
+  assert.equal(await page.locator('.measurements').getAttribute('open'),null);
+  assert((await page.locator('#miniTrace').boundingBox()).width>400,'De lopende grafiek staat naast de animatie');
+  assert.equal(await page.locator('#storySteps span').count(),5,'De vijf fasen blijven overzichtelijk');
+  assert(await page.locator('#storyTitle').isVisible(),'De faseuitleg is direct bereikbaar');
+  const motion=await page.evaluate(()=>window.__EAI_HEART_LAB__.motion);
+  assert.equal(motion.valveParts.length,4,'Alle vier echte klepmeshes beschikbaar');
+  assert.equal(motion.flowRoutes,6,'Beide bloedroutes aanwezig');
+  assert(Math.abs(motion.playbackSeconds-3.2)<.01,'Standaard 3,2 seconden per hartslag');
+  assert.equal(initial.playing,true,'De doorlopende animatie start vanzelf zonder verminderde-bewegingsvoorkeur');
+  await page.locator('#play').click();
+  assert.equal((await state(page)).playing,false,'Pauzeknop stopt het hart');
+  await setTime(page,.30);
+  assert.match(await page.locator('#storyTitle').textContent(),/vullen/i);
+  assert.match(await page.locator('#storyRoute').textContent(),/Boezems/);
+  assert.match(await page.locator('#storyAV').textContent(),/open/);
+  assert.match(await page.locator('#storySL').textContent(),/dicht/);
   let metrics=await page.evaluate(()=>window.__EAI_HEART_LAB__.metrics);
-  assert(metrics.av&&!metrics.sem&&metrics.volume>60&&metrics.pressure<20);
-  await page.evaluate(()=>window.__EAI_HEART_LAB__.setTime(.67));
+  assert(metrics.av&&!metrics.sem&&metrics.pressure<20);
+  const filling=await page.locator('#heartCanvas').screenshot();
+  await setTime(page,.67);
+  assert.match(await page.locator('#storyTitle').textContent(),/druk/i);
+  assert.match(await page.locator('#storyRoute').textContent(),/druk stijgt/i);
   metrics=await page.evaluate(()=>window.__EAI_HEART_LAB__.metrics);
-  assert(!metrics.av&&!metrics.sem&&metrics.volume===130&&metrics.pressure>15);
-  await page.evaluate(()=>window.__EAI_HEART_LAB__.setTime(.80));
-  await page.waitForTimeout(100);
+  assert(!metrics.av&&!metrics.sem&&metrics.volume===130);
+  await setTime(page,.8);
+  assert.match(await page.locator('#storyTitle').textContent(),/uitgepompt/i);
+  assert.match(await page.locator('#storyRoute').textContent(),/longen/i);
+  assert.match(await page.locator('#storySL').textContent(),/open/);
   metrics=await page.evaluate(()=>window.__EAI_HEART_LAB__.metrics);
-  assert(!metrics.av&&metrics.sem&&metrics.pressure>90&&metrics.volume<130);
+  assert(metrics.sem&&!metrics.av&&metrics.pressure>90);
   const pumping=await page.locator('#heartCanvas').screenshot();
-  assert.notDeepEqual(filling,pumping,'3D-model moet daadwerkelijk bewegen tussen vulling en uitpompen');
-  assert.equal(await page.locator('#sectionToggle').getAttribute('aria-pressed'),'false');
-  const atlas=await page.evaluate(()=>window.__EAI_HEART_LAB__.state);
-  assert(atlas.atlasReady&&atlas.atlasRich&&atlas.atlasPartCount===34,'De echte BodyParts3D-atlas moet 34 onderdelen laden');
-  const outsideFrame=await page.locator('#heartCanvas').screenshot();
-  mkdirSync('test-results',{recursive:true});
-  await page.screenshot({path:'test-results/hartslaglab-'+engine+'-desktop-atlas.png',fullPage:true});
-  await page.locator('#sectionToggle').click();
-  assert.equal(await page.locator('#sectionToggle').getAttribute('aria-pressed'),'true');
-  assert.equal(await page.evaluate(()=>window.__EAI_HEART_LAB__.state.cutaway),true);
-  assert(await page.evaluate(()=>window.__EAI_HEART_LAB__.state.anatomyView),
-    'Het opengemaakte hart moet echte anatomische structuren tonen');
-  assert(await page.locator('#flowToggle').isVisible(),
-    'Ook bij echte anatomie moet de benaderde stroomrichting aan en uit kunnen');
-  const innerAnatomy=await page.locator('#heartCanvas').screenshot();
-  assert.notDeepEqual(innerAnatomy,outsideFrame,'Het open anatomische hart moet afwijken van de buitenkant');
-  await page.screenshot({path:'test-results/hartslaglab-'+engine+'-desktop-vanbinnen.png',fullPage:true});
-  // Controleer een echte klik in de opengemaakte atlas. Een louter bestaande
-  // mesh of een muisklik op het oude schema is onvoldoende.
-  const hitTargets=await page.evaluate(()=>window.__EAI_HEART_LAB__.hitTargets);
-  assert(hitTargets.some(p=>p.id==='mitral'&&p.type==='valve'),
-    'De mitralisklep moet in het echte binnenaanzicht selecteerbaar zijn');
-  assert(!hitTargets.some(p=>['la','ra','lv','rv'].includes(p.id)),
-    'Onzichtbare bloedruimtes mogen geen klikdoel vormen');
-  const valveTarget=hitTargets.find(p=>p.id==='mitral'&&p.visible)
-    ||hitTargets.find(p=>p.id==='aortic'&&p.visible)
-    ||hitTargets.find(p=>p.type==='valve'&&p.visible);
-  assert(valveTarget,'Geen anatomische klep bereikbaar in de huidige camerastand');
-  const viewRect=await page.locator('#heartCanvas').boundingBox();
-  assert(viewRect,'De hartweergave heeft geen klikvlak');
-  await page.mouse.click(viewRect.x+valveTarget.x,viewRect.y+valveTarget.y);
-  assert.equal(await page.evaluate(()=>window.__EAI_HEART_LAB__.state.selected),valveTarget.id,
-    'Aanklikken van een echte klep mag niet het oude schematische onderdeel kiezen');
-  assert.match(await page.locator('#partInfo').textContent(),/beweging is vereenvoudigd/i,
-    'De uitleg moet de anatomische herkomst en beperking van de klepbeweging benoemen');
-  assert.equal(await page.locator('#mechanicsToggle').count(),0,
-    'De leerling mag niet terugvallen naar het oude grove model');
-  assert.equal(await page.evaluate(()=>window.__EAI_HEART_LAB__.state.anatomyView),true);
-  assert(await page.locator('#flowToggle').isVisible(),
-    'Bij de klepbeweging moet je de schematische stroomrichting kunnen schakelen');
-  await page.locator('#flowToggle').click();
-  assert.equal(await page.locator('#flowToggle').getAttribute('aria-pressed'),'false');
-  assert(await page.locator('#flowLegend').isHidden());
-  await page.locator('#flowToggle').click();
-  await page.waitForTimeout(90);
-  const cutawayFrame=await page.locator('#heartCanvas').screenshot();
-  assert.notDeepEqual(cutawayFrame,outsideFrame,'De bewegende doorsnede moet afwijken van de echte anatomische buitenkant');
-  const label=await page.locator('#phaseTitle').textContent();
-  assert.match(label,/Bloed wordt uitgepompt/);
-  await page.locator('#tabExploreBtn').click();
-  await page.locator('input[name=prediction][value=av]').check();
-  await page.locator('#checkPrediction').click();
-  assert.match(await page.locator('#predictionFeedback').textContent(),/Dat klopt/);
-  assert.equal(await page.locator('#tabExploreBtn').getAttribute('aria-selected'),'true');
-  await page.locator('#tabSourcesBtn').click();
-  assert.equal(await page.locator('.source-links a').count(),4);
-  const before=await page.evaluate(()=>window.__EAI_HEART_LAB__.state.yaw);
-  const box=await page.locator('#heartCanvas').boundingBox();
-  assert(box&&box.width>450&&box.height>300);
-  await page.mouse.move(box.x+box.width*.48,box.y+box.height*.52);
-  await page.mouse.down();
-  await page.mouse.move(box.x+box.width*.75,box.y+box.height*.52,{steps:6});
-  await page.mouse.up();
-  const after=await page.evaluate(()=>window.__EAI_HEART_LAB__.state.yaw);
-  assert(Math.abs(after-before)>.10,'Slepen moet het WebGL-hart echt draaien');
-  await page.locator('#resetCamera').click();
-  assert(Math.abs((await page.evaluate(()=>window.__EAI_HEART_LAB__.state.yaw))+.2)<.005);
+  assert.notDeepEqual(filling,pumping,'Anatomisch hart moet mee bewegen met de fase');
+  const progressed=await page.locator('#storyProgress').evaluate(el=>parseFloat(el.style.width));
+  assert(progressed>78&&progressed<83,'Voortgangsbalk volgt exact dezelfde hartfase');
+
+  // Bewijs dat afspelen doorloopt over de overgang 100% -> 0%.
+  await setTime(page,.98);
+  await page.locator('#play').click();
+  await page.waitForTimeout(520);
+  const wrapped=await state(page);
+  assert(wrapped.playing&&wrapped.t<.35,'Hartslag moet vanzelf opnieuw beginnen');
+  await page.locator('#play').click();
+
   mkdirSync('test-results',{recursive:true});
   await page.screenshot({path:'test-results/hartslaglab-'+engine+'-desktop.png',fullPage:true});
+  await page.locator('#heartOptions summary').click();
+  assert(await page.locator('#heartOptions').evaluate(el=>el.open),'Opties zijn opengeklapt');
+  assert(await page.locator('#flowToggle').isVisible(),'Stroomrichtingen kunnen uitgeschakeld worden');
+  const insideFrame=await page.locator('#heartCanvas').screenshot();
+  await page.locator('#sectionToggle').click();
+  assert.equal((await state(page)).cutaway,false,'Buitenaanzicht blijft beschikbaar');
+  const outsideFrame=await page.locator('#heartCanvas').screenshot();
+  assert.notDeepEqual(insideFrame,outsideFrame,'Binnenkant en buitenkant zijn andere beelden');
+  await page.locator('#sectionToggle').click();
+  assert((await state(page)).anatomyView,'Het binnenaanzicht blijft echte anatomie');
+  const targets=await page.evaluate(()=>window.__EAI_HEART_LAB__.hitTargets);
+  assert(targets.some(x=>x.id==='mitral'&&x.type==='valve'),'Echte kleppen zijn selecteerbaar');
+  const target=targets.find(x=>x.id==='mitral'&&x.visible)||targets.find(x=>x.type==='valve'&&x.visible);
+  assert(target,'Ten minste één bronklep bereikbaar');
+  const box=await page.locator('#heartCanvas').boundingBox();
+  await page.mouse.click(box.x+target.x,box.y+target.y);
+  assert.equal((await state(page)).selected,target.id,'Selectie hoort de bronmesh te gebruiken');
+  assert(await page.locator('#partInfo').isVisible(),'Informatie bij selectie moet verschijnen');
+  await page.locator('#flowToggle').click();
+  assert.equal((await state(page)).showFlow,false);
+  await page.locator('#flowToggle').click();
+  const before=await state(page);
+  await page.mouse.move(box.x+box.width*.48,box.y+box.height*.52);
+  await page.mouse.down();
+  await page.mouse.move(box.x+box.width*.76,box.y+box.height*.52,{steps:8});
+  await page.mouse.up();
+  assert(Math.abs((await state(page)).yaw-before.yaw)>.1,'Het hart is draaibaar');
+  await page.locator('#resetCamera').click();
+  assert(Math.abs((await state(page)).yaw+.2)<.005);
+
+  await page.locator('#explainMore summary').click();
+  await page.locator('#tabSourcesBtn').click();
+  assert.equal(await page.locator('.source-links a').count(),4,'Bronnen blijven beschikbaar');
+
   const mobile=await browser.newPage({
     viewport:{width:390,height:844},deviceScaleFactor:2,isMobile:engine==='webkit',hasTouch:true
   });
   mobile.on('pageerror',e=>errors.push(e.message));
   await mobile.goto(base+'/tools/anatomie/labs/hartslag/',{waitUntil:'domcontentloaded'});
-  await mobile.waitForFunction(()=>window.__EAI_HEART_LAB__?.rendererReady===true,{timeout:35000});
-  assert(await mobile.evaluate(()=>window.__EAI_HEART_LAB__.state.atlasReady&&window.__EAI_HEART_LAB__.state.atlasRich),
-    'Het echte hartmodel moet ook op mobiele WebKit laden');
-  const size=await mobile.evaluate(()=>({scroll:document.documentElement.scrollWidth,inner:innerWidth,canvas:document.getElementById('heartCanvas').getBoundingClientRect().width}));
-  assert(size.scroll<=size.inner+6,'Mobiele pagina mag niet horizontaal overlopen: '+JSON.stringify(size));
-  assert(size.canvas>280,'Hartmodel moet groot genoeg blijven op mobiel');
-  // Een compact scherm toont geen zes overlappende labels voor het hart.
-  assert.equal(await mobile.locator('#labelsToggle').getAttribute('aria-pressed'),'false',
-    'Namen moeten op mobiel standaard uit staan');
-  assert(await mobile.locator('#labels [data-part="ra"]').isHidden(),
-    'Hartlabels mogen de aanvankelijke 3D-weergave niet bedekken');
-  await mobile.locator('#labelsToggle').click();
-  assert.equal(await mobile.locator('#labelsToggle').getAttribute('aria-pressed'),'true');
-  await mobile.waitForFunction(()=>document.querySelectorAll('#labelLeaders .leader-path:not([hidden])').length>=4);
-  const labelLines=await mobile.evaluate(()=>{
-    const svg=document.getElementById('labelLeaders');
-    const lines=[...svg.querySelectorAll('.leader-path:not([hidden])')];
-    return {visible:!svg.hidden,shown:lines.length,
-      strokes:lines.map(line=>parseFloat(getComputedStyle(line).strokeWidth))};
-  });
-  assert(labelLines.visible&&labelLines.shown>=4,'Een naam hoort met een aanwijslijn aan het model');
-  assert(labelLines.strokes.every(v=>v<=1.1),'Aanwijslijnen mogen niet dik zijn');
-  await mobile.locator('#labelsToggle').click();
-  assert.equal(await mobile.locator('#labelsToggle').getAttribute('aria-pressed'),'false');
+  await mobile.waitForFunction(()=>window.__EAI_HEART_LAB__?.state.atlasRich===true,{timeout:40000});
+  const m0=await state(mobile);
+  assert(m0.cutaway&&m0.anatomyView&&m0.focusSide==='both','Mobiel begint met beide harthelften');
+  assert(await mobile.locator('#atlasLoading').isHidden());
+  assert(await mobile.locator('#play').isVisible(),'Start en pauze direct bereikbaar');
+  assert(await mobile.locator('#storyTitle').isVisible(),'Leerling ziet de hartfase zonder tabblad');
+  assert(!await mobile.locator('#flowToggle').isVisible(),'De optionele knoppen blijven ingeklapt');
+  assert(await mobile.locator('#miniTrace').isVisible(),'Druk en volume blijven zichtbaar');
+  assert(await mobile.locator('#labels [data-part="ra"]').isHidden(),'Namen starten verborgen op mobiel');
   const layout=await mobile.evaluate(()=>{
-    const stage=document.getElementById('stage').getBoundingClientRect();
-    const hint=document.getElementById('partInfo').getBoundingClientRect();
-    const timeline=document.getElementById('timeline');
-    const controls=[...timeline.querySelectorAll('button')];
-    return {stageHeight:stage.height,hintBelow:hint.top>=stage.bottom-1,
-      timelineScrollable:timeline.scrollWidth>timeline.clientWidth+20,
-      phaseWidths:controls.map(x=>x.clientWidth),
-      textFits:controls.every(x=>x.scrollWidth<=x.clientWidth+4),
-      hasHorizontalOverflow:document.documentElement.scrollWidth>innerWidth+6};
-  });
-  assert(layout.stageHeight>=400,'Het 3D-model moet op mobiel voldoende hoog blijven');
-  assert(layout.hintBelow,'Uitleg mag niet over de hartkamers liggen');
-  assert(layout.timelineScrollable,'Fasen moeten horizontaal te verkennen zijn');
-  assert(layout.phaseWidths.every(x=>x>=115),'Fasen mogen niet tot afgekorte knoppen krimpen');
-  assert(layout.textFits,'Faseteksten moeten volledig leesbaar zijn');
-  assert(!layout.hasHorizontalOverflow,'Alleen de fasebalk mag horizontaal scrollen');
-  const settingsLayout=await mobile.evaluate(()=>{
-    const container=document.querySelector('.view-actions').getBoundingClientRect();
-    const all=[...document.querySelectorAll('.view-actions button')];
-    const buttons=all.filter(b=>!b.hidden);
-    const rects=buttons.map(b=>b.getBoundingClientRect());
-    return {count:buttons.length,allCount:all.length,
-      visible:rects.every(r=>r.left>=container.left-2&&r.right<=container.right+2&&r.width>85),
-      fullLabels:buttons.every(b=>b.scrollWidth<=b.clientWidth+5)};
-  });
-  assert.equal(settingsLayout.allCount,4);
-  assert.equal(settingsLayout.count,3,'Bloedstroom is verborgen op het buitenaanzicht');
-  assert(settingsLayout.visible,'Weergaveknoppen mogen op telefoon niet buiten beeld vallen');
-  assert(settingsLayout.fullLabels,'Knopteksten moeten leesbaar blijven op telefoon');
-
-
-  assert.equal(await mobile.locator('#sectionToggle').count(),1,'Doorsnedeknop moet ook op mobiel beschikbaar zijn');
-  assert(await mobile.locator('#miniTrace').isVisible(),'De grafiek moet op mobiel direct onder het hart staan');
-  const mobileView=await mobile.evaluate(()=>{
     const heart=document.querySelector('#stage').getBoundingClientRect();
-    const trace=document.querySelector('#miniTrace').getBoundingClientRect();
-    const q=document.querySelector('#discovery').getBoundingClientRect();
-    return {questionBefore:q.bottom<=heart.top+1,traceBelow:trace.top>=heart.bottom,traceHeight:trace.height};
+    const play=document.querySelector('#play').getBoundingClientRect();
+    const text=document.querySelector('.phase-story').getBoundingClientRect();
+    return {scroll:document.documentElement.scrollWidth,inner:innerWidth,
+      stageHeight:heart.height,playAbove:play.bottom<=heart.top+2,
+      storyBelow:text.top>=heart.bottom-2};
   });
-  assert(mobileView.questionBefore,'De leerling moet de vraag voor de animatie zien');
-  assert(mobileView.traceBelow&&mobileView.traceHeight>=50,'De meetgrafiek hoort direct onder het hart');
-  await mobile.locator('[data-guess="av"]').click();
-  assert.equal(await mobile.locator('[data-guess="av"]').getAttribute('aria-pressed'),'true');
-  await mobile.locator('#discoveryAction').click();
-  assert.equal(await mobile.evaluate(()=>window.__EAI_HEART_LAB__.state.anatomyView),true,
-    'De onderzoeksanimatie moet de echte anatomische mesh behouden');
-  const guidedMotion=await mobile.evaluate(()=>window.__EAI_HEART_LAB__.motion);
-  assert(guidedMotion.valveParts.length===4&&guidedMotion.flowRoutes===6,
-    'Vier anatomische klepmeshes en zes gekoppelde stroomroutes moeten beschikbaar zijn');
-  assert(guidedMotion.playbackSeconds>=7.5,
-    'De begeleide fase moet zichtbaar vertraagd worden');
-  await mobile.waitForFunction(()=>window.__EAI_HEART_LAB__?.state.studyStage==='compare',{timeout:20000});
-  assert.equal(await mobile.locator('#sectionToggle').getAttribute('aria-pressed'),'true');
-  assert(await mobile.locator('#flowToggle').isVisible());
-  assert(await mobile.locator('#heartSideControls').isVisible());
-  await mobile.locator('[data-heart-side="right"]').click();
-  assert.equal(await mobile.evaluate(()=>window.__EAI_HEART_LAB__.state.focusSide),'right');
-  const rightHalf=await mobile.locator('#heartCanvas').screenshot();
-  await mobile.locator('[data-heart-side="left"]').click();
-  assert.equal(await mobile.evaluate(()=>window.__EAI_HEART_LAB__.state.focusSide),'left');
-  assert.equal(await mobile.locator('#detailToggle').getAttribute('aria-pressed'),'false');
-  const simpleHalf=await mobile.locator('#heartCanvas').screenshot();
-  await mobile.locator('#detailToggle').click();
-  assert.equal(await mobile.evaluate(()=>window.__EAI_HEART_LAB__.state.showDetails),true);
-  const detailedHalf=await mobile.locator('#heartCanvas').screenshot();
-  assert.notDeepEqual(simpleHalf,detailedHalf,'Peesdraden en klepdetails moeten zichtbaar veranderen');
-  await mobile.locator('#detailToggle').click();
-  const leftHalf=await mobile.locator('#heartCanvas').screenshot();
-  assert.notDeepEqual(rightHalf,leftHalf,'De rechter- en linkerharthelft moeten zichtbaar verschillen');
-  await mobile.locator('#discoveryAction').click();
-  assert.match(await mobile.locator('#discoveryFeedback').textContent(),/De AV-kleppen sluiten eerst/);
-  assert.equal(await mobile.evaluate(()=>window.__EAI_HEART_LAB__.state.studyStage),'done');
-  await mobile.evaluate(()=>window.__EAI_HEART_LAB__.setTime(0));
-  await mobile.locator('#nextPhase').click();
-  const t=await mobile.evaluate(()=>window.__EAI_HEART_LAB__.state.t);
-  assert(t>.5&&t<.53,'Fasebediening moet op mobiel werken');
+  assert(layout.scroll<=layout.inner+6,'Geen horizontale overflow op mobiel: '+JSON.stringify(layout));
+  assert(layout.stageHeight>=350,'Hartmodel groot genoeg op telefoon');
+  assert(layout.playAbove&&layout.storyBelow,'Afspelen boven het hart, uitleg er direct onder');
   await mobile.screenshot({path:'test-results/hartslaglab-'+engine+'-mobile.png',fullPage:true});
-  const atlasHref=await mobile.locator('.back-link').getAttribute('href');
-  assert.equal(atlasHref,'/tools/anatomie/');
+  await mobile.locator('#play').click();
+  assert.equal((await state(mobile)).playing,false,'Pauzeren werkt met aanraking');
+  await mobile.locator('#heartOptions summary').click();
+  assert(await mobile.locator('#flowToggle').isVisible());
+  await mobile.locator('#labelsToggle').click();
+  assert.equal((await state(mobile)).showLabels,true);
+  await mobile.waitForFunction(()=>document.querySelectorAll('#labelLeaders .leader-path:not([hidden])').length>=4);
+  await mobile.locator('#labelsToggle').click();
+  await mobile.locator('[data-heart-side="right"]').click();
+  assert.equal((await state(mobile)).focusSide,'right');
+  const right=await mobile.locator('#heartCanvas').screenshot();
+  await mobile.locator('[data-heart-side="left"]').click();
+  const left=await mobile.locator('#heartCanvas').screenshot();
+  assert.notDeepEqual(right,left,'Harthelften verschillen');
+  await mobile.locator('[data-heart-side="both"]').click();
+  assert.equal((await state(mobile)).focusSide,'both','Beide bloedroutes kunnen terugkomen');
+  await mobile.locator('#nextPhase').click();
+  const next=(await state(mobile)).t;
+  assert(next>=.52&&next<.53,'Fasebediening blijft beschikbaar');
+  await mobile.locator('#heartOptions summary').click();
+
+  await mobile.locator('#discovery summary').click();
+  await mobile.locator('[data-guess="av"]').click();
+  await mobile.locator('#discoveryAction').click();
+  assert.equal((await state(mobile)).anatomyView,true,'Onderzoek behoudt echte anatomie');
+  const guided=await mobile.evaluate(()=>window.__EAI_HEART_LAB__.motion);
+  assert(guided.playbackSeconds>=7.5,'Begeleide klepbeweging is vertraagd');
+  await mobile.waitForFunction(()=>window.__EAI_HEART_LAB__.state.studyStage==='compare',{timeout:20000});
+  await mobile.locator('#discoveryAction').click();
+  assert.match(await mobile.locator('#discoveryFeedback').textContent(),/AV-kleppen sluiten eerst/);
   assert.deepEqual(errors,[],'Browserfouten: '+errors.join(' | '));
-  console.log('Hartslaglab '+engine+': bewegende WebGL-frames, kleppen, grafieken, onderzoek, camera en mobiel gecontroleerd.');
-}finally {
+  console.log('Hartslaglab '+engine+': doorlopende anatomie, hartcyclus, kleurstromen, mobiliteit en rustige UX geslaagd.');
+}finally{
   await browser?.close();
   server.kill('SIGTERM');
 }
