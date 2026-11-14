@@ -2,15 +2,17 @@
 import { chromium } from 'playwright';
 import { mkdirSync } from 'node:fs';
 import { spawn } from 'node:child_process';
+import { get } from 'node:http';
 import assert from 'node:assert/strict';
 const base='http://127.0.0.1:8793';
 const server=spawn('python3',['-m','http.server','8793','--bind','127.0.0.1','--directory',process.argv[2]||'site-build'],{stdio:'ignore'});
+const probe=()=>new Promise(resolve=>{const req=get(base+'/tools/llm-observatorium/',res=>{res.resume();resolve(res.statusCode===200)});req.on('error',()=>resolve(false));req.setTimeout(1500,()=>{req.destroy();resolve(false)})});
 mkdirSync('test-results',{recursive:true});
 let browser;
 try{
  let ready=false;
  for(let i=0;i<80;i++){
-  try{ready=(await fetch(base+'/tools/llm-observatorium/')).ok}catch{}
+  ready=await probe();
   if(ready)break;
   await new Promise(resolve=>setTimeout(resolve,100));
  }
@@ -21,6 +23,47 @@ try{
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.goto(base+'/tools/llm-observatorium/',{waitUntil:'load'});
   await page.locator('#universe').waitFor({state:'visible'});
+  await page.locator('#aiGuide').waitFor({state:'visible'});
+  assert.match(await page.locator('#aiGuideTitle').innerText(),/Van jouw vraag naar een antwoord/);
+  assert.equal(await page.locator('#guideSteps button').count(),5);
+  await page.screenshot({path:'test-results/llm-guide-'+width+'-begin.png'});
+  const introLayout=await page.evaluate(()=>({
+    vw:innerWidth,vh:innerHeight,sw:document.documentElement.scrollWidth,sh:document.documentElement.scrollHeight,
+    header:document.querySelector('.ai-guide-head').getBoundingClientRect().toJSON(),
+    visual:document.querySelector('#guideVisual').getBoundingClientRect().toJSON(),
+    footer:document.querySelector('.ai-guide-bottom').getBoundingClientRect().toJSON()
+  }));
+  assert(introLayout.sw<=introLayout.vw+2&&introLayout.sh<=introLayout.vh+2,'Geen paginaschuif: '+JSON.stringify(introLayout));
+  assert(introLayout.visual.width>130&&introLayout.visual.height>90,'Zichtbaar demonstratievlak: '+JSON.stringify(introLayout));
+  assert(introLayout.footer.bottom<=introLayout.vh+2,'Onderste bediening binnen scherm');
+  await page.locator('#guidePrompt').fill('Waarom is de lucht blauw?');
+  await page.locator('#guideNext').click();
+  assert.match(await page.locator('#guideHeading').innerText(),/stukjes/);
+  assert(await page.locator('#guideVisual button').count()>0,'Tokenstukken zijn zichtbaar');
+  await page.screenshot({path:'test-results/llm-guide-'+width+'-tokens.png'});
+  await page.locator('#guideNext').click();
+  assert.match(await page.locator('#guideHeading').innerText(),/eerdere tekst/);
+  assert(await page.locator('#guideVisual .is-before').count()>0,'Eerdere context wordt getoond');
+  await page.locator('#guideNext').click();
+  assert(await page.locator('#guideTemperature').isVisible(),'Variatie is daadwerkelijk instelbaar');
+  const probsBefore=await page.locator('.ai-guide-bar strong').allInnerTexts();
+  await page.locator('#guideTemperature').evaluate(el=>{el.value='1.7';el.dispatchEvent(new Event('input',{bubbles:true}))});
+  const probsAfter=await page.locator('.ai-guide-bar strong').allInnerTexts();
+  assert.notDeepEqual(probsBefore,probsAfter,'Rekenvoorbeeld reageert op slider');
+  await page.screenshot({path:'test-results/llm-guide-'+width+'-kansen.png'});
+  await page.locator('#guideNext').click();
+  assert.match(await page.locator('#guideHeading').innerText(),/antwoord/);
+  const answerBefore=await page.locator('.ai-guide-answer').innerText();
+  await page.locator('.ai-guide-cta').click();
+  assert.notEqual(await page.locator('.ai-guide-answer').innerText(),answerBefore,'Antwoord groeit door gerichte klik');
+  await page.screenshot({path:'test-results/llm-guide-'+width+'-antwoord.png'});
+  await page.locator('#guideTechnical').click();
+  assert.equal(await page.locator('#aiGuide').isVisible(),false,'De bestaande technische werkruimte kan open');
+  assert.equal(await page.locator('#guideReturn').isVisible(),true,'De uitleg blijft bereikbaar');
+  await page.locator('#guideReturn').click();
+  assert.equal(await page.locator('#aiGuide').isVisible(),true,'Je kunt de uitleg opnieuw openen');
+  await page.locator('#guideTechnical').click();
+
   const modesCount=await page.locator('#modes .mode-btn').count();
   assert.equal(modesCount,7,'Zeven onderzoeksmodules; JS-fouten: '+errors.join(' | '));
   // De lagen staan in een volgorde, niet op concentrische ringen.
@@ -108,6 +151,40 @@ try{
   assert.equal(stopped.layer,3,'Een gekozen laag moet geselecteerd blijven');
   assert.equal(errors.length,0,'JavaScript fouten: '+errors.join(' | '));
   await page.close();
+ }
+
+ for(const [width,height] of [[320,568],[844,390]]){
+  const page=await browser.newPage({viewport:{width,height}});
+  const errors=[];page.on('pageerror',e=>errors.push(e.message));
+  try{
+   await page.goto(base+'/tools/llm-observatorium/',{waitUntil:'load'});
+   await page.locator('#aiGuide').waitFor({state:'visible'});
+   for(let step=0;step<5;step++){
+    const geometry=await page.evaluate(()=>({
+      width:innerWidth,height:innerHeight,scrollWidth:document.documentElement.scrollWidth,scrollHeight:document.documentElement.scrollHeight,
+      visual:document.querySelector('#guideVisual').getBoundingClientRect().toJSON(),
+      visualScroll:document.querySelector('#guideVisual').scrollHeight,
+      visualClient:document.querySelector('#guideVisual').clientHeight,
+      aside:document.querySelector('.ai-guide-aside').getBoundingClientRect().toJSON(),
+      asideScroll:document.querySelector('.ai-guide-aside').scrollHeight,
+      asideClient:document.querySelector('.ai-guide-aside').clientHeight,
+      button:document.querySelector('#guideNext').getBoundingClientRect().toJSON()
+    }));
+    assert(geometry.scrollWidth<=width+2&&geometry.scrollHeight<=height+2,
+      'Geen paginascroll '+width+' stap '+step+': '+JSON.stringify(geometry));
+    assert(geometry.visual.width>125&&geometry.visual.height>80,
+      'Visualisatie niet bruikbaar '+width+' stap '+step+': '+JSON.stringify(geometry));
+    assert(geometry.visualScroll<=geometry.visualClient+3,'Geen verborgen grafiektekst '+width+' stap '+step+': '+JSON.stringify(geometry));
+    assert(geometry.asideScroll<=geometry.asideClient+3,'Geen verborgen uitleg '+width+' stap '+step+': '+JSON.stringify(geometry));
+    assert(geometry.aside.height>55&&geometry.aside.bottom<=height-40,
+      'Uitleg binnen venster '+width+' stap '+step+': '+JSON.stringify(geometry));
+    assert(geometry.button.right<=width+2&&geometry.button.bottom<=height+2,
+      'Volgende knop zichtbaar '+width+' stap '+step+': '+JSON.stringify(geometry));
+    await page.screenshot({path:'test-results/llm-guide-'+width+'-stap-'+(step+1)+'.png'});
+    if(step<4)await page.locator('#guideNext').click();
+   }
+   assert.deepEqual(errors,[],'Geen JavaScript-fout bij kleine en liggende weergave');
+  }finally{await page.close();}
  }
  console.log('LLM_BROWSER_OK widths=390,1280 modes=7 tokenizer=real layer_inspector=active');
 }finally{

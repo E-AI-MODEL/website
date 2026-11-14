@@ -86,6 +86,22 @@ class LlmObservatorySourceTests(unittest.TestCase):
         self.assertIn("Elk vlak is een modellaag.", self.html)
 
 
+    def test_beginner_guide_keeps_research_features_available(self):
+        html = self.html
+        for marker in ('id="aiGuide"', "box.id='guidePrompt'", 'id="guideVisual"',
+                       'id="guideInteractive"', 'id="guideTechnical"',
+                       'id="guideNext"', 'id="guidePrev"',
+                       'function setupGuide()', 'function guideSetVisible(open)',
+                       'function guideTokenChips(parent,contextMode)',
+                       'function guideBarData()', 'function guideDrawBars()',
+                       'function guideRender()', 'setupGuide();loadRealTokenizer();'):
+            self.assertIn(marker, html)
+        self.assertIn("Deze vier kansen zijn uitsluitend een demonstratie.", html)
+        self.assertIn("De precieze verdeling wordt geladen.", html)
+        self.assertIn("Deze pagina verstuurt je vraag niet naar een AI-model.", html)
+        self.assertIn("function drawExpertsGrid()", html)
+        self.assertIn("function renderInspector()", html)
+
     def test_reasoning_and_token_costs(self):
         html = self.html
         self.assertIn("name:'Redenering & kosten'", html)
