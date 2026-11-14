@@ -70,6 +70,10 @@ try{
   assert.equal(started.mode,0);
   assert.equal(started.view,'animation','De eerste technische weergave opent met de animatie');
   assert.equal(started.playing,true,'De uitleg begint vanzelf');
+  if(width>800){
+   assert.equal(await page.locator('#inspectorPanel').isVisible(),false,'Geen technische regelaars over de uitleg');
+   assert.equal(await page.locator('#graphPanel').isVisible(),false,'Geen tweede grafiek onder de uitleg');
+  }
   await page.screenshot({path:'test-results/llm-story-'+width+'-vraag.png'});
   await page.evaluate(()=>storyAdvance(STORY_PHASES[0].duration+.08));
   assert.equal(await page.evaluate(()=>storyState.phase),1,'De animatie gaat zonder tik vanzelf naar de volgende stap');
@@ -102,6 +106,10 @@ try{
   assert(sceneGeometry.scrollWidth<=width+2&&sceneGeometry.scrollHeight<=820+2,'Geen paginaschuif: '+JSON.stringify(sceneGeometry));
   await page.locator('#story3d').click();
   assert.equal(await page.locator('#modelStory').isVisible(),false,'Het oude 3D-model kan worden geopend');
+  if(width>800){
+   assert.equal(await page.locator('#inspectorPanel').isVisible(),true,'De technische regelaars keren terug bij 3D');
+   assert.equal(await page.locator('#graphPanel').isVisible(),true,'De technische grafiek keert terug bij 3D');
+  }
   await page.locator('#storyBack3d').click();
   assert.equal(await page.locator('#modelStory').isVisible(),true,'Animatie is terug te openen');
   await page.locator('#storyReplay').click();
