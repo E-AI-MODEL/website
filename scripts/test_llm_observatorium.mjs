@@ -21,6 +21,47 @@ try{
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.goto(base+'/tools/llm-observatorium/',{waitUntil:'load'});
   await page.locator('#universe').waitFor({state:'visible'});
+  await page.locator('#aiGuide').waitFor({state:'visible'});
+  assert.match(await page.locator('#aiGuideTitle').innerText(),/Van jouw vraag naar een antwoord/);
+  assert.equal(await page.locator('#guideSteps button').count(),5);
+  await page.screenshot({path:'test-results/llm-guide-'+width+'-begin.png'});
+  const introLayout=await page.evaluate(()=>({
+    vw:innerWidth,vh:innerHeight,sw:document.documentElement.scrollWidth,sh:document.documentElement.scrollHeight,
+    header:document.querySelector('.ai-guide-head').getBoundingClientRect().toJSON(),
+    visual:document.querySelector('#guideVisual').getBoundingClientRect().toJSON(),
+    footer:document.querySelector('.ai-guide-bottom').getBoundingClientRect().toJSON()
+  }));
+  assert(introLayout.sw<=introLayout.vw+2&&introLayout.sh<=introLayout.vh+2,'Geen paginaschuif: '+JSON.stringify(introLayout));
+  assert(introLayout.visual.width>130&&introLayout.visual.height>90,'Zichtbaar demonstratievlak: '+JSON.stringify(introLayout));
+  assert(introLayout.footer.bottom<=introLayout.vh+2,'Onderste bediening binnen scherm');
+  await page.locator('#guidePrompt').fill('Waarom is de lucht blauw?');
+  await page.locator('#guideNext').click();
+  assert.match(await page.locator('#guideHeading').innerText(),/stukjes/);
+  assert(await page.locator('#guideVisual button').count()>0,'Tokenstukken zijn zichtbaar');
+  await page.screenshot({path:'test-results/llm-guide-'+width+'-tokens.png'});
+  await page.locator('#guideNext').click();
+  assert.match(await page.locator('#guideHeading').innerText(),/eerdere tekst/);
+  assert(await page.locator('#guideVisual .is-before').count()>0,'Eerdere context wordt getoond');
+  await page.locator('#guideNext').click();
+  assert(await page.locator('#guideTemperature').isVisible(),'Variatie is daadwerkelijk instelbaar');
+  const probsBefore=await page.locator('.ai-guide-bar strong').allInnerTexts();
+  await page.locator('#guideTemperature').fill('1.7');
+  const probsAfter=await page.locator('.ai-guide-bar strong').allInnerTexts();
+  assert.notDeepEqual(probsBefore,probsAfter,'Rekenvoorbeeld reageert op slider');
+  await page.screenshot({path:'test-results/llm-guide-'+width+'-kansen.png'});
+  await page.locator('#guideNext').click();
+  assert.match(await page.locator('#guideHeading').innerText(),/antwoord/);
+  const answerBefore=await page.locator('.ai-guide-answer').innerText();
+  await page.locator('.ai-guide-cta').click();
+  assert.notEqual(await page.locator('.ai-guide-answer').innerText(),answerBefore,'Antwoord groeit door gerichte klik');
+  await page.screenshot({path:'test-results/llm-guide-'+width+'-antwoord.png'});
+  await page.locator('#guideTechnical').click();
+  assert.equal(await page.locator('#aiGuide').isVisible(),false,'De bestaande technische werkruimte kan open');
+  assert.equal(await page.locator('#guideReturn').isVisible(),true,'De uitleg blijft bereikbaar');
+  await page.locator('#guideReturn').click();
+  assert.equal(await page.locator('#aiGuide').isVisible(),true,'Je kunt de uitleg opnieuw openen');
+  await page.locator('#guideTechnical').click();
+
   const modesCount=await page.locator('#modes .mode-btn').count();
   assert.equal(modesCount,7,'Zeven onderzoeksmodules; JS-fouten: '+errors.join(' | '));
   // De lagen staan in een volgorde, niet op concentrische ringen.
