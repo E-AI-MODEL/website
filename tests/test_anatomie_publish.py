@@ -130,7 +130,7 @@ class AnatomyPublishTests(unittest.TestCase):
         self.assertIn("function isLayerVisible(part)", script)
         self.assertIn("function drawAtlasExterior(m,section=false)", script)
         self.assertIn("drawAtlasExterior(m,state.cutaway);", script)
-        self.assertIn("if(part.kind==='space'||!isLayerVisible(part))continue;", script)
+        self.assertIn("if(part.kind==='space'||!isLayerVisible(part)||(!section&&part.kind==='wall'))continue;", script)
         self.assertIn("state.focusSide='both'", script)
         self.assertIn("requestAnimationFrame(frame)", script)
         self.assertIn("drawParticles(m)", script)
