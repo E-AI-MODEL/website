@@ -2,15 +2,17 @@
 import { chromium } from 'playwright';
 import { mkdirSync } from 'node:fs';
 import { spawn } from 'node:child_process';
+import { get } from 'node:http';
 import assert from 'node:assert/strict';
 const base='http://127.0.0.1:8793';
 const server=spawn('python3',['-m','http.server','8793','--bind','127.0.0.1','--directory',process.argv[2]||'site-build'],{stdio:'ignore'});
+const probe=()=>new Promise(resolve=>{const req=get(base+'/tools/llm-observatorium/',res=>{res.resume();resolve(res.statusCode===200)});req.on('error',()=>resolve(false));req.setTimeout(1500,()=>{req.destroy();resolve(false)})});
 mkdirSync('test-results',{recursive:true});
 let browser;
 try{
  let ready=false;
  for(let i=0;i<80;i++){
-  try{ready=(await fetch(base+'/tools/llm-observatorium/')).ok}catch{}
+  ready=await probe();
   if(ready)break;
   await new Promise(resolve=>setTimeout(resolve,100));
  }
