@@ -2830,7 +2830,7 @@ CLOUDFLARE_PUBLIC_BEACON = (
 CLOUDFLARE_ANALYTICS_EXCLUDED = {
     "leif", "houseoftalents", "admin", "beheer", "login", "logout",
     "auth", "private", "backoffice", "account", "accounts", "profile",
-    "profiel", "continue", "multitenant", "dossier",
+    "profiel", "continue", "multitenant", "dossier", "html-galerij",
 }
 
 
