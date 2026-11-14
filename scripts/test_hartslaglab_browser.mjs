@@ -105,7 +105,7 @@ try {
     assert.equal(await button.getAttribute('aria-pressed'),'false','Layerstatus volgt '+layer);
     const ids=await page.evaluate(()=>window.__EAI_HEART_LAB__.visibleAtlasPartIds);
     assert(!ids.includes(id),'Verborgen '+layer+' mag niet getekend worden');
-    assert.equal(await page.evaluate(()=>window.__EAI_HEART_LAB__.hitTargets.some(p=>p.id===id)),false,
+    assert.equal(await page.evaluate(targetId=>window.__EAI_HEART_LAB__.hitTargets.some(p=>p.id===targetId),id),false,
       'Verborgen '+layer+' mag niet aanklikbaar blijven');
     assert.equal(initialIds.length-ids.length,count,'De atlaslaag moet het verwachte aantal meshes verbergen');
     await button.click();
