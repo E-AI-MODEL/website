@@ -177,6 +177,9 @@ try {
   assert.notDeepEqual(insideFrame,outsideFrame,'Binnenkant en buitenkant zijn andere beelden');
   await page.locator('#sectionToggle').click();
   assert((await state(page)).anatomyView,'Het binnenaanzicht blijft echte anatomie');
+  // De instellingen staan nu onder het hart. Scroll vóór de aanraakproef
+  // terug naar het canvas; een schermcoördinaat buiten beeld is geen 3D-selectie.
+  await page.locator('#heartCanvas').scrollIntoViewIfNeeded();
   const targets=await page.evaluate(()=>window.__EAI_HEART_LAB__.hitTargets);
   assert(targets.some(x=>x.id==='mitral'&&x.type==='valve'),'Echte kleppen zijn selecteerbaar');
   const target=targets.find(x=>x.id==='mitral'&&x.visible)||targets.find(x=>x.type==='valve'&&x.visible);
