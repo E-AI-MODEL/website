@@ -297,6 +297,15 @@
  .ai-guide-technical{max-width:108px;font-size:10px!important;padding:7px}
 }
 
+
+/* Korte opmerkingen krijgen geen standaard alinea-marges: anders verdwijnen ze liggend uit beeld. */
+.ai-guide-aside #guideInteractive p{margin:0}
+.ai-guide-aside #guideInteractive{min-height:0}
+@media(max-height:470px){
+ .ai-guide-aside #guideInteractive .ai-guide-mini:first-child:not(:last-child){display:none}
+ .ai-guide-aside{gap:5px}
+}
+
 </style>
 </head>
 <body>
