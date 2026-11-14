@@ -5,6 +5,7 @@ on:
     paths:
       - 'content/llm-observatorium/**'
       - 'scripts/test_llm_observatorium.mjs'
+      - 'scripts/test_llm_mobile_webkit.mjs'
       - 'tests/test_llm_observatorium_source.py'
       - '.github/workflows/llm-observatorium-ui.yml'
   push:
@@ -12,6 +13,7 @@ on:
     paths:
       - 'content/llm-observatorium/**'
       - 'scripts/test_llm_observatorium.mjs'
+      - 'scripts/test_llm_mobile_webkit.mjs'
       - 'tests/test_llm_observatorium_source.py'
       - '.github/workflows/llm-observatorium-ui.yml'
 permissions:
@@ -38,6 +40,10 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - name: Seven research views and token interaction
         run: node scripts/test_llm_observatorium.mjs site-build
+      - name: Install WebKit for Safari layout checks
+        run: npx playwright install --with-deps webkit
+      - name: Verify mobile Safari-style layouts
+        run: node scripts/test_llm_mobile_webkit.mjs site-build
       - uses: actions/upload-artifact@v4
         if: always()
         with:

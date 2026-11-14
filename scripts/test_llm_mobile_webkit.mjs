@@ -1,0 +1,67 @@
+// Test de beeldopbouw met WebKit, de browserengine achter Safari.
+// Geen test van een fysiek iOS-apparaat of echte modelactivaties.
+import { webkit } from 'playwright';
+import { spawn } from 'node:child_process';
+import { get } from 'node:http';
+import { mkdirSync } from 'node:fs';
+import assert from 'node:assert/strict';
+
+const base='http://127.0.0.1:8794';
+const server=spawn('python3',['-m','http.server','8794','--bind','127.0.0.1','--directory',process.argv[2]||'site-build'],{stdio:'ignore'});
+const probe=()=>new Promise(resolve=>{
+ const req=get(base+'/tools/llm-observatorium/',res=>{res.resume();resolve(res.statusCode===200)});
+ req.on('error',()=>resolve(false));
+ req.setTimeout(1200,()=>{req.destroy();resolve(false)});
+});
+mkdirSync('test-results',{recursive:true});
+let browser;
+try {
+ let ready=false;
+ for(let i=0;i<80;i++){if(await probe()){ready=true;break;}await new Promise(r=>setTimeout(r,120));}
+ assert(ready,'De geteste HTML-route ontbreekt');
+ browser=await webkit.launch({headless:true});
+ for(const [width,height] of [[320,568],[390,844],[844,390]]){
+  const page=await browser.newPage({viewport:{width,height},reducedMotion:'no-preference'});
+  const errors=[];page.on('pageerror',e=>errors.push(e.message));
+  try{
+   await page.goto(base+'/tools/llm-observatorium/',{waitUntil:'load'});
+   await page.locator('#modelStory').waitFor({state:'visible'});
+   assert.equal(await page.locator('#aiGuide').isVisible(),false,'Het beeld opent direct');
+   for(let step=0;step<5;step++){
+    await page.evaluate(n=>{storyState.playing=false;storySetPhase(n);storyPaint(.6)},step);
+    const g=await page.evaluate(()=>({
+     viewport:{width:innerWidth,height:innerHeight},
+     page:{width:document.documentElement.scrollWidth,height:document.documentElement.scrollHeight},
+     heading:document.querySelector('.story-copy').getBoundingClientRect().toJSON(),
+     board:document.querySelector('#storyBoard').getBoundingClientRect().toJSON(),
+     bottom:document.querySelector('.story-bottom').getBoundingClientRect().toJSON()
+    }));
+    assert(g.page.width<=width+2&&g.page.height<=height+2,'Geen paginaschuif: '+JSON.stringify(g));
+    assert(g.board.height>80&&g.board.width>200,'Het beeld moet zichtbaar blijven: '+JSON.stringify(g));
+    assert(g.heading.bottom<=g.board.top+2,'Kop en beeld overlappen: '+JSON.stringify(g));
+    assert(g.board.bottom<=g.bottom.top+2,'Beeld en bediening overlappen: '+JSON.stringify(g));
+    assert(g.bottom.bottom<=height+2,'Bediening valt buiten het scherm: '+JSON.stringify(g));
+    await page.screenshot({path:'test-results/llm-webkit-'+width+'-'+height+'-stap-'+(step+1)+'.png'});
+   }
+   await page.locator('#story3d').click();
+   assert.equal(await page.locator('#modelStory').isVisible(),false,'3D blijft bereikbaar');
+   if(width<=800){
+    for(const panel of ['graph','settings','learn']){
+     await page.locator('.mobile-dock [data-panel="'+panel+'"]').click();
+     const el=panel==='graph'?'#graphPanel':'#inspectorPanel';
+     const box=await page.locator(el).boundingBox();
+     assert(box&&box.x>=-2&&box.width<=width+2&&box.y>=45&&box.y+box.height<=height-56,
+      'Een paneel bedekt de mobiele bediening: '+panel+' '+JSON.stringify(box));
+     await page.locator('.mobile-dock [data-panel="'+panel+'"]').click();
+    }
+   }
+   await page.locator('#storyBack3d').click();
+   assert.equal(await page.locator('#modelStory').isVisible(),true,'Terug naar het verhaal');
+   assert.deepEqual(errors,[],'JavaScript-fouten bij WebKit: '+errors.join(' / '));
+  }finally{await page.close();}
+ }
+ console.log('LLM_WEBKIT_OK: 320x568, 390x844, 844x390, vijf stappen en mobiele panelen');
+}finally{
+ if(browser)await browser.close();
+ server.kill();
+}
