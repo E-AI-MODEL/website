@@ -58,15 +58,23 @@ try {
   assert.notDeepEqual(filling,pumping,'3D-model moet daadwerkelijk bewegen tussen vulling en uitpompen');
   assert.equal(await page.locator('#sectionToggle').getAttribute('aria-pressed'),'false');
   const atlas=await page.evaluate(()=>window.__EAI_HEART_LAB__.state);
-  assert(atlas.atlasReady&&atlas.atlasPartCount>=20,'Het echte atlasmodel moet geladen zijn');
+  assert(atlas.atlasReady&&atlas.atlasRich&&atlas.atlasPartCount===34,'De echte BodyParts3D-atlas moet 34 onderdelen laden');
   const outsideFrame=await page.locator('#heartCanvas').screenshot();
   mkdirSync('test-results',{recursive:true});
   await page.screenshot({path:'test-results/hartslaglab-'+engine+'-desktop-atlas.png',fullPage:true});
   await page.locator('#sectionToggle').click();
   assert.equal(await page.locator('#sectionToggle').getAttribute('aria-pressed'),'true');
   assert.equal(await page.evaluate(()=>window.__EAI_HEART_LAB__.state.cutaway),true);
+  assert(await page.evaluate(()=>window.__EAI_HEART_LAB__.state.anatomyView),
+    'Het opengemaakte hart moet echte anatomische structuren tonen');
+  assert(await page.locator('#flowToggle').isHidden(),
+    'Schematische bloedstroom hoort niet over echte anatomie heen');
+  const innerAnatomy=await page.locator('#heartCanvas').screenshot();
+  assert.notDeepEqual(innerAnatomy,outsideFrame,'Het open anatomische hart moet afwijken van de buitenkant');
+  await page.locator('#mechanicsToggle').click();
+  assert.equal(await page.evaluate(()=>window.__EAI_HEART_LAB__.state.anatomyView),false);
   assert(await page.locator('#flowToggle').isVisible(),
-    'Binnen de doorsnede moet je bloedstroom kunnen aan- en uitzetten');
+    'Bij de klepbeweging moet je de schematische stroomrichting kunnen schakelen');
   await page.locator('#flowToggle').click();
   assert.equal(await page.locator('#flowToggle').getAttribute('aria-pressed'),'false');
   assert(await page.locator('#flowLegend').isHidden());
@@ -102,7 +110,7 @@ try {
   mobile.on('pageerror',e=>errors.push(e.message));
   await mobile.goto(base+'/tools/anatomie/labs/hartslag/',{waitUntil:'domcontentloaded'});
   await mobile.waitForFunction(()=>window.__EAI_HEART_LAB__?.rendererReady===true,{timeout:35000});
-  assert(await mobile.evaluate(()=>window.__EAI_HEART_LAB__.state.atlasReady),
+  assert(await mobile.evaluate(()=>window.__EAI_HEART_LAB__.state.atlasReady&&window.__EAI_HEART_LAB__.state.atlasRich),
     'Het echte hartmodel moet ook op mobiele WebKit laden');
   const size=await mobile.evaluate(()=>({scroll:document.documentElement.scrollWidth,inner:innerWidth,canvas:document.getElementById('heartCanvas').getBoundingClientRect().width}));
   assert(size.scroll<=size.inner+6,'Mobiele pagina mag niet horizontaal overlopen: '+JSON.stringify(size));
@@ -151,7 +159,7 @@ try {
       visible:rects.every(r=>r.left>=container.left-2&&r.right<=container.right+2&&r.width>85),
       fullLabels:buttons.every(b=>b.scrollWidth<=b.clientWidth+5)};
   });
-  assert.equal(settingsLayout.allCount,4);
+  assert.equal(settingsLayout.allCount,5);
   assert.equal(settingsLayout.count,3,'Bloedstroom is verborgen op het buitenaanzicht');
   assert(settingsLayout.visible,'Weergaveknoppen mogen op telefoon niet buiten beeld vallen');
   assert(settingsLayout.fullLabels,'Knopteksten moeten leesbaar blijven op telefoon');
