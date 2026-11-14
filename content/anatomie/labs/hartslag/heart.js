@@ -997,7 +997,7 @@ $('discoveryAction').addEventListener('click',()=>{
 // Pointer Events verwerken één en twee vingers, muis en pen op dezelfde manier.
 // Zo stuurt een pinch nooit per ongeluk ook de draaiing aan.
 const pointers=new Map();
-let gesture=null;
+let gesture=null,suppressSelection=false;
 const pointerDistance=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
 const pointerCenter=(a,b)=>({x:(a.x+b.x)/2,y:(a.y+b.y)/2});
 function cameraPan(dx,dy){
@@ -1026,7 +1026,8 @@ canvas.addEventListener('pointerdown',e=>{
   e.preventDefault();
   pointers.set(e.pointerId,{x:e.clientX,y:e.clientY,
     pan:e.pointerType==='mouse'&&(e.shiftKey||e.button===2)});
-  canvas.setPointerCapture?.(e.pointerId);
+  if(pointers.size>=2)suppressSelection=true;
+  try{canvas.setPointerCapture?.(e.pointerId);}catch{ /* Gecancelde of synthetische pointers. */ }
   resetGesture();
 });
 canvas.addEventListener('pointermove',e=>{
@@ -1058,17 +1059,22 @@ canvas.addEventListener('pointermove',e=>{
 });
 canvas.addEventListener('pointerup',e=>{
   if(!pointers.has(e.pointerId))return;
-  const selected=pointers.size===1&&gesture?.mode==='orbit'&&!gesture.moved&&
+  const selected=!suppressSelection&&pointers.size===1&&gesture?.mode==='orbit'&&!gesture.moved&&
     Math.hypot(e.clientX-gesture.start.x,e.clientY-gesture.start.y)<=5;
   pointers.delete(e.pointerId);
+  if(!pointers.size)suppressSelection=false;
   if(selected){
     const r=canvas.getBoundingClientRect();
     positionInfo(selectedPartAt(e.clientX-r.left,e.clientY-r.top));
   }
   resetGesture();
 });
-canvas.addEventListener('pointercancel',e=>{pointers.delete(e.pointerId);resetGesture();});
-canvas.addEventListener('lostpointercapture',e=>{pointers.delete(e.pointerId);resetGesture();});
+canvas.addEventListener('pointercancel',e=>{
+  pointers.delete(e.pointerId);if(!pointers.size)suppressSelection=false;resetGesture();
+});
+canvas.addEventListener('lostpointercapture',e=>{
+  pointers.delete(e.pointerId);if(!pointers.size)suppressSelection=false;resetGesture();
+});
 canvas.addEventListener('contextmenu',e=>e.preventDefault());
 canvas.addEventListener('wheel',e=>{
   e.preventDefault();
