@@ -477,6 +477,16 @@
  #app[data-mode="0"] .story-message p{font-size:18px}
  #app[data-mode="0"] .story-summary-row{padding:4px 8px}
 }
+
+/* Leesbaar detail, ook op de telefoon. De animatie zelf draagt de voortgang. */
+@media(max-width:800px) and (min-height:621px){
+ .story-evidence{font-size:10.5px}
+ .story-time-item .name{font-size:10px}
+}
+@media(prefers-reduced-motion:no-preference){
+ #storyBoard>*{animation:storyAppear .30s ease-out both}
+ @keyframes storyAppear{from{opacity:.18;transform:translateY(4px)}to{opacity:1;transform:none}}
+}
 </style>
 </head>
 <body>
@@ -1159,11 +1169,11 @@ let lastJourneyUI=0;
 
 /* Een automatisch en leesbaar voorbeeld. Geen nagebootste activaties of echte modeluitvoer. */
 const STORY_PHASES=[
- {name:'De vraag',title:'Je typt een vraag',text:'De AI krijgt de woorden die je intypt. Dit is de invoer voor de berekening.',duration:6.2},
- {name:'Stukjes',title:'De tekst wordt verdeeld',text:'De AI leest kleine tekststukjes. Die heten tokens en kunnen ook delen van woorden zijn.',duration:6.4},
- {name:'Lagen',title:'De tekst wordt bewerkt',text:'Het model verwerkt de stukjes laag voor laag. Elke laag bouwt verder op de vorige.',duration:7.8},
- {name:'Kansen',title:'Wat kan hierna komen?',text:'Het model berekent mogelijke volgende stukjes. De balken tonen alleen een verzonnen voorbeeld.',duration:7.0},
- {name:'Antwoord',title:'Zo verschijnt een antwoord',text:'Na ieder toegevoegd stukje herhaalt het model de berekening. Het antwoord groeit.',duration:7.0}
+ {name:'De vraag',title:'De AI krijgt jouw vraag',text:'De woorden die je typt zijn het begin. De AI krijgt niet vanzelf extra informatie mee.',duration:6.2},
+ {name:'Stukjes',title:'De zin wordt opgedeeld',text:'De AI verdeelt je zin in kleine stukjes. Zo’n stukje heet een token en kan ook een deel van een woord zijn.',duration:6.4},
+ {name:'Lagen',title:'De lagen rekenen verder',text:'De AI zet de tekststukjes om in getallen. Elke laag rekent daarmee verder en geeft het resultaat door.',duration:7.8},
+ {name:'Kansen',title:'Welk stukje volgt?',text:'De AI berekent wat er hierna zou kunnen komen. Een langere balk betekent in dit voorbeeld een grotere kans.',duration:7.0},
+ {name:'Antwoord',title:'Het antwoord groeit',text:'Na ieder nieuw stukje rekent de AI opnieuw. Zo ontstaat een antwoord, dat nog steeds fouten kan bevatten.',duration:7.0}
 ];
 const storyState={phase:0,elapsed:0,playing:false,finished:false,lastPaint:-1};
 const storyReduced=()=>window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1186,7 +1196,7 @@ function storySetPhase(index){
   board.append(storyEl('div','DEZELFDE ZIN, NU IN STUKJES','story-small'));
   const row=storyEl('div',null,'story-token-wrap'),items=state.promptWords.slice(0,12);
   for(const t of items)row.append(storyEl('span',readableToken(t.text).slice(0,30),'story-token'));
-  board.append(row,storyEl('div',state.tokenStatus==='real'?'De stukjes komen van de tokenizer.':'Dit is een voorbeeld met woorden, geen echte tokenindeling.','story-small'));
+  board.append(row,storyEl('div',state.tokenStatus==='real'?'De puntjes in de blokjes betekenen spaties.':'Dit is een woordvoorbeeld. Echte tokens kunnen kleiner zijn.','story-small'));
  }
  if(index===2){
   const info=storyEl('div',null,'story-layerline');
@@ -1222,7 +1232,7 @@ function storyPaint(progress){
  const t=Math.max(0,Math.min(1,progress)),n=storyState.phase;
  if(n===0){
   const sample=state.input.trim()||'Waarom is de lucht blauw?';
-  $('storyTyping').textContent=sample.slice(0,Math.max(1,Math.ceil(sample.length*t)));
+  $('storyTyping').textContent=sample;
  }
  if(n===1){
   const cells=$('storyBoard').querySelectorAll('.story-token');
