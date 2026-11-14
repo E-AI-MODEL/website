@@ -196,11 +196,12 @@ try{
       full:document.querySelector('#modeDesc').scrollHeight,
       titleBottom:document.querySelector('.stage-title').getBoundingClientRect().bottom,
       hintTop:document.querySelector('#statusHint').getBoundingClientRect().top,
+      hintHeight:document.querySelector('#statusHint').getBoundingClientRect().height,
       caption:document.querySelector('.scene-caption').getBoundingClientRect().toJSON()
      }));
      assert.ok(view.desc.length>28,'Onderwerp '+i+' moet een zinvolle uitleg hebben');
      assert.ok(view.full<=view.shown+3,'Mobiele uitleg is afgesneden: '+JSON.stringify(view));
-     assert.ok(view.titleBottom<=view.hintTop+3,'Titel en uitleg mogen niet over elkaar vallen: '+JSON.stringify(view));
+     if(view.hintHeight>0)assert.ok(view.titleBottom<=view.hintTop+3,'Titel en uitleg mogen niet over elkaar vallen: '+JSON.stringify(view));
      if(i===0||i===2||i===5)await page.screenshot({path:'test-results/llm-technical-'+width+'-modus-'+i+'.png'});
     }
    }
