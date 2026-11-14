@@ -2824,8 +2824,8 @@ def build(sources: Path, out: Path) -> None:
 # Public Cloudflare Web Analytics browser beacon. This token is a public site
 # identifier used by the browser, NOT a privileged Cloudflare API credential.
 CLOUDFLARE_PUBLIC_BEACON = (
-    '<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" '
-    'data-cf-beacon=\\'{"token":"1aa5d5810d5a48e7bb8e5b2bac573e74"}\\'></script>'
+    '<script defer src="https://static.cloudflareinsights.com/beacon.min.js" '
+    'data-cf-beacon=\'{"token":"1aa5d5810d5a48e7bb8e5b2bac573e74"}\'></script>'
 )
 CLOUDFLARE_ANALYTICS_EXCLUDED = {
     "leif", "houseoftalents", "admin", "beheer", "login", "logout",
@@ -2853,7 +2853,7 @@ def add_cloudflare_beacon_to_public_routes(out: Path, public_urls: list[str]) ->
         if "static.cloudflareinsights.com/beacon.min.js" in html:
             continue
         revised, changed = re.subn(
-            r"</head\\s*>", lambda match: CLOUDFLARE_PUBLIC_BEACON + match.group(0),
+            r"</head\s*>", lambda match: CLOUDFLARE_PUBLIC_BEACON + match.group(0),
             html, count=1, flags=re.I,
         )
         if changed:
