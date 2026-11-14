@@ -678,7 +678,9 @@ $('discoveryAction').addEventListener('click',()=>{
   if(study.stage==='choose'){
     study.stage='watch';
     state.cutaway=true;state.anatomyView=atlasRich;state.showFlow=true;state.focusSide='left';
-    state.yaw=-.20;state.pitch=.08;state.zoom=4.9;syncViewControls();
+    state.yaw=-.20;state.pitch=.08;
+    state.zoom=matchMedia('(max-width: 790px)').matches?6.65:5.4;
+    syncViewControls();
     positionInfo(null);
     $('partInfo').textContent='Kijk naar de mitralisklep. Die sluit voordat de aortaklep opent. Beide kleppen komen uit het anatomische bronmodel.';
     // Het onderzoek begint vlak voor de AV-kleppen sluiten.
