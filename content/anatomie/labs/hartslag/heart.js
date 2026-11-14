@@ -368,12 +368,20 @@ function updateLabels(){
   }
 }
 
+// Selectie volgt de daadwerkelijk getoonde geometrie, niet de verborgen
+// schematische kamers. Bloedruimtes uit de atlas zijn geen getekende oppervlakken.
+function anatomicalAtlasVisible(){
+  return atlasReady&&(!state.cutaway||state.anatomyView);
+}
+function selectableParts(){
+  if(!anatomicalAtlasVisible())return ANATOMY_PARTS;
+  if(!atlasRich)return atlasDetails;
+  return Object.fromEntries(Object.entries(atlasDetails).filter(([,part])=>part.type!=='space'));
+}
 function selectedPartAt(x,y){
   let best=null,score=55;
-  const available=!state.cutaway&&atlasReady?atlasDetails:ANATOMY_PARTS;
-  for(const [id,part] of Object.entries(available)){
-    const world=part.pos;
-    const p=project(world,pv,canvas.clientWidth,canvas.clientHeight);
+  for(const [id,part] of Object.entries(selectableParts())){
+    const p=project(part.pos,pv,canvas.clientWidth,canvas.clientHeight);
     const dist=Math.hypot(p[0]-x,p[1]-y);
     const limit=['artery','vein','papillary','auricle'].includes(part.type)?27:55;
     if(p[2]>0&&dist<limit&&dist<score){best=id;score=dist;}
@@ -382,7 +390,7 @@ function selectedPartAt(x,y){
 }
 function positionInfo(id){
   state.selected=id;
-  const part=(!state.cutaway&&atlasReady?atlasDetails:ANATOMY_PARTS)[id];
+  const part=selectableParts()[id];
   if(!part){
     $('partInfo').textContent=state.cutaway?
       'Sleep om het hart te draaien. Tik op een onderdeel om het te onderzoeken.':
@@ -390,6 +398,10 @@ function positionInfo(id){
     return;
   }
   if(part.type==='valve'){
+    if(anatomicalAtlasVisible()&&atlasRich){
+      $('partInfo').textContent=part.label+' · Dit is de echte anatomische vorm. Kies Bekijk klepbeweging om het openen en sluiten te onderzoeken.';
+      return;
+    }
     const v=VALVES.find(v=>v.id===id),m=mechanics(state.t);
     if(!v){
       $('partInfo').textContent=part.label+' · Onderdeel van de anatomische klep. Bekijk Doorsnede voor de beweging tijdens één hartslag.';
@@ -409,7 +421,9 @@ function positionInfo(id){
     $('partInfo').textContent=part.label+' · '+explanation[part.type];
     return;
   }
-  const extra=id==='lv'?'De dikke spierwand perst bloed naar de aorta.':
+  const extra=part.type==='wall'?'Dit is hartspierweefsel. Met Bekijk binnenkant kun je achter de buitenste wand kijken.':
+    part.type==='vessel'?'Dit bloedvat voert bloed naar of vanuit het hart. Kijk naar de verbindingen met de hartkamers.':
+    id==='lv'?'De dikke spierwand perst bloed naar de aorta.':
     id==='rv'?'Deze kamer pompt bloed naar de longslagader.':
     id==='septum'?'Het tussenschot houdt beide kamers gescheiden.':
     id==='ao'?'Voert zuurstofrijk bloed naar het lichaam.':
