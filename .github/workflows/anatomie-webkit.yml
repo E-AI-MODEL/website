@@ -4,6 +4,8 @@ on:
     branches: [main]
     paths:
       - 'scripts/build_anatomie.py'
+      - 'scripts/extract_hart_atlas.mjs'
+      - 'scripts/extract_hart_rich.mjs'
       - 'scripts/anatomie_refine.py'
       - 'scripts/audit_anatomie_content.py'
       - 'tests/test_anatomie_content_audit.py'
@@ -22,6 +24,8 @@ on:
     branches: [main]
     paths:
       - 'scripts/build_anatomie.py'
+      - 'scripts/extract_hart_atlas.mjs'
+      - 'scripts/extract_hart_rich.mjs'
       - 'scripts/anatomie_refine.py'
       - 'scripts/audit_anatomie_content.py'
       - 'tests/test_anatomie_content_audit.py'

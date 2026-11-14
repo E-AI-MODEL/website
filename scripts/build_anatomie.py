@@ -578,6 +578,16 @@ def build(destination: Path) -> None:
         for generated in ("atlas-heart.json", "atlas-heart.bin"):
             if not (destination / "labs" / "hartslag" / generated).is_file():
                 raise RuntimeError(f"Hartmesh ontbreekt na export: {generated}")
+        # Uitgebreider BodyParts3D 4.0-hart uit een openbaar, gepind model.
+        # Behoud de vorige atlas als terugvalbestand; ontbrekende of gewijzigde
+        # bronbestanden maken de release ongeldig in plaats van een stil alternatief.
+        richer = Path(__file__).resolve().parent / "extract_hart_rich.mjs"
+        shutil.copyfile(richer, source / "tools" / "eai-extract-hart-rich.mjs")
+        command("node", "tools/eai-extract-hart-rich.mjs",
+                str(destination.resolve() / "labs" / "hartslag"), cwd=source)
+        for generated in ("atlas-heart-rich.json", "atlas-heart-rich.bin"):
+            if not (destination / "labs" / "hartslag" / generated).is_file():
+                raise RuntimeError(f"Uitgebreide hartatlas ontbreekt: {generated}")
         shutil.copyfile(source / "LICENSE", destination / "LICENSE.txt")
         shutil.copyfile(source / "NOTICE", destination / "NOTICE.txt")
         (destination / "UPSTREAM_COMMIT.txt").write_text(
