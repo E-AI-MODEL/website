@@ -589,6 +589,13 @@ def build(destination: Path) -> None:
         atlas_index.write_text(text.replace(
             old_link, f'href="/tools/anatomie/labs/hartslag/?v={release}"'
         ), encoding="utf-8")
+        # Alleen vaste publieke interacties meten. Atlasfunctionaliteit blijft ongewijzigd.
+        atlas_markup = atlas_index.read_text(encoding="utf-8")
+        tracker = '<script defer src="/assets/site-analytics.js"></script>'
+        if tracker not in atlas_markup:
+            if "</head>" not in atlas_markup:
+                raise RuntimeError("Anatomie-atlas mist de HTML-head")
+            atlas_index.write_text(atlas_markup.replace("</head>", tracker + "</head>", 1), encoding="utf-8")
         print(f"Hartslaglab releaseversie: {release}")
         # Gebruik de al geïnstalleerde Draco-decoder van de gepinde atlasbuild.
         # Exporteer afzonderlijke echte hartonderdelen in het bestaande WebGL-formaat.
