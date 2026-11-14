@@ -22,7 +22,7 @@ test('public page never contains an API secret, account token, or fake count', (
   assert.doesNotMatch(html, /CLOUDFLARE_ANALYTICS_TOKEN|Authorization:\s*Bearer|CLOUDFLARE_ACCOUNT_ID/);
   assert.match(html, /fetch\("\/statistieken\/data\.json"/);
   assert.match(html, /Nog geen bezoekersgegevens beschikbaar/);
-  assert.match(html, /Bouncepercentage en handelingen binnen interactieve simulaties worden hier niet gemeten/);
+  assert.match(html, /bouncepercentage en handelingen binnen interactieve simulaties worden hier niet gemeten/i);
 });
 
 test('dashboard labels comparison periods and summary periods separately', () => {
