@@ -258,10 +258,10 @@ function prepareFlowOverlay(){
 }
 function updateFlowOverlay(m){
   if(!atlasRich||!state.cutaway||!state.showFlow||!atlasFlowPaths.length){
-    flowOverlay.hidden=true;
+    flowOverlay.setAttribute('hidden','');
     return;
   }
-  flowOverlay.hidden=false;
+  flowOverlay.removeAttribute('hidden');
   if(flowVisuals.length!==atlasFlowPaths.length)prepareFlowOverlay();
   const w=Math.max(1,canvas.clientWidth),h=Math.max(1,canvas.clientHeight);
   const view=[w,h,state.yaw,state.pitch,state.zoom,...state.pan].join(':');
