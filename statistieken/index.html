@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Openbare bezoekersstatistieken van eaimodel.nl, afkomstig uit Cloudflare Web Analytics.">
+<meta name="theme-color" content="#f5f7f7">
+<link rel="canonical" href="https://eaimodel.nl/statistieken/">
+<title>Bezoekersstatistieken | EAI</title>
+<style>
+:root{color-scheme:light;--bg:#f5f7f7;--white:#fff;--ink:#172734;--muted:#586a75;--line:#dce4e6;--blue:#24617a;--green:#4b8890;--soft:#e8f1f2}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased;line-height:1.52}
+a{color:inherit;text-underline-offset:3px}button{font:inherit}a:focus-visible,button:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+.skip{position:absolute;left:-9999px;top:8px;padding:10px;background:#fff;z-index:9}.skip:focus{left:8px}
+.shell{max-width:1160px;padding:0 28px;margin:auto}.site-head{border-bottom:1px solid var(--line);background:rgba(255,255,255,.82)}.site-head .shell{display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:67px}.brand{text-decoration:none;display:flex;align-items:center;gap:10px;font-size:14px;font-weight:690;letter-spacing:.02em}.mark{width:30px;height:30px;border:1px solid #285c73;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:13px;color:#245875}.site-head nav{display:flex;gap:19px;font-size:13px;color:#486171}.site-head nav a{text-decoration:none}.site-head nav a:hover{text-decoration:underline}
+main{padding-bottom:95px}.intro{padding:70px 0 24px;max-width:740px}.eyebrow{font-size:11px;color:var(--blue);font-weight:720;letter-spacing:.12em;text-transform:uppercase;margin:0 0 16px}.intro h1{font-family:Georgia,"Times New Roman",serif;font-size:clamp(35px,5vw,61px);line-height:1.09;font-weight:450;letter-spacing:-.038em;margin:0 0 17px}.lede{font-size:clamp(15px,1.75vw,18px);line-height:1.65;color:var(--muted);margin:0}
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap;margin:22px 0 17px}.status{font-size:12px;color:var(--muted);display:flex;gap:8px;align-items:center}.dot{background:#bac8cd;width:7px;height:7px;border-radius:50%;flex:none}.dot.ready{background:#4b8a79}.period{display:inline-flex;background:white;border:1px solid var(--line);border-radius:9px;padding:4px;gap:3px}.period button{padding:7px 12px;font-size:12px;border-radius:6px;border:0;color:#49606c;background:transparent;cursor:pointer}.period button[aria-pressed="true"]{background:#e6eef0;color:#1c4b62;font-weight:680}
+.kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:14px}.kpi{background:white;border:1px solid var(--line);padding:22px 25px;min-width:0}.kpi .label{font-size:12px;color:var(--muted)}.kpi strong{display:block;font-variant-numeric:tabular-nums;font-size:clamp(28px,3.5vw,43px);font-weight:560;letter-spacing:-.04em;margin:12px 0 4px;line-height:1.12}.kpi small{font-size:11px;color:var(--muted)}
+.panel{border:1px solid var(--line);background:var(--white);padding:27px}.panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:23px}.panel h2{font-size:17px;line-height:1.25;letter-spacing:-.025em;font-weight:650;margin:0 0 5px}.panel-head p,.panel .note{font-size:12px;color:var(--muted);margin:0}.trend{min-height:310px}.chart{display:block;width:100%;height:auto;max-height:270px;overflow:visible}.axis{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin:4px 13px 0}.chart-note{font-size:11px;color:var(--muted);margin-top:15px}.empty{padding:68px 22px;text-align:center;color:#60737d;background:#fafcfc;border:1px dashed #d9e2e4;font-size:13px}.grid{display:grid;grid-template-columns:1.15fr .85fr;gap:14px;margin-top:14px}.rank-list{list-style:none;margin:0;padding:0}.rank-list li{padding:11px 0;border-top:1px solid #ecf0f1}.rank-top{display:flex;align-items:baseline;justify-content:space-between;gap:10px;font-size:13px}.rank-top a{text-decoration:none;overflow-wrap:anywhere}.rank-top a:hover{text-decoration:underline}.rank-top strong{font-size:12px;font-weight:650;font-variant-numeric:tabular-nums;white-space:nowrap}.track{height:3px;background:#edf2f3;margin-top:10px}.fill{height:100%;background:#54869b;width:0}.rank-list li:first-child{border-top:0}.rank-list li:first-child{padding-top:0}
+.details{margin-top:30px;border-top:1px solid var(--line);padding-top:26px;display:grid;grid-template-columns:1fr 2fr;gap:28px}.details h2{font-size:15px;font-weight:680;margin:0}.details p{margin:0 0 11px;font-size:13px;line-height:1.68;color:var(--muted)}.details p:last-child{margin-bottom:0}
+.site-foot{padding:22px 0;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}.site-foot .shell{display:flex;align-items:center;justify-content:space-between;gap:15px}.site-foot a{text-decoration:none}
+@media(max-width:740px){.shell{padding:0 17px}.intro{padding:47px 0 15px}.toolbar{align-items:flex-start}.kpis{gap:8px}.kpi{padding:17px 13px}.kpi strong{font-size:27px}.kpi .label{font-size:11px}.panel{padding:20px 16px}.trend{min-height:240px}.grid,.details{grid-template-columns:1fr}.details{gap:12px}.site-head .shell{min-height:60px}.site-head nav{gap:11px;font-size:12px}.site-foot .shell{display:block}.site-foot a{display:inline-block;margin-top:8px}}
+@media(max-width:390px){.kpis{grid-template-columns:1fr 1fr}.kpi:last-child{grid-column:span 2}.kpi strong{font-size:30px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body class="eai-refresh">
+<a class="skip" href="#inhoud">Naar de statistieken</a>
+<header class="site-head"><div class="shell">
+<a class="brand" href="/"><span class="mark" aria-hidden="true">EAI</span><span>Bezoekersstatistieken</span></a>
+<nav aria-label="Navigatie"><a href="/">Startpagina</a><a href="/nl/onderzoek/">Onderzoek</a></nav>
+</div></header>
+<main id="inhoud" class="shell">
+<header class="intro"><p class="eyebrow">Openbare gegevens</p><h1>Hoe wordt deze website bezocht?</h1><p class="lede">Een overzicht van het bezoek aan eaimodel.nl. De cijfers komen uit Cloudflare Web Analytics en worden periodiek bijgewerkt.</p></header>
+<div class="toolbar"><div class="status" role="status" aria-live="polite"><span class="dot" id="status-dot"></span><span id="status">Gegevens ophalen…</span></div><div class="period" role="group" aria-label="Kies een periode"><button type="button" data-days="7" aria-pressed="false">7 dagen</button><button type="button" data-days="30" aria-pressed="true">30 dagen</button></div></div>
+<div class="kpis" aria-label="Bezoek in cijfers">
+<div class="kpi"><span class="label">Bezoeken</span><strong id="visits">—</strong><small>Geen unieke personen</small></div>
+<div class="kpi"><span class="label">Paginaweergaven</span><strong id="views">—</strong><small>Gemeten paginaladingen</small></div>
+<div class="kpi"><span class="label">Pagina's per bezoek</span><strong id="ratio">—</strong><small>Gemiddelde, afgerond</small></div>
+</div>
+<section class="panel trend" aria-labelledby="chart-title"><div class="panel-head"><div><h2 id="chart-title">Bezoeken per dag</h2><p id="chart-caption">De ontwikkeling over de gekozen periode</p></div></div><div id="chart-content"><div class="empty">Bezoekgegevens worden geladen.</div></div></section>
+<div class="grid">
+<section class="panel" aria-labelledby="pages-title"><div class="panel-head"><div><h2 id="pages-title">Meest bekeken pagina's</h2><p>Paginaweergaven in de gekozen periode</p></div></div><div id="pages"><p class="note">Nog geen gegevens.</p></div></section>
+<section class="panel" aria-labelledby="sources-title"><div class="panel-head"><div><h2 id="sources-title">Waar komt bezoek vandaan?</h2><p>Verwijzende websites, zonder rechtstreekse bezoeken</p></div></div><div id="sources"><p class="note">Nog geen gegevens.</p></div></section>
+</div>
+<section class="details" aria-labelledby="about-title"><h2 id="about-title">Wat meten we precies?</h2><div><p>Cloudflare Web Analytics telt paginaladingen vanuit webbrowsers. Bezoeken zijn geen unieke personen. Door steekproeven, blokkeringen en browserinstellingen kunnen aantallen afwijken van het werkelijke bezoek.</p><p>De cijfers zeggen niet of iemand iets heeft geleerd of een tool goed heeft gebruikt. Het bouncepercentage en handelingen binnen interactieve simulaties worden hier niet gemeten. Alleen samengevatte gegevens staan openbaar; er zijn geen bezoekersnamen, IP-adressen of individuele sessies zichtbaar.</p><p>Bron: <a href="https://developers.cloudflare.com/web-analytics/about/" target="_blank" rel="noopener noreferrer">Cloudflare Web Analytics</a>.</p></div></section>
+</main>
+<footer class="site-foot"><div class="shell"><span>© EAI · Openbaar inzicht in websitebezoek</span><a href="/">Terug naar eaimodel.nl</a></div></footer>
+<script>
+(function(){
+  "use strict";
+  var info=null, selected=30;
+  var number=new Intl.NumberFormat("nl-NL");
+  var decimal=new Intl.NumberFormat("nl-NL",{minimumFractionDigits:1,maximumFractionDigits:1});
+  function el(id){return document.getElementById(id);}
+  function status(message,ok){el("status").textContent=message;el("status-dot").classList.toggle("ready",!!ok);}
+  function text(node,value){node.textContent=String(value);}
+  function dateLabel(date){var bits=date.split("-");return bits[2]+"-"+bits[1];}
+  function fmtTime(iso){var d=new Date(iso);return Number.isFinite(d.getTime())?new Intl.DateTimeFormat("nl-NL",{dateStyle:"medium",timeStyle:"short",timeZone:"Europe/Amsterdam"}).format(d):"onbekend";}
+  function makeSvg(tag,attrs){var node=document.createElementNS("http://www.w3.org/2000/svg",tag);Object.keys(attrs).forEach(function(key){node.setAttribute(key,String(attrs[key]));});return node;}
+  function chart(data){
+    var target=el("chart-content");target.replaceChildren();
+    if(!data.length){var empty=document.createElement("div");empty.className="empty";text(empty,"Geen meetgegevens voor deze periode.");target.appendChild(empty);return;}
+    var max=Math.max.apply(null,data.map(function(day){return day.visits;}));var top=Math.max(1,max);
+    var svg=makeSvg("svg",{class:"chart",viewBox:"0 0 800 255",role:"img","aria-label":"Bezoeken per dag. Van "+dateLabel(data[0].date)+" tot "+dateLabel(data[data.length-1].date)+"."});
+    [0,.5,1].forEach(function(level){var y=220-level*195;svg.appendChild(makeSvg("line",{x1:34,y1:y,x2:780,y2:y,stroke:"#e6ecee","stroke-width":1}));var label=makeSvg("text",{x:3,y:y+4,"font-size":11,fill:"#657680"});text(label,number.format(Math.round(top*level)));svg.appendChild(label);});
+    var pts=data.map(function(day,i){return [34+(data.length===1?0:i*746/(data.length-1)),220-day.visits/top*195];});
+    var d=pts.map(function(p,i){return (i===0?"M":"L")+p[0].toFixed(2)+" "+p[1].toFixed(2);}).join(" ");
+    var area=makeSvg("path",{d:d+" L"+pts[pts.length-1][0].toFixed(2)+" 220 L"+pts[0][0].toFixed(2)+" 220 Z",fill:"#e8f2f4"});svg.appendChild(area);
+    svg.appendChild(makeSvg("path",{d:d,fill:"none",stroke:"#3e8191","stroke-width":2.2,"stroke-linecap":"round","stroke-linejoin":"round"}));
+    var last=pts[pts.length-1];svg.appendChild(makeSvg("circle",{cx:last[0],cy:last[1],r:3.7,fill:"#3e8191",stroke:"#ffffff","stroke-width":2}));
+    target.appendChild(svg);
+    var axis=document.createElement("div");axis.className="axis";var a=document.createElement("span");var b=document.createElement("span");text(a,dateLabel(data[0].date));text(b,dateLabel(data[data.length-1].date));axis.append(a,b);target.appendChild(axis);
+    var note=document.createElement("p");note.className="chart-note";text(note,"De meest recente dag kan nog onvolledig zijn.");target.appendChild(note);
+  }
+  var labels={"/":"Startpagina","/nl/":"Startpagina (Nederlands)","/en/":"Homepage (English)","/model-monitor/":"AI Model Monitor","/nl/model-monitor/":"AI Model Monitor","/tools/science-observatory/":"Science Observatory","/tools/llm-observatorium/":"Hoe werkt AI?","/tools/anatomie/":"Anatomie van de mens","/tools/abyss/":"ABYSS","/tools/wihtml/":"Wiskunde","/tools/lo-aanvalslab/":"Sport en bewegen","/tools/melkweg-lab/":"Galactisch Observatorium"};
+  function ranks(id,items,kind){
+    var target=el(id);target.replaceChildren();if(!items.length){var p=document.createElement("p");p.className="note";text(p,"Voor deze periode is geen uitsplitsing beschikbaar.");target.appendChild(p);return;}
+    var max=Math.max(1,items[0].views);var list=document.createElement("ol");list.className="rank-list";
+    items.slice(0,8).forEach(function(item){
+      var li=document.createElement("li"),top=document.createElement("div"),name=document.createElement(kind==="page"?"a":"span"),value=document.createElement("strong"),track=document.createElement("div"),fill=document.createElement("div");top.className="rank-top";track.className="track";fill.className="fill";
+      if(kind==="page"){name.href=item.path;text(name,labels[item.path]||item.path);}else{text(name,item.host);}
+      text(value,number.format(item.views));top.append(name,value);fill.style.width=Math.min(100,Math.round(100*item.views/max))+"%";track.appendChild(fill);li.append(top,track);list.appendChild(li);
+    });target.appendChild(list);
+  }
+  function render(){
+    if(!info)return;
+    var data=info.daily.slice(-selected);var views=data.reduce(function(sum,row){return sum+row.views;},0);var visits=data.reduce(function(sum,row){return sum+row.visits;},0);
+    text(el("visits"),number.format(visits));text(el("views"),number.format(views));text(el("ratio"),visits?decimal.format(views/visits):"—");
+    text(el("chart-caption"),selected===7?"Afgelopen 7 kalenderdagen":"Afgelopen 30 kalenderdagen");
+    chart(data);
+    // Page and source rankings in a snapshot cover the full 30-day period.
+    var full=selected===30;el("pages-title").textContent=full?"Meest bekeken pagina's":"Meest bekeken pagina's (30 dagen)";
+    el("sources-title").textContent=full?"Waar komt bezoek vandaan?":"Herkomst van bezoek (30 dagen)";
+    ranks("pages",info.pages||[],"page");ranks("sources",info.referrers||[],"source");
+    status("Bijgewerkt op "+fmtTime(info.updated_at)+" · Cloudflare Web Analytics",true);
+  }
+  document.querySelectorAll("[data-days]").forEach(function(button){button.addEventListener("click",function(){selected=Number(button.getAttribute("data-days"));document.querySelectorAll("[data-days]").forEach(function(b){b.setAttribute("aria-pressed",String(b===button));});render();});});
+  fetch("/statistieken/data.json",{cache:"no-store"}).then(function(response){if(!response.ok)throw Error("data not available");return response.json();}).then(function(data){
+    if(data.schema!==1||!Array.isArray(data.daily)||!data.daily.every(function(x){return typeof x.date==="string"&&Number.isFinite(x.views)&&Number.isFinite(x.visits);})){throw Error("Invalid dataset");}
+    info=data;render();
+  }).catch(function(){status("Nog geen bezoekersgegevens beschikbaar",false);var target=el("chart-content");var p=document.createElement("div");p.className="empty";text(p,"De openbare meting is nog niet aangesloten of de laatste publicatie ontbreekt. De cijfers verschijnen hier zodra de koppeling actief is.");target.replaceChildren(p);});
+})();
+</script>
+</body>
+</html>
