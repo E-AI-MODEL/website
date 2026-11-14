@@ -35,7 +35,6 @@ class CloudflareBeaconTest(unittest.TestCase):
                 if not private:
                     self.assertRegex(html, r"data-cf-beacon='\{\"token\":\"[a-f0-9]{32}\"\}'")
 
-    def test_missing_routes_do_not_create_files(self):
     def test_exact_source_pages_remain_unchanged(self):
         with TemporaryDirectory() as root:
             out = Path(root)
@@ -57,6 +56,7 @@ class CloudflareBeaconTest(unittest.TestCase):
                     "<html><head></head><body>Exact original</body></html>", path,
                 )
 
+    def test_missing_routes_do_not_create_files(self):
         with TemporaryDirectory() as root:
             out = Path(root)
             add_cloudflare_beacon_to_public_routes(out, ["/not-found/", "/leif/continue/"])
