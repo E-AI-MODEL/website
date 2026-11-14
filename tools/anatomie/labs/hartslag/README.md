@@ -17,6 +17,10 @@ Bewerk de bestanden onder `content/anatomie/labs/hartslag/`. `scripts/build_anat
 - `scripts/extract_hart_atlas.mjs`: eerdere Z-Anatomy-export als terugval
 - `scripts/extract_hart_rich.mjs`: gecontroleerde import van 34 BodyParts3D 4.0-structuren, met vastgezette broncommit en SHA-256
 
+Bij het draaien van het 3D-hart werken muis en aanraakscherm met dezelfde camerabediening. Eén vinger of de linkermuisknop draait. Met twee vingers kun je inzoomen en het model verschuiven; op een computer werkt verschuiven met Shift-slepen en zoomen met het muiswiel. **Startaanzicht** herstelt ook een eerdere verschuiving.
+
+De stroomweergave gebruikt nu elf korte, gebogen routes tussen de middens van de echte anatomische onderdelen. Dunne rode en blauwe banen, richtingpijlen en bewegende punten worden met dezelfde 3D-camera geprojecteerd als het hart. Door AV-kleppen of slagaderkleppen bewegen de punten alleen tijdens de fase waarin die kleppen open zijn. De aanvoer via de aders blijft zichtbaar. De routes zijn didactische indicaties van de richting, geen gemeten stromingslijnen, volumestroom of bloedcelsporen. Via **Lagen** kan de hele stroomweergave uit.
+
 De leerling kan drie samenhangende weergaven gebruiken:
 
 - **Echte anatomische buitenkant:** 34 afzonderlijk benoemde structuren uit BodyParts3D 4.0, via een reproduceerbaar open hartmodel. De twee boezemwanden en gezamenlijke kamerwand, de vier bloedruimten, kleppen, papillairspieren, grote vaten, kransslagaders en hartaders zijn echte geometrische bronvormen. De 142 oorspronkelijke atlasdelen zijn hiervoor gegroepeerd. De aanwezige schaduw- en weefselgegevens worden in de lichte WebGL-renderer gebruikt. De browser laadt een lokaal exportbestand; de originele auteur en CC BY 4.0-voorwaarden staan in [MODEL_SOURCE.md](MODEL_SOURCE.md).

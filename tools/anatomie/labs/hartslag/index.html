@@ -7,7 +7,7 @@
   <meta name="description" content="Onderzoek één hartslag: beweeg het 3D-hart, volg de kleppen en bloedstroom en vergelijk druk en volume.">
   <link rel="canonical" href="https://eaimodel.nl/tools/anatomie/labs/hartslag/">
   <title>Hartslaglab | Anatomisch Observatorium | EAI</title>
-  <link rel="stylesheet" href="./heart.css?v=65371d0d339f">
+  <link rel="stylesheet" href="./heart.css?v=142a96c444f9">
 <script defer src="/assets/site-analytics.js"></script></head>
 <body>
   <a class="skip-link" href="#onderzoek">Ga naar het onderzoek</a>
@@ -48,8 +48,9 @@
             <span class="loop-label" id="loopLabel">Het hart klopt steeds opnieuw</span>
           </div>
           <div class="stage" id="stage">
-            <canvas id="heartCanvas" aria-label="Bestuurbaar 3D-hartmodel uit BodyParts3D. De hartkleppen bewegen volgens een vereenvoudigd onderwijsmodel. Sleep om te draaien en knijp om te zoomen.">Je browser heeft ondersteuning voor WebGL nodig.</canvas>
+            <canvas id="heartCanvas" aria-label="Draaibaar 3D-hartmodel. Sleep met één vinger om te draaien. Gebruik twee vingers om in te zoomen of het hart te verplaatsen. Op een computer kun je ook met Shift en slepen verplaatsen.">Je browser heeft ondersteuning voor WebGL nodig.</canvas>
             <div class="stage-wash" aria-hidden="true"></div>
+            <svg class="flow-overlay" id="flowOverlay" aria-hidden="true" focusable="false" hidden></svg>
             <p class="guided-focus" id="guidedFocus" hidden></p>
             <details class="layer-menu" id="layerMenu" hidden>
               <summary aria-label="Kies welke onderdelen van het hart zichtbaar zijn">Lagen <span aria-hidden="true">⌄</span></summary>
@@ -233,6 +234,6 @@
       <footer class="foot"><span>Hartslaglab · Anatomisch Observatorium · havo 4 / vwo 5</span><span>Proefmodel · Vereenvoudigde fysiologie · Geen medische toepassing</span></footer>
     </main>
   </div>
-  <script type="module" src="./heart.js?v=65371d0d339f"></script>
+  <script type="module" src="./heart.js?v=142a96c444f9"></script>
 </body>
 </html>

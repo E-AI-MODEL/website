@@ -1,8 +1,8 @@
 // Hartslaglab: BodyParts3D als anatomische basis, met didactisch benaderde beweging.
 // Alleen als de anatomische atlas ontbreekt gebruiken we het oude schematische model.
 // Alle grafieken, klepbewegingen, kamerbewegingen en stroomdeeltjes gebruiken dezelfde fase.
-import {PHASES,volume,pressure,mechanics,phaseFor} from './cycle.js?v=65371d0d339f';
-import {CHAMBERS,VESSELS,VALVES,ANATOMY_PARTS,FLOW_PATHS,leafletGeometry,chamberGeometry,tubeGeometry,ringGeometry,septumGeometry,heartEnvelopeGeometry,muscleRidges,TENDINOUS_CORDS,CORONARY_DETAILS,MUSCLE_DETAILS,AURICLES} from './anatomyGeometry.js?v=65371d0d339f';
+import {PHASES,volume,pressure,mechanics,phaseFor} from './cycle.js?v=142a96c444f9';
+import {CHAMBERS,VESSELS,VALVES,ANATOMY_PARTS,FLOW_PATHS,leafletGeometry,chamberGeometry,tubeGeometry,ringGeometry,septumGeometry,heartEnvelopeGeometry,muscleRidges,TENDINOUS_CORDS,CORONARY_DETAILS,MUSCLE_DETAILS,AURICLES} from './anatomyGeometry.js?v=142a96c444f9';
 const $=id=>document.getElementById(id);
 const TAU=Math.PI*2;
 const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
@@ -10,7 +10,7 @@ const lerp=(a,b,t)=>a+(b-a)*t;
 const ease=t=>{t=clamp(t,0,1);return t*t*(3-2*t);};
 const span=(t,a,b)=>ease((t-a)/(b-a));
 const fmt=(v,n=0)=>Number(v).toLocaleString('nl-NL',{minimumFractionDigits:n,maximumFractionDigits:n});
-const state={cutaway:true,t:0,playing:false,speed:.25,yaw:-.20,pitch:.08,zoom:5.95,selected:null,showLabels:false,showFlow:true,tab:'phase',rate:75,last:0,drag:null,study:{guess:null,stage:'choose',stopAt:null},focusSide:'both',showDetails:false,anatomyView:false,userPaused:false,mode:'watch',guideStep:0};
+const state={cutaway:true,t:0,playing:false,speed:.25,yaw:-.20,pitch:.08,zoom:5.95,pan:[0,0,0],selected:null,showLabels:false,showFlow:true,tab:'phase',rate:75,last:0,drag:null,study:{guess:null,stage:'choose',stopAt:null},focusSide:'both',showDetails:false,anatomyView:false,userPaused:false,mode:'watch',guideStep:0};
 const layerVisibility={outer:true,wall:true,valve:true,vessel:true,coronary:true,papillary:true};
 function layerForKind(kind){return kind==='artery'||kind==='vein'?'coronary':kind;}
 function isLayerVisible(part){return layerVisibility[layerForKind(part.kind)]!==false;}
@@ -163,20 +163,49 @@ function pathPoint(path,t){
   for(let i=0;i<lengths.length;i++){if(d<=lengths[i]||i===lengths.length-1)return add(path[i],scl(sub(path[i+1],path[i]),d/(lengths[i]||1)));d-=lengths[i];}
   return path[path.length-1];
 }
-// De lijnen volgen middens van de echte bloedruimtes en kleppen.
-// De route toont richting, geen gemeten stroomlijn of snelheid.
+// Gebogen kijkroutes door de brononderdelen. Dit zijn onderwijsroutes,
+// geen gemeten bloedbanen of uitspraken over exacte stroomhoeveelheden.
+function splineAt(points,fraction){
+  const position=clamp(fraction,0,1)*(points.length-1);
+  const i=Math.min(points.length-2,Math.floor(position));
+  const t=position-i,t2=t*t,t3=t2*t;
+  const p0=points[Math.max(i-1,0)],p1=points[i],p2=points[i+1],p3=points[Math.min(i+2,points.length-1)];
+  return p1.map((v,j)=>{
+    const m1=(p2[j]-p0[j])*.38,m2=(p3[j]-p1[j])*.38;
+    return (2*t3-3*t2+1)*v+(t3-2*t2+t)*m1+
+      (-2*t3+3*t2)*p2[j]+(t3-t2)*m2;
+  });
+}
+function sampleFlow(flow,fraction){
+  const positions=flow.curve||flow.path;
+  if(positions.length===1)return positions[0];
+  const i=clamp(fraction,0,.999999)*(positions.length-1);
+  const k=Math.floor(i);
+  return add(positions[k],scl(sub(positions[k+1],positions[k]),i-k));
+}
 function makeAtlasFlowPaths(centers){
   const specs=[
-    ['blue','return',['svc','ra'],11],
-    ['blue','av',['ra','tricuspid','rv'],13],
-    ['blue','sem',['rv','pulmonary','pa','pa_right'],12],
-    ['red','return',['pv_ls','la'],11],
-    ['red','av',['la','mitral','lv'],13],
-    ['red','sem',['lv','aortic','ao','ao_arch'],12]
+    ['blue','return',['svc','ra'],22],
+    ['blue','return',['ivc','ra'],20],
+    ['blue','av',['ra','tricuspid','rv'],28],
+    ['blue','sem',['rv','pulmonary','pa','pa_left'],23],
+    ['blue','sem',['rv','pulmonary','pa','pa_right'],23],
+    ['red','return',['pv_ls','la'],19],
+    ['red','return',['pv_li','la'],19],
+    ['red','return',['pv_rs','la'],19],
+    ['red','return',['pv_ri','la'],19],
+    ['red','av',['la','mitral','lv'],28],
+    ['red','sem',['lv','aortic','ao','ao_arch','ao_desc'],26]
   ];
-  return specs.map(([color,channel,ids,n])=>({
-    color,channel,n,path:ids.map(id=>centers[id]).filter(Boolean)
-  })).filter(route=>route.path.length>=2);
+  return specs.map(([color,channel,ids,n])=>{
+    const path=ids.map(id=>centers[id]).filter(Boolean);
+    return {color,channel,n,path,ids,
+      curve:path.length>=2?Array.from({length:37},(_,i)=>splineAt(path,i/36)):[]};
+  }).filter(route=>route.path.length>=2);
+}
+function flowIsActive(flow,m){
+  return flow.channel==='return'||(flow.channel==='av'&&m.av)||
+    (flow.channel==='sem'&&m.sem);
 }
 function drawParticles(m){
   if(!state.showFlow)return;
@@ -184,16 +213,15 @@ function drawParticles(m){
   const routes=atlasRich&&state.cutaway?atlasFlowPaths:FLOW_PATHS;
   for(const flow of routes){
     if(atlasReady&&state.cutaway&&state.focusSide!=='both'&&flow.color!==(state.focusSide==='left'?'red':'blue'))continue;
-    const open=flow.channel==='return'||(flow.channel==='av'&&m.av)||(flow.channel==='sem'&&m.sem);
-    if(!open)continue;
+    if(!flowIsActive(flow,m))continue;
     for(let i=0;i<flow.n;i++){
-      const progress=(i/flow.n+state.t*(flow.channel==='sem'?2.5:1.25))%1;
-      const point=pathPoint(flow.path,progress);
+      const progress=(i/flow.n+state.t*(flow.channel==='sem'?2.35:1.2))%1;
+      const point=flow.curve?sampleFlow(flow,progress):pathPoint(flow.path,progress);
       batches[flow.color].push(...point);
     }
   }
   gl.disable(gl.DEPTH_TEST);gl.depthMask(false);gl.useProgram(pointProgram);
-  gl.uniformMatrix4fv(ploc.pv,false,pv);gl.uniform1f(ploc.size,(atlasRich?4.4:7.5)*Math.min(devicePixelRatio||1,2));
+  gl.uniformMatrix4fv(ploc.pv,false,pv);gl.uniform1f(ploc.size,(atlasRich?5.0:7.5)*Math.min(devicePixelRatio||1,2));
   for(const name of ['blue','red']){
     const arr=batches[name];if(!arr.length)continue;
     gl.bindBuffer(gl.ARRAY_BUFFER,particleBuffer);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(arr),gl.DYNAMIC_DRAW);
@@ -202,12 +230,76 @@ function drawParticles(m){
   }
   gl.depthMask(true);gl.enable(gl.DEPTH_TEST);
 }
+// Dunne kleurbanen en richtingpijlen worden op de 3D-bronpunten geprojecteerd.
+// De camera, zoom en pan sturen deze lijnen mee; ze blokkeren aanrakingen nooit.
+const flowOverlay=$('flowOverlay');
+const svgNS='http://www.w3.org/2000/svg';
+let flowVisuals=[],flowVisualKey='';
+function svgElement(name){return document.createElementNS(svgNS,name);}
+function prepareFlowOverlay(){
+  flowOverlay.replaceChildren();
+  flowVisuals=atlasFlowPaths.map(flow=>{
+    const bed=svgElement('path'),pulse=svgElement('path'),arrow=svgElement('path');
+    const color=flow.color==='blue'?'#75ddff':'#ffbdad';
+    for(const p of [bed,pulse]){
+      p.setAttribute('fill','none');
+      p.setAttribute('stroke',color);
+      p.setAttribute('stroke-linecap','round');
+      p.setAttribute('stroke-linejoin','round');
+    }
+    bed.setAttribute('stroke-width','7');
+    pulse.setAttribute('stroke-width','3.0');
+    pulse.setAttribute('stroke-dasharray','7 11');
+    arrow.setAttribute('fill',color);
+    flowOverlay.append(bed,pulse,arrow);
+    return {flow,bed,pulse,arrow};
+  });
+  flowVisualKey='';
+}
+function updateFlowOverlay(m){
+  if(!atlasRich||!state.cutaway||!state.showFlow||!atlasFlowPaths.length){
+    flowOverlay.setAttribute('hidden','');
+    return;
+  }
+  flowOverlay.removeAttribute('hidden');
+  if(flowVisuals.length!==atlasFlowPaths.length)prepareFlowOverlay();
+  const w=Math.max(1,canvas.clientWidth),h=Math.max(1,canvas.clientHeight);
+  const view=[w,h,state.yaw,state.pitch,state.zoom,...state.pan].join(':');
+  if(view!==flowVisualKey){
+    flowOverlay.setAttribute('viewBox','0 0 '+w+' '+h);
+    for(const {flow,bed,pulse,arrow} of flowVisuals){
+      const points=flow.curve.map(p=>project(p,pv,w,h));
+      const d=points.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' ');
+      bed.setAttribute('d',d);pulse.setAttribute('d',d);
+      const tip=points[Math.floor(points.length*.70)];
+      const before=points[Math.floor(points.length*.64)];
+      const length=Math.hypot(tip[0]-before[0],tip[1]-before[1])||1;
+      const ux=(tip[0]-before[0])/length,uy=(tip[1]-before[1])/length;
+      const back=[tip[0]-ux*12,tip[1]-uy*12];
+      arrow.setAttribute('d','M '+tip[0].toFixed(1)+' '+tip[1].toFixed(1)+
+        ' L '+(back[0]-uy*4.8).toFixed(1)+' '+(back[1]+ux*4.8).toFixed(1)+
+        ' L '+(back[0]+uy*4.8).toFixed(1)+' '+(back[1]-ux*4.8).toFixed(1)+' Z');
+    }
+    flowVisualKey=view;
+  }
+  for(const {flow,bed,pulse,arrow} of flowVisuals){
+    const side=state.focusSide==='both'||flow.color===(state.focusSide==='left'?'red':'blue');
+    const active=side&&flowIsActive(flow,m);
+    const entering=flow.channel==='return';
+    bed.style.opacity=active?(entering?'0.15':'0.26'):'0';
+    pulse.style.opacity=active?(entering?'0.65':'0.96'):'0';
+    arrow.style.opacity=active?(entering?'0.72':'0.98'):'0';
+    pulse.style.strokeDashoffset=String(-state.t*(flow.channel==='sem'?175:95));
+  }
+}
 function updateViewport(){
   const w=Math.round(canvas.clientWidth*Math.min(devicePixelRatio||1,2)),h=Math.round(canvas.clientHeight*Math.min(devicePixelRatio||1,2));
   if(canvas.width!==w||canvas.height!==h){canvas.width=w;canvas.height=h;}
   if(gl)gl.viewport(0,0,w,h);
-  const eye=[Math.sin(state.yaw)*Math.cos(state.pitch)*state.zoom,Math.sin(state.pitch)*state.zoom+.17,Math.cos(state.yaw)*Math.cos(state.pitch)*state.zoom];
-  pv=mul(persp(42*Math.PI/180,Math.max(.5,w/Math.max(h,1)),.1,100),lookAt(eye,[0,.12,0]));
+  const center=add([0,.12,0],state.pan);
+  const eye=add(center,[Math.sin(state.yaw)*Math.cos(state.pitch)*state.zoom,
+    Math.sin(state.pitch)*state.zoom,Math.cos(state.yaw)*Math.cos(state.pitch)*state.zoom]);
+  pv=mul(persp(42*Math.PI/180,Math.max(.5,w/Math.max(h,1)),.1,100),lookAt(eye,center));
 }
 // De anatomische buitenvorm wordt tijdens de sitebuild uit de bestaande GLB
 // gehaald. De browser heeft geen externe 3D-engine of Draco-decoder nodig.
@@ -216,12 +308,12 @@ async function loadAtlasModels(){
   const failures=[];
   for(const [name,isRich] of [['atlas-heart-rich',true],['atlas-heart',false]]){
     try{
-      const response=await fetch('./'+name+'.json?v=65371d0d339f');
+      const response=await fetch('./'+name+'.json?v=142a96c444f9');
       if(!response.ok)throw Error(name+'-manifest ontbreekt: '+response.status);
       const manifest=await response.json();
       if(manifest.format!==(isRich?2:1)||!Array.isArray(manifest.parts)||manifest.parts.length<(isRich?34:4))
         throw Error('Onvolledig anatomisch model: '+name);
-      const data=await fetch('./'+name+'.bin?v=65371d0d339f');
+      const data=await fetch('./'+name+'.bin?v=142a96c444f9');
       if(!data.ok)throw Error('Hartmesh ontbreekt: '+name);
       const buffer=await data.arrayBuffer();
       if(buffer.byteLength!==manifest.bytes)throw Error('Hartmesh-bestand is niet volledig');
@@ -250,6 +342,7 @@ async function loadAtlasModels(){
       atlasParts=loaded;atlasCenters=centers;atlasDetails=details;
       atlasReady=true;atlasRich=isRich;atlasError=null;
       atlasFlowPaths=isRich?makeAtlasFlowPaths(centers):[];
+      flowVisuals=[];flowVisualKey='';
       if(state.cutaway)state.anatomyView=isRich;
       syncLayerControls();
       if(isRich){
@@ -392,6 +485,7 @@ function drawScene(m){
     drawAtlasHeart(m,state.cutaway);
     drawAtlasExterior(m,state.cutaway);
     if(state.cutaway)drawParticles(m);
+    updateFlowOverlay(m);
     updateLabels();
     return;
   }
@@ -451,6 +545,7 @@ function drawScene(m){
   }
   gl.depthMask(true);
   drawParticles(m);
+  updateFlowOverlay(m);
   updateLabels();
 }
 const labelConnectors=new Map();
@@ -667,14 +762,17 @@ function display(m){
   $('scrub').value=Math.round(state.t*1000);
   $('scrub').style.setProperty('--progress',(state.t*100).toFixed(1)+'%');
   $('timeline').querySelectorAll('[data-phase]').forEach(btn=>{const on=Number(btn.dataset.phase)===m.phase;btn.classList.toggle('active',on);btn.setAttribute('aria-pressed',String(on));});
-  drawChart('pressureChart',pressure,'#ed9a80',130,'mmHg');
-  drawChart('volumeChart',volume,'#7ecdbb',150,'ml');
+  // Verborgen grafieken hoeven op mobiel niet ieder animatieframe te tekenen.
+  if($('moreTools').open&&document.querySelector('.more-tools .measurements')?.open){
+    drawChart('pressureChart',pressure,'#ed9a80',130,'mmHg');
+    drawChart('volumeChart',volume,'#7ecdbb',150,'ml');
+  }
   $('miniPressure').textContent=fmt(m.pressure)+' mmHg';
   $('miniVolume').textContent=fmt(m.volume)+' ml';
   $('miniTraceTime').textContent=fmt(state.t*60/state.rate,2)+' s';
   $('playbackDuration').textContent='Afspelen: '+fmt(60/state.rate/state.speed,1)+
     ' s per hartslag. De hartcyclus zelf duurt '+fmt(60/state.rate,2)+' s.';
-  drawMiniTrace();
+  if($('quickMeasurements').open)drawMiniTrace();
 }
 function render(){const m=mechanics(state.t);drawScene(m);display(m);}
 function focusActivePhase(){
@@ -821,6 +919,7 @@ document.querySelectorAll('[data-layer]').forEach(button=>button.addEventListene
   syncLabelsToggle();
   syncViewControls();
   updateLabels();
+  updateFlowOverlay(mechanics(state.t));
 }));
 $('resetLayers').addEventListener('click',()=>{
   Object.keys(layerVisibility).forEach(layer=>{layerVisibility[layer]=true;});
@@ -830,12 +929,13 @@ $('resetLayers').addEventListener('click',()=>{
   syncLabelsToggle();
   syncViewControls();
   updateLabels();
+  updateFlowOverlay(mechanics(state.t));
 });
 $('layerMenu').addEventListener('toggle',()=>{
   // Een open laagmenu blijft op mobiel binnen het hartvenster.
   $('layerMenu').classList.toggle('is-open',$('layerMenu').open);
 });
-$('resetCamera').addEventListener('click',()=>{state.yaw=-.20;state.pitch=.08;state.zoom=5.95;positionInfo(null);});
+$('resetCamera').addEventListener('click',()=>{state.yaw=-.20;state.pitch=.08;state.zoom=5.95;state.pan=[0,0,0];positionInfo(null);});
 document.querySelectorAll('[data-tab]').forEach(btn=>btn.addEventListener('click',()=>{
   state.tab=btn.dataset.tab;
   for(const tab of document.querySelectorAll('[data-tab]')){const active=tab===btn;tab.setAttribute('aria-selected',String(active));tab.tabIndex=active?0:-1;}
@@ -900,42 +1000,107 @@ $('discoveryAction').addEventListener('click',()=>{
   }
   syncStudy();
 });
+// Pointer Events verwerken één en twee vingers, muis en pen op dezelfde manier.
+// Zo stuurt een pinch nooit per ongeluk ook de draaiing aan.
+const pointers=new Map();
+let gesture=null,suppressSelection=false;
+const pointerDistance=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
+const pointerCenter=(a,b)=>({x:(a.x+b.x)/2,y:(a.y+b.y)/2});
+function cameraPan(dx,dy){
+  const worldPerPixel=2*Math.tan(42*Math.PI/360)*state.zoom/Math.max(canvas.clientHeight,1);
+  const right=[Math.cos(state.yaw),0,-Math.sin(state.yaw)];
+  const up=[-Math.sin(state.yaw)*Math.sin(state.pitch),Math.cos(state.pitch),
+    -Math.cos(state.yaw)*Math.sin(state.pitch)];
+  const move=add(scl(right,-dx*worldPerPixel),scl(up,dy*worldPerPixel));
+  const next=add(state.pan,move);
+  const length=Math.hypot(...next);
+  state.pan=length>2.1?scl(next,2.1/length):next;
+}
+function resetGesture(){
+  const points=[...pointers.values()];
+  if(points.length>=2){
+    const a=points[0],b=points[1];
+    gesture={mode:'pinch',center:pointerCenter(a,b),distance:Math.max(pointerDistance(a,b),1),
+      moved:true};
+  }else if(points.length===1){
+    const point=points[0];
+    gesture={mode:point.pan?'pan':'orbit',last:{...point},start:{...point},moved:false};
+  }else gesture=null;
+}
 canvas.addEventListener('pointerdown',e=>{
-  if(e.pointerType==='touch'&&e.isPrimary===false)return;
-  state.drag={x:e.clientX,y:e.clientY,yaw:state.yaw,pitch:state.pitch,moved:false};
-  canvas.setPointerCapture?.(e.pointerId);
+  if(e.pointerType==='mouse'&&e.button!==0&&e.button!==2)return;
+  e.preventDefault();
+  pointers.set(e.pointerId,{x:e.clientX,y:e.clientY,
+    pan:e.pointerType==='mouse'&&(e.shiftKey||e.button===2)});
+  if(pointers.size>=2)suppressSelection=true;
+  try{canvas.setPointerCapture?.(e.pointerId);}catch{ /* Gecancelde of synthetische pointers. */ }
+  resetGesture();
 });
 canvas.addEventListener('pointermove',e=>{
-  if(!state.drag)return;
-  const dx=e.clientX-state.drag.x,dy=e.clientY-state.drag.y;
-  if(Math.hypot(dx,dy)>5)state.drag.moved=true;
-  state.yaw=state.drag.yaw+dx*.008;
-  state.pitch=clamp(state.drag.pitch+dy*.007,-1.1,1.1);
+  if(!pointers.has(e.pointerId)||!gesture)return;
+  e.preventDefault();
+  const prior=pointers.get(e.pointerId);
+  pointers.set(e.pointerId,{...prior,x:e.clientX,y:e.clientY});
+  if(pointers.size>=2){
+    const [a,b]=[...pointers.values()];
+    const center=pointerCenter(a,b);
+    const distance=Math.max(pointerDistance(a,b),1);
+    if(gesture.mode!=='pinch')resetGesture();
+    else{
+      cameraPan(center.x-gesture.center.x,center.y-gesture.center.y);
+      state.zoom=clamp(state.zoom*gesture.distance/distance,3.5,9.5);
+      gesture.center=center;gesture.distance=distance;
+    }
+    return;
+  }
+  if(gesture.mode!=='orbit'&&gesture.mode!=='pan')resetGesture();
+  const dx=e.clientX-gesture.last.x,dy=e.clientY-gesture.last.y;
+  if(Math.hypot(e.clientX-gesture.start.x,e.clientY-gesture.start.y)>5)gesture.moved=true;
+  if(gesture.mode==='pan')cameraPan(dx,dy);
+  else{
+    state.yaw+=dx*.008;
+    state.pitch=clamp(state.pitch+dy*.007,-1.1,1.1);
+  }
+  gesture.last={...pointers.get(e.pointerId)};
 });
 canvas.addEventListener('pointerup',e=>{
-  if(!state.drag)return;
-  if(!state.drag.moved){const r=canvas.getBoundingClientRect();positionInfo(selectedPartAt(e.clientX-r.left,e.clientY-r.top));}
-  state.drag=null;
-});
-canvas.addEventListener('pointercancel',()=>{state.drag=null;});
-canvas.addEventListener('wheel',e=>{e.preventDefault();state.zoom=clamp(state.zoom*Math.exp(e.deltaY*.001),3.5,9.5);},{passive:false});
-canvas.addEventListener('keydown',e=>{
-  if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key)){
-    e.preventDefault();
-    if(e.key==='ArrowLeft')state.yaw-=.12;
-    if(e.key==='ArrowRight')state.yaw+=.12;
-    if(e.key==='ArrowUp')state.pitch=clamp(state.pitch-.1,-1.1,1.1);
-    if(e.key==='ArrowDown')state.pitch=clamp(state.pitch+.1,-1.1,1.1);
+  if(!pointers.has(e.pointerId))return;
+  const selected=!suppressSelection&&pointers.size===1&&gesture?.mode==='orbit'&&!gesture.moved&&
+    Math.hypot(e.clientX-gesture.start.x,e.clientY-gesture.start.y)<=5;
+  pointers.delete(e.pointerId);
+  if(!pointers.size)suppressSelection=false;
+  if(selected){
+    const r=canvas.getBoundingClientRect();
+    positionInfo(selectedPartAt(e.clientX-r.left,e.clientY-r.top));
   }
+  resetGesture();
+});
+canvas.addEventListener('pointercancel',e=>{
+  pointers.delete(e.pointerId);if(!pointers.size)suppressSelection=false;resetGesture();
+});
+canvas.addEventListener('lostpointercapture',e=>{
+  pointers.delete(e.pointerId);if(!pointers.size)suppressSelection=false;resetGesture();
+});
+canvas.addEventListener('contextmenu',e=>e.preventDefault());
+canvas.addEventListener('wheel',e=>{
+  e.preventDefault();
+  state.zoom=clamp(state.zoom*Math.exp(e.deltaY*.001),3.5,9.5);
+},{passive:false});
+canvas.addEventListener('keydown',e=>{
+  const directions={ArrowLeft:[-1,0],ArrowRight:[1,0],ArrowUp:[0,-1],ArrowDown:[0,1]};
+  if(directions[e.key]){
+    e.preventDefault();
+    const [dx,dy]=directions[e.key];
+    if(e.shiftKey)cameraPan(dx*32,dy*32);
+    else{state.yaw+=dx*.12;state.pitch=clamp(state.pitch+dy*.12,-1.1,1.1);}
+  }else if(e.key==='+'||e.key==='='){e.preventDefault();state.zoom=clamp(state.zoom*.87,3.5,9.5);}
+  else if(e.key==='-'){e.preventDefault();state.zoom=clamp(state.zoom*1.13,3.5,9.5);}
 });
 canvas.tabIndex=0;
-canvas.addEventListener('touchstart',e=>{if(e.touches.length===2){state.drag=null;const a=e.touches[0],b=e.touches[1];state.pinch=Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY);}}, {passive:true});
-canvas.addEventListener('touchmove',e=>{if(e.touches.length===2&&state.pinch){const a=e.touches[0],b=e.touches[1],next=Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY);state.zoom=clamp(state.zoom*state.pinch/Math.max(next,1),3.5,9.5);state.pinch=next;}},{passive:true});
-canvas.addEventListener('touchend',()=>{state.pinch=null;});
 let resize=new ResizeObserver(()=>{if(gl)render();});resize.observe(stage);
 setupModel();syncLearningMode();syncLabelsToggle();syncViewControls();syncStudy();loadAtlasModels();
 window.__EAI_HEART_LAB__={
-  get state(){return {t:state.t,playing:state.playing,speed:state.speed,yaw:state.yaw,zoom:state.zoom,selected:state.selected,cutaway:state.cutaway,showLabels:state.showLabels,showFlow:state.showFlow,focusSide:state.focusSide,showDetails:state.showDetails,atlasReady,atlasRich,anatomyView:state.anatomyView,atlasError,atlasPartCount:atlasParts.length,studyStage:state.study.stage,mode:state.mode,guideStep:state.guideStep,layers:{...layerVisibility,flow:state.showFlow,labels:state.showLabels}};},
+  get state(){return {t:state.t,playing:state.playing,speed:state.speed,yaw:state.yaw,pitch:state.pitch,zoom:state.zoom,pan:[...state.pan],selected:state.selected,cutaway:state.cutaway,showLabels:state.showLabels,showFlow:state.showFlow,focusSide:state.focusSide,showDetails:state.showDetails,atlasReady,atlasRich,anatomyView:state.anatomyView,atlasError,atlasPartCount:atlasParts.length,studyStage:state.study.stage,mode:state.mode,guideStep:state.guideStep,layers:{...layerVisibility,flow:state.showFlow,labels:state.showLabels}};},
   get visibleAtlasPartIds(){return atlasParts.filter(part=>part.kind!=='space'&&isLayerVisible(part)).map(part=>part.id);},
   // Debugbare projectiepunten voor een echte browserklik in de regressietest.
   get hitTargets(){return Object.entries(selectableParts()).map(([id,part])=>{
@@ -947,6 +1112,10 @@ window.__EAI_HEART_LAB__={
   get motion(){return {playbackSeconds:60/state.rate/state.speed,
     valveParts:atlasParts.filter(p=>p.kind==='valve').map(p=>p.id),
     flowRoutes:atlasFlowPaths.length};},
+  get flowPreview(){return atlasFlowPaths.map(f=>({
+    color:f.color,channel:f.channel,ids:f.ids,points:f.curve.length,
+    active:flowIsActive(f,mechanics(state.t))
+  }));},
   setTime:t=>setTime(t,true),pause:()=>{state.playing=false;syncPlay();},
   get rendererReady(){return Boolean(gl)&&(state.cutaway||atlasReady);}
 };
