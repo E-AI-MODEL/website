@@ -59,7 +59,10 @@ function allowed_page(string $path): bool {
     if (strlen($path) > 140 || !preg_match('~^/(?:[a-z0-9_-]+/){0,9}$~D', $path)) {
         return false;
     }
-    $sitemap = @file_get_contents(dirname(__DIR__) . '/sitemap.xml');
+    static $sitemap = null;
+    if ($sitemap === null) {
+        $sitemap = @file_get_contents(dirname(__DIR__) . '/sitemap.xml');
+    }
     if (!is_string($sitemap) || $sitemap === '') {
         return false;
     }
