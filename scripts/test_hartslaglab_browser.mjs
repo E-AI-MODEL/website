@@ -165,8 +165,11 @@ try {
     assert.equal(await button.getAttribute('aria-pressed'),'false','Layerstatus volgt '+layer);
     const ids=await page.evaluate(()=>window.__EAI_HEART_LAB__.visibleAtlasPartIds);
     assert(!ids.includes(id),'Verborgen '+layer+' mag niet getekend worden');
-    assert.equal(await page.evaluate(targetId=>window.__EAI_HEART_LAB__.hitTargets.some(p=>p.id===targetId),id),false,
-      'Verborgen '+layer+' mag niet aanklikbaar blijven');
+    const stillSelectable=await page.evaluate(targetId=>
+      window.__EAI_HEART_LAB__.hitTargets.some(p=>p.id===targetId),id);
+    assert.equal(stillSelectable,layer==='wall',
+      layer==='wall'?'De wand blijft via de zichtbare Buitenlaag selecteerbaar':
+        'Verborgen '+layer+' mag niet aanklikbaar blijven');
     assert.equal(initialIds.length-ids.length,count,'De atlaslaag moet het verwachte aantal meshes verbergen');
     await button.click();
   }
@@ -174,6 +177,10 @@ try {
   await noWallButton.click();
   assert.notDeepEqual(beforeLayers,await page.locator('#heartCanvas').screenshot(),
     'Lagen moeten het 3D-model echt veranderen');
+  await exterior.click();
+  assert.equal(await page.evaluate(()=>window.__EAI_HEART_LAB__.hitTargets.some(p=>p.id==='ra_wall')),false,
+    'Zonder beide wandlagen hoort de wand niet aanklikbaar te zijn');
+  await exterior.click();
   await page.locator('#resetLayers').click();
   assert.equal((await page.evaluate(()=>window.__EAI_HEART_LAB__.visibleAtlasPartIds)).length,30);
   assert.equal((await state(page)).layers.outer,true,'Herstellen zet de buitenlaag weer aan');
