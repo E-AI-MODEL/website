@@ -90,7 +90,7 @@ try {
   assert.match(await page.locator('#predictionFeedback').textContent(),/Dat klopt/);
   assert.equal(await page.locator('#tabExploreBtn').getAttribute('aria-selected'),'true');
   await page.locator('#tabSourcesBtn').click();
-  assert.equal(await page.locator('.source-links a').count(),3);
+  assert.equal(await page.locator('.source-links a').count(),4);
   const before=await page.evaluate(()=>window.__EAI_HEART_LAB__.state.yaw);
   const box=await page.locator('#heartCanvas').boundingBox();
   assert(box&&box.width>450&&box.height>300);
