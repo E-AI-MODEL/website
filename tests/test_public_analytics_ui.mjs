@@ -27,12 +27,29 @@ test('public page never contains an API secret, account token, or fake count', (
   assert.match(html, /id="unique"/);
   assert.match(html, /id="bounce"/);
   assert.match(html, /id="clicks"/);
+  assert.doesNotMatch(html, /<div class="kpi">[^<]*<span[^>]*>[^<]*<\/span><strong[^>]*>[^<]*<\/strong><small>/);
+  assert.doesNotMatch(html, /Cloudflare: geen unieke personen|Gemiddelde, afgerond|id="unique-note"|id="bounce-note"|id="clicks-note"/);
+  assert.match(html, /<section class="overview"/);
+  assert.match(html, /<div class="insight-frame"/);
+  assert.match(html, /<details class="details">/);
+  assert.match(html, /assets\/eai-logo\.svg/);
+  assert.match(html, /id="visits">—<\/strong><\/div>/);
   assert.match(html, /Nog geen bezoekersgegevens beschikbaar/);
   assert.match(html, /Cloudflare levert paginaweergaven en bezoeken/);
   assert.match(html, /statistieken\/collect\.php/);
   assert.match(html, /site-analytics\.js/);
   assert.match(html, /id="analytics-optout"/);
   assert.match(html, /function mergeCollected\(extra\)/);
+});
+
+test('dashboard keeps the same compact KPI grid on mobile and desktop', () => {
+  const css = html.match(/<style>([\s\S]*?)<\/style>/)?.[1] || '';
+  assert.match(css, /\.kpis\{display:grid;grid-template-columns:repeat\(3,minmax\(0,1fr\)\)/);
+  assert.match(css, /@media\(max-width:640px\)/);
+  assert.match(css, /\.kpis\{grid-template-columns:repeat\(2,minmax\(0,1fr\)\)/);
+  assert.match(css, /\.kpi\{min-height:111px/);
+  assert.doesNotMatch(css, /\.kpi small/);
+  assert.match(css, /--accent:#e8583a/);
 });
 
 test('dashboard labels comparison periods and summary periods separately', () => {
