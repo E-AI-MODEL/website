@@ -62,7 +62,8 @@ class AnatomyPublishTests(unittest.TestCase):
         self.assertIn('id="heartCanvas"', source)
         self.assertIn('src="./heart.js"', source)
         self.assertIn('href="./heart.css"', source)
-        self.assertIn("3D · Anatomische hartvorm", source)
+        self.assertIn("Echte 3D-anatomie · BodyParts3D", source)
+        self.assertIn('id="mechanicsToggle"', source)
         for name in ("heart.js", "heart.css", "cycle.js", "anatomyGeometry.js"):
             asset = lab / name
             self.assertTrue(asset.is_file(), f"Hartslaglab mist {name}")
@@ -75,6 +76,21 @@ class AnatomyPublishTests(unittest.TestCase):
         manifest = atlas_manifest.read_text(encoding="utf-8")
         for part_id in ('"ra"', '"rv"', '"la"', '"lv"'):
             self.assertIn(part_id, manifest)
+        rich_mesh = lab / "atlas-heart-rich.bin"
+        rich_manifest = lab / "atlas-heart-rich.json"
+        self.assertTrue(rich_mesh.is_file(), "Uitgebreide hartatlas ontbreekt")
+        self.assertGreater(rich_mesh.stat().st_size, 100000)
+        self.assertTrue(rich_manifest.is_file(), "Uitgebreid hartmanifest ontbreekt")
+        import json
+        data = json.loads(rich_manifest.read_text(encoding="utf-8"))
+        self.assertEqual(data.get("format"), 2)
+        self.assertEqual(len(data["parts"]), 34)
+        self.assertEqual(data["bytes"], rich_mesh.stat().st_size)
+        ids = {part["id"] for part in data["parts"]}
+        for part_id in ("ra", "rv", "la", "lv", "mitral", "tricuspid", "aortic", "pulmonary", "pap_lv", "pap_rv"):
+            self.assertIn(part_id, ids)
+        self.assertIn("BodyParts3D 4.0", data["source"])
+        self.assertTrue((lab / "MODEL_SOURCE.md").is_file())
         script = (lab / "heart.js").read_text(encoding="utf-8")
         self.assertIn("getContext('webgl'", script)
         self.assertIn("from './cycle.js'", script)
