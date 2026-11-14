@@ -283,6 +283,20 @@
 }
 @media(prefers-reduced-motion:reduce){.ai-guide-fill{transition:none!important}}
 
+
+/* Smalle telefoons: geen minimuminhoud die het vaste werkvlak breder duwt. */
+.ai-guide-shell,.ai-guide-body,.ai-guide-main,.ai-guide-work,.ai-guide-visual,.ai-guide-aside,.ai-guide-intro,.ai-guide-bottom,.ai-guide-actions,.ai-guide-barlist{min-width:0}
+.ai-guide-question,.ai-guide-brand h1,.ai-guide-aside p{overflow-wrap:anywhere}
+@media(max-width:380px){
+ .ai-guide-bottom{gap:5px;padding-left:8px;padding-right:8px}
+ .ai-guide-counter{min-width:28px;font-size:11px}
+ .ai-guide-progress{max-width:45px;gap:3px}
+ .ai-guide-actions{gap:4px}
+ .ai-guide-actions button{padding:7px 8px;min-height:36px;font-size:11px!important}
+ .ai-guide-head{gap:7px}
+ .ai-guide-technical{max-width:108px;font-size:10px!important;padding:7px}
+}
+
 </style>
 </head>
 <body>
