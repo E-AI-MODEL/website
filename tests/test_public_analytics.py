@@ -21,8 +21,8 @@ def response():
                  "count": 24, "sum": {"visits": 11}},
             ],
             "paths": [
-                {"dimensions": {"requestHost": "eaimodel.nl", "requestPath": "/nl/"}, "count": 12},
-                {"dimensions": {"requestHost": "eaimodel.nl", "requestPath": "/tools/science-observatory/"}, "count": 6},
+                {"dimensions": {"requestHost": "eaimodel.nl", "requestPath": "/nl/"}, "count": 12, "sum": {"visits": 8}},
+                {"dimensions": {"requestHost": "eaimodel.nl", "requestPath": "/tools/science-observatory/"}, "count": 6, "sum": {"visits": 3}},
                 {"dimensions": {"requestHost": "eaimodel.nl", "requestPath": "/tools/person-name-and-private-link/"}, "count": 100},
                 {"dimensions": {"requestHost": "eaimodel.nl", "requestPath": "/leif/continue/"}, "count": 110},
                 {"dimensions": {"requestHost": "unrelated.nl", "requestPath": "/"}, "count": 200},
@@ -52,6 +52,10 @@ class PublicAnalyticsTests(unittest.TestCase):
         self.assertEqual(result["daily"][0]["date"], "2026-11-12")
         self.assertEqual(result["daily"][1]["visits"], 11)
         self.assertEqual([p["path"] for p in result["pages"]], ["/nl/", "/tools/science-observatory/"])
+        self.assertEqual([p["visits"] for p in result["pages"]], [8, 3])
+        self.assertNotIn("unique_visitors", result)
+        self.assertNotIn("bounce_rate", result)
+        self.assertNotIn("clicks", result)
         self.assertEqual(result["referrers"], [
             {"host": "Zoekmachines", "views": 12},
             {"host": "Andere websites", "views": 6},

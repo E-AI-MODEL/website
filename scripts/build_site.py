@@ -2789,6 +2789,12 @@ def build(sources: Path, out: Path) -> None:
             target = out / relative
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(page, target)
+    # Only the clearly marked demo snapshot ships with the generated site.
+    # Live data.json is published separately by Cloudflare, never overwritten by builds.
+    demo_source = repo_root / "statistieken" / "demo.json"
+    if demo_source.is_file():
+        (out / "statistieken").mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(demo_source, out / "statistieken" / "demo.json")
     # Shared styles and behavior belong to the bilingual redesign as well.
     if (repo_root / "nl").is_dir():
         shutil.copytree(repo_root / "assets", out / "assets", dirs_exist_ok=True)

@@ -26,6 +26,18 @@ De knop **7 dagen** verkort de totalen en het dagverloop. De lijst met pagina's 
 
 Bij een API-fout of ontbrekende toegang blijft de laatst geslaagde publicatie behouden. Zonder een bestaande publicatie geeft het dashboard aan dat de meting nog niet is aangesloten. Er worden nooit verzonnen nulstanden of voorbeeldcijfers gepubliceerd.
 
+
+## Voorbeeldstand en nieuwe paginacijfers
+
+De gewone URL `/statistieken/` toont uitsluitend echte Cloudflare-gegevens.
+`/statistieken/?demo=1` toont een duidelijk gemarkeerde proefopstelling met **500 verzonnen bezoeken en 143 verzonnen unieke bezoekers**. De demonstratie haalt alleen `/statistieken/demo.json` op en schrijft niets naar Cloudflare of naar `data.json`. Het bestand wordt met de site gepubliceerd; `data.json` komt uitsluitend uit de afzonderlijke Cloudflare-verversing.
+
+Per openbare pagina met ten minste vijf gemeten weergaven toont het overzicht nu paginaweergaven en, voor nieuwe snapshots, het door Cloudflare gerapporteerde aantal bezoeken aan die pagina. Die paginabezoeken zijn geen unieke mensen en de aantallen zijn niet zomaar optelbaar tot het sitebrede totaal.
+
+**Geen verzonnen productiemeting:** Cloudflare Web Analytics ondersteunt momenteel geen eigen klikgebeurtenissen, individuele unieke bezoekers of standaard bouncepercentage. In de gewone weergave blijven deze velden leeg totdat er een afzonderlijke, zorgvuldig afgebakende meting bestaat. De voorbeeldstand laat wél zien hoe per-paginaklikken en bouncepercentage er straks uit kunnen zien. De bezoekerscijfers uit `demo.json` mogen nooit worden opgenomen in echte statistieken, API-uitvoer of rapportages.
+
+Bij een apart meetinstrument moeten de definities vooraf vaststaan: wat telt als klik, wat betekent een betrokken sessie, hoe wordt een terugkerende bezoeker geteld en hoe wordt omgegaan met AVG en privacy. Voor simulaties is één lang bezoek niet automatisch een mislukte sessie.
+
 ## Bronnen
 
 - [Cloudflare Web Analytics](https://developers.cloudflare.com/web-analytics/about/)

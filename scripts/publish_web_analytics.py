@@ -47,6 +47,7 @@ query PublicAnalytics($account: string!, $site: string!, $start: Time!, $end: Ti
         filter: { siteTag: $site, datetime_geq: $start, datetime_lt: $end }
       ) {
         count
+        sum { visits }
         dimensions { requestHost requestPath }
       }
       referrers: rumPageloadEventsAdaptiveGroups(
@@ -136,6 +137,8 @@ def summarize(data: dict, start: datetime, end: datetime) -> dict:
         counts[date]["visits"] += number(row["sum"]["visits"])
 
     pages = Counter()
+    page_visits = Counter()
+    visit_data_paths = set()
     for row in paths:
         dims = row["dimensions"]
         if dims.get("requestHost", "").lower() not in PUBLIC_HOSTS:
@@ -143,6 +146,13 @@ def summarize(data: dict, start: datetime, end: datetime) -> dict:
         path = public_path(dims.get("requestPath"))
         if path:
             pages[path] += number(row["count"])
+            # Cloudflare exposes page-level visits separately from pageviews.
+            # These per-page figures are not unique people and cannot be summed
+            # into a reliable total of site-wide visits.
+            value = (row.get("sum") or {}).get("visits")
+            if value is not None:
+                page_visits[path] += number(value)
+                visit_data_paths.add(path)
 
     sources = Counter()
     for row in referrers:
@@ -182,7 +192,10 @@ def summarize(data: dict, start: datetime, end: datetime) -> dict:
         "views": sum(day["views"] for day in series),
         "visits": sum(day["visits"] for day in series),
         "daily": series,
-        "pages": [{"path": path, "views": views} for path, views in pages.most_common(10) if views >= 5],
+        "pages": [
+            {"path": path, "views": views, "visits": page_visits[path] if path in visit_data_paths else None}
+            for path, views in pages.most_common(30) if views >= 5
+        ],
         "referrers": [{"host": host, "views": views} for host, views in sources.most_common() if views >= 5],
         "notes": [
             "Bezoeken zijn geen unieke personen.",
