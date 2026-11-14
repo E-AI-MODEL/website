@@ -25,59 +25,81 @@ def canonical(path: str) -> str:
     return ALIASES.get(path, path)
 
 def groups(en: bool):
-    """Korte hoofdroutes; observatoria en ontwerptools hebben elk hun eigen plek."""
+    """Een begrijpelijk menu voor de gewone websitepagina's, in beide talen."""
     if en:
         return [
-            ('Model', [('The EAI model', '/en/model/'), ('Applications', '/en/applications/')]),
-            ('Education', [('Lessons and workforms', '/en/education/')]),
-            ('Blog', [('Publications', '/en/publications/')]),
-            ('Research', [('Evidence and sources', '/en/research/')]),
-            ('Observatories', [
-                ('Interactief onderzoeken', '/tools/science-observatory/'),
-                ('Physics experiments (Dutch)', '/tools/science-observatory/labs/natuurkunde/'),
+            ('The EAI model', [
+                ('How EAI works', '/en/model/'),
+                ('Examples in practice', '/en/applications/'),
+            ]),
+            ('Education', [
+                ('Lessons and activities', '/en/education/'),
+                ('Examples from practice', '/en/applications/'),
+            ]),
+            ('Research', [
+                ('Research and sources', '/en/research/'),
+                ('Articles and publications', '/en/publications/'),
+            ]),
+            ('Interactive models', [
+                ('All interactive models', '/en/tools/#observatoria'),
+                ('Physics and mathematics', '/tools/science-observatory/'),
                 ('Human anatomy', '/tools/anatomie/'),
-                ('LLM Observatory', '/tools/llm-observatorium/'),
-                
-                ('Galactic Observatory: guided version', '/tools/melkweg-lab/'),
+                ('How AI produces text', '/tools/llm-observatorium/'),
+                ('The Galaxy: guided version', '/tools/melkweg-lab/'),
+                ('The ocean (ABYSS)', '/tools/abyss/'),
+                ('Sport and movement (Dutch)', '/tools/lo-aanvalslab/'),
             ]),
             ('Tools', [
                 ('All tools', '/en/tools/'),
-                ('Prompt Framework', '/tools/prompt-framework/'),
-                ('WiHTML Studio', '/tools/wihtml/'),
+                ('Create learning materials', '/tools/wihtml/'),
+                ('Create prompts', '/tools/prompt-framework/'),
                 ('EAIstudio', '/tools/eaistudio/'),
                 ('EAImesh', '/tools/eaimesh/'),
-                ('Process to prompt', '/tools/van-proces-naar-prompt/'),
-                ('Model Monitor', '/en/model-monitor/'),
-                ('LLMscan', '/en/llmscan/'),
+                ('AI Model Monitor', '/en/model-monitor/'),
+                ('LLMscan: AI products', '/en/llmscan/'),
             ]),
-            ('About', [('About EAI', '/en/about/'), ('Site insights', '/en/insights/')]),
+            ('About EAI', [
+                ('About EAI and Hans Visser', '/en/about/'),
+                ('Website use', '/en/insights/'),
+            ]),
         ]
     return [
-        ('Model', [('Het EAI-model', '/nl/model/'), ('Toepassingen', '/nl/toepassingen/')]),
-        ('Onderwijs', [('Lessen en werkvormen', '/nl/onderwijs/'), ('Lesvoorbeelden', '/nl/toepassingen/')]),
-        ('Blog', [('Nieuwste artikelen', '/nl/blog/'), ('Publicaties en media', '/nl/publicaties/')]),
-        ('Onderzoek', [('Onderzoek en bronnen', '/nl/onderzoek/'), ('Bronnenregister', '/bronnen/')]),
-        ('Observatoria', [
-            ('Interactief onderzoeken', '/tools/science-observatory/'),
-            ('Natuurkundeproeven', '/tools/science-observatory/labs/natuurkunde/'),
-            ('Anatomie van de mens', '/tools/anatomie/'),
-            ('LLM Observatorium', '/tools/llm-observatorium/'),
-            
-            ('Galactisch Observatorium: met uitleg', '/tools/melkweg-lab/'),
+        ('Het model', [
+            ('Hoe werkt EAI?', '/nl/model/'),
+            ('Voorbeelden uit de praktijk', '/nl/toepassingen/'),
         ]),
-        ('Tools', [
-            ('Alle tools', '/nl/tools/'),
-            ('EAI Prompt Framework', '/tools/prompt-framework/'),
-            ('WiHTML Docentstudio', '/tools/wihtml/'),
+        ('Onderwijs', [
+            ('Lesontwerp en werkvormen', '/nl/onderwijs/'),
+            ('Voorbeelden uit de praktijk', '/nl/toepassingen/'),
+        ]),
+        ('Onderzoek', [
+            ('Onderzoeken en bronnen', '/nl/onderzoek/'),
+            ('Artikelen en publicaties', '/nl/publicaties/'),
+            ('Blog', '/nl/blog/'),
+        ]),
+        ('Interactieve modellen', [
+            ('Alle interactieve modellen', '/nl/tools/#observatoria'),
+            ('Natuurkunde en wiskunde', '/tools/science-observatory/'),
+            ('Anatomie van de mens', '/tools/anatomie/'),
+            ('Hoe werkt AI?', '/tools/llm-observatorium/'),
+            ('Galactisch Observatorium: met uitleg', '/tools/melkweg-lab/'),
+            ('De oceaan (ABYSS)', '/tools/abyss/'),
+            ('Sport en bewegen', '/tools/lo-aanvalslab/'),
+        ]),
+        ('Hulpmiddelen', [
+            ('Alle hulpmiddelen', '/nl/tools/'),
+            ('Lesmateriaal maken', '/tools/wihtml/'),
+            ('Prompts maken', '/tools/prompt-framework/'),
             ('EAIstudio', '/tools/eaistudio/'),
             ('EAImesh', '/tools/eaimesh/'),
-            ('Van proces naar prompt', '/tools/van-proces-naar-prompt/'),
             ('AI Model Monitor', '/nl/model-monitor/'),
-            ('LLMscan', '/nl/llmscan/'),
+            ('LLMscan: AI-producten', '/nl/llmscan/'),
         ]),
-        ('Over', [('Over EAI', '/nl/over/'), ('Websitegebruik', '/nl/insights/')]),
+        ('Over EAI', [
+            ('Over EAI en Hans Visser', '/nl/over/'),
+            ('Websitegebruik', '/nl/insights/'),
+        ]),
     ]
-
 
 def navigation(soup: BeautifulSoup, path: str, en: bool) -> str:
     home = '/en/' if en else '/nl/'
@@ -101,10 +123,10 @@ def navigation(soup: BeautifulSoup, path: str, en: bool) -> str:
     for title, entries in groups(en):
         # About/Over blijft beschikbaar in Meer en in de voettekst.
         # Zo houdt de brede navigatie zes korte, inhoudelijke bestemmingen.
-        if title in ('About', 'Over'):
+        if title in ('About EAI', 'Over EAI'):
             continue
         target = entries[0][1]
-        if title in ('Observatoria', 'Observatories'):
+        if title in ('Interactieve modellen', 'Interactive models'):
             target = '/en/tools/#observatoria' if en else '/nl/tools/#observatoria'
         current = ' aria-current="page"' if any(path_here == canonical(item[1]) or (canonical(item[1]) not in ('/nl/', '/en/') and path_here.startswith(canonical(item[1]))) for item in entries) else ''
         primary.append(f'<a href="{html.escape(target, quote=True)}"{current}>{html.escape(title)}</a>')
@@ -121,7 +143,7 @@ def navigation(soup: BeautifulSoup, path: str, en: bool) -> str:
 
 def footer(en: bool) -> str:
     home = '/en/' if en else '/nl/'
-    links = [('Blog', '/en/publications/'), ('Research', '/en/research/'), ('Tools', '/en/tools/'), ('About', '/en/about/')] if en else [('Model', '/nl/model/'), ('Onderwijs', '/nl/onderwijs/'), ('Blog', '/nl/blog/'), ('Onderzoek', '/nl/onderzoek/'), ('Tools', '/nl/tools/'), ('Over', '/nl/over/')]
+    links = [('The EAI model', '/en/model/'), ('Education', '/en/education/'), ('Research', '/en/research/'), ('Interactive models', '/en/tools/#observatoria'), ('Tools', '/en/tools/'), ('About EAI', '/en/about/')] if en else [('Het model', '/nl/model/'), ('Onderwijs', '/nl/onderwijs/'), ('Onderzoek', '/nl/onderzoek/'), ('Interactieve modellen', '/nl/tools/#observatoria'), ('Hulpmiddelen', '/nl/tools/'), ('Over EAI', '/nl/over/')]
     rendered = ''.join(f'<a href="{u}">{t}</a>' for t, u in links)
     rendered += '<a href="https://nl.linkedin.com/in/hans-visser-92531a105" target="_blank" rel="noopener noreferrer">LinkedIn</a>'
     return f'<footer class="eai-site-footer"><div class="eai-site-footer-inner"><div><a class="eai-site-brand" href="{home}"><img src="/assets/eai-logo.svg" width="32" height="32" alt=""><span>EAI</span></a><p>Hans Visser</p></div><nav aria-label="Footer">{rendered}</nav></div></footer>'
