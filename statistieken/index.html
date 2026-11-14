@@ -27,23 +27,24 @@ main{padding-bottom:95px}.intro{padding:70px 0 24px;max-width:740px}.eyebrow{fon
 <body class="eai-refresh">
 <a class="skip" href="#inhoud">Naar de statistieken</a>
 <header class="site-head"><div class="shell">
-<a class="brand" href="/"><span class="mark" aria-hidden="true">EAI</span><span>Bezoekersstatistieken</span></a>
-<nav aria-label="Navigatie"><a href="/">Startpagina</a><a href="/nl/onderzoek/">Onderzoek</a></nav>
+<a class="brand" href="/nl/" aria-label="Terug naar EAI"><img class="mark" src="/assets/eai-logo.svg" alt="" width="34" height="34"><span>EAI</span><span class="brand-divider" aria-hidden="true">/</span><span class="brand-page">Statistieken</span></a>
+<nav aria-label="Navigatie"><a href="/nl/onderzoek/">Onderzoek</a><a href="/nl/tools/">Tools</a></nav>
 </div></header>
 <main id="inhoud" class="shell">
-<header class="intro"><p class="eyebrow">Openbare gegevens</p><h1>Hoe wordt deze website bezocht?</h1><p class="lede" id="lede">Een overzicht van het bezoek aan eaimodel.nl. De cijfers komen uit Cloudflare Web Analytics en worden periodiek bijgewerkt.</p></header>
+<header class="intro"><p class="eyebrow">Bezoekersstatistieken</p><h1>Bezoek aan eaimodel.nl</h1><p class="lede" id="lede">Bekijk welke pagina’s worden bezocht en waar bezoekers op klikken.</p></header>
 <div class="demo-note" id="demo-note" hidden role="status"><strong>Voorbeeld</strong> <a href="/statistieken/">Live cijfers</a></div>
-<div class="toolbar"><div class="status" role="status" aria-live="polite"><span class="dot" id="status-dot"></span><span id="status">Gegevens ophalen…</span></div><div class="toolbar-right"><a class="demo-link" id="demo-toggle" href="/statistieken/?demo=1">Voorbeeld</a><div class="period" role="group" aria-label="Kies een periode"><button type="button" data-days="7" aria-pressed="false">7 dagen</button><button type="button" data-days="30" aria-pressed="true">30 dagen</button></div></div></div>
+<section class="overview" aria-label="Overzicht"><div class="toolbar"><div class="status" role="status" aria-live="polite"><span class="dot" id="status-dot"></span><span id="status">Gegevens ophalen…</span></div><div class="toolbar-right"><a class="demo-link" id="demo-toggle" href="/statistieken/?demo=1">Voorbeeld</a><div class="period" role="group" aria-label="Kies een periode"><button type="button" data-days="7" aria-pressed="false">7 dagen</button><button type="button" data-days="30" aria-pressed="true">30 dagen</button></div></div></div>
 <div class="kpis" aria-label="Bezoek in cijfers">
-<div class="kpi"><span class="label">Bezoeken</span><strong id="visits">—</strong><small>Cloudflare: geen unieke personen</small></div>
-<div class="kpi"><span class="label">Unieke bezoekers</span><strong id="unique">—</strong><small id="unique-note">Nog niet gemeten</small></div>
-<div class="kpi"><span class="label">Bouncepercentage</span><strong id="bounce">—</strong><small id="bounce-note">Nog niet gemeten</small></div>
-<div class="kpi"><span class="label">Paginaweergaven</span><strong id="views">—</strong><small>Geladen pagina's</small></div>
-<div class="kpi"><span class="label">Klikken</span><strong id="clicks">—</strong><small id="clicks-note">Nog niet gemeten</small></div>
-<div class="kpi"><span class="label">Pagina's per bezoek</span><strong id="ratio">—</strong><small>Gemiddelde, afgerond</small></div>
+<div class="kpi"><span class="label">Bezoeken</span><strong id="visits">—</strong></div>
+<div class="kpi"><span class="label">Unieke bezoekers</span><strong id="unique">—</strong></div>
+<div class="kpi"><span class="label">Bouncepercentage</span><strong id="bounce">—</strong></div>
+<div class="kpi"><span class="label">Paginaweergaven</span><strong id="views">—</strong></div>
+<div class="kpi"><span class="label">Klikken</span><strong id="clicks">—</strong></div>
+<div class="kpi"><span class="label">Pagina's per bezoek</span><strong id="ratio">—</strong></div>
 </div>
 <section class="panel trend" aria-labelledby="chart-title"><div class="panel-head"><div><h2 id="chart-title">Bezoeken per dag</h2><p id="chart-caption">De ontwikkeling over de gekozen periode</p></div></div><div id="chart-content"><div class="empty">Bezoekgegevens worden geladen.</div></div></section>
-<div class="grid">
+</section>
+<div class="insight-frame"><div class="grid">
 <section class="panel" aria-labelledby="pages-title"><div class="panel-head"><div><h2 id="pages-title">Meest bekeken pagina's</h2><p>Paginaweergaven over 30 dagen</p></div></div><div id="pages"><p class="note">Nog geen gegevens.</p></div></section>
 <section class="panel" aria-labelledby="sources-title"><div class="panel-head"><div><h2 id="sources-title">Waar komt bezoek vandaan?</h2><p>Verwijzingen over 30 dagen; rechtstreekse bezoeken ontbreken</p></div></div><div id="sources"><p class="note">Nog geen gegevens.</p></div></section>
 </div>
@@ -59,9 +60,10 @@ main{padding-bottom:95px}.intro{padding:70px 0 24px;max-width:740px}.eyebrow{fon
 <div class="page-clicks" id="page-clicks"><p class="note">Klikgegevens zijn nog niet beschikbaar.</p></div>
 <p class="page-help">Pagina-aantallen zijn niet optelbaar tot unieke bezoekers. De pagina-uitsplitsing gaat steeds over 30 dagen.</p>
 </section>
-<section class="details" aria-labelledby="about-title"><h2 id="about-title">Wat meten we precies?</h2><div><p>Cloudflare Web Analytics telt paginaladingen vanuit webbrowsers. Bezoeken zijn geen unieke personen. Door steekproeven, blokkeringen en browserinstellingen kunnen aantallen afwijken van het werkelijke bezoek.</p><p>De cijfers zeggen niet of iemand iets heeft geleerd of een tool goed heeft gebruikt. Cloudflare levert paginaweergaven en bezoeken. Voor klikken, unieke browsers en bouncepercentage gebruiken we een afzonderlijke meting op deze website. Een bezoek telt als bounce als het na één pagina eindigt zonder klik of tien seconden actieve kijktijd. We slaan geen ingevulde tekst, IP-adressen of volledige URL’s op. De browsercode wordt alleen voor tellingen gebruikt en de gegevens worden na maximaal 32 dagen gewist.</p><p>Bron: <a href="https://developers.cloudflare.com/web-analytics/about/" target="_blank" rel="noopener noreferrer">Cloudflare Web Analytics</a>.</p></div></section>
+</div>
+<details class="details"><summary>Hoe tellen we dit?</summary><div><p>Cloudflare Web Analytics telt paginaladingen vanuit webbrowsers. Bezoeken zijn geen unieke personen. Door steekproeven, blokkeringen en browserinstellingen kunnen aantallen afwijken van het werkelijke bezoek.</p><p>De cijfers zeggen niet of iemand iets heeft geleerd of een tool goed heeft gebruikt. Cloudflare levert paginaweergaven en bezoeken. Voor klikken, unieke browsers en bouncepercentage gebruiken we een afzonderlijke meting op deze website. Een bezoek telt als bounce als het na één pagina eindigt zonder klik of tien seconden actieve kijktijd. We slaan geen ingevulde tekst, IP-adressen of volledige URL’s op. De browsercode wordt alleen voor tellingen gebruikt en de gegevens worden na maximaal 32 dagen gewist.</p><p>Bron: <a href="https://developers.cloudflare.com/web-analytics/about/" target="_blank" rel="noopener noreferrer">Cloudflare Web Analytics</a>.</p></div></details>
 </main>
-<footer class="site-foot"><div class="shell"><span>© EAI · Bezoek en gebruik <button id="analytics-optout" type="button" class="optout">Meting uitzetten</button></span><a href="/">Terug naar eaimodel.nl</a></div></footer>
+<footer class="site-foot"><div class="shell"><span>© EAI · Bezoek en gebruik <button id="analytics-optout" type="button" class="optout">Meting uitzetten</button></span><a href="/nl/">Terug naar EAI</a></div></footer>
 <script defer src="/assets/site-analytics.js"></script>
 <script>
 (function(){
@@ -73,7 +75,7 @@ main{padding-bottom:95px}.intro{padding:70px 0 24px;max-width:740px}.eyebrow{fon
     el("demo-toggle").href="/statistieken/";
     el("demo-toggle").textContent="Live cijfers";
     document.title="Voorbeeld · Bezoekersstatistieken | EAI";
-    el("lede").textContent="Bekijk de paginacijfers, klikacties en het bezoek over de afgelopen maand.";
+    el("lede").textContent="Bekijk welke pagina’s worden bezocht en waar bezoekers op klikken.";
   }
   var number=new Intl.NumberFormat("nl-NL");
   var decimal=new Intl.NumberFormat("nl-NL",{minimumFractionDigits:1,maximumFractionDigits:1});
@@ -88,12 +90,12 @@ main{padding-bottom:95px}.intro{padding:70px 0 24px;max-width:740px}.eyebrow{fon
     if(!data.length){var empty=document.createElement("div");empty.className="empty";text(empty,"Geen meetgegevens voor deze periode.");target.appendChild(empty);return;}
     var max=Math.max.apply(null,data.map(function(day){return day.visits;}));var top=Math.max(1,max);
     var svg=makeSvg("svg",{class:"chart",viewBox:"0 0 800 255",role:"img","aria-label":"Bezoeken per dag. Van "+dateLabel(data[0].date)+" tot "+dateLabel(data[data.length-1].date)+"."});
-    [0,.5,1].forEach(function(level){var y=220-level*195;svg.appendChild(makeSvg("line",{x1:34,y1:y,x2:780,y2:y,stroke:"#e6ecee","stroke-width":1}));var label=makeSvg("text",{x:3,y:y+4,"font-size":11,fill:"#657680"});text(label,number.format(Math.round(top*level)));svg.appendChild(label);});
+    [0,.5,1].forEach(function(level){var y=220-level*195;svg.appendChild(makeSvg("line",{x1:34,y1:y,x2:780,y2:y,stroke:"#e8edf2","stroke-width":1}));var label=makeSvg("text",{x:3,y:y+4,"font-size":11,fill:"#657680"});text(label,number.format(Math.round(top*level)));svg.appendChild(label);});
     var pts=data.map(function(day,i){return [34+(data.length===1?0:i*746/(data.length-1)),220-day.visits/top*195];});
     var d=pts.map(function(p,i){return (i===0?"M":"L")+p[0].toFixed(2)+" "+p[1].toFixed(2);}).join(" ");
-    var area=makeSvg("path",{d:d+" L"+pts[pts.length-1][0].toFixed(2)+" 220 L"+pts[0][0].toFixed(2)+" 220 Z",fill:"#e8f2f4"});svg.appendChild(area);
-    svg.appendChild(makeSvg("path",{d:d,fill:"none",stroke:"#3e8191","stroke-width":2.2,"stroke-linecap":"round","stroke-linejoin":"round"}));
-    var last=pts[pts.length-1];svg.appendChild(makeSvg("circle",{cx:last[0],cy:last[1],r:3.7,fill:"#3e8191",stroke:"#ffffff","stroke-width":2}));
+    var area=makeSvg("path",{d:d+" L"+pts[pts.length-1][0].toFixed(2)+" 220 L"+pts[0][0].toFixed(2)+" 220 Z",fill:"#eef2f7"});svg.appendChild(area);
+    svg.appendChild(makeSvg("path",{d:d,fill:"none",stroke:"#294b73","stroke-width":2.2,"stroke-linecap":"round","stroke-linejoin":"round"}));
+    var last=pts[pts.length-1];svg.appendChild(makeSvg("circle",{cx:last[0],cy:last[1],r:3.7,fill:"#e8583a",stroke:"#ffffff","stroke-width":2}));
     target.appendChild(svg);
     var axis=document.createElement("div");axis.className="axis";var a=document.createElement("span");var b=document.createElement("span");text(a,dateLabel(data[0].date));text(b,dateLabel(data[data.length-1].date));axis.append(a,b);target.appendChild(axis);
     var note=document.createElement("p");note.className="chart-note";text(note,"De meest recente dag kan nog onvolledig zijn.");target.appendChild(note);
@@ -111,13 +113,11 @@ main{padding-bottom:95px}.intro{padding:70px 0 24px;max-width:740px}.eyebrow{fon
   function maybeValue(value,suffix){
     return typeof value==="number"&&Number.isFinite(value)?(suffix==="%"?decimal.format(value)+"%":number.format(value)):"—";
   }
-  function kpi(id,value,suffix,noteId){
+  function kpi(id,value,suffix){
     var node=el(id);
     node.textContent=maybeValue(value,suffix);
     node.classList.toggle("unavailable",typeof value!=="number"||!Number.isFinite(value));
-    if(noteId){
-      el(noteId).textContent=typeof value==="number"?(demo?"Voorbeeld":"Eigen meting"):"Nog niet gemeten";
-    }
+
   }
   function renderPage(){
     var page=(info.pages||[]).find(function(p){return p.path===selectedPage;});
@@ -193,9 +193,9 @@ main{padding-bottom:95px}.intro{padding:70px 0 24px;max-width:740px}.eyebrow{fon
     var pm=(info.period_metrics||{})[String(selected)]||{};
     kpi("visits",visits);kpi("views",views);
     el("ratio").textContent=visits?decimal.format(views/visits):"—";
-    kpi("unique",pm.unique_visitors??(selected===30?info.unique_visitors:null),null,"unique-note");
-    kpi("bounce",pm.bounce_rate??(selected===30?info.bounce_rate:null),"%","bounce-note");
-    kpi("clicks",pm.clicks??(selected===30?info.clicks:null),null,"clicks-note");
+    kpi("unique",pm.unique_visitors??(selected===30?info.unique_visitors:null));
+    kpi("bounce",pm.bounce_rate??(selected===30?info.bounce_rate:null),"%");
+    kpi("clicks",pm.clicks??(selected===30?info.clicks:null));
     text(el("chart-caption"),selected===7?"Afgelopen 7 kalenderdagen":"Afgelopen 30 kalenderdagen");
     chart(data);
     // Page and source rankings in a snapshot cover the full 30-day period.
@@ -203,7 +203,7 @@ main{padding-bottom:95px}.intro{padding:70px 0 24px;max-width:740px}.eyebrow{fon
     el("pages-title").textContent="Meest bekeken pagina's (30 dagen)";
     el("sources-title").textContent="Waar komt bezoek vandaan? (30 dagen)";
     ranks("pages",info.pages||[],"page");ranks("sources",info.referrers||[],"source");updatePages();
-    status(demo?"Voorbeeld":"Bijgewerkt op "+fmtTime(info.updated_at)+" · Cloudflare Web Analytics",true);
+    status(demo?"Voorbeeld":"Bijgewerkt "+fmtTime(info.updated_at),true);
   }
   document.querySelectorAll("[data-days]").forEach(function(button){button.addEventListener("click",function(){selected=Number(button.getAttribute("data-days"));document.querySelectorAll("[data-days]").forEach(function(b){b.setAttribute("aria-pressed",String(b===button));});render();});});
   function updatePrivacyControl(){
