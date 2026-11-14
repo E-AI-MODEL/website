@@ -956,8 +956,6 @@ function tick(now){
  if(state.chartDirty&&now-lastGraph>70&&($('app').dataset.panel==='graph'||window.innerWidth>800)){drawPlot();lastGraph=now}
  requestAnimationFrame(tick);
 }
-tokenizeInput();rebuildWorld();bind();renderInspector();setMode(0);resize();setupGuide();loadRealTokenizer();new ResizeObserver(resize).observe($('stage'));new ResizeObserver(resize).observe($('graphPanel'));requestAnimationFrame(tick);
-
 /* Toegankelijke route voor beginners. Technische modellen en gegevens blijven intact. */
 const GUIDE_LABELS=['Jouw vraag','Tekst in stukjes','Eerdere tekst','Volgend stukje','Een antwoord'];
 const GUIDE_STEPS=[
@@ -1076,6 +1074,7 @@ function setupGuide(){
  guideRender();
 }
 
+tokenizeInput();rebuildWorld();bind();renderInspector();setMode(0);resize();setupGuide();loadRealTokenizer();new ResizeObserver(resize).observe($('stage'));new ResizeObserver(resize).observe($('graphPanel'));requestAnimationFrame(tick);
 </script>
 </body>
 </html>
