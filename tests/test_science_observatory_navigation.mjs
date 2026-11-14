@@ -9,7 +9,7 @@ test('Zes onderwerpen geven toegang tot alle afzonderlijke onderzoeksmodellen', 
   for (const title of ['Natuurkunde en wiskunde', 'Galactisch Observatorium', 'De oceaan (ABYSS)', 'Anatomie van de mens', 'Hoe werkt AI?', 'Sport en bewegen']) {
     assert.ok(html.includes('<h3>' + title + '</h3>'), title);
   }
-  assert.equal((html.match(/<article class="so-card(?:\\s|")/g) || []).length, 6);
+  assert.equal((html.match(/<article class="so-card(?:\s|")/g) || []).length, 6);
   for (const slug of ['natuurkunde', 'gravitatie-banen', 'wiskunde-a', 'wiskunde-b']) {
     assert.ok(html.includes('/tools/science-observatory/labs/' + slug + '/'), slug);
   }
