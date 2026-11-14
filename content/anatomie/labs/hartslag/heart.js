@@ -529,8 +529,14 @@ function anatomicalAtlasVisible(){
 function selectableParts(){
   if(!anatomicalAtlasVisible())return ANATOMY_PARTS;
   if(!atlasRich)return atlasDetails;
-  return Object.fromEntries(Object.entries(atlasDetails).filter(([,part])=>
-    part.type!=='space'&&layerVisibility[layerForKind(part.type)]!==false));
+  return Object.fromEntries(Object.entries(atlasDetails).filter(([,part])=>{
+    if(part.type==='space')return false;
+    // Een hartwand mag alleen aanklikbaar zijn als een van beide wandlagen
+    // daadwerkelijk zichtbaar is in het gekozen binnen- of buitenaanzicht.
+    if(part.type==='wall')return state.cutaway?
+      layerVisibility.wall||layerVisibility.outer:layerVisibility.outer;
+    return layerVisibility[layerForKind(part.type)]!==false;
+  }));
 }
 function selectedPartAt(x,y){
   let best=null,score=55;
