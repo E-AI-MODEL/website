@@ -63,7 +63,10 @@ class AnatomyPublishTests(unittest.TestCase):
         self.assertIn('src="./heart.js"', source)
         self.assertIn('href="./heart.css"', source)
         self.assertIn("Echte 3D-anatomie · BodyParts3D", source)
-        self.assertIn('id="mechanicsToggle"', source)
+        self.assertNotIn('id="mechanicsToggle"', source,
+                         "Een rijke anatomie mag niet overschakelen naar een grove tekening")
+        self.assertIn('id="playbackDuration"', source,
+                      "De verlengde afspeeltijd moet duidelijk zichtbaar zijn")
         for name in ("heart.js", "heart.css", "cycle.js", "anatomyGeometry.js"):
             asset = lab / name
             self.assertTrue(asset.is_file(), f"Hartslaglab mist {name}")
