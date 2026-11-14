@@ -487,6 +487,17 @@
  #storyBoard>*{animation:storyAppear .30s ease-out both}
  @keyframes storyAppear{from{opacity:.18;transform:translateY(4px)}to{opacity:1;transform:none}}
 }
+
+/* Tijdens de uitleg staan geen technische schuifregelaars en tweede grafiek in beeld.
+   Via 'Bekijk 3D-model' komen ze meteen terug. */
+@media(min-width:801px){
+ #app[data-mode="0"][data-story-view="animation"]{
+  grid-template-columns:var(--left) minmax(0,1fr) 0px;
+  grid-template-rows:54px minmax(0,1fr) 0px 41px
+ }
+ #app[data-mode="0"][data-story-view="animation"] .inspector,
+ #app[data-mode="0"][data-story-view="animation"] .plot-panel{display:none!important}
+}
 </style>
 </head>
 <body>
