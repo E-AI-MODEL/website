@@ -2818,6 +2818,46 @@ def build(sources: Path, out: Path) -> None:
         shutil.rmtree(private_leif_sources)
     items = "".join(f"<url><loc>{BASE_URL}{path}</loc></url>" for path in urls)
     write(out, "sitemap.xml", f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{items}</urlset>')
+    add_cloudflare_beacon_to_public_routes(out, urls)
+
+
+# Public Cloudflare Web Analytics browser beacon. This token is a public site
+# identifier used by the browser, NOT a privileged Cloudflare API credential.
+CLOUDFLARE_PUBLIC_BEACON = (
+    '<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" '
+    'data-cf-beacon=\\'{"token":"1aa5d5810d5a48e7bb8e5b2bac573e74"}\\'></script>'
+)
+CLOUDFLARE_ANALYTICS_EXCLUDED = {
+    "leif", "houseoftalents", "admin", "beheer", "login", "logout",
+    "auth", "private", "backoffice", "account", "accounts", "profile",
+    "profiel", "continue", "multitenant", "dossier",
+}
+
+
+def add_cloudflare_beacon_to_public_routes(out: Path, public_urls: list[str]) -> None:
+    """Measure only sitemap-listed public pages, never private/administrative routes.
+
+    Insertion is text-only to avoid reserializing standalone educational HTML.
+    This is intentionally idempotent because published nl/en HTML becomes source.
+    """
+    for route in set(public_urls):
+        if not route.startswith("/") or not route.endswith("/") or ".." in route:
+            continue
+        segments = [part for part in route.split("/") if part]
+        if any(part.casefold() in CLOUDFLARE_ANALYTICS_EXCLUDED for part in segments):
+            continue
+        page = out.joinpath(*segments, "index.html")
+        if not page.is_file():
+            continue
+        html = page.read_text(encoding="utf-8")
+        if "static.cloudflareinsights.com/beacon.min.js" in html:
+            continue
+        revised, changed = re.subn(
+            r"</head\\s*>", lambda match: CLOUDFLARE_PUBLIC_BEACON + match.group(0),
+            html, count=1, flags=re.I,
+        )
+        if changed:
+            page.write_text(revised, encoding="utf-8")
 
 
 # Shared editorial finish for generated legacy pages. Source content and URLs stay intact.
