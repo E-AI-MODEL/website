@@ -915,6 +915,7 @@ document.querySelectorAll('[data-layer]').forEach(button=>button.addEventListene
   syncLabelsToggle();
   syncViewControls();
   updateLabels();
+  updateFlowOverlay(mechanics(state.t));
 }));
 $('resetLayers').addEventListener('click',()=>{
   Object.keys(layerVisibility).forEach(layer=>{layerVisibility[layer]=true;});
@@ -924,6 +925,7 @@ $('resetLayers').addEventListener('click',()=>{
   syncLabelsToggle();
   syncViewControls();
   updateLabels();
+  updateFlowOverlay(mechanics(state.t));
 });
 $('layerMenu').addEventListener('toggle',()=>{
   // Een open laagmenu blijft op mobiel binnen het hartvenster.
