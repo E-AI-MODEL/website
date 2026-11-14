@@ -10,7 +10,7 @@ const lerp=(a,b,t)=>a+(b-a)*t;
 const ease=t=>{t=clamp(t,0,1);return t*t*(3-2*t);};
 const span=(t,a,b)=>ease((t-a)/(b-a));
 const fmt=(v,n=0)=>Number(v).toLocaleString('nl-NL',{minimumFractionDigits:n,maximumFractionDigits:n});
-const state={cutaway:false,t:0,playing:false,speed:.25,yaw:-.20,pitch:.08,zoom:5.95,selected:null,showLabels:!matchMedia('(max-width: 790px)').matches,showFlow:true,tab:'phase',rate:75,last:0,drag:null,study:{guess:null,stage:'choose',stopAt:null},focusSide:'left',showDetails:false,anatomyView:false};
+const state={cutaway:true,t:0,playing:false,speed:.25,yaw:-.20,pitch:.08,zoom:5.95,selected:null,showLabels:false,showFlow:true,tab:'phase',rate:75,last:0,drag:null,study:{guess:null,stage:'choose',stopAt:null},focusSide:'both',showDetails:false,anatomyView:false,userPaused:false};
 const m4=()=>{
   const o=new Float32Array(16);o[0]=o[5]=o[10]=o[15]=1;return o;
 };
@@ -79,15 +79,15 @@ function compile(gl,type,src){const shader=gl.createShader(type);gl.shaderSource
 function shader(gl,vs,fs){const p=gl.createProgram();gl.attachShader(p,compile(gl,gl.VERTEX_SHADER,vs));gl.attachShader(p,compile(gl,gl.FRAGMENT_SHADER,fs));gl.linkProgram(p);if(!gl.getProgramParameter(p,gl.LINK_STATUS))throw new Error(gl.getProgramInfoLog(p));return p;}
 function setupModel(){
   gl=canvas.getContext('webgl',{antialias:true,alpha:false,powerPreference:'default'})||canvas.getContext('experimental-webgl');
-  if(!gl){$('modelUnavailable').hidden=false;return false;}
+  if(!gl){$('atlasLoading').hidden=true;$('modelUnavailable').hidden=false;return false;}
   // Uit de bron-GLB komen ook per-vertex schaduw, weefselvariatie en vetmaskers.
   // Op oudere/procedurele meshes blijft dit attribuut neutraal.
   program=shader(gl,
-    "attribute vec3 position;\nattribute vec3 normal;\nattribute vec3 tissue;\nuniform mat4 pv;\nuniform mat4 model;\nuniform float pulse;\nuniform vec3 cutAxis;\nuniform float moveValve;\nuniform float valveOpen;\nuniform float valveRadius;\nuniform vec3 valveCenter;\nuniform vec3 valveAxis;\nvarying vec3 n;\nvarying vec3 p;\nvarying vec3 tissueData;\nvarying float front;\nvoid main(){\n  vec3 anatomy=position;\n  if(moveValve>.5){\n    // De bronmesh blijft intact. Alleen de bladen krijgen een getekende opening.\n    vec3 axis=normalize(valveAxis);\n    vec3 offset=anatomy-valveCenter;\n    vec3 radial=offset-axis*dot(offset,axis);\n    float r=clamp(length(radial)/max(valveRadius,.001),0.,1.);\n    float flex=1.-smoothstep(.12,.95,r);\n    float flare=4.*r*(1.-r);\n    anatomy+=valveOpen*valveRadius*(axis*.40*flex+normalize(radial+vec3(.00001))*.23*flare);\n  }else if(pulse>0.){\n    // Beperkte, niet-klinische contractie van de spierwand, niet van de vaten.\n    float weight=1.-smoothstep(-.9,.62,anatomy.y);\n    anatomy.xz*=1.-.065*pulse*weight;\n    anatomy.y+=.026*pulse*weight;\n  }\n  vec4 world=model*vec4(anatomy,1.);\n  front=dot(world.xyz,cutAxis);\n  gl_Position=pv*world;\n  n=normalize(mat3(model)*normal);\n  p=world.xyz;\n  tissueData=tissue;\n}",
+    "attribute vec3 position;\nattribute vec3 normal;\nattribute vec3 tissue;\nuniform mat4 pv;\nuniform mat4 model;\nuniform float pulse;\nuniform float atrialMode;\nuniform vec3 cutAxis;\nuniform float moveValve;\nuniform float valveOpen;\nuniform float valveRadius;\nuniform vec3 valveCenter;\nuniform vec3 valveAxis;\nvarying vec3 n;\nvarying vec3 p;\nvarying vec3 tissueData;\nvarying float front;\nvoid main(){\n  vec3 anatomy=position;\n  if(moveValve>.5){\n    // De bronmesh blijft intact. Alleen de bladen krijgen een getekende opening.\n    vec3 axis=normalize(valveAxis);\n    vec3 offset=anatomy-valveCenter;\n    vec3 radial=offset-axis*dot(offset,axis);\n    float r=clamp(length(radial)/max(valveRadius,.001),0.,1.);\n    float flex=1.-smoothstep(.12,.95,r);\n    float flare=4.*r*(1.-r);\n    anatomy+=valveOpen*valveRadius*(axis*.40*flex+normalize(radial+vec3(.00001))*.23*flare);\n  }else if(pulse>0.){\n    // Beperkte, niet-klinische contractie van de spierwand, niet van de vaten.\n    float weight=mix(1.-smoothstep(-.9,.62,anatomy.y),smoothstep(-.12,.75,anatomy.y),atrialMode);\n    anatomy.xz*=1.-.065*pulse*weight;\n    anatomy.y+=.026*pulse*weight;\n  }\n  vec4 world=model*vec4(anatomy,1.);\n  front=dot(world.xyz,cutAxis);\n  gl_Position=pv*world;\n  n=normalize(mat3(model)*normal);\n  p=world.xyz;\n  tissueData=tissue;\n}",
     'precision mediump float;varying vec3 n;varying vec3 p;varying vec3 tissueData;varying float front;uniform vec3 tint;uniform float alpha;uniform float cutFront;void main(){if(cutFront>.5&&front>.025)discard;vec3 normal=normalize(n);vec3 light=normalize(vec3(-.47,.83,1.0));vec3 fill=normalize(vec3(.50,.18,-.8));float direct=max(dot(normal,light),0.0);float soft=max(dot(normal,fill),0.0);float ao=mix(.48,1.0,clamp(tissueData.r,0.0,1.0));float mottle=mix(.91,1.07,clamp(tissueData.g,0.0,1.0));vec3 base=mix(tint,vec3(.93,.71,.43),clamp(tissueData.b,0.0,1.0)*.70);vec3 color=base*(.31+.62*direct+.12*soft)*ao*mottle;float rim=pow(1.0-abs(dot(normal,normalize(vec3(0.,.15,1.)))),2.0);color+=tint*rim*.10;float spec=pow(max(dot(reflect(-light,normal),vec3(0.,0.,1.)),0.0),28.0);color+=vec3(.92,.68,.61)*spec*.15*ao;gl_FragColor=vec4(color,alpha);}');
   pointProgram=shader(gl,'attribute vec3 position;uniform mat4 pv;uniform float size;void main(){vec4 clip=pv*vec4(position,1.0);gl_Position=clip;gl_PointSize=size*clamp(5.0/clip.w,.7,2.4);}',
     'precision mediump float;uniform vec3 tint;void main(){vec2 v=gl_PointCoord-vec2(.5);float r=length(v);if(r>.5)discard;float shine=1.0-smoothstep(.10,.50,r);gl_FragColor=vec4(tint,shine*.87);}');
-  for(const k of ['position','normal','tissue','pv','model','tint','alpha','pulse','cutAxis','cutFront','moveValve','valveOpen','valveRadius','valveCenter','valveAxis'])loc[k]=['position','normal','tissue'].includes(k)?gl.getAttribLocation(program,k):gl.getUniformLocation(program,k);
+  for(const k of ['position','normal','tissue','pv','model','tint','alpha','pulse','atrialMode','cutAxis','cutFront','moveValve','valveOpen','valveRadius','valveCenter','valveAxis'])loc[k]=['position','normal','tissue'].includes(k)?gl.getAttribLocation(program,k):gl.getUniformLocation(program,k);
   for(const k of ['position','pv','size','tint'])ploc[k]=k==='position'?gl.getAttribLocation(pointProgram,k):gl.getUniformLocation(pointProgram,k);
   meshes.sphere=upload(sphere());
   meshes.chambers={};
@@ -123,10 +123,11 @@ function upload(m){
   if(m.t){tb=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,tb);gl.bufferData(gl.ARRAY_BUFFER,m.t,gl.STATIC_DRAW);}
   return {...m,vb,nb,tb};
 }
-function drawMesh(mesh,model,color,alpha=1,pulse=0,cutFront=false,valveMotion=null){
+function drawMesh(mesh,model,color,alpha=1,pulse=0,cutFront=false,valveMotion=null,atrialMode=0){
   gl.useProgram(program);gl.uniformMatrix4fv(loc.pv,false,pv);gl.uniformMatrix4fv(loc.model,false,model);
   gl.uniform3fv(loc.tint,color);gl.uniform1f(loc.alpha,alpha);
   gl.uniform1f(loc.pulse,pulse);
+  gl.uniform1f(loc.atrialMode,atrialMode);
   gl.uniform1f(loc.cutFront,cutFront?1:0);
   gl.uniform1f(loc.moveValve,valveMotion?1:0);
   gl.uniform1f(loc.valveOpen,valveMotion?valveMotion.opening:0);
@@ -168,7 +169,7 @@ function drawParticles(m){
   const batches={red:[],blue:[]};
   const routes=atlasRich&&state.cutaway?atlasFlowPaths:FLOW_PATHS;
   for(const flow of routes){
-    if(atlasReady&&state.cutaway&&flow.color!==(state.focusSide==='left'?'red':'blue'))continue;
+    if(atlasReady&&state.cutaway&&state.focusSide!=='both'&&flow.color!==(state.focusSide==='left'?'red':'blue'))continue;
     const open=flow.channel==='return'||(flow.channel==='av'&&m.av)||(flow.channel==='sem'&&m.sem);
     if(!open)continue;
     for(let i=0;i<flow.n;i++){
@@ -236,6 +237,21 @@ async function loadAtlasModels(){
       atlasReady=true;atlasRich=isRich;atlasError=null;
       atlasFlowPaths=isRich?makeAtlasFlowPaths(centers):[];
       if(state.cutaway)state.anatomyView=isRich;
+      if(isRich){
+        state.cutaway=true;
+        state.anatomyView=true;
+        state.focusSide='both';
+        $('atlasLoading').hidden=true;
+        $('play').disabled=false;
+        // Een echte loop start zodra de atlas geladen is. Respecteer minder beweging.
+        if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&!state.userPaused)
+          state.playing=true;
+        syncPlay();
+      }else{
+        $('atlasLoading').hidden=false;
+        $('atlasLoading').textContent='Het uitgebreide hartmodel is niet geladen. Alleen de beperkte terugvalweergave is beschikbaar.';
+        $('play').disabled=true;
+      }
       $('modelCaption').textContent=isRich?
         'Echte 3D-anatomie · BodyParts3D · 34 structuren':'3D · Anatomische hartvorm · Atlasmodel';
       if(!state.cutaway)positionInfo(null);
@@ -244,6 +260,10 @@ async function loadAtlasModels(){
     }catch(error){failures.push(name+': '+String(error.message||error));}
   }
   atlasError=failures.join(' | ');atlasReady=false;atlasRich=false;atlasFlowPaths=[];
+  $('atlasLoading').hidden=false;
+  $('atlasLoading').textContent='De gedetailleerde hartanatomie kan niet worden geladen. Ververs de pagina om opnieuw te proberen.';
+  $('play').disabled=true;
+  state.playing=false;syncPlay();
   state.cutaway=true;state.anatomyView=false;
   syncViewControls();
   $('modelCaption').textContent='3D · Bewegende doorsnede · Schematisch';
@@ -261,7 +281,7 @@ function drawAtlasHeart(m,section=false){
       let valveMotion=null;
       if(section&&part.kind==='valve'){
         const left=['mitral','aortic'].includes(part.id);
-        const focused=left===(state.focusSide==='left');
+        const focused=state.focusSide==='both'||left===(state.focusSide==='left');
         const opening=['mitral','tricuspid'].includes(part.id)?m.avOpening:m.semOpening;
         color=focused?(opening>.3?[.99,.83,.62]:[.85,.60,.47]):[.58,.49,.43];
         if(state.showDetails&&focused)color=[1,.94,.72];
@@ -273,8 +293,10 @@ function drawAtlasHeart(m,section=false){
       if(state.selected===part.id)color=[1,.86,.60];
       // De atlasvorm blijft het zichtbare model; de klepbeweging is een
       // didactische vervorming, geen anatomisch gevalideerde hartcontractie.
-      const wallPulse=['wall','papillary'].includes(part.kind)?pulse:0;
-      drawMesh(part.mesh,m4(),color,1,wallPulse,cutWall,valveMotion);
+      const atrialWall=['ra_wall','la_wall'].includes(part.id);
+      const wallPulse=atrialWall?clamp((1-m.atriumScale)/.16,0,1):
+        (part.kind==='wall'||part.kind==='papillary')?pulse:0;
+      drawMesh(part.mesh,m4(),color,1,wallPulse,cutWall,valveMotion,atrialWall?1:0);
       continue;
     }
     if(section&&part.kind!=='chamber'&&part.id!==(state.focusSide==='left'?'ao':'pa'))continue;
@@ -441,6 +463,7 @@ function selectedPartAt(x,y){
 function positionInfo(id){
   state.selected=id;
   const part=selectableParts()[id];
+  $('partInfo').hidden=!part;
   if(!part){
     $('partInfo').textContent=state.cutaway?
       'Sleep om het hart te draaien. Tik op een onderdeel om het te onderzoeken.':
@@ -531,6 +554,13 @@ function drawMiniTrace(){
   const cursor=x0+state.t*w;
   ctx.lineWidth=.8;ctx.strokeStyle='#e2ece7';ctx.setLineDash([3,3]);ctx.beginPath();ctx.moveTo(cursor,y0);ctx.lineTo(cursor,y1);ctx.stroke();ctx.setLineDash([]);
 }
+const STORY_PHASES=[
+  {text:'Via de aders komt bloed in beide boezems. Het stroomt door de open AV-kleppen naar de kamers.',route:'Boezems → kamers'},
+  {text:'De boezems trekken samen. Het laatste bloed gaat door de open AV-kleppen naar de kamers.',route:'Boezems → kamers'},
+  {text:'De kamers beginnen samen te trekken. Alle kleppen zijn even dicht: de druk stijgt, maar er gaat nog geen bloed naar buiten.',route:'Kleppen dicht · druk stijgt'},
+  {text:'De druk opent de slagaderkleppen. Rechts gaat bloed naar de longen, links naar de rest van het lichaam.',route:'Rechts → longen · links → lichaam'},
+  {text:'De slagaderkleppen sluiten. De kamers ontspannen en de druk daalt; daarna kunnen ze weer vullen.',route:'Kleppen dicht · druk daalt'}
+];
 function display(m){
   const phase=PHASES[m.phase];const prev=Number($('phaseNumber').dataset.index||-1);
   if(prev!==m.phase){
@@ -539,7 +569,19 @@ function display(m){
     $('phaseTitle').textContent=phase.title;
     $('phaseText').textContent=phase.text;
     $('phaseHint').textContent=phase.hint;
+    $('storyNumber').textContent=String(m.phase+1).padStart(2,'0')+' / 05';
+    $('storyTitle').textContent=phase.title;
+    $('storyText').textContent=STORY_PHASES[m.phase].text;
+    $('storyRoute').textContent=STORY_PHASES[m.phase].route;
   }
+  $('storyAV').textContent='AV-kleppen '+(m.av?'open':'dicht');
+  $('storySL').textContent='Slagaderkleppen '+(m.sem?'open':'dicht');
+  $('storyAV').classList.toggle('open',m.av);
+  $('storySL').classList.toggle('open',m.sem);
+  $('storyProgress').style.width=(state.t*100).toFixed(2)+'%';
+  $('storySteps').querySelectorAll('[data-story-phase]').forEach(el=>{
+    el.classList.toggle('active',Number(el.dataset.storyPhase)===m.phase);
+  });
   $('phaseIndex').innerHTML=String(m.phase+1).padStart(2,'0')+' <small>/ 05</small>';
   $('avStatus').textContent=m.av?'Open':'Gesloten';
   $('slStatus').textContent=m.sem?'Open':'Gesloten';
@@ -579,8 +621,18 @@ function setTime(t,autopause=false){
   render();
   if(autopause)focusActivePhase();
 }
-function syncPlay(){$('play').textContent=state.playing?'Pauze':'Start';$('play').setAttribute('aria-label',state.playing?'Pauzeer de hartslag':'Start de hartslag');}
-$('play').addEventListener('click',()=>{state.playing=!state.playing;syncPlay();});
+function syncPlay(){
+  $('play').textContent=state.playing?'Pauzeer':'Start hartslag';
+  $('play').setAttribute('aria-label',state.playing?'Pauzeer de doorlopende hartslag':'Start de doorlopende hartslag');
+  $('loopLabel').textContent=state.playing?'De hartslag herhaalt zich':'Hartslag gepauzeerd';
+  $('loopNotice').textContent=state.playing?'Speelt steeds opnieuw af':'Druk op start om te kijken';
+}
+$('play').addEventListener('click',()=>{
+  if(!atlasRich)return;
+  state.playing=!state.playing;
+  state.userPaused=!state.playing;
+  syncPlay();
+});
 $('prevPhase').addEventListener('click',()=>{let i=phaseFor(state.t);if(Math.abs(state.t-PHASES[i].at)<.012)i=(i+PHASES.length-1)%PHASES.length;setTime(PHASES[i].at,true);});
 $('nextPhase').addEventListener('click',()=>setTime(PHASES[(phaseFor(state.t)+1)%PHASES.length].at,true));
 $('scrub').addEventListener('input',e=>setTime(Number(e.target.value)/1000,true));
@@ -732,7 +784,7 @@ canvas.addEventListener('touchend',()=>{state.pinch=null;});
 let resize=new ResizeObserver(()=>{if(gl)render();});resize.observe(stage);
 setupModel();syncPlay();syncLabelsToggle();syncViewControls();syncStudy();loadAtlasModels();
 window.__EAI_HEART_LAB__={
-  get state(){return {t:state.t,playing:state.playing,speed:state.speed,yaw:state.yaw,zoom:state.zoom,selected:state.selected,cutaway:state.cutaway,showLabels:state.showLabels,focusSide:state.focusSide,showDetails:state.showDetails,atlasReady,atlasRich,anatomyView:state.anatomyView,atlasError,atlasPartCount:atlasParts.length,studyStage:state.study.stage};},
+  get state(){return {t:state.t,playing:state.playing,speed:state.speed,yaw:state.yaw,zoom:state.zoom,selected:state.selected,cutaway:state.cutaway,showLabels:state.showLabels,showFlow:state.showFlow,focusSide:state.focusSide,showDetails:state.showDetails,atlasReady,atlasRich,anatomyView:state.anatomyView,atlasError,atlasPartCount:atlasParts.length,studyStage:state.study.stage};},
   // Debugbare projectiepunten voor een echte browserklik in de regressietest.
   get hitTargets(){return Object.entries(selectableParts()).map(([id,part])=>{
     const [x,y,depth]=project(part.pos,pv,canvas.clientWidth,canvas.clientHeight);
