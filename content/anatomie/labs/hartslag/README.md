@@ -14,14 +14,18 @@ Bewerk de bestanden onder `content/anatomie/labs/hartslag/`. `scripts/build_anat
 - `cycle.js`: de enige berekening voor de vijf fasen, de druk, het volume en de klepstanden; de klepbladen hebben tussenliggende standen
 - `anatomyGeometry.js`: opengewerkte kamers met spierwand, inwendige holtes, harttussenschot, klepbladen en vertakte bloedvaten
 - `heart.js`: weergave van brongeometrie, bewegende doorsnede, selecties, stroomdeeltjes, camera en grafieken
-- `scripts/extract_hart_atlas.mjs`: export van afzonderlijke echte hartdelen tijdens de atlasbuild
+- `scripts/extract_hart_atlas.mjs`: eerdere Z-Anatomy-export als terugval
+- `scripts/extract_hart_rich.mjs`: gecontroleerde import van 34 BodyParts3D 4.0-structuren, met vastgezette broncommit en SHA-256
 
-De leerling kan twee weergaven van hetzelfde onderwerp gebruiken:
+De leerling kan drie samenhangende weergaven gebruiken:
 
-- **Anatomische buitenkant:** echte 3D-onderdelen uit het bestaande cardiovasculaire GLB-bestand van het Anatomisch Observatorium. Het script `scripts/extract_hart_atlas.mjs` gebruikt tijdens de atlasbuild de al geïnstalleerde glTF-Transform- en Draco-decoder om geselecteerde hartstructuren te exporteren naar `atlas-heart.bin` en `atlas-heart.json`. Beide worden lokaal gehost; in de browser is geen extra 3D-engine nodig. Herkomst: Z-Anatomy/BodyParts3D via de gepinde versie van `nqwrc/3d-anatomy`, zie de meegeleverde LICENSE en NOTICE (CC BY-NC-SA 4.0).
-- **Bewegende doorsnede:** zelf opgebouwde, opengewerkte kamers en inwendige klepbladen die met de hartcyclus vervormen. Dit is een **didactisch schema**, niet dezelfde mesh als de echte buitenkant. De mitralisklep heeft twee schematische klepbladen; de tricuspidalisklep en slagaderkleppen hebben er drie. De peesdraden horen alleen bij de AV-kleppen.
+- **Echte anatomische buitenkant:** 34 afzonderlijk benoemde structuren uit BodyParts3D 4.0, via een reproduceerbaar open hartmodel. De twee boezemwanden en gezamenlijke kamerwand, de vier bloedruimten, kleppen, papillairspieren, grote vaten, kransslagaders en hartaders zijn echte geometrische bronvormen. De 142 oorspronkelijke atlasdelen zijn hiervoor gegroepeerd. De aanwezige schaduw- en weefselgegevens worden in de lichte WebGL-renderer gebruikt. De browser laadt een lokaal exportbestand; de originele auteur en CC BY 4.0-voorwaarden staan in [MODEL_SOURCE.md](MODEL_SOURCE.md).
+- **Echte anatomische binnenkant:** de voorste delen van de hartspierwand zijn weggehaald uit het zicht, zodat de werkelijke klepstructuren en spierwanden kunnen worden bestudeerd. Dit is een virtuele doorsnede, geen gemeten medische snede.
+- **Klepbeweging onderzoeken:** een afzonderlijk, schematisch model van kamers en kleppen dat de vijf fasen van de hartcyclus, drukcurven, voorbeeldvolume en aangegeven bloedstroom koppelt. Dit model heeft geen patiëntspecifieke bewegingsgegevens en is niet dezelfde anatomische mesh.
 
-Op mobiel staat de weergave van de namen standaard uit. Met 'Namen tonen' verschijnen fijne aanwijslijnen naar de hartdelen. De echte brononderdelen uit de anatomische buitenkant zijn selecteerbaar; aanwijzingen staan naast het model. De beide weergaven delen de tijdlijn, hartfrequentie en grafieken. De kleine uitzetting van de buitenkant is een onderwijseffect en **geen anatomisch gevalideerde hartcontractie**.
+De bestaande buitenkant van Z-Anatomy/BodyParts3D blijft als terugvalbestanden aanwezig. Deze bron wordt niet hergebruikt onder de CC BY 4.0-voorwaarden van het nieuwe model; de eigen upstreamlicentie en bronvermelding blijven gelden.
+
+Op mobiel staat de weergave van namen standaard uit. Met 'Namen tonen' verschijnen aanwijslijnen. De anatomische onderdelen zijn aanwijsbaar en selecteerbaar. Alle drie de weergaven delen de tijdlijn, hartfrequentie en grafieken. De beperkte uitzetting van de bronmesh is een onderwijseffect en **geen anatomisch gevalideerde hartcontractie**.
 
 ## Fysiologie
 
@@ -46,6 +50,6 @@ De echte bouw van de 3D-atlas gebruikt een vastgezette Z-Anatomy-bron en vereist
 
 ## Nog niet in deze versie
 
-Een realistisch vervormend, anatomisch rigged hart, patiëntspecifieke data, geavanceerde druk-volume-relaties, zuurstofuitwisseling in de longcapillairen, inspanningsfysiologie en ziektebeelden. Dit zijn vervolgonderwerpen, geen functies die deze versie claimt.
+Een biomechanisch gevalideerde hartcontractie, patiëntspecifieke data, geavanceerde druk-volume-relaties, zuurstofuitwisseling in de longcapillairen, inspanningsfysiologie en ziektebeelden. Dit zijn vervolgonderwerpen, geen functies die deze versie claimt.
 
 **Onderwijsgebruik:** havo 4/vwo 5, bekijken, voorspellen, afspelen, vergelijken en verklaren. Geen medisch advies.
