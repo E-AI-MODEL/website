@@ -355,6 +355,145 @@
 @media(max-width:420px){
  .stage .hint{top:128px}
 }
+
+/* De opbouw wordt eerst zonder klikken uitgelegd. Het 3D-model blijft optioneel. */
+.model-story{position:absolute;inset:0;z-index:12;display:none;min-width:0;min-height:0;overflow:hidden;grid-template-rows:minmax(0,1fr) auto;gap:clamp(7px,1.8vh,14px);padding:clamp(12px,2.5vw,30px);background:linear-gradient(148deg,#0b1d2e 0%,#091824 52%,#071321 100%);color:#e9f5f5}
+.model-story *{box-sizing:border-box}
+.model-story button{border:1px solid #50717b;background:#142a35;color:#e3f1f0;border-radius:9px;min-height:36px;padding:7px 12px;font-size:12px;font-weight:450;box-shadow:none;touch-action:manipulation}
+.model-story button:focus-visible,.story-back3d:focus-visible{outline:2px solid #a1f3d3;outline-offset:2px}
+.model-story button:hover,.story-back3d:hover{border-color:#8bd9c1}
+.story-core{display:grid;grid-template-rows:auto minmax(0,1fr);min-height:0;min-width:0;gap:clamp(8px,1.6vh,16px)}
+.story-copy{min-width:0;max-width:800px}
+.story-kicker{display:block;font:500 10px ui-monospace,monospace;letter-spacing:.12em;color:#87d8bf;margin-bottom:6px}
+.story-copy h2{font-size:clamp(20px,2.8vw,34px);font-weight:520;letter-spacing:-.036em;line-height:1.13;margin:0 0 6px;overflow-wrap:anywhere}
+.story-copy p{font-size:clamp(12px,1.15vw,15px);line-height:1.45;margin:0;color:#b4cbd0;max-width:700px;overflow-wrap:anywhere}
+.story-board{border:1px solid #395d68;border-radius:15px;background:linear-gradient(140deg,#0e2634b5,#0a192a);position:relative;min-height:0;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:clamp(9px,2vw,26px);gap:clamp(7px,1.5vh,18px)}
+.story-small{font:500 10px ui-monospace,monospace;color:#a7c6cb;letter-spacing:.08em;line-height:1.4;text-align:center}
+.story-message{max-width:min(510px,100%);min-width:min(250px,100%);border:1px solid #5d9795;border-radius:12px;background:linear-gradient(100deg,#15413e99,#17304499);padding:clamp(13px,2.5vw,26px);box-shadow:0 14px 36px #0002}
+.story-message span{display:block;color:#9fead4;font:500 10px ui-monospace,monospace;letter-spacing:.1em;margin-bottom:7px}
+.story-message p{margin:0;font-size:clamp(17px,2.15vw,25px);line-height:1.34;font-weight:460;color:#f1fffd;overflow-wrap:anywhere}
+.story-token-wrap{display:flex;justify-content:center;flex-wrap:wrap;align-content:center;gap:clamp(4px,1.5vw,10px);max-width:600px;max-height:100%;overflow:hidden}
+.story-token{display:inline-flex;align-items:center;justify-content:center;padding:8px 10px;min-height:36px;max-width:150px;overflow-wrap:anywhere;border:1px solid #6b9a9e;border-radius:8px;background:#183b47;color:#dcf4f3;font-size:clamp(12px,1.65vw,19px);opacity:.3;transform:translateY(5px);transition:opacity .3s ease,transform .3s ease}
+.story-token.is-shown{opacity:1;transform:translateY(0)}
+.story-flow{font-size:18px;color:#88d3c5;line-height:1}
+.story-layers{width:min(770px,100%);display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:2px;height:clamp(70px,16vh,150px);align-items:stretch}
+.story-layer{border:1px solid #34586a;background:linear-gradient(90deg,#193847,#102534);min-width:0;min-height:0;position:relative;transition:background .22s ease,border-color .22s ease}
+.story-layer.is-done{background:linear-gradient(90deg,#316a65,#356f79);border-color:#6db4a4}
+.story-layer.is-active{background:#edbe86;border-color:#f9d8a3;box-shadow:0 0 9px #e7b46a52}
+.story-layerline{display:flex;align-items:center;justify-content:space-between;width:min(770px,100%);font:500 11px ui-monospace,monospace;color:#b4ccd3;letter-spacing:.05em}
+.story-layerline strong{color:#f0d1a6;font-weight:500}
+.story-probabilities{display:flex;flex-direction:column;gap:clamp(6px,1vh,12px);width:min(550px,100%)}
+.story-prob-row{display:grid;grid-template-columns:minmax(56px,.4fr) minmax(50px,1fr) 44px;gap:10px;align-items:center;color:#d6eaeb;font-size:clamp(12px,1.5vw,16px)}
+.story-prob-track{width:100%;height:clamp(10px,1.6vh,17px);border:1px solid #436371;border-radius:6px;background:#112938;overflow:hidden}
+.story-prob-fill{height:100%;background:#79cfba;border-radius:5px;transition:width .18s linear}
+.story-prob-row:first-child .story-prob-fill{background:#eabb80}
+.story-prob-row strong{font-weight:500;font-variant-numeric:tabular-nums;color:#cfe4e4;font-size:12px;text-align:right}
+.story-answer{max-width:580px;width:100%;border-left:2px solid #86ddb9;background:linear-gradient(90deg,#15362c6e,transparent);padding:clamp(10px,2.5vw,25px);color:#f0fff7;font-size:clamp(16px,2vw,25px);line-height:1.5;overflow-wrap:anywhere}
+.story-answer:after{content:'▍';color:#91e4c7;animation:storyBlink .8s step-end infinite}
+@keyframes storyBlink{50%{opacity:0}}
+.story-bottom{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 17px;align-items:center;min-height:0}
+.story-timeline{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;min-width:0;align-items:center}
+.story-time-item{min-width:0;display:flex;flex-direction:column;gap:5px}
+.story-time-item .bar{height:3px;border-radius:4px;background:#345360;overflow:hidden}
+.story-time-item .bar>span{display:block;width:0%;height:100%;background:#91e7c7;transition:width .1s linear}
+.story-time-item .name{font-size:10px;color:#94b1bc;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.story-time-item.is-current .name{color:#dcf8ed}
+.story-actions{display:flex;align-items:center;justify-content:flex-end;gap:7px}
+.model-story .story-actions button:last-child{border-color:#68a594;color:#dcf9ea;background:#17382f}
+.story-evidence{grid-column:1/-1;margin:0;font-size:10px;line-height:1.2;color:#91afb7}
+.story-back3d{display:none;position:absolute;left:16px;bottom:62px;z-index:10;padding:8px 12px;min-height:37px;border:1px solid #65978d;background:#153329;color:#e2f6e9;border-radius:9px;font-size:12px}
+#app[data-mode="0"][data-story-view="animation"] #modelStory{display:grid}
+#app[data-mode="0"][data-story-view="animation"] #universe{opacity:0;pointer-events:none}
+#app[data-mode="0"][data-story-view="animation"] .stage-title,
+#app[data-mode="0"][data-story-view="animation"] .stage-status,
+#app[data-mode="0"][data-story-view="animation"] .scene-caption,
+#app[data-mode="0"][data-story-view="animation"] .cam-switch,
+#app[data-mode="0"][data-story-view="animation"] .hint,
+#app[data-mode="0"][data-story-view="animation"] .stage-journey-cta{display:none!important}
+#app[data-mode="0"][data-story-view="model"] #storyBack3d{display:block}
+@media(max-width:800px){
+ .model-story{padding:11px 13px;gap:7px}
+ .story-copy h2{font-size:clamp(18px,5.5vw,24px);margin-bottom:4px}
+ .story-copy p{font-size:12px;line-height:1.35}
+ .story-board{padding:10px;border-radius:12px}
+ .story-bottom{grid-template-columns:minmax(0,1fr);gap:7px}
+ .story-timeline{grid-template-columns:repeat(5,minmax(0,1fr));gap:5px}
+ .story-time-item .name{font-size:9px}
+ .story-actions{justify-content:flex-start;gap:6px}
+ .model-story .story-actions button{min-height:35px;font-size:11px;padding:5px 10px}
+ .story-evidence{font-size:9px}
+ .story-layerline{font-size:10px}
+ .story-layer{border-width:1px}
+ .story-message p{font-size:clamp(16px,5vw,21px)}
+}
+@media(max-height:620px){
+ .model-story{padding:8px 10px;gap:4px}
+ .story-core{gap:5px}
+ .story-kicker{font-size:9px;margin-bottom:3px}
+ .story-copy h2{font-size:18px;margin:0 0 3px}
+ .story-copy p{font-size:11px;line-height:1.26}
+ .story-board{padding:8px;gap:5px}
+ .story-layers{height:62px}
+ .story-time-item .name{display:none}
+ .story-timeline{gap:4px}
+ .story-bottom{gap:5px}
+ .model-story .story-actions button{min-height:31px;padding:4px 9px;font-size:10px}
+ .story-message{padding:10px}
+ .story-message p{font-size:16px}
+ .story-token{min-height:26px;padding:5px 7px;font-size:11px}
+ .story-probabilities{gap:5px}
+ .story-prob-track{height:10px}
+}
+@media(max-width:365px){
+ .model-story{padding:8px}
+ .story-actions{gap:4px}
+ .model-story .story-actions button{padding:5px 6px;font-size:10px}
+ .story-prob-row{grid-template-columns:50px minmax(36px,1fr) 35px;gap:5px}
+ .story-evidence{font-size:8.5px}
+}
+@media(prefers-reduced-motion:reduce){
+ .story-token,.story-layer,.story-prob-fill,.story-time-item .bar>span{transition:none!important}
+ .story-answer:after{animation:none}
+}
+
+
+.story-summary{width:min(660px,100%);display:grid;grid-template-columns:minmax(0,1fr);gap:6px;max-height:100%;overflow:hidden}
+.story-summary-row{display:grid;grid-template-columns:130px 1fr;gap:12px;align-items:center;padding:6px 10px;border-bottom:1px solid #35515c;color:#bbd4d8;font-size:12px}
+.story-summary-row strong{font-weight:500;color:#8ee3c5}
+@media(max-width:420px){.story-summary-row{grid-template-columns:100px 1fr;gap:7px;padding:4px 7px;font-size:10px}}
+
+/* Een liggende telefoon heeft onvoldoende hoogte voor de desktopgrafiek onder de uitleg. */
+@media(min-width:801px) and (max-height:560px){
+ #app[data-mode="0"]{grid-template-rows:54px minmax(0,1fr) 0 35px}
+ #app[data-mode="0"] .plot-panel{display:none!important}
+ #app[data-mode="0"] .story-board{min-height:80px}
+ #app[data-mode="0"] .model-story{padding:9px 11px;gap:6px}
+ #app[data-mode="0"] .story-core{gap:6px}
+ #app[data-mode="0"] .story-copy h2{font-size:20px}
+ #app[data-mode="0"] .story-copy p{font-size:12px}
+ #app[data-mode="0"] .story-layers{height:75px}
+ #app[data-mode="0"] .story-token{min-height:28px;padding:5px 7px;font-size:12px}
+ #app[data-mode="0"] .story-message{padding:10px 14px}
+ #app[data-mode="0"] .story-message p{font-size:18px}
+ #app[data-mode="0"] .story-summary-row{padding:4px 8px}
+}
+
+/* Leesbaar detail, ook op de telefoon. De animatie zelf draagt de voortgang. */
+@media(max-width:800px) and (min-height:621px){
+ .story-evidence{font-size:10.5px}
+ .story-time-item .name{font-size:10px}
+}
+
+/* Tijdens de uitleg staan geen technische schuifregelaars en tweede grafiek in beeld.
+   Via 'Bekijk 3D-model' komen ze meteen terug. */
+@media(min-width:801px){
+ #app[data-mode="0"][data-story-view="animation"]{
+  grid-template-columns:var(--left) minmax(0,1fr) 0px;
+  grid-template-rows:54px minmax(0,1fr) 0px 41px
+ }
+ #app[data-mode="0"][data-story-view="animation"] .inspector,
+ #app[data-mode="0"][data-story-view="animation"] .plot-panel{display:none!important}
+}
 </style>
 </head>
 <body>
@@ -376,6 +515,27 @@
  <div class="hint" id="statusHint"><strong>Goud: de gekozen rekenlaag</strong><br>De puntjes staan voor experts: kleine rekennetwerken.</div>
  <div id="usageStageTag" class="usage-stage-tag" hidden aria-live="polite"></div><button type="button" id="startJourney" class="stage-journey-cta">Volg een tekststukje <span>→</span></button><div class="scene-caption"><span class="em" id="sceneScale">4608 expertposities / 30.000+ lichtpunten</span><span>DRAAI · ZOOM · KIES EEN PUNT OF ROUTESTATION</span></div>
  <div class="cam-switch"><button type="button" data-cam="flat">BOVEN</button><button type="button" data-cam="tilt" class="active">3D</button><button type="button" data-cam="edge">ZIJ</button><button type="button" data-cam="focus">FOCUS</button></div>
+
+<section id="modelStory" class="model-story" aria-label="Hoe een taalmodel een antwoord opbouwt">
+ <div class="story-core">
+  <header class="story-copy">
+   <span class="story-kicker" id="storyKicker">HOE AI EEN ANTWOORD OPBOUWT</span>
+   <h2 id="storyHeading" aria-live="polite">Je stelt een vraag</h2>
+   <p id="storyDescription">De AI krijgt jouw tekst als invoer.</p>
+  </header>
+  <div class="story-board" id="storyBoard" aria-label="Vereenvoudigde weergave van deze stap"></div>
+ </div>
+ <div class="story-bottom">
+  <div class="story-timeline" id="storyTimeline" aria-label="Voortgang van de animatie"></div>
+  <div class="story-actions">
+   <button type="button" id="storyPause" aria-label="Animatie pauzeren">Pauze</button>
+   <button type="button" id="storyReplay">Opnieuw</button>
+   <button type="button" id="story3d">Bekijk 3D-model <span aria-hidden="true">↗</span></button>
+  </div>
+  <p class="story-evidence">Vereenvoudigde animatie. Geen meting van een draaiend AI-model.</p>
+ </div>
+</section>
+<button type="button" id="storyBack3d" class="story-back3d">Bekijk de animatie <span aria-hidden="true">↗</span></button>
 </main>
 <section class="layer-inspector-panel" id="layerInspectorPanel" hidden aria-label="Laag onderzoeken">
   <div class="li-toolbar">
@@ -956,7 +1116,7 @@ function selectAtGraph(x){
  refreshNumbers();renderInspector();updateJourneyUI();drawPlot();
 }
 
-function setMode(index){state.mode=clamp(index,0,MODES.length-1);if(state.mode===1){state.journey=0;state.layer=0;state.expert=chooseRoute(0)[0].e;state.zoom=1.06;}state.follow=false;state.playing=false;state.time=0;$('playBtn').textContent=state.playing?'II':'>';document.querySelector('[data-cam=focus]').textContent='FOCUS';const m=MODES[state.mode];document.querySelectorAll('.mode-btn').forEach((e,i)=>{e.classList.toggle('active',i===state.mode);e.setAttribute('aria-pressed',String(i===state.mode))});$('app').dataset.mode=String(state.mode);$('graphDockLabel').textContent=state.mode===1?'Details':'Grafiek';$('eyebrow').textContent=String(state.mode+1).padStart(2,'0')+' / '+m.name.toUpperCase();$('modeTitle').textContent=m.title;$('modeDesc').textContent=innerWidth<=800?MOBILE_DESCS[state.mode]:m.desc;$('insTitle').textContent=m.ins;$('insDesc').textContent=m.insDesc;$('modeCount').textContent=String(state.mode+1).padStart(2,'0')+' / '+String(MODES.length).padStart(2,'0');$('plotTitle').textContent=m.plot;$('plotNote').textContent=m.note;$('dataLabel').textContent=state.mode===0?'MODELGEGEVENS':state.mode===6?'BRON + REKENSOM':'MODEL + VOORBEELD';$('usageStageTag').hidden=state.mode!==6;$('statusHint').innerHTML=state.mode===0?'<strong>'+cfg.layers+' lagen · '+cfg.experts+' experts per laag</strong><br>Goud is de gekozen laag; ieder puntje is een klein rekennetwerk.':state.mode===1?'<strong>Volg één stukje tekst</strong><br>Deze route is een voorbeeld, geen live meting.':state.mode===2?'<strong>Vier rekennetwerken werken mee</strong><br>De kleuren tonen een voorbeeldkeuze.':state.mode===3?'<strong>Welke eerdere tekst telt mee?</strong><br>De kleuren tonen wat bereikbaar is.':state.mode===4?'<strong>Verder terugkijken</strong><br>Een lokaal venster gebruikt slechts recente tekst direct.':state.mode===5?'<strong>Lange balk = grotere voorbeeldkans</strong><br>Dit zijn geen antwoorden op jouw vraag.':'<strong>Een AI verwerkt en maakt tekst</strong><br>Ook onzichtbare tekststukjes kunnen meetellen.';renderInspector();state.dirty=true;state.chartDirty=true;updateJourneyUI();closePanel()}
+function setMode(index){state.mode=clamp(index,0,MODES.length-1);if(state.mode===1){state.journey=0;state.layer=0;state.expert=chooseRoute(0)[0].e;state.zoom=1.06;}state.follow=false;state.playing=false;state.time=0;$('playBtn').textContent=state.playing?'II':'>';document.querySelector('[data-cam=focus]').textContent='FOCUS';const m=MODES[state.mode];document.querySelectorAll('.mode-btn').forEach((e,i)=>{e.classList.toggle('active',i===state.mode);e.setAttribute('aria-pressed',String(i===state.mode))});$('app').dataset.mode=String(state.mode);$('graphDockLabel').textContent=state.mode===1?'Details':'Grafiek';$('eyebrow').textContent=String(state.mode+1).padStart(2,'0')+' / '+m.name.toUpperCase();$('modeTitle').textContent=m.title;$('modeDesc').textContent=innerWidth<=800?MOBILE_DESCS[state.mode]:m.desc;$('insTitle').textContent=m.ins;$('insDesc').textContent=m.insDesc;$('modeCount').textContent=String(state.mode+1).padStart(2,'0')+' / '+String(MODES.length).padStart(2,'0');$('plotTitle').textContent=m.plot;$('plotNote').textContent=m.note;$('dataLabel').textContent=state.mode===0?'MODELGEGEVENS':state.mode===6?'BRON + REKENSOM':'MODEL + VOORBEELD';$('usageStageTag').hidden=state.mode!==6;$('statusHint').innerHTML=state.mode===0?'<strong>'+cfg.layers+' lagen · '+cfg.experts+' experts per laag</strong><br>Goud is de gekozen laag; ieder puntje is een klein rekennetwerk.':state.mode===1?'<strong>Volg één stukje tekst</strong><br>Deze route is een voorbeeld, geen live meting.':state.mode===2?'<strong>Vier rekennetwerken werken mee</strong><br>De kleuren tonen een voorbeeldkeuze.':state.mode===3?'<strong>Welke eerdere tekst telt mee?</strong><br>De kleuren tonen wat bereikbaar is.':state.mode===4?'<strong>Verder terugkijken</strong><br>Een lokaal venster gebruikt slechts recente tekst direct.':state.mode===5?'<strong>Lange balk = grotere voorbeeldkans</strong><br>Dit zijn geen antwoorden op jouw vraag.':'<strong>Een AI verwerkt en maakt tekst</strong><br>Ook onzichtbare tekststukjes kunnen meetellen.';renderInspector();state.dirty=true;state.chartDirty=true;updateJourneyUI();closePanel();if(state.mode===0)storyOpen();else{storyStop();$('app').dataset.storyView=''} }
 function changeModel(id){state.model=+id;cfg=CONFIG[state.model];rebuildWorld();$('modelName').textContent=cfg.name;renderInspector();setMode(state.mode)}
 function renderModes(){const symbols=['▤','↣','▦','≋','▥','▧','▣'];$('modes').innerHTML=MODES.map((m,i)=>'<button type="button" class="mode-btn '+(i===state.mode?'active':'')+'" data-mode="'+i+'" aria-pressed="'+(i===state.mode)+'"><span class="mode-icon">'+symbols[i]+'</span><span><strong>'+m.name+'</strong><small>'+m.sub+'</small></span><span class="num">'+String(i+1).padStart(2,'0')+'</span></button>').join('');$('modes').addEventListener('click',e=>{const b=e.target.closest('[data-mode]');if(b)setMode(+b.dataset.mode)})}
 function setStats(items){$('stats').innerHTML=items.map(item=>'<div class="stat"><small>'+item[0]+'</small><strong class="'+(item[2]?'warm':'')+'">'+item[1]+'</strong><span>'+((item[3]||''))+'</span></div>').join('')}
@@ -1013,8 +1173,161 @@ canvas.addEventListener('pointerdown',e=>{if(e.pointerType==='touch'){touches.se
 canvas.addEventListener('pointermove',e=>{if(!touches.has(e.pointerId))return;touches.set(e.pointerId,{x:e.clientX,y:e.clientY});if(touches.size>=2&&pinchStart>0){const v=[...touches.values()];const now=Math.hypot(v[0].x-v[1].x,v[0].y-v[1].y);state.zoom=clamp(pinchZoom*now/Math.max(1,pinchStart),.55,3.8);state.dirty=true;}});
 for(const eventName of ['pointerup','pointercancel'])canvas.addEventListener(eventName,e=>{touches.delete(e.pointerId);if(touches.size<2)pinchStart=0;});$('app').addEventListener('touchmove',e=>{if(e.target===canvas)e.preventDefault()},{passive:false})}
 let lastJourneyUI=0;
+
+/* Een automatisch en leesbaar voorbeeld. Geen nagebootste activaties of echte modeluitvoer. */
+const STORY_PHASES=[
+ {name:'De vraag',title:'De AI krijgt jouw vraag',text:'De woorden die je typt zijn het begin. De AI krijgt niet vanzelf extra informatie mee.',duration:6.2},
+ {name:'Stukjes',title:'De zin wordt opgedeeld',text:'De AI verdeelt je zin in kleine stukjes. Zo’n stukje heet een token en kan ook een deel van een woord zijn.',duration:6.4},
+ {name:'Lagen',title:'De lagen rekenen verder',text:'De AI zet de tekststukjes om in getallen. Elke laag rekent daarmee verder en geeft het resultaat door.',duration:7.8},
+ {name:'Kansen',title:'Welk stukje volgt?',text:'De AI berekent wat er hierna zou kunnen komen. Een langere balk betekent in dit voorbeeld een grotere kans.',duration:7.0},
+ {name:'Antwoord',title:'Het antwoord groeit',text:'Na ieder nieuw stukje rekent de AI opnieuw. Zo ontstaat een antwoord, dat nog steeds fouten kan bevatten.',duration:7.0}
+];
+const storyState={phase:0,elapsed:0,playing:false,finished:false,lastPaint:-1};
+const storyReduced=()=>window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+function storyEl(tag,content,className){
+ const node=document.createElement(tag);if(content!==undefined&&content!==null)node.textContent=String(content);
+ if(className)node.className=className;return node;
+}
+function storySetPhase(index){
+ storyState.phase=index;storyState.elapsed=0;storyState.lastPaint=-1;
+ const data=STORY_PHASES[index],board=$('storyBoard');board.replaceChildren();
+ $('storyKicker').textContent='ZO WERKT EEN TAALMODEL · '+(index+1)+' VAN '+STORY_PHASES.length;
+ $('storyHeading').textContent=data.title;$('storyDescription').textContent=data.text;
+ if(index===0){
+  const card=storyEl('div',null,'story-message');
+  card.append(storyEl('span','JOUW VRAAG'),storyEl('p',''));
+  card.querySelector('p').id='storyTyping';
+  board.append(card,storyEl('div','↓','story-flow'),storyEl('div','Deze tekst gaat het model in.','story-small'));
+ }
+ if(index===1){
+  board.append(storyEl('div','DEZELFDE ZIN, NU IN STUKJES','story-small'));
+  const row=storyEl('div',null,'story-token-wrap'),items=state.promptWords.slice(0,12);
+  for(const t of items)row.append(storyEl('span',readableToken(t.text).slice(0,30),'story-token'));
+  board.append(row,storyEl('div',state.tokenStatus==='real'?'De puntjes in de blokjes betekenen spaties.':'Dit is een woordvoorbeeld. Echte tokens kunnen kleiner zijn.','story-small'));
+ }
+ if(index===2){
+  const info=storyEl('div',null,'story-layerline');
+  info.append(storyEl('span','VAN LAAG 1'),storyEl('strong','LAAG 1 / '+cfg.layers),storyEl('span','LAAG '+cfg.layers));
+  info.querySelector('strong').id='storyLayerCount';
+  const row=storyEl('div',null,'story-layers');
+  row.style.gridTemplateColumns='repeat('+cfg.layers+',minmax(0,1fr))';
+  for(let i=0;i<cfg.layers;i++)row.append(storyEl('span',null,'story-layer'));
+  board.append(storyEl('div','EEN SCHEMATISCHE DOORGANG LANGS DE LAGEN','story-small'),row,info);
+  board.append(storyEl('div',cfg.layers+' lagen · '+cfg.experts+' kleine rekennetwerken per laag','story-small'));
+ }
+ if(index===3){
+  board.append(storyEl('div','VOORBEELDKANSEN, NIET GEMETEN UIT JOUW VRAAG','story-small'));
+  const list=storyEl('div',null,'story-probabilities');
+  const values=[['Omdat',44],['Door',29],['De',18],['Het',9]];
+  for(const [label,percent] of values){
+   const row=storyEl('div',null,'story-prob-row'),track=storyEl('div',null,'story-prob-track');
+   const fill=storyEl('div',null,'story-prob-fill');fill.dataset.percent=percent;track.append(fill);
+   row.append(storyEl('span',label),track,storyEl('strong',percent+'%'));list.append(row);
+  }
+  board.append(list);
+ }
+ if(index===4){
+  const defaultQuestion=state.input.trim().toLowerCase().includes('waarom is de lucht blauw');
+  const text=defaultQuestion?'De lucht lijkt blauw doordat blauw licht in de lucht sterker wordt verstrooid.':'Een AI zou hier haar antwoord woord voor woord aanvullen.';
+  const answer=storyEl('div','', 'story-answer');answer.id='storyAnswer';answer.dataset.full=text;
+  board.append(storyEl('div',defaultQuestion?'VOORAF GESCHREVEN VOORBEELDANTWOORD':'VOORBEELDZIN, GEEN ANTWOORD OP JOUW VRAAG','story-small'),answer);
+ }
+ storyPaint(0);
+}
+function storyPaint(progress){
+ if(!document.getElementById('modelStory'))return;
+ const t=Math.max(0,Math.min(1,progress)),n=storyState.phase;
+ if(n===0){
+  const sample=state.input.trim()||'Waarom is de lucht blauw?';
+  $('storyTyping').textContent=sample;
+ }
+ if(n===1){
+  const cells=$('storyBoard').querySelectorAll('.story-token');
+  cells.forEach((c,i)=>c.classList.toggle('is-shown',i<Math.max(1,Math.ceil(cells.length*t))));
+ }
+ if(n===2){
+  const cells=$('storyBoard').querySelectorAll('.story-layer'),active=Math.min(cells.length-1,Math.floor(t*cells.length));
+  cells.forEach((c,i)=>{c.classList.toggle('is-done',i<active);c.classList.toggle('is-active',i===active)});
+  $('storyLayerCount').textContent='LAAG '+(active+1)+' / '+cfg.layers;
+ }
+ if(n===3){
+  $('storyBoard').querySelectorAll('.story-prob-fill').forEach(el=>{el.style.width=(Number(el.dataset.percent)*t).toFixed(1)+'%'});
+ }
+ if(n===4){
+  const node=$('storyAnswer'),full=node.dataset.full;
+  node.textContent=full.slice(0,Math.max(1,Math.ceil(full.length*t)));
+ }
+ document.querySelectorAll('#storyTimeline .story-time-item').forEach((el,i)=>{
+  el.classList.toggle('is-current',i===n);
+  const fill=el.querySelector('.bar>span');if(fill)fill.style.width=(i<n?100:i>n?0:t*100)+'%';
+ });
+}
+function storyStaticSummary(){
+ storyState.playing=false;storyState.finished=true;
+ $('storyKicker').textContent='DE UITLEG ZONDER BEWEGING';
+ $('storyHeading').textContent='Van vraag naar antwoord';
+ $('storyDescription').textContent='De AI verdeelt de tekst, verwerkt de stukjes en kiest daarna steeds een volgend stukje.';
+ const board=$('storyBoard');board.replaceChildren();
+ const rows=storyEl('div',null,'story-summary');
+ [['Jouw vraag','Je typt tekst in.'],['Kleine stukjes','De tekst wordt verdeeld in tokens.'],['Rekenlagen',cfg.layers+' lagen verwerken de stukjes.'],['Volgend stukje','Het model berekent mogelijke vervolgen.'],['Antwoord','Het voegt steeds een stukje toe.']].forEach(([name,desc])=>{
+  const line=storyEl('div',null,'story-summary-row');line.append(storyEl('strong',name),storyEl('span',desc));rows.append(line);
+ });
+ board.append(rows);
+ $('storyPause').disabled=true;$('storyReplay').disabled=true;
+ document.querySelectorAll('#storyTimeline .story-time-item .bar>span').forEach(x=>x.style.width='100%');
+}
+function storyRestart(){
+ storyState.finished=false;storyState.playing=!storyReduced();
+ $('storyPause').disabled=storyReduced();$('storyReplay').disabled=storyReduced();
+ if(storyReduced())storyStaticSummary();
+ else{storySetPhase(0);$('storyPause').textContent='Pauze';$('storyPause').setAttribute('aria-label','Animatie pauzeren');}
+}
+function storyStop(){storyState.playing=false;}
+function storyOpen(){
+ $('app').dataset.storyView='animation';
+ storyRestart();
+}
+function storyAdvance(dt){
+ if(state.mode!==0||$('app').dataset.storyView!=='animation'||!$('aiGuide').hidden||!storyState.playing||storyReduced())return;
+ storyState.elapsed+=dt;
+ const phase=STORY_PHASES[storyState.phase];
+ if(storyState.elapsed>=phase.duration){
+  if(storyState.phase===STORY_PHASES.length-1){
+   storyState.playing=false;storyState.finished=true;storyState.elapsed=phase.duration;
+   $('storyPause').textContent='Opnieuw';$('storyPause').setAttribute('aria-label','Animatie opnieuw afspelen');
+  }else{
+   const excess=storyState.elapsed-phase.duration;
+   storySetPhase(storyState.phase+1);storyState.elapsed=excess;
+  }
+ }
+ const progress=Math.min(1,storyState.elapsed/STORY_PHASES[storyState.phase].duration);
+ if(Math.abs(progress-storyState.lastPaint)>.015||progress===1){storyPaint(progress);storyState.lastPaint=progress;}
+}
+function storySetup(){
+ const timeline=$('storyTimeline');
+ STORY_PHASES.forEach(phase=>{
+  const section=storyEl('div',null,'story-time-item'),bar=storyEl('div',null,'bar');
+  bar.append(storyEl('span'));section.append(bar,storyEl('span',phase.name,'name'));timeline.append(section);
+ });
+ $('storyPause').onclick=()=>{
+  if(storyReduced())return;
+  if(storyState.finished){storyRestart();return;}
+  storyState.playing=!storyState.playing;
+  $('storyPause').textContent=storyState.playing?'Pauze':'Verder';
+  $('storyPause').setAttribute('aria-label',storyState.playing?'Animatie pauzeren':'Animatie verder afspelen');
+ };
+ $('storyReplay').onclick=()=>storyRestart();
+ $('story3d').onclick=()=>{$('app').dataset.storyView='model';storyStop();state.dirty=true};
+ $('storyBack3d').onclick=()=>storyOpen();
+ document.addEventListener('visibilitychange',()=>{
+  if(document.hidden&&storyState.playing){storyStop();$('storyPause').textContent='Verder';}
+ });
+ storySetPhase(0);
+}
+
 function tick(now){
  const dt=clamp((now-lastTime)/1000,0,.06);lastTime=now;
+ storyAdvance(dt);
  if(state.playing){
   state.time=(state.time+dt*26*state.speed)%1000;
   state.dirty=true;$('timeSlider').value=state.time;
@@ -1054,7 +1367,8 @@ function guideNode(tag,text,klass){
 function guideSetVisible(open){
  guideEl('aiGuide').hidden=!open;
  guideEl('app').setAttribute('aria-hidden',String(open));
- if(open){guideRender();guideEl('guideNext').focus({preventScroll:true});}
+ if(open){storyStop();guideRender();guideEl('guideNext').focus({preventScroll:true});}
+ else if(state.mode===0&&$('app').dataset.storyView==='animation')storyRestart();
 }
 function guideSetStep(n){
  const previous=guideStep;
@@ -1161,7 +1475,7 @@ function setupGuide(){
  guideRender();
 }
 
-tokenizeInput();rebuildWorld();bind();renderInspector();setMode(0);resize();setupGuide();loadRealTokenizer();new ResizeObserver(resize).observe($('stage'));new ResizeObserver(resize).observe($('graphPanel'));requestAnimationFrame(tick);
+tokenizeInput();rebuildWorld();bind();storySetup();renderInspector();setMode(0);resize();setupGuide();loadRealTokenizer();new ResizeObserver(resize).observe($('stage'));new ResizeObserver(resize).observe($('graphPanel'));requestAnimationFrame(tick);
 </script>
 </body>
 </html>
