@@ -594,8 +594,7 @@ function syncViewControls(){
   $('flowLegend').hidden=!inside||!state.showFlow;
   $('heartSideControls').hidden=!inside;
   // Geen schakelaar meer die de rijke atlas door een getekend hart vervangt.
-  $('mechanicsToggle').hidden=true;
-  $('detailToggle').textContent=state.showDetails?'Klepdetails verbergen':'Klepdetails tonen';
+  $('detailToggle').textContent=state.showDetails?'Markering uit':'Kleppen uitlichten';
   $('detailToggle').setAttribute('aria-pressed',String(state.showDetails));
   document.querySelectorAll('[data-heart-side]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.heartSide===state.focusSide)));
   $('modelCaption').textContent=state.cutaway?
@@ -631,7 +630,7 @@ function syncLabelsToggle(){
 $('labelsToggle').addEventListener('click',()=>{state.showLabels=!state.showLabels;syncLabelsToggle();updateLabels();});
 $('flowToggle').addEventListener('click',()=>{
   state.showFlow=!state.showFlow;
-  $('flowToggle').textContent=state.showFlow?'Bloedstroom verbergen':'Bloedstroom tonen';
+  $('flowToggle').textContent=state.showFlow?'Stroomrichting verbergen':'Stroomrichting tonen';
   $('flowToggle').setAttribute('aria-pressed',String(state.showFlow));
   syncViewControls();
 });
@@ -681,7 +680,7 @@ $('discoveryAction').addEventListener('click',()=>{
     state.cutaway=true;state.anatomyView=atlasRich;state.showFlow=true;state.focusSide='left';
     state.yaw=-.20;state.pitch=.08;state.zoom=4.9;syncViewControls();
     positionInfo(null);
-    $('partInfo').textContent='Bekijk de mitralisklep bij de linkerkamer. De aortaklep opent pas daarna.';
+    $('partInfo').textContent='Kijk naar de mitralisklep. Die sluit voordat de aortaklep opent. Beide kleppen komen uit het anatomische bronmodel.';
     // Het onderzoek begint vlak voor de AV-kleppen sluiten.
     setTime(.50,true);
     state.speed=.1;$('speed').value='.1';
