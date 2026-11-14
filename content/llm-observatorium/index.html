@@ -1054,9 +1054,12 @@ function guideRender(){
   scale.append(label,out,input);interactive.append(scale);
   guideDrawBars();
  }else{
-  const parts=['De lucht lijkt blauw','omdat moleculen in de atmosfeer','blauw licht sterker verstrooien.'];
+  const defaultQuestion=state.input.trim().toLowerCase()==='waarom is de lucht blauw?';
+  const parts=defaultQuestion
+   ?['De lucht lijkt blauw','omdat moleculen in de atmosfeer','blauw licht sterker verstrooien.']
+   :['Dit is een voorbeeldzin','die in stukjes wordt toegevoegd.','Jouw vraag wordt hier niet door een AI beantwoord.'];
   guideBuildCount=clamp(guideBuildCount,1,parts.length);
-  visual.append(guideNode('div','VOORBEELD BIJ: WAAROM IS DE LUCHT BLAUW?','ai-guide-question'));
+  visual.append(guideNode('div',defaultQuestion?'VOORBEELD BIJ: WAAROM IS DE LUCHT BLAUW?':'VOORBEELD VAN TEKST OPBOUWEN · GEEN ECHT AI-ANTWOORD','ai-guide-question'));
   const answer=guideNode('div',null,'ai-guide-answer');
   parts.slice(0,guideBuildCount).forEach((part,i)=>answer.append(guideNode('strong',part+(i<guideBuildCount-1?' ':''))));
   if(guideBuildCount<parts.length)answer.append(guideNode('span',' …'));
