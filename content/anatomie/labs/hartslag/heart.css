@@ -467,3 +467,14 @@
  .layer-menu .layer-switch{min-height:32px;padding:6px 9px}
  .layer-menu .layers-reset{min-height:34px;padding:7px 9px}
 }
+
+/* Stroomlijnen worden uit de 3D-bronposities geprojecteerd.
+   Zij liggen over het model, maar nooit boven bediening of labels. */
+.flow-overlay{position:absolute;inset:0;display:block;width:100%;height:100%;z-index:2;pointer-events:none;overflow:hidden}
+.stage .guided-focus{z-index:4}
+.stage .label-leaders,.stage .labels{z-index:5}
+.stage .view-legend{z-index:5}
+.stage canvas{user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+@media(prefers-reduced-motion:reduce){
+ .flow-overlay path{transition:none}
+}
