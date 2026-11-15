@@ -94,8 +94,8 @@ const DB = {
 };
 const env = { DB, GALLERY_ADMIN_EMAIL: EMAIL, GALLERY_PASSWORD_HASH: hash,
   RATE_LIMIT_SALT: 'a-dedicated-secret-only-for-this-test' };
-function req(path, method = 'GET', { cookie = '', origin = null, body = undefined } = {}) {
-  const headers = {};
+function req(path, method = 'GET', { cookie = '', origin = null, body = undefined, extraHeaders = {} } = {}) {
+  const headers = { ...extraHeaders };
   if (cookie) headers.Cookie = cookie;
   if (origin) headers.Origin = origin;
   return new Request(BASE + path, { method, headers, body });
@@ -182,6 +182,42 @@ assert.equal(response.status, 303);
 assert.match(response.headers.get('Set-Cookie'), /Max-Age=0/);
 assert.equal(sessions.size, 0);
 assert.equal(await statusOf(req('/api/uploads', 'GET', { cookie })), 401);
+
+// Safari on iOS can send Origin: null on a same-origin HTML form navigation.
+// Accept that narrow case without accepting cross-site forms or other mutations.
+const safariNavigation = {
+  'Sec-Fetch-Site': 'same-origin',
+  'Sec-Fetch-Mode': 'navigate',
+  'Sec-Fetch-Dest': 'document'
+};
+const safariForm = (site = 'same-origin', origin = 'null') => {
+  const body = new URLSearchParams({ email: EMAIL, password: PASSWORD });
+  return req('/auth/login', 'POST', {
+    origin, body,
+    extraHeaders: { ...safariNavigation, 'Sec-Fetch-Site': site }
+  });
+};
+assert.equal(await statusOf(safariForm('cross-site')), 403);
+assert.equal(await statusOf(safariForm('same-site')), 403);
+assert.equal(await statusOf(req('/auth/login', 'POST', {
+  origin: 'null', body: new URLSearchParams({ email: EMAIL, password: PASSWORD })
+})), 403);
+assert.equal(await statusOf(req('/auth/login', 'POST', {
+  origin: 'https://malicious.example', body: new URLSearchParams({ email: EMAIL, password: PASSWORD }),
+  extraHeaders: safariNavigation
+})), 403);
+response = await worker.fetch(safariForm(), env);
+assert.equal(response.status, 303, 'iOS Safari same-origin form must log in');
+const safariCookie = response.headers.get('Set-Cookie').split(';')[0];
+assert.equal(await statusOf(req('/api/uploads', 'GET', { cookie: safariCookie })), 200);
+assert.equal(await statusOf(req('/api/admin/uploads/' + itemId, 'DELETE', {
+  origin: 'null', cookie: safariCookie, extraHeaders: safariNavigation
+})), 403, 'Safari exception must never weaken admin POST/DELETE routes');
+response = await worker.fetch(req('/auth/logout', 'POST', {
+  origin: 'null', cookie: safariCookie, extraHeaders: safariNavigation
+}), env);
+assert.equal(response.status, 303);
+assert.equal(sessions.size, 0);
 
 // Invalid or absent Origin must never authorize a login POST.
 assert.equal(await statusOf(req('/auth/login', 'POST',
