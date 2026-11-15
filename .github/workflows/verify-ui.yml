@@ -24,6 +24,8 @@ jobs:
       - name: Build self-hosted anatomy before verifying site links
         run: python scripts/build_anatomie.py --out site-build/tools/anatomie
       - run: python scripts/prepare_ui.py --root site-build
+      - name: Check dashboard cards, route preservation and lab isolation
+        run: python -m unittest discover -s tests -p 'test_dashboard_cards.py' -v
       - name: Verify editorial card scope and build output
         run: python -m unittest discover -s tests -p 'test_story_cards.py' -v
       - run: python scripts/verify_ui.py --root site-build
@@ -42,6 +44,8 @@ jobs:
       - run: node scripts/test_tool_launch.mjs site-build
       - name: Proef EAIgit op desktop en mobiel
         run: node scripts/test_projecthulp_browser.mjs site-build
+      - name: Verify dashboard cards and filters on desktop and phones
+        run: node scripts/test_dashboard_cards_browser.mjs site-build
       - run: node scripts/ui_smoke.mjs site-build
       - name: Test editorial one-card swipe on phones and desktop
         run: node scripts/test_story_cards_browser.mjs site-build
