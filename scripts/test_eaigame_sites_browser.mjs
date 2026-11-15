@@ -128,6 +128,7 @@ async function validate3D(name, viewport, phone=false){
   await page.waitForTimeout(450);
   const after=await page.evaluate(()=>window.EAIGame3D.cameraPosition);
   assert.ok(Math.hypot(...after.map((x,i)=>x-before[i]))>0.2,'3D-camera beweegt werkelijk mee met pion');
+  await page.screenshot({path:'test-results/eaigame-'+name+'-3d-follow.png',fullPage:true});
   await page.locator('#eaigame-3d-overview').click();
   assert.equal(await page.locator('#eaigame-3d-canvas').getAttribute('data-camera-view'),'overview');
   await page.locator('#eaigame-3d-close').click();
