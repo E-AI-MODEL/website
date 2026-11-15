@@ -1,5 +1,6 @@
 import {analyzeArchive,fetchPublicRepo,makeAdvice,reportText,readmeTemplate,ignoreTemplate,parseRepoUrl} from "./analyse.mjs";
 import {generateProjectCheckWorkflow} from "./projectcheck.mjs";
+import {makeGuidance,continuationPrompt} from "./begeleiding.mjs";
 const $=(id)=>document.getElementById(id);
 const state={archive:null,repo:null,advice:null,goal:"site",aim:"",experience:"beginner",repoError:null,workerRuns:[]};
 async function runAnalysisWorker(kind,data,transfer=[]){
@@ -42,6 +43,14 @@ const download=(name,text,type="text/plain;charset=utf-8")=>{
 function render(){
  const {archive,repo,advice,repoError}=state;
  const purpose=advice.purpose;
+ state.guidance=makeGuidance({archive,repo,advice,goal:state.goal,aim:state.aim,repoError});
+ const guidance=state.guidance;
+ list("goodPoints",guidance.good);
+ const problems=guidance.problems.map(p=>p.title+": "+p.detail);
+ list("problemPoints",problems.length?problems:["Geen concrete fout vastgesteld binnen deze controles. De code is nog niet functioneel getest."]);
+ list("unknownPoints",guidance.uncertain);
+ $("nextPrompt").value=continuationPrompt(guidance,{repo});
+ setText("promptStatus","");
  const summary=$("summary");summary.replaceChildren();
  const pills=[archive?archive.project.type:"Geen ZIP onderzocht",repo?repo.name:"Geen repository bevestigd"];
  pills.forEach(label=>{const span=document.createElement("span");span.textContent=label;summary.append(span);});
@@ -73,29 +82,13 @@ function render(){
  show("openRepo",Boolean(repo?.url));
  if(repo?.url)repoLink.href=repo.url;
  repoLink.firstChild.textContent=archive?.secret?.length||purpose?.repoOnlyZips?"Bekijk GitHub, upload nog niets ":"Open je GitHub-repository ";
- let firstTitle="Bekijk je volgende stap",firstText=advice.steps[0]||"Vul je gegevens aan om verder te gaan.";
- if(archive?.secret.length){
-  firstTitle="Controleer eerst je privébestanden";
-  firstText=archive.secret.length===1?"Eén bestand heeft mogelijk vertrouwelijke inhoud. Controleer het op je eigen apparaat. Upload het pas als je zeker weet dat het openbaar mag zijn.":"Er zijn "+archive.secret.length+" bestanden met mogelijk vertrouwelijke inhoud. Controleer ze op je eigen apparaat. Upload ze niet voordat je zeker weet dat ze openbaar mogen zijn.";
- }else if(purpose?.repoOnlyZips){
-  firstTitle="Een ZIP op GitHub is nog geen project";
-  firstText="GitHub bewaart je ZIP als één bestand. Pak het ZIP-bestand op je eigen apparaat uit en voeg de losse projectbestanden toe. Controleer eerst wat je daarvan openbaar wilt maken.";
- }else if(purpose?.goal==="site"&&archive&&!archive.project.hasHtml){
-  firstTitle="Zoek eerst de startpagina";
-  firstText="We hebben geen HTML-startbestand in de onderzochte projectbestanden gevonden. Controleer welke bestanden de website moeten opbouwen voordat je ze publiceert.";
- }else if(purpose?.goal==="site"&&archive?.missingReferences?.length){
-  firstTitle="Controleer de ontbrekende bestanden";
-  firstText="De startpagina verwijst naar bestanden die niet op de verwachte plek in het ZIP-bestand staan. Herstel die verwijzingen voordat je van een werkende website uitgaat.";
- }else if(archive&&repo?.readable){
-  firstTitle="Pak je ZIP uit, niet als één bestand uploaden";
-  firstText="GitHub pakt een ZIP-bestand niet automatisch uit. Pak het op je apparaat uit. Controleer de projectbestanden en voeg vervolgens alleen de juiste bestanden in de juiste mappen aan GitHub toe.";
- }else if(archive&&!repo){
-  firstTitle="Voeg je GitHub-link toe";
-  firstText="We hebben je ZIP bekeken. Vul nu de link naar je openbare repository in, zodat we kunnen vergelijken wat er nog ontbreekt.";
- }else if(repo&&!archive){
-  firstTitle="Voeg je ZIP-bestand toe";
-  firstText="We kunnen je openbare repository bereiken. Kies nu je ZIP-bestand om te ontdekken wat er ontbreekt.";
- }
+ let firstTitle="Dit kun je nu doen";
+ if(archive?.secret?.length)firstTitle="Controleer eerst je privébestanden";
+ else if(guidance.problems.some(p=>p.title.includes("ZIP in GitHub")))firstTitle="Een ZIP op GitHub is nog geen project";
+ else if(archive?.missingReferences?.length)firstTitle="Controleer de ontbrekende bestanden";
+ else if(!archive)firstTitle="Bekijk eerst je ZIP-bestand";
+ else if(!repo?.readable)firstTitle="Controleer je GitHub-repository";
+ const firstText=guidance.next[0]||"Bekijk wat er is aangetroffen en bepaal de volgende stap.";
  setText("firstTitle",firstTitle);setText("firstText",firstText);
  setText("resultLead",archive&&repo?"We hebben je ZIP en de openbare GitHub-bestandslijst onderzocht.":"Dit is wat we konden vaststellen. De overige informatie ontbreekt of was niet bereikbaar.");
  $("downloadReadme").disabled=!archive;
@@ -162,6 +155,14 @@ drop.addEventListener("drop",event=>{
  try{const transfer=new DataTransfer();transfer.items.add(file);$("zipFile").files=transfer.files;setText("fileName",file.name);}
  catch{setText("inputError","Sleep het ZIP-bestand niet, maar kies het via de bestandsknop.");show("inputError",true);}
 });
+$("copyPrompt").addEventListener("click",async()=>{
+ const prompt=$("nextPrompt").value;
+ if(!prompt)return;
+ try{
+  await navigator.clipboard.writeText(prompt);
+  setText("promptStatus","Opdracht gekopieerd.");
+ }catch{setText("promptStatus","Kopiëren lukte niet. Selecteer de tekst hierboven.");}
+});
 $("copyReport").addEventListener("click",async()=>{
  if(!state.advice)return;
  const text=reportText({archive:state.archive,repo:state.repo,advice:state.advice,workerRuns:state.workerRuns});
@@ -177,6 +178,6 @@ $("downloadIgnore").addEventListener("click",()=>{if(state.archive)download("git
 $("downloadCheck").addEventListener("click",()=>{const yaml=generateProjectCheckWorkflow(state.archive);if(yaml)download("projectcontrole.yml",yaml,"text/yaml;charset=utf-8");});
 $("reset").addEventListener("click",()=>{
  $("zipFile").value="";$("repoUrl").value="";setText("fileName","Kies een ZIP om te onderzoeken");show("inputError",false);
- for(const key of ["archive","repo","advice","repoError"])state[key]=null;state.workerRuns=[];
+ for(const key of ["archive","repo","advice","repoError","guidance"])state[key]=null;state.workerRuns=[];
  document.querySelector('input[name="goal"][value="site"]').checked=true;$("projectAim").value="";state.aim="";screen(1);
 });
