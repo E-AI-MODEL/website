@@ -12,7 +12,7 @@ on:
       - 'en/publications/index.html'
   workflow_dispatch:
 permissions:
-  contents: read
+  contents: write
 concurrency:
   group: review-zhang-publication
   cancel-in-progress: false
@@ -31,6 +31,29 @@ jobs:
               assert path.is_file() and path.stat().st_size > 500000 and path.read_bytes().startswith(b'%PDF-')
               assert path.name in Path(route, 'index.html').read_text()
           PY
+      - name: Set up Python for PDF verification
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install fonts and PDF tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y fonts-crosextra-carlito fonts-dejavu-core
+          python -m pip install --disable-pip-version-check 'PyMuPDF==1.26.7' 'Pillow==12.3.0'
+      - name: Apply reviewed PDF corrections
+        run: python scripts/rebuild_zhang_review.py
+      - name: Preserve definitive PDF in repository
+        run: |
+          set -euo pipefail
+          if ! git diff --quiet -- assets/research/zhang-genai-l2-review-nl-2026.pdf; then
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git add assets/research/zhang-genai-l2-review-nl-2026.pdf
+            git commit -m 'docs: publish definitive Zhang meta-analysis review PDF'
+            git push origin HEAD:main
+          else
+            echo 'Definitive PDF already checked in'
+          fi
       - name: Install FTPS
         run: sudo apt-get update && sudo apt-get install -y lftp openssl
       - name: Verify FTP certificate
@@ -83,13 +106,23 @@ jobs:
               problem=None
               for i in range(4):
                   try:
-                      req=Request('https://eaimodel.nl'+path+'?review=20261114',headers={'Cache-Control':'no-cache'})
+                      req=Request('https://eaimodel.nl'+path+'?review=20261115',headers={'Cache-Control':'no-cache'})
                       with urlopen(req,timeout=30) as res:
                           data=res.read()
                           assert res.status==200
                           assert data.startswith(expect) if path.endswith('.pdf') else expect in data
                           if path == '/nl/onderzoek/zhang-genai-taal/':
                               assert b'Helpt AI bij het leren van een taal?' in data, 'Outdated Dutch copy'
+                              assert b'Bij Zhang zelf past een gerapporteerde p-waarde' in data, 'Missing revised NL copy'
+                          if path == '/assets/research/zhang-genai-l2-review-nl-2026.pdf':
+                              import fitz
+                              document=fitz.open(stream=data,filetype='pdf')
+                              assert len(document)==9, 'Expected nine pages'
+                              assert 'hardop lezen met Amazon Alexa' in document[2].get_text(), 'Stale Dutch PDF'
+                              assert 'Zes opgenomen onderzoeken' in document[2].get_text(), 'Old figure caption'
+                              assert 'Vissers opgave' in document[8].get_text(), 'Old EAI attribution'
+                              assert sum(len(page.get_links()) for page in document)==10, 'Lost DOI links'
+                              document.close()
                           if path == '/en/research/zhang-genai-language/':
                               assert b'Does AI help students learn another language?' in data, 'Outdated English copy'
                       print('LIVE:',path,len(data),'bytes')
