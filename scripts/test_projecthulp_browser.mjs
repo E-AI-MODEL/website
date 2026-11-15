@@ -19,6 +19,8 @@ function zip(files){
  const dir=Buffer.concat(central),end=Buffer.alloc(22);end.writeUInt32LE(0x06054b50,0);end.writeUInt16LE(files.length,8);end.writeUInt16LE(files.length,10);end.writeUInt32LE(dir.length,12);end.writeUInt32LE(offset,16);return Buffer.concat([...local,dir,end]);
 }
 const archive=zip([["eigen-site/index.html","<!doctype html><title>Hallo</title>"],["eigen-site/css/site.css","body{color:red}"],["eigen-site/.env","SECRET=fixture"]]);
+const safeArchive=zip([["eigen-site/index.html","<h1>Hallo</h1>"],["eigen-site/css/site.css","body{}"]]);
+let zipOnly=false;
 let browser;const errors=[],sent=[];
 try{
  let online=false;for(let i=0;i<65;i++){try{online=(await fetch(base)).ok;}catch{}if(online)break;await new Promise(r=>setTimeout(r,110));}assert(online);
@@ -28,11 +30,13 @@ try{
  page.on("request",r=>{if(!r.url().startsWith(base))sent.push({method:r.method(),url:r.url()});});
  await page.route("https://api.github.com/**",route=>{
   const url=route.request().url();
-  const data=url.includes("/git/trees/")?{sha:"fixture-sha",tree:[{type:"blob",path:"index.html"}],truncated:false}:{full_name:"voorbeeld/project",html_url:"https://github.com/voorbeeld/project",private:false,default_branch:"main"};
+  const data=url.includes("/git/trees/")?{sha:"fixture-sha",tree:zipOnly?[{type:"blob",path:"project.zip"}]:[{type:"blob",path:"index.html"}],truncated:false}:{full_name:"voorbeeld/project",html_url:"https://github.com/voorbeeld/project",private:false,default_branch:"main"};
   return route.fulfill({status:200,contentType:"application/json",headers:{"access-control-allow-origin":"*"},body:JSON.stringify(data)});
  });
  await page.goto(base+"/tools/projecthulp/");
  await page.screenshot({path:join(out,"projecthulp-start.png"),fullPage:true});
+ await page.locator('input[name="goal"][value="site"]').check();
+ await page.locator("#projectAim").fill("Bezoekers moeten een pagina kunnen openen");
  await page.locator("#toFiles").click();
  await page.locator("#repoUrl").fill("https://github.com/voorbeeld/project");
  await page.locator("#zipFile").setInputFiles({name:"website.zip",mimeType:"application/zip",buffer:archive});
@@ -43,6 +47,10 @@ try{
  assert.match(warnings,/vertrouwelijke naam/i);
  assert.match(warnings,/Gelijke namen/);
  assert.match(await page.locator("#observations").innerText(),/GitHub-repository/);
+ assert.match(await page.locator("#purposeTitle").innerText(),/website/);
+ assert.match(await page.locator("#purposeFound").innerText(),/index.html/);
+ assert.match(await page.locator("#purposeRemaining").innerText(),/browserproef/);
+ assert.match(await page.locator("#purposeAim").innerText(),/Bezoekers moeten/);
  assert.match(await page.locator("#firstTitle").innerText(),/privébestanden/);
  assert.equal(await page.locator("#openRepo").getAttribute("href"),"https://github.com/voorbeeld/project");
  assert.ok((await page.locator("#missingFiles").innerText()).includes("css/site.css"));
@@ -63,6 +71,18 @@ try{
  await page.locator("#back1").click();assert(await page.locator("#screen1").isVisible());
  await page.locator("#toFiles").click();await page.locator("#repoUrl").fill("javascript:alert(1)");
  await page.locator("#analyze").click();assert.match(await page.locator("#inputError").innerText(),/repositorylink/);
+ // Tweede volledige route: gebruiker heeft ZIP al op GitHub gezet, maar geen losse projectbestanden.
+ zipOnly=true;
+ await page.locator("#repoUrl").fill("https://github.com/voorbeeld/project");
+ await page.locator("#zipFile").setInputFiles({name:"website.zip",mimeType:"application/zip",buffer:safeArchive});
+ await page.locator("#analyze").click();
+ await page.locator("#screen3:not(.ph-hidden)").waitFor({timeout:10000});
+ assert.match(await page.locator("#firstTitle").innerText(),/ZIP op GitHub/);
+ assert.match(await page.locator("#warnings").innerText(),/projectbestanden/);
+ assert.match(await page.locator("#firstText").innerText(),/losse projectbestanden/);
+ assert.match(await page.locator("#purposeRemaining").innerText(),/niet uitgepakt/);
+ assert.match(await page.locator("#steps").innerText()+" "+await page.locator("#moreSteps").innerText(),/GitHub pakt een ZIP-bestand niet automatisch uit/);
+ assert.deepEqual(errors,[]);
  assert.deepEqual(errors,[]);
  console.log("Projecthulp browserproef geslaagd: ZIP lokaal, GitHub API gemockt, advies, download, foutpad en mobiel.");
 }finally{await browser?.close();server.kill();}
