@@ -34,6 +34,7 @@ test("ZIP: deflate en projectmanifest",async()=>{
  assert.deepEqual(archive.files,["index.html","package.json"]);
 });
 test("ZIP: pad buiten projectmap wordt geweigerd",()=>assert.throws(()=>inspectZip(makeZip([["../secret.txt","x"]])),/onveilig|niet-ondersteund/));
+test("ZIP: controltekens in paden worden geweigerd",()=>assert.throws(()=>inspectZip(makeZip([["bad\\nname.js","x"]])),/onveilig|niet-ondersteund/));
 test("ZIP: dubbele namen worden geweigerd",()=>assert.throws(()=>inspectZip(makeZip([["A.txt","a"],["a.txt","b"]])),/onveilig|dubbel/));
 test("ZIP: controlegetal mismatch wordt geweigerd",async()=>{
  const zip=inspectZip(makeZip([["index.html","abc"]]));zip.bytes[zip.entries[0].start]^=1;
@@ -54,6 +55,15 @@ test("GitHub: geen privégegevens, en geen schijnvergelijking bij API-fout",asyn
  await assert.rejects(()=>fetchPublicRepo("https://github.com/u/r",async()=>new Response("{}",{status:404})),/niet openbaar/);
  const fetcher=async(url)=>url.includes("/git/trees/")?new Response("",{status:500}):new Response(JSON.stringify({private:false,full_name:"u/r",default_branch:"main"}),{status:200});
  const repo=await fetchPublicRepo("https://github.com/u/r",fetcher);assert.equal(repo.readable,false);
+});
+test("ZIP: ongeldige package.json blokkeert geen overige analyse",async()=>{
+ const archive=await analyzeArchive(fake(makeZip([["site/package.json","null"],["site/index.html","ok"]])));
+ assert.ok(archive.manifestError);assert.equal(archive.project.type,"JavaScript-project");
+});
+test("GitHub: een lege repository zonder commits",async()=>{
+ const fetcher=async()=>new Response(JSON.stringify({full_name:"u/empty",private:false,default_branch:"main",size:0,pushed_at:null}),{status:200});
+ const repo=await fetchPublicRepo("https://github.com/u/empty",fetcher);
+ assert.equal(repo.empty,true);assert.deepEqual(repo.paths,[]);
 });
 test("Projectadvies: vergelijk bestandsnamen, claim geen inhoudelijke gelijkheid",async()=>{
  const archive=await analyzeArchive(fake(makeZip([["mijn-site/index.html","hoi"],["mijn-site/.env","SECRET=example"],["mijn-site/node_modules/lib/a.js","a"]])));
