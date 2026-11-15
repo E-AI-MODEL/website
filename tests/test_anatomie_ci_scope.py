@@ -35,6 +35,8 @@ class AnatomyScopeTests(unittest.TestCase):
         self.assertIn("python scripts/reuse_published_anatomie.py", workflow)
         self.assertIn("python scripts/reuse_published_anatomie.py --source tools/anatomie", workflow)
         self.assertIn("python -m unittest discover -s tests -p 'test_anatomie_publish.py'", workflow)
+        self.assertLess(workflow.index("test_anatomie_publish.py"),
+                        workflow.index("python scripts/prepare_ui.py"))
         self.assertIn("git diff --name-only -z 'HEAD^1' HEAD", workflow)
         builder = (ROOT / ".github/workflows/build-site.yml").read_text()
         self.assertIn('if [ "$GITHUB_EVENT_NAME" != "pull_request" ]', builder)
