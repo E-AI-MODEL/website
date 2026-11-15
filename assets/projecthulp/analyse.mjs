@@ -79,7 +79,7 @@ export async function analyzeArchive(file){
   catch(e){manifestError="package.json kon niet veilig worden gelezen: "+e.message;}
  }
  const project=describeProject(eligible,manifest && typeof manifest==="object" && !Array.isArray(manifest)?manifest:{});
- const htmlEntry=rawFiles.find(e=>e.path===root.prefix+"index.html")||rawFiles.find(e=>e.path===root.prefix+"public/index.html");
+ const htmlEntry=["index.html","public/index.html","dist/index.html","build/index.html"].map(path=>rawFiles.find(e=>e.path===root.prefix+path)).find(Boolean);
  let missingReferences=[],indexChecked=false,indexError=null;
  if(htmlEntry){
   try{
