@@ -26,3 +26,29 @@
  .ph-first{padding:18px 16px}
  .ph-first .ph-button{width:100%}
 }
+
+/* Eerst het beoogde gebruik, daarna de bestanden. */
+.ph-choices{grid-template-columns:repeat(2,minmax(0,1fr))}
+.ph-choice{min-width:0}
+.ph-choice-quiet{grid-column:1/-1}
+.ph-about{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,.8fr);gap:25px;align-items:start}
+.ph-about .ph-level{max-width:none;margin:0}
+.ph-optional{font-weight:400;font-size:12px;color:var(--ph-muted)}
+.ph-about textarea{font:inherit;font-size:14px;width:100%;min-height:74px;padding:12px;border:1px solid #d6e0dd;border-radius:7px;resize:vertical;line-height:1.5;color:var(--ph-ink)}
+.ph-about textarea:focus-visible{outline:2px solid #8ec3a9;border-color:#42866d}
+.ph-purpose{border-top:1px solid var(--ph-border);border-bottom:1px solid var(--ph-border);padding:24px 0;margin:10px 0 26px}
+.ph-purpose>h3{font:500 clamp(1.22rem,2.7vw,1.65rem)/1.2 Georgia,serif;letter-spacing:-.016em;margin:7px 0 15px}
+.ph-purpose-aim{font-size:13px;color:#51645c;margin:-5px 0 19px;max-width:760px;overflow-wrap:anywhere}
+.ph-purpose-checks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px}
+.ph-purpose-checks>div{min-width:0}
+.ph-purpose-checks h4{font-size:13px;font-weight:680;margin:0 0 9px;color:var(--ph-ink)}
+.ph-purpose-checks ul{padding-left:19px;margin:0;color:#586862;font-size:13px;line-height:1.63}
+.ph-purpose-checks li{margin-bottom:8px;overflow-wrap:anywhere}
+.ph-purpose-note{font-size:12px;color:var(--ph-muted);margin:13px 0 0}
+@media(max-width:730px){
+ .ph-choices{grid-template-columns:1fr;gap:9px}
+ .ph-choice-quiet{grid-column:auto}
+ .ph-about{grid-template-columns:1fr;gap:18px}
+ .ph-purpose{padding:19px 0;margin-top:6px}
+ .ph-purpose-checks{grid-template-columns:1fr;gap:16px}
+}
