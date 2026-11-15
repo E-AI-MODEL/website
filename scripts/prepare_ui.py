@@ -25,59 +25,115 @@ def canonical(path: str) -> str:
     return ALIASES.get(path, path)
 
 def groups(en: bool):
-    """Korte hoofdroutes; observatoria en ontwerptools hebben elk hun eigen plek."""
+    """Publieke hoofdroutes, gescheiden van alle onderliggende proeven."""
     if en:
         return [
-            ('Model', [('The EAI model', '/en/model/'), ('Applications', '/en/applications/')]),
-            ('Education', [('Lessons and workforms', '/en/education/')]),
-            ('Blog', [('Publications', '/en/publications/')]),
-            ('Research', [('Evidence and sources', '/en/research/')]),
-            ('Observatories', [
-                ('Interactief onderzoeken', '/tools/science-observatory/'),
-                ('Physics experiments (Dutch)', '/tools/science-observatory/labs/natuurkunde/'),
-                ('Human anatomy', '/tools/anatomie/'),
-                ('LLM Observatory', '/tools/llm-observatorium/'),
-                
-                ('Galactic Observatory: guided version', '/tools/melkweg-lab/'),
-            ]),
-            ('Tools', [
-                ('All tools', '/en/tools/'),
-                ('Prompt Framework', '/tools/prompt-framework/'),
-                ('WiHTML Studio', '/tools/wihtml/'),
-                ('EAIstudio', '/tools/eaistudio/'),
-                ('EAImesh', '/tools/eaimesh/'),
-                ('Process to prompt', '/tools/van-proces-naar-prompt/'),
-                ('Model Monitor', '/en/model-monitor/'),
-                ('LLMscan', '/en/llmscan/'),
-            ]),
-            ('About', [('About EAI', '/en/about/'), ('Site insights', '/en/insights/')]),
+            ('EAI model', [('The EAI model', '/en/model/'), ('Applications', '/en/applications/')]),
+            ('Education', [('Lessons and workforms', '/en/education/'), ('Applications', '/en/applications/')]),
+            ('Articles & research', [('Articles', '/en/publications/'), ('Research and sources', '/en/research/')]),
+            ('Experiments & models', [('All experiments', '/tools/science-observatory/'), ('Physics', '/tools/science-observatory/labs/natuurkunde/'), ('Mathematics A', '/tools/science-observatory/labs/wiskunde-a/'), ('Mathematics B', '/tools/science-observatory/labs/wiskunde-b/'), ('Human anatomy', '/tools/anatomie/'), ('Galactic Observatory', '/tools/science-observatory/labs/melkweg/'), ('LLM Observatory', '/tools/llm-observatorium/'), ('Sport and movement', '/tools/lo-aanvalslab/')]),
+            ('Tools', [('All tools', '/en/tools/'), ('Prompt Framework', '/tools/prompt-framework/'), ('WiHTML Studio', '/tools/wihtml/'), ('EAIstudio', '/tools/eaistudio/'), ('EAImesh', '/tools/eaimesh/'), ('Upload HTML', '/tools/html-galerij/'), ('Process to prompt', '/tools/van-proces-naar-prompt/'), ('Model Monitor', '/en/model-monitor/'), ('LLMscan', '/en/llmscan/')]),
+            ('About EAI', [('About EAI', '/en/about/'), ('Site insights', '/en/insights/')]),
         ]
     return [
-        ('Model', [('Het EAI-model', '/nl/model/'), ('Toepassingen', '/nl/toepassingen/')]),
+        ('Het EAI-model', [('Het EAI-model', '/nl/model/'), ('Toepassingen', '/nl/toepassingen/')]),
         ('Onderwijs', [('Lessen en werkvormen', '/nl/onderwijs/'), ('Lesvoorbeelden', '/nl/toepassingen/')]),
-        ('Blog', [('Nieuwste artikelen', '/nl/blog/'), ('Publicaties en media', '/nl/publicaties/')]),
-        ('Onderzoek', [('Onderzoek en bronnen', '/nl/onderzoek/'), ('Bronnenregister', '/bronnen/')]),
-        ('Observatoria', [
-            ('Interactief onderzoeken', '/tools/science-observatory/'),
-            ('Natuurkundeproeven', '/tools/science-observatory/labs/natuurkunde/'),
-            ('Anatomie van de mens', '/tools/anatomie/'),
-            ('LLM Observatorium', '/tools/llm-observatorium/'),
-            
-            ('Galactisch Observatorium: met uitleg', '/tools/melkweg-lab/'),
-        ]),
-        ('Tools', [
-            ('Alle tools', '/nl/tools/'),
-            ('EAI Prompt Framework', '/tools/prompt-framework/'),
-            ('WiHTML Docentstudio', '/tools/wihtml/'),
-            ('EAIstudio', '/tools/eaistudio/'),
-            ('EAImesh', '/tools/eaimesh/'),
-            ('Van proces naar prompt', '/tools/van-proces-naar-prompt/'),
-            ('AI Model Monitor', '/nl/model-monitor/'),
-            ('LLMscan', '/nl/llmscan/'),
-        ]),
-        ('Over', [('Over EAI', '/nl/over/'), ('Websitegebruik', '/nl/insights/')]),
+        ('Artikelen & onderzoek', [('Blog', '/nl/blog/'), ('Publicaties', '/nl/publicaties/'), ('Onderzoek en bronnen', '/nl/onderzoek/'), ('Bronnenregister', '/bronnen/')]),
+        ('Proeven & modellen', [('Alle proeven en modellen', '/tools/science-observatory/'), ('Natuurkunde', '/tools/science-observatory/labs/natuurkunde/'), ('Wiskunde A', '/tools/science-observatory/labs/wiskunde-a/'), ('Wiskunde B', '/tools/science-observatory/labs/wiskunde-b/'), ('Anatomie van de mens', '/tools/anatomie/'), ('Galactisch Observatorium', '/tools/science-observatory/labs/melkweg/'), ('Hoe werkt AI?', '/tools/llm-observatorium/'), ('Sport en bewegen', '/tools/lo-aanvalslab/')]),
+        ('Tools', [('Alle tools', '/nl/tools/'), ('EAI Prompt Framework', '/tools/prompt-framework/'), ('WiHTML Docentstudio', '/tools/wihtml/'), ('EAIstudio', '/tools/eaistudio/'), ('EAImesh', '/tools/eaimesh/'), ('HTML uploaden', '/tools/html-galerij/'), ('Van proces naar prompt', '/tools/van-proces-naar-prompt/'), ('AI Model Monitor', '/nl/model-monitor/'), ('LLMscan', '/nl/llmscan/')]),
+        ('Over EAI', [('Over EAI', '/nl/over/'), ('Websitegebruik', '/nl/insights/')]),
     ]
 
+
+def experiment_sections(en: bool):
+    """Use the model's own catalogue and IDs, never a second handwritten list."""
+    sources = Path(__file__).resolve().parent.parent / 'content' / 'science-observatory' / 'labs'
+    physics = (sources / 'natuurkunde.html').read_text(encoding='utf-8')
+    catalogue_match = re.search(r'window\.CATALOG=(\[[^\n]+\]);</script>', physics)
+    if not catalogue_match:
+        raise ValueError('Natuurkundeproeven hebben geen leesbare catalogus')
+    catalogue = json.loads(catalogue_match.group(1))
+    specs = physics.split('const labSpecs = [', 1)[1].split('\n];', 1)[0]
+    ids = re.findall(r"^\['([a-z][a-z0-9]*)',", specs, re.MULTILINE)
+    if len(ids) != len(catalogue) or len(ids) != 53:
+        raise ValueError('Catalogus en proef-ID’s verschillen')
+    physics_groups = {}
+    for id_, model in zip(ids, catalogue):
+        name = model['group'].replace('Electrodynamica', 'Elektrodynamica')
+        physics_groups.setdefault(name, []).append((model['title'].strip('"'), '/tools/science-observatory/labs/natuurkunde/#' + id_, model['title']))
+    maths = []
+    for variant in ('a', 'b'):
+        source = (sources / ('wiskunde-' + variant + '.html')).read_text(encoding='utf-8')
+        config_match = re.search(r'<script\b[^>]*\bid="config"[^>]*>(.*?)</script>', source, re.DOTALL)
+        if not config_match:
+            raise ValueError('Wiskunde ' + variant.upper() + ' heeft geen modelcatalogus')
+        modules = json.loads(config_match.group(1))['modules']
+        maths.append(('Wiskunde ' + variant.upper(), [(m['short'], '/tools/science-observatory/labs/wiskunde-' + variant + '/#' + m['id'], m.get('subtitle', '')) for m in modules]))
+    galaxy = (sources / 'melkweg.html').read_text(encoding='utf-8')
+    galaxy_doc = BeautifulSoup(galaxy, 'html.parser')
+    modes = [(button.b.get_text(' ', strip=True), '/tools/science-observatory/labs/melkweg/#' + button['data-mode'], button.small.get_text(' ', strip=True) if button.small else '') for button in galaxy_doc.select('button.nav-btn[data-mode]') if button.b]
+    if len(modes) != 6:
+        raise ValueError('De zes originele Melkwegonderdelen zijn niet compleet')
+    return [
+        ('Physics' if en else 'Natuurkunde', [(name, links) for name, links in physics_groups.items()]),
+        ('Mathematics' if en else 'Wiskunde', maths),
+        ('Human anatomy' if en else 'Anatomie van de mens', [('Anatomy and heart' if en else 'Lichaam en hart', [('The body in 3D' if en else 'Het lichaam in 3D', '/tools/anatomie/', ''), ('Heart and circulation' if en else 'Hart en bloedsomloop', '/tools/anatomie/labs/hartslag/', '')])]),
+        ('Galactic Observatory' if en else 'Galactisch Observatorium', [('Original Observatory' if en else 'Oorspronkelijk observatorium', modes), ('Guided discovery' if en else 'Ontdekken met uitleg', [('Galactic Observatory: guided' if en else 'Melkweg met uitleg', '/tools/melkweg-lab/', '')]), ('Orbits' if en else 'Banen', [('Gravity and satellites' if en else 'Gravitatie en satellietbanen', '/tools/science-observatory/labs/gravitatie-banen/', '')])]),
+        ('Language models' if en else 'Taalmodellen', [('AI' if en else 'AI onderzoeken', [('LLM Observatory' if en else 'Hoe werkt een taalmodel?', '/tools/llm-observatorium/', '')])]),
+        ('Sport and movement' if en else 'Sport en bewegen', [('Sports' if en else 'Sport en bewegen', [('Attack and defence' if en else 'Aanvallen en verdedigen', '/tools/lo-aanvalslab/', '')])]),
+    ]
+
+
+def menu_topic_html(en: bool) -> str:
+    def safe(value):
+        return html.escape(value, quote=True)
+    blocks = []
+    for title, clusters in experiment_sections(en):
+        total = sum(len(links) for _, links in clusters)
+        groups_markup = []
+        for subgroup, links in clusters:
+            items = ''.join('<a href="' + safe(url) + '" title="' + safe(extra) + '">' + safe(label) + '</a>' for label, url, extra in links)
+            groups_markup.append('<details class="eai-site-cluster"><summary>' + safe(subgroup) + '<span>' + str(len(links)) + '</span></summary><div class="eai-site-cluster-links">' + items + '</div></details>')
+        blocks.append('<details class="eai-site-topic"><summary><span>' + safe(title) + '</span><small>' + str(total) + ' ' + ('topics' if en else 'onderdelen') + '</small></summary><div class="eai-site-topic-links">' + ''.join(groups_markup) + '</div></details>')
+    return '<a class="eai-site-overview" href="/tools/science-observatory/">' + ('All experiments and models' if en else 'Alle proeven en modellen') + '</a>' + ''.join(blocks)
+
+
+def site_search_records(root: Path) -> list:
+    """Build a public, local search index from published paths and real module IDs."""
+    records = {}
+    def add(title, url, category, description=''):
+        if not title or not url.startswith('/') or url in records:
+            return
+        records[url] = {'title': str(title).strip(), 'url': url, 'category': category, 'description': str(description or '').strip()[:240]}
+    for en in (False, True):
+        for name, links in groups(en):
+            for label, url in links:
+                add(label, url, name)
+        for title, groups_ in experiment_sections(en):
+            for subgroup, entries in groups_:
+                for label, url, description in entries:
+                    add(label, url, title + ' · ' + subgroup, description)
+    allowed = ('nl', 'en', 'tools', 'publicaties', 'bronnen')
+    for path in sorted(root.rglob('index.html')):
+        relative = path.relative_to(root)
+        if not relative.parts or relative.parts[0] not in allowed:
+            continue
+        if any(part in ('admin', 'private', 'handoff', 'site-build', 'node_modules') for part in relative.parts):
+            continue
+        url = '/' + '/'.join(relative.parts[:-1]) + '/'
+        if url in records:
+            continue
+        try:
+            soup = BeautifulSoup(path.read_text(encoding='utf-8'), 'html.parser')
+            heading = soup.select_one('main h1, h1')
+            title = heading.get_text(' ', strip=True) if heading else (soup.title.get_text(' ', strip=True) if soup.title else '')
+            description = soup.find('meta', attrs={'name':'description'})
+            summary = description.get('content', '') if description else ''
+            if title and '404' not in title:
+                add(title, url, relative.parts[0].upper(), summary)
+        except (UnicodeError, OSError):
+            continue
+    return list(records.values())
 
 def navigation(soup: BeautifulSoup, path: str, en: bool) -> str:
     home = '/en/' if en else '/nl/'
