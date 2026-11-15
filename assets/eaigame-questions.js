@@ -20,15 +20,60 @@ C('Wat is een algoritme?',['Een reeks duidelijke stappen','Een willekeurige afbe
 {id:'arena',title:'De Arena',subject:'Biologie en onderzoek',slo:'Mens en natuur',color:'#f7aa75',intro:'Denk als een onderzoeker. Kijk naar bewijs.',items:[
 C('Welk orgaan pompt bloed door je lichaam?',['Het hart','De lever','De maag','De nier'],0,'Het hart pompt bloed door het lichaam.','Denk aan de hartslag.'),C('Waar wisselt zuurstof met het bloed uit?',['In de longblaasjes','In de maag','In de blaas','In de botten'],0,'De longblaasjes zorgen voor gaswisseling.','Denk aan de longen.'),C('Wat is de kleinste levende bouwsteen van het lichaam?',['Een cel','Een atoom','Een druppel','Een orgaan'],0,'Organismen bestaan uit cellen.','Organen hebben kleine bouwstenen.'),C('Wat doet een plant in een voedselketen?',['Zonne-energie vastleggen','Alle dieren opeten','Bodem uitputten','Zonder energie groeien'],0,'Planten zetten licht om via fotosynthese.','Denk aan fotosynthese.'),C('Wat nemen plantenwortels uit de bodem op?',['Water en mineralen','Zonlicht en geluid','Alleen koolstofdioxide','Suikerklontjes'],0,'Wortels nemen water en mineralen op.','Wat zit er in de bodem?'),C('Wat wordt een plas water door verdamping?',['Waterdamp','Zand','Zout','Stof die verdwijnt'],0,'Water gaat over in de gasfase.','Water blijft bestaan.'),T('Alle bacteriën veroorzaken ziekte.',false,'Veel bacteriën zijn onschadelijk of nuttig.','Denk aan je darmflora.'),C('Wat is biodiversiteit?',['Verscheidenheid van leven','Hoeveelheid beton','Aantal inwoners','Een weersvoorspelling'],0,'Biodiversiteit gaat over variatie in leven.','Bio is leven.'),C('Waarom verander je bij een proef het liefst één factor?',['Oorzaak beter onderzoeken','Altijd gelijk krijgen','Niet hoeven meten','Alle fouten voorkomen'],0,'Andere factoren gelijkhouden helpt vergelijken.','Wat kan nog meer invloed hebben?'),C('Wat is een hypothese?',['Een toetsbare verwachting','Een bewezen natuurwet','Een mening zonder toets','Een willekeurige gok'],0,'Een hypothese is toetsbaar.','Wat verwacht je vooraf?'),C('Wat vervoeren rode bloedcellen vooral?',['Zuurstof','Voedsel in de maag','Botten','Geluid'],0,'Hemoglobine bindt zuurstof voor vervoer.','Wat hebben je spieren nodig?'),C('Wat maakt een dier minder zichtbaar in zijn omgeving?',['Camouflage','Verdamping','Fotosynthese','Migratie'],0,'Camouflage geeft een schutkleur of -patroon.','Denk aan de achtergrond.'),C('Wat is een taak van veel schimmels in de natuur?',['Organisch materiaal afbreken','Zonlicht produceren','Alle planten bestuiven','Zuurstof tot steen maken'],0,'Schimmels breken resten af.','Denk aan bladeren op de grond.'),C('Wat verhoogt de betrouwbaarheid van een meting?',['Herhalen en vergelijken','Eén keer meten','Uitschieters verbergen','Alles tegelijk wijzigen'],0,'Herhalen maakt toeval beter zichtbaar.','Eén uitkomst kan toeval zijn.'),O('Zet de stappen van een onderzoek op volgorde.',['Stel een onderzoeksvraag','Maak een gecontroleerde proef','Meet en beoordeel resultaten'],'Eerst de vraag, dan de proef, dan beoordelen.','Wat wil je weten?'),T('Samenhang tussen twee metingen bewijst automatisch een oorzaak.',false,'Correlatie bewijst geen causaliteit.','Er kan een derde factor meespelen.')
 ]}];
+
+// Redactionele reparaties: antwoordlengte mag geen tip geven.
+const conciseCorrect={
+ 'stad-09':'Anderen helpen',
+ 'stad-17':'Besluiten op onjuiste gronden',
+ 'arena-04':'Zonlicht vastleggen',
+ 'stad-11':'Geschillen beoordelen',
+ 'stad-12':'Het partijprogramma',
+ 'atelier-02':'Zoek de oorzaak van de fout',
+ 'atelier-04':'Handelingen herhalen',
+ 'atelier-07':'Bezoek de officiële website',
+ 'atelier-11':'Bron en berekening controleren',
+ 'echo-13':'Controleer de bron'
+};
+// In waar/onwaar wisselen ware en onware stellingen af; dat is inhoudelijke redactie.
+const affirmativeTruth={
+ 'storm-03':'Geluid heeft een medium, zoals lucht, nodig om zich voort te planten.',
+ 'echo-06':'Een samenvatting bevat de belangrijkste punten uit een tekst.',
+ 'stad-04':'In een democratie mogen mensen van mening verschillen.',
+ 'atelier-03':'Een overtuigend AI-antwoord kan toch feitelijk onjuist zijn.',
+ 'arena-16':'Twee meetwaarden kunnen samenhangen zonder dat de ene de andere veroorzaakt.'
+};
+for(const group of groups)for(let i=0;i<group.items.length;i++){
+ const s=group.items[i],id=group.id+'-'+String(i+1).padStart(2,'0');
+ if(conciseCorrect[id]){
+   if(s.type!=='choice'||s.a!==0)throw Error('Onverwachte vraag: '+id);
+   s.o[0]=conciseCorrect[id];
+ }
+ if(affirmativeTruth[id]){
+   if(s.type!=='truth'||s.a!==1)throw Error('Onverwachte stelling: '+id);
+   s.q=affirmativeTruth[id];s.a=0;
+ }
+}
+// Vaste bronvolgorde is ook gehusseld. Dit blijft los van de nieuwe,
+// onafhankelijke presentatievolgorde bij ELKE beurt.
+function stablePermutation(q){
+ if(q.type==='order')return q;
+ let seed=2166136261;
+ for(const char of q.id)seed=Math.imul(seed^char.charCodeAt(0),16777619)>>>0;
+ function next(){seed^=seed<<13;seed^=seed>>>17;seed^=seed<<5;return seed>>>0}
+ const order=q.options.map((_,i)=>i);
+ for(let i=order.length-1;i>0;i--){const j=next()%(i+1);[order[i],order[j]]=[order[j],order[i]]}
+ return {...q,options:order.map(i=>q.options[i]),answer:order.indexOf(q.answer)};
+}
+
 const levels=['vmbo','havo','vwo'];
 export const REALMS=groups.map(({id,title,subject,slo,color,intro})=>({id,title,subject,slo,color,intro}));
 export const QUESTION_BANK=groups.flatMap(group=>group.items.flatMap((s,i)=>levels.map((level,l)=>({
  id:group.id+'-'+String(i+1).padStart(2,'0')+'-'+level,
  area:group.id,level,type:s.type,
  question:(l===0?'':l===1?'Pas je kennis toe. ':'Denk na over de beste onderbouwing. ')+s.q,
- options:s.type==='choice'?s.o.slice(0,l+2):[...s.o],
+ options:[...s.o],
  answer:Array.isArray(s.a)?[...s.a]:s.a,explanation:s.e,hint:s.h,
  source:{publisher:'EAIgame',context:'SLO curriculum-fo',subject:group.slo,url:'https://github.com/slonl/curriculum-fo'},reviewed:'editorial-draft'
-}))));
+})))).map(stablePermutation);
 export function validateBank(bank=QUESTION_BANK){const errors=[],ids=new Set();for(const q of bank){if(ids.has(q.id))errors.push('Dubbel ID '+q.id);ids.add(q.id);if(!q.question||q.question.length<8||q.options.length<2||new Set(q.options).size!==q.options.length)errors.push('Fout in inhoud '+q.id);if(q.type==='order'){if(!Array.isArray(q.answer)||q.answer.length!==q.options.length||q.answer.some((a,i)=>a!==i))errors.push('Fout in volgorde '+q.id)}else if(!Number.isInteger(q.answer)||q.answer<0||q.answer>=q.options.length)errors.push('Ongeldig antwoord '+q.id);if(!q.explanation||!q.hint)errors.push('Ontbrekende uitleg '+q.id)}return{count:bank.length,errors}}
 export function drawQuestion(area,level,used=new Set(),random=Math.random){const list=QUESTION_BANK.filter(q=>q.area===area&&q.level===level&&!used.has(q.id));if(!list.length)return null;return structuredClone(list[Math.floor(random()*list.length)])}
