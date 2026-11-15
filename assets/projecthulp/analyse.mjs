@@ -111,8 +111,6 @@ export function makeAdvice({goal="code",experience="beginner",archive,repo,aim="
   if(archive.manifestError)warnings.push(archive.manifestError);
   if(archive.indexError)warnings.push(archive.indexError);
   if(archive.missingReferences?.length)warnings.push("De startpagina verwijst naar "+archive.missingReferences.length+" lokaal bestand(en) dat niet op de verwachte plek staat: "+archive.missingReferences.slice(0,4).join(", ")+".");
-  if(!archive.project.hasReadme)warnings.push("Er is geen README gevonden. Die maakt het project begrijpelijker.");
-  if(!archive.project.hasIgnore)warnings.push("Een .gitignore ontbreekt. Die voorkomt dat tijdelijke bestanden later per ongeluk meegaan.");
  }else warnings.push("Er is geen ZIP onderzocht. Het advies is beperkt tot de repository en je antwoorden.");
  if(repo){
   observations.push("GitHub-repository '"+repo.name+"' is openbaar en bereikbaar.");
