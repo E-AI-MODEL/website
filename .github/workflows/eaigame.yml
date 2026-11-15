@@ -50,6 +50,7 @@ jobs:
           node --check assets/eaigame-sites-questions.js
           node --check assets/eaigame-sites-improvements.js
           node --check assets/eaigame-sites-level-bank.js
+          node --check assets/eaigame-sites-level-pilots.js
           node --check assets/eaigame-sites-controls.js
           node --check assets/eaigame-sites-sessions.js
           node --check assets/eaigame-sites-learning.js
