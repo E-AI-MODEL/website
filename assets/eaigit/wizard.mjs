@@ -80,11 +80,16 @@ function liList(id,entries,problem=false){
   const li=document.createElement("li");
   if(!problem){li.textContent=entry;node.append(li);continue;}
   const bold=document.createElement("strong");bold.textContent=entry.title+". ";li.append(bold,document.createTextNode(entry.detail));
+  let linked=false;
   if(entry.path&&state.repo?.readable&&state.repo?.paths?.includes(entry.path)&&state.repo?.branch&&state.guidance?.repoUrl){
    const a=document.createElement("a");
    a.href=state.guidance.repoUrl+"/blob/"+encodeURIComponent(state.repo.branch)+"/"+entry.path.split("/").map(encodeURIComponent).join("/")+(entry.line?"#L"+entry.line:"");
    a.target="_blank";a.rel="noopener noreferrer";a.textContent="Bekijk "+entry.path+" in GitHub";
    li.append(document.createTextNode(" "),a);
+   linked=true;
+  }
+  if(entry.path&&!linked){
+   li.append(document.createTextNode(" Bestand: "+entry.path+(entry.line?" (regel "+entry.line+")":"")+"."));
   }
   node.append(li);
  }
