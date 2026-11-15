@@ -5,7 +5,7 @@ import {readFileSync} from "node:fs";
 import {inspectZip,readZipText} from "../assets/projecthulp/zip.mjs";
 import {parseRepoUrl,fetchPublicRepo,stripArchiveRoot,describeProject,analyzeArchive,compareProjects,makeAdvice,reportText,readmeTemplate,ignoreTemplate} from "../assets/projecthulp/analyse.mjs";
 import {checkProjectPurpose,findBrokenLocalLinks,PURPOSES} from "../assets/projecthulp/doelcontrole.mjs";
-import {gitBlobId,goalTestFromAim} from "../assets/projecthulp/inhoudscontrole.mjs";
+import {gitBlobId,goalTestFromAim,inspectFileSignature,fetchPublicChecks} from "../assets/projecthulp/inhoudscontrole.mjs";
 import {availableProjectChecks,generateProjectCheckWorkflow} from "../assets/projecthulp/projectcheck.mjs";
 import {makeGuidance,continuationPrompt} from "../assets/projecthulp/begeleiding.mjs";
 import {buildJourney,primaryFinding,helpPrompt} from "../assets/eaigit/journey.mjs";
@@ -345,4 +345,40 @@ test("Gebruikersdoel oefeningen leidt tot concrete functionele test, geen schijn
  assert.ok(steps.some(x=>x.id==="try"&&x.description.includes("feedback")));
  assert.equal(steps[steps.length-1].id,"publishing");
  assert.equal(goalTestFromAim("",{}),null);
+});
+
+test("Bestandstype: ongeldige afbeelding en PDF worden gemeld, geldige kop niet",async()=>{
+ const archive=await analyzeArchive(fake(makeZip([
+  ["site/foto.png","geen echte afbeelding"],
+  ["site/rapport.pdf","dit is geen PDF"]
+ ])));
+ assert.ok(archive.contentCheck.findings.some(x=>x.type==="format-mismatch"&&x.path==="foto.png"));
+ assert.ok(archive.contentCheck.findings.some(x=>x.type==="format-mismatch"&&x.path==="rapport.pdf"));
+ assert.equal(inspectFileSignature("voorbeeld.png",Uint8Array.from([137,80,78,71,13,10,26,10])),null);
+});
+test("GitHub Checks: verifieer EAIgit-annotaties, filter ongeldige paden en leg echte codefout vast",async()=>{
+ const sha="a".repeat(40);
+ const fetcher=async(url)=>{
+  if(url.includes("/check-runs?"))
+   return new Response(JSON.stringify({total_count:1,check_runs:[{
+    id:12345,name:"EAIgit · projectcontrole",head_sha:sha,status:"completed",conclusion:"failure",
+    html_url:"https://github.com/u/r/actions/runs/12345"
+   }]}),{status:200});
+  if(url.includes("/annotations?"))
+   return new Response(JSON.stringify([
+    {title:"EAIgit syntaxis",path:"src/app.js",start_line:8},
+    {title:"EAIgit syntaxis",path:".env",start_line:1},
+    {title:"Ander type fout",path:"src/app.js",start_line:12}
+   ]),{status:200});
+  throw Error("Unexpected API URL "+url);
+ };
+ const checks=await fetchPublicChecks("https://api.github.com/repos/u/r","main",["src/app.js"],fetcher,{});
+ assert.equal(checks.checked,true);
+ assert.equal(checks.syntaxErrors.length,1);
+ assert.equal(checks.syntaxErrors[0].line,8);
+ const guidance=makeGuidance({repo:{name:"u/r",url:"https://github.com/u/r",readable:true,paths:["src/app.js"],
+  actionChecks:checks},goal:"app"});
+ assert.equal(guidance.codeErrorsVerified,true);
+ assert.ok(guidance.problems.some(x=>x.path==="src/app.js"&&x.line===8));
+ assert.match(guidance.next[0],/syntaxisfout/);
 });
