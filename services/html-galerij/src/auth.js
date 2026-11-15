@@ -73,7 +73,7 @@ async function currentUser(request, env) {
   try {
     const row = await env.DB.prepare(
       'SELECT email FROM gallery_sessions WHERE token_hash = ? AND expires_at > ?'
-    ).bind(await sha256(token), Math.floor(Date.now() / 1000)).first();
+    ).bind(await sha256(env.GALLERY_PASSWORD_HASH + ':' + token), Math.floor(Date.now() / 1000)).first();
     return row?.email === env.GALLERY_ADMIN_EMAIL.toLowerCase() ? row.email : null;
   } catch {
     return null;
@@ -122,7 +122,7 @@ async function login(request, env) {
     const token = Array.from(random, x => x.toString(16).padStart(2, '0')).join('');
     const now = Math.floor(Date.now() / 1000);
     await env.DB.prepare('INSERT INTO gallery_sessions(token_hash,email,expires_at) VALUES (?,?,?)')
-      .bind(await sha256(token), email, now + MAX_AGE).run();
+      .bind(await sha256(env.GALLERY_PASSWORD_HASH + ':' + token), email, now + MAX_AGE).run();
     return reply(null, 303, {
       'Location': '/',
       'Set-Cookie': COOKIE + '=' + token + '; Path=/; Secure; HttpOnly; SameSite=Strict; Max-Age=' + MAX_AGE
@@ -136,7 +136,7 @@ async function logout(request, env) {
   const token = cookieToken(request);
   try {
     if (token && env.DB) await env.DB.prepare('DELETE FROM gallery_sessions WHERE token_hash = ?')
-      .bind(await sha256(token)).run();
+      .bind(await sha256(env.GALLERY_PASSWORD_HASH + ':' + token)).run();
   } catch { return reply('Afmelden is tijdelijk niet beschikbaar.', 503); }
   return reply(null, 303, {
     'Location': '/',
