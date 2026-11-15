@@ -46,14 +46,14 @@ try{
  const warnings=await page.locator("#warnings").innerText();
  assert.match(warnings,/vertrouwelijke naam/i);
  assert.match(warnings,/Gelijke namen/);
- assert.match(await page.locator("#observations").innerText(),/GitHub-repository/);
+ assert.match(await page.locator("#observations").textContent(),/GitHub-repository/);
  assert.match(await page.locator("#purposeTitle").innerText(),/website/);
  assert.match(await page.locator("#purposeFound").innerText(),/index.html/);
  assert.match(await page.locator("#purposeRemaining").innerText(),/browserproef/);
  assert.match(await page.locator("#purposeAim").innerText(),/Bezoekers moeten/);
  assert.match(await page.locator("#firstTitle").innerText(),/privébestanden/);
  assert.equal(await page.locator("#openRepo").getAttribute("href"),"https://github.com/voorbeeld/project");
- assert.ok((await page.locator("#missingFiles").innerText()).includes("css/site.css"));
+ assert.ok((await page.locator("#missingFiles").textContent()).includes("css/site.css"));
  assert(await page.locator("#moreStepsGroup").count());
  assert.equal(await page.locator(".skip-link").evaluate(el=>el.getBoundingClientRect().x < 0),true);
  assert.equal(await page.locator("#summary span").count(),2);
@@ -81,7 +81,7 @@ try{
  assert.match(await page.locator("#warnings").innerText(),/projectbestanden/);
  assert.match(await page.locator("#firstText").innerText(),/losse projectbestanden/);
  assert.match(await page.locator("#purposeRemaining").innerText(),/niet uitgepakt/);
- assert.match(await page.locator("#steps").innerText()+" "+await page.locator("#moreSteps").innerText(),/GitHub pakt een ZIP-bestand niet automatisch uit/);
+ assert.match(await page.locator("#steps").innerText()+" "+await page.locator("#moreSteps").textContent(),/GitHub pakt een ZIP-bestand niet automatisch uit/);
  assert.deepEqual(errors,[]);
  assert.deepEqual(errors,[]);
  console.log("Projecthulp browserproef geslaagd: ZIP lokaal, GitHub API gemockt, advies, download, foutpad en mobiel.");
