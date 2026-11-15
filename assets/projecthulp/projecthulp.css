@@ -70,3 +70,35 @@
 }
 
 .ph-about{grid-template-columns:minmax(0,1fr);max-width:690px}
+
+
+/* Persoonlijke uitkomst: alleen het noodzakelijke direct in beeld. */
+.ph-findings{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;margin:18px 0 23px}
+.ph-findings-section{min-width:0;padding:18px 19px;background:#fafcfb;border:1px solid var(--ph-border);border-radius:9px}
+.ph-findings-section h3{font-size:15px;line-height:1.45;margin:0 0 13px;color:var(--ph-ink);font-weight:690}
+.ph-findings-section ul,.ph-uncertainty ul{list-style:disc outside;padding-left:20px;margin:0;color:#4d625a;font-size:13px;line-height:1.65}
+.ph-findings-section li,.ph-uncertainty li{margin:0 0 10px;overflow-wrap:anywhere}
+.ph-findings-section li:last-child,.ph-uncertainty li:last-child{margin-bottom:0}
+.ph-uncertainty{border-left:2px solid #bed5c8;padding:2px 0 2px 15px;margin:0 0 25px}
+.ph-uncertainty strong{display:block;font-size:13px;margin-bottom:7px}
+.ph-technical-details{border-top:1px solid var(--ph-border);padding:17px 0;margin:0 0 20px}
+.ph-technical-details > summary{font-weight:660}
+.ph-technical-details > .ph-purpose{margin-top:16px}
+.ph-technical-details .ph-plan{margin-bottom:14px}
+.ph-chatgpt-guide{padding:16px 0;border-top:1px solid var(--ph-border);margin:18px 0}
+.ph-chatgpt-guide > summary{color:var(--ph-accent-strong);font-size:14px;font-weight:690}
+.ph-chatgpt-guide p{max-width:760px;color:#51645c;font-size:13px;line-height:1.7;margin:13px 0}
+.ph-setup-steps{color:#445951;padding-left:23px;font-size:13px;line-height:1.7;max-width:820px;margin:12px 0 22px}
+.ph-setup-steps li{margin-bottom:12px}
+.ph-chatgpt-guide a{color:var(--ph-accent-strong);text-decoration:underline;text-underline-offset:2px}
+.ph-prompt-label{display:block;font-weight:670;font-size:13px;margin-bottom:10px}
+.ph-chatgpt-guide textarea{display:block;width:100%;resize:vertical;font:12px/1.6 ui-monospace,SFMono-Regular,Consolas,monospace;color:#30463e;border:1px solid var(--ph-border);border-radius:8px;background:#f8fbf9;padding:15px;min-height:125px;max-height:310px}
+.ph-prompt-actions{display:flex;gap:15px;align-items:center;margin:13px 0}
+.ph-prompt-actions span,.ph-copy-status{font-size:12px;color:var(--ph-accent-strong)}
+@media(max-width:730px){
+ .ph-findings{grid-template-columns:1fr;gap:11px}
+ .ph-findings-section{padding:15px}
+ .ph-uncertainty{margin-top:18px}
+ .ph-prompt-actions{flex-wrap:wrap}
+ .ph-prompt-actions .ph-button{width:100%}
+}
