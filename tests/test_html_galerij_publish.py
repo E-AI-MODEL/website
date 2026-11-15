@@ -31,7 +31,7 @@ class GalleryPublicationTests(unittest.TestCase):
         ui = (SERVICE / "ui.js").read_text(encoding="utf-8")
         schema = SCHEMA.read_text(encoding="utf-8")
         for text in ('currentUser(request, env)', 'if (!user) return error(',
-                     'sameOrigin(request)', r'\\/api\\/admin\\/uploads\\/',
+                     'sameOrigin(request)', r'\/api\/admin\/uploads\/',
                      "sandbox allow-scripts", "frame-ancestors 'self'",
                      "status = 'published'", "MAX_BYTES"):
             with self.subTest(text=text):
