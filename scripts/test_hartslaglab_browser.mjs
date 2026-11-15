@@ -65,7 +65,13 @@ try {
   assert.equal(paths.filter(p=>p.channel==='return').length,6);
   assert.equal(paths.filter(p=>p.channel==='av').length,2);
   assert.equal(paths.filter(p=>p.channel==='sem').length,3);
-  assert(paths.every(p=>p.points>=30),'De bronroutes moeten vloeiende lijnen hebben');
+  assert(paths.every(p=>p.points>=60),'De bronroutes moeten vloeiende lijnen hebben');
+  assert(paths.every(p=>p.source==='bodyparts3d-centrelines'),
+    'Alle rijke stroombanen volgen de gemeten bronmiddenlijnen, niet de bounding-box-middelpunten');
+  assert(paths.find(p=>p.ids[0]==='svc').waypoints>=6,
+    'De holle ader volgt meerdere punten in de echte vaatvorm');
+  assert(paths.find(p=>p.ids.includes('ao_desc')).waypoints>=15,
+    'De grote lichaamsslagader volgt aorta, boog en dalende aorta als doorlopende route');
   assert(Math.abs(motion.playbackSeconds-3.2)<.01,'Standaard 3,2 seconden per hartslag');
   assert.equal(initial.playing,true,'De doorlopende animatie start vanzelf zonder verminderde-bewegingsvoorkeur');
   await page.locator('#play').click();
