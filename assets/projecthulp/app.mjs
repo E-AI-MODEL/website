@@ -113,7 +113,7 @@ async function analyze(){
  }
  if(url){try{parseRepoUrl(url);}catch(error){setText("inputError",error.message);show("inputError",true);return;}}
  state.goal=document.querySelector('input[name="goal"]:checked')?.value||"upload";
- state.experience=$("experience").value;
+ state.experience="beginner";
  state.aim=$("projectAim").value.trim().slice(0,220);
  $("analyze").disabled=true;show("loading",true);setText("loadingText","We controleren je bestanden…");
  try{
@@ -172,5 +172,5 @@ $("downloadCheck").addEventListener("click",()=>{const yaml=generateProjectCheck
 $("reset").addEventListener("click",()=>{
  $("zipFile").value="";$("repoUrl").value="";setText("fileName","Kies een ZIP om te onderzoeken");show("inputError",false);
  for(const key of ["archive","repo","advice","repoError"])state[key]=null;state.workerRuns=[];
- document.querySelector('input[name="goal"][value="site"]').checked=true;$("experience").value="beginner";$("projectAim").value="";state.aim="";screen(1);
+ document.querySelector('input[name="goal"][value="site"]').checked=true;$("projectAim").value="";state.aim="";screen(1);
 });
