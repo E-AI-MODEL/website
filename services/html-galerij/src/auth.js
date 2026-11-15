@@ -82,14 +82,14 @@ async function currentUser(request, env) {
 function loginPage(message = '') {
   const status = message ? '<p role="alert" class="error">' + escaped(message) + '</p>' : '';
   return '<!doctype html><html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">' +
-    '<title>Inloggen | EAI HTML-galerij</title>' +
+    '<title>Inloggen | EAI Beheer</title>' +
     '<style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#f6f8f4;color:#1b2a23;font:16px/1.5 system-ui,sans-serif}' +
     'main{width:min(420px,calc(100vw - 40px));background:#fff;border:1px solid #d9e4dc;border-radius:14px;padding:32px;box-shadow:0 18px 50px #142b1a0c}' +
     'h1{font:400 34px/1.2 Georgia,serif;margin:4px 0 14px}p{color:#53665a}label{display:block;font-size:13px;font-weight:650;margin:20px 0 6px}' +
     'input{display:block;width:100%;box-sizing:border-box;padding:12px;border:1px solid #b5c8b9;border-radius:7px;font:inherit}' +
     'button{margin-top:25px;cursor:pointer;width:100%;padding:13px;border:0;border-radius:7px;background:#27563e;color:#fff;font:600 15px system-ui}' +
     '.error{color:#a02927}a{color:#27563e}</style></head><body><main><div>EAI · Beveiligde omgeving</div>' +
-    '<h1>Inloggen bij de HTML-galerij</h1><p>Alleen de beheerder kan HTML-bestanden bekijken, toevoegen en verwijderen.</p>' +
+    '<h1>Inloggen bij EAI Beheer</h1><p>Bekijk je websitegegevens, controles en publicaties en beheer je HTML-bestanden. Alleen de beheerder heeft toegang.</p>' +
     status +
     '<form method="post" action="/auth/login" autocomplete="on"><label for="email">E-mailadres</label>' +
     '<input id="email" name="email" type="email" autocomplete="username" required maxlength="254">' +
