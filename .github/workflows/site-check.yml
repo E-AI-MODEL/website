@@ -14,6 +14,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Check Projecthulp ZIP and GitHub journey
+        run: node --test tests/test_projecthulp.mjs
       - name: Check navigation and page structure
         run: node scripts/check-site.mjs
       - name: Check Science Observatory and observatory navigation
