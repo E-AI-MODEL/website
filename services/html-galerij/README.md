@@ -50,7 +50,7 @@ De volgende functies worden uit echte bronnen opgehaald:
 | Overzicht | Cloudflare D1, Supabase, GitHub | Bestanden, sessies, bezoekersgebeurtenissen, controlepunten |
 | Bezoekers | Bestaande publieke Supabase Edge Function `eai-site-insights` | 7/30/90 dagen, dagverloop, toolklikken, populaire pagina's, apparaatgroep |
 | Websitecontrole | HTTP HEAD vanaf de Worker naar Theory7 | Status van zes vaste pagina's; onbekend blijft onbekend |
-| Publicaties | Openbare GitHub API | Commit op main en status laatste Theory7-deployment; geen automatische publicatie |
+| Publicaties | Openbare GitHub API | Commit op main, status laatste Theory7-deployment en de laatste build-/websitetests; geen automatische publicatie |
 | HTML-beheer | Cloudflare D1 | Bestanden bekijken, online/offline halen en verborgen uploads herstellen |
 | Beveiliging | Cloudflare D1 | Actieve sessies, recente aanmeldpogingen, alle sessies intrekken |
 | Logboek | Cloudflare D1 | Handelingen van de beheerder zonder persoonsgegevens van bezoekers |
