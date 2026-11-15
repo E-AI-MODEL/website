@@ -165,6 +165,9 @@ export function ignoreTemplate(project){
 }
 export function reportText(data){
  const r=data.advice,a=data.archive,repo=data.repo;
+ const runs=(Array.isArray(data.workerRuns)?data.workerRuns:[]).map(x=>
+  "- "+x.task+": "+x.status+(x.mode?" ("+x.mode+")":"")+
+  (Number.isFinite(x.elapsedMs)?" in "+x.elapsedMs+" ms":"")+(x.reason?" · "+x.reason:""));
  return ["# Persoonlijk GitHub-advies","","Gemaakt op "+new Date().toLocaleString("nl-NL"),"",
  "## Gecontroleerd",...r.observations.map(x=>"- "+x),"",
  "## Aandachtspunten",...(r.warnings.length?r.warnings:["- Geen bijzonderheden gevonden binnen de uitgevoerde controles."]).map(x=>x.startsWith("- ")?x:"- "+x),"",
@@ -173,5 +176,5 @@ export function reportText(data){
  "## Wat nog niet vaststaat",...(r.purpose?.remaining||[]).map(x=>"- "+x),"",
  "## Jouw stappen",...r.steps.map((x,i)=>(i+1)+". "+x),"",
  "## Niet gecontroleerd",...r.limits.map(x=>"- "+x),"",
- "## Bronnen","- ZIP: "+(a?.name||"niet aangeleverd"),"- GitHub: "+(repo?.url||"niet gecontroleerd"),"- GitHub-bronversie: "+(repo?.sha||"onbekend"),""].join("\n");
+ "## Uitgevoerde browserwerkers",...(runs.length?runs:["- Niet vastgelegd"]),"","## Bronnen","- ZIP: "+(a?.name||"niet aangeleverd"),"- GitHub: "+(repo?.url||"niet gecontroleerd"),"- GitHub-bronversie: "+(repo?.sha||"onbekend"),""].join("\n");
 }
