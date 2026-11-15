@@ -6,11 +6,12 @@ import {getHelpTopic,getHelpForStep} from "./help-topics.mjs";
 const $=id=>document.getElementById(id);
 const state={intent:null,source:null,goal:"code",zip:null,repoUrl:"",archive:null,repo:null,repoError:null,aim:"",guidance:null,steps:[],stepIndex:0,busy:false};
 const stages=["intent","source","zip","repo","aim","result","guide","finished"];
-const topicForPage=new Set(["goal","source","zip","repo","aim","findings","private","safe","unzip","create","upload","files","compare","references","actions","repoStep","try","publishing","chatgpt","plugins","skills","codex","review"]);
-function openHelp(topicId){
+function openHelp(topicId,contextTip=""){
  const topic=getHelpTopic(topicId);if(!topic)return;
  label("helpTitle",topic.title);
  label("helpIntro",topic.intro);
+ show("helpContextTip",Boolean(contextTip));
+ label("helpContextTip",contextTip);
  const list=$("helpSteps");list.replaceChildren();
  for(const instruction of topic.steps){const li=document.createElement("li");li.textContent=instruction;list.append(li);}
  const links=$("helpLinks");links.replaceChildren();
@@ -32,9 +33,12 @@ function navigate(target){
  for(const stage of stages)show("stage-"+stage,stage===target);
  show("loading",false);
  const flow=getFlow(),index=flow.indexOf(target),total=flow.length-1;
- const progress=target==="guide"||target==="finished"?1:index<0?0:(index+1)/Math.max(1,total);
+ const progress=target==="finished"?1:target==="guide"
+  ?0.66+0.34*((state.stepIndex+1)/(state.steps.length+1))
+  :index<0?0:0.66*(index+1)/Math.max(1,total);
  $("progressFill").style.width=Math.round(progress*100)+"%";
- label("progressStep",target==="guide"||target==="finished"?"Bijna klaar":"Stap "+Math.max(1,Math.min(index+1,total))+" van "+total);
+ label("progressStep",target==="guide"?"Stap "+(state.stepIndex+1)+" van "+state.steps.length:
+  target==="finished"?"Klaar":"Stap "+Math.max(1,Math.min(index+1,total))+" van "+total);
  label("progressLabel",target==="guide"?"Aan de slag":target==="finished"?"Afronden":({intent:"Jouw vraag",source:"Je bestanden",zip:"Je ZIP",repo:"Je repository",aim:"Je doel",result:"Je advies"}[target]||"EAIgit"));
  document.body.classList.toggle("eg-is-result",["result","guide","finished"].includes(target));
  const heading=$("stage-"+target).querySelector("h1,h2");
@@ -140,9 +144,6 @@ function renderGuide(){
  show("createdRepoError",false);
  show("guideLink",Boolean(step.href&&step.action));
  if(step.href&&step.action){$("guideLink").href=step.href;$("guideLink").firstChild.textContent=step.action+" ";}
- const hasTip=Boolean(step.help);
- show("helpDetails",hasTip);
- $("helpDetails").open=false;label("guideTip",step.help||"");
  const phases={
   source:"verkennen",repo:"verkennen",unzip:"opzetten",create:"opzetten",upload:"opzetten",files:"opzetten",
   compare:"opzetten",private:"controleren",safe:"controleren",references:"bouwen",actions:"controleren",
@@ -235,7 +236,7 @@ $("copyPrompt").addEventListener("click",async()=>{
 for(const button of document.querySelectorAll("[data-help]")){
  button.addEventListener("click",()=>openHelp(button.dataset.help));
 }
-$("guideMore").addEventListener("click",()=>openHelp($("guideMore").dataset.help||"goal"));
+$("guideMore").addEventListener("click",()=>openHelp($("guideMore").dataset.help||"goal",state.steps[state.stepIndex]?.help||""));
 $("helpClose").addEventListener("click",()=>$("helpDialog").close());
 $("checkAgain").addEventListener("click",analyze);
 $("finishReset").addEventListener("click",reset);
