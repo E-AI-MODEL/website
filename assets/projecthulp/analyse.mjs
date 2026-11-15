@@ -1,5 +1,5 @@
 import {inspectZip,readZipText,readZipBytes} from "./zip.mjs";
-import {inspectProjectTexts,gitBlobId,inspectPublicBlobs,fetchPublicChecks} from "./inhoudscontrole.mjs";
+import {inspectProjectTexts,gitBlobId,inspectPublicBlobs,fetchPublicChecks,inspectFileSignature} from "./inhoudscontrole.mjs";
 import {checkProjectPurpose,findBrokenLocalLinks} from "./doelcontrole.mjs";
 const REPO=/^https:\/\/github\.com\/([A-Za-z0-9](?:[A-Za-z0-9-]{0,38}[A-Za-z0-9])?)\/([A-Za-z0-9_.-]+?)(?:\.git)?\/?$/i;
 const TEXT_LIMIT=350000;
@@ -95,7 +95,7 @@ export async function analyzeArchive(file){
    indexChecked=true;
   }catch(error){indexError="De startpagina kon niet volledig worden nagekeken: "+error.message;}
  }
- const fingerprints={},textRecords=[],notInspected=[];let hashedBytes=0,textBytes=0;
+ const fingerprints={},textRecords=[],notInspected=[],formatFindings=[];let hashedBytes=0,textBytes=0;
  const available=new Set(eligible);
  // De ZIP wordt lokaal op bestandbytes vergeleken met GitHub-blobs, zonder upload of code-uitvoering.
  for(const entry of rawFiles){
@@ -106,6 +106,8 @@ export async function analyzeArchive(file){
   try{
    const bytes=await readZipBytes(zip,entry,600000);
    hashedBytes+=bytes.byteLength;
+   const formatFinding=inspectFileSignature(path,bytes);
+   if(formatFinding&&formatFindings.length<12)formatFindings.push(formatFinding);
    const blobId=await gitBlobId(bytes);
    if(blobId)fingerprints[path]=blobId;
    if(isText){
@@ -119,6 +121,7 @@ export async function analyzeArchive(file){
   }catch{notInspected.push(path);}
  }
  const contentCheck=inspectProjectTexts(textRecords,eligible);
+ contentCheck.findings.push(...formatFindings.slice(0,Math.max(0,32-contentCheck.findings.length)));
  contentCheck.notInspected=notInspected.slice(0,40);
  contentCheck.incomplete=contentCheck.incomplete||notInspected.length>0;
  return {name:file.name,archiveSize:file.size,files:paths,total:zip.total,prefix:root.prefix,eligible,ignored,secret,project,manifest,manifestError,missingReferences,indexChecked,indexError,fingerprints,contentCheck};
