@@ -5,6 +5,7 @@ on:
     paths:
       - 'services/html-galerij/**'
       - 'tests/test_html_galerij_admin.mjs'
+      - 'tests/test_eai_site_admin.mjs'
       - 'tools/html-galerij/index.html'
       - '.github/workflows/test-html-gallery-auth.yml'
   push:
@@ -33,6 +34,11 @@ jobs:
           node --check services/html-galerij/src/index.js
           node --check services/html-galerij/src/auth.js
           node --check services/html-galerij/src/ui.js
+          node --check services/html-galerij/src/admin.js
+          node --check services/html-galerij/src/dashboard.js
+          node --check services/html-galerij/src/admin-client.js
           node --check services/html-galerij/scripts/password-hash.mjs
       - name: Test login, sessions, authorization, CSRF, and deletion
         run: node tests/test_html_galerij_admin.mjs
+      - name: Test website management sources, access boundaries and audit actions
+        run: node tests/test_eai_site_admin.mjs
