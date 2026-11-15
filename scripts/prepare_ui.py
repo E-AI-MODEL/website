@@ -255,7 +255,10 @@ def site_search_records(root: Path) -> list:
             current = records[url]
             if len(description) > len(current['description']):
                 current['description'] = description
-                current['category'] = category
+                # The published page can improve the snippet, but its folder
+                # name ('NL', 'TOOLS') must not replace the meaningful topic.
+                if category not in ('NL', 'EN', 'TOOLS', 'PUBLICATIES', 'BRONNEN'):
+                    current['category'] = category
             return
         records[url] = {'title': str(title).strip(), 'url': url, 'category': category, 'description': description}
     for en in (False, True):
