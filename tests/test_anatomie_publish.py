@@ -268,7 +268,10 @@ class AnatomyPublishTests(unittest.TestCase):
                 self.assertTrue(f.is_file(), page)
                 parser = Links()
                 parser.feed(f.read_text(encoding="utf-8"))
-                self.assertIn("/tools/anatomie/", parser.hrefs)
+                self.assertIn("/tools/science-observatory/", parser.hrefs,
+                              "De gezamenlijke ingang moet overal bereikbaar blijven")
+                if page != "nl/index.html":
+                    self.assertIn("/tools/anatomie/", parser.hrefs)
         sitemap = (OUT / "sitemap.xml").read_text(encoding="utf-8")
         self.assertIn("<loc>https://eaimodel.nl/tools/anatomie/</loc>", sitemap)
 
@@ -281,9 +284,15 @@ class AnatomyPublishTests(unittest.TestCase):
                 links.feed((OUT / rel).read_text(encoding="utf-8"))
                 # De gegenereerde Tools-pagina heeft één link in de inhoud
                 # en één in elk van de afzonderlijke desktop-/mobiele menu's.
-                expected = 3 if rel == "tools/index.html" else 1
-                self.assertEqual(links.hrefs.count("/tools/anatomie/"), expected,
-                                 f"Onverwacht aantal anatomievermeldingen in {rel}")
+                count = links.hrefs.count("/tools/anatomie/")
+                if rel == "nl/index.html":
+                    # Voor prepare_ui bevat de opgeslagen homepage nog de oude menulink.
+                    # Na de UI-build staat anatomie alleen onder Interactief onderzoeken.
+                    self.assertIn(count, (0, 1), "Anatomie staat dubbel op de homepage")
+                else:
+                    expected = 3 if rel == "tools/index.html" else 1
+                    self.assertEqual(count, expected,
+                                     f"Onverwacht aantal anatomievermeldingen in {rel}")
                 if rel == "tools/index.html":
                     from bs4 import BeautifulSoup
                     soup = BeautifulSoup((OUT / rel).read_text(encoding="utf-8"), "html.parser")
@@ -294,8 +303,10 @@ class AnatomyPublishTests(unittest.TestCase):
                         self.assertEqual(len(area.select('a[href="/tools/anatomie/"]')), 1,
                                          "Anatomie mag per menu/inhoud eenmaal voorkomen")
         navigation_source = (ROOT / "scripts" / "prepare_ui.py").read_text(encoding="utf-8")
-        self.assertEqual(navigation_source.count("'/tools/anatomie/'"), 2,
-                         "Er hoort een anatomievermelding per taalmenu te zijn")
+        self.assertIn("('Onderzoeken', '/tools/science-observatory/')", navigation_source)
+        self.assertIn("('Explore interactive models', '/tools/science-observatory/')", navigation_source)
+        self.assertEqual(navigation_source.count("'/tools/anatomie/'"), 0,
+                         "Anatomie staat in het gezamenlijke onderzoeksoverzicht, niet dubbel in het menu")
 
     def test_build_reproducible_and_repository_local(self):
         source = (ROOT / "scripts" / "build_anatomie.py").read_text(encoding="utf-8")

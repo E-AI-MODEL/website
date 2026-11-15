@@ -25,59 +25,63 @@ def canonical(path: str) -> str:
     return ALIASES.get(path, path)
 
 def groups(en: bool):
-    """Korte hoofdroutes; observatoria en ontwerptools hebben elk hun eigen plek."""
+    """Bezoekers kiezen een bedoeling; losse HTML-proeven staan op hun eigen overzicht."""
     if en:
         return [
-            ('Model', [('The EAI model', '/en/model/'), ('Applications', '/en/applications/')]),
-            ('Education', [('Lessons and workforms', '/en/education/')]),
-            ('Blog', [('Publications', '/en/publications/')]),
-            ('Research', [('Evidence and sources', '/en/research/')]),
-            ('Observatories', [
-                ('Interactief onderzoeken', '/tools/science-observatory/'),
-                ('Physics experiments (Dutch)', '/tools/science-observatory/labs/natuurkunde/'),
-                ('Human anatomy', '/tools/anatomie/'),
-                ('LLM Observatory', '/tools/llm-observatorium/'),
-                
-                ('Galactic Observatory: guided version', '/tools/melkweg-lab/'),
+            ('The model', [
+                ('How EAI works', '/en/model/'),
+                ('Examples in practice', '/en/applications/'),
             ]),
-            ('Tools', [
+            ('Education', [
+                ('Lessons and activities', '/en/education/'),
+            ]),
+            ('Research', [
+                ('Research and sources', '/en/research/'),
+                ('Source register (Dutch)', '/bronnen/'),
+            ]),
+            ('Articles', [
+                ('Articles and publications', '/en/publications/'),
+                ('Dutch blog', '/nl/blog/'),
+            ]),
+            ('Try it yourself', [
+                ('Explore interactive models', '/tools/science-observatory/'),
+                ('Review AI products', '/en/llmscan/'),
+                ('Make something', '/en/tools/#maken'),
                 ('All tools', '/en/tools/'),
-                ('Prompt Framework', '/tools/prompt-framework/'),
-                ('WiHTML Studio', '/tools/wihtml/'),
-                ('EAIstudio', '/tools/eaistudio/'),
-                ('EAImesh', '/tools/eaimesh/'),
-                ('Process to prompt', '/tools/van-proces-naar-prompt/'),
-                ('Model Monitor', '/en/model-monitor/'),
-                ('LLMscan', '/en/llmscan/'),
             ]),
-            ('About', [('About EAI', '/en/about/'), ('Site insights', '/en/insights/')]),
+            ('About EAI', [
+                ('About EAI and Hans Visser', '/en/about/'),
+                ('Website use', '/en/insights/'),
+            ]),
         ]
     return [
-        ('Model', [('Het EAI-model', '/nl/model/'), ('Toepassingen', '/nl/toepassingen/')]),
-        ('Onderwijs', [('Lessen en werkvormen', '/nl/onderwijs/'), ('Lesvoorbeelden', '/nl/toepassingen/')]),
-        ('Blog', [('Nieuwste artikelen', '/nl/blog/'), ('Publicaties en media', '/nl/publicaties/')]),
-        ('Onderzoek', [('Onderzoek en bronnen', '/nl/onderzoek/'), ('Bronnenregister', '/bronnen/')]),
-        ('Observatoria', [
-            ('Interactief onderzoeken', '/tools/science-observatory/'),
-            ('Natuurkundeproeven', '/tools/science-observatory/labs/natuurkunde/'),
-            ('Anatomie van de mens', '/tools/anatomie/'),
-            ('LLM Observatorium', '/tools/llm-observatorium/'),
-            
-            ('Galactisch Observatorium: met uitleg', '/tools/melkweg-lab/'),
+        ('Het model', [
+            ('Hoe werkt EAI?', '/nl/model/'),
+            ('Voorbeelden uit de praktijk', '/nl/toepassingen/'),
         ]),
-        ('Tools', [
-            ('Alle tools', '/nl/tools/'),
-            ('EAI Prompt Framework', '/tools/prompt-framework/'),
-            ('WiHTML Docentstudio', '/tools/wihtml/'),
-            ('EAIstudio', '/tools/eaistudio/'),
-            ('EAImesh', '/tools/eaimesh/'),
-            ('Van proces naar prompt', '/tools/van-proces-naar-prompt/'),
-            ('AI Model Monitor', '/nl/model-monitor/'),
-            ('LLMscan', '/nl/llmscan/'),
+        ('Onderwijs', [
+            ('Lessen en werkvormen', '/nl/onderwijs/'),
+            ('TAALwerkvormen', '/taalwerkvormen/'),
         ]),
-        ('Over', [('Over EAI', '/nl/over/'), ('Websitegebruik', '/nl/insights/')]),
+        ('Onderzoek', [
+            ('Onderzoek en bronnen', '/nl/onderzoek/'),
+            ('Bronnenregister', '/bronnen/'),
+        ]),
+        ('Artikelen', [
+            ('Nieuwste artikelen', '/nl/blog/'),
+            ('Publicaties en media', '/nl/publicaties/'),
+        ]),
+        ('Zelf aan de slag', [
+            ('Onderzoeken', '/tools/science-observatory/'),
+            ('AI beoordelen', '/nl/tools/#beoordelen'),
+            ('Iets maken', '/nl/tools/#ontwerpen'),
+            ('Alle hulpmiddelen', '/nl/tools/'),
+        ]),
+        ('Over EAI', [
+            ('Over EAI en Hans Visser', '/nl/over/'),
+            ('Websitegebruik', '/nl/insights/'),
+        ]),
     ]
-
 
 def navigation(soup: BeautifulSoup, path: str, en: bool) -> str:
     home = '/en/' if en else '/nl/'
@@ -93,20 +97,20 @@ def navigation(soup: BeautifulSoup, path: str, en: bool) -> str:
         language_links.append(f'<a href="{html.escape(target, quote=True)}" lang="{language}" hreflang="{language}"{current} data-preserve-hash>{language.upper()}</a>')
     menu = []
     for title, entries in groups(en):
-        active = any((path_here == canonical(target) or path_here.startswith(canonical(target))) and canonical(target) not in ('/nl/', '/en/') for _, target in entries)
+        active = (title in ('Zelf aan de slag', 'Try it yourself') and (path_here.startswith('/tools/') or path_here in ('/nl/tools/', '/en/tools/', '/nl/model-monitor/', '/en/model-monitor/', '/nl/llmscan/', '/en/llmscan/'))) or any((path_here == canonical(target) or path_here.startswith(canonical(target))) and canonical(target) not in ('/nl/', '/en/') for _, target in entries)
         active_cls = ' is-current' if active else ''
         links = ''.join(f'<a href="{html.escape(target, quote=True)}"' + (' aria-current="page"' if path_here == canonical(target) else '') + f'>{html.escape(label)}</a>' for label, target in entries)
         menu.append(f'<details class="eai-site-group{active_cls}" name="eai-navigation-theme"><summary>{html.escape(title)}</summary><div class="eai-site-group-links">{links}</div></details>')
     primary = []
     for title, entries in groups(en):
         # About/Over blijft beschikbaar in Meer en in de voettekst.
-        # Zo houdt de brede navigatie zes korte, inhoudelijke bestemmingen.
-        if title in ('About', 'Over'):
+        # De brede navigatie heeft vijf heldere ingangen; meer staat in het menu.
+        if title in ('About EAI', 'Over EAI'):
             continue
         target = entries[0][1]
-        if title in ('Observatoria', 'Observatories'):
-            target = '/en/tools/#observatoria' if en else '/nl/tools/#observatoria'
-        current = ' aria-current="page"' if any(path_here == canonical(item[1]) or (canonical(item[1]) not in ('/nl/', '/en/') and path_here.startswith(canonical(item[1]))) for item in entries) else ''
+        if title in ('Zelf aan de slag', 'Try it yourself'):
+            target = '/en/tools/' if en else '/nl/tools/'
+        current = ' aria-current="page"' if (title in ('Zelf aan de slag', 'Try it yourself') and (path_here.startswith('/tools/') or path_here in ('/nl/tools/', '/en/tools/', '/nl/model-monitor/', '/en/model-monitor/', '/nl/llmscan/', '/en/llmscan/'))) or any(path_here == canonical(item[1]) or (canonical(item[1]) not in ('/nl/', '/en/') and path_here.startswith(canonical(item[1]))) for item in entries) else ''
         primary.append(f'<a href="{html.escape(target, quote=True)}"{current}>{html.escape(title)}</a>')
     nav_label = 'Main navigation' if en else 'Hoofdnavigatie'
     lang_label = 'Choose language' if en else 'Kies taal'
@@ -121,7 +125,7 @@ def navigation(soup: BeautifulSoup, path: str, en: bool) -> str:
 
 def footer(en: bool) -> str:
     home = '/en/' if en else '/nl/'
-    links = [('Blog', '/en/publications/'), ('Research', '/en/research/'), ('Tools', '/en/tools/'), ('About', '/en/about/')] if en else [('Model', '/nl/model/'), ('Onderwijs', '/nl/onderwijs/'), ('Blog', '/nl/blog/'), ('Onderzoek', '/nl/onderzoek/'), ('Tools', '/nl/tools/'), ('Over', '/nl/over/')]
+    links = [('The model', '/en/model/'), ('Education', '/en/education/'), ('Research', '/en/research/'), ('Articles', '/en/publications/'), ('Try it yourself', '/en/tools/'), ('About EAI', '/en/about/')] if en else [('Het model', '/nl/model/'), ('Onderwijs', '/nl/onderwijs/'), ('Onderzoek', '/nl/onderzoek/'), ('Artikelen', '/nl/blog/'), ('Zelf aan de slag', '/nl/tools/'), ('Over EAI', '/nl/over/')]
     rendered = ''.join(f'<a href="{u}">{t}</a>' for t, u in links)
     rendered += '<a href="https://nl.linkedin.com/in/hans-visser-92531a105" target="_blank" rel="noopener noreferrer">LinkedIn</a>'
     return f'<footer class="eai-site-footer"><div class="eai-site-footer-inner"><div><a class="eai-site-brand" href="{home}"><img src="/assets/eai-logo.svg" width="32" height="32" alt=""><span>EAI</span></a><p>Hans Visser</p></div><nav aria-label="Footer">{rendered}</nav></div></footer>'

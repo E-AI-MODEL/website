@@ -1,51 +1,66 @@
-"""Controleer de werkelijke menugroepen, niet alleen de namen in de broncode."""
+"""Controleer dat het hoofdmenu bij de bezoeker begint en onderzoeksmodellen samenhoudt."""
 import unittest
 from bs4 import BeautifulSoup
 import sys
 from pathlib import Path
+
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'scripts'))
 from prepare_ui import groups, navigation
 
 
 class PublicMenuTests(unittest.TestCase):
-    def test_nederlands_en_engels_scheiden_proeven_en_ontwerpen(self):
+    def test_vijf_ingangen_plus_over_beide_talen(self):
         for en in (False, True):
-            with self.subTest(taal="en" if en else "nl"):
-                navigation_groups = groups(en)
-                self.assertEqual(len(navigation_groups), 7)
-                sections = {title: links for title, links in navigation_groups}
-                names = ("Observatories", "Tools") if en else ("Observatoria", "Tools")
-                self.assertIn(names[0], sections)
-                labs = dict(sections[names[0]])
-                tools = dict(sections[names[1]])
-                self.assertIn("/tools/science-observatory/", labs.values())
-                self.assertIn("/tools/science-observatory/labs/natuurkunde/", labs.values())
-                self.assertIn("/tools/anatomie/", labs.values())
-                self.assertIn("/tools/prompt-framework/", tools.values())
-                self.assertIn("/tools/wihtml/", tools.values())
-                self.assertNotIn("/tools/anatomie/", tools.values())
-                self.assertEqual(len({url for _,url in sections[names[0]]}), len(labs))
-                self.assertEqual(len({url for _,url in sections[names[1]]}), len(tools))
+            with self.subTest(taal='en' if en else 'nl'):
+                sections = groups(en)
+                titles = [name for name, _ in sections]
+                expected = (
+                    ['The model', 'Education', 'Research', 'Articles', 'Try it yourself', 'About EAI']
+                    if en else
+                    ['Het model', 'Onderwijs', 'Onderzoek', 'Artikelen', 'Zelf aan de slag', 'Over EAI']
+                )
+                self.assertEqual(titles, expected)
+                for title, links in sections:
+                    self.assertTrue(links, title)
+                    addresses = [href for _, href in links]
+                    self.assertEqual(len(addresses), len(set(addresses)), title)
 
-    def test_zes_brede_navigatielinks_en_zeven_overzichtelijke_menugroepen(self):
-        for en, path in ((False,"/nl/tools/"),(True,"/en/tools/")):
-            with self.subTest(taal="en" if en else "nl"):
-                soup = BeautifulSoup('<html><head></head><body></body></html>','html.parser')
-                header = BeautifulSoup(navigation(soup,path,en),'html.parser')
-                primary = header.select(".eai-site-primary > a")
-                menu = header.select(".eai-site-menu .eai-site-group")
-                self.assertEqual(len(primary), 6)
-                self.assertEqual(len(menu), 7)
-                main_observatoria = next(a for a in primary if a.get_text(strip=True) == ('Observatories' if en else 'Observatoria'))
-                self.assertEqual(main_observatoria['href'], ('/en/tools/' if en else '/nl/tools/') + '#observatoria')
+    def test_interactieve_onderwerpen_bij_een_ingang(self):
+        for en in (False, True):
+            with self.subTest(taal='en' if en else 'nl'):
+                sections = dict(groups(en))
+                subject = 'Try it yourself' if en else 'Zelf aan de slag'
+                links = dict(sections[subject])
+                self.assertIn('/tools/science-observatory/', links.values())
+                self.assertIn(('/en/tools/' if en else '/nl/tools/'), links.values())
+                self.assertFalse(any('/tools/anatomie/' == href for href in links.values()))
+                self.assertFalse(any('/tools/llm-observatorium/' == href for href in links.values()))
+                self.assertIn('/tools/science-observatory/', links.values())
+                for title, choices in sections.items():
+                    if title != subject:
+                        self.assertNotIn('/tools/science-observatory/', [u for _, u in choices])
+                self.assertNotIn('/tools/wihtml/', links.values())
+
+    def test_hoofdmenu_heeft_vijf_directe_links_en_uitklapbaar_overzicht(self):
+        for en, path in ((False, '/nl/tools/'), (True, '/en/tools/')):
+            with self.subTest(taal='en' if en else 'nl'):
+                soup = BeautifulSoup('<html><head></head><body></body></html>', 'html.parser')
+                header = BeautifulSoup(navigation(soup, path, en), 'html.parser')
+                primary = header.select('.eai-site-primary > a')
+                menu = header.select('.eai-site-menu .eai-site-group')
+                self.assertEqual(len(primary), 5)
+                self.assertEqual(len(menu), 6)
+                names = [a.get_text(strip=True) for a in primary]
+                self.assertEqual(names[-1], 'Try it yourself' if en else 'Zelf aan de slag')
+                self.assertEqual(primary[-1]['href'], '/en/tools/' if en else '/nl/tools/')
+                self.assertEqual(primary[-1].get('aria-current'), 'page')
                 headings = [item.summary.get_text(strip=True) for item in menu]
-                self.assertIn("Observatories" if en else "Observatoria", headings)
-                self.assertIn("About" if en else "Over", headings)
-                self.assertNotIn("About" if en else "Over", [a.get_text(strip=True) for a in primary])
+                self.assertIn('About EAI' if en else 'Over EAI', headings)
+                self.assertNotIn('About EAI' if en else 'Over EAI', names)
                 for item in menu:
-                    addresses = [a.get('href') for a in item.select("a[href]")]
-                    self.assertEqual(len(addresses),len(set(addresses)))
+                    addresses = [a.get('href') for a in item.select('a[href]')]
+                    self.assertEqual(len(addresses), len(set(addresses)))
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     unittest.main()
