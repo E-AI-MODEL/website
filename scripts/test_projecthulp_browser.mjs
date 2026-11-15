@@ -166,6 +166,34 @@ try{
  await page.locator("#guideNext").click();
  assert.match(await page.locator("#guideTitle").innerText(),/Voeg je bestanden toe/);
  assert.equal(await page.locator("#guideLink").getAttribute("href"),"https://github.com/voorbeeld/nieuw-project");
+ // Eigen doel is leidend: de wizard vraagt om een gerichte oefeningentest en doet geen onterechte succesclaim.
+ await page.goto(base+"/tools/eaigit/");
+ await page.locator('[data-intent="repair"]').click();
+ await page.locator('[data-source="zip"]').click();
+ const exercises=zip([["les/index.html",'<button id="startQuiz">Maak de oefening</button>'],["les/app.js",'console.log("test fixture")']]);
+ await page.locator("#zipFile").setInputFiles({name:"oefeningen.zip",mimeType:"application/zip",buffer:exercises});
+ await page.locator("#zipNext").click();
+ await page.locator("#projectAim").fill("Leerlingen moeten oefeningen maken en na elk antwoord feedback en een score zien.");
+ await page.locator("#analyze").click();
+ await page.locator("#stage-result:not(.eg-hidden)").waitFor({timeout:12000});
+ assert.match(await page.locator("#unknownPoints").textContent(),/oefeningen/);
+ await page.locator("#startGuidance").click();
+ let exerciseStepFound=false;
+ for(let k=0;k<8;k++){
+  const stage=await page.locator("#stage-guide").isVisible();
+  if(!stage)break;
+  const title=await page.locator("#guideTitle").innerText();
+  if(title==="Controleer de oefeningen"){
+   assert.match(await page.locator("#guideDescription").innerText(),/goed en een fout antwoord/);
+   exerciseStepFound=true;
+   break;
+  }
+  await page.locator("#guideNext").click();
+ }
+ assert.equal(exerciseStepFound,true,"Gebruikersdoel moet concrete functietest in wizard tonen");
+ // De test is een opdracht aan de eigenaar; EAIgit heeft de werking nog niet bevestigd.
+ assert.match(await page.locator("#unknownPoints").textContent(),/niet uitgevoerd/);
+
  // Hulppagina: eigen overzicht, per onderwerp slechts korte instructies.
  await page.goto(base+"/tools/eaigit/hulp/#uitleg-plugins");
  assert.match(await page.title(),/Hulp bij GitHub en ChatGPT/);
