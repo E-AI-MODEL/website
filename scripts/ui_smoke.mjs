@@ -77,6 +77,8 @@ try {
         const choices = page.locator('#eai-site-search-results a[href="/werkvormen/justification-mapping/"]');
         await choices.waitFor();
         assert.match(await choices.locator('.eai-site-search-hit-description').innerText(), /AI-bijdrage/, 'Zoekresultaat laat de inhoud van de werkvorm zien');
+        await search.fill('taakdichtheid');
+        await page.locator('#eai-site-search-results a[href="/nl/begrippen/#task-density"]').waitFor();
         await search.fill('');
         assert(await page.locator('.eai-site-menu-sections').isVisible(), 'Empty search restores navigation');
       }
