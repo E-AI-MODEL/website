@@ -46,7 +46,8 @@ try {
       assert.deepEqual(result.narrowParagraphs, [], `${path}: cramped text at ${width}`);
       await page.locator('.eai-site-menu>summary').click();
       const panel = await page.locator('.eai-site-menu-panel').boundingBox();
-      assert(panel && panel.x >= 0 && panel.x + panel.width <= width, 'Menu offscreen');
+      const visibleWidth = await page.evaluate(() => window.visualViewport?.width ?? document.documentElement.clientWidth);
+      assert(panel && panel.x >= 0 && panel.x + panel.width <= visibleWidth + 1, `Menu offscreen: ${JSON.stringify({panel, visibleWidth})}`);
       await page.locator('.eai-site-group').nth(1).locator(':scope > summary').click();
       await page.locator('.eai-site-group').nth(3).locator(':scope > summary').click();
       assert.equal(await page.locator('.eai-site-group[open]').count(), 1, 'Only one theme may be open');
