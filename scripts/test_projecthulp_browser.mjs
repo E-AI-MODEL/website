@@ -40,12 +40,12 @@ try{
  await page.locator("#analyze").click();
  await page.locator("#screen3:not(.ph-hidden)").waitFor({timeout:10000});
  const warnings=await page.locator("#warnings").innerText();
- assert.match(warnings,/gevoelige bestanden/i);
+ assert.match(warnings,/vertrouwelijke naam/i);
  assert.match(warnings,/Gelijke namen/);
  assert.match(await page.locator("#observations").innerText(),/GitHub-repository/);
  assert.match(await page.locator("#firstTitle").innerText(),/privébestanden/);
  assert.equal(await page.locator("#openRepo").getAttribute("href"),"https://github.com/voorbeeld/project");
- assert.match(await page.locator("#missingFiles").innerText(),/css\\/site.css/);
+ assert.ok((await page.locator("#missingFiles").innerText()).includes("css/site.css"));
  assert(await page.locator("#moreStepsGroup").count());
  assert.equal(await page.locator(".skip-link").evaluate(el=>el.getBoundingClientRect().x < 0),true);
  assert.equal(await page.locator("#summary span").count(),2);
