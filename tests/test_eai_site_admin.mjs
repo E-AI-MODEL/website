@@ -15,6 +15,11 @@ const rows=[
 const actions=[];
 let sessions=2;
 const DB={
+ async batch(statements){
+  const results=[];
+  for(const statement of statements)results.push(await statement.run());
+  return results;
+ },
  prepare(sql){
   return {bind(...args){
    return {
@@ -37,8 +42,9 @@ const DB={
     },
     async run(){
      if(sql.startsWith('INSERT INTO site_admin_audit')){
+      if(sql.includes('WHERE EXISTS') && rows.find(x=>x.id===args[3])?.status!=='hidden') return {meta:{changes:0}};
       actions.push({id:actions.length+1,actor:args[0],action:args[1],target:args[2],created_at:'2026-11-15 20:00:00'});
-      return {success:true};
+      return {meta:{changes:1}};
      }
      if(sql.startsWith('UPDATE uploads SET status=')){
       const row=rows.find(x=>x.id===args[0]&&x.status==='hidden');
@@ -49,7 +55,7 @@ const DB={
      throw Error('Unexpected DB run: '+sql);
     }
    };
-  }};
+  }, run(){return this.bind().run();}};
  }
 };
 const env={DB};
