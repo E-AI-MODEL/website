@@ -24,7 +24,9 @@
       if (link.getAttribute('aria-current')) copy.setAttribute('aria-current', link.getAttribute('aria-current'));
       rail.append(copy);
     }
-    document.body.insertBefore(rail, document.body.firstChild);
+    const header = document.querySelector('.eai-masthead');
+    if (header) header.after(rail);
+    else document.body.append(rail);
   }
 
   const controls = document.querySelector('.eai-site-controls');
@@ -142,7 +144,7 @@
       const target = Math.max(0, Math.min(cards.length - 1, index));
       track.scrollTo({
         left: cards[target].offsetLeft - cards[0].offsetLeft,
-        behavior: reducedMotion ? 'instant' : 'smooth'
+        behavior: reducedMotion ? 'auto' : 'smooth'
       });
     };
     previous.addEventListener('click', () => move(current - 1));
