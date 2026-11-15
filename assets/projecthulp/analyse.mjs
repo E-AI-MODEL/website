@@ -43,7 +43,7 @@ export function stripArchiveRoot(paths){
  return {prefix:"",paths:eligible};
 }
 const SECRETS=/(^|\/)(\.env(?:\..+)?|id_rsa(?:\.pub)?|id_ed25519(?:\.pub)?|[^/]*\.pem|[^/]*\.p12|[^/]*\.pfx|credentials?(?:\.[^/]*)?|secrets?\.(?:json|ya?ml)|config\.local\.[^/]*)$/i;
-const JUNK=/(^|\/)(__MACOSX|node_modules|\.git|\.next|dist|build|coverage|\.venv|venv|__pycache__|\.DS_Store|Thumbs\.db)(\/|$)/i;
+const JUNK=/(^|\/)(__MACOSX|node_modules|\.git|\.next|coverage|\.venv|venv|__pycache__|\.DS_Store|Thumbs\.db)(\/|$)/i;
 const extension=(path)=>path.split("/").at(-1).split(".").pop().toLowerCase();
 const includes=(set,name)=>set.has(name)||[...set].some(p=>p.endsWith("/"+name));
 export function describeProject(paths,manifest={}){
