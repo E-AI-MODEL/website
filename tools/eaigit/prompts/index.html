@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="nl"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><meta name="referrer" content="no-referrer">
+<title>EAIgit · Promptbibliotheek per ontwikkelfase</title>
+<meta name="description" content="Gerichte opdrachten voor projectonderzoek, GitHub, bouwen, testen en publiceren. Met concrete bewijs- en toestemmingsafspraken.">
+<link rel="icon" href="/assets/eaigit/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/site.css"><link rel="stylesheet" href="/assets/eaigit/wizard.css">
+<link rel="stylesheet" href="/assets/eaigit/references.css">
+<script type="module" src="/assets/eaigit/prompts-page.mjs"></script>
+</head><body class="eaigit-wizard eg-reference-page">
+<a class="eg-skip" href="#promptsMain">Ga naar de inhoud</a>
+<header class="eg-header">
+ <a class="eg-logo" href="/tools/eaigit/" aria-label="EAIgit start"><img src="/assets/eaigit/logo.svg" alt="EAIgit"></a>
+ <nav class="eg-ref-nav" aria-label="EAIgit"><a href="/tools/eaigit/">Wizard</a><a href="/tools/eaigit/hulp/">Uitleg & hulp</a></nav>
+</header>
+<main id="promptsMain" class="eg-ref-shell eg-prompt-page">
+ <div class="eg-ref-intro">
+  <span class="eg-ref-eyebrow">EAIgit · Promptbibliotheek</span>
+  <h1>Een goede vraag voor elke stap.</h1>
+  <p>Kies eerst waar je mee bezig bent. Kopieer pas daarna de opdracht die daarbij past.</p>
+ </div>
+ <div class="eg-prompt-settings">
+  <div><label for="promptRepo">Je GitHub-link <span>(mag je overslaan)</span></label><input id="promptRepo" type="url" class="eg-input" placeholder="https://github.com/naam/project" autocomplete="url" spellcheck="false"></div>
+  <div><label for="promptGoal">Wat moet je project kunnen? <span>(mag je overslaan)</span></label><input id="promptGoal" class="eg-input" type="text" maxlength="180" placeholder="Bijvoorbeeld: bezoekers kunnen oefeningen maken"></div>
+ </div>
+ <section aria-labelledby="phasesTitle" class="eg-prompt-library">
+  <div class="eg-section-heading"><h2 id="phasesTitle">Waar ben je mee bezig?</h2><p>De opdrachten blijven kort en vragen om controleerbare resultaten.</p></div>
+  <div id="promptFilters" class="eg-prompt-filters" role="group" aria-label="Filter op ontwikkelfase"></div>
+  <p id="promptCount" class="eg-count" aria-live="polite"></p>
+  <div id="promptList" class="eg-prompt-list"></div>
+ </section>
+ <section id="selectedPrompt" class="eg-prompt-choice eg-hidden" aria-labelledby="selectedTitle">
+  <div class="eg-prompt-choice-head"><span id="selectedPhase" class="eg-ref-eyebrow"></span><button id="closePrompt" class="eg-text-button" type="button">Sluiten</button></div>
+  <h2 id="selectedTitle"></h2>
+  <p id="selectedUse" class="eg-muted"></p>
+  <label for="selectedBody">Je kunt deze opdracht aanpassen voordat je hem gebruikt</label>
+  <textarea id="selectedBody" class="eg-input eg-prompt-text" rows="12" spellcheck="false"></textarea>
+  <div class="eg-ref-actions">
+   <button type="button" class="eg-primary" id="copySelected">Kopieer de opdracht</button>
+   <button type="button" class="eg-secondary" id="restoreSelected">Herstel het voorbeeld</button>
+  </div>
+  <p id="copyFeedback" class="eg-status" role="status" aria-live="polite"></p>
+  <p class="eg-note">Je besluit zelf wat het doel is. Laat uitvoerende tools alleen werken met passende rechten en laat wijzigingen en tests controleerbaar terugkomen.</p>
+ </section>
+ <section class="eg-next-panel">
+  <h2>Nog geen idee welke opdracht past?</h2>
+  <p>De EAIgit-wizard helpt je eerst je situatie bepalen. Daarna kun je gericht verder.</p>
+  <div class="eg-ref-actions"><a href="/tools/eaigit/" class="eg-primary">Start de wizard</a><a href="/tools/eaigit/hulp/" class="eg-secondary">GitHub of ChatGPT begrijpen</a></div>
+ </section>
+</main>
+<footer class="eg-footer"><span>EAIgit</span><a href="/tools/eaigit/">Terug naar de wizard</a></footer>
+</body></html>

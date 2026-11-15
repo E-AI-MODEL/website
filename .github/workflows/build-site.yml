@@ -28,6 +28,10 @@ on:
       - 'nl/**'
       - 'en/**'
       - 'assets/**'
+      - 'tools/projecthulp/**'
+      - 'tools/eaigit/**'
+      - 'tests/test_projecthulp.mjs'
+      - 'tests/test_eaigit_help.mjs'
       - 'index.html'
       - 'houseoftalents/**'
       - 'leif/**'
@@ -64,6 +68,9 @@ on:
       - 'nl/**'
       - 'en/**'
       - 'assets/**'
+      - 'tools/projecthulp/**'
+      - 'tools/eaigit/**'
+      - 'tests/test_projecthulp.mjs'
       - 'index.html'
       - 'houseoftalents/**'
       - 'leif/**'
@@ -136,6 +143,9 @@ jobs:
       - name: Check EAIwork public demonstration
         run: python -m unittest discover -s tests -p 'test_eaiwork_dashboard_publish.py' -v
 
+      - name: Test EAIgit browser analysis
+        run: node --test tests/test_projecthulp.mjs tests/test_eaigit_help.mjs
+
       - name: Check EAIgame 300 questions and gameplay mechanics
         run: node --test tests/test_eaigame.mjs
 
@@ -146,6 +156,18 @@ jobs:
           test -s site-build/statistieken/collect.php
           test -s site-build/assets/site-analytics.js
           test ! -e site-build/statistieken/data.json
+
+      - name: Controleer EAIgit in gebouwde website
+        run: |
+          set -euo pipefail
+          test -s site-build/tools/eaigit/index.html
+          test -s site-build/tools/eaigit/hulp/index.html
+          test -s site-build/tools/eaigit/prompts/index.html
+          test -s site-build/tools/projecthulp/index.html
+          test -s site-build/assets/eaigit/wizard.mjs
+          test -s site-build/assets/projecthulp/analyse.mjs
+          test -s site-build/assets/projecthulp/inhoudscontrole.mjs
+          test -s site-build/assets/projecthulp/onderzoek-worker.mjs
 
       - name: Build local anatomical 3D models and viewer
         run: python scripts/build_anatomie.py --out site-build/tools/anatomie

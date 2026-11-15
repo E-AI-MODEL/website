@@ -2829,6 +2829,29 @@ def build(sources: Path, out: Path) -> None:
     if leif_source.is_dir():
         shutil.copytree(leif_source, out / "leif", dirs_exist_ok=True)
     finish_generated_pages(out)
+    # EAIgit is a separate browser wizard: publish only its four intended pages.
+    # Do not let the general site generator rewrite their UI or JavaScript.
+    eai_routes = (
+        "tools/eaigit/index.html",
+        "tools/eaigit/hulp/index.html",
+        "tools/eaigit/prompts/index.html",
+        "tools/projecthulp/index.html",
+    )
+    for relative in eai_routes:
+        source = repo_root / relative
+        if not source.is_file():
+            raise FileNotFoundError(f"Missing EAIgit page: {source}")
+        destination = out / relative
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(source, destination)
+    for relative in (
+        "assets/eaigit/wizard.mjs",
+        "assets/projecthulp/analyse.mjs",
+        "assets/projecthulp/inhoudscontrole.mjs",
+        "assets/projecthulp/onderzoek-worker.mjs",
+    ):
+        if not (out / relative).is_file():
+            raise FileNotFoundError(f"Missing EAIgit browser asset: {relative}")
     # Standalone LEIF and its private continuation page are kept byte-for-byte.
     # Neither page is in the public sitemap or shared editorial UI.
     leif_source = repo_root / "leif"

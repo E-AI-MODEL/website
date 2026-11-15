@@ -1,0 +1,45 @@
+name: EAIgit · EAI Work-contractproef
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'assets/projecthulp/**'
+      - 'tools/projecthulp/**'
+      - 'tools/eaigit/**'
+      - 'assets/eaigit/**'
+      - 'content/projecthulp/eaiwork-mission.json'
+      - 'scripts/test_projecthulp_eaiwork.mjs'
+      - '.github/workflows/projecthulp-eaiwork-proof.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  contract-and-workers:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - name: Websitecode ophalen
+        uses: actions/checkout@v4
+        with:
+          path: website
+          persist-credentials: false
+      - name: Echte EAI Work-code vastgepind ophalen
+        uses: actions/checkout@v4
+        with:
+          repository: E-AI-MODEL/EAIwork-
+          ref: b80d3d9afb6289d1fda8bdc14a8c890043b56e22
+          path: eaiwork
+          persist-credentials: false
+      - name: Node.js 22 voor TypeScript
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Controleer afhankelijkheden, echte workers en menselijke vrijgave
+        run: node website/scripts/test_projecthulp_eaiwork.mjs website/content/projecthulp/eaiwork-mission.json eaiwork projecthulp-eaiwork-resultaat.json
+      - name: Bewaar controleerbare proefuitkomst
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: projecthulp-eaiwork-contract
+          path: projecthulp-eaiwork-resultaat.json
+          if-no-files-found: warn
