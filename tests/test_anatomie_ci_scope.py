@@ -29,7 +29,10 @@ class AnatomyScopeTests(unittest.TestCase):
         workflow = (ROOT / ".github/workflows/verify-ui.yml").read_text()
         self.assertEqual(workflow.count("python scripts/build_anatomie.py --out"), 1)
         self.assertIn('if [ "$GITHUB_EVENT_NAME" = "push" ]', workflow)
-        self.assertEqual(workflow.count("if: steps.anatomy_scope.outputs.run == 'true'"), 3)
+        self.assertEqual(workflow.count("if: steps.anatomy_scope.outputs.run == 'true'"), 4)
+        self.assertIn("cp -a tools/anatomie/. site-build/tools/anatomie/", workflow)
+        self.assertIn("test -s tools/anatomie/labs/hartslag/atlas-heart-rich.bin", workflow)
+        self.assertIn("python -m unittest discover -s tests -p 'test_anatomie_publish.py'", workflow)
         self.assertIn("git diff --name-only -z 'HEAD^1' HEAD", workflow)
 
 
