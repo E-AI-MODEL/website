@@ -54,6 +54,7 @@ jobs:
           node --check assets/eaigame-sites-sessions.js
           node --check assets/eaigame-sites-learning.js
           node --check assets/eaigame-sites-editor.js
+          node --check assets/eaigame-sites-3d.js
       - name: Verify questions and gameplay
         run: node --test tests/test_eaigame.mjs tests/test_eaigame_sites_levels.mjs
       - name: Install Playwright
