@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 760" role="img" aria-labelledby="title desc"><title id="title">De Storm: drie camerastanden voor EAIgame</title><desc id="desc">Drie schematische gamebeelden: overzicht van de gebroken brug, verkennen achter de speler en onderzoek bij de watermachine. Nog geen echte 3D-screenshots.</desc><defs>
+ <linearGradient id="back" x2="0" y2="1"><stop stop-color="#f5f3ee"/><stop offset="1" stop-color="#e6efec"/></linearGradient>
+ <linearGradient id="sky" x2="0" y2="1"><stop stop-color="#acd1d1"/><stop offset=".60" stop-color="#d4d5b5"/><stop offset="1" stop-color="#edf0d6"/></linearGradient>
+ <linearGradient id="storm" x2="0" y2="1"><stop stop-color="#6e8b96"/><stop offset=".5" stop-color="#a6b1a9"/><stop offset="1" stop-color="#dbcbac"/></linearGradient>
+ <linearGradient id="water" x2="0" y2="1"><stop stop-color="#8fbbb2"/><stop offset="1" stop-color="#276c74"/></linearGradient>
+ <linearGradient id="ground" x2="0" y2="1"><stop stop-color="#b8b39b"/><stop offset="1" stop-color="#55756f"/></linearGradient>
+ <linearGradient id="paper" x2="0" y2="1"><stop stop-color="#fffaf0"/><stop offset="1" stop-color="#e7e5d8"/></linearGradient>
+ <pattern id="watermarks" width="36" height="18" patternUnits="userSpaceOnUse"><path d="M3 11 Q12 4 22 11 T44 11" fill="none" stroke="#e4f0e6" stroke-width="1.4" opacity=".45"/></pattern>
+ <pattern id="stone" width="28" height="20" patternUnits="userSpaceOnUse"><path d="M0 13 H27 M13 0V13 M5 13V20" fill="none" stroke="#5e736a" stroke-width="1.5" opacity=".19"/></pattern>
+ <filter id="shadow" x="-25%" y="-25%" width="150%" height="150%"><feDropShadow dx="0" dy="4" stdDeviation="7" flood-color="#233e43" flood-opacity=".17"/></filter>
+ <g id="tree"><path d="M0 24 V-36" stroke="#665744" stroke-width="9" stroke-linecap="round"/><circle cx="-18" cy="-49" r="24" fill="#4c806a"/><circle cx="10" cy="-60" r="30" fill="#5e9b77"/><circle cx="31" cy="-43" r="20" fill="#88a98b"/></g>
+ <g id="wheel" fill="none" stroke="#93633d" stroke-width="9"><circle r="63"/><circle r="48" stroke-width="6"/><circle r="13" fill="#a6794f"/><path d="M-62 0H62 M0-62V62 M-44-44L44 44 M-44 44L44-44"/><g fill="#ba8756" stroke="#755035" stroke-width="2"><rect x="-12" y="-72" width="24" height="16" rx="2"/><rect x="-12" y="56" width="24" height="16" rx="2"/><rect x="-72" y="-12" width="16" height="24" rx="2"/><rect x="56" y="-12" width="16" height="24" rx="2"/></g></g>
+ <g id="player"><ellipse cx="0" cy="3" rx="26" ry="10" fill="#254e4b" opacity=".17"/><path d="M-13 -7 L-19 -42 M14 -7 L12 -43" stroke="#6c5948" stroke-width="11" stroke-linecap="round"/><path d="M-21 -45 Q-28 -79 -10 -94 L14 -94 Q26 -73 20 -45Z" fill="#315f58" stroke="#c5aa77" stroke-width="4"/><rect x="-24" y="-90" width="18" height="38" rx="7" fill="#b47b46"/><circle cx="0" cy="-117" r="19" fill="#d6a478"/><path d="M-21 -118 Q-15 -146 9 -139 Q27 -129 19 -113 Q-4 -121 -21 -118Z" fill="#604a3c"/><path d="M-22 -95 Q0 -79 21 -94" fill="none" stroke="#b86e4c" stroke-width="10"/></g>
+ <g id="skyline"><path d="M0 150L65 84 108 114 171 47 241 102 285 64 377 140V190H0Z" fill="#789a97" opacity=".46"/><path d="M0 190L58 139 111 160 188 104 263 145 329 121 450 176V210H0Z" fill="#507a79" opacity=".5"/></g>
+ </defs>
+<rect width="1600" height="760" fill="url(#back)"/>
+<text x="49" y="72" font-family="sans-serif" font-size="17" font-weight="700" fill="#396b68" letter-spacing="4">EAIGAME · DE STORM</text>
+<text x="49" y="123" font-family="sans-serif" font-size="45" font-weight="750" fill="#213b3f">Drie beelden van dezelfde wereld</text>
+<text x="49" y="156" font-family="sans-serif" font-size="19" fill="#57726c">Schematisch storyboard voor camerawerk, bediening en zichtbare spelgevolgen. Geen 3D-demo.</text>
+<g transform="translate(48 195)" font-family="sans-serif"><rect width="482" height="517" rx="25" fill="#fffdf7" stroke="#dbdfd6" stroke-width="2" filter="url(#shadow)"/>
+<svg x="13" y="13" width="456" height="444" viewBox="0 0 456 444" preserveAspectRatio="xMidYMid slice"><rect x="0" y="0" width="456" height="444" fill="url(#sky)"/>
+<use href="#skyline" x="0" y="0"/><path d="M0 285 L82 212 161 221 234 172 299 225 456 200V444H0Z" fill="#879c80"/>
+<path d="M0 316L76 265 153 261 212 239 280 268 364 248 456 292V444H0Z" fill="url(#ground)"/>
+<path d="M0 339 Q106 303 174 336 T335 342 T456 310V444H0Z" fill="url(#water)"/><path d="M0 339 Q106 303 174 336 T335 342 T456 310V444H0Z" fill="url(#watermarks)"/>
+<path d="M92 302 Q164 232 233 276 L329 304" fill="none" stroke="#6c695b" stroke-width="24" stroke-linecap="round"/>
+<path d="M92 296 Q164 226 233 270 L329 298" fill="none" stroke="#d6bc8d" stroke-width="19" stroke-linecap="round"/>
+<path d="M92 287 Q164 217 233 261 L240 263" fill="none" stroke="#7d6246" stroke-width="4" stroke-dasharray="9 13"/>
+<path d="M251 275 L319 295" stroke="#7d6246" stroke-width="4" stroke-dasharray="7 10" stroke-linecap="round"/>
+<g transform="translate(325 225) scale(.62)"><use href="#wheel"/></g>
+<rect x="278" y="223" width="88" height="16" rx="2" fill="#887257"/><path d="M271 229 L314 197 L373 216" fill="none" stroke="#e2d5af" stroke-width="6"/>
+<use href="#tree" x="66" y="267" transform="translate(66 267) scale(.75) translate(-66 -267)"/>
+<use href="#tree" x="414" y="263"/>
+<path d="M10 405 L95 355 125 373 160 402" fill="none" stroke="#c9b18b" stroke-width="44" opacity=".86"/>
+<path d="M12 405L95 354 126 372 161 401" fill="none" stroke="#796c5c" stroke-width="3" stroke-dasharray="14 10"/>
+<path d="M236 356 L315 346 363 364" fill="none" stroke="#e3edf0" stroke-width="6" opacity=".65"/>
+<rect x="20" y="18" width="254" height="51" rx="12" fill="#1d4149" opacity=".95"/><text x="38" y="37" font-size="12" font-weight="700" fill="#e0ebe4" letter-spacing="1">MIDDENSTROOM</text><text x="38" y="57" font-size="17" fill="#fff">De brug staat halfopen</text>
+<g transform="translate(393 53)"><circle r="26" fill="#f9f4e5" stroke="#c0ae84" stroke-width="2"/><path d="M-14 14 L0 -16 L14 14Z" fill="#2c686a"/><path d="M0 -16V14" stroke="#ae8f65" stroke-width="3"/></g></svg>
+<rect x="13" y="13" width="456" height="444" rx="14" fill="none" stroke="#e7e3d7" stroke-width="2"/>
+<circle cx="41" cy="479" r="17" fill="#345e5b"/><text x="41" y="485" fill="#fff" text-anchor="middle" font-size="13" font-weight="700">01</text>
+<text x="69" y="481" font-size="18" font-weight="700" fill="#263f41">Overzicht</text>
+<text x="69" y="504" font-size="13" fill="#65807b">Kade · kapotte brug · waterwerk</text></g><g transform="translate(565 195)" font-family="sans-serif"><rect width="482" height="517" rx="25" fill="#fffdf7" stroke="#dbdfd6" stroke-width="2" filter="url(#shadow)"/>
+<svg x="13" y="13" width="456" height="444" viewBox="0 0 456 444" preserveAspectRatio="xMidYMid slice"><rect width="456" height="444" fill="url(#sky)"/><use href="#skyline"/>
+<path d="M0 261 L50 238 99 242 162 211 234 247 320 222 456 254V444H0Z" fill="#73947b"/>
+<path d="M0 330 Q180 307 263 334 T456 325V444H0Z" fill="url(#water)"/><path d="M0 330 Q180 307 263 334 T456 325V444H0Z" fill="url(#watermarks)"/>
+<path d="M-20 445L143 284 208 283 341 445" fill="#bcaf91"/><path d="M-20 445L143 284 208 283 341 445" fill="url(#stone)"/>
+<path d="M178 290 Q246 203 320 216 L450 263" fill="none" stroke="#7a6b57" stroke-width="29" stroke-linecap="round"/>
+<path d="M178 284 Q246 197 320 210 L450 257" fill="none" stroke="#d4bd91" stroke-width="23" stroke-linecap="round"/>
+<path d="M306 207 L448 257" stroke="#82674e" stroke-width="4" stroke-dasharray="12 14"/>
+<g transform="translate(342 216) scale(.75)"><use href="#wheel"/></g>
+<use href="#tree" x="38" y="265" transform="translate(38 265) scale(.86) translate(-38 -265)"/>
+<path d="M36 380 L126 308 181 304" stroke="#7c624b" stroke-width="7" fill="none"/><path d="M42 387 L132 314" stroke="#b38c62" stroke-width="3" fill="none"/>
+<g transform="translate(186 429) scale(1.24)"><use href="#player"/></g>
+<rect x="14" y="15" width="223" height="54" rx="12" fill="#1d4149" opacity=".95"/><text x="31" y="35" font-size="12" font-weight="700" fill="#c7e5dd">DE STORM</text><text x="31" y="57" font-size="17" fill="#fff">Herstel de brug</text>
+<g transform="translate(362 380)"><rect x="-51" y="-19" width="138" height="38" rx="15" fill="#f9f2e5" stroke="#b69c76" stroke-width="2"/><text x="18" y="6" text-anchor="middle" font-size="15" fill="#315a58" font-weight="700">Bekijk ketting</text></g>
+<g transform="translate(419 46)"><circle r="25" fill="#f7f0e1" stroke="#b6a27f" stroke-width="2"/><path d="M-13 12L0 -13 13 12" fill="none" stroke="#345f59" stroke-width="3"/></g></svg>
+<rect x="13" y="13" width="456" height="444" rx="14" fill="none" stroke="#e7e3d7" stroke-width="2"/>
+<circle cx="41" cy="479" r="17" fill="#345e5b"/><text x="41" y="485" fill="#fff" text-anchor="middle" font-size="13" font-weight="700">02</text>
+<text x="69" y="481" font-size="18" font-weight="700" fill="#263f41">Achter de speler</text>
+<text x="69" y="504" font-size="13" fill="#65807b">Vrij bewegen · herkenbaar doel</text></g><g transform="translate(1082 195)" font-family="sans-serif"><rect width="482" height="517" rx="25" fill="#fffdf7" stroke="#dbdfd6" stroke-width="2" filter="url(#shadow)"/>
+<svg x="13" y="13" width="456" height="444" viewBox="0 0 456 444" preserveAspectRatio="xMidYMid slice"><rect width="456" height="444" fill="#d7d6c7"/>
+<rect y="0" width="456" height="110" fill="url(#storm)"/><path d="M0 111 L70 75 144 88 205 57 286 79 357 58 456 98V173H0Z" fill="#82948e"/>
+<rect x="0" y="127" width="456" height="318" fill="#a5a691"/><path d="M0 150 H456 V445H0Z" fill="url(#stone)"/>
+<path d="M0 330Q60 315 116 340T245 336T456 319V444H0Z" fill="url(#water)"/>
+<path d="M0 330Q60 315 116 340T245 336T456 319V444H0Z" fill="url(#watermarks)"/>
+<path d="M0 158 L128 152 L175 174 L283 174" stroke="#9d784e" stroke-width="15" fill="none"/>
+<path d="M18 165L164 173" stroke="#5e4c40" stroke-width="5" fill="none"/>
+<g transform="translate(249 230) scale(1.36)"><use href="#wheel"/></g>
+<path d="M249 229 L249 122 L392 122 L392 205" stroke="#554f43" stroke-width="8" fill="none"/><rect x="361" y="205" width="67" height="57" rx="5" fill="#cbb597" stroke="#8b7256" stroke-width="4"/>
+<rect x="41" y="190" width="35" height="110" rx="5" fill="#d8ceb6" stroke="#71817a" stroke-width="3"/><path d="M58 281V206" stroke="#517e76" stroke-width="8" stroke-linecap="round"/><path d="M41 261H76" stroke="#b96b4c" stroke-width="7"/>
+<path d="M103 330L103 181" stroke="#a47e4f" stroke-width="19"/><rect x="81" y="189" width="46" height="27" rx="5" fill="#a6744d"/>
+<path d="M123 210 L158 193" stroke="#5d5d4d" stroke-width="5"/><path d="M154 180V245" stroke="#dfb886" stroke-width="8"/>
+<rect x="14" y="14" width="231" height="55" rx="11" fill="#1d4149" opacity=".95"/><text x="30" y="36" font-size="12" fill="#e4ece6" letter-spacing="1">ONDERZOEK</text><text x="30" y="58" font-size="17" font-weight="700" fill="#fff">Water, rad en meting</text>
+<rect x="245" y="353" width="197" height="74" rx="15" fill="#f7f4e9" stroke="#cab58b" stroke-width="2"/>
+<text x="261" y="375" font-size="13" fill="#325b59">Schuifstand</text><path d="M262 396H419" stroke="#b4c6bb" stroke-width="8" stroke-linecap="round"/><path d="M262 396H329" stroke="#2c807a" stroke-width="8" stroke-linecap="round"/><circle cx="330" cy="396" r="12" fill="#f9f4e9" stroke="#2c807a" stroke-width="5"/>
+<text x="261" y="416" font-size="11" fill="#607574">Wijzigen laat de wereld reageren</text></svg>
+<rect x="13" y="13" width="456" height="444" rx="14" fill="none" stroke="#e7e3d7" stroke-width="2"/>
+<circle cx="41" cy="479" r="17" fill="#345e5b"/><text x="41" y="485" fill="#fff" text-anchor="middle" font-size="13" font-weight="700">03</text>
+<text x="69" y="481" font-size="18" font-weight="700" fill="#263f41">Bij het mechanisme</text>
+<text x="69" y="504" font-size="13" fill="#65807b">Water · rad · meetwaarde samen</text></g>
+<text x="54" y="742" font-size="15" font-family="sans-serif" fill="#627c74">Stijlschets v0.2 · De echte spelwereld krijgt gedetailleerde modellen, vrij beweegbare camera en dezelfde opgeslagen toestand.</text>
+</svg>
