@@ -41,6 +41,29 @@ jobs:
               page=p.get_pixmap(matrix=fitz.Matrix(1.6,1.6),alpha=False)
               page.save(f'out/english-page-{page_n}.png')
           PY
+      - name: Rebuild revised PDF and verify selected pages
+        run: |
+          python scripts/rebuild_zhang_review_en.py
+          mkdir -p revised
+          cp assets/research/zhang-genai-l2-review-en-2026.pdf revised/revised-en.pdf
+          python - <<'PY'
+          import fitz
+          original=fitz.open('out/original-en.pdf')
+          updated=fitz.open('revised/revised-en.pdf')
+          assert len(original)==len(updated)==9
+          assert sum(len(p.get_links()) for p in original)==sum(len(p.get_links()) for p in updated)==10
+          for n in range(9):
+              if n not in (0,2,5,8):
+                  assert original[n].get_text()==updated[n].get_text(), n+1
+          for n in (0,2,5,8):
+              updated[n].get_pixmap(matrix=fitz.Matrix(1.6,1.6),alpha=False).save(f'revised/english-revised-page-{n+1}.png')
+          print('Non-edited pages match, and ten links are retained')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: zhang-english-revised-inspection
+          path: revised/*
+          retention-days: 1
       - uses: actions/upload-artifact@v4
         with:
           name: zhang-english-original-inspection
