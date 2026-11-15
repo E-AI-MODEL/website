@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="nl">
+<head>
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <meta name="robots" content="noindex,nofollow">
+ <meta name="referrer" content="no-referrer">
+ <title>Projecthulp: van ZIP naar GitHub · EAI</title>
+ <meta name="description" content="Bekijk je ZIP-bestand en openbare GitHub-repository. Ontvang een persoonlijk stappenplan zonder AI of serverupload.">
+ <link rel="icon" href="/assets/eai-logo.svg" type="image/svg+xml">
+ <link rel="stylesheet" href="/assets/site.css">
+ <link rel="stylesheet" href="/assets/projecthulp/projecthulp.css">
+ <script type="module" src="/assets/projecthulp/app.mjs"></script>
+</head>
+<body class="eai-refresh projecthulp-page">
+<a class="skip-link" href="#main-content">Ga naar de inhoud</a>
+<header class="ph-nav"><a href="/" aria-label="EAI home" class="ph-logo"><img src="/assets/eai-logo.svg" alt=""><span>EAI</span></a><span>Projecthulp <span class="ph-beta">proefversie</span></span><a href="/tools/">Alle tools</a></header>
+<main id="main-content" class="ph-shell">
+ <div class="ph-intro"><span class="ph-eyebrow">EAI Work · Praktijkproef zonder AI</span><h1>Je project naar GitHub.</h1><p>Je hebt bestanden, misschien al een repository. We kijken wat er nodig is om ze goed bij elkaar te brengen. Je hoeft nog niets te publiceren.</p></div>
+ <nav class="ph-steps" aria-label="Voortgang">
+  <span class="ph-step active" id="stepLabel1"><b>1</b> Jouw situatie</span><span class="ph-line"></span><span class="ph-step" id="stepLabel2"><b>2</b> Je bestanden</span><span class="ph-line"></span><span class="ph-step" id="stepLabel3"><b>3</b> Jouw advies</span>
+ </nav>
+ <section class="ph-panel" id="screen1" aria-labelledby="screen1title">
+  <div class="ph-topline">STAP 1 VAN 3</div>
+  <h2 id="screen1title">Wat wil je doen?</h2>
+  <p>Er is geen goed of fout antwoord. We gebruiken je keuze om het advies passend te maken.</p>
+  <fieldset class="ph-choices"><legend class="ph-visually-hidden">Je doel</legend>
+   <label class="ph-choice"><input type="radio" name="goal" value="upload" checked><span><strong>Mijn ZIP-bestand op GitHub zetten</strong><small>Ik heb al bestanden en wil ze in een repository krijgen.</small></span></label>
+   <label class="ph-choice"><input type="radio" name="goal" value="maintain"><span><strong>Mijn bestaande project bijwerken</strong><small>Er staat al iets op GitHub. Ik wil weten wat ik moet aanvullen.</small></span></label>
+   <label class="ph-choice"><input type="radio" name="goal" value="publish"><span><strong>Mijn website online krijgen</strong><small>Ik wil weten of mijn project daarna ook als website kan werken.</small></span></label>
+  </fieldset>
+  <div class="ph-field ph-level"><label for="experience">Hoe bekend ben je met GitHub?</label><select id="experience"><option value="beginner">Ik begin net</option><option value="some">Ik heb al eens bestanden geüpload</option><option value="experienced">Ik gebruik GitHub vaker</option></select></div>
+  <div class="ph-actions"><span class="ph-help">De volgende stap vraagt om je ZIP en repositorylink.</span><button id="toFiles" class="ph-button ph-primary" type="button">Verder <span aria-hidden="true">→</span></button></div>
+ </section>
+ <section class="ph-panel ph-hidden" id="screen2" aria-labelledby="screen2title">
+  <div class="ph-topline">STAP 2 VAN 3</div>
+  <h2 id="screen2title">Laat zien wat je hebt.</h2><p>Je ZIP blijft op je eigen apparaat. We lezen het alleen in deze browser. Je openbare GitHub-repository lezen we rechtstreeks via GitHub.</p>
+  <div class="ph-fields">
+   <div class="ph-field">
+    <label for="repoUrl">Link naar je GitHub-repository</label><input id="repoUrl" type="url" inputmode="url" autocomplete="url" placeholder="https://github.com/gebruiker/project" spellcheck="false" aria-describedby="repoHelp">
+    <small id="repoHelp">Alleen openbare repositories, zonder aanmelden.</small>
+   </div>
+   <div class="ph-field">
+    <label for="zipFile">Je ZIP-bestand</label>
+    <label class="ph-drop" id="dropZone" for="zipFile"><span class="ph-upload-icon" aria-hidden="true">↥</span><strong id="fileName">Kies een ZIP-bestand</strong><span>Of sleep het hierheen · maximaal 16 MB</span></label>
+    <input id="zipFile" class="ph-file-native" type="file" accept=".zip,application/zip,application/x-zip-compressed" aria-describedby="zipHelp">
+    <small id="zipHelp">De bestanden worden niet naar EAI of GitHub verstuurd.</small>
+   </div>
+  </div>
+  <div class="ph-alert ph-hidden" id="inputError" role="alert"></div>
+  <div class="ph-actions"><button id="back1" type="button" class="ph-button ph-plain">← Terug</button><button id="analyze" class="ph-button ph-primary" type="button">Onderzoek mijn project <span aria-hidden="true">→</span></button></div>
+  <div class="ph-privacy"><span aria-hidden="true">◯</span><span>Je bestanden blijven lokaal. Er wordt geen code uitgevoerd en niets in GitHub gewijzigd.</span></div>
+ </section>
+ <section class="ph-panel ph-hidden" id="screen3" aria-labelledby="screen3title">
+  <div class="ph-topline">STAP 3 VAN 3</div><h2 id="screen3title">Dit is jouw volgende stap.</h2><p id="resultLead">Op basis van de bestanden die we konden controleren.</p>
+  <div class="ph-summary" id="summary"></div>
+  <div class="ph-result-grid">
+   <section class="ph-result-group"><h3><span class="ph-icon ph-ok">✓</span> Dit hebben we vastgesteld</h3><ul id="observations"></ul></section>
+   <section class="ph-result-group" id="warningsGroup"><h3><span class="ph-icon ph-warn">!</span> Hier moet je op letten</h3><ul id="warnings"></ul></section>
+  </div>
+  <section class="ph-plan"><div class="ph-plan-heading"><div><span class="ph-topline">JE PLAN</span><h3>Zo ga je verder in GitHub</h3></div><span class="ph-plan-count" id="planCount"></span></div><ol id="steps"></ol></section>
+  <details class="ph-more"><summary>Wat hebben we niet gecontroleerd?</summary><ul id="limits"></ul></details>
+  <div class="ph-downloads"><button type="button" class="ph-button ph-primary" id="downloadReport">Download je stappenplan</button><button type="button" class="ph-button ph-secondary" id="downloadReadme">Voorbeeld README</button><button type="button" class="ph-button ph-secondary" id="downloadIgnore">Voorbeeld .gitignore</button></div>
+  <div class="ph-actions"><button id="back2" type="button" class="ph-button ph-plain">← Gegevens aanpassen</button><button id="reset" type="button" class="ph-button ph-plain">Opnieuw beginnen</button></div>
+ </section>
+ <div class="ph-loading ph-hidden" id="loading" role="status" aria-live="polite"><span class="ph-spinner" aria-hidden="true"></span><span id="loadingText">We controleren de bestanden…</span></div>
+</main>
+<footer class="ph-footer"><span>EAI · Projecthulp</span><span>Geen AI. Geen account. Geen automatische publicatie.</span></footer>
+</body></html>
