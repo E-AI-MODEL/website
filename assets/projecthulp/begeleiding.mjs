@@ -50,6 +50,14 @@ export function makeGuidance({archive=null,repo=null,advice=null,goal="site",aim
   if(check?.incomplete)uncertain.push(origin+": een deel van de bestanden is niet inhoudelijk onderzocht (grootte, formaat of limiet).");
  }
  if(goalTest){
+  const hints=archive?.contentCheck?.features?.[goalTest.id]||repo?.contentCheck?.features?.[goalTest.id];
+  if(hints?.checkedFiles){
+   if(hints.found.length){
+    const present=hints.found.slice(0,4).map(x=>x.label+" ("+x.paths.slice(0,2).join(", ")+")");
+    addGood("Voor jouw doel zijn aanwijzingen aangetroffen voor: "+present.join("; ")+". Dit zegt nog niet of ze werken.");
+   }
+   if(hints.notSeen.length)uncertain.push("Voor jouw doel geen duidelijke aanwijzing gevonden voor: "+hints.notSeen.join(", ")+". Dit betreft alleen de "+hints.checkedFiles+" gelezen tekstbestanden en is geen bewijs dat de functies ontbreken.");
+  }
   if(goalTest.evidence.length)addGood("In "+goalTest.evidence.slice(0,3).join(", ")+" zijn aanwijzingen gevonden die bij jouw doel passen. De werking is niet getest.");
   uncertain.push("Jouw doel: "+goalTest.title.toLowerCase()+". De volledige gebruikershandeling is nog niet uitgevoerd.");
  }
