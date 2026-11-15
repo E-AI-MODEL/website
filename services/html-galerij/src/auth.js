@@ -103,7 +103,18 @@ function loginResponse(message = '', status = 200) {
   });
 }
 function sameOrigin(request) {
-  return request.headers.get('Origin') === new URL(request.url).origin;
+  const origin = request.headers.get('Origin');
+  if (origin === new URL(request.url).origin) return true;
+  // iOS Safari can send Origin: null for an ordinary same-origin HTML form POST.
+  // Accept only top-level, same-origin browser navigations to login/logout.
+  // Cross-site forms report Sec-Fetch-Site: cross-site and remain blocked.
+  const path = new URL(request.url).pathname;
+  return origin === 'null' &&
+    request.method === 'POST' &&
+    (path === '/auth/login' || path === '/auth/logout') &&
+    request.headers.get('Sec-Fetch-Site') === 'same-origin' &&
+    request.headers.get('Sec-Fetch-Mode') === 'navigate' &&
+    request.headers.get('Sec-Fetch-Dest') === 'document';
 }
 async function login(request, env) {
   if (!configured(env)) return loginResponse('Aanmelden is nog niet ingesteld.', 503);
