@@ -55,7 +55,7 @@ const DB={
      throw Error('Unexpected DB run: '+sql);
     }
    };
-  }, run(){return this.bind().run();}};
+  }, first(){return this.bind().first();}, all(){return this.bind().all();}, run(){return this.bind().run();}};
  }
 };
 const env={DB};
