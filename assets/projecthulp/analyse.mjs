@@ -88,13 +88,14 @@ export function compareProjects(archive,repo){
  return {missing,present,onlyRepo,matched:present.length,missingCount:missing.length};
 }
 function line(text){return text.replace(/\r/g,"").replace(/\n{3,}/g,"\n\n");}
+const countText=(n,one,many)=>n+" "+(n===1?one:many);
 export function makeAdvice({goal="upload",experience="beginner",archive,repo}){
  const observations=[],warnings=[],steps=[];
  if(archive){
-  observations.push("Het ZIP-bestand bevat "+archive.files.length+" bestanden ("+archive.project.type+").");
+  observations.push("Het ZIP-bestand bevat "+countText(archive.files.length,"bestand","bestanden")+" ("+archive.project.type+").");
   if(archive.prefix)observations.push("De bestanden zitten in een bovenliggende map '"+archive.prefix.slice(0,-1)+"'. Voor GitHub kan die map meestal worden weggelaten.");
-  if(archive.ignored.length)warnings.push(archive.ignored.length+" bestanden of mappen lijken tijdelijke bouwbestanden of afhankelijkheden. Bekijk deze voor het uploaden.");
-  if(archive.secret.length)warnings.push(archive.secret.length+" mogelijk gevoelige bestanden gevonden. Upload deze niet voordat je hebt gecontroleerd wat erin staat.");
+  if(archive.ignored.length)warnings.push(countText(archive.ignored.length,"bestand of map","bestanden of mappen")+" lijkt tijdelijk of overbodig voor GitHub. Controleer dit voor het uploaden.");
+  if(archive.secret.length)warnings.push(countText(archive.secret.length,"bestand heeft","bestanden hebben")+" een mogelijk vertrouwelijke naam. Controleer de inhoud op je eigen apparaat voordat je iets uploadt.");
   if(archive.manifestError)warnings.push(archive.manifestError);
   if(!archive.project.hasReadme)warnings.push("Er is geen README gevonden. Die maakt het project begrijpelijker.");
   if(!archive.project.hasIgnore)warnings.push("Een .gitignore ontbreekt. Die voorkomt dat tijdelijke bestanden later per ongeluk meegaan.");
@@ -104,13 +105,13 @@ export function makeAdvice({goal="upload",experience="beginner",archive,repo}){
   if(!repo.readable)warnings.push("De bestandslijst kon niet worden opgehaald. De vergelijking is niet compleet.");
   if(repo.truncated)warnings.push("De GitHub-bestandslijst is afgekapt. De vergelijking kan bestanden missen.");
   if(repo.readable&&repo.empty)observations.push("GitHub heeft nog geen projectbestanden in de standaardbranch.");
-  else if(repo.readable)observations.push("GitHub toont "+repo.paths.length+" bestanden op branch '"+repo.branch+"'.");
+  else if(repo.readable)observations.push("GitHub toont "+countText(repo.paths.length,"bestand","bestanden")+" in de branch '"+repo.branch+"'.");
  }else warnings.push("Er is geen GitHub-repository gecontroleerd.");
  let comparison=null;
  if(archive&&repo&&repo.readable&&!repo.truncated){
   comparison=compareProjects(archive,repo);
-  observations.push(comparison.missingCount+" bestanden uit het ZIP-bestand staan nog niet op hetzelfde pad in GitHub.");
-  if(comparison.present.length)warnings.push(comparison.present.length+" bestandsnamen komen al voor in GitHub. Controleer de inhoud voordat je iets overschrijft. Gelijke namen bewijzen niet dat bestanden identiek zijn.");
+  observations.push(countText(comparison.missingCount,"bestand uit het ZIP-bestand staat","bestanden uit het ZIP-bestand staan")+" nog niet op dezelfde plek in GitHub.");
+  if(comparison.present.length)warnings.push(countText(comparison.present.length,"bestandsnaam komt","bestandsnamen komen")+" al voor in GitHub. Controleer de inhoud voordat je iets overschrijft. Gelijke namen bewijzen niet dat de bestanden identiek zijn.");
  }
  if(archive?.secret.length)steps.push("Bekijk eerst de mogelijk gevoelige bestanden en haal wachtwoorden of privésleutels uit het project.");
  if(archive?.ignored.length)steps.push("Houd installatie- en bouwmappen buiten GitHub. Bewaar alleen de bestanden die nodig zijn om het project opnieuw op te bouwen.");
@@ -128,7 +129,7 @@ export function makeAdvice({goal="upload",experience="beginner",archive,repo}){
  else if(repo){steps.push("Selecteer je ZIP-bestand om een controle van de mappen en bestanden uit te voeren.");}
  if(goal==="publish")steps.push("Wil je een website online zetten? Onderzoek na het uploaden of GitHub Pages past bij het project. Een repository online zetten publiceert niet automatisch een website.");
  if(goal==="maintain")steps.push("Gebruik voor toekomstige wijzigingen een aparte branch en controleer het verschil voordat je het samenvoegt.");
- if(experience==="beginner")steps.push("Vraag iemand om mee te kijken bij het eerste uploadmoment. Een verkeerde mapindeling is later lastig te herstellen.");
+ if(experience==="beginner"&&archive&&repo)steps.push("Kijk na de upload of je bestanden op de juiste plek staan. Je hoeft nu geen nieuw programma te installeren.");
  const ready=Boolean(archive&&repo&&repo.readable&&!repo.truncated&&!archive.secret.length);
  return {observations,warnings,steps,comparison,ready,limits:["We hebben code uit het project niet uitgevoerd en niet getest.","We lezen alleen bestandsnamen en een beperkt aantal projectbestanden. De inhoud van bestaande GitHub-bestanden is niet vergeleken.","Deze tool gebruikt geen AI en maakt geen wijzigingen in GitHub."]};
 }
