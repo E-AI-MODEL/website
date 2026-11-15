@@ -24,7 +24,7 @@ async function session(name,viewport,offline=false){
  const errors=[];page.on('pageerror',err=>errors.push(err.message));
  if(offline)await page.route('https://cdn.jsdelivr.net/**',r=>r.abort());
  await page.addInitScript(()=>{Math.random=()=>.99});
- await page.goto(origin+'/tools/eaigame/',{waitUntil:'domcontentloaded',timeout:20000});
+ await page.goto(origin+'/tools/eaigame/3d/',{waitUntil:'domcontentloaded',timeout:20000});
  await page.locator('#setup button[type=submit]').waitFor({state:'visible'});
  const landingStage=await page.locator('#landing-board').boundingBox();
  assert.ok(landingStage?.width>295&&landingStage?.height>290,'Startscherm toont een eigen groot speelbord');
