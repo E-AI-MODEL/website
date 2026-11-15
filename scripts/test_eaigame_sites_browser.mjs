@@ -122,6 +122,12 @@ async function validate3D(name, viewport, phone=false){
   const pawns=await page.evaluate(()=>window.EAIGame3D.pawnPositions);
   assert.equal(pawns.length,2,'Twee 3D-pionnen zichtbaar bij spel met twee spelers');
   assert.notDeepEqual(pawns[0],pawns[1],'Twee pionnen op hetzelfde startvak overlappen niet');
+  const tileClick=await page.evaluate(()=>window.EAIGame3D.tileScreenPosition(12));
+  assert.ok(tileClick && Number.isFinite(tileClick.x)&&Number.isFinite(tileClick.y));
+  if(phone)await page.touchscreen.tap(tileClick.x,tileClick.y);
+  else await page.mouse.click(tileClick.x,tileClick.y);
+  assert.match(await page.locator('#boardCaption').innerText(),/Vak 12/,'3D-vak geeft dezelfde informatie als het Sites-bord');
+  await page.screenshot({path:'test-results/eaigame-'+name+'-3d-tile.png',fullPage:true});
   assert.equal(await page.locator('#eaigame-3d-canvas').getAttribute('data-camera-view'),'overview');
   await page.screenshot({path:'test-results/eaigame-'+name+'-3d.png',fullPage:true});
   await page.locator('#eaigame-3d-follow').click();
