@@ -1,5 +1,6 @@
 """Controleer openbare menulinks en de echte broncatalogi van de proeven."""
 import unittest
+import tempfile
 from bs4 import BeautifulSoup
 import sys
 from pathlib import Path
@@ -87,6 +88,18 @@ class PublicMenuTests(unittest.TestCase):
         maths = by_url['/tools/science-observatory/labs/wiskunde-a/#binom']
         self.assertIn('kansverdeling', maths['description'].lower())
         self.assertIn('Wiskunde', maths['category'])
+
+    def test_paginabeschrijving_behoudt_de_onderwerpcategorie(self):
+        with tempfile.TemporaryDirectory() as temp:
+            target = Path(temp) / 'nl' / 'model' / 'index.html'
+            target.parent.mkdir(parents=True)
+            target.write_text(
+                '<html><head><meta name="description" content="Een uitgewerkte uitleg van het EAI-model met proces, fase, kernhandeling en AI."></head>'
+                '<body><h1>Begin bij het leren</h1></body></html>', encoding='utf-8')
+            records = {item['url']: item for item in site_search_records(Path(temp))}
+            model = records['/nl/model/']
+            self.assertEqual(model['category'], 'Het EAI-model')
+            self.assertIn('kernhandeling', model['description'])
 
     def test_bereikbaar_menu_met_zoekveld_op_mobiel_en_desktop(self):
         for en, path in ((False,'/nl/tools/'),(True,'/en/tools/')):
