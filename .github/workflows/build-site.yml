@@ -132,6 +132,9 @@ jobs:
       - name: Check EAIwork public demonstration
         run: python -m unittest discover -s tests -p 'test_eaiwork_dashboard_publish.py' -v
 
+      - name: Check EAIgame 300 questions and gameplay mechanics
+        run: node --test tests/test_eaigame.mjs
+
       - name: Build site
         run: |
           python scripts/build_site.py --sources content/legacy --out site-build
