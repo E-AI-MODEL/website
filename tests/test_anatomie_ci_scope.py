@@ -43,6 +43,11 @@ class AnatomyScopeTests(unittest.TestCase):
         self.assertIn("python scripts/reuse_published_anatomie.py", builder)
         self.assertEqual(builder.count("python scripts/build_anatomie.py --out"), 1)
         self.assertIn("if: steps.anatomy_scope.outputs.run == 'true'", builder)
+        archive = (ROOT / ".github/workflows/audit-archive.yml").read_text()
+        self.assertIn("if: github.event_name == 'pull_request'", archive)
+        self.assertIn("python scripts/reuse_published_anatomie.py", archive)
+        self.assertIn("if: github.event_name != 'pull_request'", archive)
+        self.assertEqual(archive.count("python scripts/build_anatomie.py --out"), 1)
 
 
 
