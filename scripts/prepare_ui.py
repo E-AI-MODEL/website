@@ -30,19 +30,19 @@ def groups(en: bool):
     """Publieke hoofdroutes, gescheiden van alle onderliggende proeven."""
     if en:
         return [
-            ('EAI model', [('The EAI model', '/en/model/'), ('Applications', '/en/applications/')]),
-            ('Education', [('Lessons and workforms', '/en/education/'), ('Applications', '/en/applications/')]),
-            ('Articles & research', [('Articles', '/en/publications/'), ('Research and sources', '/en/research/')]),
-            ('Experiments & models', [('All experiments', '/tools/science-observatory/'), ('Physics', '/tools/science-observatory/labs/natuurkunde/'), ('Mathematics A', '/tools/science-observatory/labs/wiskunde-a/'), ('Mathematics B', '/tools/science-observatory/labs/wiskunde-b/'), ('Human anatomy', '/tools/anatomie/'), ('Galactic Observatory', '/tools/science-observatory/labs/melkweg/'), ('LLM Observatory', '/tools/llm-observatorium/'), ('Sport and movement', '/tools/sport-en-bewegen/')]),
+            ('Understand EAI', [('The EAI model', '/en/model/'), ('Applications', '/en/applications/'), ('Research and evidence', '/en/research/')]),
+            ('Teaching', [('Lessons and workforms', '/en/education/'), ('All workforms', '/werkvormen/')]),
+            ('Research & publications', [('All publications', '/en/publications/'), ('Research and sources', '/en/research/')]),
+            ('Experiments & simulations', [('All experiments', '/tools/science-observatory/'), ('Physics', '/tools/science-observatory/labs/natuurkunde/'), ('Mathematics A', '/tools/science-observatory/labs/wiskunde-a/'), ('Mathematics B', '/tools/science-observatory/labs/wiskunde-b/'), ('Human anatomy', '/tools/anatomie/'), ('Galactic Observatory', '/tools/science-observatory/labs/melkweg/'), ('LLM Observatory', '/tools/llm-observatorium/'), ('Sport and movement', '/tools/sport-en-bewegen/')]),
             ('Tools', [('All tools', '/en/tools/'), ('Prompt Framework', '/tools/prompt-framework/'), ('WiHTML Studio', '/tools/wihtml/'), ('EAIstudio', '/tools/eaistudio/'), ('EAImesh', '/tools/eaimesh/'), ('Upload HTML', '/tools/html-galerij/'), ('Process to prompt', '/tools/van-proces-naar-prompt/'), ('Model Monitor', '/en/model-monitor/'), ('LLMscan', '/en/llmscan/')]),
             ('About EAI', [('About EAI', '/en/about/'), ('Site insights', '/en/insights/')]),
         ]
     return [
-        ('Het EAI-model', [('Het EAI-model', '/nl/model/'), ('Toepassingen', '/nl/toepassingen/')]),
-        ('Onderwijs', [('Lessen en werkvormen', '/nl/onderwijs/'), ('Lesvoorbeelden', '/nl/toepassingen/')]),
-        ('Artikelen & onderzoek', [('Blog', '/nl/blog/'), ('Publicaties', '/nl/publicaties/'), ('Onderzoek en bronnen', '/nl/onderzoek/'), ('Bronnenregister', '/bronnen/')]),
-        ('Proeven & modellen', [('Alle proeven en modellen', '/tools/science-observatory/'), ('Natuurkunde', '/tools/science-observatory/labs/natuurkunde/'), ('Wiskunde A', '/tools/science-observatory/labs/wiskunde-a/'), ('Wiskunde B', '/tools/science-observatory/labs/wiskunde-b/'), ('Anatomie van de mens', '/tools/anatomie/'), ('Galactisch Observatorium', '/tools/science-observatory/labs/melkweg/'), ('Hoe werkt AI?', '/tools/llm-observatorium/'), ('Sport en bewegen', '/tools/sport-en-bewegen/')]),
-        ('Tools', [('Alle tools', '/nl/tools/'), ('EAI Prompt Framework', '/tools/prompt-framework/'), ('WiHTML Docentstudio', '/tools/wihtml/'), ('EAIstudio', '/tools/eaistudio/'), ('EAImesh', '/tools/eaimesh/'), ('HTML uploaden', '/tools/html-galerij/'), ('Van proces naar prompt', '/tools/van-proces-naar-prompt/'), ('AI Model Monitor', '/nl/model-monitor/'), ('LLMscan', '/nl/llmscan/')]),
+        ('EAI begrijpen', [('Het EAI-model', '/nl/model/'), ('Toepassingen', '/nl/toepassingen/'), ('Kennis en onderbouwing', '/kennis/')]),
+        ('Lespraktijk', [('Lessen en werkvormen', '/nl/onderwijs/'), ('Alle werkvormen', '/werkvormen/')]),
+        ('Onderzoek & publicaties', [('Alle publicaties', '/nl/publicaties/'), ('Onderzoek en bronnen', '/nl/onderzoek/'), ('Blog', '/nl/blog/'), ('Bronnenregister', '/bronnen/')]),
+        ('Proeven & simulaties', [('Alle proeven en simulaties', '/tools/science-observatory/'), ('Natuurkunde', '/tools/science-observatory/labs/natuurkunde/'), ('Wiskunde A', '/tools/science-observatory/labs/wiskunde-a/'), ('Wiskunde B', '/tools/science-observatory/labs/wiskunde-b/'), ('Anatomie van de mens', '/tools/anatomie/'), ('Galactisch Observatorium', '/tools/science-observatory/labs/melkweg/'), ('Hoe werkt AI?', '/tools/llm-observatorium/'), ('Sport en bewegen', '/tools/sport-en-bewegen/')]),
+        ('Hulpmiddelen', [('Alle hulpmiddelen', '/nl/tools/'), ('EAI Prompt Framework', '/tools/prompt-framework/'), ('WiHTML Docentstudio', '/tools/wihtml/'), ('EAIstudio', '/tools/eaistudio/'), ('EAImesh', '/tools/eaimesh/'), ('HTML uploaden', '/tools/html-galerij/'), ('Van proces naar prompt', '/tools/van-proces-naar-prompt/'), ('AI Model Monitor', '/nl/model-monitor/'), ('LLMscan', '/nl/llmscan/')]),
         ('Over EAI', [('Over EAI', '/nl/over/'), ('Websitegebruik', '/nl/insights/')]),
     ]
 
@@ -105,10 +105,10 @@ def experiment_sections(en: bool):
     return [
         ('Physics' if en else 'Natuurkunde', [(name, links) for name, links in physics_groups.items()]),
         ('Mathematics' if en else 'Wiskunde', maths),
-        ('Human anatomy' if en else 'Anatomie van de mens', [('Anatomy and heart' if en else 'Lichaam en hart', [('The body in 3D' if en else 'Het lichaam in 3D', '/tools/anatomie/', ''), ('Heart and circulation' if en else 'Hart en bloedsomloop', '/tools/anatomie/labs/hartslag/', 'Hartslaglab hartslag hartkleppen bloedstroom hartcyclus')])]),
-        ('Galactic Observatory' if en else 'Galactisch Observatorium', [('Original Observatory' if en else 'Oorspronkelijk observatorium', modes), ('Guided discovery' if en else 'Ontdekken met uitleg', [('Galactic Observatory: guided' if en else 'Melkweg met uitleg', '/tools/melkweg-lab/', '')] + guided_modes), ('Orbits' if en else 'Banen', [('Gravity and satellites' if en else 'Gravitatie en satellietbanen', '/tools/science-observatory/labs/gravitatie-banen/', '')])]),
-        ('Language models' if en else 'Taalmodellen', [('AI' if en else 'AI onderzoeken', [('LLM Observatory' if en else 'Hoe werkt een taalmodel?', '/tools/llm-observatorium/', '')] + llm_modes)]),
-        ('Sport and movement' if en else 'Sport en bewegen', [('Sports' if en else 'Sport en bewegen', [('Attack and defence' if en else 'Aanvallen en verdedigen', '/tools/lo-aanvalslab/', ''), ('Research and sources' if en else 'Onderbouwing van sportproeven', '/tools/lo-aanvalslab/onderbouwing/', '')])]),
+        ('Human anatomy' if en else 'Menselijk lichaam', [('Anatomy and heart' if en else 'Lichaam en hart', [('The body in 3D' if en else 'Het lichaam in 3D', '/tools/anatomie/', ''), ('Heart and circulation' if en else 'Hart en bloedsomloop', '/tools/anatomie/labs/hartslag/', 'Hartslaglab hartslag hartkleppen bloedstroom hartcyclus')])]),
+        ('Space and astronomy' if en else 'Heelal en ruimtevaart', [('Original Observatory' if en else 'Oorspronkelijk observatorium', modes), ('Guided discovery' if en else 'Ontdekken met uitleg', [('Galactic Observatory: guided' if en else 'Melkweg met uitleg', '/tools/melkweg-lab/', '')] + guided_modes), ('Orbits' if en else 'Banen', [('Gravity and satellites' if en else 'Gravitatie en satellietbanen', '/tools/science-observatory/labs/gravitatie-banen/', '')])]),
+        ('How AI works' if en else 'Hoe werkt AI?', [('AI' if en else 'AI onderzoeken', [('LLM Observatory' if en else 'Hoe werkt een taalmodel?', '/tools/llm-observatorium/', '')] + llm_modes)]),
+        ('Sport and tactics' if en else 'Sport en tactiek', [('Sports' if en else 'Sport en bewegen', [('Attack and defence' if en else 'Aanvallen en verdedigen', '/tools/lo-aanvalslab/', ''), ('Research and sources' if en else 'Onderbouwing van sportproeven', '/tools/lo-aanvalslab/onderbouwing/', '')])]),
     ]
 
 
@@ -133,11 +133,11 @@ def education_sections(en: bool):
         raise ValueError('Gepubliceerde werkvormen en brongegevens verschillen: ' + repr(sorted(published ^ set(source))))
     semantic_groups = [
         ('Opdrachten en de rol van AI', 'Planning tasks and AI roles (Dutch)', ('analyse', 'ontwerpen')),
-        ('Hulp geven en feedback', 'Support and feedback (Dutch)', ('scaffolding', 'herstellen')),
-        ('Eigen keuzes en zelfstandigheid', 'Self-regulation and independent work (Dutch)', ('zelfregulatie', 'zelfstandigheid')),
-        ('Denken en leren zichtbaar maken', 'Evidence of thinking and learning (Dutch)', ('zichtbaar', 'bewijs')),
+        ('Hulp en feedback tijdens het leren', 'Support and feedback (Dutch)', ('scaffolding', 'herstellen')),
+        ('Zelfstandigheid en zelfregulatie', 'Independent work and self-regulation (Dutch)', ('zelfregulatie', 'zelfstandigheid')),
+        ('Denk- en leerproces zichtbaar maken', 'Evidence of thinking and learning (Dutch)', ('zichtbaar', 'bewijs')),
         ('Bronnen en argumenten beoordelen', 'Sources and arguments (Dutch)', ('argumentatie',)),
-        ('Leerlingen begrijpen en beoordelen', 'Teaching decisions and evidence (Dutch)', ('professioneel-oordeel',)),
+        ('Beoordelen en professioneel oordeel', 'Assessment and professional judgement (Dutch)', ('professioneel-oordeel',)),
     ]
     categories = [category for _, _, item_categories in semantic_groups for category in item_categories]
     if len(categories) != len(set(categories)) or set(categories) != {form['category'] for form in source.values()}:
@@ -162,14 +162,14 @@ def tool_sections(en: bool):
     """Available public tools and their existing subpages."""
     if en:
         return [
-            ('Design and teaching', [('Prompt Framework', '/tools/prompt-framework/', ''), ('Process to prompt', '/tools/van-proces-naar-prompt/', ''), ('WiHTML', '/tools/wihtml/', ''), ('WiHTML Studio', '/tools/wihtml/studio/', ''), ('WiHTML Library', '/tools/wihtml/bibliotheek/', ''), ('WiHTML Example', '/tools/wihtml/voorbeeld/', ''), ('EAIstudio', '/tools/eaistudio/', ''), ('EAIstudio Editor', '/tools/eaistudio/studio/', '')]),
-            ('Research and evaluation', [('LLMscan', '/en/llmscan/', ''), ('LLMscan research', '/nl/llmscan/onderzoek/', 'Dutch'), ('AI Model Monitor', '/en/model-monitor/', ''), ('Beyond Explainability', '/tools/beyond-explainability/', ''), ('Publication verification', '/nl/tools/verificatie/', 'Dutch')]),
-            ('Explore and share', [('EAImesh', '/tools/eaimesh/', ''), ('EAImesh Start', '/tools/eaimesh/start/', ''), ('EAIwork', '/tools/eaiwork/', ''), ('Upload HTML', '/tools/html-galerij/', '')]),
+            ('Create lessons and prompts', [('Prompt Framework', '/tools/prompt-framework/', ''), ('Process to prompt', '/tools/van-proces-naar-prompt/', ''), ('WiHTML', '/tools/wihtml/', ''), ('WiHTML Studio', '/tools/wihtml/studio/', ''), ('WiHTML Library', '/tools/wihtml/bibliotheek/', ''), ('WiHTML Example', '/tools/wihtml/voorbeeld/', ''), ('EAIstudio', '/tools/eaistudio/', ''), ('EAIstudio Editor', '/tools/eaistudio/studio/', '')]),
+            ('Check models and publications', [('LLMscan', '/en/llmscan/', ''), ('LLMscan research', '/nl/llmscan/onderzoek/', 'Dutch'), ('AI Model Monitor', '/en/model-monitor/', ''), ('Beyond Explainability', '/tools/beyond-explainability/', ''), ('Publication verification', '/nl/tools/verificatie/', 'Dutch')]),
+            ('Workspaces and sharing', [('EAImesh', '/tools/eaimesh/', ''), ('EAImesh Start', '/tools/eaimesh/start/', ''), ('EAIwork', '/tools/eaiwork/', ''), ('Upload HTML', '/tools/html-galerij/', '')]),
         ]
     return [
-        ('Ontwerpen en lesmateriaal', [('EAI Prompt Framework', '/tools/prompt-framework/', ''), ('Van proces naar prompt', '/tools/van-proces-naar-prompt/', ''), ('WiHTML Docentstudio', '/tools/wihtml/', ''), ('WiHTML Studio', '/tools/wihtml/studio/', ''), ('WiHTML Bibliotheek', '/tools/wihtml/bibliotheek/', ''), ('WiHTML Voorbeeld', '/tools/wihtml/voorbeeld/', ''), ('EAIstudio', '/tools/eaistudio/', ''), ('EAIstudio bewerken', '/tools/eaistudio/studio/', '')]),
-        ('Onderzoek en controle', [('LLMscan', '/nl/llmscan/', ''), ('LLMscan onderzoek', '/nl/llmscan/onderzoek/', ''), ('AI Model Monitor', '/nl/model-monitor/', ''), ('Beyond Explainability', '/tools/beyond-explainability/', ''), ('Publicatie verifiëren', '/nl/tools/verificatie/', '')]),
-        ('Bekijken en delen', [('EAImesh', '/tools/eaimesh/', ''), ('EAImesh starten', '/tools/eaimesh/start/', ''), ('EAIwork', '/tools/eaiwork/', ''), ('HTML uploaden', '/tools/html-galerij/', '')]),
+        ('Lesmateriaal en prompts maken', [('EAI Prompt Framework', '/tools/prompt-framework/', ''), ('Van proces naar prompt', '/tools/van-proces-naar-prompt/', ''), ('WiHTML Docentstudio', '/tools/wihtml/', ''), ('WiHTML Studio', '/tools/wihtml/studio/', ''), ('WiHTML Bibliotheek', '/tools/wihtml/bibliotheek/', ''), ('WiHTML Voorbeeld', '/tools/wihtml/voorbeeld/', ''), ('EAIstudio', '/tools/eaistudio/', ''), ('EAIstudio bewerken', '/tools/eaistudio/studio/', '')]),
+        ('AI en publicaties controleren', [('LLMscan', '/nl/llmscan/', ''), ('LLMscan onderzoek', '/nl/llmscan/onderzoek/', ''), ('AI Model Monitor', '/nl/model-monitor/', ''), ('Beyond Explainability', '/tools/beyond-explainability/', ''), ('Publicatie verifiëren', '/nl/tools/verificatie/', '')]),
+        ('Werkruimtes en delen', [('EAImesh', '/tools/eaimesh/', ''), ('EAImesh starten', '/tools/eaimesh/start/', ''), ('EAIwork', '/tools/eaiwork/', ''), ('HTML uploaden', '/tools/html-galerij/', '')]),
     ]
 
 
@@ -195,9 +195,9 @@ def reading_sections(en: bool):
             ('Archive (Dutch)', [('Previous articles', '/eai-blog/', '')] + pages('eai-blog')),
         ]
     return [
-        ('Onderzoek', [('Onderzoek en bronnen', '/nl/onderzoek/', ''), ('Bronnenregister', '/bronnen/', '')] + pages('nl/onderzoek')),
+        ('Onderzoeksdossiers', [('Onderzoek en bronnen', '/nl/onderzoek/', ''), ('Bronnenregister', '/bronnen/', '')] + pages('nl/onderzoek')),
         ('Publicaties', [('Alle publicaties', '/nl/publicaties/', '')] + pages('publicaties')),
-        ('Artikelen', [('Blog', '/nl/blog/', '')] + pages('nl/blog')),
+        ('Blog', [('Blog', '/nl/blog/', '')] + pages('nl/blog')),
         ('Archief', [('Oudere artikelen', '/eai-blog/', '')] + pages('eai-blog')),
     ]
 
@@ -221,14 +221,14 @@ def menu_topic_html(en: bool) -> str:
         'Physics': 'Motion, forces, electricity, light and more. Experiments are in Dutch.',
         'Wiskunde': 'Kansverdelingen, grafieken, functies en berekeningen.',
         'Mathematics': 'Probability, graphs, functions and calculations. Models are in Dutch.',
-        'Anatomie van de mens': 'Een 3D-lichaam en een bewegend hart.',
+        'Menselijk lichaam': 'Bekijk het lichaam in 3D en onderzoek een kloppend hart.',
         'Human anatomy': 'Explore the body in 3D and a beating heart.',
-        'Galactisch Observatorium': 'De Melkweg, bewegingen en modellen met uitleg.',
-        'Galactic Observatory': 'The Milky Way, orbits and guided models.',
-        'Taalmodellen': 'Hoe een taalmodel van invoer naar tekst gaat.',
-        'Language models': 'How a language model produces text.',
-        'Sport en bewegen': 'Spelsituaties, tactiek en onderbouwing.',
-        'Sport and movement': 'Tactics, match situations and sources.',
+        'Heelal en ruimtevaart': 'Verander banen en onderzoek de Melkweg en planeten.',
+        'Space and astronomy': 'Explore the Milky Way, orbits and planets.',
+        'Hoe werkt AI?': 'Volg tokens, aandacht en tekstgeneratie in een taalmodel.',
+        'How AI works': 'Explore tokens, attention and text generation.',
+        'Sport en tactiek': 'Verander opstellingen en onderzoek keuzes in het spel.',
+        'Sport and tactics': 'Change formations and explore tactical choices.',
     }
     blocks = []
     for title, clusters in experiment_sections(en):
@@ -239,7 +239,7 @@ def menu_topic_html(en: bool) -> str:
             groups_markup.append('<details class="eai-site-cluster"><summary>' + safe(subgroup) + '<span>' + str(len(links)) + '</span></summary><div class="eai-site-cluster-links">' + items + '</div></details>')
         lead = '<p class="eai-site-topic-intro">' + safe(topic_descriptions[title]) + '</p>'
         blocks.append('<details class="eai-site-topic"><summary><span>' + safe(title) + '</span><small>' + str(total) + ' ' + ('topics' if en else 'onderdelen') + '</small></summary><div class="eai-site-topic-links">' + lead + ''.join(groups_markup) + '</div></details>')
-    return '<a class="eai-site-overview" href="/tools/science-observatory/">' + ('All experiments and models' if en else 'Alle proeven en modellen') + '</a>' + ''.join(blocks)
+    return '<a class="eai-site-overview" href="/tools/science-observatory/">' + ('All experiments and simulations' if en else 'Alle proeven en simulaties') + '</a>' + ''.join(blocks)
 
 
 def site_search_records(root: Path) -> list:
@@ -309,15 +309,15 @@ def navigation(soup: BeautifulSoup, path: str, en: bool) -> str:
     for title, entries in groups(en):
         active = any((path_here == canonical(target) or path_here.startswith(canonical(target))) and canonical(target) not in ('/nl/', '/en/') for _, target in entries)
         active_cls = ' is-current' if active else ''
-        model_group = title in ('Proeven & modellen', 'Experiments & models')
+        model_group = title in ('Proeven & simulaties', 'Experiments & simulations')
         if model_group:
             links = menu_topic_html(en)
-        elif title == 'Tools':
-            links = menu_named_sections(en, tool_sections(en), ('All tools' if en else 'Alle tools', '/en/tools/' if en else '/nl/tools/'))
-        elif title in ('Education', 'Onderwijs'):
+        elif title in ('Tools', 'Hulpmiddelen'):
+            links = menu_named_sections(en, tool_sections(en), ('All tools' if en else 'Alle hulpmiddelen', '/en/tools/' if en else '/nl/tools/'))
+        elif title in ('Teaching', 'Lespraktijk'):
             links = menu_named_sections(en, education_sections(en), ('All education resources' if en else 'Alle onderwijsactiviteiten', '/en/education/' if en else '/nl/onderwijs/'))
-        elif title in ('Artikelen & onderzoek', 'Articles & research'):
-            links = menu_named_sections(en, reading_sections(en), ('All articles and research' if en else 'Alle artikelen en onderzoek', '/en/publications/' if en else '/nl/publicaties/'))
+        elif title in ('Onderzoek & publicaties', 'Research & publications'):
+            links = menu_named_sections(en, reading_sections(en), ('All research and publications' if en else 'Alle onderzoeksdossiers en publicaties', '/en/publications/' if en else '/nl/publicaties/'))
         else:
             links = ''.join(f'<a href="{html.escape(target, quote=True)}"' + (' aria-current="page"' if path_here == canonical(target) else '') + f'>{html.escape(label)}</a>' for label, target in entries)
         menu.append(f'<details class="eai-site-group{active_cls}" name="eai-navigation-theme"><summary>{html.escape(title)}</summary><div class="eai-site-group-links{" eai-site-model-links" if model_group else ""}">{links}</div></details>')
@@ -338,11 +338,11 @@ def navigation(soup: BeautifulSoup, path: str, en: bool) -> str:
     upload_button = ('<a class="eai-site-upload" href="/tools/html-galerij/" aria-label="' + upload_label + '">'
                      '<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4m0 0L7 9m5-5 5 5M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg>'
                      '<span>' + upload_label + '</span></a>')
-    search_label = 'Search the site' if en else 'Zoek een proef, model of artikel'
+    search_label = 'Search by subject or title' if en else 'Zoek op onderwerp of naam'
     result_label = 'Search results' if en else 'Zoekresultaten'
     search_box = (f'<div class="eai-site-search"><label for="eai-site-search-input">{search_label}</label>'
                   f'<input id="eai-site-search-input" type="search" autocomplete="off" enterkeyhint="search"'
-                  f' placeholder="{search_label}" aria-controls="eai-site-search-results"></div>'
+                  f' placeholder="{("e.g. feedback or gravity" if en else "Bijv. feedback of zwaartekracht")}" aria-controls="eai-site-search-results"></div>'
                   f'<div class="eai-site-search-results" id="eai-site-search-results" aria-label="{result_label}" hidden></div>')
     return f'<header class="eai-masthead" data-eai-static-nav><nav class="eai-site-nav" aria-label="{nav_label}"><a class="eai-site-brand" href="{home}" aria-label="EAI home"><img src="/assets/eai-logo.svg" width="32" height="32" alt=""><span>EAI</span></a><div class="eai-site-primary" aria-label="{nav_label}">{"".join(primary)}</div><div class="eai-site-controls">{upload_button}<div class="eai-site-language" role="group" aria-label="{lang_label}">{"".join(language_links)}</div><details class="eai-site-menu"><summary aria-controls="eai-site-menu-panel" aria-label="{more_label}"><svg aria-hidden="true" viewBox="0 0 20 18" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M1 3h18M1 9h18M1 15h18"/></svg><span>{more_label}</span></summary><div class="eai-site-menu-panel" id="eai-site-menu-panel">{search_box}<div class="eai-site-menu-sections"><span class="eai-menu-heading">{menu_heading}</span>{"".join(menu)}</div></div></details></div></nav></header>'
 
