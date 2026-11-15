@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#091322">
+  <meta name="description" content="EAIgame: een interactieve 3D-expeditie voor vmbo, havo en vwo.">
+  <link rel="icon" href="/assets/eai-logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/eaigame.css">
+  <title>EAIgame · De Expeditie</title>
+  <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.173.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.173.0/examples/jsm/"}}</script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"1aa5d5810d5a48e7bb8e5b2bac573e74"}'></script><script defer src="/assets/site-analytics.js"></script></head>
+<body class="eai-refresh eaigame">
+<a class="skip-link" href="#main">Ga naar het spel</a>
+<div id="app">
+  <header class="topbar">
+    <a class="brand" href="/tools/" aria-label="Terug naar EAI-tools"><span class="brand-mark">E<span>.</span></span><span>EAI<span class="thin">game</span></span></a>
+    <div class="topbar-right"><span id="top-status" class="top-status">DE EXPEDITIE</span><button type="button" class="icon-btn" id="about-btn" aria-label="Uitleg en AI-instellingen">?</button></div>
+  </header>
+  <main id="main">
+    <section id="landing" class="landing">
+      <div class="intro">
+        <p class="eyebrow"><span class="signal"></span> Denken. Ontdekken. Durven.</p>
+        <h1>Geen vakjes.<br><em>Een wereld.</em></h1>
+        <p class="intro-desc">Je ziet de hele wereld voor je. Kies na een worp zelf waar je heen gaat, ontdek zes gebieden en laat ze veranderen door jouw antwoorden.</p>
+        <div class="pills"><span>3D-expeditie</span><span>1–4 spelers</span><span>Onderbouw vo</span><span>Zonder account</span></div>
+      </div>
+      <div class="landing-map"><div class="board-headline"><strong>Je hele speelwereld</strong><span>Sleep om de wereld te draaien</span></div><div class="board-stage" id="landing-board"><canvas id="world" aria-label="Driedimensionale spelwereld met zes zichtbare gebieden" tabindex="0"></canvas></div></div>
+      <form id="setup" class="setup-panel">
+        <div class="setup-head"><div><p class="eyebrow">Nieuwe expeditie</p><h2>Wie reist er mee?</h2></div><span class="subtle">01 / 02</span></div>
+        <p class="field-label" id="level-label">Kies je niveau</p>
+        <div id="levels" class="segments" role="group" aria-labelledby="level-label"><button data-level="vmbo" type="button">vmbo</button><button class="selected" data-level="havo" type="button" aria-pressed="true">havo</button><button data-level="vwo" type="button">vwo</button></div>
+        <p class="field-hint">Dezelfde leergebieden. Andere vragen en ondersteuning.</p>
+        <div class="setup-line"><label for="count-output" class="field-label">Spelers</label><div class="counter"><button id="minus" type="button" aria-label="Eén speler minder">−</button><output id="count-output">2</output><button id="plus" type="button" aria-label="Eén speler meer">+</button></div></div>
+        <div id="player-names" class="player-names"><label>Speler 1<input name="p1" maxlength="18" autocomplete="off" value="Speler 1"></label><label>Speler 2<input name="p2" maxlength="18" autocomplete="off" value="Speler 2"></label></div>
+        <button type="submit" class="primary full">Begin de expeditie <span aria-hidden="true">↗</span></button>
+        <p class="fineprint">De vraagbank werkt zonder verbinding. AI-vragen zijn optioneel en experimenteel.</p>
+      </form>
+      <div class="realm-strip" aria-hidden="true"><span>De Breuk</span><span>De Storm</span><span>De Echo</span><span>De Stad</span><span>Het Atelier</span><span>De Arena</span></div>
+    </section>
+    <section id="game-ui" class="game-ui hidden" aria-label="Spel">
+      <div class="game-heading">
+        <div class="game-title"><p class="eyebrow">DE WERELD WACHT</p><h2 id="realm-name">De expeditie</h2><p id="realm-desc">Het hele speelveld blijft zichtbaar. Kies na je worp een gebied.</p></div>
+        <div class="game-stats"><div><small>RONDE</small><strong id="round">1 / 12</strong></div><div><small>BAKENS</small><strong id="beacons">0 / 6</strong></div><button type="button" id="score-toggle"><small>TEAMENERGIE</small><strong><span id="energy">0</span> ◇</strong></button></div>
+      </div>
+      <div class="game-layout">
+        <div class="game-map">
+          <div class="board-headline"><strong>De zes gebieden</strong><span>Overzicht · alle gebieden in beeld</span></div>
+          <div class="board-stage" id="game-board"></div>
+          <p class="interaction-tip" id="interaction-tip">Sleep om het bord te draaien · tik op een gebied om het te bekijken</p>
+        </div>
+        <div class="game-controls">
+          <div class="active-player"><div class="player-jewel" id="player-jewel" aria-hidden="true"></div><div><small>AAN ZET</small><strong id="current-player">Speler 1</strong><span id="player-progress">0 ontdekkingen</span></div></div>
+          <div class="actionbar"><div><small id="phase-label">JOUW BEURT</small><strong id="phase-title">Gooi de dobbelsteen</strong><span id="phase-detail">De worp opent routes, jij kiest.</span></div><button id="roll" type="button" class="primary">⚄ Gooi dobbelsteen</button><button id="recenter" type="button" class="secondary">Hele bord ↗</button></div>
+          <div class="routes-caption" id="routes-caption">Gooi de dobbelsteen en kies daarna een gebied op het bord.</div>
+          <div id="destinations" class="destinations" aria-live="polite"></div>
+          <aside id="scoreboard" class="scoreboard hidden"><div class="score-head"><h3>De ontdekkers</h3><button id="score-close" class="icon-btn" type="button" aria-label="Sluit stand">×</button></div><ol id="score-list"></ol><p>Herstel samen zes bakens. Een goed antwoord geeft energie en herstelt een baken.</p></aside>
+        </div>
+      </div>
+    </section>
+    <dialog id="challenge" aria-labelledby="challenge-title">
+      <div class="challenge-head"><div><p class="eyebrow" id="challenge-realm">DE UITDAGING</p><span class="level-tag" id="challenge-level">HAVO · ONDERBOUW</span></div><button id="challenge-close" class="icon-btn" type="button" aria-label="Sluit opdracht">×</button></div>
+      <div class="challenge-body"><h2 id="challenge-title">Een vraag</h2><p id="challenge-question"></p><div id="challenge-options" role="group" aria-label="Kies je antwoord"></div><div class="challenge-feedback" id="feedback" role="status" aria-live="polite"></div><div class="challenge-actions"><button type="button" id="hint" class="secondary">Hint</button><button type="button" id="check" class="primary" disabled>Controleer</button></div><button type="button" id="continue" class="primary hidden">Verder reizen ↗</button></div>
+      <div class="challenge-foot"><span id="source-label">Aansluiting bij SLO</span><span id="origin-label">BASISVRAAG</span></div>
+    </dialog>
+    <dialog id="about" aria-labelledby="about-title"><div class="modal-head"><h2 id="about-title">EAIgame</h2><button type="button" class="icon-btn" id="about-close" aria-label="Sluiten">×</button></div>
+      <p>Je maakt een expeditie door zes gebieden. De impuls bepaalt hoe ver je kunt reizen, niet waar je heen móét. Een goede keuze verandert je route en helpt de wereld herstellen.</p>
+      <p>De opdrachten zijn door EAIgame gemaakt met de <a href="https://www.slo.nl/sectoren/vo/" target="_blank" rel="noopener">nieuwe SLO-kerndoelen voor de onderbouw</a> als inhoudelijk vertrekpunt. Het zijn geen officiële SLO-vragen. De vmbo-, havo- en vwo-varianten zijn ontwerpkeuzes; SLO levert hiervoor niet drie aparte vragenbanken.</p>
+      <div class="ai-setting"><div><strong>Vragen met lokale AI (experimenteel)</strong><p>Gebruik Qwen3 4B in je browser. De eerste download bestaat uit meerdere gigabytes en WebGPU is nodig. Niet elke telefoon kan dit model draaien. De vragen worden automatisch gemaakt en zijn niet inhoudelijk gecontroleerd. Gebruik deze proef alleen met een docent die de inhoud achteraf kan bespreken. Geen betaalde API.</p><p id="model-status" aria-live="polite">Uit. De vaste vraagbank blijft beschikbaar.</p></div><button type="button" id="model-load" class="secondary">Model laden</button></div>
+      <p class="refs">Open bronnen: <a href="https://github.com/slonl/curriculum-fo" target="_blank" rel="noopener">SLO op GitHub</a> · <a href="https://github.com/mlc-ai/web-llm" target="_blank" rel="noopener">WebLLM</a>.</p><p class="fineprint">Een juist antwoord in dit spel is oefenen. Het bewijst niet dat je het later zelfstandig opnieuw kunt.</p>
+    </dialog>
+    <dialog id="finished" aria-labelledby="finished-title"><p class="eyebrow">DE EXPEDITIE</p><h2 id="finished-title">Wat een reis.</h2><p id="finished-message"></p><div id="finished-stats"></div><button type="button" class="primary full" id="restart">Opnieuw beginnen ↗</button></dialog>
+  </main>
+  <footer class="footer"><a href="/tools/">EAI / Tools</a><span>Proefversie 0.1</span><span>Spelen is oefenen, geen toets</span></footer>
+</div>
+<script type="module" src="/assets/eaigame.js"></script>
+</body>
+</html>
