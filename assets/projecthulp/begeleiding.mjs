@@ -77,7 +77,7 @@ export function continuationPrompt(guidance,{repo=null}={}){
  "Dit is eerder gecontroleerd:",
  ...verified.split("\n"),
  "",
- "Onderzoek de ECHTE bestanden in mijn repository. Noem wat al goed is. Zoek codefouten en mogelijke logische fouten, maar onderscheid vastgestelde fouten van vermoedens. Geef bij iedere bewezen fout een GitHub-link met bestand en regelnummer. Controleer bestaande tests, voer veilige controles uit en maak zo nodig een plan met kleine stappen.",
+ "Onderzoek de ECHTE bestanden in mijn repository. Noem wat al goed is. Zoek codefouten en mogelijke logische fouten, maar onderscheid vastgestelde fouten van vermoedens. Geef bij iedere bewezen fout de bestandsnaam, het regelnummer en een GitHub-link. Controleer bestaande tests, voer veilige controles uit en maak zo nodig een plan met kleine stappen.",
  "Schrijf in eenvoudig Nederlands en leg de eerstvolgende handeling uit. Gebruik bestaande bestanden en behoud goede functies.",
  "Gebruik voor wijzigingen Codex of een andere aantoonbaar bevoegde GitHub-schrijfomgeving. Maak pas na mijn toestemming een aparte branch en pull request. Schrijf niet rechtstreeks naar main en publiceer niets zonder mijn afzonderlijke toestemming.",
  "Vertel eerlijk wat niet uitgevoerd of niet gecontroleerd is."
