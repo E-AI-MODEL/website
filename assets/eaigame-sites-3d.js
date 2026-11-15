@@ -28,6 +28,7 @@
   const overview = stage.querySelector('#eaigame-3d-overview');
   const follow = stage.querySelector('#eaigame-3d-follow');
   const closeButton = stage.querySelector('#eaigame-3d-close');
+  const viewSwitch = document.getElementById('eaigame-view-switch');
   const prefersLessMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const CDN = 'https://cdn.jsdelivr.net/npm/three@0.173.0/build/three.module.js';
   let three = null, scene = null, camera = null, renderer = null, observer = null;
@@ -234,6 +235,7 @@
     opening = true;
     stage.hidden = false;
     document.body.classList.add('eaigame-3d-active');
+    if(viewSwitch){viewSwitch.setAttribute('aria-pressed','true');viewSwitch.textContent='3D actief';}
     setStatus('3D-weergave laden…',true);
     closeButton.focus();
     try {
@@ -276,9 +278,11 @@
     frame = 0; lastFrame = 0;
     stage.hidden = true;
     document.body.classList.remove('eaigame-3d-active');
-    requestAnimationFrame(() => { positionPawns(); document.querySelector('[data-option="3d"]')?.focus({preventScroll:true}); });
+    if(viewSwitch){viewSwitch.setAttribute('aria-pressed','false');viewSwitch.textContent='Bekijk in 3D';}
+    requestAnimationFrame(() => { positionPawns(); viewSwitch?.focus({preventScroll:true}); });
   }
 
+  viewSwitch?.addEventListener('click',toggle);
   overview.addEventListener('click', () => setMode('overview'));
   follow.addEventListener('click', () => setMode('follow'));
   closeButton.addEventListener('click',close);
