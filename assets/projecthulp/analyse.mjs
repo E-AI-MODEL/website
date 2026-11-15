@@ -159,7 +159,7 @@ export function readmeTemplate(project,repoName){
  return line("# "+name+"\n\n## Over dit project\n\nBeschrijf hier wat het project doet en voor wie het bedoeld is.\n\n## Opbouw\n\nType: "+tech+"\n\nBeschrijf hier de belangrijkste mappen en bestanden.\n\n## Gebruiken\n\nBeschrijf hoe iemand het project kan openen of starten.\n\n## Beheer\n\nBeschrijf hoe wijzigingen worden bijgehouden en wie daarvoor verantwoordelijk is.\n");
 }
 export function ignoreTemplate(project){
- if(project?.project?.hasPackage)return "node_modules/\n.env\n.env.*\n!.env.example\n.DS_Store\nThumbs.db\ncoverage/\ndist/\nbuild/\n";
+ if(project?.project?.hasPackage)return "# Controleer of dist/ en build/ voor de website nodig zijn.\nnode_modules/\n.env\n.env.*\n!.env.example\n.DS_Store\nThumbs.db\ncoverage/\n";
  if(project?.project?.runtime==="Python")return "__pycache__/\n*.pyc\n.venv/\nvenv/\n.env\n.env.*\n.DS_Store\n";
  return ".DS_Store\nThumbs.db\n.env\n.env.*\n";
 }
