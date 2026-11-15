@@ -1,4 +1,5 @@
 import {analyzeArchive,fetchPublicRepo,makeAdvice,reportText,readmeTemplate,ignoreTemplate,parseRepoUrl} from "./analyse.mjs";
+import {generateProjectCheckWorkflow} from "./projectcheck.mjs";
 const $=(id)=>document.getElementById(id);
 const state={archive:null,repo:null,advice:null,goal:"site",aim:"",experience:"beginner",repoError:null,workerRuns:[]};
 async function runAnalysisWorker(kind,data,transfer=[]){
@@ -99,6 +100,7 @@ function render(){
  setText("resultLead",archive&&repo?"We hebben je ZIP en de openbare GitHub-bestandslijst onderzocht.":"Dit is wat we konden vaststellen. De overige informatie ontbreekt of was niet bereikbaar.");
  $("downloadReadme").disabled=!archive;
  $("downloadIgnore").disabled=!archive;
+ show("automationDetails",Boolean(generateProjectCheckWorkflow(archive)));
  screen(3);
 }
 async function analyze(){
@@ -166,6 +168,7 @@ $("downloadReport").addEventListener("click",()=>{
 });
 $("downloadReadme").addEventListener("click",()=>{if(state.archive)download("README.md",readmeTemplate(state.archive,state.repo?.name));});
 $("downloadIgnore").addEventListener("click",()=>{if(state.archive)download("gitignore-voorbeeld.txt",ignoreTemplate(state.archive));});
+$("downloadCheck").addEventListener("click",()=>{const yaml=generateProjectCheckWorkflow(state.archive);if(yaml)download("projectcontrole.yml",yaml,"text/yaml;charset=utf-8");});
 $("reset").addEventListener("click",()=>{
  $("zipFile").value="";$("repoUrl").value="";setText("fileName","Kies een ZIP om te onderzoeken");show("inputError",false);
  for(const key of ["archive","repo","advice","repoError"])state[key]=null;state.workerRuns=[];
