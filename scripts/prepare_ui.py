@@ -95,6 +95,36 @@ def experiment_sections(en: bool):
 
 
 
+
+def education_sections(en: bool):
+    """Read every public EAI workform from its existing published source."""
+    root = Path(__file__).resolve().parent.parent
+    intro = [
+        ('Education and workforms' if en else 'Onderwijs en werkvormen', '/en/education/' if en else '/nl/onderwijs/', ''),
+        ('EAI workform collection' if en else 'Alle EAI-werkvormen', '/werkvormen/', ''),
+        ('Language activities (Dutch)' if en else 'Taalwerkvormen', '/taalwerkvormen/', ''),
+        ('Teaching practice (Dutch)' if en else 'Voorbeelden uit de praktijk', '/praktijk/', ''),
+        ('Two pillars' if en else 'Twee pijlers', '/twee-pijlers/', ''),
+        ('AI workshop' if en else 'AI-workshop', '/workshop-ai/', ''),
+    ]
+    cards = []
+    for page in sorted((root / 'werkvormen').glob('*/index.html')):
+        soup = BeautifulSoup(page.read_text(encoding='utf-8'), 'html.parser')
+        heading = soup.select_one('h1')
+        title = heading.get_text(' ', strip=True) if heading else page.parent.name.replace('-', ' ').capitalize()
+        description = soup.find('meta', attrs={'name': 'description'})
+        cards.append((title, '/werkvormen/' + page.parent.name + '/', description.get('content', '') if description else ''))
+    if len(cards) < 50:
+        raise ValueError('Niet alle gepubliceerde EAI-werkvormen zijn gevonden')
+    groups_ = [('Start hier' if not en else 'Start here', intro)]
+    for first, last in (('A', 'H'), ('I', 'R'), ('S', 'Z')):
+        matches = [entry for entry in cards if first <= entry[0][0].upper() <= last]
+        groups_.append((('Werkvormen ' if not en else 'Workforms ') + first + '–' + last, sorted(matches, key=lambda item: item[0].casefold())))
+    if sum(len(entries) for _, entries in groups_[1:]) != len(cards):
+        raise ValueError('Werkvormen ontbreken in de alfabetische groepen')
+    return groups_
+
+
 def tool_sections(en: bool):
     """Available public tools and their existing subpages."""
     if en:
@@ -163,7 +193,7 @@ def site_search_records(root: Path) -> list:
             for subgroup, entries in groups_:
                 for label, url, description in entries:
                     add(label, url, title + ' · ' + subgroup, description)
-        for title, groups_ in (('Tools', tool_sections(en)), ('Articles & research' if en else 'Artikelen en onderzoek', reading_sections(en))):
+        for title, groups_ in (('Tools', tool_sections(en)), ('Education' if en else 'Onderwijs', education_sections(en)), ('Articles & research' if en else 'Artikelen en onderzoek', reading_sections(en))):
             for subgroup, entries in groups_:
                 for label, url, description in entries:
                     add(label, url, title + ' · ' + subgroup, description)
@@ -210,6 +240,8 @@ def navigation(soup: BeautifulSoup, path: str, en: bool) -> str:
             links = menu_topic_html(en)
         elif title == 'Tools':
             links = menu_named_sections(en, tool_sections(en), ('All tools' if en else 'Alle tools', '/en/tools/' if en else '/nl/tools/'))
+        elif title in ('Education', 'Onderwijs'):
+            links = menu_named_sections(en, education_sections(en), ('All education resources' if en else 'Alle onderwijsactiviteiten', '/en/education/' if en else '/nl/onderwijs/'))
         elif title in ('Artikelen & onderzoek', 'Articles & research'):
             links = menu_named_sections(en, reading_sections(en), ('All articles and research' if en else 'Alle artikelen en onderzoek', '/en/publications/' if en else '/nl/publicaties/'))
         else:
