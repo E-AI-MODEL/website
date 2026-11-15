@@ -113,6 +113,7 @@ body.eaigit-wizard{margin:0;min-height:100vh;background:radial-gradient(ellipse 
 .eg-help-dialog::backdrop{background:rgba(7,26,36,.55);backdrop-filter:blur(3px)}
 .eg-help-dialog-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .eg-help-close{border:1px solid #d9e8e7;border-radius:7px;cursor:pointer;background:#f7faf9;color:#3e6270;padding:8px 11px;font-size:12px}
+.eg-help-context{border-left:2px solid #9ed1d7;padding:9px 0 9px 14px;background:#f4fafa;color:#406570!important;margin:0 0 15px!important}
 .eg-help-dialog h2{font:500 clamp(1.55rem,3.5vw,1.93rem)/1.18 Georgia,serif;letter-spacing:-.02em;margin:15px 0 9px;color:#17323e}
 .eg-help-dialog p{color:#5b747c;font-size:13.5px;line-height:1.7;margin:0 0 17px}
 .eg-help-dialog ol{padding-left:21px;margin:13px 0 19px}
