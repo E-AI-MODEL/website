@@ -87,6 +87,7 @@ try{
  await page.locator("#startGuidance").click();
  assert(await page.locator("#stage-guide").isVisible());
  assert.match(await page.locator("#guideTitle").innerText(),/privébestanden/);
+ assert.equal(await page.locator("#phasePrompts").getAttribute("href"),"/tools/eaigit/prompts/?fase=controleren");
  await page.locator("#guideMore").click();
  assert(await page.locator("#helpDialog").evaluate(el=>el.open));
  assert.match(await page.locator("#helpTitle").innerText(),/privé blijven/);
@@ -174,6 +175,9 @@ try{
  assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2),"Hulppagina past op telefoon");
  await page.screenshot({path:join(out,"eaigit-uitleg-mobiel.png"),fullPage:true});
  // Promptbibliotheek: alle fasen en aparte, invulbare opdrachten.
+ await page.goto(base+"/tools/eaigit/prompts/?fase=controleren");
+ assert.equal(await page.locator("#promptList .eg-prompt-card").count(),3);
+ assert.equal(await page.locator('[data-phase="controleren"]').getAttribute("aria-pressed"),"true");
  await page.goto(base+"/tools/eaigit/prompts/");
  assert.match(await page.title(),/Promptbibliotheek/);
  assert.equal(await page.locator("#promptList .eg-prompt-card").count(),16);
