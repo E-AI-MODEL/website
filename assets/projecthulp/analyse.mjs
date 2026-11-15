@@ -94,7 +94,7 @@ export function makeAdvice({goal="upload",experience="beginner",archive,repo}){
  if(archive){
   observations.push("Het ZIP-bestand bevat "+countText(archive.files.length,"bestand","bestanden")+" ("+archive.project.type+").");
   if(archive.prefix)observations.push("De bestanden zitten in een bovenliggende map '"+archive.prefix.slice(0,-1)+"'. Voor GitHub kan die map meestal worden weggelaten.");
-  if(archive.ignored.length)warnings.push(countText(archive.ignored.length,"bestand of map","bestanden of mappen")+" lijkt tijdelijk of overbodig voor GitHub. Controleer dit voor het uploaden.");
+  if(archive.ignored.length)warnings.push(archive.ignored.length===1?"Eén bestand of map lijkt tijdelijk of overbodig voor GitHub. Controleer dit voor het uploaden.":archive.ignored.length+" bestanden of mappen lijken tijdelijk of overbodig voor GitHub. Controleer deze voor het uploaden.");
   if(archive.secret.length)warnings.push(countText(archive.secret.length,"bestand heeft","bestanden hebben")+" een mogelijk vertrouwelijke naam. Controleer de inhoud op je eigen apparaat voordat je iets uploadt.");
   if(archive.manifestError)warnings.push(archive.manifestError);
   if(!archive.project.hasReadme)warnings.push("Er is geen README gevonden. Die maakt het project begrijpelijker.");
