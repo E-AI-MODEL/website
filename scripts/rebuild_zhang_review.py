@@ -50,7 +50,7 @@ def verify(doc):
 
 def rebuild():
     data = SOURCE.read_bytes()
-    git_sha = hashlib.sha1(b"blob " + str(len(data)).encode() + b"\\0" + data).hexdigest()
+    git_sha = hashlib.sha1(b"blob " + str(len(data)).encode() + b"\0" + data).hexdigest()
     if git_sha != ORIGINAL_GIT_SHA:
         doc = fitz.open(SOURCE)
         try:
