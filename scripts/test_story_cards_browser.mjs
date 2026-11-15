@@ -35,6 +35,18 @@ try {
       await page.goto(base + path, { waitUntil: 'load' });
       const track = page.locator('main .eai-card-deck').first();
       await track.waitFor({ timeout: 13000 });
+      if (path === '/nl/onderwijs/' || path === '/nl/onderzoek/') {
+        const detail = page.locator('main .eai-story-mobile-detail');
+        if (width <= 620) {
+          assert.equal(await detail.count(), 1, path + ': the detailed hero must be available');
+          assert.equal(await detail.getAttribute('open'), null, 'Mobile detail should begin collapsed');
+          await detail.locator('summary').click();
+          assert.equal(await detail.getAttribute('open'), '', 'Reader can open the detailed explanation');
+          await detail.locator('summary').click();
+        } else {
+          assert.equal(await detail.count(), 0, path + ': desktop keeps the original diagram');
+        }
+      }
       const data = await track.evaluate(el => {
         const cards = [...el.children];
         const a = cards[0].getBoundingClientRect(), b = cards[1].getBoundingClientRect();
