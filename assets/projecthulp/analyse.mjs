@@ -1,4 +1,5 @@
-import {inspectZip,readZipText} from "./zip.mjs";
+import {inspectZip,readZipText,readZipBytes} from "./zip.mjs";
+import {inspectProjectTexts,gitBlobId} from "./inhoudscontrole.mjs";
 import {checkProjectPurpose,findBrokenLocalLinks} from "./doelcontrole.mjs";
 const REPO=/^https:\/\/github\.com\/([A-Za-z0-9](?:[A-Za-z0-9-]{0,38}[A-Za-z0-9])?)\/([A-Za-z0-9_.-]+?)(?:\.git)?\/?$/i;
 const TEXT_LIMIT=350000;
@@ -20,7 +21,7 @@ export async function fetchPublicRepo(url,fetcher=fetch){
  let meta;try{meta=await response.json();}catch{throw new Error("GitHub gaf ongeldige repositorygegevens terug.");}
  if(meta.private===true)throw new Error("Deze repository is privé. De proef ondersteunt alleen openbare repositories.");
  if(meta.full_name?.toLowerCase()!==p.name.toLowerCase())throw new Error("GitHub antwoordde met een andere repository.");
- let paths=[],branch=meta.default_branch||null,sha=null,truncated=false,readable=true;
+ let paths=[],branch=meta.default_branch||null,sha=null,truncated=false,readable=true,blobs={};
  if(branch&&!(meta.size===0&&meta.pushed_at===null)){
   try{
    const treeResponse=await fetcher(api+"/git/trees/"+encodeURIComponent(branch)+"?recursive=1",{headers,redirect:"error",signal:AbortSignal.timeout(15000)});
@@ -29,10 +30,12 @@ export async function fetchPublicRepo(url,fetcher=fetch){
    const tree=await treeResponse.json();
    if(!Array.isArray(tree.tree))throw new Error("GitHub gaf geen volledige bestandslijst terug.");
    sha=tree.sha||null;truncated=tree.truncated===true;
-   paths=tree.tree.filter(x=>x.type==="blob"&&typeof x.path==="string").map(x=>x.path);
-  }catch(error){readable=false;return {name:meta.full_name,url:meta.html_url||"https://github.com/"+p.name,branch,paths,sha,truncated,readable,error:error.message,empty:false};}
+   const entries=tree.tree.filter(x=>x.type==="blob"&&typeof x.path==="string");
+   paths=entries.map(x=>x.path);
+   blobs=Object.fromEntries(entries.filter(x=>/^[a-f0-9]{40}$/i.test(x.sha||"")).slice(0,3500).map(x=>[x.path,x.sha]));
+  }catch(error){readable=false;return {name:meta.full_name,url:meta.html_url||"https://github.com/"+p.name,branch,paths,sha,truncated,readable,blobs,error:error.message,empty:false};}
  }
- return {name:meta.full_name,url:meta.html_url||"https://github.com/"+p.name,branch,paths,sha,truncated,readable,empty:!branch||paths.length===0};
+ return {name:meta.full_name,url:meta.html_url||"https://github.com/"+p.name,branch,paths,sha,truncated,readable,blobs,empty:!branch||paths.length===0};
 }
 export function stripArchiveRoot(paths){
  const eligible=paths.filter(Boolean);
@@ -88,14 +91,48 @@ export async function analyzeArchive(file){
    indexChecked=true;
   }catch(error){indexError="De startpagina kon niet volledig worden nagekeken: "+error.message;}
  }
- return {name:file.name,archiveSize:file.size,files:paths,total:zip.total,prefix:root.prefix,eligible,ignored,secret,project,manifest,manifestError,missingReferences,indexChecked,indexError};
+ const fingerprints={},textRecords=[],notInspected=[];let hashedBytes=0,textBytes=0;
+ const available=new Set(eligible);
+ // De ZIP wordt lokaal op bestandbytes vergeleken met GitHub-blobs, zonder upload of code-uitvoering.
+ for(const entry of rawFiles){
+  const path=entry.path.startsWith(root.prefix)?entry.path.slice(root.prefix.length):entry.path;
+  if(!available.has(path))continue;
+  const isText=/\.(?:html?|css|[cm]?js|jsx|tsx?|json|vue|svelte|svg|py)$/i.test(path);
+  if(entry.size>600000||hashedBytes+entry.size>12*1024*1024){notInspected.push(path);continue;}
+  try{
+   const bytes=await readZipBytes(zip,entry,600000);
+   hashedBytes+=bytes.byteLength;
+   const blobId=await gitBlobId(bytes);
+   if(blobId)fingerprints[path]=blobId;
+   if(isText){
+    if(bytes.byteLength<=220000&&textBytes+bytes.byteLength<=1500000&&textRecords.length<100){
+     try{
+      textRecords.push({path,text:new TextDecoder("utf-8",{fatal:true}).decode(bytes)});
+      textBytes+=bytes.byteLength;
+     }catch{notInspected.push(path);}
+    }else notInspected.push(path);
+   }
+  }catch{notInspected.push(path);}
+ }
+ const contentCheck=inspectProjectTexts(textRecords,eligible);
+ contentCheck.notInspected=notInspected.slice(0,40);
+ contentCheck.incomplete=contentCheck.incomplete||notInspected.length>0;
+ return {name:file.name,archiveSize:file.size,files:paths,total:zip.total,prefix:root.prefix,eligible,ignored,secret,project,manifest,manifestError,missingReferences,indexChecked,indexError,fingerprints,contentCheck};
 }
 export function compareProjects(archive,repo){
  const existing=new Set(repo?.paths||[]);
  const missing=archive.eligible.filter(p=>!existing.has(p));
  const present=archive.eligible.filter(p=>existing.has(p));
  const onlyRepo=repo?.paths.filter(p=>!new Set(archive.eligible).has(p))||[];
- return {missing,present,onlyRepo,matched:present.length,missingCount:missing.length};
+ const identical=[],changed=[],unknown=[];
+ for(const path of present){
+  const zipHash=archive?.fingerprints?.[path],gitHash=repo?.blobs?.[path];
+  if(!zipHash||!gitHash)unknown.push(path);
+  else if(zipHash===gitHash)identical.push(path);
+  else changed.push(path);
+ }
+ return {missing,present,onlyRepo,matched:present.length,missingCount:missing.length,
+  identical,changed,unknown,comparedCount:identical.length+changed.length};
 }
 function line(text){return text.replace(/\r/g,"").replace(/\n{3,}/g,"\n\n");}
 const countText=(n,one,many)=>n+" "+(n===1?one:many);
