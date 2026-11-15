@@ -117,6 +117,9 @@ function renderGuide(){
  label("guideCounter","Stap "+(state.stepIndex+1)+" van "+state.steps.length);
  label("guideTitle",step.title);
  label("guideDescription",step.description);
+ show("createdRepoBox",step.id==="create");
+ if(step.id==="create")$("createdRepoUrl").value=state.repoUrl||"";
+ show("createdRepoError",false);
  show("guideLink",Boolean(step.href&&step.action));
  if(step.href&&step.action){$("guideLink").href=step.href;$("guideLink").firstChild.textContent=step.action+" ";}
  const hasTip=Boolean(step.help);
@@ -180,7 +183,26 @@ $("resultBack").addEventListener("click",()=>navigate("aim"));
 $("reset").addEventListener("click",reset);
 $("startGuidance").addEventListener("click",()=>{state.stepIndex=0;renderGuide();});
 $("guideBack").addEventListener("click",()=>{if(state.stepIndex===0)navigate("result");else{state.stepIndex--;renderGuide();}});
-$("guideNext").addEventListener("click",()=>{state.stepIndex++;if(state.stepIndex<state.steps.length)renderGuide();else{show("checkAgain",Boolean(state.repoUrl));navigate("finished");}});
+$("guideNext").addEventListener("click",()=>{
+ const step=state.steps[state.stepIndex];
+ if(step?.id==="create"){
+  const entered=$("createdRepoUrl").value.trim();
+  if(entered){
+   try{
+    state.repoUrl="https://github.com/"+parseRepoUrl(entered).name;
+    const nextStep=state.steps.find(x=>x.id==="upload");
+    if(nextStep){nextStep.href=state.repoUrl;nextStep.action="Open nieuwe repository";}
+    show("createdRepoError",false);
+   }catch(error){
+    label("createdRepoError",error.message);
+    show("createdRepoError",true);return;
+   }
+  }
+ }
+ state.stepIndex++;
+ if(state.stepIndex<state.steps.length)renderGuide();
+ else{show("checkAgain",Boolean(state.repoUrl));navigate("finished");}
+});
 $("copyPrompt").addEventListener("click",async()=>{
  const value=$("stepPrompt").value;
  try{await navigator.clipboard.writeText(value);label("copyStatus","Gekopieerd.");}
