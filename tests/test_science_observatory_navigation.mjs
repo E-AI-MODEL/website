@@ -62,17 +62,28 @@ test('Websitegenerator gebruikt de bronbestanden en aparte observatoriarubriek',
   assert.match(script, /"observatoria", "Observatoria"/);
 });
 
-test('De publieke hoofdnavigatie heeft observatoria apart van hulpmiddelen', () => {
+test('Publieke menu bevat de afzonderlijke experimenten en behoudt alle adressen', () => {
   const source = load('scripts/prepare_ui.py');
-  assert.match(source, /\('Observatoria', \[/);
-  assert.match(source, /\('Observatories', \[/);
-  assert.match(source, /'Natuurkundeproeven'/);
-  assert.match(source, /'Physics experiments \(Dutch\)'/);
-  const observatoria = source.slice(source.indexOf("('Observatoria', ["), source.indexOf("('Tools', [", source.indexOf("('Observatoria', [")));
-  assert.match(observatoria, /Anatomie van de mens/);
-  assert.doesNotMatch(observatoria, /EAI Prompt Framework/);
-  const tools = source.slice(source.indexOf("('Tools', [", source.indexOf("('Observatoria', [")), source.indexOf("('Over', [", source.indexOf("('Observatoria', [")));
-  assert.match(tools, /EAI Prompt Framework/);
-  assert.doesNotMatch(tools, /Anatomie van de mens/);
-  assert.equal((source.match(/'\/tools\/anatomie\//g) || []).length, 2);
+  assert.match(source, /'Proeven & modellen'/);
+  assert.match(source, /'Experiments & models'/);
+  assert.match(source, /'Artikelen & onderzoek'/);
+  assert.match(source, /'Natuurkunde'/);
+  assert.match(source, /'Wiskunde A'/);
+  assert.match(source, /'Wiskunde B'/);
+  assert.match(source, /'Anatomie van de mens'/);
+  assert.match(source, /'Galactisch Observatorium'/);
+  assert.match(source, /'LLMscan'/);
+  assert.match(source, /site_search_records/);
+  const script = load('assets/site-navigation.js');
+  assert.match(script, /site-search-index\.json/);
+  assert.match(script, /aria-label/);
+  assert.match(script, /resultLink/);
+  const mathA = load('content/science-observatory/labs/wiskunde-a.html');
+  const mathB = load('content/science-observatory/labs/wiskunde-b.html');
+  const galaxy = load('content/science-observatory/labs/melkweg.html');
+  for (const model of [mathA, mathB]) {
+    assert.match(model, /M\.findIndex\(m=>m\.id===location\.hash\.slice\(1\)\)/);
+    assert.match(model, /history\.replaceState/);
+  }
+  assert.match(galaxy, /modeSet\(MODE\[location\.hash\.slice\(1\)\]/);
 });
