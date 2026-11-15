@@ -41,18 +41,20 @@ jobs:
           sudo apt-get install -y fonts-crosextra-carlito fonts-dejavu-core
           python -m pip install --disable-pip-version-check 'PyMuPDF==1.26.7' 'Pillow==12.3.0'
       - name: Apply reviewed PDF corrections
-        run: python scripts/rebuild_zhang_review.py
-      - name: Preserve definitive PDF in repository
+        run: |
+          python scripts/rebuild_zhang_review.py
+          python scripts/rebuild_zhang_review_en.py
+      - name: Preserve definitive PDF files in repository
         run: |
           set -euo pipefail
-          if ! git diff --quiet -- assets/research/zhang-genai-l2-review-nl-2026.pdf; then
+          if ! git diff --quiet -- assets/research/zhang-genai-l2-review-nl-2026.pdf assets/research/zhang-genai-l2-review-en-2026.pdf; then
             git config user.name 'github-actions[bot]'
             git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-            git add assets/research/zhang-genai-l2-review-nl-2026.pdf
-            git commit -m 'docs: publish definitive Zhang meta-analysis review PDF'
+            git add assets/research/zhang-genai-l2-review-nl-2026.pdf assets/research/zhang-genai-l2-review-en-2026.pdf
+            git commit -m 'docs: publish final Dutch and English Zhang reviews'
             git push origin HEAD:main
           else
-            echo 'Definitive PDF already checked in'
+            echo 'Both definitive PDF files already checked in'
           fi
       - name: Install FTPS
         run: sudo apt-get update && sudo apt-get install -y lftp openssl
@@ -122,6 +124,16 @@ jobs:
                               assert 'Zes opgenomen onderzoeken' in document[2].get_text(), 'Old figure caption'
                               assert 'Vissers opgave' in document[8].get_text(), 'Old EAI attribution'
                               assert sum(len(page.get_links()) for page in document)==10, 'Lost DOI links'
+                              document.close()
+                          if path == '/assets/research/zhang-genai-l2-review-en-2026.pdf':
+                              import fitz
+                              document=fitz.open(stream=data,filetype='pdf')
+                              assert len(document)==9, 'Expected nine English pages'
+                              assert 'aloud with Amazon Alexa' in document[2].get_text(), 'Old English PDF'
+                              assert 'Six studies require different checks' in document[2].get_text(), 'Old English figure caption'
+                              assert 'indicating consistent coding' in document[5].get_text(), 'Old English coding discussion'
+                              assert 'Visser’s description' in document[8].get_text(), 'Old English EAI disclosure'
+                              assert sum(len(page.get_links()) for page in document)==10, 'Lost English DOI links'
                               document.close()
                           if path == '/en/research/zhang-genai-language/':
                               assert b'Does AI help students learn another language?' in data, 'Outdated English copy'
