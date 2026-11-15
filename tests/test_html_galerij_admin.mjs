@@ -115,7 +115,7 @@ assert.equal(await statusOf(req('/api/admin/uploads/' + itemId, 'DELETE', { orig
 assert.equal(uploads.get(itemId).status, 'published');
 let response = await worker.fetch(req('/'), env);
 assert.equal(response.status, 200);
-assert.match(await response.text(), /Inloggen bij de HTML-galerij/);
+assert.match(await response.text(), /Inloggen bij EAI Beheer/);
 assert.equal(response.headers.get('Cache-Control'), 'no-store');
 
 const loginForm = (email, password) => {
