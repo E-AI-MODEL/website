@@ -216,14 +216,14 @@ function drawParticles(m){
   for(const flow of routes){
     if(atlasReady&&state.cutaway&&state.focusSide!=='both'&&flow.color!==(state.focusSide==='left'?'red':'blue'))continue;
     if(!flowIsActive(flow,m))continue;
-    for(let i=0;i<flow.n;i++){
+    for(let i=0;i<flow.n;i+=(atlasRich?2:1)){
       const progress=(i/flow.n+state.t*(flow.channel==='sem'?2.35:1.2))%1;
       const point=flow.curve?sampleFlow(flow,progress):pathPoint(flow.path,progress);
       batches[flow.color].push(...point);
     }
   }
   gl.disable(gl.DEPTH_TEST);gl.depthMask(false);gl.useProgram(pointProgram);
-  gl.uniformMatrix4fv(ploc.pv,false,pv);gl.uniform1f(ploc.size,(atlasRich?5.0:7.5)*Math.min(devicePixelRatio||1,2));
+  gl.uniformMatrix4fv(ploc.pv,false,pv);gl.uniform1f(ploc.size,(atlasRich?3.4:7.5)*Math.min(devicePixelRatio||1,2));
   for(const name of ['blue','red']){
     const arr=batches[name];if(!arr.length)continue;
     gl.bindBuffer(gl.ARRAY_BUFFER,particleBuffer);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(arr),gl.DYNAMIC_DRAW);
@@ -240,21 +240,31 @@ let flowVisuals=[],flowVisualKey='';
 function svgElement(name){return document.createElementNS(svgNS,name);}
 function prepareFlowOverlay(){
   flowOverlay.replaceChildren();
-  flowVisuals=atlasFlowPaths.map(flow=>{
-    const bed=svgElement('path'),pulse=svgElement('path'),arrow=svgElement('path');
-    const color=flow.color==='blue'?'#75ddff':'#ffbdad';
-    for(const p of [bed,pulse]){
+  flowVisuals=atlasFlowPaths.map((flow,index)=>{
+    // Korte brede kleurbanen suggereren doorlopend bloed, geen rij neonstippen.
+    // Het blijft een 3D-geprojecteerde onderwijsroute, geen gemeten stromingsveld.
+    const track=svgElement('path'),bed=svgElement('path'),pulse=svgElement('path'),arrow=svgElement('path');
+    const color=flow.color==='blue'?'#6bc8ec':'#ec917e';
+    const highlight=flow.color==='blue'?'#bcefff':'#ffd4c4';
+    for(const p of [track,bed,pulse]){
       p.setAttribute('fill','none');
-      p.setAttribute('stroke',color);
       p.setAttribute('stroke-linecap','round');
       p.setAttribute('stroke-linejoin','round');
     }
-    bed.setAttribute('stroke-width','7');
-    pulse.setAttribute('stroke-width','3.0');
-    pulse.setAttribute('stroke-dasharray','7 11');
+    track.setAttribute('stroke',color);
+    track.setAttribute('stroke-width',flow.channel==='return'?'9':'11');
+    track.setAttribute('class','blood-track');
+    bed.setAttribute('stroke',color);
+    bed.setAttribute('stroke-width',flow.channel==='return'?'5.6':'6.8');
+    bed.setAttribute('class','blood-fill');
+    pulse.setAttribute('stroke',highlight);
+    pulse.setAttribute('stroke-width',flow.channel==='return'?'3':'3.8');
+    pulse.setAttribute('class','blood-pulse');
+    pulse.dataset.flowChannel=flow.channel;
     arrow.setAttribute('fill',color);
-    flowOverlay.append(bed,pulse,arrow);
-    return {flow,bed,pulse,arrow};
+    arrow.setAttribute('class','blood-arrow');
+    flowOverlay.append(track,bed,pulse,arrow);
+    return {flow,index,track,bed,pulse,arrow,length:1,blob:16};
   });
   flowVisualKey='';
 }
@@ -269,29 +279,45 @@ function updateFlowOverlay(m){
   const view=[w,h,state.yaw,state.pitch,state.zoom,...state.pan].join(':');
   if(view!==flowVisualKey){
     flowOverlay.setAttribute('viewBox','0 0 '+w+' '+h);
-    for(const {flow,bed,pulse,arrow} of flowVisuals){
+    for(const visual of flowVisuals){
+      const {flow,track,bed,pulse,arrow}=visual;
       const points=flow.curve.map(p=>project(p,pv,w,h));
       const d=points.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' ');
-      bed.setAttribute('d',d);pulse.setAttribute('d',d);
-      const tip=points[Math.floor(points.length*.70)];
-      const before=points[Math.floor(points.length*.64)];
-      const length=Math.hypot(tip[0]-before[0],tip[1]-before[1])||1;
-      const ux=(tip[0]-before[0])/length,uy=(tip[1]-before[1])/length;
-      const back=[tip[0]-ux*12,tip[1]-uy*12];
+      for(const segment of [track,bed,pulse])segment.setAttribute('d',d);
+      const length=Math.max(1,pulse.getTotalLength());
+      const blob=clamp(length*.18,14,32);
+      visual.length=length;
+      visual.blob=blob;
+      // Eén zachte, langgerekte stroompuls per route, met een open ruimte ertussen.
+      pulse.setAttribute('stroke-dasharray',blob.toFixed(1)+' '+(length+blob).toFixed(1));
+      const tip=points[Math.floor(points.length*.76)];
+      const before=points[Math.floor(points.length*.70)];
+      const tangent=Math.hypot(tip[0]-before[0],tip[1]-before[1])||1;
+      const ux=(tip[0]-before[0])/tangent,uy=(tip[1]-before[1])/tangent;
+      const back=[tip[0]-ux*8,tip[1]-uy*8];
       arrow.setAttribute('d','M '+tip[0].toFixed(1)+' '+tip[1].toFixed(1)+
-        ' L '+(back[0]-uy*4.8).toFixed(1)+' '+(back[1]+ux*4.8).toFixed(1)+
-        ' L '+(back[0]+uy*4.8).toFixed(1)+' '+(back[1]-ux*4.8).toFixed(1)+' Z');
+        ' L '+(back[0]-uy*3.0).toFixed(1)+' '+(back[1]+ux*3.0).toFixed(1)+
+        ' L '+(back[0]+uy*3.0).toFixed(1)+' '+(back[1]-ux*3.0).toFixed(1)+' Z');
     }
     flowVisualKey=view;
   }
-  for(const {flow,bed,pulse,arrow} of flowVisuals){
+  for(const {flow,index,track,bed,pulse,arrow,length,blob} of flowVisuals){
     const side=state.focusSide==='both'||flow.color===(state.focusSide==='left'?'red':'blue');
     const active=side&&flowIsActive(flow,m);
+    const valveOpening=flow.channel==='av'?m.avOpening:flow.channel==='sem'?m.semOpening:1;
+    const strength=active?clamp(valveOpening,0,1):0;
+    // Aanvoer loopt door. Bij gesloten kleppen verdwijnen bewegende uitstroombanen.
     const entering=flow.channel==='return';
-    bed.style.opacity=active?(entering?'0.15':'0.26'):'0';
-    pulse.style.opacity=active?(entering?'0.65':'0.96'):'0';
-    arrow.style.opacity=active?(entering?'0.72':'0.98'):'0';
-    pulse.style.strokeDashoffset=String(-state.t*(flow.channel==='sem'?175:95));
+    track.style.opacity=String(strength*(entering?.13:.19));
+    bed.style.opacity=String(strength*(entering?.35:.52));
+    pulse.style.opacity=String(strength*(entering?.62:.94));
+    // Alleen bij de vijf hoofdverbindingen een klein pijltje. De zijtakken
+    // lees je aan de bewegende puls, zonder een wirwar van pijlen te tekenen.
+    arrow.style.opacity=String(!entering&&active?strength*.58:0);
+    const progress=entering?state.t:flow.channel==='av'?
+      clamp(state.t/.64,0,1):clamp((state.t-.70)/.23,0,1);
+    const travel=(progress+index*.13)%1;
+    pulse.style.strokeDashoffset=String(-(length+blob)*travel);
   }
 }
 function updateViewport(){
