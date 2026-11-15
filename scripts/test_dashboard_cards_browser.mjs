@@ -1,5 +1,6 @@
 import { chromium } from "playwright";
 import { spawn } from "node:child_process";
+import { mkdirSync } from "node:fs";
 import assert from "node:assert/strict";
 
 const root = process.argv[2] || "site-build";
@@ -12,6 +13,7 @@ try {
     await new Promise(resolve=>setTimeout(resolve,110));
   }
   browser=await chromium.launch({headless:true});
+  mkdirSync("test-results",{recursive:true});
   const errors=[];
   for(const width of [1440, 768, 390, 320]) {
     const context=await browser.newContext({viewport:{width,height:900}});
@@ -24,6 +26,7 @@ try {
     assert.equal(await page.locator("main .eai-landing-route").count(),4);
     assert.equal(await page.locator("header.eai-masthead").count(),1);
     assert.equal(await page.locator("main .eai-dash-step").count(),4);
+    await page.screenshot({path:"test-results/dashboard-cards-"+width+".png",fullPage:true});
     const bounds=await page.evaluate(()=>({page:document.documentElement.scrollWidth,viewport:document.documentElement.clientWidth}));
     assert(bounds.page<=bounds.viewport+1,"Horizontal scrolling at "+width+": "+JSON.stringify(bounds));
     await page.locator('[data-dash-filter="proberen"]').click();
