@@ -55,7 +55,13 @@
   var note=document.createElement('small');
   note.textContent=item.category||'';
   link.append(name,note);
-  if(item.description)link.title=item.description;
+  var detail=String(item.description||'').trim();
+  if(detail&&clean(detail)!==clean(item.title)){
+   var summary=document.createElement('span');
+   summary.className='eai-site-search-hit-description';
+   summary.textContent=detail;
+   link.append(summary);
+  }
   return link;
  }
  function showMessage(message){
