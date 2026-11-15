@@ -137,5 +137,6 @@ body.eai-ui .eai-site-search-hit small{font-size:11px;color:#647b6b;line-height:
 body.eai-ui .eai-site-search-hit:hover,body.eai-ui .eai-site-search-hit:focus-visible{background:#edf4ee}
 body.eai-ui .eai-site-search-status{font-size:12px;color:#5d7565;margin:7px 4px 8px;line-height:1.45}
 body.eai-ui .eai-site-search-back{font:500 13px Inter,system-ui,sans-serif;color:#315d4f;min-height:42px;padding:6px 10px;border:1px solid #ccdbd0;background:#f5f9f6;border-radius:6px;cursor:pointer}
+@media(max-width:1180px){body.eai-ui .eai-site-primary{display:none!important}}
 @media(max-width:900px){body.eai-ui .eai-site-upload{display:none!important}}
 @media(max-width:620px){body.eai-ui .eai-site-nav{padding:0 15px;gap:9px}body.eai-ui .eai-site-controls{gap:7px}body.eai-ui .eai-site-menu-panel{right:-1px;top:calc(100% + 9px);width:min(430px,calc(100vw - 20px));max-height:calc(100dvh - 84px);padding:9px 13px 14px}body.eai-ui .eai-site-search{top:-9px}body.eai-ui .eai-site-menu>summary{min-height:43px}}
