@@ -5,6 +5,7 @@ import {readFileSync} from "node:fs";
 import {inspectZip,readZipText} from "../assets/projecthulp/zip.mjs";
 import {parseRepoUrl,fetchPublicRepo,stripArchiveRoot,describeProject,analyzeArchive,compareProjects,makeAdvice,reportText,readmeTemplate,ignoreTemplate} from "../assets/projecthulp/analyse.mjs";
 import {checkProjectPurpose,findBrokenLocalLinks,PURPOSES} from "../assets/projecthulp/doelcontrole.mjs";
+import {gitBlobId,goalTestFromAim} from "../assets/projecthulp/inhoudscontrole.mjs";
 import {availableProjectChecks,generateProjectCheckWorkflow} from "../assets/projecthulp/projectcheck.mjs";
 import {makeGuidance,continuationPrompt} from "../assets/projecthulp/begeleiding.mjs";
 import {buildJourney,primaryFinding,helpPrompt} from "../assets/eaigit/journey.mjs";
@@ -274,4 +275,74 @@ test("Wizard past stappen aan bij ZIP-only, nog geen GitHub en publicatie",()=>{
  assert.match(publish[publish.length-1].help,/niet voor iedere/);
  const unsure=buildJourney({intent:"explore",source:"unknown",guidance:{problems:[]}});
  assert.equal(unsure[0].id,"source");
+});
+
+test("Regressie: bestaande index.html krijgt geen melding over ontbrekend startbestand",async()=>{
+ const archive=await analyzeArchive(fake(makeZip([["site/index.html","<h1>Site</h1>"]])));
+ const purpose=checkProjectPurpose({goal:"site",archive});
+ assert.ok(purpose.found.some(x=>x.includes("index.html")));
+ assert.ok(!purpose.remaining.some(x=>x.includes("Geen index.html")));
+});
+test("ZIP: statische controle vindt echte lokale import-, CSS- en JSON-problemen",async()=>{
+ const archive=await analyzeArchive(fake(makeZip([
+  ["site/index.html",'<link rel="stylesheet" href="style.css"><script src="app.js"></script>'],
+  ["site/style.css",'body{background:url("assets/ontbreekt.png")}'],
+  ["site/app.js",'import "./scripts/ontbreekt.js";'],
+  ["site/config.json",'{"fout": }'],
+  ["site/.env","DIT_MAG_NOOIT_IN_HET_ADVIES"]
+ ])));
+ const result=archive.contentCheck;
+ assert.ok(result.checkedFiles>=4);
+ assert.ok(result.findings.some(x=>x.type==="missing-reference"&&x.path==="app.js"&&x.line===1));
+ assert.ok(result.findings.some(x=>x.type==="missing-reference"&&x.path==="style.css"));
+ assert.ok(result.findings.some(x=>x.type==="invalid-json"&&x.path==="config.json"));
+ assert.ok(!JSON.stringify(result).includes("DIT_MAG_NOOIT_IN_HET_ADVIES"));
+ assert.ok(!Object.hasOwn(archive.fingerprints,".env"));
+ assert.equal(result.executesProjectCode,false);
+});
+test("GitHub: ZIP-vingerafdrukken onderscheiden bewezen identieke en gewijzigde bytes",async()=>{
+ const archive=await analyzeArchive(fake(makeZip([["index.html","origineel"],["main.js","code-versie-A"]])));
+ const sha=archive.fingerprints["index.html"];
+ assert.match(sha,/^[a-f0-9]{40}$/);
+ const repo={readable:true,truncated:false,paths:["index.html","main.js"],blobs:{
+  "index.html":sha,"main.js":await gitBlobId(new TextEncoder().encode("code-versie-B"))
+ }};
+ const comparison=compareProjects(archive,repo);
+ assert.deepEqual(comparison.identical,["index.html"]);
+ assert.deepEqual(comparison.changed,["main.js"]);
+ assert.deepEqual(comparison.unknown,[]);
+ const guidance=makeGuidance({archive,repo:{...repo,name:"test/repo",url:"https://github.com/test/repo"},advice:{comparison},goal:"site"});
+ assert.ok(guidance.problems.some(x=>x.title.includes("verschillende versies")));
+});
+test("GitHub: openbare blobinhoud wordt pas beoordeeld na overeenkomende hash",async()=>{
+ const text='<script src="ontbreekt.js"></script>';
+ const bytes=new TextEncoder().encode(text);
+ const sha=await gitBlobId(bytes);
+ let blobCalls=0;
+ const fetcher=async(url)=>{
+  if(url.includes("/git/blobs/")){
+   blobCalls++;
+   return new Response(JSON.stringify({size:bytes.length,encoding:"base64",content:Buffer.from(bytes).toString("base64")}),{status:200});
+  }
+  if(url.includes("/git/trees/"))
+   return new Response(JSON.stringify({sha:"tree",truncated:false,tree:[{type:"blob",path:"index.html",sha,size:bytes.length}]}),{status:200});
+  return new Response(JSON.stringify({private:false,full_name:"sample/repo",default_branch:"main",html_url:"https://github.com/sample/repo"}),{status:200});
+ };
+ const repo=await fetchPublicRepo("https://github.com/sample/repo",fetcher);
+ assert.equal(blobCalls,1);
+ assert.equal(repo.contentCheck.checkedFiles,1);
+ assert.ok(repo.contentCheck.findings.some(x=>x.path==="index.html"&&x.target==="ontbreekt.js"));
+ assert.equal(repo.blobs["index.html"],sha);
+});
+test("Gebruikersdoel oefeningen leidt tot concrete functionele test, geen schijnbewijs",async()=>{
+ const archive=await analyzeArchive(fake(makeZip([["index.html",'<button id="startQuiz">Oefen</button>']])));
+ const guidance=makeGuidance({archive,goal:"app",aim:"Bezoekers moeten oefeningen kunnen maken en hun antwoorden en resultaten terugzien."});
+ assert.equal(guidance.goalTest.id,"exercise");
+ assert.match(guidance.goalTest.action,/goed en een fout antwoord/);
+ assert.equal(guidance.goalTest.tested,false);
+ assert.ok(guidance.uncertain.some(x=>x.includes("nog niet uitgevoerd")));
+ const steps=buildJourney({intent:"publish",source:"zip",archive,guidance});
+ assert.ok(steps.some(x=>x.id==="try"&&x.description.includes("feedback")));
+ assert.equal(steps[steps.length-1].id,"publishing");
+ assert.equal(goalTestFromAim("",{}),null);
 });
