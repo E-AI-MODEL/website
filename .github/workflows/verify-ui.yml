@@ -46,9 +46,9 @@ jobs:
       - name: Hergebruik de echte gepinde 3D-modellen bij andere PR's
         if: steps.anatomy_scope.outputs.run != 'true'
         run: python scripts/reuse_published_anatomie.py --source tools/anatomie --out site-build/tools/anatomie
-      - run: python scripts/prepare_ui.py --root site-build
-      - name: Controleer altijd de echte anatomische bestanden en bronvermelding
+      - name: Controleer de complete atlas en oorspronkelijke bronvermelding
         run: python -m unittest discover -s tests -p 'test_anatomie_publish.py' -v
+      - run: python scripts/prepare_ui.py --root site-build
       - name: Verify editorial card scope and build output
         run: python -m unittest discover -s tests -p 'test_story_cards.py' -v
       - run: python scripts/verify_ui.py --root site-build
