@@ -32,6 +32,7 @@ async function session(name,viewport,offline=false){
  assert.ok(await page.locator('#game-ui').isVisible(),'Spel verschijnt na starten');
  for(let area=0;area<6;area++){
   await page.locator('#roll').click();
+  if(area===0)await page.screenshot({path:'test-results/eaigame-'+name+'-playing.png'});
   const destination=await page.locator('#destinations button').count();assert.ok(destination>=1,'Worp opent een route');
   const button=page.locator('#destinations button').filter({hasText:['De Breuk','De Storm','De Echo','De Stad','Het Atelier','De Arena'][area]});
   assert.ok(await button.count()===1,'Gebied bereikbaar na worp van zes');
