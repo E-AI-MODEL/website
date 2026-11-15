@@ -3,7 +3,7 @@ import { configured, currentUser, login, logout, loginResponse, sameOrigin } fro
 import { privatePage } from './ui.js';
 import { dashboardPage } from './dashboard.js';
 import { adminClientJs } from './admin-client.js';
-import { handleAdmin, recordAdminAction } from './admin.js';
+import { handleAdmin, auditStatement } from './admin.js';
 
 const MAX_BYTES = 1024 * 1024;
 const MAX_ITEMS = 100;
@@ -75,9 +75,11 @@ async function publish(request, env) {
     ).bind(hash, hour).first();
     if ((rate?.count || 0) > 5) return error('Maximaal vijf bestanden per uur.', 429);
     const id = Date.now().toString().padStart(13, '0') + '-' + crypto.randomUUID();
-    await env.DB.prepare('INSERT INTO uploads (id, title, author, filename, html_content) VALUES (?, ?, ?, ?, ?)')
-      .bind(id, title.trim(), author.trim(), file.name.slice(0, 180), content).run();
-    await recordAdminAction(env, env.GALLERY_ADMIN_EMAIL.toLowerCase(), 'upload.published', id);
+    await env.DB.batch([
+      env.DB.prepare('INSERT INTO uploads (id, title, author, filename, html_content) VALUES (?, ?, ?, ?, ?)')
+        .bind(id, title.trim(), author.trim(), file.name.slice(0, 180), content),
+      auditStatement(env, env.GALLERY_ADMIN_EMAIL.toLowerCase(), 'upload.published', id)
+    ]);
     return json({ id, url: '/view/' + id }, 201);
   } catch (err) {
     console.error('Gallery save failed', err);
@@ -88,10 +90,14 @@ async function hideUpload(request, env, id) {
   if (!sameOrigin(request)) return error('Niet toegestaan.', 403);
   if (!validId(id)) return error('Ongeldige pagina.', 400);
   try {
-    const result = await env.DB.prepare("UPDATE uploads SET status = 'hidden' WHERE id = ? AND status = 'published'")
-      .bind(id).run();
+    const [, result] = await env.DB.batch([
+      env.DB.prepare(
+        "INSERT INTO site_admin_audit(actor, action, target) " +
+        "SELECT ?,?,? WHERE EXISTS (SELECT 1 FROM uploads WHERE id=? AND status='published')"
+      ).bind(env.GALLERY_ADMIN_EMAIL.toLowerCase(), 'upload.hidden', id, id),
+      env.DB.prepare("UPDATE uploads SET status = 'hidden' WHERE id = ? AND status = 'published'").bind(id)
+    ]);
     if ((result.meta?.changes || 0) !== 1) return error('Pagina niet gevonden.', 404);
-    await recordAdminAction(env, env.GALLERY_ADMIN_EMAIL.toLowerCase(), 'upload.hidden', id);
     return json({ ok: true });
   } catch { return error('Beheer is tijdelijk niet beschikbaar.', 503); }
 }
