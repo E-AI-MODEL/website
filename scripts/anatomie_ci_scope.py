@@ -22,6 +22,8 @@ PREFIXES = (
     "scripts/prepare_ui.py",
     "scripts/verify_ui.py",
     "scripts/anatomie_ci_scope.py",
+    "scripts/reuse_published_anatomie.py",
+    ".github/workflows/build-site.yml",
     ".github/workflows/verify-ui.yml",
     ".github/workflows/deploy-theory7.yml",
 )
