@@ -30,7 +30,7 @@ def groups(en: bool):
     """Publieke hoofdroutes, gescheiden van alle onderliggende proeven."""
     if en:
         return [
-            ('Understand EAI', [('The EAI model', '/en/model/'), ('Applications', '/en/applications/'), ('Research and evidence', '/en/research/')]),
+            ('Understand EAI', [('The EAI model', '/en/model/'), ('EAI Dictionary', '/en/glossary/'), ('Applications', '/en/applications/'), ('Research and evidence', '/en/research/')]),
             ('Teaching', [('Lessons and workforms', '/en/education/'), ('All workforms', '/werkvormen/')]),
             ('Research & publications', [('All publications', '/en/publications/'), ('Research and sources', '/en/research/')]),
             ('Experiments & simulations', [('All experiments', '/tools/science-observatory/'), ('Physics', '/tools/science-observatory/labs/natuurkunde/'), ('Mathematics A', '/tools/science-observatory/labs/wiskunde-a/'), ('Mathematics B', '/tools/science-observatory/labs/wiskunde-b/'), ('Human anatomy', '/tools/anatomie/'), ('Galactic Observatory', '/tools/science-observatory/labs/melkweg/'), ('LLM Observatory', '/tools/llm-observatorium/'), ('Sport and movement', '/tools/sport-en-bewegen/')]),
@@ -38,7 +38,7 @@ def groups(en: bool):
             ('About EAI', [('About EAI', '/en/about/'), ('Site insights', '/en/insights/')]),
         ]
     return [
-        ('EAI begrijpen', [('Het EAI-model', '/nl/model/'), ('Toepassingen', '/nl/toepassingen/'), ('Kennis en onderbouwing', '/kennis/')]),
+        ('EAI begrijpen', [('Het EAI-model', '/nl/model/'), ('Begrippen en definities', '/nl/begrippen/'), ('Toepassingen', '/nl/toepassingen/'), ('Kennis en onderbouwing', '/kennis/')]),
         ('Lespraktijk', [('Lessen en werkvormen', '/nl/onderwijs/'), ('Alle werkvormen', '/werkvormen/')]),
         ('Onderzoek & publicaties', [('Alle publicaties', '/nl/publicaties/'), ('Onderzoek en bronnen', '/nl/onderzoek/'), ('Blog', '/nl/blog/'), ('Bronnenregister', '/bronnen/')]),
         ('Proeven & simulaties', [('Alle proeven en simulaties', '/tools/science-observatory/'), ('Natuurkunde', '/tools/science-observatory/labs/natuurkunde/'), ('Wiskunde A', '/tools/science-observatory/labs/wiskunde-a/'), ('Wiskunde B', '/tools/science-observatory/labs/wiskunde-b/'), ('Anatomie van de mens', '/tools/anatomie/'), ('Galactisch Observatorium', '/tools/science-observatory/labs/melkweg/'), ('Hoe werkt AI?', '/tools/llm-observatorium/'), ('Sport en bewegen', '/tools/sport-en-bewegen/')]),
@@ -301,6 +301,24 @@ def site_search_records(root: Path) -> list:
                 add(title, url, relative.parts[0].upper(), summary)
         except (UnicodeError, OSError):
             continue
+    # Offer individual dictionary entries as search destinations, without
+    # creating or changing existing public URLs.
+    for locale, relative, heading in (
+        ('nl', 'nl/begrippen/index.html', 'EAI begrijpen · begrippen'),
+        ('en', 'en/glossary/index.html', 'Understand EAI · glossary'),
+    ):
+        page = root / relative
+        if not page.exists():
+            continue
+        soup = BeautifulSoup(page.read_text(encoding='utf-8'), 'html.parser')
+        for entry in soup.select('details.eai-dictionary-term[id]'):
+            summary = entry.select_one('summary span')
+            description = entry.select_one('.eai-dictionary-definition p')
+            if not summary:
+                continue
+            label = str(summary.contents[0]).strip() if summary.contents else summary.get_text(' ', strip=True)
+            add(label, '/' + relative.removesuffix('index.html') + '#' + entry['id'],
+                heading, description.get_text(' ', strip=True) if description else '')
     return list(records.values())
 
 def navigation(soup: BeautifulSoup, path: str, en: bool) -> str:
@@ -331,7 +349,7 @@ def navigation(soup: BeautifulSoup, path: str, en: bool) -> str:
         else:
             links = ''.join(f'<a href="{html.escape(target, quote=True)}"' + (' aria-current="page"' if path_here == canonical(target) else '') + f'>{html.escape(label)}</a>' for label, target in entries)
             if title in ('EAI begrijpen', 'Understand EAI'):
-                purpose = 'Het model, voorbeelden en de onderbouwing.' if not en else 'The model, examples and supporting evidence.'
+                purpose = 'Wat betekent het model, en welke woorden gebruiken we precies?' if not en else 'What does the model mean, and which terms do we use?'
                 links = '<p class="eai-site-topic-intro">' + html.escape(purpose) + '</p>' + links
         menu.append(f'<details class="eai-site-group{active_cls}" name="eai-navigation-theme"><summary>{html.escape(title)}</summary><div class="eai-site-group-links{" eai-site-model-links" if model_group else ""}">{links}</div></details>')
     primary = []
