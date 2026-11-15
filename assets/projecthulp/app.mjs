@@ -1,6 +1,7 @@
-import {analyzeArchive,fetchPublicRepo,makeAdvice,reportText,readmeTemplate,ignoreTemplate,parseRepoUrl} from "./analyse.mjs";
+import {analyzeArchive,fetchPublicRepo,makeAdvice,readmeTemplate,ignoreTemplate,parseRepoUrl} from "./analyse.mjs";
 import {generateProjectCheckWorkflow} from "./projectcheck.mjs";
-import {makeGuidance,continuationPrompt} from "./begeleiding.mjs";
+import {makeGuidance} from "./begeleiding.mjs";
+import {guideActions} from "./hulpstappen.mjs";
 const $=(id)=>document.getElementById(id);
 const state={archive:null,repo:null,advice:null,goal:"site",aim:"",experience:"beginner",repoError:null,workerRuns:[]};
 async function runAnalysisWorker(kind,data,transfer=[]){
@@ -40,23 +41,49 @@ const download=(name,text,type="text/plain;charset=utf-8")=>{
  const blob=new Blob([text],{type});const url=URL.createObjectURL(blob);const link=document.createElement("a");
  link.href=url;link.download=name;link.style.display="none";document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),2000);
 };
+let currentGuides={};
+function selectGuide(id){
+ const guide=currentGuides[id];
+ if(!guide)return;
+ for(const button of document.querySelectorAll("[data-guide]")){
+  const active=button.dataset.guide===id;
+  button.classList.toggle("active",active);
+  button.setAttribute("aria-pressed",String(active));
+ }
+ setText("guideStepTitle",guide.title);
+ setText("guideStepText",guide.text);
+ const link=$("guideUrl");
+ link.href=guide.url;link.textContent=guide.link;
+ show("guideUrl",Boolean(guide.url));
+ $("guidePrompt").value=guide.prompt;
+ show("guidePromptBox",false);
+ setText("guideStatus","");
+ $("revealGuidePrompt").textContent="Toon opdracht voor deze stap";
+ state.selectedGuide=id;
+}
 function render(){
  const {archive,repo,advice,repoError}=state;
- const purpose=advice.purpose;
- state.guidance=makeGuidance({archive,repo,advice,goal:state.goal,aim:state.aim,repoError});
- const guidance=state.guidance;
+ const guidance=makeGuidance({archive,repo,advice,goal:state.goal,aim:state.aim,repoError});
+ state.guidance=guidance;
+ const pills=[archive?archive.project.type:"Geen ZIP onderzocht",repo?.name||"Geen repository gecontroleerd"];
+ const summary=$("summary");summary.replaceChildren();
+ for(const label of pills){const item=document.createElement("span");item.textContent=label;summary.append(item);}
  list("goodPoints",guidance.good);
- const problems=guidance.problems;
  const issues=$("problemPoints");issues.replaceChildren();
- if(!problems.length){const li=document.createElement("li");li.textContent="Geen concrete fout vastgesteld binnen deze beperkte controle. De code is niet functioneel getest.";issues.append(li);}
- for(const problem of problems){
+ if(!guidance.problems.length){
   const li=document.createElement("li");
-  const strong=document.createElement("strong");strong.textContent=problem.title+". ";li.append(strong);
-  li.append(document.createTextNode(problem.detail));
+  li.textContent="Geen concrete fout gevonden in de uitgevoerde controles.";
+  issues.append(li);
+ }
+ for(const problem of guidance.problems){
+  const li=document.createElement("li");
+  const bold=document.createElement("strong");bold.textContent=problem.title+". ";
+  li.append(bold,document.createTextNode(problem.detail));
   if(problem.path&&repo?.readable&&repo?.paths?.includes(problem.path)&&repo?.branch&&guidance.repoUrl){
    const link=document.createElement("a");
    link.href=guidance.repoUrl+"/blob/"+encodeURIComponent(repo.branch)+"/"+problem.path.split("/").map(encodeURIComponent).join("/")+(problem.line?"#L"+problem.line:"");
-   link.target="_blank";link.rel="noopener noreferrer";link.textContent="Bekijk "+problem.path+(problem.line?" regel "+problem.line:"")+" in GitHub";
+   link.target="_blank";link.rel="noopener noreferrer";
+   link.textContent="Bekijk "+problem.path+(problem.line?" regel "+problem.line:"")+" in GitHub";
    li.append(document.createTextNode(" "),link);
   }
   issues.append(li);
@@ -64,55 +91,26 @@ function render(){
  list("unknownPoints",guidance.uncertain);
  show("nextStepsGroup",guidance.next.length>1);
  list("nextSteps",guidance.next.slice(1));
- $("nextPrompt").value=continuationPrompt(guidance,{repo});
- setText("promptStatus","");
- const summary=$("summary");summary.replaceChildren();
- const pills=[archive?archive.project.type:"Geen ZIP onderzocht",repo?repo.name:"Geen repository bevestigd"];
- pills.forEach(label=>{const span=document.createElement("span");span.textContent=label;summary.append(span);});
- list("observations",advice.observations);
- setText("purposeTitle",purpose?.label||"Wat wil je bereiken?");
- show("purposeAim",Boolean(purpose?.aim));
- setText("purposeAim",purpose?.aim?"Jouw omschrijving (niet inhoudelijk getest): “"+purpose.aim+"”":"");
- const found=purpose?.found?.length?purpose.found:["In de bestanden is nog geen duidelijke aanwijzing gevonden."];
- const remaining=purpose?.remaining?.length?purpose.remaining:["De belangrijkste gebruikershandeling is nog niet getest."];
- setText("purposeQuickFound",found[0]);
- setText("purposeQuickRemaining",remaining[0]);
- list("purposeFound",found);
- list("purposeRemaining",remaining);
- const warnings=[...advice.warnings];if(repoError)warnings.unshift("GitHub: "+repoError);
- show("warningsGroup",warnings.length>0);list("warnings",warnings);
- setText("warningsTitle",warnings.length===1?"Bekijk 1 aandachtspunt":"Bekijk "+warnings.length+" aandachtspunten");
- $("warningsGroup").open=Boolean(archive?.secret?.length||archive?.missingReferences?.length||purpose?.repoOnlyZips);
- list("steps",advice.steps.slice(0,3));
- const additional=advice.steps.slice(3);
- list("moreSteps",additional);show("moreStepsGroup",additional.length>0);
- setText("moreStepsTitle",additional.length===1?"Bekijk de laatste stap":"Bekijk de overige "+additional.length+" stappen");
- list("limits",advice.limits);
- setText("planCount",advice.steps.length+" "+(advice.steps.length===1?"stap":"stappen"));
- const missing=advice.comparison?.missing||[];
- show("missingGroup",missing.length>0);
- setText("missingTitle",missing.length===1?"Dit bestand ontbreekt nog in GitHub":"Deze "+missing.length+" bestanden ontbreken nog in GitHub");
- list("missingFiles",missing);
  const repoLink=$("openRepo");
- show("openRepo",Boolean(repo?.url));
- if(repo?.url)repoLink.href=repo.url;
- const actionLink=$("openActions");
+ show("openRepo",Boolean(guidance.repoUrl));
+ if(guidance.repoUrl)repoLink.href=guidance.repoUrl;
+ const actionsLink=$("openActions");
  show("openActions",Boolean(guidance.actionsUrl));
- if(guidance.actionsUrl)actionLink.href=guidance.actionsUrl;
- repoLink.firstChild.textContent=archive?.secret?.length||purpose?.repoOnlyZips?"Bekijk GitHub, upload nog niets ":"Open je GitHub-repository ";
- let firstTitle="Dit kun je nu doen";
- if(archive?.secret?.length)firstTitle="Controleer eerst je privébestanden";
- else if(guidance.problems.some(p=>p.title.includes("ZIP in GitHub")))firstTitle="Een ZIP op GitHub is nog geen project";
- else if(archive?.missingReferences?.length)firstTitle="Controleer de ontbrekende bestanden";
- else if(!archive)firstTitle="Bekijk eerst je ZIP-bestand";
- else if(!repo?.readable)firstTitle="Controleer je GitHub-repository";
- const firstText=guidance.next[0]||"Bekijk wat er is aangetroffen en bepaal de volgende stap.";
- setText("firstTitle",firstTitle);setText("firstText",firstText);
- setText("resultLead",archive&&repo?"We hebben je ZIP en de openbare GitHub-bestandslijst onderzocht.":"Dit is wat we konden vaststellen. De overige informatie ontbreekt of was niet bereikbaar.");
+ if(guidance.actionsUrl)actionsLink.href=guidance.actionsUrl;
+ let title="Dit kun je nu doen";
+ if(archive?.secret?.length)title="Controleer eerst je privébestanden";
+ else if(guidance.problems.some(x=>x.title.includes("ZIP in GitHub")))title="Pak eerst je ZIP uit";
+ else if(archive?.missingReferences?.length)title="Bekijk de ontbrekende bestanden";
+ else if(!archive)title="Onderzoek eerst je ZIP-bestand";
+ else if(!repo?.readable)title="Controleer de repository";
+ setText("firstTitle",title);
+ setText("firstText",guidance.next[0]||"Bekijk de gevonden onderdelen en kies je volgende stap.");
+ currentGuides=guideActions({guidance,repo,goal:state.goal,aim:state.aim});
+ selectGuide("onderzoek");
  $("downloadReadme").disabled=!archive;
  $("downloadIgnore").disabled=!archive;
+ show("optionalFiles",Boolean(archive));
  show("automationDetails",Boolean(generateProjectCheckWorkflow(archive)));
- setText("copyStatus","");
  screen(3);
 }
 async function analyze(){
@@ -124,7 +122,7 @@ async function analyze(){
   setText("inputError","Kies een ZIP-bestand van maximaal 16 MB.");show("inputError",true);return;
  }
  if(url){try{parseRepoUrl(url);}catch(error){setText("inputError",error.message);show("inputError",true);return;}}
- state.goal=document.querySelector('input[name="goal"]:checked')?.value||"upload";
+ state.goal=document.querySelector('input[name="goal"]:checked')?.value||"site";
  state.experience="beginner";
  state.aim=$("projectAim").value.trim().slice(0,220);
  $("analyze").disabled=true;show("loading",true);setText("loadingText","We controleren je bestanden…");
@@ -173,22 +171,21 @@ drop.addEventListener("drop",event=>{
  try{const transfer=new DataTransfer();transfer.items.add(file);$("zipFile").files=transfer.files;setText("fileName",file.name);}
  catch{setText("inputError","Sleep het ZIP-bestand niet, maar kies het via de bestandsknop.");show("inputError",true);}
 });
-$("copyPrompt").addEventListener("click",async()=>{
- const prompt=$("nextPrompt").value;
- if(!prompt)return;
- try{
-  await navigator.clipboard.writeText(prompt);
-  setText("promptStatus","Opdracht gekopieerd.");
- }catch{setText("promptStatus","Kopiëren lukte niet. Selecteer de tekst hierboven.");}
+for(const button of document.querySelectorAll("[data-guide]")){
+ button.addEventListener("click",()=>selectGuide(button.dataset.guide));
+}
+$("revealGuidePrompt").addEventListener("click",()=>{
+ const next=$("guidePromptBox").classList.contains("ph-hidden");
+ show("guidePromptBox",next);
+ $("revealGuidePrompt").textContent=next?"Verberg opdracht":"Toon opdracht voor deze stap";
 });
-$("copyReport").addEventListener("click",async()=>{
- if(!state.advice)return;
- const text=reportText({archive:state.archive,repo:state.repo,advice:state.advice,workerRuns:state.workerRuns});
+$("copyGuidePrompt").addEventListener("click",async()=>{
+ if(!$("guidePrompt").value)return;
  try{
-  await navigator.clipboard.writeText(text);
-  setText("copyStatus","Advies gekopieerd. Je kunt het nu plakken in een bericht of document.");
+  await navigator.clipboard.writeText($("guidePrompt").value);
+  setText("guideStatus","Opdracht gekopieerd.");
  }catch{
-  setText("copyStatus","Kopiëren lukte niet. Het volledige advies blijft hierboven zichtbaar.");
+  setText("guideStatus","Kopiëren lukte niet. Selecteer de tekst en kopieer die zelf.");
  }
 });
 $("downloadReadme").addEventListener("click",()=>{if(state.archive)download("README.md",readmeTemplate(state.archive,state.repo?.name));});
