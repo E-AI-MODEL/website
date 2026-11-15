@@ -1,7 +1,6 @@
 import {chromium} from "playwright";
 import {spawn} from "node:child_process";
 import {mkdirSync,readFileSync} from "node:fs";
-import fs from "node:fs/promises";
 import {resolve,join} from "node:path";
 import assert from "node:assert/strict";
 const root=resolve(process.argv[2]||"site-build"),out=resolve("test-results");
@@ -26,6 +25,12 @@ try{
  let online=false;for(let i=0;i<65;i++){try{online=(await fetch(base)).ok;}catch{}if(online)break;await new Promise(r=>setTimeout(r,110));}assert(online);
  browser=await chromium.launch({headless:true});
  const page=await browser.newPage({viewport:{width:1440,height:900},acceptDownloads:true});
+ await page.addInitScript(()=>{
+  window.__copiedProjectAdvice="";
+  Object.defineProperty(navigator,"clipboard",{configurable:true,value:{
+   writeText:async(value)=>{window.__copiedProjectAdvice=String(value);}
+  }});
+ });
  const spawned=[];page.on("worker",w=>spawned.push(w.url()));
  page.on("pageerror",e=>errors.push(e.message));
  page.on("request",r=>{if(!r.url().startsWith(base))sent.push({method:r.method(),url:r.url()});});
@@ -63,9 +68,10 @@ try{
  assert.equal(await page.locator(".skip-link").evaluate(el=>el.getBoundingClientRect().x < 0),true);
  assert.equal(await page.locator("#summary span").count(),2);
  await page.screenshot({path:join(out,"projecthulp-desktop.png"),fullPage:true});
- const [report]=await Promise.all([page.waitForEvent("download"),page.locator("#downloadReport").click()]);
- await report.saveAs(join(out,"projecthulp-advies.md"));
- const text=await fs.readFile(join(out,"projecthulp-advies.md"),"utf8");
+ await page.locator("#copyReport").click();
+ assert.match(await page.locator("#copyStatus").innerText(),/gekopieerd/);
+ const text=await page.evaluate(()=>window.__copiedProjectAdvice);
+ assert.ok(text.length>200,"Het advies moet volledig zijn gekopieerd");
  assert.match(text,/GitHub-bronversie: fixture-sha/);
  assert.match(text,/niet uitgevoerd/);
  assert.match(text,/Uitgevoerde browserwerkers/);
@@ -92,5 +98,5 @@ try{
  assert.match(await page.locator("#steps").innerText()+" "+await page.locator("#moreSteps").textContent(),/GitHub pakt een geüpload ZIP-bestand niet automatisch uit/);
  assert.deepEqual(errors,[]);
  assert.deepEqual(errors,[]);
- console.log("Projecthulp browserproef geslaagd: ZIP lokaal, GitHub API gemockt, advies, download, foutpad en mobiel.");
+ console.log("Projecthulp browserproef geslaagd: ZIP lokaal, GitHub API nagebootst, advies direct zichtbaar en kopieerbaar, foutpad en mobiel.");
 }finally{await browser?.close();server.kill();}
