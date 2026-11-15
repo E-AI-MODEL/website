@@ -40,11 +40,11 @@ async function requestJson(url, ms = 4000, headers = {}) {
   if (!type.toLowerCase().includes("json")) throw new Error("Response is not JSON");
   return response.json();
 }
-export async function recordAdminAction(env, actor, action, target = "") {
-  // No request data, IP, credentials or uploaded HTML in the audit trail.
-  await env.DB.prepare(
+export function auditStatement(env, actor, action, target = "") {
+  // Prepared audit write. Use in the same D1 transaction as the managed change.
+  return env.DB.prepare(
     "INSERT INTO site_admin_audit(actor, action, target) VALUES (?, ?, ?)"
-  ).bind(actor, action, target).run();
+  ).bind(actor, action, target);
 }
 async function overview(env) {
   try {
@@ -211,14 +211,18 @@ async function restore(request, env, actor, id) {
   if (!sameOrigin(request)) return fail("Herkomst niet toegestaan.", 403);
   if (!safeId(id)) return fail("Ongeldig bestandsnummer.", 400);
   try {
-    const result = await env.DB.prepare(
-      "UPDATE uploads SET status='published' WHERE id=? AND status='hidden'"
-    ).bind(id).run();
+    // Both statements succeed together, or neither changes the database.
+    const [, result] = await env.DB.batch([
+      env.DB.prepare(
+        "INSERT INTO site_admin_audit(actor, action, target) " +
+        "SELECT ?,?,? WHERE EXISTS (SELECT 1 FROM uploads WHERE id=? AND status='hidden')"
+      ).bind(actor, "upload.restored", id, id),
+      env.DB.prepare(
+        "UPDATE uploads SET status='published' WHERE id=? AND status='hidden'"
+      ).bind(id)
+    ]);
     if (count(result.meta?.changes) !== 1) return fail("Verborgen bestand niet gevonden.", 404);
-    let auditSaved = true;
-    try { await recordAdminAction(env, actor, "upload.restored", id); }
-    catch { auditSaved = false; }
-    return json({ ok: true, auditSaved });
+    return json({ ok: true, auditSaved: true });
   } catch {
     return fail("Terugzetten niet mogelijk. Controleer de tijdelijke D1-blokkade.");
   }
@@ -226,11 +230,11 @@ async function restore(request, env, actor, id) {
 async function revokeSessions(request, env, actor) {
   if (!sameOrigin(request)) return fail("Herkomst niet toegestaan.", 403);
   try {
-    await env.DB.prepare("DELETE FROM gallery_sessions").run();
-    let auditSaved = true;
-    try { await recordAdminAction(env, actor, "sessions.revoked", "all"); }
-    catch { auditSaved = false; }
-    return json({ ok: true, auditSaved, signedOut: true });
+    await env.DB.batch([
+      env.DB.prepare("DELETE FROM gallery_sessions"),
+      auditStatement(env, actor, "sessions.revoked", "all")
+    ]);
+    return json({ ok: true, auditSaved: true, signedOut: true });
   } catch { return fail("Sessies konden niet worden ingetrokken."); }
 }
 export async function handleAdmin(request, env, user) {
