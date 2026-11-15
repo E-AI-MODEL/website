@@ -435,7 +435,34 @@ try{
   assert.equal(pressed.arm1,leverStart.p.arm1,'Aanraken zonder slepen verandert de linker arm niet');
   await page.mouse.move(leverStart.x+leverStart.scale*(65+12),leverStart.y,{steps:10});
   await page.mouse.up();
-  await page.waitForFunction(()=>Math.abs(state.leverMotion?.angle||0)>.15,null,{timeout:5000});
+  const leverAfterDrag=await page.evaluate(()=>{
+   const p=state.p,m=state.leverMotion,forces=leverPhysics(p,m.angle,m.omega);
+   return {pivot:p.pivot??510,arm1:p.arm1,arm2:p.arm2,playing:state.playing,
+    simulationSpeed:state.speed,angle:m.angle,omega:m.omega,netMoment:forces.net,
+    angularAcceleration:forces.alpha,drag:state.drag2d};
+  });
+  console.log('LEVER_AFTER_DRAG '+engine.name()+' '+width+'px '+JSON.stringify(leverAfterDrag));
+  // First distinguish a failed WebKit pointer gesture from a slow animation.
+  assert(leverAfterDrag.pivot>leverStart.pivot+40,
+   'Hefboomgreep moet werkelijk verplaatst zijn: '+JSON.stringify({start:leverStart,after:leverAfterDrag}));
+  assert(leverAfterDrag.arm1>leverStart.p.arm1&&leverAfterDrag.arm2<leverStart.p.arm2,
+   'Beide armen volgen de greep: '+JSON.stringify(leverAfterDrag));
+  assert(leverAfterDrag.playing,'De hefboom moet na loslaten afspelen: '+JSON.stringify(leverAfterDrag));
+  try {
+   // Keep the exact physical threshold. The follow-up PR may investigate
+   // simulated elapsed time separately; do not hide a real stalled lever.
+   await page.waitForFunction(()=>Math.abs(state.leverMotion?.angle||0)>.15,null,{timeout:5000});
+  }catch(error){
+   const motion=await page.evaluate(()=>{
+    const m=state.leverMotion,p=state.p,forces=leverPhysics(p,m.angle,m.omega);
+    return {pivot:p.pivot??510,arm1:p.arm1,arm2:p.arm2,playing:state.playing,
+     simulationSpeed:state.speed,t:state.t,angle:m.angle,omega:m.omega,
+     netMoment:forces.net,angularAcceleration:forces.alpha};
+   });
+   await page.screenshot({path:'test-results/physics-lever-timeout-'+engine.name()+'-'+width+'.png'});
+   throw new Error('Hefboom haalt |hoek| > 0,15 rad niet binnen 5 s: '
+    +JSON.stringify({start:leverStart,afterGesture:leverAfterDrag,afterWait:motion}),{cause:error});
+  }
   const leverEnd=await page.evaluate(()=>{
    setPlaying(false);render(); // Vergelijk de berekening met het getoonde beeld op precies dezelfde hoek.
    const p=state.p,pivot=p.pivot??510,forces=leverPhysics(p,state.leverMotion.angle,state.leverMotion.omega);
