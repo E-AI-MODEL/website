@@ -44,6 +44,36 @@
     controls.insertBefore(find, controls.firstChild);
   }
 
+  // Detailed hero diagrams remain available, but no longer delay the first
+  // choice on a phone. Desktop keeps the original explanatory diagrams.
+  const compact = window.matchMedia('(max-width: 620px)');
+  for (const [selector, nl, english] of [
+    ['.page-hero .education-route-visual', 'Bekijk de lesroute in drie stappen', 'View the learning route'],
+    ['.page-hero .knowledge-depth', 'Wat vind je hier?', 'What is here?'],
+    ['.page-hero .case-map', 'Bekijk de drie toepassingen', 'Explore the three examples']
+  ]) {
+    const guide = document.querySelector(selector);
+    if (!guide) continue;
+    const parent = guide.parentNode;
+    const nextSibling = guide.nextSibling;
+    const disclosure = document.createElement('details');
+    disclosure.className = 'eai-story-mobile-detail';
+    const summary = document.createElement('summary');
+    summary.textContent = en ? english : nl;
+    disclosure.append(summary);
+    const adapt = () => {
+      if (compact.matches && !disclosure.isConnected) {
+        parent.insertBefore(disclosure, nextSibling);
+        disclosure.append(guide);
+      } else if (!compact.matches && disclosure.isConnected) {
+        parent.insertBefore(guide, disclosure);
+        disclosure.remove();
+      }
+    };
+    compact.addEventListener('change', adapt);
+    adapt();
+  }
+
   const tracks = Array.from(document.querySelectorAll([
     'main .card-grid',
     'main .publication-grid',
