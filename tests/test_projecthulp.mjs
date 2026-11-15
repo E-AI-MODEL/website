@@ -5,6 +5,7 @@ import {readFileSync} from "node:fs";
 import {inspectZip,readZipText} from "../assets/projecthulp/zip.mjs";
 import {parseRepoUrl,fetchPublicRepo,stripArchiveRoot,describeProject,analyzeArchive,compareProjects,makeAdvice,reportText,readmeTemplate,ignoreTemplate} from "../assets/projecthulp/analyse.mjs";
 import {checkProjectPurpose,findBrokenLocalLinks,PURPOSES} from "../assets/projecthulp/doelcontrole.mjs";
+import {availableProjectChecks,generateProjectCheckWorkflow} from "../assets/projecthulp/projectcheck.mjs";
 const crcTable=Array.from({length:256},(_,i)=>{let c=i;for(let k=0;k<8;k++)c=(c&1)?0xedb88320^(c>>>1):c>>>1;return c>>>0;});
 function crc32(b){let c=0xffffffff;for(const x of b)c=crcTable[(c^x)&255]^(c>>>8);return(c^0xffffffff)>>>0;}
 function makeZip(files,{compress=false}={}){
@@ -170,4 +171,24 @@ test("Doeltoets: dist-map niet blind weggooien als dit de site bevat",async()=>{
  assert.ok(purpose.found.some(x=>x.includes("dist/index.html")));
  assert.ok(purpose.remaining.some(x=>x.includes("bouwmap")));
  assert.equal(archive.missingReferences.length,0);
+});
+
+test("GitHub Actions workflow voor project: syntaxcontroles zonder schrijfbevoegdheid",()=>{
+ const archive={eligible:["index.html","assets/app.mjs","scripts/controle.py"],manifest:{scripts:{test:"rm -rf /"}}};
+ const supported=availableProjectChecks(archive);
+ assert.equal(supported.javascript,true);assert.equal(supported.python,true);
+ const yaml=generateProjectCheckWorkflow(archive);
+ assert.ok(yaml.includes("node --check"));
+ assert.ok(yaml.includes("python3 -m compileall"));
+ assert.ok(yaml.includes("permissions:\\n  contents: read"));
+ assert.ok(!yaml.includes("npm run test"));
+ assert.ok(!yaml.includes("npm install"));
+ assert.ok(!yaml.includes("pull_request_target:"));
+ assert.equal(generateProjectCheckWorkflow({eligible:["index.html","style.css"]}),null);
+});
+test("De browserworker heeft een beperkt contract: leesacties, geen schrijfverzoeken",()=>{
+ const worker=readFileSync(new URL("../assets/projecthulp/onderzoek-worker.mjs",import.meta.url),"utf8");
+ assert.match(worker,/analyzeArchive/);
+ assert.match(worker,/fetchPublicRepo/);
+ assert.doesNotMatch(worker,/\\bexec\\s*\\(|\\bspawn\\s*\\(|method:\\s*["']POST/);
 });
