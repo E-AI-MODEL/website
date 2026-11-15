@@ -141,17 +141,31 @@ def tool_sections(en: bool):
 
 
 def reading_sections(en: bool):
-    """Direct routes to published articles and research subpages."""
+    """Use published article directories instead of an incomplete manual shortlist."""
+    root = Path(__file__).resolve().parent.parent
+    def pages(folder):
+        entries = []
+        for path in sorted((root / folder).glob('*/index.html')):
+            soup = BeautifulSoup(path.read_text(encoding='utf-8'), 'html.parser')
+            heading = soup.select_one('h1')
+            title = heading.get_text(' ', strip=True) if heading else (soup.title.get_text(' ', strip=True) if soup.title else path.parent.name)
+            meta = soup.find('meta', attrs={'name': 'description'})
+            summary = meta.get('content', '') if meta else ''
+            entries.append((title, '/' + folder + '/' + path.parent.name + '/', summary))
+        return sorted(entries, key=lambda row: row[0].casefold())
     if en:
         return [
-            ('Research', [('Research and sources', '/en/research/', ''), ('Teaching tools', '/en/research/teaching-tools/', ''), ('GenAI and language meta-analysis', '/en/research/zhang-genai-language/', ''), ('Source register', '/bronnen/', '')]),
-            ('Articles', [('Publications', '/en/publications/', ''), ('Blog in Dutch', '/nl/blog/', 'Dutch')]),
+            ('Research', [('Research and sources', '/en/research/', '')] + pages('en/research')),
+            ('Publications', [('All publications', '/en/publications/', '')] + pages('publicaties')),
+            ('Articles (Dutch)', [('Dutch blog', '/nl/blog/', '')] + pages('nl/blog')),
+            ('Archive (Dutch)', [('Previous articles', '/eai-blog/', '')] + pages('eai-blog')),
         ]
     return [
-        ('Onderzoek', [('Onderzoek en bronnen', '/nl/onderzoek/', ''), ('Leermiddelen', '/nl/onderzoek/leermiddelen/', ''), ('GenAI en taal: meta-analyse', '/nl/onderzoek/zhang-genai-taal/', ''), ('Bronnenregister', '/bronnen/', '')]),
-        ('Artikelen', [('Blog', '/nl/blog/', ''), ('Wat ons werk ons werk maakt', '/nl/blog/wat-ons-werk-ons-werk-maakt/', ''), ('Publicaties', '/nl/publicaties/', ''), ('De vraag die we vergeten', '/publicaties/de-vraag-die-we-vergeten/', ''), ('AI in onderwijs: verdieping of oppervlakkigheid?', '/publicaties/ai-balans/', '')]),
+        ('Onderzoek', [('Onderzoek en bronnen', '/nl/onderzoek/', ''), ('Bronnenregister', '/bronnen/', '')] + pages('nl/onderzoek')),
+        ('Publicaties', [('Alle publicaties', '/nl/publicaties/', '')] + pages('publicaties')),
+        ('Artikelen', [('Blog', '/nl/blog/', '')] + pages('nl/blog')),
+        ('Archief', [('Oudere artikelen', '/eai-blog/', '')] + pages('eai-blog')),
     ]
-
 
 def menu_named_sections(en: bool, sections: list, overview: tuple) -> str:
     def safe(value):
