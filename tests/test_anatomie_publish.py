@@ -294,8 +294,10 @@ class AnatomyPublishTests(unittest.TestCase):
                         self.assertEqual(len(area.select('a[href="/tools/anatomie/"]')), 1,
                                          "Anatomie mag per menu/inhoud eenmaal voorkomen")
         navigation_source = (ROOT / "scripts" / "prepare_ui.py").read_text(encoding="utf-8")
-        self.assertEqual(navigation_source.count("'/tools/anatomie/'"), 2,
-                         "Er hoort een anatomievermelding per taalmenu te zijn")
+        # Eén hoofdingang per taal, plus één bronvermelding voor het
+        # uitklapbare modelmenu. HTML controleert de echte unieke links.
+        self.assertEqual(navigation_source.count("'/tools/anatomie/'"), 3,
+                         "Anatomie hoort in beide talen en in het modelmenu thuis")
 
     def test_build_reproducible_and_repository_local(self):
         source = (ROOT / "scripts" / "build_anatomie.py").read_text(encoding="utf-8")
