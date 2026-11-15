@@ -87,8 +87,8 @@ test("Bronversie en ontbrekende data blijven zichtbaar",()=>{
 test("Downloads zijn voorstellen, geen valse documentatie",()=>{
  const readme=readmeTemplate({project:{type:"HTML-website"}},"u/mijn-site");
  assert.ok(readme.includes("Beschrijf hier"));assert.ok(ignoreTemplate({project:{runtime:"Python"}}).includes("__pycache__"));
- assert.ok(!ignoreTemplate({project:{hasPackage:true}}).split("\\n").includes("dist/"));
- assert.ok(!ignoreTemplate({project:{hasPackage:true}}).split("\\n").includes("build/"));
+ assert.ok(!ignoreTemplate({project:{hasPackage:true}}).split(String.fromCharCode(10)).includes("dist/"));
+ assert.ok(!ignoreTemplate({project:{hasPackage:true}}).split(String.fromCharCode(10)).includes("build/"));
 });
 test("Websitepagina bevat toegankelijke route, geen serverupload of AI",()=>{
  const html=readFileSync(new URL("../tools/projecthulp/index.html",import.meta.url),"utf8");
