@@ -1,3 +1,13 @@
+body.eai-ui.eai-dash-page .eai-dashboard-home .eai-dash-hero-more{
+ margin-top:8px;max-width:650px;border-top:1px solid #cbded0;
+ padding-top:9px;color:#46755e;
+}
+body.eai-ui.eai-dash-page .eai-dashboard-home .eai-dash-hero-more summary{
+ cursor:pointer;font-size:12px;font-weight:650;color:#147261;
+}
+body.eai-ui.eai-dash-page .eai-dashboard-home .eai-dash-hero-more p{
+ font-size:12px;line-height:1.58;margin:8px 0;
+}
 /* Dashboard cards: only on selected indexes, never in labs or article bodies. */
 body.eai-ui.eai-dash-page,body.eai-ui.eai-card-index{
  --dash-ink:#243a35;--dash-muted:#637a70;--dash-line:#e1ebe5;--dash-card:#fff;
@@ -79,10 +89,11 @@ body.eai-ui.eai-dash-page .eai-dashboard-home .eai-landing-question p{
 body.eai-ui.eai-dash-page .eai-dashboard-home .eai-landing-question-rule{margin:10px 0}
 body.eai-ui.eai-dash-page .eai-dashboard-home .eai-landing-question .eai-landing-question-end{font-size:12px}
 body.eai-ui.eai-dash-page .eai-dash-workspace{
- display:grid;grid-template-columns:minmax(0,1fr) 284px;align-items:start;
- gap:20px;padding:25px 28px 23px;
+ display:grid;grid-template-columns:minmax(0,1fr) 284px;grid-template-areas:"routes side" "direct side";align-items:start;
+ gap:17px 20px;padding:25px 28px 23px;
 }
 body.eai-ui.eai-dash-page .eai-dash-workspace>.eai-landing-routes{
+ grid-area:routes;
  background:none!important;padding:0!important;border:0!important;
 }
 body.eai-ui.eai-dash-page .eai-dashboard-home .eai-landing-section-head{
@@ -201,7 +212,7 @@ body.eai-ui.eai-dash-page .eai-dash-route-controls input{
 }
 body.eai-ui.eai-dash-page .eai-dash-empty{padding:22px;text-align:center;font-size:13px;color:#64786b}
 body.eai-ui.eai-dash-page .eai-dash-empty[hidden]{display:none}
-body.eai-ui.eai-dash-page .eai-dash-side{display:grid;gap:14px}
+body.eai-ui.eai-dash-page .eai-dash-side{display:grid;grid-area:side;gap:14px}
 body.eai-ui.eai-dash-page .eai-dash-widget{
  border:1px solid var(--dash-line);background:white;border-radius:12px;
  box-shadow:0 4px 14px #1c4d3810;padding:17px;
@@ -250,7 +261,7 @@ body.eai-ui.eai-dash-page .eai-dash-feature strong{
  position:absolute;left:12px;top:10px;font-size:11px;font-weight:650;
  background:#154b4680;padding:5px 7px;border-radius:4px;
 }
-body.eai-ui.eai-dash-page .eai-dash-direct{padding:10px 28px 22px!important;background:transparent!important}
+body.eai-ui.eai-dash-page .eai-dash-workspace>.eai-dash-direct{grid-area:direct;padding:0!important;background:transparent!important}
 body.eai-ui.eai-dash-page .eai-dash-direct h2{font-size:19px;margin:0 0 5px;letter-spacing:-.02em}
 body.eai-ui.eai-dash-page .eai-dash-direct>p{font-size:12px;margin:0 0 12px;color:#788d80}
 body.eai-ui.eai-dash-page .eai-dash-table{border:1px solid var(--dash-line);border-radius:11px;overflow:hidden;background:#fff}
@@ -349,14 +360,37 @@ body.eai-ui.eai-card-index .knowledge-route>div>span:first-child{
  body.eai-ui.eai-dash-page .eai-dashboard-home .eai-landing-hero{padding:22px 18px!important}
  body.eai-ui.eai-dash-page .eai-dashboard-home .eai-landing-hero h1{font-size:34px!important;max-width:18ch}
  body.eai-ui.eai-dash-page .eai-dash-workspace{padding:20px 14px 8px}
- body.eai-ui.eai-dash-page .eai-dashboard-home .eai-landing-route-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
- body.eai-ui.eai-dash-page .eai-dashboard-home .eai-landing-route{min-height:242px}
- body.eai-ui.eai-dash-page .eai-dash-card-art{height:88px}
- body.eai-ui.eai-dash-page .eai-dashboard-home .eai-landing-route>:not(.eai-dash-card-art){margin-inline:12px}
- body.eai-ui.eai-dash-page .eai-dashboard-home .eai-landing-route h3{font-size:15px}
- body.eai-ui.eai-dash-page .eai-dashboard-home .eai-landing-route p{font-size:11px}
+ body.eai-ui.eai-dash-page .eai-dashboard-home .eai-landing-route-grid{grid-template-columns:minmax(0,1fr);gap:11px}
+ body.eai-ui.eai-dash-page .eai-dashboard-home .eai-landing-route{
+  display:grid;grid-template-columns:clamp(94px,30vw,132px) minmax(0,1fr);
+  grid-template-rows:auto auto 1fr;align-content:center;gap:5px 0;position:relative;
+  min-height:123px;padding:0!important;
+ }
+ body.eai-ui.eai-dash-page .eai-dash-card-art{
+  grid-column:1;grid-row:1 / 4;height:100%;min-height:123px;
+ }
+ body.eai-ui.eai-dash-page .eai-dash-mini-labels,
+ body.eai-ui.eai-dash-page .eai-dash-stage{display:none}
+ body.eai-ui.eai-dash-page .eai-dash-mini-donut{width:65px;height:65px}
+ body.eai-ui.eai-dash-page .eai-dash-mini-donut:before{inset:11px}
+ body.eai-ui.eai-dash-page .eai-dash-paper{width:75%;padding:9px}
+ body.eai-ui.eai-dash-page .eai-dashboard-home .eai-landing-route>:not(.eai-dash-card-art){
+  grid-column:2;margin-inline:13px;
+ }
+ body.eai-ui.eai-dash-page .eai-dashboard-home .eai-landing-route .eai-route-number{
+  grid-row:1;align-self:end;margin-top:11px;padding-right:22px;
+ }
+ body.eai-ui.eai-dash-page .eai-dashboard-home .eai-landing-route h3{
+  grid-row:2;font-size:16px;line-height:1.24;margin-top:0!important;
+ }
+ body.eai-ui.eai-dash-page .eai-dashboard-home .eai-landing-route p{
+  grid-row:3;font-size:12px;line-height:1.45;padding-bottom:12px;margin-top:0!important;
+ }
+ body.eai-ui.eai-dash-page .eai-dashboard-home .eai-landing-route .eai-route-arrow{
+  position:absolute;right:10px;top:10px;margin:0!important;width:24px;height:24px;
+ }
  body.eai-ui.eai-dash-page .eai-dash-side{grid-template-columns:1fr}
- body.eai-ui.eai-dash-page .eai-dash-direct{padding:18px 14px!important}
+ body.eai-ui.eai-dash-page .eai-dash-workspace>.eai-dash-direct{padding:12px 0 4px!important}
  body.eai-ui.eai-dash-page .eai-dashboard-home>.eai-landing-reading{padding:20px 14px!important}
  body.eai-ui.eai-dash-page .eai-dashboard-home>.eai-landing-end{padding:20px 14px!important}
  body.eai-ui.eai-dash-page .eai-dash-table-head,
@@ -367,10 +401,6 @@ body.eai-ui.eai-card-index .knowledge-route>div>span:first-child{
  body.eai-ui.eai-dash-page .eai-dashboard-home .eai-landing-reading-grid{grid-template-columns:1fr}
 }
 @media (max-width:355px){
- /* One complete card per row: descriptions must not be squeezed below 125px. */
- body.eai-ui.eai-dash-page .eai-dashboard-home .eai-landing-route-grid{grid-template-columns:minmax(0,1fr)}
- body.eai-ui.eai-dash-page .eai-dashboard-home .eai-landing-route{min-height:0;padding-bottom:16px!important}
- body.eai-ui.eai-dash-page .eai-dash-card-art{height:85px}
  body.eai-ui.eai-dash-page .eai-dash-mini-donut{width:56px;height:56px}
  body.eai-ui.eai-dash-page .eai-dash-mini-donut:before{inset:9px}
  body.eai-ui.eai-dash-page .eai-dash-mini-labels{margin-left:8px;font-size:8px}
