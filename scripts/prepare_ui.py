@@ -42,7 +42,7 @@ def groups(en: bool):
             ('Understand EAI', [('The EAI model', '/en/model/'), ('EAI Dictionary', '/en/glossary/'), ('Applications', '/en/applications/'), ('Research and evidence', '/en/research/')]),
             ('Teaching', [('Lessons and workforms', '/en/education/'), ('All workforms', '/werkvormen/')]),
             ('Research & publications', [('All publications', '/en/publications/'), ('Research and sources', '/en/research/')]),
-            ('Experiments & simulations', [('All experiments', '/tools/science-observatory/'), ('Physics', '/tools/science-observatory/labs/natuurkunde/'), ('Mathematics A', '/tools/science-observatory/labs/wiskunde-a/'), ('Mathematics B', '/tools/science-observatory/labs/wiskunde-b/'), ('Human anatomy', '/tools/anatomie/'), ('Galactic Observatory', '/tools/science-observatory/labs/melkweg/'), ('LLM Observatory', '/tools/llm-observatorium/'), ('Sport and movement', '/tools/sport-en-bewegen/')]),
+            ('Subject knowledge', [('All subject areas', '/tools/science-observatory/'), ('Physics', '/tools/science-observatory/labs/natuurkunde/'), ('Mathematics A', '/tools/science-observatory/labs/wiskunde-a/'), ('Mathematics B', '/tools/science-observatory/labs/wiskunde-b/'), ('Human anatomy', '/tools/anatomie/'), ('Galactic Observatory', '/tools/science-observatory/labs/melkweg/'), ('LLM Observatory', '/tools/llm-observatorium/'), ('Sport and movement', '/tools/sport-en-bewegen/')]),
             ('Tools', [('All tools', '/en/tools/'), ('Prompt Framework', '/tools/prompt-framework/'), ('WiHTML Studio', '/tools/wihtml/'), ('EAIstudio', '/tools/eaistudio/'), ('EAImesh', '/tools/eaimesh/'), ('Upload HTML', '/tools/html-galerij/'), ('Process to prompt', '/tools/van-proces-naar-prompt/'), ('Model Monitor', '/en/model-monitor/'), ('LLMscan', '/en/llmscan/')]),
             ('About EAI', [('About EAI', '/en/about/'), ('Site insights', '/en/insights/')]),
         ]
@@ -50,7 +50,7 @@ def groups(en: bool):
         ('EAI begrijpen', [('Het EAI-model', '/nl/model/'), ('Begrippen en definities', '/nl/begrippen/'), ('Toepassingen', '/nl/toepassingen/'), ('Kennis en onderbouwing', '/kennis/')]),
         ('Lespraktijk', [('Lessen en werkvormen', '/nl/onderwijs/'), ('Alle werkvormen', '/werkvormen/')]),
         ('Onderzoek & publicaties', [('Alle publicaties', '/nl/publicaties/'), ('Onderzoek en bronnen', '/nl/onderzoek/'), ('Blog', '/nl/blog/'), ('Bronnenregister', '/bronnen/')]),
-        ('Proeven & simulaties', [('Alle proeven en simulaties', '/tools/science-observatory/'), ('Natuurkunde', '/tools/science-observatory/labs/natuurkunde/'), ('Wiskunde A', '/tools/science-observatory/labs/wiskunde-a/'), ('Wiskunde B', '/tools/science-observatory/labs/wiskunde-b/'), ('Anatomie van de mens', '/tools/anatomie/'), ('Galactisch Observatorium', '/tools/science-observatory/labs/melkweg/'), ('Hoe werkt AI?', '/tools/llm-observatorium/'), ('Sport en bewegen', '/tools/sport-en-bewegen/')]),
+        ('Vakinhoud', [('Alle vakgebieden', '/tools/science-observatory/'), ('Natuurkunde', '/tools/science-observatory/labs/natuurkunde/'), ('Wiskunde A', '/tools/science-observatory/labs/wiskunde-a/'), ('Wiskunde B', '/tools/science-observatory/labs/wiskunde-b/'), ('Anatomie van de mens', '/tools/anatomie/'), ('Galactisch Observatorium', '/tools/science-observatory/labs/melkweg/'), ('Hoe werkt AI?', '/tools/llm-observatorium/'), ('Sport en bewegen', '/tools/sport-en-bewegen/')]),
         ('Hulpmiddelen', [('Alle hulpmiddelen', '/nl/tools/'), ('EAI Prompt Framework', '/tools/prompt-framework/'), ('WiHTML Docentstudio', '/tools/wihtml/'), ('EAIstudio', '/tools/eaistudio/'), ('EAImesh', '/tools/eaimesh/'), ('HTML uploaden', '/tools/html-galerij/'), ('Van proces naar prompt', '/tools/van-proces-naar-prompt/'), ('AI Model Monitor', '/nl/model-monitor/'), ('LLMscan', '/nl/llmscan/')]),
         ('Over EAI', [('Over EAI', '/nl/over/'), ('Websitegebruik', '/nl/insights/')]),
     ]
@@ -237,7 +237,7 @@ def menu_topic_html(en: bool) -> str:
         return html.escape(value, quote=True)
     topic_descriptions = {
         'Natuurkunde': 'Beweging, kracht, elektriciteit, licht en meer.',
-        'Physics': 'Motion, forces, electricity, light and more. Experiments are in Dutch.',
+        'Physics': 'Motion, forces, electricity, light and more. Interactive material is in Dutch.',
         'Wiskunde': 'Kansverdelingen, grafieken, functies en berekeningen.',
         'Mathematics': 'Probability, graphs, functions and calculations. Models are in Dutch.',
         'Menselijk lichaam': 'Bekijk het lichaam in 3D en onderzoek een kloppend hart.',
@@ -258,7 +258,7 @@ def menu_topic_html(en: bool) -> str:
             groups_markup.append('<details class="eai-site-cluster"><summary>' + safe(subgroup) + '<span>' + str(len(links)) + '</span></summary><div class="eai-site-cluster-links">' + items + '</div></details>')
         lead = '<p class="eai-site-topic-intro">' + safe(topic_descriptions[title]) + '</p>'
         blocks.append('<details class="eai-site-topic"><summary><span>' + safe(title) + '</span><small>' + str(total) + ' ' + ('topics' if en else 'onderdelen') + '</small></summary><div class="eai-site-topic-links">' + lead + ''.join(groups_markup) + '</div></details>')
-    return '<a class="eai-site-overview" href="/tools/science-observatory/">' + ('All experiments and simulations' if en else 'Alle proeven en simulaties') + '</a>' + ''.join(blocks)
+    return '<a class="eai-site-overview" href="/tools/science-observatory/">' + ('Explore all subjects' if en else 'Alle vakgebieden') + '</a>' + ''.join(blocks)
 
 
 def site_search_records(root: Path) -> list:
@@ -346,7 +346,7 @@ def navigation(soup: BeautifulSoup, path: str, en: bool) -> str:
     for title, entries in groups(en):
         active = any((path_here == canonical(target) or path_here.startswith(canonical(target))) and canonical(target) not in ('/nl/', '/en/') for _, target in entries)
         active_cls = ' is-current' if active else ''
-        model_group = title in ('Proeven & simulaties', 'Experiments & simulations')
+        model_group = title in ('Vakinhoud', 'Subject knowledge')
         if model_group:
             links = menu_topic_html(en)
         elif title in ('Tools', 'Hulpmiddelen'):

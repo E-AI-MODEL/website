@@ -15,7 +15,7 @@ class PublicMenuTests(unittest.TestCase):
             with self.subTest(taal='en' if en else 'nl'):
                 sections = dict(groups(en))
                 self.assertEqual(len(sections), 6)
-                name = 'Experiments & simulations' if en else 'Proeven & simulaties'
+                name = 'Subject knowledge' if en else 'Vakinhoud'
                 self.assertIn(name, sections)
                 labs = dict(sections[name])
                 tools = dict(sections['Tools' if en else 'Hulpmiddelen'])
