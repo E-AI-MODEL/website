@@ -50,6 +50,10 @@ async function run(name,viewport,phone=false){
    assert.ok((await page.locator('#bankList .bank-item').count())>0,'Vragenbank niet leeg');
    await page.locator('#bankDialog [data-close]').first().click();
    await page.locator('#settings').click();
+   if(!(await page.locator('#setupDialog').isVisible())){
+     console.error('EAIgame setup diagnostic',await page.evaluate(()=>({bankOpen:document.querySelector('#bankDialog').open,setupOpen:document.querySelector('#setupDialog').open,settingsDisabled:document.querySelector('#settings').disabled,bodyClasses:document.body.className,active:document.activeElement?.id,dialogCount:document.querySelectorAll('dialog[open]').length})));
+     console.error('EAIgame browser errors',errors);
+   }
    assert.ok(await page.locator('#setupDialog').isVisible(),'Spelinstellingen beschikbaar');
    await page.locator('#countButtons [data-count="1"]').click();
    await page.locator('#nameInputs input').first().fill('Testspeler');
