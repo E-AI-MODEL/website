@@ -1,4 +1,5 @@
 import {inspectZip,readZipText} from "./zip.mjs";
+import {checkProjectPurpose,findBrokenLocalLinks} from "./doelcontrole.mjs";
 const REPO=/^https:\/\/github\.com\/([A-Za-z0-9](?:[A-Za-z0-9-]{0,38}[A-Za-z0-9])?)\/([A-Za-z0-9_.-]+?)(?:\.git)?\/?$/i;
 const TEXT_LIMIT=350000;
 export function parseRepoUrl(text){
@@ -78,7 +79,16 @@ export async function analyzeArchive(file){
   catch(e){manifestError="package.json kon niet veilig worden gelezen: "+e.message;}
  }
  const project=describeProject(eligible,manifest && typeof manifest==="object" && !Array.isArray(manifest)?manifest:{});
- return {name:file.name,archiveSize:file.size,files:paths,total:zip.total,prefix:root.prefix,eligible,ignored,secret,project,manifest,manifestError};
+ const htmlEntry=rawFiles.find(e=>e.path===root.prefix+"index.html")||rawFiles.find(e=>e.path===root.prefix+"public/index.html");
+ let missingReferences=[],indexChecked=false,indexError=null;
+ if(htmlEntry){
+  try{
+   const html=await readZipText(zip,htmlEntry,TEXT_LIMIT);
+   missingReferences=findBrokenLocalLinks(htmlEntry.path.slice(root.prefix.length),html,eligible);
+   indexChecked=true;
+  }catch(error){indexError="De startpagina kon niet volledig worden nagekeken: "+error.message;}
+ }
+ return {name:file.name,archiveSize:file.size,files:paths,total:zip.total,prefix:root.prefix,eligible,ignored,secret,project,manifest,manifestError,missingReferences,indexChecked,indexError};
 }
 export function compareProjects(archive,repo){
  const existing=new Set(repo?.paths||[]);
@@ -89,7 +99,9 @@ export function compareProjects(archive,repo){
 }
 function line(text){return text.replace(/\r/g,"").replace(/\n{3,}/g,"\n\n");}
 const countText=(n,one,many)=>n+" "+(n===1?one:many);
-export function makeAdvice({goal="upload",experience="beginner",archive,repo}){
+export function makeAdvice({goal="code",experience="beginner",archive,repo,aim=""}){
+ const selectedGoal=({upload:"code",maintain:"code",publish:"site"})[goal]||goal;
+ const purpose=checkProjectPurpose({goal:selectedGoal,archive,repo,aim});
  const observations=[],warnings=[],steps=[];
  if(archive){
   observations.push("Het ZIP-bestand bevat "+countText(archive.files.length,"bestand","bestanden")+" ("+archive.project.type+").");
@@ -97,6 +109,8 @@ export function makeAdvice({goal="upload",experience="beginner",archive,repo}){
   if(archive.ignored.length)warnings.push(archive.ignored.length===1?"Eén bestand of map lijkt tijdelijk of overbodig voor GitHub. Controleer dit voor het uploaden.":archive.ignored.length+" bestanden of mappen lijken tijdelijk of overbodig voor GitHub. Controleer deze voor het uploaden.");
   if(archive.secret.length)warnings.push(countText(archive.secret.length,"bestand heeft","bestanden hebben")+" een mogelijk vertrouwelijke naam. Controleer de inhoud op je eigen apparaat voordat je iets uploadt.");
   if(archive.manifestError)warnings.push(archive.manifestError);
+  if(archive.indexError)warnings.push(archive.indexError);
+  if(archive.missingReferences?.length)warnings.push("De startpagina verwijst naar "+archive.missingReferences.length+" lokaal bestand(en) dat niet op de verwachte plek staat: "+archive.missingReferences.slice(0,4).join(", ")+".");
   if(!archive.project.hasReadme)warnings.push("Er is geen README gevonden. Die maakt het project begrijpelijker.");
   if(!archive.project.hasIgnore)warnings.push("Een .gitignore ontbreekt. Die voorkomt dat tijdelijke bestanden later per ongeluk meegaan.");
  }else warnings.push("Er is geen ZIP onderzocht. Het advies is beperkt tot de repository en je antwoorden.");
@@ -113,25 +127,30 @@ export function makeAdvice({goal="upload",experience="beginner",archive,repo}){
   observations.push(countText(comparison.missingCount,"bestand uit het ZIP-bestand staat","bestanden uit het ZIP-bestand staan")+" nog niet op dezelfde plek in GitHub.");
   if(comparison.present.length)warnings.push(countText(comparison.present.length,"bestandsnaam komt","bestandsnamen komen")+" al voor in GitHub. Controleer de inhoud voordat je iets overschrijft. Gelijke namen bewijzen niet dat de bestanden identiek zijn.");
  }
+ if(purpose.repoOnlyZips)warnings.unshift("Er staat in GitHub alleen een ZIP of een ZIP met documentatie. De projectbestanden zijn daarmee nog niet beschikbaar als broncode.");
  if(archive?.secret.length)steps.push("Bekijk eerst de mogelijk gevoelige bestanden en haal wachtwoorden of privésleutels uit het project.");
+ if(selectedGoal==="site"&&archive?.missingReferences?.length)steps.push("Herstel de ontbrekende verwijzingen uit je startpagina voordat je de website publiceert.");
+ if(selectedGoal==="site"&&archive&&!archive.project.hasHtml)steps.push("Zoek het bestand dat de website moet openen. Zonder startpagina kunnen we nog geen website aanbieden.");
+ if(selectedGoal==="app"&&archive&&!archive.project.hasPackage)steps.push("Bepaal hoe het programma gestart en getest moet worden. In het onderzochte archief ontbreekt een duidelijke projectconfiguratie.");
  if(archive?.ignored.length)steps.push("Houd installatie- en bouwmappen buiten GitHub. Bewaar alleen de bestanden die nodig zijn om het project opnieuw op te bouwen.");
  if(archive&&!archive.project.hasReadme)steps.push("Voeg een README.md toe. De tool kan hiervoor een eerste versie maken.");
  if(archive&&!archive.project.hasIgnore)steps.push("Voeg een passende .gitignore toe; controleer zelf welke mappen tijdelijk zijn.");
  if(repo&&!repo.readable)steps.push("Open je repository op GitHub en controleer of de bestandenlijst daar wel zichtbaar is.");
  if(archive&&repo&&repo.readable){
-  steps.push("Pak je ZIP-bestand uit op je eigen apparaat. Upload het uitgepakte project, niet alleen het ZIP-bestand.");
+  steps.push("Pak het ZIP-bestand uit op je eigen apparaat. GitHub pakt een geüpload ZIP-bestand niet automatisch uit tot een project.");
   steps.push("Open '"+repo.name+"' in GitHub. Kies 'Add file' en daarna 'Upload files'.");
-  if(comparison?.missingCount)steps.push("Upload de ontbrekende bestanden met behoud van de mapindeling. De webupload heeft grenzen; bij veel bestanden is uploaden in delen nodig.");
+  if(comparison?.missingCount)steps.push("Selecteer in GitHub de uitgepakte projectbestanden, niet het .zip-bestand zelf. Behoud de mappen en upload de ontbrekende bestanden. Bij veel bestanden kan dit in delen.");
   else steps.push("Vergelijk eerst de inhoud van bestaande bestanden. Alleen op basis van bestandsnamen is geen wijziging nodig.");
   steps.push("Controleer de wijzigingen, vul een korte commitbeschrijving in en bevestig de commit.");
   steps.push("Vernieuw de repository. Controleer of de bestanden en hun mapnamen kloppen.");
  }else if(archive){steps.push("Maak een repository op GitHub of kopieer de bestaande repository-URL naar deze tool.");}
  else if(repo){steps.push("Selecteer je ZIP-bestand om een controle van de mappen en bestanden uit te voeren.");}
- if(goal==="publish")steps.push("Wil je een website online zetten? Onderzoek na het uploaden of GitHub Pages past bij het project. Een repository online zetten publiceert niet automatisch een website.");
+ if(selectedGoal==="site")steps.push("Test na het uploaden de website in een browser. GitHub Pages kan een statische website publiceren, maar dat moet je apart instellen. Een servertoepassing heeft andere hosting nodig.");
+ if(selectedGoal==="app")steps.push("Test het programma en bepaal welke omgeving of hosting het nodig heeft. GitHub bewaart bronbestanden, maar voert je programma niet vanzelf uit.");
  if(goal==="maintain")steps.push("Gebruik voor toekomstige wijzigingen een aparte branch en controleer het verschil voordat je het samenvoegt.");
  if(experience==="beginner"&&archive&&repo)steps.push("Kijk na de upload of je bestanden op de juiste plek staan. Je hoeft nu geen nieuw programma te installeren.");
  const ready=Boolean(archive&&repo&&repo.readable&&!repo.truncated&&!archive.secret.length);
- return {observations,warnings,steps,comparison,ready,limits:["We hebben code uit het project niet uitgevoerd en niet getest.","We lezen alleen bestandsnamen en een beperkt aantal projectbestanden. De inhoud van bestaande GitHub-bestanden is niet vergeleken.","Deze tool gebruikt geen AI en maakt geen wijzigingen in GitHub."]};
+ return {observations,warnings,steps,comparison,ready,purpose,limits:["We hebben code uit het project niet uitgevoerd en niet getest.","We lezen alleen bestandsnamen en een beperkt aantal projectbestanden. De inhoud van bestaande GitHub-bestanden is niet vergeleken.","Deze tool gebruikt geen AI en maakt geen wijzigingen in GitHub."]};
 }
 export function readmeTemplate(project,repoName){
  const name=repoName?.split("/").at(-1)||"Mijn project";
@@ -148,6 +167,9 @@ export function reportText(data){
  return ["# Persoonlijk GitHub-advies","","Gemaakt op "+new Date().toLocaleString("nl-NL"),"",
  "## Gecontroleerd",...r.observations.map(x=>"- "+x),"",
  "## Aandachtspunten",...(r.warnings.length?r.warnings:["- Geen bijzonderheden gevonden binnen de uitgevoerde controles."]).map(x=>x.startsWith("- ")?x:"- "+x),"",
+ "## Wat wil je bereiken?","- "+(r.purpose?.label||"Niet opgegeven"),...(r.purpose?.aim?["- Jouw eigen toelichting (niet inhoudelijk beoordeeld): "+r.purpose.aim]:[]),"",
+ "## Wat de bestanden laten zien",...(r.purpose?.found||[]).map(x=>"- "+x),"",
+ "## Wat nog niet vaststaat",...(r.purpose?.remaining||[]).map(x=>"- "+x),"",
  "## Jouw stappen",...r.steps.map((x,i)=>(i+1)+". "+x),"",
  "## Niet gecontroleerd",...r.limits.map(x=>"- "+x),"",
  "## Bronnen","- ZIP: "+(a?.name||"niet aangeleverd"),"- GitHub: "+(repo?.url||"niet gecontroleerd"),"- GitHub-bronversie: "+(repo?.sha||"onbekend"),""].join("\n");
