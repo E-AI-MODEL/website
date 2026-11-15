@@ -10,6 +10,12 @@ De Worker controleert elke API-aanvraag en elke rechtstreekse `/view/{id}`-link 
 
 Het wachtwoord wordt **niet** in GitHub of de website opgeslagen. De Worker ontvangt alleen een met PBKDF2-SHA-256 en 310.000 iteraties berekende, gezouten hash via een geheim in Cloudflare.
 
+## Tijdelijke productieafscherming (15 november 2026)
+
+De oude Worker kon nog zonder login bestanden tonen en een onbeveiligde beheeractie uitvoeren. Daarom is op de bestaande Worker `eai-html-galerij` de **workers.dev-publicatie tijdelijk uitgezet** (`enabled=false`, previews uit). Er waren geen andere Cloudflare Worker-routes of Custom Domains gekoppeld. De publieke website op Theory7 blijft bestaan, maar de galerij-API en HTML-voorbeelden zijn nu niet bereikbaar. Ook de tijdelijke D1-trigger `eai_gallery_block_public_hide` blijft als aanvullende blokkade aanwezig.
+
+**Bij de nieuwe uitrol:** stel eerst de wachtwoordhash in, deploy de nieuwe beveiligde Worker met alle modules, activeer de Worker op `workers.dev` (`enabled=true`), controleer in een privébrowser dat de API en voorbeelden zonder sessie HTTP 401 geven en dat inloggen werkt, verwijder pas daarna de D1-trigger en test het verbergen van een voorbeeld. Zet de publieke website-ingang pas om na alle controles. De website kan niet veilig rechtstreeks naar de Worker wijzen zolang die op `enabled=false` staat.
+
 ## Eenmalig activeren
 
 De huidige Cloudflare-account heeft Cloudflare Access nog niet geactiveerd. Microsoft 365 SSO is daardoor **nog niet beschikbaar**. De onderstaande e-mail/wachtwoordroute werkt zonder Cloudflare Access en zonder een nieuwe DNS-koppeling.
