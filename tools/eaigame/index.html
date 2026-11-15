@@ -12,8 +12,6 @@
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"1aa5d5810d5a48e7bb8e5b2bac573e74"}'></script><script defer src="/assets/site-analytics.js"></script></head>
 <body class="eai-refresh eaigame">
 <a class="skip-link" href="#main">Ga naar het spel</a>
-<canvas id="world" aria-label="Interactieve driedimensionale spelwereld" tabindex="0"></canvas>
-<div class="world-vignette" aria-hidden="true"></div>
 <div id="app">
   <header class="topbar">
     <a class="brand" href="/tools/" aria-label="Terug naar EAI-tools"><span class="brand-mark">E<span>.</span></span><span>EAI<span class="thin">game</span></span></a>
@@ -24,9 +22,10 @@
       <div class="intro">
         <p class="eyebrow"><span class="signal"></span> Denken. Ontdekken. Durven.</p>
         <h1>Geen vakjes.<br><em>Een wereld.</em></h1>
-        <p class="intro-desc">Een worp bepaalt hoe ver je kunt reizen. Jij kiest je route. Zes gebieden wachten op een doorbraak. En de wereld verandert na elke uitdaging.</p>
+        <p class="intro-desc">Je ziet de hele wereld voor je. Kies na een worp zelf waar je heen gaat, ontdek zes gebieden en laat ze veranderen door jouw antwoorden.</p>
         <div class="pills"><span>3D-expeditie</span><span>1–4 spelers</span><span>Onderbouw vo</span><span>Zonder account</span></div>
       </div>
+      <div class="landing-map"><div class="board-headline"><strong>Je hele speelwereld</strong><span>Sleep om de wereld te draaien</span></div><div class="board-stage" id="landing-board"><canvas id="world" aria-label="Driedimensionale spelwereld met zes zichtbare gebieden" tabindex="0"></canvas></div></div>
       <form id="setup" class="setup-panel">
         <div class="setup-head"><div><p class="eyebrow">Nieuwe expeditie</p><h2>Wie reist er mee?</h2></div><span class="subtle">01 / 02</span></div>
         <p class="field-label" id="level-label">Kies je niveau</p>
@@ -40,13 +39,24 @@
       <div class="realm-strip" aria-hidden="true"><span>De Breuk</span><span>De Storm</span><span>De Echo</span><span>De Stad</span><span>Het Atelier</span><span>De Arena</span></div>
     </section>
     <section id="game-ui" class="game-ui hidden" aria-label="Spel">
-      <div class="game-title"><p class="eyebrow">DE WERELD WACHT</p><h2 id="realm-name">De expeditie</h2><p id="realm-desc">Raak een gebied aan en maak een keuze.</p></div>
-      <div class="game-stats"><div><small>RONDE</small><strong id="round">1 / 12</strong></div><div><small>BAKENS</small><strong id="beacons">0 / 6</strong></div><button type="button" id="score-toggle"><small>TEAMENERGIE</small><strong><span id="energy">0</span> ◇</strong></button></div>
-      <div class="active-player"><div class="player-jewel" id="player-jewel" aria-hidden="true"></div><div><small>AAN ZET</small><strong id="current-player">Speler 1</strong><span id="player-progress">0 ontdekkingen</span></div></div>
-      <div id="destinations" class="destinations" aria-live="polite"></div>
-      <div class="actionbar"><div><small id="phase-label">JOUW BEURT</small><strong id="phase-title">Werp je impuls</strong><span id="phase-detail">Een worp opent routes. Jij kiest.</span></div><button id="roll" type="button" class="primary">⚄ Werp impuls</button><button id="recenter" type="button" class="secondary">Overzicht</button></div>
-      <p class="interaction-tip" id="interaction-tip">Sleep om rond te kijken · tik op een gebied</p>
-      <aside id="scoreboard" class="scoreboard hidden"><div class="score-head"><h3>De ontdekkers</h3><button id="score-close" class="icon-btn" type="button" aria-label="Sluit stand">×</button></div><ol id="score-list"></ol><p>Herstel samen zes bakens. Een goed antwoord geeft energie en herstelt een baken.</p></aside>
+      <div class="game-heading">
+        <div class="game-title"><p class="eyebrow">DE WERELD WACHT</p><h2 id="realm-name">De expeditie</h2><p id="realm-desc">Het hele speelveld blijft zichtbaar. Kies na je worp een gebied.</p></div>
+        <div class="game-stats"><div><small>RONDE</small><strong id="round">1 / 12</strong></div><div><small>BAKENS</small><strong id="beacons">0 / 6</strong></div><button type="button" id="score-toggle"><small>TEAMENERGIE</small><strong><span id="energy">0</span> ◇</strong></button></div>
+      </div>
+      <div class="game-layout">
+        <div class="game-map">
+          <div class="board-headline"><strong>De zes gebieden</strong><span>Overzicht · alle gebieden in beeld</span></div>
+          <div class="board-stage" id="game-board"></div>
+          <p class="interaction-tip" id="interaction-tip">Sleep om het bord te draaien · tik op een gebied om het te bekijken</p>
+        </div>
+        <div class="game-controls">
+          <div class="active-player"><div class="player-jewel" id="player-jewel" aria-hidden="true"></div><div><small>AAN ZET</small><strong id="current-player">Speler 1</strong><span id="player-progress">0 ontdekkingen</span></div></div>
+          <div class="actionbar"><div><small id="phase-label">JOUW BEURT</small><strong id="phase-title">Werp je impuls</strong><span id="phase-detail">De worp opent routes, jij kiest.</span></div><button id="roll" type="button" class="primary">⚄ Werp impuls</button><button id="recenter" type="button" class="secondary">Hele bord ↗</button></div>
+          <div class="routes-caption" id="routes-caption">Je ziet de gebieden op het bord. Werp om je route te kiezen.</div>
+          <div id="destinations" class="destinations" aria-live="polite"></div>
+          <aside id="scoreboard" class="scoreboard hidden"><div class="score-head"><h3>De ontdekkers</h3><button id="score-close" class="icon-btn" type="button" aria-label="Sluit stand">×</button></div><ol id="score-list"></ol><p>Herstel samen zes bakens. Een goed antwoord geeft energie en herstelt een baken.</p></aside>
+        </div>
+      </div>
     </section>
     <dialog id="challenge" aria-labelledby="challenge-title">
       <div class="challenge-head"><div><p class="eyebrow" id="challenge-realm">DE UITDAGING</p><span class="level-tag" id="challenge-level">HAVO · ONDERBOUW</span></div><button id="challenge-close" class="icon-btn" type="button" aria-label="Sluit opdracht">×</button></div>
