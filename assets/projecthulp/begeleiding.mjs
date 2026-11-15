@@ -20,7 +20,7 @@ export function makeGuidance({archive=null,repo=null,advice=null,goal="site",aim
   if(archive.project?.hasReadme)addGood("Er staat al een README met informatie over het project.");
   if(archive.project?.hasTests)addGood("Er zijn bestanden aangetroffen die op tests wijzen. We hebben ze nog niet uitgevoerd.");
   if(archive.project?.framework)addGood("De projectbestanden wijzen op "+archive.project.framework+". Een ander framework is niet automatisch nodig.");
-  if(archive.secret?.length)problems.push(issue("Mogelijk privébestanden in je ZIP",archive.secret.length+" bestandsnamen lijken vertrouwelijk. Controleer die zelf en zet ze niet zomaar openbaar.","stop"));
+  if(archive.secret?.length)problems.push(issue("Mogelijk privébestanden in je ZIP",(archive.secret.length===1?"Eén bestandsnaam lijkt vertrouwelijk.":"Er zijn "+archive.secret.length+" bestandsnamen die vertrouwelijk lijken.")+" Controleer deze op je eigen apparaat en zet de inhoud niet zomaar openbaar.","stop"));
   if(archive.manifestError)problems.push(issue("Projectinstellingen niet goed leesbaar",archive.manifestError,"attention","package.json"));
   if(archive.missingReferences?.length)problems.push(issue("Verwijzingen naar ontbrekende bestanden",archive.missingReferences.length+" lokale bestandsverwijzingen konden niet worden gevonden: "+archive.missingReferences.slice(0,4).map(display).join(", ")+".","attention",archive.indexPath||"index.html"));
   if(archive.ignored?.length)uncertain.push("Er zijn "+archive.ignored.length+" tijdelijke of installatiebestanden herkend. Controleer welke je echt nodig hebt.");
