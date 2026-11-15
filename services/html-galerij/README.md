@@ -21,8 +21,9 @@ De huidige Cloudflare-account heeft Cloudflare Access nog niet geactiveerd. Micr
    - `GALLERY_PASSWORD_HASH`: de PBKDF2-regel uit het script
    - `RATE_LIMIT_SALT`: nieuwe willekeurige geheime waarde van minimaal 32 bytes, bijvoorbeeld gegenereerd met `node -e "console.log(require('node:crypto').randomBytes(32).toString('hex'))"`
 4. Publiceer de **volledige Worker-bron**, inclusief imports uit `src/auth.js` en `src/ui.js`, via `npx wrangler deploy` vanuit `services/html-galerij/`. Kopieer alleen `index.js` naar de online code-editor werkt niet, omdat de module imports dan ontbreken.
-5. Test zonder sessie: de aanmeldpagina moet verschijnen; `/api/uploads`, `/api/admin/uploads/{id}` en `/view/{id}` moeten toegang weigeren. Test vervolgens echte aanmelding, bekijken, upload, verbergen en afmelden. Controleer de statuscodes én het gedrag vanuit een tweede browser zonder sessie.
-6. Pas na een geslaagde proef de publieke websitepagina toe. De bestaande Theory7-publicatie publiceert **niet** automatisch de Worker-code of de D1-tabellen.
+5. **Verwijder pas na deployment van de beveiligde Worker de tijdelijke blokkade in D1**: `DROP TRIGGER IF EXISTS eai_gallery_block_public_hide;`. Deze tijdelijke trigger is op 15 november 2026 geplaatst, omdat de oude Worker verwijdering zonder login toestond. De trigger blokkeert ook geldig ingelogde verwijderacties totdat hij wordt opgeheven.
+6. Test zonder sessie: de aanmeldpagina moet verschijnen; `/api/uploads`, `/api/admin/uploads/{id}` en `/view/{id}` moeten toegang weigeren. Test vervolgens echte aanmelding, bekijken, upload, verbergen en afmelden. Controleer de statuscodes én het gedrag vanuit een tweede browser zonder sessie.
+7. Pas na een geslaagde proef de publieke websitepagina toe. De bestaande Theory7-publicatie publiceert **niet** automatisch de Worker-code of de D1-tabellen.
 
 De Worker sluit zonder geconfigureerde secrets of D1 de toegang af met HTTP 503. Zonder deze installatie is de nieuwe login niet werkzaam. Publiceer de statische ingang dus niet als laatste controle zonder de Worker te testen.
 
