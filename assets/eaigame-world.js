@@ -5,10 +5,14 @@ const canvas=document.getElementById('world');
 const realmColors=['#f5a08b','#76ccef','#c4a3ff','#f6d58a','#80e5c4','#f7aa75'];
 const positions=Array.from({length:6},(_,i)=>{const a=i*Math.PI/3-Math.PI/2;return new THREE.Vector3(Math.cos(a)*7,0,Math.sin(a)*7)});
 const scene=new THREE.Scene();scene.fog=new THREE.FogExp2(0x071624,.024);scene.background=new THREE.Color(0x071624);
-const camera=new THREE.PerspectiveCamera(39,1,.1,150);camera.position.set(1.8,17.5,20);
+const camera=new THREE.PerspectiveCamera(39,1,.1,150);
+const OVERVIEW_POSITION=new THREE.Vector3(1.5,25,27);
+camera.position.copy(OVERVIEW_POSITION);
+canvas.dataset.cameraView='overview';
 const renderer=new THREE.WebGLRenderer({canvas,antialias:true,powerPreference:'low-power',alpha:false});renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.65));renderer.outputColorSpace=THREE.SRGBColorSpace;
 renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.65;
-const controls=new OrbitControls(camera,canvas);controls.enablePan=false;controls.enableDamping=true;controls.dampingFactor=.08;controls.minDistance=15;controls.maxDistance=29;controls.minPolarAngle=.55;controls.maxPolarAngle=1.35;controls.autoRotate=!window.matchMedia('(prefers-reduced-motion: reduce)').matches;controls.autoRotateSpeed=.32;
+const controls=new OrbitControls(camera,canvas);controls.enablePan=false;controls.enableDamping=true;controls.dampingFactor=.08;controls.minDistance=24;controls.maxDistance=55;controls.minPolarAngle=.35;controls.maxPolarAngle=1.28;controls.autoRotate=false;
+controls.addEventListener('change',()=>{canvas.dataset.cameraDistance=camera.position.distanceTo(controls.target).toFixed(2)});
 const state={progress:[0,0,0,0,0,0],activeIndex:0,players:[],reach:[],selected:-1,impulse:0,fail:-1};
 scene.add(new THREE.HemisphereLight(0xb0ddff,0x06111a,2.2));const sun=new THREE.DirectionalLight(0xffe2c8,2.5);sun.position.set(-8,16,10);scene.add(sun);
 function mesh(geom,mat,container,x=0,y=0,z=0){const obj=new THREE.Mesh(geom,mat);obj.position.set(x,y,z);container.add(obj);return obj}
@@ -23,6 +27,13 @@ for(let i=0;i<10;i++){const a=i*Math.PI/5,r=14+(i%3)*2.1;const c=mesh(new THREE.
 function tube(a,b,r,mat){const dir=new THREE.Vector3().subVectors(b,a),m=mesh(new THREE.CylinderGeometry(r,r,dir.length(),8),mat,world);m.position.copy(a).add(b).multiplyScalar(.5);m.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),dir.normalize());return m}
 for(let i=0;i<6;i++){const a=positions[i],b=positions[(i+1)%6];tube(new THREE.Vector3(a.x,-.23,a.z),new THREE.Vector3(b.x,-.23,b.z),.10,physical(0x24566a));tube(new THREE.Vector3(a.x*.83,-.29,a.z*.83),new THREE.Vector3(a.x*.2,-.29,a.z*.2),.07,physical(0x3c828e))}
 const realmGroups=[],hitTargets=[],lights=[],beaconRings=[],caps=[];
+const realmNames=['De Breuk','De Storm','De Echo','De Stad','Het Atelier','De Arena'];
+const labelLayer=document.createElement('div');labelLayer.className='world-labels';labelLayer.setAttribute('aria-label','Gebieden op het bord');
+const labels=realmNames.map((name,i)=>{const button=document.createElement('button');button.type='button';button.className='world-label';button.textContent=name;button.title='Bekijk '+name;button.addEventListener('click',event=>{event.stopPropagation();onSelect(i)});labelLayer.append(button);return button});
+canvas.parentElement?.append(labelLayer);
+function positionLabels(){const rect=canvas.getBoundingClientRect(),w=rect.width,h=rect.height;if(!w||!h)return;for(let i=0;i<6;i++){const projected=positions[i].clone().add(new THREE.Vector3(0,2.65,0)).project(camera);const x=(projected.x+1)*w/2,y=(1-projected.y)*h/2;const el=labels[i];el.style.left=x+'px';el.style.top=y+'px';el.hidden=projected.z>1||x<36||x>w-36||y<18||y>h-18;el.classList.toggle('restored',state.progress[i]>=1);el.classList.toggle('reachable',state.reach.includes(i));el.setAttribute('aria-label',nameForLabel(i));}}
+function nameForLabel(i){return realmNames[i]+(state.progress[i]>=1?' · hersteld':state.reach.includes(i)?' · bereikbaar':'')}
+
 function decoration(group,i,col){const c=physical(col,.3,.45),pale=physical(0xe0eff7,.4,.28),baseY=.64;
  const add=(g,mt,x,y,z)=>mesh(g,mt,group,x,y,z);
  if(i===0){for(let k=0;k<6;k++){const t=k*Math.PI/3;const m=add(new THREE.TetrahedronGeometry(.36+(k%3)*.2),c,Math.cos(t)*.85,baseY+.5+(k%3)*.24,Math.sin(t)*.85);m.rotation.set(.3*k,.4*k,.2)}}
@@ -53,13 +64,16 @@ canvas.addEventListener('pointerdown',e=>{pointerDown={x:e.clientX,y:e.clientY}}
 canvas.addEventListener('pointerup',e=>{if(!pointerDown)return;const travel=Math.hypot(e.clientX-pointerDown.x,e.clientY-pointerDown.y);pointerDown=null;if(travel>10)return;const i=indexFromEvent(e);if(i>=0)onSelect(i)});
 canvas.addEventListener('pointermove',e=>{if(e.pointerType==='touch')return;const i=indexFromEvent(e);if(i!==hover){hover=i;canvas.style.cursor=i>=0?'pointer':'grab'}});
 canvas.addEventListener('keydown',e=>{if(e.key==='ArrowLeft'||e.key==='ArrowRight'){e.preventDefault();camera.position.applyAxisAngle(new THREE.Vector3(0,1,0),e.key==='ArrowLeft'?.16:-.16)}}); 
-function resize(){const rect=canvas.getBoundingClientRect();const w=Math.max(100,Math.floor(rect.width)),h=Math.max(100,Math.floor(rect.height));if(camera.aspect!==w/h){camera.aspect=w/h;camera.updateProjectionMatrix()}renderer.setSize(w,h,false)}
+function resize(){const rect=canvas.getBoundingClientRect();const w=Math.max(100,Math.floor(rect.width)),h=Math.max(100,Math.floor(rect.height));if(Math.abs(camera.aspect-w/h)>.0001){camera.aspect=w/h;camera.updateProjectionMatrix()}renderer.setSize(w,h,false);positionLabels()}
+let observer=new ResizeObserver(()=>resize());observer.observe(canvas.parentElement);
 window.addEventListener('resize',resize);resize();let frame=0;const clock=new THREE.Clock();
-function loop(){if(!running)return;requestAnimationFrame(loop);const dt=Math.min(clock.getDelta(),.06);frame+=dt;core.rotation.y+=dt*.7;core.position.y=1.1+.12*Math.sin(frame*1.7);hubRing.rotation.z=frame*.07;caps.forEach((c,i)=>{c.rotation.y+=dt*(.28+i*.03);c.position.y=1.62+.09*Math.sin(frame*1.25+i)});realmGroups.forEach((g,i)=>{g.position.y=.05*Math.sin(frame*.7+i*.7);const v=state.progress[i]||0,active=state.reach.includes(i);beaconRings[i].material.opacity=v>=1?.95:active?.68:.27;beaconRings[i].scale.setScalar(v>=1?1+.035*Math.sin(frame*2):1);lights[i].intensity=v>=1?5.5:active?3.1:1.45});playerTokens.forEach((m,i)=>{m.position.lerp(m.userData.goal,Math.min(1,dt*4));m.rotation.y+=dt*.7;m.position.y+=Math.sin(frame*2+i)*.0006});controls.update();renderer.render(scene,camera)}loop();
+function loop(){if(!running)return;requestAnimationFrame(loop);const dt=Math.min(clock.getDelta(),.06);frame+=dt;core.rotation.y+=dt*.7;core.position.y=1.1+.12*Math.sin(frame*1.7);hubRing.rotation.z=frame*.07;caps.forEach((c,i)=>{c.rotation.y+=dt*(.28+i*.03);c.position.y=1.62+.09*Math.sin(frame*1.25+i)});realmGroups.forEach((g,i)=>{g.position.y=.05*Math.sin(frame*.7+i*.7);const v=state.progress[i]||0,active=state.reach.includes(i);beaconRings[i].material.opacity=v>=1?.95:active?.68:.27;beaconRings[i].scale.setScalar(v>=1?1+.035*Math.sin(frame*2):1);lights[i].intensity=v>=1?5.5:active?3.1:1.45});playerTokens.forEach((m,i)=>{m.position.lerp(m.userData.goal,Math.min(1,dt*4));m.rotation.y+=dt*.7;m.position.y+=Math.sin(frame*2+i)*.0006});controls.update();positionLabels();renderer.render(scene,camera)}loop();
 export function createWorld({select}){onSelect=select;return{
- setState(next){Object.assign(state,next);redrawTokens()},
- focus(index){if(index<0){controls.target.set(0,0,0);camera.position.set(1.8,17.5,20)}else{const p=positions[index];controls.target.copy(p);camera.position.copy(p).add(new THREE.Vector3(0,7.5,9))}controls.update()},
- emphasize(index){state.selected=index},
- destroy(){running=false;controls.dispose();renderer.dispose();window.removeEventListener('resize',resize)},
+ setState(next){Object.assign(state,next);redrawTokens();positionLabels()},
+ focus(index){state.selected=index;if(index<0){controls.target.set(0,0,0);camera.position.copy(OVERVIEW_POSITION);canvas.dataset.cameraView='overview'}else{canvas.dataset.cameraView='overview'}controls.update();positionLabels()},
+ attach(stage){if(!stage)throw Error('Ontbrekend bord');if(labelLayer.parentElement!==stage)stage.append(labelLayer);observer.disconnect();observer.observe(stage);resize()},
+ resize,
+ emphasize(index){state.selected=index;positionLabels()},
+ destroy(){running=false;observer.disconnect();labelLayer.remove();controls.dispose();renderer.dispose();window.removeEventListener('resize',resize)},
  kind:'three'
 }}
