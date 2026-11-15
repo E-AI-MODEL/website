@@ -1,7 +1,8 @@
 import {PROMPT_PHASES,PROMPT_LIBRARY,promptsForPhase,fillPrompt} from "./prompts-data.mjs";
 const $=id=>document.getElementById(id);
 const filters=$("promptFilters"),list=$("promptList");
-let currentPhase="alle",selected=null;
+const requested=new URLSearchParams(location.search).get("fase");
+let currentPhase=PROMPT_PHASES.some(p=>p.id===requested)?requested:"alle",selected=null;
 const node=(tag,cls="",text="")=>{const el=document.createElement(tag);if(cls)el.className=cls;if(text)el.textContent=text;return el;};
 const phaseName=(id)=>PROMPT_PHASES.find(p=>p.id===id)?.label||id;
 const data=()=>({repo:$("promptRepo").value,goal:$("promptGoal").value});
