@@ -148,7 +148,12 @@ try {
   // Bewijs dat afspelen doorloopt over de overgang 100% -> 0%.
   await setTime(page,.98);
   await page.locator('#play').click();
-  await page.waitForTimeout(520);
+  // De WebGL-rendering kan op CI traag zijn. Test de echte fase-overgang,
+  // niet of een vaste hoeveelheid simulatietijd binnen 520 ms is verstreken.
+  await page.waitForFunction(()=>{
+    const {playing,t}=window.__EAI_HEART_LAB__.state;
+    return playing&&t<.35;
+  },null,{timeout:12000,polling:50});
   const wrapped=await state(page);
   assert(wrapped.playing&&wrapped.t<.35,'Hartslag moet vanzelf opnieuw beginnen');
   await page.locator('#play').click();
