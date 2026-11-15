@@ -130,6 +130,8 @@ jobs:
         run: python -m unittest discover -s tests -p 'test_site_menu_groups.py' -v
       - name: Check bilingual EAI Dictionary and semantic menu links
         run: python -m unittest discover -s tests -p 'test_dictionary_and_menu.py' -v
+      - name: Check editorial card scope excludes interactive labs
+        run: python -m unittest discover -s tests -p 'test_story_cards.py' -v
 
       - name: Check EAIwork public demonstration
         run: python -m unittest discover -s tests -p 'test_eaiwork_dashboard_publish.py' -v
