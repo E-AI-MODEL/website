@@ -16,44 +16,59 @@
 <a class="skip-link" href="#main-content">Ga naar de inhoud</a>
 <header class="ph-nav"><a href="/" aria-label="EAI home" class="ph-logo"><img src="/assets/eai-logo.svg" alt=""><span>EAI</span></a><span>Projecthulp <span class="ph-beta">proefversie</span></span><a href="/tools/">Alle tools</a></header>
 <main id="main-content" class="ph-shell">
- <div class="ph-intro"><span class="ph-eyebrow">EAI Work · Praktijkproef zonder AI</span><h1>Je project naar GitHub.</h1><p>Je hebt bestanden, misschien al een repository. We kijken wat er nodig is om ze goed bij elkaar te brengen. Je hoeft nog niets te publiceren.</p></div>
+ <div class="ph-intro"><span class="ph-eyebrow">EAI Work · Praktijkproef zonder AI</span><h1>Van bestanden naar een bruikbaar project.</h1><p>GitHub kan je projectbestanden bewaren. Maar een ZIP-bestand uploaden maakt nog geen werkende website of toepassing. We onderzoeken eerst wat jij wilt bereiken.</p></div>
  <nav class="ph-steps" aria-label="Voortgang">
   <span class="ph-step active" id="stepLabel1"><b>1</b> Jouw situatie</span><span class="ph-line"></span><span class="ph-step" id="stepLabel2"><b>2</b> Je bestanden</span><span class="ph-line"></span><span class="ph-step" id="stepLabel3"><b>3</b> Jouw advies</span>
  </nav>
  <section class="ph-panel" id="screen1" aria-labelledby="screen1title">
   <div class="ph-topline">STAP 1 VAN 3</div>
-  <h2 id="screen1title">Wat wil je doen?</h2>
-  <p>Er is geen goed of fout antwoord. We gebruiken je keuze om het advies passend te maken.</p>
-  <fieldset class="ph-choices"><legend class="ph-visually-hidden">Je doel</legend>
-   <label class="ph-choice"><input type="radio" name="goal" value="upload" checked><span><strong>Mijn ZIP-bestand op GitHub zetten</strong><small>Ik heb al bestanden en wil ze in een repository krijgen.</small></span></label>
-   <label class="ph-choice"><input type="radio" name="goal" value="maintain"><span><strong>Mijn bestaande project bijwerken</strong><small>Er staat al iets op GitHub. Ik wil weten wat ik moet aanvullen.</small></span></label>
-   <label class="ph-choice"><input type="radio" name="goal" value="publish"><span><strong>Mijn website online krijgen</strong><small>Ik wil weten of mijn project daarna ook als website kan werken.</small></span></label>
+  <h2 id="screen1title">Wat moet er straks mogelijk zijn?</h2>
+  <p>We beginnen bij het resultaat, niet bij de techniek. Dat bepaalt welke bestanden we gaan controleren.</p>
+  <fieldset class="ph-choices"><legend class="ph-visually-hidden">Wat wil je bereiken?</legend>
+   <label class="ph-choice"><input type="radio" name="goal" value="site" checked><span><strong>Een website die anderen kunnen openen</strong><small>Bezoekers krijgen een pagina te zien.</small></span></label>
+   <label class="ph-choice"><input type="radio" name="goal" value="app"><span><strong>Een programma of interactieve toepassing</strong><small>Iemand moet er echt iets mee kunnen doen.</small></span></label>
+   <label class="ph-choice"><input type="radio" name="goal" value="code"><span><strong>Mijn project verder kunnen ontwikkelen</strong><small>Bestanden bewaren, aanpassen en versies bijhouden.</small></span></label>
+   <label class="ph-choice"><input type="radio" name="goal" value="docs"><span><strong>Documenten of materiaal delen</strong><small>De inhoud moet overzichtelijk terug te vinden zijn.</small></span></label>
+   <label class="ph-choice ph-choice-quiet"><input type="radio" name="goal" value="unsure"><span><strong>Dat weet ik nog niet precies</strong><small>Help me eerst begrijpen wat ik heb.</small></span></label>
   </fieldset>
-  <div class="ph-field ph-level"><label for="experience">Hoe bekend ben je met GitHub?</label><select id="experience"><option value="beginner">Ik begin net</option><option value="some">Ik heb al eens bestanden geüpload</option><option value="experienced">Ik gebruik GitHub vaker</option></select></div>
+  <div class="ph-about">
+   <div class="ph-field"><label for="projectAim">Wat moet iemand met je project kunnen doen? <span class="ph-optional">mag je overslaan</span></label><textarea id="projectAim" maxlength="220" rows="2" placeholder="Bijvoorbeeld: bezoekers kunnen een oefening kiezen en zelf uitvoeren"></textarea><small>We nemen jouw beschrijving mee in het advies. Zonder AI kunnen we niet vaststellen of de beschreven functies echt werken.</small></div>
+   <div class="ph-field ph-level"><label for="experience">Hoe bekend ben je met GitHub?</label><select id="experience"><option value="beginner">Ik begin net</option><option value="some">Ik heb al eens bestanden toegevoegd</option><option value="experienced">Ik gebruik GitHub vaker</option></select></div>
+  </div>
   <div class="ph-actions"><span class="ph-help">De volgende stap vraagt om je ZIP en repositorylink.</span><button id="toFiles" class="ph-button ph-primary" type="button">Verder <span aria-hidden="true">→</span></button></div>
  </section>
  <section class="ph-panel ph-hidden" id="screen2" aria-labelledby="screen2title">
   <div class="ph-topline">STAP 2 VAN 3</div>
-  <h2 id="screen2title">Laat zien wat je hebt.</h2><p>Je ZIP blijft op je eigen apparaat. We lezen het alleen in deze browser. Je openbare GitHub-repository lezen we rechtstreeks via GitHub.</p>
+  <h2 id="screen2title">Welke bestanden heb je al?</h2><p>Je kiest een ZIP-bestand zodat we de inhoud op je eigen apparaat kunnen onderzoeken. We sturen het niet naar GitHub. Een openbare repository lezen we rechtstreeks bij GitHub.</p>
   <div class="ph-fields">
    <div class="ph-field">
     <label for="repoUrl">Link naar je GitHub-repository</label><input id="repoUrl" type="url" inputmode="url" autocomplete="url" placeholder="https://github.com/gebruiker/project" spellcheck="false" aria-describedby="repoHelp">
     <small id="repoHelp">Alleen openbare repositories, zonder aanmelden.</small>
    </div>
    <div class="ph-field">
-    <label for="zipFile">Je ZIP-bestand</label>
-    <label class="ph-drop" id="dropZone" for="zipFile"><span class="ph-upload-icon" aria-hidden="true">↥</span><strong id="fileName">Kies een ZIP-bestand</strong><span>Of sleep het hierheen · maximaal 16 MB</span></label>
+    <label for="zipFile">Onderzoek de inhoud van je ZIP-bestand</label>
+    <label class="ph-drop" id="dropZone" for="zipFile"><span class="ph-upload-icon" aria-hidden="true">↥</span><strong id="fileName">Kies een ZIP om te onderzoeken</strong><span>Of sleep het hierheen · maximaal 16 MB</span></label>
     <input id="zipFile" class="ph-file-native" type="file" accept=".zip,application/zip,application/x-zip-compressed" aria-describedby="zipHelp">
-    <small id="zipHelp">De bestanden worden niet naar EAI of GitHub verstuurd.</small>
+    <small id="zipHelp">Alleen in je browser gelezen. GitHub pakt een geüpload ZIP-bestand niet vanzelf uit.</small>
    </div>
   </div>
   <div class="ph-alert ph-hidden" id="inputError" role="alert"></div>
   <div class="ph-actions"><button id="back1" type="button" class="ph-button ph-plain">← Terug</button><button id="analyze" class="ph-button ph-primary" type="button">Onderzoek mijn project <span aria-hidden="true">→</span></button></div>
-  <div class="ph-privacy"><span aria-hidden="true">◯</span><span>Je bestanden blijven lokaal. Er wordt geen code uitgevoerd en niets in GitHub gewijzigd.</span></div>
+  <div class="ph-privacy"><span aria-hidden="true">◯</span><span>Jij bepaalt wat later openbaar mag worden. We voeren niets uit, sturen geen projectbestanden weg en veranderen niets in GitHub.</span></div>
  </section>
  <section class="ph-panel ph-hidden" id="screen3" aria-labelledby="screen3title">
   <div class="ph-topline">STAP 3 VAN 3</div><h2 id="screen3title">Dit hebben we gevonden.</h2><p id="resultLead">Op basis van de bestanden die we konden controleren.</p>
   <div class="ph-summary" id="summary"></div>
+  <section class="ph-purpose" aria-labelledby="purposeTitle">
+   <span class="ph-topline">JE DOEL EN DE BESTANDEN</span>
+   <h3 id="purposeTitle">Wat wil je bereiken?</h3>
+   <p id="purposeAim" class="ph-purpose-aim ph-hidden"></p>
+   <div class="ph-purpose-checks">
+    <div><h4><span class="ph-icon ph-ok">✓</span> Dit zien we in het project</h4><ul id="purposeFound"></ul></div>
+    <div><h4><span class="ph-icon ph-warn">?</span> Dit staat nog niet vast</h4><ul id="purposeRemaining"></ul></div>
+   </div>
+   <p class="ph-purpose-note">De bestandscontrole geeft aanwijzingen. Of het project werkelijk doet wat je bedoelt, moet je nog uitproberen.</p>
+  </section>
   <section class="ph-first" aria-labelledby="firstTitle">
    <div class="ph-topline">BEGIN HIER</div>
    <h3 id="firstTitle">Dit kun je nu doen</h3>
