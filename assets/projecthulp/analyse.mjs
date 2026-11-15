@@ -203,7 +203,10 @@ export function makeAdvice({goal="code",experience="beginner",archive,repo,aim="
  if(selectedGoal==="app")steps.push("Test het programma en bepaal welke omgeving of hosting het nodig heeft. GitHub bewaart bronbestanden, maar voert je programma niet vanzelf uit.");
  if(goal==="maintain")steps.push("Gebruik voor toekomstige wijzigingen een aparte branch en controleer het verschil voordat je het samenvoegt.");
  if(experience==="beginner"&&archive&&repo)steps.push("Kijk na de upload of je bestanden op de juiste plek staan. Je hoeft nu geen nieuw programma te installeren.");
- const ready=Boolean(archive&&repo&&repo.readable&&!repo.truncated&&!archive.secret.length);
+ const ready=Boolean(archive&&repo&&repo.readable&&!repo.truncated&&!archive.secret.length&&
+  !archive.contentCheck?.findings?.length&&!repo.contentCheck?.findings?.length&&
+  !repo.actionChecks?.syntaxErrors?.length&&comparison?.missingCount===0&&
+  comparison?.changed?.length===0&&comparison?.unknown?.length===0);
  return {observations,warnings,steps,comparison,ready,purpose,limits:["Projectcode is niet uitgevoerd. Knoppen, berekeningen en andere functies zijn niet automatisch getest.","De statische ZIP-analyse is begrensd. Grote of ongeschikte bestanden blijven deels onbeoordeeld.","De GitHub-vergelijking gebruikt alleen bestanden met beschikbare Git-vingerafdrukken. De tool schrijft of publiceert niets."]};
 }
 export function readmeTemplate(project,repoName){
