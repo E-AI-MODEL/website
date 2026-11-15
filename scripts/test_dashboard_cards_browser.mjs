@@ -29,6 +29,12 @@ try {
     await page.screenshot({path:"test-results/dashboard-cards-"+width+".png",fullPage:true});
     const bounds=await page.evaluate(()=>({page:document.documentElement.scrollWidth,viewport:document.documentElement.clientWidth}));
     assert(bounds.page<=bounds.viewport+1,"Horizontal scrolling at "+width+": "+JSON.stringify(bounds));
+    if(width<=390){
+      const widths=await page.locator(".eai-landing-route p").evaluateAll(nodes=>nodes.map(n=>n.getBoundingClientRect().width));
+      assert(widths.every(w=>w>=145),"Card descriptions must remain readable: "+widths.join(","));
+      const positions=await page.evaluate(()=>({direct:document.querySelector(".eai-dash-direct").getBoundingClientRect().top,side:document.querySelector(".eai-dash-side").getBoundingClientRect().top}));
+      assert(positions.direct<positions.side,"Direct links should precede optional widgets on a phone");
+    }
     await page.locator('[data-dash-filter="proberen"]').click();
     assert.equal(await page.locator(".eai-landing-route:visible").count(),1,"Only Tools after filter "+width);
     await page.locator('[data-dash-filter="all"]').click();
