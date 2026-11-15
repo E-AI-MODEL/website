@@ -15,7 +15,7 @@ export async function loadModel(onProgress=()=>{}){
  })();
  try{return await loading}catch(err){engine=null;throw err}finally{loading=null}
 }
-function parseResponse(raw,realm,level){
+export function parseResponse(raw,realm,level){
  const cleaned=String(raw||'').replace(/<think>[\s\S]*?<\/think>/g,'').replace(/^```(?:json)?/i,'').replace(/```$/,'').trim();
  const match=cleaned.match(/\{[\s\S]*\}/);if(!match)throw Error('Model heeft geen bruikbaar JSON-object gemaakt');
  const v=JSON.parse(match[0]);const options=v.options;
