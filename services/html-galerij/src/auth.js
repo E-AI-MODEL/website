@@ -2,7 +2,7 @@
 const COOKIE = '__Host-eai_gallery_session';
 const MAX_AGE = 8 * 60 * 60;
 const encoder = new TextEncoder();
-const noCache = { 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff', 'Referrer-Policy': 'no-referrer' };
+const noCache = { 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff', 'Referrer-Policy': 'no-referrer', 'X-Robots-Tag': 'noindex, nofollow, noarchive' };
 
 function reply(message, status = 200, extra = {}) {
   return new Response(message, { status, headers: { ...noCache, ...extra } });
