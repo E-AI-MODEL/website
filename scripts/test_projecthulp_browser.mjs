@@ -81,7 +81,7 @@ try{
  assert.match(await page.locator("#warnings").innerText(),/projectbestanden/);
  assert.match(await page.locator("#firstText").innerText(),/losse projectbestanden/);
  assert.match(await page.locator("#purposeRemaining").innerText(),/niet uitgepakt/);
- assert.match(await page.locator("#steps").innerText()+" "+await page.locator("#moreSteps").textContent(),/GitHub pakt een ZIP-bestand niet automatisch uit/);
+ assert.match(await page.locator("#steps").innerText()+" "+await page.locator("#moreSteps").textContent(),/GitHub pakt een geüpload ZIP-bestand niet automatisch uit/);
  assert.deepEqual(errors,[]);
  assert.deepEqual(errors,[]);
  console.log("Projecthulp browserproef geslaagd: ZIP lokaal, GitHub API gemockt, advies, download, foutpad en mobiel.");
