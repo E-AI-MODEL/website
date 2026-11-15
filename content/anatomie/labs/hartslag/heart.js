@@ -301,6 +301,7 @@ function updateFlowOverlay(m){
     }
     flowVisualKey=view;
   }
+  const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
   for(const {flow,index,track,bed,pulse,arrow,length,blob} of flowVisuals){
     const side=state.focusSide==='both'||flow.color===(state.focusSide==='left'?'red':'blue');
     const active=side&&flowIsActive(flow,m);
@@ -310,14 +311,14 @@ function updateFlowOverlay(m){
     const entering=flow.channel==='return';
     track.style.opacity=String(strength*(entering?.13:.19));
     bed.style.opacity=String(strength*(entering?.35:.52));
-    pulse.style.opacity=String(strength*(entering?.62:.94));
+    pulse.style.opacity=String(strength*(reducedMotion?.24:(entering?.62:.94)));
     // Alleen bij de vijf hoofdverbindingen een klein pijltje. De zijtakken
     // lees je aan de bewegende puls, zonder een wirwar van pijlen te tekenen.
     arrow.style.opacity=String(!entering&&active?strength*.58:0);
     const progress=entering?state.t:flow.channel==='av'?
       clamp(state.t/.64,0,1):clamp((state.t-.70)/.23,0,1);
     const travel=(progress+index*.13)%1;
-    pulse.style.strokeDashoffset=String(-(length+blob)*travel);
+    pulse.style.strokeDashoffset=String(-(length+blob)*(reducedMotion?.30:travel));
   }
 }
 function updateViewport(){
