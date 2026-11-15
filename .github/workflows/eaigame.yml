@@ -7,6 +7,7 @@ on:
       - 'assets/eaigame*'
       - 'tests/test_eaigame.mjs'
       - 'scripts/test_eaigame_browser.mjs'
+      - 'scripts/test_eaigame_sites_browser.mjs'
       - '.github/workflows/eaigame.yml'
   push:
     branches: [main]
@@ -15,6 +16,7 @@ on:
       - 'assets/eaigame*'
       - 'tests/test_eaigame.mjs'
       - 'scripts/test_eaigame_browser.mjs'
+      - 'scripts/test_eaigame_sites_browser.mjs'
       - '.github/workflows/eaigame.yml'
   workflow_dispatch:
 permissions:
@@ -40,6 +42,11 @@ jobs:
           node --check assets/eaigame-questions.js
           node --check assets/eaigame-ai.js
           node --check scripts/test_eaigame_browser.mjs
+          node --check scripts/test_eaigame_sites_browser.mjs
+          node --check assets/eaigame-sites-app.js
+          node --check assets/eaigame-sites-island.js
+          node --check assets/eaigame-sites-questions.js
+          node --check assets/eaigame-sites-improvements.js
       - name: Verify questions and gameplay
         run: node --test tests/test_eaigame.mjs
       - name: Install Playwright
@@ -50,6 +57,8 @@ jobs:
         env:
           EAIGAME_REQUIRE_3D: '1'
         run: node scripts/test_eaigame_browser.mjs .
+      - name: Verify original Sites interface and game flow on desktop and phone
+        run: node scripts/test_eaigame_sites_browser.mjs .
       - name: Save browser screenshots
         if: always()
         uses: actions/upload-artifact@v4
