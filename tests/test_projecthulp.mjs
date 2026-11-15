@@ -6,6 +6,7 @@ import {inspectZip,readZipText} from "../assets/projecthulp/zip.mjs";
 import {parseRepoUrl,fetchPublicRepo,stripArchiveRoot,describeProject,analyzeArchive,compareProjects,makeAdvice,reportText,readmeTemplate,ignoreTemplate} from "../assets/projecthulp/analyse.mjs";
 import {checkProjectPurpose,findBrokenLocalLinks,PURPOSES} from "../assets/projecthulp/doelcontrole.mjs";
 import {availableProjectChecks,generateProjectCheckWorkflow} from "../assets/projecthulp/projectcheck.mjs";
+import {makeGuidance,continuationPrompt} from "../assets/projecthulp/begeleiding.mjs";
 const crcTable=Array.from({length:256},(_,i)=>{let c=i;for(let k=0;k<8;k++)c=(c&1)?0xedb88320^(c>>>1):c>>>1;return c>>>0;});
 function crc32(b){let c=0xffffffff;for(const x of b)c=crcTable[(c^x)&255]^(c>>>8);return(c^0xffffffff)>>>0;}
 function makeZip(files,{compress=false}={}){
@@ -192,4 +193,40 @@ test("De browserworker heeft een beperkt contract: leesacties, geen schrijfverzo
  assert.match(worker,/fetchPublicRepo/);
  assert.ok(!worker.includes("child_process"));
  assert.ok(!worker.includes("method: \"POST\""));
+});
+
+test("Gebruikersantwoord: feitelijk goede onderdelen, bevestigde fouten en niet-geteste werking",()=>{
+ const archive={eligible:["index.html","app.js"],project:{hasHtml:true,hasReadme:true,hasTests:false},secret:[],missingReferences:["css/ontbreekt.css"],ignored:[]};
+ const repo={name:"voorbeeld/site",url:"https://github.com/voorbeeld/site",readable:true,paths:["index.html"],truncated:false};
+ const advice={comparison:{missingCount:1}};
+ const result=makeGuidance({archive,repo,advice,goal:"site",aim:"Bezoeker opent de site"});
+ assert.ok(result.good.some(x=>x.includes("README")));
+ assert.ok(result.problems.some(x=>x.title.includes("Verwijzingen")));
+ assert.ok(result.problems.some(x=>x.title.includes("bestand")));
+ assert.ok(result.uncertain.some(x=>x.includes("Codefouten zijn nog niet getest")));
+ assert.ok(result.uncertain.some(x=>x.includes("Logische fouten")));
+ assert.equal(result.codeErrorsVerified,false);
+ assert.equal(result.actionsUrl,"https://github.com/voorbeeld/site/actions");
+ const prompt=continuationPrompt(result);
+ assert.ok(prompt.includes("https://github.com/voorbeeld/site"));
+ assert.ok(prompt.includes("pull request"));
+ assert.ok(prompt.includes("bestandsnaam"));
+});
+test("Gebruikersantwoord: nooit vertrouwelijke inhoud, geen ongegronde foutenclaims",()=>{
+ const result=makeGuidance({archive:{eligible:["main.py"],project:{},secret:[".env"],missingReferences:[],ignored:[]},repo:null,goal:"app"});
+ assert.ok(result.problems.some(p=>p.severity==="stop"));
+ assert.ok(!JSON.stringify(result).includes("SECRET=fixture"));
+ assert.ok(result.next[0].includes("vertrouwelijke bestanden"));
+ assert.equal(result.logicErrorsVerified,false);
+});
+test("Projecthulp biedt vrijwillige GitHub-instructies, geen onjuiste schrijfrechten of Plus-eis",()=>{
+ const html=readFileSync(new URL("../tools/projecthulp/index.html",import.meta.url),"utf8");
+ assert.match(html,/Instellingen → Plug-ins → GitHub/);
+ assert.match(html,/Codex op het web/);
+ assert.match(html,/id="goodPoints"/);
+ assert.match(html,/id="problemPoints"/);
+ assert.match(html,/id="unknownPoints"/);
+ assert.match(html,/id="nextPrompt"/);
+ assert.doesNotMatch(html,/minimaal een Plus/);
+ assert.doesNotMatch(html,/geef ChatGPT.*schrijfrechten/i);
 });
