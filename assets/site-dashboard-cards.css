@@ -367,6 +367,10 @@ body.eai-ui.eai-card-index .knowledge-route>div>span:first-child{
  body.eai-ui.eai-dash-page .eai-dashboard-home .eai-landing-reading-grid{grid-template-columns:1fr}
 }
 @media (max-width:355px){
+ /* One complete card per row: descriptions must not be squeezed below 125px. */
+ body.eai-ui.eai-dash-page .eai-dashboard-home .eai-landing-route-grid{grid-template-columns:minmax(0,1fr)}
+ body.eai-ui.eai-dash-page .eai-dashboard-home .eai-landing-route{min-height:0;padding-bottom:16px!important}
+ body.eai-ui.eai-dash-page .eai-dash-card-art{height:85px}
  body.eai-ui.eai-dash-page .eai-dash-mini-donut{width:56px;height:56px}
  body.eai-ui.eai-dash-page .eai-dash-mini-donut:before{inset:9px}
  body.eai-ui.eai-dash-page .eai-dash-mini-labels{margin-left:8px;font-size:8px}
