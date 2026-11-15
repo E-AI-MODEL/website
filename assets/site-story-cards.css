@@ -342,3 +342,31 @@ body.eai-ui.eai-story-page .eai-story-mobile-detail>div{
     display:none;
   }
 }
+
+/* Page-specific legacy rules were taller than the new editorial hero. */
+@media(max-width:620px){
+  body.eai-ui.eai-story-page main section.page-hero,
+  body.eai-ui.eai-story-page main section.eai-editorial-hero{
+    padding-top:22px!important;
+    padding-bottom:19px!important;
+  }
+  body.eai-ui.eai-story-page main section.section,
+  body.eai-ui.eai-story-page main section.eai-section{
+    padding-top:23px!important;
+    padding-bottom:27px!important;
+  }
+  body.eai-ui.eai-story-page main .education-hub-hero .wrap,
+  body.eai-ui.eai-story-page main .knowledge-hub-hero .wrap{
+    gap:11px!important;
+  }
+  body.eai-ui.eai-story-page main .page-hero .lede,
+  body.eai-ui.eai-story-page main .eai-editorial-hero .eai-lead{
+    margin-bottom:8px!important;
+  }
+  body.eai-ui.eai-story-page .eai-story-mobile-detail{
+    margin-top:2px!important;
+  }
+  body.eai-ui.eai-story-page .education-start .section-head{
+    margin-bottom:12px!important;
+  }
+}
