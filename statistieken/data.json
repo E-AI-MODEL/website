@@ -1,13 +1,13 @@
 {
   "schema": 1,
   "source": "Cloudflare Web Analytics (RUM)",
-  "updated_at": "2026-11-15T06:46:12+00:00",
+  "updated_at": "2026-11-15T18:57:11+00:00",
   "period": {
     "from": "2026-10-17",
     "through": "2026-11-15"
   },
-  "views": 20,
-  "visits": 20,
+  "views": 50,
+  "visits": 30,
   "daily": [
     {
       "date": "2026-10-17",
@@ -156,15 +156,30 @@
     },
     {
       "date": "2026-11-15",
-      "views": 0,
-      "visits": 0
+      "views": 30,
+      "visits": 10
     }
   ],
   "pages": [
     {
+      "path": "/tools/science-observatory/",
+      "views": 10,
+      "visits": 0
+    },
+    {
+      "path": "/nl/onderzoek/zhang-genai-taal/",
+      "views": 10,
+      "visits": 10
+    },
+    {
       "path": "/statistieken/",
       "views": 10,
       "visits": 10
+    },
+    {
+      "path": "/tools/sport-en-bewegen/",
+      "views": 10,
+      "visits": 0
     },
     {
       "path": "/",
@@ -172,7 +187,12 @@
       "visits": 10
     }
   ],
-  "referrers": [],
+  "referrers": [
+    {
+      "host": "Sociale media",
+      "views": 10
+    }
+  ],
   "notes": [
     "Bezoeken zijn geen unieke personen.",
     "Cloudflare Web Analytics meet geladen pagina's in browsers met JavaScript; cijfers kunnen door steekproeven afwijken.",
