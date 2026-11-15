@@ -36,7 +36,7 @@ export function checkProjectPurpose({goal="unsure",archive=null,repo=null,aim=""
  const manifest=archive?.manifest&&typeof archive.manifest==="object"&&!Array.isArray(archive.manifest)?archive.manifest:{};
  const scripts=manifest.scripts&&typeof manifest.scripts==="object"&&!Array.isArray(manifest.scripts)?manifest.scripts:{};
  const found=[],remaining=[];
- const index=has(p,"index.html")?"index.html":has(p,"public/index.html")?"public/index.html":null;
+ const index=["index.html","public/index.html","dist/index.html","build/index.html"].find(x=>has(p,x))||null;
  const code=files.filter(isCode);
  const docs=files.filter(isDocument);
  const repoFiles=repo?.paths||[];
@@ -47,6 +47,7 @@ export function checkProjectPurpose({goal="unsure",archive=null,repo=null,aim=""
  if(!files.length)remaining.push("Na het weglaten van mogelijke privé- en tijdelijke bestanden blijven geen projectbestanden over.");
  if(selected==="site"){
   if(index)found.push("Een mogelijk startbestand voor een website gevonden: "+index+".");
+  if(index?.startsWith("dist/")||index?.startsWith("build/"))remaining.push("De startpagina staat in een bouwmap. GitHub publiceert deze map niet vanzelf: bepaal welke uitvoer naar de website moet.");
   else remaining.push("Geen index.html in de hoofdmap of public-map gevonden. We kunnen nog niet aanwijzen welke pagina moet openen.");
   if(project.hasPackage){found.push("Het project bevat package.json. Een bouwstap kan nodig zijn voordat de website online kan.");}
   else if(index)found.push("De bestanden wijzen op een website die mogelijk zonder extra framework kan worden geopend.");
