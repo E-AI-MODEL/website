@@ -39,6 +39,43 @@ Maak lokaal een nieuwe hash aan en vervang `GALLERY_PASSWORD_HASH` in Cloudflare
 
 Er is bewust geen wachtwoordherstel per e-mail: herstel gebeurt via de beheerder van de Cloudflare-account. Bewaar het wachtwoord in een wachtwoordmanager.
 
+## EAI Beheer, meer dan de HTML-galerij
+
+De login beschermt nu een bredere beheeromgeving. De statische website toont een ingang op `/beheer/` en publiceert **geen** beheerdata of API-sleutels. Na inloggen op de Worker opent `/` het dashboard. De eigen HTML-werkplek staat op `/gallery`.
+
+De volgende functies worden uit echte bronnen opgehaald:
+
+| Onderdeel | Bron | Wat beschikbaar is |
+| --- | --- | --- |
+| Overzicht | Cloudflare D1, Supabase, GitHub | Bestanden, sessies, bezoekersgebeurtenissen, controlepunten |
+| Bezoekers | Bestaande publieke Supabase Edge Function `eai-site-insights` | 7/30/90 dagen, dagverloop, toolklikken, populaire pagina's, apparaatgroep |
+| Websitecontrole | HTTP HEAD vanaf de Worker naar Theory7 | Status van zes vaste pagina's; onbekend blijft onbekend |
+| Publicaties | Openbare GitHub API | Commit op main en status laatste Theory7-deployment; geen automatische publicatie |
+| HTML-beheer | Cloudflare D1 | Bestanden bekijken, online/offline halen en verborgen uploads herstellen |
+| Beveiliging | Cloudflare D1 | Actieve sessies, recente aanmeldpogingen, alle sessies intrekken |
+| Logboek | Cloudflare D1 | Handelingen van de beheerder zonder persoonsgegevens van bezoekers |
+
+De externe bronnen worden server-side opgehaald. Het dashboard heeft **geen** GitHub-token, Cloudflare-accounttoken, Supabase-servicekey, DNS-bewerkrechten of LEIF-accounts. Automatische controles bieden geen bewijs dat een HTML-simulatie fysisch klopt of dat iedere mobiele interactie goed werkt. De bezoekersmetingen registreren geen unieke personen of bouncepercentage.
+
+### Beheer-API (alleen aangemelde beheerder)
+
+- `GET /api/admin/overview`, `/traffic?days=7|30|90`, `/health`, `/deploy`, `/files?status=all|published|hidden`, `/audit`
+- `POST /api/admin/files/{id}/restore` voor één verborgen bestand
+- `POST /api/admin/sessions/revoke` om alle sessies af te melden
+- `DELETE /api/admin/uploads/{id}` om een gepubliceerd bestand offline te halen (oude route, nu ook afgeschermd)
+
+Elke mutatie gebruikt een server-side sessie, een juiste `Origin` en een SQL-transactie met auditregistratie. Er zijn geen generieke SQL-, code-uitvoer-, shell-, GitHub-write- of Cloudflare-instellingenroutes beschikbaar.
+
+### Extra databasevoorbereiding
+
+De tabel `site_admin_audit` en de index zijn op 15 november 2026 in de bestaande D1-database toegevoegd en staan tevens in `schema.sql`. De eerder genoemde tijdelijke blokkade `eai_gallery_block_public_hide` blijft aanwezig totdat de nieuwe beveiligde Worker volledig werkt en de anonieme toegang getest is.
+
+De Worker en dashboardmodule moeten samen gedeployed worden. Alleen bestanden uit de websitebuild op Theory7 publiceren is niet voldoende.
+
+## Uitbreidingen voor later
+
+Meer geavanceerd beheer, zoals echte WAF-resultaten, Cloudflare-prestaties, controle van live browsergedrag, DNS, meldingen en veilige publicatie vanuit het dashboard, vraagt aparte server-side koppelingen, gerichte rechten en tests. Die functies zijn nog **niet** actief. LEIF-beheer blijft een zelfstandige, gescheiden omgeving.
+
 ## Techniek en grenzen
 
 - Geaccepteerd: UTF-8 HTML-bestanden van maximaal 1 MB; vijf uploads per uur per client; de bron wordt als tekst in D1 bewaard.
