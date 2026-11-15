@@ -20,7 +20,7 @@ class GalleryPublicationTests(unittest.TestCase):
         self.assertIn("Inloggen met e-mail", html)
         self.assertIn("https://eai-html-galerij.vis-c9d.workers.dev/auth/login", html)
         for forbidden in ('id="secret-entrance"', 'id="upload-form"',
-                          '/api/admin/uploads/', 'turnstileToken',
+                          r'\/api\/admin\/uploads\/', 'turnstileToken',
                           'GALLERY_PASSWORD_HASH', 'GALLERY_ADMIN_EMAIL'):
             with self.subTest(forbidden=forbidden):
                 self.assertNotIn(forbidden, html)
