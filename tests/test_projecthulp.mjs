@@ -7,7 +7,7 @@ import {parseRepoUrl,fetchPublicRepo,stripArchiveRoot,describeProject,analyzeArc
 import {checkProjectPurpose,findBrokenLocalLinks,PURPOSES} from "../assets/projecthulp/doelcontrole.mjs";
 import {availableProjectChecks,generateProjectCheckWorkflow} from "../assets/projecthulp/projectcheck.mjs";
 import {makeGuidance,continuationPrompt} from "../assets/projecthulp/begeleiding.mjs";
-import {guideActions} from "../assets/projecthulp/hulpstappen.mjs";
+import {buildJourney,primaryFinding,helpPrompt} from "../assets/eaigit/journey.mjs";
 const crcTable=Array.from({length:256},(_,i)=>{let c=i;for(let k=0;k<8;k++)c=(c&1)?0xedb88320^(c>>>1):c>>>1;return c>>>0;});
 function crc32(b){let c=0xffffffff;for(const x of b)c=crcTable[(c^x)&255]^(c>>>8);return(c^0xffffffff)>>>0;}
 function makeZip(files,{compress=false}={}){
@@ -95,11 +95,11 @@ test("Downloads zijn voorstellen, geen valse documentatie",()=>{
 });
 test("Websitepagina bevat toegankelijke route, geen serverupload of AI",()=>{
  const html=readFileSync(new URL("../tools/eaigit/index.html",import.meta.url),"utf8");
- const app=readFileSync(new URL("../assets/projecthulp/app.mjs",import.meta.url),"utf8");
+ const app=readFileSync(new URL("../assets/eaigit/wizard.mjs",import.meta.url),"utf8");
  assert.match(html,/name="robots" content="noindex,nofollow"/);
- assert.match(html,/class="eai-refresh/);
+ assert.match(html,/class="eaigit-wizard/);
  assert.match(html,/type="file"/);
- assert.match(html,/assets\/projecthulp\/app\.mjs/);
+ assert.match(html,/assets\/eaigit\/wizard\.mjs/);
  assert.doesNotMatch(app,/\.post\(|method:\s*["']POST|openai\.com|localStorage/);
 });
 
@@ -142,11 +142,15 @@ test("Doeltoets: externe links zijn niet automatisch ontbrekende projectbestande
 });
 test("Woordkeuze: begin bij het resultaat, geen belofte ZIP-upload",()=>{
  const html=readFileSync(new URL("../tools/eaigit/index.html",import.meta.url),"utf8");
- assert.match(html,/Wat wil je bereiken/);
- assert.doesNotMatch(html,/Mijn ZIP-bestand op GitHub zetten/);
- assert.match(html,/value="site"/);
- assert.match(html,/id="guidedChoices"/);
- assert.match(html,/GitHub pakt een geüpload ZIP-bestand niet vanzelf uit/);
+ assert.match(html,/Waar wil je hulp bij/);
+ assert.match(html,/Waar staan je bestanden nu/);
+ assert.match(html,/data-intent="start"/);
+ assert.match(html,/data-source="both"/);
+ assert.match(html,/stage-zip/);
+ assert.match(html,/stage-aim/);
+ assert.match(html,/stage-guide/);
+ assert.match(html,/stage-finished/);
+ assert.doesNotMatch(html,/één grote opdracht|redeneringssporen/i);
 });
 
 
@@ -220,38 +224,52 @@ test("Gebruikersantwoord: nooit vertrouwelijke inhoud, geen ongegronde foutencla
  assert.ok(result.next[0].includes("vertrouwelijke bestanden"));
  assert.equal(result.logicErrorsVerified,false);
 });
-test("EAIgit toont eigen beeldmerk, vier acties en geen technische uitvoersporen",()=>{
+test("EAIgit is een wizard met één handeling per scherm",()=>{
  const html=readFileSync(new URL("../tools/eaigit/index.html",import.meta.url),"utf8");
- const app=readFileSync(new URL("../assets/projecthulp/app.mjs",import.meta.url),"utf8");
- assert.match(html,/EAIgit/);
+ const app=readFileSync(new URL("../assets/eaigit/wizard.mjs",import.meta.url),"utf8");
  assert.match(html,/assets\/eaigit\/logo\.svg/);
  assert.match(html,/assets\/eaigit\/icon\.svg/);
- assert.match(html,/id="goodPoints"/);
- assert.match(html,/id="problemPoints"/);
- assert.match(html,/id="unknownPoints"/);
- assert.match(html,/id="guidePrompt"/);
- assert.match(html,/data-guide="onderzoek"/);
- assert.match(html,/data-guide="verbeter"/);
- assert.match(html,/data-guide="test"/);
- assert.match(html,/data-guide="publiceer"/);
- assert.doesNotMatch(html,/Projecthulp|Pieter|EAI Work|nextPrompt|redenering|sporen|zip-inspect/);
+ assert.match(html,/id="stage-intent"/);
+ assert.match(html,/id="stage-source"/);
+ assert.match(html,/id="stage-zip"/);
+ assert.match(html,/id="stage-repo"/);
+ assert.match(html,/id="stage-aim"/);
+ assert.match(html,/id="stage-result"/);
+ assert.match(html,/id="stage-guide"/);
+ assert.match(html,/id="stage-finished"/);
+ assert.match(html,/id="guideNext"/);
+ assert.match(html,/id="guideBack"/);
+ assert.match(html,/id="helpDetails"/);
+ assert.doesNotMatch(html,/Projecthulp|Pieter|EAI Work|redenering|uitvoerspoor/);
  assert.ok(!app.includes('reportText('));
  const redirect=readFileSync(new URL("../tools/projecthulp/index.html",import.meta.url),"utf8");
  assert.match(redirect,/\/tools\/eaigit\//);
 });
-test("EAIgit biedt hulp per handeling zonder één verplichte lange opdracht",()=>{
- const guidance=makeGuidance({goal:"site",repo:{name:"voorbeeld/site",url:"https://github.com/voorbeeld/site",readable:true,paths:["index.html"]}});
- const routes=guideActions({guidance,goal:"site",aim:"Een werkende site"});
- assert.deepEqual(Object.keys(routes),["onderzoek","verbeter","test","publiceer"]);
- for(const id of Object.keys(routes)){
-  assert.ok(routes[id].title.length>5);
-  assert.ok(routes[id].text.length>10);
-  assert.ok(routes[id].prompt.includes("https://github.com/voorbeeld/site"));
- }
- assert.notEqual(routes.onderzoek.prompt,routes.verbeter.prompt);
- assert.notEqual(routes.verbeter.prompt,routes.test.prompt);
- assert.notEqual(routes.test.prompt,routes.publiceer.prompt);
- assert.match(routes.onderzoek.prompt,/zonder iets te wijzigen/);
- assert.match(routes.publiceer.prompt,/Publiceer nog niets/);
- assert.ok(!JSON.stringify(routes).includes("Pieter"));
+test("Wizard bepaalt een veilige volgorde op basis van bestanden en GitHub",()=>{
+ const archive={secret:[".env"],project:{hasHtml:true,hasPackage:false},missingReferences:[]};
+ const repo={readable:true,url:"https://github.com/voorbeeld/site"};
+ const g={good:["HTML aanwezig"],problems:[{title:"Mogelijk privébestand",severity:"stop"}],uncertain:[]};
+ const steps=buildJourney({intent:"start",source:"both",archive,repo,guidance:g});
+ assert.equal(steps[0].id,"private");
+ assert.equal(steps[1].id,"safe");
+ assert.ok(steps.some(x=>x.id==="compare"));
+ assert.ok(steps.some(x=>x.id==="try"));
+ assert.ok(steps.every(x=>x.title&&x.description));
+ assert.ok(!helpPrompt(steps[0],repo.url,"start"));
+ assert.match(helpPrompt(steps.find(x=>x.id==="compare"),repo.url,"start"),/zonder mijn toestemming/);
+ assert.equal(primaryFinding(g).kind,"warning");
+});
+test("Wizard past stappen aan bij ZIP-only, nog geen GitHub en publicatie",()=>{
+ const archive={secret:[],project:{hasHtml:true,hasPackage:false},missingReferences:[]};
+ const zipOnly=buildJourney({intent:"repair",source:"both",archive,repo:{readable:true,url:"https://github.com/a/b"},guidance:{problems:[{title:"Een ZIP in GitHub is nog geen uitgepakt project"}]}});
+ assert.equal(zipOnly[0].id,"unzip");
+ assert.equal(zipOnly[1].id,"files");
+ const fresh=buildJourney({intent:"start",source:"zip",archive,repo:null,guidance:{problems:[]}});
+ assert.ok(fresh.some(x=>x.id==="create"));
+ assert.ok(fresh.some(x=>x.id==="upload"));
+ const publish=buildJourney({intent:"publish",source:"github",repo:{readable:true,url:"https://github.com/a/b"},guidance:{problems:[]}});
+ assert.equal(publish[publish.length-1].id,"publishing");
+ assert.match(publish[publish.length-1].help,/niet voor iedere/);
+ const unsure=buildJourney({intent:"explore",source:"unknown",guidance:{problems:[]}});
+ assert.equal(unsure[0].id,"source");
 });
