@@ -104,6 +104,11 @@
   <p class="eg-kicker" id="guideCounter">Stap 1</p>
   <h2 id="guideTitle">Je volgende handeling</h2>
   <p class="eg-guide-text" id="guideDescription"></p>
+  <div id="createdRepoBox" class="eg-create-repo eg-hidden">
+   <label for="createdRepoUrl" class="eg-label">Heb je de repository gemaakt? Plak de link hier.</label>
+   <input id="createdRepoUrl" type="url" inputmode="url" autocomplete="url" class="eg-input" placeholder="https://github.com/naam/project">
+   <p class="eg-error eg-hidden" id="createdRepoError" role="alert"></p>
+  </div>
   <a id="guideLink" class="eg-primary eg-action-link eg-hidden" target="_blank" rel="noopener noreferrer">Open GitHub <span aria-hidden="true">↗</span></a>
   <details class="eg-disclosure eg-guide-tip eg-hidden" id="helpDetails"><summary>Ik heb hier hulp bij nodig</summary><p id="guideTip"></p></details>
   <details class="eg-disclosure eg-prompt-details eg-hidden" id="promptDetails">
