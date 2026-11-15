@@ -40,7 +40,7 @@ def reuse(source: Path, destination: Path) -> None:
                 raise RuntimeError(f"3D-model heeft ongeldige glTF-kop: {system}")
     rich = source / "labs/hartslag/atlas-heart-rich.bin"
     data = json.loads((source / "labs/hartslag/atlas-heart-rich.json").read_text(encoding="utf-8"))
-    if len(data.get("parts", [])) != 34 or data.get("bytes") != rich.stat().st_size:
+    if rich.stat().st_size < 100000 or len(data.get("parts", [])) != 34 or data.get("bytes") != rich.stat().st_size:
         raise RuntimeError("De volledige 34-delige hartatlas is niet aanwezig")
     if any(f.is_symlink() for f in source.rglob("*")):
         raise RuntimeError("De anatomiebouw mag geen symbolische links overnemen")
