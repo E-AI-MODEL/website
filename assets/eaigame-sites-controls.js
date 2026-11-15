@@ -16,7 +16,7 @@ const host=$('.sidebar');if(!host)return;
 const panel=document.createElement('details');panel.id='extra-opts';panel.className='eaigame-extra';
 panel.innerHTML='<summary>Meer spelopties</summary><div class="eaigame-extra-buttons"></div>';
 host.appendChild(panel);const controls=panel.querySelector('.eaigame-extra-buttons');
-for(const [id,label] of [['contrast','Meer contrast'],['rust','Rustiger bord'],['groot','Grotere tekst'],['volledig','Volledig scherm'],['3d','Bekijk 3D'],['oefenen','Oefenen zonder worp'],['afdrukken','Bord afdrukken']]){
+for(const [id,label] of [['contrast','Meer contrast'],['rust','Rustiger bord'],['groot','Grotere tekst'],['volledig','Volledig scherm'],['oefenen','Oefenen zonder worp'],['afdrukken','Bord afdrukken']]){
  const b=document.createElement('button');b.type='button';b.className='secondary';b.textContent=label;b.dataset.option=id;
  if(Object.hasOwn(DEFAULT,id))b.dataset.gamePref=id;
  controls.appendChild(b);
@@ -25,7 +25,6 @@ controls.addEventListener('click',async event=>{
  const b=event.target.closest('[data-option]');if(!b)return;const action=b.dataset.option;
  if(Object.hasOwn(DEFAULT,action)){pref[action]=!pref[action];save();apply();return}
  if(action==='afdrukken'){window.print();return}
- if(action==='3d'){if(window.EAIGame3D)await window.EAIGame3D.toggle();else alert('De 3D-weergave is niet beschikbaar.');return}
  if(action==='volledig'){try{if(document.fullscreenElement)await document.exitFullscreen();else await document.documentElement.requestFullscreen()}catch{alert('Volledig scherm is hier niet beschikbaar.')}return}
  if(action==='oefenen'){
   if(state.phase!=='ready'&&state.phase!=='landed'){alert('Rond eerst de lopende vraag af.');return}
