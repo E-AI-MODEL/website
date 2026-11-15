@@ -91,7 +91,7 @@ try{
  await page.locator("#guideMore").click();
  assert(await page.locator("#helpDialog").evaluate(el=>el.open));
  assert.match(await page.locator("#helpTitle").innerText(),/privé blijven/);
- assert.match(await page.locator("#helpSteps").innerText(),/wachtwoorden/);
+ assert.match(await page.locator("#helpSteps").innerText(),/geheime sleutels/);
  await page.locator("#helpClose").click();
  assert.equal(await page.locator("#promptDetails").isVisible(),false);
  await page.locator("#guideNext").click();
