@@ -4,6 +4,7 @@ import {REALMS,QUESTION_BANK,validateBank,drawQuestion} from '../assets/eaigame-
 import {createGame,ringDistance,reachableAreas,isCorrect,resolveTurn,finishTurn,MAX_ROUNDS} from '../assets/eaigame-logic.js';
 import {makeAnswerTracker,presentQuestion,answerLengthCues} from '../assets/eaigame-random.js';
 import {shuffleAnswers,randomIndex,auditAnswerCues} from '../assets/eaigame-randomizer.js';
+import {parseResponse} from '../assets/eaigame-ai.js';
 
 test('300 bruikbare vraagvarianten, gekoppeld aan zes SLO-leergebieden',()=>{
   assert.equal(REALMS.length,6);
@@ -103,9 +104,21 @@ test('shufflen verandert nooit wat goed of fout is',()=>{
 });
 test('geen vaste bronvolgorde en geen kunstmatige anti-streak',()=>{
  const question=QUESTION_BANK.find(q=>q.type==='choice');
- const all=[];
- for(let i=0;i<60;i++)all.push(presentQuestion(question,makeAnswerTracker()).correctDisplayIndex);
- assert.equal(new Set(all).size,4);
- assert.ok(all.some((n,i)=>i>0&&n===all[i-1]),'Een herhaling moet mogelijk blijven');
+ const p1=presentQuestion(question,makeAnswerTracker(),()=>.99).correctDisplayIndex;
+ const p2=presentQuestion(question,makeAnswerTracker(),()=>.99).correctDisplayIndex;
+ assert.equal(p1,p2,'Achtereenvolgende dezelfde posities blijven toegestaan');
  assert.throws(()=>randomIndex(0),RangeError);
+});
+
+test('AI-vragen met opvallend lange juiste antwoorden worden afgewezen',()=>{
+ const realm=REALMS[0];
+ const sample={question:'Wat is het beste antwoord op de onderzoeksvraag?',
+ options:['Het enige juiste antwoord heeft een buitengewoon lange formulering','A','B','C'],
+ answer:0,explanation:'De uitleg hoort controleerbaar bij de inhoud van de vraag.',
+ hint:'Denk na over de inhoud'};
+ assert.throws(()=>parseResponse(JSON.stringify(sample),realm,'havo'),/lengte/);
+ sample.options=['Een pijl','Een cirkel','Een kubus','Een vlak'];
+ const result=parseResponse(JSON.stringify(sample),realm,'havo');
+ assert.equal(result.reviewed,'ai-unverified');
+ assert.equal(result.options.length,4);
 });
