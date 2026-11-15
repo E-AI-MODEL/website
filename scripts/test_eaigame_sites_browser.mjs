@@ -69,7 +69,40 @@ async function run(name,viewport,phone=false){
    console.log(name,'Sites-uiterlijk + vragenbank + spelstart + pionbeweging gecontroleerd.',JSON.stringify(summary));
  }finally{await context.close()}
 }
+async function validateLevels(){
+ const context=await browser.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
+ const page=await context.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));
+ try{
+  await page.goto(origin+'/tools/eaigame/',{waitUntil:'domcontentloaded'});
+  await page.locator('#board .tile').first().waitFor();
+  assert.equal(await page.evaluate(()=>window.EAIGAME_LEVEL_QUESTIONS?.length),300);
+  assert.ok(await page.locator('#extra-opts').isVisible());
+  await page.locator('#settings').click();
+  await page.locator('#countButtons [data-count="2"]').click();
+  assert.equal(await page.locator('#nameInputs [data-player-level]').count(),2);
+  await page.locator('#nameInputs [data-player-level]').nth(0).selectOption('vmbo');
+  await page.locator('#nameInputs [data-player-level]').nth(1).selectOption('vwo');
+  await page.locator('#startGame').click();
+  assert.deepEqual(await page.evaluate(()=>state.players.map(p=>p.level)),['vmbo','vwo']);
+  await page.evaluate(()=>ask('rekenen'));
+  assert.match(await page.locator('#questionCategory').innerText(),/VMBO.*CONCEPT/);
+  assert.match(await page.locator('#eaigame-question-origin').innerText(),/niveau niet geijkt/i);
+  const question=await page.evaluate(()=>({type:currentQ.type,answer:currentQ.answer,id:currentQ.id}));
+  assert.match(question.id,/-vmbo$/);
+  if(question.type==='order')await page.evaluate(()=>{order=[...currentQ.answer];renderOrder()});
+  else await page.locator('input[name="answer"]').nth(question.answer).check();
+  await page.locator('#checkAnswer').click();
+  assert.ok((await page.locator('#eaigame-feedback-actions, .eaigame-feedback-actions').count())>=1);
+  await page.getByRole('button',{name:'Voor nabespreking'}).click();
+  const log=await page.evaluate(()=>JSON.parse(localStorage.getItem('eaigame-antwoorden-v1')||'[]'));
+  assert.equal(log.length,1);assert.equal(log[0].level,'vmbo');assert.equal(log[0].discuss,true);
+  assert.deepEqual(errors,[],'Extra modules veroorzaken geen browserfouten');
+  console.log('EAIgame niveautest geslaagd: per speler, conceptvraag en antwoordenlog');
+ }finally{await context.close()}
+}
+
 try{
+ await validateLevels();
  await run('desktop',{width:1365,height:820});
  await run('mobile',{width:390,height:844},true);
 }catch(err){failed=true;console.error(err)}
