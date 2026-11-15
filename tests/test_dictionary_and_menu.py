@@ -38,13 +38,13 @@ class DictionaryAndMenuTests(unittest.TestCase):
         self.assertIn('EAI begrijpen', nl)
         self.assertIn('Lespraktijk', nl)
         self.assertIn('Onderzoek & publicaties', nl)
-        self.assertIn('Proeven & simulaties', nl)
+        self.assertIn('Vakinhoud', nl)
         self.assertIn('Hulpmiddelen', nl)
         self.assertIn('Understand EAI', en)
         self.assertIn('/nl/begrippen/', dict(nl['EAI begrijpen']).values())
         self.assertIn('/en/glossary/', dict(en['Understand EAI']).values())
         self.assertEqual(dict(nl['Onderzoek & publicaties'])['Alle publicaties'], '/nl/publicaties/')
-        self.assertIn('/tools/science-observatory/', dict(nl['Proeven & simulaties']).values())
+        self.assertIn('/tools/science-observatory/', dict(nl['Vakinhoud']).values())
 
     def test_begrippen_worden_als_directe_zoekresultaten_geindexeerd(self):
         with tempfile.TemporaryDirectory() as temp:

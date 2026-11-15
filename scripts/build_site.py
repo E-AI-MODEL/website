@@ -2074,7 +2074,7 @@ NAV_GROUPS = [
     ]),
     ("observatoria", "Observatoria", [
         ("/tools/science-observatory/", "Science Observatory"),
-        ("/tools/science-observatory/labs/natuurkunde/", "Natuurkunde · 53 proefmodellen"),
+        ("/tools/science-observatory/labs/natuurkunde/", "Natuurkunde · 53 interactieve modellen"),
         ("/tools/anatomie/", "Anatomisch Observatorium"),
         ("/tools/anatomie/labs/hartslag/", "Hartslaglab · hartcyclus"),
         ("/tools/llm-observatorium/", "LLM Observatorium"),
@@ -2652,8 +2652,8 @@ def build(sources: Path, out: Path) -> None:
     observatory = BeautifulSoup(
         '<section class="section" id="observatoria"><div class="wrap">'
         '<div class="section-head"><div class="kicker">Interactief onderzoeken</div>'
-        '<div><h2>Observatoria en simulaties</h2>'
-        '<p>Onderzoek zelf natuurkunde, wiskunde, de Melkweg, anatomie en taalmodellen.</p></div></div>'
+        '<div><h2>Vakinhoud en interactieve modellen</h2>'
+        '<p>Kies een vakgebied. Bekijk de uitleg en onderzoek zelf hoe het werkt.</p></div></div>'
         '<div class="tool-grid"></div></div></section>', "html.parser"
     ).section
     grid = observatory.select_one(".tool-grid")
