@@ -28,3 +28,13 @@ CREATE TABLE IF NOT EXISTS gallery_sessions (
   expires_at INTEGER NOT NULL
 );
 CREATE INDEX IF NOT EXISTS idx_gallery_sessions_expiry ON gallery_sessions(expires_at);
+
+-- Auditable administration. Never include passwords, cookie tokens, IPs, or uploaded HTML.
+CREATE TABLE IF NOT EXISTS site_admin_audit (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  actor TEXT NOT NULL,
+  action TEXT NOT NULL,
+  target TEXT NOT NULL DEFAULT '',
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS idx_site_admin_audit_created ON site_admin_audit(created_at DESC);
