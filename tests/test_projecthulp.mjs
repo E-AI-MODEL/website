@@ -239,7 +239,9 @@ test("EAIgit is een wizard met één handeling per scherm",()=>{
  assert.match(html,/id="stage-finished"/);
  assert.match(html,/id="guideNext"/);
  assert.match(html,/id="guideBack"/);
- assert.match(html,/id="helpDetails"/);
+ assert.match(html,/id="guideMore"/);
+ assert.match(html,/id="helpContextTip"/);
+ assert.doesNotMatch(html,/id="helpDetails"/);
  assert.doesNotMatch(html,/Projecthulp|Pieter|EAI Work|redenering|uitvoerspoor/);
  assert.ok(!app.includes('reportText('));
  const redirect=readFileSync(new URL("../tools/projecthulp/index.html",import.meta.url),"utf8");
