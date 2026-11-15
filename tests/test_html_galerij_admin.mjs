@@ -117,6 +117,7 @@ let response = await worker.fetch(req('/'), env);
 assert.equal(response.status, 200);
 assert.match(await response.text(), /Inloggen bij EAI Beheer/);
 assert.equal(response.headers.get('Cache-Control'), 'no-store');
+assert.equal(response.headers.get('X-Robots-Tag'), 'noindex, nofollow, noarchive');
 
 const loginForm = (email, password) => {
   const data = new FormData();
