@@ -101,6 +101,7 @@ function render(){
  $("downloadReadme").disabled=!archive;
  $("downloadIgnore").disabled=!archive;
  show("automationDetails",Boolean(generateProjectCheckWorkflow(archive)));
+ setText("copyStatus","");
  screen(3);
 }
 async function analyze(){
@@ -161,10 +162,15 @@ drop.addEventListener("drop",event=>{
  try{const transfer=new DataTransfer();transfer.items.add(file);$("zipFile").files=transfer.files;setText("fileName",file.name);}
  catch{setText("inputError","Sleep het ZIP-bestand niet, maar kies het via de bestandsknop.");show("inputError",true);}
 });
-$("downloadReport").addEventListener("click",()=>{
+$("copyReport").addEventListener("click",async()=>{
  if(!state.advice)return;
  const text=reportText({archive:state.archive,repo:state.repo,advice:state.advice,workerRuns:state.workerRuns});
- download("mijn-github-stappenplan.md",text);
+ try{
+  await navigator.clipboard.writeText(text);
+  setText("copyStatus","Advies gekopieerd. Je kunt het nu plakken in een bericht of document.");
+ }catch{
+  setText("copyStatus","Kopiëren lukte niet. Het volledige advies blijft hierboven zichtbaar.");
+ }
 });
 $("downloadReadme").addEventListener("click",()=>{if(state.archive)download("README.md",readmeTemplate(state.archive,state.repo?.name));});
 $("downloadIgnore").addEventListener("click",()=>{if(state.archive)download("gitignore-voorbeeld.txt",ignoreTemplate(state.archive));});
