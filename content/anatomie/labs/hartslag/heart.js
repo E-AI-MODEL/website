@@ -10,7 +10,7 @@ const lerp=(a,b,t)=>a+(b-a)*t;
 const ease=t=>{t=clamp(t,0,1);return t*t*(3-2*t);};
 const span=(t,a,b)=>ease((t-a)/(b-a));
 const fmt=(v,n=0)=>Number(v).toLocaleString('nl-NL',{minimumFractionDigits:n,maximumFractionDigits:n});
-const state={cutaway:true,t:0,playing:false,speed:.25,yaw:-.20,pitch:.08,zoom:5.95,pan:[0,0,0],selected:null,showLabels:false,showFlow:true,tab:'phase',rate:75,last:0,drag:null,study:{guess:null,stage:'choose',stopAt:null},focusSide:'both',showDetails:false,anatomyView:false,userPaused:false,mode:'watch',guideStep:0};
+const state={cutaway:true,t:0,playing:false,speed:.25,yaw:-.20,pitch:.08,zoom:5.95,pan:[0,0,0],selected:null,showLabels:false,showFlow:true,vesselSection:false,tab:'phase',rate:75,last:0,drag:null,study:{guess:null,stage:'choose',stopAt:null},focusSide:'both',showDetails:false,anatomyView:false,userPaused:false,mode:'watch',guideStep:0};
 const layerVisibility={outer:true,wall:true,valve:true,vessel:true,coronary:true,papillary:true};
 function layerForKind(kind){return kind==='artery'||kind==='vein'?'coronary':kind;}
 function isLayerVisible(part){return layerVisibility[layerForKind(part.kind)]!==false;}
@@ -20,7 +20,7 @@ function syncLayerControls(){
   document.querySelectorAll('[data-layer]').forEach(button=>{
     const layer=button.dataset.layer;
     const active=layer==='flow'?state.showFlow:
-      layer==='labels'?state.showLabels:layerVisibility[layer];
+      layer==='labels'?state.showLabels:layer==='vesselSection'?state.vesselSection:layerVisibility[layer];
     button.setAttribute('aria-pressed',String(active));
     button.querySelector('.layer-state').textContent=active?'Aan':'Uit';
   });
@@ -87,7 +87,7 @@ function tube(path,radius=.095,segments=10){
 }
 const COLORS={red:[.98,.63,.53],blue:[.47,.82,.98]};
 const canvas=$('heartCanvas'),stage=$('stage');
-let gl,program,pointProgram,meshes={},pv=m4(),loc={},ploc={},particleBuffer;
+let gl,program,pointProgram,meshes={},pv=m4(),loc={},ploc={},particleBuffer,cameraEye=[0,0,6];
 let atlasParts=[],atlasCenters={},atlasDetails={},atlasReady=false,atlasRich=false,atlasError=null,atlasFlowPaths=[];
 function compile(gl,type,src){const shader=gl.createShader(type);gl.shaderSource(shader,src);gl.compileShader(shader);if(!gl.getShaderParameter(shader,gl.COMPILE_STATUS))throw new Error(gl.getShaderInfoLog(shader));return shader;}
 function shader(gl,vs,fs){const p=gl.createProgram();gl.attachShader(p,compile(gl,gl.VERTEX_SHADER,vs));gl.attachShader(p,compile(gl,gl.FRAGMENT_SHADER,fs));gl.linkProgram(p);if(!gl.getProgramParameter(p,gl.LINK_STATUS))throw new Error(gl.getProgramInfoLog(p));return p;}
@@ -98,10 +98,10 @@ function setupModel(){
   // Op oudere/procedurele meshes blijft dit attribuut neutraal.
   program=shader(gl,
     "attribute vec3 position;\nattribute vec3 normal;\nattribute vec3 tissue;\nuniform mat4 pv;\nuniform mat4 model;\nuniform float pulse;\nuniform float atrialMode;\nuniform vec3 cutAxis;\nuniform float moveValve;\nuniform float valveOpen;\nuniform float valveRadius;\nuniform vec3 valveCenter;\nuniform vec3 valveAxis;\nvarying vec3 n;\nvarying vec3 p;\nvarying vec3 tissueData;\nvarying float front;\nvoid main(){\n  vec3 anatomy=position;\n  if(moveValve>.5){\n    // De bronmesh blijft intact. Alleen de bladen krijgen een getekende opening.\n    vec3 axis=normalize(valveAxis);\n    vec3 offset=anatomy-valveCenter;\n    vec3 radial=offset-axis*dot(offset,axis);\n    float r=clamp(length(radial)/max(valveRadius,.001),0.,1.);\n    float flex=1.-smoothstep(.12,.95,r);\n    float flare=4.*r*(1.-r);\n    anatomy+=valveOpen*valveRadius*(axis*.40*flex+normalize(radial+vec3(.00001))*.23*flare);\n  }else if(pulse>0.){\n    // Beperkte, niet-klinische contractie van de spierwand, niet van de vaten.\n    float weight=mix(1.-smoothstep(-.9,.62,anatomy.y),smoothstep(-.12,.75,anatomy.y),atrialMode);\n    anatomy.xz*=1.-.065*pulse*weight;\n    anatomy.y+=.026*pulse*weight;\n  }\n  vec4 world=model*vec4(anatomy,1.);\n  front=dot(world.xyz,cutAxis);\n  gl_Position=pv*world;\n  n=normalize(mat3(model)*normal);\n  p=world.xyz;\n  tissueData=tissue;\n}",
-    'precision mediump float;varying vec3 n;varying vec3 p;varying vec3 tissueData;varying float front;uniform vec3 tint;uniform float alpha;uniform float cutFront;void main(){if(cutFront>.5&&front>.025)discard;vec3 normal=normalize(n);vec3 light=normalize(vec3(-.47,.83,1.0));vec3 fill=normalize(vec3(.50,.18,-.8));float direct=max(dot(normal,light),0.0);float soft=max(dot(normal,fill),0.0);float ao=mix(.48,1.0,clamp(tissueData.r,0.0,1.0));float mottle=mix(.91,1.07,clamp(tissueData.g,0.0,1.0));vec3 base=mix(tint,vec3(.93,.71,.43),clamp(tissueData.b,0.0,1.0)*.70);vec3 color=base*(.31+.62*direct+.12*soft)*ao*mottle;float rim=pow(1.0-abs(dot(normal,normalize(vec3(0.,.15,1.)))),2.0);color+=tint*rim*.10;float spec=pow(max(dot(reflect(-light,normal),vec3(0.,0.,1.)),0.0),28.0);color+=vec3(.92,.68,.61)*spec*.15*ao;gl_FragColor=vec4(color,alpha);}');
+    'precision mediump float;varying vec3 n;varying vec3 p;varying vec3 tissueData;varying float front;uniform vec3 tint;uniform float alpha;uniform float cutFront;uniform float vesselSection;uniform vec3 eyePosition;void main(){if(cutFront>.5&&front>.025)discard;if(vesselSection>.5&&dot(normalize(n),normalize(eyePosition-p))>.12)discard;vec3 normal=normalize(n);vec3 light=normalize(vec3(-.47,.83,1.0));vec3 fill=normalize(vec3(.50,.18,-.8));float direct=max(dot(normal,light),0.0);float soft=max(dot(normal,fill),0.0);float ao=mix(.48,1.0,clamp(tissueData.r,0.0,1.0));float mottle=mix(.91,1.07,clamp(tissueData.g,0.0,1.0));vec3 base=mix(tint,vec3(.93,.71,.43),clamp(tissueData.b,0.0,1.0)*.70);vec3 color=base*(.31+.62*direct+.12*soft)*ao*mottle;float rim=pow(1.0-abs(dot(normal,normalize(vec3(0.,.15,1.)))),2.0);color+=tint*rim*.10;float spec=pow(max(dot(reflect(-light,normal),vec3(0.,0.,1.)),0.0),28.0);color+=vec3(.92,.68,.61)*spec*.15*ao;gl_FragColor=vec4(color,alpha);}');
   pointProgram=shader(gl,'attribute vec3 position;uniform mat4 pv;uniform float size;void main(){vec4 clip=pv*vec4(position,1.0);gl_Position=clip;gl_PointSize=size*clamp(5.0/clip.w,.7,2.4);}',
     'precision mediump float;uniform vec3 tint;void main(){vec2 v=gl_PointCoord-vec2(.5);float r=length(v);if(r>.5)discard;float shine=1.0-smoothstep(.10,.50,r);gl_FragColor=vec4(tint,shine*.87);}');
-  for(const k of ['position','normal','tissue','pv','model','tint','alpha','pulse','atrialMode','cutAxis','cutFront','moveValve','valveOpen','valveRadius','valveCenter','valveAxis'])loc[k]=['position','normal','tissue'].includes(k)?gl.getAttribLocation(program,k):gl.getUniformLocation(program,k);
+  for(const k of ['position','normal','tissue','pv','model','tint','alpha','pulse','atrialMode','cutAxis','cutFront','vesselSection','eyePosition','moveValve','valveOpen','valveRadius','valveCenter','valveAxis'])loc[k]=['position','normal','tissue'].includes(k)?gl.getAttribLocation(program,k):gl.getUniformLocation(program,k);
   for(const k of ['position','pv','size','tint'])ploc[k]=k==='position'?gl.getAttribLocation(pointProgram,k):gl.getUniformLocation(pointProgram,k);
   meshes.sphere=upload(sphere());
   meshes.chambers={};
@@ -137,12 +137,14 @@ function upload(m){
   if(m.t){tb=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,tb);gl.bufferData(gl.ARRAY_BUFFER,m.t,gl.STATIC_DRAW);}
   return {...m,vb,nb,tb};
 }
-function drawMesh(mesh,model,color,alpha=1,pulse=0,cutFront=false,valveMotion=null,atrialMode=0){
+function drawMesh(mesh,model,color,alpha=1,pulse=0,cutFront=false,valveMotion=null,atrialMode=0,vesselSection=false){
   gl.useProgram(program);gl.uniformMatrix4fv(loc.pv,false,pv);gl.uniformMatrix4fv(loc.model,false,model);
   gl.uniform3fv(loc.tint,color);gl.uniform1f(loc.alpha,alpha);
   gl.uniform1f(loc.pulse,pulse);
   gl.uniform1f(loc.atrialMode,atrialMode);
   gl.uniform1f(loc.cutFront,cutFront?1:0);
+  gl.uniform1f(loc.vesselSection,vesselSection?1:0);
+  gl.uniform3fv(loc.eyePosition,cameraEye);
   gl.uniform1f(loc.moveValve,valveMotion?1:0);
   gl.uniform1f(loc.valveOpen,valveMotion?valveMotion.opening:0);
   gl.uniform1f(loc.valveRadius,valveMotion?valveMotion.radius:.1);
@@ -299,6 +301,7 @@ function updateViewport(){
   const center=add([0,.12,0],state.pan);
   const eye=add(center,[Math.sin(state.yaw)*Math.cos(state.pitch)*state.zoom,
     Math.sin(state.pitch)*state.zoom,Math.cos(state.yaw)*Math.cos(state.pitch)*state.zoom]);
+  cameraEye=eye;
   pv=mul(persp(42*Math.PI/180,Math.max(.5,w/Math.max(h,1)),.1,100),lookAt(eye,center));
 }
 // De anatomische buitenvorm wordt tijdens de sitebuild uit de bestaande GLB
@@ -445,7 +448,10 @@ function drawAtlasHeart(m,section=false){
       const atrialWall=['ra_wall','la_wall'].includes(part.id);
       const wallPulse=atrialWall?clamp((1-m.atriumScale)/.16,0,1):
         (part.kind==='wall'||part.kind==='papillary')?pulse:0;
-      drawMesh(part.mesh,m4(),color,1,wallPulse,cutWall,valveMotion,atrialWall?1:0);
+      // Verberg de camera-gerichte helft van de grote vaten, met de echte bronmesh als achterwand.
+      // De stromingsroutes blijven zichtbaar; dit is een didactische kijkopening, geen scan.
+      drawMesh(part.mesh,m4(),color,1,wallPulse,cutWall,valveMotion,atrialWall?1:0,
+        section&&state.vesselSection&&part.kind==='vessel');
       continue;
     }
     if(section&&part.kind!=='chamber'&&part.id!==(state.focusSide==='left'?'ao':'pa'))continue;
@@ -914,7 +920,10 @@ document.querySelectorAll('[data-layer]').forEach(button=>button.addEventListene
   const layer=button.dataset.layer;
   if(layer==='flow')state.showFlow=!state.showFlow;
   else if(layer==='labels')state.showLabels=!state.showLabels;
-  else layerVisibility[layer]=!layerVisibility[layer];
+  else if(layer==='vesselSection'){
+    state.vesselSection=!state.vesselSection;
+    if(state.vesselSection){state.cutaway=true;state.anatomyView=atlasRich;}
+  }else layerVisibility[layer]=!layerVisibility[layer];
   positionInfo(null);
   syncLabelsToggle();
   syncViewControls();
@@ -925,6 +934,7 @@ $('resetLayers').addEventListener('click',()=>{
   Object.keys(layerVisibility).forEach(layer=>{layerVisibility[layer]=true;});
   state.showFlow=true;
   state.showLabels=false;
+  state.vesselSection=false;
   positionInfo(null);
   syncLabelsToggle();
   syncViewControls();
@@ -1100,7 +1110,7 @@ canvas.tabIndex=0;
 let resize=new ResizeObserver(()=>{if(gl)render();});resize.observe(stage);
 setupModel();syncLearningMode();syncLabelsToggle();syncViewControls();syncStudy();loadAtlasModels();
 window.__EAI_HEART_LAB__={
-  get state(){return {t:state.t,playing:state.playing,speed:state.speed,yaw:state.yaw,pitch:state.pitch,zoom:state.zoom,pan:[...state.pan],selected:state.selected,cutaway:state.cutaway,showLabels:state.showLabels,showFlow:state.showFlow,focusSide:state.focusSide,showDetails:state.showDetails,atlasReady,atlasRich,anatomyView:state.anatomyView,atlasError,atlasPartCount:atlasParts.length,studyStage:state.study.stage,mode:state.mode,guideStep:state.guideStep,layers:{...layerVisibility,flow:state.showFlow,labels:state.showLabels}};},
+  get state(){return {t:state.t,playing:state.playing,speed:state.speed,yaw:state.yaw,pitch:state.pitch,zoom:state.zoom,pan:[...state.pan],selected:state.selected,cutaway:state.cutaway,showLabels:state.showLabels,showFlow:state.showFlow,vesselSection:state.vesselSection,focusSide:state.focusSide,showDetails:state.showDetails,atlasReady,atlasRich,anatomyView:state.anatomyView,atlasError,atlasPartCount:atlasParts.length,studyStage:state.study.stage,mode:state.mode,guideStep:state.guideStep,layers:{...layerVisibility,vesselSection:state.vesselSection,flow:state.showFlow,labels:state.showLabels}};},
   get visibleAtlasPartIds(){return atlasParts.filter(part=>part.kind!=='space'&&isLayerVisible(part)).map(part=>part.id);},
   // Debugbare projectiepunten voor een echte browserklik in de regressietest.
   get hitTargets(){return Object.entries(selectableParts()).map(([id,part])=>{
