@@ -1,13 +1,13 @@
 // WebLLM gebruikt alleen expliciete gebruikersactivatie en lokale WebGPU-inferentie.
 // AI-uitkomsten zijn niet inhoudelijk nagekeken; structuurcontrole != inhoudscontrole.
-const MODEL='Qwen3-0.6B-q4f16_1-MLC';
+const MODEL='Qwen3-4B-q4f16_1-MLC';
 let engine=null,loading=null;
 export function isReady(){return Boolean(engine)}
 export async function loadModel(onProgress=()=>{}){
  if(engine)return true;if(loading)return loading;
  if(!globalThis.navigator?.gpu)throw Error('Deze browser heeft geen WebGPU. Gebruik de vaste vragenbank.');
  loading=(async()=>{
-  const webllm=await import('https://esm.sh/@mlc-ai/web-llm@0.2.80');
+  const webllm=await import('https://esm.sh/@mlc-ai/web-llm@0.2.88');
   const selected=webllm.prebuiltAppConfig?.model_list?.find(m=>m.model_id===MODEL);
   if(!selected)throw Error('Dit Qwen-model staat niet in de beschikbare WebLLM-configuratie.');
   engine=await webllm.CreateMLCEngine(MODEL,{initProgressCallback:p=>onProgress(p?.text||p?.progress?.toString()||'Model wordt geladen')});
@@ -26,6 +26,6 @@ export async function generateQuestion(realm,level){
  if(!engine)return null;
  const levels={vmbo:'concrete, korte voorbeelden en herkenbare situaties',havo:'een toepassing in een herkenbare context, met één afweging',vwo:'een kleine analyse met een denkstap en plausibele afleiders'};
  const prompt='/no_think\nMaak precies EEN Nederlandstalige meerkeuzevraag voor onderbouw '+level+'. Leergebied: '+realm.slo+'. Thema: '+realm.subject+'. Niveau: '+levels[level]+'.\nGeef ALLEEN een geldig JSON-object met velden "question" (string), "options" (array van exact vier verschillende korte antwoorden), "answer" (index 0 tot 3), "explanation" (minimaal twintig tekens), "hint" (geen antwoord verklappen). Feitelijk en controleerbaar, geen eigennamen of gevoelige persoonlijke informatie. Vermijd dubbelzinnige antwoorden.';
- const resp=await engine.chat.completions.create({messages:[{role:'system',content:'Je maakt compacte educatieve conceptvragen. Geef alleen JSON, zonder markdown.'},{role:'user',content:prompt}],temperature:.2,max_tokens:300});
+ const resp=await engine.chat.completions.create({messages:[{role:'system',content:'Je maakt compacte educatieve conceptvragen. Geef alleen JSON, zonder markdown.'},{role:'user',content:prompt}],temperature:.2,max_tokens:450});
  return parseResponse(resp?.choices?.[0]?.message?.content||'',realm,level);
 }
