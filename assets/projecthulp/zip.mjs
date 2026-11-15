@@ -4,7 +4,7 @@ const td=new TextDecoder("utf-8",{fatal:true});
 const fail=(message)=>{throw new Error(message);};
 const has=(a,o,n)=>Number.isSafeInteger(o)&&o>=0&&n>=0&&o+n<=a.byteLength;
 const u16=(a,o)=>a.getUint16(o,true),u32=(a,o)=>a.getUint32(o,true);
-const safePath=(path)=>!!path&&!path.includes("\\")&&!path.includes("\0")&&!path.startsWith("/")&&!/^[A-Za-z]:/.test(path)&&!path.split("/").some(p=>p==="."||p===".."||p==="") && path.length<=400;
+const safePath=(path)=>!!path&&!path.includes("\\")&&!path.includes("\0")&&!/[\\x00-\\x1f\\x7f]/.test(path)&&!path.startsWith("/")&&!/^[A-Za-z]:/.test(path)&&!path.split("/").some(p=>p==="."||p===".."||p==="") && path.length<=400;
 let crcTable;
 function crc32(bytes){
  if(!crcTable){crcTable=Array.from({length:256},(_,i)=>{let c=i;for(let k=0;k<8;k++)c=c&1?0xedb88320^(c>>>1):c>>>1;return c>>>0;});}
