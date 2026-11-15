@@ -63,19 +63,19 @@ Deze lijst is een **werkregister**, geen belofte dat alles al live is. De oorspr
 
 ## Stand van de eerste werkversie
 - **Al aanwezig in de oorspronkelijke Sites-implementatie:** bord met 32 vakken en vier wijken, spelerbeurten, punten en medailles, vragenbank bekijken en toevoegen, import/export van JSON, meerdere vraagtypen, lokaal voortzetten, overzicht op mobiel. Die functies worden niet vervangen.
-- **In PR #277 toegevoegd maar nog niet volledig vrijgegeven:** 300 EAI-redactievarianten voor vmbo/havo/vwo (nog **niet geijkt**, 100 per niveau), niveaukeuze per speler, oefenstand zonder dobbelsteen, volledig scherm, afdrukken, contrast/rustige weergave/grotere tekst, voorlezen, hints, lokaal antwoordlog, vraag markeren, eigen meerkeuzevragen bewerken/verwijderen, meerdere lokale spelopslagen en bestandsoverdracht.
-- **3D-vertakking:** de eerdere Three.js-expeditie blijft voorlopig apart onder `/tools/eaigame/3d/`. Dat is niet gelijk aan een 3D-bord in de originele vormgeving en nog geen besturing vanuit een camerastand achter de pion.
+- **In PR #277 toegevoegd maar nog niet volledig vrijgegeven:** 300 EAI-redactievarianten voor vmbo/havo/vwo (100 per niveau), waarvan 24 inhoudelijk onderscheiden niveauproeven rond 8 onderwerpen. De overige 276 verschillen grotendeels in formulering en zijn nog geen aantoonbaar verschillende moeilijkheidsniveaus. Geen van deze conceptvragen is geijkt of als officiële SLO-opgave gepubliceerd. Verder: niveaukeuze per speler, oefenstand, toegankelijkheidsopties, hints, lokaal antwoordlog en het bestaande vragen- en spelbeheer.
+- **3D in dezelfde Sites-interface (nieuw in PR, browsercontrole vereist):** een optionele Three.js-renderer toont de 32 vakken, het oorspronkelijke eilandbeeld en pionnen, met de keuze tussen heel-bordweergave en een volgcamera achter de huidige pion. De 2D-versie blijft de spelbron en werkt ook zonder WebGL. De eerdere, andere 3D-expeditie blijft afzonderlijk bereikbaar onder `/tools/eaigame/3d/`. Echte UX-beoordeling en bewijs van correcte camera-interactie zijn vereist voor vrijgave.
 - **AI-vragen:** bestaande WebLLM-proef hoort bij de aparte 3D-versie. Geen claim dat die inhoudelijk betrouwbare, officiële of geijkte vragen genereert.
 
 ## Volgorde van de uitvoering
 
 **A. Betrouwbaar spel:** mobiel en desktop, geen dubbele pionnen/vakken, beurten en opslaan, geen verlies van oorspronkelijke Sites-functies. Browserscreenshots en echte bedieningsproeven zijn vereist.
 
-**B. Onderwijsinhoud:** van losse kennisvragen naar controleerbare pakketten met vak, leerjaar, schoolniveau, SLO-doel-ID, bron, herkomst en controledatum. Niveaus moeten inhoudelijk verschillen en worden nagekeken. Kies bijvoorbeeld korte redeneervragen, vragen na een fout en transfervragen. Een juist spelantwoord is niet automatisch bewijs van duurzaam leren.
+**B. Onderwijsinhoud:** start gemaakt met 24 inhoudelijk verschillende niveauproeven. De overige 276 varianten zijn nog grotendeels formuleringen van dezelfde vraag. Vervolg: van losse kennisvragen naar controleerbare pakketten met vak, leerjaar, schoolniveau, SLO-doel-ID, bron, herkomst en controledatum. Niveaus moeten inhoudelijk verschillen en worden nagekeken. Kies bijvoorbeeld korte redeneervragen, vragen na een fout en transfervragen. Een juist spelantwoord is niet automatisch bewijs van duurzaam leren.
 
 **C. Spel wordt minder voorspelbaar:** alternatieve route, echte keuzes, mini-opdrachten, samenwerking en afwisselende wereldgebeurtenissen. Een dobbelsteen bepaalt bewegingsruimte, niet de volledige interactie. Dit vraagt een toetsbare spelregelwijziging; de vertrouwde bordweergave blijft.
 
-**D. 3D, passend bij Sites:** volledig bord als standaardoverzicht. Tijdens verplaatsing kan de speler kiezen voor een echte camera achter de pion in een passend ontworpen 3D-omgeving. Stop, terug naar overzicht en uitschakelen van animaties moeten werken. Vergrendel het ontwerp op basis van het originele Sites-bord en de bestaande eilandillustratie.
+**D. 3D, passend bij Sites:** op de ontwikkeltak gebouwd als optionele weergave in dezelfde pagina, met 32 vakken, hele-bordcamera, volgcamera, originele eilandillustratie, terugkeer naar 2D en terughoudende animatie. Nog niet live of voldoende visueel beoordeeld; browserscreenshots en bewegingsproeven op mobiel en desktop bepalen of de uitvoering voldoet.
 
 **E. Meer apparaten en docentgebruik:** kamer-/teamsessies en docentenoverzicht vragen een echte server, toegangsbeheer en afspraken over persoonsgegevens. Een statisch spelbestand of lokaal model doet dit niet vanzelf.
 
