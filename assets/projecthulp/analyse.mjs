@@ -67,8 +67,8 @@ export async function analyzeArchive(file){
  if(file.size>16*1024*1024)throw new Error("Dit ZIP-bestand is groter dan 16 MB.");
  const zip=inspectZip(await file.arrayBuffer());
  const rawFiles=zip.entries.filter(x=>!x.directory);
- const root=stripArchiveRoot(rawFiles.map(x=>x.path));
- const paths=root.paths.filter(Boolean);
+ const root=stripArchiveRoot(rawFiles.filter(x=>!JUNK.test(x.path)).map(x=>x.path));
+ const paths=rawFiles.map(x=>x.path.startsWith(root.prefix)?x.path.slice(root.prefix.length):x.path).filter(Boolean);
  const ignored=paths.filter(p=>JUNK.test(p));
  const secret=paths.filter(p=>SECRETS.test(p));
  const eligible=paths.filter(p=>!JUNK.test(p)&&!SECRETS.test(p));
