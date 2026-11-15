@@ -35,11 +35,17 @@ export function buildJourney({intent="start",source="zip",archive=null,repo=null
  if(repo?.readable){
   add("actions","Bekijk de controles","Open GitHub Actions om te zien of er automatische controles voor je project zijn.","Bekijk controles",repo.url+"/actions","Een groene controle vertelt alleen iets over de onderdelen die daadwerkelijk zijn getest.");
  }
+ const targetTest=g.goalTest;
+ const addGoalTest=()=>add("try",targetTest?.title||"Probeer de belangrijkste functie",targetTest?.action||"Open je project en controleer of het doet wat jij ermee wilt bereiken.","","", "Een gevonden functie of bestandsnaam bewijst nog niet dat deze goed werkt.");
  if(intent==="publish"){
+  addGoalTest();
   const staticHtml=Boolean(archive?.project?.hasHtml)&&!archive?.project?.hasPackage;
   add("publishing","Bereid de website voor","Controleer of je website in de browser werkt en of de nodige bestanden aanwezig zijn.",repo?.readable?"Open instellingen":"Lees uitleg",repo?.readable?repo.url+"/settings/pages":"https://docs.github.com/en/pages",staticHtml?"GitHub Pages kan statische HTML publiceren. Publicatie moet je zelf apart instellen.":"GitHub Pages is niet voor iedere toepassing geschikt. Een server of bouwstap kan andere hosting nodig hebben.");
- }else{
-  add("try","Probeer de belangrijkste functie","Open je project en controleer of het doet wat jij ermee wilt bereiken.","","","Een bestand vinden betekent nog niet dat de toepassing werkt.");
+ }else addGoalTest();
+ while(steps.length>7){
+  const optional=steps.findIndex(x=>x.id==="actions"||x.id==="repo");
+  if(optional<0)break;
+  steps.splice(optional,1);
  }
  return steps.slice(0,7);
 }
