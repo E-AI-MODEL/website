@@ -158,3 +158,14 @@ test("Doeltoets: interactieve HTML hoeft geen package.json te hebben",async()=>{
  assert.ok(result.found.some(x=>x.includes("browser")));
  assert.ok(result.remaining.some(x=>x.includes("Niet gecontroleerd")));
 });
+
+
+test("Doeltoets: dist-map niet blind weggooien als dit de site bevat",async()=>{
+ const archive=await analyzeArchive(fake(makeZip([["dist/index.html",'<link href="site.css">'],["dist/site.css","body{}"]])));
+ assert.ok(archive.eligible.includes("dist/index.html"));
+ assert.equal(archive.indexChecked,true);
+ const purpose=checkProjectPurpose({goal:"site",archive});
+ assert.ok(purpose.found.some(x=>x.includes("dist/index.html")));
+ assert.ok(purpose.remaining.some(x=>x.includes("bouwmap")));
+ assert.equal(archive.missingReferences.length,0);
+});
