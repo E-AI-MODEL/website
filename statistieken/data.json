@@ -1,19 +1,14 @@
 {
   "schema": 1,
   "source": "Cloudflare Web Analytics (RUM)",
-  "updated_at": "2026-11-14T22:32:42+00:00",
+  "updated_at": "2026-11-15T06:46:12+00:00",
   "period": {
-    "from": "2026-10-16",
-    "through": "2026-11-14"
+    "from": "2026-10-17",
+    "through": "2026-11-15"
   },
-  "views": 10,
-  "visits": 10,
+  "views": 20,
+  "visits": 20,
   "daily": [
-    {
-      "date": "2026-10-16",
-      "views": 0,
-      "visits": 0
-    },
     {
       "date": "2026-10-17",
       "views": 0,
@@ -156,13 +151,23 @@
     },
     {
       "date": "2026-11-14",
-      "views": 10,
-      "visits": 10
+      "views": 20,
+      "visits": 20
+    },
+    {
+      "date": "2026-11-15",
+      "views": 0,
+      "visits": 0
     }
   ],
   "pages": [
     {
       "path": "/statistieken/",
+      "views": 10,
+      "visits": 10
+    },
+    {
+      "path": "/",
       "views": 10,
       "visits": 10
     }
