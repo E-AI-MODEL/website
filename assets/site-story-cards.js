@@ -38,9 +38,11 @@
     find.className = 'eai-story-search-button';
     find.setAttribute('aria-label', labels.search);
     find.innerHTML = '<svg viewBox="0 0 24 24" width="19" height="19" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="10.8" cy="10.8" r="6.5"/><path d="m16 16 5 5"/></svg>';
-    find.addEventListener('click', () => {
+    find.addEventListener('click', event => {
+      // The shared navigation closes on any document click outside the menu.
+      // This separate search shortcut must not bubble into that close handler.
+      event.stopPropagation();
       menu.open = true;
-      menu.dispatchEvent(new Event('toggle'));
       requestAnimationFrame(() => search.focus({ preventScroll: true }));
     });
     controls.insertBefore(find, controls.firstChild);
