@@ -4,6 +4,7 @@ const state={archive:null,repo:null,advice:null,goal:"upload",experience:"beginn
 const setText=(id,text)=>{$(id).textContent=text;};
 const show=(id,on)=>$(id).classList.toggle("ph-hidden",!on);
 function screen(index){
+ document.body.classList.toggle("ph-results",index===3);
  for(let i=1;i<=3;i++){show("screen"+i,index===i);const label=$("stepLabel"+i);label.classList.toggle("active",i===index);label.classList.toggle("done",i<index);}
  window.scrollTo({top:0,behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"instant":"smooth"});
  const title=$("screen"+index).querySelector("h2");title?.setAttribute("tabindex","-1");title?.focus({preventScroll:true});
@@ -23,9 +24,35 @@ function render(){
  pills.forEach(label=>{const span=document.createElement("span");span.textContent=label;summary.append(span);});
  list("observations",advice.observations);
  const warnings=[...advice.warnings];if(repoError)warnings.unshift("GitHub: "+repoError);
- if(!warnings.length)warnings.push("Geen bijzonderheden gevonden binnen de uitgevoerde controles.");
- list("warnings",warnings);list("steps",advice.steps,true);list("limits",advice.limits);
+ show("warningsGroup",warnings.length>0);list("warnings",warnings);
+ list("steps",advice.steps.slice(0,3));
+ const additional=advice.steps.slice(3);
+ list("moreSteps",additional);show("moreStepsGroup",additional.length>0);
+ setText("moreStepsTitle","Bekijk de overige "+additional.length+" stappen");
+ list("limits",advice.limits);
  setText("planCount",advice.steps.length+" stappen");
+ const missing=advice.comparison?.missing||[];
+ show("missingGroup",missing.length>0);
+ setText("missingTitle","Deze "+missing.length+" bestanden ontbreken nog in GitHub");
+ list("missingFiles",missing);
+ const repoLink=$("openRepo");
+ show("openRepo",Boolean(repo?.url));
+ if(repo?.url)repoLink.href=repo.url;
+ let firstTitle="Bekijk je volgende stap",firstText=advice.steps[0]||"Vul je gegevens aan om verder te gaan.";
+ if(archive?.secret.length){
+  firstTitle="Controleer eerst je privébestanden";
+  firstText="In het ZIP-bestand zitten "+archive.secret.length+" mogelijk gevoelige bestanden. Controleer die op je eigen apparaat. Upload ze niet voordat je zeker weet dat ze openbaar mogen zijn.";
+ }else if(archive&&repo?.readable){
+  firstTitle="Pak je ZIP uit en bekijk wat ontbreekt";
+  firstText="Je hoeft het ZIP-bestand niet rechtstreeks in GitHub te zetten. Pak het uit en bekijk welke bestanden je kunt toevoegen. Gebruik daarna de knop om je repository te openen.";
+ }else if(archive&&!repo){
+  firstTitle="Voeg je GitHub-link toe";
+  firstText="We hebben je ZIP bekeken. Vul nu de link naar je openbare repository in, zodat we kunnen vergelijken wat er nog ontbreekt.";
+ }else if(repo&&!archive){
+  firstTitle="Voeg je ZIP-bestand toe";
+  firstText="We kunnen je openbare repository bereiken. Kies nu je ZIP-bestand om te ontdekken wat er ontbreekt.";
+ }
+ setText("firstTitle",firstTitle);setText("firstText",firstText);
  setText("resultLead",archive&&repo?"We hebben je ZIP en de openbare GitHub-bestandslijst onderzocht.":"Dit is wat we konden vaststellen. De overige informatie ontbreekt of was niet bereikbaar.");
  $("downloadReadme").disabled=!archive;
  $("downloadIgnore").disabled=!archive;
