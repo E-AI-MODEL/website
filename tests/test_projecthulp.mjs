@@ -382,3 +382,21 @@ test("GitHub Checks: verifieer EAIgit-annotaties, filter ongeldige paden en leg 
  assert.ok(guidance.problems.some(x=>x.path==="src/app.js"&&x.line===8));
  assert.match(guidance.next[0],/syntaxisfout/);
 });
+
+test("Doelcontrole kijkt afzonderlijk naar opgaven, antwoorden, feedback en score",async()=>{
+ const archive=await analyzeArchive(fake(makeZip([
+  ["oefeningen/index.html",'<button>Start quiz</button><input id="answer">'],
+  ["oefeningen/app.js",'const questions = []; function checkAnswer(){}; function showFeedback(){};']
+ ])));
+ const hints=archive.contentCheck.features.exercise;
+ assert.ok(hints.found.some(x=>x.label==="opgaven of vragen"));
+ assert.ok(hints.found.some(x=>x.label==="antwoord invoeren"));
+ assert.ok(hints.found.some(x=>x.label==="antwoord controleren"));
+ assert.ok(hints.found.some(x=>x.label==="feedback tonen"));
+ assert.ok(hints.notSeen.includes("score of resultaat"));
+ assert.equal(hints.verifiedWorking,false);
+ const guidance=makeGuidance({archive,goal:"app",aim:"Oefeningen maken en eigen antwoorden en resultaten terugzien."});
+ assert.ok(guidance.good.some(x=>x.includes("antwoorden controleren")));
+ assert.ok(guidance.uncertain.some(x=>x.includes("score of resultaat")));
+ assert.ok(guidance.uncertain.some(x=>x.includes("geen bewijs")));
+});
