@@ -27,10 +27,16 @@ function render(){
  setText("purposeTitle",purpose?.label||"Wat wil je bereiken?");
  show("purposeAim",Boolean(purpose?.aim));
  setText("purposeAim",purpose?.aim?"Jouw omschrijving (niet inhoudelijk getest): “"+purpose.aim+"”":"");
- list("purposeFound",purpose?.found?.length?purpose.found:["De bestanden geven voor dit doel nog geen duidelijke aanwijzing."]);
- list("purposeRemaining",purpose?.remaining?.length?purpose.remaining:["Ook zonder waarschuwingen is het project nog niet functioneel getest."]);
+ const found=purpose?.found?.length?purpose.found:["In de bestanden is nog geen duidelijke aanwijzing gevonden."];
+ const remaining=purpose?.remaining?.length?purpose.remaining:["De belangrijkste gebruikershandeling is nog niet getest."];
+ setText("purposeQuickFound",found[0]);
+ setText("purposeQuickRemaining",remaining[0]);
+ list("purposeFound",found);
+ list("purposeRemaining",remaining);
  const warnings=[...advice.warnings];if(repoError)warnings.unshift("GitHub: "+repoError);
  show("warningsGroup",warnings.length>0);list("warnings",warnings);
+ setText("warningsTitle",warnings.length===1?"Bekijk 1 aandachtspunt":"Bekijk "+warnings.length+" aandachtspunten");
+ $("warningsGroup").open=Boolean(archive?.secret?.length||archive?.missingReferences?.length||purpose?.repoOnlyZips);
  list("steps",advice.steps.slice(0,3));
  const additional=advice.steps.slice(3);
  list("moreSteps",additional);show("moreStepsGroup",additional.length>0);
@@ -44,6 +50,7 @@ function render(){
  const repoLink=$("openRepo");
  show("openRepo",Boolean(repo?.url));
  if(repo?.url)repoLink.href=repo.url;
+ repoLink.firstChild.textContent=archive?.secret?.length||purpose?.repoOnlyZips?"Bekijk GitHub, upload nog niets ":"Open je GitHub-repository ";
  let firstTitle="Bekijk je volgende stap",firstText=advice.steps[0]||"Vul je gegevens aan om verder te gaan.";
  if(archive?.secret.length){
   firstTitle="Controleer eerst je privébestanden";
