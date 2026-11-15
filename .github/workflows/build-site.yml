@@ -142,6 +142,9 @@ jobs:
       - name: Test EAIgit browser analysis
         run: node --test tests/test_projecthulp.mjs tests/test_eaigit_help.mjs
 
+      - name: Check EAIgame 300 questions and gameplay mechanics
+        run: node --test tests/test_eaigame.mjs
+
       - name: Build site
         run: |
           python scripts/build_site.py --sources content/legacy --out site-build
