@@ -36,6 +36,9 @@ class PublicMenuTests(unittest.TestCase):
                 physics_urls = [url for _, entries in physic for _, url, _ in entries]
                 self.assertEqual(len(physics_urls), 53)
                 self.assertEqual(len(set(physics_urls)), 53)
+                self.assertEqual(physic[0][0], 'Krachten en beweging' if not en else 'Forces and motion')
+                self.assertIn('Elektriciteit en magnetisme' if not en else 'Electricity and magnetism',
+                              [name for name, _ in physic])
                 self.assertIn('/tools/science-observatory/labs/natuurkunde/#lever', physics_urls)
                 self.assertIn('/tools/science-observatory/labs/natuurkunde/#projectile', physics_urls)
                 maths = sections[1][1]
@@ -58,6 +61,12 @@ class PublicMenuTests(unittest.TestCase):
         self.assertEqual(len(set(workforms)), len(workforms))
         self.assertIn('/werkvormen/justification-mapping/', workforms)
         self.assertIn('/werkvormen/accept-adapt-reject/', workforms)
+        names = [name for name, _ in sections]
+        self.assertIn('Hulp geven en feedback', names)
+        self.assertIn('Bronnen en argumenten beoordelen', names)
+        self.assertIn('Denken en leren zichtbaar maken', names)
+        self.assertNotIn('Werkvormen A–H', names)
+        self.assertEqual(len(names), 7)
         soup = BeautifulSoup('<html><body></body></html>', 'html.parser')
         header = BeautifulSoup(navigation(soup, '/nl/onderwijs/', False), 'html.parser')
         self.assertEqual(len(header.select('.eai-site-menu a[href^="/werkvormen/"]')), len(workforms) + 1)
@@ -70,6 +79,14 @@ class PublicMenuTests(unittest.TestCase):
         self.assertIn('/tools/science-observatory/labs/wiskunde-a/#binom', addresses)
         self.assertIn('/tools/science-observatory/labs/melkweg/#dynamics', addresses)
         self.assertIn('/tools/html-galerij/', addresses)
+        by_url = {record['url']: record for record in index}
+        workform = by_url['/werkvormen/justification-mapping/']
+        self.assertIn('Keuzes', workform['title'])
+        self.assertGreater(len(workform['description']), 35)
+        self.assertIn('Denken en leren zichtbaar maken', workform['category'])
+        maths = by_url['/tools/science-observatory/labs/wiskunde-a/#binom']
+        self.assertIn('kansverdeling', maths['description'].lower())
+        self.assertIn('Wiskunde', maths['category'])
 
     def test_bereikbaar_menu_met_zoekveld_op_mobiel_en_desktop(self):
         for en, path in ((False,'/nl/tools/'),(True,'/en/tools/')):
