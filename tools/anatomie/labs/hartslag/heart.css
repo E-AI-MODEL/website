@@ -478,3 +478,10 @@
 @media(prefers-reduced-motion:reduce){
  .flow-overlay path{transition:none}
 }
+
+/* Bloed stroomt als rustige kleurbanen langs de 3D-geprojecteerde routes.
+   De browser animeert alleen de positie van de korte lichte stroompuls. */
+.flow-overlay .blood-track,.flow-overlay .blood-fill,.flow-overlay .blood-pulse{fill:none;vector-effect:non-scaling-stroke;stroke-linejoin:round;stroke-linecap:round;pointer-events:none}
+.flow-overlay .blood-track{mix-blend-mode:screen}
+.flow-overlay .blood-arrow{pointer-events:none}
+@media(prefers-reduced-motion:reduce){.flow-overlay .blood-pulse{transition:none}}
