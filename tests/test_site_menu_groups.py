@@ -15,10 +15,10 @@ class PublicMenuTests(unittest.TestCase):
             with self.subTest(taal='en' if en else 'nl'):
                 sections = dict(groups(en))
                 self.assertEqual(len(sections), 6)
-                name = 'Experiments & models' if en else 'Proeven & modellen'
+                name = 'Experiments & simulations' if en else 'Proeven & simulaties'
                 self.assertIn(name, sections)
                 labs = dict(sections[name])
-                tools = dict(sections['Tools'])
+                tools = dict(sections['Tools' if en else 'Hulpmiddelen'])
                 self.assertIn('/tools/science-observatory/', labs.values())
                 self.assertIn('/tools/science-observatory/labs/natuurkunde/', labs.values())
                 self.assertIn('/tools/science-observatory/labs/wiskunde-a/', labs.values())
@@ -63,9 +63,9 @@ class PublicMenuTests(unittest.TestCase):
         self.assertIn('/werkvormen/justification-mapping/', workforms)
         self.assertIn('/werkvormen/accept-adapt-reject/', workforms)
         names = [name for name, _ in sections]
-        self.assertIn('Hulp geven en feedback', names)
+        self.assertIn('Hulp en feedback tijdens het leren', names)
         self.assertIn('Bronnen en argumenten beoordelen', names)
-        self.assertIn('Denken en leren zichtbaar maken', names)
+        self.assertIn('Denk- en leerproces zichtbaar maken', names)
         self.assertNotIn('Werkvormen A–H', names)
         self.assertEqual(len(names), 7)
         soup = BeautifulSoup('<html><body></body></html>', 'html.parser')
@@ -84,7 +84,7 @@ class PublicMenuTests(unittest.TestCase):
         workform = by_url['/werkvormen/justification-mapping/']
         self.assertIn('Keuzes', workform['title'])
         self.assertGreater(len(workform['description']), 35)
-        self.assertIn('Denken en leren zichtbaar maken', workform['category'])
+        self.assertIn('Denk- en leerproces zichtbaar maken', workform['category'])
         maths = by_url['/tools/science-observatory/labs/wiskunde-a/#binom']
         self.assertIn('kansverdeling', maths['description'].lower())
         self.assertIn('Wiskunde', maths['category'])
@@ -98,7 +98,7 @@ class PublicMenuTests(unittest.TestCase):
                 '<body><h1>Begin bij het leren</h1></body></html>', encoding='utf-8')
             records = {item['url']: item for item in site_search_records(Path(temp))}
             model = records['/nl/model/']
-            self.assertEqual(model['category'], 'Het EAI-model')
+            self.assertEqual(model['category'], 'EAI begrijpen')
             self.assertIn('kernhandeling', model['description'])
 
     def test_bereikbaar_menu_met_zoekveld_op_mobiel_en_desktop(self):
