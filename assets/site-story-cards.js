@@ -43,7 +43,8 @@
       // This separate search shortcut must not bubble into that close handler.
       event.stopPropagation();
       menu.open = true;
-      requestAnimationFrame(() => search.focus({ preventScroll: true }));
+      // Focus immediately: delayed focus can race the user's first keystroke.
+      search.focus({ preventScroll: true });
     });
     controls.insertBefore(find, controls.firstChild);
   }
