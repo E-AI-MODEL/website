@@ -28,7 +28,7 @@ De Worker sluit zonder geconfigureerde secrets of D1 de toegang af met HTTP 503.
 
 ### Wachtwoord wijzigen en sessies intrekken
 
-Maak lokaal een nieuwe hash aan, vervang `GALLERY_PASSWORD_HASH` in Cloudflare en trek actieve sessies in met `DELETE FROM gallery_sessions;` op D1. Wachtwoordrotatie alleen beëindigt bestaande sessies niet.
+Maak lokaal een nieuwe hash aan en vervang `GALLERY_PASSWORD_HASH` in Cloudflare. Bestaande sessies worden automatisch ongeldig doordat hun token aan de oude wachtwoordhash is gekoppeld. Trek sessies indien gewenst ook administratief in met `DELETE FROM gallery_sessions;` op D1.
 
 Er is bewust geen wachtwoordherstel per e-mail: herstel gebeurt via de beheerder van de Cloudflare-account. Bewaar het wachtwoord in een wachtwoordmanager.
 
