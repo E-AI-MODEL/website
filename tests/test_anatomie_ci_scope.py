@@ -52,7 +52,7 @@ class ReuseExistingAtlasTests(unittest.TestCase):
                      "labs/hartslag/index.html"):
             target = path / name
             target.parent.mkdir(parents=True, exist_ok=True)
-            target.write_bytes(b"sample")
+            target.write_bytes(b"x" * 100001 if name.endswith("atlas-heart-rich.bin") else b"sample")
         (path / "UPSTREAM_COMMIT.txt").write_text("Commit: " + SOURCE_COMMIT)
         size = (path / "labs/hartslag/atlas-heart-rich.bin").stat().st_size
         (path / "labs/hartslag/atlas-heart-rich.json").write_text(
