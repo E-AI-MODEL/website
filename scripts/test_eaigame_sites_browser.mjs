@@ -118,6 +118,10 @@ async function validate3D(name, viewport, phone=false){
   assert.equal(await page.locator('#eaigame-3d-canvas').getAttribute('data-engine'),'three','Echte Three.js 3D-renderer actief');
   assert.ok(await page.locator('#eaigame-3d-stage').isVisible(),'3D staat op de plaats van het bord');
   assert.ok(!await page.locator('#board').isVisible(),'Geen dubbel 2D- en 3D-bord');
+  await page.waitForFunction(()=>window.EAIGame3D.pawnPositions.length===state.players.length);
+  const pawns=await page.evaluate(()=>window.EAIGame3D.pawnPositions);
+  assert.equal(pawns.length,2,'Twee 3D-pionnen zichtbaar bij spel met twee spelers');
+  assert.notDeepEqual(pawns[0],pawns[1],'Twee pionnen op hetzelfde startvak overlappen niet');
   assert.equal(await page.locator('#eaigame-3d-canvas').getAttribute('data-camera-view'),'overview');
   await page.screenshot({path:'test-results/eaigame-'+name+'-3d.png',fullPage:true});
   await page.locator('#eaigame-3d-follow').click();
