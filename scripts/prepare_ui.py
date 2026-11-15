@@ -74,12 +74,22 @@ def experiment_sections(en: bool):
     modes = [(button.b.get_text(' ', strip=True), '/tools/science-observatory/labs/melkweg/#' + button['data-mode'], button.small.get_text(' ', strip=True) if button.small else '') for button in galaxy_doc.select('button.nav-btn[data-mode]') if button.b]
     if len(modes) != 6:
         raise ValueError('De zes originele Melkwegonderdelen zijn niet compleet')
+    guided = BeautifulSoup((Path(__file__).resolve().parent.parent / 'content' / 'melkweg-lab' / 'index.html').read_text(encoding='utf-8'), 'html.parser')
+    guided_modes = [(button.b.get_text(' ', strip=True), '/tools/melkweg-lab/#' + button['data-mode'], '') for button in guided.select('button.nav-btn[data-mode]') if button.b]
+    if len(guided_modes) != 6:
+        raise ValueError('De zes onderdelen van de Melkweg met uitleg zijn niet compleet')
+    llm_source = (Path(__file__).resolve().parent.parent / 'content' / 'llm-observatorium' / 'index.html').read_text(encoding='utf-8')
+    llm_match = re.search(r'const MODES=\[(.*?)\n\];', llm_source, re.DOTALL)
+    llm_names = re.findall(r"name:'([^']+)'", llm_match.group(1)) if llm_match else []
+    if len(llm_names) != 7:
+        raise ValueError('De zeven LLM-onderdelen zijn niet compleet')
+    llm_modes = [(name, '/tools/llm-observatorium/#' + re.sub(r'[^a-z0-9]+', '-', name.lower()).strip('-'), '') for name in llm_names]
     return [
         ('Physics' if en else 'Natuurkunde', [(name, links) for name, links in physics_groups.items()]),
         ('Mathematics' if en else 'Wiskunde', maths),
         ('Human anatomy' if en else 'Anatomie van de mens', [('Anatomy and heart' if en else 'Lichaam en hart', [('The body in 3D' if en else 'Het lichaam in 3D', '/tools/anatomie/', ''), ('Heart and circulation' if en else 'Hart en bloedsomloop', '/tools/anatomie/labs/hartslag/', '')])]),
-        ('Galactic Observatory' if en else 'Galactisch Observatorium', [('Original Observatory' if en else 'Oorspronkelijk observatorium', modes), ('Guided discovery' if en else 'Ontdekken met uitleg', [('Galactic Observatory: guided' if en else 'Melkweg met uitleg', '/tools/melkweg-lab/', '')]), ('Orbits' if en else 'Banen', [('Gravity and satellites' if en else 'Gravitatie en satellietbanen', '/tools/science-observatory/labs/gravitatie-banen/', '')])]),
-        ('Language models' if en else 'Taalmodellen', [('AI' if en else 'AI onderzoeken', [('LLM Observatory' if en else 'Hoe werkt een taalmodel?', '/tools/llm-observatorium/', '')])]),
+        ('Galactic Observatory' if en else 'Galactisch Observatorium', [('Original Observatory' if en else 'Oorspronkelijk observatorium', modes), ('Guided discovery' if en else 'Ontdekken met uitleg', [('Galactic Observatory: guided' if en else 'Melkweg met uitleg', '/tools/melkweg-lab/', '')] + guided_modes), ('Orbits' if en else 'Banen', [('Gravity and satellites' if en else 'Gravitatie en satellietbanen', '/tools/science-observatory/labs/gravitatie-banen/', '')])]),
+        ('Language models' if en else 'Taalmodellen', [('AI' if en else 'AI onderzoeken', [('LLM Observatory' if en else 'Hoe werkt een taalmodel?', '/tools/llm-observatorium/', '')] + llm_modes)]),
         ('Sport and movement' if en else 'Sport en bewegen', [('Sports' if en else 'Sport en bewegen', [('Attack and defence' if en else 'Aanvallen en verdedigen', '/tools/lo-aanvalslab/', ''), ('Research and sources' if en else 'Onderbouwing van sportproeven', '/tools/lo-aanvalslab/onderbouwing/', '')])]),
     ]
 
