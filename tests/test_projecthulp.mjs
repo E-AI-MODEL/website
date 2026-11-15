@@ -180,7 +180,7 @@ test("GitHub Actions workflow voor project: syntaxcontroles zonder schrijfbevoeg
  const yaml=generateProjectCheckWorkflow(archive);
  assert.ok(yaml.includes("node --check"));
  assert.ok(yaml.includes("python3 -m compileall"));
- assert.ok(yaml.includes("permissions:\\n  contents: read"));
+ assert.ok(yaml.includes("permissions:"+String.fromCharCode(10)+"  contents: read"));
  assert.ok(!yaml.includes("npm run test"));
  assert.ok(!yaml.includes("npm install"));
  assert.ok(!yaml.includes("pull_request_target:"));
