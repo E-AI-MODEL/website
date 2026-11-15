@@ -144,3 +144,38 @@ body.eai-ui .eai-site-search-back{font:500 13px Inter,system-ui,sans-serif;color
 /* Inhoudelijke toelichting verschijnt pas na openen of zoeken. */
 body.eai-ui .eai-site-topic-intro{font:400 12px/1.5 Inter,system-ui,sans-serif;color:#617769;margin:1px 5px 7px;padding:0}
 body.eai-ui .eai-site-search-hit-description{font:400 12px/1.45 Inter,system-ui,sans-serif;color:#53695a;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+
+
+/* EAI Dictionary: readable definitions, short purpose-led groups, simple search. */
+body.eai-ui .eai-dictionary .section{padding-top:44px;padding-bottom:44px}
+body.eai-ui .eai-dictionary .section h2{margin:0 0 14px;color:#284c38}
+body.eai-ui .eai-dictionary .section h3{margin:20px 0 10px;color:#315540}
+body.eai-ui .eai-dictionary .section p{max-width:73ch;line-height:1.65}
+body.eai-ui .eai-dictionary .eai-dictionary-switch{display:inline-flex;align-items:center;border:1px solid #c5d9cb;color:#315b44;padding:9px 13px;border-radius:8px;text-decoration:none;font-weight:600;font-size:13px;margin-top:8px}
+body.eai-ui .eai-dictionary .eai-dictionary-switch:hover,body.eai-ui .eai-dictionary .eai-dictionary-switch:focus-visible{background:#e9f3ec}
+body.eai-ui .eai-dictionary-case{background:#f3f7f2}
+body.eai-ui .eai-dictionary-label{display:block;font-size:13px;font-weight:600;margin:12px 0 7px;color:#375647}
+body.eai-ui #eai-dictionary-search{width:100%;max-width:700px;box-sizing:border-box;font:500 15px/1.4 Inter,system-ui,sans-serif;color:#213f31;background:#fff;border:1px solid #bdcebf;border-radius:9px;padding:13px 15px;min-height:48px}
+body.eai-ui #eai-dictionary-search:focus-visible{outline:2px solid #326949;outline-offset:2px}
+body.eai-ui #eai-dictionary-count{font-size:12px;color:#64806d;margin:7px 0 16px}
+body.eai-ui .eai-dictionary-groups{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:9px;margin:15px 0 32px}
+body.eai-ui .eai-dictionary-groups[hidden]{display:none!important}
+body.eai-ui .eai-dictionary-group,body.eai-ui .eai-dictionary-term{border:1px solid #d6e3d8;border-radius:10px;background:#fff;overflow:hidden}
+body.eai-ui .eai-dictionary-group>summary{cursor:pointer;display:flex;justify-content:space-between;gap:12px;padding:12px 14px;font-size:14px;font-weight:600;line-height:1.45;color:#294936}
+body.eai-ui .eai-dictionary-group>summary small{color:#78907d;font-weight:400}
+body.eai-ui .eai-dictionary-group-links{display:grid;gap:1px;padding:0 12px 14px}
+body.eai-ui .eai-dictionary-group-links a{display:block;padding:6px 4px;font-size:13px;line-height:1.4;text-decoration:none;color:#345d48}
+body.eai-ui .eai-dictionary-group-links a:hover,body.eai-ui .eai-dictionary-group-links a:focus-visible{text-decoration:underline}
+body.eai-ui .eai-dictionary-terms{display:grid;gap:9px;max-width:940px}
+body.eai-ui .eai-dictionary-term[hidden]{display:none!important}
+body.eai-ui .eai-dictionary-term>summary{cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 17px;line-height:1.4;color:#203f30}
+body.eai-ui .eai-dictionary-term>summary span{font-size:15px;font-weight:650}
+body.eai-ui .eai-dictionary-term>summary small{display:block;font-weight:400;font-size:12px;color:#708475;margin-top:4px}
+body.eai-ui .eai-dictionary-term>summary em{font-size:11px;font-style:normal;white-space:nowrap;color:#5f7a68;font-weight:500}
+body.eai-ui .eai-dictionary-term>summary:focus-visible,body.eai-ui .eai-dictionary-group>summary:focus-visible{outline:2px solid #326949;outline-offset:-2px}
+body.eai-ui .eai-dictionary-definition{border-top:1px solid #e1e9e2;padding:14px 17px 15px;color:#31493a}
+body.eai-ui .eai-dictionary-definition p{font-size:14px;line-height:1.58;margin:0 0 9px}
+body.eai-ui .eai-dictionary-definition p:last-child{margin-bottom:0}
+body.eai-ui .eai-dictionary-related{color:#617569;font-size:12px!important}
+body.eai-ui .eai-dictionary-provenance{font-size:12px;color:#647568;margin:26px 0}
+@media(max-width:620px){body.eai-ui .eai-dictionary .section{padding-top:28px;padding-bottom:30px}body.eai-ui .eai-dictionary-groups{grid-template-columns:1fr}body.eai-ui .eai-dictionary-term>summary{padding:13px 12px;align-items:flex-start}body.eai-ui .eai-dictionary-term>summary em{white-space:normal;text-align:right;max-width:125px;font-size:10px}}

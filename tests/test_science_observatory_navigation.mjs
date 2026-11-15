@@ -64,9 +64,9 @@ test('Websitegenerator gebruikt de bronbestanden en aparte observatoriarubriek',
 
 test('Publieke menu bevat de afzonderlijke experimenten en behoudt alle adressen', () => {
   const source = load('scripts/prepare_ui.py');
-  assert.match(source, /'Proeven & modellen'/);
-  assert.match(source, /'Experiments & models'/);
-  assert.match(source, /'Artikelen & onderzoek'/);
+  assert.match(source, /'Proeven & simulaties'/);
+  assert.match(source, /'Experiments & simulations'/);
+  assert.match(source, /'Onderzoek & publicaties'/);
   assert.match(source, /'Natuurkunde'/);
   assert.match(source, /'Wiskunde A'/);
   assert.match(source, /'Wiskunde B'/);
