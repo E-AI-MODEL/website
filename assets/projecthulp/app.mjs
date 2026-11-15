@@ -1,6 +1,6 @@
 import {analyzeArchive,fetchPublicRepo,makeAdvice,reportText,readmeTemplate,ignoreTemplate,parseRepoUrl} from "./analyse.mjs";
 const $=(id)=>document.getElementById(id);
-const state={archive:null,repo:null,advice:null,goal:"upload",experience:"beginner",repoError:null};
+const state={archive:null,repo:null,advice:null,goal:"site",aim:"",experience:"beginner",repoError:null};
 const setText=(id,text)=>{$(id).textContent=text;};
 const show=(id,on)=>$(id).classList.toggle("ph-hidden",!on);
 function screen(index){
@@ -19,10 +19,16 @@ const download=(name,text,type="text/plain;charset=utf-8")=>{
 };
 function render(){
  const {archive,repo,advice,repoError}=state;
+ const purpose=advice.purpose;
  const summary=$("summary");summary.replaceChildren();
  const pills=[archive?archive.project.type:"Geen ZIP onderzocht",repo?repo.name:"Geen repository bevestigd"];
  pills.forEach(label=>{const span=document.createElement("span");span.textContent=label;summary.append(span);});
  list("observations",advice.observations);
+ setText("purposeTitle",purpose?.label||"Wat wil je bereiken?");
+ show("purposeAim",Boolean(purpose?.aim));
+ setText("purposeAim",purpose?.aim?"Jouw omschrijving (niet inhoudelijk getest): “"+purpose.aim+"”":"");
+ list("purposeFound",purpose?.found?.length?purpose.found:["De bestanden geven voor dit doel nog geen duidelijke aanwijzing."]);
+ list("purposeRemaining",purpose?.remaining?.length?purpose.remaining:["Ook zonder waarschuwingen is het project nog niet functioneel getest."]);
  const warnings=[...advice.warnings];if(repoError)warnings.unshift("GitHub: "+repoError);
  show("warningsGroup",warnings.length>0);list("warnings",warnings);
  list("steps",advice.steps.slice(0,3));
@@ -42,9 +48,18 @@ function render(){
  if(archive?.secret.length){
   firstTitle="Controleer eerst je privébestanden";
   firstText=archive.secret.length===1?"Eén bestand heeft mogelijk vertrouwelijke inhoud. Controleer het op je eigen apparaat. Upload het pas als je zeker weet dat het openbaar mag zijn.":"Er zijn "+archive.secret.length+" bestanden met mogelijk vertrouwelijke inhoud. Controleer ze op je eigen apparaat. Upload ze niet voordat je zeker weet dat ze openbaar mogen zijn.";
+ }else if(purpose?.repoOnlyZips){
+  firstTitle="Een ZIP op GitHub is nog geen project";
+  firstText="GitHub bewaart je ZIP als één bestand. Pak het ZIP-bestand op je eigen apparaat uit en voeg de losse projectbestanden toe. Controleer eerst wat je daarvan openbaar wilt maken.";
+ }else if(purpose?.goal==="site"&&archive&&!archive.project.hasHtml){
+  firstTitle="Zoek eerst de startpagina";
+  firstText="We hebben geen HTML-startbestand in de onderzochte projectbestanden gevonden. Controleer welke bestanden de website moeten opbouwen voordat je ze publiceert.";
+ }else if(purpose?.goal==="site"&&archive?.missingReferences?.length){
+  firstTitle="Controleer de ontbrekende bestanden";
+  firstText="De startpagina verwijst naar bestanden die niet op de verwachte plek in het ZIP-bestand staan. Herstel die verwijzingen voordat je van een werkende website uitgaat.";
  }else if(archive&&repo?.readable){
-  firstTitle="Pak je ZIP uit en bekijk wat ontbreekt";
-  firstText="Je hoeft het ZIP-bestand niet rechtstreeks in GitHub te zetten. Pak het uit en bekijk welke bestanden je kunt toevoegen. Gebruik daarna de knop om je repository te openen.";
+  firstTitle="Pak je ZIP uit, niet als één bestand uploaden";
+  firstText="GitHub pakt een ZIP-bestand niet automatisch uit. Pak het op je apparaat uit. Controleer de projectbestanden en voeg vervolgens alleen de juiste bestanden in de juiste mappen aan GitHub toe.";
  }else if(archive&&!repo){
   firstTitle="Voeg je GitHub-link toe";
   firstText="We hebben je ZIP bekeken. Vul nu de link naar je openbare repository in, zodat we kunnen vergelijken wat er nog ontbreekt.";
@@ -69,6 +84,7 @@ async function analyze(){
  if(url){try{parseRepoUrl(url);}catch(error){setText("inputError",error.message);show("inputError",true);return;}}
  state.goal=document.querySelector('input[name="goal"]:checked')?.value||"upload";
  state.experience=$("experience").value;
+ state.aim=$("projectAim").value.trim().slice(0,220);
  $("analyze").disabled=true;show("loading",true);setText("loadingText","We controleren je bestanden…");
  try{
   state.archive=null;state.repo=null;state.repoError=null;
@@ -80,7 +96,7 @@ async function analyze(){
    setText("loadingText","We halen de openbare bestandslijst op bij GitHub…");
    try{state.repo=await fetchPublicRepo(url);}catch(error){state.repoError=error?.message||"GitHub kon niet worden gecontroleerd.";}
   }
-  state.advice=makeAdvice({goal:state.goal,experience:state.experience,archive:state.archive,repo:state.repo});
+  state.advice=makeAdvice({goal:state.goal,aim:state.aim,experience:state.experience,archive:state.archive,repo:state.repo});
   render();
  }finally{show("loading",false);$("analyze").disabled=false;}
 }
@@ -89,7 +105,7 @@ $("back1").addEventListener("click",()=>screen(1));
 $("back2").addEventListener("click",()=>screen(2));
 $("analyze").addEventListener("click",analyze);
 $("zipFile").addEventListener("change",()=>{
- const file=$("zipFile").files?.[0];setText("fileName",file?file.name:"Kies een ZIP-bestand");show("inputError",false);
+ const file=$("zipFile").files?.[0];setText("fileName",file?file.name:"Kies een ZIP om te onderzoeken");show("inputError",false);
 });
 const drop=$("dropZone");
 for(const event of ["dragenter","dragover"]){drop.addEventListener(event,e=>{e.preventDefault();drop.classList.add("dragover");});}
@@ -108,7 +124,7 @@ $("downloadReport").addEventListener("click",()=>{
 $("downloadReadme").addEventListener("click",()=>{if(state.archive)download("README.md",readmeTemplate(state.archive,state.repo?.name));});
 $("downloadIgnore").addEventListener("click",()=>{if(state.archive)download("gitignore-voorbeeld.txt",ignoreTemplate(state.archive));});
 $("reset").addEventListener("click",()=>{
- $("zipFile").value="";$("repoUrl").value="";setText("fileName","Kies een ZIP-bestand");show("inputError",false);
+ $("zipFile").value="";$("repoUrl").value="";setText("fileName","Kies een ZIP om te onderzoeken");show("inputError",false);
  for(const key of ["archive","repo","advice","repoError"])state[key]=null;
- document.querySelector('input[name="goal"][value="upload"]').checked=true;$("experience").value="beginner";screen(1);
+ document.querySelector('input[name="goal"][value="site"]').checked=true;$("experience").value="beginner";$("projectAim").value="";state.aim="";screen(1);
 });
