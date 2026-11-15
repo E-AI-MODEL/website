@@ -424,6 +424,9 @@ try{
   assert.equal(await page.locator('#insightTeacher').evaluate(el=>el.open),false,'De docentverdieping start dicht');
   await page.evaluate(()=>{document.querySelector('#insightMath').open=true;document.querySelector('#insightTeacher').open=true;});
   assert((await page.locator('#insightTeacherContent').innerText()).includes('OpenStax'),'De bronverwijzing wordt getoond');
+  // Opengeklapte uitleg mag het draaipunt niet bedekken. Meet de
+  // positie pas nadat het daadwerkelijke canvas in beeld is.
+  await page.locator('#scene').scrollIntoViewIfNeeded();
   const leverStart=await page.evaluate(()=>{
    const p=state.p,c=document.querySelector('#scene'),r=c.getBoundingClientRect(),g=sceneViewport(c),pivot=p.pivot??510;
    return {x:r.left+g.left+pivot*g.scale,y:r.top+g.top+350*g.scale,scale:g.scale,pivot,left:pivot-65*p.arm1,right:pivot+65*p.arm2,p:{...p}};
@@ -441,12 +444,22 @@ try{
     },{capture:true,passive:true});
    }
   });
+  const startPoint={x:leverStart.x+leverStart.scale*12,y:leverStart.y};
+  // Do not send a mouse gesture through a temporary overlay or before
+  // WebKit has laid out the hit target. Fail instead of silently retrying.
+  await page.waitForFunction(({x,y})=>{
+   const el=document.elementFromPoint(x,y);
+   return Boolean(el?.closest('#stage'));
+  },startPoint,{timeout:10000});
+  await page.evaluate(()=>new Promise(resolve=>
+   requestAnimationFrame(()=>requestAnimationFrame(resolve))));
   const leverHit=await page.evaluate(({x,y})=>{
    const el=document.elementFromPoint(x,y);
    return {tag:el?.tagName||null,id:el?.id||null,className:String(el?.className||'').slice(0,120),
     inStage:Boolean(el?.closest('#stage'))};
-  },{x:leverStart.x+leverStart.scale*12,y:leverStart.y});
-  await page.mouse.move(leverStart.x+leverStart.scale*12,leverStart.y);
+  },startPoint);
+  assert(leverHit.inStage,'Het draaipunt moet vrij aanklikbaar zijn: '+JSON.stringify(leverHit));
+  await page.mouse.move(startPoint.x,startPoint.y);
   await page.mouse.down();
   const pressed=await page.evaluate(()=>({pivot:state.p.pivot??510,arm1:state.p.arm1,arm2:state.p.arm2}));
   assert.equal(pressed.pivot,leverStart.pivot,'Het steunpunt springt niet weg bij aanraken');
