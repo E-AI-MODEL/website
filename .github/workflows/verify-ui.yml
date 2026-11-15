@@ -40,19 +40,9 @@ jobs:
       - name: Bouw de 3D-atlas bij anatomiewijzigingen en op main
         if: steps.anatomy_scope.outputs.run == 'true'
         run: python scripts/build_anatomie.py --out site-build/tools/anatomie
-      - name: Hergebruik de echte, eerder gebouwde 3D-modellen bij andere PR's
+      - name: Hergebruik de echte gepinde 3D-modellen bij andere PR's
         if: steps.anatomy_scope.outputs.run != 'true'
-        shell: bash
-        run: |
-          set -euo pipefail
-          test -s tools/anatomie/UPSTREAM_COMMIT.txt
-          grep -Fq '8ca3b7421bcfbe88b85859eb1983d5cf79f21749' tools/anatomie/UPSTREAM_COMMIT.txt
-          test -s tools/anatomie/models/skeletal.glb
-          test -s tools/anatomie/models/cardiovascular.glb
-          test -s tools/anatomie/labs/hartslag/atlas-heart-rich.bin
-          test -s tools/anatomie/labs/hartslag/atlas-heart-rich.json
-          mkdir -p site-build/tools/anatomie
-          cp -a tools/anatomie/. site-build/tools/anatomie/
+        run: python scripts/reuse_published_anatomie.py --source tools/anatomie --out site-build/tools/anatomie
       - run: python scripts/prepare_ui.py --root site-build
       - name: Controleer altijd de echte anatomische bestanden en bronvermelding
         run: python -m unittest discover -s tests -p 'test_anatomie_publish.py' -v
