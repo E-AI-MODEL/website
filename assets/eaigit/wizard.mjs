@@ -169,7 +169,7 @@ $("repoBack").addEventListener("click",()=>previous("repo"));
 $("repoNext").addEventListener("click",()=>{
  const entered=$("repoUrl").value.trim();
  if(!entered){label("repoError","Plak een GitHub-link of kies 'Ik heb nog geen repository'.");show("repoError",true);return;}
- try{state.repoUrl=parseRepoUrl(entered).url;show("repoError",false);navigate("aim");}
+ try{state.repoUrl="https://github.com/"+parseRepoUrl(entered).name;show("repoError",false);navigate("aim");}
  catch(error){label("repoError",error.message);show("repoError",true);}
 });
 $("repoSkip").addEventListener("click",()=>{state.repoUrl="";$("repoUrl").value="";if(state.source==="github")state.source="unknown";navigate("aim");});
