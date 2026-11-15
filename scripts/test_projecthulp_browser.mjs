@@ -44,6 +44,14 @@ try{
  assert.equal(await page.locator(".eg-logo img").getAttribute("src"),"/assets/eaigit/logo.svg");
  assert.equal(await page.locator('link[rel="icon"]').getAttribute("href"),"/assets/eaigit/icon.svg");
  assert(await page.locator("#stage-intent").isVisible());
+ // Hulp verschijnt alleen nadat de bezoeker daarom vraagt.
+ await page.locator('[data-help="goal"]').click();
+ assert(await page.locator("#helpDialog").evaluate(el=>el.open));
+ assert.match(await page.locator("#helpTitle").innerText(),/Wat wil je bereiken/);
+ assert.match(await page.locator("#helpSteps").innerText(),/website/);
+ assert.match(await page.locator("#helpFull").getAttribute("href"),/uitleg-goal/);
+ await page.locator("#helpClose").click();
+ assert.equal(await page.locator("#helpDialog").evaluate(el=>el.open),false);
  assert.equal(await page.locator("#stage-source").isVisible(),false);
  await page.screenshot({path:join(out,"eaigit-start.png"),fullPage:true});
  // Elke vraag staat op een eigen scherm.
@@ -79,6 +87,11 @@ try{
  await page.locator("#startGuidance").click();
  assert(await page.locator("#stage-guide").isVisible());
  assert.match(await page.locator("#guideTitle").innerText(),/privébestanden/);
+ await page.locator("#guideMore").click();
+ assert(await page.locator("#helpDialog").evaluate(el=>el.open));
+ assert.match(await page.locator("#helpTitle").innerText(),/privé blijven/);
+ assert.match(await page.locator("#helpSteps").innerText(),/wachtwoorden/);
+ await page.locator("#helpClose").click();
  assert.equal(await page.locator("#promptDetails").isVisible(),false);
  await page.locator("#guideNext").click();
  assert.match(await page.locator("#guideTitle").innerText(),/map klaar/);
@@ -150,6 +163,38 @@ try{
  await page.locator("#guideNext").click();
  assert.match(await page.locator("#guideTitle").innerText(),/Voeg je bestanden toe/);
  assert.equal(await page.locator("#guideLink").getAttribute("href"),"https://github.com/voorbeeld/nieuw-project");
+ // Hulppagina: eigen overzicht, per onderwerp slechts korte instructies.
+ await page.goto(base+"/tools/eaigit/hulp/#uitleg-plugins");
+ assert.match(await page.title(),/Hulp bij GitHub en ChatGPT/);
+ assert(await page.locator("#uitleg-plugins").evaluate(el=>el.open));
+ assert.match(await page.locator("#uitleg-plugins").innerText(),/lezen/);
+ assert.match(await page.locator(".eg-tool-cards").innerText(),/GitHub/);
+ assert.match(await page.locator(".eg-tool-cards").innerText(),/ChatGPT/);
+ await page.setViewportSize({width:390,height:844});
+ assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2),"Hulppagina past op telefoon");
+ await page.screenshot({path:join(out,"eaigit-uitleg-mobiel.png"),fullPage:true});
+ // Promptbibliotheek: alle fasen en aparte, invulbare opdrachten.
+ await page.goto(base+"/tools/eaigit/prompts/");
+ assert.match(await page.title(),/Promptbibliotheek/);
+ assert.equal(await page.locator("#promptList .eg-prompt-card").count(),16);
+ await page.locator("#promptRepo").fill("https://github.com/voorbeeld/project");
+ await page.locator("#promptGoal").fill("Bezoekers kunnen een oefening afronden");
+ await page.locator('[data-phase="controleren"]').click();
+ assert.equal(await page.locator("#promptList .eg-prompt-card").count(),3);
+ await page.locator('[data-prompt-id="gebruikstest"]').click();
+ assert(await page.locator("#selectedPrompt").isVisible());
+ const selectedPrompt=await page.locator("#selectedBody").inputValue();
+ assert.match(selectedPrompt,/https:\/\/github.com\/voorbeeld\/project/);
+ assert.match(selectedPrompt,/Bezoekers kunnen een oefening afronden/);
+ assert.match(selectedPrompt,/niet|geen|test/i);
+ await page.locator("#copySelected").click();
+ assert.match(await page.locator("#copyFeedback").innerText(),/gekopieerd/);
+ assert.equal(await page.evaluate(()=>window.__copiedProjectAdvice),selectedPrompt);
+ await page.locator("#selectedBody").fill("Mijn wijziging");
+ await page.locator("#restoreSelected").click();
+ assert.equal(await page.locator("#selectedBody").inputValue(),selectedPrompt);
+ assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2),"Promptbibliotheek past op telefoon");
+ await page.screenshot({path:join(out,"eaigit-prompts-mobiel.png"),fullPage:true});
  // Oude URL blijft werken, zonder de oude naam in de nieuwe UI.
  await page.goto(base+"/tools/projecthulp/");
  await page.waitForURL("**/tools/eaigit/");
