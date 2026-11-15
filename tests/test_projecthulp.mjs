@@ -398,7 +398,7 @@ test("Doelcontrole kijkt afzonderlijk naar opgaven, antwoorden, feedback en scor
  assert.ok(hints.notSeen.includes("score of resultaat"));
  assert.equal(hints.verifiedWorking,false);
  const guidance=makeGuidance({archive,goal:"app",aim:"Oefeningen maken en eigen antwoorden en resultaten terugzien."});
- assert.ok(guidance.good.some(x=>x.includes("antwoorden controleren")));
+ assert.ok(guidance.good.some(x=>x.includes("antwoord controleren")));
  assert.ok(guidance.uncertain.some(x=>x.includes("score of resultaat")));
  assert.ok(guidance.uncertain.some(x=>x.includes("geen bewijs")));
 });
