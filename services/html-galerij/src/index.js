@@ -1,6 +1,9 @@
 // Private HTML gallery. The Worker is the only host for data and administration.
 import { configured, currentUser, login, logout, loginResponse, sameOrigin } from './auth.js';
 import { privatePage } from './ui.js';
+import { dashboardPage } from './dashboard.js';
+import { adminClientJs } from './admin-client.js';
+import { handleAdmin, recordAdminAction } from './admin.js';
 
 const MAX_BYTES = 1024 * 1024;
 const MAX_ITEMS = 100;
@@ -34,7 +37,7 @@ function dashboardHeaders() {
   return {
     ...headers,
     'Content-Type': 'text/html; charset=utf-8',
-    'Content-Security-Policy': "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' data:; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'"
+    'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' data:; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'"
   };
 }
 async function visitorKey(request, env) {
@@ -74,6 +77,7 @@ async function publish(request, env) {
     const id = Date.now().toString().padStart(13, '0') + '-' + crypto.randomUUID();
     await env.DB.prepare('INSERT INTO uploads (id, title, author, filename, html_content) VALUES (?, ?, ?, ?, ?)')
       .bind(id, title.trim(), author.trim(), file.name.slice(0, 180), content).run();
+    await recordAdminAction(env, env.GALLERY_ADMIN_EMAIL.toLowerCase(), 'upload.published', id);
     return json({ id, url: '/view/' + id }, 201);
   } catch (err) {
     console.error('Gallery save failed', err);
@@ -87,6 +91,7 @@ async function hideUpload(request, env, id) {
     const result = await env.DB.prepare("UPDATE uploads SET status = 'hidden' WHERE id = ? AND status = 'published'")
       .bind(id).run();
     if ((result.meta?.changes || 0) !== 1) return error('Pagina niet gevonden.', 404);
+    await recordAdminAction(env, env.GALLERY_ADMIN_EMAIL.toLowerCase(), 'upload.hidden', id);
     return json({ ok: true });
   } catch { return error('Beheer is tijdelijk niet beschikbaar.', 503); }
 }
@@ -102,13 +107,21 @@ export default {
       return error('De galerij is nog niet ingericht.', 503);
     }
     const user = await currentUser(request, env);
-    if (path === '/' || path === '/auth/login') {
+    if (path === '/' || path === '/auth/login' || path === '/gallery') {
       if (request.method !== 'GET') return error('Methode niet toegestaan.', 405);
       if (!user) return loginResponse();
       if (path === '/auth/login') return new Response(null, { status: 303, headers: { ...headers, Location: '/' } });
-      return new Response(privatePage(user), { status: 200, headers: dashboardHeaders() });
+      if (path === '/gallery') return new Response(privatePage(user), { status: 200, headers: dashboardHeaders() });
+      return new Response(dashboardPage(user), { status: 200, headers: dashboardHeaders() });
     }
     if (!user) return error('Aanmelden vereist.', 401);
+    if (request.method === 'GET' && path === '/admin-client.js') return new Response(adminClientJs, {
+      status: 200, headers: { ...headers, 'Content-Type': 'application/javascript; charset=utf-8' }
+    });
+    if (path.startsWith('/api/admin/')) {
+      const adminResponse = await handleAdmin(request, env, user);
+      if (adminResponse) return adminResponse;
+    }
     if (request.method === 'GET' && path === '/api/me') return json({ email: user });
     if (request.method === 'GET' && path === '/api/uploads') {
       try {
