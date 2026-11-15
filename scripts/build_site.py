@@ -2623,6 +2623,17 @@ def build(sources: Path, out: Path) -> None:
         page = page.replace('</head>',
             '<link rel="alternate" hreflang="nl" href="https://eaimodel.nl/nl/begrippen/">'
             '<link rel="alternate" hreflang="en" href="https://eaimodel.nl/en/glossary/"></head>', 1)
+        # These generated source pages must also be navigable before the
+        # shared UI preparation replaces the legacy site header.
+        language_switch = (
+            '<div class="eai-lang" role="group" aria-label="Taal">'
+            '<a href="/nl/begrippen/"' + (' aria-current="page"' if locale == 'nl' else '') + '>NL</a>'
+            '<a href="/en/glossary/"' + (' aria-current="page"' if locale == 'en' else '') + '>EN</a>'
+            '</div>'
+        )
+        if page.count('<div class="nav-links">') != 1:
+            raise AssertionError('Dictionary source header must contain one navigation group')
+        page = page.replace('<div class="nav-links">', language_switch + '<div class="nav-links">', 1)
         write(out, destination, page)
 
     tools_body = f'''<main><section class="page-hero"><div class="wrap"><div class="eyebrow">Tools</div><h1>Kies een hulpmiddel bij je vraag.</h1><p class="lede">Bepaal wat je wilt bereiken en welke stap, keuze of verantwoordelijkheid bij de mens moet blijven. Met deze tools kun je de taakverdeling onderzoeken en de AI-instructie uitwerken.</p></div></section>
