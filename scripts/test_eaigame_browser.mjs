@@ -38,7 +38,12 @@ async function session(name,viewport,offline=false){
  const bounds=await page.locator('#world').boundingBox();
  assert.ok(stage?.width>295&&stage?.height>290,'Hele bord heeft een volwaardig oppervlak');
  assert.ok(bounds?.width>=stage.width-2&&bounds?.height>=stage.height-2,'Canvas vult het bordvlak');
- if(name==='mobile')assert.ok(stage.x>=0&&stage.x+stage.width<=viewport.width+2,'Het complete bord past horizontaal op mobiel');
+ if(name==='mobile'){
+   assert.ok(stage.x>=0&&stage.x+stage.width<=viewport.width+2,'Het complete bord past horizontaal op mobiel');
+   const rollBox=await page.locator('#roll').boundingBox();
+   assert.ok(rollBox&&rollBox.y+rollBox.height<stage.y,'Werpknop staat boven het bord op mobiel');
+   assert.ok(stage.y+stage.height<=viewport.height+6,'Het hele spelbord past op mobiel binnen het eerste scherm');
+ }
  const startingView=await page.locator('#world').getAttribute('data-camera-distance');
  for(let area=0;area<6;area++){
   await page.locator('#roll').click();
