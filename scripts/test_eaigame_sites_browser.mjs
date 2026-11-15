@@ -105,8 +105,44 @@ async function validateLevels(){
  }finally{await context.close()}
 }
 
+
+async function validate3D(name, viewport, phone=false){
+ const context=await browser.newContext({viewport,deviceScaleFactor:1,isMobile:phone,hasTouch:phone});
+ const page=await context.newPage(),errors=[];
+ page.on('pageerror',err=>errors.push(err.message));
+ try{
+  await page.goto(origin+'/tools/eaigame/',{waitUntil:'domcontentloaded'});
+  await page.locator('#board .tile').first().waitFor({state:'visible'});
+  await page.locator('#extra-opts summary').click();
+  await page.locator('[data-option="3d"]').click();
+  await page.waitForFunction(()=>!!document.querySelector('#eaigame-3d-canvas')?.dataset.engine,null,{timeout:30000});
+  assert.equal(await page.locator('#eaigame-3d-canvas').getAttribute('data-engine'),'three','Echte Three.js 3D-renderer actief');
+  assert.ok(await page.locator('#eaigame-3d-stage').isVisible(),'3D staat op de plaats van het bord');
+  assert.ok(!await page.locator('#board').isVisible(),'Geen dubbel 2D- en 3D-bord');
+  assert.equal(await page.locator('#eaigame-3d-canvas').getAttribute('data-camera-view'),'overview');
+  await page.screenshot({path:'test-results/eaigame-'+name+'-3d.png',fullPage:true});
+  await page.locator('#eaigame-3d-follow').click();
+  assert.equal(await page.locator('#eaigame-3d-canvas').getAttribute('data-camera-view'),'follow');
+  await page.waitForTimeout(350);
+  const before=await page.evaluate(()=>window.EAIGame3D.cameraPosition);
+  await page.evaluate(()=>{state.players[0].pos=1;state.current=0;});
+  await page.waitForTimeout(450);
+  const after=await page.evaluate(()=>window.EAIGame3D.cameraPosition);
+  assert.ok(Math.hypot(...after.map((x,i)=>x-before[i]))>0.2,'3D-camera beweegt werkelijk mee met pion');
+  await page.locator('#eaigame-3d-overview').click();
+  assert.equal(await page.locator('#eaigame-3d-canvas').getAttribute('data-camera-view'),'overview');
+  await page.locator('#eaigame-3d-close').click();
+  assert.ok(await page.locator('#board').isVisible(),'Originele bord terug');
+  assert.equal(await page.locator('#board .tile').count(),32);
+  assert.deepEqual(errors,[],'Geen browserfouten tijdens 3D-wissel');
+  console.log(name,'3D-overzicht, volgcamera, pionbeweging en terug naar Sites-bord geslaagd');
+ }finally{await context.close();}
+}
+
 try{
  await validateLevels();
+ await validate3D('desktop',{width:1365,height:820});
+ await validate3D('mobile',{width:390,height:844},true);
  await run('desktop',{width:1365,height:820});
  await run('mobile',{width:390,height:844},true);
 }catch(err){failed=true;console.error(err)}
