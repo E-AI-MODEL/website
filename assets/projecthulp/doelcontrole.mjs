@@ -48,7 +48,7 @@ export function checkProjectPurpose({goal="unsure",archive=null,repo=null,aim=""
  if(selected==="site"){
   if(index)found.push("Een mogelijk startbestand voor een website gevonden: "+index+".");
   if(index?.startsWith("dist/")||index?.startsWith("build/"))remaining.push("De startpagina staat in een bouwmap. GitHub publiceert deze map niet vanzelf: bepaal welke uitvoer naar de website moet.");
-  else remaining.push("Geen index.html in de hoofdmap of public-map gevonden. We kunnen nog niet aanwijzen welke pagina moet openen.");
+  else if(!index)remaining.push("Geen index.html in de hoofdmap of public-map gevonden. We kunnen nog niet aanwijzen welke pagina moet openen.");
   if(project.hasPackage){found.push("Het project bevat package.json. Een bouwstap kan nodig zijn voordat de website online kan.");}
   else if(index)found.push("De bestanden wijzen op een website die mogelijk zonder extra framework kan worden geopend.");
   if(archive.missingReferences?.length)remaining.push("De startpagina verwijst naar "+archive.missingReferences.length+" lokaal bestand(en) dat niet op de verwachte plek in het ZIP-bestand staat.");
