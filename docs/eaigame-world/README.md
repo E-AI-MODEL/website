@@ -21,6 +21,9 @@ Dit zijn **schematische vectorstudies**, geen 3D-renders of screenshots van een 
 - [De vier regio-studies](./regio-studies.svg): vergelijkende visuele uitwerking van alle gebieden.
 - [De drie camerastanden](./camera-studies.svg): storyboardbeelden voor De Storm.
 - [De beeldregie](./beeldregie.md): materiaal, belichting, geluid, handeling en zoekprofiel per gebied.
+- [Complete onderdeleninventaris](./complete-onderdeleninventaris.md): 3D, personages, effecten, UX, gamecode, onderwijs en tests.
+- [Bronregister (JSON)](./bronregister.json): 39 kandidaten met links, bronnen, licentie- en gebruiksstatus.
+- [Selectie De Storm](./selectie-de-storm.md): eerste vergelijking, alternatieven, openstaande gaten en importregels.
 - [De sfeerkaart](./sfeerkaart.svg): de vier visuele stijlen en hun gedeelde vormtaal.
 - [Het verhaal](./verhaal.md): plaats, personages, aanleiding, verhaallijnen, onthulling en mogelijke afloop.
 - [Storyboard](./storyboard.md): de eerste veertien speelmomenten, per scène met camera, geluid, bediening en zichtbaar gevolg.
@@ -28,6 +31,11 @@ Dit zijn **schematische vectorstudies**, geen 3D-renders of screenshots van een 
 - [Een wereld die blijft bestaan](./wereldregels.md): gebeurtenissen, spelstatus, routekeuzes, opslag, 3D en toetsbare afspraken.
 - [Materialen en onderzoek](./materiaal-en-bronnen.md): welke modellen en techniek we zoeken, met een register voor herkomst en licenties.
 - [Besluiten en vragen](./besluiten.md): wat is afgesproken, wat is nog een voorstel en wat moet eerst getest worden.
+
+## Voorbereiding vóór het bouwen
+We hebben nu een brede inventaris van wat het nieuwe spel vermoedelijk nodig heeft: van glaskas, mechanische brug, wind en water tot veilige opslag, camera en onderwijskundige inhoud. Een **catalogusvermelding is geen gedownloade asset** en geen kwaliteitsgarantie.
+
+Alle geselecteerde bronnen, modellen en UI-voorbeelden moeten op dezelfde stijl, licentie en mobiele prestaties worden getoetst. Grote ruwe bronpakketten blijven buiten de publieke website-repository. We importeren pas kleine goedgekeurde sets voor een echte proef. Zo vermijden we een bulkverzameling die uiteindelijk niet bij de wereld past.
 
 ## Richting
 EAIgame is geen quiz met een mooi decor. Het is een avonturenwereld waar leren voortkomt uit iets dat de speler wil bereiken: een brug herstellen, informatie controleren, een route openen, een keuze verdedigen of een proef uitvoeren. Het landschap reageert. Spelers kunnen gevolgen terugzien en de wereld later terugvinden.
