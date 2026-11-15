@@ -5,7 +5,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'scripts'))
-from prepare_ui import groups, navigation, experiment_sections, site_search_records
+from prepare_ui import groups, navigation, experiment_sections, education_sections, site_search_records
 
 
 class PublicMenuTests(unittest.TestCase):
@@ -49,6 +49,18 @@ class PublicMenuTests(unittest.TestCase):
                 self.assertEqual(len(galaxy), 6)
                 self.assertIn('/tools/science-observatory/labs/melkweg/#atlas', [u for _,u,_ in galaxy])
                 self.assertIn('/tools/anatomie/labs/hartslag/', [u for _,grp in sections[2][1] for _,u,_ in grp])
+
+    def test_alle_werkvormen_rechtstreeks_via_onderwijs_te_vinden(self):
+        sections = education_sections(False)
+        all_urls = [url for _, entries in sections for _, url, _ in entries]
+        workforms = [url for url in all_urls if url.startswith('/werkvormen/') and url != '/werkvormen/']
+        self.assertGreaterEqual(len(workforms), 50)
+        self.assertEqual(len(set(workforms)), len(workforms))
+        self.assertIn('/werkvormen/justification-mapping/', workforms)
+        self.assertIn('/werkvormen/accept-adapt-reject/', workforms)
+        soup = BeautifulSoup('<html><body></body></html>', 'html.parser')
+        header = BeautifulSoup(navigation(soup, '/nl/onderwijs/', False), 'html.parser')
+        self.assertEqual(len(header.select('.eai-site-menu a[href^="/werkvormen/"]')), len(workforms) + 1)
 
     def test_zoekindex_en_menu_delen_dezelfde_bestemmingen(self):
         index = site_search_records(Path(__file__).resolve().parents[1] / 'does-not-exist')
