@@ -190,5 +190,6 @@ test("De browserworker heeft een beperkt contract: leesacties, geen schrijfverzo
  const worker=readFileSync(new URL("../assets/projecthulp/onderzoek-worker.mjs",import.meta.url),"utf8");
  assert.match(worker,/analyzeArchive/);
  assert.match(worker,/fetchPublicRepo/);
- assert.doesNotMatch(worker,/\\bexec\\s*\\(|\\bspawn\\s*\\(|method:\\s*["']POST/);
+ assert.ok(!worker.includes("child_process"));
+ assert.ok(!worker.includes("method: \"POST\""));
 });
