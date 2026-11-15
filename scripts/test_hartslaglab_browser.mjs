@@ -35,6 +35,7 @@ try {
   assert.equal(initial.focusSide,'both','De rode en blauwe bloedsomloop horen samen in beeld');
   assert(initial.showFlow,'Bloedstroom hoort standaard zichtbaar te zijn');
   assert.equal(initial.layers.outer,true,'De doorzichtige buitenkant staat standaard aan');
+  assert.equal(initial.layers.vesselSection,false,'De doorkijk in grote bloedvaten start uit');
   assert.equal(initial.layers.wall,true,'De opengewerkte hartwand blijft beschikbaar');
   assert(await page.locator('#atlasLoading').isHidden(),'Het laadscherm mag de anatomie niet bedekken');
   assert(await page.locator('#play').isEnabled(),'De animatie start alleen als de rijke atlas geladen is');
@@ -64,14 +65,25 @@ try {
   assert.equal(paths.filter(p=>p.channel==='return').length,6);
   assert.equal(paths.filter(p=>p.channel==='av').length,2);
   assert.equal(paths.filter(p=>p.channel==='sem').length,3);
-  assert(paths.every(p=>p.points>=30),'De bronroutes moeten vloeiende lijnen hebben');
+  assert(paths.every(p=>p.points>=60),'De bronroutes moeten vloeiende lijnen hebben');
+  assert(paths.every(p=>p.source==='bodyparts3d-centrelines'),
+    'Alle rijke stroombanen volgen de gemeten bronmiddenlijnen, niet de bounding-box-middelpunten');
+  assert(paths.find(p=>p.ids[0]==='svc').waypoints>=6,
+    'De holle ader volgt meerdere punten in de echte vaatvorm');
+  assert(paths.find(p=>p.ids.includes('ao_desc')).waypoints>=15,
+    'De grote lichaamsslagader volgt aorta, boog en dalende aorta als doorlopende route');
   assert(Math.abs(motion.playbackSeconds-3.2)<.01,'Standaard 3,2 seconden per hartslag');
   assert.equal(initial.playing,true,'De doorlopende animatie start vanzelf zonder verminderde-bewegingsvoorkeur');
   await page.locator('#play').click();
   assert.equal((await state(page)).playing,false,'Pauzeknop stopt het hart');
   await setTime(page,.30);
-  assert.equal(await page.locator('#flowOverlay path').count(),33,
-    'Elf routes krijgen elk een basislijn, bewegende lijn en richtingspijl');
+  assert.equal(await page.locator('#flowOverlay path').count(),44,
+    'Elf routes krijgen elk een rustige stroomstrook, bloedkleur, puls en richtingspijl');
+  assert.equal(await page.locator('#flowOverlay .blood-track').count(),11);
+  assert.equal(await page.locator('#flowOverlay .blood-pulse').count(),11);
+  const fillingPulse=page.locator('#flowOverlay .blood-pulse[data-flow-channel="av"]').first();
+  assert(Number(await fillingPulse.evaluate(el=>el.style.opacity))>.5,
+    'Bij open AV-kleppen loopt de geanimeerde bloedpuls door');
   assert.equal(await page.locator('#flowOverlay').isHidden(),false);
   const fillingFlow=await page.evaluate(()=>window.__EAI_HEART_LAB__.flowPreview);
   assert.equal(fillingFlow.filter(p=>p.active).length,8,
@@ -86,6 +98,8 @@ try {
   const pressureFlow=await page.evaluate(()=>window.__EAI_HEART_LAB__.flowPreview);
   assert.equal(pressureFlow.filter(p=>p.active).length,6,
     'Met gesloten kleppen lopen er geen stroomdeeltjes door AV- of slagaderkleppen');
+  assert.equal(await fillingPulse.evaluate(el=>el.style.opacity),'0',
+    'Bij gesloten AV-kleppen blijft de puls echt uit');
   assert.equal(await page.locator('#storyTitle').textContent(),'Volg de bloedstroom',
     'De uitleg mag niet in 0,19 seconde verspringen');
   metrics=await page.evaluate(()=>window.__EAI_HEART_LAB__.metrics);
@@ -94,6 +108,8 @@ try {
   const ejectionFlow=await page.evaluate(()=>window.__EAI_HEART_LAB__.flowPreview);
   assert.equal(ejectionFlow.filter(p=>p.active).length,9,
     'Tijdens het uitpompen zijn de uitgaande slagaderroutes zichtbaar');
+  assert(Number(await page.locator('#flowOverlay .blood-pulse[data-flow-channel="sem"]').first().evaluate(el=>el.style.opacity))>.5,
+    'Het uitpompen toont duidelijk de bewegende stroom door de open slagaderkleppen');
   assert.equal(await page.locator('#storyTitle').textContent(),'Volg de bloedstroom');
   metrics=await page.evaluate(()=>window.__EAI_HEART_LAB__.metrics);
   assert(metrics.sem&&!metrics.av&&metrics.pressure>90);
@@ -161,7 +177,7 @@ try {
   await page.locator('#layerMenu > summary').click();
   assert(await page.locator('[data-layer="wall"]').isVisible(),'Lagen kunnen direct worden gekozen');
   await page.locator('#stage').screenshot({path:'test-results/hartslaglab-'+engine+'-desktop-lagen.png'});
-  assert.equal(await page.locator('#layerMenu .layer-switch').count(),8);
+  assert.equal(await page.locator('#layerMenu .layer-switch').count(),9);
   assert.equal(await page.locator('[data-layer="outer"] .layer-state').textContent(),'Aan');
   const exterior=page.locator('[data-layer="outer"]');
   await exterior.click();
@@ -174,6 +190,17 @@ try {
   await exterior.click();
   assert.equal((await state(page)).layers.outer,true);
   await page.locator('#heartCanvas').screenshot({path:'test-results/hartslaglab-'+engine+'-met-buitenlaag.png'});
+  const vesselSection=page.locator('[data-layer="vesselSection"]');
+  const wholeVessels=await page.locator('#heartCanvas').screenshot();
+  await vesselSection.click();
+  assert.equal((await state(page)).layers.vesselSection,true,'Opengewerkte grote bloedvaten staan aan');
+  assert.equal(await vesselSection.getAttribute('aria-pressed'),'true');
+  assert.equal((await state(page)).showFlow,true,'De stromingsroutes blijven zichtbaar bij doorkijk');
+  await page.locator('#heartCanvas').screenshot({path:'test-results/hartslaglab-'+engine+'-doorkijk-bloedvaten.png'});
+  assert.notDeepEqual(wholeVessels,await page.locator('#heartCanvas').screenshot(),
+    'De doorkijk moet de getekende bronvaten werkelijk veranderen');
+  await vesselSection.click();
+  assert.equal((await state(page)).layers.vesselSection,false,'De volledige vaatwand blijft terug te zetten');
   for(const [layer,count,id] of [
     ['wall',3,'ra_wall'],['valve',4,'mitral'],['papillary',2,'pap_lv'],
     ['vessel',12,'ao'],['coronary',9,'lca']
@@ -202,6 +229,7 @@ try {
   await page.locator('#resetLayers').click();
   assert.equal((await page.evaluate(()=>window.__EAI_HEART_LAB__.visibleAtlasPartIds)).length,30);
   assert.equal((await state(page)).layers.outer,true,'Herstellen zet de buitenlaag weer aan');
+  assert.equal((await state(page)).layers.vesselSection,false,'Herstellen sluit de kijkopening in de bloedvaten');
   await page.locator('[data-layer="flow"]').click();
   assert.equal((await state(page)).showFlow,false,'Stroomrichting kan uit');
   assert(await page.locator('#flowOverlay').isHidden(),'Ook de bloedstroombanen moeten verdwijnen');
@@ -262,7 +290,10 @@ try {
   await page.keyboard.up('Shift');
   assert(Math.hypot(...(await state(page)).pan.map((v,i)=>v-panBefore[i]))>.05,
     'Shift-slepen verplaatst het hart in plaats van te draaien');
-  await page.waitForTimeout(80);
+  // WebKit kan langer dan 80 ms nodig hebben om de nieuwe cameraprojectie te tekenen.
+  // Wacht op echte bijwerking van de lijn; een stilgevallen renderer blijft falen.
+  await page.waitForFunction(previous=>document.querySelector('#flowOverlay path')?.getAttribute('d')!==previous,
+    flowBeforePan,{timeout:6000});
   assert.notEqual(await page.locator('#flowOverlay path').first().getAttribute('d'),flowBeforePan,
     'Ook bij verschuiven blijven de routes aan het hart gekoppeld');
   await page.locator('#resetCamera').click();
@@ -338,6 +369,9 @@ try {
   await mobile.locator('#layerMenu > summary').click();
   assert(await mobile.locator('[data-layer="valve"]').isVisible(),'Mobiele lagen zijn bereikbaar');
   assert(await mobile.locator('[data-layer="outer"]').isVisible(),'Buitenlaag staat in het mobiele lagenmenu');
+  await mobile.locator('[data-layer="vesselSection"]').click();
+  assert.equal((await state(mobile)).layers.vesselSection,true,'Doorkijk bloedvaten werkt ook in het mobiele lagenmenu');
+  await mobile.locator('[data-layer="vesselSection"]').click();
   await mobile.locator('#stage').screenshot({path:'test-results/hartslaglab-'+engine+'-mobile-lagen.png'});
   await mobile.locator('#play').scrollIntoViewIfNeeded();
   await mobile.locator('[data-layer="outer"]').click();
