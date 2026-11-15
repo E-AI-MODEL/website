@@ -34,6 +34,8 @@ async function session(name,viewport,offline=false){
  await page.locator('#setup button[type=submit]').click();
  assert.ok(await page.locator('#game-ui').isVisible(),'Spel verschijnt na starten');
  assert.equal(await page.locator('#game-board #world').count(),1,'Hetzelfde 3D-bord blijft zichtbaar na starten');
+ assert.match(await page.locator('#roll').textContent(),/Gooi dobbelsteen/i,'De hoofdactie gebruikt begrijpelijke woorden');
+ if(!offline)await page.locator('#game-board .world-label').first().waitFor({state:'visible',timeout:25000});
  const stage=await page.locator('#game-board').boundingBox();
  const bounds=await page.locator('#world').boundingBox();
  assert.ok(stage?.width>295&&stage?.height>290,'Hele bord heeft een volwaardig oppervlak');
