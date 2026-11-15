@@ -12,6 +12,23 @@ jobs:
     timeout-minutes: 12
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Bepaal welke PR's echte 3D-browserproeven nodig hebben
+        id: anatomy_scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$GITHUB_EVENT_NAME" = "push" ]; then
+            needed=true
+          elif git rev-parse --verify 'HEAD^1' >/dev/null 2>&1; then
+            needed="$(git diff --name-only -z 'HEAD^1' HEAD | python3 scripts/anatomie_ci_scope.py)"
+          else
+            echo "Basiscommit ontbreekt; voer voor de zekerheid de 3D-tests uit."
+            needed=true
+          fi
+          echo "run=$needed" >> "$GITHUB_OUTPUT"
+          echo "3D-tests vereist: $needed"
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -20,8 +37,7 @@ jobs:
           node-version: '22'
       - run: pip install beautifulsoup4
       - run: python scripts/build_site.py --sources content/legacy --out site-build
-      - run: python scripts/build_anatomie.py --out site-build/tools/anatomie
-      - name: Build self-hosted anatomy before verifying site links
+      - name: Bouw de 3D-atlas precies een keer
         run: python scripts/build_anatomie.py --out site-build/tools/anatomie
       - run: python scripts/prepare_ui.py --root site-build
       - name: Verify editorial card scope and build output
@@ -38,6 +54,7 @@ jobs:
         timeout-minutes: 4
       - run: python -m unittest discover -s tests -p test_tool_launch.py -v
       - name: Check anatomical 3D rendering and local organ models
+        if: steps.anatomy_scope.outputs.run == 'true'
         run: node scripts/test_anatomie_3d.mjs site-build
       - run: node scripts/test_tool_launch.mjs site-build
       - name: Proef EAIgit op desktop en mobiel
@@ -56,8 +73,10 @@ jobs:
       - name: Check EAIwork dashboard layout on phones and desktop
         run: node scripts/test_eaiwork_mobile.mjs site-build
       - name: Verify anatomical 3D viewer on desktop and mobile
+        if: steps.anatomy_scope.outputs.run == 'true'
         run: node scripts/test_anatomie_browser.mjs site-build
       - name: Verify Hartslaglab WebGL animation and mobile layout
+        if: steps.anatomy_scope.outputs.run == 'true'
         run: node scripts/test_hartslaglab_browser.mjs site-build chromium
       - name: Verify LLM Observatory tokenizer in Chromium
         run: node scripts/test_llm_observatorium.mjs site-build
