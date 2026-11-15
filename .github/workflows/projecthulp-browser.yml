@@ -1,10 +1,12 @@
-name: Projecthulp gebruikersproef
+name: EAIgit · gebruikersproef
 on:
   pull_request:
     branches: [main]
     paths:
       - 'assets/projecthulp/**'
       - 'tools/projecthulp/**'
+      - 'tools/eaigit/**'
+      - 'assets/eaigit/**'
       - 'tests/test_projecthulp.mjs'
       - 'scripts/test_projecthulp_browser.mjs'
       - '.github/workflows/projecthulp-browser.yml'
@@ -32,7 +34,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: projecthulp-gebruikersproef
+          name: eaigit-gebruikersproef
           path: |
-            test-results/projecthulp-*
+            test-results/eaigit-*
           if-no-files-found: warn
