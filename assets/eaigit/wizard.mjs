@@ -1,10 +1,27 @@
 import {analyzeArchive,fetchPublicRepo,makeAdvice,parseRepoUrl} from "../projecthulp/analyse.mjs";
 import {makeGuidance} from "../projecthulp/begeleiding.mjs";
 import {buildJourney,primaryFinding,helpPrompt} from "./journey.mjs";
+import {getHelpTopic,getHelpForStep} from "./help-topics.mjs";
 
 const $=id=>document.getElementById(id);
 const state={intent:null,source:null,goal:"code",zip:null,repoUrl:"",archive:null,repo:null,repoError:null,aim:"",guidance:null,steps:[],stepIndex:0,busy:false};
 const stages=["intent","source","zip","repo","aim","result","guide","finished"];
+const topicForPage=new Set(["goal","source","zip","repo","aim","findings","private","safe","unzip","create","upload","files","compare","references","actions","repoStep","try","publishing","chatgpt","plugins","skills","codex","review"]);
+function openHelp(topicId){
+ const topic=getHelpTopic(topicId);if(!topic)return;
+ label("helpTitle",topic.title);
+ label("helpIntro",topic.intro);
+ const list=$("helpSteps");list.replaceChildren();
+ for(const instruction of topic.steps){const li=document.createElement("li");li.textContent=instruction;list.append(li);}
+ const links=$("helpLinks");links.replaceChildren();
+ for(const resource of topic.links||[]){
+  const link=document.createElement("a");link.textContent=resource.label;link.href=resource.url;
+  link.target="_blank";link.rel="noopener noreferrer";links.append(link);
+ }
+ $("helpFull").href="/tools/eaigit/hulp/#uitleg-"+encodeURIComponent(topicId);
+ if(!$("helpDialog").open)$("helpDialog").showModal();
+}
+
 const show=(id,yes)=>$(id)?.classList.toggle("eg-hidden",!yes);
 const label=(id,value)=>{$(id).textContent=value;};
 const getFlow=()=>["intent","source",...(state.source==="zip"||state.source==="both"?["zip"]:[]),...(state.source==="github"||state.source==="both"?["repo"]:[]),"aim","result"];
@@ -117,6 +134,7 @@ function renderGuide(){
  label("guideCounter","Stap "+(state.stepIndex+1)+" van "+state.steps.length);
  label("guideTitle",step.title);
  label("guideDescription",step.description);
+ $("guideMore").dataset.help=getHelpForStep(step.id);
  show("createdRepoBox",step.id==="create");
  if(step.id==="create")$("createdRepoUrl").value=state.repoUrl||"";
  show("createdRepoError",false);
@@ -208,6 +226,11 @@ $("copyPrompt").addEventListener("click",async()=>{
  try{await navigator.clipboard.writeText(value);label("copyStatus","Gekopieerd.");}
  catch{label("copyStatus","Selecteer de tekst om die zelf te kopiëren.");}
 });
+for(const button of document.querySelectorAll("[data-help]")){
+ button.addEventListener("click",()=>openHelp(button.dataset.help));
+}
+$("guideMore").addEventListener("click",()=>openHelp($("guideMore").dataset.help||"goal"));
+$("helpClose").addEventListener("click",()=>$("helpDialog").close());
 $("checkAgain").addEventListener("click",analyze);
 $("finishReset").addEventListener("click",reset);
 navigate("intent");
