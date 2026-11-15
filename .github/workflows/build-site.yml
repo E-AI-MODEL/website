@@ -157,6 +157,18 @@ jobs:
           test -s site-build/assets/site-analytics.js
           test ! -e site-build/statistieken/data.json
 
+      - name: Controleer EAIgit in gebouwde website
+        run: |
+          set -euo pipefail
+          test -s site-build/tools/eaigit/index.html
+          test -s site-build/tools/eaigit/hulp/index.html
+          test -s site-build/tools/eaigit/prompts/index.html
+          test -s site-build/tools/projecthulp/index.html
+          test -s site-build/assets/eaigit/wizard.mjs
+          test -s site-build/assets/projecthulp/analyse.mjs
+          test -s site-build/assets/projecthulp/inhoudscontrole.mjs
+          test -s site-build/assets/projecthulp/onderzoek-worker.mjs
+
       - name: Build local anatomical 3D models and viewer
         run: python scripts/build_anatomie.py --out site-build/tools/anatomie
 
