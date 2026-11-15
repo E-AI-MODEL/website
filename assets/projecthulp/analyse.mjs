@@ -133,8 +133,7 @@ export function makeAdvice({goal="code",experience="beginner",archive,repo,aim="
  if(selectedGoal==="site"&&archive&&!archive.project.hasHtml)steps.push("Zoek het bestand dat de website moet openen. Zonder startpagina kunnen we nog geen website aanbieden.");
  if(selectedGoal==="app"&&archive&&!archive.project.hasPackage)steps.push("Bepaal hoe het programma gestart en getest moet worden. In het onderzochte archief ontbreekt een duidelijke projectconfiguratie.");
  if(archive?.ignored.length)steps.push("Houd installatie- en bouwmappen buiten GitHub. Bewaar alleen de bestanden die nodig zijn om het project opnieuw op te bouwen.");
- if(archive&&!archive.project.hasReadme)steps.push("Voeg een README.md toe. De tool kan hiervoor een eerste versie maken.");
- if(archive&&!archive.project.hasIgnore)steps.push("Voeg een passende .gitignore toe; controleer zelf welke mappen tijdelijk zijn.");
+
  if(repo&&!repo.readable)steps.push("Open je repository op GitHub en controleer of de bestandenlijst daar wel zichtbaar is.");
  if(archive&&repo&&repo.readable){
   steps.push("Pak het ZIP-bestand uit op je eigen apparaat. GitHub pakt een geüpload ZIP-bestand niet automatisch uit tot een project.");
@@ -145,6 +144,10 @@ export function makeAdvice({goal="code",experience="beginner",archive,repo,aim="
   steps.push("Vernieuw de repository. Controleer of de bestanden en hun mapnamen kloppen.");
  }else if(archive){steps.push("Maak een repository op GitHub of kopieer de bestaande repository-URL naar deze tool.");}
  else if(repo){steps.push("Selecteer je ZIP-bestand om een controle van de mappen en bestanden uit te voeren.");}
+ if(archive&&!archive.project.hasReadme)steps.push("Maak een korte README.md waarin je uitlegt wat het project doet, voor wie het is en hoe iemand het kan gebruiken.");
+ if(archive&&!archive.project.hasIgnore)steps.push("Voeg een .gitignore toe als het project tijdelijke bestanden gebruikt. Bekijk daarvoor het voorgestelde voorbeeld.");
+ if(selectedGoal==="site"&&archive?.project?.hasPackage)steps.push("Bekijk de bouwopdrachten in package.json. Mogelijk moet de website eerst worden gebouwd, bijvoorbeeld met GitHub Actions.");
+ if(selectedGoal==="site"&&archive&&!archive.project.hasPackage&&archive.project.hasHtml)steps.push("Open de startpagina en controleer of de knoppen, afbeeldingen en links echt werken. Het bestand index.html alleen is geen bewijs dat de website goed werkt.");
  if(selectedGoal==="site")steps.push("Test na het uploaden de website in een browser. GitHub Pages kan een statische website publiceren, maar dat moet je apart instellen. Een servertoepassing heeft andere hosting nodig.");
  if(selectedGoal==="app")steps.push("Test het programma en bepaal welke omgeving of hosting het nodig heeft. GitHub bewaart bronbestanden, maar voert je programma niet vanzelf uit.");
  if(goal==="maintain")steps.push("Gebruik voor toekomstige wijzigingen een aparte branch en controleer het verschil voordat je het samenvoegt.");
