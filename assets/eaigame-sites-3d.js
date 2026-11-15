@@ -203,12 +203,17 @@
   function updateCamera() {
     if (mode === 'follow' && figures[state.current]) {
       const p = figures[state.current].position;
-      const desired = p.clone().addScaledVector(heading,-3.0);
-      desired.y = 2.15;
-      const target = p.clone().addScaledVector(heading,2.7);
-      target.y = 0.78;
-      camera.position.lerp(desired,prefersLessMotion?1:0.15);
-      lookAt.lerp(target,prefersLessMotion?1:0.17);
+      // Schuin achter de pion en buiten de bordrand: route én eiland blijven zichtbaar.
+      // Een lage camera op pionhoogte liet alleen grote pionnen en lege lucht zien.
+      const outward = new three.Vector3(p.x,0,p.z);
+      if (outward.lengthSq() > 0.001) outward.normalize();
+      else outward.set(0,0,1);
+      const desired = p.clone().addScaledVector(heading,-3.8).addScaledVector(outward,3.2);
+      desired.y = 7.3;
+      const target = p.clone().addScaledVector(heading,1.8).lerp(new three.Vector3(0,0,0),0.29);
+      target.y = 0.08;
+      camera.position.lerp(desired,prefersLessMotion?1:0.17);
+      lookAt.lerp(target,prefersLessMotion?1:0.19);
       camera.lookAt(lookAt);
     } else {
       const flat = Math.cos(orbit.elevation)*orbit.distance;
