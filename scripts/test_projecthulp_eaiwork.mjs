@@ -23,8 +23,8 @@ const preflight=inspectMissionPlan(plan);
 assert.equal(preflight.status,"requires-human-review");
 assert.equal(preflight.approvalGranted,false);
 assert.equal(preflight.canExecute,false);
-assert.ok(preflight.tasks.find(t=>t.id==="repo-write").blockers.includes("human-approval-required"));
-assert.ok(preflight.tasks.find(t=>t.id==="publish-site").blockers.includes("human-approval-required"));
+assert.ok(preflight.tasks.find(t=>t.taskId==="repo-write").blockers.includes("human-approval-required"));
+assert.ok(preflight.tasks.find(t=>t.taskId==="publish-site").blockers.includes("human-approval-required"));
 assert.equal(plan.phases.length,6);
 assert.equal(plan.tasks.length,11);
 assert.ok(plan.tasks.find(x=>x.id==="repo-write"&&x.effect==="external-write"));
@@ -97,7 +97,7 @@ try{
 }finally{store.close();rmSync(temp,{recursive:true,force:true});}
 const result={
  contract:"EAIwork MissionPlan v1",mission:plan.id,
- preflight:{status:preflight.status,approvalGranted:preflight.approvalGranted,canExecute:preflight.canExecute,blocked:preflight.tasks.filter(t=>t.blockers?.length).map(t=>({task:t.id,blockers:t.blockers}))},
+ preflight:{status:preflight.status,approvalGranted:preflight.approvalGranted,canExecute:preflight.canExecute,blocked:preflight.tasks.filter(t=>t.blockers?.length).map(t=>({task:t.taskId,blockers:t.blockers}))},
  outcome:"first-two-dependency-tasks-executed-in-eaiwork-opsstore-remainder-blocked",
  phases:plan.phases.map(p=>({id:p.id,title:p.title,tasks:p.taskIds})),
  schedulerRuns:schedulerResult,
