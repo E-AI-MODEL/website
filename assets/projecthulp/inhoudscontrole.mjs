@@ -1,0 +1,124 @@
+// Statische onderzoekslaag: bekijkt bestandstekst en verwijzingen, voert nooit projectcode uit.
+// Alleen herleidbare bevindingen worden teruggegeven. Broncode wordt niet in het advies opgeslagen.
+const TEXT_FILE=/\.(?:html?|css|[cm]?js|jsx|tsx?|json|vue|svelte|svg|py)$/i;
+const FILE_TARGET=/\.(?:html?|css|[cm]?js|jsx|tsx?|json|png|jpe?g|gif|svg|webp|ico|avif|woff2?|ttf|otf|pdf|webm|mp4|mp3)$/i;
+const SCRIPT_FILE=/\.(?:[cm]?js|jsx|tsx?|vue|svelte)$/i;
+const numberLine=(text,offset)=>text.slice(0,offset).split("\n").length;
+const safeLabel=value=>String(value||"").slice(0,160).replace(/[\r\n\t]/g," ");
+
+export async function gitBlobId(bytes){
+ if(!globalThis.crypto?.subtle)return null;
+ const prefix=new TextEncoder().encode("blob "+bytes.byteLength+"\0");
+ const data=new Uint8Array(prefix.length+bytes.byteLength);
+ data.set(prefix);data.set(bytes,prefix.length);
+ const hash=new Uint8Array(await globalThis.crypto.subtle.digest("SHA-1",data));
+ return Array.from(hash,x=>x.toString(16).padStart(2,"0")).join("");
+}
+function resolveLocal(from,reference,files,script=false){
+ let value=reference.trim().split(/[?#]/,1)[0];
+ if(!value||/^(?:[a-z][\w+.-]*:|\/\/|#|\?|@)/i.test(value)||/[{}]/.test(value))return null;
+ try{value=decodeURIComponent(value);}catch{return null;}
+ if(value.includes("\\")||value.includes("\0"))return null;
+ const parts=value.startsWith("/")?[]:from.split("/").slice(0,-1);
+ for(const part of value.split("/")){
+  if(!part||part===".")continue;
+  if(part===".."){if(!parts.length)return null;parts.pop();}
+  else parts.push(part);
+ }
+ const found=parts.join("/");
+ if(!found)return null;
+ // Bundlers kunnen imports zonder extensie of via een index-bestand afhandelen.
+ const candidates=script&&!/\.[a-z0-9]+$/i.test(found)
+   ?[found,...["js","mjs","cjs","jsx","ts","tsx","json"].map(x=>found+"."+x),
+      ...["js","mjs","cjs","jsx","ts","tsx"].map(x=>found+"/index."+x)]
+   :[found];
+ return {path:found,exists:candidates.some(x=>files.has(x)),
+  relevant:script||FILE_TARGET.test(found),generated:found.startsWith("_next/")||found.startsWith("build/")};
+}
+function references(path,text){
+ const found=[];
+ function extract(re,kind,group){
+  let m;while((m=re.exec(text))&&found.length<160){
+   const raw=m[group]||"";if(raw)found.push({raw,kind,line:numberLine(text,m.index)});
+  }
+ }
+ if(/\.html?$/i.test(path)){
+  extract(/\b(?:src|href|poster)\s*=\s*(["'])([^"'<>]+)\1/gi,"html",2);
+ }
+ if(/\.css$/i.test(path)){
+  extract(/\burl\s*\(\s*(?:["']([^"']+)["']|([^)]{1,240}))\s*\)/gi,"css",1);
+  extract(/@import\s+(?:url\s*\(\s*)?["']([^"']+)["']/gi,"css",1);
+ }
+ if(SCRIPT_FILE.test(path)){
+  extract(/\b(?:from\s*|import\s*|require\s*\(\s*|import\s*\(\s*)(["'])(\.{1,2}\/[^"'\s]+)\1/g,"script",2);
+  extract(/\bnew\s+URL\s*\(\s*(["'])(\.{1,2}\/[^"']+)\1/g,"script",2);
+ }
+ return found;
+}
+const SIGNALS={
+ exercise:/\b(?:oefening(?:en)?|oefen(?:en)?|exercise|exercises|quiz|vragen|question|vragenlijst|nakijken|antwoord(?:en)?|answer|score|feedback)\b/i,
+ forms:/\b(?:formulier(?:en)?|form|submit|aanmeld(?:en|ing)|registratie|contactformulier|sendmessage)\b/i,
+ charts:/\b(?:grafiek(?:en)?|chart|plot|visualisatie|simulatie|simulation|canvas|webgl|three\.js|d3\.)\b/i,
+ search:/\b(?:zoeken|zoekveld|search|filteren|filter|query)\b/i,
+ login:/\b(?:inloggen|login|sign.?in|authenticate|session|wachtwoord|password)\b/i
+};
+export function inspectProjectTexts(records,paths){
+ const files=new Set(paths),issues=[],signals=Object.fromEntries(Object.keys(SIGNALS).map(x=>[x,[]]));
+ let referenceChecks=0,jsonChecks=0;
+ for(const record of records){
+  const {path,text}=record;
+  if(!TEXT_FILE.test(path)||typeof text!=="string")continue;
+  for(const [name,re] of Object.entries(SIGNALS)){
+   if(re.test(text)&&signals[name].length<5)signals[name].push(path);
+  }
+  if(/\.json$/i.test(path)){
+   jsonChecks++;
+   try{JSON.parse(text);}
+   catch(error){
+    const m=String(error.message||"").match(/(?:position|at)\s+(\d+)/i);
+    const line=m?numberLine(text,Math.max(0,Number(m[1]))):null;
+    issues.push({type:"invalid-json",severity:"attention",path,line,title:"Ongeldige JSON",
+     detail:"Dit bestand kan niet als geldige JSON worden gelezen. Controleer de opbouw en leestekens."});
+   }
+  }
+  for(const ref of references(path,text)){
+   if(referenceChecks++>=320||issues.length>=32)break;
+   const target=resolveLocal(path,ref.raw,files,ref.kind==="script");
+   if(!target||!target.relevant||target.exists)continue;
+   issues.push({type:"missing-reference",severity:"attention",path,line:ref.line,target:target.path,
+    title:"Lokaal bestand niet gevonden",
+    detail:"Verwijzing naar '"+safeLabel(ref.raw)+"' staat niet in de aangeleverde projectbestanden. Mogelijk ontstaat deze verwijzing tijdens het bouwen."});
+  }
+  if(issues.length>=32)break;
+ }
+ return {schema:"eaigit/content-check-v1",checkedFiles:records.length,jsonChecks,referenceChecks,
+  findings:issues.slice(0,32),signals,executesProjectCode:false,
+  incomplete:issues.length>=32||referenceChecks>=320};
+}
+const GOALS=[
+ {id:"exercise",re:/\b(?:oefen(?:en|ing|ingen)?|quiz|vragen|toets(?:en|vragen)?|exercise|questions?|antwoorden|nakijken)\b/i,
+  title:"Controleer de oefeningen",
+  action:"Open een oefening, geef een goed en een fout antwoord, controleer de feedback en kijk of het resultaat correct wordt bijgehouden."},
+ {id:"forms",re:/\b(?:formulier|aanmeld(?:en|ing)|inschrijv(?:en|ing)|contact|registr(?:eren|atie)|submit)\b/i,
+  title:"Controleer het formulier",
+  action:"Vul het formulier correct en onjuist in. Controleer foutmeldingen, verzending en de bevestiging voor de bezoeker."},
+ {id:"charts",re:/\b(?:grafiek|bereken(?:en|ing)|simulat(?:ie|or)|meetwaarde|visualis(?:atie|eren)|chart|simulation)\b/i,
+  title:"Controleer de berekening en de weergave",
+  action:"Verander een invoerwaarde en controleer of de berekening, grafiek, animatie en getoonde meetwaarde met elkaar overeenkomen."},
+ {id:"search",re:/\b(?:zoek(?:en|functie|veld)?|filter(?:en)?|search)\b/i,
+  title:"Controleer zoeken en filteren",
+  action:"Zoek naar een bekend resultaat, naar iets dat niet bestaat en met een lege zoekterm. Controleer of de resultaten kloppen."},
+ {id:"login",re:/\b(?:inlog(?:gen)?|aanmeld(?:en|ing)|account|wachtwoord|auth(?:enticatie)?|login)\b/i,
+  title:"Controleer de toegang",
+  action:"Test met een geschikt testaccount of aanmelden, afmelden en toegang tot afgeschermde onderdelen werken. Gebruik geen echte wachtwoorden in deze controle."}
+];
+export function goalTestFromAim(aim,signals={}){
+ const text=String(aim||"").trim();
+ if(!text)return null;
+ const selected=GOALS.find(x=>x.re.test(text));
+ if(!selected)return {id:"general",title:"Controleer jouw eigen doel",
+  action:"Voer als bezoeker de belangrijkste handeling uit die je beschrijft en controleer of het resultaat overeenkomt met je bedoeling.",
+  evidence:[],tested:false};
+ return {id:selected.id,title:selected.title,action:selected.action,
+  evidence:Array.isArray(signals?.[selected.id])?signals[selected.id].slice(0,5):[],tested:false};
+}
