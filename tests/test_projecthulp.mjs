@@ -186,7 +186,9 @@ test("GitHub Actions workflow voor project: syntaxcontroles zonder schrijfbevoeg
  assert.equal(supported.javascript,true);assert.equal(supported.python,true);
  const yaml=generateProjectCheckWorkflow(archive);
  assert.ok(yaml.includes("node --check"));
- assert.ok(yaml.includes("python3 -m compileall"));
+ assert.ok(yaml.includes("ast.parse"));
+ assert.ok(!yaml.includes("compileall"));
+ assert.ok(!yaml.includes("pip install"));
  assert.ok(yaml.includes("permissions:"+String.fromCharCode(10)+"  contents: read"));
  assert.ok(!yaml.includes("npm run test"));
  assert.ok(!yaml.includes("npm install"));
