@@ -80,8 +80,48 @@ def experiment_sections(en: bool):
         ('Human anatomy' if en else 'Anatomie van de mens', [('Anatomy and heart' if en else 'Lichaam en hart', [('The body in 3D' if en else 'Het lichaam in 3D', '/tools/anatomie/', ''), ('Heart and circulation' if en else 'Hart en bloedsomloop', '/tools/anatomie/labs/hartslag/', '')])]),
         ('Galactic Observatory' if en else 'Galactisch Observatorium', [('Original Observatory' if en else 'Oorspronkelijk observatorium', modes), ('Guided discovery' if en else 'Ontdekken met uitleg', [('Galactic Observatory: guided' if en else 'Melkweg met uitleg', '/tools/melkweg-lab/', '')]), ('Orbits' if en else 'Banen', [('Gravity and satellites' if en else 'Gravitatie en satellietbanen', '/tools/science-observatory/labs/gravitatie-banen/', '')])]),
         ('Language models' if en else 'Taalmodellen', [('AI' if en else 'AI onderzoeken', [('LLM Observatory' if en else 'Hoe werkt een taalmodel?', '/tools/llm-observatorium/', '')])]),
-        ('Sport and movement' if en else 'Sport en bewegen', [('Sports' if en else 'Sport en bewegen', [('Attack and defence' if en else 'Aanvallen en verdedigen', '/tools/lo-aanvalslab/', '')])]),
+        ('Sport and movement' if en else 'Sport en bewegen', [('Sports' if en else 'Sport en bewegen', [('Attack and defence' if en else 'Aanvallen en verdedigen', '/tools/lo-aanvalslab/', ''), ('Research and sources' if en else 'Onderbouwing van sportproeven', '/tools/lo-aanvalslab/onderbouwing/', '')])]),
     ]
+
+
+
+def tool_sections(en: bool):
+    """Available public tools and their existing subpages."""
+    if en:
+        return [
+            ('Design and teaching', [('Prompt Framework', '/tools/prompt-framework/', ''), ('Process to prompt', '/tools/van-proces-naar-prompt/', ''), ('WiHTML', '/tools/wihtml/', ''), ('WiHTML Studio', '/tools/wihtml/studio/', ''), ('WiHTML Library', '/tools/wihtml/bibliotheek/', ''), ('WiHTML Example', '/tools/wihtml/voorbeeld/', ''), ('EAIstudio', '/tools/eaistudio/', ''), ('EAIstudio Editor', '/tools/eaistudio/studio/', '')]),
+            ('Research and evaluation', [('LLMscan', '/en/llmscan/', ''), ('LLMscan research', '/nl/llmscan/onderzoek/', 'Dutch'), ('AI Model Monitor', '/en/model-monitor/', ''), ('Beyond Explainability', '/tools/beyond-explainability/', ''), ('Publication verification', '/nl/tools/verificatie/', 'Dutch')]),
+            ('Explore and share', [('EAImesh', '/tools/eaimesh/', ''), ('EAImesh Start', '/tools/eaimesh/start/', ''), ('EAIwork', '/tools/eaiwork/', ''), ('Upload HTML', '/tools/html-galerij/', '')]),
+        ]
+    return [
+        ('Ontwerpen en lesmateriaal', [('EAI Prompt Framework', '/tools/prompt-framework/', ''), ('Van proces naar prompt', '/tools/van-proces-naar-prompt/', ''), ('WiHTML Docentstudio', '/tools/wihtml/', ''), ('WiHTML Studio', '/tools/wihtml/studio/', ''), ('WiHTML Bibliotheek', '/tools/wihtml/bibliotheek/', ''), ('WiHTML Voorbeeld', '/tools/wihtml/voorbeeld/', ''), ('EAIstudio', '/tools/eaistudio/', ''), ('EAIstudio bewerken', '/tools/eaistudio/studio/', '')]),
+        ('Onderzoek en controle', [('LLMscan', '/nl/llmscan/', ''), ('LLMscan onderzoek', '/nl/llmscan/onderzoek/', ''), ('AI Model Monitor', '/nl/model-monitor/', ''), ('Beyond Explainability', '/tools/beyond-explainability/', ''), ('Publicatie verifiëren', '/nl/tools/verificatie/', '')]),
+        ('Bekijken en delen', [('EAImesh', '/tools/eaimesh/', ''), ('EAImesh starten', '/tools/eaimesh/start/', ''), ('EAIwork', '/tools/eaiwork/', ''), ('HTML uploaden', '/tools/html-galerij/', '')]),
+    ]
+
+
+def reading_sections(en: bool):
+    """Direct routes to published articles and research subpages."""
+    if en:
+        return [
+            ('Research', [('Research and sources', '/en/research/', ''), ('Teaching tools', '/en/research/teaching-tools/', ''), ('GenAI and language meta-analysis', '/en/research/zhang-genai-language/', ''), ('Source register', '/bronnen/', '')]),
+            ('Articles', [('Publications', '/en/publications/', ''), ('Blog in Dutch', '/nl/blog/', 'Dutch')]),
+        ]
+    return [
+        ('Onderzoek', [('Onderzoek en bronnen', '/nl/onderzoek/', ''), ('Leermiddelen', '/nl/onderzoek/leermiddelen/', ''), ('GenAI en taal: meta-analyse', '/nl/onderzoek/zhang-genai-taal/', ''), ('Bronnenregister', '/bronnen/', '')]),
+        ('Artikelen', [('Blog', '/nl/blog/', ''), ('Wat ons werk ons werk maakt', '/nl/blog/wat-ons-werk-ons-werk-maakt/', ''), ('Publicaties', '/nl/publicaties/', ''), ('De vraag die we vergeten', '/publicaties/de-vraag-die-we-vergeten/', ''), ('AI in onderwijs: verdieping of oppervlakkigheid?', '/publicaties/ai-balans/', '')]),
+    ]
+
+
+def menu_named_sections(en: bool, sections: list, overview: tuple) -> str:
+    def safe(value):
+        return html.escape(value, quote=True)
+    head = '<a class="eai-site-overview" href="' + safe(overview[1]) + '">' + safe(overview[0]) + '</a>'
+    blocks = []
+    for section, links in sections:
+        items = ''.join('<a href="' + safe(url) + '">' + safe(label) + '</a>' for label, url, _ in links)
+        blocks.append('<details class="eai-site-cluster"><summary>' + safe(section) + '<span>' + str(len(links)) + '</span></summary><div class="eai-site-cluster-links">' + items + '</div></details>')
+    return head + '<div class="eai-site-topic-links">' + ''.join(blocks) + '</div>'
 
 
 def menu_topic_html(en: bool) -> str:
@@ -110,6 +150,10 @@ def site_search_records(root: Path) -> list:
             for label, url in links:
                 add(label, url, name)
         for title, groups_ in experiment_sections(en):
+            for subgroup, entries in groups_:
+                for label, url, description in entries:
+                    add(label, url, title + ' · ' + subgroup, description)
+        for title, groups_ in (('Tools', tool_sections(en)), ('Articles & research' if en else 'Artikelen en onderzoek', reading_sections(en))):
             for subgroup, entries in groups_:
                 for label, url, description in entries:
                     add(label, url, title + ' · ' + subgroup, description)
@@ -152,7 +196,14 @@ def navigation(soup: BeautifulSoup, path: str, en: bool) -> str:
         active = any((path_here == canonical(target) or path_here.startswith(canonical(target))) and canonical(target) not in ('/nl/', '/en/') for _, target in entries)
         active_cls = ' is-current' if active else ''
         model_group = title in ('Proeven & modellen', 'Experiments & models')
-        links = menu_topic_html(en) if model_group else ''.join(f'<a href="{html.escape(target, quote=True)}"' + (' aria-current="page"' if path_here == canonical(target) else '') + f'>{html.escape(label)}</a>' for label, target in entries)
+        if model_group:
+            links = menu_topic_html(en)
+        elif title == 'Tools':
+            links = menu_named_sections(en, tool_sections(en), ('All tools' if en else 'Alle tools', '/en/tools/' if en else '/nl/tools/'))
+        elif title in ('Artikelen & onderzoek', 'Articles & research'):
+            links = menu_named_sections(en, reading_sections(en), ('All articles and research' if en else 'Alle artikelen en onderzoek', '/en/publications/' if en else '/nl/publicaties/'))
+        else:
+            links = ''.join(f'<a href="{html.escape(target, quote=True)}"' + (' aria-current="page"' if path_here == canonical(target) else '') + f'>{html.escape(label)}</a>' for label, target in entries)
         menu.append(f'<details class="eai-site-group{active_cls}" name="eai-navigation-theme"><summary>{html.escape(title)}</summary><div class="eai-site-group-links{" eai-site-model-links" if model_group else ""}">{links}</div></details>')
     primary = []
     for title, entries in groups(en):
