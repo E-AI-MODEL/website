@@ -35,6 +35,7 @@ try {
   assert.equal(initial.focusSide,'both','De rode en blauwe bloedsomloop horen samen in beeld');
   assert(initial.showFlow,'Bloedstroom hoort standaard zichtbaar te zijn');
   assert.equal(initial.layers.outer,true,'De doorzichtige buitenkant staat standaard aan');
+  assert.equal(initial.layers.vesselSection,false,'De doorkijk in grote bloedvaten start uit');
   assert.equal(initial.layers.wall,true,'De opengewerkte hartwand blijft beschikbaar');
   assert(await page.locator('#atlasLoading').isHidden(),'Het laadscherm mag de anatomie niet bedekken');
   assert(await page.locator('#play').isEnabled(),'De animatie start alleen als de rijke atlas geladen is');
@@ -161,7 +162,7 @@ try {
   await page.locator('#layerMenu > summary').click();
   assert(await page.locator('[data-layer="wall"]').isVisible(),'Lagen kunnen direct worden gekozen');
   await page.locator('#stage').screenshot({path:'test-results/hartslaglab-'+engine+'-desktop-lagen.png'});
-  assert.equal(await page.locator('#layerMenu .layer-switch').count(),8);
+  assert.equal(await page.locator('#layerMenu .layer-switch').count(),9);
   assert.equal(await page.locator('[data-layer="outer"] .layer-state').textContent(),'Aan');
   const exterior=page.locator('[data-layer="outer"]');
   await exterior.click();
@@ -174,6 +175,17 @@ try {
   await exterior.click();
   assert.equal((await state(page)).layers.outer,true);
   await page.locator('#heartCanvas').screenshot({path:'test-results/hartslaglab-'+engine+'-met-buitenlaag.png'});
+  const vesselSection=page.locator('[data-layer="vesselSection"]');
+  const wholeVessels=await page.locator('#heartCanvas').screenshot();
+  await vesselSection.click();
+  assert.equal((await state(page)).layers.vesselSection,true,'Opengewerkte grote bloedvaten staan aan');
+  assert.equal(await vesselSection.getAttribute('aria-pressed'),'true');
+  assert.equal((await state(page)).showFlow,true,'De stromingsroutes blijven zichtbaar bij doorkijk');
+  await page.locator('#heartCanvas').screenshot({path:'test-results/hartslaglab-'+engine+'-doorkijk-bloedvaten.png'});
+  assert.notDeepEqual(wholeVessels,await page.locator('#heartCanvas').screenshot(),
+    'De doorkijk moet de getekende bronvaten werkelijk veranderen');
+  await vesselSection.click();
+  assert.equal((await state(page)).layers.vesselSection,false,'De volledige vaatwand blijft terug te zetten');
   for(const [layer,count,id] of [
     ['wall',3,'ra_wall'],['valve',4,'mitral'],['papillary',2,'pap_lv'],
     ['vessel',12,'ao'],['coronary',9,'lca']
@@ -202,6 +214,7 @@ try {
   await page.locator('#resetLayers').click();
   assert.equal((await page.evaluate(()=>window.__EAI_HEART_LAB__.visibleAtlasPartIds)).length,30);
   assert.equal((await state(page)).layers.outer,true,'Herstellen zet de buitenlaag weer aan');
+  assert.equal((await state(page)).layers.vesselSection,false,'Herstellen sluit de kijkopening in de bloedvaten');
   await page.locator('[data-layer="flow"]').click();
   assert.equal((await state(page)).showFlow,false,'Stroomrichting kan uit');
   assert(await page.locator('#flowOverlay').isHidden(),'Ook de bloedstroombanen moeten verdwijnen');
@@ -338,6 +351,9 @@ try {
   await mobile.locator('#layerMenu > summary').click();
   assert(await mobile.locator('[data-layer="valve"]').isVisible(),'Mobiele lagen zijn bereikbaar');
   assert(await mobile.locator('[data-layer="outer"]').isVisible(),'Buitenlaag staat in het mobiele lagenmenu');
+  await mobile.locator('[data-layer="vesselSection"]').click();
+  assert.equal((await state(mobile)).layers.vesselSection,true,'Doorkijk bloedvaten werkt ook in het mobiele lagenmenu');
+  await mobile.locator('[data-layer="vesselSection"]').click();
   await mobile.locator('#stage').screenshot({path:'test-results/hartslaglab-'+engine+'-mobile-lagen.png'});
   await mobile.locator('#play').scrollIntoViewIfNeeded();
   await mobile.locator('[data-layer="outer"]').click();
