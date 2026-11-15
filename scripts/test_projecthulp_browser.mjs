@@ -54,6 +54,17 @@ try{
  assert.match(warnings,/Gelijke namen/);
  assert.match(await page.locator("#observations").textContent(),/GitHub-repository/);
  assert.match(await page.locator("#purposeTitle").innerText(),/website/);
+ assert.match(await page.locator("#goodPoints").innerText(),/HTML-bestanden/);
+ assert.match(await page.locator("#problemPoints").innerText(),/privébestanden/);
+ assert.match(await page.locator("#unknownPoints").innerText(),/Logische fouten/);
+ assert.match(await page.locator("#nextPrompt").inputValue(),/https:\/\/github.com\/voorbeeld\/project/);
+ assert.equal(await page.locator("#openActions").getAttribute("href"),"https://github.com/voorbeeld/project/actions");
+ await page.locator("#chatgptGuide").evaluate(el=>el.open=true);
+ assert.match(await page.locator("#chatgptGuide").innerText(),/Instellingen/);
+ assert.match(await page.locator("#chatgptGuide").innerText(),/Codex op het web/);
+ await page.locator("#copyPrompt").click();
+ assert.match(await page.locator("#promptStatus").innerText(),/gekopieerd/);
+ assert.match(await page.evaluate(()=>window.__copiedProjectAdvice),/GitHub-link/);
  assert.ok(spawned.filter(url=>url.includes("onderzoek-worker.mjs")).length>=2,"ZIP en GitHub moeten twee echte workers starten");
  assert.match(await page.locator("#purposeQuickFound").innerText(),/index.html/);
  assert.match(await page.locator("#purposeQuickRemaining").innerText(),/vertrouwelijke/);
