@@ -307,6 +307,7 @@
 
   window.EAIGame3D = {toggle,close,setMode,
     get active(){return open;},
-    get view(){return mode;}
+    get view(){return mode;},
+    get cameraPosition(){return camera?.position.toArray() || [];}
   };
 })();
