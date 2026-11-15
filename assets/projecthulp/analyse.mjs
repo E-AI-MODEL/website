@@ -20,7 +20,7 @@ export async function fetchPublicRepo(url,fetcher=fetch){
  if(meta.private===true)throw new Error("Deze repository is privé. De proef ondersteunt alleen openbare repositories.");
  if(meta.full_name?.toLowerCase()!==p.name.toLowerCase())throw new Error("GitHub antwoordde met een andere repository.");
  let paths=[],branch=meta.default_branch||null,sha=null,truncated=false,readable=true;
- if(branch){
+ if(branch&&!(meta.size===0&&meta.pushed_at===null)){
   try{
    const treeResponse=await fetcher(api+"/git/trees/"+encodeURIComponent(branch)+"?recursive=1",{headers,redirect:"error",signal:AbortSignal.timeout(15000)});
    if(treeResponse.status===403||treeResponse.status===429)throw new Error("GitHub heeft de bestandslijst tijdelijk geblokkeerd.");
@@ -51,7 +51,7 @@ export function describeProject(paths,manifest={}){
  const html=paths.some(p=>p.toLowerCase().endsWith(".html")),js=paths.some(p=>/\.(js|mjs|jsx|ts|tsx)$/i.test(p));
  if(includes(s,"package.json")){
   type="JavaScript-project";runtime="Node.js / JavaScript";
-  const dependencies={...manifest.dependencies,...manifest.devDependencies};
+  const dependencies={...(manifest.dependencies&&typeof manifest.dependencies==="object"?manifest.dependencies:{}),...(manifest.devDependencies&&typeof manifest.devDependencies==="object"?manifest.devDependencies:{})};
   for(const name of ["next","vite","react","vue","svelte","astro","angular","express"]){if(Object.hasOwn(dependencies,name)||manifest.name===name){framework=name;break;}}
   if(framework==="next")type="Next.js-applicatie";
   else if(framework==="vite")type="Vite-project";
@@ -74,7 +74,7 @@ export async function analyzeArchive(file){
  const manifestEntry=rawFiles.find(e=>e.path===root.prefix+"package.json");
  let manifest={},manifestError=null;
  if(manifestEntry){
-  try{manifest=JSON.parse(await readZipText(zip,manifestEntry,TEXT_LIMIT));}
+  try{manifest=JSON.parse(await readZipText(zip,manifestEntry,TEXT_LIMIT));if(!manifest||typeof manifest!=="object"||Array.isArray(manifest))throw new Error("geen geldig JSON-object");}
   catch(e){manifestError="package.json kon niet veilig worden gelezen: "+e.message;}
  }
  const project=describeProject(eligible,manifest);
