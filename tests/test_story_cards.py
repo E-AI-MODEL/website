@@ -28,6 +28,7 @@ class EditorialCardUiTests(unittest.TestCase):
             "/tools/anatomie/",
             "/tools/sport-en-bewegen/",
             "/nl/model-monitor/",
+            "/tools/eaigame/",
         )))
 
     def test_assets_are_source_controlled(self):
