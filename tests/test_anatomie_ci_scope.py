@@ -73,6 +73,18 @@ class ReuseExistingAtlasTests(unittest.TestCase):
                              (source / "models/skeletal.glb").read_bytes())
             self.assertTrue((dest / "labs/hartslag/atlas-heart-rich.bin").is_file())
 
+    def test_werkelijke_op_main_opgeslagen_atlas_is_bruikbaar(self):
+        # Dit is de echte repository-atlas, geen gegenereerde of nagebootste mesh.
+        with tempfile.TemporaryDirectory() as temp:
+            destination = Path(temp) / "atlas"
+            reuse(ROOT / "tools/anatomie", destination)
+            source = ROOT / "tools/anatomie"
+            for relative in ("models/skeletal.glb", "models/cardiovascular.glb",
+                             "labs/hartslag/atlas-heart-rich.bin"):
+                with self.subTest(relative=relative):
+                    self.assertEqual((destination / relative).stat().st_size,
+                                     (source / relative).stat().st_size)
+
     def test_herschreven_of_beschadigde_bron_wordt_geweigerd(self):
         with tempfile.TemporaryDirectory() as temp:
             source = Path(temp) / "source"
