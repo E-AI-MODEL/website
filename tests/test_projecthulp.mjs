@@ -4,6 +4,7 @@ import {deflateRawSync} from "node:zlib";
 import {readFileSync} from "node:fs";
 import {inspectZip,readZipText} from "../assets/projecthulp/zip.mjs";
 import {parseRepoUrl,fetchPublicRepo,stripArchiveRoot,describeProject,analyzeArchive,compareProjects,makeAdvice,reportText,readmeTemplate,ignoreTemplate} from "../assets/projecthulp/analyse.mjs";
+import {checkProjectPurpose,findBrokenLocalLinks,PURPOSES} from "../assets/projecthulp/doelcontrole.mjs";
 const crcTable=Array.from({length:256},(_,i)=>{let c=i;for(let k=0;k<8;k++)c=(c&1)?0xedb88320^(c>>>1):c>>>1;return c>>>0;});
 function crc32(b){let c=0xffffffff;for(const x of b)c=crcTable[(c^x)&255]^(c>>>8);return(c^0xffffffff)>>>0;}
 function makeZip(files,{compress=false}={}){
@@ -95,4 +96,50 @@ test("Websitepagina bevat toegankelijke route, geen serverupload of AI",()=>{
  assert.match(html,/type="file"/);
  assert.match(html,/assets\/projecthulp\/app\.mjs/);
  assert.doesNotMatch(app,/\.post\(|method:\s*["']POST|openai\.com|localStorage/);
+});
+
+test("Doeltoets: een ZIP uploaden is geen projectoverdracht",async()=>{
+ const archive=await analyzeArchive(fake(makeZip([["site/index.html","<html><link href='site.css'></html>"],["site/site.css","body{}"]])));
+ const repo={name:"u/r",url:"https://github.com/u/r",paths:["project.zip"],readable:true,truncated:false,empty:false};
+ const advice=makeAdvice({goal:"site",aim:"bezoekers zien de startpagina",archive,repo});
+ assert.equal(advice.purpose.repoOnlyZips,true);
+ assert.ok(advice.warnings.some(w=>/ZIP/.test(w)));
+ assert.ok(advice.steps.some(w=>/ZIP-bestand niet automatisch uit/.test(w)));
+ assert.ok(advice.steps.some(w=>/niet het \.zip-bestand/.test(w)));
+ assert.equal(advice.purpose.label,PURPOSES.site);
+ assert.ok(reportText({archive,repo,advice}).includes("niet inhoudelijk beoordeeld"));
+});
+test("Doeltoets: website met ontbrekende verwijzing krijgt geen werkend-label",async()=>{
+ const archive=await analyzeArchive(fake(makeZip([["web/index.html",'<link href="css/site.css"><script src="app.js"></script>'],["web/app.js","console.log('x')"]])));
+ assert.deepEqual(archive.missingReferences,["css/site.css"]);
+ const result=checkProjectPurpose({goal:"site",archive});
+ assert.ok(result.found.some(t=>t.includes("index.html")));
+ assert.ok(result.remaining.some(t=>t.includes("niet op de verwachte plek")));
+ assert.ok(result.remaining.some(t=>t.includes("browserproef")));
+ assert.ok(!result.found.some(t=>t.includes("werkend")));
+});
+test("Doeltoets: geen doel of geen startbestand wordt niet als succes gepresenteerd",()=>{
+ const archive={eligible:["README.md","handleiding.pdf"],project:{hasReadme:true,hasPackage:false,hasHtml:false},secret:[]};
+ const result=checkProjectPurpose({goal:"site",archive});
+ assert.ok(result.remaining.some(t=>t.includes("Geen index.html")));
+ assert.ok(checkProjectPurpose({goal:"unsure",archive}).remaining.some(t=>t.includes("niet gekozen")));
+ assert.equal(checkProjectPurpose({goal:"app",archive}).found.length,0);
+});
+test("Doeltoets: applicatie met scripts is nog niet functioneel getest",async()=>{
+ const archive=await analyzeArchive(fake(makeZip([["project/package.json",JSON.stringify({scripts:{start:"node server.js",test:"node --test"},dependencies:{express:"4"}})],["project/server.js","console.log('hello')"]])));
+ const result=checkProjectPurpose({goal:"app",archive});
+ assert.ok(result.found.some(t=>t.includes("start, test")));
+ assert.ok(result.remaining.some(t=>t.includes("Niet gecontroleerd")));
+});
+test("Doeltoets: externe links zijn niet automatisch ontbrekende projectbestanden",()=>{
+ const html='<link href="https://cdn.example.com/style.css"><script src="/js/app.js"></script><img src="data:image/png;base64,abc"><a href="#start"></a>';
+ assert.deepEqual(findBrokenLocalLinks("index.html",html,["index.html"]),["js/app.js"]);
+});
+test("Woordkeuze: begin bij het resultaat, geen belofte ZIP-upload",()=>{
+ const html=readFileSync(new URL("../tools/projecthulp/index.html",import.meta.url),"utf8");
+ assert.match(html,/Wat moet er straks mogelijk zijn/);
+ assert.doesNotMatch(html,/Mijn ZIP-bestand op GitHub zetten/);
+ assert.match(html,/value="site"/);
+ assert.match(html,/id="purposeRemaining"/);
+ assert.match(html,/GitHub pakt een geüpload ZIP-bestand niet vanzelf uit/);
 });
