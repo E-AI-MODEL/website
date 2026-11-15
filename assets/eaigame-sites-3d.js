@@ -145,6 +145,22 @@
     return group;
   }
 
+  function pawnTarget(playerIndex) {
+    const p = state.players[playerIndex];
+    const onTile = state.players.map((item,index) => ({item,index})).filter(entry => entry.item.pos === p.pos);
+    const rank = onTile.findIndex(entry => entry.index === playerIndex);
+    const position = positionOf(p.pos).clone();
+    if (onTile.length <= 1) return position;
+    // Pionnen die hetzelfde vak delen, moeten elk zichtbaar blijven.
+    const columns = Math.min(onTile.length,2);
+    const rows = Math.ceil(onTile.length/2);
+    const column = rank % columns;
+    const row = Math.floor(rank/columns);
+    position.x += (column-(columns-1)/2)*0.42;
+    position.z += (row-(rows-1)/2)*0.42;
+    return position;
+  }
+
   function syncFigures(now) {
     const players = state.players || [];
     if (figures.length !== players.length) {
@@ -152,17 +168,19 @@
       figures = players.map((_,index) => createFigure(index));
       observed = players.map(p => p.pos);
       tweens = players.map(() => null);
-      players.forEach((p,i) => figures[i].position.copy(positionOf(p.pos)));
+      players.forEach((_,i) => figures[i].position.copy(pawnTarget(i)));
     }
     players.forEach((p,i) => {
       const figure = figures[i];
-      if (observed[i] !== p.pos) {
-        const previous = observed[i];
+      const previous = observed[i];
+      const to = pawnTarget(i);
+      const moved = previous !== p.pos;
+      const offsetChanged = !tweens[i] && figure.position.distanceTo(to) > 0.03;
+      if (moved || offsetChanged) {
         const from = figure.position.clone();
-        const to = positionOf(p.pos).clone();
-        const move = to.clone().sub(positionOf(previous));
-        if (i === state.current && move.lengthSq() > 0.0001) {
-          heading.copy(move.normalize());
+        if (moved && i === state.current) {
+          const direction = positionOf(p.pos).clone().sub(positionOf(previous));
+          if (direction.lengthSq() > 0.0001) heading.copy(direction.normalize());
         }
         tweens[i] = {from,to,start:now,duration:prefersLessMotion?0:200};
         observed[i] = p.pos;
@@ -324,6 +342,7 @@
   window.EAIGame3D = {toggle,close,setMode,
     get active(){return open;},
     get view(){return mode;},
-    get cameraPosition(){return camera?.position.toArray() || [];}
+    get cameraPosition(){return camera?.position.toArray() || [];},
+    get pawnPositions(){return figures.map(figure=>figure.position.toArray());}
   };
 })();
