@@ -205,6 +205,16 @@ def menu_named_sections(en: bool, sections: list, overview: tuple) -> str:
     def safe(value):
         return html.escape(value, quote=True)
     head = '<a class="eai-site-overview" href="' + safe(overview[1]) + '">' + safe(overview[0]) + '</a>'
+    descriptions = {
+        '/nl/onderwijs/': 'Kies eerst het leerdoel; bekijk daarna de werkvorm die daarbij past.',
+        '/en/education/': 'Start with the learning goal, then find a suitable activity.',
+        '/nl/publicaties/': 'Lees analyses, artikelen en de bronnen waarop uitspraken steunen.',
+        '/en/publications/': 'Read publications, research and the sources behind claims.',
+        '/nl/tools/': 'Maak materiaal, controleer uitkomsten en deel werk.',
+        '/en/tools/': 'Create materials, check results and share your work.',
+    }
+    if overview[1] in descriptions:
+        head += '<p class="eai-site-topic-intro">' + safe(descriptions[overview[1]]) + '</p>'
     blocks = []
     for section, links in sections:
         items = ''.join('<a href="' + safe(url) + '">' + safe(label) + '</a>' for label, url, _ in links)
@@ -269,7 +279,7 @@ def site_search_records(root: Path) -> list:
             for subgroup, entries in groups_:
                 for label, url, description in entries:
                     add(label, url, title + ' · ' + subgroup, description)
-        for title, groups_ in (('Tools', tool_sections(en)), ('Education' if en else 'Onderwijs', education_sections(en)), ('Articles & research' if en else 'Artikelen en onderzoek', reading_sections(en))):
+        for title, groups_ in (('Tools' if en else 'Hulpmiddelen', tool_sections(en)), ('Teaching' if en else 'Lespraktijk', education_sections(en)), ('Research & publications' if en else 'Onderzoek & publicaties', reading_sections(en))):
             for subgroup, entries in groups_:
                 for label, url, description in entries:
                     add(label, url, title + ' · ' + subgroup, description)
@@ -320,6 +330,9 @@ def navigation(soup: BeautifulSoup, path: str, en: bool) -> str:
             links = menu_named_sections(en, reading_sections(en), ('All research and publications' if en else 'Alle onderzoeksdossiers en publicaties', '/en/publications/' if en else '/nl/publicaties/'))
         else:
             links = ''.join(f'<a href="{html.escape(target, quote=True)}"' + (' aria-current="page"' if path_here == canonical(target) else '') + f'>{html.escape(label)}</a>' for label, target in entries)
+            if title in ('EAI begrijpen', 'Understand EAI'):
+                purpose = 'Het model, voorbeelden en de onderbouwing.' if not en else 'The model, examples and supporting evidence.'
+                links = '<p class="eai-site-topic-intro">' + html.escape(purpose) + '</p>' + links
         menu.append(f'<details class="eai-site-group{active_cls}" name="eai-navigation-theme"><summary>{html.escape(title)}</summary><div class="eai-site-group-links{" eai-site-model-links" if model_group else ""}">{links}</div></details>')
     primary = []
     for title, entries in groups(en):
