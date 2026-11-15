@@ -143,3 +143,18 @@ test("Woordkeuze: begin bij het resultaat, geen belofte ZIP-upload",()=>{
  assert.match(html,/id="purposeRemaining"/);
  assert.match(html,/GitHub pakt een geüpload ZIP-bestand niet vanzelf uit/);
 });
+
+
+test("ZIP: macOS-bijlage verhindert herkenning van projectmap niet",async()=>{
+ const archive=await analyzeArchive(fake(makeZip([[".DS_Store","rommel"],["website/index.html","<h1>Start</h1>"],["website/css/style.css","body{}"]])));
+ assert.equal(archive.prefix,"website/");
+ assert.ok(archive.eligible.includes("index.html"));
+ assert.ok(archive.ignored.includes(".DS_Store"));
+ assert.ok(checkProjectPurpose({goal:"site",archive}).found.some(x=>x.includes("index.html")));
+});
+test("Doeltoets: interactieve HTML hoeft geen package.json te hebben",async()=>{
+ const archive=await analyzeArchive(fake(makeZip([["index.html","<button>Start</button>"],["app.js","console.log(1)"]])));
+ const result=checkProjectPurpose({goal:"app",archive});
+ assert.ok(result.found.some(x=>x.includes("browser")));
+ assert.ok(result.remaining.some(x=>x.includes("Niet gecontroleerd")));
+});
