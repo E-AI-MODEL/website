@@ -50,7 +50,7 @@ export function inspectZip(buffer){
  if(p!==centralStart+centralSize)fail("Het ZIP-bestand bevat onverwachte gegevens in de bestandslijst.");
  return {entries,bytes,total:unpacked};
 }
-export async function readZipText(zip,entry,maxBytes=350000){
+export async function readZipBytes(zip,entry,maxBytes=350000){
  if(!entry||entry.directory||entry.size>maxBytes)throw new Error("Dit tekstbestand is te groot om veilig te lezen.");
  const raw=zip.bytes.subarray(entry.start,entry.start+entry.packed);
  let output;
@@ -65,5 +65,8 @@ export async function readZipText(zip,entry,maxBytes=350000){
   output=new Uint8Array(len);let p=0;for(const chunk of chunks){output.set(chunk,p);p+=chunk.length;}
  }
  if(output.length!==entry.size||crc32(output)!==entry.crc)fail("De inhoud van het ZIP-bestand is beschadigd (controlegetal klopt niet).");
- return new TextDecoder().decode(output);
+ return output;
+}
+export async function readZipText(zip,entry,maxBytes=350000){
+ return new TextDecoder().decode(await readZipBytes(zip,entry,maxBytes));
 }
