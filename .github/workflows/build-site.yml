@@ -29,6 +29,7 @@ on:
       - 'en/**'
       - 'assets/**'
       - 'tools/projecthulp/**'
+      - 'tools/eaigit/**'
       - 'tests/test_projecthulp.mjs'
       - 'index.html'
       - 'houseoftalents/**'
@@ -67,6 +68,7 @@ on:
       - 'en/**'
       - 'assets/**'
       - 'tools/projecthulp/**'
+      - 'tools/eaigit/**'
       - 'tests/test_projecthulp.mjs'
       - 'index.html'
       - 'houseoftalents/**'
@@ -136,7 +138,7 @@ jobs:
       - name: Check EAIwork public demonstration
         run: python -m unittest discover -s tests -p 'test_eaiwork_dashboard_publish.py' -v
 
-      - name: Test Projecthulp browser analysis
+      - name: Test EAIgit browser analysis
         run: node --test tests/test_projecthulp.mjs
 
       - name: Build site
