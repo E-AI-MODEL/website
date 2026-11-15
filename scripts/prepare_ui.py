@@ -61,9 +61,24 @@ def experiment_sections(en: bool):
     if len(ids) != len(catalogue) or len(ids) != 53:
         raise ValueError('Catalogus en proef-ID’s verschillen')
     physics_groups = {}
+    subject_labels = {
+        'Mechanica': ('Krachten en beweging', 'Forces and motion'),
+        'Trillingen en golven': ('Trillingen en golven', 'Oscillations and waves'),
+        'Electrodynamica': ('Elektriciteit en magnetisme', 'Electricity and magnetism'),
+        'Optica': ('Licht en lenzen', 'Light and lenses'),
+        'Thermodynamica': ('Warmte en gassen', 'Heat and gases'),
+        'Relativiteitstheorie': ('Ruimte en tijd', 'Space and time'),
+        'Atoomfysica': ('Atomen en elektronen', 'Atoms and electrons'),
+        'Kernfysica': ('Radioactiviteit en atoomkernen', 'Radioactivity and nuclei'),
+        'Vastestoffysica': ('Vaste stoffen en kristallen', 'Solids and crystals'),
+    }
+    if {model['group'] for model in catalogue} != set(subject_labels):
+        raise ValueError('De natuurkundige onderwerpindeling is veranderd; controleer de zichtbare namen')
     for id_, model in zip(ids, catalogue):
-        name = model['group'].replace('Electrodynamica', 'Elektrodynamica')
-        physics_groups.setdefault(name, []).append((model['title'].strip('"'), '/tools/science-observatory/labs/natuurkunde/#' + id_, model['title']))
+        dutch, english = subject_labels[model['group']]
+        name = english if en else dutch
+        physics_groups.setdefault(name, []).append(
+            (model['title'].strip('"'), '/tools/science-observatory/labs/natuurkunde/#' + id_, ''))
     maths = []
     for variant in ('a', 'b'):
         source = (sources / ('wiskunde-' + variant + '.html')).read_text(encoding='utf-8')
@@ -71,7 +86,7 @@ def experiment_sections(en: bool):
         if not config_match:
             raise ValueError('Wiskunde ' + variant.upper() + ' heeft geen modelcatalogus')
         modules = json.loads(config_match.group(1))['modules']
-        maths.append(('Wiskunde ' + variant.upper(), [(m['short'], '/tools/science-observatory/labs/wiskunde-' + variant + '/#' + m['id'], m.get('subtitle', '')) for m in modules]))
+        maths.append(('Wiskunde ' + variant.upper(), [(m['short'], '/tools/science-observatory/labs/wiskunde-' + variant + '/#' + m['id'], m.get('desc', m.get('subtitle', ''))) for m in modules]))
     galaxy = (sources / 'melkweg.html').read_text(encoding='utf-8')
     galaxy_doc = BeautifulSoup(galaxy, 'html.parser')
     modes = [(button.b.get_text(' ', strip=True), '/tools/science-observatory/labs/melkweg/#' + button['data-mode'], button.small.get_text(' ', strip=True) if button.small else '') for button in galaxy_doc.select('button.nav-btn[data-mode]') if button.b]
@@ -201,14 +216,29 @@ def menu_named_sections(en: bool, sections: list, overview: tuple) -> str:
 def menu_topic_html(en: bool) -> str:
     def safe(value):
         return html.escape(value, quote=True)
+    topic_descriptions = {
+        'Natuurkunde': 'Beweging, kracht, elektriciteit, licht en meer.',
+        'Physics': 'Motion, forces, electricity, light and more. Experiments are in Dutch.',
+        'Wiskunde': 'Kansverdelingen, grafieken, functies en berekeningen.',
+        'Mathematics': 'Probability, graphs, functions and calculations. Models are in Dutch.',
+        'Anatomie van de mens': 'Een 3D-lichaam en een bewegend hart.',
+        'Human anatomy': 'Explore the body in 3D and a beating heart.',
+        'Galactisch Observatorium': 'De Melkweg, bewegingen en modellen met uitleg.',
+        'Galactic Observatory': 'The Milky Way, orbits and guided models.',
+        'Taalmodellen': 'Hoe een taalmodel van invoer naar tekst gaat.',
+        'Language models': 'How a language model produces text.',
+        'Sport en bewegen': 'Spelsituaties, tactiek en onderbouwing.',
+        'Sport and movement': 'Tactics, match situations and sources.',
+    }
     blocks = []
     for title, clusters in experiment_sections(en):
         total = sum(len(links) for _, links in clusters)
         groups_markup = []
         for subgroup, links in clusters:
-            items = ''.join('<a href="' + safe(url) + '" title="' + safe(extra) + '">' + safe(label) + '</a>' for label, url, extra in links)
+            items = ''.join('<a href="' + safe(url) + '"' + (' title="' + safe(extra) + '"' if extra else '') + '>' + safe(label) + '</a>' for label, url, extra in links)
             groups_markup.append('<details class="eai-site-cluster"><summary>' + safe(subgroup) + '<span>' + str(len(links)) + '</span></summary><div class="eai-site-cluster-links">' + items + '</div></details>')
-        blocks.append('<details class="eai-site-topic"><summary><span>' + safe(title) + '</span><small>' + str(total) + ' ' + ('topics' if en else 'onderdelen') + '</small></summary><div class="eai-site-topic-links">' + ''.join(groups_markup) + '</div></details>')
+        lead = '<p class="eai-site-topic-intro">' + safe(topic_descriptions[title]) + '</p>'
+        blocks.append('<details class="eai-site-topic"><summary><span>' + safe(title) + '</span><small>' + str(total) + ' ' + ('topics' if en else 'onderdelen') + '</small></summary><div class="eai-site-topic-links">' + lead + ''.join(groups_markup) + '</div></details>')
     return '<a class="eai-site-overview" href="/tools/science-observatory/">' + ('All experiments and models' if en else 'Alle proeven en modellen') + '</a>' + ''.join(blocks)
 
 
