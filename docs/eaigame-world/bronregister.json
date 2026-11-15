@@ -11,7 +11,8 @@
     "De websitecode en het werkende spel blijven onaangeraakt.",
     "19 pakketpagina's of uitgeversvermeldingen inhoudelijk nagekeken. SourceCheck geeft aan of de bronpagina is bevestigd, NIET of het pakket in een spel is getest.",
     "Quaternius QAL v1.0 en de FAQ zijn tegenstrijdig over de brede CC0-claim; daarom bij deze bron geen losse modellen in de openbare repo opslaan.",
-    "Een aantal oudere of brede bron-URL's is nog niet opnieuw bevestigd. Selecteer nooit op basis van alleen het vermelde licentielabel."
+    "Een aantal oudere of brede bron-URL's is nog niet opnieuw bevestigd. Selecteer nooit op basis van alleen het vermelde licentielabel.",
+    "Vier extra technische/UI-referenties toegevoegd: camerasturing en HUD-voorbeelden. Referentiebeelden van games zijn niet bedoeld om te distribueren of te kopiëren."
   ],
   "candidates": [
     {
@@ -795,6 +796,90 @@
       "checkedOn": "2026-11-15",
       "sourceCheck": "nog-te-controleren",
       "sourceCheckDate": "2026-11-15"
+    },
+    {
+      "id": "camera-rig-three",
+      "category": "navigation",
+      "priority": 1,
+      "name": "Third Person Camera Rig Three.js",
+      "sourceUrl": "https://github.com/m2-md/third-person-camera-rig-threejs",
+      "licenseReported": "MIT",
+      "licenseEvidenceUrl": "https://github.com/m2-md/third-person-camera-rig-threejs/blob/main/LICENSE",
+      "areas": [
+        "alle"
+      ],
+      "proposedUse": "Proefidee voor camera die achter speler volgt met botsing, vertraging en kijkrichting.",
+      "selection": "alleen onderzoeken",
+      "formatKnown": "broncode/referentie",
+      "reviewFlag": "Broncode alleen met licentienotitie; controleer onderhoud en Three.js-versie.",
+      "filesInRepo": false,
+      "downloadStatus": "alleen bron geregistreerd",
+      "verifiedInEngine": false,
+      "checkedOn": "2026-11-15",
+      "sourceCheck": "bron of README nagekeken"
+    },
+    {
+      "id": "camera-tpp-orbit",
+      "category": "navigation",
+      "priority": 1,
+      "name": "Third Person + Orbit Camera Demo",
+      "sourceUrl": "https://github.com/Siricee/TPP-Orbit-Camera-Controller-Demo",
+      "licenseReported": "MIT",
+      "licenseEvidenceUrl": "https://github.com/Siricee/TPP-Orbit-Camera-Controller-Demo",
+      "areas": [
+        "alle"
+      ],
+      "proposedUse": "Desktop/mobiele cameraovergang vergelijken met eigen EAIgame-bediening.",
+      "selection": "alleen onderzoeken",
+      "formatKnown": "broncode/referentie",
+      "reviewFlag": "Geen kant-en-klare productiecomponent; onafhankelijke regresstest.",
+      "filesInRepo": false,
+      "downloadStatus": "alleen bron geregistreerd",
+      "verifiedInEngine": false,
+      "checkedOn": "2026-11-15",
+      "sourceCheck": "bron of README nagekeken"
+    },
+    {
+      "id": "game-ui-database",
+      "category": "ui-reference",
+      "priority": 1,
+      "name": "Game UI Database",
+      "sourceUrl": "https://www.gameuidatabase.com/",
+      "licenseReported": "reference only",
+      "licenseEvidenceUrl": "https://www.gameuidatabase.com/",
+      "areas": [
+        "alle"
+      ],
+      "proposedUse": "HUD, contextactie, kaart, dialogen en pauzemenu van bestaande avonturenspellen analyseren.",
+      "selection": "alleen onderzoeken",
+      "formatKnown": "broncode/referentie",
+      "reviewFlag": "Screenshots zijn beschermd referentiemateriaal, niet importeren of natekenen.",
+      "filesInRepo": false,
+      "downloadStatus": "alleen bron geregistreerd",
+      "verifiedInEngine": false,
+      "checkedOn": "2026-11-15",
+      "sourceCheck": "bron of README nagekeken"
+    },
+    {
+      "id": "three-examples",
+      "category": "engine-reference",
+      "priority": 1,
+      "name": "Three.js examples",
+      "sourceUrl": "https://threejs.org/examples/",
+      "licenseReported": "Three.js MIT",
+      "licenseEvidenceUrl": "https://github.com/mrdoob/three.js/blob/master/LICENSE",
+      "areas": [
+        "alle"
+      ],
+      "proposedUse": "Voorbeeldimplementaties van modelimport, camera, licht, water en animaties vergelijken.",
+      "selection": "alleen onderzoeken",
+      "formatKnown": "broncode/referentie",
+      "reviewFlag": "Examples kunnen extra assets met eigen licenties bevatten; per demo controleren.",
+      "filesInRepo": false,
+      "downloadStatus": "alleen bron geregistreerd",
+      "verifiedInEngine": false,
+      "checkedOn": "2026-11-15",
+      "sourceCheck": "bron of README nagekeken"
     }
   ],
   "verifiedPublisherPagesCount": 19,
