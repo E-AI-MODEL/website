@@ -281,8 +281,6 @@ def site_search_records(root: Path) -> list:
         if any(part in ('admin', 'private', 'handoff', 'site-build', 'node_modules') for part in relative.parts):
             continue
         url = '/' + '/'.join(relative.parts[:-1]) + '/'
-        if url in records:
-            continue
         try:
             soup = BeautifulSoup(path.read_text(encoding='utf-8'), 'html.parser')
             heading = soup.select_one('main h1, h1')
