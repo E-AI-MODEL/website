@@ -1,4 +1,4 @@
-# Projecthulp als EAI Work-proef
+# EAIgit als EAI Work-proef
 
 Status: ontwerp- en integratieproef op de ontwikkeltak van de website, geen productie-uitrol of rechtstreekse EAI Work-serverkoppeling.
 
@@ -27,7 +27,7 @@ Vermijd vooraf vragen naar framework, mappenindeling of programmeerervaring. De 
 - **Beslisregels in browser**: vergelijken bestandspaden, doelafhankelijke aanwijzingen, onzekerheden en stappen. Dat bewijst niet dat een website of applicatie werkt.
 - **GitHub Actions voor de website**: eigen code en gebruikersroute worden getest op desktop en een mobiel scherm met een nagebootst API-antwoord.
 - **EAI Work zelf**: een plan met 6 fasen, 11 taken en 2 source-anchored toestemmingsblokkades in `content/projecthulp/eaiwork-mission.json`. De workflow `.github/workflows/projecthulp-eaiwork-proof.yml` haalt de echte EAI Work-code op, vastgepind op commit `b80d3d9afb6289d1fda8bdc14a8c890043b56e22`. De uitvoerbare `text-normalize`- en `text-metrics`-adapters worden in een afzonderlijke testmissie geregistreerd, met fixtures vrijgegeven en via de lokale taakuitvoering gestart; het Operations-journal registreert hun uitkomst. De andere adapters zijn niet beschikbaar binnen deze EAI Work-runtime.
-- **GitHub Actions voor Pieters eigen repo**: de website kan desgewenst een minimaal, read-only controlebestand voor JavaScript- of Python-syntaxis aanbieden. Dit wordt alleen actief nadat de eigenaar het zelf aan `.github/workflows/projectcontrole.yml` toevoegt. Het voert geen `npm run test`, applicatiecode of installatiescripts uit.
+- **GitHub Actions voor de repository van de gebruiker**: de website kan desgewenst een minimaal, read-only controlebestand voor JavaScript- of Python-syntaxis aanbieden. Dit wordt alleen actief nadat de eigenaar het zelf aan `.github/workflows/projectcontrole.yml` toevoegt. Het voert geen `npm run test`, applicatiecode of installatiescripts uit.
 
 De browserworker en de EAI Work Operations-worker zijn **verschillende runtimes**. Hun aanwezigheid betekent niet dat het publieke scherm een echte EAI Work-serversessie heeft. EAI Work-statussen, ondertekend bewijs, veilige codeworker en private GitHub-toegang worden hier nog niet als werkend product aangeboden.
 
