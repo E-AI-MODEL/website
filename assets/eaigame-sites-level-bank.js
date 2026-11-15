@@ -99,3 +99,5 @@ function drawQuestion(area,level,used=new Set(),random=Math.random){const list=Q
   }));
   window.EAIGAME_LEVEL_REALMS=REALMS;
 })();
+
+})();
