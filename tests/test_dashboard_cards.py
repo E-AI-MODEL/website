@@ -49,6 +49,10 @@ class DashboardCardsTests(unittest.TestCase):
             self.assertIsNotNone(root.find(id=anchor), anchor)
         self.assertEqual(root.find(id="eh-home-title").get_text(" ", strip=True), "Wat ons werk ons werk maakt")
         self.assertTrue(root.select_one("#eai-dash-search"))
+        self.assertIsNotNone(root.select_one(".eai-dash-hero-more > summary"))
+        area = root.select_one(".eai-dash-workspace")
+        self.assertIsNotNone(area)
+        self.assertEqual([node.name for node in area.find_all(recursive=False)], ["section", "section", "aside"])
         self.assertEqual(len(root.select(".eai-dash-step[aria-pressed='true']")), 1)
         self.assertIn("/tools/eaigit/", [a["href"] for a in root.select(".eai-dash-table > a")])
 
