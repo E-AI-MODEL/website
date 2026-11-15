@@ -143,6 +143,12 @@ function renderGuide(){
  const hasTip=Boolean(step.help);
  show("helpDetails",hasTip);
  $("helpDetails").open=false;label("guideTip",step.help||"");
+ const phases={
+  source:"verkennen",repo:"verkennen",unzip:"opzetten",create:"opzetten",upload:"opzetten",files:"opzetten",
+  compare:"opzetten",private:"controleren",safe:"controleren",references:"bouwen",actions:"controleren",
+  try:"controleren",publishing:"publiceren"
+ };
+ $("phasePrompts").href="/tools/eaigit/prompts/?fase="+(phases[step.id]||"verkennen");
  const prompt=helpPrompt(step,state.guidance?.repoUrl||"",state.intent);
  show("promptDetails",Boolean(prompt));
  $("promptDetails").open=false;
