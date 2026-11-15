@@ -100,3 +100,30 @@ body.eaigit-wizard{margin:0;min-height:100vh;background:radial-gradient(ellipse 
 .eg-create-repo .eg-label{margin-bottom:8px}
 .eg-create-repo .eg-input{background:white}
 .eg-create-repo .eg-error{margin-bottom:0}
+
+
+/* Hulp op het juiste moment, niet in de primaire vragenroute. */
+.eg-header-actions{display:flex;align-items:center;gap:18px}
+.eg-header-actions .eg-header-link{font-size:12px;color:#54727c}
+.eg-more{display:inline-flex;align-items:center;gap:4px;background:transparent;border:0;padding:3px 0;margin:-11px 0 19px;color:#247a94;cursor:pointer;font:600 12px/1.5 system-ui,sans-serif;text-align:left}
+.eg-more:hover{text-decoration:underline;text-underline-offset:3px}
+.eg-more:focus-visible{outline:2px solid #1788b0;outline-offset:3px;border-radius:2px}
+.eg-guide-more{margin:-10px 0 19px}
+.eg-help-dialog{width:min(570px,calc(100% - 24px));max-height:calc(100dvh - 32px);border:1px solid #d4e4e4;border-radius:13px;background:white;color:#243f49;box-shadow:0 35px 95px rgba(8,35,46,.22);padding:clamp(21px,4vw,30px);overflow-y:auto}
+.eg-help-dialog::backdrop{background:rgba(7,26,36,.55);backdrop-filter:blur(3px)}
+.eg-help-dialog-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.eg-help-close{border:1px solid #d9e8e7;border-radius:7px;cursor:pointer;background:#f7faf9;color:#3e6270;padding:8px 11px;font-size:12px}
+.eg-help-dialog h2{font:500 clamp(1.55rem,3.5vw,1.93rem)/1.18 Georgia,serif;letter-spacing:-.02em;margin:15px 0 9px;color:#17323e}
+.eg-help-dialog p{color:#5b747c;font-size:13.5px;line-height:1.7;margin:0 0 17px}
+.eg-help-dialog ol{padding-left:21px;margin:13px 0 19px}
+.eg-help-dialog li{font-size:13px;color:#526b74;line-height:1.72;margin-bottom:10px;padding-left:3px}
+.eg-dialog-links{display:flex;gap:11px;flex-wrap:wrap;margin:14px 0 13px}
+.eg-dialog-links a,.eg-help-dialog #helpFull{display:inline-block;color:#137896;font-size:12.5px;font-weight:650;text-decoration:underline;text-underline-offset:3px}
+.eg-help-dialog #helpFull{border-top:1px solid #edf3f2;padding-top:12px;width:100%;margin-top:5px}
+.eg-finished-links{display:flex;gap:15px;flex-wrap:wrap;margin:18px 0 0}
+.eg-finished-links a{color:#18748e;font-size:13px;text-underline-offset:3px}
+@media(max-width:620px){
+ .eg-header-actions{gap:11px}
+ .eg-header-actions .eg-header-link{font-size:11px}
+ .eg-help-dialog{padding:21px 19px;max-height:calc(100dvh - 20px)}
+}
