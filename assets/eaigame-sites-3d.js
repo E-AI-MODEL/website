@@ -12,7 +12,7 @@
   stage.hidden = true;
   stage.setAttribute('aria-label', 'Driedimensionaal speelbord');
   stage.innerHTML = [
-    '<canvas id="eaigame-3d-canvas" aria-label="Driedimensionale versie van de 32 speelvakken en het oorspronkelijke eiland"></canvas>',
+    '<canvas id="eaigame-3d-canvas" tabindex="0" aria-label="Driedimensionale versie van de 32 speelvakken en het oorspronkelijke eiland"></canvas>',
     '<div class="eaigame-3d-toolbar">',
     '<span class="eaigame-3d-title">EAIgame <small>32 vakken · hetzelfde spel</small></span>',
     '<div class="eaigame-3d-actions">',
@@ -305,6 +305,16 @@
     event.preventDefault();
     orbit.distance = clamp(orbit.distance + Math.sign(event.deltaY)*1.3,14,31);
   },{passive:false});
+  canvas.addEventListener('keydown',event => {
+    if (mode !== 'overview') return;
+    const steps={ArrowLeft:[-0.13,0,0],ArrowRight:[0.13,0,0],ArrowUp:[0,-0.09,0],ArrowDown:[0,0.09,0],'+':[0,0,-1],'-':[0,0,1],'=':[0,0,-1]};
+    const step=steps[event.key];
+    if (!step) return;
+    event.preventDefault();
+    orbit.yaw+=step[0];
+    orbit.elevation=clamp(orbit.elevation+step[1],0.35,1.40);
+    orbit.distance=clamp(orbit.distance+step[2],14,31);
+  });
   document.addEventListener('visibilitychange', () => {
     if (open && !document.hidden && !frame) frame=requestAnimationFrame(animate);
   });
