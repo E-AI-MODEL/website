@@ -13,6 +13,7 @@ const hash = 'pbkdf2_sha256$310000$' + salt.toString('base64') + '$' +
   pbkdf2Sync(PASSWORD, salt, 310000, 32, 'sha256').toString('base64');
 const itemId = '1762800000000-11111111-1111-4111-8111-111111111111';
 const sessions = new Map();
+const auditActions=[];
 const attempts = new Map();
 const uploads = new Map([[itemId, {
   id: itemId, title: 'Voorbeeld', author: 'Maker', filename: 'proef.html',
@@ -50,6 +51,10 @@ const DB = {
             if (sql.startsWith('DELETE FROM gallery_sessions')) {
               sessions.delete(args[0]);
               return { success: true };
+            }
+            if (sql.startsWith('INSERT INTO site_admin_audit')) {
+              auditActions.push({actor:args[0],action:args[1],target:args[2]});
+              return {success:true};
             }
             if (sql.startsWith('INSERT INTO uploads')) {
               const [id, title, author, filename, html_content] = args;
@@ -129,7 +134,12 @@ assert.equal(await statusOf(req('/view/' + itemId, 'GET', { cookie })), 200);
 response = await worker.fetch(req('/', 'GET', { cookie }), env);
 const dashboard = await response.text();
 assert.equal(response.status, 200);
-assert.match(dashboard, /Mijn HTML-galerij/);
+assert.match(dashboard, /Websiteoverzicht/);
+assert.match(dashboard, /admin-client.js/);
+assert.equal(await statusOf(req('/admin-client.js')), 401);
+assert.equal(await statusOf(req('/admin-client.js','GET',{cookie})), 200);
+const galleryPage = await worker.fetch(req('/gallery','GET',{cookie}),env);
+assert.match(await galleryPage.text(), /Mijn HTML-galerij/);
 assert.ok(!dashboard.includes(PASSWORD), 'password is never exposed');
 assert.equal(response.headers.get('Content-Security-Policy').includes('frame-ancestors'), true);
 
@@ -152,6 +162,7 @@ assert.equal(uploads.get(itemId).status, 'published');
 assert.equal(await statusOf(req('/api/admin/uploads/' + itemId, 'DELETE',
   { cookie, origin: BASE })), 200);
 assert.equal(uploads.get(itemId).status, 'hidden');
+assert.equal(auditActions.at(-1).action,'upload.hidden');
 assert.equal(await statusOf(req('/view/' + itemId, 'GET', { cookie })), 404);
 assert.equal(await statusOf(req('/api/admin/uploads/' + itemId, 'DELETE',
   { cookie, origin: BASE })), 404);
