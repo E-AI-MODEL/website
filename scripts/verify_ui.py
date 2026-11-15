@@ -8,6 +8,7 @@ from pathlib import Path, PurePosixPath
 from urllib.parse import urlsplit
 from urllib.request import Request, urlopen
 from bs4 import BeautifulSoup
+from prepare_ui import STORY_PATHS, canonical
 
 
 def check(root: Path):
@@ -36,8 +37,16 @@ def check(root: Path):
             if not path or path.endswith('/'):
                 candidate = candidate / 'index.html'
             assert candidate.is_file(), f'{rel}: missing {url}'
-        for info in manifest['assets'].values():
-            assert soup.find(src=info['url']) or soup.find(href=info['url']), (rel, info['url'])
+        # Editorial stories load only on twelve explicitly permitted index pages.
+        # All other shared assets remain mandatory on every prepared page.
+        expected_story = canonical('/' + rel) in STORY_PATHS
+        assert ('eai-story-page' in soup.body.get('class', [])) == expected_story, rel
+        for name, info in manifest['assets'].items():
+            present = bool(soup.find(src=info['url']) or soup.find(href=info['url']))
+            if name in ('site-story-cards.css', 'site-story-cards.js'):
+                assert present == expected_story, (rel, info['url'], expected_story)
+            else:
+                assert present, (rel, info['url'])
         assert not soup.find(href='/assets/site.css'), rel
         assert not soup.find(src='/assets/site-refresh.js'), rel
     handoff = root / 'houseoftalents/index.html'
