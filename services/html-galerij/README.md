@@ -10,11 +10,17 @@ De Worker controleert elke API-aanvraag en elke rechtstreekse `/view/{id}`-link 
 
 Het wachtwoord wordt **niet** in GitHub of de website opgeslagen. De Worker ontvangt alleen een met PBKDF2-SHA-256 en 310.000 iteraties berekende, gezouten hash via een geheim in Cloudflare.
 
-## Tijdelijke productieafscherming (15 november 2026)
+## Uitrolstatus op 15 november 2026
 
-De oude Worker kon nog zonder login bestanden tonen en een onbeveiligde beheeractie uitvoeren. Daarom is op de bestaande Worker `eai-html-galerij` de **workers.dev-publicatie tijdelijk uitgezet** (`enabled=false`, previews uit). Er waren geen andere Cloudflare Worker-routes of Custom Domains gekoppeld. De publieke website op Theory7 blijft bestaan, maar de galerij-API en HTML-voorbeelden zijn nu niet bereikbaar. Ook de tijdelijke D1-trigger `eai_gallery_block_public_hide` blijft als aanvullende blokkade aanwezig.
+De oude Worker toonde eerder HTML zonder login en kon bestanden zonder beheerdersrechten verbergen. De openbare `workers.dev`-route is tijdelijk uitgezet om die situatie te stoppen. De bestaande uploads zijn behouden.
 
-**Bij de nieuwe uitrol:** stel eerst de wachtwoordhash in, deploy de nieuwe beveiligde Worker met alle modules, activeer de Worker op `workers.dev` (`enabled=true`), controleer in een privébrowser dat de API en voorbeelden zonder sessie HTTP 401 geven en dat inloggen werkt, verwijder pas daarna de D1-trigger en test het verbergen van een voorbeeld. Zet de publieke website-ingang pas om na alle controles. De website kan niet veilig rechtstreeks naar de Worker wijzen zolang die op `enabled=false` staat.
+Op 15 november is de nieuwe, beveiligde Worker met de zes ES-modules in Cloudflare gepubliceerd. De oorspronkelijke D1-binding en alle bestaande secrets zijn bewaard, inclusief de door de beheerder ingevoerde `GALLERY_PASSWORD_HASH`. De `workers.dev`-route is weer ingeschakeld; de nieuwe inlogpagina is bereikbaar op `https://eai-html-galerij.vis-c9d.workers.dev/auth/login`.
+
+**Live zonder aanmelding gecontroleerd:** de inlogpagina laadt; de lijst `/api/uploads`, het beheeroverzicht `/api/admin/overview` en een rechtstreekse `/view/{id}`-link geven zonder sessie `Aanmelden vereist` terug. De gerichte authenticatietests en websitebuild zijn geslaagd.
+
+**Nog niet gecontroleerd:** een echte login met het persoonlijke wachtwoord. Het wachtwoord wordt niet aan ChatGPT verstrekt en de ingestelde hash kan niet worden teruggelezen. De tijdelijke D1-trigger `eai_gallery_block_public_hide` blijft aanwezig, zodat bestanden verbergen nog niet werkt totdat de aangemelde beheerder de login heeft bevestigd.
+
+**Vervolg:** de beheerder meldt zich aan en controleert het overzicht en de HTML-galerij. Daarna de tijdelijke trigger verwijderen (`DROP TRIGGER IF EXISTS eai_gallery_block_public_hide;`), offline halen en terugzetten testen, en pas na die proef de publieke ingang `/beheer/` en aangepaste `/tools/html-galerij/` via de Theory7-siteworkflow publiceren. De algemene websitecontroles hebben nog twee oudere, niet aan deze Worker gerelateerde fouten.
 
 ## Eenmalig activeren
 
