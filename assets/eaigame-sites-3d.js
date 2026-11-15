@@ -241,6 +241,8 @@
     try {
       if (!window.WebGLRenderingContext) throw Error('Deze browser ondersteunt geen WebGL.');
       if (!three) three = await import(CDN);
+      // Een gesloten laadvenster mag niet alsnog onzichtbaar gaan renderen.
+      if (stage.hidden) return;
       if (!renderer) {
         scene = new three.Scene();
         scene.background = new three.Color('#f5f2fb');
