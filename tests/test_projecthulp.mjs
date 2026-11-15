@@ -72,7 +72,7 @@ test("Projectadvies: vergelijk bestandsnamen, claim geen inhoudelijke gelijkheid
  assert.equal(archive.secret.length,1);assert.equal(archive.ignored.length,1);
  const advice=makeAdvice({archive,repo});
  assert.equal(advice.ready,false);
- assert.ok(advice.warnings.some(w=>w.includes("gevoelige")));
+ assert.ok(advice.warnings.some(w=>w.includes("vertrouwelijke")));
  assert.ok(advice.warnings.some(w=>w.includes("Gelijke namen")));
  assert.ok(reportText({archive,repo,advice}).includes("niet uitgevoerd"));
 });
