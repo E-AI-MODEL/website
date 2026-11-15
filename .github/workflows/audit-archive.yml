@@ -28,7 +28,14 @@ jobs:
         run: |
           pip install beautifulsoup4
           python scripts/build_site.py --sources content/legacy --out site-build
-          python scripts/build_anatomie.py --out site-build/tools/anatomie
+      - name: Hergebruik echte gepinde anatomie bij archief-PR's
+        if: github.event_name == 'pull_request'
+        run: python scripts/reuse_published_anatomie.py --source tools/anatomie --out site-build/tools/anatomie
+      - name: Bouw anatomie volledig bij handmatig archiefonderzoek
+        if: github.event_name != 'pull_request'
+        run: python scripts/build_anatomie.py --out site-build/tools/anatomie
+      - name: Controleer gebouwde archiefpagina's en links
+        run: |
           python scripts/prepare_ui.py --root site-build
           python scripts/verify_ui.py --root site-build
           python -m unittest discover -s tests -p 'test_archive_review.py'
