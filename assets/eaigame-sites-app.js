@@ -44,6 +44,9 @@ function pickQuestion(cat){
  // basis/uitdaging-filter is uitsluitend voor de originele/eigen bank.
  const pool=source.filter(q=>q.cat===cat&&(level!=='bank'||state.difficulty==='all'||q.difficulty===Number(state.difficulty)));
  let available=pool.filter(q=>!state.used.includes(q.id));
+ // Toon de inhoudelijk uitgewerkte niveauproeven eerst; andere varianten blijven bewaard.
+ const pilots=available.filter(q=>q.origin==='eai-niveaupilot');
+ if(pilots.length)available=pilots;
  if(!available.length){state.used=state.used.filter(id=>!pool.some(q=>q.id===id));available=pool.filter(q=>q.id!==state.lastQ);if(!available.length)available=pool}
  return available.length?available[rand(available.length)]:null;
 }
