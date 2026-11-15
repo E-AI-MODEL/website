@@ -21,6 +21,11 @@ const uploads = new Map([[itemId, {
   created_at: '2026-11-15 12:00:00', status: 'published'
 }]]);
 const DB = {
+  async batch(statements) {
+    const results = [];
+    for (const statement of statements) results.push(await statement.run());
+    return results;
+  },
   prepare(sql) {
     return {
       bind(...args) {
@@ -53,8 +58,10 @@ const DB = {
               return { success: true };
             }
             if (sql.startsWith('INSERT INTO site_admin_audit')) {
+              const conditional = sql.includes('WHERE EXISTS');
+              if (conditional && uploads.get(args[3])?.status !== 'published') return {meta:{changes:0}};
               auditActions.push({actor:args[0],action:args[1],target:args[2]});
-              return {success:true};
+              return {meta:{changes:1}};
             }
             if (sql.startsWith('INSERT INTO uploads')) {
               const [id, title, author, filename, html_content] = args;
@@ -80,7 +87,8 @@ const DB = {
             throw new Error('Unexpected DB all: ' + sql);
           }
         };
-      }
+      },
+      run() { return this.bind().run(); }
     };
   }
 };
