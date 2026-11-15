@@ -1,128 +1,132 @@
 <!doctype html>
 <html lang="nl">
 <head>
- <meta charset="utf-8">
- <meta name="viewport" content="width=device-width, initial-scale=1">
- <meta name="robots" content="noindex,nofollow">
- <meta name="referrer" content="no-referrer">
- <title>EAIgit · Hulp bij je GitHub-project | EAI</title>
- <meta name="description" content="EAIgit onderzoekt je projectbestanden en openbare GitHub-repository. Ontdek wat goed is, wat ontbreekt en hoe je verdergaat.">
- <link rel="icon" href="/assets/eaigit/icon.svg" type="image/svg+xml">
- <link rel="stylesheet" href="/assets/site.css">
- <link rel="stylesheet" href="/assets/projecthulp/projecthulp.css">
- <script type="module" src="/assets/projecthulp/app.mjs"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#f7f9f7">
+<title>EAIgit · Stap voor stap naar GitHub</title>
+<meta name="description" content="EAIgit begeleidt je stap voor stap bij je project en GitHub, met concrete controles en duidelijke vervolgacties.">
+<link rel="icon" href="/assets/eaigit/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/site.css">
+<link rel="stylesheet" href="/assets/eaigit/wizard.css">
+<script type="module" src="/assets/eaigit/wizard.mjs"></script>
 </head>
-<body class="eai-refresh projecthulp-page eaigit-page">
-<a class="skip-link" href="#main-content">Ga naar de inhoud</a>
-<header class="ph-nav"><a href="/tools/eaigit/" aria-label="EAIgit" class="ph-logo"><img src="/assets/eaigit/logo.svg" alt="EAIgit"></a><span class="ph-nav-subtitle">Hulp bij je GitHub-project <span class="ph-beta">proefversie</span></span><a href="/tools/">Alle tools</a></header>
-<main id="main-content" class="ph-shell">
- <div class="ph-intro"><span class="ph-eyebrow">EAIgit</span><h1>Verder met je project.</h1><p>Bekijk wat al goed is, ontdek eventuele problemen en kies je volgende stap. Je bestanden blijven op je eigen apparaat.</p></div>
- <nav class="ph-steps" aria-label="Voortgang">
-  <span class="ph-step active" id="stepLabel1"><b>1</b> Jouw situatie</span><span class="ph-line"></span><span class="ph-step" id="stepLabel2"><b>2</b> Je bestanden</span><span class="ph-line"></span><span class="ph-step" id="stepLabel3"><b>3</b> Jouw advies</span>
- </nav>
- <section class="ph-panel" id="screen1" aria-labelledby="screen1title">
-  <div class="ph-topline">STAP 1 VAN 3</div>
-  <h2 id="screen1title">Wat wil je bereiken?</h2>
-  <p>Kies wat je wilt maken of verbeteren.</p>
-  <fieldset class="ph-choices"><legend class="ph-visually-hidden">Wat wil je bereiken?</legend>
-   <label class="ph-choice"><input type="radio" name="goal" value="site" checked><span><strong>Een website die anderen kunnen openen</strong><small>Bezoekers krijgen een pagina te zien.</small></span></label>
-   <label class="ph-choice"><input type="radio" name="goal" value="app"><span><strong>Een programma of interactieve toepassing</strong><small>Iemand moet er echt iets mee kunnen doen.</small></span></label>
-   <label class="ph-choice"><input type="radio" name="goal" value="code"><span><strong>Mijn project verder kunnen ontwikkelen</strong><small>Bestanden bewaren, aanpassen en versies bijhouden.</small></span></label>
-   <label class="ph-choice"><input type="radio" name="goal" value="docs"><span><strong>Documenten of materiaal delen</strong><small>De inhoud moet overzichtelijk terug te vinden zijn.</small></span></label>
-   <label class="ph-choice ph-choice-quiet"><input type="radio" name="goal" value="unsure"><span><strong>Dat weet ik nog niet precies</strong><small>Help me eerst begrijpen wat ik heb.</small></span></label>
-  </fieldset>
-  <div class="ph-about">
-   <div class="ph-field"><label for="projectAim">Wat moet iemand met je project kunnen doen? <span class="ph-optional">mag je overslaan</span></label><textarea id="projectAim" maxlength="220" rows="2" placeholder="Bijvoorbeeld: bezoekers kunnen een oefening kiezen en zelf uitvoeren"></textarea><small>We nemen jouw beschrijving mee in het advies. Zonder AI kunnen we niet vaststellen of de beschreven functies echt werken.</small></div>
+<body class="eaigit-wizard">
+<a class="eg-skip" href="#eg-main">Ga naar de inhoud</a>
+<header class="eg-header">
+ <a href="/tools/eaigit/" class="eg-logo" aria-label="EAIgit start"><img src="/assets/eaigit/logo.svg" alt="EAIgit"></a>
+ <a href="/tools/" class="eg-header-link">Alle tools</a>
+</header>
+<main class="eg-shell" id="eg-main">
+ <div class="eg-progress" aria-label="Voortgang">
+  <div class="eg-progress-top"><span id="progressLabel">Even kennismaken</span><span id="progressStep">Stap 1 van 4</span></div>
+  <div class="eg-progress-track"><div class="eg-progress-fill" id="progressFill"></div></div>
+ </div>
+ <section class="eg-card" id="stage-intent" aria-labelledby="intentTitle">
+  <p class="eg-kicker">Welkom bij EAIgit</p>
+  <h1 id="intentTitle">Waar wil je hulp bij?</h1>
+  <div class="eg-choices" role="group" aria-label="Kies wat je wilt doen">
+   <button type="button" class="eg-choice" data-intent="start"><span>Mijn bestanden op GitHub zetten</span><span aria-hidden="true">›</span></button>
+   <button type="button" class="eg-choice" data-intent="repair"><span>Mijn project controleren of verbeteren</span><span aria-hidden="true">›</span></button>
+   <button type="button" class="eg-choice" data-intent="publish"><span>Mijn website online zetten</span><span aria-hidden="true">›</span></button>
+   <button type="button" class="eg-choice" data-intent="explore"><span>Ik weet nog niet waar ik moet beginnen</span><span aria-hidden="true">›</span></button>
   </div>
-  <div class="ph-actions"><span class="ph-help">Hierna kun je bestanden toevoegen.</span><button id="toFiles" class="ph-button ph-primary" type="button">Verder <span aria-hidden="true">→</span></button></div>
+  <p class="eg-footnote">Je hebt geen technische kennis nodig.</p>
  </section>
- <section class="ph-panel ph-hidden" id="screen2" aria-labelledby="screen2title">
-  <div class="ph-topline">STAP 2 VAN 3</div>
-  <h2 id="screen2title">Welke bestanden heb je?</h2><p>Kies een ZIP-bestand en plak eventueel de link naar je openbare GitHub-repository.</p>
-  <div class="ph-fields">
-   <div class="ph-field">
-    <label for="repoUrl">Link naar je GitHub-repository</label><input id="repoUrl" type="url" inputmode="url" autocomplete="url" placeholder="https://github.com/gebruiker/project" spellcheck="false" aria-describedby="repoHelp">
-    <small id="repoHelp">Alleen openbare repositories, zonder aanmelden.</small>
-   </div>
-   <div class="ph-field">
-    <label for="zipFile">Onderzoek de inhoud van je ZIP-bestand</label>
-    <label class="ph-drop" id="dropZone" for="zipFile"><span class="ph-upload-icon" aria-hidden="true">↥</span><strong id="fileName">Kies een ZIP om te onderzoeken</strong><span>Of sleep het hierheen · maximaal 16 MB</span></label>
-    <input id="zipFile" class="ph-file-native" type="file" accept=".zip,application/zip,application/x-zip-compressed" aria-describedby="zipHelp">
-    <small id="zipHelp">Alleen in je browser gelezen. GitHub pakt een geüpload ZIP-bestand niet vanzelf uit.</small>
-   </div>
+ <section class="eg-card eg-hidden" id="stage-source" aria-labelledby="sourceTitle">
+  <p class="eg-kicker">Je project</p>
+  <h2 id="sourceTitle">Waar staan je bestanden nu?</h2>
+  <div class="eg-choices" role="group" aria-label="Kies wat je al hebt">
+   <button type="button" class="eg-choice" data-source="zip"><span>Op mijn apparaat, in een ZIP</span><span aria-hidden="true">›</span></button>
+   <button type="button" class="eg-choice" data-source="github"><span>Al op GitHub</span><span aria-hidden="true">›</span></button>
+   <button type="button" class="eg-choice" data-source="both"><span>Op mijn apparaat én GitHub</span><span aria-hidden="true">›</span></button>
+   <button type="button" class="eg-choice" data-source="unknown"><span>Dat weet ik niet</span><span aria-hidden="true">›</span></button>
   </div>
-  <div class="ph-alert ph-hidden" id="inputError" role="alert"></div>
-  <div class="ph-actions"><button id="back1" type="button" class="ph-button ph-plain">← Terug</button><button id="analyze" class="ph-button ph-primary" type="button">Onderzoek mijn project <span aria-hidden="true">→</span></button></div>
-  <div class="ph-privacy"><span aria-hidden="true">◯</span><span>Je ZIP blijft op dit apparaat. EAIgit wijzigt niets in GitHub.</span></div>
+  <button id="sourceBack" class="eg-text-button" type="button">← Terug</button>
  </section>
- <section class="ph-panel ph-hidden" id="screen3" aria-labelledby="screen3title">
-  <div class="ph-topline">JOUW RESULTAAT</div>
-  <h2 id="screen3title">Zo kun je verder.</h2>
-  <div class="ph-summary" id="summary"></div>
-  <section class="ph-first" aria-labelledby="firstTitle">
-   <div class="ph-topline">BEGIN HIER</div>
-   <h3 id="firstTitle">Je volgende stap</h3>
-   <p id="firstText"></p>
-   <div class="ph-first-links">
-    <a id="openRepo" class="ph-button ph-primary ph-hidden" target="_blank" rel="noopener noreferrer">Open je repository</a>
-    <a id="openActions" class="ph-button ph-secondary ph-hidden" target="_blank" rel="noopener noreferrer">Bekijk controles</a>
-   </div>
-  </section>
-  <section class="ph-findings" aria-label="Bevindingen">
-   <div class="ph-findings-section">
-    <h3><span class="ph-icon ph-ok">✓</span> Dit is goed</h3>
-    <ul id="goodPoints"></ul>
-   </div>
-   <div class="ph-findings-section">
-    <h3><span class="ph-icon ph-warn">!</span> Dit vraagt aandacht</h3>
-    <ul id="problemPoints"></ul>
-   </div>
-  </section>
-  <details class="ph-more ph-unknown">
-   <summary>Wat is nog niet getest?</summary>
-   <ul id="unknownPoints"></ul>
-  </details>
-  <section class="ph-next-steps ph-hidden" id="nextStepsGroup"><h3>Daarna</h3><ol id="nextSteps"></ol></section>
-  <section class="ph-guided" aria-labelledby="guidedTitle">
-   <div class="ph-topline">HULP VOOR JE VOLGENDE STAP</div>
-   <h3 id="guidedTitle">Waar wil je mee verder?</h3>
-   <div class="ph-guided-choices" id="guidedChoices">
-    <button class="ph-guide-choice active" type="button" data-guide="onderzoek" aria-pressed="true">Code onderzoeken</button>
-    <button class="ph-guide-choice" type="button" data-guide="verbeter" aria-pressed="false">Probleem oplossen</button>
-    <button class="ph-guide-choice" type="button" data-guide="test" aria-pressed="false">Werking testen</button>
-    <button class="ph-guide-choice" type="button" data-guide="publiceer" aria-pressed="false">Publiceren voorbereiden</button>
-   </div>
-   <div class="ph-guided-detail" id="guideDetail">
-    <h4 id="guideStepTitle"></h4>
-    <p id="guideStepText"></p>
-    <a id="guideUrl" class="ph-guide-link ph-hidden" target="_blank" rel="noopener noreferrer"></a>
-    <details class="ph-more ph-guide-setup" id="guideSetup"><summary>Hulp nodig bij verbinden met GitHub?</summary>
-     <ol>
-      <li>Open <a href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer">ChatGPT</a> en zoek GitHub onder de beschikbare plug-ins.</li>
-      <li>Verbind de repository die je wilt laten lezen. Controleer de gevraagde rechten. <a href="https://help.openai.com/en/articles/11145903-connecting-github-to-chatgpt" target="_blank" rel="noopener noreferrer">Bekijk de uitleg</a>.</li>
-      <li>Voor code wijzigen kun je <a href="https://codex.openai.com/" target="_blank" rel="noopener noreferrer">Codex</a> gebruiken als je account daarvoor toegang heeft. Geef alleen de benodigde rechten.</li>
-     </ol>
-    </details>
-    <button id="revealGuidePrompt" class="ph-button ph-secondary" type="button">Toon opdracht voor deze stap</button>
-    <div id="guidePromptBox" class="ph-hidden">
-     <label for="guidePrompt">Opdracht voor deze stap</label>
-     <textarea id="guidePrompt" rows="6" readonly spellcheck="false"></textarea>
-     <button id="copyGuidePrompt" class="ph-button ph-primary" type="button">Kopieer opdracht</button>
-    </div>
-    <span id="guideStatus" role="status" aria-live="polite"></span>
-   </div>
-  </section>
-  <details class="ph-more ph-templates" id="optionalFiles"><summary>Voorbeeldbestanden nodig?</summary>
-   <div class="ph-downloads"><button type="button" class="ph-button ph-secondary" id="downloadReadme">Voorbeeld README</button><button type="button" class="ph-button ph-secondary" id="downloadIgnore">Voorbeeld .gitignore</button></div>
-  </details>
-  <details class="ph-more ph-auto ph-hidden" id="automationDetails">
-   <summary>Automatische codecontrole instellen</summary>
-   <p>Voeg deze controle na beoordeling toe aan GitHub. Je project wordt niet automatisch gepubliceerd.</p>
-   <button type="button" class="ph-button ph-secondary" id="downloadCheck">Download controlebestand</button>
-  </details>
-  <div class="ph-actions"><button id="back2" type="button" class="ph-button ph-plain">← Gegevens aanpassen</button><button id="reset" type="button" class="ph-button ph-plain">Opnieuw beginnen</button></div>
+ <section class="eg-card eg-hidden" id="stage-zip" aria-labelledby="zipTitle">
+  <p class="eg-kicker">Bestanden op je apparaat</p>
+  <h2 id="zipTitle">Kies je ZIP-bestand</h2>
+  <label for="zipFile" id="zipDrop" class="eg-upload">
+   <span class="eg-upload-symbol" aria-hidden="true">↑</span>
+   <strong id="zipFileName">Bestand kiezen</strong>
+   <span>ZIP, maximaal 16 MB</span>
+  </label>
+  <input id="zipFile" class="eg-file-input" type="file" accept=".zip,application/zip,application/x-zip-compressed">
+  <p class="eg-footnote">Je ZIP blijft op dit apparaat.</p>
+  <p class="eg-error eg-hidden" id="zipError" role="alert"></p>
+  <div class="eg-actions"><button id="zipBack" class="eg-text-button" type="button">← Terug</button><button id="zipNext" class="eg-primary" type="button" disabled>Verder <span aria-hidden="true">→</span></button></div>
  </section>
- <div class="ph-loading ph-hidden" id="loading" role="status" aria-live="polite"><span class="ph-spinner" aria-hidden="true"></span><span id="loadingText">Je bestanden worden bekeken…</span></div>
+ <section class="eg-card eg-hidden" id="stage-repo" aria-labelledby="repoTitle">
+  <p class="eg-kicker">GitHub</p>
+  <h2 id="repoTitle">Wat is de link naar je project?</h2>
+  <label class="eg-label" for="repoUrl">Link naar je openbare repository</label>
+  <input id="repoUrl" type="url" inputmode="url" autocomplete="url" spellcheck="false" placeholder="https://github.com/naam/project" class="eg-input">
+  <p class="eg-error eg-hidden" id="repoError" role="alert"></p>
+  <details class="eg-disclosure">
+   <summary>Waar vind ik deze link?</summary>
+   <p>Open je project op GitHub en kopieer het adres bovenaan in je browser. De link begint met <strong>github.com/</strong>.</p>
+  </details>
+  <div class="eg-actions"><button id="repoBack" class="eg-text-button" type="button">← Terug</button><button id="repoNext" class="eg-primary" type="button">Verder <span aria-hidden="true">→</span></button></div>
+  <button id="repoSkip" class="eg-text-button eg-skip-action" type="button">Ik heb nog geen repository</button>
+ </section>
+ <section class="eg-card eg-hidden" id="stage-aim" aria-labelledby="aimTitle">
+  <p class="eg-kicker">Bijna klaar</p>
+  <h2 id="aimTitle">Wat moet je project straks kunnen?</h2>
+  <label class="eg-label" for="projectAim">Beschrijf dit in één zin, of sla het over</label>
+  <textarea id="projectAim" class="eg-input eg-textarea" maxlength="220" rows="2" placeholder="Bijvoorbeeld: bezoekers kunnen mijn website openen"></textarea>
+  <div class="eg-actions"><button id="aimBack" class="eg-text-button" type="button">← Terug</button><button id="analyze" class="eg-primary" type="button">Bekijk mijn project <span aria-hidden="true">→</span></button></div>
+  <button id="aimSkip" class="eg-text-button eg-skip-action" type="button">Deze vraag overslaan</button>
+ </section>
+ <section class="eg-card eg-hidden" id="stage-result" aria-labelledby="resultTitle">
+  <p class="eg-kicker">Je resultaat</p>
+  <h2 id="resultTitle">Dit is je volgende stap</h2>
+  <div class="eg-result-main">
+   <p id="resultTag" class="eg-result-tag">Aandachtspunt</p>
+   <h3 id="resultHeading"></h3>
+   <p id="resultDescription"></p>
+  </div>
+  <button id="startGuidance" class="eg-primary eg-wide" type="button">Help mij stap voor stap <span aria-hidden="true">→</span></button>
+  <div class="eg-mini-links">
+   <a id="repoLink" class="eg-hidden" target="_blank" rel="noopener noreferrer">Open GitHub</a>
+   <a id="actionsLink" class="eg-hidden" target="_blank" rel="noopener noreferrer">Bekijk controles</a>
+  </div>
+  <div class="eg-result-details">
+   <details id="goodDetails" class="eg-disclosure"><summary><span>Wat is al goed?</span><small id="goodCount"></small></summary><ul id="goodPoints"></ul></details>
+   <details id="issueDetails" class="eg-disclosure"><summary><span>Wat vraagt aandacht?</span><small id="issueCount"></small></summary><ul id="problemPoints"></ul></details>
+   <details id="unknownDetails" class="eg-disclosure"><summary>Wat is nog niet getest?</summary><ul id="unknownPoints"></ul></details>
+  </div>
+  <div class="eg-actions eg-actions-bottom"><button id="resultBack" class="eg-text-button" type="button">← Aanpassen</button><button id="reset" class="eg-text-button" type="button">Opnieuw beginnen</button></div>
+ </section>
+ <section class="eg-card eg-hidden" id="stage-guide" aria-labelledby="guideTitle">
+  <p class="eg-kicker" id="guideCounter">Stap 1</p>
+  <h2 id="guideTitle">Je volgende handeling</h2>
+  <p class="eg-guide-text" id="guideDescription"></p>
+  <a id="guideLink" class="eg-primary eg-action-link eg-hidden" target="_blank" rel="noopener noreferrer">Open GitHub <span aria-hidden="true">↗</span></a>
+  <details class="eg-disclosure eg-guide-tip eg-hidden" id="helpDetails"><summary>Ik heb hier hulp bij nodig</summary><p id="guideTip"></p></details>
+  <details class="eg-disclosure eg-prompt-details eg-hidden" id="promptDetails">
+   <summary>Laat ChatGPT helpen met deze stap</summary>
+   <p>Je kunt deze opdracht kopiëren. Laat wijzigingen altijd eerst controleren.</p>
+   <textarea id="stepPrompt" class="eg-input eg-textarea" rows="5" readonly></textarea>
+   <button id="copyPrompt" class="eg-secondary" type="button">Kopieer opdracht</button>
+   <p id="copyStatus" class="eg-status" role="status" aria-live="polite"></p>
+  </details>
+  <div class="eg-actions"><button id="guideBack" type="button" class="eg-text-button">← Terug</button><button id="guideNext" type="button" class="eg-primary">Deze stap heb ik gedaan <span aria-hidden="true">→</span></button></div>
+  <p class="eg-footnote">EAIgit controleert niet automatisch of je deze handeling hebt uitgevoerd.</p>
+ </section>
+ <section class="eg-card eg-hidden" id="stage-finished" aria-labelledby="finishedTitle">
+  <div class="eg-finished-icon" aria-hidden="true">✓</div>
+  <h2 id="finishedTitle">Je bent door alle stappen heen</h2>
+  <p>Je hebt de stappen afgevinkt. We hebben niet gecontroleerd of iedere handeling is gelukt.</p>
+  <div class="eg-finish-actions">
+   <button id="checkAgain" type="button" class="eg-primary">Controleer mijn project opnieuw</button>
+   <button id="finishReset" type="button" class="eg-text-button">Opnieuw beginnen</button>
+  </div>
+ </section>
+ <div id="loading" class="eg-loading eg-hidden" role="status" aria-live="polite"><span class="eg-spinner" aria-hidden="true"></span><span>Je project wordt bekeken…</span></div>
 </main>
-<footer class="ph-footer"><span>EAIgit</span><a href="/" title="Naar EAI">EAI</a></footer>
-</body></html>
+<footer class="eg-footer"><span>EAIgit</span><a href="/">EAI</a></footer>
+</body>
+</html>
