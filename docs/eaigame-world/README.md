@@ -8,7 +8,19 @@ Dit is de verhaal- en ontwerpbasis voor de volgende EAIgame. De map beschrijft h
 
 [Open de schematische stijlkaart](./sfeerkaart.svg). Dit is een **illustratie van de ontwerprichtingen**, geen gamebeeld of goedgekeurd model. Iedere wijk heeft een ander karakter en palet; het water, de bruggen en de materiaalkeuzes verbinden de wereld.
 
+## Visuele ontwerpstudies
+![Vier gebieden op dezelfde teken- en camerastijl](./regio-studies.svg)
+
+- [Vergelijk de vier gebiedsstijlen](./regio-studies.svg). Identieke kadrering, speler en materiaalafspraken; de omgevingen verschillen in architectuur, sfeer en bedoeling.
+- [Bekijk De Storm in drie camerastanden](./camera-studies.svg). Overzicht, achter de speler en onderzoek bij het waterrad.
+- [Lees de uitgebreide beeldregie](./beeldregie.md) met concrete materialen, herkenbare plekken, animatiegevolgen en assetzoektermen.
+
+Dit zijn **schematische vectorstudies**, geen 3D-renders of screenshots van een werkende game. De eerder gemaakte AI-sfeerbeelden in de chat zijn inspiratie, niet het technische bewijs dat de gewenste kwaliteit al is bereikt.
+
 ## Leesvolgorde
+- [De vier regio-studies](./regio-studies.svg): vergelijkende visuele uitwerking van alle gebieden.
+- [De drie camerastanden](./camera-studies.svg): storyboardbeelden voor De Storm.
+- [De beeldregie](./beeldregie.md): materiaal, belichting, geluid, handeling en zoekprofiel per gebied.
 - [De sfeerkaart](./sfeerkaart.svg): de vier visuele stijlen en hun gedeelde vormtaal.
 - [Het verhaal](./verhaal.md): plaats, personages, aanleiding, verhaallijnen, onthulling en mogelijke afloop.
 - [Storyboard](./storyboard.md): de eerste veertien speelmomenten, per scène met camera, geluid, bediening en zichtbaar gevolg.
