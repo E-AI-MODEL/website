@@ -16,7 +16,7 @@
 <a class="skip-link" href="#main-content">Ga naar de inhoud</a>
 <header class="ph-nav"><a href="/" aria-label="EAI home" class="ph-logo"><img src="/assets/eai-logo.svg" alt=""><span>EAI</span></a><span>Projecthulp <span class="ph-beta">proefversie</span></span><a href="/tools/">Alle tools</a></header>
 <main id="main-content" class="ph-shell">
- <div class="ph-intro"><span class="ph-eyebrow">EAI Work · Praktijkproef zonder AI</span><h1>Van bestanden naar een bruikbaar project.</h1><p>GitHub kan je projectbestanden bewaren. Maar een ZIP-bestand uploaden maakt nog geen werkende website of toepassing. We onderzoeken eerst wat jij wilt bereiken.</p></div>
+ <div class="ph-intro"><span class="ph-eyebrow">EAI Work · Praktijkproef zonder AI</span><h1>Is je project klaar voor GitHub?</h1><p>Een ZIP-bestand uploaden is niet hetzelfde als een project overzetten. We bekijken wat je wilt bereiken, welke bestanden er zijn en wat nog nodig is.</p></div>
  <nav class="ph-steps" aria-label="Voortgang">
   <span class="ph-step active" id="stepLabel1"><b>1</b> Jouw situatie</span><span class="ph-line"></span><span class="ph-step" id="stepLabel2"><b>2</b> Je bestanden</span><span class="ph-line"></span><span class="ph-step" id="stepLabel3"><b>3</b> Jouw advies</span>
  </nav>
@@ -63,11 +63,17 @@
    <span class="ph-topline">JE DOEL EN DE BESTANDEN</span>
    <h3 id="purposeTitle">Wat wil je bereiken?</h3>
    <p id="purposeAim" class="ph-purpose-aim ph-hidden"></p>
-   <div class="ph-purpose-checks">
-    <div><h4><span class="ph-icon ph-ok">✓</span> Dit zien we in het project</h4><ul id="purposeFound"></ul></div>
-    <div><h4><span class="ph-icon ph-warn">?</span> Dit staat nog niet vast</h4><ul id="purposeRemaining"></ul></div>
+   <div class="ph-purpose-brief">
+    <p><span class="ph-icon ph-ok">✓</span><span id="purposeQuickFound"></span></p>
+    <p><span class="ph-icon ph-warn">?</span><span id="purposeQuickRemaining"></span></p>
    </div>
-   <p class="ph-purpose-note">De bestandscontrole geeft aanwijzingen. Of het project werkelijk doet wat je bedoelt, moet je nog uitproberen.</p>
+   <details class="ph-more ph-purpose-more"><summary>Bekijk de volledige doelcontrole</summary>
+    <div class="ph-purpose-checks">
+     <div><h4>Wat we in de bestanden zien</h4><ul id="purposeFound"></ul></div>
+     <div><h4>Wat nog niet vaststaat</h4><ul id="purposeRemaining"></ul></div>
+    </div>
+   </details>
+   <p class="ph-purpose-note">Een bestand vinden is nog geen bewijs dat het project werkt. Dat moet je zelf nog uitproberen.</p>
   </section>
   <section class="ph-first" aria-labelledby="firstTitle">
    <div class="ph-topline">BEGIN HIER</div>
@@ -75,7 +81,7 @@
    <p id="firstText"></p>
    <a id="openRepo" class="ph-button ph-primary ph-hidden" target="_blank" rel="noopener noreferrer">Open je GitHub-repository <span aria-hidden="true">↗</span></a>
   </section>
-  <section class="ph-result-group ph-warning-panel" id="warningsGroup"><h3><span class="ph-icon ph-warn">!</span> Let hierop</h3><ul id="warnings"></ul></section>
+  <details class="ph-more ph-warning-panel" id="warningsGroup"><summary id="warningsTitle">Let hierop</summary><ul id="warnings"></ul></details>
   <details class="ph-more ph-checks"><summary>Bekijk wat we hebben gecontroleerd</summary><ul id="observations"></ul></details>
   <details class="ph-more ph-checks ph-hidden" id="missingGroup"><summary id="missingTitle">Welke bestanden ontbreken?</summary><ul id="missingFiles"></ul></details>
   <section class="ph-plan"><div class="ph-plan-heading"><div><span class="ph-topline">JE PLAN</span><h3>Zo ga je verder in GitHub</h3></div><span class="ph-plan-count" id="planCount"></span></div><ol id="steps"></ol>
