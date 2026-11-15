@@ -44,8 +44,13 @@ export function generateProjectCheckWorkflow(archive){
  }
  if(checks.python){
   lines.push(
-   "      - name: Controleer Python-syntaxis zonder import of uitvoering",
-   "        run: python3 -m compileall -q ."
+   "      - name: Controleer Python-syntaxis zonder import, bytecode of uitvoering",
+   "        shell: bash",
+   "        run: |",
+   "          set -euo pipefail",
+   "          while IFS= read -r -d '' file; do",
+   "            python3 -I -c 'import ast,pathlib,sys; ast.parse(pathlib.Path(sys.argv[1]).read_text(encoding=\"utf-8\"), filename=sys.argv[1])' \"$file\"",
+   "          done < <(find . -type f -name '*.py' -not -path './.git/*' -not -path './.venv/*' -not -path './venv/*' -not -path './node_modules/*' -print0)"
   );
  }
  lines.push(
