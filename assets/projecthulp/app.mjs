@@ -1,6 +1,27 @@
 import {analyzeArchive,fetchPublicRepo,makeAdvice,reportText,readmeTemplate,ignoreTemplate,parseRepoUrl} from "./analyse.mjs";
 const $=(id)=>document.getElementById(id);
-const state={archive:null,repo:null,advice:null,goal:"site",aim:"",experience:"beginner",repoError:null};
+const state={archive:null,repo:null,advice:null,goal:"site",aim:"",experience:"beginner",repoError:null,workerRuns:[]};
+async function runAnalysisWorker(kind,data,transfer=[]){
+ if(typeof Worker!=="function"){
+  const input=kind==="zip"?{name:data.name,size:data.buffer.byteLength,arrayBuffer:async()=>data.buffer}:null;
+  return {result:kind==="zip"?await analyzeArchive(input):await fetchPublicRepo(data.url),worker:"fallback",elapsedMs:null};
+ }
+ const worker=new Worker(new URL("./onderzoek-worker.mjs",import.meta.url),{type:"module"});
+ return new Promise((resolve,reject)=>{
+  let finished=false;
+  const close=()=>{if(finished)return false;finished=true;clearTimeout(timeout);worker.terminate();return true;};
+  const timeout=setTimeout(()=>{if(close())reject(new Error("De controle is niet afgerond. Probeer opnieuw."));},30000);
+  worker.onmessage=event=>{
+   const msg=event.data;
+   if(!msg||msg.id!==1)return;
+   if(!close())return;
+   if(msg.ok)resolve({result:msg.result,worker:"module-worker",elapsedMs:msg.elapsedMs});
+   else reject(new Error(msg.error||"De controle is mislukt."));
+  };
+  worker.onerror=()=>{if(close())reject(new Error("De browser kon de onderzoeksworker niet starten."));};
+  worker.postMessage({id:1,kind,...data},transfer);
+ });
+}
 const setText=(id,text)=>{$(id).textContent=text;};
 const show=(id,on)=>$(id).classList.toggle("ph-hidden",!on);
 function screen(index){
@@ -94,14 +115,29 @@ async function analyze(){
  state.aim=$("projectAim").value.trim().slice(0,220);
  $("analyze").disabled=true;show("loading",true);setText("loadingText","We controleren je bestanden…");
  try{
-  state.archive=null;state.repo=null;state.repoError=null;
-  if(file){
-   try{state.archive=await analyzeArchive(file);}
-   catch(error){setText("inputError",error?.message||"Het ZIP-bestand kon niet worden gelezen.");show("inputError",true);return;}
+  state.archive=null;state.repo=null;state.repoError=null;state.workerRuns=[];
+  // ZIP en GitHub zijn onafhankelijk: beide controles starten vóór de eerste wordt afgewacht.
+  const zipJob=file?(async()=>{
+   const buffer=await file.arrayBuffer();
+   return runAnalysisWorker("zip",{buffer,name:file.name},[buffer]);
+  })():Promise.resolve(null);
+  const githubJob=url?runAnalysisWorker("github",{url}):Promise.resolve(null);
+  const [zipResult,githubResult]=await Promise.allSettled([zipJob,githubJob]);
+  if(zipResult.status==="rejected"){
+   setText("inputError",zipResult.reason?.message||"Het ZIP-bestand kon niet worden gelezen.");
+   show("inputError",true);
+   return;
   }
-  if(url){
-   setText("loadingText","We halen de openbare bestandslijst op bij GitHub…");
-   try{state.repo=await fetchPublicRepo(url);}catch(error){state.repoError=error?.message||"GitHub kon niet worden gecontroleerd.";}
+  if(zipResult.value){
+   state.archive=zipResult.value.result;
+   state.workerRuns.push({task:"zip-inspect",mode:zipResult.value.worker,elapsedMs:zipResult.value.elapsedMs,status:"completed"});
+  }
+  if(githubResult.status==="fulfilled"&&githubResult.value){
+   state.repo=githubResult.value.result;
+   state.workerRuns.push({task:"github-read",mode:githubResult.value.worker,elapsedMs:githubResult.value.elapsedMs,status:state.repo.readable?"completed":"partial"});
+  }else if(githubResult.status==="rejected"){
+   state.repoError=githubResult.reason?.message||"GitHub kon niet worden gecontroleerd.";
+   state.workerRuns.push({task:"github-read",mode:"module-worker",status:"failed",reason:state.repoError});
   }
   state.advice=makeAdvice({goal:state.goal,aim:state.aim,experience:state.experience,archive:state.archive,repo:state.repo});
   render();
@@ -125,13 +161,13 @@ drop.addEventListener("drop",event=>{
 });
 $("downloadReport").addEventListener("click",()=>{
  if(!state.advice)return;
- const text=reportText({archive:state.archive,repo:state.repo,advice:state.advice});
+ const text=reportText({archive:state.archive,repo:state.repo,advice:state.advice,workerRuns:state.workerRuns});
  download("mijn-github-stappenplan.md",text);
 });
 $("downloadReadme").addEventListener("click",()=>{if(state.archive)download("README.md",readmeTemplate(state.archive,state.repo?.name));});
 $("downloadIgnore").addEventListener("click",()=>{if(state.archive)download("gitignore-voorbeeld.txt",ignoreTemplate(state.archive));});
 $("reset").addEventListener("click",()=>{
  $("zipFile").value="";$("repoUrl").value="";setText("fileName","Kies een ZIP om te onderzoeken");show("inputError",false);
- for(const key of ["archive","repo","advice","repoError"])state[key]=null;
+ for(const key of ["archive","repo","advice","repoError"])state[key]=null;state.workerRuns=[];
  document.querySelector('input[name="goal"][value="site"]').checked=true;$("experience").value="beginner";$("projectAim").value="";state.aim="";screen(1);
 });
