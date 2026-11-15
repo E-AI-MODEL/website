@@ -16,3 +16,37 @@
 .player-level-wrap span{color:var(--muted);font-size:11px}
 .player-level-wrap select{font-size:12px;max-width:155px;min-height:36px;border:1px solid #e2d9ee;background:white;color:var(--ink);border-radius:8px;padding:6px}
 @media(max-width:480px){.name-field input{min-width:130px}.player-level-wrap{width:100%;justify-content:flex-end}.player-level-wrap select{max-width:190px}}
+
+/* EAIgame 50: extra functies blijven achter een uitklapmenu. */
+.eaigame-extra{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin:14px 0;box-shadow:0 4px 18px #4633630a}
+.eaigame-extra summary{font-size:13px;font-weight:700;color:var(--ink);cursor:pointer;list-style:revert}
+.eaigame-extra-buttons,.eaigame-oefenopties{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:14px}
+.eaigame-extra-buttons button,.eaigame-oefenopties button{white-space:normal;text-align:left;min-height:38px;font-size:11px;padding:9px;border-radius:9px}
+.eaigame-extra button[aria-pressed="true"]{color:#5a2ca9;border-color:#a781e6;background:#f0e7ff}
+.eaigame-vraagtools,.eaigame-feedback-actions{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.eaigame-vraagtools button,.eaigame-feedback-actions button{font-size:12px;border-radius:9px;min-height:36px}
+.eaigame-feedback-actions button[aria-pressed="true"]{border-color:var(--nature);color:var(--nature)}
+.eaigame-bron{font-size:11px;color:var(--muted);line-height:1.4}
+.eaigame-contrast{--bg:#fff;--ink:#171124;--muted:#3b334b;--line:#6a5b76}
+.eaigame-contrast .tile{outline:1px solid #3d344a;outline-offset:-1px}
+.eaigame-rust .island svg{filter:saturate(.55)}
+.eaigame-rust .board-center,.eaigame-rust .board-shell{box-shadow:none}
+.eaigame-rust .water-ring{display:none}
+.eaigame-groot .board-caption,.eaigame-groot .muted,.eaigame-groot .turn-player p,.eaigame-groot .player-name{font-size:clamp(12px,1.1rem,16px)}
+.eaigame-groot #questionPrompt{font-size:clamp(26px,4vw,34px)}
+.eaigame-groot .answer-option{font-size:16px}
+#eaigame-saved-games{display:grid;gap:8px;margin:16px 0}
+#eaigame-editor{max-width:min(94vw,590px);max-height:90vh;overflow:auto}
+#eaigame-editor label{display:block;font-size:12px;margin-top:10px}
+#eaigame-editor input,#eaigame-editor select,#eaigame-editor textarea{width:100%;min-height:38px;padding:9px;border:1px solid #ddd2e9;border-radius:9px;background:white;color:var(--ink)}
+@media(max-width:440px){.eaigame-extra-buttons{grid-template-columns:1fr 1fr}.eaigame-extra-buttons button{min-height:42px}}
+@media print{
+ .header-actions,.sidebar,.footer-button,.eaigame-extra,dialog,.board-caption,#roll,#confetti,.page-intro .edition{display:none!important}
+ body{background:white!important;color:black!important}
+ .topbar,.page-intro,main{max-width:100%;padding:4px!important;margin:0!important}
+ .game-layout{display:block!important}
+ .board-section{width:100%;max-width:185mm;margin:auto}
+ .board-shell{box-shadow:none!important}
+ .board{break-inside:avoid}
+ .tile{print-color-adjust:exact;-webkit-print-color-adjust:exact}
+}
