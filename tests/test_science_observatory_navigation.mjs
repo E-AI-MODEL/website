@@ -50,9 +50,9 @@ test('Nederlands en Engels tonen observatoria apart van ontwerptools', () => {
   const nav = load('assets/site-refresh.js');
   assert.match(nl, /id="observatoria"/);
   assert.match(nl, /id="ontwerpen"/);
-  assert.match(en, /Interactive observatories/);
-  assert.match(nav, /Natuurkundeproeven/);
-  assert.match(nav, /Physics experiments/);
+  assert.match(en, /Subject knowledge and interactive models/);
+  assert.match(nav, /Natuurkunde/);
+  assert.match(nav, /Physics \(Dutch\)/);
 });
 
 test('Websitegenerator gebruikt de bronbestanden en aparte observatoriarubriek', () => {
@@ -64,9 +64,9 @@ test('Websitegenerator gebruikt de bronbestanden en aparte observatoriarubriek',
 
 test('Publieke menu bevat de afzonderlijke experimenten en behoudt alle adressen', () => {
   const source = load('scripts/prepare_ui.py');
-  assert.match(source, /'Proeven & modellen'/);
-  assert.match(source, /'Experiments & models'/);
-  assert.match(source, /'Artikelen & onderzoek'/);
+  assert.match(source, /'Vakinhoud'/);
+  assert.match(source, /'Subject knowledge'/);
+  assert.match(source, /'Onderzoek & publicaties'/);
   assert.match(source, /'Natuurkunde'/);
   assert.match(source, /'Wiskunde A'/);
   assert.match(source, /'Wiskunde B'/);

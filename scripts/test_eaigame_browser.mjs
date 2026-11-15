@@ -26,10 +26,27 @@ async function session(name,viewport,offline=false){
  await page.addInitScript(()=>{Math.random=()=>.99});
  await page.goto(origin+'/tools/eaigame/',{waitUntil:'domcontentloaded',timeout:20000});
  await page.locator('#setup button[type=submit]').waitFor({state:'visible'});
+ const landingStage=await page.locator('#landing-board').boundingBox();
+ assert.ok(landingStage?.width>295&&landingStage?.height>290,'Startscherm toont een eigen groot speelbord');
+ assert.equal(await page.locator('#landing-board #world').count(),1,'Canvas staat in het bordvlak');
  await page.screenshot({path:'test-results/eaigame-'+name+'-landing.png'});
  await page.locator('#minus').click(); // solo: maximaal twaalf beurten om zes gebieden te herstellen
  await page.locator('#setup button[type=submit]').click();
  assert.ok(await page.locator('#game-ui').isVisible(),'Spel verschijnt na starten');
+ assert.equal(await page.locator('#game-board #world').count(),1,'Hetzelfde 3D-bord blijft zichtbaar na starten');
+ assert.match(await page.locator('#roll').textContent(),/Gooi dobbelsteen/i,'De hoofdactie gebruikt begrijpelijke woorden');
+ if(!offline)await page.locator('#game-board .world-label').first().waitFor({state:'visible',timeout:25000});
+ const stage=await page.locator('#game-board').boundingBox();
+ const bounds=await page.locator('#world').boundingBox();
+ assert.ok(stage?.width>295&&stage?.height>290,'Hele bord heeft een volwaardig oppervlak');
+ assert.ok(bounds?.width>=stage.width-2&&bounds?.height>=stage.height-2,'Canvas vult het bordvlak');
+ if(name==='mobile'){
+   assert.ok(stage.x>=0&&stage.x+stage.width<=viewport.width+2,'Het complete bord past horizontaal op mobiel');
+   const rollBox=await page.locator('#roll').boundingBox();
+   assert.ok(rollBox&&rollBox.y+rollBox.height<stage.y,'Werpknop staat boven het bord op mobiel');
+   assert.ok(stage.y+stage.height<=viewport.height+6,'Het hele spelbord past op mobiel binnen het eerste scherm');
+ }
+ const startingView=await page.locator('#world').getAttribute('data-camera-distance');
  for(let area=0;area<6;area++){
   await page.locator('#roll').click();
   if(area===0)await page.screenshot({path:'test-results/eaigame-'+name+'-playing.png'});
@@ -38,6 +55,11 @@ async function session(name,viewport,offline=false){
   assert.ok(await button.count()===1,'Gebied bereikbaar na worp van zes');
   await button.click();
   await page.locator('#challenge').waitFor({state:'visible'});
+  if(area===0&&!offline){
+    const viewed=await page.locator('#world').getAttribute('data-camera-distance');
+    assert.equal(viewed,startingView,'Bezoek aan een gebied zoomt niet automatisch in');
+    assert.equal(await page.locator('#world').getAttribute('data-camera-view'),'overview','Bord blijft in overzichtsstand');
+  }
   const found=await page.evaluate(async()=>{
    const {QUESTION_BANK}=await import('/assets/eaigame-questions.js');
    const text=document.getElementById('challenge-question').textContent;
@@ -64,6 +86,7 @@ async function session(name,viewport,offline=false){
  if(process.env.EAIGAME_REQUIRE_3D==='1'&&!offline)assert.equal(renderer,'three','Echte 3D-renderer moet geladen zijn');
  await page.locator('#restart').click();
  assert.ok(await page.locator('#setup').isVisible(),'Een nieuw spel kan starten');
+ assert.equal(await page.locator('#landing-board #world').count(),1,'Na herstart staat het 3D-bord terug op startscherm');
  console.log('EAIgame',name,'renderer:',renderer,'vragen:',6,'horizontale overflow:',scrollWidth-viewportWidth);
  await context.close();
 }
