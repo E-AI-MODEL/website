@@ -69,7 +69,13 @@ try {
         await search.fill('hartslag');
         await page.locator('#eai-site-search-results a[href="/tools/anatomie/labs/hartslag/"]').waitFor();
         await search.fill('binomiale');
-        await page.locator('#eai-site-search-results a[href="/tools/science-observatory/labs/wiskunde-a/#binom"]').waitFor();
+        const binomial = page.locator('#eai-site-search-results a[href="/tools/science-observatory/labs/wiskunde-a/#binom"]');
+        await binomial.waitFor();
+        assert.match(await binomial.locator('.eai-site-search-hit-description').innerText(), /Verander n, p en k/, 'Zoekresultaat beschrijft wat de proef laat veranderen');
+        await search.fill('keuzes verantwoorden');
+        const choices = page.locator('#eai-site-search-results a[href="/werkvormen/justification-mapping/"]');
+        await choices.waitFor();
+        assert.match(await choices.locator('.eai-site-search-hit-description').innerText(), /AI-bijdrage/, 'Zoekresultaat laat de inhoud van de werkvorm zien');
         await search.fill('');
         assert(await page.locator('.eai-site-menu-sections').isVisible(), 'Empty search restores navigation');
       }
