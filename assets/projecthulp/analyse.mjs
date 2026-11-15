@@ -77,7 +77,7 @@ export async function analyzeArchive(file){
   try{manifest=JSON.parse(await readZipText(zip,manifestEntry,TEXT_LIMIT));if(!manifest||typeof manifest!=="object"||Array.isArray(manifest))throw new Error("geen geldig JSON-object");}
   catch(e){manifestError="package.json kon niet veilig worden gelezen: "+e.message;}
  }
- const project=describeProject(eligible,manifest);
+ const project=describeProject(eligible,manifest && typeof manifest==="object" && !Array.isArray(manifest)?manifest:{});
  return {name:file.name,archiveSize:file.size,files:paths,total:zip.total,prefix:root.prefix,eligible,ignored,secret,project,manifest,manifestError};
 }
 export function compareProjects(archive,repo){
