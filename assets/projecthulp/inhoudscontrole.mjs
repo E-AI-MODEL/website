@@ -39,14 +39,14 @@ function references(path,text){
  const found=[];
  function extract(re,kind,group){
   let m;while((m=re.exec(text))&&found.length<160){
-   const raw=m[group]||"";if(raw)found.push({raw,kind,line:numberLine(text,m.index)});
+   const raw=Array.isArray(group)?group.map(i=>m[i]).find(Boolean)||"":m[group]||"";if(raw)found.push({raw,kind,line:numberLine(text,m.index)});
   }
  }
  if(/\.html?$/i.test(path)){
   extract(/\b(?:src|href|poster)\s*=\s*(["'])([^"'<>]+)\1/gi,"html",2);
  }
  if(/\.css$/i.test(path)){
-  extract(/\burl\s*\(\s*(?:["']([^"']+)["']|([^)]{1,240}))\s*\)/gi,"css",1);
+  extract(/\burl\s*\(\s*(?:["']([^"']+)["']|([^)]{1,240}))\s*\)/gi,"css",[1,2]);
   extract(/@import\s+(?:url\s*\(\s*)?["']([^"']+)["']/gi,"css",1);
  }
  if(SCRIPT_FILE.test(path)){
@@ -121,4 +121,35 @@ export function goalTestFromAim(aim,signals={}){
   evidence:[],tested:false};
  return {id:selected.id,title:selected.title,action:selected.action,
   evidence:Array.isArray(signals?.[selected.id])?signals[selected.id].slice(0,5):[],tested:false};
+}
+
+const REPO_TEXT=/\.(?:html?|css|[cm]?js|jsx|tsx?|json|vue|svelte|py)$/i;
+const REPO_PRIVATE=/(^|\/)(?:\.env(?:\..+)?|id_(?:rsa|ed25519)|[^/]+\.pem|credentials?\.[^/]*|secrets?\.[^/]*)$/i;
+const REPO_IGNORE=/(^|\/)(?:node_modules|vendor|dist|build|coverage|\.git|\.next|\.venv)\/|(^|\/)(?:package-lock|pnpm-lock|yarn\.lock)(?:\.json)?$/i;
+const rankFile=p=>p==="index.html"?0:p==="package.json"?1:p==="public/index.html"?2:
+ /(^|\/)(?:main|app|index)\.[cm]?[jt]sx?$/i.test(p)?3:/\.html?$/i.test(p)?4:/\.css$/i.test(p)?5:6;
+// Alleen publieke, korte GitHub-blobs, met extra hashcontrole. Geen willekeurige downloadlinks.
+export async function inspectPublicBlobs(api,entries,paths,fetcher,headers){
+ const candidates=entries.filter(x=>x.type==="blob"&&REPO_TEXT.test(x.path)&&
+  Number.isSafeInteger(x.size)&&x.size<=100000&&x.size>=0&&
+  /^[a-f0-9]{40}$/i.test(x.sha||"")&&!REPO_PRIVATE.test(x.path)&&!REPO_IGNORE.test(x.path))
+  .sort((a,b)=>rankFile(a.path)-rankFile(b.path)||a.path.localeCompare(b.path));
+ const selected=candidates.slice(0,6),records=[];
+ const checks=await Promise.allSettled(selected.map(async(entry)=>{
+  const response=await fetcher(api+"/git/blobs/"+entry.sha,{
+   headers,redirect:"error",signal:AbortSignal.timeout(8500)});
+  if(!response.ok)return null;
+  const data=await response.json();
+  if(data.encoding!=="base64"||typeof data.content!=="string"||data.size!==entry.size||
+   data.content.length>150000||typeof atob!=="function")return null;
+  const bytes=Uint8Array.from(atob(data.content.replace(/\s/g,"")),x=>x.charCodeAt(0));
+  if(bytes.length!==entry.size||await gitBlobId(bytes)!==entry.sha.toLowerCase())return null;
+  return {path:entry.path,text:new TextDecoder("utf-8",{fatal:true}).decode(bytes)};
+ }));
+ for(const check of checks){if(check.status==="fulfilled"&&check.value)records.push(check.value);}
+ const result=inspectProjectTexts(records,paths);
+ result.incomplete=result.incomplete||records.length<candidates.length;
+ result.notInspectedCount=Math.max(0,candidates.length-records.length);
+ result.source="github-public-blobs";
+ return result;
 }
