@@ -7,6 +7,7 @@ import hashlib
 import html
 import json
 import re
+from functools import lru_cache
 from pathlib import Path
 from urllib.parse import urlsplit
 from bs4 import BeautifulSoup
@@ -24,6 +25,7 @@ def canonical(path: str) -> str:
     path = '/' + path.strip('/') + '/' if path.strip('/') else '/'
     return ALIASES.get(path, path)
 
+@lru_cache(maxsize=2)
 def groups(en: bool):
     """Publieke hoofdroutes, gescheiden van alle onderliggende proeven."""
     if en:
@@ -45,6 +47,7 @@ def groups(en: bool):
     ]
 
 
+@lru_cache(maxsize=2)
 def experiment_sections(en: bool):
     """Use the model's own catalogue and IDs, never a second handwritten list."""
     sources = Path(__file__).resolve().parent.parent / 'content' / 'science-observatory' / 'labs'
@@ -96,6 +99,7 @@ def experiment_sections(en: bool):
 
 
 
+@lru_cache(maxsize=2)
 def education_sections(en: bool):
     """Read every public EAI workform from its existing published source."""
     root = Path(__file__).resolve().parent.parent
@@ -125,6 +129,7 @@ def education_sections(en: bool):
     return groups_
 
 
+@lru_cache(maxsize=2)
 def tool_sections(en: bool):
     """Available public tools and their existing subpages."""
     if en:
@@ -140,6 +145,7 @@ def tool_sections(en: bool):
     ]
 
 
+@lru_cache(maxsize=2)
 def reading_sections(en: bool):
     """Use published article directories instead of an incomplete manual shortlist."""
     root = Path(__file__).resolve().parent.parent
@@ -178,6 +184,7 @@ def menu_named_sections(en: bool, sections: list, overview: tuple) -> str:
     return head + '<div class="eai-site-topic-links">' + ''.join(blocks) + '</div>'
 
 
+@lru_cache(maxsize=2)
 def menu_topic_html(en: bool) -> str:
     def safe(value):
         return html.escape(value, quote=True)
