@@ -25,7 +25,7 @@ function attachQuestion(){
  }
  $('#eaigame-hint').hidden=!currentQ.hint;
  $('#eaigame-speak').hidden=!('speechSynthesis' in window);
- $('#eaigame-question-origin').textContent=currentQ.origin==='eai-300'?'Redactionele EAIgame-vraag bij een SLO-leergebied. Niveau niet geijkt.':'Originele/eigen vragenbank. Controleer vragen voor gebruik.';
+ $('#eaigame-question-origin').textContent=currentQ.origin==='eai-niveaupilot'?'Niveauproef met andere denkstappen per niveau. Redactioneel EAIgame-concept bij SLO-leergebied; niveau niet geijkt.':currentQ.origin==='eai-300'?'Redactionele EAIgame-vraag bij een SLO-leergebied. Niveau niet geijkt.':'Originele/eigen vragenbank. Controleer vragen voor gebruik.';
 }
 const baseFeedback=showFeedback;
 showFeedback=function(q,correct,newMedal){
