@@ -25,8 +25,9 @@ export const HELP_TOPICS={
  review:{title:"Wat is een pull request?",intro:"Met een pull request kun je wijzigingen beoordelen voordat ze onderdeel worden van de hoofdversie.",steps:["Laat de wijziging bij voorkeur in een aparte branch maken.","Bekijk welke bestanden veranderen en waarom.","Controleer wat de tests daadwerkelijk hebben gedaan.","Voeg pas samen na je eigen beoordeling."],links:[{label:"Wijzigingen beoordelen",url:"https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/reviewing-changes-in-pull-requests/about-pull-request-reviews"}]},
 };
 export const HELP_CATEGORIES=[
- {id:"start",title:"Beginnen met GitHub",topics:["source","zip","unzip","repo","create","upload","private"]},
- {id:"project",title:"Je project verbeteren",topics:["actions","compare","references","try","review","publishing"]},
+ {id:"intake",title:"Eerst je situatie bepalen",topics:["goal","aim","findings"]},
+ {id:"start",title:"Beginnen met GitHub",topics:["source","zip","unzip","repo","create","upload","files","private","safe"]},
+ {id:"project",title:"Je project verbeteren",topics:["repoStep","actions","compare","references","try","review","publishing"]},
  {id:"chatgpt",title:"ChatGPT en programmeren",topics:["chatgpt","plugins","skills","codex"]}
 ];
 export const HELP_BY_STEP={
