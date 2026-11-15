@@ -30,8 +30,12 @@ const conciseCorrect={
  'stad-12':'Het partijprogramma',
  'atelier-02':'Zoek de oorzaak van de fout',
  'atelier-04':'Handelingen herhalen',
- 'atelier-07':'Bezoek de officiële website',
- 'atelier-11':'Bron en berekening controleren',
+ 'atelier-07':'Ga naar de echte site',
+ 'atelier-11':'Bron en berekening',
+ 'echo-05':'Regen maakt de weg nat',
+ 'echo-14':'Zijn hart is van steen',
+ 'stad-03':'Je mag je mening uiten',
+ 'atelier-05':'Een actie na een voorwaarde',
  'echo-13':'Controleer de bron'
 };
 // In waar/onwaar wisselen ware en onware stellingen af; dat is inhoudelijke redactie.
