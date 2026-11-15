@@ -151,17 +151,16 @@ def navigation(soup: BeautifulSoup, path: str, en: bool) -> str:
     for title, entries in groups(en):
         active = any((path_here == canonical(target) or path_here.startswith(canonical(target))) and canonical(target) not in ('/nl/', '/en/') for _, target in entries)
         active_cls = ' is-current' if active else ''
-        links = ''.join(f'<a href="{html.escape(target, quote=True)}"' + (' aria-current="page"' if path_here == canonical(target) else '') + f'>{html.escape(label)}</a>' for label, target in entries)
-        menu.append(f'<details class="eai-site-group{active_cls}" name="eai-navigation-theme"><summary>{html.escape(title)}</summary><div class="eai-site-group-links">{links}</div></details>')
+        model_group = title in ('Proeven & modellen', 'Experiments & models')
+        links = menu_topic_html(en) if model_group else ''.join(f'<a href="{html.escape(target, quote=True)}"' + (' aria-current="page"' if path_here == canonical(target) else '') + f'>{html.escape(label)}</a>' for label, target in entries)
+        menu.append(f'<details class="eai-site-group{active_cls}" name="eai-navigation-theme"><summary>{html.escape(title)}</summary><div class="eai-site-group-links{" eai-site-model-links" if model_group else ""}">{links}</div></details>')
     primary = []
     for title, entries in groups(en):
         # About/Over blijft beschikbaar in Meer en in de voettekst.
         # Zo houdt de brede navigatie zes korte, inhoudelijke bestemmingen.
-        if title in ('About', 'Over'):
+        if title in ('About EAI', 'Over EAI'):
             continue
         target = entries[0][1]
-        if title in ('Observatoria', 'Observatories'):
-            target = '/en/tools/#observatoria' if en else '/nl/tools/#observatoria'
         current = ' aria-current="page"' if any(path_here == canonical(item[1]) or (canonical(item[1]) not in ('/nl/', '/en/') and path_here.startswith(canonical(item[1]))) for item in entries) else ''
         primary.append(f'<a href="{html.escape(target, quote=True)}"{current}>{html.escape(title)}</a>')
     nav_label = 'Main navigation' if en else 'Hoofdnavigatie'
@@ -172,7 +171,13 @@ def navigation(soup: BeautifulSoup, path: str, en: bool) -> str:
     upload_button = ('<a class="eai-site-upload" href="/tools/html-galerij/" aria-label="' + upload_label + '">'
                      '<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4m0 0L7 9m5-5 5 5M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg>'
                      '<span>' + upload_label + '</span></a>')
-    return f'<header class="eai-masthead" data-eai-static-nav><nav class="eai-site-nav" aria-label="{nav_label}"><a class="eai-site-brand" href="{home}" aria-label="EAI home"><img src="/assets/eai-logo.svg" width="32" height="32" alt=""><span>EAI</span></a><div class="eai-site-primary" aria-label="{nav_label}">{"".join(primary)}</div><div class="eai-site-controls">{upload_button}<div class="eai-site-language" role="group" aria-label="{lang_label}">{"".join(language_links)}</div><details class="eai-site-menu"><summary aria-controls="eai-site-menu-panel" aria-label="{more_label}"><svg aria-hidden="true" viewBox="0 0 20 18" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M1 3h18M1 9h18M1 15h18"/></svg><span>{more_label}</span></summary><div class="eai-site-menu-panel" id="eai-site-menu-panel"><span class="eai-menu-heading">{menu_heading}</span>{"".join(menu)}</div></details></div></nav></header>'
+    search_label = 'Search the site' if en else 'Zoek een proef, model of artikel'
+    result_label = 'Search results' if en else 'Zoekresultaten'
+    search_box = (f'<div class="eai-site-search"><label for="eai-site-search-input">{search_label}</label>'
+                  f'<input id="eai-site-search-input" type="search" autocomplete="off" enterkeyhint="search"'
+                  f' placeholder="{search_label}" aria-controls="eai-site-search-results"></div>'
+                  f'<div class="eai-site-search-results" id="eai-site-search-results" aria-label="{result_label}" hidden></div>')
+    return f'<header class="eai-masthead" data-eai-static-nav><nav class="eai-site-nav" aria-label="{nav_label}"><a class="eai-site-brand" href="{home}" aria-label="EAI home"><img src="/assets/eai-logo.svg" width="32" height="32" alt=""><span>EAI</span></a><div class="eai-site-primary" aria-label="{nav_label}">{"".join(primary)}</div><div class="eai-site-controls">{upload_button}<div class="eai-site-language" role="group" aria-label="{lang_label}">{"".join(language_links)}</div><details class="eai-site-menu"><summary aria-controls="eai-site-menu-panel" aria-label="{more_label}"><svg aria-hidden="true" viewBox="0 0 20 18" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M1 3h18M1 9h18M1 15h18"/></svg><span>{more_label}</span></summary><div class="eai-site-menu-panel" id="eai-site-menu-panel">{search_box}<div class="eai-site-menu-sections"><span class="eai-menu-heading">{menu_heading}</span>{"".join(menu)}</div></div></details></div></nav></header>'
 
 
 def footer(en: bool) -> str:
@@ -199,6 +204,11 @@ def prepare(root: Path) -> dict:
     editorial_sources = ''.join(Path(__file__).with_name(name).read_text() for name in ('editorial_ui.py', 'archive_review.py', 'home_model.py'))
     editorial_sources += ''.join(p.read_text() for p in sorted(templates.glob('*.html')))
     revision = hashlib.sha256((json.dumps(manifest, sort_keys=True) + Path(__file__).read_text() + editorial_sources).encode()).hexdigest()[:12]
+    # A single index for all public pages and every named model.
+    # These URLs are existing routes; search never creates a new destination.
+    (assets / 'site-search-index.json').write_text(
+        json.dumps(site_search_records(root), ensure_ascii=False, separators=(',', ':')) + '\n',
+        encoding='utf-8')
     changed = []
     for page in sorted(root.rglob('*.html')):
         relative = page.relative_to(root)
