@@ -275,7 +275,10 @@ try {
   await page.keyboard.up('Shift');
   assert(Math.hypot(...(await state(page)).pan.map((v,i)=>v-panBefore[i]))>.05,
     'Shift-slepen verplaatst het hart in plaats van te draaien');
-  await page.waitForTimeout(80);
+  // WebKit kan langer dan 80 ms nodig hebben om de nieuwe cameraprojectie te tekenen.
+  // Wacht op echte bijwerking van de lijn; een stilgevallen renderer blijft falen.
+  await page.waitForFunction(previous=>document.querySelector('#flowOverlay path')?.getAttribute('d')!==previous,
+    flowBeforePan,{timeout:6000});
   assert.notEqual(await page.locator('#flowOverlay path').first().getAttribute('d'),flowBeforePan,
     'Ook bij verschuiven blijven de routes aan het hart gekoppeld');
   await page.locator('#resetCamera').click();
