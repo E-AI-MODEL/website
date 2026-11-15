@@ -87,9 +87,10 @@ body.eai-ui.eai-story-page .eai-card-deck:focus-visible {
 }
 body.eai-ui.eai-story-page .eai-card-deck > .eai-card-deck-slide {
   flex:0 0 calc(100% - 4px)!important;
+  flex-shrink:0!important;
   width:calc(100% - 4px)!important;
+  min-width:calc(100% - 4px)!important;
   max-width:calc(100% - 4px)!important;
-  min-width:0!important;
   height:auto;
   margin:0!important;
   box-sizing:border-box;
