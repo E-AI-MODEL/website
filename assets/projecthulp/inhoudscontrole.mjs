@@ -125,7 +125,7 @@ export function goalTestFromAim(aim,signals={}){
 
 const REPO_TEXT=/\.(?:html?|css|[cm]?js|jsx|tsx?|json|vue|svelte|py)$/i;
 const REPO_PRIVATE=/(^|\/)(?:\.env(?:\..+)?|id_(?:rsa|ed25519)|[^/]+\.pem|credentials?\.[^/]*|secrets?\.[^/]*)$/i;
-const REPO_IGNORE=/(^|\/)(?:node_modules|vendor|dist|build|coverage|\.git|\.next|\.venv)\/|(^|\/)(?:package-lock|pnpm-lock|yarn\.lock)(?:\.json)?$/i;
+const REPO_IGNORE=/(^|\/)(?:node_modules|vendor|coverage|\.git|\.next|\.venv)\/|(^|\/)(?:package-lock|pnpm-lock|yarn\.lock)(?:\.json)?$/i;
 const rankFile=p=>p==="index.html"?0:p==="package.json"?1:p==="public/index.html"?2:
  /(^|\/)(?:main|app|index)\.[cm]?[jt]sx?$/i.test(p)?3:/\.html?$/i.test(p)?4:/\.css$/i.test(p)?5:6;
 // Alleen publieke, korte GitHub-blobs, met extra hashcontrole. Geen willekeurige downloadlinks.
@@ -193,4 +193,20 @@ export async function fetchPublicChecks(api,branch,paths,fetcher,headers){
   }
  }
  return result;
+}
+
+export function inspectFileSignature(path,bytes){
+ const required={
+  png:[137,80,78,71,13,10,26,10],
+  pdf:[37,80,68,70,45],
+  jpg:[255,216,255],
+  jpeg:[255,216,255],
+  gif:[71,73,70,56],
+  webp:[82,73,70,70]
+ };
+ const ext=String(path).split(".").pop().toLowerCase(),signature=required[ext];
+ if(!signature||signature.every((n,i)=>bytes[i]===n)&&
+  (ext!=="webp"||[87,69,66,80].every((n,i)=>bytes[i+8]===n)))return null;
+ return {type:"format-mismatch",severity:"attention",path,line:null,title:"Bestandsformaat klopt niet",
+  detail:"De inhoud heeft niet de verwachte bestandskop voor een ."+ext+"-bestand. Controleer of het beschadigd of verkeerd benoemd is."};
 }
