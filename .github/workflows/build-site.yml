@@ -18,6 +18,8 @@ on:
       - 'scripts/prepare_ui.py'
       - 'services/html-galerij/**'
       - 'tests/test_html_galerij_publish.py'
+      - 'tests/test_eai_site_admin_publish.py'
+      - 'beheer/**'
       - 'tools/html-galerij/index.html'
       - 'tools/lo-aanvalslab/**'
       - 'scripts/build_anatomie.py'
@@ -54,6 +56,8 @@ on:
       - 'scripts/prepare_ui.py'
       - 'services/html-galerij/**'
       - 'tests/test_html_galerij_publish.py'
+      - 'tests/test_eai_site_admin_publish.py'
+      - 'beheer/**'
       - 'tools/html-galerij/index.html'
       - 'tools/lo-aanvalslab/**'
       - 'scripts/build_anatomie.py'
@@ -165,6 +169,9 @@ jobs:
 
       - name: Check HTML gallery static publication
         run: python -m unittest discover -s tests -p 'test_html_galerij_publish.py' -v
+
+      - name: Check standalone website administration entrance
+        run: python -m unittest discover -s tests -p 'test_eai_site_admin_publish.py' -v
 
       - name: Check HTML gallery admin routes and client script
         run: node tests/test_html_galerij_admin.mjs
