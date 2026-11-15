@@ -46,8 +46,21 @@ function render(){
  state.guidance=makeGuidance({archive,repo,advice,goal:state.goal,aim:state.aim,repoError});
  const guidance=state.guidance;
  list("goodPoints",guidance.good);
- const problems=guidance.problems.map(p=>p.title+": "+p.detail);
- list("problemPoints",problems.length?problems:["Geen concrete fout vastgesteld binnen deze controles. De code is nog niet functioneel getest."]);
+ const problems=guidance.problems;
+ const issues=$("problemPoints");issues.replaceChildren();
+ if(!problems.length){const li=document.createElement("li");li.textContent="Geen concrete fout vastgesteld binnen deze beperkte controle. De code is niet functioneel getest.";issues.append(li);}
+ for(const problem of problems){
+  const li=document.createElement("li");
+  const strong=document.createElement("strong");strong.textContent=problem.title+". ";li.append(strong);
+  li.append(document.createTextNode(problem.detail));
+  if(problem.path&&repo?.readable&&repo?.paths?.includes(problem.path)&&repo?.branch&&guidance.repoUrl){
+   const link=document.createElement("a");
+   link.href=guidance.repoUrl+"/blob/"+encodeURIComponent(repo.branch)+"/"+problem.path.split("/").map(encodeURIComponent).join("/")+(problem.line?"#L"+problem.line:"");
+   link.target="_blank";link.rel="noopener noreferrer";link.textContent="Bekijk "+problem.path+(problem.line?" regel "+problem.line:"")+" in GitHub";
+   li.append(document.createTextNode(" "),link);
+  }
+  issues.append(li);
+ }
  list("unknownPoints",guidance.uncertain);
  $("nextPrompt").value=continuationPrompt(guidance,{repo});
  setText("promptStatus","");
@@ -81,6 +94,9 @@ function render(){
  const repoLink=$("openRepo");
  show("openRepo",Boolean(repo?.url));
  if(repo?.url)repoLink.href=repo.url;
+ const actionLink=$("openActions");
+ show("openActions",Boolean(guidance.actionsUrl));
+ if(guidance.actionsUrl)actionLink.href=guidance.actionsUrl;
  repoLink.firstChild.textContent=archive?.secret?.length||purpose?.repoOnlyZips?"Bekijk GitHub, upload nog niets ":"Open je GitHub-repository ";
  let firstTitle="Dit kun je nu doen";
  if(archive?.secret?.length)firstTitle="Controleer eerst je privébestanden";
