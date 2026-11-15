@@ -29,11 +29,13 @@
   const follow = stage.querySelector('#eaigame-3d-follow');
   const closeButton = stage.querySelector('#eaigame-3d-close');
   const viewSwitch = document.getElementById('eaigame-view-switch');
+  const caption = document.getElementById('boardCaption');
+  let originalCaption = '';
   const prefersLessMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const CDN = 'https://cdn.jsdelivr.net/npm/three@0.173.0/build/three.module.js';
   let three = null, scene = null, camera = null, renderer = null, observer = null;
   let opening = false, open = false, frame = 0, mode = 'overview', lastFrame = 0;
-  let figures = [], observed = [], tweens = [];
+  let figures = [], observed = [], tweens = [], tileMeshes = [];
   let heading = null, lookAt = null;
   const orbit = {yaw: 0.40, elevation: 0.98, distance: 19.8};
   let drag = null;
@@ -102,6 +104,8 @@
         new three.MeshStandardMaterial({color,roughness:0.68})
       );
       tile.position.set(x,0.08,z);
+      tile.userData.tileIndex=t.i;
+      tileMeshes.push(tile);
       group.add(tile);
       const face = new three.Mesh(
         new three.PlaneGeometry(1.13,1.13),
@@ -254,6 +258,7 @@
     stage.hidden = false;
     document.body.classList.add('eaigame-3d-active');
     if(viewSwitch){viewSwitch.setAttribute('aria-pressed','true');viewSwitch.textContent='3D actief';}
+    if(caption){originalCaption=caption.textContent;caption.textContent='Draai het bord of kies Volg pion. Tik op een vak voor uitleg.';}
     setStatus('3D-weergave laden…',true);
     closeButton.focus();
     try {
@@ -299,6 +304,7 @@
     stage.hidden = true;
     document.body.classList.remove('eaigame-3d-active');
     if(viewSwitch){viewSwitch.setAttribute('aria-pressed','false');viewSwitch.textContent='Bekijk in 3D';}
+    if(caption)caption.textContent=originalCaption;
     requestAnimationFrame(() => { positionPawns(); viewSwitch?.focus({preventScroll:true}); });
   }
 
@@ -306,20 +312,38 @@
   overview.addEventListener('click', () => setMode('overview'));
   follow.addEventListener('click', () => setMode('follow'));
   closeButton.addEventListener('click',close);
+  function hitTestTile(event) {
+    if (!open || !three || !camera) return;
+    const bounds = canvas.getBoundingClientRect();
+    const x = ((event.clientX-bounds.left)/bounds.width)*2-1;
+    const y = -((event.clientY-bounds.top)/bounds.height)*2+1;
+    const ray = new three.Raycaster();
+    ray.setFromCamera(new three.Vector2(x,y),camera);
+    const hit = ray.intersectObjects(tileMeshes,false)[0];
+    if (hit && Number.isInteger(hit.object.userData.tileIndex)) {
+      tileInfo(tiles[hit.object.userData.tileIndex]);
+    }
+  }
   canvas.addEventListener('pointerdown',event => {
     if (mode !== 'overview') return;
-    drag = {id:event.pointerId,x:event.clientX,y:event.clientY};
+    drag = {id:event.pointerId,x:event.clientX,y:event.clientY,moved:false};
     canvas.setPointerCapture(event.pointerId);
   });
   canvas.addEventListener('pointermove',event => {
     if (!drag || drag.id !== event.pointerId || mode !== 'overview') return;
+    if (Math.hypot(event.clientX-drag.x,event.clientY-drag.y)>5) drag.moved=true;
     orbit.yaw -= (event.clientX-drag.x)*0.009;
     orbit.elevation = clamp(orbit.elevation+(event.clientY-drag.y)*0.006,0.35,1.40);
     drag.x=event.clientX;drag.y=event.clientY;
   });
-  const endDrag = event => {if(drag?.id === event.pointerId) drag=null;};
-  canvas.addEventListener('pointerup',endDrag);
-  canvas.addEventListener('pointercancel',endDrag);
+  canvas.addEventListener('pointerup',event => {
+    if ((mode==='overview' && drag?.id===event.pointerId && !drag.moved) ||
+        (mode==='follow' && !drag)) hitTestTile(event);
+    if (drag?.id===event.pointerId) drag=null;
+  });
+  canvas.addEventListener('pointercancel',event => {
+    if (drag?.id===event.pointerId) drag=null;
+  });
   canvas.addEventListener('wheel',event => {
     if (mode !== 'overview') return;
     event.preventDefault();
@@ -343,6 +367,14 @@
     get active(){return open;},
     get view(){return mode;},
     get cameraPosition(){return camera?.position.toArray() || [];},
-    get pawnPositions(){return figures.map(figure=>figure.position.toArray());}
+    get pawnPositions(){return figures.map(figure=>figure.position.toArray());},
+    tileScreenPosition(index){
+      const position=positionOf(index)?.clone();
+      if (!position || !camera) return null;
+      position.y=0.25;
+      position.project(camera);
+      const rect=canvas.getBoundingClientRect();
+      return {x:rect.left+(position.x+1)*rect.width/2,y:rect.top+(1-position.y)*rect.height/2};
+    }
   };
 })();
