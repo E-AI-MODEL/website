@@ -49,7 +49,7 @@ export function makeGuidance({archive=null,repo=null,advice=null,goal="site",aim
  if(archive?.secret?.length)next.push("Bekijk de mogelijk vertrouwelijke bestanden op je eigen apparaat en bepaal wat openbaar mag worden.");
  else if(!archive)next.push("Selecteer je ZIP-bestand zodat de projectbestanden kunnen worden onderzocht.");
  else if(!repo?.readable)next.push("Voeg de link naar je openbare GitHub-repository toe en controleer of de repository bereikbaar is.");
- else if(problems.some(x=>x.title.includes("ZIP in GitHub")))next.push("Pak het ZIP-bestand op je eigen apparaat uit. GitHub pakt een geüpload ZIP niet automatisch uit.");
+ else if(problems.some(x=>x.title.includes("ZIP in GitHub")))next.push("Pak het ZIP-bestand op je eigen apparaat uit en voeg daarna de losse projectbestanden toe. GitHub pakt een geüpload ZIP niet automatisch uit.");
  else if(advice?.comparison?.missingCount)next.push("Voeg de ontbrekende losse bestanden toe aan GitHub. Bewaar de mapindeling en controleer eventuele privégegevens.");
  else if(problems.some(x=>x.title.includes("Verwijzingen")))next.push("Controleer de verwijzingen vanuit de startpagina en herstel de ontbrekende bestanden.");
  else next.push("Controleer of de belangrijkste gebruikershandeling werkt, en besluit pas daarna of je iets wilt publiceren.");
