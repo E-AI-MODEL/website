@@ -94,6 +94,23 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Bepaal of de atlas uit bron gebouwd moet worden
+        id: anatomy_scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$GITHUB_EVENT_NAME" != "pull_request" ]; then
+            needed=true
+          elif git rev-parse --verify 'HEAD^1' >/dev/null 2>&1; then
+            needed="$(git diff --name-only -z 'HEAD^1' HEAD | python3 scripts/anatomie_ci_scope.py)"
+          else
+            echo "Geen betrouwbare PR-basis: bouw de atlas volledig."
+            needed=true
+          fi
+          echo "run=$needed" >> "$GITHUB_OUTPUT"
+          echo "Volledige atlasbouw vereist: $needed"
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -169,8 +186,12 @@ jobs:
           test -s site-build/assets/projecthulp/inhoudscontrole.mjs
           test -s site-build/assets/projecthulp/onderzoek-worker.mjs
 
-      - name: Build local anatomical 3D models and viewer
+      - name: Bouw de anatomische 3D-atlas op main en bij gerichte wijzigingen
+        if: steps.anatomy_scope.outputs.run == 'true'
         run: python scripts/build_anatomie.py --out site-build/tools/anatomie
+      - name: Hergebruik gepinde echte 3D-modellen bij niet-anatomische PR's
+        if: steps.anatomy_scope.outputs.run != 'true'
+        run: python scripts/reuse_published_anatomie.py --source tools/anatomie --out site-build/tools/anatomie
 
       - name: Test physiological sequence in Hartslaglab
         run: node scripts/test_hartslaglab_cycle.mjs
