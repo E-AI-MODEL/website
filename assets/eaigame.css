@@ -106,3 +106,30 @@ body.playing #world{pointer-events:auto;touch-action:none}
  .world-label{font-size:10px;padding:4px 7px}
  .world-label span{margin-right:3px}
 }
+
+
+/* Standaard camerastand vult het bord, zonder gebieden af te snijden. */
+@media(min-width:701px){
+ .landing-map .board-stage{height:clamp(390px,57svh,650px)}
+ .game-map .board-stage{height:clamp(405px,62svh,680px)}
+}
+@media(max-width:700px){
+ /* Op de telefoon gaat de bediening vóór het bord. Er hoeft niet eerst
+    langs het bord gescrold te worden om de volgende stap te ontdekken. */
+ .game-layout{display:flex;flex-direction:column;gap:9px}
+ .game-controls{display:contents}
+ .game-controls .active-player{order:0;width:100%;padding:7px 11px}
+ .game-controls .actionbar{order:1;display:grid;grid-template-columns:minmax(0,1fr) minmax(116px,auto) 40px;gap:7px;align-items:center;padding:10px;border:1px solid var(--line);border-radius:12px;background:rgba(8,23,39,.94)}
+ .game-controls .actionbar>div{grid-column:1;grid-row:1;gap:2px}
+ .game-controls .actionbar strong{font-size:14px}
+ .game-controls .actionbar span{font-size:10px}
+ .game-controls .actionbar .primary{grid-column:2;grid-row:1;min-height:41px;font-size:11px;padding:8px}
+ .game-controls .actionbar .secondary{grid-column:3;grid-row:1;min-height:41px;width:40px;padding:8px 0;font-size:0}
+ .game-controls .actionbar .secondary:after{content:'↺';font-size:20px;line-height:1}
+ .game-map{order:2}
+ .game-controls .routes-caption{order:3;width:100%;border:0;padding:2px 0 0;text-align:center}
+ .game-controls .destinations{order:4;width:100%}
+ .game-controls .scoreboard{order:5;width:100%}
+ .game-map .board-stage{height:clamp(300px,89vw,455px)}
+ .game-map .interaction-tip{font-size:10px;margin:5px 0 0}
+}
