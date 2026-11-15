@@ -233,6 +233,7 @@
     if (opening) return;
     opening = true;
     stage.hidden = false;
+    document.body.classList.add('eaigame-3d-active');
     setStatus('3D-weergave laden…',true);
     closeButton.focus();
     try {
@@ -274,7 +275,8 @@
     if (frame) cancelAnimationFrame(frame);
     frame = 0; lastFrame = 0;
     stage.hidden = true;
-    board.focus?.({preventScroll:true});
+    document.body.classList.remove('eaigame-3d-active');
+    requestAnimationFrame(() => { positionPawns(); document.querySelector('[data-option="3d"]')?.focus({preventScroll:true}); });
   }
 
   overview.addEventListener('click', () => setMode('overview'));
