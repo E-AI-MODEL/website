@@ -14,6 +14,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Check anatomy test scope and deployment proofs
+        run: python -m unittest discover -s tests -p 'test_anatomie_ci_scope.py' -v
       - name: Check EAIgit ZIP and GitHub journey
         run: node --test tests/test_projecthulp.mjs tests/test_eaigit_help.mjs
       - name: Check navigation and page structure
