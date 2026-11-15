@@ -113,8 +113,7 @@ async function validate3D(name, viewport, phone=false){
  try{
   await page.goto(origin+'/tools/eaigame/',{waitUntil:'domcontentloaded'});
   await page.locator('#board .tile').first().waitFor({state:'visible'});
-  await page.locator('#extra-opts summary').click();
-  await page.locator('[data-option="3d"]').click();
+  await page.locator('#eaigame-view-switch').click();
   await page.waitForFunction(()=>!!document.querySelector('#eaigame-3d-canvas')?.dataset.engine,null,{timeout:30000});
   assert.equal(await page.locator('#eaigame-3d-canvas').getAttribute('data-engine'),'three','Echte Three.js 3D-renderer actief');
   assert.ok(await page.locator('#eaigame-3d-stage').isVisible(),'3D staat op de plaats van het bord');
