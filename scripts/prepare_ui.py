@@ -15,9 +15,18 @@ from editorial_ui import apply_editorial
 from archive_review import review as review_archive
 from home_model import materialize as materialize_home_model
 
-ASSETS = ('site.css', 'site-refresh.js', 'site-ui.css', 'site-responsive.css', 'site-redesign.css', 'site-editorial.css', 'site-archive.css', 'site-navigation.js', 'home-model.css', 'home-model.js')
+ASSETS = ('site.css', 'site-refresh.js', 'site-ui.css', 'site-responsive.css', 'site-redesign.css', 'site-editorial.css', 'site-archive.css', 'site-navigation.js', 'home-model.css', 'home-model.js', 'site-story-cards.css', 'site-story-cards.js')
 SKIP = {'.git', '.github', 'content', 'scripts', 'tests', 'assets', 'handoff', 'houseoftalents', 'onderwijsin', 'leif', 'site-build'}
 ALIASES = {'/': '/nl/', '/tools/': '/nl/tools/', '/publicaties/': '/nl/publicaties/', '/over/': '/nl/over/', '/onderwijs/': '/nl/onderwijs/', '/toepassingen/': '/nl/toepassingen/', '/kennis/': '/nl/onderzoek/', '/model-monitor/': '/nl/model-monitor/', '/llmscan/': '/nl/llmscan/'}
+# Editorial-only enhancement. Not loaded in interactive labs or article bodies.
+STORY_PATHS = {
+    '/nl/onderwijs/', '/en/education/',
+    '/nl/onderzoek/', '/en/research/',
+    '/nl/publicaties/', '/en/publications/',
+    '/nl/toepassingen/', '/en/applications/',
+    '/nl/tools/', '/en/tools/',
+    '/nl/over/', '/en/about/',
+}
 INDEX_PATHS = {'/nl/', '/en/', '/nl/model/', '/en/model/', '/nl/tools/', '/en/tools/', '/nl/onderwijs/', '/en/education/', '/nl/onderzoek/', '/en/research/', '/nl/toepassingen/', '/en/applications/', '/nl/over/', '/en/about/'}
 
 def canonical(path: str) -> str:
@@ -433,20 +442,30 @@ def prepare(root: Path) -> dict:
         classes.append('eai-ui')
         if canonical(path) in INDEX_PATHS:
             classes.append('eai-index-page')
+        story_enabled = canonical(path) in STORY_PATHS
+        if story_enabled:
+            classes.append('eai-story-page')
+            body['data-eai-story-layout'] = '20261115a'
         body['class'] = classes
         body['data-ui-version'] = revision
-        css_pattern = re.compile(r'^/assets/(?:site|site-ui|site-responsive|site-redesign|site-editorial|site-archive|home-model)(?:\.[a-f0-9]{12})?\.css(?:\?.*)?$')
+        css_pattern = re.compile(r'^/assets/(?:site|site-ui|site-responsive|site-redesign|site-editorial|site-archive|home-model|site-story-cards)(?:\.[a-f0-9]{12})?\.css(?:\?.*)?$')
         for tag in list(soup.find_all('link', href=True)):
             if css_pattern.match(tag['href']):
                 tag.decompose()
         for name in ('site.css', 'site-ui.css', 'site-responsive.css', 'site-editorial.css', 'site-archive.css', 'home-model.css', 'site-redesign.css'):
             soup.head.append(soup.new_tag('link', rel='stylesheet', href=manifest[name]['url']))
-        js_pattern = re.compile(r'^/assets/(?:site-refresh|site-navigation|home-model)(?:\.[a-f0-9]{12})?\.js(?:\?.*)?$')
+        if story_enabled:
+            soup.head.append(soup.new_tag('link', rel='stylesheet', href=manifest['site-story-cards.css']['url']))
+        js_pattern = re.compile(r'^/assets/(?:site-refresh|site-navigation|home-model|site-story-cards)(?:\.[a-f0-9]{12})?\.js(?:\?.*)?$')
         for tag in list(soup.find_all('script', src=True)):
             if js_pattern.match(tag['src']):
                 tag.decompose()
         for name in ('site-refresh.js', 'site-navigation.js', 'home-model.js'):
             tag = soup.new_tag('script', src=manifest[name]['url'])
+            tag['defer'] = ''
+            soup.head.append(tag)
+        if story_enabled:
+            tag = soup.new_tag('script', src=manifest['site-story-cards.js']['url'])
             tag['defer'] = ''
             soup.head.append(tag)
         if soup.main and soup.main.decode() != before_content:
