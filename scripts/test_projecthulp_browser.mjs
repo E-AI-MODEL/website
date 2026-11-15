@@ -53,7 +53,7 @@ try{
  assert.match(warnings,/vertrouwelijke naam/i);
  assert.match(warnings,/Gelijke namen/);
  assert.match(await page.locator("#observations").textContent(),/GitHub-repository/);
- assert.match(await page.locator("#purposeTitle").innerText(),/website/);
+ assert.match(await page.locator("#purposeTitle").textContent(),/website/);
  assert.match(await page.locator("#goodPoints").innerText(),/HTML-bestanden/);
  assert.match(await page.locator("#problemPoints").innerText(),/privébestanden/);
  assert.match(await page.locator("#unknownPoints").innerText(),/Logische fouten/);
@@ -66,12 +66,12 @@ try{
  assert.match(await page.locator("#promptStatus").innerText(),/gekopieerd/);
  assert.match(await page.evaluate(()=>window.__copiedProjectAdvice),/GitHub-link/);
  assert.ok(spawned.filter(url=>url.includes("onderzoek-worker.mjs")).length>=2,"ZIP en GitHub moeten twee echte workers starten");
- assert.match(await page.locator("#purposeQuickFound").innerText(),/index.html/);
- assert.match(await page.locator("#purposeQuickRemaining").innerText(),/vertrouwelijke/);
+ assert.match(await page.locator("#purposeQuickFound").textContent(),/index.html/);
+ assert.match(await page.locator("#purposeQuickRemaining").textContent(),/vertrouwelijke/);
  assert.equal(await page.locator(".ph-purpose-more").getAttribute("open"),null);
  assert.match(await page.locator("#purposeFound").textContent(),/index.html/);
  assert.match(await page.locator("#purposeRemaining").textContent(),/browserproef/);
- assert.match(await page.locator("#purposeAim").innerText(),/Bezoekers moeten/);
+ assert.match(await page.locator("#purposeAim").textContent(),/Bezoekers moeten/);
  assert.match(await page.locator("#firstTitle").innerText(),/privébestanden/);
  assert.equal(await page.locator("#openRepo").getAttribute("href"),"https://github.com/voorbeeld/project");
  assert.ok((await page.locator("#missingFiles").textContent()).includes("css/site.css"));
@@ -106,7 +106,7 @@ try{
  assert.match(await page.locator("#warnings").textContent(),/projectbestanden/);
  assert.match(await page.locator("#firstText").innerText(),/losse projectbestanden/);
  assert.match(await page.locator("#purposeRemaining").textContent(),/niet uitgepakt/);
- assert.match(await page.locator("#steps").innerText()+" "+await page.locator("#moreSteps").textContent(),/GitHub pakt een geüpload ZIP-bestand niet automatisch uit/);
+ assert.match(await page.locator("#steps").textContent()+" "+await page.locator("#moreSteps").textContent(),/GitHub pakt een geüpload ZIP-bestand niet automatisch uit/);
  assert.deepEqual(errors,[]);
  assert.deepEqual(errors,[]);
  console.log("Projecthulp browserproef geslaagd: ZIP lokaal, GitHub API nagebootst, advies direct zichtbaar en kopieerbaar, foutpad en mobiel.");
