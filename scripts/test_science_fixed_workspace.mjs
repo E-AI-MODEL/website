@@ -428,6 +428,24 @@ try{
    const p=state.p,c=document.querySelector('#scene'),r=c.getBoundingClientRect(),g=sceneViewport(c),pivot=p.pivot??510;
    return {x:r.left+g.left+pivot*g.scale,y:r.top+g.top+350*g.scale,scale:g.scale,pivot,left:pivot-65*p.arm1,right:pivot+65*p.arm2,p:{...p}};
   });
+  // Capture real browser input and hit-testing. On mobile WebKit a
+  // Playwright mouse gesture may not represent the touch input being tested.
+  await page.evaluate(()=>{
+   window.__leverInputEvents=[];
+   for(const type of ['pointerdown','pointermove','pointerup','touchstart','touchmove','touchend','mousedown','mousemove','mouseup']){
+    document.addEventListener(type,event=>{
+     if(window.__leverInputEvents.length>=35)return;
+     window.__leverInputEvents.push({type,pointerType:event.pointerType||null,
+      target:event.target?.id||event.target?.tagName||null,
+      x:event.clientX??null,y:event.clientY??null,isTrusted:event.isTrusted});
+    },{capture:true,passive:true});
+   }
+  });
+  const leverHit=await page.evaluate(({x,y})=>{
+   const el=document.elementFromPoint(x,y);
+   return {tag:el?.tagName||null,id:el?.id||null,className:String(el?.className||'').slice(0,120),
+    inStage:Boolean(el?.closest('#stage'))};
+  },{x:leverStart.x+leverStart.scale*12,y:leverStart.y});
   await page.mouse.move(leverStart.x+leverStart.scale*12,leverStart.y);
   await page.mouse.down();
   const pressed=await page.evaluate(()=>({pivot:state.p.pivot??510,arm1:state.p.arm1,arm2:state.p.arm2}));
@@ -441,7 +459,9 @@ try{
     simulationSpeed:state.speed,angle:m.angle,omega:m.omega,netMoment:forces.net,
     angularAcceleration:forces.alpha,drag:state.drag2d};
   });
-  console.log('LEVER_AFTER_DRAG '+engine.name()+' '+width+'px '+JSON.stringify(leverAfterDrag));
+  const leverEvents=await page.evaluate(()=>window.__leverInputEvents);
+  console.log('LEVER_AFTER_DRAG '+engine.name()+' '+width+'px '
+   +JSON.stringify({hit:leverHit,events:leverEvents,physics:leverAfterDrag}));
   // First distinguish a failed WebKit pointer gesture from a slow animation.
   assert(leverAfterDrag.pivot>leverStart.pivot+40,
    'Hefboomgreep moet werkelijk verplaatst zijn: '+JSON.stringify({start:leverStart,after:leverAfterDrag}));
