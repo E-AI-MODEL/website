@@ -192,7 +192,7 @@ input[type=range]{width:100%;margin:0;accent-color:#84e3d2;cursor:pointer;touch-
   <div class="metric"><small>Hoogste punt</small><strong id="statHeight">—</strong></div>
   <div class="metric"><small>Vliegtijd</small><strong id="statTime">—</strong></div>
   <div class="metric"><small>Afstand tot mat</small><strong id="statError">—</strong></div>
-  <div class="metric note"><small>Meetinformatie</small><p id="measurementNote">Eerst gooien, dan meten. De vorige worp blijft zichtbaar.</p></div>
+  <div class="metric note"><small>Meetinformatie</small><p id="measurementNote">Gooi een bal om bereik, hoogte en vliegtijd te meten.</p></div>
  </section>
 </div>
 <script>
@@ -246,6 +246,7 @@ function updateStats(){
  $('statError').innerHTML=lastTrial?fmt(Math.abs(lastTrial.range-lastTrial.target),1)+' <span>m</span>':'—';
  $('status').textContent=explain();
  if(lastTrial)$('measurementNote').textContent='Laatste worp: '+fmt(lastTrial.speed,2)+' m/s, '+fmt(lastTrial.angle,1)+'°. Klik op een eerdere worp om die instellingen terug te zetten.';
+ else $('measurementNote').textContent='Gooi een bal om bereik, hoogte en vliegtijd te meten.';
  $('dragHint').innerHTML=S.playing?'<i class="dot"></i> De bal is onderweg':S.finished?'<i class="dot"></i> Verander iets en probeer opnieuw':'<i class="dot"></i> Richt de bal of sleep de mat';
 }
 function renderHistory(){
