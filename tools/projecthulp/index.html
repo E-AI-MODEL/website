@@ -58,6 +58,24 @@
  <section class="ph-panel ph-hidden" id="screen3" aria-labelledby="screen3title">
   <div class="ph-topline">STAP 3 VAN 3</div><h2 id="screen3title">Dit hebben we gevonden.</h2><p id="resultLead">Op basis van de bestanden die we konden controleren.</p>
   <div class="ph-summary" id="summary"></div>
+  <section class="ph-first" aria-labelledby="firstTitle">
+   <div class="ph-topline">BEGIN HIER</div>
+   <h3 id="firstTitle">Dit kun je nu doen</h3>
+   <p id="firstText"></p>
+   <a id="openRepo" class="ph-button ph-primary ph-hidden" target="_blank" rel="noopener noreferrer">Open je GitHub-repository <span aria-hidden="true">↗</span></a>
+  </section>
+  <section class="ph-findings" aria-label="Belangrijkste bevindingen">
+   <div class="ph-findings-section">
+    <h3><span class="ph-icon ph-ok">✓</span> Dit gaat al goed</h3>
+    <ul id="goodPoints"></ul>
+   </div>
+   <div class="ph-findings-section">
+    <h3><span class="ph-icon ph-warn">!</span> Dit moet je bekijken</h3>
+    <ul id="problemPoints"></ul>
+   </div>
+  </section>
+  <div class="ph-uncertainty"><strong>Dit hebben we nog niet getest</strong><ul id="unknownPoints"></ul></div>
+  <details class="ph-more ph-checks ph-technical-details"><summary>Bekijk de uitgebreide controle en het stappenplan</summary>
   <section class="ph-purpose" aria-labelledby="purposeTitle">
    <span class="ph-topline">JE DOEL EN DE BESTANDEN</span>
    <h3 id="purposeTitle">Wat wil je bereiken?</h3>
@@ -74,20 +92,29 @@
    </details>
    <p class="ph-purpose-note">Een bestand vinden is nog geen bewijs dat het project werkt. Dat moet je zelf nog uitproberen.</p>
   </section>
-  <section class="ph-first" aria-labelledby="firstTitle">
-   <div class="ph-topline">BEGIN HIER</div>
-   <h3 id="firstTitle">Dit kun je nu doen</h3>
-   <p id="firstText"></p>
-   <a id="openRepo" class="ph-button ph-primary ph-hidden" target="_blank" rel="noopener noreferrer">Open je GitHub-repository <span aria-hidden="true">↗</span></a>
-  </section>
+  
   <details class="ph-more ph-warning-panel" id="warningsGroup"><summary id="warningsTitle">Let hierop</summary><ul id="warnings"></ul></details>
   <details class="ph-more ph-checks"><summary>Bekijk wat we hebben gecontroleerd</summary><ul id="observations"></ul></details>
   <details class="ph-more ph-checks ph-hidden" id="missingGroup"><summary id="missingTitle">Welke bestanden ontbreken?</summary><ul id="missingFiles"></ul></details>
   <section class="ph-plan"><div class="ph-plan-heading"><div><span class="ph-topline">JE PLAN</span><h3>Zo ga je verder in GitHub</h3></div><span class="ph-plan-count" id="planCount"></span></div><ol id="steps"></ol>
   <details class="ph-more ph-plan-rest" id="moreStepsGroup"><summary id="moreStepsTitle">Bekijk de overige stappen</summary><ol id="moreSteps" start="4"></ol></details></section>
   <details class="ph-more"><summary>Wat hebben we niet gecontroleerd?</summary><ul id="limits"></ul></details>
+  </details>
   <div class="ph-downloads"><button type="button" class="ph-button ph-primary" id="copyReport">Kopieer je advies</button><button type="button" class="ph-button ph-secondary" id="downloadReadme">Voorbeeld README</button><button type="button" class="ph-button ph-secondary" id="downloadIgnore">Voorbeeld .gitignore</button></div>
   <p class="ph-copy-status" role="status" aria-live="polite" id="copyStatus"></p>
+  <details class="ph-more ph-chatgpt-guide" id="chatgptGuide">
+   <summary>Wil je ChatGPT of Codex het volgende werk laten doen?</summary>
+   <p>Je hebt hiervoor niet verplicht een ChatGPT-koppeling nodig. Met de GitHub-koppeling kan ChatGPT de toegestane repository lezen. Voor code aanpassen en een pull request maken gebruik je Codex of een andere GitHub-omgeving met schrijfrechten.</p>
+   <ol class="ph-setup-steps">
+    <li>Open ChatGPT en ga naar <strong>Instellingen → Plug-ins → GitHub</strong>. Kies <strong>Installeren</strong> of <strong>Verbinden</strong>, voor zover beschikbaar op jouw account.</li>
+    <li>Meld je aan bij GitHub. Kies de repository die je wilt laten lezen. Lees welke rechten worden gevraagd en bevestig alleen de noodzakelijke toegang. <a href="https://help.openai.com/en/articles/11145903-connecting-github-to-chatgpt" target="_blank" rel="noopener noreferrer">Officiële uitleg over GitHub koppelen</a>.</li>
+    <li>Wil je code laten wijzigen? Open <a href="https://codex.openai.com/" target="_blank" rel="noopener noreferrer">Codex op het web</a>, log in en volg daar de aanwijzingen om toegang tot de juiste repository te geven. Voor Codex Cloud moet je account hiervoor in aanmerking komen. Dit is niet hetzelfde als de alleen-lezen-koppeling van ChatGPT.</li>
+    <li>Kopieer de opdracht hieronder. Controleer het voorstel, de tests en de wijzigingen voordat je een pull request laat samenvoegen. <a href="https://help.openai.com/en/articles/11369540-using-codex-with-your-chatgpt-plan" target="_blank" rel="noopener noreferrer">Controleer of jouw abonnement Codex Cloud ondersteunt</a>.</li>
+   </ol>
+   <label for="nextPrompt" class="ph-prompt-label">Opdracht voor de volgende stap</label>
+   <textarea id="nextPrompt" rows="8" readonly spellcheck="false"></textarea>
+   <div class="ph-prompt-actions"><button type="button" id="copyPrompt" class="ph-button ph-secondary">Kopieer deze opdracht</button><span id="promptStatus" role="status" aria-live="polite"></span></div>
+  </details>
   <details class="ph-more ph-auto ph-hidden" id="automationDetails">
    <summary>Ook automatische controles in GitHub gebruiken?</summary>
    <p>We kunnen een controlebestand maken dat bij latere wijzigingen JavaScript- of Python-syntaxis nakijkt. Dit is geen volledige test van je project. Jij beoordeelt het bestand en voegt het zelf via GitHub toe onder <code>.github/workflows/projectcontrole.yml</code>. Pas daarna gaat GitHub Actions draaien.</p>
