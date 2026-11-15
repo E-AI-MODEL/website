@@ -62,6 +62,54 @@ const SIGNALS={
  search:/\b(?:zoeken|zoekveld|search|filteren|filter|query)\b/i,
  login:/\b(?:inloggen|login|sign.?in|authenticate|session|wachtwoord|password)\b/i
 };
+
+// Vindt onderdelen die bij een gebruikersdoel zouden kunnen horen.
+// Dit zijn statische aanwijzingen, geen bewijs dat een functie werkt.
+const FEATURE_HINTS={
+ exercise:[
+  ["opgaven of vragen",/\b(?:vraag|vragen|question|questions|exercise|opgave|quiz|oefening|exerciseItems)\b/i],
+  ["antwoord invoeren",/<(?:input|select|textarea)\b|\b(?:userAnswer|inputAnswer|antwoord|answers?)\b/i],
+  ["antwoord controleren",/\b(?:checkAnswer|validateAnswer|isCorrect|correctAnswer|correctAnswers|nakijken|controleerAntwoord)\b/i],
+  ["feedback tonen",/\b(?:feedback|showFeedback|toonFeedback|correct|incorrect)\b/i],
+  ["score of resultaat",/\b(?:score|result(?:aat)?|uitslag|punten|correctCount|totaalGoed)\b/i]
+ ],
+ forms:[
+  ["invoervelden",/<(?:input|textarea|select)\b/i],
+  ["invoer valideren",/\b(?:required|pattern|validate|checkValidity|validatie)\b/i],
+  ["verzenden",/\b(?:submit|fetch\s*\(|sendForm|verzenden|versturen)\b/i],
+  ["bevestiging",/\b(?:confirmation|success|bevestiging|gelukt|bedankt)\b/i]
+ ],
+ charts:[
+  ["invoer of parameters",/\b(?:parameter|slider|range|input|instel|waarde)\b/i],
+  ["berekeningscode",/\b(?:calculate|compute|bereken|Math\.[a-z]+|formula|equation)\b/i],
+  ["grafiek of animatie",/\b(?:chart|plot|grafiek|requestAnimationFrame|canvas|three\.js)\b/i],
+  ["meetwaarde of resultaat",/\b(?:measure|meetwaarde|result|waarde|output)\b/i]
+ ],
+ search:[
+  ["zoekinvoer",/\b(?:search|zoeken|zoekveld|query|zoekterm)\b/i],
+  ["filterlogica",/\b(?:filter\s*\(|filterResult|filtered|match|includes\s*\()\b/i],
+  ["resultaatweergave",/\b(?:results?|resultaten|searchResults|gevonden)\b/i]
+ ],
+ login:[
+  ["inlogformulier",/\b(?:login|inloggen|signin|signIn)\b/i],
+  ["sessie of toegang",/\b(?:session|sessie|token|auth|autorisatie)\b/i],
+  ["afmelden",/\b(?:logout|signOut|afmelden|uitloggen)\b/i]
+ ]
+};
+export function inspectFeatureHints(records){
+ const out={};
+ for(const [id,checks] of Object.entries(FEATURE_HINTS)){
+  const found=[],notSeen=[];
+  for(const [label,re] of checks){
+   const paths=records.filter(x=>/\.(?:html?|[cm]?js|jsx|tsx?|vue|svelte|py)$/i.test(x.path)&&re.test(x.text)).slice(0,3).map(x=>x.path);
+   if(paths.length)found.push({label,paths});
+   else notSeen.push(label);
+  }
+  out[id]={found,notSeen,checkedFiles:records.length,verifiedWorking:false};
+ }
+ return out;
+}
+
 export function inspectProjectTexts(records,paths){
  const files=new Set(paths),issues=[],signals=Object.fromEntries(Object.keys(SIGNALS).map(x=>[x,[]]));
  let referenceChecks=0,jsonChecks=0;
@@ -92,7 +140,7 @@ export function inspectProjectTexts(records,paths){
   if(issues.length>=32)break;
  }
  return {schema:"eaigit/content-check-v1",checkedFiles:records.length,jsonChecks,referenceChecks,
-  findings:issues.slice(0,32),signals,executesProjectCode:false,
+  findings:issues.slice(0,32),signals,features:inspectFeatureHints(records),executesProjectCode:false,
   incomplete:issues.length>=32||referenceChecks>=320};
 }
 const GOALS=[
