@@ -8,6 +8,8 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 from anatomie_ci_scope import must_test_anatomy
 from verify_eaigit_live import FILES, check, verify
+from reuse_published_anatomie import reuse
+from build_anatomie import SOURCE_COMMIT, SYSTEMS
 
 
 class AnatomyScopeTests(unittest.TestCase):
@@ -30,11 +32,59 @@ class AnatomyScopeTests(unittest.TestCase):
         self.assertEqual(workflow.count("python scripts/build_anatomie.py --out"), 1)
         self.assertIn('if [ "$GITHUB_EVENT_NAME" = "push" ]', workflow)
         self.assertEqual(workflow.count("if: steps.anatomy_scope.outputs.run == 'true'"), 4)
-        self.assertIn("cp -a tools/anatomie/. site-build/tools/anatomie/", workflow)
+        self.assertIn("python scripts/reuse_published_anatomie.py", workflow)
         self.assertIn("test -s tools/anatomie/labs/hartslag/atlas-heart-rich.bin", workflow)
         self.assertIn("python -m unittest discover -s tests -p 'test_anatomie_publish.py'", workflow)
         self.assertIn("git diff --name-only -z 'HEAD^1' HEAD", workflow)
+        builder = (ROOT / ".github/workflows/build-site.yml").read_text()
+        self.assertIn('if [ "$GITHUB_EVENT_NAME" != "pull_request" ]', builder)
+        self.assertIn("python scripts/reuse_published_anatomie.py", builder)
+        self.assertEqual(builder.count("python scripts/build_anatomie.py --out"), 1)
+        self.assertIn("if: steps.anatomy_scope.outputs.run == 'true'", builder)
 
+
+
+class ReuseExistingAtlasTests(unittest.TestCase):
+    def create_source(self, path):
+        for name in ("index.html", "LICENSE.txt", "NOTICE.txt",
+                     "labs/hartslag/atlas-heart-rich.bin", "labs/hartslag/atlas-heart.json",
+                     "labs/hartslag/atlas-heart.bin", "labs/hartslag/heart.js",
+                     "labs/hartslag/index.html"):
+            target = path / name
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes(b"sample")
+        (path / "UPSTREAM_COMMIT.txt").write_text("Commit: " + SOURCE_COMMIT)
+        size = (path / "labs/hartslag/atlas-heart-rich.bin").stat().st_size
+        (path / "labs/hartslag/atlas-heart-rich.json").write_text(
+            __import__("json").dumps({"parts": [{"id": str(i)} for i in range(34)], "bytes": size})
+        )
+        for system in SYSTEMS:
+            target = path / "models" / (system + ".glb")
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes(b"glTF" + b"x" * 11000)
+
+    def test_afgebakende_hergebruikstap_kopieert_zonder_bouwen(self):
+        with tempfile.TemporaryDirectory() as temp:
+            source = Path(temp) / "source"
+            dest = Path(temp) / "site-build" / "tools" / "anatomie"
+            self.create_source(source)
+            reuse(source, dest)
+            self.assertEqual((dest / "models/skeletal.glb").read_bytes(),
+                             (source / "models/skeletal.glb").read_bytes())
+            self.assertTrue((dest / "labs/hartslag/atlas-heart-rich.bin").is_file())
+
+    def test_herschreven_of_beschadigde_bron_wordt_geweigerd(self):
+        with tempfile.TemporaryDirectory() as temp:
+            source = Path(temp) / "source"
+            dest = Path(temp) / "out"
+            self.create_source(source)
+            (source / "UPSTREAM_COMMIT.txt").write_text("Commit: onbekend")
+            with self.assertRaisesRegex(RuntimeError, "broncommit"):
+                reuse(source, dest)
+            (source / "UPSTREAM_COMMIT.txt").write_text("Commit: " + SOURCE_COMMIT)
+            (source / "models/skeletal.glb").write_bytes(b"not a model")
+            with self.assertRaisesRegex(RuntimeError, "onvolledig"):
+                reuse(source, dest)
 
 class LiveProofTests(unittest.TestCase):
     def sample_site(self, root):
