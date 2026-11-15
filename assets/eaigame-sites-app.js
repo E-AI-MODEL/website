@@ -57,23 +57,23 @@ function showInfo(eyebrow,html,closable=true){$('#infoEyebrow').textContent=eyeb
 function help(){showInfo('ZO SPEEL JE',`<h2>Een rondje wijzer.</h2><div class="info-rule"><span>⚄</span><p><b>Gooi en verplaats</b>De dobbelsteen bepaalt hoeveel vakken je pion loopt. Je speelt om de beurt op hetzelfde scherm.</p></div><div class="info-rule"><span>▦</span><p><b>Vier kenniswijken</b>Natuur, Wereld, Taal en Rekenen staan in kleurreeksen bij elkaar. Een gewoon gekleurd vak geeft een vraag.</p></div><div class="info-rule"><span>✦</span><p><b>Een goed antwoord: een medaille</b>Je krijgt 2 punten en de medaille van die wijk. Een medaille die je al hebt, telt niet dubbel. De eerste met alle vier wint. Punten zijn extra; ze bepalen niet de winnaar.</p></div><div class="info-rule"><span>◇</span><p><b>Niet elk vak geeft een vraag</b>Rust: geen vraag. Verrassing: 1 of 2 punten. Kamp: 1 punt. Langs Start: 1 punt. Bij het Keuzevak kies je zelf de categorie van je vraag.</p></div><p class="rules-footer">Geen tijdsdruk. Bespreek de uitleg samen. Vanaf 12 jaar is een richtlijn; het niveau hangt af van de gekozen vragen. Je spel en vragen worden in deze browser bewaard.</p>`)}
 function tileInfo(t){const details={start:'Iedereen begint hier. Iedere keer dat je langs Start komt, krijg je 1 punt.',chance:'Een ontdekkingskaart levert 1 of 2 bonuspunten op. Hier krijg je geen vraag.',portal:'Kies zelf uit welke wijk je een vraag wilt. Handig voor een medaille die je nog mist.',camp:'Tijd om even op adem te komen. Je krijgt 1 punt, zonder vraag.',rest:'Even pauze. Je krijgt hier geen vraag en geen punten.'};$('#boardCaption').textContent=`Vak ${t.i} · ${t.label}: ${details[t.type]||'Beantwoord een vraag en verdien de medaille voor '+CATS[t.cat].name+'.'}`;}
 function showNames(){
- const old=$('#nameInputs input').map(x=>x.value);
- const oldLevels=$('[data-player-level]').map(x=>x.value);
+ const old=$$('#nameInputs input').map(x=>x.value);
+ const oldLevels=$$('[data-player-level]').map(x=>x.value);
  const levels=[['havo','havo'],['vmbo','vmbo'],['vwo','vwo'],['bank','Originele/eigen vragen']];
  $('#nameInputs').innerHTML=Array.from({length:setupCount},(_,i)=>{
    const selected=oldLevels[i]??state.players[i]?.level??(state.started?'bank':'havo');
    const options=levels.map(([v,label])=>`<option value="${v}" ${v===selected?'selected':''}>${label}</option>`).join('');
    return `<div class="name-field"><span class="avatar" style="--avatar-bg:${COLORS[i]}18">${pawnSVG(COLORS[i],'set'+i)}</span><label for="name${i}">Naam speler ${i+1}</label><input id="name${i}" maxlength="24" value="${escapeHTML(old[i]??state.players[i]?.name??names[i])}" placeholder="${names[i]}" autocomplete="off"><div class="player-level-wrap"><span>Niveau</span><select data-player-level aria-label="Niveau voor speler ${i+1}">${options}</select></div></div>`;
  }).join('');
- $('[data-count]').forEach(b=>{b.classList.toggle('selected',+b.dataset.count===setupCount);b.setAttribute('aria-pressed',+b.dataset.count===setupCount)});
- $('[data-player-level]').forEach(el=>el.addEventListener('change',updateSetupSummary));
+ $$('[data-count]').forEach(b=>{b.classList.toggle('selected',+b.dataset.count===setupCount);b.setAttribute('aria-pressed',+b.dataset.count===setupCount)});
+ $$('[data-player-level]').forEach(el=>el.addEventListener('change',updateSetupSummary));
  updateSetupSummary();
 }
 function openSetup(){setupCount=state.players.length;$('#difficulty').value=state.difficulty;$('#nameInputs').innerHTML='';showNames();$('#resetWarning').textContent=state.started?'Een nieuwe expeditie vervangt je huidige spel. Je vragenbank blijft bewaard.':'Je voortgang wordt op dit apparaat bewaard.';$('#setupDialog').showModal()}
 function startGame(e){
  e.preventDefault();
- const levels=$('[data-player-level]').map(el=>el.value);
- const p=$('#nameInputs input').map((x,i)=>({name:x.value.trim()||names[i],pos:0,score:0,medals:[],level:levels[i]||'havo'}));
+ const levels=$$('[data-player-level]').map(el=>el.value);
+ const p=$$('#nameInputs input').map((x,i)=>({name:x.value.trim()||names[i],pos:0,score:0,medals:[],level:levels[i]||'havo'}));
  state={version:1,players:p,current:0,turn:1,difficulty:$('#difficulty').value,used:[],phase:'ready',dice:1,started:true,activity:`${p[0].name} begint. Een goed antwoord levert 2 punten en een wijkmedaille op.`};
  $('#setupDialog').close();save();render();$('#roll').focus();
 }
@@ -91,5 +91,5 @@ if(state.phase==='question')ask(null,true);else if(state.phase==='winner')winner
 
 $('#undoImport').onclick=()=>{if(!previousBank)return;bank=previousBank;previousBank=null;state.used=[];saveBank();save();renderBank();$('#undoImport').hidden=true;$('#bankStatus').textContent='De vorige vragenbank is teruggezet.'};
 
-function updateSetupSummary(){const d=$('#difficulty').value,selected=bank.filter(q=>d==='all'||q.difficulty===+d);const levels=[...new Set($('[data-player-level]').map(el=>el.value))];const q=window.EAIGAME_LEVEL_QUESTIONS||[];const n=q.filter(item=>levels.includes(item.level)).length;$('#setupSummary').textContent=`${selected.length} originele/eigen vragen · ${n} niveauvarianten beschikbaar · geen tijdslimiet. Niveauvragen zijn nog niet geijkt.`}
+function updateSetupSummary(){const d=$('#difficulty').value,selected=bank.filter(q=>d==='all'||q.difficulty===+d);const levels=[...new Set($$('[data-player-level]').map(el=>el.value))];const q=window.EAIGAME_LEVEL_QUESTIONS||[];const n=q.filter(item=>levels.includes(item.level)).length;$('#setupSummary').textContent=`${selected.length} originele/eigen vragen · ${n} niveauvarianten beschikbaar · geen tijdslimiet. Niveauvragen zijn nog niet geijkt.`}
 $('#difficulty').addEventListener('change',updateSetupSummary);
