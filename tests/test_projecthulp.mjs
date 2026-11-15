@@ -7,6 +7,7 @@ import {parseRepoUrl,fetchPublicRepo,stripArchiveRoot,describeProject,analyzeArc
 import {checkProjectPurpose,findBrokenLocalLinks,PURPOSES} from "../assets/projecthulp/doelcontrole.mjs";
 import {availableProjectChecks,generateProjectCheckWorkflow} from "../assets/projecthulp/projectcheck.mjs";
 import {makeGuidance,continuationPrompt} from "../assets/projecthulp/begeleiding.mjs";
+import {guideActions} from "../assets/projecthulp/hulpstappen.mjs";
 const crcTable=Array.from({length:256},(_,i)=>{let c=i;for(let k=0;k<8;k++)c=(c&1)?0xedb88320^(c>>>1):c>>>1;return c>>>0;});
 function crc32(b){let c=0xffffffff;for(const x of b)c=crcTable[(c^x)&255]^(c>>>8);return(c^0xffffffff)>>>0;}
 function makeZip(files,{compress=false}={}){
@@ -93,7 +94,7 @@ test("Downloads zijn voorstellen, geen valse documentatie",()=>{
  assert.ok(!ignoreTemplate({project:{hasPackage:true}}).split(String.fromCharCode(10)).includes("build/"));
 });
 test("Websitepagina bevat toegankelijke route, geen serverupload of AI",()=>{
- const html=readFileSync(new URL("../tools/projecthulp/index.html",import.meta.url),"utf8");
+ const html=readFileSync(new URL("../tools/eaigit/index.html",import.meta.url),"utf8");
  const app=readFileSync(new URL("../assets/projecthulp/app.mjs",import.meta.url),"utf8");
  assert.match(html,/name="robots" content="noindex,nofollow"/);
  assert.match(html,/class="eai-refresh/);
@@ -140,11 +141,11 @@ test("Doeltoets: externe links zijn niet automatisch ontbrekende projectbestande
  assert.deepEqual(findBrokenLocalLinks("index.html",html,["index.html"]),["js/app.js"]);
 });
 test("Woordkeuze: begin bij het resultaat, geen belofte ZIP-upload",()=>{
- const html=readFileSync(new URL("../tools/projecthulp/index.html",import.meta.url),"utf8");
- assert.match(html,/Wat moet er straks mogelijk zijn/);
+ const html=readFileSync(new URL("../tools/eaigit/index.html",import.meta.url),"utf8");
+ assert.match(html,/Wat wil je bereiken/);
  assert.doesNotMatch(html,/Mijn ZIP-bestand op GitHub zetten/);
  assert.match(html,/value="site"/);
- assert.match(html,/id="purposeRemaining"/);
+ assert.match(html,/id="guidedChoices"/);
  assert.match(html,/GitHub pakt een geüpload ZIP-bestand niet vanzelf uit/);
 });
 
@@ -219,14 +220,38 @@ test("Gebruikersantwoord: nooit vertrouwelijke inhoud, geen ongegronde foutencla
  assert.ok(result.next[0].includes("vertrouwelijke bestanden"));
  assert.equal(result.logicErrorsVerified,false);
 });
-test("Projecthulp biedt vrijwillige GitHub-instructies, geen onjuiste schrijfrechten of Plus-eis",()=>{
- const html=readFileSync(new URL("../tools/projecthulp/index.html",import.meta.url),"utf8");
- assert.match(html,/Instellingen → Plug-ins → GitHub/);
- assert.match(html,/Codex op het web/);
+test("EAIgit toont eigen beeldmerk, vier acties en geen technische uitvoersporen",()=>{
+ const html=readFileSync(new URL("../tools/eaigit/index.html",import.meta.url),"utf8");
+ const app=readFileSync(new URL("../assets/projecthulp/app.mjs",import.meta.url),"utf8");
+ assert.match(html,/EAIgit/);
+ assert.match(html,/assets\/eaigit\/logo\.svg/);
+ assert.match(html,/assets\/eaigit\/icon\.svg/);
  assert.match(html,/id="goodPoints"/);
  assert.match(html,/id="problemPoints"/);
  assert.match(html,/id="unknownPoints"/);
- assert.match(html,/id="nextPrompt"/);
- assert.doesNotMatch(html,/minimaal een Plus/);
- assert.doesNotMatch(html,/geef ChatGPT.*schrijfrechten/i);
+ assert.match(html,/id="guidePrompt"/);
+ assert.match(html,/data-guide="onderzoek"/);
+ assert.match(html,/data-guide="verbeter"/);
+ assert.match(html,/data-guide="test"/);
+ assert.match(html,/data-guide="publiceer"/);
+ assert.doesNotMatch(html,/Projecthulp|Pieter|EAI Work|nextPrompt|redenering|sporen|zip-inspect/);
+ assert.ok(!app.includes('reportText('));
+ const redirect=readFileSync(new URL("../tools/projecthulp/index.html",import.meta.url),"utf8");
+ assert.match(redirect,/\/tools\/eaigit\//);
+});
+test("EAIgit biedt hulp per handeling zonder één verplichte lange opdracht",()=>{
+ const guidance=makeGuidance({goal:"site",repo:{name:"voorbeeld/site",url:"https://github.com/voorbeeld/site",readable:true,paths:["index.html"]}});
+ const routes=guideActions({guidance,goal:"site",aim:"Een werkende site"});
+ assert.deepEqual(Object.keys(routes),["onderzoek","verbeter","test","publiceer"]);
+ for(const id of Object.keys(routes)){
+  assert.ok(routes[id].title.length>5);
+  assert.ok(routes[id].text.length>10);
+  assert.ok(routes[id].prompt.includes("https://github.com/voorbeeld/site"));
+ }
+ assert.notEqual(routes.onderzoek.prompt,routes.verbeter.prompt);
+ assert.notEqual(routes.verbeter.prompt,routes.test.prompt);
+ assert.notEqual(routes.test.prompt,routes.publiceer.prompt);
+ assert.match(routes.onderzoek.prompt,/zonder iets te wijzigen/);
+ assert.match(routes.publiceer.prompt,/Publiceer nog niets/);
+ assert.ok(!JSON.stringify(routes).includes("Pieter"));
 });
