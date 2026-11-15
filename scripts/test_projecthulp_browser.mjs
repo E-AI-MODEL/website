@@ -130,6 +130,26 @@ try{
  await page.locator("#stage-result:not(.eg-hidden)").waitFor({timeout:12000});
  await page.locator("#startGuidance").click();
  assert.match(await page.locator("#guideTitle").innerText(),/projectbestanden/);
+ // Nieuwe repository wordt pas gevraagd nadat iemand die heeft aangemaakt.
+ await page.goto(base+"/tools/eaigit/");
+ await page.locator('[data-intent="start"]').click();
+ await page.locator('[data-source="zip"]').click();
+ await page.locator("#zipFile").setInputFiles({name:"mijnsite.zip",mimeType:"application/zip",buffer:safeArchive});
+ await page.locator("#zipNext").click();
+ await page.locator("#aimSkip").click();
+ await page.locator("#stage-result:not(.eg-hidden)").waitFor({timeout:12000});
+ await page.locator("#startGuidance").click();
+ assert.match(await page.locator("#guideTitle").innerText(),/Pak de ZIP uit/);
+ await page.locator("#guideNext").click();
+ assert.match(await page.locator("#guideTitle").innerText(),/repository/);
+ assert(await page.locator("#createdRepoBox").isVisible());
+ await page.locator("#createdRepoUrl").fill("not-a-repo");
+ await page.locator("#guideNext").click();
+ assert.match(await page.locator("#createdRepoError").innerText(),/repositorylink/);
+ await page.locator("#createdRepoUrl").fill("https://github.com/voorbeeld/nieuw-project");
+ await page.locator("#guideNext").click();
+ assert.match(await page.locator("#guideTitle").innerText(),/Voeg je bestanden toe/);
+ assert.equal(await page.locator("#guideLink").getAttribute("href"),"https://github.com/voorbeeld/nieuw-project");
  // Oude URL blijft werken, zonder de oude naam in de nieuwe UI.
  await page.goto(base+"/tools/projecthulp/");
  await page.waitForURL("**/tools/eaigit/");
