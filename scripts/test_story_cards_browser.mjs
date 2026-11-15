@@ -77,6 +77,12 @@ try {
     await page.goto(base + '/nl/onderzoek/', { waitUntil: 'load' });
     await page.locator('.eai-story-search-button').click();
     assert.equal(await page.locator('.eai-site-menu').getAttribute('open'), '');
+    // De zoekfocus wordt bewust in requestAnimationFrame gezet. Wacht op die toestand.
+    await page.waitForFunction(
+      () => document.querySelector('#eai-site-search-input') === document.activeElement,
+      null,
+      { timeout: 3000 }
+    );
     assert.equal(await page.locator('#eai-site-search-input').evaluate(el => el === document.activeElement), true);
     const rail = await page.locator('.eai-story-rail').evaluate(el => getComputedStyle(el).display);
     assert.equal(rail !== 'none', width === 1440, 'Desktop receives the labelled navigation rail');
