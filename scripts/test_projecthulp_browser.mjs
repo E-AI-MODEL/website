@@ -26,6 +26,7 @@ try{
  let online=false;for(let i=0;i<65;i++){try{online=(await fetch(base)).ok;}catch{}if(online)break;await new Promise(r=>setTimeout(r,110));}assert(online);
  browser=await chromium.launch({headless:true});
  const page=await browser.newPage({viewport:{width:1440,height:900},acceptDownloads:true});
+ const spawned=[];page.on("worker",w=>spawned.push(w.url()));
  page.on("pageerror",e=>errors.push(e.message));
  page.on("request",r=>{if(!r.url().startsWith(base))sent.push({method:r.method(),url:r.url()});});
  await page.route("https://api.github.com/**",route=>{
@@ -48,6 +49,7 @@ try{
  assert.match(warnings,/Gelijke namen/);
  assert.match(await page.locator("#observations").textContent(),/GitHub-repository/);
  assert.match(await page.locator("#purposeTitle").innerText(),/website/);
+ assert.ok(spawned.filter(url=>url.includes("onderzoek-worker.mjs")).length>=2,"ZIP en GitHub moeten twee echte workers starten");
  assert.match(await page.locator("#purposeQuickFound").innerText(),/index.html/);
  assert.match(await page.locator("#purposeQuickRemaining").innerText(),/vertrouwelijke/);
  assert.equal(await page.locator(".ph-purpose-more").getAttribute("open"),null);
@@ -66,6 +68,9 @@ try{
  const text=await fs.readFile(join(out,"projecthulp-advies.md"),"utf8");
  assert.match(text,/GitHub-bronversie: fixture-sha/);
  assert.match(text,/niet uitgevoerd/);
+ assert.match(text,/Uitgevoerde browserwerkers/);
+ assert.match(text,/zip-inspect: completed/);
+ assert.match(text,/github-read: completed/);
  assert.equal(sent.filter(x=>x.method!=="GET").length,0,"Er mag niets naar GitHub of EAI worden geüpload");
  assert.equal(sent.filter(x=>x.url.startsWith("https://api.github.com/")).length,2);
  await page.setViewportSize({width:390,height:844});await page.screenshot({path:join(out,"projecthulp-mobiel.png"),fullPage:true});
