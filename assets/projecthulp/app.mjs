@@ -62,6 +62,8 @@ function render(){
   issues.append(li);
  }
  list("unknownPoints",guidance.uncertain);
+ show("nextStepsGroup",guidance.next.length>1);
+ list("nextSteps",guidance.next.slice(1));
  $("nextPrompt").value=continuationPrompt(guidance,{repo});
  setText("promptStatus","");
  const summary=$("summary");summary.replaceChildren();
