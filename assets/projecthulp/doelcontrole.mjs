@@ -9,10 +9,8 @@ export const PURPOSES = Object.freeze({
 const isDocument=(p)=>/\.(pdf|md|txt|docx?|pptx?|xlsx?|odt|ods|odp)$/i.test(p);
 const isCode=(p)=>/\.(html?|css|[cm]?jsx?|tsx?|py|php|java|rb|go|rs|vue|svelte|astro|json|ya?ml)$/i.test(p);
 const isZip=(p)=>/\.zip$/i.test(p);
-const count=(items)=>items.length;
 function filenameSet(paths){return new Set(paths||[]);}
 function has(p,name){return p.has(name);}
-function textForResult(ok,yes,no){return ok?yes:no;}
 export function findBrokenLocalLinks(indexPath,html,paths){
  if(typeof html!=="string")return [];
  const files=filenameSet(paths),missing=new Set(),regexp=/\b(?:src|href)\s*=\s*(['"])(.*?)\1/gi;
@@ -58,6 +56,7 @@ export function checkProjectPurpose({goal="unsure",archive=null,repo=null,aim=""
  }else if(selected==="app"){
   if(project.hasPackage){found.push("package.json gevonden"+(project.framework?" met "+project.framework:"")+".");}
   if(Object.keys(scripts).length)found.push("Het project vermeldt start- of bouwopdrachten: "+Object.keys(scripts).slice(0,6).join(", ")+".");
+  else if(project.hasHtml)found.push("Een HTML-bestand kan het startpunt zijn van een toepassing die in de browser draait.");
   else remaining.push("Geen bevestigde start- of bouwopdracht gevonden in de onderzochte projectbestanden.");
   if(!project.hasPackage&&!project.hasHtml&&!files.some(x=>x.endsWith(".py")))remaining.push("Geen duidelijk programma-startpunt gevonden.");
   remaining.push("Niet gecontroleerd of het programma start, welke functies werken of waar het veilig kan draaien.");
