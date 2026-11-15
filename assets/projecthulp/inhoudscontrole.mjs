@@ -153,3 +153,44 @@ export async function inspectPublicBlobs(api,entries,paths,fetcher,headers){
  result.source="github-public-blobs";
  return result;
 }
+
+// Publieke GitHub Checks horen bij de huidige branch. Alleen EAIgit-annotaties
+// mogen als bewezen syntaxfouten in de wizard verschijnen; een groen vinkje bewijst geen werking.
+export async function fetchPublicChecks(api,branch,paths,fetcher,headers){
+ const result={checked:false,headSha:null,runs:[],syntaxErrors:[],incomplete:false};
+ if(!branch)return result;
+ let response;
+ try{response=await fetcher(api+"/commits/"+encodeURIComponent(branch)+"/check-runs?per_page=50",{
+  headers,redirect:"error",signal:AbortSignal.timeout(8500)});
+ }catch{return result;}
+ if(!response.ok)return result;
+ let data;
+ try{data=await response.json();}catch{return result;}
+ if(!Array.isArray(data.check_runs))return result;
+ result.checked=true;result.incomplete=data.total_count>50;
+ const permitted=new Set(paths);
+ const runs=data.check_runs.filter(x=>typeof x.name==="string"&&
+  /EAIgit|projectcontrole|project.?engine|syntax|syntaxis/i.test(x.name)).slice(0,12);
+ result.headSha=runs.find(x=>/^[a-f0-9]{40}$/i.test(x.head_sha||""))?.head_sha||null;
+ result.runs=runs.map(x=>({name:safeLabel(x.name),status:x.status==="completed"?"completed":"pending",
+  conclusion:["success","failure","cancelled","timed_out","skipped","neutral","action_required"].includes(x.conclusion)?x.conclusion:null,
+  url:typeof x.html_url==="string"&&x.html_url.startsWith("https://github.com/")?x.html_url:null})).slice(0,8);
+ const failed=runs.filter(x=>x.conclusion==="failure"&&Number.isSafeInteger(x.id)).slice(0,3);
+ for(const check of failed){
+  let response;
+  try{response=await fetcher(api+"/check-runs/"+check.id+"/annotations?per_page=100",{
+   headers,redirect:"error",signal:AbortSignal.timeout(8500)});}
+  catch{result.incomplete=true;continue;}
+  if(!response.ok){result.incomplete=true;continue;}
+  let annotations;try{annotations=await response.json();}catch{result.incomplete=true;continue;}
+  if(!Array.isArray(annotations)){result.incomplete=true;continue;}
+  for(const x of annotations){
+   if(x.title!=="EAIgit syntaxis"||!permitted.has(x.path))continue;
+   const line=Number.isSafeInteger(x.start_line)&&x.start_line>0?x.start_line:null;
+   result.syntaxErrors.push({path:x.path,line,title:"Syntaxisfout bevestigd door GitHub Actions",
+    detail:"GitHub Actions heeft de syntaxis van dit bestand gecontroleerd en een fout gemeld.",checkUrl:result.runs.find(y=>y.name===check.name)?.url||null});
+   if(result.syntaxErrors.length>=30){result.incomplete=true;return result;}
+  }
+ }
+ return result;
+}
