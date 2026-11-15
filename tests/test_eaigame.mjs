@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {REALMS,QUESTION_BANK,validateBank,drawQuestion} from '../assets/eaigame-questions.js';
 import {createGame,ringDistance,reachableAreas,isCorrect,resolveTurn,finishTurn,MAX_ROUNDS} from '../assets/eaigame-logic.js';
 import {makeAnswerTracker,presentQuestion,answerLengthCues} from '../assets/eaigame-random.js';
+import {shuffleAnswers,randomIndex,auditAnswerCues} from '../assets/eaigame-randomizer.js';
 
 test('300 bruikbare vraagvarianten, gekoppeld aan zes SLO-leergebieden',()=>{
   assert.equal(REALMS.length,6);
@@ -58,4 +59,53 @@ test('sorteervragen starten nooit al in de juiste volgorde',()=>{
 });
 test('inhoudsredactie kan opvallende antwoordlengtes signaleren',()=>{
  const bad=answerLengthCues({type:'choice',answer:0,options:['Een veel en veel langer antwoord dat uitspringt','A','B','C']});assert.equal(bad.severe,true);
+});
+
+test('vier keuzeopties op alle niveaus, zonder terugval naar twee',()=>{
+ for(const q of QUESTION_BANK.filter(q=>q.type==='choice')){
+   assert.equal(q.options.length,4,q.id);
+   assert.equal(new Set(q.options).size,4,q.id);
+ }
+});
+test('waar en niet waar worden inhoudelijk afgewisseld',()=>{
+ for(const level of ['vmbo','havo','vwo']){
+   const truth=QUESTION_BANK.filter(q=>q.level===level&&q.type==='truth');
+   assert.equal(truth.length,11);
+   assert.equal(truth.filter(q=>q.options[q.answer]==='Waar').length,6);
+   assert.equal(truth.filter(q=>q.options[q.answer]==='Niet waar').length,5);
+ }
+});
+test('geen sterke antwoordlengtehint en bronposities niet vast op A',()=>{
+ const report=auditAnswerCues(QUESTION_BANK);
+ assert.equal(report.total,249);
+ assert.deepEqual(report.largeLengthGap,[]);
+ assert.ok(report.longestRate>=.20&&report.longestRate<=.30,JSON.stringify(report));
+ assert.ok(report.answerPositions.every(n=>n>=40&&n<=85),JSON.stringify(report.answerPositions));
+});
+test('verdeling van het correcte antwoord is bij 20.000 willekeurige presentaties ongeveer gelijk',()=>{
+ const q=QUESTION_BANK.find(q=>q.type==='choice'),positions=[0,0,0,0];
+ for(let i=0;i<20000;i++){
+   const result=shuffleAnswers(q);
+   assert.equal(result.displayed[result.correctPosition],q.options[q.answer]);
+   positions[result.correctPosition]++;
+ }
+ assert.ok(positions.every(n=>n>4300&&n<5700),JSON.stringify(positions));
+});
+test('shufflen verandert nooit wat goed of fout is',()=>{
+ for(const q of QUESTION_BANK.filter(q=>q.type!=='order')){
+   for(let i=0;i<15;i++){
+     const {order,displayed,correctPosition}=shuffleAnswers(q);
+     assert.equal(order[correctPosition],q.answer,q.id);
+     assert.equal(displayed[correctPosition],q.options[q.answer],q.id);
+     assert.equal(isCorrect(q,order[correctPosition]),true,q.id);
+   }
+ }
+});
+test('geen vaste bronvolgorde en geen kunstmatige anti-streak',()=>{
+ const question=QUESTION_BANK.find(q=>q.type==='choice');
+ const all=[];
+ for(let i=0;i<60;i++)all.push(presentQuestion(question,makeAnswerTracker()).correctDisplayIndex);
+ assert.equal(new Set(all).size,4);
+ assert.ok(all.some((n,i)=>i>0&&n===all[i-1]),'Een herhaling moet mogelijk blijven');
+ assert.throws(()=>randomIndex(0),RangeError);
 });
