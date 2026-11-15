@@ -101,31 +101,44 @@ def experiment_sections(en: bool):
 
 @lru_cache(maxsize=2)
 def education_sections(en: bool):
-    """Read every public EAI workform from its existing published source."""
+    """Group published workforms by their actual teaching purpose, not their initial letter."""
     root = Path(__file__).resolve().parent.parent
     intro = [
-        ('Education and workforms' if en else 'Onderwijs en werkvormen', '/en/education/' if en else '/nl/onderwijs/', ''),
-        ('EAI workform collection' if en else 'Alle EAI-werkvormen', '/werkvormen/', ''),
-        ('Language activities (Dutch)' if en else 'Taalwerkvormen', '/taalwerkvormen/', ''),
-        ('Teaching practice (Dutch)' if en else 'Voorbeelden uit de praktijk', '/praktijk/', ''),
-        ('Two pillars' if en else 'Twee pijlers', '/twee-pijlers/', ''),
-        ('AI workshop' if en else 'AI-workshop', '/workshop-ai/', ''),
+        ('Education and workforms' if en else 'Onderwijs en werkvormen', '/en/education/' if en else '/nl/onderwijs/', 'Begin bij een vraag uit je les.'),
+        ('EAI workform collection' if en else 'Alle EAI-werkvormen', '/werkvormen/', 'Werkvormen voor leren en AI-gebruik.'),
+        ('Language activities (Dutch)' if en else 'Taalwerkvormen', '/taalwerkvormen/', 'Oefenen met vaktaal en feedback.'),
+        ('Teaching practice (Dutch)' if en else 'Voorbeelden uit de praktijk', '/praktijk/', 'Voorbeelden uit het onderwijs.'),
+        ('Two pillars' if en else 'Twee pijlers', '/twee-pijlers/', 'Didactiek en AI-geletterdheid.'),
+        ('AI workshop' if en else 'AI-workshop', '/workshop-ai/', 'Materialen voor een onderwijsworkshop.'),
     ]
-    cards = []
-    for page in sorted((root / 'werkvormen').glob('*/index.html')):
-        soup = BeautifulSoup(page.read_text(encoding='utf-8'), 'html.parser')
-        heading = soup.select_one('h1')
-        title = heading.get_text(' ', strip=True) if heading else page.parent.name.replace('-', ' ').capitalize()
-        description = soup.find('meta', attrs={'name': 'description'})
-        cards.append((title, '/werkvormen/' + page.parent.name + '/', description.get('content', '') if description else ''))
-    if len(cards) < 50:
-        raise ValueError('Niet alle gepubliceerde EAI-werkvormen zijn gevonden')
+    data = json.loads((root / 'content' / 'workforms.json').read_text(encoding='utf-8'))
+    published = {page.parent.name for page in (root / 'werkvormen').glob('*/index.html')}
+    source = {form['slug']: form for form in data['workforms']}
+    if published != set(source):
+        raise ValueError('Gepubliceerde werkvormen en brongegevens verschillen: ' + repr(sorted(published ^ set(source))))
+    semantic_groups = [
+        ('Opdrachten en de rol van AI', 'Planning tasks and AI roles (Dutch)', ('analyse', 'ontwerpen')),
+        ('Hulp geven en feedback', 'Support and feedback (Dutch)', ('scaffolding', 'herstellen')),
+        ('Eigen keuzes en zelfstandigheid', 'Self-regulation and independent work (Dutch)', ('zelfregulatie', 'zelfstandigheid')),
+        ('Denken en leren zichtbaar maken', 'Evidence of thinking and learning (Dutch)', ('zichtbaar', 'bewijs')),
+        ('Bronnen en argumenten beoordelen', 'Sources and arguments (Dutch)', ('argumentatie',)),
+        ('Leerlingen begrijpen en beoordelen', 'Teaching decisions and evidence (Dutch)', ('professioneel-oordeel',)),
+    ]
+    categories = [category for _, _, item_categories in semantic_groups for category in item_categories]
+    if len(categories) != len(set(categories)) or set(categories) != {form['category'] for form in source.values()}:
+        raise ValueError('Niet elke werkvormcategorie is precies eenmaal ingedeeld')
     groups_ = [('Start hier' if not en else 'Start here', intro)]
-    for first, last in (('A', 'H'), ('I', 'R'), ('S', 'Z')):
-        matches = [entry for entry in cards if first <= entry[0][0].upper() <= last]
-        groups_.append((('Werkvormen ' if not en else 'Workforms ') + first + '–' + last, sorted(matches, key=lambda item: item[0].casefold())))
-    if sum(len(entries) for _, entries in groups_[1:]) != len(cards):
-        raise ValueError('Werkvormen ontbreken in de alfabetische groepen')
+    total = 0
+    for dutch, english, categories_here in semantic_groups:
+        forms = [form for form in source.values() if form['category'] in categories_here]
+        links = [(form.get('public_title') or form['title'],
+                  '/werkvormen/' + form['slug'] + '/',
+                  form['summary']) for form in forms]
+        links.sort(key=lambda item: item[0].casefold())
+        total += len(links)
+        groups_.append((english if en else dutch, links))
+    if total != len(published):
+        raise ValueError('Niet alle EAI-werkvormen zijn via het menu te vinden')
     return groups_
 
 
@@ -203,9 +216,18 @@ def site_search_records(root: Path) -> list:
     """Build a public, local search index from published paths and real module IDs."""
     records = {}
     def add(title, url, category, description=''):
-        if not title or not url.startswith('/') or url in records:
+        if not title or not url.startswith('/'):
             return
-        records[url] = {'title': str(title).strip(), 'url': url, 'category': category, 'description': str(description or '').strip()[:240]}
+        description = str(description or '').strip()[:240]
+        if url in records:
+            # Category pages enter first with short labels. A published article
+            # or a workform has a more useful description: keep that information.
+            current = records[url]
+            if len(description) > len(current['description']):
+                current['description'] = description
+                current['category'] = category
+            return
+        records[url] = {'title': str(title).strip(), 'url': url, 'category': category, 'description': description}
     for en in (False, True):
         for name, links in groups(en):
             for label, url in links:
