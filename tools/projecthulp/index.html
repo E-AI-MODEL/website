@@ -88,6 +88,11 @@
   <details class="ph-more ph-plan-rest" id="moreStepsGroup"><summary id="moreStepsTitle">Bekijk de overige stappen</summary><ol id="moreSteps" start="4"></ol></details></section>
   <details class="ph-more"><summary>Wat hebben we niet gecontroleerd?</summary><ul id="limits"></ul></details>
   <div class="ph-downloads"><button type="button" class="ph-button ph-primary" id="downloadReport">Download je stappenplan</button><button type="button" class="ph-button ph-secondary" id="downloadReadme">Voorbeeld README</button><button type="button" class="ph-button ph-secondary" id="downloadIgnore">Voorbeeld .gitignore</button></div>
+  <details class="ph-more ph-auto ph-hidden" id="automationDetails">
+   <summary>Ook automatische controles in GitHub gebruiken?</summary>
+   <p>We kunnen een controlebestand maken dat bij latere wijzigingen JavaScript- of Python-syntaxis nakijkt. Dit is geen volledige test van je project. Jij beoordeelt het bestand en voegt het zelf via GitHub toe onder <code>.github/workflows/projectcontrole.yml</code>. Pas daarna gaat GitHub Actions draaien.</p>
+   <button type="button" class="ph-button ph-secondary" id="downloadCheck">Download controlebestand</button>
+  </details>
   <div class="ph-actions"><button id="back2" type="button" class="ph-button ph-plain">← Gegevens aanpassen</button><button id="reset" type="button" class="ph-button ph-plain">Opnieuw beginnen</button></div>
  </section>
  <div class="ph-loading ph-hidden" id="loading" role="status" aria-live="polite"><span class="ph-spinner" aria-hidden="true"></span><span id="loadingText">We controleren de bestanden…</span></div>
