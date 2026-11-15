@@ -8,6 +8,7 @@
   <link rel="icon" href="/assets/eai-logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/assets/eaigame.css">
   <title>EAIgame · De Expeditie</title>
+  <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.173.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.173.0/examples/jsm/"}}</script>
 </head>
 <body class="eai-refresh eaigame">
 <a class="skip-link" href="#main">Ga naar het spel</a>
@@ -45,7 +46,7 @@
       <div id="destinations" class="destinations" aria-live="polite"></div>
       <div class="actionbar"><div><small id="phase-label">JOUW BEURT</small><strong id="phase-title">Werp je impuls</strong><span id="phase-detail">Een worp opent routes. Jij kiest.</span></div><button id="roll" type="button" class="primary">⚄ Werp impuls</button><button id="recenter" type="button" class="secondary">Overzicht</button></div>
       <p class="interaction-tip" id="interaction-tip">Sleep om rond te kijken · tik op een gebied</p>
-      <aside id="scoreboard" class="scoreboard hidden"><div class="score-head"><h3>De ontdekkers</h3><button id="score-close" class="icon-btn" type="button" aria-label="Sluit stand">×</button></div><ol id="score-list"></ol><p>Herstel samen zes bakens. Een goed antwoord geeft energie, twee opdrachten herstellen een baken.</p></aside>
+      <aside id="scoreboard" class="scoreboard hidden"><div class="score-head"><h3>De ontdekkers</h3><button id="score-close" class="icon-btn" type="button" aria-label="Sluit stand">×</button></div><ol id="score-list"></ol><p>Herstel samen zes bakens. Een goed antwoord geeft energie en herstelt een baken.</p></aside>
     </section>
     <dialog id="challenge" aria-labelledby="challenge-title">
       <div class="challenge-head"><div><p class="eyebrow" id="challenge-realm">DE UITDAGING</p><span class="level-tag" id="challenge-level">HAVO · ONDERBOUW</span></div><button id="challenge-close" class="icon-btn" type="button" aria-label="Sluit opdracht">×</button></div>
@@ -54,7 +55,7 @@
     </dialog>
     <dialog id="about" aria-labelledby="about-title"><div class="modal-head"><h2 id="about-title">EAIgame</h2><button type="button" class="icon-btn" id="about-close" aria-label="Sluiten">×</button></div>
       <p>Je maakt een expeditie door zes gebieden. De impuls bepaalt hoe ver je kunt reizen, niet waar je heen móét. Een goede keuze verandert je route en helpt de wereld herstellen.</p>
-      <p>De opdrachten zijn door EAIgame gemaakt met de <a href="https://www.slo.nl/publicaties/@25214/kerndoelen-voortgezet-onderwijs/" target="_blank" rel="noopener">nieuwe SLO-kerndoelen voor de onderbouw</a> als inhoudelijk vertrekpunt. Het zijn geen officiële SLO-vragen. De vmbo-, havo- en vwo-varianten zijn ontwerpkeuzes; SLO levert hiervoor niet drie aparte vragenbanken.</p>
+      <p>De opdrachten zijn door EAIgame gemaakt met de <a href="https://www.slo.nl/sectoren/vo/" target="_blank" rel="noopener">nieuwe SLO-kerndoelen voor de onderbouw</a> als inhoudelijk vertrekpunt. Het zijn geen officiële SLO-vragen. De vmbo-, havo- en vwo-varianten zijn ontwerpkeuzes; SLO levert hiervoor niet drie aparte vragenbanken.</p>
       <div class="ai-setting"><div><strong>Vragen met lokale AI (experimenteel)</strong><p>Gebruik een Qwen-model in je browser. De eerste download kan groot zijn en WebGPU is nodig. De lokaal gemaakte vragen worden pas gebruikt na controle door jou. Geen betaalde API.</p><p id="model-status" aria-live="polite">Uit. De vaste vraagbank blijft beschikbaar.</p></div><button type="button" id="model-load" class="secondary">Model laden</button></div>
       <p class="refs">Open bronnen: <a href="https://github.com/slonl/curriculum-fo" target="_blank" rel="noopener">SLO op GitHub</a> · <a href="https://github.com/mlc-ai/web-llm" target="_blank" rel="noopener">WebLLM</a>.</p><p class="fineprint">Een juist antwoord in dit spel is oefenen. Het bewijst niet dat je het later zelfstandig opnieuw kunt.</p>
     </dialog>
