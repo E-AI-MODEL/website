@@ -185,25 +185,37 @@ function sampleFlow(flow,fraction){
   const k=Math.floor(i);
   return add(positions[k],scl(sub(positions[k+1],positions[k]),i-k));
 }
+// Vaatmiddenlijnen en bloedruimten uit DEZELFDE BodyParts3D-bron als de 34 3D-meshes.
+// Herkomst: Niyaz-05/heart-anatomy-lab, commit ad9af6c, generated/geometry.json,
+// CC BY 4.0 (DBCLS). De ruwe meters zijn met exact dezelfde uniforme schaal
+// (23.8308044) als atlas-heart-rich.json omgezet naar de EAI-ruimte.
+// Zo loopt een route niet meer rechtstreeks tussen de zichtbare meshmiddelpunten.
+const FLOW_ANATOMY={"vessel":{"svc":[[-0.84692,1.17257,-0.21169],[-1.09317,1.27526,-0.10926],[-0.78268,1.49355,-0.3062],[-0.92459,1.62259,-0.26619],[-0.90273,1.80106,-0.27529],[-0.86973,1.94962,-0.129]],"ivc":[[-0.81768,-3.10184,-0.20606],[-0.92218,-2.55106,-0.2502],[-0.84585,-2.15643,-0.06136],[-0.94022,-1.89803,-0.3006],[-0.90042,-1.4156,0.00834],[-0.89218,-0.89582,-0.22584]],"pa":[[0.24031,0.81685,0.76192],[0.06687,0.96162,0.58919],[-0.00805,0.90898,0.30248],[0.2119,1.18136,0.20063],[0.13636,1.22862,-0.01947],[0.11341,1.46972,-0.12173]],"pa_left":[[0.10772,1.27226,0.10552],[0.26052,1.32578,-0.41299],[0.3903,1.24964,-0.83811],[0.62592,1.08077,-1.17715],[0.83827,0.79492,-1.34194],[1.24418,0.12502,-1.43666]],"pa_right":[[-1.80535,0.13083,-1.27623],[-1.57631,0.66026,-0.94029],[-1.14836,0.9426,-0.77915],[-0.71886,1.13149,-0.73156],[-0.2344,1.24792,-0.49377],[0.16448,1.34546,-0.09725]],"pv_ls":[[0.49165,0.75479,-0.83727],[0.66988,0.67205,-0.75108],[0.87647,0.36468,-0.66905],[1.04388,0.23826,-0.58772],[1.21823,0.10524,-0.49163],[1.37988,-0.12909,-0.35641]],"pv_li":[[0.35303,0.09668,-1.18973],[0.52568,0.03603,-1.15942],[0.68413,-0.09578,-1.20646],[0.79907,-0.38389,-1.38583],[0.97942,-0.27372,-0.99038],[1.15963,-0.25864,-0.84161]],"pv_rs":[[-1.32301,0.7831,-0.45126],[-1.29718,0.6395,-0.55769],[-1.26017,0.55199,-0.63847],[-1.1383,0.4692,-0.68688],[-1.00726,0.38346,-0.72279],[-0.9273,0.27162,-0.75484]],"pv_ri":[[-1.26158,-0.31392,-1.0609],[-1.16716,-0.25668,-1.02322],[-1.0869,-0.14663,-1.01286],[-0.97671,-0.08612,-0.96982],[-0.80624,-0.15044,-0.92711],[-0.72458,-0.05231,-0.90774]],"ao":[[-0.04888,0.29655,-0.13622],[-0.11718,0.46136,-0.13512],[-0.32686,0.65945,0.06063],[-0.36292,0.83768,0.09875],[-0.33497,1.13211,0.03072],[-0.44054,1.28884,0.04039]],"ao_arch":[[-0.44966,1.50804,0.15645],[-0.26114,1.66637,-0.17613],[-0.06687,1.89729,-0.4826],[0.00562,1.89705,-0.88284],[0.05662,1.72178,-1.198],[0.09323,1.4507,-1.59938]],"ao_desc":[[-0.21965,-2.18054,-0.7765],[-0.18533,-1.25822,-1.07317],[-0.11725,-0.67389,-1.22357],[-0.04242,0.03999,-1.40735],[-0.05307,0.62708,-1.46226],[-0.01299,1.53763,-1.31679]]},"chamber":{"ra":[-0.94377,0.10736,-0.21681],"rv":[-0.47376,-0.30644,0.49814],"la":[-0.295,0.25046,-0.86932],"lv":[0.51167,-0.21567,-0.14522]},"valve":{"tricuspid":[-0.47864,-0.29989,0.23292],"mitral":[0.31466,-0.27119,-0.38051],"pulmonary":[0.12382,0.65785,0.48133],"aortic":[-0.0158,0.43496,-0.07807]}};
 function makeAtlasFlowPaths(centers){
+  const {vessel:v,chamber:c,valve:k}=FLOW_ANATOMY;
+  const distance=(a,b)=>Math.hypot(...sub(a,b));
+  const from=(line,origin)=>distance(line[0],origin)<=distance(line.at(-1),origin)?line:[...line].reverse();
+  const into=(line,destination)=>distance(line.at(-1),destination)<=distance(line[0],destination)?line:[...line].reverse();
+  const pa=from(v.pa,k.pulmonary),paEnd=pa.at(-1);
+  const aorta=from(v.ao,k.aortic),arch=from(v.ao_arch,aorta.at(-1));
+  const desc=from(v.ao_desc,arch.at(-1));
   const specs=[
-    ['blue','return',['svc','ra'],22],
-    ['blue','return',['ivc','ra'],20],
-    ['blue','av',['ra','tricuspid','rv'],28],
-    ['blue','sem',['rv','pulmonary','pa','pa_left'],23],
-    ['blue','sem',['rv','pulmonary','pa','pa_right'],23],
-    ['red','return',['pv_ls','la'],19],
-    ['red','return',['pv_li','la'],19],
-    ['red','return',['pv_rs','la'],19],
-    ['red','return',['pv_ri','la'],19],
-    ['red','av',['la','mitral','lv'],28],
-    ['red','sem',['lv','aortic','ao','ao_arch','ao_desc'],26]
+    ['blue','return',['svc','ra'],22,[...into(v.svc,c.ra),c.ra]],
+    ['blue','return',['ivc','ra'],20,[...into(v.ivc,c.ra),c.ra]],
+    ['blue','av',['ra','tricuspid','rv'],28,[c.ra,k.tricuspid,c.rv]],
+    ['blue','sem',['rv','pulmonary','pa','pa_left'],23,[c.rv,k.pulmonary,...pa,...from(v.pa_left,paEnd)]],
+    ['blue','sem',['rv','pulmonary','pa','pa_right'],23,[c.rv,k.pulmonary,...pa,...from(v.pa_right,paEnd)]],
+    ['red','return',['pv_ls','la'],19,[...into(v.pv_ls,c.la),c.la]],
+    ['red','return',['pv_li','la'],19,[...into(v.pv_li,c.la),c.la]],
+    ['red','return',['pv_rs','la'],19,[...into(v.pv_rs,c.la),c.la]],
+    ['red','return',['pv_ri','la'],19,[...into(v.pv_ri,c.la),c.la]],
+    ['red','av',['la','mitral','lv'],28,[c.la,k.mitral,c.lv]],
+    ['red','sem',['lv','aortic','ao','ao_arch','ao_desc'],26,[c.lv,k.aortic,...aorta,...arch,...desc]]
   ];
-  return specs.map(([color,channel,ids,n])=>{
-    const path=ids.map(id=>centers[id]).filter(Boolean);
-    return {color,channel,n,path,ids,
-      curve:path.length>=2?Array.from({length:37},(_,i)=>splineAt(path,i/36)):[]};
-  }).filter(route=>route.path.length>=2);
+  return specs.map(([color,channel,ids,n,path])=>({
+    color,channel,n,ids,path,geometrySource:'bodyparts3d-centrelines',
+    curve:Array.from({length:61},(_,i)=>splineAt(path,i/60))
+  }));
 }
 function flowIsActive(flow,m){
   return flow.channel==='return'||(flow.channel==='av'&&m.av)||
@@ -1151,6 +1163,7 @@ window.__EAI_HEART_LAB__={
     flowRoutes:atlasFlowPaths.length};},
   get flowPreview(){return atlasFlowPaths.map(f=>({
     color:f.color,channel:f.channel,ids:f.ids,points:f.curve.length,
+    waypoints:f.path.length,source:f.geometrySource||'illustrative',
     active:flowIsActive(f,mechanics(state.t))
   }));},
   setTime:t=>setTime(t,true),pause:()=>{state.playing=false;syncPlay();},
