@@ -326,12 +326,12 @@
   }
   canvas.addEventListener('pointerdown',event => {
     if (mode !== 'overview') return;
-    drag = {id:event.pointerId,x:event.clientX,y:event.clientY,moved:false};
+    drag = {id:event.pointerId,x:event.clientX,y:event.clientY,startX:event.clientX,startY:event.clientY,moved:false};
     canvas.setPointerCapture(event.pointerId);
   });
   canvas.addEventListener('pointermove',event => {
     if (!drag || drag.id !== event.pointerId || mode !== 'overview') return;
-    if (Math.hypot(event.clientX-drag.x,event.clientY-drag.y)>5) drag.moved=true;
+    if (Math.hypot(event.clientX-drag.startX,event.clientY-drag.startY)>5) drag.moved=true;
     orbit.yaw -= (event.clientX-drag.x)*0.009;
     orbit.elevation = clamp(orbit.elevation+(event.clientY-drag.y)*0.006,0.35,1.40);
     drag.x=event.clientX;drag.y=event.clientY;
