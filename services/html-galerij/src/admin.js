@@ -157,15 +157,31 @@ async function health() {
 async function deployment() {
   // Public GitHub metadata only. No token and no write capability.
   const headers = { "User-Agent": "EAI-beheer/1.0", "X-GitHub-Api-Version": "2022-11-28" };
-  const [commit, workflow] = await Promise.allSettled([
+  const [commit, workflow, checks] = await Promise.allSettled([
     requestJson(GITHUB + "/commits/main", 4500, headers),
-    requestJson(GITHUB + "/actions/workflows/deploy-theory7.yml/runs?branch=main&per_page=1", 4500, headers)
+    requestJson(GITHUB + "/actions/workflows/deploy-theory7.yml/runs?branch=main&per_page=1", 4500, headers),
+    requestJson(GITHUB + "/actions/runs?branch=main&per_page=50", 4500, headers)
   ]);
-  if (commit.status !== "fulfilled" && workflow.status !== "fulfilled") {
+  if (commit.status !== "fulfilled" && workflow.status !== "fulfilled" && checks.status !== "fulfilled") {
     return fail("GitHub-publicatiestatus is tijdelijk niet bereikbaar.");
   }
   const c = commit.status === "fulfilled" ? commit.value : null;
   const rawRun = workflow.status === "fulfilled" ? workflow.value?.workflow_runs?.[0] : null;
+  const checkedWorkflows = ["Check website", "Build EAI Site", "Verify public UI"];
+  const pipeline = [];
+  const available = checks.status === "fulfilled" && Array.isArray(checks.value?.workflow_runs)
+    ? checks.value.workflow_runs : [];
+  for (const name of checkedWorkflows) {
+    const entry = available.find(item => item && item.name === name && Number.isSafeInteger(item.id));
+    if (!entry) continue;
+    pipeline.push({
+      name, status: ["queued", "in_progress", "completed", "waiting", "pending"].includes(entry.status)
+        ? entry.status : "unknown",
+      conclusion: typeof entry.conclusion === "string" ? entry.conclusion : null,
+      createdAt: entry.created_at || null,
+      url: "https://github.com/E-AI-MODEL/website/actions/runs/" + entry.id
+    });
+  }
   const run = rawRun && Number.isSafeInteger(rawRun.id) ? {
     id: rawRun.id,
     status: ["queued", "in_progress", "completed", "waiting", "pending"].includes(rawRun.status) ? rawRun.status : "unknown",
@@ -184,6 +200,8 @@ async function deployment() {
       url: "https://github.com/E-AI-MODEL/website/commit/" + c.sha.slice(0, 40)
     } : null,
     deploy: run,
+    checks: pipeline,
+    checksAvailable: checks.status === "fulfilled",
     note: "Een commit op main of geslaagde CI is niet op zichzelf bewijs dat alle productiepagina's bijgewerkt zijn."
   });
 }
