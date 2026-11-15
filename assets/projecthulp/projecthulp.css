@@ -102,3 +102,12 @@
  .ph-prompt-actions{flex-wrap:wrap}
  .ph-prompt-actions .ph-button{width:100%}
 }
+
+
+.ph-next-steps{margin:5px 0 26px;padding:0 0 0 1px}
+.ph-next-steps h3{font-size:14px;font-weight:690;margin:0 0 10px}
+.ph-next-steps ol{margin:0;padding-left:23px;color:#425950;font-size:13px;line-height:1.65}
+.ph-next-steps li{margin:0 0 7px;padding-left:3px}
+.ph-next-steps li::marker{font-weight:700;color:var(--ph-accent)}
+.ph-findings-section li strong{color:var(--ph-ink)}
+.ph-findings-section a{color:var(--ph-accent-strong);text-decoration:underline;text-underline-offset:2px}
