@@ -124,6 +124,8 @@ export default {
     if (request.method === 'GET' && path === '/admin-client.js') return new Response(adminClientJs, {
       status: 200, headers: { ...headers, 'Content-Type': 'application/javascript; charset=utf-8' }
     });
+    const remove = path.match(/^\/api\/admin\/uploads\/([^/]+)$/);
+    if (request.method === 'DELETE' && remove) return hideUpload(request, env, remove[1]);
     if (path.startsWith('/api/admin/')) {
       const adminResponse = await handleAdmin(request, env, user);
       if (adminResponse) return adminResponse;
@@ -139,8 +141,6 @@ export default {
       } catch { return error('De galerij is tijdelijk niet beschikbaar.', 503); }
     }
     if (request.method === 'POST' && path === '/api/uploads') return publish(request, env);
-    const remove = path.match(/^\/api\/admin\/uploads\/([^/]+)$/);
-    if (request.method === 'DELETE' && remove) return hideUpload(request, env, remove[1]);
     const view = path.match(/^\/view\/([^/]+)$/);
     if (request.method === 'GET' && view) {
       if (!validId(view[1])) return error('Niet gevonden.', 404);
