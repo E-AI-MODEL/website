@@ -265,3 +265,80 @@ body.eai-ui.eai-story-page .eai-story-rail {display:none}
   body.eai-ui.eai-story-page .eai-card-deck-actions button{transition:none}
   body.eai-ui.eai-story-page .eai-card-deck{scroll-behavior:auto}
 }
+
+/* The first choice should be visible sooner, particularly on a phone. */
+body.eai-ui.eai-story-page .eai-site-upload{display:none!important}
+body.eai-ui.eai-story-page main .page-hero,
+body.eai-ui.eai-story-page main .eai-editorial-hero{
+  padding-block:clamp(32px,4vw,54px) clamp(29px,3vw,43px);
+}
+body.eai-ui.eai-story-page main .page-hero h1,
+body.eai-ui.eai-story-page main .eai-editorial-hero h1{
+  font-family:Inter,ui-sans-serif,system-ui,sans-serif;
+  font-size:clamp(34px,4vw,53px);
+}
+body.eai-ui.eai-story-page main .page-hero .lede,
+body.eai-ui.eai-story-page main .eai-editorial-hero .eai-lead{
+  font:400 clamp(15px,1.45vw,17px)/1.56 Inter,ui-sans-serif,system-ui,sans-serif;
+}
+body.eai-ui.eai-story-page .eai-story-mobile-detail{
+  display:block;
+  grid-column:1/-1;
+  margin-top:14px;
+  padding:0 12px;
+  border:1px solid #c8dcd0;
+  border-radius:11px;
+  background:rgba(255,255,255,.84);
+}
+body.eai-ui.eai-story-page .eai-story-mobile-detail>summary{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  min-height:43px;
+  padding:8px 4px;
+  font:600 13px/1.45 Inter,ui-sans-serif,system-ui,sans-serif;
+  cursor:pointer;
+  color:#24513e;
+}
+body.eai-ui.eai-story-page .eai-story-mobile-detail>summary:after{
+  content:"+";
+  color:#568b71;
+  font-size:18px;
+}
+body.eai-ui.eai-story-page .eai-story-mobile-detail[open]>summary:after{content:"−"}
+body.eai-ui.eai-story-page .eai-story-mobile-detail>summary:focus-visible{
+  outline:2px solid #1a7b65;outline-offset:2px;
+}
+body.eai-ui.eai-story-page .eai-story-mobile-detail>div{
+  padding:8px 0 16px;
+}
+@media(max-width:620px){
+  body.eai-ui.eai-story-page main .page-hero,
+  body.eai-ui.eai-story-page main .eai-editorial-hero{
+    padding-block:26px 25px;
+  }
+  body.eai-ui.eai-story-page main .page-hero h1,
+  body.eai-ui.eai-story-page main .eai-editorial-hero h1{
+    font-size:clamp(28px,8vw,34px);
+    line-height:1.15;
+    margin-block:10px 15px;
+  }
+  body.eai-ui.eai-story-page main .page-hero .lede,
+  body.eai-ui.eai-story-page main .eai-editorial-hero .eai-lead{
+    font-size:15px;line-height:1.52;
+  }
+  body.eai-ui.eai-story-page .feature-publication{
+    padding:21px 19px;
+    border:1px solid #dbe7de;
+    border-radius:14px;
+    box-shadow:none;
+  }
+  body.eai-ui.eai-story-page .feature-publication h2{
+    font-size:clamp(23px,6vw,28px);
+    line-height:1.22;
+  }
+  body.eai-ui.eai-story-page .feature-publication .question-mark{
+    display:none;
+  }
+}
