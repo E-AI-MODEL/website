@@ -28,12 +28,12 @@ function render(){
  list("steps",advice.steps.slice(0,3));
  const additional=advice.steps.slice(3);
  list("moreSteps",additional);show("moreStepsGroup",additional.length>0);
- setText("moreStepsTitle","Bekijk de overige "+additional.length+" stappen");
+ setText("moreStepsTitle",additional.length===1?"Bekijk de laatste stap":"Bekijk de overige "+additional.length+" stappen");
  list("limits",advice.limits);
- setText("planCount",advice.steps.length+" stappen");
+ setText("planCount",advice.steps.length+" "+(advice.steps.length===1?"stap":"stappen"));
  const missing=advice.comparison?.missing||[];
  show("missingGroup",missing.length>0);
- setText("missingTitle","Deze "+missing.length+" bestanden ontbreken nog in GitHub");
+ setText("missingTitle",missing.length===1?"Dit bestand ontbreekt nog in GitHub":"Deze "+missing.length+" bestanden ontbreken nog in GitHub");
  list("missingFiles",missing);
  const repoLink=$("openRepo");
  show("openRepo",Boolean(repo?.url));
@@ -41,7 +41,7 @@ function render(){
  let firstTitle="Bekijk je volgende stap",firstText=advice.steps[0]||"Vul je gegevens aan om verder te gaan.";
  if(archive?.secret.length){
   firstTitle="Controleer eerst je privébestanden";
-  firstText="In het ZIP-bestand zitten "+archive.secret.length+" mogelijk gevoelige bestanden. Controleer die op je eigen apparaat. Upload ze niet voordat je zeker weet dat ze openbaar mogen zijn.";
+  firstText=archive.secret.length===1?"Eén bestand heeft mogelijk vertrouwelijke inhoud. Controleer het op je eigen apparaat. Upload het pas als je zeker weet dat het openbaar mag zijn.":"Er zijn "+archive.secret.length+" bestanden met mogelijk vertrouwelijke inhoud. Controleer ze op je eigen apparaat. Upload ze niet voordat je zeker weet dat ze openbaar mogen zijn.";
  }else if(archive&&repo?.readable){
   firstTitle="Pak je ZIP uit en bekijk wat ontbreekt";
   firstText="Je hoeft het ZIP-bestand niet rechtstreeks in GitHub te zetten. Pak het uit en bekijk welke bestanden je kunt toevoegen. Gebruik daarna de knop om je repository te openen.";
