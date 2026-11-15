@@ -53,6 +53,21 @@ export function makeGuidance({archive=null,repo=null,advice=null,goal="site",aim
   if(goalTest.evidence.length)addGood("In "+goalTest.evidence.slice(0,3).join(", ")+" zijn aanwijzingen gevonden die bij jouw doel passen. De werking is niet getest.");
   uncertain.push("Jouw doel: "+goalTest.title.toLowerCase()+". De volledige gebruikershandeling is nog niet uitgevoerd.");
  }
+ const ci=repo?.actionChecks;
+ for(const finding of ci?.syntaxErrors||[]){
+  problems.push(issue(finding.title,finding.detail,"attention",finding.path,finding.line));
+ }
+ if(ci?.runs?.length){
+  for(const run of ci.runs.slice(0,3)){
+   if(run.status==="completed"&&run.conclusion==="success"){
+    addGood("GitHub Actions meldt een geslaagde controle: "+run.name+". Dat bewijst geen functionele werking.");
+   }else if(run.conclusion==="failure"&&!ci.syntaxErrors?.length){
+    problems.push(issue("GitHub Actions-controle mislukt","Controle '"+run.name+"' is mislukt. Bekijk de gegevens in GitHub Actions voor de oorzaak.","attention"));
+   }
+  }
+  uncertain.push("Van GitHub Actions zijn alleen jobstatussen en eventuele EAIgit-syntaxisannotaties gelezen. Het volledige rapport is nog niet gekoppeld.");
+ }
+ if(ci?.incomplete)uncertain.push("Niet alle GitHub Actions-resultaten konden worden gelezen.");
  if(advice?.comparison&&repo?.readable&&!repo.truncated&&archive){
   const n=advice.comparison.missingCount||0;
   if(n>0)problems.push(issue(n===1?"Eén bestand staat nog niet in GitHub":n+" bestanden staan nog niet in GitHub","Vergelijk de mappen en voeg de ontbrekende uitgepakte bestanden toe. Gelijke bestandsnamen bewijzen niet dat de inhoud gelijk is.","attention"));
@@ -65,12 +80,14 @@ export function makeGuidance({archive=null,repo=null,advice=null,goal="site",aim
  }
  if(goal==="site"&&archive&&!archive.project?.hasHtml)problems.push(issue("Startpagina niet vastgesteld","Er is geen herkenbaar HTML-bestand gevonden. Mogelijk moet dit project eerst gebouwd worden.","attention"));
  if(!good.length)good.push("We hebben nog te weinig gecontroleerde informatie om onderdelen als goed te beoordelen.");
- uncertain.push("Codefouten zijn nog niet getest met een compiler of linter. We kunnen niet zeggen dat de code foutloos is.");
+ if(ci?.syntaxErrors?.length)uncertain.push("Andere code en functies zijn niet automatisch getest. De meldingen uit GitHub Actions gaan alleen over de aangewezen syntaxisfouten.");
+ else uncertain.push("Codefouten zijn nog niet getest met een compiler of linter. We kunnen niet zeggen dat de code foutloos is.");
  uncertain.push("Logische fouten of ontbrekende werking kun je pas vaststellen met gerichte gebruikstests. We hebben de projectcode niet uitgevoerd.");
  if(archive?.secret?.length)next.push("Bekijk de mogelijk vertrouwelijke bestanden op je eigen apparaat en bepaal wat openbaar mag worden.");
  else if(!archive&&!repo?.readable)next.push("Selecteer je ZIP-bestand zodat de projectbestanden kunnen worden onderzocht.");
  else if(!repo?.readable)next.push("Voeg de link naar je openbare GitHub-repository toe en controleer of de repository bereikbaar is.");
  else if(problems.some(x=>x.title.includes("ZIP in GitHub")))next.push("Pak het ZIP-bestand op je eigen apparaat uit en voeg daarna de losse projectbestanden toe. GitHub pakt een geüpload ZIP niet automatisch uit.");
+ else if(problems.some(x=>x.title==="Syntaxisfout bevestigd door GitHub Actions"))next.push("Open de gemelde syntaxisfout in GitHub, herstel deze en laat de GitHub Actions-controle opnieuw uitvoeren.");
  else if(problems.some(x=>x.title==="Ongeldige JSON"||x.title==="Lokaal bestand niet gevonden"||x.title==="ZIP en GitHub bevatten verschillende versies"))next.push("Bekijk de concrete fouten en verschillen bij het genoemde bestand en regelnummer. Verander niets voordat duidelijk is welke versie moet blijven.");
  else if(advice?.comparison?.missingCount)next.push("Voeg de ontbrekende losse bestanden toe aan GitHub. Bewaar de mapindeling en controleer eventuele privégegevens.");
  else if(problems.some(x=>x.title.includes("Verwijzingen")))next.push("Controleer de verwijzingen vanuit de startpagina en herstel de ontbrekende bestanden.");
@@ -84,7 +101,7 @@ export function makeGuidance({archive=null,repo=null,advice=null,goal="site",aim
   codexUrl:"https://codex.openai.com/",
   codexHelpUrl:"https://help.openai.com/en/articles/11369540-using-codex-with-your-chatgpt-plan",
   // Benoem niet-verifieerbare fouten nooit als bewezen.
-  codeErrorsVerified:false,logicErrorsVerified:false
+  codeErrorsVerified:Boolean(ci?.syntaxErrors?.length),logicErrorsVerified:false
  };
 }
 export function continuationPrompt(guidance,{repo=null}={}){
