@@ -52,13 +52,19 @@
   <div class="ph-privacy"><span aria-hidden="true">◯</span><span>Je bestanden blijven lokaal. Er wordt geen code uitgevoerd en niets in GitHub gewijzigd.</span></div>
  </section>
  <section class="ph-panel ph-hidden" id="screen3" aria-labelledby="screen3title">
-  <div class="ph-topline">STAP 3 VAN 3</div><h2 id="screen3title">Dit is jouw volgende stap.</h2><p id="resultLead">Op basis van de bestanden die we konden controleren.</p>
+  <div class="ph-topline">STAP 3 VAN 3</div><h2 id="screen3title">Dit hebben we gevonden.</h2><p id="resultLead">Op basis van de bestanden die we konden controleren.</p>
   <div class="ph-summary" id="summary"></div>
-  <div class="ph-result-grid">
-   <section class="ph-result-group"><h3><span class="ph-icon ph-ok">✓</span> Dit hebben we vastgesteld</h3><ul id="observations"></ul></section>
-   <section class="ph-result-group" id="warningsGroup"><h3><span class="ph-icon ph-warn">!</span> Hier moet je op letten</h3><ul id="warnings"></ul></section>
-  </div>
-  <section class="ph-plan"><div class="ph-plan-heading"><div><span class="ph-topline">JE PLAN</span><h3>Zo ga je verder in GitHub</h3></div><span class="ph-plan-count" id="planCount"></span></div><ol id="steps"></ol></section>
+  <section class="ph-first" aria-labelledby="firstTitle">
+   <div class="ph-topline">BEGIN HIER</div>
+   <h3 id="firstTitle">Dit kun je nu doen</h3>
+   <p id="firstText"></p>
+   <a id="openRepo" class="ph-button ph-primary ph-hidden" target="_blank" rel="noopener noreferrer">Open je GitHub-repository <span aria-hidden="true">↗</span></a>
+  </section>
+  <section class="ph-result-group ph-warning-panel" id="warningsGroup"><h3><span class="ph-icon ph-warn">!</span> Let hierop</h3><ul id="warnings"></ul></section>
+  <details class="ph-more ph-checks"><summary>Bekijk wat we hebben gecontroleerd</summary><ul id="observations"></ul></details>
+  <details class="ph-more ph-checks ph-hidden" id="missingGroup"><summary id="missingTitle">Welke bestanden ontbreken?</summary><ul id="missingFiles"></ul></details>
+  <section class="ph-plan"><div class="ph-plan-heading"><div><span class="ph-topline">JE PLAN</span><h3>Zo ga je verder in GitHub</h3></div><span class="ph-plan-count" id="planCount"></span></div><ol id="steps"></ol>
+  <details class="ph-more ph-plan-rest" id="moreStepsGroup"><summary id="moreStepsTitle">Bekijk de overige stappen</summary><ol id="moreSteps" start="4"></ol></details></section>
   <details class="ph-more"><summary>Wat hebben we niet gecontroleerd?</summary><ul id="limits"></ul></details>
   <div class="ph-downloads"><button type="button" class="ph-button ph-primary" id="downloadReport">Download je stappenplan</button><button type="button" class="ph-button ph-secondary" id="downloadReadme">Voorbeeld README</button><button type="button" class="ph-button ph-secondary" id="downloadIgnore">Voorbeeld .gitignore</button></div>
   <div class="ph-actions"><button id="back2" type="button" class="ph-button ph-plain">← Gegevens aanpassen</button><button id="reset" type="button" class="ph-button ph-plain">Opnieuw beginnen</button></div>
