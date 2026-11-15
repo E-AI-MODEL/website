@@ -3,7 +3,13 @@
 
 Dit is de verhaal- en ontwerpbasis voor de volgende EAIgame. De map beschrijft hoe de wereld eruitziet, hoe ze aanvoelt, wat de speler kan doen en wat er verandert door die handelingen. Het is geen bewijs dat de beschreven functies al zijn gebouwd. Deze documenten wijzigen de huidige EAIgame niet.
 
+## Visuele sfeerkaart
+![Vier eigen stijlen, een doorlopende eilandwereld](./sfeerkaart.svg)
+
+[Open de schematische stijlkaart](./sfeerkaart.svg). Dit is een **illustratie van de ontwerprichtingen**, geen gamebeeld of goedgekeurd model. Iedere wijk heeft een ander karakter en palet; het water, de bruggen en de materiaalkeuzes verbinden de wereld.
+
 ## Leesvolgorde
+- [De sfeerkaart](./sfeerkaart.svg): de vier visuele stijlen en hun gedeelde vormtaal.
 - [Het verhaal](./verhaal.md): plaats, personages, aanleiding, verhaallijnen, onthulling en mogelijke afloop.
 - [Storyboard](./storyboard.md): de eerste veertien speelmomenten, per scène met camera, geluid, bediening en zichtbaar gevolg.
 - [Stijl en toon](./stijl-en-toon.md): gedeelde vormgeving, eigen sfeer per gebied, UI, teksten en geluid.
