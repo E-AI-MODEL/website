@@ -5,6 +5,8 @@ import {runInNewContext} from 'node:vm';
 const code=readFileSync(new URL('../assets/eaigame-sites-level-bank.js',import.meta.url),'utf8');
 const scope={window:{}};
 runInNewContext(code,scope,{timeout:2000});
+const pilotCode=readFileSync(new URL('../assets/eaigame-sites-level-pilots.js',import.meta.url),'utf8');
+runInNewContext(pilotCode,scope,{timeout:2000});
 const bank=JSON.parse(JSON.stringify(scope.window.EAIGAME_LEVEL_QUESTIONS));
 const categories=new Set(['natuur','wereld','taal','rekenen']);
 test('300 originele EAIgame-varianten zijn op vier kenniswijken aangesloten',()=>{
@@ -32,4 +34,17 @@ test('geen fout in mapping van antwoorden en vraagtypen',()=>{
 test('de broncode bevat geen verzoek om antwoorden aan externe AI door te geven',()=>{
  assert.ok(!code.includes('fetch('));
  assert.ok(!code.includes('XMLHttpRequest'));
+});
+test('24 niveauproeven bevatten werkelijk andere taken en antwoordredeneringen',()=>{
+ const pilots=bank.filter(q=>q.origin==='eai-niveaupilot');
+ assert.equal(pilots.length,24);
+ assert.equal(new Set(pilots.map(q=>q.id)).size,24);
+ for(const stem of ['breuk-01','breuk-02','storm-01','storm-02','echo-01','echo-02','stad-01','stad-02']){
+   const variants=['vmbo','havo','vwo'].map(level=>pilots.find(q=>q.id===stem+'-'+level));
+   assert.ok(variants.every(Boolean),stem+' 3 niveaus');
+   assert.equal(new Set(variants.map(q=>q.prompt)).size,3,stem+' heeft andere inhoudelijke vragen');
+   assert.equal(new Set(variants.map(q=>q.explanation)).size,3,stem+' heeft andere redeneringen');
+   assert.ok(variants.every(q=>q.options.length===4&&q.type==='choice'&&q.answer>=0&&q.answer<4&&q.hint));
+ }
+ assert.equal(scope.window.EAIGAME_LEVEL_PILOT_COUNT,24);
 });
