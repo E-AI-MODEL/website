@@ -52,3 +52,19 @@
  .ph-purpose{padding:19px 0;margin-top:6px}
  .ph-purpose-checks{grid-template-columns:1fr;gap:16px}
 }
+
+
+/* Het doel blijft zichtbaar; details verschijnen pas als de bezoeker ze opent. */
+.projecthulp-page .ph-intro h1{max-width:740px;font-size:clamp(2.45rem,5.4vw,3.85rem);line-height:1.12}
+.ph-purpose-brief{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:10px 0 0}
+.ph-purpose-brief p{display:flex;align-items:flex-start;gap:9px;font-size:13px;line-height:1.6;color:#455d54;margin:0;min-width:0}
+.ph-purpose-brief .ph-icon{margin:0;flex:none;width:21px;height:21px}
+.ph-purpose-more{margin:13px 0 0;padding:10px 0 0}
+.ph-purpose-more .ph-purpose-checks{padding-top:15px}
+.ph-purpose-note{margin:9px 0 0}
+.ph-warning-panel{margin-bottom:15px;padding:11px 0}
+.ph-warning-panel ul{padding-top:12px}
+@media(max-width:730px){
+ .projecthulp-page .ph-intro h1{font-size:clamp(2.2rem,8.4vw,3rem);line-height:1.12}
+ .ph-purpose-brief{grid-template-columns:1fr;gap:11px}
+}
