@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {REALMS,QUESTION_BANK,validateBank,drawQuestion} from '../assets/eaigame-questions.js';
 import {createGame,ringDistance,reachableAreas,isCorrect,resolveTurn,finishTurn,MAX_ROUNDS} from '../assets/eaigame-logic.js';
+import {makeAnswerTracker,presentQuestion,answerLengthCues} from '../assets/eaigame-random.js';
 
 test('300 bruikbare vraagvarianten, gekoppeld aan zes SLO-leergebieden',()=>{
   assert.equal(REALMS.length,6);
@@ -45,4 +46,16 @@ test('zes herstelde bakens beëindigen het spel',()=>{
 test('fouten leveren geen onterechte voortgang op',()=>{
  const g=createGame(['Alfa'],'vwo');g.reach=[2];g.phase='challenge';
  const result=resolveTurn(g,2,false,false);assert.equal(result.reward,0);assert.equal(g.progress[2],0);assert.equal(g.misses[2],1);
+});
+
+test('juist antwoord wordt zichtbaar op wisselende plekken getoond, ook bij vaste bronindex',()=>{
+ const tracker=makeAnswerTracker(),question=QUESTION_BANK.find(q=>q.type==='choice'&&q.options.length===4);const positions=new Set();
+ for(let i=0;i<60;i++){const result=presentQuestion(question,tracker,Math.random);assert.equal(result.order[result.correctDisplayIndex],question.answer);positions.add(result.correctDisplayIndex)}
+ assert.ok(positions.size>=3,'Het juiste antwoord blijft op te weinig plekken');
+});
+test('sorteervragen starten nooit al in de juiste volgorde',()=>{
+ const q=QUESTION_BANK.find(q=>q.type==='order');for(let i=0;i<10;i++){const result=presentQuestion(q,makeAnswerTracker(),()=>.99);assert.notDeepEqual(result.order,[0,1,2]);assert.equal(result.correctDisplayIndex,null)}
+});
+test('inhoudsredactie kan opvallende antwoordlengtes signaleren',()=>{
+ const bad=answerLengthCues({type:'choice',answer:0,options:['Een veel en veel langer antwoord dat uitspringt','A','B','C']});assert.equal(bad.severe,true);
 });
