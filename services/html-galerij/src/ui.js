@@ -30,7 +30,7 @@ export function privatePage(email) {
   'iframe{display:block;width:100%;height:70vh;border:0}' +
   '@media(max-width:800px){.cols{grid-template-columns:1fr}.nav{gap:10px}.account{flex-basis:100%;order:3;margin:0 0 12px}.hero{padding:32px 0}.gallery-head{align-items:stretch;flex-direction:column}.gallery-head input{max-width:none}}' +
   '</style></head><body>' +
-  '<header class="top"><div class="wrap nav"><a class="brand" href="https://eaimodel.nl/">EAI</a><span>HTML-galerij</span>' +
+  '<header class="top"><div class="wrap nav"><a class="brand" href="https://eaimodel.nl/">EAI</a><a href="/" style="font-size:12px;text-decoration:none">Websitebeheer</a><span>HTML-galerij</span>' +
   '<span class="account">Ingelogd als ' + safeEmail + '</span><form method="post" action="/auth/logout"><button class="exit">Uitloggen</button></form></div></header>' +
   '<main class="wrap"><section class="hero"><span class="eyebrow">Beveiligde omgeving</span><h1>Mijn HTML-galerij</h1>' +
   '<p>Voeg een HTML-bestand toe, bekijk je bestanden of haal een pagina offline. Alleen jij hebt toegang.</p></section>' +
