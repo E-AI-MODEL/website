@@ -130,6 +130,13 @@ globalThis.fetch=async (url,opts)=>{
  if(target.includes('api.github.com/repos/E-AI-MODEL/website/actions/workflows/deploy-theory7.yml/runs')){
   return Response.json({workflow_runs:[{id:123456,status:'completed',conclusion:'failure',created_at:'2026-11-15T10:00:00Z',updated_at:'2026-11-15T10:01:00Z',head_sha:'de'.repeat(20)}]});
  }
+ if(target.includes('api.github.com/repos/E-AI-MODEL/website/actions/runs?branch=main')){
+  return Response.json({workflow_runs:[
+   {id:123500,name:'Check website',status:'completed',conclusion:'failure',created_at:'2026-11-15T12:00:00Z'},
+   {id:123501,name:'Build EAI Site',status:'completed',conclusion:'success',created_at:'2026-11-15T12:00:00Z'},
+   {id:123502,name:'Verify public UI',status:'in_progress',conclusion:null,created_at:'2026-11-15T12:00:00Z'}
+  ]});
+ }
  if(target.startsWith('https://eaimodel.nl/')){
   if(target.endsWith('/tools/anatomie/'))return Response.json({}, {status:503});
   if(target.endsWith('/tools/html-galerij/'))throw Error('Timeout');
@@ -157,6 +164,9 @@ try{
  body=await data(response);
  assert.equal(body.main.commit,'ab'.repeat(6));
  assert.equal(body.deploy.conclusion,'failure');
+ assert.equal(body.checks.length,3);
+ assert.equal(body.checks.find(x=>x.name==='Check website').conclusion,'failure');
+ assert.ok(body.checksAvailable);
  assert.match(body.note,/niet op zichzelf bewijs/i);
 }finally{
  globalThis.fetch=originalFetch;
