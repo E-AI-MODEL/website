@@ -56,7 +56,8 @@ try {
   for(const route of ["/tools/anatomie/","/tools/eaigame/","/tools/science-observatory/labs/natuurkunde/"]) {
     const page=await browser.newPage();
     await page.route("**/*",route=>route.request().url().startsWith(base)?route.continue():route.abort());
-    await page.goto(base+route,{waitUntil:"domcontentloaded"});
+    const labResponse=await page.goto(base+route,{waitUntil:"domcontentloaded"});
+    assert(labResponse?.ok(),"Lab route must exist: "+route);
     assert.equal(await page.locator("body.eai-dash-page,body.eai-card-index").count(),0,route);
     assert.equal(await page.locator('link[href*="site-dashboard-cards."]').count(),0,route);
     await page.close();
