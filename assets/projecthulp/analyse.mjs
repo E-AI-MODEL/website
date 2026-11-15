@@ -1,5 +1,5 @@
 import {inspectZip,readZipText,readZipBytes} from "./zip.mjs";
-import {inspectProjectTexts,gitBlobId} from "./inhoudscontrole.mjs";
+import {inspectProjectTexts,gitBlobId,inspectPublicBlobs} from "./inhoudscontrole.mjs";
 import {checkProjectPurpose,findBrokenLocalLinks} from "./doelcontrole.mjs";
 const REPO=/^https:\/\/github\.com\/([A-Za-z0-9](?:[A-Za-z0-9-]{0,38}[A-Za-z0-9])?)\/([A-Za-z0-9_.-]+?)(?:\.git)?\/?$/i;
 const TEXT_LIMIT=350000;
@@ -21,7 +21,7 @@ export async function fetchPublicRepo(url,fetcher=fetch){
  let meta;try{meta=await response.json();}catch{throw new Error("GitHub gaf ongeldige repositorygegevens terug.");}
  if(meta.private===true)throw new Error("Deze repository is privé. De proef ondersteunt alleen openbare repositories.");
  if(meta.full_name?.toLowerCase()!==p.name.toLowerCase())throw new Error("GitHub antwoordde met een andere repository.");
- let paths=[],branch=meta.default_branch||null,sha=null,truncated=false,readable=true,blobs={};
+ let paths=[],branch=meta.default_branch||null,sha=null,truncated=false,readable=true,blobs={},contentCheck=null;
  if(branch&&!(meta.size===0&&meta.pushed_at===null)){
   try{
    const treeResponse=await fetcher(api+"/git/trees/"+encodeURIComponent(branch)+"?recursive=1",{headers,redirect:"error",signal:AbortSignal.timeout(15000)});
@@ -33,9 +33,10 @@ export async function fetchPublicRepo(url,fetcher=fetch){
    const entries=tree.tree.filter(x=>x.type==="blob"&&typeof x.path==="string");
    paths=entries.map(x=>x.path);
    blobs=Object.fromEntries(entries.filter(x=>/^[a-f0-9]{40}$/i.test(x.sha||"")).slice(0,3500).map(x=>[x.path,x.sha]));
-  }catch(error){readable=false;return {name:meta.full_name,url:meta.html_url||"https://github.com/"+p.name,branch,paths,sha,truncated,readable,blobs,error:error.message,empty:false};}
+   try{contentCheck=await inspectPublicBlobs(api,entries,paths,fetcher,headers);}catch{contentCheck=null;}
+  }catch(error){readable=false;return {name:meta.full_name,url:meta.html_url||"https://github.com/"+p.name,branch,paths,sha,truncated,readable,blobs,contentCheck,error:error.message,empty:false};}
  }
- return {name:meta.full_name,url:meta.html_url||"https://github.com/"+p.name,branch,paths,sha,truncated,readable,blobs,empty:!branch||paths.length===0};
+ return {name:meta.full_name,url:meta.html_url||"https://github.com/"+p.name,branch,paths,sha,truncated,readable,blobs,contentCheck,empty:!branch||paths.length===0};
 }
 export function stripArchiveRoot(paths){
  const eligible=paths.filter(Boolean);
@@ -150,6 +151,8 @@ export function makeAdvice({goal="code",experience="beginner",archive,repo,aim="
   if(archive.missingReferences?.length)warnings.push("De startpagina verwijst naar "+archive.missingReferences.length+" lokaal bestand(en) dat niet op de verwachte plek staat: "+archive.missingReferences.slice(0,4).join(", ")+".");
  }else warnings.push("Er is geen ZIP onderzocht. Het advies is beperkt tot de repository en je antwoorden.");
  if(repo){
+  if(repo.contentCheck?.checkedFiles)observations.push("Van GitHub zijn "+repo.contentCheck.checkedFiles+" kleine bronbestanden inhoudelijk gelezen en statisch gecontroleerd.");
+  if(repo.contentCheck?.findings?.length)warnings.push("In de GitHub-code zijn "+repo.contentCheck.findings.length+" inhoudelijke aandachtspunten gevonden.");
   observations.push("GitHub-repository '"+repo.name+"' is openbaar en bereikbaar.");
   if(!repo.readable)warnings.push("De bestandslijst kon niet worden opgehaald. De vergelijking is niet compleet.");
   if(repo.truncated)warnings.push("De GitHub-bestandslijst is afgekapt. De vergelijking kan bestanden missen.");
