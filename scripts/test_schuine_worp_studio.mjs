@@ -97,7 +97,7 @@ try{
   await page.locator('#reset').click();
   assert.equal(await page.locator('#statRange').innerText(),'—');
   assert.match(await page.locator('#measurementNote').innerText(),/Gooi een bal om bereik, hoogte en vliegtijd te meten\./,'Na herstel verwijst de meetinformatie niet meer naar een gewiste worp');
-  assert.equal(await page.locator('#history').innerText(),'Je metingen verschijnen hier.','Na herstel is de metingengeschiedenis leeg');
+  assert.equal((await page.locator('#history').innerText()).trim(),'Je metingen verschijnen hier.','Na herstel is de metingengeschiedenis leeg');
   await page.locator('#fire').click();
   await page.waitForFunction(()=>window.__physicsStudio.state.trials.length===1,null,{timeout:12000});
   assert.match(await page.locator('#measurementNote').innerText(),/Laatste worp:/,'Na een nieuwe worp is er opnieuw meetinformatie');
@@ -105,7 +105,7 @@ try{
    await page.locator('#clear').click();
    assert.equal(await page.locator('#statRange').innerText(),'—','Wissen maakt de metingen leeg');
    assert.match(await page.locator('#measurementNote').innerText(),/Gooi een bal om bereik, hoogte en vliegtijd te meten\./,'Wissen verwijdert verouderde meetinformatie');
-   assert.equal(await page.locator('#history').innerText(),'Je metingen verschijnen hier.','Wissen maakt de geschiedenis leeg');
+   assert.equal((await page.locator('#history').innerText()).trim(),'Je metingen verschijnen hier.','Wissen maakt de geschiedenis leeg');
   }
   assert.equal(await page.evaluate(()=>window.__physicsStudio.state.height),0);
   assert.equal(await page.evaluate(()=>window.__physicsStudio.state.target),24);
