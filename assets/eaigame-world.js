@@ -6,7 +6,7 @@ const realmColors=['#f5a08b','#76ccef','#c4a3ff','#f6d58a','#80e5c4','#f7aa75'];
 const positions=Array.from({length:6},(_,i)=>{const a=i*Math.PI/3-Math.PI/2;return new THREE.Vector3(Math.cos(a)*7,0,Math.sin(a)*7)});
 const scene=new THREE.Scene();scene.fog=new THREE.FogExp2(0x071624,.024);scene.background=new THREE.Color(0x071624);
 const camera=new THREE.PerspectiveCamera(39,1,.1,150);
-const OVERVIEW_POSITION=new THREE.Vector3(1.5,25,27);
+const OVERVIEW_POSITION=new THREE.Vector3(1,19.5,21.5);
 camera.position.copy(OVERVIEW_POSITION);
 canvas.dataset.cameraView='overview';
 const renderer=new THREE.WebGLRenderer({canvas,antialias:true,powerPreference:'low-power',alpha:false});renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.65));renderer.outputColorSpace=THREE.SRGBColorSpace;
