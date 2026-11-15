@@ -1,14 +1,20 @@
 // This is a real cross-repository contract test. It does NOT approve or execute external actions.
 import assert from "node:assert/strict";
-import {readFileSync,writeFileSync,mkdirSync} from "node:fs";
+import {readFileSync,writeFileSync,mkdirSync,mkdtempSync,rmSync} from "node:fs";
+import {tmpdir} from "node:os";
+import {join} from "node:path";
 import {resolve,dirname} from "node:path";
 import {pathToFileURL} from "node:url";
 const [planFile,workRoot,outputFile]=process.argv.slice(2);
 if(!planFile||!workRoot)throw new Error("Gebruik: node test_projecthulp_eaiwork.mjs <plan.json> <eaiwork-checkout> [report.json]");
 const source=resolve(workRoot);
 const get=(p)=>import(pathToFileURL(resolve(source,p)).href);
-const [{validateMissionPlan,applyMissionEvent,blockingConstraints,missionProgress},{runPureTextAdapter,builtinInventory}]=await Promise.all([
- get("packages/operations/src/missions.ts"),get("packages/operations/src/execution.ts")
+const [{validateMissionPlan,applyMissionEvent,blockingConstraints,missionProgress},
+ {runPureTextAdapter,builtinInventory,runMissionStep,evaluateBuiltin},
+ {OpsStore}]=await Promise.all([
+ get("packages/operations/src/missions.ts"),
+ get("packages/operations/src/execution.ts"),
+ get("packages/operations/src/store.ts")
 ]);
 const plan=JSON.parse(readFileSync(planFile,"utf8"));
 validateMissionPlan(plan);
@@ -35,10 +41,59 @@ assert.throws(()=>runPureTextAdapter("github-write",{text:"nooit"}),/unsupported
 const available=new Set(builtinInventory().adapterIds);
 const actual=plan.tasks.filter(x=>available.has(x.taskKind)).map(x=>x.id);
 assert.deepEqual(actual,["goal-normalize","goal-measure"]);
+// Geef alleen in deze test twee bekende workers vrij via de echte Operations-journal.
+// De testpersoon is een fixture, geen toestemming van een echte gebruiker.
+const temp=mkdtempSync(join(tmpdir(),"projecthulp-eaiwork-"));
+let schedulerResult,operationProof;
+const store=new OpsStore(temp);
+let number=0;
+const at="2026-11-15T00:00:00.000Z";
+const emit=(event,actor={kind:"person",id:"test-owner"})=>
+ store.append({id:"projecthulp-test-"+(++number),at,actor,event});
+try{
+ for(const id of ["text-normalize","text-metrics"]){
+  const contract={
+   id,version:"1.0.0",name:id,specialization:"Controlled deterministic text fixture",
+   taskKinds:[id],inputSchema:{type:"object"},outputSchema:{type:"object"},
+   tools:[],requestedPermissions:[],modelPolicy:{preferred:"deterministic"},
+   testSuite:"builtin-fixture-v1",stopConditions:["invalid-input"]
+  };
+  emit({type:"worker.register",contract});
+  const measurement=evaluateBuiltin(id,contract);
+  assert.equal(measurement.numerator,measurement.denominator);
+  const evidenceRef="fixture:"+id+":1.0.0";
+  emit({type:"quality.record",measurement:{
+   id:"measurement-"+id,workerId:id,version:"1.0.0",
+   taskKind:id,dataset:measurement.dataset,suiteVersion:measurement.suiteVersion,
+   cohort:measurement.cohort,metric:measurement.metric,numerator:measurement.numerator,
+   denominator:measurement.denominator,measuredAt:at,evidenceRef
+  }},{kind:"check",id:"check:builtins"});
+  emit({type:"worker.release",id,evidenceRef});
+ }
+ emit({type:"mission.create",plan});
+ const firstRun=runMissionStep(store,plan.id,1);
+ const secondRun=runMissionStep(store,plan.id,1);
+ const blockedRun=runMissionStep(store,plan.id,2);
+ assert.deepEqual(firstRun.completed,["goal-normalize"]);
+ assert.deepEqual(secondRun.completed,["goal-measure"]);
+ assert.deepEqual(blockedRun.completed,[]);
+ assert.deepEqual(blockedRun.blocked.map(x=>x.taskId).sort(),["github-inventory","zip-inventory"]);
+ const snapshot=store.snapshot().missions[plan.id];
+ assert.equal(snapshot.tasks["goal-normalize"].status,"done");
+ assert.equal(snapshot.tasks["goal-measure"].status,"done");
+ assert.deepEqual(blockingConstraints(snapshot,"repo-write").map(x=>x.id),["gate-github-write"]);
+ assert.deepEqual(blockingConstraints(snapshot,"publish-site").map(x=>x.id),["gate-publish"]);
+ schedulerResult={first:firstRun.completed,second:secondRun.completed,blocked:blockedRun.blocked};
+ operationProof={registered:Object.keys(store.snapshot().workers),completed:2,
+  journalIntegrity:"recorded-by-ops-store",
+  permissionScope:"test-only-no-external-writes",remaining:missionProgress(snapshot)};
+}finally{store.close();rmSync(temp,{recursive:true,force:true});}
 const result={
  contract:"EAIwork MissionPlan v1",mission:plan.id,
- outcome:"contract-checked-not-mission-executed",
+ outcome:"first-two-dependency-tasks-executed-in-eaiwork-opsstore-remainder-blocked",
  phases:plan.phases.map(p=>({id:p.id,title:p.title,tasks:p.taskIds})),
+ schedulerRuns:schedulerResult,
+ operations:operationProof,
  eaiworkWorkersExecuted:[
   {task:"goal-normalize",adapter:"text-normalize",output:normal.text},
   {task:"goal-measure",adapter:"text-metrics",words:measured.words}
