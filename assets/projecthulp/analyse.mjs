@@ -160,10 +160,16 @@ export function makeAdvice({goal="code",experience="beginner",archive,repo,aim="
  if(archive&&repo&&repo.readable&&!repo.truncated){
   comparison=compareProjects(archive,repo);
   observations.push(countText(comparison.missingCount,"bestand uit het ZIP-bestand staat","bestanden uit het ZIP-bestand staan")+" nog niet op dezelfde plek in GitHub.");
-  if(comparison.present.length)warnings.push(countText(comparison.present.length,"bestandsnaam komt","bestandsnamen komen")+" al voor in GitHub. Controleer de inhoud voordat je iets overschrijft. Gelijke namen bewijzen niet dat de bestanden identiek zijn.");
+  if(comparison.identical.length)observations.push(countText(comparison.identical.length,"bestand is","bestanden zijn")+" inhoudelijk gelijk aan de GitHub-versie (Git-vingerafdruk).");
+  if(comparison.changed.length)warnings.push(countText(comparison.changed.length,"bestand heeft","bestanden hebben")+" aantoonbaar andere inhoud dan dezelfde bestandsnaam in GitHub. Controleer welke versie je wilt behouden.");
+  if(comparison.unknown.length)warnings.push(countText(comparison.unknown.length,"bestandsnaam komt","bestandsnamen komen")+" al voor in GitHub, maar de inhoud kon niet worden vergeleken. Gelijke namen bewijzen niet dat de bestanden identiek zijn.");
  }
+ if(archive?.contentCheck?.findings?.length)warnings.push(archive.contentCheck.findings.length+" inhoudelijke fouten of verwijzingsproblemen gevonden. Zie de concrete bevindingen.");
+ if(archive?.contentCheck?.incomplete)warnings.push("Sommige bestanden zijn door grootte of formaat niet inhoudelijk gecontroleerd.");
  if(purpose.repoOnlyZips)warnings.unshift("Er staat in GitHub alleen een ZIP of een ZIP met documentatie. De projectbestanden zijn daarmee nog niet beschikbaar als broncode.");
  if(archive?.secret.length)steps.push("Bekijk eerst de mogelijk gevoelige bestanden en haal wachtwoorden of privésleutels uit het project.");
+ if(archive?.contentCheck?.findings?.length)steps.push("Bekijk de gevonden inhoudelijke problemen en controleer per bestand en regel welke wijziging nodig is.");
+ if(comparison?.changed?.length)steps.push("Vergelijk de afwijkende bestanden inhoudelijk voordat je iets overschrijft in GitHub.");
  if(selectedGoal==="site"&&archive?.missingReferences?.length)steps.push("Herstel de ontbrekende verwijzingen uit je startpagina voordat je de website publiceert.");
  if(selectedGoal==="site"&&archive&&!archive.project.hasHtml)steps.push("Zoek het bestand dat de website moet openen. Zonder startpagina kunnen we nog geen website aanbieden.");
  if(selectedGoal==="app"&&archive&&!archive.project.hasPackage)steps.push("Bepaal hoe het programma gestart en getest moet worden. In het onderzochte archief ontbreekt een duidelijke projectconfiguratie.");
@@ -188,7 +194,7 @@ export function makeAdvice({goal="code",experience="beginner",archive,repo,aim="
  if(goal==="maintain")steps.push("Gebruik voor toekomstige wijzigingen een aparte branch en controleer het verschil voordat je het samenvoegt.");
  if(experience==="beginner"&&archive&&repo)steps.push("Kijk na de upload of je bestanden op de juiste plek staan. Je hoeft nu geen nieuw programma te installeren.");
  const ready=Boolean(archive&&repo&&repo.readable&&!repo.truncated&&!archive.secret.length);
- return {observations,warnings,steps,comparison,ready,purpose,limits:["We hebben code uit het project niet uitgevoerd en niet getest.","We lezen alleen bestandsnamen en een beperkt aantal projectbestanden. De inhoud van bestaande GitHub-bestanden is niet vergeleken.","Deze tool gebruikt geen AI en maakt geen wijzigingen in GitHub."]};
+ return {observations,warnings,steps,comparison,ready,purpose,limits:["Projectcode is niet uitgevoerd. Knoppen, berekeningen en andere functies zijn niet automatisch getest.","De statische ZIP-analyse is begrensd. Grote of ongeschikte bestanden blijven deels onbeoordeeld.","De GitHub-vergelijking gebruikt alleen bestanden met beschikbare Git-vingerafdrukken. De tool schrijft of publiceert niets."]};
 }
 export function readmeTemplate(project,repoName){
  const name=repoName?.split("/").at(-1)||"Mijn project";
