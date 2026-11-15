@@ -14,3 +14,17 @@ CREATE TABLE IF NOT EXISTS upload_limits (
   count INTEGER NOT NULL DEFAULT 1,
   PRIMARY KEY (visitor_hash, hour)
 );
+
+-- Login attempts are counted per hashed client and globally in fixed 15-minute windows.
+CREATE TABLE IF NOT EXISTS gallery_login_attempts (
+  bucket TEXT NOT NULL,
+  window INTEGER NOT NULL,
+  count INTEGER NOT NULL DEFAULT 0,
+  PRIMARY KEY (bucket, window)
+);
+CREATE TABLE IF NOT EXISTS gallery_sessions (
+  token_hash TEXT PRIMARY KEY,
+  email TEXT NOT NULL,
+  expires_at INTEGER NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_gallery_sessions_expiry ON gallery_sessions(expires_at);
