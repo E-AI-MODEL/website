@@ -8,7 +8,10 @@
     "'LicenseReported' betekent: op genoemde bronpagina vermeld, niet alle bestanden afzonderlijk juridisch vrijgegeven.",
     "'Eerst testen' betekent: bronkandidaat, niet een goedgekeurd of bruikbaar model.",
     "Voor betaalde subsets van assets is geen aanschaf gedaan.",
-    "De websitecode en het werkende spel blijven onaangeraakt."
+    "De websitecode en het werkende spel blijven onaangeraakt.",
+    "19 pakketpagina's of uitgeversvermeldingen inhoudelijk nagekeken. SourceCheck geeft aan of de bronpagina is bevestigd, NIET of het pakket in een spel is getest.",
+    "Quaternius QAL v1.0 en de FAQ zijn tegenstrijdig over de brede CC0-claim; daarom bij deze bron geen losse modellen in de openbare repo opslaan.",
+    "Een aantal oudere of brede bron-URL's is nog niet opnieuw bevestigd. Selecteer nooit op basis van alleen het vermelde licentielabel."
   ],
   "candidates": [
     {
@@ -26,11 +29,13 @@
       "proposedUse": "Bomen, rotsen, struiken en omgeving; kleuren en afmetingen uniform maken.",
       "selection": "eerst testen",
       "formatKnown": "3D pack",
-      "reviewFlag": "330 bestandvarianten, geen bewijs van stijlmatch",
+      "reviewFlag": "330 bestanden, bron vermeldt CC0. Afzonderlijke bestanden nog niet op stijl en prestaties getest.",
       "filesInRepo": false,
       "downloadStatus": "alleen bron geregistreerd",
       "verifiedInEngine": false,
-      "checkedOn": "2026-11-15"
+      "checkedOn": "2026-11-15",
+      "sourceCheck": "publisher-page-seen",
+      "sourceCheckDate": "2026-11-15"
     },
     {
       "id": "kaykit-forest",
@@ -51,7 +56,9 @@
       "filesInRepo": false,
       "downloadStatus": "alleen bron geregistreerd",
       "verifiedInEngine": false,
-      "checkedOn": "2026-11-15"
+      "checkedOn": "2026-11-15",
+      "sourceCheck": "publisher-page-seen",
+      "sourceCheckDate": "2026-11-15"
     },
     {
       "id": "kaykit-medieval",
@@ -69,11 +76,13 @@
       "proposedUse": "Waterrad, windmolen, huizen, markt, waterloop en decor; losse props, geen hexagon-bord.",
       "selection": "eerst testen",
       "formatKnown": "FBX, glTF, OBJ",
-      "reviewFlag": "Hexagonbodems niet inzetten in randloze wereld; modelonderdelen beoordelen.",
+      "reviewFlag": "CC0 en GLTF bij de uitgever bevestigd. Alleen gebouwen en onderdelen hergebruiken; geen hexagonpaden.",
       "filesInRepo": false,
       "downloadStatus": "alleen bron geregistreerd",
       "verifiedInEngine": false,
-      "checkedOn": "2026-11-15"
+      "checkedOn": "2026-11-15",
+      "sourceCheck": "publisher-page-seen",
+      "sourceCheckDate": "2026-11-15"
     },
     {
       "id": "kenney-fantasy-town",
@@ -94,7 +103,9 @@
       "filesInRepo": false,
       "downloadStatus": "alleen bron geregistreerd",
       "verifiedInEngine": false,
-      "checkedOn": "2026-11-15"
+      "checkedOn": "2026-11-15",
+      "sourceCheck": "publisher-page-seen",
+      "sourceCheckDate": "2026-11-15"
     },
     {
       "id": "kenney-castle",
@@ -116,7 +127,9 @@
       "filesInRepo": false,
       "downloadStatus": "alleen bron geregistreerd",
       "verifiedInEngine": false,
-      "checkedOn": "2026-11-15"
+      "checkedOn": "2026-11-15",
+      "sourceCheck": "publisher-page-seen",
+      "sourceCheckDate": "2026-11-15"
     },
     {
       "id": "kenney-watercraft",
@@ -137,7 +150,9 @@
       "filesInRepo": false,
       "downloadStatus": "alleen bron geregistreerd",
       "verifiedInEngine": false,
-      "checkedOn": "2026-11-15"
+      "checkedOn": "2026-11-15",
+      "sourceCheck": "publisher-page-seen",
+      "sourceCheckDate": "2026-11-15"
     },
     {
       "id": "kenney-pirate",
@@ -157,7 +172,9 @@
       "filesInRepo": false,
       "downloadStatus": "alleen bron geregistreerd",
       "verifiedInEngine": false,
-      "checkedOn": "2026-11-15"
+      "checkedOn": "2026-11-15",
+      "sourceCheck": "publisher-page-seen",
+      "sourceCheckDate": "2026-11-15"
     },
     {
       "id": "kenney-cave",
@@ -178,7 +195,9 @@
       "filesInRepo": false,
       "downloadStatus": "alleen bron geregistreerd",
       "verifiedInEngine": false,
-      "checkedOn": "2026-11-15"
+      "checkedOn": "2026-11-15",
+      "sourceCheck": "publisher-page-seen",
+      "sourceCheckDate": "2026-11-15"
     },
     {
       "id": "kenney-factory",
@@ -198,7 +217,9 @@
       "filesInRepo": false,
       "downloadStatus": "alleen bron geregistreerd",
       "verifiedInEngine": false,
-      "checkedOn": "2026-11-15"
+      "checkedOn": "2026-11-15",
+      "sourceCheck": "publisher-page-seen",
+      "sourceCheckDate": "2026-11-15"
     },
     {
       "id": "kenney-furniture",
@@ -219,7 +240,9 @@
       "filesInRepo": false,
       "downloadStatus": "alleen bron geregistreerd",
       "verifiedInEngine": false,
-      "checkedOn": "2026-11-15"
+      "checkedOn": "2026-11-15",
+      "sourceCheck": "publisher-page-seen",
+      "sourceCheckDate": "2026-11-15"
     },
     {
       "id": "kenney-modular-buildings",
@@ -239,7 +262,9 @@
       "filesInRepo": false,
       "downloadStatus": "alleen bron geregistreerd",
       "verifiedInEngine": false,
-      "checkedOn": "2026-11-15"
+      "checkedOn": "2026-11-15",
+      "sourceCheck": "publisher-page-seen",
+      "sourceCheckDate": "2026-11-15"
     },
     {
       "id": "kaykit-adventurers",
@@ -255,11 +280,13 @@
       "proposedUse": "Bewegende speler als vaste visuele maat; free tier heeft 5 personages.",
       "selection": "eerst testen",
       "formatKnown": "FBX, glTF, rigged",
-      "reviewFlag": "Fantasywapens niet gebruiken; kleding en silhouet wellicht aanpassen.",
+      "reviewFlag": "FREE tier vijf personages, accessoires bevatten wapens die niet in EAIgame horen. Mix van personages en echte animatieproef vereist.",
       "filesInRepo": false,
       "downloadStatus": "alleen bron geregistreerd",
       "verifiedInEngine": false,
-      "checkedOn": "2026-11-15"
+      "checkedOn": "2026-11-15",
+      "sourceCheck": "publisher-page-seen",
+      "sourceCheckDate": "2026-11-15"
     },
     {
       "id": "kaykit-animations",
@@ -279,7 +306,9 @@
       "filesInRepo": false,
       "downloadStatus": "alleen bron geregistreerd",
       "verifiedInEngine": false,
-      "checkedOn": "2026-11-15"
+      "checkedOn": "2026-11-15",
+      "sourceCheck": "publisher-page-seen",
+      "sourceCheckDate": "2026-11-15"
     },
     {
       "id": "kenney-skyboxes",
@@ -293,13 +322,15 @@
         "alle"
       ],
       "proposedUse": "Rustige achtergrondlucht in lage kwaliteit voor mobiele fallback.",
-      "selection": "reserve",
+      "selection": "uitstellen",
       "formatKnown": "texture pack",
-      "reviewFlag": "Het volledige eiland krijgt dezelfde geloofwaardige weerslijn.",
+      "reviewFlag": "URL niet bevestigd; kandidaat niet als bron gebruiken zonder correcte packpagina",
       "filesInRepo": false,
       "downloadStatus": "alleen bron geregistreerd",
       "verifiedInEngine": false,
-      "checkedOn": "2026-11-15"
+      "checkedOn": "2026-11-15",
+      "sourceCheck": "URL-niet-bevestigd",
+      "sourceCheckDate": "2026-11-15"
     },
     {
       "id": "polyhaven",
@@ -319,7 +350,9 @@
       "filesInRepo": false,
       "downloadStatus": "alleen bron geregistreerd",
       "verifiedInEngine": false,
-      "checkedOn": "2026-11-15"
+      "checkedOn": "2026-11-15",
+      "sourceCheck": "nog-te-controleren",
+      "sourceCheckDate": "2026-11-15"
     },
     {
       "id": "ambientcg",
@@ -339,7 +372,9 @@
       "filesInRepo": false,
       "downloadStatus": "alleen bron geregistreerd",
       "verifiedInEngine": false,
-      "checkedOn": "2026-11-15"
+      "checkedOn": "2026-11-15",
+      "sourceCheck": "nog-te-controleren",
+      "sourceCheckDate": "2026-11-15"
     },
     {
       "id": "kenney-ui-adventure",
@@ -359,7 +394,9 @@
       "filesInRepo": false,
       "downloadStatus": "alleen bron geregistreerd",
       "verifiedInEngine": false,
-      "checkedOn": "2026-11-15"
+      "checkedOn": "2026-11-15",
+      "sourceCheck": "publisher-page-seen",
+      "sourceCheckDate": "2026-11-15"
     },
     {
       "id": "kenney-ui",
@@ -379,7 +416,9 @@
       "filesInRepo": false,
       "downloadStatus": "alleen bron geregistreerd",
       "verifiedInEngine": false,
-      "checkedOn": "2026-11-15"
+      "checkedOn": "2026-11-15",
+      "sourceCheck": "publisher-page-seen",
+      "sourceCheckDate": "2026-11-15"
     },
     {
       "id": "kenney-input",
@@ -399,7 +438,9 @@
       "filesInRepo": false,
       "downloadStatus": "alleen bron geregistreerd",
       "verifiedInEngine": false,
-      "checkedOn": "2026-11-15"
+      "checkedOn": "2026-11-15",
+      "sourceCheck": "publisher-page-seen",
+      "sourceCheckDate": "2026-11-15"
     },
     {
       "id": "kenney-icons",
@@ -419,7 +460,9 @@
       "filesInRepo": false,
       "downloadStatus": "alleen bron geregistreerd",
       "verifiedInEngine": false,
-      "checkedOn": "2026-11-15"
+      "checkedOn": "2026-11-15",
+      "sourceCheck": "publisher-page-seen",
+      "sourceCheckDate": "2026-11-15"
     },
     {
       "id": "kenney-interface-sounds",
@@ -439,7 +482,9 @@
       "filesInRepo": false,
       "downloadStatus": "alleen bron geregistreerd",
       "verifiedInEngine": false,
-      "checkedOn": "2026-11-15"
+      "checkedOn": "2026-11-15",
+      "sourceCheck": "publisher-page-seen",
+      "sourceCheckDate": "2026-11-15"
     },
     {
       "id": "kenney-impact-sounds",
@@ -460,7 +505,9 @@
       "filesInRepo": false,
       "downloadStatus": "alleen bron geregistreerd",
       "verifiedInEngine": false,
-      "checkedOn": "2026-11-15"
+      "checkedOn": "2026-11-15",
+      "sourceCheck": "publisher-page-seen",
+      "sourceCheckDate": "2026-11-15"
     },
     {
       "id": "quaternius-assets",
@@ -476,11 +523,13 @@
       "proposedUse": "Mogelijke alternatieve stijlen of losse props.",
       "selection": "uitstellen",
       "formatKnown": "3D packs",
-      "reviewFlag": "Niet als losse assets herpubliceren of als bundel delen; QAL geen CC0. Per pakket hercontrole.",
+      "reviewFlag": "QAL v1.0 28-08-2026 verbiedt losse verspreiding van assetbestanden; FAQ noemt CC0. In publiek GitHub repo niet zonder juridisch en pakketonderzoek.",
       "filesInRepo": false,
       "downloadStatus": "alleen bron geregistreerd",
       "verifiedInEngine": false,
-      "checkedOn": "2026-11-15"
+      "checkedOn": "2026-11-15",
+      "sourceCheck": "uitgever-licentie-bevestigd-maar-tegenstrijdige-FAQ",
+      "sourceCheckDate": "2026-11-15"
     },
     {
       "id": "threejs-existing",
@@ -500,7 +549,9 @@
       "filesInRepo": false,
       "downloadStatus": "alleen bron geregistreerd",
       "verifiedInEngine": false,
-      "checkedOn": "2026-11-15"
+      "checkedOn": "2026-11-15",
+      "sourceCheck": "nog-te-controleren",
+      "sourceCheckDate": "2026-11-15"
     },
     {
       "id": "three-glTF",
@@ -520,7 +571,9 @@
       "filesInRepo": false,
       "downloadStatus": "alleen bron geregistreerd",
       "verifiedInEngine": false,
-      "checkedOn": "2026-11-15"
+      "checkedOn": "2026-11-15",
+      "sourceCheck": "nog-te-controleren",
+      "sourceCheckDate": "2026-11-15"
     },
     {
       "id": "three-animationmixer",
@@ -540,7 +593,9 @@
       "filesInRepo": false,
       "downloadStatus": "alleen bron geregistreerd",
       "verifiedInEngine": false,
-      "checkedOn": "2026-11-15"
+      "checkedOn": "2026-11-15",
+      "sourceCheck": "nog-te-controleren",
+      "sourceCheckDate": "2026-11-15"
     },
     {
       "id": "three-instancedmesh",
@@ -560,7 +615,9 @@
       "filesInRepo": false,
       "downloadStatus": "alleen bron geregistreerd",
       "verifiedInEngine": false,
-      "checkedOn": "2026-11-15"
+      "checkedOn": "2026-11-15",
+      "sourceCheck": "nog-te-controleren",
+      "sourceCheckDate": "2026-11-15"
     },
     {
       "id": "three-pathfinding",
@@ -580,7 +637,9 @@
       "filesInRepo": false,
       "downloadStatus": "alleen bron geregistreerd",
       "verifiedInEngine": false,
-      "checkedOn": "2026-11-15"
+      "checkedOn": "2026-11-15",
+      "sourceCheck": "nog-te-controleren",
+      "sourceCheckDate": "2026-11-15"
     },
     {
       "id": "rapier",
@@ -600,7 +659,9 @@
       "filesInRepo": false,
       "downloadStatus": "alleen bron geregistreerd",
       "verifiedInEngine": false,
-      "checkedOn": "2026-11-15"
+      "checkedOn": "2026-11-15",
+      "sourceCheck": "nog-te-controleren",
+      "sourceCheckDate": "2026-11-15"
     },
     {
       "id": "postprocessing",
@@ -620,7 +681,9 @@
       "filesInRepo": false,
       "downloadStatus": "alleen bron geregistreerd",
       "verifiedInEngine": false,
-      "checkedOn": "2026-11-15"
+      "checkedOn": "2026-11-15",
+      "sourceCheck": "nog-te-controleren",
+      "sourceCheckDate": "2026-11-15"
     },
     {
       "id": "gltf-transform",
@@ -640,7 +703,9 @@
       "filesInRepo": false,
       "downloadStatus": "alleen bron geregistreerd",
       "verifiedInEngine": false,
-      "checkedOn": "2026-11-15"
+      "checkedOn": "2026-11-15",
+      "sourceCheck": "nog-te-controleren",
+      "sourceCheckDate": "2026-11-15"
     },
     {
       "id": "gltfpack",
@@ -660,7 +725,9 @@
       "filesInRepo": false,
       "downloadStatus": "alleen bron geregistreerd",
       "verifiedInEngine": false,
-      "checkedOn": "2026-11-15"
+      "checkedOn": "2026-11-15",
+      "sourceCheck": "nog-te-controleren",
+      "sourceCheckDate": "2026-11-15"
     },
     {
       "id": "khronos-samples",
@@ -680,7 +747,9 @@
       "filesInRepo": false,
       "downloadStatus": "alleen bron geregistreerd",
       "verifiedInEngine": false,
-      "checkedOn": "2026-11-15"
+      "checkedOn": "2026-11-15",
+      "sourceCheck": "nog-te-controleren",
+      "sourceCheckDate": "2026-11-15"
     },
     {
       "id": "slo-curriculum",
@@ -700,7 +769,9 @@
       "filesInRepo": false,
       "downloadStatus": "alleen bron geregistreerd",
       "verifiedInEngine": false,
-      "checkedOn": "2026-11-15"
+      "checkedOn": "2026-11-15",
+      "sourceCheck": "nog-te-controleren",
+      "sourceCheckDate": "2026-11-15"
     },
     {
       "id": "openstax-physics",
@@ -721,7 +792,11 @@
       "filesInRepo": false,
       "downloadStatus": "alleen bron geregistreerd",
       "verifiedInEngine": false,
-      "checkedOn": "2026-11-15"
+      "checkedOn": "2026-11-15",
+      "sourceCheck": "nog-te-controleren",
+      "sourceCheckDate": "2026-11-15"
     }
-  ]
+  ],
+  "verifiedPublisherPagesCount": 19,
+  "checkedOn": "2026-11-15"
 }
