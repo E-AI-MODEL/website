@@ -71,8 +71,13 @@ try {
   await page.locator('#play').click();
   assert.equal((await state(page)).playing,false,'Pauzeknop stopt het hart');
   await setTime(page,.30);
-  assert.equal(await page.locator('#flowOverlay path').count(),33,
-    'Elf routes krijgen elk een basislijn, bewegende lijn en richtingspijl');
+  assert.equal(await page.locator('#flowOverlay path').count(),44,
+    'Elf routes krijgen elk een rustige stroomstrook, bloedkleur, puls en richtingspijl');
+  assert.equal(await page.locator('#flowOverlay .blood-track').count(),11);
+  assert.equal(await page.locator('#flowOverlay .blood-pulse').count(),11);
+  const fillingPulse=page.locator('#flowOverlay .blood-pulse[data-flow-channel="av"]').first();
+  assert(Number(await fillingPulse.evaluate(el=>el.style.opacity))>.5,
+    'Bij open AV-kleppen loopt de geanimeerde bloedpuls door');
   assert.equal(await page.locator('#flowOverlay').isHidden(),false);
   const fillingFlow=await page.evaluate(()=>window.__EAI_HEART_LAB__.flowPreview);
   assert.equal(fillingFlow.filter(p=>p.active).length,8,
@@ -87,6 +92,8 @@ try {
   const pressureFlow=await page.evaluate(()=>window.__EAI_HEART_LAB__.flowPreview);
   assert.equal(pressureFlow.filter(p=>p.active).length,6,
     'Met gesloten kleppen lopen er geen stroomdeeltjes door AV- of slagaderkleppen');
+  assert.equal(await fillingPulse.evaluate(el=>el.style.opacity),'0',
+    'Bij gesloten AV-kleppen blijft de puls echt uit');
   assert.equal(await page.locator('#storyTitle').textContent(),'Volg de bloedstroom',
     'De uitleg mag niet in 0,19 seconde verspringen');
   metrics=await page.evaluate(()=>window.__EAI_HEART_LAB__.metrics);
@@ -95,6 +102,8 @@ try {
   const ejectionFlow=await page.evaluate(()=>window.__EAI_HEART_LAB__.flowPreview);
   assert.equal(ejectionFlow.filter(p=>p.active).length,9,
     'Tijdens het uitpompen zijn de uitgaande slagaderroutes zichtbaar');
+  assert(Number(await page.locator('#flowOverlay .blood-pulse[data-flow-channel="sem"]').first().evaluate(el=>el.style.opacity))>.5,
+    'Het uitpompen toont duidelijk de bewegende stroom door de open slagaderkleppen');
   assert.equal(await page.locator('#storyTitle').textContent(),'Volg de bloedstroom');
   metrics=await page.evaluate(()=>window.__EAI_HEART_LAB__.metrics);
   assert(metrics.sem&&!metrics.av&&metrics.pressure>90);
