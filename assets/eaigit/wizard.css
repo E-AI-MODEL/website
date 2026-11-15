@@ -127,3 +127,7 @@ body.eaigit-wizard{margin:0;min-height:100vh;background:radial-gradient(ellipse 
  .eg-header-actions .eg-header-link{font-size:11px}
  .eg-help-dialog{padding:21px 19px;max-height:calc(100dvh - 20px)}
 }
+
+
+.eg-stage-prompt-link{display:inline-flex;color:#197996;font-size:12px;font-weight:640;margin:9px 0 0;text-decoration:underline;text-underline-offset:3px}
+.eg-stage-prompt-link:focus-visible{outline:2px solid #1788b0;outline-offset:3px;border-radius:2px}
