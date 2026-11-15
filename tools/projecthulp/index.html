@@ -86,7 +86,8 @@
   <section class="ph-plan"><div class="ph-plan-heading"><div><span class="ph-topline">JE PLAN</span><h3>Zo ga je verder in GitHub</h3></div><span class="ph-plan-count" id="planCount"></span></div><ol id="steps"></ol>
   <details class="ph-more ph-plan-rest" id="moreStepsGroup"><summary id="moreStepsTitle">Bekijk de overige stappen</summary><ol id="moreSteps" start="4"></ol></details></section>
   <details class="ph-more"><summary>Wat hebben we niet gecontroleerd?</summary><ul id="limits"></ul></details>
-  <div class="ph-downloads"><button type="button" class="ph-button ph-primary" id="downloadReport">Download je stappenplan</button><button type="button" class="ph-button ph-secondary" id="downloadReadme">Voorbeeld README</button><button type="button" class="ph-button ph-secondary" id="downloadIgnore">Voorbeeld .gitignore</button></div>
+  <div class="ph-downloads"><button type="button" class="ph-button ph-primary" id="copyReport">Kopieer je advies</button><button type="button" class="ph-button ph-secondary" id="downloadReadme">Voorbeeld README</button><button type="button" class="ph-button ph-secondary" id="downloadIgnore">Voorbeeld .gitignore</button></div>
+  <p class="ph-copy-status" role="status" aria-live="polite" id="copyStatus"></p>
   <details class="ph-more ph-auto ph-hidden" id="automationDetails">
    <summary>Ook automatische controles in GitHub gebruiken?</summary>
    <p>We kunnen een controlebestand maken dat bij latere wijzigingen JavaScript- of Python-syntaxis nakijkt. Dit is geen volledige test van je project. Jij beoordeelt het bestand en voegt het zelf via GitHub toe onder <code>.github/workflows/projectcontrole.yml</code>. Pas daarna gaat GitHub Actions draaien.</p>
