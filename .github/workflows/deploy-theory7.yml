@@ -81,10 +81,15 @@ jobs:
         run: |
           python - <<'PY'
           import re
-          from urllib.request import urlopen
+          from urllib.request import Request, urlopen
           from pathlib import Path
           base = 'https://eaimodel.nl'
-          html = urlopen(base + '/tools/anatomie/', timeout=30).read().decode('utf-8')
+          def release_open(url, timeout):
+              return urlopen(Request(url, headers={
+                  'User-Agent': 'EAI-release-check/1.0',
+                  'Cache-Control': 'no-cache',
+              }), timeout=timeout)
+          html = release_open(base + '/tools/anatomie/', timeout=30).read().decode('utf-8')
           for kind, pattern, expected in (
               ('javascript', r'<script[^>]+src="(/tools/anatomie/assets/[^"]+[.]js)"', ('javascript', 'ecmascript')),
               ('stylesheet', r'<link[^>]+href="(/tools/anatomie/assets/[^"]+[.]css)"', ('css',)),
@@ -94,7 +99,7 @@ jobs:
               path = match.group(1)
               local = Path('site-build') / path.lstrip('/')
               assert local.is_file(), f'Build is missing {path}'
-              with urlopen(base + path, timeout=35) as response:
+              with release_open(base + path, timeout=35) as response:
                   content = response.read()
                   ct = response.headers.get('Content-Type', '').lower()
                   assert response.status == 200, (kind, response.status)
@@ -108,11 +113,16 @@ jobs:
           import hashlib
           import json
           from pathlib import Path
-          from urllib.request import urlopen
+          from urllib.request import Request, urlopen
 
           relative = 'tools/anatomie/labs/hartslag/'
+          def release_open(url, timeout):
+              return urlopen(Request(url, headers={
+                  'User-Agent': 'EAI-release-check/1.0',
+                  'Cache-Control': 'no-cache',
+              }), timeout=timeout)
           local = Path('site-build') / relative
-          with urlopen('https://eaimodel.nl/' + relative, timeout=35) as response:
+          with release_open('https://eaimodel.nl/' + relative, timeout=35) as response:
               page = response.read().decode('utf-8')
               assert response.status == 200
               assert 'id="mechanicsToggle"' not in page
@@ -124,7 +134,7 @@ jobs:
 
           for name in ('heart.js', 'atlas-heart-rich.json', 'atlas-heart-rich.bin'):
               expected = hashlib.sha256((local / name).read_bytes()).hexdigest()
-              with urlopen('https://eaimodel.nl/' + relative + name, timeout=70) as response:
+              with release_open('https://eaimodel.nl/' + relative + name, timeout=70) as response:
                   assert response.status == 200, name
                   hasher = hashlib.sha256()
                   while chunk := response.read(1024 * 1024):
@@ -136,14 +146,19 @@ jobs:
       - name: Verify live anatomical models
         run: |
           python - <<'PY'
-          from urllib.request import urlopen
+          from urllib.request import Request, urlopen
           base = 'https://eaimodel.nl/tools/anatomie/'
-          with urlopen(base, timeout=35) as response:
+          def release_open(url, timeout):
+              return urlopen(Request(url, headers={
+                  'User-Agent': 'EAI-release-check/1.0',
+                  'Cache-Control': 'no-cache',
+              }), timeout=timeout)
+          with release_open(base, timeout=35) as response:
               assert response.status == 200
               assert b'Anatomisch Observatorium' in response.read(120000)
           for system in ('skeletal', 'muscular', 'joints', 'cardiovascular',
                          'lymphatic', 'nervous', 'visceral'):
-              with urlopen(base + 'models/' + system + '.glb', timeout=40) as response:
+              with release_open(base + 'models/' + system + '.glb', timeout=40) as response:
                   assert response.status == 200, system
                   assert response.read(4) == b'glTF', system
           print('Online anatomische modellen gecontroleerd')

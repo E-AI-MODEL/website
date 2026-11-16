@@ -76,6 +76,15 @@ class CloudflareLiveHashTests(unittest.TestCase):
                 tampered = injected.replace(b'<body', b'<body data-injected="yes"', 1)
                 self.assertEqual(html_matches_release(tampered, digest), (False, False))
 
+    def test_anatomie_live_checks_use_known_release_user_agent(self):
+        workflow = (Path(__file__).resolve().parents[1] /
+                    '.github/workflows/deploy-theory7.yml').read_text(encoding='utf-8')
+        anatomy = workflow.split('      - name: Verify live anatomy JavaScript and stylesheets', 1)[1]
+        self.assertEqual(anatomy.count('def release_open(url, timeout):'), 3)
+        self.assertEqual(anatomy.count("'User-Agent': 'EAI-release-check/1.0'"), 3)
+        self.assertNotIn('with urlopen(', anatomy)
+        self.assertNotIn('html = urlopen(', anatomy)
+
     def test_geen_dubbele_of_meervoudige_injecties(self):
         extra = ORIGINAL.replace(b"</body>", BEACON + BEACON + b"</body>")
         self.assertEqual(html_matches_release(extra, DIGEST), (False, False))
