@@ -157,6 +157,23 @@ def html_matches_release(data: bytes, digest: str) -> tuple[bool, bool]:
                 return True, True
     return False, False
 
+def assert_live_ui_contract(path: str, soup: BeautifulSoup, version: str) -> None:
+    """A verified redirect is not a UI page; both have strict page contracts."""
+    if path in LEGACY_HUB_REDIRECTS:
+        target = LEGACY_HUB_REDIRECTS[path]
+        # The caller has already checked the exact published HTML hash.
+        # A redirect deliberately lacks the large full-page UI shell.
+        canonical_link = soup.find('link', rel='canonical')
+        refresh = soup.find('meta', attrs={'http-equiv': 'refresh'})
+        fallback = soup.select_one('main a[href]')
+        assert canonical_link and canonical_link.get('href') == 'https://eaimodel.nl' + target, path
+        assert refresh and target in refresh.get('content', ''), path
+        assert fallback and fallback.get('href') == target, path
+        return
+    assert soup.body and soup.body.get('data-ui-version') == version, f'Stale UI: {path}'
+    assert soup.select_one('.eai-site-menu'), path
+
+
 def verify_live(base: str, manifest: dict, timeout: int, root: Path):
     def get(path):
         request = Request(base.rstrip('/') + path, headers={'Cache-Control': 'no-cache', 'User-Agent': 'EAI-release-check/1.0'})
@@ -175,17 +192,7 @@ def verify_live(base: str, manifest: dict, timeout: int, root: Path):
                 if edge_beacon:
                     print(f'Cloudflare RUM injection verified without weakening HTML hash: {path}', flush=True)
                 soup = BeautifulSoup(data, 'html.parser')
-                if path in LEGACY_HUB_REDIRECTS:
-                    # A legacy top-level route intentionally serves a small
-                    # redirect, not the full UI. Its exact bytes were just
-                    # verified above, including any permitted CF RUM beacon.
-                    target = LEGACY_HUB_REDIRECTS[path]
-                    assert soup.find('link', rel='canonical')['href'] == 'https://eaimodel.nl' + target, path
-                    assert target in soup.find('meta', attrs={'http-equiv': 'refresh'})['content'], path
-                    assert soup.select_one('main a[href]')['href'] == target, path
-                else:
-                    assert soup.body.get('data-ui-version') == manifest['version'], f'Stale UI: {path}'
-                    assert soup.select_one('.eai-site-menu'), path
+                assert_live_ui_contract(path, soup, manifest['version'])
             # Cloudflare also injects its strictly validated RUM beacon into
             # the standalone LEIF pages. Do not weaken the byte-exact release
             # check: html_matches_release permits only that verified script.
