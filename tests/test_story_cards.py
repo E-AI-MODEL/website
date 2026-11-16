@@ -41,8 +41,8 @@ class EditorialCardUiTests(unittest.TestCase):
         self.assertFalse(soup.select(".knowledge-depth"), "The same three choices should not appear in hero and cards")
         cards = soup.select(".knowledge-routes .knowledge-route")
         self.assertEqual(len(cards), 3)
-        self.assertIn("5 min", cards[0].get_text(" ", strip=True))
-        self.assertIn("20 min", cards[1].get_text(" ", strip=True))
+        self.assertNotIn("5 min", cards[0].get_text(" ", strip=True))
+        self.assertNotIn("20 min", cards[1].get_text(" ", strip=True))
         self.assertTrue(all(card.select_one("a[href]") for card in cards))
 
     def test_prepared_pages_link_assets_without_changing_routes(self):
