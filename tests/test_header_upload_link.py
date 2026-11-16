@@ -15,7 +15,7 @@ class UploadNavigationTests(unittest.TestCase):
         self.assertIn('class="eai-site-upload"', source)
         # Desktop retains the button. On mobile the central tools landing
         # exposes the HTML gallery without duplicating it in the menu.
-        self.assertIn("('Onderzoeken en maken', '/nl/tools/')", source)
+        self.assertIn("('Kies een vakgebied of hulpmiddel', '/nl/tools/')", source)
         self.assertIn("('Explore and create', '/en/tools/')", source)
         for path in ('nl/tools/index.html', 'en/tools/index.html'):
             self.assertIn('href="/tools/html-galerij/"',
