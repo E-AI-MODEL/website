@@ -372,4 +372,4 @@ body.eai-ui.eai-story-page .eai-story-mobile-detail>div{
 }
 /* The research cards already provide the three choices; the intro should not repeat them. */
 body.eai-ui.eai-story-page .knowledge-hub-hero .knowledge-hero-grid{display:block}
-body.eai-ui.eai-story-page .knowledge-hub-hero .knowledge-hero-grid>.lede{max-width:66ch}
+body.eai-ui.eai-story-page .knowledge-hub-hero .knowledge-hero-grid>div:first-child{max-width:850px}
