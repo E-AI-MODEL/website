@@ -341,6 +341,23 @@ def check(root: Path, register: dict, taxonomy: dict) -> list[str]:
             if route(base) not in page_urls:
                 errors.append(f"Onderdeel: niet-geregistreerde route {i['id']}")
 
+    # Public sitemap is another data source, not a substitute for this register.
+    # An omitted legacy route may be intentional; an unreported difference isn't.
+    try:
+        sitemap = read(root / "sitemap.xml")
+        sitemap_paths = {
+            route(urlsplit(value).path)
+            for value in re.findall(r"<loc>([^<]+)</loc>", sitemap)
+        }
+        for page in pages:
+            if page.get("in_committed_sitemap") is not (page["url"] in sitemap_paths):
+                errors.append(f"Sitemap: vermelding verschilt voor {page['url']}")
+        missing = sitemap_paths - page_urls
+        if missing:
+            errors.append("Sitemap: routes zonder registratie: " + repr(sorted(missing)))
+    except OSError as exc:
+        errors.append(f"Sitemap: bestand niet leesbaar: {exc}")
+
     actual_page_files = visible_pages(root)
     registered_page_files = {p["file"] for p in pages if p.get("file")}
     if actual_page_files != registered_page_files:
