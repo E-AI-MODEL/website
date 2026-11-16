@@ -10,7 +10,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "scripts"))
 
-from check_website_register import check, extract_physics, extract_math, extract_taal, extract_llmscan, extract_glossary, extract_wihtml
+from check_website_register import (check, extract_physics, extract_math, extract_taal, extract_llmscan,
+                                    extract_glossary, extract_wihtml, extract_abyss,
+                                    extract_gravity, extract_sport_modes, extract_process_modes)
 
 
 class WebsiteRegisterTests(unittest.TestCase):
@@ -31,6 +33,37 @@ class WebsiteRegisterTests(unittest.TestCase):
         self.assertEqual(30, len(extract_glossary(ROOT, "nl")))
         self.assertEqual(30, len(extract_glossary(ROOT, "en")))
         self.assertEqual(2, len(extract_wihtml(ROOT)))
+
+    def test_more_embedded_catalogues_are_covered(self):
+        self.assertEqual(6, len(extract_abyss(ROOT)))
+        self.assertEqual(6, len(extract_gravity(ROOT)))
+        self.assertEqual(4, len(extract_sport_modes(ROOT)))
+        self.assertEqual(2, len(extract_process_modes(ROOT)))
+
+    def test_missing_ocean_item_is_rejected(self):
+        altered = copy.deepcopy(self.register)
+        altered["embedded_items"] = [
+            item for item in altered["embedded_items"] if item["id"] != "abyss:0"
+        ]
+        problems = check(ROOT, altered, self.taxonomy)
+        self.assertTrue(any("Oceaan: onderdelen wijken af" in p for p in problems))
+
+    def test_missing_sport_mode_is_rejected(self):
+        altered = copy.deepcopy(self.register)
+        altered["embedded_items"] = [
+            item for item in altered["embedded_items"] if item["id"] != "sport-mode:online"
+        ]
+        problems = check(ROOT, altered, self.taxonomy)
+        self.assertTrue(any("Sportkeuzes: onderdelen wijken af" in p for p in problems))
+
+    def test_melkweg_two_versions_same_topics(self):
+        melkweg = [
+            item for item in self.register["embedded_items"]
+            if item.get("topic_id", "").startswith("melkweg:")
+        ]
+        self.assertEqual(12, len(melkweg))
+        self.assertEqual(6, len({x["topic_id"] for x in melkweg}))
+        self.assertEqual(2, len(self.register["collections"][0]["variants"]))
 
     def test_missing_page_is_rejected(self):
         altered = copy.deepcopy(self.register)
