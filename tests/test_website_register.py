@@ -123,6 +123,14 @@ class WebsiteRegisterTests(unittest.TestCase):
         problems = check(ROOT, altered, self.taxonomy)
         self.assertTrue(any("Onderdeel: dubbele identificatie" in p for p in problems))
 
+    def test_model_pages_are_in_sitemap(self):
+        sitemap = (ROOT / "sitemap.xml").read_text(encoding="utf-8")
+        self.assertIn("https://eaimodel.nl/nl/model/", sitemap)
+        self.assertIn("https://eaimodel.nl/en/model/", sitemap)
+        for route in ("/nl/model/", "/en/model/"):
+            page = next(p for p in self.register["pages"] if p["url"] == route)
+            self.assertTrue(page["in_committed_sitemap"])
+
     def test_sitemap_registration_matches_file(self):
         problems = check(ROOT, self.register, self.taxonomy)
         self.assertFalse(any(p.startswith("Sitemap:") for p in problems))
