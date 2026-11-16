@@ -87,6 +87,19 @@ class HubStructureTests(unittest.TestCase):
         for rel in ('tools/eaigit/index.html', 'tools/anatomie/index.html'):
             self.assertNotIn('http-equiv="refresh"', (build / rel).read_text(encoding='utf-8'))
 
+    def test_public_subject_names_and_single_milky_way_entry(self):
+        import json
+        register = json.loads((ROOT / 'catalog/website-register.json').read_text(encoding='utf-8'))
+        pages = {page['url']: page for page in register['pages']}
+        self.assertEqual(pages['/tools/abyss/']['public_title_nl'], 'Oceanografie')
+        self.assertEqual(pages['/tools/science-observatory/labs/melkweg/']['search_scope'], 'via_verwijzing')
+        self.assertEqual(pages['/tools/melkweg-lab/']['public_title_nl'], 'De Melkweg')
+        index = {r['url']: r for r in site_search_records(ROOT / 'does-not-exist')}
+        self.assertEqual(index['/tools/melkweg-lab/']['title'], 'De Melkweg')
+        self.assertEqual(index['/tools/abyss/']['title'], 'Oceanografie')
+        self.assertNotIn('/tools/science-observatory/labs/melkweg/', index)
+        self.assertEqual(sum(url.startswith('/tools/science-observatory/labs/natuurkunde/#') for url in index), 53)
+
     def test_search_keeps_deep_labs_and_workforms(self):
         index = {r['url'] for r in site_search_records(ROOT / 'does-not-exist')}
         for url in ('/werkvormen/first-attempt/',
