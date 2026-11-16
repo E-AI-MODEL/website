@@ -2791,6 +2791,9 @@ def build(sources: Path, out: Path) -> None:
             shutil.copytree(language_source, out / language, dirs_exist_ok=True)
             urls.extend("/" + str(page.relative_to(repo_root).parent) + "/"
                         for page in language_source.rglob("index.html"))
+    # These model pages are materialized during the subsequent UI preparation.
+    # They belong in the public sitemap even though they are not source index.html files.
+    urls.extend(["/nl/model/", "/en/model/"])
     # Current redesigned aliases are also maintained as page sources. Older
     # article and toolbox pages continue to come from their content/generator.
     for page in repo_root.rglob("*.html"):
