@@ -99,6 +99,48 @@ def extract_llm(root: Path) -> set[str]:
     return {f"anchor:/tools/llm-observatorium/#{i}" for i in ids}
 
 
+def extract_abyss(root: Path) -> set[str]:
+    """Six ocean topics are in one HTML file, not six HTML routes."""
+    content = read(root / "content/abyss/ABYSS.html")
+    match = re.search(r"const MODES=\[(.*?)\];", content, re.DOTALL)
+    if not match:
+        raise ValueError("Oceaan: MODES ontbreekt")
+    names = re.findall(r"\['([^']+)','([^']+)'\]", match.group(1))
+    if len(names) != 6:
+        raise ValueError(f"Oceaan: verwacht zes inhoudelijke delen, gevonden {len(names)}")
+    return {f"abyss:{i}" for i in range(len(names))}
+
+
+def extract_gravity(root: Path) -> set[str]:
+    """Six orbital investigations are stored in one JavaScript array."""
+    content = read(root / "content/science-observatory/labs/gravitatie-banen.html")
+    match = re.search(r"const M=\[(.*?)\];", content, re.DOTALL)
+    if not match:
+        raise ValueError("Gravitatie: M ontbreekt")
+    names = re.findall(r"\{short:'([^']+)',desc:'([^']+)',title:'([^']+)'", match.group(1))
+    if len(names) != 6:
+        raise ValueError(f"Gravitatie: verwacht zes inhoudelijke delen, gevonden {len(names)}")
+    return {f"gravitation:{i}" for i in range(len(names))}
+
+
+def extract_sport_modes(root: Path) -> set[str]:
+    """Three modes and online play are entry points, not separate websites."""
+    content = read(root / "tools/lo-aanvalslab/index.html")
+    modes = re.findall(r'<button\b[^>]*class="choice"[^>]*data-mode="([^"]+)"', content)
+    if len(modes) != 3 or len(set(modes)) != 3 or 'id="onlineChoice"' not in content:
+        raise ValueError("Sport: verwachte drie keuzes en samenspel ontbreken")
+    return {f"sport-mode:{mode}" for mode in modes} | {"sport-mode:online"}
+
+
+def extract_process_modes(root: Path) -> set[str]:
+    """The existing process wizard serves two different user goals."""
+    content = read(root / "tools/van-proces-naar-prompt/index.html")
+    modes = re.findall(r'<button\b[^>]*data-mode="(ontwerpen|onderzoeken)"', content)
+    if len(modes) != 2 or len(set(modes)) != 2:
+        raise ValueError("Proceswizard: twee functies ontbreken")
+    return {f"process-mode:{mode}" for mode in modes}
+
+
 def extract_taal(root: Path) -> set[str]:
     source = read(root / "content/taalwerkvormen-page.html")
     ids = re.findall(r'<a href="#(taal-\d+)">', source)
@@ -242,6 +284,39 @@ def check(root: Path, register: dict, taxonomy: dict) -> list[str]:
                       + "; niet meer gevonden: " + repr(sorted(tracked_html_files - actual_html_files)))
 
     ids = {i["id"] for i in items}
+    # These embedded screens have no independent pages or URL fragments. Still
+    # count them, and reject additions/removals that bypass the register.
+    for label, extract, prefix in [
+        ("Oceaan", extract_abyss, "abyss:"),
+        ("Gravitatie", extract_gravity, "gravitation:"),
+        ("Sportkeuzes", extract_sport_modes, "sport-mode:"),
+        ("Proceswizard", extract_process_modes, "process-mode:"),
+    ]:
+        try:
+            expected = extract(root)
+        except (OSError, ValueError, KeyError, TypeError) as exc:
+            errors.append(f"{label}: bron niet leesbaar: {exc}")
+            continue
+        recorded = {i["id"] for i in items if i["id"].startswith(prefix)}
+        if expected != recorded:
+            errors.append(
+                f"{label}: onderdelen wijken af; ontbreekt "
+                + repr(sorted(expected - recorded))
+                + ", overbodig " + repr(sorted(recorded - expected))
+            )
+
+    # Both Melkweg pages present the same six research topics. Names are
+    # editorial proposals; the stable technical topic IDs must agree.
+    melkweg = {}
+    for url in ("/tools/melkweg-lab/", "/tools/science-observatory/labs/melkweg/"):
+        group = [i for i in items if i.get("parent") == "page:" + url]
+        melkweg[url] = {i.get("topic_id") for i in group}
+        if len(group) != 6 or melkweg[url] != {
+            "melkweg:atlas", "melkweg:dynamics", "melkweg:structure",
+            "melkweg:stars", "melkweg:gaia", "melkweg:blackhole"
+        }:
+            errors.append(f"Melkweg: gekoppelde onderwerpen verschillen bij {url}")
+
     for label, extract in [
         ("Natuurkunde", lambda: extract_physics(root)),
         ("Wiskunde A", lambda: extract_math(root, "a")),
