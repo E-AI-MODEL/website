@@ -47,6 +47,18 @@ try {
     assert.equal(await page.locator('.eai-dash-table>a[href="/tools/eaigit/"]').count(),1);
     await context.close();
   }
+  // Dutch and English home share the same information structure and actions.
+  {
+    const page=await browser.newPage({viewport:{width:390,height:844}});
+    await page.route("**/*",route=>route.request().url().startsWith(base)?route.continue():route.abort());
+    await page.goto(base+"/en/",{waitUntil:"load"});
+    assert.equal(await page.locator("main.eai-dashboard-home .eai-landing-route").count(),4);
+    assert.equal(await page.locator("main.eai-dashboard-home .eai-dash-rail").count(),0);
+    await page.locator('[data-dash-step="2"]').click();
+    assert.match(await page.locator("#eai-dash-step-detail").innerText(),/Core action/);
+    assert.equal(await page.locator("main.eai-dashboard-home .eai-landing-route[href='/en/education/']").count(),1);
+    await page.close();
+  }
   for(const route of ["/nl/tools/","/nl/onderwijs/","/nl/onderzoek/","/nl/toepassingen/"]) {
     const page=await browser.newPage({viewport:{width:390,height:844}});
     await page.route("**/*",route=>route.request().url().startsWith(base)?route.continue():route.abort());
