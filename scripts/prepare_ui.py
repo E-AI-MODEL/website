@@ -37,22 +37,41 @@ def canonical(path: str) -> str:
 
 @lru_cache(maxsize=2)
 def groups(en: bool):
-    """Publieke hoofdroutes, gescheiden van alle onderliggende proeven."""
+    """One short public route per purpose; deep links stay in search and catalogs."""
     if en:
         return [
-            ('Understand EAI', [('The EAI model', '/en/model/'), ('EAI Dictionary', '/en/glossary/'), ('Applications', '/en/applications/'), ('Research and evidence', '/en/research/')]),
-            ('Teaching', [('Lessons and workforms', '/en/education/'), ('All workforms', '/werkvormen/')]),
-            ('Research & publications', [('All publications', '/en/publications/'), ('Research and sources', '/en/research/')]),
-            ('Subject knowledge', [('All subject areas', '/tools/science-observatory/'), ('Physics', '/tools/science-observatory/labs/natuurkunde/'), ('Mathematics A', '/tools/science-observatory/labs/wiskunde-a/'), ('Mathematics B', '/tools/science-observatory/labs/wiskunde-b/'), ('Human anatomy', '/tools/anatomie/'), ('Galactic Observatory', '/tools/science-observatory/labs/melkweg/'), ('LLM Observatory', '/tools/llm-observatorium/'), ('Sport and movement', '/tools/sport-en-bewegen/')]),
-            ('Tools', [('All tools', '/en/tools/'), ('Prompt Framework', '/tools/prompt-framework/'), ('WiHTML Studio', '/tools/wihtml/'), ('EAIstudio', '/tools/eaistudio/'), ('EAImesh', '/tools/eaimesh/'), ('Upload HTML', '/tools/html-galerij/'), ('Process to prompt', '/tools/van-proces-naar-prompt/'), ('Model Monitor', '/en/model-monitor/'), ('LLMscan', '/en/llmscan/')]),
+            ('The model', [('Explore the EAI model', '/en/model/'), ('Glossary', '/en/glossary/'),
+                           ('The two pillars', '/twee-pijlers/')]),
+            ('Education', [('Begin with a learning question', '/en/education/'),
+                           ('EAI workforms', '/werkvormen/'), ('Language activities (Dutch)', '/taalwerkvormen/')]),
+            ('Research', [('Research and evidence', '/en/research/'), ('Source register', '/bronnen/'),
+                          ('Teaching tools research', '/en/research/teaching-tools/')]),
+            ('Articles', [('Publications and media', '/en/publications/'),
+                          ('The Act of Learning', '/publicaties/the-act-of-learning/'),
+                          ('Research reviews', '/en/research/zhang-genai-language/')]),
+            ('Explore & create', [('Explore and create', '/en/tools/'),
+                                  ('Subject experiments', '/tools/science-observatory/'),
+                                  ('Prompt Framework', '/tools/prompt-framework/'),
+                                  ('WiHTML Studio', '/tools/wihtml/'),
+                                  ('EAIstudio', '/tools/eaistudio/'),
+                                  ('AI Model Monitor', '/en/model-monitor/')]),
             ('About EAI', [('About EAI', '/en/about/'), ('Site insights', '/en/insights/')]),
         ]
     return [
-        ('EAI begrijpen', [('Het EAI-model', '/nl/model/'), ('Begrippen en definities', '/nl/begrippen/'), ('Toepassingen', '/nl/toepassingen/'), ('Kennis en onderbouwing', '/kennis/')]),
-        ('Lespraktijk', [('Lessen en werkvormen', '/nl/onderwijs/'), ('Alle werkvormen', '/werkvormen/')]),
-        ('Onderzoek & publicaties', [('Alle publicaties', '/nl/publicaties/'), ('Onderzoek en bronnen', '/nl/onderzoek/'), ('Blog', '/nl/blog/'), ('Bronnenregister', '/bronnen/')]),
-        ('Vakinhoud', [('Alle vakgebieden', '/tools/science-observatory/'), ('Natuurkunde', '/tools/science-observatory/labs/natuurkunde/'), ('Wiskunde A', '/tools/science-observatory/labs/wiskunde-a/'), ('Wiskunde B', '/tools/science-observatory/labs/wiskunde-b/'), ('Anatomie van de mens', '/tools/anatomie/'), ('Galactisch Observatorium', '/tools/science-observatory/labs/melkweg/'), ('Hoe werkt AI?', '/tools/llm-observatorium/'), ('Sport en bewegen', '/tools/sport-en-bewegen/')]),
-        ('Hulpmiddelen', [('Alle hulpmiddelen', '/nl/tools/'), ('EAI Prompt Framework', '/tools/prompt-framework/'), ('WiHTML Docentstudio', '/tools/wihtml/'), ('EAIstudio', '/tools/eaistudio/'), ('EAImesh', '/tools/eaimesh/'), ('HTML uploaden', '/tools/html-galerij/'), ('Van proces naar prompt', '/tools/van-proces-naar-prompt/'), ('AI Model Monitor', '/nl/model-monitor/'), ('LLMscan', '/nl/llmscan/')]),
+        ('Het model', [('Het EAI-model', '/nl/model/'), ('Begrippen en definities', '/nl/begrippen/'),
+                       ('Twee pijlers', '/twee-pijlers/')]),
+        ('Onderwijs', [('Begin bij je lesvraag', '/nl/onderwijs/'), ('EAI Toolbox', '/werkvormen/'),
+                        ('TAALwerkvormen', '/taalwerkvormen/')]),
+        ('Onderzoek', [('Onderzoek en onderbouwing', '/nl/onderzoek/'), ('Bronnenregister', '/bronnen/'),
+                        ('Onderzoek leermiddelen', '/nl/onderzoek/leermiddelen/')]),
+        ('Artikelen', [('Artikelen en publicaties', '/nl/publicaties/'), ('Blog', '/nl/blog/'),
+                       ('De vraag die we vergeten', '/publicaties/de-vraag-die-we-vergeten/')]),
+        ('Zelf aan de slag', [('Onderzoeken en maken', '/nl/tools/'),
+                              ('Vakinhoudelijke proeven', '/tools/science-observatory/'),
+                              ('EAI Prompt Framework', '/tools/prompt-framework/'),
+                              ('WiHTML Docentstudio', '/tools/wihtml/'),
+                              ('EAIstudio', '/tools/eaistudio/'),
+                              ('AI Model Monitor', '/nl/model-monitor/')]),
         ('Over EAI', [('Over EAI', '/nl/over/'), ('Websitegebruik', '/nl/insights/')]),
     ]
 
@@ -343,29 +362,25 @@ def navigation(soup: BeautifulSoup, path: str, en: bool) -> str:
         target = target or '/' + language + '/'
         current = ' aria-current="true"' if language == ('en' if en else 'nl') else ''
         language_links.append(f'<a href="{html.escape(target, quote=True)}" lang="{language}" hreflang="{language}"{current} data-preserve-hash>{language.upper()}</a>')
+    # Compact menu: the full 57-workform and 53-physics catalogs are reachable
+    # through their own pages and site-wide search, not duplicated in the menu.
     menu = []
     for title, entries in groups(en):
-        active = any((path_here == canonical(target) or path_here.startswith(canonical(target))) and canonical(target) not in ('/nl/', '/en/') for _, target in entries)
-        active_cls = ' is-current' if active else ''
-        model_group = title in ('Vakinhoud', 'Subject knowledge')
-        if model_group:
-            links = menu_topic_html(en)
-        elif title in ('Tools', 'Hulpmiddelen'):
-            links = menu_named_sections(en, tool_sections(en), ('All tools' if en else 'Alle hulpmiddelen', '/en/tools/' if en else '/nl/tools/'))
-        elif title in ('Teaching', 'Lespraktijk'):
-            links = menu_named_sections(en, education_sections(en), ('All education resources' if en else 'Alle onderwijsactiviteiten', '/en/education/' if en else '/nl/onderwijs/'))
-        elif title in ('Onderzoek & publicaties', 'Research & publications'):
-            links = menu_named_sections(en, reading_sections(en), ('All research and publications' if en else 'Alle onderzoeksdossiers en publicaties', '/en/publications/' if en else '/nl/publicaties/'))
-        else:
-            links = ''.join(f'<a href="{html.escape(target, quote=True)}"' + (' aria-current="page"' if path_here == canonical(target) else '') + f'>{html.escape(label)}</a>' for label, target in entries)
-            if title in ('EAI begrijpen', 'Understand EAI'):
-                purpose = 'Wat betekent het model, en welke woorden gebruiken we precies?' if not en else 'What does the model mean, and which terms do we use?'
-                links = '<p class="eai-site-topic-intro">' + html.escape(purpose) + '</p>' + links
-        menu.append(f'<details class="eai-site-group{active_cls}" name="eai-navigation-theme"><summary>{html.escape(title)}</summary><div class="eai-site-group-links{" eai-site-model-links" if model_group else ""}">{links}</div></details>')
+        active = any(path_here == canonical(target) or
+                     (canonical(target) not in ('/nl/', '/en/') and path_here.startswith(canonical(target)))
+                     for _, target in entries)
+        links = ''.join(
+            f'<a href="{html.escape(target, quote=True)}"' +
+            (' aria-current="page"' if path_here == canonical(target) else '') +
+            f'>{html.escape(label)}</a>'
+            for label, target in entries
+        )
+        menu.append(f'<details class="eai-site-group{" is-current" if active else ""}" name="eai-navigation-theme">'
+                    f'<summary>{html.escape(title)}</summary><div class="eai-site-group-links">{links}</div></details>')
     primary = []
     for title, entries in groups(en):
         # About/Over blijft beschikbaar in Meer en in de voettekst.
-        # Zo houdt de brede navigatie zes korte, inhoudelijke bestemmingen.
+        # De vijf directe routes blijven kort; achtergrondinformatie staat in Meer.
         if title in ('About EAI', 'Over EAI'):
             continue
         target = entries[0][1]
