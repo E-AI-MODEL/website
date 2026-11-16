@@ -16,6 +16,8 @@ on:
       - '.github/workflows/deploy-theory7.yml'
       - 'scripts/build_site.py'
       - 'scripts/prepare_ui.py'
+      - 'scripts/verify_ui.py'
+      - 'tests/test_theory7_cloudflare_hash.py'
       - 'services/html-galerij/**'
       - 'tests/test_html_galerij_publish.py'
       - 'tools/html-galerij/index.html'
@@ -56,6 +58,8 @@ on:
       - '.github/workflows/deploy-theory7.yml'
       - 'scripts/build_site.py'
       - 'scripts/prepare_ui.py'
+      - 'scripts/verify_ui.py'
+      - 'tests/test_theory7_cloudflare_hash.py'
       - 'services/html-galerij/**'
       - 'tests/test_html_galerij_publish.py'
       - 'tools/html-galerij/index.html'
@@ -109,6 +113,9 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install beautifulsoup4
+
+      - name: Test exact Theory7 hashes with Cloudflare beacon injection
+        run: python -m unittest discover -s tests -p 'test_theory7_cloudflare_hash.py' -v
 
       - name: Test homepage and model rendering
         run: python -m unittest discover -s tests -p 'test_home_model.py' -v
