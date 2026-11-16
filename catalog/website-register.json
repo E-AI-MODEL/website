@@ -23,7 +23,8 @@
       "category": null,
       "review": "niet_in_publieke_zoekindex_status_controleren",
       "parent": null,
-      "family": "model"
+      "family": "model",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/bronnen/",
@@ -34,7 +35,8 @@
       "category": "Onderzoek",
       "review": "gevonden_in_zoekindex",
       "parent": null,
-      "family": "onderzoek"
+      "family": "onderzoek",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/eaa-model/",
@@ -45,7 +47,8 @@
       "category": null,
       "review": "niet_in_publieke_zoekindex_status_controleren",
       "parent": null,
-      "family": "model"
+      "family": "model",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/eai-blog/",
@@ -56,7 +59,8 @@
       "category": "Onderzoek & publicaties · Archief",
       "review": "gevonden_in_zoekindex",
       "parent": null,
-      "family": "publicaties"
+      "family": "publicaties",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/eai-blog/eai-balans/",
@@ -67,7 +71,8 @@
       "category": "Onderzoek & publicaties · Archief",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/eai-blog/",
-      "family": "publicaties"
+      "family": "publicaties",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/eai-blog/eai-beyond-explainability/",
@@ -78,7 +83,8 @@
       "category": "Onderzoek & publicaties · Archief",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/eai-blog/",
-      "family": "publicaties"
+      "family": "publicaties",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/eai-blog/eai-stappenplan/",
@@ -89,7 +95,8 @@
       "category": "Onderzoek & publicaties · Archief",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/eai-blog/",
-      "family": "publicaties"
+      "family": "publicaties",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/eai-blog/eai-task-density/",
@@ -100,7 +107,8 @@
       "category": "Onderzoek & publicaties · Archief",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/eai-blog/",
-      "family": "publicaties"
+      "family": "publicaties",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/eai-blog/rapportage-wang-fan-2025/",
@@ -111,7 +119,8 @@
       "category": "Onderzoek & publicaties · Archief",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/eai-blog/",
-      "family": "publicaties"
+      "family": "publicaties",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/eai-blog/the-act-of-learning-act-2/",
@@ -122,7 +131,8 @@
       "category": "Onderzoek & publicaties · Archief",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/eai-blog/",
-      "family": "publicaties"
+      "family": "publicaties",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/eai-blog/the-act-of-learning/",
@@ -133,7 +143,8 @@
       "category": "Onderzoek & publicaties · Archief",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/eai-blog/",
-      "family": "publicaties"
+      "family": "publicaties",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/eai-tools-modules/",
@@ -142,9 +153,12 @@
       "title": "Doorverwijzing naar hulpmiddelen",
       "kind": "doorverwijzing",
       "category": null,
-      "review": "doorverwijzing_doel_controleren",
+      "review": "doel_als_bron_genoteerd_niet_live_gecontroleerd",
       "parent": null,
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "page_status": "meta_redirect_verified",
+      "redirect_target": "/tools/",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/eai-tools-modules/act-of-learning-game-2/",
@@ -153,9 +167,12 @@
       "title": "Doorverwijzing naar The Act of Learning (spel)",
       "kind": "doorverwijzing",
       "category": null,
-      "review": "doorverwijzing_doel_controleren",
+      "review": "doel_als_bron_genoteerd_niet_live_gecontroleerd",
       "parent": "page:/eai-tools-modules/",
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "page_status": "meta_redirect_verified",
+      "redirect_target": "https://rainbow-tarsier-a88e9b.netlify.app/",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/eai-tools-modules/eaa-model-tool/",
@@ -164,9 +181,12 @@
       "title": "Doorverwijzing naar EAA Model",
       "kind": "doorverwijzing",
       "category": null,
-      "review": "doorverwijzing_doel_controleren",
+      "review": "doel_als_bron_genoteerd_niet_live_gecontroleerd",
       "parent": "page:/eai-tools-modules/",
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "page_status": "meta_redirect_verified",
+      "redirect_target": "https://sunny-blancmange-dec4a1.netlify.app",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/eai-tools-modules/eai-eduprompt-builder/",
@@ -175,9 +195,12 @@
       "title": "Doorverwijzing naar EAI Eduprompt Builder",
       "kind": "doorverwijzing",
       "category": null,
-      "review": "doorverwijzing_doel_controleren",
+      "review": "doel_als_bron_genoteerd_niet_live_gecontroleerd",
       "parent": "page:/eai-tools-modules/",
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "page_status": "meta_redirect_verified",
+      "redirect_target": "https://eai-prompt.lovable.app/",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/eai-tools-modules/eai-toolanalyse/",
@@ -186,9 +209,12 @@
       "title": "Doorverwijzing naar EAI Toolanalyse",
       "kind": "doorverwijzing",
       "category": null,
-      "review": "doorverwijzing_doel_controleren",
+      "review": "doel_als_bron_genoteerd_niet_live_gecontroleerd",
       "parent": "page:/eai-tools-modules/",
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "page_status": "meta_redirect_verified",
+      "redirect_target": "https://subtle-churros-4d44d5.netlify.app",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/eai-tools-modules/eai-toolkit-beyond-explainability/",
@@ -197,9 +223,12 @@
       "title": "Doorverwijzing naar Beyond Explainability",
       "kind": "doorverwijzing",
       "category": null,
-      "review": "doorverwijzing_doel_controleren",
+      "review": "doel_als_bron_genoteerd_niet_live_gecontroleerd",
       "parent": "page:/eai-tools-modules/",
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "page_status": "meta_redirect_verified",
+      "redirect_target": "/tools/beyond-explainability/",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/eai-tools-modules/eai-toolkit-the-act-of-learning-en/",
@@ -208,9 +237,12 @@
       "title": "Doorverwijzing naar The Act of Learning",
       "kind": "doorverwijzing",
       "category": null,
-      "review": "doorverwijzing_doel_controleren",
+      "review": "doel_als_bron_genoteerd_niet_live_gecontroleerd",
       "parent": "page:/eai-tools-modules/",
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "page_status": "meta_redirect_verified",
+      "redirect_target": "https://effortless-fenglisu-71cd58.netlify.app/",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/eai-tools-modules/eai-what-if-machine/",
@@ -219,9 +251,12 @@
       "title": "Doorverwijzing naar EAI What-if Machine",
       "kind": "doorverwijzing",
       "category": null,
-      "review": "doorverwijzing_doel_controleren",
+      "review": "doel_als_bron_genoteerd_niet_live_gecontroleerd",
       "parent": "page:/eai-tools-modules/",
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "page_status": "meta_redirect_verified",
+      "redirect_target": "https://what-if-lesson-designer.lovable.app/",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/en/",
@@ -232,7 +267,8 @@
       "category": "EN",
       "review": "gevonden_in_zoekindex",
       "parent": null,
-      "family": "model"
+      "family": "model",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/en/about/",
@@ -243,7 +279,8 @@
       "category": "About EAI",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/en/",
-      "family": "over"
+      "family": "over",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/en/applications/",
@@ -254,7 +291,8 @@
       "category": "EN",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/en/",
-      "family": "praktijk"
+      "family": "praktijk",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/en/education/",
@@ -265,7 +303,8 @@
       "category": "Teaching · Start here",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/en/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/en/glossary/",
@@ -276,7 +315,8 @@
       "category": "The model",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/en/",
-      "family": "model"
+      "family": "model",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/en/insights/",
@@ -287,7 +327,8 @@
       "category": "About EAI",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/en/",
-      "family": "over"
+      "family": "over",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/en/llmscan/",
@@ -298,7 +339,8 @@
       "category": "Tools · Check models and publications",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/en/",
-      "family": "ai"
+      "family": "ai",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/en/model-monitor/",
@@ -309,7 +351,8 @@
       "category": "Explore & create",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/en/",
-      "family": "ai"
+      "family": "ai",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/en/model/",
@@ -320,7 +363,8 @@
       "category": "The model",
       "review": "bouwresultaat_controleren",
       "parent": "page:/en/",
-      "family": "model"
+      "family": "model",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/en/publications/",
@@ -331,7 +375,8 @@
       "category": "Articles",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/en/",
-      "family": "publicaties"
+      "family": "publicaties",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/en/research/",
@@ -342,7 +387,8 @@
       "category": "Research",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/en/",
-      "family": "onderzoek"
+      "family": "onderzoek",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/en/research/teaching-tools/",
@@ -353,7 +399,8 @@
       "category": "Research & publications · Research",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/en/research/",
-      "family": "onderzoek"
+      "family": "onderzoek",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/en/research/zhang-genai-language/",
@@ -364,7 +411,8 @@
       "category": "Research & publications · Research",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/en/research/",
-      "family": "onderzoek"
+      "family": "onderzoek",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/en/tools/",
@@ -375,7 +423,8 @@
       "category": "Explore & create",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/en/",
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/houseoftalents/",
@@ -386,7 +435,8 @@
       "category": null,
       "review": "niet_in_publieke_zoekindex_status_controleren",
       "parent": null,
-      "family": "technisch"
+      "family": "technisch",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/houseoftalents/3d/",
@@ -395,9 +445,12 @@
       "title": "Onderwijs in: technische anatomie (kaarten)",
       "kind": "overig",
       "category": null,
-      "review": "niet_in_publieke_zoekindex_status_controleren",
+      "review": "noindex_in_bron_gecontroleerd",
       "parent": "page:/houseoftalents/",
-      "family": "technisch"
+      "family": "technisch",
+      "robots_noindex_in_html": true,
+      "page_status": "niet_voor_zoekmachines",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/kennis/",
@@ -408,7 +461,8 @@
       "category": null,
       "review": "niet_in_publieke_zoekindex_status_controleren",
       "parent": null,
-      "family": "onderzoek"
+      "family": "onderzoek",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/leif/",
@@ -417,9 +471,12 @@
       "title": "LEIF | Meer dan een profiel",
       "kind": "afgeschermd_of_app",
       "category": null,
-      "review": "niet_in_publieke_zoekindex_status_controleren",
+      "review": "noindex_in_bron_gecontroleerd",
       "parent": null,
-      "family": "technisch"
+      "family": "technisch",
+      "robots_noindex_in_html": true,
+      "page_status": "niet_voor_zoekmachines",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/leif/beheer/",
@@ -428,9 +485,12 @@
       "title": "LEIF | Beheer",
       "kind": "afgeschermd_of_app",
       "category": null,
-      "review": "niet_in_publieke_zoekindex_status_controleren",
+      "review": "noindex_in_bron_gecontroleerd",
       "parent": "page:/leif/",
-      "family": "technisch"
+      "family": "technisch",
+      "robots_noindex_in_html": true,
+      "page_status": "niet_voor_zoekmachines",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/leif/continue/",
@@ -439,9 +499,12 @@
       "title": "LEIF | Verder met mijn verhaal",
       "kind": "afgeschermd_of_app",
       "category": null,
-      "review": "niet_in_publieke_zoekindex_status_controleren",
+      "review": "noindex_in_bron_gecontroleerd",
       "parent": "page:/leif/",
-      "family": "technisch"
+      "family": "technisch",
+      "robots_noindex_in_html": true,
+      "page_status": "niet_voor_zoekmachines",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/leif/mijn/",
@@ -450,9 +513,12 @@
       "title": "LEIF | Mijn omgeving",
       "kind": "afgeschermd_of_app",
       "category": null,
-      "review": "niet_in_publieke_zoekindex_status_controleren",
+      "review": "noindex_in_bron_gecontroleerd",
       "parent": "page:/leif/",
-      "family": "technisch"
+      "family": "technisch",
+      "robots_noindex_in_html": true,
+      "page_status": "niet_voor_zoekmachines",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/leif/verhaal/",
@@ -461,9 +527,12 @@
       "title": "LEIF | Persoonlijk verhaal",
       "kind": "afgeschermd_of_app",
       "category": null,
-      "review": "niet_in_publieke_zoekindex_status_controleren",
+      "review": "noindex_in_bron_gecontroleerd",
       "parent": "page:/leif/",
-      "family": "technisch"
+      "family": "technisch",
+      "robots_noindex_in_html": true,
+      "page_status": "niet_voor_zoekmachines",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/model-monitor/",
@@ -474,7 +543,8 @@
       "category": null,
       "review": "niet_in_publieke_zoekindex_status_controleren",
       "parent": null,
-      "family": "ai"
+      "family": "ai",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/nl/",
@@ -485,7 +555,8 @@
       "category": "NL",
       "review": "gevonden_in_zoekindex",
       "parent": null,
-      "family": "model"
+      "family": "model",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/nl/begrippen/",
@@ -496,7 +567,8 @@
       "category": "Het model",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/nl/",
-      "family": "model"
+      "family": "model",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/nl/blog/",
@@ -507,7 +579,8 @@
       "category": "Artikelen",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/nl/",
-      "family": "publicaties"
+      "family": "publicaties",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/nl/blog/wat-ons-werk-ons-werk-maakt/",
@@ -518,7 +591,8 @@
       "category": "Onderzoek & publicaties · Blog",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/nl/blog/",
-      "family": "publicaties"
+      "family": "publicaties",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/nl/insights/",
@@ -529,7 +603,8 @@
       "category": "Over EAI",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/nl/",
-      "family": "over"
+      "family": "over",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/nl/llmscan/",
@@ -540,7 +615,8 @@
       "category": "Hulpmiddelen · AI en publicaties controleren",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/nl/",
-      "family": "ai"
+      "family": "ai",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/nl/llmscan/onderzoek/",
@@ -551,7 +627,8 @@
       "category": "Tools · Check models and publications",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/nl/llmscan/",
-      "family": "ai"
+      "family": "ai",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/nl/model-monitor/",
@@ -562,7 +639,8 @@
       "category": "Zelf aan de slag",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/nl/",
-      "family": "ai"
+      "family": "ai",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/nl/model/",
@@ -573,7 +651,8 @@
       "category": "Het model",
       "review": "bouwresultaat_controleren",
       "parent": "page:/nl/",
-      "family": "model"
+      "family": "model",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/nl/onderwijs/",
@@ -584,7 +663,8 @@
       "category": "Lespraktijk · Start hier",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/nl/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/nl/onderzoek/",
@@ -595,7 +675,8 @@
       "category": "Onderzoek",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/nl/",
-      "family": "onderzoek"
+      "family": "onderzoek",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/nl/onderzoek/leermiddelen/",
@@ -606,7 +687,8 @@
       "category": "Onderzoek & publicaties · Onderzoeksdossiers",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/nl/onderzoek/",
-      "family": "onderzoek"
+      "family": "onderzoek",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/nl/onderzoek/zhang-genai-taal/",
@@ -617,7 +699,8 @@
       "category": "Onderzoek & publicaties · Onderzoeksdossiers",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/nl/onderzoek/",
-      "family": "onderzoek"
+      "family": "onderzoek",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/nl/over/",
@@ -628,7 +711,8 @@
       "category": "Over EAI",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/nl/",
-      "family": "over"
+      "family": "over",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/nl/publicaties/",
@@ -639,7 +723,8 @@
       "category": "Artikelen",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/nl/",
-      "family": "publicaties"
+      "family": "publicaties",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/nl/toepassingen/",
@@ -650,7 +735,8 @@
       "category": "NL",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/nl/",
-      "family": "praktijk"
+      "family": "praktijk",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/nl/tools/",
@@ -661,7 +747,8 @@
       "category": "Zelf aan de slag",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/nl/",
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/nl/tools/verificatie/",
@@ -672,7 +759,8 @@
       "category": "Tools · Check models and publications",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/nl/tools/",
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/onderbouwing/",
@@ -683,7 +771,8 @@
       "category": null,
       "review": "niet_in_publieke_zoekindex_status_controleren",
       "parent": null,
-      "family": "onderzoek"
+      "family": "onderzoek",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/onderwijs/",
@@ -694,7 +783,8 @@
       "category": null,
       "review": "niet_in_publieke_zoekindex_status_controleren",
       "parent": null,
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/onderwijsin/",
@@ -705,7 +795,8 @@
       "category": null,
       "review": "niet_in_publieke_zoekindex_status_controleren",
       "parent": null,
-      "family": "technisch"
+      "family": "technisch",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/onderwijsin/3d/",
@@ -714,9 +805,12 @@
       "title": "Onderwijs in: technische anatomie (kaarten)",
       "kind": "overig",
       "category": null,
-      "review": "niet_in_publieke_zoekindex_status_controleren",
+      "review": "noindex_in_bron_gecontroleerd",
       "parent": "page:/onderwijsin/",
-      "family": "technisch"
+      "family": "technisch",
+      "robots_noindex_in_html": true,
+      "page_status": "niet_voor_zoekmachines",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/onderwijsin/houseoftalents/",
@@ -727,7 +821,8 @@
       "category": null,
       "review": "niet_in_publieke_zoekindex_status_controleren",
       "parent": "page:/onderwijsin/",
-      "family": "technisch"
+      "family": "technisch",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/onderwijsin/houseoftalents/3d/",
@@ -736,9 +831,12 @@
       "title": "Onderwijs in: technische anatomie (kaarten)",
       "kind": "overig",
       "category": null,
-      "review": "niet_in_publieke_zoekindex_status_controleren",
+      "review": "noindex_in_bron_gecontroleerd",
       "parent": "page:/onderwijsin/houseoftalents/",
-      "family": "technisch"
+      "family": "technisch",
+      "robots_noindex_in_html": true,
+      "page_status": "niet_voor_zoekmachines",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/over/",
@@ -749,7 +847,8 @@
       "category": null,
       "review": "niet_in_publieke_zoekindex_status_controleren",
       "parent": null,
-      "family": "over"
+      "family": "over",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/praktijk/",
@@ -760,7 +859,8 @@
       "category": "Lespraktijk · Start hier",
       "review": "gevonden_in_zoekindex",
       "parent": null,
-      "family": "praktijk"
+      "family": "praktijk",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/publicaties/",
@@ -771,7 +871,8 @@
       "category": null,
       "review": "niet_in_publieke_zoekindex_status_controleren",
       "parent": null,
-      "family": "publicaties"
+      "family": "publicaties",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/publicaties/ai-balans/",
@@ -782,7 +883,8 @@
       "category": "Onderzoek & publicaties · Publicaties",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/publicaties/",
-      "family": "publicaties"
+      "family": "publicaties",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/publicaties/beyond-explainability/",
@@ -793,7 +895,8 @@
       "category": "Onderzoek & publicaties · Publicaties",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/publicaties/",
-      "family": "publicaties"
+      "family": "publicaties",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/publicaties/de-vraag-die-we-vergeten/",
@@ -804,7 +907,8 @@
       "category": "Onderzoek & publicaties · Publicaties",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/publicaties/",
-      "family": "publicaties"
+      "family": "publicaties",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/publicaties/eai-stappenplan/",
@@ -815,7 +919,8 @@
       "category": "Onderzoek & publicaties · Publicaties",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/publicaties/",
-      "family": "publicaties"
+      "family": "publicaties",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/publicaties/task-density/",
@@ -826,7 +931,8 @@
       "category": "Onderzoek & publicaties · Publicaties",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/publicaties/",
-      "family": "publicaties"
+      "family": "publicaties",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/publicaties/the-act-of-learning-act-2/",
@@ -837,7 +943,8 @@
       "category": "Onderzoek & publicaties · Publicaties",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/publicaties/",
-      "family": "publicaties"
+      "family": "publicaties",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/publicaties/the-act-of-learning/",
@@ -848,7 +955,8 @@
       "category": "Onderzoek & publicaties · Publicaties",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/publicaties/",
-      "family": "publicaties"
+      "family": "publicaties",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/publicaties/wang-fan-2025/",
@@ -859,7 +967,8 @@
       "category": "Onderzoek & publicaties · Publicaties",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/publicaties/",
-      "family": "publicaties"
+      "family": "publicaties",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/statistieken/",
@@ -870,7 +979,8 @@
       "category": null,
       "review": "niet_in_publieke_zoekindex_status_controleren",
       "parent": null,
-      "family": "technisch"
+      "family": "technisch",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/taalwerkvormen/",
@@ -881,7 +991,8 @@
       "category": "Lespraktijk · Start hier",
       "review": "gevonden_in_zoekindex",
       "parent": null,
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/toepassingen/",
@@ -892,7 +1003,8 @@
       "category": null,
       "review": "niet_in_publieke_zoekindex_status_controleren",
       "parent": null,
-      "family": "praktijk"
+      "family": "praktijk",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/toepassingen/onderwijs-ai/",
@@ -903,7 +1015,8 @@
       "category": null,
       "review": "niet_in_publieke_zoekindex_status_controleren",
       "parent": "page:/toepassingen/",
-      "family": "praktijk"
+      "family": "praktijk",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/toepassingen/onderwijsregio-rotterdam/",
@@ -914,7 +1027,8 @@
       "category": null,
       "review": "niet_in_publieke_zoekindex_status_controleren",
       "parent": "page:/toepassingen/",
-      "family": "praktijk"
+      "family": "praktijk",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/toepassingen/saga-legal-ai/",
@@ -925,7 +1039,8 @@
       "category": null,
       "review": "niet_in_publieke_zoekindex_status_controleren",
       "parent": "page:/toepassingen/",
-      "family": "praktijk"
+      "family": "praktijk",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/tools/",
@@ -936,7 +1051,8 @@
       "category": null,
       "review": "niet_in_publieke_zoekindex_status_controleren",
       "parent": null,
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/tools/abyss/",
@@ -948,7 +1064,9 @@
       "review": "publieke_naam_voorstel",
       "parent": "page:/tools/",
       "suggested_title_nl": "Diepzee",
-      "family": "oceanen"
+      "family": "oceanen",
+      "embedded_inventory": "afzonderlijke_keuzes_brongecontroleerd",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/tools/anatomie/",
@@ -960,7 +1078,8 @@
       "review": "publieke_naam_voorstel",
       "parent": "page:/tools/",
       "suggested_title_nl": "Het lichaam in 3D",
-      "family": "menselijk-lichaam"
+      "family": "menselijk-lichaam",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/tools/anatomie/labs/hartslag/",
@@ -972,7 +1091,8 @@
       "review": "publieke_naam_voorstel",
       "parent": "page:/tools/anatomie/",
       "suggested_title_nl": "Het hart en de bloedsomloop",
-      "family": "menselijk-lichaam"
+      "family": "menselijk-lichaam",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/tools/beyond-explainability/",
@@ -983,7 +1103,8 @@
       "category": "Hulpmiddelen · AI en publicaties controleren",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/",
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/tools/eaigame/",
@@ -994,7 +1115,21 @@
       "category": "TOOLS",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/",
-      "family": "hulpmiddelen"
+      "family": "spelen-en-oefenen",
+      "embedded_inventory": "zes_gebieden_brongecontroleerd",
+      "question_bank": {
+        "source": "assets/eaigame-questions.js",
+        "seeds": 100,
+        "levels": [
+          "vmbo",
+          "havo",
+          "vwo"
+        ],
+        "count": 300,
+        "review": "vragen_zijn_niet_elk_een_aparte_openbare_pagina",
+        "quality_status": "editorial-draft"
+      },
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/tools/eaigit/",
@@ -1005,7 +1140,8 @@
       "category": "TOOLS",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/",
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/tools/eaigit/hulp/",
@@ -1016,7 +1152,8 @@
       "category": "TOOLS",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/eaigit/",
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/tools/eaigit/prompts/",
@@ -1027,7 +1164,8 @@
       "category": "TOOLS",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/eaigit/",
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/tools/eaimesh/",
@@ -1038,7 +1176,8 @@
       "category": "Hulpmiddelen · Werkruimtes en delen",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/",
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/tools/eaimesh/start/",
@@ -1049,7 +1188,21 @@
       "category": "Hulpmiddelen · Werkruimtes en delen",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/eaimesh/",
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "embedded_inventory": "zeven_analysekeuzes",
+      "other_settings_from_source": {
+        "scope": [
+          "entire",
+          "current"
+        ],
+        "detail": [
+          "quick",
+          "standard",
+          "deep"
+        ],
+        "not_individual_content": true
+      },
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/tools/eaistudio/",
@@ -1060,7 +1213,8 @@
       "category": "Zelf aan de slag",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/",
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/tools/eaistudio/studio/",
@@ -1071,7 +1225,9 @@
       "category": "Hulpmiddelen · Lesmateriaal en prompts maken",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/eaistudio/",
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "embedded_inventory": "40_componenten_3_startvoorbeelden_8_scenesjablonen",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/tools/eaiwork/",
@@ -1082,7 +1238,9 @@
       "category": "Hulpmiddelen · Werkruimtes en delen",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/",
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "embedded_inventory": "vijftien_interne_werkomgevingen",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/tools/html-galerij/",
@@ -1091,9 +1249,17 @@
       "title": "HTML uploaden",
       "kind": "toepassing",
       "category": "Hulpmiddelen · Werkruimtes en delen",
-      "review": "gevonden_in_zoekindex",
+      "review": "bronstructuur_gelezen_backend_en_toegang_niet_getest",
       "parent": "page:/tools/",
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "embedded_inventory": "uploadformulier_en_dynamische_galerij_geen_statische_onderdelen",
+      "note": "Uploads en galerijvermeldingen worden niet door de website-repository beheerd. Geen schijnzekerheid over live items.",
+      "in_committed_sitemap": true,
+      "functional_sections": [
+        "HTML-bestand toevoegen",
+        "Door anderen gemaakte HTML bekijken"
+      ],
+      "external_dependency": "services/html-galerij/ en externe opslag/API; inhoud van uploads niet opgenomen in deze Git-repository"
     },
     {
       "id": "page:/tools/llm-observatorium/",
@@ -1105,7 +1271,8 @@
       "review": "publieke_naam_voorstel",
       "parent": "page:/tools/",
       "suggested_title_nl": "Hoe werkt een taalmodel?",
-      "family": "ai"
+      "family": "ai",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/tools/lo-aanvalslab/",
@@ -1117,7 +1284,9 @@
       "review": "publieke_naam_voorstel",
       "parent": "page:/tools/",
       "suggested_title_nl": "Aanvallen en verdedigen",
-      "family": "sport-en-bewegen"
+      "family": "sport-en-bewegen",
+      "embedded_inventory": "afzonderlijke_keuzes_brongecontroleerd",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/tools/lo-aanvalslab/onderbouwing/",
@@ -1128,7 +1297,8 @@
       "category": "Sport en tactiek · Sport en bewegen",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/lo-aanvalslab/",
-      "family": "sport-en-bewegen"
+      "family": "sport-en-bewegen",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/tools/melkweg-lab/",
@@ -1137,10 +1307,12 @@
       "title": "Melkweg met uitleg",
       "kind": "toepassing",
       "category": "Heelal en ruimtevaart · Ontdekken met uitleg",
-      "review": "publieke_naam_voorstel",
+      "review": "twee_uitvoeringen_broncontrole_gecontroleerd",
       "parent": "page:/tools/",
       "suggested_title_nl": "Melkweg",
-      "family": "heelal"
+      "family": "heelal",
+      "content_collection": "melkweg",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/tools/projecthulp/",
@@ -1151,7 +1323,8 @@
       "category": "TOOLS",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/",
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/tools/prompt-framework/",
@@ -1160,9 +1333,21 @@
       "title": "EAI Prompt Framework",
       "kind": "toepassing",
       "category": "Zelf aan de slag",
-      "review": "gevonden_in_zoekindex",
+      "review": "functieopbouw_in_bron_gelezen_geen_browserproef",
       "parent": "page:/tools/",
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "embedded_inventory": "enkele_wizard_geen_vaste_zelfstandig_openbare_onderdelen",
+      "in_committed_sitemap": true,
+      "functional_sections": [
+        "Context",
+        "Leerdoel",
+        "Leerstap van de leerling",
+        "Wat AI mag doen",
+        "Gedrag van AI",
+        "Toegestane bronnen en hulpmiddelen",
+        "Wat de leerling laat zien",
+        "Wat de toepassing moet maken"
+      ]
     },
     {
       "id": "page:/tools/science-observatory/",
@@ -1173,7 +1358,8 @@
       "category": "Zelf aan de slag",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/",
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/tools/science-observatory/labs/gravitatie-banen/",
@@ -1184,7 +1370,9 @@
       "category": "Heelal en ruimtevaart · Banen",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/science-observatory/",
-      "family": "heelal"
+      "family": "heelal",
+      "embedded_inventory": "afzonderlijke_keuzes_brongecontroleerd",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/tools/science-observatory/labs/melkweg/",
@@ -1193,10 +1381,12 @@
       "title": "MW / 01",
       "kind": "toepassing",
       "category": "TOOLS",
-      "review": "publieke_naam_voorstel",
+      "review": "twee_uitvoeringen_broncontrole_gecontroleerd",
       "parent": "page:/tools/science-observatory/",
       "suggested_title_nl": "Melkweg",
-      "family": "heelal"
+      "family": "heelal",
+      "content_collection": "melkweg",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/tools/science-observatory/labs/natuurkunde/",
@@ -1208,7 +1398,8 @@
       "review": "publieke_naam_voorstel",
       "parent": "page:/tools/science-observatory/",
       "suggested_title_nl": "Natuurkunde",
-      "family": "natuurkunde"
+      "family": "natuurkunde",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/tools/science-observatory/labs/schuine-worp/",
@@ -1219,7 +1410,8 @@
       "category": "TOOLS",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/science-observatory/",
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/tools/science-observatory/labs/wiskunde-a/",
@@ -1231,7 +1423,8 @@
       "review": "publieke_naam_voorstel",
       "parent": "page:/tools/science-observatory/",
       "suggested_title_nl": "Wiskunde A",
-      "family": "wiskunde"
+      "family": "wiskunde",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/tools/science-observatory/labs/wiskunde-b/",
@@ -1243,7 +1436,8 @@
       "review": "publieke_naam_voorstel",
       "parent": "page:/tools/science-observatory/",
       "suggested_title_nl": "Wiskunde B",
-      "family": "wiskunde"
+      "family": "wiskunde",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/tools/sport-en-bewegen/",
@@ -1254,7 +1448,8 @@
       "category": "TOOLS",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/",
-      "family": "sport-en-bewegen"
+      "family": "sport-en-bewegen",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/tools/sport-en-bewegen/opstellingen/",
@@ -1266,7 +1461,9 @@
       "review": "publieke_naam_voorstel",
       "parent": "page:/tools/sport-en-bewegen/",
       "suggested_title_nl": "Opstellingen maken",
-      "family": "sport-en-bewegen"
+      "family": "sport-en-bewegen",
+      "embedded_inventory": "dynamische_functies_nog_nader_controleren",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/tools/van-proces-naar-prompt/",
@@ -1277,7 +1474,9 @@
       "category": "Hulpmiddelen · Lesmateriaal en prompts maken",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/",
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "embedded_inventory": "afzonderlijke_keuzes_brongecontroleerd",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/tools/wihtml/",
@@ -1288,7 +1487,8 @@
       "category": "Zelf aan de slag",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/",
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/tools/wihtml/bibliotheek/",
@@ -1299,7 +1499,8 @@
       "category": "Hulpmiddelen · Lesmateriaal en prompts maken",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/wihtml/",
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/tools/wihtml/studio/",
@@ -1310,7 +1511,9 @@
       "category": "Hulpmiddelen · Lesmateriaal en prompts maken",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/wihtml/",
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "embedded_inventory": "tien_lesonderdeeltypen",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/tools/wihtml/voorbeeld/",
@@ -1321,7 +1524,8 @@
       "category": "Hulpmiddelen · Lesmateriaal en prompts maken",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/wihtml/",
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/twee-pijlers/",
@@ -1332,7 +1536,8 @@
       "category": "Lespraktijk · Start hier",
       "review": "gevonden_in_zoekindex",
       "parent": null,
-      "family": "model"
+      "family": "model",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/verdieping/",
@@ -1341,9 +1546,12 @@
       "title": "Doorverwijzing naar kennis",
       "kind": "doorverwijzing",
       "category": null,
-      "review": "doorverwijzing_doel_controleren",
+      "review": "doel_als_bron_genoteerd_niet_live_gecontroleerd",
       "parent": null,
-      "family": "onderzoek"
+      "family": "onderzoek",
+      "page_status": "meta_redirect_verified",
+      "redirect_target": "/kennis/",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/",
@@ -1354,7 +1562,8 @@
       "category": "Lespraktijk · Start hier",
       "review": "gevonden_in_zoekindex",
       "parent": null,
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/accept-adapt-reject/",
@@ -1365,7 +1574,8 @@
       "category": "Lespraktijk · Zelfstandigheid en zelfregulatie",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/ai-role-handback-plan/",
@@ -1376,7 +1586,8 @@
       "category": "Lespraktijk · Opdrachten en de rol van AI",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/assessment-redesign/",
@@ -1387,7 +1598,8 @@
       "category": "Lespraktijk · Opdrachten en de rol van AI",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/bewijs-van-leren/",
@@ -1398,7 +1610,8 @@
       "category": "Lespraktijk · Denk- en leerproces zichtbaar maken",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/bound-the-claim/",
@@ -1409,7 +1622,8 @@
       "category": "Lespraktijk · Beoordelen en professioneel oordeel",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/compare-then-reconstruct/",
@@ -1420,7 +1634,8 @@
       "category": "Lespraktijk · Zelfstandigheid en zelfregulatie",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/competing-explanations/",
@@ -1431,7 +1646,8 @@
       "category": "Lespraktijk · Beoordelen en professioneel oordeel",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/conclusion-strength/",
@@ -1442,7 +1658,8 @@
       "category": "Lespraktijk · Bronnen en argumenten beoordelen",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/confidence-vs-evidence/",
@@ -1453,7 +1670,8 @@
       "category": "Lespraktijk · Denk- en leerproces zichtbaar maken",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/controlled-detachment/",
@@ -1464,7 +1682,8 @@
       "category": "Lespraktijk · Zelfstandigheid en zelfregulatie",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/counterargument-first/",
@@ -1475,7 +1694,8 @@
       "category": "Lespraktijk · Bronnen en argumenten beoordelen",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/delayed-reperformance/",
@@ -1486,7 +1706,8 @@
       "category": "Lespraktijk · Denk- en leerproces zichtbaar maken",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/discriminating-probe/",
@@ -1497,7 +1718,8 @@
       "category": "Lespraktijk · Beoordelen en professioneel oordeel",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/eai-kaart/",
@@ -1508,7 +1730,8 @@
       "category": "Lespraktijk · Opdrachten en de rol van AI",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/eliciting-question/",
@@ -1519,7 +1742,8 @@
       "category": "Lespraktijk · Hulp en feedback tijdens het leren",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/evidence-to-claim/",
@@ -1530,7 +1754,8 @@
       "category": "Lespraktijk · Bronnen en argumenten beoordelen",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/evidence-to-next-response/",
@@ -1541,7 +1766,8 @@
       "category": "Lespraktijk · Beoordelen en professioneel oordeel",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/explain-before-continue/",
@@ -1552,7 +1778,8 @@
       "category": "Lespraktijk · Zelfstandigheid en zelfregulatie",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/fade-one-layer/",
@@ -1563,7 +1790,8 @@
       "category": "Lespraktijk · Hulp en feedback tijdens het leren",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/feedback-redo/",
@@ -1574,7 +1802,8 @@
       "category": "Lespraktijk · Hulp en feedback tijdens het leren",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/feedback-without-rewrite/",
@@ -1585,7 +1814,8 @@
       "category": "Lespraktijk · Hulp en feedback tijdens het leren",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/find-my-impasse/",
@@ -1596,7 +1826,8 @@
       "category": "Lespraktijk · Zelfstandigheid en zelfregulatie",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/first-attempt/",
@@ -1607,7 +1838,8 @@
       "category": "Lespraktijk · Denk- en leerproces zichtbaar maken",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/first-breakdown/",
@@ -1618,7 +1850,8 @@
       "category": "Lespraktijk · Beoordelen en professioneel oordeel",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/foutanalyse/",
@@ -1629,7 +1862,8 @@
       "category": "Lespraktijk · Hulp en feedback tijdens het leren",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/fresh-item-same-operation/",
@@ -1640,7 +1874,8 @@
       "category": "Lespraktijk · Zelfstandigheid en zelfregulatie",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/hand-back-the-action/",
@@ -1651,7 +1886,8 @@
       "category": "Lespraktijk · Hulp en feedback tijdens het leren",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/herontwerp-opdracht/",
@@ -1662,7 +1898,8 @@
       "category": "Lespraktijk · Opdrachten en de rol van AI",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/hidden-assumption/",
@@ -1673,7 +1910,8 @@
       "category": "Lespraktijk · Bronnen en argumenten beoordelen",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/justification-mapping/",
@@ -1684,7 +1922,8 @@
       "category": "Lespraktijk · Denk- en leerproces zichtbaar maken",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/kernhandeling-check/",
@@ -1695,7 +1934,8 @@
       "category": "Lespraktijk · Opdrachten en de rol van AI",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/learner-voice-check/",
@@ -1706,7 +1946,8 @@
       "category": "Lespraktijk · Beoordelen en professioneel oordeel",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/learning-goal-vs-task/",
@@ -1717,7 +1958,8 @@
       "category": "Lespraktijk · Zelfstandigheid en zelfregulatie",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/least-intrusive-support/",
@@ -1728,7 +1970,8 @@
       "category": "Lespraktijk · Hulp en feedback tijdens het leren",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/model-then-reperform/",
@@ -1739,7 +1982,8 @@
       "category": "Lespraktijk · Hulp en feedback tijdens het leren",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/monitoring-checkpoint/",
@@ -1750,7 +1994,8 @@
       "category": "Lespraktijk · Zelfstandigheid en zelfregulatie",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/observation-vs-inference/",
@@ -1761,7 +2006,8 @@
       "category": "Lespraktijk · Beoordelen en professioneel oordeel",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/perspective-weighing/",
@@ -1772,7 +2018,8 @@
       "category": "Lespraktijk · Bronnen en argumenten beoordelen",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/plan-it-yourself/",
@@ -1783,7 +2030,8 @@
       "category": "Lespraktijk · Zelfstandigheid en zelfregulatie",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/practice-or-reteach/",
@@ -1794,7 +2042,8 @@
       "category": "Lespraktijk · Hulp en feedback tijdens het leren",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/preserve-uncertainty/",
@@ -1805,7 +2054,8 @@
       "category": "Lespraktijk · Beoordelen en professioneel oordeel",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/process-reconstruction/",
@@ -1816,7 +2066,8 @@
       "category": "Lespraktijk · Zelfstandigheid en zelfregulatie",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/prompt-variation-lab/",
@@ -1827,7 +2078,8 @@
       "category": "Lespraktijk · Opdrachten en de rol van AI",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/proportionate-follow-up/",
@@ -1838,7 +2090,8 @@
       "category": "Lespraktijk · Beoordelen en professioneel oordeel",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/rebuttal-reconstruction/",
@@ -1849,7 +2102,8 @@
       "category": "Lespraktijk · Bronnen en argumenten beoordelen",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/reconstruct-professional-judgement/",
@@ -1860,7 +2114,8 @@
       "category": "Lespraktijk · Beoordelen en professioneel oordeel",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/reflective-re-entry/",
@@ -1871,7 +2126,8 @@
       "category": "Lespraktijk · Denk- en leerproces zichtbaar maken",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/resume-control/",
@@ -1882,7 +2138,8 @@
       "category": "Lespraktijk · Zelfstandigheid en zelfregulatie",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/smallest-help-needed/",
@@ -1893,7 +2150,8 @@
       "category": "Lespraktijk · Zelfstandigheid en zelfregulatie",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/source-suitability/",
@@ -1904,7 +2162,8 @@
       "category": "Lespraktijk · Bronnen en argumenten beoordelen",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/source-verification/",
@@ -1915,7 +2174,8 @@
       "category": "Lespraktijk · Hulp en feedback tijdens het leren",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/strategy-switch-from-evidence/",
@@ -1926,7 +2186,8 @@
       "category": "Lespraktijk · Zelfstandigheid en zelfregulatie",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/target-action-first/",
@@ -1937,7 +2198,8 @@
       "category": "Lespraktijk · Hulp en feedback tijdens het leren",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/task-density-scan/",
@@ -1948,7 +2210,8 @@
       "category": "Lespraktijk · Opdrachten en de rol van AI",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/toollab/",
@@ -1959,7 +2222,8 @@
       "category": "Lespraktijk · Opdrachten en de rol van AI",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/trace-back-prompting/",
@@ -1970,7 +2234,8 @@
       "category": "Lespraktijk · Denk- en leerproces zichtbaar maken",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/transfer-task/",
@@ -1981,7 +2246,8 @@
       "category": "Lespraktijk · Denk- en leerproces zichtbaar maken",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/workshop-ai/",
@@ -1992,10 +2258,101 @@
       "category": "Lespraktijk · Start hier",
       "review": "gevonden_in_zoekindex",
       "parent": null,
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     }
   ],
   "embedded_items": [
+    {
+      "id": "abyss:0",
+      "url": "/tools/abyss/",
+      "parent": "page:/tools/abyss/",
+      "name": "Zeebodem",
+      "category": "oceanen",
+      "source": "content/abyss/ABYSS.html",
+      "source_file": "content/abyss/ABYSS.html",
+      "family": "oceanen",
+      "link": "binnen_toepassing",
+      "review": "afzonderlijk_in_bron_gevonden",
+      "source_ref": "MODES[0]",
+      "source_description": "3D reliëf",
+      "suggested_title_nl": "Zeebodem"
+    },
+    {
+      "id": "abyss:1",
+      "url": "/tools/abyss/",
+      "parent": "page:/tools/abyss/",
+      "name": "De afdaling",
+      "category": "oceanen",
+      "source": "content/abyss/ABYSS.html",
+      "source_file": "content/abyss/ABYSS.html",
+      "family": "oceanen",
+      "link": "binnen_toepassing",
+      "review": "afzonderlijk_in_bron_gevonden",
+      "source_ref": "MODES[1]",
+      "source_description": "Druk & licht",
+      "suggested_title_nl": "Waterdruk en licht"
+    },
+    {
+      "id": "abyss:2",
+      "url": "/tools/abyss/",
+      "parent": "page:/tools/abyss/",
+      "name": "Aardbevingen",
+      "category": "oceanen",
+      "source": "content/abyss/ABYSS.html",
+      "source_file": "content/abyss/ABYSS.html",
+      "family": "oceanen",
+      "link": "binnen_toepassing",
+      "review": "afzonderlijk_in_bron_gevonden",
+      "source_ref": "MODES[2]",
+      "source_description": "USGS gegevens",
+      "suggested_title_nl": "Aardbevingen"
+    },
+    {
+      "id": "abyss:3",
+      "url": "/tools/abyss/",
+      "parent": "page:/tools/abyss/",
+      "name": "Plaattektoniek",
+      "category": "oceanen",
+      "source": "content/abyss/ABYSS.html",
+      "source_file": "content/abyss/ABYSS.html",
+      "family": "oceanen",
+      "link": "binnen_toepassing",
+      "review": "afzonderlijk_in_bron_gevonden",
+      "source_ref": "MODES[3]",
+      "source_description": "Grenzen & lagen",
+      "suggested_title_nl": "Plaattektoniek"
+    },
+    {
+      "id": "abyss:4",
+      "url": "/tools/abyss/",
+      "parent": "page:/tools/abyss/",
+      "name": "Oceaanstroming",
+      "category": "oceanen",
+      "source": "content/abyss/ABYSS.html",
+      "source_file": "content/abyss/ABYSS.html",
+      "family": "oceanen",
+      "link": "binnen_toepassing",
+      "review": "afzonderlijk_in_bron_gevonden",
+      "source_ref": "MODES[4]",
+      "source_description": "Modelstromingen",
+      "suggested_title_nl": "Oceaanstromingen"
+    },
+    {
+      "id": "abyss:5",
+      "url": "/tools/abyss/",
+      "parent": "page:/tools/abyss/",
+      "name": "Meetbaar of geschat?",
+      "category": "oceanen",
+      "source": "content/abyss/ABYSS.html",
+      "source_file": "content/abyss/ABYSS.html",
+      "family": "oceanen",
+      "link": "binnen_toepassing",
+      "review": "afzonderlijk_in_bron_gevonden",
+      "source_ref": "MODES[5]",
+      "source_description": "GEBCO 2026",
+      "suggested_title_nl": "Herkomst van dieptegegevens"
+    },
     {
       "id": "anchor:/en/glossary/#act-of-learning",
       "url": "/en/glossary/#act-of-learning",
@@ -2809,8 +3166,11 @@
       "source": "publieke_zoekindex",
       "source_file": "content/melkweg-lab/index.html",
       "link": "direct",
-      "review": "bestaande_benaming",
-      "family": "heelal"
+      "review": "publieke_naam_voorstel_brononderdeel_gecontroleerd",
+      "family": "heelal",
+      "suggested_title_nl": "Structuur van de Melkweg",
+      "suggested_description_nl": "Onderzoek de schijf, spiraalarmen, centrale balk en halo.",
+      "topic_id": "melkweg:atlas"
     },
     {
       "id": "anchor:/tools/melkweg-lab/#blackhole",
@@ -2821,8 +3181,11 @@
       "source": "publieke_zoekindex",
       "source_file": "content/melkweg-lab/index.html",
       "link": "direct",
-      "review": "bestaande_benaming",
-      "family": "heelal"
+      "review": "publieke_naam_voorstel_brononderdeel_gecontroleerd",
+      "family": "heelal",
+      "suggested_title_nl": "Sagittarius A*",
+      "suggested_description_nl": "Onderzoek de baan van ster S2 rond het zwarte gat in de Melkweg.",
+      "topic_id": "melkweg:blackhole"
     },
     {
       "id": "anchor:/tools/melkweg-lab/#dynamics",
@@ -2833,8 +3196,11 @@
       "source": "publieke_zoekindex",
       "source_file": "content/melkweg-lab/index.html",
       "link": "direct",
-      "review": "bestaande_benaming",
-      "family": "heelal"
+      "review": "publieke_naam_voorstel_brononderdeel_gecontroleerd",
+      "family": "heelal",
+      "suggested_title_nl": "Rotatie en zwaartekracht",
+      "suggested_description_nl": "Verander de massa van de Melkweg en onderzoek de omloopsnelheid.",
+      "topic_id": "melkweg:dynamics"
     },
     {
       "id": "anchor:/tools/melkweg-lab/#gaia",
@@ -2845,8 +3211,11 @@
       "source": "publieke_zoekindex",
       "source_file": "content/melkweg-lab/index.html",
       "link": "direct",
-      "review": "bestaande_benaming",
-      "family": "heelal"
+      "review": "publieke_naam_voorstel_brononderdeel_gecontroleerd",
+      "family": "heelal",
+      "suggested_title_nl": "Meten met Gaia",
+      "suggested_description_nl": "Onderzoek afstanden en eigenbeweging van sterren.",
+      "topic_id": "melkweg:gaia"
     },
     {
       "id": "anchor:/tools/melkweg-lab/#stars",
@@ -2857,8 +3226,11 @@
       "source": "publieke_zoekindex",
       "source_file": "content/melkweg-lab/index.html",
       "link": "direct",
-      "review": "bestaande_benaming",
-      "family": "heelal"
+      "review": "publieke_naam_voorstel_brononderdeel_gecontroleerd",
+      "family": "heelal",
+      "suggested_title_nl": "Sterpopulaties",
+      "suggested_description_nl": "Vergelijk de eigenschappen van verschillende sterren en sterpopulaties.",
+      "topic_id": "melkweg:stars"
     },
     {
       "id": "anchor:/tools/melkweg-lab/#structure",
@@ -2869,8 +3241,11 @@
       "source": "publieke_zoekindex",
       "source_file": "content/melkweg-lab/index.html",
       "link": "direct",
-      "review": "bestaande_benaming",
-      "family": "heelal"
+      "review": "publieke_naam_voorstel_brononderdeel_gecontroleerd",
+      "family": "heelal",
+      "suggested_title_nl": "Schijf en halo",
+      "suggested_description_nl": "Vergelijk de verdeling van sterren en de vorm van de Melkweg.",
+      "topic_id": "melkweg:structure"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/melkweg/#atlas",
@@ -2881,8 +3256,11 @@
       "source": "publieke_zoekindex",
       "source_file": "content/science-observatory/labs/melkweg.html",
       "link": "direct",
-      "review": "bestaande_benaming",
-      "family": "heelal"
+      "review": "publieke_naam_voorstel_brononderdeel_gecontroleerd",
+      "family": "heelal",
+      "suggested_title_nl": "Structuur van de Melkweg",
+      "suggested_description_nl": "Onderzoek de schijf, spiraalarmen, centrale balk en halo.",
+      "topic_id": "melkweg:atlas"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/melkweg/#blackhole",
@@ -2893,8 +3271,11 @@
       "source": "publieke_zoekindex",
       "source_file": "content/science-observatory/labs/melkweg.html",
       "link": "direct",
-      "review": "bestaande_benaming",
-      "family": "heelal"
+      "review": "publieke_naam_voorstel_brononderdeel_gecontroleerd",
+      "family": "heelal",
+      "suggested_title_nl": "Sagittarius A*",
+      "suggested_description_nl": "Onderzoek de baan van ster S2 rond het zwarte gat in de Melkweg.",
+      "topic_id": "melkweg:blackhole"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/melkweg/#dynamics",
@@ -2905,8 +3286,11 @@
       "source": "publieke_zoekindex",
       "source_file": "content/science-observatory/labs/melkweg.html",
       "link": "direct",
-      "review": "bestaande_benaming",
-      "family": "heelal"
+      "review": "publieke_naam_voorstel_brononderdeel_gecontroleerd",
+      "family": "heelal",
+      "suggested_title_nl": "Rotatie en zwaartekracht",
+      "suggested_description_nl": "Verander de massa van de Melkweg en onderzoek de omloopsnelheid.",
+      "topic_id": "melkweg:dynamics"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/melkweg/#gaia",
@@ -2917,8 +3301,11 @@
       "source": "publieke_zoekindex",
       "source_file": "content/science-observatory/labs/melkweg.html",
       "link": "direct",
-      "review": "bestaande_benaming",
-      "family": "heelal"
+      "review": "publieke_naam_voorstel_brononderdeel_gecontroleerd",
+      "family": "heelal",
+      "suggested_title_nl": "Meten met Gaia",
+      "suggested_description_nl": "Onderzoek afstanden en eigenbeweging van sterren.",
+      "topic_id": "melkweg:gaia"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/melkweg/#stars",
@@ -2929,8 +3316,11 @@
       "source": "publieke_zoekindex",
       "source_file": "content/science-observatory/labs/melkweg.html",
       "link": "direct",
-      "review": "bestaande_benaming",
-      "family": "heelal"
+      "review": "publieke_naam_voorstel_brononderdeel_gecontroleerd",
+      "family": "heelal",
+      "suggested_title_nl": "Sterpopulaties",
+      "suggested_description_nl": "Vergelijk de eigenschappen van verschillende sterren en sterpopulaties.",
+      "topic_id": "melkweg:stars"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/melkweg/#structure",
@@ -2941,8 +3331,11 @@
       "source": "publieke_zoekindex",
       "source_file": "content/science-observatory/labs/melkweg.html",
       "link": "direct",
-      "review": "bestaande_benaming",
-      "family": "heelal"
+      "review": "publieke_naam_voorstel_brononderdeel_gecontroleerd",
+      "family": "heelal",
+      "suggested_title_nl": "Schijf en halo",
+      "suggested_description_nl": "Vergelijk de verdeling van sterren en de vorm van de Melkweg.",
+      "topic_id": "melkweg:structure"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/natuurkunde/#ac",
@@ -3725,6 +4118,1247 @@
       "family": "wiskunde"
     },
     {
+      "id": "eaimesh-focus:architecture",
+      "url": "/tools/eaimesh/start/",
+      "parent": "page:/tools/eaimesh/start/",
+      "name": "Architecture",
+      "category": "eaimesh-focus",
+      "source": "content/eaimesh/start.html",
+      "source_file": "content/eaimesh/start.html",
+      "source_ref": "INTENTS.architecture",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "analysekeuze"
+    },
+    {
+      "id": "eaimesh-focus:docsconfig",
+      "url": "/tools/eaimesh/start/",
+      "parent": "page:/tools/eaimesh/start/",
+      "name": "Docs & config",
+      "category": "eaimesh-focus",
+      "source": "content/eaimesh/start.html",
+      "source_file": "content/eaimesh/start.html",
+      "source_ref": "INTENTS.docsconfig",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "analysekeuze"
+    },
+    {
+      "id": "eaimesh-focus:full",
+      "url": "/tools/eaimesh/start/",
+      "parent": "page:/tools/eaimesh/start/",
+      "name": "Full mesh",
+      "category": "eaimesh-focus",
+      "source": "content/eaimesh/start.html",
+      "source_file": "content/eaimesh/start.html",
+      "source_ref": "INTENTS.full",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "analysekeuze"
+    },
+    {
+      "id": "eaimesh-focus:overview",
+      "url": "/tools/eaimesh/start/",
+      "parent": "page:/tools/eaimesh/start/",
+      "name": "Overview",
+      "category": "eaimesh-focus",
+      "source": "content/eaimesh/start.html",
+      "source_file": "content/eaimesh/start.html",
+      "source_ref": "INTENTS.overview",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "analysekeuze"
+    },
+    {
+      "id": "eaimesh-focus:relations",
+      "url": "/tools/eaimesh/start/",
+      "parent": "page:/tools/eaimesh/start/",
+      "name": "Relations",
+      "category": "eaimesh-focus",
+      "source": "content/eaimesh/start.html",
+      "source_file": "content/eaimesh/start.html",
+      "source_ref": "INTENTS.relations",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "analysekeuze"
+    },
+    {
+      "id": "eaimesh-focus:runtime",
+      "url": "/tools/eaimesh/start/",
+      "parent": "page:/tools/eaimesh/start/",
+      "name": "Runtime",
+      "category": "eaimesh-focus",
+      "source": "content/eaimesh/start.html",
+      "source_file": "content/eaimesh/start.html",
+      "source_ref": "INTENTS.runtime",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "analysekeuze"
+    },
+    {
+      "id": "eaimesh-focus:tests",
+      "url": "/tools/eaimesh/start/",
+      "parent": "page:/tools/eaimesh/start/",
+      "name": "Tests",
+      "category": "eaimesh-focus",
+      "source": "content/eaimesh/start.html",
+      "source_file": "content/eaimesh/start.html",
+      "source_ref": "INTENTS.tests",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "analysekeuze"
+    },
+    {
+      "id": "eaistudio-component:ai-chat",
+      "url": "/tools/eaistudio/studio/",
+      "parent": "page:/tools/eaistudio/studio/",
+      "name": "AI-chat",
+      "category": "Gesprekken",
+      "source": "content/eaistudio/studio.html",
+      "source_file": "content/eaistudio/studio.html",
+      "source_ref": "CORE_LIBRARY_COMPONENTS[ai-chat]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "herbruikbaar_component"
+    },
+    {
+      "id": "eaistudio-component:bar-chart",
+      "url": "/tools/eaistudio/studio/",
+      "parent": "page:/tools/eaistudio/studio/",
+      "name": "Staafdiagram",
+      "category": "Data",
+      "source": "content/eaistudio/studio.html",
+      "source_file": "content/eaistudio/studio.html",
+      "source_ref": "CORE_LIBRARY_COMPONENTS[bar-chart]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "herbruikbaar_component"
+    },
+    {
+      "id": "eaistudio-component:big-number",
+      "url": "/tools/eaistudio/studio/",
+      "parent": "page:/tools/eaistudio/studio/",
+      "name": "Groot getal",
+      "category": "Presentatie",
+      "source": "content/eaistudio/studio.html",
+      "source_file": "content/eaistudio/studio.html",
+      "source_ref": "CORE_LIBRARY_COMPONENTS[big-number]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "herbruikbaar_component"
+    },
+    {
+      "id": "eaistudio-component:browser-search",
+      "url": "/tools/eaistudio/studio/",
+      "parent": "page:/tools/eaistudio/studio/",
+      "name": "Zoekpagina",
+      "category": "Apps & schermen",
+      "source": "content/eaistudio/studio.html",
+      "source_file": "content/eaistudio/studio.html",
+      "source_ref": "CORE_LIBRARY_COMPONENTS[browser-search]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "herbruikbaar_component"
+    },
+    {
+      "id": "eaistudio-component:build-pipeline",
+      "url": "/tools/eaistudio/studio/",
+      "parent": "page:/tools/eaistudio/studio/",
+      "name": "Build pipeline",
+      "category": "Code & dev",
+      "source": "content/eaistudio/studio.html",
+      "source_file": "content/eaistudio/studio.html",
+      "source_ref": "CORE_LIBRARY_COMPONENTS[build-pipeline]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "herbruikbaar_component"
+    },
+    {
+      "id": "eaistudio-component:choice-cards",
+      "url": "/tools/eaistudio/studio/",
+      "parent": "page:/tools/eaistudio/studio/",
+      "name": "Keuzekaarten",
+      "category": "Interactief",
+      "source": "content/eaistudio/studio.html",
+      "source_file": "content/eaistudio/studio.html",
+      "source_ref": "CORE_LIBRARY_COMPONENTS[choice-cards]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "herbruikbaar_component"
+    },
+    {
+      "id": "eaistudio-component:comment-thread",
+      "url": "/tools/eaistudio/studio/",
+      "parent": "page:/tools/eaistudio/studio/",
+      "name": "Reactiedraad",
+      "category": "Gesprekken",
+      "source": "content/eaistudio/studio.html",
+      "source_file": "content/eaistudio/studio.html",
+      "source_ref": "CORE_LIBRARY_COMPONENTS[comment-thread]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "herbruikbaar_component"
+    },
+    {
+      "id": "eaistudio-component:countdown",
+      "url": "/tools/eaistudio/studio/",
+      "parent": "page:/tools/eaistudio/studio/",
+      "name": "Countdown",
+      "category": "Presentatie",
+      "source": "content/eaistudio/studio.html",
+      "source_file": "content/eaistudio/studio.html",
+      "source_ref": "CORE_LIBRARY_COMPONENTS[countdown]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "herbruikbaar_component"
+    },
+    {
+      "id": "eaistudio-component:dashboard-grid",
+      "url": "/tools/eaistudio/studio/",
+      "parent": "page:/tools/eaistudio/studio/",
+      "name": "Dashboard",
+      "category": "Apps & schermen",
+      "source": "content/eaistudio/studio.html",
+      "source_file": "content/eaistudio/studio.html",
+      "source_ref": "CORE_LIBRARY_COMPONENTS[dashboard-grid]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "herbruikbaar_component"
+    },
+    {
+      "id": "eaistudio-component:document-review",
+      "url": "/tools/eaistudio/studio/",
+      "parent": "page:/tools/eaistudio/studio/",
+      "name": "Document review",
+      "category": "Apps & schermen",
+      "source": "content/eaistudio/studio.html",
+      "source_file": "content/eaistudio/studio.html",
+      "source_ref": "CORE_LIBRARY_COMPONENTS[document-review]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "herbruikbaar_component"
+    },
+    {
+      "id": "eaistudio-component:donut-gauge",
+      "url": "/tools/eaistudio/studio/",
+      "parent": "page:/tools/eaistudio/studio/",
+      "name": "Voortgangsmeter",
+      "category": "Data",
+      "source": "content/eaistudio/studio.html",
+      "source_file": "content/eaistudio/studio.html",
+      "source_ref": "CORE_LIBRARY_COMPONENTS[donut-gauge]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "herbruikbaar_component"
+    },
+    {
+      "id": "eaistudio-component:error-cascade",
+      "url": "/tools/eaistudio/studio/",
+      "parent": "page:/tools/eaistudio/studio/",
+      "name": "Error cascade",
+      "category": "Meldingen",
+      "source": "content/eaistudio/studio.html",
+      "source_file": "content/eaistudio/studio.html",
+      "source_ref": "CORE_LIBRARY_COMPONENTS[error-cascade]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "herbruikbaar_component"
+    },
+    {
+      "id": "eaistudio-component:error-stack",
+      "url": "/tools/eaistudio/studio/",
+      "parent": "page:/tools/eaistudio/studio/",
+      "name": "Error stack",
+      "category": "Code & dev",
+      "source": "content/eaistudio/studio.html",
+      "source_file": "content/eaistudio/studio.html",
+      "source_ref": "CORE_LIBRARY_COMPONENTS[error-stack]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "herbruikbaar_component"
+    },
+    {
+      "id": "eaistudio-component:file-browser",
+      "url": "/tools/eaistudio/studio/",
+      "parent": "page:/tools/eaistudio/studio/",
+      "name": "Bestandsbrowser",
+      "category": "Apps & schermen",
+      "source": "content/eaistudio/studio.html",
+      "source_file": "content/eaistudio/studio.html",
+      "source_ref": "CORE_LIBRARY_COMPONENTS[file-browser]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "herbruikbaar_component"
+    },
+    {
+      "id": "eaistudio-component:git-diff",
+      "url": "/tools/eaistudio/studio/",
+      "parent": "page:/tools/eaistudio/studio/",
+      "name": "Git diff",
+      "category": "Code & dev",
+      "source": "content/eaistudio/studio.html",
+      "source_file": "content/eaistudio/studio.html",
+      "source_ref": "CORE_LIBRARY_COMPONENTS[git-diff]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "herbruikbaar_component"
+    },
+    {
+      "id": "eaistudio-component:hotspot-button",
+      "url": "/tools/eaistudio/studio/",
+      "parent": "page:/tools/eaistudio/studio/",
+      "name": "Hotspot",
+      "category": "Interactief",
+      "source": "content/eaistudio/studio.html",
+      "source_file": "content/eaistudio/studio.html",
+      "source_ref": "CORE_LIBRARY_COMPONENTS[hotspot-button]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "herbruikbaar_component"
+    },
+    {
+      "id": "eaistudio-component:ide-editor",
+      "url": "/tools/eaistudio/studio/",
+      "parent": "page:/tools/eaistudio/studio/",
+      "name": "IDE editor",
+      "category": "Code & dev",
+      "source": "content/eaistudio/studio.html",
+      "source_file": "content/eaistudio/studio.html",
+      "source_ref": "CORE_LIBRARY_COMPONENTS[ide-editor]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "herbruikbaar_component"
+    },
+    {
+      "id": "eaistudio-component:kpi-strip",
+      "url": "/tools/eaistudio/studio/",
+      "parent": "page:/tools/eaistudio/studio/",
+      "name": "KPI-kaarten",
+      "category": "Data",
+      "source": "content/eaistudio/studio.html",
+      "source_file": "content/eaistudio/studio.html",
+      "source_ref": "CORE_LIBRARY_COMPONENTS[kpi-strip]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "herbruikbaar_component"
+    },
+    {
+      "id": "eaistudio-component:line-chart",
+      "url": "/tools/eaistudio/studio/",
+      "parent": "page:/tools/eaistudio/studio/",
+      "name": "Lijngrafiek",
+      "category": "Data",
+      "source": "content/eaistudio/studio.html",
+      "source_file": "content/eaistudio/studio.html",
+      "source_ref": "CORE_LIBRARY_COMPONENTS[line-chart]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "herbruikbaar_component"
+    },
+    {
+      "id": "eaistudio-component:loader-sequence",
+      "url": "/tools/eaistudio/studio/",
+      "parent": "page:/tools/eaistudio/studio/",
+      "name": "Loader sequence",
+      "category": "Motion",
+      "source": "content/eaistudio/studio.html",
+      "source_file": "content/eaistudio/studio.html",
+      "source_ref": "CORE_LIBRARY_COMPONENTS[loader-sequence]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "herbruikbaar_component"
+    },
+    {
+      "id": "eaistudio-component:log-monitor",
+      "url": "/tools/eaistudio/studio/",
+      "parent": "page:/tools/eaistudio/studio/",
+      "name": "Log monitor",
+      "category": "Code & dev",
+      "source": "content/eaistudio/studio.html",
+      "source_file": "content/eaistudio/studio.html",
+      "source_ref": "CORE_LIBRARY_COMPONENTS[log-monitor]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "herbruikbaar_component"
+    },
+    {
+      "id": "eaistudio-component:mailbox-triage",
+      "url": "/tools/eaistudio/studio/",
+      "parent": "page:/tools/eaistudio/studio/",
+      "name": "Mailbox triage",
+      "category": "Apps & schermen",
+      "source": "content/eaistudio/studio.html",
+      "source_file": "content/eaistudio/studio.html",
+      "source_ref": "CORE_LIBRARY_COMPONENTS[mailbox-triage]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "herbruikbaar_component"
+    },
+    {
+      "id": "eaistudio-component:notification-bell",
+      "url": "/tools/eaistudio/studio/",
+      "parent": "page:/tools/eaistudio/studio/",
+      "name": "Meldingsteller",
+      "category": "Meldingen",
+      "source": "content/eaistudio/studio.html",
+      "source_file": "content/eaistudio/studio.html",
+      "source_ref": "CORE_LIBRARY_COMPONENTS[notification-bell]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "herbruikbaar_component"
+    },
+    {
+      "id": "eaistudio-component:orbit-nodes",
+      "url": "/tools/eaistudio/studio/",
+      "parent": "page:/tools/eaistudio/studio/",
+      "name": "Orbit nodes",
+      "category": "Motion",
+      "source": "content/eaistudio/studio.html",
+      "source_file": "content/eaistudio/studio.html",
+      "source_ref": "CORE_LIBRARY_COMPONENTS[orbit-nodes]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "herbruikbaar_component"
+    },
+    {
+      "id": "eaistudio-component:progress-checklist",
+      "url": "/tools/eaistudio/studio/",
+      "parent": "page:/tools/eaistudio/studio/",
+      "name": "Checklist",
+      "category": "Data",
+      "source": "content/eaistudio/studio.html",
+      "source_file": "content/eaistudio/studio.html",
+      "source_ref": "CORE_LIBRARY_COMPONENTS[progress-checklist]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "herbruikbaar_component"
+    },
+    {
+      "id": "eaistudio-component:pulse-grid",
+      "url": "/tools/eaistudio/studio/",
+      "parent": "page:/tools/eaistudio/studio/",
+      "name": "Pulse grid",
+      "category": "Motion",
+      "source": "content/eaistudio/studio.html",
+      "source_file": "content/eaistudio/studio.html",
+      "source_ref": "CORE_LIBRARY_COMPONENTS[pulse-grid]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "herbruikbaar_component"
+    },
+    {
+      "id": "eaistudio-component:quote-reveal",
+      "url": "/tools/eaistudio/studio/",
+      "parent": "page:/tools/eaistudio/studio/",
+      "name": "Quote reveal",
+      "category": "Presentatie",
+      "source": "content/eaistudio/studio.html",
+      "source_file": "content/eaistudio/studio.html",
+      "source_ref": "CORE_LIBRARY_COMPONENTS[quote-reveal]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "herbruikbaar_component"
+    },
+    {
+      "id": "eaistudio-component:rating-meter",
+      "url": "/tools/eaistudio/studio/",
+      "parent": "page:/tools/eaistudio/studio/",
+      "name": "Scorekeuze",
+      "category": "Interactief",
+      "source": "content/eaistudio/studio.html",
+      "source_file": "content/eaistudio/studio.html",
+      "source_ref": "CORE_LIBRARY_COMPONENTS[rating-meter]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "herbruikbaar_component"
+    },
+    {
+      "id": "eaistudio-component:reveal-card",
+      "url": "/tools/eaistudio/studio/",
+      "parent": "page:/tools/eaistudio/studio/",
+      "name": "Reveal card",
+      "category": "Interactief",
+      "source": "content/eaistudio/studio.html",
+      "source_file": "content/eaistudio/studio.html",
+      "source_ref": "CORE_LIBRARY_COMPONENTS[reveal-card]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "herbruikbaar_component"
+    },
+    {
+      "id": "eaistudio-component:scan-sweep",
+      "url": "/tools/eaistudio/studio/",
+      "parent": "page:/tools/eaistudio/studio/",
+      "name": "Scan sweep",
+      "category": "Motion",
+      "source": "content/eaistudio/studio.html",
+      "source_file": "content/eaistudio/studio.html",
+      "source_ref": "CORE_LIBRARY_COMPONENTS[scan-sweep]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "herbruikbaar_component"
+    },
+    {
+      "id": "eaistudio-component:section-label",
+      "url": "/tools/eaistudio/studio/",
+      "parent": "page:/tools/eaistudio/studio/",
+      "name": "Hoofdstuktitel",
+      "category": "Presentatie",
+      "source": "content/eaistudio/studio.html",
+      "source_file": "content/eaistudio/studio.html",
+      "source_ref": "CORE_LIBRARY_COMPONENTS[section-label]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "herbruikbaar_component"
+    },
+    {
+      "id": "eaistudio-component:settings-panel",
+      "url": "/tools/eaistudio/studio/",
+      "parent": "page:/tools/eaistudio/studio/",
+      "name": "Instellingenpaneel",
+      "category": "Apps & schermen",
+      "source": "content/eaistudio/studio.html",
+      "source_file": "content/eaistudio/studio.html",
+      "source_ref": "CORE_LIBRARY_COMPONENTS[settings-panel]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "herbruikbaar_component"
+    },
+    {
+      "id": "eaistudio-component:spotlight-focus",
+      "url": "/tools/eaistudio/studio/",
+      "parent": "page:/tools/eaistudio/studio/",
+      "name": "Spotlight",
+      "category": "Meldingen",
+      "source": "content/eaistudio/studio.html",
+      "source_file": "content/eaistudio/studio.html",
+      "source_ref": "CORE_LIBRARY_COMPONENTS[spotlight-focus]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "herbruikbaar_component"
+    },
+    {
+      "id": "eaistudio-component:system-modal",
+      "url": "/tools/eaistudio/studio/",
+      "parent": "page:/tools/eaistudio/studio/",
+      "name": "Systeemvenster",
+      "category": "Meldingen",
+      "source": "content/eaistudio/studio.html",
+      "source_file": "content/eaistudio/studio.html",
+      "source_ref": "CORE_LIBRARY_COMPONENTS[system-modal]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "herbruikbaar_component"
+    },
+    {
+      "id": "eaistudio-component:team-chat",
+      "url": "/tools/eaistudio/studio/",
+      "parent": "page:/tools/eaistudio/studio/",
+      "name": "Teamchat",
+      "category": "Gesprekken",
+      "source": "content/eaistudio/studio.html",
+      "source_file": "content/eaistudio/studio.html",
+      "source_ref": "CORE_LIBRARY_COMPONENTS[team-chat]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "herbruikbaar_component"
+    },
+    {
+      "id": "eaistudio-component:terminal-stream",
+      "url": "/tools/eaistudio/studio/",
+      "parent": "page:/tools/eaistudio/studio/",
+      "name": "Terminal stream",
+      "category": "Code & dev",
+      "source": "content/eaistudio/studio.html",
+      "source_file": "content/eaistudio/studio.html",
+      "source_ref": "CORE_LIBRARY_COMPONENTS[terminal-stream]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "herbruikbaar_component"
+    },
+    {
+      "id": "eaistudio-component:timeline-stepper",
+      "url": "/tools/eaistudio/studio/",
+      "parent": "page:/tools/eaistudio/studio/",
+      "name": "Processtappen",
+      "category": "Presentatie",
+      "source": "content/eaistudio/studio.html",
+      "source_file": "content/eaistudio/studio.html",
+      "source_ref": "CORE_LIBRARY_COMPONENTS[timeline-stepper]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "herbruikbaar_component"
+    },
+    {
+      "id": "eaistudio-component:toast-stack",
+      "url": "/tools/eaistudio/studio/",
+      "parent": "page:/tools/eaistudio/studio/",
+      "name": "Toastmeldingen",
+      "category": "Meldingen",
+      "source": "content/eaistudio/studio.html",
+      "source_file": "content/eaistudio/studio.html",
+      "source_ref": "CORE_LIBRARY_COMPONENTS[toast-stack]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "herbruikbaar_component"
+    },
+    {
+      "id": "eaistudio-component:toggle-switch",
+      "url": "/tools/eaistudio/studio/",
+      "parent": "page:/tools/eaistudio/studio/",
+      "name": "Schakelaar",
+      "category": "Interactief",
+      "source": "content/eaistudio/studio.html",
+      "source_file": "content/eaistudio/studio.html",
+      "source_ref": "CORE_LIBRARY_COMPONENTS[toggle-switch]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "herbruikbaar_component"
+    },
+    {
+      "id": "eaistudio-component:typing-prompt",
+      "url": "/tools/eaistudio/studio/",
+      "parent": "page:/tools/eaistudio/studio/",
+      "name": "Prompt typen",
+      "category": "Gesprekken",
+      "source": "content/eaistudio/studio.html",
+      "source_file": "content/eaistudio/studio.html",
+      "source_ref": "CORE_LIBRARY_COMPONENTS[typing-prompt]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "herbruikbaar_component"
+    },
+    {
+      "id": "eaistudio-scene:blank",
+      "url": "/tools/eaistudio/studio/",
+      "parent": "page:/tools/eaistudio/studio/",
+      "name": "Lege scène",
+      "category": "eaistudio-scene",
+      "source": "content/eaistudio/studio.html",
+      "source_file": "content/eaistudio/studio.html",
+      "source_ref": "RECIPES[blank]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "scenesjabloon"
+    },
+    {
+      "id": "eaistudio-scene:chaos",
+      "url": "/tools/eaistudio/studio/",
+      "parent": "page:/tools/eaistudio/studio/",
+      "name": "Meldingen & onrust",
+      "category": "eaistudio-scene",
+      "source": "content/eaistudio/studio.html",
+      "source_file": "content/eaistudio/studio.html",
+      "source_ref": "RECIPES[chaos]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "scenesjabloon"
+    },
+    {
+      "id": "eaistudio-scene:chat",
+      "url": "/tools/eaistudio/studio/",
+      "parent": "page:/tools/eaistudio/studio/",
+      "name": "Gesprek op klik",
+      "category": "eaistudio-scene",
+      "source": "content/eaistudio/studio.html",
+      "source_file": "content/eaistudio/studio.html",
+      "source_ref": "RECIPES[chat]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "scenesjabloon"
+    },
+    {
+      "id": "eaistudio-scene:choice",
+      "url": "/tools/eaistudio/studio/",
+      "parent": "page:/tools/eaistudio/studio/",
+      "name": "Kies de route",
+      "category": "eaistudio-scene",
+      "source": "content/eaistudio/studio.html",
+      "source_file": "content/eaistudio/studio.html",
+      "source_ref": "RECIPES[choice]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "scenesjabloon"
+    },
+    {
+      "id": "eaistudio-scene:ending",
+      "url": "/tools/eaistudio/studio/",
+      "parent": "page:/tools/eaistudio/studio/",
+      "name": "Afsluiting",
+      "category": "eaistudio-scene",
+      "source": "content/eaistudio/studio.html",
+      "source_file": "content/eaistudio/studio.html",
+      "source_ref": "RECIPES[ending]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "scenesjabloon"
+    },
+    {
+      "id": "eaistudio-scene:mail",
+      "url": "/tools/eaistudio/studio/",
+      "parent": "page:/tools/eaistudio/studio/",
+      "name": "Mailbox & analyse",
+      "category": "eaistudio-scene",
+      "source": "content/eaistudio/studio.html",
+      "source_file": "content/eaistudio/studio.html",
+      "source_ref": "RECIPES[mail]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "scenesjabloon"
+    },
+    {
+      "id": "eaistudio-scene:split",
+      "url": "/tools/eaistudio/studio/",
+      "parent": "page:/tools/eaistudio/studio/",
+      "name": "Twee vensters",
+      "category": "eaistudio-scene",
+      "source": "content/eaistudio/studio.html",
+      "source_file": "content/eaistudio/studio.html",
+      "source_ref": "RECIPES[split]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "scenesjabloon"
+    },
+    {
+      "id": "eaistudio-scene:title",
+      "url": "/tools/eaistudio/studio/",
+      "parent": "page:/tools/eaistudio/studio/",
+      "name": "Rustige opening",
+      "category": "eaistudio-scene",
+      "source": "content/eaistudio/studio.html",
+      "source_file": "content/eaistudio/studio.html",
+      "source_ref": "RECIPES[title]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "scenesjabloon"
+    },
+    {
+      "id": "eaistudio-starter:interactive",
+      "url": "/tools/eaistudio/studio/",
+      "parent": "page:/tools/eaistudio/studio/",
+      "name": "Demo · zaal bepaalt mee",
+      "category": "eaistudio-starter",
+      "source": "content/eaistudio/studio.html",
+      "source_file": "content/eaistudio/studio.html",
+      "source_ref": "STARTER_TEMPLATES[interactive]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "startsituatie"
+    },
+    {
+      "id": "eaistudio-starter:style",
+      "url": "/tools/eaistudio/studio/",
+      "parent": "page:/tools/eaistudio/studio/",
+      "name": "Voorbeeld huisstijl",
+      "category": "eaistudio-starter",
+      "source": "content/eaistudio/studio.html",
+      "source_file": "content/eaistudio/studio.html",
+      "source_ref": "STARTER_TEMPLATES[style]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "startsituatie"
+    },
+    {
+      "id": "eaistudio-starter:tech",
+      "url": "/tools/eaistudio/studio/",
+      "parent": "page:/tools/eaistudio/studio/",
+      "name": "Demo · AI in actie",
+      "category": "eaistudio-starter",
+      "source": "content/eaistudio/studio.html",
+      "source_file": "content/eaistudio/studio.html",
+      "source_ref": "STARTER_TEMPLATES[tech]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "startsituatie"
+    },
+    {
+      "id": "eaiwork-view:bewijs",
+      "url": "/tools/eaiwork/",
+      "parent": "page:/tools/eaiwork/",
+      "name": "Bewijs en herkomst",
+      "category": "eaiwork-view",
+      "source": "content/eaiwork-dashboard.html",
+      "source_file": "content/eaiwork-dashboard.html",
+      "source_ref": "nav[bewijs]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "interne_navigatieweergave",
+      "access": "binnen_dezelfde_html"
+    },
+    {
+      "id": "eaiwork-view:bibliotheek",
+      "url": "/tools/eaiwork/",
+      "parent": "page:/tools/eaiwork/",
+      "name": "Workerbibliotheek",
+      "category": "eaiwork-view",
+      "source": "content/eaiwork-dashboard.html",
+      "source_file": "content/eaiwork-dashboard.html",
+      "source_ref": "nav[bibliotheek]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "interne_navigatieweergave",
+      "access": "binnen_dezelfde_html"
+    },
+    {
+      "id": "eaiwork-view:bronnen",
+      "url": "/tools/eaiwork/",
+      "parent": "page:/tools/eaiwork/",
+      "name": "Bronnen en RepoSearch",
+      "category": "eaiwork-view",
+      "source": "content/eaiwork-dashboard.html",
+      "source_file": "content/eaiwork-dashboard.html",
+      "source_ref": "nav[bronnen]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "interne_navigatieweergave",
+      "access": "binnen_dezelfde_html"
+    },
+    {
+      "id": "eaiwork-view:browser",
+      "url": "/tools/eaiwork/",
+      "parent": "page:/tools/eaiwork/",
+      "name": "Browser LLM",
+      "category": "eaiwork-view",
+      "source": "content/eaiwork-dashboard.html",
+      "source_file": "content/eaiwork-dashboard.html",
+      "source_ref": "nav[browser]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "interne_navigatieweergave",
+      "access": "binnen_dezelfde_html"
+    },
+    {
+      "id": "eaiwork-view:builder",
+      "url": "/tools/eaiwork/",
+      "parent": "page:/tools/eaiwork/",
+      "name": "Worker Builder",
+      "category": "eaiwork-view",
+      "source": "content/eaiwork-dashboard.html",
+      "source_file": "content/eaiwork-dashboard.html",
+      "source_ref": "nav[builder]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "interne_navigatieweergave",
+      "access": "binnen_dezelfde_html"
+    },
+    {
+      "id": "eaiwork-view:hitl",
+      "url": "/tools/eaiwork/",
+      "parent": "page:/tools/eaiwork/",
+      "name": "Menselijke besluiten",
+      "category": "eaiwork-view",
+      "source": "content/eaiwork-dashboard.html",
+      "source_file": "content/eaiwork-dashboard.html",
+      "source_ref": "nav[hitl]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "interne_navigatieweergave",
+      "access": "binnen_dezelfde_html"
+    },
+    {
+      "id": "eaiwork-view:instellingen",
+      "url": "/tools/eaiwork/",
+      "parent": "page:/tools/eaiwork/",
+      "name": "Instellingen",
+      "category": "eaiwork-view",
+      "source": "content/eaiwork-dashboard.html",
+      "source_file": "content/eaiwork-dashboard.html",
+      "source_ref": "nav[instellingen]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "interne_navigatieweergave",
+      "access": "binnen_dezelfde_html"
+    },
+    {
+      "id": "eaiwork-view:kwaliteit",
+      "url": "/tools/eaiwork/",
+      "parent": "page:/tools/eaiwork/",
+      "name": "Kwaliteit en drift",
+      "category": "eaiwork-view",
+      "source": "content/eaiwork-dashboard.html",
+      "source_file": "content/eaiwork-dashboard.html",
+      "source_ref": "nav[kwaliteit]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "interne_navigatieweergave",
+      "access": "binnen_dezelfde_html"
+    },
+    {
+      "id": "eaiwork-view:logboek",
+      "url": "/tools/eaiwork/",
+      "parent": "page:/tools/eaiwork/",
+      "name": "Logboek",
+      "category": "eaiwork-view",
+      "source": "content/eaiwork-dashboard.html",
+      "source_file": "content/eaiwork-dashboard.html",
+      "source_ref": "nav[logboek]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "interne_navigatieweergave",
+      "access": "binnen_dezelfde_html"
+    },
+    {
+      "id": "eaiwork-view:opdrachten",
+      "url": "/tools/eaiwork/",
+      "parent": "page:/tools/eaiwork/",
+      "name": "Opdrachten (demo)",
+      "category": "eaiwork-view",
+      "source": "content/eaiwork-dashboard.html",
+      "source_file": "content/eaiwork-dashboard.html",
+      "source_ref": "nav[opdrachten]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "interne_navigatieweergave",
+      "access": "binnen_dezelfde_html"
+    },
+    {
+      "id": "eaiwork-view:overzicht",
+      "url": "/tools/eaiwork/",
+      "parent": "page:/tools/eaiwork/",
+      "name": "Overzicht",
+      "category": "eaiwork-view",
+      "source": "content/eaiwork-dashboard.html",
+      "source_file": "content/eaiwork-dashboard.html",
+      "source_ref": "nav[overzicht]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "interne_navigatieweergave",
+      "access": "binnen_dezelfde_html"
+    },
+    {
+      "id": "eaiwork-view:planner",
+      "url": "/tools/eaiwork/",
+      "parent": "page:/tools/eaiwork/",
+      "name": "Planner en taken",
+      "category": "eaiwork-view",
+      "source": "content/eaiwork-dashboard.html",
+      "source_file": "content/eaiwork-dashboard.html",
+      "source_ref": "nav[planner]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "interne_navigatieweergave",
+      "access": "binnen_dezelfde_html"
+    },
+    {
+      "id": "eaiwork-view:registratie",
+      "url": "/tools/eaiwork/",
+      "parent": "page:/tools/eaiwork/",
+      "name": "Contracten en registratie",
+      "category": "eaiwork-view",
+      "source": "content/eaiwork-dashboard.html",
+      "source_file": "content/eaiwork-dashboard.html",
+      "source_ref": "nav[registratie]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "interne_navigatieweergave",
+      "access": "binnen_dezelfde_html"
+    },
+    {
+      "id": "eaiwork-view:uitvoering",
+      "url": "/tools/eaiwork/",
+      "parent": "page:/tools/eaiwork/",
+      "name": "Echte uitvoering",
+      "category": "eaiwork-view",
+      "source": "content/eaiwork-dashboard.html",
+      "source_file": "content/eaiwork-dashboard.html",
+      "source_ref": "nav[uitvoering]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "interne_navigatieweergave",
+      "access": "binnen_dezelfde_html"
+    },
+    {
+      "id": "eaiwork-view:workers",
+      "url": "/tools/eaiwork/",
+      "parent": "page:/tools/eaiwork/",
+      "name": "Workerleger",
+      "category": "eaiwork-view",
+      "source": "content/eaiwork-dashboard.html",
+      "source_file": "content/eaiwork-dashboard.html",
+      "source_ref": "nav[workers]",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "interne_navigatieweergave",
+      "access": "binnen_dezelfde_html"
+    },
+    {
+      "id": "game-area:arena",
+      "url": "/tools/eaigame/",
+      "parent": "page:/tools/eaigame/",
+      "name": "De Arena",
+      "category": "game-area",
+      "source": "assets/eaigame-questions.js",
+      "source_file": "assets/eaigame-questions.js",
+      "source_ref": "groups[arena]",
+      "link": "binnen_toepassing",
+      "family": "spelen-en-oefenen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "game-area",
+      "subject": "Biologie en onderzoek",
+      "slo": "Mens en natuur",
+      "question_seeds": 16,
+      "question_variants": 48,
+      "source_description": "Denk als een onderzoeker. Kijk naar bewijs."
+    },
+    {
+      "id": "game-area:atelier",
+      "url": "/tools/eaigame/",
+      "parent": "page:/tools/eaigame/",
+      "name": "Het Atelier",
+      "category": "game-area",
+      "source": "assets/eaigame-questions.js",
+      "source_file": "assets/eaigame-questions.js",
+      "source_ref": "groups[atelier]",
+      "link": "binnen_toepassing",
+      "family": "spelen-en-oefenen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "game-area",
+      "subject": "Digitale geletterdheid",
+      "slo": "Digitale geletterdheid",
+      "question_seeds": 16,
+      "question_variants": 48,
+      "source_description": "Ontwerp, probeer, test en verbeter."
+    },
+    {
+      "id": "game-area:breuk",
+      "url": "/tools/eaigame/",
+      "parent": "page:/tools/eaigame/",
+      "name": "De Breuk",
+      "category": "game-area",
+      "source": "assets/eaigame-questions.js",
+      "source_file": "assets/eaigame-questions.js",
+      "source_ref": "groups[breuk]",
+      "link": "binnen_toepassing",
+      "family": "spelen-en-oefenen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "game-area",
+      "subject": "Rekenen en wiskunde",
+      "slo": "Wiskunde",
+      "question_seeds": 17,
+      "question_variants": 51,
+      "source_description": "Verhoudingen, patronen en verborgen verbanden."
+    },
+    {
+      "id": "game-area:echo",
+      "url": "/tools/eaigame/",
+      "parent": "page:/tools/eaigame/",
+      "name": "De Echo",
+      "category": "game-area",
+      "source": "assets/eaigame-questions.js",
+      "source_file": "assets/eaigame-questions.js",
+      "source_ref": "groups[echo]",
+      "link": "binnen_toepassing",
+      "family": "spelen-en-oefenen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "game-area",
+      "subject": "Nederlands en taal",
+      "slo": "Nederlands",
+      "question_seeds": 17,
+      "question_variants": 51,
+      "source_description": "Lees wat er staat. Zoek wat er wordt bedoeld."
+    },
+    {
+      "id": "game-area:stad",
+      "url": "/tools/eaigame/",
+      "parent": "page:/tools/eaigame/",
+      "name": "De Stad",
+      "category": "game-area",
+      "source": "assets/eaigame-questions.js",
+      "source_file": "assets/eaigame-questions.js",
+      "source_ref": "groups[stad]",
+      "link": "binnen_toepassing",
+      "family": "spelen-en-oefenen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "game-area",
+      "subject": "Burgerschap",
+      "slo": "Burgerschap",
+      "question_seeds": 17,
+      "question_variants": 51,
+      "source_description": "Samenleven vraagt meer dan een snel antwoord."
+    },
+    {
+      "id": "game-area:storm",
+      "url": "/tools/eaigame/",
+      "parent": "page:/tools/eaigame/",
+      "name": "De Storm",
+      "category": "game-area",
+      "source": "assets/eaigame-questions.js",
+      "source_file": "assets/eaigame-questions.js",
+      "source_ref": "groups[storm]",
+      "link": "binnen_toepassing",
+      "family": "spelen-en-oefenen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "game-area",
+      "subject": "Natuurkunde",
+      "slo": "Mens en natuur",
+      "question_seeds": 17,
+      "question_variants": 51,
+      "source_description": "Energie, beweging en krachten die je niet ziet."
+    },
+    {
+      "id": "gravitation:0",
+      "url": "/tools/science-observatory/labs/gravitatie-banen/",
+      "parent": "page:/tools/science-observatory/labs/gravitatie-banen/",
+      "name": "Satelliet in een baan",
+      "category": "heelal",
+      "source": "content/science-observatory/labs/gravitatie-banen.html",
+      "source_file": "content/science-observatory/labs/gravitatie-banen.html",
+      "family": "heelal",
+      "link": "binnen_toepassing",
+      "review": "afzonderlijk_in_bron_gevonden",
+      "source_ref": "M[0]",
+      "short_name": "Baan & Kepler",
+      "source_description": "Ellips, omlooptijd en gelijke oppervlakken"
+    },
+    {
+      "id": "gravitation:1",
+      "url": "/tools/science-observatory/labs/gravitatie-banen/",
+      "parent": "page:/tools/science-observatory/labs/gravitatie-banen/",
+      "name": "Het veld rond de aarde",
+      "category": "heelal",
+      "source": "content/science-observatory/labs/gravitatie-banen.html",
+      "source_file": "content/science-observatory/labs/gravitatie-banen.html",
+      "family": "heelal",
+      "link": "binnen_toepassing",
+      "review": "afzonderlijk_in_bron_gevonden",
+      "source_ref": "M[1]",
+      "short_name": "Zwaartekrachtveld",
+      "source_description": "Kracht en potentiaal op afstand"
+    },
+    {
+      "id": "gravitation:2",
+      "url": "/tools/science-observatory/labs/gravitatie-banen/",
+      "parent": "page:/tools/science-observatory/labs/gravitatie-banen/",
+      "name": "Energie blijft behouden",
+      "category": "heelal",
+      "source": "content/science-observatory/labs/gravitatie-banen.html",
+      "source_file": "content/science-observatory/labs/gravitatie-banen.html",
+      "family": "heelal",
+      "link": "binnen_toepassing",
+      "review": "afzonderlijk_in_bron_gevonden",
+      "source_ref": "M[2]",
+      "short_name": "Energie in een baan",
+      "source_description": "Kinetisch, potentieel en totale energie"
+    },
+    {
+      "id": "gravitation:3",
+      "url": "/tools/science-observatory/labs/gravitatie-banen/",
+      "parent": "page:/tools/science-observatory/labs/gravitatie-banen/",
+      "name": "Naar een hogere baan",
+      "category": "heelal",
+      "source": "content/science-observatory/labs/gravitatie-banen.html",
+      "source_file": "content/science-observatory/labs/gravitatie-banen.html",
+      "family": "heelal",
+      "link": "binnen_toepassing",
+      "review": "afzonderlijk_in_bron_gevonden",
+      "source_ref": "M[3]",
+      "short_name": "Baanwissel",
+      "source_description": "Hohmanntransfer tussen twee cirkelbanen"
+    },
+    {
+      "id": "gravitation:4",
+      "url": "/tools/science-observatory/labs/gravitatie-banen/",
+      "parent": "page:/tools/science-observatory/labs/gravitatie-banen/",
+      "name": "Wanneer ontsnapt een satelliet?",
+      "category": "heelal",
+      "source": "content/science-observatory/labs/gravitatie-banen.html",
+      "source_file": "content/science-observatory/labs/gravitatie-banen.html",
+      "family": "heelal",
+      "link": "binnen_toepassing",
+      "review": "afzonderlijk_in_bron_gevonden",
+      "source_ref": "M[4]",
+      "short_name": "Ontsnappen",
+      "source_description": "Elliptische, parabole en hyperbolische baan"
+    },
+    {
+      "id": "gravitation:5",
+      "url": "/tools/science-observatory/labs/gravitatie-banen/",
+      "parent": "page:/tools/science-observatory/labs/gravitatie-banen/",
+      "name": "Wat ziet een waarnemer op aarde?",
+      "category": "heelal",
+      "source": "content/science-observatory/labs/gravitatie-banen.html",
+      "source_file": "content/science-observatory/labs/gravitatie-banen.html",
+      "family": "heelal",
+      "link": "binnen_toepassing",
+      "review": "afzonderlijk_in_bron_gevonden",
+      "source_ref": "M[5]",
+      "short_name": "Grondspoor",
+      "source_description": "Baanvlak, aardrotatie en herhaling"
+    },
+    {
       "id": "llmscan:brisk",
       "url": "/nl/llmscan/",
       "parent": "page:/nl/llmscan/",
@@ -4337,6 +5971,84 @@
       "family": "ai"
     },
     {
+      "id": "process-mode:onderzoeken",
+      "url": "/tools/van-proces-naar-prompt/",
+      "parent": "page:/tools/van-proces-naar-prompt/",
+      "name": "Tool onderzoeken",
+      "category": "hulpmiddelen",
+      "source": "tools/van-proces-naar-prompt/index.html",
+      "source_file": "tools/van-proces-naar-prompt/index.html",
+      "family": "hulpmiddelen",
+      "link": "binnen_toepassing",
+      "review": "afzonderlijk_in_bron_gevonden",
+      "source_ref": "[data-mode=\"onderzoeken\"]"
+    },
+    {
+      "id": "process-mode:ontwerpen",
+      "url": "/tools/van-proces-naar-prompt/",
+      "parent": "page:/tools/van-proces-naar-prompt/",
+      "name": "AI-inzet ontwerpen",
+      "category": "hulpmiddelen",
+      "source": "tools/van-proces-naar-prompt/index.html",
+      "source_file": "tools/van-proces-naar-prompt/index.html",
+      "family": "hulpmiddelen",
+      "link": "binnen_toepassing",
+      "review": "afzonderlijk_in_bron_gevonden",
+      "source_ref": "[data-mode=\"ontwerpen\"]"
+    },
+    {
+      "id": "sport-mode:attack",
+      "url": "/tools/lo-aanvalslab/",
+      "parent": "page:/tools/lo-aanvalslab/",
+      "name": "Ik val aan",
+      "category": "sport-en-bewegen",
+      "source": "tools/lo-aanvalslab/index.html",
+      "source_file": "tools/lo-aanvalslab/index.html",
+      "family": "sport-en-bewegen",
+      "link": "binnen_toepassing",
+      "review": "afzonderlijk_in_bron_gevonden",
+      "source_ref": "[data-mode=\"attack\"]"
+    },
+    {
+      "id": "sport-mode:defend",
+      "url": "/tools/lo-aanvalslab/",
+      "parent": "page:/tools/lo-aanvalslab/",
+      "name": "Ik verdedig",
+      "category": "sport-en-bewegen",
+      "source": "tools/lo-aanvalslab/index.html",
+      "source_file": "tools/lo-aanvalslab/index.html",
+      "family": "sport-en-bewegen",
+      "link": "binnen_toepassing",
+      "review": "afzonderlijk_in_bron_gevonden",
+      "source_ref": "[data-mode=\"defend\"]"
+    },
+    {
+      "id": "sport-mode:free",
+      "url": "/tools/lo-aanvalslab/",
+      "parent": "page:/tools/lo-aanvalslab/",
+      "name": "Vrij opstellen",
+      "category": "sport-en-bewegen",
+      "source": "tools/lo-aanvalslab/index.html",
+      "source_file": "tools/lo-aanvalslab/index.html",
+      "family": "sport-en-bewegen",
+      "link": "binnen_toepassing",
+      "review": "afzonderlijk_in_bron_gevonden",
+      "source_ref": "[data-mode=\"free\"]"
+    },
+    {
+      "id": "sport-mode:online",
+      "url": "/tools/lo-aanvalslab/",
+      "parent": "page:/tools/lo-aanvalslab/",
+      "name": "Samen spelen",
+      "category": "sport-en-bewegen",
+      "source": "tools/lo-aanvalslab/index.html",
+      "source_file": "tools/lo-aanvalslab/index.html",
+      "family": "sport-en-bewegen",
+      "link": "binnen_toepassing",
+      "review": "afzonderlijk_in_bron_gevonden",
+      "source_ref": "#onlineChoice"
+    },
+    {
       "id": "taal:taal-01",
       "url": "/taalwerkvormen/#taal-01",
       "parent": "page:/taalwerkvormen/",
@@ -4515,6 +6227,146 @@
       "link": "direct",
       "review": "bronbenaming",
       "family": "onderwijs"
+    },
+    {
+      "id": "wihtml-slide:compare",
+      "url": "/tools/wihtml/studio/",
+      "parent": "page:/tools/wihtml/studio/",
+      "name": "Verklaren en vergelijken",
+      "category": "wihtml-slide",
+      "source": "content/wihtml/studio.html",
+      "source_file": "content/wihtml/studio.html",
+      "source_ref": "TYPES.compare",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "lesonderdeel_type"
+    },
+    {
+      "id": "wihtml-slide:error",
+      "url": "/tools/wihtml/studio/",
+      "parent": "page:/tools/wihtml/studio/",
+      "name": "Zoek de fout",
+      "category": "wihtml-slide",
+      "source": "content/wihtml/studio.html",
+      "source_file": "content/wihtml/studio.html",
+      "source_ref": "TYPES.error",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "lesonderdeel_type"
+    },
+    {
+      "id": "wihtml-slide:graph",
+      "url": "/tools/wihtml/studio/",
+      "parent": "page:/tools/wihtml/studio/",
+      "name": "Onderzoek met grafiek",
+      "category": "wihtml-slide",
+      "source": "content/wihtml/studio.html",
+      "source_file": "content/wihtml/studio.html",
+      "source_ref": "TYPES.graph",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "lesonderdeel_type"
+    },
+    {
+      "id": "wihtml-slide:mathplot",
+      "url": "/tools/wihtml/studio/",
+      "parent": "page:/tools/wihtml/studio/",
+      "name": "Functiegrafiek",
+      "category": "wihtml-slide",
+      "source": "content/wihtml/studio.html",
+      "source_file": "content/wihtml/studio.html",
+      "source_ref": "TYPES.mathplot",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "lesonderdeel_type"
+    },
+    {
+      "id": "wihtml-slide:practice",
+      "url": "/tools/wihtml/studio/",
+      "parent": "page:/tools/wihtml/studio/",
+      "name": "Zelfstandig oefenen",
+      "category": "wihtml-slide",
+      "source": "content/wihtml/studio.html",
+      "source_file": "content/wihtml/studio.html",
+      "source_ref": "TYPES.practice",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "lesonderdeel_type"
+    },
+    {
+      "id": "wihtml-slide:question",
+      "url": "/tools/wihtml/studio/",
+      "parent": "page:/tools/wihtml/studio/",
+      "name": "Meerkeuzevraag",
+      "category": "wihtml-slide",
+      "source": "content/wihtml/studio.html",
+      "source_file": "content/wihtml/studio.html",
+      "source_ref": "TYPES.question",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "lesonderdeel_type"
+    },
+    {
+      "id": "wihtml-slide:quizset",
+      "url": "/tools/wihtml/studio/",
+      "parent": "page:/tools/wihtml/studio/",
+      "name": "Meerdere begripsvragen",
+      "category": "wihtml-slide",
+      "source": "content/wihtml/studio.html",
+      "source_file": "content/wihtml/studio.html",
+      "source_ref": "TYPES.quizset",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "lesonderdeel_type"
+    },
+    {
+      "id": "wihtml-slide:steps",
+      "url": "/tools/wihtml/studio/",
+      "parent": "page:/tools/wihtml/studio/",
+      "name": "Uitwerking in stappen",
+      "category": "wihtml-slide",
+      "source": "content/wihtml/studio.html",
+      "source_file": "content/wihtml/studio.html",
+      "source_ref": "TYPES.steps",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "lesonderdeel_type"
+    },
+    {
+      "id": "wihtml-slide:table",
+      "url": "/tools/wihtml/studio/",
+      "parent": "page:/tools/wihtml/studio/",
+      "name": "Onderzoekstabel",
+      "category": "wihtml-slide",
+      "source": "content/wihtml/studio.html",
+      "source_file": "content/wihtml/studio.html",
+      "source_ref": "TYPES.table",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "lesonderdeel_type"
+    },
+    {
+      "id": "wihtml-slide:text",
+      "url": "/tools/wihtml/studio/",
+      "parent": "page:/tools/wihtml/studio/",
+      "name": "Tekst of opdracht",
+      "category": "wihtml-slide",
+      "source": "content/wihtml/studio.html",
+      "source_file": "content/wihtml/studio.html",
+      "source_ref": "TYPES.text",
+      "link": "binnen_toepassing",
+      "family": "hulpmiddelen",
+      "review": "bron_als_afzonderlijke_functie_gecontroleerd",
+      "kind": "lesonderdeel_type"
     },
     {
       "id": "wihtml:kansen-twee-worpen",
@@ -4714,7 +6566,87 @@
     "page_families_needing_review": 0,
     "redirect_title_candidates": 9,
     "collections": 5,
-    "wihtml_examples": 2
+    "wihtml_examples": 2,
+    "last_structural_review": "2026-11-16",
+    "additional_verified_sections": {
+      "abyss": 6,
+      "gravity": 6,
+      "sport_modes": 4,
+      "process_modes": 2,
+      "melkweg_variants": 2,
+      "melkweg_shared_topics": 6,
+      "verified_redirects": 9,
+      "noindex_pages_checked": 8
+    },
+    "new_embedded_items": 18,
+    "dynamic_function_review_pending": [],
+    "registry_policy": "HTML en pagina's volledig; afgebakende broncatalogi van toepassingen worden apart opgenomen. Dynamisch gemaakte inhoud en instellingen zijn niet automatisch afzonderlijke pagina's.",
+    "app_structure_review": {
+      "eaigame": {
+        "areas": 6,
+        "question_seeds": 100,
+        "level_variants": 3,
+        "question_entries": 300
+      },
+      "eaistudio": {
+        "components": 40,
+        "starters": 3,
+        "scene_recipes": 8
+      },
+      "wihtml": {
+        "slide_types": 10
+      },
+      "eaiwork": {
+        "internal_views": 15
+      },
+      "eaimesh": {
+        "analysis_choices": 7
+      }
+    },
+    "sitemap_from_main": {
+      "source": "sitemap.xml",
+      "registered_urls": 145,
+      "registered_missing": 34,
+      "examples_not_in_sitemap": [
+        "/eai-blog/",
+        "/eai-blog/eai-balans/",
+        "/eai-blog/eai-beyond-explainability/",
+        "/eai-blog/eai-stappenplan/",
+        "/eai-blog/eai-task-density/",
+        "/eai-blog/rapportage-wang-fan-2025/",
+        "/eai-blog/the-act-of-learning-act-2/",
+        "/eai-blog/the-act-of-learning/",
+        "/eai-tools-modules/",
+        "/eai-tools-modules/act-of-learning-game-2/",
+        "/eai-tools-modules/eaa-model-tool/",
+        "/eai-tools-modules/eai-eduprompt-builder/",
+        "/eai-tools-modules/eai-toolanalyse/",
+        "/eai-tools-modules/eai-toolkit-beyond-explainability/",
+        "/eai-tools-modules/eai-toolkit-the-act-of-learning-en/",
+        "/eai-tools-modules/eai-what-if-machine/",
+        "/houseoftalents/",
+        "/houseoftalents/3d/",
+        "/leif/",
+        "/leif/beheer/",
+        "/leif/continue/",
+        "/leif/mijn/",
+        "/leif/verhaal/",
+        "/onderwijsin/houseoftalents/",
+        "/onderwijsin/houseoftalents/3d/",
+        "/toepassingen/onderwijsregio-rotterdam/",
+        "/toepassingen/saga-legal-ai/",
+        "/tools/eaigit/",
+        "/tools/eaigit/hulp/",
+        "/tools/eaigit/prompts/",
+        "/tools/lo-aanvalslab/onderbouwing/",
+        "/tools/projecthulp/",
+        "/tools/science-observatory/labs/schuine-worp/",
+        "/tools/van-proces-naar-prompt/"
+      ],
+      "important_generated_pages_missing": [],
+      "status": "beide_modelpaginas_toegevoegd_aan_generator_en_sitemap"
+    },
+    "audit_completion_note": "Brongebonden inventarisatie van vaste subonderdelen uitgevoerd waar herkenbare verzamelingen bestaan. Werkelijk gebruik, servergegevens en alle dynamische UI toestanden zijn niet uit de Git-code alleen vast te stellen."
   },
   "collections": [
     {
@@ -4727,15 +6659,30 @@
       ],
       "variants": [
         {
+          "id": "melkweg-basis",
           "page": "page:/tools/science-observatory/labs/melkweg/",
-          "id": "bestaande-uitvoering-1"
+          "technical_origin": "content/science-observatory/labs/melkweg.html",
+          "display_title_nl": "Melkweg",
+          "features_verified": [
+            "zes_onderwerpen",
+            "berekeningen_en_grafieken",
+            "export_json_png"
+          ]
         },
         {
+          "id": "melkweg-uitgebreid",
           "page": "page:/tools/melkweg-lab/",
-          "id": "bestaande-uitvoering-2"
+          "technical_origin": "content/melkweg-lab/index.html",
+          "display_title_nl": "Melkweg",
+          "features_verified": [
+            "dezelfde_zes_onderwerpen",
+            "GUIDE_vragen_en_hints",
+            "extra_weergaven_en_bediening",
+            "berekeningen_en_grafieken"
+          ]
         }
       ],
-      "review": "werking_en_verschillen_nog_vergelijken"
+      "review": "onderdelen_gelijk_verschillen_vastgelegd_geen_technische_fusie"
     },
     {
       "id": "wiskunde",

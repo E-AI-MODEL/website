@@ -119,6 +119,13 @@
       "nl": "Nog te beoordelen",
       "en": "Needs review",
       "kind": "intern"
+    },
+    {
+      "id": "spelen-en-oefenen",
+      "nl": "Spelen en oefenen",
+      "en": "Play and practice",
+      "kind": "toepassingen",
+      "parent": "hulpmiddelen"
     }
   ],
   "types": [

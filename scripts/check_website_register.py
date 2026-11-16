@@ -99,6 +99,120 @@ def extract_llm(root: Path) -> set[str]:
     return {f"anchor:/tools/llm-observatorium/#{i}" for i in ids}
 
 
+def extract_abyss(root: Path) -> set[str]:
+    """Six ocean topics are in one HTML file, not six HTML routes."""
+    content = read(root / "content/abyss/ABYSS.html")
+    match = re.search(r"const MODES=\[(.*?)\];", content, re.DOTALL)
+    if not match:
+        raise ValueError("Oceaan: MODES ontbreekt")
+    names = re.findall(r"\['([^']+)','([^']+)'\]", match.group(1))
+    if len(names) != 6:
+        raise ValueError(f"Oceaan: verwacht zes inhoudelijke delen, gevonden {len(names)}")
+    return {f"abyss:{i}" for i in range(len(names))}
+
+
+def extract_gravity(root: Path) -> set[str]:
+    """Six orbital investigations are stored in one JavaScript array."""
+    content = read(root / "content/science-observatory/labs/gravitatie-banen.html")
+    match = re.search(r"const M=\[(.*?)\];", content, re.DOTALL)
+    if not match:
+        raise ValueError("Gravitatie: M ontbreekt")
+    names = re.findall(r"\{short:'([^']+)',desc:'([^']+)',title:'([^']+)'", match.group(1))
+    if len(names) != 6:
+        raise ValueError(f"Gravitatie: verwacht zes inhoudelijke delen, gevonden {len(names)}")
+    return {f"gravitation:{i}" for i in range(len(names))}
+
+
+def extract_sport_modes(root: Path) -> set[str]:
+    """Three modes and online play are entry points, not separate websites."""
+    content = read(root / "tools/lo-aanvalslab/index.html")
+    modes = re.findall(r'<button\b[^>]*class="choice"[^>]*data-mode="([^"]+)"', content)
+    if len(modes) != 3 or len(set(modes)) != 3 or 'id="onlineChoice"' not in content:
+        raise ValueError("Sport: verwachte drie keuzes en samenspel ontbreken")
+    return {f"sport-mode:{mode}" for mode in modes} | {"sport-mode:online"}
+
+
+def extract_process_modes(root: Path) -> set[str]:
+    """The existing process wizard serves two different user goals."""
+    content = read(root / "tools/van-proces-naar-prompt/index.html")
+    modes = re.findall(r'<button\b[^>]*data-mode="(ontwerpen|onderzoeken)"', content)
+    if len(modes) != 2 or len(set(modes)) != 2:
+        raise ValueError("Proceswizard: twee functies ontbreken")
+    return {f"process-mode:{mode}" for mode in modes}
+
+
+def extract_game(root: Path) -> tuple[set[str], int, list[str]]:
+    """EAIgame stores 100 source questions which yield three level versions."""
+    content = read(root / "assets/eaigame-questions.js")
+    groups = re.findall(
+        r"\{id:'([^']+)',title:'[^']+',subject:'[^']+',slo:'[^']+',color:'[^']+',intro:'[^']+',items:\[(.*?)\]\s*\}",
+        content, re.DOTALL
+    )
+    levels_match = re.search(r"const levels=\[([^\]]+)\]", content)
+    levels = re.findall(r"'([^']+)'", levels_match.group(1)) if levels_match else []
+    identifiers = [entry[0] for entry in groups]
+    seeds = sum(len(re.findall(r"\b[CTO]\(", entry[1])) for entry in groups)
+    if len(identifiers) != 6 or len(set(identifiers)) != 6 or seeds != 100 or levels != ["vmbo", "havo", "vwo"]:
+        raise ValueError("EAIgame: gebieden, vraagbronnen of niveaus veranderd")
+    return {f"game-area:{i}" for i in identifiers}, seeds * len(levels), levels
+
+
+def extract_studio(root: Path) -> dict[str, set[str]]:
+    """Count only the fixed starter, recipe and reusable-component catalogues."""
+    content = read(root / "content/eaistudio/studio.html")
+    source = re.search(r"const CORE_LIBRARY_COMPONENTS=\[(.*?)\];", content, re.DOTALL)
+    starters = re.search(r"const STARTER_TEMPLATES=\[(.*?)\];", content, re.DOTALL)
+    recipes = re.search(r"const RECIPES=\[(.*?)\];", content, re.DOTALL)
+    if not source or not starters or not recipes:
+        raise ValueError("EAIstudio: een vaste bibliotheek ontbreekt")
+    components = re.findall(r"defineLibraryComponent\('([^']+)','[^']+','[^']+'", source.group(1))
+    starts = re.findall(r"\{id:'([^']+)',name:'[^']+'", starters.group(1))
+    scenes = re.findall(r"\{id:'([^']+)',name:'[^']+'", recipes.group(1))
+    if len(components) != 40 or len(starts) != 3 or len(scenes) != 8:
+        raise ValueError("EAIstudio: omvang van vaste bibliotheken veranderd")
+    for entries in (components, starts, scenes):
+        if len(set(entries)) != len(entries):
+            raise ValueError("EAIstudio: dubbele vaste IDs")
+    return {
+        "eaistudio-component:": {f"eaistudio-component:{i}" for i in components},
+        "eaistudio-starter:": {f"eaistudio-starter:{i}" for i in starts},
+        "eaistudio-scene:": {f"eaistudio-scene:{i}" for i in scenes},
+    }
+
+
+def extract_wihtml_slide_types(root: Path) -> set[str]:
+    content = read(root / "content/wihtml/studio.html")
+    types = re.search(r"const TYPES=(\{[^}]+\});", content)
+    if not types:
+        raise ValueError("WiHTML: lesonderdeeltypen ontbreken")
+    identifiers = re.findall(r"(\w+):\"[^\"]+\"", types.group(1))
+    if len(identifiers) != 10 or len(set(identifiers)) != 10:
+        raise ValueError("WiHTML: lesonderdeeltypen veranderd")
+    return {f"wihtml-slide:{i}" for i in identifiers}
+
+
+def extract_eaiwork_views(root: Path) -> set[str]:
+    content = read(root / "content/eaiwork-dashboard.html")
+    source = re.search(r"const nav=\[(.*?)\];", content, re.DOTALL)
+    if not source:
+        raise ValueError("EAIwork: navigatie ontbreekt")
+    identifiers = re.findall(r"\['([^']+)','[^']+','[^']+'\]", source.group(1))
+    if len(identifiers) != 15 or len(set(identifiers)) != 15:
+        raise ValueError("EAIwork: interne schermen veranderd")
+    return {f"eaiwork-view:{i}" for i in identifiers}
+
+
+def extract_eaimesh_focus(root: Path) -> set[str]:
+    content = read(root / "content/eaimesh/start.html")
+    source = re.search(r"(?:var|const)\s+INTENTS\s*=\s*\{(.*?)\};", content, re.DOTALL)
+    if not source:
+        raise ValueError("EAImesh: analysekeuzes ontbreken")
+    identifiers = re.findall(r"(\w+):\{label:'[^']+'", source.group(1))
+    if len(identifiers) != 7 or len(set(identifiers)) != 7:
+        raise ValueError("EAImesh: analysekeuzes veranderd")
+    return {f"eaimesh-focus:{i}" for i in identifiers}
+
+
 def extract_taal(root: Path) -> set[str]:
     source = read(root / "content/taalwerkvormen-page.html")
     ids = re.findall(r'<a href="#(taal-\d+)">', source)
@@ -227,6 +341,23 @@ def check(root: Path, register: dict, taxonomy: dict) -> list[str]:
             if route(base) not in page_urls:
                 errors.append(f"Onderdeel: niet-geregistreerde route {i['id']}")
 
+    # Public sitemap is another data source, not a substitute for this register.
+    # An omitted legacy route may be intentional; an unreported difference isn't.
+    try:
+        sitemap = read(root / "sitemap.xml")
+        sitemap_paths = {
+            route(urlsplit(value).path)
+            for value in re.findall(r"<loc>([^<]+)</loc>", sitemap)
+        }
+        for page in pages:
+            if page.get("in_committed_sitemap") is not (page["url"] in sitemap_paths):
+                errors.append(f"Sitemap: vermelding verschilt voor {page['url']}")
+        missing = sitemap_paths - page_urls
+        if missing:
+            errors.append("Sitemap: routes zonder registratie: " + repr(sorted(missing)))
+    except OSError as exc:
+        errors.append(f"Sitemap: bestand niet leesbaar: {exc}")
+
     actual_page_files = visible_pages(root)
     registered_page_files = {p["file"] for p in pages if p.get("file")}
     if actual_page_files != registered_page_files:
@@ -242,6 +373,79 @@ def check(root: Path, register: dict, taxonomy: dict) -> list[str]:
                       + "; niet meer gevonden: " + repr(sorted(tracked_html_files - actual_html_files)))
 
     ids = {i["id"] for i in items}
+    # These embedded screens have no independent pages or URL fragments. Still
+    # count them, and reject additions/removals that bypass the register.
+    for label, extract, prefix in [
+        ("Oceaan", extract_abyss, "abyss:"),
+        ("Gravitatie", extract_gravity, "gravitation:"),
+        ("Sportkeuzes", extract_sport_modes, "sport-mode:"),
+        ("Proceswizard", extract_process_modes, "process-mode:"),
+    ]:
+        try:
+            expected = extract(root)
+        except (OSError, ValueError, KeyError, TypeError) as exc:
+            errors.append(f"{label}: bron niet leesbaar: {exc}")
+            continue
+        recorded = {i["id"] for i in items if i["id"].startswith(prefix)}
+        if expected != recorded:
+            errors.append(
+                f"{label}: onderdelen wijken af; ontbreekt "
+                + repr(sorted(expected - recorded))
+                + ", overbodig " + repr(sorted(recorded - expected))
+            )
+
+    # These controls keep the larger JavaScript-driven applications visible
+    # without inventing a separate public URL for each internal screen.
+    fixed = [
+        ("WiHTML lesonderdelen", extract_wihtml_slide_types, "wihtml-slide:"),
+        ("EAIwork schermen", extract_eaiwork_views, "eaiwork-view:"),
+        ("EAImesh keuzes", extract_eaimesh_focus, "eaimesh-focus:"),
+    ]
+    for label, extractor, prefix in fixed:
+        try:
+            expected = extractor(root)
+        except (OSError, ValueError, KeyError, TypeError) as exc:
+            errors.append(f"{label}: bron niet leesbaar: {exc}")
+            continue
+        actual = {item["id"] for item in items if item["id"].startswith(prefix)}
+        if actual != expected:
+            errors.append(f"{label}: onderdelen wijken af; ontbreekt "
+                          + repr(sorted(expected - actual))
+                          + ", overbodig " + repr(sorted(actual - expected)))
+
+    try:
+        expected_game, question_count, levels = extract_game(root)
+        actual_game = {item["id"] for item in items if item["id"].startswith("game-area:")}
+        if actual_game != expected_game:
+            errors.append("EAIgame: gebieden wijken af")
+        game_pages = [p for p in pages if p["url"] == "/tools/eaigame/"]
+        bank = game_pages[0].get("question_bank", {}) if game_pages else {}
+        if bank.get("count") != question_count or bank.get("levels") != levels:
+            errors.append("EAIgame: vragenbank of niveaus komen niet overeen met het register")
+    except (OSError, ValueError, KeyError, TypeError) as exc:
+        errors.append(f"EAIgame: bron niet leesbaar: {exc}")
+
+    try:
+        studio = extract_studio(root)
+        for prefix, expected in studio.items():
+            actual = {item["id"] for item in items if item["id"].startswith(prefix)}
+            if actual != expected:
+                errors.append("EAIstudio: bibliotheek wijkt af: " + prefix)
+    except (OSError, ValueError, KeyError, TypeError) as exc:
+        errors.append(f"EAIstudio: bron niet leesbaar: {exc}")
+
+    # Both Melkweg pages present the same six research topics. Names are
+    # editorial proposals; the stable technical topic IDs must agree.
+    melkweg = {}
+    for url in ("/tools/melkweg-lab/", "/tools/science-observatory/labs/melkweg/"):
+        group = [i for i in items if i.get("parent") == "page:" + url]
+        melkweg[url] = {i.get("topic_id") for i in group}
+        if len(group) != 6 or melkweg[url] != {
+            "melkweg:atlas", "melkweg:dynamics", "melkweg:structure",
+            "melkweg:stars", "melkweg:gaia", "melkweg:blackhole"
+        }:
+            errors.append(f"Melkweg: gekoppelde onderwerpen verschillen bij {url}")
+
     for label, extract in [
         ("Natuurkunde", lambda: extract_physics(root)),
         ("Wiskunde A", lambda: extract_math(root, "a")),

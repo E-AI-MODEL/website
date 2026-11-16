@@ -17,6 +17,18 @@ Er zijn 177 HTML-pagina's uit de repository en twee pagina's die tijdens
 de bouw ontstaan, plus 40 andere HTML-bestanden. Er zijn ook 144
 afzonderlijke verwijzingen uit de publieke zoekindex, 15 TAALwerkvormen
 51 producten uit de LLMscan-catalogus en twee WiHTML-voorbeeldlessen opgenomen.
+In de EAIgame-omgeving zijn zes gebieden en de bijbehorende bron van
+100 vragen opgenomen. De applicatie maakt daar varianten voor vmbo, havo
+en vwo van, samen 300 vraagrecords. Dit zijn geen 300 losse pagina's.
+Ook 40 herbruikbare EAIstudio-componenten, drie startvoorbeelden,
+acht scènesjablonen, tien WiHTML-lesvormen, vijftien interne EAIwork-
+schermen en zeven EAImesh-analysekeuzes zijn afzonderlijk benoemd.
+
+De aanvullende inventarisatie heeft ook zes onderwerpen voor oceaanonderzoek,
+zes voor gravitatie en satellietbanen, vier werkwijzen bij sport en twee
+werkwijzen van de proceswizard vastgelegd. Het totaal van afzonderlijk
+benoemde onderdelen is daarmee 230. De twee Melkweguitvoeringen blijven
+aparte bestanden met zes gekoppelde gedeelde onderwerpen.
 
 Dit zijn verschillende meeteenheden. Een HTML-bestand kan veel
 inhoudelijke onderdelen bevatten. Een zoekresultaat kan naar een
@@ -65,11 +77,15 @@ menu zetten is niet genoeg.
 
 - Pagina's die niet in de publieke zoekindex staan, inclusief oude
   doorverwijzingen en afgeschermde of technische pagina's.
-- JavaScript-weergaven en andere zelfstandig te gebruiken onderdelen
-  die nog geen machineleesbare broncatalogus hebben. Hun HTML-bestanden
-  zijn wel geregistreerd, maar dit bewijst niet dat ieder onderdeel
-  daarbinnen is herkend.
-- De verschillen en overeenkomsten tussen de Melkweguitvoeringen.
+- Het EAI Prompt Framework heeft een vaste formulieropbouw, geen afzonderlijk
+  te openen inhoudelijke pagina's. De HTML-galerij heeft een uploadformulier
+  en een dynamisch overzicht. Door gebruikers geüploade inhoud valt buiten
+  de Git-inventaris en is niet live gecontroleerd. Ook thema's, schuifjes en
+  andere instellingen zijn geen afzonderlijke inhoudspagina's.
+- De twee Melkweguitvoeringen zijn op broncode en onderdelen vergeleken.
+  De hoofdonderwerpen komen overeen; de uitgebreide uitvoering heeft daarnaast
+  begeleidende vragen, hints en extra bediening. Of samenvoegen wenselijk of
+  technisch verantwoord is, is niet vastgesteld.
 - Of een Nederlandse of Engelse paginanaam werkelijk aansluit op de
   beschikbare taal, en de definitieve namen op de publieke website.
 
@@ -80,3 +96,22 @@ Deze vragen blijven zichtbaar als te beoordelen, niet als voltooid.
 Het register wijzigt geen menu, URL, omleiding, backend of applicatie.
 Branches worden pas verwijderd na vergelijking van hun inhoud, PR's
 en afhankelijkheden met de actuele main. Dit register verwijdert niets.
+
+## Status van niet-geindexeerde pagina's
+
+De negen rechtstreeks gecontroleerde HTML-doorverwijzingen hebben een
+`redirect_target`. Acht gecontroleerde pagina's bevatten `noindex`,
+waaronder LEIF. `noindex` zegt niets over werkelijke toegangsbeveiliging.
+Gewone pagina's zonder zoekindexvermelding zijn niet automatisch verouderd.
+De verwijzingen naar externe sites zijn uit de bron overgenomen, niet live
+gecontroleerd. De naamvoorstellen wijzigen geen publieke teksten.
+
+## Sitemap en zoekindex
+
+De vastgelegde sitemap bevat nu 145 URL's. Het register bevat 179 pagina's,
+waarvan 34 niet in de sitemap staan. Daaronder zijn bewust uitgesloten
+pagina's, doorverwijzingen en eerder gepubliceerde archiefroutes.
+De tijdens de bouw gegenereerde modelpagina's `/nl/model/` en `/en/model/`
+worden nu ook door `build_site.py` aan de sitemap toegevoegd.
+De controle vergelijkt iedere sitemapvermelding met het register.
+Dat is geen controle of zoekmachines alle pagina's hebben opgenomen.
