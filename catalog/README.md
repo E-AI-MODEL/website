@@ -17,6 +17,13 @@ Er zijn 177 HTML-pagina's uit de repository en twee pagina's die tijdens
 de bouw ontstaan, plus 40 andere HTML-bestanden. Er zijn ook 144
 afzonderlijke verwijzingen uit de publieke zoekindex, 15 TAALwerkvormen
 51 producten uit de LLMscan-catalogus en twee WiHTML-voorbeeldlessen opgenomen.
+In de EAIgame-omgeving zijn zes gebieden en de bijbehorende bron van
+100 vragen opgenomen. De applicatie maakt daar varianten voor vmbo, havo
+en vwo van, samen 300 vraagrecords. Dit zijn geen 300 losse pagina's.
+Ook 40 herbruikbare EAIstudio-componenten, drie startvoorbeelden,
+acht scènesjablonen, tien WiHTML-lesvormen, vijftien interne EAIwork-
+schermen en zeven EAImesh-analysekeuzes zijn afzonderlijk benoemd.
+
 De aanvullende inventarisatie heeft ook zes onderwerpen voor oceaanonderzoek,
 zes voor gravitatie en satellietbanen, vier werkwijzen bij sport en twee
 werkwijzen van de proceswizard vastgelegd. Het totaal van afzonderlijk
@@ -70,9 +77,10 @@ menu zetten is niet genoeg.
 
 - Pagina's die niet in de publieke zoekindex staan, inclusief oude
   doorverwijzingen en afgeschermde of technische pagina's.
-- Dynamische functies in onder meer EAIgame, EAImesh, EAIstudio, EAIwork,
-  WiHTML en de HTML-galerij. Hun bronbestanden zijn wel geregistreerd,
-  maar nog niet alle zelfstandig bruikbare functies zijn afzonderlijk getoetst.
+- Functies binnen het EAI Prompt Framework en de HTML-galerij. De galerij
+  kan door gebruikers geüploade inhoud bevatten die niet in deze Git-repository
+  staat. Ook instellingen zoals thema's of knopfuncties zijn niet als
+  afzonderlijke inhoudspagina's geregistreerd.
 - De twee Melkweguitvoeringen zijn op broncode en onderdelen vergeleken.
   De hoofdonderwerpen komen overeen; de uitgebreide uitvoering heeft daarnaast
   begeleidende vragen, hints en extra bediening. Of samenvoegen wenselijk of
