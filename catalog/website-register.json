@@ -232,7 +232,7 @@
       "category": "EN",
       "review": "gevonden_in_zoekindex",
       "parent": null,
-      "family": "te-beoordelen"
+      "family": "model"
     },
     {
       "id": "page:/en/about/",
@@ -485,7 +485,7 @@
       "category": "NL",
       "review": "gevonden_in_zoekindex",
       "parent": null,
-      "family": "te-beoordelen"
+      "family": "model"
     },
     {
       "id": "page:/nl/begrippen/",
@@ -4687,7 +4687,69 @@
     "additional_html_files": 40,
     "all_html_files": 217,
     "pages_not_in_public_search": 34,
-    "page_families_needing_review": 2,
-    "redirect_title_candidates": 9
-  }
+    "page_families_needing_review": 0,
+    "redirect_title_candidates": 9,
+    "collections": 5
+  },
+  "collections": [
+    {
+      "id": "melkweg",
+      "title_nl": "Melkweg",
+      "family": "heelal",
+      "members": [
+        "page:/tools/science-observatory/labs/melkweg/",
+        "page:/tools/melkweg-lab/"
+      ],
+      "variants": [
+        {
+          "page": "page:/tools/science-observatory/labs/melkweg/",
+          "id": "bestaande-uitvoering-1"
+        },
+        {
+          "page": "page:/tools/melkweg-lab/",
+          "id": "bestaande-uitvoering-2"
+        }
+      ],
+      "review": "werking_en_verschillen_nog_vergelijken"
+    },
+    {
+      "id": "wiskunde",
+      "title_nl": "Wiskunde",
+      "family": "wiskunde",
+      "members": [
+        "page:/tools/science-observatory/labs/wiskunde-a/",
+        "page:/tools/science-observatory/labs/wiskunde-b/"
+      ],
+      "review": "volledigheid_broncatalogi_gecontroleerd"
+    },
+    {
+      "id": "menselijk-lichaam",
+      "title_nl": "Menselijk lichaam",
+      "family": "menselijk-lichaam",
+      "members": [
+        "page:/tools/anatomie/",
+        "page:/tools/anatomie/labs/hartslag/"
+      ],
+      "review": "namen_voor_publiek_nog_te_beoordelen"
+    },
+    {
+      "id": "sport-en-bewegen",
+      "title_nl": "Sport en bewegen",
+      "family": "sport-en-bewegen",
+      "members": [
+        "page:/tools/lo-aanvalslab/",
+        "page:/tools/sport-en-bewegen/opstellingen/"
+      ],
+      "review": "namen_voor_publiek_nog_te_beoordelen"
+    },
+    {
+      "id": "natuurkunde",
+      "title_nl": "Natuurkunde",
+      "family": "natuurkunde",
+      "members": [
+        "page:/tools/science-observatory/labs/natuurkunde/"
+      ],
+      "review": "53_onderdelen_brongebonden"
+    }
+  ]
 }
