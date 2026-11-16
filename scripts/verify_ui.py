@@ -26,9 +26,8 @@ def check(root: Path):
         assert len(soup.select('.eai-site-group')) == 6, rel
         assert len(soup.select('.eai-site-language a')) == 2, rel
         assert len(soup.select('h1')) == 1, rel
-        # Cloudflare's zone-wide email protection rewrites unguarded mailto links
-        # and injects a decoder. Each prepared email link must opt out locally so
-        # deployed bytes remain verifiable without disabling site-wide protection.
+        # Cloudflare rewrites unguarded mailto links, breaking exact HTML hashes.
+        # Keep zone-wide protection on and opt out only for explicit contact links.
         for email_link in soup.select('a[href^="mailto:"]'):
             opening, closing = email_link.previous_sibling, email_link.next_sibling
             assert isinstance(opening, Comment) and opening.strip() == 'email_off', f'{rel}: unguarded mailto link'
@@ -148,31 +147,6 @@ def html_matches_release(data: bytes, digest: str) -> tuple[bool, bool]:
                 return True, True
     return False, False
 
-def diagnose_html_mismatch(base: str, path: str, root: Path):
-    """Report public, bounded evidence. Never bypass the strict release check."""
-    from urllib.parse import urlencode
-    relative = path.lstrip('/') + ('index.html' if path.endswith('/') else '')
-    local = (root / relative).read_bytes()
-    print(f'DIAGNOSTIC route={path} local_sha256={hashlib.sha256(local).hexdigest()} local_bytes={len(local)}', flush=True)
-    urls = [path, path.rstrip('/') + '/index.html', path + '?' + urlencode({'eai_release_probe': hashlib.sha256(local).hexdigest()[:12]})]
-    for route in dict.fromkeys(urls):
-        try:
-            request = Request(base.rstrip('/') + route, headers={'Cache-Control': 'no-cache', 'User-Agent': 'EAI-release-check/1.0'})
-            with urlopen(request, timeout=20) as response:
-                remote = response.read()
-                headers = response.headers
-                status = response.status
-                final_url = response.url
-            pos = next((i for i, (a, b) in enumerate(zip(local, remote)) if a != b), min(len(local), len(remote)))
-            # Byte ranges are limited to the public HTML being published and inspected.
-            before = repr(local[max(0, pos-48):pos+120])[:210]
-            after = repr(remote[max(0, pos-48):pos+120])[:210]
-            print(f'DIAGNOSTIC route={route} status={status} final_url={final_url} remote_sha256={hashlib.sha256(remote).hexdigest()} remote_bytes={len(remote)} first_diff_byte={pos} cf_cache_status={headers.get("CF-Cache-Status", "")} age={headers.get("Age", "")} last_modified={headers.get("Last-Modified", "")} server={headers.get("Server", "")}', flush=True)
-            print(f'DIAGNOSTIC expected_excerpt={before} actual_excerpt={after}', flush=True)
-        except Exception as exc:
-            print(f'DIAGNOSTIC route={route} request_failed={type(exc).__name__}: {exc}', flush=True)
-
-
 def verify_live(base: str, manifest: dict, timeout: int, root: Path):
     def get(path):
         request = Request(base.rstrip('/') + path, headers={'Cache-Control': 'no-cache', 'User-Agent': 'EAI-release-check/1.0'})
@@ -182,15 +156,11 @@ def verify_live(base: str, manifest: dict, timeout: int, root: Path):
     # page's exact bytes, rather than a fixed sample or the UI version alone.
     expected_html = expected_pages(root, manifest)
     deadline = time.monotonic() + timeout
-    diagnosed = set()
     while True:
         try:
             for path, digest in expected_html.items():
                 data = get(path)
                 matched, edge_beacon = html_matches_release(data, digest)
-                if not matched and path not in diagnosed:
-                    diagnosed.add(path)
-                    diagnose_html_mismatch(base, path, root)
                 assert matched, f'HTML content mismatch: {path}'
                 if edge_beacon:
                     print(f'Cloudflare RUM injection verified without weakening HTML hash: {path}', flush=True)
