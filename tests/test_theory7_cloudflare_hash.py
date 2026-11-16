@@ -58,7 +58,7 @@ class CloudflareLiveHashTests(unittest.TestCase):
                 source = (root / relative).read_bytes()
                 digest = hashlib.sha256(source).hexdigest()
                 self.assertIn(b'</body>', source)
-                injected = source.replace(b'</body>', BEACON + b'\\n</body>')
+                injected = source.replace(b'</body>', BEACON + b'\n</body>')
                 self.assertEqual(html_matches_release(injected, digest), (True, True))
                 changed = injected.replace(b'<body', b'<body data-unauthorized="1"', 1)
                 self.assertEqual(html_matches_release(changed, digest), (False, False))
