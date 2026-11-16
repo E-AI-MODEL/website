@@ -62,11 +62,11 @@ test('Websitegenerator gebruikt de bronbestanden en aparte observatoriarubriek',
   assert.match(script, /"observatoria", "Observatoria"/);
 });
 
-test('Publieke menu bevat de afzonderlijke experimenten en behoudt alle adressen', () => {
+test('Compact hoofdmenu behoudt de volledige proefcatalogus in zoeken', () => {
   const source = load('scripts/prepare_ui.py');
-  assert.match(source, /'Vakinhoud'/);
-  assert.match(source, /'Subject knowledge'/);
-  assert.match(source, /'Onderzoek & publicaties'/);
+  assert.match(source, /'Zelf aan de slag'/);
+  assert.match(source, /'Explore & create'/);
+  assert.match(source, /'Artikelen'/);
   assert.match(source, /'Natuurkunde'/);
   assert.match(source, /'Wiskunde A'/);
   assert.match(source, /'Wiskunde B'/);
