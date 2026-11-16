@@ -204,6 +204,7 @@ body.eai-ui.eai-dash-page .eai-dash-step span:before{content:"";width:7px;height
 body.eai-ui.eai-dash-page .eai-dash-step:nth-child(2) span:before{background:#67b5de}
 body.eai-ui.eai-dash-page .eai-dash-step:nth-child(3) span:before{background:#efc164}
 body.eai-ui.eai-dash-page .eai-dash-step:nth-child(4) span:before{background:#8371d2}
+body.eai-ui.eai-dash-page .eai-dash-step:focus-visible{outline:3px solid #40a88f;outline-offset:2px}
 body.eai-ui.eai-dash-page .eai-dash-step[aria-pressed="true"]{color:#0b6d59;background:#eaf5ef}
 body.eai-ui.eai-dash-page .eai-dash-step-detail{
  font-size:11px;line-height:1.55;color:#436454;padding:11px 12px;
