@@ -1,0 +1,33 @@
+name: Diagnose HTTP 403 anatomie zonder wijzigingen
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/diagnose-anatomie-http.yml'
+permissions:
+  contents: read
+jobs:
+  read-only:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - name: Vergelijk bestaande en herkenbare HTTP User-Agent
+        run: |
+          python - <<'PY'
+          from urllib.request import Request, urlopen
+          from urllib.error import HTTPError, URLError
+          url='https://eaimodel.nl/tools/anatomie/'
+          for name,headers in (
+              ('python-default',{}),
+              ('eai-release-check',{'User-Agent':'EAI-release-check/1.0','Cache-Control':'no-cache'}),
+          ):
+              try:
+                  with urlopen(Request(url,headers=headers),timeout=25) as r:
+                      body=r.read(160)
+                      print(name,'HTTP',r.status,'bytes_head',len(body),'ct',r.headers.get('Content-Type'),'server',r.headers.get('Server'),'cf_ray',r.headers.get('CF-Ray'),flush=True)
+              except HTTPError as e:
+                  print(name,'HTTP',e.code,'server',e.headers.get('Server'),'cf_ray',e.headers.get('CF-Ray'),flush=True)
+              except Exception as e:
+                  print(name,'request_failed',type(e).__name__,str(e)[:130],flush=True)
+          PY
