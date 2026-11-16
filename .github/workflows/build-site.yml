@@ -117,6 +117,9 @@ jobs:
       - name: Test exact Theory7 hashes with Cloudflare beacon injection
         run: python -m unittest discover -s tests -p 'test_theory7_cloudflare_hash.py' -v
 
+      - name: Check review PDF workflow never overwrites site HTML or JS
+        run: python -m unittest discover -s tests -p 'test_zhang_workflow_isolation.py' -v
+
       - name: Test homepage and model rendering
         run: python -m unittest discover -s tests -p 'test_home_model.py' -v
 
