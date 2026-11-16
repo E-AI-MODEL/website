@@ -1,0 +1,52 @@
+name: EAIgame asset proof
+
+on:
+  push:
+    branches:
+      - design/eaigame-levend-eiland-storyworld
+    paths:
+      - scripts/eaigame_asset_proof.py
+      - .github/workflows/eaigame-assets.yml
+      - docs/eaigame-world/bronregister.json
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  curated-sources:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Prepare Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Download and validate curated CC0 proof assets
+        run: python scripts/eaigame_asset_proof.py
+      - name: Validate manifest and file hashes
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib, json
+          base = Path("build/eaigame-asset-proof")
+          m = json.loads((base / "manifest.json").read_text())
+          assert m["files"], "No asset files recorded"
+          assert any(x["path"].endswith((".gltf", ".glb")) for x in m["files"]), "No models obtained"
+          for item in m["files"]:
+              data = (base / item["path"]).read_bytes()
+              assert len(data) == item["bytes"]
+              assert hashlib.sha256(data).hexdigest() == item["sha256"]
+          print(f"Checked {len(m['files'])} file hashes across {len(m['sources'])} source packs")
+          for warning in m["warnings"]: print("WARNING:", warning)
+          PY
+      - name: Upload trial assets and provenance
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: eaigame-curated-asset-proof
+          path: build/eaigame-asset-proof/
+          if-no-files-found: error
+          retention-days: 14
