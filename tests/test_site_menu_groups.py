@@ -10,23 +10,24 @@ from prepare_ui import groups, navigation, experiment_sections, education_sectio
 
 
 class PublicMenuTests(unittest.TestCase):
-    def test_navigatie_onderscheidt_modelproeven_van_tools(self):
+    def test_vijf_directe_hoofdroutes_en_compact_meer_menu(self):
         for en in (False, True):
             with self.subTest(taal='en' if en else 'nl'):
                 sections = dict(groups(en))
                 self.assertEqual(len(sections), 6)
-                name = 'Subject knowledge' if en else 'Vakinhoud'
-                self.assertIn(name, sections)
-                labs = dict(sections[name])
-                tools = dict(sections['Tools' if en else 'Hulpmiddelen'])
-                self.assertIn('/tools/science-observatory/', labs.values())
-                self.assertIn('/tools/science-observatory/labs/natuurkunde/', labs.values())
-                self.assertIn('/tools/science-observatory/labs/wiskunde-a/', labs.values())
-                self.assertIn('/tools/science-observatory/labs/wiskunde-b/', labs.values())
-                self.assertIn('/tools/anatomie/', labs.values())
-                self.assertIn('/tools/prompt-framework/', tools.values())
-                self.assertIn('/tools/html-galerij/', tools.values())
-                self.assertNotIn('/tools/anatomie/', tools.values())
+                self.assertEqual(list(sections)[:5],
+                    ['The model', 'Education', 'Research', 'Articles', 'Explore & create'] if en else
+                    ['Het model', 'Onderwijs', 'Onderzoek', 'Artikelen', 'Zelf aan de slag'])
+                main = dict(sections['Explore & create' if en else 'Zelf aan de slag'])
+                self.assertIn('/tools/science-observatory/', main.values())
+                self.assertIn('/tools/prompt-framework/', main.values())
+                self.assertNotIn('/tools/science-observatory/labs/natuurkunde/', main.values())
+                header = BeautifulSoup(navigation(BeautifulSoup('<html><body></body></html>', 'html.parser'),
+                                                   '/en/tools/' if en else '/nl/tools/', en), 'html.parser')
+                self.assertEqual(len(header.select('.eai-site-primary > a')), 5)
+                self.assertEqual(len(header.select('.eai-site-menu .eai-site-group')), 6)
+                self.assertLessEqual(len(header.select('.eai-site-menu a')), 28)
+                self.assertTrue(header.select_one('#eai-site-search-input[type=search]'))
 
     def test_proeven_hebben_allemaal_een_rechtstreekse_aanwezige_bestemming(self):
         for en in (False, True):
@@ -70,7 +71,10 @@ class PublicMenuTests(unittest.TestCase):
         self.assertEqual(len(names), 7)
         soup = BeautifulSoup('<html><body></body></html>', 'html.parser')
         header = BeautifulSoup(navigation(soup, '/nl/onderwijs/', False), 'html.parser')
-        self.assertEqual(len(header.select('.eai-site-menu a[href^="/werkvormen/"]')), len(workforms) + 1)
+        self.assertEqual(len(header.select('.eai-site-menu a[href="/werkvormen/"]')), 1)
+        self.assertEqual(len(header.select('.eai-site-menu a[href^="/werkvormen/"]')), 1)
+        addresses = {entry['url'] for entry in site_search_records(Path(__file__).resolve().parents[1] / 'does-not-exist')}
+        self.assertTrue(set(workforms).issubset(addresses))
 
     def test_zoekindex_en_menu_delen_dezelfde_bestemmingen(self):
         index = site_search_records(Path(__file__).resolve().parents[1] / 'does-not-exist')
@@ -98,26 +102,23 @@ class PublicMenuTests(unittest.TestCase):
                 '<body><h1>Begin bij het leren</h1></body></html>', encoding='utf-8')
             records = {item['url']: item for item in site_search_records(Path(temp))}
             model = records['/nl/model/']
-            self.assertEqual(model['category'], 'EAI begrijpen')
+            self.assertEqual(model['category'], 'Het model')
             self.assertIn('kernhandeling', model['description'])
 
-    def test_bereikbaar_menu_met_zoekveld_op_mobiel_en_desktop(self):
-        for en, path in ((False,'/nl/tools/'),(True,'/en/tools/')):
+    def test_menu_en_volledige_zoekindex_op_mobiel_en_desktop(self):
+        for en, path in ((False, '/nl/tools/'), (True, '/en/tools/')):
             with self.subTest(taal='en' if en else 'nl'):
                 soup = BeautifulSoup('<html><head></head><body></body></html>', 'html.parser')
                 header = BeautifulSoup(navigation(soup, path, en), 'html.parser')
                 self.assertEqual(len(header.select('.eai-site-primary > a')), 5)
                 self.assertEqual(len(header.select('.eai-site-menu .eai-site-group')), 6)
                 self.assertTrue(header.select_one('#eai-site-search-input[type=search]'))
-                menu = header.select_one('.eai-site-model-links')
-                self.assertIsNotNone(menu)
-                self.assertEqual(len(menu.select('.eai-site-topic')), 6)
-                physics = [a['href'] for a in menu.select('a[href*="/labs/natuurkunde/#"]')]
-                self.assertEqual(len(physics), 53)
-                maths = [a['href'] for a in menu.select('a[href*="/labs/wiskunde-"]') if '/#' in a['href']]
-                self.assertGreaterEqual(len(maths), 12)
-                self.assertIn('/tools/anatomie/labs/hartslag/', [a['href'] for a in menu.select('a[href]')])
-                self.assertIn('/tools/science-observatory/labs/melkweg/#gaia', [a['href'] for a in menu.select('a[href]')])
+                self.assertFalse(header.select('.eai-site-model-links'))
+                self.assertFalse(header.select('a[href*="/labs/natuurkunde/#"]'))
+                addresses = {item['url'] for item in site_search_records(Path(__file__).resolve().parents[1] / 'does-not-exist')}
+                self.assertIn('/tools/science-observatory/labs/natuurkunde/#lever', addresses)
+                self.assertIn('/tools/anatomie/labs/hartslag/', addresses)
+                self.assertIn('/tools/science-observatory/labs/melkweg/#gaia', addresses)
 
 
 if __name__ == '__main__':

@@ -68,7 +68,7 @@ class DashboardCardsTests(unittest.TestCase):
         build = ROOT / "site-build"
         if not (build / "nl/index.html").is_file():
             self.skipTest("Pas na sitebuild en prepare_ui")
-        for page in ("index.html", "nl/index.html"):
+        for page in ("index.html", "nl/index.html", "en/index.html"):
             home = BeautifulSoup((build / page).read_text(encoding="utf-8"), "html.parser")
             self.assertIn("eai-dash-page", home.body.get("class", []))
             self.assertIsNotNone(home.select_one('link[href*="site-dashboard-cards."]'), page)

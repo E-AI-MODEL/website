@@ -35,16 +35,12 @@ class DictionaryAndMenuTests(unittest.TestCase):
         en = dict(groups(True))
         self.assertEqual(len(nl), 6)
         self.assertEqual(len(en), 6)
-        self.assertIn('EAI begrijpen', nl)
-        self.assertIn('Lespraktijk', nl)
-        self.assertIn('Onderzoek & publicaties', nl)
-        self.assertIn('Vakinhoud', nl)
-        self.assertIn('Hulpmiddelen', nl)
-        self.assertIn('Understand EAI', en)
-        self.assertIn('/nl/begrippen/', dict(nl['EAI begrijpen']).values())
-        self.assertIn('/en/glossary/', dict(en['Understand EAI']).values())
-        self.assertEqual(dict(nl['Onderzoek & publicaties'])['Alle publicaties'], '/nl/publicaties/')
-        self.assertIn('/tools/science-observatory/', dict(nl['Vakinhoud']).values())
+        self.assertEqual(list(nl)[:5], ['Het model', 'Onderwijs', 'Onderzoek', 'Artikelen', 'Zelf aan de slag'])
+        self.assertEqual(list(en)[:5], ['The model', 'Education', 'Research', 'Articles', 'Explore & create'])
+        self.assertIn('/nl/begrippen/', dict(nl['Het model']).values())
+        self.assertIn('/en/glossary/', dict(en['The model']).values())
+        self.assertEqual(dict(nl['Artikelen'])['Artikelen en publicaties'], '/nl/publicaties/')
+        self.assertIn('/tools/science-observatory/', dict(nl['Zelf aan de slag']).values())
 
     def test_begrippen_worden_als_directe_zoekresultaten_geindexeerd(self):
         with tempfile.TemporaryDirectory() as temp:

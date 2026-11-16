@@ -9,7 +9,7 @@ from pathlib import Path, PurePosixPath
 from urllib.parse import urlsplit
 from urllib.request import Request, urlopen
 from bs4 import BeautifulSoup, Comment
-from prepare_ui import STORY_PATHS, DASH_CARD_PATHS, canonical
+from prepare_ui import STORY_PATHS, DASH_CARD_PATHS, LEGACY_HUB_REDIRECTS, canonical
 
 
 def check(root: Path):
@@ -20,6 +20,16 @@ def check(root: Path):
         assert hashlib.sha256(data).hexdigest() == info['sha256'], name
     for rel in manifest['pages']:
         soup = BeautifulSoup((root / rel).read_text(), 'html.parser')
+        route = '/' + rel.removesuffix('index.html')
+        if route in LEGACY_HUB_REDIRECTS:
+            # Redirect handoffs are byte-verified on the live site like all HTML.
+            # They have no shared menu because the browser immediately navigates.
+            expected = LEGACY_HUB_REDIRECTS[route]
+            assert soup.find('link', rel='canonical')['href'] == 'https://eaimodel.nl' + expected, rel
+            assert expected in soup.find('meta', attrs={'http-equiv': 'refresh'})['content'], rel
+            assert soup.select_one('main a[href]')['href'] == expected, rel
+            assert 'location.search + location.hash' in (root / rel).read_text(), rel
+            continue
         assert len(soup.select('header.eai-masthead')) == 1, rel
         assert not soup.select('header .eai-links'), rel
         assert len(soup.select('.eai-site-menu')) == 1, rel
@@ -48,7 +58,7 @@ def check(root: Path):
         # All other shared assets remain mandatory on every prepared page.
         page_route = canonical('/' + rel)
         expected_story = page_route in STORY_PATHS
-        dashboard_home = page_route == '/nl/' and bool(soup.select_one('main.eai-dashboard-home'))
+        dashboard_home = page_route in ('/nl/', '/en/') and bool(soup.select_one('main.eai-dashboard-home'))
         card_index = page_route in DASH_CARD_PATHS
         assert ('eai-story-page' in soup.body.get('class', [])) == expected_story, rel
         assert ('eai-dash-page' in soup.body.get('class', [])) == dashboard_home, rel

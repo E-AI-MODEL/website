@@ -51,17 +51,15 @@ try {
       await page.locator('.eai-site-group').nth(1).locator(':scope > summary').click();
       await page.locator('.eai-site-group').nth(3).locator(':scope > summary').click();
       assert.equal(await page.locator('.eai-site-group[open]').count(), 1, 'Only one theme may be open');
-      const topics = page.locator('.eai-site-group').nth(3).locator('.eai-site-topic');
-      assert.equal(await topics.count(), 6, 'All six model areas stay reachable');
-      await topics.first().locator(':scope > summary').click();
-      const mechanics = topics.first().locator('.eai-site-cluster').first();
-      await mechanics.locator(':scope > summary').click();
-      assert.equal(await mechanics.locator('a[href*="/labs/natuurkunde/#"]').count(), 18, 'All mechanics experiments are listed');
-      assert.equal(await page.locator('.eai-site-menu-panel a[href="/tools/science-observatory/labs/natuurkunde/#lever"]').count(), 1);
+      // Compact thematic menu; the full experiment/workform catalog lives in search.
+      assert.equal(await page.locator('.eai-site-topic').count(), 0, 'No duplicate model catalogue');
+      assert.equal(await page.locator('.eai-site-group').nth(3).locator('a[href="/nl/publicaties/"],a[href="/en/publications/"]').count(), 1);
       await page.locator('.eai-site-group').nth(4).locator(':scope > summary').click();
+      assert.equal(await page.locator('.eai-site-menu-panel a[href="/tools/science-observatory/"]').count(), 1);
+      assert.equal(await page.locator('.eai-site-menu-panel a[href="/tools/anatomie/"]').count(), 1);
       assert.equal(await page.locator('.eai-site-menu-panel a[href="/tools/eaistudio/"]').count(), 1);
-      assert.equal(await page.locator('.eai-site-menu-panel a[href="/tools/eaimesh/"]').count(), 1);
-      assert.equal(await page.locator('.eai-site-menu-panel a[href="/tools/wihtml/bibliotheek/"]').count(), 1);
+      assert.equal(await page.locator('.eai-site-menu-panel a[href="/tools/wihtml/"]').count(), 1);
+      assert((await page.locator('.eai-site-menu-panel a[href]').count()) <= 28, 'Keep menu short');
       if (width === 390 && path === '/') {
         const search = page.locator('#eai-site-search-input');
         await search.fill('hefboom');
@@ -77,6 +75,8 @@ try {
         const choices = page.locator('#eai-site-search-results a[href="/werkvormen/justification-mapping/"]');
         await choices.waitFor();
         assert.match(await choices.locator('.eai-site-search-hit-description').innerText(), /AI-bijdrage/, 'Zoekresultaat laat de inhoud van de werkvorm zien');
+        await search.fill('EAImesh');
+        await page.locator('#eai-site-search-results a[href="/tools/eaimesh/"]').waitFor();
         await search.fill('taakdichtheid');
         await page.locator('#eai-site-search-results a[href="/nl/begrippen/#task-density"]').waitFor();
         await search.fill('');
@@ -311,11 +311,9 @@ try {
   await fallback.locator('.eai-site-group').nth(4).locator(':scope > summary').click();
   assert.equal(await fallback.locator('.eai-site-group[open]').count(), 1, 'Native accordion must be exclusive');
   const fallbackTools = fallback.locator('.eai-site-group').nth(4);
-  assert.equal(await fallbackTools.locator('.eai-site-cluster').count(), 3, 'Tool categories work without JavaScript');
-  await fallbackTools.locator('.eai-site-cluster').first().locator(':scope > summary').click();
-  assert((await fallbackTools.locator('.eai-site-cluster').first().locator('a:visible').count()) >= 5, 'No-JS creation menu is incomplete');
+  assert((await fallbackTools.locator('a[href]').count()) >= 6, 'No-JS menu must retain direct tool links');
   assert.equal(await fallback.locator('.eai-site-menu-panel a[href="/tools/eaistudio/"]').count(), 1);
-  assert.equal(await fallback.locator('.eai-site-menu-panel a[href="/tools/eaimesh/"]').count(), 1);
+  assert.equal(await fallback.locator('.eai-site-menu-panel a[href="/tools/science-observatory/"]').count(), 1);
   await noJS.close();
   assert.deepEqual(errors, []);
   writeFileSync('test-results/ui-report.json', JSON.stringify({ results, noJavaScriptMenu: true, homeRoutes: true, languageLinks: true, errors }, null, 2));
