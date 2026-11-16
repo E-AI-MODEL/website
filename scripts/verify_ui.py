@@ -195,7 +195,17 @@ def verify_live(base: str, manifest: dict, timeout: int, root: Path):
                 if not local.is_file():
                     continue  # Mock release fixtures contain only editorial pages; tool tests enforce completeness.
                 online_path = '/' + relative.removesuffix('index.html')
-                assert hashlib.sha256(get(online_path)).hexdigest() == hashlib.sha256(local.read_bytes()).hexdigest(), f'Tool content mismatch: {online_path}'
+                expected = hashlib.sha256(local.read_bytes()).hexdigest()
+                remote = get(online_path)
+                if relative.endswith('.html'):
+                    # Apply the same strict single-beacon check as editorial
+                    # pages and LEIF; do not allow any other HTML changes.
+                    matched, edge_beacon = html_matches_release(remote, expected)
+                    assert matched, f'Tool content mismatch: {online_path}'
+                    if edge_beacon:
+                        print(f'Cloudflare RUM injection verified without weakening HTML hash: {online_path}', flush=True)
+                else:
+                    assert hashlib.sha256(remote).hexdigest() == expected, f'Tool content mismatch: {online_path}'
             for info in manifest['assets'].values():
                 assert hashlib.sha256(get(info['url'])).hexdigest() == info['sha256'], f'Asset mismatch: {info["url"]}'
             print(f'LIVE verified: all {len(expected_html)} prepared HTML files and all asset hashes match UI {manifest["version"]}')
