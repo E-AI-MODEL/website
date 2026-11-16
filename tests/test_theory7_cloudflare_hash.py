@@ -51,6 +51,19 @@ class CloudflareLiveHashTests(unittest.TestCase):
             (False, False)
         )
 
+    def test_leif_public_pages_allow_only_verified_cloudflare_beacon(self):
+        root = Path(__file__).resolve().parents[1]
+        for relative in ('leif/index.html', 'leif/continue/index.html', 'leif/verhaal/index.html'):
+            with self.subTest(relative=relative):
+                source = (root / relative).read_bytes()
+                digest = hashlib.sha256(source).hexdigest()
+                self.assertIn(b'</body>', source)
+                before, closing = source.rsplit(b'</body>', 1)
+                injected = before + BEACON + b'\n</body>' + closing
+                self.assertEqual(html_matches_release(injected, digest), (True, True))
+                changed = injected.replace(b'<body', b'<body data-unauthorized="1"', 1)
+                self.assertEqual(html_matches_release(changed, digest), (False, False))
+
     def test_geen_dubbele_of_meervoudige_injecties(self):
         extra = ORIGINAL.replace(b"</body>", BEACON + BEACON + b"</body>")
         self.assertEqual(html_matches_release(extra, DIGEST), (False, False))
