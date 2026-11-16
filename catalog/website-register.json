@@ -18,11 +18,12 @@
       "id": "page:/",
       "url": "/",
       "file": "index.html",
-      "title": null,
+      "title": "EAI | Wat ons werk ons werk maakt",
       "kind": "overig",
       "category": null,
-      "review": "titel_en_status_controleren",
-      "parent": null
+      "review": "niet_in_publieke_zoekindex_status_controleren",
+      "parent": null,
+      "family": "model"
     },
     {
       "id": "page:/bronnen/",
@@ -32,17 +33,19 @@
       "kind": "overig",
       "category": "Onderzoek",
       "review": "gevonden_in_zoekindex",
-      "parent": null
+      "parent": null,
+      "family": "onderzoek"
     },
     {
       "id": "page:/eaa-model/",
       "url": "/eaa-model/",
       "file": "eaa-model/index.html",
-      "title": null,
+      "title": "EAA Model · EAI",
       "kind": "overig",
       "category": null,
-      "review": "titel_en_status_controleren",
-      "parent": null
+      "review": "niet_in_publieke_zoekindex_status_controleren",
+      "parent": null,
+      "family": "model"
     },
     {
       "id": "page:/eai-blog/",
@@ -52,7 +55,8 @@
       "kind": "publicatie",
       "category": "Onderzoek & publicaties · Archief",
       "review": "gevonden_in_zoekindex",
-      "parent": null
+      "parent": null,
+      "family": "publicaties"
     },
     {
       "id": "page:/eai-blog/eai-balans/",
@@ -62,7 +66,8 @@
       "kind": "publicatie",
       "category": "Onderzoek & publicaties · Archief",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/eai-blog/"
+      "parent": "page:/eai-blog/",
+      "family": "publicaties"
     },
     {
       "id": "page:/eai-blog/eai-beyond-explainability/",
@@ -72,7 +77,8 @@
       "kind": "publicatie",
       "category": "Onderzoek & publicaties · Archief",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/eai-blog/"
+      "parent": "page:/eai-blog/",
+      "family": "publicaties"
     },
     {
       "id": "page:/eai-blog/eai-stappenplan/",
@@ -82,7 +88,8 @@
       "kind": "publicatie",
       "category": "Onderzoek & publicaties · Archief",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/eai-blog/"
+      "parent": "page:/eai-blog/",
+      "family": "publicaties"
     },
     {
       "id": "page:/eai-blog/eai-task-density/",
@@ -92,7 +99,8 @@
       "kind": "publicatie",
       "category": "Onderzoek & publicaties · Archief",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/eai-blog/"
+      "parent": "page:/eai-blog/",
+      "family": "publicaties"
     },
     {
       "id": "page:/eai-blog/rapportage-wang-fan-2025/",
@@ -102,7 +110,8 @@
       "kind": "publicatie",
       "category": "Onderzoek & publicaties · Archief",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/eai-blog/"
+      "parent": "page:/eai-blog/",
+      "family": "publicaties"
     },
     {
       "id": "page:/eai-blog/the-act-of-learning-act-2/",
@@ -112,7 +121,8 @@
       "kind": "publicatie",
       "category": "Onderzoek & publicaties · Archief",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/eai-blog/"
+      "parent": "page:/eai-blog/",
+      "family": "publicaties"
     },
     {
       "id": "page:/eai-blog/the-act-of-learning/",
@@ -122,87 +132,96 @@
       "kind": "publicatie",
       "category": "Onderzoek & publicaties · Archief",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/eai-blog/"
+      "parent": "page:/eai-blog/",
+      "family": "publicaties"
     },
     {
       "id": "page:/eai-tools-modules/",
       "url": "/eai-tools-modules/",
       "file": "eai-tools-modules/index.html",
-      "title": null,
-      "kind": "toepassing",
+      "title": "Doorverwijzing naar hulpmiddelen",
+      "kind": "doorverwijzing",
       "category": null,
-      "review": "titel_en_status_controleren",
-      "parent": null
+      "review": "doorverwijzing_doel_controleren",
+      "parent": null,
+      "family": "hulpmiddelen"
     },
     {
       "id": "page:/eai-tools-modules/act-of-learning-game-2/",
       "url": "/eai-tools-modules/act-of-learning-game-2/",
       "file": "eai-tools-modules/act-of-learning-game-2/index.html",
-      "title": null,
-      "kind": "toepassing",
+      "title": "Doorverwijzing naar The Act of Learning (spel)",
+      "kind": "doorverwijzing",
       "category": null,
-      "review": "titel_en_status_controleren",
-      "parent": "page:/eai-tools-modules/"
+      "review": "doorverwijzing_doel_controleren",
+      "parent": "page:/eai-tools-modules/",
+      "family": "hulpmiddelen"
     },
     {
       "id": "page:/eai-tools-modules/eaa-model-tool/",
       "url": "/eai-tools-modules/eaa-model-tool/",
       "file": "eai-tools-modules/eaa-model-tool/index.html",
-      "title": null,
-      "kind": "toepassing",
+      "title": "Doorverwijzing naar EAA Model",
+      "kind": "doorverwijzing",
       "category": null,
-      "review": "titel_en_status_controleren",
-      "parent": "page:/eai-tools-modules/"
+      "review": "doorverwijzing_doel_controleren",
+      "parent": "page:/eai-tools-modules/",
+      "family": "hulpmiddelen"
     },
     {
       "id": "page:/eai-tools-modules/eai-eduprompt-builder/",
       "url": "/eai-tools-modules/eai-eduprompt-builder/",
       "file": "eai-tools-modules/eai-eduprompt-builder/index.html",
-      "title": null,
-      "kind": "toepassing",
+      "title": "Doorverwijzing naar EAI Eduprompt Builder",
+      "kind": "doorverwijzing",
       "category": null,
-      "review": "titel_en_status_controleren",
-      "parent": "page:/eai-tools-modules/"
+      "review": "doorverwijzing_doel_controleren",
+      "parent": "page:/eai-tools-modules/",
+      "family": "hulpmiddelen"
     },
     {
       "id": "page:/eai-tools-modules/eai-toolanalyse/",
       "url": "/eai-tools-modules/eai-toolanalyse/",
       "file": "eai-tools-modules/eai-toolanalyse/index.html",
-      "title": null,
-      "kind": "toepassing",
+      "title": "Doorverwijzing naar EAI Toolanalyse",
+      "kind": "doorverwijzing",
       "category": null,
-      "review": "titel_en_status_controleren",
-      "parent": "page:/eai-tools-modules/"
+      "review": "doorverwijzing_doel_controleren",
+      "parent": "page:/eai-tools-modules/",
+      "family": "hulpmiddelen"
     },
     {
       "id": "page:/eai-tools-modules/eai-toolkit-beyond-explainability/",
       "url": "/eai-tools-modules/eai-toolkit-beyond-explainability/",
       "file": "eai-tools-modules/eai-toolkit-beyond-explainability/index.html",
-      "title": null,
-      "kind": "toepassing",
+      "title": "Doorverwijzing naar Beyond Explainability",
+      "kind": "doorverwijzing",
       "category": null,
-      "review": "titel_en_status_controleren",
-      "parent": "page:/eai-tools-modules/"
+      "review": "doorverwijzing_doel_controleren",
+      "parent": "page:/eai-tools-modules/",
+      "family": "hulpmiddelen"
     },
     {
       "id": "page:/eai-tools-modules/eai-toolkit-the-act-of-learning-en/",
       "url": "/eai-tools-modules/eai-toolkit-the-act-of-learning-en/",
       "file": "eai-tools-modules/eai-toolkit-the-act-of-learning-en/index.html",
-      "title": null,
-      "kind": "toepassing",
+      "title": "Doorverwijzing naar The Act of Learning",
+      "kind": "doorverwijzing",
       "category": null,
-      "review": "titel_en_status_controleren",
-      "parent": "page:/eai-tools-modules/"
+      "review": "doorverwijzing_doel_controleren",
+      "parent": "page:/eai-tools-modules/",
+      "family": "hulpmiddelen"
     },
     {
       "id": "page:/eai-tools-modules/eai-what-if-machine/",
       "url": "/eai-tools-modules/eai-what-if-machine/",
       "file": "eai-tools-modules/eai-what-if-machine/index.html",
-      "title": null,
-      "kind": "toepassing",
+      "title": "Doorverwijzing naar EAI What-if Machine",
+      "kind": "doorverwijzing",
       "category": null,
-      "review": "titel_en_status_controleren",
-      "parent": "page:/eai-tools-modules/"
+      "review": "doorverwijzing_doel_controleren",
+      "parent": "page:/eai-tools-modules/",
+      "family": "hulpmiddelen"
     },
     {
       "id": "page:/en/",
@@ -212,7 +231,8 @@
       "kind": "pagina",
       "category": "EN",
       "review": "gevonden_in_zoekindex",
-      "parent": null
+      "parent": null,
+      "family": "te-beoordelen"
     },
     {
       "id": "page:/en/about/",
@@ -222,7 +242,8 @@
       "kind": "pagina",
       "category": "About EAI",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/en/"
+      "parent": "page:/en/",
+      "family": "over"
     },
     {
       "id": "page:/en/applications/",
@@ -232,7 +253,8 @@
       "kind": "pagina",
       "category": "EN",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/en/"
+      "parent": "page:/en/",
+      "family": "praktijk"
     },
     {
       "id": "page:/en/education/",
@@ -242,7 +264,8 @@
       "kind": "pagina",
       "category": "Teaching · Start here",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/en/"
+      "parent": "page:/en/",
+      "family": "onderwijs"
     },
     {
       "id": "page:/en/glossary/",
@@ -252,7 +275,8 @@
       "kind": "pagina",
       "category": "The model",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/en/"
+      "parent": "page:/en/",
+      "family": "model"
     },
     {
       "id": "page:/en/insights/",
@@ -262,7 +286,8 @@
       "kind": "pagina",
       "category": "About EAI",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/en/"
+      "parent": "page:/en/",
+      "family": "over"
     },
     {
       "id": "page:/en/llmscan/",
@@ -272,7 +297,8 @@
       "kind": "pagina",
       "category": "Tools · Check models and publications",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/en/"
+      "parent": "page:/en/",
+      "family": "ai"
     },
     {
       "id": "page:/en/model-monitor/",
@@ -282,7 +308,8 @@
       "kind": "pagina",
       "category": "Explore & create",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/en/"
+      "parent": "page:/en/",
+      "family": "ai"
     },
     {
       "id": "page:/en/model/",
@@ -292,7 +319,8 @@
       "kind": "gegenereerde_pagina",
       "category": "The model",
       "review": "bouwresultaat_controleren",
-      "parent": "page:/en/"
+      "parent": "page:/en/",
+      "family": "model"
     },
     {
       "id": "page:/en/publications/",
@@ -302,7 +330,8 @@
       "kind": "pagina",
       "category": "Articles",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/en/"
+      "parent": "page:/en/",
+      "family": "publicaties"
     },
     {
       "id": "page:/en/research/",
@@ -312,7 +341,8 @@
       "kind": "onderzoek",
       "category": "Research",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/en/"
+      "parent": "page:/en/",
+      "family": "onderzoek"
     },
     {
       "id": "page:/en/research/teaching-tools/",
@@ -322,7 +352,8 @@
       "kind": "onderzoek",
       "category": "Research & publications · Research",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/en/research/"
+      "parent": "page:/en/research/",
+      "family": "onderzoek"
     },
     {
       "id": "page:/en/research/zhang-genai-language/",
@@ -332,7 +363,8 @@
       "kind": "onderzoek",
       "category": "Research & publications · Research",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/en/research/"
+      "parent": "page:/en/research/",
+      "family": "onderzoek"
     },
     {
       "id": "page:/en/tools/",
@@ -342,97 +374,107 @@
       "kind": "pagina",
       "category": "Explore & create",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/en/"
+      "parent": "page:/en/",
+      "family": "hulpmiddelen"
     },
     {
       "id": "page:/houseoftalents/",
       "url": "/houseoftalents/",
       "file": "houseoftalents/index.html",
-      "title": null,
+      "title": "Onderwijs in: wat staat er werkelijk op GitHub?",
       "kind": "overig",
       "category": null,
-      "review": "titel_en_status_controleren",
-      "parent": null
+      "review": "niet_in_publieke_zoekindex_status_controleren",
+      "parent": null,
+      "family": "technisch"
     },
     {
       "id": "page:/houseoftalents/3d/",
       "url": "/houseoftalents/3d/",
       "file": "houseoftalents/3d/index.html",
-      "title": null,
+      "title": "Onderwijs in: technische anatomie (kaarten)",
       "kind": "overig",
       "category": null,
-      "review": "titel_en_status_controleren",
-      "parent": "page:/houseoftalents/"
+      "review": "niet_in_publieke_zoekindex_status_controleren",
+      "parent": "page:/houseoftalents/",
+      "family": "technisch"
     },
     {
       "id": "page:/kennis/",
       "url": "/kennis/",
       "file": "kennis/index.html",
-      "title": null,
+      "title": "Kennis · EAI",
       "kind": "overig",
       "category": null,
-      "review": "titel_en_status_controleren",
-      "parent": null
+      "review": "niet_in_publieke_zoekindex_status_controleren",
+      "parent": null,
+      "family": "onderzoek"
     },
     {
       "id": "page:/leif/",
       "url": "/leif/",
       "file": "leif/index.html",
-      "title": null,
+      "title": "LEIF | Meer dan een profiel",
       "kind": "afgeschermd_of_app",
       "category": null,
-      "review": "titel_en_status_controleren",
-      "parent": null
+      "review": "niet_in_publieke_zoekindex_status_controleren",
+      "parent": null,
+      "family": "technisch"
     },
     {
       "id": "page:/leif/beheer/",
       "url": "/leif/beheer/",
       "file": "leif/beheer/index.html",
-      "title": null,
+      "title": "LEIF | Beheer",
       "kind": "afgeschermd_of_app",
       "category": null,
-      "review": "titel_en_status_controleren",
-      "parent": "page:/leif/"
+      "review": "niet_in_publieke_zoekindex_status_controleren",
+      "parent": "page:/leif/",
+      "family": "technisch"
     },
     {
       "id": "page:/leif/continue/",
       "url": "/leif/continue/",
       "file": "leif/continue/index.html",
-      "title": null,
+      "title": "LEIF | Verder met mijn verhaal",
       "kind": "afgeschermd_of_app",
       "category": null,
-      "review": "titel_en_status_controleren",
-      "parent": "page:/leif/"
+      "review": "niet_in_publieke_zoekindex_status_controleren",
+      "parent": "page:/leif/",
+      "family": "technisch"
     },
     {
       "id": "page:/leif/mijn/",
       "url": "/leif/mijn/",
       "file": "leif/mijn/index.html",
-      "title": null,
+      "title": "LEIF | Mijn omgeving",
       "kind": "afgeschermd_of_app",
       "category": null,
-      "review": "titel_en_status_controleren",
-      "parent": "page:/leif/"
+      "review": "niet_in_publieke_zoekindex_status_controleren",
+      "parent": "page:/leif/",
+      "family": "technisch"
     },
     {
       "id": "page:/leif/verhaal/",
       "url": "/leif/verhaal/",
       "file": "leif/verhaal/index.html",
-      "title": null,
+      "title": "LEIF | Persoonlijk verhaal",
       "kind": "afgeschermd_of_app",
       "category": null,
-      "review": "titel_en_status_controleren",
-      "parent": "page:/leif/"
+      "review": "niet_in_publieke_zoekindex_status_controleren",
+      "parent": "page:/leif/",
+      "family": "technisch"
     },
     {
       "id": "page:/model-monitor/",
       "url": "/model-monitor/",
       "file": "model-monitor/index.html",
-      "title": null,
+      "title": "AI (Act) Model Monitor · EAI",
       "kind": "overig",
       "category": null,
-      "review": "titel_en_status_controleren",
-      "parent": null
+      "review": "niet_in_publieke_zoekindex_status_controleren",
+      "parent": null,
+      "family": "ai"
     },
     {
       "id": "page:/nl/",
@@ -442,7 +484,8 @@
       "kind": "pagina",
       "category": "NL",
       "review": "gevonden_in_zoekindex",
-      "parent": null
+      "parent": null,
+      "family": "te-beoordelen"
     },
     {
       "id": "page:/nl/begrippen/",
@@ -452,7 +495,8 @@
       "kind": "pagina",
       "category": "Het model",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/nl/"
+      "parent": "page:/nl/",
+      "family": "model"
     },
     {
       "id": "page:/nl/blog/",
@@ -462,7 +506,8 @@
       "kind": "publicatie",
       "category": "Artikelen",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/nl/"
+      "parent": "page:/nl/",
+      "family": "publicaties"
     },
     {
       "id": "page:/nl/blog/wat-ons-werk-ons-werk-maakt/",
@@ -472,7 +517,8 @@
       "kind": "publicatie",
       "category": "Onderzoek & publicaties · Blog",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/nl/blog/"
+      "parent": "page:/nl/blog/",
+      "family": "publicaties"
     },
     {
       "id": "page:/nl/insights/",
@@ -482,7 +528,8 @@
       "kind": "pagina",
       "category": "Over EAI",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/nl/"
+      "parent": "page:/nl/",
+      "family": "over"
     },
     {
       "id": "page:/nl/llmscan/",
@@ -492,7 +539,8 @@
       "kind": "pagina",
       "category": "Hulpmiddelen · AI en publicaties controleren",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/nl/"
+      "parent": "page:/nl/",
+      "family": "ai"
     },
     {
       "id": "page:/nl/llmscan/onderzoek/",
@@ -502,7 +550,8 @@
       "kind": "pagina",
       "category": "Tools · Check models and publications",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/nl/llmscan/"
+      "parent": "page:/nl/llmscan/",
+      "family": "ai"
     },
     {
       "id": "page:/nl/model-monitor/",
@@ -512,7 +561,8 @@
       "kind": "pagina",
       "category": "Zelf aan de slag",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/nl/"
+      "parent": "page:/nl/",
+      "family": "ai"
     },
     {
       "id": "page:/nl/model/",
@@ -522,7 +572,8 @@
       "kind": "gegenereerde_pagina",
       "category": "Het model",
       "review": "bouwresultaat_controleren",
-      "parent": "page:/nl/"
+      "parent": "page:/nl/",
+      "family": "model"
     },
     {
       "id": "page:/nl/onderwijs/",
@@ -532,7 +583,8 @@
       "kind": "pagina",
       "category": "Lespraktijk · Start hier",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/nl/"
+      "parent": "page:/nl/",
+      "family": "onderwijs"
     },
     {
       "id": "page:/nl/onderzoek/",
@@ -542,7 +594,8 @@
       "kind": "onderzoek",
       "category": "Onderzoek",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/nl/"
+      "parent": "page:/nl/",
+      "family": "onderzoek"
     },
     {
       "id": "page:/nl/onderzoek/leermiddelen/",
@@ -552,7 +605,8 @@
       "kind": "onderzoek",
       "category": "Onderzoek & publicaties · Onderzoeksdossiers",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/nl/onderzoek/"
+      "parent": "page:/nl/onderzoek/",
+      "family": "onderzoek"
     },
     {
       "id": "page:/nl/onderzoek/zhang-genai-taal/",
@@ -562,7 +616,8 @@
       "kind": "onderzoek",
       "category": "Onderzoek & publicaties · Onderzoeksdossiers",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/nl/onderzoek/"
+      "parent": "page:/nl/onderzoek/",
+      "family": "onderzoek"
     },
     {
       "id": "page:/nl/over/",
@@ -572,7 +627,8 @@
       "kind": "pagina",
       "category": "Over EAI",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/nl/"
+      "parent": "page:/nl/",
+      "family": "over"
     },
     {
       "id": "page:/nl/publicaties/",
@@ -582,7 +638,8 @@
       "kind": "pagina",
       "category": "Artikelen",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/nl/"
+      "parent": "page:/nl/",
+      "family": "publicaties"
     },
     {
       "id": "page:/nl/toepassingen/",
@@ -592,7 +649,8 @@
       "kind": "pagina",
       "category": "NL",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/nl/"
+      "parent": "page:/nl/",
+      "family": "praktijk"
     },
     {
       "id": "page:/nl/tools/",
@@ -602,7 +660,8 @@
       "kind": "pagina",
       "category": "Zelf aan de slag",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/nl/"
+      "parent": "page:/nl/",
+      "family": "hulpmiddelen"
     },
     {
       "id": "page:/nl/tools/verificatie/",
@@ -612,77 +671,85 @@
       "kind": "pagina",
       "category": "Tools · Check models and publications",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/nl/tools/"
+      "parent": "page:/nl/tools/",
+      "family": "hulpmiddelen"
     },
     {
       "id": "page:/onderbouwing/",
       "url": "/onderbouwing/",
       "file": "onderbouwing/index.html",
-      "title": null,
+      "title": "Onderbouwing · EAI",
       "kind": "overig",
       "category": null,
-      "review": "titel_en_status_controleren",
-      "parent": null
+      "review": "niet_in_publieke_zoekindex_status_controleren",
+      "parent": null,
+      "family": "onderzoek"
     },
     {
       "id": "page:/onderwijs/",
       "url": "/onderwijs/",
       "file": "onderwijs/index.html",
-      "title": null,
+      "title": "Onderwijs · EAI",
       "kind": "overig",
       "category": null,
-      "review": "titel_en_status_controleren",
-      "parent": null
+      "review": "niet_in_publieke_zoekindex_status_controleren",
+      "parent": null,
+      "family": "onderwijs"
     },
     {
       "id": "page:/onderwijsin/",
       "url": "/onderwijsin/",
       "file": "onderwijsin/index.html",
-      "title": null,
+      "title": "Onderwijs in: wat staat er werkelijk op GitHub? · EAI",
       "kind": "overig",
       "category": null,
-      "review": "titel_en_status_controleren",
-      "parent": null
+      "review": "niet_in_publieke_zoekindex_status_controleren",
+      "parent": null,
+      "family": "technisch"
     },
     {
       "id": "page:/onderwijsin/3d/",
       "url": "/onderwijsin/3d/",
       "file": "onderwijsin/3d/index.html",
-      "title": null,
+      "title": "Onderwijs in: technische anatomie (kaarten)",
       "kind": "overig",
       "category": null,
-      "review": "titel_en_status_controleren",
-      "parent": "page:/onderwijsin/"
+      "review": "niet_in_publieke_zoekindex_status_controleren",
+      "parent": "page:/onderwijsin/",
+      "family": "technisch"
     },
     {
       "id": "page:/onderwijsin/houseoftalents/",
       "url": "/onderwijsin/houseoftalents/",
       "file": "onderwijsin/houseoftalents/index.html",
-      "title": null,
+      "title": "Onderwijs in: wat staat er werkelijk op GitHub?",
       "kind": "overig",
       "category": null,
-      "review": "titel_en_status_controleren",
-      "parent": "page:/onderwijsin/"
+      "review": "niet_in_publieke_zoekindex_status_controleren",
+      "parent": "page:/onderwijsin/",
+      "family": "technisch"
     },
     {
       "id": "page:/onderwijsin/houseoftalents/3d/",
       "url": "/onderwijsin/houseoftalents/3d/",
       "file": "onderwijsin/houseoftalents/3d/index.html",
-      "title": null,
+      "title": "Onderwijs in: technische anatomie (kaarten)",
       "kind": "overig",
       "category": null,
-      "review": "titel_en_status_controleren",
-      "parent": "page:/onderwijsin/houseoftalents/"
+      "review": "niet_in_publieke_zoekindex_status_controleren",
+      "parent": "page:/onderwijsin/houseoftalents/",
+      "family": "technisch"
     },
     {
       "id": "page:/over/",
       "url": "/over/",
       "file": "over/index.html",
-      "title": null,
+      "title": "Over EAI en Hans Visser · EAI",
       "kind": "overig",
       "category": null,
-      "review": "titel_en_status_controleren",
-      "parent": null
+      "review": "niet_in_publieke_zoekindex_status_controleren",
+      "parent": null,
+      "family": "over"
     },
     {
       "id": "page:/praktijk/",
@@ -692,17 +759,19 @@
       "kind": "overig",
       "category": "Lespraktijk · Start hier",
       "review": "gevonden_in_zoekindex",
-      "parent": null
+      "parent": null,
+      "family": "praktijk"
     },
     {
       "id": "page:/publicaties/",
       "url": "/publicaties/",
       "file": "publicaties/index.html",
-      "title": null,
+      "title": "Publicaties · EAI",
       "kind": "publicatie",
       "category": null,
-      "review": "titel_en_status_controleren",
-      "parent": null
+      "review": "niet_in_publieke_zoekindex_status_controleren",
+      "parent": null,
+      "family": "publicaties"
     },
     {
       "id": "page:/publicaties/ai-balans/",
@@ -712,7 +781,8 @@
       "kind": "publicatie",
       "category": "Onderzoek & publicaties · Publicaties",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/publicaties/"
+      "parent": "page:/publicaties/",
+      "family": "publicaties"
     },
     {
       "id": "page:/publicaties/beyond-explainability/",
@@ -722,7 +792,8 @@
       "kind": "publicatie",
       "category": "Onderzoek & publicaties · Publicaties",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/publicaties/"
+      "parent": "page:/publicaties/",
+      "family": "publicaties"
     },
     {
       "id": "page:/publicaties/de-vraag-die-we-vergeten/",
@@ -732,7 +803,8 @@
       "kind": "publicatie",
       "category": "Onderzoek & publicaties · Publicaties",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/publicaties/"
+      "parent": "page:/publicaties/",
+      "family": "publicaties"
     },
     {
       "id": "page:/publicaties/eai-stappenplan/",
@@ -742,7 +814,8 @@
       "kind": "publicatie",
       "category": "Onderzoek & publicaties · Publicaties",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/publicaties/"
+      "parent": "page:/publicaties/",
+      "family": "publicaties"
     },
     {
       "id": "page:/publicaties/task-density/",
@@ -752,7 +825,8 @@
       "kind": "publicatie",
       "category": "Onderzoek & publicaties · Publicaties",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/publicaties/"
+      "parent": "page:/publicaties/",
+      "family": "publicaties"
     },
     {
       "id": "page:/publicaties/the-act-of-learning-act-2/",
@@ -762,7 +836,8 @@
       "kind": "publicatie",
       "category": "Onderzoek & publicaties · Publicaties",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/publicaties/"
+      "parent": "page:/publicaties/",
+      "family": "publicaties"
     },
     {
       "id": "page:/publicaties/the-act-of-learning/",
@@ -772,7 +847,8 @@
       "kind": "publicatie",
       "category": "Onderzoek & publicaties · Publicaties",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/publicaties/"
+      "parent": "page:/publicaties/",
+      "family": "publicaties"
     },
     {
       "id": "page:/publicaties/wang-fan-2025/",
@@ -782,17 +858,19 @@
       "kind": "publicatie",
       "category": "Onderzoek & publicaties · Publicaties",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/publicaties/"
+      "parent": "page:/publicaties/",
+      "family": "publicaties"
     },
     {
       "id": "page:/statistieken/",
       "url": "/statistieken/",
       "file": "statistieken/index.html",
-      "title": null,
+      "title": "Bezoekersstatistieken | EAI",
       "kind": "overig",
       "category": null,
-      "review": "titel_en_status_controleren",
-      "parent": null
+      "review": "niet_in_publieke_zoekindex_status_controleren",
+      "parent": null,
+      "family": "technisch"
     },
     {
       "id": "page:/taalwerkvormen/",
@@ -802,57 +880,63 @@
       "kind": "overig",
       "category": "Lespraktijk · Start hier",
       "review": "gevonden_in_zoekindex",
-      "parent": null
+      "parent": null,
+      "family": "onderwijs"
     },
     {
       "id": "page:/toepassingen/",
       "url": "/toepassingen/",
       "file": "toepassingen/index.html",
-      "title": null,
+      "title": "Toepassingen · EAI",
       "kind": "praktijk",
       "category": null,
-      "review": "titel_en_status_controleren",
-      "parent": null
+      "review": "niet_in_publieke_zoekindex_status_controleren",
+      "parent": null,
+      "family": "praktijk"
     },
     {
       "id": "page:/toepassingen/onderwijs-ai/",
       "url": "/toepassingen/onderwijs-ai/",
       "file": "toepassingen/onderwijs-ai/index.html",
-      "title": null,
+      "title": "Onderwijs en AI · EAI",
       "kind": "praktijk",
       "category": null,
-      "review": "titel_en_status_controleren",
-      "parent": "page:/toepassingen/"
+      "review": "niet_in_publieke_zoekindex_status_controleren",
+      "parent": "page:/toepassingen/",
+      "family": "praktijk"
     },
     {
       "id": "page:/toepassingen/onderwijsregio-rotterdam/",
       "url": "/toepassingen/onderwijsregio-rotterdam/",
       "file": "toepassingen/onderwijsregio-rotterdam/index.html",
-      "title": null,
+      "title": "Onderwijsregio Rotterdam · EAI",
       "kind": "praktijk",
       "category": null,
-      "review": "titel_en_status_controleren",
-      "parent": "page:/toepassingen/"
+      "review": "niet_in_publieke_zoekindex_status_controleren",
+      "parent": "page:/toepassingen/",
+      "family": "praktijk"
     },
     {
       "id": "page:/toepassingen/saga-legal-ai/",
       "url": "/toepassingen/saga-legal-ai/",
       "file": "toepassingen/saga-legal-ai/index.html",
-      "title": null,
+      "title": "Saga Legal AI · EAI",
       "kind": "praktijk",
       "category": null,
-      "review": "titel_en_status_controleren",
-      "parent": "page:/toepassingen/"
+      "review": "niet_in_publieke_zoekindex_status_controleren",
+      "parent": "page:/toepassingen/",
+      "family": "praktijk"
     },
     {
       "id": "page:/tools/",
       "url": "/tools/",
       "file": "tools/index.html",
-      "title": null,
+      "title": "Hulpmiddelen · EAI",
       "kind": "toepassing",
       "category": null,
-      "review": "titel_en_status_controleren",
-      "parent": null
+      "review": "niet_in_publieke_zoekindex_status_controleren",
+      "parent": null,
+      "family": "hulpmiddelen"
     },
     {
       "id": "page:/tools/abyss/",
@@ -898,7 +982,8 @@
       "kind": "toepassing",
       "category": "Hulpmiddelen · AI en publicaties controleren",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/tools/"
+      "parent": "page:/tools/",
+      "family": "hulpmiddelen"
     },
     {
       "id": "page:/tools/eaigame/",
@@ -908,7 +993,8 @@
       "kind": "toepassing",
       "category": "TOOLS",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/tools/"
+      "parent": "page:/tools/",
+      "family": "hulpmiddelen"
     },
     {
       "id": "page:/tools/eaigit/",
@@ -918,7 +1004,8 @@
       "kind": "toepassing",
       "category": "TOOLS",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/tools/"
+      "parent": "page:/tools/",
+      "family": "hulpmiddelen"
     },
     {
       "id": "page:/tools/eaigit/hulp/",
@@ -928,7 +1015,8 @@
       "kind": "toepassing",
       "category": "TOOLS",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/tools/eaigit/"
+      "parent": "page:/tools/eaigit/",
+      "family": "hulpmiddelen"
     },
     {
       "id": "page:/tools/eaigit/prompts/",
@@ -938,7 +1026,8 @@
       "kind": "toepassing",
       "category": "TOOLS",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/tools/eaigit/"
+      "parent": "page:/tools/eaigit/",
+      "family": "hulpmiddelen"
     },
     {
       "id": "page:/tools/eaimesh/",
@@ -948,7 +1037,8 @@
       "kind": "toepassing",
       "category": "Hulpmiddelen · Werkruimtes en delen",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/tools/"
+      "parent": "page:/tools/",
+      "family": "hulpmiddelen"
     },
     {
       "id": "page:/tools/eaimesh/start/",
@@ -958,7 +1048,8 @@
       "kind": "toepassing",
       "category": "Hulpmiddelen · Werkruimtes en delen",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/tools/eaimesh/"
+      "parent": "page:/tools/eaimesh/",
+      "family": "hulpmiddelen"
     },
     {
       "id": "page:/tools/eaistudio/",
@@ -968,7 +1059,8 @@
       "kind": "toepassing",
       "category": "Zelf aan de slag",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/tools/"
+      "parent": "page:/tools/",
+      "family": "hulpmiddelen"
     },
     {
       "id": "page:/tools/eaistudio/studio/",
@@ -978,7 +1070,8 @@
       "kind": "toepassing",
       "category": "Hulpmiddelen · Lesmateriaal en prompts maken",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/tools/eaistudio/"
+      "parent": "page:/tools/eaistudio/",
+      "family": "hulpmiddelen"
     },
     {
       "id": "page:/tools/eaiwork/",
@@ -988,7 +1081,8 @@
       "kind": "toepassing",
       "category": "Hulpmiddelen · Werkruimtes en delen",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/tools/"
+      "parent": "page:/tools/",
+      "family": "hulpmiddelen"
     },
     {
       "id": "page:/tools/html-galerij/",
@@ -998,7 +1092,8 @@
       "kind": "toepassing",
       "category": "Hulpmiddelen · Werkruimtes en delen",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/tools/"
+      "parent": "page:/tools/",
+      "family": "hulpmiddelen"
     },
     {
       "id": "page:/tools/llm-observatorium/",
@@ -1055,7 +1150,8 @@
       "kind": "toepassing",
       "category": "TOOLS",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/tools/"
+      "parent": "page:/tools/",
+      "family": "hulpmiddelen"
     },
     {
       "id": "page:/tools/prompt-framework/",
@@ -1065,7 +1161,8 @@
       "kind": "toepassing",
       "category": "Zelf aan de slag",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/tools/"
+      "parent": "page:/tools/",
+      "family": "hulpmiddelen"
     },
     {
       "id": "page:/tools/science-observatory/",
@@ -1075,7 +1172,8 @@
       "kind": "toepassing",
       "category": "Zelf aan de slag",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/tools/"
+      "parent": "page:/tools/",
+      "family": "hulpmiddelen"
     },
     {
       "id": "page:/tools/science-observatory/labs/gravitatie-banen/",
@@ -1120,7 +1218,8 @@
       "kind": "toepassing",
       "category": "TOOLS",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/tools/science-observatory/"
+      "parent": "page:/tools/science-observatory/",
+      "family": "hulpmiddelen"
     },
     {
       "id": "page:/tools/science-observatory/labs/wiskunde-a/",
@@ -1177,7 +1276,8 @@
       "kind": "toepassing",
       "category": "Hulpmiddelen · Lesmateriaal en prompts maken",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/tools/"
+      "parent": "page:/tools/",
+      "family": "hulpmiddelen"
     },
     {
       "id": "page:/tools/wihtml/",
@@ -1187,7 +1287,8 @@
       "kind": "toepassing",
       "category": "Zelf aan de slag",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/tools/"
+      "parent": "page:/tools/",
+      "family": "hulpmiddelen"
     },
     {
       "id": "page:/tools/wihtml/bibliotheek/",
@@ -1197,7 +1298,8 @@
       "kind": "toepassing",
       "category": "Hulpmiddelen · Lesmateriaal en prompts maken",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/tools/wihtml/"
+      "parent": "page:/tools/wihtml/",
+      "family": "hulpmiddelen"
     },
     {
       "id": "page:/tools/wihtml/studio/",
@@ -1207,7 +1309,8 @@
       "kind": "toepassing",
       "category": "Hulpmiddelen · Lesmateriaal en prompts maken",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/tools/wihtml/"
+      "parent": "page:/tools/wihtml/",
+      "family": "hulpmiddelen"
     },
     {
       "id": "page:/tools/wihtml/voorbeeld/",
@@ -1217,7 +1320,8 @@
       "kind": "toepassing",
       "category": "Hulpmiddelen · Lesmateriaal en prompts maken",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/tools/wihtml/"
+      "parent": "page:/tools/wihtml/",
+      "family": "hulpmiddelen"
     },
     {
       "id": "page:/twee-pijlers/",
@@ -1227,17 +1331,19 @@
       "kind": "overig",
       "category": "Lespraktijk · Start hier",
       "review": "gevonden_in_zoekindex",
-      "parent": null
+      "parent": null,
+      "family": "model"
     },
     {
       "id": "page:/verdieping/",
       "url": "/verdieping/",
       "file": "verdieping/index.html",
-      "title": null,
-      "kind": "overig",
+      "title": "Doorverwijzing naar kennis",
+      "kind": "doorverwijzing",
       "category": null,
-      "review": "titel_en_status_controleren",
-      "parent": null
+      "review": "doorverwijzing_doel_controleren",
+      "parent": null,
+      "family": "onderzoek"
     },
     {
       "id": "page:/werkvormen/",
@@ -1247,7 +1353,8 @@
       "kind": "werkvorm",
       "category": "Lespraktijk · Start hier",
       "review": "gevonden_in_zoekindex",
-      "parent": null
+      "parent": null,
+      "family": "onderwijs"
     },
     {
       "id": "page:/werkvormen/accept-adapt-reject/",
@@ -1257,7 +1364,8 @@
       "kind": "werkvorm",
       "category": "Lespraktijk · Zelfstandigheid en zelfregulatie",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/werkvormen/"
+      "parent": "page:/werkvormen/",
+      "family": "onderwijs"
     },
     {
       "id": "page:/werkvormen/ai-role-handback-plan/",
@@ -1267,7 +1375,8 @@
       "kind": "werkvorm",
       "category": "Lespraktijk · Opdrachten en de rol van AI",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/werkvormen/"
+      "parent": "page:/werkvormen/",
+      "family": "onderwijs"
     },
     {
       "id": "page:/werkvormen/assessment-redesign/",
@@ -1277,7 +1386,8 @@
       "kind": "werkvorm",
       "category": "Lespraktijk · Opdrachten en de rol van AI",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/werkvormen/"
+      "parent": "page:/werkvormen/",
+      "family": "onderwijs"
     },
     {
       "id": "page:/werkvormen/bewijs-van-leren/",
@@ -1287,7 +1397,8 @@
       "kind": "werkvorm",
       "category": "Lespraktijk · Denk- en leerproces zichtbaar maken",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/werkvormen/"
+      "parent": "page:/werkvormen/",
+      "family": "onderwijs"
     },
     {
       "id": "page:/werkvormen/bound-the-claim/",
@@ -1297,7 +1408,8 @@
       "kind": "werkvorm",
       "category": "Lespraktijk · Beoordelen en professioneel oordeel",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/werkvormen/"
+      "parent": "page:/werkvormen/",
+      "family": "onderwijs"
     },
     {
       "id": "page:/werkvormen/compare-then-reconstruct/",
@@ -1307,7 +1419,8 @@
       "kind": "werkvorm",
       "category": "Lespraktijk · Zelfstandigheid en zelfregulatie",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/werkvormen/"
+      "parent": "page:/werkvormen/",
+      "family": "onderwijs"
     },
     {
       "id": "page:/werkvormen/competing-explanations/",
@@ -1317,7 +1430,8 @@
       "kind": "werkvorm",
       "category": "Lespraktijk · Beoordelen en professioneel oordeel",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/werkvormen/"
+      "parent": "page:/werkvormen/",
+      "family": "onderwijs"
     },
     {
       "id": "page:/werkvormen/conclusion-strength/",
@@ -1327,7 +1441,8 @@
       "kind": "werkvorm",
       "category": "Lespraktijk · Bronnen en argumenten beoordelen",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/werkvormen/"
+      "parent": "page:/werkvormen/",
+      "family": "onderwijs"
     },
     {
       "id": "page:/werkvormen/confidence-vs-evidence/",
@@ -1337,7 +1452,8 @@
       "kind": "werkvorm",
       "category": "Lespraktijk · Denk- en leerproces zichtbaar maken",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/werkvormen/"
+      "parent": "page:/werkvormen/",
+      "family": "onderwijs"
     },
     {
       "id": "page:/werkvormen/controlled-detachment/",
@@ -1347,7 +1463,8 @@
       "kind": "werkvorm",
       "category": "Lespraktijk · Zelfstandigheid en zelfregulatie",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/werkvormen/"
+      "parent": "page:/werkvormen/",
+      "family": "onderwijs"
     },
     {
       "id": "page:/werkvormen/counterargument-first/",
@@ -1357,7 +1474,8 @@
       "kind": "werkvorm",
       "category": "Lespraktijk · Bronnen en argumenten beoordelen",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/werkvormen/"
+      "parent": "page:/werkvormen/",
+      "family": "onderwijs"
     },
     {
       "id": "page:/werkvormen/delayed-reperformance/",
@@ -1367,7 +1485,8 @@
       "kind": "werkvorm",
       "category": "Lespraktijk · Denk- en leerproces zichtbaar maken",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/werkvormen/"
+      "parent": "page:/werkvormen/",
+      "family": "onderwijs"
     },
     {
       "id": "page:/werkvormen/discriminating-probe/",
@@ -1377,7 +1496,8 @@
       "kind": "werkvorm",
       "category": "Lespraktijk · Beoordelen en professioneel oordeel",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/werkvormen/"
+      "parent": "page:/werkvormen/",
+      "family": "onderwijs"
     },
     {
       "id": "page:/werkvormen/eai-kaart/",
@@ -1387,7 +1507,8 @@
       "kind": "werkvorm",
       "category": "Lespraktijk · Opdrachten en de rol van AI",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/werkvormen/"
+      "parent": "page:/werkvormen/",
+      "family": "onderwijs"
     },
     {
       "id": "page:/werkvormen/eliciting-question/",
@@ -1397,7 +1518,8 @@
       "kind": "werkvorm",
       "category": "Lespraktijk · Hulp en feedback tijdens het leren",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/werkvormen/"
+      "parent": "page:/werkvormen/",
+      "family": "onderwijs"
     },
     {
       "id": "page:/werkvormen/evidence-to-claim/",
@@ -1407,7 +1529,8 @@
       "kind": "werkvorm",
       "category": "Lespraktijk · Bronnen en argumenten beoordelen",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/werkvormen/"
+      "parent": "page:/werkvormen/",
+      "family": "onderwijs"
     },
     {
       "id": "page:/werkvormen/evidence-to-next-response/",
@@ -1417,7 +1540,8 @@
       "kind": "werkvorm",
       "category": "Lespraktijk · Beoordelen en professioneel oordeel",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/werkvormen/"
+      "parent": "page:/werkvormen/",
+      "family": "onderwijs"
     },
     {
       "id": "page:/werkvormen/explain-before-continue/",
@@ -1427,7 +1551,8 @@
       "kind": "werkvorm",
       "category": "Lespraktijk · Zelfstandigheid en zelfregulatie",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/werkvormen/"
+      "parent": "page:/werkvormen/",
+      "family": "onderwijs"
     },
     {
       "id": "page:/werkvormen/fade-one-layer/",
@@ -1437,7 +1562,8 @@
       "kind": "werkvorm",
       "category": "Lespraktijk · Hulp en feedback tijdens het leren",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/werkvormen/"
+      "parent": "page:/werkvormen/",
+      "family": "onderwijs"
     },
     {
       "id": "page:/werkvormen/feedback-redo/",
@@ -1447,7 +1573,8 @@
       "kind": "werkvorm",
       "category": "Lespraktijk · Hulp en feedback tijdens het leren",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/werkvormen/"
+      "parent": "page:/werkvormen/",
+      "family": "onderwijs"
     },
     {
       "id": "page:/werkvormen/feedback-without-rewrite/",
@@ -1457,7 +1584,8 @@
       "kind": "werkvorm",
       "category": "Lespraktijk · Hulp en feedback tijdens het leren",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/werkvormen/"
+      "parent": "page:/werkvormen/",
+      "family": "onderwijs"
     },
     {
       "id": "page:/werkvormen/find-my-impasse/",
@@ -1467,7 +1595,8 @@
       "kind": "werkvorm",
       "category": "Lespraktijk · Zelfstandigheid en zelfregulatie",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/werkvormen/"
+      "parent": "page:/werkvormen/",
+      "family": "onderwijs"
     },
     {
       "id": "page:/werkvormen/first-attempt/",
@@ -1477,7 +1606,8 @@
       "kind": "werkvorm",
       "category": "Lespraktijk · Denk- en leerproces zichtbaar maken",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/werkvormen/"
+      "parent": "page:/werkvormen/",
+      "family": "onderwijs"
     },
     {
       "id": "page:/werkvormen/first-breakdown/",
@@ -1487,7 +1617,8 @@
       "kind": "werkvorm",
       "category": "Lespraktijk · Beoordelen en professioneel oordeel",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/werkvormen/"
+      "parent": "page:/werkvormen/",
+      "family": "onderwijs"
     },
     {
       "id": "page:/werkvormen/foutanalyse/",
@@ -1497,7 +1628,8 @@
       "kind": "werkvorm",
       "category": "Lespraktijk · Hulp en feedback tijdens het leren",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/werkvormen/"
+      "parent": "page:/werkvormen/",
+      "family": "onderwijs"
     },
     {
       "id": "page:/werkvormen/fresh-item-same-operation/",
@@ -1507,7 +1639,8 @@
       "kind": "werkvorm",
       "category": "Lespraktijk · Zelfstandigheid en zelfregulatie",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/werkvormen/"
+      "parent": "page:/werkvormen/",
+      "family": "onderwijs"
     },
     {
       "id": "page:/werkvormen/hand-back-the-action/",
@@ -1517,7 +1650,8 @@
       "kind": "werkvorm",
       "category": "Lespraktijk · Hulp en feedback tijdens het leren",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/werkvormen/"
+      "parent": "page:/werkvormen/",
+      "family": "onderwijs"
     },
     {
       "id": "page:/werkvormen/herontwerp-opdracht/",
@@ -1527,7 +1661,8 @@
       "kind": "werkvorm",
       "category": "Lespraktijk · Opdrachten en de rol van AI",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/werkvormen/"
+      "parent": "page:/werkvormen/",
+      "family": "onderwijs"
     },
     {
       "id": "page:/werkvormen/hidden-assumption/",
@@ -1537,7 +1672,8 @@
       "kind": "werkvorm",
       "category": "Lespraktijk · Bronnen en argumenten beoordelen",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/werkvormen/"
+      "parent": "page:/werkvormen/",
+      "family": "onderwijs"
     },
     {
       "id": "page:/werkvormen/justification-mapping/",
@@ -1547,7 +1683,8 @@
       "kind": "werkvorm",
       "category": "Lespraktijk · Denk- en leerproces zichtbaar maken",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/werkvormen/"
+      "parent": "page:/werkvormen/",
+      "family": "onderwijs"
     },
     {
       "id": "page:/werkvormen/kernhandeling-check/",
@@ -1557,7 +1694,8 @@
       "kind": "werkvorm",
       "category": "Lespraktijk · Opdrachten en de rol van AI",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/werkvormen/"
+      "parent": "page:/werkvormen/",
+      "family": "onderwijs"
     },
     {
       "id": "page:/werkvormen/learner-voice-check/",
@@ -1567,7 +1705,8 @@
       "kind": "werkvorm",
       "category": "Lespraktijk · Beoordelen en professioneel oordeel",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/werkvormen/"
+      "parent": "page:/werkvormen/",
+      "family": "onderwijs"
     },
     {
       "id": "page:/werkvormen/learning-goal-vs-task/",
@@ -1577,7 +1716,8 @@
       "kind": "werkvorm",
       "category": "Lespraktijk · Zelfstandigheid en zelfregulatie",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/werkvormen/"
+      "parent": "page:/werkvormen/",
+      "family": "onderwijs"
     },
     {
       "id": "page:/werkvormen/least-intrusive-support/",
@@ -1587,7 +1727,8 @@
       "kind": "werkvorm",
       "category": "Lespraktijk · Hulp en feedback tijdens het leren",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/werkvormen/"
+      "parent": "page:/werkvormen/",
+      "family": "onderwijs"
     },
     {
       "id": "page:/werkvormen/model-then-reperform/",
@@ -1597,7 +1738,8 @@
       "kind": "werkvorm",
       "category": "Lespraktijk · Hulp en feedback tijdens het leren",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/werkvormen/"
+      "parent": "page:/werkvormen/",
+      "family": "onderwijs"
     },
     {
       "id": "page:/werkvormen/monitoring-checkpoint/",
@@ -1607,7 +1749,8 @@
       "kind": "werkvorm",
       "category": "Lespraktijk · Zelfstandigheid en zelfregulatie",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/werkvormen/"
+      "parent": "page:/werkvormen/",
+      "family": "onderwijs"
     },
     {
       "id": "page:/werkvormen/observation-vs-inference/",
@@ -1617,7 +1760,8 @@
       "kind": "werkvorm",
       "category": "Lespraktijk · Beoordelen en professioneel oordeel",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/werkvormen/"
+      "parent": "page:/werkvormen/",
+      "family": "onderwijs"
     },
     {
       "id": "page:/werkvormen/perspective-weighing/",
@@ -1627,7 +1771,8 @@
       "kind": "werkvorm",
       "category": "Lespraktijk · Bronnen en argumenten beoordelen",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/werkvormen/"
+      "parent": "page:/werkvormen/",
+      "family": "onderwijs"
     },
     {
       "id": "page:/werkvormen/plan-it-yourself/",
@@ -1637,7 +1782,8 @@
       "kind": "werkvorm",
       "category": "Lespraktijk · Zelfstandigheid en zelfregulatie",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/werkvormen/"
+      "parent": "page:/werkvormen/",
+      "family": "onderwijs"
     },
     {
       "id": "page:/werkvormen/practice-or-reteach/",
@@ -1647,7 +1793,8 @@
       "kind": "werkvorm",
       "category": "Lespraktijk · Hulp en feedback tijdens het leren",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/werkvormen/"
+      "parent": "page:/werkvormen/",
+      "family": "onderwijs"
     },
     {
       "id": "page:/werkvormen/preserve-uncertainty/",
@@ -1657,7 +1804,8 @@
       "kind": "werkvorm",
       "category": "Lespraktijk · Beoordelen en professioneel oordeel",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/werkvormen/"
+      "parent": "page:/werkvormen/",
+      "family": "onderwijs"
     },
     {
       "id": "page:/werkvormen/process-reconstruction/",
@@ -1667,7 +1815,8 @@
       "kind": "werkvorm",
       "category": "Lespraktijk · Zelfstandigheid en zelfregulatie",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/werkvormen/"
+      "parent": "page:/werkvormen/",
+      "family": "onderwijs"
     },
     {
       "id": "page:/werkvormen/prompt-variation-lab/",
@@ -1677,7 +1826,8 @@
       "kind": "werkvorm",
       "category": "Lespraktijk · Opdrachten en de rol van AI",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/werkvormen/"
+      "parent": "page:/werkvormen/",
+      "family": "onderwijs"
     },
     {
       "id": "page:/werkvormen/proportionate-follow-up/",
@@ -1687,7 +1837,8 @@
       "kind": "werkvorm",
       "category": "Lespraktijk · Beoordelen en professioneel oordeel",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/werkvormen/"
+      "parent": "page:/werkvormen/",
+      "family": "onderwijs"
     },
     {
       "id": "page:/werkvormen/rebuttal-reconstruction/",
@@ -1697,7 +1848,8 @@
       "kind": "werkvorm",
       "category": "Lespraktijk · Bronnen en argumenten beoordelen",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/werkvormen/"
+      "parent": "page:/werkvormen/",
+      "family": "onderwijs"
     },
     {
       "id": "page:/werkvormen/reconstruct-professional-judgement/",
@@ -1707,7 +1859,8 @@
       "kind": "werkvorm",
       "category": "Lespraktijk · Beoordelen en professioneel oordeel",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/werkvormen/"
+      "parent": "page:/werkvormen/",
+      "family": "onderwijs"
     },
     {
       "id": "page:/werkvormen/reflective-re-entry/",
@@ -1717,7 +1870,8 @@
       "kind": "werkvorm",
       "category": "Lespraktijk · Denk- en leerproces zichtbaar maken",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/werkvormen/"
+      "parent": "page:/werkvormen/",
+      "family": "onderwijs"
     },
     {
       "id": "page:/werkvormen/resume-control/",
@@ -1727,7 +1881,8 @@
       "kind": "werkvorm",
       "category": "Lespraktijk · Zelfstandigheid en zelfregulatie",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/werkvormen/"
+      "parent": "page:/werkvormen/",
+      "family": "onderwijs"
     },
     {
       "id": "page:/werkvormen/smallest-help-needed/",
@@ -1737,7 +1892,8 @@
       "kind": "werkvorm",
       "category": "Lespraktijk · Zelfstandigheid en zelfregulatie",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/werkvormen/"
+      "parent": "page:/werkvormen/",
+      "family": "onderwijs"
     },
     {
       "id": "page:/werkvormen/source-suitability/",
@@ -1747,7 +1903,8 @@
       "kind": "werkvorm",
       "category": "Lespraktijk · Bronnen en argumenten beoordelen",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/werkvormen/"
+      "parent": "page:/werkvormen/",
+      "family": "onderwijs"
     },
     {
       "id": "page:/werkvormen/source-verification/",
@@ -1757,7 +1914,8 @@
       "kind": "werkvorm",
       "category": "Lespraktijk · Hulp en feedback tijdens het leren",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/werkvormen/"
+      "parent": "page:/werkvormen/",
+      "family": "onderwijs"
     },
     {
       "id": "page:/werkvormen/strategy-switch-from-evidence/",
@@ -1767,7 +1925,8 @@
       "kind": "werkvorm",
       "category": "Lespraktijk · Zelfstandigheid en zelfregulatie",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/werkvormen/"
+      "parent": "page:/werkvormen/",
+      "family": "onderwijs"
     },
     {
       "id": "page:/werkvormen/target-action-first/",
@@ -1777,7 +1936,8 @@
       "kind": "werkvorm",
       "category": "Lespraktijk · Hulp en feedback tijdens het leren",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/werkvormen/"
+      "parent": "page:/werkvormen/",
+      "family": "onderwijs"
     },
     {
       "id": "page:/werkvormen/task-density-scan/",
@@ -1787,7 +1947,8 @@
       "kind": "werkvorm",
       "category": "Lespraktijk · Opdrachten en de rol van AI",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/werkvormen/"
+      "parent": "page:/werkvormen/",
+      "family": "onderwijs"
     },
     {
       "id": "page:/werkvormen/toollab/",
@@ -1797,7 +1958,8 @@
       "kind": "werkvorm",
       "category": "Lespraktijk · Opdrachten en de rol van AI",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/werkvormen/"
+      "parent": "page:/werkvormen/",
+      "family": "onderwijs"
     },
     {
       "id": "page:/werkvormen/trace-back-prompting/",
@@ -1807,7 +1969,8 @@
       "kind": "werkvorm",
       "category": "Lespraktijk · Denk- en leerproces zichtbaar maken",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/werkvormen/"
+      "parent": "page:/werkvormen/",
+      "family": "onderwijs"
     },
     {
       "id": "page:/werkvormen/transfer-task/",
@@ -1817,7 +1980,8 @@
       "kind": "werkvorm",
       "category": "Lespraktijk · Denk- en leerproces zichtbaar maken",
       "review": "gevonden_in_zoekindex",
-      "parent": "page:/werkvormen/"
+      "parent": "page:/werkvormen/",
+      "family": "onderwijs"
     },
     {
       "id": "page:/workshop-ai/",
@@ -1827,7 +1991,8 @@
       "kind": "overig",
       "category": "Lespraktijk · Start hier",
       "review": "gevonden_in_zoekindex",
-      "parent": null
+      "parent": null,
+      "family": "onderwijs"
     }
   ],
   "embedded_items": [
@@ -1838,9 +2003,10 @@
       "name": "Act of Learning",
       "category": "Understand EAI · glossary",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "en/glossary/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/en/glossary/#ai-drift",
@@ -1849,9 +2015,10 @@
       "name": "AI Drift",
       "category": "Understand EAI · glossary",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "en/glossary/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/en/glossary/#answer-machine-era",
@@ -1860,9 +2027,10 @@
       "name": "Answer Machine Era",
       "category": "Understand EAI · glossary",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "en/glossary/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/en/glossary/#closure-bias",
@@ -1871,9 +2039,10 @@
       "name": "Closure Bias",
       "category": "Understand EAI · glossary",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "en/glossary/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/en/glossary/#cognitive-displacement",
@@ -1882,9 +2051,10 @@
       "name": "Cognitive Displacement",
       "category": "Understand EAI · glossary",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "en/glossary/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/en/glossary/#controlled-detachment",
@@ -1893,9 +2063,10 @@
       "name": "Controlled Detachment",
       "category": "Understand EAI · glossary",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "en/glossary/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/en/glossary/#core-learning-action",
@@ -1904,9 +2075,10 @@
       "name": "Core Learning Action",
       "category": "Understand EAI · glossary",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "en/glossary/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/en/glossary/#didactic-controllability",
@@ -1915,9 +2087,10 @@
       "name": "Didactic Controllability",
       "category": "Understand EAI · glossary",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "en/glossary/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/en/glossary/#didactic-distortion",
@@ -1926,9 +2099,10 @@
       "name": "Didactic Distortion",
       "category": "Understand EAI · glossary",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "en/glossary/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/en/glossary/#education-in-the-loop-eitl",
@@ -1937,9 +2111,10 @@
       "name": "Education in the Loop (EITL)",
       "category": "Understand EAI · glossary",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "en/glossary/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/en/glossary/#evidence-function-shift",
@@ -1948,9 +2123,10 @@
       "name": "Evidence-Function Shift",
       "category": "Understand EAI · glossary",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "en/glossary/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/en/glossary/#illusion-of-completeness",
@@ -1959,9 +2135,10 @@
       "name": "Illusion of Completeness",
       "category": "Understand EAI · glossary",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "en/glossary/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/en/glossary/#independent-evidence",
@@ -1970,9 +2147,10 @@
       "name": "Independent Evidence",
       "category": "Understand EAI · glossary",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "en/glossary/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/en/glossary/#justification-mapping",
@@ -1981,9 +2159,10 @@
       "name": "Justification Mapping",
       "category": "Understand EAI · glossary",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "en/glossary/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/en/glossary/#learning-evidence",
@@ -1992,9 +2171,10 @@
       "name": "Learning Evidence",
       "category": "Understand EAI · glossary",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "en/glossary/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/en/glossary/#meaning-making-vs-addition",
@@ -2003,9 +2183,10 @@
       "name": "Meaning-Making vs Addition",
       "category": "Understand EAI · glossary",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "en/glossary/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/en/glossary/#output-evidence",
@@ -2014,9 +2195,10 @@
       "name": "Output Evidence",
       "category": "Understand EAI · glossary",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "en/glossary/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/en/glossary/#oversupport",
@@ -2025,9 +2207,10 @@
       "name": "Oversupport",
       "category": "Understand EAI · glossary",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "en/glossary/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/en/glossary/#presence-vs-performance",
@@ -2036,9 +2219,10 @@
       "name": "Presence vs Performance",
       "category": "Understand EAI · glossary",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "en/glossary/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/en/glossary/#process-evidence",
@@ -2047,9 +2231,10 @@
       "name": "Process Evidence",
       "category": "Understand EAI · glossary",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "en/glossary/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/en/glossary/#pseudo-complexity",
@@ -2058,9 +2243,10 @@
       "name": "Pseudo-Complexity",
       "category": "Understand EAI · glossary",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "en/glossary/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/en/glossary/#question-emergence",
@@ -2069,9 +2255,10 @@
       "name": "Question Emergence",
       "category": "Understand EAI · glossary",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "en/glossary/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/en/glossary/#reflective-re-entry",
@@ -2080,9 +2267,10 @@
       "name": "Reflective Re-Entry",
       "category": "Understand EAI · glossary",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "en/glossary/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/en/glossary/#reverse-scaffolding-eai-meaning",
@@ -2091,9 +2279,10 @@
       "name": "Reverse Scaffolding — EAI meaning",
       "category": "Understand EAI · glossary",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "en/glossary/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/en/glossary/#support-replacement-boundary",
@@ -2102,9 +2291,10 @@
       "name": "Support–Replacement Boundary",
       "category": "Understand EAI · glossary",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "en/glossary/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/en/glossary/#sycophantic-completion",
@@ -2113,9 +2303,10 @@
       "name": "Sycophantic Completion",
       "category": "Understand EAI · glossary",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "en/glossary/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/en/glossary/#task-density",
@@ -2124,9 +2315,10 @@
       "name": "Task Density",
       "category": "Understand EAI · glossary",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "en/glossary/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/en/glossary/#trace-back-prompting",
@@ -2135,9 +2327,10 @@
       "name": "Trace-back Prompting",
       "category": "Understand EAI · glossary",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "en/glossary/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/en/glossary/#truth-apathy",
@@ -2146,9 +2339,10 @@
       "name": "Truth Apathy",
       "category": "Understand EAI · glossary",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "en/glossary/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/en/glossary/#visible-cognitive-work",
@@ -2157,9 +2351,10 @@
       "name": "Visible Cognitive Work",
       "category": "Understand EAI · glossary",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "en/glossary/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/nl/begrippen/#act-of-learning",
@@ -2168,9 +2363,10 @@
       "name": "De handeling van het leren",
       "category": "EAI begrijpen · begrippen",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "nl/begrippen/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/nl/begrippen/#ai-drift",
@@ -2179,9 +2375,10 @@
       "name": "AI-drift",
       "category": "EAI begrijpen · begrippen",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "nl/begrippen/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/nl/begrippen/#answer-machine-era",
@@ -2190,9 +2387,10 @@
       "name": "Tijdperk van de antwoordmachine",
       "category": "EAI begrijpen · begrippen",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "nl/begrippen/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/nl/begrippen/#closure-bias",
@@ -2201,9 +2399,10 @@
       "name": "Afsluitingsneiging (closure bias)",
       "category": "EAI begrijpen · begrippen",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "nl/begrippen/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/nl/begrippen/#cognitive-displacement",
@@ -2212,9 +2411,10 @@
       "name": "Cognitieve verplaatsing",
       "category": "EAI begrijpen · begrippen",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "nl/begrippen/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/nl/begrippen/#controlled-detachment",
@@ -2223,9 +2423,10 @@
       "name": "Gecontroleerde ontkoppeling",
       "category": "EAI begrijpen · begrippen",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "nl/begrippen/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/nl/begrippen/#core-learning-action",
@@ -2234,9 +2435,10 @@
       "name": "Kernhandeling",
       "category": "EAI begrijpen · begrippen",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "nl/begrippen/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/nl/begrippen/#didactic-controllability",
@@ -2245,9 +2447,10 @@
       "name": "Didactische controleerbaarheid",
       "category": "EAI begrijpen · begrippen",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "nl/begrippen/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/nl/begrippen/#didactic-distortion",
@@ -2256,9 +2459,10 @@
       "name": "Didactische vervorming",
       "category": "EAI begrijpen · begrippen",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "nl/begrippen/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/nl/begrippen/#education-in-the-loop-eitl",
@@ -2267,9 +2471,10 @@
       "name": "Education in the Loop (EITL)",
       "category": "EAI begrijpen · begrippen",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "nl/begrippen/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/nl/begrippen/#evidence-function-shift",
@@ -2278,9 +2483,10 @@
       "name": "Verschuiving van de bewijsfunctie",
       "category": "EAI begrijpen · begrippen",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "nl/begrippen/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/nl/begrippen/#illusion-of-completeness",
@@ -2289,9 +2495,10 @@
       "name": "Illusie van volledigheid",
       "category": "EAI begrijpen · begrippen",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "nl/begrippen/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/nl/begrippen/#independent-evidence",
@@ -2300,9 +2507,10 @@
       "name": "Bewijs van zelfstandigheid",
       "category": "EAI begrijpen · begrippen",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "nl/begrippen/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/nl/begrippen/#justification-mapping",
@@ -2311,9 +2519,10 @@
       "name": "Verantwoordingsmapping (keuzes verantwoorden)",
       "category": "EAI begrijpen · begrippen",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "nl/begrippen/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/nl/begrippen/#learning-evidence",
@@ -2322,9 +2531,10 @@
       "name": "Bewijs van leren",
       "category": "EAI begrijpen · begrippen",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "nl/begrippen/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/nl/begrippen/#meaning-making-vs-addition",
@@ -2333,9 +2543,10 @@
       "name": "Betekenis geven versus toevoegen",
       "category": "EAI begrijpen · begrippen",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "nl/begrippen/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/nl/begrippen/#output-evidence",
@@ -2344,9 +2555,10 @@
       "name": "Outputbewijs",
       "category": "EAI begrijpen · begrippen",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "nl/begrippen/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/nl/begrippen/#oversupport",
@@ -2355,9 +2567,10 @@
       "name": "Overondersteuning",
       "category": "EAI begrijpen · begrippen",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "nl/begrippen/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/nl/begrippen/#presence-vs-performance",
@@ -2366,9 +2579,10 @@
       "name": "Cognitieve aanwezigheid versus prestatie",
       "category": "EAI begrijpen · begrippen",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "nl/begrippen/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/nl/begrippen/#process-evidence",
@@ -2377,9 +2591,10 @@
       "name": "Procesbewijs",
       "category": "EAI begrijpen · begrippen",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "nl/begrippen/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/nl/begrippen/#pseudo-complexity",
@@ -2388,9 +2603,10 @@
       "name": "Schijncomplexiteit",
       "category": "EAI begrijpen · begrippen",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "nl/begrippen/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/nl/begrippen/#question-emergence",
@@ -2399,9 +2615,10 @@
       "name": "Het ontstaan van de vraag",
       "category": "EAI begrijpen · begrippen",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "nl/begrippen/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/nl/begrippen/#reflective-re-entry",
@@ -2410,9 +2627,10 @@
       "name": "Reflectieve herintreding",
       "category": "EAI begrijpen · begrippen",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "nl/begrippen/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/nl/begrippen/#reverse-scaffolding-eai-meaning",
@@ -2421,9 +2639,10 @@
       "name": "Reverse scaffolding (EAI-betekenis)",
       "category": "EAI begrijpen · begrippen",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "nl/begrippen/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/nl/begrippen/#support-replacement-boundary",
@@ -2432,9 +2651,10 @@
       "name": "Grens tussen ondersteunen en overnemen",
       "category": "EAI begrijpen · begrippen",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "nl/begrippen/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/nl/begrippen/#sycophantic-completion",
@@ -2443,9 +2663,10 @@
       "name": "Meegaande voltooiing",
       "category": "EAI begrijpen · begrippen",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "nl/begrippen/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/nl/begrippen/#task-density",
@@ -2454,9 +2675,10 @@
       "name": "Taakdichtheid",
       "category": "EAI begrijpen · begrippen",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "nl/begrippen/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/nl/begrippen/#trace-back-prompting",
@@ -2465,9 +2687,10 @@
       "name": "Terugtraceerprompting",
       "category": "EAI begrijpen · begrippen",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "nl/begrippen/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/nl/begrippen/#truth-apathy",
@@ -2476,9 +2699,10 @@
       "name": "Waarheidsapathie",
       "category": "EAI begrijpen · begrippen",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "nl/begrippen/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/nl/begrippen/#visible-cognitive-work",
@@ -2487,9 +2711,10 @@
       "name": "Zichtbaar denkwerk",
       "category": "EAI begrijpen · begrippen",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "nl/begrippen/index.html",
       "link": "direct",
-      "review": "bestaande_benaming"
+      "review": "bestaande_benaming",
+      "family": "model"
     },
     {
       "id": "anchor:/tools/llm-observatorium/#eerdere-tekst",
@@ -2498,7 +2723,7 @@
       "name": "Eerdere tekst",
       "category": "Hoe werkt AI? · AI onderzoeken",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/llm-observatorium/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "ai"
@@ -2510,7 +2735,7 @@
       "name": "Experts",
       "category": "Hoe werkt AI? · AI onderzoeken",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/llm-observatorium/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "ai"
@@ -2522,7 +2747,7 @@
       "name": "Hoeveel tekst?",
       "category": "Hoe werkt AI? · AI onderzoeken",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/llm-observatorium/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "ai"
@@ -2534,7 +2759,7 @@
       "name": "Kosten",
       "category": "Hoe werkt AI? · AI onderzoeken",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/llm-observatorium/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "ai"
@@ -2546,7 +2771,7 @@
       "name": "Opbouw",
       "category": "Hoe werkt AI? · AI onderzoeken",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/llm-observatorium/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "ai"
@@ -2558,7 +2783,7 @@
       "name": "Tekststukjes",
       "category": "Hoe werkt AI? · AI onderzoeken",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/llm-observatorium/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "ai"
@@ -2570,7 +2795,7 @@
       "name": "Volgend stukje",
       "category": "Hoe werkt AI? · AI onderzoeken",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/llm-observatorium/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "ai"
@@ -2582,7 +2807,7 @@
       "name": "Galactische atlas",
       "category": "Heelal en ruimtevaart · Ontdekken met uitleg",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/melkweg-lab/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "heelal"
@@ -2594,7 +2819,7 @@
       "name": "Sagittarius A*",
       "category": "Heelal en ruimtevaart · Ontdekken met uitleg",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/melkweg-lab/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "heelal"
@@ -2606,7 +2831,7 @@
       "name": "Dynamica",
       "category": "Heelal en ruimtevaart · Ontdekken met uitleg",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/melkweg-lab/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "heelal"
@@ -2618,7 +2843,7 @@
       "name": "Meten met Gaia",
       "category": "Heelal en ruimtevaart · Ontdekken met uitleg",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/melkweg-lab/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "heelal"
@@ -2630,7 +2855,7 @@
       "name": "Sterpopulaties",
       "category": "Heelal en ruimtevaart · Ontdekken met uitleg",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/melkweg-lab/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "heelal"
@@ -2642,7 +2867,7 @@
       "name": "Schijf & halo",
       "category": "Heelal en ruimtevaart · Ontdekken met uitleg",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/melkweg-lab/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "heelal"
@@ -2654,7 +2879,7 @@
       "name": "Galactische atlas",
       "category": "Heelal en ruimtevaart · Oorspronkelijk observatorium",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/melkweg.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "heelal"
@@ -2666,7 +2891,7 @@
       "name": "Sagittarius A*",
       "category": "Heelal en ruimtevaart · Oorspronkelijk observatorium",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/melkweg.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "heelal"
@@ -2678,7 +2903,7 @@
       "name": "Dynamica",
       "category": "Heelal en ruimtevaart · Oorspronkelijk observatorium",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/melkweg.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "heelal"
@@ -2690,7 +2915,7 @@
       "name": "Meten met Gaia",
       "category": "Heelal en ruimtevaart · Oorspronkelijk observatorium",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/melkweg.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "heelal"
@@ -2702,7 +2927,7 @@
       "name": "Sterpopulaties",
       "category": "Heelal en ruimtevaart · Oorspronkelijk observatorium",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/melkweg.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "heelal"
@@ -2714,7 +2939,7 @@
       "name": "Schijf & halo",
       "category": "Heelal en ruimtevaart · Oorspronkelijk observatorium",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/melkweg.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "heelal"
@@ -2726,7 +2951,7 @@
       "name": "Eenvoudige wisselstroomschakeling",
       "category": "Natuurkunde · Elektriciteit en magnetisme",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "natuurkunde"
@@ -2738,7 +2963,7 @@
       "name": "Eenparig versnelde beweging",
       "category": "Natuurkunde · Krachten en beweging",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "natuurkunde"
@@ -2750,7 +2975,7 @@
       "name": "Zwevingen",
       "category": "Natuurkunde · Trillingen en golven",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "natuurkunde"
@@ -2762,7 +2987,7 @@
       "name": "Bohr's theorie van het waterstofatoom",
       "category": "Natuurkunde · Atomen en elektronen",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "natuurkunde"
@@ -2774,7 +2999,7 @@
       "name": "Bragg-reflectie",
       "category": "Natuurkunde · Vaste stoffen en kristallen",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "natuurkunde"
@@ -2786,7 +3011,7 @@
       "name": "Opwaartse kracht in vloeistoffen",
       "category": "Natuurkunde · Krachten en beweging",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "natuurkunde"
@@ -2798,7 +3023,7 @@
       "name": "Carousel (centripetale kracht)",
       "category": "Natuurkunde · Krachten en beweging",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "natuurkunde"
@@ -2810,7 +3035,7 @@
       "name": "Radioactieve reeksen",
       "category": "Natuurkunde · Radioactiviteit en atoomkernen",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "natuurkunde"
@@ -2822,7 +3047,7 @@
       "name": "Eenparig cirkelvormige beweging",
       "category": "Natuurkunde · Krachten en beweging",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "natuurkunde"
@@ -2834,7 +3059,7 @@
       "name": "Elastische en onelastische botsing",
       "category": "Natuurkunde · Krachten en beweging",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "natuurkunde"
@@ -2846,7 +3071,7 @@
       "name": "Gekoppelde slinger",
       "category": "Natuurkunde · Trillingen en golven",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "natuurkunde"
@@ -2858,7 +3083,7 @@
       "name": "Newton's wieg",
       "category": "Natuurkunde · Krachten en beweging",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "natuurkunde"
@@ -2870,7 +3095,7 @@
       "name": "Vervalwet",
       "category": "Natuurkunde · Radioactiviteit en atoomkernen",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "natuurkunde"
@@ -2882,7 +3107,7 @@
       "name": "Tijdrek",
       "category": "Natuurkunde · Ruimte en tijd",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "natuurkunde"
@@ -2894,7 +3119,7 @@
       "name": "Doppler effect",
       "category": "Natuurkunde · Trillingen en golven",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "natuurkunde"
@@ -2906,7 +3131,7 @@
       "name": "Interferentie bij dubbele spleet",
       "category": "Natuurkunde · Licht en lenzen",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "natuurkunde"
@@ -2918,7 +3143,7 @@
       "name": "Electromagnetische golven",
       "category": "Natuurkunde · Elektriciteit en magnetisme",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "natuurkunde"
@@ -2930,7 +3155,7 @@
       "name": "Evenwicht van drie krachten",
       "category": "Natuurkunde · Krachten en beweging",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "natuurkunde"
@@ -2942,7 +3167,7 @@
       "name": "Speciale processen in een ideaal gas",
       "category": "Natuurkunde · Warmte en gassen",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "natuurkunde"
@@ -2954,7 +3179,7 @@
       "name": "Generator",
       "category": "Natuurkunde · Elektriciteit en magnetisme",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "natuurkunde"
@@ -2966,7 +3191,7 @@
       "name": "Reflectie en refractie van golven (Principe van Huygens)",
       "category": "Natuurkunde · Licht en lenzen",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "natuurkunde"
@@ -2978,7 +3203,7 @@
       "name": "Vloeistofdruk",
       "category": "Natuurkunde · Krachten en beweging",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "natuurkunde"
@@ -2990,7 +3215,7 @@
       "name": "Hellend vlak",
       "category": "Natuurkunde · Krachten en beweging",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "natuurkunde"
@@ -3002,7 +3227,7 @@
       "name": "Interferentie van twee golven",
       "category": "Natuurkunde · Trillingen en golven",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "natuurkunde"
@@ -3014,7 +3239,7 @@
       "name": "Eerste wet van Kepler",
       "category": "Natuurkunde · Krachten en beweging",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "natuurkunde"
@@ -3026,7 +3251,7 @@
       "name": "Tweede wet van Kepler",
       "category": "Natuurkunde · Krachten en beweging",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "natuurkunde"
@@ -3038,7 +3263,7 @@
       "name": "LC-kring (electromagnetische oscillatie)",
       "category": "Natuurkunde · Elektriciteit en magnetisme",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "natuurkunde"
@@ -3050,7 +3275,7 @@
       "name": "De bolle lens",
       "category": "Natuurkunde · Licht en lenzen",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "natuurkunde"
@@ -3062,7 +3287,7 @@
       "name": "De hefboom",
       "category": "Natuurkunde · Krachten en beweging",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "natuurkunde"
@@ -3074,7 +3299,7 @@
       "name": "Staande longitudinale golven",
       "category": "Natuurkunde · Trillingen en golven",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "natuurkunde"
@@ -3086,7 +3311,7 @@
       "name": "De looping",
       "category": "Natuurkunde · Krachten en beweging",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "natuurkunde"
@@ -3098,7 +3323,7 @@
       "name": "Lorentzkracht",
       "category": "Natuurkunde · Elektriciteit en magnetisme",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "natuurkunde"
@@ -3110,7 +3335,7 @@
       "name": "Magnetisch veld van een staafmagneet",
       "category": "Natuurkunde · Elektriciteit en magnetisme",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "natuurkunde"
@@ -3122,7 +3347,7 @@
       "name": "Magneetveld rond stroomdraad",
       "category": "Natuurkunde · Elektriciteit en magnetisme",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "natuurkunde"
@@ -3134,7 +3359,7 @@
       "name": "Gelijkstroommotor",
       "category": "Natuurkunde · Elektriciteit en magnetisme",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "natuurkunde"
@@ -3146,7 +3371,7 @@
       "name": "Tweede wet van Newton",
       "category": "Natuurkunde · Krachten en beweging",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "natuurkunde"
@@ -3158,7 +3383,7 @@
       "name": "Wet van Ohm",
       "category": "Natuurkunde · Elektriciteit en magnetisme",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "natuurkunde"
@@ -3170,7 +3395,7 @@
       "name": "Slinger",
       "category": "Natuurkunde · Trillingen en golven",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "natuurkunde"
@@ -3182,7 +3407,7 @@
       "name": "Foto-electrisch effect",
       "category": "Natuurkunde · Atomen en elektronen",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "natuurkunde"
@@ -3194,7 +3419,7 @@
       "name": "Potentiometer",
       "category": "Natuurkunde · Elektriciteit en magnetisme",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "natuurkunde"
@@ -3206,7 +3431,7 @@
       "name": "Schuine worp",
       "category": "Natuurkunde · Krachten en beweging",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "natuurkunde"
@@ -3218,7 +3443,7 @@
       "name": "Katrollen",
       "category": "Natuurkunde · Krachten en beweging",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "natuurkunde"
@@ -3230,7 +3455,7 @@
       "name": "Breking van lichtstralen",
       "category": "Natuurkunde · Licht en lenzen",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "natuurkunde"
@@ -3242,7 +3467,7 @@
       "name": "Schakelen van weerstanden",
       "category": "Natuurkunde · Elektriciteit en magnetisme",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "natuurkunde"
@@ -3254,7 +3479,7 @@
       "name": "Ontbinden van vectoren / krachten",
       "category": "Natuurkunde · Krachten en beweging",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "natuurkunde"
@@ -3266,7 +3491,7 @@
       "name": "Gedwongen trillingen (Resonantie)",
       "category": "Natuurkunde · Trillingen en golven",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "natuurkunde"
@@ -3278,7 +3503,7 @@
       "name": "Krachtsresultante (Optellen van vectoren)",
       "category": "Natuurkunde · Krachten en beweging",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "natuurkunde"
@@ -3290,7 +3515,7 @@
       "name": "Combinaties van weerstanden, spoelen en condensatoren",
       "category": "Natuurkunde · Elektriciteit en magnetisme",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "natuurkunde"
@@ -3302,7 +3527,7 @@
       "name": "Diffractie van licht bij een enkele spleet",
       "category": "Natuurkunde · Licht en lenzen",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "natuurkunde"
@@ -3314,7 +3539,7 @@
       "name": "Trillende veer",
       "category": "Natuurkunde · Trillingen en golven",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "natuurkunde"
@@ -3326,7 +3551,7 @@
       "name": "Staande golven",
       "category": "Natuurkunde · Trillingen en golven",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "natuurkunde"
@@ -3338,7 +3563,7 @@
       "name": "Astronomische (lenzen) telescoop",
       "category": "Natuurkunde · Licht en lenzen",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "natuurkunde"
@@ -3350,7 +3575,7 @@
       "name": "Brug van Wheatstone",
       "category": "Natuurkunde · Elektriciteit en magnetisme",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "natuurkunde"
@@ -3362,7 +3587,7 @@
       "name": "Bayesiaans bijstellen",
       "category": "Wiskunde · Wiskunde A",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/wiskunde-a.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "wiskunde"
@@ -3374,7 +3599,7 @@
       "name": "Binomiale verdeling",
       "category": "Wiskunde · Wiskunde A",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/wiskunde-a.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "wiskunde"
@@ -3386,7 +3611,7 @@
       "name": "Normale verdeling",
       "category": "Wiskunde · Wiskunde A",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/wiskunde-a.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "wiskunde"
@@ -3398,7 +3623,7 @@
       "name": "Regressie",
       "category": "Wiskunde · Wiskunde A",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/wiskunde-a.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "wiskunde"
@@ -3410,7 +3635,7 @@
       "name": "Steekproefbias",
       "category": "Wiskunde · Wiskunde A",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/wiskunde-a.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "wiskunde"
@@ -3422,7 +3647,7 @@
       "name": "Hypothesen toetsen",
       "category": "Wiskunde · Wiskunde A",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/wiskunde-a.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "wiskunde"
@@ -3434,7 +3659,7 @@
       "name": "Integreren",
       "category": "Wiskunde · Wiskunde B",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/wiskunde-b.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "wiskunde"
@@ -3446,7 +3671,7 @@
       "name": "Differentiaalvergelijking",
       "category": "Wiskunde · Wiskunde B",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/wiskunde-b.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "wiskunde"
@@ -3458,7 +3683,7 @@
       "name": "Nulpunten zoeken",
       "category": "Wiskunde · Wiskunde B",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/wiskunde-b.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "wiskunde"
@@ -3470,7 +3695,7 @@
       "name": "Optimaliseren",
       "category": "Wiskunde · Wiskunde B",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/wiskunde-b.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "wiskunde"
@@ -3482,7 +3707,7 @@
       "name": "Functies & raaklijnen",
       "category": "Wiskunde · Wiskunde B",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/wiskunde-b.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "wiskunde"
@@ -3494,7 +3719,7 @@
       "name": "Vectoren",
       "category": "Wiskunde · Wiskunde B",
       "source": "publieke_zoekindex",
-      "source_file": null,
+      "source_file": "content/science-observatory/labs/wiskunde-b.html",
       "link": "direct",
       "review": "bestaande_benaming",
       "family": "wiskunde"
@@ -3508,7 +3733,8 @@
       "source": "nl/llmscan/catalogue.js",
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
-      "review": "productnaam_uit_bron"
+      "review": "productnaam_uit_bron",
+      "family": "ai"
     },
     {
       "id": "llmscan:canva-education",
@@ -3519,7 +3745,8 @@
       "source": "nl/llmscan/catalogue.js",
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
-      "review": "productnaam_uit_bron"
+      "review": "productnaam_uit_bron",
+      "family": "ai"
     },
     {
       "id": "llmscan:chatgpt",
@@ -3530,7 +3757,8 @@
       "source": "nl/llmscan/catalogue.js",
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
-      "review": "productnaam_uit_bron"
+      "review": "productnaam_uit_bron",
+      "family": "ai"
     },
     {
       "id": "llmscan:claude-edu",
@@ -3541,7 +3769,8 @@
       "source": "nl/llmscan/catalogue.js",
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
-      "review": "productnaam_uit_bron"
+      "review": "productnaam_uit_bron",
+      "family": "ai"
     },
     {
       "id": "llmscan:copilot-chat",
@@ -3552,7 +3781,8 @@
       "source": "nl/llmscan/catalogue.js",
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
-      "review": "productnaam_uit_bron"
+      "review": "productnaam_uit_bron",
+      "family": "ai"
     },
     {
       "id": "llmscan:copilot-teach",
@@ -3563,7 +3793,8 @@
       "source": "nl/llmscan/catalogue.js",
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
-      "review": "productnaam_uit_bron"
+      "review": "productnaam_uit_bron",
+      "family": "ai"
     },
     {
       "id": "llmscan:diffit",
@@ -3574,7 +3805,8 @@
       "source": "nl/llmscan/catalogue.js",
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
-      "review": "productnaam_uit_bron"
+      "review": "productnaam_uit_bron",
+      "family": "ai"
     },
     {
       "id": "llmscan:gemini",
@@ -3585,7 +3817,8 @@
       "source": "nl/llmscan/catalogue.js",
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
-      "review": "productnaam_uit_bron"
+      "review": "productnaam_uit_bron",
+      "family": "ai"
     },
     {
       "id": "llmscan:guided",
@@ -3596,7 +3829,8 @@
       "source": "nl/llmscan/catalogue.js",
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
-      "review": "productnaam_uit_bron"
+      "review": "productnaam_uit_bron",
+      "family": "ai"
     },
     {
       "id": "llmscan:kahoot",
@@ -3607,7 +3841,8 @@
       "source": "nl/llmscan/catalogue.js",
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
-      "review": "productnaam_uit_bron"
+      "review": "productnaam_uit_bron",
+      "family": "ai"
     },
     {
       "id": "llmscan:khanmigo",
@@ -3618,7 +3853,8 @@
       "source": "nl/llmscan/catalogue.js",
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
-      "review": "productnaam_uit_bron"
+      "review": "productnaam_uit_bron",
+      "family": "ai"
     },
     {
       "id": "llmscan:learn-way",
@@ -3629,7 +3865,8 @@
       "source": "nl/llmscan/catalogue.js",
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
-      "review": "productnaam_uit_bron"
+      "review": "productnaam_uit_bron",
+      "family": "ai"
     },
     {
       "id": "llmscan:lessonup",
@@ -3640,7 +3877,8 @@
       "source": "nl/llmscan/catalogue.js",
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
-      "review": "productnaam_uit_bron"
+      "review": "productnaam_uit_bron",
+      "family": "ai"
     },
     {
       "id": "llmscan:magicschool",
@@ -3651,7 +3889,8 @@
       "source": "nl/llmscan/catalogue.js",
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
-      "review": "productnaam_uit_bron"
+      "review": "productnaam_uit_bron",
+      "family": "ai"
     },
     {
       "id": "llmscan:model-claude-fable-5-1-9",
@@ -3662,7 +3901,8 @@
       "source": "nl/llmscan/catalogue.js",
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
-      "review": "productnaam_uit_bron"
+      "review": "productnaam_uit_bron",
+      "family": "ai"
     },
     {
       "id": "llmscan:model-claude-haiku-5-5-0",
@@ -3673,7 +3913,8 @@
       "source": "nl/llmscan/catalogue.js",
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
-      "review": "productnaam_uit_bron"
+      "review": "productnaam_uit_bron",
+      "family": "ai"
     },
     {
       "id": "llmscan:model-claude-opus-5-11",
@@ -3684,7 +3925,8 @@
       "source": "nl/llmscan/catalogue.js",
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
-      "review": "productnaam_uit_bron"
+      "review": "productnaam_uit_bron",
+      "family": "ai"
     },
     {
       "id": "llmscan:model-claude-opus-5-5-4",
@@ -3695,7 +3937,8 @@
       "source": "nl/llmscan/catalogue.js",
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
-      "review": "productnaam_uit_bron"
+      "review": "productnaam_uit_bron",
+      "family": "ai"
     },
     {
       "id": "llmscan:model-claude-sonnet-5-5-6",
@@ -3706,7 +3949,8 @@
       "source": "nl/llmscan/catalogue.js",
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
-      "review": "productnaam_uit_bron"
+      "review": "productnaam_uit_bron",
+      "family": "ai"
     },
     {
       "id": "llmscan:model-deepseek-v4-1-flash-26",
@@ -3717,7 +3961,8 @@
       "source": "nl/llmscan/catalogue.js",
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
-      "review": "productnaam_uit_bron"
+      "review": "productnaam_uit_bron",
+      "family": "ai"
     },
     {
       "id": "llmscan:model-gemini-3-8-flash-22",
@@ -3728,7 +3973,8 @@
       "source": "nl/llmscan/catalogue.js",
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
-      "review": "productnaam_uit_bron"
+      "review": "productnaam_uit_bron",
+      "family": "ai"
     },
     {
       "id": "llmscan:model-gemini-3-8-flash-medium-16",
@@ -3739,7 +3985,8 @@
       "source": "nl/llmscan/catalogue.js",
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
-      "review": "productnaam_uit_bron"
+      "review": "productnaam_uit_bron",
+      "family": "ai"
     },
     {
       "id": "llmscan:model-gemini-4-argon-2",
@@ -3750,7 +3997,8 @@
       "source": "nl/llmscan/catalogue.js",
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
-      "review": "productnaam_uit_bron"
+      "review": "productnaam_uit_bron",
+      "family": "ai"
     },
     {
       "id": "llmscan:model-glm-5-3-14",
@@ -3761,7 +4009,8 @@
       "source": "nl/llmscan/catalogue.js",
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
-      "review": "productnaam_uit_bron"
+      "review": "productnaam_uit_bron",
+      "family": "ai"
     },
     {
       "id": "llmscan:model-glm-5-3-flash-21",
@@ -3772,7 +4021,8 @@
       "source": "nl/llmscan/catalogue.js",
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
-      "review": "productnaam_uit_bron"
+      "review": "productnaam_uit_bron",
+      "family": "ai"
     },
     {
       "id": "llmscan:model-gpt-5-6-luna-17",
@@ -3783,7 +4033,8 @@
       "source": "nl/llmscan/catalogue.js",
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
-      "review": "productnaam_uit_bron"
+      "review": "productnaam_uit_bron",
+      "family": "ai"
     },
     {
       "id": "llmscan:model-gpt-5-6-sol-13",
@@ -3794,7 +4045,8 @@
       "source": "nl/llmscan/catalogue.js",
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
-      "review": "productnaam_uit_bron"
+      "review": "productnaam_uit_bron",
+      "family": "ai"
     },
     {
       "id": "llmscan:model-gpt-5-6-terra-20",
@@ -3805,7 +4057,8 @@
       "source": "nl/llmscan/catalogue.js",
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
-      "review": "productnaam_uit_bron"
+      "review": "productnaam_uit_bron",
+      "family": "ai"
     },
     {
       "id": "llmscan:model-gpt-6-1-sol-5",
@@ -3816,7 +4069,8 @@
       "source": "nl/llmscan/catalogue.js",
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
-      "review": "productnaam_uit_bron"
+      "review": "productnaam_uit_bron",
+      "family": "ai"
     },
     {
       "id": "llmscan:model-gpt-6-astra-10",
@@ -3827,7 +4081,8 @@
       "source": "nl/llmscan/catalogue.js",
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
-      "review": "productnaam_uit_bron"
+      "review": "productnaam_uit_bron",
+      "family": "ai"
     },
     {
       "id": "llmscan:model-gpt-6-luna-8",
@@ -3838,7 +4093,8 @@
       "source": "nl/llmscan/catalogue.js",
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
-      "review": "productnaam_uit_bron"
+      "review": "productnaam_uit_bron",
+      "family": "ai"
     },
     {
       "id": "llmscan:model-gpt-6-sol-7",
@@ -3849,7 +4105,8 @@
       "source": "nl/llmscan/catalogue.js",
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
-      "review": "productnaam_uit_bron"
+      "review": "productnaam_uit_bron",
+      "family": "ai"
     },
     {
       "id": "llmscan:model-gpt-nl-3",
@@ -3860,7 +4117,8 @@
       "source": "nl/llmscan/catalogue.js",
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
-      "review": "productnaam_uit_bron"
+      "review": "productnaam_uit_bron",
+      "family": "ai"
     },
     {
       "id": "llmscan:model-grok-4-6-18",
@@ -3871,7 +4129,8 @@
       "source": "nl/llmscan/catalogue.js",
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
-      "review": "productnaam_uit_bron"
+      "review": "productnaam_uit_bron",
+      "family": "ai"
     },
     {
       "id": "llmscan:model-k2-horizon-27",
@@ -3882,7 +4141,8 @@
       "source": "nl/llmscan/catalogue.js",
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
-      "review": "productnaam_uit_bron"
+      "review": "productnaam_uit_bron",
+      "family": "ai"
     },
     {
       "id": "llmscan:model-kimi-k3-19",
@@ -3893,7 +4153,8 @@
       "source": "nl/llmscan/catalogue.js",
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
-      "review": "productnaam_uit_bron"
+      "review": "productnaam_uit_bron",
+      "family": "ai"
     },
     {
       "id": "llmscan:model-mistral-large-4-1",
@@ -3904,7 +4165,8 @@
       "source": "nl/llmscan/catalogue.js",
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
-      "review": "productnaam_uit_bron"
+      "review": "productnaam_uit_bron",
+      "family": "ai"
     },
     {
       "id": "llmscan:model-mistral-medium-3-5-29",
@@ -3915,7 +4177,8 @@
       "source": "nl/llmscan/catalogue.js",
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
-      "review": "productnaam_uit_bron"
+      "review": "productnaam_uit_bron",
+      "family": "ai"
     },
     {
       "id": "llmscan:model-muse-spark-1-3-12",
@@ -3926,7 +4189,8 @@
       "source": "nl/llmscan/catalogue.js",
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
-      "review": "productnaam_uit_bron"
+      "review": "productnaam_uit_bron",
+      "family": "ai"
     },
     {
       "id": "llmscan:model-qwen-3-8-2-4t-24",
@@ -3937,7 +4201,8 @@
       "source": "nl/llmscan/catalogue.js",
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
-      "review": "productnaam_uit_bron"
+      "review": "productnaam_uit_bron",
+      "family": "ai"
     },
     {
       "id": "llmscan:model-qwen-3-8-flash-next-25",
@@ -3948,7 +4213,8 @@
       "source": "nl/llmscan/catalogue.js",
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
-      "review": "productnaam_uit_bron"
+      "review": "productnaam_uit_bron",
+      "family": "ai"
     },
     {
       "id": "llmscan:model-qwen-3-8-max-23",
@@ -3959,7 +4225,8 @@
       "source": "nl/llmscan/catalogue.js",
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
-      "review": "productnaam_uit_bron"
+      "review": "productnaam_uit_bron",
+      "family": "ai"
     },
     {
       "id": "llmscan:model-solar-pro-4-28",
@@ -3970,7 +4237,8 @@
       "source": "nl/llmscan/catalogue.js",
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
-      "review": "productnaam_uit_bron"
+      "review": "productnaam_uit_bron",
+      "family": "ai"
     },
     {
       "id": "llmscan:model-step-5-preview-15",
@@ -3981,7 +4249,8 @@
       "source": "nl/llmscan/catalogue.js",
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
-      "review": "productnaam_uit_bron"
+      "review": "productnaam_uit_bron",
+      "family": "ai"
     },
     {
       "id": "llmscan:notebook",
@@ -3992,7 +4261,8 @@
       "source": "nl/llmscan/catalogue.js",
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
-      "review": "productnaam_uit_bron"
+      "review": "productnaam_uit_bron",
+      "family": "ai"
     },
     {
       "id": "llmscan:perplexity",
@@ -4003,7 +4273,8 @@
       "source": "nl/llmscan/catalogue.js",
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
-      "review": "productnaam_uit_bron"
+      "review": "productnaam_uit_bron",
+      "family": "ai"
     },
     {
       "id": "llmscan:quizlet",
@@ -4014,7 +4285,8 @@
       "source": "nl/llmscan/catalogue.js",
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
-      "review": "productnaam_uit_bron"
+      "review": "productnaam_uit_bron",
+      "family": "ai"
     },
     {
       "id": "llmscan:schoolai",
@@ -4025,7 +4297,8 @@
       "source": "nl/llmscan/catalogue.js",
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
-      "review": "productnaam_uit_bron"
+      "review": "productnaam_uit_bron",
+      "family": "ai"
     },
     {
       "id": "llmscan:study-mode",
@@ -4036,7 +4309,8 @@
       "source": "nl/llmscan/catalogue.js",
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
-      "review": "productnaam_uit_bron"
+      "review": "productnaam_uit_bron",
+      "family": "ai"
     },
     {
       "id": "llmscan:teens",
@@ -4047,7 +4321,8 @@
       "source": "nl/llmscan/catalogue.js",
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
-      "review": "productnaam_uit_bron"
+      "review": "productnaam_uit_bron",
+      "family": "ai"
     },
     {
       "id": "llmscan:wayground",
@@ -4058,7 +4333,8 @@
       "source": "nl/llmscan/catalogue.js",
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
-      "review": "productnaam_uit_bron"
+      "review": "productnaam_uit_bron",
+      "family": "ai"
     },
     {
       "id": "taal:taal-01",
@@ -4069,7 +4345,8 @@
       "source": "content/taalwerkvormen-page.html",
       "source_file": "content/taalwerkvormen-page.html",
       "link": "direct",
-      "review": "bronbenaming"
+      "review": "bronbenaming",
+      "family": "onderwijs"
     },
     {
       "id": "taal:taal-02",
@@ -4080,7 +4357,8 @@
       "source": "content/taalwerkvormen-page.html",
       "source_file": "content/taalwerkvormen-page.html",
       "link": "direct",
-      "review": "bronbenaming"
+      "review": "bronbenaming",
+      "family": "onderwijs"
     },
     {
       "id": "taal:taal-03",
@@ -4091,7 +4369,8 @@
       "source": "content/taalwerkvormen-page.html",
       "source_file": "content/taalwerkvormen-page.html",
       "link": "direct",
-      "review": "bronbenaming"
+      "review": "bronbenaming",
+      "family": "onderwijs"
     },
     {
       "id": "taal:taal-04",
@@ -4102,7 +4381,8 @@
       "source": "content/taalwerkvormen-page.html",
       "source_file": "content/taalwerkvormen-page.html",
       "link": "direct",
-      "review": "bronbenaming"
+      "review": "bronbenaming",
+      "family": "onderwijs"
     },
     {
       "id": "taal:taal-05",
@@ -4113,7 +4393,8 @@
       "source": "content/taalwerkvormen-page.html",
       "source_file": "content/taalwerkvormen-page.html",
       "link": "direct",
-      "review": "bronbenaming"
+      "review": "bronbenaming",
+      "family": "onderwijs"
     },
     {
       "id": "taal:taal-06",
@@ -4124,7 +4405,8 @@
       "source": "content/taalwerkvormen-page.html",
       "source_file": "content/taalwerkvormen-page.html",
       "link": "direct",
-      "review": "bronbenaming"
+      "review": "bronbenaming",
+      "family": "onderwijs"
     },
     {
       "id": "taal:taal-07",
@@ -4135,7 +4417,8 @@
       "source": "content/taalwerkvormen-page.html",
       "source_file": "content/taalwerkvormen-page.html",
       "link": "direct",
-      "review": "bronbenaming"
+      "review": "bronbenaming",
+      "family": "onderwijs"
     },
     {
       "id": "taal:taal-08",
@@ -4146,7 +4429,8 @@
       "source": "content/taalwerkvormen-page.html",
       "source_file": "content/taalwerkvormen-page.html",
       "link": "direct",
-      "review": "bronbenaming"
+      "review": "bronbenaming",
+      "family": "onderwijs"
     },
     {
       "id": "taal:taal-09",
@@ -4157,7 +4441,8 @@
       "source": "content/taalwerkvormen-page.html",
       "source_file": "content/taalwerkvormen-page.html",
       "link": "direct",
-      "review": "bronbenaming"
+      "review": "bronbenaming",
+      "family": "onderwijs"
     },
     {
       "id": "taal:taal-10",
@@ -4168,7 +4453,8 @@
       "source": "content/taalwerkvormen-page.html",
       "source_file": "content/taalwerkvormen-page.html",
       "link": "direct",
-      "review": "bronbenaming"
+      "review": "bronbenaming",
+      "family": "onderwijs"
     },
     {
       "id": "taal:taal-11",
@@ -4179,7 +4465,8 @@
       "source": "content/taalwerkvormen-page.html",
       "source_file": "content/taalwerkvormen-page.html",
       "link": "direct",
-      "review": "bronbenaming"
+      "review": "bronbenaming",
+      "family": "onderwijs"
     },
     {
       "id": "taal:taal-12",
@@ -4190,7 +4477,8 @@
       "source": "content/taalwerkvormen-page.html",
       "source_file": "content/taalwerkvormen-page.html",
       "link": "direct",
-      "review": "bronbenaming"
+      "review": "bronbenaming",
+      "family": "onderwijs"
     },
     {
       "id": "taal:taal-13",
@@ -4201,7 +4489,8 @@
       "source": "content/taalwerkvormen-page.html",
       "source_file": "content/taalwerkvormen-page.html",
       "link": "direct",
-      "review": "bronbenaming"
+      "review": "bronbenaming",
+      "family": "onderwijs"
     },
     {
       "id": "taal:taal-14",
@@ -4212,7 +4501,8 @@
       "source": "content/taalwerkvormen-page.html",
       "source_file": "content/taalwerkvormen-page.html",
       "link": "direct",
-      "review": "bronbenaming"
+      "review": "bronbenaming",
+      "family": "onderwijs"
     },
     {
       "id": "taal:taal-15",
@@ -4223,10 +4513,14 @@
       "source": "content/taalwerkvormen-page.html",
       "source_file": "content/taalwerkvormen-page.html",
       "link": "direct",
-      "review": "bronbenaming"
+      "review": "bronbenaming",
+      "family": "onderwijs"
     }
   ],
   "html_sources": [
+    {
+      "path": "404.html"
+    },
     {
       "path": "content/abyss/ABYSS.html"
     },
@@ -4389,6 +4683,11 @@
       "/tools/",
       "/verdieping/"
     ],
-    "orphan_items": []
+    "orphan_items": [],
+    "additional_html_files": 40,
+    "all_html_files": 217,
+    "pages_not_in_public_search": 34,
+    "page_families_needing_review": 2,
+    "redirect_title_candidates": 9
   }
 }
