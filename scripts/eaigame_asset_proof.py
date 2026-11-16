@@ -20,12 +20,24 @@ from pathlib import Path
 DEST = Path("build/eaigame-asset-proof")
 MAX_DOWNLOAD = 70 * 1024 * 1024
 MAX_ARCHIVE_TOTAL = 200 * 1024 * 1024
-SOURCES = [
-    ("kenney-nature", "https://kenney.nl/media/pages/assets/nature-kit/37ac38a37b-1677698939/kenney_nature-kit.zip",
-     [["tree", 2], ["rock", 2], ["bush", 1]]),
-    ("kenney-town", "https://kenney.nl/media/pages/assets/fantasy-town-kit/efe948d309-1754222374/kenney_fantasy-town-kit_2.0.zip",
-     [["house", 2], ["tower", 1], ["wall", 1], ["market", 1]]),
-]
+KENNEY_MIRROR_REPO = "shorepine/kenney"
+KENNEY_MIRROR_SHA = "3694c6879e487c108f55677be7dd2ca75b07cc3b"
+KENNEY_SELECTED = {
+    "nature-kit": [
+        "tree_oak.glb", "tree_detailed.glb", "rock_largeA.glb",
+        "rock_smallA.glb", "grass_large.glb", "bridge_wood.glb",
+        "cliff_stone.glb", "ground_pathStraight.glb",
+    ],
+    "fantasy-town": [
+        "wall-broken.glb", "wall-door.glb", "roof-gable.glb",
+        "planks.glb", "lantern.glb",
+    ],
+}
+KENNEY_PUBLISHER_PAGES = {
+    "nature-kit": "https://kenney.nl/assets/nature-kit",
+    "fantasy-town": "https://kenney.nl/assets/fantasy-town-kit",
+}
+
 MEDIEVAL_REPO = "KayKit-Game-Assets/KayKit-Medieval-Hexagon-Pack-1.0"
 MEDIEVAL_SHA = "84fa4e91af6a88989be7c99e0891cede11f2ca38"
 MEDIEVAL_BASE = "addons/kaykit_medieval_hexagon_pack/Assets/gltf/"
@@ -100,75 +112,65 @@ def gltf_sidecars(model_id: str, gltf_bytes: bytes, source: str, read_dep) -> No
     save(model_id, "model.gltf", json.dumps(gltf, separators=(",", ":")).encode(), source,
          f"GLTF with {len(external)} external dependencies: {', '.join(external)}")
 
-def extract_kenney(source_id: str, download_url: str, groups: list) -> None:
-    print("Downloading", source_id)
-    raw = get(download_url)
-    if not zipfile.is_zipfile(io.BytesIO(raw)):
-        raise ValueError("Publisher download is not a ZIP archive")
-    with zipfile.ZipFile(io.BytesIO(raw)) as z:
-        files = {x.filename: x for x in z.infolist() if not x.is_dir()}
-        if sum(x.file_size for x in files.values()) > MAX_ARCHIVE_TOTAL:
-            raise ValueError("Archive uncompressed contents too large")
-        candidates = [name for name in files if name.lower().endswith((".glb", ".gltf"))]
-        model_groups = {}
-        for tag, needed in groups:
-            found = [
-                name for name in candidates
-                if tag in posixpath.basename(name).lower()
-            ]
-            found.sort(key=lambda s: (
-                0 if s.lower().endswith(".glb") else 1,
-                len(s), s.lower()
-            ))
-            used_stems = {
-                posixpath.splitext(posixpath.basename(x))[0].lower()
-                for x in model_groups.values()
-            }
-            selected = []
-            for name in found:
-                stem = posixpath.splitext(posixpath.basename(name))[0].lower()
-                if stem not in used_stems:
-                    selected.append(name)
-                    used_stems.add(stem)
-                if len(selected) >= needed:
-                    break
-            if len(selected) < needed:
-                warnings.append(f"{source_id}: selected {len(selected)}/{needed} for '{tag}'")
-            for n, name in enumerate(selected):
-                model_groups[f"{tag}-{n+1}"] = name
+def glb_external_resources(blob: bytes) -> list[str]:
+    if len(blob) < 20 or blob[:4] != b"glTF":
+        raise ValueError("Invalid GLB header")
+    import struct
+    version, total_size = struct.unpack_from("<II", blob, 4)
+    if version != 2 or total_size != len(blob):
+        raise ValueError("Unsupported or truncated GLB")
+    json_size, chunk_type = struct.unpack_from("<II", blob, 12)
+    if chunk_type != 0x4E4F534A or 20 + json_size > len(blob):
+        raise ValueError("Invalid GLB JSON chunk")
+    metadata = json.loads(blob[20:20+json_size])
+    required = []
+    for key in ("buffers", "images"):
+        for entry in metadata.get(key, []):
+            uri = entry.get("uri", "")
+            if not uri or uri.startswith("data:"):
+                continue
+            if (urllib.parse.urlparse(uri).scheme or uri.startswith("/") or
+                    ".." in posixpath.normpath(uri).split("/")):
+                raise ValueError(f"Invalid external resource URI: {uri}")
+            required.append(uri)
+    return sorted(set(required))
 
-        for key, name in model_groups.items():
-            model_id = f"{source_id}-{key}"
-            raw_model = z.read(name)
-            if name.lower().endswith(".glb"):
-                if raw_model[:4] != b"glTF":
-                    raise ValueError(f"Invalid GLB header: {name}")
-                save(model_id, "model.glb", raw_model, download_url,
-                     f"Selected from {name}")
-            else:
-                parent = posixpath.dirname(name)
-                def get_zip_dep(uri: str) -> bytes:
-                    path = posixpath.normpath(posixpath.join(parent, urllib.parse.unquote(uri)))
-                    if path.startswith("../") or path not in files:
-                        raise ValueError(f"GLTF dependency not in pack: {path}")
-                    return z.read(path)
-                gltf_sidecars(model_id, raw_model, download_url, get_zip_dep)
 
-        licenses = [
-            k for k in files
-            if posixpath.basename(k).lower() in ("license.txt", "licence.txt")
-        ]
-        for license_name in licenses[:1]:
-            save(f"{source_id}-license", "LICENSE.txt", z.read(license_name), download_url,
-                 "Publisher license included in source ZIP")
+def extract_kenney_mirror() -> None:
+    for pack, models in KENNEY_SELECTED.items():
+        count = 0
+        for name in models:
+            model_id = f"kenney-{pack}-{Path(name).stem}"
+            rel = f"3d/{'nature' if pack == 'nature-kit' else 'fantasy-town'}/{name}"
+            url = raw_github(KENNEY_MIRROR_REPO, KENNEY_MIRROR_SHA, rel)
+            try:
+                blob = get(url)
+                dependencies = glb_external_resources(blob)
+                for uri in dependencies:
+                    parent = posixpath.dirname(rel)
+                    dependency_path = posixpath.normpath(posixpath.join(parent, uri))
+                    if not dependency_path.startswith("3d/"):
+                        raise ValueError("External GLB resource outside asset directory")
+                    dep_url = raw_github(KENNEY_MIRROR_REPO, KENNEY_MIRROR_SHA,
+                                         dependency_path)
+                    dep = get(dep_url)
+                    save(model_id, uri, dep, dep_url, "Required external GLB texture")
+                save(model_id, "model.glb", blob, url,
+                     f"Re-export mirror of publisher pack {pack}. Asset: {name}")
+                count += 1
+            except Exception as exc:
+                warnings.append(f"{pack}/{name}: {type(exc).__name__}: {exc}")
         archives.append({
-            "sourceId": source_id, "publisher": "Kenney", "licenseClaimed": "CC0",
-            "publisherPage": f"https://kenney.nl/assets/{'nature-kit' if source_id == 'kenney-nature' else 'fantasy-town-kit'}",
-            "downloadUrl": download_url, "sourceArchiveSha256": sha256(raw),
-            "sourceArchiveBytes": len(raw), "selectedModels": len(model_groups),
-            "availableModelFiles": len(candidates), "licenseFileIncluded": bool(licenses),
+            "sourceId": f"kenney-{pack}", "publisher": "Kenney",
+            "publisherPage": KENNEY_PUBLISHER_PAGES[pack],
+            "repositoryMirror": KENNEY_MIRROR_REPO,
+            "mirrorCommit": KENNEY_MIRROR_SHA,
+            "licenseClaimed": "CC0", "selectedModels": count,
+            "plannedModels": len(models),
+            "note": "GitHub mirror supplies re-exported GLBs. Publisher ZIP inaccessible; "
+                    "not source-identical to upstream ZIP. Must inspect final models visually.",
         })
-        print(f"{source_id}: {len(model_groups)} models, {len(candidates)} candidate files, source {len(raw)} bytes")
+        print(f"Kenney {pack}: {count}/{len(models)} verified GLB downloads")
 
 def raw_github(repo: str, sha: str, path: str) -> str:
     return f"https://raw.githubusercontent.com/{repo}/{sha}/{path}"
@@ -215,12 +217,11 @@ def extract_character() -> None:
 
 def main() -> None:
     DEST.mkdir(parents=True, exist_ok=True)
-    for source_id, download_url, groups in SOURCES:
-        try:
-            extract_kenney(source_id, download_url, groups)
-        except Exception as exc:
-            warnings.append(f"{source_id}: download/extraction unavailable: {type(exc).__name__}: {exc}")
-            print(warnings[-1])
+    try:
+        extract_kenney_mirror()
+    except Exception as exc:
+        warnings.append(f"kenney-mirror: {type(exc).__name__}: {exc}")
+        print(warnings[-1])
     try:
         extract_kaykit()
     except Exception as exc:
