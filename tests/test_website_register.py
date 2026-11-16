@@ -10,7 +10,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "scripts"))
 
-from check_website_register import check, extract_physics, extract_math, extract_taal, extract_llmscan
+from check_website_register import check, extract_physics, extract_math, extract_taal, extract_llmscan, extract_glossary
 
 
 class WebsiteRegisterTests(unittest.TestCase):
@@ -28,6 +28,8 @@ class WebsiteRegisterTests(unittest.TestCase):
         self.assertEqual(6, len(extract_math(ROOT, "b")))
         self.assertEqual(15, len(extract_taal(ROOT)))
         self.assertEqual(51, len(extract_llmscan(ROOT)))
+        self.assertEqual(30, len(extract_glossary(ROOT, "nl")))
+        self.assertEqual(30, len(extract_glossary(ROOT, "en")))
 
     def test_missing_page_is_rejected(self):
         altered = copy.deepcopy(self.register)
@@ -43,6 +45,12 @@ class WebsiteRegisterTests(unittest.TestCase):
         ]
         problems = check(ROOT, altered, self.taxonomy)
         self.assertTrue(any("Natuurkunde: register en bron komen niet overeen" in p for p in problems))
+
+    def test_missing_collection_member_is_rejected(self):
+        altered = copy.deepcopy(self.register)
+        altered["collections"][0]["members"].append("page:/geen-bestaande-pagina/")
+        problems = check(ROOT, altered, self.taxonomy)
+        self.assertTrue(any("Verzameling verwijst naar ontbrekende pagina" in p for p in problems))
 
     def test_duplicate_item_is_rejected(self):
         altered = copy.deepcopy(self.register)
