@@ -10,7 +10,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "scripts"))
 
-from check_website_register import check, extract_physics, extract_math, extract_taal, extract_llmscan, extract_glossary
+from check_website_register import check, extract_physics, extract_math, extract_taal, extract_llmscan, extract_glossary, extract_wihtml
 
 
 class WebsiteRegisterTests(unittest.TestCase):
@@ -30,6 +30,7 @@ class WebsiteRegisterTests(unittest.TestCase):
         self.assertEqual(51, len(extract_llmscan(ROOT)))
         self.assertEqual(30, len(extract_glossary(ROOT, "nl")))
         self.assertEqual(30, len(extract_glossary(ROOT, "en")))
+        self.assertEqual(2, len(extract_wihtml(ROOT)))
 
     def test_missing_page_is_rejected(self):
         altered = copy.deepcopy(self.register)
