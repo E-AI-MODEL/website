@@ -167,16 +167,22 @@ def verify_live(base: str, manifest: dict, timeout: int, root: Path):
                 soup = BeautifulSoup(data, 'html.parser')
                 assert soup.body.get('data-ui-version') == manifest['version'], f'Stale UI: {path}'
                 assert soup.select_one('.eai-site-menu'), path
-            leif_expected = hashlib.sha256((root / 'leif/index.html').read_bytes()).hexdigest()
-            assert hashlib.sha256(get('/leif/')).hexdigest() == leif_expected, 'LEIF is missing or out of date'
-            continuation = root / 'leif/continue/index.html'
-            if continuation.exists():
-                expected_continuation = hashlib.sha256(continuation.read_bytes()).hexdigest()
-                assert hashlib.sha256(get('/leif/continue/')).hexdigest() == expected_continuation, 'LEIF continuation is missing or out of date'
-            story = root / 'leif/verhaal/index.html'
-            if story.exists():
-                expected_story = hashlib.sha256(story.read_bytes()).hexdigest()
-                assert hashlib.sha256(get('/leif/verhaal/')).hexdigest() == expected_story, 'LEIF personal reader is missing or out of date'
+            # Cloudflare also injects its strictly validated RUM beacon into
+            # the standalone LEIF pages. Do not weaken the byte-exact release
+            # check: html_matches_release permits only that verified script.
+            for relative, url, label in (
+                ('leif/index.html', '/leif/', 'LEIF is missing or out of date'),
+                ('leif/continue/index.html', '/leif/continue/', 'LEIF continuation is missing or out of date'),
+                ('leif/verhaal/index.html', '/leif/verhaal/', 'LEIF personal reader is missing or out of date'),
+            ):
+                local = root / relative
+                if not local.exists() and relative != 'leif/index.html':
+                    continue
+                expected = hashlib.sha256(local.read_bytes()).hexdigest()
+                matched, edge_beacon = html_matches_release(get(url), expected)
+                assert matched, label
+                if edge_beacon:
+                    print(f'Cloudflare RUM injection verified without weakening HTML hash: {url}', flush=True)
             # Controleer ook de zelfstandige tools die niet door de UI-builder zijn herschreven.
             for relative in ('tools/eaimesh/start/index.html',
                              'tools/eaistudio/studio/index.html',
