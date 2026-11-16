@@ -142,9 +142,11 @@
       "title": "Doorverwijzing naar hulpmiddelen",
       "kind": "doorverwijzing",
       "category": null,
-      "review": "doorverwijzing_doel_controleren",
+      "review": "doel_als_bron_genoteerd_niet_live_gecontroleerd",
       "parent": null,
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "page_status": "meta_redirect_verified",
+      "redirect_target": "/tools/"
     },
     {
       "id": "page:/eai-tools-modules/act-of-learning-game-2/",
@@ -153,9 +155,11 @@
       "title": "Doorverwijzing naar The Act of Learning (spel)",
       "kind": "doorverwijzing",
       "category": null,
-      "review": "doorverwijzing_doel_controleren",
+      "review": "doel_als_bron_genoteerd_niet_live_gecontroleerd",
       "parent": "page:/eai-tools-modules/",
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "page_status": "meta_redirect_verified",
+      "redirect_target": "https://rainbow-tarsier-a88e9b.netlify.app/"
     },
     {
       "id": "page:/eai-tools-modules/eaa-model-tool/",
@@ -164,9 +168,11 @@
       "title": "Doorverwijzing naar EAA Model",
       "kind": "doorverwijzing",
       "category": null,
-      "review": "doorverwijzing_doel_controleren",
+      "review": "doel_als_bron_genoteerd_niet_live_gecontroleerd",
       "parent": "page:/eai-tools-modules/",
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "page_status": "meta_redirect_verified",
+      "redirect_target": "https://sunny-blancmange-dec4a1.netlify.app"
     },
     {
       "id": "page:/eai-tools-modules/eai-eduprompt-builder/",
@@ -175,9 +181,11 @@
       "title": "Doorverwijzing naar EAI Eduprompt Builder",
       "kind": "doorverwijzing",
       "category": null,
-      "review": "doorverwijzing_doel_controleren",
+      "review": "doel_als_bron_genoteerd_niet_live_gecontroleerd",
       "parent": "page:/eai-tools-modules/",
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "page_status": "meta_redirect_verified",
+      "redirect_target": "https://eai-prompt.lovable.app/"
     },
     {
       "id": "page:/eai-tools-modules/eai-toolanalyse/",
@@ -186,9 +194,11 @@
       "title": "Doorverwijzing naar EAI Toolanalyse",
       "kind": "doorverwijzing",
       "category": null,
-      "review": "doorverwijzing_doel_controleren",
+      "review": "doel_als_bron_genoteerd_niet_live_gecontroleerd",
       "parent": "page:/eai-tools-modules/",
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "page_status": "meta_redirect_verified",
+      "redirect_target": "https://subtle-churros-4d44d5.netlify.app"
     },
     {
       "id": "page:/eai-tools-modules/eai-toolkit-beyond-explainability/",
@@ -197,9 +207,11 @@
       "title": "Doorverwijzing naar Beyond Explainability",
       "kind": "doorverwijzing",
       "category": null,
-      "review": "doorverwijzing_doel_controleren",
+      "review": "doel_als_bron_genoteerd_niet_live_gecontroleerd",
       "parent": "page:/eai-tools-modules/",
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "page_status": "meta_redirect_verified",
+      "redirect_target": "/tools/beyond-explainability/"
     },
     {
       "id": "page:/eai-tools-modules/eai-toolkit-the-act-of-learning-en/",
@@ -208,9 +220,11 @@
       "title": "Doorverwijzing naar The Act of Learning",
       "kind": "doorverwijzing",
       "category": null,
-      "review": "doorverwijzing_doel_controleren",
+      "review": "doel_als_bron_genoteerd_niet_live_gecontroleerd",
       "parent": "page:/eai-tools-modules/",
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "page_status": "meta_redirect_verified",
+      "redirect_target": "https://effortless-fenglisu-71cd58.netlify.app/"
     },
     {
       "id": "page:/eai-tools-modules/eai-what-if-machine/",
@@ -219,9 +233,11 @@
       "title": "Doorverwijzing naar EAI What-if Machine",
       "kind": "doorverwijzing",
       "category": null,
-      "review": "doorverwijzing_doel_controleren",
+      "review": "doel_als_bron_genoteerd_niet_live_gecontroleerd",
       "parent": "page:/eai-tools-modules/",
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "page_status": "meta_redirect_verified",
+      "redirect_target": "https://what-if-lesson-designer.lovable.app/"
     },
     {
       "id": "page:/en/",
@@ -395,9 +411,11 @@
       "title": "Onderwijs in: technische anatomie (kaarten)",
       "kind": "overig",
       "category": null,
-      "review": "niet_in_publieke_zoekindex_status_controleren",
+      "review": "noindex_in_bron_gecontroleerd",
       "parent": "page:/houseoftalents/",
-      "family": "technisch"
+      "family": "technisch",
+      "robots_noindex_in_html": true,
+      "page_status": "niet_voor_zoekmachines"
     },
     {
       "id": "page:/kennis/",
@@ -417,9 +435,11 @@
       "title": "LEIF | Meer dan een profiel",
       "kind": "afgeschermd_of_app",
       "category": null,
-      "review": "niet_in_publieke_zoekindex_status_controleren",
+      "review": "noindex_in_bron_gecontroleerd",
       "parent": null,
-      "family": "technisch"
+      "family": "technisch",
+      "robots_noindex_in_html": true,
+      "page_status": "niet_voor_zoekmachines"
     },
     {
       "id": "page:/leif/beheer/",
@@ -428,9 +448,11 @@
       "title": "LEIF | Beheer",
       "kind": "afgeschermd_of_app",
       "category": null,
-      "review": "niet_in_publieke_zoekindex_status_controleren",
+      "review": "noindex_in_bron_gecontroleerd",
       "parent": "page:/leif/",
-      "family": "technisch"
+      "family": "technisch",
+      "robots_noindex_in_html": true,
+      "page_status": "niet_voor_zoekmachines"
     },
     {
       "id": "page:/leif/continue/",
@@ -439,9 +461,11 @@
       "title": "LEIF | Verder met mijn verhaal",
       "kind": "afgeschermd_of_app",
       "category": null,
-      "review": "niet_in_publieke_zoekindex_status_controleren",
+      "review": "noindex_in_bron_gecontroleerd",
       "parent": "page:/leif/",
-      "family": "technisch"
+      "family": "technisch",
+      "robots_noindex_in_html": true,
+      "page_status": "niet_voor_zoekmachines"
     },
     {
       "id": "page:/leif/mijn/",
@@ -450,9 +474,11 @@
       "title": "LEIF | Mijn omgeving",
       "kind": "afgeschermd_of_app",
       "category": null,
-      "review": "niet_in_publieke_zoekindex_status_controleren",
+      "review": "noindex_in_bron_gecontroleerd",
       "parent": "page:/leif/",
-      "family": "technisch"
+      "family": "technisch",
+      "robots_noindex_in_html": true,
+      "page_status": "niet_voor_zoekmachines"
     },
     {
       "id": "page:/leif/verhaal/",
@@ -461,9 +487,11 @@
       "title": "LEIF | Persoonlijk verhaal",
       "kind": "afgeschermd_of_app",
       "category": null,
-      "review": "niet_in_publieke_zoekindex_status_controleren",
+      "review": "noindex_in_bron_gecontroleerd",
       "parent": "page:/leif/",
-      "family": "technisch"
+      "family": "technisch",
+      "robots_noindex_in_html": true,
+      "page_status": "niet_voor_zoekmachines"
     },
     {
       "id": "page:/model-monitor/",
@@ -714,9 +742,11 @@
       "title": "Onderwijs in: technische anatomie (kaarten)",
       "kind": "overig",
       "category": null,
-      "review": "niet_in_publieke_zoekindex_status_controleren",
+      "review": "noindex_in_bron_gecontroleerd",
       "parent": "page:/onderwijsin/",
-      "family": "technisch"
+      "family": "technisch",
+      "robots_noindex_in_html": true,
+      "page_status": "niet_voor_zoekmachines"
     },
     {
       "id": "page:/onderwijsin/houseoftalents/",
@@ -736,9 +766,11 @@
       "title": "Onderwijs in: technische anatomie (kaarten)",
       "kind": "overig",
       "category": null,
-      "review": "niet_in_publieke_zoekindex_status_controleren",
+      "review": "noindex_in_bron_gecontroleerd",
       "parent": "page:/onderwijsin/houseoftalents/",
-      "family": "technisch"
+      "family": "technisch",
+      "robots_noindex_in_html": true,
+      "page_status": "niet_voor_zoekmachines"
     },
     {
       "id": "page:/over/",
@@ -948,7 +980,8 @@
       "review": "publieke_naam_voorstel",
       "parent": "page:/tools/",
       "suggested_title_nl": "Diepzee",
-      "family": "oceanen"
+      "family": "oceanen",
+      "embedded_inventory": "afzonderlijke_keuzes_brongecontroleerd"
     },
     {
       "id": "page:/tools/anatomie/",
@@ -994,7 +1027,8 @@
       "category": "TOOLS",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/",
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "embedded_inventory": "dynamische_functies_nog_nader_controleren"
     },
     {
       "id": "page:/tools/eaigit/",
@@ -1049,7 +1083,8 @@
       "category": "Hulpmiddelen · Werkruimtes en delen",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/eaimesh/",
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "embedded_inventory": "dynamische_functies_nog_nader_controleren"
     },
     {
       "id": "page:/tools/eaistudio/",
@@ -1071,7 +1106,8 @@
       "category": "Hulpmiddelen · Lesmateriaal en prompts maken",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/eaistudio/",
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "embedded_inventory": "dynamische_functies_nog_nader_controleren"
     },
     {
       "id": "page:/tools/eaiwork/",
@@ -1082,7 +1118,8 @@
       "category": "Hulpmiddelen · Werkruimtes en delen",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/",
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "embedded_inventory": "dynamische_functies_nog_nader_controleren"
     },
     {
       "id": "page:/tools/html-galerij/",
@@ -1093,7 +1130,8 @@
       "category": "Hulpmiddelen · Werkruimtes en delen",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/",
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "embedded_inventory": "dynamische_functies_nog_nader_controleren"
     },
     {
       "id": "page:/tools/llm-observatorium/",
@@ -1117,7 +1155,8 @@
       "review": "publieke_naam_voorstel",
       "parent": "page:/tools/",
       "suggested_title_nl": "Aanvallen en verdedigen",
-      "family": "sport-en-bewegen"
+      "family": "sport-en-bewegen",
+      "embedded_inventory": "afzonderlijke_keuzes_brongecontroleerd"
     },
     {
       "id": "page:/tools/lo-aanvalslab/onderbouwing/",
@@ -1137,10 +1176,11 @@
       "title": "Melkweg met uitleg",
       "kind": "toepassing",
       "category": "Heelal en ruimtevaart · Ontdekken met uitleg",
-      "review": "publieke_naam_voorstel",
+      "review": "twee_uitvoeringen_broncontrole_gecontroleerd",
       "parent": "page:/tools/",
       "suggested_title_nl": "Melkweg",
-      "family": "heelal"
+      "family": "heelal",
+      "content_collection": "melkweg"
     },
     {
       "id": "page:/tools/projecthulp/",
@@ -1162,7 +1202,8 @@
       "category": "Zelf aan de slag",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/",
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "embedded_inventory": "dynamische_functies_nog_nader_controleren"
     },
     {
       "id": "page:/tools/science-observatory/",
@@ -1184,7 +1225,8 @@
       "category": "Heelal en ruimtevaart · Banen",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/science-observatory/",
-      "family": "heelal"
+      "family": "heelal",
+      "embedded_inventory": "afzonderlijke_keuzes_brongecontroleerd"
     },
     {
       "id": "page:/tools/science-observatory/labs/melkweg/",
@@ -1193,10 +1235,11 @@
       "title": "MW / 01",
       "kind": "toepassing",
       "category": "TOOLS",
-      "review": "publieke_naam_voorstel",
+      "review": "twee_uitvoeringen_broncontrole_gecontroleerd",
       "parent": "page:/tools/science-observatory/",
       "suggested_title_nl": "Melkweg",
-      "family": "heelal"
+      "family": "heelal",
+      "content_collection": "melkweg"
     },
     {
       "id": "page:/tools/science-observatory/labs/natuurkunde/",
@@ -1266,7 +1309,8 @@
       "review": "publieke_naam_voorstel",
       "parent": "page:/tools/sport-en-bewegen/",
       "suggested_title_nl": "Opstellingen maken",
-      "family": "sport-en-bewegen"
+      "family": "sport-en-bewegen",
+      "embedded_inventory": "dynamische_functies_nog_nader_controleren"
     },
     {
       "id": "page:/tools/van-proces-naar-prompt/",
@@ -1277,7 +1321,8 @@
       "category": "Hulpmiddelen · Lesmateriaal en prompts maken",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/",
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "embedded_inventory": "afzonderlijke_keuzes_brongecontroleerd"
     },
     {
       "id": "page:/tools/wihtml/",
@@ -1310,7 +1355,8 @@
       "category": "Hulpmiddelen · Lesmateriaal en prompts maken",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/wihtml/",
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "embedded_inventory": "dynamische_functies_nog_nader_controleren"
     },
     {
       "id": "page:/tools/wihtml/voorbeeld/",
@@ -1341,9 +1387,11 @@
       "title": "Doorverwijzing naar kennis",
       "kind": "doorverwijzing",
       "category": null,
-      "review": "doorverwijzing_doel_controleren",
+      "review": "doel_als_bron_genoteerd_niet_live_gecontroleerd",
       "parent": null,
-      "family": "onderzoek"
+      "family": "onderzoek",
+      "page_status": "meta_redirect_verified",
+      "redirect_target": "/kennis/"
     },
     {
       "id": "page:/werkvormen/",
@@ -1996,6 +2044,96 @@
     }
   ],
   "embedded_items": [
+    {
+      "id": "abyss:0",
+      "url": "/tools/abyss/",
+      "parent": "page:/tools/abyss/",
+      "name": "Zeebodem",
+      "category": "oceanen",
+      "source": "content/abyss/ABYSS.html",
+      "source_file": "content/abyss/ABYSS.html",
+      "family": "oceanen",
+      "link": "binnen_toepassing",
+      "review": "afzonderlijk_in_bron_gevonden",
+      "source_ref": "MODES[0]",
+      "source_description": "3D reliëf",
+      "suggested_title_nl": "Zeebodem"
+    },
+    {
+      "id": "abyss:1",
+      "url": "/tools/abyss/",
+      "parent": "page:/tools/abyss/",
+      "name": "De afdaling",
+      "category": "oceanen",
+      "source": "content/abyss/ABYSS.html",
+      "source_file": "content/abyss/ABYSS.html",
+      "family": "oceanen",
+      "link": "binnen_toepassing",
+      "review": "afzonderlijk_in_bron_gevonden",
+      "source_ref": "MODES[1]",
+      "source_description": "Druk & licht",
+      "suggested_title_nl": "Waterdruk en licht"
+    },
+    {
+      "id": "abyss:2",
+      "url": "/tools/abyss/",
+      "parent": "page:/tools/abyss/",
+      "name": "Aardbevingen",
+      "category": "oceanen",
+      "source": "content/abyss/ABYSS.html",
+      "source_file": "content/abyss/ABYSS.html",
+      "family": "oceanen",
+      "link": "binnen_toepassing",
+      "review": "afzonderlijk_in_bron_gevonden",
+      "source_ref": "MODES[2]",
+      "source_description": "USGS gegevens",
+      "suggested_title_nl": "Aardbevingen"
+    },
+    {
+      "id": "abyss:3",
+      "url": "/tools/abyss/",
+      "parent": "page:/tools/abyss/",
+      "name": "Plaattektoniek",
+      "category": "oceanen",
+      "source": "content/abyss/ABYSS.html",
+      "source_file": "content/abyss/ABYSS.html",
+      "family": "oceanen",
+      "link": "binnen_toepassing",
+      "review": "afzonderlijk_in_bron_gevonden",
+      "source_ref": "MODES[3]",
+      "source_description": "Grenzen & lagen",
+      "suggested_title_nl": "Plaattektoniek"
+    },
+    {
+      "id": "abyss:4",
+      "url": "/tools/abyss/",
+      "parent": "page:/tools/abyss/",
+      "name": "Oceaanstroming",
+      "category": "oceanen",
+      "source": "content/abyss/ABYSS.html",
+      "source_file": "content/abyss/ABYSS.html",
+      "family": "oceanen",
+      "link": "binnen_toepassing",
+      "review": "afzonderlijk_in_bron_gevonden",
+      "source_ref": "MODES[4]",
+      "source_description": "Modelstromingen",
+      "suggested_title_nl": "Oceaanstromingen"
+    },
+    {
+      "id": "abyss:5",
+      "url": "/tools/abyss/",
+      "parent": "page:/tools/abyss/",
+      "name": "Meetbaar of geschat?",
+      "category": "oceanen",
+      "source": "content/abyss/ABYSS.html",
+      "source_file": "content/abyss/ABYSS.html",
+      "family": "oceanen",
+      "link": "binnen_toepassing",
+      "review": "afzonderlijk_in_bron_gevonden",
+      "source_ref": "MODES[5]",
+      "source_description": "GEBCO 2026",
+      "suggested_title_nl": "Herkomst van dieptegegevens"
+    },
     {
       "id": "anchor:/en/glossary/#act-of-learning",
       "url": "/en/glossary/#act-of-learning",
@@ -2809,8 +2947,11 @@
       "source": "publieke_zoekindex",
       "source_file": "content/melkweg-lab/index.html",
       "link": "direct",
-      "review": "bestaande_benaming",
-      "family": "heelal"
+      "review": "publieke_naam_voorstel_brononderdeel_gecontroleerd",
+      "family": "heelal",
+      "suggested_title_nl": "Structuur van de Melkweg",
+      "suggested_description_nl": "Onderzoek de schijf, spiraalarmen, centrale balk en halo.",
+      "topic_id": "melkweg:atlas"
     },
     {
       "id": "anchor:/tools/melkweg-lab/#blackhole",
@@ -2821,8 +2962,11 @@
       "source": "publieke_zoekindex",
       "source_file": "content/melkweg-lab/index.html",
       "link": "direct",
-      "review": "bestaande_benaming",
-      "family": "heelal"
+      "review": "publieke_naam_voorstel_brononderdeel_gecontroleerd",
+      "family": "heelal",
+      "suggested_title_nl": "Sagittarius A*",
+      "suggested_description_nl": "Onderzoek de baan van ster S2 rond het zwarte gat in de Melkweg.",
+      "topic_id": "melkweg:blackhole"
     },
     {
       "id": "anchor:/tools/melkweg-lab/#dynamics",
@@ -2833,8 +2977,11 @@
       "source": "publieke_zoekindex",
       "source_file": "content/melkweg-lab/index.html",
       "link": "direct",
-      "review": "bestaande_benaming",
-      "family": "heelal"
+      "review": "publieke_naam_voorstel_brononderdeel_gecontroleerd",
+      "family": "heelal",
+      "suggested_title_nl": "Rotatie en zwaartekracht",
+      "suggested_description_nl": "Verander de massa van de Melkweg en onderzoek de omloopsnelheid.",
+      "topic_id": "melkweg:dynamics"
     },
     {
       "id": "anchor:/tools/melkweg-lab/#gaia",
@@ -2845,8 +2992,11 @@
       "source": "publieke_zoekindex",
       "source_file": "content/melkweg-lab/index.html",
       "link": "direct",
-      "review": "bestaande_benaming",
-      "family": "heelal"
+      "review": "publieke_naam_voorstel_brononderdeel_gecontroleerd",
+      "family": "heelal",
+      "suggested_title_nl": "Meten met Gaia",
+      "suggested_description_nl": "Onderzoek afstanden en eigenbeweging van sterren.",
+      "topic_id": "melkweg:gaia"
     },
     {
       "id": "anchor:/tools/melkweg-lab/#stars",
@@ -2857,8 +3007,11 @@
       "source": "publieke_zoekindex",
       "source_file": "content/melkweg-lab/index.html",
       "link": "direct",
-      "review": "bestaande_benaming",
-      "family": "heelal"
+      "review": "publieke_naam_voorstel_brononderdeel_gecontroleerd",
+      "family": "heelal",
+      "suggested_title_nl": "Sterpopulaties",
+      "suggested_description_nl": "Vergelijk de eigenschappen van verschillende sterren en sterpopulaties.",
+      "topic_id": "melkweg:stars"
     },
     {
       "id": "anchor:/tools/melkweg-lab/#structure",
@@ -2869,8 +3022,11 @@
       "source": "publieke_zoekindex",
       "source_file": "content/melkweg-lab/index.html",
       "link": "direct",
-      "review": "bestaande_benaming",
-      "family": "heelal"
+      "review": "publieke_naam_voorstel_brononderdeel_gecontroleerd",
+      "family": "heelal",
+      "suggested_title_nl": "Schijf en halo",
+      "suggested_description_nl": "Vergelijk de verdeling van sterren en de vorm van de Melkweg.",
+      "topic_id": "melkweg:structure"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/melkweg/#atlas",
@@ -2881,8 +3037,11 @@
       "source": "publieke_zoekindex",
       "source_file": "content/science-observatory/labs/melkweg.html",
       "link": "direct",
-      "review": "bestaande_benaming",
-      "family": "heelal"
+      "review": "publieke_naam_voorstel_brononderdeel_gecontroleerd",
+      "family": "heelal",
+      "suggested_title_nl": "Structuur van de Melkweg",
+      "suggested_description_nl": "Onderzoek de schijf, spiraalarmen, centrale balk en halo.",
+      "topic_id": "melkweg:atlas"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/melkweg/#blackhole",
@@ -2893,8 +3052,11 @@
       "source": "publieke_zoekindex",
       "source_file": "content/science-observatory/labs/melkweg.html",
       "link": "direct",
-      "review": "bestaande_benaming",
-      "family": "heelal"
+      "review": "publieke_naam_voorstel_brononderdeel_gecontroleerd",
+      "family": "heelal",
+      "suggested_title_nl": "Sagittarius A*",
+      "suggested_description_nl": "Onderzoek de baan van ster S2 rond het zwarte gat in de Melkweg.",
+      "topic_id": "melkweg:blackhole"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/melkweg/#dynamics",
@@ -2905,8 +3067,11 @@
       "source": "publieke_zoekindex",
       "source_file": "content/science-observatory/labs/melkweg.html",
       "link": "direct",
-      "review": "bestaande_benaming",
-      "family": "heelal"
+      "review": "publieke_naam_voorstel_brononderdeel_gecontroleerd",
+      "family": "heelal",
+      "suggested_title_nl": "Rotatie en zwaartekracht",
+      "suggested_description_nl": "Verander de massa van de Melkweg en onderzoek de omloopsnelheid.",
+      "topic_id": "melkweg:dynamics"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/melkweg/#gaia",
@@ -2917,8 +3082,11 @@
       "source": "publieke_zoekindex",
       "source_file": "content/science-observatory/labs/melkweg.html",
       "link": "direct",
-      "review": "bestaande_benaming",
-      "family": "heelal"
+      "review": "publieke_naam_voorstel_brononderdeel_gecontroleerd",
+      "family": "heelal",
+      "suggested_title_nl": "Meten met Gaia",
+      "suggested_description_nl": "Onderzoek afstanden en eigenbeweging van sterren.",
+      "topic_id": "melkweg:gaia"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/melkweg/#stars",
@@ -2929,8 +3097,11 @@
       "source": "publieke_zoekindex",
       "source_file": "content/science-observatory/labs/melkweg.html",
       "link": "direct",
-      "review": "bestaande_benaming",
-      "family": "heelal"
+      "review": "publieke_naam_voorstel_brononderdeel_gecontroleerd",
+      "family": "heelal",
+      "suggested_title_nl": "Sterpopulaties",
+      "suggested_description_nl": "Vergelijk de eigenschappen van verschillende sterren en sterpopulaties.",
+      "topic_id": "melkweg:stars"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/melkweg/#structure",
@@ -2941,8 +3112,11 @@
       "source": "publieke_zoekindex",
       "source_file": "content/science-observatory/labs/melkweg.html",
       "link": "direct",
-      "review": "bestaande_benaming",
-      "family": "heelal"
+      "review": "publieke_naam_voorstel_brononderdeel_gecontroleerd",
+      "family": "heelal",
+      "suggested_title_nl": "Schijf en halo",
+      "suggested_description_nl": "Vergelijk de verdeling van sterren en de vorm van de Melkweg.",
+      "topic_id": "melkweg:structure"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/natuurkunde/#ac",
@@ -3725,6 +3899,96 @@
       "family": "wiskunde"
     },
     {
+      "id": "gravitation:0",
+      "url": "/tools/science-observatory/labs/gravitatie-banen/",
+      "parent": "page:/tools/science-observatory/labs/gravitatie-banen/",
+      "name": "Satelliet in een baan",
+      "category": "heelal",
+      "source": "content/science-observatory/labs/gravitatie-banen.html",
+      "source_file": "content/science-observatory/labs/gravitatie-banen.html",
+      "family": "heelal",
+      "link": "binnen_toepassing",
+      "review": "afzonderlijk_in_bron_gevonden",
+      "source_ref": "M[0]",
+      "short_name": "Baan & Kepler",
+      "source_description": "Ellips, omlooptijd en gelijke oppervlakken"
+    },
+    {
+      "id": "gravitation:1",
+      "url": "/tools/science-observatory/labs/gravitatie-banen/",
+      "parent": "page:/tools/science-observatory/labs/gravitatie-banen/",
+      "name": "Het veld rond de aarde",
+      "category": "heelal",
+      "source": "content/science-observatory/labs/gravitatie-banen.html",
+      "source_file": "content/science-observatory/labs/gravitatie-banen.html",
+      "family": "heelal",
+      "link": "binnen_toepassing",
+      "review": "afzonderlijk_in_bron_gevonden",
+      "source_ref": "M[1]",
+      "short_name": "Zwaartekrachtveld",
+      "source_description": "Kracht en potentiaal op afstand"
+    },
+    {
+      "id": "gravitation:2",
+      "url": "/tools/science-observatory/labs/gravitatie-banen/",
+      "parent": "page:/tools/science-observatory/labs/gravitatie-banen/",
+      "name": "Energie blijft behouden",
+      "category": "heelal",
+      "source": "content/science-observatory/labs/gravitatie-banen.html",
+      "source_file": "content/science-observatory/labs/gravitatie-banen.html",
+      "family": "heelal",
+      "link": "binnen_toepassing",
+      "review": "afzonderlijk_in_bron_gevonden",
+      "source_ref": "M[2]",
+      "short_name": "Energie in een baan",
+      "source_description": "Kinetisch, potentieel en totale energie"
+    },
+    {
+      "id": "gravitation:3",
+      "url": "/tools/science-observatory/labs/gravitatie-banen/",
+      "parent": "page:/tools/science-observatory/labs/gravitatie-banen/",
+      "name": "Naar een hogere baan",
+      "category": "heelal",
+      "source": "content/science-observatory/labs/gravitatie-banen.html",
+      "source_file": "content/science-observatory/labs/gravitatie-banen.html",
+      "family": "heelal",
+      "link": "binnen_toepassing",
+      "review": "afzonderlijk_in_bron_gevonden",
+      "source_ref": "M[3]",
+      "short_name": "Baanwissel",
+      "source_description": "Hohmanntransfer tussen twee cirkelbanen"
+    },
+    {
+      "id": "gravitation:4",
+      "url": "/tools/science-observatory/labs/gravitatie-banen/",
+      "parent": "page:/tools/science-observatory/labs/gravitatie-banen/",
+      "name": "Wanneer ontsnapt een satelliet?",
+      "category": "heelal",
+      "source": "content/science-observatory/labs/gravitatie-banen.html",
+      "source_file": "content/science-observatory/labs/gravitatie-banen.html",
+      "family": "heelal",
+      "link": "binnen_toepassing",
+      "review": "afzonderlijk_in_bron_gevonden",
+      "source_ref": "M[4]",
+      "short_name": "Ontsnappen",
+      "source_description": "Elliptische, parabole en hyperbolische baan"
+    },
+    {
+      "id": "gravitation:5",
+      "url": "/tools/science-observatory/labs/gravitatie-banen/",
+      "parent": "page:/tools/science-observatory/labs/gravitatie-banen/",
+      "name": "Wat ziet een waarnemer op aarde?",
+      "category": "heelal",
+      "source": "content/science-observatory/labs/gravitatie-banen.html",
+      "source_file": "content/science-observatory/labs/gravitatie-banen.html",
+      "family": "heelal",
+      "link": "binnen_toepassing",
+      "review": "afzonderlijk_in_bron_gevonden",
+      "source_ref": "M[5]",
+      "short_name": "Grondspoor",
+      "source_description": "Baanvlak, aardrotatie en herhaling"
+    },
+    {
       "id": "llmscan:brisk",
       "url": "/nl/llmscan/",
       "parent": "page:/nl/llmscan/",
@@ -4337,6 +4601,84 @@
       "family": "ai"
     },
     {
+      "id": "process-mode:onderzoeken",
+      "url": "/tools/van-proces-naar-prompt/",
+      "parent": "page:/tools/van-proces-naar-prompt/",
+      "name": "Tool onderzoeken",
+      "category": "hulpmiddelen",
+      "source": "tools/van-proces-naar-prompt/index.html",
+      "source_file": "tools/van-proces-naar-prompt/index.html",
+      "family": "hulpmiddelen",
+      "link": "binnen_toepassing",
+      "review": "afzonderlijk_in_bron_gevonden",
+      "source_ref": "[data-mode=\"onderzoeken\"]"
+    },
+    {
+      "id": "process-mode:ontwerpen",
+      "url": "/tools/van-proces-naar-prompt/",
+      "parent": "page:/tools/van-proces-naar-prompt/",
+      "name": "AI-inzet ontwerpen",
+      "category": "hulpmiddelen",
+      "source": "tools/van-proces-naar-prompt/index.html",
+      "source_file": "tools/van-proces-naar-prompt/index.html",
+      "family": "hulpmiddelen",
+      "link": "binnen_toepassing",
+      "review": "afzonderlijk_in_bron_gevonden",
+      "source_ref": "[data-mode=\"ontwerpen\"]"
+    },
+    {
+      "id": "sport-mode:attack",
+      "url": "/tools/lo-aanvalslab/",
+      "parent": "page:/tools/lo-aanvalslab/",
+      "name": "Ik val aan",
+      "category": "sport-en-bewegen",
+      "source": "tools/lo-aanvalslab/index.html",
+      "source_file": "tools/lo-aanvalslab/index.html",
+      "family": "sport-en-bewegen",
+      "link": "binnen_toepassing",
+      "review": "afzonderlijk_in_bron_gevonden",
+      "source_ref": "[data-mode=\"attack\"]"
+    },
+    {
+      "id": "sport-mode:defend",
+      "url": "/tools/lo-aanvalslab/",
+      "parent": "page:/tools/lo-aanvalslab/",
+      "name": "Ik verdedig",
+      "category": "sport-en-bewegen",
+      "source": "tools/lo-aanvalslab/index.html",
+      "source_file": "tools/lo-aanvalslab/index.html",
+      "family": "sport-en-bewegen",
+      "link": "binnen_toepassing",
+      "review": "afzonderlijk_in_bron_gevonden",
+      "source_ref": "[data-mode=\"defend\"]"
+    },
+    {
+      "id": "sport-mode:free",
+      "url": "/tools/lo-aanvalslab/",
+      "parent": "page:/tools/lo-aanvalslab/",
+      "name": "Vrij opstellen",
+      "category": "sport-en-bewegen",
+      "source": "tools/lo-aanvalslab/index.html",
+      "source_file": "tools/lo-aanvalslab/index.html",
+      "family": "sport-en-bewegen",
+      "link": "binnen_toepassing",
+      "review": "afzonderlijk_in_bron_gevonden",
+      "source_ref": "[data-mode=\"free\"]"
+    },
+    {
+      "id": "sport-mode:online",
+      "url": "/tools/lo-aanvalslab/",
+      "parent": "page:/tools/lo-aanvalslab/",
+      "name": "Samen spelen",
+      "category": "sport-en-bewegen",
+      "source": "tools/lo-aanvalslab/index.html",
+      "source_file": "tools/lo-aanvalslab/index.html",
+      "family": "sport-en-bewegen",
+      "link": "binnen_toepassing",
+      "review": "afzonderlijk_in_bron_gevonden",
+      "source_ref": "#onlineChoice"
+    },
+    {
       "id": "taal:taal-01",
       "url": "/taalwerkvormen/#taal-01",
       "parent": "page:/taalwerkvormen/",
@@ -4714,7 +5056,30 @@
     "page_families_needing_review": 0,
     "redirect_title_candidates": 9,
     "collections": 5,
-    "wihtml_examples": 2
+    "wihtml_examples": 2,
+    "last_structural_review": "2026-11-16",
+    "additional_verified_sections": {
+      "abyss": 6,
+      "gravity": 6,
+      "sport_modes": 4,
+      "process_modes": 2,
+      "melkweg_variants": 2,
+      "melkweg_shared_topics": 6,
+      "verified_redirects": 9,
+      "noindex_pages_checked": 8
+    },
+    "new_embedded_items": 18,
+    "dynamic_function_review_pending": [
+      "/tools/eaigame/",
+      "/tools/eaimesh/start/",
+      "/tools/eaistudio/studio/",
+      "/tools/eaiwork/",
+      "/tools/wihtml/studio/",
+      "/tools/html-galerij/",
+      "/tools/prompt-framework/",
+      "/tools/sport-en-bewegen/opstellingen/"
+    ],
+    "registry_policy": "Alle pagina's en alle HTML-bestanden zijn opgenomen; verborgen functies zijn alleen volledig afgedekt waar een broncatalogus of een gerichte controle bestaat."
   },
   "collections": [
     {
@@ -4727,15 +5092,30 @@
       ],
       "variants": [
         {
+          "id": "melkweg-basis",
           "page": "page:/tools/science-observatory/labs/melkweg/",
-          "id": "bestaande-uitvoering-1"
+          "technical_origin": "content/science-observatory/labs/melkweg.html",
+          "display_title_nl": "Melkweg",
+          "features_verified": [
+            "zes_onderwerpen",
+            "berekeningen_en_grafieken",
+            "export_json_png"
+          ]
         },
         {
+          "id": "melkweg-uitgebreid",
           "page": "page:/tools/melkweg-lab/",
-          "id": "bestaande-uitvoering-2"
+          "technical_origin": "content/melkweg-lab/index.html",
+          "display_title_nl": "Melkweg",
+          "features_verified": [
+            "dezelfde_zes_onderwerpen",
+            "GUIDE_vragen_en_hints",
+            "extra_weergaven_en_bediening",
+            "berekeningen_en_grafieken"
+          ]
         }
       ],
-      "review": "werking_en_verschillen_nog_vergelijken"
+      "review": "onderdelen_gelijk_verschillen_vastgelegd_geen_technische_fusie"
     },
     {
       "id": "wiskunde",
