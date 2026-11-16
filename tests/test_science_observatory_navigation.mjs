@@ -71,7 +71,7 @@ test('Compact hoofdmenu behoudt de volledige proefcatalogus in zoeken', () => {
   assert.match(source, /maths\.append\(/);
   assert.match(source, /Wiskunde ' \+ variant.upper/);
   assert.match(source, /'Menselijk lichaam'/);
-  assert.match(source, /'Galactisch Observatorium'/);
+  assert.match(source, /\/tools\/science-observatory\/labs\/melkweg\/#/);
   assert.match(source, /'LLMscan'/);
   assert.match(source, /site_search_records/);
   const script = load('assets/site-navigation.js');
