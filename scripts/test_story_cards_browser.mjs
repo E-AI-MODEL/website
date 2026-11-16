@@ -35,16 +35,20 @@ try {
       await page.goto(base + path, { waitUntil: 'load' });
       const track = page.locator('main .eai-card-deck').first();
       await track.waitFor({ timeout: 13000 });
-      if (path === '/nl/onderwijs/' || path === '/nl/onderzoek/') {
+      if (path === '/nl/onderzoek/') {
+        assert.equal(await page.locator('main .eai-story-mobile-detail').count(), 0,
+          'Research uses the three route cards only, not a duplicate hero menu');
+      }
+      if (path === '/nl/onderwijs/') {
         const detail = page.locator('main .eai-story-mobile-detail');
         if (width <= 620) {
-          assert.equal(await detail.count(), 1, path + ': the detailed hero must be available');
+          assert.equal(await detail.count(), 1, 'The distinct teaching process must remain available');
           assert.equal(await detail.getAttribute('open'), null, 'Mobile detail should begin collapsed');
           await detail.locator('summary').click();
           assert.equal(await detail.getAttribute('open'), '', 'Reader can open the detailed explanation');
           await detail.locator('summary').click();
         } else {
-          assert.equal(await detail.count(), 0, path + ': desktop keeps the original diagram');
+          assert.equal(await detail.count(), 0, 'Desktop keeps the teaching process diagram');
         }
       }
       const data = await track.evaluate(el => {

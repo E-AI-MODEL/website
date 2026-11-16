@@ -36,6 +36,15 @@ class EditorialCardUiTests(unittest.TestCase):
             self.assertIn(name, ASSETS)
             self.assertGreater((ROOT / "assets" / name).stat().st_size, 1000)
 
+    def test_research_page_has_one_choice_list(self):
+        soup = BeautifulSoup((ROOT / "nl/onderzoek/index.html").read_text(encoding="utf-8"), "html.parser")
+        self.assertFalse(soup.select(".knowledge-depth"), "The same three choices should not appear in hero and cards")
+        cards = soup.select(".knowledge-routes .knowledge-route")
+        self.assertEqual(len(cards), 3)
+        self.assertNotIn("5 min", cards[0].get_text(" ", strip=True))
+        self.assertNotIn("20 min", cards[1].get_text(" ", strip=True))
+        self.assertTrue(all(card.select_one("a[href]") for card in cards))
+
     def test_prepared_pages_link_assets_without_changing_routes(self):
         out = ROOT / "site-build"
         if not (out / "nl/onderzoek/index.html").exists():

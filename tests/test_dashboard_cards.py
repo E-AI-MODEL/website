@@ -41,14 +41,15 @@ class DashboardCardsTests(unittest.TestCase):
         self.assertEqual(len(root.select(".eai-dash-table > a")), 4)
         self.assertEqual(len(root.select(".eai-reading-feature")), 1)
         self.assertEqual(len(root.select(".eai-reading-list a")), 2)
-        self.assertEqual(len(root.select('.eai-dash-rail a[aria-label]')), 6)
+        self.assertFalse(root.select('.eai-dash-rail'), 'Only one shared site navigation')
+        self.assertFalse(root.select('[data-dash-filter], .eai-dash-route-controls'), 'Four links need no filters')
         for target in ("/nl/model/", "/nl/onderwijs/", "/nl/onderzoek/", "/nl/tools/"):
             self.assertEqual(len(root.select(f'.eai-landing-route[href="{target}"]')), 1)
         for anchor in ("model", "leren-en-toetsen", "schoolafspraken", "ai-playground", "eai-blog",
                        "dagelijks-werk", "toepassing-kiezen", "ai-begrijpen", "verhaal", "verder-lezen"):
             self.assertIsNotNone(root.find(id=anchor), anchor)
         self.assertEqual(root.find(id="eh-home-title").get_text(" ", strip=True), "Wat ons werk ons werk maakt")
-        self.assertTrue(root.select_one("#eai-dash-search"))
+        self.assertIsNone(root.select_one("#eai-dash-search"))
         self.assertIsNotNone(root.select_one(".eai-dash-hero-more > summary"))
         area = root.select_one(".eai-dash-workspace")
         self.assertIsNotNone(area)

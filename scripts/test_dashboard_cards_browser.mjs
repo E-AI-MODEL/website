@@ -35,16 +35,12 @@ try {
       const positions=await page.evaluate(()=>({direct:document.querySelector(".eai-dash-direct").getBoundingClientRect().top,side:document.querySelector(".eai-dash-side").getBoundingClientRect().top}));
       assert(positions.direct<positions.side,"Direct links should precede optional widgets on a phone");
     }
-    await page.locator('[data-dash-filter="proberen"]').click();
-    assert.equal(await page.locator(".eai-landing-route:visible").count(),1,"Only Tools after filter "+width);
-    await page.locator('[data-dash-filter="all"]').click();
-    assert.equal(await page.locator(".eai-landing-route:visible").count(),4);
-    await page.locator("#eai-dash-search").fill("onderwijs");
-    assert.equal(await page.locator(".eai-landing-route:visible").count(),1,"Search filter on "+width);
-    await page.locator("#eai-dash-search").fill("bestaat-niet-xyz");
-    assert(await page.locator("#eai-dash-empty").isVisible());
-    await page.locator("#eai-dash-search").fill("");
-    assert.equal(await page.locator(".eai-landing-route:visible").count(),4);
+    assert.equal(await page.locator("main .eai-dash-rail").count(),0,"Homepage must not duplicate site navigation");
+    assert.equal(await page.locator("main .eai-dash-route-controls").count(),0,"Only four routes need no filters");
+    assert.equal(await page.locator("main .eai-landing-route:visible").count(),4,"All four destinations must stay visible");
+    for(const href of ["/nl/model/","/nl/onderwijs/","/nl/onderzoek/","/nl/tools/"]){
+      assert.equal(await page.locator('main .eai-landing-route[href="'+href+'"]').count(),1);
+    }
     await page.locator('[data-dash-step="2"]').click();
     assert.match(await page.locator("#eai-dash-step-detail").innerText(),/Handeling/);
     assert.equal(await page.locator('.eai-dash-step[aria-pressed="true"]').count(),1);
@@ -72,7 +68,7 @@ try {
     await page.close();
   }
   assert.deepEqual(errors,[],"No unhandled JavaScript errors on dashboard");
-  console.log("Dashboard cards: desktop, tablet, mobile, filters, aria-pressed and lab isolation OK");
+  console.log("Dashboard cards: desktop, tablet, mobile, unique navigation, route links, model buttons and lab isolation OK");
 } finally {
   if(browser) await browser.close();
   server.kill();

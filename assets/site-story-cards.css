@@ -370,3 +370,6 @@ body.eai-ui.eai-story-page .eai-story-mobile-detail>div{
     margin-bottom:12px!important;
   }
 }
+/* The research cards already provide the three choices; the intro should not repeat them. */
+body.eai-ui.eai-story-page .knowledge-hub-hero .knowledge-hero-grid{display:block}
+body.eai-ui.eai-story-page .knowledge-hub-hero .knowledge-hero-grid>div:first-child{max-width:850px}
