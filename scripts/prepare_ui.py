@@ -458,7 +458,7 @@ def prepare(root: Path) -> dict:
         classes.append('eai-ui')
         if canonical(path) in INDEX_PATHS:
             classes.append('eai-index-page')
-        dashboard_home = canonical(path) == '/nl/' and bool(soup.select_one('main.eai-dashboard-home'))
+        dashboard_home = canonical(path) in ('/nl/', '/en/') and bool(soup.select_one('main.eai-dashboard-home'))
         if dashboard_home:
             classes.append('eai-dash-page')
             body['data-eai-dashboard-layout'] = 'cards-v1'
