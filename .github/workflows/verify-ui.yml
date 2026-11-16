@@ -24,6 +24,8 @@ jobs:
       - name: Build self-hosted anatomy before verifying site links
         run: python scripts/build_anatomie.py --out site-build/tools/anatomie
       - run: python scripts/prepare_ui.py --root site-build
+      - name: Verify one canonical hub per subject and legacy redirects
+        run: python -m unittest discover -s tests -p 'test_hub_structure.py' -v
       - name: Check dashboard cards, route preservation and lab isolation
         run: python -m unittest discover -s tests -p 'test_dashboard_cards.py' -v
       - name: Verify editorial card scope and build output
