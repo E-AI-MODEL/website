@@ -18,6 +18,17 @@ from home_model import materialize as materialize_home_model
 ASSETS = ('site.css', 'site-refresh.js', 'site-ui.css', 'site-responsive.css', 'site-redesign.css', 'site-editorial.css', 'site-archive.css', 'site-navigation.js', 'home-model.css', 'home-model.js', 'site-story-cards.css', 'site-story-cards.js', 'site-dashboard-cards.css', 'site-dashboard-cards.js')
 SKIP = {'.git', '.github', 'content', 'scripts', 'tests', 'assets', 'handoff', 'houseoftalents', 'onderwijsin', 'leif', 'site-build'}
 ALIASES = {'/': '/nl/', '/tools/': '/nl/tools/', '/publicaties/': '/nl/publicaties/', '/over/': '/nl/over/', '/onderwijs/': '/nl/onderwijs/', '/toepassingen/': '/nl/toepassingen/', '/kennis/': '/nl/onderzoek/', '/model-monitor/': '/nl/model-monitor/', '/llmscan/': '/nl/llmscan/'}
+# These are former index pages, not the many child routes underneath them.
+# Keep the root homepage and independent monitor/tools unchanged.
+LEGACY_HUB_REDIRECTS = {
+    '/onderwijs/': '/nl/onderwijs/',
+    '/kennis/': '/nl/onderzoek/',
+    '/publicaties/': '/nl/publicaties/',
+    '/toepassingen/': '/nl/toepassingen/',
+    '/over/': '/nl/over/',
+    '/tools/': '/nl/tools/',
+}
+
 # Editorial-only enhancement. Not loaded in interactive labs or article bodies.
 STORY_PATHS = {
     '/nl/onderwijs/', '/en/education/',
@@ -285,6 +296,8 @@ def site_search_records(root: Path) -> list:
     """Build a public, local search index from published paths and real module IDs."""
     records = {}
     def add(title, url, category, description=''):
+        if url in LEGACY_HUB_REDIRECTS:
+            return
         if not title or not url.startswith('/'):
             return
         description = str(description or '').strip()[:240]
@@ -436,6 +449,29 @@ def prepare(root: Path) -> dict:
     for page in sorted(root.rglob('*.html')):
         relative = page.relative_to(root)
         if relative.as_posix() != 'onderwijsin/index.html' and any(part in SKIP for part in relative.parts):
+            continue
+        old_route = '/' + relative.as_posix().removesuffix('index.html')
+        destination = LEGACY_HUB_REDIRECTS.get(old_route)
+        if destination:
+            # Static HTML handoff avoids two drifting catalogues. The query and
+            # anchor are retained for existing bookmarks by the small script.
+            # The visible link and meta refresh still work without JavaScript.
+            title = 'Deze pagina is verhuisd'
+            safe_url = html.escape(destination, quote=True)
+            new_document = (
+                '<!doctype html><html lang="nl"><head><meta charset="utf-8">'
+                '<meta name="viewport" content="width=device-width,initial-scale=1">'
+                f'<meta http-equiv="refresh" content="0;url={safe_url}">'
+                f'<link rel="canonical" href="https://eaimodel.nl{safe_url}">'
+                f'<title>{title} | EAI</title></head>'
+                f'<body><main><h1>{title}</h1><p>Bekijk de actuele pagina: '
+                f'<a href="{safe_url}">{safe_url}</a>.</p></main>'
+                '<script>location.replace(' + json.dumps(destination) +
+                ' + location.search + location.hash);</script></body></html>\n'
+            )
+            if page.read_text(encoding='utf-8') != new_document:
+                page.write_text(new_document, encoding='utf-8')
+                changed.append(relative.as_posix())
             continue
         original = page.read_text(encoding='utf-8')
         soup = BeautifulSoup(original, 'html.parser')
