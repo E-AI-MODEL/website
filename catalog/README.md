@@ -16,7 +16,7 @@ f3bcd77c94f464aa636ce7ddac766f9d87dc2c26, aangevuld met het op
 Er zijn 177 HTML-pagina's uit de repository en twee pagina's die tijdens
 de bouw ontstaan, plus 40 andere HTML-bestanden. Er zijn ook 144
 afzonderlijke verwijzingen uit de publieke zoekindex, 15 TAALwerkvormen
-en 51 producten uit de LLMscan-catalogus opgenomen.
+51 producten uit de LLMscan-catalogus en twee WiHTML-voorbeeldlessen opgenomen.
 
 Dit zijn verschillende meeteenheden. Een HTML-bestand kan veel
 inhoudelijke onderdelen bevatten. Een zoekresultaat kan naar een
@@ -55,7 +55,8 @@ Voer vanaf de hoofdmap uit:
     python -m unittest discover -s tests -p 'test_website_register.py' -v
 
 De controle stopt bij ontbrekende of dubbele registraties, ontbrekende
-bronbestanden en wijzigingen in de reeds machineleesbare catalogi.
+bronbestanden en wijzigingen in de reeds machineleesbare catalogi,
+inclusief de twee WiHTML-voorbeeldlessen.
 Bij een nieuw HTML-bestand of nieuw zelfstandig onderdeel moeten ook
 de gegevens in het register worden aangevuld. Alleen een link in een
 menu zetten is niet genoeg.
