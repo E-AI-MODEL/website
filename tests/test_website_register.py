@@ -123,6 +123,17 @@ class WebsiteRegisterTests(unittest.TestCase):
         problems = check(ROOT, altered, self.taxonomy)
         self.assertTrue(any("Onderdeel: dubbele identificatie" in p for p in problems))
 
+    def test_sitemap_registration_matches_file(self):
+        problems = check(ROOT, self.register, self.taxonomy)
+        self.assertFalse(any(p.startswith("Sitemap:") for p in problems))
+
+    def test_sitemap_mismatch_is_detected(self):
+        changed = copy.deepcopy(self.register)
+        model = next(p for p in changed["pages"] if p["url"] == "/nl/model/")
+        model["in_committed_sitemap"] = True
+        problems = check(ROOT, changed, self.taxonomy)
+        self.assertTrue(any("Sitemap: vermelding verschilt" in p for p in problems))
+
     def test_no_frontend_label_is_forced_by_taxonomy(self):
         self.assertFalse(self.register["rules"]["display_kind_by_default"])
         self.assertTrue(self.register["rules"]["technical_type_is_not_frontend_label"])
