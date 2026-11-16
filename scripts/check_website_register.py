@@ -137,6 +137,18 @@ def extract_glossary(root: Path, locale: str) -> set[str]:
     return {f"anchor:{base}#{i}" for i in ids}
 
 
+def extract_wihtml(root: Path) -> set[str]:
+    folder = root / "content/wihtml/bibliotheek"
+    files = sorted(folder.glob("*.json"))
+    if not files:
+        raise ValueError("WiHTML: bibliotheek bevat geen bronlessen")
+    for path in files:
+        data = load(path)
+        if not isinstance(data.get("title"), str) or not data.get("slides"):
+            raise ValueError(f"WiHTML: ongeldige lesinhoud: {path.name}")
+    return {f"wihtml:{path.stem}" for path in files}
+
+
 def extract_workforms(root: Path) -> set[str]:
     data = load(root / "content/workforms.json")
     slugs = [w["slug"] for w in data["workforms"]]
@@ -243,6 +255,7 @@ def check(root: Path, register: dict, taxonomy: dict) -> list[str]:
         ("LLMscan", lambda: extract_llmscan(root)),
         ("Begrippen NL", lambda: extract_glossary(root, "nl")),
         ("Begrippen EN", lambda: extract_glossary(root, "en")),
+        ("WiHTML", lambda: extract_wihtml(root)),
     ]:
         try:
             expected = extract()
@@ -254,6 +267,8 @@ def check(root: Path, register: dict, taxonomy: dict) -> list[str]:
             current = {i for i in ids if i.startswith("taal:")}
         elif label == "LLMscan":
             current = {i for i in ids if i.startswith("llmscan:")}
+        elif label == "WiHTML":
+            current = {i for i in ids if i.startswith("wihtml:")}
         else:
             target = next(iter(expected)).split("#", 1)[0]
             current = {i for i in ids if i.startswith(target + "#")}
