@@ -64,6 +64,18 @@ class CloudflareLiveHashTests(unittest.TestCase):
                 changed = injected.replace(b'<body', b'<body data-unauthorized="1"', 1)
                 self.assertEqual(html_matches_release(changed, digest), (False, False))
 
+    def test_standalone_tool_html_accepts_only_single_beacon(self):
+        root = Path(__file__).resolve().parents[1]
+        for relative in ('tools/eaimesh/start/index.html', 'tools/eaistudio/studio/index.html'):
+            with self.subTest(relative=relative):
+                source = (root / relative).read_bytes()
+                digest = hashlib.sha256(source).hexdigest()
+                first, last = source.rsplit(b'</body>', 1)
+                injected = first + BEACON + b'\n</body>' + last
+                self.assertEqual(html_matches_release(injected, digest), (True, True))
+                tampered = injected.replace(b'<body', b'<body data-injected="yes"', 1)
+                self.assertEqual(html_matches_release(tampered, digest), (False, False))
+
     def test_geen_dubbele_of_meervoudige_injecties(self):
         extra = ORIGINAL.replace(b"</body>", BEACON + BEACON + b"</body>")
         self.assertEqual(html_matches_release(extra, DIGEST), (False, False))
