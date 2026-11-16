@@ -40,7 +40,7 @@ test('Natuurkunde is een herkenbare zelfstandige proefversie', () => {
   for (const id of ['labSection', 'experimentTree', 'stage', 'plot', 'comparisonRows', 'controls']) {
     assert.match(html, new RegExp('id="' + id + '"'));
   }
-  assert.match(html, /NATUURKUNDE · PROEFVERSIE/);
+  assert.match(html, /Natuurkunde in 53 onderwerpen/);
   assert.match(html, /href="\/tools\/science-observatory\/"/);
 });
 
