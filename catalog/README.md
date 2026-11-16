@@ -77,10 +77,11 @@ menu zetten is niet genoeg.
 
 - Pagina's die niet in de publieke zoekindex staan, inclusief oude
   doorverwijzingen en afgeschermde of technische pagina's.
-- Functies binnen het EAI Prompt Framework en de HTML-galerij. De galerij
-  kan door gebruikers geüploade inhoud bevatten die niet in deze Git-repository
-  staat. Ook instellingen zoals thema's of knopfuncties zijn niet als
-  afzonderlijke inhoudspagina's geregistreerd.
+- Het EAI Prompt Framework heeft een vaste formulieropbouw, geen afzonderlijk
+  te openen inhoudelijke pagina's. De HTML-galerij heeft een uploadformulier
+  en een dynamisch overzicht. Door gebruikers geüploade inhoud valt buiten
+  de Git-inventaris en is niet live gecontroleerd. Ook thema's, schuifjes en
+  andere instellingen zijn geen afzonderlijke inhoudspagina's.
 - De twee Melkweguitvoeringen zijn op broncode en onderdelen vergeleken.
   De hoofdonderwerpen komen overeen; de uitgebreide uitvoering heeft daarnaast
   begeleidende vragen, hints en extra bediening. Of samenvoegen wenselijk of
@@ -104,3 +105,13 @@ waaronder LEIF. `noindex` zegt niets over werkelijke toegangsbeveiliging.
 Gewone pagina's zonder zoekindexvermelding zijn niet automatisch verouderd.
 De verwijzingen naar externe sites zijn uit de bron overgenomen, niet live
 gecontroleerd. De naamvoorstellen wijzigen geen publieke teksten.
+
+## Sitemap en zoekindex
+
+De vastgelegde sitemap bevat 143 URL's. Het register bevat 179 pagina's,
+waarvan 36 niet in de sitemap staan. Daaronder zijn bewust uitgesloten
+pagina's en doorverwijzingen, maar ook de tijdens de bouw gegenereerde
+modelpagina's `/nl/model/` en `/en/model/`. De controle vergelijkt iedere
+sitemapvermelding met het register. Die brongebonden controle is geen
+SEO-validatie: de ontbrekende modelvermeldingen moeten apart worden hersteld
+of met een expliciete reden uitgesloten.
