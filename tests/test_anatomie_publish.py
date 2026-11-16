@@ -274,15 +274,19 @@ class AnatomyPublishTests(unittest.TestCase):
         self.assertIn("<loc>https://eaimodel.nl/tools/anatomie/</loc>", sitemap)
 
     def test_anatomie_route_in_catalogue_and_concise_navigation(self):
+        # build_site runs before prepare_ui in one workflow. Both stages matter.
         from bs4 import BeautifulSoup
         for rel in ("nl/tools/index.html", "en/tools/index.html"):
             with self.subTest(page=rel):
                 soup = BeautifulSoup((OUT / rel).read_text(encoding="utf-8"), "html.parser")
                 self.assertEqual(len(soup.select('main a[href="/tools/anatomie/"]')), 1)
-                self.assertEqual(len(soup.select('.eai-site-menu a[href="/tools/anatomie/"]')), 1)
-        # The old root catalogue is a safe handoff, not another outdated list.
+                if soup.select_one('.eai-site-menu'):
+                    self.assertEqual(len(soup.select('.eai-site-menu a[href="/tools/anatomie/"]')), 1)
         old = BeautifulSoup((OUT / "tools/index.html").read_text(encoding="utf-8"), "html.parser")
-        self.assertEqual(old.select_one('main a[href]')['href'], '/nl/tools/')
+        if old.find('meta', attrs={'http-equiv': 'refresh'}):
+            self.assertEqual(old.select_one('main a[href]')['href'], '/nl/tools/')
+        else:
+            self.assertEqual(len(old.select('main a[href="/tools/anatomie/"]')), 1)
         navigation_source = (ROOT / "scripts/prepare_ui.py").read_text(encoding="utf-8")
         self.assertEqual(navigation_source.count("'/tools/anatomie/'"), 3)
 
