@@ -151,7 +151,7 @@ en `/tools/` blijven als doorstuurpagina's bestaan; hun **subpagina's** behouden
 hun eigen URL. Er is geen automatische doorsturing van individuele proeven,
 onderzoeken of artikelen.
 
-De tientallen werkvormen en afzonderlijke natuurkundeproeven staan in hun
+De tientallen werkvormen en de 53 afzonderlijke natuurkundeonderwerpen staan in hun
 eigen doorzoekbare omgeving én de volledige sitezoekindex. Het algemene
 menu herhaalt die verzameling niet. Een algemene hoofdpagina is een bruikbare
 keuze of overzicht van nieuwe inhoud, geen extra inhoudsopgave.
@@ -173,3 +173,23 @@ Een componentvorm heeft één betekenis. Twee kaarten die er hetzelfde uitzien, 
 ### Technische laag
 
 Technische koppelingen, adapters, registry-termen en implementatiedetails staan achter een disclosure of in technische documentatie. Ze mogen de eerste docent- of bezoekerslaag niet domineren.
+
+## Publieke vaknamen en zoekresultaten (november 2026)
+
+De pagina `/nl/tools/` geeft acht directe keuzes: Natuurkunde, Wiskunde,
+Menselijk lichaam, Heelal, Oceanografie, Sport en bewegen, AI, Lessen en
+presentaties. De keuze opent het bijbehorende overzicht met directe links.
+Het algemene menu toont niet alle losse onderwerpen.
+
+De openbare namen zijn: De Melkweg, Het lichaam in 3D, Hart en bloedsomloop,
+Aanvallen en verdedigen, Hoe werkt een taalmodel?, Oceanografie en Natuurkunde
+en wiskunde. Bestaande technisch geadresseerde URL's blijven staan.
+
+De Melkweg heeft één primaire openbare ingang: `/tools/melkweg-lab/`.
+De tweede uitvoering onder `/tools/science-observatory/labs/melkweg/` blijft
+rechtstreeks bereikbaar en wordt alleen als alternatief bij De Melkweg genoemd.
+De 53 natuurkundeonderwerpen blijven vindbaar via de oorspronkelijke ankers.
+
+`search_scope` in het inhoudsregister maakt onderscheid tussen algemene
+vindbaarheid, inhoud binnen een toepassing, onderdelen in de eigen bibliotheek
+en interne schermen. Niet elke registratie wordt een algemeen zoekresultaat.
