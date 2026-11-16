@@ -7,6 +7,28 @@ on:
 permissions:
   contents: read
 jobs:
+  diagnose-live-html:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install beautifulsoup4
+      - run: python scripts/build_site.py --sources content/legacy --out site-build
+      - run: python scripts/build_anatomie.py --out site-build/tools/anatomie
+      - run: python scripts/prepare_ui.py --root site-build
+      - name: Vergelijk live HTML met gegenereerde Engelse pagina (alleen lezen)
+        run: |
+          python - <<'PY'
+          import sys
+          from pathlib import Path
+          sys.path.insert(0, 'scripts')
+          from verify_ui import diagnose_html_mismatch
+          diagnose_html_mismatch('https://eaimodel.nl', '/en/about/', Path('site-build'))
+          PY
   verify:
     runs-on: ubuntu-24.04
     timeout-minutes: 12
