@@ -108,10 +108,10 @@ gecontroleerd. De naamvoorstellen wijzigen geen publieke teksten.
 
 ## Sitemap en zoekindex
 
-De vastgelegde sitemap bevat 143 URL's. Het register bevat 179 pagina's,
-waarvan 36 niet in de sitemap staan. Daaronder zijn bewust uitgesloten
-pagina's en doorverwijzingen, maar ook de tijdens de bouw gegenereerde
-modelpagina's `/nl/model/` en `/en/model/`. De controle vergelijkt iedere
-sitemapvermelding met het register. Die brongebonden controle is geen
-SEO-validatie: de ontbrekende modelvermeldingen moeten apart worden hersteld
-of met een expliciete reden uitgesloten.
+De vastgelegde sitemap bevat nu 145 URL's. Het register bevat 179 pagina's,
+waarvan 34 niet in de sitemap staan. Daaronder zijn bewust uitgesloten
+pagina's, doorverwijzingen en eerder gepubliceerde archiefroutes.
+De tijdens de bouw gegenereerde modelpagina's `/nl/model/` en `/en/model/`
+worden nu ook door `build_site.py` aan de sitemap toegevoegd.
+De controle vergelijkt iedere sitemapvermelding met het register.
+Dat is geen controle of zoekmachines alle pagina's hebben opgenomen.
