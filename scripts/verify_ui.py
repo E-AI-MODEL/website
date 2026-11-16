@@ -129,7 +129,7 @@ def html_matches_release(data: bytes, digest: str) -> tuple[bool, bool]:
             set(beacon.attrs) - permitted or
             beacon.get_text(strip=True) or
             not re.fullmatch(
-                r'https://static\\.cloudflareinsights\\.com/beacon\\.min\\.js/v[a-zA-Z0-9]+',
+                r'https://static\.cloudflareinsights\.com/beacon\.min\.js/v[a-zA-Z0-9]+',
                 str(beacon.get('src', ''))
             )):
             continue
