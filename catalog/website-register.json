@@ -23,7 +23,8 @@
       "category": null,
       "review": "niet_in_publieke_zoekindex_status_controleren",
       "parent": null,
-      "family": "model"
+      "family": "model",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/bronnen/",
@@ -34,7 +35,8 @@
       "category": "Onderzoek",
       "review": "gevonden_in_zoekindex",
       "parent": null,
-      "family": "onderzoek"
+      "family": "onderzoek",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/eaa-model/",
@@ -45,7 +47,8 @@
       "category": null,
       "review": "niet_in_publieke_zoekindex_status_controleren",
       "parent": null,
-      "family": "model"
+      "family": "model",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/eai-blog/",
@@ -56,7 +59,8 @@
       "category": "Onderzoek & publicaties · Archief",
       "review": "gevonden_in_zoekindex",
       "parent": null,
-      "family": "publicaties"
+      "family": "publicaties",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/eai-blog/eai-balans/",
@@ -67,7 +71,8 @@
       "category": "Onderzoek & publicaties · Archief",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/eai-blog/",
-      "family": "publicaties"
+      "family": "publicaties",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/eai-blog/eai-beyond-explainability/",
@@ -78,7 +83,8 @@
       "category": "Onderzoek & publicaties · Archief",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/eai-blog/",
-      "family": "publicaties"
+      "family": "publicaties",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/eai-blog/eai-stappenplan/",
@@ -89,7 +95,8 @@
       "category": "Onderzoek & publicaties · Archief",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/eai-blog/",
-      "family": "publicaties"
+      "family": "publicaties",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/eai-blog/eai-task-density/",
@@ -100,7 +107,8 @@
       "category": "Onderzoek & publicaties · Archief",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/eai-blog/",
-      "family": "publicaties"
+      "family": "publicaties",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/eai-blog/rapportage-wang-fan-2025/",
@@ -111,7 +119,8 @@
       "category": "Onderzoek & publicaties · Archief",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/eai-blog/",
-      "family": "publicaties"
+      "family": "publicaties",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/eai-blog/the-act-of-learning-act-2/",
@@ -122,7 +131,8 @@
       "category": "Onderzoek & publicaties · Archief",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/eai-blog/",
-      "family": "publicaties"
+      "family": "publicaties",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/eai-blog/the-act-of-learning/",
@@ -133,7 +143,8 @@
       "category": "Onderzoek & publicaties · Archief",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/eai-blog/",
-      "family": "publicaties"
+      "family": "publicaties",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/eai-tools-modules/",
@@ -146,7 +157,8 @@
       "parent": null,
       "family": "hulpmiddelen",
       "page_status": "meta_redirect_verified",
-      "redirect_target": "/tools/"
+      "redirect_target": "/tools/",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/eai-tools-modules/act-of-learning-game-2/",
@@ -159,7 +171,8 @@
       "parent": "page:/eai-tools-modules/",
       "family": "hulpmiddelen",
       "page_status": "meta_redirect_verified",
-      "redirect_target": "https://rainbow-tarsier-a88e9b.netlify.app/"
+      "redirect_target": "https://rainbow-tarsier-a88e9b.netlify.app/",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/eai-tools-modules/eaa-model-tool/",
@@ -172,7 +185,8 @@
       "parent": "page:/eai-tools-modules/",
       "family": "hulpmiddelen",
       "page_status": "meta_redirect_verified",
-      "redirect_target": "https://sunny-blancmange-dec4a1.netlify.app"
+      "redirect_target": "https://sunny-blancmange-dec4a1.netlify.app",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/eai-tools-modules/eai-eduprompt-builder/",
@@ -185,7 +199,8 @@
       "parent": "page:/eai-tools-modules/",
       "family": "hulpmiddelen",
       "page_status": "meta_redirect_verified",
-      "redirect_target": "https://eai-prompt.lovable.app/"
+      "redirect_target": "https://eai-prompt.lovable.app/",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/eai-tools-modules/eai-toolanalyse/",
@@ -198,7 +213,8 @@
       "parent": "page:/eai-tools-modules/",
       "family": "hulpmiddelen",
       "page_status": "meta_redirect_verified",
-      "redirect_target": "https://subtle-churros-4d44d5.netlify.app"
+      "redirect_target": "https://subtle-churros-4d44d5.netlify.app",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/eai-tools-modules/eai-toolkit-beyond-explainability/",
@@ -211,7 +227,8 @@
       "parent": "page:/eai-tools-modules/",
       "family": "hulpmiddelen",
       "page_status": "meta_redirect_verified",
-      "redirect_target": "/tools/beyond-explainability/"
+      "redirect_target": "/tools/beyond-explainability/",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/eai-tools-modules/eai-toolkit-the-act-of-learning-en/",
@@ -224,7 +241,8 @@
       "parent": "page:/eai-tools-modules/",
       "family": "hulpmiddelen",
       "page_status": "meta_redirect_verified",
-      "redirect_target": "https://effortless-fenglisu-71cd58.netlify.app/"
+      "redirect_target": "https://effortless-fenglisu-71cd58.netlify.app/",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/eai-tools-modules/eai-what-if-machine/",
@@ -237,7 +255,8 @@
       "parent": "page:/eai-tools-modules/",
       "family": "hulpmiddelen",
       "page_status": "meta_redirect_verified",
-      "redirect_target": "https://what-if-lesson-designer.lovable.app/"
+      "redirect_target": "https://what-if-lesson-designer.lovable.app/",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/en/",
@@ -248,7 +267,8 @@
       "category": "EN",
       "review": "gevonden_in_zoekindex",
       "parent": null,
-      "family": "model"
+      "family": "model",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/en/about/",
@@ -259,7 +279,8 @@
       "category": "About EAI",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/en/",
-      "family": "over"
+      "family": "over",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/en/applications/",
@@ -270,7 +291,8 @@
       "category": "EN",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/en/",
-      "family": "praktijk"
+      "family": "praktijk",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/en/education/",
@@ -281,7 +303,8 @@
       "category": "Teaching · Start here",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/en/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/en/glossary/",
@@ -292,7 +315,8 @@
       "category": "The model",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/en/",
-      "family": "model"
+      "family": "model",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/en/insights/",
@@ -303,7 +327,8 @@
       "category": "About EAI",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/en/",
-      "family": "over"
+      "family": "over",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/en/llmscan/",
@@ -314,7 +339,8 @@
       "category": "Tools · Check models and publications",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/en/",
-      "family": "ai"
+      "family": "ai",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/en/model-monitor/",
@@ -325,7 +351,8 @@
       "category": "Explore & create",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/en/",
-      "family": "ai"
+      "family": "ai",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/en/model/",
@@ -336,7 +363,8 @@
       "category": "The model",
       "review": "bouwresultaat_controleren",
       "parent": "page:/en/",
-      "family": "model"
+      "family": "model",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/en/publications/",
@@ -347,7 +375,8 @@
       "category": "Articles",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/en/",
-      "family": "publicaties"
+      "family": "publicaties",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/en/research/",
@@ -358,7 +387,8 @@
       "category": "Research",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/en/",
-      "family": "onderzoek"
+      "family": "onderzoek",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/en/research/teaching-tools/",
@@ -369,7 +399,8 @@
       "category": "Research & publications · Research",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/en/research/",
-      "family": "onderzoek"
+      "family": "onderzoek",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/en/research/zhang-genai-language/",
@@ -380,7 +411,8 @@
       "category": "Research & publications · Research",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/en/research/",
-      "family": "onderzoek"
+      "family": "onderzoek",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/en/tools/",
@@ -391,7 +423,8 @@
       "category": "Explore & create",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/en/",
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/houseoftalents/",
@@ -402,7 +435,8 @@
       "category": null,
       "review": "niet_in_publieke_zoekindex_status_controleren",
       "parent": null,
-      "family": "technisch"
+      "family": "technisch",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/houseoftalents/3d/",
@@ -415,7 +449,8 @@
       "parent": "page:/houseoftalents/",
       "family": "technisch",
       "robots_noindex_in_html": true,
-      "page_status": "niet_voor_zoekmachines"
+      "page_status": "niet_voor_zoekmachines",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/kennis/",
@@ -426,7 +461,8 @@
       "category": null,
       "review": "niet_in_publieke_zoekindex_status_controleren",
       "parent": null,
-      "family": "onderzoek"
+      "family": "onderzoek",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/leif/",
@@ -439,7 +475,8 @@
       "parent": null,
       "family": "technisch",
       "robots_noindex_in_html": true,
-      "page_status": "niet_voor_zoekmachines"
+      "page_status": "niet_voor_zoekmachines",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/leif/beheer/",
@@ -452,7 +489,8 @@
       "parent": "page:/leif/",
       "family": "technisch",
       "robots_noindex_in_html": true,
-      "page_status": "niet_voor_zoekmachines"
+      "page_status": "niet_voor_zoekmachines",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/leif/continue/",
@@ -465,7 +503,8 @@
       "parent": "page:/leif/",
       "family": "technisch",
       "robots_noindex_in_html": true,
-      "page_status": "niet_voor_zoekmachines"
+      "page_status": "niet_voor_zoekmachines",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/leif/mijn/",
@@ -478,7 +517,8 @@
       "parent": "page:/leif/",
       "family": "technisch",
       "robots_noindex_in_html": true,
-      "page_status": "niet_voor_zoekmachines"
+      "page_status": "niet_voor_zoekmachines",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/leif/verhaal/",
@@ -491,7 +531,8 @@
       "parent": "page:/leif/",
       "family": "technisch",
       "robots_noindex_in_html": true,
-      "page_status": "niet_voor_zoekmachines"
+      "page_status": "niet_voor_zoekmachines",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/model-monitor/",
@@ -502,7 +543,8 @@
       "category": null,
       "review": "niet_in_publieke_zoekindex_status_controleren",
       "parent": null,
-      "family": "ai"
+      "family": "ai",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/nl/",
@@ -513,7 +555,8 @@
       "category": "NL",
       "review": "gevonden_in_zoekindex",
       "parent": null,
-      "family": "model"
+      "family": "model",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/nl/begrippen/",
@@ -524,7 +567,8 @@
       "category": "Het model",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/nl/",
-      "family": "model"
+      "family": "model",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/nl/blog/",
@@ -535,7 +579,8 @@
       "category": "Artikelen",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/nl/",
-      "family": "publicaties"
+      "family": "publicaties",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/nl/blog/wat-ons-werk-ons-werk-maakt/",
@@ -546,7 +591,8 @@
       "category": "Onderzoek & publicaties · Blog",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/nl/blog/",
-      "family": "publicaties"
+      "family": "publicaties",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/nl/insights/",
@@ -557,7 +603,8 @@
       "category": "Over EAI",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/nl/",
-      "family": "over"
+      "family": "over",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/nl/llmscan/",
@@ -568,7 +615,8 @@
       "category": "Hulpmiddelen · AI en publicaties controleren",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/nl/",
-      "family": "ai"
+      "family": "ai",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/nl/llmscan/onderzoek/",
@@ -579,7 +627,8 @@
       "category": "Tools · Check models and publications",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/nl/llmscan/",
-      "family": "ai"
+      "family": "ai",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/nl/model-monitor/",
@@ -590,7 +639,8 @@
       "category": "Zelf aan de slag",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/nl/",
-      "family": "ai"
+      "family": "ai",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/nl/model/",
@@ -601,7 +651,8 @@
       "category": "Het model",
       "review": "bouwresultaat_controleren",
       "parent": "page:/nl/",
-      "family": "model"
+      "family": "model",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/nl/onderwijs/",
@@ -612,7 +663,8 @@
       "category": "Lespraktijk · Start hier",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/nl/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/nl/onderzoek/",
@@ -623,7 +675,8 @@
       "category": "Onderzoek",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/nl/",
-      "family": "onderzoek"
+      "family": "onderzoek",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/nl/onderzoek/leermiddelen/",
@@ -634,7 +687,8 @@
       "category": "Onderzoek & publicaties · Onderzoeksdossiers",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/nl/onderzoek/",
-      "family": "onderzoek"
+      "family": "onderzoek",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/nl/onderzoek/zhang-genai-taal/",
@@ -645,7 +699,8 @@
       "category": "Onderzoek & publicaties · Onderzoeksdossiers",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/nl/onderzoek/",
-      "family": "onderzoek"
+      "family": "onderzoek",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/nl/over/",
@@ -656,7 +711,8 @@
       "category": "Over EAI",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/nl/",
-      "family": "over"
+      "family": "over",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/nl/publicaties/",
@@ -667,7 +723,8 @@
       "category": "Artikelen",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/nl/",
-      "family": "publicaties"
+      "family": "publicaties",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/nl/toepassingen/",
@@ -678,7 +735,8 @@
       "category": "NL",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/nl/",
-      "family": "praktijk"
+      "family": "praktijk",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/nl/tools/",
@@ -689,7 +747,8 @@
       "category": "Zelf aan de slag",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/nl/",
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/nl/tools/verificatie/",
@@ -700,7 +759,8 @@
       "category": "Tools · Check models and publications",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/nl/tools/",
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/onderbouwing/",
@@ -711,7 +771,8 @@
       "category": null,
       "review": "niet_in_publieke_zoekindex_status_controleren",
       "parent": null,
-      "family": "onderzoek"
+      "family": "onderzoek",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/onderwijs/",
@@ -722,7 +783,8 @@
       "category": null,
       "review": "niet_in_publieke_zoekindex_status_controleren",
       "parent": null,
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/onderwijsin/",
@@ -733,7 +795,8 @@
       "category": null,
       "review": "niet_in_publieke_zoekindex_status_controleren",
       "parent": null,
-      "family": "technisch"
+      "family": "technisch",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/onderwijsin/3d/",
@@ -746,7 +809,8 @@
       "parent": "page:/onderwijsin/",
       "family": "technisch",
       "robots_noindex_in_html": true,
-      "page_status": "niet_voor_zoekmachines"
+      "page_status": "niet_voor_zoekmachines",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/onderwijsin/houseoftalents/",
@@ -757,7 +821,8 @@
       "category": null,
       "review": "niet_in_publieke_zoekindex_status_controleren",
       "parent": "page:/onderwijsin/",
-      "family": "technisch"
+      "family": "technisch",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/onderwijsin/houseoftalents/3d/",
@@ -770,7 +835,8 @@
       "parent": "page:/onderwijsin/houseoftalents/",
       "family": "technisch",
       "robots_noindex_in_html": true,
-      "page_status": "niet_voor_zoekmachines"
+      "page_status": "niet_voor_zoekmachines",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/over/",
@@ -781,7 +847,8 @@
       "category": null,
       "review": "niet_in_publieke_zoekindex_status_controleren",
       "parent": null,
-      "family": "over"
+      "family": "over",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/praktijk/",
@@ -792,7 +859,8 @@
       "category": "Lespraktijk · Start hier",
       "review": "gevonden_in_zoekindex",
       "parent": null,
-      "family": "praktijk"
+      "family": "praktijk",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/publicaties/",
@@ -803,7 +871,8 @@
       "category": null,
       "review": "niet_in_publieke_zoekindex_status_controleren",
       "parent": null,
-      "family": "publicaties"
+      "family": "publicaties",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/publicaties/ai-balans/",
@@ -814,7 +883,8 @@
       "category": "Onderzoek & publicaties · Publicaties",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/publicaties/",
-      "family": "publicaties"
+      "family": "publicaties",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/publicaties/beyond-explainability/",
@@ -825,7 +895,8 @@
       "category": "Onderzoek & publicaties · Publicaties",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/publicaties/",
-      "family": "publicaties"
+      "family": "publicaties",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/publicaties/de-vraag-die-we-vergeten/",
@@ -836,7 +907,8 @@
       "category": "Onderzoek & publicaties · Publicaties",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/publicaties/",
-      "family": "publicaties"
+      "family": "publicaties",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/publicaties/eai-stappenplan/",
@@ -847,7 +919,8 @@
       "category": "Onderzoek & publicaties · Publicaties",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/publicaties/",
-      "family": "publicaties"
+      "family": "publicaties",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/publicaties/task-density/",
@@ -858,7 +931,8 @@
       "category": "Onderzoek & publicaties · Publicaties",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/publicaties/",
-      "family": "publicaties"
+      "family": "publicaties",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/publicaties/the-act-of-learning-act-2/",
@@ -869,7 +943,8 @@
       "category": "Onderzoek & publicaties · Publicaties",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/publicaties/",
-      "family": "publicaties"
+      "family": "publicaties",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/publicaties/the-act-of-learning/",
@@ -880,7 +955,8 @@
       "category": "Onderzoek & publicaties · Publicaties",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/publicaties/",
-      "family": "publicaties"
+      "family": "publicaties",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/publicaties/wang-fan-2025/",
@@ -891,7 +967,8 @@
       "category": "Onderzoek & publicaties · Publicaties",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/publicaties/",
-      "family": "publicaties"
+      "family": "publicaties",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/statistieken/",
@@ -902,7 +979,8 @@
       "category": null,
       "review": "niet_in_publieke_zoekindex_status_controleren",
       "parent": null,
-      "family": "technisch"
+      "family": "technisch",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/taalwerkvormen/",
@@ -913,7 +991,8 @@
       "category": "Lespraktijk · Start hier",
       "review": "gevonden_in_zoekindex",
       "parent": null,
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/toepassingen/",
@@ -924,7 +1003,8 @@
       "category": null,
       "review": "niet_in_publieke_zoekindex_status_controleren",
       "parent": null,
-      "family": "praktijk"
+      "family": "praktijk",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/toepassingen/onderwijs-ai/",
@@ -935,7 +1015,8 @@
       "category": null,
       "review": "niet_in_publieke_zoekindex_status_controleren",
       "parent": "page:/toepassingen/",
-      "family": "praktijk"
+      "family": "praktijk",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/toepassingen/onderwijsregio-rotterdam/",
@@ -946,7 +1027,8 @@
       "category": null,
       "review": "niet_in_publieke_zoekindex_status_controleren",
       "parent": "page:/toepassingen/",
-      "family": "praktijk"
+      "family": "praktijk",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/toepassingen/saga-legal-ai/",
@@ -957,7 +1039,8 @@
       "category": null,
       "review": "niet_in_publieke_zoekindex_status_controleren",
       "parent": "page:/toepassingen/",
-      "family": "praktijk"
+      "family": "praktijk",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/tools/",
@@ -968,7 +1051,8 @@
       "category": null,
       "review": "niet_in_publieke_zoekindex_status_controleren",
       "parent": null,
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/tools/abyss/",
@@ -981,7 +1065,8 @@
       "parent": "page:/tools/",
       "suggested_title_nl": "Diepzee",
       "family": "oceanen",
-      "embedded_inventory": "afzonderlijke_keuzes_brongecontroleerd"
+      "embedded_inventory": "afzonderlijke_keuzes_brongecontroleerd",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/tools/anatomie/",
@@ -993,7 +1078,8 @@
       "review": "publieke_naam_voorstel",
       "parent": "page:/tools/",
       "suggested_title_nl": "Het lichaam in 3D",
-      "family": "menselijk-lichaam"
+      "family": "menselijk-lichaam",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/tools/anatomie/labs/hartslag/",
@@ -1005,7 +1091,8 @@
       "review": "publieke_naam_voorstel",
       "parent": "page:/tools/anatomie/",
       "suggested_title_nl": "Het hart en de bloedsomloop",
-      "family": "menselijk-lichaam"
+      "family": "menselijk-lichaam",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/tools/beyond-explainability/",
@@ -1016,7 +1103,8 @@
       "category": "Hulpmiddelen · AI en publicaties controleren",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/",
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/tools/eaigame/",
@@ -1040,7 +1128,8 @@
         "count": 300,
         "review": "vragen_zijn_niet_elk_een_aparte_openbare_pagina",
         "quality_status": "editorial-draft"
-      }
+      },
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/tools/eaigit/",
@@ -1051,7 +1140,8 @@
       "category": "TOOLS",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/",
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/tools/eaigit/hulp/",
@@ -1062,7 +1152,8 @@
       "category": "TOOLS",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/eaigit/",
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/tools/eaigit/prompts/",
@@ -1073,7 +1164,8 @@
       "category": "TOOLS",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/eaigit/",
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/tools/eaimesh/",
@@ -1084,7 +1176,8 @@
       "category": "Hulpmiddelen · Werkruimtes en delen",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/",
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/tools/eaimesh/start/",
@@ -1108,7 +1201,8 @@
           "deep"
         ],
         "not_individual_content": true
-      }
+      },
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/tools/eaistudio/",
@@ -1119,7 +1213,8 @@
       "category": "Zelf aan de slag",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/",
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/tools/eaistudio/studio/",
@@ -1131,7 +1226,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/eaistudio/",
       "family": "hulpmiddelen",
-      "embedded_inventory": "40_componenten_3_startvoorbeelden_8_scenesjablonen"
+      "embedded_inventory": "40_componenten_3_startvoorbeelden_8_scenesjablonen",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/tools/eaiwork/",
@@ -1143,7 +1239,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/",
       "family": "hulpmiddelen",
-      "embedded_inventory": "vijftien_interne_werkomgevingen"
+      "embedded_inventory": "vijftien_interne_werkomgevingen",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/tools/html-galerij/",
@@ -1152,11 +1249,17 @@
       "title": "HTML uploaden",
       "kind": "toepassing",
       "category": "Hulpmiddelen · Werkruimtes en delen",
-      "review": "gevonden_in_zoekindex",
+      "review": "bronstructuur_gelezen_backend_en_toegang_niet_getest",
       "parent": "page:/tools/",
       "family": "hulpmiddelen",
-      "embedded_inventory": "gebruikersinhoud_dynamisch_geen_statische_bestandsinventaris",
-      "note": "Uploads en galerijvermeldingen worden niet door de website-repository beheerd. Geen schijnzekerheid over live items."
+      "embedded_inventory": "uploadformulier_en_dynamische_galerij_geen_statische_onderdelen",
+      "note": "Uploads en galerijvermeldingen worden niet door de website-repository beheerd. Geen schijnzekerheid over live items.",
+      "in_committed_sitemap": true,
+      "functional_sections": [
+        "HTML-bestand toevoegen",
+        "Door anderen gemaakte HTML bekijken"
+      ],
+      "external_dependency": "services/html-galerij/ en externe opslag/API; inhoud van uploads niet opgenomen in deze Git-repository"
     },
     {
       "id": "page:/tools/llm-observatorium/",
@@ -1168,7 +1271,8 @@
       "review": "publieke_naam_voorstel",
       "parent": "page:/tools/",
       "suggested_title_nl": "Hoe werkt een taalmodel?",
-      "family": "ai"
+      "family": "ai",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/tools/lo-aanvalslab/",
@@ -1181,7 +1285,8 @@
       "parent": "page:/tools/",
       "suggested_title_nl": "Aanvallen en verdedigen",
       "family": "sport-en-bewegen",
-      "embedded_inventory": "afzonderlijke_keuzes_brongecontroleerd"
+      "embedded_inventory": "afzonderlijke_keuzes_brongecontroleerd",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/tools/lo-aanvalslab/onderbouwing/",
@@ -1192,7 +1297,8 @@
       "category": "Sport en tactiek · Sport en bewegen",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/lo-aanvalslab/",
-      "family": "sport-en-bewegen"
+      "family": "sport-en-bewegen",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/tools/melkweg-lab/",
@@ -1205,7 +1311,8 @@
       "parent": "page:/tools/",
       "suggested_title_nl": "Melkweg",
       "family": "heelal",
-      "content_collection": "melkweg"
+      "content_collection": "melkweg",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/tools/projecthulp/",
@@ -1216,7 +1323,8 @@
       "category": "TOOLS",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/",
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/tools/prompt-framework/",
@@ -1225,10 +1333,21 @@
       "title": "EAI Prompt Framework",
       "kind": "toepassing",
       "category": "Zelf aan de slag",
-      "review": "gevonden_in_zoekindex",
+      "review": "functieopbouw_in_bron_gelezen_geen_browserproef",
       "parent": "page:/tools/",
       "family": "hulpmiddelen",
-      "embedded_inventory": "wizard_geen_vaste_catalogus_onderdelen_nader_controleren"
+      "embedded_inventory": "enkele_wizard_geen_vaste_zelfstandig_openbare_onderdelen",
+      "in_committed_sitemap": true,
+      "functional_sections": [
+        "Context",
+        "Leerdoel",
+        "Leerstap van de leerling",
+        "Wat AI mag doen",
+        "Gedrag van AI",
+        "Toegestane bronnen en hulpmiddelen",
+        "Wat de leerling laat zien",
+        "Wat de toepassing moet maken"
+      ]
     },
     {
       "id": "page:/tools/science-observatory/",
@@ -1239,7 +1358,8 @@
       "category": "Zelf aan de slag",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/",
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/tools/science-observatory/labs/gravitatie-banen/",
@@ -1251,7 +1371,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/science-observatory/",
       "family": "heelal",
-      "embedded_inventory": "afzonderlijke_keuzes_brongecontroleerd"
+      "embedded_inventory": "afzonderlijke_keuzes_brongecontroleerd",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/tools/science-observatory/labs/melkweg/",
@@ -1264,7 +1385,8 @@
       "parent": "page:/tools/science-observatory/",
       "suggested_title_nl": "Melkweg",
       "family": "heelal",
-      "content_collection": "melkweg"
+      "content_collection": "melkweg",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/tools/science-observatory/labs/natuurkunde/",
@@ -1276,7 +1398,8 @@
       "review": "publieke_naam_voorstel",
       "parent": "page:/tools/science-observatory/",
       "suggested_title_nl": "Natuurkunde",
-      "family": "natuurkunde"
+      "family": "natuurkunde",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/tools/science-observatory/labs/schuine-worp/",
@@ -1287,7 +1410,8 @@
       "category": "TOOLS",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/science-observatory/",
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/tools/science-observatory/labs/wiskunde-a/",
@@ -1299,7 +1423,8 @@
       "review": "publieke_naam_voorstel",
       "parent": "page:/tools/science-observatory/",
       "suggested_title_nl": "Wiskunde A",
-      "family": "wiskunde"
+      "family": "wiskunde",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/tools/science-observatory/labs/wiskunde-b/",
@@ -1311,7 +1436,8 @@
       "review": "publieke_naam_voorstel",
       "parent": "page:/tools/science-observatory/",
       "suggested_title_nl": "Wiskunde B",
-      "family": "wiskunde"
+      "family": "wiskunde",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/tools/sport-en-bewegen/",
@@ -1322,7 +1448,8 @@
       "category": "TOOLS",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/",
-      "family": "sport-en-bewegen"
+      "family": "sport-en-bewegen",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/tools/sport-en-bewegen/opstellingen/",
@@ -1335,7 +1462,8 @@
       "parent": "page:/tools/sport-en-bewegen/",
       "suggested_title_nl": "Opstellingen maken",
       "family": "sport-en-bewegen",
-      "embedded_inventory": "dynamische_functies_nog_nader_controleren"
+      "embedded_inventory": "dynamische_functies_nog_nader_controleren",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/tools/van-proces-naar-prompt/",
@@ -1347,7 +1475,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/",
       "family": "hulpmiddelen",
-      "embedded_inventory": "afzonderlijke_keuzes_brongecontroleerd"
+      "embedded_inventory": "afzonderlijke_keuzes_brongecontroleerd",
+      "in_committed_sitemap": false
     },
     {
       "id": "page:/tools/wihtml/",
@@ -1358,7 +1487,8 @@
       "category": "Zelf aan de slag",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/",
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/tools/wihtml/bibliotheek/",
@@ -1369,7 +1499,8 @@
       "category": "Hulpmiddelen · Lesmateriaal en prompts maken",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/wihtml/",
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/tools/wihtml/studio/",
@@ -1381,7 +1512,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/wihtml/",
       "family": "hulpmiddelen",
-      "embedded_inventory": "tien_lesonderdeeltypen"
+      "embedded_inventory": "tien_lesonderdeeltypen",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/tools/wihtml/voorbeeld/",
@@ -1392,7 +1524,8 @@
       "category": "Hulpmiddelen · Lesmateriaal en prompts maken",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/wihtml/",
-      "family": "hulpmiddelen"
+      "family": "hulpmiddelen",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/twee-pijlers/",
@@ -1403,7 +1536,8 @@
       "category": "Lespraktijk · Start hier",
       "review": "gevonden_in_zoekindex",
       "parent": null,
-      "family": "model"
+      "family": "model",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/verdieping/",
@@ -1416,7 +1550,8 @@
       "parent": null,
       "family": "onderzoek",
       "page_status": "meta_redirect_verified",
-      "redirect_target": "/kennis/"
+      "redirect_target": "/kennis/",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/",
@@ -1427,7 +1562,8 @@
       "category": "Lespraktijk · Start hier",
       "review": "gevonden_in_zoekindex",
       "parent": null,
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/accept-adapt-reject/",
@@ -1438,7 +1574,8 @@
       "category": "Lespraktijk · Zelfstandigheid en zelfregulatie",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/ai-role-handback-plan/",
@@ -1449,7 +1586,8 @@
       "category": "Lespraktijk · Opdrachten en de rol van AI",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/assessment-redesign/",
@@ -1460,7 +1598,8 @@
       "category": "Lespraktijk · Opdrachten en de rol van AI",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/bewijs-van-leren/",
@@ -1471,7 +1610,8 @@
       "category": "Lespraktijk · Denk- en leerproces zichtbaar maken",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/bound-the-claim/",
@@ -1482,7 +1622,8 @@
       "category": "Lespraktijk · Beoordelen en professioneel oordeel",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/compare-then-reconstruct/",
@@ -1493,7 +1634,8 @@
       "category": "Lespraktijk · Zelfstandigheid en zelfregulatie",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/competing-explanations/",
@@ -1504,7 +1646,8 @@
       "category": "Lespraktijk · Beoordelen en professioneel oordeel",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/conclusion-strength/",
@@ -1515,7 +1658,8 @@
       "category": "Lespraktijk · Bronnen en argumenten beoordelen",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/confidence-vs-evidence/",
@@ -1526,7 +1670,8 @@
       "category": "Lespraktijk · Denk- en leerproces zichtbaar maken",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/controlled-detachment/",
@@ -1537,7 +1682,8 @@
       "category": "Lespraktijk · Zelfstandigheid en zelfregulatie",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/counterargument-first/",
@@ -1548,7 +1694,8 @@
       "category": "Lespraktijk · Bronnen en argumenten beoordelen",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/delayed-reperformance/",
@@ -1559,7 +1706,8 @@
       "category": "Lespraktijk · Denk- en leerproces zichtbaar maken",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/discriminating-probe/",
@@ -1570,7 +1718,8 @@
       "category": "Lespraktijk · Beoordelen en professioneel oordeel",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/eai-kaart/",
@@ -1581,7 +1730,8 @@
       "category": "Lespraktijk · Opdrachten en de rol van AI",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/eliciting-question/",
@@ -1592,7 +1742,8 @@
       "category": "Lespraktijk · Hulp en feedback tijdens het leren",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/evidence-to-claim/",
@@ -1603,7 +1754,8 @@
       "category": "Lespraktijk · Bronnen en argumenten beoordelen",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/evidence-to-next-response/",
@@ -1614,7 +1766,8 @@
       "category": "Lespraktijk · Beoordelen en professioneel oordeel",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/explain-before-continue/",
@@ -1625,7 +1778,8 @@
       "category": "Lespraktijk · Zelfstandigheid en zelfregulatie",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/fade-one-layer/",
@@ -1636,7 +1790,8 @@
       "category": "Lespraktijk · Hulp en feedback tijdens het leren",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/feedback-redo/",
@@ -1647,7 +1802,8 @@
       "category": "Lespraktijk · Hulp en feedback tijdens het leren",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/feedback-without-rewrite/",
@@ -1658,7 +1814,8 @@
       "category": "Lespraktijk · Hulp en feedback tijdens het leren",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/find-my-impasse/",
@@ -1669,7 +1826,8 @@
       "category": "Lespraktijk · Zelfstandigheid en zelfregulatie",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/first-attempt/",
@@ -1680,7 +1838,8 @@
       "category": "Lespraktijk · Denk- en leerproces zichtbaar maken",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/first-breakdown/",
@@ -1691,7 +1850,8 @@
       "category": "Lespraktijk · Beoordelen en professioneel oordeel",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/foutanalyse/",
@@ -1702,7 +1862,8 @@
       "category": "Lespraktijk · Hulp en feedback tijdens het leren",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/fresh-item-same-operation/",
@@ -1713,7 +1874,8 @@
       "category": "Lespraktijk · Zelfstandigheid en zelfregulatie",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/hand-back-the-action/",
@@ -1724,7 +1886,8 @@
       "category": "Lespraktijk · Hulp en feedback tijdens het leren",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/herontwerp-opdracht/",
@@ -1735,7 +1898,8 @@
       "category": "Lespraktijk · Opdrachten en de rol van AI",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/hidden-assumption/",
@@ -1746,7 +1910,8 @@
       "category": "Lespraktijk · Bronnen en argumenten beoordelen",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/justification-mapping/",
@@ -1757,7 +1922,8 @@
       "category": "Lespraktijk · Denk- en leerproces zichtbaar maken",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/kernhandeling-check/",
@@ -1768,7 +1934,8 @@
       "category": "Lespraktijk · Opdrachten en de rol van AI",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/learner-voice-check/",
@@ -1779,7 +1946,8 @@
       "category": "Lespraktijk · Beoordelen en professioneel oordeel",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/learning-goal-vs-task/",
@@ -1790,7 +1958,8 @@
       "category": "Lespraktijk · Zelfstandigheid en zelfregulatie",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/least-intrusive-support/",
@@ -1801,7 +1970,8 @@
       "category": "Lespraktijk · Hulp en feedback tijdens het leren",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/model-then-reperform/",
@@ -1812,7 +1982,8 @@
       "category": "Lespraktijk · Hulp en feedback tijdens het leren",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/monitoring-checkpoint/",
@@ -1823,7 +1994,8 @@
       "category": "Lespraktijk · Zelfstandigheid en zelfregulatie",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/observation-vs-inference/",
@@ -1834,7 +2006,8 @@
       "category": "Lespraktijk · Beoordelen en professioneel oordeel",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/perspective-weighing/",
@@ -1845,7 +2018,8 @@
       "category": "Lespraktijk · Bronnen en argumenten beoordelen",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/plan-it-yourself/",
@@ -1856,7 +2030,8 @@
       "category": "Lespraktijk · Zelfstandigheid en zelfregulatie",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/practice-or-reteach/",
@@ -1867,7 +2042,8 @@
       "category": "Lespraktijk · Hulp en feedback tijdens het leren",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/preserve-uncertainty/",
@@ -1878,7 +2054,8 @@
       "category": "Lespraktijk · Beoordelen en professioneel oordeel",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/process-reconstruction/",
@@ -1889,7 +2066,8 @@
       "category": "Lespraktijk · Zelfstandigheid en zelfregulatie",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/prompt-variation-lab/",
@@ -1900,7 +2078,8 @@
       "category": "Lespraktijk · Opdrachten en de rol van AI",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/proportionate-follow-up/",
@@ -1911,7 +2090,8 @@
       "category": "Lespraktijk · Beoordelen en professioneel oordeel",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/rebuttal-reconstruction/",
@@ -1922,7 +2102,8 @@
       "category": "Lespraktijk · Bronnen en argumenten beoordelen",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/reconstruct-professional-judgement/",
@@ -1933,7 +2114,8 @@
       "category": "Lespraktijk · Beoordelen en professioneel oordeel",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/reflective-re-entry/",
@@ -1944,7 +2126,8 @@
       "category": "Lespraktijk · Denk- en leerproces zichtbaar maken",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/resume-control/",
@@ -1955,7 +2138,8 @@
       "category": "Lespraktijk · Zelfstandigheid en zelfregulatie",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/smallest-help-needed/",
@@ -1966,7 +2150,8 @@
       "category": "Lespraktijk · Zelfstandigheid en zelfregulatie",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/source-suitability/",
@@ -1977,7 +2162,8 @@
       "category": "Lespraktijk · Bronnen en argumenten beoordelen",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/source-verification/",
@@ -1988,7 +2174,8 @@
       "category": "Lespraktijk · Hulp en feedback tijdens het leren",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/strategy-switch-from-evidence/",
@@ -1999,7 +2186,8 @@
       "category": "Lespraktijk · Zelfstandigheid en zelfregulatie",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/target-action-first/",
@@ -2010,7 +2198,8 @@
       "category": "Lespraktijk · Hulp en feedback tijdens het leren",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/task-density-scan/",
@@ -2021,7 +2210,8 @@
       "category": "Lespraktijk · Opdrachten en de rol van AI",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/toollab/",
@@ -2032,7 +2222,8 @@
       "category": "Lespraktijk · Opdrachten en de rol van AI",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/trace-back-prompting/",
@@ -2043,7 +2234,8 @@
       "category": "Lespraktijk · Denk- en leerproces zichtbaar maken",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/werkvormen/transfer-task/",
@@ -2054,7 +2246,8 @@
       "category": "Lespraktijk · Denk- en leerproces zichtbaar maken",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/workshop-ai/",
@@ -2065,7 +2258,8 @@
       "category": "Lespraktijk · Start hier",
       "review": "gevonden_in_zoekindex",
       "parent": null,
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "in_committed_sitemap": true
     }
   ],
   "embedded_items": [
@@ -6385,10 +6579,7 @@
       "noindex_pages_checked": 8
     },
     "new_embedded_items": 18,
-    "dynamic_function_review_pending": [
-      "/tools/prompt-framework/",
-      "/tools/html-galerij/"
-    ],
+    "dynamic_function_review_pending": [],
     "registry_policy": "HTML en pagina's volledig; afgebakende broncatalogi van toepassingen worden apart opgenomen. Dynamisch gemaakte inhoud en instellingen zijn niet automatisch afzonderlijke pagina's.",
     "app_structure_review": {
       "eaigame": {
@@ -6411,7 +6602,56 @@
       "eaimesh": {
         "analysis_choices": 7
       }
-    }
+    },
+    "sitemap_from_main": {
+      "source": "sitemap.xml",
+      "registered_urls": 143,
+      "registered_missing": 36,
+      "examples_not_in_sitemap": [
+        "/eai-blog/",
+        "/eai-blog/eai-balans/",
+        "/eai-blog/eai-beyond-explainability/",
+        "/eai-blog/eai-stappenplan/",
+        "/eai-blog/eai-task-density/",
+        "/eai-blog/rapportage-wang-fan-2025/",
+        "/eai-blog/the-act-of-learning-act-2/",
+        "/eai-blog/the-act-of-learning/",
+        "/eai-tools-modules/",
+        "/eai-tools-modules/act-of-learning-game-2/",
+        "/eai-tools-modules/eaa-model-tool/",
+        "/eai-tools-modules/eai-eduprompt-builder/",
+        "/eai-tools-modules/eai-toolanalyse/",
+        "/eai-tools-modules/eai-toolkit-beyond-explainability/",
+        "/eai-tools-modules/eai-toolkit-the-act-of-learning-en/",
+        "/eai-tools-modules/eai-what-if-machine/",
+        "/en/model/",
+        "/houseoftalents/",
+        "/houseoftalents/3d/",
+        "/leif/",
+        "/leif/beheer/",
+        "/leif/continue/",
+        "/leif/mijn/",
+        "/leif/verhaal/",
+        "/nl/model/",
+        "/onderwijsin/houseoftalents/",
+        "/onderwijsin/houseoftalents/3d/",
+        "/toepassingen/onderwijsregio-rotterdam/",
+        "/toepassingen/saga-legal-ai/",
+        "/tools/eaigit/",
+        "/tools/eaigit/hulp/",
+        "/tools/eaigit/prompts/",
+        "/tools/lo-aanvalslab/onderbouwing/",
+        "/tools/projecthulp/",
+        "/tools/science-observatory/labs/schuine-worp/",
+        "/tools/van-proces-naar-prompt/"
+      ],
+      "important_generated_pages_missing": [
+        "/nl/model/",
+        "/en/model/"
+      ],
+      "status": "verschil_vastgelegd_niet_automatisch_hersteld"
+    },
+    "audit_completion_note": "Brongebonden inventarisatie van vaste subonderdelen uitgevoerd waar herkenbare verzamelingen bestaan. Werkelijk gebruik, servergegevens en alle dynamische UI toestanden zijn niet uit de Git-code alleen vast te stellen."
   },
   "collections": [
     {
