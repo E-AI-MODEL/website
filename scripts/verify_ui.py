@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 import time
 from pathlib import Path, PurePosixPath
 from urllib.parse import urlsplit
@@ -103,6 +104,29 @@ def expected_pages(root: Path, manifest: dict) -> dict[str, str]:
     return expected
 
 
+
+# Cloudflare may append its own *versioned* RUM beacon after the HTML reaches
+# the origin. Never accept arbitrary HTML changes: only a single exact known
+# extra script may be removed, and the remaining bytes must hash to the build.
+_EDGE_RUM_SCRIPT = re.compile(
+    rb'<script\b(?=[^>]*\bsrc=["\x27]https://static\.cloudflareinsights\.com/beacon\.min\.js/v[^\x22\x27]+["\x27])[^>]*></script>',
+    re.IGNORECASE,
+)
+
+
+def html_matches_release(data: bytes, digest: str) -> tuple[bool, bool]:
+    """(matches, was_edge_beacon_removed); all non-beacon bytes stay exact."""
+    if hashlib.sha256(data).hexdigest() == digest:
+        return True, False
+    for match in _EDGE_RUM_SCRIPT.finditer(data):
+        before = data[:match.start()]
+        after = data[match.end():]
+        # Cloudflare can insert a final newline along with its script tag.
+        for remainder in (after, after[1:] if after.startswith(b'\n') else after):
+            if hashlib.sha256(before + remainder).hexdigest() == digest:
+                return True, True
+    return False, False
+
 def verify_live(base: str, manifest: dict, timeout: int, root: Path):
     def get(path):
         request = Request(base.rstrip('/') + path, headers={'Cache-Control': 'no-cache', 'User-Agent': 'EAI-release-check/1.0'})
@@ -116,7 +140,10 @@ def verify_live(base: str, manifest: dict, timeout: int, root: Path):
         try:
             for path, digest in expected_html.items():
                 data = get(path)
-                assert hashlib.sha256(data).hexdigest() == digest, f'HTML content mismatch: {path}'
+                matched, edge_beacon = html_matches_release(data, digest)
+                assert matched, f'HTML content mismatch: {path}'
+                if edge_beacon:
+                    print(f'Cloudflare RUM injection verified without weakening HTML hash: {path}', flush=True)
                 soup = BeautifulSoup(data, 'html.parser')
                 assert soup.body.get('data-ui-version') == manifest['version'], f'Stale UI: {path}'
                 assert soup.select_one('.eai-site-menu'), path
