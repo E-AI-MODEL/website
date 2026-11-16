@@ -17,6 +17,11 @@ Er zijn 177 HTML-pagina's uit de repository en twee pagina's die tijdens
 de bouw ontstaan, plus 40 andere HTML-bestanden. Er zijn ook 144
 afzonderlijke verwijzingen uit de publieke zoekindex, 15 TAALwerkvormen
 51 producten uit de LLMscan-catalogus en twee WiHTML-voorbeeldlessen opgenomen.
+De aanvullende inventarisatie heeft ook zes onderwerpen voor oceaanonderzoek,
+zes voor gravitatie en satellietbanen, vier werkwijzen bij sport en twee
+werkwijzen van de proceswizard vastgelegd. Het totaal van afzonderlijk
+benoemde onderdelen is daarmee 230. De twee Melkweguitvoeringen blijven
+aparte bestanden met zes gekoppelde gedeelde onderwerpen.
 
 Dit zijn verschillende meeteenheden. Een HTML-bestand kan veel
 inhoudelijke onderdelen bevatten. Een zoekresultaat kan naar een
@@ -65,11 +70,13 @@ menu zetten is niet genoeg.
 
 - Pagina's die niet in de publieke zoekindex staan, inclusief oude
   doorverwijzingen en afgeschermde of technische pagina's.
-- JavaScript-weergaven en andere zelfstandig te gebruiken onderdelen
-  die nog geen machineleesbare broncatalogus hebben. Hun HTML-bestanden
-  zijn wel geregistreerd, maar dit bewijst niet dat ieder onderdeel
-  daarbinnen is herkend.
-- De verschillen en overeenkomsten tussen de Melkweguitvoeringen.
+- Dynamische functies in onder meer EAIgame, EAImesh, EAIstudio, EAIwork,
+  WiHTML en de HTML-galerij. Hun bronbestanden zijn wel geregistreerd,
+  maar nog niet alle zelfstandig bruikbare functies zijn afzonderlijk getoetst.
+- De twee Melkweguitvoeringen zijn op broncode en onderdelen vergeleken.
+  De hoofdonderwerpen komen overeen; de uitgebreide uitvoering heeft daarnaast
+  begeleidende vragen, hints en extra bediening. Of samenvoegen wenselijk of
+  technisch verantwoord is, is niet vastgesteld.
 - Of een Nederlandse of Engelse paginanaam werkelijk aansluit op de
   beschikbare taal, en de definitieve namen op de publieke website.
 
@@ -80,3 +87,12 @@ Deze vragen blijven zichtbaar als te beoordelen, niet als voltooid.
 Het register wijzigt geen menu, URL, omleiding, backend of applicatie.
 Branches worden pas verwijderd na vergelijking van hun inhoud, PR's
 en afhankelijkheden met de actuele main. Dit register verwijdert niets.
+
+## Status van niet-geindexeerde pagina's
+
+De negen rechtstreeks gecontroleerde HTML-doorverwijzingen hebben een
+`redirect_target`. Acht gecontroleerde pagina's bevatten `noindex`,
+waaronder LEIF. `noindex` zegt niets over werkelijke toegangsbeveiliging.
+Gewone pagina's zonder zoekindexvermelding zijn niet automatisch verouderd.
+De verwijzingen naar externe sites zijn uit de bron overgenomen, niet live
+gecontroleerd. De naamvoorstellen wijzigen geen publieke teksten.
