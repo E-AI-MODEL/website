@@ -8,7 +8,7 @@ from pathlib import Path, PurePosixPath
 from urllib.parse import urlsplit
 from urllib.request import Request, urlopen
 from bs4 import BeautifulSoup
-from prepare_ui import STORY_PATHS, canonical
+from prepare_ui import STORY_PATHS, DASH_CARD_PATHS, canonical
 
 
 def check(root: Path):
@@ -39,12 +39,21 @@ def check(root: Path):
             assert candidate.is_file(), f'{rel}: missing {url}'
         # Editorial stories load only on twelve explicitly permitted index pages.
         # All other shared assets remain mandatory on every prepared page.
-        expected_story = canonical('/' + rel) in STORY_PATHS
+        page_route = canonical('/' + rel)
+        expected_story = page_route in STORY_PATHS
+        dashboard_home = page_route == '/nl/' and bool(soup.select_one('main.eai-dashboard-home'))
+        card_index = page_route in DASH_CARD_PATHS
         assert ('eai-story-page' in soup.body.get('class', [])) == expected_story, rel
+        assert ('eai-dash-page' in soup.body.get('class', [])) == dashboard_home, rel
+        assert ('eai-card-index' in soup.body.get('class', [])) == card_index, rel
         for name, info in manifest['assets'].items():
             present = bool(soup.find(src=info['url']) or soup.find(href=info['url']))
             if name in ('site-story-cards.css', 'site-story-cards.js'):
                 assert present == expected_story, (rel, info['url'], expected_story)
+            elif name == 'site-dashboard-cards.css':
+                assert present == (dashboard_home or card_index), (rel, info['url'])
+            elif name == 'site-dashboard-cards.js':
+                assert present == dashboard_home, (rel, info['url'])
             else:
                 assert present, (rel, info['url'])
         assert not soup.find(href='/assets/site.css'), rel
