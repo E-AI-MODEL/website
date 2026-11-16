@@ -102,7 +102,7 @@ class PublicMenuTests(unittest.TestCase):
                 '<body><h1>Begin bij het leren</h1></body></html>', encoding='utf-8')
             records = {item['url']: item for item in site_search_records(Path(temp))}
             model = records['/nl/model/']
-            self.assertEqual(model['category'], 'EAI begrijpen')
+            self.assertEqual(model['category'], 'Het model')
             self.assertIn('kernhandeling', model['description'])
 
     def test_menu_en_volledige_zoekindex_op_mobiel_en_desktop(self):
