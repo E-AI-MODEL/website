@@ -119,6 +119,20 @@ def html_matches_release(data: bytes, digest: str) -> tuple[bool, bool]:
     if hashlib.sha256(data).hexdigest() == digest:
         return True, False
     for match in _EDGE_RUM_SCRIPT.finditer(data):
+        # A matching URL alone is insufficient: reject event handlers, unknown
+        # attributes and inline script text, even if removal would fix the hash.
+        fragment = BeautifulSoup(match.group(0), 'html.parser')
+        beacon = fragment.script
+        permitted = {'type', 'src', 'integrity', 'data-cf-beacon',
+                     'crossorigin', 'async', 'defer'}
+        if (beacon is None or
+            set(beacon.attrs) - permitted or
+            beacon.get_text(strip=True) or
+            not re.fullmatch(
+                r'https://static\\.cloudflareinsights\\.com/beacon\\.min\\.js/v[a-zA-Z0-9]+',
+                str(beacon.get('src', ''))
+            )):
+            continue
         before = data[:match.start()]
         after = data[match.end():]
         # Cloudflare can insert a final newline along with its script tag.
