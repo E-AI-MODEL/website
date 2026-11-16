@@ -27,7 +27,7 @@ schermen en zeven EAImesh-analysekeuzes zijn afzonderlijk benoemd.
 De aanvullende inventarisatie heeft ook zes onderwerpen voor oceaanonderzoek,
 zes voor gravitatie en satellietbanen, vier werkwijzen bij sport en twee
 werkwijzen van de proceswizard vastgelegd. Het totaal van afzonderlijk
-benoemde onderdelen is daarmee 230. De twee Melkweguitvoeringen blijven
+benoemde onderdelen is 319. De twee Melkweguitvoeringen blijven
 aparte bestanden met zes gekoppelde gedeelde onderwerpen.
 
 Dit zijn verschillende meeteenheden. Een HTML-bestand kan veel
@@ -55,9 +55,8 @@ zijn geen verplichte zichtbare labels.
 
 Gebruik geen algemene publieksnamen als proeven, modules, labs of
 observatoria voor de hele verzameling. Productnamen mogen blijven staan
-waar ze een herkenbare eigennaam zijn. Voorgestelde namen zijn nog geen
-gepubliceerde wijzigingen. Bestaande URLs, IDs, menu's en interfaces
-blijven onaangeroerd.
+waar ze een herkenbare eigennaam zijn. De vastgestelde vaknamen worden gebruikt op de openbare ingangen,
+kaarten en in de zoekfunctie. Technische IDs, bronpaden en URL's veranderen niet.
 
 ## Controleren
 
@@ -91,9 +90,24 @@ menu zetten is niet genoeg.
 
 Deze vragen blijven zichtbaar als te beoordelen, niet als voltooid.
 
-## Geen wijzigingen aan de live website
+## Publieke indeling na PR #293
 
-Het register wijzigt geen menu, URL, omleiding, backend of applicatie.
+Het register staat op main. De openbare indeling wordt apart uitgewerkt en
+pas na controles gepubliceerd. Het menu Zelf aan de slag verwijst naar één
+overzicht met acht directe keuzes: Natuurkunde, Wiskunde, Menselijk lichaam,
+Heelal, Oceanografie, Sport en bewegen, AI, Lessen en presentaties.
+
+De Melkweg gebruikt /tools/melkweg-lab/ als publieke ingang. De uitvoering op
+/tools/science-observatory/labs/melkweg/ blijft bestaan via een inhoudelijke
+verwijzing, zonder tweede vermelding in de algemene zoekfunctie.
+
+`search_scope` onderscheidt algemene zoekresultaten, inhoud binnen een
+zelfstandige toepassing, de eigen bibliotheek en interne schermen. De 319
+onderdelen blijven geregistreerd, ook als zij niet in de algemene zoekfunctie
+worden opgenomen. De 53 natuurkundeonderwerpen blijven rechtstreeks
+vindbaar via hun bestaande fragmentadressen.
+
+Het register wijzigt geen bestaande URL, omleiding of backend.
 Branches worden pas verwijderd na vergelijking van hun inhoud, PR's
 en afhankelijkheden met de actuele main. Dit register verwijdert niets.
 

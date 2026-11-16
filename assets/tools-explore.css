@@ -1,0 +1,40 @@
+/* Zelf aan de slag: one direct choice, then its real subject links. */
+.eai-explore-root{--explore-ink:var(--text,#243448);--explore-line:#d5dfe7;--explore-paper:#f6f8fa;color:var(--explore-ink);min-height:70vh}
+.eai-explore-root [hidden]{display:none!important}
+.eai-explore-shell{max-width:1190px;margin:0 auto;padding:0 clamp(18px,3vw,36px)}
+.eai-explore-hero{padding:clamp(28px,5vw,62px) 0 24px}
+.eai-explore-overline{font-weight:700;font-size:.72rem;letter-spacing:.07em;text-transform:uppercase;color:#50758a;margin:0 0 12px}
+.eai-explore-hero h1,.eai-explore-detail-head h2{font-size:clamp(2rem,3.5vw,3.2rem);letter-spacing:-.045em;line-height:1.12;margin:0 0 13px;font-weight:750}
+.eai-explore-hero p:last-child,.eai-explore-detail-head>p:last-child{font-size:1rem;line-height:1.6;max-width:650px;color:#4a5968;margin:0}
+.eai-explore-choices{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:18px 0 25px}
+.eai-explore-choice{position:relative;display:flex;flex-direction:column;gap:9px;min-height:164px;padding:20px 22px 40px;border:1px solid var(--explore-line);border-radius:8px;background:#fff;color:#25384a;text-decoration:none;transition:border-color .14s,background-color .14s}
+.eai-explore-choice strong{font-size:1.26rem;line-height:1.24;letter-spacing:-.025em}
+.eai-explore-choice span:nth-child(2){font-size:.85rem;line-height:1.5;color:#67788a}
+.eai-explore-choice .eai-explore-chevron{position:absolute;right:20px;bottom:14px;font-size:1.35rem;color:#487b95}
+.eai-explore-choice:hover,.eai-explore-choice:focus-visible{border-color:#477a99;background:#f5f9fb}
+.eai-explore-choice:focus-visible,.eai-explore-links a:focus-visible,.eai-explore-back:focus-visible{outline:3px solid #327faf;outline-offset:3px}
+.eai-explore-other{border-top:1px solid var(--explore-line);margin:15px 0 60px;padding:18px 0;display:flex;gap:24px;align-items:baseline;flex-wrap:wrap}
+.eai-explore-other h2{font-size:.98rem;line-height:1.3;font-weight:700;margin:0}
+.eai-explore-other>div{display:flex;flex-wrap:wrap;gap:10px 24px}
+.eai-explore-other a{font-size:.88rem;color:#315b73;text-decoration:underline;text-underline-offset:3px}
+.eai-explore-detail{padding:35px 0 65px}
+.eai-explore-back{display:inline-block;font-size:.92rem;text-decoration:none;margin-bottom:32px;color:#34647c;font-weight:650}
+.eai-explore-detail-head{padding-bottom:24px;border-bottom:1px solid var(--explore-line)}
+.eai-explore-detail-head h2:focus{outline:none}
+.eai-explore-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;margin:26px 0}
+.eai-explore-links>a{min-height:74px;border:1px solid var(--explore-line);border-radius:8px;padding:18px;display:flex;align-items:center;justify-content:space-between;gap:16px;text-decoration:none;color:#203648;font-weight:650;background:#fff}
+.eai-explore-links>a:hover{background:#f6f9fa;border-color:#6994ad}
+.eai-explore-links>a span:last-child{color:#598297;font-size:1.06rem}
+.eai-explore-alternate{margin:25px 0;font-size:.9rem;color:#56697a}
+.eai-explore-alternate a{color:#286087;text-underline-offset:3px}
+.eai-explore-subjects{margin-top:25px;padding:22px;background:var(--explore-paper);border-radius:8px}
+.eai-explore-subjects h3{font-size:1rem;margin:0 0 8px}
+.eai-explore-subjects p{font-size:.92rem;line-height:1.7;margin:0}
+.eai-explore-physics{margin-top:33px;border-top:1px solid var(--explore-line);padding-top:18px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:25px 38px}
+.eai-explore-physics-group h3{font-size:1.13rem;margin:10px 0 11px}
+.eai-explore-physics-group ul{list-style:none;margin:0;padding:0}
+.eai-explore-physics-group li a{display:block;padding:8px 0;border-bottom:1px solid #e3e9ef;font-size:.91rem;text-decoration:none;color:#305b75}
+.eai-explore-physics-group li a:hover{text-decoration:underline}
+@media(max-width:930px){.eai-explore-choices{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:570px){.eai-explore-hero{padding:28px 0 16px}.eai-explore-choices,.eai-explore-links,.eai-explore-physics{grid-template-columns:1fr}.eai-explore-choice{min-height:112px;padding:17px 36px 17px 16px}.eai-explore-choice .eai-explore-chevron{right:12px;bottom:50%;transform:translateY(50%)}.eai-explore-detail{padding-top:23px}.eai-explore-other{margin-bottom:30px}}
+@media(prefers-reduced-motion:reduce){.eai-explore-choice{transition:none}}

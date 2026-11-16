@@ -19,8 +19,7 @@ class PublicMenuTests(unittest.TestCase):
                     ['The model', 'Education', 'Research', 'Articles', 'Explore & create'] if en else
                     ['Het model', 'Onderwijs', 'Onderzoek', 'Artikelen', 'Zelf aan de slag'])
                 main = dict(sections['Explore & create' if en else 'Zelf aan de slag'])
-                self.assertIn('/tools/science-observatory/', main.values())
-                self.assertIn('/tools/prompt-framework/', main.values())
+                self.assertEqual(list(main.values()), ['/en/tools/' if en else '/nl/tools/'])
                 self.assertNotIn('/tools/science-observatory/labs/natuurkunde/', main.values())
                 header = BeautifulSoup(navigation(BeautifulSoup('<html><body></body></html>', 'html.parser'),
                                                    '/en/tools/' if en else '/nl/tools/', en), 'html.parser')
@@ -33,7 +32,7 @@ class PublicMenuTests(unittest.TestCase):
         for en in (False, True):
             with self.subTest(taal='en' if en else 'nl'):
                 sections = experiment_sections(en)
-                self.assertEqual(len(sections), 6)
+                self.assertEqual(len(sections), 7)
                 physic = sections[0][1]
                 physics_urls = [url for _, entries in physic for _, url, _ in entries]
                 self.assertEqual(len(physics_urls), 53)
@@ -52,7 +51,9 @@ class PublicMenuTests(unittest.TestCase):
                         self.assertIn('/#', url)
                 galaxy = sections[3][1][0][1]
                 self.assertEqual(len(galaxy), 6)
-                self.assertIn('/tools/science-observatory/labs/melkweg/#atlas', [u for _,u,_ in galaxy])
+                self.assertIn('/tools/melkweg-lab/#atlas', [u for _,u,_ in galaxy])
+                self.assertEqual(len([entry for _, subgroup in sections[3][1] for entry in subgroup if '/tools/melkweg-lab/#' in entry[1]]), 6)
+                self.assertIn('/tools/abyss/', [u for _, grp in sections[4][1] for _, u, _ in grp])
                 self.assertIn('/tools/anatomie/labs/hartslag/', [u for _,grp in sections[2][1] for _,u,_ in grp])
 
     def test_alle_werkvormen_rechtstreeks_via_onderwijs_te_vinden(self):
@@ -82,8 +83,11 @@ class PublicMenuTests(unittest.TestCase):
         self.assertEqual(len(addresses), len(index))
         self.assertIn('/tools/science-observatory/labs/natuurkunde/#lever', addresses)
         self.assertIn('/tools/science-observatory/labs/wiskunde-a/#binom', addresses)
-        self.assertIn('/tools/science-observatory/labs/melkweg/#dynamics', addresses)
+        self.assertIn('/tools/melkweg-lab/#dynamics', addresses)
         self.assertIn('/tools/html-galerij/', addresses)
+        self.assertIn('/tools/abyss/', addresses)
+        self.assertNotIn('/tools/science-observatory/labs/melkweg/', addresses)
+        self.assertNotIn('/tools/science-observatory/labs/melkweg/#dynamics', addresses)
         by_url = {record['url']: record for record in index}
         workform = by_url['/werkvormen/justification-mapping/']
         self.assertIn('Keuzes', workform['title'])
@@ -118,7 +122,7 @@ class PublicMenuTests(unittest.TestCase):
                 addresses = {item['url'] for item in site_search_records(Path(__file__).resolve().parents[1] / 'does-not-exist')}
                 self.assertIn('/tools/science-observatory/labs/natuurkunde/#lever', addresses)
                 self.assertIn('/tools/anatomie/labs/hartslag/', addresses)
-                self.assertIn('/tools/science-observatory/labs/melkweg/#gaia', addresses)
+                self.assertIn('/tools/melkweg-lab/#gaia', addresses)
 
 
 if __name__ == '__main__':
