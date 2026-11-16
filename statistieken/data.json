@@ -1,13 +1,13 @@
 {
   "schema": 1,
   "source": "Cloudflare Web Analytics (RUM)",
-  "updated_at": "2026-11-16T06:45:03+00:00",
+  "updated_at": "2026-11-16T22:17:12+00:00",
   "period": {
     "from": "2026-10-18",
     "through": "2026-11-16"
   },
-  "views": 130,
-  "visits": 50,
+  "views": 160,
+  "visits": 60,
   "daily": [
     {
       "date": "2026-10-18",
@@ -156,8 +156,8 @@
     },
     {
       "date": "2026-11-16",
-      "views": 20,
-      "visits": 10
+      "views": 50,
+      "visits": 20
     }
   ],
   "pages": [
@@ -168,8 +168,13 @@
     },
     {
       "path": "/nl/tools/",
-      "views": 20,
+      "views": 30,
       "visits": 0
+    },
+    {
+      "path": "/nl/model-monitor/",
+      "views": 20,
+      "visits": 10
     },
     {
       "path": "/nl/onderzoek/zhang-genai-taal/",
@@ -179,6 +184,11 @@
     {
       "path": "/tools/science-observatory/",
       "views": 20,
+      "visits": 0
+    },
+    {
+      "path": "/nl/model/",
+      "views": 10,
       "visits": 0
     },
     {
