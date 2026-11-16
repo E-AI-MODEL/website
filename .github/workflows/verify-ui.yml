@@ -29,6 +29,15 @@ jobs:
       - name: Verify editorial card scope and build output
         run: python -m unittest discover -s tests -p 'test_story_cards.py' -v
       - run: python scripts/verify_ui.py --root site-build
+      - name: Diagnose only the public EN about page without deployment
+        run: |
+          python - <<'PY'
+          import sys
+          from pathlib import Path
+          sys.path.insert(0, 'scripts')
+          from verify_ui import diagnose_html_mismatch
+          diagnose_html_mismatch('https://eaimodel.nl', '/en/about/', Path('site-build'))
+          PY
       - name: Verify LEIF is published without rewriting answers or access screen
         run: |
           test -s site-build/leif/index.html
