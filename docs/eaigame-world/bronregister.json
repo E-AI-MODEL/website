@@ -36,7 +36,14 @@
       "verifiedInEngine": false,
       "checkedOn": "2026-11-15",
       "sourceCheck": "publisher-page-seen",
-      "sourceCheckDate": "2026-11-15"
+      "sourceCheckDate": "2026-11-15",
+      "downloadTest": {
+        "models": 8,
+        "result": "verified SHA256 and local glTF load",
+        "url": "https://github.com/E-AI-MODEL/website/actions/runs/43817891733",
+        "format": "GLB/glTF with sidecars",
+        "note": "From pinned public Kenney re-export mirror, not official ZIP"
+      }
     },
     {
       "id": "kaykit-forest",
@@ -83,7 +90,14 @@
       "verifiedInEngine": false,
       "checkedOn": "2026-11-15",
       "sourceCheck": "publisher-page-seen",
-      "sourceCheckDate": "2026-11-15"
+      "sourceCheckDate": "2026-11-15",
+      "downloadTest": {
+        "models": 5,
+        "result": "verified SHA256 and local glTF load",
+        "url": "https://github.com/E-AI-MODEL/website/actions/runs/43817891733",
+        "format": "GLB/glTF with sidecars",
+        "note": "Pinned KayKit 1.0 GitHub repo"
+      }
     },
     {
       "id": "kenney-fantasy-town",
@@ -106,7 +120,14 @@
       "verifiedInEngine": false,
       "checkedOn": "2026-11-15",
       "sourceCheck": "publisher-page-seen",
-      "sourceCheckDate": "2026-11-15"
+      "sourceCheckDate": "2026-11-15",
+      "downloadTest": {
+        "models": 5,
+        "result": "verified SHA256 and local glTF load",
+        "url": "https://github.com/E-AI-MODEL/website/actions/runs/43817891733",
+        "format": "GLB/glTF with sidecars",
+        "note": "From pinned public Kenney re-export mirror, not official ZIP"
+      }
     },
     {
       "id": "kenney-castle",
@@ -287,7 +308,14 @@
       "verifiedInEngine": false,
       "checkedOn": "2026-11-15",
       "sourceCheck": "publisher-page-seen",
-      "sourceCheckDate": "2026-11-15"
+      "sourceCheckDate": "2026-11-15",
+      "downloadTest": {
+        "models": 1,
+        "result": "verified SHA256 and local glTF load",
+        "url": "https://github.com/E-AI-MODEL/website/actions/runs/43817891733",
+        "format": "GLB/glTF with sidecars",
+        "note": "Pinned KayKit 1.0 GitHub repo"
+      }
     },
     {
       "id": "kaykit-animations",
@@ -883,5 +911,16 @@
     }
   ],
   "verifiedPublisherPagesCount": 19,
-  "checkedOn": "2026-11-15"
+  "checkedOn": "2026-11-15",
+  "trialDownload": {
+    "runUrl": "https://github.com/E-AI-MODEL/website/actions/runs/43817891733",
+    "artifactId": 14202822587,
+    "sha256Manifest": true,
+    "downloadedAt": "2026-11-16",
+    "modelCount": 19,
+    "selectedFileCount": 36,
+    "uncompressedBytes": 4241114,
+    "siteRepoAssetsCommitted": false,
+    "visualReview": "not yet performed"
+  }
 }
