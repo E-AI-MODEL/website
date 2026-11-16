@@ -1,19 +1,14 @@
 {
   "schema": 1,
   "source": "Cloudflare Web Analytics (RUM)",
-  "updated_at": "2026-11-15T18:57:11+00:00",
+  "updated_at": "2026-11-16T06:45:03+00:00",
   "period": {
-    "from": "2026-10-17",
-    "through": "2026-11-15"
+    "from": "2026-10-18",
+    "through": "2026-11-16"
   },
-  "views": 50,
-  "visits": 30,
+  "views": 130,
+  "visits": 50,
   "daily": [
-    {
-      "date": "2026-10-17",
-      "views": 0,
-      "visits": 0
-    },
     {
       "date": "2026-10-18",
       "views": 0,
@@ -156,20 +151,35 @@
     },
     {
       "date": "2026-11-15",
-      "views": 30,
+      "views": 90,
+      "visits": 20
+    },
+    {
+      "date": "2026-11-16",
+      "views": 20,
       "visits": 10
     }
   ],
   "pages": [
     {
-      "path": "/tools/science-observatory/",
-      "views": 10,
+      "path": "/",
+      "views": 30,
+      "visits": 30
+    },
+    {
+      "path": "/nl/tools/",
+      "views": 20,
       "visits": 0
     },
     {
       "path": "/nl/onderzoek/zhang-genai-taal/",
-      "views": 10,
+      "views": 20,
       "visits": 10
+    },
+    {
+      "path": "/tools/science-observatory/",
+      "views": 20,
+      "visits": 0
     },
     {
       "path": "/statistieken/",
@@ -182,9 +192,9 @@
       "visits": 0
     },
     {
-      "path": "/",
+      "path": "/publicaties/ai-balans/",
       "views": 10,
-      "visits": 10
+      "visits": 0
     }
   ],
   "referrers": [
