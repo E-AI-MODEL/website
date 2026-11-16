@@ -24,6 +24,7 @@ Dit zijn **schematische vectorstudies**, geen 3D-renders of screenshots van een 
 - [Complete onderdeleninventaris](./complete-onderdeleninventaris.md): 3D, personages, effecten, UX, gamecode, onderwijs en tests.
 - [Bronregister (JSON)](./bronregister.json): 39 kandidaten met links, bronnen, licentie- en gebruiksstatus.
 - [Selectie De Storm](./selectie-de-storm.md): eerste vergelijking, alternatieven, openstaande gaten en importregels.
+- [Downloadbesluit en proefset](./downloadbesluit.md): 19 werkelijk opgehaalde modellen, licenties, controle en tijdelijke ZIP.
 - [De sfeerkaart](./sfeerkaart.svg): de vier visuele stijlen en hun gedeelde vormtaal.
 - [Het verhaal](./verhaal.md): plaats, personages, aanleiding, verhaallijnen, onthulling en mogelijke afloop.
 - [Storyboard](./storyboard.md): de eerste veertien speelmomenten, per scène met camera, geluid, bediening en zichtbaar gevolg.
