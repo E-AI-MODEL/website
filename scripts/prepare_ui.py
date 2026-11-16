@@ -340,6 +340,13 @@ def site_search_records(root: Path) -> list:
                     current['category'] = category
             return
         records[url] = {'title': str(title).strip(), 'url': url, 'category': category, 'description': description}
+    # Only explicitly approved public page titles are added from the register.
+    # All other internal entries remain in their original application or library.
+    taxonomy = json.loads((Path(__file__).resolve().parent.parent / 'catalog' / 'taxonomie.json').read_text(encoding='utf-8'))
+    family_names = {family['id']: family['nl'] for family in taxonomy['families']}
+    for page in register['pages']:
+        if page.get('public_title_nl') and page.get('search_scope') == 'algemeen':
+            add(page['public_title_nl'], page['url'], family_names.get(page['family'], 'Hulpmiddelen'))
     for en in (False, True):
         for name, links in groups(en):
             for label, url in links:
