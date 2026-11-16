@@ -121,6 +121,9 @@ jobs:
         run: python -m unittest discover -s tests -p 'test_zhang_workflow_isolation.py' -v
 
       - name: Test homepage and model rendering
+      - name: Test strict legacy redirect and full-page version rules
+        run: python -m unittest discover -s tests -p 'test_live_redirect_contract.py' -v
+
         run: python -m unittest discover -s tests -p 'test_home_model.py' -v
 
       - name: Check shared dashboard-card scope and homepage content
