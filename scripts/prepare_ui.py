@@ -362,15 +362,32 @@ def navigation(soup: BeautifulSoup, path: str, en: bool) -> str:
                 purpose = 'Wat betekent het model, en welke woorden gebruiken we precies?' if not en else 'What does the model mean, and which terms do we use?'
                 links = '<p class="eai-site-topic-intro">' + html.escape(purpose) + '</p>' + links
         menu.append(f'<details class="eai-site-group{active_cls}" name="eai-navigation-theme"><summary>{html.escape(title)}</summary><div class="eai-site-group-links{" eai-site-model-links" if model_group else ""}">{links}</div></details>')
+    # Five stable visitor destinations. The complete catalogue remains in Meer
+    # and in the searchable subject/tool indexes, not in duplicate top-level bars.
+    primary_routes = (
+        [
+            ('Understand EAI', '/en/model/'),
+            ('Teaching', '/en/education/'),
+            ('Research', '/en/research/'),
+            ('Articles', '/en/publications/'),
+            ('Explore & create', '/en/tools/'),
+        ] if en else [
+            ('Het model', '/nl/model/'),
+            ('Onderwijs', '/nl/onderwijs/'),
+            ('Onderzoek', '/nl/onderzoek/'),
+            ('Artikelen', '/nl/publicaties/'),
+            ('Zelf aan de slag', '/nl/tools/'),
+        ]
+    )
     primary = []
-    for title, entries in groups(en):
-        # About/Over blijft beschikbaar in Meer en in de voettekst.
-        # Zo houdt de brede navigatie zes korte, inhoudelijke bestemmingen.
-        if title in ('About EAI', 'Over EAI'):
-            continue
-        target = entries[0][1]
-        current = ' aria-current="page"' if any(path_here == canonical(item[1]) or (canonical(item[1]) not in ('/nl/', '/en/') and path_here.startswith(canonical(item[1]))) for item in entries) else ''
-        primary.append(f'<a href="{html.escape(target, quote=True)}"{current}>{html.escape(title)}</a>')
+    for title, target in primary_routes:
+        section = canonical(target)
+        current = (path_here == section or
+                   (section.endswith('/tools/') and path_here in ('/tools/science-observatory/', '/tools/anatomie/', '/tools/sport-en-bewegen/')) or
+                   (section.endswith('/education/') and path_here == '/werkvormen/'))
+        primary.append(f'<a href="{html.escape(target, quote=True)}"' +
+                       (' aria-current="page"' if current else '') +
+                       f'>{html.escape(title)}</a>')
     nav_label = 'Main navigation' if en else 'Hoofdnavigatie'
     lang_label = 'Choose language' if en else 'Kies taal'
     menu_heading = 'Navigate' if en else 'Ga naar'
