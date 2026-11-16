@@ -138,7 +138,7 @@ class WebsiteRegisterTests(unittest.TestCase):
     def test_sitemap_mismatch_is_detected(self):
         changed = copy.deepcopy(self.register)
         model = next(p for p in changed["pages"] if p["url"] == "/nl/model/")
-        model["in_committed_sitemap"] = True
+        model["in_committed_sitemap"] = False
         problems = check(ROOT, changed, self.taxonomy)
         self.assertTrue(any("Sitemap: vermelding verschilt" in p for p in problems))
 
