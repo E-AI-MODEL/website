@@ -15,10 +15,12 @@ class ToolLaunchTests(unittest.TestCase):
                 with tempfile.TemporaryDirectory() as folder:
                     file=Path(folder)/'check.js';file.write_text(tag.get_text());subprocess.run(['node','--check',str(file)],check=True,capture_output=True)
     def test_tools_in_both_languages_and_menu(self):
-        for path in ['nl/tools/index.html','en/tools/index.html','tools/index.html']:
+        for path in ['nl/tools/index.html','en/tools/index.html']:
             soup=BeautifulSoup((BUILD/path).read_text(),'html.parser')
             for slug in ['eaimesh','eaistudio','wihtml']:
                 with self.subTest(path=path,slug=slug):self.assertIsNotNone(soup.select_one(f'main a[href="/tools/{slug}/"]'))
+        legacy=BeautifulSoup((BUILD/'tools/index.html').read_text(), 'html.parser')
+        self.assertEqual(legacy.select_one('main a[href]')['href'], '/nl/tools/')
         menu=(ROOT/'assets/site-refresh.js').read_text(encoding='utf-8')
         for slug in ['eaimesh','eaistudio','wihtml']:
             self.assertIn("'/tools/"+slug+"/'", menu)
