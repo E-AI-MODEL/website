@@ -31,6 +31,8 @@ jobs:
       - name: Verify editorial card scope and build output
         run: python -m unittest discover -s tests -p 'test_story_cards.py' -v
       - run: python scripts/verify_ui.py --root site-build
+      - name: Test live redirect contracts separately from full UI pages
+        run: python -m unittest discover -s tests -p 'test_live_redirect_contract.py' -v
       - name: Verify LEIF is published without rewriting answers or access screen
         run: |
           test -s site-build/leif/index.html
