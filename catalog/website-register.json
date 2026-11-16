@@ -364,7 +364,7 @@
       "review": "bouwresultaat_controleren",
       "parent": "page:/en/",
       "family": "model",
-      "in_committed_sitemap": false
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/en/publications/",
@@ -652,7 +652,7 @@
       "review": "bouwresultaat_controleren",
       "parent": "page:/nl/",
       "family": "model",
-      "in_committed_sitemap": false
+      "in_committed_sitemap": true
     },
     {
       "id": "page:/nl/onderwijs/",
@@ -6605,8 +6605,8 @@
     },
     "sitemap_from_main": {
       "source": "sitemap.xml",
-      "registered_urls": 143,
-      "registered_missing": 36,
+      "registered_urls": 145,
+      "registered_missing": 34,
       "examples_not_in_sitemap": [
         "/eai-blog/",
         "/eai-blog/eai-balans/",
@@ -6624,7 +6624,6 @@
         "/eai-tools-modules/eai-toolkit-beyond-explainability/",
         "/eai-tools-modules/eai-toolkit-the-act-of-learning-en/",
         "/eai-tools-modules/eai-what-if-machine/",
-        "/en/model/",
         "/houseoftalents/",
         "/houseoftalents/3d/",
         "/leif/",
@@ -6632,7 +6631,6 @@
         "/leif/continue/",
         "/leif/mijn/",
         "/leif/verhaal/",
-        "/nl/model/",
         "/onderwijsin/houseoftalents/",
         "/onderwijsin/houseoftalents/3d/",
         "/toepassingen/onderwijsregio-rotterdam/",
@@ -6645,11 +6643,8 @@
         "/tools/science-observatory/labs/schuine-worp/",
         "/tools/van-proces-naar-prompt/"
       ],
-      "important_generated_pages_missing": [
-        "/nl/model/",
-        "/en/model/"
-      ],
-      "status": "verschil_vastgelegd_niet_automatisch_hersteld"
+      "important_generated_pages_missing": [],
+      "status": "beide_modelpaginas_toegevoegd_aan_generator_en_sitemap"
     },
     "audit_completion_note": "Brongebonden inventarisatie van vaste subonderdelen uitgevoerd waar herkenbare verzamelingen bestaan. Werkelijk gebruik, servergegevens en alle dynamische UI toestanden zijn niet uit de Git-code alleen vast te stellen."
   },
