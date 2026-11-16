@@ -41,17 +41,15 @@
       ['Explore',[['The EAI model','/en/#model'],['Education','/en/education/']]],
       ['Applications',[['All applications','/en/applications/'],['Education','/en/education/']]],
       ['Research',[['Research','/en/research/'],['Publications','/en/publications/']]],
-      ['Subject knowledge',[['Explore subjects','/tools/science-observatory/'],['Physics (Dutch)','/tools/science-observatory/labs/natuurkunde/'],['Human anatomy','/tools/anatomie/'],['LLM Observatory','/tools/llm-observatorium/'],['Galactic Observatory: guided version','/tools/melkweg-lab/']]],
-      ['Create',[['WiHTML Studio','/tools/wihtml/'],['EAIstudio','/tools/eaistudio/'],['EAImesh','/tools/eaimesh/'],['Prompt Framework','/tools/prompt-framework/'],['Process to prompt','/tools/van-proces-naar-prompt/']]],
-      ['Tools & monitors',[['All tools','/en/tools/'],['Model Monitor','/en/model-monitor/'],['LLMscan','/en/llmscan/']]],
+      ['Explore & create',[['Choose a subject or tool','/en/tools/']]],
+      ['Tools & monitors',[['Model Monitor','/en/model-monitor/'],['LLMscan','/en/llmscan/']]],
       ['About EAI',[['About EAI','/en/about/'],['Site insights','/en/insights/']]]
     ]:[
       ['Ontdekken',[['Het EAI-model','/nl/#model'],['EAI in het onderwijs','/nl/onderwijs/']]],
       ['Toepassingen',[['Alle toepassingen','/nl/toepassingen/'],['Onderwijs in','/onderwijsin/']]],
       ['Onderzoek',[['Onderzoek','/nl/onderzoek/'],['Publicaties','/nl/publicaties/']]],
-      ['Vakinhoud',[['Alle vakgebieden','/tools/science-observatory/'],['Natuurkunde','/tools/science-observatory/labs/natuurkunde/'],['Anatomie van de mens','/tools/anatomie/'],['LLM Observatorium','/tools/llm-observatorium/'],['Galactisch Observatorium: met uitleg','/tools/melkweg-lab/']]],
-      ['Maken & ontwerpen',[['WiHTML Docentstudio','/tools/wihtml/'],['EAIstudio','/tools/eaistudio/'],['EAImesh','/tools/eaimesh/'],['Prompt Framework','/tools/prompt-framework/'],['Van proces naar prompt','/tools/van-proces-naar-prompt/']]],
-      ['Tools & monitoren',[['Alle tools','/nl/tools/'],['AI Model Monitor','/nl/model-monitor/'],['LLMscan','/nl/llmscan/']]],
+      ['Zelf aan de slag',[['Kies een vakgebied of hulpmiddel','/nl/tools/']]],
+      ['Tools & monitoren',[['AI Model Monitor','/nl/model-monitor/'],['LLMscan','/nl/llmscan/']]],
       ['Over EAI',[['Over EAI en Hans Visser','/nl/over/'],['EAI Insights · websitegebruik','/nl/insights/']]]
     ];
     var links=header.querySelector('.eai-links');

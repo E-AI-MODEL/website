@@ -53,8 +53,9 @@ test('Nederlands en Engels tonen observatoria apart van ontwerptools', () => {
   assert.match(nl, /href="\/tools\/abyss\/"/);
   assert.match(en, /href="#vak-oceanografie"/);
   assert.match(en, /href="#vak-lessen-en-presentaties"/);
-  assert.match(nav, /Natuurkunde/);
-  assert.match(nav, /Physics \(Dutch\)/);
+  assert.match(nav, /\['Zelf aan de slag'/);
+  assert.match(nav, /\['Explore & create'/);
+  assert.doesNotMatch(nav, /Galactisch Observatorium|LLM Observatorium/);
 });
 
 test('Websitegenerator gebruikt de bronbestanden en aparte observatoriarubriek', () => {
