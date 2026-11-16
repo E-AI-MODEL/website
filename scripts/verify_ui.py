@@ -174,6 +174,12 @@ def verify_live(base: str, manifest: dict, timeout: int, root: Path):
                 assert matched, f'HTML content mismatch: {path}'
                 if edge_beacon:
                     print(f'Cloudflare RUM injection verified without weakening HTML hash: {path}', flush=True)
+                if path in LEGACY_HUB_REDIRECTS:
+                    # These six old hubs are intentional redirect handoffs,
+                    # not editorial pages with the shared UI marker/menu.
+                    # Their full bytes still have to match the prepared build;
+                    # check(root) validates each redirect destination.
+                    continue
                 soup = BeautifulSoup(data, 'html.parser')
                 assert soup.body.get('data-ui-version') == manifest['version'], f'Stale UI: {path}'
                 assert soup.select_one('.eai-site-menu'), path
