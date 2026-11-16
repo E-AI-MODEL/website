@@ -119,6 +119,24 @@ def extract_llmscan(root: Path) -> set[str]:
     return {f"llmscan:{i}" for i in ids}
 
 
+def extract_glossary(root: Path, locale: str) -> set[str]:
+    if locale not in ("nl", "en"):
+        raise ValueError("Onbekende taal voor begrippenregister")
+    path = "nl/begrippen/index.html" if locale == "nl" else "en/glossary/index.html"
+    base = "/nl/begrippen/" if locale == "nl" else "/en/glossary/"
+    content = read(root / path)
+    ids = []
+    for tag in re.findall(r"<details\b[^>]*>", content, re.IGNORECASE):
+        if "eai-dictionary-term" not in tag:
+            continue
+        match = re.search(r'\bid=["\x27]([^"\x27]+)["\x27]', tag)
+        if match:
+            ids.append(match.group(1))
+    if not ids or len(ids) != len(set(ids)):
+        raise ValueError(f"Begrippenregister {locale}: IDs ontbreken of zijn dubbel")
+    return {f"anchor:{base}#{i}" for i in ids}
+
+
 def extract_workforms(root: Path) -> set[str]:
     data = load(root / "content/workforms.json")
     slugs = [w["slug"] for w in data["workforms"]]
@@ -135,6 +153,12 @@ def check(root: Path, register: dict, taxonomy: dict) -> list[str]:
     families = {f["id"] for f in taxonomy.get("families", [])}
     if len(families) != len(taxonomy.get("families", [])):
         errors.append("Taxonomie: dubbele familie-ID")
+
+    for f in taxonomy.get("families", []):
+        if f.get("parent") and f["parent"] not in families:
+            errors.append(f"Taxonomie: ouder ontbreekt voor {f['id']}")
+        if f.get("parent") == f["id"]:
+            errors.append(f"Taxonomie: familie verwijst naar zichzelf ({f['id']})")
 
     def unique(values, label):
         if len(values) != len(set(values)):
@@ -161,6 +185,21 @@ def check(root: Path, register: dict, taxonomy: dict) -> list[str]:
             errors.append(f"Pagina: titel ontbreekt bij {p['id']}")
         if p.get("file") and not (root / p["file"]).is_file():
             errors.append(f"Pagina: bronbestand bestaat niet: {p['file']}")
+
+    collections = register.get("collections", [])
+    unique([c["id"] for c in collections], "Verzameling")
+    for collection in collections:
+        if collection.get("family") not in families:
+            errors.append(f"Verzameling heeft onbekende familie: {collection['id']}")
+        members = collection.get("members", [])
+        if not members or len(members) != len(set(members)):
+            errors.append(f"Verzameling heeft geen unieke leden: {collection['id']}")
+        for member in members:
+            if member not in page_ids:
+                errors.append(f"Verzameling verwijst naar ontbrekende pagina: {member}")
+        for variant in collection.get("variants", []):
+            if variant.get("page") not in members:
+                errors.append(f"Verzameling: uitvoering ontbreekt bij leden: {collection['id']}")
 
     for i in items:
         if i.get("parent") not in page_ids:
@@ -202,6 +241,8 @@ def check(root: Path, register: dict, taxonomy: dict) -> list[str]:
         ("Taalmodel", lambda: extract_llm(root)),
         ("TAALwerkvormen", lambda: extract_taal(root)),
         ("LLMscan", lambda: extract_llmscan(root)),
+        ("Begrippen NL", lambda: extract_glossary(root, "nl")),
+        ("Begrippen EN", lambda: extract_glossary(root, "en")),
     ]:
         try:
             expected = extract()
