@@ -8,7 +8,7 @@ import time
 from pathlib import Path, PurePosixPath
 from urllib.parse import urlsplit
 from urllib.request import Request, urlopen
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, Comment
 from prepare_ui import STORY_PATHS, DASH_CARD_PATHS, canonical
 
 
@@ -26,6 +26,13 @@ def check(root: Path):
         assert len(soup.select('.eai-site-group')) == 6, rel
         assert len(soup.select('.eai-site-language a')) == 2, rel
         assert len(soup.select('h1')) == 1, rel
+        # Cloudflare's zone-wide email protection rewrites unguarded mailto links
+        # and injects a decoder. Each prepared email link must opt out locally so
+        # deployed bytes remain verifiable without disabling site-wide protection.
+        for email_link in soup.select('a[href^="mailto:"]'):
+            opening, closing = email_link.previous_sibling, email_link.next_sibling
+            assert isinstance(opening, Comment) and opening.strip() == 'email_off', f'{rel}: unguarded mailto link'
+            assert isinstance(closing, Comment) and closing.strip() == '/email_off', f'{rel}: unguarded mailto link'
         assert len(soup.select('.eai-site-primary a')) == 5, rel
         ids = [tag['id'] for tag in soup.select('[id]')]
         assert len(ids) == len(set(ids)), f'Duplicate id: {rel}'
