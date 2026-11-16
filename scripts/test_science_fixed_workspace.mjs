@@ -424,18 +424,78 @@ try{
   assert.equal(await page.locator('#insightTeacher').evaluate(el=>el.open),false,'De docentverdieping start dicht');
   await page.evaluate(()=>{document.querySelector('#insightMath').open=true;document.querySelector('#insightTeacher').open=true;});
   assert((await page.locator('#insightTeacherContent').innerText()).includes('OpenStax'),'De bronverwijzing wordt getoond');
+  // Opengeklapte uitleg mag het draaipunt niet bedekken. Meet de
+  // positie pas nadat het daadwerkelijke canvas in beeld is.
+  await page.locator('#scene').scrollIntoViewIfNeeded();
   const leverStart=await page.evaluate(()=>{
    const p=state.p,c=document.querySelector('#scene'),r=c.getBoundingClientRect(),g=sceneViewport(c),pivot=p.pivot??510;
    return {x:r.left+g.left+pivot*g.scale,y:r.top+g.top+350*g.scale,scale:g.scale,pivot,left:pivot-65*p.arm1,right:pivot+65*p.arm2,p:{...p}};
   });
-  await page.mouse.move(leverStart.x+leverStart.scale*12,leverStart.y);
+  // Capture real browser input and hit-testing. On mobile WebKit a
+  // Playwright mouse gesture may not represent the touch input being tested.
+  await page.evaluate(()=>{
+   window.__leverInputEvents=[];
+   for(const type of ['pointerdown','pointermove','pointerup','touchstart','touchmove','touchend','mousedown','mousemove','mouseup']){
+    document.addEventListener(type,event=>{
+     if(window.__leverInputEvents.length>=35)return;
+     window.__leverInputEvents.push({type,pointerType:event.pointerType||null,
+      target:event.target?.id||event.target?.tagName||null,
+      x:event.clientX??null,y:event.clientY??null,isTrusted:event.isTrusted});
+    },{capture:true,passive:true});
+   }
+  });
+  const startPoint={x:leverStart.x+leverStart.scale*12,y:leverStart.y};
+  // Do not send a mouse gesture through a temporary overlay or before
+  // WebKit has laid out the hit target. Fail instead of silently retrying.
+  await page.waitForFunction(({x,y})=>{
+   const el=document.elementFromPoint(x,y);
+   return Boolean(el?.closest('#stage'));
+  },startPoint,{timeout:10000});
+  await page.evaluate(()=>new Promise(resolve=>
+   requestAnimationFrame(()=>requestAnimationFrame(resolve))));
+  const leverHit=await page.evaluate(({x,y})=>{
+   const el=document.elementFromPoint(x,y);
+   return {tag:el?.tagName||null,id:el?.id||null,className:String(el?.className||'').slice(0,120),
+    inStage:Boolean(el?.closest('#stage'))};
+  },startPoint);
+  assert(leverHit.inStage,'Het draaipunt moet vrij aanklikbaar zijn: '+JSON.stringify(leverHit));
+  await page.mouse.move(startPoint.x,startPoint.y);
   await page.mouse.down();
   const pressed=await page.evaluate(()=>({pivot:state.p.pivot??510,arm1:state.p.arm1,arm2:state.p.arm2}));
   assert.equal(pressed.pivot,leverStart.pivot,'Het steunpunt springt niet weg bij aanraken');
   assert.equal(pressed.arm1,leverStart.p.arm1,'Aanraken zonder slepen verandert de linker arm niet');
   await page.mouse.move(leverStart.x+leverStart.scale*(65+12),leverStart.y,{steps:10});
   await page.mouse.up();
-  await page.waitForFunction(()=>Math.abs(state.leverMotion?.angle||0)>.15,null,{timeout:5000});
+  const leverAfterDrag=await page.evaluate(()=>{
+   const p=state.p,m=state.leverMotion,forces=leverPhysics(p,m.angle,m.omega);
+   return {pivot:p.pivot??510,arm1:p.arm1,arm2:p.arm2,playing:state.playing,
+    simulationSpeed:state.speed,angle:m.angle,omega:m.omega,netMoment:forces.net,
+    angularAcceleration:forces.alpha,drag:state.drag2d};
+  });
+  const leverEvents=await page.evaluate(()=>window.__leverInputEvents);
+  console.log('LEVER_AFTER_DRAG '+engine.name()+' '+width+'px '
+   +JSON.stringify({hit:leverHit,events:leverEvents,physics:leverAfterDrag}));
+  // First distinguish a failed WebKit pointer gesture from a slow animation.
+  assert(leverAfterDrag.pivot>leverStart.pivot+40,
+   'Hefboomgreep moet werkelijk verplaatst zijn: '+JSON.stringify({start:leverStart,after:leverAfterDrag}));
+  assert(leverAfterDrag.arm1>leverStart.p.arm1&&leverAfterDrag.arm2<leverStart.p.arm2,
+   'Beide armen volgen de greep: '+JSON.stringify(leverAfterDrag));
+  assert(leverAfterDrag.playing,'De hefboom moet na loslaten afspelen: '+JSON.stringify(leverAfterDrag));
+  try {
+   // Keep the exact physical threshold. The follow-up PR may investigate
+   // simulated elapsed time separately; do not hide a real stalled lever.
+   await page.waitForFunction(()=>Math.abs(state.leverMotion?.angle||0)>.15,null,{timeout:5000});
+  }catch(error){
+   const motion=await page.evaluate(()=>{
+    const m=state.leverMotion,p=state.p,forces=leverPhysics(p,m.angle,m.omega);
+    return {pivot:p.pivot??510,arm1:p.arm1,arm2:p.arm2,playing:state.playing,
+     simulationSpeed:state.speed,t:state.t,angle:m.angle,omega:m.omega,
+     netMoment:forces.net,angularAcceleration:forces.alpha};
+   });
+   await page.screenshot({path:'test-results/physics-lever-timeout-'+engine.name()+'-'+width+'.png'});
+   throw new Error('Hefboom haalt |hoek| > 0,15 rad niet binnen 5 s: '
+    +JSON.stringify({start:leverStart,afterGesture:leverAfterDrag,afterWait:motion}),{cause:error});
+  }
   const leverEnd=await page.evaluate(()=>{
    setPlaying(false);render(); // Vergelijk de berekening met het getoonde beeld op precies dezelfde hoek.
    const p=state.p,pivot=p.pivot??510,forces=leverPhysics(p,state.leverMotion.angle,state.leverMotion.omega);
