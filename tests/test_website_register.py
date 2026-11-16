@@ -12,7 +12,9 @@ sys.path.insert(0, str(ROOT / "scripts"))
 
 from check_website_register import (check, extract_physics, extract_math, extract_taal, extract_llmscan,
                                     extract_glossary, extract_wihtml, extract_abyss,
-                                    extract_gravity, extract_sport_modes, extract_process_modes)
+                                    extract_gravity, extract_sport_modes, extract_process_modes,
+                                    extract_game, extract_studio, extract_wihtml_slide_types,
+                                    extract_eaiwork_views, extract_eaimesh_focus)
 
 
 class WebsiteRegisterTests(unittest.TestCase):
@@ -64,6 +66,35 @@ class WebsiteRegisterTests(unittest.TestCase):
         self.assertEqual(12, len(melkweg))
         self.assertEqual(6, len({x["topic_id"] for x in melkweg}))
         self.assertEqual(2, len(self.register["collections"][0]["variants"]))
+
+    def test_fixed_catalogues_inside_applications(self):
+        areas, questions, levels = extract_game(ROOT)
+        self.assertEqual(6, len(areas))
+        self.assertEqual(300, questions)
+        self.assertEqual(["vmbo", "havo", "vwo"], levels)
+        self.assertEqual([40, 3, 8], [
+            len(x) for x in extract_studio(ROOT).values()
+        ])
+        self.assertEqual(10, len(extract_wihtml_slide_types(ROOT)))
+        self.assertEqual(15, len(extract_eaiwork_views(ROOT)))
+        self.assertEqual(7, len(extract_eaimesh_focus(ROOT)))
+
+    def test_removed_eaistudio_component_is_detected(self):
+        changed = copy.deepcopy(self.register)
+        changed["embedded_items"] = [
+            i for i in changed["embedded_items"]
+            if i["id"] != "eaistudio-component:terminal-stream"
+        ]
+        errors = check(ROOT, changed, self.taxonomy)
+        self.assertTrue(any("EAIstudio: bibliotheek wijkt af" in e for e in errors))
+
+    def test_wrong_game_question_count_is_detected(self):
+        changed = copy.deepcopy(self.register)
+        for page in changed["pages"]:
+            if page["url"] == "/tools/eaigame/":
+                page["question_bank"]["count"] = 299
+        errors = check(ROOT, changed, self.taxonomy)
+        self.assertTrue(any("EAIgame: vragenbank" in e for e in errors))
 
     def test_missing_page_is_rejected(self):
         altered = copy.deepcopy(self.register)
