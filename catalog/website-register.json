@@ -4515,6 +4515,30 @@
       "link": "direct",
       "review": "bronbenaming",
       "family": "onderwijs"
+    },
+    {
+      "id": "wihtml:kansen-twee-worpen",
+      "url": "/tools/wihtml/bibliotheek/",
+      "parent": "page:/tools/wihtml/bibliotheek/",
+      "name": "Kansen bij twee worpen",
+      "category": "Wiskundeles",
+      "source": "content/wihtml/bibliotheek/kansen-twee-worpen.json",
+      "source_file": "content/wihtml/bibliotheek/kansen-twee-worpen.json",
+      "family": "wiskunde",
+      "link": "verzamelpagina",
+      "review": "titel_uit_bronbestand"
+    },
+    {
+      "id": "wihtml:lineaire-verbanden",
+      "url": "/tools/wihtml/bibliotheek/",
+      "parent": "page:/tools/wihtml/bibliotheek/",
+      "name": "Lineaire verbanden: helling en startwaarde",
+      "category": "Wiskundeles",
+      "source": "content/wihtml/bibliotheek/lineaire-verbanden.json",
+      "source_file": "content/wihtml/bibliotheek/lineaire-verbanden.json",
+      "family": "wiskunde",
+      "link": "verzamelpagina",
+      "review": "titel_uit_bronbestand"
     }
   ],
   "html_sources": [
@@ -4689,7 +4713,8 @@
     "pages_not_in_public_search": 34,
     "page_families_needing_review": 0,
     "redirect_title_candidates": 9,
-    "collections": 5
+    "collections": 5,
+    "wihtml_examples": 2
   },
   "collections": [
     {
