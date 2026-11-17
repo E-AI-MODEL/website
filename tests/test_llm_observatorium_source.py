@@ -159,6 +159,7 @@ class LlmObservatorySourceTests(unittest.TestCase):
         viewer = (ROOT / "assets" / "llm-real-trace-viewer.js").read_text(encoding="utf-8")
         self.assertIn("/assets/llm-real-trace.json", viewer)
         self.assertIn("niet jouw vraag", viewer)
+        self.assertIn("head 1 in de eerste laag is dus niet dezelfde head", viewer)
 
     def test_local_math_module_is_present(self):
         math = ROOT / "assets" / "llm-learning-math.js"
