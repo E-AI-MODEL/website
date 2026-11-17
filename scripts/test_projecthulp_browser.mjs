@@ -246,6 +246,7 @@ try{
  await page.locator("#restoreSelected").click();
  assert.equal(await page.locator("#selectedBody").inputValue(),selectedPrompt);
  assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2),"Promptbibliotheek past op telefoon");
+ await page.evaluate(()=>window.scrollTo(0,0));
  await page.screenshot({path:join(out,"eaigit-prompts-mobiel.png"),fullPage:true});
  // Oude URL blijft werken, zonder de oude naam in de nieuwe UI.
  await page.goto(base+"/tools/projecthulp/");
