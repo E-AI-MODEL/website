@@ -103,7 +103,7 @@
    const first=choice===0;
    const weights=first?s.attention.first_layer:s.attention.last_layer;
    const nav=el('div',null,'ai-trace-head-choices');
-   const label=el('span','Aandacht van dezelfde head','ai-trace-head-label');
+   const label=el('span','Vergelijk head 1 in twee lagen','ai-trace-head-label');
    nav.append(label);
    for(const [i,name] of ['Eerste laag','Laatste laag'].entries()){
     const btn=el('button',name,'ai-trace-head-btn'+(i===choice?' is-active':''));
@@ -114,8 +114,9 @@
    }
    host.append(nav);
    host.append(el('p','Dit zijn echt gemeten gewichten van head 1 in de '+
-    (first?'eerste':'laatste')+' laag. Vergelijk hoe ze over de al geschreven tokens zijn verdeeld. '+
-    'Het gewicht bewijst niet waarom het model een antwoord gaf.','ai-trace-help'));
+    (first?'eerste':'laatste')+' laag. Elke laag heeft zijn eigen rekenonderdeel; '+
+    'head 1 in de eerste laag is dus niet dezelfde head als in de laatste laag. '+
+    'De gewichten laten zien hoe de beschikbare tokens worden meegewogen, niet waarom het model dit antwoord gaf.','ai-trace-help'));
    bars(host,weights.map((value,i)=>({
     label:tokenText(s.input_tokens[i]?.text).slice(0,16),value
    })));
