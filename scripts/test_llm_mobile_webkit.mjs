@@ -27,7 +27,8 @@ try {
    await page.goto(base+'/tools/llm-observatorium/',{waitUntil:'load'});
    await page.locator('#modelStory').waitFor({state:'visible'});
    assert.equal(await page.locator('#aiGuide').isVisible(),false,'Het beeld opent direct');
-   for(let step=0;step<5;step++){
+   assert.equal(await page.locator('#storyTimeline .story-time-item').count(),9,'Dezelfde negen fasen als in de leerroute');
+   for(let step=0;step<9;step++){
     await page.evaluate(n=>{storyState.playing=false;storySetPhase(n);storyPaint(.6)},step);
     const g=await page.evaluate(()=>({
      viewport:{width:innerWidth,height:innerHeight},
