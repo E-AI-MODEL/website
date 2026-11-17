@@ -72,6 +72,14 @@ try{
   const attentionSum=await page.locator('.ai-learn-bar strong').allInnerTexts();
   assert(Math.abs(attentionSum.reduce((sum,value)=>sum+parseFloat(value),0)-100)<.2,'Attention-gewichten sommeren tot 100%');
   await page.screenshot({path:'test-results/llm-guide-'+width+'-attention.png'});
+  await page.locator('.ai-trace-toggle').click();
+  await page.locator('.ai-trace-title').waitFor({state:'visible'});
+  assert.match(await page.locator('.ai-trace-disclaimer').innerText(),/geen experts en een eigen tokenizer/i);
+  assert.equal(await page.locator('.ai-trace-bar').count(),5,'Echte opgeslagen aandachtgewichten voor vijf tokens');
+  const actualWeightSum=await page.locator('.ai-trace-bar strong').allInnerTexts();
+  assert(Math.abs(actualWeightSum.reduce((sum,v)=>sum+parseFloat(v),0)-100)<.3,
+    'Echte aandachtgewichten tellen op tot 100%');
+  await page.screenshot({path:'test-results/llm-guide-'+width+'-echte-attention.png'});
 
   await page.locator('#guideNext').click();
   assert.match(await page.locator('#guideHeading').innerText(),/rekennetwerken/);
@@ -97,6 +105,15 @@ try{
   await page.locator('.ai-guide-cta').click();
   assert(await page.locator('#guideVisual').innerText().then(t=>t.includes('Gekozen in dit voorbeeld')));
   await page.screenshot({path:'test-results/llm-guide-'+width+'-kansen.png'});
+  await page.locator('.ai-trace-toggle').click();
+  await page.locator('.ai-trace-title').waitFor({state:'visible'});
+  assert.equal(await page.locator('.ai-trace-bar').count(),8,'Acht echte top-tokenkansen uit de opgenomen uitvoering');
+  assert.match(await page.locator('.ai-trace-prompt').innerText(),/Once upon a time/);
+  const actualFirst=await page.locator('.ai-trace-bar strong').first().innerText();
+  assert(parseFloat(actualFirst)>20,'Waarschijnlijkheid is werkelijk gemeten bij de kleine verhalenverteller');
+  await page.locator('.ai-trace-nav button').last().click();
+  assert.match(await page.locator('.ai-trace-nav span').innerText(),/Voorspelling 2/);
+  await page.screenshot({path:'test-results/llm-guide-'+width+'-echte-kansen.png'});
 
   await page.locator('#guideNext').click();
   assert.match(await page.locator('#guideHeading').innerText(),/antwoord/);
