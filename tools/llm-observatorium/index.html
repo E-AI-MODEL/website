@@ -712,6 +712,32 @@
 @media(min-width:681px){.ai-guide-aside{justify-content:flex-start;overflow-y:auto;overflow-x:hidden}}
 @media(max-width:680px){.ai-guide-aside{justify-content:flex-start;overflow:visible}}
 
+
+/* Vier echte modelvoorspellingen, binnen het bestaande EAI-kleurgebruik. */
+.ai-trace-journey{border:1px solid #47777b;border-radius:10px;background:#12313d;padding:9px;display:grid;gap:7px}
+.ai-trace-journey-title{font:650 12px/1.3 system-ui;color:#d9f4e9}
+.ai-trace-existing{font:500 12px/1.5 system-ui;color:#c8e0e7;margin:0;white-space:pre-wrap;overflow-wrap:anywhere}
+.ai-trace-token-steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}
+.ai-trace-token-step{border:1px solid #527689;border-radius:7px;background:#163a48;color:#bcdce0;padding:8px 4px;min-width:0;min-height:39px;font:600 11px/1.2 ui-monospace,monospace;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ai-trace-token-step.is-active{border-color:#f0c784;background:#473a2b;color:#ffdfac}
+.ai-trace-token-step:focus-visible,.ai-trace-head-btn:focus-visible{outline:2px solid #91e6d5;outline-offset:2px}
+.ai-trace-selected{color:#f2d39f;font:600 11px/1.4 ui-monospace,monospace;margin:0;overflow-wrap:anywhere}
+.ai-trace-head-choices{display:flex;align-items:center;flex-wrap:wrap;gap:5px}
+.ai-trace-head-label{flex-basis:100%;font:11px system-ui;color:#b1cbd0}
+.ai-trace-head-btn{border:1px solid #547d90;border-radius:7px;background:#17394c;color:#d4eaed;padding:7px 9px;min-height:33px;font:11px system-ui}
+.ai-trace-head-btn.is-active{border-color:#ebbb77;background:#44362a;color:#ffe0b4}
+.ai-trace-differences{display:grid;gap:6px}
+.ai-trace-diff-title{font:11px system-ui;color:#accdd2}
+.ai-trace-delta strong{color:#bcebd8}
+.ai-trace-new-token{background:#456044;color:#f6e2a9;border-radius:3px;padding:0 2px;white-space:pre-wrap}
+@media(max-width:680px){
+ .ai-trace-journey{padding:7px;gap:6px}
+ .ai-trace-token-steps{gap:3px}
+ .ai-trace-token-step{font-size:10px;padding:7px 2px;min-height:36px}
+ .ai-trace-journey-title{font-size:11px}
+ .ai-trace-existing{font-size:11px}
+}
+
 </style>
 <script src="/assets/llm-learning-math.js"></script>
 <script src="/assets/llm-real-trace-viewer.js"></script>
