@@ -1,6 +1,6 @@
 # LLM Observatorium: leerroute en storyboard
 
-**Status:** fase 1 vastgesteld; negen interactieve leerstappen en kleine berekeningen gebouwd op concept-PR #297. Automatische introductie en leerroute zijn nog niet volledig samengevoegd.  
+**Status:** fase 1 vastgesteld; negen interactieve leerstappen en kleine berekeningen gebouwd op concept-PR #297. Automatische introductie en interactieve leerroute delen nu dezelfde negen stapdefinities en kleine berekeningen. De technische 3D-verdieping blijft apart beschikbaar.  
 **Datum:** 17 november 2026  
 **Repository:** E-AI-MODEL/website  
 **Bestaande URL:** /tools/llm-observatorium/  
@@ -12,7 +12,7 @@ De bezoeker voert een zin in, ziet hoe die in tokens uiteenvalt en volgt vervolg
 
 De bestaande EAI-vormgeving, 3D-omgeving, navigatie en onderzoeksfuncties blijven herkenbaar. De begeleide route krijgt voorrang. De technische weergave is een verdieping, geen drempel voor de eerste bezoeker.
 
-Deze pagina is de bron voor de inhoud, het gedrag en de illustraties. De bestaande vijfdelige introductie-animatie en de zesdelige begeleide route moeten uiteindelijk dezelfde negen inhoudelijke stappen volgen. Het is niet de bedoeling om negen losse pagina's of een tweede website te maken.
+Deze pagina is de bron voor de inhoud, het gedrag en de illustraties. De automatische introductie en de begeleide route volgen inmiddels dezelfde negen inhoudelijke stappen. Het is niet de bedoeling om negen losse pagina's of een tweede website te maken.
 
 ## Niet onderhandelbaar
 
@@ -217,11 +217,11 @@ De route toont bij de eerste stap ook kort het verschil tussen **leren tijdens t
 ## Hoe de drie bestaande weergaven samenwerken
 
 De huidige code heeft:
-1. **Automatische introductie:** modelStory en STORY_PHASES, vijf animatiefasen.
+1. **Automatische introductie:** modelStory en STORY_PHASES, negen animatiefasen gebaseerd op GUIDE_STEPS.
 2. **Begeleide route:** aiGuide en GUIDE_STEPS, op de werkbranch negen interactieve stappen.
 3. **Technisch onderzoek:** MODES met zeven onderzoeksmodi en de 3D-weergave.
 
-De negen stappen hierboven zijn de inhoudelijke volgorde voor de hele toepassing. Bij implementatie hoort een **gedeelde stapdefinitie** te ontstaan, met titel, korte uitleg, visualisatie, interactie, bronsoort en vervolg. De automatische animatie en de begeleide route gebruiken diezelfde definities, eventueel in een kortere presentatie. De zeven technische modi blijven zelfstandig bereikbaar en worden per stap als verdieping gekoppeld.
+De negen stappen hierboven vormen de inhoudelijke volgorde. De automatische animatie en de begeleide route delen nu GUIDE_STEPS als bron voor titels, namen en uitleg. De kleine illustraties worden nog afzonderlijk gerenderd, zodat het formaat past bij automatisch bekijken of actief onderzoeken. De zeven technische modi blijven zelfstandig bereikbaar en worden per stap als verdieping gekoppeld.
 
 **Niet doen:** twee los bijgehouden lijsten met tegenstrijdige uitleg, dubbele navigatie, een tweede vormgeving of een extra verplicht keuzemenu bij het openen.
 
@@ -231,8 +231,8 @@ De negen stappen hierboven zijn de inhoudelijke volgorde voor de hele toepassing
 | --- | --- |
 | content/llm-observatorium/index.html | Huidige bron van HTML, CSS en JavaScript |
 | tools/llm-observatorium/index.html | Publieke kopie; byte-identiek houden aan de bron |
-| GUIDE_STEPS / guideRender | Negen interactieve stappen gebouwd; gedeelde bron met de automatische introductie ontbreekt nog |
-| STORY_PHASES / storyPaint | Zelfde verhaal in de automatische introductie; niet los blijven |
+| GUIDE_STEPS / guideRender | De gedeelde definitie van negen stappen en hun interactieve weergaven |
+| STORY_PHASES / storyPaint | Leid de animatiefasen af uit GUIDE_STEPS; negen visuele scènes met dezelfde lokale rekenmodule |
 | tokenizeInput / loadRealTokenizer | Echte tokenizer behouden, laadstatus en fallback expliciet houden |
 | chooseRoute / logits | Rekenvoorbeelden herkenbaar houden, nooit als echte gpt-oss-uitvoer labelen |
 | drawAttention / drawExpertsGrid | Bereik en voorbeeldkeuzes duidelijk onderscheiden van echte modelmetingen |
@@ -285,7 +285,7 @@ Dit ontwerp mag als **inhoudelijk vastgesteld** worden beschouwd als:
 - [x] de technische grenzen, begrijpelijkheid, gratis gebruik, stijl en mobiele vereisten zijn vastgelegd;
 - [x] de hiaten in de huidige implementatie expliciet zijn benoemd.
 
-**Werkstatus:** de negen stappen zijn inmiddels in de interactieve gids gebouwd, inclusief echte lokale minivoorbeeldberekeningen. De automatische animatie loopt nog als korter verhaal ernaast; echte gpt-oss-router- en attention-activaties zijn niet beschikbaar. De prestaties op fysieke apparaten en de leeropbrengst zijn nog niet getoetst.
+**Werkstatus:** de negen stappen zijn inmiddels in de interactieve gids gebouwd, inclusief echte lokale minivoorbeeldberekeningen. De automatische animatie volgt inmiddels dezelfde negen stappen; echte gpt-oss-router- en attention-activaties zijn niet beschikbaar. De prestaties op fysieke apparaten en de leeropbrengst zijn nog niet getoetst.
 
 ## Afbakening van de volgende fases
 
@@ -293,7 +293,7 @@ Dit ontwerp mag als **inhoudelijk vastgesteld** worden beschouwd als:
 
 **Fase 3: illustraties en interactie.** De begeleide route bevat nu tokennummer → voorbeeldgetallen → attention → experts → laag → volgende-tokenkansen → tokengewijze voorbeeldtekst. De exacte visuele leesbaarheid wordt in CI en op screenshots gecontroleerd. Ontwerp daarna de overige stappen. Iedere visualisatie verklaart een zichtbare verandering.
 
-**Fase 4: één ervaring.** Verbind story, guide en 3D zonder dubbele navigatie. Houd de zeven onderzoeksmodi beschikbaar als verdieping.
+**Fase 4: één ervaring.** Story en guide volgen dezelfde negen stappen; via 'Stap voor stap' behoudt de bezoeker de gekozen fase en na het laatste scherm gaat hij naar de bestaande 3D-verdieping. Test de bediening en begrijpelijkheid verder. Houd de zeven onderzoeksmodi beschikbaar als verdieping.
 
 **Fase 5: gecontroleerde publicatie.** Tests op mobiel, tablet en desktop, wiskundige controles, performance, toegankelijkheid en een korte begripstest met nieuwe gebruikers. Pas na geslaagde controles publiceren.
 
