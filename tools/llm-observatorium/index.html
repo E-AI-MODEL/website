@@ -597,6 +597,20 @@
 .ai-learn-piece.newest{background:#375b49;color:#c3ffe5;border-radius:3px}
 @media(max-width:680px){.ai-learn-number{padding:6px 3px}.ai-learn-number small{font-size:9px}.ai-learn-bar{grid-template-columns:61px minmax(0,1fr) 36px;gap:5px}.ai-learn-expert-grid{gap:3px}.ai-learn-layer-row{padding:6px 8px}.ai-learn-layer-row strong{font-size:11px}.ai-learn-orderpiece{padding:5px}.ai-learn-selection span{padding:3px 5px;font-size:10px}}
 
+
+/* Korte mobiele schermen: uitleg en berekeningen blijven zelf scrollbaar. */
+.ai-guide-visual{overflow-x:hidden;overflow-y:auto;justify-content:flex-start;scrollbar-width:thin}
+.ai-guide-aside{overflow-x:hidden;overflow-y:auto;justify-content:flex-start;scrollbar-width:thin}
+.ai-guide-chip-area{overflow-y:visible;max-height:none;flex-shrink:0}
+.ai-guide-steps{overflow-y:auto;scrollbar-width:thin}
+@media(max-width:680px){
+ .ai-guide-visual{padding:11px;gap:8px}
+ .ai-guide-aside{padding:10px 12px}
+ .ai-guide-intro h2{font-size:clamp(19px,5.2vw,27px)}
+ .ai-guide-boundary{font-size:10px}
+ .ai-guide-cta{min-height:34px;font-size:12px!important}
+}
+
 </style>
 <script src="/assets/llm-learning-math.js"></script>
 <script defer src="/assets/site-analytics.js"></script></head>
