@@ -611,6 +611,22 @@
  .ai-guide-cta{min-height:34px;font-size:12px!important}
 }
 
+
+/* Mobiel: geen twee afgesneden panelen. Eerst de volledige illustratie,
+   daarna de uitleg in dezelfde natuurlijke scrollruimte. Navigatie blijft vast. */
+@media(max-width:680px){
+ .ai-guide-main{display:block;overflow-x:hidden;overflow-y:auto;scrollbar-width:thin}
+ .ai-guide-intro{margin-bottom:10px}
+ .ai-guide-work{display:flex;flex-direction:column;overflow:visible;gap:10px}
+ .ai-guide-visual{flex:0 0 auto;min-height:190px;max-height:none;overflow:visible;justify-content:flex-start;padding:12px;gap:9px}
+ .ai-guide-aside{flex:0 0 auto;min-height:80px;max-height:none;overflow:visible}
+ .ai-guide-chip-area{overflow:visible;max-height:none}
+ .ai-guide-input{min-height:95px}
+ .ai-learn-layer-row{gap:2px;padding:6px 8px}
+ .ai-learn-layer-rows{gap:5px}
+ .ai-learn-bars{max-height:none;overflow:visible}
+}
+
 </style>
 <script src="/assets/llm-learning-math.js"></script>
 <script defer src="/assets/site-analytics.js"></script></head>
@@ -1612,7 +1628,8 @@ function guideDrawExperts(){
  visual.append(guideNode('p','Van '+cfg.experts+' experts lichten er vier op. Deze keuze is zelf berekend, niet uit gpt-oss gemeten.','ai-guide-legend'));
 }
 function guideDrawLayers(){
- const visual=guideEl('guideVisual'),trace=guideTrace().current;
+ const visual=guideEl('guideVisual');visual.replaceChildren();
+ const trace=guideTrace().current;
  guideLabel(visual,'ÉÉN REKENLAAG VAN DICHTBIJ · MINIVOORBEELD');
  const rows=[
   ['Getallen uit vorige laag',trace.input],
@@ -1676,6 +1693,7 @@ function guideDrawAnswer(){
 function guideRender(){
  const step=GUIDE_STEPS[guideStep],visual=guideEl('guideVisual'),interactive=guideEl('guideInteractive');
  if(!visual||!interactive)return;
+ const main=document.querySelector('.ai-guide-main');if(main)main.scrollTop=0;
  guideEl('guideEyebrow').textContent='STAP '+(guideStep+1)+' VAN '+GUIDE_STEPS.length;
  guideEl('guideHeading').textContent=step.title;
  guideEl('guideSubheading').textContent=step.sub;
