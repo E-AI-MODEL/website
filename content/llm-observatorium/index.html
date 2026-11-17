@@ -673,8 +673,40 @@
 .v-mini-values strong{color:#ffdbab}
 @media(max-width:800px){.v-mini-values strong{font-size:12px}.v-mini-row{background:#153446}}
 
+
+/* Echte vooraf opgeslagen modelmeting. Behoud het donkere EAI-palet. */
+.ai-trace-outer{margin-top:15px;padding:11px;border:1px solid #41677a;border-radius:12px;background:#0b2232;min-width:0;display:grid;gap:8px}
+.ai-trace-toggle{display:block;width:100%;border:1px solid #609a9a;background:#173c46;color:#d4f6ee;border-radius:8px;padding:10px 9px;text-align:left;font:600 12px system-ui;cursor:pointer;min-height:39px}
+.ai-trace-toggle:hover{border-color:#8ec6bd;background:#204f52}
+.ai-trace-intro,.ai-trace-help,.ai-trace-disclaimer,.ai-trace-footnote{margin:0;color:#acc8d1;font:11px/1.5 system-ui}
+.ai-trace-intro{font-size:10px}
+.ai-trace-content{display:grid;gap:10px;min-width:0;border-top:1px solid #2d5060;padding-top:10px}
+.ai-trace-content[hidden]{display:none}
+.ai-trace-title{display:block;color:#f7d3a0;font:650 13px/1.3 system-ui}
+.ai-trace-source{color:#9ee6d2;font:11px system-ui;text-decoration:underline}
+.ai-trace-prompt,.ai-trace-choice{font:600 12px/1.45 ui-monospace,monospace;color:#e6d0af;margin:0;overflow-wrap:anywhere}
+.ai-trace-numbers{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}
+.ai-trace-number{min-width:0;padding:7px 4px;text-align:center;background:#143342;border:1px solid #345b70;border-radius:6px}
+.ai-trace-number small{display:block;color:#95adbb;font:10px ui-monospace,monospace}
+.ai-trace-number strong{color:#f4d7aa;font:600 clamp(11px,1.15vw,15px) ui-monospace,monospace}
+.ai-trace-bars{display:grid;gap:7px}
+.ai-trace-bar{display:grid;grid-template-columns:minmax(0,65px) minmax(0,1fr) 44px;gap:5px;align-items:center;font:11px system-ui}
+.ai-trace-word{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;color:#cce8e8}
+.ai-trace-track{height:11px;border-radius:3px;background:#234153;overflow:hidden}
+.ai-trace-track i{display:block;height:100%;min-width:1px;background:#e9bc7d;border-radius:3px}
+.ai-trace-bar strong{font:600 10px ui-monospace,monospace;text-align:right;color:#e7d2ad}
+.ai-trace-completion{margin:0;padding:12px;border:1px solid #477e7d;background:#153b3d;color:#e5f5ee;border-radius:8px;font:600 15px/1.5 system-ui;overflow-wrap:anywhere;white-space:pre-wrap}
+.ai-trace-nav{display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.ai-trace-nav button,.ai-trace-nav select{border:1px solid #406d80;border-radius:7px;background:#15384a;color:#d7eded;padding:7px 9px;min-height:34px;font:11px system-ui}
+.ai-trace-nav button:disabled{opacity:.35}
+.ai-trace-nav span{font:10px ui-monospace,monospace;color:#afc4cc}
+.ai-trace-footnote{font-size:10px;color:#92aeb9}
+.ai-trace-error{color:#eac9a6;font:11px/1.5 system-ui}
+@media(max-width:680px){.ai-trace-outer{margin-top:10px;padding:8px}.ai-trace-bar{grid-template-columns:52px minmax(0,1fr) 41px;gap:4px}.ai-trace-number{padding:5px 2px}.ai-trace-number strong{font-size:11px}}
+
 </style>
 <script src="/assets/llm-learning-math.js"></script>
+<script src="/assets/llm-real-trace-viewer.js"></script>
 <script defer src="/assets/site-analytics.js"></script></head>
 <body>
 <div id="app" data-panel="">
@@ -1862,6 +1894,36 @@ function guideDrawAnswer(){
  visual.append(answer);
  visual.append(guideNode('p',guideBuildCount+' van '+tokens.length+' '+(tokenizer?'echte tokens':'woordstukjes')+' getoond. Het antwoord is vooraf geschreven, niet door AI voorspeld.','ai-guide-legend'));
 }
+/* Alleen op verzoek een klein opgeslagen meetbestand tonen.
+ * De meetgegevens horen bij een ander getraind model, niet bij de eigen vraag.
+ */
+function guideAddRealTrace(host){
+ if(![2,4,6,7,8].includes(guideStep))return;
+ const viewer=globalThis.EAIRealTraceViewer;
+ if(!viewer)return;
+ const outer=guideNode('section',null,'ai-trace-outer');
+ const button=guideNode('button','Bekijk echte modelmeting (ander model)','ai-trace-toggle');
+ button.type='button';button.setAttribute('aria-expanded','false');
+ const contents=guideNode('div',null,'ai-trace-content');contents.hidden=true;
+ const intro=guideNode('p','Wat je hierboven ziet, is ons minivoorbeeld. Hieronder kun je echte waarden bekijken uit een vooraf uitgevoerde, kleine GPT-Neo. Dat is niet gpt-oss en gebruikt niet jouw eigen tekst.','ai-trace-intro');
+ outer.append(button,intro,contents);host.append(outer);
+ const currentStep=guideStep;
+ button.onclick=async()=>{
+  if(!contents.hidden){contents.hidden=true;button.setAttribute('aria-expanded','false');return}
+  contents.hidden=false;button.setAttribute('aria-expanded','true');
+  contents.replaceChildren(guideNode('p','Meetbestand openen…','ai-trace-loading'));
+  try{
+   const trace=await viewer.load();
+   if(!contents.isConnected||guideStep!==currentStep)return;
+   const show=(tokenIndex,layerIndex)=>viewer.render(contents,trace,currentStep,tokenIndex,layerIndex,show);
+   show(0,0);
+  }catch(error){
+   if(contents.isConnected)contents.replaceChildren(
+    guideNode('p','De echte modelmeting is niet beschikbaar. Het lokale rekenvoorbeeld hierboven blijft werken.','ai-trace-error')
+   );
+  }
+ };
+}
 function guideRender(){
  const step=GUIDE_STEPS[guideStep],visual=guideEl('guideVisual'),interactive=guideEl('guideInteractive');
  if(!visual||!interactive)return;
@@ -1969,6 +2031,7 @@ function guideRender(){
   quick.onclick=()=>{guideBuildCount=Math.min(tokens.length,guideBuildCount+5);guideRender()};
   actions.append(quick);interactive.append(actions);
  }
+ guideAddRealTrace(interactive);
 }
 function setupGuide(){
  window.addEventListener('resize',()=>{
