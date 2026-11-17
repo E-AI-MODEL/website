@@ -55,10 +55,10 @@ try {
       assert.equal(await page.locator('.eai-site-topic').count(), 0, 'No duplicate model catalogue');
       assert.equal(await page.locator('.eai-site-group').nth(3).locator('a[href="/nl/publicaties/"],a[href="/en/publications/"]').count(), 1);
       await page.locator('.eai-site-group').nth(4).locator(':scope > summary').click();
-      assert.equal(await page.locator('.eai-site-menu-panel a[href="/tools/science-observatory/"]').count(), 1);
-      assert.equal(await page.locator('.eai-site-menu-panel a[href="/tools/anatomie/"]').count(), 1);
-      assert.equal(await page.locator('.eai-site-menu-panel a[href="/tools/eaistudio/"]').count(), 1);
-      assert.equal(await page.locator('.eai-site-menu-panel a[href="/tools/wihtml/"]').count(), 1);
+      assert.equal(await page.locator('.eai-site-group').nth(4).locator('a[href="/nl/tools/"], a[href="/en/tools/"]').count(), 1, 'One entry to the eight subject choices');
+      for (const deep of ['/tools/science-observatory/', '/tools/anatomie/', '/tools/eaistudio/', '/tools/wihtml/']) {
+        assert.equal(await page.locator('.eai-site-menu-panel a[href="'+deep+'"]').count(), 0, 'Application links live in the subject overview: '+deep);
+      }
       assert((await page.locator('.eai-site-menu-panel a[href]').count()) <= 28, 'Keep menu short');
       if (width === 390 && path === '/') {
         const search = page.locator('#eai-site-search-input');
@@ -128,6 +128,15 @@ try {
   await page.goto(base + '/nl/tools/', { waitUntil: 'load' });
   assert.equal(await page.locator('.eai-site-language a[lang="en"]').getAttribute('href'), '/en/tools/');
   assert.equal(await page.locator('.eai-site-language a[lang="nl"]').getAttribute('href'), '/nl/tools/');
+  assert.equal(await page.locator('.eai-explore-choice').count(), 8, 'Eight direct subject choices');
+  await page.locator('.eai-explore-choice[href="#vak-natuurkunde"]').click();
+  assert(await page.locator('#vak-natuurkunde').isVisible(), 'Natuurkunde has its own view');
+  assert.equal(await page.locator('#vak-natuurkunde .eai-explore-physics-group a[href^="/tools/science-observatory/labs/natuurkunde/#"]').count(), 53, 'The 53 subjects remain directly accessible');
+  assert(!(await page.locator('.eai-explore-choices').isVisible()), 'The overview steps aside for the selected subject');
+  await page.locator('#vak-natuurkunde .eai-explore-back').click();
+  assert(await page.locator('.eai-explore-choices').isVisible(), 'Back returns to all subjects');
+  await page.locator('.eai-explore-choice[href="#vak-oceanografie"]').click();
+  assert(await page.locator('#vak-oceanografie a[href="/tools/abyss/"]').isVisible(), 'Oceanography has a working direct entry');
   // WiHTML: van de rustige landingspagina via elke keuze naar een echte offline HTML-les.
   const wiContext = await browser.newContext({ viewport: { width: 1280, height: 900 }, acceptDownloads: true });
   const wiPage = await wiContext.newPage();
