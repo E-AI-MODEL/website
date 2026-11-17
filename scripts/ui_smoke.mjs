@@ -89,7 +89,8 @@ try {
       await page.keyboard.press('Escape');
       assert.equal(await page.locator('.eai-site-menu').getAttribute('open'), null);
       const expectedFocus = width === 390 && path === '/' ? '.eai-site-search-trigger' : '.eai-site-menu>summary';
-      assert(await page.locator(expectedFocus).evaluate(e => e === document.activeElement));
+      const activeFocus = await page.evaluate(() => ({ tag:document.activeElement?.tagName, label:document.activeElement?.getAttribute('aria-label'), className:document.activeElement?.getAttribute('class'), menuOpen:document.querySelector('.eai-site-menu')?.open, searchHidden:document.querySelector('.eai-site-search')?.hidden }));
+      assert(await page.locator(expectedFocus).evaluate(e => e === document.activeElement), `Focus expected ${expectedFocus} at ${path}/${width}: ${JSON.stringify(activeFocus)}`);
       await page.locator('.eai-site-menu>summary').click();
       assert.equal(await page.locator('.eai-site-group[open]').count(), 0, 'Reopening resets themes');
       await page.keyboard.press('Escape');
