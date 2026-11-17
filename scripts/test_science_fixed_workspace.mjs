@@ -1,16 +1,24 @@
 import assert from 'node:assert/strict';
 import {chromium, webkit} from 'playwright';
 import {spawn} from 'node:child_process';
+import {request as httpRequest} from 'node:http';
 import {mkdirSync} from 'node:fs';
 const root=process.argv[2]||'site-build',engine=process.argv[3]==='webkit'?webkit:chromium;
 const port=8891,base='http://127.0.0.1:'+port;
 const server=spawn('python3',['-m','http.server',String(port),'--bind','127.0.0.1','--directory',root],{stdio:'ignore'});
 const pause=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+const resourceAvailable=url=>new Promise(resolve=>{
+ const request=httpRequest(url,{method:'HEAD'},response=>{response.resume();resolve(response.statusCode===200);});
+ request.on('error',()=>resolve(false));
+ request.setTimeout(2500,()=>{request.destroy();resolve(false);});
+ request.end();
+});
+
 let browser;
 mkdirSync('test-results',{recursive:true});
 try{
  let ok=false;
- for(let i=0;i<100;i++){try{if((await fetch(base+'/tools/science-observatory/labs/natuurkunde/')).ok){ok=true;break}}catch{}await pause(120)}
+ for(let i=0;i<100;i++){try{if(await resourceAvailable(base+'/tools/science-observatory/labs/natuurkunde/')){ok=true;break}}catch{}await pause(120)}
  assert(ok,'Built physics page must be served');
  browser=await engine.launch({headless:true});
  for(const width of [320,390,768,1024,1440]){
