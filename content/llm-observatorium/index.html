@@ -1462,7 +1462,7 @@ function storySetPhase(index){
  }else if(index===1){
   scene.innerHTML='<div class="v-question small" id="vSource"></div><span class="v-label" id="vTokenSource"></span><div class="v-wordline" id="vTokens"></div><div class="v-mini-caption">Tik op Stap voor stap om een token en zijn nummer te onderzoeken.</div>';
   $('vSource').textContent=state.input;
-  $('vTokenSource').textContent=state.tokenStatus==='real'?'ECHTE TOKENIZER · O200K_HARMONY':'WOORDVOORBEELD · TOKENIZER NIET BESCHIKBAAR';
+  $('vTokenSource').textContent=state.tokenStatus==='real'?'ECHTE TOKENIZER · O200K_HARMONY':state.tokenStatus==='error'?'WOORDVOORBEELD · TOKENIZER NIET BESCHIKBAAR':'WOORDVOORBEELD · TOKENIZER WORDT GELADEN';
   storyTokenRow($('vTokens'),state.promptWords,10);
   const selected=$('vTokens').children[storyFocusIndex()];if(selected)selected.classList.add('is-hot');
  }else if(index===2){
@@ -1899,7 +1899,7 @@ function guideRender(){
   visual.append(box);
   interactive.append(guideNode('p','Probeer bijvoorbeeld: Waarom is de lucht blauw?','ai-guide-mini'));
  }else if(guideStep===1){
-  guideLabel(visual,state.tokenStatus==='real'?'ECHTE TOKENIZER · GPT-OSS · O200K_HARMONY':'TOKENIZER LADEN / WOORDVOORBEELD');
+  guideLabel(visual,state.tokenStatus==='real'?'ECHTE TOKENIZER · GPT-OSS · O200K_HARMONY':state.tokenStatus==='error'?'TOKENIZER NIET BESCHIKBAAR · WOORDVOORBEELD':'TOKENIZER WORDT GELADEN · WOORDVOORBEELD');
   guideTokenIndex=clamp(guideTokenIndex,0,state.promptWords.length-1);
   guideTokenChips(visual,false);
   const tok=state.promptWords[guideTokenIndex]||{};
