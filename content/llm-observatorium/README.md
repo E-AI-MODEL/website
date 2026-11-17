@@ -6,6 +6,16 @@ Deze zelfstandige HTML is een herbouw van het eerdere LLM-prototype. Het oorspro
 
 Open `index.html` in een browser. Voor echte tokenisatie laadt de pagina eenmaal `gpt-tokenizer@4.1.0` via jsDelivr. Er is geen account of modelsleutel nodig. Zonder netwerkverbinding blijft de voorbeeldweergave werken, maar zie je geen echte token-ID's.
 
+## Leerroute van negen stappen (concept-PR #297)
+
+De interactieve beginnersroute behandelt achtereenvolgens: **jouw vraag, echte tokens, getallen, volgorde, eerdere tekst, experts, rekenlagen, volgend token en het antwoord**.
+
+De huidige interactieve versie rekent in de browser met een **klein, deterministisch viergetallenvoorbeeld**. Hiermee laten we echt berekende attention-gewichten, top-4-routerkeuzes en veranderingen per voorbeeldlaag zien. Het is geen echte gpt-oss-activatie en het maakt geen eigen modelantwoord. De tokenizer `o200k_harmony` blijft wel echt; zijn tokennummers worden gebruikt als invoer voor het minivoorbeeld. Zonder tokenizer blijft de fallback expliciet.
+
+De zelfstandige rekenmodule is `assets/llm-learning-math.js`. De wiskunde wordt gecontroleerd met `node scripts/test_llm_learning_math.mjs` en de leerroute met Chromium- en WebKit-tests. Berekeningen vragen geen account, API-sleutel, betaalde inferentie of groot model in de browser. De gewone websitehosting en beschikbare CI-quota blijven van toepassing.
+
+**Nog niet afgerond:** de automatische vijfdelige introductie is nog een korter overzicht naast de negen begeleide stappen. Er zijn geen echte gpt-oss-routeractivaties, attentiongewichten of logits ingelezen. Laadtijden op fysieke telefoons en aantoonbaar leerresultaat zijn nog niet gevalideerd. De PR mag pas gepubliceerd worden nadat alle tests slagen en de beelden zijn beoordeeld.
+
 ## Onderzoeken
 
 - Modelstelsel: opeenvolgende lagen met expertroosters in 3D. Selecteer met de muis of een vinger
@@ -50,7 +60,7 @@ Dit is geen validatie van echte modelactivaties, wetenschappelijke verklaringskr
 
 ## Status
 
-Het LLM Observatorium staat op eaimodel.nl. De nieuwe leerroute en het storyboard worden uitgewerkt in [concept-pull request #297](https://github.com/E-AI-MODEL/website/pull/297). De eerdere verwijzing naar PR #125 beschrijft een oudere herziening; controleer de actuele main-branch en gepubliceerde site voordat wordt gepubliceerd.
+Het LLM Observatorium staat op eaimodel.nl. De negenstapsleerroute en het storyboard staan in [concept-pull request #297](https://github.com/E-AI-MODEL/website/pull/297) en worden daar getest. De eerdere verwijzing naar PR #125 beschrijft een oudere herziening; controleer de actuele main-branch en gepubliceerde site voordat wordt gepubliceerd.
 
 ## Visuele weergave, november 2026
 
