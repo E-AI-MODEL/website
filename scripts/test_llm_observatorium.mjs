@@ -79,6 +79,17 @@ try{
   const actualWeightSum=await page.locator('.ai-trace-bar strong').allInnerTexts();
   assert(Math.abs(actualWeightSum.reduce((sum,v)=>sum+parseFloat(v),0)-100)<.3,
     'Echte aandachtgewichten tellen op tot 100%');
+  assert.equal(await page.locator('.ai-trace-token-step').count(),4,
+    'De hele gemeten tokenreeks is direct bereikbaar');
+  const firstLayerValues=await page.locator('.ai-trace-bar strong').allInnerTexts();
+  await page.locator('.ai-trace-head-btn').first().click();
+  const differentLayerValues=await page.locator('.ai-trace-bar strong').allInnerTexts();
+  assert.notDeepEqual(firstLayerValues,differentLayerValues,
+    'Echte eerste en laatste attentionlaag geven verschillende gewichten');
+  await page.locator('.ai-trace-token-step').nth(1).click();
+  assert.match(await page.locator('.ai-trace-selected').innerText(),/was/);
+  assert.equal(await page.locator('.ai-trace-bar').count(),6,
+    'Na het eerste gegenereerde token groeit de tekst waarop attention is berekend');
   await page.screenshot({path:'test-results/llm-guide-'+width+'-echte-attention.png'});
 
   await page.locator('#guideNext').click();
@@ -95,6 +106,14 @@ try{
   assert.notEqual(layerBefore,layerAfter,'Een nieuwe voorbeeldlaag verandert de berekende getallen');
   assert.equal(await page.locator('.ai-learn-layer-row').count(),3,'Laagwissel mag de grafiek niet dupliceren');
   await page.screenshot({path:'test-results/llm-guide-'+width+'-lagen.png'});
+  await page.locator('.ai-trace-toggle').click();
+  await page.locator('.ai-trace-title').waitFor({state:'visible'});
+  assert.equal(await page.locator('.ai-trace-number').count(),8,
+    'De echte modelmeting toont acht getallen van één laag');
+  await page.locator('.ai-trace-nav select').selectOption('2');
+  assert.equal(await page.locator('.ai-trace-delta').count(),8,
+    'Per getal is de werkelijke verandering sinds de vorige laag zichtbaar');
+  await page.screenshot({path:'test-results/llm-guide-'+width+'-echte-lagen.png'});
 
   await page.locator('#guideNext').click();
   assert(await page.locator('#guideTemperature').isVisible(),'Variatie kan worden ingesteld');
@@ -111,6 +130,8 @@ try{
   assert.match(await page.locator('.ai-trace-prompt').innerText(),/Once upon a time/);
   const actualFirst=await page.locator('.ai-trace-bar strong').first().innerText();
   assert(parseFloat(actualFirst)>20,'Waarschijnlijkheid is werkelijk gemeten bij de kleine verhalenverteller');
+  assert.match(await page.locator('.ai-trace-footnote').first().innerText(),/overige tokens samen/i,
+    'Acht getoonde kansen mogen niet als de volledige verdeling worden voorgesteld');
   await page.locator('.ai-trace-nav button').last().click();
   assert.match(await page.locator('.ai-trace-nav span').innerText(),/Voorspelling 2/);
   await page.screenshot({path:'test-results/llm-guide-'+width+'-echte-kansen.png'});
@@ -121,6 +142,14 @@ try{
   await page.locator('.ai-learn-answer-actions .ai-guide-cta').first().click();
   assert.equal(await page.locator('.ai-learn-piece').count(),firstCount+1,'Per klik verschijnt een echt getokeniseerd stukje');
   await page.screenshot({path:'test-results/llm-guide-'+width+'-antwoord.png'});
+  await page.locator('.ai-trace-toggle').click();
+  await page.locator('.ai-trace-title').waitFor({state:'visible'});
+  await page.locator('.ai-trace-token-step').last().click();
+  assert.match(await page.locator('.ai-trace-selected').innerText(),/little/);
+  assert.match(await page.locator('.ai-trace-completion').innerText(),/there was a little/);
+  assert.equal(await page.locator('.ai-trace-new-token').count(),1,
+    'De nieuw gekozen token is zichtbaar gemarkeerd');
+  await page.screenshot({path:'test-results/llm-guide-'+width+'-echt-antwoord.png'});
   assert.match(await page.locator('#guideTechnical').innerText(),/kansen/);
   await page.locator('#guideTechnical').click();
   assert.equal(await page.locator('#aiGuide').isVisible(),false,'Technisch onderzoek gaat open');
