@@ -1,4 +1,5 @@
 import {chromium} from "playwright";
+import {PROMPT_LIBRARY,promptsForPhase} from "../assets/eaigit/prompts-data.mjs";
 import {spawn} from "node:child_process";
 import {mkdirSync,readFileSync} from "node:fs";
 import {resolve,join} from "node:path";
@@ -144,6 +145,9 @@ try{
  assert(await page.locator("#stage-aim").isVisible());
  await page.locator("#aimSkip").click();
  await page.locator("#stage-result:not(.eg-hidden)").waitFor({timeout:12000});
+ assert.match(await page.locator("#resultHeading").innerText(),/nog geen bestanden onderzocht/i);
+ assert.match(await page.locator("#goodCount").innerText(),/Nog niets onderzocht/);
+ assert.match(await page.locator("#issueCount").innerText(),/Nog geen controle/);
  await page.locator("#startGuidance").click();
  assert.match(await page.locator("#guideTitle").innerText(),/projectbestanden/);
  // Nieuwe repository wordt pas gevraagd nadat iemand die heeft aangemaakt.
@@ -204,19 +208,33 @@ try{
  await page.setViewportSize({width:390,height:844});
  assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2),"Hulppagina past op telefoon");
  await page.screenshot({path:join(out,"eaigit-uitleg-mobiel.png"),fullPage:true});
- // Promptbibliotheek: alle fasen en aparte, invulbare opdrachten.
+ // Promptbibliotheek: dezelfde rustige dashboardopzet op groot en klein scherm.
+ await page.setViewportSize({width:1365,height:900});
+ await page.goto(base+"/tools/eaigit/prompts/");
+ assert(await page.locator("#selectedPrompt").isVisible(),"Op desktop is de geselecteerde opdracht direct zichtbaar");
+ assert.equal(await page.locator("#promptList .eg-prompt-card").count(),PROMPT_LIBRARY.length);
+ assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2),"Dashboard past op desktop");
+ await page.screenshot({path:join(out,"eaigit-prompts-desktop.png"),fullPage:true});
+ await page.setViewportSize({width:390,height:844});
  await page.goto(base+"/tools/eaigit/prompts/?fase=controleren");
- assert.equal(await page.locator("#promptList .eg-prompt-card").count(),3);
+ assert.equal(await page.locator("#promptList .eg-prompt-card").count(),promptsForPhase("controleren").length);
  assert.equal(await page.locator('[data-phase="controleren"]').getAttribute("aria-pressed"),"true");
  await page.goto(base+"/tools/eaigit/prompts/");
  assert.match(await page.title(),/Promptbibliotheek/);
- assert.equal(await page.locator("#promptList .eg-prompt-card").count(),16);
+ assert(await page.locator("#selectedOutcome").textContent());
+ await page.locator("#promptSearch").fill("zoek en herstel een fout");
+ assert((await page.locator("#promptList .eg-prompt-card").count())>0);
+ assert((await page.locator("#promptList .eg-prompt-card").count())<PROMPT_LIBRARY.length);
+ await page.locator("#promptSearch").fill("");
+ assert.equal(await page.locator("#promptList .eg-prompt-card").count(),PROMPT_LIBRARY.length);
  await page.locator("#promptRepo").fill("https://github.com/voorbeeld/project");
  await page.locator("#promptGoal").fill("Bezoekers kunnen een oefening afronden");
  await page.locator('[data-phase="controleren"]').click();
- assert.equal(await page.locator("#promptList .eg-prompt-card").count(),3);
+ assert.equal(await page.locator("#promptList .eg-prompt-card").count(),promptsForPhase("controleren").length);
  await page.locator('[data-prompt-id="gebruikstest"]').click();
  assert(await page.locator("#selectedPrompt").isVisible());
+ assert(await page.locator("#promptWorkspace").evaluate(el=>el.classList.contains("eg-dashboard-mobile-detail")),"Op mobiel opent de gekozen opdracht als eigen werkruimte");
+ assert.match(await page.locator("#selectedOutcome").innerText(),/testrapport/i);
  const selectedPrompt=await page.locator("#selectedBody").inputValue();
  assert.match(selectedPrompt,/https:\/\/github.com\/voorbeeld\/project/);
  assert.match(selectedPrompt,/Bezoekers kunnen een oefening afronden/);
@@ -228,6 +246,10 @@ try{
  await page.locator("#restoreSelected").click();
  assert.equal(await page.locator("#selectedBody").inputValue(),selectedPrompt);
  assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2),"Promptbibliotheek past op telefoon");
+ const mobileTitleSize=await page.locator("#promptPageTitle").evaluate(el=>parseFloat(getComputedStyle(el).fontSize));
+ assert(mobileTitleSize<=34,"Mobiele kop is te groot: "+mobileTitleSize+"px");
+ await page.evaluate(()=>window.scrollTo({top:0,behavior:"instant"}));
+ await page.waitForFunction(()=>window.scrollY===0);
  await page.screenshot({path:join(out,"eaigit-prompts-mobiel.png"),fullPage:true});
  // Oude URL blijft werken, zonder de oude naam in de nieuwe UI.
  await page.goto(base+"/tools/projecthulp/");

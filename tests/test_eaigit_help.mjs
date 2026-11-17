@@ -36,7 +36,8 @@ test("Bibliotheek heeft verschillende opdrachten voor alle ontwikkelfasen",()=>{
  for(const prompt of PROMPT_LIBRARY){
   assert.ok(prompt.body.includes("{{REPO}}"),prompt.id);
   assert.ok(prompt.body.includes("{{DOEL}}"),prompt.id);
-  assert.ok(prompt.body.length>170);
+  assert.ok(prompt.body.length>=750,"Opdracht te summier: "+prompt.id);
+  assert.ok(prompt.outcome.length>=25,"Geen concreet resultaat: "+prompt.id);
   assert.ok(!prompt.body.includes("Pieter"));
   assert.ok(!/mijn chain.of.thought|interne redeneersporen|redeneringstekst/i.test(prompt.body));
   const ready=fillPrompt(prompt,{repo:"https://github.com/voorbeeld/site",goal:"Een werkende website"});
@@ -58,6 +59,10 @@ test("Hulppagina en prompts zijn aparte toegankelijke routes",()=>{
  assert.match(help,/id="helpCategories"/);
  assert.match(help,/Wat gebruik je waarvoor/);
  assert.match(prompts,/id="promptFilters"/);
+ assert.match(prompts,/id="promptSearch"/);
+ assert.match(prompts,/id="selectedOutcome"/);
+ assert.match(prompts,/eg-dashboard-workspace/);
+ assert.match(prompts,/prompt-dashboard/);
  assert.match(prompts,/id="selectedBody"/);
  assert.match(prompts,/id="copySelected"/);
  assert.match(wizard,/id="helpDialog"/);

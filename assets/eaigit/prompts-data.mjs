@@ -1,82 +1,181 @@
-// Kopieerbare opdrachten per ontwikkelfase. Niet automatisch uitvoeren of versturen.
+// EAIgit. Praktische opdrachten met controleerbare uitkomsten.
+// Een opdracht geeft nooit toestemming om wijzigingen automatisch te publiceren.
 export const PROMPT_PHASES=[
- {id:"verkennen",label:"Verkennen"},
- {id:"opzetten",label:"Opzetten"},
- {id:"bouwen",label:"Bouwen"},
- {id:"controleren",label:"Controleren"},
- {id:"publiceren",label:"Publiceren"},
- {id:"onderhouden",label:"Onderhouden"}
+  {
+    "id": "verkennen",
+    "label": "Verkennen"
+  },
+  {
+    "id": "opzetten",
+    "label": "Opzetten"
+  },
+  {
+    "id": "bouwen",
+    "label": "Bouwen"
+  },
+  {
+    "id": "controleren",
+    "label": "Controleren"
+  },
+  {
+    "id": "publiceren",
+    "label": "Publiceren"
+  },
+  {
+    "id": "onderhouden",
+    "label": "Onderhouden"
+  }
 ];
-const P=(id,phase,title,forWhom,body)=>({id,phase,title,forWhom,body});
 export const PROMPT_LIBRARY=[
- P("begrijp","verkennen","Wat heb ik eigenlijk?","Voor een bestaande ZIP of onbekende repository.",
-`Bekijk mijn project in {{REPO}}. Ik wil bereiken: {{DOEL}}.
-Begin met een overzicht in gewone taal: welke onderdelen zijn er, wat lijkt al bruikbaar en wat ontbreekt nog? Geef echte bestandsnamen als bewijs. Noem niet automatisch iets 'werkend' omdat een bestand aanwezig is. Stel maximaal één vraag als een antwoord nodig is om verder te kunnen.
-Wijzig niets. Eindig met één concrete volgende handeling.`),
- P("doel","verkennen","Maak mijn idee toetsbaar","Voor je begint te bouwen of veranderen.",
-`Mijn idee is: {{DOEL}}. Mijn project staat op {{REPO}}.
-Help mij beschrijven wat een gebruiker straks precies moet kunnen. Maak maximaal vijf controleerbare gebruikssituaties, zonder een technische oplossing voor te schrijven. Laat mij kiezen wat de eerste versie moet kunnen.
-Leg uit wat ik zelf moet beslissen en welke technische uitwerking kan worden overgenomen. Werk nog niets uit in code.`),
- P("mogelijkheden","verkennen","Welke aanpak past hier?","Voor je een framework of dienst kiest.",
-`Doel: {{DOEL}}. Repository: {{REPO}}.
-Onderzoek eerst de bestaande bestanden en gebruikte techniek. Vergelijk daarna maximaal drie passende manieren om mijn doel te bereiken. Beoordeel de opties op begrijpelijkheid, onderhoud, kosten, privacy en of bestaande goede onderdelen behouden blijven.
-Baseer uitspraken op aantoonbare projectgegevens en officiële documentatie. Laat mij de keuze maken voordat je iets verandert.`),
- P("repo-start","opzetten","Van ZIP naar GitHub","Voor de eerste overdracht.",
-`Mijn doel: {{DOEL}}. GitHub-repository: {{REPO}}.
-Help mij stap voor stap om een bestaande ZIP als losse projectbestanden op GitHub te zetten. Controleer eerst de mapstructuur en mogelijke privébestanden. Leg precies uit welke knoppen ik op github.com moet gebruiken. Ga niet uit van GitHub Desktop of een terminal.
-Laat mij zelf bepalen wat openbaar wordt. Stop na iedere menselijke keuze en geef pas daarna de volgende stap. Upload niet alleen de ZIP.`),
- P("plan","opzetten","Maak een werkbaar stappenplan","Voor een wijziging met meerdere onderdelen.",
-`Bekijk {{REPO}} in het licht van dit doel: {{DOEL}}.
-Verdeel het werk in kleine afhankelijke taken. Geef per taak: verwacht resultaat, betrokken bestanden, een passende controle en wat ik zelf moet beslissen. Begin bij wat al goed is en behoud dat.
-Laat taken die onafhankelijk zijn naast elkaar uitvoeren waar dat veilig kan. Geen codewijzigingen of publicatie zonder mijn toestemming. Begin met de eerste haalbare stap.`),
- P("structuur","opzetten","Maak de projectmap begrijpelijk","Voor een rommelige of onduidelijke repository.",
-`Repository: {{REPO}}. Doel: {{DOEL}}.
-Bekijk de huidige mappen, README, startbestanden en configuratie. Stel alleen veranderingen voor die de vindbaarheid of werking echt verbeteren. Vertel welke bestanden moeten blijven, welke overbodig lijken en wat nog onbekend is.
-Verplaats of verwijder niets zonder mijn akkoord. Geef eerst een voorstel met een korte reden per wijziging.`),
- P("kleine-wijziging","bouwen","Verbeter één onderdeel","Voor gericht werk in bestaande code.",
-`Doel: {{DOEL}}. Repository: {{REPO}}.
-Onderzoek het onderdeel dat hiervoor nodig is. Benoem eerst de huidige werking en wat behouden moet blijven. Stel de kleinste passende wijziging voor, op basis van echte bestanden.
-Voer in een bevoegde codeomgeving alleen na mijn toestemming die wijziging uit op een aparte branch. Test het gewijzigde gedrag. Geef een overzicht van aangepaste bestanden, testresultaten en openstaande punten. Geen publicatie.`),
- P("fix","bouwen","Los een bewezen fout op","Voor een bug met een voorbeeld.",
-`Repository: {{REPO}}. Het probleem houdt verband met: {{DOEL}}.
-Probeer het probleem eerst te reproduceren. Vertel wat je daadwerkelijk hebt gezien. Geef een bestandslink en regelnummer bij aantoonbare codefouten. Noem een vermoeden ook echt een vermoeden.
-Zoek naar de oorzaak en maak pas na mijn akkoord de kleinste passende reparatie. Controleer daarna de volledige gebruikershandeling en bestaande functies op nieuwe fouten.`),
- P("begrijp-code","bouwen","Leg een lastig bestand uit","Voor onbekende code.",
-`Bekijk het bestand dat relevant is voor {{DOEL}} in {{REPO}}.
-Leg in gewone taal uit waarvoor dit bestand dient, wat erin gebeurt en welke andere bestanden ermee samenhangen. Gebruik maximaal één concreet voorbeeld en geef bestandslinks.
-Maak verschil tussen wat je uit de code kunt afleiden en wat alleen met uitvoering getest kan worden. Pas niets aan.`),
- P("gebruikstest","controleren","Test wat de gebruiker doet","Voor een echte functietest.",
-`Mijn doel is: {{DOEL}}. Mijn project staat op {{REPO}}.
-Kies drie belangrijke gebruikershandelingen. Test ze echt in de juiste omgeving, ook op een mobiel formaat waar dat zinvol is. Noteer per handeling: wat is uitgevoerd, wat gebeurde er en of de uitkomst klopt.
-Maak onderscheid tussen geslaagd, mislukt en niet uitgevoerd. Een groene syntaxcheck is geen functietest. Maak geen testresultaten die je niet kunt onderbouwen.`),
- P("review","controleren","Laat wijzigingen streng nakijken","Voor een pull request.",
-`Bekijk de voorgestelde wijzigingen in {{REPO}} voor dit doel: {{DOEL}}.
-Controleer of de wijziging echt nodig is, bestaande goede functies behoudt, geen onbedoelde neveneffecten geeft en de rechten niet vergroot zonder reden. Lees het verschil tussen de oude en nieuwe code.
-Noem bevindingen met bestand, regel en bewijs. Zet vermoedens apart. Sluit af met: gereed om te beoordelen, nog werk nodig of niet te verifiëren. Voeg niets zelf samen.`),
- P("veiligheid","controleren","Controleer wat openbaar mag","Voor delen, koppelen of publiceren.",
-`Repository: {{REPO}}. Doel: {{DOEL}}.
-Controleer mogelijke geheimen in bestandsnamen en configuratie, afhankelijkheden, toegangsrechten en publicatie-instellingen. Voer geen onbekende projectcode uit buiten een geschikte veilige omgeving.
-Noem concrete risico's met bronverwijzingen en geef aan wat je niet hebt gecontroleerd. Stel een veilig herstelplan voor. Mijn toestemming is nodig voor verwijderen, rechten aanpassen en publiceren.`),
- P("publiceer-plan","publiceren","Onderzoek hoe ik dit online krijg","Voor een website of toepassing die klaar lijkt.",
-`Doel: {{DOEL}}. Repository: {{REPO}}.
-Controleer aan de hand van de echte projectbestanden of GitHub Pages geschikt is of andere hosting nodig is. Maak een kort stappenplan met officiële links, benodigde instellingen en kosten of beperkingen voor zover bekend.
-Voer beschikbare tests eerst uit en benoem ontbrekende testdekking. Vraag apart toestemming voor repositorywijzigingen en voor publicatie. Publiceer nog niets.`),
- P("oplevering","publiceren","Controleer de oplevering","Na een publicatie.",
-`Het gepubliceerde project hoort dit te kunnen: {{DOEL}}. Bronrepository: {{REPO}}.
-Open de werkelijke pagina en doorloop de belangrijkste gebruikershandelingen. Controleer de openbare URL, de versies die zijn gepubliceerd, foutmeldingen en mobiele weergave.
-Geef alleen geslaagde resultaten als je de handeling echt hebt uitgevoerd. Noem ontbrekende controles en eventuele fouten met herleidbare bronnen. Wijzig niets zonder overleg.`),
- P("onderhoud","onderhouden","Wat heeft onderhoud nodig?","Voor een bestaande repository.",
-`Bekijk {{REPO}} met dit doel: {{DOEL}}.
-Onderzoek openstaande problemen, beschikbare tests, oude afhankelijkheden en documentatie. Maak een korte geprioriteerde lijst. Geef per voorstel aan welk aantoonbaar probleem het oplost en welke controle nodig is.
-Verzin geen problemen om de lijst langer te maken. Geen automatische upgrades of merges. Laat mij kiezen wat eerst gebeurt.`),
- P("leren","onderhouden","Leg uit wat ik nu zelf kan","Voor wie meer grip op het project wil.",
-`Mijn project staat op {{REPO}} en moet dit kunnen: {{DOEL}}.
-Kies één concrete handeling die ik nog niet goed begrijp uit dit project. Leg die uit met een klein voorbeeld en laat mij daarna zelf voorspellen wat er gebeurt als ik iets verander.
-Neem de leerstap niet over door meteen het antwoord te geven. Laat me mijn keuze uitleggen en geef gerichte feedback. Houd wijzigingen buiten de hoofdbranch.`)
+  {
+    "id": "begrijp",
+    "phase": "verkennen",
+    "title": "Breng mijn project in kaart",
+    "forWhom": "Eerst begrijpen wat er werkelijk staat.",
+    "outcome": "Overzicht van bestanden en werking",
+    "body": "Repository: {{REPO}}\nGewenst resultaat: {{DOEL}}\n\nOpdracht\nBepaal of de repository het juiste project bevat. Lees README, projectconfiguratie, startbestanden en scripts. Leg met exacte paden uit wat het programma doet, hoe het volgens de code start, welke onderdelen samenwerken en waar de gebruiker het resultaat ziet. Controleer welke tests er zijn, zonder hun aanwezigheid als succes te beschouwen. Lever een projectkaart met de rubrieken aanwezig, onduidelijk en niet getest, plus drie gerichte vervolgstappen. Geen nieuw framework voorstellen voordat de bestaande situatie duidelijk is.\n\nWerkwijze en bewijs\n- Lees de echte bestanden en meld welke paden, commits, PR's of logs de bevinding onderbouwen.\n- Scheid vastgesteld, daadwerkelijk getest, aannemelijk en niet onderzocht. Een geslaagde build zegt niet dat alle functies werken.\n- Verzin geen bestanden, tests, rechten of resultaten. Zeg duidelijk wat je niet kunt openen of uitvoeren.\n- Verander geen code, bestanden, rechten of publicatie-instellingen zonder mijn toestemming. Gebruik voor goedgekeurde wijzigingen een aparte branch, nooit rechtstreeks main.\n- Geef een bondige uitkomst en eindig met één concrete volgende handeling."
+  },
+  {
+    "id": "doel",
+    "phase": "verkennen",
+    "title": "Maak de gewenste werking toetsbaar",
+    "forWhom": "Maak van een idee concrete gebruikershandelingen.",
+    "outcome": "Acceptatiecriteria voor de eerste versie",
+    "body": "Repository: {{REPO}}\nGewenst resultaat: {{DOEL}}\n\nOpdracht\nVertaal mijn doel naar maximaal vijf concrete gebruikershandelingen. Beschrijf per handeling de startsituatie, invoer, verwachte zichtbare uitkomst, foutpad en het criterium voor geslaagd. Zoek in de bestaande code naar aanwijzingen dat de handeling al mogelijk is. Scheid functionele eisen van technische keuzes en uiterlijk. Lever een korte acceptatielijst waarmee iemand op desktop of telefoon kan testen. Vul onbekende productkeuzes niet in; stel alleen een vraag als die echt nodig is. Bouw nog niets.\n\nWerkwijze en bewijs\n- Lees de echte bestanden en meld welke paden, commits, PR's of logs de bevinding onderbouwen.\n- Scheid vastgesteld, daadwerkelijk getest, aannemelijk en niet onderzocht. Een geslaagde build zegt niet dat alle functies werken.\n- Verzin geen bestanden, tests, rechten of resultaten. Zeg duidelijk wat je niet kunt openen of uitvoeren.\n- Verander geen code, bestanden, rechten of publicatie-instellingen zonder mijn toestemming. Gebruik voor goedgekeurde wijzigingen een aparte branch, nooit rechtstreeks main.\n- Geef een bondige uitkomst en eindig met één concrete volgende handeling."
+  },
+  {
+    "id": "mogelijkheden",
+    "phase": "verkennen",
+    "title": "Vergelijk passende technische routes",
+    "forWhom": "Kies niet opnieuw wat al goed gebouwd is.",
+    "outcome": "Vergelijking met concrete gevolgen",
+    "body": "Repository: {{REPO}}\nGewenst resultaat: {{DOEL}}\n\nOpdracht\nOnderzoek eerst de huidige techniek, hosting en aantoonbaar werkende onderdelen. Vergelijk behoud van de bestaande aanpak met maximaal twee realistische alternatieven. Beoordeel de benodigde wijzigingen, hergebruik, beheer, onderhoud, kosten met actuele bron en gevolgen voor privacy. Noteer wat aantoonbaar is en welke aannames over de uitvoerbaarheid nog getest moeten worden. Lever een compacte vergelijking en een voorstel met expliciete voorwaarden. Start geen migratie zonder akkoord.\n\nWerkwijze en bewijs\n- Lees de echte bestanden en meld welke paden, commits, PR's of logs de bevinding onderbouwen.\n- Scheid vastgesteld, daadwerkelijk getest, aannemelijk en niet onderzocht. Een geslaagde build zegt niet dat alle functies werken.\n- Verzin geen bestanden, tests, rechten of resultaten. Zeg duidelijk wat je niet kunt openen of uitvoeren.\n- Verander geen code, bestanden, rechten of publicatie-instellingen zonder mijn toestemming. Gebruik voor goedgekeurde wijzigingen een aparte branch, nooit rechtstreeks main.\n- Geef een bondige uitkomst en eindig met één concrete volgende handeling."
+  },
+  {
+    "id": "repo-start",
+    "phase": "opzetten",
+    "title": "Zet mijn ZIP goed op GitHub",
+    "forWhom": "Voor een project dat nog als ZIP bestaat.",
+    "outcome": "Controleerbaar uploadplan",
+    "body": "Repository: {{REPO}}\nGewenst resultaat: {{DOEL}}\n\nOpdracht\nHelp mij een ZIP als losse projectbestanden op GitHub te plaatsen. Bepaal de hoofdmap en startbestanden. Controleer namen en, waar mogelijk, inhoud op .env, tokens, sleutels, persoonsgegevens, tijdelijke mappen en buildbestanden. Benoem concreet wat wel en niet mee moet. Beschrijf de stappen via github.com zonder terminal of GitHub Desktop te veronderstellen. Een ZIP uploaden is niet hetzelfde als broncode publiceren. Stop vóór het openbaar maken. Laat na de upload de bestandsstructuur en commit controleren.\n\nWerkwijze en bewijs\n- Lees de echte bestanden en meld welke paden, commits, PR's of logs de bevinding onderbouwen.\n- Scheid vastgesteld, daadwerkelijk getest, aannemelijk en niet onderzocht. Een geslaagde build zegt niet dat alle functies werken.\n- Verzin geen bestanden, tests, rechten of resultaten. Zeg duidelijk wat je niet kunt openen of uitvoeren.\n- Verander geen code, bestanden, rechten of publicatie-instellingen zonder mijn toestemming. Gebruik voor goedgekeurde wijzigingen een aparte branch, nooit rechtstreeks main.\n- Geef een bondige uitkomst en eindig met één concrete volgende handeling."
+  },
+  {
+    "id": "plan",
+    "phase": "opzetten",
+    "title": "Maak een uitvoerbaar bouwplan",
+    "forWhom": "Voor werk met meerdere samenhangende wijzigingen.",
+    "outcome": "Taken met bestanden en controles",
+    "body": "Repository: {{REPO}}\nGewenst resultaat: {{DOEL}}\n\nOpdracht\nLees het project, de openstaande problemen en de bestaande tests. Maak maximaal acht kleine taken. Geef per taak de aanleiding, het zichtbare resultaat, betrokken bestanden, afhankelijkheden, passend testscenario en stopcriterium. Benoem bestaande functies die behouden moeten blijven en mogelijke regressie. Zet noodzakelijke reparaties vóór uitbreidingen. Scheid onafhankelijke taken van werk dat op andere wijzigingen wacht. Lever het plan; begin pas met implementeren na akkoord.\n\nWerkwijze en bewijs\n- Lees de echte bestanden en meld welke paden, commits, PR's of logs de bevinding onderbouwen.\n- Scheid vastgesteld, daadwerkelijk getest, aannemelijk en niet onderzocht. Een geslaagde build zegt niet dat alle functies werken.\n- Verzin geen bestanden, tests, rechten of resultaten. Zeg duidelijk wat je niet kunt openen of uitvoeren.\n- Verander geen code, bestanden, rechten of publicatie-instellingen zonder mijn toestemming. Gebruik voor goedgekeurde wijzigingen een aparte branch, nooit rechtstreeks main.\n- Geef een bondige uitkomst en eindig met één concrete volgende handeling."
+  },
+  {
+    "id": "structuur",
+    "phase": "opzetten",
+    "title": "Maak de repository overzichtelijk",
+    "forWhom": "Voor veel mappen of onduidelijke startpunten.",
+    "outcome": "Voorstel zonder ongevraagde verhuizingen",
+    "body": "Repository: {{REPO}}\nGewenst resultaat: {{DOEL}}\n\nOpdracht\nInventariseer mappen, startbestanden, imports, build-output, routes, workflows, configuratie en documentatie. Onderzoek mogelijke dubbelen; noem iets pas overbodig na controle van verwijzingen. Maak een tabel met huidig pad, voorgesteld pad, reden, gevolgen en controle. Wijs bestaande URL's en imports aan die niet mogen breken. Lever alleen een voorstel. Verplaats of verwijder niets zonder akkoord.\n\nWerkwijze en bewijs\n- Lees de echte bestanden en meld welke paden, commits, PR's of logs de bevinding onderbouwen.\n- Scheid vastgesteld, daadwerkelijk getest, aannemelijk en niet onderzocht. Een geslaagde build zegt niet dat alle functies werken.\n- Verzin geen bestanden, tests, rechten of resultaten. Zeg duidelijk wat je niet kunt openen of uitvoeren.\n- Verander geen code, bestanden, rechten of publicatie-instellingen zonder mijn toestemming. Gebruik voor goedgekeurde wijzigingen een aparte branch, nooit rechtstreeks main.\n- Geef een bondige uitkomst en eindig met één concrete volgende handeling."
+  },
+  {
+    "id": "kleine-wijziging",
+    "phase": "bouwen",
+    "title": "Pas één functie gericht aan",
+    "forWhom": "Voor een gerichte uitbreiding of verbetering.",
+    "outcome": "Kleine wijziging met aantoonbare test",
+    "body": "Repository: {{REPO}}\nGewenst resultaat: {{DOEL}}\n\nOpdracht\nZoek de code achter de gevraagde handeling. Beschrijf eerst wat nu gebeurt en wat behouden moet blijven, met bestandslinks. Stel de kleinst passende wijziging en een toetsbaar acceptatiecriterium voor. Pas na akkoord code aan op een aparte branch. Voeg waar mogelijk een regressietest toe en test ook de volledige zichtbare handeling. Lever diff, gewijzigde paden, werkelijk uitgevoerde tests en wat nog onzeker is. Publiceer niet.\n\nWerkwijze en bewijs\n- Lees de echte bestanden en meld welke paden, commits, PR's of logs de bevinding onderbouwen.\n- Scheid vastgesteld, daadwerkelijk getest, aannemelijk en niet onderzocht. Een geslaagde build zegt niet dat alle functies werken.\n- Verzin geen bestanden, tests, rechten of resultaten. Zeg duidelijk wat je niet kunt openen of uitvoeren.\n- Verander geen code, bestanden, rechten of publicatie-instellingen zonder mijn toestemming. Gebruik voor goedgekeurde wijzigingen een aparte branch, nooit rechtstreeks main.\n- Geef een bondige uitkomst en eindig met één concrete volgende handeling."
+  },
+  {
+    "id": "fix",
+    "phase": "bouwen",
+    "title": "Onderzoek en herstel een fout",
+    "forWhom": "Voor een fout die iemand werkelijk ziet.",
+    "outcome": "Reproductie, oorzaak, reparatie en hertest",
+    "body": "Repository: {{REPO}}\nGewenst resultaat: {{DOEL}}\n\nOpdracht\nReproduceer eerst de fout met exacte stappen, verwacht gedrag en waargenomen uitkomst. Onderzoek browserconsole, netwerk, testlog en relevante bestanden. Scheid vermoedens van bewezen oorzaken. Wijs de oorzaak aan met pad en regel of leg uit waarom dat nog niet kan. Stel een gerichte reparatie voor, vraag akkoord en wijzig op een aparte branch. Test daarna dezelfde handeling, één foutpad en een verwante functie. Geef bewijs; een groene build vervangt de hertest niet.\n\nWerkwijze en bewijs\n- Lees de echte bestanden en meld welke paden, commits, PR's of logs de bevinding onderbouwen.\n- Scheid vastgesteld, daadwerkelijk getest, aannemelijk en niet onderzocht. Een geslaagde build zegt niet dat alle functies werken.\n- Verzin geen bestanden, tests, rechten of resultaten. Zeg duidelijk wat je niet kunt openen of uitvoeren.\n- Verander geen code, bestanden, rechten of publicatie-instellingen zonder mijn toestemming. Gebruik voor goedgekeurde wijzigingen een aparte branch, nooit rechtstreeks main.\n- Geef een bondige uitkomst en eindig met één concrete volgende handeling."
+  },
+  {
+    "id": "begrijp-code",
+    "phase": "bouwen",
+    "title": "Leg een stuk code uit",
+    "forWhom": "Voor wie een onderdeel wil begrijpen.",
+    "outcome": "Uitleg met echte paden en een voorbeeld",
+    "body": "Repository: {{REPO}}\nGewenst resultaat: {{DOEL}}\n\nOpdracht\nZoek de bestanden die de genoemde functie uitvoeren. Leg de stroom van invoer, verwerking, externe afhankelijkheden en uitkomst uit. Gebruik één realistisch voorbeeld met concrete waarden en verwijzingen naar de juiste code. Maak duidelijk wat uit de code volgt en wat alleen met een test is vast te stellen. Lever een uitleg in maximaal vijf stappen en één controlevraag waarmee ik kan laten zien dat ik de werking begrijp. Pas niets aan.\n\nWerkwijze en bewijs\n- Lees de echte bestanden en meld welke paden, commits, PR's of logs de bevinding onderbouwen.\n- Scheid vastgesteld, daadwerkelijk getest, aannemelijk en niet onderzocht. Een geslaagde build zegt niet dat alle functies werken.\n- Verzin geen bestanden, tests, rechten of resultaten. Zeg duidelijk wat je niet kunt openen of uitvoeren.\n- Verander geen code, bestanden, rechten of publicatie-instellingen zonder mijn toestemming. Gebruik voor goedgekeurde wijzigingen een aparte branch, nooit rechtstreeks main.\n- Geef een bondige uitkomst en eindig met één concrete volgende handeling."
+  },
+  {
+    "id": "api-data",
+    "phase": "bouwen",
+    "title": "Controleer een data- of API-koppeling",
+    "forWhom": "Voor gegevens die van buiten het project komen.",
+    "outcome": "Bron-tot-scherm controle met foutpaden",
+    "body": "Repository: {{REPO}}\nGewenst resultaat: {{DOEL}}\n\nOpdracht\nBreng een gegevensstroom in kaart van externe bron tot zichtbare waarde. Controleer veldnamen, transformaties, datums, verversing, foutafhandeling en dubbele records. Gebruik echte responsvoorbeelden, met aandacht voor geheimen in de browser en verouderde caching. Voer geen onbedoelde schrijfacties naar externe systemen uit. Lever een tabel met veld, bron, verwerking, uitkomst en werkelijk uitgevoerde test. Noem wat niet bereikbaar was.\n\nWerkwijze en bewijs\n- Lees de echte bestanden en meld welke paden, commits, PR's of logs de bevinding onderbouwen.\n- Scheid vastgesteld, daadwerkelijk getest, aannemelijk en niet onderzocht. Een geslaagde build zegt niet dat alle functies werken.\n- Verzin geen bestanden, tests, rechten of resultaten. Zeg duidelijk wat je niet kunt openen of uitvoeren.\n- Verander geen code, bestanden, rechten of publicatie-instellingen zonder mijn toestemming. Gebruik voor goedgekeurde wijzigingen een aparte branch, nooit rechtstreeks main.\n- Geef een bondige uitkomst en eindig met één concrete volgende handeling."
+  },
+  {
+    "id": "gebruikstest",
+    "phase": "controleren",
+    "title": "Test wat de bezoeker echt doet",
+    "forWhom": "Voor een werkende interface op desktop en mobiel.",
+    "outcome": "Testrapport per gebruikershandeling",
+    "body": "Repository: {{REPO}}\nGewenst resultaat: {{DOEL}}\n\nOpdracht\nKies drie gebruikershandelingen die het doel rechtstreeks toetsen. Open de echte website of testomgeving. Doorloop op desktop en waar passend mobiel het normale pad en een foutpad. Controleer ook toetsenbord, foutmeldingen, netwerkfouten en horizontaal scrollen. Leg per test URL, versie, stappen, verwacht gedrag, waarneming, bewijs en status vast: geslaagd, mislukt of niet uitgevoerd. Lever een compact testrapport; geen schijnbewijs op basis van alleen bestanden of builds.\n\nWerkwijze en bewijs\n- Lees de echte bestanden en meld welke paden, commits, PR's of logs de bevinding onderbouwen.\n- Scheid vastgesteld, daadwerkelijk getest, aannemelijk en niet onderzocht. Een geslaagde build zegt niet dat alle functies werken.\n- Verzin geen bestanden, tests, rechten of resultaten. Zeg duidelijk wat je niet kunt openen of uitvoeren.\n- Verander geen code, bestanden, rechten of publicatie-instellingen zonder mijn toestemming. Gebruik voor goedgekeurde wijzigingen een aparte branch, nooit rechtstreeks main.\n- Geef een bondige uitkomst en eindig met één concrete volgende handeling."
+  },
+  {
+    "id": "review",
+    "phase": "controleren",
+    "title": "Controleer een pull request",
+    "forWhom": "Voor wijzigingen die nog niet zijn samengevoegd.",
+    "outcome": "Review met bevindingen en bewijslast",
+    "body": "Repository: {{REPO}}\nGewenst resultaat: {{DOEL}}\n\nOpdracht\nLees de echte diff tegen de doelbranch en controleer het afgesproken doel, bestaand gedrag, beveiliging, privacy, imports, URL's, toegankelijkheid en mogelijke regressie. Noem per bevinding bestand, regel, bewijs en impact. Scheid bewezen fouten, vermoedens en suggesties. Controleer welke tests aantoonbaar zijn uitgevoerd. Lever maximaal vijf bevindingen plus het oordeel klaar voor beoordeling, nog werk nodig of onvoldoende bewijs. Voeg niets samen.\n\nWerkwijze en bewijs\n- Lees de echte bestanden en meld welke paden, commits, PR's of logs de bevinding onderbouwen.\n- Scheid vastgesteld, daadwerkelijk getest, aannemelijk en niet onderzocht. Een geslaagde build zegt niet dat alle functies werken.\n- Verzin geen bestanden, tests, rechten of resultaten. Zeg duidelijk wat je niet kunt openen of uitvoeren.\n- Verander geen code, bestanden, rechten of publicatie-instellingen zonder mijn toestemming. Gebruik voor goedgekeurde wijzigingen een aparte branch, nooit rechtstreeks main.\n- Geef een bondige uitkomst en eindig met één concrete volgende handeling."
+  },
+  {
+    "id": "veiligheid",
+    "phase": "controleren",
+    "title": "Controleer wat openbaar mag",
+    "forWhom": "Voor bestanden, koppelingen en publicatie.",
+    "outcome": "Veiligheidscontrole met concrete herstelacties",
+    "body": "Repository: {{REPO}}\nGewenst resultaat: {{DOEL}}\n\nOpdracht\nControleer openbare bestanden en configuratie op tokens, wachtwoorden, persoonsgegevens, onnodige rechten, externe afhankelijkheden en blootstelling vanuit de browser. Onderzoek waar mogelijk of gevoelige inhoud ooit in een commit is beland. Toon geen geheime waarden en voer geen onbevoegde proeven uit. Benoem per bevinding het bewijs, het mogelijke gevolg en wat niet gecontroleerd is. Lever niet-destructieve herstelvoorstellen en vraag akkoord vóór een wijziging. Noem dit geen volledige beveiligingsaudit.\n\nWerkwijze en bewijs\n- Lees de echte bestanden en meld welke paden, commits, PR's of logs de bevinding onderbouwen.\n- Scheid vastgesteld, daadwerkelijk getest, aannemelijk en niet onderzocht. Een geslaagde build zegt niet dat alle functies werken.\n- Verzin geen bestanden, tests, rechten of resultaten. Zeg duidelijk wat je niet kunt openen of uitvoeren.\n- Verander geen code, bestanden, rechten of publicatie-instellingen zonder mijn toestemming. Gebruik voor goedgekeurde wijzigingen een aparte branch, nooit rechtstreeks main.\n- Geef een bondige uitkomst en eindig met één concrete volgende handeling."
+  },
+  {
+    "id": "ci",
+    "phase": "controleren",
+    "title": "Onderzoek een mislukte GitHub-controle",
+    "forWhom": "Voor rode Actions en onduidelijke testresultaten.",
+    "outcome": "Oorzaak met run-link en gerichte oplossing",
+    "body": "Repository: {{REPO}}\nGewenst resultaat: {{DOEL}}\n\nOpdracht\nOpen de specifieke workflow-run, job en logregels. Bepaal of de fout in code, configuratie, een externe dienst, toegang of de test zelf zit. Maak onderscheid tussen failure, cancelled en skipped. Leg de gebruikte commit vast. Wijs de bewijsbare foutregel aan en geef de kleinste hersteloptie plus hertest. Lever run-link, foutregel, oorzaakstatus en controleplan. Claim pas succes als dezelfde workflow op de juiste commit opnieuw geslaagd is. Wijzig niets zonder akkoord.\n\nWerkwijze en bewijs\n- Lees de echte bestanden en meld welke paden, commits, PR's of logs de bevinding onderbouwen.\n- Scheid vastgesteld, daadwerkelijk getest, aannemelijk en niet onderzocht. Een geslaagde build zegt niet dat alle functies werken.\n- Verzin geen bestanden, tests, rechten of resultaten. Zeg duidelijk wat je niet kunt openen of uitvoeren.\n- Verander geen code, bestanden, rechten of publicatie-instellingen zonder mijn toestemming. Gebruik voor goedgekeurde wijzigingen een aparte branch, nooit rechtstreeks main.\n- Geef een bondige uitkomst en eindig met één concrete volgende handeling."
+  },
+  {
+    "id": "publiceer-plan",
+    "phase": "publiceren",
+    "title": "Kies een passende publicatieroute",
+    "forWhom": "Voor code die online moet komen.",
+    "outcome": "Publicatieplan met voorwaarden en terugweg",
+    "body": "Repository: {{REPO}}\nGewenst resultaat: {{DOEL}}\n\nOpdracht\nControleer bouwstappen, routes, serverfuncties, variabelen, domein en aanwezige hostinginstellingen. Bepaal met bewijs of statische hosting zoals GitHub Pages volstaat. Noteer bekende kosten alleen met actuele bron. Maak een concrete volgorde voor build, test, livecontrole en terugdraaien. Benoem ontbrekende rechten of gegevens. Lever een publicatieplan en vraag apart akkoord voor codewijzigingen en livegang. Publiceer nog niets.\n\nWerkwijze en bewijs\n- Lees de echte bestanden en meld welke paden, commits, PR's of logs de bevinding onderbouwen.\n- Scheid vastgesteld, daadwerkelijk getest, aannemelijk en niet onderzocht. Een geslaagde build zegt niet dat alle functies werken.\n- Verzin geen bestanden, tests, rechten of resultaten. Zeg duidelijk wat je niet kunt openen of uitvoeren.\n- Verander geen code, bestanden, rechten of publicatie-instellingen zonder mijn toestemming. Gebruik voor goedgekeurde wijzigingen een aparte branch, nooit rechtstreeks main.\n- Geef een bondige uitkomst en eindig met één concrete volgende handeling."
+  },
+  {
+    "id": "oplevering",
+    "phase": "publiceren",
+    "title": "Vergelijk live met de repository",
+    "forWhom": "Na een release die ook echt zichtbaar moet zijn.",
+    "outcome": "Livecontrole met versie- en functieverschillen",
+    "body": "Repository: {{REPO}}\nGewenst resultaat: {{DOEL}}\n\nOpdracht\nOpen de openbare URL. Controleer de belangrijkste pagina's en werkelijke gebruikershandelingen, statuscodes, CSS/JS, assets, navigatie, mobiel en console. Vergelijk waar mogelijk de livebestanden of versie met de bedoelde commit. Let op caching en oude redirects. Lever per onderdeel verwacht, waargenomen, bewijs en status. Een geslaagde Actions-run bewijst niet dat de juiste versie live staat. Meld wat niet gecontroleerd is; publiceer niets.\n\nWerkwijze en bewijs\n- Lees de echte bestanden en meld welke paden, commits, PR's of logs de bevinding onderbouwen.\n- Scheid vastgesteld, daadwerkelijk getest, aannemelijk en niet onderzocht. Een geslaagde build zegt niet dat alle functies werken.\n- Verzin geen bestanden, tests, rechten of resultaten. Zeg duidelijk wat je niet kunt openen of uitvoeren.\n- Verander geen code, bestanden, rechten of publicatie-instellingen zonder mijn toestemming. Gebruik voor goedgekeurde wijzigingen een aparte branch, nooit rechtstreeks main.\n- Geef een bondige uitkomst en eindig met één concrete volgende handeling."
+  },
+  {
+    "id": "onderhoud",
+    "phase": "onderhouden",
+    "title": "Bepaal welk onderhoud nodig is",
+    "forWhom": "Voor een project dat al enige tijd draait.",
+    "outcome": "Onderhoudslijst op basis van echte problemen",
+    "body": "Repository: {{REPO}}\nGewenst resultaat: {{DOEL}}\n\nOpdracht\nBekijk recente issues, workflows, afhankelijkheden, kapotte links, documentatie en ontbrekende tests. Scheid bewezen problemen van mogelijke verbeteringen. Noem per punt concrete bron, merkbaar gevolg, beperkte oplossing en test. Benoem ook wat goed werkt en met rust gelaten moet worden. Lever maximaal zes taken in verstandige volgorde. Stel geen grote herbouw voor alleen omdat code oud is. Voer geen upgrades uit zonder akkoord.\n\nWerkwijze en bewijs\n- Lees de echte bestanden en meld welke paden, commits, PR's of logs de bevinding onderbouwen.\n- Scheid vastgesteld, daadwerkelijk getest, aannemelijk en niet onderzocht. Een geslaagde build zegt niet dat alle functies werken.\n- Verzin geen bestanden, tests, rechten of resultaten. Zeg duidelijk wat je niet kunt openen of uitvoeren.\n- Verander geen code, bestanden, rechten of publicatie-instellingen zonder mijn toestemming. Gebruik voor goedgekeurde wijzigingen een aparte branch, nooit rechtstreeks main.\n- Geef een bondige uitkomst en eindig met één concrete volgende handeling."
+  },
+  {
+    "id": "leren",
+    "phase": "onderhouden",
+    "title": "Leer één GitHub-handeling zelf doen",
+    "forWhom": "Voor wie zelfstandiger wil werken.",
+    "outcome": "Kleine oefening met terugkoppeling",
+    "body": "Repository: {{REPO}}\nGewenst resultaat: {{DOEL}}\n\nOpdracht\nKies een handeling die past bij mijn project, zoals een commit bekijken, een foutlog lezen of een pull request vergelijken. Leg in eenvoudige stappen uit waar ik moet klikken en waarom. Geef mij één kleine oefening met een zichtbaar resultaat. Vraag eerst wat ik verwacht, geef daarna feedback op mijn eigen keuze en laat mij zelf controleren. Lever alleen de volgende stap en de controle, geen hele cursus ineens. Verander niets aan de repository.\n\nWerkwijze en bewijs\n- Lees de echte bestanden en meld welke paden, commits, PR's of logs de bevinding onderbouwen.\n- Scheid vastgesteld, daadwerkelijk getest, aannemelijk en niet onderzocht. Een geslaagde build zegt niet dat alle functies werken.\n- Verzin geen bestanden, tests, rechten of resultaten. Zeg duidelijk wat je niet kunt openen of uitvoeren.\n- Verander geen code, bestanden, rechten of publicatie-instellingen zonder mijn toestemming. Gebruik voor goedgekeurde wijzigingen een aparte branch, nooit rechtstreeks main.\n- Geef een bondige uitkomst en eindig met één concrete volgende handeling."
+  }
 ];
 export function fillPrompt(prompt,{repo="",goal=""}={}){
  const value=typeof prompt==="string"?prompt:String(prompt?.body||"");
- return value.replaceAll("{{REPO}}",repo.trim()||"[voeg de link naar je repository toe]").replaceAll("{{DOEL}}",goal.trim()||"[beschrijf wat het project moet kunnen]");
+ return value.replaceAll("{{REPO}}",String(repo||"").trim()||"[voeg de link naar je repository toe]")
+  .replaceAll("{{DOEL}}",String(goal||"").trim()||"[beschrijf wat het project moet kunnen]");
 }
 export function promptsForPhase(phase="alle"){
  return phase==="alle"?PROMPT_LIBRARY:PROMPT_LIBRARY.filter(x=>x.phase===phase);

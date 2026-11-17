@@ -49,10 +49,14 @@ export function buildJourney({intent="start",source="zip",archive=null,repo=null
  }
  return steps.slice(0,7);
 }
-export function primaryFinding(guidance){
- const p=guidance?.problems||[];
- const first=p.find(x=>x.severity==="stop")||p[0];
+export function primaryFinding(guidance,{archive=null,repo=null,repoError=null}={}){
+ const problems=guidance?.problems||[];
+ const first=problems.find(x=>x.severity==="stop")||problems[0];
  if(first)return {label:"Dit vraagt aandacht",title:first.title,description:first.detail,kind:first.severity==="stop"?"warning":"attention"};
+ if(!archive&&!repo?.readable&&!repoError){
+  return {label:"Nog geen controle",title:"Er zijn nog geen bestanden onderzocht",
+   description:"Voeg een ZIP-bestand of een link naar een openbare GitHub-repository toe om de projectbestanden te controleren.",kind:"info"};
+ }
  return {label:"Gevonden",title:"Je bestanden zijn bekeken",description:(guidance?.good||[])[0]||"Voor een uitgebreidere controle zijn meer gegevens nodig.",kind:"ok"};
 }
 export function helpPrompt(step,repositoryUrl="",intent="start"){
