@@ -37,7 +37,7 @@ class AnatomyPublishTests(unittest.TestCase):
         page = ATLAS / "index.html"
         self.assertTrue(page.is_file(), "3D-atlas niet gebouwd")
         html = page.read_text(encoding="utf-8")
-        self.assertIn("Anatomisch Observatorium", html)
+        self.assertIn("Het lichaam in 3D", html)
         self.assertIn('lang="nl"', html)
         self.assertIn("BodyParts3D", html)
         self.assertIn("Z-Anatomy", html)
@@ -288,7 +288,7 @@ class AnatomyPublishTests(unittest.TestCase):
         else:
             self.assertEqual(len(old.select('main a[href="/tools/anatomie/"]')), 1)
         navigation_source = (ROOT / "scripts/prepare_ui.py").read_text(encoding="utf-8")
-        self.assertEqual(navigation_source.count("'/tools/anatomie/'"), 3)
+        self.assertEqual(navigation_source.count("'/tools/anatomie/'"), 1)
 
     def test_build_reproducible_and_repository_local(self):
         source = (ROOT / "scripts" / "build_anatomie.py").read_text(encoding="utf-8")

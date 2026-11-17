@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import {chromium,webkit} from 'playwright';
 import {spawn} from 'node:child_process';
+import {request as httpRequest} from 'node:http';
 import {mkdirSync} from 'node:fs';
 
 const root=process.argv[2]||'site-build';
@@ -9,11 +10,18 @@ const engineName=process.argv[3]==='webkit'?'webkit':'chromium';
 const port=8898,base='http://127.0.0.1:'+port;
 const server=spawn('python3',['-m','http.server',String(port),'--bind','127.0.0.1','--directory',root],{stdio:'ignore'});
 const pause=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+const resourceAvailable=url=>new Promise(resolve=>{
+ const request=httpRequest(url,{method:'HEAD'},response=>{response.resume();resolve(response.statusCode===200);});
+ request.on('error',()=>resolve(false));
+ request.setTimeout(2500,()=>{request.destroy();resolve(false);});
+ request.end();
+});
+
 mkdirSync('test-results',{recursive:true});
 let browser;
 try{
  let ready=false;
- for(let i=0;i<100;i++){try{if((await fetch(base+'/tools/science-observatory/labs/wiskunde-a/')).ok){ready=true;break;}}catch{}await pause(100);}
+ for(let i=0;i<100;i++){try{if(await resourceAvailable(base+'/tools/science-observatory/labs/wiskunde-a/')){ready=true;break;}}catch{}await pause(100);}
  assert.ok(ready,'Built mathematics observatory is served');
  browser=await engine.launch({headless:true});
  const sizes=[[320,568],[390,844],[844,390],[1440,900]];

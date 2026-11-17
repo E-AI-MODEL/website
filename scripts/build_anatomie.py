@@ -41,9 +41,9 @@ def patch_upstream(source: Path) -> None:
     html = index.read_text(encoding="utf-8")
     changes = {
         "<html lang=\"en\">": "<html lang=\"nl\">",
-        "<title>Z-Anatomy - 3D Anatomy Atlas</title>": "<title>AN / 01 | Anatomisch Observatorium | EAI</title>",
+        "<title>Z-Anatomy - 3D Anatomy Atlas</title>": "<title>Het lichaam in 3D | EAI</title>",
         "href=\"/favicon.svg\"": "href=\"/assets/eai-logo.svg\"",
-        "<h1 class=\"logo\">Z-Anatomy</h1>": "<h1 class=\"logo\">AN / 01 <span class=\"eai-app-name\">Anatomisch Observatorium</span></h1>",
+        "<h1 class=\"logo\">Z-Anatomy</h1>": "<h1 class=\"logo\">Het lichaam in 3D</h1>",
         "<div class=\"header-right\">": "<div class=\"header-right\"><a class=\"eai-back\" href=\"/tools/\">Alle tools</a>",
         "placeholder=\"Search an anatomical structure...\"": "placeholder=\"Zoek een anatomische structuur...\"",
         "<h2>Anatomical systems</h2>": "<h2>Lichaamsstelsels</h2>",

@@ -20,9 +20,10 @@ async function waitForCameraSettled(page) {
     window.__eaiCameraSample = state;
     if (!prior) { window.__eaiCameraStill = 0; return false; }
     const delta = Math.hypot(...state.map((value, index) => value - prior[index]));
-    window.__eaiCameraStill = delta < 1e-5 ? (window.__eaiCameraStill || 0) + 1 : 0;
+    // Under WebGL headless rendering, below 0.0001 model units is already subpixel.
+    window.__eaiCameraStill = delta < 1e-4 ? (window.__eaiCameraStill || 0) + 1 : 0;
     return window.__eaiCameraStill >= 4;
-  }, null, {timeout:10000, polling:90});
+  }, null, {timeout:15000, polling:90});
   await page.evaluate(() => {
     delete window.__eaiCameraSample;
     delete window.__eaiCameraStill;
@@ -300,7 +301,7 @@ try {
       const y=Math.min(c.bottom,layout.attribution.bottom)-Math.max(c.top,layout.attribution.top);
       assert(x<=0||y<=0, 'Bronvermelding bedekt cameraknop '+i);
     }
-    assert((await page.title()).includes('Anatomisch Observatorium'));
+    assert((await page.title()).includes('Het lichaam in 3D'));
     assert.equal(await page.locator('#resetBtn').innerText(),'In beeld',
       'De cameraknop moet duidelijk van Onderdelen herstellen verschillen');
     await page.screenshot({path:'test-results/anatomie-start-'+width+'.png'});

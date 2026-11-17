@@ -33,6 +33,22 @@ try {
       '/en/education/', '/en/about/',
     ]) {
       await page.goto(base + path, { waitUntil: 'load' });
+      if (path === '/nl/tools/') {
+        // The subject chooser intentionally replaces the editorial swipe deck.
+        assert.equal(await page.locator('main .eai-explore-choice').count(), 8,
+          'Tools show eight subject choices, not repeated generic cards');
+        assert.equal(await page.locator('main .eai-card-deck').count(), 0,
+          'Tools have no editorial swipe deck');
+        await page.locator('main a[href="#vak-menselijk-lichaam"]').click();
+        assert(await page.locator('#vak-menselijk-lichaam a[href="/tools/anatomie/"]').isVisible(),
+          'Human anatomy is available directly from its subject screen');
+        assert(await page.locator('#vak-menselijk-lichaam a[href="/tools/anatomie/labs/hartslag/"]').isVisible(),
+          'Heart and circulation remains reachable');
+        assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1),
+          'Tools page fits the current viewport');
+        report.push({path,width,subjectChoices:8});
+        continue;
+      }
       const track = page.locator('main .eai-card-deck').first();
       await track.waitFor({ timeout: 13000 });
       if (path === '/nl/onderzoek/') {

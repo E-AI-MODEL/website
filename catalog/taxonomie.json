@@ -6,7 +6,7 @@
     "De registratie van een onderdeel is onafhankelijk van de menustructuur en weergave.",
     "Tonen van typewoorden zoals onderwerp of toepassing is optioneel, nooit verplicht.",
     "Het register onderscheidt een werkende publicatie, een bronbestand, een doorverwijzing en een interne toepassing.",
-    "Behoud huidige technische ID's, bronpaden en URL's; naamwijzigingen in de frontend komen pas na toetsing.",
+    "Behoud technische ID's, bronpaden en bestaande URL's; publieke namen worden in de interface en zoekfunctie gebruikt.",
     "Publiceer geen ongecontroleerde automatische vertaling: label de werkelijke beschikbare taal.",
     "Een bestaand productmerk zoals EAIgit blijft herkenbaar; omslachtige of modieuze termen zijn geen standaardnamen."
   ],
@@ -175,36 +175,116 @@
       "en": "Technical page"
     }
   ],
-  "naamsuggesties_ter_beoordeling": [
+  "publieke_namen": [
     {
-      "legacy": "Galactisch Observatorium",
-      "nl": "Melkweg",
-      "variant": "uitvoering 1"
+      "url": "/tools/abyss/",
+      "nl": "Oceanografie",
+      "public": true
     },
     {
-      "legacy": "Melkweg met uitleg",
-      "nl": "Melkweg",
-      "variant": "uitvoering 2"
+      "url": "/tools/anatomie/",
+      "nl": "Het lichaam in 3D",
+      "public": true
     },
     {
-      "legacy": "LO Aanvalslab",
-      "nl": "Aanvallen en verdedigen"
+      "url": "/tools/anatomie/labs/hartslag/",
+      "nl": "Hart en bloedsomloop",
+      "public": true
     },
     {
-      "legacy": "Anatomisch Observatorium",
-      "nl": "Het lichaam in 3D"
+      "url": "/tools/llm-observatorium/",
+      "nl": "Hoe werkt een taalmodel?",
+      "public": true
     },
     {
-      "legacy": "Hartslaglab",
-      "nl": "Het hart en de bloedsomloop"
+      "url": "/tools/lo-aanvalslab/",
+      "nl": "Aanvallen en verdedigen",
+      "public": true
     },
     {
-      "legacy": "LLM Observatorium",
-      "nl": "Hoe werkt een taalmodel?"
+      "url": "/tools/melkweg-lab/",
+      "nl": "De Melkweg",
+      "public": true
     },
     {
-      "legacy": "ABYSS",
-      "nl": "De diepzee verkennen"
+      "url": "/tools/science-observatory/labs/melkweg/",
+      "nl": "De Melkweg",
+      "public": true
+    },
+    {
+      "url": "/tools/science-observatory/",
+      "nl": "Natuurkunde en wiskunde",
+      "public": true
+    },
+    {
+      "url": "/tools/science-observatory/labs/natuurkunde/",
+      "nl": "Natuurkunde",
+      "public": true
+    },
+    {
+      "url": "/tools/science-observatory/labs/wiskunde-a/",
+      "nl": "Wiskunde A",
+      "public": true
+    },
+    {
+      "url": "/tools/science-observatory/labs/wiskunde-b/",
+      "nl": "Wiskunde B",
+      "public": true
     }
-  ]
+  ],
+  "zelf_aan_de_slag": [
+    {
+      "id": "natuurkunde",
+      "nl": "Natuurkunde",
+      "en": "Physics",
+      "public_url": "/nl/tools/#vak-natuurkunde"
+    },
+    {
+      "id": "wiskunde",
+      "nl": "Wiskunde",
+      "en": "Mathematics",
+      "public_url": "/nl/tools/#vak-wiskunde"
+    },
+    {
+      "id": "menselijk-lichaam",
+      "nl": "Menselijk lichaam",
+      "en": "Human body",
+      "public_url": "/nl/tools/#vak-menselijk-lichaam"
+    },
+    {
+      "id": "heelal",
+      "nl": "Heelal",
+      "en": "Space",
+      "public_url": "/nl/tools/#vak-heelal"
+    },
+    {
+      "id": "oceanografie",
+      "nl": "Oceanografie",
+      "en": "Oceanography",
+      "public_url": "/nl/tools/#vak-oceanografie"
+    },
+    {
+      "id": "sport-en-bewegen",
+      "nl": "Sport en bewegen",
+      "en": "Sport and movement",
+      "public_url": "/nl/tools/#vak-sport-en-bewegen"
+    },
+    {
+      "id": "ai",
+      "nl": "AI",
+      "en": "AI",
+      "public_url": "/nl/tools/#vak-ai"
+    },
+    {
+      "id": "lessen-en-presentaties",
+      "nl": "Lessen en presentaties",
+      "en": "Lessons and presentations",
+      "public_url": "/nl/tools/#vak-lessen-en-presentaties"
+    }
+  ],
+  "melkweg": {
+    "publieke_ingang": "/tools/melkweg-lab/",
+    "andere_uitvoering": "/tools/science-observatory/labs/melkweg/",
+    "samenvoegen": false
+  }
 }

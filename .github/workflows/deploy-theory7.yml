@@ -155,7 +155,7 @@ jobs:
               }), timeout=timeout)
           with release_open(base, timeout=35) as response:
               assert response.status == 200
-              assert b'Anatomisch Observatorium' in response.read(120000)
+              assert b'Het lichaam in 3D' in response.read(120000)
           for system in ('skeletal', 'muscular', 'joints', 'cardiovascular',
                          'lymphatic', 'nervous', 'visceral'):
               with release_open(base + 'models/' + system + '.glb', timeout=40) as response:

@@ -24,7 +24,8 @@
       "review": "niet_in_publieke_zoekindex_status_controleren",
       "parent": null,
       "family": "model",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "niet_indexeren"
     },
     {
       "id": "page:/bronnen/",
@@ -36,7 +37,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": null,
       "family": "onderzoek",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/eaa-model/",
@@ -48,7 +50,8 @@
       "review": "niet_in_publieke_zoekindex_status_controleren",
       "parent": null,
       "family": "model",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "niet_indexeren"
     },
     {
       "id": "page:/eai-blog/",
@@ -60,7 +63,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": null,
       "family": "publicaties",
-      "in_committed_sitemap": false
+      "in_committed_sitemap": false,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/eai-blog/eai-balans/",
@@ -72,7 +76,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/eai-blog/",
       "family": "publicaties",
-      "in_committed_sitemap": false
+      "in_committed_sitemap": false,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/eai-blog/eai-beyond-explainability/",
@@ -84,7 +89,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/eai-blog/",
       "family": "publicaties",
-      "in_committed_sitemap": false
+      "in_committed_sitemap": false,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/eai-blog/eai-stappenplan/",
@@ -96,7 +102,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/eai-blog/",
       "family": "publicaties",
-      "in_committed_sitemap": false
+      "in_committed_sitemap": false,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/eai-blog/eai-task-density/",
@@ -108,7 +115,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/eai-blog/",
       "family": "publicaties",
-      "in_committed_sitemap": false
+      "in_committed_sitemap": false,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/eai-blog/rapportage-wang-fan-2025/",
@@ -120,7 +128,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/eai-blog/",
       "family": "publicaties",
-      "in_committed_sitemap": false
+      "in_committed_sitemap": false,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/eai-blog/the-act-of-learning-act-2/",
@@ -132,7 +141,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/eai-blog/",
       "family": "publicaties",
-      "in_committed_sitemap": false
+      "in_committed_sitemap": false,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/eai-blog/the-act-of-learning/",
@@ -144,7 +154,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/eai-blog/",
       "family": "publicaties",
-      "in_committed_sitemap": false
+      "in_committed_sitemap": false,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/eai-tools-modules/",
@@ -158,7 +169,8 @@
       "family": "hulpmiddelen",
       "page_status": "meta_redirect_verified",
       "redirect_target": "/tools/",
-      "in_committed_sitemap": false
+      "in_committed_sitemap": false,
+      "search_scope": "niet_indexeren"
     },
     {
       "id": "page:/eai-tools-modules/act-of-learning-game-2/",
@@ -172,7 +184,8 @@
       "family": "hulpmiddelen",
       "page_status": "meta_redirect_verified",
       "redirect_target": "https://rainbow-tarsier-a88e9b.netlify.app/",
-      "in_committed_sitemap": false
+      "in_committed_sitemap": false,
+      "search_scope": "niet_indexeren"
     },
     {
       "id": "page:/eai-tools-modules/eaa-model-tool/",
@@ -186,7 +199,8 @@
       "family": "hulpmiddelen",
       "page_status": "meta_redirect_verified",
       "redirect_target": "https://sunny-blancmange-dec4a1.netlify.app",
-      "in_committed_sitemap": false
+      "in_committed_sitemap": false,
+      "search_scope": "niet_indexeren"
     },
     {
       "id": "page:/eai-tools-modules/eai-eduprompt-builder/",
@@ -200,7 +214,8 @@
       "family": "hulpmiddelen",
       "page_status": "meta_redirect_verified",
       "redirect_target": "https://eai-prompt.lovable.app/",
-      "in_committed_sitemap": false
+      "in_committed_sitemap": false,
+      "search_scope": "niet_indexeren"
     },
     {
       "id": "page:/eai-tools-modules/eai-toolanalyse/",
@@ -214,7 +229,8 @@
       "family": "hulpmiddelen",
       "page_status": "meta_redirect_verified",
       "redirect_target": "https://subtle-churros-4d44d5.netlify.app",
-      "in_committed_sitemap": false
+      "in_committed_sitemap": false,
+      "search_scope": "niet_indexeren"
     },
     {
       "id": "page:/eai-tools-modules/eai-toolkit-beyond-explainability/",
@@ -228,7 +244,8 @@
       "family": "hulpmiddelen",
       "page_status": "meta_redirect_verified",
       "redirect_target": "/tools/beyond-explainability/",
-      "in_committed_sitemap": false
+      "in_committed_sitemap": false,
+      "search_scope": "niet_indexeren"
     },
     {
       "id": "page:/eai-tools-modules/eai-toolkit-the-act-of-learning-en/",
@@ -242,7 +259,8 @@
       "family": "hulpmiddelen",
       "page_status": "meta_redirect_verified",
       "redirect_target": "https://effortless-fenglisu-71cd58.netlify.app/",
-      "in_committed_sitemap": false
+      "in_committed_sitemap": false,
+      "search_scope": "niet_indexeren"
     },
     {
       "id": "page:/eai-tools-modules/eai-what-if-machine/",
@@ -256,7 +274,8 @@
       "family": "hulpmiddelen",
       "page_status": "meta_redirect_verified",
       "redirect_target": "https://what-if-lesson-designer.lovable.app/",
-      "in_committed_sitemap": false
+      "in_committed_sitemap": false,
+      "search_scope": "niet_indexeren"
     },
     {
       "id": "page:/en/",
@@ -268,7 +287,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": null,
       "family": "model",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/en/about/",
@@ -280,7 +300,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/en/",
       "family": "over",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/en/applications/",
@@ -292,7 +313,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/en/",
       "family": "praktijk",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/en/education/",
@@ -304,7 +326,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/en/",
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/en/glossary/",
@@ -316,7 +339,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/en/",
       "family": "model",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/en/insights/",
@@ -328,7 +352,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/en/",
       "family": "over",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/en/llmscan/",
@@ -340,7 +365,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/en/",
       "family": "ai",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/en/model-monitor/",
@@ -352,7 +378,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/en/",
       "family": "ai",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/en/model/",
@@ -364,7 +391,8 @@
       "review": "bouwresultaat_controleren",
       "parent": "page:/en/",
       "family": "model",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/en/publications/",
@@ -376,7 +404,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/en/",
       "family": "publicaties",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/en/research/",
@@ -388,7 +417,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/en/",
       "family": "onderzoek",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/en/research/teaching-tools/",
@@ -400,7 +430,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/en/research/",
       "family": "onderzoek",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/en/research/zhang-genai-language/",
@@ -412,7 +443,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/en/research/",
       "family": "onderzoek",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/en/tools/",
@@ -424,7 +456,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/en/",
       "family": "hulpmiddelen",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/houseoftalents/",
@@ -436,7 +469,8 @@
       "review": "niet_in_publieke_zoekindex_status_controleren",
       "parent": null,
       "family": "technisch",
-      "in_committed_sitemap": false
+      "in_committed_sitemap": false,
+      "search_scope": "niet_indexeren"
     },
     {
       "id": "page:/houseoftalents/3d/",
@@ -450,7 +484,8 @@
       "family": "technisch",
       "robots_noindex_in_html": true,
       "page_status": "niet_voor_zoekmachines",
-      "in_committed_sitemap": false
+      "in_committed_sitemap": false,
+      "search_scope": "niet_indexeren"
     },
     {
       "id": "page:/kennis/",
@@ -462,7 +497,8 @@
       "review": "niet_in_publieke_zoekindex_status_controleren",
       "parent": null,
       "family": "onderzoek",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "niet_indexeren"
     },
     {
       "id": "page:/leif/",
@@ -476,7 +512,8 @@
       "family": "technisch",
       "robots_noindex_in_html": true,
       "page_status": "niet_voor_zoekmachines",
-      "in_committed_sitemap": false
+      "in_committed_sitemap": false,
+      "search_scope": "niet_indexeren"
     },
     {
       "id": "page:/leif/beheer/",
@@ -490,7 +527,8 @@
       "family": "technisch",
       "robots_noindex_in_html": true,
       "page_status": "niet_voor_zoekmachines",
-      "in_committed_sitemap": false
+      "in_committed_sitemap": false,
+      "search_scope": "niet_indexeren"
     },
     {
       "id": "page:/leif/continue/",
@@ -504,7 +542,8 @@
       "family": "technisch",
       "robots_noindex_in_html": true,
       "page_status": "niet_voor_zoekmachines",
-      "in_committed_sitemap": false
+      "in_committed_sitemap": false,
+      "search_scope": "niet_indexeren"
     },
     {
       "id": "page:/leif/mijn/",
@@ -518,7 +557,8 @@
       "family": "technisch",
       "robots_noindex_in_html": true,
       "page_status": "niet_voor_zoekmachines",
-      "in_committed_sitemap": false
+      "in_committed_sitemap": false,
+      "search_scope": "niet_indexeren"
     },
     {
       "id": "page:/leif/verhaal/",
@@ -532,7 +572,8 @@
       "family": "technisch",
       "robots_noindex_in_html": true,
       "page_status": "niet_voor_zoekmachines",
-      "in_committed_sitemap": false
+      "in_committed_sitemap": false,
+      "search_scope": "niet_indexeren"
     },
     {
       "id": "page:/model-monitor/",
@@ -544,7 +585,8 @@
       "review": "niet_in_publieke_zoekindex_status_controleren",
       "parent": null,
       "family": "ai",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "niet_indexeren"
     },
     {
       "id": "page:/nl/",
@@ -556,7 +598,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": null,
       "family": "model",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/nl/begrippen/",
@@ -568,7 +611,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/nl/",
       "family": "model",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/nl/blog/",
@@ -580,7 +624,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/nl/",
       "family": "publicaties",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/nl/blog/wat-ons-werk-ons-werk-maakt/",
@@ -592,7 +637,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/nl/blog/",
       "family": "publicaties",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/nl/insights/",
@@ -604,7 +650,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/nl/",
       "family": "over",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/nl/llmscan/",
@@ -616,7 +663,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/nl/",
       "family": "ai",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/nl/llmscan/onderzoek/",
@@ -628,7 +676,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/nl/llmscan/",
       "family": "ai",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/nl/model-monitor/",
@@ -640,7 +689,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/nl/",
       "family": "ai",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/nl/model/",
@@ -652,7 +702,8 @@
       "review": "bouwresultaat_controleren",
       "parent": "page:/nl/",
       "family": "model",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/nl/onderwijs/",
@@ -664,7 +715,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/nl/",
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/nl/onderzoek/",
@@ -676,7 +728,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/nl/",
       "family": "onderzoek",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/nl/onderzoek/leermiddelen/",
@@ -688,7 +741,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/nl/onderzoek/",
       "family": "onderzoek",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/nl/onderzoek/zhang-genai-taal/",
@@ -700,7 +754,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/nl/onderzoek/",
       "family": "onderzoek",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/nl/over/",
@@ -712,7 +767,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/nl/",
       "family": "over",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/nl/publicaties/",
@@ -724,7 +780,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/nl/",
       "family": "publicaties",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/nl/toepassingen/",
@@ -736,7 +793,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/nl/",
       "family": "praktijk",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/nl/tools/",
@@ -748,7 +806,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/nl/",
       "family": "hulpmiddelen",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/nl/tools/verificatie/",
@@ -760,7 +819,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/nl/tools/",
       "family": "hulpmiddelen",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/onderbouwing/",
@@ -772,7 +832,8 @@
       "review": "niet_in_publieke_zoekindex_status_controleren",
       "parent": null,
       "family": "onderzoek",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "niet_indexeren"
     },
     {
       "id": "page:/onderwijs/",
@@ -784,7 +845,8 @@
       "review": "niet_in_publieke_zoekindex_status_controleren",
       "parent": null,
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "niet_indexeren"
     },
     {
       "id": "page:/onderwijsin/",
@@ -796,7 +858,8 @@
       "review": "niet_in_publieke_zoekindex_status_controleren",
       "parent": null,
       "family": "technisch",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "niet_indexeren"
     },
     {
       "id": "page:/onderwijsin/3d/",
@@ -810,7 +873,8 @@
       "family": "technisch",
       "robots_noindex_in_html": true,
       "page_status": "niet_voor_zoekmachines",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "niet_indexeren"
     },
     {
       "id": "page:/onderwijsin/houseoftalents/",
@@ -822,7 +886,8 @@
       "review": "niet_in_publieke_zoekindex_status_controleren",
       "parent": "page:/onderwijsin/",
       "family": "technisch",
-      "in_committed_sitemap": false
+      "in_committed_sitemap": false,
+      "search_scope": "niet_indexeren"
     },
     {
       "id": "page:/onderwijsin/houseoftalents/3d/",
@@ -836,7 +901,8 @@
       "family": "technisch",
       "robots_noindex_in_html": true,
       "page_status": "niet_voor_zoekmachines",
-      "in_committed_sitemap": false
+      "in_committed_sitemap": false,
+      "search_scope": "niet_indexeren"
     },
     {
       "id": "page:/over/",
@@ -848,7 +914,8 @@
       "review": "niet_in_publieke_zoekindex_status_controleren",
       "parent": null,
       "family": "over",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "niet_indexeren"
     },
     {
       "id": "page:/praktijk/",
@@ -860,7 +927,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": null,
       "family": "praktijk",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/publicaties/",
@@ -872,7 +940,8 @@
       "review": "niet_in_publieke_zoekindex_status_controleren",
       "parent": null,
       "family": "publicaties",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "niet_indexeren"
     },
     {
       "id": "page:/publicaties/ai-balans/",
@@ -884,7 +953,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/publicaties/",
       "family": "publicaties",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/publicaties/beyond-explainability/",
@@ -896,7 +966,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/publicaties/",
       "family": "publicaties",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/publicaties/de-vraag-die-we-vergeten/",
@@ -908,7 +979,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/publicaties/",
       "family": "publicaties",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/publicaties/eai-stappenplan/",
@@ -920,7 +992,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/publicaties/",
       "family": "publicaties",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/publicaties/task-density/",
@@ -932,7 +1005,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/publicaties/",
       "family": "publicaties",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/publicaties/the-act-of-learning-act-2/",
@@ -944,7 +1018,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/publicaties/",
       "family": "publicaties",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/publicaties/the-act-of-learning/",
@@ -956,7 +1031,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/publicaties/",
       "family": "publicaties",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/publicaties/wang-fan-2025/",
@@ -968,7 +1044,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/publicaties/",
       "family": "publicaties",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/statistieken/",
@@ -980,7 +1057,8 @@
       "review": "niet_in_publieke_zoekindex_status_controleren",
       "parent": null,
       "family": "technisch",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "niet_indexeren"
     },
     {
       "id": "page:/taalwerkvormen/",
@@ -992,7 +1070,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": null,
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/toepassingen/",
@@ -1004,7 +1083,8 @@
       "review": "niet_in_publieke_zoekindex_status_controleren",
       "parent": null,
       "family": "praktijk",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "niet_indexeren"
     },
     {
       "id": "page:/toepassingen/onderwijs-ai/",
@@ -1016,7 +1096,8 @@
       "review": "niet_in_publieke_zoekindex_status_controleren",
       "parent": "page:/toepassingen/",
       "family": "praktijk",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "niet_indexeren"
     },
     {
       "id": "page:/toepassingen/onderwijsregio-rotterdam/",
@@ -1028,7 +1109,8 @@
       "review": "niet_in_publieke_zoekindex_status_controleren",
       "parent": "page:/toepassingen/",
       "family": "praktijk",
-      "in_committed_sitemap": false
+      "in_committed_sitemap": false,
+      "search_scope": "niet_indexeren"
     },
     {
       "id": "page:/toepassingen/saga-legal-ai/",
@@ -1040,7 +1122,8 @@
       "review": "niet_in_publieke_zoekindex_status_controleren",
       "parent": "page:/toepassingen/",
       "family": "praktijk",
-      "in_committed_sitemap": false
+      "in_committed_sitemap": false,
+      "search_scope": "niet_indexeren"
     },
     {
       "id": "page:/tools/",
@@ -1052,7 +1135,8 @@
       "review": "niet_in_publieke_zoekindex_status_controleren",
       "parent": null,
       "family": "hulpmiddelen",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "niet_indexeren"
     },
     {
       "id": "page:/tools/abyss/",
@@ -1066,7 +1150,9 @@
       "suggested_title_nl": "Diepzee",
       "family": "oceanen",
       "embedded_inventory": "afzonderlijke_keuzes_brongecontroleerd",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "public_title_nl": "Oceanografie",
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/tools/anatomie/",
@@ -1079,7 +1165,9 @@
       "parent": "page:/tools/",
       "suggested_title_nl": "Het lichaam in 3D",
       "family": "menselijk-lichaam",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "public_title_nl": "Het lichaam in 3D",
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/tools/anatomie/labs/hartslag/",
@@ -1092,7 +1180,9 @@
       "parent": "page:/tools/anatomie/",
       "suggested_title_nl": "Het hart en de bloedsomloop",
       "family": "menselijk-lichaam",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "public_title_nl": "Hart en bloedsomloop",
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/tools/beyond-explainability/",
@@ -1104,7 +1194,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/",
       "family": "hulpmiddelen",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/tools/eaigame/",
@@ -1129,7 +1220,8 @@
         "review": "vragen_zijn_niet_elk_een_aparte_openbare_pagina",
         "quality_status": "editorial-draft"
       },
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/tools/eaigit/",
@@ -1141,7 +1233,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/",
       "family": "hulpmiddelen",
-      "in_committed_sitemap": false
+      "in_committed_sitemap": false,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/tools/eaigit/hulp/",
@@ -1153,7 +1246,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/eaigit/",
       "family": "hulpmiddelen",
-      "in_committed_sitemap": false
+      "in_committed_sitemap": false,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/tools/eaigit/prompts/",
@@ -1165,7 +1259,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/eaigit/",
       "family": "hulpmiddelen",
-      "in_committed_sitemap": false
+      "in_committed_sitemap": false,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/tools/eaimesh/",
@@ -1177,7 +1272,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/",
       "family": "hulpmiddelen",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/tools/eaimesh/start/",
@@ -1202,7 +1298,8 @@
         ],
         "not_individual_content": true
       },
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/tools/eaistudio/",
@@ -1214,7 +1311,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/",
       "family": "hulpmiddelen",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/tools/eaistudio/studio/",
@@ -1227,7 +1325,8 @@
       "parent": "page:/tools/eaistudio/",
       "family": "hulpmiddelen",
       "embedded_inventory": "40_componenten_3_startvoorbeelden_8_scenesjablonen",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/tools/eaiwork/",
@@ -1240,7 +1339,8 @@
       "parent": "page:/tools/",
       "family": "hulpmiddelen",
       "embedded_inventory": "vijftien_interne_werkomgevingen",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/tools/html-galerij/",
@@ -1259,7 +1359,8 @@
         "HTML-bestand toevoegen",
         "Door anderen gemaakte HTML bekijken"
       ],
-      "external_dependency": "services/html-galerij/ en externe opslag/API; inhoud van uploads niet opgenomen in deze Git-repository"
+      "external_dependency": "services/html-galerij/ en externe opslag/API; inhoud van uploads niet opgenomen in deze Git-repository",
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/tools/llm-observatorium/",
@@ -1272,7 +1373,9 @@
       "parent": "page:/tools/",
       "suggested_title_nl": "Hoe werkt een taalmodel?",
       "family": "ai",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "public_title_nl": "Hoe werkt een taalmodel?",
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/tools/lo-aanvalslab/",
@@ -1286,7 +1389,9 @@
       "suggested_title_nl": "Aanvallen en verdedigen",
       "family": "sport-en-bewegen",
       "embedded_inventory": "afzonderlijke_keuzes_brongecontroleerd",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "public_title_nl": "Aanvallen en verdedigen",
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/tools/lo-aanvalslab/onderbouwing/",
@@ -1298,7 +1403,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/lo-aanvalslab/",
       "family": "sport-en-bewegen",
-      "in_committed_sitemap": false
+      "in_committed_sitemap": false,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/tools/melkweg-lab/",
@@ -1312,7 +1418,9 @@
       "suggested_title_nl": "Melkweg",
       "family": "heelal",
       "content_collection": "melkweg",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "public_title_nl": "De Melkweg",
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/tools/projecthulp/",
@@ -1324,7 +1432,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/",
       "family": "hulpmiddelen",
-      "in_committed_sitemap": false
+      "in_committed_sitemap": false,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/tools/prompt-framework/",
@@ -1347,7 +1456,8 @@
         "Toegestane bronnen en hulpmiddelen",
         "Wat de leerling laat zien",
         "Wat de toepassing moet maken"
-      ]
+      ],
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/tools/science-observatory/",
@@ -1359,7 +1469,9 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/",
       "family": "hulpmiddelen",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "public_title_nl": "Natuurkunde en wiskunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/tools/science-observatory/labs/gravitatie-banen/",
@@ -1372,7 +1484,8 @@
       "parent": "page:/tools/science-observatory/",
       "family": "heelal",
       "embedded_inventory": "afzonderlijke_keuzes_brongecontroleerd",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/tools/science-observatory/labs/melkweg/",
@@ -1386,7 +1499,9 @@
       "suggested_title_nl": "Melkweg",
       "family": "heelal",
       "content_collection": "melkweg",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "public_title_nl": "De Melkweg",
+      "search_scope": "via_verwijzing"
     },
     {
       "id": "page:/tools/science-observatory/labs/natuurkunde/",
@@ -1399,7 +1514,9 @@
       "parent": "page:/tools/science-observatory/",
       "suggested_title_nl": "Natuurkunde",
       "family": "natuurkunde",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "public_title_nl": "Natuurkunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/tools/science-observatory/labs/schuine-worp/",
@@ -1411,7 +1528,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/science-observatory/",
       "family": "hulpmiddelen",
-      "in_committed_sitemap": false
+      "in_committed_sitemap": false,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/tools/science-observatory/labs/wiskunde-a/",
@@ -1424,7 +1542,9 @@
       "parent": "page:/tools/science-observatory/",
       "suggested_title_nl": "Wiskunde A",
       "family": "wiskunde",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "public_title_nl": "Wiskunde A",
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/tools/science-observatory/labs/wiskunde-b/",
@@ -1437,7 +1557,9 @@
       "parent": "page:/tools/science-observatory/",
       "suggested_title_nl": "Wiskunde B",
       "family": "wiskunde",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "public_title_nl": "Wiskunde B",
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/tools/sport-en-bewegen/",
@@ -1449,7 +1571,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/",
       "family": "sport-en-bewegen",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/tools/sport-en-bewegen/opstellingen/",
@@ -1463,7 +1586,8 @@
       "suggested_title_nl": "Opstellingen maken",
       "family": "sport-en-bewegen",
       "embedded_inventory": "dynamische_functies_nog_nader_controleren",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/tools/van-proces-naar-prompt/",
@@ -1476,7 +1600,8 @@
       "parent": "page:/tools/",
       "family": "hulpmiddelen",
       "embedded_inventory": "afzonderlijke_keuzes_brongecontroleerd",
-      "in_committed_sitemap": false
+      "in_committed_sitemap": false,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/tools/wihtml/",
@@ -1488,7 +1613,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/",
       "family": "hulpmiddelen",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/tools/wihtml/bibliotheek/",
@@ -1500,7 +1626,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/wihtml/",
       "family": "hulpmiddelen",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/tools/wihtml/studio/",
@@ -1513,7 +1640,8 @@
       "parent": "page:/tools/wihtml/",
       "family": "hulpmiddelen",
       "embedded_inventory": "tien_lesonderdeeltypen",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/tools/wihtml/voorbeeld/",
@@ -1525,7 +1653,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/wihtml/",
       "family": "hulpmiddelen",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/twee-pijlers/",
@@ -1537,7 +1666,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": null,
       "family": "model",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/verdieping/",
@@ -1551,7 +1681,8 @@
       "family": "onderzoek",
       "page_status": "meta_redirect_verified",
       "redirect_target": "/kennis/",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "niet_indexeren"
     },
     {
       "id": "page:/werkvormen/",
@@ -1563,7 +1694,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": null,
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/werkvormen/accept-adapt-reject/",
@@ -1575,7 +1707,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/werkvormen/ai-role-handback-plan/",
@@ -1587,7 +1720,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/werkvormen/assessment-redesign/",
@@ -1599,7 +1733,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/werkvormen/bewijs-van-leren/",
@@ -1611,7 +1746,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/werkvormen/bound-the-claim/",
@@ -1623,7 +1759,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/werkvormen/compare-then-reconstruct/",
@@ -1635,7 +1772,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/werkvormen/competing-explanations/",
@@ -1647,7 +1785,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/werkvormen/conclusion-strength/",
@@ -1659,7 +1798,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/werkvormen/confidence-vs-evidence/",
@@ -1671,7 +1811,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/werkvormen/controlled-detachment/",
@@ -1683,7 +1824,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/werkvormen/counterargument-first/",
@@ -1695,7 +1837,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/werkvormen/delayed-reperformance/",
@@ -1707,7 +1850,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/werkvormen/discriminating-probe/",
@@ -1719,7 +1863,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/werkvormen/eai-kaart/",
@@ -1731,7 +1876,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/werkvormen/eliciting-question/",
@@ -1743,7 +1889,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/werkvormen/evidence-to-claim/",
@@ -1755,7 +1902,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/werkvormen/evidence-to-next-response/",
@@ -1767,7 +1915,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/werkvormen/explain-before-continue/",
@@ -1779,7 +1928,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/werkvormen/fade-one-layer/",
@@ -1791,7 +1941,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/werkvormen/feedback-redo/",
@@ -1803,7 +1954,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/werkvormen/feedback-without-rewrite/",
@@ -1815,7 +1967,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/werkvormen/find-my-impasse/",
@@ -1827,7 +1980,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/werkvormen/first-attempt/",
@@ -1839,7 +1993,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/werkvormen/first-breakdown/",
@@ -1851,7 +2006,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/werkvormen/foutanalyse/",
@@ -1863,7 +2019,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/werkvormen/fresh-item-same-operation/",
@@ -1875,7 +2032,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/werkvormen/hand-back-the-action/",
@@ -1887,7 +2045,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/werkvormen/herontwerp-opdracht/",
@@ -1899,7 +2058,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/werkvormen/hidden-assumption/",
@@ -1911,7 +2071,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/werkvormen/justification-mapping/",
@@ -1923,7 +2084,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/werkvormen/kernhandeling-check/",
@@ -1935,7 +2097,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/werkvormen/learner-voice-check/",
@@ -1947,7 +2110,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/werkvormen/learning-goal-vs-task/",
@@ -1959,7 +2123,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/werkvormen/least-intrusive-support/",
@@ -1971,7 +2136,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/werkvormen/model-then-reperform/",
@@ -1983,7 +2149,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/werkvormen/monitoring-checkpoint/",
@@ -1995,7 +2162,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/werkvormen/observation-vs-inference/",
@@ -2007,7 +2175,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/werkvormen/perspective-weighing/",
@@ -2019,7 +2188,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/werkvormen/plan-it-yourself/",
@@ -2031,7 +2201,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/werkvormen/practice-or-reteach/",
@@ -2043,7 +2214,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/werkvormen/preserve-uncertainty/",
@@ -2055,7 +2227,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/werkvormen/process-reconstruction/",
@@ -2067,7 +2240,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/werkvormen/prompt-variation-lab/",
@@ -2079,7 +2253,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/werkvormen/proportionate-follow-up/",
@@ -2091,7 +2266,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/werkvormen/rebuttal-reconstruction/",
@@ -2103,7 +2279,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/werkvormen/reconstruct-professional-judgement/",
@@ -2115,7 +2292,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/werkvormen/reflective-re-entry/",
@@ -2127,7 +2305,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/werkvormen/resume-control/",
@@ -2139,7 +2318,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/werkvormen/smallest-help-needed/",
@@ -2151,7 +2331,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/werkvormen/source-suitability/",
@@ -2163,7 +2344,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/werkvormen/source-verification/",
@@ -2175,7 +2357,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/werkvormen/strategy-switch-from-evidence/",
@@ -2187,7 +2370,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/werkvormen/target-action-first/",
@@ -2199,7 +2383,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/werkvormen/task-density-scan/",
@@ -2211,7 +2396,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/werkvormen/toollab/",
@@ -2223,7 +2409,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/werkvormen/trace-back-prompting/",
@@ -2235,7 +2422,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/werkvormen/transfer-task/",
@@ -2247,7 +2435,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/workshop-ai/",
@@ -2259,7 +2448,8 @@
       "review": "gevonden_in_zoekindex",
       "parent": null,
       "family": "onderwijs",
-      "in_committed_sitemap": true
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     }
   ],
   "embedded_items": [
@@ -2276,7 +2466,8 @@
       "review": "afzonderlijk_in_bron_gevonden",
       "source_ref": "MODES[0]",
       "source_description": "3D reliëf",
-      "suggested_title_nl": "Zeebodem"
+      "suggested_title_nl": "Zeebodem",
+      "search_scope": "binnen_toepassing"
     },
     {
       "id": "abyss:1",
@@ -2291,7 +2482,8 @@
       "review": "afzonderlijk_in_bron_gevonden",
       "source_ref": "MODES[1]",
       "source_description": "Druk & licht",
-      "suggested_title_nl": "Waterdruk en licht"
+      "suggested_title_nl": "Waterdruk en licht",
+      "search_scope": "binnen_toepassing"
     },
     {
       "id": "abyss:2",
@@ -2306,7 +2498,8 @@
       "review": "afzonderlijk_in_bron_gevonden",
       "source_ref": "MODES[2]",
       "source_description": "USGS gegevens",
-      "suggested_title_nl": "Aardbevingen"
+      "suggested_title_nl": "Aardbevingen",
+      "search_scope": "binnen_toepassing"
     },
     {
       "id": "abyss:3",
@@ -2321,7 +2514,8 @@
       "review": "afzonderlijk_in_bron_gevonden",
       "source_ref": "MODES[3]",
       "source_description": "Grenzen & lagen",
-      "suggested_title_nl": "Plaattektoniek"
+      "suggested_title_nl": "Plaattektoniek",
+      "search_scope": "binnen_toepassing"
     },
     {
       "id": "abyss:4",
@@ -2336,7 +2530,8 @@
       "review": "afzonderlijk_in_bron_gevonden",
       "source_ref": "MODES[4]",
       "source_description": "Modelstromingen",
-      "suggested_title_nl": "Oceaanstromingen"
+      "suggested_title_nl": "Oceaanstromingen",
+      "search_scope": "binnen_toepassing"
     },
     {
       "id": "abyss:5",
@@ -2351,7 +2546,8 @@
       "review": "afzonderlijk_in_bron_gevonden",
       "source_ref": "MODES[5]",
       "source_description": "GEBCO 2026",
-      "suggested_title_nl": "Herkomst van dieptegegevens"
+      "suggested_title_nl": "Herkomst van dieptegegevens",
+      "search_scope": "binnen_toepassing"
     },
     {
       "id": "anchor:/en/glossary/#act-of-learning",
@@ -2363,7 +2559,8 @@
       "source_file": "en/glossary/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/en/glossary/#ai-drift",
@@ -2375,7 +2572,8 @@
       "source_file": "en/glossary/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/en/glossary/#answer-machine-era",
@@ -2387,7 +2585,8 @@
       "source_file": "en/glossary/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/en/glossary/#closure-bias",
@@ -2399,7 +2598,8 @@
       "source_file": "en/glossary/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/en/glossary/#cognitive-displacement",
@@ -2411,7 +2611,8 @@
       "source_file": "en/glossary/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/en/glossary/#controlled-detachment",
@@ -2423,7 +2624,8 @@
       "source_file": "en/glossary/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/en/glossary/#core-learning-action",
@@ -2435,7 +2637,8 @@
       "source_file": "en/glossary/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/en/glossary/#didactic-controllability",
@@ -2447,7 +2650,8 @@
       "source_file": "en/glossary/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/en/glossary/#didactic-distortion",
@@ -2459,7 +2663,8 @@
       "source_file": "en/glossary/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/en/glossary/#education-in-the-loop-eitl",
@@ -2471,7 +2676,8 @@
       "source_file": "en/glossary/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/en/glossary/#evidence-function-shift",
@@ -2483,7 +2689,8 @@
       "source_file": "en/glossary/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/en/glossary/#illusion-of-completeness",
@@ -2495,7 +2702,8 @@
       "source_file": "en/glossary/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/en/glossary/#independent-evidence",
@@ -2507,7 +2715,8 @@
       "source_file": "en/glossary/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/en/glossary/#justification-mapping",
@@ -2519,7 +2728,8 @@
       "source_file": "en/glossary/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/en/glossary/#learning-evidence",
@@ -2531,7 +2741,8 @@
       "source_file": "en/glossary/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/en/glossary/#meaning-making-vs-addition",
@@ -2543,7 +2754,8 @@
       "source_file": "en/glossary/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/en/glossary/#output-evidence",
@@ -2555,7 +2767,8 @@
       "source_file": "en/glossary/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/en/glossary/#oversupport",
@@ -2567,7 +2780,8 @@
       "source_file": "en/glossary/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/en/glossary/#presence-vs-performance",
@@ -2579,7 +2793,8 @@
       "source_file": "en/glossary/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/en/glossary/#process-evidence",
@@ -2591,7 +2806,8 @@
       "source_file": "en/glossary/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/en/glossary/#pseudo-complexity",
@@ -2603,7 +2819,8 @@
       "source_file": "en/glossary/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/en/glossary/#question-emergence",
@@ -2615,7 +2832,8 @@
       "source_file": "en/glossary/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/en/glossary/#reflective-re-entry",
@@ -2627,7 +2845,8 @@
       "source_file": "en/glossary/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/en/glossary/#reverse-scaffolding-eai-meaning",
@@ -2639,7 +2858,8 @@
       "source_file": "en/glossary/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/en/glossary/#support-replacement-boundary",
@@ -2651,7 +2871,8 @@
       "source_file": "en/glossary/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/en/glossary/#sycophantic-completion",
@@ -2663,7 +2884,8 @@
       "source_file": "en/glossary/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/en/glossary/#task-density",
@@ -2675,7 +2897,8 @@
       "source_file": "en/glossary/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/en/glossary/#trace-back-prompting",
@@ -2687,7 +2910,8 @@
       "source_file": "en/glossary/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/en/glossary/#truth-apathy",
@@ -2699,7 +2923,8 @@
       "source_file": "en/glossary/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/en/glossary/#visible-cognitive-work",
@@ -2711,7 +2936,8 @@
       "source_file": "en/glossary/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/nl/begrippen/#act-of-learning",
@@ -2723,7 +2949,8 @@
       "source_file": "nl/begrippen/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/nl/begrippen/#ai-drift",
@@ -2735,7 +2962,8 @@
       "source_file": "nl/begrippen/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/nl/begrippen/#answer-machine-era",
@@ -2747,7 +2975,8 @@
       "source_file": "nl/begrippen/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/nl/begrippen/#closure-bias",
@@ -2759,7 +2988,8 @@
       "source_file": "nl/begrippen/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/nl/begrippen/#cognitive-displacement",
@@ -2771,7 +3001,8 @@
       "source_file": "nl/begrippen/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/nl/begrippen/#controlled-detachment",
@@ -2783,7 +3014,8 @@
       "source_file": "nl/begrippen/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/nl/begrippen/#core-learning-action",
@@ -2795,7 +3027,8 @@
       "source_file": "nl/begrippen/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/nl/begrippen/#didactic-controllability",
@@ -2807,7 +3040,8 @@
       "source_file": "nl/begrippen/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/nl/begrippen/#didactic-distortion",
@@ -2819,7 +3053,8 @@
       "source_file": "nl/begrippen/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/nl/begrippen/#education-in-the-loop-eitl",
@@ -2831,7 +3066,8 @@
       "source_file": "nl/begrippen/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/nl/begrippen/#evidence-function-shift",
@@ -2843,7 +3079,8 @@
       "source_file": "nl/begrippen/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/nl/begrippen/#illusion-of-completeness",
@@ -2855,7 +3092,8 @@
       "source_file": "nl/begrippen/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/nl/begrippen/#independent-evidence",
@@ -2867,7 +3105,8 @@
       "source_file": "nl/begrippen/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/nl/begrippen/#justification-mapping",
@@ -2879,7 +3118,8 @@
       "source_file": "nl/begrippen/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/nl/begrippen/#learning-evidence",
@@ -2891,7 +3131,8 @@
       "source_file": "nl/begrippen/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/nl/begrippen/#meaning-making-vs-addition",
@@ -2903,7 +3144,8 @@
       "source_file": "nl/begrippen/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/nl/begrippen/#output-evidence",
@@ -2915,7 +3157,8 @@
       "source_file": "nl/begrippen/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/nl/begrippen/#oversupport",
@@ -2927,7 +3170,8 @@
       "source_file": "nl/begrippen/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/nl/begrippen/#presence-vs-performance",
@@ -2939,7 +3183,8 @@
       "source_file": "nl/begrippen/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/nl/begrippen/#process-evidence",
@@ -2951,7 +3196,8 @@
       "source_file": "nl/begrippen/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/nl/begrippen/#pseudo-complexity",
@@ -2963,7 +3209,8 @@
       "source_file": "nl/begrippen/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/nl/begrippen/#question-emergence",
@@ -2975,7 +3222,8 @@
       "source_file": "nl/begrippen/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/nl/begrippen/#reflective-re-entry",
@@ -2987,7 +3235,8 @@
       "source_file": "nl/begrippen/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/nl/begrippen/#reverse-scaffolding-eai-meaning",
@@ -2999,7 +3248,8 @@
       "source_file": "nl/begrippen/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/nl/begrippen/#support-replacement-boundary",
@@ -3011,7 +3261,8 @@
       "source_file": "nl/begrippen/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/nl/begrippen/#sycophantic-completion",
@@ -3023,7 +3274,8 @@
       "source_file": "nl/begrippen/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/nl/begrippen/#task-density",
@@ -3035,7 +3287,8 @@
       "source_file": "nl/begrippen/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/nl/begrippen/#trace-back-prompting",
@@ -3047,7 +3300,8 @@
       "source_file": "nl/begrippen/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/nl/begrippen/#truth-apathy",
@@ -3059,7 +3313,8 @@
       "source_file": "nl/begrippen/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/nl/begrippen/#visible-cognitive-work",
@@ -3071,7 +3326,8 @@
       "source_file": "nl/begrippen/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "model"
+      "family": "model",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/llm-observatorium/#eerdere-tekst",
@@ -3083,7 +3339,8 @@
       "source_file": "content/llm-observatorium/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "ai"
+      "family": "ai",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/llm-observatorium/#experts",
@@ -3095,7 +3352,8 @@
       "source_file": "content/llm-observatorium/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "ai"
+      "family": "ai",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/llm-observatorium/#hoeveel-tekst",
@@ -3107,7 +3365,8 @@
       "source_file": "content/llm-observatorium/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "ai"
+      "family": "ai",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/llm-observatorium/#kosten",
@@ -3119,7 +3378,8 @@
       "source_file": "content/llm-observatorium/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "ai"
+      "family": "ai",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/llm-observatorium/#opbouw",
@@ -3131,7 +3391,8 @@
       "source_file": "content/llm-observatorium/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "ai"
+      "family": "ai",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/llm-observatorium/#tekststukjes",
@@ -3143,7 +3404,8 @@
       "source_file": "content/llm-observatorium/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "ai"
+      "family": "ai",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/llm-observatorium/#volgend-stukje",
@@ -3155,7 +3417,8 @@
       "source_file": "content/llm-observatorium/index.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "ai"
+      "family": "ai",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/melkweg-lab/#atlas",
@@ -3170,7 +3433,8 @@
       "family": "heelal",
       "suggested_title_nl": "Structuur van de Melkweg",
       "suggested_description_nl": "Onderzoek de schijf, spiraalarmen, centrale balk en halo.",
-      "topic_id": "melkweg:atlas"
+      "topic_id": "melkweg:atlas",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/melkweg-lab/#blackhole",
@@ -3185,7 +3449,8 @@
       "family": "heelal",
       "suggested_title_nl": "Sagittarius A*",
       "suggested_description_nl": "Onderzoek de baan van ster S2 rond het zwarte gat in de Melkweg.",
-      "topic_id": "melkweg:blackhole"
+      "topic_id": "melkweg:blackhole",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/melkweg-lab/#dynamics",
@@ -3200,7 +3465,8 @@
       "family": "heelal",
       "suggested_title_nl": "Rotatie en zwaartekracht",
       "suggested_description_nl": "Verander de massa van de Melkweg en onderzoek de omloopsnelheid.",
-      "topic_id": "melkweg:dynamics"
+      "topic_id": "melkweg:dynamics",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/melkweg-lab/#gaia",
@@ -3215,7 +3481,8 @@
       "family": "heelal",
       "suggested_title_nl": "Meten met Gaia",
       "suggested_description_nl": "Onderzoek afstanden en eigenbeweging van sterren.",
-      "topic_id": "melkweg:gaia"
+      "topic_id": "melkweg:gaia",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/melkweg-lab/#stars",
@@ -3230,7 +3497,8 @@
       "family": "heelal",
       "suggested_title_nl": "Sterpopulaties",
       "suggested_description_nl": "Vergelijk de eigenschappen van verschillende sterren en sterpopulaties.",
-      "topic_id": "melkweg:stars"
+      "topic_id": "melkweg:stars",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/melkweg-lab/#structure",
@@ -3245,7 +3513,8 @@
       "family": "heelal",
       "suggested_title_nl": "Schijf en halo",
       "suggested_description_nl": "Vergelijk de verdeling van sterren en de vorm van de Melkweg.",
-      "topic_id": "melkweg:structure"
+      "topic_id": "melkweg:structure",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/melkweg/#atlas",
@@ -3260,7 +3529,8 @@
       "family": "heelal",
       "suggested_title_nl": "Structuur van de Melkweg",
       "suggested_description_nl": "Onderzoek de schijf, spiraalarmen, centrale balk en halo.",
-      "topic_id": "melkweg:atlas"
+      "topic_id": "melkweg:atlas",
+      "search_scope": "binnen_toepassing"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/melkweg/#blackhole",
@@ -3275,7 +3545,8 @@
       "family": "heelal",
       "suggested_title_nl": "Sagittarius A*",
       "suggested_description_nl": "Onderzoek de baan van ster S2 rond het zwarte gat in de Melkweg.",
-      "topic_id": "melkweg:blackhole"
+      "topic_id": "melkweg:blackhole",
+      "search_scope": "binnen_toepassing"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/melkweg/#dynamics",
@@ -3290,7 +3561,8 @@
       "family": "heelal",
       "suggested_title_nl": "Rotatie en zwaartekracht",
       "suggested_description_nl": "Verander de massa van de Melkweg en onderzoek de omloopsnelheid.",
-      "topic_id": "melkweg:dynamics"
+      "topic_id": "melkweg:dynamics",
+      "search_scope": "binnen_toepassing"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/melkweg/#gaia",
@@ -3305,7 +3577,8 @@
       "family": "heelal",
       "suggested_title_nl": "Meten met Gaia",
       "suggested_description_nl": "Onderzoek afstanden en eigenbeweging van sterren.",
-      "topic_id": "melkweg:gaia"
+      "topic_id": "melkweg:gaia",
+      "search_scope": "binnen_toepassing"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/melkweg/#stars",
@@ -3320,7 +3593,8 @@
       "family": "heelal",
       "suggested_title_nl": "Sterpopulaties",
       "suggested_description_nl": "Vergelijk de eigenschappen van verschillende sterren en sterpopulaties.",
-      "topic_id": "melkweg:stars"
+      "topic_id": "melkweg:stars",
+      "search_scope": "binnen_toepassing"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/melkweg/#structure",
@@ -3335,7 +3609,8 @@
       "family": "heelal",
       "suggested_title_nl": "Schijf en halo",
       "suggested_description_nl": "Vergelijk de verdeling van sterren en de vorm van de Melkweg.",
-      "topic_id": "melkweg:structure"
+      "topic_id": "melkweg:structure",
+      "search_scope": "binnen_toepassing"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/natuurkunde/#ac",
@@ -3347,7 +3622,8 @@
       "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "natuurkunde"
+      "family": "natuurkunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/natuurkunde/#acceleration",
@@ -3359,7 +3635,8 @@
       "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "natuurkunde"
+      "family": "natuurkunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/natuurkunde/#beats",
@@ -3371,7 +3648,8 @@
       "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "natuurkunde"
+      "family": "natuurkunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/natuurkunde/#bohr",
@@ -3383,7 +3661,8 @@
       "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "natuurkunde"
+      "family": "natuurkunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/natuurkunde/#bragg",
@@ -3395,7 +3674,8 @@
       "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "natuurkunde"
+      "family": "natuurkunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/natuurkunde/#buoyant",
@@ -3407,7 +3687,8 @@
       "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "natuurkunde"
+      "family": "natuurkunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/natuurkunde/#carousel",
@@ -3419,7 +3700,8 @@
       "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "natuurkunde"
+      "family": "natuurkunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/natuurkunde/#chains",
@@ -3431,7 +3713,8 @@
       "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "natuurkunde"
+      "family": "natuurkunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/natuurkunde/#circular",
@@ -3443,7 +3726,8 @@
       "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "natuurkunde"
+      "family": "natuurkunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/natuurkunde/#collision",
@@ -3455,7 +3739,8 @@
       "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "natuurkunde"
+      "family": "natuurkunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/natuurkunde/#coupled",
@@ -3467,7 +3752,8 @@
       "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "natuurkunde"
+      "family": "natuurkunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/natuurkunde/#cradle",
@@ -3479,7 +3765,8 @@
       "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "natuurkunde"
+      "family": "natuurkunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/natuurkunde/#decay",
@@ -3491,7 +3778,8 @@
       "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "natuurkunde"
+      "family": "natuurkunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/natuurkunde/#dilation",
@@ -3503,7 +3791,8 @@
       "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "natuurkunde"
+      "family": "natuurkunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/natuurkunde/#doppler",
@@ -3515,7 +3804,8 @@
       "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "natuurkunde"
+      "family": "natuurkunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/natuurkunde/#double",
@@ -3527,7 +3817,8 @@
       "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "natuurkunde"
+      "family": "natuurkunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/natuurkunde/#em",
@@ -3539,7 +3830,8 @@
       "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "natuurkunde"
+      "family": "natuurkunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/natuurkunde/#equilibrium",
@@ -3551,7 +3843,8 @@
       "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "natuurkunde"
+      "family": "natuurkunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/natuurkunde/#gas",
@@ -3563,7 +3856,8 @@
       "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "natuurkunde"
+      "family": "natuurkunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/natuurkunde/#generator",
@@ -3575,7 +3869,8 @@
       "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "natuurkunde"
+      "family": "natuurkunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/natuurkunde/#huygens",
@@ -3587,7 +3882,8 @@
       "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "natuurkunde"
+      "family": "natuurkunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/natuurkunde/#hydro",
@@ -3599,7 +3895,8 @@
       "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "natuurkunde"
+      "family": "natuurkunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/natuurkunde/#incline",
@@ -3611,7 +3908,8 @@
       "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "natuurkunde"
+      "family": "natuurkunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/natuurkunde/#interference",
@@ -3623,7 +3921,8 @@
       "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "natuurkunde"
+      "family": "natuurkunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/natuurkunde/#kepler1",
@@ -3635,7 +3934,8 @@
       "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "natuurkunde"
+      "family": "natuurkunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/natuurkunde/#kepler2",
@@ -3647,7 +3947,8 @@
       "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "natuurkunde"
+      "family": "natuurkunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/natuurkunde/#lc",
@@ -3659,7 +3960,8 @@
       "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "natuurkunde"
+      "family": "natuurkunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/natuurkunde/#lens",
@@ -3671,7 +3973,8 @@
       "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "natuurkunde"
+      "family": "natuurkunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/natuurkunde/#lever",
@@ -3683,7 +3986,8 @@
       "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "natuurkunde"
+      "family": "natuurkunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/natuurkunde/#longitudinal",
@@ -3695,7 +3999,8 @@
       "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "natuurkunde"
+      "family": "natuurkunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/natuurkunde/#looping",
@@ -3707,7 +4012,8 @@
       "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "natuurkunde"
+      "family": "natuurkunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/natuurkunde/#lorentz",
@@ -3719,7 +4025,8 @@
       "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "natuurkunde"
+      "family": "natuurkunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/natuurkunde/#magnetbar",
@@ -3731,7 +4038,8 @@
       "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "natuurkunde"
+      "family": "natuurkunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/natuurkunde/#magnetwire",
@@ -3743,7 +4051,8 @@
       "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "natuurkunde"
+      "family": "natuurkunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/natuurkunde/#motor",
@@ -3755,7 +4064,8 @@
       "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "natuurkunde"
+      "family": "natuurkunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/natuurkunde/#newton2",
@@ -3767,7 +4077,8 @@
       "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "natuurkunde"
+      "family": "natuurkunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/natuurkunde/#ohm",
@@ -3779,7 +4090,8 @@
       "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "natuurkunde"
+      "family": "natuurkunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/natuurkunde/#pendulum",
@@ -3791,7 +4103,8 @@
       "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "natuurkunde"
+      "family": "natuurkunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/natuurkunde/#photo",
@@ -3803,7 +4116,8 @@
       "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "natuurkunde"
+      "family": "natuurkunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/natuurkunde/#potentiometer",
@@ -3815,7 +4129,8 @@
       "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "natuurkunde"
+      "family": "natuurkunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/natuurkunde/#projectile",
@@ -3827,7 +4142,8 @@
       "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "natuurkunde"
+      "family": "natuurkunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/natuurkunde/#pulleys",
@@ -3839,7 +4155,8 @@
       "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "natuurkunde"
+      "family": "natuurkunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/natuurkunde/#refraction",
@@ -3851,7 +4168,8 @@
       "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "natuurkunde"
+      "family": "natuurkunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/natuurkunde/#resistors",
@@ -3863,7 +4181,8 @@
       "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "natuurkunde"
+      "family": "natuurkunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/natuurkunde/#resolution",
@@ -3875,7 +4194,8 @@
       "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "natuurkunde"
+      "family": "natuurkunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/natuurkunde/#resonance",
@@ -3887,7 +4207,8 @@
       "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "natuurkunde"
+      "family": "natuurkunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/natuurkunde/#resultant",
@@ -3899,7 +4220,8 @@
       "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "natuurkunde"
+      "family": "natuurkunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/natuurkunde/#rlc",
@@ -3911,7 +4233,8 @@
       "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "natuurkunde"
+      "family": "natuurkunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/natuurkunde/#single",
@@ -3923,7 +4246,8 @@
       "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "natuurkunde"
+      "family": "natuurkunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/natuurkunde/#spring",
@@ -3935,7 +4259,8 @@
       "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "natuurkunde"
+      "family": "natuurkunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/natuurkunde/#standing",
@@ -3947,7 +4272,8 @@
       "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "natuurkunde"
+      "family": "natuurkunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/natuurkunde/#telescope",
@@ -3959,7 +4285,8 @@
       "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "natuurkunde"
+      "family": "natuurkunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/natuurkunde/#wheatstone",
@@ -3971,7 +4298,8 @@
       "source_file": "content/science-observatory/labs/natuurkunde.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "natuurkunde"
+      "family": "natuurkunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/wiskunde-a/#bayes",
@@ -3983,7 +4311,8 @@
       "source_file": "content/science-observatory/labs/wiskunde-a.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "wiskunde"
+      "family": "wiskunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/wiskunde-a/#binom",
@@ -3995,7 +4324,8 @@
       "source_file": "content/science-observatory/labs/wiskunde-a.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "wiskunde"
+      "family": "wiskunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/wiskunde-a/#normal",
@@ -4007,7 +4337,8 @@
       "source_file": "content/science-observatory/labs/wiskunde-a.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "wiskunde"
+      "family": "wiskunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/wiskunde-a/#regression",
@@ -4019,7 +4350,8 @@
       "source_file": "content/science-observatory/labs/wiskunde-a.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "wiskunde"
+      "family": "wiskunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/wiskunde-a/#sampling",
@@ -4031,7 +4363,8 @@
       "source_file": "content/science-observatory/labs/wiskunde-a.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "wiskunde"
+      "family": "wiskunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/wiskunde-a/#testing",
@@ -4043,7 +4376,8 @@
       "source_file": "content/science-observatory/labs/wiskunde-a.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "wiskunde"
+      "family": "wiskunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/wiskunde-b/#integral",
@@ -4055,7 +4389,8 @@
       "source_file": "content/science-observatory/labs/wiskunde-b.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "wiskunde"
+      "family": "wiskunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/wiskunde-b/#logistic",
@@ -4067,7 +4402,8 @@
       "source_file": "content/science-observatory/labs/wiskunde-b.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "wiskunde"
+      "family": "wiskunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/wiskunde-b/#newton",
@@ -4079,7 +4415,8 @@
       "source_file": "content/science-observatory/labs/wiskunde-b.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "wiskunde"
+      "family": "wiskunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/wiskunde-b/#optimum",
@@ -4091,7 +4428,8 @@
       "source_file": "content/science-observatory/labs/wiskunde-b.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "wiskunde"
+      "family": "wiskunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/wiskunde-b/#polynomial",
@@ -4103,7 +4441,8 @@
       "source_file": "content/science-observatory/labs/wiskunde-b.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "wiskunde"
+      "family": "wiskunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "anchor:/tools/science-observatory/labs/wiskunde-b/#vectors",
@@ -4115,7 +4454,8 @@
       "source_file": "content/science-observatory/labs/wiskunde-b.html",
       "link": "direct",
       "review": "bestaande_benaming",
-      "family": "wiskunde"
+      "family": "wiskunde",
+      "search_scope": "algemeen"
     },
     {
       "id": "eaimesh-focus:architecture",
@@ -4129,7 +4469,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "analysekeuze"
+      "kind": "analysekeuze",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "eaimesh-focus:docsconfig",
@@ -4143,7 +4484,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "analysekeuze"
+      "kind": "analysekeuze",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "eaimesh-focus:full",
@@ -4157,7 +4499,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "analysekeuze"
+      "kind": "analysekeuze",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "eaimesh-focus:overview",
@@ -4171,7 +4514,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "analysekeuze"
+      "kind": "analysekeuze",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "eaimesh-focus:relations",
@@ -4185,7 +4529,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "analysekeuze"
+      "kind": "analysekeuze",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "eaimesh-focus:runtime",
@@ -4199,7 +4544,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "analysekeuze"
+      "kind": "analysekeuze",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "eaimesh-focus:tests",
@@ -4213,7 +4559,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "analysekeuze"
+      "kind": "analysekeuze",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "eaistudio-component:ai-chat",
@@ -4227,7 +4574,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "herbruikbaar_component"
+      "kind": "herbruikbaar_component",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "eaistudio-component:bar-chart",
@@ -4241,7 +4589,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "herbruikbaar_component"
+      "kind": "herbruikbaar_component",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "eaistudio-component:big-number",
@@ -4255,7 +4604,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "herbruikbaar_component"
+      "kind": "herbruikbaar_component",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "eaistudio-component:browser-search",
@@ -4269,7 +4619,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "herbruikbaar_component"
+      "kind": "herbruikbaar_component",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "eaistudio-component:build-pipeline",
@@ -4283,7 +4634,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "herbruikbaar_component"
+      "kind": "herbruikbaar_component",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "eaistudio-component:choice-cards",
@@ -4297,7 +4649,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "herbruikbaar_component"
+      "kind": "herbruikbaar_component",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "eaistudio-component:comment-thread",
@@ -4311,7 +4664,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "herbruikbaar_component"
+      "kind": "herbruikbaar_component",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "eaistudio-component:countdown",
@@ -4325,7 +4679,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "herbruikbaar_component"
+      "kind": "herbruikbaar_component",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "eaistudio-component:dashboard-grid",
@@ -4339,7 +4694,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "herbruikbaar_component"
+      "kind": "herbruikbaar_component",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "eaistudio-component:document-review",
@@ -4353,7 +4709,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "herbruikbaar_component"
+      "kind": "herbruikbaar_component",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "eaistudio-component:donut-gauge",
@@ -4367,7 +4724,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "herbruikbaar_component"
+      "kind": "herbruikbaar_component",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "eaistudio-component:error-cascade",
@@ -4381,7 +4739,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "herbruikbaar_component"
+      "kind": "herbruikbaar_component",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "eaistudio-component:error-stack",
@@ -4395,7 +4754,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "herbruikbaar_component"
+      "kind": "herbruikbaar_component",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "eaistudio-component:file-browser",
@@ -4409,7 +4769,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "herbruikbaar_component"
+      "kind": "herbruikbaar_component",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "eaistudio-component:git-diff",
@@ -4423,7 +4784,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "herbruikbaar_component"
+      "kind": "herbruikbaar_component",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "eaistudio-component:hotspot-button",
@@ -4437,7 +4799,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "herbruikbaar_component"
+      "kind": "herbruikbaar_component",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "eaistudio-component:ide-editor",
@@ -4451,7 +4814,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "herbruikbaar_component"
+      "kind": "herbruikbaar_component",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "eaistudio-component:kpi-strip",
@@ -4465,7 +4829,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "herbruikbaar_component"
+      "kind": "herbruikbaar_component",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "eaistudio-component:line-chart",
@@ -4479,7 +4844,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "herbruikbaar_component"
+      "kind": "herbruikbaar_component",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "eaistudio-component:loader-sequence",
@@ -4493,7 +4859,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "herbruikbaar_component"
+      "kind": "herbruikbaar_component",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "eaistudio-component:log-monitor",
@@ -4507,7 +4874,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "herbruikbaar_component"
+      "kind": "herbruikbaar_component",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "eaistudio-component:mailbox-triage",
@@ -4521,7 +4889,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "herbruikbaar_component"
+      "kind": "herbruikbaar_component",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "eaistudio-component:notification-bell",
@@ -4535,7 +4904,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "herbruikbaar_component"
+      "kind": "herbruikbaar_component",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "eaistudio-component:orbit-nodes",
@@ -4549,7 +4919,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "herbruikbaar_component"
+      "kind": "herbruikbaar_component",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "eaistudio-component:progress-checklist",
@@ -4563,7 +4934,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "herbruikbaar_component"
+      "kind": "herbruikbaar_component",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "eaistudio-component:pulse-grid",
@@ -4577,7 +4949,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "herbruikbaar_component"
+      "kind": "herbruikbaar_component",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "eaistudio-component:quote-reveal",
@@ -4591,7 +4964,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "herbruikbaar_component"
+      "kind": "herbruikbaar_component",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "eaistudio-component:rating-meter",
@@ -4605,7 +4979,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "herbruikbaar_component"
+      "kind": "herbruikbaar_component",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "eaistudio-component:reveal-card",
@@ -4619,7 +4994,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "herbruikbaar_component"
+      "kind": "herbruikbaar_component",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "eaistudio-component:scan-sweep",
@@ -4633,7 +5009,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "herbruikbaar_component"
+      "kind": "herbruikbaar_component",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "eaistudio-component:section-label",
@@ -4647,7 +5024,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "herbruikbaar_component"
+      "kind": "herbruikbaar_component",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "eaistudio-component:settings-panel",
@@ -4661,7 +5039,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "herbruikbaar_component"
+      "kind": "herbruikbaar_component",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "eaistudio-component:spotlight-focus",
@@ -4675,7 +5054,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "herbruikbaar_component"
+      "kind": "herbruikbaar_component",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "eaistudio-component:system-modal",
@@ -4689,7 +5069,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "herbruikbaar_component"
+      "kind": "herbruikbaar_component",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "eaistudio-component:team-chat",
@@ -4703,7 +5084,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "herbruikbaar_component"
+      "kind": "herbruikbaar_component",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "eaistudio-component:terminal-stream",
@@ -4717,7 +5099,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "herbruikbaar_component"
+      "kind": "herbruikbaar_component",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "eaistudio-component:timeline-stepper",
@@ -4731,7 +5114,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "herbruikbaar_component"
+      "kind": "herbruikbaar_component",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "eaistudio-component:toast-stack",
@@ -4745,7 +5129,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "herbruikbaar_component"
+      "kind": "herbruikbaar_component",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "eaistudio-component:toggle-switch",
@@ -4759,7 +5144,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "herbruikbaar_component"
+      "kind": "herbruikbaar_component",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "eaistudio-component:typing-prompt",
@@ -4773,7 +5159,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "herbruikbaar_component"
+      "kind": "herbruikbaar_component",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "eaistudio-scene:blank",
@@ -4787,7 +5174,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "scenesjabloon"
+      "kind": "scenesjabloon",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "eaistudio-scene:chaos",
@@ -4801,7 +5189,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "scenesjabloon"
+      "kind": "scenesjabloon",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "eaistudio-scene:chat",
@@ -4815,7 +5204,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "scenesjabloon"
+      "kind": "scenesjabloon",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "eaistudio-scene:choice",
@@ -4829,7 +5219,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "scenesjabloon"
+      "kind": "scenesjabloon",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "eaistudio-scene:ending",
@@ -4843,7 +5234,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "scenesjabloon"
+      "kind": "scenesjabloon",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "eaistudio-scene:mail",
@@ -4857,7 +5249,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "scenesjabloon"
+      "kind": "scenesjabloon",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "eaistudio-scene:split",
@@ -4871,7 +5264,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "scenesjabloon"
+      "kind": "scenesjabloon",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "eaistudio-scene:title",
@@ -4885,7 +5279,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "scenesjabloon"
+      "kind": "scenesjabloon",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "eaistudio-starter:interactive",
@@ -4899,7 +5294,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "startsituatie"
+      "kind": "startsituatie",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "eaistudio-starter:style",
@@ -4913,7 +5309,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "startsituatie"
+      "kind": "startsituatie",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "eaistudio-starter:tech",
@@ -4927,7 +5324,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "startsituatie"
+      "kind": "startsituatie",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "eaiwork-view:bewijs",
@@ -4942,7 +5340,8 @@
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
       "kind": "interne_navigatieweergave",
-      "access": "binnen_dezelfde_html"
+      "access": "binnen_dezelfde_html",
+      "search_scope": "intern"
     },
     {
       "id": "eaiwork-view:bibliotheek",
@@ -4957,7 +5356,8 @@
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
       "kind": "interne_navigatieweergave",
-      "access": "binnen_dezelfde_html"
+      "access": "binnen_dezelfde_html",
+      "search_scope": "intern"
     },
     {
       "id": "eaiwork-view:bronnen",
@@ -4972,7 +5372,8 @@
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
       "kind": "interne_navigatieweergave",
-      "access": "binnen_dezelfde_html"
+      "access": "binnen_dezelfde_html",
+      "search_scope": "intern"
     },
     {
       "id": "eaiwork-view:browser",
@@ -4987,7 +5388,8 @@
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
       "kind": "interne_navigatieweergave",
-      "access": "binnen_dezelfde_html"
+      "access": "binnen_dezelfde_html",
+      "search_scope": "intern"
     },
     {
       "id": "eaiwork-view:builder",
@@ -5002,7 +5404,8 @@
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
       "kind": "interne_navigatieweergave",
-      "access": "binnen_dezelfde_html"
+      "access": "binnen_dezelfde_html",
+      "search_scope": "intern"
     },
     {
       "id": "eaiwork-view:hitl",
@@ -5017,7 +5420,8 @@
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
       "kind": "interne_navigatieweergave",
-      "access": "binnen_dezelfde_html"
+      "access": "binnen_dezelfde_html",
+      "search_scope": "intern"
     },
     {
       "id": "eaiwork-view:instellingen",
@@ -5032,7 +5436,8 @@
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
       "kind": "interne_navigatieweergave",
-      "access": "binnen_dezelfde_html"
+      "access": "binnen_dezelfde_html",
+      "search_scope": "intern"
     },
     {
       "id": "eaiwork-view:kwaliteit",
@@ -5047,7 +5452,8 @@
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
       "kind": "interne_navigatieweergave",
-      "access": "binnen_dezelfde_html"
+      "access": "binnen_dezelfde_html",
+      "search_scope": "intern"
     },
     {
       "id": "eaiwork-view:logboek",
@@ -5062,7 +5468,8 @@
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
       "kind": "interne_navigatieweergave",
-      "access": "binnen_dezelfde_html"
+      "access": "binnen_dezelfde_html",
+      "search_scope": "intern"
     },
     {
       "id": "eaiwork-view:opdrachten",
@@ -5077,7 +5484,8 @@
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
       "kind": "interne_navigatieweergave",
-      "access": "binnen_dezelfde_html"
+      "access": "binnen_dezelfde_html",
+      "search_scope": "intern"
     },
     {
       "id": "eaiwork-view:overzicht",
@@ -5092,7 +5500,8 @@
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
       "kind": "interne_navigatieweergave",
-      "access": "binnen_dezelfde_html"
+      "access": "binnen_dezelfde_html",
+      "search_scope": "intern"
     },
     {
       "id": "eaiwork-view:planner",
@@ -5107,7 +5516,8 @@
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
       "kind": "interne_navigatieweergave",
-      "access": "binnen_dezelfde_html"
+      "access": "binnen_dezelfde_html",
+      "search_scope": "intern"
     },
     {
       "id": "eaiwork-view:registratie",
@@ -5122,7 +5532,8 @@
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
       "kind": "interne_navigatieweergave",
-      "access": "binnen_dezelfde_html"
+      "access": "binnen_dezelfde_html",
+      "search_scope": "intern"
     },
     {
       "id": "eaiwork-view:uitvoering",
@@ -5137,7 +5548,8 @@
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
       "kind": "interne_navigatieweergave",
-      "access": "binnen_dezelfde_html"
+      "access": "binnen_dezelfde_html",
+      "search_scope": "intern"
     },
     {
       "id": "eaiwork-view:workers",
@@ -5152,7 +5564,8 @@
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
       "kind": "interne_navigatieweergave",
-      "access": "binnen_dezelfde_html"
+      "access": "binnen_dezelfde_html",
+      "search_scope": "intern"
     },
     {
       "id": "game-area:arena",
@@ -5171,7 +5584,8 @@
       "slo": "Mens en natuur",
       "question_seeds": 16,
       "question_variants": 48,
-      "source_description": "Denk als een onderzoeker. Kijk naar bewijs."
+      "source_description": "Denk als een onderzoeker. Kijk naar bewijs.",
+      "search_scope": "binnen_toepassing"
     },
     {
       "id": "game-area:atelier",
@@ -5190,7 +5604,8 @@
       "slo": "Digitale geletterdheid",
       "question_seeds": 16,
       "question_variants": 48,
-      "source_description": "Ontwerp, probeer, test en verbeter."
+      "source_description": "Ontwerp, probeer, test en verbeter.",
+      "search_scope": "binnen_toepassing"
     },
     {
       "id": "game-area:breuk",
@@ -5209,7 +5624,8 @@
       "slo": "Wiskunde",
       "question_seeds": 17,
       "question_variants": 51,
-      "source_description": "Verhoudingen, patronen en verborgen verbanden."
+      "source_description": "Verhoudingen, patronen en verborgen verbanden.",
+      "search_scope": "binnen_toepassing"
     },
     {
       "id": "game-area:echo",
@@ -5228,7 +5644,8 @@
       "slo": "Nederlands",
       "question_seeds": 17,
       "question_variants": 51,
-      "source_description": "Lees wat er staat. Zoek wat er wordt bedoeld."
+      "source_description": "Lees wat er staat. Zoek wat er wordt bedoeld.",
+      "search_scope": "binnen_toepassing"
     },
     {
       "id": "game-area:stad",
@@ -5247,7 +5664,8 @@
       "slo": "Burgerschap",
       "question_seeds": 17,
       "question_variants": 51,
-      "source_description": "Samenleven vraagt meer dan een snel antwoord."
+      "source_description": "Samenleven vraagt meer dan een snel antwoord.",
+      "search_scope": "binnen_toepassing"
     },
     {
       "id": "game-area:storm",
@@ -5266,7 +5684,8 @@
       "slo": "Mens en natuur",
       "question_seeds": 17,
       "question_variants": 51,
-      "source_description": "Energie, beweging en krachten die je niet ziet."
+      "source_description": "Energie, beweging en krachten die je niet ziet.",
+      "search_scope": "binnen_toepassing"
     },
     {
       "id": "gravitation:0",
@@ -5281,7 +5700,8 @@
       "review": "afzonderlijk_in_bron_gevonden",
       "source_ref": "M[0]",
       "short_name": "Baan & Kepler",
-      "source_description": "Ellips, omlooptijd en gelijke oppervlakken"
+      "source_description": "Ellips, omlooptijd en gelijke oppervlakken",
+      "search_scope": "binnen_toepassing"
     },
     {
       "id": "gravitation:1",
@@ -5296,7 +5716,8 @@
       "review": "afzonderlijk_in_bron_gevonden",
       "source_ref": "M[1]",
       "short_name": "Zwaartekrachtveld",
-      "source_description": "Kracht en potentiaal op afstand"
+      "source_description": "Kracht en potentiaal op afstand",
+      "search_scope": "binnen_toepassing"
     },
     {
       "id": "gravitation:2",
@@ -5311,7 +5732,8 @@
       "review": "afzonderlijk_in_bron_gevonden",
       "source_ref": "M[2]",
       "short_name": "Energie in een baan",
-      "source_description": "Kinetisch, potentieel en totale energie"
+      "source_description": "Kinetisch, potentieel en totale energie",
+      "search_scope": "binnen_toepassing"
     },
     {
       "id": "gravitation:3",
@@ -5326,7 +5748,8 @@
       "review": "afzonderlijk_in_bron_gevonden",
       "source_ref": "M[3]",
       "short_name": "Baanwissel",
-      "source_description": "Hohmanntransfer tussen twee cirkelbanen"
+      "source_description": "Hohmanntransfer tussen twee cirkelbanen",
+      "search_scope": "binnen_toepassing"
     },
     {
       "id": "gravitation:4",
@@ -5341,7 +5764,8 @@
       "review": "afzonderlijk_in_bron_gevonden",
       "source_ref": "M[4]",
       "short_name": "Ontsnappen",
-      "source_description": "Elliptische, parabole en hyperbolische baan"
+      "source_description": "Elliptische, parabole en hyperbolische baan",
+      "search_scope": "binnen_toepassing"
     },
     {
       "id": "gravitation:5",
@@ -5356,7 +5780,8 @@
       "review": "afzonderlijk_in_bron_gevonden",
       "source_ref": "M[5]",
       "short_name": "Grondspoor",
-      "source_description": "Baanvlak, aardrotatie en herhaling"
+      "source_description": "Baanvlak, aardrotatie en herhaling",
+      "search_scope": "binnen_toepassing"
     },
     {
       "id": "llmscan:brisk",
@@ -5368,7 +5793,8 @@
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
       "review": "productnaam_uit_bron",
-      "family": "ai"
+      "family": "ai",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "llmscan:canva-education",
@@ -5380,7 +5806,8 @@
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
       "review": "productnaam_uit_bron",
-      "family": "ai"
+      "family": "ai",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "llmscan:chatgpt",
@@ -5392,7 +5819,8 @@
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
       "review": "productnaam_uit_bron",
-      "family": "ai"
+      "family": "ai",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "llmscan:claude-edu",
@@ -5404,7 +5832,8 @@
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
       "review": "productnaam_uit_bron",
-      "family": "ai"
+      "family": "ai",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "llmscan:copilot-chat",
@@ -5416,7 +5845,8 @@
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
       "review": "productnaam_uit_bron",
-      "family": "ai"
+      "family": "ai",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "llmscan:copilot-teach",
@@ -5428,7 +5858,8 @@
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
       "review": "productnaam_uit_bron",
-      "family": "ai"
+      "family": "ai",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "llmscan:diffit",
@@ -5440,7 +5871,8 @@
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
       "review": "productnaam_uit_bron",
-      "family": "ai"
+      "family": "ai",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "llmscan:gemini",
@@ -5452,7 +5884,8 @@
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
       "review": "productnaam_uit_bron",
-      "family": "ai"
+      "family": "ai",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "llmscan:guided",
@@ -5464,7 +5897,8 @@
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
       "review": "productnaam_uit_bron",
-      "family": "ai"
+      "family": "ai",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "llmscan:kahoot",
@@ -5476,7 +5910,8 @@
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
       "review": "productnaam_uit_bron",
-      "family": "ai"
+      "family": "ai",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "llmscan:khanmigo",
@@ -5488,7 +5923,8 @@
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
       "review": "productnaam_uit_bron",
-      "family": "ai"
+      "family": "ai",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "llmscan:learn-way",
@@ -5500,7 +5936,8 @@
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
       "review": "productnaam_uit_bron",
-      "family": "ai"
+      "family": "ai",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "llmscan:lessonup",
@@ -5512,7 +5949,8 @@
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
       "review": "productnaam_uit_bron",
-      "family": "ai"
+      "family": "ai",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "llmscan:magicschool",
@@ -5524,7 +5962,8 @@
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
       "review": "productnaam_uit_bron",
-      "family": "ai"
+      "family": "ai",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "llmscan:model-claude-fable-5-1-9",
@@ -5536,7 +5975,8 @@
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
       "review": "productnaam_uit_bron",
-      "family": "ai"
+      "family": "ai",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "llmscan:model-claude-haiku-5-5-0",
@@ -5548,7 +5988,8 @@
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
       "review": "productnaam_uit_bron",
-      "family": "ai"
+      "family": "ai",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "llmscan:model-claude-opus-5-11",
@@ -5560,7 +6001,8 @@
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
       "review": "productnaam_uit_bron",
-      "family": "ai"
+      "family": "ai",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "llmscan:model-claude-opus-5-5-4",
@@ -5572,7 +6014,8 @@
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
       "review": "productnaam_uit_bron",
-      "family": "ai"
+      "family": "ai",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "llmscan:model-claude-sonnet-5-5-6",
@@ -5584,7 +6027,8 @@
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
       "review": "productnaam_uit_bron",
-      "family": "ai"
+      "family": "ai",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "llmscan:model-deepseek-v4-1-flash-26",
@@ -5596,7 +6040,8 @@
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
       "review": "productnaam_uit_bron",
-      "family": "ai"
+      "family": "ai",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "llmscan:model-gemini-3-8-flash-22",
@@ -5608,7 +6053,8 @@
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
       "review": "productnaam_uit_bron",
-      "family": "ai"
+      "family": "ai",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "llmscan:model-gemini-3-8-flash-medium-16",
@@ -5620,7 +6066,8 @@
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
       "review": "productnaam_uit_bron",
-      "family": "ai"
+      "family": "ai",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "llmscan:model-gemini-4-argon-2",
@@ -5632,7 +6079,8 @@
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
       "review": "productnaam_uit_bron",
-      "family": "ai"
+      "family": "ai",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "llmscan:model-glm-5-3-14",
@@ -5644,7 +6092,8 @@
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
       "review": "productnaam_uit_bron",
-      "family": "ai"
+      "family": "ai",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "llmscan:model-glm-5-3-flash-21",
@@ -5656,7 +6105,8 @@
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
       "review": "productnaam_uit_bron",
-      "family": "ai"
+      "family": "ai",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "llmscan:model-gpt-5-6-luna-17",
@@ -5668,7 +6118,8 @@
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
       "review": "productnaam_uit_bron",
-      "family": "ai"
+      "family": "ai",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "llmscan:model-gpt-5-6-sol-13",
@@ -5680,7 +6131,8 @@
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
       "review": "productnaam_uit_bron",
-      "family": "ai"
+      "family": "ai",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "llmscan:model-gpt-5-6-terra-20",
@@ -5692,7 +6144,8 @@
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
       "review": "productnaam_uit_bron",
-      "family": "ai"
+      "family": "ai",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "llmscan:model-gpt-6-1-sol-5",
@@ -5704,7 +6157,8 @@
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
       "review": "productnaam_uit_bron",
-      "family": "ai"
+      "family": "ai",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "llmscan:model-gpt-6-astra-10",
@@ -5716,7 +6170,8 @@
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
       "review": "productnaam_uit_bron",
-      "family": "ai"
+      "family": "ai",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "llmscan:model-gpt-6-luna-8",
@@ -5728,7 +6183,8 @@
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
       "review": "productnaam_uit_bron",
-      "family": "ai"
+      "family": "ai",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "llmscan:model-gpt-6-sol-7",
@@ -5740,7 +6196,8 @@
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
       "review": "productnaam_uit_bron",
-      "family": "ai"
+      "family": "ai",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "llmscan:model-gpt-nl-3",
@@ -5752,7 +6209,8 @@
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
       "review": "productnaam_uit_bron",
-      "family": "ai"
+      "family": "ai",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "llmscan:model-grok-4-6-18",
@@ -5764,7 +6222,8 @@
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
       "review": "productnaam_uit_bron",
-      "family": "ai"
+      "family": "ai",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "llmscan:model-k2-horizon-27",
@@ -5776,7 +6235,8 @@
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
       "review": "productnaam_uit_bron",
-      "family": "ai"
+      "family": "ai",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "llmscan:model-kimi-k3-19",
@@ -5788,7 +6248,8 @@
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
       "review": "productnaam_uit_bron",
-      "family": "ai"
+      "family": "ai",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "llmscan:model-mistral-large-4-1",
@@ -5800,7 +6261,8 @@
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
       "review": "productnaam_uit_bron",
-      "family": "ai"
+      "family": "ai",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "llmscan:model-mistral-medium-3-5-29",
@@ -5812,7 +6274,8 @@
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
       "review": "productnaam_uit_bron",
-      "family": "ai"
+      "family": "ai",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "llmscan:model-muse-spark-1-3-12",
@@ -5824,7 +6287,8 @@
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
       "review": "productnaam_uit_bron",
-      "family": "ai"
+      "family": "ai",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "llmscan:model-qwen-3-8-2-4t-24",
@@ -5836,7 +6300,8 @@
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
       "review": "productnaam_uit_bron",
-      "family": "ai"
+      "family": "ai",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "llmscan:model-qwen-3-8-flash-next-25",
@@ -5848,7 +6313,8 @@
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
       "review": "productnaam_uit_bron",
-      "family": "ai"
+      "family": "ai",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "llmscan:model-qwen-3-8-max-23",
@@ -5860,7 +6326,8 @@
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
       "review": "productnaam_uit_bron",
-      "family": "ai"
+      "family": "ai",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "llmscan:model-solar-pro-4-28",
@@ -5872,7 +6339,8 @@
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
       "review": "productnaam_uit_bron",
-      "family": "ai"
+      "family": "ai",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "llmscan:model-step-5-preview-15",
@@ -5884,7 +6352,8 @@
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
       "review": "productnaam_uit_bron",
-      "family": "ai"
+      "family": "ai",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "llmscan:notebook",
@@ -5896,7 +6365,8 @@
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
       "review": "productnaam_uit_bron",
-      "family": "ai"
+      "family": "ai",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "llmscan:perplexity",
@@ -5908,7 +6378,8 @@
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
       "review": "productnaam_uit_bron",
-      "family": "ai"
+      "family": "ai",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "llmscan:quizlet",
@@ -5920,7 +6391,8 @@
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
       "review": "productnaam_uit_bron",
-      "family": "ai"
+      "family": "ai",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "llmscan:schoolai",
@@ -5932,7 +6404,8 @@
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
       "review": "productnaam_uit_bron",
-      "family": "ai"
+      "family": "ai",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "llmscan:study-mode",
@@ -5944,7 +6417,8 @@
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
       "review": "productnaam_uit_bron",
-      "family": "ai"
+      "family": "ai",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "llmscan:teens",
@@ -5956,7 +6430,8 @@
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
       "review": "productnaam_uit_bron",
-      "family": "ai"
+      "family": "ai",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "llmscan:wayground",
@@ -5968,7 +6443,8 @@
       "source_file": "nl/llmscan/catalogue.js",
       "link": "verzamelpagina",
       "review": "productnaam_uit_bron",
-      "family": "ai"
+      "family": "ai",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "process-mode:onderzoeken",
@@ -5981,7 +6457,8 @@
       "family": "hulpmiddelen",
       "link": "binnen_toepassing",
       "review": "afzonderlijk_in_bron_gevonden",
-      "source_ref": "[data-mode=\"onderzoeken\"]"
+      "source_ref": "[data-mode=\"onderzoeken\"]",
+      "search_scope": "binnen_toepassing"
     },
     {
       "id": "process-mode:ontwerpen",
@@ -5994,7 +6471,8 @@
       "family": "hulpmiddelen",
       "link": "binnen_toepassing",
       "review": "afzonderlijk_in_bron_gevonden",
-      "source_ref": "[data-mode=\"ontwerpen\"]"
+      "source_ref": "[data-mode=\"ontwerpen\"]",
+      "search_scope": "binnen_toepassing"
     },
     {
       "id": "sport-mode:attack",
@@ -6007,7 +6485,8 @@
       "family": "sport-en-bewegen",
       "link": "binnen_toepassing",
       "review": "afzonderlijk_in_bron_gevonden",
-      "source_ref": "[data-mode=\"attack\"]"
+      "source_ref": "[data-mode=\"attack\"]",
+      "search_scope": "binnen_toepassing"
     },
     {
       "id": "sport-mode:defend",
@@ -6020,7 +6499,8 @@
       "family": "sport-en-bewegen",
       "link": "binnen_toepassing",
       "review": "afzonderlijk_in_bron_gevonden",
-      "source_ref": "[data-mode=\"defend\"]"
+      "source_ref": "[data-mode=\"defend\"]",
+      "search_scope": "binnen_toepassing"
     },
     {
       "id": "sport-mode:free",
@@ -6033,7 +6513,8 @@
       "family": "sport-en-bewegen",
       "link": "binnen_toepassing",
       "review": "afzonderlijk_in_bron_gevonden",
-      "source_ref": "[data-mode=\"free\"]"
+      "source_ref": "[data-mode=\"free\"]",
+      "search_scope": "binnen_toepassing"
     },
     {
       "id": "sport-mode:online",
@@ -6046,7 +6527,8 @@
       "family": "sport-en-bewegen",
       "link": "binnen_toepassing",
       "review": "afzonderlijk_in_bron_gevonden",
-      "source_ref": "#onlineChoice"
+      "source_ref": "#onlineChoice",
+      "search_scope": "binnen_toepassing"
     },
     {
       "id": "taal:taal-01",
@@ -6058,7 +6540,8 @@
       "source_file": "content/taalwerkvormen-page.html",
       "link": "direct",
       "review": "bronbenaming",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "search_scope": "algemeen"
     },
     {
       "id": "taal:taal-02",
@@ -6070,7 +6553,8 @@
       "source_file": "content/taalwerkvormen-page.html",
       "link": "direct",
       "review": "bronbenaming",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "search_scope": "algemeen"
     },
     {
       "id": "taal:taal-03",
@@ -6082,7 +6566,8 @@
       "source_file": "content/taalwerkvormen-page.html",
       "link": "direct",
       "review": "bronbenaming",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "search_scope": "algemeen"
     },
     {
       "id": "taal:taal-04",
@@ -6094,7 +6579,8 @@
       "source_file": "content/taalwerkvormen-page.html",
       "link": "direct",
       "review": "bronbenaming",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "search_scope": "algemeen"
     },
     {
       "id": "taal:taal-05",
@@ -6106,7 +6592,8 @@
       "source_file": "content/taalwerkvormen-page.html",
       "link": "direct",
       "review": "bronbenaming",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "search_scope": "algemeen"
     },
     {
       "id": "taal:taal-06",
@@ -6118,7 +6605,8 @@
       "source_file": "content/taalwerkvormen-page.html",
       "link": "direct",
       "review": "bronbenaming",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "search_scope": "algemeen"
     },
     {
       "id": "taal:taal-07",
@@ -6130,7 +6618,8 @@
       "source_file": "content/taalwerkvormen-page.html",
       "link": "direct",
       "review": "bronbenaming",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "search_scope": "algemeen"
     },
     {
       "id": "taal:taal-08",
@@ -6142,7 +6631,8 @@
       "source_file": "content/taalwerkvormen-page.html",
       "link": "direct",
       "review": "bronbenaming",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "search_scope": "algemeen"
     },
     {
       "id": "taal:taal-09",
@@ -6154,7 +6644,8 @@
       "source_file": "content/taalwerkvormen-page.html",
       "link": "direct",
       "review": "bronbenaming",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "search_scope": "algemeen"
     },
     {
       "id": "taal:taal-10",
@@ -6166,7 +6657,8 @@
       "source_file": "content/taalwerkvormen-page.html",
       "link": "direct",
       "review": "bronbenaming",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "search_scope": "algemeen"
     },
     {
       "id": "taal:taal-11",
@@ -6178,7 +6670,8 @@
       "source_file": "content/taalwerkvormen-page.html",
       "link": "direct",
       "review": "bronbenaming",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "search_scope": "algemeen"
     },
     {
       "id": "taal:taal-12",
@@ -6190,7 +6683,8 @@
       "source_file": "content/taalwerkvormen-page.html",
       "link": "direct",
       "review": "bronbenaming",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "search_scope": "algemeen"
     },
     {
       "id": "taal:taal-13",
@@ -6202,7 +6696,8 @@
       "source_file": "content/taalwerkvormen-page.html",
       "link": "direct",
       "review": "bronbenaming",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "search_scope": "algemeen"
     },
     {
       "id": "taal:taal-14",
@@ -6214,7 +6709,8 @@
       "source_file": "content/taalwerkvormen-page.html",
       "link": "direct",
       "review": "bronbenaming",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "search_scope": "algemeen"
     },
     {
       "id": "taal:taal-15",
@@ -6226,7 +6722,8 @@
       "source_file": "content/taalwerkvormen-page.html",
       "link": "direct",
       "review": "bronbenaming",
-      "family": "onderwijs"
+      "family": "onderwijs",
+      "search_scope": "algemeen"
     },
     {
       "id": "wihtml-slide:compare",
@@ -6240,7 +6737,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "lesonderdeel_type"
+      "kind": "lesonderdeel_type",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "wihtml-slide:error",
@@ -6254,7 +6752,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "lesonderdeel_type"
+      "kind": "lesonderdeel_type",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "wihtml-slide:graph",
@@ -6268,7 +6767,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "lesonderdeel_type"
+      "kind": "lesonderdeel_type",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "wihtml-slide:mathplot",
@@ -6282,7 +6782,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "lesonderdeel_type"
+      "kind": "lesonderdeel_type",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "wihtml-slide:practice",
@@ -6296,7 +6797,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "lesonderdeel_type"
+      "kind": "lesonderdeel_type",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "wihtml-slide:question",
@@ -6310,7 +6812,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "lesonderdeel_type"
+      "kind": "lesonderdeel_type",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "wihtml-slide:quizset",
@@ -6324,7 +6827,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "lesonderdeel_type"
+      "kind": "lesonderdeel_type",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "wihtml-slide:steps",
@@ -6338,7 +6842,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "lesonderdeel_type"
+      "kind": "lesonderdeel_type",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "wihtml-slide:table",
@@ -6352,7 +6857,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "lesonderdeel_type"
+      "kind": "lesonderdeel_type",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "wihtml-slide:text",
@@ -6366,7 +6872,8 @@
       "link": "binnen_toepassing",
       "family": "hulpmiddelen",
       "review": "bron_als_afzonderlijke_functie_gecontroleerd",
-      "kind": "lesonderdeel_type"
+      "kind": "lesonderdeel_type",
+      "search_scope": "eigen_bibliotheek"
     },
     {
       "id": "wihtml:kansen-twee-worpen",
@@ -6378,7 +6885,8 @@
       "source_file": "content/wihtml/bibliotheek/kansen-twee-worpen.json",
       "family": "wiskunde",
       "link": "verzamelpagina",
-      "review": "titel_uit_bronbestand"
+      "review": "titel_uit_bronbestand",
+      "search_scope": "binnen_toepassing"
     },
     {
       "id": "wihtml:lineaire-verbanden",
@@ -6390,7 +6898,8 @@
       "source_file": "content/wihtml/bibliotheek/lineaire-verbanden.json",
       "family": "wiskunde",
       "link": "verzamelpagina",
-      "review": "titel_uit_bronbestand"
+      "review": "titel_uit_bronbestand",
+      "search_scope": "binnen_toepassing"
     }
   ],
   "html_sources": [
@@ -6682,7 +7191,9 @@
           ]
         }
       ],
-      "review": "onderdelen_gelijk_verschillen_vastgelegd_geen_technische_fusie"
+      "review": "publieke_ingang_gekozen_geen_technische_fusie",
+      "primary_public_page": "page:/tools/melkweg-lab/",
+      "alternate_access": "via_verwijzing"
     },
     {
       "id": "wiskunde",

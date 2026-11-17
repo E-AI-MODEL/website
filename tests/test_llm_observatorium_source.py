@@ -168,7 +168,7 @@ class LlmObservatorySourceTests(unittest.TestCase):
         self.assertTrue(published.is_file(), "Gepubliceerde LLM-pagina ontbreekt")
         self.assertEqual(SOURCE.read_bytes(), published.read_bytes(),
                          "Publicatie mag de zelfstandige HTML niet wijzigen")
-        for rel in ("tools/index.html", "nl/tools/index.html"):
+        for rel in ("nl/tools/index.html", "en/tools/index.html"):
             with self.subTest(page=rel):
                 page = ROOT / "site-build" / rel
                 self.assertTrue(page.is_file())

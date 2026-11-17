@@ -60,13 +60,7 @@ def groups(en: bool):
             ('Articles', [('Publications and media', '/en/publications/'),
                           ('The Act of Learning', '/publicaties/the-act-of-learning/'),
                           ('Research reviews', '/en/research/zhang-genai-language/')]),
-            ('Explore & create', [('Explore and create', '/en/tools/'),
-                                  ('Subject experiments', '/tools/science-observatory/'),
-                                  ('Anatomy', '/tools/anatomie/'),
-                                  ('Prompt Framework', '/tools/prompt-framework/'),
-                                  ('WiHTML Studio', '/tools/wihtml/'),
-                                  ('EAIstudio', '/tools/eaistudio/'),
-                                  ('AI Model Monitor', '/en/model-monitor/')]),
+            ('Explore & create', [('Explore and create', '/en/tools/')]),
             ('About EAI', [('About EAI', '/en/about/'), ('Site insights', '/en/insights/')]),
         ]
     return [
@@ -78,13 +72,7 @@ def groups(en: bool):
                         ('Onderzoek leermiddelen', '/nl/onderzoek/leermiddelen/')]),
         ('Artikelen', [('Artikelen en publicaties', '/nl/publicaties/'), ('Blog', '/nl/blog/'),
                        ('De vraag die we vergeten', '/publicaties/de-vraag-die-we-vergeten/')]),
-        ('Zelf aan de slag', [('Onderzoeken en maken', '/nl/tools/'),
-                              ('Vakinhoudelijke proeven', '/tools/science-observatory/'),
-                              ('Anatomie', '/tools/anatomie/'),
-                              ('EAI Prompt Framework', '/tools/prompt-framework/'),
-                              ('WiHTML Docentstudio', '/tools/wihtml/'),
-                              ('EAIstudio', '/tools/eaistudio/'),
-                              ('AI Model Monitor', '/nl/model-monitor/')]),
+        ('Zelf aan de slag', [('Kies een vakgebied of hulpmiddel', '/nl/tools/')]),
         ('Over EAI', [('Over EAI', '/nl/over/'), ('Websitegebruik', '/nl/insights/')]),
     ]
 
@@ -147,10 +135,11 @@ def experiment_sections(en: bool):
     return [
         ('Physics' if en else 'Natuurkunde', [(name, links) for name, links in physics_groups.items()]),
         ('Mathematics' if en else 'Wiskunde', maths),
-        ('Human anatomy' if en else 'Menselijk lichaam', [('Anatomy and heart' if en else 'Lichaam en hart', [('The body in 3D' if en else 'Het lichaam in 3D', '/tools/anatomie/', ''), ('Heart and circulation' if en else 'Hart en bloedsomloop', '/tools/anatomie/labs/hartslag/', 'Hartslaglab hartslag hartkleppen bloedstroom hartcyclus')])]),
-        ('Space and astronomy' if en else 'Heelal en ruimtevaart', [('Original Observatory' if en else 'Oorspronkelijk observatorium', modes), ('Guided discovery' if en else 'Ontdekken met uitleg', [('Galactic Observatory: guided' if en else 'Melkweg met uitleg', '/tools/melkweg-lab/', '')] + guided_modes), ('Orbits' if en else 'Banen', [('Gravity and satellites' if en else 'Gravitatie en satellietbanen', '/tools/science-observatory/labs/gravitatie-banen/', '')])]),
-        ('How AI works' if en else 'Hoe werkt AI?', [('AI' if en else 'AI onderzoeken', [('LLM Observatory' if en else 'Hoe werkt een taalmodel?', '/tools/llm-observatorium/', '')] + llm_modes)]),
-        ('Sport and tactics' if en else 'Sport en tactiek', [('Sports' if en else 'Sport en bewegen', [('Attack and defence' if en else 'Aanvallen en verdedigen', '/tools/lo-aanvalslab/', ''), ('Research and sources' if en else 'Onderbouwing van sportproeven', '/tools/lo-aanvalslab/onderbouwing/', '')])]),
+        ('Human body' if en else 'Menselijk lichaam', [('Body and heart' if en else 'Lichaam en hart', [('The body in 3D' if en else 'Het lichaam in 3D', '/tools/anatomie/', ''), ('Heart and circulation' if en else 'Hart en bloedsomloop', '/tools/anatomie/labs/hartslag/', 'hartslag hartkleppen bloedstroom hartcyclus')])]),
+        ('Space' if en else 'Heelal', [('The Milky Way' if en else 'De Melkweg', guided_modes), ('Orbits' if en else 'Banen', [('Gravity and satellites' if en else 'Gravitatie en satellietbanen', '/tools/science-observatory/labs/gravitatie-banen/', '')])]),
+        ('Oceanography' if en else 'Oceanografie', [('Oceanography' if en else 'Oceanografie', [('Oceanography (Dutch)' if en else 'Oceanografie', '/tools/abyss/', 'Zeebodem, aardbevingen, plaattektoniek, stromingen en meetgegevens')])]),
+        ('Sport and movement' if en else 'Sport en bewegen', [('Sports' if en else 'Sport en bewegen', [('Attack and defence' if en else 'Aanvallen en verdedigen', '/tools/lo-aanvalslab/', ''), ('Research and sources' if en else 'Onderbouwing van aanvallen en verdedigen', '/tools/lo-aanvalslab/onderbouwing/', '')])]),
+        ('AI', [('Language models' if en else 'Taalmodellen', [('How does a language model work?' if en else 'Hoe werkt een taalmodel?', '/tools/llm-observatorium/', '')] + llm_modes)]),
     ]
 
 
@@ -277,6 +266,14 @@ def menu_topic_html(en: bool) -> str:
         'Human anatomy': 'Explore the body in 3D and a beating heart.',
         'Heelal en ruimtevaart': 'Verander banen en onderzoek de Melkweg en planeten.',
         'Space and astronomy': 'Explore the Milky Way, orbits and planets.',
+        'Heelal': 'De Melkweg, sterren en satellietbanen.',
+        'Space': 'The Milky Way, stars and satellite orbits.',
+        'Oceanografie': 'Zeebodem, aardbevingen, plaattektoniek en stromingen.',
+        'Oceanography': 'Seafloor, earthquakes, plate tectonics and currents.',
+        'Sport en bewegen': 'Aanvallen, verdedigen en opstellingen.',
+        'Sport and movement': 'Attack, defence and lineups.',
+        'AI': 'Onderzoek taalmodellen en de werking van AI.',
+        'Human body': 'Explore the body in 3D and a beating heart.',
         'Hoe werkt AI?': 'Volg tokens, aandacht en tekstgeneratie in een taalmodel.',
         'How AI works': 'Explore tokens, attention and text generation.',
         'Sport en tactiek': 'Verander opstellingen en onderzoek keuzes in het spel.',
@@ -294,10 +291,38 @@ def menu_topic_html(en: bool) -> str:
     return '<a class="eai-site-overview" href="/tools/science-observatory/">' + ('Explore all subjects' if en else 'Alle vakgebieden') + '</a>' + ''.join(blocks)
 
 
+
+def populate_physics_topics(soup: BeautifulSoup, en: bool) -> None:
+    """Render links from the tested 53-item model catalog; no second manual list."""
+    holder = soup.select_one('[data-eai-physics-list]')
+    if holder is None:
+        return
+    for title, links in experiment_sections(en)[0][1]:
+        section = soup.new_tag('section', attrs={'class': 'eai-explore-physics-group'})
+        heading = soup.new_tag('h3')
+        heading.string = title
+        section.append(heading)
+        listing = soup.new_tag('ul')
+        for label, url, _ in links:
+            item = soup.new_tag('li')
+            anchor = soup.new_tag('a', href=url)
+            anchor.string = label
+            item.append(anchor)
+            listing.append(item)
+        section.append(listing)
+        holder.append(section)
+
+
 def site_search_records(root: Path) -> list:
     """Build a public, local search index from published paths and real module IDs."""
     records = {}
+    register = json.loads((Path(__file__).resolve().parent.parent / 'catalog' / 'website-register.json').read_text(encoding='utf-8'))
+    titles = {page['url']: page['public_title_nl'] for page in register['pages'] if page.get('public_title_nl')}
+    excluded = {page['url'] for page in register['pages'] if page.get('search_scope') in ('via_verwijzing', 'intern', 'niet_indexeren')}
     def add(title, url, category, description=''):
+        if url.split('#', 1)[0] in excluded:
+            return
+        title = titles.get(url, title)
         if url in LEGACY_HUB_REDIRECTS:
             return
         if not title or not url.startswith('/'):
@@ -315,6 +340,13 @@ def site_search_records(root: Path) -> list:
                     current['category'] = category
             return
         records[url] = {'title': str(title).strip(), 'url': url, 'category': category, 'description': description}
+    # Only explicitly approved public page titles are added from the register.
+    # All other internal entries remain in their original application or library.
+    taxonomy = json.loads((Path(__file__).resolve().parent.parent / 'catalog' / 'taxonomie.json').read_text(encoding='utf-8'))
+    family_names = {family['id']: family['nl'] for family in taxonomy['families']}
+    for page in register['pages']:
+        if page.get('public_title_nl') and page.get('search_scope') == 'algemeen':
+            add(page['public_title_nl'], page['url'], family_names.get(page['family'], 'Hulpmiddelen'))
     for en in (False, True):
         for name, links in groups(en):
             for label, url in links:
@@ -477,6 +509,8 @@ def prepare(root: Path) -> dict:
             continue
         original = page.read_text(encoding='utf-8')
         soup = BeautifulSoup(original, 'html.parser')
+        if canonical('/' + relative.as_posix()) in ('/nl/tools/', '/en/tools/'):
+            populate_physics_topics(soup, soup.html.get('lang', '').startswith('en'))
         body = soup.body
         path = '/' + relative.as_posix()
         if not body or not review_archive(soup, canonical(path)):
