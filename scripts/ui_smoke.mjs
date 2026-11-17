@@ -61,7 +61,11 @@ try {
       }
       assert((await page.locator('.eai-site-menu-panel a[href]').count()) <= 28, 'Keep menu short');
       if (width === 390 && path === '/') {
+        assert(!(await page.locator('.eai-site-search').isVisible()), 'Search is not forced into the menu');
+        await page.locator('.eai-site-search-trigger').click();
         const search = page.locator('#eai-site-search-input');
+        assert(await search.isVisible(), 'Search button reveals search');
+        assert(await search.evaluate(el => document.activeElement === el), 'Search is focused');
         await search.fill('hefboom');
         await page.locator('#eai-site-search-results a[href="/tools/science-observatory/labs/natuurkunde/#lever"]').waitFor();
         assert.equal(await page.locator('.eai-site-search-results').count(), 1);
@@ -84,7 +88,9 @@ try {
       }
       await page.keyboard.press('Escape');
       assert.equal(await page.locator('.eai-site-menu').getAttribute('open'), null);
-      assert(await page.locator('.eai-site-menu>summary').evaluate(e => e === document.activeElement));
+      const expectedFocus = width === 390 && path === '/' ? '.eai-site-search-trigger' : '.eai-site-menu>summary';
+      const activeFocus = await page.evaluate(() => ({ tag:document.activeElement?.tagName, label:document.activeElement?.getAttribute('aria-label'), className:document.activeElement?.getAttribute('class'), menuOpen:document.querySelector('.eai-site-menu')?.open, searchHidden:document.querySelector('.eai-site-search')?.hidden }));
+      assert(await page.locator(expectedFocus).evaluate(e => e === document.activeElement), `Focus expected ${expectedFocus} at ${path}/${width}: ${JSON.stringify(activeFocus)}`);
       await page.locator('.eai-site-menu>summary').click();
       assert.equal(await page.locator('.eai-site-group[open]').count(), 0, 'Reopening resets themes');
       await page.keyboard.press('Escape');

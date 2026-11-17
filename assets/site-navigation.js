@@ -4,6 +4,8 @@
  var menu=document.querySelector('.eai-site-menu');
  if(!menu)return;
  var trigger=menu.querySelector(':scope > summary');
+ var searchTrigger=document.querySelector('.eai-site-search-trigger');
+ var searchBox=menu.querySelector('.eai-site-search');
  var panel=menu.querySelector('.eai-site-menu-panel');
  var sections=menu.querySelector('.eai-site-menu-sections');
  var groups=Array.from(menu.querySelectorAll('.eai-site-group'));
@@ -14,6 +16,9 @@
  var activeQuery=0;
 
  function reset(){
+  activeQuery++;
+  if(searchBox)searchBox.hidden=true;
+  if(searchTrigger)searchTrigger.setAttribute('aria-expanded','false');
   groups.forEach(function(group){group.open=false;});
   menu.querySelectorAll('.eai-site-topic,.eai-site-cluster').forEach(function(item){item.open=false;});
   if(input){input.value='';}
@@ -23,15 +28,17 @@
  }
  function sync(){
   trigger.setAttribute('aria-expanded',String(menu.open));
+  if(searchTrigger)searchTrigger.setAttribute('aria-expanded',String(menu.open && searchBox && !searchBox.hidden));
   trigger.setAttribute('aria-label',english?(menu.open?'Close menu':'Open menu'):(menu.open?'Menu sluiten':'Menu openen'));
   if(!menu.open)reset();
  }
  function close(focus){
   if(!menu.open)return;
+  var wasSearching=Boolean(searchBox && !searchBox.hidden);
   menu.open=false;
   reset();
   sync();
-  if(focus)trigger.focus();
+  if(focus)(wasSearching && searchTrigger ? searchTrigger : trigger).focus();
  }
  function clean(value){
   return String(value||'').toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,' ').trim();
@@ -116,6 +123,18 @@
   if(count>60)showMessage(english?'Refine your search for more results.':'Verfijn je zoekopdracht om meer resultaten te zien.');
   panel.scrollTop=0;
  }
+ if(searchTrigger && searchBox && input){
+  searchTrigger.addEventListener('click',function(event){
+   event.preventDefault();
+   event.stopPropagation();
+   if(menu.open && !searchBox.hidden){close(false);searchTrigger.focus();return;}
+   menu.open=true;
+   reset();
+   searchBox.hidden=false;
+   sync();
+   input.focus();
+  });
+ }
  groups.forEach(function(group){
   group.addEventListener('toggle',function(){
    if(!group.open)return;
@@ -133,7 +152,12 @@
     var best=results.querySelector('a');
     if(best){event.preventDefault();best.click();}
    }
-   if(event.key==='Escape'&&input.value){event.stopPropagation();input.value='';doSearch();}
+   if(event.key==='Escape'){
+    event.preventDefault();
+    event.stopPropagation();
+    if(input.value){input.value='';doSearch();}
+    else{close(true);}
+   }
   });
  }
  menu.addEventListener('toggle',sync);

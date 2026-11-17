@@ -68,7 +68,8 @@ try{
    results.push({path,width,...m});
   }
   await page.goto(base+'/nl/onderzoek/',{waitUntil:'load'});
-  await page.locator('.eai-story-search-button').click();
+  assert.equal(await page.locator('.eai-story-search-button').count(),0,'No duplicate search control on editorial pages');
+  await page.locator('.eai-site-search-trigger').click();
   assert.equal(await page.locator('.eai-site-menu').getAttribute('open'),'');
   await page.waitForFunction(()=>document.querySelector('#eai-site-search-input')===document.activeElement,null,{timeout:4500});
   if(width>=1100)assert(await page.locator('.eai-site-primary').isVisible(),'Homepage header on desktop');
