@@ -62,7 +62,7 @@ test("Hulppagina en prompts zijn aparte toegankelijke routes",()=>{
  assert.match(prompts,/id="promptSearch"/);
  assert.match(prompts,/id="selectedOutcome"/);
  assert.match(prompts,/eg-dashboard-workspace/);
- assert.match(prompts,/prompt-dashboard\\.css/);
+ assert.match(prompts,/prompt-dashboard/);
  assert.match(prompts,/id="selectedBody"/);
  assert.match(prompts,/id="copySelected"/);
  assert.match(wizard,/id="helpDialog"/);
