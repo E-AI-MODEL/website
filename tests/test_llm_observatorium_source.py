@@ -156,7 +156,7 @@ class LlmObservatorySourceTests(unittest.TestCase):
         self.assertIn('guideAddRealTrace(interactive)', self.html)
         viewer = (ROOT / "assets" / "llm-real-trace-viewer.js").read_text(encoding="utf-8")
         self.assertIn("/assets/llm-real-trace.json", viewer)
-        self.assertIn("niet jouw vraag", self.html)
+        self.assertIn("niet jouw vraag", viewer)
 
     def test_local_math_module_is_present(self):
         math = ROOT / "assets" / "llm-learning-math.js"
