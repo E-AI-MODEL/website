@@ -93,6 +93,7 @@ class LlmObservatorySourceTests(unittest.TestCase):
                        'id="guideNext"', 'id="guidePrev"',
                        'function setupGuide()', 'function guideSetVisible(open)',
                        'function guideTokenChips(parent,contextMode)',
+                       'function guideDrawLayer()',
                        'function guideBarData()', 'function guideDrawBars()',
                        'function guideRender()', 'setupGuide();loadRealTokenizer();'):
             self.assertIn(marker, html)
@@ -109,6 +110,7 @@ class LlmObservatorySourceTests(unittest.TestCase):
             "Een expert is een klein rekennetwerk, geen persoon.",
             "AI verdeelt tekst in kleine stukjes: tokens.",
             "De kleuren tonen de volgorde.",
+            "Je zin wordt verdeeld in echte tokens",
             "Elke balk is een mogelijk volgend stukje tekst.",
             "Een taalmodel maakt een antwoord niet in één keer",
             "Deze route is een voorbeeld, geen live meting.",
