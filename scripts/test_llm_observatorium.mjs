@@ -104,7 +104,7 @@ try{
   await page.locator('.ai-learn-answer-actions .ai-guide-cta').first().click();
   assert.equal(await page.locator('.ai-learn-piece').count(),firstCount+1,'Per klik verschijnt een echt getokeniseerd stukje');
   await page.screenshot({path:'test-results/llm-guide-'+width+'-antwoord.png'});
-  assert.match(await page.locator('#guideTechnical').innerText(),/volgende tokens/);
+  assert.match(await page.locator('#guideTechnical').innerText(),/kansen/);
   await page.locator('#guideTechnical').click();
   assert.equal(await page.locator('#aiGuide').isVisible(),false,'Technisch onderzoek gaat open');
   assert.equal(await page.evaluate(()=>state.mode),5,'Bij de volgende tokens opent de kansmodus');
