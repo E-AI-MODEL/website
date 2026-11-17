@@ -263,6 +263,20 @@ De interface kent vier duidelijk onderscheidbare soorten informatie:
 
 **Regel:** “Echte berekening” mag nooit stilzwijgend worden gelezen als “echt door gpt-oss berekend”. Een kansberekening over verzonnen scores moet tegelijk de aanduiding “voorbeeldscores” krijgen.
 
+## Echte modelmetingen, vanaf de huidige werkbranch
+
+De oorspronkelijke gpt-oss-illustraties tonen openbare modelafmetingen en controleerbare minivoorbeelden. Daarnaast is nu één afzonderlijke **echte modelmeting** beschikbaar, volledig zonder extra kosten voor bezoekers.
+
+- Getraind model: [EphAsad/IllaryiaStories-1M](https://huggingface.co/EphAsad/IllaryiaStories-1M), acht lagen, 16 attention-heads, GPT-Neo, MIT-licentie.
+- Vast bronmodel: revisie `20baf4ebd7123dac70aeba0d6fa1e1671afa64f9`; het JSON-bestand bevat de SHA-256 van de safetensors-gewichten.
+- Vaste tekst: `Once upon a time,` (Engels). Vier echte tokenvoorspellingen vormen ` there was a little`.
+- Gemeten gegevens: token-ID's, een deel van de token- en positiegetallen, aandachtgewichten van één head, acht lagen en de volgende-tokenkansen.
+- **Dit model gebruikt geen experts en niet de gpt-oss-tokenizer.** Het maakt geen modeluitvoer voor de vraag die de bezoeker heeft ingevoerd.
+- Het meetbestand `assets/llm-real-trace.json` is ongeveer 21 KB. Het wordt alleen na een bewuste klik vanaf dezelfde website geladen.
+- Alleen het **handmatig te starten** GitHub-workflow `llm-real-trace.yml` voert het getrainde model opnieuw uit; de reguliere tests controleren het reeds opgenomen bestand zonder gewichten te downloaden.
+
+Toon nooit een aandachtgewicht als reden waarom het model een bepaalde uitspraak doet. De lengte of grootte van een vector bewijst evenmin dat het model meer begrijpt.
+
 ## Gratis en snel: concrete uitvoeringseisen
 
 - Geen API-sleutels in de frontend, geen betaalde inferentie per bezoeker, geen verplicht account.
