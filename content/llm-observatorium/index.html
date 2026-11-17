@@ -738,6 +738,218 @@
  .ai-trace-existing{font-size:11px}
 }
 
+
+/* EAI LLM visual refresh 2026-11: editorial surfaces, hairlines and restrained interaction.
+   A visual layer only: the nine learning steps, real measurement data and 3D logic stay intact. */
+:root{
+ --bg:#0b1018;--nav:#0c131d;--surface:#101923;--inner:#151f2a;
+ --edge:#283440;--fg:#eef3f5;--muted:#a4b3bd;--dim:#7e929f;
+ --cyan:#aad9d1;--amber:#dec4a0;--purple:#b9bcd4;--green:#b6d9c9;
+ --llm-bg:#0b1018;--llm-panel:#111922;--llm-raised:#17212b;
+ --llm-hairline:rgba(202,219,225,.15);--llm-line:rgba(202,219,225,.24);
+ --llm-text:#edf2f4;--llm-subtle:#b5c2ca;--llm-dim:#91a3ae;--llm-accent:#aed9ca;
+}
+html,body{background:var(--llm-bg);color:var(--llm-text);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif}
+button,input,select,textarea{font-family:inherit}
+button{transition:background-color .15s,border-color .15s,color .15s}
+:focus-visible{outline:2px solid #b6e2d2!important;outline-offset:2px}
+.ai-guide,.model-story{background:var(--llm-bg);color:var(--llm-text);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif}
+.ai-guide-shell{grid-template-rows:76px minmax(0,1fr) 74px;max-width:1540px}
+.ai-guide-head,.ai-guide-bottom{background:#0c131c;border-color:var(--llm-hairline)}
+.ai-guide-head{padding-inline:clamp(16px,3vw,45px)}
+.ai-guide-brand{gap:14px}
+.ai-guide-mark{width:38px;height:38px;background:#15211f;border:1px solid #54766a;color:#c4e5d8;border-radius:8px;font-size:13px;font-weight:650;letter-spacing:0}
+.ai-guide-kicker,.ai-guide-stepname,.ai-guide-small{color:var(--llm-accent);font-size:10px;letter-spacing:.065em;font-weight:600}
+.ai-guide-brand h1{font-weight:570;letter-spacing:-.028em;color:#f4f6f7}
+.ai-guide-body{gap:clamp(18px,2.2vw,35px);padding:clamp(13px,2vw,29px)}
+.ai-guide-steps{border-right:1px solid var(--llm-hairline);gap:4px;padding:12px 13px 12px 0}
+.ai-guide-steps button{padding:10px 11px;border:1px solid transparent;border-radius:7px;background:transparent;color:#aebdc6;font-size:13px!important;font-weight:450!important}
+.ai-guide-steps button:hover{background:#17212b;color:#f0f5f6}
+.ai-guide-steps button span{width:25px;height:25px;border:1px solid var(--llm-line);border-radius:5px;background:transparent;color:#99abb7;font-size:11px}
+.ai-guide .ai-guide-steps button[aria-current=step]{border-color:var(--llm-hairline);background:#182822;color:#f1f6f4;font-weight:550!important;box-shadow:inset 2px 0 0 #b4d9ca}
+.ai-guide .ai-guide-steps button[aria-current=step] span{border-color:#6c9181;background:transparent;color:#d9eee5}
+.ai-guide-intro h2{font-weight:560;letter-spacing:-.042em;line-height:1.1;color:#f2f5f5}
+.ai-guide-intro p{color:var(--llm-subtle);font-weight:400;line-height:1.5}
+.ai-guide-main{gap:clamp(13px,2vh,23px)}
+.ai-guide-work{gap:clamp(12px,1.7vw,23px);grid-template-columns:minmax(0,1.36fr) minmax(250px,.72fr)}
+.ai-guide-visual,.ai-guide-aside{border:1px solid var(--llm-hairline);border-radius:10px;box-shadow:none}
+.ai-guide-visual{background:#111a24;padding:clamp(16px,2.3vw,31px);gap:16px}
+.ai-guide-aside{background:#101822;padding:clamp(16px,2.2vw,29px);gap:13px}
+.ai-guide-aside>p:not(.ai-guide-boundary){color:#e0e8ed;font-weight:400;letter-spacing:-.012em}
+.ai-guide-boundary{border-color:var(--llm-hairline);color:#9eafb9}
+.ai-guide-question{font-size:10px;letter-spacing:.075em;text-transform:uppercase;color:#a9c6c8;font-weight:650}
+.ai-guide-small{color:#b2cac4}
+.ai-guide-input{background:#0b141e;border:1px solid #506775;border-radius:8px;color:#f1f5f6;box-shadow:none;padding:16px 18px;font-size:clamp(16px,1.5vw,19px)!important}
+.ai-guide-input:focus{border-color:#8ebba9}
+.ai-guide-chat{border:1px solid var(--llm-line);border-radius:10px 10px 3px 10px;background:#1a2a35;box-shadow:none}
+.ai-guide-token{border:1px solid #526a74;border-radius:6px;background:#1a3039;color:#e5eeed;box-shadow:none}
+.ai-guide-token[aria-pressed=true],.ai-guide-token.is-focus{background:#d7bf98;border-color:#d7bf98;color:#202622}
+.ai-guide-token.is-before{background:#213b34;border-color:#658b7d;color:#d6eee3}
+.ai-guide-token.is-after{background:#15222b;border-color:#334653;color:#a1b2bd}
+.ai-guide-flow-item,.ai-guide-mini-values,.ai-guide-mini{border-color:var(--llm-hairline)}
+.ai-guide-flow-item{background:#17242c;border:1px solid var(--llm-hairline);border-radius:7px}
+.ai-guide-flow-item>b{color:#d1e5dd;font-weight:570}
+.ai-guide-flow-item>span,.ai-guide-flow-item>small,.ai-guide-legend{color:#afc0c9}
+.ai-guide-layer-track i{background:#253745;border-color:#455a66;box-shadow:none}
+.ai-guide-layer-track i.is-current{background:#d3b990;border-color:#d3b990;box-shadow:none}
+.ai-guide-bar>span,.ai-guide-bar>strong,.ai-guide-scale label{color:#d8e3e8}
+.ai-guide-scale output{color:#c7e1d7}
+.ai-guide-track{border:1px solid var(--llm-hairline);background:#21303a;border-radius:4px}
+.ai-guide-fill{background:#8fb5a9;border-radius:3px}
+.ai-guide-bar:first-child .ai-guide-fill{background:#d0b18a}
+.ai-guide-answer strong{color:#b8dfd0}
+.ai-guide .ai-guide-cta,.ai-guide .ai-guide-technical,.ai-guide .ai-guide-actions button{font-weight:500!important;box-shadow:none;border-radius:7px}
+.ai-guide .ai-guide-technical{background:#151f29;border-color:var(--llm-line);color:#e2ebed;padding:10px 15px}
+.ai-guide .ai-guide-technical span{color:#bbdcca}
+.ai-guide .ai-guide-cta{background:#20342e;border:1px solid #6c9b88;color:#e1f0e9}
+.ai-guide .ai-guide-cta:hover,.ai-guide .ai-guide-technical:hover{background:#273a37;border-color:#96bbab}
+.ai-guide-bottom{padding-inline:clamp(16px,3vw,45px)}
+.ai-guide-counter{font-size:12px;color:#b8c6cb}
+.ai-guide-progress{gap:5px;max-width:285px}
+.ai-guide-progress i{height:2px;border-radius:2px;background:#354650}
+.ai-guide-progress i.on{background:#b8d6ca}
+.ai-guide .ai-guide-actions button{background:#141e27;border:1px solid var(--llm-line);color:#d9e4e9;min-height:43px;padding:9px 16px}
+.ai-guide .ai-guide-actions button:hover:not(:disabled){background:#1d3035;border-color:#7f9b9c}
+.ai-guide .ai-guide-actions .ai-guide-next{background:#c8dfd4;border-color:#c8dfd4;color:#162820;font-weight:620!important}
+.ai-guide .ai-guide-actions .ai-guide-next:hover{background:#deede6;border-color:#deede6}
+#guideReturn{background:#182b26;border-color:#668b7a;color:#d9ece1}
+.ai-guide .ai-guide-actions button:disabled{opacity:.38}
+.ai-trace-outer,.ai-trace-journey{background:#141f28;border:1px solid var(--llm-hairline);border-radius:8px}
+.ai-trace-toggle,.ai-trace-nav button,.ai-trace-nav select,.ai-trace-token-step,.ai-trace-head-btn{border:1px solid var(--llm-line);background:#1b2933;border-radius:6px;color:#dde9ec;font-weight:500}
+.ai-trace-toggle:hover,.ai-trace-nav button:hover:not(:disabled),.ai-trace-head-btn:hover{background:#253640;border-color:#74978f}
+.ai-trace-number{background:#192833;border:1px solid var(--llm-hairline);border-radius:5px}
+.ai-trace-title,.ai-trace-selected,.ai-trace-prompt,.ai-trace-choice{color:#ddcaab}
+.ai-trace-intro,.ai-trace-help,.ai-trace-disclaimer,.ai-trace-footnote,.ai-trace-head-label{color:#acbdc4}
+.ai-trace-source{color:#badbd0}
+.ai-trace-bar strong,.ai-trace-number strong{color:#e3d0b1}
+.ai-trace-track{background:#283b44}
+.ai-trace-track i{background:#c4b18f}
+.ai-trace-completion{background:#202f30;border:1px solid #678d7e;border-radius:6px;font-weight:520}
+.ai-trace-token-step.is-active,.ai-trace-head-btn.is-active{background:#3a342b;border-color:#bca37e;color:#f0dab7}
+.ai-trace-new-token{background:#496151;color:#f6ebcf}
+.ai-trace-content{border-color:var(--llm-hairline)}
+/* The same visual language continues in the animated explanation and technical 3D view. */
+.model-story{background:#0d141d}
+.story-copy h2{font-weight:560;color:#eef3f4}
+.story-copy p,.v-label,.story-evidence{color:#abc0ca}
+.story-kicker{color:#aed7c9}
+.story-board{background:#111d27;border:1px solid var(--llm-hairline);border-radius:9px}
+.story-board:before{opacity:.35}
+.v-question{background:#1b2f39;border:1px solid #526c76;border-radius:9px 9px 9px 3px;box-shadow:none}
+.v-token{background:#1e3640;border:1px solid #53717a;border-radius:4px;box-shadow:none}
+.v-token.is-hot{background:#3e372c;border-color:#bda57e;color:#f0d8b6}
+.v-machine{background:#192c35;border:1px solid #557d79;border-radius:9px;box-shadow:none}
+.v-layers-sketch i{box-shadow:none;border-color:#55777a}
+.v-layers-sketch i.is-hot{box-shadow:none;background:#bca482}
+.v-process-col,.v-numerics{background:#152632;border:1px solid var(--llm-hairline);border-radius:7px}
+.v-numerics span{background:#9ec0b4}
+.v-expert-grid i.active,.v-stepcount i.active{box-shadow:none}
+.v-score .track,.v-bar-track{background:#223640}
+.story-bottom{border-color:var(--llm-hairline)}
+.story-actions button,.story-back3d{border-radius:6px;box-shadow:none}
+.sidebar,.topbar,.plot-panel,.inspector,.footer{background:#0d151e;border-color:var(--llm-hairline)}
+.logo{border-color:var(--llm-hairline)}
+.logo .mark{border-color:#678279}
+.logo .mark:before,.logo .mark:after{border-color:#7d9a8d}
+.logo strong{color:#eef3f5;letter-spacing:.04em;font-weight:610}
+.logo small,.section-label,.mode-btn small,.side-foot{color:#91a6b1;letter-spacing:.045em}
+.side-foot{border-color:var(--llm-hairline)}
+.side-foot .live{color:#b8d7c9;letter-spacing:.04em}
+.side-foot .live:before{box-shadow:none;background:#a7ceb9}
+.mode-list{gap:4px}
+.mode-btn{border:1px solid transparent;border-radius:6px;min-height:58px;color:#b5c5cd}
+.mode-btn strong{color:#c2d0d6;font-weight:530}
+.mode-btn small{font-family:inherit;font-weight:400}
+.mode-btn .mode-icon{background:#192530;border:1px solid var(--llm-hairline);border-radius:5px;color:#b5d6ce}
+.mode-btn:hover{background:#17232d}
+.mode-btn.active{background:#192a2c;border-color:var(--llm-hairline);box-shadow:inset 2px 0 0 #afd7c6}
+.mode-btn.active .mode-icon{border-color:#729b8d;color:#d2e8dc}
+.mode-btn.active strong{color:#eff5f3}
+.topbar .breadcrumb{font-family:inherit;letter-spacing:.03em;color:#99acb6}
+.topbar .breadcrumb b{color:#d8e4e9}
+.tool-btn,.top-actions select,.small-btn,.control select,.control textarea,.control input[type=text]{background:#182532;border:1px solid var(--llm-line);border-radius:6px;color:#d7e4e8;box-shadow:none}
+.tool-btn.primary,.small-btn.selected{background:#243e37;border-color:#688f80;color:#e2f1e9}
+.stage{background:radial-gradient(ellipse at 52% 46%,#182a38 0%,#0e1a26 43%,#0a111a 89%)}
+.stage-title .eyebrow,.stage-status,.scene-caption,.hint{color:#abc3c8;text-shadow:none}
+.stage-title h1{color:#f0f5f6;font-weight:570;letter-spacing:-.04em}
+.stage-title p{color:#b5c5cd}
+.cam-switch,.journey-panel{background:#101d27e8;border:1px solid var(--llm-line);border-radius:7px;box-shadow:none}
+.cam-switch button{color:#b0c2cd}
+.cam-switch button.active{background:#274039;color:#e6f1ed}
+.journey-top strong{color:#e3cfac}
+.journey-kicker{color:#b8d9cd}
+.journey-controls button,.journey-data button,.stage-journey-cta{background:#1a2c35;border:1px solid var(--llm-line);border-radius:6px;color:#dbe8ec;box-shadow:none}
+.journey-controls .journey-primary{background:#344336;border-color:#9aa786;color:#ecf2e2}
+.journey-track,.plot-summary{background:#1b2b34;border-color:var(--llm-hairline)}
+.journey-track>div{background:#a8cfc1;box-shadow:none}
+.plot-head,.plot-note,.plot-summary{color:#b7c7ce;border-color:var(--llm-hairline);font-family:inherit;letter-spacing:0}
+.plot-panel,.plot-note,.plot-summary{background:#111c26}
+.ins-head{border-color:var(--llm-hairline)}
+.ins-head h2{color:#ecf2f4;font-weight:590}
+.ins-head p{color:#acbec6}
+.stat,.learn-card,.source-note{background:#16242f;border:1px solid var(--llm-hairline);border-radius:7px;color:#b9cbd2}
+.stat small{color:#95acb8}
+.stat strong{color:#edf3f5;font-weight:570}
+.stat strong.warm{color:#e0c49d}
+.block-title{border-color:var(--llm-hairline);color:#cfdbdf;font-family:inherit;letter-spacing:.055em}
+.control label{color:#bdd0d9}
+.control label output{color:#b4dacb}
+.data-pill{background:#1b302e;border-color:#547a6f;border-radius:4px;color:#c7e3d5}
+.data-pill.demo{background:#362c23;border-color:#79694d;color:#e0c69d}
+.footer{border-color:var(--llm-hairline)}
+.mobile-dock{background:#0d151e;border-color:var(--llm-hairline)}
+.mobile-dock button{border-radius:6px}
+.mobile-dock button b{color:#bad6d1}
+.mobile-dock button.active{background:#1b302c;border:1px solid #5d8275;color:#eff5f3}
+@media(max-width:960px){
+ .ai-guide-work{grid-template-columns:minmax(0,1fr) minmax(220px,.8fr)}
+}
+@media(max-width:800px){
+ .sidebar,.inspector,.plot-panel{background:#111d27;border:1px solid var(--llm-line);border-radius:10px;box-shadow:0 -8px 32px #0007}
+ .mobile-dock{border-top:1px solid var(--llm-hairline)}
+}
+@media(max-width:680px){
+ .ai-guide-shell{grid-template-rows:64px minmax(0,1fr) 64px}
+ .ai-guide-head{padding:8px 13px}
+ .ai-guide-brand{gap:9px}
+ .ai-guide-mark{height:32px;width:32px;border-radius:6px;font-size:11px}
+ .ai-guide-brand h1{font-size:15px;font-weight:560}
+ .ai-guide-kicker,.ai-guide-stepname,.ai-guide-small{font-size:9px;letter-spacing:.045em}
+ .ai-guide-technical{padding:7px 9px!important;font-size:11px!important}
+ .ai-guide-body{padding:10px 12px;gap:9px}
+ .ai-guide-intro h2{font-size:clamp(20px,5.25vw,29px);line-height:1.12}
+ .ai-guide-intro p{font-size:12px;line-height:1.42}
+ .ai-guide-visual,.ai-guide-aside{padding:13px;border-radius:8px}
+ .ai-guide-visual{gap:11px}
+ .ai-guide-aside{gap:9px}
+ .ai-guide-aside>p:not(.ai-guide-boundary){font-size:13px;line-height:1.48}
+ .ai-guide-input{border-radius:7px;min-height:85px;padding:13px}
+ .ai-guide-flow-item{border-radius:5px}
+ .ai-guide-bottom{padding:7px 12px;gap:9px}
+ .ai-guide-actions{gap:7px}
+ .ai-guide .ai-guide-actions button{min-height:41px;border-radius:6px;padding:8px 12px;font-size:12px!important}
+ .ai-guide-progress i{height:2px}
+ .story-board{border-radius:8px}
+ .story-copy h2{font-size:clamp(21px,5.6vw,27px)}
+ .story-board:before{opacity:.2}
+}
+@media(prefers-reduced-motion:reduce){
+ button{transition:none!important}
+}
+
+
+/* Narrow phones: keep previous/next completely inside the viewport. */
+@media(max-width:380px){
+ .ai-guide-bottom{padding-left:10px;padding-right:10px;gap:6px}
+ .ai-guide-progress{display:none}
+ .ai-guide-counter{min-width:27px;flex:none;font-size:11px}
+ .ai-guide-actions{gap:5px;min-width:0;margin-left:auto}
+ .ai-guide .ai-guide-actions button{
+   padding:7px 10px;min-height:40px;font-size:11px!important;
+   max-width:calc(100vw - 110px);
+ }
+}
+
 </style>
 <script src="/assets/llm-learning-math.js"></script>
 <script src="/assets/llm-real-trace-viewer.js"></script>
