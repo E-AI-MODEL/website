@@ -320,9 +320,12 @@ try {
   await fallback.locator('.eai-site-group').nth(4).locator(':scope > summary').click();
   assert.equal(await fallback.locator('.eai-site-group[open]').count(), 1, 'Native accordion must be exclusive');
   const fallbackTools = fallback.locator('.eai-site-group').nth(4);
-  assert((await fallbackTools.locator('a[href]').count()) >= 6, 'No-JS menu must retain direct tool links');
-  assert.equal(await fallback.locator('.eai-site-menu-panel a[href="/tools/eaistudio/"]').count(), 1);
-  assert.equal(await fallback.locator('.eai-site-menu-panel a[href="/tools/science-observatory/"]').count(), 1);
+  assert.equal(await fallbackTools.locator('a[href="/nl/tools/"]').count(), 1, 'No-JS navigation goes through one subject overview');
+  await fallbackTools.locator('a[href="/nl/tools/"]').click();
+  assert.equal(await fallback.locator('main .eai-explore-choice').count(), 8, 'Eight subject choices are plain links, even without scripts');
+  assert.equal(await fallback.locator('main a[href="/tools/eaistudio/"]').count(), 1, 'EAIstudio remains available without JavaScript');
+  assert.equal(await fallback.locator('main a[href="/tools/science-observatory/"]').count(), 1, 'Subject catalogue remains available without JavaScript');
+  assert.equal(await fallback.locator('main a[href="/tools/abyss/"]').count(), 1, 'Oceanography remains available without JavaScript');
   await noJS.close();
   assert.deepEqual(errors, []);
   writeFileSync('test-results/ui-report.json', JSON.stringify({ results, noJavaScriptMenu: true, homeRoutes: true, languageLinks: true, errors }, null, 2));
