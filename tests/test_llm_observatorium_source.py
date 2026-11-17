@@ -137,7 +137,7 @@ class LlmObservatorySourceTests(unittest.TestCase):
     def test_visual_first_story_and_mobile_panels(self):
         html = self.html
         self.assertIn('id="aiGuide" class="ai-guide" hidden', html)
-        self.assertIn("guideNode('button','Zelf proberen'", html)
+        self.assertIn("guideNode('button','Stap voor stap'", html)
         self.assertIn("function visualSetScene(id)", html)
         self.assertIn("v-flow-svg", html)
         self.assertIn("v-score-list", html)
