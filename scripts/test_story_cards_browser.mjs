@@ -43,6 +43,12 @@ try{
    assert(m.links>0,path+': page links missing');
    if(['/nl/onderzoek/','/nl/onderwijs/','/nl/toepassingen/'].includes(path))
     assert(m.illustrations>=2,path+': illustrated choices missing');
+   if(path==='/nl/tools/'){
+    const figures=await page.locator('.eai-explore-choice .eai-continuity-art svg').all();
+    assert.equal(figures.length,8,'Eight subject-specific illustrations required');
+    const signatures=await Promise.all(figures.map(el=>el.evaluate(svg=>svg.innerHTML)));
+    assert.equal(new Set(signatures).size,8,'No repeated generic art for different subjects');
+   }
    if(width===1440){
     const sel=path==='/nl/onderzoek/'?'.knowledge-route':path==='/nl/onderwijs/'?'.education-choice-grid>a':path==='/nl/publicaties/'?'.publication-card':path==='/nl/toepassingen/'?'.case-card':null;
     if(sel){
@@ -50,6 +56,10 @@ try{
      if(await cards.count()>1){
       const a=await cards.nth(0).boundingBox(),b=await cards.nth(1).boundingBox();
       assert(a&&b&&Math.abs(a.y-b.y)<42,path+': cards must share a desktop row');
+      if(path==='/nl/onderzoek/'&&await cards.count()===3){
+       const wide=await cards.nth(2).boundingBox();
+       assert(wide.width>a.width*1.65,'Third research route spans both columns');
+      }
      }
     }
    }

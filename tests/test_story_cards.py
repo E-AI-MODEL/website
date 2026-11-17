@@ -51,6 +51,15 @@ class EditorialCardUiTests(unittest.TestCase):
         self.assertNotIn("20 min", cards[1].get_text(" ", strip=True))
         self.assertTrue(all(card.select_one("a[href]") for card in cards))
 
+    def test_distinct_visuals_per_subject_in_prepared_tools(self):
+        page = ROOT / "site-build/nl/tools/index.html"
+        if not page.exists():
+            self.skipTest("Run after site build")
+        soup = BeautifulSoup(page.read_text(encoding="utf-8"), "html.parser")
+        svgs = soup.select(".eai-explore-choice .eai-continuity-art svg")
+        self.assertEqual(len(svgs), 8)
+        self.assertEqual(len({str(svg) for svg in svgs}), 8)
+
     def test_prepared_pages_link_assets_without_changing_routes(self):
         out = ROOT / "site-build"
         if not (out / "nl/onderzoek/index.html").exists():
