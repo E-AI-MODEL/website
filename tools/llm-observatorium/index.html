@@ -937,6 +937,19 @@ button{transition:background-color .15s,border-color .15s,color .15s}
  button{transition:none!important}
 }
 
+
+/* Narrow phones: keep previous/next completely inside the viewport. */
+@media(max-width:380px){
+ .ai-guide-bottom{padding-left:10px;padding-right:10px;gap:6px}
+ .ai-guide-progress{display:none}
+ .ai-guide-counter{min-width:27px;flex:none;font-size:11px}
+ .ai-guide-actions{gap:5px;min-width:0;margin-left:auto}
+ .ai-guide .ai-guide-actions button{
+   padding:7px 10px;min-height:40px;font-size:11px!important;
+   max-width:calc(100vw - 110px);
+ }
+}
+
 </style>
 <script src="/assets/llm-learning-math.js"></script>
 <script src="/assets/llm-real-trace-viewer.js"></script>
