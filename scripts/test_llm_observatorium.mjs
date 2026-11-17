@@ -132,6 +132,9 @@ try{
   await page.evaluate(()=>{storySetPhase(2);storyPaint(.7)});
   assert.equal(await page.locator('#vMiniNumbers .v-mini-values strong').count(),4,
     'Echt lokaal berekend getallenvoorbeeld bij een token-ID');
+  const focusToken=await page.evaluate(()=>state.promptWords[storyFocusIndex()]?.id);
+  if(Number.isInteger(focusToken))assert((await page.locator('#vTokenId').innerText()).includes(String(focusToken)),
+    'Het getallenvoorbeeld gebruikt het geselecteerde echte token');
   await page.screenshot({path:'test-results/llm-story-'+width+'-getallen.png'});
   await page.evaluate(()=>{storySetPhase(3);storyPaint(.8)});
   assert.equal(await page.locator('#vOrderRows .v-mini-order').count(),2,
