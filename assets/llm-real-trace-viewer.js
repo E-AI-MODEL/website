@@ -86,6 +86,8 @@
   const s=t.steps[index];
   const show=typeof redraw==='function'?redraw:()=>{};
   journey(host,t,index,show);
+  host.append(el('p','Vaste begintekst: "'+t.prompt+'" · '+s.input_length+
+    ' invoertokens op dit meetpunt','ai-trace-prompt'));
   host.append(el('p','Dit is een opname van de vaste invoer. De cijfers veranderen alleen als je een andere opgenomen voorspelling kiest.','ai-trace-help'));
   if(lessonStep===2){
    host.append(el('p','Dit zijn de eerste acht echte waarden uit de aangeleerde getallenrij bij het laatste token dat het model al kreeg. Dezelfde token-ID verwijst in dit model steeds naar dezelfde rij.','ai-trace-help'));
