@@ -402,3 +402,14 @@ test("Doelcontrole kijkt afzonderlijk naar opgaven, antwoorden, feedback en scor
  assert.ok(guidance.uncertain.some(x=>x.includes("score of resultaat")));
  assert.ok(guidance.uncertain.some(x=>x.includes("geen bewijs")));
 });
+
+
+test("EAIgit zegt zonder projectbron niet dat bestanden zijn bekeken",()=>{
+ const guidance=makeGuidance({archive:null,repo:null,advice:{purpose:{}},goal:"code",aim:""});
+ const first=primaryFinding(guidance,{archive:null,repo:null});
+ assert.match(first.title,/nog geen bestanden onderzocht/i);
+ assert.equal(first.kind,"info");
+ assert.doesNotMatch(first.description,/zijn bekeken/i);
+ const failed=primaryFinding({problems:[{title:"GitHub kon niet worden gecontroleerd",detail:"Repository niet gevonden",severity:"attention"}]},{repoError:"Repository niet gevonden"});
+ assert.equal(failed.title,"GitHub kon niet worden gecontroleerd");
+});
