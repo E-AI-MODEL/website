@@ -1,5 +1,7 @@
 # LLM Observatorium, interactieve 3D-proef
 
+> **Ontwerp voor de herziening:** [LEERROUTE-ONTWERP.md](LEERROUTE-ONTWERP.md). Dit document beschrijft de negen stappen, de illustraties, de gegevensbronnen, gratis gebruik en de eisen voor mobiel. De huidige applicatie is nog niet volledig volgens dit storyboard ingericht.
+
 Deze zelfstandige HTML is een herbouw van het eerdere LLM-prototype. Het oorspronkelijke Galactisch Observatorium diende als referentie voor een grote, vrij bestuurbare 3D-wereld, zeven onderzoeksmodes, gekoppelde grafieken en een inspector. De oude visual met concentrische ringen is vervangen door een schematische reeks modellagen. Dit project wijzigt de Melkwegbron niet.
 
 Open `index.html` in een browser. Voor echte tokenisatie laadt de pagina eenmaal `gpt-tokenizer@4.1.0` via jsDelivr. Er is geen account of modelsleutel nodig. Zonder netwerkverbinding blijft de voorbeeldweergave werken, maar zie je geen echte token-ID's.
@@ -48,7 +50,7 @@ Dit is geen validatie van echte modelactivaties, wetenschappelijke verklaringskr
 
 ## Status
 
-Het LLM Observatorium staat op eaimodel.nl. Deze herziening staat als concept in pull request #125. Ze is nog niet op de openbare site gepubliceerd.
+Het LLM Observatorium staat op eaimodel.nl. De nieuwe leerroute en het storyboard worden uitgewerkt in [concept-pull request #297](https://github.com/E-AI-MODEL/website/pull/297). De eerdere verwijzing naar PR #125 beschrijft een oudere herziening; controleer de actuele main-branch en gepubliceerde site voordat wordt gepubliceerd.
 
 ## Visuele weergave, november 2026
 
