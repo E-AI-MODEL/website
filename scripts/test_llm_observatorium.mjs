@@ -82,7 +82,7 @@ try{
   assert.equal(await page.locator('.ai-trace-token-step').count(),4,
     'De hele gemeten tokenreeks is direct bereikbaar');
   const firstLayerValues=await page.locator('.ai-trace-bar strong').allInnerTexts();
-  await page.locator('.ai-trace-head-btn').first().click();
+  await page.locator('.ai-trace-head-btn').last().click();
   const differentLayerValues=await page.locator('.ai-trace-bar strong').allInnerTexts();
   assert.notDeepEqual(firstLayerValues,differentLayerValues,
     'Echte eerste en laatste attentionlaag geven verschillende gewichten');
