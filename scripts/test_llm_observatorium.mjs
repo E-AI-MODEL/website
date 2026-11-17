@@ -29,7 +29,7 @@ try{
   await page.locator('#guideReturn').click();
   await page.locator('#aiGuide').waitFor({state:'visible'});
   assert.match(await page.locator('#aiGuideTitle').innerText(),/Van jouw vraag naar een antwoord/);
-  assert.equal(await page.locator('#guideSteps button').count(),5);
+  assert.equal(await page.locator('#guideSteps button').count(),6);
   await page.screenshot({path:'test-results/llm-guide-'+width+'-begin.png'});
   const introLayout=await page.evaluate(()=>({
     vw:innerWidth,vh:innerHeight,sw:document.documentElement.scrollWidth,sh:document.documentElement.scrollHeight,
@@ -46,7 +46,10 @@ try{
   assert(await page.locator('#guideVisual button').count()>0,'Tokenstukken zijn zichtbaar');
   await page.screenshot({path:'test-results/llm-guide-'+width+'-tokens.png'});
   await page.locator('#guideNext').click();
-  assert.match(await page.locator('#guideHeading').innerText(),/eerdere tekst/);
+  assert.match(await page.locator('#guideHeading').innerText(),/lagen/);
+  assert.equal(await page.locator('.ai-guide-flow-item').count(),3,'Van tokennummer via getallen naar lagen');
+  await page.locator('#guideNext').click();
+  assert.match(await page.locator('#guideHeading').innerText(),/tekst/);
   assert(await page.locator('#guideVisual .is-before').count()>0,'Eerdere context wordt getoond');
   await page.locator('#guideNext').click();
   assert(await page.locator('#guideTemperature').isVisible(),'Variatie is daadwerkelijk instelbaar');
