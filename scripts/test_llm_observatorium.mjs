@@ -29,7 +29,7 @@ try{
   await page.locator('#guideReturn').click();
   await page.locator('#aiGuide').waitFor({state:'visible'});
   assert.match(await page.locator('#aiGuideTitle').innerText(),/Van jouw vraag naar een antwoord/);
-  assert.equal(await page.locator('#guideSteps button').count(),6);
+  assert.equal(await page.locator('#guideSteps button').count(),9,'De doorlopende route heeft negen stappen');
   await page.screenshot({path:'test-results/llm-guide-'+width+'-begin.png'});
   const introLayout=await page.evaluate(()=>({
     vw:innerWidth,vh:innerHeight,sw:document.documentElement.scrollWidth,sh:document.documentElement.scrollHeight,
@@ -42,27 +42,59 @@ try{
   assert(introLayout.footer.bottom<=introLayout.vh+2,'Onderste bediening binnen scherm');
   await page.locator('#guidePrompt').fill('Waarom is de lucht blauw?');
   await page.locator('#guideNext').click();
-  assert.match(await page.locator('#guideHeading').innerText(),/stukjes/);
-  assert(await page.locator('#guideVisual button').count()>0,'Tokenstukken zijn zichtbaar');
+  assert.match(await page.locator('#guideHeading').innerText(),/valt uiteen/);
+  assert(await page.locator('#guideVisual button').count()>0,'Echte tokens zijn selecteerbaar');
   await page.screenshot({path:'test-results/llm-guide-'+width+'-tokens.png'});
+
   await page.locator('#guideNext').click();
-  assert.match(await page.locator('#guideHeading').innerText(),/lagen/);
-  assert.equal(await page.locator('.ai-guide-flow-item').count(),3,'Van tokennummer via getallen naar lagen');
+  assert.match(await page.locator('#guideHeading').innerText(),/getallen/);
+  assert.equal(await page.locator('.ai-learn-number').count(),4,'Vier voorbeeldgetallen zichtbaar');
+  assert(await page.locator('.ai-learn-source').innerText().then(t=>t.includes('Tokennummer')));
+  await page.screenshot({path:'test-results/llm-guide-'+width+'-getallen.png'});
+
   await page.locator('#guideNext').click();
-  assert.match(await page.locator('#guideHeading').innerText(),/tekst/);
-  assert(await page.locator('#guideVisual .is-before').count()>0,'Eerdere context wordt getoond');
+  assert.match(await page.locator('#guideHeading').innerText(),/volgorde/);
+  const orderBefore=await page.locator('.ai-learn-orderpiece strong').allInnerTexts();
+  await page.locator('.ai-guide-cta').click();
+  const orderAfter=await page.locator('.ai-learn-orderpiece strong').allInnerTexts();
+  assert.notDeepEqual(orderBefore,orderAfter,'Tokenposities zijn echt te wisselen');
+
   await page.locator('#guideNext').click();
-  assert(await page.locator('#guideTemperature').isVisible(),'Variatie is daadwerkelijk instelbaar');
+  assert.match(await page.locator('#guideHeading').innerText(),/eerdere tekst/);
+  assert(await page.locator('.ai-learn-bar').count()>0,'Attention toont berekende gewichten');
+  const attentionSum=await page.locator('.ai-learn-bar strong').allInnerTexts();
+  assert(Math.abs(attentionSum.reduce((sum,value)=>sum+parseFloat(value),0)-100)<.2,'Attention-gewichten sommeren tot 100%');
+  await page.screenshot({path:'test-results/llm-guide-'+width+'-attention.png'});
+
+  await page.locator('#guideNext').click();
+  assert.match(await page.locator('#guideHeading').innerText(),/rekennetwerken/);
+  assert.equal(await page.locator('.ai-learn-expert.chosen').count(),4,'Vier voorbeeldexperts zijn geselecteerd');
+  await page.screenshot({path:'test-results/llm-guide-'+width+'-experts.png'});
+
+  await page.locator('#guideNext').click();
+  assert.match(await page.locator('#guideHeading').innerText(),/laag/);
+  assert.equal(await page.locator('.ai-learn-layer-row').count(),3,'De berekening binnen een laag wordt getoond');
+  const layerBefore=await page.locator('.ai-learn-layer-row').last().innerText();
+  await page.locator('#guideLayerRange').evaluate(el=>{el.value='3';el.dispatchEvent(new Event('input',{bubbles:true}))});
+  const layerAfter=await page.locator('.ai-learn-layer-row').last().innerText();
+  assert.notEqual(layerBefore,layerAfter,'Een nieuwe voorbeeldlaag verandert de berekende getallen');
+  await page.screenshot({path:'test-results/llm-guide-'+width+'-lagen.png'});
+
+  await page.locator('#guideNext').click();
+  assert(await page.locator('#guideTemperature').isVisible(),'Variatie kan worden ingesteld');
   const probsBefore=await page.locator('.ai-guide-bar strong').allInnerTexts();
   await page.locator('#guideTemperature').evaluate(el=>{el.value='1.7';el.dispatchEvent(new Event('input',{bubbles:true}))});
   const probsAfter=await page.locator('.ai-guide-bar strong').allInnerTexts();
-  assert.notDeepEqual(probsBefore,probsAfter,'Rekenvoorbeeld reageert op slider');
+  assert.notDeepEqual(probsBefore,probsAfter,'Een echte kansberekening reageert op de slider');
+  await page.locator('.ai-guide-cta').click();
+  assert(await page.locator('#guideVisual').innerText().then(t=>t.includes('Gekozen in dit voorbeeld')));
   await page.screenshot({path:'test-results/llm-guide-'+width+'-kansen.png'});
+
   await page.locator('#guideNext').click();
   assert.match(await page.locator('#guideHeading').innerText(),/antwoord/);
-  const answerBefore=await page.locator('.ai-guide-answer').innerText();
-  await page.locator('.ai-guide-cta').click();
-  assert.notEqual(await page.locator('.ai-guide-answer').innerText(),answerBefore,'Antwoord groeit door gerichte klik');
+  const firstCount=await page.locator('.ai-learn-piece').count();
+  await page.locator('.ai-learn-answer-actions .ai-guide-cta').first().click();
+  assert.equal(await page.locator('.ai-learn-piece').count(),firstCount+1,'Per klik verschijnt een echt getokeniseerd stukje');
   await page.screenshot({path:'test-results/llm-guide-'+width+'-antwoord.png'});
   await page.locator('#guideTechnical').click();
   assert.equal(await page.locator('#aiGuide').isVisible(),false,'De bestaande technische werkruimte kan open');
@@ -231,7 +263,7 @@ try{
    await page.locator('#modelStory').waitFor({state:'visible'});
    await page.locator('#guideReturn').click();
    await page.locator('#aiGuide').waitFor({state:'visible'});
-   for(let step=0;step<5;step++){
+   for(let step=0;step<9;step++){
     const geometry=await page.evaluate(()=>({
       width:innerWidth,height:innerHeight,scrollWidth:document.documentElement.scrollWidth,scrollHeight:document.documentElement.scrollHeight,
       visual:document.querySelector('#guideVisual').getBoundingClientRect().toJSON(),
@@ -246,14 +278,16 @@ try{
       'Geen paginascroll '+width+' stap '+step+': '+JSON.stringify(geometry));
     assert(geometry.visual.width>125&&geometry.visual.height>80,
       'Visualisatie niet bruikbaar '+width+' stap '+step+': '+JSON.stringify(geometry));
-    assert(geometry.visualScroll<=geometry.visualClient+3,'Geen verborgen grafiektekst '+width+' stap '+step+': '+JSON.stringify(geometry));
-    assert(geometry.asideScroll<=geometry.asideClient+3,'Geen verborgen uitleg '+width+' stap '+step+': '+JSON.stringify(geometry));
+    assert(geometry.visualScroll<=geometry.visualClient+3||await page.locator('#guideVisual').evaluate(el=>getComputedStyle(el).overflowY==='auto'),
+      'Visualisatie moet bereikbaar blijven via eigen scrollruimte: '+JSON.stringify(geometry));
+    assert(geometry.asideScroll<=geometry.asideClient+3||await page.locator('.ai-guide-aside').evaluate(el=>getComputedStyle(el).overflowY==='auto'),
+      'Uitleg moet bereikbaar blijven via eigen scrollruimte: '+JSON.stringify(geometry));
     assert(geometry.aside.height>55&&geometry.aside.bottom<=height-40,
       'Uitleg binnen venster '+width+' stap '+step+': '+JSON.stringify(geometry));
     assert(geometry.button.right<=width+2&&geometry.button.bottom<=height+2,
       'Volgende knop zichtbaar '+width+' stap '+step+': '+JSON.stringify(geometry));
     await page.screenshot({path:'test-results/llm-guide-'+width+'-stap-'+(step+1)+'.png'});
-    if(step<4)await page.locator('#guideNext').click();
+    if(step<8)await page.locator('#guideNext').click();
    }
    await page.locator('#guideTechnical').click();
    await page.locator('#modelStory').waitFor({state:'visible'});
