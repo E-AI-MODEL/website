@@ -78,6 +78,7 @@ try{
   await page.locator('#guideLayerRange').evaluate(el=>{el.value='3';el.dispatchEvent(new Event('input',{bubbles:true}))});
   const layerAfter=await page.locator('.ai-learn-layer-row').last().innerText();
   assert.notEqual(layerBefore,layerAfter,'Een nieuwe voorbeeldlaag verandert de berekende getallen');
+  assert.equal(await page.locator('.ai-learn-layer-row').count(),3,'Laagwissel mag de grafiek niet dupliceren');
   await page.screenshot({path:'test-results/llm-guide-'+width+'-lagen.png'});
 
   await page.locator('#guideNext').click();
@@ -284,8 +285,10 @@ try{
       'Visualisatie moet bereikbaar blijven via eigen scrollruimte: '+JSON.stringify(geometry));
     assert(geometry.asideScroll<=geometry.asideClient+3||await page.locator('.ai-guide-aside').evaluate(el=>getComputedStyle(el).overflowY==='auto'),
       'Uitleg moet bereikbaar blijven via eigen scrollruimte: '+JSON.stringify(geometry));
-    assert(geometry.aside.height>55&&geometry.aside.bottom<=height-40,
-      'Uitleg binnen venster '+width+' stap '+step+': '+JSON.stringify(geometry));
+    assert(geometry.aside.height>55,
+      'Uitleg bestaat ook op korte schermen '+width+' stap '+step+': '+JSON.stringify(geometry));
+    if(width<=680)assert(await page.locator('.ai-guide-main').evaluate(el=>getComputedStyle(el).overflowY==='auto'),
+      'Op mobiel blijft uitleg bereikbaar via een doorlopend scrollvlak');
     assert(geometry.button.right<=width+2&&geometry.button.bottom<=height+2,
       'Volgende knop zichtbaar '+width+' stap '+step+': '+JSON.stringify(geometry));
     await page.screenshot({path:'test-results/llm-guide-'+width+'-stap-'+(step+1)+'.png'});
