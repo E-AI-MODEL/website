@@ -177,3 +177,15 @@ body.eg-prompt-dashboard{
  .eg-dashboard-editor{scroll-margin-top:74px}
  .eg-prompt-dashboard #selectedBody{font-size:14px;line-height:1.65}
 }
+
+/* Specifieke kopstijl: geen overname van de algemene websitekop op telefoon. */
+@media (max-width:610px){
+ body.eg-prompt-dashboard .eg-dashboard-shell .eg-dashboard-intro h1#promptPageTitle{
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;
+  font-size:29px!important;
+  font-weight:780!important;
+  line-height:1.13!important;
+  letter-spacing:-.04em;
+  max-width:19ch;
+ }
+}
