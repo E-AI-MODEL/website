@@ -254,3 +254,15 @@ body.eai-ui.eai-story-page .eai-story-opening{
 @media(prefers-reduced-motion:reduce){
  body.eai-ui.eai-story-page *{scroll-behavior:auto!important}
 }
+
+/* Three research routes: the last is a deliberate wide editorial card. */
+@media(min-width:721px){
+ body.eai-ui.eai-story-page .knowledge-routes>.wrap>.knowledge-route:nth-child(3):last-child{
+  grid-column:1/-1!important;display:grid!important;
+  grid-template-columns:minmax(0,1.45fr) minmax(250px,.65fr)!important;
+  gap:clamp(20px,3vw,48px)!important;align-items:center!important;
+ }
+ body.eai-ui.eai-story-page .knowledge-routes>.wrap>.knowledge-route:nth-child(3):last-child>div:last-child{
+  margin-top:0!important
+ }
+}
