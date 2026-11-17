@@ -787,13 +787,13 @@ const MODES=[
  {name:'Kosten',sub:'Wat wordt er meegerekend?',glyph:'&#9678;',title:'Wat kost een AI-antwoord?',desc:'Een model gebruikt tokens voor invoer en uitvoer. Ook verborgen redeneertokens kunnen meetellen. Verander de aantallen in het kostenvoorbeeld.',ins:'Rekenwerk en voorbeeldkosten',insDesc:'Een token is een klein stukje tekst. Invoer en uitvoer kunnen verschillend worden afgerekend. De prijzen op dit scherm zijn voorbeelden.',plot:'VOORBEELDKOSTEN PER SOORT TOKEN',note:'De aantallen starten met een gepubliceerd voorbeeld. Dit zijn geen actuele API-tarieven.',task:'In het voorbeeld zijn er 1024 redeneertokens. Bij welke categorie worden die voor de kosten gerekend?',options:['Bij invoer','Bij uitvoer','Ze tellen niet mee'],answer:1}
 ];
 const MOBILE_DESCS=[
- 'Elke laag rekent verder. Goud markeert de laag die je onderzoekt.',
- 'Dit zijn echte tokens. De getekende route is een voorbeeld.',
- 'Een router kiest vier experts. De kleuren zijn voorbeeldkeuzes.',
- 'Eerdere tokens kunnen meedoen. De kleuren tonen bereik, geen gewichten.',
- 'Een lokaal venster ziet de laatste 128 posities rechtstreeks.',
- 'De balken tonen berekende voorbeeldkansen, niet je eigen AI-antwoord.',
- 'Bekijk hoe invoer en uitvoer meetellen in een kostenvoorbeeld.'
+ 'Elke laag rekent verder. Goud toont jouw laag.',
+ 'Echte tokens. De getekende route is een voorbeeld.',
+ 'Vier experts worden gekozen. Dit is een voorbeeld.',
+ 'Kleur toont bereik, geen echte aandachtsscore.',
+ 'Lokaal bereik: de laatste 128 tokens.',
+ 'Deze kansen komen uit voorbeeldscores.',
+ 'Invoer en uitvoer tellen mee in de kosten.'
 ];
 const state={model:120,mode:0,layer:17,expert:21,token:0,input:'Waarom is de lucht blauw?',promptWords:[],tokenStatus:'example',contextTokens:4096,temp:.8,topP:.9,showExperts:true,showFields:true,showTrails:true,showLabels:true,yaw:.35,pitch:.79,zoom:1.07,time:120,playing:false,speed:1,panel:'',journey:0,follow:false,uInput:75,uCached:0,uWrite:0,uReason:1024,uOther:162,uRateIn:1,uRateOut:5,uFocus:3,dirty:true,chartDirty:true};
 let cfg=CONFIG[state.model],world=null,routeCache=new Map(),plotMeta=null,screenJourney=[],cam={cy:1,sy:0,cp:1,sp:0,sc:1,ox:0,oy:0},canvas=$('universe'),ct=canvas.getContext('2d',{alpha:false}),plot=$('plot'),pc=plot.getContext('2d'),W=0,H=0,PW=0,PH=0,dpr=1,screenExperts=[],lastTime=0,lastDraw=0,pointer=null,moveDist=0,lastGraph=0;
