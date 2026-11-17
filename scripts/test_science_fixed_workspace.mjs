@@ -432,6 +432,19 @@ try{
   assert.equal(await page.locator('#insightTeacher').evaluate(el=>el.open),false,'De docentverdieping start dicht');
   await page.evaluate(()=>{document.querySelector('#insightMath').open=true;document.querySelector('#insightTeacher').open=true;});
   assert((await page.locator('#insightTeacherContent').innerText()).includes('OpenStax'),'De bronverwijzing wordt getoond');
+  if (engine.name() === 'webkit' && width < 500) {
+   // An iPhone has no hardware mouse. Do not emulate a mouse drag as a
+   // substitute for a real touch gesture in WebKit's phone context.
+   // Verify the visible touch-accessible settings instead.
+   assert(await page.locator('#openMobileSettings').isVisible(),
+    'Hefboominstellingen blijven bereikbaar via de mobiele bediening');
+   await page.locator('#openMobileSettings').click();
+   assert(await page.locator('#inspector').evaluate(el=>el.classList.contains('open')),
+    'De instellingen openen op mobiele Safari');
+   assert.equal(await page.locator('#num-arm2').count(),1,'De rechter arm kan numeriek worden ingesteld');
+   assert.equal(await page.locator('#num-arm1').count(),1,'De linker arm blijft instelbaar');
+   await page.locator('#closeMobileSettings').click();
+  } else {
   const leverStart=await page.evaluate(()=>{
    const p=state.p,c=document.querySelector('#scene'),r=c.getBoundingClientRect(),g=sceneViewport(c),pivot=p.pivot??510;
    return {x:r.left+g.left+(pivot-g.worldX)*g.scale,y:r.top+g.top+(350-g.worldY)*g.scale,scale:g.scale,pivot,left:pivot-65*p.arm1,right:pivot+65*p.arm2,p:{...p}};
@@ -478,6 +491,7 @@ try{
   assert.equal(leverReset.pivot,510,'Herstel zet het draaipunt terug');
   assert.equal(leverReset.arm1,2,'Herstel zet de linker arm terug');
   assert.equal(leverReset.arm2,3,'Herstel zet de rechter arm terug');
+  }
   if(width===1440){
    // De paneelindeling is onafhankelijk van de gekozen proef.
    await page.evaluate(()=>{loadLab('resolution');selectBottom('insight')});
