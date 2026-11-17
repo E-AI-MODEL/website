@@ -1309,10 +1309,20 @@ function renderModes(){const symbols=['▤','↣','▦','≋','▥','▧','▣']
 function setStats(items){$('stats').innerHTML=items.map(item=>'<div class="stat"><small>'+item[0]+'</small><strong class="'+(item[2]?'warm':'')+'">'+item[1]+'</strong><span>'+((item[3]||''))+'</span></div>').join('')}
 function addRange(label,key,min,max,step,suffix='',cb){let d=document.createElement('div');d.className='control';d.innerHTML='<label for="r-'+key+'"><span>'+label+'</span><output id="o-'+key+'">'+state[key]+suffix+'</output></label><input id="r-'+key+'" type="range" min="'+min+'" max="'+max+'" step="'+step+'" value="'+state[key]+'">';$('controls').appendChild(d);d.querySelector('input').addEventListener('input',e=>{state[key]=+e.target.value;d.querySelector('output').textContent=state[key]+suffix;if(cb)cb();if(state.mode===1&&key==='layer'){state.journey=state.layer;state.playing=false;$('playBtn').textContent='>';state.expert=chooseRoute(state.layer)[0].e;}if(state.mode===1&&key==='token'){state.expert=chooseRoute(state.layer)[0].e;}state.dirty=true;state.chartDirty=true;refreshNumbers();updateJourneyUI()})}
 function addCheck(label,key){let d=document.createElement('label');d.style.cssText='display:flex;justify-content:space-between;align-items:center;gap:8px;margin:0 0 10px;color:#bdd2df;font-size:11px';d.innerHTML='<span>'+label+'</span><input type="checkbox" '+(state[key]?'checked':'')+'>';d.querySelector('input').addEventListener('change',e=>{state[key]=e.target.checked;state.dirty=true});$('controls').appendChild(d)}
+/* Concrete uitleg bij de bestaande technische onderzoeken; ook voor mobiel. */
+const TECH_EXPLANATIONS=[
+ {title:'Waarom zoveel lagen?',text:'Iedere laag gebruikt de getallen die de vorige laag heeft berekend. Kies een andere laag en kijk waar je in de reeks zit. De stippen zijn rekennetwerken, geen losse gedachten.'},
+ {title:'Waarom tokens?',text:'Het model rekent niet rechtstreeks met letters. De tokenizer geeft stukjes tekst een nummer. Kies een token: het nummer is echt, maar de getekende route is een voorbeeld.'},
+ {title:'Waarom vier experts?',text:'Een router kiest vier rekennetwerken om mee te rekenen. Het model hoeft daardoor niet alle experts te gebruiken. Wissel van token om de voorbeeldkeuze te vergelijken.'},
+ {title:'Waarom eerdere tekst?',text:'Voor een volgend token kan het model alleen al geschreven tekst gebruiken. Kies een andere laag en zie welk deel rechtstreeks bereikbaar is. Dit is niet hetzelfde als gemeten aandacht.'},
+ {title:'Waarom een venster van 128?',text:'Een lokale laag gebruikt rechtstreeks de laatste 128 tokenposities. Maak het tekstvoorbeeld langer: dan vormt dit venster een steeds kleiner deel van de totale invoer.'},
+ {title:'Waarom verschillende kansen?',text:'Het model kiest een token uit verschillende mogelijkheden. Hogere temperatuur maakt dit rekenvoorbeeld minder uitgesproken. Top-p beperkt welke kandidaten meedoen.'},
+ {title:'Waarom tellen redeneertokens mee?',text:'Ook extra tokens die een redeneermodel intern genereert, kunnen onder uitvoer vallen. Verander de aantallen en kijk hoe de voorbeeldkosten wijzigen. Dit is geen factuur.'}
+];
 function makeTask(){
- const mode=MODES[state.mode];
- $('taskTitle').textContent=mode.name;
- $('taskText').textContent=mode.desc+' '+mode.note;
+ const explanation=TECH_EXPLANATIONS[state.mode];
+ $('taskTitle').textContent=explanation.title;
+ $('taskText').textContent=explanation.text;
 }
 function renderInspector(){const m=state.mode;$('controls').innerHTML='';if(m===0){setStats([['LAGEN',cfg.layers],['EXPERTS / LAAG',cfg.experts],['EXPERTPOSITIES',cfg.layers*cfg.experts],['BREEDTE',cfg.dim,'', 'dimensies']]);addRange('Laag','layer',0,cfg.layers-1,1,'',()=>{state.expert=clamp(state.expert,0,cfg.experts-1)});addRange('Expert','expert',0,cfg.experts-1,1);addCheck('Laat experts zien','showExperts');addCheck('Toon informatiesporen','showTrails');addCheck('Toon lichtveld','showFields')}
 else if(m===1){setStats([]);addInput();addRange('Contextposities (voorbeeld)','contextTokens',128,8192,128)}
