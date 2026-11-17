@@ -1921,11 +1921,11 @@ function setupGuide(){
  window.addEventListener('resize',()=>{
   $('modeDesc').textContent=innerWidth<=800?MOBILE_DESCS[state.mode]:MODES[state.mode].desc;
  });
- const back=guideNode('button','Stap voor stap','tool-btn');back.id='guideReturn';back.type='button';back.onclick=()=>guideSetVisible(true);
+ const back=guideNode('button','Stap voor stap','tool-btn');back.id='guideReturn';back.type='button';back.onclick=()=>{if(state.mode===0&&$('app').dataset.storyView==='animation')guideStep=storyState.phase;guideSetVisible(true)};
  document.querySelector('.top-actions').prepend(back);
  guideEl('guideTechnical').onclick=()=>{guideSetVisible(false);if(state.mode===0)$('story3d').click()};
  guideEl('guidePrev').onclick=()=>guideSetStep(guideStep-1);
- guideEl('guideNext').onclick=()=>guideStep===GUIDE_STEPS.length-1?guideSetVisible(false):guideSetStep(guideStep+1);
+ guideEl('guideNext').onclick=()=>guideStep===GUIDE_STEPS.length-1?guideEl('guideTechnical').click():guideSetStep(guideStep+1);
  guideRender();
 }
 
