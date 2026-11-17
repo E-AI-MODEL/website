@@ -208,7 +208,14 @@ try{
  await page.setViewportSize({width:390,height:844});
  assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2),"Hulppagina past op telefoon");
  await page.screenshot({path:join(out,"eaigit-uitleg-mobiel.png"),fullPage:true});
- // Promptbibliotheek: alle fasen en aparte, invulbare opdrachten.
+ // Promptbibliotheek: dezelfde rustige dashboardopzet op groot en klein scherm.
+ await page.setViewportSize({width:1365,height:900});
+ await page.goto(base+"/tools/eaigit/prompts/");
+ assert(await page.locator("#selectedPrompt").isVisible(),"Op desktop is de geselecteerde opdracht direct zichtbaar");
+ assert.equal(await page.locator("#promptList .eg-prompt-card").count(),PROMPT_LIBRARY.length);
+ assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2),"Dashboard past op desktop");
+ await page.screenshot({path:join(out,"eaigit-prompts-desktop.png"),fullPage:true});
+ await page.setViewportSize({width:390,height:844});
  await page.goto(base+"/tools/eaigit/prompts/?fase=controleren");
  assert.equal(await page.locator("#promptList .eg-prompt-card").count(),promptsForPhase("controleren").length);
  assert.equal(await page.locator('[data-phase="controleren"]').getAttribute("aria-pressed"),"true");
