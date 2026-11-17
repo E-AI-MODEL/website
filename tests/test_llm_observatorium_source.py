@@ -120,7 +120,7 @@ class LlmObservatorySourceTests(unittest.TestCase):
             "Welk stukje komt hierna?",
             "Een antwoord groeit token voor token",
             "De kansberekening is echt, maar de scores en woorden zijn voorbeelden.",
-            "Geen echte gpt-oss-attention-scores.",
+            "De technische weergave toont welke tekst bereikbaar is, niet hoeveel gewicht die krijgt.",
             "vooraf geschreven",
         ):
             self.assertIn(passage, html)
