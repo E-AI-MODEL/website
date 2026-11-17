@@ -1767,7 +1767,7 @@ function guideRender(){
  }else{
   guideDrawAnswer();
   const tokens=guideAnswerTokens(),actions=guideNode('div',null,'ai-learn-answer-actions');
-  const add=guideNode('button',guideBuildCount<tokens.length?'Voeg één token toe':'Begin opnieuw','ai-guide-cta');
+  const add=guideNode('button',guideBuildCount<tokens.length?(tokenizer?'Voeg één token toe':'Voeg een woordstukje toe'):'Begin opnieuw','ai-guide-cta');
   add.type='button';add.onclick=()=>{guideBuildCount=guideBuildCount<tokens.length?guideBuildCount+1:1;guideRender()};
   actions.append(add);
   const quick=guideNode('button','Voeg vijf toe','ai-guide-cta');
