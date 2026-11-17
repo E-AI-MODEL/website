@@ -43,6 +43,23 @@ try {
     assert(g.bottom.bottom<=height+2,'Bediening valt buiten het scherm: '+JSON.stringify(g));
     await page.screenshot({path:'test-results/llm-webkit-'+width+'-'+height+'-stap-'+(step+1)+'.png'});
    }
+   // Ook de volledige negenstapsroute moet in Safari op een klein scherm werken.
+   await page.locator('#guideReturn').click();
+   assert.equal(await page.locator('#guideSteps button').count(),9,'Negen lesstappen ook in WebKit');
+   for(let step=0;step<9;step++){
+    await page.evaluate(i=>guideSetStep(i),step);
+    assert(await page.locator('#guideHeading').isVisible(),'Titel van de stap zichtbaar');
+    const g=await page.evaluate(()=>({
+     docWidth:document.documentElement.scrollWidth,
+     docHeight:document.documentElement.scrollHeight,
+     visual:document.querySelector('#guideVisual').getBoundingClientRect().toJSON(),
+     aside:document.querySelector('.ai-guide-aside').getBoundingClientRect().toJSON()
+    }));
+    assert(g.docWidth<=width+2&&g.docHeight<=height+2,'Geen pagina-overloop in lesstap '+step+': '+JSON.stringify(g));
+    assert(g.visual.width>100&&g.visual.height>50&&g.aside.height>40,
+     'Zichtbaar lesmateriaal in WebKit stap '+step+': '+JSON.stringify(g));
+   }
+   await page.evaluate(()=>guideSetVisible(false));
    await page.locator('#story3d').click();
    assert.equal(await page.locator('#modelStory').isVisible(),false,'3D blijft bereikbaar');
    if(width>800&&height<560){
@@ -73,7 +90,7 @@ try {
    assert.deepEqual(errors,[],'JavaScript-fouten bij WebKit: '+errors.join(' / '));
   }finally{await page.close();}
  }
- console.log('LLM_WEBKIT_OK: 320x568, 390x844, 844x390, vijf stappen en mobiele panelen');
+ console.log('LLM_WEBKIT_OK: 320x568, 390x844, 844x390, negen leerstappen en mobiele panelen');
 }finally{
  if(browser)await browser.close();
  server.kill();
