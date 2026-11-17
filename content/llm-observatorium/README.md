@@ -14,7 +14,7 @@ De huidige interactieve versie rekent in de browser met een **klein, determinist
 
 De zelfstandige rekenmodule is `assets/llm-learning-math.js`. De wiskunde wordt gecontroleerd met `node scripts/test_llm_learning_math.mjs` en de leerroute met Chromium- en WebKit-tests. Berekeningen vragen geen account, API-sleutel, betaalde inferentie of groot model in de browser. De gewone websitehosting en beschikbare CI-quota blijven van toepassing.
 
-**Nog niet afgerond:** de automatische vijfdelige introductie is nog een korter overzicht naast de negen begeleide stappen. Er zijn geen echte gpt-oss-routeractivaties, attentiongewichten of logits ingelezen. Laadtijden op fysieke telefoons en aantoonbaar leerresultaat zijn nog niet gevalideerd. De PR mag pas gepubliceerd worden nadat alle tests slagen en de beelden zijn beoordeeld.
+**Gebouwd:** de automatische introductie en de begeleide route hebben nu dezelfde negen stappen en delen hun titels en uitleggegevens. De animatie gebruikt dezelfde lokale berekeningen als de gids. Er zijn nog geen echte gpt-oss-routeractivaties, attentiongewichten of logits ingelezen. Laadtijden op fysieke telefoons en aantoonbaar leerresultaat zijn nog niet gevalideerd. De PR mag pas gepubliceerd worden nadat alle tests slagen en de beelden zijn beoordeeld.
 
 ## Onderzoeken
 
