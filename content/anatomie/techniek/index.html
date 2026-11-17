@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1420">
+  <meta name="description" content="Technische opbouw en anatomische gegevensbronnen van Het lichaam in 3D.">
+  <link rel="canonical" href="https://eaimodel.nl/tools/anatomie/techniek/">
+  <link rel="icon" type="image/svg+xml" href="/assets/eai-logo.svg">
+  <title>Techniek en bronnen | Het lichaam in 3D | EAI</title>
+  <link rel="stylesheet" href="./techniek.css">
+  <script src="./techniek.js" defer></script>
+  <script defer src="/assets/site-analytics.js"></script>
+</head>
+<body>
+  <a class="skip" href="#inhoud">Naar inhoud</a>
+  <header class="topbar">
+    <div class="topbar-path">
+      <a class="brand" href="/">EAI</a>
+      <span class="path-mark">/</span>
+      <a class="path-link" href="/tools/anatomie/">Het lichaam in 3D</a>
+      <span class="path-mark">/</span>
+      <span class="path-current">Techniek</span>
+    </div>
+    <a class="back-link" href="/tools/anatomie/">Open de atlas <span aria-hidden="true">↗</span></a>
+  </header>
+
+  <main id="inhoud" class="dashboard">
+    <div class="heading-row">
+      <h1>Techniek en bronnen</h1>
+      <span class="heading-id">ANATOMIE / SYSTEEMOVERZICHT</span>
+    </div>
+
+    <section class="metrics" aria-label="Gegevens in cijfers">
+      <div class="metric"><strong id="totalStructures" class="tabular">2.827</strong><span>3D-onderdelen</span></div>
+      <div class="metric"><strong class="tabular">7</strong><span>3D-modelbestanden</span></div>
+      <div class="metric"><strong class="tabular">62</strong><span>Specifieke uitlegteksten</span></div>
+      <div class="metric"><strong class="tabular">7</strong><span>Lichaamsstelsels</span></div>
+    </section>
+
+    <div class="overview-grid">
+      <section class="atlas-panel" aria-labelledby="modelHeading">
+        <div class="panel-heading">
+          <div><span class="section-index">01 / 3D</span><h2 id="modelHeading">Het model</h2></div>
+          <span class="tag">THREE.JS / WEBGL</span>
+        </div>
+        <div class="model-stage">
+          <div class="model-grid" aria-hidden="true"></div>
+          <div class="model-coordinate top">MODEL / GLB</div>
+          <iframe id="anatomyFrame" title="Interactieve anatomieatlas, echte 3D-modellen" src="/tools/anatomie/?techniek=1" loading="eager"></iframe>
+          <a class="model-fallback" id="modelFallback" href="/tools/anatomie/" hidden>Open het 3D-model ↗</a>
+          <div class="model-coordinate bottom">DRAAI · ZOOM · SELECTEER STELSEL</div>
+        </div>
+        <div class="model-list-heading"><h3>Modelbestanden</h3><span>GLB / DRACO</span></div>
+        <div class="model-list" id="modelList" aria-label="Kies een anatomisch stelsel">
+          <button type="button" class="model-item is-active" data-system="skeletal" aria-pressed="true">
+            <span class="model-number">01</span><span class="model-name">Botten <small>skeletal.glb</small></span><span class="model-count tabular" data-count="skeletal">277</span>
+          </button>
+          <button type="button" class="model-item" data-system="joints" aria-pressed="false">
+            <span class="model-number">02</span><span class="model-name">Gewrichten en banden <small>joints.glb</small></span><span class="model-count tabular" data-count="joints">349</span>
+          </button>
+          <button type="button" class="model-item" data-system="muscular" aria-pressed="false">
+            <span class="model-number">03</span><span class="model-name">Spieren <small>muscular.glb</small></span><span class="model-count tabular" data-count="muscular">669</span>
+          </button>
+          <button type="button" class="model-item" data-system="cardiovascular" aria-pressed="false">
+            <span class="model-number">04</span><span class="model-name">Hart en bloedvaten <small>cardiovascular.glb</small></span><span class="model-count tabular" data-count="cardiovascular">676</span>
+          </button>
+          <button type="button" class="model-item" data-system="lymphatic" aria-pressed="false">
+            <span class="model-number">05</span><span class="model-name">Lymfestelsel <small>lymphatic.glb</small></span><span class="model-count tabular" data-count="lymphatic">158</span>
+          </button>
+          <button type="button" class="model-item" data-system="nervous" aria-pressed="false">
+            <span class="model-number">06</span><span class="model-name">Zenuwstelsel <small>nervous.glb</small></span><span class="model-count tabular" data-count="nervous">580</span>
+          </button>
+          <button type="button" class="model-item" data-system="visceral" aria-pressed="false">
+            <span class="model-number">07</span><span class="model-name">Organen <small>visceral.glb</small></span><span class="model-count tabular" data-count="visceral">118</span>
+          </button>
+        </div>
+      </section>
+
+      <div class="information-grid">
+        <section class="panel" aria-labelledby="stackHeading">
+          <div class="panel-heading"><div><span class="section-index">02 / ENGINE</span><h2 id="stackHeading">Techstack</h2></div></div>
+          <div class="fact-list">
+            <div class="fact"><span class="fact-name">Three.js</span><span class="fact-value">3D-rendering</span></div>
+            <div class="fact"><span class="fact-name">WebGL</span><span class="fact-value">GPU / browser</span></div>
+            <div class="fact"><span class="fact-name">JavaScript</span><span class="fact-value">Interface / interactie</span></div>
+            <div class="fact"><span class="fact-name">GLB / glTF</span><span class="fact-value">3D-bestanden</span></div>
+            <div class="fact"><span class="fact-name">Draco</span><span class="fact-value">Geometriecompressie</span></div>
+            <div class="fact"><span class="fact-name">three-mesh-bvh</span><span class="fact-value">3D-selectie</span></div>
+            <div class="fact"><span class="fact-name">Vite</span><span class="fact-value">Build</span></div>
+            <div class="fact"><span class="fact-name">Node.js 22</span><span class="fact-value">Buildomgeving</span></div>
+          </div>
+        </section>
+
+        <section class="panel" aria-labelledby="dataHeading">
+          <div class="panel-heading"><div><span class="section-index">03 / GEGEVENS</span><h2 id="dataHeading">Gegevensbestanden</h2></div><span class="tag">LOKAAL</span></div>
+          <div class="file-list">
+            <a href="/tools/anatomie/data/systems.json" target="_blank" rel="noopener"><code>systems.json</code><span>Stelsels en onderdelen</span></a>
+            <a href="/tools/anatomie/data/definitions.json" target="_blank" rel="noopener"><code>definitions.json</code><span>Engelse definities</span></a>
+            <a href="/tools/anatomie/data/lexicon.json" target="_blank" rel="noopener"><code>lexicon.json</code><span>Latijnse namen</span></a>
+            <a href="/tools/anatomie/data/synonyms.nl.json" target="_blank" rel="noopener"><code>synonyms.nl.json</code><span>Nederlandse namen</span></a>
+            <a href="https://github.com/E-AI-MODEL/website/blob/main/content/anatomie/guide.js" target="_blank" rel="noopener noreferrer"><code>guide.js</code><span>Specifieke uitleg</span></a>
+            <a href="https://github.com/E-AI-MODEL/website/blob/main/content/anatomie/teaching.js" target="_blank" rel="noopener noreferrer"><code>teaching.js</code><span>Algemene uitleg</span></a>
+            <a href="https://github.com/E-AI-MODEL/website/blob/main/content/anatomie/sourceMap.js" target="_blank" rel="noopener noreferrer"><code>sourceMap.js</code><span>Bronverwijzingen</span></a>
+          </div>
+        </section>
+
+        <section class="panel sources-panel" aria-labelledby="sourcesHeading">
+          <div class="panel-heading"><div><span class="section-index">04 / HERKOMST</span><h2 id="sourcesHeading">Anatomische gegevens</h2></div></div>
+          <div class="source-grid">
+            <a href="https://lifesciencedb.jp/bp3d/" target="_blank" rel="noopener noreferrer"><strong>BodyParts3D</strong><span>3D-geometrie</span><em>LOKALE KOPIE</em></a>
+            <a href="https://www.z-anatomy.com/" target="_blank" rel="noopener noreferrer"><strong>Z-Anatomy</strong><span>Modellen / structuren</span><em>LOKALE KOPIE</em></a>
+            <a href="https://en.wikipedia.org/wiki/Wikipedia:Copyrights" target="_blank" rel="noopener noreferrer"><strong>Wikipedia</strong><span>Engelse definities</span><em>LOKALE TEKST</em></a>
+            <a href="https://openstax.org/books/anatomy-and-physiology-2e/" target="_blank" rel="noopener noreferrer"><strong>OpenStax</strong><span>Anatomische uitleg</span><em>BRONLINKS</em></a>
+            <a href="https://www.ncbi.nlm.nih.gov/books/" target="_blank" rel="noopener noreferrer"><strong>NCBI Bookshelf</strong><span>Medische vakbronnen</span><em>BRONLINKS</em></a>
+            <a href="https://ifaa.net/committees/anatomical-terminology-fipat/fipat-ifaa-terminologies/" target="_blank" rel="noopener noreferrer"><strong>FIPAT / TA2</strong><span>Anatomische naamgeving</span><em>REFERENTIE</em></a>
+            <a href="https://www.elsevier.com/resources/anatomy" target="_blank" rel="noopener noreferrer"><strong>Elsevier</strong><span>Anatomische referentie</span><em>BRONLINKS</em></a>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <section class="pipeline-panel" aria-labelledby="publicationHeading">
+      <div class="panel-heading"><div><span class="section-index">05 / PUBLICATIE</span><h2 id="publicationHeading">Bouw en hosting</h2></div><span class="tag">STATISCHE SITE</span></div>
+      <div class="pipeline">
+        <a href="https://github.com/E-AI-MODEL/website" target="_blank" rel="noopener noreferrer"><span class="pipeline-index">01</span><strong>GitHub</strong><small>Repository</small></a>
+        <span class="pipeline-arrow" aria-hidden="true">→</span>
+        <a href="https://github.com/E-AI-MODEL/website/actions" target="_blank" rel="noopener noreferrer"><span class="pipeline-index">02</span><strong>GitHub Actions</strong><small>Build / tests</small></a>
+        <span class="pipeline-arrow" aria-hidden="true">→</span>
+        <div class="pipeline-stage"><span class="pipeline-index">03</span><strong>FTPS</strong><small>Publicatie</small></div>
+        <span class="pipeline-arrow" aria-hidden="true">→</span>
+        <div class="pipeline-stage"><span class="pipeline-index">04</span><strong>Theory7</strong><small>Webhosting</small></div>
+      </div>
+      <div class="pipeline-footer">
+        <span><strong>Statistieken</strong> Cloudflare · /statistieken/collect.php</span>
+        <span><strong>Modelbron</strong> <a href="/tools/anatomie/UPSTREAM_COMMIT.txt">Vastgezette upstream-commit ↗</a></span>
+        <span><strong>Licenties</strong> <a href="/tools/anatomie/NOTICE.txt">Bronvermelding ↗</a> · <a href="/tools/anatomie/LICENSE.txt">Licentietekst ↗</a></span>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
