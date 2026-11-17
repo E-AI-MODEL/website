@@ -834,6 +834,11 @@ async function loadRealTokenizer(){
  if(!tokenizer)state.tokenStatus='error';
  const range=$('r-token');if(range){range.max=Math.max(0,words().length-1);range.value=state.token}
  renderTokenPieces();refreshNumbers();updateJourneyUI();if(typeof guideRender==='function')guideRender();
+ if(state.mode===0&&$('app').dataset.storyView==='animation'&&storyState.phase>0&&!storyState.finished){
+  const phase=storyState.phase,elapsed=storyState.elapsed;
+  storySetPhase(phase);storyState.elapsed=elapsed;
+  storyPaint(Math.min(1,elapsed/STORY_PHASES[phase].duration));
+ }
 }
 function chooseRoute(layer,token=state.token){const tokenSeed=state.promptWords[token]?.id??token;const key=state.model+':'+layer+':'+tokenSeed;if(routeCache.has(key))return routeCache.get(key);const ranked=[];for(let e=0;e<cfg.experts;e++){const score=1.6*hash(layer+4,e+7,tokenSeed+93)+.7*Math.sin((e+1)*.071+layer*.63+tokenSeed*.39)+.2*Math.cos(e*.18-layer*.49);ranked.push({e,score})}ranked.sort((a,b)=>b.score-a.score);const chosen=ranked.slice(0,cfg.top);const exps=chosen.map(x=>Math.exp(x.score*2));const total=exps.reduce((a,b)=>a+b,0);const answer=chosen.map((x,i)=>({e:x.e,p:exps[i]/total,score:x.score}));routeCache.set(key,answer);return answer}
 function logits(){let base=[2.35,1.7,1.05,.66,.23,-.19,-.65,-1.16];let weights=base.map(x=>Math.exp(x/state.temp));let sum=weights.reduce((a,b)=>a+b,0);let p=weights.map(x=>x/sum);let order=[...p.keys()].sort((a,b)=>p[b]-p[a]);let used=[],cumulative=0;for(const idx of order){used.push(idx);cumulative+=p[idx];if(cumulative>=state.topP)break}let m=p.map((x,i)=>used.includes(i)?x:0);let k=m.reduce((a,b)=>a+b,0);return {p:p,keep:used,chosen:m.map(x=>x/k),candidates:['leren','denken','taal','vragen','antwoord','onderzoek','model','gegevens']}}
