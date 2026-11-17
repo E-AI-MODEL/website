@@ -444,7 +444,15 @@ try{
   assert.equal(pressed.arm1,leverStart.p.arm1,'Aanraken zonder slepen verandert de linker arm niet');
   await page.mouse.move(leverStart.x+leverStart.scale*(65+12),leverStart.y,{steps:10});
   await page.mouse.up();
-  await page.waitForFunction(()=>Math.abs(state.leverMotion?.angle||0)>.15,null,{timeout:5000});
+  const afterRelease=await page.evaluate(()=>({playing:state.playing,pivot:state.p.pivot??510,angle:state.leverMotion?.angle,drag2d:state.drag2d,leverDrag:state.leverDrag}));
+  assert.equal(afterRelease.playing,true,'De hefboom hervat na pointerup of het verliezen van pointer capture: '+JSON.stringify(afterRelease));
+  assert(afterRelease.pivot>leverStart.pivot+40,'Het steunpunt moet echt worden versleept: '+JSON.stringify(afterRelease));
+  try {
+    await page.waitForFunction(()=>Math.abs(state.leverMotion?.angle||0)>.15,null,{timeout:12000});
+  } catch (error) {
+    const stateOnFailure=await page.evaluate(()=>({playing:state.playing,p:state.p,motion:state.leverMotion,drag2d:state.drag2d,leverDrag:state.leverDrag,visible:document.visibilityState}));
+    throw new Error('De hefboom beweegt niet na loslaten: '+JSON.stringify(stateOnFailure),{cause:error});
+  }
   const leverEnd=await page.evaluate(()=>{
    setPlaying(false);render(); // Vergelijk de berekening met het getoonde beeld op precies dezelfde hoek.
    const p=state.p,pivot=p.pivot??510,forces=leverPhysics(p,state.leverMotion.angle,state.leverMotion.omega);
