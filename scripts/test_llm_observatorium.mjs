@@ -125,15 +125,41 @@ try{
   await page.evaluate(()=>{storySetPhase(1);storyPaint(.8)});
   assert(await page.locator('#vTokens .v-token').count()>0,'De tekst wordt zichtbaar in stukjes verdeeld');
   await page.screenshot({path:'test-results/llm-story-'+width+'-stukjes.png'});
-  await page.evaluate(()=>{storySetPhase(2);storyPaint(.55)});
-  assert.equal(await page.locator('#vSteps rect').count(),36,'Het gekozen gpt-oss-120b toont zijn 36 lagen');
-  assert(await page.locator('#vSteps rect[fill="#75bba9"]').count()>0,'Lagen lichten achtereenvolgens op');
-  await page.screenshot({path:'test-results/llm-story-'+width+'-lagen.png'});
+  assert.equal(await page.evaluate(()=>STORY_PHASES.length),9,'De automatische uitleg heeft dezelfde negen stappen');
+  assert.equal(await page.locator('#storyTimeline .story-time-item').count(),9,'Negen fasen in de voortgang');
+  assert.equal(await page.evaluate(()=>STORY_PHASES.every((s,i)=>s.title===GUIDE_STEPS[i].title)),
+    true,'Automatische animatie en begeleiding gebruiken dezelfde titels');
+  await page.evaluate(()=>{storySetPhase(2);storyPaint(.7)});
+  assert.equal(await page.locator('#vMiniNumbers .v-mini-values strong').count(),4,
+    'Echt lokaal berekend getallenvoorbeeld bij een token-ID');
+  await page.screenshot({path:'test-results/llm-story-'+width+'-getallen.png'});
   await page.evaluate(()=>{storySetPhase(3);storyPaint(.8)});
-  assert.equal(await page.locator('#vScores .v-score').count(),4,'Het kansvoorbeeld toont vier balken');
+  assert.equal(await page.locator('#vOrderRows .v-mini-order').count(),2,
+    'Dezelfde tokenreeks in een andere volgorde');
+  await page.screenshot({path:'test-results/llm-story-'+width+'-volgorde.png'});
+  await page.evaluate(()=>{storySetPhase(4);storyPaint(.8)});
+  assert(await page.locator('#vAttentionScores .v-score').count()>0,
+    'Echte kleine attention-berekening in de animatie');
+  await page.screenshot({path:'test-results/llm-story-'+width+'-attention.png'});
+  await page.evaluate(()=>{storySetPhase(5);storyPaint(.8)});
+  assert.equal(await page.locator('#vStoryExperts i.active').count(),4,
+    'Dezelfde vier voorbeeldexperts als in de begeleide route');
+  await page.screenshot({path:'test-results/llm-story-'+width+'-experts.png'});
+  await page.evaluate(()=>{storySetPhase(6);storyPaint(.8)});
+  assert.equal(await page.locator('#vLayerRows .v-mini-row').count(),3,
+    'Getallen voor en na attention en de experts');
+  await page.screenshot({path:'test-results/llm-story-'+width+'-lagen.png'});
+  await page.evaluate(()=>{storySetPhase(7);storyPaint(.8)});
+  assert.equal(await page.locator('#vScores .v-score').count(),4,
+    'Het kansvoorbeeld gebruikt vier lokaal uitgerekende kansen');
+  const chanceSum=await page.locator('#vScores .v-score strong').allInnerTexts();
+  assert(Math.abs(chanceSum.reduce((total,n)=>total+parseFloat(n),0)-100)<.3,
+    'Afgeronde voorbeeldkansen tellen op tot 100%');
   await page.screenshot({path:'test-results/llm-story-'+width+'-kansen.png'});
-  await page.evaluate(()=>{storySetPhase(4);storyPaint(.85)});
-  assert.match((await page.locator('#vAnswer span').allTextContents()).join(' '),/De lucht lijkt blauw/);
+  await page.evaluate(()=>{storySetPhase(8);storyPaint(.85)});
+  assert(await page.locator('#vAnswer span').count()>3,
+    'Het vooraf geschreven antwoord wordt token voor token getoond');
+  assert.match(await page.locator('#vAnswerSource').innerText(),/VOORAF GESCHREVEN ANTWOORD/);
   await page.screenshot({path:'test-results/llm-story-'+width+'-antwoord.png'});
   const sceneGeometry=await page.evaluate(()=>({
     viewportWidth:innerWidth,viewportHeight:innerHeight,
