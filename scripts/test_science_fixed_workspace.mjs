@@ -434,8 +434,13 @@ try{
   assert((await page.locator('#insightTeacherContent').innerText()).includes('OpenStax'),'De bronverwijzing wordt getoond');
   const leverStart=await page.evaluate(()=>{
    const p=state.p,c=document.querySelector('#scene'),r=c.getBoundingClientRect(),g=sceneViewport(c),pivot=p.pivot??510;
-   return {x:r.left+g.left+pivot*g.scale,y:r.top+g.top+350*g.scale,scale:g.scale,pivot,left:pivot-65*p.arm1,right:pivot+65*p.arm2,p:{...p}};
+   return {x:r.left+g.left+(pivot-g.worldX)*g.scale,y:r.top+g.top+(350-g.worldY)*g.scale,scale:g.scale,pivot,left:pivot-65*p.arm1,right:pivot+65*p.arm2,p:{...p}};
   });
+  const leverHit=await page.evaluate(({x,y})=>{
+    const c=document.querySelector('#scene'),r=c.getBoundingClientRect(),g=sceneViewport(c);
+    return is2dHandle((x-r.left-g.left)/g.scale+g.worldX,(y-r.top-g.top)/g.scale+g.worldY);
+  },leverStart);
+  assert(leverHit,'Het zichtbare steunpunt moet bereikbaar zijn bij deze schermgrootte');
   await page.mouse.move(leverStart.x+leverStart.scale*12,leverStart.y);
   await page.mouse.down();
   const pressed=await page.evaluate(()=>({pivot:state.p.pivot??510,arm1:state.p.arm1,arm2:state.p.arm2,playing:state.playing}));
