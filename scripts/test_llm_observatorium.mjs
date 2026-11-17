@@ -99,6 +99,8 @@ try{
   await page.locator('#guideTechnical').click();
   assert.equal(await page.locator('#aiGuide').isVisible(),false,'De bestaande technische werkruimte kan open');
   assert.equal(await page.locator('#guideReturn').isVisible(),true,'De uitleg blijft bereikbaar');
+  assert.equal(await page.locator('#modelStory').isVisible(),false,'Bekijk de techniek opent werkelijk het 3D-model');
+  await page.locator('#storyBack3d').click();
 
   // De opbouw is een automatische, pauzeerbare uitleg. Het oude 3D-model is optioneel.
   await page.locator('#modelStory').waitFor({state:'visible'});
@@ -290,6 +292,8 @@ try{
     if(step<8)await page.locator('#guideNext').click();
    }
    await page.locator('#guideTechnical').click();
+   assert.equal(await page.locator('#modelStory').isVisible(),false,'Techniek opent de onderzoeksruimte');
+   await page.locator('#storyBack3d').click();
    await page.locator('#modelStory').waitFor({state:'visible'});
    const storyFits=await page.evaluate(()=>({
      stage:document.querySelector('#stage').getBoundingClientRect().toJSON(),
