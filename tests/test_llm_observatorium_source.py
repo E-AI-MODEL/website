@@ -1,5 +1,6 @@
 """Static publication safety checks for the standalone LLM Observatory."""
 from pathlib import Path
+import json
 import re
 import subprocess
 import unittest
@@ -138,6 +139,24 @@ class LlmObservatorySourceTests(unittest.TestCase):
         self.assertIn("function guideOpenTechnical(finish=false)", html)
         self.assertIn("repeat(9,minmax(0,1fr))", html)
         self.assertIn("VOORAF GESCHREVEN ANTWOORD", html)
+
+    def test_real_training_trace_is_genuine_and_separate_from_gpt_oss(self):
+        trace_path = ROOT / "assets" / "llm-real-trace.json"
+        self.assertTrue(trace_path.is_file(), "De vooraf opgenomen echte meting ontbreekt")
+        data = json.loads(trace_path.read_text(encoding="utf-8"))
+        self.assertEqual(data["kind"], "recorded_model_execution")
+        self.assertEqual(data["model"]["id"], "EphAsad/IllaryiaStories-1M")
+        self.assertEqual(data["model"]["experts"], 0)
+        self.assertEqual(data["model"]["tokenizer"],
+                         "model-specific GPT-Neo/GPT-2 tokenizer, not o200k_harmony")
+        self.assertEqual(data["prompt"], "Once upon a time,")
+        self.assertEqual(len(data["steps"]), 4)
+        self.assertIn('llm-real-trace-viewer.js', self.html)
+        self.assertIn('function guideAddRealTrace(host)', self.html)
+        self.assertIn('guideAddRealTrace(interactive)', self.html)
+        viewer = (ROOT / "assets" / "llm-real-trace-viewer.js").read_text(encoding="utf-8")
+        self.assertIn("/assets/llm-real-trace.json", viewer)
+        self.assertIn("niet jouw vraag", self.html)
 
     def test_local_math_module_is_present(self):
         math = ROOT / "assets" / "llm-learning-math.js"
