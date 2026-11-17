@@ -152,7 +152,12 @@
     var best=results.querySelector('a');
     if(best){event.preventDefault();best.click();}
    }
-   if(event.key==='Escape'&&input.value){event.stopPropagation();input.value='';doSearch();}
+   if(event.key==='Escape'){
+    event.preventDefault();
+    event.stopPropagation();
+    if(input.value){input.value='';doSearch();}
+    else{close(true);}
+   }
   });
  }
  menu.addEventListener('toggle',sync);
