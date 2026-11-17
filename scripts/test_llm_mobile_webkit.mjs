@@ -60,6 +60,27 @@ try {
     assert(g.visual.width>100&&g.visual.height>50&&g.aside.height>40,
      'Zichtbaar lesmateriaal in WebKit stap '+step+': '+JSON.stringify(g));
    }
+   // Een echte opgeslagen modelmeting moet ook op kleine iPhones te openen zijn.
+   await page.evaluate(()=>guideSetStep(4));
+   await page.locator('.ai-trace-toggle').click();
+   await page.locator('.ai-trace-token-steps').waitFor({state:'visible'});
+   assert.equal(await page.locator('.ai-trace-token-step').count(),4,
+    'Vier direct selecteerbare voorspellingen op mobiel');
+   await page.locator('.ai-trace-head-btn').last().click();
+   assert.match(await page.locator('.ai-trace-help').last().innerText(),/laatste laag/);
+   await page.locator('.ai-trace-token-step').last().click();
+   assert.match(await page.locator('.ai-trace-selected').innerText(),/little/);
+   const traceScreen=await page.evaluate(()=>({
+    pageWidth:document.documentElement.scrollWidth,
+    pageHeight:document.documentElement.scrollHeight,
+    viewerWidth:document.querySelector('.ai-trace-content').getBoundingClientRect().width,
+    toggleWidth:document.querySelector('.ai-trace-toggle').getBoundingClientRect().width
+   }));
+   assert(traceScreen.pageWidth<=width+2&&traceScreen.pageHeight<=height+2,
+    'Geen paginaschuif na echte meting: '+JSON.stringify(traceScreen));
+   assert(traceScreen.viewerWidth>120&&traceScreen.toggleWidth>120,
+    'De echte meetwaarden blijven bruikbaar op mobiel');
+   await page.screenshot({path:'test-results/llm-webkit-'+width+'-'+height+'-echte-meting.png'});
    await page.evaluate(()=>guideSetVisible(false));
    await page.locator('#story3d').click();
    assert.equal(await page.locator('#modelStory').isVisible(),false,'3D blijft bereikbaar');
