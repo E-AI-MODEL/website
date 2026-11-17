@@ -64,7 +64,7 @@ def groups(en: bool):
             ('Articles', [('Publications and media', '/en/publications/'),
                           ('The Act of Learning', '/publicaties/the-act-of-learning/'),
                           ('Research reviews', '/en/research/zhang-genai-language/')]),
-            ('Explore & create', [('Explore and create', '/en/tools/')]),
+            ('Explore & create', [('Explore and create', '/en/tools/'), ('Upload HTML', '/tools/html-galerij/')]),
             ('About EAI', [('About EAI', '/en/about/'), ('Site insights', '/en/insights/')]),
         ]
     return [
@@ -76,7 +76,7 @@ def groups(en: bool):
                         ('Onderzoek leermiddelen', '/nl/onderzoek/leermiddelen/')]),
         ('Artikelen', [('Artikelen en publicaties', '/nl/publicaties/'), ('Blog', '/nl/blog/'),
                        ('De vraag die we vergeten', '/publicaties/de-vraag-die-we-vergeten/')]),
-        ('Zelf aan de slag', [('Kies een vakgebied of hulpmiddel', '/nl/tools/')]),
+        ('Zelf aan de slag', [('Kies een vakgebied of hulpmiddel', '/nl/tools/'), ('HTML uploaden', '/tools/html-galerij/')]),
         ('Over EAI', [('Over EAI', '/nl/over/'), ('Websitegebruik', '/nl/insights/')]),
     ]
 
@@ -439,19 +439,22 @@ def navigation(soup: BeautifulSoup, path: str, en: bool) -> str:
         primary.append(f'<a href="{html.escape(target, quote=True)}"{current}>{html.escape(title)}</a>')
     nav_label = 'Main navigation' if en else 'Hoofdnavigatie'
     lang_label = 'Choose language' if en else 'Kies taal'
-    menu_heading = 'Navigate' if en else 'Ga naar'
-    more_label = 'More' if en else 'Meer'
-    upload_label = "Upload HTML" if en else "HTML uploaden"
-    upload_button = ('<a class="eai-site-upload" href="/tools/html-galerij/" aria-label="' + upload_label + '">'
-                     '<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4m0 0L7 9m5-5 5 5M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg>'
-                     '<span>' + upload_label + '</span></a>')
-    search_label = 'Search by subject or title' if en else 'Zoek op onderwerp of naam'
+    more_label = 'Menu'
+    home_label = 'EAI home' if en else 'EAI startpagina'
+    search_trigger = ('<button type="button" class="eai-site-search-trigger"'
+                      f' aria-label="{("Search" if en else "Zoeken")}"'
+                      ' aria-controls="eai-site-menu-panel" aria-expanded="false">'
+                      '<svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20" fill="none"'
+                      ' stroke="currentColor" stroke-width="1.7" stroke-linecap="round">'
+                      '<circle cx="10.8" cy="10.8" r="6.3"/><path d="m15.6 15.6 5 5"/></svg>'
+                      '</button>')
+    search_label = 'Search this site' if en else 'Zoek op de website'
     result_label = 'Search results' if en else 'Zoekresultaten'
-    search_box = (f'<div class="eai-site-search"><label for="eai-site-search-input">{search_label}</label>'
+    search_box = (f'<div class="eai-site-search" hidden><label for="eai-site-search-input">{search_label}</label>'
                   f'<input id="eai-site-search-input" type="search" autocomplete="off" enterkeyhint="search"'
-                  f' placeholder="{("e.g. feedback or gravity" if en else "Bijv. feedback of zwaartekracht")}" aria-controls="eai-site-search-results"></div>'
+                  f' placeholder="{("Search articles, tools and terms" if en else "Zoek artikelen, tools en begrippen")}" aria-controls="eai-site-search-results"></div>'
                   f'<div class="eai-site-search-results" id="eai-site-search-results" aria-label="{result_label}" hidden></div>')
-    return f'<header class="eai-masthead" data-eai-static-nav><nav class="eai-site-nav" aria-label="{nav_label}"><a class="eai-site-brand" href="{home}" aria-label="EAI home"><img src="/assets/eai-logo.svg" width="32" height="32" alt=""><span>EAI</span></a><div class="eai-site-primary" aria-label="{nav_label}">{"".join(primary)}</div><div class="eai-site-controls">{upload_button}<div class="eai-site-language" role="group" aria-label="{lang_label}">{"".join(language_links)}</div><details class="eai-site-menu"><summary aria-controls="eai-site-menu-panel" aria-label="{more_label}"><svg aria-hidden="true" viewBox="0 0 20 18" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M1 3h18M1 9h18M1 15h18"/></svg><span>{more_label}</span></summary><div class="eai-site-menu-panel" id="eai-site-menu-panel">{search_box}<div class="eai-site-menu-sections"><span class="eai-menu-heading">{menu_heading}</span>{"".join(menu)}</div></div></details></div></nav></header>'
+    return f'<header class="eai-masthead" data-eai-static-nav><nav class="eai-site-nav" aria-label="{nav_label}"><a class="eai-site-brand" href="{home}" aria-label="{home_label}"><img src="/assets/eai-logo.svg" width="32" height="32" alt=""><span>EAI</span></a><div class="eai-site-primary" aria-label="{nav_label}">{"".join(primary)}</div><div class="eai-site-controls">{search_trigger}<div class="eai-site-language" role="group" aria-label="{lang_label}">{"".join(language_links)}</div><details class="eai-site-menu"><summary aria-controls="eai-site-menu-panel" aria-label="{more_label}"><svg aria-hidden="true" viewBox="0 0 20 18" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M1 3h18M1 9h18M1 15h18"/></svg><span>{more_label}</span></summary><div class="eai-site-menu-panel" id="eai-site-menu-panel">{search_box}<div class="eai-site-menu-sections">{"".join(menu)}</div></div></details></div></nav></header>'
 
 
 def footer(en: bool) -> str:
