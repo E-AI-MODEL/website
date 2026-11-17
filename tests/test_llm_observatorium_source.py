@@ -119,7 +119,7 @@ class LlmObservatorySourceTests(unittest.TestCase):
             "De getallen veranderen per laag",
             "Welk stukje komt hierna?",
             "Een antwoord groeit token voor token",
-            "De kansberekening is echt.",
+            "De kansberekening is echt, maar de scores en woorden zijn voorbeelden.",
             "Geen echte gpt-oss-attention-scores.",
             "vooraf geschreven",
         ):
