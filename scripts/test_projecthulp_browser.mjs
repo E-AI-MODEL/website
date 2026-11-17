@@ -144,6 +144,9 @@ try{
  assert(await page.locator("#stage-aim").isVisible());
  await page.locator("#aimSkip").click();
  await page.locator("#stage-result:not(.eg-hidden)").waitFor({timeout:12000});
+ assert.match(await page.locator("#resultHeading").innerText(),/nog geen bestanden onderzocht/i);
+ assert.match(await page.locator("#goodCount").innerText(),/Nog niets onderzocht/);
+ assert.match(await page.locator("#issueCount").innerText(),/Nog geen controle/);
  await page.locator("#startGuidance").click();
  assert.match(await page.locator("#guideTitle").innerText(),/projectbestanden/);
  // Nieuwe repository wordt pas gevraagd nadat iemand die heeft aangemaakt.
@@ -210,6 +213,12 @@ try{
  assert.equal(await page.locator('[data-phase="controleren"]').getAttribute("aria-pressed"),"true");
  await page.goto(base+"/tools/eaigit/prompts/");
  assert.match(await page.title(),/Promptbibliotheek/);
+ assert(await page.locator("#selectedOutcome").textContent());
+ await page.locator("#promptSearch").fill("fout");
+ assert((await page.locator("#promptList .eg-prompt-card").count())>0);
+ assert((await page.locator("#promptList .eg-prompt-card").count())<16);
+ await page.locator("#promptSearch").fill("");
+ assert.equal(await page.locator("#promptList .eg-prompt-card").count(),16);
  assert.equal(await page.locator("#promptList .eg-prompt-card").count(),16);
  await page.locator("#promptRepo").fill("https://github.com/voorbeeld/project");
  await page.locator("#promptGoal").fill("Bezoekers kunnen een oefening afronden");
@@ -217,6 +226,8 @@ try{
  assert.equal(await page.locator("#promptList .eg-prompt-card").count(),3);
  await page.locator('[data-prompt-id="gebruikstest"]').click();
  assert(await page.locator("#selectedPrompt").isVisible());
+ assert(await page.locator("#promptWorkspace").evaluate(el=>el.classList.contains("eg-dashboard-mobile-detail")),"Op mobiel opent de gekozen opdracht als eigen werkruimte");
+ assert.match(await page.locator("#selectedOutcome").innerText(),/testrapport/);
  const selectedPrompt=await page.locator("#selectedBody").inputValue();
  assert.match(selectedPrompt,/https:\/\/github.com\/voorbeeld\/project/);
  assert.match(selectedPrompt,/Bezoekers kunnen een oefening afronden/);
