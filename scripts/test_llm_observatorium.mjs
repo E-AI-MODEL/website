@@ -237,6 +237,8 @@ try{
     await page.waitForTimeout(120);
     if([0,1,2,3,4,5].includes(mode))await page.screenshot({path:'test-results/llm-'+width+'-modus-'+mode+'.png'});
     assert.equal(await page.evaluate(()=>state.playing),false,'Geen automatische beweging in modus '+mode);
+    const explanation=await page.locator('#taskText').innerText();
+    assert(explanation.length>75,'Iedere technische modus legt uit waarom de berekening nodig is: '+mode);
     const isPlayerVisible=await page.locator('#playBtn').isVisible();
     assert.equal(isPlayerVisible,false,'Geen nutteloze afspeelbalk in modus '+mode);
   }
