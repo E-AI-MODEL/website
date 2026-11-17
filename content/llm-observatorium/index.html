@@ -563,7 +563,42 @@
   position:absolute;top:auto;left:13px;bottom:12px;z-index:30
  }
 }
+
+/* Uitleg op basis van echte kleine berekeningen, in de bestaande EAI-vormgeving. */
+.ai-learn-numbers{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.ai-learn-number{min-width:0;background:#102b38;border:1px solid #406472;border-radius:10px;padding:9px;text-align:center;display:grid;gap:3px}
+.ai-learn-number small{color:#a5bec7;font-size:10px}
+.ai-learn-number strong{color:#e8c58e;font-size:clamp(13px,1.6vw,20px);font-variant-numeric:tabular-nums}
+.ai-learn-source{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;color:#a3c0c9;font-size:12px}
+.ai-learn-source b{font-weight:600;color:#a9e7d5}
+.ai-learn-order{display:flex;gap:7px;flex-wrap:wrap}
+.ai-learn-orderpiece{display:grid;gap:3px;min-width:40px;padding:8px;border:1px solid #466c7c;border-radius:9px;background:#143441}
+.ai-learn-orderpiece strong{font-weight:600;color:#dcf3f0;font-size:13px;overflow-wrap:anywhere}
+.ai-learn-orderpiece small{font-size:10px;color:#a0bdc9}
+.ai-learn-orderpiece.is-swapped{border-color:#e6bd81;background:#3b3529}
+.ai-learn-bars{display:grid;gap:7px;max-height:100%;overflow:auto}
+.ai-learn-bar{display:grid;grid-template-columns:85px minmax(0,1fr) 40px;gap:9px;align-items:center}
+.ai-learn-bar span{font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ai-learn-bar strong{font-size:11px;text-align:right;font-variant-numeric:tabular-nums}
+.ai-learn-expert-grid{display:grid;grid-template-columns:repeat(var(--expert-cols,16),minmax(0,1fr));gap:4px}
+.ai-learn-expert{display:block;height:clamp(7px,1.3vw,15px);background:#214454;border:1px solid #416877;border-radius:2px}
+.ai-learn-expert.chosen{background:#efc58e;border-color:#ffe1ad}
+.ai-learn-selection{display:flex;flex-wrap:wrap;gap:5px}
+.ai-learn-selection span{border:1px solid #b78d59;background:#3b3226;color:#f8d7a0;border-radius:7px;padding:4px 7px;font-size:11px}
+.ai-learn-layer-rows{display:grid;gap:6px}
+.ai-learn-layer-row{display:grid;gap:4px;padding:8px 10px;background:#102a39;border:1px solid #426575;border-radius:9px}
+.ai-learn-layer-row span{font-size:11px;color:#a9c2ce}
+.ai-learn-layer-row strong{font-size:clamp(11px,1.5vw,16px);font-weight:600;color:#afe6d4;font-variant-numeric:tabular-nums;word-spacing:3px}
+.ai-learn-position-choices,.ai-learn-answer-actions{display:flex;flex-wrap:wrap;gap:6px}
+.ai-learn-position-choices button{min-width:30px;min-height:31px;background:#123545;color:#cbeced;border:1px solid #4e7b8a;border-radius:8px}
+.ai-learn-position-choices button.chosen{background:#efc58e;border-color:#ffe0ad;color:#282315}
+.ai-learn-answer{max-height:100%;overflow:auto;overflow-wrap:anywhere}
+.ai-learn-piece{white-space:pre-wrap}
+.ai-learn-piece.newest{background:#375b49;color:#c3ffe5;border-radius:3px}
+@media(max-width:680px){.ai-learn-number{padding:6px 3px}.ai-learn-number small{font-size:9px}.ai-learn-bar{grid-template-columns:61px minmax(0,1fr) 36px;gap:5px}.ai-learn-expert-grid{gap:3px}.ai-learn-layer-row{padding:6px 8px}.ai-learn-layer-row strong{font-size:11px}.ai-learn-orderpiece{padding:5px}.ai-learn-selection span{padding:3px 5px;font-size:10px}}
+
 </style>
+<script src="/assets/llm-learning-math.js"></script>
 <script defer src="/assets/site-analytics.js"></script></head>
 <body>
 <div id="app" data-panel="">
@@ -652,14 +687,14 @@
   <div class="ai-guide-body">
    <nav class="ai-guide-steps" id="guideSteps" aria-label="Stappen van de uitleg"></nav>
    <div class="ai-guide-main">
-    <div class="ai-guide-intro"><span id="guideEyebrow" class="ai-guide-stepname">STAP 1 VAN 5</span><h2 id="guideHeading">Je stelt een vraag</h2><p id="guideSubheading"></p></div>
+    <div class="ai-guide-intro"><span id="guideEyebrow" class="ai-guide-stepname">STAP 1 VAN 9</span><h2 id="guideHeading">Je stelt een vraag</h2><p id="guideSubheading"></p></div>
     <div class="ai-guide-work">
      <div class="ai-guide-visual" id="guideVisual" aria-label="Voorbeeld van deze stap"></div>
      <div class="ai-guide-aside"><span class="ai-guide-small">WAT GEBEURT ER?</span><p id="guideExplanation"></p><div id="guideInteractive"></div><p id="guideBoundary" class="ai-guide-boundary"></p></div>
     </div>
    </div>
   </div>
-  <footer class="ai-guide-bottom"><span id="guideCounter" class="ai-guide-counter" aria-live="polite">1 / 5</span><div class="ai-guide-progress" id="guideProgress" aria-hidden="true"></div><div class="ai-guide-actions"><button type="button" id="guidePrev">Vorige</button><button type="button" id="guideNext" class="ai-guide-next">Bekijk de stukjes <span aria-hidden="true">→</span></button></div></footer>
+  <footer class="ai-guide-bottom"><span id="guideCounter" class="ai-guide-counter" aria-live="polite">1 / 9</span><div class="ai-guide-progress" id="guideProgress" aria-hidden="true"></div><div class="ai-guide-actions"><button type="button" id="guidePrev">Vorige</button><button type="button" id="guideNext" class="ai-guide-next">Bekijk de stukjes <span aria-hidden="true">→</span></button></div></footer>
  </div>
 </section>
 <script>
@@ -1433,20 +1468,32 @@ function tick(now){
  if(state.chartDirty&&now-lastGraph>70&&($('app').dataset.panel==='graph'||window.innerWidth>800)){drawPlot();lastGraph=now}
  requestAnimationFrame(tick);
 }
-/* Toegankelijke route voor beginners. Technische modellen en gegevens blijven intact. */
-const GUIDE_LABELS=['Jouw vraag','Echte tokens','Getallen en lagen','Eerdere tekst','Mogelijke vervolgen','Het antwoord'];
+/* Negen leerstappen, van de eigen vraag tot de herhaalde tokenkeuze.
+ * De 4D-math is een echt doorgerekend MINIVOORBEELD, nooit een gpt-oss-activatie.
+ */
+const GUIDE_LABELS=['Jouw vraag','Echte tokens','Getallen','Volgorde','Eerdere tekst','Experts','Rekenlagen','Volgend token','Het antwoord'];
 const GUIDE_STEPS=[
- {title:'Je stelt een vraag',sub:'Typ een vraag. We volgen dezelfde tekst door alle stappen.',explain:'Een taalmodel is software die tekst aanvult. Je vraag blijft hier op je apparaat. Je ziet hoe de berekeningen werken, zonder iets te versturen. Er wordt geen online taalmodel aangeroepen.',boundary:'Een AI kan overtuigend antwoorden zonder dat het antwoord klopt.'},
- {title:'Je zin wordt verdeeld in echte tokens',sub:'Tik op een stukje. Je ziet het nummer dat de tokenizer ervoor gebruikt.',explain:'AI verdeelt tekst in kleine stukjes: tokens. Een stukje kan een heel woord zijn, een deel van een woord of een leesteken. Hier gebruikt de website de echte tokenizer van gpt-oss, zodra die is geladen.',boundary:'Zonder de echte tokenizer zie je een woordvoorbeeld, niet de precieze verdeling.'},
- {title:'Waarom rekent het model in lagen?',sub:'Een tokennummer is geen betekenis. Het model gebruikt er een lange rij getallen bij.',explain:'Bij een tokennummer hoort in het model een rij getallen. Iedere laag rekent met deze getallen verder: ze gebruikt eerdere tekst en kleine rekennetwerken. De nieuwe getallen gaan naar de volgende laag.',boundary:'Het aantal lagen en experts komt uit de echte modelbeschrijving. De getekende stappen zijn een schema, geen gemeten waarden uit een draaiend model.'},
- {title:'Welke tekst stond er al?',sub:'Tik op een token. Groen stond ervoor; goud is je gekozen token.',explain:'Bij het berekenen van een volgend stukje gebruikt het model eerdere tokens. Sommige lagen kunnen verder terugkijken dan andere. De groene kleur laat alleen zien welke tekst eerder staat, niet hoeveel gewicht die krijgt.',boundary:'De kleuren tonen de volgorde. Ze zeggen niet hoeveel aandacht AI aan ieder stukje geeft.'},
- {title:'Welk stukje tekst komt hierna?',sub:'De balken tonen mogelijke vervolgen. Verander de variatie en kijk wat verschuift.',explain:'Elke balk is een mogelijk volgend stukje tekst. Het verschil in lengte ontstaat door een echte kansberekening op voorbeeldscores. Er draait hier geen taalmodel dat jouw vraag voorspelt.',boundary:'Dit zijn voorbeeldkansen. Er is niets berekend voor jouw vraag.'},
- {title:'Zo groeit een antwoord',sub:'Na elk nieuw stukje wordt opnieuw berekend wat kan volgen.',explain:'Klik om de volgende tekst te tonen. Een taalmodel maakt een antwoord niet in één keer. Het kiest steeds een volgend token en gebruikt dat voor de volgende berekening.',boundary:'De leesbare zinsdelen in dit voorbeeld zijn vooraf geschreven. Dit is geen echt AI-antwoord.'}
+ {title:'Je stelt een vraag',sub:'Typ een zin. Diezelfde zin blijft zichtbaar wanneer je verdergaat.',explain:'Een taalmodel krijgt tekst en berekent welk stukje erna kan komen. Je eigen tekst blijft op dit apparaat. Er wordt geen online taalmodel aangeroepen.',boundary:'Een model kan overtuigend klinken en toch een onjuist antwoord maken.'},
+ {title:'Je zin valt uiteen',sub:'Tik op een stukje tekst. Je ziet het echte nummer van dat token.',explain:'De tokenizer verdeelt je zin in stukjes. Dat zijn niet altijd hele woorden. Bij ieder stukje hoort een nummer dat het model kan herkennen.',boundary:'Echte o200k_harmony-tokenizer zodra die is geladen. Anders: duidelijk gemarkeerd woordvoorbeeld.'},
+ {title:'Een tokennummer wordt een rij getallen',sub:'Bekijk de getallen bij je gekozen token.',explain:'Het tokennummer is een verwijzing. In het taalmodel hoort bij dat nummer een rij getallen. Daarmee kan het model verder rekenen. De vier getallen hier zijn een klein, zelf berekend voorbeeld, niet uit gpt-oss.',boundary:'Echt tokennummer, voorbeeldgetallen. Echte embeddings van gpt-oss worden hier niet uitgelezen.'},
+ {title:'De volgorde maakt verschil',sub:'Wissel twee stukjes om. Wat verandert er aan de zin?',explain:'De volgorde van woorden maakt verschil. Het model gebruikt bij de berekeningen ook de plek van ieder token. Bij gpt-oss gebeurt dat onder meer in attention.',boundary:'Echte tokenposities. Het verwisselen is alleen een illustratie; het model wordt niet opnieuw uitgevoerd.'},
+ {title:'Welke eerdere tekst telt mee?',sub:'Tik op een token en zie de gewichten in een kleine voorbeeldberekening.',explain:'Een token wordt niet los van de tekst berekend. Met attention kan het model informatie uit eerdere tokens combineren. De gekleurde balken hieronder zijn echt uitgerekend met een klein voorbeeld, niet gemeten bij gpt-oss.',boundary:'Echte wiskunde met vier voorbeeldgetallen per token. Geen echte gpt-oss-attention-scores.'},
+ {title:'Vier rekennetwerken doen mee',sub:'Bekijk welke vier een kleine voorbeeldrouter selecteert.',explain:'Bij gpt-oss staan veel kleine rekennetwerken klaar: experts. Een router kiest er vier per token om mee te rekenen. We rekenen zo’n keuze hier zelf uit met een klein voorbeeld.',boundary:'Aantal experts komt uit de modelbeschrijving. Gekleurde keuzes en scores zijn van het voorbeeldmodel.'},
+ {title:'De getallen veranderen per laag',sub:'Kies een voorbeeldlaag en vergelijk de getallen ervoor en erna.',explain:'Een laag gebruikt eerdere tekst en rekennetwerken om de getallen te veranderen. De volgende laag rekent verder met die nieuwe getallen. Hier doen we dat echt, maar met een klein voorbeeld van vier lagen.',boundary:'Het aantal gpt-oss-lagen is echt. De getallen hieronder zijn uit een eigen vierlagenvoorbeeld, niet uit gpt-oss.'},
+ {title:'Welk stukje komt hierna?',sub:'Verander de variatie. Bekijk hoe de kansen verschuiven.',explain:'Het model geeft verschillende mogelijke vervolgen een score. Uit die scores kunnen we kansen berekenen. Hier rekenen we met vier voorbeeldscores om het verschil te laten zien.',boundary:'De kansberekening is echt. De scores en woordkeuzes zijn voorbeelden, niet voorspeld voor jouw vraag.'},
+ {title:'Een antwoord groeit token voor token',sub:'Voeg een token toe en zie hoe het antwoord groeit.',explain:'Een taalmodel kiest een volgend token, voegt het toe en berekent het volgende token opnieuw. Dit antwoord is vooraf geschreven. De echte tokenizer laat zien uit welke tokens die tekst bestaat.',boundary:'Vooraf geschreven voorbeeld, geen antwoord van een draaiend taalmodel. De tokenindeling is echt zodra de tokenizer is geladen.'}
 ];
-let guideStep=0,guideBuildCount=1,guideTokenIndex=0,guideLayer=0;
+let guideStep=0,guideBuildCount=1,guideTokenIndex=0,guideMiniLayer=0,guideSwapped=false,guideSampledIndex=-1;
 const guideEl=id=>document.getElementById(id);
-function guideNode(tag,text,klass){
- const node=document.createElement(tag);if(text!=null)node.textContent=String(text);if(klass)node.className=klass;return node;
+const guideMath=()=>globalThis.EAILearningMath;
+function guideNode(tag,value,klass){
+ const node=document.createElement(tag);
+ if(value!=null)node.textContent=String(value);
+ if(klass)node.className=klass;
+ return node;
+}
+function guideLabel(parent,value){
+ parent.appendChild(guideNode('div',value,'ai-guide-question'));
 }
 function guideSetVisible(open){
  guideEl('aiGuide').hidden=!open;
@@ -1457,132 +1504,262 @@ function guideSetVisible(open){
 function guideSetStep(n){
  const previous=guideStep;
  guideStep=clamp(n,0,GUIDE_STEPS.length-1);
- if(guideStep===3&&previous!==3)guideTokenIndex=Math.max(0,state.promptWords.length-1);
+ if(guideStep===4&&previous!==4)guideTokenIndex=Math.max(0,Math.min(state.promptWords.length-1,7));
  guideRender();
+}
+function guideTokenIds(){
+ return state.promptWords.slice(0,8).map((t,i)=>Number.isInteger(t.id)?t.id:i+73);
+}
+function guideTrace(){
+ const ids=guideTokenIds();
+ return guideMath().miniTrace(ids,Math.min(guideTokenIndex,ids.length-1),guideMiniLayer,cfg.experts);
 }
 function guideTokenChips(parent,contextMode){
  const tokens=state.promptWords.slice(0,18);
- const area=guideNode('div',null,'ai-guide-chip-area');area.setAttribute('aria-label','Stukjes van de ingevoerde tekst');
+ const area=guideNode('div',null,'ai-guide-chip-area');
+ area.setAttribute('aria-label','Stukjes van de ingevoerde tekst');
  tokens.forEach((token,i)=>{
   const b=guideNode('button',readableToken(token.text).slice(0,30),'ai-guide-token');
   b.type='button';b.setAttribute('aria-pressed',String(i===guideTokenIndex));
   if(contextMode)b.classList.add(i<guideTokenIndex?'is-before':i===guideTokenIndex?'is-focus':'is-after');
-  b.title=token.id==null?'Woordvoorbeeld, geen echte token-ID':'Echt token-ID '+token.id;
+  b.title=token.id==null?'Woordvoorbeeld zonder echt token-ID':'Echt token-ID '+token.id;
   b.onclick=()=>{guideTokenIndex=i;state.token=i;guideRender()};
   area.appendChild(b);
  });
  parent.appendChild(area);
- if(state.promptWords.length>tokens.length)parent.append(guideNode('p','+ '+(state.promptWords.length-tokens.length)+' extra stukjes. Maak de tekst korter om ze allemaal te zien.','ai-guide-legend'));
+ if(state.promptWords.length>tokens.length)parent.append(guideNode('p','+ '+(state.promptWords.length-tokens.length)+' extra tokens. Verkort je vraag om ze te bekijken.','ai-guide-legend'));
 }
-function guideDrawLayer(){
- const visual=guideEl('guideVisual');visual.replaceChildren();
- const token=state.promptWords[guideTokenIndex]||{};
- const authentic=state.tokenStatus==='real'&&token.id!=null;
- visual.append(guideNode('div','VAN TOKENNUMMER NAAR REKENLAGEN · SCHEMA','ai-guide-question'));
- const flow=guideNode('div',null,'ai-guide-flow');
- const items=[
-  {title:'Tokennummer',detail:authentic?String(token.id):'Nog niet geladen',description:'De echte tokenizer kent dit nummer toe.'},
-  {title:'Rij getallen',detail:'In het model',description:'Bij dit nummer hoort een lange rij getallen. Die waarden tonen we hier niet.'},
-  {title:'Laag '+(guideLayer+1),detail:'Van '+cfg.layers+' lagen',description:'Eerdere tekst en rekennetwerken veranderen de getallen.'}
- ];
- items.forEach(item=>{
-  const card=guideNode('div',null,'ai-guide-flow-item');
-  card.append(guideNode('span',item.title),guideNode('b',item.detail),guideNode('small',item.description));
-  flow.append(card);
+function guideNumbers(parent,values){
+ const wrap=guideNode('div',null,'ai-learn-numbers');
+ values.forEach((n,i)=>{
+  const cell=guideNode('div',null,'ai-learn-number');
+  cell.append(guideNode('small','Getal '+(i+1)),guideNode('strong',n.toFixed(2)));
+  wrap.append(cell);
  });
- visual.append(flow);
- const strip=guideNode('div',null,'ai-guide-layer-track');
- strip.setAttribute('role','img');
- strip.setAttribute('aria-label','Model met '+cfg.layers+' lagen; laag '+(guideLayer+1)+' is gekozen');
- for(let i=0;i<cfg.layers;i++){
-  const dot=guideNode('i',null,i===guideLayer?'is-current':'');
-  dot.title='Laag '+(i+1);strip.append(dot);
+ parent.append(wrap);
+}
+function guideDrawEmbedding(){
+ const visual=guideEl('guideVisual'),t=state.promptWords[guideTokenIndex]||{};
+ guideLabel(visual,'ECHT TOKENNUMMER → BEREKEND MINIVOORBEELD');
+ const line=guideNode('div',null,'ai-learn-source');
+ line.append(guideNode('span',t.id==null?'Tokennummer niet beschikbaar':'Echt tokennummer: '+t.id),guideNode('b','Vier voorbeeldgetallen'));
+ visual.append(line);
+ guideNumbers(visual,guideMath().tokenVector(Number.isInteger(t.id)?t.id:73));
+ visual.append(guideNode('p','Deze vier waarden zijn lokaal berekend voor de uitleg. Het echte gpt-oss-model gebruikt veel meer getallen; die lezen we hier niet uit.','ai-guide-legend'));
+}
+function guideDrawOrder(){
+ const visual=guideEl('guideVisual');
+ guideLabel(visual,'DEZELFDE TOKENS, EEN ANDERE VOLGORDE');
+ const tokens=state.promptWords.slice(0,8);
+ const swapAt=tokens.length>=3?2:tokens.length-1;
+ const pieces=tokens.map((t,i)=>({text:t.text,id:t.id,from:i}));
+ if(guideSwapped&&pieces.length>=2){const a=0,b=swapAt;const old=pieces[a];pieces[a]=pieces[b];pieces[b]=old;}
+ const row=guideNode('div',null,'ai-learn-order');
+ pieces.forEach((token,i)=>{
+  const cell=guideNode('div',null,'ai-learn-orderpiece');
+  cell.append(guideNode('strong',readableToken(token.text)),guideNode('small','Plek '+(i+1)));
+  if(guideSwapped&&(token.from===0||token.from===swapAt))cell.classList.add('is-swapped');
+  row.append(cell);
+ });
+ visual.append(row);
+ visual.append(guideNode('p','De tokennummers veranderen niet. Alleen de plekken van de stukjes veranderen. Dat kan de betekenis veranderen.','ai-guide-legend'));
+}
+function guideDrawAttention(){
+ const visual=guideEl('guideVisual');
+ guideLabel(visual,'ATTENTION · ECHTE BEREKENING MET VOORBEELDGETALLEN');
+ const trace=guideTrace(),weights=trace.current.attention.weights;
+ const row=guideNode('div',null,'ai-learn-bars');
+ weights.forEach((w,i)=>{
+  const t=state.promptWords[i],el=guideNode('div',null,'ai-learn-bar');
+  const label=guideNode('span',readableToken(t?.text||'?').slice(0,13));
+  const track=guideNode('div',null,'ai-guide-track'),fill=guideNode('div',null,'ai-guide-fill');
+  fill.style.width=(100*w).toFixed(1)+'%';track.append(fill);
+  el.append(label,track,guideNode('strong',(100*w).toFixed(1)+'%'));
+  row.append(el);
+ });
+ visual.append(row);
+ visual.append(guideNode('p','Berekend voor de gekozen tokenpositie met maximaal acht tokens. Tokens die later staan doen niet mee.','ai-guide-legend'));
+}
+function guideDrawExperts(){
+ const visual=guideEl('guideVisual'),trace=guideTrace(),chosen=trace.current.experts.selected;
+ guideLabel(visual,'SELECTIE VAN VIER EXPERTS · MINIVOORBEELD');
+ const selected=new Set(chosen.map(x=>x.expert));
+ const grid=guideNode('div',null,'ai-learn-expert-grid');
+ grid.style.setProperty('--expert-cols',cfg.experts<=32?'8':'16');
+ for(let i=0;i<cfg.experts;i++){
+  const cell=guideNode('span',null,'ai-learn-expert'+(selected.has(i)?' chosen':''));
+  cell.title='Expert '+(i+1)+(selected.has(i)?' geselecteerd':'');
+  grid.append(cell);
  }
- visual.append(strip);
- visual.append(guideNode('p','Iedere volgende laag gebruikt de getallen die de vorige heeft berekend. Je ziet hier de volgorde, geen echte activaties.','ai-guide-legend'));
+ visual.append(grid);
+ const answer=guideNode('div',null,'ai-learn-selection');
+ chosen.forEach(e=>answer.append(guideNode('span','Expert '+(e.expert+1)+' · '+e.weight.toFixed(2))));
+ visual.append(answer);
+ visual.append(guideNode('p','Van '+cfg.experts+' experts lichten er vier op. Deze keuze is zelf berekend, niet uit gpt-oss gemeten.','ai-guide-legend'));
+}
+function guideDrawLayers(){
+ const visual=guideEl('guideVisual'),trace=guideTrace().current;
+ guideLabel(visual,'ÉÉN REKENLAAG VAN DICHTBIJ · MINIVOORBEELD');
+ const rows=[
+  ['Getallen uit vorige laag',trace.input],
+  ['Na eerdere tekst',trace.afterAttention],
+  ['Na vier experts',trace.result]
+ ];
+ const wrap=guideNode('div',null,'ai-learn-layer-rows');
+ rows.forEach(([title,values])=>{
+  const line=guideNode('div',null,'ai-learn-layer-row');
+  line.append(guideNode('span',title),guideNode('strong',values.map(x=>x.toFixed(2)).join('  ·  ')));
+  wrap.append(line);
+ });
+ visual.append(wrap);
+ const track=guideNode('div',null,'ai-guide-layer-track');
+ for(let i=0;i<cfg.layers;i++){const bar=guideNode('i',null,i===guideMiniLayer?'is-current':'');bar.title='Architectuurlaag '+(i+1);track.append(bar);}
+ visual.append(track);
+ visual.append(guideNode('p','Boven: drie stappen van onze echte vierlagenberekening. Onder: de '+cfg.layers+' lagen van '+cfg.name+' als openbaar modelgegeven. Niet dezelfde modeluitvoering.','ai-guide-legend'));
 }
 function guideBarData(){
- const scores=[2.45,1.50,.82,.24],temperature=clamp(state.temp,.3,1.8);
- const weights=scores.map(x=>Math.exp(x/temperature)),sum=weights.reduce((a,b)=>a+b,0);
- return weights.map(v=>v/sum);
+ return guideMath().softmax([2.45,1.50,.82,.24],state.temp);
 }
 function guideDrawBars(){
  const visual=guideEl('guideVisual');visual.replaceChildren();
- visual.appendChild(guideNode('div','DE VOLGENDE WOORDSTUKJES ZIJN EEN REKENVOORBEELD','ai-guide-question'));
+ guideLabel(visual,'KANSBEREKENING OP VIER VOORBEELDSCORES');
  const bars=guideNode('div',null,'ai-guide-barlist');
  const data=guideBarData(),labels=['Omdat','De','Het','Dat'];
  data.forEach((value,i)=>{
-  const row=guideNode('div',null,'ai-guide-bar');row.append(guideNode('span',labels[i]));
-  const track=guideNode('div',null,'ai-guide-track'),fill=guideNode('div',null,'ai-guide-fill');fill.style.width=(value*100).toFixed(1)+'%';track.append(fill);row.append(track,guideNode('strong',(value*100).toFixed(1)+'%'));bars.append(row);
+  const row=guideNode('div',null,'ai-guide-bar');
+  row.append(guideNode('span',labels[i]+(guideSampledIndex===i?' ✓':'')));
+  const track=guideNode('div',null,'ai-guide-track'),fill=guideNode('div',null,'ai-guide-fill');
+  fill.style.width=(value*100).toFixed(1)+'%';
+  track.append(fill);row.append(track,guideNode('strong',(value*100).toFixed(1)+'%'));bars.append(row);
  });
  visual.append(bars);
- const out=guideEl('guideTemperatureValue');if(out)out.textContent=state.temp.toFixed(1);
+ if(guideSampledIndex>=0)visual.append(guideNode('p','Gekozen in dit voorbeeld: '+labels[guideSampledIndex]+'. De hoogste kans wordt niet altijd gekozen.','ai-guide-legend'));
+ const output=guideEl('guideTemperatureValue');if(output)output.textContent=state.temp.toFixed(1);
+}
+function guideAnswerTokens(){
+ const defaultQuestion=state.input.trim().toLowerCase()==='waarom is de lucht blauw?';
+ const answer=defaultQuestion?'De lucht lijkt blauw doordat zonlicht in de lucht wordt verstrooid.':'Dit is een voorbeeldzin, niet het antwoord op jouw vraag.';
+ if(tokenizer){
+  try{return tokenizer.encode(answer).map(id=>({id,text:tokenizer.decode([id])}));}
+  catch(error){}
+ }
+ return (answer.match(/\S+\s*/g)||[answer]).map(text=>({id:null,text}));
+}
+function guideDrawAnswer(){
+ const visual=guideEl('guideVisual'),tokens=guideAnswerTokens();
+ guideBuildCount=clamp(guideBuildCount,1,tokens.length);
+ guideLabel(visual,tokenizer?'VOORAF GESCHREVEN TEKST · ECHTE TOKENS':'VOORAF GESCHREVEN TEKST · WOORDVOORBEELD');
+ const answer=guideNode('div',null,'ai-guide-answer ai-learn-answer');
+ tokens.slice(0,guideBuildCount).forEach((t,i)=>{
+  const piece=guideNode('span',t.text,'ai-learn-piece'+(i===guideBuildCount-1?' newest':''));
+  piece.title=t.id==null?'Woordvoorbeeld':'Echt token-ID '+t.id;
+  answer.append(piece);
+ });
+ if(guideBuildCount<tokens.length)answer.append(guideNode('span',' …'));
+ visual.append(answer);
+ visual.append(guideNode('p',guideBuildCount+' van '+tokens.length+' '+(tokenizer?'echte tokens':'woordstukjes')+' getoond. Het antwoord is vooraf geschreven, niet door AI voorspeld.','ai-guide-legend'));
 }
 function guideRender(){
  const step=GUIDE_STEPS[guideStep],visual=guideEl('guideVisual'),interactive=guideEl('guideInteractive');
  if(!visual||!interactive)return;
  guideEl('guideEyebrow').textContent='STAP '+(guideStep+1)+' VAN '+GUIDE_STEPS.length;
- guideEl('guideHeading').textContent=step.title;guideEl('guideSubheading').textContent=step.sub;
- guideEl('guideExplanation').textContent=step.explain;guideEl('guideBoundary').textContent=step.boundary;
+ guideEl('guideHeading').textContent=step.title;
+ guideEl('guideSubheading').textContent=step.sub;
+ guideEl('guideExplanation').textContent=step.explain;
+ guideEl('guideBoundary').textContent=step.boundary;
  guideEl('guideCounter').textContent=(guideStep+1)+' / '+GUIDE_STEPS.length;
  guideEl('guidePrev').disabled=guideStep===0;
- guideEl('guideNext').firstChild.textContent=['Bekijk de tokens','Bekijk de lagen','Bekijk de eerdere tekst','Bekijk de keuzes','Bouw het antwoord','Bekijk de techniek'][guideStep];
+ guideEl('guideNext').firstChild.textContent=['Bekijk de tokens','Bekijk de getallen','Bekijk de volgorde','Bekijk de eerdere tekst','Bekijk de experts','Bekijk de lagen','Bekijk de kansen','Bouw een antwoord','Bekijk de techniek'][guideStep];
  const stepButtons=guideEl('guideSteps');stepButtons.replaceChildren();
- GUIDE_LABELS.forEach((title,i)=>{const b=guideNode('button',null);b.type='button';b.append(guideNode('span',i+1),guideNode('strong',title));if(i===guideStep)b.setAttribute('aria-current','step');b.onclick=()=>guideSetStep(i);stepButtons.append(b)});
+ GUIDE_LABELS.forEach((title,i)=>{
+  const b=guideNode('button',null);b.type='button';
+  b.append(guideNode('span',i+1),guideNode('strong',title));
+  if(i===guideStep)b.setAttribute('aria-current','step');
+  b.onclick=()=>guideSetStep(i);stepButtons.append(b);
+ });
  const progress=guideEl('guideProgress');progress.replaceChildren();
- GUIDE_STEPS.forEach((_,i)=>{const mark=document.createElement('i');if(i<=guideStep)mark.classList.add('on');progress.append(mark)});
+ GUIDE_STEPS.forEach((_,i)=>{
+  const mark=document.createElement('i');if(i<=guideStep)mark.classList.add('on');progress.append(mark);
+ });
  visual.replaceChildren();interactive.replaceChildren();
  if(guideStep===0){
-  const prompt=guideNode('div','JOUW VRAAG','ai-guide-question');
-  const box=guideNode('textarea',null,'ai-guide-input');box.id='guidePrompt';box.maxLength=140;box.rows=3;box.setAttribute('aria-label','Jouw vraag aan AI');
+  guideLabel(visual,'JOUW VRAAG');
+  const box=guideNode('textarea',null,'ai-guide-input');
+  box.id='guidePrompt';box.maxLength=140;box.rows=3;box.setAttribute('aria-label','Jouw vraag aan AI');
   box.placeholder='Typ een vraag';box.value=state.input;
-  box.addEventListener('input',()=>{state.input=box.value||' ';tokenizeInput();guideTokenIndex=0;});
-  visual.append(prompt,box);
+  box.addEventListener('input',()=>{state.input=box.value||' ';tokenizeInput();guideTokenIndex=0;guideBuildCount=1;});
+  visual.append(box);
   interactive.append(guideNode('p','Probeer bijvoorbeeld: Waarom is de lucht blauw?','ai-guide-mini'));
  }else if(guideStep===1){
-  visual.append(guideNode('div',state.tokenStatus==='real'?'ECHTE TOKENIZER · GPT-OSS · O200K_HARMONY':'TOKENIZER NIET BESCHIKBAAR · WOORDVOORBEELD','ai-guide-question'));
-  guideTokenIndex=clamp(guideTokenIndex,0,state.promptWords.length-1);guideTokenChips(visual,false);
-  visual.append(guideNode('div',state.tokenStatus==='real'?'De tekst is echt in tokens verdeeld.':'Dit is een woordvoorbeeld. De precieze verdeling is nog niet geladen.','ai-guide-legend'));
-  const token=state.promptWords[guideTokenIndex]||{};
-  interactive.append(guideNode('p',state.promptWords.length+' stukjes in deze invoer.','ai-guide-mini'));
-  interactive.append(guideNode('p',token.id==null?'Bij dit voorbeeld hoort nog geen echt tokennummer.':'Gekozen stukje: nummer '+token.id+' (echt token-ID).','ai-guide-mini'));
-  interactive.append(guideNode('p',state.tokenStatus==='real'?'Deze verdeling is op jouw apparaat berekend, zonder AI-server.':'De tokenizer kon niet laden; dit is nog geen echte tokenverdeling.','ai-guide-mini'));
+  guideLabel(visual,state.tokenStatus==='real'?'ECHTE TOKENIZER · GPT-OSS · O200K_HARMONY':'TOKENIZER LADEN / WOORDVOORBEELD');
+  guideTokenIndex=clamp(guideTokenIndex,0,state.promptWords.length-1);
+  guideTokenChips(visual,false);
+  const tok=state.promptWords[guideTokenIndex]||{};
+  interactive.append(guideNode('p',state.promptWords.length+' '+(state.tokenStatus==='real'?'echte tokens':'woordstukjes')+' in jouw tekst.','ai-guide-mini'));
+  interactive.append(guideNode('p',tok.id==null?'Nog geen echt token-ID.':('Geselecteerd echt token-ID: '+tok.id),'ai-guide-mini'));
  }else if(guideStep===2){
-  guideLayer=clamp(guideLayer,0,cfg.layers-1);
-  const scale=guideNode('div',null,'ai-guide-scale');
-  const label=guideNode('label','Bekijk een rekenlaag');label.htmlFor='guideLayerRange';
-  const output=guideNode('output','Laag '+(guideLayer+1)+' / '+cfg.layers);output.id='guideLayerCount';
-  const input=document.createElement('input');input.id='guideLayerRange';input.type='range';input.min='1';input.max=String(cfg.layers);input.step='1';input.value=String(guideLayer+1);
-  input.oninput=()=>{guideLayer=+input.value-1;output.textContent='Laag '+(guideLayer+1)+' / '+cfg.layers;guideDrawLayer()};
-  scale.append(label,output,input);interactive.append(scale);
-  interactive.append(guideNode('p',cfg.name+': '+cfg.layers+' lagen, '+cfg.experts+' experts per laag. Per token kiezen vier experts mee te rekenen.','ai-guide-mini'));
-  guideDrawLayer();
+  guideTokenIndex=clamp(guideTokenIndex,0,state.promptWords.length-1);
+  guideDrawEmbedding();
+  interactive.append(guideNode('p','Een echt taalmodel heeft een grote tabel met aangeleerde getallen. We doen die niet na alsof we ze hebben uitgelezen.','ai-guide-mini'));
+  const btn=guideNode('button','Kies een ander token','ai-guide-cta');
+  btn.onclick=()=>{guideTokenIndex=(guideTokenIndex+1)%Math.min(state.promptWords.length,8);guideRender()};
+  interactive.append(btn);
  }else if(guideStep===3){
-  visual.append(guideNode('div','GROEN: AL GELEZEN  ·  GOUD: GEKOZEN','ai-guide-question'));
-  guideTokenIndex=clamp(guideTokenIndex,0,state.promptWords.length-1);guideTokenChips(visual,true);
-  visual.append(guideNode('p','Tekst rechts van het gekozen stukje hoort op dat moment nog niet bij de eerdere context.','ai-guide-legend'));
-  interactive.append(guideNode('p','Je kunt op een ander stukje tikken om de grens te verplaatsen.','ai-guide-mini'));
+  guideDrawOrder();
+  const btn=guideNode('button',guideSwapped?'Herstel de volgorde':'Wissel twee tokens','ai-guide-cta');
+  btn.onclick=()=>{guideSwapped=!guideSwapped;guideRender()};
+  interactive.append(btn);
  }else if(guideStep===4){
-  const label=guideNode('label','Variatie in het rekenvoorbeeld');
-  label.htmlFor='guideTemperature';
+  guideTokenIndex=clamp(guideTokenIndex,0,Math.min(state.promptWords.length,8)-1);
+  guideDrawAttention();
+  interactive.append(guideNode('p','Kies een ander token. De gewichten van dit kleine rekenvoorbeeld veranderen.','ai-guide-mini'));
+  const select=guideNode('div',null,'ai-learn-position-choices');
+  state.promptWords.slice(0,8).forEach((token,i)=>{
+   const b=guideNode('button',String(i+1),i===guideTokenIndex?'chosen':'');
+   b.type='button';b.title=readableToken(token.text);
+   b.onclick=()=>{guideTokenIndex=i;guideRender()};select.append(b);
+  });
+  interactive.append(select);
+ }else if(guideStep===5){
+  guideDrawExperts();
+  interactive.append(guideNode('p','Probeer een ander token. De berekende routerkeuze kan veranderen.','ai-guide-mini'));
+  const btn=guideNode('button','Ander token','ai-guide-cta');
+  btn.onclick=()=>{guideTokenIndex=(guideTokenIndex+1)%Math.min(state.promptWords.length,8);guideRender()};
+  interactive.append(btn);
+ }else if(guideStep===6){
+  guideDrawLayers();
+  const scale=guideNode('div',null,'ai-guide-scale');
+  const label=guideNode('label','Bekijk een laag van het minivoorbeeld');label.htmlFor='guideLayerRange';
+  const output=guideNode('output','Voorbeeldlaag '+(guideMiniLayer+1)+' / 4');output.id='guideLayerCount';
+  const input=document.createElement('input');input.id='guideLayerRange';
+  input.type='range';input.min='1';input.max='4';input.step='1';input.value=String(guideMiniLayer+1);
+  input.oninput=()=>{guideMiniLayer=+input.value-1;output.textContent='Voorbeeldlaag '+(guideMiniLayer+1)+' / 4';guideDrawLayers()};
+  scale.append(label,output,input);interactive.append(scale);
+ }else if(guideStep===7){
+  const label=guideNode('label','Variatie in het rekenvoorbeeld');label.htmlFor='guideTemperature';
   const scale=guideNode('div',null,'ai-guide-scale'),out=guideNode('output',state.temp.toFixed(1));out.id='guideTemperatureValue';
-  const input=document.createElement('input');input.type='range';input.id='guideTemperature';input.min='.3';input.max='1.8';input.step='.1';input.value=String(state.temp);
-  input.oninput=()=>{state.temp=+input.value;guideDrawBars()};
+  const input=document.createElement('input');input.type='range';
+  input.id='guideTemperature';input.min='.3';input.max='1.8';input.step='.1';input.value=String(state.temp);
+  input.oninput=()=>{state.temp=+input.value;guideSampledIndex=-1;guideDrawBars()};
   scale.append(label,out,input);interactive.append(scale);
-  guideDrawBars();
+  const btn=guideNode('button','Kies een voorbeeldtoken','ai-guide-cta');
+  btn.onclick=()=>{
+   const r=Math.random(),dist=guideBarData();let total=0;
+   guideSampledIndex=dist.findIndex(p=>(total+=p)>=r);
+   if(guideSampledIndex<0)guideSampledIndex=dist.length-1;
+   guideDrawBars();
+  };
+  interactive.append(btn);guideDrawBars();
  }else{
-  const defaultQuestion=state.input.trim().toLowerCase()==='waarom is de lucht blauw?';
-  const parts=defaultQuestion
-   ?['De lucht lijkt blauw','omdat moleculen in de atmosfeer','blauw licht sterker verstrooien.']
-   :['Dit is een voorbeeldzin','die in stukjes wordt toegevoegd.','Jouw vraag wordt hier niet door een AI beantwoord.'];
-  guideBuildCount=clamp(guideBuildCount,1,parts.length);
-  visual.append(guideNode('div',defaultQuestion?'VOORBEELD BIJ: WAAROM IS DE LUCHT BLAUW?':'VOORBEELD VAN TEKST OPBOUWEN · GEEN ECHT AI-ANTWOORD','ai-guide-question'));
-  const answer=guideNode('div',null,'ai-guide-answer');
-  parts.slice(0,guideBuildCount).forEach((part,i)=>answer.append(guideNode('strong',part+(i<guideBuildCount-1?' ':''))));
-  if(guideBuildCount<parts.length)answer.append(guideNode('span',' …'));
-  visual.append(answer);
-  const button=guideNode('button',guideBuildCount<parts.length?'Laat het volgende stukje zien':'Begin opnieuw','ai-guide-cta');button.type='button';button.onclick=()=>{guideBuildCount=guideBuildCount<parts.length?guideBuildCount+1:1;guideRender()};
-  interactive.append(button);
+  guideDrawAnswer();
+  const tokens=guideAnswerTokens(),actions=guideNode('div',null,'ai-learn-answer-actions');
+  const add=guideNode('button',guideBuildCount<tokens.length?'Voeg één token toe':'Begin opnieuw','ai-guide-cta');
+  add.type='button';add.onclick=()=>{guideBuildCount=guideBuildCount<tokens.length?guideBuildCount+1:1;guideRender()};
+  actions.append(add);
+  const quick=guideNode('button','Voeg vijf toe','ai-guide-cta');
+  quick.type='button';quick.disabled=guideBuildCount===tokens.length;
+  quick.onclick=()=>{guideBuildCount=Math.min(tokens.length,guideBuildCount+5);guideRender()};
+  actions.append(quick);interactive.append(actions);
  }
 }
 function setupGuide(){
