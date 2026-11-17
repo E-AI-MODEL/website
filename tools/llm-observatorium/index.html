@@ -1364,7 +1364,7 @@ const GUIDE_STEPS=[
  {title:'Een antwoord groeit token voor token',sub:'Voeg een token toe en zie hoe het antwoord groeit.',storyText:'Het model kiest telkens een volgend token. Dit antwoord is vooraf geschreven, niet door AI gemaakt.',explain:'Een taalmodel kiest een volgend token, voegt het toe en berekent het volgende token opnieuw. Dit antwoord is vooraf geschreven. De echte tokenizer laat zien uit welke tokens die tekst bestaat.',boundary:'Vooraf geschreven voorbeeld, geen antwoord van een draaiend taalmodel. De tokenindeling is echt zodra de tokenizer is geladen.'}
 ];
 const STORY_PHASES=GUIDE_STEPS.map((step,i)=>({
- name:GUIDE_LABELS[i],title:step.title,text:step.storyText,duration:[5.5,6.3,6.1,5.7,6.7,6.2,6.5,6.2,7.2][i]
+ name:GUIDE_LABELS[i],title:step.title,text:step.storyText,duration:[4.1,4.1,4.2,3.7,4.4,4.2,4.5,4.0,5.0][i]
 }));
 const storyState={phase:0,elapsed:0,playing:false,finished:false,lastPaint:-1};
 const storyReduced=()=>window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1402,9 +1402,10 @@ function visualLayerMachine(){
  </svg>`;
 }
 /* Animatie gebruikt dezelfde invoer, tokens en minivoorbeeldberekeningen als de gids. */
+function storyFocusIndex(){return Math.min(3,Math.max(0,state.promptWords.length-1))}
 function storyExampleTrace(){
  const ids=state.promptWords.slice(0,6).map((p,i)=>Number.isInteger(p.id)?p.id:73+i);
- return guideMath().miniTrace(ids,Math.max(0,ids.length-1),0,cfg.experts);
+ return guideMath().miniTrace(ids,Math.min(storyFocusIndex(),ids.length-1),0,cfg.experts);
 }
 function storyTokenRow(container,tokens,limit=8){
  tokens.slice(0,limit).forEach((t,i)=>{
@@ -1435,9 +1436,10 @@ function storySetPhase(index){
   $('vSource').textContent=state.input;
   $('vTokenSource').textContent=state.tokenStatus==='real'?'ECHTE TOKENIZER · O200K_HARMONY':'WOORDVOORBEELD · TOKENIZER NIET BESCHIKBAAR';
   storyTokenRow($('vTokens'),state.promptWords,10);
+  const selected=$('vTokens').children[storyFocusIndex()];if(selected)selected.classList.add('is-hot');
  }else if(index===2){
   scene.innerHTML='<span class="v-label">VAN ECHT TOKENNUMMER NAAR VIER VOORBEELDGETALLEN</span><div class="v-mini-source" id="vTokenId"></div>'+visualArrow()+'<div id="vMiniNumbers" class="v-mini-table"></div>';
-  const p=state.promptWords[0]||{},real=Number.isInteger(p.id);
+  const p=state.promptWords[storyFocusIndex()]||{},real=Number.isInteger(p.id);
   $('vTokenId').textContent=real?'Token-ID '+p.id:'Geen echt tokennummer beschikbaar';
   storyValueRow($('vMiniNumbers'),'Zelf berekend voorbeeld',guideMath().tokenVector(real?p.id:73),'');
  }else if(index===3){
@@ -1921,7 +1923,7 @@ function setupGuide(){
  window.addEventListener('resize',()=>{
   $('modeDesc').textContent=innerWidth<=800?MOBILE_DESCS[state.mode]:MODES[state.mode].desc;
  });
- const back=guideNode('button','Stap voor stap','tool-btn');back.id='guideReturn';back.type='button';back.onclick=()=>{if(state.mode===0&&$('app').dataset.storyView==='animation')guideStep=storyState.phase;guideSetVisible(true)};
+ const back=guideNode('button','Stap voor stap','tool-btn');back.id='guideReturn';back.type='button';back.onclick=()=>{if(state.mode===0&&$('app').dataset.storyView==='animation'){guideStep=storyState.phase;if(guideStep>=2&&guideStep<=6)guideTokenIndex=storyFocusIndex()}guideSetVisible(true)};
  document.querySelector('.top-actions').prepend(back);
  guideEl('guideTechnical').onclick=()=>{guideSetVisible(false);if(state.mode===0)$('story3d').click()};
  guideEl('guidePrev').onclick=()=>guideSetStep(guideStep-1);
