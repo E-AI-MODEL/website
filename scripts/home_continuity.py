@@ -43,6 +43,14 @@ def enhance(soup, path, en):
         if hero:
             inner = hero.select_one('.wrap, .eai-explore-shell')
             if inner and not inner.select_one('.eai-continuity-aside'):
+                # Existing grids have a single copy column. Plain hero wraps
+                # contain h1/p directly and need a copy column of their own.
+                direct = [tag for tag in inner.children if getattr(tag,'name',None)]
+                if any(tag.name in ('h1','h2','p','span') for tag in direct):
+                    copy = soup.new_tag('div', attrs={'class':'eai-continuity-hero-copy'})
+                    for child in list(inner.contents):
+                        copy.append(child.extract())
+                    inner.append(copy)
                 heading, summary = ASIDES[path]
                 aside = soup.new_tag('aside', attrs={'class':'eai-continuity-aside'})
                 label = soup.new_tag('span', attrs={'class':'eai-continuity-label'})

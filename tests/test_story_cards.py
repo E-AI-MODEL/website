@@ -1,4 +1,4 @@
-"""Eenkaart-per-swipe blijft beperkt tot publieke tekstpagina's."""
+"""Homepage-stijl blijft beperkt tot publieke pagina's en artikelen."""
 from pathlib import Path
 import sys
 import unittest
@@ -7,6 +7,7 @@ from bs4 import BeautifulSoup
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 from prepare_ui import ASSETS, STORY_PATHS
+from home_continuity import ROUTES, HUBS
 
 
 class EditorialCardUiTests(unittest.TestCase):
@@ -18,8 +19,13 @@ class EditorialCardUiTests(unittest.TestCase):
             "/nl/toepassingen/", "/en/applications/",
             "/nl/tools/", "/en/tools/",
             "/nl/over/", "/en/about/",
+            "/nl/blog/", "/nl/blog/wat-ons-werk-ons-werk-maakt/",
+            "/nl/onderzoek/leermiddelen/", "/en/research/teaching-tools/",
+            "/nl/onderzoek/zhang-genai-taal/", "/en/research/zhang-genai-language/",
         }
         self.assertEqual(STORY_PATHS, expected)
+        self.assertEqual(ROUTES, expected)
+        self.assertEqual(len(HUBS), 12)
         self.assertFalse(any("/labs/" in path or path.startswith("/tools/") for path in STORY_PATHS))
         self.assertFalse(any(path in STORY_PATHS for path in (
             "/tools/science-observatory/labs/natuurkunde/",
@@ -54,6 +60,10 @@ class EditorialCardUiTests(unittest.TestCase):
             self.assertTrue(page.exists(), route)
             soup = BeautifulSoup(page.read_text(encoding="utf-8"), "html.parser")
             self.assertIn("eai-story-page", soup.body.get("class", []), route)
+            self.assertEqual(soup.body.get('data-eai-story-layout'), 'homepage-continuity-v1', route)
+            self.assertFalse(soup.select_one('.eai-card-deck'), route)
+            if route in HUBS:
+                self.assertTrue(soup.select_one('.eai-continuity-art') or soup.select_one('.eai-continuity-aside'), route)
             self.assertTrue(soup.select_one('link[href*="site-story-cards."]'), route)
             self.assertTrue(soup.select_one('script[src*="site-story-cards."]'), route)
         for route in (
