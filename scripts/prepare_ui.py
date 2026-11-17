@@ -14,6 +14,7 @@ from bs4 import BeautifulSoup
 from editorial_ui import apply_editorial
 from archive_review import review as review_archive
 from home_model import materialize as materialize_home_model
+from home_continuity import enhance as enhance_home_continuity, ROUTES as CONTINUITY_PATHS
 
 ASSETS = ('site.css', 'site-refresh.js', 'site-ui.css', 'site-responsive.css', 'site-redesign.css', 'site-editorial.css', 'site-archive.css', 'site-navigation.js', 'home-model.css', 'home-model.js', 'site-story-cards.css', 'site-story-cards.js', 'site-dashboard-cards.css', 'site-dashboard-cards.js')
 SKIP = {'.git', '.github', 'content', 'scripts', 'tests', 'assets', 'handoff', 'houseoftalents', 'onderwijsin', 'leif', 'site-build'}
@@ -37,6 +38,9 @@ STORY_PATHS = {
     '/nl/toepassingen/', '/en/applications/',
     '/nl/tools/', '/en/tools/',
     '/nl/over/', '/en/about/',
+    '/nl/blog/', '/nl/blog/wat-ons-werk-ons-werk-maakt/',
+    '/nl/onderzoek/leermiddelen/', '/en/research/teaching-tools/',
+    '/nl/onderzoek/zhang-genai-taal/', '/en/research/zhang-genai-language/',
 }
 DASH_CARD_PATHS = {'/nl/tools/', '/en/tools/', '/nl/onderwijs/', '/en/education/', '/nl/onderzoek/', '/en/research/', '/nl/toepassingen/', '/en/applications/', '/nl/publicaties/', '/en/publications/'}
 INDEX_PATHS = {'/nl/', '/en/', '/nl/model/', '/en/model/', '/nl/tools/', '/en/tools/', '/nl/onderwijs/', '/en/education/', '/nl/onderzoek/', '/en/research/', '/nl/toepassingen/', '/en/applications/', '/nl/over/', '/en/about/'}
@@ -518,6 +522,7 @@ def prepare(root: Path) -> dict:
         en = soup.html.get('lang', '').startswith('en')
         if not body.get('data-home-model-layout'):
             apply_editorial(soup, canonical(path), en)
+        enhance_home_continuity(soup, canonical(path), en)
         before_content = soup.main.decode() if soup.main else None
         header = soup.select_one('header.eai-masthead, header.site-header, header.eai-site-nav')
         if header is None:
@@ -539,7 +544,7 @@ def prepare(root: Path) -> dict:
         story_enabled = canonical(path) in STORY_PATHS
         if story_enabled:
             classes.append('eai-story-page')
-            body['data-eai-story-layout'] = '20261115a'
+            body['data-eai-story-layout'] = 'homepage-continuity-v1'
         body['class'] = classes
         body['data-ui-version'] = revision
         css_pattern = re.compile(r'^/assets/(?:site|site-ui|site-responsive|site-redesign|site-editorial|site-archive|home-model|site-story-cards|site-dashboard-cards)(?:\.[a-f0-9]{12})?\.css(?:\?.*)?$')
@@ -548,10 +553,12 @@ def prepare(root: Path) -> dict:
                 tag.decompose()
         for name in ('site.css', 'site-ui.css', 'site-responsive.css', 'site-editorial.css', 'site-archive.css', 'home-model.css', 'site-redesign.css'):
             soup.head.append(soup.new_tag('link', rel='stylesheet', href=manifest[name]['url']))
-        if story_enabled:
-            soup.head.append(soup.new_tag('link', rel='stylesheet', href=manifest['site-story-cards.css']['url']))
         if dashboard_home or canonical(path) in DASH_CARD_PATHS:
             soup.head.append(soup.new_tag('link', rel='stylesheet', href=manifest['site-dashboard-cards.css']['url']))
+        # Keep the homepage-like editorial layer last, including over older
+        # index/dashboard styles. The interactive labs never load this CSS.
+        if story_enabled:
+            soup.head.append(soup.new_tag('link', rel='stylesheet', href=manifest['site-story-cards.css']['url']))
         js_pattern = re.compile(r'^/assets/(?:site-refresh|site-navigation|home-model|site-story-cards|site-dashboard-cards)(?:\.[a-f0-9]{12})?\.js(?:\?.*)?$')
         for tag in list(soup.find_all('script', src=True)):
             if js_pattern.match(tag['src']):
