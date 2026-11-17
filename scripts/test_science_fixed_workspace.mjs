@@ -436,15 +436,11 @@ try{
    const p=state.p,c=document.querySelector('#scene'),r=c.getBoundingClientRect(),g=sceneViewport(c),pivot=p.pivot??510;
    return {x:r.left+g.left+(pivot-g.worldX)*g.scale,y:r.top+g.top+(350-g.worldY)*g.scale,scale:g.scale,pivot,left:pivot-65*p.arm1,right:pivot+65*p.arm2,p:{...p}};
   });
-  const leverHit=await page.evaluate(({x,y})=>{
-    const c=document.querySelector('#scene'),r=c.getBoundingClientRect(),g=sceneViewport(c);
-    return is2dHandle((x-r.left-g.left)/g.scale+g.worldX,(y-r.top-g.top)/g.scale+g.worldY);
-  },leverStart);
-  assert(leverHit,'Het zichtbare steunpunt moet bereikbaar zijn bij deze schermgrootte');
   await page.mouse.move(leverStart.x+leverStart.scale*12,leverStart.y);
   await page.mouse.down();
-  const pressed=await page.evaluate(()=>({pivot:state.p.pivot??510,arm1:state.p.arm1,arm2:state.p.arm2,playing:state.playing}));
+  const pressed=await page.evaluate(()=>({pivot:state.p.pivot??510,arm1:state.p.arm1,arm2:state.p.arm2,playing:state.playing,drag2d:state.drag2d}));
   assert.equal(pressed.pivot,leverStart.pivot,'Het steunpunt springt niet weg bij aanraken');
+  assert(Number.isFinite(pressed.drag2d),'Het zichtbare steunpunt moet een pointer-event opvangen: '+JSON.stringify({leverStart,pressed}));
   assert.equal(pressed.playing,false,'De hefboom blijft stil tijdens het verslepen van het steunpunt');
   assert.equal(pressed.arm1,leverStart.p.arm1,'Aanraken zonder slepen verandert de linker arm niet');
   await page.mouse.move(leverStart.x+leverStart.scale*(65+12),leverStart.y,{steps:10});

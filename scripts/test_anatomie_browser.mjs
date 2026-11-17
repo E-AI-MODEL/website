@@ -20,9 +20,10 @@ async function waitForCameraSettled(page) {
     window.__eaiCameraSample = state;
     if (!prior) { window.__eaiCameraStill = 0; return false; }
     const delta = Math.hypot(...state.map((value, index) => value - prior[index]));
-    window.__eaiCameraStill = delta < 1e-5 ? (window.__eaiCameraStill || 0) + 1 : 0;
+    // Under WebGL headless rendering, below 0.0001 model units is already subpixel.
+    window.__eaiCameraStill = delta < 1e-4 ? (window.__eaiCameraStill || 0) + 1 : 0;
     return window.__eaiCameraStill >= 4;
-  }, null, {timeout:10000, polling:90});
+  }, null, {timeout:15000, polling:90});
   await page.evaluate(() => {
     delete window.__eaiCameraSample;
     delete window.__eaiCameraStill;
