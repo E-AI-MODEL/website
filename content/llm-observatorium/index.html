@@ -201,6 +201,15 @@
 .ai-guide-token.is-after{background:#102331;border-color:#2b4a5b;color:#819aaa}
 .ai-guide-token.is-focus{background:#e4c089;border-color:#ffe0ad;color:#2b261c}
 .ai-guide-legend{color:#a4bfc8;font-size:11px;line-height:1.45}
+.ai-guide-flow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.ai-guide-flow-item{min-width:0;border:1px solid #3b6170;border-radius:12px;background:#102c3b;padding:11px;display:flex;flex-direction:column;gap:5px}
+.ai-guide-flow-item>span{font-size:10px;letter-spacing:.04em;color:#94bbc4}
+.ai-guide-flow-item>b{font-size:clamp(13px,1.5vw,18px);font-weight:650;color:#baf3dc;overflow-wrap:anywhere}
+.ai-guide-flow-item>small{font-size:11px;line-height:1.4;color:#c0d4dc}
+.ai-guide-layer-track{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:5px}
+.ai-guide-layer-track i{display:block;height:10px;border-radius:3px;background:#244c5a;border:1px solid #44717f}
+.ai-guide-layer-track i.is-current{background:#eec68c;border-color:#ffdfaf;box-shadow:0 0 9px #d7a56366}
+@media(max-width:680px){.ai-guide-flow{gap:5px}.ai-guide-flow-item{padding:8px 6px;gap:3px}.ai-guide-flow-item>b{font-size:12px}.ai-guide-flow-item>small{font-size:9px;line-height:1.25}.ai-guide-layer-track{gap:3px}.ai-guide-layer-track i{height:7px}}
 .ai-guide-mini{font-size:13px;line-height:1.45;color:#b4d4d9}
 .ai-guide-scale{display:grid;grid-template-columns:1fr auto;gap:7px 12px;align-items:center}
 .ai-guide-scale label{color:#cfdee3;font-size:13px}
@@ -1425,15 +1434,16 @@ function tick(now){
  requestAnimationFrame(tick);
 }
 /* Toegankelijke route voor beginners. Technische modellen en gegevens blijven intact. */
-const GUIDE_LABELS=['Jouw vraag','Stukjes tekst','Wat stond ervoor?','Mogelijke vervolgen','Het antwoord'];
+const GUIDE_LABELS=['Jouw vraag','Echte tokens','Getallen en lagen','Eerdere tekst','Mogelijke vervolgen','Het antwoord'];
 const GUIDE_STEPS=[
- {title:'Je stelt een vraag',sub:'Een taalmodel is software die tekst kan aanvullen. Typ een vraag.',explain:'In een echte AI-chat krijgt het taalmodel jouw tekst. Hier kun je zien hoe dat werkt, zonder iets te versturen.',boundary:'Een AI kan overtuigend antwoorden zonder dat het antwoord klopt.'},
- {title:'AI verdeelt tekst in stukjes',sub:'Zo’n stukje heet een token. Het kan kleiner zijn dan een woord.',explain:'De AI verdeelt tekst in kleine stukjes: tokens. Een token kan een woord, een woorddeel of een leesteken zijn. Tik op een stukje om het nummer te zien.',boundary:'Zonder de echte tokenizer zie je een woordvoorbeeld, niet de precieze verdeling.'},
- {title:'AI gebruikt eerdere tekst',sub:'Groen stond al vóór het gekozen stukje. Goud is je keuze.',explain:'De AI gebruikt wat eerder is geschreven om het volgende stukje te voorspellen. Tik op een ander stukje. Alles wat ervoor staat, kleurt groen.',boundary:'De kleuren tonen de volgorde. Ze zeggen niet hoeveel aandacht AI aan ieder stukje geeft.'},
- {title:'AI berekent mogelijke vervolgen',sub:'Uit veel voorbeeldteksten leerde de AI welke stukjes bij elkaar passen.',explain:'Elke balk is een mogelijk volgend stukje tekst. Een lange balk betekent hier meer kans. Verander de variatie en bekijk wat er met de kansen gebeurt.',boundary:'Dit zijn voorbeeldkansen. Er is niets berekend voor jouw vraag.'},
- {title:'Het antwoord groeit stukje voor stukje',sub:'Na ieder stukje berekent AI opnieuw wat erop kan volgen.',explain:'Klik om de volgende tekst te tonen. Een taalmodel maakt een antwoord niet in één keer: het voegt telkens een volgend stukje toe.',boundary:'We gebruiken hier leesbare zinsdelen. Het antwoord is vooraf geschreven, niet door AI berekend.'}
+ {title:'Je stelt een vraag',sub:'Typ een vraag. We volgen dezelfde tekst door alle stappen.',explain:'Een taalmodel is software die tekst aanvult. Je vraag blijft hier op je apparaat. Je ziet hoe de berekeningen werken, zonder een online taalmodel aan te roepen.',boundary:'Een AI kan overtuigend antwoorden zonder dat het antwoord klopt.'},
+ {title:'Je zin wordt verdeeld in echte tokens',sub:'Tik op een stukje. Je ziet het nummer dat de tokenizer ervoor gebruikt.',explain:'AI verdeelt tekst in kleine stukjes: tokens. Een stukje kan een heel woord zijn, een deel van een woord of een leesteken. Hier gebruikt de website de echte tokenizer van gpt-oss, zodra die is geladen.',boundary:'Zonder de echte tokenizer zie je een woordvoorbeeld, niet de precieze verdeling.'},
+ {title:'Waarom rekent het model in lagen?',sub:'Een tokennummer is geen betekenis. Het model gebruikt er een lange rij getallen bij.',explain:'Bij een tokennummer hoort in het model een rij getallen. Iedere laag rekent met deze getallen verder: ze gebruikt eerdere tekst en kleine rekennetwerken. De nieuwe getallen gaan naar de volgende laag.',boundary:'Het aantal lagen en experts komt uit de echte modelbeschrijving. De getekende stappen zijn een schema, geen gemeten waarden uit een draaiend model.'},
+ {title:'Welke tekst stond er al?',sub:'Tik op een token. Groen stond ervoor; goud is je gekozen token.',explain:'Bij het berekenen van een volgend stukje gebruikt het model eerdere tokens. Sommige lagen kunnen verder terugkijken dan andere. De groene kleur laat alleen zien welke tekst eerder staat, niet hoeveel gewicht die krijgt.',boundary:'De kleuren tonen de volgorde. Ze zeggen niet hoeveel aandacht AI aan ieder stukje geeft.'},
+ {title:'Welk stukje tekst komt hierna?',sub:'De balken tonen mogelijke vervolgen. Verander de variatie en kijk wat verschuift.',explain:'Elke balk is een mogelijk volgend stukje tekst. Het verschil in lengte ontstaat door een echte kansberekening op voorbeeldscores. Er draait hier geen taalmodel dat jouw vraag voorspelt.',boundary:'Dit zijn voorbeeldkansen. Er is niets berekend voor jouw vraag.'},
+ {title:'Zo groeit een antwoord',sub:'Na elk nieuw stukje wordt opnieuw berekend wat kan volgen.',explain:'Klik om de volgende tekst te tonen. Een taalmodel maakt een antwoord niet in één keer. Het kiest steeds een volgend token en gebruikt dat voor de volgende berekening.',boundary:'De leesbare zinsdelen in dit voorbeeld zijn vooraf geschreven. Dit is geen echt AI-antwoord.'}
 ];
-let guideStep=0,guideBuildCount=1,guideTokenIndex=0;
+let guideStep=0,guideBuildCount=1,guideTokenIndex=0,guideLayer=0;
 const guideEl=id=>document.getElementById(id);
 function guideNode(tag,text,klass){
  const node=document.createElement(tag);if(text!=null)node.textContent=String(text);if(klass)node.className=klass;return node;
@@ -1447,7 +1457,7 @@ function guideSetVisible(open){
 function guideSetStep(n){
  const previous=guideStep;
  guideStep=clamp(n,0,GUIDE_STEPS.length-1);
- if(guideStep===2&&previous!==2)guideTokenIndex=Math.max(0,state.promptWords.length-1);
+ if(guideStep===3&&previous!==3)guideTokenIndex=Math.max(0,state.promptWords.length-1);
  guideRender();
 }
 function guideTokenChips(parent,contextMode){
@@ -1463,6 +1473,33 @@ function guideTokenChips(parent,contextMode){
  });
  parent.appendChild(area);
  if(state.promptWords.length>tokens.length)parent.append(guideNode('p','+ '+(state.promptWords.length-tokens.length)+' extra stukjes. Maak de tekst korter om ze allemaal te zien.','ai-guide-legend'));
+}
+function guideDrawLayer(){
+ const visual=guideEl('guideVisual');visual.replaceChildren();
+ const token=state.promptWords[guideTokenIndex]||{};
+ const authentic=state.tokenStatus==='real'&&token.id!=null;
+ visual.append(guideNode('div','VAN TOKENNUMMER NAAR REKENLAGEN · SCHEMA','ai-guide-question'));
+ const flow=guideNode('div',null,'ai-guide-flow');
+ const items=[
+  {title:'Tokennummer',detail:authentic?String(token.id):'Nog niet geladen',description:'De echte tokenizer kent dit nummer toe.'},
+  {title:'Rij getallen',detail:'In het model',description:'Bij dit nummer hoort een lange rij getallen. Die waarden tonen we hier niet.'},
+  {title:'Laag '+(guideLayer+1),detail:'Van '+cfg.layers+' lagen',description:'Eerdere tekst en rekennetwerken veranderen de getallen.'}
+ ];
+ items.forEach(item=>{
+  const card=guideNode('div',null,'ai-guide-flow-item');
+  card.append(guideNode('span',item.title),guideNode('b',item.detail),guideNode('small',item.description));
+  flow.append(card);
+ });
+ visual.append(flow);
+ const strip=guideNode('div',null,'ai-guide-layer-track');
+ strip.setAttribute('role','img');
+ strip.setAttribute('aria-label','Model met '+cfg.layers+' lagen; laag '+(guideLayer+1)+' is gekozen');
+ for(let i=0;i<cfg.layers;i++){
+  const dot=guideNode('i',null,i===guideLayer?'is-current':'');
+  dot.title='Laag '+(i+1);strip.append(dot);
+ }
+ visual.append(strip);
+ visual.append(guideNode('p','Iedere volgende laag gebruikt de getallen die de vorige heeft berekend. Je ziet hier de volgorde, geen echte activaties.','ai-guide-legend'));
 }
 function guideBarData(){
  const scores=[2.45,1.50,.82,.24],temperature=clamp(state.temp,.3,1.8);
@@ -1489,7 +1526,7 @@ function guideRender(){
  guideEl('guideExplanation').textContent=step.explain;guideEl('guideBoundary').textContent=step.boundary;
  guideEl('guideCounter').textContent=(guideStep+1)+' / '+GUIDE_STEPS.length;
  guideEl('guidePrev').disabled=guideStep===0;
- guideEl('guideNext').firstChild.textContent=guideStep===GUIDE_STEPS.length-1?'Bekijk de techniek':guideStep===0?'Bekijk de stukjes':guideStep===1?'Bekijk de context':guideStep===2?'Bekijk de keuzes':'Bouw een antwoord';
+ guideEl('guideNext').firstChild.textContent=['Bekijk de tokens','Bekijk de lagen','Bekijk de eerdere tekst','Bekijk de keuzes','Bouw het antwoord','Bekijk de techniek'][guideStep];
  const stepButtons=guideEl('guideSteps');stepButtons.replaceChildren();
  GUIDE_LABELS.forEach((title,i)=>{const b=guideNode('button',null);b.type='button';b.append(guideNode('span',i+1),guideNode('strong',title));if(i===guideStep)b.setAttribute('aria-current','step');b.onclick=()=>guideSetStep(i);stepButtons.append(b)});
  const progress=guideEl('guideProgress');progress.replaceChildren();
@@ -1503,18 +1540,29 @@ function guideRender(){
   visual.append(prompt,box);
   interactive.append(guideNode('p','Probeer bijvoorbeeld: Waarom is de lucht blauw?','ai-guide-mini'));
  }else if(guideStep===1){
-  visual.append(guideNode('div','KLIK OP EEN STUKJE','ai-guide-question'));
+  visual.append(guideNode('div',state.tokenStatus==='real'?'ECHTE TOKENIZER · GPT-OSS · O200K_HARMONY':'TOKENIZER NIET BESCHIKBAAR · WOORDVOORBEELD','ai-guide-question'));
   guideTokenIndex=clamp(guideTokenIndex,0,state.promptWords.length-1);guideTokenChips(visual,false);
   visual.append(guideNode('div',state.tokenStatus==='real'?'De tekst is echt in tokens verdeeld.':'Dit is een woordvoorbeeld. De precieze verdeling is nog niet geladen.','ai-guide-legend'));
   const token=state.promptWords[guideTokenIndex]||{};
   interactive.append(guideNode('p',state.promptWords.length+' stukjes in deze invoer.','ai-guide-mini'));
-  interactive.append(guideNode('p',token.id==null?'Bij dit voorbeeld hoort nog geen echt tokennummer.':'Gekozen stukje: nummer '+token.id,'ai-guide-mini'));
+  interactive.append(guideNode('p',token.id==null?'Bij dit voorbeeld hoort nog geen echt tokennummer.':'Gekozen stukje: nummer '+token.id+' (echt token-ID).','ai-guide-mini'));
+  interactive.append(guideNode('p',state.tokenStatus==='real'?'Deze verdeling is op jouw apparaat berekend, zonder AI-server.':'De tokenizer kon niet laden; dit is nog geen echte tokenverdeling.','ai-guide-mini'));
  }else if(guideStep===2){
+  guideLayer=clamp(guideLayer,0,cfg.layers-1);
+  const scale=guideNode('div',null,'ai-guide-scale');
+  const label=guideNode('label','Bekijk een rekenlaag');label.htmlFor='guideLayerRange';
+  const output=guideNode('output','Laag '+(guideLayer+1)+' / '+cfg.layers);output.id='guideLayerCount';
+  const input=document.createElement('input');input.id='guideLayerRange';input.type='range';input.min='1';input.max=String(cfg.layers);input.step='1';input.value=String(guideLayer+1);
+  input.oninput=()=>{guideLayer=+input.value-1;output.textContent='Laag '+(guideLayer+1)+' / '+cfg.layers;guideDrawLayer()};
+  scale.append(label,output,input);interactive.append(scale);
+  interactive.append(guideNode('p',cfg.name+': '+cfg.layers+' lagen, '+cfg.experts+' experts per laag. Per token kiezen vier experts mee te rekenen.','ai-guide-mini'));
+  guideDrawLayer();
+ }else if(guideStep===3){
   visual.append(guideNode('div','GROEN: AL GELEZEN  ·  GOUD: GEKOZEN','ai-guide-question'));
   guideTokenIndex=clamp(guideTokenIndex,0,state.promptWords.length-1);guideTokenChips(visual,true);
   visual.append(guideNode('p','Tekst rechts van het gekozen stukje hoort op dat moment nog niet bij de eerdere context.','ai-guide-legend'));
   interactive.append(guideNode('p','Je kunt op een ander stukje tikken om de grens te verplaatsen.','ai-guide-mini'));
- }else if(guideStep===3){
+ }else if(guideStep===4){
   const label=guideNode('label','Variatie in het rekenvoorbeeld');
   label.htmlFor='guideTemperature';
   const scale=guideNode('div',null,'ai-guide-scale'),out=guideNode('output',state.temp.toFixed(1));out.id='guideTemperatureValue';
