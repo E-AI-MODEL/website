@@ -40,6 +40,13 @@ try{
   assert(introLayout.sw<=introLayout.vw+2&&introLayout.sh<=introLayout.vh+2,'Geen paginaschuif: '+JSON.stringify(introLayout));
   assert(introLayout.visual.width>130&&introLayout.visual.height>90,'Zichtbaar demonstratievlak: '+JSON.stringify(introLayout));
   assert(introLayout.footer.bottom<=introLayout.vh+2,'Onderste bediening binnen scherm');
+  await page.evaluate(()=>guideSetStep(5));
+  assert.match(await page.locator('#guideTechnical').innerText(),/experts/);
+  await page.locator('#guideTechnical').click();
+  assert.equal(await page.evaluate(()=>state.mode),2,'Experts opent het technische expertscherm');
+  await page.locator('#guideReturn').click();
+  assert.equal(await page.evaluate(()=>guideStep),5,'Terug bij dezelfde stap over experts');
+  await page.evaluate(()=>guideSetStep(0));
   await page.locator('#guidePrompt').fill('Waarom is de lucht blauw?');
   await page.locator('#guideNext').click();
   assert.match(await page.locator('#guideHeading').innerText(),/valt uiteen/);
@@ -97,10 +104,16 @@ try{
   await page.locator('.ai-learn-answer-actions .ai-guide-cta').first().click();
   assert.equal(await page.locator('.ai-learn-piece').count(),firstCount+1,'Per klik verschijnt een echt getokeniseerd stukje');
   await page.screenshot({path:'test-results/llm-guide-'+width+'-antwoord.png'});
+  assert.match(await page.locator('#guideTechnical').innerText(),/volgende tokens/);
   await page.locator('#guideTechnical').click();
-  assert.equal(await page.locator('#aiGuide').isVisible(),false,'De bestaande technische werkruimte kan open');
+  assert.equal(await page.locator('#aiGuide').isVisible(),false,'Technisch onderzoek gaat open');
+  assert.equal(await page.evaluate(()=>state.mode),5,'Bij de volgende tokens opent de kansmodus');
   assert.equal(await page.locator('#guideReturn').isVisible(),true,'De uitleg blijft bereikbaar');
-  assert.equal(await page.locator('#modelStory').isVisible(),false,'Bekijk de techniek opent werkelijk het 3D-model');
+  await page.locator('#guideReturn').click();
+  assert.equal(await page.evaluate(()=>guideStep),8,'Terug naar dezelfde lesstap');
+  await page.locator('#guideNext').click();
+  assert.equal(await page.evaluate(()=>state.mode),0,'Na de laatste stap opent de 3D-verdieping');
+  assert.equal(await page.locator('#modelStory').isVisible(),false,'De technische 3D-wereld is zichtbaar');
   await page.locator('#storyBack3d').click();
 
   // De opbouw is een automatische, pauzeerbare uitleg. Het oude 3D-model is optioneel.
@@ -334,7 +347,12 @@ try{
     if(step<8)await page.locator('#guideNext').click();
    }
    await page.locator('#guideTechnical').click();
-   assert.equal(await page.locator('#modelStory').isVisible(),false,'Techniek opent de onderzoeksruimte');
+   assert.equal(await page.evaluate(()=>state.mode),5,'De laatste stap verwijst naar het technische kansscherm');
+   await page.locator('#guideReturn').click();
+   assert.equal(await page.evaluate(()=>guideStep),8,'De uitleg onthoudt de gekozen stap');
+   await page.locator('#guideNext').click();
+   assert.equal(await page.evaluate(()=>state.mode),0,'Afronden opent de 3D-verdieping');
+   assert.equal(await page.locator('#modelStory').isVisible(),false,'De technische 3D-wereld staat open');
    await page.locator('#storyBack3d').click();
    await page.locator('#modelStory').waitFor({state:'visible'});
    const storyFits=await page.evaluate(()=>({
