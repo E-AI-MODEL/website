@@ -704,6 +704,14 @@
 .ai-trace-error{color:#eac9a6;font:11px/1.5 system-ui}
 @media(max-width:680px){.ai-trace-outer{margin-top:10px;padding:8px}.ai-trace-bar{grid-template-columns:52px minmax(0,1fr) 41px;gap:4px}.ai-trace-number{padding:5px 2px}.ai-trace-number strong{font-size:11px}}
 
+
+/* Plaats de optionele gemeten uitvoer in de normale stroom.
+   Laat het bewijslimiet onder de knoppen staan, zonder overlapping. */
+.ai-guide-aside #guideInteractive{flex-shrink:0;min-width:0}
+.ai-guide-aside #guideBoundary{flex-shrink:0}
+@media(min-width:681px){.ai-guide-aside{justify-content:flex-start;overflow-y:auto;overflow-x:hidden}}
+@media(max-width:680px){.ai-guide-aside{justify-content:flex-start;overflow:visible}}
+
 </style>
 <script src="/assets/llm-learning-math.js"></script>
 <script src="/assets/llm-real-trace-viewer.js"></script>
