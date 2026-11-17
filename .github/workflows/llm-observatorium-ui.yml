@@ -7,6 +7,9 @@ on:
       - 'scripts/test_llm_observatorium.mjs'
       - 'scripts/test_llm_learning_math.mjs'
       - 'assets/llm-learning-math.js'
+      - 'assets/llm-real-trace.json'
+      - 'assets/llm-real-trace-viewer.js'
+      - 'scripts/test_llm_real_trace.py'
       - 'tools/llm-observatorium/**'
       - 'scripts/test_llm_mobile_webkit.mjs'
       - 'tests/test_llm_observatorium_source.py'
@@ -18,6 +21,9 @@ on:
       - 'scripts/test_llm_observatorium.mjs'
       - 'scripts/test_llm_learning_math.mjs'
       - 'assets/llm-learning-math.js'
+      - 'assets/llm-real-trace.json'
+      - 'assets/llm-real-trace-viewer.js'
+      - 'scripts/test_llm_real_trace.py'
       - 'tools/llm-observatorium/**'
       - 'scripts/test_llm_mobile_webkit.mjs'
       - 'tests/test_llm_observatorium_source.py'
@@ -42,6 +48,8 @@ jobs:
       - run: python scripts/prepare_ui.py --root site-build
       - name: Verify local learning mathematics
         run: node scripts/test_llm_learning_math.mjs
+      - name: Verify real recorded GPT-Neo model execution
+        run: python scripts/test_llm_real_trace.py assets/llm-real-trace.json
       - name: Validate original model and updated visualization
         run: python -m unittest discover -s tests -p 'test_llm_observatorium_source.py' -v
       - run: npm install --no-save playwright@1.56.1
