@@ -97,7 +97,7 @@ function liList(id,entries,problem=false){
 function renderResult(){
  const g=makeGuidance({archive:state.archive,repo:state.repo,advice:makeAdvice({goal:state.goal,aim:state.aim,experience:"beginner",archive:state.archive,repo:state.repo}),goal:state.goal,aim:state.aim,repoError:state.repoError});
  state.guidance=g;
- const first=primaryFinding(g);
+ const first=primaryFinding(g,{archive:state.archive,repo:state.repo,repoError:state.repoError});
  label("resultTag",first.label);
  label("resultHeading",first.title);
  label("resultDescription",first.description);
