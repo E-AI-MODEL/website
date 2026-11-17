@@ -210,6 +210,10 @@ body.eai-ui.eai-story-page .eai-story-opening{
  border:1px solid var(--hc-line)!important;border-radius:10px;
  box-shadow:0 8px 24px #244c3a0e
 }
+/* Match the point where the shared navigation changes to its compact menu. */
+@media(max-width:1130px){
+ body.eai-ui.eai-story-page .eai-site-primary{display:none!important}
+}
 @media(max-width:950px){
  body.eai-ui.eai-story-page .eai-continuity-hero-inner{
   grid-template-columns:minmax(0,1fr) minmax(230px,.75fr)!important;gap:24px!important
