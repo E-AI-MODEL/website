@@ -666,6 +666,13 @@
  .v-mini-caption{font-size:9px}
 }
 
+
+/* Goed leesbare geselecteerde experts en laagwaarden op telefoons. */
+.v-story-experts i.active{background:#efc58e!important;border-color:#ffe0a7!important;box-shadow:0 0 9px #e3ac68bb!important;opacity:1!important}
+.v-mini-row-label{color:#d7eaf0}
+.v-mini-values strong{color:#ffdbab}
+@media(max-width:800px){.v-mini-values strong{font-size:12px}.v-mini-row{background:#153446}}
+
 </style>
 <script src="/assets/llm-learning-math.js"></script>
 <script defer src="/assets/site-analytics.js"></script></head>
@@ -1477,6 +1484,7 @@ function storySetPhase(index){
   for(let i=0;i<cfg.experts;i++){
    const dot=document.createElement('i');
    dot.className=chosen.has(i)?'active':'';
+   if(chosen.has(i)){dot.style.background='#efc58e';dot.style.borderColor='#ffe0a7';dot.style.boxShadow='0 0 9px #e3ac68bb';}
    dot.title='Expert '+(i+1)+(chosen.has(i)?' (gekozen)':'');
    grid.append(dot);
   }
@@ -1519,17 +1527,17 @@ function storyPaint(progress){
    el.style.opacity=show?'1':'.1';el.style.transform=show?'translateY(0)':'translateY(-12px)';
   });
  }else if(phase===2){
-  scene.querySelectorAll('.v-mini-values strong').forEach((el,i)=>{
-   el.style.opacity=String(Math.max(.1,Math.min(1,t*5-i*.2)));
-  });
+  // De voorbeeldgetallen blijven direct leesbaar, ook zonder animatie.
  }else if(phase===3){
   const alt=scene.querySelector('.v-mini-order.is-alt');if(alt)alt.style.opacity=String(Math.max(.15,Math.min(1,(t-.3)*2)));
  }else if(phase===4||phase===7){
   scene.querySelectorAll('.v-score .fill').forEach(el=>el.style.width=(Number(el.dataset.percent)*Math.min(1,t*1.7))+'%');
  }else if(phase===5){
-  scene.querySelectorAll('#vStoryExperts i.active').forEach((el,i)=>el.style.opacity=String(Math.max(.05,Math.min(1,t*4-i*.2))));
+  // Geselecteerde experts blijven duidelijk goud tijdens de hele stap.
  }else if(phase===6){
-  scene.querySelectorAll('#vLayerRows .v-mini-row').forEach((el,i)=>el.style.opacity=String(Math.max(.1,Math.min(1,t*3-i*.5))));
+  scene.querySelectorAll('#vLayerRows .v-mini-row').forEach((el,i)=>{
+   el.style.borderColor=i===Math.min(2,Math.floor(t*3))?'#dfb778':'#426578';
+  });
  }else if(phase===8){
   const pieces=scene.querySelectorAll('#vAnswer span');
   pieces.forEach((el,i)=>{
