@@ -246,7 +246,10 @@ try{
  await page.locator("#restoreSelected").click();
  assert.equal(await page.locator("#selectedBody").inputValue(),selectedPrompt);
  assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2),"Promptbibliotheek past op telefoon");
- await page.evaluate(()=>window.scrollTo(0,0));
+ const mobileTitleSize=await page.locator("#promptPageTitle").evaluate(el=>parseFloat(getComputedStyle(el).fontSize));
+ assert(mobileTitleSize<=34,"Mobiele kop is te groot: "+mobileTitleSize+"px");
+ await page.evaluate(()=>window.scrollTo({top:0,behavior:"instant"}));
+ await page.waitForFunction(()=>window.scrollY===0);
  await page.screenshot({path:join(out,"eaigit-prompts-mobiel.png"),fullPage:true});
  // Oude URL blijft werken, zonder de oude naam in de nieuwe UI.
  await page.goto(base+"/tools/projecthulp/");
