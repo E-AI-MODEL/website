@@ -339,7 +339,7 @@ try{
    assert(storyFits.board.width>175&&storyFits.board.height>55,'Animatie zichtbaar op '+width+': '+JSON.stringify(storyFits));
    assert(storyFits.bottom.bottom<=storyFits.stage.bottom+2,'Animatiebediening niet afgesneden: '+JSON.stringify(storyFits));
    assert(storyFits.scrollWidth<=width+2&&storyFits.scrollHeight<=height+2,'Geen scroll in animatie op '+width);
-   for(let part=0;part<5;part++){
+   for(let part=0;part<9;part++){
      await page.evaluate(n=>{storySetPhase(n);storyPaint(.6)},part);
      await page.screenshot({path:'test-results/llm-story-'+width+'-stap-'+(part+1)+'.png'});
    }
@@ -369,14 +369,14 @@ try{
   }finally{await page.close();}
  }
 
- // Minder beweging: alle vijf stappen zijn tegelijk als stilstaand overzicht te lezen.
+ // Minder beweging: alle negen stappen zijn tegelijk als stilstaand overzicht te lezen.
  {
   const reduced=await browser.newPage({viewport:{width:390,height:820},reducedMotion:'reduce'});
   try{
    await reduced.goto(base+'/tools/llm-observatorium/',{waitUntil:'load'});
    await reduced.locator('#modelStory').waitFor({state:'visible'});
    assert.equal(await reduced.evaluate(()=>storyState.playing),false);
-   assert.equal(await reduced.locator('.story-summary-row').count(),5);
+   assert.equal(await reduced.locator('.story-summary-row').count(),9);
    await reduced.screenshot({path:'test-results/llm-story-390-minder-beweging.png'});
   }finally{await reduced.close()}
  }
