@@ -235,7 +235,7 @@
 .ai-guide-actions button{min-height:45px;padding:9px 17px;border-radius:12px;border:1px solid #436374;color:#d2e1e8;background:#132537;white-space:nowrap;font-size:13px!important}
 .ai-guide-actions button:disabled{opacity:.28}
 .ai-guide-actions .ai-guide-next{background:#8be8c4;border-color:#8be8c4;color:#0a2c23;font-weight:750}
-#guideReturn{border-color:#52917c;background:#153d33;color:#c4f5df}
+#guideReturn{border-color:#52917c;background:#153d33;color:#c4f5df;font-weight:650}
 @media(max-width:960px){
  .ai-guide-body{grid-template-columns:minmax(0,1fr);padding:14px 18px}
  .ai-guide-steps{display:none}
@@ -1296,11 +1296,11 @@ let lastJourneyUI=0;
 
 /* Een automatisch en leesbaar voorbeeld. Geen nagebootste activaties of echte modeluitvoer. */
 const STORY_PHASES=[
- {name:'Vraag',title:'Je stelt een vraag',text:'Je woorden gaan het taalmodel in.',duration:5.6},
- {name:'Stukjes',title:'De zin valt uiteen',text:'Het model verwerkt kleine stukjes tekst, tokens genoemd.',duration:7.0},
- {name:'Rekenen',title:'De getallen gaan door de lagen',text:'Eerdere tekst en kleine rekennetwerken veranderen de getallen in iedere laag.',duration:9.0},
- {name:'Kiezen',title:'Welk stukje komt hierna?',text:'Het model vergelijkt mogelijke vervolgen en kiest er één.',duration:7.0},
- {name:'Antwoord',title:'Zo groeit het antwoord',text:'Voor ieder nieuw stukje wordt opnieuw gerekend.',duration:8.0}
+ {name:'Vraag',title:'Je stelt een vraag',text:'Het model krijgt tekst en berekent welk stukje erna kan komen.',duration:5.6},
+ {name:'Stukjes',title:'De zin valt uiteen',text:'Een tokenizer geeft ieder stukje tekst een nummer. Dat stukje heet een token.',duration:7.0},
+ {name:'Rekenen',title:'De getallen veranderen per laag',text:'De laag gebruikt eerdere tekst en vier gekozen rekennetwerken. Daarna rekent de volgende laag verder.',duration:9.0},
+ {name:'Kiezen',title:'Welk stukje komt hierna?',text:'De balken tonen voorbeeldkansen. Bekijk de echte berekening stap voor stap via de uitleg.',duration:7.0},
+ {name:'Antwoord',title:'Zo groeit het antwoord',text:'Deze animatie toont vooraf geschreven woorden. In een echt model wordt telkens een nieuw token gekozen.',duration:8.0}
 ];
 const storyState={phase:0,elapsed:0,playing:false,finished:false,lastPaint:-1};
 const storyReduced=()=>window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1780,9 +1780,9 @@ function setupGuide(){
  window.addEventListener('resize',()=>{
   $('modeDesc').textContent=innerWidth<=800?MOBILE_DESCS[state.mode]:MODES[state.mode].desc;
  });
- const back=guideNode('button','Zelf proberen','tool-btn');back.id='guideReturn';back.type='button';back.onclick=()=>guideSetVisible(true);
+ const back=guideNode('button','Stap voor stap','tool-btn');back.id='guideReturn';back.type='button';back.onclick=()=>guideSetVisible(true);
  document.querySelector('.top-actions').prepend(back);
- guideEl('guideTechnical').onclick=()=>guideSetVisible(false);
+ guideEl('guideTechnical').onclick=()=>{guideSetVisible(false);if(state.mode===0)$('story3d').click()};
  guideEl('guidePrev').onclick=()=>guideSetStep(guideStep-1);
  guideEl('guideNext').onclick=()=>guideStep===GUIDE_STEPS.length-1?guideSetVisible(false):guideSetStep(guideStep+1);
  guideRender();
