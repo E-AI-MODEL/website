@@ -93,30 +93,46 @@ class LlmObservatorySourceTests(unittest.TestCase):
                        'id="guideNext"', 'id="guidePrev"',
                        'function setupGuide()', 'function guideSetVisible(open)',
                        'function guideTokenChips(parent,contextMode)',
-                       'function guideDrawLayer()',
-                       'function guideBarData()', 'function guideDrawBars()',
-                       'function guideRender()', 'setupGuide();loadRealTokenizer();'):
+                       'function guideDrawEmbedding()', 'function guideDrawOrder()',
+                       'function guideDrawAttention()', 'function guideDrawExperts()',
+                       'function guideDrawLayers()', 'function guideDrawBars()',
+                       'function guideDrawAnswer()', 'function guideRender()',
+                       'setupGuide();loadRealTokenizer();'):
             self.assertIn(marker, html)
-        self.assertIn("Dit zijn voorbeeldkansen. Er is niets berekend voor jouw vraag.", html)
-        self.assertIn("Zonder de echte tokenizer zie je een woordvoorbeeld", html)
-        self.assertIn("zonder iets te versturen.", html)
+        self.assertIn("const GUIDE_LABELS=['Jouw vraag','Echte tokens','Getallen','Volgorde'", html)
+        self.assertIn("STAP 1 VAN 9", html)
+        self.assertIn("llm-learning-math.js", html)
+        self.assertIn("guideMath().miniTrace", html)
+        self.assertIn("Deze vier waarden zijn lokaal berekend", html)
+        self.assertIn("geen metingen uit een draaiend model", html)
         self.assertIn("function drawExpertsGrid()", html)
         self.assertIn("function renderInspector()", html)
 
     def test_explanations_start_with_a_clear_action(self):
         html = self.html
         for passage in (
-            "Elke laag verwerkt de tekst verder.",
-            "Een expert is een klein rekennetwerk, geen persoon.",
-            "AI verdeelt tekst in kleine stukjes: tokens.",
-            "De kleuren tonen de volgorde.",
-            "Je zin wordt verdeeld in echte tokens",
-            "Elke balk is een mogelijk volgend stukje tekst.",
-            "Een taalmodel maakt een antwoord niet in één keer",
-            "Deze route is een voorbeeld, geen live meting.",
-            "Dit zijn verzonnen rekenvoorbeelden.",
+            "Je zin valt uiteen",
+            "Een tokennummer wordt een rij getallen",
+            "De volgorde maakt verschil",
+            "Welke eerdere tekst telt mee?",
+            "Vier rekennetwerken doen mee",
+            "De getallen veranderen per laag",
+            "Welk stukje komt hierna?",
+            "Een antwoord groeit token voor token",
+            "De kansberekening is echt.",
+            "Geen echte gpt-oss-attention-scores.",
+            "vooraf geschreven",
         ):
             self.assertIn(passage, html)
+
+    def test_local_math_module_is_present(self):
+        math = ROOT / "assets" / "llm-learning-math.js"
+        self.assertTrue(math.is_file(), "De echte lokale berekeningen ontbreken")
+        content = math.read_text(encoding="utf-8")
+        for fn in ("function softmax(", "function attention(", "function routeExperts(",
+                   "function miniTrace(", "function tokenVector("):
+            self.assertIn(fn, content)
+        self.assertIn("Geen activaties uit gpt-oss", content)
 
     def test_visual_first_story_and_mobile_panels(self):
         html = self.html
