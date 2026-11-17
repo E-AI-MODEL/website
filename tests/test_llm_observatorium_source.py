@@ -125,6 +125,18 @@ class LlmObservatorySourceTests(unittest.TestCase):
         ):
             self.assertIn(passage, html)
 
+    def test_automatic_story_and_interactive_guide_share_steps(self):
+        html = self.html
+        self.assertIn("const STORY_PHASES=GUIDE_STEPS.map", html)
+        self.assertNotIn("const STORY_PHASES=[", html)
+        self.assertIn("storyExampleTrace()", html)
+        self.assertIn("guideMath().softmax([2.45,1.50,.82,.24],state.temp)", html)
+        self.assertIn("storyTokenRow($('vTokens'),state.promptWords,10)", html)
+        self.assertIn("guideStep=storyState.phase", html)
+        self.assertIn("guideEl('guideTechnical').click()", html)
+        self.assertIn("repeat(9,minmax(0,1fr))", html)
+        self.assertIn("VOORAF GESCHREVEN ANTWOORD", html)
+
     def test_local_math_module_is_present(self):
         math = ROOT / "assets" / "llm-learning-math.js"
         self.assertTrue(math.is_file(), "De echte lokale berekeningen ontbreken")
