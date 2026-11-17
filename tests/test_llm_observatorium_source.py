@@ -143,6 +143,8 @@ class LlmObservatorySourceTests(unittest.TestCase):
     def test_real_training_trace_is_genuine_and_separate_from_gpt_oss(self):
         trace_path = ROOT / "assets" / "llm-real-trace.json"
         self.assertTrue(trace_path.is_file(), "De vooraf opgenomen echte meting ontbreekt")
+        self.assertLess(trace_path.stat().st_size, 50_000,
+                        "De echte meting moet zonder grote download op mobiel beschikbaar blijven")
         data = json.loads(trace_path.read_text(encoding="utf-8"))
         self.assertEqual(data["kind"], "recorded_model_execution")
         self.assertEqual(data["model"]["id"], "EphAsad/IllaryiaStories-1M")
