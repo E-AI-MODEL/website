@@ -1,6 +1,6 @@
 # LLM Observatorium: leerroute en storyboard
 
-**Status:** vastgesteld ontwerp voor fase 1, geen claim dat alle negen stappen al zijn gebouwd  
+**Status:** fase 1 vastgesteld; negen interactieve leerstappen en kleine berekeningen gebouwd op concept-PR #297. Automatische introductie en leerroute zijn nog niet volledig samengevoegd.  
 **Datum:** 17 november 2026  
 **Repository:** E-AI-MODEL/website  
 **Bestaande URL:** /tools/llm-observatorium/  
@@ -218,7 +218,7 @@ De route toont bij de eerste stap ook kort het verschil tussen **leren tijdens t
 
 De huidige code heeft:
 1. **Automatische introductie:** modelStory en STORY_PHASES, vijf animatiefasen.
-2. **Begeleide route:** aiGuide en GUIDE_STEPS, op de werkbranch zes stappen.
+2. **Begeleide route:** aiGuide en GUIDE_STEPS, op de werkbranch negen interactieve stappen.
 3. **Technisch onderzoek:** MODES met zeven onderzoeksmodi en de 3D-weergave.
 
 De negen stappen hierboven zijn de inhoudelijke volgorde voor de hele toepassing. Bij implementatie hoort een **gedeelde stapdefinitie** te ontstaan, met titel, korte uitleg, visualisatie, interactie, bronsoort en vervolg. De automatische animatie en de begeleide route gebruiken diezelfde definities, eventueel in een kortere presentatie. De zeven technische modi blijven zelfstandig bereikbaar en worden per stap als verdieping gekoppeld.
@@ -231,7 +231,7 @@ De negen stappen hierboven zijn de inhoudelijke volgorde voor de hele toepassing
 | --- | --- |
 | content/llm-observatorium/index.html | Huidige bron van HTML, CSS en JavaScript |
 | tools/llm-observatorium/index.html | Publieke kopie; byte-identiek houden aan de bron |
-| GUIDE_STEPS / guideRender | Van zes samengestelde schermen naar de gedeelde negen-stappeninhoud |
+| GUIDE_STEPS / guideRender | Negen interactieve stappen gebouwd; gedeelde bron met de automatische introductie ontbreekt nog |
 | STORY_PHASES / storyPaint | Zelfde verhaal in de automatische introductie; niet los blijven |
 | tokenizeInput / loadRealTokenizer | Echte tokenizer behouden, laadstatus en fallback expliciet houden |
 | chooseRoute / logits | Rekenvoorbeelden herkenbaar houden, nooit als echte gpt-oss-uitvoer labelen |
@@ -285,13 +285,13 @@ Dit ontwerp mag als **inhoudelijk vastgesteld** worden beschouwd als:
 - [x] de technische grenzen, begrijpelijkheid, gratis gebruik, stijl en mobiele vereisten zijn vastgelegd;
 - [x] de hiaten in de huidige implementatie expliciet zijn benoemd.
 
-**Niet klaar door dit document:** de negen stappen zijn nog niet allemaal gebouwd; de automatische animatie loopt nog los; echte gpt-oss-router- en attention-activaties zijn niet beschikbaar; de prestaties en de leeropbrengst zijn nog niet getoetst.
+**Werkstatus:** de negen stappen zijn inmiddels in de interactieve gids gebouwd, inclusief echte lokale minivoorbeeldberekeningen. De automatische animatie loopt nog als korter verhaal ernaast; echte gpt-oss-router- en attention-activaties zijn niet beschikbaar. De prestaties op fysieke apparaten en de leeropbrengst zijn nog niet getoetst.
 
 ## Afbakening van de volgende fases
 
-**Fase 2: gegevens en berekeningen.** Behoud en controleer echte tokenisatie. Ontwerp kleine wiskundig correcte voorbeelden in de browser. Inventariseer of echte modeltraces gratis vooraf kunnen worden gemaakt; beloof niet dat ze bestaan voordat ze geleverd zijn. Scheid brongegevens, voorbeelduitvoer en schema's.
+**Fase 2: gegevens en berekeningen.** De echte tokenisatie is behouden en de kleine wiskundig correcte voorbeelden voor attention, top-4-routerkeuze en rekenlagen zijn inmiddels gebouwd in `assets/llm-learning-math.js`. Inventariseer of echte modeltraces gratis vooraf kunnen worden gemaakt; beloof niet dat ze bestaan voordat ze geleverd zijn. Scheid brongegevens, voorbeelduitvoer en schema's.
 
-**Fase 3: illustraties en interactie.** Bouw eerst één complete verticale proef van tokennummer → getallen → één laag → volgend token → herhaling. Ontwerp daarna de overige stappen. Iedere visualisatie verklaart een zichtbare verandering.
+**Fase 3: illustraties en interactie.** De begeleide route bevat nu tokennummer → voorbeeldgetallen → attention → experts → laag → volgende-tokenkansen → tokengewijze voorbeeldtekst. De exacte visuele leesbaarheid wordt in CI en op screenshots gecontroleerd. Ontwerp daarna de overige stappen. Iedere visualisatie verklaart een zichtbare verandering.
 
 **Fase 4: één ervaring.** Verbind story, guide en 3D zonder dubbele navigatie. Houd de zeven onderzoeksmodi beschikbaar als verdieping.
 
