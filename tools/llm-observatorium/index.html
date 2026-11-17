@@ -1691,15 +1691,16 @@ function guideOpenTechnical(finish=false){
  guideSetVisible(false);
  setMode(mode);
  if(mode===0){
+  // De vier miniatuurlagen zijn niet dezelfde lagen als die van gpt-oss.
+  // Neem de miniatuurindex dus bewust niet over naar de 3D-architectuur.
   $('story3d').click();
-  state.layer=clamp(guideMiniLayer,0,cfg.layers-1);
-  refreshNumbers();state.dirty=true;state.chartDirty=true;
+  state.dirty=true;state.chartDirty=true;
  }else if(mode===1){
   selectLayerToken(token);
  }else if(mode===2){
   state.token=clamp(token,0,state.promptWords.length-1);
   state.expert=chooseRoute(state.layer)[0].e;
-  refreshNumbers();state.dirty=true;state.chartDirty=true;
+  renderInspector();refreshNumbers();state.dirty=true;state.chartDirty=true;
  }
 }
 function guideSetStep(n){
