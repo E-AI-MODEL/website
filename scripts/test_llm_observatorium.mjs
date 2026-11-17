@@ -21,6 +21,10 @@ try{
  for(const width of [390,1280]){
   const page=await browser.newPage({viewport:{width,height:820}});
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
+  const measuredRequests=[];
+  page.on('request',req=>{
+   if(new URL(req.url()).pathname==='/assets/llm-real-trace.json')measuredRequests.push(req.url());
+  });
   await page.goto(base+'/tools/llm-observatorium/',{waitUntil:'load'});
   await page.locator('#universe').waitFor({state:'visible'});
   await page.locator('#modelStory').waitFor({state:'visible'});
@@ -30,6 +34,7 @@ try{
   await page.locator('#aiGuide').waitFor({state:'visible'});
   assert.match(await page.locator('#aiGuideTitle').innerText(),/Van jouw vraag naar een antwoord/);
   assert.equal(await page.locator('#guideSteps button').count(),9,'De doorlopende route heeft negen stappen');
+  assert.equal(measuredRequests.length,0,'Het meetbestand wordt niet geladen voordat de bezoeker erom vraagt');
   await page.screenshot({path:'test-results/llm-guide-'+width+'-begin.png'});
   const introLayout=await page.evaluate(()=>({
     vw:innerWidth,vh:innerHeight,sw:document.documentElement.scrollWidth,sh:document.documentElement.scrollHeight,
@@ -74,6 +79,7 @@ try{
   await page.screenshot({path:'test-results/llm-guide-'+width+'-attention.png'});
   await page.locator('.ai-trace-toggle').click();
   await page.locator('.ai-trace-title').waitFor({state:'visible'});
+  assert.equal(measuredRequests.length,1,'Op verzoek wordt het echte meetbestand eenmaal lokaal opgehaald');
   assert.match(await page.locator('.ai-trace-disclaimer').innerText(),/geen experts en een eigen tokenizer/i);
   assert.equal(await page.locator('.ai-trace-bar').count(),5,'Echte opgeslagen aandachtgewichten voor vijf tokens');
   const actualWeightSum=await page.locator('.ai-trace-bar strong').allInnerTexts();
@@ -126,6 +132,7 @@ try{
   await page.screenshot({path:'test-results/llm-guide-'+width+'-kansen.png'});
   await page.locator('.ai-trace-toggle').click();
   await page.locator('.ai-trace-title').waitFor({state:'visible'});
+  assert.equal(measuredRequests.length,1,'Herhaald openen gebruikt hetzelfde kleine meetbestand vanuit het geheugen');
   assert.equal(await page.locator('.ai-trace-bar').count(),8,'Acht echte top-tokenkansen uit de opgenomen uitvoering');
   assert.match(await page.locator('.ai-trace-prompt').innerText(),/Once upon a time/);
   const actualFirst=await page.locator('.ai-trace-bar strong').first().innerText();
