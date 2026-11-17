@@ -20,6 +20,8 @@ ILLUSTRATIONS = (
  '''<svg viewBox="0 0 260 100"><g stroke="#d1e5e0" stroke-width="1"><path d="M20 19h221M20 39h221M20 59h221M20 79h221M45 9v80M90 9v80M135 9v80M180 9v80M225 9v80"/></g><path d="M20 69 C42 69 48 18 74 25 S111 77 136 62 S167 16 190 30 S217 72 241 19" stroke="#0c9c91" stroke-width="3.5" stroke-linecap="round" fill="none"/><circle cx="190" cy="30" r="5" fill="#f5c56d" stroke="white" stroke-width="2"/></svg>''',
 )
 ASIDES = {
+ '/en/education/': ('Start with learning', 'Choose what students practise and what help fits the next step.'),
+ '/en/applications/': ('Follow a case', 'See which task AI does and what remains with the professional.'),
  '/nl/onderzoek/': ('Zelf controleren', 'Vind brongegevens, berekeningen en onderbouwing achter onderzoeksuitspraken.'),
  '/en/research/': ('Check the evidence', 'Find source data, calculations and the evidence behind a claim.'),
  '/nl/publicaties/': ('Verder lezen', 'Artikelen, essays, onderzoeksreviews en gesprekken, ieder met hun eigen bronnen.'),
