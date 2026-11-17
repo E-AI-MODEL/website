@@ -16,6 +16,10 @@ De zelfstandige rekenmodule is `assets/llm-learning-math.js`. De wiskunde wordt 
 
 **Gebouwd:** de automatische introductie en de begeleide route hebben nu dezelfde negen stappen en delen hun titels en uitleggegevens. De animatie gebruikt dezelfde lokale berekeningen als de gids. Er zijn nog geen echte gpt-oss-routeractivaties, attentiongewichten of logits ingelezen. Laadtijden op fysieke telefoons en aantoonbaar leerresultaat zijn nog niet gevalideerd. De PR mag pas gepubliceerd worden nadat alle tests slagen en de beelden zijn beoordeeld.
 
+**Van leren naar onderzoeken:** de knop rechtsboven in de leerroute opent nu het passende technische onderdeel. Bij experts ga je naar de expertweergave, bij eerdere tekst naar het bereik van attention en bij tokenkansen naar de kansgrafiek. Bij de tokenroute blijft het gekozen token geselecteerd. Via **Stap voor stap** kom je terug bij de uitleg. Na stap 9 opent de 3D-verdieping.
+
+**De twee voorbeelden zijn niet hetzelfde:** de miniatuurrekenmodule van de leerroute en de 3D-router gebruiken verschillende voorbeeldscores. Ze kunnen andere experts aanwijzen. De interface vermeldt dit bij beide weergaven.
+
 ## Onderzoeken
 
 - Modelstelsel: opeenvolgende lagen met expertroosters in 3D. Selecteer met de muis of een vinger
