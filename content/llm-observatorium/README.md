@@ -20,6 +20,18 @@ De zelfstandige rekenmodule is `assets/llm-learning-math.js`. De wiskunde wordt 
 
 **De twee voorbeelden zijn niet hetzelfde:** de miniatuurrekenmodule van de leerroute en de 3D-router gebruiken verschillende voorbeeldscores. Ze kunnen andere experts aanwijzen. De interface vermeldt dit bij beide weergaven.
 
+## Echte modelmetingen, zonder betaalde diensten
+
+Naast de kleine rekenvoorbeelden biedt de leerroute op de relevante stappen de knop **Bekijk echte modelmeting (ander model)**. Deze knop opent een klein, vooraf opgeslagen JSON-bestand op dezelfde website. Er draait **geen taalmodel bij het bezoek**, er wordt niets van de bezoeker verstuurd en de browser hoeft geen modelgewichten te downloaden.
+
+De meetgegevens worden één keer berekend met het getrainde open model [EphAsad/IllaryiaStories-1M](https://huggingface.co/EphAsad/IllaryiaStories-1M). De openbare modelkaart vermeldt de **MIT-licentie**. De modelversie en de SHA-256 van het checkpoint staan in het JSON-bestand. Het model is een GPT-Neo met acht lagen en een eigen tokenizer, **niet** gpt-oss en **zonder experts**.
+
+De vaste Engelse invoer is `Once upon a time,`. De opname bevat vier werkelijk uitgevoerde voorspellingen: token-ID's, een deel van de echte embedding, aandachtgewichten van één head, gemeten waarden per laag, de grootste volgende-tokenkansen en de gekozen tokens. De opname is niet gekoppeld aan de vraag van de bezoeker. De originele `o200k_harmony`-tokenizer blijft gebruikt worden voor de eigen vraag in het gpt-oss-voorbeeld.
+
+De opname wordt geproduceerd met `scripts/generate_llm_real_trace.py`, gecontroleerd met `scripts/test_llm_real_trace.py` en gegenereerd in GitHub Actions door `.github/workflows/llm-real-trace.yml`. Het statische bestand staat onder `assets/llm-real-trace.json`. De viewer laadt dit pas **na een klik**, zodat de gewone leerroute ook op een langzame telefoon snel en volledig gratis blijft.
+
+**Belangrijk:** een gemeten aandachtgewicht is niet automatisch een verklaring voor een antwoord. Een hogere lengte van de getallenrij in een laag betekent niet dat het model meer begrijpt. De route gebruikt de echte meetwaarden alleen voor vragen die die waarden daadwerkelijk ondersteunen.
+
 ## Onderzoeken
 
 - Modelstelsel: opeenvolgende lagen met expertroosters in 3D. Selecteer met de muis of een vinger
