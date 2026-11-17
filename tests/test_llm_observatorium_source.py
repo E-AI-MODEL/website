@@ -133,7 +133,9 @@ class LlmObservatorySourceTests(unittest.TestCase):
         self.assertIn("guideMath().softmax([2.45,1.50,.82,.24],state.temp)", html)
         self.assertIn("storyTokenRow($('vTokens'),state.promptWords,10)", html)
         self.assertIn("guideStep=storyState.phase", html)
-        self.assertIn("guideEl('guideTechnical').click()", html)
+        self.assertIn("guideOpenTechnical(true)", html)
+        self.assertIn("const GUIDE_TECH_MODES=[0,1,1,1,3,2,0,5,5]", html)
+        self.assertIn("function guideOpenTechnical(finish=false)", html)
         self.assertIn("repeat(9,minmax(0,1fr))", html)
         self.assertIn("VOORAF GESCHREVEN ANTWOORD", html)
 
