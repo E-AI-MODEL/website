@@ -1,13 +1,13 @@
 {
   "schema": 1,
   "source": "Cloudflare Web Analytics (RUM)",
-  "updated_at": "2026-11-17T08:05:01+00:00",
+  "updated_at": "2026-11-17T21:02:52+00:00",
   "period": {
     "from": "2026-10-19",
     "through": "2026-11-17"
   },
-  "views": 160,
-  "visits": 60,
+  "views": 210,
+  "visits": 110,
   "daily": [
     {
       "date": "2026-10-19",
@@ -156,25 +156,25 @@
     },
     {
       "date": "2026-11-17",
-      "views": 0,
-      "visits": 0
+      "views": 50,
+      "visits": 50
     }
   ],
   "pages": [
     {
+      "path": "/nl/model-monitor/",
+      "views": 50,
+      "visits": 40
+    },
+    {
       "path": "/",
-      "views": 30,
-      "visits": 30
+      "views": 40,
+      "visits": 40
     },
     {
       "path": "/nl/tools/",
       "views": 30,
       "visits": 0
-    },
-    {
-      "path": "/nl/model-monitor/",
-      "views": 20,
-      "visits": 10
     },
     {
       "path": "/nl/onderzoek/zhang-genai-taal/",
@@ -202,6 +202,11 @@
       "visits": 0
     },
     {
+      "path": "/nl/",
+      "views": 10,
+      "visits": 10
+    },
+    {
       "path": "/publicaties/ai-balans/",
       "views": 10,
       "visits": 0
@@ -210,7 +215,7 @@
   "referrers": [
     {
       "host": "Sociale media",
-      "views": 10
+      "views": 20
     }
   ],
   "notes": [
