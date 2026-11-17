@@ -147,10 +147,14 @@ try{
   await page.evaluate(()=>{storySetPhase(5);storyPaint(.8)});
   assert.equal(await page.locator('#vStoryExperts i.active').count(),4,
     'Dezelfde vier voorbeeldexperts als in de begeleide route');
+  const selectedColor=await page.locator('#vStoryExperts i.active').first().evaluate(el=>getComputedStyle(el).backgroundColor);
+  assert(selectedColor.includes('239, 197, 142'),'Geselecteerde experts zijn zichtbaar goud: '+selectedColor);
   await page.screenshot({path:'test-results/llm-story-'+width+'-experts.png'});
   await page.evaluate(()=>{storySetPhase(6);storyPaint(.8)});
   assert.equal(await page.locator('#vLayerRows .v-mini-row').count(),3,
     'Getallen voor en na attention en de experts');
+  const layerVisibility=await page.locator('#vLayerRows .v-mini-row').first().evaluate(el=>getComputedStyle(el).opacity);
+  assert.equal(layerVisibility,'1','De getallen mogen niet vervagen');
   await page.screenshot({path:'test-results/llm-story-'+width+'-lagen.png'});
   await page.evaluate(()=>{storySetPhase(7);storyPaint(.8)});
   assert.equal(await page.locator('#vScores .v-score').count(),4,
