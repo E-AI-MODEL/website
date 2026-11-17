@@ -28,7 +28,7 @@ De meetgegevens worden één keer berekend met het getrainde open model [EphAsad
 
 De vaste Engelse invoer is `Once upon a time,`. De opname bevat vier werkelijk uitgevoerde voorspellingen: token-ID's, een deel van de echte embedding, aandachtgewichten van één head, gemeten waarden per laag, de grootste volgende-tokenkansen en de gekozen tokens. De opname is niet gekoppeld aan de vraag van de bezoeker. De originele `o200k_harmony`-tokenizer blijft gebruikt worden voor de eigen vraag in het gpt-oss-voorbeeld.
 
-De opname wordt geproduceerd met `scripts/generate_llm_real_trace.py`, gecontroleerd met `scripts/test_llm_real_trace.py` en gegenereerd in GitHub Actions door `.github/workflows/llm-real-trace.yml`. Het statische bestand staat onder `assets/llm-real-trace.json`. De viewer laadt dit pas **na een klik**, zodat de gewone leerroute ook op een langzame telefoon snel en volledig gratis blijft.
+De opname wordt geproduceerd met `scripts/generate_llm_real_trace.py` en gecontroleerd met `scripts/test_llm_real_trace.py`. De zware GitHub Actions-run in `.github/workflows/llm-real-trace.yml` wordt **alleen handmatig gestart**. De gewone websitecontroles toetsen het reeds opgeslagen JSON-bestand zonder opnieuw modelgewichten te downloaden. Het statische bestand staat onder `assets/llm-real-trace.json`. De viewer laadt dit pas **na een klik**, zodat de gewone leerroute ook op een langzame telefoon snel en volledig gratis blijft.
 
 **Belangrijk:** een gemeten aandachtgewicht is niet automatisch een verklaring voor een antwoord. Een hogere lengte van de getallenrij in een laag betekent niet dat het model meer begrijpt. De route gebruikt de echte meetwaarden alleen voor vragen die die waarden daadwerkelijk ondersteunen.
 
