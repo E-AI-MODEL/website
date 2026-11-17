@@ -1,14 +1,9 @@
 name: Record real tiny LLM activations
+# Heavy model inference runs only on deliberate manual request, not every PR commit.
 on:
-  pull_request:
-    branches: [main]
-    paths:
-      - 'scripts/generate_llm_real_trace.py'
-      - 'scripts/test_llm_real_trace.py'
-      - '.github/workflows/llm-real-trace.yml'
   workflow_dispatch:
 permissions:
-  contents: write
+  contents: read
 jobs:
   measure:
     runs-on: ubuntu-24.04
@@ -18,8 +13,6 @@ jobs:
       TOKENIZERS_PARALLELISM: "false"
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.head_ref || github.ref_name }}
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -27,25 +20,12 @@ jobs:
         run: |
           python -m pip install --index-url https://download.pytorch.org/whl/cpu torch==2.6.0
           python -m pip install transformers==4.49.0 huggingface_hub==0.34.4 safetensors==0.5.3
-      - name: Run the trained public model once and capture real values
+      - name: Capture real values from trained public GPT-Neo model
         run: python scripts/generate_llm_real_trace.py --out artifacts/tinystories-real-trace.json
-      - name: Check provenance, probabilities, attention and token history
+      - name: Validate model trace before releasing the artifact
         run: python scripts/test_llm_real_trace.py artifacts/tinystories-real-trace.json
       - uses: actions/upload-artifact@v4
         with:
           name: real-llm-trace
           path: artifacts/tinystories-real-trace.json
           if-no-files-found: error
-      - name: Save the verified static snapshot on this PR branch
-        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
-        env:
-          PR_HEAD: ${{ github.event.pull_request.head.ref }}
-        run: |
-          cp artifacts/tinystories-real-trace.json assets/llm-real-trace.json
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add assets/llm-real-trace.json
-          if ! git diff --cached --quiet; then
-            git commit -m "Save audited pretrained GPT-Neo snapshot for the observatory"
-            git push origin "HEAD:${PR_HEAD}"
-          fi
