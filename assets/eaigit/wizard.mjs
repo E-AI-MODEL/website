@@ -97,15 +97,16 @@ function liList(id,entries,problem=false){
 function renderResult(){
  const g=makeGuidance({archive:state.archive,repo:state.repo,advice:makeAdvice({goal:state.goal,aim:state.aim,experience:"beginner",archive:state.archive,repo:state.repo}),goal:state.goal,aim:state.aim,repoError:state.repoError});
  state.guidance=g;
+ const noSource=!state.archive&&!state.repo?.readable&&!state.repoError;
  const first=primaryFinding(g,{archive:state.archive,repo:state.repo,repoError:state.repoError});
  label("resultTag",first.label);
  label("resultHeading",first.title);
  label("resultDescription",first.description);
- const good=g.good||[],problems=g.problems||[];
- label("goodCount",good.length+" gevonden");
- label("issueCount",problems.length+" aandachtspunt"+(problems.length===1?"":"en"));
- liList("goodPoints",good);
- liList("problemPoints",problems.length?problems:[{title:"Geen concrete fout vastgesteld",detail:"Alleen de uitgevoerde controles tellen mee."}],true);
+ const good=noSource?[]:g.good||[],problems=g.problems||[];
+ label("goodCount",noSource?"Nog niets onderzocht":good.length+" gevonden");
+ label("issueCount",noSource?"Nog geen controle":problems.length+" aandachtspunt"+(problems.length===1?"":"en"));
+ liList("goodPoints",noSource?["Er zijn nog geen projectbestanden onderzocht."]:good);
+ liList("problemPoints",noSource?[{title:"Nog geen beoordeling mogelijk",detail:"Voeg een ZIP-bestand of een openbare GitHub-repository toe."}]:problems.length?problems:[{title:"Geen concrete fout vastgesteld",detail:"Alleen de uitgevoerde controles tellen mee."}],true);
  liList("unknownPoints",g.uncertain||[]);
  $("goodDetails").open=false;$("issueDetails").open=false;$("unknownDetails").open=false;
  if(problems.some(p=>p.severity==="stop"))$("issueDetails").open=true;
