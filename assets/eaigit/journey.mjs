@@ -49,7 +49,12 @@ export function buildJourney({intent="start",source="zip",archive=null,repo=null
  }
  return steps.slice(0,7);
 }
-export function primaryFinding(guidance){
+export function primaryFinding(guidance,{archive=null,repo=null,repoError=null}={}){
+ if(!archive&&!repo?.readable&&!repoError){
+  return {label:"Nog geen controle",title:"Er zijn nog geen bestanden onderzocht",
+   description:"Voeg een ZIP-bestand of een link naar een openbare GitHub-repository toe om de projectbestanden te controleren.",kind:"info"};
+ }
+
  const p=guidance?.problems||[];
  const first=p.find(x=>x.severity==="stop")||p[0];
  if(first)return {label:"Dit vraagt aandacht",title:first.title,description:first.detail,kind:first.severity==="stop"?"warning":"attention"};
