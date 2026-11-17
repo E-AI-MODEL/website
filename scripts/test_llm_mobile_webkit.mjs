@@ -27,7 +27,8 @@ try {
    await page.goto(base+'/tools/llm-observatorium/',{waitUntil:'load'});
    await page.locator('#modelStory').waitFor({state:'visible'});
    assert.equal(await page.locator('#aiGuide').isVisible(),false,'Het beeld opent direct');
-   for(let step=0;step<5;step++){
+   assert.equal(await page.locator('#storyTimeline .story-time-item').count(),9,'Dezelfde negen fasen als in de leerroute');
+   for(let step=0;step<9;step++){
     await page.evaluate(n=>{storyState.playing=false;storySetPhase(n);storyPaint(.6)},step);
     const g=await page.evaluate(()=>({
      viewport:{width:innerWidth,height:innerHeight},
@@ -43,6 +44,44 @@ try {
     assert(g.bottom.bottom<=height+2,'Bediening valt buiten het scherm: '+JSON.stringify(g));
     await page.screenshot({path:'test-results/llm-webkit-'+width+'-'+height+'-stap-'+(step+1)+'.png'});
    }
+   // Ook de volledige negenstapsroute moet in Safari op een klein scherm werken.
+   await page.locator('#guideReturn').click();
+   assert.equal(await page.locator('#guideSteps button').count(),9,'Negen lesstappen ook in WebKit');
+   for(let step=0;step<9;step++){
+    await page.evaluate(i=>guideSetStep(i),step);
+    assert(await page.locator('#guideHeading').isVisible(),'Titel van de stap zichtbaar');
+    const g=await page.evaluate(()=>({
+     docWidth:document.documentElement.scrollWidth,
+     docHeight:document.documentElement.scrollHeight,
+     visual:document.querySelector('#guideVisual').getBoundingClientRect().toJSON(),
+     aside:document.querySelector('.ai-guide-aside').getBoundingClientRect().toJSON()
+    }));
+    assert(g.docWidth<=width+2&&g.docHeight<=height+2,'Geen pagina-overloop in lesstap '+step+': '+JSON.stringify(g));
+    assert(g.visual.width>100&&g.visual.height>50&&g.aside.height>40,
+     'Zichtbaar lesmateriaal in WebKit stap '+step+': '+JSON.stringify(g));
+   }
+   // Een echte opgeslagen modelmeting moet ook op kleine iPhones te openen zijn.
+   await page.evaluate(()=>guideSetStep(4));
+   await page.locator('.ai-trace-toggle').click();
+   await page.locator('.ai-trace-token-steps').waitFor({state:'visible'});
+   assert.equal(await page.locator('.ai-trace-token-step').count(),4,
+    'Vier direct selecteerbare voorspellingen op mobiel');
+   await page.locator('.ai-trace-head-btn').last().click();
+   assert.match(await page.locator('.ai-trace-help').last().innerText(),/laatste laag/);
+   await page.locator('.ai-trace-token-step').last().click();
+   assert.match(await page.locator('.ai-trace-selected').innerText(),/little/);
+   const traceScreen=await page.evaluate(()=>({
+    pageWidth:document.documentElement.scrollWidth,
+    pageHeight:document.documentElement.scrollHeight,
+    viewerWidth:document.querySelector('.ai-trace-content').getBoundingClientRect().width,
+    toggleWidth:document.querySelector('.ai-trace-toggle').getBoundingClientRect().width
+   }));
+   assert(traceScreen.pageWidth<=width+2&&traceScreen.pageHeight<=height+2,
+    'Geen paginaschuif na echte meting: '+JSON.stringify(traceScreen));
+   assert(traceScreen.viewerWidth>120&&traceScreen.toggleWidth>120,
+    'De echte meetwaarden blijven bruikbaar op mobiel');
+   await page.screenshot({path:'test-results/llm-webkit-'+width+'-'+height+'-echte-meting.png'});
+   await page.evaluate(()=>guideSetVisible(false));
    await page.locator('#story3d').click();
    assert.equal(await page.locator('#modelStory').isVisible(),false,'3D blijft bereikbaar');
    if(width>800&&height<560){
@@ -73,7 +112,7 @@ try {
    assert.deepEqual(errors,[],'JavaScript-fouten bij WebKit: '+errors.join(' / '));
   }finally{await page.close();}
  }
- console.log('LLM_WEBKIT_OK: 320x568, 390x844, 844x390, vijf stappen en mobiele panelen');
+ console.log('LLM_WEBKIT_OK: 320x568, 390x844, 844x390, negen leerstappen en mobiele panelen');
 }finally{
  if(browser)await browser.close();
  server.kill();
