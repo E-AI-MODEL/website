@@ -172,6 +172,12 @@ try{
   assert(sceneGeometry.board.width>190&&sceneGeometry.board.height>80,'De animatie moet zichtbaar zijn: '+JSON.stringify(sceneGeometry));
   assert(sceneGeometry.bottom.bottom<=sceneGeometry.stage.bottom+2,'Bediening blijft binnen de werkruimte: '+JSON.stringify(sceneGeometry));
   assert(sceneGeometry.scrollWidth<=width+2&&sceneGeometry.scrollHeight<=820+2,'Geen paginaschuif: '+JSON.stringify(sceneGeometry));
+  await page.locator('#guideReturn').click();
+  assert.equal(await page.evaluate(()=>guideStep),8,'Stap voor stap opent bij de gekozen animatiefase');
+  assert.equal(await page.locator('#guideSteps button[aria-current="step"]').count(),1);
+  await page.locator('#guideNext').click();
+  assert.equal(await page.locator('#modelStory').isVisible(),false,'Na de laatste stap gaat de bezoeker naar de techniek');
+  await page.locator('#storyBack3d').click();
   await page.locator('#story3d').click();
   if(width<800){
    assert.equal(await page.locator('.mobile-dock').isVisible(),true,'De technische bediening keert terug');
