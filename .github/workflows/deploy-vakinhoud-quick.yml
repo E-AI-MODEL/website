@@ -1,9 +1,7 @@
 name: Publish Vakinhoud navigation
+# Manual-only targeted recovery. A regular main push uses the complete
+# Deploy to Theory7 release and verifies the exact published site.
 on:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/deploy-vakinhoud-quick.yml'
   workflow_dispatch:
 permissions:
   contents: read
