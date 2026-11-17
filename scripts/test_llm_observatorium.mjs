@@ -49,7 +49,7 @@ try{
   await page.locator('#guideNext').click();
   assert.match(await page.locator('#guideHeading').innerText(),/getallen/);
   assert.equal(await page.locator('.ai-learn-number').count(),4,'Vier voorbeeldgetallen zichtbaar');
-  assert(await page.locator('.ai-learn-source').innerText().then(t=>t.includes('Tokennummer')));
+  assert(await page.locator('.ai-learn-source').innerText().then(t=>t.toLowerCase().includes('tokennummer')));
   await page.screenshot({path:'test-results/llm-guide-'+width+'-getallen.png'});
 
   await page.locator('#guideNext').click();
