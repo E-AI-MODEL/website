@@ -1940,7 +1940,7 @@ else if(id==='gas'){
  const low=Math.max(first[3],total-second[4]),high=Math.min(first[4],total-second[3]);
  const arm1=clamp(Math.round(((x-anchors.left)/65)/.25)*.25,low,high);
  state.p.pivot=anchors.left+65*arm1;
- setControlValue('arm1',arm1);setControlValue('arm2',total-arm1);setPlaying(true);
+ setControlValue('arm1',arm1);setControlValue('arm2',total-arm1); // Play resumes on pointerup, after the support has been released.
 }else return;if(id!=='circular')state.t=0;render()}
 stage.addEventListener('pointerdown',ev=>{if(state.id==='interference'){stage.setPointerCapture(ev.pointerId);mission.pointer=ev.pointerId;const point=pointOnScene(ev);mission.probe={x:clamp(point.x,32,970),y:clamp(point.y,25,470)};render();return}if(special3d.has(state.id)){
  if(state.pointer.size===0){state.orbitResume=state.playing;setPlaying(false);stage.classList.add('orbit-held')}
