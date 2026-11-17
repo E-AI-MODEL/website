@@ -1366,7 +1366,7 @@ let lastJourneyUI=0;
 const GUIDE_LABELS=['Jouw vraag','Echte tokens','Getallen','Volgorde','Eerdere tekst','Experts','Rekenlagen','Volgend token','Het antwoord'];
 /* Bij iedere lesstap hoort een bestaand technisch onderzoek. Geen extra menu. */
 const GUIDE_TECH_MODES=[0,1,1,1,3,2,0,5,5];
-const GUIDE_TECH_NAMES=['modellagen','tokens','tokenroute','tokenvolgorde','eerdere tekst','experts','modellagen','volgende tokens','volgende tokens'];
+const GUIDE_TECH_NAMES=['3D-model','tokens','tokenroute','tokenroute','context','experts','lagen','kansen','kansen'];
 const MODE_GUIDE_STEPS=[6,1,5,4,4,7,8];
 let guideVisited=false;
 
@@ -1862,7 +1862,7 @@ function guideRender(){
  guideEl('guideBoundary').textContent=step.boundary;
  guideEl('guideCounter').textContent=(guideStep+1)+' / '+GUIDE_STEPS.length;
  const tech=guideEl('guideTechnical');
- tech.firstChild.textContent='Onderzoek '+GUIDE_TECH_NAMES[guideStep]+' ';
+ tech.firstChild.textContent='Bekijk '+GUIDE_TECH_NAMES[guideStep]+' ';
  tech.title='Open de technische modus '+MODES[GUIDE_TECH_MODES[guideStep]].name+
   '. De routes en scores zijn voorbeelden, geen metingen uit gpt-oss.';
  guideEl('guidePrev').disabled=guideStep===0;
