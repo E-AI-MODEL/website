@@ -214,7 +214,7 @@ try{
  await page.goto(base+"/tools/eaigit/prompts/");
  assert.match(await page.title(),/Promptbibliotheek/);
  assert(await page.locator("#selectedOutcome").textContent());
- await page.locator("#promptSearch").fill("fout");
+ await page.locator("#promptSearch").fill("zoek en herstel een fout");
  assert((await page.locator("#promptList .eg-prompt-card").count())>0);
  assert((await page.locator("#promptList .eg-prompt-card").count())<16);
  await page.locator("#promptSearch").fill("");
