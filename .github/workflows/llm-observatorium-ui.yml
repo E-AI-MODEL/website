@@ -5,6 +5,9 @@ on:
     paths:
       - 'content/llm-observatorium/**'
       - 'scripts/test_llm_observatorium.mjs'
+      - 'scripts/test_llm_learning_math.mjs'
+      - 'assets/llm-learning-math.js'
+      - 'tools/llm-observatorium/**'
       - 'scripts/test_llm_mobile_webkit.mjs'
       - 'tests/test_llm_observatorium_source.py'
       - '.github/workflows/llm-observatorium-ui.yml'
@@ -13,6 +16,9 @@ on:
     paths:
       - 'content/llm-observatorium/**'
       - 'scripts/test_llm_observatorium.mjs'
+      - 'scripts/test_llm_learning_math.mjs'
+      - 'assets/llm-learning-math.js'
+      - 'tools/llm-observatorium/**'
       - 'scripts/test_llm_mobile_webkit.mjs'
       - 'tests/test_llm_observatorium_source.py'
       - '.github/workflows/llm-observatorium-ui.yml'
@@ -34,11 +40,13 @@ jobs:
       - name: Build LLM page from source
         run: python scripts/build_site.py --sources content/legacy --out site-build
       - run: python scripts/prepare_ui.py --root site-build
+      - name: Verify local learning mathematics
+        run: node scripts/test_llm_learning_math.mjs
       - name: Validate original model and updated visualization
         run: python -m unittest discover -s tests -p 'test_llm_observatorium_source.py' -v
       - run: npm install --no-save playwright@1.56.1
       - run: npx playwright install --with-deps chromium
-      - name: Seven research views and token interaction
+      - name: Nine learning steps, research views and token interaction
         run: node scripts/test_llm_observatorium.mjs site-build
       - name: Install WebKit for Safari layout checks
         run: npx playwright install --with-deps webkit
