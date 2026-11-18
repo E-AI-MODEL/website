@@ -283,6 +283,7 @@ try{
  assert.match(await page.locator("#workEvidence").innerText(),/Niet uitgevoerd/);
  await page.locator("#startGuidance").click();
  assert(await page.locator("#routeDetails").evaluate(el=>el.open));
+ assert.match(await page.locator("#guideDescription").innerText(),/private repository/i);
  assert((await page.locator("#routeList button").count())>=2);
  assert(await page.locator("#guideCheckDetails").evaluate(el=>el.open));
  // Oude URL blijft werken, zonder de oude naam in de nieuwe UI.
