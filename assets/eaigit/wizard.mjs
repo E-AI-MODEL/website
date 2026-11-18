@@ -198,6 +198,11 @@ function verifyStep(step){
   case "private": return "Bekijk de genoemde bestanden op je eigen apparaat. Ga pas verder als je hebt bepaald wat openbaar mag zijn. EAIgit kan dat niet voor je beslissen.";
   case "safe":return "Controleer dat de uitgepakte projectmap geen wachtwoorden, sleutels of andere privégegevens bevat.";
   case "unzip":return "Je ziet losse bestanden en mappen, niet alleen een .zip-bestand.";
+  case "create-local":return "Je hebt een bestand gemaakt en op je eigen apparaat opgeslagen. EAIgit heeft het nog niet automatisch getest.";
+  case "offline":return "Open het bestand op het bedoelde apparaat, zet de internetverbinding uit en test de belangrijkste functie. Bij een programma kunnen installaties nodig zijn.";
+  case "file-sharing":return "Open de kopie op een ander geschikt apparaat. Controleer of alle benodigde bestanden en programma’s aanwezig zijn.";
+  case "local-hosting":return "Controleer de openbare URL en de belangrijkste functie. EAIgit heeft niets gepubliceerd.";
+  case "try-local":return "Test openen, bediening en opslag op het bedoelde apparaat, zonder internet. Test ook in een tweede browser waar dat helpt.";
   case "create":return "Je nieuwe repository is zichtbaar in GitHub. Kopieer de volledige repositorylink en vul die hier in.";
   case "upload":case "files":return "Vernieuw GitHub en open enkele bestanden. Controleer of de paden en bestandsinhoud kloppen.";
   case "compare":return "Vergelijk de bedoelde bestanden op GitHub met je eigen ZIP. Gelijke namen betekenen niet dat de inhoud gelijk is.";
@@ -246,11 +251,12 @@ function renderGuide(){
  const selectedPrompts={
   source:"begrijp",repo:"begrijp",unzip:"repo-start",create:"repo-start",upload:"repo-start",
   files:"repo-start",compare:"repo-start",private:"veiligheid",safe:"veiligheid",
-  references:"fix",actions:"ci",try:"gebruikstest",publishing:"publiceer-plan"
+  references:"fix",actions:"ci",try:"gebruikstest",publishing:"publiceer-plan",
+   "create-local":"begrijp",offline:"gebruikstest","file-sharing":"review","local-hosting":"publiceer-plan","try-local":"gebruikstest"
  };
  $("phasePrompts").href="/tools/eaigit/prompts/?taak="+(step.audit?.promptId||selectedPrompts[step.id]||"begrijp");
  show("phasePrompts",!step.audit);
- const prompt=helpPrompt(step,state.guidance?.repoUrl||"",state.intent);
+ const prompt=helpPrompt(step,state.guidance?.repoUrl||"",state.intent,state.aim,state.delivery);
  show("promptDetails",Boolean(prompt));
  $("promptDetails").open=false;
  $("stepPrompt").value=prompt;
@@ -259,10 +265,12 @@ function renderGuide(){
  navigate("guide");
 }
 function reset(){
- state.intent=null;state.source=null;state.goal="code";state.zip=null;state.repoUrl="";state.archive=null;state.repo=null;state.repoError=null;state.aim="";state.guidance=null;state.steps=[];state.stepIndex=0;state.workPlan=null;state.auditAction=null;state.completedSteps.clear();
+ state.intent=null;state.source=null;state.goal="code";state.delivery="local";state.zip=null;state.singleFile=null;state.repoUrl="";state.archive=null;state.repo=null;state.repoError=null;state.aim="";state.guidance=null;state.steps=[];state.stepIndex=0;state.workPlan=null;state.auditAction=null;state.completedSteps.clear();
  $("zipFile").value="";label("zipFileName","Bestand kiezen");$("zipNext").disabled=true;
+ $("singleFile").value="";label("singleFileName","Los bestand kiezen");$("fileNext").disabled=true;
+ for(const b of document.querySelectorAll("[data-delivery]"))b.setAttribute("aria-pressed",String(b.dataset.delivery==="local"));
  $("repoUrl").value="";$("projectAim").value="";
- show("zipError",false);show("repoError",false);
+ show("zipError",false);show("fileError",false);show("repoError",false);
  navigate("intent");
 }
 for(const button of document.querySelectorAll("[data-experience]")){
@@ -280,6 +288,34 @@ for(const button of document.querySelectorAll("[data-source]")){
  button.addEventListener("click",()=>{state.source=button.dataset.source;afterSource();});
 }
 $("sourceBack").addEventListener("click",()=>navigate("intent"));
+for(const button of document.querySelectorAll("[data-delivery]")){
+ button.addEventListener("click",()=>{
+  state.delivery=button.dataset.delivery;
+  for(const b of document.querySelectorAll("[data-delivery]"))
+   b.setAttribute("aria-pressed",String(b.dataset.delivery===state.delivery));
+ });
+}
+const fileInput=$("singleFile");
+fileInput.addEventListener("change",()=>{
+ state.singleFile=fileInput.files?.[0]||null;
+ label("singleFileName",state.singleFile?.name||"Los bestand kiezen");
+ $("fileNext").disabled=!state.singleFile;
+ show("fileError",false);
+});
+const fileDrop=$("fileDrop");
+for(const event of ["dragenter","dragover"])fileDrop.addEventListener(event,e=>{e.preventDefault();fileDrop.classList.add("eg-drag");});
+for(const event of ["dragleave","drop"])fileDrop.addEventListener(event,e=>{e.preventDefault();fileDrop.classList.remove("eg-drag");});
+fileDrop.addEventListener("drop",e=>{
+ const file=e.dataTransfer?.files?.[0];if(!file)return;
+ try{const transfer=new DataTransfer();transfer.items.add(file);fileInput.files=transfer.files;fileInput.dispatchEvent(new Event("change",{bubbles:true}));}
+ catch{label("fileError","Kies het bestand via de bestandsknop.");show("fileError",true);}
+});
+$("fileBack").addEventListener("click",()=>navigate("source"));
+$("fileNext").addEventListener("click",()=>{
+ if(!state.singleFile)return;
+ if(state.singleFile.size>SINGLE_FILE_LIMIT){label("fileError","Kies een los bestand van maximaal 8 MB.");show("fileError",true);return;}
+ navigate("aim");
+});
 const zipInput=$("zipFile");
 zipInput.addEventListener("change",()=>{
  state.zip=zipInput.files?.[0]||null;
