@@ -4,6 +4,7 @@ import {readFileSync} from "node:fs";
 import {HELP_TOPICS,HELP_CATEGORIES,HELP_BY_STEP} from "../assets/eaigit/help-topics.mjs";
 import {PROMPT_LIBRARY,PROMPT_PHASES,promptsForPhase,fillPrompt} from "../assets/eaigit/prompts-data.mjs";
 import {buildLocalWorkPlan,validateLocalWorkPlan,reasonForStep} from "../assets/eaigit/work-plan.mjs";
+import {buildJourney} from "../assets/eaigit/journey.mjs";
 
 test("Bij iedere wizardvraag hoort relevante hulp met handelingen",()=>{
  for(const id of ["goal","source","zip","repo","aim","findings"]){
@@ -149,4 +150,15 @@ test("Onzekere bronvergelijking krijgt geen volledig onderzocht-label",()=>{
  assert.equal(item.state,"beperkt");
  assert.equal(work.partial,1);
  assert.match(item.detail,/van 1 bestand is niet vastgesteld of de inhoud gelijk is/);
+});
+
+test("Ervaren gebruiker krijgt andere, op bewijs gerichte handelingen",()=>{
+ const archive={eligible:["index.html","app.js"],missingReferences:["bad.css"],secret:[]};
+ const guided=buildJourney({intent:"repair",source:"zip",archive,experience:"guided"});
+ const compact=buildJourney({intent:"repair",source:"zip",archive,experience:"compact"});
+ assert.deepEqual(guided.map(x=>x.id),compact.map(x=>x.id),"De veiligheidsroute mag niet veranderen");
+ assert.notEqual(guided[0].description,compact[0].description);
+ assert.match(compact[0].description,/projectroot|bronbestanden/);
+ assert.match(compact.find(x=>x.id==="references").description,/1 lokale verwijzingen/);
+ assert.ok(guided[0].description.length>0);
 });
