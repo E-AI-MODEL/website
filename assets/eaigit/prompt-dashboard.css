@@ -189,3 +189,58 @@ body.eg-prompt-dashboard{
   max-width:19ch;
  }
 }
+
+
+/* De eigen EAIgit-header; de homepage krijgt hier geen tweede merkvermelding. */
+.eg-prompt-dashboard .eg-dashboard-product-header{
+ position:sticky;top:0;z-index:25;
+ background:rgba(249,251,248,.97);backdrop-filter:blur(12px);
+}
+.eg-prompt-dashboard .eg-dashboard-shell{margin-top:22px}
+.eg-prompt-dashboard .eg-dashboard-intro{border-radius:9px 9px 0 0}
+.eg-prompt-assist{
+ display:grid;grid-template-columns:210px minmax(0,1fr);gap:28px;align-items:center;
+ background:#fff;border:1px solid var(--eg-board-rule);border-top:0;
+ border-radius:0 0 9px 9px;padding:20px 33px
+}
+.eg-prompt-assist h2{font-size:19px;letter-spacing:-.03em;margin:0;color:var(--eg-board-ink)}
+.eg-assist-options{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.eg-assist-options button{
+ display:flex;align-items:center;justify-content:space-between;text-align:left;
+ min-height:57px;padding:11px 13px;background:#fcfefc;color:#2b5141;
+ border:1px solid #dce9df;border-radius:6px;cursor:pointer;
+ font:680 12px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif
+}
+.eg-assist-options button:hover{background:#f1f8f3;border-color:#9fc6aa}
+.eg-assist-options button:focus-visible{outline:2px solid #15796c;outline-offset:2px}
+.eg-project-settings{
+ margin:0 0 20px;padding:12px 14px;
+ border:1px solid #dce9df;border-radius:7px;background:#fcfefc
+}
+.eg-project-settings summary{
+ cursor:pointer;color:#2c6653;
+ font:700 12.5px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif
+}
+.eg-project-settings>p{font-size:12px;color:#667d6c;line-height:1.6;margin:9px 0 14px}
+.eg-project-settings .eg-dashboard-context-fields{gap:12px}
+.eg-project-settings .eg-dashboard-context-fields label{
+ color:#3f6250;font-size:12px;font-weight:650
+}
+.eg-project-settings .eg-dashboard-context-fields small{font-size:11px;color:#85988a}
+.eg-prompt-dashboard .eg-dashboard-outcome{margin-bottom:14px}
+.eg-prompt-dashboard .eg-dashboard-text-head{margin-top:0}
+.eg-prompt-dashboard .eg-dashboard-editor{scroll-margin-top:90px}
+@media(max-width:1050px){
+ .eg-prompt-assist{grid-template-columns:1fr;gap:15px}
+ .eg-assist-options{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:610px){
+ .eg-prompt-dashboard .eg-dashboard-shell{margin-top:11px}
+ .eg-prompt-dashboard .eg-dashboard-intro{padding:23px 19px 22px}
+ .eg-prompt-assist{padding:20px 19px;gap:12px}
+ .eg-prompt-assist h2{font-size:19px}
+ .eg-assist-options{gap:7px}
+ .eg-assist-options button{min-height:58px;padding:9px 10px;font-size:11.5px}
+ .eg-project-settings .eg-dashboard-context-fields{grid-template-columns:1fr}
+ .eg-prompt-dashboard .eg-dashboard-editor{scroll-margin-top:70px}
+}
