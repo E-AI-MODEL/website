@@ -139,3 +139,14 @@ test("EAIwork-plan is veilig: publiceren is slechts een voorstel, nooit een taak
  cycle.tasks[0].dependsOn=["user-test"];
  assert.throws(()=>validateLocalWorkPlan(cycle),/afhankelijkheid|Cirkel/);
 });
+
+test("Onzekere bronvergelijking krijgt geen volledig onderzocht-label",()=>{
+ const archive={eligible:["index.html"],contentCheck:{checkedFiles:1}};
+ const repo={readable:true,paths:["index.html"],truncated:false};
+ const advice={comparison:{missingCount:0,changed:[],unknown:["index.html"]}};
+ const work=buildLocalWorkPlan({intent:"repair",source:"both",archive,repo,advice});
+ const item=work.observations.find(o=>o.id==="file-compare");
+ assert.equal(item.state,"beperkt");
+ assert.equal(work.partial,1);
+ assert.match(item.detail,/1 kunnen niet inhoudelijk worden vergeleken/);
+});
