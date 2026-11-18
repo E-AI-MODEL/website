@@ -1,4 +1,5 @@
 import {analyzeArchive,fetchPublicRepo,makeAdvice,parseRepoUrl} from "../projecthulp/analyse.mjs";
+import {analyzeSingleFile,SINGLE_FILE_LIMIT} from "../projecthulp/los-bestand.mjs";
 import {makeGuidance} from "../projecthulp/begeleiding.mjs";
 import {buildJourney,primaryFinding,helpPrompt} from "./journey.mjs";
 import {buildLocalWorkPlan,reasonForStep} from "./work-plan.mjs";
@@ -6,8 +7,8 @@ import {selectAuditAction} from "./audit-advice.mjs";
 import {getHelpTopic,getHelpForStep} from "./help-topics.mjs";
 
 const $=id=>document.getElementById(id);
-const state={intent:null,source:null,goal:"code",zip:null,repoUrl:"",archive:null,repo:null,repoError:null,aim:"",guidance:null,steps:[],stepIndex:0,busy:false,experience:"guided",workPlan:null,completedSteps:new Set()};
-const stages=["intent","source","zip","repo","aim","result","guide","finished"];
+const state={intent:null,source:null,goal:"code",delivery:"local",zip:null,singleFile:null,repoUrl:"",archive:null,repo:null,repoError:null,aim:"",guidance:null,steps:[],stepIndex:0,busy:false,experience:"guided",workPlan:null,completedSteps:new Set()};
+const stages=["intent","source","file","zip","repo","aim","result","guide","finished"];
 function openHelp(topicId,contextTip=""){
  const topic=getHelpTopic(topicId);if(!topic)return;
  label("helpTitle",topic.title);
@@ -27,8 +28,8 @@ function openHelp(topicId,contextTip=""){
 
 const show=(id,yes)=>$(id)?.classList.toggle("eg-hidden",!yes);
 const label=(id,value)=>{$(id).textContent=value;};
-const getFlow=()=>["intent","source",...(state.source==="zip"||state.source==="both"?["zip"]:[]),...(state.source==="github"||state.source==="both"?["repo"]:[]),"aim","result"];
-const goals={start:"code",repair:"app",publish:"site",explore:"unsure"};
+const getFlow=()=>["intent","source",...(state.source==="file"?["file"]:[]),...(state.source==="zip"||state.source==="both"?["zip"]:[]),...(state.source==="github"||state.source==="both"?["repo"]:[]),"aim","result"];
+const goals={start:"code",local:"app",repair:"app",publish:"site",explore:"unsure"};
 let currentStage="intent";
 function navigate(target){
  currentStage=target;
@@ -41,7 +42,8 @@ function navigate(target){
  $("progressFill").style.width=Math.round(progress*100)+"%";
  label("progressStep",target==="guide"?"Stap "+(state.stepIndex+1)+" van "+state.steps.length:
   target==="finished"?"Klaar":"Stap "+Math.max(1,Math.min(index+1,total))+" van "+total);
- label("progressLabel",target==="guide"?"Aan de slag":target==="finished"?"Afronden":({intent:"Jouw vraag",source:"Je bestanden",zip:"Je ZIP",repo:"Je repository",aim:"Je doel",result:"Je advies"}[target]||"EAIgit"));
+ label("progressLabel",target==="guide"?"Aan de slag":target==="finished"?"Afronden":({intent:"Jouw vraag",source:"Je bestanden",file:"Je bestand",zip:"Je ZIP",repo:"Je repository",aim:"Je doel",result:"Je advies"}[target]||"EAIgit"));
+ if(target==="aim")show("deliveryChoices",state.intent==="local"||state.source==="file");
  document.body.classList.toggle("eg-is-result",["result","guide","finished"].includes(target));
  const heading=$("stage-"+target).querySelector("h1,h2");
  heading?.setAttribute("tabindex","-1");
@@ -53,14 +55,15 @@ function previous(stage){
  navigate(flow[Math.max(0,at-1)]||"intent");
 }
 function afterSource(){
- if(state.source==="zip"||state.source==="both")navigate("zip");
+ if(state.source==="file")navigate("file");
+ else if(state.source==="zip"||state.source==="both")navigate("zip");
  else if(state.source==="github")navigate("repo");
  else navigate("aim");
 }
 async function runWorker(kind,data,transfer=[]){
  if(typeof Worker!=="function"){
-  const source=kind==="zip"?{name:data.name,size:data.buffer.byteLength,arrayBuffer:async()=>data.buffer}:null;
-  return kind==="zip"?analyzeArchive(source):fetchPublicRepo(data.url);
+  const source=kind!=="github"?{name:data.name,size:data.buffer.byteLength,arrayBuffer:async()=>data.buffer}:null;
+  return kind==="zip"?analyzeArchive(source):kind==="file"?analyzeSingleFile(source):fetchPublicRepo(data.url);
  }
  const worker=new Worker(new URL("../projecthulp/onderzoek-worker.mjs",import.meta.url),{type:"module"});
  return new Promise((resolve,reject)=>{
@@ -97,15 +100,15 @@ function liList(id,entries,problem=false){
  }
 }
 function renderResult(){
- const advice=makeAdvice({
+ const advice=(state.intent==="local"||state.source==="file")?null:makeAdvice({
   goal:state.goal,aim:state.aim,experience:state.experience==="compact"?"advanced":"beginner",
   archive:state.archive,repo:state.repo
  });
  const g=makeGuidance({archive:state.archive,repo:state.repo,advice,
-  goal:state.goal,aim:state.aim,repoError:state.repoError,intent:state.intent});
+  goal:state.goal,aim:state.aim,repoError:state.repoError,intent:state.intent,source:state.source,delivery:state.delivery});
  state.guidance=g;
  const noSource=!state.archive&&!state.repo?.readable&&!state.repoError;
- const first=primaryFinding(g,{archive:state.archive,repo:state.repo,repoError:state.repoError});
+ const first=primaryFinding(g,{archive:state.archive,repo:state.repo,repoError:state.repoError,intent:state.intent});
  label("resultTag",first.label);
  label("resultHeading",first.title);
  label("resultDescription",first.description);
@@ -113,7 +116,7 @@ function renderResult(){
  label("goodCount",noSource?"Nog niets onderzocht":good.length+" gevonden");
  label("issueCount",noSource?"Nog geen controle":problems.length+" aandachtspunt"+(problems.length===1?"":"en"));
  liList("goodPoints",noSource?["Er zijn nog geen projectbestanden onderzocht."]:good);
- liList("problemPoints",noSource?[{title:"Nog geen beoordeling mogelijk",detail:"Voeg een ZIP-bestand of een openbare GitHub-repository toe."}]:problems.length?problems:[{title:"Geen concrete fout vastgesteld",detail:"Alleen de uitgevoerde controles tellen mee."}],true);
+ liList("problemPoints",noSource?[{title:"Nog geen beoordeling mogelijk",detail:state.intent==="local"?"Er is nog geen bestand aangeleverd. Je krijgt wel stappen om een zelfstandig bestand te maken en te testen.":"Voeg een bestand, ZIP of openbare GitHub-repository toe."}]:problems.length?problems:[{title:"Geen concrete fout vastgesteld",detail:"Alleen de uitgevoerde controles tellen mee."}],true);
  liList("unknownPoints",g.uncertain||[]);
  $("goodDetails").open=false;$("issueDetails").open=false;$("unknownDetails").open=false;
  if(problems.some(p=>p.severity==="stop"))$("issueDetails").open=true;
@@ -132,12 +135,12 @@ function renderResult(){
    +" · "+(a.certainty==="review"?"nog controleren":"statisch vastgesteld"));
  }
  state.steps=buildJourney({intent:state.intent,source:state.source,archive:state.archive,
-  repo:state.repo,guidance:g,experience:state.experience,auditAction:state.auditAction});
+  repo:state.repo,guidance:g,experience:state.experience,auditAction:state.auditAction,delivery:state.delivery,aim:state.aim});
  state.stepIndex=0;
  state.completedSteps.clear();
  state.workPlan=buildLocalWorkPlan({
   intent:state.intent,source:state.source,archive:state.archive,repo:state.repo,
-  repoError:state.repoError,advice,aim:state.aim,steps:state.steps
+  repoError:state.repoError,advice,aim:state.aim,steps:state.steps,delivery:state.delivery
  });
  showWorkEvidence(state.workPlan);
  navigate("result");
@@ -148,10 +151,15 @@ async function analyze(){
  show("loading",true);
  try{
   state.archive=null;state.repo=null;state.repoError=null;
-  const zip=state.zip?state.zip.arrayBuffer().then(buffer=>runWorker("zip",{name:state.zip.name,buffer},[buffer])):Promise.resolve(null);
+  const selected=state.source==="file"?state.singleFile:state.zip;
+  const kind=state.source==="file"?"file":"zip";
+  const zip=selected?selected.arrayBuffer().then(buffer=>runWorker(kind,{name:selected.name,buffer},[buffer])):Promise.resolve(null);
   const repo=state.repoUrl?runWorker("github",{url:state.repoUrl}):Promise.resolve(null);
   const [z,r]=await Promise.allSettled([zip,repo]);
-  if(z.status==="rejected"){label("zipError",z.reason?.message||"ZIP kon niet worden gelezen.");show("zipError",true);navigate("zip");show("zipError",true);return;}
+  if(z.status==="rejected"){
+   const target=state.source==="file"?"file":"zip";const errorId=target==="file"?"fileError":"zipError";
+   label(errorId,z.reason?.message||"Bestand kon niet worden gelezen.");show(errorId,true);navigate(target);show(errorId,true);return;
+  }
   if(z.value)state.archive=z.value;
   if(r.status==="fulfilled"&&r.value)state.repo=r.value;
   if(r.status==="rejected")state.repoError=r.reason?.message||"GitHub is niet bereikbaar.";
@@ -159,7 +167,7 @@ async function analyze(){
  }catch(error){
   label("repoError",error?.message||"Er ging iets mis. Probeer het opnieuw.");
   show("repoError",true);
-  navigate(state.repoUrl?"repo":state.zip?"zip":"aim");
+  navigate(state.repoUrl?"repo":state.source==="file"?"file":state.zip?"zip":"aim");
  }finally{show("loading",false);$("analyze").disabled=false;state.busy=false;}
 }
 function showWorkEvidence(work){
