@@ -78,6 +78,7 @@ try{
  assert.match(await page.locator("#problemPoints").textContent(),/privébestanden/);
  assert.match(await page.locator("#unknownPoints").textContent(),/Logische fouten/);
  assert.match(await page.locator("#workSummary").innerText(),/onderzocht/);
+ await page.locator("#workDetails summary").click();
  assert.match(await page.locator("#workEvidence").innerText(),/Niet getest/);
  assert.match(await page.locator("#workEvidence").innerText(),/ZIP-bestand/);
  assert.equal(await page.locator("#repoLink").getAttribute("href"),"https://github.com/voorbeeld/project");
