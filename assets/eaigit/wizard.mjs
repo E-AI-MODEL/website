@@ -240,6 +240,7 @@ function renderGuide(){
   references:"fix",actions:"ci",try:"gebruikstest",publishing:"publiceer-plan"
  };
  $("phasePrompts").href="/tools/eaigit/prompts/?taak="+(step.audit?.promptId||selectedPrompts[step.id]||"begrijp");
+ show("phasePrompts",!step.audit);
  const prompt=helpPrompt(step,state.guidance?.repoUrl||"",state.intent);
  show("promptDetails",Boolean(prompt));
  $("promptDetails").open=false;
