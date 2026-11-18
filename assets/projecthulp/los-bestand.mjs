@@ -75,6 +75,15 @@ export async function analyzeSingleFile(input){
   }else notInspected.push(name);
  }
  const contentCheck=inspectProjectTexts(records,eligible);
+ // Alleen het gekozen bestand is bekend. Een verwijzing kan naast het bestand
+ // bestaan zonder dat die tweede bron is aangeleverd.
+ for(const issue of contentCheck.findings){
+  if(issue.type==="missing-reference"){
+   issue.certainty="review";
+   issue.title="Bijbehorend bestand niet meegeleverd";
+   issue.detail="De verwijzing is in dit losse bestand gevonden, maar het doelbestand is niet aangeleverd. Of het op het apparaat bestaat, is niet gecontroleerd.";
+  }
+ }
  await appendStaticAudit(contentCheck,records,eligible,{standalone:true});
  contentCheck.findings.push(...formatFindings);
  contentCheck.notInspected=notInspected;
