@@ -92,7 +92,7 @@ try{
  await page.locator("#startGuidance").click();
  assert(await page.locator("#stage-guide").isVisible());
  assert.match(await page.locator("#guideTitle").innerText(),/privébestanden/);
- assert.match(await page.locator("#guideReason").innerText(),/mogelijk vertrouwelijk/);
+ assert.match(await page.locator("#guideReason").innerText(),/privégegevens kan wijzen/);
  await page.locator("#guideCheckDetails summary").click();
  assert.match(await page.locator("#guideCheck").innerText(),/Bekijk/);
  await page.locator("#guideTrouble").click();
