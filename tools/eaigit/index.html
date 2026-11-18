@@ -124,6 +124,10 @@
   <h2 id="guideTitle">Je volgende handeling</h2>
   <p class="eg-guide-text" id="guideDescription"></p>
   <div class="eg-guide-why"><strong>Waarom deze stap?</strong><p id="guideReason"></p></div>
+  <details id="routeDetails" class="eg-disclosure eg-guide-route">
+   <summary>Bekijk alle stappen in je route</summary>
+   <ol id="routeList"></ol>
+  </details>
   <details class="eg-disclosure eg-guide-check" id="guideCheckDetails">
    <summary>Hoe controleer ik of het gelukt is?</summary>
    <p id="guideCheck"></p>
@@ -149,8 +153,9 @@
  </section>
  <section class="eg-card eg-hidden" id="stage-finished" aria-labelledby="finishedTitle">
   <div class="eg-finished-icon" aria-hidden="true">✓</div>
-  <h2 id="finishedTitle">Je hebt de stappen doorlopen</h2>
-  <p>Je hebt de stappen zelf afgevinkt. De werkelijke werking is daarmee nog niet aangetoond. Controleer je bestanden opnieuw, of test de belangrijkste functie zelf.</p>
+  <h2 id="finishedTitle">Je bent bij het einde van je route</h2>
+  <p id="finishStatus"></p>
+  <p>De werking is nog niet gecontroleerd. Je kunt je bestanden opnieuw onderzoeken of zelf de belangrijkste functie testen.</p>
   <div class="eg-finished-links"><a href="/tools/eaigit/hulp/">Hulp bij GitHub</a><a href="/tools/eaigit/prompts/">Gerichte opdrachten</a></div>
   <div class="eg-finish-actions">
    <button id="checkAgain" type="button" class="eg-primary">Controleer mijn project opnieuw</button>
