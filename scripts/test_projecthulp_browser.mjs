@@ -282,12 +282,17 @@ try{
  await page.locator('[data-source="unknown"]').click();
  await page.locator("#aimSkip").click();
  await page.locator("#stage-result:not(.eg-hidden)").waitFor({timeout:12000});
- assert(await page.locator("#workDetails").evaluate(el=>el.open));
+ assert.equal(await page.locator("#workDetails").evaluate(el=>el.open),false,"Onderzoeksdetails staan standaard dicht");
+ await page.locator("#workDetails summary").click();
  assert.match(await page.locator("#workEvidence").innerText(),/Niet uitgevoerd/);
  await page.locator("#startGuidance").click();
+ assert.equal(await page.locator("#routeDetails").evaluate(el=>el.open),false,"Route staat standaard dicht");
+ await page.locator("#routeDetails summary").click();
  assert(await page.locator("#routeDetails").evaluate(el=>el.open));
  assert.match(await page.locator("#guideDescription").innerText(),/private repository/i);
  assert((await page.locator("#routeList button").count())>=2);
+ assert.equal(await page.locator("#guideCheckDetails").evaluate(el=>el.open),false,"Controleuitleg staat standaard dicht");
+ await page.locator("#guideCheckDetails summary").click();
  assert(await page.locator("#guideCheckDetails").evaluate(el=>el.open));
  // Nieuwe controle: ZIP met ongeldige JavaScript-syntaxis leidt zonder AI naar
  // een concrete vervolgstap, een echt bronregelnummer en een optionele prompt.
