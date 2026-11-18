@@ -233,3 +233,11 @@ body.eaigit-wizard{
  .eg-experience-label{width:100%}
  .eg-work-evidence li{grid-template-columns:minmax(0,1fr) auto}
 }
+
+
+/* Gerichte vervolgstap na lokale code- en structuuranalyse. */
+.eg-audit-next{margin:4px 0 19px;padding:16px 0 15px;border-top:1px solid #dce9df;border-bottom:1px solid #dce9df}
+.eg-audit-next .eg-kicker{margin:0 0 7px;font-size:10px}
+.eg-audit-next h3{margin:0 0 7px!important;font:750 18px/1.32 system-ui,-apple-system,"Segoe UI",sans-serif!important;color:#264637}
+.eg-audit-next p{font-size:13px;line-height:1.6;color:#566e5f;margin:0 0 7px}
+.eg-audit-next .eg-audit-next-source{font-size:11.5px;color:#72897a;margin:5px 0 0;overflow-wrap:anywhere}
