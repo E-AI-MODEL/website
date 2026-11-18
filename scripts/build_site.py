@@ -2794,6 +2794,8 @@ def build(sources: Path, out: Path) -> None:
     # These model pages are materialized during the subsequent UI preparation.
     # They belong in the public sitemap even though they are not source index.html files.
     urls.extend(["/nl/model/", "/en/model/"])
+    # EAIgit is a public tool with three indexable entry pages.
+    urls.extend(["/tools/eaigit/", "/tools/eaigit/hulp/", "/tools/eaigit/prompts/"])
     # Current redesigned aliases are also maintained as page sources. Older
     # article and toolbox pages continue to come from their content/generator.
     for page in repo_root.rglob("*.html"):
