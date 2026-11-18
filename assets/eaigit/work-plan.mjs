@@ -10,11 +10,12 @@ const plain=(value)=>String(value||"").replace(/[\r\n\t]/g," ").slice(0,240);
 const count=(number,singular,plural)=>number+" "+(number===1?singular:plural);
 export function buildLocalWorkPlan({
  intent="explore",source="unknown",archive=null,repo=null,repoError=null,
- advice=null,aim="",steps=[]
+ advice=null,aim="",steps=[],delivery="local"
 }={}){
  const hasZip=Boolean(archive?.eligible);
  const hasRepo=Boolean(repo?.readable);
  const wantsZip=["zip","both"].includes(source);
+ const wantsFile=source==="file";
  const wantsRepo=["github","both"].includes(source);
  const observations=[],tasks=[],phases=[];
  const add=(id,title,members)=>{
@@ -23,6 +24,10 @@ export function buildLocalWorkPlan({
   phases.push({id,title,taskIds:members.map(m=>m.id)});
  };
  const inputs=[];
+ if(wantsFile){
+  inputs.push(task("file-source","Los bestand onderzoeken","single-file-inspect"));
+  observations.push(evidence("file-source","Los bestand",archive?"gevonden":"niet-onderzocht",archive?"Bestand "+plain(archive.name)+" lokaal gelezen. "+(archive.contentCheck?.checkedFiles||0)+" bronbestand statisch bekeken; er is niets uitgevoerd.":"Er is geen los bestand onderzocht."));
+ }
  if(wantsZip){
   inputs.push(task("zip-source","ZIP-bestand onderzoeken","zip-inspect"));
   observations.push(evidence("zip-source","ZIP-bestand",hasZip?"gevonden":"niet-onderzocht",
@@ -34,8 +39,8 @@ export function buildLocalWorkPlan({
    hasRepo?count(repo.paths.length,"bestandspad","bestandspaden")+" in de openbare repository gelezen.":plain(repoError)||"GitHub is niet of niet volledig uitgelezen."));
  }
  if(!inputs.length){
-  inputs.push(task("find-source","Vind de projectbestanden","source-locate"));
-  observations.push(evidence("find-source","Projectbestanden","niet-onderzocht","Er is nog geen bestand of repository gecontroleerd."));
+  inputs.push(task("find-source",intent==="local"?"Bepaal welk los bestand je wilt maken":"Vind de projectbestanden","source-locate"));
+  observations.push(evidence("find-source","Projectbestanden","niet-onderzocht",intent==="local"?"Je wilt een bestand maken, maar er is nog geen bronbestand om te onderzoeken.":"Er is nog geen bestand of repository gecontroleerd."));
  }
  add("phase-sources","Bronnen",inputs);
  const checks=[],sourceIds=inputs.map(t=>t.id);
@@ -68,6 +73,14 @@ export function buildLocalWorkPlan({
     ?count(c.missingCount,"bestand ontbreekt","bestanden ontbreken")+" op dezelfde plek; "+count(c.changed.length,"bestand wijkt","bestanden wijken")+" aantoonbaar af; van "+count(c.unknown.length,"bestand","bestanden")+" is niet vastgesteld of de inhoud gelijk is."
     :"Voor een vergelijking zijn beide bronnen nodig."));
  }
+ if(wantsFile&&archive){
+  checks.push(task("offline-review","Controleer aanwijzingen voor offline gebruik","offline-static-review",sourceIds));
+  const r=archive.readiness||{};
+  const hints=(r.external?.length||0)+(r.network?.length||0)+(r.server?.length||0);
+  observations.push(evidence("offline-review","Offline gebruik","beperkt",
+   hints?hints+" mogelijke externe of lokale afhankelijkheden in de bron aangetroffen. Of de toepassing zonder internet werkt, is niet getest.":
+   "Geen doorslaggevende netwerkafhankelijkheid gevonden in de beperkte broncontrole. Offline werking is niet getest."));
+ }
  add("phase-inspect","Onderzoek",checks);
  const adviceTask=task("guided-next","Bepaal de volgende handeling","deterministic-guidance",checks.length?checks.map(t=>t.id):sourceIds);
  add("phase-guidance","Begeleiding",[adviceTask]);
@@ -80,7 +93,7 @@ export function buildLocalWorkPlan({
   ["write","Wijzigingen beoordelen","external-write"],
   ["publish","Publicatie beoordelen","publish"]
  ]){
-  if(id==="write"?!["start","repair"].includes(intent):intent!=="publish")continue;
+  if(id==="write"?!["start","repair"].includes(intent):!(intent==="publish"||(intent==="local"&&delivery==="online")))continue;
   pendingDecisions.push({id,title,effect,policy:PRODUCT_RULES[id],approved:false});
   observations.push(evidence(id,title,"toestemming-nodig",
    "Er is niets gewijzigd of gepubliceerd. Deze handeling vraagt afzonderlijke toestemming."));
@@ -157,6 +170,11 @@ export function validateLocalWorkPlan(plan){
 export function reasonForStep(step,{archive=null,repo=null,guidance=null}={}){
  const id=step?.id;
  if(id==="source")return "Er zijn nog geen projectbestanden onderzocht.";
+ if(id==="create-local")return "Er is nog geen werkend bestand gemaakt of getest. Dit is een voorstel op basis van het beschreven doel.";
+ if(id==="offline")return archive?.readiness?"De aangeleverde bron is statisch bekeken, maar de offline werking is niet uitgevoerd.":"De omstandigheden waarin het bestand zal draaien zijn nog niet onderzocht.";
+ if(id==="try-local")return "De toepassing is nog niet op het werkelijke apparaat, zonder internet of met echte invoer getest.";
+ if(id==="file-sharing")return "Gebruik op een ander apparaat is niet getest. Een losse kopie deelt geen opgeslagen gegevens.";
+ if(id==="local-hosting")return "De website of toepassing is niet gepubliceerd. Beschikbaarheid op internet is nog niet aangetoond.";
  if(["private","safe"].includes(id)){
   const n=archive?.secret?.length||0;
   return n===1?"EAIgit vond één bestandsnaam die op privégegevens kan wijzen. Controleer dit bestand voordat je iets deelt.":
