@@ -185,7 +185,7 @@ test("Optionele technische details blijven standaard dicht, ook voor ervaren geb
  assert.doesNotMatch(code,/\.open=state\.experience==="compact"/);
  const wizard=readFileSync(new URL("../tools/eaigit/index.html",import.meta.url),"utf8");
  assert.match(wizard,/<details id="routeDetails"/);
- assert.match(wizard,/<details id="guideCheckDetails"/);
+ assert.match(wizard,/<details\b[^>]*id="guideCheckDetails"/);
 });
 
 test("Drie openbare EAIgit-pagina's zijn indexeerbaar en hebben correcte sitemap en canonical",()=>{
