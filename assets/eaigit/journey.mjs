@@ -154,7 +154,7 @@ export function helpPrompt(step,repositoryUrl="",intent="start",aim="",delivery=
  if(intent==="local"&&step.id==="unzip")return [
   "Ik wil de bestanden in een ZIP lokaal op mijn apparaat gebruiken.",
   "Mijn doel: "+(aim||"[beschrijf de gewenste functie]")+".",
-  "Leg uit hoe ik de ZIP uitpak en de benodigde bestanden samenhoud zonder GitHub.",
+  "Leg uit hoe ik de ZIP lokaal uitpak en de benodigde bestanden bij elkaar houd.",
   "Help me testen op het bedoelde apparaat, ook zonder internet. Controleer extra afhankelijkheden en maak geen schijnclaims.",
   "Wijzig of publiceer niets zonder mijn toestemming."
  ].join("\n");
