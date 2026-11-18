@@ -59,6 +59,16 @@ Een productregel die voorschrijft dat schrijven apart akkoord vereist, is **niet
 - Op telefoon en desktop moet de gebruiker altijd bij een vorige stap kunnen terugkomen, hulp kunnen openen en het onderscheid tussen uitgevoerde controle en vervolgstap kunnen zien.
 - Geen loze introducties zoals 'vul deze gegevens één keer in' als die invoer niet nodig is om verder te kunnen.
 
+## Openbare toegang en ChatGPT-GitHub-koppeling
+
+De drie openbare EAIgit-pagina's (`/tools/eaigit/`, `/hulp/` en `/prompts/`) zijn indexeerbaar, hebben een eigen canonical-URL en staan in de gegenereerde en gecommitte sitemap. Dit geldt uitsluitend voor deze drie pagina's. `/tools/projecthulp/` blijft buiten de publieke sitemap. De publieke indexering zegt niets over de technische werking of de veiligheid van een geüpload project.
+
+De eenvoudige ZIP- en openbare-repositorycontrole werkt zonder ChatGPT-account of abonnement. **ChatGPT en GitHub verbinden is optioneel.** De uitklapbare uitleg toont de route via Instellingen > Plug-ins, het beperken van toegestane GitHub-repositories en de grens tussen lezen met de GitHub-koppeling en wijzigingen via Codex of een andere schrijfgemachtigde omgeving. Plug-in- en Codex-beschikbaarheid moet worden gecontroleerd per account en werkruimte. Er is geen onveranderlijk minimumabonnement dat voor alle gebruikers is gegarandeerd. Verwijs voor actuele eisen naar de officiële OpenAI-hulp.
+
+Op het resultaatscherm, in het routeoverzicht en bij de controle-instructie staan aanvullende details standaard dicht. Ook ervaren gebruikers krijgen pas na een bewuste keuze de uitgebreide informatie. Zware veiligheidsbevindingen kunnen nog wel zichtbaar worden gemaakt om een reëel probleem niet te verbergen. Een extra oefenmodule of tweede wizard wordt niet toegevoegd.
+
+**Vrijgavecheck**: de afzonderlijke browserroute en broncontrole moeten slagen, de sitemap moet de drie URL's precies eenmaal bevatten en de gepubliceerde pagina's moeten achteraf op HTTP-status, robots-meta, canonical en de werkelijke bediening worden nagekeken. GitHub-merge bewijst niet dat de website al is gepubliceerd.
+
 ## Proeven voordat publicatie wordt vrijgegeven
 
 De tests moeten minimaal aantonen:
