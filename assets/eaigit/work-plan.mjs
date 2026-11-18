@@ -82,6 +82,7 @@ export function buildLocalWorkPlan({
   goal:plain(aim).slice(0,180)||"Mijn project begrijpen en gericht verder werken",
   sourceInstruction:SOURCE_RULES, tasks,phases,constraints
  };
+ validateLocalWorkPlan(plan);
  return {
   plan,observations,
   investigated:observations.filter(o=>o.state==="gevonden").length,
@@ -90,6 +91,55 @@ export function buildLocalWorkPlan({
   explanation:"EAIgit gebruikt lokaal uitgevoerde browsercontroles en EAIwork-taakafhankelijkheden. EAIwork-workers zijn hier niet gestart."
  };
 }
+
+/**
+ * Kleine browser-preflight volgens de strikte, herbruikbare EAIwork-regels.
+ * Dit is een lokale contractcontrole, geen EAIwork-Operations-run.
+ * Iedere taak hoort bij precies één fase. Er zijn geen afhankelijkheidscirkels.
+ * Niet-lokale taken zijn zonder afzonderlijk akkoord geblokkeerd.
+ */
+export function validateLocalWorkPlan(plan){
+ if(!plan||!Array.isArray(plan.tasks)||!Array.isArray(plan.phases))throw Error("Ongeldig werkplan");
+ if(!plan.tasks.length||plan.tasks.length>32)throw Error("Ongeldig aantal taken");
+ const byId=new Map(plan.tasks.map(t=>[t.id,t]));
+ if(byId.size!==plan.tasks.length)throw Error("Dubbele taak");
+ const assigned=new Map();
+ for(const [phaseIndex,p] of plan.phases.entries()){
+  if(!p.taskIds?.length)throw Error("Lege fase");
+  for(const id of p.taskIds){
+   if(!byId.has(id)||assigned.has(id))throw Error("Ongeldige fase-indeling");
+   assigned.set(id,phaseIndex);
+  }
+ }
+ if(assigned.size!==byId.size)throw Error("Taak ontbreekt in fase");
+ const visited=new Set(),active=new Set();
+ function visit(id){
+  if(active.has(id))throw Error("Cirkel in taakafhankelijkheden");
+  if(visited.has(id))return;
+  active.add(id);
+  const t=byId.get(id);
+  if(!Array.isArray(t.dependsOn)||!t.taskKind)throw Error("Taak zonder contract");
+  for(const dep of t.dependsOn){
+   if(!byId.has(dep)||assigned.get(dep)>assigned.get(id))throw Error("Ongeldige afhankelijkheid");
+   visit(dep);
+  }
+  active.delete(id);visited.add(id);
+ }
+ for(const t of plan.tasks)visit(t.id);
+ const constraints=plan.constraints||[];
+ for(const c of constraints){
+  if(!c.quote||plan.sourceInstruction?.slice(c.start,c.end)!==c.quote)
+   throw Error("Toestemming niet herleidbaar");
+  if(!c.taskIds?.length||c.taskIds.some(id=>!byId.has(id)))
+   throw Error("Toestemming zonder taak");
+ }
+ for(const t of plan.tasks){
+  if(t.effect!=="local"&&!constraints.some(c=>c.kind==="approval"&&c.taskIds.includes(t.id)))
+   throw Error("Externe handeling zonder toestemming");
+ }
+ return true;
+}
+
 export function reasonForStep(step,{archive=null,repo=null,guidance=null}={}){
  const id=step?.id;
  if(id==="source")return "Er zijn nog geen projectbestanden onderzocht.";
