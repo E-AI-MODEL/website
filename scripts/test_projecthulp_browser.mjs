@@ -41,7 +41,7 @@ try{
   return route.fulfill({status:200,contentType:"application/json",headers:{"access-control-allow-origin":"*"},body:JSON.stringify(data)});
  });
  await page.goto(base+"/tools/eaigit/");
- assert.equal(await page.title(),"EAIgit · Stap voor stap naar GitHub");
+ assert.match(await page.title(),/^EAIgit · Los bestand/);
  assert.equal(await page.locator(".eg-logo img").getAttribute("src"),"/assets/eaigit/logo.svg");
  assert.equal(await page.locator('link[rel="icon"]').getAttribute("href"),"/assets/eaigit/icon.svg");
  assert(await page.locator("#stage-intent").isVisible());
@@ -328,6 +328,64 @@ try{
  assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2),"Codeadvies past niet op mobiel");
  await page.screenshot({path:join(out,"eaigit-codecontrole-mobiel.png"),fullPage:true});
  assert.equal(sent.filter(x=>x.method!=="GET").length,0,"Projectcode is nooit verstuurd of uitgevoerd");
+ // Zelfstandig een los bestand willen maken, zonder aangeleverde bron of GitHub.
+ await page.goto(base+"/tools/eaigit/");
+ await page.locator('[data-intent="local"]').click();
+ await page.locator('[data-source="unknown"]').click();
+ assert(await page.locator("#deliveryChoices").isVisible());
+ await page.locator("#projectAim").fill("Een offline oefening die resultaten lokaal kan tonen");
+ await page.locator('[data-delivery="share"]').click();
+ assert.equal(await page.locator('[data-delivery="share"]').getAttribute("aria-pressed"),"true");
+ await page.locator("#analyze").click();
+ await page.locator("#stage-result:not(.eg-hidden)").waitFor();
+ assert.match(await page.locator("#resultHeading").innerText(),/geen bestanden onderzocht/);
+ await page.locator("#startGuidance").click();
+ assert.match(await page.locator("#guideTitle").innerText(),/Maak het losse bestand/);
+ const shareSteps=await page.locator("#routeList button").allTextContents();
+ assert(shareSteps.some(x=>/anderen het bestand/.test(x)));
+ assert(!shareSteps.some(x=>/repository|GitHub/i.test(x)));
+ assert.equal(await page.locator("#routeDetails").evaluate(el=>el.open),false,"Extra uitleg blijft gesloten");
+ await page.screenshot({path:join(out,"eaigit-los-bestand-zonder-bron.png"),fullPage:true});
+
+ // Gegeven losse HTML met externe onderdelen: een echte browserworkercontrole.
+ await page.goto(base+"/tools/eaigit/");
+ await page.locator('[data-intent="local"]').click();
+ await page.locator('[data-source="file"]').click();
+ assert(await page.locator("#stage-file").isVisible());
+ assert.equal(await page.locator("#stage-zip").isVisible(),false);
+ const localHtml='<!doctype html><html><head><meta name="viewport" content="width=device-width"><script type="module" src="https://cdn.example/script.js"></script></head><body><h1>Oefening</h1></body></html>';
+ await page.locator("#singleFile").setInputFiles({name:"oefening.html",mimeType:"text/html",buffer:Buffer.from(localHtml)});
+ await page.locator("#fileNext").click();
+ assert(await page.locator("#stage-aim").isVisible());
+ assert(await page.locator("#deliveryChoices").isVisible());
+ await page.locator("#projectAim").fill("Oefening werkt zonder internet");
+ await page.locator("#analyze").click();
+ await page.locator("#stage-result:not(.eg-hidden)").waitFor({timeout:15000});
+ assert.match(await page.locator("#resultHeading").innerText(),/Externe onderdelen/);
+ await page.locator("#workDetails summary").click();
+ assert.match(await page.locator("#workEvidence").innerText(),/Los bestand/);
+ assert.match(await page.locator("#workEvidence").innerText(),/Offline gebruik/);
+ await page.locator("#startGuidance").click();
+ assert.match(await page.locator("#guideTitle").innerText(),/voorwaarden voor lokaal gebruik/);
+ assert.match(await page.locator("#guideDescription").innerText(),/externe verwijzing/);
+ const offlineSteps=await page.locator("#routeList button").allTextContents();
+ assert(offlineSteps.some(x=>/zonder internet/.test(x)));
+ assert(!offlineSteps.some(x=>/repository|GitHub/i.test(x)));
+ assert.equal(sent.filter(x=>x.method!=="GET").length,0,"Ook een los bestand wordt nergens naartoe geüpload");
+ await page.screenshot({path:join(out,"eaigit-offline-html-mobiel.png"),fullPage:true});
+
+ // Een lokaal ZIP-project mag eveneens zonder repository door de route.
+ await page.goto(base+"/tools/eaigit/");
+ await page.locator('[data-intent="local"]').click();
+ await page.locator('[data-source="zip"]').click();
+ await page.locator("#zipFile").setInputFiles({name:"offline.zip",mimeType:"application/zip",buffer:safeArchive});
+ await page.locator("#zipNext").click();
+ await page.locator("#aimSkip").click();
+ await page.locator("#stage-result:not(.eg-hidden)").waitFor({timeout:15000});
+ await page.locator("#startGuidance").click();
+ const zipLocalSteps=await page.locator("#routeList button").allTextContents();
+ assert(zipLocalSteps.some(x=>/lokaal uit/.test(x)));
+ assert(!zipLocalSteps.some(x=>/repository|GitHub/i.test(x)));
  // Oude URL blijft werken, zonder de oude naam in de nieuwe UI.
  await page.goto(base+"/tools/projecthulp/");
  await page.waitForURL("**/tools/eaigit/");
