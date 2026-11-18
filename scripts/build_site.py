@@ -2885,6 +2885,10 @@ EAI_FIRST_PARTY_TRACKER = '<script defer src="/assets/site-analytics.js"></scrip
 # These are reviewed standalone HTML files whose publication tests require exact bytes.
 # They may get RUM later through an explicit, separately tested source change.
 CLOUDFLARE_EXACT_SOURCE_ROUTES = {
+    # EAIgit analyses potentially private ZIPs locally; no site analytics.
+    "/tools/eaigit/",
+    "/tools/eaigit/hulp/",
+    "/tools/eaigit/prompts/",
     "/tools/wihtml/studio/",
     "/tools/wihtml/voorbeeld/",
     "/tools/abyss/",
