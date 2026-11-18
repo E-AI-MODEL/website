@@ -45,6 +45,7 @@ class CloudflareBeaconTest(unittest.TestCase):
                 "/tools/abyss/", "/tools/melkweg-lab/",
                 "/tools/llm-observatorium/", "/tools/eaimesh/start/",
                 "/tools/eaistudio/studio/",
+                "/tools/eaigit/", "/tools/eaigit/hulp/", "/tools/eaigit/prompts/",
                 "/tools/science-observatory/labs/wiskunde-a/",
             ]
             for path in paths:
