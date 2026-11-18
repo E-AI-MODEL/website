@@ -1,7 +1,7 @@
 // EAIgit: lokale taakafhankelijkheden, herleidbare status en toestemmingsgrenzen.
 // Gebaseerd op de EAIwork MissionPlan v1-vorm. EAIgit voert de voorgestelde
 // EAIwork-taken NIET uit. Browsercontroles hebben hun eigen uitvoerlogica.
-const SOURCE_RULES="Schrijf pas na afzonderlijke toestemming naar GitHub.\nPubliceer pas na afzonderlijke toestemming.";
+const PRODUCT_RULES={write:"Wijzigingen vereisen een apart akkoord.",publish:"Publiceren vereist een apart akkoord."};
 const task=(id,title,taskKind,dependsOn=[],effect="local")=>({
  id,title,taskKind,dependsOn:[...dependsOn],effect,input:{text:title}
 });
@@ -58,33 +58,31 @@ export function buildLocalWorkPlan({
  add("phase-guidance","Begeleiding",[adviceTask]);
  observations.push(evidence("guided-next","Vervolgroute","voorgesteld",
   (steps.length||0)+" mogelijke vervolgstappen uit de gekozen route en beschikbare brongegevens. Geen van deze stappen is uitgevoerd."));
- const guarded=[],constraints=[];
- for(const [id,title,kind,effect,quote] of [
-  ["write","Wijzigingen beoordelen","github-write","external-write","Schrijf pas na afzonderlijke toestemming naar GitHub."],
-  ["publish","Publicatie beoordelen","site-publish","publish","Publiceer pas na afzonderlijke toestemming."]
+ // Toestemming kan hier niet zijn gegeven. Externe handelingen staan daarom
+ // uitdrukkelijk BUITEN het EAIwork-taakplan. De gebruiker ziet slechts voorstellen.
+ const pendingDecisions=[];
+ for(const [id,title,effect] of [
+  ["write","Wijzigingen beoordelen","external-write"],
+  ["publish","Publicatie beoordelen","publish"]
  ]){
-  const needed=id==="write"?["start","repair"].includes(intent):intent==="publish";
-  if(!needed)continue;
-  guarded.push(task(id,title,kind,["guided-next"],effect));
-  const start=SOURCE_RULES.indexOf(quote);
-  constraints.push({id:"approval-"+id,kind:"approval",quote,start,end:start+quote.length,
-   taskIds:[id],approverId:"project-owner"});
+  if(id==="write"?!["start","repair"].includes(intent):intent!=="publish")continue;
+  pendingDecisions.push({id,title,effect,policy:PRODUCT_RULES[id],approved:false});
   observations.push(evidence(id,title,"toestemming-nodig",
    "Er is niets gewijzigd of gepubliceerd. Deze handeling vraagt afzonderlijke toestemming."));
  }
- add("phase-decisions","Besluiten",guarded);
- add("phase-verify","Controle",[task("user-test","Test de belangrijkste gebruikershandeling","human-review",
-  guarded.length?guarded.map(t=>t.id):["guided-next"])]);
+ add("phase-verify","Controle",[task("user-test","Test de belangrijkste gebruikershandeling","human-review",["guided-next"])]);
  observations.push(evidence("user-test","Werkende toepassing","niet-getest",
   "Een bestandencontrole bewijst niet dat de website of toepassing werkt. Er is geen volledige gebruikstest uitgevoerd."));
+ const originalAim=String(aim||"").trim();
  const plan={
   id:"eaigit-local-project",title:"EAIgit projectonderzoek",
   goal:plain(aim).slice(0,180)||"Mijn project begrijpen en gericht verder werken",
-  sourceInstruction:SOURCE_RULES, tasks,phases,constraints
+  ...(originalAim?{sourceInstruction:originalAim}:{}),
+  tasks,phases
  };
  validateLocalWorkPlan(plan);
  return {
-  plan,observations,
+  plan,observations,pendingDecisions,
   investigated:observations.filter(o=>o.state==="gevonden").length,
   notTested:observations.filter(o=>["niet-onderzocht","niet-getest"].includes(o.state)).length,
   proposedSteps:steps.length, aiRequired:false,mode:"read-only",
@@ -96,7 +94,7 @@ export function buildLocalWorkPlan({
  * Kleine browser-preflight volgens de strikte, herbruikbare EAIwork-regels.
  * Dit is een lokale contractcontrole, geen EAIwork-Operations-run.
  * Iedere taak hoort bij precies één fase. Er zijn geen afhankelijkheidscirkels.
- * Niet-lokale taken zijn zonder afzonderlijk akkoord geblokkeerd.
+ * Onuitgevoerde externe acties zijn geen onderdeel van het uitvoerbare plan.
  */
 export function validateLocalWorkPlan(plan){
  if(!plan||!Array.isArray(plan.tasks)||!Array.isArray(plan.phases))throw Error("Ongeldig werkplan");
