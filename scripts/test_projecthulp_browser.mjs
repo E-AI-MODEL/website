@@ -305,7 +305,7 @@ try{
  await page.locator("#stage-result:not(.eg-hidden)").waitFor({timeout:15000});
  assert(await page.locator("#auditNext").isVisible(),"Gegronde vervolgstap ontbreekt");
  assert.match(await page.locator("#auditNextTitle").innerText(),/JavaScript-syntaxis/);
- assert.match(await page.locator("#auditNextSource").innerText(),/app\\.js.*regel 1/);
+ assert.ok((await page.locator("#auditNextSource").innerText()).includes("app.js · regel 1"));
  assert.match(await page.locator("#problemPoints").innerText(),/JavaScript-syntaxisfout/);
  await page.locator("#workDetails summary").click();
  assert.match(await page.locator("#workEvidence").innerText(),/JavaScript-syntaxis/);
@@ -315,7 +315,7 @@ try{
  assert.match(await page.locator("#guideReason").innerText(),/parser/);
  assert.equal(await page.locator("#phasePrompts").getAttribute("href"),"/tools/eaigit/prompts/?taak=fix");
  await page.locator("#promptDetails summary").click();
- assert.match(await page.locator("#stepPrompt").inputValue(),/app\\.js \\(regel 1\\)/);
+ assert.ok((await page.locator("#stepPrompt").inputValue()).includes("app.js (regel 1)"));
  assert.match(await page.locator("#stepPrompt").inputValue(),/toestemming/);
  await page.locator("#copyPrompt").click();
  assert.match(await page.locator("#copyStatus").innerText(),/Gekopieerd/);
