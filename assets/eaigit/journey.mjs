@@ -1,7 +1,7 @@
 // EAIgit: kort en doelafhankelijk. Instructies zijn geen bewijs van uitgevoerde acties.
 const has=(items,part)=>Array.isArray(items)&&items.some(x=>String(x.title||x).includes(part));
 const step=(id,title,description,action="",href="",help="")=>({id,title,description,action,href,help});
-export function buildJourney({intent="start",source="zip",archive=null,repo=null,guidance=null,experience="guided"}={}){
+export function buildJourney({intent="start",source="zip",archive=null,repo=null,guidance=null,experience="guided",auditAction=null}={}){
  const g=guidance||{good:[],problems:[],uncertain:[],next:[]};
  const issues=g.problems||[];
  const steps=[];
@@ -12,6 +12,11 @@ export function buildJourney({intent="start",source="zip",archive=null,repo=null
  if(sensitive){
   add("private","Controleer eerst privébestanden","In je ZIP zijn bestandsnamen gevonden die privé kunnen zijn. Open de uitgepakte map en controleer deze bestanden zelf.","","","Verwijder bijvoorbeeld wachtwoorden en sleutels uit bestanden die je online wilt zetten. Een groene controle is nog geen bewijs dat alles veilig is.");
   add("safe","Maak de map klaar","Houd privébestanden buiten je GitHub-project. Controleer daarna de bestanden die je wilt delen.","","","Je bepaalt zelf wat openbaar mag worden. EAIgit verwijdert niets.");
+ }
+ if(auditAction){
+  const item=step("audit",auditAction.title,auditAction.description,"","",auditAction.reason);
+  item.audit=auditAction;
+  steps.push(item);
  }
  if(zipOnly){
   add("unzip","Pak de ZIP uit","GitHub heeft een ZIP-bestand, maar niet de losse projectbestanden. Pak het ZIP-bestand uit op je eigen apparaat.","","","Je mag de ZIP bewaren als reservekopie, maar GitHub kan de code in die ZIP niet als losse bestanden bewerken.");
@@ -36,7 +41,7 @@ export function buildJourney({intent="start",source="zip",archive=null,repo=null
  }else{
   add("source","Zoek je projectbestanden","Een ZIP-bestand of een link naar een openbare GitHub-repository is nodig om gericht verder te kunnen.","","","Op GitHub kun je de projectlink kopiëren uit de adresbalk.");
  }
- if(archive?.missingReferences?.length){
+ if(archive?.missingReferences?.length&&auditAction?.type!=="missing-reference"){
   add("references","Controleer ontbrekende bestanden","De startpagina verwijst naar bestanden die niet op de verwachte plek staan. Kijk of je ze nog hebt en pas zo nodig de verwijzingen aan.","","","Een bestandsnaam kan goed zijn terwijl de website alsnog niet werkt.");
  }
  if(repo?.readable){
@@ -79,6 +84,7 @@ export function buildJourney({intent="start",source="zip",archive=null,repo=null
   if(item.id==="unzip"&&count)item.description+=" Gevonden: "+count+" mogelijke projectbestanden.";
   if(item.id==="references"&&missing)item.description+=" Er "+(missing===1?"ontbreekt één lokale verwijzing.":"ontbreken "+missing+" lokale verwijzingen.");
   if(item.id==="try"&&g.goalTest?.action)item.description=g.goalTest.action+" Leg verwachte en waargenomen uitkomst apart vast.";
+  if(item.id==="audit"&&item.audit)item.description=item.audit.description+" Begin bij "+(item.audit.path||"de projectstructuur")+(item.audit.line?" regel "+item.audit.line:"")+".";
  }
  return chosen;
 }
@@ -94,6 +100,7 @@ export function primaryFinding(guidance,{archive=null,repo=null,repoError=null}=
 }
 export function helpPrompt(step,repositoryUrl="",intent="start"){
  if(!step)return "";
+ if(step.id==="audit")return step.audit?.prompt||"";
  const repo=repositoryUrl||"[vul je GitHub-link in]";
  const rules="Gebruik eenvoudige stappen. Verander niets in mijn repository zonder mijn toestemming. Verzin geen testresultaten.";
  if(["private","safe"].includes(step.id))return "";
