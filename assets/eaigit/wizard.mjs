@@ -255,7 +255,7 @@ function renderGuide(){
    "create-local":"begrijp",offline:"gebruikstest","file-sharing":"review","local-hosting":"publiceer-plan","try-local":"gebruikstest"
  };
  $("phasePrompts").href="/tools/eaigit/prompts/?taak="+(step.audit?.promptId||selectedPrompts[step.id]||"begrijp");
- show("phasePrompts",!step.audit);
+ show("phasePrompts",!step.audit&&state.intent!=="local"&&!(state.source==="file"&&["repair","explore"].includes(state.intent)));
  const prompt=helpPrompt(step,state.guidance?.repoUrl||"",state.intent,state.aim,state.delivery);
  show("promptDetails",Boolean(prompt));
  $("promptDetails").open=false;
