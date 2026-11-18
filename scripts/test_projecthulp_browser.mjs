@@ -341,6 +341,10 @@ try{
  assert.match(await page.locator("#resultHeading").innerText(),/geen bestanden onderzocht/);
  await page.locator("#startGuidance").click();
  assert.match(await page.locator("#guideTitle").innerText(),/Maak het losse bestand/);
+ assert.equal(await page.locator("#phasePrompts").isVisible(),false,"De GitHub-opdrachten horen niet in een lokale route");
+ await page.locator("#promptDetails summary").click();
+ assert.match(await page.locator("#stepPrompt").inputValue(),/Een offline oefening/);
+ assert.doesNotMatch(await page.locator("#stepPrompt").inputValue(),/Mijn repository|vul je GitHub-link in/i);
  const shareSteps=await page.locator("#routeList button").allTextContents();
  assert(shareSteps.some(x=>/anderen het bestand/.test(x)));
  assert(!shareSteps.some(x=>/repository|GitHub/i.test(x)));
