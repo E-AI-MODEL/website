@@ -4,7 +4,7 @@ Status: productafspraken voor `/tools/eaigit/` en de twee ondersteunende pagina'
 
 ## Wat EAIgit is
 
-EAIgit helpt mensen hun project te begrijpen, onderzoeken, verbeteren, delen en controleren. De eerste route werkt zonder AI-model, zonder GitHub-account en zonder server waar een ZIP naartoe wordt gestuurd. Een openbare GitHub-repository kan met de publieke GitHub API worden onderzocht; daarvoor is wel netwerktoegang nodig.
+EAIgit helpt mensen hun bestand of project te maken, begrijpen, onderzoeken, verbeteren, delen en controleren. De eerste route werkt zonder AI-model, zonder GitHub-account en zonder server waar een ZIP naartoe wordt gestuurd. Een openbare GitHub-repository kan met de publieke GitHub API worden onderzocht; daarvoor is wel netwerktoegang nodig.
 
 De gebruiker kiest een doel. EAIgit bepaalt welke bronnen nodig zijn, onderzoekt de ontvangen gegevens, noemt alleen controleerbare bevindingen en kiest daarop volgende handelingen. Bij elke handeling kan iemand vragen *waarom*, *hoe*, *hoe controleer ik het* en *wat als het niet lukt*. Zonder verplicht een prompt te kopiëren.
 
@@ -12,12 +12,16 @@ De gebruiker kiest een doel. EAIgit bepaalt welke bronnen nodig zijn, onderzoekt
 
 | Route | Wat zelfstandig gebeurt | Wat nog menselijk werk is |
 | --- | --- | --- |
+| Ik wil één lokaal bestand maken en heb nog geen bron | Doel en uitvoeromgeving vastleggen; korte niet-uitgevoerde route maken | Bestand echt maken, opslaan, openen en testen. Geen GitHub nodig |
+| Ik heb één los bestand (HTML, script of programma) | Bestand onder 8 MB lokaal lezen, leesbare tekst beperkt controleren, externe afhankelijkheden signaleren zonder uitvoering | Bijbehorende bestanden, installaties, werking zonder internet en veiligheid testen |
+| Ik wil een bestand doorgeven | Afhankelijkheden en beperkingen uitleggen | Kopie op tweede apparaat proberen, ontbrekende bestanden aanleveren, privacy controleren |
+| Ik wil een lokaal bestand online bereikbaar maken | Mogelijke hostingvoorwaarden beschrijven | Apart toestemming geven, geschikte omgeving kiezen en de gepubliceerde toepassing testen |
 | Ik begin met een ZIP | Lokale inventarisatie, bestandstypen, enkele statische inhouds- en verwijzingscontroles | Privégegevens beoordelen, GitHub-account aanmaken, delen of uploaden |
 | Mijn project staat op GitHub | Openbare repository- en bestandslijst onderzoeken, beperkte statische inhoudscontrole | Uitgevoerde tests beoordelen, wijzigingen doorvoeren |
 | ZIP en GitHub | Bestanden en waar mogelijk inhoud vergelijken, ontbrekende en afwijkende bestanden onderscheiden | Bepalen welke versie klopt en wat mag worden overschreven |
 | Controleren of verbeteren | Bestaande code en verwijzingen onderzoeken, problemen en onbekende uitkomsten tonen | De werkelijke functie reproduceren, een gerichte reparatie goedkeuren en testen |
 | Website publiceren | Bestandsstructuur en mogelijke publicatievoorwaarden onderzoeken | Hosting kiezen, publiceren, openbare URL en gebruikersfunctie testen |
-| Nog geen bron | Uitleg en een volgende zoek- of voorbereidingshandeling aanbieden | ZIP/repository kiezen; geen schijnanalyse doen |
+| Nog geen bron | Uitleg en een volgende zoek- of voorbereidingshandeling aanbieden | Eén bestand maken of een bestaande bron kiezen; geen schijnanalyse doen |
 
 Onderzoeken of herstellen mag **niet verplicht eerst via een nieuwe GitHub-repository lopen**. Extra hulp is beschikbaar zonder de bestaande wizardroute te verlaten.
 
@@ -47,7 +51,7 @@ Een advies of statisch bestandsonderzoek mag nooit worden gepresenteerd als: pro
 
 EAIgit gebruikt de opbouw van `MissionPlan v1`: expliciete taken, afhankelijkheden en fases. Het lokale werkplan wordt gecontroleerd op ongeldige verwijzingen en cirkels. De contractproef in `scripts/test_projecthulp_eaiwork.mjs` haalt de echte EAI Work-broncode op en valideert vijf EAIgit-browserplannen met `validateMissionPlan` en `inspectMissionPlan`.
 
-De browser **start op dit moment geen EAI Work-Operations-server, Worker Registry of EAIwork-workers**. In de aparte EAI Work-contractproef lopen wel twee echte lokale tekstadapters; de andere taken zijn in die proef niet uitgevoerd. EAIgit heeft zelf al zelfstandige ZIP-, repository- en statische controles in `assets/projecthulp/`, via een browserworker. De gedeelde taakcontracten mogen niet worden voorgesteld als reeds uitgevoerde EAI Work-workers.
+De browser **start op dit moment geen EAI Work-Operations-server, Worker Registry of EAIwork-workers**. In de aparte EAI Work-contractproef lopen wel twee echte lokale tekstadapters; de andere taken zijn in die proef niet uitgevoerd. EAIgit heeft zelfstandige ZIP-, losse-bestands-, repository- en statische controles in `assets/projecthulp/`, via een browserworker. De gedeelde taakcontracten mogen niet worden voorgesteld als reeds uitgevoerde EAI Work-workers.
 
 Een productregel die voorschrijft dat schrijven apart akkoord vereist, is **niet** een citaat of toestemming van de gebruiker. Daarom blijven schrijf- en publicatievoorstellen buiten het uitvoerbare lokale werkplan, in `pendingDecisions`. EAIgit schrijft of publiceert niets.
 
@@ -58,6 +62,18 @@ Een productregel die voorschrijft dat schrijven apart akkoord vereist, is **niet
 - **Opdrachten**: `/tools/eaigit/prompts/` biedt **optionele** AI-opdrachten, bereikbaar vanuit een specifieke stap of via een korte taakkeuze. Geen algemene projectvelden als verplichte start, geen tweede EAI-model-logo. Zonder AI blijft de wizard bruikbaar.
 - Op telefoon en desktop moet de gebruiker altijd bij een vorige stap kunnen terugkomen, hulp kunnen openen en het onderscheid tussen uitgevoerde controle en vervolgstap kunnen zien.
 - Geen loze introducties zoals 'vul deze gegevens één keer in' als die invoer niet nodig is om verder te kunnen.
+
+## Los bestand en offline toepassing
+
+De wizard biedt een eigen doelkeuze voor een los bestand of offline programma. Een bezoeker kan zonder bestaande bron beginnen met een maak- en testroute. In hetzelfde bestaande invoerscherm kiest die bezoeker waar het bestand moet werken: lokaal, als doorgestuurd bestand of online. Dit is geen tweede wizard, en GitHub is niet verplicht.
+
+De bron `file` wordt apart aangeboden naast `zip`, `github`, `both` en `unknown`. De bestaande browserworker accepteert een bestand van maximaal 8 MB en leest het lokaal. Voor ondersteunde UTF-8-bestanden is de inhoudscontrole maximaal 220 kB tekst; grotere, uitvoerbare of onbekende bestanden krijgen geen schijncontrole. Bestanden worden niet uitgevoerd, geïnstalleerd, naar de server verstuurd of automatisch gepubliceerd. Voor HTML, gewone JavaScript-bestanden, JSON en verwijzingen gelden de bestaande statische controles.
+
+Bij één bestand zijn externe bijbestanden niet meegeleverd. Een onbekend lokaal pad is daarom een **aanwijzing, geen bewezen ontbrekend bestand**. Het lezen van code kan externe URL's, netwerk-API's, modules, serviceworkers en browseropslag aantonen of suggereren. EAIgit kan daarmee niet bewijzen dat de toepassing offline werkt. Een HTML-bestand kan rechtstreeks vanuit `file://` openen, maar browserregels kunnen modules, lokale bestandsverzoeken, serviceworkers en opslag beperken. Binaire uitvoerbare bestanden worden niet gestart of op veiligheid beoordeeld.
+
+De lokale route vraagt een echte gebruikstest op het doelapparaat, met en zonder netwerk. Gegevens uit een lokaal bestand worden niet vanzelf gedeeld of gesynchroniseerd. Wie een bestand kopieert, deelt een losse kopie; wie de toepassing online wil aanbieden, heeft afhankelijk van het type bestand hosting en toestemming nodig. EAIgit voert die externe handeling niet uit.
+
+De EAIwork-achtige taakplanning blijft leeswerk zonder externe schrijfrechten. Alleen bij de keuze online aanbieden wordt publicatie als **nog niet goedgekeurde beslissing** opgenomen. Er zijn geen extra oefeningen of nieuwe verplichtingen voor bestaande ZIP- en GitHub-routes.
 
 ## Openbare toegang en ChatGPT-GitHub-koppeling
 
