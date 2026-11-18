@@ -151,6 +151,13 @@ export function helpPrompt(step,repositoryUrl="",intent="start",aim="",delivery=
   "Geef het volledige bestand of alleen de kleinste nodige aanpassing, met uitleg hoe ik het lokaal kan opslaan en testen.",
   "Voer geen onbekende software uit en publiceer niets zonder mijn toestemming. Verzin geen testresultaten."
  ].join("\n");
+ if(intent==="local"&&step.id==="unzip")return [
+  "Ik wil de bestanden in een ZIP lokaal op mijn apparaat gebruiken.",
+  "Mijn doel: "+(aim||"[beschrijf de gewenste functie]")+".",
+  "Leg uit hoe ik de ZIP uitpak en de benodigde bestanden samenhoud zonder GitHub.",
+  "Help me testen op het bedoelde apparaat, ook zonder internet. Controleer extra afhankelijkheden en maak geen schijnclaims.",
+  "Wijzig of publiceer niets zonder mijn toestemming."
+ ].join("\n");
  if(["create","unzip","upload","files","compare"].includes(step.id))
   return "Help me met deze stap in GitHub: "+step.title+".\nMijn situatie: "+step.description+"\nRepository: "+repo+"\nLeg alleen de volgende handeling uit, alsof ik GitHub nog niet ken. "+rules;
  if(["references","actions","try","publishing","repo"].includes(step.id))
