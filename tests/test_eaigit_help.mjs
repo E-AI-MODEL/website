@@ -148,5 +148,5 @@ test("Onzekere bronvergelijking krijgt geen volledig onderzocht-label",()=>{
  const item=work.observations.find(o=>o.id==="file-compare");
  assert.equal(item.state,"beperkt");
  assert.equal(work.partial,1);
- assert.match(item.detail,/1 kunnen niet inhoudelijk worden vergeleken/);
+ assert.match(item.detail,/van 1 bestand is niet vastgesteld of de inhoud gelijk is/);
 });
