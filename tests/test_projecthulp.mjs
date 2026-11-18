@@ -427,3 +427,32 @@ test("EAIgit zegt zonder projectbron niet dat bestanden zijn bekeken",()=>{
  const failed=primaryFinding({problems:[{title:"GitHub kon niet worden gecontroleerd",detail:"Repository niet gevonden",severity:"attention"}]},{repoError:"Repository niet gevonden"});
  assert.equal(failed.title,"GitHub kon niet worden gecontroleerd");
 });
+
+test("ZIP: statische lintachtige controles draaien lokaal en nemen concrete bronregels mee",async()=>{
+ const zip=makeZip([
+  ["mijnsite/index.html",'<!doctype html><html><head><meta name="viewport" content="width=device-width"></head><body><div id="bestaat"></div></body></html>'],
+  ["mijnsite/app.js",'const ongelukkig = ;\ndocument.getElementById("onbekend");']
+ ]);
+ const a=await analyzeArchive(fake(zip));
+ assert.equal(a.contentCheck.audit.checked.javascript,1);
+ assert.ok(a.contentCheck.findings.some(x=>x.type==="javascript-syntax"&&x.path==="app.js"&&x.line===1));
+ assert.ok(a.contentCheck.findings.some(x=>x.type==="dom-id-unseen"&&x.certainty==="review"));
+ assert.equal(a.contentCheck.audit.passed.javascript,0);
+});
+test("GitHub: openbare en hash-gecontroleerde JS-bestanden worden statisch geparseerd",async()=>{
+ const text="const x = ;",bytes=new TextEncoder().encode(text);
+ const sha=await gitBlobId(bytes);
+ assert.ok(sha);
+ const blob={content:Buffer.from(bytes).toString("base64"),encoding:"base64",size:bytes.length};
+ const fetcher=async url=>{
+  const content=url.includes("/git/blobs/")?blob:
+   url.includes("/git/trees/")?{sha:"tree",truncated:false,tree:[{type:"blob",path:"app.js",size:bytes.length,sha}]}:
+   {private:false,full_name:"u/r",default_branch:"main",html_url:"https://github.com/u/r"};
+  return new Response(JSON.stringify(content),{status:200});
+ };
+ const r=await fetchPublicRepo("https://github.com/u/r",fetcher);
+ assert.equal(r.readable,true);
+ assert.equal(r.contentCheck.audit.checked.javascript,1);
+ assert.ok(r.contentCheck.findings.some(x=>x.type==="javascript-syntax"&&x.path==="app.js"));
+ assert.equal(r.contentCheck.source,"github-public-blobs");
+});

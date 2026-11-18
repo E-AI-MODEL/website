@@ -289,6 +289,40 @@ try{
  assert.match(await page.locator("#guideDescription").innerText(),/private repository/i);
  assert((await page.locator("#routeList button").count())>=2);
  assert(await page.locator("#guideCheckDetails").evaluate(el=>el.open));
+ // Nieuwe controle: ZIP met ongeldige JavaScript-syntaxis leidt zonder AI naar
+ // een concrete vervolgstap, een echt bronregelnummer en een optionele prompt.
+ await page.setViewportSize({width:390,height:844});
+ await page.goto(base+"/tools/eaigit/");
+ await page.locator('[data-intent="repair"]').click();
+ await page.locator('[data-source="zip"]').click();
+ const brokenZip=zip([
+  ["probe/index.html",'<!doctype html><html><head><meta name="viewport" content="width=device-width"></head><body><div id="bestaand"></div></body></html>'],
+  ["probe/app.js","const kapot = ;"]
+ ]);
+ await page.locator("#zipFile").setInputFiles({name:"codecontrole.zip",mimeType:"application/zip",buffer:brokenZip});
+ await page.locator("#zipNext").click();
+ await page.locator("#aimSkip").click();
+ await page.locator("#stage-result:not(.eg-hidden)").waitFor({timeout:15000});
+ assert(await page.locator("#auditNext").isVisible(),"Gegronde vervolgstap ontbreekt");
+ assert.match(await page.locator("#auditNextTitle").innerText(),/JavaScript-syntaxis/);
+ assert.ok((await page.locator("#auditNextSource").innerText()).includes("app.js · regel 1"));
+ await page.locator("#issueDetails summary").click();
+ assert.match(await page.locator("#problemPoints").innerText(),/JavaScript-syntaxisfout/);
+ await page.locator("#workDetails summary").click();
+ assert.match(await page.locator("#workEvidence").innerText(),/JavaScript-syntaxis/);
+ assert.match(await page.locator("#workEvidence").innerText(),/Niet getest/);
+ await page.locator("#startGuidance").click();
+ assert.match(await page.locator("#guideTitle").innerText(),/JavaScript-syntaxis/);
+ assert.match(await page.locator("#guideReason").innerText(),/parser/);
+ assert.equal(await page.locator("#phasePrompts").getAttribute("href"),"/tools/eaigit/prompts/?taak=fix");
+ await page.locator("#promptDetails summary").click();
+ assert.ok((await page.locator("#stepPrompt").inputValue()).includes("app.js (regel 1)"));
+ assert.match(await page.locator("#stepPrompt").inputValue(),/toestemming/);
+ await page.locator("#copyPrompt").click();
+ assert.match(await page.locator("#copyStatus").innerText(),/Gekopieerd/);
+ assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2),"Codeadvies past niet op mobiel");
+ await page.screenshot({path:join(out,"eaigit-codecontrole-mobiel.png"),fullPage:true});
+ assert.equal(sent.filter(x=>x.method!=="GET").length,0,"Projectcode is nooit verstuurd of uitgevoerd");
  // Oude URL blijft werken, zonder de oude naam in de nieuwe UI.
  await page.goto(base+"/tools/projecthulp/");
  await page.waitForURL("**/tools/eaigit/");

@@ -2,6 +2,7 @@ import {analyzeArchive,fetchPublicRepo,makeAdvice,parseRepoUrl} from "../project
 import {makeGuidance} from "../projecthulp/begeleiding.mjs";
 import {buildJourney,primaryFinding,helpPrompt} from "./journey.mjs";
 import {buildLocalWorkPlan,reasonForStep} from "./work-plan.mjs";
+import {selectAuditAction} from "./audit-advice.mjs";
 import {getHelpTopic,getHelpForStep} from "./help-topics.mjs";
 
 const $=id=>document.getElementById(id);
@@ -101,7 +102,7 @@ function renderResult(){
   archive:state.archive,repo:state.repo
  });
  const g=makeGuidance({archive:state.archive,repo:state.repo,advice,
-  goal:state.goal,aim:state.aim,repoError:state.repoError});
+  goal:state.goal,aim:state.aim,repoError:state.repoError,intent:state.intent});
  state.guidance=g;
  const noSource=!state.archive&&!state.repo?.readable&&!state.repoError;
  const first=primaryFinding(g,{archive:state.archive,repo:state.repo,repoError:state.repoError});
@@ -120,7 +121,18 @@ function renderResult(){
  show("actionsLink",Boolean(g.actionsUrl));
  if(g.repoUrl)$("repoLink").href=g.repoUrl;
  if(g.actionsUrl)$("actionsLink").href=g.actionsUrl;
- state.steps=buildJourney({intent:state.intent,source:state.source,archive:state.archive,repo:state.repo,guidance:g,experience:state.experience});
+ state.auditAction=selectAuditAction({archive:state.archive,repo:state.repo});
+ // Een privacyblokkade gaat altijd vóór gewone syntax- of structuuradviezen.
+ show("auditNext",Boolean(state.auditAction)&&!state.archive?.secret?.length&&!g.problems.some(x=>x.severity==="stop"));
+ if(state.auditAction){
+  const a=state.auditAction;
+  label("auditNextTitle",a.title);
+  label("auditNextDescription",a.description);
+  label("auditNextSource",a.source+" · "+(a.path||"Projectstructuur")+(a.line?" · regel "+a.line:"")
+   +" · "+(a.certainty==="review"?"nog controleren":"statisch vastgesteld"));
+ }
+ state.steps=buildJourney({intent:state.intent,source:state.source,archive:state.archive,
+  repo:state.repo,guidance:g,experience:state.experience,auditAction:state.auditAction});
  state.stepIndex=0;
  state.completedSteps.clear();
  state.workPlan=buildLocalWorkPlan({
@@ -213,11 +225,11 @@ function renderGuide(){
  label("guideCounter","Stap "+(state.stepIndex+1)+" van "+state.steps.length);
  label("guideTitle",step.title);
  label("guideDescription",step.description);
- label("guideReason",reasonForStep(step,{archive:state.archive,repo:state.repo,guidance:state.guidance}));
- label("guideCheck",verifyStep(step));
+ label("guideReason",step.audit?.reason||reasonForStep(step,{archive:state.archive,repo:state.repo,guidance:state.guidance}));
+ label("guideCheck",step.audit?.verify||verifyStep(step));
  $("guideCheckDetails").open=state.experience==="compact";
  renderRoute();
- $("guideMore").dataset.help=getHelpForStep(step.id);
+ $("guideMore").dataset.help=step.audit?.helpId||getHelpForStep(step.id);
  show("createdRepoBox",step.id==="create");
  if(step.id==="create")$("createdRepoUrl").value=state.repoUrl||"";
  show("createdRepoError",false);
@@ -228,7 +240,8 @@ function renderGuide(){
   files:"repo-start",compare:"repo-start",private:"veiligheid",safe:"veiligheid",
   references:"fix",actions:"ci",try:"gebruikstest",publishing:"publiceer-plan"
  };
- $("phasePrompts").href="/tools/eaigit/prompts/?taak="+(selectedPrompts[step.id]||"begrijp");
+ $("phasePrompts").href="/tools/eaigit/prompts/?taak="+(step.audit?.promptId||selectedPrompts[step.id]||"begrijp");
+ show("phasePrompts",!step.audit);
  const prompt=helpPrompt(step,state.guidance?.repoUrl||"",state.intent);
  show("promptDetails",Boolean(prompt));
  $("promptDetails").open=false;
@@ -238,7 +251,7 @@ function renderGuide(){
  navigate("guide");
 }
 function reset(){
- state.intent=null;state.source=null;state.goal="code";state.zip=null;state.repoUrl="";state.archive=null;state.repo=null;state.repoError=null;state.aim="";state.guidance=null;state.steps=[];state.stepIndex=0;state.workPlan=null;state.completedSteps.clear();
+ state.intent=null;state.source=null;state.goal="code";state.zip=null;state.repoUrl="";state.archive=null;state.repo=null;state.repoError=null;state.aim="";state.guidance=null;state.steps=[];state.stepIndex=0;state.workPlan=null;state.auditAction=null;state.completedSteps.clear();
  $("zipFile").value="";label("zipFileName","Bestand kiezen");$("zipNext").disabled=true;
  $("repoUrl").value="";$("projectAim").value="";
  show("zipError",false);show("repoError",false);

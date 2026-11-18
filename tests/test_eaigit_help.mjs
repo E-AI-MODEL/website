@@ -24,7 +24,7 @@ test("Bronlinks voor GitHub en ChatGPT leiden naar officiële hulp of de dienst 
  for(const link of links){
   const url=new URL(link.url);
   assert.equal(url.protocol,"https:");
-  assert.ok(["docs.github.com","github.com","help.openai.com","chatgpt.com","codex.openai.com"].includes(url.hostname),url.hostname);
+  assert.ok(["docs.github.com","github.com","help.openai.com","chatgpt.com","codex.openai.com","developer.mozilla.org"].includes(url.hostname),url.hostname);
  }
  assert.match(HELP_TOPICS.plugins.intro,/plug-in/);
  assert.match(HELP_TOPICS.skills.intro,/skill/);

@@ -11,7 +11,7 @@ function repoLink(repo){
 function issue(title,detail,severity="attention",path=null,line=null){
  return {title,detail,severity,path,line};
 }
-export function makeGuidance({archive=null,repo=null,advice=null,goal="site",aim="",repoError=null}={}){
+export function makeGuidance({archive=null,repo=null,advice=null,goal="site",aim="",repoError=null,intent=null}={}){
  const good=[],problems=[],uncertain=[],next=[],reference=repoLink(repo);
  const purpose=goalName(goal);
  const goalTest=goalTestFromAim(aim,archive?.contentCheck?.signals||repo?.contentCheck?.signals);
@@ -45,9 +45,17 @@ export function makeGuidance({archive=null,repo=null,advice=null,goal="site",aim
  for(const [origin,check] of [["ZIP",archive?.contentCheck],["GitHub",repo?.contentCheck]]){
   for(const finding of check?.findings||[]){
    if(origin==="ZIP"&&finding.type==="missing-reference"&&archive?.missingReferences?.includes(finding.target))continue;
-   problems.push(issue(finding.title,origin+": "+finding.detail,"attention",finding.path,finding.line));
+   if(finding.certainty==="review"){
+    uncertain.push(origin+": "+finding.title+(finding.path?" ("+finding.path+(finding.line?":"+finding.line:"")+")":"")+". "+finding.detail);
+   }else problems.push(issue(finding.title,origin+": "+finding.detail,"attention",finding.path,finding.line));
   }
   if(check?.incomplete)uncertain.push(origin+": een deel van de bestanden is niet inhoudelijk onderzocht (grootte, formaat of limiet).");
+  if(check?.audit){
+   const a=check.audit,js=a.checked?.javascript||0,ok=a.passed?.javascript||0,skipped=a.skipped?.javascript?.length||0;
+   if(js)addGood(origin+": "+js+" JavaScript-bestand(en) met Acorn geparseerd, "+ok+" zonder syntaxisfout. De projectcode is niet uitgevoerd.");
+   if(a.checked?.html)addGood(origin+": "+a.checked.html+" HTML-bestand(en) statisch op IDs en elementen onderzocht.");
+   if(skipped)uncertain.push(origin+": "+skipped+" JavaScript/JSX/TypeScript-bestand(en) niet volledig op syntaxis gecontroleerd.");
+  }
  }
  if(goalTest){
   const hints=archive?.contentCheck?.features?.[goalTest.id]||repo?.contentCheck?.features?.[goalTest.id];
@@ -89,11 +97,15 @@ export function makeGuidance({archive=null,repo=null,advice=null,goal="site",aim
  if(goal==="site"&&archive&&!archive.project?.hasHtml)problems.push(issue("Startpagina niet vastgesteld","Er is geen herkenbaar HTML-bestand gevonden. Mogelijk moet dit project eerst gebouwd worden.","attention"));
  if(!good.length)good.push("We hebben nog te weinig gecontroleerde informatie om onderdelen als goed te beoordelen.");
  if(ci?.syntaxErrors?.length)uncertain.push("Andere code en functies zijn niet automatisch getest. De meldingen uit GitHub Actions gaan alleen over de aangewezen syntaxisfouten.");
+ else if((archive?.contentCheck?.audit?.checked?.javascript||0)+(repo?.contentCheck?.audit?.checked?.javascript||0)>0)
+  uncertain.push("Een lokale parser heeft de ondersteunde JavaScript-syntaxis onderzocht. Volledige ESLint, TypeScript, build, imports bij uitvoering en tests zijn niet gedraaid.");
  else uncertain.push("Codefouten zijn nog niet getest met een compiler of linter. We kunnen niet zeggen dat de code foutloos is.");
  uncertain.push("Logische fouten of ontbrekende werking kun je pas vaststellen met gerichte gebruikstests. We hebben de projectcode niet uitgevoerd.");
+ const syntaxProblem=problems.find(x=>x.title==="JavaScript-syntaxisfout");
  if(archive?.secret?.length)next.push("Bekijk de mogelijk vertrouwelijke bestanden op je eigen apparaat en bepaal wat openbaar mag worden.");
+ else if(syntaxProblem)next.push("Onderzoek de gemelde JavaScript-syntaxisfout in "+(syntaxProblem.path||"het bestand")+(syntaxProblem.line?" op regel "+syntaxProblem.line:"")+". Controleer het gewijzigde project daarna opnieuw.");
  else if(!archive&&!repo?.readable)next.push("Selecteer je ZIP-bestand zodat de projectbestanden kunnen worden onderzocht.");
- else if(!repo?.readable)next.push("Voeg de link naar je openbare GitHub-repository toe en controleer of de repository bereikbaar is.");
+ else if(!repo?.readable&&intent!=="repair"&&intent!=="explore")next.push("Voeg desgewenst een openbare GitHub-repository toe voor een vergelijking. Dit is niet nodig om je lokale ZIP te onderzoeken.");
  else if(problems.some(x=>x.title.includes("ZIP in GitHub")))next.push("Pak het ZIP-bestand op je eigen apparaat uit en voeg daarna de losse projectbestanden toe. GitHub pakt een geüpload ZIP niet automatisch uit.");
  else if(problems.some(x=>x.title==="Syntaxisfout bevestigd door GitHub Actions"))next.push("Open de gemelde syntaxisfout in GitHub, herstel deze en laat de GitHub Actions-controle opnieuw uitvoeren.");
  else if(problems.some(x=>x.title==="Ongeldige JSON"||x.title==="Lokaal bestand niet gevonden"||x.title==="ZIP en GitHub bevatten verschillende versies"))next.push("Bekijk de concrete fouten en verschillen bij het genoemde bestand en regelnummer. Verander niets voordat duidelijk is welke versie moet blijven.");

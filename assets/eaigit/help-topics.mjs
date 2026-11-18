@@ -23,16 +23,28 @@ export const HELP_TOPICS={
  skills:{title:"Wat is een skill?",intro:"Een skill is een herbruikbare werkwijze met instructies, voorbeelden of bestanden. Zo hoeft dezelfde uitleg niet steeds opnieuw.",steps:["Open in ChatGPT ‘Plug-ins’ en bekijk het tabblad ‘Vaardigheden’ als het beschikbaar is.","Een skill kan bijvoorbeeld altijd dezelfde kwaliteitscontrole of schrijfstijl toepassen.","Je hebt geen skill nodig voor één losse vraag of een enkele GitHub-upload.","Beschikbaarheid en installatie hangen af van je abonnement en werkruimte."],links:[{label:"Uitleg over Skills",url:"https://help.openai.com/nl-nl/articles/20001066-skills-in-chatgpt"}]},
  codex:{title:"Wat is Codex?",intro:"Codex kan in een daarvoor geschikte omgeving code wijzigen en wijzigingen voorbereiden.",steps:["Open codex.openai.com als jouw account toegang heeft.","Kies de repository en controleer welke machtigingen worden gevraagd.","Laat eerst onderzoeken of testen. Vraag daarna om een wijziging op een aparte branch.","Lees de voorgestelde wijzigingen en controleer de tests voordat je een pull request samenvoegt."],links:[{label:"Open Codex",url:"https://codex.openai.com/"},{label:"Codex en je abonnement",url:"https://help.openai.com/en/articles/11369540-using-codex-with-your-chatgpt-plan"}]},
  review:{title:"Wat is een pull request?",intro:"Met een pull request kun je wijzigingen beoordelen voordat ze onderdeel worden van de hoofdversie.",steps:["Laat de wijziging bij voorkeur in een aparte branch maken.","Bekijk welke bestanden veranderen en waarom.","Controleer wat de tests daadwerkelijk hebben gedaan.","Voeg pas samen na je eigen beoordeling."],links:[{label:"Wijzigingen beoordelen",url:"https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/reviewing-changes-in-pull-requests/about-pull-request-reviews"}]},
+ codecheck:{
+  title:"Wat heeft EAIgit in de code gecontroleerd?",
+  intro:"EAIgit leest JavaScript, HTML, JSON en bestandsverwijzingen, zonder de toepassing uit te voeren. Een fout is niet hetzelfde als een mislukte gebruikstest.",
+  steps:[
+   "Open de genoemde bestandsnaam en, waar beschikbaar, het regelnummer.",
+   "JavaScript-syntaxis is met een lokale parser gecontroleerd. Dit is geen volledige ESLint-controle. JSX en TypeScript vragen andere hulpmiddelen.",
+   "Controleer het verband tussen HTML-elementen, ID's en JavaScript. Dynamisch aangemaakte elementen zijn niet altijd zichtbaar in de broncode.",
+   "Herstel alleen de bedoelde fout en controleer daarna opnieuw. Test ook de werkelijke gebruikershandeling.",
+   "EAIgit past bestanden niet aan en voert geen npm-scripts of projectcode uit."
+  ],
+  links:[{label:"JavaScript syntax",url:"https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Errors"}]
+ },
 };
 export const HELP_CATEGORIES=[
  {id:"intake",title:"Eerst je situatie bepalen",topics:["goal","aim","findings"]},
  {id:"start",title:"Beginnen met GitHub",topics:["source","zip","unzip","repo","create","upload","files","private","safe"]},
- {id:"project",title:"Je project verbeteren",topics:["repoStep","actions","compare","references","try","review","publishing"]},
+ {id:"project",title:"Je project verbeteren",topics:["repoStep","actions","compare","references","codecheck","try","review","publishing"]},
  {id:"chatgpt",title:"ChatGPT en programmeren",topics:["chatgpt","plugins","skills","codex"]}
 ];
 export const HELP_BY_STEP={
  private:"private",safe:"safe",unzip:"unzip",create:"create",upload:"upload",files:"files",compare:"compare",
- references:"references",actions:"actions",repo:"repoStep",try:"try",publishing:"publishing",source:"source"
+ references:"references",audit:"codecheck",actions:"actions",repo:"repoStep",try:"try",publishing:"publishing",source:"source"
 };
 export function getHelpTopic(id){return HELP_TOPICS[id]||null;}
 export function getHelpForStep(stepId){return HELP_BY_STEP[stepId]||"goal";}
