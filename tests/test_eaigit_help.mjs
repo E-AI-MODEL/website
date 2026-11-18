@@ -159,6 +159,6 @@ test("Ervaren gebruiker krijgt andere, op bewijs gerichte handelingen",()=>{
  assert.deepEqual(guided.map(x=>x.id),compact.map(x=>x.id),"De veiligheidsroute mag niet veranderen");
  assert.notEqual(guided[0].description,compact[0].description);
  assert.match(compact[0].description,/projectroot|bronbestanden/);
- assert.match(compact.find(x=>x.id==="references").description,/1 lokale verwijzingen/);
+ assert.match(compact.find(x=>x.id==="references").description,/één lokale verwijzing/);
  assert.ok(guided[0].description.length>0);
 });
