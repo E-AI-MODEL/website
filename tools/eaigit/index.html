@@ -99,6 +99,12 @@
    <h3 id="resultHeading"></h3>
    <p id="resultDescription"></p>
   </div>
+  <section id="auditNext" class="eg-audit-next eg-hidden" aria-labelledby="auditNextTitle">
+   <p class="eg-kicker">Aanbevolen vervolgstap</p>
+   <h3 id="auditNextTitle"></h3>
+   <p id="auditNextDescription"></p>
+   <p id="auditNextSource" class="eg-audit-next-source"></p>
+  </section>
   <button id="startGuidance" class="eg-primary eg-wide" type="button">Ga verder met mijn project <span aria-hidden="true">→</span></button>
   <section class="eg-work-summary" aria-label="Onderzoeksstatus">
    <p id="workSummary" class="eg-work-summary-text"></p>
@@ -141,7 +147,7 @@
   <a id="guideLink" class="eg-primary eg-action-link eg-hidden" target="_blank" rel="noopener noreferrer">Open GitHub <span aria-hidden="true">↗</span></a>
   
   <details class="eg-disclosure eg-prompt-details eg-hidden" id="promptDetails">
-   <summary>Laat ChatGPT helpen met deze stap</summary>
+   <summary>Optioneel: gerichte opdracht voor AI</summary>
    <p>Je kunt deze opdracht kopiëren. Laat wijzigingen altijd eerst controleren.</p>
    <textarea id="stepPrompt" class="eg-input eg-textarea" rows="5" readonly></textarea>
    <button id="copyPrompt" class="eg-secondary" type="button">Kopieer opdracht</button>
