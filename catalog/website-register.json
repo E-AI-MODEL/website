@@ -1233,7 +1233,7 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/",
       "family": "hulpmiddelen",
-      "in_committed_sitemap": false,
+      "in_committed_sitemap": true,
       "search_scope": "algemeen"
     },
     {
@@ -1246,7 +1246,7 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/eaigit/",
       "family": "hulpmiddelen",
-      "in_committed_sitemap": false,
+      "in_committed_sitemap": true,
       "search_scope": "algemeen"
     },
     {
@@ -1259,7 +1259,7 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/eaigit/",
       "family": "hulpmiddelen",
-      "in_committed_sitemap": false,
+      "in_committed_sitemap": true,
       "search_scope": "algemeen"
     },
     {
@@ -7114,8 +7114,8 @@
     },
     "sitemap_from_main": {
       "source": "sitemap.xml",
-      "registered_urls": 145,
-      "registered_missing": 34,
+      "registered_urls": 148,
+      "registered_missing": 31,
       "examples_not_in_sitemap": [
         "/eai-blog/",
         "/eai-blog/eai-balans/",
@@ -7144,9 +7144,6 @@
         "/onderwijsin/houseoftalents/3d/",
         "/toepassingen/onderwijsregio-rotterdam/",
         "/toepassingen/saga-legal-ai/",
-        "/tools/eaigit/",
-        "/tools/eaigit/hulp/",
-        "/tools/eaigit/prompts/",
         "/tools/lo-aanvalslab/onderbouwing/",
         "/tools/projecthulp/",
         "/tools/science-observatory/labs/schuine-worp/",

@@ -162,3 +162,46 @@ test("Ervaren gebruiker krijgt andere, op bewijs gerichte handelingen",()=>{
  assert.match(compact.find(x=>x.id==="references").description,/één lokale verwijzing/);
  assert.ok(guided[0].description.length>0);
 });
+
+
+test("GitHub koppelen is optioneel, met controleerbare en voorzichtige abonnementsuitleg",()=>{
+ const help=readFileSync(new URL("../tools/eaigit/hulp/index.html",import.meta.url),"utf8");
+ assert.match(help,/<details class="eg-help-group eg-connection-guide" id="githubConnect">/);
+ assert.doesNotMatch(help,/<details class="eg-help-group eg-connection-guide" id="githubConnect" open/);
+ assert.match(help,/Instellingen → Plug-ins/);
+ assert.match(HELP_TOPICS.koppelen.intro,/ChatGPT/);
+ assert.match(HELP_TOPICS.abonnement.intro,/geen ChatGPT-abonnement/);
+ assert.match(HELP_TOPICS.abonnement.steps.join(" "),/werkruimte/);
+ assert.doesNotMatch(HELP_TOPICS.abonnement.steps.join(" "),/minimaal Plus|Free en Go zijn plug-inextensies niet beschikbaar/);
+ assert.ok(HELP_CATEGORIES.find(g=>g.id==="chatgpt").topics.includes("koppelen"));
+ assert.ok(HELP_CATEGORIES.find(g=>g.id==="chatgpt").topics.includes("abonnement"));
+});
+
+test("Optionele technische details blijven standaard dicht, ook voor ervaren gebruikers",()=>{
+ const code=readFileSync(new URL("../assets/eaigit/wizard.mjs",import.meta.url),"utf8");
+ for(const id of ["workDetails","routeDetails","guideCheckDetails"]){
+  assert.ok(code.includes('$("'+id+'").open=false;'),id+" moet standaard dicht");
+ }
+ assert.doesNotMatch(code,/\.open=state\.experience==="compact"/);
+ const wizard=readFileSync(new URL("../tools/eaigit/index.html",import.meta.url),"utf8");
+ assert.match(wizard,/<details id="routeDetails"/);
+ assert.match(wizard,/<details\b[^>]*id="guideCheckDetails"/);
+});
+
+test("Drie openbare EAIgit-pagina's zijn indexeerbaar en hebben correcte sitemap en canonical",()=>{
+ const routes=["/tools/eaigit/","/tools/eaigit/hulp/","/tools/eaigit/prompts/"];
+ const files=["../tools/eaigit/index.html","../tools/eaigit/hulp/index.html","../tools/eaigit/prompts/index.html"];
+ const sitemap=readFileSync(new URL("../sitemap.xml",import.meta.url),"utf8");
+ const generator=readFileSync(new URL("../scripts/build_site.py",import.meta.url),"utf8");
+ const register=JSON.parse(readFileSync(new URL("../catalog/website-register.json",import.meta.url),"utf8"));
+ for(let i=0;i<routes.length;i++){
+  const html=readFileSync(new URL(files[i],import.meta.url),"utf8");
+  const url="https://eaimodel.nl"+routes[i];
+  assert.match(html,/<meta name="robots" content="index,follow">/);
+  assert.ok(html.includes('<link rel="canonical" href="'+url+'">'));
+  assert.doesNotMatch(html,/noindex|nofollow/i);
+  assert.equal(sitemap.split("<loc>"+url+"</loc>").length-1,1);
+  assert.equal(register.pages.find(p=>p.url===routes[i])?.in_committed_sitemap,true);
+ }
+ assert.ok(generator.includes('urls.extend(["/tools/eaigit/", "/tools/eaigit/hulp/", "/tools/eaigit/prompts/"])'));
+});

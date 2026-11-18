@@ -153,3 +153,11 @@ body.eg-reference-page:not(.eg-prompt-dashboard){
  }
  .eg-reference-page:not(.eg-prompt-dashboard) .eg-tool-cards article{padding:19px}
 }
+
+/* Extra koppelhandleiding staat standaard ingeklapt en vraagt geen invoer. */
+.eg-connection-guide{margin-top:-20px;margin-bottom:38px}
+.eg-connection-guide>summary{cursor:pointer;color:#2e505b;font-size:14px;font-weight:650;line-height:1.55}
+.eg-connection-guide>summary:hover{color:#167395}
+.eg-connection-guide[open]>summary{margin-bottom:14px}
+.eg-connection-guide .eg-help-content{padding:0;max-width:830px}
+.eg-connection-guide .eg-help-content strong{color:#335963}

@@ -97,7 +97,8 @@ test("Downloads zijn voorstellen, geen valse documentatie",()=>{
 test("Websitepagina bevat toegankelijke route, geen serverupload of AI",()=>{
  const html=readFileSync(new URL("../tools/eaigit/index.html",import.meta.url),"utf8");
  const app=readFileSync(new URL("../assets/eaigit/wizard.mjs",import.meta.url),"utf8");
- assert.match(html,/name="robots" content="noindex,nofollow"/);
+ assert.match(html,/name="robots" content="index,follow"/);
+ assert.match(html,/<link rel="canonical" href="https:\/\/eaimodel\.nl\/tools\/eaigit\/">/);
  assert.match(html,/class="eaigit-wizard/);
  assert.match(html,/type="file"/);
  assert.match(html,/assets\/eaigit\/wizard\.mjs/);

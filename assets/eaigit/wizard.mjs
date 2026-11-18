@@ -183,7 +183,7 @@ function showWorkEvidence(work){
  label("workSummary",found||partial
   ?found+" onderdelen onderzocht"+(partial?", "+partial+" met beperkingen":"")+". De werking van het project is nog niet getest."
   :"Er is nog geen volledige broncontrole uitgevoerd. De werking is niet getest.");
- $("workDetails").open=state.experience==="compact";
+ $("workDetails").open=false;
 }
 function verifyStep(step){
  switch(step.id){
@@ -217,7 +217,7 @@ function renderRoute(){
   }
   list.append(li);
  }
- $("routeDetails").open=state.experience==="compact";
+ $("routeDetails").open=false;
 }
 function renderGuide(){
  const step=state.steps[state.stepIndex];
@@ -227,7 +227,7 @@ function renderGuide(){
  label("guideDescription",step.description);
  label("guideReason",step.audit?.reason||reasonForStep(step,{archive:state.archive,repo:state.repo,guidance:state.guidance}));
  label("guideCheck",step.audit?.verify||verifyStep(step));
- $("guideCheckDetails").open=state.experience==="compact";
+ $("guideCheckDetails").open=false;
  renderRoute();
  $("guideMore").dataset.help=step.audit?.helpId||getHelpForStep(step.id);
  show("createdRepoBox",step.id==="create");
