@@ -49,7 +49,7 @@ export function buildLocalWorkPlan({
  if(wantsZip&&wantsRepo){
   checks.push(task("file-compare","ZIP en GitHub vergelijken","file-compare",sourceIds));
   const c=advice?.comparison;
-  observations.push(evidence("file-compare","Bronnen vergelijken",hasZip&&hasRepo&&c?"gevonden":"niet-onderzocht",
+  observations.push(evidence("file-compare","Bronnen vergelijken",hasZip&&hasRepo&&c?(c.unknown.length||repo?.truncated?"beperkt":"gevonden"):"niet-onderzocht",
    hasZip&&hasRepo&&c
     ?count(c.missingCount,"bestand ontbreekt","bestanden ontbreken")+" op dezelfde plek; "+count(c.changed.length,"bestand wijkt","bestanden wijken")+" aantoonbaar af; van "+count(c.unknown.length,"bestand","bestanden")+" is niet vastgesteld of de inhoud gelijk is."
     :"Voor een vergelijking zijn beide bronnen nodig."));
@@ -85,6 +85,7 @@ export function buildLocalWorkPlan({
  return {
   plan,observations,pendingDecisions,
   investigated:observations.filter(o=>o.state==="gevonden").length,
+  partial:observations.filter(o=>o.state==="beperkt").length,
   notTested:observations.filter(o=>["niet-onderzocht","niet-getest"].includes(o.state)).length,
   proposedSteps:steps.length, aiRequired:false,mode:"read-only",
   explanation:"EAIgit gebruikt lokaal uitgevoerde browsercontroles en EAIwork-taakafhankelijkheden. EAIwork-workers zijn hier niet gestart."
