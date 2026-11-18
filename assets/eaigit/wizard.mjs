@@ -43,7 +43,7 @@ function navigate(target){
  label("progressStep",target==="guide"?"Stap "+(state.stepIndex+1)+" van "+state.steps.length:
   target==="finished"?"Klaar":"Stap "+Math.max(1,Math.min(index+1,total))+" van "+total);
  label("progressLabel",target==="guide"?"Aan de slag":target==="finished"?"Afronden":({intent:"Jouw vraag",source:"Je bestanden",file:"Je bestand",zip:"Je ZIP",repo:"Je repository",aim:"Je doel",result:"Je advies"}[target]||"EAIgit"));
- if(target==="aim")show("deliveryChoices",state.intent==="local"||state.source==="file");
+ if(target==="aim")show("deliveryChoices",state.intent==="local"||(state.source==="file"&&["repair","explore"].includes(state.intent)));
  document.body.classList.toggle("eg-is-result",["result","guide","finished"].includes(target));
  const heading=$("stage-"+target).querySelector("h1,h2");
  heading?.setAttribute("tabindex","-1");
