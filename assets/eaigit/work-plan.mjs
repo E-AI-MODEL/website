@@ -7,6 +7,7 @@ const task=(id,title,taskKind,dependsOn=[],effect="local")=>({
 });
 const evidence=(id,title,state,detail)=>({id,title,state,detail});
 const plain=(value)=>String(value||"").replace(/[\r\n\t]/g," ").slice(0,240);
+const count=(number,singular,plural)=>number+" "+(number===1?singular:plural);
 export function buildLocalWorkPlan({
  intent="explore",source="unknown",archive=null,repo=null,repoError=null,
  advice=null,aim="",steps=[]
@@ -25,12 +26,12 @@ export function buildLocalWorkPlan({
  if(wantsZip){
   inputs.push(task("zip-source","ZIP-bestand onderzoeken","zip-inspect"));
   observations.push(evidence("zip-source","ZIP-bestand",hasZip?"gevonden":"niet-onderzocht",
-   hasZip?archive.eligible.length+" mogelijke projectbestanden lokaal geïnventariseerd; projectcode is niet uitgevoerd.":"Er is geen ZIP-bestand onderzocht."));
+   hasZip?count(archive.eligible.length,"mogelijk projectbestand","mogelijke projectbestanden")+" lokaal geïnventariseerd. Projectcode is niet uitgevoerd.":"Er is geen ZIP-bestand onderzocht."));
  }
  if(wantsRepo){
   inputs.push(task("github-source","Openbare GitHub-repository lezen","github-read"));
   observations.push(evidence("github-source","GitHub",hasRepo?"gevonden":"niet-onderzocht",
-   hasRepo?repo.paths.length+" bestandspaden in de openbare repository gelezen.":plain(repoError)||"GitHub is niet of niet volledig uitgelezen."));
+   hasRepo?count(repo.paths.length,"bestandspad","bestandspaden")+" in de openbare repository gelezen.":plain(repoError)||"GitHub is niet of niet volledig uitgelezen."));
  }
  if(!inputs.length){
   inputs.push(task("find-source","Vind de projectbestanden","source-locate"));
@@ -43,21 +44,21 @@ export function buildLocalWorkPlan({
   checks.push(task("text-review","Bestandstekst en verwijzingen onderzoeken","static-file-review",sourceIds));
   const checked=Number(archive?.contentCheck?.checkedFiles||0)+Number(repo?.contentCheck?.checkedFiles||0);
   observations.push(evidence("text-review","Inhoud en verwijzingen",checked?"gevonden":"beperkt",
-   checked?checked+" leesbare bronbestanden statisch gecontroleerd. De toepassing is niet gestart.":"Er zijn nog geen leesbare bronbestanden inhoudelijk gecontroleerd."));
+   checked?count(checked,"leesbaar bronbestand","leesbare bronbestanden")+" statisch gecontroleerd. De toepassing is niet gestart.":"Er zijn nog geen leesbare bronbestanden inhoudelijk gecontroleerd."));
  }
  if(wantsZip&&wantsRepo){
   checks.push(task("file-compare","ZIP en GitHub vergelijken","file-compare",sourceIds));
   const c=advice?.comparison;
   observations.push(evidence("file-compare","Bronnen vergelijken",hasZip&&hasRepo&&c?"gevonden":"niet-onderzocht",
    hasZip&&hasRepo&&c
-    ?c.missingCount+" ontbreken op dezelfde plek, "+c.changed.length+" verschillen aantoonbaar, "+c.unknown.length+" kunnen niet inhoudelijk worden vergeleken."
+    ?count(c.missingCount,"bestand ontbreekt","bestanden ontbreken")+" op dezelfde plek; "+count(c.changed.length,"bestand wijkt","bestanden wijken")+" aantoonbaar af; van "+count(c.unknown.length,"bestand","bestanden")+" is niet vastgesteld of de inhoud gelijk is."
     :"Voor een vergelijking zijn beide bronnen nodig."));
  }
  add("phase-inspect","Onderzoek",checks);
  const adviceTask=task("guided-next","Bepaal de volgende handeling","deterministic-guidance",checks.length?checks.map(t=>t.id):sourceIds);
  add("phase-guidance","Begeleiding",[adviceTask]);
  observations.push(evidence("guided-next","Vervolgroute","voorgesteld",
-  (steps.length||0)+" mogelijke vervolgstappen uit de gekozen route en beschikbare brongegevens. Geen van deze stappen is uitgevoerd."));
+  count(steps.length||0,"vervolgstap","vervolgstappen")+" voorgesteld op basis van je vraag en de beschikbare gegevens. Geen daarvan is uitgevoerd."));
  // Toestemming kan hier niet zijn gegeven. Externe handelingen staan daarom
  // uitdrukkelijk BUITEN het EAIwork-taakplan. De gebruiker ziet slechts voorstellen.
  const pendingDecisions=[];
@@ -141,14 +142,18 @@ export function validateLocalWorkPlan(plan){
 export function reasonForStep(step,{archive=null,repo=null,guidance=null}={}){
  const id=step?.id;
  if(id==="source")return "Er zijn nog geen projectbestanden onderzocht.";
- if(["private","safe"].includes(id))return "Er zijn "+(archive?.secret?.length||0)+" namen aangetroffen die mogelijk vertrouwelijk zijn. Controleer ze zelf voordat je iets deelt.";
+ if(["private","safe"].includes(id)){
+  const n=archive?.secret?.length||0;
+  return n===1?"EAIgit vond één bestandsnaam die op privégegevens kan wijzen. Controleer dit bestand voordat je iets deelt.":
+   "EAIgit vond "+count(n,"bestandsnaam","bestandsnamen")+" die op privégegevens kunnen wijzen. Controleer deze bestanden voordat je iets deelt.";
+ }
  if(id==="references"){
   const found=(guidance?.problems||[]).find(p=>/verwijzingen|ontbrekende bestanden/i.test(p.title));
   return found?plain(found.detail):"Een verwijzing kan naar een ontbrekend bestand wijzen. Controleer het precieze pad.";
  }
  if(["unzip","create","upload","files","compare"].includes(id))
   return archive?.eligible?.length
-   ?archive.eligible.length+" mogelijke projectbestanden gevonden in de ZIP. Dit zegt niets over hun werking."
+   ?count(archive.eligible.length,"mogelijk projectbestand","mogelijke projectbestanden")+" gevonden in de ZIP. Dit zegt niets over de werking."
    :repo?.readable?"De openbare GitHub-bestandslijst is gelezen. Er is geen ZIP onderzocht.":"We hebben nog geen volledig project kunnen vergelijken.";
  if(id==="actions"||id==="repo")return repo?.readable?"De repository is bereikbaar. De inhoud en werking zijn niet automatisch volledig getest.":"De repository is nog niet gecontroleerd.";
  if(id==="try")return "Er is geen werkende gebruikersroute getest. De gevonden code is hiervoor geen bewijs.";
