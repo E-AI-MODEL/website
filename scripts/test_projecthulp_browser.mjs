@@ -306,6 +306,7 @@ try{
  assert(await page.locator("#auditNext").isVisible(),"Gegronde vervolgstap ontbreekt");
  assert.match(await page.locator("#auditNextTitle").innerText(),/JavaScript-syntaxis/);
  assert.ok((await page.locator("#auditNextSource").innerText()).includes("app.js · regel 1"));
+ await page.locator("#issueDetails summary").click();
  assert.match(await page.locator("#problemPoints").innerText(),/JavaScript-syntaxisfout/);
  await page.locator("#workDetails summary").click();
  assert.match(await page.locator("#workEvidence").innerText(),/JavaScript-syntaxis/);
