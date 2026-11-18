@@ -61,7 +61,7 @@ Een productregel die voorschrijft dat schrijven apart akkoord vereist, is **niet
 
 ## Openbare toegang en ChatGPT-GitHub-koppeling
 
-De drie openbare EAIgit-pagina's (`/tools/eaigit/`, `/hulp/` en `/prompts/`) zijn indexeerbaar, hebben een eigen canonical-URL en staan in de gegenereerde en gecommitte sitemap. Dit geldt uitsluitend voor deze drie pagina's. `/tools/projecthulp/` blijft buiten de publieke sitemap. De publieke indexering zegt niets over de technische werking of de veiligheid van een geüpload project.
+De drie openbare EAIgit-pagina's (`/tools/eaigit/`, `/hulp/` en `/prompts/`) zijn indexeerbaar, hebben een eigen canonical-URL en staan in de gegenereerde en gecommitte sitemap. De websitebouwer sluit deze routes uit van Cloudflare Web Analytics en de eigen bezoekersmeting. De gemaakte analyses blijven in de browser en genereren geen meetverzoeken met projectgegevens. Dit geldt uitsluitend voor deze drie pagina's. `/tools/projecthulp/` blijft buiten de publieke sitemap. De publieke indexering zegt niets over de technische werking of de veiligheid van een geüpload project.
 
 De eenvoudige ZIP- en openbare-repositorycontrole werkt zonder ChatGPT-account of abonnement. **ChatGPT en GitHub verbinden is optioneel.** De uitklapbare uitleg toont de route via Instellingen > Plug-ins, het beperken van toegestane GitHub-repositories en de grens tussen lezen met de GitHub-koppeling en wijzigingen via Codex of een andere schrijfgemachtigde omgeving. Plug-in- en Codex-beschikbaarheid moet worden gecontroleerd per account en werkruimte. Er is geen onveranderlijk minimumabonnement dat voor alle gebruikers is gegarandeerd. Verwijs voor actuele eisen naar de officiële OpenAI-hulp.
 
