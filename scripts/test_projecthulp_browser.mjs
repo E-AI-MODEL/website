@@ -297,7 +297,7 @@ try{
  await page.locator('[data-source="zip"]').click();
  const brokenZip=zip([
   ["probe/index.html",'<!doctype html><html><head><meta name="viewport" content="width=device-width"></head><body><div id="bestaand"></div></body></html>'],
-  ["probe/app.js",'const kapot = ;\\ndocument.getElementById("later");'.replace("\\\\n","\\n")]
+  ["probe/app.js","const kapot = ;"]
  ]);
  await page.locator("#zipFile").setInputFiles({name:"codecontrole.zip",mimeType:"application/zip",buffer:brokenZip});
  await page.locator("#zipNext").click();
