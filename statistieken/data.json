@@ -1,19 +1,14 @@
 {
   "schema": 1,
   "source": "Cloudflare Web Analytics (RUM)",
-  "updated_at": "2026-11-17T21:02:52+00:00",
+  "updated_at": "2026-11-18T07:40:36+00:00",
   "period": {
-    "from": "2026-10-19",
-    "through": "2026-11-17"
+    "from": "2026-10-20",
+    "through": "2026-11-18"
   },
-  "views": 210,
-  "visits": 110,
+  "views": 230,
+  "visits": 130,
   "daily": [
-    {
-      "date": "2026-10-19",
-      "views": 0,
-      "visits": 0
-    },
     {
       "date": "2026-10-20",
       "views": 0,
@@ -156,20 +151,25 @@
     },
     {
       "date": "2026-11-17",
-      "views": 50,
-      "visits": 50
+      "views": 60,
+      "visits": 60
+    },
+    {
+      "date": "2026-11-18",
+      "views": 10,
+      "visits": 10
     }
   ],
   "pages": [
     {
       "path": "/nl/model-monitor/",
-      "views": 50,
-      "visits": 40
+      "views": 60,
+      "visits": 50
     },
     {
       "path": "/",
-      "views": 40,
-      "visits": 40
+      "views": 50,
+      "visits": 50
     },
     {
       "path": "/nl/tools/",
