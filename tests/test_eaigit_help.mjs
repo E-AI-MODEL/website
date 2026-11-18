@@ -116,21 +116,25 @@ test("Een ZIP en openbare repository leveren brongebonden, maar geen bewezen geb
  assert.equal(work.observations.find(x=>x.id==="file-compare").state,"gevonden");
  assert.equal(work.observations.find(x=>x.id==="user-test").state,"niet-getest");
  assert.equal(work.observations.find(x=>x.id==="write").state,"toestemming-nodig");
- assert.equal(work.plan.tasks.find(x=>x.id==="write").effect,"external-write");
+ assert.deepEqual(work.pendingDecisions.map(x=>x.effect),["external-write"]);
+ assert.equal(work.pendingDecisions[0].approved,false);
+ assert.ok(work.plan.tasks.every(x=>x.effect==="local"));
+ assert.equal(work.plan.sourceInstruction,"Controleer de oefening");
  assert.equal(validateLocalWorkPlan(work.plan),true);
  assert.match(reasonForStep({id:"try"}),/geen werkende gebruikersroute getest/);
 });
-test("EAIwork-achtige plancontrole weigert ontbrekende toestemmingen en cirkels",()=>{
+test("EAIwork-plan is veilig: publiceren is slechts een voorstel, nooit een taak",()=>{
  const archive={eligible:["index.html"],contentCheck:{checkedFiles:1}};
  const work=buildLocalWorkPlan({intent:"publish",source:"zip",archive,steps:[{id:"publishing"}]});
- assert.equal(work.plan.tasks.find(x=>x.id==="publish").effect,"publish");
+ assert.deepEqual(work.pendingDecisions.map(x=>x.effect),["publish"]);
+ assert.equal(work.pendingDecisions[0].approved,false);
+ assert.ok(work.plan.tasks.every(x=>x.effect==="local"));
+ assert.equal(work.plan.sourceInstruction,undefined,"Verzin geen gebruikersopdracht");
  assert.equal(work.observations.find(x=>x.id==="publish").state,"toestemming-nodig");
- assert.ok(work.plan.constraints[0].quote.includes("Publiceer"));
  assert.equal(validateLocalWorkPlan(work.plan),true);
- const missingGate=structuredClone(work.plan);missingGate.constraints=[];
- assert.throws(()=>validateLocalWorkPlan(missingGate),/zonder toestemming/);
- const changedQuote=structuredClone(work.plan);changedQuote.constraints[0].quote="Goedgekeurd";
- assert.throws(()=>validateLocalWorkPlan(changedQuote),/niet herleidbaar/);
+ const illegalWrite=structuredClone(work.plan);
+ illegalWrite.tasks[0].effect="publish";
+ assert.throws(()=>validateLocalWorkPlan(illegalWrite),/zonder toestemming/);
  const cycle=structuredClone(work.plan);
  cycle.tasks[0].dependsOn=["user-test"];
  assert.throws(()=>validateLocalWorkPlan(cycle),/afhankelijkheid|Cirkel/);
