@@ -98,7 +98,7 @@ try{
  await page.locator("#guideTrouble").click();
  assert(await page.locator("#helpDialog").evaluate(el=>el.open));
  await page.locator("#helpClose").click();
- assert.equal(await page.locator("#phasePrompts").getAttribute("href"),"/tools/eaigit/prompts/?fase=controleren");
+ assert.equal(await page.locator("#phasePrompts").getAttribute("href"),"/tools/eaigit/prompts/?taak=veiligheid");
  await page.locator("#guideMore").click();
  assert(await page.locator("#helpDialog").evaluate(el=>el.open));
  assert.match(await page.locator("#helpTitle").innerText(),/privé blijven/);
@@ -173,6 +173,8 @@ try{
  await page.locator("#guideNext").click();
  assert.match(await page.locator("#guideTitle").innerText(),/repository/);
  assert(await page.locator("#createdRepoBox").isVisible());
+ await page.locator("#guideNext").click();
+ assert.match(await page.locator("#createdRepoError").innerText(),/Plak eerst de link/);
  await page.locator("#createdRepoUrl").fill("not-a-repo");
  await page.locator("#guideNext").click();
  assert.match(await page.locator("#createdRepoError").innerText(),/repositorylink/);
