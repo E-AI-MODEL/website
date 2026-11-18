@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import {readFileSync} from "node:fs";
 import {HELP_TOPICS,HELP_CATEGORIES,HELP_BY_STEP} from "../assets/eaigit/help-topics.mjs";
 import {PROMPT_LIBRARY,PROMPT_PHASES,promptsForPhase,fillPrompt} from "../assets/eaigit/prompts-data.mjs";
+import {buildLocalWorkPlan,validateLocalWorkPlan,reasonForStep} from "../assets/eaigit/work-plan.mjs";
 
 test("Bij iedere wizardvraag hoort relevante hulp met handelingen",()=>{
  for(const id of ["goal","source","zip","repo","aim","findings"]){
@@ -71,4 +72,66 @@ test("Hulppagina en prompts zijn aparte toegankelijke routes",()=>{
  assert.match(wizard,/href="\/tools\/eaigit\/hulp\//);
  assert.match(wizard,/href="\/tools\/eaigit\/prompts\//);
  assert.doesNotMatch(wizard,/Pieter|redeneringssporen|chain.of.thought/);
+});
+
+test("EAIgit heeft één eigen logo en een heldere route op alle pagina's",()=>{
+ const pages=["../tools/eaigit/index.html","../tools/eaigit/hulp/index.html","../tools/eaigit/prompts/index.html"];
+ for(const path of pages){
+  const html=readFileSync(new URL(path,import.meta.url),"utf8");
+  assert.match(html,/src="\/assets\/eaigit\/logo\.svg" alt="EAIgit"/);
+  assert.equal((html.match(/<img\b/g)||[]).length,1,path);
+  assert.doesNotMatch(html,/eg-dashboard-homebrand|eg-dashboard-symbol/);
+ }
+ const start=readFileSync(new URL(pages[0],import.meta.url),"utf8");
+ assert.match(start,/data-experience="guided"/);
+ assert.match(start,/data-experience="compact"/);
+ for(const id of ["workSummary","workEvidence","guideReason","guideCheck","routeList","guideTrouble","finishStatus"])
+  assert.match(start,new RegExp('id="'+id+'"'));
+ const prompts=readFileSync(new URL(pages[2],import.meta.url),"utf8");
+ assert.match(prompts,/data-suggest="fix"/);
+ assert.match(prompts,/id="projectSettings"/);
+ assert.doesNotMatch(prompts,/Vul deze gegevens één keer in/);
+});
+test("Zonder projectbron kan EAIgit geen werkend project claimen",()=>{
+ const work=buildLocalWorkPlan({source:"unknown",intent:"explore",steps:[{id:"source"}]});
+ assert.equal(work.aiRequired,false);
+ assert.equal(work.mode,"read-only");
+ assert.equal(work.investigated,0);
+ assert.equal(work.observations.find(x=>x.id==="find-source").state,"niet-onderzocht");
+ assert.equal(work.observations.find(x=>x.id==="user-test").state,"niet-getest");
+ assert.equal(work.observations.find(x=>x.id==="guided-next").state,"voorgesteld");
+ assert.equal(validateLocalWorkPlan(work.plan),true);
+ assert.equal(work.plan.tasks.filter(x=>x.effect!=="local").length,0);
+});
+test("Een ZIP en openbare repository leveren brongebonden, maar geen bewezen gebruikstest op",()=>{
+ const archive={eligible:["index.html","app.js"],contentCheck:{checkedFiles:2},secret:[]};
+ const repo={readable:true,paths:["index.html","app.js"]};
+ const advice={comparison:{missingCount:0,changed:[],unknown:[]}};
+ const work=buildLocalWorkPlan({
+  intent:"repair",source:"both",archive,repo,advice,
+  aim:"Controleer de oefening",steps:[{id:"try"},{id:"compare"}]
+ });
+ assert.equal(work.investigated,4);
+ assert.equal(work.proposedSteps,2);
+ assert.equal(work.observations.find(x=>x.id==="file-compare").state,"gevonden");
+ assert.equal(work.observations.find(x=>x.id==="user-test").state,"niet-getest");
+ assert.equal(work.observations.find(x=>x.id==="write").state,"toestemming-nodig");
+ assert.equal(work.plan.tasks.find(x=>x.id==="write").effect,"external-write");
+ assert.equal(validateLocalWorkPlan(work.plan),true);
+ assert.match(reasonForStep({id:"try"}),/geen werkende gebruikersroute getest/);
+});
+test("EAIwork-achtige plancontrole weigert ontbrekende toestemmingen en cirkels",()=>{
+ const archive={eligible:["index.html"],contentCheck:{checkedFiles:1}};
+ const work=buildLocalWorkPlan({intent:"publish",source:"zip",archive,steps:[{id:"publishing"}]});
+ assert.equal(work.plan.tasks.find(x=>x.id==="publish").effect,"publish");
+ assert.equal(work.observations.find(x=>x.id==="publish").state,"toestemming-nodig");
+ assert.ok(work.plan.constraints[0].quote.includes("Publiceer"));
+ assert.equal(validateLocalWorkPlan(work.plan),true);
+ const missingGate=structuredClone(work.plan);missingGate.constraints=[];
+ assert.throws(()=>validateLocalWorkPlan(missingGate),/zonder toestemming/);
+ const changedQuote=structuredClone(work.plan);changedQuote.constraints[0].quote="Goedgekeurd";
+ assert.throws(()=>validateLocalWorkPlan(changedQuote),/niet herleidbaar/);
+ const cycle=structuredClone(work.plan);
+ cycle.tasks[0].dependsOn=["user-test"];
+ assert.throws(()=>validateLocalWorkPlan(cycle),/afhankelijkheid|Cirkel/);
 });
