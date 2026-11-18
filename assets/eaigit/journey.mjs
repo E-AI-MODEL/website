@@ -18,7 +18,14 @@ export function buildJourney({intent="start",source="zip",archive=null,repo=null
   add("files","Zet de losse bestanden in GitHub","Open je repository. Kies 'Add file' en daarna 'Upload files'. Voeg de projectbestanden toe met hun mappen.","Open repository",repo?.url||"","Zet geen privébestanden online. Klik pas op 'Commit changes' als je de bestanden hebt gecontroleerd.");
  }else if((source==="zip"||source==="both")&&archive){
   if(!sensitive)add("unzip","Pak de ZIP uit","Pak het bestand uit op je eigen apparaat en controleer de losse projectbestanden.","","","GitHub pakt een ZIP niet vanzelf uit.");
-  if(noRepo){
+  if(["repair","explore"].includes(intent)){
+   // Alleen onderzoeken of herstellen vereist geen GitHub-account of upload.
+   // Bij twee bronnen kan een vergelijking helpen, maar niets wordt overschreven.
+   if(!noRepo)add("compare","Onderzoek verschillen met GitHub",
+    "Bekijk welke bestanden in je ZIP en op GitHub verschillen. Bepaal welke versie hoort bij je doel voordat je iets wijzigt.",
+    "Open repository",repo.url,
+    "EAIgit kan niet alle bestandsinhoud vergelijken. Onzekere overeenkomsten blijven onbeslist.");
+  }else if(noRepo){
    add("create","Maak een repository op GitHub","Open GitHub en maak een nieuwe repository. Je kunt zelf bepalen of die openbaar of privé wordt.","Open GitHub","https://github.com/new","Je hebt hiervoor een GitHub-account nodig. Het is niet nodig om code te installeren.");
    add("upload","Voeg je bestanden toe","Open je nieuwe repository. Kies 'Add file' en 'Upload files'. Voeg de losse projectbestanden toe en controleer de mappen.","","","Upload niet alleen het ZIP-bestand. Kies zelf welke bestanden mee mogen.");
   }else{
