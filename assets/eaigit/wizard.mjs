@@ -166,9 +166,10 @@ function showWorkEvidence(work){
   const detail=document.createElement("p");detail.textContent=entry.detail;
   item.append(name,status,detail);list.append(item);
  }
- const found=work.observations.filter(e=>e.state==="gevonden").length;
- label("workSummary",found
-  ?found+" onderdelen onderzocht. De werking van het project is nog niet getest."
+ const found=work.investigated||0;
+ const partial=work.partial||0;
+ label("workSummary",found||partial
+  ?found+" onderdelen onderzocht"+(partial?", "+partial+" met beperkingen":"")+". De werking van het project is nog niet getest."
   :"Er is nog geen volledige broncontrole uitgevoerd. De werking is niet getest.");
  $("workDetails").open=state.experience==="compact";
 }
