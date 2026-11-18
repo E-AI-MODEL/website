@@ -79,6 +79,9 @@ test("EAIgit stelt zonder bestandsbron een lokale maakroute voor en claimt geen 
  const prompt=helpPrompt(route[0],"","local","Een oefening zonder internet","local");
  assert.match(prompt,/volledige bestand/);
  assert.doesNotMatch(prompt,/VUL HIER JE GITHUB-REPOSITORY IN/);
+ const unzip=buildJourney({intent:"local",source:"zip",archive:{eligible:["index.html"],project:{hasHtml:true}}})[0];
+ assert.equal(unzip.id,"unzip");
+ assert.doesNotMatch(helpPrompt(unzip,"","local","Mijn oefening","local"),/GitHub|repository/);
  const plan=buildLocalWorkPlan({intent:"local",source:"unknown",steps:route,aim:"Een oefening zonder internet"});
  assert.equal(validateLocalWorkPlan(plan.plan),true);
  assert.equal(plan.observations.find(x=>x.id==="find-source").state,"niet-onderzocht");
