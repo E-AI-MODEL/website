@@ -45,7 +45,9 @@ export function makeGuidance({archive=null,repo=null,advice=null,goal="site",aim
  for(const [origin,check] of [["ZIP",archive?.contentCheck],["GitHub",repo?.contentCheck]]){
   for(const finding of check?.findings||[]){
    if(origin==="ZIP"&&finding.type==="missing-reference"&&archive?.missingReferences?.includes(finding.target))continue;
-   problems.push(issue(finding.title,origin+": "+finding.detail,"attention",finding.path,finding.line));
+   if(finding.certainty==="review"){
+    uncertain.push(origin+": "+finding.title+(finding.path?" ("+finding.path+(finding.line?":"+finding.line:"")+")":"")+". "+finding.detail);
+   }else problems.push(issue(finding.title,origin+": "+finding.detail,"attention",finding.path,finding.line));
   }
   if(check?.incomplete)uncertain.push(origin+": een deel van de bestanden is niet inhoudelijk onderzocht (grootte, formaat of limiet).");
   if(check?.audit){
