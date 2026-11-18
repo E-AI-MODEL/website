@@ -1,5 +1,5 @@
 import {inspectZip,readZipText,readZipBytes} from "./zip.mjs";
-import {inspectProjectTexts,gitBlobId,inspectPublicBlobs,fetchPublicChecks,inspectFileSignature} from "./inhoudscontrole.mjs";
+import {inspectProjectTexts,gitBlobId,inspectPublicBlobs,fetchPublicChecks,inspectFileSignature,appendStaticAudit} from "./inhoudscontrole.mjs";
 import {checkProjectPurpose,findBrokenLocalLinks} from "./doelcontrole.mjs";
 const REPO=/^https:\/\/github\.com\/([A-Za-z0-9](?:[A-Za-z0-9-]{0,38}[A-Za-z0-9])?)\/([A-Za-z0-9_.-]+?)(?:\.git)?\/?$/i;
 const TEXT_LIMIT=350000;
@@ -121,6 +121,7 @@ export async function analyzeArchive(file){
   }catch{notInspected.push(path);}
  }
  const contentCheck=inspectProjectTexts(textRecords,eligible);
+ await appendStaticAudit(contentCheck,textRecords,eligible,{manifest});
  contentCheck.findings.push(...formatFindings.slice(0,Math.max(0,32-contentCheck.findings.length)));
  contentCheck.notInspected=notInspected.slice(0,40);
  contentCheck.incomplete=contentCheck.incomplete||notInspected.length>0;
