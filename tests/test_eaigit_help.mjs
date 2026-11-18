@@ -200,6 +200,7 @@ test("Drie openbare EAIgit-pagina's zijn indexeerbaar en hebben correcte sitemap
   assert.match(html,/<meta name="robots" content="index,follow">/);
   assert.ok(html.includes('<link rel="canonical" href="'+url+'">'));
   assert.doesNotMatch(html,/noindex|nofollow/i);
+  assert.doesNotMatch(html,/cloudflareinsights\.com\/beacon|\/assets\/site-analytics\.js/,"De ZIP-tool krijgt geen bezoekersmeting of POST-tracker");
   assert.equal(sitemap.split("<loc>"+url+"</loc>").length-1,1);
   assert.equal(register.pages.find(p=>p.url===routes[i])?.in_committed_sitemap,true);
  }
