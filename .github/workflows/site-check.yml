@@ -15,7 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Check EAIgit ZIP and GitHub journey
-        run: node --test tests/test_projecthulp.mjs tests/test_eaigit_help.mjs
+        run: node --test tests/test_projecthulp.mjs tests/test_eaigit_help.mjs tests/test_eaigit_single_file.mjs
       - name: Check navigation and page structure
         run: node scripts/check-site.mjs
       - name: Check Science Observatory and observatory navigation
