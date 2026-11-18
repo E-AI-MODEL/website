@@ -1,11 +1,75 @@
 // Hulp op het juiste moment. Korte stappen; langere uitleg staat op de hulppagina.
 export const HELP_TOPICS={
- goal:{title:"Wat wil je bereiken?",intro:"Je hoeft nog niet te weten welke techniek je nodig hebt. Kies wat je wilt doen.",steps:["Een website is iets wat bezoekers in een browser openen.","Een toepassing heeft functies waarmee iemand iets doet.","Je kunt je keuze later aanpassen."],links:[]},
- source:{title:"Waar staan je bestanden?",intro:"EAIgit hoeft niet meer te weten dan waar het project nu staat.",steps:["Een ZIP is één ingepakt bestand met mappen en losse bestanden.","Een repository is een projectmap op GitHub, met eerdere versies.","Je mag ook alleen een ZIP kiezen. Een GitHub-account is nog niet nodig om die te onderzoeken."],links:[{label:"Wat is een repository?",url:"https://docs.github.com/en/repositories/creating-and-managing-repositories/about-repositories"}]},
+ goal:{title:"Wat wil je bereiken?",intro:"Een los bestand, een offline programma en een online website zijn verschillende eindresultaten. Kies wat je wilt doen.",steps:["Een website is iets wat bezoekers in een browser openen.","Een toepassing heeft functies waarmee iemand iets doet.","Je kunt je keuze later aanpassen."],links:[]},
+ source:{title:"Waar staan je bestanden?",intro:"EAIgit hoeft niet meer te weten dan waar het project nu staat.",steps:["Je kunt één los bestand kiezen, een ZIP met meerdere bestanden of een openbare GitHub-repository.","Een repository is een projectmap op GitHub, met eerdere versies.","Een los bestand en een ZIP kun je onderzoeken zonder GitHub-account."],links:[{label:"Wat is een repository?",url:"https://docs.github.com/en/repositories/creating-and-managing-repositories/about-repositories"}]},
  zip:{title:"Wat is een ZIP?",intro:"Een ZIP is een ingepakte map. GitHub pakt een geüpload ZIP-bestand niet automatisch uit.",steps:["Kies de ZIP via de knop Bestandskeuze.","EAIgit bekijkt de inhoud in je browser. Je ZIP wordt niet naar onze server verstuurd.","Voordat je bestanden op GitHub zet, pak je de ZIP op je eigen apparaat uit en bekijk je welke bestanden meegaan."],links:[]},
  repo:{title:"Waar vind je je GitHub-link?",intro:"Een repository is de plek waar GitHub de bestanden en wijzigingen van je project bewaart.",steps:["Open https://github.com en meld je zo nodig aan.","Open jouw repository. Dat is de pagina met de lijst projectbestanden.","Kopieer het volledige adres uit de adresbalk, bijvoorbeeld https://github.com/naam/project.","Plak de link in EAIgit. Alleen openbare repositories kunnen hier zonder koppeling worden gelezen."],links:[{label:"GitHub openen",url:"https://github.com/"},{label:"GitHub voor beginners",url:"https://docs.github.com/en/get-started/start-your-journey/creating-a-repository-for-your-project-on-github"}]},
  aim:{title:"Wat moet het project kunnen?",intro:"Beschrijf het resultaat alsof je het aan een bezoeker uitlegt.",steps:["Bijvoorbeeld: bezoekers kunnen een oefening openen en het antwoord nakijken.","Je hoeft niet te weten welke programmeertaal of techniek is gebruikt.","EAIgit kan controleren welke bestanden aanwezig zijn, niet vanzelf of alles ook echt werkt."],links:[]},
  findings:{title:"Wat betekenen de uitkomsten?",intro:"EAIgit maakt verschil tussen wat is gevonden en wat werkelijk is getest.",steps:["‘Dit is goed’ betekent dat er concrete aanwijzingen zijn, zoals een startbestand of README.","‘Dit vraagt aandacht’ verwijst naar een aangetroffen probleem of ontbrekend onderdeel.","‘Nog niet getest’ is geen foutmelding. De werking moet apart worden gecontroleerd."],links:[]},
+ single:{
+  title:"Wat gebeurt er met een los bestand?",
+  intro:"EAIgit leest één gekozen bestand lokaal in een browserworker. Er wordt niets uitgevoerd, geïnstalleerd of geüpload.",
+  steps:[
+   "Kies een HTML-, JavaScript-, Python-, tekst- of ander bestand van maximaal 8 MB.",
+   "Bij leesbare tekst controleert EAIgit een beperkt deel van de syntaxis, verwijzingen en mogelijke internetafhankelijkheden.",
+   "Een uitvoerbaar programma wordt niet gestart. De bestandsextensie bewijst niet dat het programma veilig is of werkt.",
+   "Bij één los bestand kan EAIgit niet zien welke andere bestanden op je apparaat aanwezig zijn. Een ontbrekende verwijzing is alleen een aanwijzing.",
+   "Een los bestand draait op het apparaat waarop je het opent. Je kunt het kopiëren, maar gegevens worden niet vanzelf gesynchroniseerd."
+  ],links:[]
+ },
+ offline:{
+  title:"Werkt mijn bestand zonder internet?",
+  intro:"Een zelfstandige HTML-pagina kan vaak lokaal worden geopend. Dat is geen garantie voor alle functies.",
+  steps:[
+   "Een bestand op je apparaat gebruik je alleen daar waar het wordt geopend, of op een ander apparaat waar je het heen kopieert.",
+   "Externe afbeeldingen, fonts, JavaScript-bibliotheken, API's en aanmeldfuncties kunnen zonder netwerk stoppen met werken.",
+   "Browsers beperken sommige functies vanaf file://, onder andere module-imports en toegang tot andere lokale bestanden. Een lokale server op localhost kan nodig zijn.",
+   "Browseropslag en bestanden op schijf worden niet vanzelf tussen computers gedeeld. Het gedrag van opslag via file:// kan per browser verschillen.",
+   "Test op het juiste apparaat, verbreek daarna de internetverbinding en herhaal de belangrijkste functies. EAIgit voert deze gebruikstest niet zelf uit."
+  ],links:[{label:"Browserbeveiliging en lokale bestanden",url:"https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy"}]
+ },
+ createLocal:{
+  title:"Hoe maak ik één zelfstandig bestand?",
+  intro:"Bepaal eerst welk bestandstype bij de functie past. GitHub is niet verplicht.",
+  steps:[
+   "Een eenvoudige interactieve browserpagina kan soms als één .html-bestand worden geleverd met de CSS en JavaScript in dat bestand.",
+   "Een Python-script vraagt doorgaans een geschikte Python-installatie. Andere programma's hebben soms een installer, bibliotheken of specifieke systeemrechten nodig.",
+   "Vraag desgewenst in ChatGPT om de volledige inhoud van het bestand, zonder onnodige externe afhankelijkheden.",
+   "Sla het bestand lokaal op en controleer bestandsnaam en extensie. Een codefragment in een chat is nog geen werkend bestand.",
+   "Open en test het resultaat echt. EAIgit schrijft, installeert of publiceert het bestand niet automatisch."
+  ],links:[]
+ },
+ tryLocal:{
+  title:"Hoe test ik een bestand lokaal?",
+  intro:"Een syntaxiscontrole is geen bewijs dat iemand het programma kan gebruiken.",
+  steps:[
+   "Open het bestand op het bedoelde apparaat met een passend programma of in een browser.",
+   "Test de belangrijkste handeling met een juiste en een onjuiste invoer.",
+   "Zet internet tijdelijk uit en herhaal dezelfde handeling.",
+   "Controleer of gegevens na sluiten en opnieuw openen blijven bestaan, als de toepassing dat moet kunnen.",
+   "Herhaal op een tweede apparaat of browser als je het bestand aan anderen wilt geven."
+  ],links:[]
+ },
+ sharingLocal:{
+  title:"Hoe deel ik een offline bestand?",
+  intro:"Bestandsdeling is niet hetzelfde als een online dienst.",
+  steps:[
+   "Deel het originele bestand en alle werkelijk benodigde hulpbestanden; controleer dat niemand onbedoeld privégegevens ontvangt.",
+   "Een HTML-bestand kan op een ander apparaat in een browser openen, maar externe onderdelen kunnen ontbreken.",
+   "Software en scripts moeten passen bij besturingssysteem, rechten en geïnstalleerde programma's.",
+   "Test de kopie op een ander apparaat. Bestandskopieën delen of synchroniseren geen opgeslagen gegevens uit zichzelf."
+  ],links:[]
+ },
+ hostingLocal:{
+  title:"Wat verandert er bij online publiceren?",
+  intro:"Een bestand op de computer is nog geen publiek bereikbare website of online dienst.",
+  steps:[
+   "Voor eenvoudige statische HTML kan hosting van losse bestanden voldoende zijn.",
+   "Een server, database, inlogfunctie of buildproces vraagt een geschikte uitvoeromgeving.",
+   "Controleer of bestanden, persoonlijke gegevens en instellingen wel openbaar mogen worden.",
+   "EAIgit publiceert niet en schakelt geen server in. Dit vraagt een aparte expliciete opdracht."
+  ],links:[]
+ },
  private:{title:"Wat moet privé blijven?",intro:"In projectbestanden kunnen wachtwoorden, sleutels, persoonsgegevens en instellingen zitten.",steps:["Controleer bijvoorbeeld .env, geheime sleutels, tokens en persoonlijke gegevens.","Zet zulke bestanden niet zomaar in een openbare repository.","Bepaal zelf wat gedeeld mag worden. EAIgit verwijdert of publiceert niets."],links:[{label:"Gevoelige gegevens op GitHub",url:"https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository"}]},
  safe:{title:"Hoe maak je de map klaar?",intro:"Bepaal welke losse bestanden echt bij je project horen.",steps:["Bewaar je originele ZIP als reservekopie op je apparaat.","Maak een uitgepakte projectmap zonder privébestanden of onnodige installatiebestanden.","Controleer of een eventuele .gitignore past bij je project. Niet iedere build-map is overbodig."],links:[{label:"Bestanden toevoegen",url:"https://docs.github.com/en/repositories/working-with-files/managing-files/adding-a-file-to-a-repository"}]},
  unzip:{title:"Hoe pak je een ZIP uit?",intro:"GitHub kan de inhoud pas als projectbestanden gebruiken nadat je de ZIP hebt uitgepakt.",steps:["Windows: klik met rechts op de ZIP en kies ‘Alles uitpakken’.","Mac: dubbelklik op de ZIP. Er verschijnt een map.","Open de map en controleer of de projectbestanden erin staan. Upload straks die inhoud, niet alleen de ZIP."],links:[]},
@@ -50,13 +114,14 @@ export const HELP_TOPICS={
 };
 export const HELP_CATEGORIES=[
  {id:"intake",title:"Eerst je situatie bepalen",topics:["goal","aim","findings"]},
+ {id:"local",title:"Los bestand en offline gebruiken",topics:["single","offline","createLocal","tryLocal","sharingLocal","hostingLocal"]},
  {id:"start",title:"Beginnen met GitHub",topics:["source","zip","unzip","repo","create","upload","files","private","safe"]},
  {id:"project",title:"Je project verbeteren",topics:["repoStep","actions","compare","references","codecheck","try","review","publishing"]},
  {id:"chatgpt",title:"ChatGPT en programmeren",topics:["chatgpt","koppelen","abonnement","plugins","skills","codex"]}
 ];
 export const HELP_BY_STEP={
  private:"private",safe:"safe",unzip:"unzip",create:"create",upload:"upload",files:"files",compare:"compare",
- references:"references",audit:"codecheck",actions:"actions",repo:"repoStep",try:"try",publishing:"publishing",source:"source"
+ references:"references","create-local":"createLocal",offline:"offline","try-local":"tryLocal","file-sharing":"sharingLocal","local-hosting":"hostingLocal",audit:"codecheck",actions:"actions",repo:"repoStep",try:"try",publishing:"publishing",source:"source"
 };
 export function getHelpTopic(id){return HELP_TOPICS[id]||null;}
 export function getHelpForStep(stepId){return HELP_BY_STEP[stepId]||"goal";}

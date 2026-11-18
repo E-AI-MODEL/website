@@ -70,7 +70,7 @@ function staticDomReferences(path,text){
  }
  return refs;
 }
-export function inspectStaticProject(records=[],paths=[],{manifest=null}={}){
+export function inspectStaticProject(records=[],paths=[],{manifest=null,standalone=false}={}){
  const existing=new Set(paths),checked={javascript:0,html:0,domReferences:0},
   passed={javascript:0},skipped={javascript:[],markup:[]},findings=[];
  const add=x=>{if(findings.length<MAX_FINDINGS)findings.push(x);};
@@ -94,7 +94,7 @@ export function inspectStaticProject(records=[],paths=[],{manifest=null}={}){
   const inspected=htmlMarkup(record.path,record.text);
   for(const id of inspected.ids.keys())knownIds.add(id);
   for(const f of inspected.findings)add(f);
-  if(knownEntry.includes(record.path)){
+  if(knownEntry.includes(record.path)||standalone){
    if(!inspected.viewport)add(finding("missing-viewport","Mobiele viewport ontbreekt",
     "In deze startpagina is geen viewport-meta-instelling aangetroffen. Controleer de weergave op telefoons.",record.path,1,"review"));
    if(!inspected.doctype)add(finding("missing-doctype","HTML-doctype niet gevonden",
@@ -115,7 +115,7 @@ export function inspectStaticProject(records=[],paths=[],{manifest=null}={}){
   }
  }
  const htmlCount=paths.filter(p=>HTML.test(p)).length;
- if(htmlCount&&!knownEntry.some(p=>existing.has(p))){
+ if(htmlCount&&!standalone&&!knownEntry.some(p=>existing.has(p))){
   const isBuild=paths.some(p=>p==="package.json"||p.endsWith("/package.json"));
   add(finding("entry-unconfirmed","Startpagina niet eenduidig",
    isBuild?"Er zijn HTML-bestanden, maar geen bekende publieke index.html. Een buildproces kan de startpagina maken.":

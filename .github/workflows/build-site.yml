@@ -34,6 +34,7 @@ on:
       - 'tools/eaigit/**'
       - 'tests/test_projecthulp.mjs'
       - 'tests/test_eaigit_help.mjs'
+      - 'tests/test_eaigit_single_file.mjs'
       - 'index.html'
       - 'houseoftalents/**'
       - 'leif/**'
@@ -157,7 +158,7 @@ jobs:
         run: python -m unittest discover -s tests -p 'test_eaiwork_dashboard_publish.py' -v
 
       - name: Test EAIgit browser analysis
-        run: node --test tests/test_projecthulp.mjs tests/test_eaigit_help.mjs
+        run: node --test tests/test_projecthulp.mjs tests/test_eaigit_help.mjs tests/test_eaigit_single_file.mjs
 
       - name: Check EAIgame 300 questions and gameplay mechanics
         run: node --test tests/test_eaigame.mjs
@@ -181,6 +182,7 @@ jobs:
           test -s site-build/assets/projecthulp/analyse.mjs
           test -s site-build/assets/projecthulp/inhoudscontrole.mjs
           test -s site-build/assets/projecthulp/onderzoek-worker.mjs
+          test -s site-build/assets/projecthulp/los-bestand.mjs
 
       - name: Build local anatomical 3D models and viewer
         run: python scripts/build_anatomie.py --out site-build/tools/anatomie
