@@ -107,7 +107,8 @@ export function selectAuditAction({archive=null,repo=null}={}){
  ].join("\n");
  return {
   id:"audit",type:item.type,source:item.source,certainty:item.certainty,
-  title:c.title,description:singleLine(item.detail),reason,verify:c.verify,notice:line,
+  title:c.title,description:item.type==="javascript-syntax"?"In "+location+" staat een JavaScript-syntaxisfout. De parser kon dit bestand niet volledig lezen; de code is niet uitgevoerd.":singleLine(item.detail),
+  rawDetail:singleLine(item.detail),reason,verify:c.verify,notice:line,
   path:item.path||null,line:item.line||null,priority:item.priority,
   promptId:c.prompt,helpId:c.help,prompt
  };
