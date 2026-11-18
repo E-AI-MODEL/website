@@ -102,7 +102,7 @@ function renderResult(){
   archive:state.archive,repo:state.repo
  });
  const g=makeGuidance({archive:state.archive,repo:state.repo,advice,
-  goal:state.goal,aim:state.aim,repoError:state.repoError});
+  goal:state.goal,aim:state.aim,repoError:state.repoError,intent:state.intent});
  state.guidance=g;
  const noSource=!state.archive&&!state.repo?.readable&&!state.repoError;
  const first=primaryFinding(g,{archive:state.archive,repo:state.repo,repoError:state.repoError});
