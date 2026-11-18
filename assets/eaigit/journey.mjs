@@ -84,7 +84,7 @@ export function buildJourney({intent="start",source="zip",archive=null,repo=null
   if(item.id==="unzip"&&count)item.description+=" Gevonden: "+count+" mogelijke projectbestanden.";
   if(item.id==="references"&&missing)item.description+=" Er "+(missing===1?"ontbreekt één lokale verwijzing.":"ontbreken "+missing+" lokale verwijzingen.");
   if(item.id==="try"&&g.goalTest?.action)item.description=g.goalTest.action+" Leg verwachte en waargenomen uitkomst apart vast.";
-  if(item.id==="audit"&&item.audit)item.description=item.audit.description+" Begin bij "+(item.audit.path||"de projectstructuur")+(item.audit.line?" regel "+item.audit.line:"")+".";
+  if(item.id==="audit"&&item.audit)item.description=item.audit.rawDetail+" Begin bij "+(item.audit.path||"de projectstructuur")+(item.audit.line?" regel "+item.audit.line:"")+".";
  }
  return chosen;
 }
