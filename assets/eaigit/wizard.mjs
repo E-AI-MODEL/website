@@ -222,18 +222,18 @@ function renderGuide(){
  show("createdRepoError",false);
  show("guideLink",Boolean(step.href&&step.action));
  if(step.href&&step.action){$("guideLink").href=step.href;$("guideLink").firstChild.textContent=step.action+" ";}
- const phases={
-  source:"verkennen",repo:"verkennen",unzip:"opzetten",create:"opzetten",upload:"opzetten",files:"opzetten",
-  compare:"opzetten",private:"controleren",safe:"controleren",references:"bouwen",actions:"controleren",
-  try:"controleren",publishing:"publiceren"
+ const selectedPrompts={
+  source:"begrijp",repo:"begrijp",unzip:"repo-start",create:"repo-start",upload:"repo-start",
+  files:"repo-start",compare:"repo-start",private:"veiligheid",safe:"veiligheid",
+  references:"fix",actions:"ci",try:"gebruikstest",publishing:"publiceer-plan"
  };
- $("phasePrompts").href="/tools/eaigit/prompts/?fase="+(phases[step.id]||"verkennen");
+ $("phasePrompts").href="/tools/eaigit/prompts/?taak="+(selectedPrompts[step.id]||"begrijp");
  const prompt=helpPrompt(step,state.guidance?.repoUrl||"",state.intent);
  show("promptDetails",Boolean(prompt));
  $("promptDetails").open=false;
  $("stepPrompt").value=prompt;
  label("copyStatus","");
- label("guideNext",state.stepIndex===state.steps.length-1?"Afronden →":"Deze stap heb ik gedaan →");
+ label("guideNext",state.stepIndex===state.steps.length-1?"Naar de afsluiting →":"Ik heb dit gedaan →");
  navigate("guide");
 }
 function reset(){
@@ -298,6 +298,10 @@ $("guideNext").addEventListener("click",()=>{
  const step=state.steps[state.stepIndex];
  if(step?.id==="create"){
   const entered=$("createdRepoUrl").value.trim();
+  if(!entered){
+   label("createdRepoError","Plak eerst de link naar je nieuwe repository. EAIgit heeft die nodig om je bij het uploaden te helpen.");
+   show("createdRepoError",true);return;
+  }
   if(entered){
    try{
     state.repoUrl="https://github.com/"+parseRepoUrl(entered).name;
