@@ -120,7 +120,7 @@ function renderResult(){
  show("actionsLink",Boolean(g.actionsUrl));
  if(g.repoUrl)$("repoLink").href=g.repoUrl;
  if(g.actionsUrl)$("actionsLink").href=g.actionsUrl;
- state.steps=buildJourney({intent:state.intent,source:state.source,archive:state.archive,repo:state.repo,guidance:g});
+ state.steps=buildJourney({intent:state.intent,source:state.source,archive:state.archive,repo:state.repo,guidance:g,experience:state.experience});
  state.stepIndex=0;
  state.completedSteps.clear();
  state.workPlan=buildLocalWorkPlan({
