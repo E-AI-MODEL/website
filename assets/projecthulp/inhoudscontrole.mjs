@@ -143,6 +143,23 @@ export function inspectProjectTexts(records,paths){
   findings:issues.slice(0,32),signals,features:inspectFeatureHints(records),executesProjectCode:false,
   incomplete:issues.length>=32||referenceChecks>=320};
 }
+// Pas een syntactische/structurele analyse toe zonder projectcode uit te voeren.
+// Laad de parser pas op aanvraag, niet al bij de start van de EAIgit-wizard.
+export async function appendStaticAudit(result,records,paths,options={}){
+ const {inspectStaticProject}=await import("./static-audit.mjs");
+ const audit=inspectStaticProject(records,paths,options);
+ result.audit=audit;
+ const seen=new Set(result.findings.map(f=>[f.type,f.path,f.line,f.target].join("|")));
+ for(const item of audit.findings){
+  const key=[item.type,item.path,item.line,item.target].join("|");
+  if(seen.has(key))continue;
+  if(result.findings.length>=32){result.incomplete=true;break;}
+  result.findings.push(item);seen.add(key);
+ }
+ result.incomplete=result.incomplete||audit.incomplete;
+ return result;
+}
+
 const GOALS=[
  {id:"exercise",re:/\b(?:oefen(?:en|ing|ingen)?|quiz|vragen|toets(?:en|vragen)?|exercise|questions?|antwoorden|nakijken)\b/i,
   title:"Controleer de oefeningen",
@@ -196,6 +213,7 @@ export async function inspectPublicBlobs(api,entries,paths,fetcher,headers){
  }));
  for(const check of checks){if(check.status==="fulfilled"&&check.value)records.push(check.value);}
  const result=inspectProjectTexts(records,paths);
+ await appendStaticAudit(result,records,paths);
  result.incomplete=result.incomplete||records.length<candidates.length;
  result.notInspectedCount=Math.max(0,candidates.length-records.length);
  result.source="github-public-blobs";
