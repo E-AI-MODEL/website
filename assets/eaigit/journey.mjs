@@ -62,7 +62,7 @@ export function buildJourney({intent="start",source="zip",archive=null,repo=null
   references:"Controleer lokale href-, src- en importpaden, inclusief hoofdlettergebruik en relatieve projectroot. Test de verwijzing in de browser.",
   actions:"Open de laatste GitHub Actions-run, bekijk de uitgevoerde jobs, logs en testdekking. Een groene workflow bewijst geen eindgebruikersfunctie.",
   repo:"Controleer standaardbranch, projectroot, README en relevante bronbestanden in de openbare GitHub-repository.",
-  publishing:"Controleer hostingtype, eventuele buildoutput, bronbranch en publicatieinstellingen. Voer daarna een live browserproef uit.",
+  publishing:"Controleer hostingtype, eventuele buildoutput, bronbranch en publicatie-instellingen. Voer daarna een live browserproef uit.",
   source:"Bepaal de vindplaats van de projectbron: een lokale ZIP of een openbare repository-URL. Een private repository is hier niet rechtstreeks leesbaar."
  };
  const count=(archive?.eligible||[]).length;
@@ -70,7 +70,7 @@ export function buildJourney({intent="start",source="zip",archive=null,repo=null
  for(const item of chosen){
   if(expertText[item.id])item.description=expertText[item.id];
   if(item.id==="unzip"&&count)item.description+=" Gevonden: "+count+" mogelijke projectbestanden.";
-  if(item.id==="references"&&missing)item.description+=" Er ontbreken "+missing+" lokale verwijzingen.";
+  if(item.id==="references"&&missing)item.description+=" Er "+(missing===1?"ontbreekt één lokale verwijzing.":"ontbreken "+missing+" lokale verwijzingen.");
   if(item.id==="try"&&g.goalTest?.action)item.description=g.goalTest.action+" Leg verwachte en waargenomen uitkomst apart vast.";
  }
  return chosen;
