@@ -86,7 +86,8 @@ export function selectAuditAction({archive=null,repo=null}={}){
  }
  candidates.sort((a,b)=>b.priority-a.priority||+(a.certainty==="review")-+(b.certainty==="review"));
  const item=candidates[0];
- if(!item)return null;
+ // Kleine verbeterpunten horen in het detailoverzicht, niet als verplichte eerste wizardstap.
+ if(!item||item.priority<50)return null;
  const c=wording[item.type]||wording["missing-reference"];
  const location=item.path?singleLine(item.path)+(item.line?" (regel "+item.line+")":""):"projectstructuur";
  const reason=c.reason;
