@@ -279,6 +279,20 @@ test("Wizard past stappen aan bij ZIP-only, nog geen GitHub en publicatie",()=>{
  assert.equal(unsure[0].id,"source");
 });
 
+test("Herstellen en verkennen verplichten geen GitHub-upload",()=>{
+ const archive={eligible:["index.html"],secret:[],missingReferences:[],project:{hasHtml:true}};
+ for(const intent of ["repair","explore"]){
+  const steps=buildJourney({intent,source:"zip",archive,repo:null,guidance:{problems:[]}});
+  assert.ok(steps.some(x=>x.id==="unzip"));
+  assert.ok(steps.some(x=>x.id==="try"));
+  assert.ok(!steps.some(x=>["create","upload","files"].includes(x.id)),
+   "Bij "+intent+" is een GitHub-account niet nodig");
+ }
+ const both=buildJourney({intent:"repair",source:"both",archive,
+  repo:{readable:true,url:"https://github.com/voorbeeld/site"},guidance:{problems:[]}});
+ assert.ok(both.some(x=>x.id==="compare"));
+ assert.ok(!both.some(x=>["create","upload"].includes(x.id)));
+});
 test("Regressie: bestaande index.html krijgt geen melding over ontbrekend startbestand",async()=>{
  const archive=await analyzeArchive(fake(makeZip([["site/index.html","<h1>Site</h1>"]])));
  const purpose=checkProjectPurpose({goal:"site",archive});

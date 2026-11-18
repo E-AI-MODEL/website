@@ -1,7 +1,7 @@
 // EAIgit: kort en doelafhankelijk. Instructies zijn geen bewijs van uitgevoerde acties.
 const has=(items,part)=>Array.isArray(items)&&items.some(x=>String(x.title||x).includes(part));
 const step=(id,title,description,action="",href="",help="")=>({id,title,description,action,href,help});
-export function buildJourney({intent="start",source="zip",archive=null,repo=null,guidance=null}={}){
+export function buildJourney({intent="start",source="zip",archive=null,repo=null,guidance=null,experience="guided"}={}){
  const g=guidance||{good:[],problems:[],uncertain:[],next:[]};
  const issues=g.problems||[];
  const steps=[];
@@ -18,7 +18,14 @@ export function buildJourney({intent="start",source="zip",archive=null,repo=null
   add("files","Zet de losse bestanden in GitHub","Open je repository. Kies 'Add file' en daarna 'Upload files'. Voeg de projectbestanden toe met hun mappen.","Open repository",repo?.url||"","Zet geen privébestanden online. Klik pas op 'Commit changes' als je de bestanden hebt gecontroleerd.");
  }else if((source==="zip"||source==="both")&&archive){
   if(!sensitive)add("unzip","Pak de ZIP uit","Pak het bestand uit op je eigen apparaat en controleer de losse projectbestanden.","","","GitHub pakt een ZIP niet vanzelf uit.");
-  if(noRepo){
+  if(["repair","explore"].includes(intent)){
+   // Alleen onderzoeken of herstellen vereist geen GitHub-account of upload.
+   // Bij twee bronnen kan een vergelijking helpen, maar niets wordt overschreven.
+   if(!noRepo)add("compare","Onderzoek verschillen met GitHub",
+    "Bekijk welke bestanden in je ZIP en op GitHub verschillen. Bepaal welke versie hoort bij je doel voordat je iets wijzigt.",
+    "Open repository",repo.url,
+    "EAIgit kan niet alle bestandsinhoud vergelijken. Onzekere overeenkomsten blijven onbeslist.");
+  }else if(noRepo){
    add("create","Maak een repository op GitHub","Open GitHub en maak een nieuwe repository. Je kunt zelf bepalen of die openbaar of privé wordt.","Open GitHub","https://github.com/new","Je hebt hiervoor een GitHub-account nodig. Het is niet nodig om code te installeren.");
    add("upload","Voeg je bestanden toe","Open je nieuwe repository. Kies 'Add file' en 'Upload files'. Voeg de losse projectbestanden toe en controleer de mappen.","","","Upload niet alleen het ZIP-bestand. Kies zelf welke bestanden mee mogen.");
   }else{
@@ -47,7 +54,33 @@ export function buildJourney({intent="start",source="zip",archive=null,repo=null
   if(optional<0)break;
   steps.splice(optional,1);
  }
- return steps.slice(0,7);
+ const chosen=steps.slice(0,7);
+ if(experience!=="compact")return chosen;
+ // Een tweede niveau heeft eigen werkinstructies in plaats van dezelfde tekst
+ // achter een ander knopje. Zonder brongegevens worden geen details verzonnen.
+ const expertText={
+  private:"Controleer de verdachte bestandsnamen en inhoud lokaal op credentials, .env, keys en persoonsgegevens. Leg vast welke bestanden niet in GitHub mogen staan.",
+  safe:"Controleer .gitignore en de te uploaden bestandslijst. Verwijder gevoelige bestanden uit de projectmap voordat je een commit voorbereidt.",
+  unzip:"Pak de ZIP lokaal uit, controleer de projectroot en behoud relatieve paden. Commit geen ZIP als vervanging voor losse bronbestanden.",
+  create:"Maak op GitHub een repository, kies bewust Public of Private en controleer de standaardbranch. Noteer de repository-URL voor de volgende stap.",
+  upload:"Open de repository en upload alleen de bedoelde bronbestanden met hun directorystructuur. Controleer het diff voordat je commit.",
+  files:"Zet de uitgepakte bestanden als bronbestanden in GitHub. Controleer na de commit de exacte paden en lees een aantal bestanden terug.",
+  compare:"Controleer ontbrekende en gewijzigde bestanden afzonderlijk. Gelijknamige bestanden zonder hashvergelijking zijn nog niet inhoudelijk gelijk verklaard.",
+  references:"Controleer lokale href-, src- en importpaden, inclusief hoofdlettergebruik en relatieve projectroot. Test de verwijzing in de browser.",
+  actions:"Open de laatste GitHub Actions-run, bekijk de uitgevoerde jobs, logs en testdekking. Een groene workflow bewijst geen eindgebruikersfunctie.",
+  repo:"Controleer standaardbranch, projectroot, README en relevante bronbestanden in de openbare GitHub-repository.",
+  publishing:"Controleer hostingtype, eventuele buildoutput, bronbranch en publicatie-instellingen. Voer daarna een live browserproef uit.",
+  source:"Bepaal de vindplaats van de projectbron: een lokale ZIP of een openbare repository-URL. Een private repository is hier niet rechtstreeks leesbaar."
+ };
+ const count=(archive?.eligible||[]).length;
+ const missing=archive?.missingReferences?.length||0;
+ for(const item of chosen){
+  if(expertText[item.id])item.description=expertText[item.id];
+  if(item.id==="unzip"&&count)item.description+=" Gevonden: "+count+" mogelijke projectbestanden.";
+  if(item.id==="references"&&missing)item.description+=" Er "+(missing===1?"ontbreekt één lokale verwijzing.":"ontbreken "+missing+" lokale verwijzingen.");
+  if(item.id==="try"&&g.goalTest?.action)item.description=g.goalTest.action+" Leg verwachte en waargenomen uitkomst apart vast.";
+ }
+ return chosen;
 }
 export function primaryFinding(guidance,{archive=null,repo=null,repoError=null}={}){
  const problems=guidance?.problems||[];

@@ -1,10 +1,11 @@
 import {analyzeArchive,fetchPublicRepo,makeAdvice,parseRepoUrl} from "../projecthulp/analyse.mjs";
 import {makeGuidance} from "../projecthulp/begeleiding.mjs";
 import {buildJourney,primaryFinding,helpPrompt} from "./journey.mjs";
+import {buildLocalWorkPlan,reasonForStep} from "./work-plan.mjs";
 import {getHelpTopic,getHelpForStep} from "./help-topics.mjs";
 
 const $=id=>document.getElementById(id);
-const state={intent:null,source:null,goal:"code",zip:null,repoUrl:"",archive:null,repo:null,repoError:null,aim:"",guidance:null,steps:[],stepIndex:0,busy:false};
+const state={intent:null,source:null,goal:"code",zip:null,repoUrl:"",archive:null,repo:null,repoError:null,aim:"",guidance:null,steps:[],stepIndex:0,busy:false,experience:"guided",workPlan:null,completedSteps:new Set()};
 const stages=["intent","source","zip","repo","aim","result","guide","finished"];
 function openHelp(topicId,contextTip=""){
  const topic=getHelpTopic(topicId);if(!topic)return;
@@ -95,7 +96,12 @@ function liList(id,entries,problem=false){
  }
 }
 function renderResult(){
- const g=makeGuidance({archive:state.archive,repo:state.repo,advice:makeAdvice({goal:state.goal,aim:state.aim,experience:"beginner",archive:state.archive,repo:state.repo}),goal:state.goal,aim:state.aim,repoError:state.repoError});
+ const advice=makeAdvice({
+  goal:state.goal,aim:state.aim,experience:state.experience==="compact"?"advanced":"beginner",
+  archive:state.archive,repo:state.repo
+ });
+ const g=makeGuidance({archive:state.archive,repo:state.repo,advice,
+  goal:state.goal,aim:state.aim,repoError:state.repoError});
  state.guidance=g;
  const noSource=!state.archive&&!state.repo?.readable&&!state.repoError;
  const first=primaryFinding(g,{archive:state.archive,repo:state.repo,repoError:state.repoError});
@@ -114,8 +120,14 @@ function renderResult(){
  show("actionsLink",Boolean(g.actionsUrl));
  if(g.repoUrl)$("repoLink").href=g.repoUrl;
  if(g.actionsUrl)$("actionsLink").href=g.actionsUrl;
- state.steps=buildJourney({intent:state.intent,source:state.source,archive:state.archive,repo:state.repo,guidance:g});
+ state.steps=buildJourney({intent:state.intent,source:state.source,archive:state.archive,repo:state.repo,guidance:g,experience:state.experience});
  state.stepIndex=0;
+ state.completedSteps.clear();
+ state.workPlan=buildLocalWorkPlan({
+  intent:state.intent,source:state.source,archive:state.archive,repo:state.repo,
+  repoError:state.repoError,advice,aim:state.aim,steps:state.steps
+ });
+ showWorkEvidence(state.workPlan);
  navigate("result");
 }
 async function analyze(){
@@ -138,38 +150,107 @@ async function analyze(){
   navigate(state.repoUrl?"repo":state.zip?"zip":"aim");
  }finally{show("loading",false);$("analyze").disabled=false;state.busy=false;}
 }
+function showWorkEvidence(work){
+ const list=$("workEvidence");list.replaceChildren();
+ const states={
+  "gevonden":"Onderzocht","beperkt":"Beperkt","niet-onderzocht":"Niet onderzocht",
+  "niet-getest":"Niet getest","voorgesteld":"Voorgesteld",
+  "toestemming-nodig":"Niet uitgevoerd"
+ };
+ for(const entry of work.observations){
+  const item=document.createElement("li");
+  const name=document.createElement("strong");name.textContent=entry.title;
+  const status=document.createElement("span");
+  status.className="eg-proof-status eg-proof-"+entry.state;
+  status.textContent=states[entry.state]||entry.state;
+  const detail=document.createElement("p");detail.textContent=entry.detail;
+  item.append(name,status,detail);list.append(item);
+ }
+ const found=work.investigated||0;
+ const partial=work.partial||0;
+ label("workSummary",found||partial
+  ?found+" onderdelen onderzocht"+(partial?", "+partial+" met beperkingen":"")+". De werking van het project is nog niet getest."
+  :"Er is nog geen volledige broncontrole uitgevoerd. De werking is niet getest.");
+ $("workDetails").open=state.experience==="compact";
+}
+function verifyStep(step){
+ switch(step.id){
+  case "private": return "Bekijk de genoemde bestanden op je eigen apparaat. Ga pas verder als je hebt bepaald wat openbaar mag zijn. EAIgit kan dat niet voor je beslissen.";
+  case "safe":return "Controleer dat de uitgepakte projectmap geen wachtwoorden, sleutels of andere privégegevens bevat.";
+  case "unzip":return "Je ziet losse bestanden en mappen, niet alleen een .zip-bestand.";
+  case "create":return "Je nieuwe repository is zichtbaar in GitHub. Kopieer de volledige repositorylink en vul die hier in.";
+  case "upload":case "files":return "Vernieuw GitHub en open enkele bestanden. Controleer of de paden en bestandsinhoud kloppen.";
+  case "compare":return "Vergelijk de bedoelde bestanden op GitHub met je eigen ZIP. Gelijke namen betekenen niet dat de inhoud gelijk is.";
+  case "references":return "Open het bronbestand of de website en controleer dat de eerder ontbrekende verwijzing nu naar het juiste bestand gaat.";
+  case "actions":return "Bekijk een recente GitHub Actions-run. Lees ook welke tests zijn uitgevoerd en welke niet.";
+  case "repo":return "Je ziet de verwachte bestanden op GitHub en kunt enkele daarvan openen.";
+  case "publishing":return "Open de openbare URL in een nieuw venster. Controleer de belangrijkste functie en de links, niet alleen de startpagina.";
+  case "source":return "Je hebt een ZIP op je apparaat gevonden of de link naar een openbare repository. Gebruik 'Opnieuw beginnen' om die hier te onderzoeken.";
+  case "try":return "Voer de beschreven handeling zelf uit. Controleer wat er na een goed en een fout antwoord gebeurt. Een gevonden knop is geen geslaagde test.";
+  default:return "Voer de handeling uit en controleer het zichtbare resultaat. EAIgit voert dit niet automatisch uit.";
+ }
+}
+function renderRoute(){
+ const list=$("routeList");list.replaceChildren();
+ for(const [index,step] of state.steps.entries()){
+  const li=document.createElement("li");
+  const button=document.createElement("button");button.type="button";
+  button.textContent=(index+1)+". "+step.title;
+  button.setAttribute("aria-current",String(index===state.stepIndex));
+  button.addEventListener("click",()=>{state.stepIndex=index;renderGuide();});
+  li.append(button);
+  if(state.completedSteps.has(step.id)){
+   const label=document.createElement("small");label.textContent="Zelf afgevinkt";
+   li.append(label);
+  }
+  list.append(li);
+ }
+ $("routeDetails").open=state.experience==="compact";
+}
 function renderGuide(){
  const step=state.steps[state.stepIndex];
  if(!step){navigate("finished");return;}
  label("guideCounter","Stap "+(state.stepIndex+1)+" van "+state.steps.length);
  label("guideTitle",step.title);
  label("guideDescription",step.description);
+ label("guideReason",reasonForStep(step,{archive:state.archive,repo:state.repo,guidance:state.guidance}));
+ label("guideCheck",verifyStep(step));
+ $("guideCheckDetails").open=state.experience==="compact";
+ renderRoute();
  $("guideMore").dataset.help=getHelpForStep(step.id);
  show("createdRepoBox",step.id==="create");
  if(step.id==="create")$("createdRepoUrl").value=state.repoUrl||"";
  show("createdRepoError",false);
  show("guideLink",Boolean(step.href&&step.action));
  if(step.href&&step.action){$("guideLink").href=step.href;$("guideLink").firstChild.textContent=step.action+" ";}
- const phases={
-  source:"verkennen",repo:"verkennen",unzip:"opzetten",create:"opzetten",upload:"opzetten",files:"opzetten",
-  compare:"opzetten",private:"controleren",safe:"controleren",references:"bouwen",actions:"controleren",
-  try:"controleren",publishing:"publiceren"
+ const selectedPrompts={
+  source:"begrijp",repo:"begrijp",unzip:"repo-start",create:"repo-start",upload:"repo-start",
+  files:"repo-start",compare:"repo-start",private:"veiligheid",safe:"veiligheid",
+  references:"fix",actions:"ci",try:"gebruikstest",publishing:"publiceer-plan"
  };
- $("phasePrompts").href="/tools/eaigit/prompts/?fase="+(phases[step.id]||"verkennen");
+ $("phasePrompts").href="/tools/eaigit/prompts/?taak="+(selectedPrompts[step.id]||"begrijp");
  const prompt=helpPrompt(step,state.guidance?.repoUrl||"",state.intent);
  show("promptDetails",Boolean(prompt));
  $("promptDetails").open=false;
  $("stepPrompt").value=prompt;
  label("copyStatus","");
- label("guideNext",state.stepIndex===state.steps.length-1?"Afronden →":"Deze stap heb ik gedaan →");
+ label("guideNext",state.stepIndex===state.steps.length-1?"Naar de afsluiting →":"Ik heb dit gedaan →");
  navigate("guide");
 }
 function reset(){
- state.intent=null;state.source=null;state.goal="code";state.zip=null;state.repoUrl="";state.archive=null;state.repo=null;state.repoError=null;state.aim="";state.guidance=null;state.steps=[];state.stepIndex=0;
+ state.intent=null;state.source=null;state.goal="code";state.zip=null;state.repoUrl="";state.archive=null;state.repo=null;state.repoError=null;state.aim="";state.guidance=null;state.steps=[];state.stepIndex=0;state.workPlan=null;state.completedSteps.clear();
  $("zipFile").value="";label("zipFileName","Bestand kiezen");$("zipNext").disabled=true;
  $("repoUrl").value="";$("projectAim").value="";
  show("zipError",false);show("repoError",false);
  navigate("intent");
+}
+for(const button of document.querySelectorAll("[data-experience]")){
+ button.addEventListener("click",()=>{
+  state.experience=button.dataset.experience==="compact"?"compact":"guided";
+  document.body.classList.toggle("eg-compact",state.experience==="compact");
+  for(const b of document.querySelectorAll("[data-experience]"))
+   b.setAttribute("aria-pressed",String(b.dataset.experience===state.experience));
+ });
 }
 for(const button of document.querySelectorAll("[data-intent]")){
  button.addEventListener("click",()=>{state.intent=button.dataset.intent;state.goal=goals[state.intent]||"code";navigate("source");});
@@ -218,6 +299,10 @@ $("guideNext").addEventListener("click",()=>{
  const step=state.steps[state.stepIndex];
  if(step?.id==="create"){
   const entered=$("createdRepoUrl").value.trim();
+  if(!entered){
+   label("createdRepoError","Plak eerst de link naar je nieuwe repository. EAIgit heeft die nodig om je bij het uploaden te helpen.");
+   show("createdRepoError",true);return;
+  }
   if(entered){
    try{
     state.repoUrl="https://github.com/"+parseRepoUrl(entered).name;
@@ -230,9 +315,15 @@ $("guideNext").addEventListener("click",()=>{
    }
   }
  }
+ state.completedSteps.add(step.id);
  state.stepIndex++;
  if(state.stepIndex<state.steps.length)renderGuide();
- else{show("checkAgain",Boolean(state.repoUrl));navigate("finished");}
+ else{
+  const count=state.completedSteps.size;
+  label("finishStatus","Je hebt "+count+" van "+state.steps.length+" stappen zelf afgevinkt. Dit is geen controle van de werking.");
+  show("checkAgain",Boolean(state.repoUrl||state.zip));
+  navigate("finished");
+ }
 });
 $("copyPrompt").addEventListener("click",async()=>{
  const value=$("stepPrompt").value;
@@ -243,6 +334,11 @@ for(const button of document.querySelectorAll("[data-help]")){
  button.addEventListener("click",()=>openHelp(button.dataset.help));
 }
 $("guideMore").addEventListener("click",()=>openHelp($("guideMore").dataset.help||"goal",state.steps[state.stepIndex]?.help||""));
+$("guideTrouble").addEventListener("click",()=>{
+ const step=state.steps[state.stepIndex];
+ openHelp(getHelpForStep(step?.id)||"goal",
+  "Loop je vast? Bekijk de handelingen hieronder. "+(step?.help||""));
+});
 $("helpClose").addEventListener("click",()=>$("helpDialog").close());
 $("checkAgain").addEventListener("click",analyze);
 $("finishReset").addEventListener("click",reset);

@@ -2,7 +2,7 @@
 <html lang="nl"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow"><meta name="referrer" content="no-referrer">
-<title>EAIgit · Hulp bij GitHub en ChatGPT</title>
+<title>EAIgit · Uitleg en hulp bij je project</title>
 <meta name="description" content="Eenvoudige uitleg over GitHub, ChatGPT, Codex, plug-ins en skills. Met korte stappen en officiële links.">
 <link rel="icon" href="/assets/eaigit/icon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="/assets/site.css"><link rel="stylesheet" href="/assets/eaigit/wizard.css">
@@ -10,26 +10,30 @@
 <script type="module" src="/assets/eaigit/help-page.mjs"></script>
 </head><body class="eaigit-wizard eg-reference-page">
 <a class="eg-skip" href="#helpMain">Ga naar inhoud</a>
-<header class="eg-header">
+<header class="eg-header eg-product-header">
  <a class="eg-logo" href="/tools/eaigit/" aria-label="EAIgit start"><img src="/assets/eaigit/logo.svg" alt="EAIgit"></a>
- <nav class="eg-ref-nav" aria-label="EAIgit"><a href="/tools/eaigit/">Wizard</a><a href="/tools/eaigit/prompts/">Promptbibliotheek</a></nav>
+ <nav class="eg-header-actions" aria-label="EAIgit">
+  <a href="/tools/eaigit/" class="eg-header-link">Wizard</a>
+  <span class="eg-header-current" aria-current="page">Uitleg</span>
+  <a href="/tools/eaigit/prompts/" class="eg-header-link">Opdrachten</a>
+ </nav>
 </header>
 <main id="helpMain" class="eg-ref-shell">
- <div class="eg-ref-intro"><span class="eg-ref-eyebrow">EAIgit · Hulp</span><h1>Wat kun je ermee?</h1><p>Je hoeft niet alles te kennen. Zoek wat je nu nodig hebt. De uitleg bevat korte stappen en links naar de oorspronkelijke handleidingen.</p></div>
+ <div class="eg-ref-intro"><span class="eg-ref-eyebrow">EAIgit · Uitleg</span><h1>Zelf verder met je project</h1><p>Begin met een ZIP of openbare GitHub-link. EAIgit onderzoekt bestanden zonder AI en begeleidt je bij de volgende stap. Hier lees je hoe de onderdelen werken.</p></div>
  <section aria-label="De mogelijkheden" class="eg-tool-cards">
-  <article><div class="eg-tool-icon">GH</div><h2>GitHub</h2><p>Bewaart je bestanden, onthoudt wijzigingen en laat je werk controleren voordat je het samenvoegt.</p><p><strong>Handig voor:</strong> bestanden delen, versies terugvinden, controles automatiseren.</p><a href="#githubTopics">Meer over GitHub</a></article>
-  <article><div class="eg-tool-icon">AI</div><h2>ChatGPT</h2><p>Helpt bij uitleg, vragen, code begrijpen en keuzes voorbereiden. Je bepaalt zelf wat er verandert.</p><p><strong>Handig voor:</strong> begrijpen, onderzoeken, een aanpak vergelijken.</p><a href="#chatgptTopics">Meer over ChatGPT</a></article>
-  <article><div class="eg-tool-icon">+</div><h2>Plug-ins en skills</h2><p>Een plug-in koppelt functies of diensten. Een skill bewaart een herbruikbare werkwijze. Je hebt ze niet voor iedere vraag nodig.</p><p><strong>Handig voor:</strong> terugkerende controles of werken met een gekoppelde repository.</p><a href="#chatgptTopics">Wat is het verschil?</a></article>
+  <article><div class="eg-tool-icon">E</div><h2>EAIgit</h2><p>Leest een ZIP op je apparaat, onderzoekt openbare GitHub-bestanden en geeft stappen die passen bij je doel.</p><p><strong>Zonder AI:</strong> inventariseren, verwijzingen controleren, vergelijken en begeleiden.</p><a href="/tools/eaigit/">Start de wizard</a></article>
+  <article><div class="eg-tool-icon">GH</div><h2>GitHub</h2><p>Bewaart je bestanden, toont eerdere versies en kan automatische controles uitvoeren.</p><p><strong>Handig voor:</strong> bestanden delen, wijzigingen vergelijken, controles bekijken.</p><a href="#githubTopics">Meer over GitHub</a></article>
+  <article><div class="eg-tool-icon">AI</div><h2>ChatGPT en andere AI</h2><p>Kan helpen bij ingewikkelde vragen, code of een voorstel voor een wijziging. Dit is aanvullend, niet nodig voor de browsercontroles.</p><p><strong>Handig voor:</strong> code aanpassen of uitgebreide uitleg, met toestemming en controle.</p><a href="#chatgptTopics">Wanneer AI gebruiken?</a></article>
  </section>
  <section class="eg-decision" aria-labelledby="decisionTitle">
   <h2 id="decisionTitle">Wat gebruik je waarvoor?</h2>
   <div class="eg-decision-grid">
-   <div><strong>Bestanden online bewaren</strong><span>GitHub</span></div>
-   <div><strong>Begrijpen of onderzoeken</strong><span>ChatGPT, eventueel met GitHub-koppeling</span></div>
+   <div><strong>ZIP of openbare repository onderzoeken</strong><span>EAIgit, zelfstandig in de browser</span></div><div><strong>Bestanden online bewaren</strong><span>GitHub</span></div>
+   <div><strong>Vragen over code beantwoorden</strong><span>EAIgit geeft het eerste overzicht. AI is een aanvullende keuze.</span></div>
    <div><strong>Code veranderen</strong><span>Codex of een andere bevoegde codeomgeving</span></div>
    <div><strong>Telkens dezelfde controle</strong><span>Skill of automatische GitHub-controle</span></div>
   </div>
-  <p class="eg-note">De GitHub-koppeling van ChatGPT geeft leestoegang. Ze is geen knop om code terug te schrijven. Voor schrijfacties moet je apart toestemming verlenen. <a href="https://help.openai.com/nl-nl/articles/11145903-connecting-github-to-chatgpt" target="_blank" rel="noopener noreferrer">Bekijk de officiële uitleg</a>.</p>
+  <p class="eg-note">EAIgit leest alleen en schrijft niets naar GitHub. Rechten van andere hulpmiddelen hangen af van de koppeling en je account. Voor wijzigingen en publicatie is afzonderlijke toestemming nodig. <a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure" target="_blank" rel="noopener noreferrer">Over toegangsbeveiliging op GitHub</a>.</p>
  </section>
  <section aria-labelledby="howTitle" class="eg-ref-topics">
   <div class="eg-section-heading"><h2 id="howTitle">Uitleg in kleine stappen</h2><p>Kies alleen het onderwerp waar je nu mee bezig bent.</p></div>
@@ -37,8 +41,8 @@
  </section>
  <section class="eg-next-panel">
   <h2>Wil je nu aan de slag?</h2>
-  <p>Je kunt verder met de wizard of een gerichte opdracht kiezen uit de promptbibliotheek.</p>
-  <div class="eg-ref-actions"><a href="/tools/eaigit/" class="eg-primary">Start de wizard</a><a href="/tools/eaigit/prompts/" class="eg-secondary">Open de promptbibliotheek</a></div>
+  <p>De wizard is het beginpunt. Je kunt ook een gerichte opdracht voor een AI-hulpmiddel kiezen.</p>
+  <div class="eg-ref-actions"><a href="/tools/eaigit/" class="eg-primary">Onderzoek mijn project</a><a href="/tools/eaigit/prompts/" class="eg-secondary">Bekijk opdrachten</a></div>
  </section>
  <p class="eg-ref-small">De instructies beschrijven beschikbare mogelijkheden, geen uitgevoerde controles. Sommige functies hangen af van je account, abonnement of werkruimte.</p>
 </main>

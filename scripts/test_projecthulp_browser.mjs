@@ -77,6 +77,10 @@ try{
  assert.match(await page.locator("#goodPoints").textContent(),/HTML-bestanden/);
  assert.match(await page.locator("#problemPoints").textContent(),/privébestanden/);
  assert.match(await page.locator("#unknownPoints").textContent(),/Logische fouten/);
+ assert.match(await page.locator("#workSummary").innerText(),/onderzocht/);
+ await page.locator("#workDetails summary").click();
+ assert.match(await page.locator("#workEvidence").innerText(),/Niet getest/);
+ assert.match(await page.locator("#workEvidence").innerText(),/ZIP-bestand/);
  assert.equal(await page.locator("#repoLink").getAttribute("href"),"https://github.com/voorbeeld/project");
  assert.equal(await page.locator("#actionsLink").getAttribute("href"),"https://github.com/voorbeeld/project/actions");
  assert.ok(spawned.filter(url=>url.includes("onderzoek-worker.mjs")).length>=2,"GitHub en ZIP werken in aparte browserworkers");
@@ -88,7 +92,13 @@ try{
  await page.locator("#startGuidance").click();
  assert(await page.locator("#stage-guide").isVisible());
  assert.match(await page.locator("#guideTitle").innerText(),/privébestanden/);
- assert.equal(await page.locator("#phasePrompts").getAttribute("href"),"/tools/eaigit/prompts/?fase=controleren");
+ assert.match(await page.locator("#guideReason").innerText(),/privégegevens kan wijzen/);
+ await page.locator("#guideCheckDetails summary").click();
+ assert.match(await page.locator("#guideCheck").innerText(),/Bekijk/);
+ await page.locator("#guideTrouble").click();
+ assert(await page.locator("#helpDialog").evaluate(el=>el.open));
+ await page.locator("#helpClose").click();
+ assert.equal(await page.locator("#phasePrompts").getAttribute("href"),"/tools/eaigit/prompts/?taak=veiligheid");
  await page.locator("#guideMore").click();
  assert(await page.locator("#helpDialog").evaluate(el=>el.open));
  assert.match(await page.locator("#helpTitle").innerText(),/privé blijven/);
@@ -163,6 +173,8 @@ try{
  await page.locator("#guideNext").click();
  assert.match(await page.locator("#guideTitle").innerText(),/repository/);
  assert(await page.locator("#createdRepoBox").isVisible());
+ await page.locator("#guideNext").click();
+ assert.match(await page.locator("#createdRepoError").innerText(),/Plak eerst de link/);
  await page.locator("#createdRepoUrl").fill("not-a-repo");
  await page.locator("#guideNext").click();
  assert.match(await page.locator("#createdRepoError").innerText(),/repositorylink/);
@@ -192,6 +204,9 @@ try{
    exerciseStepFound=true;
    break;
   }
+  if(title==="Maak een repository op GitHub"){
+   await page.locator("#createdRepoUrl").fill("https://github.com/voorbeeld/oefeningen");
+  }
   await page.locator("#guideNext").click();
  }
  assert.equal(exerciseStepFound,true,"Gebruikersdoel moet concrete functietest in wizard tonen");
@@ -200,7 +215,7 @@ try{
 
  // Hulppagina: eigen overzicht, per onderwerp slechts korte instructies.
  await page.goto(base+"/tools/eaigit/hulp/#uitleg-plugins");
- assert.match(await page.title(),/Hulp bij GitHub en ChatGPT/);
+ assert.match(await page.title(),/Uitleg en hulp bij je project/);
  assert(await page.locator("#uitleg-plugins").evaluate(el=>el.open));
  assert.match(await page.locator("#uitleg-plugins").innerText(),/lezen/);
  assert.match(await page.locator(".eg-tool-cards").innerText(),/GitHub/);
@@ -213,6 +228,8 @@ try{
  await page.goto(base+"/tools/eaigit/prompts/");
  assert(await page.locator("#selectedPrompt").isVisible(),"Op desktop is de geselecteerde opdracht direct zichtbaar");
  assert.equal(await page.locator("#promptList .eg-prompt-card").count(),PROMPT_LIBRARY.length);
+ assert.equal(await page.locator(".eg-logo img").count(),1,"Alleen eigen EAIgit-logo");
+ assert.equal(await page.locator(".eg-dashboard-homebrand").count(),0,"Geen dubbel EAI-logo");
  assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2),"Dashboard past op desktop");
  await page.screenshot({path:join(out,"eaigit-prompts-desktop.png"),fullPage:true});
  await page.setViewportSize({width:390,height:844});
@@ -227,12 +244,13 @@ try{
  assert((await page.locator("#promptList .eg-prompt-card").count())<PROMPT_LIBRARY.length);
  await page.locator("#promptSearch").fill("");
  assert.equal(await page.locator("#promptList .eg-prompt-card").count(),PROMPT_LIBRARY.length);
- await page.locator("#promptRepo").fill("https://github.com/voorbeeld/project");
- await page.locator("#promptGoal").fill("Bezoekers kunnen een oefening afronden");
  await page.locator('[data-phase="controleren"]').click();
  assert.equal(await page.locator("#promptList .eg-prompt-card").count(),promptsForPhase("controleren").length);
  await page.locator('[data-prompt-id="gebruikstest"]').click();
  assert(await page.locator("#selectedPrompt").isVisible());
+ await page.locator("#projectSettings summary").click();
+ await page.locator("#promptRepo").fill("https://github.com/voorbeeld/project");
+ await page.locator("#promptGoal").fill("Bezoekers kunnen een oefening afronden");
  assert(await page.locator("#promptWorkspace").evaluate(el=>el.classList.contains("eg-dashboard-mobile-detail")),"Op mobiel opent de gekozen opdracht als eigen werkruimte");
  assert.match(await page.locator("#selectedOutcome").innerText(),/testrapport/i);
  const selectedPrompt=await page.locator("#selectedBody").inputValue();
@@ -251,6 +269,26 @@ try{
  await page.evaluate(()=>window.scrollTo({top:0,behavior:"instant"}));
  await page.waitForFunction(()=>window.scrollY===0);
  await page.screenshot({path:join(out,"eaigit-prompts-mobiel.png"),fullPage:true});
+ // Korte keuzeroute en ervaren modus mogen geen schijncontrole opleveren.
+ await page.setViewportSize({width:1365,height:900});
+ await page.goto(base+"/tools/eaigit/prompts/");
+ await page.locator('[data-suggest="fix"]').click();
+ assert.match(await page.locator("#selectedTitle").innerText(),/fout/);
+ assert.equal(await page.locator('[data-phase="bouwen"]').getAttribute("aria-pressed"),"true");
+ await page.goto(base+"/tools/eaigit/");
+ await page.locator('[data-experience="compact"]').click();
+ assert.equal(await page.locator('[data-experience="compact"]').getAttribute("aria-pressed"),"true");
+ await page.locator('[data-intent="publish"]').click();
+ await page.locator('[data-source="unknown"]').click();
+ await page.locator("#aimSkip").click();
+ await page.locator("#stage-result:not(.eg-hidden)").waitFor({timeout:12000});
+ assert(await page.locator("#workDetails").evaluate(el=>el.open));
+ assert.match(await page.locator("#workEvidence").innerText(),/Niet uitgevoerd/);
+ await page.locator("#startGuidance").click();
+ assert(await page.locator("#routeDetails").evaluate(el=>el.open));
+ assert.match(await page.locator("#guideDescription").innerText(),/private repository/i);
+ assert((await page.locator("#routeList button").count())>=2);
+ assert(await page.locator("#guideCheckDetails").evaluate(el=>el.open));
  // Oude URL blijft werken, zonder de oude naam in de nieuwe UI.
  await page.goto(base+"/tools/projecthulp/");
  await page.waitForURL("**/tools/eaigit/");
