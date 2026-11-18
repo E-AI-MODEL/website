@@ -122,7 +122,8 @@ function renderResult(){
  if(g.repoUrl)$("repoLink").href=g.repoUrl;
  if(g.actionsUrl)$("actionsLink").href=g.actionsUrl;
  state.auditAction=selectAuditAction({archive:state.archive,repo:state.repo});
- show("auditNext",Boolean(state.auditAction));
+ // Een privacyblokkade gaat altijd vóór gewone syntax- of structuuradviezen.
+ show("auditNext",Boolean(state.auditAction)&&!state.archive?.secret?.length&&!g.problems.some(x=>x.severity==="stop"));
  if(state.auditAction){
   const a=state.auditAction;
   label("auditNextTitle",a.title);
