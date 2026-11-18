@@ -7,8 +7,8 @@
 <link rel="canonical" href="https://eaimodel.nl/tools/eaigit/">
 <meta name="referrer" content="no-referrer">
 <meta name="theme-color" content="#f7f9f7">
-<title>EAIgit · Stap voor stap naar GitHub</title>
-<meta name="description" content="EAIgit begeleidt je stap voor stap bij je project en GitHub, met concrete controles en duidelijke vervolgacties.">
+<title>EAIgit · Los bestand, offline toepassing of GitHub-project</title>
+<meta name="description" content="EAIgit helpt met losse bestanden, offline toepassingen en GitHub-projecten, met lokale controles en concrete vervolgstappen.">
 <link rel="icon" href="/assets/eaigit/icon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="/assets/site.css">
 <link rel="stylesheet" href="/assets/eaigit/wizard.css">
@@ -31,6 +31,7 @@
   <button type="button" class="eg-more" data-help="goal">? Meer weten</button>
   <div class="eg-choices" role="group" aria-label="Kies wat je wilt doen">
    <button type="button" class="eg-choice" data-intent="start"><span>Mijn bestanden op GitHub zetten</span><span aria-hidden="true">›</span></button>
+   <button type="button" class="eg-choice" data-intent="local"><span>Een los bestand of offline programma maken of gebruiken</span><span aria-hidden="true">›</span></button>
    <button type="button" class="eg-choice" data-intent="repair"><span>Mijn project controleren of verbeteren</span><span aria-hidden="true">›</span></button>
    <button type="button" class="eg-choice" data-intent="publish"><span>Mijn website online zetten</span><span aria-hidden="true">›</span></button>
    <button type="button" class="eg-choice" data-intent="explore"><span>Ik weet nog niet waar ik moet beginnen</span><span aria-hidden="true">›</span></button>
@@ -40,19 +41,34 @@
    <button type="button" data-experience="guided" aria-pressed="true">Met uitleg</button>
    <button type="button" data-experience="compact" aria-pressed="false">Ik ken GitHub al</button>
   </div>
-  <p class="eg-footnote">EAIgit onderzoekt wat het kan vinden, zonder AI-model of account. Je ZIP blijft op je apparaat.</p>
+  <p class="eg-footnote">EAIgit leest je eigen bestanden lokaal, zonder AI-model of account. Je hoeft niets op GitHub te zetten.</p>
  </section>
  <section class="eg-card eg-hidden" id="stage-source" aria-labelledby="sourceTitle">
   <p class="eg-kicker">Je project</p>
   <h2 id="sourceTitle">Waar staan je bestanden nu?</h2>
   <button type="button" class="eg-more" data-help="source">? Meer weten</button>
   <div class="eg-choices" role="group" aria-label="Kies wat je al hebt">
+   <button type="button" class="eg-choice" data-source="file"><span>Een los bestand op mijn apparaat</span><span aria-hidden="true">›</span></button>
    <button type="button" class="eg-choice" data-source="zip"><span>Op mijn apparaat, in een ZIP</span><span aria-hidden="true">›</span></button>
    <button type="button" class="eg-choice" data-source="github"><span>Al op GitHub</span><span aria-hidden="true">›</span></button>
    <button type="button" class="eg-choice" data-source="both"><span>Op mijn apparaat én GitHub</span><span aria-hidden="true">›</span></button>
    <button type="button" class="eg-choice" data-source="unknown"><span>Dat weet ik niet</span><span aria-hidden="true">›</span></button>
   </div>
   <button id="sourceBack" class="eg-text-button" type="button">← Terug</button>
+ </section>
+ <section class="eg-card eg-hidden" id="stage-file" aria-labelledby="fileTitle">
+  <p class="eg-kicker">Bestand op je apparaat</p>
+  <h2 id="fileTitle">Welk bestand wil je bekijken?</h2>
+  <button type="button" class="eg-more" data-help="single">? Welke bestanden kan ik kiezen?</button>
+  <label for="singleFile" id="fileDrop" class="eg-upload">
+   <span class="eg-upload-symbol" aria-hidden="true">↑</span>
+   <strong id="singleFileName">Los bestand kiezen</strong>
+   <span>Bijvoorbeeld HTML, JavaScript, Python of een programma, maximaal 8 MB</span>
+  </label>
+  <input id="singleFile" class="eg-file-input" type="file">
+  <p class="eg-footnote">Dit bestand blijft op je apparaat. EAIgit voert de inhoud niet uit en installeert niets.</p>
+  <p class="eg-error eg-hidden" id="fileError" role="alert"></p>
+  <div class="eg-actions"><button id="fileBack" class="eg-text-button" type="button">← Terug</button><button id="fileNext" class="eg-primary" type="button" disabled>Verder <span aria-hidden="true">→</span></button></div>
  </section>
  <section class="eg-card eg-hidden" id="stage-zip" aria-labelledby="zipTitle">
   <p class="eg-kicker">Bestanden op je apparaat</p>
@@ -87,7 +103,16 @@
   <h2 id="aimTitle">Wat moet je project straks kunnen?</h2>
   <button type="button" class="eg-more" data-help="aim">? Meer weten</button>
   <label class="eg-label" for="projectAim">Beschrijf dit in één zin, of sla het over</label>
-  <textarea id="projectAim" class="eg-input eg-textarea" maxlength="220" rows="2" placeholder="Bijvoorbeeld: bezoekers kunnen mijn website openen"></textarea>
+  <textarea id="projectAim" class="eg-input eg-textarea" maxlength="220" rows="2" placeholder="Bijvoorbeeld: een interactieve oefening die zonder internet werkt"></textarea>
+  <div id="deliveryChoices" class="eg-delivery eg-hidden">
+   <p class="eg-label">Waar wil je het gebruiken?</p>
+   <div class="eg-choices" role="group" aria-label="Waar moet het bestand werken?">
+    <button type="button" class="eg-choice" data-delivery="local" aria-pressed="true"><span>Alleen op mijn apparaat</span><span aria-hidden="true">›</span></button>
+    <button type="button" class="eg-choice" data-delivery="share" aria-pressed="false"><span>Als bestand aan anderen geven</span><span aria-hidden="true">›</span></button>
+    <button type="button" class="eg-choice" data-delivery="online" aria-pressed="false"><span>Via internet bereikbaar maken</span><span aria-hidden="true">›</span></button>
+   </div>
+   <p class="eg-footnote">Een lokaal bestand werkt alleen op het apparaat waarop het wordt geopend, tenzij je het kopieert of deelt. Opslag en wijzigingen worden niet vanzelf gesynchroniseerd.</p>
+  </div>
   <div class="eg-actions"><button id="aimBack" class="eg-text-button" type="button">← Terug</button><button id="analyze" class="eg-primary" type="button">Bekijk mijn project <span aria-hidden="true">→</span></button></div>
   <button id="aimSkip" class="eg-text-button eg-skip-action" type="button">Deze vraag overslaan</button>
  </section>
@@ -162,8 +187,8 @@
   <div class="eg-finished-icon" aria-hidden="true">✓</div>
   <h2 id="finishedTitle">Je bent bij het einde van je route</h2>
   <p id="finishStatus"></p>
-  <p>De werking is nog niet gecontroleerd. Je kunt je bestanden opnieuw onderzoeken of zelf de belangrijkste functie testen.</p>
-  <div class="eg-finished-links"><a href="/tools/eaigit/hulp/">Hulp bij GitHub</a><a href="/tools/eaigit/prompts/">Gerichte opdrachten</a></div>
+  <p>De werking is niet automatisch getest. Controleer het bestand op de bedoelde apparaten, zo nodig ook zonder internet.</p>
+  <div class="eg-finished-links"><a href="/tools/eaigit/hulp/">Uitleg en hulp</a><a href="/tools/eaigit/prompts/">Gerichte opdrachten</a></div>
   <div class="eg-finish-actions">
    <button id="checkAgain" type="button" class="eg-primary">Controleer mijn project opnieuw</button>
    <button id="finishReset" type="button" class="eg-text-button">Opnieuw beginnen</button>
