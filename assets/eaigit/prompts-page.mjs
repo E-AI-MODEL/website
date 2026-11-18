@@ -2,7 +2,9 @@ import {PROMPT_PHASES,PROMPT_LIBRARY,promptsForPhase,fillPrompt} from "./prompts
 
 const $=id=>document.getElementById(id);
 const filters=$("promptFilters"),list=$("promptList"),workspace=$("promptWorkspace");
-const requested=new URLSearchParams(location.search).get("fase");
+const query=new URLSearchParams(location.search);
+const requested=query.get("fase");
+const requestedTask=query.get("taak");
 let currentPhase=PROMPT_PHASES.some(p=>p.id===requested)?requested:"alle";
 let selected=null;
 let edited=false;
@@ -142,5 +144,18 @@ $("closePrompt").addEventListener("click",()=>{
   selected=null;
  }
 });
+function suggestPrompt(id){
+ const prompt=PROMPT_LIBRARY.find(item=>item.id===id);
+ if(!prompt)return;
+ currentPhase=prompt.phase;
+ $("promptSearch").value="";
+ workspace.classList.remove("eg-dashboard-mobile-detail");
+ drawFilters();drawCards();
+ selectPrompt(id,{openOnMobile:true});
+ if(!isNarrow())$("selectedPrompt").scrollIntoView({behavior:"smooth",block:"start"});
+}
+for(const button of document.querySelectorAll("[data-suggest]"))
+ button.addEventListener("click",()=>suggestPrompt(button.dataset.suggest));
 drawFilters();
 drawCards();
+if(requestedTask)suggestPrompt(requestedTask);
