@@ -34,8 +34,9 @@ function parseJavascript(path,text){
 }
 function htmlMarkup(path,text){
  // Alleen eenvoudige, zichtbare tags. Geen JavaScript, CSS, templates of HTML-entiteiten uitvoeren.
- const markup=text.replace(/<!--[\s\S]*?-->/g,"")
-  .replace(/<(script|style)\b[^>]*>[\s\S]*?<\/\1\s*>/gi,"");
+ const blank=m=>m.replace(/[^\n]/g," ");
+ const markup=text.replace(/<!--[\s\S]*?-->/g,blank)
+  .replace(/<(script|style)\b[^>]*>[\s\S]*?<\/\1\s*>/gi,blank);
  const ids=new Map(),found=[],images=[];
  const tag=/<([a-z][a-z\d:-]*)\b([^<>]*?)>/gi;
  let m;
