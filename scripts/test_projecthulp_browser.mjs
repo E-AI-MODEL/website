@@ -204,6 +204,9 @@ try{
    exerciseStepFound=true;
    break;
   }
+  if(title==="Maak een repository op GitHub"){
+   await page.locator("#createdRepoUrl").fill("https://github.com/voorbeeld/oefeningen");
+  }
   await page.locator("#guideNext").click();
  }
  assert.equal(exerciseStepFound,true,"Gebruikersdoel moet concrete functietest in wizard tonen");
