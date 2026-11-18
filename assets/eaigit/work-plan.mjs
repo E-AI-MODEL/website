@@ -46,6 +46,20 @@ export function buildLocalWorkPlan({
   observations.push(evidence("text-review","Inhoud en verwijzingen",checked?"gevonden":"beperkt",
    checked?count(checked,"leesbaar bronbestand","leesbare bronbestanden")+" statisch gecontroleerd. De toepassing is niet gestart.":"Er zijn nog geen leesbare bronbestanden inhoudelijk gecontroleerd."));
  }
+ const audits=[archive?.contentCheck?.audit,repo?.contentCheck?.audit].filter(Boolean);
+ const jsChecked=audits.reduce((n,a)=>n+(a.checked?.javascript||0),0);
+ const jsPassed=audits.reduce((n,a)=>n+(a.passed?.javascript||0),0);
+ const jsSkipped=audits.reduce((n,a)=>n+(a.skipped?.javascript?.length||0),0);
+ const htmlChecked=audits.reduce((n,a)=>n+(a.checked?.html||0),0);
+ if(audits.length){
+  checks.push(task("syntax-review","Controleer JavaScript- en HTML-structuur","browser-static-audit",sourceIds));
+  observations.push(evidence("syntax-review","JavaScript-syntaxis",
+   jsChecked?(jsSkipped?"beperkt":"gevonden"):"niet-onderzocht",
+   jsChecked?count(jsChecked,"JavaScript-bestand","JavaScript-bestanden")+" door de lokale parser gelezen; "+jsPassed+" zonder syntaxisfout. "+(jsSkipped?jsSkipped+" niet volledig te controleren.":"Geen projectcode uitgevoerd."):"Geen ondersteunde JavaScript-bestanden geparseerd."));
+  observations.push(evidence("html-review","HTML-structuur",
+   htmlChecked?"gevonden":"niet-onderzocht",
+   htmlChecked?count(htmlChecked,"HTML-bestand","HTML-bestanden")+" statisch gecontroleerd op elementen en ID's. Dit is geen browserproef.":"Er zijn geen HTML-bestanden uitgelezen voor deze controle."));
+ }
  if(wantsZip&&wantsRepo){
   checks.push(task("file-compare","ZIP en GitHub vergelijken","file-compare",sourceIds));
   const c=advice?.comparison;
