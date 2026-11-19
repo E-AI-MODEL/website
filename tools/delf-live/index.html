@@ -19,8 +19,8 @@
 <div class="panel-content">
 <p class="hint">Test hier vooraf de microfoon, Franse vertaling en beide stemmen. Op de MacBook: 1 start de ondertiteling en → begint de overname. Op je iPhone kun je de knoppen onder Verloop gebruiken. Het scherm blijft buiten dit menu vrij van bediening.</p>
 <div class="group"><h3>Voor de ceremonie</h3>
-<button id="prepareTranslate" class="action">Franse vertaling laden</button><p class="feedback" id="translationStatus">Nog niet geladen</p>
-<button id="prepareMic" class="action outline">Microfoon controleren</button><p class="feedback" id="microphoneStatus">Nog niet gecontroleerd</p>
+<button id="prepareTranslate" class="action">Franse vertaling laden</button><p class="feedback" id="translationStatus" aria-live="polite">De vertaling is nog niet getest.</p>
+<button id="prepareMic" class="action outline">Nederlandse spraak testen</button><p class="feedback" id="microphoneStatus" aria-live="polite">Zeg een korte Nederlandse zin. De herkende woorden verschijnen hier.</p>
 <label class="upload">Frans stemmodel openen (checkpointmap)<input id="modelFolder" type="file" webkitdirectory directory multiple></label>
 <p class="hint">Nadat je toegang tot het model hebt gekregen, download je de checkpointmap bij Hugging Face. Er is geen knop voor publicatie naar GitHub. Gebruik het model <code>gradium/phonon-40m-fr</code> van Hugging Face. Selecteer de gedownloade map. De bestanden blijven op deze computer en gaan niet naar eaimodel.nl. <a href="https://huggingface.co/gradium/phonon-40m-fr" target="_blank" rel="noopener noreferrer">Open de modelpagina</a> om de toegang en bestanden te vinden.</p>
 <button id="loadFrench" class="action">Franse stem laden</button><button id="previewFrench" class="action outline">Luister naar de Franse stem</button><p class="feedback" id="frenchStatus">Nog geen Franse stem geladen</p>

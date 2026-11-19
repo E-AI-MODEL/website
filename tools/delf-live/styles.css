@@ -357,3 +357,21 @@ body.panel-visible{overflow:hidden}
 }
 @media (max-width:680px) and (pointer:fine){.mobile-settings{display:none;}}
 @media(prefers-reduced-motion:reduce){.panel,.panel .action{transition:none!important}}
+
+/* Het lege podium ademt vanuit het midden, zonder bewegende letters. */
+.stage::after{
+  inset:-12%;
+  background:
+    radial-gradient(ellipse 31% 30% at 50% 52%,rgba(190,218,216,.33),transparent 88%),
+    radial-gradient(ellipse 50% 39% at 51% 51%,rgba(227,235,232,.23),transparent 91%),
+    radial-gradient(ellipse 47% 37% at 50% 49%,rgba(241,225,210,.20),transparent 92%);
+  opacity:.7;
+  transform-origin:50% 50%;
+  animation:delf-center-breathe 13s ease-in-out infinite alternate;
+}
+@keyframes delf-center-breathe {
+  0% {transform:translate3d(0,0,0) scale(.89);opacity:.54;}
+  50% {transform:translate3d(0,0,0) scale(1.015);opacity:.84;}
+  100% {transform:translate3d(0,0,0) scale(1.12);opacity:.64;}
+}
+@media(prefers-reduced-motion:reduce){.stage::after{animation:none!important}}

@@ -254,6 +254,7 @@ function clearLiveState() {
   $('displayText').classList.remove('caption-layout');
 }
 function panel(open) {
+  if (!open) stopMicrophoneCheck();
   document.body.classList.toggle('panel-visible', open);
   $('panel').classList.toggle('open', open);
   $('panel').setAttribute('aria-hidden', open ? 'false' : 'true');
@@ -286,7 +287,7 @@ function reportError(message) {
 async function prepareTranslation() {
   feedback('translationStatus', 'Franse vertaling controleren…');
   if (typeof globalThis.Translator === 'undefined') {
-    feedback('translationStatus', 'Chrome Translator ontbreekt. Zonder deze functie geen echte livevertaling.', 'bad');
+    feedback('translationStatus', 'Deze browser heeft geen live vertaling NL → FR. Je kunt de Nederlandse spraak apart testen. Gebruik voor de podiumuitvoering Chrome op de MacBook.', 'bad');
     return false;
   }
   try {
@@ -302,14 +303,79 @@ async function prepareTranslation() {
   } catch (e) { reportError('Vertaalmodel: ' + (e.message || e)); feedback('translationStatus', 'Vertalen niet beschikbaar', 'bad'); return false; }
 }
 $('prepareTranslate').onclick = prepareTranslation;
-$('prepareMic').onclick = async () => {
+let microphoneCheck = null;
+let microphoneCheckTimer = null;
+function stopMicrophoneCheck() {
+  if (microphoneCheckTimer) { clearTimeout(microphoneCheckTimer); microphoneCheckTimer = null; }
+  const previous = microphoneCheck;
+  microphoneCheck = null;
+  if (previous) {
+    previous.onstart = null;
+    previous.onresult = null;
+    previous.onend = null;
+    previous.onerror = null;
+    try { previous.abort(); } catch {}
+  }
+  $('prepareMic').textContent = 'Nederlandse spraak testen';
+}
+$('prepareMic').onclick = () => {
+  if (microphoneCheck) {
+    stopMicrophoneCheck();
+    feedback('microphoneStatus','Test gestopt.','');
+    return;
+  }
+  if (phase !== 'intro') {
+    feedback('microphoneStatus','Stop eerst de voorstelling. Daarna kun je de microfoon testen.','bad');
+    return;
+  }
   const SR = globalThis.SpeechRecognition || globalThis.webkitSpeechRecognition;
-  if (!SR) { feedback('microphoneStatus', 'Spraakherkenning ontbreekt in deze browser', 'bad'); return; }
+  if (!SR) {
+    feedback('microphoneStatus','Deze browser heeft geen ondersteunde spraakherkenning. Toestemming voor de microfoon alleen is niet genoeg.','bad');
+    return;
+  }
+  const instance = new SR();
+  microphoneCheck = instance;
+  let heard = false;
+  instance.lang = 'nl-NL';
+  instance.continuous = false;
+  instance.interimResults = true;
+  instance.onstart = () => {
+    if (microphoneCheck !== instance) return;
+    $('prepareMic').textContent = 'Stop spraaktest';
+    feedback('microphoneStatus','Luistert naar Nederlands… Spreek een korte zin uit.');
+  };
+  instance.onresult = event => {
+    if (microphoneCheck !== instance) return;
+    const words = Array.from(event.results).map(result => result[0]?.transcript || '').join(' ').trim();
+    if (!words) return;
+    heard = true;
+    const final = Array.from(event.results).every(result => result.isFinal);
+    feedback('microphoneStatus', (final ? 'Herkend Nederlands: ' : 'Herkenning bezig: ') + words, final ? 'good' : '');
+  };
+  instance.onerror = event => {
+    if (microphoneCheck !== instance) return;
+    const msg = event.error || 'onbekende fout';
+    feedback('microphoneStatus','Spraakherkenning mislukt ('+ msg +'). De toestemmingspop-up bewijst alleen toegang tot de microfoon.','bad');
+    stopMicrophoneCheck();
+  };
+  instance.onend = () => {
+    if (microphoneCheck !== instance) return;
+    stopMicrophoneCheck();
+    if (!heard) feedback('microphoneStatus','De microfoon is gestopt, maar er zijn geen woorden herkend. Probeer het opnieuw.','bad');
+  };
   try {
-    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    stream.getTracks().forEach(track => track.stop());
-    feedback('microphoneStatus', 'Microfoon beschikbaar. Gebruik Nederlands.', 'good');
-  } catch (e) { feedback('microphoneStatus', 'Microfoon: ' + e.message, 'bad'); }
+    instance.start();
+    $('prepareMic').textContent = 'Stop spraaktest';
+    feedback('microphoneStatus','Toegang en spraakherkenning starten…');
+    microphoneCheckTimer = setTimeout(() => {
+      if (microphoneCheck !== instance) return;
+      stopMicrophoneCheck();
+      if (!heard) feedback('microphoneStatus','Geen Nederlandse woorden ontvangen binnen 12 seconden.','bad');
+    },12000);
+  } catch (error) {
+    stopMicrophoneCheck();
+    feedback('microphoneStatus','Kon de spraaktest niet starten: ' + error.message,'bad');
+  }
 };
 
 function stopMic() {
@@ -640,7 +706,12 @@ async function streamFrench() {
   } catch (e) { if (!controller.signal.aborted) reportError(`Franse stem onderbroken: ${e.message || e}`); }
 }
 function goStart() {
-  if (!translator) { reportError('Start eerst het vertaalmodel. Geen voorbereid Frans als vervanging.'); return; }
+  if (!translator) {
+    reportError('Starten kan pas na het laden van de Franse vertaling.');
+    panel(true);
+    void prepareTranslation();
+    return;
+  }
   if (stageAdvance(phase, 'start') === null) return;
   stopVoices(); clearLiveState(); closing = false;
   setPhase('live', 'TRADUCTION EN DIRECT');
@@ -650,8 +721,17 @@ function goStart() {
 }
 function goInterrupt() {
   if (closing || stageAdvance(phase, 'interrupt') === null) return;
-  if (!french) { reportError('Laad eerst de Franse stem. De onderbreking begint pas als de overname klaarstaat.'); return; }
-  if (!selectedDutchVoice) { reportError('Selecteer eerst een Nederlandse stem.'); return; }
+  if (!french) {
+    reportError('Laad eerst de Franse stem. De overname is nog niet klaar.');
+    feedback('frenchStatus','Frans stemmodel niet geladen. De overname start niet.','bad');
+    panel(true);
+    return;
+  }
+  if (!selectedDutchVoice) {
+    reportError('Selecteer eerst een Nederlandse stem.');
+    panel(true);
+    return;
+  }
   stopMic(); stopVoices();
   setPhase('interrupted', 'UN INSTANT…');
   blankStage();

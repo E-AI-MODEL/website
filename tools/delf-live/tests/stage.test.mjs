@@ -113,3 +113,23 @@ test('instellingen zijn dun en rustig, en Esc werkt ook bij focus op een invoerv
   assert.ok(html.includes('id="panelClose"'));
   assert.ok(html.includes('close-strokes'));
 });
+
+test('microfoontest herkent echte Nederlandse woorden in plaats van alleen toestemming',()=>{
+  assert.ok(html.includes('Nederlandse spraak testen'));
+  assert.ok(main.includes('microphoneCheck = instance'));
+  assert.ok(main.includes("instance.lang = 'nl-NL'"));
+  assert.ok(main.includes('instance.onresult = event =>'));
+  assert.ok(main.includes('Herkend Nederlands: '));
+  assert.ok(!main.includes('Microfoon beschikbaar. Gebruik Nederlands.'));
+});
+test('geen schijnstart bij ontbrekende vertaling, fout is zichtbaar',()=>{
+  assert.ok(main.includes('function goStart()'));
+  assert.ok(main.includes('void prepareTranslation()'));
+  assert.ok(main.includes('panel(true)'));
+  assert.ok(main.includes('geen live vertaling NL → FR'));
+});
+test('de witgolf ademt zichtbaar vanuit het midden',()=>{
+  assert.ok(styles.includes('@keyframes delf-center-breathe'));
+  assert.ok(styles.includes('transform-origin:50% 50%'));
+  assert.ok(styles.includes('scale(1.12)'));
+});
