@@ -1,9 +1,10 @@
-import { chromium } from 'playwright';
+import { chromium, webkit } from 'playwright';
 import assert from 'node:assert/strict';
 import { mkdirSync } from 'node:fs';
 const base='http://127.0.0.1:8765';
 mkdirSync('test-results/topo',{recursive:true});
-const browser=await chromium.launch({headless:true});
+const engine=process.env.TOPO_BROWSER==='webkit'?webkit:chromium;
+const browser=await engine.launch({headless:true});
 const failures=[];
 async function scenario(label,url,adjust){
  const page=await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:1,isMobile:true,hasTouch:true});
@@ -58,6 +59,6 @@ try{
  console.log('settings to national gameplay OK');
  await page.close();
  if(failures.length)throw Error(failures.join('\n'));
- console.log('TOPO MOBILE PASS');
+ console.log('TOPO MOBILE PASS '+(process.env.TOPO_BROWSER||'chromium'));
 }catch(error){console.error('TOPO MOBILE FAIL: '+error.stack);process.exitCode=1}
 finally{await browser.close()}
