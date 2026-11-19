@@ -254,7 +254,7 @@ body.playing .hint-chip{z-index:3}
  body.playing.keyboard-open .question-card #sub,
  body.playing.keyboard-open .question-card .small-links{display:none}
  body.playing.keyboard-open .question-card h2{font-size:clamp(21px,5vw,28px);margin:0 0 7px;line-height:1.1}
- body.playing.keyboard-open .question-card .type-label{font-size:11px}
+ body.playing.keyboard-open .question-card .type-label{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
  body.playing.keyboard-open .question-card #typeForm{row-gap:2px}
  body.playing.keyboard-open .question-card #typeForm .typed{min-height:44px;padding:9px 11px;font-size:16px}
  body.playing.keyboard-open .question-card #typeForm .type-submit{min-height:44px;padding:9px 11px;font-size:16px}
@@ -431,9 +431,13 @@ function focusQuestionMap(){
  if(!document.body.classList.contains('playing')||game.done||game.kind==='point')return;
  const frame=$('map'),svg=frame.querySelector('svg');
  if(!svg||!frame.clientWidth||!frame.clientHeight)return;
- const height=Math.max(410,Math.min(900,Math.round(1240*frame.clientHeight/frame.clientWidth)));
- const y=Math.max(0,Math.min(900-height,Math.round(q().y-height/2)));
- svg.setAttribute('viewBox','0 '+y+' 1240 '+height);
+ // Match the viewBox to the available map area. No blue letterboxing.
+ const ratio=frame.clientWidth/frame.clientHeight;
+ const width=Math.min(1240,Math.round(900*ratio));
+ const height=Math.min(900,Math.round(width/ratio));
+ const left=Math.max(0,Math.min(1240-width,Math.round(q().x-width/2)));
+ const top=Math.max(0,Math.min(900-height,Math.round(q().y-height/2)));
+ svg.setAttribute('viewBox',left+' '+top+' '+width+' '+height);
  svg.setAttribute('preserveAspectRatio','xMidYMid meet');
 }
 $('answerOptions').addEventListener('focusin',e=>{
