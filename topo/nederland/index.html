@@ -121,7 +121,8 @@ const fmt=n=>Math.round(n*10)/10;
 function slug(s){return s.toLocaleLowerCase('nl').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')}
 function tidy(v){return String(v||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]/g,'')}
 function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
-function pathOf(geom){return geom.coordinates.map(poly=>poly.map(ring=>ring.map((p,i)=>{const v=proj(p[0],p[1]);return (i?'L':'M')+fmt(v[0])+' '+fmt(v[1]);}).join(' ')+' Z').join(' ')).join(' ')}
+function polygonParts(geom){return geom.type==='MultiPolygon'?geom.coordinates:[geom.coordinates]}
+function pathOf(geom){return polygonParts(geom).map(poly=>poly.map(ring=>ring.map((p,i)=>{const v=proj(p[0],p[1]);return (i?'L':'M')+fmt(v[0])+' '+fmt(v[1]);}).join(' ')+' Z').join(' ')).join(' ')}
 function cityItem(row,capital){
  const province=row[0],name=row[1],p=proj(row[2],row[3]);
  return {id:(capital?'cap-':'stad-')+slug(name),province,name,kind:'city',capital,x:p[0],y:p[1]};
@@ -135,7 +136,7 @@ function countryMap(showNames,focused){
  const items=data.filter(x=>x.kind==='city');
  const cityDots=items.map(x=>'<g><circle class="city-halo" cx="'+fmt(x.x)+'" cy="'+fmt(x.y)+'" r="9"/><circle class="city-dot" cx="'+fmt(x.x)+'" cy="'+fmt(x.y)+'" r="5"/><circle class="city-hit" data-place="'+x.id+'" cx="'+fmt(x.x)+'" cy="'+fmt(x.y)+'" r="21"/></g>').join('');
  const labelCities=(showNames?items.filter(x=>x.capital):items.filter(x=>x.capital&&focused&&x.id===focused.id));
- const texts=showNames?labelCities.map(x=>'<text class="map-text city" x="'+fmt(x.x+12)+'" y="'+fmt(x.y-12)+'">'+x.name.replace(/&/g,'&amp;')+'</text>').join(''):'';
+ const texts=showNames?labelCities.map(x=>'<text data-label-id="'+x.id+'" class="map-text city" x="'+fmt(x.x+12)+'" y="'+fmt(x.y-12)+'">'+x.name.replace(/&/g,'&amp;')+'</text>').join(''):'';
  return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1020 850" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Kaart van de provincies van Nederland" style="background:#cbe9f4"><g>'+provinces+'</g><g>'+cityDots+'</g><g id="targetHighlight"></g><g>'+texts+'</g></svg>';
 }
 function displayMap(showNames=false){$('map').innerHTML=countryMap(showNames);focusMap();}
@@ -157,7 +158,7 @@ function makePool(){
  if(topics.has('provinces'))pool=pool.concat(allProvinces.filter(n=>areas.has(n)).map(n=>{
   const feat=features.find(f=>(f.properties.statnaam==='Fryslân'?'Friesland':f.properties.statnaam)===n);
   if(!feat)return null;
-  let ps=feat.geometry.coordinates.flat(2);
+  const ps=polygonParts(feat.geometry).flat(2);
   const lats=ps.map(p=>p[1]),lons=ps.map(p=>p[0]);
   const p=proj((Math.min(...lons)+Math.max(...lons))/2,(Math.min(...lats)+Math.max(...lats))/2);
   return {id:slug(n),province:n,name:n,kind:'province',x:p[0],y:p[1]};
@@ -203,7 +204,7 @@ function draw(){
   $('sub').textContent=currentMode==='missing'?'Kijk naar de lege plek.':'Typ de naam.';
   if(currentMode==='missing'){
    const mark=$('map').querySelector('svg');
-   mark.querySelectorAll('[data-place="'+x.id+'"]').forEach(n=>n.style.opacity='0');
+   mark.querySelectorAll('[data-place="'+x.id+'"],[data-label-id="'+x.id+'"]').forEach(n=>n.style.opacity='0');
    mark.querySelector('#targetHighlight').innerHTML='<circle cx="'+fmt(x.x)+'" cy="'+fmt(x.y)+'" r="23" fill="#fff4c5" stroke="#182b34" stroke-width="3" stroke-dasharray="6 5"/><text x="'+fmt(x.x)+'" y="'+fmt(x.y+10)+'" text-anchor="middle" font-size="29" font-weight="1000">?</text>';
   }else highlight(x);
   $('mapHint').textContent='WELKE NAAM?';
@@ -223,7 +224,7 @@ function answer(ok){
   done=true;const x=current();
   if(attempts===1&&!assisted.has(x.id)&&!x.revisit)stars++;
   else if(!x.revisit)wrong.add(x.id);
-  if(x.kind==='city'){ $('map').querySelectorAll('[data-place="'+x.id+'"]').forEach(n=>n.removeAttribute('style'));}
+  if(x.kind==='city'){ $('map').querySelectorAll('[data-place="'+x.id+'"],[data-label-id="'+x.id+'"]').forEach(n=>n.removeAttribute('style'));}
   highlight(x);$('score').textContent='★ '+stars;$('mapHint').textContent='GEVONDEN!';
   feedback(attempts===1&&!assisted.has(x.id)?'YES!':'GEVONDEN!','');$('next').classList.remove('hide');
   $('skip').style.visibility='hidden';$('help').style.visibility='hidden';
