@@ -433,95 +433,101 @@ function showWrongPlace(id,clientX,clientY){
 function clearWrongPlace(){clearTimeout(wrongPopTimer);$('wrongPlacePop').classList.add('hide')}
 const placeHints={
  "friesland": [
-  "F-G-D: Friesland links, Groningen rechtsboven, Drenthe rechtsonder.",
-  "Friesland ligt links, bij het IJsselmeer."
+  "F-G-D. Denk aan de volgorde van de drie provincies.",
+  "Kijk bij het grote meer aan de linkerkant."
  ],
  "groningen-prov": [
-  "F-G-D: Groningen is de G, rechtsboven op de kaart.",
-  "Denk aan de stad Groningen. Die ligt in deze provincie."
+  "F-G-D. Denk aan de volgorde van de drie provincies.",
+  "Welke provincie ligt boven het groene gebied?"
  ],
  "drenthe": [
-  "F-G-D: Drenthe is de D, onder Groningen.",
-  "Drenthe ligt onder Groningen en rechts van Friesland."
+  "F-G-D. Denk aan de volgorde van de drie provincies.",
+  "Welke provincie ligt niet aan de zee?"
  ],
  "leeuwarden": [
-  "Een LEEUW in Leeuwarden. Leeuwarden is de hoofdstad van Friesland.",
-  "De Friese hoofdstad staat boven Sneek."
+  "Denk aan een leeuw en een hoofdstad.",
+  "Zoek in de provincie met veel meren."
  ],
  "sneek": [
-  "Onthoud Sneek bij de Friese meren.",
-  "Sneek ligt links van Heerenveen."
+  "Denk aan de Friese meren.",
+  "Zoek dicht bij de grote stad met de L."
  ],
  "heerenveen": [
-  "Heerenveen en Hoogeveen eindigen allebei op -veen. Welke ligt in Friesland?",
-  "Heerenveen ligt onder Drachten."
+  "Denk aan twee plaatsen met 'veen' in hun naam.",
+  "Welke van die twee ligt in Friesland?"
  ],
  "drachten": [
-  "Drachten en Delfzijl beginnen allebei met D. Drachten ligt in Friesland.",
-  "Drachten ligt rechts van Leeuwarden."
+  "Een plaatsnaam met een D, maar niet bij de zee.",
+  "Kijk tussen de hoofdstad van Friesland en de provincie rechts ervan."
  ],
  "groningen-stad": [
-  "Groningen is twee keer op de kaart: een stad én een provincie.",
-  "De stad Groningen ligt boven Assen."
+  "Stad en provincie kunnen dezelfde naam hebben.",
+  "Zoek de hoofdstad boven Assen."
  ],
  "delfzijl": [
-  "DelfZIJL: denk aan een plaats bij het water.",
-  "Delfzijl ligt rechtsboven, bij de kust."
+  "Denk aan een haven bij de zee.",
+  "Kijk in de provincie boven Drenthe."
  ],
  "assen": [
-  "G-A: Groningen boven, Assen eronder. Assen is de hoofdstad van Drenthe.",
-  "Assen ligt boven Hoogeveen."
+  "Denk aan de hoofdstad van Drenthe.",
+  "Kijk tussen de stad boven Drenthe en de steden onderaan."
  ],
  "veendam": [
-  "Veendam en Hoogeveen eindigen op -veen. Veendam ligt in Groningen.",
-  "Veendam ligt rechts van de stad Groningen."
+  "Denk aan een plaatsnaam die op '-dam' eindigt.",
+  "Zoek in de provincie boven Drenthe."
  ],
  "meppel": [
-  "Meppel, Hoogeveen, Emmen: van links naar rechts in Drenthe.",
-  "Meppel is de stad linksonder in Drenthe."
+  "Denk aan drie steden in Drenthe, naast elkaar.",
+  "Welke ligt links van de andere twee?"
  ],
  "hoogeveen": [
-  "HOOgeveen: denk aan 'hoog' en 'veen'.",
-  "Hoogeveen ligt tussen Meppel en Emmen."
+  "Denk aan een plaatsnaam met 'veen' erin.",
+  "Zoek tussen de westelijke en de oostelijke stad in Drenthe."
  ],
  "emmen": [
-  "Meppel, Hoogeveen, Emmen: Emmen is de laatste, helemaal rechts.",
-  "Emmen ligt rechts van Hoogeveen."
+  "Denk aan de drie steden onderaan in Drenthe.",
+  "Kijk bij de grens aan de rechterkant."
  ],
  "vlieland": [
-  "TV-TAS: Texel, Vlieland, Terschelling, Ameland, Schiermonnikoog.",
-  "Texel staat niet op deze kaart. Vlieland is het eerste eiland links."
+  "TV-TAS. Zeg de eilandnamen op in die volgorde.",
+  "De T staat voor een eiland dat niet op deze kaart staat."
  ],
  "terschelling": [
-  "TV-TAS: Texel, Vlieland, Terschelling, Ameland, Schiermonnikoog.",
-  "Texel staat niet op deze kaart. Terschelling is het tweede eiland links."
+  "TV-TAS. Zeg de eilandnamen op in die volgorde.",
+  "Op deze kaart ontbreekt het eerste eiland van de reeks."
  ],
  "ameland": [
-  "TV-TAS: Texel, Vlieland, Terschelling, Ameland, Schiermonnikoog.",
-  "Texel staat niet op deze kaart. Ameland is het derde eiland links."
+  "TV-TAS. Zeg de eilandnamen op in die volgorde.",
+  "Op deze kaart ontbreekt het eerste eiland van de reeks."
  ],
  "schiermonnikoog": [
-  "TV-TAS: Texel, Vlieland, Terschelling, Ameland, Schiermonnikoog.",
-  "Texel staat niet op deze kaart. Schiermonnikoog ligt helemaal rechts."
+  "TV-TAS. Zeg de eilandnamen op in die volgorde.",
+  "Op deze kaart ontbreekt het eerste eiland van de reeks."
  ],
  "waddenzee": [
-  "WADdenzee: denk aan WADlopen bij de eilanden.",
-  "Dit water ligt tussen de eilanden en het vaste land."
+  "Denk aan wadlopen bij de eilanden.",
+  "Zoek het water tussen eilanden en het vaste land."
  ],
  "ijsselmeer": [
-  "IJsselMEER: denk aan een groot meer, geen zee.",
-  "Het ligt onder de Afsluitdijk, links van Friesland."
+  "Denk aan een meer dat achter een lange dijk ligt.",
+  "Zoek het grote water links onder het vasteland."
  ],
  "afsluitdijk": [
-  "AFSLUIT-dijk: de dijk sluit het IJsselmeer af.",
-  "Het is de lange streep tussen IJsselmeer en Waddenzee."
+  "Denk aan iets dat twee wateren van elkaar scheidt.",
+  "Zoek de lange verbinding over het water."
  ]
 };
+function safeHint(item,clue){
+ const normalized=String(clue).toLocaleLowerCase('nl').normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+ const names=[item.short,item.name,...(item.aliases||[])].filter(Boolean).map(n=>String(n).toLocaleLowerCase('nl').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s*\([^)]*\)/g,'').trim());
+ return !names.some(name=>name.length>2&&normalized.includes(name));
+}
 function giveHint(){
  if(game.done||game.hintStep>=2)return;
  const step=game.hintStep,clues=placeHints[q().id];
  if(!clues)return;
  const clue=clues[step];
+ if(!safeHint(q(),clue)){console.warn('Hint contains answer; skipping.');return;}
  game.hintClicks++;game.hintStep++;game.hint=true;game.assistedQuestions.add(q().id);
  game.wrong.add(q().id);returnLater(q());
  flash((step===0?'ONTHOUD! ':'TIP! ')+clue,'neutral');
