@@ -13,6 +13,7 @@ let translator = null;
 let mic = null;
 let wantsMic = false;
 let restartTimer = null;
+let micSilentTimer = null;
 let previewTimer = null;
 let finalTranslations = [];
 let pendingFinal = Promise.resolve();
@@ -407,6 +408,7 @@ $('prepareMic').onclick = () => {
 function stopMic() {
   wantsMic = false;
   if (restartTimer) { clearTimeout(restartTimer); restartTimer = null; }
+  if (micSilentTimer) { clearTimeout(micSilentTimer); micSilentTimer = null; }
   if (previewTimer) { clearTimeout(previewTimer); previewTimer = null; }
   latestInterim = '';
   previewSequence++;
@@ -473,12 +475,28 @@ function startMic() {
   instance.continuous = true;
   instance.interimResults = true;
   instance.maxAlternatives = 1;
+  let recognized = false;
+  const onIOS = /iPhone|iPad|iPod/.test(navigator.userAgent);
+  instance.onstart = () => {
+    if (!onIOS) return;
+    if (micSilentTimer) clearTimeout(micSilentTimer);
+    micSilentTimer = setTimeout(() => {
+      if (mic === instance && phase === 'live' && !recognized) {
+        feedback('runtimeStatus','Geen Nederlandse woorden ontvangen. iOS kan spraakherkenning blokkeren ondanks een actieve microfoon. Open instellingen en gebruik Start ondertiteling om opnieuw te proberen.','bad');
+      }
+    },18000);
+  };
   instance.onresult = event => {
     let interim = '';
     for (let i = event.resultIndex; i < event.results.length; i++) {
       const value = event.results[i];
-      if (value.isFinal) translateFinal(value[0].transcript);
-      else interim += value[0].transcript;
+      const words = value[0]?.transcript || '';
+      if (words.trim()) {
+        recognized = true;
+        if (micSilentTimer) { clearTimeout(micSilentTimer); micSilentTimer = null; }
+      }
+      if (value.isFinal) translateFinal(words);
+      else interim += words;
     }
     if (interim) { feedback('runtimeStatus', `Luistert: ${interim}`); translatePreview(interim); }
   };
@@ -798,6 +816,15 @@ function goStart() {
     });
     return;
   }
+  // Bij vastgelopen spraakherkenning kan de gebruiker live opnieuw proberen.
+  if (phase === 'live') {
+    stopMic();
+    if (startMic()) {
+      feedback('runtimeStatus','Nederlandse spraakherkenning opnieuw gestart. Spreek een korte zin.','good');
+      panel(false);
+    } else panel(true);
+    return;
+  }
   if (stageAdvance(phase, 'start') === null) return;
   stopVoices(); clearLiveState(); closing = false;
   setPhase('live', 'TRADUCTION EN DIRECT');
@@ -859,8 +886,11 @@ function goFinish() {
   stopVoices(); clearLiveState(); closing = true;
   setPhase('live', 'TRADUCTION EN DIRECT');
   renderCaptions();
-  startMic();
-  panel(false);
+  if (startMic()) panel(false);
+  else {
+    reportError('De microfoon kon na de Franse speech niet opnieuw starten. Gebruik Start ondertiteling.');
+    panel(true);
+  }
 }
 function goReset() {
   releasePreparedAudio();
