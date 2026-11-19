@@ -3,37 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#f8f6f1">
+<meta name="theme-color" content="#fbfbf9">
 <title>DELF scolaire | Live</title>
 <link rel="stylesheet" href="./styles.css">
 <script type="module" src="./src/main.js"></script>
 </head>
 <body>
-<div class="stage" id="stage" data-phase="intro">
-<header class="masthead"><div class="monogram" aria-hidden="true">D<span>·</span>F</div><div class="brand">DELF <strong>SCOLAIRE</strong><small>REMISE DES DIPLÔMES</small></div><div class="stage-status"><span class="status-dot" id="dot"></span><span id="publicStatus">CÉRÉMONIE</span></div></header>
-<main class="centerpiece" aria-live="polite"><p class="eyebrow" id="eyebrow">FÉLICITATIONS AUX DIPLÔMÉS</p><div class="ornament" id="ornament">✦</div><div class="display-surface" id="displayText">Une langue de plus.<br>Un monde de plus.</div><p class="translation-meta" id="translationMeta">Ce soir, nous célébrons votre réussite</p><div class="wave" id="wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></main>
-<footer class="stage-footer"><span>DELF SCOLAIRE</span><span>FÉLICITATIONS <b>·</b> 2026</span></footer>
+<div class="stage" id="stage" data-phase="intro" tabindex="-1">
+<main class="centerpiece" aria-label="Franse tekst" aria-live="polite"><div class="display-surface" id="displayText">Une langue de plus.<br>Un monde de plus.</div><p class="translation-meta sr-only" id="translationMeta">Ce soir, nous célébrons votre réussite</p></main>
 </div>
-<!-- Op een gespiegeld scherm verdwijnen deze knoppen vanzelf. -->
-<nav class="stage-controls" id="stageControls" aria-label="Snelle podiumbediening">
-  <button type="button" class="quick-button" id="quickStart" aria-label="Start live Franse vertaling" title="Start vertaling (1)">
-    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.7 18 12 8 18.3Z"/></svg>
-  </button>
-  <button type="button" class="quick-button quick-primary" id="quickTakeover" aria-label="Laat de Franse stem de speech overnemen" title="Overname (pijltje rechts)" hidden>
-    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6"/></svg>
-  </button>
-  <button type="button" class="quick-button" id="quickPause" aria-label="Pauzeer de stem" title="Pauzeren of hervatten (spatie)" hidden>
-    <svg viewBox="0 0 24 24" aria-hidden="true"><path id="pauseIcon" d="M9 5v14M15 5v14"/></svg>
-  </button>
-  <button type="button" class="quick-button" id="quickSettings" aria-label="Open instellingen" title="Instellingen (Escape)">
-    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="m19 13 2-1-2-1-.7-2.1 1-2-2-2-2 1-2.1-.7-1-2-1 2-2.1.7-2-1-2 2 1 2L5 11l-2 1 2 1 .7 2.1-1 2 2 2 2-1 2.1.7 1 2 1-2 2.1-.7 2 1 2-2-1-2z"/></svg>
-  </button>
-</nav>
-<button class="panel-toggle" id="panelToggle" aria-label="Podiumbediening openen" title="Podiumbediening, Escape" hidden>⚙</button>
 <aside id="panel" class="panel" aria-label="Podiumbediening" aria-hidden="true">
 <div class="panel-head"><div><small>ALLEEN ACHTER DE SCHERMEN</small><h2>DELF scolaire</h2></div><button id="panelClose" class="close" aria-label="Sluiten">×</button></div>
 <div class="panel-content">
-<p class="hint">Bij gespiegeld beeld ziet de zaal ook dit instellingenpaneel. Sluit het vóór je begint. Start met 1 of de kleine afspeelknop. Tijdens jouw Nederlandse opening druk je op → of de kleine pijlknop. De onderbreking, Franse speech en teruggave volgen vanzelf. Na de teruggave vertaalt de app jouw slot.</p>
+<p class="hint">Voor aanvang: druk op Esc om dit paneel te openen en test microfoon, vertaling en beide stemmen. Sluit het paneel met Esc. Op het bord komt alleen Franse tekst in beeld. Start met 1, druk tijdens jouw Nederlandse opening eenmaal op → voor de hele overname. Spatie pauzeert of hervat, X stopt direct.</p>
 <div class="group"><h3>Voor de ceremonie</h3>
 <button id="prepareTranslate" class="action">Franse vertaling laden</button><p class="feedback" id="translationStatus">Nog niet geladen</p>
 <button id="prepareMic" class="action outline">Microfoon controleren</button><p class="feedback" id="microphoneStatus">Nog niet gecontroleerd</p>

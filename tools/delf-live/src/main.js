@@ -3,33 +3,6 @@ import { interrupt, handback, speech, speechSegments, modelFiles, stageAdvance, 
 
 const $ = id => document.getElementById(id);
 const stage = $('stage');
-const controls = $('stageControls');
-let controlHideTimer = null;
-function hideControls() {
-  if (controlHideTimer) clearTimeout(controlHideTimer);
-  controlHideTimer = null;
-  controls.classList.remove('visible');
-  if (controls.contains(document.activeElement)) document.activeElement.blur();
-}
-function revealControls() {
-  if ($('panel').classList.contains('open')) return;
-  controls.classList.add('visible');
-  if (controlHideTimer) clearTimeout(controlHideTimer);
-  controlHideTimer = setTimeout(() => {
-    if (!controls.matches(':focus-within')) hideControls();
-  }, 2800);
-}
-document.addEventListener('pointermove', revealControls, { passive: true });
-document.addEventListener('pointerdown', revealControls, { passive: true });
-document.addEventListener('touchstart', revealControls, { passive: true });
-controls.addEventListener('focusin', revealControls);
-function refreshQuickControls() {
-  $('quickStart').hidden = phase !== 'intro';
-  $('quickTakeover').hidden = phase !== 'live' || closing;
-  $('quickPause').hidden = !['interrupted','french','handback'].includes(phase);
-  $('quickPause').setAttribute('aria-label', paused ? 'Hervat de stem' : 'Pauzeer de stem');
-  $('quickPause').querySelector('path').setAttribute('d', paused ? 'M8 5.7 18 12 8 18.3Z' : 'M9 5v14M15 5v14');
-}
 $('speechText').value = speech;
 let phase = 'intro';
 let epoch = 0;
@@ -69,6 +42,15 @@ function feedback(id, message, type = '') {
   el.classList.remove('good', 'bad');
   if (type) el.classList.add(type);
 }
+let glowTimer = null;
+function pulseText() {
+  if (glowTimer) clearTimeout(glowTimer);
+  stage.classList.remove('text-arriving');
+  // Retrigger only after a new sentence, not on every interim update.
+  void stage.offsetWidth;
+  stage.classList.add('text-arriving');
+  glowTimer = setTimeout(() => { stage.classList.remove('text-arriving'); glowTimer = null; }, 850);
+}
 function screen(text, meta = '') {
   stage.dataset.display = 'statement';
   const parent = $('displayText');
@@ -79,6 +61,7 @@ function screen(text, meta = '') {
   item.textContent = String(text);
   parent.append(item);
   $('translationMeta').textContent = meta;
+  pulseText();
 }
 function splitFrenchCaption(value) {
   const text = String(value).replace(/\s+/g, ' ').trim();
@@ -111,12 +94,14 @@ function renderCaptions() {
   const lines = finalTranslations.slice(-2);
   const [previous, current, draft] = parent.children;
   const states = [lines.length > 1 ? lines[0] : '', lines.at(-1) || '', draftText];
+  const currentChanged = current.textContent !== states[1] && Boolean(states[1]);
   [previous, current, draft].forEach((el, index) => {
     const next = states[index];
     if (el.textContent !== next) el.textContent = next;
     el.classList.toggle('empty', !next);
   });
   $('translationMeta').textContent = draftText ? 'TRADUCTION EN DIRECT' : 'NÉERLANDAIS · FRANÇAIS';
+  if (currentChanged) pulseText();
 }
 function clearLiveState() {
   finalTranslations = [];
@@ -130,20 +115,16 @@ function clearLiveState() {
   $('displayText').classList.remove('caption-layout');
 }
 function panel(open) {
-  if (open) hideControls();
   document.body.classList.toggle('panel-visible', open);
   $('panel').classList.toggle('open', open);
   $('panel').setAttribute('aria-hidden', open ? 'false' : 'true');
   if (!open) { stage.tabIndex = -1; stage.focus({preventScroll:true}); }
 }
-$('panelToggle').onclick = () => panel(true);
 $('panelClose').onclick = () => panel(false);
 function setPhase(p, publicLabel) {
   phase = p; epoch++;
   stage.dataset.phase = p;
-  $('publicStatus').textContent = publicLabel;
   feedback('phaseStatus', `Onderdeel: ${publicLabel}`);
-  refreshQuickControls();
 }
 function reportError(message) {
   errors.push(message);
@@ -418,9 +399,7 @@ function togglePause() {
   } else if ('speechSynthesis' in window) {
     if (paused) speechSynthesis.pause(); else speechSynthesis.resume();
   }
-  $('publicStatus').textContent = paused ? 'PAUSE' : (phase === 'french' ? 'DISCOURS EN FRANÇAIS' : 'UN INSTANT…');
   feedback('phaseStatus', paused ? 'Gepauzeerd · spatie om door te gaan' : 'Hervat');
-  refreshQuickControls();
 }
 function followAudioClock(ctx, controller) {
   if (cueTimer) clearInterval(cueTimer);
@@ -554,12 +533,6 @@ function panic() {
   setPhase('stopped', 'PAUSE');
   feedback('runtimeStatus', 'Alles gestopt. Toets 0 om opnieuw te beginnen.', 'bad');
 }
-// Aanraakbediening gebruikt exact dezelfde functies als het toetsenbord.
-$('quickStart').onclick = () => { goStart(); hideControls(); };
-$('quickTakeover').onclick = () => { goInterrupt(); hideControls(); };
-$('quickPause').onclick = () => { togglePause(); $('quickPause').blur(); revealControls(); };
-$('quickSettings').onclick = () => panel(true);
-refreshQuickControls();
 const actions = {start:goStart, interrupt:goInterrupt, french:goFrench, handback:goHandback, finish:goFinish, reset:goReset, panic};
 for (const [name, fn] of Object.entries(actions)) $(name).onclick = fn;
 $('fullscreen').onclick = () => document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.();

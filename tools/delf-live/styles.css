@@ -106,3 +106,89 @@ button,textarea,input,select { font: inherit; }
 body.panel-visible .stage-controls {opacity:0;pointer-events:none}
 @media(pointer:coarse){.stage-controls .quick-button{width:42px;height:42px}.stage-controls{gap:5px}.stage-controls svg{width:19px;height:19px}}
 @media(prefers-reduced-motion:reduce){.stage-controls{transition:none}}
+
+
+/* DELF v3: alle zaalbediening weg; uitsluitend Franse tekst op een lichte ondergrond. */
+:root {
+  --paper: #fbfbf9;
+  --ink: #223743;
+  --quiet: #465d68;
+}
+html, body {background:#fbfbf9;color:#223743;}
+.stage {
+  min-height:100dvh;
+  display:flex;
+  align-items:stretch;
+  justify-content:center;
+  padding:clamp(28px,5.5vw,96px);
+  background:
+    radial-gradient(ellipse 52% 55% at 14% 10%,rgba(220,234,232,.25),transparent 85%),
+    radial-gradient(ellipse 49% 58% at 93% 86%,rgba(237,226,217,.18),transparent 82%),
+    #fbfbf9;
+}
+.stage::before {
+  content:'';
+  position:absolute;
+  z-index:0;
+  inset:0;
+  width:auto;
+  aspect-ratio:auto;
+  left:auto;top:auto;
+  transform:none;
+  border:0;
+  border-radius:0;
+  background:radial-gradient(ellipse 43% 38% at 50% 52%,rgba(176,211,207,.18),transparent 85%);
+  box-shadow:none;
+  animation:none;
+  opacity:.24;
+  pointer-events:none;
+  will-change:opacity;
+}
+.stage::after {background:none;}
+.stage.text-arriving::before { animation:text-glow 820ms ease-out both; }
+@keyframes text-glow {
+  0% {opacity:.21;}
+  22% {opacity:.71;}
+  100% {opacity:.24;}
+}
+.centerpiece {
+  position:relative;
+  z-index:1;
+  width:100%;max-width:1350px;
+  min-height:calc(100dvh - clamp(56px,11vw,192px));
+  padding:0;margin:auto;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+}
+.display-surface {
+  position:relative;
+  width:100%;min-height:clamp(260px,58vh,630px);
+  color:#223743;
+  justify-content:center;
+}
+.statement {
+  color:#223743;
+  font:400 clamp(42px,5.3vw,83px)/1.2 Georgia,'Times New Roman',serif;
+  letter-spacing:-.025em;
+  animation:showSentence .16s ease-out both;
+}
+.stage[data-phase='french'] .statement {color:#223743;font-size:clamp(36px,4.3vw,68px);line-height:1.26;}
+.stage[data-phase='interrupted'] .statement,
+.stage[data-phase='handback'] .statement {color:#263b46;font-style:normal;}
+.caption-layout {gap:12px;min-height:clamp(300px,55vh,610px);}
+.caption-current {color:#223743;font-size:clamp(39px,4.6vw,72px);font-weight:400;line-height:1.22;letter-spacing:-.02em;}
+.caption-previous {color:#4c606b;font-size:clamp(26px,2.65vw,39px);line-height:1.3;}
+.caption-draft {color:#516772;font-size:clamp(27px,2.7vw,41px);line-height:1.32;opacity:1;}
+.caption-row.empty {opacity:0;}
+.sr-only {position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+.masthead,.stage-footer,.eyebrow,.ornament,.wave,.stage-controls,.panel-toggle {display:none!important;}
+@media(max-width:680px){
+  .stage{padding:26px 22px;}
+  .centerpiece{min-height:calc(100dvh - 52px);}
+  .statement {font-size:clamp(33px,8vw,53px);}
+  .caption-current{font-size:clamp(30px,6.1vw,46px);}
+  .caption-previous{font-size:clamp(22px,4.6vw,32px);}
+  .caption-draft{font-size:clamp(23px,4.8vw,34px);}
+}
+@media(prefers-reduced-motion:reduce){.stage.text-arriving::before,.statement{animation:none!important;}}

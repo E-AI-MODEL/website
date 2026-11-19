@@ -4,9 +4,9 @@ Een zelfstandige webapp voor de diploma-uitreiking. Je spreekt Nederlands, de Fr
 
 ## Gebruik
 
-De podiumomgeving toont uitsluitend Frans. Je begint in het Nederlands; Chrome herkent jouw woorden en vertaalt ze zo snel mogelijk naar korte Franse tekstregels. De tekst staat op een vaste plek. Het scherm gebruikt een lichte, rustige achtergrond.
+De zaal ziet alleen Franse tekst. Er zijn geen iconen, titelbalk, voetregels of knoppen op het gespiegeld scherm. Je begint in het Nederlands; Chrome herkent jouw woorden en vertaalt ze zo snel mogelijk naar korte Franse tekstregels. De tekst staat op een vaste plek. Het scherm gebruikt een lichte, rustige achtergrond.
 
-Voor aanvang open je met `Esc` de instellingen en bereid je het Franse vertaalmodel, de microfoon, het Franse stemmodel en een bewust gekozen Nederlandse onderbrekingsstem voor. Klik op **Luister naar de Franse stem** om het Franse accent en de intonatie te beoordelen. Met `1` begin je live te vertalen.
+Voor aanvang open je met `Esc` de instellingen en bereid je het Franse vertaalmodel, de microfoon, het Franse stemmodel en een bewust gekozen Nederlandse onderbrekingsstem voor. Klik op **Luister naar de Franse stem** om het Franse accent en de intonatie te beoordelen. Met `1` begin je live te vertalen. Alle bediening werkt via de MacBook-toetsen. Met `Esc` open of sluit je het instellingenpaneel. Doe de voorbereiding voordat het bord zichtbaar is voor de zaal.
 
 **Eén druk op `→`** tijdens de Nederlandse opening begint de volledige overname: de Nederlandse stem onderbreekt je; je krijgt ruim vier seconden om te antwoorden; de Franse Phonon-stem spreekt de voorbereide Franse tekst **live** uit; en de Nederlandse stem geeft het woord weer aan jou. Meteen daarna schakelt de app zelf de live vertaling weer in voor jouw Nederlandse slot. Toets `→` heeft tijdens het slot geen effect.
 
