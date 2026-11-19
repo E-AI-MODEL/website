@@ -243,6 +243,25 @@ body.playing .hint-chip{z-index:3}
  }
 }
 </style>
+<style id="mobileKeyboardRepair">
+/* iOS keyboard takes away screen height; keep the question and answer visible. */
+@media(max-width:850px) and (orientation:portrait){
+ body.playing.keyboard-open #game{gap:5px;padding-top:4px;padding-bottom:5px}
+ body.playing.keyboard-open .game-top{display:none}
+ body.playing.keyboard-open .game-grid{display:flex;flex-direction:column;gap:7px;min-height:0}
+ body.playing.keyboard-open .question-card{flex:0 0 auto;max-height:none;overflow:visible;order:0;padding:10px 13px 13px}
+ body.playing.keyboard-open .question-card .q-label,
+ body.playing.keyboard-open .question-card #sub,
+ body.playing.keyboard-open .question-card .small-links{display:none}
+ body.playing.keyboard-open .question-card h2{font-size:clamp(21px,5vw,28px);margin:0 0 7px;line-height:1.1}
+ body.playing.keyboard-open .question-card .type-label{font-size:11px}
+ body.playing.keyboard-open .question-card #typeForm{row-gap:2px}
+ body.playing.keyboard-open .question-card #typeForm .typed{min-height:44px;padding:9px 11px;font-size:16px}
+ body.playing.keyboard-open .question-card #typeForm .type-submit{min-height:44px;padding:9px 11px;font-size:16px}
+ body.playing.keyboard-open .game-board{flex:1 1 0;min-height:75px;order:1}
+ body.playing.keyboard-open .hint-chip{font-size:10px}
+}
+</style>
 <style id="sheetZoomStyles">
 .sheet-zoom-tools{display:flex;align-items:center;gap:10px;margin:8px 0 11px}
 .sheet-zoom-tools button{border:2px solid var(--ink);background:white;border-radius:12px;min-width:46px;min-height:44px;font-size:24px;font-weight:1000;color:var(--ink);box-shadow:0 3px 0 var(--ink)}
@@ -397,15 +416,38 @@ $('chips').onclick=e=>{let b=e.target.closest('[data-cat]');if(!b)return;let k=b
 function fitGameViewport(){
  const h=window.visualViewport?.height||window.innerHeight;
  document.documentElement.style.setProperty('--game-height',Math.round(h)+'px');
+ if(document.body.classList.contains('playing'))requestAnimationFrame(focusQuestionMap);
 }
 window.addEventListener('resize',fitGameViewport);
 window.visualViewport?.addEventListener('resize',fitGameViewport);
 function show(id){
+ document.body.classList.remove('keyboard-open');
  document.body.classList.toggle('playing',id==='game');
  document.body.classList.toggle('home-fixed',id==='home');
  ['home','game','end'].forEach(k=>$(k).classList.toggle('hide',k!==id));
  fitGameViewport();window.scrollTo(0,0);
 }
+function focusQuestionMap(){
+ if(!document.body.classList.contains('playing')||game.done||game.kind==='point')return;
+ const frame=$('map'),svg=frame.querySelector('svg');
+ if(!svg||!frame.clientWidth||!frame.clientHeight)return;
+ const height=Math.max(410,Math.min(900,Math.round(1240*frame.clientHeight/frame.clientWidth)));
+ const y=Math.max(0,Math.min(900-height,Math.round(q().y-height/2)));
+ svg.setAttribute('viewBox','0 '+y+' 1240 '+height);
+ svg.setAttribute('preserveAspectRatio','xMidYMid meet');
+}
+$('answerOptions').addEventListener('focusin',e=>{
+ if(e.target.matches('input[type=text]')){
+  document.body.classList.add('keyboard-open');
+  fitGameViewport();
+ }
+});
+$('answerOptions').addEventListener('focusout',e=>{
+ if(e.target.matches('input[type=text]')){
+  document.body.classList.remove('keyboard-open');
+  fitGameViewport();
+ }
+});
 function highlight(id){const svg=$('map').querySelector('svg');svg?.querySelectorAll('[data-highlight]').forEach(n=>n.classList.toggle('active',n.dataset.highlight===id));}
 function svgMap(target,showNames=false){$(target).innerHTML=makeMap(target!=='map');const svg=$(target).querySelector('svg');svg.classList.toggle('hide-labels',!showNames);if(target==='map')svg.setAttribute('aria-label','Klik een plek aan op de kaart');}
 function start(){let p=shuffle(pool());if(!p.length)return;game.queue=p.slice(0,Math.min(8,p.length));game.idx=0;game.stars=0;game.hintClicks=0;game.peekOpens=0;game.assistedQuestions=new Set();game.wrong=new Set();game.repeated=new Map();game.lastKind=null;game.round++;game.seen=new Set();svgMap('map');show('game');draw()}
@@ -554,7 +596,7 @@ if(game.kind==='choice'&&db.filter(y=>y.kind===x.kind).length<2)game.kind='type'
  $('answerOptions').innerHTML='';$('mapHint').textContent='KIJK OP DE KAART';
  $('progressText').textContent=(game.idx+1)+'/'+game.queue.length;$('missionName').textContent='MISSIE '+game.round;
  $('progressFill').style.width=((game.idx/game.queue.length)*100)+'%';$('score').textContent='★ '+game.stars;
- highlight(null);svgMap('map');setHitTargets(x);
+ highlight(null);svgMap('map');setHitTargets(x);requestAnimationFrame(focusQuestionMap);
  if(game.kind==='point'){
   $('prompt').textContent='Waar ligt '+whereLabel(x)+'?';$('sub').textContent='Tik op de kaart!';$('mapHint').textContent='TIK OP DE KAART!';
  }else if(game.kind==='choice'){
