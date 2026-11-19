@@ -1,18 +1,12 @@
-export const interrupt = 'Stop. Mag ik je even onderbreken? We zijn hier om leerlingen te feliciteren met hun Frans. Is het dan niet eerlijker om hen ook in het Frans toe te spreken? Vind je het goed als ik het vanaf hier overneem?';
-export const handback = 'Volgens mij heb ik je hiermee genoeg geholpen. Aan jou om deze bijzondere avond zelf af te sluiten.';
-// Laat de spreker rustig reageren na de Nederlandse onderbreking.
+export const opening = "Goedemiddag allemaal, beste leerlingen en collega's,\n\nOnze rector kan er vanmiddag helaas niet bij zijn. Ik mag daarom namens de schoolleiding het woord voeren.\n\nAllereerst wil ik jullie van harte feliciteren met het behalen van jullie DELF scolaire-diploma. Van A2 tot en met B2. Een mooie prestatie, waar we als schoolleiding trots op zijn.\n\nEn natuurlijk wil ik ook iets zeggen over het belang van de Franse taal...";
+export const reply = "Nou, vooruit. Maar gedraag je een beetje.";
+export const closing = "Dank je wel. Ik geloof dat ik zojuist ook nog even op mijn plaats ben gezet.\n\nBeste leerlingen,\n\nNogmaals van harte gefeliciteerd. Jullie mogen trots zijn op wat jullie hebben bereikt.\n\nMevrouw Klatten wil ik graag bedanken voor alle inzet en begeleiding. Zonder haar hadden we hier vanmiddag niet zo gestaan.\n\nEn dan wordt het tijd voor waar jullie voor gekomen zijn: de diploma's!";
+export const interrupt = "Ho, ho. Wacht eens even!\n\nWe hebben hier leerlingen die een officieel diploma Frans hebben gehaald, en jij houdt doodleuk een toespraak in het Nederlands?\n\nDat meen je toch niet?\n\nLaat mij dit maar even doen. Ik denk dat het in het Frans een stuk beter klinkt.";
+export const handback = "Zo. Volgens mij is nu wel duidelijk hoe belangrijk de Franse taal is.\n\nEn ik moet toegeven: je leerlingen hebben het beter begrepen dan jij.\n\nMaar goed, ik zal niet ál je werk overnemen.\n\nAan jou om af te sluiten. In het Nederlands, vooruit dan maar.";
+// Ruimte om na de Nederlandse onderbreking zelf te antwoorden.
 export const replyPauseMs = 4600;
-export const speech = `Chers élèves, chers parents, chers collègues,
+export const speech = "Mesdames et messieurs, chers élèves,\n\nVous venez d'assister à quelque chose d'assez extraordinaire.\n\nUn conrecteur de l'Emmauscollege qui prononce un discours sur l'importance du français… en néerlandais !\n\nIncroyable !\n\nHeureusement, je suis là.\n\nCar enfin, parlons sérieusement !\n\nLe français n'est pas une langue comme les autres.\n\nC'est la langue de Molière, de Victor Hugo, de la poésie, de la gastronomie et de l'élégance !\n\nUne langue dans laquelle même une simple commande de café peut devenir une œuvre d'art.\n\nEt soyons honnêtes : « Je t'aime », c'est quand même un peu plus romantique que « Ik hou van jou ».\n\nMais aujourd'hui, les véritables artistes, c'est vous.\n\nVous avez obtenu vos diplômes DELF scolaire, du niveau A2 au niveau B2.\n\nEt cela mérite nos applaudissements.\n\nParce qu'apprendre une langue demande du travail, de la persévérance et du courage.\n\nIl faut oser parler, même quand on cherche ses mots. Il faut accepter de faire des erreurs. Et surtout, il faut continuer.\n\nVous l'avez fait. Et vous avez réussi.\n\nAu nom de toute la direction de l'Emmauscollege, je peux vous dire une chose : nous sommes très fiers de vous.\n\nUn grand merci également à Madame Klatten, pour son engagement et tout le travail accompli auprès des élèves.\n\nChers diplômés, profitez de ce moment.\n\nSoyez fiers de vos résultats, mais aussi du chemin parcouru.\n\nEt surtout, continuez à parler français !\n\nMême si votre conrecteur préfère encore le néerlandais...\n\nToutes mes félicitations à vous !";
 
-Ce soir, nous célébrons votre réussite. Vous avez choisi d'aller plus loin dans l'apprentissage du français. Vous avez étudié, pratiqué, parfois hésité, puis recommencé. Et aujourd'hui, vous recevez le diplôme DELF scolaire.
-
-Ce diplôme est une reconnaissance officielle de votre niveau de français. Mais il raconte aussi quelque chose de vous. Il montre que vous avez osé parler une autre langue, chercher vos mots, écouter les autres et continuer même quand ce n'était pas facile.
-
-Apprendre une langue, c'est bien plus que connaître du vocabulaire ou des règles de grammaire. C'est pouvoir rencontrer d'autres personnes, comprendre d'autres idées et se sentir un peu plus chez soi dans le monde.
-
-Alors, profitez de cette soirée. Soyez fiers du chemin parcouru, de votre travail et de ce que vous avez accompli. Aux enseignants et à toutes les personnes qui vous ont accompagnés, merci.
-
-Et à vous, les diplômés : toutes mes félicitations ! Continuez à être curieux, à apprendre et, surtout, à oser parler français.`;
 export function paragraphs(text){return String(text).split(/\n\s*\n/).map(s=>s.trim()).filter(Boolean);}
 export function modelFiles(files){
  const arr=Array.from(files||[]);

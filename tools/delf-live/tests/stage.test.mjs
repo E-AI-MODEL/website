@@ -1,5 +1,5 @@
 import {test} from 'node:test';import assert from 'node:assert/strict';
-import {modelFiles,paragraphs,speechSegments,stageAdvance,speech,replyPauseMs} from '../src/script.mjs';
+import {modelFiles,paragraphs,speechSegments,stageAdvance,speech,replyPauseMs,opening,reply,closing,interrupt,handback} from '../src/script.mjs';
 test('podiumvolgorde en noodstop',()=>{
  let s='intro';for(const action of ['start','interrupt','french','handback','finish']){
   const next=stageAdvance(s,action);assert.ok(next);s=next;
@@ -46,4 +46,35 @@ test('mobiele test gebruikt een echt Frans Phonon-model, geen systeemstem',()=>{
   assert.ok(!script.includes('SpeechSynthesisUtterance'));
   assert.ok(!script.includes('speechSynthesis'));
   assert.ok(page.includes('niet identiek aan het afzonderlijke Franse checkpoint'));
+});
+
+test('echt gesproken Nederlands wordt vertaald, spiektekst niet',()=>{
+  assert.ok(html.includes('id="displayText"></div>'));
+  assert.ok(html.includes('id="voiceVisual"'));
+  assert.ok(!html.includes('Une langue de plus.'));
+  assert.match(opening,/Onze rector kan er vanmiddag helaas niet bij zijn/);
+  assert.match(closing,/Mevrouw Klatten/);
+  assert.match(reply,/gedraag je/);
+  assert.ok(main.includes('translateFinal(value[0].transcript)'));
+  assert.ok(main.includes('translatePreview(interim)'));
+  assert.ok(!main.includes('translateFinal(opening)'));
+  assert.ok(!main.includes('translateFinal(closing)'));
+});
+test('voorgelezen script blijft vast, maar staat niet op het scherm',()=>{
+  assert.match(interrupt,/toespraak in het Nederlands/);
+  assert.match(handback,/In het Nederlands, vooruit dan maar/);
+  assert.match(speech,/Madame Klatten/);
+  assert.match(speech,/A2 au niveau B2/);
+  assert.match(speech,/toute la direction de l'Emmauscollege/);
+  assert.ok(!speech.includes('chers parents'));
+  assert.ok(!main.includes("screen('Un instant"));
+  assert.ok(!main.includes("screen('Merci. À vous"));
+  assert.ok(!main.includes("screen('À vous maintenant"));
+  assert.ok(!main.includes("screen(captionCues.shift().text"));
+});
+test('wolken en dunne lijnen op stem, geen podiumiconen',()=>{
+  assert.ok(styles.includes('@keyframes delf-cloud-drift'));
+  assert.ok(styles.includes('.voice-visual'));
+  assert.ok(!html.includes('stage-controls'));
+  assert.ok(styles.includes('color:#223743'));
 });

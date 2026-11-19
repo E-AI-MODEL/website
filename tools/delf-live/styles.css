@@ -192,3 +192,27 @@ html, body {background:#fbfbf9;color:#223743;}
   .caption-draft{font-size:clamp(23px,4.8vw,34px);}
 }
 @media(prefers-reduced-motion:reduce){.stage.text-arriving::before,.statement{animation:none!important;}}
+
+/* Wit, langzaam bewegend wolkenveld. Geen tekst vóór het eerste gesproken woord. */
+.stage::after{
+  content:'';position:absolute;z-index:0;inset:-12%;pointer-events:none;
+  background:radial-gradient(ellipse 33% 32% at 19% 41%,rgba(198,222,227,.25),transparent 90%),
+    radial-gradient(ellipse 33% 38% at 82% 63%,rgba(234,222,213,.19),transparent 90%),
+    radial-gradient(ellipse 42% 41% at 52% 22%,rgba(223,237,233,.23),transparent 90%);
+  opacity:.7;animation:delf-cloud-drift 33s ease-in-out infinite alternate;
+}
+@keyframes delf-cloud-drift {
+  0%{transform:translate3d(-1.7%,-1.1%,0) scale(1)}
+  100%{transform:translate3d(1.7%,1.3%,0) scale(1.035)}
+}
+.voice-visual{
+  position:absolute;z-index:2;left:50%;top:50%;
+  width:min(68vw,700px);height:220px;max-height:35dvh;
+  transform:translate(-50%,-50%);
+  pointer-events:none;opacity:0;transition:opacity 650ms ease;
+}
+.stage[data-phase='interrupted'] .voice-visual,
+.stage[data-phase='french'] .voice-visual,
+.stage[data-phase='handback'] .voice-visual{opacity:.95}
+@media(max-width:680px){.voice-visual{width:90vw;height:155px}}
+@media(prefers-reduced-motion:reduce){.stage::after{animation:none!important}.voice-visual{transition:none!important}}

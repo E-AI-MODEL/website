@@ -1,9 +1,12 @@
 import { PhononTTS } from 'phonon-tts';
-import { interrupt, handback, speech, speechSegments, modelFiles, stageAdvance, replyPauseMs } from './script.mjs';
+import { opening, reply, closing, interrupt, handback, speech, speechSegments, modelFiles, stageAdvance, replyPauseMs } from './script.mjs';
 
 const $ = id => document.getElementById(id);
 const stage = $('stage');
 $('speechText').value = speech;
+$('openingText').value = opening;
+$('replyText').textContent = reply;
+$('closingText').value = closing;
 let phase = 'intro';
 let epoch = 0;
 let translator = null;
@@ -50,6 +53,13 @@ function pulseText() {
   void stage.offsetWidth;
   stage.classList.add('text-arriving');
   glowTimer = setTimeout(() => { stage.classList.remove('text-arriving'); glowTimer = null; }, 850);
+}
+function blankStage() {
+  stage.dataset.display = 'statement';
+  const surface = $('displayText');
+  surface.classList.remove('caption-layout');
+  surface.replaceChildren();
+  $('translationMeta').textContent = '';
 }
 function screen(text, meta = '') {
   stage.dataset.display = 'statement';
@@ -406,7 +416,7 @@ function followAudioClock(ctx, controller) {
   cueTimer = setInterval(() => {
     if (controller.signal.aborted || soundContext !== ctx) { clearInterval(cueTimer); cueTimer = null; return; }
     while (captionCues.length && ctx.currentTime + 0.025 >= captionCues[0].at) {
-      screen(captionCues.shift().text, 'DELF SCOLAIRE · DISCOURS EN FRANÇAIS');
+      captionCues.shift(); // Stem blijft hoorbaar, maar geen tekst bij de AI.
     }
   }, 35);
 }
@@ -431,7 +441,7 @@ async function streamFrench() {
   const segments = speechSegments($('speechText').value);
   const started = performance.now();
   followAudioClock(ctx, controller);
-  screen('À vous maintenant, chers diplômés.', 'DELF SCOLAIRE');
+  blankStage();
   try {
     for (const line of segments) {
       if (controller.signal.aborted || phase !== 'french') return;
@@ -450,7 +460,7 @@ async function streamFrench() {
         node.connect(ctx.destination);
         t = Math.max(t, ctx.currentTime + 0.045);
         if (firstChunk) {
-          captionCues.push({ at: t, text: line });
+          captionCues.push({ at: t });
           firstChunk = false;
         }
         node.start(t);
@@ -473,8 +483,8 @@ function goStart() {
   stopVoices(); clearLiveState(); closing = false;
   setPhase('live', 'TRADUCTION EN DIRECT');
   renderCaptions();
-  startMic();
-  panel(false);
+  if (startMic()) panel(false);
+  else { setPhase('intro', 'VOORBEREIDING'); blankStage(); panel(true); }
 }
 function goInterrupt() {
   if (closing || stageAdvance(phase, 'interrupt') === null) return;
@@ -482,7 +492,7 @@ function goInterrupt() {
   if (!selectedDutchVoice) { reportError('Selecteer eerst een Nederlandse stem.'); return; }
   stopMic(); stopVoices();
   setPhase('interrupted', 'UN INSTANT…');
-  screen('Un instant, s’il vous plaît.', '');
+  blankStage();
   const now = epoch;
   const started = speakDutch(interrupt, () => {
     // One key triggers the complete takeover, including a brief reply opportunity.
@@ -506,7 +516,7 @@ function goHandback() {
   if (stageAdvance(phase, 'handback') === null) return;
   stopVoices();
   setPhase('handback', 'À VOUS');
-  screen('Merci. À vous de conclure.', '');
+  blankStage();
   const now = epoch;
   speakDutch(handback, () => {
     if (phase === 'handback' && epoch === now) goFinish();
@@ -525,12 +535,13 @@ function goFinish() {
 function goReset() {
   stopMic(); stopVoices(); clearLiveState(); closing = false;
   setPhase('intro', 'CÉRÉMONIE');
-  screen('Une langue de plus.\nUn monde de plus.', 'Ce soir, nous célébrons votre réussite');
+  blankStage();
   panel(false);
 }
 function panic() {
   stopMic(); stopVoices(); previewSequence++;
   setPhase('stopped', 'PAUSE');
+  blankStage();
   feedback('runtimeStatus', 'Alles gestopt. Toets 0 om opnieuw te beginnen.', 'bad');
 }
 const actions = {start:goStart, interrupt:goInterrupt, french:goFrench, handback:goHandback, finish:goFinish, reset:goReset, panic};
