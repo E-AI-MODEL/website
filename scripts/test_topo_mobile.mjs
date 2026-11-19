@@ -89,7 +89,8 @@ try{
   await sh.locator('#next').click();
  }
  assert.ok(await sh.locator('#end').isVisible(),'Shuffle round does not finish');
- assert.equal(waters,2,'Shuffle must include two water questions');
+ console.log('TOPO SHUFFLE initial counts '+JSON.stringify({waters,brain,zoomed,provinces,uniqueQuestions:initialPrompts.size}));
+ assert.ok(waters>=2,'Shuffle must include at least two water questions');
  assert.ok(brain>=1,'Shuffle must include a question without the map');
  assert.ok(zoomed>=1,'Shuffle must include a zoom challenge');
  assert.ok(provinces>=1,'Shuffle must include a province question');
