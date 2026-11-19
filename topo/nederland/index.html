@@ -162,7 +162,7 @@ function countryMap(showNames,focused){
    :'<circle class="city-dot" cx="'+fmt(x.x)+'" cy="'+fmt(x.y)+'" r="7"/>';
   return '<g><circle class="city-halo" cx="'+fmt(x.x)+'" cy="'+fmt(x.y)+'" r="15"/>'+marker+'<circle class="city-hit" data-place="'+x.id+'" cx="'+fmt(x.x)+'" cy="'+fmt(x.y)+'" r="21"/></g>';
  }).join('');
- const labelCities=(showNames?items.filter(x=>x.capital):items.filter(x=>x.capital&&focused&&x.id===focused.id));
+ const labelCities=showNames?items.filter(x=>x.capital||(queue[index]&&x.province===queue[index].province)):[];
  const provinceTexts=showNames&&focused==='sheet'?provinceLabels.map(row=>{
   const p=proj(row[1],row[2]);return '<text class="map-text province" x="'+fmt(p[0])+'" y="'+fmt(p[1])+'" text-anchor="middle">'+row[0]+'</text>';
  }).join(''):'';
