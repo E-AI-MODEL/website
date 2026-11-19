@@ -1,5 +1,7 @@
 export const interrupt = 'Stop. Mag ik je even onderbreken? We zijn hier om leerlingen te feliciteren met hun Frans. Is het dan niet eerlijker om hen ook in het Frans toe te spreken? Vind je het goed als ik het vanaf hier overneem?';
 export const handback = 'Volgens mij heb ik je hiermee genoeg geholpen. Aan jou om deze bijzondere avond zelf af te sluiten.';
+// Laat de spreker rustig reageren na de Nederlandse onderbreking.
+export const replyPauseMs = 4600;
 export const speech = `Chers élèves, chers parents, chers collègues,
 
 Ce soir, nous célébrons votre réussite. Vous avez choisi d'aller plus loin dans l'apprentissage du français. Vous avez étudié, pratiqué, parfois hésité, puis recommencé. Et aujourd'hui, vous recevez le diplôme DELF scolaire.

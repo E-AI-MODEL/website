@@ -8,7 +8,7 @@ De podiumomgeving toont uitsluitend Frans. Je begint in het Nederlands; Chrome h
 
 Voor aanvang open je met `Esc` de instellingen en bereid je het Franse vertaalmodel, de microfoon, het Franse stemmodel en een bewust gekozen Nederlandse onderbrekingsstem voor. Klik op **Luister naar de Franse stem** om het Franse accent en de intonatie te beoordelen. Met `1` begin je live te vertalen.
 
-**Eén druk op `→`** tijdens de Nederlandse opening begint de volledige overname: de Nederlandse stem onderbreekt je; er volgt een korte ruimte voor een reactie; de Franse Phonon-stem spreekt de voorbereide Franse tekst **live** uit; en de Nederlandse stem geeft het woord weer aan jou. Meteen daarna schakelt de app zelf de live vertaling weer in voor jouw Nederlandse slot. Toets `→` heeft tijdens het slot geen effect.
+**Eén druk op `→`** tijdens de Nederlandse opening begint de volledige overname: de Nederlandse stem onderbreekt je; je krijgt ruim vier seconden om te antwoorden; de Franse Phonon-stem spreekt de voorbereide Franse tekst **live** uit; en de Nederlandse stem geeft het woord weer aan jou. Meteen daarna schakelt de app zelf de live vertaling weer in voor jouw Nederlandse slot. Toets `→` heeft tijdens het slot geen effect.
 
 **`Spatie`** pauzeert en hervat de stem. **`X`** stopt alle stemgeluiden en de microfoon meteen. Met `0` begin je opnieuw. De toetsen `2` tot en met `5` blijven beschikbaar om een onderdeel bij een storing handmatig te starten. `F` zet het scherm volledig open.
 

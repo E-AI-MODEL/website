@@ -1,5 +1,5 @@
 import { PhononTTS } from 'phonon-tts';
-import { interrupt, handback, speech, speechSegments, modelFiles, stageAdvance } from './script.mjs';
+import { interrupt, handback, speech, speechSegments, modelFiles, stageAdvance, replyPauseMs } from './script.mjs';
 
 const $ = id => document.getElementById(id);
 const stage = $('stage');
@@ -47,6 +47,9 @@ let previewInFlight = false;
 let previewSequence = 0;
 let closing = false;
 let autoTimer = null;
+let autoCallback = null;
+let autoDeadline = 0;
+let autoRemainingMs = 0;
 let paused = false;
 let captionCues = [];
 let cueTimer = null;
@@ -370,8 +373,32 @@ function speakDutch(text, onEnd) {
 }
 $('previewDutch').onclick = () => { speakDutch('Goedenavond. Mag ik je even onderbreken?'); };
 
+function scheduleAuto(callback, durationMs) {
+  autoCallback = callback;
+  autoRemainingMs = durationMs;
+  resumeAuto();
+}
+function resumeAuto() {
+  if (paused || !autoCallback || autoTimer) return;
+  autoDeadline = performance.now() + autoRemainingMs;
+  autoTimer = setTimeout(() => {
+    autoTimer = null;
+    const callback = autoCallback;
+    autoCallback = null;
+    autoRemainingMs = 0;
+    callback?.();
+  }, autoRemainingMs);
+}
+function pauseAuto() {
+  if (!autoTimer) return;
+  clearTimeout(autoTimer);
+  autoTimer = null;
+  autoRemainingMs = Math.max(0, autoDeadline - performance.now());
+}
 function stopVoices() {
   if (autoTimer) { clearTimeout(autoTimer); autoTimer = null; }
+  autoCallback = null;
+  autoRemainingMs = 0;
   if (cueTimer) { clearInterval(cueTimer); cueTimer = null; }
   captionCues = [];
   paused = false;
@@ -385,6 +412,7 @@ function stopVoices() {
 function togglePause() {
   if (!['interrupted', 'french', 'handback'].includes(phase)) return;
   paused = !paused;
+  if (paused) pauseAuto(); else resumeAuto();
   if (phase === 'french' && soundContext) {
     void (paused ? soundContext.suspend() : soundContext.resume()).catch(e => reportError(e.message));
   } else if ('speechSynthesis' in window) {
@@ -479,9 +507,9 @@ function goInterrupt() {
   const now = epoch;
   const started = speakDutch(interrupt, () => {
     // One key triggers the complete takeover, including a brief reply opportunity.
-    autoTimer = setTimeout(() => {
+    scheduleAuto(() => {
       if (phase === 'interrupted' && epoch === now) goFrench();
-    }, 1600);
+    }, replyPauseMs);
   });
   if (!started) reportError('De onderbreking kon niet starten.');
   panel(false);

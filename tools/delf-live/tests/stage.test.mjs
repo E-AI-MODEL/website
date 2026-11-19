@@ -1,5 +1,5 @@
 import {test} from 'node:test';import assert from 'node:assert/strict';
-import {modelFiles,paragraphs,speechSegments,stageAdvance,speech} from '../src/script.mjs';
+import {modelFiles,paragraphs,speechSegments,stageAdvance,speech,replyPauseMs} from '../src/script.mjs';
 test('podiumvolgorde en noodstop',()=>{
  let s='intro';for(const action of ['start','interrupt','french','handback','finish']){
   const next=stageAdvance(s,action);assert.ok(next);s=next;
@@ -14,3 +14,5 @@ test('geen schijnstem zonder de Franse checkpointbestanden',()=>{
 test('script bevat alinea’s en blijft Frans',()=>{assert.ok(paragraphs(speech).length>=5);assert.ok(speech.includes('DELF scolaire'));});
 
 test('korte Franse zinsdelen zonder vooraf ingesproken audio',()=>{const parts=speechSegments(speech); assert.ok(parts.length>paragraphs(speech).length); assert.ok(parts.every(part=>part.length<=220)); assert.equal(parts.join(' ').includes('DELF scolaire'),true);});
+
+test('voldoende reactietijd tussen onderbreking en Franse speech',()=>{assert.ok(replyPauseMs >= 4000 && replyPauseMs < 7000);});
