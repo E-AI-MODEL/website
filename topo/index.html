@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f8fbfa">
+<meta name="description" content="Oefen topografie van Noord-Nederland met een interactieve kaart. Geen account, cookies of opgeslagen scores.">
+<title>TopoTrainer | Nederland Kaart B</title>
+<style>
+:root{--ink:#18323d;--inksoft:#607782;--teal:#0e8078;--mint:#e1f5ed;--sky:#e2f2f8;--line:#d7e5e4;--paper:#fff;--warm:#fff9ec;--orange:#f8ab60;--danger:#b43c4b;--shadow:0 18px 55px rgba(32,63,74,.09)}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:ui-rounded,"SF Pro Rounded",Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:linear-gradient(165deg,#f4fafb 0%,#f9faf5 59%,#fdf9f1 100%)}
+button,input{font:inherit}button{cursor:pointer;-webkit-tap-highlight-color:transparent}button:focus-visible,input:focus-visible{outline:3px solid #52cbb3;outline-offset:3px}
+button:disabled{opacity:.45;cursor:not-allowed}.shell{max-width:1330px;margin:0 auto;padding:22px clamp(14px,3vw,36px) 40px}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:28px}.brand{display:flex;align-items:center;gap:11px;font-weight:850;letter-spacing:-.035em;font-size:20px}
+.brand-icon{height:37px;width:37px;display:grid;place-items:center;color:white;background:var(--teal);border-radius:12px;transform:rotate(-5deg);font-size:23px;box-shadow:0 5px 0 #badad3}
+.smalltag{font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#69828a}
+.link-btn{border:1px solid var(--line);background:rgba(255,255,255,.88);color:#2b5660;padding:11px 15px;border-radius:14px;font-weight:700;display:inline-flex;align-items:center;gap:7px}
+.link-btn:hover{border-color:#80b9b4;background:#f5fffd}.link-btn svg{width:18px;height:18px}
+.hero{margin-bottom:22px}.eyebrow{color:var(--teal);font-size:12px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px}.hero h1{margin:0;font-size:clamp(34px,4.3vw,58px);line-height:1.08;letter-spacing:-.055em}.hero p{margin:10px 0 0;max-width:610px;color:#5d7881;font-size:clamp(14px,1.4vw,17px);line-height:1.55}
+.setup-grid{display:grid;grid-template-columns:minmax(385px,.88fr) minmax(0,1.12fr);gap:22px;align-items:start}.panel{border:1px solid #e6eeeb;background:rgba(255,255,255,.94);box-shadow:var(--shadow);border-radius:25px;padding:clamp(18px,2.2vw,28px)}
+.section-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:13px}.section-heading h2{margin:0;font-size:19px;letter-spacing:-.035em}.soft-count{color:#6b828a;font-size:12px;font-weight:700}.mini-actions{display:flex;gap:7px}
+.tiny-btn{background:transparent;color:var(--teal);border:0;font-size:12px;font-weight:800;padding:6px 3px;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
+.category-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.category-btn{background:#fcfefd;border:1.5px solid #e1e9e7;border-radius:16px;text-align:left;min-height:78px;padding:12px;display:flex;gap:10px;align-items:center;transition:.17s ease;position:relative}.category-btn:hover{background:#f3faf8;transform:translateY(-1px)}.category-btn.selected{background:#ebfaf5;border-color:#51b9a3;box-shadow:inset 0 0 0 .5px #51b9a3}
+.cat-icon{display:grid;place-items:center;flex-shrink:0;width:37px;height:37px;border-radius:12px;background:#eff1f3;font-size:22px;font-weight:850;color:#5a6a76}.category-btn.selected .cat-icon{background:#c9f0e1;color:#0a7368}.cat-copy{min-width:0}.cat-copy strong{display:block;font-size:13px;letter-spacing:-.02em;line-height:1.25}.cat-copy small{display:block;color:#6c838b;font-size:11px;margin-top:5px}.tick{position:absolute;right:9px;top:8px;width:17px;height:17px;border-radius:100%;background:#dce4e3;color:white;font-size:13px;display:grid;place-items:center}.category-btn.selected .tick{background:var(--teal)}
+.opt-title{font-size:13px;font-weight:850;margin:22px 0 9px}.switcher{display:flex;gap:5px;padding:4px;background:#edf4f3;border-radius:14px;flex-wrap:wrap}.switcher button{min-height:40px;flex:1;background:transparent;border:0;border-radius:11px;padding:7px 9px;color:#66808a;font-size:12px;font-weight:800;white-space:nowrap}.switcher button.chosen{background:#fff;color:#163f4b;box-shadow:0 2px 9px rgba(25,67,78,.1)}.switcher.four button{flex:1 1 auto}
+.option-help{font-size:11px;color:#71878d;line-height:1.5;margin:8px 0 0}.startbar{display:flex;justify-content:space-between;align-items:center;gap:13px;margin-top:23px}.count-note{font-size:12px;color:#789097;line-height:1.45}.count-note strong{display:block;color:#183a41;font-size:15px}.primary{border:0;background:#117e76;color:#fff;border-radius:16px;min-height:52px;padding:12px 22px;font-size:15px;font-weight:850;box-shadow:0 7px 0 #b6dfd5;display:inline-flex;align-items:center;justify-content:center;gap:10px;transition:background .16s,transform .16s}.primary:hover{background:#0b706c}.primary:active{transform:translateY(3px);box-shadow:0 4px 0 #b6dfd5}.primary:disabled{box-shadow:none}
+.preview-panel{overflow:hidden;padding:0}.preview-head{padding:20px 22px 0;display:flex;justify-content:space-between;align-items:center;gap:9px}.preview-head h2{margin:0;font-size:16px;letter-spacing:-.02em}.preview-caption{margin:7px 22px 8px;font-size:12px;color:#6e868c;line-height:1.5}.map-wrap{position:relative;overflow:hidden;border-radius:17px;background:var(--sky)}.map-wrap.preview{margin:14px;box-shadow:inset 0 0 0 1px #d2e6e8}.map-art{display:block;width:100%;height:auto;touch-action:manipulation;user-select:none}.map-art path,.map-art circle,.map-art rect{transition:fill .15s,stroke .15s,opacity .15s}.map-art .sea-fill{fill:#cbe9f4}.map-art .land-shadow{fill:#e2e9d8;stroke:#8eafa6;stroke-width:2}.map-art .friesland{fill:#fae8bc}.map-art .groningen{fill:#f9dc9d}.map-art .drenthe{fill:#f9e7b4}.map-art .region{stroke:#c6a975;stroke-width:2.8;stroke-linecap:round;stroke-linejoin:round}.map-art .other{fill:#d8dfd1;stroke:#adc0b8;stroke-width:2}.map-art .island{fill:#f8e5b9;stroke:#bba77f;stroke-width:2.6;stroke-linejoin:round}.map-art .water-shape{fill:#badfeb;stroke:#9dc8d7;stroke-width:2}.map-art .canal{fill:none;stroke:#8bbbd0;stroke-width:4.5;stroke-linecap:round;stroke-linejoin:round;opacity:.88}.map-art .road{fill:none;stroke:#d7c48e;stroke-width:3;stroke-linecap:round;stroke-dasharray:9 11;opacity:.7}.map-art .dike{stroke:#698e9b;stroke-width:7;stroke-linecap:round;fill:none}.map-art .city-halo{fill:#fff5de;stroke:#dda775;stroke-width:2}.map-art .city-dot{fill:#283a44}.map-art .capital-dot{fill:#283a44;rx:2}.map-art .map-label{font-size:17px;font-weight:800;fill:#30454d;paint-order:stroke;stroke:#f4f7ed;stroke-width:5;stroke-linejoin:round;pointer-events:none}.map-art .map-label.small{font-size:16px}.map-art .map-label.region-name{font-size:21px;font-weight:900;fill:#665a48;letter-spacing:1px}.map-art .map-label.water-name{font-size:26px;fill:#5f9cb5;letter-spacing:3px;font-weight:800;stroke:#e4f4fa;stroke-width:7}.map-art .label-layer{transition:opacity .2s}.map-art.hide-labels .label-layer{opacity:0}.map-art .click-layer [data-place]{cursor:crosshair}.map-art .click-layer .province-click{fill:transparent;stroke:transparent;stroke-width:2}.map-art .click-layer .island-click{fill:transparent;stroke:transparent;stroke-width:22;stroke-linejoin:round}.map-art .click-layer .water-click{fill:transparent;stroke:transparent}.map-art .click-layer .dike-click{fill:none;stroke:transparent;stroke-width:35;stroke-linecap:round}.map-art .click-layer .city-click{fill:transparent;stroke:none}.map-art .highlight-layer{pointer-events:none}.map-art .highlight-layer [data-highlight]{opacity:0;transition:opacity .18s}.map-art .highlight-layer [data-highlight].active{opacity:1}.map-art .highlight-layer .region-highlight{fill:#2ec99c;fill-opacity:.48;stroke:#008779;stroke-width:6}.map-art .highlight-layer .island-highlight{fill:#2ec99c;fill-opacity:.65;stroke:#048b7c;stroke-width:6;stroke-linejoin:round}.map-art .highlight-layer .water-highlight{fill:#6cbee5;fill-opacity:.55;stroke:#247aa5;stroke-width:6}.map-art .highlight-layer .dike-highlight{stroke:#0c9b87;stroke-width:13;fill:none;stroke-linecap:round}.map-art .highlight-layer .city-highlight{fill:#31caa0;fill-opacity:.4;stroke:#008b7a;stroke-width:7}.map-art .highlight-layer .city-highlight.inner{fill:#0c806f;stroke:white;stroke-width:4}.map-art.preview-map .click-layer{pointer-events:none}.map-art.preview-map .highlight-layer{display:none}
+.legend{display:flex;align-items:center;gap:15px;flex-wrap:wrap;padding:0 20px 20px;color:#67818c;font-size:11px}.legend span{display:flex;gap:6px;align-items:center}.legend b{display:inline-block;width:10px;height:10px;background:#243740;border-radius:50%}.legend b.square{border-radius:1px}
+#play,#finish{display:none}.play-layout{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(285px,.75fr);gap:20px;align-items:start}.play-header{margin-bottom:18px;display:flex;justify-content:space-between;align-items:center;gap:15px}.progress-wrap{flex:1;max-width:530px}.progress-text{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;color:#647e84;font-size:13px;font-weight:800}.progress{height:10px;border-radius:50px;background:#e4eeea;overflow:hidden}.progress-inner{background:#3bbf9d;height:100%;width:0;border-radius:50px;transition:width .25s}.metric{font-size:13px;font-weight:850;color:#17695e;background:#e4f6ef;border-radius:12px;padding:10px 14px;white-space:nowrap}
+.map-panel{padding:12px;overflow:hidden}.map-tools{display:flex;align-items:center;justify-content:space-between;gap:7px;padding:4px 5px 12px}.map-tools .tool-buttons{display:flex;gap:6px}.tool{border:1px solid #d8e7e5;color:#32626b;background:#f9fdfc;border-radius:11px;min-height:35px;padding:8px 11px;font-size:12px;font-weight:800}.tool.active{background:#dcf3e8;border-color:#6ac3ae}.tool.zoom{font-size:18px;min-width:35px;padding:4px 8px}.map-stage{border-radius:14px;overflow:hidden;background:#d4eef3}.map-stage .map-art{cursor:grab}.map-stage .map-art:active{cursor:grabbing}.mapfoot{font-size:11px;color:#7d9396;padding:10px 5px 4px;display:flex;justify-content:space-between;gap:6px}
+.question-panel{padding:25px}.question-top{display:flex;align-items:center;justify-content:space-between;gap:8px}.question-kind{border-radius:9px;background:#edf6f4;color:#27796e;font-weight:900;letter-spacing:.08em;font-size:11px;text-transform:uppercase;padding:8px 10px}.question-n{font-size:12px;color:#789098;font-weight:800}.question-title{font-size:clamp(23px,2.9vw,35px);line-height:1.24;letter-spacing:-.045em;margin:21px 0 10px}.question-desc{color:#6d858b;font-size:14px;line-height:1.5;margin:0 0 20px;min-height:42px}.options{display:flex;flex-direction:column;gap:10px}.answer-btn{border:1.5px solid #dce8e5;background:#fbfdfd;border-radius:13px;padding:15px 17px;text-align:left;color:var(--ink);font-weight:800;display:flex;align-items:center;gap:11px;min-height:53px}.answer-btn:hover:not(:disabled){background:#ecfaf4;border-color:#64bdac}.answer-btn .choice-num{font-size:12px;width:27px;height:27px;display:grid;place-items:center;background:#eef4f2;color:#71908c;border-radius:8px}.answer-btn.correct{background:#e0f7ec;border-color:#3cba92}.answer-btn.wrong{background:#fff0ee;border-color:#e49b9c}.answer-btn:disabled{opacity:1}
+.type-form{display:flex;gap:8px;flex-wrap:wrap}.type-form input{flex:1 1 170px;min-width:0;min-height:53px;background:#fcfffe;border-radius:13px;border:1.5px solid #d4e7e4;padding:12px 15px;color:var(--ink);font-weight:750}.type-form button{border:0;background:#147e76;border-radius:13px;color:white;padding:0 20px;font-weight:850;min-height:53px}.answer-feedback{display:none;margin-top:18px;border-radius:14px;padding:15px;line-height:1.5;font-size:14px}.answer-feedback.visible{display:block}.answer-feedback.good{color:#145c49;background:#e5f7ea}.answer-feedback.bad{color:#914447;background:#fff1ed}.answer-feedback.neutral{color:#4c6d77;background:#edf7f7}.answer-feedback strong{display:block;font-size:16px;margin-bottom:3px}
+.question-actions{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:21px;flex-wrap:wrap}.simple{border:0;background:transparent;padding:10px 0;color:#638188;font-size:13px;font-weight:850}.next{min-width:145px}.end-link{margin-top:18px;display:block;background:transparent;color:#7b9197;border:0;font-weight:700;font-size:12px;text-decoration:underline;text-underline-offset:3px}
+.result-wrap{max-width:740px;margin:25px auto}.result-top{text-align:center;padding:35px 22px 10px}.result-graphic{height:85px;width:85px;margin:0 auto 16px;display:grid;place-items:center;font-size:44px;background:#e8f7ea;border-radius:26px;transform:rotate(-8deg)}.result-top h2{font-size:clamp(26px,4vw,39px);margin:6px 0;letter-spacing:-.04em}.result-top p{color:#638087;margin:10px 0 20px}.result-score{font-size:50px;font-weight:900;letter-spacing:-.06em;color:#107d70}.result-score small{font-size:18px;color:#8aa29e}.result-details{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:8px 0 25px}.result-stat{border-radius:16px;padding:17px;background:#f0f7f5}.result-stat b{display:block;font-size:22px;margin-bottom:3px}.result-stat span{font-size:12px;color:#68848b}.review{background:#fcf8ed;border-radius:16px;padding:17px;margin:12px 0 25px}.review h3{margin:0 0 10px;font-size:15px}.review-list{display:flex;flex-wrap:wrap;gap:7px}.review-list span{border:1px solid #dfcfa4;color:#6e5d39;background:#fffdf7;padding:7px 10px;border-radius:10px;font-size:12px;font-weight:750}.result-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:14px}
+.dialog{position:fixed;inset:0;z-index:30;background:rgba(17,37,47,.7);display:none;align-items:center;justify-content:center;padding:18px}.dialog.visible{display:flex}.dialog-card{background:#fff;border-radius:22px;max-width:960px;width:100%;padding:18px;max-height:92vh;display:flex;flex-direction:column;box-shadow:0 30px 120px #09212470}.dialog-head{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:2px 4px 13px}.dialog-head h2{margin:0;font-size:19px}.dialog-head p{margin:5px 0 0;font-size:12px;color:#68858a}.dialog-close{border:0;border-radius:10px;background:#f0f5f3;color:#325c63;min-height:38px;min-width:38px;font-size:24px}
+.footer{padding:22px 0 0;font-size:11px;color:#84999e;text-align:center}
+@media(max-width:1010px){.setup-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.category-btn{gap:6px;padding:10px}.cat-icon{height:32px;width:32px;font-size:18px}.play-layout{grid-template-columns:minmax(0,1fr) minmax(270px,.83fr)}}
+@media(max-width:790px){.topbar{margin-bottom:19px}.shell{padding-top:16px}.setup-grid,.play-layout{grid-template-columns:1fr}.panel{border-radius:19px}.hero h1{font-size:38px}.hero{margin-bottom:18px}.preview-panel{display:none}.play-layout{gap:12px}.question-panel{grid-row:1}.map-panel{grid-row:2}.question-panel{padding:20px}.question-title{font-size:25px;margin-top:13px}.question-desc{margin-bottom:13px;min-height:0}.options{display:grid;grid-template-columns:1fr 1fr;gap:7px}.answer-btn{padding:12px 10px;min-height:58px;font-size:13px}.answer-btn .choice-num{width:22px;height:22px;flex-shrink:0}.map-tools{padding-bottom:8px}.play-header{margin-bottom:11px}.question-actions{margin-top:14px}.mapfoot{font-size:10px}}
+@media(max-width:420px){.shell{padding:12px 12px 25px}.brand{font-size:17px}.brand-icon{height:32px;width:32px;font-size:20px}.topbar .link-btn{font-size:11px;padding:10px}.hero h1{font-size:34px}.panel{padding:15px}.category-grid{gap:7px}.category-btn{min-height:67px}.cat-copy strong{font-size:12px}.cat-copy small{font-size:10px}.tick{right:5px;top:5px;width:15px;height:15px}.startbar{align-items:stretch}.startbar .primary{padding:10px 13px;flex:1}.count-note{font-size:11px}.switcher.four button{font-size:11px}.question-title{font-size:24px}.question-panel{padding:18px}.map-panel{padding:7px}.mapfoot{display:flex;padding:8px 4px 3px}.mapfoot span:last-child{display:none}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+
+/* Clean printable answer sheet, drawn from the same vector map as the game. */
+body.modal-open{overflow:hidden}
+.footer-link{border:0;background:transparent;text-decoration:underline;text-underline-offset:3px;color:#516e77;padding:0;font-size:inherit;cursor:pointer}
+.answers-dialog-card{max-width:1270px;min-height:0;padding:22px;overflow-y:auto}
+.dialog-card.answers-dialog-card .dialog-head{position:sticky;top:-22px;z-index:2;background:#fff;padding:6px 2px 16px}
+.answer-sheet{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(255px,.86fr);gap:18px;min-height:0}
+.answer-map-wrap{background:#f0f8f9;border-radius:17px;border:1px solid #dcebec;padding:12px;display:flex;flex-direction:column;justify-content:center;min-width:0}
+.answer-map-label{display:flex;justify-content:space-between;align-items:center;font-size:13px;margin:1px 5px 12px;gap:8px}
+.answer-map-label strong{font-size:17px;letter-spacing:-.025em}.mini-map-toggle{border:1px solid #bfcfcd;background:white;border-radius:10px;padding:7px 10px;color:#316570;font-size:12px;font-weight:800}
+#answerMap{overflow:auto;border-radius:12px}#answerMap .map-art{border-radius:12px;background:#d6eef4;max-height:min(58vh,690px)}#answerMap.enlarged .map-art{min-width:850px;width:850px;max-height:none}
+.answer-legend{display:flex;gap:18px;flex-wrap:wrap;color:#68828c;font-size:11px;padding:10px 5px 2px}.answer-legend span{display:flex;align-items:center;gap:7px}
+.answer-legend i{width:9px;height:9px;background:#2d3a43;display:block}.answer-legend i.key-city{border-radius:50%}
+.answer-contents{overflow-y:auto;min-width:0;max-height:70vh;padding:4px 8px 4px 3px}.answer-contents h3{margin:0;font-size:20px;letter-spacing:-.04em}.answer-contents-head p{color:#6d838b;font-size:12px;line-height:1.5;margin:6px 0 16px}
+.answer-group{border-top:1px solid #e5efed;padding:11px 0}.answer-group h4{margin:0 0 8px;font-size:12px;color:#386e72;display:flex;justify-content:space-between;align-items:center;letter-spacing:.01em}.answer-group h4 span{color:#8ca2a6;font-size:11px;font-weight:700}
+.answer-tags{display:flex;flex-wrap:wrap;gap:6px}.answer-tag{background:#f4f8f7;border:1px solid #e4eeeb;border-radius:9px;padding:6px 8px;font-size:12px;font-weight:650;color:#314b50}.answer-tag.capital{background:#eaf8f1;border-color:#bce4d3}
+.answer-tag small{display:block;color:#5b8b78;margin-top:3px;font-size:10px}
+.answer-sheet-footer{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 2px 2px;color:#74888d;font-size:12px;flex-wrap:wrap}
+.answer-footer-actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.small-primary{min-height:40px;padding:9px 14px;font-size:12px;border-radius:11px;box-shadow:none}.small-primary:active{box-shadow:none}
+.privacy-dialog-card{max-width:525px;padding:clamp(24px,4.5vw,40px);max-height:calc(100vh - 28px);overflow-y:auto;gap:0}
+.privacy-mark{width:51px;height:51px;background:#dff6ea;color:#17775e;border-radius:17px;display:grid;place-items:center;font-weight:900;font-size:27px;margin-bottom:19px}
+.privacy-dialog-card h2{margin:6px 0 10px;font-size:clamp(27px,4.3vw,34px);line-height:1.18;letter-spacing:-.05em}
+.privacy-dialog-card>p{font-size:14px;color:#596f79;line-height:1.6;margin:0 0 18px}
+.privacy-points{background:#f3f9f7;border:1px solid #e1f0eb;border-radius:16px;padding:10px 15px;display:grid;gap:2px}
+.privacy-points>div{display:flex;gap:10px;align-items:flex-start;padding:8px 0;font-size:13px;color:#385b60;line-height:1.45}
+.privacy-icon{flex:none;width:20px;height:20px;background:#dcefe6;color:#137567;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:850}
+.privacy-detail{margin:14px 0 18px;font-size:12px;color:#657e86;line-height:1.55}.privacy-detail summary{cursor:pointer;font-weight:800;color:#3d6570}.privacy-detail p{margin:8px 0 0}
+.privacy-start{width:100%;box-shadow:none}.privacy-start:active{box-shadow:none}
+@media(max-width:830px){.answers-dialog-card{padding:14px;max-height:96vh}.answer-sheet{grid-template-columns:1fr}.answer-contents{max-height:none;padding:4px 5px;overflow:visible}.answer-sheet{flex-shrink:0}.answer-sheet-footer{flex-shrink:0}.answer-contents-head{margin-top:2px}.answer-group{padding:9px 0}.answer-map-wrap{padding:8px}.answer-sheet-footer{padding:12px 2px 2px}.answer-footer-actions{width:100%}.answer-footer-actions button{flex:1;justify-content:center}.dialog-card.answers-dialog-card .dialog-head{top:-14px}}
+@media(max-width:420px){.dialog{padding:8px}.answers-dialog-card{max-height:98vh}.answer-map-label strong{font-size:15px}.answer-legend{font-size:10px}.dialog-head h2{font-size:19px}.privacy-dialog-card{padding:23px}}
+@media print {
+ @page{size:A4 landscape;margin:9mm}
+ html,body{background:#fff!important;height:auto!important}
+ body>*{display:none!important} body>#referenceDialog{display:block!important;position:static!important;background:none!important;padding:0!important;inset:auto!important}
+ #referenceDialog .answers-dialog-card{display:block!important;max-width:none!important;max-height:none!important;overflow:visible!important;padding:0!important;box-shadow:none!important}
+ #referenceDialog .dialog-head{position:static!important;padding:0 0 7px!important}
+ #referenceDialog .dialog-close,#referenceDialog .answer-sheet-footer,#referenceDialog .dialog-head p{display:none!important}
+ #referenceDialog .answer-sheet{grid-template-columns:61% 37%;gap:2%;min-height:0}
+ #referenceDialog .answer-map-wrap{padding:7px!important;break-inside:avoid}
+ #referenceDialog #answerMap svg{width:100%!important;min-width:0!important;height:auto;max-height:174mm}
+ #referenceDialog .answer-contents{max-height:none!important;overflow:visible!important;padding:0}
+ #referenceDialog .answer-contents-head p{margin:3px 0 5px}
+ #referenceDialog .answer-group{padding:6px 0}
+ #referenceDialog .answer-tag{font-size:9px;padding:3px 5px}
+ #referenceDialog .answer-tag small{font-size:8px}
+ #referenceDialog .answer-legend{padding-top:4px}
+}
+
+</style>
+</head>
+<body class="eai-refresh">
+<div class="shell">
+<header class="topbar"><div class="brand"><div class="brand-icon" aria-hidden="true">⌖</div><span>TopoTrainer<span style="color:#2dab9d">.</span></span></div><button class="link-btn" id="openReference" type="button" aria-label="Bekijk het antwoordenblad">▤ &nbsp;Antwoordenblad</button></header>
+<section id="setup">
+  <div class="hero"><div class="eyebrow">Nederland · TopoMaster kaart B</div><h1>Waar ligt dat ook alweer?</h1><p>Oefen de topo van Noord-Nederland. Kies zelf welke onderdelen je wilt leren en hoe je overhoord wilt worden.</p></div>
+  <div class="setup-grid">
+    <section class="panel" aria-label="Stel je oefening samen">
+      <div class="section-heading"><h2>Wat wil je oefenen?</h2><div class="mini-actions"><button class="tiny-btn" id="selectAll" type="button">Alles</button><button class="tiny-btn" id="selectNone" type="button">Wissen</button></div></div>
+      <div class="category-grid" id="categoryGrid"></div>
+      <div class="opt-title">Hoe wil je oefenen?</div>
+      <div class="switcher" id="learningMode" role="group" aria-label="Soort oefening"><button type="button" data-mode="practice" class="chosen">Oefenen</button><button type="button" data-mode="test">Toetsen</button></div>
+      <p class="option-help" id="modeHelp">Bij oefenen mag je opnieuw proberen en kun je om een hint vragen.</p>
+      <div class="opt-title">Welke vragen?</div>
+      <div class="switcher four" id="questionMode" role="group" aria-label="Vraagvorm"><button type="button" data-qmode="mix" class="chosen">Afwisselend</button><button type="button" data-qmode="point">Aanwijzen</button><button type="button" data-qmode="choice">Meerkeuze</button><button type="button" data-qmode="type">Zelf typen</button></div>
+      <div class="opt-title">Aantal vragen</div>
+      <div class="switcher" id="questionCount" role="group" aria-label="Aantal vragen"><button type="button" data-count="5">5</button><button type="button" data-count="10" class="chosen">10</button><button type="button" data-count="all">Alles</button></div>
+      <p class="option-help">Je voortgang wordt niet opgeslagen. Je kunt steeds opnieuw beginnen.</p><div class="startbar"><div class="count-note" id="selectedCount"><strong>21 plekken</strong>geselecteerd</div><button class="primary" type="button" id="startBtn">Start oefenen <span aria-hidden="true">→</span></button></div>
+    </section>
+    <section class="panel preview-panel" aria-label="Voorbeeldkaart"><div class="preview-head"><h2>Dit ga je leren</h2><div class="smalltag">Leerkaart</div></div><p class="preview-caption">De namen staan hier nog bij. Tijdens de vragen verdwijnen ze.</p><div class="map-wrap preview" id="previewMap"></div><div class="legend"><span><b class="square"></b> Provinciehoofdstad</span><span><b></b> Stad</span><span>◇ Eiland</span><span>≈ Water</span></div></section>
+  </div>
+</section>
+<section id="play" aria-label="Topospel">
+ <div class="play-header"><div class="progress-wrap"><div class="progress-text"><span id="progressLabel">Vraag 1 van 10</span><span id="progressPct">0%</span></div><div class="progress"><div class="progress-inner" id="progressFill"></div></div></div><div class="metric" id="scoreMetric">✓ 0 goed</div></div>
+ <div class="play-layout">
+  <section class="panel map-panel"><div class="map-tools"><div class="tool-buttons"><button type="button" class="tool" id="toggleLabels">Namen tonen</button><button type="button" class="tool" id="showReference">Antwoordenblad</button></div><div class="tool-buttons"><button type="button" class="tool zoom" id="zoomOut" aria-label="Uitzoomen">−</button><button type="button" class="tool zoom" id="zoomIn" aria-label="Inzoomen">+</button><button type="button" class="tool" id="resetZoom" aria-label="Hele kaart tonen">⤢</button></div></div><div class="map-stage" id="gameMap"></div><div class="mapfoot"><span>Tik op de kaart om een plek aan te wijzen</span><span>Met + en − kun je zoomen</span></div></section>
+  <section class="panel question-panel"><div class="question-top"><span class="question-kind" id="qCategory">STEDEN</span><span class="question-n" id="qCounter">1 / 10</span></div><h2 class="question-title" id="questionTitle">Waar ligt Leeuwarden?</h2><p class="question-desc" id="questionDesc">Tik op de juiste plek op de kaart.</p><div id="answerArea"></div><div class="answer-feedback" id="answerFeedback" role="status" aria-live="polite"></div><div class="question-actions"><button type="button" class="simple" id="hintBtn">Geef een hint</button><button type="button" class="primary next" id="nextBtn" style="display:none">Volgende →</button></div><button type="button" class="end-link" id="stopBtn">Stoppen en resultaat bekijken</button></section>
+ </div>
+</section>
+<section id="finish" aria-label="Resultaat"><div class="panel result-wrap"><div class="result-top"><div class="result-graphic" aria-hidden="true" id="resultEmoji">★</div><div class="eyebrow">Je resultaat</div><h2 id="resultTitle">Goed geoefend!</h2><div class="result-score" id="resultScore">0 <small>/ 10 goed</small></div><p id="resultComment">Mooi gedaan. Bekijk de plekken die je nog kunt oefenen.</p></div><div class="result-details"><div class="result-stat"><b id="resultCorrect">0</b><span>In één keer goed</span></div><div class="result-stat"><b id="resultMistakes">0</b><span>Nog even oefenen</span></div></div><div class="review" id="reviewBox"><h3>Deze plekken kun je nog oefenen</h3><div class="review-list" id="reviewList"></div></div><div class="result-actions"><button class="link-btn" id="backSetup" type="button">Andere onderdelen kiezen</button><button class="primary" id="replay" type="button">Nog een ronde →</button></div></div></section>
+<footer class="footer">Gebaseerd op de aangeleverde TopoMaster-kaart B. De kaart is speciaal voor dit spel getekend en is een schematische oefenkaart. Je kunt alle antwoorden apart bekijken. Werkt ook zonder internet. <button type="button" class="footer-link" id="openPrivacy">Privacy</button></footer>
+</div>
+<div class="dialog" id="referenceDialog" role="dialog" aria-modal="true" aria-labelledby="answersTitle" aria-hidden="true">
+ <div class="dialog-card answers-dialog-card">
+  <div class="dialog-head"><div><div class="eyebrow">Leerblad · Nederland kaart B</div><h2 id="answersTitle">Alle antwoorden op één plek</h2><p>Gebruik de getekende kaart om de namen en locaties te leren.</p></div><button type="button" class="dialog-close" id="closeReference" aria-label="Antwoordenblad sluiten">×</button></div>
+  <div class="answer-sheet" id="answerSheet">
+   <div class="answer-map-wrap"><div class="answer-map-label"><strong>Noord-Nederland</strong><button type="button" id="zoomAnswer" class="mini-map-toggle" aria-pressed="false">Vergroot kaart +</button></div><div id="answerMap"></div><div class="answer-legend"><span><i class="key-capital"></i> Provinciehoofdstad</span><span><i class="key-city"></i> Stad</span></div></div>
+   <aside class="answer-contents"><div class="answer-contents-head"><h3>Dit moet je kennen</h3><p>Alles wat op de toetskaart staat, overzichtelijk bij elkaar.</p></div><div id="answerGroups"></div></aside>
+  </div>
+  <div class="answer-sheet-footer"><span>Tip: oefen eerst met dit blad. Kies daarna 'Toetsen' om jezelf te testen.</span><div class="answer-footer-actions"><button type="button" class="link-btn" id="printReference">Print antwoordenblad</button><button type="button" class="primary small-primary" id="closeReferenceBottom">Terug naar het spel</button></div></div>
+ </div>
+</div>
+<div class="dialog visible" id="privacyDialog" role="dialog" aria-modal="true" aria-labelledby="privacyTitle" aria-hidden="false">
+ <div class="dialog-card privacy-dialog-card">
+  <div class="privacy-mark" aria-hidden="true">✓</div><div class="eyebrow">Welkom bij TopoTrainer</div>
+  <h2 id="privacyTitle">Oefenen zonder gegevens achter te laten</h2>
+  <p>Je hoeft geen account aan te maken. Dit spel bewaart je naam, antwoorden of scores niet.</p>
+  <div class="privacy-points"><div><span class="privacy-icon" aria-hidden="true">✓</span><span>Je antwoorden en score blijven alleen tijdens het spelen in je browser.</span></div><div><span class="privacy-icon" aria-hidden="true">✓</span><span>Dit spel gebruikt geen cookies, trackers of externe diensten.</span></div><div><span class="privacy-icon" aria-hidden="true">✓</span><span>Na het sluiten of vernieuwen van de pagina is je score weg.</span></div></div>
+  <details class="privacy-detail"><summary>Voor ouders en docenten</summary><p>Deze losse HTML-pagina verzendt geen spelgegevens en slaat niets op in cookies, localStorage of een database. Na plaatsing op eaimodel.nl kan de webserver wel gewone technische bezoekgegevens registreren. Dat valt buiten het spel en hoort bij de privacyinformatie van de website.</p></details>
+  <button class="primary privacy-start" type="button" id="closePrivacy">Begrepen, ik wil oefenen →</button>
+ </div>
+</div>
+<script>
+'use strict';
+const db=[
+{id:'friesland',name:'Friesland (Fryslân)',short:'Friesland',group:'provinces',kind:'province',x:563,y:456,aliases:['Friesland','Fryslan','Fryslân']},
+{id:'groningen-prov',name:'Groningen (provincie)',short:'Groningen',group:'provinces',kind:'province',x:974,y:214,aliases:['Groningen','Provincie Groningen']},
+{id:'drenthe',name:'Drenthe',short:'Drenthe',group:'provinces',kind:'province',x:982,y:590},
+{id:'leeuwarden',name:'Leeuwarden',group:'cities',kind:'city',capital:true,x:551,y:339,labelX:569,labelY:322},
+{id:'sneek',name:'Sneek',group:'cities',kind:'city',x:468,y:480,labelX:411,labelY:469},
+{id:'heerenveen',name:'Heerenveen',group:'cities',kind:'city',x:603,y:539,labelX:618,labelY:525},
+{id:'drachten',name:'Drachten',group:'cities',kind:'city',x:688,y:408,labelX:660,labelY:390},
+{id:'groningen-stad',name:'Groningen',group:'cities',kind:'city',capital:true,x:939,y:296,labelX:954,labelY:281},
+{id:'delfzijl',name:'Delfzijl',group:'cities',kind:'city',x:1130,y:184,labelX:1051,labelY:171},
+{id:'assen',name:'Assen',group:'cities',kind:'city',capital:true,x:918,y:479,labelX:935,labelY:463},
+{id:'veendam',name:'Veendam',group:'cities',kind:'city',x:1087,y:377,labelX:1101,labelY:364},
+{id:'meppel',name:'Meppel',group:'cities',kind:'city',x:713,y:722,labelX:727,labelY:704},
+{id:'hoogeveen',name:'Hoogeveen',group:'cities',kind:'city',x:862,y:697,labelX:875,labelY:679},
+{id:'emmen',name:'Emmen',group:'cities',kind:'city',x:1074,y:639,labelX:1087,labelY:620},
+{id:'vlieland',name:'Vlieland',group:'islands',kind:'island',x:123,y:287,labelX:84,labelY:242},
+{id:'terschelling',name:'Terschelling',group:'islands',kind:'island',x:320,y:160,labelX:246,labelY:116},
+{id:'ameland',name:'Ameland',group:'islands',kind:'island',x:548,y:115,labelX:517,labelY:72},
+{id:'schiermonnikoog',name:'Schiermonnikoog',group:'islands',kind:'island',x:780,y:75,labelX:728,labelY:38},
+{id:'waddenzee',name:'Waddenzee',group:'waters',kind:'water',x:340,y:302},
+{id:'ijsselmeer',name:'IJsselmeer',group:'waters',kind:'water',x:270,y:708},
+{id:'afsluitdijk',name:'Afsluitdijk',group:'landmark',kind:'dike',x:243,y:508,aliases:['De Afsluitdijk','Afsluit dijk']}
+];
+const byId=Object.fromEntries(db.map(item=>[item.id,item]));
+const categoryInfo=[
+{key:'provinces',name:'Provincies',detail:'3 provincies',symbol:'▤'},
+{key:'cities',name:'Steden',detail:'11 plaatsen',symbol:'●'},
+{key:'islands',name:'Eilanden',detail:'4 eilanden',symbol:'◇'},
+{key:'waters',name:'Wateren',detail:'2 wateren',symbol:'≈'},
+{key:'landmark',name:'Afsluitdijk',detail:'1 verbinding',symbol:'╱'},
+{key:'capitals',name:'Hoofdsteden',detail:'3 hoofdsteden',symbol:'■'}
+];
+const categoryText={provinces:'Provincies',cities:'Steden',islands:'Eilanden',waters:'Wateren',landmark:'Verbinden',capitals:'Hoofdsteden'};
+const state={selected:new Set(['provinces','cities','islands','waters','landmark']),mode:'practice',qmode:'mix',count:'10',questions:[],index:0,correct:0,attempts:0,answered:false,failures:[],labels:false,zoom:1,center:[620,450],currentType:'point',pickedAnswers:[],hintUsed:false};
+const $=id=>document.getElementById(id);
+const shuffle=a=>{const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;};
+const normalize=s=>String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]/g,'');
+function pool(){const seen=new Set();const a=[];for(const item of db){if(state.selected.has(item.group)||(state.selected.has('capitals')&&item.capital)){if(!seen.has(item.id)){seen.add(item.id);a.push(item)}}}return a;}
+function makeMap(preview=false){
+const dots=db.filter(i=>i.kind==='city').map(i=>`<g class="city-symbol"><circle cx="${i.x}" cy="${i.y}" r="15" class="city-halo"/><${i.capital?'rect':'circle'} ${i.capital?`x="${i.x-7}" y="${i.y-7}" width="14" height="14" rx="1"`:`cx="${i.x}" cy="${i.y}" r="7"`} class="${i.capital?'capital-dot':'city-dot'}"/></g>`).join('');
+const labels=db.map(i=>i.kind==='province'?`<text class="map-label region-name" x="${i.x}" y="${i.y}" text-anchor="middle">${i.short.toUpperCase()}</text>`:i.kind==='water'?`<text class="map-label water-name" x="${i.x}" y="${i.y}" text-anchor="middle" transform="rotate(${i.id==='waddenzee'?-26:0} ${i.x} ${i.y})">${i.name}</text>`:i.kind==='dike'?`<text class="map-label small" x="205" y="485" transform="rotate(-44 205 485)">Afsluitdijk</text>`:`<text class="map-label ${i.kind==='island'?'small':''}" x="${i.labelX??i.x+10}" y="${i.labelY??i.y-14}">${i.name}</text>`).join('');
+const cityHits=db.filter(i=>i.kind==='city').map(i=>`<circle data-place="${i.id}" class="city-click" cx="${i.x}" cy="${i.y}" r="39"/>`).join('');
+const cityHighlights=db.filter(i=>i.kind==='city').map(i=>`<g data-highlight="${i.id}"><circle class="city-highlight" cx="${i.x}" cy="${i.y}" r="33"/><circle class="city-highlight inner" cx="${i.x}" cy="${i.y}" r="9"/></g>`).join('');
+const regions={
+friesland:'M353 366 C353 321 430 254 487 224 C536 192 604 180 669 161 L735 145 C768 175 788 221 781 254 L750 313 L733 357 L756 389 L841 420 L820 484 L806 545 L769 561 L736 541 L702 588 L662 616 L611 642 L577 645 L548 659 L515 631 L475 625 L437 642 L392 628 L349 610 L317 582 L329 531 L329 474 L344 420 Z',
+groningen:'M735 145 L768 143 L793 151 L823 141 L852 143 L904 119 L965 101 L1028 69 L1086 77 L1114 86 L1125 154 L1135 185 L1190 203 L1240 215 L1240 420 L1202 407 L1179 476 L1164 543 L1110 465 L1056 413 L1003 376 L944 355 L897 348 L856 392 L841 420 L756 389 L733 357 L750 313 L781 254 C788 221 768 175 735 145 Z',
+drenthe:'M841 420 L856 392 L897 348 L944 355 L1003 376 L1056 413 L1110 465 L1164 543 L1147 659 L1129 745 L1095 756 L1021 746 L977 750 L938 779 L874 787 L830 777 L802 759 L774 742 L711 722 L689 679 L662 616 L702 588 L736 541 L769 561 L806 545 L820 484 Z'
+};
+const islandPaths={
+vlieland:'M61 341 Q81 332 97 310 Q113 290 133 281 L153 263 Q161 257 174 262 Q181 269 174 277 L160 280 Q145 284 136 301 L111 329 L80 352 Q65 359 61 350 Z',
+terschelling:'M207 212 Q220 185 243 175 L291 154 Q325 140 350 139 L398 127 Q418 122 431 129 Q428 140 409 144 L373 151 L344 164 L323 171 Q305 174 281 188 L250 210 Q224 226 210 225 Z',
+ameland:'M452 126 Q455 104 472 103 Q496 107 517 100 L558 98 Q602 99 625 91 L646 92 Q655 98 647 106 L607 115 L576 119 L540 123 L501 134 Q462 151 452 138 Z',
+schiermonnikoog:'M718 88 Q722 65 740 57 Q760 54 774 54 L803 46 Q830 42 849 52 Q843 60 821 63 L800 73 L776 78 Q745 93 729 105 Q720 106 718 88 Z'
+};
+const waterPaths={
+waddenzee:'M0 0 L1240 0 L1240 210 L1190 203 L1135 185 L1125 154 L1114 86 L1086 77 L1028 69 L965 101 L904 119 L852 143 L823 141 L793 151 L768 143 L735 145 L669 161 C604 180 536 192 487 224 C430 254 353 321 353 366 L344 420 L329 474 L317 582 L164 574 L72 542 L0 550 Z',
+ijsselmeer:'M0 552 L72 542 L164 574 L254 562 L293 582 L317 582 L349 610 L392 628 L437 642 L475 625 L515 631 L548 659 L544 805 L430 852 L383 900 L0 900 Z'
+};
+const clickable=[...Object.entries(waterPaths).map(([id,d])=>`<path class="water-click" data-place="${id}" d="${d}"/>`),...Object.entries(regions).map(([id,d])=>`<path class="province-click" data-place="${id==='groningen'?'groningen-prov':id}" d="${d}"/>`),...Object.entries(islandPaths).map(([id,d])=>`<path class="island-click" data-place="${id}" d="${d}"/>`),'<path class="dike-click" data-place="afsluitdijk" d="M164 575 L320 448"/>',cityHits].join('');
+const high=[...Object.entries(waterPaths).map(([id,d])=>`<path data-highlight="${id}" class="water-highlight" d="${d}"/>`),...Object.entries(regions).map(([id,d])=>`<path data-highlight="${id==='groningen'?'groningen-prov':id}" class="region-highlight" d="${d}"/>`),...Object.entries(islandPaths).map(([id,d])=>`<path data-highlight="${id}" class="island-highlight" d="${d}"/>`),'<path data-highlight="afsluitdijk" class="dike-highlight" d="M164 575 L320 448"/>',cityHighlights].join('');
+return `<svg class="map-art ${preview?'preview-map':''}" id="${preview?'previewSvg':'gameSvg'}" viewBox="0 0 1240 900" role="img" aria-label="Oefenkaart Noord-Nederland met provincies, Waddeneilanden, steden en wateren" xmlns="http://www.w3.org/2000/svg">
+<defs><pattern id="${preview?'p':'g'}grid" width="79" height="79" patternUnits="userSpaceOnUse"><path d="M79 0H0V79" fill="none" stroke="#fff" stroke-opacity=".22" stroke-width="1"/></pattern></defs>
+<rect width="1240" height="900" class="sea-fill"/><rect width="1240" height="900" fill="url(#${preview?'p':'g'}grid)"/>
+<!-- neighbouring land, shown for orientation -->
+<path class="other" d="M0 556 L72 542 L164 574 L254 562 L293 582 L317 582 L349 610 L392 628 L437 642 L475 625 L515 631 L548 659 L544 805 L430 852 L383 900 L0 900 Z" opacity=".0"/>
+<path class="other" d="M0 559 L65 556 L138 582 L181 572 L200 623 L201 709 L242 720 L276 764 L329 801 L328 900 L0 900 Z"/>
+<path class="other" d="M430 900 L473 817 L542 800 L544 659 L578 645 L611 642 L662 616 L689 679 L711 722 L774 742 L802 759 L830 777 L874 787 L870 900 Z"/>
+<path class="other" d="M870 900 L874 787 L938 779 L977 750 L1021 746 L1095 756 L1129 745 L1147 659 L1164 543 L1179 476 L1202 407 L1240 420 L1240 900 Z"/>
+<path class="other" d="M1240 0 L1240 215 L1190 203 L1135 185 L1125 154 L1114 86 L1086 77 L1028 69 L965 101 L904 119 L852 143 L823 141 L793 151 L768 143 L735 145 L669 161 L1240 0 Z" opacity=".0"/>
+<path class="region friesland" d="${regions.friesland}"/><path class="region groningen" d="${regions.groningen}"/><path class="region drenthe" d="${regions.drenthe}"/>
+<path class="canal" d="M346 367 C391 372 420 361 453 367 Q491 366 519 350 L574 353 L613 383 Q630 414 603 443 L575 464 Q545 490 511 514 L488 554 L483 624"/>
+<path class="canal" d="M342 548 Q402 527 444 525 Q479 510 489 482 L497 450"/>
+<path class="canal" d="M900 266 Q926 299 951 301 Q976 313 990 330 L1050 334 Q1096 326 1133 331"/>
+<path class="road" d="M736 543 Q805 525 891 472 Q980 419 1088 375"/>
+<path class="water-shape" d="M412 526 Q437 518 463 523 L480 509 L493 524 Q479 541 460 544 L431 566 L402 558 Z"/>
+<path class="water-shape" d="M515 580 Q537 569 557 573 L557 596 L510 610 L506 594 Z"/>
+<path class="water-shape" d="M506 450 Q519 439 535 448 Q526 461 512 465 L493 488 L479 480 Z"/>
+<path class="water-shape" d="M642 732 Q655 718 671 731 L680 741 L667 749 L644 745 Z"/>
+<path class="island" d="${islandPaths.vlieland}"/><path class="island" d="${islandPaths.terschelling}"/><path class="island" d="${islandPaths.ameland}"/><path class="island" d="${islandPaths.schiermonnikoog}"/>
+<path class="dike" d="M164 575 L320 448"/>${dots}
+<g class="click-layer">${clickable}</g>
+<g class="highlight-layer">${high}</g>
+<g class="label-layer">${labels}</g>
+<text x="23" y="879" style="font-size:13px;font-weight:800;fill:#538294;opacity:.65;pointer-events:none">NOORD-NEDERLAND · KAART B</text>
+</svg>`;
+}
+function renderAnswerSheet(){
+  $('answerMap').innerHTML=makeMap(true).replace('id="previewSvg"','id="answerSvg"');
+  const groups=[
+    {title:'Provincies',key:'provinces'},
+    {title:'Steden',key:'cities'},
+    {title:'Waddeneilanden',key:'islands'},
+    {title:'Wateren',key:'waters'},
+    {title:'Overig',key:'landmark'}
+  ];
+  $('answerGroups').innerHTML=groups.map(g=>{
+    const list=db.filter(p=>p.group===g.key);
+    return `<section class="answer-group"><h4>${g.title}<span>${list.length}</span></h4><div class="answer-tags">${list.map(p=>`<span class="answer-tag ${p.capital?'capital':''}">${escapeHTML(p.short||p.name)}${p.capital?'<small>Hoofdstad</small>':''}</span>`).join('')}</div></section>`;
+  }).join('');
+}
+function renderCategories(){const grid=$('categoryGrid');grid.innerHTML=categoryInfo.map(c=>`<button class="category-btn ${state.selected.has(c.key)?'selected':''}" type="button" data-cat="${c.key}" aria-pressed="${state.selected.has(c.key)}"><span class="cat-icon" aria-hidden="true">${c.symbol}</span><span class="cat-copy"><strong>${c.name}</strong><small>${c.detail}</small></span><span class="tick" aria-hidden="true">${state.selected.has(c.key)?'✓':''}</span></button>`).join('');const n=pool().length;$('selectedCount').innerHTML=`<strong>${n} ${n===1?'plek':'plekken'}</strong>geselecteerd`;$('startBtn').disabled=n===0;}
+function setMode(id,attr,val){document.querySelectorAll(`#${id} button`).forEach(b=>{const on=b.dataset[attr]===val;b.classList.toggle('chosen',on);b.setAttribute('aria-pressed',on?'true':'false');});}
+function setup(){renderCategories();$('previewMap').innerHTML=makeMap(true);renderAnswerSheet();$('categoryGrid').addEventListener('click',e=>{const el=e.target.closest('[data-cat]');if(!el)return;state.selected.has(el.dataset.cat)?state.selected.delete(el.dataset.cat):state.selected.add(el.dataset.cat);renderCategories();});$('selectAll').onclick=()=>{state.selected=new Set(categoryInfo.map(c=>c.key));renderCategories();};$('selectNone').onclick=()=>{state.selected.clear();renderCategories();};
+$('learningMode').onclick=e=>{const b=e.target.closest('[data-mode]');if(!b)return;state.mode=b.dataset.mode;setMode('learningMode','mode',state.mode);$('modeHelp').textContent=state.mode==='practice'?'Bij oefenen mag je opnieuw proberen en kun je om een hint vragen.':'Bij toetsen telt ieder eerste antwoord. Hints en namen zijn uitgeschakeld.';};
+$('questionMode').onclick=e=>{const b=e.target.closest('[data-qmode]');if(!b)return;state.qmode=b.dataset.qmode;setMode('questionMode','qmode',state.qmode);};
+$('questionCount').onclick=e=>{const b=e.target.closest('[data-count]');if(!b)return;state.count=b.dataset.count;setMode('questionCount','count',state.count);};
+$('startBtn').onclick=()=>begin();$('openReference').onclick=openRef;$('showReference').onclick=openRef;$('closeReference').onclick=closeRef;$('closeReferenceBottom').onclick=closeRef;$('printReference').onclick=()=>window.print();$('zoomAnswer').onclick=()=>{const enlarged=$('answerMap').classList.toggle('enlarged');$('zoomAnswer').textContent=enlarged?'Verklein kaart −':'Vergroot kaart +';$('zoomAnswer').setAttribute('aria-pressed',String(enlarged));};$('openPrivacy').onclick=openPrivacy;$('closePrivacy').onclick=closePrivacy;document.body.classList.add('modal-open');$('closePrivacy').focus();$('referenceDialog').addEventListener('click',e=>{if(e.target===$('referenceDialog'))closeRef();});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('referenceDialog').classList.contains('visible'))closeRef();if(e.key==='Enter'&&$('play').style.display==='block'&&state.answered&&$('referenceDialog').getAttribute('aria-hidden')==='true'&&$('privacyDialog').getAttribute('aria-hidden')==='true'){nextQuestion();}});
+$('toggleLabels').onclick=()=>{if(state.mode==='test')return;state.labels=!state.labels;paintMap();};$('hintBtn').onclick=hint;$('nextBtn').onclick=nextQuestion;$('stopBtn').onclick=finish;$('backSetup').onclick=()=>showScene('setup');$('replay').onclick=()=>begin();$('zoomIn').onclick=()=>zoom(1.35);$('zoomOut').onclick=()=>zoom(1/1.35);$('resetZoom').onclick=()=>{state.zoom=1;state.center=[620,450];applyViewBox();};
+}
+function openRef(){
+  $('referenceDialog').classList.add('visible');
+  $('referenceDialog').setAttribute('aria-hidden','false');
+  document.body.classList.add('modal-open');
+  $('closeReference').focus();
+}
+function closeRef(){
+  $('referenceDialog').classList.remove('visible');
+  $('referenceDialog').setAttribute('aria-hidden','true');
+  if(!$('privacyDialog').classList.contains('visible'))document.body.classList.remove('modal-open');
+}
+function openPrivacy(){
+  $('privacyDialog').classList.add('visible');
+  $('privacyDialog').setAttribute('aria-hidden','false');
+  document.body.classList.add('modal-open');
+  $('closePrivacy').focus();
+}
+function closePrivacy(){
+  $('privacyDialog').classList.remove('visible');
+  $('privacyDialog').setAttribute('aria-hidden','true');
+  if(!$('referenceDialog').classList.contains('visible'))document.body.classList.remove('modal-open');
+  $('startBtn').focus();
+}
+function showScene(id){for(const sec of ['setup','play','finish'])$(sec).style.display=id===sec?'block':'none';window.scrollTo({top:0,behavior:'instant'});}
+function begin(){const available=shuffle(pool());if(!available.length)return;const max=state.count==='all'?available.length:Math.min(Number(state.count),available.length);state.questions=available.slice(0,max);state.index=0;state.correct=0;state.attempts=0;state.failures=[];state.answered=false;state.labels=false;state.zoom=1;state.center=[620,450];$('gameMap').innerHTML=makeMap(false);$('gameSvg').classList.add('hide-labels');$('gameSvg').addEventListener('click',mapClick);installPan();showScene('play');drawQuestion();}
+function question(){return state.questions[state.index];}
+function drawQuestion(){const q=question();if(!q){finish();return;}state.answered=false;state.attempts=0;state.hintUsed=false;state.pickedAnswers=[];const type=state.qmode==='mix'?['point','choice','type'][state.index%3]:state.qmode;state.currentType=type;
+$('progressLabel').textContent=`Vraag ${state.index+1} van ${state.questions.length}`;$('progressPct').textContent=`${Math.round((state.index/state.questions.length)*100)}%`;$('progressFill').style.width=`${state.index/state.questions.length*100}%`;$('scoreMetric').textContent=`✓ ${state.correct} goed`;$('qCounter').textContent=`${state.index+1} / ${state.questions.length}`;$('qCategory').textContent=q.capital&&state.selected.has('capitals')&&!state.selected.has('cities')?'HOOFDSTEDEN':categoryText[q.group].toUpperCase();
+$('answerFeedback').className='answer-feedback';$('answerFeedback').textContent='';$('nextBtn').style.display='none';$('hintBtn').style.display=state.mode==='practice'?'inline-block':'none';$('hintBtn').disabled=false;$('hintBtn').textContent='Geef een hint';
+const area=$('answerArea');area.innerHTML='';if(type==='point'){$('questionTitle').textContent=q.kind==='dike'?'Waar ligt de Afsluitdijk?':`Waar ligt ${q.name}?`;$('questionDesc').textContent=q.kind==='province'?'Tik op de juiste provincie op de kaart.':q.kind==='city'?'Tik op de juiste zwarte stip op de kaart.':q.kind==='water'?'Tik op het juiste water op de kaart.':q.kind==='island'?'Tik op het juiste eiland op de kaart.':'Tik op de dijk op de kaart.';}
+else if(type==='choice'){$('questionTitle').textContent='Welke plek is groen gemarkeerd?';$('questionDesc').textContent='Kies de juiste naam.';const from=db.filter(p=>p.group===q.group&&p.id!==q.id);let names=shuffle(from).slice(0,3);if(names.length<3){const extras=shuffle(db.filter(p=>p.id!==q.id&&!names.includes(p)&&(p.kind===q.kind||q.kind==='dike'||q.kind==='water')));names=names.concat(extras.slice(0,3-names.length));}const opts=shuffle([q,...names]);area.innerHTML='<div class="options">'+opts.map((p,i)=>`<button type="button" class="answer-btn" data-answer="${p.id}"><span class="choice-num">${i+1}</span><span>${p.short||p.name}</span></button>`).join('')+'</div>';area.addEventListener('click',handleChoice,{once:false});}
+else{$('questionTitle').textContent='Welke naam hoort bij deze plek?';$('questionDesc').textContent='De juiste plek is groen gemarkeerd. Typ de naam.';area.innerHTML='<form class="type-form" id="answerForm" autocomplete="off"><input id="typedAnswer" aria-label="Typ de plaatsnaam" enterkeyhint="done" autocomplete="off" autocorrect="off" spellcheck="false" placeholder="Typ de naam…" required><button type="submit">Check</button></form>';$('answerForm').onsubmit=e=>{e.preventDefault();if(!state.answered)checkType();};if(window.innerWidth>790)setTimeout(()=>$('typedAnswer')?.focus(),80);}
+paintMap();}
+function handleChoice(e){const el=e.target.closest('[data-answer]');if(!el||state.answered||state.currentType!=='choice')return;const guess=byId[el.dataset.answer];if(!guess)return;state.pickedAnswers.push(guess.id);onAnswer(guess.id===question().id,guess.id);}
+function checkType(){const inp=$('typedAnswer');if(!inp)return;const val=normalize(inp.value);if(!val)return;const q=question();const acceptable=[q.name,q.short||'',...(q.aliases||[])];onAnswer(acceptable.some(s=>normalize(s)===val),val);}
+function mapClick(e){if(state.answered||state.currentType!=='point')return;const hit=e.target.closest('[data-place]');if(!hit)return;const selected=byId[hit.dataset.place];const q=question();if(!selected)return;
+if(selected.kind!==q.kind){setFeedback('neutral','Probeer een andere plek.',q.kind==='city'?'Tik op een zwarte stip.':q.kind==='province'?'Tik op een provincie.':q.kind==='island'?'Tik op een eiland.':q.kind==='water'?'Tik op het blauwe water.':'Tik op de dijk.');return;}
+onAnswer(selected.id===q.id,selected.id);}
+function onAnswer(ok,guessed){if(state.answered)return;const q=question();state.attempts++;if(ok){state.answered=true;const pure=state.attempts===1&&!state.hintUsed;if(pure){state.correct++;}else{state.failures.push(q);}setFeedback('good',pure?'Helemaal goed!':'Goed gevonden!',pure?`${q.name} is juist.`:`${q.name} gevonden. Deze oefenen we nog een keer.`);reveal();return;}
+if(state.mode==='practice'&&state.attempts<2){setFeedback('neutral','Bijna!','Probeer het nog een keer. Je kunt ook om een hint vragen.');if(state.currentType==='type'){$('typedAnswer').select();}return;}
+state.failures.push(q);state.answered=true;setFeedback('bad','Dit was de juiste plek:',q.name);reveal();}
+function setFeedback(kind,title,detail){const el=$('answerFeedback');el.className=`answer-feedback visible ${kind}`;el.innerHTML=`<strong>${escapeHTML(title)}</strong>${escapeHTML(detail)}`;}
+function escapeHTML(s){return String(s).replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[c]));}
+function reveal(){paintMap();$('nextBtn').style.display='inline-flex';$('nextBtn').textContent=state.index===state.questions.length-1?'Bekijk resultaat →':'Volgende →';$('hintBtn').style.display='none';document.querySelectorAll('.answer-btn').forEach(el=>{el.disabled=true;el.classList.toggle('correct',el.dataset.answer===question().id);el.classList.toggle('wrong',el.dataset.answer!==question().id&&state.pickedAnswers.includes(el.dataset.answer));});if($('typedAnswer')){$('typedAnswer').disabled=true;$('answerForm').querySelector('button').disabled=true;}$('scoreMetric').textContent=`✓ ${state.correct} goed`;}
+function nextQuestion(){if(!state.answered)return;state.index++;if(state.index>=state.questions.length){finish();return;}drawQuestion();}
+function hint(){if(state.answered||state.mode!=='practice')return;state.hintUsed=true;const q=question();$('hintBtn').disabled=true;$('hintBtn').textContent='Hint gebruikt';if(state.currentType==='point'){paintMap();setFeedback('neutral','Hier moet je zoeken.','De juiste plek is nu groen gemarkeerd.');}else{setFeedback('neutral','Een kleine hint:',`De naam begint met een ${q.name[0].toUpperCase()}.`);}}
+function paintMap(){const svg=$('gameSvg');if(!svg)return;svg.classList.toggle('hide-labels',!state.labels);$('toggleLabels').classList.toggle('active',state.labels);$('toggleLabels').textContent=state.labels?'Namen verbergen':'Namen tonen';$('toggleLabels').disabled=state.mode==='test';const q=question();svg.querySelectorAll('[data-highlight]').forEach(h=>{h.classList.toggle('active',h.dataset.highlight===q?.id&&(state.currentType!=='point'||state.answered||state.hintUsed));});}
+function finish(){const done=state.answered?state.index+1:state.index;if(done===0){showScene('setup');return;}const mistakes=[...new Map(state.failures.map(q=>[q.id,q])).values()];showScene('finish');const percent=Math.round(state.correct/done*100);$('resultTitle').textContent=percent===100?'Alles in één keer goed!':percent>=70?'Dat gaat al goed!':'Mooi geoefend!';$('resultEmoji').textContent=percent===100?'★':percent>=70?'✓':'⌖';$('resultScore').innerHTML=`${state.correct} <small>/ ${done} goed</small>`;$('resultComment').textContent=percent===100?'Je kent alle geoefende plekken. Probeer eens een toets zonder hints.':'Je ziet hieronder welke plekken je nog eens kunt oefenen.';$('resultCorrect').textContent=state.correct;$('resultMistakes').textContent=done-state.correct;$('reviewBox').style.display=mistakes.length?'block':'none';$('reviewList').innerHTML=mistakes.map(q=>`<span>${escapeHTML(q.name)}</span>`).join('');}
+function zoom(factor){const next=Math.max(1,Math.min(2.7,state.zoom*factor));state.zoom=next;applyViewBox();}
+function applyViewBox(){const svg=$('gameSvg');if(!svg)return;const w=1240/state.zoom,h=900/state.zoom;state.center[0]=Math.max(w/2,Math.min(1240-w/2,state.center[0]));state.center[1]=Math.max(h/2,Math.min(900-h/2,state.center[1]));svg.setAttribute('viewBox',`${state.center[0]-w/2} ${state.center[1]-h/2} ${w} ${h}`);}
+function installPan(){const svg=$('gameSvg');let last=null;let moved=false;svg.addEventListener('pointerdown',e=>{if(state.zoom<=1)return;last=[e.clientX,e.clientY];moved=false;svg.setPointerCapture?.(e.pointerId);});svg.addEventListener('pointermove',e=>{if(!last||state.zoom<=1)return;const rect=svg.getBoundingClientRect();const ratio=(1240/state.zoom)/rect.width;const dx=e.clientX-last[0],dy=e.clientY-last[1];if(Math.abs(dx)+Math.abs(dy)>2)moved=true;state.center[0]-=dx*ratio;state.center[1]-=dy*ratio;last=[e.clientX,e.clientY];applyViewBox();});svg.addEventListener('pointerup',()=>{last=null;});svg.addEventListener('pointercancel',()=>{last=null;});svg.addEventListener('wheel',e=>{if(!e.ctrlKey)return;e.preventDefault();zoom(e.deltaY<0?1.1:1/1.1);},{passive:false});}
+setup();
+</script>
+</body>
+</html>
