@@ -422,7 +422,8 @@ function buildShuffleRound(limit){
  const used=new Set();
  function put(task,forced){
   if(!task||used.has(task.id)||tasks.length>=limit)return;
-  used.add(task.id);tasks.push({...task,shuffleMode:forced||task.shuffleMode||shuffle(['point','choice','type','missing'])[0]});
+  const kinds=task.kind==='province'?['point','choice','type']:['point','choice','type','missing'];
+  used.add(task.id);tasks.push({...task,shuffleMode:forced||task.shuffleMode||shuffle(kinds)[0]});
  }
  put(waters[0]);put(waters[1]);put(brains[0]);
  put(provinces[0],shuffle(['point','choice','type'])[0]);
