@@ -2,8 +2,8 @@
 <html lang="nl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#10192c">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f8f6f1">
 <title>DELF scolaire | Live</title>
 <link rel="stylesheet" href="./styles.css">
 <script type="module" src="./src/main.js"></script>
@@ -11,30 +11,45 @@
 <body>
 <div class="stage" id="stage" data-phase="intro">
 <header class="masthead"><div class="monogram" aria-hidden="true">D<span>·</span>F</div><div class="brand">DELF <strong>SCOLAIRE</strong><small>REMISE DES DIPLÔMES</small></div><div class="stage-status"><span class="status-dot" id="dot"></span><span id="publicStatus">CÉRÉMONIE</span></div></header>
-<main class="centerpiece" aria-live="polite"><p class="eyebrow" id="eyebrow">FÉLICITATIONS AUX DIPLÔMÉS</p><div class="ornament" id="ornament">✦</div><h1 id="displayText">Une langue de plus.<br>Un monde de plus.</h1><p class="translation-meta" id="translationMeta">Ce soir, nous célébrons votre réussite</p><div class="wave" id="wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></main>
+<main class="centerpiece" aria-live="polite"><p class="eyebrow" id="eyebrow">FÉLICITATIONS AUX DIPLÔMÉS</p><div class="ornament" id="ornament">✦</div><div class="display-surface" id="displayText">Une langue de plus.<br>Un monde de plus.</div><p class="translation-meta" id="translationMeta">Ce soir, nous célébrons votre réussite</p><div class="wave" id="wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></main>
 <footer class="stage-footer"><span>DELF SCOLAIRE</span><span>FÉLICITATIONS <b>·</b> 2026</span></footer>
 </div>
-<button class="panel-toggle" id="panelToggle" aria-label="Podiumbediening openen" title="Podiumbediening, Escape">⚙</button>
+<!-- Op een gespiegeld scherm verdwijnen deze knoppen vanzelf. -->
+<nav class="stage-controls" id="stageControls" aria-label="Snelle podiumbediening">
+  <button type="button" class="quick-button" id="quickStart" aria-label="Start live Franse vertaling" title="Start vertaling (1)">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.7 18 12 8 18.3Z"/></svg>
+  </button>
+  <button type="button" class="quick-button quick-primary" id="quickTakeover" aria-label="Laat de Franse stem de speech overnemen" title="Overname (pijltje rechts)" hidden>
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6"/></svg>
+  </button>
+  <button type="button" class="quick-button" id="quickPause" aria-label="Pauzeer de stem" title="Pauzeren of hervatten (spatie)" hidden>
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path id="pauseIcon" d="M9 5v14M15 5v14"/></svg>
+  </button>
+  <button type="button" class="quick-button" id="quickSettings" aria-label="Open instellingen" title="Instellingen (Escape)">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="m19 13 2-1-2-1-.7-2.1 1-2-2-2-2 1-2.1-.7-1-2-1 2-2.1.7-2-1-2 2 1 2L5 11l-2 1 2 1 .7 2.1-1 2 2 2 2-1 2.1.7 1 2 1-2 2.1-.7 2 1 2-2-1-2z"/></svg>
+  </button>
+</nav>
+<button class="panel-toggle" id="panelToggle" aria-label="Podiumbediening openen" title="Podiumbediening, Escape" hidden>⚙</button>
 <aside id="panel" class="panel" aria-label="Podiumbediening" aria-hidden="true">
 <div class="panel-head"><div><small>ALLEEN ACHTER DE SCHERMEN</small><h2>DELF scolaire</h2></div><button id="panelClose" class="close" aria-label="Sluiten">×</button></div>
 <div class="panel-content">
-<p class="hint">Dit paneel hoort niet op de beamer. Open de podiumweergave schermvullend en gebruik de sneltoetsen. De stem is live gegenereerd; er zijn geen opnamen.</p>
+<p class="hint">Bij gespiegeld beeld ziet de zaal ook dit instellingenpaneel. Sluit het vóór je begint. Start met 1 of de kleine afspeelknop. Tijdens jouw Nederlandse opening druk je op → of de kleine pijlknop. De onderbreking, Franse speech en teruggave volgen vanzelf. Na de teruggave vertaalt de app jouw slot.</p>
 <div class="group"><h3>Voor de ceremonie</h3>
 <button id="prepareTranslate" class="action">Franse vertaling laden</button><p class="feedback" id="translationStatus">Nog niet geladen</p>
 <button id="prepareMic" class="action outline">Microfoon controleren</button><p class="feedback" id="microphoneStatus">Nog niet gecontroleerd</p>
 <label class="upload">Frans stemmodel openen (checkpointmap)<input id="modelFolder" type="file" webkitdirectory directory multiple></label>
-<p class="hint">Download zelf na toestemming het model <code>gradium/phonon-40m-fr</code> van Hugging Face. Selecteer de gedownloade map. De bestanden blijven op deze computer en gaan niet naar eaimodel.nl.</p>
-<button id="loadFrench" class="action">Franse stem laden</button><p class="feedback" id="frenchStatus">Nog geen Franse stem geladen</p>
+<p class="hint">Nadat je toegang tot het model hebt gekregen, download je de checkpointmap bij Hugging Face. Er is geen knop voor publicatie naar GitHub. Gebruik het model <code>gradium/phonon-40m-fr</code> van Hugging Face. Selecteer de gedownloade map. De bestanden blijven op deze computer en gaan niet naar eaimodel.nl. <a href="https://huggingface.co/gradium/phonon-40m-fr" target="_blank" rel="noopener noreferrer">Open de modelpagina</a> om de toegang en bestanden te vinden.</p>
+<button id="loadFrench" class="action">Franse stem laden</button><button id="previewFrench" class="action outline">Luister naar de Franse stem</button><p class="feedback" id="frenchStatus">Nog geen Franse stem geladen</p>
 <label class="upload">Nederlandse onderbrekingsstem <select id="nlVoice"><option value="">Kies een aanwezige stem</option></select></label>
 <button id="previewDutch" class="action outline">Nederlandse stem beluisteren</button><p class="feedback" id="dutchStatus">Kies een stem. Er wordt niet automatisch teruggevallen op een standaardstem.</p>
 </div>
 <div class="group"><h3>Verloop</h3><div class="control-grid">
-<button id="start" class="action">1 · Begin: live vertalen</button><button id="interrupt" class="action">2 · Stop: onderbreking</button>
-<button id="french" class="action">3 · Franse stem neemt over</button><button id="handback" class="action">4 · Geef woord terug</button>
-<button id="finish" class="action">5 · Slot: live vertalen</button><button id="reset" class="action outline">0 · Opnieuw</button>
+<button id="start" class="action">1 · Start live vertaling</button><button id="interrupt" class="action">→ · Overname starten</button>
+<button id="french" class="action">3 · Frans (handmatig)</button><button id="handback" class="action">4 · Teruggave (handmatig)</button>
+<button id="finish" class="action">5 · Slot (handmatig)</button><button id="reset" class="action outline">0 · Opnieuw</button>
 </div><div class="control-grid two"><button id="fullscreen" class="action outline">F · Schermvullend</button><button id="panic" class="action dangerous">X · Stilte</button></div><p class="feedback" id="phaseStatus">Klaar om voor te bereiden</p></div>
-<div class="group"><h3>Franse speech</h3><textarea id="speechText" rows="13" spellcheck="true"></textarea><p class="hint">De tekst staat klaar. Bij toets 3 spreekt Phonon de tekst op dat moment uit. De opbouw is per alinea, met pauzes voor de zaal.</p></div>
+<div class="group"><h3>Franse speech</h3><textarea id="speechText" rows="13" spellcheck="true"></textarea><p class="hint">De tekst staat klaar. De Franse stem spreekt na de onderbreking automatisch. De tekst verschijnt in korte zinnen, terwijl de stem spreekt.</p></div>
 <div class="group"><h3>Vertaling testen</h3><textarea id="testDutch" rows="3">Goedenavond allemaal. Wat mooi dat we hier bijeen zijn voor de uitreiking van de DELF-diploma's.</textarea><button id="testTranslate" class="action outline">Vertaal deze zin</button></div>
-<div class="group"><h3>Status en metingen</h3><p class="feedback" id="runtimeStatus">Nog niet gestart</p><p class="feedback" id="latencyStatus">Nog geen stemmeting</p><p class="hint">1: openen · 2: onderbreking · 3: Frans · 4: teruggave · 5: slot · X: direct stoppen · Esc: instellingen</p></div>
+<div class="group"><h3>Status en metingen</h3><p class="feedback" id="runtimeStatus">Nog niet gestart</p><p class="feedback" id="latencyStatus">Nog geen stemmeting</p><p class="hint">1: live vertaling · →: volledige overname · spatie: pauze/hervat · X: stop · 0: opnieuw · Esc: instellingen</p></div>
 </div></aside>
 </body></html>

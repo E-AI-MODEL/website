@@ -1,8 +1,35 @@
 import { PhononTTS } from 'phonon-tts';
-import { interrupt, handback, speech, paragraphs, modelFiles, stageAdvance } from './script.mjs';
+import { interrupt, handback, speech, speechSegments, modelFiles, stageAdvance } from './script.mjs';
 
 const $ = id => document.getElementById(id);
 const stage = $('stage');
+const controls = $('stageControls');
+let controlHideTimer = null;
+function hideControls() {
+  if (controlHideTimer) clearTimeout(controlHideTimer);
+  controlHideTimer = null;
+  controls.classList.remove('visible');
+  if (controls.contains(document.activeElement)) document.activeElement.blur();
+}
+function revealControls() {
+  if ($('panel').classList.contains('open')) return;
+  controls.classList.add('visible');
+  if (controlHideTimer) clearTimeout(controlHideTimer);
+  controlHideTimer = setTimeout(() => {
+    if (!controls.matches(':focus-within')) hideControls();
+  }, 2800);
+}
+document.addEventListener('pointermove', revealControls, { passive: true });
+document.addEventListener('pointerdown', revealControls, { passive: true });
+document.addEventListener('touchstart', revealControls, { passive: true });
+controls.addEventListener('focusin', revealControls);
+function refreshQuickControls() {
+  $('quickStart').hidden = phase !== 'intro';
+  $('quickTakeover').hidden = phase !== 'live' || closing;
+  $('quickPause').hidden = !['interrupted','french','handback'].includes(phase);
+  $('quickPause').setAttribute('aria-label', paused ? 'Hervat de stem' : 'Pauzeer de stem');
+  $('quickPause').querySelector('path').setAttribute('d', paused ? 'M8 5.7 18 12 8 18.3Z' : 'M9 5v14M15 5v14');
+}
 $('speechText').value = speech;
 let phase = 'intro';
 let epoch = 0;
@@ -13,7 +40,16 @@ let restartTimer = null;
 let previewTimer = null;
 let finalTranslations = [];
 let pendingFinal = Promise.resolve();
-let translationId = 0;
+let finalInFlight = 0;
+let draftText = '';
+let latestInterim = '';
+let previewInFlight = false;
+let previewSequence = 0;
+let closing = false;
+let autoTimer = null;
+let paused = false;
+let captionCues = [];
+let cueTimer = null;
 let selectedDutchVoice = null;
 let french = null;
 let modelUrls = [];
@@ -22,7 +58,6 @@ let soundContext = null;
 let playingNodes = [];
 let dutchUtterance = null;
 let firstAudioMs = null;
-let stageStarted = 0;
 let errors = [];
 
 function feedback(id, message, type = '') {
@@ -32,17 +67,71 @@ function feedback(id, message, type = '') {
   if (type) el.classList.add(type);
 }
 function screen(text, meta = '') {
+  stage.dataset.display = 'statement';
   const parent = $('displayText');
+  parent.classList.remove('caption-layout');
   parent.replaceChildren();
-  String(text).split('\n').forEach((line, i) => {
-    if (i) parent.append(document.createElement('br'));
-    parent.append(document.createTextNode(line));
-  });
+  const item = document.createElement('span');
+  item.className = 'statement';
+  item.textContent = String(text);
+  parent.append(item);
   $('translationMeta').textContent = meta;
 }
+function splitFrenchCaption(value) {
+  const text = String(value).replace(/\s+/g, ' ').trim();
+  if (text.length <= 92) return text ? [text] : [];
+  const words = text.split(' ');
+  const lines = [];
+  let part = '';
+  for (const word of words) {
+    if (part && (part.length + word.length > 88)) {
+      lines.push(part);
+      part = word;
+    } else part = part ? part + ' ' + word : word;
+  }
+  if (part) lines.push(part);
+  return lines;
+}
+function renderCaptions() {
+  if (phase !== 'live') return;
+  stage.dataset.display = 'captions';
+  const parent = $('displayText');
+  if (!parent.classList.contains('caption-layout')) {
+    parent.replaceChildren();
+    parent.classList.add('caption-layout');
+    for (const cls of ['caption-previous', 'caption-current', 'caption-draft']) {
+      const row = document.createElement('div');
+      row.className = 'caption-row ' + cls;
+      parent.append(row);
+    }
+  }
+  const lines = finalTranslations.slice(-2);
+  const [previous, current, draft] = parent.children;
+  const states = [lines.length > 1 ? lines[0] : '', lines.at(-1) || '', draftText];
+  [previous, current, draft].forEach((el, index) => {
+    const next = states[index];
+    if (el.textContent !== next) el.textContent = next;
+    el.classList.toggle('empty', !next);
+  });
+  $('translationMeta').textContent = draftText ? 'TRADUCTION EN DIRECT' : 'NÉERLANDAIS · FRANÇAIS';
+}
+function clearLiveState() {
+  finalTranslations = [];
+  finalInFlight = 0;
+  draftText = '';
+  latestInterim = '';
+  previewSequence++;
+  pendingFinal = Promise.resolve();
+  if (previewTimer) clearTimeout(previewTimer);
+  previewTimer = null;
+  $('displayText').classList.remove('caption-layout');
+}
 function panel(open) {
+  if (open) hideControls();
+  document.body.classList.toggle('panel-visible', open);
   $('panel').classList.toggle('open', open);
   $('panel').setAttribute('aria-hidden', open ? 'false' : 'true');
+  if (!open) { stage.tabIndex = -1; stage.focus({preventScroll:true}); }
 }
 $('panelToggle').onclick = () => panel(true);
 $('panelClose').onclick = () => panel(false);
@@ -51,6 +140,7 @@ function setPhase(p, publicLabel) {
   stage.dataset.phase = p;
   $('publicStatus').textContent = publicLabel;
   feedback('phaseStatus', `Onderdeel: ${publicLabel}`);
+  refreshQuickControls();
 }
 function reportError(message) {
   errors.push(message);
@@ -91,41 +181,59 @@ function stopMic() {
   wantsMic = false;
   if (restartTimer) { clearTimeout(restartTimer); restartTimer = null; }
   if (previewTimer) { clearTimeout(previewTimer); previewTimer = null; }
+  latestInterim = '';
+  previewSequence++;
   const previous = mic;
   mic = null;
   if (previous) { previous.onend = null; previous.onresult = null; previous.onerror = null; try { previous.abort(); } catch {} }
 }
-function showTranslation(result, isPreview, localEpoch, id) {
-  if (phase !== 'live' || localEpoch !== epoch || id !== translationId) return;
-  const recent = [...finalTranslations.slice(-2), result];
-  screen(recent.join('\n'), isPreview ? 'Traduction en direct · en cours' : 'Traduction en direct · néerlandais vers français');
-}
-async function translateFinal(fragment) {
+function translateFinal(fragment) {
   const text = fragment.trim();
   if (!text || !translator || phase !== 'live') return;
   const localEpoch = epoch;
-  const id = ++translationId;
+  // A finished Dutch fragment always wins over an older interim preview.
+  latestInterim = '';
+  draftText = '';
+  previewSequence++;
+  if (previewTimer) clearTimeout(previewTimer);
+  previewTimer = null;
+  finalInFlight++;
   pendingFinal = pendingFinal.catch(() => {}).then(async () => {
     if (phase !== 'live' || epoch !== localEpoch) return;
     try {
       const translated = await translator.translate(text);
       if (phase !== 'live' || epoch !== localEpoch) return;
-      finalTranslations.push(translated);
-      finalTranslations = finalTranslations.slice(-3);
-      screen(finalTranslations.slice(-3).join('\n'), 'Traduction en direct · néerlandais vers français');
+      finalTranslations.push(...splitFrenchCaption(translated));
+      finalTranslations = finalTranslations.slice(-2);
+      renderCaptions();
       feedback('runtimeStatus', `Herkend: ${text}`, 'good');
     } catch (e) { reportError(`Vertaling mislukt: ${e.message}`); }
-  });
+  }).finally(() => { finalInFlight = Math.max(0, finalInFlight - 1); });
 }
 function translatePreview(fragment) {
-  if (!translator || phase !== 'live' || fragment.split(/\s+/).length < 5) return;
-  if (previewTimer) clearTimeout(previewTimer);
+  if (!translator || phase !== 'live') return;
+  latestInterim = fragment.trim();
+  if (latestInterim.split(/\s+/).length < 3) return;
+  if (previewTimer || previewInFlight || finalInFlight) return;
   const localEpoch = epoch;
   previewTimer = setTimeout(async () => {
-    const id = ++translationId;
-    try { const translated = await translator.translate(fragment.trim()); showTranslation(translated, true, localEpoch, id); }
-    catch { /* eindresultaat blijft leidend */ }
-  }, 550);
+    previewTimer = null;
+    if (phase !== 'live' || epoch !== localEpoch || previewInFlight || finalInFlight) return;
+    const snapshot = latestInterim;
+    const sequence = ++previewSequence;
+    previewInFlight = true;
+    try {
+      const translated = await translator.translate(snapshot);
+      if (phase === 'live' && epoch === localEpoch && sequence === previewSequence && !finalInFlight && snapshot === latestInterim) {
+        draftText = splitFrenchCaption(translated).at(-1) || '';
+        renderCaptions();
+      }
+    } catch { /* Alleen echte vertalingen verschijnen. */ }
+    finally {
+      previewInFlight = false;
+      if (phase === 'live' && epoch === localEpoch && latestInterim !== snapshot && !finalInFlight) translatePreview(latestInterim);
+    }
+  }, 180);
 }
 function startMic() {
   const SR = globalThis.SpeechRecognition || globalThis.webkitSpeechRecognition;
@@ -194,6 +302,42 @@ $('loadFrench').onclick = async () => {
   } catch (e) { french = null; releaseModelUrls(); reportError(`Frans model kon niet starten: ${e.message}`); feedback('frenchStatus', 'Model niet geladen', 'bad'); }
 };
 
+// Listen to the real French model before the ceremony, without saving audio.
+$('previewFrench').onclick = async () => {
+  if (!french) { feedback('frenchStatus', 'Laad eerst het Franse model.', 'bad'); return; }
+  if (phase !== 'intro') { feedback('frenchStatus', 'De Franse stem kun je vóór de toespraak beluisteren.', 'bad'); return; }
+  stopVoices();
+  speechAbort = new AbortController();
+  const controller = speechAbort;
+  const ctx = new AudioContext({ sampleRate: french.sampleRate });
+  soundContext = ctx;
+  await ctx.resume();
+  let playTime = ctx.currentTime + .08;
+  const started = performance.now();
+  try {
+    const sample = french.stream('Chers élèves, félicitations pour votre diplôme. Ce soir, nous célébrons votre réussite.', { signal: controller.signal });
+    let pieces = 0;
+    for await (const pcm of sample) {
+      if (controller.signal.aborted || ctx.state === 'closed') return;
+      if (pieces === 0) feedback('latencyStatus', `Franse stem: eerste klank na ${Math.round(performance.now() - started)} ms`, 'good');
+      const buffer = ctx.createBuffer(1, pcm.length, french.sampleRate);
+      buffer.copyToChannel(pcm, 0);
+      const node = ctx.createBufferSource();
+      node.buffer = buffer;
+      node.connect(ctx.destination);
+      playTime = Math.max(playTime, ctx.currentTime + .03);
+      node.start(playTime);
+      playTime += buffer.duration;
+      playingNodes.push(node);
+      node.onended = () => { const index = playingNodes.indexOf(node); if (index !== -1) playingNodes.splice(index, 1); };
+      pieces++;
+    }
+    await sample.done;
+    await waitForPlayback(ctx, controller, playTime);
+    if (!controller.signal.aborted) feedback('frenchStatus', 'Franse stem beluisterd. Beoordeel accent en intonatie.', 'good');
+  } catch (e) { if (!controller.signal.aborted) reportError(`Franse stemproef: ${e.message || e}`); }
+};
+
 function populateVoices() {
   const all = speechSynthesis.getVoices().filter(v => /^nl(?:-|$)/i.test(v.lang));
   const current = $('nlVoice').value;
@@ -227,12 +371,46 @@ function speakDutch(text, onEnd) {
 $('previewDutch').onclick = () => { speakDutch('Goedenavond. Mag ik je even onderbreken?'); };
 
 function stopVoices() {
+  if (autoTimer) { clearTimeout(autoTimer); autoTimer = null; }
+  if (cueTimer) { clearInterval(cueTimer); cueTimer = null; }
+  captionCues = [];
+  paused = false;
   if (speechAbort) { speechAbort.abort(); speechAbort = null; }
   if (soundContext) { const ctx = soundContext; soundContext = null; void ctx.close().catch(() => {}); }
   playingNodes.forEach(n => { try { n.stop(); } catch {} });
   playingNodes = [];
   if ('speechSynthesis' in window) speechSynthesis.cancel();
   dutchUtterance = null;
+}
+function togglePause() {
+  if (!['interrupted', 'french', 'handback'].includes(phase)) return;
+  paused = !paused;
+  if (phase === 'french' && soundContext) {
+    void (paused ? soundContext.suspend() : soundContext.resume()).catch(e => reportError(e.message));
+  } else if ('speechSynthesis' in window) {
+    if (paused) speechSynthesis.pause(); else speechSynthesis.resume();
+  }
+  $('publicStatus').textContent = paused ? 'PAUSE' : (phase === 'french' ? 'DISCOURS EN FRANÇAIS' : 'UN INSTANT…');
+  feedback('phaseStatus', paused ? 'Gepauzeerd · spatie om door te gaan' : 'Hervat');
+  refreshQuickControls();
+}
+function followAudioClock(ctx, controller) {
+  if (cueTimer) clearInterval(cueTimer);
+  cueTimer = setInterval(() => {
+    if (controller.signal.aborted || soundContext !== ctx) { clearInterval(cueTimer); cueTimer = null; return; }
+    while (captionCues.length && ctx.currentTime + 0.025 >= captionCues[0].at) {
+      screen(captionCues.shift().text, 'DELF SCOLAIRE · DISCOURS EN FRANÇAIS');
+    }
+  }, 35);
+}
+function waitForPlayback(ctx, controller, targetTime) {
+  return new Promise(resolve => {
+    const check = () => {
+      if (controller.signal.aborted || soundContext !== ctx || ctx.state === 'closed' || ctx.currentTime >= targetTime) return resolve();
+      setTimeout(check, 45);
+    };
+    check();
+  });
 }
 async function streamFrench() {
   if (!french) { reportError('De Franse stem is niet geladen. Er wordt geen andere stem gebruikt.'); return; }
@@ -241,16 +419,17 @@ async function streamFrench() {
   soundContext = new AudioContext({ sampleRate: french.sampleRate });
   const ctx = soundContext;
   await ctx.resume();
-  let t = ctx.currentTime + 0.09;
+  let t = ctx.currentTime + 0.11;
   let totalChunks = 0;
-  const paragraphsToSay = paragraphs($('speechText').value);
+  const segments = speechSegments($('speechText').value);
   const started = performance.now();
+  followAudioClock(ctx, controller);
+  screen('À vous maintenant, chers diplômés.', 'DELF SCOLAIRE');
   try {
-    for (let i = 0; i < paragraphsToSay.length; i++) {
+    for (const line of segments) {
       if (controller.signal.aborted || phase !== 'french') return;
-      const line = paragraphsToSay[i];
-      screen(line, 'DELF scolaire · Discours en français');
       const stream = french.stream(line, { signal: controller.signal });
+      let firstChunk = true;
       for await (const pcm of stream) {
         if (controller.signal.aborted || ctx.state === 'closed') return;
         if (firstAudioMs === null) {
@@ -262,44 +441,54 @@ async function streamFrench() {
         const node = ctx.createBufferSource();
         node.buffer = buffer;
         node.connect(ctx.destination);
-        t = Math.max(t, ctx.currentTime + 0.04);
+        t = Math.max(t, ctx.currentTime + 0.045);
+        if (firstChunk) {
+          captionCues.push({ at: t, text: line });
+          firstChunk = false;
+        }
         node.start(t);
         t += buffer.duration;
         playingNodes.push(node);
         node.onended = () => { const index = playingNodes.indexOf(node); if (index !== -1) playingNodes.splice(index, 1); };
         totalChunks++;
       }
-      // The next paragraph has a deliberate pause, not a synthetic recording.
-      t += 0.38;
+      t += 0.24;
       await stream.done;
     }
-    const waitMs = Math.max(0, Math.ceil((t - ctx.currentTime) * 1000));
     feedback('runtimeStatus', `Franse speech loopt. ${totalChunks} live audiostukken.`, 'good');
-    await new Promise(resolve => setTimeout(resolve, waitMs));
+    await waitForPlayback(ctx, controller, t);
     if (!controller.signal.aborted && phase === 'french') goHandback();
   } catch (e) { if (!controller.signal.aborted) reportError(`Franse stem onderbroken: ${e.message || e}`); }
 }
 function goStart() {
   if (!translator) { reportError('Start eerst het vertaalmodel. Geen voorbereid Frans als vervanging.'); return; }
-  if (stageAdvance(phase, 'start') === null) { reportError('Start is in deze fase niet beschikbaar.'); return; }
-  stopVoices(); finalTranslations = []; translationId++;
+  if (stageAdvance(phase, 'start') === null) return;
+  stopVoices(); clearLiveState(); closing = false;
   setPhase('live', 'TRADUCTION EN DIRECT');
-  screen('À vous la parole.', 'Traduction en direct · Néerlandais → Français');
+  renderCaptions();
   startMic();
   panel(false);
 }
 function goInterrupt() {
+  if (closing || stageAdvance(phase, 'interrupt') === null) return;
+  if (!french) { reportError('Laad eerst de Franse stem. De onderbreking begint pas als de overname klaarstaat.'); return; }
   if (!selectedDutchVoice) { reportError('Selecteer eerst een Nederlandse stem.'); return; }
-  if (!stageAdvance(phase, 'interrupt')) return;
   stopMic(); stopVoices();
   setPhase('interrupted', 'UN INSTANT…');
   screen('Un instant, s’il vous plaît.', '');
-  speakDutch(interrupt);
+  const now = epoch;
+  const started = speakDutch(interrupt, () => {
+    // One key triggers the complete takeover, including a brief reply opportunity.
+    autoTimer = setTimeout(() => {
+      if (phase === 'interrupted' && epoch === now) goFrench();
+    }, 1600);
+  });
+  if (!started) reportError('De onderbreking kon niet starten.');
   panel(false);
 }
 function goFrench() {
   if (!french) { reportError('Laad eerst het Franse Phonon-model.'); return; }
-  if (!stageAdvance(phase, 'french')) return;
+  if (stageAdvance(phase, 'french') === null) return;
   stopMic(); stopVoices(); firstAudioMs = null;
   setPhase('french', 'DISCOURS EN FRANÇAIS');
   panel(false);
@@ -307,33 +496,42 @@ function goFrench() {
 }
 function goHandback() {
   if (!selectedDutchVoice) { reportError('Nederlandse teruggavestem ontbreekt.'); return; }
-  if (!stageAdvance(phase, 'handback')) return;
+  if (stageAdvance(phase, 'handback') === null) return;
   stopVoices();
   setPhase('handback', 'À VOUS');
-  screen('Merci. Et maintenant, à vous.', '');
-  speakDutch(handback);
+  screen('Merci. À vous de conclure.', '');
+  const now = epoch;
+  speakDutch(handback, () => {
+    if (phase === 'handback' && epoch === now) goFinish();
+  });
   panel(false);
 }
 function goFinish() {
   if (!translator) { reportError('Vertaalmodel ontbreekt.'); return; }
-  if (!stageAdvance(phase, 'finish')) return;
-  stopVoices(); finalTranslations = []; translationId++;
+  if (stageAdvance(phase, 'finish') === null) return;
+  stopVoices(); clearLiveState(); closing = true;
   setPhase('live', 'TRADUCTION EN DIRECT');
-  screen('Félicitations à tous les diplômés.', 'Traduction en direct · Néerlandais → Français');
+  renderCaptions();
   startMic();
   panel(false);
 }
 function goReset() {
-  stopMic(); stopVoices(); translationId++; finalTranslations = [];
+  stopMic(); stopVoices(); clearLiveState(); closing = false;
   setPhase('intro', 'CÉRÉMONIE');
   screen('Une langue de plus.\nUn monde de plus.', 'Ce soir, nous célébrons votre réussite');
   panel(false);
 }
 function panic() {
-  stopMic(); stopVoices(); translationId++;
+  stopMic(); stopVoices(); previewSequence++;
   setPhase('stopped', 'PAUSE');
   feedback('runtimeStatus', 'Alles gestopt. Toets 0 om opnieuw te beginnen.', 'bad');
 }
+// Aanraakbediening gebruikt exact dezelfde functies als het toetsenbord.
+$('quickStart').onclick = () => { goStart(); hideControls(); };
+$('quickTakeover').onclick = () => { goInterrupt(); hideControls(); };
+$('quickPause').onclick = () => { togglePause(); $('quickPause').blur(); revealControls(); };
+$('quickSettings').onclick = () => panel(true);
+refreshQuickControls();
 const actions = {start:goStart, interrupt:goInterrupt, french:goFrench, handback:goHandback, finish:goFinish, reset:goReset, panic};
 for (const [name, fn] of Object.entries(actions)) $(name).onclick = fn;
 $('fullscreen').onclick = () => document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.();
@@ -344,7 +542,13 @@ $('testTranslate').onclick = async () => {
 };
 document.addEventListener('keydown', event => {
   if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement || event.target instanceof HTMLSelectElement) return;
-  if (event.key === 'Escape') { panel(!$('panel').classList.contains('open')); return; }
+  if (event.key === 'Escape') { event.preventDefault(); panel(!$('panel').classList.contains('open')); return; }
+  if (event.code === 'ArrowRight') {
+    event.preventDefault();
+    if (phase === 'live' && !closing) goInterrupt();
+    return;
+  }
+  if (event.code === 'Space') { event.preventDefault(); togglePause(); return; }
   const map = {'1':goStart,'2':goInterrupt,'3':goFrench,'4':goHandback,'5':goFinish,'0':goReset,'x':panic,'X':panic,'f':$('fullscreen').onclick,'F':$('fullscreen').onclick};
   if (map[event.key]) { event.preventDefault(); map[event.key](); }
 });

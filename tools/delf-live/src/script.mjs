@@ -26,3 +26,23 @@ export function stageAdvance(phase, action){
  if(phase==='stopped'&&action==='reset')return 'intro';
  return transitions[phase]?.[action]??null;
 }
+
+// Show short French phrases in sync with the stream, without one-word animations.
+export function speechSegments(value) {
+  const sections = paragraphs(value);
+  const output = [];
+  for (const section of sections) {
+    const sentences = section.match(/[^.!?…]+[.!?…]+(?:[”»']+)?|[^.!?…]+$/g) || [section];
+    let segment = '';
+    for (const sentence of sentences) {
+      const part = sentence.trim();
+      if (!part) continue;
+      if (segment && segment.length + part.length > 162) {
+        output.push(segment);
+        segment = part;
+      } else segment = segment ? segment + ' ' + part : part;
+    }
+    if (segment) output.push(segment);
+  }
+  return output;
+}

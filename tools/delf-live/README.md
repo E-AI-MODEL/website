@@ -4,7 +4,15 @@ Een zelfstandige webapp voor de diploma-uitreiking. Je spreekt Nederlands, de Fr
 
 ## Gebruik
 
-Open de app in een recente desktopversie van Chrome. Druk op Esc voor het regiepaneel. Bereid vóór de bijeenkomst de Nederlandse spraakherkenning, de Chrome Translator API en het Franse stemmodel voor. Test de geluidsuitvoer en beluister de Nederlandse stem. In de zaal: `1` start de Nederlandse microfoon met live Franse vertaling; `2` laat de Nederlandse stem je onderbreken; na je eigen reactie start `3` de Franse toespraak; de app geeft daarna automatisch in het Nederlands het woord terug; `5` begint je slot weer met live vertaling. Met `X` wordt alle audio gestopt. `0` zet alles terug.
+De podiumomgeving toont uitsluitend Frans. Je begint in het Nederlands; Chrome herkent jouw woorden en vertaalt ze zo snel mogelijk naar korte Franse tekstregels. De tekst staat op een vaste plek. Het scherm gebruikt een lichte, rustige achtergrond.
+
+Voor aanvang open je met `Esc` de instellingen en bereid je het Franse vertaalmodel, de microfoon, het Franse stemmodel en een bewust gekozen Nederlandse onderbrekingsstem voor. Klik op **Luister naar de Franse stem** om het Franse accent en de intonatie te beoordelen. Met `1` begin je live te vertalen.
+
+**Eén druk op `→`** tijdens de Nederlandse opening begint de volledige overname: de Nederlandse stem onderbreekt je; er volgt een korte ruimte voor een reactie; de Franse Phonon-stem spreekt de voorbereide Franse tekst **live** uit; en de Nederlandse stem geeft het woord weer aan jou. Meteen daarna schakelt de app zelf de live vertaling weer in voor jouw Nederlandse slot. Toets `→` heeft tijdens het slot geen effect.
+
+**`Spatie`** pauzeert en hervat de stem. **`X`** stopt alle stemgeluiden en de microfoon meteen. Met `0` begin je opnieuw. De toetsen `2` tot en met `5` blijven beschikbaar om een onderdeel bij een storing handmatig te starten. `F` zet het scherm volledig open.
+
+De vertaling en spraakgeneratie blijven afhankelijk van de browser, het geladen model en eventuele online spraakherkenning. De app verzint bij uitval geen Franse ondertitels.
 
 ## Franse spraak
 
@@ -12,7 +20,7 @@ De app gebruikt `phonon-tts@0.7.1` en specifiek het Franse checkpoint `gradium/p
 
 Accepteer zelf de voorwaarden op https://huggingface.co/gradium/phonon-40m-fr en download de checkpointmap. In Chrome open je vervolgens die map bij **Frans stemmodel openen**. De app leest de bestanden lokaal, maakt tijdelijke blob-URL's en laadt het model in een browser-worker. De map moet in ieder geval `model.q8.gguf`, `config.json`, `tokenizer.json` en een Franse stem bevatten (`default-voice.safetensors` of een stem-embeddingsbestand). Opnieuw laden na het sluiten van de browser vraagt opnieuw de map kiezen. Er worden geen Franse audiobestanden opgeslagen.
 
-De app speelt de PCM-audio van Phonon live af via Web Audio. Ze meet de model-laadtijd en de tijd tot het eerste audiostuk. Dat zijn apparaatgebonden metingen.
+De app speelt de PCM-audio van Phonon live af via Web Audio. Franse zinsdelen verschijnen wanneer het bijbehorende geluid start. Ze meet de model-laadtijd en de tijd tot het eerste audiostuk. Dat zijn apparaatgebonden metingen.
 
 ## Nederlandse onderbreking
 
