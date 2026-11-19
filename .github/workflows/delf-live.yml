@@ -1,0 +1,44 @@
+name: DELF podiumapp
+
+on:
+  pull_request:
+    paths:
+      - 'tools/delf-live/**'
+      - '.github/workflows/delf-live.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'tools/delf-live/**'
+      - '.github/workflows/delf-live.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check-and-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: tools/delf-live
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Controleer en bouw de podiumapp
+        run: |
+          npm install --no-audit --no-fund
+          node --check src/main.js
+          npm test
+          npm run build
+          test -s dist/index.html
+          find dist/assets -name '*.js' -type f | grep -q .
+      - name: Bewaar de gebouwde podiumapp voor controle
+        uses: actions/upload-artifact@v4
+        with:
+          name: delf-podiumapp-preview
+          path: tools/delf-live/dist/
+          if-no-files-found: error
