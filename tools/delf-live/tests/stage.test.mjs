@@ -133,3 +133,17 @@ test('de witgolf ademt zichtbaar vanuit het midden',()=>{
   assert.ok(styles.includes('transform-origin:50% 50%'));
   assert.ok(styles.includes('scale(1.12)'));
 });
+
+test('browservertaling zonder Chrome Translator gebruikt een eigen ONNX-model',()=>{
+  const fallback=readFileSync(new URL('../src/translation-fallback.js',import.meta.url),'utf8');
+  const worker=readFileSync(new URL('../src/translation-worker.js',import.meta.url),'utf8');
+  assert.ok(main.includes("import('./translation-fallback.js')"));
+  assert.ok(main.includes('createBrowserTranslator(progress'));
+  assert.ok(main.includes('const availability = await Translator.availability(opts)'));
+  assert.ok(fallback.includes("new Worker(new URL('./translation-worker.js', import.meta.url)"));
+  assert.ok(worker.includes("pipeline('translation', 'Xenova/opus-mt-nl-fr'"));
+  assert.ok(worker.includes("dtype: 'q8'"));
+  assert.ok(worker.includes("device: 'wasm'"));
+  assert.ok(!worker.includes('token='));
+  assert.ok(!worker.includes('api_key'));
+});

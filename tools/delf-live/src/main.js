@@ -284,23 +284,48 @@ function reportError(message) {
   console.error('[DELF]', message);
 }
 
+let preparingTranslation = null;
 async function prepareTranslation() {
-  feedback('translationStatus', 'Franse vertaling controleren…');
-  if (typeof globalThis.Translator === 'undefined') {
-    feedback('translationStatus', 'Deze browser heeft geen live vertaling NL → FR. Je kunt de Nederlandse spraak apart testen. Gebruik voor de podiumuitvoering Chrome op de MacBook.', 'bad');
-    return false;
-  }
-  try {
-    const opts = { sourceLanguage: 'nl', targetLanguage: 'fr' };
-    const status = await Translator.availability(opts);
-    if (status === 'unavailable') throw Error('Nederlands naar Frans is hier niet beschikbaar');
-    feedback('translationStatus', status === 'available' ? 'Taalmodel openen…' : 'Taalpakket downloaden…');
-    translator = await Translator.create({ ...opts, monitor(m) {
-      m.addEventListener('downloadprogress', e => feedback('translationStatus', `Taalpakket ${Math.floor(e.loaded * 100)}%`));
-    }});
-    feedback('translationStatus', 'Vertaling gereed', 'good');
+  if (translator) {
+    feedback('translationStatus', 'Franse vertaling is geladen.', 'good');
     return true;
-  } catch (e) { reportError('Vertaalmodel: ' + (e.message || e)); feedback('translationStatus', 'Vertalen niet beschikbaar', 'bad'); return false; }
+  }
+  if (preparingTranslation) return preparingTranslation;
+  preparingTranslation = (async () => {
+    feedback('translationStatus', 'Franse vertaling voorbereiden…');
+    const opts = { sourceLanguage: 'nl', targetLanguage: 'fr' };
+    if (typeof globalThis.Translator !== 'undefined') {
+      try {
+        const availability = await Translator.availability(opts);
+        if (availability !== 'unavailable') {
+          feedback('translationStatus', availability === 'available' ? 'Chrome-vertaling openen…' : 'Chrome-taalpakket downloaden…');
+          translator = await Translator.create({ ...opts, monitor(m) {
+            m.addEventListener('downloadprogress', e => feedback('translationStatus', 'Chrome-taalpakket ' + Math.floor(e.loaded * 100) + '%'));
+          }});
+          translator.kind = 'chrome';
+          feedback('translationStatus', 'Nederlandse spraak → Franse tekst. Chrome-vertaling klaar.', 'good');
+          return true;
+        }
+      } catch (e) {
+        feedback('translationStatus', 'Chrome-vertaling niet beschikbaar (' + (e.message || e) + '). Browsermodel proberen…');
+      }
+    }
+    // De tweede route draait op het toestel via WebAssembly, zonder API-sleutel.
+    feedback('translationStatus', 'Browsermodel Nederlands → Frans laden. Eerste keer grotere download; gebruik wifi.');
+    try {
+      const { createBrowserTranslator } = await import('./translation-fallback.js');
+      translator = await createBrowserTranslator(progress => feedback('translationStatus', progress));
+      feedback('translationStatus', 'Nederlands → Frans geladen via browsermodel. Probeer een korte zin.', 'good');
+      return true;
+    } catch (e) {
+      translator = null;
+      const msg = 'Browservertaling niet geladen: ' + (e.message || e);
+      feedback('translationStatus', msg, 'bad');
+      reportError(msg);
+      return false;
+    }
+  })();
+  try { return await preparingTranslation; } finally { preparingTranslation = null; }
 }
 $('prepareTranslate').onclick = prepareTranslation;
 let microphoneCheck = null;

@@ -59,3 +59,7 @@ Tijdens de onderbreking mag je vrij antwoorden. De microfoon probeert je reactie
 ## iPhone bediening en instellingen
 
 Op smalle touchscreens staan rechtsboven twee kleine dunne lijntjes. Eén tik opent het instellingenpaneel. Dat paneel heeft een lichte, bijna witte achtergrond en dunne scheidingslijnen. In `Verloop` staan dezelfde handmatige bedieningsknoppen als op de MacBook. Door het instellingenmenu te sluiten blijft de podiumweergave leeg. Op de MacBook blijven de twee lijntjes verborgen en gebruik je Esc. Live NL→FR-vertaling is afhankelijk van Chrome Translator en wordt op iOS niet gegarandeerd.
+
+## Tweede vertaalroute zonder Chrome Translator
+
+De app gebruikt op MacBook waar mogelijk de ingebouwde Chrome Translator API. Op andere browsers of wanneer die API ontbreekt of faalt, kan de gebruiker in de voorbereiding het openbare Nederlands-Franse model `Xenova/opus-mt-nl-fr` (Helsinki-NLP OPUS-MT, Apache-2.0) via Transformers.js en WebAssembly laden. Het model draait in een module-worker op het toestel en wordt in de browsercache bewaard. Er wordt geen API-sleutel gepubliceerd. Eerste keer downloaden en inference kunnen op iPhones langzaam zijn; de echte snelheid, kwaliteit en geheugenbelasting zijn nog niet op een fysiek toestel vastgesteld. Alleen echte herkende woorden worden vertaald, geen gescripte opening of afsluiting.
