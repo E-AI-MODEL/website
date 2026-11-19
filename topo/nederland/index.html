@@ -143,7 +143,7 @@ function countryMap(showNames,focused){
  const items=data.filter(x=>x.kind==='city');
  const cityDots=items.map(x=>'<g><circle class="city-halo" cx="'+fmt(x.x)+'" cy="'+fmt(x.y)+'" r="9"/><circle class="city-dot" cx="'+fmt(x.x)+'" cy="'+fmt(x.y)+'" r="5"/><circle class="city-hit" data-place="'+x.id+'" cx="'+fmt(x.x)+'" cy="'+fmt(x.y)+'" r="21"/></g>').join('');
  const labelCities=(showNames?items.filter(x=>x.capital):items.filter(x=>x.capital&&focused&&x.id===focused.id));
- const provinceTexts=showNames?provinceLabels.map(row=>{
+ const provinceTexts=showNames&&focused==='sheet'?provinceLabels.map(row=>{
   const p=proj(row[1],row[2]);return '<text class="map-text province" x="'+fmt(p[0])+'" y="'+fmt(p[1])+'" text-anchor="middle">'+row[0]+'</text>';
  }).join(''):'';
  const texts=showNames?labelCities.map(x=>'<text data-label-id="'+x.id+'" class="map-text city" x="'+fmt(x.x+12)+'" y="'+fmt(x.y-12)+'">'+x.name.replace(/&/g,'&amp;')+'</text>').join(''):'';
@@ -317,7 +317,7 @@ function finish(){
 $('again').onclick=start;
 function openSheet(){
  if(!$('game').classList.contains('hide')&&!done){peekCount++;assisted.add(current().id);wrong.add(current().id);queueAgain(current());}
- $('sheetCanvas').innerHTML=countryMap(true);$('sheetLayer').classList.remove('hide');zoom=1;updateZoom();
+ $('sheetCanvas').innerHTML=countryMap(true,'sheet');$('sheetLayer').classList.remove('hide');zoom=1;updateZoom();
 }
 function updateZoom(){zoom=Math.max(1,Math.min(4,zoom));$('sheetCanvas').style.width=(zoom*100)+'%';$('zoomText').textContent=Math.round(zoom*100)+'%';}
 $('showAnswer').onclick=openSheet;
