@@ -1126,19 +1126,6 @@
       "search_scope": "niet_indexeren"
     },
     {
-      "id": "page:/topo/",
-      "url": "/topo/",
-      "file": "topo/index.html",
-      "title": "TOPO! Waar ligt dat dan?!",
-      "kind": "toepassing",
-      "category": "Spelen en oefenen",
-      "review": "speelbare_topografie_noord_nederland",
-      "parent": null,
-      "family": "spelen-en-oefenen",
-      "in_committed_sitemap": true,
-      "search_scope": "algemeen"
-    },
-    {
       "id": "page:/tools/",
       "url": "/tools/",
       "file": "tools/index.html",
@@ -1668,6 +1655,32 @@
       "family": "hulpmiddelen",
       "in_committed_sitemap": true,
       "search_scope": "algemeen"
+    },
+    {
+      "id": "page:/topo/",
+      "url": "/topo/",
+      "file": "topo/index.html",
+      "title": "TOPO! Waar ligt dat dan?!",
+      "kind": "toepassing",
+      "category": "Spelen en oefenen",
+      "review": "speelbare_topografie_noord_nederland",
+      "parent": null,
+      "family": "spelen-en-oefenen",
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
+    },
+    {
+      "id": "page:/topo/instellingen/",
+      "url": "/topo/instellingen/",
+      "file": "topo/instellingen/index.html",
+      "title": "Instellingen | Let's go TOPO!",
+      "kind": "toepassing",
+      "category": "Spelen en oefenen",
+      "review": "instellingenpagina_toekomstige_regios_niet_live_actief",
+      "parent": "page:/topo/",
+      "family": "spelen-en-oefenen",
+      "in_committed_sitemap": false,
+      "search_scope": "niet_indexeren"
     },
     {
       "id": "page:/twee-pijlers/",
@@ -7038,8 +7051,8 @@
     }
   ],
   "audit": {
-    "tracked_html_files": 217,
-    "public_page_files": 177,
+    "tracked_html_files": 218,
+    "public_page_files": 178,
     "generated_pages": 2,
     "search_index_entries": 289,
     "embedded_items_in_search": 144,
@@ -7083,8 +7096,8 @@
     ],
     "orphan_items": [],
     "additional_html_files": 40,
-    "all_html_files": 217,
-    "pages_not_in_public_search": 34,
+    "all_html_files": 218,
+    "pages_not_in_public_search": 35,
     "page_families_needing_review": 0,
     "redirect_title_candidates": 9,
     "collections": 5,
