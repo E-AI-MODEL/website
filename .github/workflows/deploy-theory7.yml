@@ -3,6 +3,12 @@ name: Deploy to Theory7
 on:
   push:
     branches: [main]
+    # TOPO publishes through deploy-topo-theory7.yml, not the site-wide pipeline.
+    paths-ignore:
+      - 'topo/**'
+      - '.github/workflows/deploy-topo-theory7.yml'
+      - '.github/workflows/topo-mobile-verify.yml'
+      - 'scripts/test_topo_mobile.mjs'
   workflow_dispatch:
 
 permissions:
