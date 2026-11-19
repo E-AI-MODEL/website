@@ -152,7 +152,7 @@ body.playing .hint-chip{z-index:3}
 .sheet-zoom-tools button{border:2px solid var(--ink);background:white;border-radius:12px;min-width:46px;min-height:44px;font-size:24px;font-weight:1000;color:var(--ink);box-shadow:0 3px 0 var(--ink)}
 .sheet-zoom-tools #sheetZoomReset{font-size:13px;padding:6px 12px;margin-left:auto}
 #sheetZoomLevel{min-width:50px;text-align:center;font-size:15px;font-weight:900}
-.answer-modal #sheetMap{height:min(54dvh,560px);max-height:none;overflow:auto;touch-action:pan-x pan-y;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.answer-modal #sheetMap{height:min(54dvh,560px);max-height:none;overflow:auto;touch-action:pan-x pan-y;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;cursor:grab}.answer-modal #sheetMap.dragging{cursor:grabbing;user-select:none}
 .answer-modal #sheetMapCanvas{width:100%;min-width:0;transform-origin:top left}
 .answer-modal #sheetMapCanvas svg{display:block;width:100%;min-width:0;height:auto}
 .sheet-zoom-note{font-size:12px;font-weight:700;color:#4b6370;margin:6px 0}
@@ -443,6 +443,20 @@ $('sheetZoomIn').onclick=()=>applySheetZoom(sheetZoom+.25);
 $('sheetZoomOut').onclick=()=>applySheetZoom(sheetZoom-.25);
 $('sheetZoomReset').onclick=()=>applySheetZoom(1);
 const sheetViewport=$('sheetMap');
+let sheetDrag=null;
+sheetViewport.addEventListener('pointerdown',e=>{
+ if(e.pointerType==='touch'||e.button!==0)return;
+ sheetDrag={id:e.pointerId,x:e.clientX,y:e.clientY,left:sheetViewport.scrollLeft,top:sheetViewport.scrollTop};
+ sheetViewport.classList.add('dragging');sheetViewport.setPointerCapture(e.pointerId);
+});
+sheetViewport.addEventListener('pointermove',e=>{
+ if(!sheetDrag||e.pointerId!==sheetDrag.id)return;
+ sheetViewport.scrollLeft=sheetDrag.left-(e.clientX-sheetDrag.x);
+ sheetViewport.scrollTop=sheetDrag.top-(e.clientY-sheetDrag.y);
+});
+function endSheetDrag(e){if(sheetDrag&&e.pointerId===sheetDrag.id){sheetDrag=null;sheetViewport.classList.remove('dragging');}}
+sheetViewport.addEventListener('pointerup',endSheetDrag);
+sheetViewport.addEventListener('pointercancel',endSheetDrag);
 function pinchDistance(touches){return Math.hypot(touches[0].clientX-touches[1].clientX,touches[0].clientY-touches[1].clientY)}
 sheetViewport.addEventListener('touchstart',e=>{if(e.touches.length===2){const b=sheetViewport.getBoundingClientRect();sheetPinchStart={distance:pinchDistance(e.touches),zoom:sheetZoom,x:((e.touches[0].clientX+e.touches[1].clientX)/2-b.left)/b.width,y:((e.touches[0].clientY+e.touches[1].clientY)/2-b.top)/b.height};}},{passive:true});
 sheetViewport.addEventListener('touchmove',e=>{if(e.touches.length===2&&sheetPinchStart){e.preventDefault();applySheetZoom(sheetPinchStart.zoom*pinchDistance(e.touches)/sheetPinchStart.distance,Math.max(0,Math.min(1,sheetPinchStart.x)),Math.max(0,Math.min(1,sheetPinchStart.y)));}},{passive:false});
