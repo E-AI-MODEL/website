@@ -67,6 +67,19 @@ main{width:min(1400px,100%);margin:auto;padding:5px clamp(13px,2vw,27px) 30px}
 }
 @media(min-width:701px){body{overflow:auto}.game-grid{min-height:65vh}}
 @media print{body{overflow:visible}.top,main,.credits,.close,.sheet-tools{display:none!important}#sheetLayer{position:static!important;display:block!important;background:white!important;padding:0!important}.modal{box-shadow:none;border:0;max-height:none!important;width:100%!important}.sheet-map{max-height:none!important;overflow:visible!important}.sheet-canvas{width:100%!important}}
+</style><style id="national-map-match-north">
+/* Map appearance matches the existing Noord-Nederland map; geometry stays CBS/PDOK. */
+.map-art{font-family:ui-rounded,'Trebuchet MS',system-ui,sans-serif;user-select:none;touch-action:manipulation}
+.map-art .province-shape{stroke:#c6a975;stroke-width:2.8;stroke-linecap:round;stroke-linejoin:round}
+.map-art .province-shape.on{stroke:#008779;stroke-width:6;filter:drop-shadow(0 0 8px #fff)}
+.map-art .city-halo{fill:#fff5de;stroke:#dda775;stroke-width:2;pointer-events:none}
+.map-art .city-dot,.map-art .capital-dot{fill:#283a44;stroke:none;pointer-events:none}
+.map-art .city-hit{stroke:transparent;fill:transparent;pointer-events:visiblePainted}
+.map-art .city-focus{fill:#31caa0;fill-opacity:.4;stroke:#008b7a;stroke-width:7}
+.map-art .map-text{font-family:ui-rounded,'Trebuchet MS',system-ui,sans-serif;font-size:17px;font-weight:800;fill:#30454d;paint-order:stroke;stroke:#f4f7ed;stroke-width:5;stroke-linejoin:round;pointer-events:none}
+.map-art .map-text.province{font-size:21px;font-weight:900;fill:#665a48;letter-spacing:1px}
+.map-art .map-text.city{font-size:17px;font-weight:800}
+.map-art .map-text.water{font-size:26px;fill:#5f9cb5;stroke:#e4f4fa;stroke-width:7;letter-spacing:2px}
 </style></head><body>
 <header class="top"><a href="/topo/" class="logo">Let’s go <span>TOPO!</span></a><a href="/topo/instellingen/" class="other">Instellingen</a></header>
 <main>
@@ -123,7 +136,8 @@ const countChoice=params.get('questions')||'8';
 const questionLimit=countChoice==='all'?60:Math.max(5,Math.min(60,parseInt(countChoice,10)||8));
 const noHints=params.get('assist')==='none';
 let data=[],features=[],round=0,queue=[],index=0,stars=0,helpCount=0,peekCount=0,wrong=new Set(),assisted=new Set(),repeated=new Set(),hintStep=0,attempts=0,done=false,currentMode='point',zoom=1,guessOptions=[];
-const C=['#ffe3a4','#ffc2b8','#c9e6ae','#e7c7ee','#b6e3f1','#f9cf9d','#e8e39f','#b2dbbf','#f4b4d4','#b8dadd','#d6e9a5','#c8c6f5'];
+// All province fills derive from the existing Noord-Nederland pastel map.
+const C=['#ffc2b8','#ffe3a4','#c9e6ae','#f4dfbc','#c7e6e7','#ffe4bb','#d7e8ba','#ffcfc0','#e8d8e8','#f5e4bd','#d7e0ee','#d2e7bc'];
 const proj=(lon,lat)=>[95+(lon-3.35)*205,65+(53.6-lat)*235];
 const fmt=n=>Math.round(n*10)/10;
 function slug(s){return s.toLocaleLowerCase('nl').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')}
@@ -142,13 +156,21 @@ function countryMap(showNames,focused){
   return '<path class="province-shape" data-place="'+slug(p)+'" fill="'+colorMap[p]+'" d="'+pathOf(f.geometry)+'"/>';
  }).join('');
  const items=data.filter(x=>x.kind==='city');
- const cityDots=items.map(x=>'<g><circle class="city-halo" cx="'+fmt(x.x)+'" cy="'+fmt(x.y)+'" r="9"/><circle class="city-dot" cx="'+fmt(x.x)+'" cy="'+fmt(x.y)+'" r="5"/><circle class="city-hit" data-place="'+x.id+'" cx="'+fmt(x.x)+'" cy="'+fmt(x.y)+'" r="21"/></g>').join('');
+ const cityDots=items.map(x=>{
+  const marker=x.capital
+   ?'<rect class="capital-dot" x="'+fmt(x.x-7)+'" y="'+fmt(x.y-7)+'" width="14" height="14" rx="1"/>'
+   :'<circle class="city-dot" cx="'+fmt(x.x)+'" cy="'+fmt(x.y)+'" r="7"/>';
+  return '<g><circle class="city-halo" cx="'+fmt(x.x)+'" cy="'+fmt(x.y)+'" r="15"/>'+marker+'<circle class="city-hit" data-place="'+x.id+'" cx="'+fmt(x.x)+'" cy="'+fmt(x.y)+'" r="21"/></g>';
+ }).join('');
  const labelCities=(showNames?items.filter(x=>x.capital):items.filter(x=>x.capital&&focused&&x.id===focused.id));
  const provinceTexts=showNames&&focused==='sheet'?provinceLabels.map(row=>{
   const p=proj(row[1],row[2]);return '<text class="map-text province" x="'+fmt(p[0])+'" y="'+fmt(p[1])+'" text-anchor="middle">'+row[0]+'</text>';
  }).join(''):'';
  const texts=showNames?labelCities.map(x=>'<text data-label-id="'+x.id+'" class="map-text city" x="'+fmt(x.x+12)+'" y="'+fmt(x.y-12)+'">'+x.name.replace(/&/g,'&amp;')+'</text>').join(''):'';
- return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1020 850" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Kaart van de provincies van Nederland" style="background:#cbe9f4"><g>'+provinces+'</g><g>'+cityDots+'</g><g id="targetHighlight"></g><g>'+provinceTexts+'</g><g>'+texts+'</g></svg>';
+ return '<svg class="map-art" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1020 850" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Kaart van de provincies van Nederland">'+
+ '<defs><pattern id="topo-grid" width="79" height="79" patternUnits="userSpaceOnUse"><path d="M79 0H0V79" fill="none" stroke="#fff" stroke-opacity=".22" stroke-width="1"/></pattern></defs>'+
+ '<rect width="1020" height="850" fill="#cbe9f4"/><rect width="1020" height="850" fill="url(#topo-grid)"/>'+
+ '<g>'+provinces+'</g><g>'+cityDots+'</g><g id="targetHighlight"></g><g>'+provinceTexts+'</g><g>'+texts+'</g></svg>';
 }
 function displayMap(showNames=false){$('map').innerHTML=countryMap(showNames);focusMap();}
 function focusMap(){
