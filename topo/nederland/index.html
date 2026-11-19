@@ -269,7 +269,7 @@ function makePool(){
 }
 function start(){
  const pool=mode==='shuffle'?buildShuffleRound(questionLimit):shuffle(makePool());if(!pool.length){$('loading').classList.remove('hide');$('loading').innerHTML='<h2>Geen vragen!</h2><p>Kies in Instellingen minimaal één provincie en een onderwerp.</p>';return;}
- queue=pool.slice(0,Math.min(questionLimit,pool.length));index=0;stars=0;helpCount=0;peekCount=0;assisted=new Set();wrong=new Set();repeated=new Set();round++;
+ queue=pool.slice(0,Math.min(questionLimit,pool.length));index=0;stars=0;helpCount=0;peekCount=0;correctStreak=0;wrongStreak=0;wrongTapTimes=[];assisted=new Set();wrong=new Set();repeated=new Set();round++;
  document.body.classList.add('playing');document.body.classList.remove('keyboard-open');
  $('loading').classList.add('hide');$('end').classList.add('hide');$('game').classList.remove('hide');draw();
 }
@@ -296,7 +296,7 @@ function draw(){
  if(currentMode==='quiz'){
   $('map').innerHTML='';
   $('kind').textContent=x.revisit?'NOG EENS!':x.category==='water'?'WATEREN':'ZONDER KAART';
-  $('prompt').textContent=x.question;$('sub').textContent='Kies het goede antwoord.';
+  $('prompt').textContent=x.question;$('sub').textContent='Kies het goede antwoord.'+(mode==='shuffle'&&index%3===0?' '+voice('shuffle'):'');
   $('mapHint').textContent='TOPO SHUFFLE';
   $('answerOptions').innerHTML=shuffle(x.options).map(y=>
    '<button type="button" class="option" data-fact-choice="'+encodeURIComponent(y)+'">'+y+'</button>'
@@ -317,7 +317,7 @@ function draw(){
   guessOptions=shuffle([x,...others]);$('answerOptions').innerHTML=guessOptions.map(y=>'<button type="button" class="option" data-option="'+y.id+'">'+y.name+'</button>').join('');
  }else if(currentMode==='zoom'){
   $('prompt').textContent='Welke stad is omcirkeld?';
-  $('sub').textContent='Kijk goed naar de ingezoomde kaart.';
+  $('sub').textContent='Kijk goed naar de ingezoomde kaart.'+(index%3===0?' '+voice('shuffle'):'');
   $('mapHint').textContent='INGEZOOMD!';
   highlight(x);
   const nearby=shuffle(data.filter(y=>y.name!==x.name).sort((a,b)=>
@@ -346,26 +346,40 @@ function queueAgain(x){
  queue.splice(later,0,{...x,revisit:true});
 }
 function answer(ok){
- if(done)return;attempts++;
+ if(done)return;
+ attempts++;
  if(ok){
-  done=true;const x=current();
-  if(attempts===1&&!assisted.has(x.id)&&!x.revisit)stars++;
-  else if(!x.revisit)wrong.add(x.id);
-  if(x.kind==='city'){ $('map').querySelectorAll('[data-place="'+x.id+'"],[data-label-id="'+x.id+'"]').forEach(n=>n.removeAttribute('style'));}
+  done=true;
+  const x=current();
+  const independent=attempts===1&&!assisted.has(x.id)&&!x.revisit;
+  if(independent){stars++;correctStreak++;}else{correctStreak=0;if(!x.revisit)wrong.add(x.id);}
+  wrongStreak=0;
+  if(x.kind==='city')$('map').querySelectorAll('[data-place="'+x.id+'"],[data-label-id="'+x.id+'"]').forEach(n=>n.removeAttribute('style'));
   highlight(x);$('score').textContent='★ '+stars;$('mapHint').textContent='GEVONDEN!';
-  feedback((attempts===1&&!assisted.has(x.id)?'YES!':'GEVONDEN!')+(x.kind==='fact'?' '+x.note:''),'');$('next').classList.remove('hide');
-  $('skip').style.visibility='hidden';$('help').style.visibility='hidden';
+  const phrase=correctStreak>=3?voice('goede_reeks'):voice('goed_antwoord');
+  feedback((phrase||'Gevonden!')+(x.kind==='fact'?' '+x.note:''),'');
+  $('next').classList.remove('hide');$('skip').style.visibility='hidden';$('help').style.visibility='hidden';
   $('typedAnswer')?.blur();
  }else{
+  correctStreak=0;wrongStreak++;
   wrong.add(current().id);queueAgain(current());
-  if(attempts>=2){done=true;feedback(current().kind==='fact'?'Dat was '+current().answer+'. '+current().note:'Deze komt straks terug!','neutral');$('next').classList.remove('hide');$('help').style.visibility='hidden';}
-  else feedback('NOG EENS!','bad');
+  if(attempts>=2){
+   done=true;
+   const explanation=current().kind==='fact'?'Dat was '+current().answer+'. '+current().note:'Deze komt straks terug!';
+   feedback(explanation,'neutral');$('next').classList.remove('hide');$('help').style.visibility='hidden';
+  }else{
+   const wild=wrongTapTimes.length>=4&&wrongTapTimes.at(-1)-wrongTapTimes.at(-4)<8000;
+   const phrase=wild?voice('wild_klikken'):wrongStreak>=3?voice('veel_fouten'):voice('fout_antwoord');
+   feedback(phrase||'Nog eens!','bad');
+  }
  }
 }
 $('map').addEventListener('click',e=>{
  if(currentMode!=='point'||done)return;
  const place=e.target.closest('[data-place]');if(!place)return;
- answer(place.dataset.place===current().id);
+ const correct=place.dataset.place===current().id;
+ if(!correct){wrongTapTimes.push(performance.now());if(wrongTapTimes.length>8)wrongTapTimes.shift();}
+ answer(correct);
 });
 $('answerOptions').addEventListener('click',e=>{
  const b=e.target.closest('[data-option],[data-fact-choice]');if(!b||done)return;
@@ -414,7 +428,7 @@ $('help').onclick=()=>{
  const x=current(),hint=hintFor(x,hintStep);
  if(!hint||hint.toLocaleLowerCase('nl').includes(x.name.toLocaleLowerCase('nl')))return;
  hintStep++;helpCount++;assisted.add(x.id);wrong.add(x.id);queueAgain(x);
- feedback(hint,'neutral');$('mapHint').textContent='ZOEK MAAR!';
+ feedback((voice('spieken_hints')||'Nou vooruit, één hintje dan.')+' '+hint,'neutral');$('mapHint').textContent='ZOEK MAAR!';
  $('help').textContent='Nog een hint?';if(hintStep>=2)$('help').style.visibility='hidden';
 };
 $('skip').onclick=()=>{wrong.add(current().id);queueAgain(current());done=true;feedback(current().kind==='fact'?'Het goede antwoord is '+current().answer+'.':'Deze komt terug!','neutral');$('next').classList.remove('hide');$('skip').style.visibility='hidden'};
@@ -422,7 +436,7 @@ $('next').onclick=()=>{if(!done)return;document.activeElement?.blur?.();index++;
 function finish(){
  document.body.classList.remove('playing','keyboard-open');
  $('game').classList.add('hide');$('end').classList.remove('hide');
- $('endTitle').textContent=stars===queue.filter(x=>!x.revisit).length?'KAARTBAAS!':'LEKKER BEZIG!';
+ $('endTitle').textContent=stars===queue.filter(x=>!x.revisit).length?(voice('bijnamen')||'KAARTBAAS!'):(voice('einde')||'LEKKER BEZIG!');
  const total=queue.filter(x=>!x.revisit).length;
  $('endText').textContent=stars+' van '+total+' meteen goed, zonder hulp.';
  $('helpSummary').innerHTML='<span>TIPS '+helpCount+'×</span><span>SPIEKKAART '+peekCount+'×</span>';
@@ -432,7 +446,9 @@ function finish(){
 $('again').onclick=start;
 function openSheet(){
  if(!$('game').classList.contains('hide')&&!done){peekCount++;assisted.add(current().id);wrong.add(current().id);queueAgain(current());}
- $('sheetCanvas').innerHTML=countryMap(true,'sheet');$('sheetLayer').classList.remove('hide');zoom=1;updateZoom();
+ $('sheetCanvas').innerHTML=countryMap(true,'sheet');$('sheetLayer').classList.remove('hide');
+ $('sheetLayer .modal p').textContent=voice('spieken_hints')||'Kijk goed. Probeer het daarna zelf!';
+ zoom=1;updateZoom();
 }
 function updateZoom(){zoom=Math.max(1,Math.min(4,zoom));$('sheetCanvas').style.width=(zoom*100)+'%';$('zoomText').textContent=Math.round(zoom*100)+'%';}
 $('showAnswer').onclick=openSheet;
