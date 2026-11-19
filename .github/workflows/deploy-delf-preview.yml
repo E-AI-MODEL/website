@@ -1,4 +1,4 @@
-name: Publish DELF MacBook test
+name: Publish DELF MacBook and mobile tests
 
 on:
   push:
@@ -22,7 +22,7 @@ jobs:
       - name: Checkout tested DELF version
         uses: actions/checkout@v4
         with:
-          ref: d7a30d4963c8316880be049eb82fc2d6631622ec
+          ref: a093e7139d1ff0a9598246432e5a0d895913c851
 
       - name: Node.js
         uses: actions/setup-node@v4
@@ -36,6 +36,8 @@ jobs:
           npm run test --prefix tools/delf-live
           npm run build --prefix tools/delf-live
           test -s tools/delf-live/dist/index.html
+          test -s tools/delf-live/dist/mobile-preview.html
+          grep -q 'DELF · Franse modelproef' tools/delf-live/dist/mobile-preview.html
           test -d tools/delf-live/dist/assets
           grep -q 'DELF scolaire' tools/delf-live/dist/index.html
 
@@ -118,5 +120,10 @@ jobs:
                   assert res.status == 200
               assert data == local.read_bytes(), 'Asset differs: ' + asset
               print('OK:', asset, len(data), 'bytes')
-          print('DELF page publicly available at', base)
+          with urlopen(Request(base + 'mobile-preview.html', headers={'Cache-Control':'no-cache','User-Agent':'DELF-preview-check/1.0'}), timeout=30) as res:
+              mobile_page = res.read()
+              assert res.status == 200
+          assert b'DELF' in mobile_page and b'Franse modelproef' in mobile_page
+          assert b'/assets/' in mobile_page, 'Mobile model JS not linked'
+          print('DELF MacBook and mobile pages publicly available at', base)
           PY
