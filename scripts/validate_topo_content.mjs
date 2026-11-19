@@ -14,7 +14,7 @@ const provinces=geo.features.map(name);
 assert.equal(new Set(provinces).size,12,'Dubbele provincies');
 const capitalsText=national.match(/const provinceCapitals=(\[[\s\S]*?\]);/);
 assert.ok(capitalsText,'Hoofdstedentabel ontbreekt');
-const capitals=vm.runInNewContext(capitalsText[1]);
+const capitals=Array.from(vm.runInNewContext(capitalsText[1]),row=>Array.from(row));
 assert.equal(capitals.length,12);
 assert.deepEqual([...capitals.map(r=>r[0])].sort(),[...provinces].sort());
 const pairs=capitals.filter(c=>c[0]===c[1]).map(c=>c[0]).sort();
