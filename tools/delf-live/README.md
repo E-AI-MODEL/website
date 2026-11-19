@@ -41,3 +41,9 @@ npm run build
 De output staat in `dist/`. Op eaimodel.nl wordt die in `/tools/delf-live/` geplaatst door de websitebuild. Een geslaagde syntax- of mocktest is geen bewijs van modelkwaliteit, een echte stemmeting of compatibiliteit met de gebruikte laptop.
 
 Bronnen: https://github.com/gradium-ai/xn-ptts/blob/main/ptts-wasm/js/README.md en https://developer.chrome.com/docs/ai/translator-api .
+
+## Mobiel: echte modelproef
+
+`mobile-preview.html` gebruikt de **publiek beschikbare Phonon 40M multilingual**-modelkopie van `ldenoue/phonon-40m-multilingual` op Hugging Face (CC BY-NC 4.0, oorspronkelijke auteur Gradium). De iPhone downloadt de q8-gewichten rechtstreeks en voert de Franse TTS uit met `phonon-tts`. De stemmen Hélène, Lucien en Noémie komen uit de openbare Gradium-voicecatalogus. Tik achtereenvolgens op Model laden en Beluister Frans. Dit is een echte on-device modeltest en **geen telefoon-systeemstem**. Niet de aparte, gated `gradium/phonon-40m-fr` uit de MacBook-podiumapp. De grote download en de iOS-browseruitvoering moeten nog op een echte iPhone worden gecontroleerd. Voor een test van het specifieke Franse checkpoint is ook de officiële Phonon-demo beschikbaar: https://gradium-phonon.static.hf.space/index.html
+
+De mobiele modelproef heeft bewust geen live vertaling: de browser Translator API werkt daar niet. De MacBook-podiumapp blijft ongewijzigd.

@@ -32,3 +32,18 @@ test('donkere Franse tekst op lichte achtergrond en alleen toetsen',()=>{
   assert.ok(main.includes("event.code === 'ArrowRight'"));
   assert.ok(main.includes('pulseText()'));
 });
+
+test('mobiele test gebruikt een echt Frans Phonon-model, geen systeemstem',()=>{
+  const page=readFileSync(new URL('../mobile-preview.html',import.meta.url),'utf8');
+  const script=readFileSync(new URL('../src/mobile.js',import.meta.url),'utf8');
+  assert.ok(page.includes('id="listen"'));
+  assert.ok(page.includes('id="load"'));
+  assert.ok(script.includes("import { PhononTTS } from 'phonon-tts'"));
+  assert.ok(script.includes('PhononTTS.load('));
+  assert.ok(script.includes('tts.stream(text,'));
+  assert.ok(script.includes("lang:'fr'"));
+  assert.ok(script.includes('phonon-40m-multilingual'));
+  assert.ok(!script.includes('SpeechSynthesisUtterance'));
+  assert.ok(!script.includes('speechSynthesis'));
+  assert.ok(page.includes('niet identiek aan het afzonderlijke Franse checkpoint'));
+});
