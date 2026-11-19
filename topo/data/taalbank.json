@@ -1,0 +1,75 @@
+{
+  "version": "1.0",
+  "name": "Let’s go TOPO! taalbank",
+  "total": 50,
+  "uitspraak": {
+    "bijnamen": [
+      "Kaartbaas!",
+      "Topokoning!",
+      "Topoheld!",
+      "Kaartknakker!",
+      "De Grote Kaartbaas!",
+      "Opperkaartbaas!",
+      "Topo-eindbaas!",
+      "Kaartkoning!",
+      "Topolegende!"
+    ],
+    "goed_antwoord": [
+      "Hoppaaa!",
+      "Ja toch!",
+      "Kijk ’m gaan!",
+      "Die hebbie!",
+      "Kijk, zo kan het ook!",
+      "Nou, nou. Kaartbaas hoor!",
+      "Dat bedoel ik!",
+      "Kijk eens aan, meneer de topograaf!"
+    ],
+    "fout_antwoord": [
+      "Ook een plek. Maar niet de goeie.",
+      "Wat doe jij nou?!",
+      "Ben je verdwaald of zo?!",
+      "Da’s een eind uit de buurt!",
+      "Mooi geprobeerd. Volledig mis.",
+      "Kan gebeuren."
+    ],
+    "wild_klikken": [
+      "Jij klikt ook maar wat, hè?!",
+      "Ben je aan het gokken of aan het leren?!",
+      "Dat is geen topo, dat is bingo!"
+    ],
+    "veel_fouten": [
+      "Ben je nog in Nederland?!",
+      "Zal ik de kaart even omdraaien?",
+      "Volgens mij ben jij de weg kwijt.",
+      "Je gaat wel lekker. De verkeerde kant op.",
+      "We gaan het gewoon nog een keer proberen."
+    ],
+    "goede_reeks": [
+      "Zo, jij gaat lekker!",
+      "Kijk die kaartbaas dan!",
+      "Hoppa. Weer eentje!"
+    ],
+    "spieken_hints": [
+      "Hé, effe gluren?",
+      "Spiekbriefje erbij?",
+      "Nou vooruit, één hintje dan.",
+      "Zal ik je een zetje geven?",
+      "Spieken mag. Maar niet stoer doen achteraf, hè."
+    ],
+    "shuffle": [
+      "Toposhuffle!",
+      "We gooien de boel door elkaar!",
+      "Even kijken of je écht wat weet.",
+      "Nu zonder zijwieltjes!",
+      "Wacht effe. Deze is gemeen.",
+      "O, jij dacht dat je klaar was?!",
+      "Komt-ie dan!"
+    ],
+    "einde": [
+      "KAARTBAAS!",
+      "TOPOKONING!",
+      "Jij mag jezelf kaartbaas noemen.",
+      "Nou, nog eentje dan?"
+    ]
+  }
+}
