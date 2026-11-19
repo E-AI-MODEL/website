@@ -38,6 +38,135 @@ let playingNodes = [];
 let dutchUtterance = null;
 let firstAudioMs = null;
 let errors = [];
+let replyMic = null;
+let replyStartedAt = 0;
+let replyHeard = false;
+let dutchSpeaking = false;
+let dutchPulseAt = -Infinity;
+let frenchAnalyser = null;
+let visualFrame = null;
+let smoothedLevel = 0;
+
+// De centrale lijnen reageren tijdens Frans op de audiobuffers.
+ // Nederlandse browser-TTS levert geen audiobuffers: dan volgen ze woordgrenzen.
+const voiceCanvas = $('voiceVisual');
+const voiceContext = voiceCanvas.getContext('2d', { alpha: true });
+const voiceSamples = new Float32Array(512);
+function voiceLevel() {
+  if (paused) return 0;
+  if (phase === 'french' && frenchAnalyser && soundContext?.state === 'running') {
+    frenchAnalyser.getFloatTimeDomainData(voiceSamples);
+    let power = 0;
+    for (const sample of voiceSamples) power += sample * sample;
+    return Math.min(1, Math.sqrt(power / voiceSamples.length) * 8);
+  }
+  if (dutchSpeaking && (phase === 'interrupted' || phase === 'handback')) {
+    const age = performance.now() - dutchPulseAt;
+    return Math.min(.64, .14 + .42 * Math.max(0, 1 - age / 400));
+  }
+  return 0;
+}
+function drawVoice() {
+  visualFrame = null;
+  if (!['interrupted','french','handback'].includes(phase) || !voiceContext) return;
+  const box = voiceCanvas.getBoundingClientRect();
+  const scale = Math.min(window.devicePixelRatio || 1, 2);
+  const width = Math.max(1, Math.round(box.width * scale));
+  const height = Math.max(1, Math.round(box.height * scale));
+  if (voiceCanvas.width !== width || voiceCanvas.height !== height) {
+    voiceCanvas.width = width;
+    voiceCanvas.height = height;
+  }
+  const ctx = voiceContext;
+  ctx.clearRect(0, 0, width, height);
+  const current = voiceLevel();
+  smoothedLevel += (current - smoothedLevel) * (current > smoothedLevel ? .23 : .085);
+  if (current > .015 || smoothedLevel > .01) {
+    const cx = width / 2, cy = height / 2;
+    const now = performance.now() / 1100;
+    const span = Math.min(width * .38, (66 + 115 * smoothedLevel) * scale);
+    for (let i = -6; i <= 6; i++) {
+      const lane = i * (2.4 + smoothedLevel * 3.8) * scale;
+      const progress = 1 - Math.abs(i) / 8;
+      for (const direction of [-1, 1]) {
+        const reach = span * (.75 + .25 * progress);
+        const sway = Math.sin(now * 1.4 + i * .59) * smoothedLevel * 9 * scale;
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.bezierCurveTo(
+          cx + direction * reach * .25, cy + lane * .19,
+          cx + direction * reach * .66, cy + lane + sway,
+          cx + direction * reach, cy + lane * .82
+        );
+        ctx.lineWidth = Math.max(.65 * scale, .8);
+        ctx.strokeStyle = 'rgba(72,105,115,' + (0.13 + smoothedLevel * .36) + ')';
+        ctx.stroke();
+      }
+    }
+  }
+  visualFrame = requestAnimationFrame(drawVoice);
+}
+function refreshVoiceVisual() {
+  if (visualFrame !== null) {
+    cancelAnimationFrame(visualFrame);
+    visualFrame = null;
+  }
+  if (voiceContext) voiceContext.clearRect(0, 0, voiceCanvas.width, voiceCanvas.height);
+  smoothedLevel = 0;
+  if (['interrupted','french','handback'].includes(phase) && voiceContext) {
+    visualFrame = requestAnimationFrame(drawVoice);
+  }
+}
+function stopReplyMic() {
+  const active = replyMic;
+  replyMic = null;
+  if (active) {
+    active.onresult = null;
+    active.onerror = null;
+    active.onend = null;
+    try { active.abort(); } catch {}
+  }
+}
+function beginReplyWindow(expectedEpoch) {
+  replyStartedAt = performance.now();
+  replyHeard = false;
+  scheduleAuto(() => {
+    if (phase === 'interrupted' && epoch === expectedEpoch) goFrench();
+  }, replyPauseMs);
+  // De reactie kan de pauze verlengen, maar de AI zegt geen andere zinnen.
+  const SR = globalThis.SpeechRecognition || globalThis.webkitSpeechRecognition;
+  if (!SR) return;
+  const instance = new SR();
+  replyMic = instance;
+  instance.lang = 'nl-NL';
+  instance.continuous = false;
+  instance.interimResults = true;
+  instance.onresult = event => {
+    if (phase !== 'interrupted' || epoch !== expectedEpoch || replyMic !== instance) return;
+    const heard = Array.from(event.results).some(result => result[0]?.transcript?.trim());
+    if (!heard) return;
+    replyHeard = true;
+    const elapsed = performance.now() - replyStartedAt;
+    const remaining = Math.max(0, 12000 - elapsed);
+    if (remaining < 300) return;
+    const final = Array.from(event.results).some(result => result.isFinal);
+    scheduleAuto(() => {
+      if (phase === 'interrupted' && epoch === expectedEpoch) goFrench();
+    }, Math.min(remaining, final ? 1250 : 2300));
+  };
+  instance.onerror = () => { stopReplyMic(); };
+  instance.onend = () => {
+    if (replyMic !== instance) return;
+    replyMic = null;
+    if (!replyHeard) return;
+    const elapsed = performance.now() - replyStartedAt;
+    const remaining = Math.max(0, 12000 - elapsed);
+    scheduleAuto(() => {
+      if (phase === 'interrupted' && epoch === expectedEpoch) goFrench();
+    }, Math.min(remaining, 1250));
+  };
+  try { instance.start(); } catch { stopReplyMic(); }
+}
 
 function feedback(id, message, type = '') {
   const el = $(id);
@@ -134,6 +263,7 @@ $('panelClose').onclick = () => panel(false);
 function setPhase(p, publicLabel) {
   phase = p; epoch++;
   stage.dataset.phase = p;
+  refreshVoiceVisual();
   feedback('phaseStatus', `Onderdeel: ${publicLabel}`);
 }
 function reportError(message) {
@@ -356,15 +486,28 @@ function speakDutch(text, onEnd) {
   utterance.rate = 0.95;
   utterance.pitch = 1;
   dutchUtterance = utterance;
+  dutchSpeaking = false;
   const started = performance.now();
-  utterance.onstart = () => feedback('latencyStatus', `Nederlandse stem gestart na ${Math.round(performance.now() - started)} ms`, 'good');
-  utterance.onend = () => { if (dutchUtterance === utterance) { dutchUtterance = null; onEnd?.(); } };
-  utterance.onerror = e => reportError(`Nederlandse stem: ${e.error}`);
+  utterance.onstart = () => {
+    dutchSpeaking = true;
+    dutchPulseAt = performance.now();
+    feedback('latencyStatus', `Nederlandse stem gestart na ${Math.round(performance.now() - started)} ms`, 'good');
+  };
+  utterance.onboundary = () => { dutchPulseAt = performance.now(); };
+  utterance.onend = () => {
+    if (dutchUtterance === utterance) {
+      dutchSpeaking = false;
+      dutchUtterance = null;
+      onEnd?.();
+    }
+  };
+  utterance.onerror = e => { dutchSpeaking = false; reportError(`Nederlandse stem: ${e.error}`); };
   try { speechSynthesis.speak(utterance); return true; } catch(e) { reportError(`Nederlandse stem: ${e.message}`); return false; }
 }
 $('previewDutch').onclick = () => { speakDutch('Goedenavond. Mag ik je even onderbreken?'); };
 
 function scheduleAuto(callback, durationMs) {
+  if (autoTimer) { clearTimeout(autoTimer); autoTimer = null; }
   autoCallback = callback;
   autoRemainingMs = durationMs;
   resumeAuto();
@@ -399,6 +542,9 @@ function stopVoices() {
   playingNodes = [];
   if ('speechSynthesis' in window) speechSynthesis.cancel();
   dutchUtterance = null;
+  dutchSpeaking = false;
+  frenchAnalyser = null;
+  stopReplyMic();
 }
 function togglePause() {
   if (!['interrupted', 'french', 'handback'].includes(phase)) return;
@@ -436,9 +582,14 @@ async function streamFrench() {
   soundContext = new AudioContext({ sampleRate: french.sampleRate });
   const ctx = soundContext;
   await ctx.resume();
+  const analyser = ctx.createAnalyser();
+  analyser.fftSize = 512;
+  analyser.smoothingTimeConstant = .68;
+  analyser.connect(ctx.destination);
+  frenchAnalyser = analyser;
   let t = ctx.currentTime + 0.11;
   let totalChunks = 0;
-  const segments = speechSegments($('speechText').value);
+  const segments = speechSegments(speech); // Vaste, goedgekeurde Franse speech
   const started = performance.now();
   followAudioClock(ctx, controller);
   blankStage();
@@ -457,7 +608,7 @@ async function streamFrench() {
         buffer.copyToChannel(pcm, 0);
         const node = ctx.createBufferSource();
         node.buffer = buffer;
-        node.connect(ctx.destination);
+        node.connect(analyser);
         t = Math.max(t, ctx.currentTime + 0.045);
         if (firstChunk) {
           captionCues.push({ at: t });
@@ -495,10 +646,8 @@ function goInterrupt() {
   blankStage();
   const now = epoch;
   const started = speakDutch(interrupt, () => {
-    // One key triggers the complete takeover, including a brief reply opportunity.
-    scheduleAuto(() => {
-      if (phase === 'interrupted' && epoch === now) goFrench();
-    }, replyPauseMs);
+    // Een eigen reactie is welkom. Daarna volgt altijd de goedgekeurde Franse speech.
+    beginReplyWindow(now);
   });
   if (!started) reportError('De onderbreking kon niet starten.');
   panel(false);

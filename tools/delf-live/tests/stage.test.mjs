@@ -78,3 +78,19 @@ test('wolken en dunne lijnen op stem, geen podiumiconen',()=>{
   assert.ok(!html.includes('stage-controls'));
   assert.ok(styles.includes('color:#223743'));
 });
+
+test('dunne stemlijnen volgen echte Franse audio en Nederlandse spreekgrenzen',()=>{
+  assert.ok(main.includes('const analyser = ctx.createAnalyser()'));
+  assert.ok(main.includes('node.connect(analyser)'));
+  assert.ok(main.includes('frenchAnalyser.getFloatTimeDomainData(voiceSamples)'));
+  assert.ok(main.includes('requestAnimationFrame(drawVoice)'));
+  assert.ok(main.includes('utterance.onboundary'));
+  assert.ok(main.includes('stopReplyMic()'));
+});
+test('vrije reactie zonder wijziging van de vaste Franse speech',()=>{
+  assert.ok(main.includes('function beginReplyWindow(expectedEpoch)'));
+  assert.ok(main.includes("instance.lang = 'nl-NL'"));
+  assert.ok(main.includes('const segments = speechSegments(speech)'));
+  assert.ok(!main.includes("speechSegments($('speechText').value)"));
+  assert.ok(html.includes('id="speechText" rows="13" spellcheck="false" readonly'));
+});
