@@ -17,13 +17,18 @@
 <aside id="panel" class="panel" aria-label="Podiumbediening" aria-hidden="true">
 <div class="panel-head"><div><small>VOORBEREIDING</small><h2>Instellingen</h2></div><button id="panelClose" class="close" type="button" aria-label="Instellingen sluiten"><span aria-hidden="true" class="close-strokes"></span></button></div>
 <div class="panel-content">
-<p class="hint">Test hier vooraf de microfoon, Franse vertaling en beide stemmen. Op de MacBook: 1 start de ondertiteling en → begint de overname. Op je iPhone kun je de knoppen onder Verloop gebruiken. Het scherm blijft buiten dit menu vrij van bediening.</p>
+<p class="hint">Spreek Nederlands. De Franse ondertiteling verschijnt live. Laad en controleer eerst de vertaling en de stemmen. Start met 1 op de MacBook of met de knop onder Verloop.</p>
 <div class="group"><h3>Voor de ceremonie</h3>
 <button id="prepareTranslate" class="action">Franse vertaling laden</button><p class="feedback" id="translationStatus" aria-live="polite">De vertaling is nog niet getest.</p>
 <button id="prepareMic" class="action outline">Nederlandse spraak testen</button><p class="feedback" id="microphoneStatus" aria-live="polite">Zeg een korte Nederlandse zin. De herkende woorden verschijnen hier.</p>
-<label class="upload">Frans stemmodel openen (checkpointmap)<input id="modelFolder" type="file" webkitdirectory directory multiple></label>
-<p class="hint">Nadat je toegang tot het model hebt gekregen, download je de checkpointmap bij Hugging Face. Er is geen knop voor publicatie naar GitHub. Gebruik het model <code>gradium/phonon-40m-fr</code> van Hugging Face. Selecteer de gedownloade map. De bestanden blijven op deze computer en gaan niet naar eaimodel.nl. <a href="https://huggingface.co/gradium/phonon-40m-fr" target="_blank" rel="noopener noreferrer">Open de modelpagina</a> om de toegang en bestanden te vinden.</p>
-<button id="loadFrench" class="action">Franse stem laden</button><button id="previewFrench" class="action outline">Luister naar de Franse stem</button><p class="feedback" id="frenchStatus">Nog geen Franse stem geladen</p>
+<button id="loadPublicFrench" class="action">Franse AI-stem laden</button>
+<button id="previewFrench" class="action outline">Franse stem beluisteren</button>
+<p class="feedback" id="frenchStatus" aria-live="polite">Phonon maakt de stem op dit toestel. Het model wordt de eerste keer via internet geladen.</p>
+<details class="advanced-setting"><summary>Eigen Frans stemmodel gebruiken</summary>
+<p class="hint">Heb je toegang tot het afzonderlijke Franse model van Gradium, selecteer dan de gedownloade map. Zonder eigen map kun je hierboven de openbare meertalige Phonon-stem gebruiken.</p>
+<label class="upload">Franse checkpointmap<input id="modelFolder" type="file" webkitdirectory directory multiple></label>
+<button id="loadFrench" class="action outline">Eigen model laden</button>
+</details>
 <label class="upload">Nederlandse onderbrekingsstem <select id="nlVoice"><option value="">Kies een aanwezige stem</option></select></label>
 <button id="previewDutch" class="action outline">Nederlandse stem beluisteren</button><p class="feedback" id="dutchStatus">Kies een stem. Er wordt niet automatisch teruggevallen op een standaardstem.</p>
 </div>

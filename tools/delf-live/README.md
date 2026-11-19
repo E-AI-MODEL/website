@@ -63,3 +63,7 @@ Op smalle touchscreens staan rechtsboven twee kleine dunne lijntjes. Eén tik op
 ## Tweede vertaalroute zonder Chrome Translator
 
 De app gebruikt op MacBook waar mogelijk de ingebouwde Chrome Translator API. Op andere browsers of wanneer die API ontbreekt of faalt, kan de gebruiker in de voorbereiding het openbare Nederlands-Franse model `Xenova/opus-mt-nl-fr` (Helsinki-NLP OPUS-MT, Apache-2.0) via Transformers.js en WebAssembly laden. Het model draait in een module-worker op het toestel en wordt in de browsercache bewaard. Er wordt geen API-sleutel gepubliceerd. Eerste keer downloaden en inference kunnen op iPhones langzaam zijn; de echte snelheid, kwaliteit en geheugenbelasting zijn nog niet op een fysiek toestel vastgesteld. Alleen echte herkende woorden worden vertaald, geen gescripte opening of afsluiting.
+
+## Model zonder handmatige download
+
+De knop **Franse AI-stem laden** laadt de openbare meertalige Phonon 40M-variant van ldenoue met stem Hélène (CC BY-NC 4.0). Dat is een echte gegenereerde Franse stem, maar niet hetzelfde checkpoint als het afgeschermde `gradium/phonon-40m-fr`. Het originele checkpoint kun je onder Eigen Frans stemmodel gebruiken kiezen. Er zijn geen vooraf opgenomen speechbestanden. Op iOS wordt tijdens de gebruikerhandeling voor de overname een AudioContext gestart om de iOS autoplaybeperking zo goed mogelijk op te vangen. Het live toestelgedrag is nog niet fysiek gecontroleerd.

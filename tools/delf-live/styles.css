@@ -375,3 +375,28 @@ body.panel-visible{overflow:hidden}
   100% {transform:translate3d(0,0,0) scale(1.12);opacity:.64;}
 }
 @media(prefers-reduced-motion:reduce){.stage::after{animation:none!important}}
+
+/* Technische voorbereiding zit standaard achter één rustige regel. */
+.advanced-setting{
+  border-top:1px solid rgba(132,156,159,.23);
+  margin-top:17px;
+  padding-top:13px;
+  font-size:12px;
+  color:#536e78;
+}
+.advanced-setting>summary{
+  cursor:pointer;
+  list-style:none;
+  min-height:35px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-size:12px;
+  font-weight:500;
+}
+.advanced-setting>summary::-webkit-details-marker{display:none}
+.advanced-setting>summary::after{
+  content:'+';font-size:19px;font-weight:300;color:#759092;
+}
+.advanced-setting[open]>summary::after{content:'−'}
+.advanced-setting>.hint{margin-top:12px}

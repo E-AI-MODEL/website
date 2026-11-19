@@ -126,7 +126,7 @@ test('geen schijnstart bij ontbrekende vertaling, fout is zichtbaar',()=>{
   assert.ok(main.includes('function goStart()'));
   assert.ok(main.includes('void prepareTranslation()'));
   assert.ok(main.includes('panel(true)'));
-  assert.ok(main.includes('geen live vertaling NL → FR'));
+  assert.ok(main.includes("import('./translation-fallback.js')"));
 });
 test('de witgolf ademt zichtbaar vanuit het midden',()=>{
   assert.ok(styles.includes('@keyframes delf-center-breathe'));
@@ -146,4 +146,19 @@ test('browservertaling zonder Chrome Translator gebruikt een eigen ONNX-model',(
   assert.ok(worker.includes("device: 'wasm'"));
   assert.ok(!worker.includes('token='));
   assert.ok(!worker.includes('api_key'));
+});
+
+test('Frans stemmodel kan zonder handmatige checkpointmap worden geladen',()=>{
+  assert.ok(html.includes('id="loadPublicFrench"'));
+  assert.ok(html.includes('Franse AI-stem laden'));
+  assert.ok(html.includes('class="advanced-setting"'));
+  assert.ok(main.includes('ldenoue/phonon-40m-multilingual'));
+  assert.ok(main.includes('gradium/phonon-voices'));
+  assert.ok(main.includes("lang:'fr',quant:'q8'"));
+});
+test('iPhone audio krijgt een actieve context vanuit de overnameklik',()=>{
+  assert.ok(main.includes('function prewarmFrenchAudio()'));
+  assert.ok(main.includes('prewarmFrenchAudio();'));
+  assert.ok(main.includes("preparedFrenchContext && preparedFrenchContext.state !== 'closed'"));
+  assert.ok(main.includes('function releasePreparedAudio()'));
 });

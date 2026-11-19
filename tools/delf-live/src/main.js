@@ -37,6 +37,7 @@ let soundContext = null;
 let playingNodes = [];
 let dutchUtterance = null;
 let firstAudioMs = null;
+let preparedFrenchContext = null;
 let errors = [];
 let replyMic = null;
 let replyStartedAt = 0;
@@ -503,6 +504,43 @@ folder.addEventListener('change', () => {
   const files = modelFiles(folder.files);
   feedback('frenchStatus', files.missing.length ? `Checkpointmap mist: ${files.missing.join(', ')}` : 'Franse modelbestanden gevonden. Klik op Franse stem laden.', files.missing.length ? 'bad' : 'good');
 });
+// Publieke Phonon-variant voor de proef: echt TTS, geen browser-systeemstem.
+$('loadPublicFrench').onclick = async () => {
+  if (phase !== 'intro') {
+    feedback('frenchStatus','Laad de stem vóór de uitvoering. Gebruik 0 om opnieuw te beginnen.','bad');
+    return;
+  }
+  const button = $('loadPublicFrench');
+  button.disabled = true;
+  feedback('frenchStatus','Frans Phonon-model laden. Eerste keer ongeveer 75 MB; gebruik wifi.');
+  const source = 'https://huggingface.co/ldenoue/phonon-40m-multilingual/resolve/main/';
+  const voice = 'https://huggingface.co/gradium/phonon-voices/resolve/main/voices/';
+  const model = {
+    weights:{q8:source+'model.q8.gguf'},
+    config:source+'config.json',
+    tokenizer:source+'tokenizer.json',
+    voices:{helene:voice+'Vvakv7iWZCUrBooR.safetensors'},
+    defaultVoice:'helene'
+  };
+  try {
+    if (french) { await french.dispose(); french = null; }
+    const started = performance.now();
+    french = await PhononTTS.load({
+      model,lang:'fr',quant:'q8',device:'auto',threads:1,
+      onProgress: progress => {
+        const pct = progress.total ? ' ' + Math.round(progress.loaded / progress.total * 100) + '%' : '';
+        feedback('frenchStatus','Model laden · '+(progress.file || 'Phonon')+pct);
+      }
+    });
+    const elapsed = Math.round((performance.now()-started)/1000);
+    feedback('frenchStatus','Franse Phonon-stem klaar na '+elapsed+' s. Druk op Franse stem beluisteren.','good');
+    feedback('latencyStatus','Franse stem geladen. Eerste klank nog niet gemeten.','good');
+  } catch (error) {
+    french = null;
+    feedback('frenchStatus','Franse Phonon-stem niet geladen: '+(error.message || error),'bad');
+    reportError('Frans model laden mislukt');
+  } finally { button.disabled = false; }
+};
 $('loadFrench').onclick = async () => {
   const files = modelFiles(folder.files);
   if (files.missing.length) { feedback('frenchStatus', `Ontbrekende modelbestanden: ${files.missing.join(', ')}`, 'bad'); return; }
@@ -631,6 +669,23 @@ function pauseAuto() {
   autoTimer = null;
   autoRemainingMs = Math.max(0, autoDeadline - performance.now());
 }
+function releasePreparedAudio() {
+  const ctx = preparedFrenchContext;
+  preparedFrenchContext = null;
+  if (ctx) void ctx.close().catch(() => {});
+}
+function prewarmFrenchAudio() {
+  if (!french) return;
+  try {
+    releasePreparedAudio();
+    const ctx = new AudioContext({sampleRate:french.sampleRate});
+    preparedFrenchContext = ctx;
+    // Deze functie wordt direct door de tik op Overname of toets → aangeroepen.
+    void ctx.resume().catch(e => reportError('Franse audio voorbereiden: ' + e.message));
+  } catch(e) {
+    reportError('Franse audio kon niet worden voorbereid: ' + e.message);
+  }
+}
 function stopVoices() {
   if (autoTimer) { clearTimeout(autoTimer); autoTimer = null; }
   autoCallback = null;
@@ -681,9 +736,13 @@ async function streamFrench() {
   if (!french) { reportError('De Franse stem is niet geladen. Er wordt geen andere stem gebruikt.'); return; }
   speechAbort = new AbortController();
   const controller = speechAbort;
-  soundContext = new AudioContext({ sampleRate: french.sampleRate });
+  soundContext = preparedFrenchContext && preparedFrenchContext.state !== 'closed'
+    ? preparedFrenchContext
+    : new AudioContext({ sampleRate:french.sampleRate });
+  preparedFrenchContext = null;
   const ctx = soundContext;
   await ctx.resume();
+  if (ctx.state !== 'running') throw Error('Franse audio is geblokkeerd. Tik eerst op de overnameknop in het menu.');
   const analyser = ctx.createAnalyser();
   analyser.fftSize = 512;
   analyser.smoothingTimeConstant = .68;
@@ -758,6 +817,7 @@ function goInterrupt() {
     return;
   }
   stopMic(); stopVoices();
+  prewarmFrenchAudio();
   setPhase('interrupted', 'UN INSTANT…');
   blankStage();
   const now = epoch;
@@ -765,7 +825,7 @@ function goInterrupt() {
     // Een eigen reactie is welkom. Daarna volgt altijd de goedgekeurde Franse speech.
     beginReplyWindow(now);
   });
-  if (!started) reportError('De onderbreking kon niet starten.');
+  if (!started) { releasePreparedAudio(); reportError('De onderbreking kon niet starten.'); }
   panel(false);
 }
 function goFrench() {
@@ -798,12 +858,14 @@ function goFinish() {
   panel(false);
 }
 function goReset() {
+  releasePreparedAudio();
   stopMic(); stopVoices(); clearLiveState(); closing = false;
   setPhase('intro', 'CÉRÉMONIE');
   blankStage();
   panel(false);
 }
 function panic() {
+  releasePreparedAudio();
   stopMic(); stopVoices(); previewSequence++;
   setPhase('stopped', 'PAUSE');
   blankStage();
