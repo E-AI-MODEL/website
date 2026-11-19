@@ -249,6 +249,29 @@ body.playing .hint-chip{z-index:3}
 @media(max-width:620px){.answer-modal #sheetMap{height:min(49dvh,460px)}.sheet-zoom-tools{gap:7px}.sheet-zoom-tools button{min-width:42px;min-height:42px}}
 @media print{.sheet-zoom-tools,.sheet-zoom-note{display:none!important}.answer-modal #sheetMap{height:auto!important;overflow:visible!important}.answer-modal #sheetMapCanvas{width:100%!important}.answer-modal #sheetMapCanvas svg{width:100%!important;min-width:0!important}}
 </style>
+<style id="sheetVisualRepair">
+/* Keep the map's natural ratio; never reserve a tall empty viewport. */
+.answer-modal{padding:clamp(17px,3vw,30px)}
+.answer-modal #sheetTitle{margin:8px 0 12px}
+.answer-modal #sheetMap{height:auto!important;max-height:min(58dvh,610px);aspect-ratio:1240 / 900;overflow:auto;background:#cbe9f4;touch-action:pan-x pan-y}
+.answer-modal #sheetMapCanvas{width:100%;min-width:0;line-height:0}
+.answer-modal #sheetMapCanvas svg{display:block;width:100%;height:auto;min-width:0;max-width:none}
+.answer-modal .sheet-zoom-tools{margin:5px 0 10px;gap:8px}
+.answer-modal #sheetZoomReset{margin-left:auto}
+.answer-modal .sheet-zoom-note{margin:7px 0 2px;font-size:12px}
+.answer-modal .answer-tags{margin:10px 0;gap:6px}
+@media(max-width:620px){
+ .answer-modal{width:min(96vw,600px);padding:17px}
+ .answer-modal #sheetMap{max-height:min(52dvh,430px)}
+ .answer-modal #sheetTitle{font-size:clamp(30px,7vw,44px);margin:6px 0 10px}
+ .answer-modal .sheet-zoom-tools button{min-width:41px;min-height:40px}
+ .answer-modal #sheetZoomLevel{font-size:14px}
+}
+@media print{
+ .answer-modal #sheetMap{height:auto!important;max-height:none!important;aspect-ratio:auto!important;overflow:visible!important}
+ .answer-modal #sheetMapCanvas{width:100%!important}
+}
+</style>
 <style id="wrongPlacePopStyle">
 .wrong-place-pop{position:absolute;z-index:5;max-width:min(80%,280px);background:#fff4ca;border:3px solid var(--ink);border-radius:14px;box-shadow:4px 5px 0 var(--ink);padding:8px 13px;font-size:clamp(14px,2vw,20px);font-weight:1000;line-height:1.1;white-space:nowrap;pointer-events:none;transform:translate(-50%,-115%) rotate(-3deg);animation:pop .17s ease-out}
 </style>
@@ -267,7 +290,7 @@ body.playing .hint-chip{z-index:3}
 <section class="screen hide" id="end"><div class="result"><div class="star" id="endIcon">✦</div><div class="sticker">RONDE KLAAR!</div><h2 id="endTitle">Lekker bezig!</h2><p id="endText">Je vond 6 plekken.</p><div id="review" class="review"></div><div class="actions"><button id="again" class="big secondary">NOG EEN KEER!</button><button id="change" class="quiet">Andere plekken</button></div></div></section>
 </main><div class="foot">Een speelse oefenkaart, geen exacte landkaart. Geen account of opgeslagen scores.</div>
 <div class="overlay" id="privacyLayer" role="dialog" aria-modal="true" aria-labelledby="privacyTitle"><div class="modal"><span class="mini-label">TOPO!</span><h2 id="privacyTitle">Let’s go, TOPO!</h2><p>Geen account nodig. Je antwoorden en scores bewaren we niet.</p><details><summary>Voor ouders</summary><p>Je hoeft geen persoonlijke gegevens in te vullen. Antwoorden en scores blijven tijdens het spelen in de browser en verdwijnen als je de pagina sluit of vernieuwt. Het spel slaat niets op en verstuurt geen speelgegevens. De website of hosting kan wel technische bezoekgegevens verwerken, zoals een IP-adres.</p></details><button class="big" id="privacyOk">JA, SPELEN! ↗</button></div></div>
-<div class="overlay hide" id="sheetLayer" role="dialog" aria-modal="true" aria-labelledby="sheetTitle"><div class="modal answer-modal"><button class="close" id="closeSheet" aria-label="Sluiten">×</button><span class="mini-label">ANTWOORDEN</span><h2 id="sheetTitle">Even spieken!</h2><div class="sheet-zoom-tools" aria-label="Kaart vergroten en verkleinen"><button type="button" id="sheetZoomOut" aria-label="Uitzoomen">−</button><span id="sheetZoomLevel" aria-live="polite">100%</span><button type="button" id="sheetZoomIn" aria-label="Inzoomen">+</button><button type="button" id="sheetZoomReset">Passend</button></div><div class="sheet-map" id="sheetMap"><div class="sheet-map-canvas" id="sheetMapCanvas"></div></div><div class="sheet-zoom-note">Sleep de kaart om rond te kijken. Zoom met twee vingers of de knoppen.</div><div class="answer-tags" id="answerTags"></div><button id="printSheet" class="plain">Print kaart</button></div></div>
+<div class="overlay hide" id="sheetLayer" role="dialog" aria-modal="true" aria-labelledby="sheetTitle"><div class="modal answer-modal"><button class="close" id="closeSheet" aria-label="Sluiten">×</button><span class="mini-label">ANTWOORDEN</span><h2 id="sheetTitle">Even spieken!</h2><div class="sheet-zoom-tools" aria-label="Kaart vergroten en verkleinen"><button type="button" id="sheetZoomOut" aria-label="Uitzoomen">−</button><span id="sheetZoomLevel" aria-live="polite">100%</span><button type="button" id="sheetZoomIn" aria-label="Inzoomen">+</button><button type="button" id="sheetZoomReset">Passend</button></div><div class="sheet-map" id="sheetMap"><div class="sheet-map-canvas" id="sheetMapCanvas"></div></div><div class="sheet-zoom-note">Zoom in. Bekijk de plekken.</div><div class="answer-tags" id="answerTags"></div><button id="printSheet" class="plain">Print kaart</button></div></div>
 <script>
 const db=[
 {id:'friesland',name:'Friesland (Fryslân)',short:'Friesland',group:'provinces',kind:'province',x:563,y:456,aliases:['Friesland','Fryslan','Fryslân']},
@@ -303,7 +326,7 @@ const categoryInfo=[
 ];
 const categoryText={provinces:'Provincies',cities:'Steden',islands:'Eilanden',waters:'Wateren',landmark:'Verbinden',capitals:'Hoofdsteden'};
 
-function makeMap(preview=false){
+function makeMap(preview=false,crop=preview){
 const dots=db.filter(i=>i.kind==='city').map(i=>`<g class="city-symbol" data-city-id="${i.id}"><circle cx="${i.x}" cy="${i.y}" r="15" class="city-halo"/><${i.capital?'rect':'circle'} ${i.capital?`x="${i.x-7}" y="${i.y-7}" width="14" height="14" rx="1"`:`cx="${i.x}" cy="${i.y}" r="7"`} class="${i.capital?'capital-dot':'city-dot'}"/></g>`).join('');
 const labels=db.map(i=>i.kind==='province'?`<text class="map-label region-name" x="${i.x}" y="${i.y}" text-anchor="middle">${i.short.toUpperCase()}</text>`:i.kind==='water'?`<text class="map-label water-name" x="${i.x}" y="${i.y}" text-anchor="middle" transform="rotate(${i.id==='waddenzee'?-26:0} ${i.x} ${i.y})">${i.name}</text>`:i.kind==='dike'?`<text class="map-label small" x="205" y="485" transform="rotate(-44 205 485)">Afsluitdijk</text>`:`<text data-label-id="${i.id}" class="map-label ${i.kind==='island'?'small':''}" x="${i.labelX??i.x+10}" y="${i.labelY??i.y-14}">${i.name}</text>`).join('');
 const cityHits=db.filter(i=>i.kind==='city').map(i=>`<circle data-place="${i.id}" class="city-click" cx="${i.x}" cy="${i.y}" r="39"/>`).join('');
@@ -325,7 +348,7 @@ ijsselmeer:'M0 552 L72 542 L164 574 L254 562 L293 582 L317 582 L349 610 L392 628
 };
 const clickable=[...Object.entries(waterPaths).map(([id,d])=>`<path class="water-click" data-place="${id}" d="${d}"/>`),...Object.entries(regions).map(([id,d])=>`<path class="province-click" data-place="${id==='groningen'?'groningen-prov':id}" d="${d}"/>`),...Object.entries(islandPaths).map(([id,d])=>`<path class="island-click" data-place="${id}" d="${d}"/>`),'<path class="dike-click" data-place="afsluitdijk" d="M164 575 L320 448"/>',cityHits].join('');
 const high=[...Object.entries(waterPaths).map(([id,d])=>`<path data-highlight="${id}" class="water-highlight" d="${d}"/>`),...Object.entries(regions).map(([id,d])=>`<path data-highlight="${id==='groningen'?'groningen-prov':id}" class="region-highlight" d="${d}"/>`),...Object.entries(islandPaths).map(([id,d])=>`<path data-highlight="${id}" class="island-highlight" d="${d}"/>`),'<path data-highlight="afsluitdijk" class="dike-highlight" d="M164 575 L320 448"/>',cityHighlights].join('');
-return `<svg class="map-art ${preview?'preview-map':''}" id="${preview?'previewSvg':'gameSvg'}" viewBox="0 0 1240 900" preserveAspectRatio="${preview?'xMidYMid slice':'xMidYMid meet'}" role="img" aria-label="Oefenkaart Noord-Nederland met provincies, Waddeneilanden, steden en wateren" xmlns="http://www.w3.org/2000/svg">
+return `<svg class="map-art ${preview?'preview-map':''}" id="${preview?'previewSvg':'gameSvg'}" viewBox="0 0 1240 900" preserveAspectRatio="${crop?'xMidYMid slice':'xMidYMid meet'}" role="img" aria-label="Oefenkaart Noord-Nederland met provincies, Waddeneilanden, steden en wateren" xmlns="http://www.w3.org/2000/svg">
 <defs><pattern id="${preview?'p':'g'}grid" width="79" height="79" patternUnits="userSpaceOnUse"><path d="M79 0H0V79" fill="none" stroke="#fff" stroke-opacity=".22" stroke-width="1"/></pattern></defs>
 <rect width="1240" height="900" class="sea-fill"/><rect width="1240" height="900" fill="url(#${preview?'p':'g'}grid)"/>
 <!-- neighbouring land, shown for orientation -->
@@ -542,7 +565,7 @@ function applySheetZoom(next,anchorX=.5,anchorY=.5){
  viewport.scrollTop=Math.max(0,canvas.scrollHeight*relY-viewport.clientHeight*anchorY);
 }
 function openSheet(){
- $('sheetMapCanvas').innerHTML=makeMap(true);
+ $('sheetMapCanvas').innerHTML=makeMap(true,false);
  applySheetZoom(1);
 $('answerTags').innerHTML=categories.map(([k,n])=>`<span><b>${n}:</b> ${db.filter(x=>x.group===k||(k==='capitals'&&x.capital)).map(x=>x.short||x.name).join(', ')}</span>`).join('');$('sheetLayer').classList.remove('hide');$('closeSheet').focus()}$('openSheet').onclick=openSheet;$('showAnswer').onclick=openSheet;$('closeSheet').onclick=()=>$('sheetLayer').classList.add('hide');
 $('sheetZoomIn').onclick=()=>applySheetZoom(sheetZoom+.25);
