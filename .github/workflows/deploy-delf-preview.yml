@@ -100,12 +100,17 @@ jobs:
                   with urlopen(Request(base, headers={'Cache-Control':'no-cache','User-Agent':'DELF-preview-check/1.0'}), timeout=20) as res:
                       page = res.read()
                       assert res.status == 200
-                  if page == expected: break
+                  # Hosting may inject analytics or modify markup after upload.
+                  # Check the app identity and exact versioned asset references instead.
+                  markers = (b'<title>DELF scolaire | Live</title>',
+                             b'id="displayText"', b'id="speechText"')
+                  if all(marker in page for marker in markers) and all(asset.encode() in page for asset in assets):
+                      break
               except Exception as err:
                   print('Test page not ready:', err)
               time.sleep(5)
           else:
-              raise SystemExit('Published DELF HTML missing or different')
+              raise SystemExit('Published DELF page missing or referencing different app assets')
           for asset in assets:
               local = Path('tools/delf-live/dist') / asset.lstrip('./')
               with urlopen(Request(urljoin(base, asset), headers={'Cache-Control':'no-cache','User-Agent':'DELF-preview-check/1.0'}), timeout=30) as res:
