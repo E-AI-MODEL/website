@@ -1,12 +1,12 @@
 import { PhononTTS } from 'phonon-tts';
-import { opening, reply, closing, interrupt, handback, speech, speechSegments, modelFiles, stageAdvance, replyPauseMs } from './script.mjs';
+import { opening, reply, closing as closingScript, interrupt, handback, speech, speechSegments, modelFiles, stageAdvance, replyPauseMs } from './script.mjs';
 
 const $ = id => document.getElementById(id);
 const stage = $('stage');
 $('speechText').value = speech;
 $('openingText').value = opening;
 $('replyText').textContent = reply;
-$('closingText').value = closing;
+$('closingText').value = closingScript;
 let phase = 'intro';
 let epoch = 0;
 let translator = null;
