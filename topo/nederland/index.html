@@ -88,7 +88,7 @@ main{width:min(1400px,100%);margin:auto;padding:5px clamp(13px,2vw,27px) 30px}
 #game .game-grid.shuffle-no-map .option{margin:7px 0}
 @media(max-width:700px){
  #game .game-grid.shuffle-no-map{height:calc(var(--vh,100dvh) - 67px);align-items:center;justify-content:center}
- #game .game-grid.shuffle-no-map .question-card{min-height:0;max-height:92%;width:100%;flex:0 1 auto;overflow:auto;padding:23px 20px}
+ #game .game-grid.shuffle-no-map .question-card{min-height:min(67dvh,570px);max-height:92%;width:100%;flex:0 1 auto;overflow:auto;padding:23px 20px}
  #game .game-grid.shuffle-no-map .question-card h2{font-size:clamp(26px,7vw,36px)}
  #game .game-grid.shuffle-no-map .option{font-size:16px}
  #game .game-grid.shuffle-no-map .small-links{margin-top:14px}
@@ -542,7 +542,7 @@ function draw(){
  $('kind').textContent=x.revisit?'NOG EENS!':({point:'AANWIJZEN',choice:'KIEZEN',type:'TYPEN',missing:'WAT MIST ER?',zoom:'INGEZOOMD',quiz:'ZONDER KAART'})[currentMode];
  $('next').classList.add('hide');$('feedback').classList.add('hide');$('help').style.visibility=noHints?'hidden':'visible';$('help').textContent='Help me!';
  $('skip').style.visibility='visible';$('answerOptions').innerHTML='';
- $('progressText').textContent=(index+1)+'/'+queue.length;$('missionName').textContent='MISSIE '+round;
+ $('progressText').textContent=(index+1)+'/'+queue.length;$('missionName').textContent=mode==='shuffle'?'TOPO SHUFFLE':'MISSIE '+round;
  $('progressFill').style.width=(100*index/queue.length)+'%';$('score').textContent='★ '+stars;
  $('mapHint').textContent='KIJK OP DE KAART';
  if(currentMode==='quiz'){
