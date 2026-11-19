@@ -433,99 +433,107 @@ function showWrongPlace(id,clientX,clientY){
 function clearWrongPlace(){clearTimeout(wrongPopTimer);$('wrongPlacePop').classList.add('hide')}
 const placeHints={
  "friesland": [
-  "Deze provincie ligt tussen het IJsselmeer en de Waddenzee.",
-  "Groningen ligt er rechts van. Leeuwarden ligt erin."
+  "Kijk links op de kaart.",
+  "Zoek het gele gebied bij het grote meer."
  ],
  "groningen-prov": [
-  "Zoek het noordoosten van Nederland, boven Drenthe.",
-  "Deze provincie grenst aan Friesland en heeft de Waddenzee in het noorden."
+  "Kijk rechtsboven.",
+  "Zoek het roze gebied boven het groene."
  ],
  "drenthe": [
-  "Deze provincie heeft geen kust en ligt onder Groningen.",
-  "Zoek het gebied rechts van Friesland, met Assen en Emmen."
+  "Kijk rechtsonder.",
+  "Zoek het groene gebied onder Groningen."
  ],
  "leeuwarden": [
-  "Zoek de hoofdstad in het noordelijke deel van Friesland.",
-  "De stad ligt ten noorden van Sneek en ten westen van Drachten."
+  "Zoek in het gele gebied.",
+  "Kijk boven Sneek."
  ],
  "sneek": [
-  "Deze Friese stad ligt in het gebied met veel meren.",
-  "Zoek ten zuidwesten van Leeuwarden en ten westen van Heerenveen."
+  "Zoek in het gele gebied.",
+  "Kijk links van Heerenveen."
  ],
  "heerenveen": [
-  "Dit ligt in het zuidoosten van Friesland.",
-  "Zoek ten oosten van Sneek en ten zuiden van Drachten."
+  "Zoek in het gele gebied.",
+  "Kijk onder Drachten."
  ],
  "drachten": [
-  "Zoek in het oosten van Friesland.",
-  "Deze stad ligt tussen Leeuwarden en Groningen, ten noorden van Heerenveen."
+  "Zoek in het gele gebied.",
+  "Kijk rechts van Leeuwarden."
  ],
  "groningen-stad": [
-  "Zoek de provinciehoofdstad in het noordoosten.",
-  "De stad ligt ten noorden van Assen en ten westen van Delfzijl."
+  "Zoek in het roze gebied.",
+  "Kijk boven Assen."
  ],
  "delfzijl": [
-  "Deze plaats ligt dichtbij de kust, in Groningen.",
-  "Zoek rechtsboven op de kaart, ten noordoosten van de stad Groningen."
+  "Zoek in het roze gebied.",
+  "Kijk helemaal rechtsboven."
  ],
  "assen": [
-  "Dit is de hoofdstad van Drenthe.",
-  "Zoek ten zuiden van de stad Groningen en ten noorden van Hoogeveen."
+  "Zoek in het groene gebied.",
+  "Kijk boven Hoogeveen."
  ],
  "veendam": [
-  "Zoek in het oostelijke deel van Groningen.",
-  "Deze plaats ligt ten zuidoosten van de stad Groningen."
+  "Zoek in het roze gebied.",
+  "Kijk rechts van de stad Groningen."
  ],
  "meppel": [
-  "Zoek in het zuidwesten van Drenthe.",
-  "Dit is de westelijkste van de vier getekende Drentse steden."
+  "Zoek in het groene gebied.",
+  "Kijk linksonder in Drenthe."
  ],
  "hoogeveen": [
-  "Deze plaats ligt in het zuiden van Drenthe.",
-  "Zoek ten oosten van Meppel en ten westen van Emmen."
+  "Zoek in het groene gebied.",
+  "Kijk tussen Meppel en Emmen."
  ],
  "emmen": [
-  "Zoek in het zuidoosten van Drenthe.",
-  "Deze plaats ligt oostelijk van Hoogeveen, vlak bij de Duitse grens."
+  "Zoek in het groene gebied.",
+  "Kijk rechts van Hoogeveen."
  ],
  "vlieland": [
-  "Zoek een Waddeneiland, boven de kust.",
-  "Dit eiland ligt aan de westkant van de vier eilanden op de kaart."
+  "Zoek boven de zee.",
+  "Kijk naar het eiland helemaal links."
  ],
  "terschelling": [
-  "Zoek het eiland tussen twee andere Waddeneilanden.",
-  "Het ligt ten oosten van Vlieland en ten westen van Ameland."
+  "Zoek boven de zee.",
+  "Kijk naar het tweede eiland van links."
  ],
  "ameland": [
-  "Zoek het eiland boven Friesland.",
-  "Het ligt tussen Terschelling en Schiermonnikoog."
+  "Zoek boven de zee.",
+  "Kijk naar het derde eiland van links."
  ],
  "schiermonnikoog": [
-  "Zoek een Waddeneiland boven het vasteland.",
-  "Dit is het oostelijkste eiland van de vier op de kaart."
+  "Zoek boven de zee.",
+  "Kijk naar het eiland helemaal rechts."
  ],
  "waddenzee": [
-  "Dit water ligt tussen de Waddeneilanden en het vasteland.",
-  "Zoek het water ten noorden van Friesland en Groningen."
+  "Zoek boven aan de kaart.",
+  "Kijk naar het water tussen de eilanden en het land."
  ],
  "ijsselmeer": [
-  "Zoek een groot water ten zuidwesten van Friesland.",
-  "Het ligt onder de Afsluitdijk, tussen Friesland en Noord-Holland."
+  "Zoek linksonder.",
+  "Kijk naar het grote blauwe water."
  ],
  "afsluitdijk": [
-  "Zoek de lange verbinding dwars door het water.",
-  "Deze dijk loopt van Noord-Holland naar Friesland en scheidt IJsselmeer en Waddenzee."
+  "Zoek links op de kaart.",
+  "Kijk naar de lange streep dwars door het water."
  ]
 };
+function nameHint(item,step){
+ const name=String(item.short||item.name).replace(/ \(.*\)$/,'');
+ const letters=[...name].filter(c=>/\p{L}/u.test(c));
+ if(step===0)return 'De naam begint met '+letters[0].toUpperCase()+'.';
+ return 'De naam heeft '+letters.length+' letters.';
+}
 function giveHint(){
  if(game.done||game.hintStep>=2)return;
- const clues=placeHints[q().id]||["Kijk naar de ligging ten opzichte van andere plekken.","Vergelijk de plaatsen op de spiekkaart en probeer het opnieuw."];
- const step=Math.min(game.hintStep,clues.length-1);
+ const step=game.hintStep;
+ const clue=game.kind==='point'
+   ?(placeHints[q().id]||['Kijk eerst goed naar de kaart.','Zoek vlak bij de andere plekken.'])[step]
+   :nameHint(q(),step);
  game.hintClicks++;game.hintStep++;game.hint=true;game.assistedQuestions.add(q().id);
  game.wrong.add(q().id);returnLater(q());
- flash('TIP '+(step+1)+': '+clues[step],'neutral');
- $('mapHint').textContent='DENK EVEN NA';
- if(game.hintStep>=clues.length){$('help').style.visibility='hidden';}
+ flash('TIP '+(step+1)+': '+clue,'neutral');
+ $('mapHint').textContent='NOG EVEN ZOEKEN!';
+ if(game.hintStep>=2)$('help').style.visibility='hidden';
  else $('help').textContent='Nog een tip?';
 }
 function returnLater(item){
