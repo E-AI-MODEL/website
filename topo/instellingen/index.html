@@ -161,7 +161,7 @@ document.querySelectorAll('[data-tab]').forEach(tab=>tab.onclick=()=>{
 $('zones').onclick=e=>{
  const b=e.target.closest('[data-zone]');if(!b)return;
  state.zone=b.dataset.zone;
- if(state.zone==='north'){state.areas=new Set(north);if(!state.topics.size)state.topics=new Set(options.topics.map(x=>x[0]));}
+ if(state.zone==='north'){state.areas=new Set(north);state.topics=new Set(options.topics.map(x=>x[0]));}
  if(state.zone==='all'){state.areas=new Set(provinces);state.topics=new Set(readyTopics().length?readyTopics():[...nationalTopics]);}
  if(state.zone==='own'){state.areas=new Set();state.topics=new Set(readyTopics().length?readyTopics():[...nationalTopics]);}
  update();
