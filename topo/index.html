@@ -147,6 +147,18 @@ body.playing .hint-chip{z-index:3}
 }
 @media print{body.playing{height:auto;overflow:visible}body.playing main{display:none}}
 </style>
+<style id="sheetZoomStyles">
+.sheet-zoom-tools{display:flex;align-items:center;gap:10px;margin:8px 0 11px}
+.sheet-zoom-tools button{border:2px solid var(--ink);background:white;border-radius:12px;min-width:46px;min-height:44px;font-size:24px;font-weight:1000;color:var(--ink);box-shadow:0 3px 0 var(--ink)}
+.sheet-zoom-tools #sheetZoomReset{font-size:13px;padding:6px 12px;margin-left:auto}
+#sheetZoomLevel{min-width:50px;text-align:center;font-size:15px;font-weight:900}
+.answer-modal #sheetMap{height:min(54dvh,560px);max-height:none;overflow:auto;touch-action:pan-x pan-y;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.answer-modal #sheetMapCanvas{width:100%;min-width:0;transform-origin:top left}
+.answer-modal #sheetMapCanvas svg{display:block;width:100%;min-width:0;height:auto}
+.sheet-zoom-note{font-size:12px;font-weight:700;color:#4b6370;margin:6px 0}
+@media(max-width:620px){.answer-modal #sheetMap{height:min(49dvh,460px)}.sheet-zoom-tools{gap:7px}.sheet-zoom-tools button{min-width:42px;min-height:42px}}
+@media print{.sheet-zoom-tools,.sheet-zoom-note{display:none!important}.answer-modal #sheetMap{height:auto!important;overflow:visible!important}.answer-modal #sheetMapCanvas{width:100%!important}.answer-modal #sheetMapCanvas svg{width:100%!important;min-width:0!important}}
+</style>
 <style id="wrongPlacePopStyle">
 .wrong-place-pop{position:absolute;z-index:5;max-width:min(80%,280px);background:#fff4ca;border:3px solid var(--ink);border-radius:14px;box-shadow:4px 5px 0 var(--ink);padding:8px 13px;font-size:clamp(14px,2vw,20px);font-weight:1000;line-height:1.1;white-space:nowrap;pointer-events:none;transform:translate(-50%,-115%) rotate(-3deg);animation:pop .17s ease-out}
 </style>
@@ -165,7 +177,7 @@ body.playing .hint-chip{z-index:3}
 <section class="screen hide" id="end"><div class="result"><div class="star" id="endIcon">✦</div><div class="sticker">RONDE KLAAR!</div><h2 id="endTitle">Lekker bezig!</h2><p id="endText">Je vond 6 plekken.</p><div id="review" class="review"></div><div class="actions"><button id="again" class="big secondary">NOG EEN KEER!</button><button id="change" class="quiet">Andere plekken</button></div></div></section>
 </main><div class="foot">Een speelse oefenkaart, geen exacte landkaart. Geen account of opgeslagen scores.</div>
 <div class="overlay" id="privacyLayer" role="dialog" aria-modal="true" aria-labelledby="privacyTitle"><div class="modal"><span class="mini-label">TOPO!</span><h2 id="privacyTitle">Let’s go, TOPO!</h2><p>Geen account nodig. Je antwoorden en scores bewaren we niet.</p><details><summary>Voor ouders</summary><p>Je hoeft geen persoonlijke gegevens in te vullen. Antwoorden en scores blijven tijdens het spelen in de browser en verdwijnen als je de pagina sluit of vernieuwt. Het spel slaat niets op en verstuurt geen speelgegevens. De website of hosting kan wel technische bezoekgegevens verwerken, zoals een IP-adres.</p></details><button class="big" id="privacyOk">JA, SPELEN! ↗</button></div></div>
-<div class="overlay hide" id="sheetLayer" role="dialog" aria-modal="true" aria-labelledby="sheetTitle"><div class="modal answer-modal"><button class="close" id="closeSheet" aria-label="Sluiten">×</button><span class="mini-label">ANTWOORDEN</span><h2 id="sheetTitle">Even spieken!</h2><div class="sheet-map" id="sheetMap"></div><div class="answer-tags" id="answerTags"></div><button id="printSheet" class="plain">Print kaart</button></div></div>
+<div class="overlay hide" id="sheetLayer" role="dialog" aria-modal="true" aria-labelledby="sheetTitle"><div class="modal answer-modal"><button class="close" id="closeSheet" aria-label="Sluiten">×</button><span class="mini-label">ANTWOORDEN</span><h2 id="sheetTitle">Even spieken!</h2><div class="sheet-zoom-tools" aria-label="Kaart vergroten en verkleinen"><button type="button" id="sheetZoomOut" aria-label="Uitzoomen">−</button><span id="sheetZoomLevel" aria-live="polite">100%</span><button type="button" id="sheetZoomIn" aria-label="Inzoomen">+</button><button type="button" id="sheetZoomReset">Passend</button></div><div class="sheet-map" id="sheetMap"><div class="sheet-map-canvas" id="sheetMapCanvas"></div></div><div class="sheet-zoom-note">Sleep de kaart om rond te kijken. Zoom met twee vingers of de knoppen.</div><div class="answer-tags" id="answerTags"></div><button id="printSheet" class="plain">Print kaart</button></div></div>
 <script>
 const db=[
 {id:'friesland',name:'Friesland (Fryslân)',short:'Friesland',group:'provinces',kind:'province',x:563,y:456,aliases:['Friesland','Fryslan','Fryslân']},
@@ -407,6 +419,34 @@ function finish(){
  game.retry=misses;
 }
 $('again').onclick=()=>{if(game.retry?.length){game.queue=shuffle([...game.retry,...shuffle(pool().filter(x=>!game.retry.some(y=>y.id===x.id))).slice(0,Math.max(0,8-game.retry.length))]).slice(0,8);game.idx=0;game.stars=0;game.round++;game.wrong=new Set();game.repeated=new Map();svgMap('map');show('game');draw();}else start()};$('change').onclick=()=>show('home');$('back').onclick=()=>show('home');$('logo').onclick=e=>{e.preventDefault();show('home')};$('start').onclick=start;
-function openSheet(){svgMap('sheetMap',true);$('answerTags').innerHTML=categories.map(([k,n])=>`<span><b>${n}:</b> ${db.filter(x=>x.group===k||(k==='capitals'&&x.capital)).map(x=>x.short||x.name).join(', ')}</span>`).join('');$('sheetLayer').classList.remove('hide');$('closeSheet').focus()}$('openSheet').onclick=openSheet;$('showAnswer').onclick=openSheet;$('closeSheet').onclick=()=>$('sheetLayer').classList.add('hide');$('sheetLayer').onclick=e=>{if(e.target.id==='sheetLayer')$('closeSheet').click()};$('printSheet').onclick=()=>window.print();$('openPrivacy').onclick=()=>$('privacyLayer').classList.remove('hide');$('privacyOk').onclick=()=>$('privacyLayer').classList.add('hide');document.addEventListener('keydown',e=>{if(e.key==='Escape'&& !$('sheetLayer').classList.contains('hide'))$('closeSheet').click();if(e.key==='Enter'&&!$('game').classList.contains('hide')&&game.done&&$('sheetLayer').classList.contains('hide'))$('next').click()});
+let sheetZoom=1,sheetPinchStart=null;
+function applySheetZoom(next,anchorX=.5,anchorY=.5){
+ const viewport=$('sheetMap'),canvas=$('sheetMapCanvas');
+ const oldWidth=canvas.getBoundingClientRect().width||viewport.clientWidth;
+ const oldHeight=canvas.getBoundingClientRect().height||viewport.clientHeight;
+ const viewX=viewport.scrollLeft+viewport.clientWidth*anchorX;
+ const viewY=viewport.scrollTop+viewport.clientHeight*anchorY;
+ const relX=oldWidth?viewX/oldWidth:anchorX,relY=oldHeight?viewY/oldHeight:anchorY;
+ sheetZoom=Math.max(1,Math.min(4,Math.round(next*100)/100));
+ canvas.style.width=(sheetZoom*100)+'%';
+ $('sheetZoomLevel').textContent=Math.round(sheetZoom*100)+'%';
+ $('sheetZoomOut').disabled=sheetZoom<=1;
+ $('sheetZoomIn').disabled=sheetZoom>=4;
+ viewport.scrollLeft=Math.max(0,canvas.scrollWidth*relX-viewport.clientWidth*anchorX);
+ viewport.scrollTop=Math.max(0,canvas.scrollHeight*relY-viewport.clientHeight*anchorY);
+}
+function openSheet(){
+ $('sheetMapCanvas').innerHTML=makeMap(true);
+ applySheetZoom(1);
+$('answerTags').innerHTML=categories.map(([k,n])=>`<span><b>${n}:</b> ${db.filter(x=>x.group===k||(k==='capitals'&&x.capital)).map(x=>x.short||x.name).join(', ')}</span>`).join('');$('sheetLayer').classList.remove('hide');$('closeSheet').focus()}$('openSheet').onclick=openSheet;$('showAnswer').onclick=openSheet;$('closeSheet').onclick=()=>$('sheetLayer').classList.add('hide');
+$('sheetZoomIn').onclick=()=>applySheetZoom(sheetZoom+.25);
+$('sheetZoomOut').onclick=()=>applySheetZoom(sheetZoom-.25);
+$('sheetZoomReset').onclick=()=>applySheetZoom(1);
+const sheetViewport=$('sheetMap');
+function pinchDistance(touches){return Math.hypot(touches[0].clientX-touches[1].clientX,touches[0].clientY-touches[1].clientY)}
+sheetViewport.addEventListener('touchstart',e=>{if(e.touches.length===2){const b=sheetViewport.getBoundingClientRect();sheetPinchStart={distance:pinchDistance(e.touches),zoom:sheetZoom,x:((e.touches[0].clientX+e.touches[1].clientX)/2-b.left)/b.width,y:((e.touches[0].clientY+e.touches[1].clientY)/2-b.top)/b.height};}},{passive:true});
+sheetViewport.addEventListener('touchmove',e=>{if(e.touches.length===2&&sheetPinchStart){e.preventDefault();applySheetZoom(sheetPinchStart.zoom*pinchDistance(e.touches)/sheetPinchStart.distance,Math.max(0,Math.min(1,sheetPinchStart.x)),Math.max(0,Math.min(1,sheetPinchStart.y)));}},{passive:false});
+sheetViewport.addEventListener('touchend',e=>{if(e.touches.length<2)sheetPinchStart=null},{passive:true});
+sheetViewport.addEventListener('wheel',e=>{if(e.ctrlKey||e.metaKey){e.preventDefault();const b=sheetViewport.getBoundingClientRect();applySheetZoom(sheetZoom*(e.deltaY>0?.9:1.1),Math.max(0,Math.min(1,(e.clientX-b.left)/b.width)),Math.max(0,Math.min(1,(e.clientY-b.top)/b.height)));}},{passive:false});$('sheetLayer').onclick=e=>{if(e.target.id==='sheetLayer')$('closeSheet').click()};$('printSheet').onclick=()=>window.print();$('openPrivacy').onclick=()=>$('privacyLayer').classList.remove('hide');$('privacyOk').onclick=()=>$('privacyLayer').classList.add('hide');document.addEventListener('keydown',e=>{if(e.key==='Escape'&& !$('sheetLayer').classList.contains('hide'))$('closeSheet').click();if(e.key==='Enter'&&!$('game').classList.contains('hide')&&game.done&&$('sheetLayer').classList.contains('hide'))$('next').click()});
 svgMap('preview',true);renderChips();show('home');
 </script></body></html>
