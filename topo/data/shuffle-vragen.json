@@ -299,22 +299,22 @@
       "kind": "fact",
       "category": "puzzel",
       "name": "Drenthe",
-      "question": "Welke provincie ligt tussen Groningen en Overijssel?",
-      "answer": "Drenthe",
+      "question": "Welke provincie grenst aan Drenthe én Gelderland?",
+      "answer": "Overijssel",
       "options": [
-        "Drenthe",
+        "Overijssel",
         "Friesland",
         "Flevoland",
-        "Gelderland"
+        "Limburg"
       ],
-      "hint": "Denk aan de provincie waar Assen ligt.",
-      "note": "Drenthe ligt tussen Groningen en Overijssel.",
+      "hint": "Zoek de provincie rechts van Flevoland.",
+      "note": "Overijssel grenst aan Drenthe en Gelderland.",
       "shuffleMode": "quiz",
       "check": {
         "type": "common-neighbor",
         "provinces": [
-          "Groningen",
-          "Overijssel"
+          "Drenthe",
+          "Gelderland"
         ]
       }
     },
