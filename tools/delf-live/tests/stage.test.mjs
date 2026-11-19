@@ -162,3 +162,13 @@ test('iPhone audio krijgt een actieve context vanuit de overnameklik',()=>{
   assert.ok(main.includes("preparedFrenchContext && preparedFrenchContext.state !== 'closed'"));
   assert.ok(main.includes('function releasePreparedAudio()'));
 });
+
+test('menu toont eerst alleen voorbereiding en eenvoudige bediening',()=>{
+  assert.ok(html.includes('id="runtimeStatus" aria-live="assertive"'));
+  assert.ok(html.includes('Start ondertiteling'));
+  assert.ok(html.includes('AI neemt over'));
+  assert.ok(html.includes('Handmatige stappen'));
+  assert.ok(html.includes('compact-details'));
+  assert.ok(html.includes('<summary>Franse speech</summary>'));
+  assert.ok(main.includes('Tik nogmaals op Start ondertiteling'));
+});

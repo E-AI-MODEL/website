@@ -791,9 +791,11 @@ async function streamFrench() {
 }
 function goStart() {
   if (!translator) {
-    reportError('Starten kan pas na het laden van de Franse vertaling.');
+    reportError('Laad eerst de Franse vertaling.');
     panel(true);
-    void prepareTranslation();
+    void prepareTranslation().then(ok => {
+      if (ok && phase === 'intro') feedback('runtimeStatus','Vertaling klaar. Tik nogmaals op Start ondertiteling om de microfoon te openen.','good');
+    });
     return;
   }
   if (stageAdvance(phase, 'start') === null) return;
@@ -834,7 +836,10 @@ function goFrench() {
   stopMic(); stopVoices(); firstAudioMs = null;
   setPhase('french', 'DISCOURS EN FRANÇAIS');
   panel(false);
-  void streamFrench();
+  void streamFrench().catch(error => {
+    reportError('Franse audio kon niet starten: ' + (error.message || error));
+    panel(true);
+  });
 }
 function goHandback() {
   if (!selectedDutchVoice) { reportError('Nederlandse teruggavestem ontbreekt.'); return; }
