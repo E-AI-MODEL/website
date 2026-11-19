@@ -41,7 +41,7 @@
       "shuffleMode": "quiz",
       "check": {
         "type": "water-source",
-        "source": "https://www.rijkswaterstaat.nl/water/waterbeheer/beheer-en-ontwikkeling-rijkswateren/rivieren"
+        "source": "https://www.rijkswaterstaat.nl/water/vaarwegenoverzicht/noordzee"
       }
     },
     {
