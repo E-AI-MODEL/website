@@ -518,14 +518,14 @@ const placeHints={
  ]
 };
 function giveHint(){
- if(game.done)return;
+ if(game.done||game.hintStep>=2)return;
  const clues=placeHints[q().id]||["Kijk naar de ligging ten opzichte van andere plekken.","Vergelijk de plaatsen op de spiekkaart en probeer het opnieuw."];
  const step=Math.min(game.hintStep,clues.length-1);
  game.hintClicks++;game.hintStep++;game.hint=true;game.assistedQuestions.add(q().id);
  game.wrong.add(q().id);returnLater(q());
  flash('TIP '+(step+1)+': '+clues[step],'neutral');
  $('mapHint').textContent='DENK EVEN NA';
- if(game.hintStep>=clues.length)$('help').textContent='Nog eens kijken?';
+ if(game.hintStep>=clues.length){$('help').style.visibility='hidden';}
  else $('help').textContent='Nog een tip?';
 }
 function returnLater(item){
