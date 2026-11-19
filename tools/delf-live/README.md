@@ -55,3 +55,7 @@ De mobiele modelproef heeft bewust geen live vertaling: de browser Translator AP
 ## Reactie en stemlijnen
 
 Tijdens de onderbreking mag je vrij antwoorden. De microfoon probeert je reactie te herkennen en verlengt de korte pauze zolang je spreekt, met maximaal twaalf seconden totaal. De AI zegt daarna uitsluitend de vooraf goedgekeurde Franse toespraak. Er verschijnen tijdens de Nederlandse en Franse AI-stemmen geen ondertitels. Dunne lijnen reageren tijdens het Frans op echte Web Audio-samples. Bij de Nederlandse systeemstem, waarvoor geen ruwe audiobuffers beschikbaar zijn, gebruiken de lijnen de spreekgrenzen die de browser doorgeeft. Stoppen en resetten stoppen ook de reactieherkenning en de lijnen. De Franse speech is vastgezet en read-only.
+
+## iPhone bediening en instellingen
+
+Op smalle touchscreens staan rechtsboven twee kleine dunne lijntjes. Eén tik opent het instellingenpaneel. Dat paneel heeft een lichte, bijna witte achtergrond en dunne scheidingslijnen. In `Verloop` staan dezelfde handmatige bedieningsknoppen als op de MacBook. Door het instellingenmenu te sluiten blijft de podiumweergave leeg. Op de MacBook blijven de twee lijntjes verborgen en gebruik je Esc. Live NL→FR-vertaling is afhankelijk van Chrome Translator en wordt op iOS niet gegarandeerd.

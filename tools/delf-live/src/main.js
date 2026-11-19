@@ -257,8 +257,19 @@ function panel(open) {
   document.body.classList.toggle('panel-visible', open);
   $('panel').classList.toggle('open', open);
   $('panel').setAttribute('aria-hidden', open ? 'false' : 'true');
-  if (!open) { stage.tabIndex = -1; stage.focus({preventScroll:true}); }
+  const trigger = $('mobileSettings');
+  trigger.setAttribute('aria-expanded', String(open));
+  trigger.setAttribute('aria-label', open ? 'Instellingen sluiten' : 'Instellingen openen');
+  if (open) {
+    $('panelClose').focus({preventScroll:true});
+  } else if (getComputedStyle(trigger).display !== 'none') {
+    trigger.focus({preventScroll:true});
+  } else {
+    stage.tabIndex = -1;
+    stage.focus({preventScroll:true});
+  }
 }
+$('mobileSettings').addEventListener('click', () => panel(!$('panel').classList.contains('open')));
 $('panelClose').onclick = () => panel(false);
 function setPhase(p, publicLabel) {
   phase = p; epoch++;
@@ -702,8 +713,8 @@ $('testTranslate').onclick = async () => {
   catch(e) { reportError('Vertaaltest: ' + e.message); }
 };
 document.addEventListener('keydown', event => {
-  if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement || event.target instanceof HTMLSelectElement) return;
   if (event.key === 'Escape') { event.preventDefault(); panel(!$('panel').classList.contains('open')); return; }
+  if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement || event.target instanceof HTMLSelectElement) return;
   if (event.code === 'ArrowRight') {
     event.preventDefault();
     if (phase === 'live' && !closing) goInterrupt();

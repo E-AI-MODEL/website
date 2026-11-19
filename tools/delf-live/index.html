@@ -11,12 +11,13 @@
 <body>
 <div class="stage" id="stage" data-phase="intro" tabindex="-1">
 <canvas id="voiceVisual" class="voice-visual" aria-hidden="true"></canvas>
+<button id="mobileSettings" class="mobile-settings" type="button" aria-label="Instellingen openen" aria-controls="panel" aria-expanded="false"><span class="mobile-settings-lines" aria-hidden="true"><span></span><span></span></span></button>
 <main class="centerpiece" aria-label="Franse ondertiteling" aria-live="polite"><div class="display-surface" id="displayText"></div><p class="translation-meta sr-only" id="translationMeta"></p></main>
 </div>
 <aside id="panel" class="panel" aria-label="Podiumbediening" aria-hidden="true">
-<div class="panel-head"><div><small>ALLEEN ACHTER DE SCHERMEN</small><h2>DELF scolaire</h2></div><button id="panelClose" class="close" aria-label="Sluiten">×</button></div>
+<div class="panel-head"><div><small>VOORBEREIDING</small><h2>Instellingen</h2></div><button id="panelClose" class="close" type="button" aria-label="Instellingen sluiten"><span aria-hidden="true" class="close-strokes"></span></button></div>
 <div class="panel-content">
-<p class="hint">Voor aanvang: druk op Esc om dit paneel te openen en test microfoon, vertaling en beide stemmen. Sluit het paneel met Esc. Op het bord komt alleen Franse tekst in beeld. Start met 1, druk tijdens jouw Nederlandse opening eenmaal op → voor de hele overname. Spatie pauzeert of hervat, X stopt direct.</p>
+<p class="hint">Test hier vooraf de microfoon, Franse vertaling en beide stemmen. Op de MacBook: 1 start de ondertiteling en → begint de overname. Op je iPhone kun je de knoppen onder Verloop gebruiken. Het scherm blijft buiten dit menu vrij van bediening.</p>
 <div class="group"><h3>Voor de ceremonie</h3>
 <button id="prepareTranslate" class="action">Franse vertaling laden</button><p class="feedback" id="translationStatus">Nog niet geladen</p>
 <button id="prepareMic" class="action outline">Microfoon controleren</button><p class="feedback" id="microphoneStatus">Nog niet gecontroleerd</p>
@@ -39,6 +40,6 @@
 </div>
 <div class="group"><h3>Franse speech</h3><textarea id="speechText" rows="13" spellcheck="false" readonly></textarea><p class="hint">De Franse speech ligt vast. Tijdens de AI-stem blijft het scherm zonder tekst. Dunne lijnen vanuit het midden reageren op de stem.</p></div>
 <div class="group"><h3>Vertaling testen</h3><textarea id="testDutch" rows="3">Goedemiddag allemaal. Vandaag feliciteren we leerlingen met hun DELF scolaire-diploma.</textarea><button id="testTranslate" class="action outline">Vertaal deze zin</button></div>
-<div class="group"><h3>Status en metingen</h3><p class="feedback" id="runtimeStatus">Nog niet gestart</p><p class="feedback" id="latencyStatus">Nog geen stemmeting</p><p class="hint">1: live vertaling · →: volledige overname · spatie: pauze/hervat · X: stop · 0: opnieuw · Esc: instellingen</p></div>
+<div class="group"><h3>Status en metingen</h3><p class="feedback" id="runtimeStatus">Nog niet gestart</p><p class="feedback" id="latencyStatus">Nog geen stemmeting</p><p class="hint">MacBook: 1 start · → overname · spatie pauze/hervat · X stop · 0 opnieuw · Esc instellingen. iPhone: gebruik de knoppen hierboven; open dit menu via de twee lijnen rechtsboven.</p></div>
 </div></aside>
 </body></html>

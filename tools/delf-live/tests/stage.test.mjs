@@ -94,3 +94,22 @@ test('vrije reactie zonder wijziging van de vaste Franse speech',()=>{
   assert.ok(!main.includes("speechSegments($('speechText').value)"));
   assert.ok(html.includes('id="speechText" rows="13" spellcheck="false" readonly'));
 });
+
+test('iPhone heeft altijd bereikbaar instellingenmenu rechtsboven',()=>{
+  assert.ok(html.includes('id="mobileSettings"'));
+  assert.ok(html.includes('aria-controls="panel"'));
+  assert.ok(html.includes('aria-expanded="false"'));
+  assert.ok(main.includes("$('mobileSettings').addEventListener('click'"));
+  assert.ok(main.includes("trigger.setAttribute('aria-expanded', String(open))"));
+  assert.ok(styles.includes('(max-width:680px) and (pointer:coarse)'));
+  assert.ok(styles.includes('.mobile-settings-lines>span'));
+});
+test('instellingen zijn dun en rustig, en Esc werkt ook bij focus op een invoerveld',()=>{
+  assert.ok(styles.includes('.panel .group'));
+  assert.ok(styles.includes('border-top:1px solid rgba(132,156,159,.23)'));
+  assert.ok(styles.includes('.panel .action'));
+  const keyBlock=main.slice(main.indexOf("document.addEventListener('keydown'"));
+  assert.ok(keyBlock.indexOf("event.key === 'Escape'")<keyBlock.indexOf("event.target instanceof HTMLInputElement"));
+  assert.ok(html.includes('id="panelClose"'));
+  assert.ok(html.includes('close-strokes'));
+});

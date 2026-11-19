@@ -216,3 +216,144 @@ html, body {background:#fbfbf9;color:#223743;}
 .stage[data-phase='handback'] .voice-visual{opacity:.95}
 @media(max-width:680px){.voice-visual{width:90vw;height:155px}}
 @media(prefers-reduced-motion:reduce){.stage::after{animation:none!important}.voice-visual{transition:none!important}}
+
+/* DELF: zacht instellingenmenu met dunne lijnen, geen donkere bedieningsvlakken. */
+.panel {
+  background:rgba(250,251,249,.98);
+  color:#223743;
+  box-shadow:-12px 0 50px rgba(36,60,65,.08);
+  border-left:1px solid rgba(139,164,163,.24);
+  transition:transform .3s cubic-bezier(.2,.8,.2,1);
+}
+.panel-head{
+  flex-shrink:0;
+  padding:24px 26px 22px;
+  background:transparent;
+  border-bottom:1px solid rgba(132,156,159,.23);
+}
+.panel-head small{
+  color:#778a8c;
+  font:500 10px/1.3 system-ui,sans-serif;
+  letter-spacing:.15em;
+}
+.panel-head h2{
+  font:400 clamp(27px,6vw,32px)/1.2 Georgia,'Times New Roman',serif;
+  letter-spacing:-.025em;
+  margin:8px 0 0;
+  color:#223743;
+}
+.panel-content{
+  padding:20px 26px max(32px,env(safe-area-inset-bottom));
+  overscroll-behavior:contain;
+}
+.panel .group{
+  border-top:1px solid rgba(132,156,159,.23);
+  padding-top:22px;
+  margin-top:25px;
+}
+.panel .group h3{
+  color:#304b54;
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:.015em;
+  margin-bottom:15px;
+}
+.panel .hint{
+  color:#5d737b;
+  font-size:12px;
+  line-height:1.65;
+}
+.panel .action{
+  border:1px solid #b5c7c7;
+  background:rgba(255,255,255,.48);
+  color:#284651;
+  border-radius:6px;
+  min-height:44px;
+  font-size:12px;
+  font-weight:500;
+  padding:11px 13px;
+  transition:background .2s ease,border-color .2s ease;
+}
+.panel .action:hover,.panel .action:focus-visible{
+  filter:none;
+  background:#e9f1ef;
+  border-color:#8da7aa;
+}
+.panel .dangerous{color:#9c4e4e;border-color:rgba(170,113,113,.45);}
+.panel .feedback{color:#516a73;font-size:12px;}
+.panel .feedback.good{color:#3e756c;}
+.panel .feedback.bad{color:#a15151;}
+.panel .upload{
+  padding:12px 14px;
+  border:1px solid #d6e0df;
+  background:rgba(255,255,255,.52);
+  border-radius:6px;
+  color:#4e6670;
+}
+.panel textarea,.panel select{
+  background:rgba(255,255,255,.63);
+  border:1px solid #cbdad9;
+  border-radius:6px;
+  color:#223743;
+  box-shadow:none;
+}
+.panel a{color:#315e68;text-underline-offset:3px;}
+body.panel-visible{overflow:hidden}
+.close{
+  position:relative;
+  flex-shrink:0;
+  display:grid;
+  place-items:center;
+  width:44px;height:44px;
+  border:0;
+  background:transparent;
+  border-radius:6px;
+}
+.close:focus-visible,.mobile-settings:focus-visible{
+  outline:2px solid #89a9ae;
+  outline-offset:2px;
+}
+.close-strokes{position:relative;display:block;width:18px;height:18px;}
+.close-strokes::before,.close-strokes::after{
+  content:'';
+  position:absolute;
+  top:8px;left:0;
+  width:18px;height:1px;
+  background:#516e79;
+  transform:rotate(45deg);
+}
+.close-strokes::after{transform:rotate(-45deg)}
+.mobile-settings{display:none;}
+@media (max-width:680px) and (pointer:coarse){
+  .mobile-settings{
+    display:grid;
+    place-items:center;
+    position:fixed;
+    top:max(10px,env(safe-area-inset-top));
+    right:max(12px,env(safe-area-inset-right));
+    z-index:26;
+    width:46px;height:46px;
+    border:0;
+    border-radius:10px;
+    color:#526f76;
+    background:rgba(251,251,249,.12);
+    -webkit-tap-highlight-color:transparent;
+    touch-action:manipulation;
+  }
+  .mobile-settings-lines{display:grid;gap:6px;justify-items:end;}
+  .mobile-settings-lines>span{display:block;width:18px;height:1px;background:#66838a;}
+  .mobile-settings-lines>span:last-child{width:12px;}
+  .panel{
+    width:100%;
+    border-left:0;
+    box-shadow:none;
+    background:linear-gradient(145deg,rgba(251,252,250,.985),rgba(246,249,248,.985));
+  }
+  .panel-head{
+    padding:max(18px,env(safe-area-inset-top)) 22px 18px;
+  }
+  .panel-content{padding:20px 22px max(36px,env(safe-area-inset-bottom));}
+  body.panel-visible .mobile-settings{opacity:0;pointer-events:none;}
+}
+@media (max-width:680px) and (pointer:fine){.mobile-settings{display:none;}}
+@media(prefers-reduced-motion:reduce){.panel,.panel .action{transition:none!important}}
