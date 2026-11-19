@@ -1,19 +1,14 @@
 {
   "schema": 1,
   "source": "Cloudflare Web Analytics (RUM)",
-  "updated_at": "2026-11-18T20:40:23+00:00",
+  "updated_at": "2026-11-19T07:37:09+00:00",
   "period": {
-    "from": "2026-10-20",
-    "through": "2026-11-18"
+    "from": "2026-10-21",
+    "through": "2026-11-19"
   },
   "views": 270,
   "visits": 150,
   "daily": [
-    {
-      "date": "2026-10-20",
-      "views": 0,
-      "visits": 0
-    },
     {
       "date": "2026-10-21",
       "views": 0,
@@ -158,6 +153,11 @@
       "date": "2026-11-18",
       "views": 50,
       "visits": 30
+    },
+    {
+      "date": "2026-11-19",
+      "views": 0,
+      "visits": 0
     }
   ],
   "pages": [
