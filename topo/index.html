@@ -137,7 +137,7 @@ function returnLater(item){if(game.repeated.has(item.id)||item.revisit)return;ga
 function draw(){
  if(game.idx>=game.queue.length)return finish();
  game.done=false;game.hint=false;game.attempts=0;game.lastError=null;game.armed=false;game.justDropped=false;
- const x=q(),modes=['point','choice','type','drag'];game.kind=modes[game.idx%4];
+ const x=q(),modes=['point','choice','type','drag'];game.kind=modes[game.idx%4];if(game.kind==='choice'&&db.filter(y=>y.kind===x.kind).length<2)game.kind='drag';
  $('kind').textContent=x.revisit?'NOG EENS!':({point:'AANWIJZEN',choice:'KIEZEN',type:'TYPEN',drag:'SLEPEN'}[game.kind]);
  $('next').classList.add('hide');$('feedback').classList.add('hide');$('help').style.visibility='visible';$('skip').style.visibility='visible';
  $('answerOptions').innerHTML='';$('mapHint').textContent='KIJK OP DE KAART';
