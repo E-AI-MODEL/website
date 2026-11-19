@@ -90,6 +90,12 @@ const provinceCapitals=[
 ['Utrecht','Utrecht',5.1214,52.0907],['Noord-Holland','Haarlem',4.6462,52.3874],['Zuid-Holland','Den Haag',4.3007,52.0705],
 ['Zeeland','Middelburg',3.6100,51.4988],['Noord-Brabant',"'s-Hertogenbosch",5.3037,51.6978],['Limburg','Maastricht',5.6910,50.8514]
 ];
+const provinceLabels=[
+ ['Groningen',6.74,53.30],['Friesland',5.64,53.14],['Drenthe',6.62,52.90],
+ ['Overijssel',6.29,52.41],['Flevoland',5.47,52.49],['Gelderland',5.75,52.04],
+ ['Utrecht',5.12,52.10],['Noord-Holland',4.72,52.49],['Zuid-Holland',4.51,52.01],
+ ['Zeeland',3.72,51.50],['Noord-Brabant',5.12,51.56],['Limburg',5.88,51.06]
+];
 const additionalCities=[
 ['Groningen','Delfzijl',6.924,53.333],['Groningen','Veendam',6.879,53.106],
 ['Friesland','Sneek',5.659,53.033],['Friesland','Heerenveen',5.92,52.959],['Friesland','Drachten',6.10,53.112],
@@ -137,8 +143,11 @@ function countryMap(showNames,focused){
  const items=data.filter(x=>x.kind==='city');
  const cityDots=items.map(x=>'<g><circle class="city-halo" cx="'+fmt(x.x)+'" cy="'+fmt(x.y)+'" r="9"/><circle class="city-dot" cx="'+fmt(x.x)+'" cy="'+fmt(x.y)+'" r="5"/><circle class="city-hit" data-place="'+x.id+'" cx="'+fmt(x.x)+'" cy="'+fmt(x.y)+'" r="21"/></g>').join('');
  const labelCities=(showNames?items.filter(x=>x.capital):items.filter(x=>x.capital&&focused&&x.id===focused.id));
+ const provinceTexts=showNames?provinceLabels.map(row=>{
+  const p=proj(row[1],row[2]);return '<text class="map-text province" x="'+fmt(p[0])+'" y="'+fmt(p[1])+'" text-anchor="middle">'+row[0]+'</text>';
+ }).join(''):'';
  const texts=showNames?labelCities.map(x=>'<text data-label-id="'+x.id+'" class="map-text city" x="'+fmt(x.x+12)+'" y="'+fmt(x.y-12)+'">'+x.name.replace(/&/g,'&amp;')+'</text>').join(''):'';
- return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1020 850" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Kaart van de provincies van Nederland" style="background:#cbe9f4"><g>'+provinces+'</g><g>'+cityDots+'</g><g id="targetHighlight"></g><g>'+texts+'</g></svg>';
+ return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1020 850" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Kaart van de provincies van Nederland" style="background:#cbe9f4"><g>'+provinces+'</g><g>'+cityDots+'</g><g id="targetHighlight"></g><g>'+provinceTexts+'</g><g>'+texts+'</g></svg>';
 }
 function displayMap(showNames=false){$('map').innerHTML=countryMap(showNames);focusMap();}
 function focusMap(){
