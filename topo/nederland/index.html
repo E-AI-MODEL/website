@@ -80,6 +80,19 @@ main{width:min(1400px,100%);margin:auto;padding:5px clamp(13px,2vw,27px) 30px}
 .map-art .map-text.province{font-size:21px;font-weight:900;fill:#665a48;letter-spacing:1px}
 .map-art .map-text.city{font-size:17px;font-weight:800}
 .map-art .map-text.water{font-size:26px;fill:#5f9cb5;stroke:#e4f4fa;stroke-width:7;letter-spacing:2px}
+</style><style id="topo-shuffle-layout">
+#game .game-grid.shuffle-no-map{display:flex;align-items:center;justify-content:center}
+#game .game-grid.shuffle-no-map .game-board{display:none}
+#game .game-grid.shuffle-no-map .question-card{width:min(710px,100%);min-height:420px;max-height:min(74dvh,780px);margin:auto;transform:rotate(-1deg)}
+#game .game-grid.shuffle-no-map .question-card h2{font-size:clamp(30px,4.6vw,54px);line-height:1.08}
+#game .game-grid.shuffle-no-map .option{margin:7px 0}
+@media(max-width:700px){
+ #game .game-grid.shuffle-no-map{height:calc(var(--vh,100dvh) - 67px);align-items:center;justify-content:center}
+ #game .game-grid.shuffle-no-map .question-card{min-height:0;max-height:92%;width:100%;flex:0 1 auto;overflow:auto;padding:23px 20px}
+ #game .game-grid.shuffle-no-map .question-card h2{font-size:clamp(26px,7vw,36px)}
+ #game .game-grid.shuffle-no-map .option{font-size:16px}
+ #game .game-grid.shuffle-no-map .small-links{margin-top:14px}
+}
 </style></head><body>
 <header class="top"><a href="/topo/" class="logo">Let’s go <span>TOPO!</span></a><a href="/topo/instellingen/" class="other">Instellingen</a></header>
 <main>
@@ -124,13 +137,311 @@ const additionalCities=[
 ['Noord-Brabant','Eindhoven',5.4697,51.4416],['Noord-Brabant','Tilburg',5.0913,51.5555],['Noord-Brabant','Breda',4.7759,51.5875],
 ['Limburg','Venlo',6.1724,51.3704],['Limburg','Roermond',5.988,51.1942],['Limburg','Heerlen',5.979,50.888]
 ];
+const shuffleFacts=[
+ {
+  "id": "shuffle-1",
+  "kind": "fact",
+  "category": "water",
+  "name": "Waddenzee",
+  "question": "Welk water ligt tussen de Waddeneilanden en de kust?",
+  "answer": "Waddenzee",
+  "options": [
+   "Waddenzee",
+   "IJsselmeer",
+   "Noordzee",
+   "Markermeer"
+  ],
+  "hint": "Denk aan de eilanden boven Friesland en Groningen.",
+  "note": "Tussen de eilanden en het vasteland ligt de Waddenzee.",
+  "shuffleMode": "quiz"
+ },
+ {
+  "id": "shuffle-2",
+  "kind": "fact",
+  "category": "water",
+  "name": "Noordzee",
+  "question": "Welke zee ligt langs de westkust van Nederland?",
+  "answer": "Noordzee",
+  "options": [
+   "Noordzee",
+   "Waddenzee",
+   "Oostzee",
+   "Zuiderzee"
+  ],
+  "hint": "Denk aan de stranden van Scheveningen en Zandvoort.",
+  "note": "De Noordzee ligt langs de westkust.",
+  "shuffleMode": "quiz"
+ },
+ {
+  "id": "shuffle-3",
+  "kind": "fact",
+  "category": "water",
+  "name": "IJsselmeer",
+  "question": "Welk meer ligt aan de zuidkant van de Afsluitdijk?",
+  "answer": "IJsselmeer",
+  "options": [
+   "IJsselmeer",
+   "Markermeer",
+   "Veluwemeer",
+   "Lauwersmeer"
+  ],
+  "hint": "De dijk scheidt het meer van de zee.",
+  "note": "Het IJsselmeer ligt ten zuiden van de Afsluitdijk.",
+  "shuffleMode": "quiz"
+ },
+ {
+  "id": "shuffle-4",
+  "kind": "fact",
+  "category": "water",
+  "name": "Markermeer",
+  "question": "Welk meer ligt tussen Noord-Holland en Flevoland?",
+  "answer": "Markermeer",
+  "options": [
+   "Markermeer",
+   "IJsselmeer",
+   "Gooimeer",
+   "Sneekermeer"
+  ],
+  "hint": "Denk aan het water ten oosten van Amsterdam.",
+  "note": "Het Markermeer ligt tussen Noord-Holland en Flevoland.",
+  "shuffleMode": "quiz"
+ },
+ {
+  "id": "shuffle-5",
+  "kind": "fact",
+  "category": "water",
+  "name": "Maas",
+  "question": "Welke rivier stroomt door Maastricht?",
+  "answer": "Maas",
+  "options": [
+   "Maas",
+   "Waal",
+   "IJssel",
+   "Vecht"
+  ],
+  "hint": "Volg de rivier door Limburg.",
+  "note": "De Maas stroomt door Maastricht.",
+  "shuffleMode": "quiz"
+ },
+ {
+  "id": "shuffle-6",
+  "kind": "fact",
+  "category": "water",
+  "name": "IJssel",
+  "question": "Welke rivier stroomt langs Deventer?",
+  "answer": "IJssel",
+  "options": [
+   "IJssel",
+   "Maas",
+   "Waal",
+   "Vecht"
+  ],
+  "hint": "Deze rivier stroomt door het oosten van Nederland.",
+  "note": "De IJssel loopt langs Deventer.",
+  "shuffleMode": "quiz"
+ },
+ {
+  "id": "shuffle-7",
+  "kind": "fact",
+  "category": "water",
+  "name": "Waal",
+  "question": "Welke rivier stroomt langs Nijmegen?",
+  "answer": "Waal",
+  "options": [
+   "Waal",
+   "Maas",
+   "IJssel",
+   "Amstel"
+  ],
+  "hint": "Het is een grote tak van de Rijn.",
+  "note": "De Waal stroomt langs Nijmegen.",
+  "shuffleMode": "quiz"
+ },
+ {
+  "id": "shuffle-8",
+  "kind": "fact",
+  "category": "water",
+  "name": "Nederrijn",
+  "question": "Welke rivier stroomt langs Arnhem?",
+  "answer": "Nederrijn",
+  "options": [
+   "Nederrijn",
+   "Waal",
+   "IJssel",
+   "Amstel"
+  ],
+  "hint": "Het is een tak van de Rijn, maar niet de Waal.",
+  "note": "De Nederrijn loopt langs Arnhem.",
+  "shuffleMode": "quiz"
+ },
+ {
+  "id": "shuffle-9",
+  "kind": "fact",
+  "category": "puzzel",
+  "name": "Zeeland",
+  "question": "Welke provincie grenst aan Noord-Brabant?",
+  "answer": "Zeeland",
+  "options": [
+   "Zeeland",
+   "Friesland",
+   "Drenthe",
+   "Overijssel"
+  ],
+  "hint": "Denk aan een provincie met veel eilanden.",
+  "note": "Zeeland is een van de vier buurprovincies van Noord-Brabant.",
+  "shuffleMode": "quiz"
+ },
+ {
+  "id": "shuffle-10",
+  "kind": "fact",
+  "category": "puzzel",
+  "name": "Drenthe",
+  "question": "Welke provincie grenst níét aan Noord-Brabant?",
+  "answer": "Drenthe",
+  "options": [
+   "Drenthe",
+   "Zeeland",
+   "Limburg",
+   "Gelderland"
+  ],
+  "hint": "Denk aan het verschil tussen noord en zuid.",
+  "note": "Drenthe ligt niet naast Noord-Brabant.",
+  "shuffleMode": "quiz"
+ },
+ {
+  "id": "shuffle-11",
+  "kind": "fact",
+  "category": "puzzel",
+  "name": "4",
+  "question": "Hoeveel provincies grenzen aan Noord-Brabant?",
+  "answer": "4",
+  "options": [
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "hint": "Denk aan west, noord en oost. Tel de buren.",
+  "note": "Noord-Brabant grenst aan Zeeland, Zuid-Holland, Gelderland en Limburg.",
+  "shuffleMode": "quiz"
+ },
+ {
+  "id": "shuffle-12",
+  "kind": "fact",
+  "category": "puzzel",
+  "name": "2",
+  "question": "Bij hoeveel provincies heeft de hoofdstad dezelfde naam als de provincie?",
+  "answer": "2",
+  "options": [
+   "1",
+   "2",
+   "3",
+   "4"
+  ],
+  "hint": "Vergelijk de provincienamen eens met hun hoofdsteden.",
+  "note": "Dat zijn Groningen en Utrecht: twee provincies.",
+  "shuffleMode": "quiz"
+ },
+ {
+  "id": "shuffle-13",
+  "kind": "fact",
+  "category": "puzzel",
+  "name": "Groningen en Utrecht",
+  "question": "Welke twee provincies hebben een hoofdstad met dezelfde naam?",
+  "answer": "Groningen en Utrecht",
+  "options": [
+   "Groningen en Utrecht",
+   "Drenthe en Zeeland",
+   "Friesland en Limburg",
+   "Gelderland en Flevoland"
+  ],
+  "hint": "Denk aan een provincie in het noordoosten en een in het midden.",
+  "note": "De hoofdstad van Groningen is Groningen. Die van Utrecht is Utrecht.",
+  "shuffleMode": "quiz"
+ },
+ {
+  "id": "shuffle-14",
+  "kind": "fact",
+  "category": "puzzel",
+  "name": "Haarlem",
+  "question": "Wat is de hoofdstad van Noord-Holland?",
+  "answer": "Haarlem",
+  "options": [
+   "Haarlem",
+   "Amsterdam",
+   "Alkmaar",
+   "Den Helder"
+  ],
+  "hint": "Amsterdam is de hoofdstad van Nederland. Maar van de provincie?",
+  "note": "Haarlem is de hoofdstad van Noord-Holland.",
+  "shuffleMode": "quiz"
+ },
+ {
+  "id": "shuffle-15",
+  "kind": "fact",
+  "category": "puzzel",
+  "name": "Drenthe",
+  "question": "Welke provincie ligt tussen Groningen en Overijssel?",
+  "answer": "Drenthe",
+  "options": [
+   "Drenthe",
+   "Friesland",
+   "Flevoland",
+   "Gelderland"
+  ],
+  "hint": "Denk aan de provincie waar Assen ligt.",
+  "note": "Drenthe ligt tussen Groningen en Overijssel.",
+  "shuffleMode": "quiz"
+ },
+ {
+  "id": "shuffle-16",
+  "kind": "fact",
+  "category": "puzzel",
+  "name": "Flevoland",
+  "question": "Van welke provincie is Lelystad de hoofdstad?",
+  "answer": "Flevoland",
+  "options": [
+   "Flevoland",
+   "Utrecht",
+   "Gelderland",
+   "Zeeland"
+  ],
+  "hint": "Deze provincie was vroeger grotendeels water.",
+  "note": "Lelystad is de hoofdstad van Flevoland.",
+  "shuffleMode": "quiz"
+ }
+];
+const shuffleWater=shuffleFacts.filter(q=>q.category==='water');
+const shuffleBrain=shuffleFacts.filter(q=>q.category==='puzzel');
+function buildShuffleRound(limit){
+ const base=makePool();
+ const waters=shuffle(shuffleWater),brains=shuffle(shuffleBrain);
+ const provinces=shuffle(base.filter(q=>q.kind==='province'));
+ const closeCities=shuffle(base.filter(q=>q.kind==='city'&&data.filter(other=>other.name!==q.name&&Math.hypot(q.x-other.x,q.y-other.y)<125).length>=2));
+ const tasks=[];
+ const used=new Set();
+ function put(task,forced){
+  if(!task||used.has(task.id)||tasks.length>=limit)return;
+  used.add(task.id);tasks.push({...task,shuffleMode:forced||task.shuffleMode||shuffle(['point','choice','type','missing'])[0]});
+ }
+ put(waters[0]);put(waters[1]);put(brains[0]);
+ put(provinces[0],shuffle(['point','choice','type'])[0]);
+ put(closeCities[0],'zoom');
+ const extras=shuffle([
+   ...waters.slice(2),...brains.slice(1),
+   ...base.filter(x=>!used.has(x.id))
+ ]);
+ extras.forEach(t=>put(t));
+ return shuffle(tasks).slice(0,limit);
+}
+
 const params=new URLSearchParams(location.search);
 const selected=(params.get('prov')||'').split(',').filter(x=>allProvinces.includes(x));
 const areas=new Set(selected.length?selected:allProvinces);
 const wanted=(params.get('topics')||'provinces,cities,capitals').split(',');
 const topics=new Set(wanted.filter(t=>['provinces','cities','capitals'].includes(t)));
 if(!topics.size)topics.add('provinces');
-const modes=(params.get('mode')||'mix').split(',').filter(t=>['mix','point','type','choice','missing'].includes(t));
+const modes=(params.get('mode')||'mix').split(',').filter(t=>['mix','point','type','choice','missing','shuffle'].includes(t));
 const mode=modes[0]||'mix';
 const countChoice=params.get('questions')||'8';
 const questionLimit=countChoice==='all'?60:Math.max(5,Math.min(60,parseInt(countChoice,10)||8));
@@ -142,7 +453,7 @@ const proj=(lon,lat)=>[95+(lon-3.35)*205,65+(53.6-lat)*235];
 const fmt=n=>Math.round(n*10)/10;
 function slug(s){return s.toLocaleLowerCase('nl').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')}
 function tidy(v){return String(v||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]/g,'')}
-function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
+function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function polygonParts(geom){return geom.type==='MultiPolygon'?geom.coordinates:[geom.coordinates]}
 function pathOf(geom){return polygonParts(geom).map(poly=>poly.map(ring=>ring.map((p,i)=>{const v=proj(p[0],p[1]);return (i?'L':'M')+fmt(v[0])+' '+fmt(v[1]);}).join(' ')+' Z').join(' ')).join(' ')}
 function cityItem(row,capital){
@@ -178,7 +489,9 @@ function focusMap(){
  if(!svg||!frame.clientWidth||!frame.clientHeight||!queue[index])return;
  if(currentMode==='point'){svg.setAttribute('viewBox','0 0 1020 850');return;}
  const ratio=frame.clientWidth/frame.clientHeight;
- const width=Math.min(1020,Math.round(850*ratio));
+ const width=currentMode==='zoom'
+   ?Math.max(235,Math.min(440,Math.round(335*ratio)))
+   :Math.min(1020,Math.round(850*ratio));
  const height=Math.min(850,Math.round(width/ratio));
  const x=queue[index];
  const left=Math.max(0,Math.min(1020-width,Math.round(x.x-width/2)));
@@ -206,13 +519,14 @@ function makePool(){
  return pool;
 }
 function start(){
- const pool=shuffle(makePool());if(!pool.length){$('loading').classList.remove('hide');$('loading').innerHTML='<h2>Geen vragen!</h2><p>Kies in Instellingen minimaal één provincie en een onderwerp.</p>';return;}
+ const pool=mode==='shuffle'?buildShuffleRound(questionLimit):shuffle(makePool());if(!pool.length){$('loading').classList.remove('hide');$('loading').innerHTML='<h2>Geen vragen!</h2><p>Kies in Instellingen minimaal één provincie en een onderwerp.</p>';return;}
  queue=pool.slice(0,Math.min(questionLimit,pool.length));index=0;stars=0;helpCount=0;peekCount=0;assisted=new Set();wrong=new Set();repeated=new Set();round++;
  document.body.classList.add('playing');document.body.classList.remove('keyboard-open');
  $('loading').classList.add('hide');$('end').classList.add('hide');$('game').classList.remove('hide');draw();
 }
 function current(){return queue[index]}
 function selectMode(x){
+ if(mode==='shuffle')return x.shuffleMode||'point';
  if(mode!=='mix')return mode==='missing'&&x.kind!=='city'?'type':mode;
  const types=['point','choice','type','missing'];let m=types[index%4];
  if(m==='missing'&&x.kind!=='city')m='choice';
@@ -223,12 +537,22 @@ function draw(){
  if(index>=queue.length){finish();return;}
  hintStep=0;attempts=0;done=false;
  const x=current();currentMode=selectMode(x);
- $('kind').textContent=x.revisit?'NOG EENS!':({point:'AANWIJZEN',choice:'KIEZEN',type:'TYPEN',missing:'WAT MIST ER?'})[currentMode];
+ document.querySelector('#game .game-grid').classList.toggle('shuffle-no-map',currentMode==='quiz');
+ $('kind').textContent=x.revisit?'NOG EENS!':({point:'AANWIJZEN',choice:'KIEZEN',type:'TYPEN',missing:'WAT MIST ER?',zoom:'INGEZOOMD',quiz:'ZONDER KAART'})[currentMode];
  $('next').classList.add('hide');$('feedback').classList.add('hide');$('help').style.visibility=noHints?'hidden':'visible';$('help').textContent='Help me!';
  $('skip').style.visibility='visible';$('answerOptions').innerHTML='';
  $('progressText').textContent=(index+1)+'/'+queue.length;$('missionName').textContent='MISSIE '+round;
  $('progressFill').style.width=(100*index/queue.length)+'%';$('score').textContent='★ '+stars;
  $('mapHint').textContent='KIJK OP DE KAART';
+ if(currentMode==='quiz'){
+  $('map').innerHTML='';
+  $('kind').textContent=x.revisit?'NOG EENS!':x.category==='water'?'WATEREN':'ZONDER KAART';
+  $('prompt').textContent=x.question;$('sub').textContent='Kies het goede antwoord.';
+  $('mapHint').textContent='TOPO SHUFFLE';
+  $('answerOptions').innerHTML=shuffle(x.options).map(y=>
+   '<button type="button" class="option" data-fact-choice="'+encodeURIComponent(y)+'">'+y+'</button>'
+  ).join('');
+ }else{
  displayMap(currentMode==='missing');
  $('map').querySelector('svg')?.setAttribute('data-answer-kind',x.kind);
  if(currentMode==='point'){
@@ -242,6 +566,15 @@ function draw(){
   :data;
   const others=shuffle(choices.filter(y=>y.id!==x.id&&y.kind===x.kind)).slice(0,3);
   guessOptions=shuffle([x,...others]);$('answerOptions').innerHTML=guessOptions.map(y=>'<button type="button" class="option" data-option="'+y.id+'">'+y.name+'</button>').join('');
+ }else if(currentMode==='zoom'){
+  $('prompt').textContent='Welke stad is omcirkeld?';
+  $('sub').textContent='Kijk goed naar de ingezoomde kaart.';
+  $('mapHint').textContent='INGEZOOMD!';
+  highlight(x);
+  const nearby=shuffle(data.filter(y=>y.name!==x.name).sort((a,b)=>
+   Math.hypot(a.x-x.x,a.y-x.y)-Math.hypot(b.x-x.x,b.y-x.y)).slice(0,8)).slice(0,3);
+  guessOptions=shuffle([x,...nearby]);
+  $('answerOptions').innerHTML=guessOptions.map(y=>'<button type="button" class="option" data-option="'+y.id+'">'+y.name+'</button>').join('');
  }else{
   $('prompt').textContent=currentMode==='missing'?'Welke stad mist er?':'Hoe heet deze '+(x.kind==='city'?'stad':'provincie')+'?';
   $('sub').textContent=currentMode==='missing'?'Kijk naar de lege plek.':'Typ de naam.';
@@ -252,6 +585,7 @@ function draw(){
   }else highlight(x);
   $('mapHint').textContent='WELKE NAAM?';
   $('answerOptions').innerHTML='<form id="typeForm" autocomplete="off"><label class="type-label" for="typedAnswer">Jouw antwoord</label><input id="typedAnswer" class="typed" type="text" maxlength="80" autocapitalize="words" spellcheck="false" required placeholder="Typ hier..."><button class="type-submit" type="submit">CHECK! →</button></form>';
+ }
  }
  requestAnimationFrame(focusMap);
 }
@@ -270,12 +604,12 @@ function answer(ok){
   else if(!x.revisit)wrong.add(x.id);
   if(x.kind==='city'){ $('map').querySelectorAll('[data-place="'+x.id+'"],[data-label-id="'+x.id+'"]').forEach(n=>n.removeAttribute('style'));}
   highlight(x);$('score').textContent='★ '+stars;$('mapHint').textContent='GEVONDEN!';
-  feedback(attempts===1&&!assisted.has(x.id)?'YES!':'GEVONDEN!','');$('next').classList.remove('hide');
+  feedback((attempts===1&&!assisted.has(x.id)?'YES!':'GEVONDEN!')+(x.kind==='fact'?' '+x.note:''),'');$('next').classList.remove('hide');
   $('skip').style.visibility='hidden';$('help').style.visibility='hidden';
   $('typedAnswer')?.blur();
  }else{
   wrong.add(current().id);queueAgain(current());
-  if(attempts>=2){done=true;feedback('Deze komt straks terug!','neutral');$('next').classList.remove('hide');$('help').style.visibility='hidden';}
+  if(attempts>=2){done=true;feedback(current().kind==='fact'?'Dat was '+current().answer+'. '+current().note:'Deze komt straks terug!','neutral');$('next').classList.remove('hide');$('help').style.visibility='hidden';}
   else feedback('NOG EENS!','bad');
  }
 }
@@ -285,8 +619,11 @@ $('map').addEventListener('click',e=>{
  answer(place.dataset.place===current().id);
 });
 $('answerOptions').addEventListener('click',e=>{
- const b=e.target.closest('[data-option]');if(!b||done)return;
- b.classList.add(b.dataset.option===current().id?'good':'bad');answer(b.dataset.option===current().id);
+ const b=e.target.closest('[data-option],[data-fact-choice]');if(!b||done)return;
+ const ok=b.hasAttribute('data-fact-choice')
+  ?decodeURIComponent(b.dataset.factChoice)===current().answer
+  :b.dataset.option===current().id;
+ b.classList.add(ok?'good':'bad');answer(ok);
 });
 $('answerOptions').addEventListener('submit',e=>{
  if(e.target.id!=='typeForm')return;e.preventDefault();if(done)return;
@@ -310,6 +647,7 @@ const provinceClues={
  'Limburg':['Noord-Brabant','rechts van']
 };
 function hintFor(x,step){
+ if(x.kind==='fact')return step===0?x.hint:'Gebruik de spiekkaart om het zelf uit te zoeken.';
  if(x.kind==='province'){
   const rel=provinceClues[x.name];if(!rel)return null;
   return step===0?'Deze provincie ligt naast '+rel[0]+'.':'Kijk '+rel[1]+' '+rel[0]+'.';
@@ -330,7 +668,7 @@ $('help').onclick=()=>{
  feedback(hint,'neutral');$('mapHint').textContent='ZOEK MAAR!';
  $('help').textContent='Nog een hint?';if(hintStep>=2)$('help').style.visibility='hidden';
 };
-$('skip').onclick=()=>{wrong.add(current().id);queueAgain(current());done=true;feedback('Deze komt terug!','neutral');$('next').classList.remove('hide');$('skip').style.visibility='hidden'};
+$('skip').onclick=()=>{wrong.add(current().id);queueAgain(current());done=true;feedback(current().kind==='fact'?'Het goede antwoord is '+current().answer+'.':'Deze komt terug!','neutral');$('next').classList.remove('hide');$('skip').style.visibility='hidden'};
 $('next').onclick=()=>{if(!done)return;document.activeElement?.blur?.();index++;draw()};
 function finish(){
  document.body.classList.remove('playing','keyboard-open');
@@ -339,7 +677,7 @@ function finish(){
  const total=queue.filter(x=>!x.revisit).length;
  $('endText').textContent=stars+' van '+total+' meteen goed, zonder hulp.';
  $('helpSummary').innerHTML='<span>TIPS '+helpCount+'×</span><span>SPIEKKAART '+peekCount+'×</span>';
- const missed=makePool().filter(x=>wrong.has(x.id));
+ const missed=(mode==='shuffle'?queue.filter(x=>!x.revisit):makePool()).filter(x=>wrong.has(x.id));
  $('review').innerHTML=missed.length?'<strong>Deze nog eens:</strong>'+missed.map(x=>'<span>'+x.name+'</span>').join(''):'<span>Alles gevonden!</span>';
 }
 $('again').onclick=start;
