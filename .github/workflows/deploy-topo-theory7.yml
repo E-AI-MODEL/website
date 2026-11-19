@@ -6,6 +6,7 @@ on:
     paths:
       - 'topo/**'
       - '.github/workflows/deploy-topo-theory7.yml'
+      - 'scripts/validate_topo_content.mjs'
   workflow_dispatch:
 
 permissions:
@@ -41,6 +42,8 @@ jobs:
               assert 'TOPO!' in html, file
           print('TOPO sources and 12 province boundaries OK')
           PY
+      - name: Verify map, capitals, water sources and approved TOPO copy
+        run: node scripts/validate_topo_content.mjs
       - name: Install FTPS client
         run: |
           sudo apt-get update -qq
