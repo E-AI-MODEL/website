@@ -304,8 +304,8 @@ const categoryInfo=[
 const categoryText={provinces:'Provincies',cities:'Steden',islands:'Eilanden',waters:'Wateren',landmark:'Verbinden',capitals:'Hoofdsteden'};
 
 function makeMap(preview=false){
-const dots=db.filter(i=>i.kind==='city').map(i=>`<g class="city-symbol"><circle cx="${i.x}" cy="${i.y}" r="15" class="city-halo"/><${i.capital?'rect':'circle'} ${i.capital?`x="${i.x-7}" y="${i.y-7}" width="14" height="14" rx="1"`:`cx="${i.x}" cy="${i.y}" r="7"`} class="${i.capital?'capital-dot':'city-dot'}"/></g>`).join('');
-const labels=db.map(i=>i.kind==='province'?`<text class="map-label region-name" x="${i.x}" y="${i.y}" text-anchor="middle">${i.short.toUpperCase()}</text>`:i.kind==='water'?`<text class="map-label water-name" x="${i.x}" y="${i.y}" text-anchor="middle" transform="rotate(${i.id==='waddenzee'?-26:0} ${i.x} ${i.y})">${i.name}</text>`:i.kind==='dike'?`<text class="map-label small" x="205" y="485" transform="rotate(-44 205 485)">Afsluitdijk</text>`:`<text class="map-label ${i.kind==='island'?'small':''}" x="${i.labelX??i.x+10}" y="${i.labelY??i.y-14}">${i.name}</text>`).join('');
+const dots=db.filter(i=>i.kind==='city').map(i=>`<g class="city-symbol" data-city-id="${i.id}"><circle cx="${i.x}" cy="${i.y}" r="15" class="city-halo"/><${i.capital?'rect':'circle'} ${i.capital?`x="${i.x-7}" y="${i.y-7}" width="14" height="14" rx="1"`:`cx="${i.x}" cy="${i.y}" r="7"`} class="${i.capital?'capital-dot':'city-dot'}"/></g>`).join('');
+const labels=db.map(i=>i.kind==='province'?`<text class="map-label region-name" x="${i.x}" y="${i.y}" text-anchor="middle">${i.short.toUpperCase()}</text>`:i.kind==='water'?`<text class="map-label water-name" x="${i.x}" y="${i.y}" text-anchor="middle" transform="rotate(${i.id==='waddenzee'?-26:0} ${i.x} ${i.y})">${i.name}</text>`:i.kind==='dike'?`<text class="map-label small" x="205" y="485" transform="rotate(-44 205 485)">Afsluitdijk</text>`:`<text data-label-id="${i.id}" class="map-label ${i.kind==='island'?'small':''}" x="${i.labelX??i.x+10}" y="${i.labelY??i.y-14}">${i.name}</text>`).join('');
 const cityHits=db.filter(i=>i.kind==='city').map(i=>`<circle data-place="${i.id}" class="city-click" cx="${i.x}" cy="${i.y}" r="39"/>`).join('');
 const cityHighlights=db.filter(i=>i.kind==='city').map(i=>`<g data-highlight="${i.id}"><circle class="city-highlight" cx="${i.x}" cy="${i.y}" r="33"/><circle class="city-highlight inner" cx="${i.x}" cy="${i.y}" r="9"/></g>`).join('');
 const regions={
@@ -406,13 +406,17 @@ function returnLater(item){
 function draw(){
  if(game.idx>=game.queue.length)return finish();
  game.done=false;game.hint=false;game.attempts=0;game.lastError=null;game.armed=false;game.justDropped=false;clearWrongPlace();
- const x=q(),modes=['point','choice','type','drag'];game.kind=modes[game.idx%4];if(x.revisit&&x.previousKind===game.kind)game.kind=modes[(game.idx+1)%4];if(game.kind==='choice'&&db.filter(y=>y.kind===x.kind).length<2)game.kind='drag';
- $('kind').textContent=x.revisit?'NOG EENS!':({point:'AANWIJZEN',choice:'KIEZEN',type:'TYPEN',drag:'SLEPEN'}[game.kind]);
+ const x=q(),modes=['point','choice','type','drag','missing'];
+game.kind=modes[game.idx%5];
+if(game.kind==='missing'&&x.kind!=='city')game.kind='type';
+if(x.revisit&&x.previousKind===game.kind)game.kind=(x.kind==='city'?'point':'drag');
+if(game.kind==='choice'&&db.filter(y=>y.kind===x.kind).length<2)game.kind='drag';
+ $('kind').textContent=x.revisit?'NOG EENS!':({point:'AANWIJZEN',choice:'KIEZEN',type:'TYPEN',drag:'SLEPEN',missing:'WAT MIST ER?'}[game.kind]);
  $('next').classList.add('hide');$('feedback').classList.add('hide');$('help').style.visibility='visible';$('skip').style.visibility='visible';
  $('answerOptions').innerHTML='';$('mapHint').textContent='KIJK OP DE KAART';
  $('progressText').textContent=(game.idx+1)+'/'+game.queue.length;$('missionName').textContent='MISSIE '+game.round;
  $('progressFill').style.width=((game.idx/game.queue.length)*100)+'%';$('score').textContent='★ '+game.stars;
- highlight(null);setHitTargets(x);
+ highlight(null);svgMap('map');setHitTargets(x);
  if(game.kind==='point'){
   $('prompt').textContent='Waar ligt '+whereLabel(x)+'?';$('sub').textContent='Tik op de kaart!';$('mapHint').textContent='TIK OP DE KAART!';
  }else if(game.kind==='choice'){
@@ -422,6 +426,17 @@ function draw(){
  }else if(game.kind==='type'){
   $('prompt').textContent='Hoe heet deze '+kindLabel(x)+'?';$('sub').textContent='Typ de naam.';highlight(x.id);$('mapHint').textContent='WELKE NAAM?';
   $('answerOptions').innerHTML='<form id="typeForm" autocomplete="off"><label class="type-label" for="typedAnswer">Jouw antwoord</label><input id="typedAnswer" class="typed" type="text" maxlength="80" autocapitalize="words" spellcheck="false" placeholder="Typ hier..." required><button class="type-submit" type="submit">CHECK! →</button></form>';
+ }else if(game.kind==='missing'){
+  $('prompt').textContent='Welke stad mist er?';$('sub').textContent='Kijk naar de lege plek. Typ de naam.';$('mapHint').textContent='WIE ONTBREEKT?';
+  const svg=$('map').querySelector('svg');
+  svg.classList.remove('hide-labels');
+  const symbol=svg.querySelector('[data-city-id="'+x.id+'"]'),label=svg.querySelector('[data-label-id="'+x.id+'"]');
+  if(symbol)symbol.style.opacity='0';if(label)label.style.opacity='0';
+  const mark=document.createElementNS('http://www.w3.org/2000/svg','g');
+  mark.setAttribute('data-missing-marker','');mark.setAttribute('aria-hidden','true');mark.setAttribute('pointer-events','none');
+  mark.innerHTML='<circle cx="'+x.x+'" cy="'+x.y+'" r="28" fill="#fff4c5" stroke="#192e38" stroke-width="4" stroke-dasharray="7 6"/><text x="'+x.x+'" y="'+(x.y+10)+'" text-anchor="middle" font-size="31" font-family="sans-serif" font-weight="900" fill="#182b34">?</text>';
+  svg.appendChild(mark);
+  $('answerOptions').innerHTML='<form id="typeForm" autocomplete="off"><label class="type-label" for="typedAnswer">Welke stad?</label><input id="typedAnswer" class="typed" type="text" maxlength="80" autocapitalize="words" spellcheck="false" placeholder="Typ de stad..." required><button class="type-submit" type="submit">CHECK! →</button></form>';
  }else{
   $('prompt').textContent='Zet '+whereLabel(x)+' op de kaart!';$('sub').textContent='Sleep het kaartje. Tikken mag ook.';$('mapHint').textContent='SLEEP OF TIK';
   $('answerOptions').innerHTML='<button type="button" id="dragToken" class="drag-token" aria-label="Sleep dit kaartje naar de kaart of tik en wijs aan">'+placeLabel(x)+' <span aria-hidden="true">✥</span></button><div class="drag-help">Sleep naar de kaart of tik op de juiste plek.</div>';
@@ -432,6 +447,7 @@ function answer(ok,which){
  if(game.done)return;game.attempts++;
  if(ok){
   game.done=true;game.seen.add(q().id);
+  if(game.kind==='missing'){$('map').querySelector('[data-missing-marker]')?.remove();$('map').querySelector('[data-city-id="'+q().id+'"]')?.removeAttribute('style');$('map').querySelector('[data-label-id="'+q().id+'"]')?.removeAttribute('style');}
   if(game.attempts===1&&!game.hint&&!q().revisit)game.stars++;
   else if(!q().revisit)game.wrong.add(q().id);
   $('score').textContent='★ '+game.stars;highlight(q().id);$('mapHint').textContent='GEVONDEN!';
