@@ -20,7 +20,7 @@ main{width:min(1400px,100%);margin:auto;padding:5px clamp(13px,2vw,27px) 30px}
 .game-board{height:min(74dvh,780px)}
 .hint-chip{position:absolute;top:18px;left:18px;padding:7px 12px;transform:rotate(-4deg);background:var(--lime);border:2px solid var(--ink);border-radius:12px;box-shadow:4px 5px 0 var(--ink);font-size:12px;font-weight:1000;pointer-events:none;z-index:2}
 .province-shape{stroke:#8b9e93;stroke-width:2.4;stroke-linejoin:round;cursor:pointer;transition:filter .12s}.province-shape:hover{filter:brightness(1.06)}.province-shape.on{stroke:#ff7f57;stroke-width:8;filter:drop-shadow(0 0 7px #fff)}
-.city-halo{fill:#fff4d5;stroke:#fff;stroke-width:3}.city-dot{fill:var(--ink);stroke:#fff;stroke-width:2}.city-hit{fill:transparent;cursor:pointer}.city-hit:focus{stroke:#f66d54;stroke-width:5}
+.city-halo{fill:#fff4d5;stroke:#fff;stroke-width:3}.city-dot{fill:var(--ink);stroke:#fff;stroke-width:2}.city-hit{fill:transparent;cursor:pointer}.map-frame svg[data-answer-kind=province] .city-hit,.map-frame svg[data-answer-kind=province] .city-dot,.map-frame svg[data-answer-kind=province] .city-halo{pointer-events:none}.city-hit:focus{stroke:#f66d54;stroke-width:5}
 .city-focus{fill:none;stroke:#f2654b;stroke-width:6;pointer-events:none}.map-text{font-family:ui-rounded,'Trebuchet MS',system-ui,sans-serif;font-weight:1000;paint-order:stroke;stroke:#fff7e4;stroke-width:4;fill:#263f45;pointer-events:none}.map-text.province{font-size:20px}.map-text.city{font-size:16px}.map-text.water{font-size:23px;fill:#5d98af;stroke:#d7f1fa}
 .question-card{display:flex;flex-direction:column;padding:clamp(15px,2.5vw,26px);gap:0;max-height:min(74dvh,780px);overflow-y:auto}
 .q-label{align-self:flex-start;padding:7px 12px;background:var(--pink);border:2px solid var(--ink);border-radius:11px;transform:rotate(-4deg);font-size:13px;font-weight:1000}
@@ -115,7 +115,7 @@ const mode=modes[0]||'mix';
 const countChoice=params.get('questions')||'8';
 const questionLimit=countChoice==='all'?60:Math.max(5,Math.min(60,parseInt(countChoice,10)||8));
 const noHints=params.get('assist')==='none';
-let data=[],features=[],round=0,queue=[],index=0,stars=0,helpCount=0,peekCount=0,wrong=new Set(),assisted=new Set(),hintStep=0,attempts=0,done=false,currentMode='point',zoom=1,guessOptions=[];
+let data=[],features=[],round=0,queue=[],index=0,stars=0,helpCount=0,peekCount=0,wrong=new Set(),assisted=new Set(),repeated=new Set(),hintStep=0,attempts=0,done=false,currentMode='point',zoom=1,guessOptions=[];
 const C=['#ffe3a4','#ffc2b8','#c9e6ae','#e7c7ee','#b6e3f1','#f9cf9d','#e8e39f','#b2dbbf','#f4b4d4','#b8dadd','#d6e9a5','#c8c6f5'];
 const proj=(lon,lat)=>[95+(lon-3.35)*205,65+(53.6-lat)*235];
 const fmt=n=>Math.round(n*10)/10;
@@ -170,7 +170,7 @@ function makePool(){
 }
 function start(){
  const pool=shuffle(makePool());if(!pool.length){$('loading').classList.remove('hide');$('loading').innerHTML='<h2>Geen vragen!</h2><p>Kies in Instellingen minimaal één provincie en een onderwerp.</p>';return;}
- queue=pool.slice(0,Math.min(questionLimit,pool.length));index=0;stars=0;helpCount=0;peekCount=0;assisted=new Set();wrong=new Set();round++;
+ queue=pool.slice(0,Math.min(questionLimit,pool.length));index=0;stars=0;helpCount=0;peekCount=0;assisted=new Set();wrong=new Set();repeated=new Set();round++;
  document.body.classList.add('playing');document.body.classList.remove('keyboard-open');
  $('loading').classList.add('hide');$('end').classList.add('hide');$('game').classList.remove('hide');draw();
 }
@@ -193,13 +193,17 @@ function draw(){
  $('progressFill').style.width=(100*index/queue.length)+'%';$('score').textContent='★ '+stars;
  $('mapHint').textContent='KIJK OP DE KAART';
  displayMap(currentMode==='missing');
+ $('map').querySelector('svg')?.setAttribute('data-answer-kind',x.kind);
  if(currentMode==='point'){
   $('prompt').textContent='Waar ligt '+(x.kind==='city'?'de stad ':'de provincie ')+x.name+'?';
   $('sub').textContent='Tik op de kaart!';$('mapHint').textContent='TIK OP DE KAART!';
  }else if(currentMode==='choice'){
   $('prompt').textContent='Welke '+(x.kind==='city'?'stad':'provincie')+' is dit?';
   $('sub').textContent='Kies de naam.';highlight(x);
-  const others=shuffle(makePool().filter(y=>y.id!==x.id&&y.kind===x.kind)).slice(0,3);
+  const choices=x.kind==='province'
+  ?allProvinces.map(n=>({id:slug(n),name:n,kind:'province'}))
+  :data;
+  const others=shuffle(choices.filter(y=>y.id!==x.id&&y.kind===x.kind)).slice(0,3);
   guessOptions=shuffle([x,...others]);$('answerOptions').innerHTML=guessOptions.map(y=>'<button type="button" class="option" data-option="'+y.id+'">'+y.name+'</button>').join('');
  }else{
   $('prompt').textContent=currentMode==='missing'?'Welke stad mist er?':'Hoe heet deze '+(x.kind==='city'?'stad':'provincie')+'?';
@@ -216,7 +220,8 @@ function draw(){
 }
 function feedback(t,kind){const f=$('feedback');f.className='feedback '+(kind||'');f.textContent=t}
 function queueAgain(x){
- if(x.revisit)return;
+ if(x.revisit||repeated.has(x.id))return;
+ repeated.add(x.id);
  const later=Math.min(index+4,queue.length);
  queue.splice(later,0,{...x,revisit:true});
 }
@@ -253,19 +258,39 @@ $('answerOptions').addEventListener('submit',e=>{
 });
 $('answerOptions').addEventListener('focusin',e=>{if(e.target.matches('input')){document.body.classList.add('keyboard-open');resize();}});
 $('answerOptions').addEventListener('focusout',e=>{if(e.target.matches('input')){document.body.classList.remove('keyboard-open');resize();}});
-const helpText=[
- ['Steden dichtbij elkaar? Zoek eerst een stad die je al kent.','Kijk daarna vlakbij die stad.'],
- ['Kijk naar de kleuren van de provincies.','Welke buurprovincie ligt ernaast?']
-];
+const provinceClues={
+ 'Groningen':['Drenthe','boven'],
+ 'Friesland':['Groningen','links van'],
+ 'Drenthe':['Groningen','onder'],
+ 'Overijssel':['Drenthe','onder'],
+ 'Flevoland':['Overijssel','links van'],
+ 'Gelderland':['Overijssel','onder'],
+ 'Utrecht':['Gelderland','links van'],
+ 'Noord-Holland':['Utrecht','boven'],
+ 'Zuid-Holland':['Noord-Holland','onder'],
+ 'Zeeland':['Zuid-Holland','onder'],
+ 'Noord-Brabant':['Gelderland','onder'],
+ 'Limburg':['Noord-Brabant','rechts van']
+};
+function hintFor(x,step){
+ if(x.kind==='province'){
+  const rel=provinceClues[x.name];if(!rel)return null;
+  return step===0?'Deze provincie ligt naast '+rel[0]+'.':'Kijk '+rel[1]+' '+rel[0]+'.';
+ }
+ const candidates=data.filter(y=>y.id!==x.id&&y.name!==x.name);
+ candidates.sort((a,b)=>Math.hypot(a.x-x.x,a.y-x.y)-Math.hypot(b.x-x.x,b.y-x.y));
+ const near=candidates[0];if(!near)return null;
+ if(step===0)return 'Deze stad ligt dicht bij '+near.name+'.';
+ const dx=x.x-near.x,dy=x.y-near.y;
+ const direction=Math.abs(dx)>Math.abs(dy)?(dx>0?'rechts':'links'):(dy>0?'onder':'boven');
+ return 'Kijk '+direction+' van '+near.name+'.';
+}
 $('help').onclick=()=>{
  if(done||hintStep>=2||noHints)return;
- const x=current();let hint;
- if(x.kind==='province')hint=helpText[1][hintStep];
- else if(x.province==='Drenthe'&&x.name==='Hoogeveen')hint=['Deze stad ligt dicht bij Meppel.','Kijk tussen Meppel en Emmen.'][hintStep];
- else if(x.province==='Drenthe'&&x.name==='Assen')hint=['Deze stad ligt niet ver van Groningen.','Kijk boven Hoogeveen.'][hintStep];
- else hint=helpText[0][hintStep];
- if(hint.toLowerCase().includes(x.name.toLowerCase()))hint='Kijk naar de plaatsen eromheen.';
- hintStep++;helpCount++;assisted.add(x.id);wrong.add(x.id);queueAgain(x);feedback(hint,'neutral');$('mapHint').textContent='NOG EENS!';
+ const x=current(),hint=hintFor(x,hintStep);
+ if(!hint||hint.toLocaleLowerCase('nl').includes(x.name.toLocaleLowerCase('nl')))return;
+ hintStep++;helpCount++;assisted.add(x.id);wrong.add(x.id);queueAgain(x);
+ feedback(hint,'neutral');$('mapHint').textContent='ZOEK MAAR!';
  $('help').textContent='Nog een hint?';if(hintStep>=2)$('help').style.visibility='hidden';
 };
 $('skip').onclick=()=>{wrong.add(current().id);queueAgain(current());done=true;feedback('Deze komt terug!','neutral');$('next').classList.remove('hide');$('skip').style.visibility='hidden'};
