@@ -61,6 +61,7 @@ main{width:min(1400px,100%);margin:auto;padding:5px clamp(13px,2vw,27px) 30px}
  body.keyboard-open .question-card h2{font-size:22px;margin:0 0 6px}
  body.keyboard-open .question-card .q-label,body.keyboard-open .question-card p,body.keyboard-open .question-card .small-links{display:none}
  body.keyboard-open .game-board{min-height:95px}
+ body.playing .top,body.playing .credits{display:none}
  .result{max-height:calc(var(--vh,100dvh) - 20px);overflow:auto;margin:5px 7px;padding:20px 15px}
 }
 @media(min-width:701px){body{overflow:auto}.game-grid{min-height:65vh}}
@@ -170,6 +171,7 @@ function makePool(){
 function start(){
  const pool=shuffle(makePool());if(!pool.length){$('loading').classList.remove('hide');$('loading').innerHTML='<h2>Geen vragen!</h2><p>Kies in Instellingen minimaal één provincie en een onderwerp.</p>';return;}
  queue=pool.slice(0,Math.min(questionLimit,pool.length));index=0;stars=0;helpCount=0;peekCount=0;assisted=new Set();wrong=new Set();round++;
+ document.body.classList.add('playing');document.body.classList.remove('keyboard-open');
  $('loading').classList.add('hide');$('end').classList.add('hide');$('game').classList.remove('hide');draw();
 }
 function current(){return queue[index]}
@@ -269,6 +271,7 @@ $('help').onclick=()=>{
 $('skip').onclick=()=>{wrong.add(current().id);queueAgain(current());done=true;feedback('Deze komt terug!','neutral');$('next').classList.remove('hide');$('skip').style.visibility='hidden'};
 $('next').onclick=()=>{if(!done)return;document.activeElement?.blur?.();index++;draw()};
 function finish(){
+ document.body.classList.remove('playing','keyboard-open');
  $('game').classList.add('hide');$('end').classList.remove('hide');
  $('endTitle').textContent=stars===queue.filter(x=>!x.revisit).length?'KAARTBAAS!':'LEKKER BEZIG!';
  const total=queue.filter(x=>!x.revisit).length;
