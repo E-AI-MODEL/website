@@ -431,92 +431,28 @@ function showWrongPlace(id,clientX,clientY){
  wrongPopTimer=setTimeout(()=>pop.classList.add('hide'),1450);
 }
 function clearWrongPlace(){clearTimeout(wrongPopTimer);$('wrongPlacePop').classList.add('hide')}
-const placeHints={
- "friesland": [
-  "F-G-D. Denk aan de volgorde van de drie provincies.",
-  "Kijk bij het grote meer aan de linkerkant."
+const hintActivities={
+ island:[
+  'TV-TAS! Zeg het eilandrijtje in je hoofd op.',
+  'Wijs de eilanden één voor één aan. Welk eiland uit het rijtje zie je niet?'
  ],
- "groningen-prov": [
-  "F-G-D. Denk aan de volgorde van de drie provincies.",
-  "Welke provincie ligt boven het groene gebied?"
- ],
- "drenthe": [
-  "F-G-D. Denk aan de volgorde van de drie provincies.",
-  "Welke provincie ligt niet aan de zee?"
- ],
- "leeuwarden": [
-  "Denk aan een leeuw en een hoofdstad.",
-  "Zoek in de provincie met veel meren."
- ],
- "sneek": [
-  "Denk aan de Friese meren.",
-  "Zoek dicht bij de grote stad met de L."
- ],
- "heerenveen": [
-  "Denk aan twee plaatsen met 'veen' in hun naam.",
-  "Welke van die twee ligt in Friesland?"
- ],
- "drachten": [
-  "Een plaatsnaam met een D, maar niet bij de zee.",
-  "Kijk tussen de hoofdstad van Friesland en de provincie rechts ervan."
- ],
- "groningen-stad": [
-  "Stad en provincie kunnen dezelfde naam hebben.",
-  "Zoek de hoofdstad boven Assen."
- ],
- "delfzijl": [
-  "Denk aan een haven bij de zee.",
-  "Kijk in de provincie boven Drenthe."
- ],
- "assen": [
-  "Denk aan de hoofdstad van Drenthe.",
-  "Kijk tussen de stad boven Drenthe en de steden onderaan."
- ],
- "veendam": [
-  "Denk aan een plaatsnaam die op '-dam' eindigt.",
-  "Zoek in de provincie boven Drenthe."
- ],
- "meppel": [
-  "Denk aan drie steden in Drenthe, naast elkaar.",
-  "Welke ligt links van de andere twee?"
- ],
- "hoogeveen": [
-  "Denk aan een plaatsnaam met 'veen' erin.",
-  "Zoek tussen de westelijke en de oostelijke stad in Drenthe."
- ],
- "emmen": [
-  "Denk aan de drie steden onderaan in Drenthe.",
-  "Kijk bij de grens aan de rechterkant."
- ],
- "vlieland": [
-  "TV-TAS. Zeg de eilandnamen op in die volgorde.",
-  "De T staat voor een eiland dat niet op deze kaart staat."
- ],
- "terschelling": [
-  "TV-TAS. Zeg de eilandnamen op in die volgorde.",
-  "Op deze kaart ontbreekt het eerste eiland van de reeks."
- ],
- "ameland": [
-  "TV-TAS. Zeg de eilandnamen op in die volgorde.",
-  "Op deze kaart ontbreekt het eerste eiland van de reeks."
- ],
- "schiermonnikoog": [
-  "TV-TAS. Zeg de eilandnamen op in die volgorde.",
-  "Op deze kaart ontbreekt het eerste eiland van de reeks."
- ],
- "waddenzee": [
-  "Denk aan wadlopen bij de eilanden.",
-  "Zoek het water tussen eilanden en het vaste land."
- ],
- "ijsselmeer": [
-  "Denk aan een meer dat achter een lange dijk ligt.",
-  "Zoek het grote water links onder het vasteland."
- ],
- "afsluitdijk": [
-  "Denk aan iets dat twee wateren van elkaar scheidt.",
-  "Zoek de lange verbinding over het water."
- ]
+ point:{
+  city:['Ken je al een stad op de kaart? Gebruik die als startpunt!','Doe je ogen even dicht. Zie je nog waar de andere steden liggen?'],
+  province:['Denk aan drie puzzelstukjes. Hoe passen de provincies bij elkaar?','Probeer de kaart uit je hoofd na te tekenen. Waar hoort het stukje?'],
+  water:['Stel je voor dat je langs het water loopt. Waar ben je dan?','Trek in je hoofd een lijn langs de kust. Welk water zoek je?'],
+  dike:['Denk aan een brug tussen twee stukken land. Waar zou die kunnen lopen?','Maak in je hoofd een streep van land naar land. Zoek die streep op de kaart.']
+ },
+ type:['Kijk even weg. Kun je de naam eerst zelf zeggen?','Zeg de naam in stukjes in je hoofd. Typ hem daarna.'],
+ choice:['Welke namen weet je zeker dat het níét zijn? Streep ze weg in je hoofd!','Nog twee over? Kijk goed: welke past bij deze plek?'],
+ missing:['Noem drie steden die je al kent. Zit de verdwenen stad ertussen?','Maak een denkbeeldige reis langs de steden. Welke naam mis je?']
 };
+function hintActivity(item,mode,step){
+ if(item.kind==='island')return hintActivities.island[step];
+ if(mode==='choice')return hintActivities.choice[step];
+ if(mode==='missing')return hintActivities.missing[step];
+ if(mode==='type')return hintActivities.type[step];
+ return (hintActivities.point[item.kind]||hintActivities.point.city)[step];
+}
 function safeHint(item,clue){
  const normalized=String(clue).toLocaleLowerCase('nl').normalize('NFD').replace(/[\u0300-\u036f]/g,'');
  const names=[item.short,item.name,...(item.aliases||[])].filter(Boolean).map(n=>String(n).toLocaleLowerCase('nl').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s*\([^)]*\)/g,'').trim());
@@ -524,16 +460,14 @@ function safeHint(item,clue){
 }
 function giveHint(){
  if(game.done||game.hintStep>=2)return;
- const step=game.hintStep,clues=placeHints[q().id];
- if(!clues)return;
- const clue=clues[step];
- if(!safeHint(q(),clue)){console.warn('Hint contains answer; skipping.');return;}
+ const step=game.hintStep,clue=hintActivity(q(),game.kind,step);
+ if(!clue||!safeHint(q(),clue)){console.warn('Hint blocked.');return;}
  game.hintClicks++;game.hintStep++;game.hint=true;game.assistedQuestions.add(q().id);
  game.wrong.add(q().id);returnLater(q());
- flash((step===0?'ONTHOUD! ':'TIP! ')+clue,'neutral');
- $('mapHint').textContent=step===0?'ONTHOUD DIT!':'PROBEER HET!';
+ flash(clue,'neutral');
+ $('mapHint').textContent='JIJ KUNT DIT!';
  if(game.hintStep>=2)$('help').style.visibility='hidden';
- else $('help').textContent='Nog een tip?';
+ else $('help').textContent='Nog een trucje?';
 }
 function returnLater(item){
  const times=game.repeated.get(item.id)||0;
