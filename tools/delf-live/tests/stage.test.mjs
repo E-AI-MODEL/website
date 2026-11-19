@@ -55,7 +55,7 @@ test('echt gesproken Nederlands wordt vertaald, spiektekst niet',()=>{
   assert.match(opening,/Onze rector kan er vanmiddag helaas niet bij zijn/);
   assert.match(closing,/Mevrouw Klatten/);
   assert.match(reply,/gedraag je/);
-  assert.ok(main.includes('translateFinal(value[0].transcript)'));
+  assert.ok(main.includes('translateFinal(words)'));
   assert.ok(main.includes('translatePreview(interim)'));
   assert.ok(!main.includes('translateFinal(opening)'));
   assert.ok(!main.includes('translateFinal(closing)'));
