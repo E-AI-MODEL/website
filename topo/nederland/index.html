@@ -60,6 +60,7 @@ main{width:min(1400px,100%);margin:auto;padding:5px clamp(13px,2vw,27px) 30px}
  body.keyboard-open .question-card{max-height:none;overflow:visible;padding:10px 12px}
  body.keyboard-open .question-card h2{font-size:22px;margin:0 0 6px}
  body.keyboard-open .question-card .q-label,body.keyboard-open .question-card p,body.keyboard-open .question-card .small-links{display:none}
+ body.keyboard-open #typeForm .type-label{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
  body.keyboard-open .game-board{min-height:95px}
  body.playing .top,body.playing .credits{display:none}
  .result{max-height:calc(var(--vh,100dvh) - 20px);overflow:auto;margin:5px 7px;padding:20px 15px}
@@ -151,12 +152,17 @@ function countryMap(showNames,focused){
 }
 function displayMap(showNames=false){$('map').innerHTML=countryMap(showNames);focusMap();}
 function focusMap(){
- const frame=$('map'),svg=frame.querySelector('svg');if(!svg||!frame.clientWidth||!frame.clientHeight||!queue[index])return;
+ const frame=$('map'),svg=frame.querySelector('svg');
+ if(!svg||!frame.clientWidth||!frame.clientHeight||!queue[index])return;
  if(currentMode==='point'){svg.setAttribute('viewBox','0 0 1020 850');return;}
- const x=queue[index];let desired=650;
- if(window.innerWidth<=700){desired=Math.max(400,Math.min(850,Math.round(1020*frame.clientHeight/frame.clientWidth)));}
- const centerX=x.x,centerY=x.y,baseX=Math.max(0,Math.min(1020-desired,centerX-desired/2)),height=Math.min(850,Math.round(desired*frame.clientHeight/frame.clientWidth)),baseY=Math.max(0,Math.min(850-height,centerY-height/2));
- svg.setAttribute('viewBox',[fmt(baseX),fmt(baseY),desired,Math.max(230,height)].join(' '));
+ const ratio=frame.clientWidth/frame.clientHeight;
+ const width=Math.min(1020,Math.round(850*ratio));
+ const height=Math.min(850,Math.round(width/ratio));
+ const x=queue[index];
+ const left=Math.max(0,Math.min(1020-width,Math.round(x.x-width/2)));
+ const top=Math.max(0,Math.min(850-height,Math.round(x.y-height/2)));
+ svg.setAttribute('viewBox',[left,top,width,height].join(' '));
+ svg.setAttribute('preserveAspectRatio','xMidYMid meet');
 }
 function highlight(x){
  const svg=$('map').querySelector('svg');if(!svg)return;
