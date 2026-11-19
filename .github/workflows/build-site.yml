@@ -31,6 +31,7 @@ on:
       - 'en/**'
       - 'assets/**'
       - 'tools/projecthulp/**'
+      - 'tools/delf-live/**'
       - 'tools/eaigit/**'
       - 'tests/test_projecthulp.mjs'
       - 'tests/test_eaigit_help.mjs'
@@ -74,6 +75,7 @@ on:
       - 'en/**'
       - 'assets/**'
       - 'tools/projecthulp/**'
+      - 'tools/delf-live/**'
       - 'tools/eaigit/**'
       - 'tests/test_projecthulp.mjs'
       - 'index.html'
@@ -163,9 +165,16 @@ jobs:
       - name: Check EAIgame 300 questions and gameplay mechanics
         run: node --test tests/test_eaigame.mjs
 
+      - name: Build DELF live podiumapp
+        run: |
+          npm install --prefix tools/delf-live --no-audit --no-fund
+          npm run test --prefix tools/delf-live
+          npm run build --prefix tools/delf-live
+
       - name: Build site
         run: |
           python scripts/build_site.py --sources content/legacy --out site-build
+          test -s site-build/tools/delf-live/index.html
           test -s site-build/statistieken/demo.json
           test -s site-build/statistieken/collect.php
           test -s site-build/assets/site-analytics.js

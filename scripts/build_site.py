@@ -2834,6 +2834,11 @@ def build(sources: Path, out: Path) -> None:
     leif_source = repo_root / "leif"
     if leif_source.is_dir():
         shutil.copytree(leif_source, out / "leif", dirs_exist_ok=True)
+    # Self-contained DELF podiumapp. When built, copy the Vite output unchanged.
+    # Other local site builds do not require installing Node dependencies.
+    delf_dist = repo_root / "tools" / "delf-live" / "dist"
+    if (delf_dist / "index.html").is_file():
+        shutil.copytree(delf_dist, out / "tools" / "delf-live", dirs_exist_ok=True)
     finish_generated_pages(out)
     # EAIgit is a separate browser wizard: publish only its four intended pages.
     # Do not let the general site generator rewrite their UI or JavaScript.
