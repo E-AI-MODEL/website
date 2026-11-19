@@ -13,6 +13,9 @@ button{touch-action:manipulation}.hide{display:none!important}.top{height:76px;d
 @media(max-width:620px){.top{height:62px}.screen{padding:4px 13px 16px}.hero{padding-top:15px}.hero h1{font-size:clamp(62px,16vw,95px);margin:13px 0}.hero-copy>p{font-size:18px;margin-bottom:21px}.chip{font-size:14px;min-height:45px;padding:9px 12px}.chips{gap:8px}.actions{margin-top:23px}.big{font-size:27px;padding:15px 30px}.preview-board{box-shadow:7px 9px 0 var(--ink);margin:0 7px}.board-tag{font-size:12px;right:-11px}.game-top{gap:8px;min-height:58px}.back{padding:8px 10px;font-size:12px}.level{padding:8px;font-size:11px}.progress-label{font-size:11px}.game-grid{gap:10px}.question-card{padding:15px;border-radius:20px;box-shadow:4px 5px 0 var(--ink)}.question-card h2{font-size:clamp(28px,8vw,40px);line-height:1.0}.q-label{padding:4px 8px;font-size:11px}.game-board{padding:5px;box-shadow:5px 6px 0 var(--ink);border-radius:19px}.game-board .map-frame{height:auto;min-height:0;aspect-ratio:1240 / 900;max-height:54dvh}.game-board .map-art{height:auto;width:100%}.hint-chip{top:12px;left:12px;font-size:11px;padding:5px 8px}.next{font-size:20px;padding:12px}.feedback{padding:10px;margin:9px 0;font-size:17px}.small-links{gap:5px}.small-links button{font-size:12px}.result{margin:35px 8px;padding:35px 20px}.sheet-map svg{min-width:650px}}
 @media print{body{background:white!important}.top,main,.foot,#privacyLayer,.close,#printSheet{display:none!important}#sheetLayer{position:static!important;display:block!important;background:white!important;padding:0!important}.answer-modal{border:none!important;box-shadow:none!important;width:100%!important;max-height:none!important;padding:0!important}.sheet-map{max-height:none!important;overflow:visible!important}.sheet-map svg{width:100%!important;min-width:0!important}.answer-tags span{break-inside:avoid}}
 </style>
+<style id="wrongPlacePopStyle">
+.wrong-place-pop{position:absolute;z-index:5;max-width:min(80%,280px);background:#fff4ca;border:3px solid var(--ink);border-radius:14px;box-shadow:4px 5px 0 var(--ink);padding:8px 13px;font-size:clamp(14px,2vw,20px);font-weight:1000;line-height:1.1;white-space:nowrap;pointer-events:none;transform:translate(-50%,-115%) rotate(-3deg);animation:pop .17s ease-out}
+</style>
 <style id="answerModes">
 .type-label{display:block;font-size:13px;font-weight:1000;margin:0 0 8px}.type-submit{background:var(--lime);border:var(--border);border-radius:14px;box-shadow:0 4px 0 var(--ink);padding:12px 22px;font-size:21px;font-weight:1000;width:100%;margin-bottom:6px}
 .drag-token{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:68px;width:100%;padding:13px 19px;background:var(--lime);border:var(--border);box-shadow:5px 6px 0 var(--ink);border-radius:17px;transform:rotate(-2deg);font-weight:1000;font-size:clamp(19px,2.6vw,29px);touch-action:none;user-select:none;cursor:grab;text-align:left}
@@ -24,7 +27,7 @@ button{touch-action:manipulation}.hide{display:none!important}.top{height:76px;d
 <header class="top"><a href="#" class="logo" id="logo">TOPO<span>!</span></a><div class="toplinks"><button class="plain" id="openSheet">Spiekkaart</button><button class="plain" id="openPrivacy">Privacy</button></div></header>
 <main>
 <section class="screen" id="home"><div class="hero"><div class="hero-copy"><span class="sticker">KAART B · NOORD-NEDERLAND</span><h1>Waar<br>ligt dat<br>dan?!</h1><p>Tik. Zoek. Vind.<br>Kun jij de kaart verslaan?</p><div class="choose-title">Wat ga jij zoeken?</div><div class="chips" id="chips"></div><div class="actions"><button class="big" id="start">SPELEN! ↗</button><button class="quiet" id="all">Alles kiezen</button></div></div><div class="preview-board"><div class="board-tag">21 plekken!</div><div class="map-frame" id="preview"></div></div></div></section>
-<section class="screen hide" id="game"><div class="game-top"><button class="back" id="back">← Terug</button><div class="progress-box"><div class="progress-label"><span id="missionName">MISSIE 1</span><span id="progressText">1/8</span></div><div class="bar"><div id="progressFill"></div></div></div><div class="level" id="score">★ 0</div></div><div class="game-grid"><div class="game-board"><div class="map-frame" id="map"></div><div class="hint-chip" id="mapHint">TIK OP DE KAART!</div></div><section class="question-card"><span class="q-label" id="kind">ZOEKTOCHT</span><h2 id="prompt">Waar ligt Sneek?</h2><p id="sub">Tik op de juiste plek!</p><div id="answerOptions"></div><div class="feedback hide" id="feedback"></div><button class="next hide" id="next">VERDER! →</button><div class="small-links"><button id="help">Help me!</button><button id="showAnswer">Spiekkaart</button><button id="skip">Even overslaan →</button></div></section></div></section>
+<section class="screen hide" id="game"><div class="game-top"><button class="back" id="back">← Terug</button><div class="progress-box"><div class="progress-label"><span id="missionName">MISSIE 1</span><span id="progressText">1/8</span></div><div class="bar"><div id="progressFill"></div></div></div><div class="level" id="score">★ 0</div></div><div class="game-grid"><div class="game-board"><div class="map-frame" id="map"></div><div id="wrongPlacePop" class="wrong-place-pop hide" aria-live="polite"></div><div class="hint-chip" id="mapHint">TIK OP DE KAART!</div></div><section class="question-card"><span class="q-label" id="kind">ZOEKTOCHT</span><h2 id="prompt">Waar ligt Sneek?</h2><p id="sub">Tik op de juiste plek!</p><div id="answerOptions"></div><div class="feedback hide" id="feedback"></div><button class="next hide" id="next">VERDER! →</button><div class="small-links"><button id="help">Help me!</button><button id="showAnswer">Spiekkaart</button><button id="skip">Even overslaan →</button></div></section></div></section>
 <section class="screen hide" id="end"><div class="result"><div class="star" id="endIcon">✦</div><div class="sticker">RONDE KLAAR!</div><h2 id="endTitle">Lekker bezig!</h2><p id="endText">Je vond 6 plekken.</p><div id="review" class="review"></div><div class="actions"><button id="again" class="big secondary">NOG EEN KEER!</button><button id="change" class="quiet">Andere plekken</button></div></div></section>
 </main><div class="foot">Een speelse oefenkaart, geen exacte landkaart. Geen account of opgeslagen scores.</div>
 <div class="overlay" id="privacyLayer" role="dialog" aria-modal="true" aria-labelledby="privacyTitle"><div class="modal"><span class="mini-label">TOPO!</span><h2 id="privacyTitle">Let’s go, TOPO!</h2><p>Geen account nodig. Je antwoorden en scores bewaren we niet.</p><details><summary>Voor ouders</summary><p>Je hoeft geen persoonlijke gegevens in te vullen. Antwoorden en scores blijven tijdens het spelen in de browser en verdwijnen als je de pagina sluit of vernieuwt. Het spel slaat niets op en verstuurt geen speelgegevens. De website of hosting kan wel technische bezoekgegevens verwerken, zoals een IP-adres.</p></details><button class="big" id="privacyOk">JA, SPELEN! ↗</button></div></div>
@@ -133,10 +136,23 @@ function tidy(value){return String(value||'').toLocaleLowerCase('nl').normalize(
 function validTyped(item,typed){const choices=[item.name,item.short,...(item.aliases||[])].filter(Boolean);return choices.some(x=>tidy(x)===tidy(typed))}
 function setHitTargets(item){const svg=$('map').querySelector('svg');svg.classList.add('hide-labels');svg.querySelector('.click-layer')?.setAttribute('class','click-layer '+((game.kind==='point'||game.kind==='drag')?'kind-'+item.kind:''))}
 
+let wrongPopTimer=null;
+function showWrongPlace(id,clientX,clientY){
+ const item=byId[id],pop=$('wrongPlacePop'),board=pop.parentElement;
+ if(!item)return;
+ clearTimeout(wrongPopTimer);
+ const bounds=board.getBoundingClientRect();
+ pop.textContent=placeLabel(item);
+ const px=Math.max(105,Math.min(bounds.width-105,clientX-bounds.left));
+ const py=Math.max(62,Math.min(bounds.height-12,clientY-bounds.top));
+ pop.style.left=px+'px';pop.style.top=py+'px';pop.classList.remove('hide');
+ wrongPopTimer=setTimeout(()=>pop.classList.add('hide'),1450);
+}
+function clearWrongPlace(){clearTimeout(wrongPopTimer);$('wrongPlacePop').classList.add('hide')}
 function returnLater(item){if(game.repeated.has(item.id)||item.revisit)return;game.repeated.add(item.id);const offset=Math.min(3,game.queue.length-game.idx);game.queue.splice(game.idx+offset,0,{...item,revisit:true});}
 function draw(){
  if(game.idx>=game.queue.length)return finish();
- game.done=false;game.hint=false;game.attempts=0;game.lastError=null;game.armed=false;game.justDropped=false;
+ game.done=false;game.hint=false;game.attempts=0;game.lastError=null;game.armed=false;game.justDropped=false;clearWrongPlace();
  const x=q(),modes=['point','choice','type','drag'];game.kind=modes[game.idx%4];if(game.kind==='choice'&&db.filter(y=>y.kind===x.kind).length<2)game.kind='drag';
  $('kind').textContent=x.revisit?'NOG EENS!':({point:'AANWIJZEN',choice:'KIEZEN',type:'TYPEN',drag:'SLEPEN'}[game.kind]);
  $('next').classList.add('hide');$('feedback').classList.add('hide');$('help').style.visibility='visible';$('skip').style.visibility='visible';
@@ -173,8 +189,8 @@ function answer(ok,which){
  game.wrong.add(q().id);returnLater(q());game.lastError=which;
  flash(['BIJNA!','NOG EENS!','PROBEER NOG!'][Math.min(game.attempts-1,2)],'bad');
  if(game.attempts>=2){
-  game.done=true;highlight(q().id);$('mapHint').textContent='HIER DUS!';
-  $('sub').textContent='Kijk goed waar de plek ligt.';$('next').classList.remove('hide');
+  game.done=true;$('mapHint').textContent='STRAX NOG EENS';
+  $('sub').textContent='Deze komt straks terug.';$('next').classList.remove('hide');
   $('help').style.visibility='hidden';$('skip').style.visibility='hidden';
  }
 }
@@ -182,6 +198,7 @@ function flash(t,kind){let f=$('feedback');f.className='feedback '+(kind==='bad'
 $('map').onclick=e=>{
  if(game.done||(game.kind!=='point'&&game.kind!=='drag')||game.justDropped)return;
  const t=e.target.closest('[data-place]');if(!t)return;
+ if(t.dataset.place!==q().id)showWrongPlace(t.dataset.place,e.clientX,e.clientY);
  answer(t.dataset.place===q().id,t.dataset.place);
 };
 $('answerOptions').onclick=e=>{
@@ -212,15 +229,20 @@ function finishDrag(e){
  if(!dragMoved||game.done)return;
  const hit=document.elementFromPoint(e.clientX,e.clientY)?.closest('[data-place]');
  if(hit&&hit.closest('#map')){
-  game.justDropped=true;answer(hit.dataset.place===q().id,hit.dataset.place);
+  game.justDropped=true;if(hit.dataset.place!==q().id)showWrongPlace(hit.dataset.place,e.clientX,e.clientY);answer(hit.dataset.place===q().id,hit.dataset.place);
   Promise.resolve().then(()=>{game.justDropped=false;});
  }
 }
 $('answerOptions').addEventListener('pointerup',finishDrag);
 $('answerOptions').addEventListener('pointercancel',e=>{if(dragGhost){dragGhost.remove();dragGhost=null;}dragPointer=null;dragMoved=false;});
-$('answerOptions').onclick=e=>{const t=e.target.closest('[data-option]');if(!t||game.done)return;const correct=t.dataset.option===q().id;t.classList.add(correct?'good':'bad');answer(correct,t.dataset.option)};
-$('help').onclick=()=>{if(game.done)return;game.hint=true;game.wrong.add(q().id);returnLater(q());highlight(q().id);flash('KIJK! HIER ERGENS.','neutral');$('mapHint').textContent='ZOEK BIJ DE KLEUR!'};
-$('skip').onclick=()=>{game.wrong.add(q().id);returnLater(q());game.done=true;highlight(q().id);$('mapHint').textContent='DEZE WAS HET!';flash('VOLGENDE KEER BETER!','neutral');$('next').classList.remove('hide')};
+$('help').onclick=()=>{
+ if(game.done)return;game.hint=true;game.wrong.add(q().id);returnLater(q());
+ const x=q();
+ const provinces={leeuwarden:'Friesland',sneek:'Friesland',heerenveen:'Friesland',drachten:'Friesland','groningen-stad':'Groningen',delfzijl:'Groningen',veendam:'Groningen',assen:'Drenthe',meppel:'Drenthe',hoogeveen:'Drenthe',emmen:'Drenthe'};
+ const clue=provinces[x.id]?'Denk aan '+provinces[x.id]+'.':x.kind==='province'?'Zoek tussen de andere provincies.':x.kind==='island'?'Kijk boven de kust.':x.kind==='water'?'Zoek het water.':x.kind==='dike'?'Zoek de verbinding over het water.':'Kijk goed naar de omgeving.';
+ flash(clue,'neutral');$('mapHint').textContent='KIJK NOG EENS';
+};
+$('skip').onclick=()=>{game.wrong.add(q().id);returnLater(q());game.done=true;$('mapHint').textContent='STRAX NOG EENS';flash('DEZE KOMT TERUG!','neutral');$('next').classList.remove('hide')};
 $('next').onclick=()=>{if(!game.done)return;game.idx++;draw()};
 function finish(){
  $('progressFill').style.width='100%';show('end');
