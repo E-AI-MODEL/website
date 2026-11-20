@@ -182,7 +182,7 @@ body.playing .game-grid.shuffle-no-map .question-card{flex:0 1 auto;width:min(71
 .map-art .province-shape{stroke:#c6a975;stroke-width:2;stroke-linejoin:round}
 .map-art .city-focus{stroke:#018b7c;stroke-width:5;fill:#31caa0;fill-opacity:.25}
 .map-art .map-text{pointer-events:none}
-</style></head><body>
+</style><style id="country-land-context">.map-art .surrounding-land{fill:#dfe5dd;stroke:#bfccbf;stroke-width:2;stroke-linejoin:round;pointer-events:none;fill-rule:evenodd}.map-art .province-shape{fill-rule:evenodd}</style></head><body>
 <header class="top"><a href="/topo/" class="logo">Let’s go <span>TOPO!</span></a><a href="/topo/instellingen/" class="other">Instellingen</a></header>
 <main>
 <section id="loading" class="result"><span class="sticker">HEEL NEDERLAND</span><h2>Kaart laden…</h2><p>De twaalf provincies komen eraan.</p></section>
@@ -284,7 +284,7 @@ const mode=modes[0]||'mix';
 const countChoice=params.get('questions')||'8';
 const questionLimit=countChoice==='all'?60:Math.max(5,Math.min(60,parseInt(countChoice,10)||8));
 const noHints=params.get('assist')==='none';
-let data=[],features=[],landBounds=null,round=0,queue=[],index=0,stars=0,helpCount=0,peekCount=0,wrong=new Set(),assisted=new Set(),repeated=new Set(),hintStep=0,attempts=0,done=false,currentMode='point',zoom=1,guessOptions=[];
+let data=[],features=[],neighborFeatures=[],landBounds=null,round=0,queue=[],index=0,stars=0,helpCount=0,peekCount=0,wrong=new Set(),assisted=new Set(),repeated=new Set(),hintStep=0,attempts=0,done=false,currentMode='point',zoom=1,guessOptions=[];
 // All province fills derive from the existing Noord-Nederland pastel map.
 const C=['#ffc2b8','#ffe3a4','#c9e6ae','#f4dfbc','#c7e6e7','#ffe4bb','#d7e8ba','#ffcfc0','#e8d8e8','#f5e4bd','#d7e0ee','#d2e7bc'];
 const proj=(lon,lat)=>[95+(lon-3.35)*205,65+(53.6-lat)*235];
@@ -300,6 +300,7 @@ function cityItem(row,capital){
 }
 function countryMap(showNames,focused){
  const colorMap={};allProvinces.forEach((n,i)=>colorMap[n]=C[i%C.length]);
+ const otherLand=neighborFeatures.map(f=>'<path class="surrounding-land" d="'+pathOf(f.geometry)+'"/>').join('');
  const provinces=features.map((f,i)=>{
   const p=f.properties.statnaam==='Fryslân'?'Friesland':f.properties.statnaam;
   return '<path class="province-shape" data-place="'+slug(p)+'" fill="'+colorMap[p]+'" d="'+pathOf(f.geometry)+'"/>';
@@ -335,7 +336,7 @@ function countryMap(showNames,focused){
  '<defs><pattern id="topo-grid" width="79" height="79" patternUnits="userSpaceOnUse"><path d="M79 0H0V79" fill="none" stroke="#fff" stroke-opacity=".22" stroke-width="1"/></pattern></defs>'+
  '<rect x="-1000" y="-1000" width="3000" height="3000" fill="#cbe9f4"/>'+
  '<rect x="-1000" y="-1000" width="3000" height="3000" fill="url(#topo-grid)"/>'+
- '<g>'+provinces+'</g><g aria-hidden="true">'+waterNames+'</g><g>'+cityDots+'</g>'+
+ '<g aria-hidden="true">'+otherLand+'</g><g>'+provinces+'</g><g aria-hidden="true">'+waterNames+'</g><g>'+cityDots+'</g>'+
  '<g id="targetHighlight"></g><g>'+provinceTexts+'</g><g>'+texts+'</g></svg>';
 }
 function displayMap(showNames=false){$('map').innerHTML=countryMap(showNames);focusMap();}
@@ -588,10 +589,12 @@ const getJSON=async path=>{const res=await fetch(path);if(!res.ok)throw Error('K
 Promise.all([
  getJSON('/topo/data/provincies-2026.geojson'),
  getJSON('/topo/data/shuffle-vragen.json').catch(err=>{if(mode==='shuffle')throw err;console.warn(err);return null;}),
- getJSON('/topo/data/taalbank.json').catch(err=>{console.warn(err);return null;})
-]).then(([geo,facts,language])=>{
+ getJSON('/topo/data/taalbank.json').catch(err=>{console.warn(err);return null;}),
+ getJSON('/topo/data/buurlanden.geojson').catch(err=>{console.warn(err);return null;})
+]).then(([geo,facts,language,neighbors])=>{
  if(!geo||!Array.isArray(geo.features)||geo.features.length!==12)throw Error('Onvolledige kaart');
  features=geo.features;
+ neighborFeatures=neighbors?.features||[];
  landBounds=provinceBounds(geo);
  if(facts)setFactBank(facts);
  if(language&&language.total===50&&language.uitspraak)topoTalk=language.uitspraak;
