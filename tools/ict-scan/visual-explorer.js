@@ -80,9 +80,10 @@
     const ring=dom('div','viz-donut-ring');
     ring.style.background='conic-gradient('+slices.join(',')+')';
     ring.setAttribute('role','img');
-    ring.setAttribute('aria-label',fmt(total)+' registraties verdeeld over '+entries.length+' categorieën');
+    const unit=root.id==='phaseChart'?'lesfasevermeldingen':(root.id==='aiProducts'?'AI-functies':'registraties');
+    ring.setAttribute('aria-label',fmt(total)+' '+unit+' verdeeld over '+entries.length+' categorieën');
     const center=dom('div','viz-donut-center');
-    center.append(dom('strong','',fmt(total)),dom('span','','registraties'));ring.append(center);
+    center.append(dom('strong','',fmt(total)),dom('span','',unit));ring.append(center);
     const legend=dom('div','viz-donut-legend');
     for(const [name,count] of entries){
       const b=markClick(dom('button','viz-legend-row'),name,count,total,selected,select);
