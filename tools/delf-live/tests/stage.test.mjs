@@ -359,7 +359,7 @@ test('vrij praten is gescheiden van de vaste voorstelling',()=>{
   assert.match(html,/https:\/\/js\.puter\.com\/v2\//);
   const chat=readFileSync(new URL('../src/free-talk.js',import.meta.url),'utf8');
   assert.match(chat,/SpeechRecognition\|\|window\.webkitSpeechRecognition/);
-  assert.match(chat,/rec\.lang='nl-NL'/);
+  assert.match(chat,/rec\.lang=inputLang\.value/);
   assert.match(chat,/api\.ai\.chat\(messages/);
   assert.match(chat,/api\.ai\.txt2speech\(french/);
   assert.match(chat,/play\.addEventListener\('click'/);
