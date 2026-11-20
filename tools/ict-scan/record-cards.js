@@ -203,6 +203,8 @@
       const labelEl=text('label','card-field'),title=text('span','card-field-label',lbl),inp=text('input','');
       inp.name='recordMeta.'+field;inp.value=meta[field]||'';inp.autocomplete='off';labelEl.append(title,inp);evidence.append(labelEl);
     }
+    const extraSource=text('label','card-field'),sourceTitle=text('span','card-field-label','Nieuwe bronverwijzing (bestaande blijven behouden)'),sourceInput=text('input','');
+    sourceInput.name='newSourceReference';sourceInput.placeholder='Bestand, document, URL of registratie-ID';sourceInput.autocomplete='off';extraSource.append(sourceTitle,sourceInput);evidence.append(extraSource);
     const reason=text('label','card-field'),title=text('span','card-field-label','Toelichting bij deze wijziging'),textarea=text('textarea','');
     textarea.name='changeReason';textarea.rows=3;textarea.required=true;textarea.placeholder='Wat is aangepast, waarom en op basis van welke bron?';
     textarea.value=model.drafts.get(key(model.current.type,r.id))?.reason||'';
@@ -230,6 +232,8 @@
     }
     r.relations=parseRows('cardRelationRows',['targetType','targetId','relationType','status','evidence','note']);
     r.frameworkLinks=parseRows('cardFrameworkRows',['frameworkId','article','status','evidence','note']);
+    const sourceInput=$c('cardFormFields').querySelector('[name="newSourceReference"]');
+    if(sourceInput&&sourceInput.value.trim())r.sources=[...new Set([...(r.sources||[]),sourceInput.value.trim()])];
     r.recordMeta={};
     for(const input of $c('cardFormFields').querySelectorAll('[name^="recordMeta."]'))if(input.value.trim())r.recordMeta[input.name.slice(11)]=input.value.trim();
     const reason=$c('cardFormFields').querySelector('[name="changeReason"]').value.trim();
@@ -258,7 +262,7 @@
   }
   function diff(before,after){
     const keys=new Set([...Object.keys(before||{}),...Object.keys(after||{})]);
-    return [...keys].filter(k=>!['auditTrail','sources','sourceFields','provenance','otherDescription','id'].includes(k)&&JSON.stringify(before?.[k]??null)!==JSON.stringify(after?.[k]??null));
+    return [...keys].filter(k=>!['auditTrail','sourceFields','provenance','otherDescription','id'].includes(k)&&JSON.stringify(before?.[k]??null)!==JSON.stringify(after?.[k]??null));
   }
   function saveDraft(){
     try{
