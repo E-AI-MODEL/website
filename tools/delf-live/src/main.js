@@ -733,47 +733,6 @@ $('previewFrench').onclick = async () => {
   } catch (e) { if (!controller.signal.aborted) {componentStatus('frenchStatus','error','Franse stemproef mislukt',e);reportError(`Franse stemproef: ${e.message || e}`);} }
 };
 
-// Los Frans gesprek in de studio. Werkt zonder Nederlandse systeemstem.
-window.cloudFrenchConversationSpeak = async text => {
-  if (phase !== 'intro') throw new Error('Stop eerst de voorstelling voordat je een gesprek begint.');
-  if (!french) throw new Error('Laad eerst de Franse stem bij Stem.');
-  if (typeof text !== 'string' || !text.trim()) throw new Error('Geen Franse tekst om uit te spreken.');
-  stopVoices();
-  speechAbort=new AbortController();
-  const controller=speechAbort;
-  const ctx=new AudioContext({sampleRate:french.sampleRate});
-  soundContext=ctx;
-  await ctx.resume();
-  let playTime=ctx.currentTime+.08;
-  let pieces=0;
-  try{
-    const sample=french.stream(text.slice(0,650),{signal:controller.signal});
-    for await (const pcm of sample){
-      if(controller.signal.aborted || ctx.state==='closed') throw new Error('Spraak gestopt');
-      const buffer=ctx.createBuffer(1,pcm.length,french.sampleRate);
-      buffer.copyToChannel(pcm,0);
-      const node=ctx.createBufferSource();
-      node.buffer=buffer;node.connect(ctx.destination);
-      playTime=Math.max(playTime,ctx.currentTime+.03);
-      node.start(playTime);playTime+=buffer.duration;
-      playingNodes.push(node);
-      node.onended=()=>{const i=playingNodes.indexOf(node);if(i!==-1)playingNodes.splice(i,1);};
-      pieces++;
-    }
-    await sample.done;
-    if(!pieces) throw new Error('Het Franse stemmodel leverde geen audio');
-    componentStatus('frenchStatus','ready','Franse gesprekstem maakt audio');
-    await waitForPlayback(ctx,controller,playTime);
-  } catch(error){
-    if(!controller.signal.aborted) componentStatus('frenchStatus','error','Franse gesprekstem mislukt',error);
-    throw error;
-  } finally{
-    if(soundContext===ctx) soundContext=null;
-    try{await ctx.close();}catch{}
-  }
-};
-window.cloudFrenchConversationStop=()=>stopVoices();
-
 function populateVoices() {
   const all = speechSynthesis.getVoices().filter(v => /^nl(?:-|$)/i.test(v.lang));
   const current = $('nlVoice').value;
