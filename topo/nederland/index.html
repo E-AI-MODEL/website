@@ -67,7 +67,87 @@ main{width:min(1400px,100%);margin:auto;padding:5px clamp(13px,2vw,27px) 30px}
 }
 @media(min-width:701px){body{overflow:auto}.game-grid{min-height:65vh}}
 @media print{body{overflow:visible}.top,main,.credits,.close,.sheet-tools{display:none!important}#sheetLayer{position:static!important;display:block!important;background:white!important;padding:0!important}.modal{box-shadow:none;border:0;max-height:none!important;width:100%!important}.sheet-map{max-height:none!important;overflow:visible!important}.sheet-canvas{width:100%!important}}
-</style><style id="national-map-match-north">
+</style><style id="national-fixed-game-v2">
+/* Full-screen game like the original North-Nederland: no scrolling and no cut-off answers. */
+html:has(body.playing),body.playing{overflow:hidden!important;height:var(--vh,100dvh)!important;overscroll-behavior:none}
+body.playing .top,body.playing .credits{display:none!important}
+body.playing main{width:100%;height:var(--vh,100dvh);max-height:var(--vh,100dvh);overflow:hidden;padding:clamp(7px,1.5vh,14px) clamp(10px,2vw,18px) clamp(10px,1.6vh,18px);display:flex;flex-direction:column}
+body.playing #game{display:flex!important;flex-direction:column;flex:1 1 auto;min-height:0;min-width:0}
+body.playing #game.hide{display:none!important}
+body.playing .game-top{flex:0 0 auto;min-height:44px;margin:0 0 12px}
+body.playing .game-grid{height:auto!important;min-height:0!important;flex:1 1 auto;max-height:100%;grid-template-columns:minmax(0,1.24fr) minmax(0,.76fr)}
+body.playing .game-board{height:auto!important;max-height:none;min-height:0;overflow:hidden}
+body.playing .map-frame{flex:1 1 auto;min-height:0;overflow:hidden}
+body.playing .question-card{min-height:0;max-height:none;overflow:hidden}
+body.playing #answerOptions{min-height:0}
+body.playing .option{overflow:hidden;text-overflow:ellipsis}
+body.playing .question-card .small-links{flex:0 0 auto}
+body.playing .game-grid.shuffle-no-map{align-items:center;justify-content:center}
+body.playing .game-grid.shuffle-no-map .question-card{flex:0 1 auto;width:min(710px,100%);max-height:100%;overflow:hidden}
+@media(max-width:900px) and (orientation:portrait){
+ body.playing main{padding:8px 11px 12px}
+ body.playing .game-top{gap:7px;min-height:47px;margin-bottom:9px}
+ body.playing .game-grid{display:flex!important;flex-direction:column;gap:10px}
+ body.playing .question-card{order:0;flex:0 0 auto;max-height:none!important;height:auto;overflow:hidden;padding:11px 15px 12px;border-radius:24px;box-shadow:5px 6px 0 var(--ink)}
+ body.playing .question-card h2{margin:8px 0 6px;font-size:clamp(24px,6.2vw,33px);line-height:1.04}
+ body.playing .question-card .q-label{font-size:11px;padding:5px 9px}
+ body.playing .question-card p{font-size:13px;line-height:1.16;margin:0 0 7px}
+ body.playing .question-card .small-links{display:flex!important;gap:6px;flex-wrap:nowrap;padding-top:6px;margin-top:auto;justify-content:space-between}
+ body.playing .question-card .small-links button{display:block;font-size:clamp(10px,2.8vw,13px);padding:6px 0;white-space:nowrap}
+ body.playing .question-card .feedback{max-height:57px;overflow:hidden;font-size:12px;line-height:1.25;padding:6px 9px;margin:5px 0}
+ body.playing .question-card .next{font-size:16px;padding:8px;margin:6px 0 0}
+ body.playing .game-board{order:1;flex:1 1 0;min-height:0;height:0!important;border-radius:24px;padding:7px}
+ body.playing .hint-chip{top:13px;left:16px;font-size:clamp(10px,2.7vw,12px);padding:6px 9px}
+ body.playing .game-grid[data-mode="point"] .question-card{height:clamp(147px,22%,183px)}
+ body.playing .game-grid[data-mode="choice"] .question-card,
+ body.playing .game-grid[data-mode="zoom"] .question-card{height:clamp(310px,49%,405px);display:flex;flex-direction:column}
+ body.playing .game-grid[data-mode="choice"] #answerOptions,
+ body.playing .game-grid[data-mode="zoom"] #answerOptions{display:grid;grid-template-rows:repeat(4,minmax(0,1fr));gap:7px;flex:1 1 0;overflow:hidden;min-height:0}
+ body.playing .game-grid[data-mode="choice"] .option,
+ body.playing .game-grid[data-mode="zoom"] .option{min-height:0!important;height:100%;margin:0;padding:4px 12px;font-size:clamp(15px,4.3vw,20px);border-radius:14px;line-height:1.1;box-shadow:0 3px 0 var(--ink);white-space:normal}
+ body.playing .game-grid[data-mode="type"] .question-card,
+ body.playing .game-grid[data-mode="missing"] .question-card{height:clamp(180px,30%,251px)}
+ body.playing .game-grid[data-mode="type"] #typeForm,
+ body.playing .game-grid[data-mode="missing"] #typeForm{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px;align-items:end}
+ body.playing .game-grid[data-mode="type"] #typeForm .type-label,
+ body.playing .game-grid[data-mode="missing"] #typeForm .type-label{grid-column:1/-1}
+ body.playing .typed,body.playing .type-submit{font-size:16px;min-height:43px;padding:8px 10px}
+ body.playing .game-grid.shuffle-no-map{display:flex!important;align-items:center;justify-content:center}
+ body.playing .game-grid.shuffle-no-map .question-card{width:100%;max-height:100%;height:min(100%,610px);min-height:0;display:flex;flex-direction:column;padding:18px 17px}
+ body.playing .game-grid.shuffle-no-map #answerOptions{display:grid;grid-template-rows:repeat(4,minmax(0,1fr));gap:8px;flex:1 1 auto;min-height:0}
+ body.playing .game-grid.shuffle-no-map #answerOptions .option{height:100%;margin:0;padding:5px 11px;font-size:clamp(16px,4.1vw,20px)}
+ body.playing .game-grid.shuffle-no-map .question-card h2{font-size:clamp(26px,7vw,37px)}
+ body.playing .game-grid.shuffle-no-map .small-links{padding-top:10px}
+ body.playing.keyboard-open .game-top{display:none!important}
+ body.playing.keyboard-open main{padding-top:5px;padding-bottom:5px}
+ body.playing.keyboard-open .game-grid{gap:8px}
+ body.playing.keyboard-open .question-card{height:auto!important;min-height:0;flex:0 0 auto;padding:10px 12px 9px;overflow:hidden}
+ body.playing.keyboard-open .question-card h2{font-size:clamp(20px,5.6vw,27px);margin:0 0 5px}
+ body.playing.keyboard-open .question-card .q-label,body.playing.keyboard-open .question-card p,
+ body.playing.keyboard-open .question-card .small-links{display:none!important}
+ body.playing.keyboard-open .game-grid .type-label{position:absolute;width:1px;height:1px;clip:rect(0,0,0,0);overflow:hidden}
+ body.playing.keyboard-open .game-board{height:0!important;flex:1 1 0;min-height:68px}
+}
+@media(max-width:900px) and (orientation:landscape){
+ body.playing .game-grid{display:grid;grid-template-columns:minmax(0,1.22fr) minmax(0,.78fr);gap:10px}
+ body.playing .game-board{height:auto!important;min-height:0}
+ body.playing .question-card{height:auto!important;max-height:none;overflow:hidden;min-height:0;padding:10px}
+ body.playing .question-card h2{font-size:clamp(18px,2.7vw,29px);margin:5px 0}
+ body.playing .question-card p{font-size:12px;margin:0 0 5px}
+ body.playing .question-card .small-links{padding-top:5px}
+ body.playing .game-grid[data-mode="choice"] #answerOptions,
+ body.playing .game-grid[data-mode="zoom"] #answerOptions{display:grid;grid-template-rows:repeat(4,minmax(0,1fr));gap:4px;flex:1;min-height:0}
+ body.playing .game-grid[data-mode="choice"] .option,
+ body.playing .game-grid[data-mode="zoom"] .option{padding:4px;margin:0;min-height:0}
+}
+@media(max-height:620px) and (orientation:portrait){
+ body.playing .game-grid[data-mode="choice"] .question-card,
+ body.playing .game-grid[data-mode="zoom"] .question-card{height:clamp(230px,57%,310px)}
+ body.playing .question-card .q-label,body.playing .question-card p{display:none}
+ body.playing .question-card h2{font-size:21px;margin:0 0 6px}
+}
+</style>
+<style id="national-map-match-north">
 /* Map appearance matches the existing Noord-Nederland map; geometry stays CBS/PDOK. */
 .map-art{font-family:ui-rounded,'Trebuchet MS',system-ui,sans-serif;user-select:none;touch-action:manipulation}
 .map-art .province-shape{stroke:#c6a975;stroke-width:2.8;stroke-linecap:round;stroke-linejoin:round}
@@ -286,7 +366,9 @@ function draw(){
  if(index>=queue.length){finish();return;}
  hintStep=0;attempts=0;done=false;
  const x=current();currentMode=selectMode(x);
- document.querySelector('#game .game-grid').classList.toggle('shuffle-no-map',currentMode==='quiz');
+ const layout=document.querySelector('#game .game-grid');
+ layout.dataset.mode=currentMode;
+ layout.classList.toggle('shuffle-no-map',currentMode==='quiz');
  $('kind').textContent=x.revisit?'NOG EENS!':({point:'AANWIJZEN',choice:'KIEZEN',type:'TYPEN',missing:'WAT MIST ER?',zoom:'INGEZOOMD',quiz:'ZONDER KAART'})[currentMode];
  $('next').classList.add('hide');$('feedback').classList.add('hide');$('help').style.visibility=noHints?'hidden':'visible';$('help').textContent='Help me!';
  $('skip').style.visibility='visible';$('answerOptions').innerHTML='';
