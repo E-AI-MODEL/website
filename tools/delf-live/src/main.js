@@ -265,6 +265,7 @@ function panel(open) {
   if (!open) stopMicrophoneCheck();
   document.body.classList.toggle('panel-visible', open);
   $('panel').inert = !open;
+  stage.inert = open;
   $('panel').classList.toggle('open', open);
   $('panel').setAttribute('aria-hidden', open ? 'false' : 'true');
   const trigger = $('mobileSettings');
@@ -929,7 +930,9 @@ $('testTranslate').onclick = async () => {
 };
 document.addEventListener('keydown', event => {
   if (event.key === 'Escape') { event.preventDefault(); panel(!$('panel').classList.contains('open')); return; }
-  if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement || event.target instanceof HTMLSelectElement) return;
+  // Tijdens de studio bedienen pijltoetsen de tabs, nooit de overname.
+  if ($('panel').classList.contains('open')) return;
+  if (event.target instanceof HTMLButtonElement || event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement || event.target instanceof HTMLSelectElement) return;
   if (event.code === 'ArrowRight') {
     event.preventDefault();
     if (phase === 'live' && !closing) goInterrupt();

@@ -72,3 +72,10 @@ test('geen vooraf gemaakte vertaaltekst op het podium door studio-proef',()=>{
   assert.ok(main.includes('translateFinal(words)'));
   assert.ok(main.includes('translatePreview(interim)'));
 });
+
+test('pijltoetsen in Cloud Studio kunnen de AI niet overnemen',()=>{
+  assert.ok(main.includes("if ($('panel').classList.contains('open')) return;"));
+  assert.ok(main.includes('stage.inert = open;'));
+  const keyboard = main.slice(main.lastIndexOf("document.addEventListener('keydown'"));
+  assert.ok(keyboard.indexOf("if ($('panel').classList.contains('open')) return;") < keyboard.indexOf("if (event.code === 'ArrowRight')"));
+});

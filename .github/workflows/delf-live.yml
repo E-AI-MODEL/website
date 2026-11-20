@@ -54,7 +54,7 @@ jobs:
       - name: Checkout tested DELF version
         uses: actions/checkout@v4
         with:
-          ref: 446e5e24929521f70c94092bd07cf959a0c92794
+          ref: ${{ github.sha }}
 
       - name: Node.js
         uses: actions/setup-node@v4
@@ -164,7 +164,9 @@ jobs:
                       assert res.status == 200
                   # Hosting may inject analytics or modify markup after upload.
                   # Check the app identity and exact versioned asset references instead.
-                  markers = (b'<title>DELF scolaire | Live</title>',
+                  title = re.search(rb'<title>[^<]+</title>', expected)
+                  assert title, 'Built DELF app has no title'
+                  markers = (title.group(0),
                              b'id="displayText"', b'id="speechText"')
                   if all(marker in page for marker in markers) and all(asset.encode() in page for asset in assets):
                       break
