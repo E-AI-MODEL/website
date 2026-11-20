@@ -7,7 +7,7 @@ TOOL = ROOT / "tools" / "ict-scan"
 
 class ICTScanTests(unittest.TestCase):
     def test_files_exist(self):
-        for filename in ("index.html", "style.css", "monitor.css", "app.js", "enhancements.js", "github-sync.js", "rail-drawer.js", "visual-explorer.js", "visual-explorer.css", "record-cards.js", "record-github.js", "record-cards.css", "frameworks.json", "emmaus-logo.svg", "README.md"):
+        for filename in ("index.html", "style.css", "monitor.css", "app.js", "enhancements.js", "github-sync.js", "rail-drawer.js", "visual-explorer.js", "visual-explorer.css", "record-cards.js", "record-github.js", "record-cards.css", "frameworks.json", "answer-engine.js", "answer-engine.css", "emmaus-logo.svg", "README.md"):
             self.assertTrue((TOOL / filename).is_file(), filename)
 
     def test_secret_not_security_and_litespeed_404_middle_zero(self):
@@ -49,6 +49,8 @@ class ICTScanTests(unittest.TestCase):
         self.assertIn('href="./visual-explorer.css"', html)
         self.assertIn('src="./record-cards.js"', html)
         self.assertIn('src="./record-github.js"', html)
+        self.assertIn('src="./answer-engine.js"', html)
+        self.assertIn('href="./answer-engine.css"', html)
         self.assertIn('href="./record-cards.css"', html)
         self.assertIn('href="./monitor.css"', html)
         self.assertIn('src="./emmaus-logo.svg"', html)
