@@ -173,6 +173,7 @@ selectView=function(view){
   document.querySelectorAll('.rail-button[data-view],.work-tab[data-view]').forEach(b=>b.classList.toggle('active',b.dataset.view===view));
 };
 function renderGlobalSuggestions(){
+  if(window.EmmausAnswerEngine)return window.EmmausAnswerEngine.render();
   const q=normalize($('globalSearch').value),host=$('globalResults');
   if(q.length<2){host.hidden=true;host.replaceChildren();return;}
   const sections=[['Toepassingen','apps',array(state.apps),x=>[x.id,x.name,x.description]],['AI-functies','ai',array(state.ai),x=>[x.id,x.name,x.product,x.action]],['Entra-koppelingen','connections',array(state.connections),x=>[x.id,x.name,x.matched]],['Controles','findings',allFindings(),x=>[x.id,x.name,x.explanation]]];
