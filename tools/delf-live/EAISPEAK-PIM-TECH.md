@@ -29,7 +29,7 @@ Dat is **geen bewijs** dat PiM al een vrije meertalige stemconversatie ondersteu
 - De bestaande NL→FR-ondertiteling blijft ongewijzigd.
 - Vrij praten gebruikt momenteel de externe Puter-route. Dat is geen in-browser LLM en het gesprek is nog niet end-to-end gevalideerd.
 - Een browser-LLM via WebLLM/Transformers.js is een volgende afzonderlijke implementatie, niet al functioneel door dit document.
-- De zes vertaalrichtingen NL/EN/FR zijn een ontwerpdoel. Realisatie en browserproeven volgen per route.
+- Vrij praten ondersteunt de zes combinaties van Nederlands, Engels en Frans als gespreksinstelling; alle zes live-ondertitelingsroutes zijn nog niet gebouwd. Opnames en de gescripte DELF-voorstelling blijven onafhankelijk.
 
 ## Adres
 
