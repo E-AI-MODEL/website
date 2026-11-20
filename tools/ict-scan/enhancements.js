@@ -104,7 +104,7 @@ function sheetsForScope(scope){
   }
   if(scope==='privacy'){
     const s=scopedSheet('FG broninformatie','Verzamelde DPIA-onderwerpen voor FG-advies en onafhankelijk toezicht. Geen FG-oordeel of besluit door deze schoolscan.');
-    rkpis(s,[['DPIA-BRONITEMS',state.dpia.size,'Brononderwerpen, geen uitgevoerde DPIAs'],['PRIVACYBRONNEN',legalSources.length,'Actuele versies controleren'],['FG-ADVIES',0,'Niet aangeleverd in deze inventaris'],['FG-BESLUIT',0,'De FG neemt geen besluit; bevoegd gezag verantwoordelijk']]);
+    rkpis(s,[['DPIA-BRONITEMS',state.dpia.size,'Brononderwerpen, geen uitgevoerde DPIAs'],['PRIVACYBRONNEN',legalSources.length,'Actuele versies controleren'],['FG-ADVIES','Niet aangeleverd','Niet beoordeeld door deze scan'],['BESLUIT GEZAG','Niet aangeleverd','Bevoegd gezag blijft verantwoordelijk']]);
     rsection(s,'DPIA EN ONDERBOUWING');for(const x of state.dpia.values()){rgroup(s,x.id,x.name,x.assessment);rdetail(s,'Status volgens bron',x.assessment,true);rdetail(s,'Beschrijving',x.description,true);rdetail(s,'Lokaal',x.local,true);rdetail(s,'Bron',(x.sources||[]).join('; '),true);}
     rsection(s,'WETGEVING EN BRONNEN');for(const x of legalSources){rgroup(s,'BRON',x.name,x.url);rdetail(s,'Onderwerp',x.description,true);}return [s];
   }
