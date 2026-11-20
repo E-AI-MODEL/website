@@ -1,12 +1,6 @@
 name: Publiceer alleen LO Aanvalslab
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'tools/lo-aanvalslab/index.html'
-      - 'tools/lo-aanvalslab/onderbouwing/index.html'
-      - '.github/workflows/deploy-lo-quick.yml'
   workflow_dispatch:
 
 permissions:
