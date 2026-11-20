@@ -1,17 +1,19 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import {SERVICES,STATUS,validateLocalEndpoint,probeLocalModel,classifyError} from '../src/system-probes.mjs';
+import {SERVICES,STATUS,listLocalModels,validateLocalEndpoint,probeLocalModel,classifyError} from '../src/system-probes.mjs';
 
 test('geen automatische verbinding en duidelijke beginstatus',()=>{
-  assert.equal(SERVICES.length,7);
+  assert.equal(SERVICES.length,8);
   assert.equal(STATUS.idle,'idle');
   const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');
   const panel=readFileSync(new URL('../src/system-status.js',import.meta.url),'utf8');
   const main=readFileSync(new URL('../src/main.js',import.meta.url),'utf8');
   assert.match(html,/src\/system-status\.js/);
   assert.match(panel,/addEventListener\('click',async\(\)=>/);
-  assert.match(panel,/probeLocalModel\(id,\$\('systemEndpoint'\)\.value\)/);
+  assert.match(panel,/probeLocalModel\(id,\$\('systemEndpoint'\)\.value,modelSelect.value\)/);
+  assert.match(panel,/systemDiscover/);
+  assert.match(panel,/systemConnect'\)\.disabled=true/);
   assert.match(panel,/Niet gecontroleerd/);
   assert.match(panel,/Laatste gebeurtenissen/);
   assert.match(main,/componentStatus\('translationStatus','idle','Browsermodel geladen/);
@@ -70,4 +72,23 @@ test('verbindingsfouten en timeouts krijgen een hersteladvies',()=>{
   assert.match(network.advice,/CORS/);
   assert.equal(classifyError(new Error('operation aborted'),'lmstudio').code,'SYS-TIMEOUT-001');
   assert.equal(classifyError(new Error('HTTP 404'),'ollama').code,'SYS-MODEL-004');
+});
+
+test('llama.cpp: modelnamen en geselecteerd model',async()=>{
+  const original=globalThis.fetch;
+  const bodies=[];
+  globalThis.fetch=async (url,options)=>{
+    if(options?.body)bodies.push(JSON.parse(options.body));
+    return {ok:true,json:async()=>url.endsWith('/v1/models')
+      ? {data:[{id:'first'},{id:'second'}]}
+      : {choices:[{message:{content:'OK'}}]}};
+  };
+  try{
+    const models=await listLocalModels('llamacpp','http://localhost:8080/');
+    assert.deepEqual(models,['first','second']);
+    const result=await probeLocalModel('llamacpp','http://localhost:8080/','second');
+    assert.equal(result.model,'second');
+    assert.equal(bodies[0].model,'second');
+    await assert.rejects(()=>probeLocalModel('llamacpp','http://localhost:8080/','absent'),/staat niet op de server/);
+  } finally {globalThis.fetch=original;}
 });
