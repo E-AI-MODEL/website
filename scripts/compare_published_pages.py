@@ -37,6 +37,10 @@ def owner(path: str) -> str:
     for prefix, label in SEPARATE.items():
         if path.startswith(prefix + "/"):
             return label
+    if path.startswith("content/"):
+        return "Bronkopie op de server (publicatiebron, geen nieuwe pagina)"
+    if path.startswith("tools/eaispeak/"):
+        return "EAIspeak (staat live, maar niet in huidige main-build)"
     return "Algemene website"
 
 
@@ -124,7 +128,7 @@ def compare(root: Path, ftp_listing: str, http_limit: int = 30, max_depth: int |
         if len(page["grams"]) >= 30:
             expected.append((url_for(relative), page))
     pages = [{"bestand": p, "url": url_for(p), "beheer": owner(p)} for p in only_remote]
-    candidates = [item for item in pages if item["beheer"] == "Algemene website"]
+    candidates = [item for item in pages if not any(item["bestand"].startswith(prefix + "/") for prefix in SEPARATE)]
     selected = candidates[:max(0, min(http_limit, 60))]
     if selected:
         with concurrent.futures.ThreadPoolExecutor(max_workers=5) as pool:
@@ -138,8 +142,10 @@ def compare(root: Path, ftp_listing: str, http_limit: int = 30, max_depth: int |
             "html_op_ftp": len(raw), "html_op_website_ftp": len(remote),
             "html_in_build": len(built), "dezelfde_bestandsroute": len(remote & built),
             "alleen_ftp": len(only_remote), "alleen_build": len(only_build),
-            "apart_gepubliceerd": sum(owner(p) != "Algemene website" for p in only_remote),
-            "alleen_ftp_algemene_site": len(candidates),
+            "apart_gepubliceerd": sum(any(p.startswith(prefix + "/") for prefix in SEPARATE) for p in only_remote),
+            "bronkopieen_op_ftp": sum(p.startswith("content/") for p in only_remote),
+            "eaispeak_buiten_build": sum(p.startswith("tools/eaispeak/") for p in only_remote),
+            "niet_apart_gepubliceerd": len(candidates),
             "via_http_gecontroleerd": len(selected),
             "http_niet_gecontroleerd": len(candidates) - len(selected),
             "afgeschermd_niet_gerapporteerd": len(restricted),
@@ -163,7 +169,9 @@ def markdown(result: dict) -> str:
              f"**FTPS:** {c['html_op_ftp']} HTML-bestanden. **Websitebuild:** {c['html_in_build']}. "
              f"**Zelfde pad:** {c['dezelfde_bestandsroute']}.",
              f"**Alleen op server:** {c['alleen_ftp']} (waarvan {c['apart_gepubliceerd']} apart gepubliceerd). "
-             f"**Alleen in build:** {c['alleen_build']}.", "",
+             f"**Alleen in build:** {c['alleen_build']}.",
+             f"Bronkopieën onder content/: **{c['bronkopieen_op_ftp']}**. "
+             f"EAIspeak buiten de huidige main-build: **{c['eaispeak_buiten_build']}**.", "",
              "| Type | HTML-bestand | Controle |", "|---|---|---|"]
     for item in result["alleen_ftp"][:90]:
         note = item["beheer"]
