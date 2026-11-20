@@ -2837,6 +2837,14 @@ def build(sources: Path, out: Path) -> None:
     if leif_source.is_dir():
         shutil.copytree(leif_source, out / "leif", dirs_exist_ok=True)
     finish_generated_pages(out)
+    # Standalone local-only school ICT scan. Not part of navigation or sitemap.
+    ict_scan_source = repo_root / "tools" / "ict-scan"
+    if ict_scan_source.is_dir():
+        for name in ("index.html", "style.css", "app.js"):
+            if not (ict_scan_source / name).is_file():
+                raise FileNotFoundError(f"Missing local ICT scan asset: {name}")
+        shutil.copytree(ict_scan_source, out / "tools" / "ict-scan", dirs_exist_ok=True)
+
     # EAIgit is a separate browser wizard: publish only its four intended pages.
     # Do not let the general site generator rewrite their UI or JavaScript.
     eai_routes = (
