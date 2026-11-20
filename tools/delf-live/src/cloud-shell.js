@@ -14,7 +14,7 @@ let revealObserver = null;
 let idleControlsTimer = null;
 let idleCaptionsTimer = null;
 let idleStudioTimer = null;
-let captionIdleSeconds = 12;
+let captionIdleSeconds = 6;
 let editingId = null;
 let lastOpenState = null;
 
@@ -22,7 +22,7 @@ try {
   const stored = localStorage.getItem('eai-cloud-caption-idle-seconds');
   if (stored !== null) {
     const value = Number(stored);
-    if ([0,8,12,20,30].includes(value)) captionIdleSeconds = value;
+    if ([0,4,6,10,20].includes(value)) captionIdleSeconds = value;
   }
 } catch {}
 
@@ -35,13 +35,14 @@ function markActivity() {
   clearTimeout(idleStudioTimer);
   idleControlsTimer = setTimeout(() => {
     if (!panel.classList.contains('open')) document.body.classList.add('cloud-idle');
-  }, 7200);
+  }, 3400);
   idleStudioTimer = setTimeout(() => {
     if (panel.classList.contains('open') &&
-      !['INPUT','TEXTAREA','SELECT'].includes(document.activeElement?.tagName)) {
+      !['INPUT','TEXTAREA','SELECT'].includes(document.activeElement?.tagName) &&
+      !(document.activeElement?.isContentEditable)) {
       scroll.classList.add('is-idle');
     }
-  }, 22000);
+  }, 4600);
   if (captionIdleSeconds > 0 && !reduceMotion.matches && stage.dataset.phase === 'live') {
     idleCaptionsTimer = setTimeout(() => {
       if (stage.dataset.phase === 'live' && !panel.classList.contains('open')) {
@@ -88,7 +89,15 @@ function activateView(name, options={focus:false}) {
     item.setAttribute('aria-selected', String(active));
     item.tabIndex = active ? 0 : -1;
   }
-  for (const page of pages) page.hidden = page.dataset.studioPage !== name;
+  for (const page of pages) {
+    const active = page.dataset.studioPage === name;
+    page.hidden = !active;
+    if (active) {
+      page.classList.remove('mist-page-arriving');
+      void page.offsetWidth;
+      page.classList.add('mist-page-arriving');
+    } else page.classList.remove('mist-page-arriving');
+  }
   scroll.scrollTop = 0;
   if (options.focus) tab.focus({preventScroll:true});
   markActivity();
@@ -161,9 +170,7 @@ function syncSessionUI() {
     // Do not overwrite changes in the editor while the user is typing.
     return;
   }
-  report(chosen.id === 'delf'
-    ? 'De goedgekeurde DELF-tekst staat vast. Je kunt voor een volgende gelegenheid een nieuwe sessie maken.'
-    : 'Deze sessie is alleen op dit apparaat bewaard. Exporteer de tekst om hem mee te nemen.','');
+  report(chosen.id === 'delf' ? 'DELF · vaste tekst' : 'Lokaal bewaard · export mogelijk','');
 }
 sessionSelect.addEventListener('change',() => {
   if (!canEditSession()) { syncSessionUI(); return; }
@@ -263,7 +270,7 @@ const captionSelect = $('idleCaptionSeconds');
 captionSelect.value = String(captionIdleSeconds);
 captionSelect.addEventListener('change',() => {
   const n=Number(captionSelect.value);
-  if (![0,8,12,20,30].includes(n)) return;
+  if (![0,4,6,10,20].includes(n)) return;
   captionIdleSeconds=n;
   try {localStorage.setItem('eai-cloud-caption-idle-seconds',String(n));} catch {}
   markActivity();

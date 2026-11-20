@@ -41,35 +41,35 @@
   </nav>
   <div class="studio-scroll" id="studioScroll">
     <div class="studio-page" id="page-podium" role="tabpanel" aria-labelledby="tab-podium" data-studio-page="podium">
-      <div class="studio-hero cloud-reveal"><span class="studio-overline">PODIUM / LIVE</span><h1 class="cloud-heading">Ruimte voor je woorden.</h1>
-        <p class="cloud-intro">Jij spreekt Nederlands. Het Frans verschijnt rustig in beeld. Tijdens de overname zie je alleen de stemlijnen.</p></div>
+      <div class="studio-hero cloud-reveal"><span class="studio-overline">PODIUM / LIVE</span><h1 class="cloud-heading">Podium</h1>
+        <p class="cloud-intro">Jij spreekt. Het Frans verschijnt.</p></div>
       <div class="studio-status cloud-reveal" role="status"><span class="status-breath" aria-hidden="true"></span><p class="feedback" id="phaseStatus">Klaar om te beginnen</p></div>
-      <p class="feedback studio-live-feedback cloud-reveal" id="runtimeStatus" aria-live="assertive">Open Taal en Stem om alles vooraf te testen.</p>
+      <p class="feedback studio-live-feedback cloud-reveal" id="runtimeStatus" aria-live="assertive">Controleer eerst Taal en Stem.</p>
       <div class="studio-action-grid cloud-reveal">
-        <button id="start" class="action studio-action studio-action-emphasis">Start / hervat ondertiteling <span class="action-stroke" aria-hidden="true"></span></button>
-        <button id="interrupt" class="action studio-action">AI neemt over <span class="action-stroke" aria-hidden="true"></span></button>
+        <button id="start" class="action studio-action studio-action-emphasis">Start ondertiteling <span class="action-stroke" aria-hidden="true"></span></button>
+        <button id="interrupt" class="action studio-action">Overname <span class="action-stroke" aria-hidden="true"></span></button>
       </div>
       <div class="studio-action-grid studio-secondary-actions cloud-reveal">
-        <button id="panic" class="action studio-action studio-action-quiet">Alles stoppen</button>
-        <button id="reset" class="action studio-action studio-action-quiet">Opnieuw beginnen</button>
+        <button id="panic" class="action studio-action studio-action-quiet">Stop</button>
+        <button id="reset" class="action studio-action studio-action-quiet">Opnieuw</button>
       </div>
-      <p class="studio-aside cloud-reveal">MacBook: 1 om te starten, → voor de overname, Esc voor de studio. Op je iPhone gebruik je de knoppen hierboven.</p>
+      <p class="studio-aside cloud-reveal">1 starten · → overname · Esc studio</p>
     </div>
 
     <div class="studio-page" id="page-taal" role="tabpanel" aria-labelledby="tab-taal" data-studio-page="taal" hidden>
-      <div class="studio-hero cloud-reveal"><span class="studio-overline">TAAL / NEDERLANDS → FRANS</span><h1 class="cloud-heading">Wat jij zegt, verschijnt in het Frans.</h1>
-        <p class="cloud-intro">Controleer eerst wat je iPhone of MacBook werkelijk herkent. Laad daarna de Franse vertaling.</p></div>
+      <div class="studio-hero cloud-reveal"><span class="studio-overline">NL → FR</span><h1 class="cloud-heading">Taal</h1>
+        <p class="cloud-intro">Van je stem naar Franse tekst.</p></div>
       <section class="studio-section cloud-reveal"><div class="studio-section-top"><span class="studio-section-no">01</span><h2>Microfoon</h2></div>
-        <p class="studio-support">Spreek een Nederlandse zin uit. De herkende woorden zie je hieronder.</p>
-        <button id="prepareMic" class="action studio-action">Nederlandse spraak testen</button>
+        <p class="studio-support">Spreek een korte zin.</p>
+        <button id="prepareMic" class="action studio-action">Test microfoon</button>
         <p class="feedback" id="microphoneStatus" aria-live="polite">Nog niet getest</p>
       </section>
       <section class="studio-section cloud-reveal"><div class="studio-section-top"><span class="studio-section-no">02</span><h2>Vertaling</h2></div>
-        <p class="studio-support">De browser kiest een geschikte vertaalroute. De eerste keer kan een taalmodel worden gedownload.</p>
-        <button id="prepareTranslate" class="action studio-action">Franse vertaling laden</button>
+        <p class="studio-support">Eerste keer laden via wifi.</p>
+        <button id="prepareTranslate" class="action studio-action">Laad vertaling</button>
         <p class="feedback" id="translationStatus" aria-live="polite">Nog niet geladen</p>
       </section>
-      <details class="studio-disclosure cloud-reveal"><summary>Een zin proberen</summary>
+      <details class="studio-disclosure cloud-reveal"><summary>Vertaling proberen</summary>
         <label class="studio-field">Nederlandse tekst<textarea id="testDutch" rows="3">Goedemiddag allemaal. Vandaag feliciteren we leerlingen met hun DELF scolaire-diploma.</textarea></label>
         <button id="testTranslate" class="action studio-action">Vertaal deze zin</button>
         <p id="translationTestResult" class="studio-translation-result" aria-live="polite"></p>
@@ -77,49 +77,49 @@
     </div>
 
     <div class="studio-page" id="page-stem" role="tabpanel" aria-labelledby="tab-stem" data-studio-page="stem" hidden>
-      <div class="studio-hero cloud-reveal"><span class="studio-overline">STEM / AI</span><h1 class="cloud-heading">Laat de stem horen.</h1>
-        <p class="cloud-intro">De Franse stem wordt op het apparaat gemaakt. Een Nederlandse stem onderbreekt je en geeft het woord later terug.</p></div>
+      <div class="studio-hero cloud-reveal"><span class="studio-overline">AUDIO</span><h1 class="cloud-heading">Stem</h1>
+        <p class="cloud-intro">Frans en Nederlands op jouw apparaat.</p></div>
       <section class="studio-section cloud-reveal"><div class="studio-section-top"><span class="studio-section-no">01</span><h2>Frans</h2></div>
-        <button id="loadPublicFrench" class="action studio-action">Franse AI-stem laden</button>
-        <button id="previewFrench" class="action studio-action studio-action-quiet">Franse stem beluisteren</button>
-        <p class="feedback" id="frenchStatus" aria-live="polite">Phonon 40M is nog niet geladen. Gebruik bij voorkeur wifi.</p>
+        <button id="loadPublicFrench" class="action studio-action">Laad Franse stem</button>
+        <button id="previewFrench" class="action studio-action studio-action-quiet">Luister Frans</button>
+        <p class="feedback" id="frenchStatus" aria-live="polite">Nog niet geladen</p>
       </section>
       <section class="studio-section cloud-reveal"><div class="studio-section-top"><span class="studio-section-no">02</span><h2>Nederlands</h2></div>
-        <label class="studio-field">Onderbrekingsstem<select id="nlVoice"><option value="">Kies een aanwezige stem</option></select></label>
-        <button id="previewDutch" class="action studio-action studio-action-quiet">Nederlandse stem beluisteren</button>
-        <p class="feedback" id="dutchStatus">Kies een stem voor de onderbreking en teruggave.</p>
+        <label class="studio-field">Nederlandse stem<select id="nlVoice"><option value="">Kies een aanwezige stem</option></select></label>
+        <button id="previewDutch" class="action studio-action studio-action-quiet">Luister Nederlands</button>
+        <p class="feedback" id="dutchStatus">Kies een stem</p>
       </section>
-      <details class="studio-disclosure cloud-reveal advanced-setting"><summary>Eigen Frans model</summary>
-        <p class="studio-support">Je kunt ook de afgeschermde Franse checkpointmap van Gradium gebruiken. De openbare stem hierboven werkt zonder map.</p>
+      <details class="studio-disclosure cloud-reveal advanced-setting"><summary>Eigen stemmodel</summary>
+        <p class="studio-support">Alleen voor een eigen modelbestand.</p>
         <label class="studio-field">Checkpointmap<input id="modelFolder" type="file" webkitdirectory directory multiple></label>
         <button id="loadFrench" class="action studio-action">Eigen model laden</button>
       </details>
     </div>
 
     <div class="studio-page" id="page-sessie" role="tabpanel" aria-labelledby="tab-sessie" data-studio-page="sessie" hidden>
-      <div class="studio-hero cloud-reveal"><span class="studio-overline">SESSIE / TEKST</span><h1 class="cloud-heading">Elke gelegenheid een eigen verhaal.</h1>
-        <p class="cloud-intro">De huidige DELF-speech staat vast. Voor een andere gelegenheid maak je een nieuwe sessie. Je bewaart die op dit apparaat.</p></div>
-      <section class="studio-section cloud-reveal"><div class="studio-section-top"><span class="studio-section-no">01</span><h2>Huidige sessie</h2></div>
+      <div class="studio-hero cloud-reveal"><span class="studio-overline">TEKST</span><h1 class="cloud-heading">Sessies</h1>
+        <p class="cloud-intro">Kies of bewaar een tekst.</p></div>
+      <section class="studio-section cloud-reveal"><div class="studio-section-top"><span class="studio-section-no">01</span><h2>Gekozen tekst</h2></div>
         <label class="studio-field">Kies een sessie<select id="sessionSelect"><option value="delf">DELF scolaire</option></select></label>
         <div class="studio-action-grid">
-          <button id="newSession" class="action studio-action">Nieuwe sessie</button>
-          <button id="exportSession" class="action studio-action studio-action-quiet">Exporteer tekst</button>
+          <button id="newSession" class="action studio-action">Nieuwe tekst</button>
+          <button id="exportSession" class="action studio-action studio-action-quiet">Exporteren</button>
         </div>
         <p id="sessionStatus" class="feedback" aria-live="polite">DELF scolaire is klaar voor gebruik.</p>
         <details class="studio-disclosure">
-          <summary>Sessies beheren</summary>
+          <summary>Beheer</summary>
           <div class="studio-action-grid">
             <button id="editSession" class="action studio-action studio-action-quiet">Bewerk sessie</button>
             <button id="deleteSession" class="action studio-action studio-action-quiet">Verwijder sessie</button>
             <button id="importSession" class="action studio-action studio-action-quiet">Importeer bestand</button>
             <input id="sessionImportFile" type="file" accept=".json,application/json" hidden>
           </div>
-          <p class="studio-support">Sessies blijven op dit apparaat. Via export en import neem je ze mee naar een andere browser.</p>
+          <p class="studio-support">Bewaar een bestand om je teksten mee te nemen.</p>
         </details>
       </section>
       <div id="sessionEditor" class="session-editor cloud-reveal" hidden>
-        <div class="studio-section-top"><span class="studio-section-no">02</span><h2>Nieuwe sessie maken</h2></div>
-        <p class="studio-support">Deze tekst blijft vast tijdens de overname. Je eigen opening en slot worden altijd live vertaald, niet van papier overgenomen.</p>
+        <div class="studio-section-top"><span class="studio-section-no">02</span><h2>Tekst maken</h2></div>
+        <p class="studio-support">Je opening en slot blijven live. De AI-tekst staat vast.</p>
         <label class="studio-field">Naam van de sessie<input id="sessionTitle" type="text" maxlength="80" placeholder="Bijvoorbeeld: diploma-uitreiking"></label>
         <label class="studio-field">Jouw opening<textarea id="editOpening" rows="4"></textarea></label>
         <label class="studio-field">Jouw reactie<textarea id="editReply" rows="2"></textarea></label>
@@ -129,7 +129,7 @@
         <label class="studio-field">Jouw slot<textarea id="editClosing" rows="4"></textarea></label>
         <div class="studio-action-grid"><button id="saveSession" class="action studio-action">Sessie bewaren</button><button id="cancelSession" class="action studio-action studio-action-quiet">Annuleren</button></div>
       </div>
-      <details class="studio-disclosure cloud-reveal"><summary>Bekijk de teksten van deze sessie</summary>
+      <details class="studio-disclosure cloud-reveal"><summary>Teksten bekijken</summary>
         <label class="studio-field">Jouw opening<textarea id="openingText" rows="7" readonly></textarea></label>
         <p class="studio-support">Jouw reactie: <span id="replyText"></span></p>
         <label class="studio-field">Jouw slot<textarea id="closingText" rows="7" readonly></textarea></label>
@@ -138,10 +138,10 @@
     </div>
 
     <div class="studio-page" id="page-meer" role="tabpanel" aria-labelledby="tab-meer" data-studio-page="meer" hidden>
-      <div class="studio-hero cloud-reveal"><span class="studio-overline">MEER / CONTROLE</span><h1 class="cloud-heading">Voor de laatste controle.</h1>
-        <p class="cloud-intro">De voorstelling loopt normaal met één overnametoets. Deze handmatige stappen zijn alleen voor testen of als iets niet gaat zoals gepland.</p></div>
+      <div class="studio-hero cloud-reveal"><span class="studio-overline">OPTIES</span><h1 class="cloud-heading">Meer</h1>
+        <p class="cloud-intro">Handmatige stappen en voorkeuren.</p></div>
       <section class="studio-section cloud-reveal">
-        <div class="studio-section-top"><span class="studio-section-no">01</span><h2>Handmatig verdergaan</h2></div>
+        <div class="studio-section-top"><span class="studio-section-no">01</span><h2>Bediening</h2></div>
         <div class="studio-action-grid">
           <button id="french" class="action studio-action studio-action-quiet">Franse speech</button>
           <button id="handback" class="action studio-action studio-action-quiet">Woord teruggeven</button>
@@ -151,12 +151,12 @@
       </section>
       <section class="studio-section cloud-reveal">
         <div class="studio-section-top"><span class="studio-section-no">02</span><h2>Status</h2></div>
-        <label class="studio-field">Franse tekst verdampt na
+        <label class="studio-field">Tekst vervaagt na
           <select id="idleCaptionSeconds">
-            <option value="8">8 seconden stilte</option>
-            <option value="12" selected>12 seconden stilte</option>
-            <option value="20">20 seconden stilte</option>
-            <option value="30">30 seconden stilte</option>
+            <option value="4">4 seconden</option>
+            <option value="6" selected>6 seconden</option>
+            <option value="10">10 seconden</option>
+            <option value="20">20 seconden</option>
             <option value="0">Nooit</option>
           </select>
         </label>
