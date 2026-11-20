@@ -182,7 +182,7 @@ body.playing .game-grid.shuffle-no-map .question-card{flex:0 1 auto;width:min(71
 .map-art .province-shape{stroke:#c6a975;stroke-width:2;stroke-linejoin:round}
 .map-art .city-focus{stroke:#018b7c;stroke-width:5;fill:#31caa0;fill-opacity:.25}
 .map-art .map-text{pointer-events:none}
-</style><style id="country-land-context">.map-art .surrounding-land{fill:#dfe5dd;stroke:#bfccbf;stroke-width:2;stroke-linejoin:round;pointer-events:none;fill-rule:evenodd}.map-art .province-shape{fill-rule:evenodd}</style></head><body>
+</style><style id="country-land-context">.map-art .surrounding-land{fill:#dfe5dd;stroke:#bfccbf;stroke-width:2;stroke-linejoin:round;pointer-events:none;fill-rule:evenodd}.map-art .province-shape{fill-rule:evenodd}</style><style id="choice-inline-feedback">body.playing .game-grid[data-mode="choice"] .question-card #sub,body.playing .game-grid[data-mode="zoom"] .question-card #sub{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;height:19px;flex:0 0 19px;margin-bottom:7px}body.playing #sub.answer-wrong{color:#a73e37}</style></head><body>
 <header class="top"><a href="/topo/" class="logo">Let’s go <span>TOPO!</span></a><a href="/topo/instellingen/" class="other">Instellingen</a></header>
 <main>
 <section id="loading" class="result"><span class="sticker">HEEL NEDERLAND</span><h2>Kaart laden…</h2><p>De twaalf provincies komen eraan.</p></section>
@@ -433,6 +433,7 @@ function selectMode(x){
 function draw(){
  if(index>=queue.length){finish();return;}
  hintStep=0;attempts=0;done=false;
+ $('sub').classList.remove('answer-wrong');
  const x=current();currentMode=selectMode(x);
  const layout=document.querySelector('#game .game-grid');
  layout.dataset.mode=currentMode;
@@ -488,7 +489,18 @@ function draw(){
  }
  requestAnimationFrame(focusMap);
 }
-function feedback(t,kind){const f=$('feedback');f.className='feedback '+(kind||'');f.textContent=t}
+function feedback(t,kind){
+ const f=$('feedback');
+ if(currentMode==='choice'||currentMode==='zoom'){
+  // Feedback replaces existing helper text. It may not shrink four answers.
+  f.className='feedback hide';
+  $('sub').textContent=t;
+  $('sub').classList.toggle('answer-wrong',kind==='bad');
+  return;
+ }
+ f.className='feedback '+(kind||'');
+ f.textContent=t;
+}
 function queueAgain(x){
  if(x.revisit||repeated.has(x.id))return;
  repeated.add(x.id);
