@@ -236,3 +236,35 @@ test('Franse noodspeech kan zonder actieve vertaling starten',()=>{
   assert.match(main,/interrupt:reserveFrenchSpeech/);
   assert.match(main,/if\(translator\) goFinish\(\)/);
 });
+
+test('nieuwe voorstelling heeft twee aparte geluidsopnamen en vereenvoudigd menu',()=>{
+  assert.match(html,/id="scriptedStart"/);
+  assert.match(html,/id="scriptedNext"/);
+  assert.match(html,/id="scriptedAudioOne"/);
+  assert.match(html,/id="scriptedAudioTwo"/);
+  assert.match(html,/id="extraStudioTabs"/);
+  assert.match(html,/Overige opties/);
+  assert.match(html,/>Instellingen<\/button>/);
+});
+test('Nederlands antwoord heeft geen timer en volgende scène start pas door pijl',()=>{
+  const part=main.slice(main.indexOf('let scriptedMode'),main.indexOf('// De centrale lijnen'));
+  assert.match(part,/scriptedMode='reply'/);
+  assert.match(part,/Jij antwoordt nu zelf\. Er is geen timer/);
+  assert.match(part,/else if\(scriptedMode==='reply'\)playScriptedScene\(1\)/);
+  assert.doesNotMatch(part,/setTimeout\(/);
+  assert.match(main,/if\(scriptedMode!=='off'\)\{scriptedNext\(\);return;\}/);
+});
+test('scène twee eindigt zonder automatische live vertaling of gesproken slot',()=>{
+  const part=main.slice(main.indexOf('function playScriptedScene('),main.indexOf("$('scriptedStart').addEventListener"));
+  assert.match(part,/scriptedMode='finished'/);
+  assert.match(part,/setPhase\('handback','JOUW NEDERLANDSE SLOT'\)/);
+  assert.match(part,/blankStage\(\)/);
+  assert.doesNotMatch(part,/goFinish\(/);
+});
+test('Scène-afspelen gebruikt geluidsbestanden, niet browserstem of AI-model',()=>{
+  const part=main.slice(main.indexOf('function playScriptedScene('),main.indexOf('function scriptedNext()'));
+  assert.match(part,/new Audio\(scriptedAudioUrls\[index\]\)/);
+  assert.match(part,/player\.play\(\)/);
+  assert.doesNotMatch(part,/speechSynthesis\.speak/);
+  assert.doesNotMatch(part,/french\.stream/);
+});
