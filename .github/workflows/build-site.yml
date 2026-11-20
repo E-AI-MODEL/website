@@ -177,7 +177,8 @@ jobs:
           node --check tools/ict-scan/app.js
           node --check tools/ict-scan/enhancements.js
           node --check tools/ict-scan/github-sync.js
-          node --test tests/test_ict_scan_2026_data.mjs tests/test_ict_scan_github_sync.mjs
+          node --check tools/ict-scan/visual-explorer.js
+          node --test tests/test_ict_scan_2026_data.mjs tests/test_ict_scan_github_sync.mjs tests/test_ict_scan_visuals.mjs
 
       - name: Check first-party clicks and session privacy
         run: |
@@ -236,6 +237,8 @@ jobs:
           test -s site-build/tools/ict-scan/enhancements.js
           test -s site-build/tools/ict-scan/github-sync.js
           test -s site-build/tools/ict-scan/rail-drawer.js
+          test -s site-build/tools/ict-scan/visual-explorer.js
+          test -s site-build/tools/ict-scan/visual-explorer.css
           node --check tools/ict-scan/rail-drawer.js
           node --check tools/ict-scan/github-sync.js
           test -s site-build/tools/ict-scan/emmaus-logo.svg
