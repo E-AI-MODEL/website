@@ -334,3 +334,16 @@ test('DELF audio workflow synthesizes from the exact speech instead of hardcoded
   assert.match(generator,/SCENE_1/);
   assert.match(generator,/Et maintenant, je vous rends la parole/);
 });
+
+test('dunne golflijnen reageren op de werkelijke MP3 in beide scenes',()=>{
+  assert.match(main,/function connectScriptedAudio\(player\)/);
+  assert.match(main,/createMediaElementSource\(player\)/);
+  assert.match(main,/source\.connect\(analyser\)/);
+  assert.match(main,/analyser\.connect\(context\.destination\)/);
+  assert.match(main,/connectScriptedAudio\(player\)/);
+  assert.match(main,/scriptedMode === 'scene1' \|\| scriptedMode === 'scene2'/);
+  assert.match(main,/scriptedAnalyser\.getFloatTimeDomainData\(voiceSamples\)/);
+  assert.match(main,/scriptedPlayer\?\.paused/);
+  assert.match(main,/scriptedAnalyser = null;/);
+  assert.match(main,/old\.close\(\)/);
+});
