@@ -28,6 +28,16 @@
       },
       "sha": "dae0fc2917cd61fe0e0ec50a11cda9ea2d271253",
       "verified": true
+    },
+    {
+      "path": "2026-werkregister.json",
+      "schema": "eai-school-ict-v1",
+      "recordCounts": {
+        "workActions": 13,
+        "softwareReview": 12
+      },
+      "sha": "8f017f556ec029419e24eec78c13741edc23e8cb",
+      "verified": true
     }
   ],
   "notes": [
