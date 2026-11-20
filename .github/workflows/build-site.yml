@@ -48,6 +48,8 @@ on:
       - 'leif/**'
       - 'tests/test_home_model.py'
       - 'tests/test_eaiwork_dashboard_publish.py'
+      - 'tests/test_eaiwork_public_entry.py'
+      - 'work/**'
       - 'tests/test_science_observatory_publish.py'
       - 'tests/test_abyss_publish.py'
       - 'tests/test_llm_observatorium_source.py'
@@ -203,6 +205,9 @@ jobs:
         run: python -m unittest discover -s tests -p 'test_dictionary_and_menu.py' -v
       - name: Check editorial card scope excludes interactive labs
         run: python -m unittest discover -s tests -p 'test_story_cards.py' -v
+
+      - name: Check EAIwork public /work/ entry
+        run: python -m unittest discover -s tests -p 'test_eaiwork_public_entry.py' -v
 
       - name: Check EAIwork public demonstration
         if: ${{ steps.scope.outputs.eaiwork == 'true' }}
