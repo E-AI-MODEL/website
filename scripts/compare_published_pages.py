@@ -15,6 +15,12 @@ from bs4 import BeautifulSoup
 SITE = "https://eaimodel.nl"
 # Deze mappen hebben eigen publicatieworkflows; geen opruimadvies genereren.
 SEPARATE = {"topo": "TOPO (eigen publicatie)", "tools/delf-live": "DELF (eigen publicatie)"}
+RETIRED_3D = {
+    "content/legacy/onderwijsin-3d.html",
+    "onderwijsin/3d/index.html",
+    "houseoftalents/3d/index.html",
+    "onderwijsin/houseoftalents/3d/index.html",
+}
 PRIVATE = {".git", ".github", ".well-known", "admin", "private", "cgi-bin", "node_modules",
            "backup", "backups", "backend", "logs", "cache", "tmp", "temp", "uploads",
            "secrets", "staging", "test-results", "beheer", "mijn", "account", "auth"}
@@ -34,6 +40,8 @@ def normalize_path(text: str) -> str | None:
 
 
 def owner(path: str) -> str:
+    if path in RETIRED_3D:
+        return "Verouderde 3D-kopie (gericht verwijderen bij algemene publicatie)"
     for prefix, label in SEPARATE.items():
         if path.startswith(prefix + "/"):
             return label
@@ -145,6 +153,7 @@ def compare(root: Path, ftp_listing: str, http_limit: int = 30, max_depth: int |
             "apart_gepubliceerd": sum(any(p.startswith(prefix + "/") for prefix in SEPARATE) for p in only_remote),
             "bronkopieen_op_ftp": sum(p.startswith("content/") for p in only_remote),
             "eaispeak_buiten_build": sum(p.startswith("tools/eaispeak/") for p in only_remote),
+            "oude_3d_kopieen": sum(p in RETIRED_3D for p in only_remote),
             "niet_apart_gepubliceerd": len(candidates),
             "via_http_gecontroleerd": len(selected),
             "http_niet_gecontroleerd": len(candidates) - len(selected),
@@ -171,7 +180,8 @@ def markdown(result: dict) -> str:
              f"**Alleen op server:** {c['alleen_ftp']} (waarvan {c['apart_gepubliceerd']} apart gepubliceerd). "
              f"**Alleen in build:** {c['alleen_build']}.",
              f"Bronkopieën onder content/: **{c['bronkopieen_op_ftp']}**. "
-             f"EAIspeak buiten de huidige main-build: **{c['eaispeak_buiten_build']}**.", "",
+             f"EAIspeak buiten de huidige main-build: **{c['eaispeak_buiten_build']}**. "
+             f"Verouderde 3D-kopieën: **{c['oude_3d_kopieen']}**.", "",
              "| Type | HTML-bestand | Controle |", "|---|---|---|"]
     for item in result["alleen_ftp"][:90]:
         note = item["beheer"]
