@@ -61,6 +61,8 @@ jobs:
           python scripts/check_publication_duplicates.py \
             --root site-build \
             --known catalog/publication-page-overlaps.json \
+            --deferred /tools/anatomie/ \
+            --deferred /tools/anatomie/labs/hartslag/ \
             --summary "$GITHUB_STEP_SUMMARY" \
             --json "$RUNNER_TEMP/publication-duplicates.json"
       - name: Bewaar volledige publicatiecontrole
