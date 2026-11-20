@@ -47,7 +47,7 @@ try{
    assert.ok((await page.locator('#bookingStatus').textContent()).includes('niets verzonden'),'No booking made');
    await page.locator('#editBooking').click();
    assert.equal(await page.locator('#bookingForm').isVisible(),true,'Booking can be edited');
-   await page.locator('#resetBooking').click().catch(async()=>{await page.locator('#bookingForm').evaluate(el=>el.reset());});
+   await page.locator('#bookingForm').evaluate(el=>el.reset());
    await page.locator('#mastMenu').click();
    assert.equal(await page.locator('#mastNav').isVisible(),true,'navigation opens');
    await page.screenshot({path:folder+'/'+device.name+'-menu.png'});
