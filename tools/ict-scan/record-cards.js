@@ -32,7 +32,7 @@
     localAI:'AI lokaal ingeschakeld?',sourceNotes:'Bronnotities',sourceCode:'Broncode',involvedRoles:'Betrokken rollen',known:'Bekend uit documenten',
     originalNumber:'Oorspronkelijk nummer',sourceRow:'Rij in export',moduleId:'Module-ID',usageContext:'Gebruikssituatie',m365Context:'Microsoft 365-context'
   };
-  const PROTECTED=new Set(['id','originalNumber','sourceFields','otherDescription','provenance','sources','auditTrail','relations','frameworkLinks','sourceMeta','recordMeta']);
+  const PROTECTED=new Set(['id','originalNumber','sourceFields','otherDescription','provenance','sources','auditTrail','relations','frameworkLinks','sourceMeta','recordMeta','sourceRefs']);
   const MULTILINE=/answer|aliases|description|action|explanation|attention|didactics|learning|evidence|processing|agreement|note|instructions|source|data|links|review|unknown|advice|formative|usageContext|m365Context|nuance|execution|nextStep|limitation|input|teacher|student|known|status/i;
   const typesByKey=Object.fromEntries(SPECS.map(s=>[s.key,s]));
   const model={drafts:new Map(),current:null,editing:false,adding:false,original:null,working:null,catalog:null,loading:false};
@@ -104,7 +104,7 @@
     if(!r){container.append(text('p','card-empty','Kies links een registratie of maak een nieuwe kaart.'));return;}
     const spec=specFor(model.current.type),main=spec.fields.filter(f=>f!=='name').map(f=>[label(f),r[f]]);
     lines(container,'Gegevens',main);
-    const used=new Set([...spec.fields,'id','originalNumber','sourceFields','otherDescription','provenance','sources','auditTrail','relations','frameworkLinks','recordMeta','sourceMeta']);
+    const used=new Set([...spec.fields,'id','originalNumber','sourceFields','otherDescription','provenance','sources','auditTrail','relations','frameworkLinks','recordMeta','sourceMeta','sourceRefs']);
     const extras=Object.keys(r).filter(k=>!used.has(k)).map(k=>[label(k),r[k]]);
     if(extras.length){const advanced=text('details','card-details'),summary=text('summary','','Aanvullende velden ('+extras.length+')');advanced.append(summary);lines(advanced,'Overige gegevens',extras);container.append(advanced);}
     const relations=Array.isArray(r.relations)?r.relations:[];
@@ -116,6 +116,7 @@
     lines(container,'IBP, AVG, AI Act en overige regels',fLinks.length?fLinks.map(x=>[(catalog.get(x.frameworkId)?.name||x.frameworkId)+' '+(x.article||''),x.status+' · '+(x.evidence||'Bewijs niet ingevuld')+(x.note?' · '+x.note:'')]):[['Toetsingen','Nog niet per bepaling beoordeeld']]);
     lines(container,'Herkomst',[
       ['Bronnen',(r.sources||[]).join('; ')],
+      ['Verwijzingen',(r.sourceRefs||[]).join('; ')],
       ['Oorspronkelijk nummer',r.originalNumber],
       ['Bronrijen',(r.provenance||[]).map(x=>[x.file,x.sheet,x.row].join(' / ')).join('; ')],
       ['Broninstellingen',Object.keys(meta).length?JSON.stringify(meta):'']
