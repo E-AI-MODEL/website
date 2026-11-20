@@ -103,7 +103,7 @@ async function restoreSceneAudio(){
     })));
     db.close();
     values.forEach((blob,index)=>{
-      if(blob instanceof Blob && !scriptedAudioChosen[index]){
+      if(blob instanceof Blob && !scriptedAudioChosen[index] && !scriptedAudioUrls[index]){
         scriptedAudioUrls[index]=URL.createObjectURL(blob);
       }
     });
@@ -149,6 +149,30 @@ for(const [index,id] of ['scriptedAudioOne','scriptedAudioTwo'].entries()){
     });
   });
 }
+async function loadBuiltInFrenchScenes(){
+  const names=['scene-1-interruption.mp3','scene-2-discours.mp3'];
+  try {
+    const builtIn=await Promise.all(names.map(async name=>{
+      const url=new URL('./audio/'+name,document.baseURI);
+      const response=await fetch(url,{cache:'force-cache'});
+      if(!response.ok)throw new Error(name+' niet beschikbaar ('+response.status+')');
+      const blob=await response.blob();
+      if(blob.size<10000 || !/audio|octet-stream/.test(blob.type))
+        throw new Error(name+' is geen geldige opname');
+      return blob;
+    }));
+    builtIn.forEach((blob,index)=>{
+      // Eigen opname gaat voor, anders de meegeleverde Franse stem.
+      if(scriptedAudioChosen[index])return;
+      if(scriptedAudioUrls[index])URL.revokeObjectURL(scriptedAudioUrls[index]);
+      scriptedAudioUrls[index]=URL.createObjectURL(blob);
+    });
+    if(scriptedShowReady())scriptedFeedback('Franse opnamen zijn geladen. Je kunt de voorstelling starten.');
+  }catch(error){
+    if(!scriptedShowReady())scriptedFeedback('Franse opnamen laden niet: '+String(error?.message||error)+'. Je kunt eigen MP3-bestanden kiezen.',true);
+  }
+}
+void loadBuiltInFrenchScenes();
 void restoreSceneAudio();
 function startScriptedShow(){
   if(scriptedMode!=='off' && scriptedMode!=='armed'){
@@ -156,7 +180,7 @@ function startScriptedShow(){
     return;
   }
   if(!scriptedShowReady()){
-    scriptedFeedback('Kies eerst de audio van scène 1 en scène 2 bij Audio voor de voorstelling.',true);
+    scriptedFeedback('De Franse opnamen zijn nog niet beschikbaar. Controleer of de pagina volledig is geladen.',true);
     $('scriptedShow').querySelector('details').open=true;
     panel(true);return;
   }

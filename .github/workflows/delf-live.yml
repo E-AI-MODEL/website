@@ -15,7 +15,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   actions: read
 
 jobs:
@@ -189,3 +189,41 @@ jobs:
           assert b'/assets/' in mobile_page, 'Mobile model JS not linked'
           print('DELF MacBook and mobile pages publicly available at', base)
           PY
+
+  # Eenmalig: bouw de definitieve Franse opnamen in GitHub, niet op de Mac.
+  generate-french-scenes:
+    if: github.event_name == 'pull_request' && github.head_ref == 'fix/delf-bundled-french-audio-20261120'
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Installeer Franse stem
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq espeak-ng ffmpeg
+          python -m pip install --upgrade pip
+          python -m pip install 'kokoro==0.9.4' numpy soundfile
+      - name: Maak de twee opgenomen Franse scènes
+        run: python tools/delf-live/scripts/generate_scene_audio.py
+      - name: Controleer opnamebestanden
+        run: |
+          set -euo pipefail
+          for f in tools/delf-live/public/audio/*.mp3; do
+            test -s "$f"
+            ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1 "$f"
+          done
+      - name: Bewaar de opnamen in dezelfde branch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add tools/delf-live/public/audio/
+          git diff --cached --quiet || git commit -m 'DELF: bundle French speech recordings'
+          git fetch origin "${{ github.head_ref }}"
+          git rebase FETCH_HEAD
+          git push origin HEAD:${{ github.head_ref }}
