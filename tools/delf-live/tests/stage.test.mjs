@@ -314,7 +314,7 @@ test('Franse scene-opnamen blijven zonder externe hosting lokaal in Safari',()=>
   assert.match(block,/tx\.objectStore\('audio'\)\.put\(file,index\)/);
   assert.match(block,/tx\.objectStore\('audio'\)\.get\(index\)/);
   assert.match(block,/!scriptedAudioChosen\[index\]/);
-  assert.match(main,/void restoreSceneAudio\(\)/);
+  assert.ok(main.includes('void loadBuiltInFrenchScenes();'));
 });
 
 test('de twee Franse MP3s worden automatisch ingeladen; eigen audio blijft optioneel',()=>{
