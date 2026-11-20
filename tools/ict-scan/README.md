@@ -125,6 +125,14 @@ Het logboek bevat kaartwijzigingen en is niet automatisch een volledige weergave
 
 Test: node --check tools/ict-scan/record-cards.js, node --check tools/ict-scan/record-github.js, en node --test tests/test_ict_scan_cards.mjs.
 
+## Vragen voorspellen tijdens het typen
+
+De zoekbalk in de bestaande zijbalk laat eerst mogelijke vragen zien. De teksten klinken als gewone vragen, bijvoorbeeld **Welke printsoftware gebruiken we?**, **Wie beheert 3CX?** en **Wat betekent een Entra-registratie?**. Er verschijnt nog geen antwoord tijdens het typen.
+
+De suggesties komen uit de FAQ-vragen en hun alternatieve formuleringen, uit vaste vraagvormen en uit namen van toepassingen die echt in het register voorkomen. Ze verwijzen naar een bestaande bronroute, niet naar een gegenereerd antwoord. De lijst blijft beperkt tot vijf voorstellen en is met de pijltjestoetsen en Enter te bedienen. Een aangeklikte vraag wordt beantwoord, maar de gebruiker kan ook de eigen vraag afmaken en met Enter zoeken. Escape sluit de voorstellen.
+
+De zoekfunctie gebruikt de geladen lokale JSON-gegevens; de input wordt niet naar een externe dienst gestuurd. Het antwoord noemt de bronstatus en laat onbekende informatie onbevestigd. De vaste FAQ-kaarten blijven via dezelfde JSON-editor bewerkbaar.
+
 ## Vragen stellen zonder AI
 
 De bestaande zoekfunctie in de uitklapbare zijbalk heeft een antwoordweergave. Er is geen nieuwe hoofdmenuoptie of afzonderlijke chatbot toegevoegd. De HTML gebruikt lokale JavaScript-regels om een vraag te herkennen, de relevante gegevens te selecteren en het resultaat samen met de bronstatus te tonen. Er gaan geen vraagteksten naar een AI-dienst.
