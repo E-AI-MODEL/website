@@ -374,7 +374,7 @@ function focusMap(){
  if((currentMode==='point'||currentMode==='choice')&&landBounds){
   // A city question shows its province and surrounding towns, not a tiny
   // Netherlands silhouette in a tall phone viewport. Province questions stay nationwide.
-  const region=x.kind==='city'?provinceContext(x.province):null;
+  const region=currentMode==='point'&&x.kind==='city'?provinceContext(x.province):null;
   const bounds=region||landBounds,pad=region?68:36;
   let width=bounds.right-bounds.left+pad*2;
   let height=bounds.bottom-bounds.top+pad*2;
