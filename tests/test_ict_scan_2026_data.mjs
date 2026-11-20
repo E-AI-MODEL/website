@@ -1,6 +1,7 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
+import {createHash} from 'node:crypto';
 import {resolve} from 'node:path';
 
 const source=JSON.parse(readFileSync(resolve('ict-scan/bronnen/2026-applicatielandschap.json'),'utf8'));
@@ -56,6 +57,26 @@ test('Aanvullende kandidaten zijn niet als bevestigde toepassingen meegeteld',()
   assert.ok(source.additionalCandidates.every(x=>!ids.has(x.id)&&x.confirmed===false));
   assert.ok(source.connections.every(x=>x.usageConfirmed===false));
   assert.ok(source.metadata.limitations.some(s=>s.includes('76 aanvullende')));
+});
+
+test('Manifest-SHA controleert de exacte publicatiebestanden',()=>{
+  const sources=[
+    ['2026-applicatielandschap.json',readFileSync(resolve('ict-scan/bronnen/2026-applicatielandschap.json'))],
+    ['2026-werkregister.json',readFileSync(resolve('ict-scan/bronnen/2026-werkregister.json'))]
+  ];
+  for(const [name,bytes] of sources){
+    const expected=createHash('sha1').update('blob '+bytes.length+'\0').update(bytes).digest('hex');
+    assert.equal(manifest.dataFiles.find(x=>x.path===name)?.sha,expected,name+' wijkt af van het manifest');
+  }
+});
+
+test('Een vermoede productfamilie wordt niet als bewezen parent/child opgenomen',()=>{
+  for(const id of ['APP-010','APP-035']){
+    const app=source.apps.find(x=>x.id===id);
+    assert.equal(app.parent,'',id);
+    assert.equal(app.suggestedParent,'Microsoft 365',id);
+    assert.equal(app.suggestedParentStatus,'Niet bevestigd uit de bron');
+  }
 });
 
 test('Het gecontroleerde werkregister is apart beschikbaar',()=>{
