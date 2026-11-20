@@ -28,6 +28,15 @@ class PublicationOwnershipTests(unittest.TestCase):
                     r"(?m)^concurrency:\s*\n\s+group:\s*theory7-production\s*\n\s+cancel-in-progress:\s*false",
                 )
 
+    def test_build_job_never_pushes_generated_pages_to_main(self):
+        source = (WORKFLOWS / "build-site.yml").read_text(encoding="utf-8")
+        self.assertNotIn("git push origin HEAD:main", source)
+        self.assertNotIn("rm -rf assets publicaties tools", source)
+        self.assertIn("contents: read", source)
+        deploy = (WORKFLOWS / "deploy-theory7.yml").read_text(encoding="utf-8")
+        self.assertIn("python scripts/build_site.py", deploy)
+        self.assertIn("mirror -R", deploy)
+
     def test_topo_keeps_its_independent_queue(self):
         source = (WORKFLOWS / "deploy-topo-theory7.yml").read_text(encoding="utf-8")
         self.assertIn("group: topo-production", source)
