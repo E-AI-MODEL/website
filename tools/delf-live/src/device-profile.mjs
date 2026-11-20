@@ -16,7 +16,7 @@ export function describeDevice({userAgent='',userAgentDataMobile,platform='',tou
 export function suggestDeviceSetup({kind='computer',gpuUsable=false,memoryGB=null,saveData=false}={}){
   // Op een telefoon is de lichte keuze het veiligst. Zelfs voldoende geheugen
   // garandeert niet dat de browser de WebGPU-gewichten kan laden.
-  const restricted=kind==='phone'||saveData===true;
+  const restricted=kind==='phone'||kind==='tablet'||saveData===true;
   const enoughMemory=typeof memoryGB==='number'&&memoryGB>=8;
   return {
     engine:restricted||!gpuUsable?'puter':'browser',
@@ -28,7 +28,7 @@ export function modelDeviceAdvice({kind='computer',gpuUsable=false,memoryGB=null
   if(!gpuUsable)return 'Geen WebGPU-adapter. Gebruik voorlopig een online model.';
   if(saveData)return 'Databesparing staat aan. Modellen worden alleen na je eigen keuze gedownload.';
   const heavy=modelId.includes('3B-Instruct')||modelId.includes('1.5B-Instruct');
-  if(kind==='phone'&&heavy)return 'Dit model kan te zwaar zijn voor een telefoon. Probeer liever eerst Qwen 0,5B.';
+  if((kind==='phone'||kind==='tablet')&&heavy)return 'Dit model kan te zwaar zijn voor een telefoon of tablet. Probeer liever eerst Qwen 0,5B.';
   if(typeof memoryGB==='number'&&memoryGB<=4&&heavy)return 'Dit model kan te veel geheugen vragen. Probeer liever Qwen 0,5B.';
   if(kind==='phone')return 'Een klein lokaal model is te proberen. Of het past, blijkt pas tijdens het laden.';
   return 'De browser kan een lokaal model proberen. De werkelijke belasting blijkt bij het laden.';
