@@ -93,7 +93,8 @@ class ICTScanTests(unittest.TestCase):
         for control in ('globalSearch', 'topImport', 'topGithubSync', 'topReports', 'topPdf', 'drawerExcel', 'drawerJson'):
             self.assertEqual(html.count(f'id="{control}"'), 1, control)
         self.assertIn("event.key==='Escape'", js)
-        self.assertIn("event.key==='/'", js)
+        self.assertIn("event.key!=='/'", js)
+        self.assertIn("openDrawer(true)", js)
         self.assertIn('.icon-rail .rail-more', css)
         self.assertIn('@media(max-width:720px)', css)
 
