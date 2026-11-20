@@ -17,7 +17,7 @@
     el.dataset.mode = mode;
   }
   function validInput() {
-    const repo = $('githubRepo').value.trim().replace(/^https:\/\/github\.com\//i,'').replace(/\/$/,'').replace(/\.git$/i,'');
+    const repo = ($('githubRepo').value.trim() || 'E-AI-MODEL/website').replace(/^https:\/\/github\.com\//i,'').replace(/\/$/,'').replace(/\.git$/i,'');
     const folder = $('githubFolder').value.trim().replace(/^\/+|\/+$/g,'');
     const ref = $('githubRef').value.trim();
     if (!/^[\w.-]+\/[\w.-]+$/.test(repo) || repo.includes('..')) throw Error('Gebruik een repository als eigenaar/naam.');
@@ -37,7 +37,7 @@
     if(!response.ok) {
       if(response.status===401)throw Error('GitHub heeft de token geweigerd.');
       if(response.status===403)throw Error('GitHub weigert toegang. Controleer leesrechten of de API-limiet.');
-      if(response.status===404)throw Error('Repository of map niet gevonden. Bij een privé-repository is een token met Contents: Read nodig.');
+      if(response.status===404)throw Error('GitHub geeft 404: repository of bronmap niet gevonden. Controleer de map in GitHub. Voor de openbare E-AI-MODEL/website is geen token nodig.');
       throw Error('GitHub antwoordt met HTTP '+response.status+'.');
     }
     return response.json();
@@ -118,7 +118,7 @@
       $('githubSyncSummary').hidden=true;
       showStatus('GitHub-map controleren…');
       const entries=await listFiles(cfg,token,abort.signal);
-      if(!entries.length){showStatus('Geen Excel-, CSV-, JSON-, Word- of PDF-bestanden gevonden in deze GitHub-map.','warning');return;}
+      if(!entries.length){showStatus('GitHub is bereikbaar, maar deze map bevat geen ondersteunde bronbestanden. Voeg bestanden toe aan '+cfg.repo+' / '+cfg.folder+'.','warning');return;}
       const signature=cfg.repo+'@'+cfg.ref+':'+entries.map(x=>x.path+':'+x.sha).join('|');
       if(signature===previousSignature && state.sources.some(x=>x.githubRemote?.repository===cfg.repo)){showStatus('Geen nieuwe versies in GitHub gevonden. Het dashboard is al bijgewerkt.','success');return;}
       for(let i=0;i<entries.length;i++) {
