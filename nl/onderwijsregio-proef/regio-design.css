@@ -170,3 +170,25 @@ footer{padding-top:44px;padding-bottom:32px}
  .side-rail,.side-panel,.prefs,.panel.side-help,.inline-help,.notice{background:#f5faf4}
  .pie:before{background:#e5f2e7}
 }
+
+/* Accentvlakken uit de bronbeelden: limoengroen, turquoise en zachtpaars. */
+.source-link{margin-top:24px!important}
+.source-link a,#times>a{font-weight:570;font-size:15px;text-decoration-thickness:1px;text-underline-offset:6px}
+.training{padding:clamp(32px,4vw,58px);background:linear-gradient(125deg,#e2e965,#eff19e 80%,#f8f8d3);border:0;border-radius:5px 30px 5px 5px;margin:32px 0 20px}
+.training .card{background:transparent;border:0;padding:0;max-width:43rem}
+.training h3{font-size:clamp(20px,2.2vw,30px);letter-spacing:-.035em}
+.training .card p{color:#2d463a}
+.knowledge{padding:clamp(32px,4vw,58px);background:linear-gradient(137deg,#79d2c6,#a1e4d0 70%,#d4efda);border:0;border-radius:29px 5px 5px 5px;margin-top:34px}
+.knowledge #faq details{background:rgba(255,255,255,.85);padding-inline:17px;margin:0;border-color:#cce4dc}
+.knowledge #faq details:first-child{border-radius:14px 14px 0 0}
+.knowledge #faq details:last-child{border-radius:0 0 14px 14px}
+.knowledge #faq details[open]{background:#fff;border-radius:14px;margin:5px 0;box-shadow:0 9px 28px -22px #0c453c}
+.knowledge #moreFaq{color:#175446;font-weight:570}
+.topics .grid .card:nth-child(1){border-top:3px solid #dce878}
+.topics .grid .card:nth-child(2){border-top:3px solid #aaa2ec;padding:18px 18px 23px;background:linear-gradient(145deg,#e9e4fc,#f8f5ff);border-radius:0 0 18px 18px}
+.topics .grid .card:nth-child(3){border-top:3px solid #84d6c6}
+@media(max-width:760px){
+.training,.knowledge{padding:27px 18px 31px;margin:24px 0 14px;border-radius:17px 17px 4px 4px}
+.knowledge #faq details{padding-inline:11px}
+.topics .grid .card:nth-child(2){margin-top:23px}
+}
