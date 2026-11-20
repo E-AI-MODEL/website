@@ -460,7 +460,7 @@ function translateFinal(fragment) {
       finalTranslations = finalTranslations.slice(-2);
       renderCaptions();
       feedback('runtimeStatus', `Herkend: ${text}`, 'good');
-    } catch (e) { reportError(`Vertaling mislukt: ${e.message}`); }
+    } catch (e) { componentStatus('translationStatus','error','Live vertaling mislukt',e);reportError(`Vertaling mislukt: ${e.message}`); }
   }).finally(() => { finalInFlight = Math.max(0, finalInFlight - 1); });
 }
 function translatePreview(fragment) {
@@ -490,7 +490,7 @@ function translatePreview(fragment) {
 }
 function startMic() {
   const SR = globalThis.SpeechRecognition || globalThis.webkitSpeechRecognition;
-  if (!SR) { reportError('Spraakherkenning ontbreekt. Er wordt geen tekst verzonnen.'); return false; }
+  if (!SR) { componentStatus('microphoneStatus','unavailable','Geen spraakherkenning',new Error('SpeechRecognition ontbreekt'));reportError('Spraakherkenning ontbreekt. Er wordt geen tekst verzonnen.'); return false; }
   stopMic();
   wantsMic = true;
   const instance = new SR();
@@ -507,6 +507,7 @@ function startMic() {
     micSilentTimer = setTimeout(() => {
       if (mic === instance && phase === 'live' && !recognized) {
         feedback('runtimeStatus','Geen Nederlandse woorden ontvangen. iOS kan spraakherkenning blokkeren ondanks een actieve microfoon. Open instellingen en gebruik Start ondertiteling om opnieuw te proberen.','bad');
+        componentStatus('microphoneStatus','error','iOS: geen spraak ontvangen',new Error('Timeout'));
       }
     },18000);
   };
@@ -526,6 +527,7 @@ function startMic() {
     if (interim) { feedback('runtimeStatus', `Luistert: ${interim}`); translatePreview(interim); }
   };
   instance.onerror = e => {
+    componentStatus('microphoneStatus','error','Spraakherkenning mislukt',new Error(e.error));
     reportError(`Spraakherkenning: ${e.error}`);
     if (['not-allowed', 'service-not-allowed', 'audio-capture'].includes(e.error)) wantsMic = false;
   };
@@ -537,8 +539,8 @@ function startMic() {
       }
     }, 300);
   };
-  try { instance.start(); feedback('runtimeStatus', 'Live vertaling luistert naar Nederlands', 'good'); return true; }
-  catch (e) { reportError('Microfoon kon niet beginnen: ' + e.message); wantsMic = false; return false; }
+  try { instance.start(); componentStatus('microphoneStatus','busy','Live microfoon gestart, nog geen woorden');feedback('runtimeStatus', 'Live vertaling luistert naar Nederlands', 'good'); return true; }
+  catch (e) { componentStatus('microphoneStatus','error','Microfoon kon niet starten',e);reportError('Microfoon kon niet beginnen: ' + e.message); wantsMic = false; return false; }
 }
 
 function releaseModelUrls() { modelUrls.forEach(url => URL.revokeObjectURL(url)); modelUrls = []; }
@@ -896,6 +898,7 @@ function goFrench() {
   setPhase('french', 'DISCOURS EN FRANÇAIS');
   panel(false);
   void streamFrench().catch(error => {
+    componentStatus('frenchStatus','error','Franse speech kon niet starten',error);
     reportError('Franse audio kon niet starten: ' + (error.message || error));
     panel(true);
   });
