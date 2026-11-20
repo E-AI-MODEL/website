@@ -8,6 +8,7 @@ on:
   push:
     branches:
       - main
+      - feature/delf-live-stage-2026-11-19
     paths:
       - 'tools/delf-live/**'
       - '.github/workflows/delf-live.yml'
