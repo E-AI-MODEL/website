@@ -412,7 +412,10 @@ $('prepareMic').onclick = async () => {
   // Test de fysieke microfoon apart van Web Speech. Geen opname of audio wordt bewaard.
   let stream;
   try {
-    const request = navigator.mediaDevices.getUserMedia({audio:true});
+    const request = navigator.mediaDevices.getUserMedia({audio:true}).then(openedStream => {
+      if (generation !== microphoneTestGeneration || !microphonePreparing) openedStream.getTracks().forEach(track=>track.stop());
+      return openedStream;
+    });
     const timeout = new Promise((_,reject) => {
       microphoneCheckTimer = setTimeout(() => reject(new Error('Timeout microfoontoestemming')),12000);
     });
