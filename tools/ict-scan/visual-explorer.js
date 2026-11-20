@@ -204,7 +204,7 @@
         const row=dom('tr');
         for(const text of [cell.area,cell.kind]){
           const td=dom('td'),btn=dom('button','viz-table-choice',text);btn.type='button';
-          btn.addEventListener('click',()=>{state.overviewArea=cell.area;state.overviewKind=cell.kind;renderOverview();});
+          btn.addEventListener('click',()=>{const same=state.overviewArea===cell.area&&state.overviewKind===cell.kind;state.overviewArea=same?'':cell.area;state.overviewKind=same?'':cell.kind;renderOverview();});
           td.append(btn);row.append(td);
         }
         row.append(dom('td','viz-num',fmt(cell.count)),dom('td','viz-num',((cell.count/total)*100).toLocaleString('nl-NL',{maximumFractionDigits:1})+'%'));
@@ -337,8 +337,8 @@
     const byArea=apps.filter(x=>!state.overviewArea||category(x.area)===state.overviewArea);
     showChart('areaChart',byKind,'area',choice.area,state.overviewArea,value=>selectDimension('area',value));
     showChart('typeChart',byArea,'kind',choice.kind,state.overviewKind,value=>selectDimension('kind',value));
-    el('areaChartCaption').textContent=fmt(byKind.length)+' registraties in '+tally(byKind,'area').length+' gebruiksgebieden · andere filter toegepast; klik om te selecteren.';
-    el('kindChartCaption').textContent=fmt(byArea.length)+' registraties in '+tally(byArea,'kind').length+' soorten · andere filter toegepast; klik om te selecteren.';
+    el('areaChartCaption').textContent=fmt(byKind.length)+' registraties in '+tally(byKind,'area').length+' gebruiksgebieden · '+(state.overviewKind?'Soort: '+state.overviewKind:'Alle soorten')+' · klik om te filteren.';
+    el('kindChartCaption').textContent=fmt(byArea.length)+' registraties in '+tally(byArea,'kind').length+' soorten · '+(state.overviewArea?'Gebied: '+state.overviewArea:'Alle gebruiksgebieden')+' · klik om te filteren.';
     renderCrossMatrix();renderFamily();
     const link=el('overviewToApps');if(link)link.textContent='Open '+fmt(selected.length)+' toepassingen';
   };
