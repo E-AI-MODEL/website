@@ -2634,6 +2634,11 @@ def build(sources: Path, out: Path) -> None:
     if not eaiwork_dashboard.is_file():
         raise SystemExit("EAIwork dashboard source missing")
     write(out, "tools/eaiwork/index.html", eaiwork_dashboard.read_text(encoding="utf-8"))
+    # Separate public entry. Real execution remains on the protected local backend.
+    workspace_entry = Path(__file__).resolve().parent.parent / "work" / "index.html"
+    if not workspace_entry.is_file():
+        raise FileNotFoundError(f"EAIwork entry missing: {workspace_entry}")
+    write(out, "work/index.html", workspace_entry.read_text(encoding="utf-8"))
     # Observatory pages belong under investigating, not under AI instruction design.
     tools_soup = BeautifulSoup(tools_body, "html.parser")
     design_section = next((section for section in tools_soup.select("section.section")
