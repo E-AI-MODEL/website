@@ -16,10 +16,11 @@
     {key:'devices',store:'devices',label:'Apparaatmetingen',prefix:'DEV',file:'2026-applicatielandschap.json',fields:['name','type','quantity','description','measurementDate','limitation']},
     {key:'licenseReview',store:'licenseReview',label:'Licenties ter controle',prefix:'LIC',file:'2026-applicatielandschap.json',fields:['name','domain','type','status','aiPossibilities','localAI','license2026','priority','action','sourceNotes','sourceCode']},
     {key:'workActions',store:'workActions',label:'Werkregisteracties',prefix:'WRK',file:'2026-werkregister.json',fields:['name','action','involvedRoles','status']},
-    {key:'softwareReview',store:'softwareReview',label:'Softwarecontroles',prefix:'SWR',file:'2026-werkregister.json',fields:['name','known','action','status']}
+    {key:'softwareReview',store:'softwareReview',label:'Softwarecontroles',prefix:'SWR',file:'2026-werkregister.json',fields:['name','known','action','status']},
+    {key:'faqs',store:'faqs',label:'Veelgestelde vragen',prefix:'FAQ',file:'2026-faq.json',fields:['name','answer','aliases','topic','reference','status','reviewedAt']}
   ];
   const labels={
-    name:'Naam',id:'ID',description:'Beschrijving',area:'Gebruiksgebied',process:'Proces',kind:'Soort voorziening',type:'Type',local:'Gebruik op school',owner:'Verantwoordelijke',users:'Gebruikers',
+    name:'Naam',id:'ID',answer:'Vast antwoord',aliases:'Andere vraagformuleringen (gescheiden door |)',topic:'Onderwerp',reference:'Verwijzing naar bron',reviewedAt:'Beoordeeld op',description:'Beschrijving',area:'Gebruiksgebied',process:'Proces',kind:'Soort voorziening',type:'Type',local:'Gebruik op school',owner:'Verantwoordelijke',users:'Gebruikers',
     data:'Welke gegevens?',links:'Gegevensuitwisseling en koppelingen',processorAgreement:'Verwerkersovereenkomst',dpiaStatus:'DPIA-status',aiRefs:'AI-functies',reviewAction:'Nog controleren',sourceDescription:'Aanvullende bronbeschrijving',
     product:'Toepassing',supplier:'Leverancier',parentId:'Hoofdtoepassing-ID',parent:'Hoofdtoepassing-ID',suggestedParent:'Mogelijke familie',suggestedParentStatus:'Status mogelijke familie',
     domain:'Domein',phase:'Lesfase',action:'Functie of vervolgstap',input:'Wat kan de docent instellen?',teacher:'Controle door docent',student:'Wat doet de leerling?',reviewer:'Wie beoordeelt de uitkomst?',didactics:'Didactische onderbouwing',learning:'Leerdoel',attention:'Didactisch aandachtspunt',
