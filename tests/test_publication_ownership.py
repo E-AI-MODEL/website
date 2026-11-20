@@ -35,6 +35,26 @@ class PublicationOwnershipTests(unittest.TestCase):
         general = (WORKFLOWS / "deploy-theory7.yml").read_text(encoding="utf-8")
         self.assertIn("- 'topo/**'", general)
 
+    def test_quick_recovery_uploads_are_manual_only(self):
+        for workflow in (
+            "deploy-analytics-dashboard.yml",
+            "deploy-eaiwork-theory7.yml",
+            "deploy-leif-quick.yml",
+            "deploy-lo-quick.yml",
+            "deploy-sport-opstellingen-quick.yml",
+        ):
+            with self.subTest(workflow=workflow):
+                source = (WORKFLOWS / workflow).read_text(encoding="utf-8")
+                events = source.split("\non:\n", 1)[1].split("\npermissions:", 1)[0]
+                self.assertIn("  workflow_dispatch:", events)
+                self.assertNotIn("  push:", events)
+
+    def test_main_site_release_is_still_automatic(self):
+        source = (WORKFLOWS / "deploy-theory7.yml").read_text(encoding="utf-8")
+        events = source.split("\non:\n", 1)[1].split("\npermissions:", 1)[0]
+        self.assertIn("  push:", events)
+        self.assertIn("branches: [main]", events)
+
     def test_public_data_keeps_its_own_publication(self):
         source = (WORKFLOWS / "publish-public-analytics.yml").read_text(encoding="utf-8")
         self.assertIn("group: eai-public-analytics", source)
