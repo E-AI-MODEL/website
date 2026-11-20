@@ -1,0 +1,74 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+
+const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');
+const css=readFileSync(new URL('../cloud-shell.css',import.meta.url),'utf8');
+const shell=readFileSync(new URL('../src/cloud-shell.js',import.meta.url),'utf8');
+const main=readFileSync(new URL('../src/main.js',import.meta.url),'utf8');
+
+test('podium is werkelijk leeg en open studio is geen zijpaneel',()=>{
+  assert.match(html,/<div class="display-surface" id="displayText"><\/div>/);
+  assert.ok(html.includes('cloud-atmosphere'));
+  assert.ok(!html.includes('Une langue de plus.'));
+  assert.ok(css.includes('.cloud-studio.panel{'));
+  assert.ok(css.includes('width:100vw;height:100dvh'));
+  assert.ok(css.includes('clip-path:circle('));
+  assert.ok(main.includes("$('panel').inert = !open;"));
+});
+
+test('vijf afzonderlijke studio-onderdelen zijn toegankelijk met toetsen en aanraking',()=>{
+  const names=['podium','taal','stem','sessie','meer'];
+  for(const name of names){
+    assert.ok(html.includes('data-studio-view="'+name+'"'),name+' tab');
+    assert.ok(html.includes('data-studio-page="'+name+'"'),name+' page');
+    assert.ok(html.includes('aria-controls="page-'+name+'"'),name+' aria control');
+    assert.ok(html.includes('aria-labelledby="tab-'+name+'"'),name+' aria label');
+  }
+  assert.ok(shell.includes("event.key === 'ArrowRight'"));
+  assert.ok(shell.includes("event.key === 'ArrowLeft'"));
+  assert.ok(shell.includes('revealObserver = new IntersectionObserver('));
+  assert.ok(css.includes('.cloud-reveal.is-revealed'));
+});
+
+test('geen verloren bediening bij een open of gesloten studio',()=>{
+  const all=[...html.matchAll(/\bid="([^"]+)"/g)].map(x=>x[1]);
+  assert.equal(new Set(all).size,all.length,'alle id-attributen zijn uniek');
+  for(const id of ['stage','mobileSettings','panel','panelClose','prepareMic','prepareTranslate',
+    'loadPublicFrench','previewFrench','previewDutch','nlVoice','start','interrupt','panic',
+    'reset','french','handback','finish','fullscreen','runtimeStatus','translationStatus']){
+    assert.ok(all.includes(id),'geen ontbrekende bediening: '+id);
+  }
+  assert.ok(html.includes('id="panel" class="panel cloud-studio"'));
+  assert.ok(shell.includes("new MutationObserver(onStudioVisibility)"));
+  assert.ok(main.includes("panel(!$('panel').classList.contains('open'))"));
+});
+
+test('wolken golven vanuit het midden en tekst ontstaat bij scroll',()=>{
+  assert.ok(css.includes('@keyframes cloud-inhale'));
+  assert.ok(css.includes('left:50%;top:50%'));
+  assert.ok(css.includes('translate(-50%,-50%)'));
+  assert.ok(css.includes('@keyframes cloud-caption-arrive'));
+  assert.ok(css.includes('filter:blur(12px)'));
+  assert.ok(css.includes('.cloud-reveal'));
+  assert.ok(shell.includes('requestAnimationFrame(revealVisible)'));
+  assert.ok(css.includes('@media(prefers-reduced-motion:reduce)'));
+});
+
+test('verdampen gebeurt bij stilte, niet terwijl livewoorden binnenkomen',()=>{
+  assert.ok(shell.includes('captions-evaporated'));
+  assert.ok(shell.includes("stage.dataset.phase === 'live'"));
+  assert.ok(shell.includes("captionObserver.observe($('displayText')"));
+  assert.ok(shell.includes('markActivity()'));
+  assert.ok(html.includes('id="idleCaptionSeconds"'));
+  assert.ok(html.includes('<option value="0">Nooit</option>'));
+  assert.ok(css.includes('transition:opacity 2.2s ease'));
+});
+
+test('geen vooraf gemaakte vertaaltekst op het podium door studio-proef',()=>{
+  assert.ok(html.includes('id="translationTestResult"'));
+  assert.ok(main.includes("$('translationTestResult').textContent = translated;"));
+  assert.ok(!main.includes("screen(await translator.translate($('testDutch').value)"));
+  assert.ok(main.includes('translateFinal(words)'));
+  assert.ok(main.includes('translatePreview(interim)'));
+});
