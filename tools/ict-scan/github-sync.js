@@ -125,7 +125,7 @@
   }
   function verifyCounts(spec){
     if(!spec)return;
-    const mapping={apps:'apps',ai:'ai',connections:'connections',checks:'checks',parts:'parts',dpia:'dpia',aiControls:'aiControls',devices:'devices',additionalCandidates:'candidates',licenseReview:'licenseReview',workActions:'workActions',softwareReview:'softwareReview'};
+    const mapping={apps:'apps',ai:'ai',connections:'connections',checks:'checks',parts:'parts',dpia:'dpia',aiControls:'aiControls',devices:'devices',additionalCandidates:'candidates',licenseReview:'licenseReview',workActions:'workActions',softwareReview:'softwareReview',faqs:'faqs'};
     const totals=new Map();
     for(const entry of spec){
       for(const [kind,n] of Object.entries(entry.recordCounts||{})){
@@ -141,7 +141,7 @@
   }
   function snapshotState() {
     const maps={};
-    for(const k of ['apps','ai','connections','checks','devices','parts','dpia','aiControls','policyDocs','signals','candidates','licenseReview','workActions','softwareReview'])maps[k]=new Map(state[k]);
+    for(const k of ['apps','ai','connections','checks','devices','parts','dpia','aiControls','policyDocs','signals','candidates','licenseReview','workActions','softwareReview','faqs'])maps[k]=new Map(state[k]);
     return {maps,sources:state.sources.slice(),docs:state.docs.slice(),derived:Array.isArray(state.derived)?state.derived.slice():[],ready:state.ready,view:state.view,metadata:state.metadata||null};
   }
   function restoreState(backup) {
@@ -155,7 +155,7 @@
     renderAll();
   }
   function resetWorkingState() {
-    for(const name of ['apps','ai','connections','checks','devices','parts','dpia','aiControls','policyDocs','signals','candidates','licenseReview','workActions','softwareReview'])state[name].clear();
+    for(const name of ['apps','ai','connections','checks','devices','parts','dpia','aiControls','policyDocs','signals','candidates','licenseReview','workActions','softwareReview','faqs'])state[name].clear();
     state.sources=[];state.docs=[];state.derived=[];state.ready=false;state.metadata=null;
   }
   async function syncGitHub() {
