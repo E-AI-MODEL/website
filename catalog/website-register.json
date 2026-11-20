@@ -15,6 +15,19 @@
   },
   "pages": [
     {
+      "id": "page:/nl/onderwijsregio-proef/",
+      "url": "/nl/onderwijsregio-proef/",
+      "file": "nl/onderwijsregio-proef/index.html",
+      "title": "Onderwijsregio Rotterdam | Proefomgeving",
+      "kind": "overig",
+      "category": null,
+      "review": "niet_in_publieke_zoekindex_status_controleren",
+      "parent": null,
+      "family": "model",
+      "in_committed_sitemap": false,
+      "search_scope": "niet_indexeren"
+    },
+    {
       "id": "page:/",
       "url": "/",
       "file": "index.html",
