@@ -23,3 +23,5 @@
 .ollama-setup button:disabled{opacity:.46;cursor:not-allowed}
 @media(max-width:540px){.ollama-navigation{grid-template-columns:1fr 1fr}.ollama-command{padding:10px 9px}.ollama-command code{font-size:10px}}
 @media(prefers-reduced-motion:reduce){.ollama-step-content,.ollama-help[open]>:not(summary){animation:none!important}}
+
+.ollama-reply{margin:15px 0;padding:14px 16px;background:rgba(210,227,227,.24);border-left:1px solid #91b2ad;border-radius:0 9px 9px 0;color:#365b64;font:400 13px/1.8 system-ui,sans-serif;overflow-wrap:anywhere}
