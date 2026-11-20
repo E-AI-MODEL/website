@@ -107,7 +107,7 @@
     const parts=items(state.parts).filter(x=>x.parent===app.id);
     const refs=new Set(ai.map(x=>x.id));
     const controls=items(state.aiControls).filter(x=>(String(x.aiRefs||'').match(/AI-\d+/gi)||[]).some(id=>refs.has(id)));
-    const isMicrosoft=/microsoft|copilot|teams|azure/i.test(app.name||'');
+    const isMicrosoft=/^(Microsoft 365|Microsoft Copilot|Teams for Education)(?:$|\s)/i.test(app.name||'');
     const isToetsPers=/toetspers/i.test(app.name||'');
     const dpia=items(state.dpia).filter(x=>{
       const name=String(x.name||'');
@@ -131,7 +131,7 @@
     if(relationApp!==app.id){relationApp=app.id;relationTab='ai';}
     const sets=relationSets(app);
     if(!sets.some(x=>x.key===relationTab&&x.items.length))relationTab=(sets.find(x=>x.items.length)||sets[0]).key;
-    root.innerHTML='<div class="relation-overview"><div class="relation-center"><small>'+safe(app.id)+' · '+safe(app.kind)+'</small><strong>'+safe(app.name)+'</strong><span>Geregistreerde toepassing · lokaal gebruik niet bevestigd</span></div>'+
+    root.innerHTML='<div class="relation-overview"><div class="relation-center"><small>'+safe(app.id)+' · '+safe(app.kind)+'</small><strong>'+safe(app.name)+'</strong><span>Geregistreerde toepassing · '+safe(unknown(app.local)?'lokaal gebruik niet bevestigd':app.local)+'</span></div>'+
       '<div class="relation-spokes">'+sets.map(group=>'<button type="button" data-relation="'+group.key+'" class="relation-spoke '+(relationTab===group.key?'active':'')+'"><small>'+safe(group.name)+'</small><strong>'+fmt(group.items.length)+'</strong><span>'+safe(group.items.length?'Bronrelaties':'Geen relatie vastgelegd')+'</span></button>').join('')+'</div></div>'+
       '<div class="relation-detail" id="relationDetail"></div>';
     for(const b of root.querySelectorAll('[data-relation]'))b.addEventListener('click',()=>{relationTab=b.dataset.relation;renderRelations();});
