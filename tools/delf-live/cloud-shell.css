@@ -1139,3 +1139,16 @@ body.panel-visible .mobile-settings.cloud-entry{opacity:0!important}
 .free-talk-floating #freeTalkConnect:disabled{
   opacity:.5;cursor:progress;
 }
+
+
+/* EAIspeak: compacte toestelcontrole binnen het bestaande zwevende menu. */
+.free-talk-device-details{
+  border-top:1px solid rgba(150,178,178,.25);
+  margin-top:14px;
+  padding-top:8px;
+}
+.free-talk-device-details .studio-support{
+  font:400 11px/1.5 system-ui,sans-serif;
+  color:#758e91;
+  margin:5px 0;
+}
