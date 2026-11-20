@@ -10,7 +10,6 @@
 <script type="module" src="./src/main.js"></script>
 <script type="module" src="./src/cloud-shell.js"></script>
 <script type="module" src="./src/system-status.js"></script>
-<script type="module" src="./src/french-conversation.js"></script>
 </head>
 <body>
 <div class="stage" id="stage" data-phase="intro" tabindex="-1" data-display="statement">
@@ -94,27 +93,6 @@
         <label class="studio-field">Nederlandse stem<select id="nlVoice"><option value="">Kies een aanwezige stem</option></select></label>
         <button id="previewDutch" class="action studio-action studio-action-quiet">Luister Nederlands</button>
         <p class="feedback" id="dutchStatus">Kies een stem</p>
-      </section>
-      <section class="studio-section cloud-reveal" id="frenchConversation">
-        <div class="studio-section-top"><span class="studio-section-no">03</span><h2>Frans gesprek</h2></div>
-        <p class="studio-support">Praat rechtstreeks met een Frans gesprek via je microfoon. Het gekozen taalmodel antwoordt in het Frans. Phonon spreekt het antwoord uit. Een Nederlandse stem is niet nodig.</p>
-        <p class="studio-support">Laad hierboven eerst de Franse stem. Kies hieronder een lokaal taalmodel. Er wordt niets verbonden totdat je zelf op een knop klikt.</p>
-        <label class="studio-field">Modelserver<select id="dialogueProvider">
-          <option value="ollama">Ollama</option><option value="lmstudio">LM Studio</option><option value="llamacpp">llama.cpp</option>
-        </select></label>
-        <label class="studio-field">Serveradres<input id="dialogueEndpoint" type="url" value="http://localhost:11434/" autocomplete="off" spellcheck="false"></label>
-        <button class="action studio-action studio-action-quiet" id="dialogueDiscover" type="button">Zoek taalmodellen</button>
-        <label class="studio-field">Taal van jouw spraak<select id="dialogueLanguage"><option value="fr-FR">Frans</option><option value="nl-NL">Nederlands</option></select></label>
-        <label class="studio-field">Gespreksmodel<select id="dialogueModel"><option value="">Zoek eerst een beschikbaar model</option></select></label>
-        <div class="studio-action-grid">
-          <button class="action studio-action" id="dialogueStart" type="button" disabled>Spreek Frans</button>
-          <button class="action studio-action studio-action-quiet" id="dialogueStop" type="button" disabled>Stop gesprek</button>
-        </div>
-        <p class="feedback" id="dialogueStatus" role="status" aria-live="polite">Nog geen gesprek gestart.</p>
-        <details class="studio-disclosure"><summary>Gesprekstekst</summary>
-          <p class="studio-support">Herkend via microfoon</p><p class="feedback" id="dialogueSource"></p>
-          <p class="studio-support">Antwoord van het model</p><p class="feedback" id="dialogueAnswer" lang="fr"></p>
-        </details>
       </section>
       <details class="studio-disclosure cloud-reveal advanced-setting"><summary>Eigen stemmodel</summary>
         <p class="studio-support">Alleen voor een eigen modelbestand.</p>
