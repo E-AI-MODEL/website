@@ -3,14 +3,15 @@
    Only existing DOM nodes move, so graphs, imports and form listeners are retained. */
 (function(){
   const groups={
-    overview:[['Samenvatting',4],['Verbanden',2],['Toepassingen',1]],
-    apps:[['Register',3]],
-    connections:[['Inzicht',2],['Registraties',3]],
-    ai:[['Inzicht',2],['Functies',2]],
-    privacy:[['Beoordelingen',2],['Wetgeving en bronnen',1]],
-    findings:[['Overzicht',3],['Controlepunten',4]],
-    reports:[['Rapport kiezen',2],['Downloaden',2]],
-    sources:[['Synchroniseren',3],['Herkomst en beheer',3],['Beleid en bronnen',2]]
+    overview:[['Schoolbreed',4],['Relaties en bewijs',2],['Toepassingen',1]],
+    apps:[['Toepassingen',3]],
+    connections:[['Registraties en status',2],['Koppelingen doorzoeken',3]],
+    devices:[['Apparaatstatus',3],['Onderliggende metingen',1]],
+    ai:[['AI-functies',2],['Functies doorzoeken',2]],
+    privacy:[['DPIA en bewijs',2],['AI-beheer',1],['Wetgeving en bronnen',1]],
+    findings:[['Stand van controles',3],['Controlepunten',4]],
+    reports:[['Rapport kiezen',2],['Rapport ophalen',2]],
+    sources:[['Synchroniseren',3],['Herkomst en beheer',3],['Documentatie',2]]
   };
   const leading={ai:2};
   const scenes=new Map();

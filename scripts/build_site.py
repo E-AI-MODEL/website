@@ -2871,7 +2871,7 @@ def build(sources: Path, out: Path) -> None:
     # Schoolbrede ICT-scan: standalone local-first browser tool. No public navigation,
     # no sitemap entry and no public source data. Files stay in the browser.
     ict_scan_source = repo_root / "tools" / "ict-scan"
-    for filename in ("index.html", "style.css", "monitor.css", "app.js", "enhancements.js", "github-sync.js", "rail-drawer.js", "visual-explorer.js", "visual-explorer.css", "record-cards.js", "record-github.js", "record-cards.css", "scene-navigation.js", "scene-navigation.css", "answer-engine.js", "answer-engine.css", "frameworks.json", "emmaus-logo.svg", "README.md"):
+    for filename in ("index.html", "style.css", "monitor.css", "app.js", "enhancements.js", "github-sync.js", "rail-drawer.js", "visual-explorer.js", "visual-explorer.css", "record-cards.js", "record-github.js", "record-cards.css", "scene-navigation.js", "scene-navigation.css", "evidence-experience.js", "evidence-experience.css", "answer-engine.js", "answer-engine.css", "frameworks.json", "emmaus-logo.svg", "README.md"):
         source_file = ict_scan_source / filename
         if not source_file.is_file():
             raise FileNotFoundError(f"Missing ICT-scan source file: {source_file}")

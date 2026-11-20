@@ -75,6 +75,39 @@ try {
   assert(size.main<size.height,'Hoofdvenster groeit buiten de viewport bij '+width);
   await page.locator('#viewOverview .scene-tab').nth(1).click();
   assert.equal(await page.locator('#viewOverview .scene-panel:not([hidden])').count(),1);
+  assert.equal(await page.locator('#relationshipExplorer .relation-spoke').count(),5,'Bronrelaties ontbreken');
+  await page.screenshot({path:'test-results/ict-scan-'+width+'-relationships.png'});
+  await page.locator('[data-view="devices"]').click();
+  assert.equal(await page.locator('#viewDevices .scene-tab').count(),2,'Hardware heeft geen duidelijke schermindeling');
+  assert.match(await page.locator('#deviceStats').textContent(),/161/);
+  assert.match(await page.locator('#deviceCoverage').textContent(),/92 \/ 161/,'De bekende compliancewaarden ontbreken');
+  assert.equal(await page.locator('#deviceRecords .device-record').count(),4);
+  await page.screenshot({path:'test-results/ict-scan-'+width+'-hardware.png'});
+  await page.locator('[data-view="privacy"]').click();
+  assert.equal(await page.locator('#viewPrivacy .scene-tab').count(),3);
+  assert.equal(await page.locator('#privacyDpia .dpia-evidence').count(),10,'DPIA-onderwerpen niet volledig');
+  await page.screenshot({path:'test-results/ict-scan-'+width+'-privacy.png'});
+  await page.locator('#viewPrivacy .scene-tab').nth(1).click();
+  assert((await page.locator('#privacyControls .evidence-group').count())>=4,'Beheerpunten zijn niet gegroepeerd');
+  await page.locator('[data-view="apps"]').click();
+  assert.equal(await page.locator('#candidatePanel').isVisible(),false,'Kandidaten zijn niet gescheiden van basisregistraties');
+  await page.locator('.app-register-tab').nth(1).click();
+  assert.equal(await page.locator('#candidatePanel').isVisible(),true);
+  assert(!/76\s+aanwijzingen/.test(await page.locator('#candidateInfo').textContent()),'Dezelfde 76 wordt dubbel getoond');
+  await page.locator('[data-view="reports"]').click();
+  assert.equal(await page.locator('#reportPicker [data-report]').count(),7);
+  await page.locator('[data-report="devices"]').click();
+  assert.match(await page.locator('#reportPreviewTitle').textContent(),/Apparaten/);
+  await page.locator('[data-view="ai"]').click();
+  await page.locator('#aiModeSchool').click();
+  assert.equal(await page.locator('#aiSchoolPanels').isVisible(),true);
+  assert.equal(await page.locator('#dpiaList').isVisible(),false,'DPIA wordt dubbel getoond binnen AI');
+
+  for(const name of ['overview','apps','connections','devices','ai','privacy','findings','reports','sources']){
+    await page.locator('[data-view="'+name+'"]').click();
+    const result=await page.evaluate(()=>({width:document.documentElement.scrollWidth,viewport:document.documentElement.clientWidth,heading:document.getElementById('sectionTitle')?.textContent}));
+    assert(result.width<=result.viewport+1,'Horizontale overloop bij '+width+' in '+name+': '+JSON.stringify(result));
+  }
   await page.locator('#railMore').click();
   const pop=await page.locator('#railDrawer').boundingBox();
   assert(pop&&pop.x>=0&&pop.x+pop.width<=width+1,'Functiemenu buiten viewport: '+JSON.stringify(pop));

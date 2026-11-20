@@ -7,7 +7,7 @@ TOOL = ROOT / "tools" / "ict-scan"
 
 class ICTScanTests(unittest.TestCase):
     def test_files_exist(self):
-        for filename in ("index.html", "style.css", "monitor.css", "app.js", "enhancements.js", "github-sync.js", "rail-drawer.js", "visual-explorer.js", "visual-explorer.css", "record-cards.js", "record-github.js", "record-cards.css", "frameworks.json", "answer-engine.js", "answer-engine.css", "scene-navigation.js", "scene-navigation.css", "emmaus-logo.svg", "README.md"):
+        for filename in ("index.html", "style.css", "monitor.css", "app.js", "enhancements.js", "github-sync.js", "rail-drawer.js", "visual-explorer.js", "visual-explorer.css", "record-cards.js", "record-github.js", "record-cards.css", "frameworks.json", "answer-engine.js", "answer-engine.css", "scene-navigation.js", "scene-navigation.css", "evidence-experience.js", "evidence-experience.css", "emmaus-logo.svg", "README.md"):
             self.assertTrue((TOOL / filename).is_file(), filename)
 
     def test_secret_not_security_and_litespeed_404_middle_zero(self):
@@ -58,6 +58,11 @@ class ICTScanTests(unittest.TestCase):
         self.assertNotIn('https://cdn.', html)
         self.assertIn('src="./scene-navigation.js', html)
         self.assertIn('href="./scene-navigation.css', html)
+        self.assertIn('src="./evidence-experience.js', html)
+        self.assertIn('href="./evidence-experience.css', html)
+        self.assertIn('data-view="devices"', html)
+        self.assertIn('id="deviceCoverage"', html)
+        self.assertIn('data-report="devices"', html)
         self.assertIn('PDF-inhoud is niet beoordeeld', (TOOL / 'app.js').read_text(encoding='utf-8'))
 
     def test_github_sync_is_read_only_and_credentials_not_persisted(self):
