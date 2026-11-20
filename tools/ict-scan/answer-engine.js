@@ -191,14 +191,99 @@
     if(suggestions.length)return result('suggestions','Geen rechtstreeks antwoord gevonden. Dit zijn registraties die mogelijk bij je vraag passen.',suggestions,'Zoeksuggesties',[],question);
     return result('none','Geen betrouwbaar antwoord gevonden in de huidige gegevens. Probeer een toepassingsnaam of een kortere vraag.',[],'Niet gevonden',[],question);
   }
-  const api=Object.freeze({search,norm,unknown,words});
+  // Present natural questions before answering. Every suggestion maps to an existing
+  // fact query or a fixed FAQ. No language model or invented source information.
+  function predict(typed,dataset,limit=5){
+    const raw=norm(typed),terms=words(typed);
+    const data={apps:dataset.apps||[],ai:dataset.ai||[],connections:dataset.connections||[],faqs:dataset.faqs||[]};
+    const found=[],unique=new Set();
+    const add=(question,keywords='',context='')=>{
+      const n=norm(question);
+      if(!n||unique.has(n))return;
+      unique.add(n);
+      found.push({question,keywords:norm(keywords),context,order:found.length});
+    };
+    const apps=data.apps;
+    const printing=apps.some(a=>/\b(print|afdruk|uniflow|kuario|printer)/.test(norm([a.name,a.description,a.process].join(' '))));
+    const phone=apps.some(a=>/\b(telefonie|telefoon|3cx|bereikbaarheid)\b/.test(norm([a.name,a.description,a.process].join(' '))));
+    if(printing){
+      add('Welke printsoftware gebruiken we?','printers printen afdrukken kopieren uniflow kuario','Software');
+      add('Welke programma’s gebruiken we om te printen?','printsoftware printers printen afdrukken kopieer','Software');
+    }
+    if(phone)add('Welke software gebruiken we voor telefonie?','telefoon telefooncentrale bellen 3cx bereikbaarheid','Software');
+    if(apps.length){
+      add('Hoeveel toepassingen staan er in het overzicht?','aantal applicaties software diensten apps','Overzicht');
+      add('Welke toepassingen hebben AI-functies?','ai copilot toepassingen software','AI');
+      add('Welke toepassingen hebben nog geen verantwoordelijke?','beheer eigenaars beheerder eigenaar ontbreekt','Controle');
+      add('Welke toepassingen hebben een Entra-match?','entra sso koppelingen','Verbanden');
+    }
+    if(data.connections.length)add('Hoeveel Entra-registraties zijn er?','entra sso connecties','Overzicht');
+    if(data.ai.length)add('Hoeveel AI-functies zijn beschreven?','ai copilot functies','AI');
+    for(const faq of data.faqs){
+      const aliases=String(faq.aliases||'').split('|').join(' ');
+      add(faq.name,aliases+' '+faq.topic,'Veelgestelde vraag');
+    }
+    if(raw){
+      const candidates=apps.filter(a=>{
+        const name=norm(a.name);
+        if(name.length<2)return false;
+        return name.split(' ').some(w=>w.length>=2&&terms.some(t=>w.startsWith(t)||t.startsWith(w)))||raw.includes(name);
+      }).sort((a,b)=>b.name.length-a.name.length).slice(0,4);
+      for(const app of candidates){
+        add('Wat doet '+app.name+'?',app.name+' omschrijving waarvoor doel','Toepassing');
+        add('Wie beheert '+app.name+'?',app.name+' eigenaar verantwoordelijke beheer','Toepassing');
+        add('Gebruiken we '+app.name+'?',app.name+' actief aanwezig gebruikt','Toepassing');
+        add('Welke AI-functies heeft '+app.name+'?',app.name+' copilot ai functies','AI');
+      }
+    }
+    if(!raw){
+      const preferred=[
+        'Welke printsoftware gebruiken we?',
+        'Wie beheert 3CX?',
+        'Wat betekent een Entra-registratie?',
+        'Welke toepassingen hebben AI-functies?'
+      ];
+      const starter=preferred.map(q=>found.find(x=>norm(x.question)===norm(q))).filter(Boolean);
+      if(starter.length)return starter.slice(0,limit).map(({question,context})=>({question,context}));
+      return found.slice(0,Math.min(3,limit)).map(({question,context})=>({question,context}));
+    }
+    const score=entry=>{
+      const hay=entry.question+' '+entry.keywords;
+      const hayWords=new Set(hay.split(' ').filter(Boolean));
+      const matched=terms.filter(term=>[...hayWords].some(w=>w===term||w.startsWith(term)||(term.length>3&&term.startsWith(w)))).length;
+      if(!matched)return 0;
+      const coverage=matched/Math.max(1,terms.length);
+      let points=coverage*7+matched*1.3;
+      if(norm(entry.question).startsWith(raw))points+=12;
+      else if(norm(entry.question).includes(raw))points+=5;
+      if(terms.some(x=>entry.keywords.split(' ').includes(x)))points+=1;
+      if(entry.context==='Veelgestelde vraag')points+=0.25;
+      return points;
+    };
+    const ranked=found.map(x=>({...x,score:score(x)})).filter(x=>x.score>=3.8).sort((a,b)=>b.score-a.score||a.order-b.order);
+    return ranked.slice(0,limit).map(({question,context})=>({question,context}));
+  }
+  const api=Object.freeze({search,predict,norm,unknown,words});
   if(typeof window!=='undefined')window.EmmausAnswerLogic=api;
   const input=document.getElementById('globalSearch'),host=document.getElementById('globalResults');
   if(!input||!host)return;
   const make=(tag,cls,txt)=>{const node=document.createElement(tag);if(cls)node.className=cls;if(txt!==undefined)node.textContent=String(txt);return node;};
+  let mode='closed',options=[],active=-1;
+  input.setAttribute('role','combobox');
+  input.setAttribute('aria-controls','globalResults');
+  input.setAttribute('aria-autocomplete','list');
+  input.setAttribute('aria-expanded','false');
   function snapshot(){
     const from=name=>state[name] instanceof Map?Array.from(state[name].values()):[];
     return {apps:from('apps'),ai:from('ai'),connections:from('connections'),parts:from('parts'),candidates:from('candidates'),faqs:from('faqs'),dpia:from('dpia'),licenseReview:from('licenseReview'),workActions:from('workActions'),devices:from('devices')};
+  }
+  function show(){
+    host.hidden=false;input.setAttribute('aria-expanded','true');
+  }
+  function hide(){
+    mode='closed';options=[];active=-1;host.hidden=true;host.replaceChildren();
+    input.setAttribute('aria-expanded','false');
+    input.removeAttribute('aria-activedescendant');
   }
   function openResult(item){
     if(item.type==='apps'||item.type==='ai'||item.type==='connections'){
@@ -207,16 +292,19 @@
       const mapping={faqs:'faqs',candidates:'additionalCandidates'};
       window.EmmausRecordCards.open(mapping[item.type]||item.type,item.id);
     }
-    host.hidden=true;input.value='';
+    hide();input.value='';
   }
-  function render(){
-    const q=input.value.trim();
-    if(norm(q).length<2){host.hidden=true;host.replaceChildren();return;}
+  function answer(question){
+    const q=String(question||'').trim();
+    if(norm(q).length<2){hide();return;}
+    input.value=q;options=[];active=-1;mode='answer';
+    input.removeAttribute('aria-activedescendant');
     const found=search(q,snapshot());
-    host.replaceChildren();host.hidden=false;
+    host.replaceChildren();show();
     const card=make('section','answer-result');
-    card.append(make('p','answer-kicker',found.kind==='faq'?'VAST ANTWOORD':found.kind==='suggestions'?'MOGELIJKE RESULTATEN':'ANTWOORD UIT DE GEGEVENS'));
-    const reply=make('p','answer-body',found.answer);card.append(reply);
+    card.append(make('p','answer-kicker',found.kind==='faq'?'Vast antwoord':found.kind==='suggestions'?'Mogelijke resultaten':'Antwoord uit de gegevens'));
+    card.append(make('p','answer-query',q));
+    card.append(make('p','answer-body',found.answer));
     card.append(make('p','answer-status',found.status));
     if(found.records.length){
       const list=make('div','answer-records');
@@ -227,18 +315,98 @@
         button.addEventListener('click',()=>openResult(record));list.append(button);
       }
       card.append(list);
-      if(found.records.length>8)card.append(make('p','answer-foot','Toon meer via het betreffende register.'));
+      if(found.records.length>8)card.append(make('p','answer-foot','Bekijk de overige resultaten in het register.'));
     }
     if(found.sources.length){
       const details=make('details','answer-evidence'),summary=make('summary','','Bronnen ('+found.sources.length+')');
       details.append(summary);
       for(const src of found.sources)details.append(make('p','answer-source',src));
       card.append(details);
-    } else if(found.kind==='none'||found.kind==='suggestions'){
-      card.append(make('p','answer-foot','Er is geen antwoord uit de bron afgeleid.'));
+    }else if(found.kind==='none'||found.kind==='suggestions'){
+      card.append(make('p','answer-foot','Er is geen antwoord uit de bronnen afgeleid.'));
     }
-    host.append(card);
+    const back=make('button','answer-again','Andere vraag');
+    back.type='button';back.addEventListener('click',()=>{
+      input.value='';suggest();input.focus();
+    });
+    card.append(back);host.append(card);
+    return found;
   }
-  window.EmmausAnswerEngine=Object.freeze({render,search});
-  document.addEventListener('ict-scan:local-restored',()=>{if(input.value.trim())render();});
+  function select(index){
+    if(!options[index])return false;
+    answer(options[index].question);
+    return true;
+  }
+  function highlight(index){
+    if(!options.length)return;
+    active=(index+options.length)%options.length;
+    const list=host.querySelectorAll('[data-question-index]');
+    list.forEach((node,i)=>{
+      node.classList.toggle('is-active',i===active);
+      node.setAttribute('aria-selected',String(i===active));
+    });
+    input.setAttribute('aria-activedescendant','answer-prediction-'+active);
+  }
+  function suggest(){
+    const q=input.value.trim();
+    options=predict(q,snapshot());
+    active=-1;input.removeAttribute('aria-activedescendant');
+    host.replaceChildren();
+    if(!options.length){
+      if(q.length>1){
+        mode='predict';show();
+        const wrap=make('section','answer-result');
+        wrap.append(make('p','answer-kicker','Vraag stellen'));
+        wrap.append(make('p','answer-foot','Druk op Enter om je vraag te zoeken.'));
+        host.append(wrap);
+      }else hide();
+      return options;
+    }
+    mode='predict';show();
+    const panel=make('section','answer-result answer-predict');
+    panel.append(make('p','answer-kicker',q?'Bedoel je een van deze vragen?':'Je kunt bijvoorbeeld vragen:'));
+    const list=make('div','answer-predictions');list.setAttribute('role','listbox');
+    list.setAttribute('aria-label','Voorgestelde vragen');
+    options.forEach((option,index)=>{
+      const button=make('button','answer-prediction');
+      button.type='button';button.dataset.questionIndex=String(index);
+      button.id='answer-prediction-'+index;
+      button.setAttribute('role','option');
+      button.setAttribute('aria-selected','false');
+      button.append(make('span','',option.question),make('small','',option.context));
+      button.addEventListener('click',()=>select(index));
+      button.addEventListener('mouseenter',()=>highlight(index));
+      list.append(button);
+    });
+    panel.append(list);
+    if(q)panel.append(make('p','answer-foot','Kies een vraag of druk op Enter voor je eigen vraag.'));
+    host.append(panel);
+    return options;
+  }
+  function render(){return suggest();}
+  function handleKeydown(event){
+    if(event.key==='Escape'){
+      if(!host.hidden){event.preventDefault();event.stopPropagation();hide();return true;}
+      return false;
+    }
+    if(event.key==='ArrowDown'||event.key==='ArrowUp'){
+      if(mode!=='predict'||!options.length)return false;
+      event.preventDefault();event.stopPropagation();
+      highlight(active<0?(event.key==='ArrowDown'?0:options.length-1):active+(event.key==='ArrowDown'?1:-1));
+      return true;
+    }
+    if(event.key==='Enter'){
+      event.preventDefault();event.stopPropagation();
+      if(mode==='predict'&&active>=0&&select(active))return true;
+      answer(input.value);return true;
+    }
+    return false;
+  }
+  window.EmmausAnswerEngine=Object.freeze({render,search,predict,answer,handleKeydown});
+  input.addEventListener('focus',()=>{
+    if(mode!=='answer')suggest();
+  });
+  document.addEventListener('ict-scan:local-restored',()=>{
+    if(document.activeElement===input&&mode!=='answer')suggest();
+  });
 })();
