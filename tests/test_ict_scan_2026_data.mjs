@@ -7,6 +7,8 @@ import {resolve} from 'node:path';
 const source=JSON.parse(readFileSync(resolve('ict-scan/bronnen/2026-applicatielandschap.json'),'utf8'));
 const manifest=JSON.parse(readFileSync(resolve('ict-scan/bronnen/manifest.json'),'utf8'));
 const work=JSON.parse(readFileSync(resolve('ict-scan/bronnen/2026-werkregister.json'),'utf8'));
+const faq=JSON.parse(readFileSync(resolve('ict-scan/bronnen/2026-faq.json'),'utf8'));
+
 const html=readFileSync(resolve('tools/ict-scan/index.html'),'utf8');
 const app=readFileSync(resolve('tools/ict-scan/app.js'),'utf8');
 const sync=readFileSync(resolve('tools/ict-scan/github-sync.js'),'utf8');
@@ -59,10 +61,21 @@ test('Aanvullende kandidaten zijn niet als bevestigde toepassingen meegeteld',()
   assert.ok(source.metadata.limitations.some(s=>s.includes('76 aanvullende')));
 });
 
+test('FAQ-registraties en hun bronnen zijn afzonderlijk gecontroleerd',()=>{
+  assert.equal(faq.schema,'eai-school-ict-v1');
+  assert.equal(faq.faqs.length,14);
+  assert.equal(new Set(faq.faqs.map(x=>x.id)).size,14);
+  const row=manifest.dataFiles.find(x=>x.path==='2026-faq.json');
+  assert.ok(row,'FAQ staat niet in het manifest');
+  assert.equal(row.recordCounts.faqs,14);
+  assert.ok(faq.faqs.every(x=>x.answer&&x.status==='Brongebonden werkversie'&&x.sources.length));
+});
+
 test('Manifest-SHA controleert de exacte publicatiebestanden',()=>{
   const sources=[
     ['2026-applicatielandschap.json',readFileSync(resolve('ict-scan/bronnen/2026-applicatielandschap.json'))],
-    ['2026-werkregister.json',readFileSync(resolve('ict-scan/bronnen/2026-werkregister.json'))]
+    ['2026-werkregister.json',readFileSync(resolve('ict-scan/bronnen/2026-werkregister.json'))],
+    ['2026-faq.json',readFileSync(resolve('ict-scan/bronnen/2026-faq.json'))]
   ];
   for(const [name,bytes] of sources){
     const expected=createHash('sha1').update('blob '+bytes.length+'\0').update(bytes).digest('hex');
