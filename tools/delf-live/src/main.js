@@ -58,6 +58,14 @@ let reserveSpeechActive = false;
 let frenchSegmentIndex = 0;
 let frenchSegmentTotal = 0;
 let scriptedMode = 'off'; // off | armed | scene1 | reply | scene2 | finished
+function acknowledgeArrow(){
+  const wave=$('arrowWave');
+  if(!wave)return;
+  wave.classList.remove('is-pulsing');
+  void wave.offsetWidth; // iedere druk geeft een nieuwe subtiele golf
+  wave.classList.add('is-pulsing');
+}
+
 let scriptedPlayer = null;
 let scriptedAudioUrls = [null,null];
 function scriptedFeedback(message, problem=false) {
@@ -155,6 +163,7 @@ function playScriptedScene(index) {
   });
 }
 function scriptedNext(){
+  acknowledgeArrow();
   if(scriptedMode==='armed')playScriptedScene(0);
   else if(scriptedMode==='reply')playScriptedScene(1);
   else if(scriptedMode==='scene1'||scriptedMode==='scene2') scriptedFeedback('Deze scène speelt. Wacht tot de stem klaar is.');
@@ -1269,6 +1278,7 @@ document.addEventListener('keydown', event => {
   if (event.code === 'ArrowRight') {
     event.preventDefault();
     if(scriptedMode!=='off'){scriptedNext();return;}
+    acknowledgeArrow();
     if (phase === 'french') nextFrenchPassage();
     else if (phase === 'live' && !closing) reserveFrenchSpeech();
     return;
