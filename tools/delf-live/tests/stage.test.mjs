@@ -347,3 +347,23 @@ test('dunne golflijnen reageren op de werkelijke MP3 in beide scenes',()=>{
   assert.match(main,/scriptedAnalyser = null;/);
   assert.match(main,/old\.close\(\)/);
 });
+
+test('vrij praten is gescheiden van de vaste voorstelling',()=>{
+  assert.match(html,/id="tab-gesprek"/);
+  assert.match(html,/id="page-gesprek"/);
+  assert.match(html,/id="freeTalkSpeak"/);
+  assert.match(html,/id="freeTalkStop"/);
+  assert.match(html,/id="freeTalkPlay"/);
+  assert.match(html,/id="freeTalkSend"/);
+  assert.match(html,/\.\/src\/free-talk\.js/);
+  assert.match(html,/https:\/\/js\.puter\.com\/v2\//);
+  const chat=readFileSync(new URL('../src/free-talk.js',import.meta.url),'utf8');
+  assert.match(chat,/SpeechRecognition\|\|window\.webkitSpeechRecognition/);
+  assert.match(chat,/rec\.lang='nl-NL'/);
+  assert.match(chat,/api\.ai\.chat\(messages/);
+  assert.match(chat,/api\.ai\.txt2speech\(french/);
+  assert.match(chat,/play\.addEventListener\('click'/);
+  assert.match(chat,/language:'fr-FR'/);
+  assert.match(chat,/if\(own!==turn\)return/);
+  assert.doesNotMatch(chat,/ollama serve|localhost:11434|Caddy/);
+});
