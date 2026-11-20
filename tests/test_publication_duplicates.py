@@ -29,7 +29,7 @@ class PublicationDuplicatesTests(unittest.TestCase):
         self.site = Path(self.temp.name)
 
     def page(self, url, text=LONG_TEXT, title="Pagina", canonical=None,
-             redirect=None, noindex=False):
+             redirect=None, noindex=False, script=""):
         route = url.strip("/")
         target = self.site / route / "index.html" if route else self.site / "index.html"
         target.parent.mkdir(parents=True, exist_ok=True)
@@ -41,7 +41,7 @@ class PublicationDuplicatesTests(unittest.TestCase):
         target.write_text(
             f'<html><head><title>{title} | EAI</title>{links}</head>'
             f'<body><header>Algemeen menu</header><main><h1>{title}</h1>'
-            f'<p>{text}</p></main><footer>Footer</footer></body></html>',
+            f'<p>{text}</p></main><script>{script}</script><footer>Footer</footer></body></html>',
             encoding="utf-8",
         )
 
@@ -88,6 +88,23 @@ class PublicationDuplicatesTests(unittest.TestCase):
         self.page("/twee/", LONG_TEXT, "Tweede")
         self.sitemap("/een/", "/twee/")
         self.assertIn("exact_dezelfde_pagina", [x["type"] for x in audit(self.site, {})["blocking"]])
+
+    def test_registered_variants_need_different_actual_scripts(self):
+        self.page("/wiskunde-a/", LONG_TEXT, "Wiskunde", script="const wiskunde='A';")
+        self.page("/wiskunde-b/", LONG_TEXT, "Wiskunde", script="const wiskunde='B';")
+        self.sitemap("/wiskunde-a/", "/wiskunde-b/")
+        pair = ("/wiskunde-a/", "/wiskunde-b/")
+        result = audit(self.site, {}, variants={pair: "Verschillende wiskundemodellen"})
+        self.assertEqual([], result["blocking"])
+        self.assertIn("afzonderlijke_toepassingsvarianten", [x["type"] for x in result["notes"]])
+
+    def test_registered_variants_cannot_hide_identical_scripts(self):
+        self.page("/wiskunde-a/", LONG_TEXT, "Wiskunde", script="const wiskunde='A';")
+        self.page("/wiskunde-b/", LONG_TEXT, "Wiskunde", script="const wiskunde='A';")
+        self.sitemap("/wiskunde-a/", "/wiskunde-b/")
+        pair = ("/wiskunde-a/", "/wiskunde-b/")
+        result = audit(self.site, {}, variants={pair: "Gedeelde bediening"})
+        self.assertIn("exact_dezelfde_pagina", [x["type"] for x in result["blocking"]])
 
     def test_nearly_identical_homepages_are_reported(self):
         self.page("/", LONG_TEXT, "Homepage")
