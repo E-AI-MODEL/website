@@ -38,6 +38,7 @@ try {
   const page=await browser.newPage({viewport:{width,height:900},isMobile:width<600,hasTouch:width<600});
   const errors=[];
   page.on('pageerror',error=>errors.push(error.message));
+  page.on('dialog',dialog=>dialog.accept());
   await page.route('https://api.github.com/**',async route=>{
    const url=new URL(route.request().url());
    if(route.request().method()==='OPTIONS'){await route.fulfill({status:204,headers:cors});return;}
