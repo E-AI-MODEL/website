@@ -7,7 +7,7 @@ TOOL = ROOT / "tools" / "ict-scan"
 
 class ICTScanTests(unittest.TestCase):
     def test_files_exist(self):
-        for filename in ("index.html", "style.css", "monitor.css", "app.js", "enhancements.js", "emmaus-logo.svg", "README.md"):
+        for filename in ("index.html", "style.css", "monitor.css", "app.js", "enhancements.js", "github-sync.js", "emmaus-logo.svg", "README.md"):
             self.assertTrue((TOOL / filename).is_file(), filename)
 
     def test_secret_not_security_and_litespeed_404_middle_zero(self):
@@ -35,7 +35,7 @@ class ICTScanTests(unittest.TestCase):
         self.assertIn("document.addEventListener('ict-scan:opened',restoreSnapshot)", enhancements)
         self.assertNotIn("gateForm", enhancements)
         self.assertIn('noindex,nofollow', html)
-        self.assertIn("connect-src 'none'", html)
+        self.assertIn('connect-src https://api.github.com', html)
         self.assertNotIn('analytics.js', html)
         self.assertNotIn('cloudflareinsights', html)
 
@@ -43,11 +43,29 @@ class ICTScanTests(unittest.TestCase):
         html = (TOOL / "index.html").read_text(encoding="utf-8")
         self.assertIn('src="./app.js"', html)
         self.assertIn('src="./enhancements.js"', html)
+        self.assertIn('src="./github-sync.js"', html)
         self.assertIn('href="./monitor.css"', html)
         self.assertIn('src="./emmaus-logo.svg"', html)
         self.assertNotIn('<script src="http', html)
         self.assertNotIn('https://cdn.', html)
         self.assertIn('PDF-inhoud is niet beoordeeld', (TOOL / 'app.js').read_text(encoding='utf-8'))
+
+    def test_github_sync_is_read_only_and_credentials_not_persisted(self):
+        html = (TOOL / 'index.html').read_text(encoding='utf-8')
+        js = (TOOL / 'github-sync.js').read_text(encoding='utf-8')
+        self.assertIn('id="githubSyncStart"', html)
+        self.assertIn('id="githubRepo"', html)
+        self.assertIn('id="githubFolder"', html)
+        self.assertIn('id="githubToken" type="password"', html)
+        self.assertIn('https://api.github.com', js)
+        self.assertIn("method:'GET'", js)
+        self.assertNotIn("method:'POST'", js)
+        self.assertNotIn("method:'PUT'", js)
+        self.assertNotIn("localStorage", js)
+        self.assertNotIn("sessionStorage", js)
+        self.assertIn("githubToken').value=''", js)
+        self.assertIn('await importOneFile(file)', js)
+        self.assertIn('restoreState(backup)', js)
 
     def test_routes_copied_by_builder(self):
         builder = (ROOT / 'scripts' / 'build_site.py').read_text(encoding='utf-8')
