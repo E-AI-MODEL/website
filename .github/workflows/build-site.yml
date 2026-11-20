@@ -166,6 +166,11 @@ jobs:
       - name: Build site
         run: |
           python scripts/build_site.py --sources content/legacy --out site-build
+          # TOPO is a complete, independently deployed application.
+          test ! -e site-build/topo/index.html
+          test -s topo/index.html
+          test -s topo/instellingen/index.html
+          test -s topo/nederland/index.html
           test -s site-build/statistieken/demo.json
           test -s site-build/statistieken/collect.php
           test -s site-build/assets/site-analytics.js
