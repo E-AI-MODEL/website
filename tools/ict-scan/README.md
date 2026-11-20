@@ -1,10 +1,10 @@
-# Schoolbrede ICT-scan
+# Applicatielandschap Emmauscollege
 
 Een zelfstandige pagina van de EAI-website. Geen bronbestanden, tokens, wachtwoorden, persoonsgegevens, boekingsregels of andere schoolinhoud worden naar GitHub of naar een server verstuurd. De import, de controles en de exports draaien in het browservenster.
 
 ## Gebruik
 
-De route staat niet in de gewone website-navigatie of de sitemap. De pagina begint met de standaard 404-weergave. Dubbelklik op de middelste 0 van 404 en voer de afgesproken toegangscode in. Dit is een verborgen ingang, geen authenticatie of beveiliging van de broncode.
+De route staat niet in de gewone website-navigatie of de sitemap. De pagina begint met de standaard 404-weergave. Dubbelklik op de middelste 0 van 404. Het dashboard opent direct, zonder toegangscode of wachtwoord. De verborgen ingang is geen authenticatie of beveiliging van de broncode.
 
 Open een of meer bestanden via Bronnen en export. Op het overzicht staan de aantallen en de verdelingen. Toepassingen en AI-functies zijn gescheiden van Entra-registraties en onderliggende productonderdelen. Controles met gelijke ID worden samengevoegd en de bronregels blijven herkenbaar. Nieuwe onderzoekssignalen staan apart. De rapportselectie biedt zes uitvoerprofielen: volledige nulmeting, applicatielandschap, Entra en toegang, AI in het onderwijs, DPIA en AI Act, en controlepunten. Een volledige Excel-export heeft de tabbladen Schoolbreed, AI in de klas, AI in de school en Controle & bronnen. Andere selecties beperken het aantal tabbladen zonder onderliggende bronbeschrijvingen weg te laten. De uitgebreide omschrijvingen zijn onder een AI-ID uitklapbaar en de lesfaseverdeling staat vooraan. De PDF is een zelfstandig leesrapport met de verdelingen en volledige inhoudelijke beschrijvingen. De JSON-export bewaart de ingelezen gegevens voor een volgende controlesessie.
 
@@ -20,9 +20,9 @@ Het dashboard start leeg. Er worden geen aantallen of controles verzonnen. Categ
 
 ## Grenzen
 
-De toegangscode is zichtbaar in publieke JavaScript en is niet geschikt als toegangsbeveiliging voor serverdata. Bestanden worden niet geupload. Standaard verdwijnen gegevens na herladen. Alleen via de uitdrukkelijke knop **Bewaar op dit apparaat** wordt een lokale momentopname opgeslagen in IndexedDB, te verwijderen met **Wis lokale gegevens**. De site heeft geen toegang tot de live Microsoft 365-tenant. Een Entra-registratie is geen bewijs van een actieve gegevenskoppeling. Juridische verwijzingen zijn niet automatisch juridisch advies. DPIA-beoordelingen hebben een bewijsstatus en vragen lokale verificatie. Publicatie op een openbaar domein maakt de code openbaar, niet de lokaal ingelezen inhoud.
+Er is geen toegangscode of server-side toegangsbeveiliging. De 404-ingang is alleen een verborgen navigatieroute. Bestanden worden niet geüpload. Standaard verdwijnen gegevens na herladen. Alleen via de uitdrukkelijke knop **Bewaar op dit apparaat** wordt een lokale momentopname opgeslagen in IndexedDB, te verwijderen met **Wis lokale gegevens**. De site heeft geen toegang tot de live Microsoft 365-tenant. Een Entra-registratie is geen bewijs van een actieve gegevenskoppeling. Juridische verwijzingen zijn niet automatisch juridisch advies. DPIA-beoordelingen hebben een bewijsstatus en vragen lokale verificatie. Publicatie op een openbaar domein maakt de code openbaar, niet de lokaal ingelezen inhoud.
 
-De pagina laadt geen externe JavaScript-bibliotheken, analytics of lettertypen. `emmaus-logo.svg` bevat het originele Emmauscollege-logo lokaal en vraagt niets op van een externe website. De CSP verbiedt netwerkverzoeken vanuit JavaScript. Exports worden lokaal gegenereerd. PDF loopt via het afdrukvenster van de browser.
+De pagina laadt geen externe JavaScript-bibliotheken, analytics of lettertypen. `emmaus-logo.svg` bevat het originele Emmauscollege-logo lokaal en vraagt niets op van een externe website. De CSP staat alleen GitHub API-verzoeken toe voor de vrijwillige, alleen-lezen-synchronisatie; andere externe verbindingen vanuit JavaScript zijn niet toegestaan. Exports worden lokaal gegenereerd. PDF loopt via het afdrukvenster van de browser.
 
 ## Controle
 
@@ -63,10 +63,10 @@ Onder **Bronnen** staat **Sync data met GitHub**. Deze functie leest uitsluitend
 
 - De standaardbron is de openbare repository `E-AI-MODEL/website`, map `ict-scan/bronnen` op `main`. Een openbare repository kan zonder token worden gelezen. Publiceer geen wachtwoorden, toegangssleutels of ruwe accountgegevens. Voor andere, afgeschermde bronmappen kan een privé-repository met beperkte leestoken worden gebruikt.
 - Voor een privé-repository wordt een tijdelijke GitHub fine-grained access token gevraagd, beperkt tot die repository met **Contents: Read**. De token gaat alleen met GET-verzoeken naar `https://api.github.com`, wordt niet opgeslagen, niet meegestuurd in exports en na de synchronisatie uit het scherm gewist. Gebruik geen accountbrede of schrijfgerechtigde token.
-- Alle bestanden worden eerst opgehaald en pas daarna ingelezen. Bij een importfout wordt de vorige werkstand teruggezet. Bij een vooraf gevuld overzicht vraagt **Vervangen** om bevestiging.
-- De scanner leest een map met alle ondersteunde bronbestanden (ook submappen, begrensd). Beperk de map tot de te gebruiken nulmeting. Een `README.md` en andere documenten zonder ondersteunde extensie worden overgeslagen.
+- Alle bestanden worden eerst opgehaald en pas daarna ingelezen. Bij een importfout of annulering tijdens het verwerken wordt de vorige werkstand teruggezet. Bij een vooraf gevuld overzicht vraagt **Vervangen** om bevestiging, ook wanneer dezelfde GitHub-versie eerder is gesynchroniseerd.
+- De scanner leest een map met ondersteunde bronbestanden (ook submappen, begrensd). Bij een GitHub-lijst met 1.000 items weigert de synchronisatie om onvolledige data ongemerkt als compleet te presenteren. Beperk de map tot de te gebruiken nulmeting. Een `README.md` en andere documenten zonder ondersteunde extensie worden overgeslagen.
 - De status toont of een synchronisatie is geslaagd en vermeldt welke bestanden zijn gebruikt; de GitHub-bestand-SHA wordt per bron opgeslagen in de huidige browsersessie.
-- Er wordt niet automatisch gesynchroniseerd of geüpload. Lokaal opslaan blijft een afzonderlijke handeling.
+- Er wordt niet automatisch gesynchroniseerd of geüpload. Iedere handmatige synchronisatie verwerkt de gekozen GitHub-versie opnieuw, ook na lokale aanpassingen. Lokaal opslaan blijft een afzonderlijke handeling.
 - Voor een snelle openbare *technische test* bestaat `tests/fixtures/ict-scan-github-sync/demo.json`; dit bevat uitsluitend fictieve gegevens. Nooit gebruiken als schoolinventaris.
 
 De publieke repository `E-AI-MODEL/website` bevat **geen echte schoolinventaris**. De actuele bronbestanden moeten eerst in een hiervoor bedoelde privé-repository worden geplaatst. Een verborgen 404-ingang is geen toegangsbescherming voor GitHub-inhoud.
