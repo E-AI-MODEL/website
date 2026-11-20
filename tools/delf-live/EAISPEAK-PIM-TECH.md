@@ -35,3 +35,15 @@ Dat is **geen bewijs** dat PiM al een vrije meertalige stemconversatie ondersteu
 
 Nieuwe primaire proef-URL: `https://eaimodel.nl/tools/eaispeak/`.
 Bestaande DELF-link `https://eaimodel.nl/tools/delf-live/` blijft voorlopig bereikbaar zodat reeds gedeelde links niet breken. Beide wijzen bij deze overgang naar dezelfde build; er is geen server-side redirect nodig. De fysieke bronmap blijft eerst `tools/delf-live` om CI en bestandsafhankelijkheden niet onnodig te breken. Een interne maphernoeming is geen voorwaarde om de publieke URL te wijzigen.
+
+## EAIspeak uitbreidingsstatus (20 november 2026)
+
+- Twee routes voor vrije gesprekken: Puter online en WebLLM lokaal in de browser. Geen terminal nodig voor de browserroute.
+- Vier browsermodellen: Qwen2.5 0,5B, Qwen2.5 1,5B, Qwen2.5 3B en Llama 3.2 1B. De catalogus staat in `src/browser-llm.js`. Download en geheugenbehoefte kunnen groot zijn.
+- Voor vrij praten kan de gebruiker Nederlands, Engels en Frans onafhankelijk instellen voor invoer en antwoord. De zes taalparen zijn **niet** automatisch ook zes werkende live-ondertitelingsroutes.
+- Bij een lokaal model kiest de app standaard de lokale browserstem, zodat geen Puter-aanmelding nodig is. De stemkwaliteit hangt af van de beschikbare systeemstemmen.
+- Modellen worden pas geladen na een expliciete gebruikshandeling. WebGPU-ondersteuning wordt gecontroleerd, het laden toont voortgang en er is geen verzwegen cloudfallback.
+- De instellingen voor vrij praten staan onder een licht zwevend menu met de actuele taalroute, niet permanent in een lange lijst.
+- Automatische tests en bundeling zijn geslaagd. Een werkelijk vrij gesproken gesprek met een lokaal model in Safari of Chrome moet nog op het doelapparaat worden vastgesteld.
+
+De primaire URL is `/tools/eaispeak/`; de oude `/tools/delf-live/` blijft tijdelijk beschikbaar.
