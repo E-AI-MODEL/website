@@ -32,6 +32,12 @@ on:
       - 'assets/**'
       - 'tools/projecthulp/**'
       - 'tools/eaigit/**'
+      - 'tools/ict-scan/**'
+      - 'tests/test_ict_scan_publish.py'
+      - 'tests/test_ict_scan_export.mjs'
+      - 'tools/ict-scan/**'
+      - 'tests/test_ict_scan_publish.py'
+      - 'tests/test_ict_scan_export.mjs'
       - 'tests/test_projecthulp.mjs'
       - 'tests/test_eaigit_help.mjs'
       - 'tests/test_eaigit_single_file.mjs'
@@ -75,6 +81,12 @@ on:
       - 'assets/**'
       - 'tools/projecthulp/**'
       - 'tools/eaigit/**'
+      - 'tools/ict-scan/**'
+      - 'tests/test_ict_scan_publish.py'
+      - 'tests/test_ict_scan_export.mjs'
+      - 'tools/ict-scan/**'
+      - 'tests/test_ict_scan_publish.py'
+      - 'tests/test_ict_scan_export.mjs'
       - 'tests/test_projecthulp.mjs'
       - 'index.html'
       - 'houseoftalents/**'
@@ -150,6 +162,12 @@ jobs:
       - name: Verify Cloudflare beacon on public sitemap pages
         run: python -m unittest discover -s tests -p 'test_cloudflare_beacon.py' -v
 
+      - name: Check local-only ICT scan publishing
+        run: python -m unittest discover -s tests -p 'test_ict_scan_publish.py' -v
+
+      - name: Test ICT scan Excel reports and AI categorization
+        run: node tests/test_ict_scan_export.mjs
+
       - name: Check first-party clicks and session privacy
         run: |
           php -l statistieken/collect.php
@@ -195,6 +213,17 @@ jobs:
           test -s site-build/statistieken/collect.php
           test -s site-build/assets/site-analytics.js
           test ! -e site-build/statistieken/data.json
+
+      - name: Controleer verborgen lokale ICT-scan
+        run: |
+          python -m unittest discover -s tests -p 'test_ict_scan_publish.py' -v
+          test -s site-build/tools/ict-scan/index.html
+          test -s site-build/tools/ict-scan/app.js
+          test -s site-build/tools/ict-scan/style.css
+          test -s site-build/tools/ict-scan/monitor.css
+          test -s site-build/tools/ict-scan/enhancements.js
+          test -s site-build/tools/ict-scan/emmaus-logo.svg
+          ! grep -q 'https://eaimodel.nl/tools/ict-scan/' site-build/sitemap.xml
 
       - name: Controleer EAIgit in gebouwde website
         run: |

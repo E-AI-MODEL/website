@@ -1250,6 +1250,21 @@
       "search_scope": "algemeen"
     },
     {
+      "id": "page:/tools/ict-scan/",
+      "url": "/tools/ict-scan/",
+      "file": "tools/ict-scan/index.html",
+      "title": "Schoolbrede ICT-scan Emmauscollege",
+      "kind": "afgeschermd_of_app",
+      "category": null,
+      "review": "noindex_in_bron_gecontroleerd",
+      "parent": null,
+      "family": "technisch",
+      "robots_noindex_in_html": true,
+      "page_status": "niet_voor_zoekmachines",
+      "in_committed_sitemap": false,
+      "search_scope": "niet_indexeren"
+    },
+    {
       "id": "page:/tools/eaigit/hulp/",
       "url": "/tools/eaigit/hulp/",
       "file": "tools/eaigit/hulp/index.html",
