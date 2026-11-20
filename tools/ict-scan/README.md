@@ -98,3 +98,29 @@ De zijbalk, de acht schermen en de uitgebreide beschrijvingen blijven behouden. 
 De bronpopulaties blijven gescheiden: 61 basisregistraties, 76 beschreven AI-functies, 93 Entra-registraties en 76 aanvullende kandidaten volgens de gecontroleerde bronnen uit november 2026. De grafieken presenteren deze groepen niet als het definitieve aantal daadwerkelijk gebruikte applicaties.
 
 De GitHub-sync vergelijkt de bestanden en de aantallen met het manifest in ict-scan/bronnen. Een verschil tussen het manifest en de GitHub-versie stopt de import; bij een mislukte verwerking wordt de vorige stand hersteld. De bronbestanden zelf worden niet veranderd vanuit de browser. De nieuwe grafieken zijn uitgevoerd met HTML, CSS en JavaScript, zonder externe bibliotheken of extra netwerkverzoeken.
+
+## Eén JSON-kaart, wettelijke kaders en logboek
+
+De uitklapbare zijbalk bevat **JSON-kaarten beheren**. De editor werkt voor alle twaalf registers: toepassingen, AI-functies, Entra, technische onderdelen, kandidaten, controles, DPIA, AI-beheer, apparaten, licenties, werkacties en softwarecontroles. Per type verschijnen de juiste invulvelden. Originele Excelteksten, bronnummers, bronrijen en herkomst blijven bewaard.
+
+De kaart bewaart conceptwijzigingen buiten de actuele inventaris. Nog niet goedgekeurde concepten veranderen de grafieken en rapportages niet. Nieuwe registraties krijgen een ID per register; bestaande IDs blijven onveranderd.
+
+Relaties hebben een relatietype, doelregister, doel-ID, status, bewijs en toelichting. Bevestigde relaties vereisen bewijs. De toetsingskaders staan afzonderlijk in tools/ict-scan/frameworks.json: IBP, AVG, UAVG, AI-verordening en WVO 2020, met officiële bronlinks. De gebruiker kiest de concrete norm of het wetsartikel en voegt een beoordeling toe. Er volgt nooit automatisch het oordeel dat aan een wet is voldaan.
+
+Voor de bronstructuur is geleerd van de HOVI- en OnderwijsIN-datasets en het eigen onderwijscorpus: bronlagen en gegevensmodellen scheiden, oorspronkelijke IDs en beschrijvingen bewaren, rechten en peildatum vastleggen en relaties uitsluitend op grond van brongegevens toevoegen. Inhoudelijke HOVI-gegevens zijn niet aan het schoolregister toegevoegd.
+
+### Wijzigingen naar GitHub
+
+Een gebruiker met de juiste rechten kan vanuit de kaart een GitHub-pull-request maken. Hiervoor is voorlopig een fijnmazig token nodig met Contents en Pull requests: Read and write op E-AI-MODEL/website. Het token wordt niet opgeslagen; het invoerveld wordt na afloop leeggemaakt. Er is een aparte bevestiging nodig dat de wijziging openbaar mag worden voorgesteld.
+
+De website haalt de actuele GitHub-versie op, vergelijkt de basisvelden met het concept en controleert IDs, onderlinge verbanden, bewijsstatus en manifest. Vervolgens schrijft de website de wijzigingen op een nieuwe branch en opent een pull request. De kaart schrijft niet naar main.
+
+Dit is een eerste oplossing. Een GitHub App met afgeschermde aanmelding verdient de voorkeur voor gebruik door meerdere beheerders.
+
+### Logboek
+
+Na publicatie via pull request bevat de registratie een auditTrail met tijdstip, GitHub-gebruiker, gewijzigde velden en reden. In Bronnen staat een uitklapbaar logboek; de eerste regel beschrijft de start van de inventarisatie op 10 augustus 2026 volgens de metadata. Excel en JSON behouden de wijzigingsgegevens. GitHub bewaart daarnaast het commitverschil en de reviewgeschiedenis.
+
+Het logboek bevat kaartwijzigingen en is niet automatisch een volledige weergave van alle rechtstreekse GitHub-bewerkingen. Bevestigde relaties of juridische oordelen vragen altijd afzonderlijk bewijs.
+
+Test: node --check tools/ict-scan/record-cards.js, node --check tools/ict-scan/record-github.js, en node --test tests/test_ict_scan_cards.mjs.
