@@ -68,6 +68,19 @@ class ServerComparisonTests(unittest.TestCase):
         self.assertIn("find -d 10 /", workflow)
         self.assertNotIn("mirror -R --delete", workflow)
 
+    def test_four_retired_3d_pages_are_marked_not_confused_with_live_sites(self):
+        paths = [
+            "/content/legacy/onderwijsin-3d.html",
+            "/onderwijsin/3d/index.html",
+            "/houseoftalents/3d/index.html",
+            "/onderwijsin/houseoftalents/3d/index.html",
+        ]
+        report = compare(self.root, self.list(paths), http_limit=0)
+        self.assertEqual(4, report["aantallen"]["oude_3d_kopieen"])
+        named = {x["bestand"]: x["beheer"] for x in report["alleen_ftp"]}
+        for path in paths:
+            self.assertIn("Verouderde 3D-kopie", named[path.removeprefix("/")])
+
     def test_restricted_locations_never_enter_report(self):
         report = compare(self.root, self.list(["/admin/secret.html", "/leif/beheer/index.html"]), 0)
         self.assertNotIn("admin/secret.html", [x["bestand"] for x in report["alleen_ftp"]])
