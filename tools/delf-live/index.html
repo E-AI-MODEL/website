@@ -143,14 +143,18 @@
               <option value="puter">Online · Puter-account</option>
             </select>
           </label>
-          <label class="studio-field" id="freeTalkBrowserModelRow">Browsermodel
-            <select id="freeTalkBrowserModel">
+          <div id="freeTalkBrowserModelRow">
+            <label class="studio-field">Browsermodel
+              <select id="freeTalkBrowserModel">
               <option value="Qwen2.5-0.5B-Instruct-q4f16_1-MLC">Qwen 0,5B · ±945 MB</option>
               <option value="Llama-3.2-1B-Instruct-q4f16_1-MLC">Llama 1B · ±880 MB</option>
               <option value="Qwen2.5-1.5B-Instruct-q4f16_1-MLC">Qwen 1,5B · ±1,6 GB</option>
               <option value="Qwen2.5-3B-Instruct-q4f16_1-MLC">Qwen 3B · ±2,4 GB</option>
-            </select>
-          </label>
+              </select>
+            </label>
+            <button id="freeTalkPreload" class="action studio-action studio-action-quiet" type="button">Model vooraf laden</button>
+            <p id="freeTalkPreloadStatus" class="studio-support" role="status" aria-live="polite">Het model wordt pas gedownload wanneer je het gebruikt.</p>
+          </div>
           <div id="freeTalkOnlineOptions" hidden>
             <label class="studio-field">Online model
               <select id="freeTalkCloudModel"><option value="gpt-5.4-nano">GPT-5.4 nano · snel</option></select>

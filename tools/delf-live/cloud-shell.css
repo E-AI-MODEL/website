@@ -1117,3 +1117,25 @@ body.panel-visible .mobile-settings.cloud-entry{opacity:0!important}
   .free-talk-floating-content{padding:12px 15px 15px}
   .free-talk-floating .studio-action-grid{grid-template-columns:1fr}
 }
+
+
+/* De voorbereidende knoppen blijven klein en zwevend in het instellingenpaneel. */
+.free-talk-floating #freeTalkPreload,
+.free-talk-floating #freeTalkConnect{
+  display:inline-flex;
+  align-items:center;
+  width:auto;
+  min-height:36px;
+  margin-top:11px;
+  border-radius:999px;
+  padding:8px 13px;
+  background:rgba(242,249,247,.63);
+  border:1px solid rgba(140,168,165,.35);
+  box-shadow:0 5px 19px rgba(40,70,75,.04);
+  font:500 11px/1.35 system-ui,sans-serif;
+  color:#45646d;
+}
+.free-talk-floating #freeTalkPreload:disabled,
+.free-talk-floating #freeTalkConnect:disabled{
+  opacity:.5;cursor:progress;
+}
