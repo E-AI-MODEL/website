@@ -7,7 +7,7 @@ TOOL = ROOT / "tools" / "ict-scan"
 
 class ICTScanTests(unittest.TestCase):
     def test_files_exist(self):
-        for filename in ("index.html", "style.css", "monitor.css", "app.js", "enhancements.js", "github-sync.js", "rail-drawer.js", "visual-explorer.js", "visual-explorer.css", "record-cards.js", "record-github.js", "record-cards.css", "frameworks.json", "answer-engine.js", "answer-engine.css", "scene-navigation.js", "scene-navigation.css", "evidence-experience.js", "evidence-experience.css", "emmaus-logo.svg", "README.md"):
+        for filename in ("index.html", "style.css", "monitor.css", "app.js", "enhancements.js", "github-sync.js", "rail-drawer.js", "visual-explorer.js", "visual-explorer.css", "record-cards.js", "record-github.js", "record-cards.css", "frameworks.json", "answer-engine.js", "answer-engine.css", "scene-navigation.js", "scene-navigation.css", "evidence-experience.js", "evidence-experience.css", "role-modes.js", "role-modes.css", "emmaus-logo.svg", "README.md"):
             self.assertTrue((TOOL / filename).is_file(), filename)
 
     def test_secret_not_security_and_litespeed_404_middle_zero(self):
@@ -60,6 +60,12 @@ class ICTScanTests(unittest.TestCase):
         self.assertIn('href="./scene-navigation.css', html)
         self.assertIn('src="./evidence-experience.js', html)
         self.assertIn('href="./evidence-experience.css', html)
+        self.assertIn('id="roleModeFG"', html)
+        self.assertIn('id="roleModeAI"', html)
+        self.assertIn('class="fg-role-boundary"', html)
+        self.assertIn('src="./role-modes.js', html)
+        self.assertIn('href="./role-modes.css', html)
+        self.assertNotIn('<h2>DPIA-beoordelingen</h2>', html)
         self.assertIn('data-view="devices"', html)
         self.assertIn('id="deviceCoverage"', html)
         self.assertIn('data-report="devices"', html)
