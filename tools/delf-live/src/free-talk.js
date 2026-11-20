@@ -46,7 +46,7 @@ function drawLines(){
   speakingLevel+=(active==='idle'?0:Math.max(level,.08)-speakingLevel)*.09;
   const amp=active==='idle'?.025:Math.min(.7,speakingLevel);
   const time=performance.now()*.001;
-  for(let i=-2;i<=2;i++){
+  for(const i of [-.5,.5]){
     voiceCtx.beginPath();
     for(let x=0;x<=width;x+=4*ratio){
       const phase=(x-cx)/Math.max(1,width)*Math.PI*3.2;
