@@ -75,7 +75,8 @@ try {
   assert(size.main<size.height,'Hoofdvenster groeit buiten de viewport bij '+width);
   await page.locator('#viewOverview .scene-tab').nth(1).click();
   assert.equal(await page.locator('#viewOverview .scene-panel:not([hidden])').count(),1);
-  assert.equal(await page.locator('#relationshipExplorer .relation-spoke').count(),5,'Bronrelaties ontbreken');
+  assert.equal(await page.locator('#relationshipExplorer .relation-spoke').count(),4,'FG-informatie mag niet standaard zichtbaar zijn');
+  assert.equal(await page.locator('.rail-button[data-view="privacy"]').isVisible(),false,'FG-modus moet standaard uit staan');
   await page.screenshot({path:'test-results/ict-scan-'+width+'-relationships.png'});
   await page.locator('[data-view="devices"]').click();
   assert.equal(await page.locator('#viewDevices .scene-tab').count(),2,'Hardware heeft geen duidelijke schermindeling');
@@ -83,12 +84,20 @@ try {
   assert.match(await page.locator('#deviceCoverage').textContent(),/92 \/ 161/,'De bekende compliancewaarden ontbreken');
   assert.equal(await page.locator('#deviceRecords .device-record').count(),4);
   await page.screenshot({path:'test-results/ict-scan-'+width+'-hardware.png'});
+  // FG is an optional view, not an access role and never a DPIA approval workflow.
+  await page.locator('#railMore').click();
+  assert.equal(await page.locator('#roleModeFG').isChecked(),false,'FG moet standaard uit staan');
+  await page.locator('#roleModeFG').check();
+  assert.equal(await page.locator('#roleModeFG').isChecked(),true);
+  await page.locator('#railDrawerClose').click();
+  assert.equal(await page.locator('#relationshipExplorer .relation-spoke').count(),5);
   await page.locator('[data-view="privacy"]').click();
-  assert.equal(await page.locator('#viewPrivacy .scene-tab').count(),3);
-  assert.equal(await page.locator('#privacyDpia .dpia-evidence').count(),10,'DPIA-onderwerpen niet volledig');
+  assert.equal(await page.locator('#viewPrivacy .scene-tab').count(),2);
+  assert.equal(await page.locator('#viewPrivacy .privacy-governance-panel').count(),0,'AI-beheer mag niet onder FG staan');
+  assert.equal(await page.locator('#privacyDpia .dpia-evidence').count(),10,'DPIA-bronvermeldingen niet volledig');
+  assert.match(await page.locator('.fg-role-boundary').textContent(),/geen DPIA|Geen DPIA/i);
+  assert.match(await page.locator('#privacySummary').textContent(),/Niet aangeleverd/);
   await page.screenshot({path:'test-results/ict-scan-'+width+'-privacy.png'});
-  await page.locator('#viewPrivacy .scene-tab').nth(1).click();
-  assert((await page.locator('#privacyControls .evidence-group').count())>=4,'Beheerpunten zijn niet gegroepeerd');
   await page.locator('[data-view="apps"]').click();
   assert.equal(await page.locator('#candidatePanel').isVisible(),false,'Kandidaten zijn niet gescheiden van basisregistraties');
   await page.locator('.app-register-tab').nth(1).click();
@@ -102,6 +111,22 @@ try {
   await page.locator('#aiModeSchool').click();
   assert.equal(await page.locator('#aiSchoolPanels').isVisible(),true);
   assert.equal(await page.locator('#dpiaList').isVisible(),false,'DPIA wordt dubbel getoond binnen AI');
+  await page.locator('#jumpAiBeheer').click();
+  assert.equal(await page.locator('#viewAi .scene-tab').count(),3,'AI-beheer moet onder AI staan');
+  assert((await page.locator('#privacyControls .evidence-group').count())>=4,'Beheerpunten zijn niet gegroepeerd');
+  await page.locator('#viewAiScene2').waitFor({state:'visible'});
+  await page.locator('#railMore').click();
+  await page.locator('#roleModeAI').uncheck();
+  assert.equal(await page.locator('.rail-button[data-view="ai"]').isVisible(),false);
+  assert.equal(await page.locator('#kpiGrid .kpi').count(),3);
+  await page.locator('#roleModeAI').check();
+  assert.equal(await page.locator('.rail-button[data-view="ai"]').isVisible(),true);
+  await page.locator('#roleModeFG').uncheck();
+  assert.equal(await page.locator('.rail-button[data-view="privacy"]').isVisible(),false);
+  assert.equal(await page.locator('#reportPicker [data-report="privacy"]').isVisible(),false);
+  await page.locator('#roleModeFG').check();
+  await page.locator('#railDrawerClose').click();
+  assert.match(await page.evaluate(()=>localStorage.getItem('emmaus-ict-scan-visible-roles-v1')),/"fg":true/);
 
   for(const name of ['overview','apps','connections','devices','ai','privacy','findings','reports','sources']){
     await page.locator('[data-view="'+name+'"]').click();

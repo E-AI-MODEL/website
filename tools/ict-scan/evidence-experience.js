@@ -73,11 +73,11 @@
     const dpia=items(state.dpia),controls=items(state.aiControls);
     const external=dpia.filter(x=>/bevestigd/i.test(x.evidence||'')).length;
     byId('privacySummary').innerHTML=[
-      ['DPIA-onderwerpen',dpia.length,'Niet hetzelfde als tien DPIA-rapporten'],
-      ['Externe bronstatus',external,'Beoordelingen met bevestigde bron'],
-      ['AI-beheerpunten',controls.length,'Afzonderlijke functies en maatregelen'],
-      ['Lokaal bevestigd',controls.filter(x=>!unknown(x.local)).length,'Van '+controls.length+' beheerinstellingen']
-    ].map(([name,n,caption])=>'<div class="evidence-stat"><small>'+safe(name)+'</small><strong>'+fmt(n)+'</strong><span>'+safe(caption)+'</span></div>').join('');
+      ['DPIA-bronitems',dpia.length,'Geen uitgevoerde DPIAs of FG-oordelen'],
+      ['Externe bronstatus',external,'Verwijzingen met bevestigde externe onderbouwing'],
+      ['FG-advies','Niet aangeleverd','Niet opgenomen in deze inventarisatie'],
+      ['Besluit bevoegd gezag','Niet aangeleverd','Geen besluit in de aangeleverde bronnen']
+    ].map(([name,n,caption])=>'<div class="evidence-stat"><small>'+safe(name)+'</small><strong>'+(typeof n==='number'?fmt(n):safe(n))+'</strong><span>'+safe(caption)+'</span></div>').join('');
     const grouped=new Map();
     for(const record of controls){const group=record.domain||'Overige beheerpunten';if(!grouped.has(group))grouped.set(group,[]);grouped.get(group).push(record);}
     byId('privacyControls').innerHTML=[...grouped].map(([name,records],i)=>
@@ -90,7 +90,7 @@
       const status=String(r.assessment||'Niet beoordeeld');
       const level=/^GROEN/i.test(status)?'partial':/^ORANJE/i.test(status)?'caution':'unknown';
       return '<details class="evidence-row dpia-evidence"><summary><span><small>'+safe(r.id)+' · '+safe(r.type||'Beoordeling')+'</small><strong>'+safe(r.name)+'</strong></span><span class="evidence-status '+level+'">'+safe(status)+'</span></summary><div class="evidence-row-body">'+
-        note('Wat is beoordeeld?',r.description)+note('Betekenis voor Emmauscollege',r.local)+note('Status van het bewijs',r.evidence)+note('Bronpeildatum',r.sourceDate)+note('Bron',Array.isArray(r.sources)?r.sources.join('; '):'')+
+        note('Wat is beoordeeld?',r.description)+note('Aandachtspunt volgens aangeleverde bron',r.local)+note('Status van de bronvermelding',r.evidence)+note('Bronpeildatum',r.sourceDate)+note('Bron',Array.isArray(r.sources)?r.sources.join('; '):'')+
         '<button class="evidence-record-open" type="button" data-card-type="dpia" data-card-id="'+safe(r.id)+'">Open volledige gegevenskaart</button></div></details>';
     }).join('')||'<div class="no-results">Geen DPIA-onderwerpen gevonden.</div>';
     for(const node of document.querySelectorAll('#privacyDpia [data-card-id],#privacyControls [data-card-id]')){
@@ -119,8 +119,12 @@
       {key:'parts',name:'Onderdelen',items:parts,type:'parts',note:'Vastgelegde onderliggende registraties'},
       {key:'entra',name:'Entra-matches',items:entra,type:'connections',note:'Mogelijke overeenkomst, werking niet bewezen'},
       {key:'controls',name:'AI-beheer',items:controls,type:'aiControls',note:'Via expliciete AI-ID gekoppeld'},
-      {key:'dpia',name:'Privacycontext',items:dpia,type:'dpia',note:'Thematische aansluiting, geen individuele goedkeuring'}
-    ];
+      {key:'dpia',name:'FG | DPIA-bronnen',items:dpia,type:'dpia',note:'Thematische bronverwijzing voor FG, geen beoordeling door deze scan'}
+    ].filter(group=>{
+      if(group.key==='dpia')return window.EmmausRoles?.isEnabled('fg')===true;
+      if(group.key==='ai'||group.key==='controls')return window.EmmausRoles?.isEnabled('ai')!==false;
+      return true;
+    });
   }
   let relationTab='ai',relationApp='';
   function renderRelations(){
@@ -169,7 +173,7 @@
       ['AI-functies',aiCount,narrowed?'Gekoppeld aan de selectie; '+state.ai.size+' totaal':'Beschreven functies, niet automatisch ingeschakeld','ai'],
       ['Entra-registraties',state.connections.size,'Schoolbreed, geen bewijs van actuele uitwisseling','connections'],
       ['Apparaatrecords',d.amount||'?',(d.total?.measurementDate||'Peildatum onbekend')+' · geen totaal fysieke apparaten','devices']
-    ];
+    ].filter(row=>row[3]!=='ai'||window.EmmausRoles?.isEnabled('ai')!==false);
     const grid=byId('kpiGrid');
     grid.replaceChildren();
     for(const [label,value,explain,view] of totals){

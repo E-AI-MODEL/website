@@ -1,10 +1,10 @@
 'use strict';
 /* Dashboard UI. No uploads, analytics, external scripts or implicit persistence. */
-viewNames.privacy='Privacy & AI Act';
+viewNames.privacy='FG | DPIA-bronnen';
 viewNames.reports='Rapporten';
-viewTitles.privacy='Privacy, DPIA en AI Act';
+viewTitles.privacy='FG | DPIA-bronnen en privacy';
 viewTitles.reports='Rapportages op maat';
-sectionTexts.privacy='Bronbeoordelingen, wettelijke eisen, lokale instellingen en nog openstaande vragen.';
+sectionTexts.privacy='Aangeleverde bronnen voor het onafhankelijke advies en toezicht van de FG. Geen FG-oordeel of DPIA van deze scan.';
 sectionTexts.reports='Kies een onderwerp. Elke export gebruikt alleen de ingelezen gegevens.';
 state.overviewArea='';
 state.overviewKind='';
@@ -69,7 +69,7 @@ function renderPrivacy(){
   $('privacyControls').innerHTML=admin.length?admin.map(x=>governanceRow(x,'control')).join(''):'<div class="no-results">Nog geen AI-beheerregistratie ingelezen.</div>';
   $('privacyLegal').innerHTML=legalSources.map(x=>'<div class="legal-item"><div><strong>'+esc(x.name)+'</strong><p>'+esc(x.description)+'</p></div><a target="_blank" rel="noopener noreferrer" href="'+esc(x.url)+'">Bron openen</a></div>').join('');
 }
-const reportNames={all:['Volledige nulmeting','Applicaties, koppelingen, onderwijs-AI, beheer en controles.'],schoolbreed:['Applicatielandschap','Software, diensten en de onderliggende productstructuur.'],koppelingen:['Entra en toegang','Technische registraties, matches en ontbrekend bewijs.'],ai:['AI in het onderwijs','AI-functies per lesfase en AI in de schoolorganisatie.'],privacy:['DPIA en AI Act','Externe rapporten, lokale verificaties en AI-beheer.'],controles:['Controlepunten','Vastgelegde vragen, bronverwijzingen en aanvullende signalen.'],devices:['Apparaten en beheer','Apparaatrecords, meetdekking en grenzen van de huidige export.']};
+const reportNames={all:['Volledige broninventaris','Bronregistraties, waaronder externe privacybronnen. Geen DPIA of FG-oordeel door deze scan.'],schoolbreed:['Applicatielandschap','Software, diensten en de onderliggende productstructuur.'],koppelingen:['Entra en toegang','Technische registraties, matches en ontbrekend bewijs.'],ai:['AI in het onderwijs','AI-functies per lesfase en AI in de schoolorganisatie.'],privacy:['FG | DPIA-bronnen','Bronvermeldingen ter ondersteuning van de FG, niet een eigen DPIA of goedkeuring.'],controles:['Controlepunten','Vastgelegde vragen, bronverwijzingen en aanvullende signalen.'],devices:['Apparaten en beheer','Apparaatrecords, meetdekking en grenzen van de huidige export.']};
 function renderReports(){
   document.querySelectorAll('[data-report]').forEach(b=>{const selected=b.dataset.report===state.reportScope;b.classList.toggle('selected',selected);b.setAttribute('aria-pressed',selected?'true':'false');});
   const [title,desc]=reportNames[state.reportScope]||reportNames.all;
@@ -103,10 +103,9 @@ function sheetsForScope(scope){
     return [s];
   }
   if(scope==='privacy'){
-    const s=scopedSheet('Privacy en AI Act','DPIA, AI-instellingen en actuele toetsingsbronnen. Geen automatische AVG of AI Act-goedkeuring.');
-    rkpis(s,[['DPIA-REGISTRATIES',state.dpia.size,'Extern oordeel, niet lokale goedkeuring'],['AI-BEHEERPUNTEN',state.aiControls.size,'Inrichting en advies'],['JURIDISCHE BRONNEN',legalSources.length,'Versies controleren'],['AI-FUNCTIES',state.ai.size,'Aangeboden en beschreven']]);
-    rsection(s,'DPIA EN ONDERBOUWING');for(const x of state.dpia.values()){rgroup(s,x.id,x.name,x.assessment);rdetail(s,'Externe beoordeling',x.assessment,true);rdetail(s,'Beschrijving',x.description,true);rdetail(s,'Lokaal',x.local,true);rdetail(s,'Bron',(x.sources||[]).join('; '),true);}
-    rsection(s,'AI-BEHEER');for(const x of state.aiControls.values()){rgroup(s,x.id,x.name,x.local);rdetail(s,'Advies',x.advice,true);rdetail(s,'Onderzoek',x.action,true);rdetail(s,'Bron',(x.sources||[]).join('; '),true);}
+    const s=scopedSheet('FG broninformatie','Verzamelde DPIA-onderwerpen voor FG-advies en onafhankelijk toezicht. Geen FG-oordeel of besluit door deze schoolscan.');
+    rkpis(s,[['DPIA-BRONITEMS',state.dpia.size,'Brononderwerpen, geen uitgevoerde DPIAs'],['PRIVACYBRONNEN',legalSources.length,'Actuele versies controleren'],['FG-ADVIES','Niet aangeleverd','Niet beoordeeld door deze scan'],['BESLUIT GEZAG','Niet aangeleverd','Bevoegd gezag blijft verantwoordelijk']]);
+    rsection(s,'DPIA EN ONDERBOUWING');for(const x of state.dpia.values()){rgroup(s,x.id,x.name,x.assessment);rdetail(s,'Status volgens bron',x.assessment,true);rdetail(s,'Beschrijving',x.description,true);rdetail(s,'Lokaal',x.local,true);rdetail(s,'Bron',(x.sources||[]).join('; '),true);}
     rsection(s,'WETGEVING EN BRONNEN');for(const x of legalSources){rgroup(s,'BRON',x.name,x.url);rdetail(s,'Onderwerp',x.description,true);}return [s];
   }
   if(scope==='controles'){
@@ -134,7 +133,7 @@ function exportScopedPdf(scope){
   else if(scope==='koppelingen'){body='<p>Entra-koppelingen zijn technische registraties. Hun aanwezigheid zegt niets over actief gegevensverkeer.</p>'+printTable('Entra-koppelingen',['ID','Registratie','Status','Gekoppeld aan'],array(state.connections).map(x=>[x.id,x.name,x.enabled,x.matched]),200);}
   else if(scope==='ai'){const classroom=array(state.ai).filter(isClassroomAi),others=array(state.ai).filter(x=>!isClassroomAi(x));body=printBarSection('AI per lesfase','Een AI-functie kan in meer dan één lesfase vallen.',phaseBreakdown(classroom))+classroom.map(printFeature).join('')+'<div class="pagebreak"></div><h2>AI voor organisatie en beheer</h2>'+others.map(printFeature).join('');}
   else if(scope==='devices'){body='<p>Deze metingen zijn afkomstig uit september 2026. Het aantal Entra-records vormt geen volledige schoolbrede hardware-inventaris.</p>'+printTable('Apparaatmetingen',['ID','Onderwerp','Waarde','Peildatum','Beperking'],array(state.devices).map(x=>[x.id,x.name,x.quantity,x.measurementDate,x.limitation]),100);}
-  else if(scope==='privacy'){body='<h2>DPIA en lokale beoordeling</h2><p>Een groene deelbeoordeling verandert de algemene DPIA-beoordeling niet.</p>'+array(state.dpia).map(x=>printGovernanceItem(x,'dpia')).join('')+'<h2>AI-beheer</h2>'+array(state.aiControls).map(x=>printGovernanceItem(x,'control')).join('')+'<h2>Wettelijke bronnen</h2>'+legalSources.map(x=>'<p>'+esc(x.name)+': '+esc(x.url)+'</p>').join('');}
+  else if(scope==='privacy'){body='<h2>FG | DPIA-bronnen</h2><p>Broninformatie voor FG-advies en toezicht. Dit rapport is geen DPIA, geen FG-oordeel en geen goedkeuring. Het bevoegd gezag blijft verantwoordelijk voor besluiten.</p>'+array(state.dpia).map(x=>printGovernanceItem(x,'dpia')).join('')+'<h2>Privacybronnen</h2>'+legalSources.map(x=>'<p>'+esc(x.name)+': '+esc(x.url)+'</p>').join('');}
   else if(scope==='controles'){const all=allFindings();body=printBarSection('Open punten naar onderwerp','Vastgelegde controles.',rsummaryCounts(all,'category'))+printTable('Open controles',['ID','Onderwerp','Wat controleren','Status'],all.map(x=>[x.id,x.name,x.explanation,x.status]),250);}
   $('printReport').innerHTML=lead+body+'<p class="print-end">Bronnen en beoordelingen moeten actueel worden gecontroleerd. Bedragen en boekingsregels worden niet opgenomen.</p>';
   window.print();
