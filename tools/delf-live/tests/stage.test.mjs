@@ -361,7 +361,7 @@ test('vrij praten is gescheiden van de vaste voorstelling',()=>{
   assert.match(chat,/SpeechRecognition\|\|window\.webkitSpeechRecognition/);
   assert.match(chat,/rec\.lang=inputLang\.value/);
   assert.match(chat,/api\.ai\.chat\(messages/);
-  assert.match(chat,/api\.ai\.txt2speech\(french/);
+  assert.match(chat,/api\.ai\.txt2speech\(text/);
   assert.match(chat,/play\.addEventListener\('click'/);
   assert.match(chat,/language:'fr-FR'/);
   assert.match(chat,/if\(own!==turn\)return/);
