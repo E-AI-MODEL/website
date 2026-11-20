@@ -10,7 +10,7 @@
     ['additionalCandidates','2026-applicatielandschap.json'],['checks','2026-applicatielandschap.json'],
     ['dpia','2026-applicatielandschap.json'],['aiControls','2026-applicatielandschap.json'],
     ['devices','2026-applicatielandschap.json'],['licenseReview','2026-applicatielandschap.json'],
-    ['workActions','2026-werkregister.json'],['softwareReview','2026-werkregister.json']
+    ['workActions','2026-werkregister.json'],['softwareReview','2026-werkregister.json'],['faqs','2026-faq.json']
   ]);
   const SOURCE_DIR='ict-scan/bronnen/';
   const equals=(a,b)=>JSON.stringify(a??null)===JSON.stringify(b??null);
@@ -140,7 +140,7 @@
       if(!user.login)fail('GitHub heeft geen gebruikersnaam teruggegeven.');
       const baseSha=head?.object?.sha;
       if(!/^[a-f0-9]{40}$/i.test(baseSha||''))fail('De versie van main is niet vastgesteld.');
-      const paths=['2026-applicatielandschap.json','2026-werkregister.json'];
+      const paths=['2026-applicatielandschap.json','2026-werkregister.json','2026-faq.json'];
       const names=paths.concat(['manifest.json']);
       const fetched={};
       for(const name of names){
