@@ -75,7 +75,7 @@ class Page:
     content_hash: str | None
     grams: frozenset[str]
     word_count: int
-    source_hash: str
+    script_hash: str | None
 
 
 def parse_page(root: Path, path: Path) -> Page:
@@ -89,6 +89,8 @@ def parse_page(root: Path, path: Path) -> Page:
     redirect = bool(soup.find("meta", attrs={"http-equiv": re.compile("^refresh$", re.I)}))
     robots = " ".join(meta.get("content", "") for meta in soup.find_all(
         "meta", attrs={"name": re.compile("^robots$", re.I)})).casefold()
+    scripts = "\n".join((str(tag.get("src", "")) + tag.get_text())
+                        for tag in soup.find_all("script"))
     node = soup.main or soup.body
     text = ""
     if node:
@@ -106,7 +108,7 @@ def parse_page(root: Path, path: Path) -> Page:
         content_hash=hashlib.sha256(normal.encode()).hexdigest() if meaningful else None,
         grams=text_grams(tokens) if meaningful else frozenset(),
         word_count=len(tokens),
-        source_hash=hashlib.sha256(path.read_bytes()).hexdigest(),
+        script_hash=hashlib.sha256(scripts.encode()).hexdigest() if scripts.strip() else None,
     )
 
 
@@ -218,7 +220,7 @@ def audit(root: Path, reviewed: dict[tuple[str, str], str],
             key = pair_key(a.url, b.url)
             reported_pairs.add(key)
             if a.url in active and b.url in active:
-                if key in variants and a.source_hash != b.source_hash:
+                if key in variants and a.script_hash and b.script_hash and a.script_hash != b.script_hash:
                     notes.append(entry("afzonderlijke_toepassingsvarianten", list(key),
                                        variants[key] + "; de daadwerkelijke bronbestanden verschillen"))
                 elif key in reviewed:
