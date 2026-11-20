@@ -1,0 +1,126 @@
+{
+  "schema": "eai-applicable-frameworks-v1",
+  "title": "Toetsingskaders applicatielandschap",
+  "version": "2026-11-20",
+  "sourcePolicy": "Een verwijzing is een toetsingsvraag, geen automatisch nalevingsoordeel. De gebruiker onderbouwt toepasselijkheid, bevinding en bewijs per registratie.",
+  "references": [
+    {
+      "id": "IBP",
+      "name": "Normenkader IBP voor het onderwijs",
+      "category": "sectornorm",
+      "authority": "Kennisnet, OCW en sectorpartijen",
+      "url": "https://normenkaderibp.kennisnet.nl/",
+      "scope": "69 normen informatiebeveiliging, 25 normen privacy. Gebruik een concrete normcode en de geldende normversie bij een beoordeling.",
+      "suggestedRefs": [],
+      "note": "Sectorale normen zijn niet één-op-één identiek aan wetsartikelen."
+    },
+    {
+      "id": "AVG",
+      "name": "Algemene verordening gegevensbescherming",
+      "category": "EU-verordening",
+      "authority": "Europese Unie",
+      "url": "https://eur-lex.europa.eu/eli/reg/2016/679/oj",
+      "scope": "Persoonsgegevens, rollen, grondslagen, transparantie, beveiliging en DPIA waar relevant.",
+      "suggestedRefs": [
+        "art. 5",
+        "art. 6",
+        "art. 9",
+        "art. 12-14",
+        "art. 25",
+        "art. 28",
+        "art. 30",
+        "art. 32",
+        "art. 33-34",
+        "art. 35"
+      ]
+    },
+    {
+      "id": "UAVG",
+      "name": "Uitvoeringswet AVG",
+      "category": "Nederlandse wet",
+      "authority": "Nederlandse wetgever",
+      "url": "https://wetten.overheid.nl/BWBR0040940",
+      "scope": "Nationale aanvulling op de AVG. Beoordeel de toepasselijke bepaling per verwerking.",
+      "suggestedRefs": []
+    },
+    {
+      "id": "AIACT",
+      "name": "AI-verordening (EU) 2024/1689",
+      "category": "EU-verordening",
+      "authority": "Europese Unie",
+      "url": "https://eur-lex.europa.eu/eli/reg/2024/1689",
+      "scope": "Controleer functie, rol (aanbieder of gebruiksverantwoordelijke), eventuele hoogrisicoclassificatie en de toepasselijke datum. Geen standaardtoekenning aan alle AI-functionaliteit.",
+      "suggestedRefs": [
+        "art. 4",
+        "art. 5",
+        "art. 6",
+        "art. 26",
+        "art. 27",
+        "art. 50"
+      ]
+    },
+    {
+      "id": "WVO2020",
+      "name": "Wet voortgezet onderwijs 2020",
+      "category": "Nederlandse wet",
+      "authority": "Nederlandse wetgever",
+      "url": "https://wetten.overheid.nl/BWBR0044212",
+      "scope": "Onderwijsorganisatie, kwaliteit, examen en gegevensgebruik waar een specifieke bepaling relevant is.",
+      "suggestedRefs": []
+    }
+  ],
+  "relationTypes": [
+    {
+      "id": "part_of",
+      "label": "Onderdeel van",
+      "note": "Productmodule of dienst maakt deel uit van een toepassing."
+    },
+    {
+      "id": "uses",
+      "label": "Maakt gebruik van",
+      "note": "Een toepassing gebruikt een andere voorziening."
+    },
+    {
+      "id": "sso",
+      "label": "Aanmelding via",
+      "note": "Geregistreerde aanmeldroute; niet per definitie actief."
+    },
+    {
+      "id": "integration",
+      "label": "Technische koppeling",
+      "note": "Gegevens- of API-verbinding; werking apart onderbouwen."
+    },
+    {
+      "id": "processes_for",
+      "label": "Verwerkt gegevens voor",
+      "note": "Vereist onderbouwing en een vastgesteld verwerkingsdoel."
+    },
+    {
+      "id": "managed_by",
+      "label": "Beheerd via",
+      "note": "Beheerplatform, identiteit of configuratie."
+    },
+    {
+      "id": "supports",
+      "label": "Ondersteunt",
+      "note": "Samenhang in onderwijsproces of bedrijfsvoering."
+    },
+    {
+      "id": "replaces",
+      "label": "Vervangt",
+      "note": "Historische opvolging, met peildatum."
+    }
+  ],
+  "statuses": [
+    "Nog te beoordelen",
+    "In onderzoek",
+    "Onderbouwd",
+    "Niet van toepassing"
+  ],
+  "relationStatuses": [
+    "Vermoedelijk",
+    "Geregistreerd",
+    "Bevestigd",
+    "Historisch"
+  ]
+}
