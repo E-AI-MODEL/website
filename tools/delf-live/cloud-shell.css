@@ -932,3 +932,28 @@ body.cloud-idle:not(.panel-visible) .mobile-settings.cloud-entry{
   .studio-scroll.is-idle .cloud-reveal.is-revealed{filter:none;opacity:.4;transform:none}
   .stage.captions-evaporated[data-phase='live'] .display-surface{filter:none;opacity:.22;transform:none}
 }
+
+/* Ook de navigatie trekt zich terug wanneer niemand iets doet.
+   Een zichtbaar toetsenbordfocus blijft leesbaar. */
+body.cloud-studio-idle.panel-visible:not(:has(:focus-visible)) .cloud-studio .studio-header,
+body.cloud-studio-idle.panel-visible:not(:has(:focus-visible)) .cloud-studio .studio-nav{
+  opacity:.13;
+  filter:blur(2.6px);
+  transform:translateY(-3px);
+  transition:opacity .85s ease,filter .95s ease,transform 1s ease;
+}
+body.panel-visible:not(.cloud-studio-idle) .cloud-studio .studio-header,
+body.panel-visible:not(.cloud-studio-idle) .cloud-studio .studio-nav{
+  opacity:1;
+  filter:none;
+  transform:none;
+  transition:opacity .25s ease,filter .35s ease,transform .4s ease;
+}
+@media(prefers-reduced-motion:reduce){
+  body.cloud-studio-idle.panel-visible .cloud-studio .studio-header,
+  body.cloud-studio-idle.panel-visible .cloud-studio .studio-nav{
+    opacity:1;
+    filter:none;
+    transform:none;
+  }
+}

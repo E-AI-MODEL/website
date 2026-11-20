@@ -118,3 +118,10 @@ test('één animatie per uitklapmenu en geen dubbele sluiting',()=>{
   assert.ok(shell.includes("detail.classList.add('is-dissolving')"));
   assert.ok(!shell.includes('const closingDetails = new WeakMap()'));
 });
+
+test('navigatie en titel blijven als schim zichtbaar na inactiviteit',()=>{
+  assert.ok(shell.includes("document.body.classList.add('cloud-studio-idle')"));
+  assert.ok(shell.includes("classList.remove('cloud-idle','cloud-studio-idle')"));
+  assert.ok(css.includes('body.cloud-studio-idle.panel-visible:not(:has(:focus-visible))'));
+  assert.ok(css.includes('opacity:.13'));
+});

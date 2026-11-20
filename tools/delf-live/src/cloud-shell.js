@@ -27,7 +27,7 @@ try {
 } catch {}
 
 function markActivity() {
-  document.body.classList.remove('cloud-idle');
+  document.body.classList.remove('cloud-idle','cloud-studio-idle');
   scroll.classList.remove('is-idle');
   stage.classList.remove('captions-evaporated');
   clearTimeout(idleControlsTimer);
@@ -41,6 +41,7 @@ function markActivity() {
       !['INPUT','TEXTAREA','SELECT'].includes(document.activeElement?.tagName) &&
       !(document.activeElement?.isContentEditable)) {
       scroll.classList.add('is-idle');
+      document.body.classList.add('cloud-studio-idle');
     }
   }, 4600);
   if (captionIdleSeconds > 0 && !reduceMotion.matches && stage.dataset.phase === 'live') {
