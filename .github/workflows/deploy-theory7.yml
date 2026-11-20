@@ -143,7 +143,7 @@ jobs:
           # The browser loads heart.js with this release-specific query value.
           # Verify the same URL, not a potentially older unversioned CDN response.
           built_page = (local / 'index.html').read_text(encoding='utf-8')
-          release_match = re.search(r'\\./heart\\.js\\?v=([0-9a-f]{12})', built_page)
+          release_match = re.search(r'\./heart\.js\?v=([0-9a-f]{12})', built_page)
           assert release_match, 'Missing versioned Hartslaglab script in release HTML'
           release = release_match.group(1)
           for name in ('heart.js', 'atlas-heart-rich.json', 'atlas-heart-rich.bin'):
