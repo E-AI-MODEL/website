@@ -7,8 +7,8 @@
     apps:[['Toepassingen',3]],
     connections:[['Registraties en status',2],['Koppelingen doorzoeken',3]],
     devices:[['Apparaatstatus',3],['Onderliggende metingen',1]],
-    ai:[['AI-functies',2],['Functies doorzoeken',2]],
-    privacy:[['DPIA en bewijs',2],['AI-beheer',1],['Wetgeving en bronnen',1]],
+    ai:[['AI-functies',2],['Functies doorzoeken',2],['AI-beheer',1]],
+    privacy:[['DPIA-bronnen',3],['Privacykaders',1]],
     findings:[['Stand van controles',3],['Controlepunten',4]],
     reports:[['Rapport kiezen',2],['Rapport ophalen',2]],
     sources:[['Synchroniseren',3],['Herkomst en beheer',3],['Documentatie',2]]
