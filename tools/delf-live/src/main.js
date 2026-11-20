@@ -1136,7 +1136,7 @@ function panic() {
   blankStage();
   feedback('runtimeStatus', 'Alles gestopt. Toets 0 om opnieuw te beginnen.', 'bad');
 }
-const actions = {start:goStart, interrupt:goInterrupt, french:goFrench, handback:goHandback, finish:goFinish, reset:goReset, panic, nextFrenchPassage, previousFrenchPassage, reserveSpeech:reserveFrenchSpeech, reserveTakeBack};
+const actions = {start:goStart, interrupt:reserveFrenchSpeech, french:goFrench, handback:goHandback, finish:goFinish, reset:goReset, panic, nextFrenchPassage, previousFrenchPassage, reserveSpeech:reserveFrenchSpeech, reserveTakeBack};
 for (const [name, fn] of Object.entries(actions)) $(name).onclick = fn;
 $('fullscreen').onclick = () => document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.();
 $('testTranslate').onclick = async () => {
@@ -1160,11 +1160,11 @@ document.addEventListener('keydown', event => {
   if (event.code === 'ArrowRight') {
     event.preventDefault();
     if (phase === 'french') nextFrenchPassage();
-    else if (phase === 'live' && !closing) goInterrupt();
+    else if (phase === 'live' && !closing) reserveFrenchSpeech();
     return;
   }
   if (event.code === 'ArrowLeft' && phase === 'french') { event.preventDefault(); previousFrenchPassage(); return; }
   if (event.code === 'Space') { event.preventDefault(); togglePause(); return; }
-  const map = {'1':goStart,'2':goInterrupt,'3':()=>phase==='live'?reserveFrenchSpeech():goFrench(),'4':()=>reserveSpeechActive?reserveTakeBack():goHandback(),'5':goFinish,'0':goReset,'x':panic,'X':panic,'f':$('fullscreen').onclick,'F':$('fullscreen').onclick};
+  const map = {'1':goStart,'2':reserveFrenchSpeech,'3':()=>phase==='live'?reserveFrenchSpeech():goFrench(),'4':()=>reserveSpeechActive?reserveTakeBack():goHandback(),'5':goFinish,'0':goReset,'x':panic,'X':panic,'f':$('fullscreen').onclick,'F':$('fullscreen').onclick};
   if (map[event.key]) { event.preventDefault(); map[event.key](); }
 });
