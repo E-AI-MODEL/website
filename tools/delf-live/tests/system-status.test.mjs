@@ -134,3 +134,17 @@ test('installatiewizard begeleidt zonder automatisch uitvoeren of downloaden',()
   assert.doesNotMatch(wizard,/fetch\(\s*['"`]https:\/\/ollama\.com/);
   assert.doesNotMatch(wizard,/\/api\/pull/);
 });
+
+test('Franse testprompt gaat werkelijk mee naar Ollama',async()=>{
+  const original=globalThis.fetch;
+  let body;
+  globalThis.fetch=async (url,options)=>{
+    if(options?.body)body=JSON.parse(options.body);
+    return {ok:true,json:async()=>url.endsWith('/api/tags')?{models:[{name:'qwen3:4b'}]}:{response:'Bravo pour votre diplôme !'}};
+  };
+  try{
+    const result=await probeLocalModel('ollama','http://localhost:11434/','qwen3:4b','Félicite la classe en français.');
+    assert.equal(body.prompt,'Félicite la classe en français.');
+    assert.match(result.answer,/Bravo/);
+  }finally{globalThis.fetch=original;}
+});
