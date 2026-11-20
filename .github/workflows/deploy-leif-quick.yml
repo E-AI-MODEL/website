@@ -11,8 +11,8 @@ permissions:
   contents: read
 
 concurrency:
-  group: leif-direct-publish
-  cancel-in-progress: true
+  group: theory7-production
+  cancel-in-progress: false
 
 jobs:
   publish-leif:
