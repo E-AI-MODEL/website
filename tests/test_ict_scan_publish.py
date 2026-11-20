@@ -7,7 +7,7 @@ TOOL = ROOT / "tools" / "ict-scan"
 
 class ICTScanTests(unittest.TestCase):
     def test_files_exist(self):
-        for filename in ("index.html", "style.css", "monitor.css", "app.js", "enhancements.js", "github-sync.js", "emmaus-logo.svg", "README.md"):
+        for filename in ("index.html", "style.css", "monitor.css", "app.js", "enhancements.js", "github-sync.js", "rail-drawer.js", "emmaus-logo.svg", "README.md"):
             self.assertTrue((TOOL / filename).is_file(), filename)
 
     def test_secret_not_security_and_litespeed_404_middle_zero(self):
@@ -44,6 +44,7 @@ class ICTScanTests(unittest.TestCase):
         self.assertIn('src="./app.js"', html)
         self.assertIn('src="./enhancements.js"', html)
         self.assertIn('src="./github-sync.js"', html)
+        self.assertIn('src="./rail-drawer.js"', html)
         self.assertIn('href="./monitor.css"', html)
         self.assertIn('src="./emmaus-logo.svg"', html)
         self.assertNotIn('<script src="http', html)
@@ -71,6 +72,23 @@ class ICTScanTests(unittest.TestCase):
         builder = (ROOT / 'scripts' / 'build_site.py').read_text(encoding='utf-8')
         self.assertIn('ict_scan_source = repo_root / "tools" / "ict-scan"', builder)
         self.assertNotIn('"/tools/ict-scan/"', builder.split('urls.extend(')[-1])
+
+    def test_expandable_sidebar_keeps_primary_navigation(self):
+        html = (TOOL / 'index.html').read_text(encoding='utf-8')
+        js = (TOOL / 'rail-drawer.js').read_text(encoding='utf-8')
+        css = (TOOL / 'monitor.css').read_text(encoding='utf-8')
+        for label in ('overview', 'apps', 'connections', 'ai', 'privacy', 'findings', 'reports', 'sources'):
+            self.assertIn(f'class="rail-button" data-view="{label}"', html)
+        self.assertIn('id="railMore"', html)
+        self.assertIn('id="railDrawer"', html)
+        self.assertIn('id="railScrim"', html)
+        self.assertNotIn('class="work-tabs"', html)
+        for control in ('globalSearch', 'topImport', 'topGithubSync', 'topReports', 'topPdf', 'drawerExcel', 'drawerJson'):
+            self.assertEqual(html.count(f'id="{control}"'), 1, control)
+        self.assertIn("event.key==='Escape'", js)
+        self.assertIn("event.key==='/'", js)
+        self.assertIn('.icon-rail .rail-more', css)
+        self.assertIn('@media(max-width:720px)', css)
 
     def test_school_style_fixed_viewport_and_reports(self):
         css = (TOOL / 'monitor.css').read_text(encoding='utf-8')
