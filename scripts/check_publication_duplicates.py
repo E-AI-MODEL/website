@@ -25,7 +25,7 @@ SITE = "https://eaimodel.nl"
 # TOPO wordt via een eigen release gebouwd en staat bewust niet in site-build.
 INDEPENDENT_ROUTES = {"/topo/"}
 IGNORED_TAGS = ("script", "style", "template", "svg", "canvas", "noscript",
-                "header", "footer", "nav")
+                "header", "footer", "nav", "h1")
 
 
 def route(value: str) -> str | None:
@@ -174,7 +174,7 @@ def audit(root: Path, reviewed: dict[tuple[str, str], str]) -> dict:
     # werkelijke, gebouwde HTML-pagina's tellen mee, geen content/ bronkopieën.
     exact_groups = defaultdict(list)
     for p in pages.values():
-        if p.content_hash and not p.redirect and not p.noindex:
+        if p.content_hash and not p.redirect:
             exact_groups[p.content_hash].append(p)
     reported_pairs = set()
     for group in exact_groups.values():
