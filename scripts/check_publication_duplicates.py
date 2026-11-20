@@ -24,6 +24,9 @@ from bs4 import BeautifulSoup
 SITE = "https://eaimodel.nl"
 # TOPO wordt via een eigen release gebouwd en staat bewust niet in site-build.
 INDEPENDENT_ROUTES = {"/topo/"}
+# Alleen de snelle PR-proef mag deze routes overslaan. De productiebuild
+# moet ze allebei wél bevatten voordat de FTP-upload begint.
+PREVIEW_DEFERABLE = {"/tools/anatomie/", "/tools/anatomie/labs/hartslag/"}
 IGNORED_TAGS = ("script", "style", "template", "svg", "canvas", "noscript",
                 "header", "footer", "nav", "h1")
 
@@ -132,7 +135,10 @@ def entry(kind: str, urls: list[str], explanation: str) -> dict[str, object]:
     return {"type": kind, "urls": urls, "explanation": explanation}
 
 
-def audit(root: Path, reviewed: dict[tuple[str, str], str]) -> dict:
+def audit(root: Path, reviewed: dict[tuple[str, str], str],
+          deferred: frozenset[str] = frozenset()) -> dict:
+    if not deferred.issubset(PREVIEW_DEFERABLE):
+        raise ValueError("Onbekende uitgestelde pagina in publicatiecontrole")
     locations = sitemap_urls(root)
     counts = Counter(locations)
     blocking = []
@@ -154,8 +160,12 @@ def audit(root: Path, reviewed: dict[tuple[str, str], str]) -> dict:
         if url in INDEPENDENT_ROUTES:
             continue
         if url not in pages:
-            blocking.append(entry("ontbrekende_pagina", [url],
-                                  "Staat in sitemap.xml, maar ontbreekt in de gebouwde release"))
+            if url in deferred:
+                notes.append(entry("alleen_bij_volledige_release", [url],
+                                   "Niet gebouwd in snelle PR-proef. Productiecontrole slaat deze pagina niet over."))
+            else:
+                blocking.append(entry("ontbrekende_pagina", [url],
+                                      "Staat in sitemap.xml, maar ontbreekt in de gebouwde release"))
     indexed = [p for p in pages.values() if p.url in counts and not p.redirect and not p.noindex]
     active = {p.url for p in indexed}
     canonical_owners = defaultdict(list)
@@ -224,12 +234,13 @@ def audit(root: Path, reviewed: dict[tuple[str, str], str]) -> dict:
 
     redirects = [p.url for p in pages.values() if p.redirect]
     return {
-        "status": "blokkeren" if blocking else ("aandacht" if review else "geen_afwijkingen"),
+        "status": "blokkeren" if blocking else ("aandacht" if review or notes else "geen_afwijkingen"),
         "counts": {
             "html_routes": len(pages),
             "sitemap_routes": len(counts),
             "redirects": len(redirects),
             "apart_gepubliceerd": len(set(counts) & INDEPENDENT_ROUTES),
+            "pas_in_volledige_release": len(deferred & (set(counts) - set(pages))),
             "blokkades": len(blocking),
             "nader_beoordelen": len(review),
         },
@@ -239,6 +250,7 @@ def audit(root: Path, reviewed: dict[tuple[str, str], str]) -> dict:
         "not_checked": [
             "Dit is de inhoud van de nieuwe site-build, niet een volledige inventaris van oude bestanden op de FTP-server.",
             "TOPO wordt afzonderlijk gepubliceerd en valt buiten deze releasecontrole.",
+            *([f"De snelle PR-proef heeft {len(deferred)} uitgestelde anatomiepagina's; de productierelease controleert ook deze routes."] if deferred else []),
         ],
     }
 
@@ -278,11 +290,13 @@ def main() -> int:
     parser.add_argument("--root", type=Path, default=Path("site-build"))
     parser.add_argument("--known", type=Path,
                         default=Path("catalog/publication-page-overlaps.json"))
+    parser.add_argument("--deferred", action="append", default=[],
+                        help="Alleen in snelle PR-proef voor uitgestelde anatomiepagina's")
     parser.add_argument("--json", type=Path)
     parser.add_argument("--summary", type=Path)
     args = parser.parse_args()
     try:
-        result = audit(args.root, known_pairs(args.known))
+        result = audit(args.root, known_pairs(args.known), frozenset(args.deferred))
     except (OSError, ValueError, ElementTree.ParseError) as e:
         print("Controle dubbele pagina's kon niet worden afgerond:", e, file=sys.stderr)
         return 1
