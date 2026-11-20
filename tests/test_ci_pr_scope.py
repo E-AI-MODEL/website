@@ -56,6 +56,26 @@ class CiPrScopeTests(unittest.TestCase):
     def test_topo_and_docs_are_independent(self):
         self.assertEqual(affected_suites(["topo/instellingen/index.html", "docs/notes.md"]), set())
 
+    def test_project_workflows_keep_their_own_tests(self):
+        root = Path(__file__).resolve().parents[1] / ".github" / "workflows"
+        site = (root / "site-check.yml").read_text(encoding="utf-8")
+        build = (root / "build-site.yml").read_text(encoding="utf-8")
+        ui = (root / "verify-ui.yml").read_text(encoding="utf-8")
+        self.assertIn("if: ${{ steps.scope.outputs.eaigit == 'true' }}", site)
+        self.assertIn("if: ${{ steps.scope.outputs.publishing == 'true' }}", site)
+        self.assertIn("if: ${{ steps.scope.outputs.physics == 'true' }}", site)
+        self.assertIn("if: ${{ steps.scope.outputs.leif == 'true' }}", site)
+        self.assertGreaterEqual(build.count("if: ${{ steps.scope.outputs.ictscan == 'true' }}"), 4)
+        self.assertIn("if: ${{ steps.scope.outputs.ictscan == 'true' }}", ui)
+        for workflow in (site, build, ui):
+            self.assertIn("python3 scripts/ci_pr_scope.py --all", workflow)
+
+    def test_delf_manual_publish_shares_theory7_queue(self):
+        workflow = (Path(__file__).resolve().parents[1] / ".github" / "workflows" / "deploy-delf-preview.yml").read_text(encoding="utf-8")
+        self.assertIn("  workflow_dispatch:", workflow)
+        self.assertNotIn("  push:", workflow.split("on:", 1)[1].split("permissions:", 1)[0])
+        self.assertIn("group: theory7-production", workflow)
+
     def test_reject_path_escape(self):
         self.assertEqual(affected_suites(["../tools/anatomie/index.html"]), set(SUITES))
 
