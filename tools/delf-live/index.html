@@ -36,10 +36,15 @@
   </header>
   <nav class="studio-nav" role="tablist" aria-label="Studio-onderdelen">
     <button class="studio-tab" role="tab" type="button" data-studio-view="podium" id="tab-podium" aria-controls="page-podium" aria-selected="true">Podium</button>
-    <button class="studio-tab" role="tab" type="button" data-studio-view="taal" id="tab-taal" aria-controls="page-taal" aria-selected="false" tabindex="-1">Taal</button>
-    <button class="studio-tab" role="tab" type="button" data-studio-view="stem" id="tab-stem" aria-controls="page-stem" aria-selected="false" tabindex="-1">Stem</button>
-    <button class="studio-tab" role="tab" type="button" data-studio-view="sessie" id="tab-sessie" aria-controls="page-sessie" aria-selected="false" tabindex="-1">Sessie</button>
-    <button class="studio-tab" role="tab" type="button" data-studio-view="meer" id="tab-meer" aria-controls="page-meer" aria-selected="false" tabindex="-1">Meer</button>
+    <button class="studio-tab" role="tab" type="button" data-studio-view="taal" id="tab-taal" aria-controls="page-taal" aria-selected="false" tabindex="-1">Instellingen</button>
+    <details id="extraStudioTabs" class="studio-more-tabs">
+      <summary>Overige opties</summary>
+      <div class="studio-extra-links">
+        <button class="studio-tab" role="tab" type="button" data-studio-view="stem" id="tab-stem" aria-controls="page-stem" aria-selected="false" tabindex="-1">Stem</button>
+        <button class="studio-tab" role="tab" type="button" data-studio-view="sessie" id="tab-sessie" aria-controls="page-sessie" aria-selected="false" tabindex="-1">Sessie</button>
+        <button class="studio-tab" role="tab" type="button" data-studio-view="meer" id="tab-meer" aria-controls="page-meer" aria-selected="false" tabindex="-1">Techniek</button>
+      </div>
+    </details>
   </nav>
   <div class="studio-scroll" id="studioScroll">
     <div class="studio-page" id="page-podium" role="tabpanel" aria-labelledby="tab-podium" data-studio-page="podium">
