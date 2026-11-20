@@ -101,7 +101,7 @@ De GitHub-sync vergelijkt de bestanden en de aantallen met het manifest in ict-s
 
 ## Eén JSON-kaart, wettelijke kaders en logboek
 
-De uitklapbare zijbalk bevat **JSON-kaarten beheren**. De editor werkt voor alle twaalf registers: toepassingen, AI-functies, Entra, technische onderdelen, kandidaten, controles, DPIA, AI-beheer, apparaten, licenties, werkacties en softwarecontroles. Per type verschijnen de juiste invulvelden. Originele Excelteksten, bronnummers, bronrijen en herkomst blijven bewaard.
+De uitklapbare zijbalk bevat **JSON-kaarten beheren**. De editor werkt voor dertien registers: toepassingen, AI-functies, Entra, technische onderdelen, kandidaten, controles, DPIA, AI-beheer, apparaten, licenties, werkacties, softwarecontroles en veelgestelde vragen. Per type verschijnen de juiste invulvelden. Originele Excelteksten, bronnummers, bronrijen en herkomst blijven bewaard.
 
 De kaart bewaart conceptwijzigingen buiten de actuele inventaris. Nog niet goedgekeurde concepten veranderen de grafieken en rapportages niet. Nieuwe registraties krijgen een ID per register; bestaande IDs blijven onveranderd.
 
@@ -124,3 +124,20 @@ Na publicatie via pull request bevat de registratie een auditTrail met tijdstip,
 Het logboek bevat kaartwijzigingen en is niet automatisch een volledige weergave van alle rechtstreekse GitHub-bewerkingen. Bevestigde relaties of juridische oordelen vragen altijd afzonderlijk bewijs.
 
 Test: node --check tools/ict-scan/record-cards.js, node --check tools/ict-scan/record-github.js, en node --test tests/test_ict_scan_cards.mjs.
+
+## Vragen stellen zonder AI
+
+De bestaande zoekfunctie in de uitklapbare zijbalk heeft een antwoordweergave. Er is geen nieuwe hoofdmenuoptie of afzonderlijke chatbot toegevoegd. De HTML gebruikt lokale JavaScript-regels om een vraag te herkennen, de relevante gegevens te selecteren en het resultaat samen met de bronstatus te tonen. Er gaan geen vraagteksten naar een AI-dienst.
+
+De drie antwoordroutes zijn:
+- **Geregistreerde feiten:** antwoorden op vragen over een specifieke toepassing, zoals verantwoordelijke, omschrijving, gebruikte gegevens, verwerkersafspraken, DPIA-status, bron, AI-functies of Entra-matches. Een niet-bevestigd veld blijft expliciet niet vastgesteld.
+- **Berekende selecties:** aantallen en lijsten uit de geladen JSON-registers. Bijvoorbeeld toepassingen met beschreven AI-functies, open verantwoordelijken, Entra-matches, printersoftware en telefonie.
+- **Vaste FAQ's:** brongebonden, redactioneel nog te beoordelen antwoorden uit het afzonderlijke bestand ict-scan/bronnen/2026-faq.json. Iedere kaart bevat een ID, hoofdvraag, alternatieve vragen, antwoord, onderwerp, status en bronverwijzing.
+
+De FAQ is als dertiende register beschikbaar via dezelfde JSON-kaarteneditor. Concepten worden voor de FAQ op dezelfde manier gecontroleerd en via een pull request voorgesteld als voor de andere twaalf registers. Het manifest bevat de SHA en het aantal FAQ's; de GitHub-synchronisatie weigert afwijkende bronbestanden.
+
+Een ingevoerde vraag wordt eerst vergeleken met exacte FAQ-vragen of alternatieve formuleringen, daarna met expliciete toepassingsnamen en vraagtypes, en vervolgens met berekenbare selecties. Een bijna identieke FAQ-vraag kan automatisch worden herkend wanneer geen twijfel tussen meerdere antwoorden bestaat. Bij twijfel verschijnen alleen suggesties. Er worden geen nieuwe feiten geschreven op basis van een vermoedelijke overeenkomst.
+
+De vragenverzameling in tests/test_ict_scan_answers.mjs bevat 28 echte Nederlandse zoekvragen, met controles op bronvelden, aantallen, onvoldoende bewijs, de bronverwijzing en de afwezigheid van generatieve tekst. De JavaScript-code is lokaal: tools/ict-scan/answer-engine.js. De vormgeving staat in answer-engine.css.
+
+Vragen worden niet opgeslagen als zoeklog, niet gebruikt als profiel en niet verzonden naar externe zoekdiensten. De verborgen 404-ingang is geen beveiliging. De gepubliceerde JSON-bestanden zijn openbaar in de GitHub-repository.
