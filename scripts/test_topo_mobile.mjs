@@ -84,6 +84,22 @@ try{
    if(mode==='point'){
     assert.ok(parseFloat(sizes.viewBox.split(' ')[2])<1000,'Map is still zoomed too far out');
    }
+   if(mode==='choice'){
+    // Wrong answer must not push the fourth answer or help row offscreen.
+    const options=page.locator('#answerOptions button.option');
+    await options.nth(0).click();
+    const after=await page.evaluate(()=>{
+      const q=document.querySelector('.question-card').getBoundingClientRect();
+      const l=document.querySelector('.small-links').getBoundingClientRect();
+      const choices=[...document.querySelectorAll('#answerOptions .option')].map(x=>x.getBoundingClientRect());
+      return {questionBottom:q.bottom,linksBottom:l.bottom,optionBottom:choices.at(-1).bottom,
+        minChoiceHeight:Math.min(...choices.map(x=>x.height)),viewport:window.visualViewport?.height||window.innerHeight};
+    });
+    assert.ok(after.linksBottom<=after.questionBottom-3,'Help links cut off after feedback');
+    assert.ok(after.optionBottom<after.linksBottom,'Fourth answer cut off after feedback');
+    assert.ok(after.minChoiceHeight>=32,'Choices too small after feedback');
+    await page.screenshot({path:'test-results/topo/fixed-choice-feedback.png',fullPage:true});
+   }
    await page.screenshot({path:'test-results/topo/fixed-'+name+'.png',fullPage:true});
   }finally{await page.close();}
  }
