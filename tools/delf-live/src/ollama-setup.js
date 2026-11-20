@@ -31,7 +31,7 @@ if(host) {
   ];
   const $=id=>document.getElementById(id);
   const origin=window.location.origin;
-  const safari=/^((?!chrome|chromium|crios).)*safari/i.test(navigator.userAgent);
+  const safari=/safari/i.test(navigator.userAgent)&&!/chrome|chromium|crios|edg/i.test(navigator.userAgent);
   const browserName=safari?'Safari':'deze browser';
   const httpServer='http://localhost:11434/';
   const httpsServer='https://localhost:11435/';
@@ -100,10 +100,7 @@ if(host) {
     if(index===1){
       contentElement.append(line('p','Open Ollama via Programma’s. Gebruik Terminal alleen als je de server zelf wilt starten. Start niet twee servers naast elkaar.','studio-support'));
       addCommand('Controleer of de lokale API al draait:','curl http://localhost:11434/api/tags');
-      contentElement.append(action('Controleer server vanuit deze browser',async()=>{
-        await checkServer();
-        if(serverReady){installAcknowledged=true;index=2;render();}
-      }));
+      contentElement.append(action('Ik zie mijn modellen in Terminal',()=>{installAcknowledged=true;index=2;notify('Kies nu hoe deze browser Ollama bereikt.');render();}));
       contentElement.append(line('p','Krijg je in Terminal een verbindingsfout en staat Ollama niet in de menubalk? Open de app opnieuw. Gebruik eventueel “ollama serve” in een Terminal-venster; laat dat venster open.','studio-support'));
       contentElement.append(terminal('ollama serve'));
     }
@@ -118,7 +115,7 @@ if(host) {
       contentElement.append(line('p','Te testen adres: '+server,'studio-support'));
       if(connectionKind==='https'){
         contentElement.append(line('p','Safari kan een HTTP-aanvraag vanuit een HTTPS-website blokkeren. Ollama spreekt zelf HTTP. Caddy kan alleen op jouw Mac een vertrouwde HTTPS-verbinding vóór Ollama verzorgen.','studio-support'));
-        const setup=document.createElement('details');setup.className='ollama-help';setup.open=true;
+        const setup=document.createElement('details');setup.className='ollama-help';
         setup.append(line('summary','Lokale HTTPS-verbinding voor Safari'));
         setup.append(line('p','Installeer Caddy als je Homebrew hebt. Is Homebrew niet aanwezig, gebruik de officiële instructies van caddyserver.com. Voer de opdrachten één voor één uit.','studio-support'));
         setup.append(terminal('brew install caddy'));
