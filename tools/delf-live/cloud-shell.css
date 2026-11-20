@@ -1003,3 +1003,15 @@ body.panel-visible .mobile-settings.cloud-entry{opacity:0!important}
 @media(prefers-reduced-motion:reduce){
   .cloud-studio .studio-clouds,.cloud-studio .studio-clouds::before,.cloud-studio .studio-clouds::after{animation:none!important}
 }
+
+/* Simpel studiomenu: de bestaande functies blijven onder Overige opties. */
+.studio-more-tabs{flex:1 1 auto;min-width:110px;position:relative;border-top:0!important;padding:0!important}
+.studio-more-tabs>summary{list-style:none;cursor:pointer;color:var(--cloud-muted);font-size:12px;padding:12px 10px;white-space:nowrap;user-select:none}
+.studio-more-tabs>summary::-webkit-details-marker{display:none}
+.studio-more-tabs>summary:after{content:'⌄';padding-left:8px;opacity:.5}
+.studio-more-tabs[open]>summary{color:var(--cloud-ink)}
+.studio-extra-links{position:absolute;top:100%;right:0;z-index:80;display:flex;flex-direction:column;min-width:165px;padding:6px;background:rgba(251,251,249,.97);border:1px solid var(--cloud-hairline);border-radius:10px;box-shadow:0 12px 30px rgba(43,61,70,.10)}
+.studio-extra-links>.studio-tab{text-align:left;min-height:38px;width:100%;flex:none}
+#scriptedShow .studio-section-top{margin-bottom:9px}
+#scriptedShow input[type=file]{max-width:100%;font-size:12px}
+#scriptedShow .studio-section-top~.studio-action-grid{margin-top:14px}
