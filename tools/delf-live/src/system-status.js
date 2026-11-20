@@ -17,7 +17,8 @@ if(host) {
       <button type="button" class="action studio-action" id="systemConnect">Test modelantwoord</button>
     </details>
     <div class="system-actions"><button type="button" class="action studio-action studio-action-quiet" id="systemCapabilities">Controleer browser</button><button type="button" class="action studio-action studio-action-quiet" id="systemStorage">Controleer opslag</button></div>
-    <p class="studio-support" id="systemChecked" aria-live="polite">Nog geen controles uitgevoerd.</p>`;
+    <p class="studio-support" id="systemChecked" aria-live="polite">Nog geen controles uitgevoerd.</p>
+    <details class="system-log"><summary>Laatste gebeurtenissen</summary><ol id="systemLog"></ol></details>`;
   host.append(section);
   const states=new Map(SERVICES.map(service=>[service.id,{status:STATUS.idle,message:'Niet gecontroleerd',code:'',advice:''}]));
   const list=$('systemServices');
@@ -28,6 +29,8 @@ if(host) {
       const state=states.get(service.id);
       const row=document.createElement('details');
       row.className='system-row';
+      row.open=Boolean(list.querySelector('[data-service="'+service.id+'"]')?.open);
+      row.dataset.service=service.id;
       row.dataset.status=state.status;
       const summary=document.createElement('summary');
       const indicator=document.createElement('span');indicator.className='system-indicator';indicator.setAttribute('aria-hidden','true');
@@ -39,6 +42,7 @@ if(host) {
       const advice=document.createElement('p');advice.textContent=state.advice||service.action;
       body.append(hint,advice);
       if(state.code){const code=document.createElement('code');code.textContent=state.code;body.append(code);}
+      if(state.cause){const cause=document.createElement('p');cause.textContent='Melding: '+state.cause;body.append(cause);}
       row.append(summary,body);
       list.append(row);
     }
@@ -47,25 +51,28 @@ if(host) {
     const prior=states.get(id);
     if(!prior) return;
     const diagnosed=error?classifyError(error,id):null;
-    states.set(id,{status,message:String(message).slice(0,180),code:diagnosed?.code||'',advice:diagnosed?.advice||''});
+    states.set(id,{status,message:String(message).slice(0,180),code:diagnosed?.code||'',advice:diagnosed?.advice||'',cause:error?String(error?.message||error).slice(0,240):''});
     history.push({at:new Date().toISOString(),id,status,code:diagnosed?.code||''});
     if(history.length>40) history.shift();
+    const log=$('systemLog');
+    log.replaceChildren();
+    for(const item of history.slice(-8).reverse()) {
+      const line=document.createElement('li');
+      line.textContent=new Date(item.at).toLocaleTimeString('nl-NL')+' · '+(SERVICES.find(service=>service.id===item.id)?.name||item.id)+' · '+item.status+(item.code?' · '+item.code:'');
+      log.append(line);
+    }
     $('systemChecked').textContent='Laatste controle: '+new Date().toLocaleTimeString('nl-NL',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
     display();
   }
   display();
   const idForFeedback={microphoneStatus:'mic',translationStatus:'translation',frenchStatus:'french',dutchStatus:'dutch'};
   window.addEventListener('cloud-function-status',event=>{
-    const {id,kind,message}=event.detail||{};
+    const {id,state,message,error}=event.detail||{};
     const service=idForFeedback[id];
-    if(!service) return;
-    // Een laden-melding toont geen succes. Alleen een geslaagde actie geeft 'klaar'.
-    const successful=kind==='good' && !/gevonden|kies|beluister.*vóór|eerste klank nog niet/i.test(message||'');
-    update(service,kind==='bad'?STATUS.error:successful?STATUS.ready:STATUS.busy,
-      kind==='bad'?'Storing':successful?'Gereed':'Bezig of nog niet getest',
-      kind==='bad'?new Error(message):null);
+    if(!service || !Object.values(STATUS).includes(state)) return;
+    update(service,state,message||'Geen nadere informatie',error?new Error(error):null);
   });
-  $('systemProvider').addEventListener('change',()=>{
+    $('systemProvider').addEventListener('change',()=>{
     $('systemEndpoint').value=$('systemProvider').value==='ollama'?'http://localhost:11434/':'http://localhost:1234/';
   });
   $('systemConnect').addEventListener('click',async()=>{
