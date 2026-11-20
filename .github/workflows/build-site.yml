@@ -34,8 +34,10 @@ on:
       - 'tools/eaigit/**'
       - 'tools/ict-scan/**'
       - 'tests/test_ict_scan_publish.py'
+      - 'tests/test_ict_scan_export.mjs'
       - 'tools/ict-scan/**'
       - 'tests/test_ict_scan_publish.py'
+      - 'tests/test_ict_scan_export.mjs'
       - 'tests/test_projecthulp.mjs'
       - 'tests/test_eaigit_help.mjs'
       - 'tests/test_eaigit_single_file.mjs'
@@ -81,8 +83,10 @@ on:
       - 'tools/eaigit/**'
       - 'tools/ict-scan/**'
       - 'tests/test_ict_scan_publish.py'
+      - 'tests/test_ict_scan_export.mjs'
       - 'tools/ict-scan/**'
       - 'tests/test_ict_scan_publish.py'
+      - 'tests/test_ict_scan_export.mjs'
       - 'tests/test_projecthulp.mjs'
       - 'index.html'
       - 'houseoftalents/**'
@@ -160,6 +164,9 @@ jobs:
 
       - name: Check local-only ICT scan publishing
         run: python -m unittest discover -s tests -p 'test_ict_scan_publish.py' -v
+
+      - name: Test ICT scan Excel reports and AI categorization
+        run: node tests/test_ict_scan_export.mjs
 
       - name: Check first-party clicks and session privacy
         run: |
