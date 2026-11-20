@@ -272,6 +272,7 @@
   const input=document.getElementById('globalSearch'),host=document.getElementById('globalResults');
   if(!input||!host)return;
   const make=(tag,cls,txt)=>{const node=document.createElement(tag);if(cls)node.className=cls;if(txt!==undefined)node.textContent=String(txt);return node;};
+  const wrap=input.closest('.global-search-wrap');
   let mode='closed',options=[],active=-1;
   input.setAttribute('role','combobox');
   input.setAttribute('aria-controls','globalResults');
@@ -282,10 +283,10 @@
     return {apps:from('apps'),ai:from('ai'),connections:from('connections'),parts:from('parts'),candidates:from('candidates'),faqs:from('faqs'),dpia:from('dpia'),licenseReview:from('licenseReview'),workActions:from('workActions'),devices:from('devices')};
   }
   function show(){
-    host.hidden=false;input.setAttribute('aria-expanded','true');
+    host.hidden=false;wrap?.classList.add('has-answer');input.setAttribute('aria-expanded','true');
   }
   function hide(){
-    mode='closed';options=[];active=-1;host.hidden=true;host.replaceChildren();
+    mode='closed';options=[];active=-1;host.hidden=true;host.replaceChildren();wrap?.classList.remove('has-answer');
     input.setAttribute('aria-expanded','false');
     input.removeAttribute('aria-activedescendant');
   }
