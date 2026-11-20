@@ -7,8 +7,11 @@
   const MAX_FILES = 60;
   const MAX_FILE_BYTES = 35 * 1024 * 1024;
   const MAX_TOTAL_BYTES = 95 * 1024 * 1024;
+  const MAX_DIRECTORY_ENTRIES = 1000;
+  function assertNotCancelled(signal) {
+    if(signal && signal.aborted) { const error=new Error('Synchronisatie geannuleerd.'); error.name='AbortError'; throw error; }
+  }
   let busy = false;
-  let previousSignature = '';
   let abort = null;
 
   function showStatus(message, mode='info') {
@@ -33,6 +36,7 @@
     return h;
   }
   async function githubJson(url,token,signal) {
+    assertNotCancelled(signal);
     const response = await fetch(url,{method:'GET',mode:'cors',credentials:'omit',cache:'no-store',headers:headers(token),signal});
     if(!response.ok) {
       if(response.status===401)throw Error('GitHub heeft de token geweigerd.');
@@ -40,18 +44,23 @@
       if(response.status===404)throw Error('GitHub geeft 404: repository of bronmap niet gevonden. Controleer de map in GitHub. Voor de openbare E-AI-MODEL/website is geen token nodig.');
       throw Error('GitHub antwoordt met HTTP '+response.status+'.');
     }
-    return response.json();
+    const data=await response.json();
+    assertNotCancelled(signal);
+    return data;
   }
   async function listFiles(cfg,token,signal) {
     const files=[];
     let manifest=null;
     const recurse=async (folder,depth)=>{
+      assertNotCancelled(signal);
       if(depth>5)throw Error('De mapstructuur is te diep. Selecteer een kleinere map.');
       const url=endpoint(cfg,'contents/'+pathUrl(folder)+'?ref='+encodeURIComponent(cfg.ref));
       const entries=await githubJson(url,token,signal);
       if(!Array.isArray(entries))throw Error('De opgegeven locatie is een bestand, geen map.');
+      if(entries.length>=MAX_DIRECTORY_ENTRIES)throw Error('GitHub toont maximaal 1.000 items per map. Kies een kleinere bronmap; anders kunnen bestanden ongemerkt ontbreken.');
       const sorted=entries.slice().sort((a,b)=>String(a.path).localeCompare(String(b.path),'nl'));
       for(const entry of sorted){
+        assertNotCancelled(signal);
         if(entry.type==='dir') {
           if(entry.name.startsWith('.') || /^(?:node_modules|archief|archive|old|backup)$/i.test(entry.name))continue;
           await recurse(entry.path,depth+1);
@@ -65,6 +74,7 @@
       }
     };
     await recurse(cfg.folder,0);
+    assertNotCancelled(signal);
     const total=files.reduce((n,x)=>n+x.size,0);
     if(total>MAX_TOTAL_BYTES)throw Error('Samen zijn de bestanden groter dan 95 MB. Selecteer een kleinere map.');
     files.manifest=manifest;
@@ -85,11 +95,13 @@
     return actual;
   }
   async function downloadFile(cfg,entry,token,signal) {
+    assertNotCancelled(signal);
     // Git blob endpoint supports binary files above GitHub's 1 MB Contents API threshold.
     if(!/^[a-f0-9]{40}$/.test(entry.sha))throw Error('Onverwachte GitHub-identificatie: '+entry.path);
     const result=await githubJson(endpoint(cfg,'git/blobs/'+entry.sha),token,signal);
     if(result.encoding!=='base64'||typeof result.content!=='string')throw Error('GitHub geeft voor '+entry.path+' geen leesbare bestandsinhoud terug.');
     const bytes=decodeBase64(result.content,entry.size);
+    assertNotCancelled(signal);
     return new File([bytes],entry.name,{type:'application/octet-stream'});
   }
   function snapshotState() {
@@ -123,42 +135,49 @@
       $('githubSyncSummary').hidden=true;
       showStatus('GitHub-map controleren…');
       const entries=await listFiles(cfg,token,abort.signal);
+      assertNotCancelled(abort.signal);
       let manifestMetadata=null;
-      if(entries.manifest){const manifestFile=await downloadFile(cfg,entries.manifest,token,abort.signal);const manifest=JSON.parse(await manifestFile.text());if(manifest.schema!=='eai-school-ict-manifest-v1'||!manifest.metadata||typeof manifest.metadata!=='object')throw Error('Ongeldig metadata-bestand in GitHub.');manifestMetadata=manifest.metadata;}
+      if(entries.manifest){const manifestFile=await downloadFile(cfg,entries.manifest,token,abort.signal);const manifest=JSON.parse(await manifestFile.text());assertNotCancelled(abort.signal);if(manifest.schema!=='eai-school-ict-manifest-v1'||!manifest.metadata||typeof manifest.metadata!=='object')throw Error('Ongeldig metadata-bestand in GitHub.');manifestMetadata=manifest.metadata;}
       if(!entries.length){if(manifestMetadata){state.metadata=manifestMetadata;renderAll();}showStatus('GitHub is bereikbaar en de metadata zijn gelezen. Er staan nog geen applicatiebronnen in '+cfg.folder+'.','warning');return;}
-      const signature=cfg.repo+'@'+cfg.ref+':'+entries.map(x=>x.path+':'+x.sha).join('|')+(entries.manifest?'|manifest:'+entries.manifest.sha:'');
-      if(signature===previousSignature && state.sources.some(x=>x.githubRemote?.repository===cfg.repo)){showStatus('Geen nieuwe versies in GitHub gevonden. Het dashboard is al bijgewerkt.','success');return;}
+      // Always reapply the selected GitHub revision. A local import may have changed
+      // the dashboard since the last sync even when the remote file SHAs are unchanged.
       for(let i=0;i<entries.length;i++) {
         const entry=entries[i];
         showStatus('Bestanden ophalen: '+(i+1)+' van '+entries.length+' · '+entry.name);
         const file=await downloadFile(cfg,entry,token,abort.signal);
+        assertNotCancelled(abort.signal);
         files.push({file,entry});
       }
       // Only after ALL downloads succeed do we alter the current inventory.
+      assertNotCancelled(abort.signal);
       const replacing=$('githubReplace').checked;
       if(replacing&&state.ready&&!confirm('Het huidige overzicht in de browser vervangen door de GitHub-bestanden? Een eerder lokaal bewaarde momentopname blijft bestaan.')){
         showStatus('Synchronisatie geannuleerd. Het bestaande overzicht is behouden.','warning');return;
       }
+      assertNotCancelled(abort.signal);
       const backup=snapshotState();
       try {
         if(replacing)resetWorkingState();
         if(manifestMetadata)state.metadata=manifestMetadata;
         for(let i=0;i<files.length;i++) {
+          assertNotCancelled(abort.signal);
           const {file,entry}=files[i];
           showStatus('Gegevens verwerken: '+(i+1)+' van '+files.length+' · '+entry.name);
           const before=state.sources.length;
           await importOneFile(file);
+          assertNotCancelled(abort.signal);
           for(const record of state.sources.slice(before)){
             record.githubRemote={repository:cfg.repo,ref:cfg.ref,path:entry.path,sha:entry.sha};
             record.info=(record.info?record.info+' · ':'')+'GitHub: '+cfg.repo+' / '+entry.path+' @ '+cfg.ref+' · '+entry.sha.slice(0,8);
           }
         }
+        assertNotCancelled(abort.signal);
         state.ready=state.apps.size+state.connections.size+state.ai.size+state.checks.size+state.signals.size+state.devices.size+state.parts.size>0;
         buildDerived();
         state.view='overview';
         renderAll();
-        previousSignature=signature;
-      }catch(error){restoreState(backup);throw Error('Gegevens niet bijgewerkt: '+error.message);}
+        assertNotCancelled(abort.signal);
+      }catch(error){restoreState(backup);if(error.name==='AbortError')throw error;throw Error('Gegevens niet bijgewerkt: '+error.message);}
       const date=new Date().toLocaleString('nl-NL');
       const msg=files.length+' GitHub-bestanden geladen ('+date+'). '+state.apps.size+' toepassingen, '+state.ai.size+' AI-functies, '+state.connections.size+' Entra-koppelingen.';
       $('githubSyncSummary').hidden=false;
