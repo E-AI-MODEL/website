@@ -182,7 +182,15 @@ body.playing .game-grid.shuffle-no-map .question-card{flex:0 1 auto;width:min(71
 .map-art .province-shape{stroke:#c6a975;stroke-width:2;stroke-linejoin:round}
 .map-art .city-focus{stroke:#018b7c;stroke-width:5;fill:#31caa0;fill-opacity:.25}
 .map-art .map-text{pointer-events:none}
-</style><style id="country-land-context">.map-art .surrounding-land{fill:#dfe5dd;stroke:#bfccbf;stroke-width:2;stroke-linejoin:round;pointer-events:none;fill-rule:evenodd}.map-art .province-shape{fill-rule:evenodd}</style><style id="choice-inline-feedback">body.playing .game-grid[data-mode="choice"] .question-card #sub,body.playing .game-grid[data-mode="zoom"] .question-card #sub{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;height:19px;flex:0 0 19px;margin-bottom:7px}body.playing #sub.answer-wrong{color:#a73e37}</style></head><body>
+</style><style id="country-land-context">.map-art .surrounding-land{fill:#dfe5dd;stroke:#bfccbf;stroke-width:2;stroke-linejoin:round;pointer-events:none;fill-rule:evenodd}.map-art .province-shape{fill-rule:evenodd}</style><style id="national-pdok-topography">
+/* PDOK base imagery enriches the static, separately checked province geometry. */
+.map-art .pdok-detail,.map-art .pdok-detail image{pointer-events:none}
+.map-art .pdok-water{opacity:.60}
+.map-art .pdok-routes{opacity:.19}
+.map-art.detail-close .pdok-water{opacity:.81}
+.map-art.detail-close .pdok-routes{opacity:.25}
+@media(prefers-reduced-data:reduce){.map-art .pdok-detail{display:none}}
+</style><style id="choice-inline-feedback">body.playing .game-grid[data-mode="choice"] .question-card #sub,body.playing .game-grid[data-mode="zoom"] .question-card #sub{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;height:19px;flex:0 0 19px;margin-bottom:7px}body.playing #sub.answer-wrong{color:#a73e37}</style></head><body>
 <header class="top"><a href="/topo/" class="logo">Let’s go <span>TOPO!</span></a><a href="/topo/instellingen/" class="other">Instellingen</a></header>
 <main>
 <section id="loading" class="result"><span class="sticker">HEEL NEDERLAND</span><h2>Kaart laden…</h2><p>De twaalf provincies komen eraan.</p></section>
@@ -194,7 +202,7 @@ body.playing .game-grid.shuffle-no-map .question-card{flex:0 1 auto;width:min(71
 <section id="end" class="hide result"><span class="sticker">RONDE KLAAR!</span><h2 id="endTitle">Lekker bezig!</h2><p id="endText"></p><div id="helpSummary" class="scores"></div><div id="review" class="review"></div><div class="actions"><button id="again" class="big secondary">NOG EEN KEER!</button><a href="/topo/instellingen/" class="quiet">Andere plekken</a></div></section>
 </main>
 <div class="overlay hide" id="sheetLayer" role="dialog" aria-modal="true" aria-labelledby="sheetTitle"><div class="modal"><button class="close" id="closeSheet" aria-label="Sluiten">×</button><span class="sticker">SPIEKKAART</span><h2 id="sheetTitle">Even spieken!</h2><div class="sheet-tools"><button id="zoomOut" type="button" aria-label="Uitzoomen">−</button><strong id="zoomText">100%</strong><button id="zoomIn" type="button" aria-label="Inzoomen">+</button><button id="zoomFit" type="button">Passend</button></div><div class="sheet-map" id="sheetMap"><div class="sheet-canvas" id="sheetCanvas"></div></div><p>Kijk goed. Probeer het daarna zelf!</p></div></div>
-<div class="credits">Kaartgrenzen 2026: CBS/PDOK via cartomap/nl · Oefenkaart, geen navigatiekaart</div>
+<div class="credits">Provinciegrenzen: CBS/PDOK via cartomap/nl · Water, wegen en spoor: Kadaster/PDOK BRT TOP10NL (CC BY 4.0) · Oefenkaart, geen navigatiekaart</div>
 <script>
 (function(){
 'use strict';
@@ -289,6 +297,21 @@ let data=[],features=[],neighborFeatures=[],landBounds=null,round=0,queue=[],ind
 const C=['#ffc2b8','#ffe3a4','#c9e6ae','#f4dfbc','#c7e6e7','#ffe4bb','#d7e8ba','#ffcfc0','#e8d8e8','#f5e4bd','#d7e0ee','#d2e7bc'];
 const proj=(lon,lat)=>[95+(lon-3.35)*205,65+(53.6-lat)*235];
 const fmt=n=>Math.round(n*10)/10;
+// Official Kadaster/PDOK BRT TOP10NL WMS: EPSG:4326 with latitude,longitude
+// axis order in WMS 1.3.0. These are decoration, never answer geometry.
+const pdokBox={west:3.0,east:7.7,south:50.4,north:53.9};
+function pdokDetail(){
+ const a=proj(pdokBox.west,pdokBox.north),b=proj(pdokBox.east,pdokBox.south);
+ const attrs='x="'+fmt(a[0])+'" y="'+fmt(a[1])+'" width="'+fmt(b[0]-a[0])+'" height="'+fmt(b[1]-a[1])+'" preserveAspectRatio="none"';
+ const base='https://service.pdok.nl/kadaster/brt-top10nl/wms/v1_0';
+ const url=layers=>base+'?'+new URLSearchParams({SERVICE:'WMS',VERSION:'1.3.0',REQUEST:'GetMap',
+  LAYERS:layers,STYLES:'',CRS:'EPSG:4326',BBOX:[pdokBox.south,pdokBox.west,pdokBox.north,pdokBox.east].join(','),
+  WIDTH:'1440',HEIGHT:'1120',FORMAT:'image/png',TRANSPARENT:'TRUE'}).toString().replace(/&/g,'&amp;');
+ return '<g class="pdok-detail" aria-hidden="true">'+
+  '<image class="pdok-water" '+attrs+' href="'+url('Waterdeel')+'"/>'+
+  '<image class="pdok-routes" '+attrs+' href="'+url('Wegdeelhartlijn,Spoorbaandeel')+'"/>'+
+  '</g>';
+}
 function slug(s){return s.toLocaleLowerCase('nl').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')}
 function tidy(v){return String(v||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]/g,'')}
 function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
@@ -336,7 +359,7 @@ function countryMap(showNames,focused){
  '<defs><pattern id="topo-grid" width="79" height="79" patternUnits="userSpaceOnUse"><path d="M79 0H0V79" fill="none" stroke="#fff" stroke-opacity=".22" stroke-width="1"/></pattern></defs>'+
  '<rect x="-1000" y="-1000" width="3000" height="3000" fill="#cbe9f4"/>'+
  '<rect x="-1000" y="-1000" width="3000" height="3000" fill="url(#topo-grid)"/>'+
- '<g aria-hidden="true">'+otherLand+'</g><g>'+provinces+'</g><g aria-hidden="true">'+waterNames+'</g><g>'+cityDots+'</g>'+
+ '<g aria-hidden="true">'+otherLand+'</g><g>'+provinces+'</g>'+pdokDetail()+'<g aria-hidden="true">'+waterNames+'</g><g>'+cityDots+'</g>'+
  '<g id="targetHighlight"></g><g>'+provinceTexts+'</g><g>'+texts+'</g></svg>';
 }
 function displayMap(showNames=false){$('map').innerHTML=countryMap(showNames);focusMap();}
@@ -375,7 +398,8 @@ function focusMap(){
   // A city question shows its province and surrounding towns, not a tiny
   // Netherlands silhouette in a tall phone viewport. Province questions stay nationwide.
   const region=currentMode==='point'&&x.kind==='city'?provinceContext(x.province):null;
-  const bounds=region||landBounds,pad=region?68:36;
+  svg.classList.toggle('detail-close',Boolean(region));
+   const bounds=region||landBounds,pad=region?68:36;
   let width=bounds.right-bounds.left+pad*2;
   let height=bounds.bottom-bounds.top+pad*2;
   if(region){width=Math.max(width,290);height=Math.max(height,370);}
@@ -386,7 +410,8 @@ function focusMap(){
   tidyMapLabels(svg);
   return;
  }
- const width=currentMode==='zoom'
+ svg.classList.toggle('detail-close',currentMode==='zoom');
+  const width=currentMode==='zoom'
    ?Math.max(235,Math.min(440,Math.round(335*ratio)))
    :Math.min(1020,Math.round(850*ratio));
  const height=width/ratio;

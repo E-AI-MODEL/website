@@ -15,7 +15,14 @@ async function scenario(label,url,adjust){
   const map=page.locator('#map svg');
   await map.waitFor({timeout:12000});
   const provinceCount=await page.locator('.province-shape').count();
-  if(label==='nederland')assert.equal(provinceCount,12,'Landelijke kaart mist een provincie');
+  if(label==='nederland'){
+   assert.equal(provinceCount,12,'Landelijke kaart mist een provincie');
+   const images=page.locator('.pdok-detail image');
+   assert.equal(await images.count(),2,'PDOK-kaartdetails ontbreken');
+   const sources=await images.evaluateAll(nodes=>nodes.map(n=>n.getAttribute('href')||''));
+   assert.ok(sources.every(url=>url.includes('service.pdok.nl')&&url.includes('BBOX=')),'PDOK-bron of projectie ontbreekt');
+   assert.equal(await page.locator('.province-shape').count(),12,'De klikbare provinciegrenzen moeten blijven');
+  }
   else assert.ok((await page.locator('#map .map-art').count())>0,'Noordelijke kaart ontbreekt');
   for(let step=0;step<9;step++){
    const form=page.locator('#typeForm');
