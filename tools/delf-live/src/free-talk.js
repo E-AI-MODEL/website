@@ -49,7 +49,7 @@ for(const control of [engine,browserModel,inputLang,outputLang,voice])control.ad
 updateControls();
 async function ensurePuter(required){
   const api=globalThis.puter;
-  if(!api?.ai?.txt2speech || (required&&!api?.ai?.chat))
+  if(!api?.ai || (required&&!api.ai.chat) || (!required&&!api.ai.txt2speech))
     throw new Error('Puter is nog niet geladen of wordt door de browser geblokkeerd.');
   if(!api.auth.isSignedIn())await api.auth.signIn();
   return api;
