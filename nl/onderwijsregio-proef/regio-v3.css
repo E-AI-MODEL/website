@@ -12,7 +12,7 @@
 html{scroll-behavior:smooth;scroll-padding-top:24px;overscroll-behavior-y:none}
 body,h1,h2,h3,p,figure{margin:0}
 body{background:linear-gradient(162deg,#fbfcf9 0%,#fffefa 46%,#f7fbf8 100%);min-width:0;color:var(--ink)}
-body:has(#pie:not([hidden]))::before{content:"";position:fixed;inset:0;z-index:11;pointer-events:none;background:rgba(244,249,245,.87);-webkit-backdrop-filter:blur(7px);backdrop-filter:blur(7px)}
+body:has(#pie:not([hidden]),#mastNav:not([hidden]),#prefs:not([hidden]),#panel.side-help:not([hidden]))::before{content:"";position:fixed;inset:0;z-index:11;pointer-events:none;background:rgba(248,251,247,.74);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
 button,input,select,summary{font:inherit;color:inherit}
 button,summary,select{cursor:pointer}
 button{border:0;background:transparent}
@@ -129,7 +129,7 @@ footer a{margin-left:9px}
  position:fixed;z-index:16;left:calc(var(--rail) + 53px);top:clamp(62px,10vh,94px);
  width:min(480px,calc(100vw - var(--rail) - 80px));max-height:calc(100dvh - 98px);
  overflow-y:auto;overscroll-behavior:contain;transform:none!important;
- background:linear-gradient(142deg,rgba(255,255,254,.97),rgba(233,244,237,.94) 66%,rgba(255,255,252,.97));
+ background:linear-gradient(142deg,rgba(255,255,254,.995),rgba(239,248,241,.988) 66%,rgba(255,255,252,.995));
  -webkit-backdrop-filter:blur(28px) saturate(135%);backdrop-filter:blur(28px) saturate(135%);
  border:1px solid #ffffff;outline:1px solid #d0e0d5;
  border-radius:18px 24px 24px 18px;box-shadow:0 22px 64px -30px #183e3180,inset 0 1px #ffffffee;
