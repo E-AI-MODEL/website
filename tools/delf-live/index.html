@@ -7,7 +7,9 @@
 <title>Podium | live Franse ondertiteling</title>
 <link rel="stylesheet" href="./styles.css">
 <link rel="stylesheet" href="./cloud-shell.css">
+<script src="https://js.puter.com/v2/" defer></script>
 <script type="module" src="./src/main.js"></script>
+<script type="module" src="./src/free-talk.js"></script>
 <script type="module" src="./src/cloud-shell.js"></script>
 <script type="module" src="./src/system-status.js"></script>
 <script type="module" src="./src/ollama-setup.js"></script>
@@ -37,6 +39,7 @@
   </header>
   <nav class="studio-nav" role="tablist" aria-label="Studio-onderdelen">
     <button class="studio-tab" role="tab" type="button" data-studio-view="podium" id="tab-podium" aria-controls="page-podium" aria-selected="true">Podium</button>
+    <button class="studio-tab" role="tab" type="button" data-studio-view="gesprek" id="tab-gesprek" aria-controls="page-gesprek" aria-selected="false" tabindex="-1">Vrij praten</button>
     <button class="studio-tab" role="tab" type="button" data-studio-view="taal" id="tab-taal" aria-controls="page-taal" aria-selected="false" tabindex="-1">Instellingen</button>
     <details id="extraStudioTabs" class="studio-more-tabs">
       <summary>Overige opties</summary>
@@ -108,6 +111,30 @@
       <p class="studio-aside cloud-reveal">→ onderbreking · → na jouw antwoord · zachte golf bij teruggave</p>
     </div>
 
+    <div class="studio-page" id="page-gesprek" role="tabpanel" aria-labelledby="tab-gesprek" data-studio-page="gesprek" hidden>
+      <div class="studio-hero cloud-reveal">
+        <span class="studio-overline">FRANSE SPREKER / VRIJ GESPREK</span>
+        <h1 class="cloud-heading">Vrij praten</h1>
+        <p class="cloud-intro">Zeg iets in het Nederlands. De AI antwoordt in gesproken Frans.</p>
+      </div>
+      <section class="studio-section cloud-reveal">
+        <p class="studio-support">Geen vaste speech en geen Terminal. Eenmalig aanmelden bij Puter. De gratis gebruiksruimte is beperkt; bij een tekort stopt het gesprek zonder kosten te maken buiten je tegoed.</p>
+        <div class="studio-action-grid">
+          <button id="freeTalkSpeak" class="action studio-action studio-action-emphasis" type="button">Praat</button>
+          <button id="freeTalkStop" class="action studio-action studio-action-quiet" type="button">Stop gesprek</button>
+        </div>
+        <p class="feedback" id="freeTalkStatus" role="status" aria-live="polite">Klaar om een gesprek te beginnen.</p>
+        <p class="studio-support">Jij zei</p>
+        <p class="feedback" id="freeTalkHeard">Nog niets.</p>
+        <p class="studio-support">Franse reactie</p>
+        <p class="feedback" id="freeTalkAnswer">Nog geen antwoord.</p>
+        <details class="studio-disclosure"><summary>Typ een zin als de microfoon niet werkt</summary>
+          <label class="studio-field">Jouw zin <textarea id="freeTalkTyped" rows="2" placeholder="Wat vind jij van deze diploma-uitreiking?"></textarea></label>
+          <button id="freeTalkSend" type="button" class="action studio-action studio-action-quiet">Vraag het in het Frans</button>
+        </details>
+        <p class="studio-support">Na ieder antwoord kun je weer op Praat klikken. Jij bepaalt het tempo. Er wordt geen tekst naar de vaste voorstelling doorgestuurd.</p>
+      </section>
+    </div>
     <div class="studio-page" id="page-taal" role="tabpanel" aria-labelledby="tab-taal" data-studio-page="taal" hidden>
       <div class="studio-hero cloud-reveal"><span class="studio-overline">NL → FR</span><h1 class="cloud-heading">Taal</h1>
         <p class="cloud-intro">Van je stem naar Franse tekst.</p></div>
