@@ -3,6 +3,7 @@ const $ = id => document.getElementById(id);
 const speak = $('freeTalkSpeak');
 const stop = $('freeTalkStop');
 const send = $('freeTalkSend');
+const play = $('freeTalkPlay');
 const status = $('freeTalkStatus');
 const heard = $('freeTalkHeard');
 const answer = $('freeTalkAnswer');
@@ -26,6 +27,7 @@ function cancelAudio(){
   audio.onended=null;audio.onerror=null;
   audio.pause();
   audio=null;
+  play.disabled=true;
 }
 function stopConversation(){
   turn++;
@@ -57,6 +59,7 @@ async function ask(question,api){
   state('De Franse spreker denkt na…');
   const messages=[{role:'system',content:instructions},...history.slice(-8),{role:'user',content:question}];
   try{
+    cancelAudio();
     const result=await api.ai.chat(messages,{model:'gpt-5.4-nano',normalize:true});
     if(own!==turn)return;
     const french=extractResponse(result);
@@ -71,16 +74,29 @@ async function ask(question,api){
     if(own!==turn){spoken?.pause?.();return;}
     if(!(spoken instanceof HTMLAudioElement))throw new Error('De spraakdienst stuurde geen audiobestand.');
     audio=spoken;
-    audio.onended=()=>{if(own!==turn)return;audio=null;ready();state('Jij bent weer aan zet. Klik op Praat.','ready');};
+    play.disabled=false;
+    audio.onended=()=>{if(own!==turn)return;ready();state('Jij bent weer aan zet. Klik op Praat.','ready');};
     audio.onerror=()=>{if(own!==turn)return;audio=null;ready();state('De tekst is beschikbaar, maar de Franse stem kon niet afspelen.','error');};
     state('De Franse spreker antwoordt…');
-    await audio.play();
+    try{await audio.play();}
+    catch(error){
+      // Safari kan autoplay blokkeren na het ophalen van tekst en spraak.
+      ready();
+      state('Het Franse antwoord is klaar. Klik op Luister naar antwoord om het af te spelen.');
+    }
   }catch(e){
     if(own!==turn)return;
     ready();
     state('Gesprek niet gelukt: '+String(e?.message||e)+'. Controleer je gratis tegoed of probeer opnieuw.','error');
   }
 }
+play.addEventListener('click',()=>{
+  if(!audio)return;
+  audio.currentTime=0;
+  pending=true;speak.disabled=true;send.disabled=true;
+  state('De Franse spreker antwoordt…');
+  void audio.play().catch(error=>{ready();state('Afspelen lukt niet: '+String(error?.message||error),'error');});
+});
 speak.addEventListener('click',async()=>{
   if(pending)return;
   if(recognition){try{recognition.stop()}catch{}return;}
