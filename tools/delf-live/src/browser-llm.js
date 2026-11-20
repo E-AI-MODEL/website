@@ -20,7 +20,7 @@ export async function ensureBrowserModel(modelId,report=()=>{}){
       await engine.unload?.();
       engine=null;activeModel='';
     }
-    report('Modelbestanden worden gedownload. Dit gebeurt alleen de eerste keer…');
+    report('Model laden uit browsercache. Ontbrekende bestanden worden gedownload…');
     const {CreateMLCEngine,prebuiltAppConfig}=await import('@mlc-ai/web-llm');
     if(!prebuiltAppConfig.model_list.some(entry=>entry.model_id===modelId)){
       throw new Error('Dit model staat niet in de WebLLM-bibliotheek van deze website. Kies een ander model.');

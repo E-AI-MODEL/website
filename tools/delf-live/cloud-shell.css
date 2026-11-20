@@ -1152,3 +1152,54 @@ body.panel-visible .mobile-settings.cloud-entry{opacity:0!important}
   color:#758e91;
   margin:5px 0;
 }
+
+/* EAIspeak: vaste werkruimte, interne scroll en zichtbare bediening. */
+html,body{width:100%;height:100%;overflow:hidden;overscroll-behavior:none}
+.stage{position:fixed!important;inset:0!important;width:100%;height:100dvh;min-height:0!important;overflow:hidden}
+.cloud-studio.panel{height:100dvh;min-height:0;max-height:100dvh;overflow:hidden}
+.cloud-studio .studio-header,.cloud-studio .studio-nav{flex-shrink:0}
+.cloud-studio .studio-nav{overflow:visible;isolation:isolate;z-index:9}
+.cloud-studio .studio-scroll{min-height:0;flex:1 1 0;overflow-x:hidden;overflow-y:auto;scrollbar-gutter:stable}
+.cloud-studio .studio-page{min-height:0}
+.studio-more-tabs{position:relative;flex:0 0 auto;z-index:50}
+.studio-more-tabs[open]{z-index:70}
+.studio-extra-links{top:calc(100% + 8px);right:0;z-index:80}
+.studio-more-tabs .studio-tab[aria-selected="true"]{background:rgba(221,239,235,.62)}
+.studio-more-tabs:not([open]) .studio-extra-links{visibility:hidden}
+.free-talk-floating>.mist-detail-body{max-height:min(64dvh,550px);overscroll-behavior:contain;scrollbar-width:thin}
+.free-talk-floating .studio-field select,.free-talk-floating .studio-field input[type=url]{width:100%;max-width:100%;box-sizing:border-box}
+.free-talk-handsfree{display:flex!important;gap:10px;align-items:flex-start}
+.free-talk-handsfree input{margin:2px 0 0;accent-color:#568d91}
+.free-talk-visual{width:100%;height:112px;display:flex;position:relative;justify-content:center;align-items:center;flex-direction:column;margin:7px 0 12px;pointer-events:none}
+.free-talk-visual canvas{width:min(100%,520px);height:74px;display:block}
+.free-talk-visual-label{font:400 10px/1.3 var(--cloud-fine,system-ui);color:#8aa1a2;letter-spacing:.03em}
+.free-talk-visual canvas[data-mode=answer]{opacity:.9}
+.free-talk-visual canvas[data-mode=listening]{opacity:1}
+.cloud-studio .studio-scroll.is-idle:has(.free-talk-visual canvas[data-mode=listening]) .cloud-reveal,
+.cloud-studio .studio-scroll.is-idle:has(.free-talk-visual canvas[data-mode=answer]) .cloud-reveal{opacity:1;filter:none;transform:none}
+@media(max-width:700px){
+ .cloud-studio .studio-nav{overflow-x:auto;overflow-y:visible;justify-content:flex-start}
+ .studio-more-tabs{min-width:120px}
+ .studio-extra-links{position:fixed;top:clamp(100px,14dvh,142px);right:12px}
+ .free-talk-visual{height:88px}
+ .free-talk-floating>.mist-detail-body{width:min(420px,calc(100vw - 34px));max-height:min(60dvh,530px)}
+}
+@media(prefers-reduced-motion:reduce){.free-talk-visual canvas{transition:none}}
+
+/* Rustige overgang: actieve bediening blijft leesbaar, verdwijnt niet abrupt. */
+.studio-scroll.is-idle .cloud-reveal.is-revealed:not(:focus-within){
+ opacity:.72;filter:blur(.65px);transform:translateY(-1px) scale(.999);
+ transition:opacity 2.6s ease,filter 2.8s ease,transform 2.8s ease;
+}
+.studio-scroll.is-idle:has(select:focus,input:focus,button:focus,textarea:focus) .cloud-reveal.is-revealed{
+ opacity:1;filter:none;transform:none;
+}
+body.cloud-studio-idle.panel-visible:not(:has(:focus-visible)) .cloud-studio .studio-header,
+body.cloud-studio-idle.panel-visible:not(:has(:focus-visible)) .cloud-studio .studio-nav{
+ opacity:.48;filter:blur(.8px);
+ transition:opacity 2.5s ease,filter 2.6s ease,transform 2.6s ease;
+}
+body.panel-visible:not(.cloud-studio-idle) .cloud-studio .studio-header,
+body.panel-visible:not(.cloud-studio-idle) .cloud-studio .studio-nav{
+ transition:opacity 1.2s ease,filter 1.3s ease,transform 1.2s ease;
+}

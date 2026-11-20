@@ -489,7 +489,7 @@ test('EAIspeak toont toesteladvies zonder podium of vrije keuze te verwijderen',
   assert.match(chat,/suggestDeviceSetup\(/);
   assert.match(chat,/modelDeviceAdvice\(/);
   assert.match(chat,/option\.disabled=!result\.usable/);
-  assert.match(chat,/if\(!userSelectedEngine&&!pending\)engine\.value=recommended\.engine/);
+  assert.match(chat,/if\(!userSelectedEngine&&!saved\.engine&&!pending\)engine\.value=recommended\.engine/);
   assert.match(chat,/userSelectedEngine=true/);
   assert.match(chat,/userSelectedModel=true/);
   assert.match(css,/\.free-talk-device-details/);

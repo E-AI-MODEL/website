@@ -140,20 +140,32 @@
           <label class="studio-field">Model draait
             <select id="freeTalkEngine">
               <option value="browser">Op dit apparaat · WebLLM</option>
+              <option value="ollama">Op mijn computer · Ollama</option>
               <option value="puter">Online · Puter-account</option>
             </select>
           </label>
           <div id="freeTalkBrowserModelRow">
             <label class="studio-field">Browsermodel
               <select id="freeTalkBrowserModel">
-              <option value="Qwen2.5-0.5B-Instruct-q4f16_1-MLC">Qwen 0,5B · ±945 MB</option>
+              <option value="Qwen2.5-0.5B-Instruct-q4f16_1-MLC">Qwen 0,5B · beperkt Nederlands</option>
               <option value="Llama-3.2-1B-Instruct-q4f16_1-MLC">Llama 1B · ±880 MB</option>
               <option value="Qwen2.5-1.5B-Instruct-q4f16_1-MLC">Qwen 1,5B · ±1,6 GB</option>
-              <option value="Qwen2.5-3B-Instruct-q4f16_1-MLC">Qwen 3B · ±2,4 GB</option>
+              <option value="Qwen2.5-3B-Instruct-q4f16_1-MLC">Qwen 3B · ±2,4 GB, betere taalvaardigheid</option>
               </select>
             </label>
             <button id="freeTalkPreload" class="action studio-action studio-action-quiet" type="button">Model vooraf laden</button>
-            <p id="freeTalkPreloadStatus" class="studio-support" role="status" aria-live="polite">Het model wordt pas gedownload wanneer je het gebruikt.</p>
+            <p id="freeTalkPreloadStatus" class="studio-support" role="status" aria-live="polite">Een eerste download wordt normaal in de browsercache bewaard. Na herstart wordt het model opnieuw geladen, niet automatisch opnieuw gedownload.</p>
+            <p id="freeTalkCacheStatus" class="studio-support"></p>
+          </div>
+          <div id="freeTalkOllamaOptions" hidden>
+            <label class="studio-field">Ollama op deze computer
+              <input id="freeTalkOllamaEndpoint" type="url" value="http://localhost:11434/" autocomplete="off" spellcheck="false" aria-describedby="freeTalkOllamaStatus">
+            </label>
+            <button id="freeTalkOllamaConnect" type="button" class="action studio-action studio-action-quiet">Zoek lokale modellen</button>
+            <label class="studio-field">Geïnstalleerd model
+              <select id="freeTalkOllamaModel"><option value="">Nog geen modellen gevonden</option></select>
+            </label>
+            <p id="freeTalkOllamaStatus" class="studio-support" role="status" aria-live="polite">Start Ollama op je computer en kies Zoek lokale modellen. Onder Techniek staat hulp bij het verbinden.</p>
           </div>
           <div id="freeTalkOnlineOptions" hidden>
             <label class="studio-field">Online model
@@ -169,6 +181,10 @@
               <option value="none">Alleen tekst</option>
             </select>
           </label>
+          <label class="studio-field" id="freeTalkVoiceNameRow">Beschikbare stem op dit apparaat
+            <select id="freeTalkVoiceName"><option value="">Automatisch passende stem</option></select>
+          </label>
+          <label class="studio-field free-talk-handsfree"><input id="freeTalkAutoListen" type="checkbox" checked> Handsfree: luister na ieder antwoord opnieuw</label>
           <div class="free-talk-device-details" aria-live="polite">
             <p class="studio-support" id="freeTalkDeviceStatus">Apparaat controleren…</p>
             <p class="studio-support" id="freeTalkDeviceAdvice"></p>
@@ -177,9 +193,13 @@
           </div>
         </details>
         <div class="studio-action-grid">
-          <button id="freeTalkSpeak" class="action studio-action studio-action-emphasis" type="button">Praat</button>
+          <button id="freeTalkSpeak" class="action studio-action studio-action-emphasis" type="button">Begin met spreken</button>
           <button id="freeTalkStop" class="action studio-action studio-action-quiet" type="button">Stop gesprek</button>
           <button id="freeTalkPlay" class="action studio-action studio-action-quiet" type="button" disabled>Luister naar antwoord</button>
+        </div>
+        <div class="free-talk-visual" aria-label="Spraakactiviteit" role="img">
+          <canvas id="freeTalkVoiceLines" aria-hidden="true"></canvas>
+          <span id="freeTalkSpeechIndicator" class="free-talk-visual-label" aria-hidden="true">Wacht op je stem</span>
         </div>
         <p class="feedback" id="freeTalkStatus" role="status" aria-live="polite">Klaar om een gesprek te beginnen.</p>
         <p class="studio-support">Jij zei</p>
@@ -190,7 +210,7 @@
           <label class="studio-field">Jouw zin <textarea id="freeTalkTyped" rows="2" placeholder="Wat vind jij van deze diploma-uitreiking?"></textarea></label>
           <button id="freeTalkSend" type="button" class="action studio-action studio-action-quiet">Verstuur</button>
         </details>
-        <p class="studio-support">Na ieder antwoord kun je weer op Praat klikken. Jij bepaalt het tempo. Er wordt geen tekst naar de vaste voorstelling doorgestuurd.</p>
+        <p class="studio-support">Een eerste klik geeft de microfoon toestemming. In handsfree stand luistert het gesprek na ieder antwoord opnieuw, zolang je dit scherm openhoudt. Met Stop gesprek sluit je de microfoon. Er wordt niets naar de vaste voorstelling gestuurd.</p>
       </section>
     </div>
     <div class="studio-page" id="page-taal" role="tabpanel" aria-labelledby="tab-taal" data-studio-page="taal" hidden>
