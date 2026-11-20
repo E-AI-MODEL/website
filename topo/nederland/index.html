@@ -173,6 +173,15 @@ body.playing .game-grid.shuffle-no-map .question-card{flex:0 1 auto;width:min(71
  #game .game-grid.shuffle-no-map .option{font-size:16px}
  #game .game-grid.shuffle-no-map .small-links{margin-top:14px}
 }
+</style><style id="national-map-details">
+.map-art .city-halo{fill:#fff5de;stroke:#d8af86;stroke-width:1.7}
+.map-art .city-dot,.map-art .capital-dot{fill:#293e49}
+.map-art .city-symbol{opacity:.9}
+.map-art .map-text.city{font-size:15.5px;font-weight:900;stroke:#fff8e8;stroke-width:4.8}
+.map-art .map-text.water{font-size:22px;letter-spacing:1.3px;fill:#659fb7;stroke:#d9eff8;stroke-width:5}
+.map-art .province-shape{stroke:#c6a975;stroke-width:2;stroke-linejoin:round}
+.map-art .city-focus{stroke:#018b7c;stroke-width:5;fill:#31caa0;fill-opacity:.25}
+.map-art .map-text{pointer-events:none}
 </style></head><body>
 <header class="top"><a href="/topo/" class="logo">Let’s go <span>TOPO!</span></a><a href="/topo/instellingen/" class="other">Instellingen</a></header>
 <main>
@@ -275,7 +284,7 @@ const mode=modes[0]||'mix';
 const countChoice=params.get('questions')||'8';
 const questionLimit=countChoice==='all'?60:Math.max(5,Math.min(60,parseInt(countChoice,10)||8));
 const noHints=params.get('assist')==='none';
-let data=[],features=[],round=0,queue=[],index=0,stars=0,helpCount=0,peekCount=0,wrong=new Set(),assisted=new Set(),repeated=new Set(),hintStep=0,attempts=0,done=false,currentMode='point',zoom=1,guessOptions=[];
+let data=[],features=[],landBounds=null,round=0,queue=[],index=0,stars=0,helpCount=0,peekCount=0,wrong=new Set(),assisted=new Set(),repeated=new Set(),hintStep=0,attempts=0,done=false,currentMode='point',zoom=1,guessOptions=[];
 // All province fills derive from the existing Noord-Nederland pastel map.
 const C=['#ffc2b8','#ffe3a4','#c9e6ae','#f4dfbc','#c7e6e7','#ffe4bb','#d7e8ba','#ffcfc0','#e8d8e8','#f5e4bd','#d7e0ee','#d2e7bc'];
 const proj=(lon,lat)=>[95+(lon-3.35)*205,65+(53.6-lat)*235];
@@ -298,34 +307,66 @@ function countryMap(showNames,focused){
  const items=data.filter(x=>x.kind==='city');
  const cityDots=items.map(x=>{
   const marker=x.capital
-   ?'<rect class="capital-dot" x="'+fmt(x.x-7)+'" y="'+fmt(x.y-7)+'" width="14" height="14" rx="1"/>'
-   :'<circle class="city-dot" cx="'+fmt(x.x)+'" cy="'+fmt(x.y)+'" r="7"/>';
-  return '<g><circle class="city-halo" cx="'+fmt(x.x)+'" cy="'+fmt(x.y)+'" r="15"/>'+marker+'<circle class="city-hit" data-place="'+x.id+'" cx="'+fmt(x.x)+'" cy="'+fmt(x.y)+'" r="21"/></g>';
+   ?'<rect class="capital-dot" x="'+fmt(x.x-6)+'" y="'+fmt(x.y-6)+'" width="12" height="12" rx="1"/>'
+   :'<circle class="city-dot" cx="'+fmt(x.x)+'" cy="'+fmt(x.y)+'" r="5.5"/>';
+  return '<g class="city-symbol" data-province="'+slug(x.province)+'"><circle class="city-halo" cx="'+fmt(x.x)+'" cy="'+fmt(x.y)+'" r="12"/>'+marker+'<circle class="city-hit" data-place="'+x.id+'" cx="'+fmt(x.x)+'" cy="'+fmt(x.y)+'" r="21"/></g>';
  }).join('');
- const labelCities=showNames?items.filter(x=>x.capital||(queue[index]&&x.province===queue[index].province)):[];
+ const active=queue[index];
+ const labelCities=showNames?items.filter(x=>x.capital||(active&&x.province===active.province)):
+  items.filter(x=>x.capital&&x.id!==active?.id).sort((a,b)=>
+    Math.hypot(a.x-(active?.x||500),a.y-(active?.y||400))-
+    Math.hypot(b.x-(active?.x||500),b.y-(active?.y||400)))
+    .reduce((chosen,item)=>{
+      if(chosen.length<10&&chosen.every(y=>Math.hypot(y.x-item.x,y.y-item.y)>75))chosen.push(item);
+      return chosen;
+    },[]);
  const provinceTexts=showNames&&focused==='sheet'?provinceLabels.map(row=>{
   const p=proj(row[1],row[2]);return '<text class="map-text province" x="'+fmt(p[0])+'" y="'+fmt(p[1])+'" text-anchor="middle">'+row[0]+'</text>';
  }).join(''):'';
- const texts=showNames?labelCities.map(x=>'<text data-label-id="'+x.id+'" class="map-text city" x="'+fmt(x.x+12)+'" y="'+fmt(x.y-12)+'">'+x.name.replace(/&/g,'&amp;')+'</text>').join(''):'';
+ const texts=labelCities.map(x=>'<text data-label-id="'+x.id+'" class="map-text city" x="'+fmt(x.x+13)+'" y="'+fmt(x.y-14)+'">'+x.name.replace(/&/g,'&amp;')+'</text>').join('');
+ const waterNames=[
+  ['Waddenzee',5.4,53.48,-8],['IJsselmeer',5.2,52.76,0],
+  ['Noordzee',3.7,52.5,-85],['Markermeer',5.18,52.52,0]
+ ].map(([label,lon,lat,rotate])=>{
+  const [x,y]=proj(lon,lat);
+  return '<text class="map-text water" x="'+fmt(x)+'" y="'+fmt(y)+'" text-anchor="middle" transform="rotate('+rotate+' '+fmt(x)+' '+fmt(y)+')">'+label+'</text>';
+ }).join('');
  return '<svg class="map-art" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1020 850" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Kaart van de provincies van Nederland">'+
  '<defs><pattern id="topo-grid" width="79" height="79" patternUnits="userSpaceOnUse"><path d="M79 0H0V79" fill="none" stroke="#fff" stroke-opacity=".22" stroke-width="1"/></pattern></defs>'+
- '<rect width="1020" height="850" fill="#cbe9f4"/><rect width="1020" height="850" fill="url(#topo-grid)"/>'+
- '<g>'+provinces+'</g><g>'+cityDots+'</g><g id="targetHighlight"></g><g>'+provinceTexts+'</g><g>'+texts+'</g></svg>';
+ '<rect x="-1000" y="-1000" width="3000" height="3000" fill="#cbe9f4"/>'+
+ '<rect x="-1000" y="-1000" width="3000" height="3000" fill="url(#topo-grid)"/>'+
+ '<g>'+provinces+'</g><g aria-hidden="true">'+waterNames+'</g><g>'+cityDots+'</g>'+
+ '<g id="targetHighlight"></g><g>'+provinceTexts+'</g><g>'+texts+'</g></svg>';
 }
 function displayMap(showNames=false){$('map').innerHTML=countryMap(showNames);focusMap();}
+function provinceBounds(geo){
+ const points=geo.features.flatMap(f=>polygonParts(f.geometry).flat(2));
+ const screen=points.map(p=>proj(p[0],p[1]));
+ return {left:Math.min(...screen.map(p=>p[0])),right:Math.max(...screen.map(p=>p[0])),
+         top:Math.min(...screen.map(p=>p[1])),bottom:Math.max(...screen.map(p=>p[1]))};
+}
 function focusMap(){
  const frame=$('map'),svg=frame.querySelector('svg');
  if(!svg||!frame.clientWidth||!frame.clientHeight||!queue[index])return;
- if(currentMode==='point'){svg.setAttribute('viewBox','0 0 1020 850');return;}
  const ratio=frame.clientWidth/frame.clientHeight;
+ const x=queue[index];
+ if(currentMode==='point'&&landBounds){
+  const bounds=landBounds,pad=36;
+  let width=bounds.right-bounds.left+pad*2;
+  let height=bounds.bottom-bounds.top+pad*2;
+  if(width/height<ratio)width=height*ratio;else height=width/ratio;
+  const centerX=(bounds.left+bounds.right)/2,centerY=(bounds.top+bounds.bottom)/2;
+  svg.setAttribute('viewBox',[fmt(centerX-width/2),fmt(centerY-height/2),fmt(width),fmt(height)].join(' '));
+  svg.setAttribute('preserveAspectRatio','xMidYMid meet');
+  return;
+ }
  const width=currentMode==='zoom'
    ?Math.max(235,Math.min(440,Math.round(335*ratio)))
    :Math.min(1020,Math.round(850*ratio));
- const height=Math.min(850,Math.round(width/ratio));
- const x=queue[index];
- const left=Math.max(0,Math.min(1020-width,Math.round(x.x-width/2)));
- const top=Math.max(0,Math.min(850-height,Math.round(x.y-height/2)));
- svg.setAttribute('viewBox',[left,top,width,height].join(' '));
+ const height=width/ratio;
+ const centerX=x.x,centerY=x.y;
+ const left=centerX-width/2,top=centerY-height/2;
+ svg.setAttribute('viewBox',[fmt(left),fmt(top),fmt(width),fmt(height)].join(' '));
  svg.setAttribute('preserveAspectRatio','xMidYMid meet');
 }
 function highlight(x){
@@ -551,6 +592,7 @@ Promise.all([
 ]).then(([geo,facts,language])=>{
  if(!geo||!Array.isArray(geo.features)||geo.features.length!==12)throw Error('Onvolledige kaart');
  features=geo.features;
+ landBounds=provinceBounds(geo);
  if(facts)setFactBank(facts);
  if(language&&language.total===50&&language.uitspraak)topoTalk=language.uitspraak;
  data=[...provinceCapitals.map(r=>cityItem(r,true)),...additionalCities.map(r=>cityItem(r,false))];
