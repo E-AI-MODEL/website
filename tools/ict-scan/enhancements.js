@@ -206,7 +206,7 @@ function enhancementEvents(){
   $('globalSearch').addEventListener('input',renderGlobalSuggestions);
   $('globalSearch').addEventListener('keydown',e=>{if(e.key==='Escape'){$('globalResults').hidden=true;$('globalSearch').blur();}if(e.key==='Enter'){const first=$('globalResults').querySelector('[data-result-kind]');if(first)first.click();}});
   document.addEventListener('click',e=>{if(!e.target.closest('.global-search-wrap'))$('globalResults').hidden=true;});
-  $('gateForm').addEventListener('submit',()=>{if($('gateInput').value.trim()==='Emmauscollege')restoreSnapshot();});
+  document.addEventListener('ict-scan:opened',restoreSnapshot);
   window.addEventListener('beforeprint',()=>{const root=$('printReport');if(root.children.length && !root.querySelector('.print-logo'))root.insertAdjacentHTML('afterbegin','<img class="print-logo" src="./emmaus-logo.svg" alt="Emmauscollege Rotterdam">');});
 }
 enhancementEvents();
