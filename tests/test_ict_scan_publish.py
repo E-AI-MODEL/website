@@ -7,7 +7,7 @@ TOOL = ROOT / "tools" / "ict-scan"
 
 class ICTScanTests(unittest.TestCase):
     def test_files_exist(self):
-        for filename in ("index.html", "style.css", "monitor.css", "app.js", "enhancements.js", "github-sync.js", "rail-drawer.js", "visual-explorer.js", "visual-explorer.css", "record-cards.js", "record-github.js", "record-cards.css", "frameworks.json", "answer-engine.js", "answer-engine.css", "emmaus-logo.svg", "README.md"):
+        for filename in ("index.html", "style.css", "monitor.css", "app.js", "enhancements.js", "github-sync.js", "rail-drawer.js", "visual-explorer.js", "visual-explorer.css", "record-cards.js", "record-github.js", "record-cards.css", "frameworks.json", "answer-engine.js", "answer-engine.css", "scene-navigation.js", "scene-navigation.css", "emmaus-logo.svg", "README.md"):
             self.assertTrue((TOOL / filename).is_file(), filename)
 
     def test_secret_not_security_and_litespeed_404_middle_zero(self):
@@ -41,21 +41,23 @@ class ICTScanTests(unittest.TestCase):
 
     def test_no_remote_scripts(self):
         html = (TOOL / "index.html").read_text(encoding="utf-8")
-        self.assertIn('src="./app.js"', html)
-        self.assertIn('src="./enhancements.js"', html)
-        self.assertIn('src="./github-sync.js"', html)
-        self.assertIn('src="./rail-drawer.js"', html)
-        self.assertIn('src="./visual-explorer.js"', html)
-        self.assertIn('href="./visual-explorer.css"', html)
-        self.assertIn('src="./record-cards.js"', html)
-        self.assertIn('src="./record-github.js"', html)
-        self.assertIn('src="./answer-engine.js"', html)
-        self.assertIn('href="./answer-engine.css"', html)
-        self.assertIn('href="./record-cards.css"', html)
-        self.assertIn('href="./monitor.css"', html)
-        self.assertIn('src="./emmaus-logo.svg"', html)
+        self.assertRegex(html, r'src="\./app\.js')
+        self.assertRegex(html, r'src="\./enhancements\.js')
+        self.assertRegex(html, r'src="\./github-sync\.js')
+        self.assertRegex(html, r'src="\./rail-drawer\.js')
+        self.assertRegex(html, r'src="\./visual-explorer\.js')
+        self.assertRegex(html, r'href="\./visual-explorer\.css')
+        self.assertRegex(html, r'src="\./record-cards\.js')
+        self.assertRegex(html, r'src="\./record-github\.js')
+        self.assertRegex(html, r'src="\./answer-engine\.js')
+        self.assertRegex(html, r'href="\./answer-engine\.css')
+        self.assertRegex(html, r'href="\./record-cards\.css')
+        self.assertRegex(html, r'href="\./monitor\.css')
+        self.assertRegex(html, r'src="\./emmaus-logo\.svg')
         self.assertNotIn('<script src="http', html)
         self.assertNotIn('https://cdn.', html)
+        self.assertIn('src="./scene-navigation.js', html)
+        self.assertIn('href="./scene-navigation.css', html)
         self.assertIn('PDF-inhoud is niet beoordeeld', (TOOL / 'app.js').read_text(encoding='utf-8'))
 
     def test_github_sync_is_read_only_and_credentials_not_persisted(self):
