@@ -193,6 +193,12 @@
       $('githubSyncCancel').hidden=true;
     }
   }
+  let initialGitHubLoadStarted=false;
+  document.addEventListener('ict-scan:local-restored',()=>{
+    if(initialGitHubLoadStarted||state.ready)return;
+    initialGitHubLoadStarted=true;
+    void syncGitHub();
+  });
   $('githubSyncStart').addEventListener('click',syncGitHub);
   $('githubSyncCancel').addEventListener('click',()=>{if(abort)abort.abort();});
   $('topGithubSync').addEventListener('click',()=>{selectView('sources');void syncGitHub();});
