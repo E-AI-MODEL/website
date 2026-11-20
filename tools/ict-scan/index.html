@@ -5,21 +5,31 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow,noarchive,nosnippet">
 <meta name="referrer" content="no-referrer">
-<meta name="color-scheme" content="light">
-<meta name="theme-color" content="#212d5c">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#000000">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; form-action 'none'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'">
-<title>Niet gevonden | EAI</title>
-<link rel="icon" href="/assets/eai-logo.svg" type="image/svg+xml">
+<title>404 Not Found</title>
+
 <link rel="stylesheet" href="./style.css">
 <link rel="stylesheet" href="./monitor.css">
 <script defer src="./app.js"></script>
 <script defer src="./enhancements.js"></script>
 </head>
 <body>
-<div id="notFound" class="not-found eai-mock-404">
-  <header class="mock-header"><div class="mock-nav"><a href="/" class="mock-brand"><span class="brand-mark">EAI</span></a><nav aria-label="Hoofdnavigatie"><a href="/">EAI</a><a href="/toepassingen/">Toepassingen</a><a href="/onderwijs/">Onderwijs</a><a href="/kennis/">Kennis</a><a href="/tools/">Tools</a><a href="/over/">Over</a></nav></div></header>
-  <main class="mock-hero" aria-labelledby="notFoundTitle"><div class="mock-wrap"><div class="mock-eyebrow"><button type="button" id="unlockFour" aria-label="4">4</button>04</div><h1 id="notFoundTitle">Deze pagina is er niet meer.</h1><p>De oude Google-site bevatte ook een paar dode links. Ga terug naar de publicaties of tools.</p><div class="mock-links"><a class="mock-btn" href="/publicaties/">Publicaties</a><a class="mock-btn secondary" href="/tools/">Tools</a></div></div></main>
-  <footer class="mock-footer"><strong>EAI</strong> &middot; Menselijk handelen en AI in samenhang.</footer>
+<div id="notFound" class="litespeed-404" aria-label="404 Not Found">
+  <main class="ls-error-area" aria-labelledby="lsErrorTitle">
+    <div class="ls-error-message">
+      <div class="ls-status" aria-label="404">
+        <span>4</span><button type="button" id="unlockZero" aria-label="0">0</button><span>4</span>
+      </div>
+      <h1 id="lsErrorTitle">Not Found</h1>
+      <p>The resource requested could not be found on this server!</p>
+    </div>
+  </main>
+  <footer class="ls-footer">
+    <p><strong>Proudly powered by LiteSpeed Web Server</strong></p>
+    <p>Please be advised that LiteSpeed Technologies Inc. is not a web hosting company and, as such, has no control over content found on this site.</p>
+  </footer>
 </div>
 <div id="gate" class="gate-backdrop" hidden>
   <form id="gateForm" class="gate-modal" autocomplete="off" aria-label="Toegang" novalidate>
