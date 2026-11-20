@@ -2801,7 +2801,9 @@ def build(sources: Path, out: Path) -> None:
     # article and toolbox pages continue to come from their content/generator.
     for page in repo_root.rglob("*.html"):
         relative = page.relative_to(repo_root)
-        if relative.parts[0] in {"content", "nl", "en", "site-build"}:
+        # TOPO has its own complete publication path; the generic site build must not copy
+        # an isolated TOPO landing page without its settings, map and data files.
+        if relative.parts[0] in {"content", "nl", "en", "site-build", "topo"}:
             continue
         # tools/index.html is generated above from the current Tools catalogue.
         # The old refreshed output must not overwrite that newly built page.
