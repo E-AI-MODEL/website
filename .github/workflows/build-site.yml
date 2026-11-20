@@ -32,6 +32,8 @@ on:
       - 'assets/**'
       - 'tools/projecthulp/**'
       - 'tools/eaigit/**'
+      - 'tools/ict-scan/**'
+      - 'tests/test_ict_scan_publish.py'
       - 'tests/test_projecthulp.mjs'
       - 'tests/test_eaigit_help.mjs'
       - 'tests/test_eaigit_single_file.mjs'
@@ -75,6 +77,8 @@ on:
       - 'assets/**'
       - 'tools/projecthulp/**'
       - 'tools/eaigit/**'
+      - 'tools/ict-scan/**'
+      - 'tests/test_ict_scan_publish.py'
       - 'tests/test_projecthulp.mjs'
       - 'index.html'
       - 'houseoftalents/**'
@@ -149,6 +153,9 @@ jobs:
 
       - name: Verify Cloudflare beacon on public sitemap pages
         run: python -m unittest discover -s tests -p 'test_cloudflare_beacon.py' -v
+
+      - name: Check local-only ICT scan publishing
+        run: python -m unittest discover -s tests -p 'test_ict_scan_publish.py' -v
 
       - name: Check first-party clicks and session privacy
         run: |
