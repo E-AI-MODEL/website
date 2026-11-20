@@ -12,6 +12,26 @@ class CiPrScopeTests(unittest.TestCase):
     def test_eaigit_changes_run_eaigit(self):
         self.assertEqual(affected_suites(["tools/eaigit/index.html", "assets/eaigit/wizard.mjs"]), {"eaigit"})
 
+    def test_eaigit_pr_339_does_not_run_anatomy_or_other_tools(self):
+        changed = [
+            ".github/workflows/projecthulp-browser.yml",
+            "assets/eaigit/github-checks.mjs",
+            "assets/eaigit/wizard.css",
+            "assets/eaigit/wizard.mjs",
+            "tests/test_eaigit_github_checks.mjs",
+            "tools/eaigit/index.html",
+        ]
+        self.assertEqual(affected_suites(changed), {"eaigit"})
+
+    def test_ict_scan_changes_run_own_suite(self):
+        self.assertEqual(affected_suites(["tools/ict-scan/app.js", "tests/test_ict_scan_export.mjs"]), {"ictscan"})
+
+    def test_delf_publication_workflow_only_runs_publishing_suite(self):
+        self.assertEqual(affected_suites([".github/workflows/deploy-delf-preview.yml"]), {"publishing"})
+
+    def test_main_runs_full_test_selection(self):
+        self.assertEqual(affected_suites([]), set(SUITES))
+
     def test_own_science_changes_run_physics(self):
         self.assertEqual(affected_suites(["content/science-observatory/labs/natuurkunde.html"]), {"physics", "melkweg"})
 
