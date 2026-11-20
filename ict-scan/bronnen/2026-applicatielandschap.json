@@ -32,9 +32,10 @@
       "dpia": 10,
       "aiControls": 22,
       "checks": 16,
-      "devices": 0,
+      "devices": 4,
       "licenseReview": 40
-    }
+    },
+    "deviceSourceStatus": "Vier geregistreerde apparaatmetingen, niet een volledige hardware-inventaris"
   },
   "apps": [
     {
@@ -13812,7 +13813,56 @@
       ]
     }
   ],
-  "devices": [],
+  "devices": [
+    {
+      "id": "DEV-001",
+      "type": "Apparaatstatus",
+      "name": "Entra apparaatrecords",
+      "quantity": "161",
+      "description": "92 met ingevulde compliancewaarde; 69 zonder ingevulde waarde.",
+      "measurementDate": "10-09-2026",
+      "limitation": "Telling uit september",
+      "sources": [
+        "Emmauscollege_nulmeting_gerepareerd_Excel_2026.xlsx / Applicatieoverzicht 2026 rij 251"
+      ]
+    },
+    {
+      "id": "DEV-002",
+      "type": "Apparaatstatus",
+      "name": "Compliancevelden",
+      "quantity": "28 True / 64 False",
+      "description": "Verdeling van de 92 records met expliciete compliancewaarde.",
+      "measurementDate": "10-09-2026",
+      "limitation": "Geen uitspraak over complete actuele populatie",
+      "sources": [
+        "Emmauscollege_nulmeting_gerepareerd_Excel_2026.xlsx / Applicatieoverzicht 2026 rij 252"
+      ]
+    },
+    {
+      "id": "DEV-003",
+      "type": "macOS",
+      "name": "Mac-records in export",
+      "quantity": "3",
+      "description": "Drie Mac-records met isManaged=False en isCompliant=False.",
+      "measurementDate": "10-09-2026",
+      "limitation": "Niet volledige schoolbrede Mac-inventaris",
+      "sources": [
+        "Emmauscollege_nulmeting_gerepareerd_Excel_2026.xlsx / Applicatieoverzicht 2026 rij 253"
+      ]
+    },
+    {
+      "id": "DEV-004",
+      "type": "macOS",
+      "name": "Getest apparaat",
+      "quantity": "DEP/ADE en MDM aangetroffen",
+      "description": "Bij één onderzochte Mac was Company Portal niet aangetroffen; de test toonde geen actieve Platform SSO.",
+      "measurementDate": "09-2026",
+      "limitation": "Eén apparaat, één meetmoment",
+      "sources": [
+        "Emmauscollege_nulmeting_gerepareerd_Excel_2026.xlsx / Applicatieoverzicht 2026 rij 254"
+      ]
+    }
+  ],
   "additionalCandidates": [
     {
       "id": "A-001",
@@ -15033,6 +15083,7 @@
   ],
   "licenseReview": [
     {
+      "id": "LIC-001",
       "name": "Microsoft 365",
       "domain": "Digitale werkomgeving en productiviteit",
       "type": "Suite",
@@ -15060,6 +15111,7 @@
       }
     },
     {
+      "id": "LIC-002",
       "name": "Google Workspace",
       "domain": "Digitale werkomgeving en productiviteit",
       "type": "Suite",
@@ -15087,6 +15139,7 @@
       }
     },
     {
+      "id": "LIC-003",
       "name": "LessonUp",
       "domain": "Les, leermiddelen en interactie",
       "type": "Applicatie / dienst",
@@ -15114,6 +15167,7 @@
       }
     },
     {
+      "id": "LIC-004",
       "name": "Showbie",
       "domain": "Les, leermiddelen en interactie",
       "type": "Applicatie / dienst",
@@ -15141,6 +15195,7 @@
       }
     },
     {
+      "id": "LIC-005",
       "name": "Canva",
       "domain": "Les, leermiddelen en interactie",
       "type": "Applicatie / dienst",
@@ -15168,6 +15223,7 @@
       }
     },
     {
+      "id": "LIC-006",
       "name": "Quizlet",
       "domain": "Les, leermiddelen en interactie",
       "type": "Applicatie / dienst",
@@ -15195,6 +15251,7 @@
       }
     },
     {
+      "id": "LIC-007",
       "name": "Padlet",
       "domain": "Les, leermiddelen en interactie",
       "type": "Applicatie / dienst",
@@ -15222,6 +15279,7 @@
       }
     },
     {
+      "id": "LIC-008",
       "name": "Socrative",
       "domain": "Les, leermiddelen en interactie",
       "type": "Applicatie / dienst",
@@ -15249,6 +15307,7 @@
       }
     },
     {
+      "id": "LIC-009",
       "name": "Nearpod",
       "domain": "Les, leermiddelen en interactie",
       "type": "Applicatie / dienst",
@@ -15276,6 +15335,7 @@
       }
     },
     {
+      "id": "LIC-010",
       "name": "BookWidgets",
       "domain": "Les, leermiddelen en interactie",
       "type": "Applicatie / dienst",
@@ -15303,6 +15363,7 @@
       }
     },
     {
+      "id": "LIC-011",
       "name": "Formative",
       "domain": "Les, leermiddelen en interactie",
       "type": "Applicatie / dienst",
@@ -15330,6 +15391,7 @@
       }
     },
     {
+      "id": "LIC-012",
       "name": "ToetsPers",
       "domain": "Toetsing en kwaliteitszorg",
       "type": "Applicatie / dienst",
@@ -15357,6 +15419,7 @@
       }
     },
     {
+      "id": "LIC-013",
       "name": "Magister",
       "domain": "Toetsing en kwaliteitszorg",
       "type": "Applicatie / dienst",
@@ -15384,6 +15447,7 @@
       }
     },
     {
+      "id": "LIC-014",
       "name": "Zermelo",
       "domain": "Toetsing en kwaliteitszorg",
       "type": "Applicatie / dienst",
@@ -15411,6 +15475,7 @@
       }
     },
     {
+      "id": "LIC-015",
       "name": "Excel / Power BI",
       "domain": "Toetsing en kwaliteitszorg",
       "type": "Samengevoegde producten",
@@ -15438,6 +15503,7 @@
       }
     },
     {
+      "id": "LIC-016",
       "name": "iPad",
       "domain": "Devices, hardware en beheer",
       "type": "Hardware",
@@ -15465,6 +15531,7 @@
       }
     },
     {
+      "id": "LIC-017",
       "name": "Jamf",
       "domain": "Devices, hardware en beheer",
       "type": "Beheerdienst",
@@ -15492,6 +15559,7 @@
       }
     },
     {
+      "id": "LIC-018",
       "name": "Apple Klaslokaal",
       "domain": "Devices, hardware en beheer",
       "type": "App",
@@ -15519,6 +15587,7 @@
       }
     },
     {
+      "id": "LIC-019",
       "name": "Entra ID / LDAP",
       "domain": "Devices, hardware en beheer",
       "type": "Identiteitsdienst",
@@ -15546,6 +15615,7 @@
       }
     },
     {
+      "id": "LIC-020",
       "name": "Smartboards / digiborden / laptops / Apple TV / print & scan",
       "domain": "Devices, hardware en beheer",
       "type": "Hardwaregroep",
@@ -15573,6 +15643,7 @@
       }
     },
     {
+      "id": "LIC-021",
       "name": "JoJoSchool",
       "domain": "Anders organiseren en ondersteuning",
       "type": "Applicatie / dienst",
@@ -15600,6 +15671,7 @@
       }
     },
     {
+      "id": "LIC-022",
       "name": "SLBdiensten",
       "domain": "Anders organiseren en ondersteuning",
       "type": "Leverancier/distributeur",
@@ -15627,6 +15699,7 @@
       }
     },
     {
+      "id": "LIC-023",
       "name": "Kuario",
       "domain": "Anders organiseren en ondersteuning",
       "type": "Applicatie / dienst",
@@ -15654,6 +15727,7 @@
       }
     },
     {
+      "id": "LIC-024",
       "name": "3CX",
       "domain": "Anders organiseren en ondersteuning",
       "type": "Applicatie / dienst",
@@ -15681,6 +15755,7 @@
       }
     },
     {
+      "id": "LIC-025",
       "name": "Vecos",
       "domain": "Anders organiseren en ondersteuning",
       "type": "Applicatie / dienst",
@@ -15708,6 +15783,7 @@
       }
     },
     {
+      "id": "LIC-026",
       "name": "AFAS",
       "domain": "Schoolorganisatie en bedrijfsvoering",
       "type": "Applicatie / dienst",
@@ -15735,6 +15811,7 @@
       }
     },
     {
+      "id": "LIC-027",
       "name": "Canon UniFlow",
       "domain": "Schoolorganisatie en bedrijfsvoering",
       "type": "Applicatie / dienst",
@@ -15762,6 +15839,7 @@
       }
     },
     {
+      "id": "LIC-028",
       "name": "Releezme",
       "domain": "Schoolorganisatie en bedrijfsvoering",
       "type": "Applicatie / dienst",
@@ -15789,6 +15867,7 @@
       }
     },
     {
+      "id": "LIC-029",
       "name": "SIVON",
       "domain": "Schoolorganisatie en bedrijfsvoering",
       "type": "Sectororganisatie",
@@ -15816,6 +15895,7 @@
       }
     },
     {
+      "id": "LIC-030",
       "name": "Exact Online",
       "domain": "Schoolorganisatie en bedrijfsvoering",
       "type": "Applicatie / dienst",
@@ -15843,6 +15923,7 @@
       }
     },
     {
+      "id": "LIC-031",
       "name": "Topdesk / Helpdesk",
       "domain": "Schoolorganisatie en bedrijfsvoering",
       "type": "Applicatie / dienst",
@@ -15870,6 +15951,7 @@
       }
     },
     {
+      "id": "LIC-032",
       "name": "ChatGPT",
       "domain": "AI in onderwijs en praktijk",
       "type": "AI-dienst",
@@ -15897,6 +15979,7 @@
       }
     },
     {
+      "id": "LIC-033",
       "name": "Gemini",
       "domain": "AI in onderwijs en praktijk",
       "type": "AI-dienst",
@@ -15924,6 +16007,7 @@
       }
     },
     {
+      "id": "LIC-034",
       "name": "Claude",
       "domain": "AI in onderwijs en praktijk",
       "type": "AI-dienst",
@@ -15951,6 +16035,7 @@
       }
     },
     {
+      "id": "LIC-035",
       "name": "Microsoft Copilot",
       "domain": "AI in onderwijs en praktijk",
       "type": "AI-dienst",
@@ -15978,6 +16063,7 @@
       }
     },
     {
+      "id": "LIC-036",
       "name": "MagicSchool",
       "domain": "AI in onderwijs en praktijk",
       "type": "AI-dienst",
@@ -16005,6 +16091,7 @@
       }
     },
     {
+      "id": "LIC-037",
       "name": "Theaistudy.ai",
       "domain": "AI in onderwijs en praktijk",
       "type": "AI-dienst",
@@ -16032,6 +16119,7 @@
       }
     },
     {
+      "id": "LIC-038",
       "name": "Leonardo.ai",
       "domain": "AI in onderwijs en praktijk",
       "type": "AI-dienst",
@@ -16059,6 +16147,7 @@
       }
     },
     {
+      "id": "LIC-039",
       "name": "DALL-E / Stable Diffusion",
       "domain": "AI in onderwijs en praktijk",
       "type": "Samengevoegde producten",
@@ -16086,6 +16175,7 @@
       }
     },
     {
+      "id": "LIC-040",
       "name": "Eigen ontwikkeling",
       "domain": "AI in onderwijs en praktijk",
       "type": "Eigen toepassingen",
