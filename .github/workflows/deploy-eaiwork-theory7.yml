@@ -11,6 +11,11 @@ on:
 permissions:
   contents: read
 
+# One upload queue for all jobs writing site-wide Theory7 files.
+concurrency:
+  group: theory7-production
+  cancel-in-progress: false
+
 jobs:
   publish-dashboard:
     runs-on: ubuntu-24.04
