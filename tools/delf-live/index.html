@@ -51,6 +51,25 @@
         <button id="prepareShow" class="action studio-action studio-action-emphasis" type="button">Voorbereiden</button>
         <span id="showReadyStatus" class="studio-support" role="status" aria-live="polite">Nog niet voorbereid</span>
       </div>
+      <section class="studio-section cloud-reveal" id="scriptedShow">
+        <div class="studio-section-top"><span class="studio-section-no">02</span><h2>Voorstelling</h2></div>
+        <p class="studio-support">Jij spreekt Nederlands. De pijl naar rechts start de Franse onderbreking. Jij reageert zelf. Pas de volgende druk start de Franse speech. Na afloop wordt het podium weer rustig wit.</p>
+        <div class="studio-action-grid">
+          <button id="scriptedStart" class="action studio-action studio-action-emphasis" type="button">Start voorstelling</button>
+          <button id="scriptedNext" class="action studio-action" type="button">Volgende scène →</button>
+        </div>
+        <p class="feedback" id="scriptedStatus" role="status" aria-live="polite">Laad twee Franse audio-opnamen om te beginnen.</p>
+        <details class="studio-disclosure"><summary>Audio voor de voorstelling</summary>
+          <p class="studio-support">Kies twee vooraf gemaakte MP3- of WAV-bestanden. De opname speelt direct af, zonder AI of Terminal. Bewaar de bestanden ook op je Mac; na verversen moet je ze opnieuw kiezen.</p>
+          <label class="studio-field">Scène 1 · Franse onderbreking <input id="scriptedAudioOne" type="file" accept="audio/mpeg,audio/mp3,audio/wav,audio/x-wav,audio/ogg,audio/mp4,.mp3,.wav,.m4a,.ogg"></label>
+          <label class="studio-field">Scène 2 · Franse speech en teruggave <input id="scriptedAudioTwo" type="file" accept="audio/mpeg,audio/mp3,audio/wav,audio/x-wav,audio/ogg,audio/mp4,.mp3,.wav,.m4a,.ogg"></label>
+          <details><summary>Teksten voor je opnames</summary>
+            <p class="studio-support">Scène 1: Un instant ! Pardon, mais ça ne va pas du tout ! Ces élèves viennent de réussir leur DELF scolaire, un diplôme de français, et leur conrecteur leur fait un discours... en néerlandais ? C'est quand même incroyable ! Le français mérite mieux que ça, non ?</p>
+            <p class="studio-support">Jouw reactie, live: Je hebt helemaal gelijk. Wil jij anders wat moois tegen de leerlingen vertellen?</p>
+            <p class="studio-support">Scène 2: Gebruik de bestaande Franse DELF-speech. Voeg als laatste toe: « Et maintenant, je vous rends la parole. Merci à tous, et encore toutes mes félicitations ! »</p>
+          </details>
+        </details>
+      </section>
       <div class="studio-action-grid cloud-reveal">
         <button id="start" class="action studio-action studio-action-emphasis">Start Nederlands <span class="action-stroke" aria-hidden="true"></span></button>
         <button id="interrupt" class="action studio-action">Franse speech <span class="action-stroke" aria-hidden="true"></span></button>
@@ -77,7 +96,7 @@
         </div>
         <p class="studio-support">Op het podium: ← en → voor passages, spatie om te pauzeren. De speechtekst blijft vaststaan.</p>
       </details>
-      <p class="studio-aside cloud-reveal">1 starten · → overname · Esc studio</p>
+      <p class="studio-aside cloud-reveal">Voorstelling: → onderbreking · → na jouw antwoord · Esc instellingen</p>
     </div>
 
     <div class="studio-page" id="page-taal" role="tabpanel" aria-labelledby="tab-taal" data-studio-page="taal" hidden>
@@ -87,7 +106,7 @@
         <p class="studio-support">Spreek een korte zin.</p>
         <button id="prepareMic" class="action studio-action">Test microfoon</button>
         <p class="feedback" id="microphoneStatus" aria-live="polite">Nog niet getest</p>
-        <p class="studio-support" id="microphoneDeviceStatus" aria-live="polite">Chrome vraagt pas bij de test om toestemming.</p>
+        <p class="studio-support" id="microphoneDeviceStatus" aria-live="polite">Safari vraagt bij de test om toestemming.</p>
       </section>
       <section class="studio-section cloud-reveal"><div class="studio-section-top"><span class="studio-section-no">02</span><h2>Vertaling</h2></div>
         <p class="studio-support">Eerste keer laden via wifi.</p>
