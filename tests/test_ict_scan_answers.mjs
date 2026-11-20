@@ -12,6 +12,7 @@ const html=read('tools/ict-scan/index.html');
 const ctx={window:{},document:{getElementById(){return null;}}};
 vm.runInNewContext(source,ctx,{filename:'answer-engine.js'});
 const query=ctx.window.EmmausAnswerLogic.search;
+const predict=ctx.window.EmmausAnswerLogic.predict;
 const dataset={
   apps:main.apps,ai:main.ai,connections:main.connections,parts:main.parts,
   candidates:main.additionalCandidates,faqs:faq.faqs,dpia:main.dpia,
@@ -34,7 +35,7 @@ const tasks=[
   ['Hoeveel Entra-registraties zijn er?','count',/93 Entra-registraties/i],
   ['Hoeveel kandidaten zijn er?','count',/76 aanvullende kandidaten/i],
   ['Hoeveel apps hebben AI-functies?','count',/beschreven AI-functie/i],
-  ['Welke printsoftware is geregistreerd?','list',/Canon UniFlow.*Kuario|Kuario.*Canon UniFlow/i],
+  ['Welke printsoftware gebruiken we?','list',/Canon UniFlow.*Kuario|Kuario.*Canon UniFlow/i],
   ['Welke telefoniesoftware staat geregistreerd?','list',/3CX/i,'APP-033'],
   ['Welke applicaties hebben nog geen verantwoordelijke?','list',/geen vastgestelde verantwoordelijke/i],
   ['Welke applicaties hebben een Entra-match?','list',/mogelijke Entra-match/i],
@@ -56,6 +57,50 @@ for(const [question,kind,expected,recordId] of tasks){
     if(recordId)assert.ok(response.records.some(x=>x.id===recordId),'Bronregistratie ontbreekt voor '+question);
   });
 }
+test('De zoekbalk voorspelt natuurlijke vragen terwijl je typt',()=>{
+  const options=predict('print',dataset);
+  assert.ok(options.length>=1);
+  assert.equal(options[0].question,'Welke printsoftware gebruiken we?');
+  assert.ok(options.every(x=>!x.question.includes('is geregistreerd')));
+  assert.ok(options.every(x=>x.question.endsWith('?')));
+});
+test('Voorspellingen gebruiken de naam van de gevonden toepassing',()=>{
+  const items=predict('3CX',dataset);
+  assert.ok(items.some(x=>x.question==='Wie beheert 3CX?'));
+  assert.ok(items.some(x=>x.question==='Gebruiken we 3CX?'));
+  const source=predict('Canon uni',dataset);
+  assert.ok(source.some(x=>x.question==='Wie beheert Canon UniFlow?'));
+});
+test('Vaste FAQ-vragen zijn voorstellen, niet de korte aliasfragmenten',()=>{
+  const options=predict('entra registratie',dataset);
+  assert.ok(options.some(x=>x.question==='Wat betekent een Entra-registratie?'));
+  assert.ok(options.every(x=>x.question.includes('?')));
+  assert.ok(!options.some(x=>x.question==='entra registratie betekenis'));
+});
+test('Zonder invoer toont de zoekbalk enkele nuttige startvragen',()=>{
+  const options=predict('',dataset);
+  assert.ok(options.length>=2&&options.length<=5);
+  assert.ok(options.some(x=>x.question==='Welke printsoftware gebruiken we?'));
+});
+test('Voorspellingen leiden niet tot verzonnen antwoorden en gelden alleen voor aanwezige brongegevens',()=>{
+  const empty={...dataset,apps:[],ai:[],connections:[],faqs:[]};
+  assert.deepEqual(Array.from(predict('printer',empty)),[]);
+  const original=predict('print',dataset);
+  assert.ok(original.length>0);
+  assert.equal(query(original[0].question,dataset).kind,'list');
+  assert.match(query(original[0].question,dataset).answer,/Canon UniFlow|Kuario/);
+});
+test('Een antwoord komt pas na keuze of Enter, niet tijdens het voorspellen',()=>{
+  const js=read('tools/ict-scan/answer-engine.js');
+  assert.ok(js.includes('function render(){return suggest();}'));
+  assert.ok(js.includes('button.addEventListener(\\'click\\',()=>select(index))'));
+  assert.ok(js.includes("if(event.key==='ArrowDown'||event.key==='ArrowUp')"));
+  assert.ok(js.includes("if(event.key==='Enter')"));
+  assert.ok(js.includes("answer(input.value);return true;"));
+  const enh=read('tools/ict-scan/enhancements.js');
+  assert.ok(enh.includes('window.EmmausAnswerEngine?.handleKeydown(e)'));
+});
+
 test('Geen bevestiging uit een ontbrekend veld verzinnen',()=>{
   const who=ask('Wie beheert 3CX?');
   assert.equal(who.status,'Niet vastgesteld');
