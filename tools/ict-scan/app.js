@@ -197,7 +197,7 @@ function generateReportSheets(){const apps=array(state.apps),parts=array(state.p
  rsection(s,'APPARAATGROEPEN','Aantallen zonder actuele export worden niet als bevestigd gepresenteerd.');for(const d of devices){rgroup(s,d.id,d.name,[d.type,d.manager].filter(Boolean).join(' / '));rdetail(s,'Aantal volgens bron',d.quantity,true);}
  rsection(s,'AANVULLENDE ONDERZOEKSSIGNALEN','Automatische signalen zijn geen formeel vastgestelde tekortkomingen. Dubbelingen kunnen voorkomen.');for(const v of signals){rgroup(s,v.id,v.name,v.category);rdetail(s,'Waarom onderzoeken?',v.explanation,true);rdetail(s,'Bron',v.source,true);}
  const logbook=[],linked=[],rules=[];
- for(const [register,store] of [['Toepassingen',state.apps],['AI',state.ai],['Entra',state.connections],['Onderdelen',state.parts],['Kandidaten',state.candidates],['Controles',state.checks],['DPIA',state.dpia],['AI-beheer',state.aiControls],['Apparaten',state.devices],['Licenties',state.licenseReview],['Werkacties',state.workActions],['Softwarecontrole',state.softwareReview]]){
+ for(const [register,store] of [['Toepassingen',state.apps],['AI',state.ai],['Entra',state.connections],['Onderdelen',state.parts],['Kandidaten',state.candidates],['Controles',state.checks],['DPIA',state.dpia],['AI-beheer',state.aiControls],['Apparaten',state.devices],['Licenties',state.licenseReview],['Werkacties',state.workActions],['Softwarecontrole',state.softwareReview],['FAQ',state.faqs]]){
   for(const rec of store.values()){
    for(const rel of rec.relations||[])linked.push({register,id:rec.id,name:rec.name,rel});
    for(const rule of rec.frameworkLinks||[])rules.push({register,id:rec.id,name:rec.name,rule});
