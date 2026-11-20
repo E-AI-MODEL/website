@@ -157,7 +157,32 @@
     byId('familyApp')?.addEventListener('change',renderRelations);
   }
   const earlierOverview=renderOverview;
-  renderOverview=function(){earlierOverview();if(state.ready)renderRelations();};
+  function renderOverviewMetrics(){
+    const apps=items(state.apps),filtered=apps.filter(a=>
+      (!state.overviewArea||String(a.area||'').trim()===state.overviewArea)&&
+      (!state.overviewKind||String(a.kind||'').trim()===state.overviewKind));
+    const ids=new Set(filtered.map(a=>a.id));
+    const narrowed=filtered.length!==apps.length;
+    const aiCount=narrowed?items(state.ai).filter(a=>ids.has(a.parentId)).length:state.ai.size;
+    const d=deviceData(),totals=[
+      ['Basisregistraties',filtered.length,narrowed?filtered.length+' geselecteerd van '+apps.length+' totaal':'Gebruik niet volledig bevestigd','apps'],
+      ['AI-functies',aiCount,narrowed?'Gekoppeld aan de selectie; '+state.ai.size+' totaal':'Beschreven functies, niet automatisch ingeschakeld','ai'],
+      ['Entra-registraties',state.connections.size,'Schoolbreed, geen bewijs van actuele uitwisseling','connections'],
+      ['Apparaatrecords',d.amount||'?',(d.total?.measurementDate||'Peildatum onbekend')+' · geen totaal fysieke apparaten','devices']
+    ];
+    const grid=byId('kpiGrid');
+    grid.replaceChildren();
+    for(const [label,value,explain,view] of totals){
+      const b=document.createElement('button');
+      b.type='button';b.className='kpi trust-kpi evidence-kpi';
+      b.setAttribute('aria-label',label+': '+value+'. Open '+viewNames[view]);
+      b.innerHTML='<span class="kpi-label">'+safe(label)+'</span><strong class="kpi-value">'+safe(value)+'</strong><span class="kpi-desc">'+safe(explain)+'</span><span class="evidence-kpi-open">Bekijk '+safe(viewNames[view])+'</span>';
+      b.addEventListener('click',()=>selectView(view));grid.append(b);
+    }
+    const sub=byId('inventoryPopulation');
+    if(sub)sub.textContent=fmt(state.apps.size)+' basis · '+fmt(state.ai.size)+' AI-functies · '+fmt(state.connections.size)+' Entra · '+fmt(state.candidates.size)+' kandidaten · '+(d.amount?fmt(d.amount)+' apparaatrecords':'apparaatrecords onbekend')+' · verschillende tellingen, niet optelbaar';
+  }
+  renderOverview=function(){earlierOverview();if(state.ready){renderOverviewMetrics();renderRelations();}};
   const oldCandidates=renderCandidates;
   renderCandidates=function(){
     oldCandidates();
