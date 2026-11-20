@@ -222,7 +222,7 @@ def audit(root: Path, reviewed: dict[tuple[str, str], str],
             if a.url in active and b.url in active:
                 if key in variants and a.script_hash and b.script_hash and a.script_hash != b.script_hash:
                     notes.append(entry("afzonderlijke_toepassingsvarianten", list(key),
-                                       variants[key] + "; de daadwerkelijke bronbestanden verschillen"))
+                                       variants[key] + "; de functionele scripts verschillen aantoonbaar"))
                 elif key in reviewed:
                     review.append(entry("bekende_dubbeling_nog_open", list(key),
                                         "Dezelfde zichtbare pagina-inhoud. " + reviewed[key]))
@@ -267,7 +267,9 @@ def audit(root: Path, reviewed: dict[tuple[str, str], str],
 
     redirects = [p.url for p in pages.values() if p.redirect]
     return {
-        "status": "blokkeren" if blocking else ("aandacht" if review or notes else "geen_afwijkingen"),
+        "status": "blokkeren" if blocking else (
+            "aandacht" if review or any(x["type"] != "afzonderlijke_toepassingsvarianten" for x in notes)
+            else "geen_afwijkingen"),
         "counts": {
             "html_routes": len(pages),
             "sitemap_routes": len(counts),
@@ -304,7 +306,9 @@ def summary_md(result: dict) -> str:
     ]
     items = ([("Blokkade", i) for i in result["blocking"]]
              + [("Nog te beoordelen", i) for i in result["review"]]
-             + [("Register controleren", i) for i in result["notes"]])
+             + [("Bewuste varianten" if i["type"] == "afzonderlijke_toepassingsvarianten"
+                  else "Niet volledig gecontroleerd" if i["type"] == "alleen_bij_volledige_release"
+                  else "Register controleren", i) for i in result["notes"]])
     if not items:
         lines.append("| Geen verdubbeling aangetroffen | - | Binnen de onderzochte release |")
     for label, i in items[:45]:
