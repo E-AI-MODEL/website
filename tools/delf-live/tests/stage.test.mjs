@@ -90,7 +90,7 @@ test('dunne stemlijnen volgen echte Franse audio en Nederlandse spreekgrenzen',(
 test('vrije reactie zonder wijziging van de vaste Franse speech',()=>{
   assert.ok(main.includes('function beginReplyWindow(expectedEpoch)'));
   assert.ok(main.includes("instance.lang = 'nl-NL'"));
-  assert.ok(main.includes('const segments = speechSegments(speech)'));
+  assert.ok(main.includes('const segments = speechSegments(getActiveSession().speech)'));
   assert.ok(!main.includes("speechSegments($('speechText').value)"));
   assert.ok(html.includes('id="speechText" rows="13" spellcheck="false" readonly'));
 });
@@ -151,7 +151,7 @@ test('browservertaling zonder Chrome Translator gebruikt een eigen ONNX-model',(
 test('Frans stemmodel kan zonder handmatige checkpointmap worden geladen',()=>{
   assert.ok(html.includes('id="loadPublicFrench"'));
   assert.ok(html.includes('Franse AI-stem laden'));
-  assert.ok(html.includes('class="advanced-setting"'));
+  assert.ok(html.includes('advanced-setting'));
   assert.ok(main.includes('ldenoue/phonon-40m-multilingual'));
   assert.ok(main.includes('gradium/phonon-voices'));
   assert.ok(main.includes("lang:'fr',quant:'q8'"));
@@ -167,9 +167,9 @@ test('menu toont eerst alleen voorbereiding en eenvoudige bediening',()=>{
   assert.ok(html.includes('id="runtimeStatus" aria-live="assertive"'));
   assert.ok(html.includes('Start / hervat ondertiteling'));
   assert.ok(html.includes('AI neemt over'));
-  assert.ok(html.includes('Handmatige stappen'));
-  assert.ok(html.includes('compact-details'));
-  assert.ok(html.includes('<summary>Franse speech</summary>'));
+  assert.ok(html.includes('Handmatig verdergaan'));
+  assert.ok(html.includes('studio-disclosure'));
+  assert.ok(html.includes('<summary>Bekijk de teksten van deze sessie</summary>'));
   assert.ok(main.includes('Tik nogmaals op Start ondertiteling'));
 });
 
