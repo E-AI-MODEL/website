@@ -1,0 +1,62 @@
+"""Tests voor de read-only FTPS-publicatievergelijking."""
+import sys
+import tempfile
+import unittest
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "scripts"))
+from compare_published_pages import compare, html_url, normalize_path, owner, markdown
+
+
+class ServerComparisonTests(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name)
+        (self.root / "index.html").write_text("<html><body>Home</body></html>", encoding="utf-8")
+
+    def list(self, extra=()):
+        return "\n".join(["/index.html"] + [f"/pagina-{i}/index.html" for i in range(22)] + list(extra))
+
+    def test_clean_paths_and_directory_urls(self):
+        self.assertEqual("topo/index.html", normalize_path("./topo/index.html"))
+        self.assertEqual("/topo/", html_url("topo/index.html"))
+        self.assertEqual("/", html_url("index.html"))
+        self.assertEqual("/file.html", html_url("file.html"))
+        self.assertIsNone(normalize_path("../private.html"))
+        self.assertIsNone(normalize_path("/.well-known/secrets.html"))
+
+    def test_only_server_and_only_build_are_distinct(self):
+        (self.root / "nieuw").mkdir()
+        (self.root / "nieuw/index.html").write_text("<html>Nieuw</html>", encoding="utf-8")
+        report = compare(self.root, self.list(), http_limit=0)
+        self.assertEqual(22, report["aantallen"]["alleen_ftp"])
+        self.assertEqual(["nieuw/index.html"], report["alleen_build"])
+        self.assertEqual(1, report["aantallen"]["dezelfde_bestandsroute"])
+        self.assertIn("Server tegenover websitebuild", markdown(report))
+
+    def test_independent_deploy_is_not_called_unowned(self):
+        report = compare(self.root, self.list(["/topo/index.html", "/tools/delf-live/index.html"]), 0)
+        self.assertEqual(2, report["aantallen"]["apart_gepubliceerd"])
+        self.assertEqual("TOPO (eigen publicatie)", owner("topo/instellingen/index.html"))
+        self.assertEqual("DELF (eigen publicatie)", owner("tools/delf-live/mobile-preview.html"))
+
+    def test_restricted_locations_never_enter_report(self):
+        report = compare(self.root, self.list(["/admin/secret.html", "/leif/beheer/index.html"]), 0)
+        self.assertNotIn("admin/secret.html", [x["bestand"] for x in report["alleen_ftp"]])
+        self.assertNotIn("leif/beheer/index.html", [x["bestand"] for x in report["alleen_ftp"]])
+        self.assertEqual(2, report["aantallen"]["afgeschermd_niet_gerapporteerd"])
+
+    def test_incomplete_listing_fails_instead_of_green(self):
+        with self.assertRaisesRegex(ValueError, "onvolledig"):
+            compare(self.root, "/index.html", 0)
+
+    def test_read_only_inventory_does_not_modify_files(self):
+        original = (self.root / "index.html").read_bytes()
+        compare(self.root, self.list(), 0)
+        self.assertEqual(original, (self.root / "index.html").read_bytes())
+
+
+if __name__ == "__main__":
+    unittest.main()
