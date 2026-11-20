@@ -69,10 +69,13 @@ test('Bronrelaties zijn expliciet; technische matches worden niet als actieve ko
 });
 
 test('Elke kaart heeft eigen weergavekeuze en het 404-menu en de zijbalk blijven bestaan',()=>{
-  for(const id of ['areaVizMode','kindVizMode','matrixVizMode','familyMode','crossMatrix','familyApp','familyVisual','inventoryMetaLine','inventoryPopulation']){
+  for(const id of ['areaVizMode','kindVizMode','matrixVizMode','familyMode','phaseVizMode','aiProductVizMode','connectionVizMode','crossMatrix','familyApp','familyVisual','inventoryMetaLine','inventoryPopulation']){
     assert.equal((html.match(new RegExp('id="'+id+'"','g'))||[]).length,1,id);
   }
   for(const mode of ['bars','donut','treemap','table'])assert.ok(source.includes("mode==='"+mode+"'")||html.includes('value="'+mode+'"'));
+  assert.ok(source.includes('renderAi=function()'));
+  assert.ok(source.includes('renderConnections=function()'));
+  assert.ok(source.includes('const families=apps.slice()'));
   assert.ok(html.includes('id="railMore"'));
   assert.ok(html.includes('id="unlockZero"'));
   assert.ok(html.includes('<title>404 Not Found</title>'));
