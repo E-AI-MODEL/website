@@ -112,7 +112,7 @@ if(host) {
       method.value=connectionKind;
       method.addEventListener('change',()=>{connectionKind=method.value;server=connectionKind==='https'?httpsServer:httpServer;serverReady=false;models=[];selected='';verified=false;notify('');render();});
       choices.append(method);contentElement.append(choices);
-      contentElement.append(line('p','Te testen adres: '+server,'studio-support'));
+      contentElement.append(line('p','Te testen adres: '+server+'. De verbinding wordt pas bevestigd na een antwoord vanuit deze browser.','studio-support'));
       if(connectionKind==='https'){
         contentElement.append(line('p','Safari kan een HTTP-aanvraag vanuit een HTTPS-website blokkeren. Ollama spreekt zelf HTTP. Caddy kan alleen op jouw Mac een vertrouwde HTTPS-verbinding vóór Ollama verzorgen.','studio-support'));
         const setup=document.createElement('details');setup.className='ollama-help';
