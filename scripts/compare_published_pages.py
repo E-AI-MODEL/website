@@ -99,7 +99,7 @@ def live_probe(path: str, local: list[tuple[str, dict]]) -> dict:
         return {"toegang": "niet_vastgesteld"}
 
 
-def compare(root: Path, ftp_listing: str, http_limit: int = 30) -> dict:
+def compare(root: Path, ftp_listing: str, http_limit: int = 30, max_depth: int | None = None) -> dict:
     if not (root / "index.html").is_file():
         raise ValueError("Geen websitebuild aanwezig")
     raw = sorted({p for row in ftp_listing.splitlines() if (p := normalize_path(row))})
@@ -107,8 +107,12 @@ def compare(root: Path, ftp_listing: str, http_limit: int = 30) -> dict:
         raise ValueError(f"FTPS-inventaris onvolledig of onjuist: {len(raw)} HTML-bestanden")
     restricted = [p for p in raw if any(part.casefold() in PRIVATE for part in PurePosixPath(p).parts)]
     remote = set(raw) - set(restricted)
+    if max_depth:
+        remote = {p for p in remote if len(PurePosixPath(p).parts) <= max_depth}
     built = {p.relative_to(root).as_posix() for p in root.rglob("*.html")
              if not any(part.casefold() in PRIVATE for part in p.relative_to(root).parts)}
+    if max_depth:
+        built = {p for p in built if len(PurePosixPath(p).parts) <= max_depth}
     only_remote = sorted(remote - built)
     only_build = sorted(built - remote)
     expected = []
@@ -129,6 +133,7 @@ def compare(root: Path, ftp_listing: str, http_limit: int = 30) -> dict:
             item.update(result)
     return {
         "resultaat": "onderzoek_nodig" if only_remote or only_build else "zelfde_html_routes",
+        "scan_diepte": max_depth or "volledig_naar_lftp_lijst",
         "aantallen": {
             "html_op_ftp": len(raw), "html_op_website_ftp": len(remote),
             "html_in_build": len(built), "dezelfde_bestandsroute": len(remote & built),
@@ -146,6 +151,7 @@ def compare(root: Path, ftp_listing: str, http_limit: int = 30) -> dict:
             "Het rapport bevat geen afgeschermde bestandsnamen of inhoud.",
             "Een bestandsverschil bewijst geen inhoudelijke dubbeling. De inhoudscontrole loopt apart.",
             "Er is niets gewijzigd of verwijderd op de server.",
+            *([f"De scan omvat alleen HTML-bestandsroutes tot {max_depth} niveaus; niet de hele server."] if max_depth else []),
         ],
     }
 
@@ -153,6 +159,7 @@ def compare(root: Path, ftp_listing: str, http_limit: int = 30) -> dict:
 def markdown(result: dict) -> str:
     c = result["aantallen"]
     lines = ["## Server tegenover websitebuild", "",
+             ("**Gedeeltelijke scan, maximaal " + str(result["scan_diepte"]) + " mapniveaus.**" if isinstance(result["scan_diepte"], int) else "**Volledige FTP-lijst tot de ingestelde scandiepte.**"),
              f"**FTPS:** {c['html_op_ftp']} HTML-bestanden. **Websitebuild:** {c['html_in_build']}. "
              f"**Zelfde pad:** {c['dezelfde_bestandsroute']}.",
              f"**Alleen op server:** {c['alleen_ftp']} (waarvan {c['apart_gepubliceerd']} apart gepubliceerd). "
@@ -178,12 +185,13 @@ def main() -> int:
     p.add_argument("--root", type=Path, default=Path("site-build"))
     p.add_argument("--listing", type=Path, required=True)
     p.add_argument("--http-limit", type=int, default=30)
+    p.add_argument("--depth", type=int, help="Beperk vergelijkingspaden tot deze mapdiepte")
     p.add_argument("--json", type=Path)
     p.add_argument("--summary", type=Path)
     args = p.parse_args()
     try:
         result = compare(args.root, args.listing.read_text(encoding="utf-8"),
-                         args.http_limit)
+                         args.http_limit, args.depth)
     except (OSError, ValueError) as exc:
         print("Serververgelijking mislukt:", exc, file=sys.stderr)
         return 1
