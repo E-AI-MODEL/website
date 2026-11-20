@@ -58,6 +58,18 @@ test('Een wijziging blijft gekoppeld aan ID, originele tekst, bewijs en auteur',
   assert.equal(after.auditTrail[0].reason,edit.reason);
   assert.deepEqual(Array.from(after.auditTrail[0].fields),['description']);
 });
+test('Nieuwe bronverwijzingen worden toegevoegd zonder originele bronnen te vervangen',()=>{
+  const all=docs(),original=all['2026-applicatielandschap.json'].apps[0];
+  const baseline=clone(original);baseline.sources=baseline.sources.concat(['2026-applicatielandschap.json']);
+  const updated=clone(baseline);updated.sources.push('Getekend verwerkerscontract 2026');
+  const staged={type:'apps',id:original.id,before:baseline,after:updated,changed:['sources'],reason:'Nieuwe bewijsverwijzing toegevoegd aan bestaande registratie'};
+  logic.applyDrafts(all,[staged],'reviewer','2026-11-20T15:00:00Z');
+  const stored=all['2026-applicatielandschap.json'].apps[0];
+  assert.equal(stored.sources.includes('Getekend verwerkerscontract 2026'),true);
+  assert.equal(stored.sources.includes('2026-applicatielandschap.json'),false);
+  assert.ok(original.sources.every(x=>stored.sources.includes(x)));
+});
+
 test('Nieuwe kaart wijzigt alleen het juiste register en de telling',()=>{
   const all=docs();
   const entry={id:'APP-999',name:'Nieuwe testtoepassing',description:'Voorbeeldregistratie',relations:[],frameworkLinks:[],sources:[]};
