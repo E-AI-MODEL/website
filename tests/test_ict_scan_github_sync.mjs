@@ -6,7 +6,7 @@ import vm from 'node:vm';
 import {File} from 'node:buffer';
 
 const source=readFileSync(resolve('tools/ict-scan/github-sync.js'),'utf8');
-const maps=['apps','ai','connections','checks','devices','parts','dpia','aiControls','policyDocs','signals','candidates','licenseReview'];
+const maps=['apps','ai','connections','checks','devices','parts','dpia','aiControls','policyDocs','signals','candidates','licenseReview','workActions','softwareReview'];
 function setup({bad=false,unauthorized=false,cancelDuringImport=false,largeDirectory=false}={}) {
   const fields={};
   for(const id of ['githubRepo','githubFolder','githubRef','githubToken','githubSyncStart','githubSyncCancel','githubSyncStatus','githubSyncSummary','githubReplace','topGithubSync']) {
