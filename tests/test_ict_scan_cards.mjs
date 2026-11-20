@@ -10,16 +10,17 @@ const html=read('tools/ict-scan/index.html');
 const catalog=JSON.parse(read('tools/ict-scan/frameworks.json'));
 const main=JSON.parse(read('ict-scan/bronnen/2026-applicatielandschap.json'));
 const work=JSON.parse(read('ict-scan/bronnen/2026-werkregister.json'));
+const faq=JSON.parse(read('ict-scan/bronnen/2026-faq.json'));
 const clone=v=>JSON.parse(JSON.stringify(v));
 const ctx={window:{},document:{getElementById:()=>({addEventListener(){}})},TextEncoder,TextDecoder,atob,btoa,Uint8Array};
 vm.createContext(ctx);vm.runInContext(githubSource,ctx);
 const logic=ctx.window.EmmausCardGitLogic;
-function docs(){return {'2026-applicatielandschap.json':clone(main),'2026-werkregister.json':clone(work)};}
+function docs(){return {'2026-applicatielandschap.json':clone(main),'2026-werkregister.json':clone(work),'2026-faq.json':clone(faq)};}
 function change(type,record,fields){
   return {type,id:record.id,before:clone(record),after:{...clone(record),...fields},changed:Object.keys(fields),reason:'Broncorrectie op basis van vastgelegde inventarisatie'};
 }
-test('Één editor voor twaalf bestaande registers, zonder weggooien bronvelden',()=>{
-  for(const token of ["{key:'apps'","{key:'ai'","{key:'connections'","{key:'parts'","{key:'additionalCandidates'","{key:'checks'","{key:'dpia'","{key:'aiControls'","{key:'devices'","{key:'licenseReview'","{key:'workActions'","{key:'softwareReview'"])
+test('Één editor voor dertien registers, zonder weggooien bronvelden',()=>{
+  for(const token of ["{key:'apps'","{key:'ai'","{key:'connections'","{key:'parts'","{key:'additionalCandidates'","{key:'checks'","{key:'dpia'","{key:'aiControls'","{key:'devices'","{key:'licenseReview'","{key:'workActions'","{key:'softwareReview'","{key:'faqs'"])
     assert.ok(cardSource.includes(token),token);
   assert.ok(cardSource.includes("'sourceFields'"));
   assert.ok(cardSource.includes("'otherDescription'"));
@@ -68,6 +69,21 @@ test('Nieuwe bronverwijzingen worden toegevoegd zonder originele bronnen te verv
   assert.equal(stored.sources.includes('Getekend verwerkerscontract 2026'),true);
   assert.equal(stored.sources.includes('2026-applicatielandschap.json'),false);
   assert.ok(original.sources.every(x=>stored.sources.includes(x)));
+});
+
+test('FAQ-antwoord aanpassen behoudt vaste ID, bronverwijzing en wijzigingslog',()=>{
+  const all=docs(),original=all['2026-faq.json'].faqs[0];
+  const before=clone(original);
+  const changed=change('faqs',original,{answer:original.answer+' Aanvullend gecontroleerd in bronregister.'});
+  logic.applyDrafts(all,[changed],'faq-reviewer','2026-11-20T20:00:00Z');
+  const after=all['2026-faq.json'].faqs[0];
+  assert.equal(after.id,'FAQ-001');
+  assert.deepEqual(after.sourceRefs,before.sourceRefs);
+  assert.deepEqual(after.sources,before.sources);
+  assert.match(after.answer,/Aanvullend gecontroleerd/);
+  assert.equal(after.auditTrail.length,1);
+  assert.equal(after.auditTrail[0].actor,'faq-reviewer');
+  assert.equal(all['2026-applicatielandschap.json'].apps.length,61);
 });
 
 test('Nieuwe kaart wijzigt alleen het juiste register en de telling',()=>{
