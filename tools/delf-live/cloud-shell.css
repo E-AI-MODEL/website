@@ -1015,3 +1015,27 @@ body.panel-visible .mobile-settings.cloud-entry{opacity:0!important}
 #scriptedShow .studio-section-top{margin-bottom:9px}
 #scriptedShow input[type=file]{max-width:100%;font-size:12px}
 #scriptedShow .studio-section-top~.studio-action-grid{margin-top:14px}
+
+/* Een zeer lichte golf bevestigt de pijltoets, ook in een wachtstand. */
+.arrow-wave{
+  position:absolute;z-index:3;left:50%;top:50%;width:min(44vw,390px);
+  aspect-ratio:1;border-radius:50%;pointer-events:none;
+  transform:translate(-50%,-50%) scale(.28);
+  opacity:0;border:1px solid rgba(103,149,155,.22);
+  background:radial-gradient(circle,rgba(181,209,208,.055) 4%,rgba(181,209,208,.035) 45%,transparent 69%);
+  box-shadow:0 0 30px rgba(128,175,179,.025);
+}
+.arrow-wave.is-pulsing{animation:delf-arrow-wave 1150ms cubic-bezier(.2,.55,.3,1) both}
+@keyframes delf-arrow-wave {
+  0%{opacity:0;transform:translate(-50%,-50%) scale(.28)}
+  24%{opacity:.34}
+  66%{opacity:.17}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(1.48)}
+}
+@media (prefers-reduced-motion:reduce){
+  .arrow-wave.is-pulsing{animation:delf-arrow-wave-reduced 350ms ease-out both}
+  @keyframes delf-arrow-wave-reduced{
+    0%{opacity:.2;transform:translate(-50%,-50%) scale(.95)}
+    100%{opacity:0;transform:translate(-50%,-50%) scale(.95)}
+  }
+}
