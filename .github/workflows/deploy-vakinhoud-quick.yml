@@ -6,7 +6,7 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: vakinhoud-targeted-publication
+  group: theory7-production
   cancel-in-progress: false
 jobs:
   publish:
