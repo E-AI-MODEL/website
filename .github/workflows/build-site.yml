@@ -241,6 +241,10 @@ jobs:
           test -s site-build/tools/ict-scan/rail-drawer.js
           test -s site-build/tools/ict-scan/visual-explorer.js
           test -s site-build/tools/ict-scan/visual-explorer.css
+          test -s site-build/tools/ict-scan/record-cards.js
+          test -s site-build/tools/ict-scan/record-github.js
+          test -s site-build/tools/ict-scan/record-cards.css
+          test -s site-build/tools/ict-scan/frameworks.json
           node --check tools/ict-scan/rail-drawer.js
           node --check tools/ict-scan/github-sync.js
           test -s site-build/tools/ict-scan/emmaus-logo.svg
