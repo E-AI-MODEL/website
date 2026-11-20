@@ -176,5 +176,5 @@
   }
   $('githubSyncStart').addEventListener('click',syncGitHub);
   $('githubSyncCancel').addEventListener('click',()=>{if(abort)abort.abort();});
-  $('topGithubSync').addEventListener('click',()=>{selectView('sources');$('githubSyncStart').focus();});
+  $('topGithubSync').addEventListener('click',()=>{selectView('sources');void syncGitHub();});
 })();
