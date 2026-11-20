@@ -316,3 +316,21 @@ test('Franse scene-opnamen blijven zonder externe hosting lokaal in Safari',()=>
   assert.match(block,/!scriptedAudioChosen\[index\]/);
   assert.match(main,/void restoreSceneAudio\(\)/);
 });
+
+test('de twee Franse MP3s worden automatisch ingeladen; eigen audio blijft optioneel',()=>{
+  assert.match(main,/function loadBuiltInFrenchScenes\(\)/);
+  assert.match(main,/scene-1-interruption\.mp3/);
+  assert.match(main,/scene-2-discours\.mp3/);
+  assert.match(main,/void restoreSceneAudio\(\)\.then\(loadBuiltInFrenchScenes\)/);
+  assert.match(html,/Andere audio kiezen \(optioneel\)/);
+  assert.match(html,/Franse opnamen worden automatisch geladen/);
+  assert.match(main,/new Audio\(scriptedAudioUrls\[index\]\)/);
+});
+test('DELF audio workflow synthesizes from the exact speech instead of hardcoded short samples',()=>{
+  const generator=readFileSync(new URL('../scripts/generate_scene_audio.py',import.meta.url),'utf8');
+  assert.match(generator,/ROOT\s*\/\s*'src\/script\.mjs'/);
+  assert.match(generator,/KPipeline\(lang_code='f'\)/);
+  assert.match(generator,/scene-2-discours\.mp3/);
+  assert.match(generator,/SCENE_1/);
+  assert.match(generator,/Et maintenant, je vous rends la parole/);
+});
