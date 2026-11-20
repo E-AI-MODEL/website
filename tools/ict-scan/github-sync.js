@@ -44,6 +44,7 @@
   }
   async function listFiles(cfg,token,signal) {
     const files=[];
+    let manifest=null;
     const recurse=async (folder,depth)=>{
       if(depth>5)throw Error('De mapstructuur is te diep. Selecteer een kleinere map.');
       const url=endpoint(cfg,'contents/'+pathUrl(folder)+'?ref='+encodeURIComponent(cfg.ref));
@@ -54,6 +55,8 @@
         if(entry.type==='dir') {
           if(entry.name.startsWith('.') || /^(?:node_modules|archief|archive|old|backup)$/i.test(entry.name))continue;
           await recurse(entry.path,depth+1);
+        } else if(entry.type==='file'&&entry.name.toLowerCase()==='manifest.json'&&folder===cfg.folder){
+          manifest={name:entry.name,path:entry.path,sha:entry.sha,size:entry.size};
         } else if(entry.type==='file'&&allowed.test(entry.name)&&entry.name.toLowerCase()!=='manifest.json'){
           if(entry.size>MAX_FILE_BYTES)throw Error(entry.path+': bestand groter dan 35 MB.');
           files.push({name:entry.name,path:entry.path,sha:entry.sha,size:entry.size});
@@ -64,6 +67,7 @@
     await recurse(cfg.folder,0);
     const total=files.reduce((n,x)=>n+x.size,0);
     if(total>MAX_TOTAL_BYTES)throw Error('Samen zijn de bestanden groter dan 95 MB. Selecteer een kleinere map.');
+    files.manifest=manifest;
     return files;
   }
   function decodeBase64(input,expected) {
@@ -91,7 +95,7 @@
   function snapshotState() {
     const maps={};
     for(const k of ['apps','ai','connections','checks','devices','parts','dpia','aiControls','policyDocs','signals'])maps[k]=new Map(state[k]);
-    return {maps,sources:state.sources.slice(),docs:state.docs.slice(),derived:Array.isArray(state.derived)?state.derived.slice():[],ready:state.ready,view:state.view};
+    return {maps,sources:state.sources.slice(),docs:state.docs.slice(),derived:Array.isArray(state.derived)?state.derived.slice():[],ready:state.ready,view:state.view,metadata:state.metadata||null};
   }
   function restoreState(backup) {
     for(const [name,value] of Object.entries(backup.maps))state[name]=value;
@@ -100,11 +104,12 @@
     state.derived=backup.derived;
     state.ready=backup.ready;
     state.view=backup.view;
+    state.metadata=backup.metadata;
     renderAll();
   }
   function resetWorkingState() {
     for(const name of ['apps','ai','connections','checks','devices','parts','dpia','aiControls','policyDocs','signals'])state[name].clear();
-    state.sources=[];state.docs=[];state.derived=[];state.ready=false;
+    state.sources=[];state.docs=[];state.derived=[];state.ready=false;state.metadata=null;
   }
   async function syncGitHub() {
     if(busy)return;
@@ -118,8 +123,10 @@
       $('githubSyncSummary').hidden=true;
       showStatus('GitHub-map controleren…');
       const entries=await listFiles(cfg,token,abort.signal);
-      if(!entries.length){showStatus('GitHub is bereikbaar, maar deze map bevat geen ondersteunde bronbestanden. Voeg bestanden toe aan '+cfg.repo+' / '+cfg.folder+'.','warning');return;}
-      const signature=cfg.repo+'@'+cfg.ref+':'+entries.map(x=>x.path+':'+x.sha).join('|');
+      let manifestMetadata=null;
+      if(entries.manifest){const manifestFile=await downloadFile(cfg,entries.manifest,token,abort.signal);const manifest=JSON.parse(await manifestFile.text());if(manifest.schema!=='eai-school-ict-manifest-v1'||!manifest.metadata||typeof manifest.metadata!=='object')throw Error('Ongeldig metadata-bestand in GitHub.');manifestMetadata=manifest.metadata;}
+      if(!entries.length){if(manifestMetadata){state.metadata=manifestMetadata;renderAll();}showStatus('GitHub is bereikbaar en de metadata zijn gelezen. Er staan nog geen applicatiebronnen in '+cfg.folder+'.','warning');return;}
+      const signature=cfg.repo+'@'+cfg.ref+':'+entries.map(x=>x.path+':'+x.sha).join('|')+(entries.manifest?'|manifest:'+entries.manifest.sha:'');
       if(signature===previousSignature && state.sources.some(x=>x.githubRemote?.repository===cfg.repo)){showStatus('Geen nieuwe versies in GitHub gevonden. Het dashboard is al bijgewerkt.','success');return;}
       for(let i=0;i<entries.length;i++) {
         const entry=entries[i];
@@ -135,6 +142,7 @@
       const backup=snapshotState();
       try {
         if(replacing)resetWorkingState();
+        if(manifestMetadata)state.metadata=manifestMetadata;
         for(let i=0;i<files.length;i++) {
           const {file,entry}=files[i];
           showStatus('Gegevens verwerken: '+(i+1)+' van '+files.length+' · '+entry.name);
