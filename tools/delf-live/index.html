@@ -30,7 +30,7 @@
     <button id="panelClose" class="close studio-return" type="button" aria-label="Terug naar het podium">
       <span class="close-strokes" aria-hidden="true"></span><span>Podium</span>
     </button>
-    <span class="studio-current" id="studioSessionLabel">DELF scolaire</span>
+    <span class="studio-current" id="studioSessionLabel" hidden aria-hidden="true"></span>
     <span class="studio-mark" aria-hidden="true">·</span>
   </header>
   <nav class="studio-nav" role="tablist" aria-label="Studio-onderdelen">
@@ -64,6 +64,7 @@
         <p class="studio-support">Spreek een korte zin.</p>
         <button id="prepareMic" class="action studio-action">Test microfoon</button>
         <p class="feedback" id="microphoneStatus" aria-live="polite">Nog niet getest</p>
+        <p class="studio-support" id="microphoneDeviceStatus" aria-live="polite">Chrome vraagt pas bij de test om toestemming.</p>
       </section>
       <section class="studio-section cloud-reveal"><div class="studio-section-top"><span class="studio-section-no">02</span><h2>Vertaling</h2></div>
         <p class="studio-support">Eerste keer laden via wifi.</p>
