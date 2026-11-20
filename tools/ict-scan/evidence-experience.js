@@ -1,0 +1,209 @@
+'use strict';
+/* One visible purpose per screen, with the supplied source records as the only evidence. */
+(function(){
+  viewNames.devices='Apparaten';
+  viewTitles.devices='Apparaten en beheer';
+  sectionTexts.devices='Apparaatregistraties, meetdekking en wat nog niet vaststaat.';
+  const byId=id=>document.getElementById(id);
+  const items=map=>Array.from(map.values());
+  const fmt=n=>Number(n).toLocaleString('nl-NL');
+  const safe=x=>esc(x==null?'':String(x));
+  const unknown=v=>!String(v||'').trim()||/^\?|niet vastgesteld|onbekend|niet gecontroleerd|niet inzichtelijk/i.test(String(v));
+  const digits=s=>Number(String(s||'').match(/\d+/)?.[0]||0);
+  const openCard=(type,id)=>window.EmmausRecordCards?.open(type,id);
+  const action=(label,fn,cls='monitor-button subtle')=>{
+    const b=document.createElement('button');b.type='button';b.className=cls;b.textContent=label;b.addEventListener('click',fn);return b;
+  };
+  const note=(label,text)=>'<div class="evidence-fact"><small>'+safe(label)+'</small><span>'+safe(text||'Niet vastgesteld')+'</span></div>';
+  function deviceData(){
+    const rows=items(state.devices);
+    const total=rows.find(x=>/entra apparaatrecords/i.test(x.name))||null;
+    const compliance=rows.find(x=>/compliancevelden/i.test(x.name))||null;
+    const macs=rows.find(x=>/mac.records/i.test(x.name))||null;
+    const test=rows.find(x=>/getest apparaat/i.test(x.name))||null;
+    const amount=digits(total?.quantity),match=String(compliance?.quantity||'').match(/(\d+)\s*True\s*\/\s*(\d+)\s*False/i);
+    const yes=match?Number(match[1]):0,no=match?Number(match[2]):0;
+    const missing=amount-(yes+no);
+    const complete=amount>0&&yes+no<=amount;
+    return {rows,total,amount,yes,no,missing,complete,macs,test};
+  }
+  function renderDevices(){
+    const d=deviceData(),cardRoot=byId('deviceStats'),bars=byId('deviceCoverage');
+    if(!cardRoot||!bars)return;
+    if(!d.rows.length){
+      cardRoot.innerHTML='<div class="no-results">Er zijn nog geen apparaatmetingen ingelezen.</div>';
+      bars.innerHTML='<div class="no-results">Meetgegevens ontbreken.</div>';
+      byId('deviceRecords').replaceChildren();return;
+    }
+    const period=d.total?.measurementDate||'Periode nog onbekend';
+    byId('deviceStamp').textContent='Bronpeildatum '+period;
+    cardRoot.innerHTML=[
+      ['Entra-apparaatrecords',d.amount?fmt(d.amount):'Onbekend','Geen schoolbreed totaal'],
+      ['Compliance ingevuld',d.complete?fmt(d.yes+d.no):'Onbekend','Niet hetzelfde als aantoonbaar veilig'],
+      ['Compliance ontbreekt',d.complete?fmt(d.missing):'Onbekend','Geen waarde in de export'],
+      ['Mac-records',d.macs?String(d.macs.quantity):'Onbekend','Aantal records in deze export']
+    ].map(([label,num,sub])=>'<div class="evidence-stat"><small>'+safe(label)+'</small><strong>'+safe(num)+'</strong><span>'+safe(sub)+'</span></div>').join('');
+    if(d.complete){
+      const parts=[{n:d.yes,label:'True',cls:'yes'},{n:d.no,label:'False',cls:'no'},{n:d.missing,label:'Niet ingevuld',cls:'missing'}];
+      bars.innerHTML='<div class="device-headline"><strong>'+fmt(d.yes+d.no)+' / '+fmt(d.amount)+'</strong><span>records met een ingevulde waarde</span></div>'+
+        '<div class="device-meter" role="img" aria-label="'+parts.map(p=>p.n+' '+p.label).join(', ')+'">'+parts.filter(p=>p.n).map(p=>'<span class="device-meter-'+p.cls+'" style="width:'+(p.n/d.amount*100).toFixed(3)+'%"></span>').join('')+'</div>'+
+        '<div class="device-legend">'+parts.map(p=>'<div><i class="device-dot '+p.cls+'"></i><span>'+p.label+'</span><strong>'+fmt(p.n)+'</strong><small>'+Math.round(p.n/d.amount*100)+'%</small></div>').join('')+'</div>';
+      byId('deviceCoverageNote').textContent='De 28 True en 64 False zijn waarden in de bronexport, geen oordeel over alle apparaten. De 69 ontbrekende waarden tellen niet als False.';
+    }else{
+      bars.innerHTML='<div class="no-results">De totalen van deze bron sluiten niet op elkaar aan. Geen verdeling getoond.</div>';
+      byId('deviceCoverageNote').textContent='Controleer de bronwaarden voordat percentages worden gebruikt.';
+    }
+    byId('deviceGaps').innerHTML=[
+      ['Actuele schoolpopulatie','De export uit september bevestigt niet hoeveel fysieke apparaten er nu zijn.'],
+      ['Eigenaar en gebruik','Voor iedere apparaatgroep ontbreken hier volledige rol-, locatie- en gebruiksgegevens.'],
+      ['Beheer en beveiliging','Een True/False-veld is onvoldoende voor een complete MDM-, Intune- of beveiligingscontrole.'],
+      ['Aanvullende meting','Controleer aantallen per type en de actuele beheerstatus in de juiste bronsystemen.']
+    ].map(([name,desc])=>'<div class="device-gap"><span class="device-gap-line"></span><strong>'+safe(name)+'</strong><p>'+safe(desc)+'</p></div>').join('');
+    const host=byId('deviceRecords');host.replaceChildren();
+    for(const row of d.rows){
+      const box=document.createElement('div');box.className='device-record';
+      box.innerHTML='<div><small>'+safe(row.id)+' · '+safe(row.type)+' · '+safe(row.measurementDate)+'</small><strong>'+safe(row.name)+'</strong><p>'+safe(row.description)+'</p><span>Beperking: '+safe(row.limitation)+'</span></div>';
+      box.append(action('Bronkaart',()=>openCard('devices',row.id),'evidence-link'));
+      host.append(box);
+    }
+  }
+  const priorPrivacy=renderPrivacy;
+  renderPrivacy=function(){
+    priorPrivacy();
+    const dpia=items(state.dpia),controls=items(state.aiControls);
+    const external=dpia.filter(x=>/bevestigd/i.test(x.evidence||'')).length;
+    byId('privacySummary').innerHTML=[
+      ['DPIA-onderwerpen',dpia.length,'Niet hetzelfde als tien DPIA-rapporten'],
+      ['Externe bronstatus',external,'Beoordelingen met bevestigde bron'],
+      ['AI-beheerpunten',controls.length,'Afzonderlijke functies en maatregelen'],
+      ['Lokaal bevestigd',controls.filter(x=>!unknown(x.local)).length,'Van '+controls.length+' beheerinstellingen']
+    ].map(([name,n,caption])=>'<div class="evidence-stat"><small>'+safe(name)+'</small><strong>'+fmt(n)+'</strong><span>'+safe(caption)+'</span></div>').join('');
+    const grouped=new Map();
+    for(const record of controls){const group=record.domain||'Overige beheerpunten';if(!grouped.has(group))grouped.set(group,[]);grouped.get(group).push(record);}
+    byId('privacyControls').innerHTML=[...grouped].map(([name,records],i)=>
+      '<details class="evidence-group" '+(i===0?'open':'')+'><summary><strong>'+safe(name)+'</strong><span>'+fmt(records.length)+' beheerpunten</span></summary><div class="evidence-group-list">'+
+      records.map(r=>'<details class="evidence-row"><summary><span><small>'+safe(r.id)+'</small><strong>'+safe(r.name)+'</strong></span><span class="evidence-chevron">Toelichting</span></summary><div class="evidence-row-body">'+
+        note('Advies',r.advice)+note('Waar wordt dit beheerd?',r.managementLocation)+note('Wat moet worden nagegaan?',r.action)+note('Uitvoering',r.execution)+note('Nuance',r.nuance)+note('Bron',Array.isArray(r.sources)?r.sources.join('; '):'')+
+        '<button class="evidence-record-open" type="button" data-card-type="aiControls" data-card-id="'+safe(r.id)+'">Open volledige gegevenskaart</button></div></details>').join('')+
+      '</div></details>').join('')||'<div class="no-results">Geen AI-beheerpunten gevonden.</div>';
+    byId('privacyDpia').innerHTML=dpia.map(r=>{
+      const status=String(r.assessment||'Niet beoordeeld');
+      const level=/^GROEN/i.test(status)?'partial':/^ORANJE/i.test(status)?'caution':'unknown';
+      return '<details class="evidence-row dpia-evidence"><summary><span><small>'+safe(r.id)+' · '+safe(r.type||'Beoordeling')+'</small><strong>'+safe(r.name)+'</strong></span><span class="evidence-status '+level+'">'+safe(status)+'</span></summary><div class="evidence-row-body">'+
+        note('Wat is beoordeeld?',r.description)+note('Betekenis voor Emmauscollege',r.local)+note('Status van het bewijs',r.evidence)+note('Bronpeildatum',r.sourceDate)+note('Bron',Array.isArray(r.sources)?r.sources.join('; '):'')+
+        '<button class="evidence-record-open" type="button" data-card-type="dpia" data-card-id="'+safe(r.id)+'">Open volledige gegevenskaart</button></div></details>';
+    }).join('')||'<div class="no-results">Geen DPIA-onderwerpen gevonden.</div>';
+    for(const node of document.querySelectorAll('#privacyDpia [data-card-id],#privacyControls [data-card-id]')){
+      node.addEventListener('click',()=>openCard(node.dataset.cardType,node.dataset.cardId));
+    }
+  };
+  // No second copy of DPIA or AI management inside the AI-functions view.
+  const previouslyRenderedAi=renderAi;
+  renderAi=function(){previouslyRenderedAi();byId('aiSchoolPanels')?.classList.toggle('evidence-organisational',state.aiMode==='school');};
+
+  function relationSets(app){
+    const ai=items(state.ai).filter(x=>x.parentId===app.id);
+    const entra=items(state.connections).filter(x=>x.matchedId===app.id);
+    const parts=items(state.parts).filter(x=>x.parent===app.id);
+    const refs=new Set(ai.map(x=>x.id));
+    const controls=items(state.aiControls).filter(x=>(String(x.aiRefs||'').match(/AI-\d+/gi)||[]).some(id=>refs.has(id)));
+    const isMicrosoft=/microsoft|copilot|teams|azure/i.test(app.name||'');
+    const isToetsPers=/toetspers/i.test(app.name||'');
+    const dpia=items(state.dpia).filter(x=>{
+      const name=String(x.name||'');
+      return isMicrosoft&&/m365|microsoft|copilot|flex routing|leerlingen en minderjarigen/i.test(name)||
+             isToetsPers&&/toetspers/i.test(name);
+    });
+    return [
+      {key:'ai',name:'AI-functies',items:ai,type:'ai',note:'Beschrijving, niet automatisch lokaal actief'},
+      {key:'parts',name:'Onderdelen',items:parts,type:'parts',note:'Vastgelegde onderliggende registraties'},
+      {key:'entra',name:'Entra-matches',items:entra,type:'connections',note:'Mogelijke overeenkomst, werking niet bewezen'},
+      {key:'controls',name:'AI-beheer',items:controls,type:'aiControls',note:'Via expliciete AI-ID gekoppeld'},
+      {key:'dpia',name:'Privacycontext',items:dpia,type:'dpia',note:'Thematische aansluiting, geen individuele goedkeuring'}
+    ];
+  }
+  let relationTab='ai',relationApp='';
+  function renderRelations(){
+    const select=byId('familyApp'),root=byId('relationshipExplorer');
+    if(!root)return;
+    const app=state.apps.get(select?.value)||items(state.apps)[0];
+    if(!app){root.innerHTML='<p>Geen toepassingen ingelezen.</p>';return;}
+    if(relationApp!==app.id){relationApp=app.id;relationTab='ai';}
+    const sets=relationSets(app);
+    if(!sets.some(x=>x.key===relationTab&&x.items.length))relationTab=(sets.find(x=>x.items.length)||sets[0]).key;
+    root.innerHTML='<div class="relation-overview"><div class="relation-center"><small>'+safe(app.id)+' · '+safe(app.kind)+'</small><strong>'+safe(app.name)+'</strong><span>Geregistreerde toepassing · lokaal gebruik niet bevestigd</span></div>'+
+      '<div class="relation-spokes">'+sets.map(group=>'<button type="button" data-relation="'+group.key+'" class="relation-spoke '+(relationTab===group.key?'active':'')+'"><small>'+safe(group.name)+'</small><strong>'+fmt(group.items.length)+'</strong><span>'+safe(group.items.length?'Bronrelaties':'Geen relatie vastgelegd')+'</span></button>').join('')+'</div></div>'+
+      '<div class="relation-detail" id="relationDetail"></div>';
+    for(const b of root.querySelectorAll('[data-relation]'))b.addEventListener('click',()=>{relationTab=b.dataset.relation;renderRelations();});
+    const chosen=sets.find(x=>x.key===relationTab);
+    const rows=chosen.items;
+    const box=byId('relationDetail');
+    box.innerHTML='<div class="relation-detail-head"><strong>'+safe(chosen.name)+' · '+fmt(rows.length)+'</strong><span>'+safe(chosen.note)+'</span></div>';
+    if(!rows.length){box.insertAdjacentHTML('beforeend','<p class="no-results">Geen bevestigde relatie in de beschikbare bron. Dat sluit een bestaande relatie niet uit.</p>');return;}
+    const list=document.createElement('div');list.className='relation-items';
+    for(const rec of rows.slice(0,32)){
+      const item=document.createElement('div');item.className='relation-item';
+      item.innerHTML='<span><small>'+safe(rec.id)+'</small><strong>'+safe(rec.name)+'</strong></span>';
+      item.append(action('Bekijk',()=>openCard(chosen.type,rec.id),'evidence-link'));
+      list.append(item);
+    }
+    box.append(list);
+    if(rows.length>32){const p=document.createElement('p');p.className='viz-caption';p.textContent='32 van '+rows.length+' relaties getoond. Open de bijbehorende registerpagina voor de volledige lijst.';box.append(p);}
+  }
+  const family=byId('familyVisual');
+  if(family){
+    const relation=document.createElement('div');relation.id='relationshipExplorer';relation.className='relationship-explorer';
+    family.parentNode.insertBefore(relation,family.nextSibling);
+    byId('familyApp')?.addEventListener('change',renderRelations);
+  }
+  const earlierOverview=renderOverview;
+  renderOverview=function(){earlierOverview();if(state.ready)renderRelations();};
+  const oldCandidates=renderCandidates;
+  renderCandidates=function(){
+    oldCandidates();
+    const info=byId('candidateInfo');
+    if(info)info.textContent='Gebruik en overlap nog controleren; niet meegeteld bij basisregistraties';
+  };
+  // Record population and status instead of suggesting every recorded item is in use.
+  const sourceLabels={overview:'Schoolbreed',apps:'Toepassingen',connections:'Entra',devices:'Apparaten',ai:'AI-functies',privacy:'Privacy en beheer',findings:'Controles',reports:'Rapporten',sources:'Bronnen'};
+  function updatePath(view){
+    let path=byId('evidencePath');
+    if(!path){path=document.createElement('div');path.id='evidencePath';path.className='evidence-path';byId('sectionEyebrow').insertAdjacentElement('afterend',path);}
+    const current=byId('view'+view[0].toUpperCase()+view.slice(1));
+    const selected=current?.querySelector('.scene-tab.active');
+    path.textContent=(sourceLabels[view]||view)+(selected?' / '+selected.textContent:'');
+  }
+  const beforeSelect=selectView;
+  selectView=function(view){beforeSelect(view);if(view==='devices')renderDevices();if(viewNames[view])updatePath(view);};
+  document.addEventListener('click',e=>{
+    const tab=e.target.closest('.scene-tab');
+    if(tab)queueMicrotask(()=>updatePath(state.view));
+    const deviceLink=e.target.closest('#viewDevices [data-open]');
+    if(deviceLink){e.preventDefault();selectView(deviceLink.dataset.open);}
+  });
+  const earlierAll=renderAll;
+  renderAll=function(){earlierAll();if(state.ready)renderDevices();updatePath(state.view);};
+  // Keep the useful report builder as the one place for exports.
+  const duplicateExport=byId('exportExcel')?.closest('.panel');
+  if(duplicateExport)duplicateExport.classList.add('duplicate-source-export');
+  const candidate=byId('candidatePanel');
+  if(candidate)candidate.querySelector('summary')?.setAttribute('title','Mogelijke toepassingen, niet meegenomen in de 61 basisregistraties');
+  const registerRoot=byId('viewAppsScene0');
+  if(registerRoot){
+    const tabs=document.createElement('div');tabs.className='app-register-switch';
+    const buttons=[
+      action('Basisregistraties',()=>chooseApps('registered'),'app-register-tab active'),
+      action('Aanvullende kandidaten',()=>chooseApps('candidates'),'app-register-tab')
+    ];
+    buttons.forEach(b=>tabs.append(b));registerRoot.prepend(tabs);
+    function chooseApps(mode){
+      const candidates=mode==='candidates';
+      byId('appsList').hidden=candidates;
+      registerRoot.querySelector(':scope > .list-tools').hidden=candidates;
+      byId('candidatePanel').hidden=!candidates;
+      if(candidates)byId('candidatePanel').open=true;
+      buttons.forEach((b,i)=>{const active=(i===1)===candidates;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active));});
+    }
+    chooseApps('registered');
+  }
+})();
