@@ -24,6 +24,7 @@ test('alleen loopbackadressen zonder toegangsgegevens worden geaccepteerd',()=>{
   for(const address of ['http://localhost:11434/','http://127.0.0.1:1234/','http://[::1]:1234/']){
     assert.ok(validateLocalEndpoint(address).startsWith('http://'));
   }
+  assert.equal(validateLocalEndpoint('https://localhost:11435/'),'https://localhost:11435');
   for(const address of ['https://example.org/','http://192.168.1.12:11434/','http://host.local/','file:///etc/passwd','http://localhost:11434/private','http://user:pass@localhost:11434/','http://localhost:11434/?token=abc']){
     assert.throws(()=>validateLocalEndpoint(address));
   }
@@ -131,6 +132,11 @@ test('installatiewizard begeleidt zonder automatisch uitvoeren of downloaden',()
   assert.match(wizard,/index===3&&!selected/);
   assert.match(wizard,/index===4&&!verified/);
   assert.match(wizard,/Dit test tekst, nog geen gesproken gesprek/);
+  assert.match(wizard,/https:\\/\\/localhost:11435\\//);
+  assert.match(wizard,/caddy run --config/);
+  assert.match(wizard,/bind 127\\.0\\.0\\.1/);
+  assert.match(wizard,/connectionKind==='https'/);
+  assert.doesNotMatch(wizard,/Niet bereikbaar vanuit Chrome/);
   assert.doesNotMatch(wizard,/fetch\(\s*['"`]https:\/\/ollama\.com/);
   assert.doesNotMatch(wizard,/\/api\/pull/);
 });
