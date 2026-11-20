@@ -153,9 +153,9 @@ function cancelSound(){
 }
 function stopConversation(){
   turn++;
+  interruptBrowserReply();
   handsfree=false;manualReplay=false;clearTimeout(restartTimer);
   releaseMicrophone();setSpeechActivity('idle');
-  interruptBrowserReply();
   const rec=recognition;recognition=null;
   if(rec){rec.onresult=null;rec.onerror=null;rec.onend=null;try{rec.abort();}catch{}}
   cancelSound();ready();
