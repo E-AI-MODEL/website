@@ -268,3 +268,24 @@ test('Scène-afspelen gebruikt geluidsbestanden, niet browserstem of AI-model',(
   assert.doesNotMatch(part,/speechSynthesis\.speak/);
   assert.doesNotMatch(part,/french\.stream/);
 });
+
+test('rechterpijl bevestigt de handeling met een subtiele visuele golf',()=>{
+  const css=readFileSync(new URL('../cloud-shell.css',import.meta.url),'utf8');
+  assert.match(html,/id="arrowWave" class="arrow-wave" aria-hidden="true"/);
+  assert.match(css,/\.arrow-wave\.is-pulsing/);
+  assert.match(css,/@keyframes delf-arrow-wave/);
+  assert.match(css,/pointer-events:none/);
+  assert.match(main,/function acknowledgeArrow\(\)/);
+  assert.match(main,/wave\.classList\.remove\('is-pulsing'\)/);
+  assert.match(main,/wave\.classList\.add\('is-pulsing'\)/);
+});
+test('scène bevestigen met golf verandert de handmatige wachtstand niet',()=>{
+  const block=main.slice(main.indexOf('function scriptedNext()'),main.indexOf("$('scriptedStart').addEventListener"));
+  assert.match(block,/acknowledgeArrow\(\)/);
+  assert.match(block,/if\(scriptedMode==='armed'\)playScriptedScene\(0\)/);
+  assert.match(block,/scriptedMode==='reply'\)playScriptedScene\(1\)/);
+  assert.doesNotMatch(block,/setTimeout\(/);
+  const key=main.slice(main.indexOf("if (event.code === 'ArrowRight')"));
+  assert.match(key,/if\(scriptedMode!=='off'\)\{scriptedNext\(\);return;\}/);
+  assert.match(key,/acknowledgeArrow\(\)/);
+});
