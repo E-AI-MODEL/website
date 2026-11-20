@@ -196,6 +196,24 @@ function generateReportSheets(){const apps=array(state.apps),parts=array(state.p
  rsection(s,'ENTRA-KOPPELINGEN','Een geregistreerde koppeling bewijst niet dat er gegevens worden uitgewisseld. Rechten en feitelijk gebruik apart controleren.');for(const e of entr){rgroup(s,e.id,e.name,[e.enabled,e.visible].filter(Boolean).join(' / '));rdetail(s,'Overeenkomende toepassing',e.matched,true);rdetail(s,'Bron',(e.sources||[]).join('; '),true);}
  rsection(s,'APPARAATGROEPEN','Aantallen zonder actuele export worden niet als bevestigd gepresenteerd.');for(const d of devices){rgroup(s,d.id,d.name,[d.type,d.manager].filter(Boolean).join(' / '));rdetail(s,'Aantal volgens bron',d.quantity,true);}
  rsection(s,'AANVULLENDE ONDERZOEKSSIGNALEN','Automatische signalen zijn geen formeel vastgestelde tekortkomingen. Dubbelingen kunnen voorkomen.');for(const v of signals){rgroup(s,v.id,v.name,v.category);rdetail(s,'Waarom onderzoeken?',v.explanation,true);rdetail(s,'Bron',v.source,true);}
+ const logbook=[],linked=[],rules=[];
+ for(const [register,store] of [['Toepassingen',state.apps],['AI',state.ai],['Entra',state.connections],['Onderdelen',state.parts],['Kandidaten',state.candidates],['Controles',state.checks],['DPIA',state.dpia],['AI-beheer',state.aiControls],['Apparaten',state.devices],['Licenties',state.licenseReview],['Werkacties',state.workActions],['Softwarecontrole',state.softwareReview]]){
+  for(const rec of store.values()){
+   for(const rel of rec.relations||[])linked.push({register,id:rec.id,name:rec.name,rel});
+   for(const rule of rec.frameworkLinks||[])rules.push({register,id:rec.id,name:rec.name,rule});
+   for(const change of rec.auditTrail||[])logbook.push({register,id:rec.id,name:rec.name,change});
+  }
+ }
+ }
+ rsection(s,'VASTGELEGDE ONDERLINGE VERBANDEN','Alleen handmatig gekoppelde verbanden. Vermoedelijke en geregistreerde relaties zijn niet automatisch bevestigd.');
+ for(const x of linked){rgroup(s,x.id,x.name,x.rel.relationType+' / '+x.rel.status);rdetail(s,'Gerelateerde registratie',x.rel.targetType+' / '+x.rel.targetId,true);rdetail(s,'Bronbewijs',x.rel.evidence,true);rdetail(s,'Toelichting',x.rel.note,true);}
+ if(!linked.length)rsource(s,'Nog geen handmatig beoordeelde verbanden via de JSON-kaart.');
+ rsection(s,'IBP, AVG, AI ACT EN WETTELIJKE VERWIJZINGEN','Een gekoppelde norm of wet is een beoordelingspunt; geen automatische nalevingsverklaring.');
+ for(const x of rules){rgroup(s,x.id,x.name,x.rule.frameworkId+' / '+x.rule.article);rdetail(s,'Beoordelingsstatus',x.rule.status,true);rdetail(s,'Bewijs',x.rule.evidence,true);rdetail(s,'Toelichting',x.rule.note,true);}
+ if(!rules.length)rsource(s,'Nog geen concrete wets- of normverwijzingen beoordeeld via de JSON-kaart.');
+ rsection(s,'WIJZIGINGSLOGBOEK','De datum, auteur en toelichting zijn opgeslagen bij de registratie. De GitHub-pull-request vormt het externe wijzigingsspoor.');
+ for(const x of logbook.sort((a,b)=>String(b.change.timestamp||'').localeCompare(String(a.change.timestamp||'')))){rgroup(s,x.id,x.name,x.change.timestamp+' / '+x.change.actor);rdetail(s,'Bewerking',x.change.action,true);rdetail(s,'Velden',(x.change.fields||[]).join(', '),true);rdetail(s,'Waarom',x.change.reason,true);}
+ if(!logbook.length)rsource(s,'Eerste inventarisatie gestart op 10 augustus 2026. Geen gepubliceerde wijzigingen via JSON-kaarten gevonden.');
  rsection(s,'TOETSINGSKADERS','Beoordeel altijd de actuele versie. Een externe DPIA geeft geen automatische goedkeuring voor lokaal gebruik.');for(const l of legalSources){rgroup(s,'BRON',l.name,l.url);rdetail(s,'Onderwerp',l.description,true);}
  sheets.push(s);}
  return sheets;
