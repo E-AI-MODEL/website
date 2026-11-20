@@ -211,6 +211,7 @@
       add('Welke programma’s gebruiken we om te printen?','printsoftware printers printen afdrukken kopieer','Software');
     }
     if(phone)add('Welke software gebruiken we voor telefonie?','telefoon telefooncentrale bellen 3cx bereikbaarheid','Software');
+    if(apps.some(a=>norm(a.name)==='3cx'))add('Wie beheert 3CX?','verantwoordelijke eigenaar 3cx telefonie','Toepassing');
     if(apps.length){
       add('Hoeveel toepassingen staan er in het overzicht?','aantal applicaties software diensten apps','Overzicht');
       add('Welke toepassingen hebben AI-functies?','ai copilot toepassingen software','AI');
@@ -228,7 +229,10 @@
         const name=norm(a.name);
         if(name.length<2)return false;
         return name.split(' ').some(w=>w.length>=2&&terms.some(t=>w.startsWith(t)||t.startsWith(w)))||raw.includes(name);
-      }).sort((a,b)=>b.name.length-a.name.length).slice(0,4);
+      }).sort((a,b)=>{
+        const relevance=a=>norm(a.name)===raw?3:norm(a.name).startsWith(raw)?2:norm(a.name).includes(raw)?1:0;
+        return relevance(b)-relevance(a)||a.name.length-b.name.length;
+      }).slice(0,4);
       for(const app of candidates){
         add('Wat doet '+app.name+'?',app.name+' omschrijving waarvoor doel','Toepassing');
         add('Wie beheert '+app.name+'?',app.name+' eigenaar verantwoordelijke beheer','Toepassing');
@@ -248,7 +252,7 @@
       return found.slice(0,Math.min(3,limit)).map(({question,context})=>({question,context}));
     }
     const score=entry=>{
-      const hay=entry.question+' '+entry.keywords;
+      const hay=norm(entry.question)+' '+entry.keywords;
       const hayWords=new Set(hay.split(' ').filter(Boolean));
       const matched=terms.filter(term=>[...hayWords].some(w=>w===term||w.startsWith(term)||(term.length>3&&term.startsWith(w)))).length;
       if(!matched)return 0;
