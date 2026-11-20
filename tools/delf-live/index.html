@@ -4,54 +4,147 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#fbfbf9">
-<title>DELF scolaire | Live</title>
+<title>Podium | live Franse ondertiteling</title>
 <link rel="stylesheet" href="./styles.css">
+<link rel="stylesheet" href="./cloud-shell.css">
 <script type="module" src="./src/main.js"></script>
+<script type="module" src="./src/cloud-shell.js"></script>
 </head>
 <body>
-<div class="stage" id="stage" data-phase="intro" tabindex="-1">
-<canvas id="voiceVisual" class="voice-visual" aria-hidden="true"></canvas>
-<button id="mobileSettings" class="mobile-settings" type="button" aria-label="Instellingen openen" aria-controls="panel" aria-expanded="false"><span class="mobile-settings-lines" aria-hidden="true"><span></span><span></span></span></button>
-<main class="centerpiece" aria-label="Franse ondertiteling" aria-live="polite"><div class="display-surface" id="displayText"></div><p class="translation-meta sr-only" id="translationMeta"></p></main>
+<div class="stage" id="stage" data-phase="intro" tabindex="-1" data-display="statement">
+  <div class="cloud-atmosphere" aria-hidden="true"><i class="cloud-layer cloud-layer-a"></i><i class="cloud-layer cloud-layer-b"></i><i class="cloud-layer cloud-layer-c"></i><i class="cloud-layer cloud-layer-d"></i></div>
+  <canvas id="voiceVisual" class="voice-visual" aria-hidden="true"></canvas>
+  <button id="mobileSettings" class="mobile-settings cloud-entry" type="button" aria-label="Studio openen" aria-controls="panel" aria-expanded="false">
+    <span class="mobile-settings-lines" aria-hidden="true"><span></span><span></span></span>
+    <span class="sr-only">Studio openen</span>
+  </button>
+  <main class="centerpiece" aria-label="Franse ondertiteling" aria-live="polite">
+    <div class="display-surface" id="displayText"></div>
+    <p class="translation-meta sr-only" id="translationMeta"></p>
+  </main>
 </div>
-<aside id="panel" class="panel" aria-label="Podiumbediening" aria-hidden="true">
-<div class="panel-head"><div><small>VOORBEREIDING</small><h2>Instellingen</h2></div><button id="panelClose" class="close" type="button" aria-label="Instellingen sluiten"><span aria-hidden="true" class="close-strokes"></span></button></div>
-<div class="panel-content">
-<p class="hint">Jij spreekt Nederlands. Op het scherm verschijnt de Franse vertaling. Tijdens de AI-overname reageren alleen de dunne lijnen op de stem.</p>
-<p class="feedback" id="runtimeStatus" aria-live="assertive">Begin met de microfoontest, vertaling en stemmen.</p>
-<div class="group"><h3>Voor de ceremonie</h3>
-<button id="prepareTranslate" class="action">Franse vertaling laden</button><p class="feedback" id="translationStatus" aria-live="polite">De vertaling is nog niet getest.</p>
-<button id="prepareMic" class="action outline">Nederlandse spraak testen</button><p class="feedback" id="microphoneStatus" aria-live="polite">Zeg een korte Nederlandse zin. De herkende woorden verschijnen hier.</p>
-<button id="loadPublicFrench" class="action">Franse AI-stem laden</button>
-<button id="previewFrench" class="action outline">Franse stem beluisteren</button>
-<p class="feedback" id="frenchStatus" aria-live="polite">Phonon maakt de stem op dit toestel. Het model wordt de eerste keer via internet geladen.</p>
-<details class="advanced-setting"><summary>Eigen Frans stemmodel gebruiken</summary>
-<p class="hint">Heb je toegang tot het afzonderlijke Franse model van Gradium, selecteer dan de gedownloade map. Zonder eigen map kun je hierboven de openbare meertalige Phonon-stem gebruiken.</p>
-<label class="upload">Franse checkpointmap<input id="modelFolder" type="file" webkitdirectory directory multiple></label>
-<button id="loadFrench" class="action outline">Eigen model laden</button>
-</details>
-<label class="upload">Nederlandse onderbrekingsstem <select id="nlVoice"><option value="">Kies een aanwezige stem</option></select></label>
-<button id="previewDutch" class="action outline">Nederlandse stem beluisteren</button><p class="feedback" id="dutchStatus">Kies een stem. Er wordt niet automatisch teruggevallen op een standaardstem.</p>
-</div>
-<div class="group"><h3>Verloop</h3>
-<div class="control-grid">
-<button id="start" class="action">Start / hervat ondertiteling</button><button id="interrupt" class="action">AI neemt over</button>
-<button id="panic" class="action dangerous">Alles stoppen</button><button id="reset" class="action outline">Opnieuw</button>
-</div><p class="feedback" id="phaseStatus">Klaar om voor te bereiden</p>
-<details class="advanced-setting"><summary>Handmatige stappen</summary>
-<div class="control-grid">
-<button id="french" class="action outline">Franse speech</button><button id="handback" class="action outline">Woord teruggeven</button>
-<button id="finish" class="action outline">Nederlands slot</button><button id="fullscreen" class="action outline">Schermvullend</button>
-</div>
-</details></div>
-<details class="group compact-details"><summary>Jouw opening en slot</summary>
-<p class="hint">Alleen spiektekst. De Franse ondertiteling komt niet uit deze tekst, maar uit wat je echt in het Nederlands zegt.</p>
-<label class="upload">Opening (Nederlands)<textarea id="openingText" rows="7" readonly></textarea></label>
-<p class="hint">Jouw antwoord na de onderbreking: <strong id="replyText"></strong> Je mag natuurlijk improviseren.</p>
-<label class="upload">Slot (Nederlands)<textarea id="closingText" rows="7" readonly></textarea></label>
-</details>
-<details class="group compact-details"><summary>Franse speech</summary><textarea id="speechText" rows="13" spellcheck="false" readonly></textarea><p class="hint">De speech ligt vast. Tijdens de AI-overname blijft het scherm zonder tekst.</p></details>
-<details class="group compact-details"><summary>Franse vertaling met tekst testen</summary><textarea id="testDutch" rows="3">Goedemiddag allemaal. Vandaag feliciteren we leerlingen met hun DELF scolaire-diploma.</textarea><button id="testTranslate" class="action outline">Vertaal deze zin</button></details>
-<details class="group compact-details"><summary>Metingen en sneltoetsen</summary><p class="feedback" id="latencyStatus">Nog geen stemmeting</p><p class="hint">MacBook: 1 start · → overname · spatie pauze/hervat · X stop · 0 opnieuw · Esc instellingen. iPhone: gebruik het menu rechtsboven.</p></details>
-</div></aside>
-</body></html>
+<aside id="panel" class="panel cloud-studio" role="dialog" aria-modal="true" aria-label="Studio" aria-hidden="true" inert>
+  <div class="studio-clouds" aria-hidden="true"></div>
+  <header class="studio-header">
+    <button id="panelClose" class="close studio-return" type="button" aria-label="Terug naar het podium">
+      <span class="close-strokes" aria-hidden="true"></span><span>Podium</span>
+    </button>
+    <span class="studio-current" id="studioSessionLabel">DELF scolaire</span>
+    <span class="studio-mark" aria-hidden="true">·</span>
+  </header>
+  <nav class="studio-nav" role="tablist" aria-label="Studio-onderdelen">
+    <button class="studio-tab" role="tab" type="button" data-studio-view="podium" id="tab-podium" aria-controls="page-podium" aria-selected="true">Podium</button>
+    <button class="studio-tab" role="tab" type="button" data-studio-view="taal" id="tab-taal" aria-controls="page-taal" aria-selected="false" tabindex="-1">Taal</button>
+    <button class="studio-tab" role="tab" type="button" data-studio-view="stem" id="tab-stem" aria-controls="page-stem" aria-selected="false" tabindex="-1">Stem</button>
+    <button class="studio-tab" role="tab" type="button" data-studio-view="sessie" id="tab-sessie" aria-controls="page-sessie" aria-selected="false" tabindex="-1">Sessie</button>
+    <button class="studio-tab" role="tab" type="button" data-studio-view="meer" id="tab-meer" aria-controls="page-meer" aria-selected="false" tabindex="-1">Meer</button>
+  </nav>
+  <div class="studio-scroll" id="studioScroll">
+    <div class="studio-page" id="page-podium" role="tabpanel" aria-labelledby="tab-podium" data-studio-page="podium">
+      <div class="studio-hero cloud-reveal"><span class="studio-overline">PODIUM / LIVE</span><h1 class="cloud-heading">Ruimte voor je woorden.</h1>
+        <p class="cloud-intro">Jij spreekt Nederlands. Het Frans verschijnt rustig in beeld. Tijdens de overname zie je alleen de stemlijnen.</p></div>
+      <div class="studio-status cloud-reveal" role="status"><span class="status-breath" aria-hidden="true"></span><p class="feedback" id="phaseStatus">Klaar om te beginnen</p></div>
+      <p class="feedback studio-live-feedback cloud-reveal" id="runtimeStatus" aria-live="assertive">Open Taal en Stem om alles vooraf te testen.</p>
+      <div class="studio-action-grid cloud-reveal">
+        <button id="start" class="action studio-action studio-action-emphasis">Start / hervat ondertiteling <span class="action-stroke" aria-hidden="true"></span></button>
+        <button id="interrupt" class="action studio-action">AI neemt over <span class="action-stroke" aria-hidden="true"></span></button>
+      </div>
+      <div class="studio-action-grid studio-secondary-actions cloud-reveal">
+        <button id="panic" class="action studio-action studio-action-quiet">Alles stoppen</button>
+        <button id="reset" class="action studio-action studio-action-quiet">Opnieuw beginnen</button>
+      </div>
+      <p class="studio-aside cloud-reveal">MacBook: 1 om te starten, → voor de overname, Esc voor de studio. Op je iPhone gebruik je de knoppen hierboven.</p>
+    </div>
+
+    <div class="studio-page" id="page-taal" role="tabpanel" aria-labelledby="tab-taal" data-studio-page="taal" hidden>
+      <div class="studio-hero cloud-reveal"><span class="studio-overline">TAAL / NEDERLANDS → FRANS</span><h1 class="cloud-heading">Wat jij zegt, verschijnt in het Frans.</h1>
+        <p class="cloud-intro">Controleer eerst wat je iPhone of MacBook werkelijk herkent. Laad daarna de Franse vertaling.</p></div>
+      <section class="studio-section cloud-reveal"><div class="studio-section-top"><span class="studio-section-no">01</span><h2>Microfoon</h2></div>
+        <p class="studio-support">Spreek een Nederlandse zin uit. De herkende woorden zie je hieronder.</p>
+        <button id="prepareMic" class="action studio-action">Nederlandse spraak testen</button>
+        <p class="feedback" id="microphoneStatus" aria-live="polite">Nog niet getest</p>
+      </section>
+      <section class="studio-section cloud-reveal"><div class="studio-section-top"><span class="studio-section-no">02</span><h2>Vertaling</h2></div>
+        <p class="studio-support">De browser kiest een geschikte vertaalroute. De eerste keer kan een taalmodel worden gedownload.</p>
+        <button id="prepareTranslate" class="action studio-action">Franse vertaling laden</button>
+        <p class="feedback" id="translationStatus" aria-live="polite">Nog niet geladen</p>
+      </section>
+      <details class="studio-disclosure cloud-reveal"><summary>Een zin proberen</summary>
+        <label class="studio-field">Nederlandse tekst<textarea id="testDutch" rows="3">Goedemiddag allemaal. Vandaag feliciteren we leerlingen met hun DELF scolaire-diploma.</textarea></label>
+        <button id="testTranslate" class="action studio-action">Vertaal deze zin</button>
+      </details>
+    </div>
+
+    <div class="studio-page" id="page-stem" role="tabpanel" aria-labelledby="tab-stem" data-studio-page="stem" hidden>
+      <div class="studio-hero cloud-reveal"><span class="studio-overline">STEM / AI</span><h1 class="cloud-heading">Laat de stem horen.</h1>
+        <p class="cloud-intro">De Franse stem wordt op het apparaat gemaakt. Een Nederlandse stem onderbreekt je en geeft het woord later terug.</p></div>
+      <section class="studio-section cloud-reveal"><div class="studio-section-top"><span class="studio-section-no">01</span><h2>Frans</h2></div>
+        <button id="loadPublicFrench" class="action studio-action">Franse AI-stem laden</button>
+        <button id="previewFrench" class="action studio-action studio-action-quiet">Franse stem beluisteren</button>
+        <p class="feedback" id="frenchStatus" aria-live="polite">Phonon 40M is nog niet geladen. Gebruik bij voorkeur wifi.</p>
+      </section>
+      <section class="studio-section cloud-reveal"><div class="studio-section-top"><span class="studio-section-no">02</span><h2>Nederlands</h2></div>
+        <label class="studio-field">Onderbrekingsstem<select id="nlVoice"><option value="">Kies een aanwezige stem</option></select></label>
+        <button id="previewDutch" class="action studio-action studio-action-quiet">Nederlandse stem beluisteren</button>
+        <p class="feedback" id="dutchStatus">Kies een stem voor de onderbreking en teruggave.</p>
+      </section>
+      <details class="studio-disclosure cloud-reveal advanced-setting"><summary>Eigen Frans model</summary>
+        <p class="studio-support">Je kunt ook de afgeschermde Franse checkpointmap van Gradium gebruiken. De openbare stem hierboven werkt zonder map.</p>
+        <label class="studio-field">Checkpointmap<input id="modelFolder" type="file" webkitdirectory directory multiple></label>
+        <button id="loadFrench" class="action studio-action">Eigen model laden</button>
+      </details>
+    </div>
+
+    <div class="studio-page" id="page-sessie" role="tabpanel" aria-labelledby="tab-sessie" data-studio-page="sessie" hidden>
+      <div class="studio-hero cloud-reveal"><span class="studio-overline">SESSIE / TEKST</span><h1 class="cloud-heading">Elke gelegenheid een eigen verhaal.</h1>
+        <p class="cloud-intro">De huidige DELF-speech staat vast. Voor een andere gelegenheid maak je een nieuwe sessie. Je bewaart die op dit apparaat.</p></div>
+      <section class="studio-section cloud-reveal"><div class="studio-section-top"><span class="studio-section-no">01</span><h2>Huidige sessie</h2></div>
+        <label class="studio-field">Kies een sessie<select id="sessionSelect"><option value="delf">DELF scolaire</option></select></label>
+        <div class="studio-action-grid">
+          <button id="newSession" class="action studio-action">Nieuwe sessie</button>
+          <button id="exportSession" class="action studio-action studio-action-quiet">Exporteer tekst</button>
+        </div>
+        <p id="sessionStatus" class="feedback" aria-live="polite">DELF scolaire is klaar voor gebruik.</p>
+      </section>
+      <div id="sessionEditor" class="session-editor cloud-reveal" hidden>
+        <div class="studio-section-top"><span class="studio-section-no">02</span><h2>Nieuwe sessie maken</h2></div>
+        <p class="studio-support">Deze tekst blijft vast tijdens de overname. Je eigen opening en slot worden altijd live vertaald, niet van papier overgenomen.</p>
+        <label class="studio-field">Naam van de sessie<input id="sessionTitle" type="text" maxlength="80" placeholder="Bijvoorbeeld: diploma-uitreiking"></label>
+        <label class="studio-field">Jouw opening<textarea id="editOpening" rows="4"></textarea></label>
+        <label class="studio-field">Jouw reactie<textarea id="editReply" rows="2"></textarea></label>
+        <label class="studio-field">Nederlandse onderbreking<textarea id="editInterrupt" rows="4"></textarea></label>
+        <label class="studio-field">Franse speech<textarea id="editSpeech" rows="8" lang="fr"></textarea></label>
+        <label class="studio-field">Nederlandse teruggave<textarea id="editHandback" rows="3"></textarea></label>
+        <label class="studio-field">Jouw slot<textarea id="editClosing" rows="4"></textarea></label>
+        <div class="studio-action-grid"><button id="saveSession" class="action studio-action">Sessie bewaren</button><button id="cancelSession" class="action studio-action studio-action-quiet">Annuleren</button></div>
+      </div>
+      <details class="studio-disclosure cloud-reveal"><summary>Bekijk de teksten van deze sessie</summary>
+        <label class="studio-field">Jouw opening<textarea id="openingText" rows="7" readonly></textarea></label>
+        <p class="studio-support">Jouw reactie: <span id="replyText"></span></p>
+        <label class="studio-field">Jouw slot<textarea id="closingText" rows="7" readonly></textarea></label>
+        <label class="studio-field">Franse AI-speech<textarea id="speechText" rows="13" spellcheck="false" readonly></textarea></label>
+      </details>
+    </div>
+
+    <div class="studio-page" id="page-meer" role="tabpanel" aria-labelledby="tab-meer" data-studio-page="meer" hidden>
+      <div class="studio-hero cloud-reveal"><span class="studio-overline">MEER / CONTROLE</span><h1 class="cloud-heading">Voor de laatste controle.</h1>
+        <p class="cloud-intro">De voorstelling loopt normaal met één overnametoets. Deze handmatige stappen zijn alleen voor testen of als iets niet gaat zoals gepland.</p></div>
+      <section class="studio-section cloud-reveal">
+        <div class="studio-section-top"><span class="studio-section-no">01</span><h2>Handmatig verdergaan</h2></div>
+        <div class="studio-action-grid">
+          <button id="french" class="action studio-action studio-action-quiet">Franse speech</button>
+          <button id="handback" class="action studio-action studio-action-quiet">Woord teruggeven</button>
+          <button id="finish" class="action studio-action studio-action-quiet">Nederlands slot</button>
+          <button id="fullscreen" class="action studio-action studio-action-quiet">Schermvullend</button>
+        </div>
+      </section>
+      <section class="studio-section cloud-reveal">
+        <div class="studio-section-top"><span class="studio-section-no">02</span><h2>Status</h2></div>
+        <p class="feedback" id="latencyStatus">Nog geen stemmeting</p>
+        <p class="studio-support">MacBook: 1 start, → overname, spatie pauze, X stopt, 0 opnieuw, Esc opent de studio.</p>
+      </section>
+    </div>
+  </div>
+</aside>
+</body>
+</html>
