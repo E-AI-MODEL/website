@@ -125,6 +125,7 @@ function itemCard(item,kind){let info='',label='',sub='',chip='',detailHtml='';
  const editType=editTypes[kind];
  if(editType){const edit=document.createElement('button');edit.type='button';edit.className='card-edit-inline';edit.textContent='Open JSON-kaart';edit.addEventListener('click',()=>window.EmmausRecordCards?.open(editType,item.id));detailBox.appendChild(edit);}
  summary.addEventListener('click',()=>{detailBox.hidden=!detailBox.hidden;summary.setAttribute('aria-expanded',String(!detailBox.hidden));div.classList.toggle('is-open',!detailBox.hidden);});div.append(summary,detailBox);return div;
+}
 function renderList(parent,items,kind,limit=100){const el=$(parent);el.replaceChildren();if(!items.length){el.innerHTML='<div class="no-results">Geen resultaten bij deze selectie.</div>';return;}const f=document.createDocumentFragment();items.slice(0,limit).forEach(it=>f.appendChild(itemCard(it,kind)));el.appendChild(f);if(items.length>limit){const hint=document.createElement('p');hint.className='load-status';hint.textContent='De eerste '+limit+' van '+items.length+' resultaten worden getoond. Gebruik zoeken om specifieker te kijken.';el.appendChild(hint);}}
 function fillSelect(el,items,value){const select=$(el);const selected=value??select.value;const first=select.firstElementChild?.cloneNode(true);select.replaceChildren();if(first)select.append(first);items.sort((a,b)=>a.localeCompare(b,'nl')).forEach(v=>{if(!v)return;const opt=document.createElement('option');opt.value=v;opt.textContent=v;select.append(opt);});if(items.includes(selected))select.value=selected;}
 function renderApps(){const apps=array(state.apps);fillSelect('appsArea',[...new Set(apps.map(x=>x.area).filter(Boolean))],state.area);fillSelect('appsType',[...new Set(apps.map(x=>x.kind).filter(Boolean))],state.type);const q=normalize($('appsSearch').value),area=$('appsArea').value||state.area,type=$('appsType').value||state.type;state.area=area;state.type=type;const filtered=apps.filter(x=>(!q||normalize([x.id,x.name,x.description,x.parent,x.area].join(' ')).includes(q))&&(!area||x.area===area)&&(!type||x.kind===type)).sort((a,b)=>a.name.localeCompare(b.name,'nl'));$('appsCount').textContent=filtered.length+' van '+apps.length;renderList('appsList',filtered,'app',140);renderCandidates();}
@@ -203,7 +204,6 @@ function generateReportSheets(){const apps=array(state.apps),parts=array(state.p
    for(const rule of rec.frameworkLinks||[])rules.push({register,id:rec.id,name:rec.name,rule});
    for(const change of rec.auditTrail||[])logbook.push({register,id:rec.id,name:rec.name,change});
   }
- }
  }
  rsection(s,'VASTGELEGDE ONDERLINGE VERBANDEN','Alleen handmatig gekoppelde verbanden. Vermoedelijke en geregistreerde relaties zijn niet automatisch bevestigd.');
  for(const x of linked){rgroup(s,x.id,x.name,x.rel.relationType+' / '+x.rel.status);rdetail(s,'Gerelateerde registratie',x.rel.targetType+' / '+x.rel.targetId,true);rdetail(s,'Bronbewijs',x.rel.evidence,true);rdetail(s,'Toelichting',x.rel.note,true);}
