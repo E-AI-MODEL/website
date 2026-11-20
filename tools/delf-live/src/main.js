@@ -57,6 +57,112 @@ let smoothedLevel = 0;
 let reserveSpeechActive = false;
 let frenchSegmentIndex = 0;
 let frenchSegmentTotal = 0;
+let scriptedMode = 'off'; // off | armed | scene1 | reply | scene2 | finished
+let scriptedPlayer = null;
+let scriptedAudioUrls = [null,null];
+function scriptedFeedback(message, problem=false) {
+  feedback('scriptedStatus',message,problem?'bad':'good');
+}
+function releaseScriptedAudio() {
+  stopScriptedPlayer();
+  scriptedAudioUrls.forEach(url => { if(url) URL.revokeObjectURL(url); });
+  scriptedAudioUrls=[null,null];
+}
+function stopScriptedPlayer() {
+  if(scriptedPlayer) {
+    scriptedPlayer.onended=null;
+    scriptedPlayer.onerror=null;
+    scriptedPlayer.pause();
+    scriptedPlayer.removeAttribute('src');
+    scriptedPlayer.load();
+    scriptedPlayer=null;
+  }
+}
+function scriptedStop() {
+  stopScriptedPlayer();
+  scriptedMode='off';
+}
+function scriptedShowReady() {
+  return scriptedAudioUrls[0]&&scriptedAudioUrls[1];
+}
+for(const [index,id] of ['scriptedAudioOne','scriptedAudioTwo'].entries()){
+  $(id).addEventListener('change',event=>{
+    const file=event.target.files?.[0];
+    if(scriptedAudioUrls[index]) URL.revokeObjectURL(scriptedAudioUrls[index]);
+    scriptedAudioUrls[index]=file?URL.createObjectURL(file):null;
+    scriptedFeedback(scriptedShowReady()?'Beide opnamen klaar. Start voorstelling.':'Laad ook de andere Franse opname.',!scriptedShowReady());
+  });
+}
+function startScriptedShow(){
+  if(!scriptedShowReady()){
+    scriptedFeedback('Kies eerst de audio van scène 1 en scène 2 bij Audio voor de voorstelling.',true);
+    $('scriptedShow').querySelector('details').open=true;
+    panel(true);return;
+  }
+  if(phase!=='intro' && phase!=='live'){
+    scriptedFeedback('Klik eerst op Opnieuw om de voorstelling vanaf het begin te starten.',true);
+    return;
+  }
+  if(phase==='intro'){
+    if(!translator){scriptedFeedback('Klik eerst op Voorbereiden om de live ondertiteling te laden.',true);panel(true);return;}
+    goStart();
+    if(phase!=='live')return;
+  }
+  scriptedMode='armed';
+  scriptedFeedback('Je spreekt Nederlands. Druk op → zodra de Franse spreker mag ingrijpen.');
+  panel(false);
+}
+function playScriptedScene(index) {
+  if(!scriptedShowReady()) {scriptedFeedback('Franse opnamen ontbreken.',true);panel(true);return;}
+  if(index===0 && scriptedMode!=='armed')return;
+  if(index===1 && scriptedMode!=='reply')return;
+  const target=index===0?'scene1':'scene2';
+  stopMic();stopVoices();stopScriptedPlayer();
+  scriptedMode=target;
+  setPhase('interrupted',index===0?'SCÈNE 1 · ONDERBREKING':'SCÈNE 2 · FRANSE SPEECH');
+  blankStage();
+  const player=new Audio(scriptedAudioUrls[index]);
+  player.preload='auto';
+  scriptedPlayer=player;
+  player.onended=()=>{
+    if(scriptedPlayer!==player || scriptedMode!==target)return;
+    stopScriptedPlayer();
+    if(index===0){
+      scriptedMode='reply';
+      setPhase('interrupted','JOUW REACTIE');
+      blankStage();
+      scriptedFeedback('Jij antwoordt nu zelf. Er is geen timer. Druk pas daarna op →.');
+    }else{
+      scriptedMode='finished';
+      setPhase('handback','JOUW NEDERLANDSE SLOT');
+      blankStage();
+      scriptedFeedback('De Franse spreker is klaar. Rustig wit podium. Jij sluit zelf af.');
+    }
+  };
+  player.onerror=()=>{
+    if(scriptedPlayer!==player)return;
+    scriptedFeedback('De opname kan niet worden afgespeeld. Kies het bestand opnieuw.',true);
+    panel(true);
+  };
+  scriptedFeedback(index===0?'Scène 1: Franse spreker onderbreekt.':'Scène 2: Franse toespraak. De spreker geeft daarna het woord terug.');
+  panel(false);
+  void player.play().catch(error=>{
+    if(scriptedPlayer!==player)return;
+    scriptedFeedback('Safari kon de opname niet starten: '+String(error?.message||error)+'. Druk nogmaals op Volgende scène.',true);
+    scriptedMode=index===0?'armed':'reply';
+    stopScriptedPlayer();
+    panel(true);
+  });
+}
+function scriptedNext(){
+  if(scriptedMode==='armed')playScriptedScene(0);
+  else if(scriptedMode==='reply')playScriptedScene(1);
+  else if(scriptedMode==='scene1'||scriptedMode==='scene2') scriptedFeedback('Deze scène speelt. Wacht tot de stem klaar is.');
+  else if(scriptedMode==='finished') scriptedFeedback('De voorstelling is afgerond. Jij hebt het woord.');
+  else scriptedFeedback('Klik eerst op Start voorstelling.',true);
+}
+$('scriptedStart').addEventListener('click',startScriptedShow);
+$('scriptedNext').addEventListener('click',scriptedNext);
 
 // De centrale lijnen reageren tijdens Frans op de audiobuffers.
  // Nederlandse browser-TTS levert geen audiobuffers: dan volgen ze woordgrenzen.
@@ -1032,6 +1138,7 @@ async function prepareShow(){
 }
 $('prepareShow').addEventListener('click',prepareShow);
 function goStart() {
+  if (scriptedMode==='finished'){feedback('runtimeStatus','Je hebt het woord. Gebruik Opnieuw voor een nieuwe voorstelling.');return;}
   if (!translator) {
     feedback('runtimeStatus','Klik eerst op Voorbereiden. Daarna op Start Nederlands.','bad');
     panel(true);
@@ -1121,6 +1228,7 @@ function goFinish() {
   }
 }
 function goReset() {
+  scriptedStop();
   reserveSpeechActive=false;
   releasePreparedAudio();
   stopMic(); stopVoices(); clearLiveState(); closing = false;
@@ -1129,6 +1237,7 @@ function goReset() {
   panel(false);
 }
 function panic() {
+  scriptedStop();
   reserveSpeechActive=false;
   releasePreparedAudio();
   stopMic(); stopVoices(); previewSequence++;
@@ -1159,12 +1268,13 @@ document.addEventListener('keydown', event => {
   if (event.target instanceof HTMLButtonElement || event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement || event.target instanceof HTMLSelectElement) return;
   if (event.code === 'ArrowRight') {
     event.preventDefault();
+    if(scriptedMode!=='off'){scriptedNext();return;}
     if (phase === 'french') nextFrenchPassage();
     else if (phase === 'live' && !closing) reserveFrenchSpeech();
     return;
   }
   if (event.code === 'ArrowLeft' && phase === 'french') { event.preventDefault(); previousFrenchPassage(); return; }
   if (event.code === 'Space') { event.preventDefault(); togglePause(); return; }
-  const map = {'1':goStart,'2':reserveFrenchSpeech,'3':()=>phase==='live'?reserveFrenchSpeech():goFrench(),'4':()=>reserveSpeechActive?reserveTakeBack():goHandback(),'5':goFinish,'0':goReset,'x':panic,'X':panic,'f':$('fullscreen').onclick,'F':$('fullscreen').onclick};
+  const map = {'1':goStart,'2':()=>scriptedMode!=='off'?scriptedNext():reserveFrenchSpeech(),'3':()=>phase==='live'?reserveFrenchSpeech():goFrench(),'4':()=>reserveSpeechActive?reserveTakeBack():goHandback(),'5':goFinish,'0':goReset,'x':panic,'X':panic,'f':$('fullscreen').onclick,'F':$('fullscreen').onclick};
   if (map[event.key]) { event.preventDefault(); map[event.key](); }
 });
