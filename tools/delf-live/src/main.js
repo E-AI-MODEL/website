@@ -1,12 +1,18 @@
 import { PhononTTS } from 'phonon-tts';
+import { getActiveSession } from './session-store.js';
 import { opening, reply, closing as closingScript, interrupt, handback, speech, speechSegments, modelFiles, stageAdvance, replyPauseMs } from './script.mjs';
 
 const $ = id => document.getElementById(id);
 const stage = $('stage');
-$('speechText').value = speech;
-$('openingText').value = opening;
-$('replyText').textContent = reply;
-$('closingText').value = closingScript;
+function syncScriptPreview() {
+  const selected = getActiveSession();
+  $('speechText').value = selected.speech;
+  $('openingText').value = selected.opening;
+  $('replyText').textContent = selected.reply;
+  $('closingText').value = selected.closing;
+}
+syncScriptPreview();
+window.addEventListener('cloud-session-change', syncScriptPreview);
 let phase = 'intro';
 let epoch = 0;
 let translator = null;
@@ -258,6 +264,7 @@ function clearLiveState() {
 function panel(open) {
   if (!open) stopMicrophoneCheck();
   document.body.classList.toggle('panel-visible', open);
+  $('panel').inert = !open;
   $('panel').classList.toggle('open', open);
   $('panel').setAttribute('aria-hidden', open ? 'false' : 'true');
   const trigger = $('mobileSettings');
@@ -768,7 +775,7 @@ async function streamFrench() {
   frenchAnalyser = analyser;
   let t = ctx.currentTime + 0.11;
   let totalChunks = 0;
-  const segments = speechSegments(speech); // Vaste, goedgekeurde Franse speech
+  const segments = speechSegments(getActiveSession().speech); // Vaste tekst van de gekozen sessie
   const started = performance.now();
   followAudioClock(ctx, controller);
   blankStage();
@@ -850,7 +857,7 @@ function goInterrupt() {
   setPhase('interrupted', 'UN INSTANT…');
   blankStage();
   const now = epoch;
-  const started = speakDutch(interrupt, () => {
+  const started = speakDutch(getActiveSession().interrupt, () => {
     // Een eigen reactie is welkom. Daarna volgt altijd de goedgekeurde Franse speech.
     beginReplyWindow(now);
   });
@@ -875,7 +882,7 @@ function goHandback() {
   setPhase('handback', 'À VOUS');
   blankStage();
   const now = epoch;
-  speakDutch(handback, () => {
+  speakDutch(getActiveSession().handback, () => {
     if (phase === 'handback' && epoch === now) goFinish();
   });
   panel(false);
@@ -911,8 +918,14 @@ for (const [name, fn] of Object.entries(actions)) $(name).onclick = fn;
 $('fullscreen').onclick = () => document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.();
 $('testTranslate').onclick = async () => {
   if (!translator && !(await prepareTranslation())) return;
-  try { screen(await translator.translate($('testDutch').value), 'Testvertaling'); feedback('runtimeStatus', 'Vertaaltest geslaagd', 'good'); }
-  catch(e) { reportError('Vertaaltest: ' + e.message); }
+  try {
+    const translated = await translator.translate($('testDutch').value);
+    $('translationTestResult').textContent = translated;
+    feedback('runtimeStatus', 'Vertaaltest geslaagd. De uitslag staat in de studio.', 'good');
+  } catch(e) {
+    $('translationTestResult').textContent = 'Vertalen is niet gelukt: ' + e.message;
+    reportError('Vertaaltest: ' + e.message);
+  }
 };
 document.addEventListener('keydown', event => {
   if (event.key === 'Escape') { event.preventDefault(); panel(!$('panel').classList.contains('open')); return; }
