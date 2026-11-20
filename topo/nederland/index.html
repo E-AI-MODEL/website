@@ -358,7 +358,7 @@ function focusMap(){
  if(!svg||!frame.clientWidth||!frame.clientHeight||!queue[index])return;
  const ratio=frame.clientWidth/frame.clientHeight;
  const x=queue[index];
- if(currentMode==='point'&&landBounds){
+ if((currentMode==='point'||currentMode==='choice')&&landBounds){
   // A city question shows its province and surrounding towns, not a tiny
   // Netherlands silhouette in a tall phone viewport. Province questions stay nationwide.
   const region=x.kind==='city'?provinceContext(x.province):null;
