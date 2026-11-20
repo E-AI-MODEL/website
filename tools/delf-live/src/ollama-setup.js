@@ -17,7 +17,7 @@ if(host) {
       <button type="button" class="action studio-action" id="ollamaNext">Verder</button>
     </div>
   `;
-  const before=host.querySelector('.system-section');
+  const before=host.querySelector('.studio-section');
   if(before)host.insertBefore(section,before);else host.append(section);
 
   const steps=[
@@ -32,7 +32,7 @@ if(host) {
   const server='http://localhost:11434/';
   let index=0;
   let serverReady=false, models=[], selected='', verified=false;
-  let busy=false, lastError='';
+  let busy=false, lastError='', modelReply='';
   let installAcknowledged=false;
   const stepsElement=section.querySelector('.ollama-steps');
   const contentElement=$('ollamaStepContent');
@@ -134,6 +134,8 @@ if(host) {
     if(index===4){
       contentElement.append(line('p','Te testen model: '+(selected||'geen')+'. De controle vraagt een Franse zin op. Dit test tekst, nog geen gesproken gesprek.','studio-support'));
       contentElement.append(action('Test Frans modelantwoord',checkAnswer));
+      if(modelReply) contentElement.append(line('blockquote',modelReply,'ollama-reply'));
+
       contentElement.append(line('p',verified?'Het model gaf tekst terug. De lokale verbinding is klaar voor verdere integratie.':'De verbinding is pas klaar na een ontvangen antwoord.','studio-support'));
       contentElement.append(line('p','De microfoon, het realtime gesprek en de Franse stem hebben elk een eigen test nodig. Dit is nog geen volledige stemgesprektest.','studio-support'));
     }
@@ -159,13 +161,14 @@ if(host) {
     if(busy||!selected)return;
     busy=true;verified=false;notify('Frans modelantwoord opvragen…');render();
     try{
-      const result=await probeLocalModel('ollama',server,selected);
+      const result=await probeLocalModel('ollama',server,selected,'Réponds en français, avec une phrase simple, pour féliciter les élèves qui ont obtenu leur diplôme DELF.');
       if(!result.answer.trim()) throw new Error('Geen antwoord');
       verified=true;
+      modelReply=result.answer;
       notify('Antwoord ontvangen van '+result.model+'. Ollama werkt vanuit Chrome.');
       window.dispatchEvent(new CustomEvent('cloud-ollama-ready',{detail:{endpoint:server,model:result.model}}));
     }catch(error){
-      verified=false;const diagnosis=classifyError(error,'ollama');
+      verified=false;modelReply='';const diagnosis=classifyError(error,'ollama');
       notify('Modeltest niet geslaagd ('+diagnosis.code+'). '+diagnosis.advice,true);
     }finally{busy=false;render();}
   }
