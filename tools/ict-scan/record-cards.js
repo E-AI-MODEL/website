@@ -223,6 +223,7 @@
     for(const input of $c('cardFormFields').querySelectorAll('[data-field]')){
       const field=input.dataset.field;
       const raw=input.value.trim();
+      if(!raw&&(r[field]===undefined||r[field]===null)){delete r[field];continue;}
       if(typeof r[field]==='boolean'){if(!['true','false'].includes(raw.toLowerCase()))throw Error(label(field)+' moet true of false zijn.');r[field]=raw.toLowerCase()==='true';}
       else if(typeof r[field]==='number'){if(raw!==''&&!Number.isFinite(Number(raw)))throw Error(label(field)+' moet een getal zijn.');r[field]=raw===''?null:Number(raw);}
       else r[field]=raw;
@@ -294,6 +295,7 @@
   }
   function open(type,id,edit=false){
     if($c('workspace').hidden)return;
+    if(model.editing&&!confirm('Niet-bewaarde invoer verlaten?'))return;
     const spec=specFor(type);
     if(!record(type,id)){feedback('Registratie niet gevonden.',true);return;}
     $c('cardEditor').hidden=false;$c('cardScrim').hidden=false;document.body.classList.add('record-card-open');
@@ -302,8 +304,12 @@
     showList();showPane();if(edit)startEdit();
   }
   function create(){
+    if(model.editing&&!confirm('Niet-bewaarde invoer verlaten?'))return;
+    if(!state.ready){feedback('Laad eerst de brongegevens vanuit GitHub voordat je een nieuwe kaart maakt.',true);return;}
     const type=$c('cardTypeFilter').value,spec=specFor(type),id=nextId(spec);
     const source={id,name:'',relations:[],frameworkLinks:[],sources:[],recordMeta:{sourceSystem:'Handmatige registratie',referenceDate:new Date().toISOString().slice(0,10)}};
+    if(type==='additionalCandidates')source.confirmed=false;
+    if(type==='connections')source.usageConfirmed=false;
     model.current={type,id};model.working=source;model.original=null;model.adding=true;model.editing=true;
     $c('cardEditor').hidden=false;$c('cardScrim').hidden=false;
     document.body.classList.add('record-card-open');
@@ -387,7 +393,7 @@
   $c('cardOpen').addEventListener('click',launch);
   $c('cardEditorClose').addEventListener('click',close);
   $c('cardScrim').addEventListener('click',close);
-  $c('cardTypeFilter').addEventListener('change',()=>{model.current=null;model.editing=false;model.working=null;showList();showPane();});
+  $c('cardTypeFilter').addEventListener('change',()=>{if(model.editing&&!confirm('Niet-bewaarde invoer verlaten?')){$c('cardTypeFilter').value=model.current.type;return;}model.current=null;model.editing=false;model.working=null;showList();showPane();});
   $c('cardSearch').addEventListener('input',showList);
   $c('cardNew').addEventListener('click',create);
   $c('cardNewFromRecord').addEventListener('click',create);
