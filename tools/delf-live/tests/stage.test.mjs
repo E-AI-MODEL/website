@@ -307,3 +307,12 @@ test('de pauzeknop stopt een vooraf opgenomen fragment zonder nieuwe stem aan te
   assert.match(block,/scriptedPlayer\.pause\(\)/);
   assert.match(block,/scriptedPlayer\.play\(\)/);
 });
+
+test('Franse scene-opnamen blijven zonder externe hosting lokaal in Safari',()=>{
+  const block=main.slice(main.indexOf('const scriptedDbName='),main.indexOf('function scriptedFeedback('));
+  assert.match(block,/indexedDB\.open\(scriptedDbName,1\)/);
+  assert.match(block,/tx\.objectStore\('audio'\)\.put\(file,index\)/);
+  assert.match(block,/tx\.objectStore\('audio'\)\.get\(index\)/);
+  assert.match(block,/!scriptedAudioChosen\[index\]/);
+  assert.match(main,/void restoreSceneAudio\(\)/);
+});
