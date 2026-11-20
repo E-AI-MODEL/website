@@ -75,6 +75,7 @@ class Page:
     content_hash: str | None
     grams: frozenset[str]
     word_count: int
+    source_hash: str
 
 
 def parse_page(root: Path, path: Path) -> Page:
@@ -105,6 +106,7 @@ def parse_page(root: Path, path: Path) -> Page:
         content_hash=hashlib.sha256(normal.encode()).hexdigest() if meaningful else None,
         grams=text_grams(tokens) if meaningful else frozenset(),
         word_count=len(tokens),
+        source_hash=hashlib.sha256(path.read_bytes()).hexdigest(),
     )
 
 
@@ -131,12 +133,34 @@ def known_pairs(path: Path) -> dict[tuple[str, str], str]:
     return known
 
 
+def variant_pairs(register: Path) -> dict[tuple[str, str], str]:
+    """Alleen bestaande, in het inhoudsregister benoemde aparte toepassingen."""
+    if not register.is_file():
+        raise ValueError(f"Publicatieregister ontbreekt: {register}")
+    payload = json.loads(register.read_text(encoding="utf-8"))
+    documented = {}
+    for collection in payload.get("collections", []):
+        members = [m.removeprefix("page:") for m in collection.get("members", [])]
+        if len(members) < 2 or not collection.get("review"):
+            continue
+        # Toevallige inhoudsgelijkheid mag niet worden weggewimpeld: alleen
+        # een als eigen uitvoering geregistreerde verzameling geeft context.
+        for a, b in itertools.combinations(members, 2):
+            documented[pair_key(a, b)] = (
+                f"{collection.get('title_nl', collection.get('id', 'Toepassing'))}: "
+                "afzonderlijke functies met gedeelde zichtbare bediening"
+            )
+    return documented
+
+
 def entry(kind: str, urls: list[str], explanation: str) -> dict[str, object]:
     return {"type": kind, "urls": urls, "explanation": explanation}
 
 
 def audit(root: Path, reviewed: dict[tuple[str, str], str],
-          deferred: frozenset[str] = frozenset()) -> dict:
+          deferred: frozenset[str] = frozenset(),
+          variants: dict[tuple[str, str], str] | None = None) -> dict:
+    variants = variants or {}
     if not deferred.issubset(PREVIEW_DEFERABLE):
         raise ValueError("Onbekende uitgestelde pagina in publicatiecontrole")
     locations = sitemap_urls(root)
@@ -194,8 +218,15 @@ def audit(root: Path, reviewed: dict[tuple[str, str], str],
             key = pair_key(a.url, b.url)
             reported_pairs.add(key)
             if a.url in active and b.url in active:
-                blocking.append(entry("exact_dezelfde_pagina", list(key),
-                                      "De inhoud van beide gepubliceerde pagina's is gelijk"))
+                if key in variants and a.source_hash != b.source_hash:
+                    notes.append(entry("afzonderlijke_toepassingsvarianten", list(key),
+                                       variants[key] + "; de daadwerkelijke bronbestanden verschillen"))
+                elif key in reviewed:
+                    review.append(entry("bekende_dubbeling_nog_open", list(key),
+                                        "Dezelfde zichtbare pagina-inhoud. " + reviewed[key]))
+                else:
+                    blocking.append(entry("exact_dezelfde_pagina", list(key),
+                                          "De inhoud van beide gepubliceerde pagina's is gelijk"))
             else:
                 review.append(entry("dubbele_directe_route", list(key),
                                     "Dezelfde inhoud staat ook op een URL buiten de sitemap"))
@@ -290,13 +321,16 @@ def main() -> int:
     parser.add_argument("--root", type=Path, default=Path("site-build"))
     parser.add_argument("--known", type=Path,
                         default=Path("catalog/publication-page-overlaps.json"))
+    parser.add_argument("--register", type=Path,
+                        default=Path("catalog/website-register.json"))
     parser.add_argument("--deferred", action="append", default=[],
                         help="Alleen in snelle PR-proef voor uitgestelde anatomiepagina's")
     parser.add_argument("--json", type=Path)
     parser.add_argument("--summary", type=Path)
     args = parser.parse_args()
     try:
-        result = audit(args.root, known_pairs(args.known), frozenset(args.deferred))
+        result = audit(args.root, known_pairs(args.known), frozenset(args.deferred),
+                       variant_pairs(args.register))
     except (OSError, ValueError, ElementTree.ParseError) as e:
         print("Controle dubbele pagina's kon niet worden afgerond:", e, file=sys.stderr)
         return 1
