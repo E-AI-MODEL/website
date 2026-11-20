@@ -350,81 +350,148 @@ async function prepareTranslation() {
 $('prepareTranslate').onclick = prepareTranslation;
 let microphoneCheck = null;
 let microphoneCheckTimer = null;
+let microphoneTestGeneration = 0;
+let microphonePreparing = false;
+function microphoneAdvice(error) {
+  const code = String(error?.name || error?.error || error || '').toLowerCase();
+  if (/notallowed|permissiondenied|not-allowed|service-not-allowed/.test(code))
+    return 'Chrome heeft geen toegang. Klik op het icoon links van het webadres, sta Microfoon toe en laad de pagina opnieuw.';
+  if (/notfound|devicesnotfound|audio-capture/.test(code))
+    return 'Geen microfoon gevonden. Controleer de invoer bij macOS > Systeeminstellingen > Geluid.';
+  if (/notreadable|trackstarterror/.test(code))
+    return 'De microfoon is bezet of niet beschikbaar. Sluit andere programma’s die de microfoon gebruiken.';
+  if (/network/.test(code))
+    return 'Chrome bereikt de spraakherkenningsdienst niet. De microfoon kan wel werken, maar er komt geen Nederlandse tekst terug. Controleer netwerk en browserinstellingen.';
+  if (/no-speech/.test(code))
+    return 'Er zijn geen woorden herkend. Controleer de gekozen microfoon en spreek duidelijk.';
+  if (/timeout|aborted/.test(code))
+    return 'De spraakherkenning reageert niet. Controleer de microfoontoestemming, je netwerk en probeer opnieuw.';
+  return 'Controleer de microfoon in Chrome en probeer de spraaktest opnieuw.';
+}
 function stopMicrophoneCheck() {
+  microphoneTestGeneration++;
+  microphonePreparing = false;
   if (microphoneCheckTimer) { clearTimeout(microphoneCheckTimer); microphoneCheckTimer = null; }
   const previous = microphoneCheck;
   microphoneCheck = null;
   if (previous) {
-    previous.onstart = null;
-    previous.onresult = null;
-    previous.onend = null;
-    previous.onerror = null;
+    previous.onstart = null; previous.onresult = null;
+    previous.onend = null; previous.onerror = null;
     try { previous.abort(); } catch {}
   }
-  $('prepareMic').textContent = 'Nederlandse spraak testen';
+  $('prepareMic').textContent = 'Test microfoon';
 }
-$('prepareMic').onclick = () => {
-  if (microphoneCheck) {
+$('prepareMic').onclick = async () => {
+  if (microphonePreparing || microphoneCheck) {
     stopMicrophoneCheck();
-    feedback('microphoneStatus','Test gestopt.','');
+    feedback('microphoneStatus','Spraaktest gestopt.');
+    componentStatus('microphoneStatus','idle','Test gestopt');
     return;
   }
   if (phase !== 'intro') {
     feedback('microphoneStatus','Stop eerst de voorstelling. Daarna kun je de microfoon testen.','bad');
     return;
   }
-  const SR = globalThis.SpeechRecognition || globalThis.webkitSpeechRecognition;
+  const generation = ++microphoneTestGeneration;
+  microphonePreparing = true;
+  $('prepareMic').textContent = 'Stop spraaktest';
+  feedback('microphoneStatus','Controleert de microfoontoegang…');
+  componentStatus('microphoneStatus','busy','Microfoontoegang controleren');
+  const setDeviceMessage = message => {
+    if (generation === microphoneTestGeneration) $('microphoneDeviceStatus').textContent = message;
+  };
+  if (!window.isSecureContext || !navigator.mediaDevices?.getUserMedia) {
+    microphonePreparing = false;
+    setDeviceMessage('Microfoontoegang niet beschikbaar.');
+    const reason = new Error('De browser heeft geen beveiligde microfoontoegang.');
+    feedback('microphoneStatus','Open deze pagina via HTTPS in Chrome. Microfoontoegang is hier niet beschikbaar.','bad');
+    componentStatus('microphoneStatus','error','Geen browsertoegang',reason);
+    $('prepareMic').textContent = 'Test microfoon';
+    return;
+  }
+  // Test de fysieke microfoon apart van Web Speech. Geen opname of audio wordt bewaard.
+  let stream;
+  try {
+    const request = navigator.mediaDevices.getUserMedia({audio:true});
+    const timeout = new Promise((_,reject) => {
+      microphoneCheckTimer = setTimeout(() => reject(new Error('Timeout microfoontoestemming')),12000);
+    });
+    stream = await Promise.race([request,timeout]);
+    if (microphoneCheckTimer) {clearTimeout(microphoneCheckTimer);microphoneCheckTimer=null;}
+    if (generation !== microphoneTestGeneration) { stream.getTracks().forEach(track=>track.stop()); return; }
+    const track = stream.getAudioTracks()[0];
+    setDeviceMessage('Microfoon bereikbaar: '+(track?.label || 'audio-invoer')+'. Geen audio opgeslagen.');
+    stream.getTracks().forEach(track=>track.stop());
+  } catch(error) {
+    if (generation !== microphoneTestGeneration) return;
+    microphonePreparing = false;
+    $('prepareMic').textContent = 'Test microfoon';
+    setDeviceMessage('Microfoontoegang mislukt.');
+    feedback('microphoneStatus',microphoneAdvice(error),'bad');
+    componentStatus('microphoneStatus','error','Microfoontoegang mislukt',error);
+    return;
+  } finally {
+    stream?.getTracks().forEach(track=>track.stop());
+  }
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SR) {
-    feedback('microphoneStatus','Deze browser heeft geen ondersteunde spraakherkenning. Toestemming voor de microfoon alleen is niet genoeg.','bad');
-    componentStatus('microphoneStatus','unavailable','Spraakherkenning ontbreekt',new Error('Geen SpeechRecognition'));
+    microphonePreparing = false;
+    $('prepareMic').textContent='Test microfoon';
+    feedback('microphoneStatus','De microfoon is bereikbaar. Deze Chrome-versie biedt geen spraakherkenning.','bad');
+    componentStatus('microphoneStatus','unavailable','Spraakherkenning ontbreekt',new Error('SpeechRecognition ontbreekt'));
     return;
   }
   const instance = new SR();
   microphoneCheck = instance;
+  microphonePreparing = false;
   let heard = false;
   instance.lang = 'nl-NL';
   instance.continuous = false;
   instance.interimResults = true;
   instance.onstart = () => {
-    if (microphoneCheck !== instance) return;
-    $('prepareMic').textContent = 'Stop spraaktest';
-    feedback('microphoneStatus','Luistert naar Nederlands… Spreek een korte zin uit.');
-    componentStatus('microphoneStatus','busy','Luistert, nog geen woorden herkend');
+    if (generation !== microphoneTestGeneration || microphoneCheck !== instance) return;
+    feedback('microphoneStatus','Microfoon werkt. Chrome luistert nu naar Nederlands. Spreek een korte zin.');
+    componentStatus('microphoneStatus','busy','Spraakherkenning luistert');
   };
   instance.onresult = event => {
-    if (microphoneCheck !== instance) return;
-    const words = Array.from(event.results).map(result => result[0]?.transcript || '').join(' ').trim();
+    if (generation !== microphoneTestGeneration || microphoneCheck !== instance) return;
+    const words = Array.from(event.results).map(result=>result[0]?.transcript||'').join(' ').trim();
     if (!words) return;
     heard = true;
-    const final = Array.from(event.results).every(result => result.isFinal);
-    feedback('microphoneStatus', (final ? 'Herkend Nederlands: ' : 'Herkenning bezig: ') + words, final ? 'good' : '');
+    const final = Array.from(event.results).every(result=>result.isFinal);
+    feedback('microphoneStatus',(final?'Herkend: ':'Herkenning: ')+words,final?'good':'');
     componentStatus('microphoneStatus','ready','Nederlandse woorden herkend');
   };
   instance.onerror = event => {
-    if (microphoneCheck !== instance) return;
-    const msg = event.error || 'onbekende fout';
-    feedback('microphoneStatus','Spraakherkenning mislukt ('+ msg +'). De toestemmingspop-up bewijst alleen toegang tot de microfoon.','bad');
-    componentStatus('microphoneStatus','error','Spraakherkenning mislukt',new Error(msg));
+    if (generation !== microphoneTestGeneration || microphoneCheck !== instance) return;
+    const code = event.error || 'onbekend';
     stopMicrophoneCheck();
+    feedback('microphoneStatus','Spraakherkenning: '+code+'. '+microphoneAdvice(code),'bad');
+    componentStatus('microphoneStatus','error','Spraakherkenning mislukt',new Error(code));
   };
   instance.onend = () => {
-    if (microphoneCheck !== instance) return;
+    if (generation !== microphoneTestGeneration || microphoneCheck !== instance) return;
     stopMicrophoneCheck();
-    if (!heard) {feedback('microphoneStatus','De microfoon is gestopt, maar er zijn geen woorden herkend. Probeer het opnieuw.','bad');componentStatus('microphoneStatus','error','Geen woorden herkend',new Error('Geen spraak ontvangen'));}
+    if (!heard) {
+      feedback('microphoneStatus','De microfoon werkt, maar Chrome heeft geen woorden herkend. '+microphoneAdvice('no-speech'),'bad');
+      componentStatus('microphoneStatus','error','Geen woorden herkend',new Error('no-speech'));
+    }
   };
-  try {
-    instance.start();
-    $('prepareMic').textContent = 'Stop spraaktest';
-    feedback('microphoneStatus','Toegang en spraakherkenning starten…');
-    microphoneCheckTimer = setTimeout(() => {
-      if (microphoneCheck !== instance) return;
-      stopMicrophoneCheck();
-      if (!heard) {feedback('microphoneStatus','Geen Nederlandse woorden ontvangen binnen 12 seconden.','bad');componentStatus('microphoneStatus','error','Spraakherkenning reageert niet',new Error('Timeout'));}
-    },12000);
-  } catch (error) {
+  microphoneCheckTimer = setTimeout(() => {
+    if (generation !== microphoneTestGeneration || microphoneCheck !== instance) return;
     stopMicrophoneCheck();
-    feedback('microphoneStatus','Kon de spraaktest niet starten: ' + error.message,'bad');
-    componentStatus('microphoneStatus','error','Microfoontest kon niet starten',error);
+    if (!heard) {
+      feedback('microphoneStatus','De microfoon is bereikbaar, maar spraakherkenning reageert niet. '+microphoneAdvice('timeout'),'bad');
+      componentStatus('microphoneStatus','error','Spraakherkenning reageert niet',new Error('Timeout'));
+    }
+  },15000);
+  try {
+    feedback('microphoneStatus','Chrome-spraakherkenning starten…');
+    instance.start();
+  } catch(error) {
+    stopMicrophoneCheck();
+    feedback('microphoneStatus','Spraakherkenning kon niet starten. '+microphoneAdvice(error),'bad');
+    componentStatus('microphoneStatus','error','Spraakherkenning kon niet starten',error);
   }
 };
 
