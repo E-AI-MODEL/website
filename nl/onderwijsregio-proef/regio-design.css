@@ -192,3 +192,19 @@ footer{padding-top:44px;padding-bottom:32px}
 .knowledge #faq details{padding-inline:11px}
 .topics .grid .card:nth-child(2){margin-top:23px}
 }
+
+/* contrastcorrectie pie: matglas blijft glas, tekst wordt niet doorschijnend. */
+.side-panel,.prefs{background:linear-gradient(142deg,rgba(254,255,251,.96),rgba(230,246,235,.92) 65%,rgba(253,255,251,.97))}
+.panel.side-help{background:linear-gradient(135deg,rgba(254,255,252,.97),rgba(229,243,234,.93))}
+.pie:before{
+ background:radial-gradient(circle at 32% 27%,rgba(255,255,255,.96),rgba(226,243,231,.90) 58%,rgba(251,255,250,.96));
+ -webkit-backdrop-filter:blur(27px) saturate(150%);backdrop-filter:blur(27px) saturate(150%);
+}
+.pie svg g:not(#wheelClose) path{fill:#edf7ef!important;fill-opacity:.97!important;stroke:#fff;stroke-width:2.5}
+.pie svg g:not(#wheelClose):hover path,.pie svg g:not(#wheelClose):focus path{fill:#d7ecdf!important;fill-opacity:1!important;stroke:#5d9e88;stroke-width:3}
+.pie svg g text,.pie svg g:hover text,.pie svg g:focus text{fill:#17463c!important}
+.pie #wheelClose circle{fill:#fafdfa!important;fill-opacity:1!important}
+@media(prefers-reduced-transparency:reduce),(prefers-contrast:more){
+.side-panel,.prefs,.panel.side-help{background:#f5fbf6!important}
+.pie:before{background:#edf7ef!important;-webkit-backdrop-filter:none;backdrop-filter:none}
+}
