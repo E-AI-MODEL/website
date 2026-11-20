@@ -71,8 +71,8 @@
       <section class="page-head"><div><p class="eyebrow" id="sectionEyebrow">SCHOOLBREED OVERZICHT</p><h1 id="sectionTitle">Applicatielandschap</h1><p id="sectionIntro" class="page-intro">Toepassingen, koppelingen, beheer en AI op basis van de ingelezen bronnen.</p></div><div class="head-status"><span class="status-circle"></span><span id="statusText">Nog geen bronbestanden</span></div></section>
       <div class="empty-state" id="emptyState">
         <div class="empty-illustration"><div class="empty-square s1"></div><div class="empty-square s2"></div><div class="empty-square s3"></div><div class="empty-line"></div></div>
-        <h2>Begin met de bestanden die er al zijn.</h2>
-        <p>Open de applicatie-inventaris, een Entra-export of de ICT-registratie. Het overzicht wordt opgebouwd uit de bestanden die je kiest, zonder vooraf ingevulde cijfers.</p>
+        <h2>Inventarisatie 2026</h2>
+        <p>De geregistreerde gegevens worden uit GitHub geladen. Werkt de verbinding niet, open dan Bronnen om opnieuw te synchroniseren of een bestand toe te voegen.</p>
         <button id="emptyImport" class="button primary large">Bestanden selecteren</button>
         <p class="empty-small">Ondersteund: Excel (.xlsx), CSV, JSON en Word (.docx). PDF-bestanden worden als bron geregistreerd; hun inhoud wordt nog niet automatisch gecontroleerd.</p>
       </div>
@@ -151,7 +151,7 @@
             <label class="github-sync-replace"><input id="githubReplace" type="checkbox" checked> Huidige gegevens vervangen na een geslaagde download</label>
             <div class="github-sync-actions"><button type="button" class="monitor-button primary" id="githubSyncStart">Sync data met GitHub</button><button type="button" class="monitor-button subtle" id="githubSyncCancel" hidden>Annuleren</button></div>
           </div>
-          <div id="githubSyncStatus" class="github-sync-status" role="status" aria-live="polite">Selecteer de repository en de map met schoolbronnen. GitHub-inhoud wordt pas opgehaald na een klik.</div>
+          <div id="githubSyncStatus" class="github-sync-status" role="status" aria-live="polite">De openbare bronbestanden worden bij de eerste opening opgehaald. Je kunt hier ook handmatig synchroniseren.</div>
           <div id="githubSyncSummary" class="github-sync-summary" hidden></div>
           <p class="github-sync-note">Een privé-repository vraagt een GitHub-token met uitsluitend leesrechten voor bestanden. De token wordt niet opgeslagen of geëxporteerd. De standaardmap ict-scan/bronnen moet bestaan en bronbestanden bevatten.</p>
         </article>
