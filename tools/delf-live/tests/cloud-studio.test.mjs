@@ -94,9 +94,11 @@ test('menu-inhoud komt uit mist en verdampt ook weer bij sluiten',()=>{
   assert.ok(css.includes('@keyframes cloud-disclosure-appear'));
   assert.ok(css.includes('@keyframes cloud-disclosure-evaporate'));
   assert.ok(css.includes('@keyframes cloud-page-approach'));
-  assert.ok(shell.includes('details.classList.add('+"'mist-closing'"+')'));
-  assert.ok(shell.includes('details.open = false;'));
-  assert.ok(shell.includes('clearTimeout(previous)'));
+  assert.ok(shell.includes("detail.classList.add('is-dissolving')"));
+  assert.ok(shell.includes('detail.open = false;'));
+  assert.ok(shell.includes('body.className = \'mist-detail-body\''));
+  assert.ok(css.includes('@keyframes mist-detail-in'));
+  assert.ok(css.includes('@keyframes mist-detail-out'));
   assert.ok(css.includes('@media(prefers-reduced-motion:reduce)'));
 });
 
@@ -108,4 +110,11 @@ test('snelle inactiviteit laat alleen lichte schim van podiumtekst zien',()=>{
   assert.ok(css.includes('opacity:.095;'));
   assert.ok(css.includes('filter:blur(4px)'));
   assert.ok(css.includes('.studio-scroll.is-idle'));
+});
+
+test('één animatie per uitklapmenu en geen dubbele sluiting',()=>{
+  const occurrences = shell.match(/querySelectorAll\('\.studio-disclosure'\)/g) || [];
+  assert.equal(occurrences.length,1);
+  assert.ok(shell.includes("detail.classList.add('is-dissolving')"));
+  assert.ok(!shell.includes('const closingDetails = new WeakMap()'));
 });
