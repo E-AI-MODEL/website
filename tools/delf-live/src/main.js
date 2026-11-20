@@ -923,6 +923,7 @@ async function streamFrench() {
       }
       t += 0.24;
       await stream.done;
+      if (controller.signal.aborted || phase !== 'french') return;
       frenchSegmentIndex = i + 1;
       updateSpeechProgress();
     }
