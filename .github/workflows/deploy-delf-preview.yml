@@ -18,7 +18,7 @@ jobs:
       - name: Checkout tested DELF version
         uses: actions/checkout@v4
         with:
-          ref: 2bbdff04f1a16042785450d72ab63a48823d71b1
+          ref: 446e5e24929521f70c94092bd07cf959a0c92794
 
       - name: Node.js
         uses: actions/setup-node@v4
