@@ -106,7 +106,7 @@
   }
   function snapshotState() {
     const maps={};
-    for(const k of ['apps','ai','connections','checks','devices','parts','dpia','aiControls','policyDocs','signals'])maps[k]=new Map(state[k]);
+    for(const k of ['apps','ai','connections','checks','devices','parts','dpia','aiControls','policyDocs','signals','candidates','licenseReview'])maps[k]=new Map(state[k]);
     return {maps,sources:state.sources.slice(),docs:state.docs.slice(),derived:Array.isArray(state.derived)?state.derived.slice():[],ready:state.ready,view:state.view,metadata:state.metadata||null};
   }
   function restoreState(backup) {
@@ -120,7 +120,7 @@
     renderAll();
   }
   function resetWorkingState() {
-    for(const name of ['apps','ai','connections','checks','devices','parts','dpia','aiControls','policyDocs','signals'])state[name].clear();
+    for(const name of ['apps','ai','connections','checks','devices','parts','dpia','aiControls','policyDocs','signals','candidates','licenseReview'])state[name].clear();
     state.sources=[];state.docs=[];state.derived=[];state.ready=false;state.metadata=null;
   }
   async function syncGitHub() {
