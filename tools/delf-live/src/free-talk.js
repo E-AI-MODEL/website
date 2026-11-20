@@ -1,5 +1,5 @@
 // EAIspeak: vrij spreken, met apart gekozen model, taal en stem.
-import {BROWSER_MODELS,localReply} from './browser-llm.js';
+import {localReply,interruptBrowserReply} from './browser-llm.js';
 const $=id=>document.getElementById(id);
 const speak=$('freeTalkSpeak'),stop=$('freeTalkStop'),send=$('freeTalkSend'),play=$('freeTalkPlay');
 const status=$('freeTalkStatus'),heard=$('freeTalkHeard'),answer=$('freeTalkAnswer'),typed=$('freeTalkTyped');
@@ -25,6 +25,7 @@ function cancelSound(){
 }
 function stopConversation(){
   turn++;
+  interruptBrowserReply();
   const rec=recognition;recognition=null;
   if(rec){rec.onresult=null;rec.onerror=null;rec.onend=null;try{rec.abort();}catch{}}
   cancelSound();ready();
