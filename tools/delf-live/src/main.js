@@ -1141,30 +1141,25 @@ function reserveTakeBack(){
   else goReset();
 }
 async function prepareShow(){
-  if(phase!=='intro') {feedback('runtimeStatus','Druk eerst op Opnieuw. Daarna kun je voorbereiden.');return;}
+  if(phase!=='intro') {feedback('runtimeStatus','Druk eerst op Opnieuw om de vertaling opnieuw voor te bereiden.');return;}
   const button=$('prepareShow');
   button.disabled=true;
   const status=$('showReadyStatus');
   try{
-    status.textContent='Vertaling laden…';
+    status.textContent='Nederlandse spraak naar Franse tekst laden…';
     if($('translationEngine').value==='chrome' && typeof globalThis.Translator==='undefined') $('translationEngine').value='onnx';
     const translated=await prepareTranslation();
-    status.textContent=translated?'Franse stem laden…':'Vertaling niet beschikbaar. Franse stem proberen…';
-    if(!french) await $('loadPublicFrench').onclick();
-    if(translated&&french){
-      status.textContent='Klaar. Start Nederlands of Franse spreker.';
-      feedback('runtimeStatus','Alles voorbereid. Start Nederlands of de Franse spreker.','good');
-    }else if(french){
-      status.textContent='Franse stem klaar. Live vertaling niet beschikbaar.';
-      feedback('runtimeStatus','De Franse spreker is beschikbaar. Live vertaling nog niet.','bad');
-    }else{
-      status.textContent='Voorbereiding niet volledig. Bekijk Taal of Stem.';
-      feedback('runtimeStatus','Voorbereiding niet volledig. Bekijk de melding bij Taal of Stem.','bad');
+    if(translated) {
+      status.textContent='Franse ondertiteling klaar. Kies twee opnamen en start de voorstelling.';
+      feedback('runtimeStatus','Franse ondertiteling klaar. De opgenomen scènes hebben geen stemmodel nodig.','good');
+    } else {
+      status.textContent='Vertaling niet beschikbaar. Kijk bij Instellingen.';
+      feedback('runtimeStatus','De vertaling kon niet laden. Kijk bij Instellingen.','bad');
     }
-  }catch(error){
-    status.textContent='Voorbereiding mislukt: '+String(error?.message||error);
+  } catch(error) {
+    status.textContent='Vertaling laden mislukt: '+String(error?.message||error);
     reportError('Voorbereiden: '+String(error?.message||error));
-  }finally{button.disabled=false;}
+  } finally {button.disabled=false;}
 }
 $('prepareShow').addEventListener('click',prepareShow);
 function goStart() {
