@@ -122,7 +122,7 @@ test('installatiewizard begeleidt zonder automatisch uitvoeren of downloaden',()
   assert.match(html,/src\/ollama-setup\.js/);
   assert.match(wizard,/Stap '\+\(index\+1\)\+' van '/);
   assert.match(wizard,/inspectOllamaServer\(server\)/);
-  assert.match(wizard,/probeLocalModel\('ollama',server,selected\)/);
+  assert.match(wizard,/probeLocalModel\('ollama',server,selected,/);
   assert.match(wizard,/ollama pull qwen3:4b/);
   assert.match(wizard,/launchctl setenv OLLAMA_ORIGINS/);
   assert.match(wizard,/navigator.clipboard.writeText/);
