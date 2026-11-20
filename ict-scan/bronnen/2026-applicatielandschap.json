@@ -15,7 +15,8 @@
       "76 aanvullende kandidaten zijn niet automatisch gebruikte toepassingen",
       "Entra-registratie bewijst geen actuele gegevensuitwisseling",
       "Leveranciersfuncties en lokale AI-activering zijn apart beoordeeld",
-      "Historische licentiebedragen bewijzen geen actief contract in 2026"
+      "Historische licentiebedragen bewijzen geen actief contract in 2026",
+      "Vermoedelijke productfamilies worden niet als vastgestelde parent/child-relaties geteld."
     ],
     "sourceFiles": [
       "Emmauscollege_nulmeting_gerepareerd_Excel_2026.xlsx",
@@ -160,7 +161,7 @@
       "dpiaStatus": "? Lokale beoordeling controleren",
       "sourceDescription": "Broninventaris, rij 26; stand november 2026",
       "reviewAction": "Controleer gebruiker, proceseigenaar, koppelingen en privacydocumentatie",
-      "parent": "Microsoft 365",
+      "parent": "",
       "sourceFields": {
         "16": "12",
         "34": "10",
@@ -192,7 +193,9 @@
       "sources": [
         "Emmauscollege_schoolbreed_applicatielandschap_en_AI_2026.xlsx / Applicaties rij 8",
         "Emmauscollege_nulmeting_gerepareerd_Excel_2026.xlsx / Applicatieoverzicht 2026 rij 25"
-      ]
+      ],
+      "suggestedParent": "Microsoft 365",
+      "suggestedParentStatus": "Niet bevestigd uit de bron"
     },
     {
       "id": "APP-035",
@@ -212,7 +215,7 @@
       "dpiaStatus": "? Lokale beoordeling controleren",
       "sourceDescription": "Broninventaris, rij 40; stand november 2026",
       "reviewAction": "Controleer gebruiker, proceseigenaar, koppelingen en privacydocumentatie",
-      "parent": "Microsoft 365",
+      "parent": "",
       "sourceFields": {
         "16": "15",
         "34": "35",
@@ -244,7 +247,9 @@
       "sources": [
         "Emmauscollege_schoolbreed_applicatielandschap_en_AI_2026.xlsx / Applicaties rij 9",
         "Emmauscollege_nulmeting_gerepareerd_Excel_2026.xlsx / Applicatieoverzicht 2026 rij 39"
-      ]
+      ],
+      "suggestedParent": "Microsoft 365",
+      "suggestedParentStatus": "Niet bevestigd uit de bron"
     },
     {
       "id": "APP-058",
