@@ -118,6 +118,8 @@ jobs:
           python - <<'PY'
           import hashlib
           import json
+          import re
+          import time
           from pathlib import Path
           from urllib.request import Request, urlopen
 
@@ -138,16 +140,42 @@ jobs:
           assert manifest['sourceMeshCount'] == 34
           assert len(manifest['parts']) == 34
 
+          # The browser loads heart.js with this release-specific query value.
+          # Verify the same URL, not a potentially older unversioned CDN response.
+          built_page = (local / 'index.html').read_text(encoding='utf-8')
+          release_match = re.search(r'\./heart\.js\?v=([0-9a-f]{12})', built_page)
+          assert release_match, 'Missing versioned Hartslaglab script in release HTML'
+          release = release_match.group(1)
           for name in ('heart.js', 'atlas-heart-rich.json', 'atlas-heart-rich.bin'):
               expected = hashlib.sha256((local / name).read_bytes()).hexdigest()
-              with release_open('https://eaimodel.nl/' + relative + name, timeout=70) as response:
-                  assert response.status == 200, name
-                  hasher = hashlib.sha256()
-                  while chunk := response.read(1024 * 1024):
-                      hasher.update(chunk)
-                  actual = hasher.hexdigest()
-              assert actual == expected, f'Live Hartslaglab verschilt: {name}'
-              print(f'Hartslaglab live gecontroleerd: {name}, sha256={actual}')
+              url = 'https://eaimodel.nl/' + relative + name + '?v=' + release
+              last_problem = ''
+              for attempt in range(4):
+                  try:
+                      with release_open(url, timeout=70) as response:
+                          assert response.status == 200, name
+                          hasher = hashlib.sha256()
+                          size = 0
+                          while chunk := response.read(1024 * 1024):
+                              size += len(chunk)
+                              hasher.update(chunk)
+                          actual = hasher.hexdigest()
+                          encoding = response.headers.get('Content-Encoding', 'identity')
+                      if actual == expected:
+                          print(f'Hartslaglab live: {name}, bytes={size}, sha256={actual}, release={release}')
+                          last_problem = ''
+                          break
+                      last_problem = (
+                          f'{name}: expected={expected}, got={actual}, bytes={size}, '
+                          f'encoding={encoding}, url={url}'
+                      )
+                  except Exception as exc:
+                      last_problem = f'{name}: request failed: {type(exc).__name__}: {exc}'
+                  print(f'Live Hartslaglab check {attempt+1}/4: {last_problem}', flush=True)
+                  if attempt < 3:
+                      time.sleep(4)
+              if last_problem:
+                  raise AssertionError('Live Hartslaglab verschilt: ' + last_problem)
           PY
       - name: Verify live anatomical models
         run: |
