@@ -20,7 +20,7 @@ function state(message, kind=''){
   status.classList.toggle('bad',kind==='error');
   status.classList.toggle('good',kind==='ready');
 }
-function ready(){speak.disabled=false;send.disabled=false;pending=false;}
+function ready(){speak.disabled=false;speak.textContent='Praat';send.disabled=false;pending=false;}
 function cancelAudio(){
   if(!audio)return;
   audio.onended=null;audio.onerror=null;
