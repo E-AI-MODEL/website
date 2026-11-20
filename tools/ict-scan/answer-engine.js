@@ -139,13 +139,13 @@
       const rows=apps.filter(x=>unknown(x.owner));
       return result('list',rows.length+' van '+apps.length+' basisregistraties hebben nog geen vastgestelde verantwoordelijke. Bijvoorbeeld: '+shortList(rows)+'.',rows.map(x=>entry('apps',x)),'Open controles',recordSources(rows));
     }
-    if(/\b(printer|printers|printsoftware|printen|afdruk|afdrukken|kopieren|kopieer)\b/.test(q)){
+    if(/\b(printer|printers|printersoftware|printsoftware|printen|afdruk|afdrukken|afdruksoftware|kopieren|kopieer)\b/.test(q)){
       const rows=apps.filter(x=>/\b(print|afdruk|uniflow|kuario|printer|kopieer)/.test(norm([x.name,x.description,x.process].join(' '))));
-      return result('list',rows.length?'Voor printen of afdrukken zijn '+rows.length+' basisregistraties gevonden: '+shortList(rows)+'. De actuele inzet op school is niet per toepassing bevestigd.':'Er is geen print- of afdrukregistratie gevonden in deze bronstand.',rows.map(x=>entry('apps',x)),rows.length?'Geregistreerd':'Geen bronmatch',recordSources(rows));
+      return result('list',rows.length?'Bij printen en afdrukken staan in het overzicht: '+shortList(rows)+'. Of alle voorzieningen nu op school worden gebruikt, is nog niet bevestigd.':'Ik kan geen print- of afdruksoftware vinden in de huidige gegevens.',rows.map(x=>entry('apps',x)),rows.length?'Uit de inventarisatie':'Geen bronmatch',recordSources(rows));
     }
     if(/\b(telefonie|telefoon|bellen|bereikbaarheid|telefoniesoftware)\b/.test(q)){
       const rows=apps.filter(x=>/\b(telefonie|telefoon|bereikbaarheid|3cx)\b/.test(norm([x.name,x.description].join(' '))));
-      return result('list',rows.length?'Voor telefonie en bereikbaarheid staan '+rows.length+' registraties: '+shortList(rows)+'. Het daadwerkelijke schoolgebruik moet apart worden bevestigd.':'Er is geen telefonievoorziening gevonden in deze bronstand.',rows.map(x=>entry('apps',x)),rows.length?'Geregistreerd':'Geen bronmatch',recordSources(rows));
+      return result('list',rows.length?'Bij telefonie en bereikbaarheid staat in het overzicht: '+shortList(rows)+'. Het daadwerkelijke schoolgebruik is nog niet voor elke voorziening bevestigd.':'Ik kan geen telefoniesoftware vinden in de huidige gegevens.',rows.map(x=>entry('apps',x)),rows.length?'Uit de inventarisatie':'Geen bronmatch',recordSources(rows));
     }
     if(/\b(ai|kunstmatige|copilot)\b/.test(q)){
       const ids=new Set(data.ai.map(x=>x.parentId).filter(Boolean));
