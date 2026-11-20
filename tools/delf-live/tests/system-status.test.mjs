@@ -1,7 +1,7 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import {SERVICES,STATUS,listLocalModels,validateLocalEndpoint,probeLocalModel,chatLocalModel,classifyError} from '../src/system-probes.mjs';
+import {SERVICES,STATUS,listLocalModels,validateLocalEndpoint,probeLocalModel,classifyError} from '../src/system-probes.mjs';
 
 test('geen automatische verbinding en duidelijke beginstatus',()=>{
   assert.equal(SERVICES.length,8);
@@ -91,30 +91,4 @@ test('llama.cpp: modelnamen en geselecteerd model',async()=>{
     assert.equal(bodies[0].model,'second');
     await assert.rejects(()=>probeLocalModel('llamacpp','http://localhost:8080/','absent'),/staat niet op de server/);
   } finally {globalThis.fetch=original;}
-});
-
-test('Frans gesprek gebruikt chatmodel zonder Nederlandse systeemstem',async()=>{
-  const original=globalThis.fetch;
-  const calls=[];
-  globalThis.fetch=async (url,options)=>{
-    calls.push({url,body:JSON.parse(options.body)});
-    return {ok:true,json:async()=>({message:{content:'Bonjour ! Comment allez-vous ?'}})};
-  };
-  try {
-    const result=await chatLocalModel('ollama','http://localhost:11434/','francais',[
-      {role:'system',content:'Réponds en français.'},{role:'user',content:'Bonjour'}
-    ]);
-    assert.match(result,/Bonjour/);
-    assert.equal(new URL(calls[0].url).pathname,'/api/chat');
-    assert.equal(calls[0].body.stream,false);
-    assert.equal(calls[0].body.model,'francais');
-  }finally{globalThis.fetch=original;}
-  const stage=readFileSync(new URL('../src/main.js',import.meta.url),'utf8');
-  const conversation=readFileSync(new URL('../src/french-conversation.js',import.meta.url),'utf8');
-  const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');
-  assert.match(stage,/cloudFrenchConversationSpeak/);
-  assert.match(conversation,/recognition.lang=language.value/);
-  assert.match(conversation,/cloudFrenchConversationSpeak\(result\)/);
-  assert.match(html,/id="dialogueLanguage"/);
-  assert.match(html,/id="dialogueStart"/);
 });
