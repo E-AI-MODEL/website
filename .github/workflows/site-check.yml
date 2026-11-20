@@ -18,6 +18,8 @@ jobs:
         run: node --test tests/test_projecthulp.mjs tests/test_eaigit_help.mjs tests/test_eaigit_single_file.mjs
       - name: Check navigation and page structure
         run: node scripts/check-site.mjs
+      - name: Controleer scheiding tussen website- en TOPO-publicatie
+        run: python3 -m unittest discover -s tests -p 'test_publication_ownership.py' -v
       - name: Check Science Observatory and observatory navigation
         run: node --test tests/test_science_observatory_navigation.mjs
       - name: Check physics reference values and drawings
