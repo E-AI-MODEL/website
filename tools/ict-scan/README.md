@@ -4,7 +4,7 @@ Een zelfstandige pagina van de EAI-website. Geen bronbestanden, tokens, wachtwoo
 
 ## Gebruik
 
-De route staat niet in de gewone website-navigatie of de sitemap. De pagina begint met de standaard 404-weergave. Klik op de eerste 4 en voer de afgesproken toegangsnaam in. Dit is een verborgen ingang, geen authenticatie of beveiliging van de broncode.
+De route staat niet in de gewone website-navigatie of de sitemap. De pagina begint met de standaard 404-weergave. Dubbelklik op de middelste 0 van 404 en voer de afgesproken toegangscode in. Dit is een verborgen ingang, geen authenticatie of beveiliging van de broncode.
 
 Open een of meer bestanden via Bronnen en export. Op het overzicht staan de aantallen en de verdelingen. Toepassingen en AI-functies zijn gescheiden van Entra-registraties en onderliggende productonderdelen. Controles met gelijke ID worden samengevoegd en de bronregels blijven herkenbaar. Nieuwe onderzoekssignalen staan apart. De rapportselectie biedt zes uitvoerprofielen: volledige nulmeting, applicatielandschap, Entra en toegang, AI in het onderwijs, DPIA en AI Act, en controlepunten. Een volledige Excel-export heeft de tabbladen Schoolbreed, AI in de klas, AI in de school en Controle & bronnen. Andere selecties beperken het aantal tabbladen zonder onderliggende bronbeschrijvingen weg te laten. De uitgebreide omschrijvingen zijn onder een AI-ID uitklapbaar en de lesfaseverdeling staat vooraan. De PDF is een zelfstandig leesrapport met de verdelingen en volledige inhoudelijke beschrijvingen. De JSON-export bewaart de ingelezen gegevens voor een volgende controlesessie.
 
@@ -51,3 +51,9 @@ De website volgt de navigatie van de EAIact Model Monitor, maar gebruikt de kleu
 - Lege startpositie, geen schoolgegevens in de publieke code.
 
 Bestanden: `index.html` (ingang en structuur), `style.css` (basis), `monitor.css` (schoolstijl en vaste schermindeling), `app.js` (inlezen, normaliseren en export), `enhancements.js` (dashboards, grafieken, rapportkeuze en vrijwillige lokale opslag), `emmaus-logo.svg` (schoollogo). De websitebuild moet al deze bestanden meenemen.
+
+## Verborgen LiteSpeed-ingang (v3)
+
+De openingspagina is uiterlijk gelijk aan het normale 404-scherm op eaimodel.nl: zwart vlak, grijze 404 en Not Found, met de LiteSpeed-voettekst. Geen EAI-menu of herkenbare navigatie. Twee klikken op de **middelste 0** openen het formulier. Een enkele klik doet niets. Op mobiel werkt dubbel tikken; met het toetsenbord tweemaal Enter of spatie. De code blijft Emmauscollege.
+
+Dit is een bewust vermomde ingang en geen server-side login. Een echte 404 van de webserver, bijvoorbeeld voor een niet-gepubliceerde URL, kan geen formulier openen. De juiste route moet daadwerkelijk zijn gepubliceerd. Browser- en brondata blijven lokaal.
