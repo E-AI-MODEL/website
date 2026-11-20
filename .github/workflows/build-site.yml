@@ -48,6 +48,8 @@ on:
       - 'leif/**'
       - 'tests/test_home_model.py'
       - 'tests/test_eaiwork_dashboard_publish.py'
+      - 'work/**'
+      - 'tests/test_work_entry.py'
       - 'tests/test_science_observatory_publish.py'
       - 'tests/test_abyss_publish.py'
       - 'tests/test_llm_observatorium_source.py'
@@ -215,6 +217,9 @@ jobs:
       - name: Check EAIgame 300 questions and gameplay mechanics
         if: ${{ steps.scope.outputs.eaigame == 'true' }}
         run: node --test tests/test_eaigame.mjs
+
+      - name: Check EAIwork entry
+        run: python -m unittest discover -s tests -p 'test_work_entry.py' -v
 
       - name: Build site
         run: |
