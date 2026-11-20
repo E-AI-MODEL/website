@@ -35,3 +35,9 @@
 .monitor-layout .answer-again:hover{text-decoration:underline}
 .monitor-layout .answer-result .answer-kicker{text-transform:none;letter-spacing:.015em}
 @media(max-width:720px){.monitor-layout .answer-prediction{min-height:40px;padding:10px 8px}.monitor-layout .answer-prediction small{font-size:9px}}
+
+/* Suggestions expand inside the drawer; they do not cover the other sidebar actions. */
+.monitor-layout .rail-drawer .global-search-wrap.has-answer{height:auto;min-height:40px;display:flex;flex-direction:column;align-items:stretch}
+.monitor-layout .rail-drawer .global-search-wrap.has-answer>input{flex:none;height:40px;width:100%}
+.monitor-layout .rail-drawer .global-search-wrap.has-answer>.answer-results:not([hidden]){position:relative;left:auto;right:auto;top:auto;max-height:min(315px,40dvh);width:100%;margin-top:7px;z-index:auto;box-shadow:none;border-color:#e4eaf2;overflow:auto}
+@media(max-width:720px){.monitor-layout .rail-drawer .global-search-wrap.has-answer>.answer-results:not([hidden]){max-height:min(250px,32dvh)}}
