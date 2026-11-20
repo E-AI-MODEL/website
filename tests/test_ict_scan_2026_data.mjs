@@ -5,6 +5,7 @@ import {resolve} from 'node:path';
 
 const source=JSON.parse(readFileSync(resolve('ict-scan/bronnen/2026-applicatielandschap.json'),'utf8'));
 const manifest=JSON.parse(readFileSync(resolve('ict-scan/bronnen/manifest.json'),'utf8'));
+const work=JSON.parse(readFileSync(resolve('ict-scan/bronnen/2026-werkregister.json'),'utf8'));
 const html=readFileSync(resolve('tools/ict-scan/index.html'),'utf8');
 const app=readFileSync(resolve('tools/ict-scan/app.js'),'utf8');
 const sync=readFileSync(resolve('tools/ict-scan/github-sync.js'),'utf8');
@@ -57,12 +58,23 @@ test('Aanvullende kandidaten zijn niet als bevestigde toepassingen meegeteld',()
   assert.ok(source.metadata.limitations.some(s=>s.includes('76 aanvullende')));
 });
 
+test('Het gecontroleerde werkregister is apart beschikbaar',()=>{
+  assert.equal(work.schema,'eai-school-ict-v1');
+  assert.equal(work.workActions.length,13);
+  assert.equal(work.softwareReview.length,12);
+  assert.ok(manifest.dataFiles.some(item=>item.path==='2026-werkregister.json'));
+  assert.ok(work.workActions.every(item=>item.id && item.action && item.status));
+  assert.ok(work.softwareReview.every(item=>item.id && item.action));
+});
+
 test('Website kan de registers laden en toont ze in eigen panelen',()=>{
-  for(const id of ['candidatePanel','candidatesList','candidateTotal','licensePanel','licenseList','licenseTotal']){
+  for(const id of ['candidatePanel','candidatesList','candidateTotal','licensePanel','licenseList','licenseTotal','workPanel','workList','workTotal','softwareReviewList']){
     assert.ok(html.includes('id="'+id+'"'),id+' mist in HTML');
   }
   for(const piece of ["['additionalCandidates',state.candidates]","['licenseReview',state.licenseReview]","function renderCandidates()","function renderLicenseReview()"]){
     assert.ok(app.includes(piece),piece);
+  assert.ok(app.includes('function renderWorkActions()'));
+  assert.ok(app.includes('function renderSoftwareReview()'));
   }
   assert.ok(sync.includes("'candidates','licenseReview'"));
   assert.ok(html.includes('id="railMore"'));
