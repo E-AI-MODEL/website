@@ -1,8 +1,10 @@
 // EAIspeak: browsermodel uit PiM-ontwerp, op aanvraag geladen.
 // Geen tekst gaat naar Hugging Face: enkel modelbestanden worden opgehaald.
 export const BROWSER_MODELS=Object.freeze([
-  {id:'Qwen2.5-0.5B-Instruct-q4f16_1-MLC',name:'Qwen 0,5B · licht',size:'circa 400 MB',backend:'WebGPU'},
-  {id:'Qwen2.5-1.5B-Instruct-q4f16_1-MLC',name:'Qwen 1,5B · uitgebreid',size:'circa 1 GB',backend:'WebGPU'}
+  {id:'Qwen2.5-0.5B-Instruct-q4f16_1-MLC',name:'Qwen 0,5B · licht',size:'circa 945 MB werkgeheugen',backend:'WebGPU'},
+  {id:'Llama-3.2-1B-Instruct-q4f16_1-MLC',name:'Llama 1B · licht',size:'circa 880 MB werkgeheugen',backend:'WebGPU'},
+  {id:'Qwen2.5-1.5B-Instruct-q4f16_1-MLC',name:'Qwen 1,5B · middel',size:'circa 1,6 GB werkgeheugen',backend:'WebGPU'},
+  {id:'Qwen2.5-3B-Instruct-q4f16_1-MLC',name:'Qwen 3B · groter',size:'circa 2,4 GB werkgeheugen',backend:'WebGPU'}
 ]);
 let engine=null,activeModel='',loading=null;
 export async function ensureBrowserModel(modelId,report=()=>{}){
@@ -11,6 +13,11 @@ export async function ensureBrowserModel(modelId,report=()=>{}){
   if(engine&&activeModel===modelId)return engine;
   if(loading)throw new Error('Er wordt al een browsermodel geladen.');
   loading=(async()=>{
+    if(engine&&activeModel!==modelId){
+      report('Vorige model wordt vrijgegeven…');
+      await engine.unload?.();
+      engine=null;activeModel='';
+    }
     report('Modelbestanden worden gedownload. Dit gebeurt alleen de eerste keer…');
     const {CreateMLCEngine}=await import('@mlc-ai/web-llm');
     const loaded=await CreateMLCEngine(modelId,{
