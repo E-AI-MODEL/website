@@ -15,6 +15,7 @@
 <link rel="stylesheet" href="./monitor.css">
 <link rel="stylesheet" href="./visual-explorer.css">
 <link rel="stylesheet" href="./record-cards.css">
+<link rel="stylesheet" href="./answer-engine.css">
 <script defer src="./app.js"></script>
 <script defer src="./enhancements.js"></script>
 <script defer src="./visual-explorer.js"></script>
@@ -22,6 +23,7 @@
 <script defer src="./rail-drawer.js"></script>
 <script defer src="./record-cards.js"></script>
 <script defer src="./record-github.js"></script>
+<script defer src="./answer-engine.js"></script>
 </head>
 <body>
 <div id="notFound" class="litespeed-404" aria-label="404 Not Found">
@@ -47,8 +49,8 @@
     <section class="rail-drawer" id="railDrawer" aria-label="Extra functies" hidden>
       <div class="rail-drawer-head"><strong>Functies</strong><button type="button" id="railDrawerClose" aria-label="Menu sluiten" title="Sluiten"><svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
       <div class="rail-drawer-section"><p class="rail-drawer-label">Zoeken</p>
-        <div class="global-search-wrap" role="search"><span class="global-search-icon"><svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/></svg></span><input id="globalSearch" type="search" placeholder="Zoek toepassingen, koppelingen of AI-functies" aria-label="Zoek in alle gegevens" autocomplete="off"><div id="globalResults" class="global-results" hidden></div></div>
-        <p class="rail-drawer-hint">Zoek op toepassing, AI-functie of controle.</p>
+        <div class="global-search-wrap" role="search"><span class="global-search-icon"><svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/></svg></span><input id="globalSearch" type="search" placeholder="Stel een vraag of zoek een toepassing" aria-label="Stel een vraag over het applicatielandschap" autocomplete="off"><div id="globalResults" class="global-results answer-results" role="region" aria-label="Antwoorden en zoekresultaten" hidden></div></div>
+        <p class="rail-drawer-hint">Vaste antwoorden en feiten uit de inventarisatie. Zonder AI.</p>
       </div>
       <div class="rail-drawer-section"><p class="rail-drawer-label">Registraties</p>
         <button type="button" id="cardOpen" class="rail-action"><svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h4"/></svg><span>JSON-kaarten beheren</span><span id="cardPending" class="rail-pending" hidden>0</span></button>
