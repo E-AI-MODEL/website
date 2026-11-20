@@ -84,3 +84,17 @@ De GitHub-actie in dit menu start de alleen-lezen-synchronisatie en opent het br
 De hoofdbron bewaart 61 basisregistraties, 76 volledig beschreven AI-functies, 93 Entra-registraties, 76 aanvullende kandidaten, 10 DPIA-punten, 22 AI-beheerpunten, 16 samenvattende controles, 13 technisch gekoppelde onderdelen, 40 licentiecontrole-registraties en vier afzonderlijke apparaatmetingen. Het werkregister bevat daarnaast 13 open acties en 12 softwarecontroles. De 76 kandidaten tellen niet mee bij de basisregistraties. De JSON bewaart zowel de velden voor het dashboard als de oorspronkelijke teksten en herkomstverwijzingen uit de Excelbestanden.
 
 De code kent aparte registers voor kandidaten, licentiecontrole, werkacties en softwarecontrole. Bij synchronisatie worden de bronnen uit GitHub gelezen zonder terugschrijven. De website en de exports vermelden een bronstatus en mogen ontbrekende bevestigingen niet invullen.
+
+## Visualisaties uit de brondata
+
+De zijbalk, de acht schermen en de uitgebreide beschrijvingen blijven behouden. De overzichtspagina toont de geregistreerde toepassingen uit dezelfde dataset als het applicatieregister, zonder fictieve aantallen of een vaste voorbeeldketen.
+
+- **Gebruik en soort:** per grafiek instelbaar op staaf, ring, tegels (proportionele vlakverdeling) of exacte tabel. Geen verborgen top-7 of top-9: alle categorieën blijven meetellen. Een categorie selecteren filtert de toepassingen; het andere diagram houdt de overige categorieën zichtbaar.
+- **Kruising:** gebruiksgebied × soort voorziening, als matrix met aantallen en totalen of als tabel. Een matrixvak filtert op beide velden.
+- **Toepassingsfamilies:** elke toepassing is selecteerbaar. De kaart en lijst lezen uitsluitend expliciete bronrelaties uit parent, parentId of matchedId. Technische onderdelen, AI-functies en mogelijke Entra-matches hebben eigen labels. Een match bewijst geen live koppeling. Registraties zonder beschreven relaties blijven zichtbaar.
+- **Onderwijs-AI en Entra:** dezelfde keuze uit staaf, ring, tegels of tabel. Lesfasevermeldingen kunnen hoger uitvallen dan het aantal unieke AI-functies, omdat een functie meerdere lesfasen kan betreffen.
+- **Gegevensdekking:** beschrijving, verantwoordelijke, lokaal gebruik en gegevensuitwisseling zijn afzonderlijk gemeten op de geselecteerde basisregistraties. Onbekend is geen afkeuring.
+
+De bronpopulaties blijven gescheiden: 61 basisregistraties, 76 beschreven AI-functies, 93 Entra-registraties en 76 aanvullende kandidaten volgens de gecontroleerde bronnen uit november 2026. De grafieken presenteren deze groepen niet als het definitieve aantal daadwerkelijk gebruikte applicaties.
+
+De GitHub-sync vergelijkt de bestanden en de aantallen met het manifest in ict-scan/bronnen. Een verschil tussen het manifest en de GitHub-versie stopt de import; bij een mislukte verwerking wordt de vorige stand hersteld. De bronbestanden zelf worden niet veranderd vanuit de browser. De nieuwe grafieken zijn uitgevoerd met HTML, CSS en JavaScript, zonder externe bibliotheken of extra netwerkverzoeken.
