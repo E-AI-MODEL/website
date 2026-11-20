@@ -34,6 +34,8 @@ on:
       - 'tools/eaigit/**'
       - 'tools/ict-scan/**'
       - 'tests/test_ict_scan_publish.py'
+      - 'tools/ict-scan/**'
+      - 'tests/test_ict_scan_publish.py'
       - 'tests/test_projecthulp.mjs'
       - 'tests/test_eaigit_help.mjs'
       - 'tests/test_eaigit_single_file.mjs'
@@ -77,6 +79,8 @@ on:
       - 'assets/**'
       - 'tools/projecthulp/**'
       - 'tools/eaigit/**'
+      - 'tools/ict-scan/**'
+      - 'tests/test_ict_scan_publish.py'
       - 'tools/ict-scan/**'
       - 'tests/test_ict_scan_publish.py'
       - 'tests/test_projecthulp.mjs'
@@ -202,6 +206,14 @@ jobs:
           test -s site-build/statistieken/collect.php
           test -s site-build/assets/site-analytics.js
           test ! -e site-build/statistieken/data.json
+
+      - name: Controleer verborgen lokale ICT-scan
+        run: |
+          python -m unittest discover -s tests -p 'test_ict_scan_publish.py' -v
+          test -s site-build/tools/ict-scan/index.html
+          test -s site-build/tools/ict-scan/app.js
+          test -s site-build/tools/ict-scan/style.css
+          ! grep -q 'https://eaimodel.nl/tools/ict-scan/' site-build/sitemap.xml
 
       - name: Controleer EAIgit in gebouwde website
         run: |
