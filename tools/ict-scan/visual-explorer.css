@@ -144,3 +144,14 @@
  .monitor-layout .family-groups{grid-template-columns:1fr}
 }
 @media(prefers-reduced-motion:reduce){.monitor-layout .viz-bar-fill{transition:none}}
+
+/* Existing Entra selectors used a flex layout for bars; every new mode needs its own layout. */
+.monitor-layout #connectionChart.viz-stage,
+.monitor-layout #phaseChart.viz-stage,
+.monitor-layout #aiProducts.viz-stage{display:block;min-height:190px;max-width:100%;gap:0}
+.monitor-layout #connectionChart.viz-stage .viz-donut-layout,
+.monitor-layout #phaseChart.viz-stage .viz-donut-layout,
+.monitor-layout #aiProducts.viz-stage .viz-donut-layout{display:grid}
+.monitor-layout #connectionChart.viz-stage .viz-treemap,
+.monitor-layout #phaseChart.viz-stage .viz-treemap,
+.monitor-layout #aiProducts.viz-stage .viz-treemap{display:block}
