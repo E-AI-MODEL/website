@@ -1,0 +1,52 @@
+'use strict';
+/* Secondary actions share the existing navigation rail; no duplicate page tabs. */
+(function(){
+  const byId = id => document.getElementById(id);
+  const trigger=byId('railMore'),drawer=byId('railDrawer'),closeButton=byId('railDrawerClose');
+  const scrim=byId('railScrim'),search=byId('globalSearch'),results=byId('globalResults');
+  if(!trigger||!drawer||!closeButton||!scrim||!search)return;
+
+  function closeDrawer(returnFocus=false){
+    if(drawer.hidden)return;
+    drawer.hidden=true;
+    scrim.hidden=true;
+    trigger.setAttribute('aria-expanded','false');
+    trigger.setAttribute('aria-label','Extra functies openen');
+    if(results)results.hidden=true;
+    if(returnFocus && !byId('workspace').hidden)trigger.focus();
+  }
+  function openDrawer(focusSearch=true){
+    drawer.hidden=false;
+    scrim.hidden=false;
+    trigger.setAttribute('aria-expanded','true');
+    trigger.setAttribute('aria-label','Extra functies sluiten');
+    if(focusSearch)search.focus();
+  }
+  trigger.addEventListener('click',()=>drawer.hidden?openDrawer():closeDrawer(true));
+  closeButton.addEventListener('click',()=>closeDrawer(true));
+  scrim.addEventListener('click',()=>closeDrawer(true));
+  document.querySelectorAll('.icon-rail .rail-button[data-view]').forEach(button=>{
+    button.addEventListener('click',()=>closeDrawer());
+  });
+  drawer.addEventListener('click',event=>{
+    const item=event.target.closest('.rail-action,[data-result-kind]');
+    if(item)closeDrawer();
+  });
+  document.addEventListener('click',event=>{
+    if(!drawer.hidden && !drawer.contains(event.target) && !trigger.contains(event.target))closeDrawer();
+  });
+  document.addEventListener('keydown',event=>{
+    if(event.key==='Escape'&&!drawer.hidden){event.preventDefault();closeDrawer(true);return;}
+    if(event.key!=='/' || event.altKey || event.ctrlKey || event.metaKey || !drawer.hidden || byId('workspace').hidden)return;
+    const target=event.target;
+    if(target && (target.closest('input,textarea,select,[contenteditable="true"]') || target.isContentEditable))return;
+    event.preventDefault();
+    openDrawer(true);
+  });
+
+  byId('drawerExcel').addEventListener('click',()=>byId('exportExcel').click());
+  byId('drawerJson').addEventListener('click',()=>{
+    if(!state.ready){selectView('sources');toast('Er zijn nog geen gegevens ingelezen.');return;}
+    byId('exportJson').click();
+  });
+})();
