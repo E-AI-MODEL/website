@@ -124,7 +124,7 @@ test('microfoontest herkent echte Nederlandse woorden in plaats van alleen toest
 });
 test('geen schijnstart bij ontbrekende vertaling, fout is zichtbaar',()=>{
   assert.ok(main.includes('function goStart()'));
-  assert.ok(main.includes('void prepareTranslation()'));
+  assert.ok(main.includes('const translated=await prepareTranslation()'));
   assert.ok(main.includes('panel(true)'));
   assert.ok(main.includes("import('./translation-fallback.js')"));
 });
@@ -165,12 +165,12 @@ test('iPhone audio krijgt een actieve context vanuit de overnameklik',()=>{
 
 test('menu toont eerst alleen voorbereiding en eenvoudige bediening',()=>{
   assert.ok(html.includes('id="runtimeStatus" aria-live="assertive"'));
-  assert.ok(html.includes('Start ondertiteling'));
-  assert.ok(html.includes('Overname'));
+  assert.ok(html.includes('Start Nederlands'));
+  assert.ok(html.includes('Franse speech'));
   assert.ok(html.includes('Bediening'));
   assert.ok(html.includes('studio-disclosure'));
   assert.ok(html.includes('<summary>Teksten bekijken</summary>'));
-  assert.ok(main.includes('Tik nogmaals op Start ondertiteling'));
+  assert.ok(main.includes("$('prepareShow').addEventListener('click',prepareShow)"));
 });
 
 test('op iOS zichtbaar waarschuwen wanneer microfoon geen woorden herkent',()=>{
@@ -202,7 +202,7 @@ test('reserveprogramma start Franse speech alleen vanuit vertalende podiumstand'
   assert.match(html,/id="reserveSpeech"/);
   assert.match(html,/id="reserveTakeBack"/);
   assert.match(main,/function reserveFrenchSpeech\(\)/);
-  assert.match(main,/if\(phase!==\x27live\x27\)/);
+  assert.match(main,/phase!=='live' && phase!=='intro'/);
   assert.match(main,/reserveSpeechActive=true/);
   assert.match(main,/setPhase\(\x27interrupted\x27,\x27FRANSE SPEECH\x27\)/);
   assert.match(main,/goFrench\(\);/);
@@ -218,4 +218,21 @@ test('reserveprogramma kan onderbreken en live vertaling weer starten',()=>{
   assert.match(part,/goFinish\(\)/);
   assert.ok(main.includes('if (reserveSpeechActive) {'));
   assert.match(main,/reserveSpeechActive=false;\n  releasePreparedAudio\(\)/);
+});
+
+test('podium bereidt onderdelen samen voor zonder Terminal',()=>{
+  assert.match(html,/id="prepareShow"/);
+  assert.match(html,/id="showReadyStatus"/);
+  assert.match(html,/Start Nederlands/);
+  assert.match(html,/Franse speech/);
+  assert.match(main,/async function prepareShow\(\)/);
+  assert.match(main,/await prepareTranslation\(\)/);
+  assert.match(main,/await \$\('loadPublicFrench'\)\.onclick\(\)/);
+});
+test('Franse noodspeech kan zonder actieve vertaling starten',()=>{
+  const part=main.slice(main.indexOf('function reserveFrenchSpeech()'),main.indexOf('function reserveTakeBack()'));
+  assert.doesNotMatch(part,/if\(!translator\)/);
+  assert.match(part,/phase!=='live' && phase!=='intro'/);
+  assert.match(main,/interrupt:reserveFrenchSpeech/);
+  assert.match(main,/if\(translator\) goFinish\(\)/);
 });
