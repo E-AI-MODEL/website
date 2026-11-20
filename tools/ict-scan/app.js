@@ -226,7 +226,35 @@ function exportPdf(){if(!state.ready){toast('Voeg eerst bronbestanden toe.');ret
  const close='<div class="pagebreak"></div><h2>Openstaande controles</h2><p class="section-lead">'+checks.length+' verschillende controle-ID’s. Een open punt is geen vastgesteld probleem. De volledige technische registratie staat in de Excel-uitvoer en blijft beschikbaar voor de controle.</p>'+printBarSection('Verdeling open punten','Verschillende onderwerpen die op bevestiging wachten.',rsummaryCounts(checks,'category'),12)+'<h2>Bronnen en toetsingskaders</h2><p>'+state.sources.map(x=>esc(x.kind==='financieel'?'ICT-registratie 2026':x.name)).join('; ')+'</p>'+legalSources.map(x=>'<p><strong>'+esc(x.name)+'</strong>: '+esc(x.url)+'</p>').join('')+'<p>Er zijn geen financiële bedragen of boekingsgegevens opgenomen. Verifieer actuele wetgeving en externe DPIA-versies bij een formeel besluit.</p>';
  $('printReport').innerHTML=lead+ict+classText+schoolText+close;window.print();}
 
-function installEvents(){const showGate=()=>{$('gate').hidden=false;$('gateInput').focus();};$('unlockFour').addEventListener('click',showGate);$('gateCancel').addEventListener('click',()=>{$('gate').hidden=true;$('gateError').hidden=true;$('unlockFour').focus();});$('gateForm').addEventListener('submit',e=>{e.preventDefault();if($('gateInput').value.trim()==='Emmauscollege'){$('gate').hidden=true;$('notFound').hidden=true;$('workspace').hidden=false;document.title='Emmauscollege | ICT-scan';renderAll();}else{$('gateError').hidden=false;$('gateInput').select();}});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('gate').hidden){$('gateCancel').click();}});
+function installEvents(){
+ const zero=$('unlockZero');
+ const showGate=()=>{
+   if(!$('gate').hidden || !$('notFound') || $('notFound').hidden)return;
+   $('gateInput').value='';
+   $('gateError').hidden=true;
+   $('gate').hidden=false;
+   $('gateInput').focus();
+ };
+ // Only the centre zero opens the form, after two clicks. Single clicks do nothing.
+ zero.addEventListener('dblclick',e=>{e.preventDefault();showGate();});
+ // Touchscreens do not reliably dispatch dblclick; recognise two taps on the same zero.
+ let lastTouch=0;
+ zero.addEventListener('pointerup',e=>{
+   if(e.pointerType!=='touch'&&e.pointerType!=='pen')return;
+   const now=Date.now();
+   if(now-lastTouch<650){e.preventDefault();lastTouch=0;showGate();}
+   else lastTouch=now;
+ });
+ // Keyboard accessibility: two consecutive Enter/Space presses also open the form.
+ let lastKey=0;
+ zero.addEventListener('keydown',e=>{
+   if(e.key!=='Enter'&&e.key!==' ')return;
+   e.preventDefault();
+   const now=Date.now();
+   if(now-lastKey<650){lastKey=0;showGate();}
+   else lastKey=now;
+ });
+ $('gateCancel').addEventListener('click',()=>{$('gate').hidden=true;$('gateError').hidden=true;zero.focus();});$('gateForm').addEventListener('submit',e=>{e.preventDefault();if($('gateInput').value.trim()==='Emmauscollege'){$('gate').hidden=true;$('notFound').hidden=true;$('workspace').hidden=false;document.title='Emmauscollege | ICT-scan';renderAll();}else{$('gateError').hidden=false;$('gateInput').select();}});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('gate').hidden){$('gateCancel').click();}});
  const choose=()=>$('fileInput').click();for(const id of ['topImport','emptyImport','sourcesImport'])$(id).addEventListener('click',choose);$('fileInput').addEventListener('change',async e=>{const files=Array.from(e.target.files||[]);e.target.value='';await handleFiles(files);});for(const el of document.querySelectorAll('[data-view]'))el.addEventListener('click',()=>selectView(el.dataset.view));for(const el of document.querySelectorAll('[data-open]'))el.addEventListener('click',()=>selectView(el.dataset.open));for(const id of ['appsSearch','connectionsSearch','aiSearch','findingsSearch'])$(id).addEventListener('input',()=>({appsSearch:renderApps,connectionsSearch:renderConnections,aiSearch:renderAiList,findingsSearch:renderFindings}[id])());for(const [id,mode] of [['aiModeKlas','klas'],['aiModeSchool','school']])$(id).addEventListener('click',()=>{state.aiMode=mode;state.phase='';state.aiProduct='';renderAi();});
  $('modeRegistered').addEventListener('click',()=>{state.findingMode='registered';$('findingsFilter').value='';renderFindings();});$('modeSignals').addEventListener('click',()=>{state.findingMode='signals';$('findingsFilter').value='';renderFindings();});for(const id of ['appsArea','appsType'])$(id).addEventListener('change',()=>{state.area=$('appsArea').value;state.type=$('appsType').value;renderApps();});$('findingsFilter').addEventListener('change',renderFindings);
  $('topPdf').addEventListener('click',exportPdf);$('exportPdf').addEventListener('click',exportPdf);$('exportExcel').addEventListener('click',exportWorkbook);$('exportJson').addEventListener('click',exportJson);const zone=$('dropzone');for(const event of ['dragenter','dragover'])zone.addEventListener(event,e=>{e.preventDefault();zone.classList.add('dragging');});for(const event of ['dragleave','drop'])zone.addEventListener(event,e=>{e.preventDefault();zone.classList.remove('dragging');});zone.addEventListener('drop',async e=>{await handleFiles(Array.from(e.dataTransfer?.files||[]));});}
