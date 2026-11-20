@@ -6,7 +6,8 @@ export const SERVICES = [
   {id:'dutch',name:'Nederlandse stem',hint:'Systeemstem van de browser',action:'Kies en beluister via Stem'},
   {id:'sessions',name:'Sessies',hint:'Opslag op dit apparaat',action:'Controleer opslag'},
   {id:'ollama',name:'Ollama',hint:'Optionele lokale modelserver',action:'Test verbinding'},
-  {id:'lmstudio',name:'LM Studio',hint:'Optionele lokale modelserver',action:'Test verbinding'}
+  {id:'lmstudio',name:'LM Studio',hint:'Optionele lokale modelserver',action:'Test verbinding'},
+  {id:'llamacpp',name:'llama.cpp',hint:'Optionele lokale modelserver',action:'Test verbinding'}
 ];
 export const STATUS = Object.freeze({idle:'idle',ready:'ready',busy:'busy',error:'error',unavailable:'unavailable'});
 export function classifyError(error,service='') {
@@ -14,7 +15,7 @@ export function classifyError(error,service='') {
   if (/abort|timeout|time.out/i.test(message)) return {code:'SYS-TIMEOUT-001',advice:'De controle duurde te lang. Probeer het opnieuw en kijk of het model geladen is.'};
   if (/failed to fetch|networkerror|load failed|cors/i.test(message)) return {code:'SYS-NET-002',advice:'De verbinding is niet bereikbaar of de browser blokkeert de aanvraag (CORS). Controleer adres, server en toegestane browserorigin.'};
   if (/permission|not.allowed|denied/i.test(message)) return {code:'SYS-PERM-003',advice:'Controleer de browsertoestemming voor de microfoon.'};
-  if (/404|model.*not found/i.test(message)) return {code:'SYS-MODEL-004',advice:'Het gekozen model ontbreekt op de server. Laad of kies een beschikbaar model.'};
+  if (/404|model.*not found|gekozen model staat niet/i.test(message)) return {code:'SYS-MODEL-004',advice:'Het gekozen model ontbreekt op de server. Laad of kies een beschikbaar model.'};
   return {code:'SYS-'+service.toUpperCase().replace(/[^A-Z]/g,'').slice(0,8)+'-005',advice:'Open de betreffende functie, controleer de instellingen en probeer de test opnieuw.'};
 }
 export function validateLocalEndpoint(value) {
@@ -34,17 +35,22 @@ async function request(url,init={},ms=8000) {
     return response.json();
   } finally {clearTimeout(timer);}
 }
-export async function probeLocalModel(provider,endpoint) {
+export async function listLocalModels(provider,endpoint) {
   const origin=validateLocalEndpoint(endpoint);
-  if(!['ollama','lmstudio'].includes(provider)) throw new Error('Onbekende aanbieder');
-  const models=provider==='ollama'
-    ? await request(origin+'/api/tags')
-    : await request(origin+'/v1/models');
+  if(!['ollama','lmstudio','llamacpp'].includes(provider)) throw new Error('Onbekende aanbieder');
+  const models=provider==='ollama' ? await request(origin+'/api/tags') : await request(origin+'/v1/models');
   const candidates=provider==='ollama' ? models.models : models.data;
   if(!Array.isArray(candidates)||!candidates.length) throw new Error('Geen modellen gevonden');
-  const model=provider==='ollama' ? (candidates[0].name||candidates[0].model) : candidates[0].id;
-  if(typeof model!=='string'||!model) throw new Error('Geen geldig model gevonden');
-  // Een bereikbare server is nog geen bewijs dat een model antwoord geeft.
+  const names=candidates.map(entry=>provider==='ollama' ? (entry?.name||entry?.model) : entry?.id)
+    .filter(name=>typeof name==='string'&&name.length>0);
+  if(!names.length) throw new Error('Geen geldig model gevonden');
+  return [...new Set(names)];
+}
+export async function probeLocalModel(provider,endpoint,selectedModel=null) {
+  const origin=validateLocalEndpoint(endpoint);
+  const candidates=await listLocalModels(provider,origin);
+  const model=selectedModel||candidates[0];
+  if(!candidates.includes(model)) throw new Error('Gekozen model staat niet op de server');
   const payload=provider==='ollama'
     ? {model,prompt:'Antwoord alleen met OK.',stream:false,options:{num_predict:8}}
     : {model,messages:[{role:'user',content:'Antwoord alleen met OK.'}],max_tokens:8,stream:false};
