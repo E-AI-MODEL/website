@@ -45,7 +45,12 @@ function syncChanges(){
   history.length=0;
   updateControls();
 }
-for(const control of [engine,browserModel,inputLang,outputLang,voice])control.addEventListener('change',syncChanges);
+for(const control of [browserModel,inputLang,outputLang,voice])control.addEventListener('change',syncChanges);
+engine.addEventListener('change',()=>{
+  // Een browsermodel werkt standaard volledig zonder extern account.
+  if(engine.value==='browser'&&voice.value==='cloud')voice.value='browser';
+  syncChanges();
+});
 updateControls();
 async function ensurePuter(required){
   const api=globalThis.puter;
