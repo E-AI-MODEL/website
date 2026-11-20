@@ -196,3 +196,26 @@ test('Franse speech kan per passage worden bediend, zonder Nederlandse stem als 
   assert.ok(handbackBlock.includes('if (selectedDutchVoice)'));
   assert.ok(!handbackBlock.includes('Nederlandse teruggavestem ontbreekt'));
 });
+
+test('reserveprogramma start Franse speech alleen vanuit vertalende podiumstand',()=>{
+  assert.match(html,/id="reserveProgramme"/);
+  assert.match(html,/id="reserveSpeech"/);
+  assert.match(html,/id="reserveTakeBack"/);
+  assert.match(main,/function reserveFrenchSpeech\(\)/);
+  assert.match(main,/if\(phase!==\x27live\x27\)/);
+  assert.match(main,/reserveSpeechActive=true/);
+  assert.match(main,/setPhase\(\x27interrupted\x27,\x27FRANSE SPEECH\x27\)/);
+  assert.match(main,/goFrench\(\);/);
+});
+test('reserveprogramma kan onderbreken en live vertaling weer starten',()=>{
+  const start=main.indexOf('function reserveTakeBack()');
+  const end=main.indexOf('function goStart()',start);
+  assert.ok(start>=0&&end>start);
+  const part=main.slice(start,end);
+  assert.match(part,/stopVoices\(\)/);
+  assert.match(part,/setPhase\(\x27handback\x27,\x27WOORD TERUG\x27\)/);
+  assert.match(part,/reserveSpeechActive=false/);
+  assert.match(part,/goFinish\(\)/);
+  assert.ok(main.includes('if (reserveSpeechActive) {'));
+  assert.match(main,/reserveSpeechActive=false;\n  releasePreparedAudio\(\)/);
+});
