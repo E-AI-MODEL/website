@@ -8,7 +8,7 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: sport-opstellingen-targeted-publication
+  group: theory7-production
   cancel-in-progress: false
 jobs:
   publish:
