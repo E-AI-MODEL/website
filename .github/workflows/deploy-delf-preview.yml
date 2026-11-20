@@ -1,6 +1,11 @@
 name: Publish DELF MacBook and mobile tests
 
 on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/deploy-delf-preview.yml'
   workflow_dispatch:
 
 permissions:
