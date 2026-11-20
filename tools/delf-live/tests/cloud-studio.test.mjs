@@ -79,3 +79,33 @@ test('pijltoetsen in Cloud Studio kunnen de AI niet overnemen',()=>{
   const keyboard = main.slice(main.lastIndexOf("document.addEventListener('keydown'"));
   assert.ok(keyboard.indexOf("if ($('panel').classList.contains('open')) return;") < keyboard.indexOf("if (event.code === 'ArrowRight')"));
 });
+
+
+test('compacte techstudio en ronde knoppen zijn geen zware kaarten',()=>{
+  assert.ok(css.includes('.cloud-studio .studio-tab{'));
+  assert.ok(css.includes('font:400 11px/1.3 Roboto'));
+  assert.ok(css.includes('border-radius:999px'));
+  assert.ok(css.includes('.cloud-studio .cloud-heading{'));
+  assert.ok(css.includes('font:400 clamp(20px,2.7vw,27px)'));
+  assert.ok(html.includes('Jij spreekt. Het Frans verschijnt.'));
+});
+
+test('menu-inhoud komt uit mist en verdampt ook weer bij sluiten',()=>{
+  assert.ok(css.includes('@keyframes cloud-disclosure-appear'));
+  assert.ok(css.includes('@keyframes cloud-disclosure-evaporate'));
+  assert.ok(css.includes('@keyframes cloud-page-approach'));
+  assert.ok(shell.includes('details.classList.add('+"'mist-closing'"+')'));
+  assert.ok(shell.includes('details.open = false;'));
+  assert.ok(shell.includes('clearTimeout(previous)'));
+  assert.ok(css.includes('@media(prefers-reduced-motion:reduce)'));
+});
+
+test('snelle inactiviteit laat alleen lichte schim van podiumtekst zien',()=>{
+  assert.ok(shell.includes('}, 3400);'));
+  assert.ok(shell.includes('}, 4600);'));
+  assert.ok(shell.includes('let captionIdleSeconds = 6;'));
+  assert.ok(html.includes('<option value="6" selected>6 seconden</option>'));
+  assert.ok(css.includes('opacity:.095;'));
+  assert.ok(css.includes('filter:blur(4px)'));
+  assert.ok(css.includes('.studio-scroll.is-idle'));
+});

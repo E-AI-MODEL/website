@@ -9,6 +9,7 @@ const stage = $('stage');
 const scroll = $('studioScroll');
 const tabs = Array.from(document.querySelectorAll('.studio-tab'));
 const pages = Array.from(document.querySelectorAll('.studio-page'));
+const disclosures = Array.from(panel.querySelectorAll('.studio-disclosure'));
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 let revealObserver = null;
 let idleControlsTimer = null;
@@ -103,6 +104,37 @@ function activateView(name, options={focus:false}) {
   markActivity();
   requestAnimationFrame(revealVisible);
 }
+// Openstaande inhoud verschijnt vanuit de mist; sluiten verdampt eerst de inhoud.
+const closingDetails = new WeakMap();
+for (const details of disclosures) {
+  const summary = details.querySelector(':scope > summary');
+  if (!summary) continue;
+  summary.addEventListener('click', event => {
+    if (!details.open || reduceMotion.matches) return;
+    event.preventDefault();
+    const previous = closingDetails.get(details);
+    if (previous) clearTimeout(previous);
+    details.classList.add('mist-closing');
+    const closeTimer = setTimeout(() => {
+      details.open = false;
+      details.classList.remove('mist-closing');
+      closingDetails.delete(details);
+    }, 275);
+    closingDetails.set(details,closeTimer);
+  });
+  details.addEventListener('toggle', () => {
+    if (details.open) {
+      const pending = closingDetails.get(details);
+      if (pending) {
+        clearTimeout(pending);
+        closingDetails.delete(details);
+      }
+      details.classList.remove('mist-closing');
+      markActivity();
+    }
+  });
+}
+
 for (const tab of tabs) {
   tab.addEventListener('click',() => activateView(tab.dataset.studioView,{focus:true}));
   tab.addEventListener('keydown',event => {

@@ -115,7 +115,7 @@ test('instellingen zijn dun en rustig, en Esc werkt ook bij focus op een invoerv
 });
 
 test('microfoontest herkent echte Nederlandse woorden in plaats van alleen toestemming',()=>{
-  assert.ok(html.includes('Nederlandse spraak testen'));
+  assert.ok(html.includes('Test microfoon'));
   assert.ok(main.includes('microphoneCheck = instance'));
   assert.ok(main.includes("instance.lang = 'nl-NL'"));
   assert.ok(main.includes('instance.onresult = event =>'));
@@ -150,7 +150,7 @@ test('browservertaling zonder Chrome Translator gebruikt een eigen ONNX-model',(
 
 test('Frans stemmodel kan zonder handmatige checkpointmap worden geladen',()=>{
   assert.ok(html.includes('id="loadPublicFrench"'));
-  assert.ok(html.includes('Franse AI-stem laden'));
+  assert.ok(html.includes('Laad Franse stem'));
   assert.ok(html.includes('advanced-setting'));
   assert.ok(main.includes('ldenoue/phonon-40m-multilingual'));
   assert.ok(main.includes('gradium/phonon-voices'));
@@ -165,11 +165,11 @@ test('iPhone audio krijgt een actieve context vanuit de overnameklik',()=>{
 
 test('menu toont eerst alleen voorbereiding en eenvoudige bediening',()=>{
   assert.ok(html.includes('id="runtimeStatus" aria-live="assertive"'));
-  assert.ok(html.includes('Start / hervat ondertiteling'));
-  assert.ok(html.includes('AI neemt over'));
-  assert.ok(html.includes('Handmatig verdergaan'));
+  assert.ok(html.includes('Start ondertiteling'));
+  assert.ok(html.includes('Overname'));
+  assert.ok(html.includes('Bediening'));
   assert.ok(html.includes('studio-disclosure'));
-  assert.ok(html.includes('<summary>Bekijk de teksten van deze sessie</summary>'));
+  assert.ok(html.includes('<summary>Teksten bekijken</summary>'));
   assert.ok(main.includes('Tik nogmaals op Start ondertiteling'));
 });
 

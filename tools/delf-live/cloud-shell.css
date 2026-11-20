@@ -364,3 +364,345 @@ body.panel-visible .mobile-settings.cloud-entry{pointer-events:none!important;op
   .cloud-studio.panel{transition:opacity .15s ease;clip-path:none!important;-webkit-clip-path:none!important}
   .cloud-studio.panel:not(.open){visibility:hidden}
 }
+
+
+/* CLOUD STUDIO · COMPACT / MIST. Labels in de studio zijn klein.
+   Ondertiteling op het podium blijft groot genoeg voor de zaal. */
+.cloud-studio.panel{
+  --cloud-ink:#354d56;
+  --cloud-muted:#778e95;
+  font-family:Roboto,Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-weight:400;
+  letter-spacing:.005em;
+  background:rgba(249,251,250,.975);
+}
+.cloud-studio .studio-header{
+  min-height:52px;
+  padding:5px var(--cloud-space);
+  gap:6px;
+}
+.cloud-studio .studio-return.close{
+  min-width:0;
+  height:36px;
+  padding:0 11px;
+  gap:9px;
+  border-radius:24px;
+  font-size:11px;
+  font-weight:400;
+  letter-spacing:.01em;
+  color:#688187;
+}
+.cloud-studio .studio-current{font-size:9px;letter-spacing:.08em;font-weight:400}
+.cloud-studio .studio-nav{
+  justify-content:center;
+  gap:4px;
+  padding:0 20px 4px;
+  border:0;
+  box-shadow:none;
+}
+.cloud-studio .studio-tab{
+  min-width:58px;
+  min-height:35px;
+  padding:7px 13px;
+  border:0;
+  border-radius:22px;
+  background:transparent;
+  font:400 11px/1.3 Roboto,Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  color:#8ba0a5;
+  letter-spacing:.01em;
+  transition:color .35s ease,background .4s ease,opacity .5s ease;
+}
+.cloud-studio .studio-tab[aria-selected="true"]{
+  background:rgba(219,235,233,.48);
+  color:#3c626b;
+}
+.cloud-studio .studio-tab[aria-selected="true"]::after{display:none}
+.cloud-studio .studio-tab:hover,.cloud-studio .studio-tab:focus-visible{
+  background:rgba(225,237,236,.66);
+  outline:1px solid rgba(123,161,164,.3);
+  outline-offset:2px;
+}
+.cloud-studio .studio-scroll{
+  padding:0 clamp(17px,4vw,38px) max(35px,env(safe-area-inset-bottom));
+  scrollbar-color:rgba(173,195,196,.3) transparent;
+}
+.cloud-studio .studio-page{max-width:620px;padding:0 0 38px}
+.cloud-studio .studio-hero{padding:clamp(24px,4.5vh,47px) 0 15px}
+.cloud-studio .studio-overline,.cloud-studio .studio-section-no{
+  font:400 9px/1.5 Roboto,Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  letter-spacing:.12em;
+  color:#9aafb0;
+}
+.cloud-studio .cloud-heading{
+  max-width:480px;
+  margin:8px 0 8px;
+  font:400 clamp(20px,2.7vw,27px)/1.19 Roboto,Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  letter-spacing:-.028em;
+  color:#3d555f;
+}
+.cloud-studio .cloud-intro{
+  max-width:435px;
+  margin:0;
+  color:#84989c;
+  font:400 11.5px/1.55 Roboto,Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+.cloud-studio .studio-status{
+  gap:10px;
+  margin-top:8px;
+  padding:8px 0 3px;
+  border:0;
+}
+.cloud-studio .studio-status .feedback{
+  font-size:11px;
+  line-height:1.35;
+  font-weight:400;
+  color:#768e91;
+}
+.cloud-studio .studio-live-feedback{
+  font-size:11px;
+  line-height:1.45;
+  margin:1px 0 12px;
+  min-height:0;
+  color:#779197;
+}
+.cloud-studio .studio-action-grid{
+  max-width:510px;
+  gap:9px;
+  margin-top:8px;
+}
+.cloud-studio .studio-secondary-actions{
+  margin-top:9px;
+  max-width:510px;
+}
+.cloud-studio .studio-action-grid .action,
+.cloud-studio .studio-section .action,
+.cloud-studio .studio-disclosure .action,
+.cloud-studio .session-editor .action{
+  min-height:42px;
+  max-width:510px;
+  border-radius:999px;
+  padding:9px 17px;
+  border:1px solid rgba(141,173,176,.24);
+  background:linear-gradient(145deg,rgba(241,248,246,.71),rgba(255,255,255,.5));
+  color:#476a72;
+  text-align:left;
+  font:400 11.5px/1.3 Roboto,Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  letter-spacing:.005em;
+  box-shadow:0 3px 20px rgba(151,182,181,.055),inset 0 1px 0 rgba(255,255,255,.45);
+  transition:background .28s ease,border-color .28s ease,
+             box-shadow .28s ease,transform .28s ease,color .28s ease;
+}
+.cloud-studio .studio-action-grid .action:hover,
+.cloud-studio .studio-section .action:hover,
+.cloud-studio .studio-disclosure .action:hover,
+.cloud-studio .session-editor .action:hover{
+  transform:translateY(-1px);
+  border-color:rgba(106,157,158,.52);
+  background:linear-gradient(135deg,rgba(218,236,232,.86),rgba(249,252,249,.84));
+  box-shadow:0 6px 21px rgba(154,193,190,.14);
+  color:#365b65;
+}
+.cloud-studio .studio-action-grid .action:active,
+.cloud-studio .studio-section .action:active,
+.cloud-studio .studio-disclosure .action:active,
+.cloud-studio .session-editor .action:active{
+  transform:scale(.985);
+}
+.cloud-studio .studio-action-grid .action:focus-visible,
+.cloud-studio .studio-section .action:focus-visible,
+.cloud-studio .studio-disclosure .action:focus-visible,
+.cloud-studio .session-editor .action:focus-visible{
+  outline:2px solid rgba(102,154,158,.67);
+  outline-offset:3px;
+}
+.cloud-studio .studio-action-grid .studio-action-emphasis{
+  background:linear-gradient(140deg,rgba(209,233,228,.82),rgba(244,249,246,.76));
+  border-color:rgba(121,165,165,.48);
+  font-weight:500;
+}
+.cloud-studio .studio-action-grid .studio-action-quiet{
+  background:rgba(251,252,250,.27);
+  color:#7f9699;
+  border-color:rgba(153,177,178,.16);
+  box-shadow:none;
+}
+.cloud-studio .studio-action-grid .dangerous{color:#986e74}
+.cloud-studio .studio-action-grid .action-stroke{
+  right:15px;width:12px;height:1px;opacity:.43;
+}
+.cloud-studio .studio-aside{
+  max-width:520px;
+  margin:14px 0 0;
+  color:#98a9ad;
+  font-size:10px;
+  line-height:1.45;
+}
+.cloud-studio .studio-section,
+.cloud-studio .session-editor{
+  border:0;
+  padding:12px 0 15px;
+  margin:0;
+}
+.cloud-studio .studio-section-top{gap:9px;align-items:baseline}
+.cloud-studio .studio-section-top h2{
+  margin:0;
+  font:400 14px/1.4 Roboto,Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  color:#4c6b75;
+  letter-spacing:-.012em;
+}
+.cloud-studio .studio-section>.studio-support{
+  margin:4px 0 7px;
+  max-width:450px;
+}
+.cloud-studio .studio-support,
+.cloud-studio .studio-aside{font-family:Roboto,Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.cloud-studio .studio-support{font-size:11px;line-height:1.5;color:#879b9d}
+.cloud-studio .studio-section>.action,
+.cloud-studio .studio-disclosure>.action{max-width:355px;margin:7px 0 0}
+.cloud-studio .studio-section>.feedback,
+.cloud-studio .studio-disclosure>.feedback{
+  border:0;
+  padding:0;
+  margin:7px 0 0;
+  color:#8a9fa2;
+  font-size:10.5px;
+  line-height:1.4;
+}
+.cloud-studio .studio-field{
+  margin:9px 0 14px;
+  color:#83999c;
+  font-size:11px;
+  line-height:1.4;
+}
+.cloud-studio .studio-field :is(select,textarea,input:not([type=file])){
+  margin:6px 0 0;
+  border:1px solid rgba(144,175,177,.23);
+  border-radius:15px;
+  padding:10px 13px;
+  color:#445f68;
+  background:rgba(243,249,247,.52);
+  font:400 12px/1.5 Roboto,Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+.cloud-studio .studio-field select{
+  appearance:none;
+  padding-right:32px;
+  background-image:linear-gradient(45deg,transparent 48%,#84a3a6 50%),
+                   linear-gradient(135deg,#84a3a6 50%,transparent 52%);
+  background-repeat:no-repeat;
+  background-size:6px 6px;
+  background-position:calc(100% - 18px) 51%,calc(100% - 13px) 51%;
+}
+.cloud-studio .studio-disclosure{
+  border:0;
+  margin:6px 0 8px;
+  padding:2px 0 8px;
+  background:transparent;
+  min-width:0;
+}
+.cloud-studio .studio-disclosure summary{
+  min-height:37px;
+  gap:14px;
+  padding:6px 13px 6px 0;
+  border:0;
+  background:transparent;
+  color:#68868c;
+  font:400 11.5px/1.4 Roboto,Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  transition:color .28s ease,filter .4s ease,opacity .4s ease;
+}
+.cloud-studio .studio-disclosure summary::after{
+  width:7px;
+  height:7px;
+  margin-right:11px;
+  border-color:#91acaf;
+  transform:rotate(45deg);
+}
+.cloud-studio .studio-disclosure[open] summary::after{transform:rotate(225deg)}
+.cloud-studio .studio-disclosure summary:hover{color:#3e6871}
+.cloud-studio .studio-disclosure summary:focus-visible{
+  outline:1px solid rgba(123,161,164,.6);
+  outline-offset:2px;
+  border-radius:16px;
+}
+.cloud-studio .studio-disclosure[open]:not(.mist-closing)>:not(summary){
+  animation:cloud-disclosure-appear .52s cubic-bezier(.2,.65,.22,1) both;
+}
+.cloud-studio .studio-disclosure.mist-closing>:not(summary){
+  animation:cloud-disclosure-evaporate .28s ease-in both;
+}
+@keyframes cloud-disclosure-appear{
+  from{opacity:0;filter:blur(9px);transform:translate3d(0,9px,0) scale(.987)}
+  to{opacity:1;filter:blur(0);transform:translate3d(0,0,0) scale(1)}
+}
+@keyframes cloud-disclosure-evaporate{
+  from{opacity:1;filter:blur(0);transform:translateY(0)}
+  to{opacity:.04;filter:blur(8px);transform:translateY(-5px)}
+}
+.cloud-studio .studio-page.mist-page-arriving{
+  animation:cloud-page-approach .58s cubic-bezier(.16,.71,.22,1) both;
+}
+@keyframes cloud-page-approach{
+  from{opacity:.13;filter:blur(13px);transform:translate3d(0,11px,0) scale(.991)}
+  to{opacity:1;filter:blur(0);transform:translate3d(0,0,0) scale(1)}
+}
+.cloud-studio .cloud-reveal{
+  transition:opacity .65s ease,filter .65s ease,transform .7s ease;
+}
+.cloud-studio .studio-scroll.is-idle .studio-page:not([hidden]):not(:focus-within)>.cloud-reveal.is-revealed{
+  opacity:.10;
+  filter:blur(3.5px);
+  transform:translate3d(0,-6px,0);
+  transition:opacity .8s ease,filter .95s ease,transform 1s ease;
+}
+.cloud-studio .studio-scroll.is-idle .studio-page:not([hidden]):not(:focus-within) .studio-support{
+  color:#aab9bb;
+}
+.cloud-studio .studio-scroll.is-idle .studio-page:not([hidden]):not(:focus-within)> .studio-section.cloud-reveal.is-revealed,
+.cloud-studio .studio-scroll.is-idle .studio-page:not([hidden]):not(:focus-within)> .studio-disclosure.cloud-reveal.is-revealed{
+  opacity:.10;
+}
+.cloud-studio .studio-clouds{animation-duration:20s}
+body.cloud-idle:not(.panel-visible) .mobile-settings.cloud-entry{
+  opacity:.10;
+  filter:blur(1px);
+  transform:translateY(-4px);
+  transition:opacity 1.1s ease,filter 1.1s ease,transform 1.2s ease;
+}
+.stage.captions-evaporated[data-phase="live"] .display-surface{
+  opacity:.095;
+  filter:blur(4px);
+  transform:translate3d(0,-8px,0) scale(1.008);
+  -webkit-mask-image:none;
+  mask-image:none;
+  transition:opacity 1.4s ease,filter 1.5s ease,transform 1.5s ease;
+}
+.stage[data-phase="live"] .display-surface{
+  transition:opacity .5s ease,filter .65s ease,transform .7s ease;
+}
+@media(max-width:700px){
+  .cloud-studio .studio-header{min-height:49px;padding:4px 17px}
+  .cloud-studio .studio-nav{gap:1px;padding:0 9px 4px;justify-content:space-around}
+  .cloud-studio .studio-tab{min-width:52px;min-height:33px;padding:7px 11px;font-size:10.5px}
+  .cloud-studio .studio-scroll{padding:0 18px max(28px,env(safe-area-inset-bottom))}
+  .cloud-studio .studio-hero{padding:24px 0 16px}
+  .cloud-studio .cloud-heading{font-size:21px;line-height:1.2;letter-spacing:-.025em}
+  .cloud-studio .cloud-intro{font-size:11px;line-height:1.5}
+  .cloud-studio .studio-section{padding:12px 0 14px}
+  .cloud-studio .studio-action-grid{gap:8px}
+  .cloud-studio .studio-action-grid .action{min-height:42px;font-size:11px;padding:9px 12px}
+}
+@media(prefers-reduced-motion:reduce){
+  .cloud-studio .studio-page.mist-page-arriving,
+  .cloud-studio .studio-disclosure[open]:not(.mist-closing)>:not(summary),
+  .cloud-studio .studio-disclosure.mist-closing>:not(summary){
+    animation:none!important;
+    opacity:1;
+    filter:none;
+    transform:none;
+  }
+  .cloud-studio .studio-scroll.is-idle .studio-page:not([hidden])>.cloud-reveal.is-revealed,
+  .stage.captions-evaporated[data-phase="live"] .display-surface{
+    filter:none!important;
+    transform:none!important;
+    opacity:1!important;
+  }
+}
