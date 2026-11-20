@@ -1,11 +1,6 @@
 name: Publish EAIwork dashboard to Theory7
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'content/eaiwork-dashboard.html'
-      - '.github/workflows/deploy-eaiwork-theory7.yml'
   workflow_dispatch:
 
 permissions:
