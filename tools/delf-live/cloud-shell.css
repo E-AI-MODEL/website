@@ -957,3 +957,49 @@ body.panel-visible:not(.cloud-studio-idle) .cloud-studio .studio-nav{
     transform:none;
   }
 }
+
+
+/* Desktop en mobiel gebruiken dezelfde volledige studio, met zichtbare bewegende mist. */
+.cloud-studio .studio-current[hidden]{display:none!important}
+.cloud-studio .studio-header{grid-template-columns:1fr auto}
+.cloud-studio .studio-mark{grid-column:2}
+.cloud-studio.panel{background:rgba(249,251,250,.955)}
+.cloud-studio .studio-clouds{
+  inset:-18%;
+  opacity:1;
+  background:
+    radial-gradient(ellipse 28% 42% at 24% 35%,rgba(165,206,209,.36),transparent 88%),
+    radial-gradient(ellipse 36% 30% at 76% 22%,rgba(222,196,181,.21),transparent 94%),
+    radial-gradient(ellipse 40% 35% at 59% 76%,rgba(173,205,203,.31),transparent 92%);
+  animation:studio-cloud-current 19s ease-in-out infinite alternate;
+  will-change:transform,opacity;
+}
+.cloud-studio .studio-clouds::before,
+.cloud-studio .studio-clouds::after{
+  content:"";position:absolute;inset:5% -10%;
+  border-radius:50%;pointer-events:none;
+  background:radial-gradient(ellipse 42% 22% at 50% 51%,rgba(169,206,210,.21),transparent 85%);
+  filter:blur(37px);
+  transform-origin:center;
+}
+.cloud-studio .studio-clouds::before{animation:studio-cloud-wave 24s ease-in-out infinite alternate}
+.cloud-studio .studio-clouds::after{
+  background:radial-gradient(ellipse 42% 24% at 53% 45%,rgba(228,207,194,.18),transparent 90%);
+  animation:studio-cloud-wave 29s ease-in-out infinite alternate-reverse;
+}
+@keyframes studio-cloud-current{
+  0%{transform:translate3d(-6%,-2%,0) scale(.92);opacity:.76}
+  50%{transform:translate3d(4%,2%,0) scale(1.06);opacity:1}
+  100%{transform:translate3d(-1%,-5%,0) scale(1.13);opacity:.82}
+}
+@keyframes studio-cloud-wave{
+  0%{transform:translate3d(-16%,4%,0) rotate(-8deg) scale(.8)}
+  100%{transform:translate3d(13%,-6%,0) rotate(9deg) scale(1.33)}
+}
+/* Dezelfde instellingenknop op ieder scherm; Esc blijft beschikbaar. */
+.mobile-settings.cloud-entry{display:grid!important;opacity:.75!important}
+body.cloud-idle:not(.panel-visible) .mobile-settings.cloud-entry{opacity:.19!important}
+body.panel-visible .mobile-settings.cloud-entry{opacity:0!important}
+@media(prefers-reduced-motion:reduce){
+  .cloud-studio .studio-clouds,.cloud-studio .studio-clouds::before,.cloud-studio .studio-clouds::after{animation:none!important}
+}
