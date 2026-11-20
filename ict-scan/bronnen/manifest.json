@@ -8,7 +8,8 @@
     "compiledBy": "Hans Visser",
     "referencePeriod": "november 2026",
     "evidenceCutoff": "2026-11-17",
-    "dataVersion": "2026-11-20-inventaris-v1"
+    "dataVersion": "2026-11-20-inventaris-v1",
+    "faqDataVersion": "2026-11-20"
   },
   "dataFiles": [
     {
@@ -37,6 +38,15 @@
         "softwareReview": 12
       },
       "sha": "8f017f556ec029419e24eec78c13741edc23e8cb",
+      "verified": true
+    },
+    {
+      "path": "2026-faq.json",
+      "schema": "eai-school-ict-v1",
+      "recordCounts": {
+        "faqs": 14
+      },
+      "sha": "44962fa1747a882cc65999c89bc6b3ec0a30e890",
       "verified": true
     }
   ],
