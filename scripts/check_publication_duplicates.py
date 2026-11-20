@@ -216,6 +216,7 @@ def audit(root: Path, reviewed: dict[tuple[str, str], str],
     for group in exact_groups.values():
         if len(group) < 2:
             continue
+        direct_copies = set()
         for a, b in itertools.combinations(sorted(group, key=lambda p: p.url), 2):
             key = pair_key(a.url, b.url)
             reported_pairs.add(key)
@@ -230,8 +231,10 @@ def audit(root: Path, reviewed: dict[tuple[str, str], str],
                     blocking.append(entry("exact_dezelfde_pagina", list(key),
                                           "De inhoud van beide gepubliceerde pagina's is gelijk"))
             else:
-                review.append(entry("dubbele_directe_route", list(key),
-                                    "Dezelfde inhoud staat ook op een URL buiten de sitemap"))
+                direct_copies.update(key)
+        if direct_copies:
+            review.append(entry("dubbele_directe_route", sorted(direct_copies),
+                                "Dezelfde inhoud staat op meerdere direct bereikbare URLs, minstens één buiten de sitemap"))
 
     # Bijna gelijke pagina's, zoals de twee bestaande EAI-homepages, moeten
     # zichtbaar zijn. Alleen werkelijk nieuwe, onbeoordeelde dubbelen blokkeren.
