@@ -10,10 +10,22 @@ class ICTScanTests(unittest.TestCase):
         for filename in ("index.html", "style.css", "monitor.css", "app.js", "enhancements.js", "emmaus-logo.svg", "README.md"):
             self.assertTrue((TOOL / filename).is_file(), filename)
 
-    def test_secret_not_security_and_404_first_digit(self):
+    def test_secret_not_security_and_litespeed_404_middle_zero(self):
         html = (TOOL / "index.html").read_text(encoding="utf-8")
         js = (TOOL / "app.js").read_text(encoding="utf-8")
-        self.assertIn('id="unlockFour"', html)
+        self.assertIn('id="unlockZero"', html)
+        self.assertNotIn('id="unlockFour"', html)
+        self.assertIn('<title>404 Not Found</title>', html)
+        self.assertIn('Proudly powered by LiteSpeed Web Server', html)
+        self.assertIn('The resource requested could not be found on this server!', html)
+        self.assertNotIn('class="mock-header"', html)
+        self.assertIn("zero.addEventListener('dblclick'", js)
+        self.assertIn("e.pointerType!=='touch'", js)
+        self.assertNotIn("$('unlockFour')", js)
+        css = (TOOL / 'monitor.css').read_text(encoding='utf-8')
+        self.assertIn('#notFound.litespeed-404', css)
+        self.assertIn('background: #000', css)
+        self.assertIn('background: #474747', css)
         self.assertIn('id="gateInput"', html)
         self.assertIn("==='Emmauscollege'", js)
         self.assertIn('noindex,nofollow', html)
