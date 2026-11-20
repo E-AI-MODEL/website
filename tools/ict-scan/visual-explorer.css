@@ -155,3 +155,5 @@
 .monitor-layout #connectionChart.viz-stage .viz-treemap,
 .monitor-layout #phaseChart.viz-stage .viz-treemap,
 .monitor-layout #aiProducts.viz-stage .viz-treemap{display:block}
+
+.monitor-layout .family-no-links{margin:0;padding:10px 12px;border:1px solid #e5eaf1;border-radius:6px;background:#f8fafc;font-size:11px;line-height:1.55;color:#64758e}
