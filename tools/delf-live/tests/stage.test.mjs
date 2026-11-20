@@ -404,7 +404,7 @@ test('browser-LLM laadt alleen na expliciete keuze en ondersteunt statusweergave
   const local=readFileSync(new URL('../src/browser-llm.js',import.meta.url),'utf8');
   assert.match(local,/Qwen2\.5-0\.5B-Instruct-q4f16_1-MLC/);
   assert.match(local,/Qwen2\.5-1\.5B-Instruct-q4f16_1-MLC/);
-  assert.match(local,/if\(!navigator\.gpu\)/);
+  assert.match(local,/checkWebGpuAvailability\(navigator\.gpu\)/);
   assert.match(local,/await import\('@mlc-ai\/web-llm'\)/);
   assert.match(local,/initProgressCallback/);
   assert.match(local,/model\.chat\.completions\.create/);
@@ -443,7 +443,7 @@ test('lokaal praten vraagt geen Puter-login en stop onderbreekt echte generatie'
   assert.match(html,/<option value="browser">Stem van deze browser/);
   assert.match(chat,/if\(engine\.value==='puter'&&!puterSdk\?\.auth\?\.isSignedIn\(\)\)/);
   assert.match(chat,/function stopConversation\(\)[\s\S]{0,90}interruptBrowserReply\(\)/);
-  assert.match(local,/navigator\.gpu\.requestAdapter\(\)/);
+  assert.match(local,/checkWebGpuAvailability\(navigator\.gpu\)/);
   assert.match(local,/prebuiltAppConfig\.model_list\.some/);
   assert.match(local,/engine\.interruptGenerate\(\)/);
   assert.match(local,/finally\{generating=false;\}/);
@@ -459,4 +459,20 @@ test('vooraf laden houdt gespreksknoppen en podiumscenes onafhankelijk',()=>{
   assert.match(talk,/preload\.disabled=true;browserModel\.disabled=true;/);
   assert.match(talk,/browserModel\.disabled=false;preload\.disabled=false;/);
   assert.doesNotMatch(talk,/preload\.addEventListener[\s\S]{0,500}SpeechRecognition/);
+});
+
+test('EAIspeak meldt vooraf ontbrekende WebGPU-adapter',()=>{
+  const talk=readFileSync(new URL('../src/free-talk.js',import.meta.url),'utf8');
+  const helper=readFileSync(new URL('../src/gpu-capability.mjs',import.meta.url),'utf8');
+  assert.match(talk,/function probeGpu\(/);
+  assert.match(talk,/preload\.disabled=!support\.usable/);
+  assert.match(talk,/preloadStatus\.textContent=support\.message/);
+  assert.match(helper,/gpu\.requestAdapter\(\)/);
+});
+test('Puter wordt bij keuze online geladen vóór de aanmeldknop actief is',()=>{
+  const talk=readFileSync(new URL('../src/free-talk.js',import.meta.url),'utf8');
+  assert.match(talk,/if\(engine\.value==='puter'\)void primePuter\(\)/);
+  assert.match(talk,/connect\.disabled=true;[\s\S]{0,60}connect\.textContent='Puter laden/);
+  assert.match(talk,/connect\.textContent=signed\?'Puter verbonden':'Aanmelden bij Puter'/);
+  assert.doesNotMatch(talk,/Klik nogmaals op Verbind met Puter/);
 });
