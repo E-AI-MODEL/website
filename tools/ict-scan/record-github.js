@@ -56,7 +56,7 @@
   }
   function currentFields(remote,baseline,changed){
     if(!remote||!baseline)return false;
-    return changed.every(field=>equals(remote[field],baseline[field]));
+    return changed.every(field=>field==='sources'||equals(remote[field],baseline[field]));
   }
   function checkGraph(files){
     const byType={};
@@ -95,7 +95,13 @@
       if(!isNew && index<0)fail('Registratie verwijderd sinds de laatste synchronisatie: '+d.id);
       if(!isNew && !currentFields(list[index],d.before,d.changed))fail('De registratie '+d.id+' is sinds jouw laatste bronversie gewijzigd. Synchroniseer opnieuw.');
       let next=isNew?clone(d.after):clone(list[index]);
-      if(!isNew)for(const field of d.changed)next[field]=clone(d.after[field]);
+      if(!isNew)for(const field of d.changed){
+        if(field==='sources'){
+          const originals=new Set(d.before.sources||[]);
+          const additions=(d.after.sources||[]).filter(src=>!originals.has(src));
+          next.sources=[...new Set([...(next.sources||[]),...additions])];
+        }else next[field]=clone(d.after[field]);
+      }
       if(!Array.isArray(next.sources))next.sources=[];
       const history=Array.isArray(next.auditTrail)?next.auditTrail:[];
       history.push({timestamp:stamp,actor,action:isNew?'toegevoegd':'aangepast',fields:d.changed.slice(),reason:d.reason,method:'GitHub-pull-request',source:'Applicatielandschap · JSON-kaart'});
