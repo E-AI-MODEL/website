@@ -124,6 +124,22 @@ class PublicationDuplicatesTests(unittest.TestCase):
         self.sitemap("/een/", "/topo/")
         self.assertEqual([], audit(self.site, {})["blocking"])
 
+    def test_fast_preview_reports_unbuilt_anatomy_instead_of_calling_it_clean(self):
+        self.page("/een/")
+        self.sitemap("/een/", "/tools/anatomie/")
+        quick = audit(self.site, {}, frozenset({"/tools/anatomie/"}))
+        self.assertEqual([], quick["blocking"])
+        self.assertEqual("aandacht", quick["status"])
+        self.assertEqual(1, quick["counts"]["pas_in_volledige_release"])
+        full = audit(self.site, {})
+        self.assertIn("ontbrekende_pagina", [x["type"] for x in full["blocking"]])
+
+    def test_arbitrary_deferred_page_is_forbidden(self):
+        self.page("/een/")
+        self.sitemap("/een/", "/twee/")
+        with self.assertRaisesRegex(ValueError, "Onbekende uitgestelde pagina"):
+            audit(self.site, {}, frozenset({"/twee/"}))
+
     def test_different_language_versions_do_not_block(self):
         self.page("/nl/", LONG_TEXT, "Les")
         self.page("/en/", OTHER_TEXT, "Les")
