@@ -33,7 +33,7 @@
     originalNumber:'Oorspronkelijk nummer',sourceRow:'Rij in export',moduleId:'Module-ID',usageContext:'Gebruikssituatie',m365Context:'Microsoft 365-context'
   };
   const PROTECTED=new Set(['id','originalNumber','sourceFields','otherDescription','provenance','sources','auditTrail','relations','frameworkLinks','sourceMeta','recordMeta']);
-  const MULTILINE=/description|action|explanation|attention|didactics|learning|evidence|processing|agreement|note|instructions|source|data|links|review|unknown|advice|formative|usageContext|m365Context|nuance|execution|nextStep|limitation|input|teacher|student|known|status/i;
+  const MULTILINE=/answer|aliases|description|action|explanation|attention|didactics|learning|evidence|processing|agreement|note|instructions|source|data|links|review|unknown|advice|formative|usageContext|m365Context|nuance|execution|nextStep|limitation|input|teacher|student|known|status/i;
   const typesByKey=Object.fromEntries(SPECS.map(s=>[s.key,s]));
   const model={drafts:new Map(),current:null,editing:false,adding:false,original:null,working:null,catalog:null,loading:false};
   const key=(type,id)=>type+':'+id;
