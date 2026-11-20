@@ -462,7 +462,7 @@ $('prepareMic').onclick = async () => {
     if (!words) return;
     heard = true;
     const final = Array.from(event.results).every(result=>result.isFinal);
-    feedback('microphoneStatus',(final?'Herkend: ':'Herkenning: ')+words,final?'good':'');
+    feedback('microphoneStatus',(final?'Herkend Nederlands: ':'Herkenning bezig: ')+words,final?'good':'');
     componentStatus('microphoneStatus','ready','Nederlandse woorden herkend');
   };
   instance.onerror = event => {
