@@ -2868,6 +2868,17 @@ def build(sources: Path, out: Path) -> None:
     ):
         if not (out / relative).is_file():
             raise FileNotFoundError(f"Missing EAIgit browser asset: {relative}")
+    # Schoolbrede ICT-scan: standalone local-first browser tool. No public navigation,
+    # no sitemap entry and no public source data. Files stay in the browser.
+    ict_scan_source = repo_root / "tools" / "ict-scan"
+    for filename in ("index.html", "style.css", "app.js", "README.md"):
+        source_file = ict_scan_source / filename
+        if not source_file.is_file():
+            raise FileNotFoundError(f"Missing ICT-scan source file: {source_file}")
+        destination_file = out / "tools" / "ict-scan" / filename
+        destination_file.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(source_file, destination_file)
+
     # Standalone LEIF and its private continuation page are kept byte-for-byte.
     # Neither page is in the public sitemap or shared editorial UI.
     leif_source = repo_root / "leif"
