@@ -189,7 +189,12 @@ jobs:
               assert res.status == 200
           assert b'DELF' in mobile_page and b'Franse modelproef' in mobile_page
           assert b'/assets/' in mobile_page, 'Mobile model JS not linked'
-          print('EAIspeak and DELF pages publicly available at', base)
+          old_base = 'https://eaimodel.nl/tools/delf-live/'
+          with urlopen(Request(old_base, headers={'Cache-Control':'no-cache','User-Agent':'EAIspeak-legacy-check/1.0'}), timeout=30) as res:
+              old_page = res.read()
+              assert res.status == 200
+          assert b'id="scriptedStart"' in old_page, 'Original DELF route no longer works'
+          print('EAIspeak page published at', base, 'and legacy DELF route preserved:', old_base)
           PY
 
   # Eenmalig: bouw de definitieve Franse opnamen in GitHub, niet op de Mac.
