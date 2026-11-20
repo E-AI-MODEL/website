@@ -8,7 +8,8 @@ if(host) {
   section.id='ollamaSetup';
   section.innerHTML=`
     <div class="studio-section-top"><span class="studio-section-no">03</span><h2>Ollama op je Mac</h2></div>
-    <p class="studio-support">Je hoeft de website niet te installeren. Volg de stappen om een lokaal taalmodel met deze browser te verbinden.</p>
+    <p class="studio-support">Je hoeft de website niet te installeren. De handleiding opent pas wanneer je Ollama wilt koppelen.</p>
+    <details class="ollama-guide"><summary>Ollama instellen op deze Mac</summary>
     <div class="ollama-steps" role="group" aria-label="Voortgang Ollama installatie"></div>
     <div class="ollama-step-content" id="ollamaStepContent"></div>
     <p id="ollamaStepFeedback" class="ollama-feedback" role="status" aria-live="polite"></p>
@@ -16,6 +17,7 @@ if(host) {
       <button type="button" class="action studio-action studio-action-quiet" id="ollamaBack">Vorige</button>
       <button type="button" class="action studio-action" id="ollamaNext">Verder</button>
     </div>
+    </details>
   `;
   const before=host.querySelector('.studio-section');
   if(before)host.insertBefore(section,before);else host.append(section);
@@ -121,7 +123,7 @@ if(host) {
         for(const model of models){const option=new Option(model,model);select.add(option);}
         if(selected&&models.includes(selected))select.value=selected;else selected=models[0];
         select.value=selected;
-        select.addEventListener('change',()=>{selected=select.value;verified=false;next.disabled=false;});
+        select.addEventListener('change',()=>{selected=select.value;verified=false;modelReply='';next.disabled=false;});
         label.append(select);contentElement.append(label);
       }else contentElement.append(line('p','De server is bereikbaar, maar er staat nog geen model op je Mac.','studio-support'));
       addCommand('Een relatief licht model voor een eerste Franse test (ongeveer 2,5 GB download):','ollama pull qwen3:4b');
