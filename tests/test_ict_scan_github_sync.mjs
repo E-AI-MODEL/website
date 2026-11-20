@@ -23,7 +23,7 @@ function setup({bad=false,unauthorized=false,cancelDuringImport=false,largeDirec
   const content=Buffer.from(JSON.stringify({apps:[{id:'APP-1',name:'Dummy software'}]}));
   const sha='a'.repeat(40);
   const context={
-    document:{getElementById:id=>fields[id]}, state,
+    document:{getElementById:id=>fields[id],addEventListener(event,handler){this.events??={};this.events[event]=handler;}}, state,
     URL, AbortController, File, atob,
     Date, Error, Uint8Array, console,
     selectView(view){state.view=view;},
