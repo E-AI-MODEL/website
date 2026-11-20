@@ -43,7 +43,7 @@ Test de generator bij een codewijziging met `node tests/test_ict_scan_export.mjs
 
 De website volgt de navigatie van de EAIact Model Monitor, maar gebruikt de kleuren van het Emmauscollege. Het officiële logo is overgenomen uit `LogoEmmausCollege4000px.png` en lokaal als `emmaus-logo.svg` opgenomen.
 
-- Vast scherm met bovenbalk, iconennavigatie en horizontaal tabmenu. De inhoud scrolt alleen binnen de hoofdruimte. Op mobiel staat de iconenbalk onderaan.
+- Vast scherm met bovenbalk en de bestaande iconenzijbalk. De dubbele horizontale menubalk is verwijderd. Extra functies staan in het uitklapbare menu onderaan de zijbalk. De inhoud scrolt alleen binnen de hoofdruimte. Op mobiel staat de iconenbalk onderaan en opent het extra menu naar boven.
 - Acht schermen: Overzicht, Toepassingen, Koppelingen, AI, Privacy & AI Act, Controles, Rapporten en Bronnen.
 - Klikbare staafgrafieken op het schoolbrede dashboard, keuzelijstfilters, een ringdiagram als alternatieve weergave en een staafdiagram naar lesfase op het AI-scherm.
 - Aanvullende staafdiagrammen voor Entra-registratiestatus en controlepunten; openen van applicaties via overzicht en wereldwijde zoekbalk.
@@ -61,7 +61,7 @@ Dit is een bewust vermomde ingang en geen server-side login. Een echte 404 van d
 
 Onder **Bronnen** staat **Sync data met GitHub**. Deze functie leest uitsluitend gegevens uit GitHub en verandert geen bestanden in de repository. De GitHub-map, branch/tag en repository zijn instelbaar. Dezelfde invoer voor XLSX, CSV, JSON, DOCX en PDF wordt gebruikt als bij lokale bestanden; PDF's worden alleen geregistreerd, niet inhoudelijk beoordeeld.
 
-- Een openbare repository kan zonder token worden gelezen. Voor schoolbronnen: gebruik een **privé-repository**.
+- De standaardbron is de openbare repository `E-AI-MODEL/website`, map `ict-scan/bronnen` op `main`. Een openbare repository kan zonder token worden gelezen. Publiceer geen wachtwoorden, toegangssleutels of ruwe accountgegevens. Voor andere, afgeschermde bronmappen kan een privé-repository met beperkte leestoken worden gebruikt.
 - Voor een privé-repository wordt een tijdelijke GitHub fine-grained access token gevraagd, beperkt tot die repository met **Contents: Read**. De token gaat alleen met GET-verzoeken naar `https://api.github.com`, wordt niet opgeslagen, niet meegestuurd in exports en na de synchronisatie uit het scherm gewist. Gebruik geen accountbrede of schrijfgerechtigde token.
 - Alle bestanden worden eerst opgehaald en pas daarna ingelezen. Bij een importfout wordt de vorige werkstand teruggezet. Bij een vooraf gevuld overzicht vraagt **Vervangen** om bevestiging.
 - De scanner leest een map met alle ondersteunde bronbestanden (ook submappen, begrensd). Beperk de map tot de te gebruiken nulmeting. Een `README.md` en andere documenten zonder ondersteunde extensie worden overgeslagen.
@@ -72,3 +72,9 @@ Onder **Bronnen** staat **Sync data met GitHub**. Deze functie leest uitsluitend
 De publieke repository `E-AI-MODEL/website` bevat **geen echte schoolinventaris**. De actuele bronbestanden moeten eerst in een hiervoor bedoelde privé-repository worden geplaatst. Een verborgen 404-ingang is geen toegangsbescherming voor GitHub-inhoud.
 
 Voor een technische test: `node --test tests/test_ict_scan_github_sync.mjs`. De websitebuild controleert ook dat `github-sync.js` wordt gepubliceerd en dat de toegestane netwerkverbinding beperkt blijft tot `https://api.github.com`.
+
+## Uitklapbaar functiemenu (v5)
+
+De acht oorspronkelijke iconen voor de hoofdonderdelen zijn gehandhaafd. De extra knop onderaan opent zoeken, GitHub-synchronisatie, lokale bestandsimport en rapportexports (Excel, PDF, JSON). De zoekbalk en losse acties zijn uit de bovenbalk gehaald; de dubbele horizontale navigatie bestaat niet meer. Op een klein scherm opent de functiesectie boven de onderste iconenbalk. Sluiten kan met Escape, de sluitknop of een klik buiten het menu. De toets `/` opent de zoekfunctie buiten invoervelden.
+
+De GitHub-actie in dit menu start de bestaande alleen-lezen-synchronisatie en opent het bronnenscherm voor de status. De map bevat momenteel wel `manifest.json` met de eerste inventarisatiedatum (10 augustus 2026) en samensteller (Hans Visser); de inhoudelijke applicatiebestanden moeten apart worden gecontroleerd en toegevoegd. Zolang die ontbreken, mag het dashboard geen aantallen verzinnen.
