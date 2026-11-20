@@ -37,6 +37,22 @@ class PublicationOwnershipTests(unittest.TestCase):
         self.assertIn("python scripts/build_site.py", deploy)
         self.assertIn("mirror -R", deploy)
 
+    def test_manual_recovery_publishers_do_not_compete_automatically(self):
+        for workflow in (
+            "deploy-delf-preview.yml",
+            "deploy-zhang-review-rapid.yml",
+            "deploy-analytics-dashboard.yml",
+            "deploy-eaiwork-theory7.yml",
+            "deploy-leif-quick.yml",
+            "deploy-lo-quick.yml",
+            "deploy-sport-opstellingen-quick.yml",
+            "deploy-vakinhoud-quick.yml",
+        ):
+            with self.subTest(workflow=workflow):
+                source = (WORKFLOWS / workflow).read_text(encoding="utf-8")
+                self.assertIn("workflow_dispatch:", source)
+                self.assertNotIn("\\n  push:", source)
+
     def test_topo_keeps_its_independent_queue(self):
         source = (WORKFLOWS / "deploy-topo-theory7.yml").read_text(encoding="utf-8")
         self.assertIn("group: topo-production", source)
