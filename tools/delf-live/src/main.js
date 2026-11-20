@@ -54,6 +54,8 @@ let dutchPulseAt = -Infinity;
 let frenchAnalyser = null;
 let visualFrame = null;
 let smoothedLevel = 0;
+let frenchSegmentIndex = 0;
+let frenchSegmentTotal = 0;
 
 // De centrale lijnen reageren tijdens Frans op de audiobuffers.
  // Nederlandse browser-TTS levert geen audiobuffers: dan volgen ze woordgrenzen.
@@ -884,11 +886,16 @@ async function streamFrench() {
   let t = ctx.currentTime + 0.11;
   let totalChunks = 0;
   const segments = speechSegments(getActiveSession().speech); // Vaste tekst van de gekozen sessie
+  frenchSegmentTotal = segments.length;
+  updateSpeechProgress();
   const started = performance.now();
   followAudioClock(ctx, controller);
   blankStage();
   try {
-    for (const line of segments) {
+    for (let i = frenchSegmentIndex; i < segments.length; i++) {
+      frenchSegmentIndex = i;
+      updateSpeechProgress();
+      const line = segments[i];
       if (controller.signal.aborted || phase !== 'french') return;
       const stream = french.stream(line, { signal: controller.signal });
       let firstChunk = true;
@@ -916,11 +923,42 @@ async function streamFrench() {
       }
       t += 0.24;
       await stream.done;
+      if (controller.signal.aborted || phase !== 'french') return;
+      frenchSegmentIndex = i + 1;
+      updateSpeechProgress();
     }
     feedback('runtimeStatus', `Franse speech loopt. ${totalChunks} live audiostukken.`, 'good');
     await waitForPlayback(ctx, controller, t);
     if (!controller.signal.aborted && phase === 'french') goHandback();
   } catch (e) { if (!controller.signal.aborted) reportError(`Franse stem onderbroken: ${e.message || e}`); }
+}
+function updateSpeechProgress() {
+  const target = $('speechProgress');
+  if (target) target.textContent = frenchSegmentTotal
+    ? 'Franse passage ' + Math.min(frenchSegmentIndex+1,frenchSegmentTotal) + ' van ' + frenchSegmentTotal
+    : 'Franse speech nog niet begonnen';
+}
+function nextFrenchPassage() {
+  if (phase !== 'french') return;
+  const segments = speechSegments(getActiveSession().speech);
+  const next = Math.min(segments.length, frenchSegmentIndex+1);
+  stopVoices();
+  frenchSegmentIndex = next;
+  frenchSegmentTotal = segments.length;
+  updateSpeechProgress();
+  if (frenchSegmentIndex >= frenchSegmentTotal) {goHandback();return;}
+  void streamFrench().catch(error=>{
+    componentStatus('frenchStatus','error','Volgende passage kon niet starten',error);
+    reportError('Franse speech kon niet hervatten: '+String(error?.message||error));
+    panel(true);
+  });
+}
+function previousFrenchPassage() {
+  if (phase !== 'french') return;
+  stopVoices();
+  frenchSegmentIndex = Math.max(0,frenchSegmentIndex-1);
+  updateSpeechProgress();
+  void streamFrench().catch(error=>reportError('Vorige passage kon niet starten: '+String(error?.message||error)));
 }
 function goStart() {
   if (!translator) {
@@ -955,27 +993,27 @@ function goInterrupt() {
     panel(true);
     return;
   }
-  if (!selectedDutchVoice) {
-    reportError('Selecteer eerst een Nederlandse stem.');
-    panel(true);
-    return;
-  }
   stopMic(); stopVoices();
   prewarmFrenchAudio();
   setPhase('interrupted', 'UN INSTANT…');
   blankStage();
   const now = epoch;
-  const started = speakDutch(getActiveSession().interrupt, () => {
-    // Een eigen reactie is welkom. Daarna volgt altijd de goedgekeurde Franse speech.
+  if (selectedDutchVoice) {
+    const started = speakDutch(getActiveSession().interrupt, () => beginReplyWindow(now));
+    if (!started) { releasePreparedAudio(); reportError('De onderbreking kon niet starten.'); }
+  } else {
+    feedback('runtimeStatus','De Franse spreker is klaar voor de overname. Jij kunt nog reageren of doorgaan naar de speech.');
     beginReplyWindow(now);
-  });
-  if (!started) { releasePreparedAudio(); reportError('De onderbreking kon niet starten.'); }
+  }
   panel(false);
 }
 function goFrench() {
   if (!french) { reportError('Laad eerst het Franse Phonon-model.'); return; }
   if (stageAdvance(phase, 'french') === null) return;
   stopMic(); stopVoices(); firstAudioMs = null;
+  frenchSegmentIndex = 0;
+  frenchSegmentTotal = speechSegments(getActiveSession().speech).length;
+  updateSpeechProgress();
   setPhase('french', 'DISCOURS EN FRANÇAIS');
   panel(false);
   void streamFrench().catch(error => {
@@ -985,15 +1023,18 @@ function goFrench() {
   });
 }
 function goHandback() {
-  if (!selectedDutchVoice) { reportError('Nederlandse teruggavestem ontbreekt.'); return; }
   if (stageAdvance(phase, 'handback') === null) return;
   stopVoices();
   setPhase('handback', 'À VOUS');
   blankStage();
   const now = epoch;
-  speakDutch(getActiveSession().handback, () => {
-    if (phase === 'handback' && epoch === now) goFinish();
-  });
+  if (selectedDutchVoice) {
+    speakDutch(getActiveSession().handback, () => {
+      if (phase === 'handback' && epoch === now) goFinish();
+    });
+  } else {
+    feedback('runtimeStatus','De Franse spreker heeft het woord teruggegeven. Klik op Nederlands slot om verder te gaan.');
+  }
   panel(false);
 }
 function goFinish() {
@@ -1022,7 +1063,7 @@ function panic() {
   blankStage();
   feedback('runtimeStatus', 'Alles gestopt. Toets 0 om opnieuw te beginnen.', 'bad');
 }
-const actions = {start:goStart, interrupt:goInterrupt, french:goFrench, handback:goHandback, finish:goFinish, reset:goReset, panic};
+const actions = {start:goStart, interrupt:goInterrupt, french:goFrench, handback:goHandback, finish:goFinish, reset:goReset, panic, nextFrenchPassage, previousFrenchPassage};
 for (const [name, fn] of Object.entries(actions)) $(name).onclick = fn;
 $('fullscreen').onclick = () => document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.();
 $('testTranslate').onclick = async () => {
@@ -1045,9 +1086,11 @@ document.addEventListener('keydown', event => {
   if (event.target instanceof HTMLButtonElement || event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement || event.target instanceof HTMLSelectElement) return;
   if (event.code === 'ArrowRight') {
     event.preventDefault();
-    if (phase === 'live' && !closing) goInterrupt();
+    if (phase === 'french') nextFrenchPassage();
+    else if (phase === 'live' && !closing) goInterrupt();
     return;
   }
+  if (event.code === 'ArrowLeft' && phase === 'french') { event.preventDefault(); previousFrenchPassage(); return; }
   if (event.code === 'Space') { event.preventDefault(); togglePause(); return; }
   const map = {'1':goStart,'2':goInterrupt,'3':goFrench,'4':goHandback,'5':goFinish,'0':goReset,'x':panic,'X':panic,'f':$('fullscreen').onclick,'F':$('fullscreen').onclick};
   if (map[event.key]) { event.preventDefault(); map[event.key](); }

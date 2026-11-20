@@ -46,18 +46,32 @@ export async function listLocalModels(provider,endpoint) {
   if(!names.length) throw new Error('Geen geldig model gevonden');
   return [...new Set(names)];
 }
-export async function probeLocalModel(provider,endpoint,selectedModel=null) {
+export async function probeLocalModel(provider,endpoint,selectedModel=null,prompt='Antwoord alleen met OK.') {
   const origin=validateLocalEndpoint(endpoint);
   const candidates=await listLocalModels(provider,origin);
   const model=selectedModel||candidates[0];
   if(!candidates.includes(model)) throw new Error('Gekozen model staat niet op de server');
   const payload=provider==='ollama'
-    ? {model,prompt:'Antwoord alleen met OK.',stream:false,options:{num_predict:8}}
-    : {model,messages:[{role:'user',content:'Antwoord alleen met OK.'}],max_tokens:8,stream:false};
+    ? {model,prompt,stream:false,options:{num_predict:128},...(model.startsWith('qwen3:')?{think:false}:{})}
+    : {model,messages:[{role:'user',content:prompt}],max_tokens:80,stream:false};
   const result=await request(origin+(provider==='ollama'?'/api/generate':'/v1/chat/completions'),{
     method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)
-  },20000);
+  },60000);
   const answer=provider==='ollama'?result.response:result.choices?.[0]?.message?.content;
   if(typeof answer!=='string'||!answer.trim()) throw new Error('Het model gaf geen tekst terug');
   return {model,answer};
+}
+
+/**
+ * Bereikbaarheid is geen modeltest. Een lege modellenlijst betekent wel dat
+ * Ollama bereikbaar is; modellen worden nooit automatisch gedownload.
+ */
+export async function inspectOllamaServer(endpoint='http://localhost:11434/') {
+  const origin=validateLocalEndpoint(endpoint);
+  const result=await request(origin+'/api/tags',{},5000);
+  if(!Array.isArray(result?.models)) throw new Error('Ongeldig Ollama-antwoord op /api/tags');
+  return {
+    online:true,
+    models:result.models.map(model=>model?.name||model?.model).filter(name=>typeof name==='string'&&name.length>0)
+  };
 }
