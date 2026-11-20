@@ -178,7 +178,9 @@ jobs:
           node --check tools/ict-scan/enhancements.js
           node --check tools/ict-scan/github-sync.js
           node --check tools/ict-scan/visual-explorer.js
-          node --test tests/test_ict_scan_2026_data.mjs tests/test_ict_scan_github_sync.mjs tests/test_ict_scan_visuals.mjs
+          node --check tools/ict-scan/record-cards.js
+          node --check tools/ict-scan/record-github.js
+          node --test tests/test_ict_scan_2026_data.mjs tests/test_ict_scan_github_sync.mjs tests/test_ict_scan_visuals.mjs tests/test_ict_scan_cards.mjs
 
       - name: Check first-party clicks and session privacy
         run: |
