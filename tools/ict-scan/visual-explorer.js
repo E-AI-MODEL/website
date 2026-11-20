@@ -345,6 +345,48 @@
     choice[key]=control.value;
     control.addEventListener('change',()=>{choice[key]=control.value;if(key==='family')renderFamily();else renderOverview();});
   }
+  // The same visual choices also work on the AI and Entra pages.
+  choice.phase=el('phaseVizMode').value;
+  choice.aiProduct=el('aiProductVizMode').value;
+  choice.connection=el('connectionVizMode').value;
+  const beforeRenderAi=renderAi;
+  renderAi=function(){
+    beforeRenderAi();
+    if(!state.ready)return;
+    const ai=array(state.ai).filter(isClassroomAi);
+    const assignments=[];
+    for(const item of ai){
+      const phases=(item.phase||'Niet ingedeeld').split(/[\/,;]/).map(s=>s.trim()).filter(Boolean);
+      for(const phase of new Set(phases.length?phases:['Niet ingedeeld'])){
+        if(!/beheer|organisatie/i.test(phase))assignments.push({phase});
+      }
+    }
+    showChart('phaseChart',assignments,'phase',choice.phase,state.phase,value=>{
+      state.phase=state.phase===value?'':value;renderAi();
+    });
+    showChart('aiProducts',ai,'product',choice.aiProduct,state.aiProduct,value=>{
+      state.aiProduct=state.aiProduct===value?'':value;renderAi();
+    });
+    el('aiProductsCaption').textContent=fmt(ai.length)+' beschreven onderwijsfuncties. Dit zijn geen zelfstandige toepassingen en niet automatisch ingeschakelde functies.';
+  };
+  const beforeRenderConnections=renderConnections;
+  renderConnections=function(){
+    beforeRenderConnections();
+    if(!state.ready)return;
+    const all=array(state.connections).map(item=>({status:connectionState(item)}));
+    const selected=el('connectionsStatus').value;
+    showChart('connectionChart',all,'status',choice.connection,selected,value=>{
+      el('connectionsStatus').value=selected===value?'':value;
+      renderConnections();
+    });
+  };
+  for(const [id,key,render] of [
+    ['phaseVizMode','phase',()=>renderAi()],
+    ['aiProductVizMode','aiProduct',()=>renderAi()],
+    ['connectionVizMode','connection',()=>renderConnections()]
+  ]){
+    el(id).addEventListener('change',()=>{choice[key]=el(id).value;render();});
+  }
   el('familyApp').addEventListener('change',()=>{focusedFamily=el('familyApp').value;expandedGroups.clear();renderFamily();});
   el('overviewToApps').addEventListener('click',()=>{
     state.area=state.overviewArea||'';state.type=state.overviewKind||'';
