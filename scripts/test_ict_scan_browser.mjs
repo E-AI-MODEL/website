@@ -52,14 +52,15 @@ try {
   });
   await page.route('**/*',route=>{
    const url=route.request().url();
-   if(url.startsWith(base)||url.startsWith('https://api.github.com/'))return route.continue();
+   if(url.startsWith(base))return route.continue();
+   if(url.startsWith('https://api.github.com/'))return route.fallback();
    return route.abort();
   });
   await page.goto(base+'/tools/ict-scan/',{waitUntil:'load'});
   assert.equal(await page.title(),'404 Not Found');
   await page.locator('#unlockZero').dblclick({force:true});
   await page.locator('#workspace:not([hidden])').waitFor();
-  await page.waitForFunction(()=>/geslaagd|niet gelukt/i.test(document.getElementById('githubSyncStatus')?.textContent||''),{timeout:45000});
+  await page.waitForFunction(()=>/geslaagd|niet gelukt/i.test(document.getElementById('githubSyncStatus')?.textContent||''),null,{timeout:45000});
   const message=await page.locator('#githubSyncStatus').textContent();
   assert.match(message,/geslaagd/i,'GitHub-sync mislukt: '+message);
   await page.waitForFunction(()=>document.getElementById('statusText')?.textContent.includes('61 toepassingen'));
