@@ -1,5 +1,5 @@
 import './system-status.css';
-import {SERVICES,STATUS,classifyError,probeLocalModel} from './system-probes.mjs';
+import {SERVICES,STATUS,classifyError,probeLocalModel,listLocalModels} from './system-probes.mjs';
 
 const $=id=>document.getElementById(id);
 const host=document.querySelector('#page-meer');
@@ -12,9 +12,11 @@ if(host) {
     <details class="system-provider">
       <summary>Lokale modellen verbinden</summary>
       <p class="studio-support">Alleen op dit apparaat. Een verbinding wordt pas getest wanneer je op Test klikt.</p>
-      <label class="studio-field">Aanbieder<select id="systemProvider"><option value="ollama">Ollama</option><option value="lmstudio">LM Studio</option></select></label>
+      <label class="studio-field">Aanbieder<select id="systemProvider"><option value="ollama">Ollama</option><option value="lmstudio">LM Studio</option><option value="llamacpp">llama.cpp</option></select></label>
       <label class="studio-field">Serveradres<input id="systemEndpoint" type="url" value="http://localhost:11434/" spellcheck="false" autocomplete="off"></label>
-      <button type="button" class="action studio-action" id="systemConnect">Test modelantwoord</button>
+      <button type="button" class="action studio-action studio-action-quiet" id="systemDiscover">Zoek beschikbare modellen</button>
+      <label class="studio-field">Model<select id="systemModel"><option value="">Zoek eerst beschikbare modellen</option></select></label>
+      <button type="button" class="action studio-action" id="systemConnect" disabled>Test modelantwoord</button>
     </details>
     <div class="system-actions"><button type="button" class="action studio-action studio-action-quiet" id="systemCapabilities">Controleer browser</button><button type="button" class="action studio-action studio-action-quiet" id="systemStorage">Controleer opslag</button></div>
     <p class="studio-support" id="systemChecked" aria-live="polite">Nog geen controles uitgevoerd.</p>
@@ -74,14 +76,36 @@ if(host) {
     if(!service || !Object.values(STATUS).includes(state)) return;
     update(service,state,message||'Geen nadere informatie',error?new Error(error):null);
   });
-    $('systemProvider').addEventListener('change',()=>{
-    $('systemEndpoint').value=$('systemProvider').value==='ollama'?'http://localhost:11434/':'http://localhost:1234/';
+    const modelSelect=$('systemModel');
+  function clearModels(){
+    modelSelect.replaceChildren(new Option('Zoek eerst beschikbare modellen',''));
+    $('systemConnect').disabled=true;
+  }
+  $('systemProvider').addEventListener('change',()=>{
+    $('systemEndpoint').value=({ollama:'http://localhost:11434/',lmstudio:'http://localhost:1234/',llamacpp:'http://localhost:8080/'})[$('systemProvider').value];
+    clearModels();
+  });
+  $('systemEndpoint').addEventListener('input',clearModels);
+  $('systemDiscover').addEventListener('click',async()=>{
+    const id=$('systemProvider').value,button=$('systemDiscover');
+    button.disabled=true;clearModels();update(id,STATUS.busy,'Modelnamen opvragen');
+    try{
+      const models=await listLocalModels(id,$('systemEndpoint').value);
+      modelSelect.replaceChildren();
+      for(const model of models) modelSelect.add(new Option(model,model));
+      $('systemConnect').disabled=false;
+      update(id,STATUS.idle,models.length+' model(len) gevonden. Nog niet getest.');
+    } catch(error){update(id,STATUS.error,'Modelnamen niet beschikbaar',error);}
+    finally{button.disabled=false;}
   });
   $('systemConnect').addEventListener('click',async()=>{
     const id=$('systemProvider').value,button=$('systemConnect');
-    button.disabled=true;update(id,STATUS.busy,'Model testen');
-    try{const result=await probeLocalModel(id,$('systemEndpoint').value);update(id,STATUS.ready,'Antwoord ontvangen: '+result.model);}
-    catch(error){update(id,STATUS.error,'Modeltest mislukt',error);}
+    if(!modelSelect.value) return;
+    button.disabled=true;update(id,STATUS.busy,'Modelantwoord testen');
+    try{
+      const result=await probeLocalModel(id,$('systemEndpoint').value,modelSelect.value);
+      update(id,STATUS.ready,'Antwoord ontvangen: '+result.model);
+    } catch(error){update(id,STATUS.error,'Modeltest mislukt',error);}
     finally{button.disabled=false;}
   });
   $('systemCapabilities').addEventListener('click',()=>{
