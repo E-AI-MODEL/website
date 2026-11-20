@@ -301,6 +301,10 @@ function reportError(message) {
 
 let preparingTranslation = null;
 async function prepareTranslation() {
+  if (translator && translator.kind !== $('translationEngine').value) {
+    await translator.dispose?.();
+    translator=null;
+  }
   if (translator) {
     feedback('translationStatus', 'Franse vertaling is geladen.', 'good');
     componentStatus('translationStatus','idle','Model geladen. Nog niet vertaald.');
@@ -311,7 +315,7 @@ async function prepareTranslation() {
     feedback('translationStatus', 'Franse vertaling voorbereiden…');
     componentStatus('translationStatus','busy','Vertaling laden');
     const opts = { sourceLanguage: 'nl', targetLanguage: 'fr' };
-    if (typeof globalThis.Translator !== 'undefined') {
+    if ($('translationEngine').value === 'chrome' && typeof globalThis.Translator !== 'undefined') {
       try {
         const availability = await Translator.availability(opts);
         if (availability !== 'unavailable') {
@@ -348,6 +352,10 @@ async function prepareTranslation() {
   try { return await preparingTranslation; } finally { preparingTranslation = null; }
 }
 $('prepareTranslate').onclick = prepareTranslation;
+$('translationEngine').addEventListener('change',()=>{
+  feedback('translationStatus','Andere vertaalroute gekozen. Klik op Laad vertaling om over te schakelen.');
+  componentStatus('translationStatus','idle','Andere route gekozen, nog niet getest');
+});
 let microphoneCheck = null;
 let microphoneCheckTimer = null;
 let microphoneTestGeneration = 0;
@@ -510,7 +518,8 @@ function stopMic() {
   if (previous) { previous.onend = null; previous.onresult = null; previous.onerror = null; try { previous.abort(); } catch {} }
 }
 function translateFinal(fragment) {
-  const text = fragment.trim();
+  const text = fragment.replace(/\\s+/g,' ').trim();
+  if (text) $('recognizedDutch').textContent = text;
   if (!text || !translator || phase !== 'live') return;
   const localEpoch = epoch;
   // A finished Dutch fragment always wins over an older interim preview.
@@ -525,6 +534,7 @@ function translateFinal(fragment) {
     try {
       const translated = await translator.translate(text);
       if (phase !== 'live' || epoch !== localEpoch) return;
+      if (!translated?.trim()) throw new Error('Het vertaalmodel gaf geen Franse tekst');
       if(translated?.trim()) componentStatus('translationStatus','ready','Live vertaling uitgevoerd');
        finalTranslations.push(...splitFrenchCaption(translated));
       finalTranslations = finalTranslations.slice(-2);
@@ -534,6 +544,7 @@ function translateFinal(fragment) {
   }).finally(() => { finalInFlight = Math.max(0, finalInFlight - 1); });
 }
 function translatePreview(fragment) {
+  if (!$('translationDrafts').checked) return;
   if (!translator || phase !== 'live') return;
   latestInterim = fragment.trim();
   if (latestInterim.split(/\s+/).length < 3) return;
