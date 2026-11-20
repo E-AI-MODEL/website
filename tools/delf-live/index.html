@@ -118,7 +118,48 @@
         <p class="cloud-intro">Zeg iets in het Nederlands. De AI antwoordt in gesproken Frans.</p>
       </div>
       <section class="studio-section cloud-reveal">
-        <p class="studio-support">Geen vaste speech en geen Terminal. Eenmalig aanmelden bij Puter. De gratis gebruiksruimte is beperkt; bij een tekort stopt het gesprek zonder kosten te maken buiten je tegoed.</p>
+        <p class="studio-support">Geen vast script. Kies een online model of een gratis browsermodel. Een browsermodel moet je eenmalig downloaden; de eerste keer kost dat tijd.</p>
+        <details class="studio-disclosure" id="freeTalkOptions" open>
+          <summary>Taal en model</summary>
+          <div class="studio-action-grid">
+            <label class="studio-field">Ik spreek
+              <select id="freeTalkInputLang">
+                <option value="nl-NL">Nederlands</option>
+                <option value="en-US">Engels</option>
+                <option value="fr-FR">Frans</option>
+              </select>
+            </label>
+            <label class="studio-field">AI antwoordt in
+              <select id="freeTalkOutputLang">
+                <option value="fr-FR">Frans</option>
+                <option value="en-US">Engels</option>
+                <option value="nl-NL">Nederlands</option>
+              </select>
+            </label>
+          </div>
+          <label class="studio-field">Model draait
+            <select id="freeTalkEngine">
+              <option value="puter">Online · Puter (gratis tegoed)</option>
+              <option value="browser">In deze browser · WebLLM (gratis)</option>
+            </select>
+          </label>
+          <label class="studio-field" id="freeTalkBrowserModelRow" hidden>Browsermodel
+            <select id="freeTalkBrowserModel">
+              <option value="Qwen2.5-0.5B-Instruct-q4f16_1-MLC">Qwen 0,5B · ±945 MB</option>
+              <option value="Llama-3.2-1B-Instruct-q4f16_1-MLC">Llama 1B · ±880 MB</option>
+              <option value="Qwen2.5-1.5B-Instruct-q4f16_1-MLC">Qwen 1,5B · ±1,6 GB</option>
+              <option value="Qwen2.5-3B-Instruct-q4f16_1-MLC">Qwen 3B · ±2,4 GB</option>
+            </select>
+          </label>
+          <label class="studio-field">Stem
+            <select id="freeTalkVoice">
+              <option value="cloud">Franse cloudstem (Puter)</option>
+              <option value="browser">Stem van deze browser</option>
+              <option value="none">Alleen tekst</option>
+            </select>
+          </label>
+          <p class="studio-support" id="freeTalkModelHint">De online route vraagt eenmalig aanmelden. Vrij praten blijft gescheiden van de voorstelling.</p>
+        </details>
         <div class="studio-action-grid">
           <button id="freeTalkSpeak" class="action studio-action studio-action-emphasis" type="button">Praat</button>
           <button id="freeTalkStop" class="action studio-action studio-action-quiet" type="button">Stop gesprek</button>

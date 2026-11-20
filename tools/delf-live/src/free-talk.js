@@ -1,142 +1,174 @@
-// Vrij gesprek in de browser. De bestaande vaste voorstelling blijft onafhankelijk.
-const $ = id => document.getElementById(id);
-const speak = $('freeTalkSpeak');
-const stop = $('freeTalkStop');
-const send = $('freeTalkSend');
-const play = $('freeTalkPlay');
-const status = $('freeTalkStatus');
-const heard = $('freeTalkHeard');
-const answer = $('freeTalkAnswer');
-const typed = $('freeTalkTyped');
-
-let recognition = null;
-let audio = null;
-let pending = false;
-let turn = 0;
-const history = [];
-const instructions = 'Tu es une voix française chaleureuse et vive pendant une remise de diplômes DELF scolaire au collège Emmaus de Rotterdam. On te parle surtout néerlandais. Réponds naturellement en français, en une ou deux phrases courtes, de manière spontanée et avec une pointe d\'humour. Ce n\'est pas un discours préparé. Réponds à ce qui vient vraiment d\'être dit, sans inventer de conversation ou de personnes. Pas de markdown.';
-
-function state(message, kind=''){
+// EAIspeak: vrij spreken, met apart gekozen model, taal en stem.
+import {BROWSER_MODELS,localReply} from './browser-llm.js';
+const $=id=>document.getElementById(id);
+const speak=$('freeTalkSpeak'),stop=$('freeTalkStop'),send=$('freeTalkSend'),play=$('freeTalkPlay');
+const status=$('freeTalkStatus'),heard=$('freeTalkHeard'),answer=$('freeTalkAnswer'),typed=$('freeTalkTyped');
+const engine=$('freeTalkEngine'),browserModel=$('freeTalkBrowserModel');
+const inputLang=$('freeTalkInputLang'),outputLang=$('freeTalkOutputLang'),voice=$('freeTalkVoice');
+const modelRow=$('freeTalkBrowserModelRow'),hint=$('freeTalkModelHint');
+let recognition=null,audio=null,utterance=null,pending=false,turn=0,lastAnswer='';
+const history=[];
+const languages={'nl-NL':'Nederlands','en-US':'Engels','fr-FR':'Frans'};
+function setStatus(message,kind=''){
   status.textContent=message;
-  status.classList.toggle('bad',kind==='error');
-  status.classList.toggle('good',kind==='ready');
+  status.dataset.kind=kind;
 }
-function ready(){speak.disabled=false;speak.textContent='Praat';send.disabled=false;pending=false;}
-function cancelAudio(){
-  if(!audio)return;
-  audio.onended=null;audio.onerror=null;
-  audio.pause();
-  audio=null;
-  play.disabled=true;
+function ready(){
+  pending=false;speak.disabled=false;speak.textContent='Praat';send.disabled=false;
+}
+function cancelSound(){
+  if(audio){audio.onended=null;audio.onerror=null;audio.pause();audio=null;}
+  if('speechSynthesis' in window)window.speechSynthesis.cancel();
+  utterance=null;play.disabled=!lastAnswer;
 }
 function stopConversation(){
   turn++;
-  const rec=recognition;
-  recognition=null;
+  const rec=recognition;recognition=null;
   if(rec){rec.onresult=null;rec.onerror=null;rec.onend=null;try{rec.abort();}catch{}}
-  cancelAudio();
-  ready();
-  state('Gestopt. Klik op Praat om verder te praten.');
+  cancelSound();ready();
+  setStatus('Gestopt. Klik op Praat om verder te praten.');
 }
-async function ensurePuter(){
+function updateControls(){
+  const local=engine.value==='browser';
+  modelRow.hidden=!local;
+  hint.textContent=local
+    ? 'Dit model draait op je apparaat. Eerste keer downloaden. WebGPU vereist; de downloads kunnen honderden MB zijn.'
+    : 'Online route via Puter. Eenmalig aanmelden en beperkt gratis tegoed.';
+  if(local&&!navigator.gpu)hint.textContent+=' WebGPU is hier niet beschikbaar: kies voor nu de online route.';
+  if(voice.value==='cloud'&&outputLang.value!=='fr-FR'){
+    voice.value='browser';
+    setStatus('Voor Nederlands en Engels gebruiken we voorlopig de gekozen browserstem.');
+  }
+}
+function syncChanges(){
+  if(pending||recognition)stopConversation();
+  history.length=0;
+  updateControls();
+}
+for(const control of [engine,browserModel,inputLang,outputLang,voice])control.addEventListener('change',syncChanges);
+updateControls();
+async function ensurePuter(required){
   const api=globalThis.puter;
-  if(!api?.ai?.chat||!api?.ai?.txt2speech)throw new Error('De gratis gespreksdienst kon niet laden. Controleer internet.');
+  if(!api?.ai || (required&&!api.ai.chat) || (!required&&!api.ai.txt2speech))
+    throw new Error('Puter is nog niet geladen of wordt door de browser geblokkeerd.');
   if(!api.auth.isSignedIn())await api.auth.signIn();
   return api;
 }
 function extractResponse(result){
-  const content=result?.message?.content;
-  if(typeof content==='string')return content.trim();
-  if(Array.isArray(content))return content.map(x=>typeof x==='string'?x:x?.text||'').join(' ').trim();
+  const c=result?.message?.content;
+  if(typeof c==='string')return c.trim();
+  if(Array.isArray(c))return c.map(x=>typeof x==='string'?x:x?.text||'').join(' ').trim();
   if(typeof result==='string')return result.trim();
   return '';
 }
-async function ask(question,api){
-  const own=++turn;
-  pending=true;speak.disabled=true;send.disabled=true;
-  heard.textContent=question;
-  answer.textContent='…';
-  state('De Franse spreker denkt na…');
-  const messages=[{role:'system',content:instructions},...history.slice(-8),{role:'user',content:question}];
+function prompt(){
+  const target=languages[outputLang.value];
+  return 'You are a spontaneous, warm, concise conversational partner in a multilingual speaking studio. The user may speak Dutch, English or French. Always answer in '+target+'. Answer the actual message, never a predetermined speech. Use one or two natural, short sentences. Do not make up people or facts. No markdown.';
+}
+function sayInBrowser(text,own){
+  if(!('speechSynthesis' in window))throw new Error('Deze browser heeft geen spraakuitvoer.');
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang=outputLang.value;u.rate=.95;
+  const voices=window.speechSynthesis.getVoices();
+  const match=voices.find(v=>v.lang.toLowerCase()===u.lang.toLowerCase())
+    ||voices.find(v=>v.lang.toLowerCase().startsWith(u.lang.slice(0,2).toLowerCase()));
+  if(match)u.voice=match;
+  utterance=u;play.disabled=false;
+  u.onend=()=>{if(own!==turn)return;ready();setStatus('Jij bent weer aan zet.','ready');};
+  u.onerror=()=>{if(own!==turn)return;ready();setStatus('Spraakuitvoer lukte niet. De tekst blijft zichtbaar.','error');};
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(u);
+  setStatus('De reactie wordt uitgesproken…');
+}
+async function speakAnswer(text,own){
+  lastAnswer=text;
+  if(voice.value==='none'){ready();setStatus('Antwoord klaar.','ready');return;}
+  if(voice.value==='browser'){sayInBrowser(text,own);return;}
+  // De cloudstem gebruikt Puter uitsluitend voor spraak; de LLM mag lokaal draaien.
+  const api=await ensurePuter(false);
+  if(own!==turn)return;
+  setStatus('Franse stem voorbereiden…');
+  const spoken=await api.ai.txt2speech(text.slice(0,700),{
+    provider:'aws-polly',voice:'Lea',engine:'neural',language:'fr-FR'
+  });
+  if(own!==turn){spoken?.pause?.();return;}
+  if(!(spoken instanceof HTMLAudioElement))throw new Error('Er kwam geen afspeelbaar geluidsbestand terug.');
+  audio=spoken;play.disabled=false;
+  audio.onended=()=>{if(own!==turn)return;ready();setStatus('Jij bent weer aan zet.','ready');};
+  audio.onerror=()=>{if(own!==turn)return;ready();setStatus('Audio mislukt. Gebruik Luister naar antwoord of kies browserstem.','error');};
+  try{await audio.play();setStatus('De reactie wordt uitgesproken…');}
+  catch{ready();setStatus('De opname is klaar. Klik op Luister naar antwoord.');}
+}
+async function ask(question){
+  const own=++turn;pending=true;speak.disabled=true;send.disabled=true;
+  heard.textContent=question;answer.textContent='…';lastAnswer='';play.disabled=true;
+  cancelSound();
+  const messages=[{role:'system',content:prompt()},...history.slice(-8),{role:'user',content:question}];
   try{
-    cancelAudio();
-    const result=await api.ai.chat(messages,{model:'gpt-5.4-nano',normalize:true});
-    if(own!==turn)return;
-    const french=extractResponse(result);
-    if(!french)throw new Error('Het taalmodel gaf geen bruikbaar antwoord.');
-    answer.textContent=french;
-    history.push({role:'user',content:question},{role:'assistant',content:french});
-    if(history.length>12)history.splice(0,history.length-12);
-    state('De Franse spreker maakt geluid…');
-    const spoken=await api.ai.txt2speech(french.slice(0,700),{
-      provider:'aws-polly',voice:'Lea',engine:'neural',language:'fr-FR'
-    });
-    if(own!==turn){spoken?.pause?.();return;}
-    if(!(spoken instanceof HTMLAudioElement))throw new Error('De spraakdienst stuurde geen audiobestand.');
-    audio=spoken;
-    play.disabled=false;
-    audio.onended=()=>{if(own!==turn)return;ready();state('Jij bent weer aan zet. Klik op Praat.','ready');};
-    audio.onerror=()=>{if(own!==turn)return;audio=null;ready();state('De tekst is beschikbaar, maar de Franse stem kon niet afspelen.','error');};
-    state('De Franse spreker antwoordt…');
-    try{await audio.play();}
-    catch(error){
-      // Safari kan autoplay blokkeren na het ophalen van tekst en spraak.
-      ready();
-      state('Het Franse antwoord is klaar. Klik op Luister naar antwoord om het af te spelen.');
+    setStatus(engine.value==='browser'?'Browsermodel laden…':'AI maakt een antwoord…');
+    let text;
+    if(engine.value==='browser'){
+      text=await localReply(messages,browserModel.value,message=>{if(own===turn)setStatus(message);});
+    }else{
+      const api=await ensurePuter(true);
+      if(own!==turn)return;
+      const result=await api.ai.chat(messages,{model:'gpt-5.4-nano',normalize:true});
+      text=extractResponse(result);
     }
-  }catch(e){
     if(own!==turn)return;
-    ready();
-    state('Gesprek niet gelukt: '+String(e?.message||e)+'. Controleer je gratis tegoed of probeer opnieuw.','error');
+    if(!text?.trim())throw new Error('Het model gaf geen bruikbaar antwoord.');
+    answer.textContent=text;
+    history.push({role:'user',content:question},{role:'assistant',content:text});
+    if(history.length>12)history.splice(0,history.length-12);
+    await speakAnswer(text,own);
+  }catch(error){
+    if(own!==turn)return;
+    ready();setStatus('Het gesprek liep vast: '+String(error?.message||error)+'. Probeer een ander model of een andere stem.','error');
   }
 }
 play.addEventListener('click',()=>{
-  if(!audio)return;
-  audio.currentTime=0;
-  pending=true;speak.disabled=true;send.disabled=true;
-  state('De Franse spreker antwoordt…');
-  void audio.play().catch(error=>{ready();state('Afspelen lukt niet: '+String(error?.message||error),'error');});
+  if(!lastAnswer||pending)return;
+  const own=turn;
+  if(audio){
+    audio.currentTime=0;pending=true;speak.disabled=true;send.disabled=true;
+    void audio.play().catch(e=>{ready();setStatus('Afspelen lukt niet: '+String(e?.message||e),'error');});
+  }else if(voice.value==='browser'){
+    pending=true;speak.disabled=true;send.disabled=true;
+    try{sayInBrowser(lastAnswer,own);}catch(e){ready();setStatus(String(e?.message||e),'error');}
+  }
 });
-speak.addEventListener('click',async()=>{
+speak.addEventListener('click',()=>{
   if(pending)return;
-  if(recognition){try{recognition.stop()}catch{}return;}
-  // De aanmelding opent vanuit een echte gebruikersklik.
-  speak.disabled=true;
-  state('Verbinding maken…');
-  let api;
-  try{api=await ensurePuter();}
-  catch(e){ready();state('Aanmelden mislukt: '+String(e?.message||e),'error');return;}
+  if(recognition){try{recognition.stop();}catch{}return;}
   const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-  if(!SR){ready();state('Deze browser heeft geen spraakherkenning. Typ je vraag hieronder.','error');return;}
-  const rec=new SR();
-  recognition=rec;
-  rec.lang='nl-NL';rec.interimResults=false;rec.continuous=false;rec.maxAlternatives=1;
+  if(!SR){setStatus('Geen spraakherkenning. Gebruik Typ een zin.','error');return;}
+  const rec=new SR();recognition=rec;
+  rec.lang=inputLang.value;rec.interimResults=false;rec.continuous=false;rec.maxAlternatives=1;
   let captured='';
   rec.onresult=e=>{
     captured=Array.from(e.results).map(r=>r[0]?.transcript||'').join(' ').trim();
-    heard.textContent=captured||'Nog niets gehoord';
+    heard.textContent=captured||'Nog niets gehoord.';
   };
   rec.onerror=e=>{
     if(recognition!==rec)return;
-    recognition=null;ready();
-    state('Microfoon: '+String(e.error)+'. Je kunt ook een zin typen.','error');
+    recognition=null;ready();setStatus('Microfoon: '+String(e.error)+'. Gebruik eventueel typen.','error');
   };
   rec.onend=()=>{
     if(recognition!==rec)return;
-    recognition=null;
-    if(!captured){ready();state('Geen woorden herkend. Klik op Praat en probeer opnieuw.');return;}
-    void ask(captured,api);
+    recognition=null;ready();
+    if(!captured){setStatus('Geen woorden herkend. Probeer opnieuw.');return;}
+    void ask(captured);
   };
-  try{rec.start();state('Ik luister naar jouw Nederlands…');speak.disabled=false;speak.textContent='Klaar met praten';}
-  catch(e){recognition=null;ready();state('Microfoon kon niet starten: '+String(e?.message||e),'error');}
+  try{rec.start();speak.textContent='Klaar met praten';setStatus('Ik luister…');}
+  catch(e){recognition=null;ready();setStatus('Microfoon kon niet starten: '+String(e?.message||e),'error');}
 });
-send.addEventListener('click',async()=>{
+send.addEventListener('click',()=>{
   if(pending)return;
-  const question=typed.value.trim();
-  if(!question){state('Typ eerst een vraag.');return;}
-  send.disabled=true;
-  try{const api=await ensurePuter();typed.value='';await ask(question,api);}
-  catch(e){ready();state('Aanmelden mislukt: '+String(e?.message||e),'error');}
+  const q=typed.value.trim();
+  if(!q){setStatus('Typ eerst een vraag.');return;}
+  typed.value='';void ask(q);
 });
 stop.addEventListener('click',stopConversation);
-document.addEventListener('visibilitychange',()=>{if(document.hidden&&recognition){try{recognition.abort()}catch{}}});
+document.addEventListener('visibilitychange',()=>{
+  if(document.hidden&&recognition){try{recognition.abort();}catch{}}
+});

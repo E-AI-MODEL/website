@@ -359,9 +359,9 @@ test('vrij praten is gescheiden van de vaste voorstelling',()=>{
   assert.match(html,/https:\/\/js\.puter\.com\/v2\//);
   const chat=readFileSync(new URL('../src/free-talk.js',import.meta.url),'utf8');
   assert.match(chat,/SpeechRecognition\|\|window\.webkitSpeechRecognition/);
-  assert.match(chat,/rec\.lang='nl-NL'/);
+  assert.match(chat,/rec\.lang=inputLang\.value/);
   assert.match(chat,/api\.ai\.chat\(messages/);
-  assert.match(chat,/api\.ai\.txt2speech\(french/);
+  assert.match(chat,/api\.ai\.txt2speech\(text/);
   assert.match(chat,/play\.addEventListener\('click'/);
   assert.match(chat,/language:'fr-FR'/);
   assert.match(chat,/if\(own!==turn\)return/);
@@ -381,4 +381,32 @@ test('EAIspeak is de naam van de hub en de bestaande DELF-scènes blijven behoud
   assert.match(workflow,/mkdir -p \/tools\/eaispeak/);
   assert.match(workflow,/mkdir -p \/tools\/delf-live/);
   assert.match(workflow,/https:\/\/eaimodel\.nl\/tools\/eaispeak\//);
+});
+
+test('EAIspeak laat alle zes richtingen tussen NL EN en FR kiezen',()=>{
+  const chat=readFileSync(new URL('../src/free-talk.js',import.meta.url),'utf8');
+  for(const id of ['freeTalkInputLang','freeTalkOutputLang','freeTalkEngine','freeTalkVoice','freeTalkBrowserModel']){
+    assert.match(html,new RegExp('id="'+id+'"'));
+    assert.match(chat,new RegExp(id));
+  }
+  for(const lang of ['nl-NL','en-US','fr-FR']){
+    assert.match(html,new RegExp('value="'+lang+'"'));
+    assert.match(chat,new RegExp(lang));
+  }
+  assert.match(chat,/rec\.lang=inputLang\.value/);
+  assert.match(chat,/outputLang\.value/);
+  assert.match(chat,/history\.length=0/);
+  assert.match(chat,/engine\.value==='browser'/);
+  assert.match(chat,/localReply\(messages,browserModel\.value/);
+  assert.match(chat,/api\.ai\.chat\(messages/);
+});
+test('browser-LLM laadt alleen na expliciete keuze en ondersteunt statusweergave',()=>{
+  const local=readFileSync(new URL('../src/browser-llm.js',import.meta.url),'utf8');
+  assert.match(local,/Qwen2\.5-0\.5B-Instruct-q4f16_1-MLC/);
+  assert.match(local,/Qwen2\.5-1\.5B-Instruct-q4f16_1-MLC/);
+  assert.match(local,/if\(!navigator\.gpu\)/);
+  assert.match(local,/await import\('@mlc-ai\/web-llm'\)/);
+  assert.match(local,/initProgressCallback/);
+  assert.match(local,/model\.chat\.completions\.create/);
+  assert.doesNotMatch(local,/fetch\(.+api\/generate/);
 });
