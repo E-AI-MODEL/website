@@ -1,7 +1,7 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import {SERVICES,STATUS,listLocalModels,validateLocalEndpoint,probeLocalModel,classifyError} from '../src/system-probes.mjs';
+import {SERVICES,STATUS,listLocalModels,validateLocalEndpoint,probeLocalModel,inspectOllamaServer,classifyError} from '../src/system-probes.mjs';
 
 test('geen automatische verbinding en duidelijke beginstatus',()=>{
   assert.equal(SERVICES.length,8);
@@ -91,4 +91,46 @@ test('llama.cpp: modelnamen en geselecteerd model',async()=>{
     assert.equal(bodies[0].model,'second');
     await assert.rejects(()=>probeLocalModel('llamacpp','http://localhost:8080/','absent'),/staat niet op de server/);
   } finally {globalThis.fetch=original;}
+});
+
+test('Ollama-server zonder geïnstalleerde modellen is bereikbaar',async()=>{
+  const original=globalThis.fetch;
+  let urls=[];
+  globalThis.fetch=async url=>{urls.push(url);return {ok:true,json:async()=>({models:[]})};};
+  try{
+    const inspected=await inspectOllamaServer('http://localhost:11434/');
+    assert.equal(inspected.online,true);
+    assert.deepEqual(inspected.models,[]);
+    assert.deepEqual(urls.map(url=>new URL(url).pathname),['/api/tags']);
+  }finally{globalThis.fetch=original;}
+});
+test('Ollama-server geeft lokale modelnamen zonder iets te downloaden',async()=>{
+  const original=globalThis.fetch;
+  globalThis.fetch=async()=>({ok:true,json:async()=>({models:[{name:'qwen3:4b'},{model:'mistral'}]})});
+  try{assert.deepEqual((await inspectOllamaServer()).models,['qwen3:4b','mistral']);}
+  finally{globalThis.fetch=original;}
+});
+test('Ollama controle wijst ongeldig serverantwoord af',async()=>{
+  const original=globalThis.fetch;
+  globalThis.fetch=async()=>({ok:true,json:async()=>({wrong:'data'})});
+  try{await assert.rejects(()=>inspectOllamaServer(),/Ongeldig Ollama-antwoord/);}
+  finally{globalThis.fetch=original;}
+});
+test('installatiewizard begeleidt zonder automatisch uitvoeren of downloaden',()=>{
+  const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');
+  const wizard=readFileSync(new URL('../src/ollama-setup.js',import.meta.url),'utf8');
+  assert.match(html,/src\/ollama-setup\.js/);
+  assert.match(wizard,/Stap '\+\(index\+1\)\+' van '/);
+  assert.match(wizard,/inspectOllamaServer\(server\)/);
+  assert.match(wizard,/probeLocalModel\('ollama',server,selected\)/);
+  assert.match(wizard,/ollama pull qwen3:4b/);
+  assert.match(wizard,/launchctl setenv OLLAMA_ORIGINS/);
+  assert.match(wizard,/navigator.clipboard.writeText/);
+  assert.match(wizard,/origin=window.location.origin/);
+  assert.match(wizard,/index===2&&!serverReady/);
+  assert.match(wizard,/index===3&&!selected/);
+  assert.match(wizard,/index===4&&!verified/);
+  assert.match(wizard,/Dit test tekst, nog geen gesproken gesprek/);
+  assert.doesNotMatch(wizard,/fetch\(\s*['"`]https:\/\/ollama\.com/);
+  assert.doesNotMatch(wizard,/\/api\/pull/);
 });
