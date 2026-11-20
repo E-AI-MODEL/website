@@ -6,7 +6,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
-from compare_published_pages import compare, html_url, normalize_path, owner, markdown
+from compare_published_pages import compare, url_for, normalize_path, owner, markdown
 
 
 class ServerComparisonTests(unittest.TestCase):
@@ -21,9 +21,9 @@ class ServerComparisonTests(unittest.TestCase):
 
     def test_clean_paths_and_directory_urls(self):
         self.assertEqual("topo/index.html", normalize_path("./topo/index.html"))
-        self.assertEqual("/topo/", html_url("topo/index.html"))
-        self.assertEqual("/", html_url("index.html"))
-        self.assertEqual("/file.html", html_url("file.html"))
+        self.assertEqual("/topo/", url_for("topo/index.html"))
+        self.assertEqual("/", url_for("index.html"))
+        self.assertEqual("/file.html", url_for("file.html"))
         self.assertIsNone(normalize_path("../private.html"))
         self.assertIsNone(normalize_path("/.well-known/secrets.html"))
 
