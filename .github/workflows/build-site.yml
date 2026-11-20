@@ -228,6 +228,9 @@ jobs:
           test -s site-build/tools/ict-scan/monitor.css
           test -s site-build/tools/ict-scan/enhancements.js
           test -s site-build/tools/ict-scan/github-sync.js
+          test -s site-build/tools/ict-scan/rail-drawer.js
+          node --check tools/ict-scan/rail-drawer.js
+          node --check tools/ict-scan/github-sync.js
           test -s site-build/tools/ict-scan/emmaus-logo.svg
           ! grep -q 'https://eaimodel.nl/tools/ict-scan/' site-build/sitemap.xml
 
