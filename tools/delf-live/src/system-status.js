@@ -24,12 +24,13 @@ if(host) {
   const list=$('systemServices');
   const history=[];
   function display(){
+    const opened=new Set([...list.querySelectorAll('details[open]')].map(row=>row.dataset.service));
     list.replaceChildren();
     for(const service of SERVICES){
       const state=states.get(service.id);
       const row=document.createElement('details');
       row.className='system-row';
-      row.open=Boolean(list.querySelector('[data-service="'+service.id+'"]')?.open);
+      row.open=opened.has(service.id);
       row.dataset.service=service.id;
       row.dataset.status=state.status;
       const summary=document.createElement('summary');
