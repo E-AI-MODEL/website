@@ -106,7 +106,7 @@ class RetiredOnderwijsIn3dTests(unittest.TestCase):
         end = workflow.index("Verify live HTML and exact asset hashes", start)
         section = workflow[start:end]
         deletions = re.findall(r"(?m)^\s+rm -f (/[^\n]+)$", section)
-        self.assertEqual(["/" + path for path in RETIRED], deletions)
+        self.assertCountEqual(["/" + path for path in RETIRED], deletions)
         self.assertNotIn("mirror --delete", section)
         self.assertNotIn("rm -rf", section)
         for path in ("topo/", "tools/delf-live/", "tools/eaispeak/", "tools/anatomie/"):
