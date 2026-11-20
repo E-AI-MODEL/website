@@ -58,6 +58,8 @@ jobs:
         run: |
           python scripts/build_site.py --sources content/legacy --out site-build
           python scripts/prepare_ui.py --root site-build
+      - name: Controleer dat de oude Onderwijs in 3D-varianten verdwenen zijn
+        run: python -m unittest discover -s tests -p 'test_retired_onderwijsin_3d.py' -v
       - name: Toon dubbele URLs, canonieke pagina's en oude varianten
         run: |
           python scripts/check_publication_duplicates.py \
