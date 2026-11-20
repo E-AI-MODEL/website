@@ -67,6 +67,30 @@ function acknowledgeArrow(){
 }
 
 let scriptedPlayer = null;
+let scriptedAudioContext = null;
+let scriptedAnalyser = null;
+function connectScriptedAudio(player){
+  // De MP3 loopt nu via dezelfde echte audiometing als de eerdere Franse stem.
+  const Context = window.AudioContext || window.webkitAudioContext;
+  if(!Context) return;
+  try {
+    const context = new Context();
+    const source = context.createMediaElementSource(player);
+    const analyser = context.createAnalyser();
+    analyser.fftSize = 1024;
+    analyser.smoothingTimeConstant = .78;
+    source.connect(analyser);
+    analyser.connect(context.destination);
+    scriptedAudioContext = context;
+    scriptedAnalyser = analyser;
+    // Gebeurt direct na de echte klik of pijltjestoets, zodat Safari audio toelaat.
+    void context.resume().catch(error => {
+      console.warn('[DELF] Audio visualiseren lukt niet:',error);
+    });
+  } catch(error) {
+    console.warn('[DELF] Golfanimatie niet beschikbaar, opname blijft afspeelbaar:',error);
+  }
+}
 let scriptedAudioUrls = [null,null];
 let scriptedAudioChosen = [false,false];
 // Eenmalig kiezen is genoeg: bewaar de twee audiofragmenten lokaal in Safari.
@@ -121,6 +145,12 @@ function releaseScriptedAudio() {
   scriptedAudioUrls=[null,null];
 }
 function stopScriptedPlayer() {
+  scriptedAnalyser = null;
+  if(scriptedAudioContext) {
+    const old = scriptedAudioContext;
+    scriptedAudioContext = null;
+    void old.close().catch(() => {});
+  }
   if(scriptedPlayer) {
     scriptedPlayer.onended=null;
     scriptedPlayer.onerror=null;
@@ -209,6 +239,7 @@ function playScriptedScene(index) {
   const player=new Audio(scriptedAudioUrls[index]);
   player.preload='auto';
   scriptedPlayer=player;
+  connectScriptedAudio(player);
   player.onended=()=>{
     if(scriptedPlayer!==player || scriptedMode!==target)return;
     stopScriptedPlayer();
@@ -259,6 +290,12 @@ const voiceContext = voiceCanvas.getContext('2d', { alpha: true });
 const voiceSamples = new Float32Array(512);
 function voiceLevel() {
   if (paused) return 0;
+  if ((scriptedMode === 'scene1' || scriptedMode === 'scene2') && scriptedAnalyser && scriptedAudioContext?.state === 'running' && !scriptedPlayer?.paused) {
+    scriptedAnalyser.getFloatTimeDomainData(voiceSamples);
+    let power = 0;
+    for (const sample of voiceSamples) power += sample * sample;
+    return Math.min(1, Math.sqrt(power / voiceSamples.length) * 8);
+  }
   if (phase === 'french' && frenchAnalyser && soundContext?.state === 'running') {
     frenchAnalyser.getFloatTimeDomainData(voiceSamples);
     let power = 0;
