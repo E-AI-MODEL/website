@@ -11,7 +11,7 @@
     {key:'parts',store:'parts',label:'Technische onderdelen',prefix:'MOD',file:'2026-applicatielandschap.json',fields:['name','parent','kind','description','local','connectionId']},
     {key:'additionalCandidates',store:'candidates',label:'Aanvullende kandidaten',prefix:'A',file:'2026-applicatielandschap.json',fields:['name','kind','status','priority','included','description','action','source','evidenceDate','confirmed']},
     {key:'checks',store:'checks',label:'Controles',prefix:'C',file:'2026-applicatielandschap.json',fields:['name','category','status','explanation','evidence','value','action']},
-    {key:'dpia',store:'dpia',label:'DPIA en privacy',prefix:'DPIA',file:'2026-applicatielandschap.json',fields:['name','type','assessment','description','sourceDate','url','evidence','local']},
+    {key:'dpia',store:'dpia',label:'FG | DPIA-bronnen',prefix:'DPIA',file:'2026-applicatielandschap.json',fields:['name','type','assessment','description','sourceDate','url','evidence','local']},
     {key:'aiControls',store:'aiControls',label:'AI-beheer',prefix:'B',file:'2026-applicatielandschap.json',fields:['name','domain','aiRefs','advice','description','knownUse','local','managementLocation','action','nuance','execution','nextStep','sourceInternal','supplierSource','extraSources']},
     {key:'devices',store:'devices',label:'Apparaatmetingen',prefix:'DEV',file:'2026-applicatielandschap.json',fields:['name','type','quantity','description','measurementDate','limitation']},
     {key:'licenseReview',store:'licenseReview',label:'Licenties ter controle',prefix:'LIC',file:'2026-applicatielandschap.json',fields:['name','domain','type','status','aiPossibilities','localAI','license2026','priority','action','sourceNotes','sourceCode']},
