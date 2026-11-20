@@ -49,6 +49,65 @@ try{
   await page.locator('#start').click();
  });
  await scenario('nederland','/topo/nederland/?prov=Groningen%2CFriesland%2CDrenthe%2COverijssel%2CFlevoland%2CGelderland%2CUtrecht%2CNoord-Holland%2CZuid-Holland%2CZeeland%2CNoord-Brabant%2CLimburg&topics=provinces%2Ccities%2Ccapitals',async page=>{await page.locator('#loading').waitFor({state:'hidden',timeout:12000});});
+ // Every answer layout must fit a fixed phone screen, including the fourth choice.
+ async function assertFixedMode(name,mode,topics){
+  const page=await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:1,isMobile:true,hasTouch:true});
+  page.on('pageerror',error=>failures.push(name+': '+error.message));
+  try{
+   await page.goto(base+'/topo/nederland/?mode='+mode+'&topics='+topics+'&questions=8',{waitUntil:'domcontentloaded'});
+   await page.locator('#loading').waitFor({state:'hidden',timeout:12000});
+   if(mode==='missing')assert.equal(await page.locator('#kind').textContent(),'WAT MIST ER?');
+   const sizes=await page.evaluate(()=>{
+    const get=s=>{const node=document.querySelector(s);if(!node)return null;const rect=node.getBoundingClientRect();return {top:rect.top,bottom:rect.bottom,height:rect.height,left:rect.left,right:rect.right,width:rect.width}};
+    return {viewport:window.visualViewport?.height||window.innerHeight,bodyHeight:document.body.scrollHeight,
+     box:get('.question-card'),map:get('.game-board'),mapArt:get('#map svg'),links:get('.small-links'),
+     answers:[...document.querySelectorAll('#answerOptions .option')].map(e=>{const r=e.getBoundingClientRect();return {top:r.top,bottom:r.bottom,height:r.height}}),
+     check:get('.type-submit'),input:get('.typed'),next:get('#next'),mode:document.querySelector('.game-grid').dataset.mode,
+     viewBox:document.querySelector('#map svg')?.getAttribute('viewBox')};
+   });
+   console.log('TOPO FIXED '+name+' '+JSON.stringify(sizes));
+   assert.equal(sizes.mode,mode);
+   assert.ok(sizes.box.bottom<=sizes.viewport-6,'Question card clipped '+name);
+   assert.ok(sizes.links.bottom<=sizes.box.bottom-3,'Help links clipped '+name);
+   assert.ok(sizes.map.height>=135,'Map was squeezed '+name);
+   assert.ok(sizes.map.bottom<=sizes.viewport+3,'Map clipped '+name);
+   assert.ok(sizes.bodyHeight<=sizes.viewport+8,'Page scrolls '+name);
+   if(mode==='choice'){
+    assert.equal(sizes.answers.length,4);
+    assert.ok(sizes.answers[0].height>=37,'Answer buttons too small');
+    for(const item of sizes.answers)assert.ok(item.bottom<=sizes.links.top+2,'Answer button cut off '+name);
+   }
+   if(mode==='type'||mode==='missing'){
+    assert.ok(sizes.input.bottom<=sizes.links.top+2,'Input clipped');
+    assert.ok(sizes.check.bottom<=sizes.links.top+2,'CHECK clipped');
+   }
+   if(mode==='point'){
+    assert.ok(parseFloat(sizes.viewBox.split(' ')[2])<1000,'Map is still zoomed too far out');
+   }
+   await page.screenshot({path:'test-results/topo/fixed-'+name+'.png',fullPage:true});
+  }finally{await page.close();}
+ }
+ await assertFixedMode('point','point','cities,capitals');
+ await assertFixedMode('choice','choice','cities,capitals');
+ await assertFixedMode('type','type','cities,capitals');
+ await assertFixedMode('missing','missing','cities');
+ // Fixed settings page: tabs, footer and the play action must remain visible.
+ const settings=await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:1,isMobile:true,hasTouch:true});
+ await settings.goto(base+'/topo/instellingen/');
+ for(const tab of ['area','practice','game']){
+  await settings.locator('[data-tab='+tab+']').click();
+  const position=await settings.evaluate(()=>{
+   const rect=s=>document.querySelector(s).getBoundingClientRect();
+   return {height:window.visualViewport?.height||window.innerHeight,bodyHeight:document.body.scrollHeight,
+     footer:rect('.bottom').bottom,button:rect('#go').bottom};
+  });
+  assert.ok(position.footer<position.height+3,'Settings footer clipped '+tab);
+  assert.ok(position.button<position.height+3,'Settings play button clipped '+tab);
+  assert.ok(position.bodyHeight<=position.height+8,'Settings page scrolls '+tab);
+  if(tab==='area')await settings.screenshot({path:'test-results/topo/fixed-settings.png',fullPage:true});
+ }
+ await settings.close();
+
  // TOPO SHUFFLE must mix water, provinces, facts and close-up map tasks.
  const sh=await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:1,isMobile:true,hasTouch:true});
  sh.on('pageerror',error=>failures.push('shuffle: '+error.message));
