@@ -166,7 +166,7 @@ test('iPhone audio krijgt een actieve context vanuit de overnameklik',()=>{
 test('menu toont eerst alleen voorbereiding en eenvoudige bediening',()=>{
   assert.ok(html.includes('id="runtimeStatus" aria-live="assertive"'));
   assert.ok(html.includes('Start Nederlands'));
-  assert.ok(html.includes('Overname'));
+  assert.ok(html.includes('Franse speech'));
   assert.ok(html.includes('Bediening'));
   assert.ok(html.includes('studio-disclosure'));
   assert.ok(html.includes('<summary>Teksten bekijken</summary>'));
