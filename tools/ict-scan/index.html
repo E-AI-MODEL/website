@@ -13,8 +13,10 @@
 
 <link rel="stylesheet" href="./style.css">
 <link rel="stylesheet" href="./monitor.css">
+<link rel="stylesheet" href="./visual-explorer.css">
 <script defer src="./app.js"></script>
 <script defer src="./enhancements.js"></script>
+<script defer src="./visual-explorer.js"></script>
 <script defer src="./github-sync.js"></script>
 <script defer src="./rail-drawer.js"></script>
 </head>
@@ -75,19 +77,42 @@
         <p class="empty-small">Ondersteund: Excel (.xlsx), CSV, JSON en Word (.docx). PDF-bestanden worden als bron geregistreerd; hun inhoud wordt nog niet automatisch gecontroleerd.</p>
       </div>
       <section id="viewOverview" class="view" hidden>
-        <div class="monitor-hero"><div class="hero-copy"><span class="hero-eyebrow">SCHOOLBREED · ICT EN AI</span><h2>Applicatielandschap Emmauscollege</h2><p>Van toepassingen en koppelingen tot onderwijs, gegevens en beheer. Open de onderdelen om te zien wat is vastgesteld.</p></div><div class="hero-stamp"><span>WERKDOCUMENT</span><strong>Inventarisatie 2026</strong></div><div class="hero-waves" aria-hidden="true"><svg preserveAspectRatio="none" viewBox="0 0 1000 210"><path d="M0 130 Q115 35 225 130T450 123T675 116T1000 90V210H0Z" fill="#f2ddaa" opacity=".48"/><path d="M0 150 Q150 50 300 151T600 124T900 135T1200 75V210H0Z" fill="#e7af60" opacity=".33"/><path d="M0 178 Q200 82 360 175T730 158T1100 125V210H0Z" fill="#d49a4d" opacity=".24"/><path d="M0 192 Q150 135 320 193T680 186T1000 165V210H0Z" fill="#26386e" opacity=".16"/></svg></div></div>
-        <div class="dashboard-tools"><span class="tools-title">Verdeling</span><select id="overviewArea" aria-label="Gebruik filteren"><option value="">Alle gebruiksgebieden</option></select><select id="overviewKind" aria-label="Soort toepassing filteren"><option value="">Alle soorten</option></select><div class="tools-spacer"></div><span id="overviewResultCount" class="tools-note"></span><button id="overviewClear" class="monitor-button subtle" type="button">Filters wissen</button><div class="chart-segment"><button type="button" class="seg-on" id="chartBars">Staaf</button><button type="button" id="chartRing">Verdeling</button></div></div>
+        <div class="inventory-line" aria-label="Peildatum en herkomst">
+          <div class="inventory-line-main"><span class="inventory-year">2026</span><span id="inventoryMetaLine">Brongegevens worden geladen</span></div>
+          <span id="inventoryPopulation" class="inventory-population"></span>
+        </div>
+        <div class="dashboard-tools"><span class="tools-title">Verdeling</span><select id="overviewArea" aria-label="Gebruik filteren"><option value="">Alle gebruiksgebieden</option></select><select id="overviewKind" aria-label="Soort toepassing filteren"><option value="">Alle soorten</option></select><div class="tools-spacer"></div><span id="overviewResultCount" class="tools-note"></span><button id="overviewClear" class="monitor-button subtle" type="button">Filters wissen</button></div>
 
         <div class="kpi-grid" id="kpiGrid"></div>
         <div class="two-col gap-lg">
-          <article class="panel"><div class="panel-head"><div><p class="panel-kicker">VERDELING</p><h2>Gebruik per schoolonderdeel</h2></div><span class="tiny-help">Klik om te filteren</span></div><div id="areaChart" class="bars"></div></article>
-          <article class="panel"><div class="panel-head"><div><p class="panel-kicker">INRICHTING</p><h2>Soorten voorzieningen</h2></div></div><div id="typeChart" class="bars"></div></article>
+          <article class="panel viz-panel">
+            <div class="panel-head"><div><p class="panel-kicker">GEBRUIKSGEBIED</p><h2>Waarvoor is software geregistreerd?</h2></div>
+              <label class="viz-select-label"><span class="visually-hidden">Weergave gebruiksgebied</span><select id="areaVizMode" aria-label="Weergave gebruiksgebied"><option value="bars">Staaf</option><option value="donut">Ring</option><option value="treemap">Tegels</option><option value="table">Tabel</option></select></label>
+            </div>
+            <div id="areaChart" class="viz-stage"></div>
+            <p class="viz-caption" id="areaChartCaption"></p>
+          </article>
+          <article class="panel viz-panel">
+            <div class="panel-head"><div><p class="panel-kicker">SOORT VOORZIENING</p><h2>Welke soorten zijn vastgelegd?</h2></div>
+              <label class="viz-select-label"><span class="visually-hidden">Weergave soort voorziening</span><select id="kindVizMode" aria-label="Weergave soort voorziening"><option value="bars">Staaf</option><option value="donut">Ring</option><option value="treemap" selected>Tegels</option><option value="table">Tabel</option></select></label>
+            </div>
+            <div id="typeChart" class="viz-stage"></div>
+            <p class="viz-caption" id="kindChartCaption"></p>
+          </article>
         </div>
+        <article class="panel matrix-panel">
+          <div class="panel-head"><div><p class="panel-kicker">VERBAND</p><h2>Gebruiksgebied en soort voorziening</h2></div>
+            <label class="viz-select-label"><span class="visually-hidden">Weergave kruising</span><select id="matrixVizMode" aria-label="Weergave van gebruiksgebied en soort voorziening"><option value="matrix">Matrix</option><option value="table">Tabel</option></select></label>
+          </div>
+          <p id="matrixContext" class="viz-caption"></p>
+          <div id="crossMatrix" class="cross-matrix"></div>
+        </article>
         <div class="two-col gap-lg">
           <article class="panel"><div class="panel-head"><div><p class="panel-kicker">GEGEVENSDEKKING</p><h2>Wat weten we al?</h2></div></div><div id="coverage" class="coverage"></div></article>
-          <article class="panel"><div class="panel-head"><div><p class="panel-kicker">SAMENHANG</p><h2>Van platform naar functie</h2></div></div><div class="relation-tree"><span class="node primary-node">Microsoft 365</span><span class="tree-branch">Microsoft 365 Copilot</span><span class="tree-branch nested">Cowork</span><span class="tree-branch nested muted">Taken uitvoeren</span></div><p class="panel-foot">Een functie binnen een product is geen afzonderlijke schoolapplicatie.</p></article>
+          <article class="panel"><div class="panel-head"><div><p class="panel-kicker">SAMENHANG</p><h2>Toepassingen en hun onderdelen</h2></div></div><div class="family-controls"><label class="visually-hidden" for="familyApp">Toepassing kiezen</label><select id="familyApp" aria-label="Toepassing kiezen"></select><label class="visually-hidden" for="familyMode">Familieweergave</label><select id="familyMode" aria-label="Familieweergave"><option value="map">Kaart</option><option value="list">Lijst</option></select></div>
+            <div id="familyVisual" class="family-visual"></div><p class="viz-caption" id="familyContext"></p></article>
         </div>
-        <article class="panel preview-panel"><div class="panel-head"><div><p class="panel-kicker">TOEPASSINGEN</p><h2>In het overzicht</h2></div><button class="text-button" data-open="apps">Alle toepassingen bekijken &#8594;</button></div><div id="overviewApps"></div></article>
+        <article class="panel preview-panel"><div class="panel-head"><div><p class="panel-kicker">TOEPASSINGEN</p><h2>In het overzicht</h2></div><button class="text-button" id="overviewToApps" data-open="apps">Selectie openen &#8594;</button></div><div id="overviewApps"></div></article>
       </section>
       <section id="viewApps" class="view" hidden><div class="list-tools"><input id="appsSearch" type="search" aria-label="Zoek toepassing" placeholder="Zoek op naam, ID of beschrijving"><select id="appsArea" aria-label="Filter gebruiksgebied"><option value="">Alle gebruiksgebieden</option></select><select id="appsType" aria-label="Filter soort"><option value="">Alle soorten</option></select><span id="appsCount" class="result-count"></span></div><div id="appsList" class="item-list"></div>
         <details class="panel candidates-panel" id="candidatePanel"><summary><strong><span id="candidateTotal">0</span> aanvullende kandidaten</strong><small id="candidateInfo">Nog niet opgenomen in de basisinventaris</small></summary><div class="candidate-content"><p>Een registratie is geen bewijs van actief schoolgebruik. Controleer de bron en status voordat een kandidaat wordt toegevoegd.</p><div class="list-tools"><input id="candidatesSearch" type="search" placeholder="Zoek aanvullende kandidaten" aria-label="Zoek aanvullende kandidaten"></div><div id="candidatesList" class="item-list"></div></div></details>
