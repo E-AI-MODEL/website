@@ -93,7 +93,7 @@ test('Voorspellingen leiden niet tot verzonnen antwoorden en gelden alleen voor 
 test('Een antwoord komt pas na keuze of Enter, niet tijdens het voorspellen',()=>{
   const js=read('tools/ict-scan/answer-engine.js');
   assert.ok(js.includes('function render(){return suggest();}'));
-  assert.ok(js.includes('button.addEventListener(\\'click\\',()=>select(index))'));
+  assert.ok(js.includes("button.addEventListener('click',()=>select(index))"));
   assert.ok(js.includes("if(event.key==='ArrowDown'||event.key==='ArrowUp')"));
   assert.ok(js.includes("if(event.key==='Enter')"));
   assert.ok(js.includes("answer(input.value);return true;"));
