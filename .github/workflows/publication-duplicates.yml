@@ -52,6 +52,8 @@ jobs:
         run: pip install beautifulsoup4
       - name: Controleer alle beslisregels met proefpagina's
         run: python -m unittest discover -s tests -p 'test_publication_duplicates.py' -v
+      - name: Controleer FTPS-vergelijking zonder serververbinding
+        run: python -m unittest discover -s tests -p 'test_compare_published_pages.py' -v
       - name: Bouw de werkelijke publicatiepagina's
         run: |
           python scripts/build_site.py --sources content/legacy --out site-build
