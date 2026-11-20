@@ -1,22 +1,13 @@
 name: Publiceer statistiekendashboard afzonderlijk
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'statistieken/index.html'
-      - 'statistieken/demo.json'
-      - 'statistieken/collect.php'
-      - 'assets/site-analytics.js'
-      - 'tests/test_first_party_analytics.py'
-      - '.github/workflows/deploy-analytics-dashboard.yml'
   workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: eai-statistieken-quick
+  group: theory7-production
   cancel-in-progress: false
 
 jobs:

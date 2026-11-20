@@ -1,19 +1,14 @@
 {
   "schema": 1,
   "source": "Cloudflare Web Analytics (RUM)",
-  "updated_at": "2026-11-19T07:37:09+00:00",
+  "updated_at": "2026-11-20T20:30:54+00:00",
   "period": {
-    "from": "2026-10-21",
-    "through": "2026-11-19"
+    "from": "2026-10-22",
+    "through": "2026-11-20"
   },
-  "views": 270,
-  "visits": 150,
+  "views": 400,
+  "visits": 250,
   "daily": [
-    {
-      "date": "2026-10-21",
-      "views": 0,
-      "visits": 0
-    },
     {
       "date": "2026-10-22",
       "views": 0,
@@ -156,8 +151,13 @@
     },
     {
       "date": "2026-11-19",
-      "views": 0,
-      "visits": 0
+      "views": 90,
+      "visits": 80
+    },
+    {
+      "date": "2026-11-20",
+      "views": 40,
+      "visits": 20
     }
   ],
   "pages": [
@@ -168,12 +168,12 @@
     },
     {
       "path": "/",
-      "views": 50,
-      "visits": 50
+      "views": 60,
+      "visits": 60
     },
     {
       "path": "/nl/tools/",
-      "views": 30,
+      "views": 50,
       "visits": 0
     },
     {
@@ -188,6 +188,11 @@
     },
     {
       "path": "/nl/model/",
+      "views": 10,
+      "visits": 0
+    },
+    {
+      "path": "/en/",
       "views": 10,
       "visits": 0
     },

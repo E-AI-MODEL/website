@@ -1,0 +1,125 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import vm from 'node:vm';
+import {readFileSync} from 'node:fs';
+import {resolve} from 'node:path';
+const read=path=>readFileSync(resolve(path),'utf8');
+const cardSource=read('tools/ict-scan/record-cards.js');
+const githubSource=read('tools/ict-scan/record-github.js');
+const html=read('tools/ict-scan/index.html');
+const catalog=JSON.parse(read('tools/ict-scan/frameworks.json'));
+const main=JSON.parse(read('ict-scan/bronnen/2026-applicatielandschap.json'));
+const work=JSON.parse(read('ict-scan/bronnen/2026-werkregister.json'));
+const faq=JSON.parse(read('ict-scan/bronnen/2026-faq.json'));
+const clone=v=>JSON.parse(JSON.stringify(v));
+const ctx={window:{},document:{getElementById:()=>({addEventListener(){}})},TextEncoder,TextDecoder,atob,btoa,Uint8Array};
+vm.createContext(ctx);vm.runInContext(githubSource,ctx);
+const logic=ctx.window.EmmausCardGitLogic;
+function docs(){return {'2026-applicatielandschap.json':clone(main),'2026-werkregister.json':clone(work),'2026-faq.json':clone(faq)};}
+function change(type,record,fields){
+  return {type,id:record.id,before:clone(record),after:{...clone(record),...fields},changed:Object.keys(fields),reason:'Broncorrectie op basis van vastgelegde inventarisatie'};
+}
+test('Één editor voor dertien registers, zonder weggooien bronvelden',()=>{
+  for(const token of ["{key:'apps'","{key:'ai'","{key:'connections'","{key:'parts'","{key:'additionalCandidates'","{key:'checks'","{key:'dpia'","{key:'aiControls'","{key:'devices'","{key:'licenseReview'","{key:'workActions'","{key:'softwareReview'","{key:'faqs'"])
+    assert.ok(cardSource.includes(token),token);
+  assert.ok(cardSource.includes("'sourceFields'"));
+  assert.ok(cardSource.includes("'otherDescription'"));
+  assert.ok(cardSource.includes("function relationRow(obj)"));
+  assert.ok(cardSource.includes("function frameworkRow(obj)"));
+  for(const id of ['cardEditor','cardOpen','cardGithubPanel','cardCreatePR','cardSaveDraft','cardTypeFilter','cardFeedback','cardJson']){
+    assert.equal((html.match(new RegExp('id="'+id+'"','g'))||[]).length,1,id);
+  }
+  assert.ok(html.includes('id="railMore"'));
+  assert.ok(html.includes('id="unlockZero"'));
+});
+test('Het normregister bevat verifieerbare officiële bronnen',()=>{
+  assert.equal(catalog.schema,'eai-applicable-frameworks-v1');
+  for(const id of ['IBP','AVG','AIACT','UAVG','WVO2020']){
+    const item=catalog.references.find(x=>x.id===id);
+    assert.ok(item,id+' ontbreekt');
+    assert.ok(/^https:\/\//.test(item.url),item.url);
+  }
+  assert.ok(catalog.relationTypes.length>=7);
+  assert.ok(catalog.statuses.includes('Nog te beoordelen'));
+  assert.ok(!catalog.statuses.some(s=>/voldoet|compliant/i.test(s)));
+});
+test('Een wijziging blijft gekoppeld aan ID, originele tekst, bewijs en auteur',()=>{
+  const all=docs(),original=all['2026-applicatielandschap.json'].apps[0],before=clone(original);
+  const edit=change('apps',original,{description:'Gecorrigeerde beschrijving na broncontrole'});
+  const changed=logic.applyDrafts(all,[edit],'test-reviewer','2026-11-20T15:00:00Z');
+  assert.equal(changed.has('2026-applicatielandschap.json'),true);
+  const after=all['2026-applicatielandschap.json'].apps[0];
+  assert.equal(after.id,original.id);
+  assert.equal(after.description,'Gecorrigeerde beschrijving na broncontrole');
+  assert.deepEqual(after.sourceFields,before.sourceFields);
+  assert.deepEqual(after.provenance,before.provenance);
+  assert.deepEqual(after.sources,before.sources);
+  assert.equal(after.auditTrail.length,1);
+  assert.equal(after.auditTrail[0].actor,'test-reviewer');
+  assert.equal(after.auditTrail[0].reason,edit.reason);
+  assert.deepEqual(Array.from(after.auditTrail[0].fields),['description']);
+});
+test('Nieuwe bronverwijzingen worden toegevoegd zonder originele bronnen te vervangen',()=>{
+  const all=docs(),original=all['2026-applicatielandschap.json'].apps[0];
+  const baseline=clone(original);baseline.sources=baseline.sources.concat(['2026-applicatielandschap.json']);
+  const updated=clone(baseline);updated.sources.push('Getekend verwerkerscontract 2026');
+  const staged={type:'apps',id:original.id,before:baseline,after:updated,changed:['sources'],reason:'Nieuwe bewijsverwijzing toegevoegd aan bestaande registratie'};
+  logic.applyDrafts(all,[staged],'reviewer','2026-11-20T15:00:00Z');
+  const stored=all['2026-applicatielandschap.json'].apps[0];
+  assert.equal(stored.sources.includes('Getekend verwerkerscontract 2026'),true);
+  assert.equal(stored.sources.includes('2026-applicatielandschap.json'),false);
+  assert.ok(original.sources.every(x=>stored.sources.includes(x)));
+});
+
+test('FAQ-antwoord aanpassen behoudt vaste ID, bronverwijzing en wijzigingslog',()=>{
+  const all=docs(),original=all['2026-faq.json'].faqs[0];
+  const before=clone(original);
+  const changed=change('faqs',original,{answer:original.answer+' Aanvullend gecontroleerd in bronregister.'});
+  logic.applyDrafts(all,[changed],'faq-reviewer','2026-11-20T20:00:00Z');
+  const after=all['2026-faq.json'].faqs[0];
+  assert.equal(after.id,'FAQ-001');
+  assert.deepEqual(after.sourceRefs,before.sourceRefs);
+  assert.deepEqual(after.sources,before.sources);
+  assert.match(after.answer,/Aanvullend gecontroleerd/);
+  assert.equal(after.auditTrail.length,1);
+  assert.equal(after.auditTrail[0].actor,'faq-reviewer');
+  assert.equal(all['2026-applicatielandschap.json'].apps.length,61);
+});
+
+test('Nieuwe kaart wijzigt alleen het juiste register en de telling',()=>{
+  const all=docs();
+  const entry={id:'APP-999',name:'Nieuwe testtoepassing',description:'Voorbeeldregistratie',relations:[],frameworkLinks:[],sources:[]};
+  const newItem={type:'apps',id:entry.id,before:null,after:entry,changed:['name','description'],reason:'Nieuwe registratie uit handmatige inventarisatie'};
+  logic.applyDrafts(all,[newItem],'reviewer','2026-11-20T15:00:00Z');
+  assert.equal(all['2026-applicatielandschap.json'].apps.length,62);
+  assert.equal(all['2026-applicatielandschap.json'].metadata.counts.apps,62);
+  assert.equal(all['2026-werkregister.json'].workActions.length,13);
+  assert.equal(all['2026-applicatielandschap.json'].apps.at(-1).auditTrail[0].action,'toegevoegd');
+});
+test('Gelijktijdige wijzigingen en dubbele IDs stoppen publicatie',()=>{
+  const all=docs(),base=all['2026-applicatielandschap.json'].apps[0];
+  const edit=change('apps',base,{description:'Test gecorrigeerd'});
+  all['2026-applicatielandschap.json'].apps[0].description='Andere auteur was eerder';
+  assert.throws(()=>logic.applyDrafts(all,[edit],'reviewer','2026-11-20T15:00:00Z'),/sinds jouw laatste bronversie gewijzigd/);
+  const add={type:'apps',id:base.id,before:null,after:{id:base.id,name:'Dubbel'},changed:['name'],reason:'Toets van dubbele registraties'};
+  assert.throws(()=>logic.applyDrafts(docs(),[add],'reviewer','2026-11-20T15:00:00Z'),/bestaat inmiddels al/);
+});
+test('Bevestigde relaties en oordelen vereisen bewijs',()=>{
+  const base=main.apps[0];
+  const target=main.apps[1];
+  const rel=change('apps',base,{relations:[{targetType:'apps',targetId:target.id,relationType:'uses',status:'Bevestigd',evidence:''}]});
+  assert.throws(()=>logic.applyDrafts(docs(),[rel],'reviewer','2026-11-20T15:00:00Z'),/zonder bewijs/);
+  const law=change('apps',base,{frameworkLinks:[{frameworkId:'AVG',article:'art. 28',status:'Onderbouwd',evidence:''}]});
+  assert.throws(()=>logic.applyDrafts(docs(),[law],'reviewer','2026-11-20T15:00:00Z'),/zonder bewijs/);
+});
+test('Geen rechtstreekse overschrijving van main',()=>{
+  assert.ok(githubSource.includes("request('POST','/git/refs'"));
+  assert.ok(githubSource.includes("request('POST','/pulls'"));
+  assert.ok(githubSource.includes("'main'"));
+  assert.ok(githubSource.includes('manifest.dataFiles'));
+  assert.ok(githubSource.includes('source_sha')===false);
+  assert.ok(html.includes("connect-src 'self' https://api.github.com"));
+  assert.ok(html.includes('src="./record-cards.js"'));
+  assert.ok(html.includes('src="./record-github.js"'));
+  assert.ok(html.includes('href="./record-cards.css"'));
+});

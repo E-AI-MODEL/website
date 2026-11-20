@@ -15,6 +15,19 @@
   },
   "pages": [
     {
+      "id": "page:/nl/onderwijsregio-proef/",
+      "url": "/nl/onderwijsregio-proef/",
+      "file": "nl/onderwijsregio-proef/index.html",
+      "title": "Onderwijsregio Rotterdam | Proefomgeving",
+      "kind": "overig",
+      "category": null,
+      "review": "niet_in_publieke_zoekindex_status_controleren",
+      "parent": null,
+      "family": "model",
+      "in_committed_sitemap": false,
+      "search_scope": "niet_indexeren"
+    },
+    {
       "id": "page:/",
       "url": "/",
       "file": "index.html",
@@ -1235,6 +1248,21 @@
       "family": "hulpmiddelen",
       "in_committed_sitemap": true,
       "search_scope": "algemeen"
+    },
+    {
+      "id": "page:/tools/ict-scan/",
+      "url": "/tools/ict-scan/",
+      "file": "tools/ict-scan/index.html",
+      "title": "Schoolbrede ICT-scan Emmauscollege",
+      "kind": "afgeschermd_of_app",
+      "category": null,
+      "review": "noindex_in_bron_gecontroleerd",
+      "parent": null,
+      "family": "technisch",
+      "robots_noindex_in_html": true,
+      "page_status": "niet_voor_zoekmachines",
+      "in_committed_sitemap": false,
+      "search_scope": "niet_indexeren"
     },
     {
       "id": "page:/tools/eaigit/hulp/",

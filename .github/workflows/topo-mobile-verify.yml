@@ -1,10 +1,18 @@
 name: TOPO mobile and country map verification
 on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'topo/**'
+      - 'scripts/test_topo_mobile.mjs'
+      - 'scripts/validate_topo_content.mjs'
+      - '.github/workflows/topo-mobile-verify.yml'
   push:
     branches: [main]
     paths:
       - 'topo/**'
       - 'scripts/test_topo_mobile.mjs'
+      - 'scripts/validate_topo_content.mjs'
       - '.github/workflows/topo-mobile-verify.yml'
   workflow_dispatch:
 permissions:
@@ -22,6 +30,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Validate sourced TOPO questions and language bank
+        run: node scripts/validate_topo_content.mjs
       - run: npm install --no-save playwright@1.56.1
       - run: npx playwright install --with-deps ${{ matrix.browser }}
       - name: Start local static site
