@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive,nosnippet">
+<meta name="referrer" content="no-referrer">
+<meta name="color-scheme" content="light">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; form-action 'none'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'">
+<title>Niet gevonden | EAI</title>
+<link rel="icon" href="/assets/eai-logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="./style.css">
+<script defer src="./app.js"></script>
+</head>
+<body>
+<div id="notFound" class="not-found eai-mock-404">
+  <header class="mock-header"><div class="mock-nav"><a href="/" class="mock-brand"><span class="brand-mark">EAI</span></a><nav aria-label="Hoofdnavigatie"><a href="/">EAI</a><a href="/toepassingen/">Toepassingen</a><a href="/onderwijs/">Onderwijs</a><a href="/kennis/">Kennis</a><a href="/tools/">Tools</a><a href="/over/">Over</a></nav></div></header>
+  <main class="mock-hero" aria-labelledby="notFoundTitle"><div class="mock-wrap"><div class="mock-eyebrow"><button type="button" id="unlockFour" aria-label="4">4</button>04</div><h1 id="notFoundTitle">Deze pagina is er niet meer.</h1><p>De oude Google-site bevatte ook een paar dode links. Ga terug naar de publicaties of tools.</p><div class="mock-links"><a class="mock-btn" href="/publicaties/">Publicaties</a><a class="mock-btn secondary" href="/tools/">Tools</a></div></div></main>
+  <footer class="mock-footer"><strong>EAI</strong> &middot; Menselijk handelen en AI in samenhang.</footer>
+</div>
+<div id="gate" class="gate-backdrop" hidden>
+  <form id="gateForm" class="gate-modal" autocomplete="off" aria-label="Toegang" novalidate>
+    <div class="gate-icon">EAI <span> / </span> ICT</div>
+    <h2>Toegang tot de werkomgeving</h2>
+    <label for="gateInput">Toegangscode</label>
+    <input id="gateInput" type="password" spellcheck="false" autocomplete="off" required>
+    <p id="gateError" class="field-error" role="alert" hidden>De invoer is niet herkend.</p>
+    <div class="gate-actions"><button type="button" id="gateCancel" class="button ghost">Annuleren</button><button type="submit" class="button primary">Verder</button></div>
+  </form>
+</div>
+<div id="workspace" class="workspace" hidden>
+  <aside class="sidebar" aria-label="Navigatie">
+    <div class="side-brand"><span class="brand-mark">EAI</span><span class="side-brand-line"></span><span class="side-school">Emmauscollege</span></div>
+    <div class="side-overline">DIGITALE OMGEVING</div>
+    <nav id="sections" class="side-nav">
+      <button class="side-link active" data-view="overview"><span class="side-ico">&#9638;</span> Overzicht</button>
+      <button class="side-link" data-view="apps"><span class="side-ico">&#9639;</span> Toepassingen</button>
+      <button class="side-link" data-view="connections"><span class="side-ico">&#9678;</span> Entra-koppelingen</button>
+      <button class="side-link" data-view="ai"><span class="side-ico">&#10022;</span> AI in onderwijs</button>
+      <button class="side-link" data-view="findings"><span class="side-ico">&#9670;</span> Controles</button>
+      <button class="side-link" data-view="sources"><span class="side-ico">&#8942;</span> Bronnen en export</button>
+    </nav>
+    <div class="side-bottom"><span class="privacy-dot"></span><strong>Lokale verwerking</strong><small>Bestanden verlaten de browser niet.</small></div>
+  </aside>
+  <div class="main-shell">
+    <header class="topbar">
+      <div class="top-breadcrumb">Emmauscollege <span>/</span> <strong id="crumb">Overzicht</strong></div>
+      <div class="top-actions"><span class="top-date" id="reportDate"></span><button type="button" class="button outline" id="topImport">Bestanden toevoegen <span aria-hidden="true">+</span></button><button type="button" class="button primary" id="topPdf">Rapport als PDF</button></div>
+    </header>
+    <main id="main" class="main-content">
+      <section class="page-head"><div><p class="eyebrow" id="sectionEyebrow">SCHOOLBREED OVERZICHT</p><h1 id="sectionTitle">De digitale omgeving</h1><p id="sectionIntro" class="page-intro">Toepassingen, koppelingen, beheer en AI op basis van de ingelezen bronnen.</p></div><div class="head-status"><span class="status-circle"></span><span id="statusText">Nog geen bronbestanden</span></div></section>
+      <div class="empty-state" id="emptyState">
+        <div class="empty-illustration"><div class="empty-square s1"></div><div class="empty-square s2"></div><div class="empty-square s3"></div><div class="empty-line"></div></div>
+        <h2>Begin met de bestanden die er al zijn.</h2>
+        <p>Open de applicatie-inventaris, een Entra-export of de ICT-registratie. Het overzicht wordt opgebouwd uit de bestanden die je kiest, zonder vooraf ingevulde cijfers.</p>
+        <button id="emptyImport" class="button primary large">Bestanden selecteren</button>
+        <p class="empty-small">Ondersteund: Excel (.xlsx), CSV, JSON en Word (.docx). PDF-bestanden worden als bron geregistreerd; hun inhoud wordt nog niet automatisch gecontroleerd.</p>
+      </div>
+      <section id="viewOverview" class="view" hidden>
+        <div class="kpi-grid" id="kpiGrid"></div>
+        <div class="two-col gap-lg">
+          <article class="panel"><div class="panel-head"><div><p class="panel-kicker">VERDELING</p><h2>Waarvoor gebruikt de school ICT?</h2></div><span class="tiny-help">Klik om te filteren</span></div><div id="areaChart" class="bars"></div></article>
+          <article class="panel"><div class="panel-head"><div><p class="panel-kicker">INRICHTING</p><h2>Wat voor onderdelen zijn dit?</h2></div></div><div id="typeChart" class="bars"></div></article>
+        </div>
+        <div class="two-col gap-lg">
+          <article class="panel"><div class="panel-head"><div><p class="panel-kicker">GEGEVENSDEKKING</p><h2>Wat weten we al?</h2></div></div><div id="coverage" class="coverage"></div></article>
+          <article class="panel"><div class="panel-head"><div><p class="panel-kicker">SAMENHANG</p><h2>Van platform naar functie</h2></div></div><div class="relation-tree"><span class="node primary-node">Microsoft 365</span><span class="tree-branch">Microsoft 365 Copilot</span><span class="tree-branch nested">Cowork</span><span class="tree-branch nested muted">Taken uitvoeren</span></div><p class="panel-foot">Een functie binnen een product is geen afzonderlijke schoolapplicatie.</p></article>
+        </div>
+        <article class="panel preview-panel"><div class="panel-head"><div><p class="panel-kicker">TOEPASSINGEN</p><h2>In het overzicht</h2></div><button class="text-button" data-open="apps">Alle toepassingen bekijken &#8594;</button></div><div id="overviewApps"></div></article>
+      </section>
+      <section id="viewApps" class="view" hidden><div class="list-tools"><input id="appsSearch" type="search" aria-label="Zoek toepassing" placeholder="Zoek op naam, ID of beschrijving"><select id="appsArea" aria-label="Filter gebruiksgebied"><option value="">Alle gebruiksgebieden</option></select><select id="appsType" aria-label="Filter soort"><option value="">Alle soorten</option></select><span id="appsCount" class="result-count"></span></div><div id="appsList" class="item-list"></div></section>
+      <section id="viewConnections" class="view" hidden><article class="panel intro-panel"><h2>Entra-koppelingen</h2><p>Registraties van toepassingen en diensten in Microsoft Entra. Een registratie is niet automatisch bewijs dat een verbinding nu actief is of gegevens uitwisselt.</p></article><div class="list-tools"><input id="connectionsSearch" type="search" placeholder="Zoek een koppeling" aria-label="Zoek koppeling"><span id="connectionsCount" class="result-count"></span></div><div id="connectionsList" class="item-list"></div></section>
+      <section id="viewAi" class="view" hidden><div class="two-col gap-lg"><article class="panel"><div class="panel-head"><div><p class="panel-kicker">ONDERWIJS</p><h2>AI-functies per lesfase</h2></div></div><div id="phaseChart" class="bars"></div><p class="panel-foot">Een functie kan in meer dan een lesfase vallen. De balken zijn geen aantallen applicaties.</p></article><article class="panel"><div class="panel-head"><div><p class="panel-kicker">TOEPASSINGEN</p><h2>Waar zit de AI?</h2></div></div><div id="aiProducts" class="bars"></div></article></div><div class="two-col gap-lg" id="aiCompliancePanels"><article class="panel"><div class="panel-head"><div><p class="panel-kicker">PRIVACY</p><h2>DPIA en bewijsstatus</h2></div></div><div id="dpiaList" class="record-notes"></div></article><article class="panel"><div class="panel-head"><div><p class="panel-kicker">INRICHTING</p><h2>AI-beheer en instellingen</h2></div></div><div id="aiAdminList" class="record-notes"></div></article></div><div class="list-tools"><input id="aiSearch" type="search" placeholder="Zoek AI-functie of toepassing" aria-label="Zoek AI-functie"><span id="aiCount" class="result-count"></span></div><div id="aiList" class="item-list"></div></section>
+      <section id="viewFindings" class="view" hidden><article class="panel intro-panel"><h2>Open controles</h2><p>Een open punt is geen vastgestelde fout. Je ziet welke informatie nodig is om iets te kunnen bevestigen.</p></article><div id="findingsSummary" class="finding-chips"></div><div class="mode-tabs"><button type="button" id="modeRegistered" class="mode-button is-active">Vastgelegde controles</button><button type="button" id="modeSignals" class="mode-button">Aanvullende signalen</button></div><div class="list-tools"><input id="findingsSearch" type="search" placeholder="Zoek controlepunt" aria-label="Zoek controlepunt"><select id="findingsFilter" aria-label="Categorie controles"><option value="">Alle onderwerpen</option></select><span id="findingsCount" class="result-count"></span></div><div id="findingsList" class="item-list"></div></section>
+      <section id="viewSources" class="view" hidden><div class="two-col gap-lg"><article class="panel upload-panel" id="dropzone"><div class="upload-mark">&#8682;</div><h2>Bestanden toevoegen</h2><p>Sleep bestanden hierheen of selecteer ze. De gegevens worden uitsluitend in deze browser verwerkt.</p><button class="button primary" id="sourcesImport">Bestanden selecteren</button><small>Excel, CSV, JSON, DOCX en PDF. Geen verbinding met Microsoft 365 of een externe server.</small></article><article class="panel"><div class="panel-head"><div><p class="panel-kicker">RAPPORTAGE</p><h2>Exporteer het overzicht</h2></div></div><div class="export-actions"><button id="exportExcel" class="export-option"><span class="export-icon green">X</span><span><strong>Excel</strong><small>Toepassingen, AI, koppelingen en controles</small></span><span>&#8594;</span></button><button id="exportPdf" class="export-option"><span class="export-icon dark">P</span><span><strong>PDF</strong><small>Leesbaar overzicht via Afdrukken / Bewaar als PDF</small></span><span>&#8594;</span></button><button id="exportJson" class="export-option"><span class="export-icon blue">J</span><span><strong>JSON</strong><small>Gecontroleerde data voor een volgende sessie</small></span><span>&#8594;</span></button></div><p class="panel-foot">Bedragen, boekingsnummers en persoonlijke accountgegevens zijn uitgesloten van de exports.</p></article></div>
+        <article class="panel"><div class="panel-head"><div><p class="panel-kicker">HERKOMST</p><h2>Ingelezen bestanden</h2></div></div><div id="sourceList" class="source-list"></div></article>
+        <article class="panel"><div class="panel-head"><div><p class="panel-kicker">BELEID EN PROCEDURES</p><h2>Aangetroffen documenten</h2></div></div><div id="policyDocs" class="source-list"></div></article><article class="panel"><div class="panel-head"><div><p class="panel-kicker">TOETSINGSKADERS</p><h2>Privacy en AI</h2></div></div><p class="explain">Deze bronnen helpen bij de beoordeling. De aanwezigheid van een document is geen bewijs dat de school aan alle vereisten voldoet. Wetgeving en rapportversies moeten bij een besluit opnieuw worden gecontroleerd.</p><div id="legalList" class="legal-list"></div></article>
+      </section>
+      <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+    </main>
+  </div>
+</div>
+<input id="fileInput" type="file" multiple accept=".xlsx,.csv,.json,.docx,.pdf" hidden>
+<div id="printReport" class="print-report" aria-hidden="true"></div>
+</body>
+</html>
