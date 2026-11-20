@@ -249,13 +249,50 @@
     foot.append(dom('th','',fmt(total)));body.append(foot);
     table.append(body);shell.append(table);result.append(shell);
   }
+  function recordedConnections(app){
+    const groups=[['apps','apps'],['ai','ai'],['connections','connections'],['parts','parts'],['additionalCandidates','candidates'],['checks','checks'],['dpia','dpia'],['aiControls','aiControls'],['devices','devices'],['licenseReview','licenseReview'],['workActions','workActions'],['softwareReview','softwareReview']];
+    const lookup=Object.fromEntries(groups.map(([type,store])=>[type,state[store]]));
+    const linked=[],seen=new Set();
+    for(const [type,store] of groups){
+      for(const current of state[store]?.values()||[]){
+        for(const relation of current.relations||[]){
+          const outgoing=type==='apps'&&current.id===app.id;
+          const incoming=relation.targetType==='apps'&&relation.targetId===app.id;
+          if(!outgoing&&!incoming)continue;
+          const target=outgoing?lookup[relation.targetType]?.get(relation.targetId):current;
+          const otherType=outgoing?relation.targetType:type;
+          if(!target)continue;
+          const id=type+'/'+current.id+'/'+relation.relationType+'/'+relation.targetType+'/'+relation.targetId;
+          if(seen.has(id))continue;seen.add(id);
+          linked.push({
+            id:target.id,name:target.name||target.id,cardType:otherType,
+            description:relation.relationType+' · '+(relation.status||'Status onbekend')+
+              (relation.evidence?' · Bron: '+relation.evidence:' · Bron nog niet vastgelegd')+
+              (relation.note?' · '+relation.note:'')
+          });
+        }
+      }
+    }
+    return linked;
+  }
+  function applicableRules(app){
+    return (app.frameworkLinks||[]).map(link=>({
+      id:link.frameworkId+' '+link.article,
+      name:link.frameworkId+' · '+link.article,
+      description:(link.status||'Nog te beoordelen')+
+        (link.evidence?' · Bron: '+link.evidence:' · Bewijs ontbreekt')+
+        (link.note?' · '+link.note:'')
+    }));
+  }
   function matchingFamily(app){
     const key=normalize(app.name);
     return [
       {key:'child',title:'Onderliggende toepassingen',entries:array(state.apps).filter(x=>x.id!==app.id&&(x.parent===app.id||normalize(x.parent||'')===key)),view:'apps'},
       {key:'part',title:'Technische registraties',entries:array(state.parts).filter(x=>x.parent===app.id),view:''},
       {key:'ai',title:'Beschreven AI-functies',entries:array(state.ai).filter(x=>x.parentId===app.id),view:'ai'},
-      {key:'entra',title:'Mogelijke Entra-matches',entries:array(state.connections).filter(x=>x.matchedId===app.id),view:'connections'}
+      {key:'entra',title:'Mogelijke Entra-matches',entries:array(state.connections).filter(x=>x.matchedId===app.id),view:'connections'},
+      {key:'recorded',title:'Beoordeelde verbanden',entries:recordedConnections(app),view:''},
+      {key:'legal',title:'Gekoppelde normen en wetten',entries:applicableRules(app),view:''}
     ].filter(g=>g.entries.length>0);
   }
   function familyScore(app){return matchingFamily(app).reduce((n,g)=>n+g.entries.length,0);}
@@ -286,9 +323,9 @@
           const item=dom('div','family-list-row');item.append(dom('strong','',entry.name));
           const text=entry.action||entry.description||entry.matched||entry.local||'';
           item.append(dom('span','',text));
-          if(group.view){
+          if(group.view||entry.cardType){
             const link=dom('button','family-open','Bekijk');
-            link.type='button';link.addEventListener('click',()=>openRecord(group.view,entry.id));item.append(link);
+            link.type='button';link.addEventListener('click',()=>entry.cardType?window.EmmausRecordCards?.open(entry.cardType,entry.id):openRecord(group.view,entry.id));item.append(link);
           }
           list.append(item);
         }
@@ -303,10 +340,10 @@
         const expanded=expandedGroups.has(app.id+':'+group.key);
         const visible=expanded?group.entries:group.entries.slice(0,5);
         for(const entry of visible){
-          if(group.view){
+          if(group.view||entry.cardType){
             const b=dom('button','family-leaf');
-            b.type='button';b.append(dom('strong','',entry.name),dom('span','',entry.id));
-            b.addEventListener('click',()=>openRecord(group.view,entry.id));column.append(b);
+            b.type='button';b.append(dom('strong','',entry.name),dom('span','',entry.description||entry.id));
+            b.addEventListener('click',()=>entry.cardType?window.EmmausRecordCards?.open(entry.cardType,entry.id):openRecord(group.view,entry.id));column.append(b);
           }else{
             const detail=dom('details','family-leaf-details');
             detail.append(dom('summary','',entry.name));
