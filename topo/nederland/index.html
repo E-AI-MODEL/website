@@ -346,15 +346,26 @@ function provinceBounds(geo){
  return {left:Math.min(...screen.map(p=>p[0])),right:Math.max(...screen.map(p=>p[0])),
          top:Math.min(...screen.map(p=>p[1])),bottom:Math.max(...screen.map(p=>p[1]))};
 }
+function provinceContext(name){
+ const feat=features.find(f=>(f.properties.statnaam==='Fryslân'?'Friesland':f.properties.statnaam)===name);
+ if(!feat)return null;
+ const points=polygonParts(feat.geometry).flat(2).map(p=>proj(p[0],p[1]));
+ return {left:Math.min(...points.map(p=>p[0])),right:Math.max(...points.map(p=>p[0])),
+         top:Math.min(...points.map(p=>p[1])),bottom:Math.max(...points.map(p=>p[1]))};
+}
 function focusMap(){
  const frame=$('map'),svg=frame.querySelector('svg');
  if(!svg||!frame.clientWidth||!frame.clientHeight||!queue[index])return;
  const ratio=frame.clientWidth/frame.clientHeight;
  const x=queue[index];
  if(currentMode==='point'&&landBounds){
-  const bounds=landBounds,pad=36;
+  // A city question shows its province and surrounding towns, not a tiny
+  // Netherlands silhouette in a tall phone viewport. Province questions stay nationwide.
+  const region=x.kind==='city'?provinceContext(x.province):null;
+  const bounds=region||landBounds,pad=region?68:36;
   let width=bounds.right-bounds.left+pad*2;
   let height=bounds.bottom-bounds.top+pad*2;
+  if(region){width=Math.max(width,290);height=Math.max(height,370);}
   if(width/height<ratio)width=height*ratio;else height=width/ratio;
   const centerX=(bounds.left+bounds.right)/2,centerY=(bounds.top+bounds.bottom)/2;
   svg.setAttribute('viewBox',[fmt(centerX-width/2),fmt(centerY-height/2),fmt(width),fmt(height)].join(' '));
