@@ -28,9 +28,9 @@
     if(entries.length===1)return [{name:entries[0][0],count:entries[0][1],x,y,width,height}];
     const ordered=entries.slice().sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0],'nl'));
     const sum=ordered.reduce((n,p)=>n+p[1],0);
-    let cut=1,acc=ordered[0][1],best=Math.abs(sum/2-acc);
-    for(let i=2;i<ordered.length;i++){const next=acc+ordered[i-1][1];const dist=Math.abs(sum/2-next);if(dist<best){best=dist;cut=i;acc=next;}}
-    const ratio=acc/sum;
+    let cut=1,running=ordered[0][1],chosenSum=running,best=Math.abs(sum/2-running);
+    for(let i=2;i<ordered.length;i++){running+=ordered[i-1][1];const dist=Math.abs(sum/2-running);if(dist<best){best=dist;cut=i;chosenSum=running;}}
+    const ratio=chosenSum/sum;
     if(width>=height){
       return treemap(ordered.slice(0,cut),x,y,width*ratio,height).concat(treemap(ordered.slice(cut),x+width*ratio,y,width*(1-ratio),height));
     }
@@ -101,6 +101,8 @@
       b.style.left=item.x.toFixed(4)+'%';b.style.top=item.y.toFixed(4)+'%';
       b.style.width=item.width.toFixed(4)+'%';b.style.height=item.height.toFixed(4)+'%';
       b.style.backgroundColor=palette(item.name);
+      const color=palette(item.name);const r=parseInt(color.slice(1,3),16),g=parseInt(color.slice(3,5),16),blue=parseInt(color.slice(5,7),16);
+      if((0.2126*r+0.7152*g+0.0722*blue)>157)b.style.color='#1f3455';
       if(item.width<19||item.height<19)b.classList.add('viz-tile-small');
       b.append(dom('span','viz-tile-label',item.name),dom('strong','',fmt(item.count)));
       stage.append(b);
@@ -224,7 +226,9 @@
         if(n){
           const selected=state.overviewArea===area&&state.overviewKind===kind;
           const btn=dom('button','heat-value',fmt(n));
-          btn.type='button';btn.style.backgroundColor='rgba(48,74,127,'+(0.1+0.68*Math.pow(n/max,0.72)).toFixed(3)+')';
+          btn.type='button';const alpha=0.1+0.68*Math.pow(n/max,0.72);
+          btn.style.backgroundColor='rgba(48,74,127,'+alpha.toFixed(3)+')';
+          btn.style.color=alpha<0.48?'#263e66':'#ffffff';
           btn.setAttribute('aria-label',area+' / '+kind+': '+fmt(n)+' toepassingen; klik om te filteren');
           btn.setAttribute('aria-pressed',String(selected));
           btn.title=area+' · '+kind+' · '+n+' van '+total;
