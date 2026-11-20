@@ -410,3 +410,15 @@ test('browser-LLM laadt alleen na expliciete keuze en ondersteunt statusweergave
   assert.match(local,/model\.chat\.completions\.create/);
   assert.doesNotMatch(local,/fetch\(.+api\/generate/);
 });
+
+test('Vrij praten gebruikt een compact zwevend taal- en modelmenu',()=>{
+  const css=readFileSync(new URL('../cloud-shell.css',import.meta.url),'utf8');
+  const chat=readFileSync(new URL('../src/free-talk.js',import.meta.url),'utf8');
+  assert.match(html,/id="freeTalkOptions"/);
+  assert.doesNotMatch(html,/id="freeTalkOptions" open/);
+  assert.match(html,/id="freeTalkSummary"/);
+  assert.match(html,/free-talk-floating-content/);
+  assert.match(css,/\.free-talk-floating>\.mist-detail-body/);
+  assert.match(css,/backdrop-filter:blur\(24px\)/);
+  assert.match(chat,/modelSummary\.textContent=languages\[inputLang\.value\]/);
+});
