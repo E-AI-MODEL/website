@@ -1,0 +1,10 @@
+{
+  "schema": "eai-school-ict-manifest-v1",
+  "metadata": {
+    "title": "Applicatielandschap Emmauscollege",
+    "institution": "Emmauscollege Rotterdam",
+    "inventoryYear": 2026,
+    "firstInventoryStarted": "2026-08-10",
+    "compiledBy": "Hans Visser"
+  }
+}
