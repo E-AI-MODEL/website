@@ -448,3 +448,15 @@ test('lokaal praten vraagt geen Puter-login en stop onderbreekt echte generatie'
   assert.match(local,/engine\.interruptGenerate\(\)/);
   assert.match(local,/finally\{generating=false;\}/);
 });
+
+test('vooraf laden houdt gespreksknoppen en podiumscenes onafhankelijk',()=>{
+  const talk=readFileSync(new URL('../src/free-talk.js',import.meta.url),'utf8');
+  assert.match(html,/id="freeTalkPreload"/);
+  assert.match(html,/id="freeTalkPreloadStatus"/);
+  assert.match(html,/id="scriptedStart"/);
+  assert.match(talk,/preload\.addEventListener\('click',async/);
+  assert.match(talk,/await ensureBrowserModel\(selected,report\)/);
+  assert.match(talk,/preload\.disabled=true;browserModel\.disabled=true;/);
+  assert.match(talk,/browserModel\.disabled=false;preload\.disabled=false;/);
+  assert.doesNotMatch(talk,/preload\.addEventListener[\s\S]{0,500}SpeechRecognition/);
+});
