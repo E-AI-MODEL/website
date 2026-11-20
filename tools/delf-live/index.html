@@ -71,6 +71,9 @@
         <p class="studio-support">Eerste keer laden via wifi.</p>
         <button id="prepareTranslate" class="action studio-action">Laad vertaling</button>
         <p class="feedback" id="translationStatus" aria-live="polite">Nog niet geladen</p>
+        <label class="studio-field">Vertaalroute<select id="translationEngine"><option value="chrome">Chrome Translator</option><option value="onnx">Lokaal browsermodel</option></select></label>
+        <label class="studio-field"><input id="translationDrafts" type="checkbox"> Toon voorlopige vertalingen tijdens het spreken (sneller, minder stabiel)</label>
+        <p class="studio-support">Laatst herkend Nederlands:</p><p class="feedback" id="recognizedDutch">Nog geen woorden herkend.</p>
       </section>
       <details class="studio-disclosure cloud-reveal"><summary>Vertaling proberen</summary>
         <label class="studio-field">Nederlandse tekst<textarea id="testDutch" rows="3">Goedemiddag allemaal. Vandaag feliciteren we leerlingen met hun DELF scolaire-diploma.</textarea></label>
