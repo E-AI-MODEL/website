@@ -321,7 +321,7 @@ test('de twee Franse MP3s worden automatisch ingeladen; eigen audio blijft optio
   assert.match(main,/function loadBuiltInFrenchScenes\(\)/);
   assert.match(main,/scene-1-interruption\.mp3/);
   assert.match(main,/scene-2-discours\.mp3/);
-  assert.match(main,/void restoreSceneAudio\(\)\.then\(loadBuiltInFrenchScenes\)/);
+  assert.ok(main.includes('void loadBuiltInFrenchScenes();'));
   assert.match(html,/Andere audio kiezen \(optioneel\)/);
   assert.match(html,/Franse opnamen worden automatisch geladen/);
   assert.match(main,/new Audio\(scriptedAudioUrls\[index\]\)/);
