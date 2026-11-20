@@ -476,3 +476,21 @@ test('Puter wordt bij keuze online geladen vóór de aanmeldknop actief is',()=>
   assert.match(talk,/connect\.textContent=signed\?'Puter verbonden':'Aanmelden bij Puter'/);
   assert.doesNotMatch(talk,/Klik nogmaals op Verbind met Puter/);
 });
+
+test('EAIspeak toont toesteladvies zonder podium of vrije keuze te verwijderen',()=>{
+  const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');
+  const chat=readFileSync(new URL('../src/free-talk.js',import.meta.url),'utf8');
+  const css=readFileSync(new URL('../cloud-shell.css',import.meta.url),'utf8');
+  assert.match(html,/id="freeTalkDeviceStatus"/);
+  assert.match(html,/id="freeTalkDeviceAdvice"/);
+  assert.match(html,/id="freeTalkOptions"/);
+  assert.match(html,/id="scriptedStart"/);
+  assert.match(chat,/describeDevice\(/);
+  assert.match(chat,/suggestDeviceSetup\(/);
+  assert.match(chat,/modelDeviceAdvice\(/);
+  assert.match(chat,/option\.disabled=!result\.usable/);
+  assert.match(chat,/if\(!userSelectedEngine&&!pending\)engine\.value=recommended\.engine/);
+  assert.match(chat,/userSelectedEngine=true/);
+  assert.match(chat,/userSelectedModel=true/);
+  assert.match(css,/\.free-talk-device-details/);
+});
