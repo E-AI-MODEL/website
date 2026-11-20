@@ -131,6 +131,16 @@ class PublicationDuplicatesTests(unittest.TestCase):
         self.assertEqual([], result["blocking"])
         self.assertIn("dubbele_directe_route", [x["type"] for x in result["review"]])
 
+    def test_three_old_mirrors_are_one_review_group(self):
+        self.page("/nieuw/", LONG_TEXT, "Nieuw")
+        self.page("/oud/", LONG_TEXT, "Oud")
+        self.page("/kopie/", LONG_TEXT, "Kopie")
+        self.sitemap("/nieuw/")
+        result = audit(self.site, {})
+        copies = [x for x in result["review"] if x["type"] == "dubbele_directe_route"]
+        self.assertEqual(1, len(copies))
+        self.assertEqual(["/kopie/", "/nieuw/", "/oud/"], copies[0]["urls"])
+
     def test_missing_build_output_fails(self):
         self.page("/een/")
         self.sitemap("/een/", "/vergeten/")
