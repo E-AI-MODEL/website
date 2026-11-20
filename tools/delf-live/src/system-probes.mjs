@@ -46,17 +46,17 @@ export async function listLocalModels(provider,endpoint) {
   if(!names.length) throw new Error('Geen geldig model gevonden');
   return [...new Set(names)];
 }
-export async function probeLocalModel(provider,endpoint,selectedModel=null) {
+export async function probeLocalModel(provider,endpoint,selectedModel=null,prompt='Antwoord alleen met OK.') {
   const origin=validateLocalEndpoint(endpoint);
   const candidates=await listLocalModels(provider,origin);
   const model=selectedModel||candidates[0];
   if(!candidates.includes(model)) throw new Error('Gekozen model staat niet op de server');
   const payload=provider==='ollama'
-    ? {model,prompt:'Antwoord alleen met OK.',stream:false,options:{num_predict:8}}
-    : {model,messages:[{role:'user',content:'Antwoord alleen met OK.'}],max_tokens:8,stream:false};
+    ? {model,prompt,stream:false,options:{num_predict:80}}
+    : {model,messages:[{role:'user',content:prompt}],max_tokens:80,stream:false};
   const result=await request(origin+(provider==='ollama'?'/api/generate':'/v1/chat/completions'),{
     method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)
-  },20000);
+  },60000);
   const answer=provider==='ollama'?result.response:result.choices?.[0]?.message?.content;
   if(typeof answer!=='string'||!answer.trim()) throw new Error('Het model gaf geen tekst terug');
   return {model,answer};
