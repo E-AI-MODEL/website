@@ -30,7 +30,7 @@ class ICTScanTests(unittest.TestCase):
 
     def test_routes_copied_by_builder(self):
         builder = (ROOT / 'scripts' / 'build_site.py').read_text(encoding='utf-8')
-        self.assertIn('tools/ict-scan', builder)
+        self.assertIn('ict_scan_source = repo_root / "tools" / "ict-scan"', builder)
         self.assertNotIn('"/tools/ict-scan/"', builder.split('urls.extend(')[-1])
 
 if __name__ == '__main__':
