@@ -57,11 +57,11 @@ jobs:
         run: npx playwright install chromium
         timeout-minutes: 4
       - run: python -m unittest discover -s tests -p test_tool_launch.py -v
+      - name: Controleer ICT-scan synchronisatie en interface op desktop en mobiel
+        run: node scripts/test_ict_scan_browser.mjs site-build
       - name: Check anatomical 3D rendering and local organ models
         if: ${{ steps.scope.outputs.anatomy == 'true' }}
         run: node scripts/test_anatomie_3d.mjs site-build
-      - name: Controleer ICT-scan synchronisatie en interface op desktop en mobiel
-        run: node scripts/test_ict_scan_browser.mjs site-build
       - run: node scripts/test_tool_launch.mjs site-build
       - name: Proef EAIgit op desktop en mobiel
         if: ${{ steps.scope.outputs.eaigit == 'true' }}
