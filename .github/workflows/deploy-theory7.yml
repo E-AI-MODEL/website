@@ -118,6 +118,38 @@ jobs:
           mirror -R --parallel=3 --verbose --exclude-glob topo/ --exclude-glob 'topo/**' --exclude-glob assets/ --exclude-glob .git/ --exclude-glob .github/ --exclude-glob .htaccess --exclude-glob cgi-bin/ --exclude-glob .well-known/ site-build/ /
           bye
           EOF
+      - name: Verwijder uitsluitend de vier vervallen Onderwijs in 3D-kopieën
+        shell: bash
+        env:
+          HOST: ftp.eaimodel.nl
+          FTP_USER: ${{ secrets.THEORY7_FTP_USER }}
+          FTP_PASSWORD: ${{ secrets.THEORY7_FTP_PASSWORD }}
+        run: |
+          set -euo pipefail
+          # Stop zodra de build nog een oude pagina of 3D-tab bevat.
+          test ! -e site-build/onderwijsin/3d/index.html
+          test ! -e site-build/houseoftalents/3d/index.html
+          test ! -e site-build/onderwijsin/houseoftalents/3d/index.html
+          test -s site-build/onderwijsin/index.html
+          test -s site-build/houseoftalents/index.html
+          test -s site-build/onderwijsin/houseoftalents/index.html
+          ! grep -q 'oiTab3d' site-build/onderwijsin/index.html
+          ! grep -q 'oiTab3d' site-build/houseoftalents/index.html
+          test -n "$FTP_USER" && test -n "$FTP_PASSWORD"
+          lftp -u "$FTP_USER","$FTP_PASSWORD" "ftp://$HOST:21" <<'EOF'
+          set cmd:fail-exit yes
+          set ftp:ssl-force true
+          set ftp:ssl-protect-data true
+          set ssl:verify-certificate false
+          set net:timeout 20
+          set net:max-retries 1
+          # Uitsluitend deze vier exacte HTML-paden. Geen mirror --delete.
+          rm -f /content/legacy/onderwijsin-3d.html
+          rm -f /onderwijsin/3d/index.html
+          rm -f /houseoftalents/3d/index.html
+          rm -f /onderwijsin/houseoftalents/3d/index.html
+          bye
+          EOF
       - name: Verify live HTML and exact asset hashes
         run: python scripts/verify_ui.py --root site-build --url https://eaimodel.nl --timeout 90
       - name: Verify live anatomy JavaScript and stylesheets
