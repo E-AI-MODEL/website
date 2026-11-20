@@ -1,6 +1,7 @@
 // EAIspeak: vrij spreken, met apart gekozen model, taal en stem.
 import {localReply,interruptBrowserReply,ensureBrowserModel,browserModelStatus} from './browser-llm.js';
 import {checkWebGpuAvailability} from './gpu-capability.mjs';
+import {describeDevice,suggestDeviceSetup,modelDeviceAdvice} from './device-profile.mjs';
 const $=id=>document.getElementById(id);
 const speak=$('freeTalkSpeak'),stop=$('freeTalkStop'),send=$('freeTalkSend'),play=$('freeTalkPlay');
 const status=$('freeTalkStatus'),heard=$('freeTalkHeard'),answer=$('freeTalkAnswer'),typed=$('freeTalkTyped');
@@ -9,16 +10,47 @@ const connect=$('freeTalkConnect'),connectStatus=$('freeTalkConnectionStatus'),o
 const inputLang=$('freeTalkInputLang'),outputLang=$('freeTalkOutputLang'),voice=$('freeTalkVoice');
 const modelRow=$('freeTalkBrowserModelRow'),hint=$('freeTalkModelHint'),modelSummary=$('freeTalkSummary');
 const preload=$('freeTalkPreload'),preloadStatus=$('freeTalkPreloadStatus');
+const deviceStatus=$('freeTalkDeviceStatus'),deviceAdvice=$('freeTalkDeviceAdvice');
 let recognition=null,audio=null,utterance=null,pending=false,turn=0,lastAnswer='';
 let puterSdk=null,puterLoad=null,gpuProbeSequence=0;
 const history=[];
 const languages={'nl-NL':'Nederlands','en-US':'Engels','fr-FR':'Frans'};
+const hasMicrophone=!!(window.SpeechRecognition||window.webkitSpeechRecognition);
+const hasBrowserVoice=!!(window.speechSynthesis&&window.SpeechSynthesisUtterance);
+const device=describeDevice({userAgent:navigator.userAgent,userAgentDataMobile:navigator.userAgentData?.mobile,
+  platform:navigator.platform,touchPoints:navigator.maxTouchPoints||0,width:window.innerWidth,
+  pointerCoarse:window.matchMedia?.('(pointer:coarse)')?.matches||false});
+const memoryGB=Number.isFinite(navigator.deviceMemory)?navigator.deviceMemory:null;
+const saveData=!!navigator.connection?.saveData;
+let gpuSupport=null,userSelectedEngine=false,userSelectedModel=false;
+const defaultSetup=suggestDeviceSetup({kind:device.kind,gpuUsable:false,memoryGB,saveData});
+engine.value=defaultSetup.engine;
+browserModel.value=defaultSetup.model;
+const hardwareCheck=checkWebGpuAvailability(navigator.gpu).then(result=>{
+  gpuSupport=result;
+  const option=engine.querySelector('option[value="browser"]');
+  if(option){
+    option.disabled=!result.usable;
+    option.textContent=result.usable?'Op dit apparaat · WebLLM':'Op dit apparaat · niet beschikbaar';
+  }
+  const recommended=suggestDeviceSetup({kind:device.kind,gpuUsable:result.usable,memoryGB,saveData});
+  if(!userSelectedModel)browserModel.value=recommended.model;
+  if(!userSelectedEngine&&!pending)engine.value=recommended.engine;
+  if(!result.usable&&engine.value==='browser'){
+    engine.value='puter';
+    setStatus('Dit apparaat kan geen browsermodel laden. Kies een online model.');
+  }
+  updateControls();
+  return result;
+});
 function setStatus(message,kind=''){
   status.textContent=message;
   status.dataset.kind=kind;
 }
 function ready(){
-  pending=false;speak.disabled=false;speak.textContent='Praat';send.disabled=false;
+  pending=false;speak.disabled=!hasMicrophone;
+  speak.textContent=hasMicrophone?'Praat':'Geen microfoonherkenning';
+  send.disabled=false;
 }
 function cancelSound(){
   if(audio){audio.onended=null;audio.onerror=null;audio.pause();audio=null;}
@@ -44,6 +76,9 @@ function updateControls(){
   hint.textContent=local
     ? 'Het taalmodel draait op dit apparaat. De eerste download kan enkele minuten duren. De microfoonherkenning kan wel een internetdienst gebruiken.'
     : 'Online via Puter. Meld je aan voordat je spreekt. Het gebruik kan kosten meebrengen.';
+  deviceStatus.textContent=device.label+' · '+(gpuSupport?(gpuSupport.usable?'WebGPU beschikbaar':'Geen WebGPU-adapter'):'WebGPU controleren…')+' · '+(hasMicrophone?'Spreken mogelijk':'Gebruik typen');
+  deviceAdvice.textContent=gpuSupport?modelDeviceAdvice({kind:device.kind,gpuUsable:gpuSupport.usable,
+    memoryGB,saveData,modelId:browserModel.value}):'De website kiest straks een passende startinstelling. Je kunt die zelf wijzigen.';
   if(local)void probeGpu();
   else gpuProbeSequence++;
   if(voice.value==='cloud'&&outputLang.value!=='fr-FR'){
@@ -57,7 +92,7 @@ async function probeGpu(){
   if(state.loading || (state.ready&&state.model===browserModel.value))return;
   preload.disabled=true;
   preloadStatus.textContent='Grafische processor controleren…';
-  const support=await checkWebGpuAvailability(navigator.gpu);
+  const support=await hardwareCheck;
   if(sequence!==gpuProbeSequence||engine.value!=='browser'||browserModelStatus().loading)return;
   preload.disabled=!support.usable;
   preloadStatus.textContent=support.message;
@@ -67,14 +102,27 @@ function syncChanges(){
   history.length=0;
   updateControls();
 }
-for(const control of [browserModel,cloudModel,inputLang,outputLang,voice])control.addEventListener('change',syncChanges);
+for(const control of [cloudModel,inputLang,outputLang,voice])control.addEventListener('change',syncChanges);
+browserModel.addEventListener('change',()=>{userSelectedModel=true;syncChanges();});
 engine.addEventListener('change',()=>{
+  userSelectedEngine=true;
   // Een browsermodel werkt standaard volledig zonder extern account.
   if(engine.value==='browser'&&voice.value==='cloud')voice.value='browser';
   if(engine.value==='puter')void primePuter();
   syncChanges();
 });
 updateControls();
+ready();
+if(!hasBrowserVoice){
+  const option=voice.querySelector('option[value="browser"]');
+  if(option)option.disabled=true;
+  if(voice.value==='browser')voice.value='none';
+  updateControls();
+}
+const talkTab=$('tab-gesprek');
+if(talkTab)talkTab.addEventListener('click',()=>{
+  if(engine.value==='puter'&&!puterSdk)void primePuter();
+});
 preload.addEventListener('click',async()=>{
   if(pending||preload.disabled)return;
   const selected=browserModel.value;
