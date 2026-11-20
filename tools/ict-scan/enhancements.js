@@ -50,7 +50,7 @@ renderOverview=function(){
     barChart('areaChart',left,9,v=>change('overviewArea',v));
     barChart('typeChart',right,9,v=>change('overviewKind',v));
   }
-  $('chartBars').classList.toggle('seg-on',state.chartMode==='bars');$('chartRing').classList.toggle('seg-on',state.chartMode==='ring');
+  // Independent chart modes are handled by visual-explorer.js.
   const cover=[['Verantwoordelijke vastgelegd',shown.filter(x=>!hasUnknown(x.owner)).length,shown.length],['Gebruik op school bevestigd',shown.filter(x=>!hasUnknown(x.local)).length,shown.length],['Gegevensuitwisseling beschreven',shown.filter(x=>!hasUnknown(x.links)).length,shown.length],['Lokale AI-instellingen bekend',ai.filter(x=>!hasUnknown(x.local)).length,ai.length]];
   $('coverage').innerHTML=cover.map(([label,n,total])=>'<div class="coverage-row"><span class="coverage-name">'+esc(label)+'</span><b>'+n+' / '+total+'</b><div class="coverage-progress"><div style="width:'+(total?Math.min(100,n/total*100):0)+'%"></div></div></div>').join('');
   $('overviewApps').innerHTML='<div class="preview-rows">'+(shown.length?shown.slice(0,9).map(x=>'<button type="button" class="preview-row" data-quick-app="'+esc(x.id)+'"><span>'+esc(x.id)+'</span><strong>'+esc(x.name)+'</strong><small>'+esc(x.area||x.kind||'')+'</small></button>').join(''):'<div class="no-results">Geen resultaten voor deze filters.</div>')+'</div>';
@@ -197,7 +197,7 @@ function enhancementEvents(){
   for(const id of ['overviewArea','overviewKind'])$(id).addEventListener('change',()=>{state.overviewArea=$('overviewArea').value;state.overviewKind=$('overviewKind').value;renderOverview();});
   $('connectionsStatus').addEventListener('change',renderConnections);
   $('overviewClear').addEventListener('click',()=>{state.overviewArea='';state.overviewKind='';renderOverview();});
-  for(const [id,mode] of [['chartBars','bars'],['chartRing','ring']])$(id).addEventListener('click',()=>{state.chartMode=mode;renderOverview();});
+  // Chart choices are bound per visual, not as a single global switch.
   document.querySelectorAll('[data-report]').forEach(btn=>btn.addEventListener('click',()=>{state.reportScope=btn.dataset.report;renderReports();}));
   $('reportExcel').addEventListener('click',()=>exportScopedExcel(state.reportScope));
   $('reportPdf').addEventListener('click',()=>exportScopedPdf(state.reportScope));
