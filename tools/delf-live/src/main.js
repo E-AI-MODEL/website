@@ -103,7 +103,7 @@ async function restoreSceneAudio(){
     })));
     db.close();
     values.forEach((blob,index)=>{
-      if(blob instanceof Blob && !scriptedAudioChosen[index]){
+      if(blob instanceof Blob && !scriptedAudioChosen[index] && !scriptedAudioUrls[index]){
         scriptedAudioUrls[index]=URL.createObjectURL(blob);
       }
     });
@@ -172,7 +172,8 @@ async function loadBuiltInFrenchScenes(){
     if(!scriptedShowReady())scriptedFeedback('Franse opnamen laden niet: '+String(error?.message||error)+'. Je kunt eigen MP3-bestanden kiezen.',true);
   }
 }
-void restoreSceneAudio().then(loadBuiltInFrenchScenes);
+void loadBuiltInFrenchScenes();
+void restoreSceneAudio();
 function startScriptedShow(){
   if(scriptedMode!=='off' && scriptedMode!=='armed'){
     scriptedFeedback('De voorstelling loopt al. Gebruik Stop of Opnieuw om opnieuw te starten.',true);
