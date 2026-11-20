@@ -299,3 +299,5 @@ button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible,su
 .item-detail .source-fields>summary{padding:11px 13px;font-size:11px;font-weight:650;color:#4b5e7a;cursor:pointer}
 .item-detail .source-fields .detail-grid{padding:6px 13px 14px}
 @media(max-width:720px){.candidates-panel>summary,.license-panel>summary{padding:12px 14px;align-items:flex-start;flex-direction:column;gap:4px}.candidate-content{padding:12px 14px}.candidate-content .item-list{max-height:52dvh}}
+
+.candidate-content .section-mini-title{font-size:12px;font-weight:720;color:#344767;margin:18px 0 10px;padding-top:12px;border-top:1px solid #edf0f4}
