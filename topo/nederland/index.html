@@ -353,6 +353,19 @@ function provinceContext(name){
  return {left:Math.min(...points.map(p=>p[0])),right:Math.max(...points.map(p=>p[0])),
          top:Math.min(...points.map(p=>p[1])),bottom:Math.max(...points.map(p=>p[1]))};
 }
+function tidyMapLabels(svg){
+ const b=svg.viewBox.baseVal,accepted=[],margin=9;
+ for(const el of svg.querySelectorAll('.map-text.city')){
+  el.style.display='';
+  const r=el.getBBox();
+  const inside=r.x>=b.x+margin&&r.x+r.width<=b.x+b.width-margin&&
+   r.y>=b.y+margin&&r.y+r.height<=b.y+b.height-margin;
+  const tooClose=accepted.some(a=>(r.x-5<a.x+a.width+5&&r.x+r.width+5>a.x-5&&
+   r.y-5<a.y+a.height+5&&r.y+r.height+5>a.y-5));
+  if(!inside||tooClose)el.style.display='none';
+  else accepted.push(r);
+ }
+}
 function focusMap(){
  const frame=$('map'),svg=frame.querySelector('svg');
  if(!svg||!frame.clientWidth||!frame.clientHeight||!queue[index])return;
@@ -370,6 +383,7 @@ function focusMap(){
   const centerX=(bounds.left+bounds.right)/2,centerY=(bounds.top+bounds.bottom)/2;
   svg.setAttribute('viewBox',[fmt(centerX-width/2),fmt(centerY-height/2),fmt(width),fmt(height)].join(' '));
   svg.setAttribute('preserveAspectRatio','xMidYMid meet');
+  tidyMapLabels(svg);
   return;
  }
  const width=currentMode==='zoom'
@@ -380,6 +394,7 @@ function focusMap(){
  const left=centerX-width/2,top=centerY-height/2;
  svg.setAttribute('viewBox',[fmt(left),fmt(top),fmt(width),fmt(height)].join(' '));
  svg.setAttribute('preserveAspectRatio','xMidYMid meet');
+ tidyMapLabels(svg);
 }
 function highlight(x){
  const svg=$('map').querySelector('svg');if(!svg)return;
