@@ -25,13 +25,18 @@ if(host) {
   const steps=[
     {title:'Installatie',instruction:'Ollama moet op je Mac zijn geïnstalleerd. Heb je Ollama al? Ga dan verder.'},
     {title:'Opstarten',instruction:'Start Ollama op je Mac. De app blijft in de menubalk draaien. Controleer daarna de lokale server.'},
-    {title:'Browser verbinden',instruction:'De website moet vanuit Chrome toestemming krijgen om de lokale Ollama-server te benaderen.'},
+    {title:'Browser verbinden',instruction:'Verbind deze browser met Ollama op je Mac. Safari gebruikt bij voorkeur een lokale HTTPS-verbinding.'},
     {title:'Een model kiezen',instruction:'Gebruik bij voorkeur een model dat al op je Mac staat. Ontbreekt er een model? Download er één via Terminal.'},
     {title:'Model testen',instruction:'Laat het gekozen model één korte Franse zin maken. Pas na een echt antwoord is deze controle geslaagd.'}
   ];
   const $=id=>document.getElementById(id);
   const origin=window.location.origin;
-  const server='http://localhost:11434/';
+  const safari=/^((?!chrome|chromium|crios).)*safari/i.test(navigator.userAgent);
+  const browserName=safari?'Safari':'deze browser';
+  const httpServer='http://localhost:11434/';
+  const httpsServer='https://localhost:11435/';
+  let server=safari?httpsServer:httpServer;
+  let connectionKind=safari?'https':'http';
   let index=0;
   let serverReady=false, models=[], selected='', verified=false;
   let busy=false, lastError='', modelReply='';
@@ -95,7 +100,7 @@ if(host) {
     if(index===1){
       contentElement.append(line('p','Open Ollama via Programma’s. Gebruik Terminal alleen als je de server zelf wilt starten. Start niet twee servers naast elkaar.','studio-support'));
       addCommand('Controleer of de lokale API al draait:','curl http://localhost:11434/api/tags');
-      contentElement.append(action('Controleer nu in Chrome',async()=>{
+      contentElement.append(action('Controleer server vanuit deze browser',async()=>{
         await checkServer();
         if(serverReady){installAcknowledged=true;index=2;render();}
       }));
@@ -103,15 +108,39 @@ if(host) {
       contentElement.append(terminal('ollama serve'));
     }
     if(index===2){
-      contentElement.append(line('p','Chrome gebruikt '+origin+' om verbinding te maken. Verleen toestemming als Chrome vraagt om toegang tot lokale netwerkadressen.','studio-support'));
+      contentElement.append(line('p',browserName+' opent de website op '+origin+'. Een rechtstreekse pagina op localhost bewijst niet dat een aanvraag vanuit deze website lukt.','studio-support'));
+      const choices=line('label','Verbindingsmethode','studio-field');
+      const method=document.createElement('select');method.id='ollamaConnectionKind';
+      [['https','Beveiligde lokale verbinding (Safari)'],['http','Direct via HTTP (andere browsers)']].forEach(([value,label])=>method.add(new Option(label,value)));
+      method.value=connectionKind;
+      method.addEventListener('change',()=>{connectionKind=method.value;server=connectionKind==='https'?httpsServer:httpServer;serverReady=false;models=[];selected='';verified=false;notify('');render();});
+      choices.append(method);contentElement.append(choices);
+      contentElement.append(line('p','Te testen adres: '+server,'studio-support'));
+      if(connectionKind==='https'){
+        contentElement.append(line('p','Safari kan een HTTP-aanvraag vanuit een HTTPS-website blokkeren. Ollama spreekt zelf HTTP. Caddy kan alleen op jouw Mac een vertrouwde HTTPS-verbinding vóór Ollama verzorgen.','studio-support'));
+        const setup=document.createElement('details');setup.className='ollama-help';setup.open=true;
+        setup.append(line('summary','Lokale HTTPS-verbinding voor Safari'));
+        setup.append(line('p','Installeer Caddy als je Homebrew hebt. Is Homebrew niet aanwezig, gebruik de officiële instructies van caddyserver.com. Voer de opdrachten één voor één uit.','studio-support'));
+        setup.append(terminal('brew install caddy'));
+        setup.append(line('p','Maak een configuratie die uitsluitend luistert op je eigen Mac:','studio-support'));
+        setup.append(terminal('mkdir -p "$HOME/.config/delf-live" && printf "%s\\n" "https://localhost:11435 {" "  bind 127.0.0.1" "  tls internal" "  reverse_proxy 127.0.0.1:11434" "}" > "$HOME/.config/delf-live/Caddyfile"'));
+        setup.append(line('p','Laat Ollama op poort 11434 draaien. Start in een tweede Terminal-venster deze HTTPS-verbinding:','studio-support'));
+        setup.append(terminal('caddy run --config "$HOME/.config/delf-live/Caddyfile"'));
+        setup.append(line('p','Caddy kan om toestemming vragen om het lokale certificaat op je Mac te vertrouwen. Geef die toestemming uitsluitend als je Caddy zelf hebt geïnstalleerd. Laat ook dit Terminal-venster open.','studio-support'));
+        setup.append(line('p','Open https://localhost:11435/api/tags eerst rechtstreeks in Safari. De pagina moet zonder certificaatwaarschuwing laden. Pas daarna heeft de test vanuit de website zin.','studio-support'));
+        setup.append(line('p','De lokale HTTPS-poort is niet vanaf internet toegankelijk. Deze configuratie bindt aan 127.0.0.1.','studio-support'));
+        contentElement.append(setup);
+      }else{
+        contentElement.append(line('p','Deze directe HTTP-route kan in sommige browsers werken. Safari kan de aanvraag vanuit een HTTPS-website blokkeren, ook wanneer Terminal een HTTP 200 teruggeeft.','studio-support'));
+      }
       contentElement.append(action('Test verbinding vanuit deze browser',checkServer));
       const detail=document.createElement('details');
       detail.className='ollama-help';
       const summary=document.createElement('summary');summary.textContent='Verbinding geblokkeerd? Toon de oplossing voor macOS';detail.append(summary);
-      detail.append(line('p','De website kan door Ollama’s CORS-instellingen worden geweigerd. De volgende opdracht staat uitsluitend deze website toe. Stop Ollama via het menubalkmenu, voer de opdracht uit en start Ollama opnieuw.','studio-support'));
+      detail.append(line('p','Ollama moet het echte websiteadres toestaan. Stop Ollama en start daarna opnieuw met de juiste instelling. Deze stap helpt bij een CORS-fout, maar herstelt geen blokkade van onbeveiligd HTTP door Safari.','studio-support'));
       detail.append(terminal('launchctl setenv OLLAMA_ORIGINS "'+origin+'"'));
-      detail.append(line('p','Controleer eerst of Ollama lokaal bereikbaar is. Werkt Terminal wel en Chrome niet, controleer dan de toegestane websiteherkomst en de toestemming in Chrome.','studio-support'));
-      detail.append(terminal('curl http://localhost:11434/api/tags'));
+      detail.append(line('p','Een Terminal-test met Origin controleert CORS, niet de browserblokkade. Test daarna opnieuw vanuit deze website.','studio-support'));
+      detail.append(terminal('curl -i -H "Origin: '+origin+'" http://localhost:11434/api/tags'));
       detail.append(line('p','Deze instelling geldt voor de huidige macOS-aanmeldsessie. Na een herstart van je Mac kan opnieuw instellen nodig zijn.','studio-support'));
       contentElement.append(detail);
     }
@@ -155,7 +184,7 @@ if(host) {
     }catch(error){
       serverReady=false;models=[];selected='';verified=false;lastError=String(error?.message||error);
       const diagnosis=classifyError(error,'ollama');
-      notify('Niet bereikbaar vanuit Chrome ('+diagnosis.code+'). '+diagnosis.advice+' Open de extra stappen onder Browser verbinden.',true);
+      notify('Verbinding vanuit '+browserName+' mislukt ('+diagnosis.code+'). '+(safari&&connectionKind==='http'?'Safari kan HTTP vanaf deze HTTPS-website blokkeren. Kies hierboven de lokale HTTPS-verbinding. ':safari&&connectionKind==='https'?'Controleer of Caddy draait en of https://localhost:11435/api/tags zonder certificaatwaarschuwing opent. ':'')+diagnosis.advice,true);
       return false;
     }finally{busy=false;render();}
   }
@@ -167,7 +196,7 @@ if(host) {
       if(!result.answer.trim()) throw new Error('Geen antwoord');
       verified=true;
       modelReply=result.answer;
-      notify('Antwoord ontvangen van '+result.model+'. Ollama werkt vanuit Chrome.');
+      notify('Antwoord ontvangen van '+result.model+'. Ollama werkt vanuit '+browserName+'.');
       window.dispatchEvent(new CustomEvent('cloud-ollama-ready',{detail:{endpoint:server,model:result.model}}));
     }catch(error){
       verified=false;modelReply='';const diagnosis=classifyError(error,'ollama');
