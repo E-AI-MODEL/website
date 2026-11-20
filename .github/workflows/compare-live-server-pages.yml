@@ -1,15 +1,6 @@
 name: Vergelijk FTP-server met websitebuild
 
 on:
-  # Tijdelijke proef op de eigen branch. Na de controle blijft
-  # uitsluitend workflow_dispatch over.
-  push:
-    branches:
-      - feat/publication-page-duplicate-gate-20261120
-    paths:
-      - 'scripts/compare_published_pages.py'
-      - 'tests/test_compare_published_pages.py'
-      - '.github/workflows/compare-live-server-pages.yml'
   workflow_dispatch:
 
 permissions:
