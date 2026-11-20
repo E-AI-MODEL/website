@@ -147,6 +147,38 @@ for (const tab of tabs) {
   });
 }
 
+
+/* De inhoud van een openklapregel verschijnt als mist in plaats van een standaard HTML-sprong. */
+const prefersReducedMist = reduceMotion;
+for (const detail of document.querySelectorAll('.studio-disclosure')) {
+  const summary = detail.querySelector(':scope > summary');
+  if (!summary) continue;
+  const body = document.createElement('div');
+  body.className = 'mist-detail-body';
+  while (summary.nextSibling) body.append(summary.nextSibling);
+  detail.append(body);
+  let closingTimer = null;
+  summary.addEventListener('click', event => {
+    if (!detail.open || prefersReducedMist.matches) return;
+    event.preventDefault();
+    if (detail.classList.contains('is-dissolving')) return;
+    detail.classList.add('is-dissolving');
+    closingTimer = setTimeout(() => {
+      detail.open = false;
+      detail.classList.remove('is-dissolving');
+      closingTimer = null;
+    }, 300);
+  });
+  detail.addEventListener('toggle', () => {
+    if (detail.open && closingTimer) {
+      clearTimeout(closingTimer);
+      closingTimer = null;
+      detail.classList.remove('is-dissolving');
+    }
+    if (detail.open) markActivity();
+  });
+}
+
 function onStudioVisibility() {
   const open = panel.classList.contains('open');
   if (lastOpenState === open) return;
