@@ -136,3 +136,5 @@ body.record-card-open{overflow:hidden}
 .card-logbook-row p{grid-column:2/4;margin:0;font-size:10px;color:#63748e;line-height:1.5;overflow-wrap:anywhere}
 .card-logbook-row button{grid-column:2/4;justify-self:start}
 @media(max-width:600px){.card-logbook-row{grid-template-columns:1fr 1fr}.card-logbook-row .card-logbook-date{grid-column:1}.card-logbook-row strong{grid-column:1/-1;grid-row:2}.card-logbook-row small{grid-column:2;grid-row:1}.card-logbook-row p,.card-logbook-row button{grid-column:1/-1}}
+
+.card-editor[hidden],.card-editor [hidden],.card-scrim[hidden]{display:none!important}
