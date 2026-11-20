@@ -69,7 +69,7 @@ Onder **Bronnen** staat **Sync data met GitHub**. Deze functie leest uitsluitend
 - Er wordt niet automatisch gesynchroniseerd of geüpload. Iedere handmatige synchronisatie verwerkt de gekozen GitHub-versie opnieuw, ook na lokale aanpassingen. Lokaal opslaan blijft een afzonderlijke handeling.
 - Voor een snelle openbare *technische test* bestaat `tests/fixtures/ict-scan-github-sync/demo.json`; dit bevat uitsluitend fictieve gegevens. Nooit gebruiken als schoolinventaris.
 
-De publieke repository `E-AI-MODEL/website` bevat **geen echte schoolinventaris**. De actuele bronbestanden moeten eerst in een hiervoor bedoelde privé-repository worden geplaatst. Een verborgen 404-ingang is geen toegangsbescherming voor GitHub-inhoud.
+De publieke repository `E-AI-MODEL/website` bevat nu een gestructureerde 2026-inventaris in `ict-scan/bronnen/2026-applicatielandschap.json` en een gecontroleerd werkregister in `ict-scan/bronnen/2026-werkregister.json`. Beide bestanden worden beschreven in `manifest.json`. De ruwe Entra-roltoewijzingen en persoonlijke accountgegevens zijn niet gepubliceerd. De verborgen 404-ingang is geen toegangsbeveiliging.
 
 Voor een technische test: `node --test tests/test_ict_scan_github_sync.mjs`. De websitebuild controleert ook dat `github-sync.js` wordt gepubliceerd en dat de toegestane netwerkverbinding beperkt blijft tot `https://api.github.com`.
 
@@ -77,4 +77,10 @@ Voor een technische test: `node --test tests/test_ict_scan_github_sync.mjs`. De 
 
 De acht oorspronkelijke iconen voor de hoofdonderdelen zijn gehandhaafd. De extra knop onderaan opent zoeken, GitHub-synchronisatie, lokale bestandsimport en rapportexports (Excel, PDF, JSON). De zoekbalk en losse acties zijn uit de bovenbalk gehaald; de dubbele horizontale navigatie bestaat niet meer. Op een klein scherm opent de functiesectie boven de onderste iconenbalk. Sluiten kan met Escape, de sluitknop of een klik buiten het menu. De toets `/` opent de zoekfunctie buiten invoervelden.
 
-De GitHub-actie in dit menu start de bestaande alleen-lezen-synchronisatie en opent het bronnenscherm voor de status. De map bevat momenteel wel `manifest.json` met de eerste inventarisatiedatum (10 augustus 2026) en samensteller (Hans Visser); de inhoudelijke applicatiebestanden moeten apart worden gecontroleerd en toegevoegd. Zolang die ontbreken, mag het dashboard geen aantallen verzinnen.
+De GitHub-actie in dit menu start de alleen-lezen-synchronisatie en opent het bronnenscherm voor de status. Bij de eerste opening haalt de website de twee openbare JSON-bestanden op, mits er geen lokale momentopname klaarstaat. Handmatig synchroniseren blijft mogelijk. Het manifest bevat de startdatum (10 augustus 2026), samensteller (Hans Visser) en aantallen. De 61 basisregistraties zijn niet het definitieve totaal; 76 kandidaten blijven apart.
+
+## Brondata 2026 (20 november)
+
+De hoofdbron bewaart 61 basisregistraties, 76 volledig beschreven AI-functies, 93 Entra-registraties, 76 aanvullende kandidaten, 10 DPIA-punten, 22 AI-beheerpunten, 16 samenvattende controles, 13 technisch gekoppelde onderdelen, 40 licentiecontrole-registraties en vier afzonderlijke apparaatmetingen. Het werkregister bevat daarnaast 13 open acties en 12 softwarecontroles. De 76 kandidaten tellen niet mee bij de basisregistraties. De JSON bewaart zowel de velden voor het dashboard als de oorspronkelijke teksten en herkomstverwijzingen uit de Excelbestanden.
+
+De code kent aparte registers voor kandidaten, licentiecontrole, werkacties en softwarecontrole. Bij synchronisatie worden de bronnen uit GitHub gelezen zonder terugschrijven. De website en de exports vermelden een bronstatus en mogen ontbrekende bevestigingen niet invullen.
