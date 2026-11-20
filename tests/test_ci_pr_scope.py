@@ -13,7 +13,7 @@ class CiPrScopeTests(unittest.TestCase):
         self.assertEqual(affected_suites(["tools/eaigit/index.html", "assets/eaigit/wizard.mjs"]), {"eaigit"})
 
     def test_own_science_changes_run_physics(self):
-        self.assertEqual(affected_suites(["content/science-observatory/labs/natuurkunde.html"]), {"physics"})
+        self.assertEqual(affected_suites(["content/science-observatory/labs/natuurkunde.html"]), {"physics", "melkweg"})
 
     def test_anatomy_change_runs_anatomy(self):
         self.assertEqual(affected_suites(["scripts/build_anatomie.py"]), {"anatomy"})
