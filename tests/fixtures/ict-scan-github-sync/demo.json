@@ -1,0 +1,30 @@
+{
+  "schema": "eai-school-ict-v1",
+  "apps": [
+    {
+      "id": "DEMO-001",
+      "name": "Demo toepassing (fictief)",
+      "area": "Onderwijs",
+      "kind": "Applicatie",
+      "description": "Fictieve testdata voor de GitHub-import. Niet afkomstig van het Emmauscollege.",
+      "local": "Niet vastgesteld",
+      "sources": ["Openbare demo"]
+    }
+  ],
+  "ai": [
+    {
+      "id": "DEMO-AI-001",
+      "name": "Demo AI-functie (fictief)",
+      "product": "Demo toepassing (fictief)",
+      "phase": "Oefenen",
+      "action": "Uitsluitend een voorbeeld om de synchronisatie te testen.",
+      "sources": ["Openbare demo"]
+    }
+  ],
+  "connections": [],
+  "checks": [],
+  "devices": [],
+  "parts": [],
+  "dpia": [],
+  "aiControls": []
+}

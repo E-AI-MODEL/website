@@ -35,9 +35,11 @@ on:
       - 'tools/ict-scan/**'
       - 'tests/test_ict_scan_publish.py'
       - 'tests/test_ict_scan_export.mjs'
+      - 'tests/test_ict_scan_github_sync.mjs'
       - 'tools/ict-scan/**'
       - 'tests/test_ict_scan_publish.py'
       - 'tests/test_ict_scan_export.mjs'
+      - 'tests/test_ict_scan_github_sync.mjs'
       - 'tests/test_projecthulp.mjs'
       - 'tests/test_eaigit_help.mjs'
       - 'tests/test_eaigit_single_file.mjs'
@@ -84,9 +86,11 @@ on:
       - 'tools/ict-scan/**'
       - 'tests/test_ict_scan_publish.py'
       - 'tests/test_ict_scan_export.mjs'
+      - 'tests/test_ict_scan_github_sync.mjs'
       - 'tools/ict-scan/**'
       - 'tests/test_ict_scan_publish.py'
       - 'tests/test_ict_scan_export.mjs'
+      - 'tests/test_ict_scan_github_sync.mjs'
       - 'tests/test_projecthulp.mjs'
       - 'index.html'
       - 'houseoftalents/**'
@@ -217,11 +221,13 @@ jobs:
       - name: Controleer verborgen lokale ICT-scan
         run: |
           python -m unittest discover -s tests -p 'test_ict_scan_publish.py' -v
+          node --test tests/test_ict_scan_github_sync.mjs
           test -s site-build/tools/ict-scan/index.html
           test -s site-build/tools/ict-scan/app.js
           test -s site-build/tools/ict-scan/style.css
           test -s site-build/tools/ict-scan/monitor.css
           test -s site-build/tools/ict-scan/enhancements.js
+          test -s site-build/tools/ict-scan/github-sync.js
           test -s site-build/tools/ict-scan/emmaus-logo.svg
           ! grep -q 'https://eaimodel.nl/tools/ict-scan/' site-build/sitemap.xml
 

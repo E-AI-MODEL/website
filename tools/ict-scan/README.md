@@ -57,3 +57,18 @@ Bestanden: `index.html` (ingang en structuur), `style.css` (basis), `monitor.css
 De openingspagina is uiterlijk gelijk aan het normale 404-scherm op eaimodel.nl: zwart vlak, grijze 404 en Not Found, met de LiteSpeed-voettekst. Geen EAI-menu of herkenbare navigatie. Twee klikken op de **middelste 0** openen direct het dashboard, zonder formulier of wachtwoord. Een enkele klik doet niets. Op mobiel werkt dubbel tikken; met het toetsenbord tweemaal Enter of spatie. Een eerder lokaal bewaarde momentopname kan bij het openen worden teruggezet.
 
 Dit is een bewust vermomde ingang en geen server-side login. Een echte 404 van de webserver, bijvoorbeeld voor een niet-gepubliceerde URL, kan geen formulier openen. De juiste route moet daadwerkelijk zijn gepubliceerd. Browser- en brondata blijven lokaal.
+## GitHub synchronisatie (v4)
+
+Onder **Bronnen** staat **Sync data met GitHub**. Deze functie leest uitsluitend gegevens uit GitHub en verandert geen bestanden in de repository. De GitHub-map, branch/tag en repository zijn instelbaar. Dezelfde invoer voor XLSX, CSV, JSON, DOCX en PDF wordt gebruikt als bij lokale bestanden; PDF's worden alleen geregistreerd, niet inhoudelijk beoordeeld.
+
+- Een openbare repository kan zonder token worden gelezen. Voor schoolbronnen: gebruik een **privé-repository**.
+- Voor een privé-repository wordt een tijdelijke GitHub fine-grained access token gevraagd, beperkt tot die repository met **Contents: Read**. De token gaat alleen met GET-verzoeken naar `https://api.github.com`, wordt niet opgeslagen, niet meegestuurd in exports en na de synchronisatie uit het scherm gewist. Gebruik geen accountbrede of schrijfgerechtigde token.
+- Alle bestanden worden eerst opgehaald en pas daarna ingelezen. Bij een importfout wordt de vorige werkstand teruggezet. Bij een vooraf gevuld overzicht vraagt **Vervangen** om bevestiging.
+- De scanner leest een map met alle ondersteunde bronbestanden (ook submappen, begrensd). Beperk de map tot de te gebruiken nulmeting. Een `README.md` en andere documenten zonder ondersteunde extensie worden overgeslagen.
+- De status toont of een synchronisatie is geslaagd en vermeldt welke bestanden zijn gebruikt; de GitHub-bestand-SHA wordt per bron opgeslagen in de huidige browsersessie.
+- Er wordt niet automatisch gesynchroniseerd of geüpload. Lokaal opslaan blijft een afzonderlijke handeling.
+- Voor een snelle openbare *technische test* bestaat `tests/fixtures/ict-scan-github-sync/demo.json`; dit bevat uitsluitend fictieve gegevens. Nooit gebruiken als schoolinventaris.
+
+De publieke repository `E-AI-MODEL/website` bevat **geen echte schoolinventaris**. De actuele bronbestanden moeten eerst in een hiervoor bedoelde privé-repository worden geplaatst. Een verborgen 404-ingang is geen toegangsbescherming voor GitHub-inhoud.
+
+Voor een technische test: `node --test tests/test_ict_scan_github_sync.mjs`. De websitebuild controleert ook dat `github-sync.js` wordt gepubliceerd en dat de toegestane netwerkverbinding beperkt blijft tot `https://api.github.com`.
