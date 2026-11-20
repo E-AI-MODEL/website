@@ -140,7 +140,13 @@
       for(const name of names){
         const raw=await request('GET','/contents/'+SOURCE_DIR+name+'?ref='+encodeURIComponent(baseSha));
         if(!/^[a-f0-9]{40}$/i.test(raw.sha||''))fail('Bronbestand zonder controleerbare GitHub-SHA: '+name);
-        fetched[name]={sha:raw.sha,data:JSON.parse(decodeBase64(raw.content))};
+        let base64=raw.content;
+        if(raw.encoding!=='base64'||typeof base64!=='string'||!base64.trim()){
+          const blob=await request('GET','/git/blobs/'+raw.sha);
+          if(blob.encoding!=='base64'||typeof blob.content!=='string')fail('GitHub kan de JSON-bron niet lezen: '+name);
+          base64=blob.content;
+        }
+        fetched[name]={sha:raw.sha,data:JSON.parse(decodeBase64(base64))};
       }
       const manifest=fetched['manifest.json'].data,docs=Object.fromEntries(paths.map(name=>[name,fetched[name].data]));
       if(manifest.schema!=='eai-school-ict-manifest-v1')fail('Het manifest heeft een onbekende structuur.');
