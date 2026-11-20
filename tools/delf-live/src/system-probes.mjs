@@ -61,3 +61,17 @@ export async function probeLocalModel(provider,endpoint,selectedModel=null) {
   if(typeof answer!=='string'||!answer.trim()) throw new Error('Het model gaf geen tekst terug');
   return {model,answer};
 }
+
+/**
+ * Bereikbaarheid is geen modeltest. Een lege modellenlijst betekent wel dat
+ * Ollama bereikbaar is; modellen worden nooit automatisch gedownload.
+ */
+export async function inspectOllamaServer(endpoint='http://localhost:11434/') {
+  const origin=validateLocalEndpoint(endpoint);
+  const result=await request(origin+'/api/tags',{},5000);
+  if(!Array.isArray(result?.models)) throw new Error('Ongeldig Ollama-antwoord op /api/tags');
+  return {
+    online:true,
+    models:result.models.map(model=>model?.name||model?.model).filter(name=>typeof name==='string'&&name.length>0)
+  };
+}
