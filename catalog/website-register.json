@@ -15,30 +15,30 @@
   },
   "pages": [
     {
-      "id": "page:/en/model/",
-      "url": "/en/model/",
-      "file": null,
-      "title": "Explore the EAI model",
-      "kind": "gegenereerde_pagina",
-      "category": "The model",
-      "review": "bouwresultaat_controleren",
-      "parent": "page:/en/",
+      "id": "page:/nl/onderwijsregio-proef/",
+      "url": "/nl/onderwijsregio-proef/",
+      "file": "nl/onderwijsregio-proef/index.html",
+      "title": "Onderwijsregio Rotterdam | Proefomgeving",
+      "kind": "overig",
+      "category": null,
+      "review": "niet_in_publieke_zoekindex_status_controleren",
+      "parent": null,
       "family": "model",
-      "in_committed_sitemap": true,
-      "search_scope": "algemeen"
+      "in_committed_sitemap": false,
+      "search_scope": "niet_indexeren"
     },
     {
-      "id": "page:/nl/model/",
-      "url": "/nl/model/",
-      "file": null,
-      "title": "Het EAI-model",
-      "kind": "gegenereerde_pagina",
-      "category": "Het model",
-      "review": "bouwresultaat_controleren",
-      "parent": "page:/nl/",
+      "id": "page:/",
+      "url": "/",
+      "file": "index.html",
+      "title": "EAI | Wat ons werk ons werk maakt",
+      "kind": "overig",
+      "category": null,
+      "review": "niet_in_publieke_zoekindex_status_controleren",
+      "parent": null,
       "family": "model",
       "in_committed_sitemap": true,
-      "search_scope": "algemeen"
+      "search_scope": "niet_indexeren"
     },
     {
       "id": "page:/bronnen/",
@@ -65,6 +65,19 @@
       "family": "model",
       "in_committed_sitemap": true,
       "search_scope": "niet_indexeren"
+    },
+    {
+      "id": "page:/eai-blog/",
+      "url": "/eai-blog/",
+      "file": "eai-blog/index.html",
+      "title": "Oudere artikelen",
+      "kind": "publicatie",
+      "category": "Onderzoek & publicaties · Archief",
+      "review": "gevonden_in_zoekindex",
+      "parent": null,
+      "family": "publicaties",
+      "in_committed_sitemap": false,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/eai-blog/eai-balans/",
@@ -119,19 +132,6 @@
       "search_scope": "algemeen"
     },
     {
-      "id": "page:/eai-blog/",
-      "url": "/eai-blog/",
-      "file": "eai-blog/index.html",
-      "title": "Oudere artikelen",
-      "kind": "publicatie",
-      "category": "Onderzoek & publicaties · Archief",
-      "review": "gevonden_in_zoekindex",
-      "parent": null,
-      "family": "publicaties",
-      "in_committed_sitemap": false,
-      "search_scope": "algemeen"
-    },
-    {
       "id": "page:/eai-blog/rapportage-wang-fan-2025/",
       "url": "/eai-blog/rapportage-wang-fan-2025/",
       "file": "eai-blog/rapportage-wang-fan-2025/index.html",
@@ -169,6 +169,21 @@
       "family": "publicaties",
       "in_committed_sitemap": false,
       "search_scope": "algemeen"
+    },
+    {
+      "id": "page:/eai-tools-modules/",
+      "url": "/eai-tools-modules/",
+      "file": "eai-tools-modules/index.html",
+      "title": "Doorverwijzing naar hulpmiddelen",
+      "kind": "doorverwijzing",
+      "category": null,
+      "review": "doel_als_bron_genoteerd_niet_live_gecontroleerd",
+      "parent": null,
+      "family": "hulpmiddelen",
+      "page_status": "meta_redirect_verified",
+      "redirect_target": "/tools/",
+      "in_committed_sitemap": false,
+      "search_scope": "niet_indexeren"
     },
     {
       "id": "page:/eai-tools-modules/act-of-learning-game-2/",
@@ -276,19 +291,17 @@
       "search_scope": "niet_indexeren"
     },
     {
-      "id": "page:/eai-tools-modules/",
-      "url": "/eai-tools-modules/",
-      "file": "eai-tools-modules/index.html",
-      "title": "Doorverwijzing naar hulpmiddelen",
-      "kind": "doorverwijzing",
-      "category": null,
-      "review": "doel_als_bron_genoteerd_niet_live_gecontroleerd",
+      "id": "page:/en/",
+      "url": "/en/",
+      "file": "en/index.html",
+      "title": "The work that makes us human",
+      "kind": "pagina",
+      "category": "EN",
+      "review": "gevonden_in_zoekindex",
       "parent": null,
-      "family": "hulpmiddelen",
-      "page_status": "meta_redirect_verified",
-      "redirect_target": "/tools/",
-      "in_committed_sitemap": false,
-      "search_scope": "niet_indexeren"
+      "family": "model",
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/en/about/",
@@ -343,19 +356,6 @@
       "search_scope": "algemeen"
     },
     {
-      "id": "page:/en/",
-      "url": "/en/",
-      "file": "en/index.html",
-      "title": "The work that makes us human",
-      "kind": "pagina",
-      "category": "EN",
-      "review": "gevonden_in_zoekindex",
-      "parent": null,
-      "family": "model",
-      "in_committed_sitemap": true,
-      "search_scope": "algemeen"
-    },
-    {
       "id": "page:/en/insights/",
       "url": "/en/insights/",
       "file": "en/insights/index.html",
@@ -391,6 +391,19 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/en/",
       "family": "ai",
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
+    },
+    {
+      "id": "page:/en/model/",
+      "url": "/en/model/",
+      "file": null,
+      "title": "Explore the EAI model",
+      "kind": "gegenereerde_pagina",
+      "category": "The model",
+      "review": "bouwresultaat_controleren",
+      "parent": "page:/en/",
+      "family": "model",
       "in_committed_sitemap": true,
       "search_scope": "algemeen"
     },
@@ -460,6 +473,19 @@
       "search_scope": "algemeen"
     },
     {
+      "id": "page:/houseoftalents/",
+      "url": "/houseoftalents/",
+      "file": "houseoftalents/index.html",
+      "title": "Onderwijs in: wat staat er werkelijk op GitHub?",
+      "kind": "overig",
+      "category": null,
+      "review": "niet_in_publieke_zoekindex_status_controleren",
+      "parent": null,
+      "family": "technisch",
+      "in_committed_sitemap": false,
+      "search_scope": "niet_indexeren"
+    },
+    {
       "id": "page:/houseoftalents/3d/",
       "url": "/houseoftalents/3d/",
       "file": "houseoftalents/3d/index.html",
@@ -475,32 +501,6 @@
       "search_scope": "niet_indexeren"
     },
     {
-      "id": "page:/houseoftalents/",
-      "url": "/houseoftalents/",
-      "file": "houseoftalents/index.html",
-      "title": "Onderwijs in: wat staat er werkelijk op GitHub?",
-      "kind": "overig",
-      "category": null,
-      "review": "niet_in_publieke_zoekindex_status_controleren",
-      "parent": null,
-      "family": "technisch",
-      "in_committed_sitemap": false,
-      "search_scope": "niet_indexeren"
-    },
-    {
-      "id": "page:/",
-      "url": "/",
-      "file": "index.html",
-      "title": "EAI | Wat ons werk ons werk maakt",
-      "kind": "overig",
-      "category": null,
-      "review": "niet_in_publieke_zoekindex_status_controleren",
-      "parent": null,
-      "family": "model",
-      "in_committed_sitemap": true,
-      "search_scope": "niet_indexeren"
-    },
-    {
       "id": "page:/kennis/",
       "url": "/kennis/",
       "file": "kennis/index.html",
@@ -511,6 +511,21 @@
       "parent": null,
       "family": "onderzoek",
       "in_committed_sitemap": true,
+      "search_scope": "niet_indexeren"
+    },
+    {
+      "id": "page:/leif/",
+      "url": "/leif/",
+      "file": "leif/index.html",
+      "title": "LEIF | Meer dan een profiel",
+      "kind": "afgeschermd_of_app",
+      "category": null,
+      "review": "noindex_in_bron_gecontroleerd",
+      "parent": null,
+      "family": "technisch",
+      "robots_noindex_in_html": true,
+      "page_status": "niet_voor_zoekmachines",
+      "in_committed_sitemap": false,
       "search_scope": "niet_indexeren"
     },
     {
@@ -537,21 +552,6 @@
       "category": null,
       "review": "noindex_in_bron_gecontroleerd",
       "parent": "page:/leif/",
-      "family": "technisch",
-      "robots_noindex_in_html": true,
-      "page_status": "niet_voor_zoekmachines",
-      "in_committed_sitemap": false,
-      "search_scope": "niet_indexeren"
-    },
-    {
-      "id": "page:/leif/",
-      "url": "/leif/",
-      "file": "leif/index.html",
-      "title": "LEIF | Meer dan een profiel",
-      "kind": "afgeschermd_of_app",
-      "category": null,
-      "review": "noindex_in_bron_gecontroleerd",
-      "parent": null,
       "family": "technisch",
       "robots_noindex_in_html": true,
       "page_status": "niet_voor_zoekmachines",
@@ -602,6 +602,19 @@
       "search_scope": "niet_indexeren"
     },
     {
+      "id": "page:/nl/",
+      "url": "/nl/",
+      "file": "nl/index.html",
+      "title": "Wat ons werk ons werk maakt",
+      "kind": "pagina",
+      "category": "NL",
+      "review": "gevonden_in_zoekindex",
+      "parent": null,
+      "family": "model",
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
+    },
+    {
       "id": "page:/nl/begrippen/",
       "url": "/nl/begrippen/",
       "file": "nl/begrippen/index.html",
@@ -637,19 +650,6 @@
       "review": "gevonden_in_zoekindex",
       "parent": "page:/nl/blog/",
       "family": "publicaties",
-      "in_committed_sitemap": true,
-      "search_scope": "algemeen"
-    },
-    {
-      "id": "page:/nl/",
-      "url": "/nl/",
-      "file": "nl/index.html",
-      "title": "Wat ons werk ons werk maakt",
-      "kind": "pagina",
-      "category": "NL",
-      "review": "gevonden_in_zoekindex",
-      "parent": null,
-      "family": "model",
       "in_committed_sitemap": true,
       "search_scope": "algemeen"
     },
@@ -706,6 +706,19 @@
       "search_scope": "algemeen"
     },
     {
+      "id": "page:/nl/model/",
+      "url": "/nl/model/",
+      "file": null,
+      "title": "Het EAI-model",
+      "kind": "gegenereerde_pagina",
+      "category": "Het model",
+      "review": "bouwresultaat_controleren",
+      "parent": "page:/nl/",
+      "family": "model",
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
+    },
+    {
       "id": "page:/nl/onderwijs/",
       "url": "/nl/onderwijs/",
       "file": "nl/onderwijs/index.html",
@@ -717,19 +730,6 @@
       "family": "onderwijs",
       "in_committed_sitemap": true,
       "search_scope": "algemeen"
-    },
-    {
-      "id": "page:/nl/onderwijsregio-proef/",
-      "url": "/nl/onderwijsregio-proef/",
-      "file": "nl/onderwijsregio-proef/index.html",
-      "title": "Onderwijsregio Rotterdam | Proefomgeving",
-      "kind": "overig",
-      "category": null,
-      "review": "niet_in_publieke_zoekindex_status_controleren",
-      "parent": null,
-      "family": "model",
-      "in_committed_sitemap": false,
-      "search_scope": "niet_indexeren"
     },
     {
       "id": "page:/nl/onderzoek/",
@@ -862,6 +862,19 @@
       "search_scope": "niet_indexeren"
     },
     {
+      "id": "page:/onderwijsin/",
+      "url": "/onderwijsin/",
+      "file": "onderwijsin/index.html",
+      "title": "Onderwijs in: wat staat er werkelijk op GitHub? · EAI",
+      "kind": "overig",
+      "category": null,
+      "review": "niet_in_publieke_zoekindex_status_controleren",
+      "parent": null,
+      "family": "technisch",
+      "in_committed_sitemap": true,
+      "search_scope": "niet_indexeren"
+    },
+    {
       "id": "page:/onderwijsin/3d/",
       "url": "/onderwijsin/3d/",
       "file": "onderwijsin/3d/index.html",
@@ -874,21 +887,6 @@
       "robots_noindex_in_html": true,
       "page_status": "niet_voor_zoekmachines",
       "in_committed_sitemap": true,
-      "search_scope": "niet_indexeren"
-    },
-    {
-      "id": "page:/onderwijsin/houseoftalents/3d/",
-      "url": "/onderwijsin/houseoftalents/3d/",
-      "file": "onderwijsin/houseoftalents/3d/index.html",
-      "title": "Onderwijs in: technische anatomie (kaarten)",
-      "kind": "overig",
-      "category": null,
-      "review": "noindex_in_bron_gecontroleerd",
-      "parent": "page:/onderwijsin/houseoftalents/",
-      "family": "technisch",
-      "robots_noindex_in_html": true,
-      "page_status": "niet_voor_zoekmachines",
-      "in_committed_sitemap": false,
       "search_scope": "niet_indexeren"
     },
     {
@@ -905,16 +903,18 @@
       "search_scope": "niet_indexeren"
     },
     {
-      "id": "page:/onderwijsin/",
-      "url": "/onderwijsin/",
-      "file": "onderwijsin/index.html",
-      "title": "Onderwijs in: wat staat er werkelijk op GitHub? · EAI",
+      "id": "page:/onderwijsin/houseoftalents/3d/",
+      "url": "/onderwijsin/houseoftalents/3d/",
+      "file": "onderwijsin/houseoftalents/3d/index.html",
+      "title": "Onderwijs in: technische anatomie (kaarten)",
       "kind": "overig",
       "category": null,
-      "review": "niet_in_publieke_zoekindex_status_controleren",
-      "parent": null,
+      "review": "noindex_in_bron_gecontroleerd",
+      "parent": "page:/onderwijsin/houseoftalents/",
       "family": "technisch",
-      "in_committed_sitemap": true,
+      "robots_noindex_in_html": true,
+      "page_status": "niet_voor_zoekmachines",
+      "in_committed_sitemap": false,
       "search_scope": "niet_indexeren"
     },
     {
@@ -942,6 +942,19 @@
       "family": "praktijk",
       "in_committed_sitemap": true,
       "search_scope": "algemeen"
+    },
+    {
+      "id": "page:/publicaties/",
+      "url": "/publicaties/",
+      "file": "publicaties/index.html",
+      "title": "Publicaties · EAI",
+      "kind": "publicatie",
+      "category": null,
+      "review": "niet_in_publieke_zoekindex_status_controleren",
+      "parent": null,
+      "family": "publicaties",
+      "in_committed_sitemap": true,
+      "search_scope": "niet_indexeren"
     },
     {
       "id": "page:/publicaties/ai-balans/",
@@ -994,19 +1007,6 @@
       "family": "publicaties",
       "in_committed_sitemap": true,
       "search_scope": "algemeen"
-    },
-    {
-      "id": "page:/publicaties/",
-      "url": "/publicaties/",
-      "file": "publicaties/index.html",
-      "title": "Publicaties · EAI",
-      "kind": "publicatie",
-      "category": null,
-      "review": "niet_in_publieke_zoekindex_status_controleren",
-      "parent": null,
-      "family": "publicaties",
-      "in_committed_sitemap": true,
-      "search_scope": "niet_indexeren"
     },
     {
       "id": "page:/publicaties/task-density/",
@@ -1139,6 +1139,32 @@
       "search_scope": "niet_indexeren"
     },
     {
+      "id": "page:/tools/",
+      "url": "/tools/",
+      "file": "tools/index.html",
+      "title": "Hulpmiddelen · EAI",
+      "kind": "toepassing",
+      "category": null,
+      "review": "niet_in_publieke_zoekindex_status_controleren",
+      "parent": null,
+      "family": "hulpmiddelen",
+      "in_committed_sitemap": true,
+      "search_scope": "niet_indexeren"
+    },
+    {
+      "id": "page:/tools/delf-live/",
+      "url": "/tools/delf-live/",
+      "file": "tools/delf-live/index.html",
+      "title": "EAIspeak | praten, vertalen en presenteren",
+      "kind": "toepassing",
+      "category": "Hulpmiddelen · Vrij spreken en vertalen",
+      "review": "proef_zelfstandig_gepubliceerd",
+      "parent": "page:/tools/",
+      "family": "hulpmiddelen",
+      "in_committed_sitemap": false,
+      "search_scope": "via_verwijzing"
+    },
+    {
       "id": "page:/tools/abyss/",
       "url": "/tools/abyss/",
       "file": "tools/abyss/index.html",
@@ -1198,19 +1224,6 @@
       "search_scope": "algemeen"
     },
     {
-      "id": "page:/tools/delf-live/",
-      "url": "/tools/delf-live/",
-      "file": "tools/delf-live/index.html",
-      "title": "EAIspeak | praten, vertalen en presenteren",
-      "kind": "toepassing",
-      "category": "Hulpmiddelen · Vrij spreken en vertalen",
-      "review": "proef_zelfstandig_gepubliceerd",
-      "parent": "page:/tools/",
-      "family": "hulpmiddelen",
-      "in_committed_sitemap": false,
-      "search_scope": "via_verwijzing"
-    },
-    {
       "id": "page:/tools/eaigame/",
       "url": "/tools/eaigame/",
       "file": "tools/eaigame/index.html",
@@ -1237,19 +1250,6 @@
       "search_scope": "algemeen"
     },
     {
-      "id": "page:/tools/eaigit/hulp/",
-      "url": "/tools/eaigit/hulp/",
-      "file": "tools/eaigit/hulp/index.html",
-      "title": "Wat kun je ermee?",
-      "kind": "toepassing",
-      "category": "TOOLS",
-      "review": "gevonden_in_zoekindex",
-      "parent": "page:/tools/eaigit/",
-      "family": "hulpmiddelen",
-      "in_committed_sitemap": true,
-      "search_scope": "algemeen"
-    },
-    {
       "id": "page:/tools/eaigit/",
       "url": "/tools/eaigit/",
       "file": "tools/eaigit/index.html",
@@ -1258,6 +1258,34 @@
       "category": "TOOLS",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/",
+      "family": "hulpmiddelen",
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
+    },
+    {
+      "id": "page:/tools/ict-scan/",
+      "url": "/tools/ict-scan/",
+      "file": "tools/ict-scan/index.html",
+      "title": "Schoolbrede ICT-scan Emmauscollege",
+      "kind": "afgeschermd_of_app",
+      "category": null,
+      "review": "noindex_in_bron_gecontroleerd",
+      "parent": null,
+      "family": "technisch",
+      "robots_noindex_in_html": true,
+      "page_status": "niet_voor_zoekmachines",
+      "in_committed_sitemap": false,
+      "search_scope": "niet_indexeren"
+    },
+    {
+      "id": "page:/tools/eaigit/hulp/",
+      "url": "/tools/eaigit/hulp/",
+      "file": "tools/eaigit/hulp/index.html",
+      "title": "Wat kun je ermee?",
+      "kind": "toepassing",
+      "category": "TOOLS",
+      "review": "gevonden_in_zoekindex",
+      "parent": "page:/tools/eaigit/",
       "family": "hulpmiddelen",
       "in_committed_sitemap": true,
       "search_scope": "algemeen"
@@ -1374,34 +1402,6 @@
       ],
       "external_dependency": "services/html-galerij/ en externe opslag/API; inhoud van uploads niet opgenomen in deze Git-repository",
       "search_scope": "algemeen"
-    },
-    {
-      "id": "page:/tools/ict-scan/",
-      "url": "/tools/ict-scan/",
-      "file": "tools/ict-scan/index.html",
-      "title": "Schoolbrede ICT-scan Emmauscollege",
-      "kind": "afgeschermd_of_app",
-      "category": null,
-      "review": "noindex_in_bron_gecontroleerd",
-      "parent": null,
-      "family": "technisch",
-      "robots_noindex_in_html": true,
-      "page_status": "niet_voor_zoekmachines",
-      "in_committed_sitemap": false,
-      "search_scope": "niet_indexeren"
-    },
-    {
-      "id": "page:/tools/",
-      "url": "/tools/",
-      "file": "tools/index.html",
-      "title": "Hulpmiddelen · EAI",
-      "kind": "toepassing",
-      "category": null,
-      "review": "niet_in_publieke_zoekindex_status_controleren",
-      "parent": null,
-      "family": "hulpmiddelen",
-      "in_committed_sitemap": true,
-      "search_scope": "niet_indexeren"
     },
     {
       "id": "page:/tools/llm-observatorium/",
@@ -1645,19 +1645,6 @@
       "search_scope": "algemeen"
     },
     {
-      "id": "page:/tools/wihtml/bibliotheek/",
-      "url": "/tools/wihtml/bibliotheek/",
-      "file": "tools/wihtml/bibliotheek/index.html",
-      "title": "WiHTML Bibliotheek",
-      "kind": "toepassing",
-      "category": "Hulpmiddelen · Lesmateriaal en prompts maken",
-      "review": "gevonden_in_zoekindex",
-      "parent": "page:/tools/wihtml/",
-      "family": "hulpmiddelen",
-      "in_committed_sitemap": true,
-      "search_scope": "algemeen"
-    },
-    {
       "id": "page:/tools/wihtml/",
       "url": "/tools/wihtml/",
       "file": "tools/wihtml/index.html",
@@ -1666,6 +1653,19 @@
       "category": "Zelf aan de slag",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/tools/",
+      "family": "hulpmiddelen",
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
+    },
+    {
+      "id": "page:/tools/wihtml/bibliotheek/",
+      "url": "/tools/wihtml/bibliotheek/",
+      "file": "tools/wihtml/bibliotheek/index.html",
+      "title": "WiHTML Bibliotheek",
+      "kind": "toepassing",
+      "category": "Hulpmiddelen · Lesmateriaal en prompts maken",
+      "review": "gevonden_in_zoekindex",
+      "parent": "page:/tools/wihtml/",
       "family": "hulpmiddelen",
       "in_committed_sitemap": true,
       "search_scope": "algemeen"
@@ -1763,6 +1763,19 @@
       "redirect_target": "/kennis/",
       "in_committed_sitemap": true,
       "search_scope": "niet_indexeren"
+    },
+    {
+      "id": "page:/werkvormen/",
+      "url": "/werkvormen/",
+      "file": "werkvormen/index.html",
+      "title": "EAI Toolbox",
+      "kind": "werkvorm",
+      "category": "Lespraktijk · Start hier",
+      "review": "gevonden_in_zoekindex",
+      "parent": null,
+      "family": "onderwijs",
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     },
     {
       "id": "page:/werkvormen/accept-adapt-reject/",
@@ -2137,19 +2150,6 @@
       "category": "Lespraktijk · Bronnen en argumenten beoordelen",
       "review": "gevonden_in_zoekindex",
       "parent": "page:/werkvormen/",
-      "family": "onderwijs",
-      "in_committed_sitemap": true,
-      "search_scope": "algemeen"
-    },
-    {
-      "id": "page:/werkvormen/",
-      "url": "/werkvormen/",
-      "file": "werkvormen/index.html",
-      "title": "EAI Toolbox",
-      "kind": "werkvorm",
-      "category": "Lespraktijk · Start hier",
-      "review": "gevonden_in_zoekindex",
-      "parent": null,
       "family": "onderwijs",
       "in_committed_sitemap": true,
       "search_scope": "algemeen"
