@@ -1,5 +1,6 @@
 // EAIspeak: browsermodel uit PiM-ontwerp, op aanvraag geladen.
 // Geen tekst gaat naar Hugging Face: enkel modelbestanden worden opgehaald.
+import {checkWebGpuAvailability} from './gpu-capability.mjs';
 export const BROWSER_MODELS=Object.freeze([
   {id:'Qwen2.5-0.5B-Instruct-q4f16_1-MLC',name:'Qwen 0,5B · licht',size:'circa 945 MB werkgeheugen',backend:'WebGPU'},
   {id:'Llama-3.2-1B-Instruct-q4f16_1-MLC',name:'Llama 1B · licht',size:'circa 880 MB werkgeheugen',backend:'WebGPU'},
@@ -9,9 +10,8 @@ export const BROWSER_MODELS=Object.freeze([
 let engine=null,activeModel='',loading=null,generating=false;
 export async function ensureBrowserModel(modelId,report=()=>{}){
   if(!BROWSER_MODELS.some(model=>model.id===modelId))throw new Error('Dit browsermodel staat niet in de catalogus.');
-  if(!navigator.gpu)throw new Error('WebGPU ontbreekt. Gebruik een recente browser of kies een online model.');
-  const adapter=await navigator.gpu.requestAdapter();
-  if(!adapter)throw new Error('Geen bruikbare grafische processor gevonden. Probeer Chrome of kies een online model.');
+  const hardware=await checkWebGpuAvailability(navigator.gpu);
+  if(!hardware.usable)throw new Error(hardware.message);
   if(engine&&activeModel===modelId)return engine;
   if(loading)throw new Error('Er wordt al een browsermodel geladen.');
   loading=(async()=>{

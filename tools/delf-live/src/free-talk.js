@@ -1,5 +1,6 @@
 // EAIspeak: vrij spreken, met apart gekozen model, taal en stem.
 import {localReply,interruptBrowserReply,ensureBrowserModel,browserModelStatus} from './browser-llm.js';
+import {checkWebGpuAvailability} from './gpu-capability.mjs';
 const $=id=>document.getElementById(id);
 const speak=$('freeTalkSpeak'),stop=$('freeTalkStop'),send=$('freeTalkSend'),play=$('freeTalkPlay');
 const status=$('freeTalkStatus'),heard=$('freeTalkHeard'),answer=$('freeTalkAnswer'),typed=$('freeTalkTyped');
@@ -9,7 +10,7 @@ const inputLang=$('freeTalkInputLang'),outputLang=$('freeTalkOutputLang'),voice=
 const modelRow=$('freeTalkBrowserModelRow'),hint=$('freeTalkModelHint'),modelSummary=$('freeTalkSummary');
 const preload=$('freeTalkPreload'),preloadStatus=$('freeTalkPreloadStatus');
 let recognition=null,audio=null,utterance=null,pending=false,turn=0,lastAnswer='';
-let puterSdk=null,puterLoad=null;
+let puterSdk=null,puterLoad=null,gpuProbeSequence=0;
 const history=[];
 const languages={'nl-NL':'Nederlands','en-US':'Engels','fr-FR':'Frans'};
 function setStatus(message,kind=''){
@@ -43,11 +44,23 @@ function updateControls(){
   hint.textContent=local
     ? 'Het taalmodel draait op dit apparaat. De eerste download kan enkele minuten duren. De microfoonherkenning kan wel een internetdienst gebruiken.'
     : 'Online via Puter. Meld je aan voordat je spreekt. Het gebruik kan kosten meebrengen.';
-  if(local&&!navigator.gpu)hint.textContent+=' WebGPU is niet beschikbaar: gebruik een andere browser of kies online.';
+  if(local)void probeGpu();
+  else gpuProbeSequence++;
   if(voice.value==='cloud'&&outputLang.value!=='fr-FR'){
     voice.value='browser';
     setStatus('Voor Nederlands en Engels gebruiken we voorlopig de gekozen browserstem.');
   }
+}
+async function probeGpu(){
+  const sequence=++gpuProbeSequence;
+  const state=browserModelStatus();
+  if(state.loading || (state.ready&&state.model===browserModel.value))return;
+  preload.disabled=true;
+  preloadStatus.textContent='Grafische processor controleren…';
+  const support=await checkWebGpuAvailability(navigator.gpu);
+  if(sequence!==gpuProbeSequence||engine.value!=='browser'||browserModelStatus().loading)return;
+  preload.disabled=!support.usable;
+  preloadStatus.textContent=support.message;
 }
 function syncChanges(){
   if(pending||recognition)stopConversation();
@@ -58,7 +71,7 @@ for(const control of [browserModel,cloudModel,inputLang,outputLang,voice])contro
 engine.addEventListener('change',()=>{
   // Een browsermodel werkt standaard volledig zonder extern account.
   if(engine.value==='browser'&&voice.value==='cloud')voice.value='browser';
-  if(engine.value==='puter')void loadPuterSdk().catch(error=>{connectStatus.textContent='Puter kon niet laden: '+String(error?.message||error);});
+  if(engine.value==='puter')void primePuter();
   syncChanges();
 });
 updateControls();
@@ -90,6 +103,24 @@ function loadPuterSdk(){
     return api;
   }).catch(error=>{puterLoad=null;throw error;});
   return puterLoad;
+}
+function primePuter(){
+  connect.disabled=true;
+  connect.textContent='Puter laden…';
+  connectStatus.textContent='Puter voorbereiden…';
+  return loadPuterSdk().then(api=>{
+    connect.disabled=false;
+    const signed=api.auth.isSignedIn();
+    connect.textContent=signed?'Puter verbonden':'Aanmelden bij Puter';
+    connectStatus.textContent=signed?'Verbonden met Puter.':'Klaar voor aanmelden. Klik op Aanmelden bij Puter.';
+    if(signed)void listOnlineModels(api);
+    return api;
+  }).catch(error=>{
+    connect.disabled=false;
+    connect.textContent='Puter opnieuw laden';
+    connectStatus.textContent='Puter kon niet laden: '+String(error?.message||error);
+    return null;
+  });
 }
 async function ensurePuter(required){
   const api=await loadPuterSdk();
@@ -123,9 +154,7 @@ async function listOnlineModels(api){
 }
 connect.addEventListener('click',()=>{
   if(!puterSdk){
-    void loadPuterSdk().then(()=>{
-      setStatus('Puter is klaar. Klik nogmaals op Verbind met Puter om aan te melden.');
-    }).catch(error=>{setStatus('Online module kan niet laden: '+String(error?.message||error),'error');});
+    void primePuter();
     return;
   }
   // Aanmelden moet direct vanuit deze klik starten, anders blokkeert Safari de popup.
@@ -134,12 +163,14 @@ connect.addEventListener('click',()=>{
     connectStatus.textContent='Puter is verbonden.';void listOnlineModels(api);return;
   }
   connectStatus.textContent='Aanmelden bij Puter…';
+  connect.disabled=true;
   void api.auth.signIn().then(()=>{
     connectStatus.textContent='Puter verbonden.';
+    connect.textContent='Puter verbonden';
     void listOnlineModels(api);
   }).catch(error=>{
     connectStatus.textContent='Aanmelden is gestopt: '+String(error?.msg||error?.message||error);
-  });
+  }).finally(()=>{connect.disabled=false;});
 });
 function extractResponse(result){
   const c=result?.message?.content;
