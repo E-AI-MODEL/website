@@ -7,7 +7,7 @@ import {File} from 'node:buffer';
 
 const source=readFileSync(resolve('tools/ict-scan/github-sync.js'),'utf8');
 const maps=['apps','ai','connections','checks','devices','parts','dpia','aiControls','policyDocs','signals'];
-function setup({bad=false,unauthorized=false}={}) {
+function setup({bad=false,unauthorized=false,cancelDuringImport=false,largeDirectory=false}={}) {
   const fields={};
   for(const id of ['githubRepo','githubFolder','githubRef','githubToken','githubSyncStart','githubSyncCancel','githubSyncStatus','githubSyncSummary','githubReplace','topGithubSync']) {
     fields[id]={events:{},value:'',checked:false,hidden:false,disabled:false,textContent:'',dataset:{},addEventListener(event,handler){this.events[event]=handler;},focus(){}};
@@ -31,6 +31,7 @@ function setup({bad=false,unauthorized=false}={}) {
     confirm(){return true;},
     async importOneFile(file) {
       if(bad)throw Error('Ongeldig bestand');
+      if(cancelDuringImport)fields.githubSyncCancel.events.click();
       const payload=JSON.parse(await file.text());
       state.apps.set(payload.apps[0].id,{...payload.apps[0],sources:[file.name]});
       state.sources.push({name:file.name,kind:'toepassingen',rows:1,info:'Herkomst van de registratie.'});
@@ -39,7 +40,7 @@ function setup({bad=false,unauthorized=false}={}) {
       calls.push({url,options});
       if(unauthorized)return {ok:false,status:404};
       const data=url.includes('/contents/')
-        ?[{name:'school.json',type:'file',path:'bronmap/school.json',size:content.length,sha}]
+        ?(largeDirectory?Array.from({length:1000},(_,i)=>({name:'item-'+i+'.txt',type:'file',path:'bronmap/item-'+i+'.txt',size:100,sha})):[{name:'school.json',type:'file',path:'bronmap/school.json',size:content.length,sha}])
         :{encoding:'base64',content:content.toString('base64')};
       return {ok:true,async json(){return data;}};
     },
@@ -63,13 +64,17 @@ test('GitHub-bron wordt alleen gelezen, verwerkt en de token gewist',async()=>{
   assert.ok(x.renders>0);
 });
 
-test('Ongewijzigde bron wordt niet dubbel ingelezen',async()=>{
+test('Dezelfde GitHub-versie wordt opnieuw verwerkt en vervangt lokale toevoegingen',async()=>{
   const x=setup();
   await x.fields.githubSyncStart.events.click();
+  x.state.apps.set('APP-LOCAL',{id:'APP-LOCAL',name:'Lokaal toegevoegd'});
+  x.state.sources.push({name:'lokaal.json',kind:'toepassingen',rows:1});
   await x.fields.githubSyncStart.events.click();
   assert.equal(x.state.apps.size,1);
+  assert.equal(x.state.apps.has('APP-LOCAL'),false);
   assert.equal(x.state.sources.length,1);
-  assert.match(x.fields.githubSyncStatus.textContent,/geen nieuwe versies/i);
+  assert.equal(x.calls.length,4);
+  assert.match(x.fields.githubSyncStatus.textContent,/geslaagd/i);
 });
 
 test('Ongeldige GitHub-map wordt zonder netwerkverzoek geweigerd',async()=>{
@@ -100,4 +105,25 @@ test('Privé-repo zonder toegang geeft een leesbare fout zonder data te wijzigen
   assert.equal(x.state.apps.size,0);
   assert.equal(x.fields.githubToken.value,'');
   assert.match(x.fields.githubSyncStatus.textContent,/token/i);
+});
+test('Een mogelijk afgekapt GitHub-mappenoverzicht wordt afgewezen',async()=>{
+  const x=setup({largeDirectory:true});
+  await x.fields.githubSyncStart.events.click();
+  assert.equal(x.calls.length,1);
+  assert.equal(x.state.apps.size,0);
+  assert.match(x.fields.githubSyncStatus.textContent,/1\.000/);
+  assert.match(x.fields.githubSyncStatus.textContent,/niet gelukt/);
+});
+
+test('Annuleren tijdens import herstelt de bestaande inventaris',async()=>{
+  const x=setup({cancelDuringImport:true});
+  x.state.apps.set('APP-old',{id:'APP-old',name:'Bestaande app',sources:['oud']});
+  x.state.sources.push({name:'oud',rows:1});
+  x.state.ready=true;
+  await x.fields.githubSyncStart.events.click();
+  assert.equal(x.state.apps.size,1);
+  assert.equal(x.state.apps.get('APP-old').name,'Bestaande app');
+  assert.equal(x.state.sources.length,1);
+  assert.match(x.fields.githubSyncStatus.textContent,/afgebroken/i);
+  assert.equal(x.fields.githubToken.value,'');
 });
