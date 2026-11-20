@@ -51,7 +51,8 @@ class PublicationOwnershipTests(unittest.TestCase):
             with self.subTest(workflow=workflow):
                 source = (WORKFLOWS / workflow).read_text(encoding="utf-8")
                 self.assertIn("workflow_dispatch:", source)
-                self.assertNotIn("\\n  push:", source)
+                events = source.split("on:", 1)[1].split("permissions:", 1)[0]
+                self.assertNotIn("  push:", events)
 
     def test_topo_keeps_its_independent_queue(self):
         source = (WORKFLOWS / "deploy-topo-theory7.yml").read_text(encoding="utf-8")
