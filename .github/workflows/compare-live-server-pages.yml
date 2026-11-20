@@ -53,7 +53,7 @@ jobs:
           set ssl:verify-certificate false
           set net:timeout 20
           set net:max-retries 1
-          find -d 5 /
+          find -d 10 /
           bye
           EOF
           test -s "$RUNNER_TEMP/server-file-list.txt"
@@ -63,8 +63,7 @@ jobs:
           python scripts/compare_published_pages.py \
             --root site-build \
             --listing "$RUNNER_TEMP/server-file-list.txt" \
-            --http-limit 25 \
-            --depth 5 \
+            --http-limit 35 \
             --json "$RUNNER_TEMP/server-versus-build.json" \
             --summary "$GITHUB_STEP_SUMMARY"
       - name: Bewaar alleen het gefilterde rapport
