@@ -5,7 +5,7 @@ const speak=$('freeTalkSpeak'),stop=$('freeTalkStop'),send=$('freeTalkSend'),pla
 const status=$('freeTalkStatus'),heard=$('freeTalkHeard'),answer=$('freeTalkAnswer'),typed=$('freeTalkTyped');
 const engine=$('freeTalkEngine'),browserModel=$('freeTalkBrowserModel');
 const inputLang=$('freeTalkInputLang'),outputLang=$('freeTalkOutputLang'),voice=$('freeTalkVoice');
-const modelRow=$('freeTalkBrowserModelRow'),hint=$('freeTalkModelHint');
+const modelRow=$('freeTalkBrowserModelRow'),hint=$('freeTalkModelHint'),modelSummary=$('freeTalkSummary');
 let recognition=null,audio=null,utterance=null,pending=false,turn=0,lastAnswer='';
 const history=[];
 const languages={'nl-NL':'Nederlands','en-US':'Engels','fr-FR':'Frans'};
@@ -30,6 +30,7 @@ function stopConversation(){
 }
 function updateControls(){
   const local=engine.value==='browser';
+  modelSummary.textContent=languages[inputLang.value]+' → '+languages[outputLang.value]+' · '+(local?'in browser':'online');
   modelRow.hidden=!local;
   hint.textContent=local
     ? 'Dit model draait op je apparaat. Eerste keer downloaden. WebGPU vereist; de downloads kunnen honderden MB zijn.'

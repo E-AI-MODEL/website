@@ -119,8 +119,9 @@
       </div>
       <section class="studio-section cloud-reveal">
         <p class="studio-support">Geen vast script. Kies een online model of een gratis browsermodel. Een browsermodel moet je eenmalig downloaden; de eerste keer kost dat tijd.</p>
-        <details class="studio-disclosure" id="freeTalkOptions" open>
-          <summary>Taal en model</summary>
+        <details class="studio-disclosure free-talk-floating" id="freeTalkOptions">
+          <summary><span id="freeTalkSummary">Nederlands → Frans · online</span></summary>
+          <div class="free-talk-floating-content">
           <div class="studio-action-grid">
             <label class="studio-field">Ik spreek
               <select id="freeTalkInputLang">
@@ -159,6 +160,7 @@
             </select>
           </label>
           <p class="studio-support" id="freeTalkModelHint">De online route vraagt eenmalig aanmelden. Vrij praten blijft gescheiden van de voorstelling.</p>
+          </div>
         </details>
         <div class="studio-action-grid">
           <button id="freeTalkSpeak" class="action studio-action studio-action-emphasis" type="button">Praat</button>
