@@ -15,14 +15,15 @@
     if(results)results.hidden=true;
     if(returnFocus && !byId('workspace').hidden)trigger.focus();
   }
-  function openDrawer(focusSearch=true){
+  function openDrawer(focusSearch=false){
     drawer.hidden=false;
     scrim.hidden=false;
     trigger.setAttribute('aria-expanded','true');
     trigger.setAttribute('aria-label','Extra functies sluiten');
     if(focusSearch)search.focus();
+    else if(window.matchMedia && window.matchMedia('(max-width:720px)').matches)closeButton.focus();
   }
-  trigger.addEventListener('click',()=>drawer.hidden?openDrawer():closeDrawer(true));
+  trigger.addEventListener('click',()=>drawer.hidden?openDrawer(false):closeDrawer(true));
   closeButton.addEventListener('click',()=>closeDrawer(true));
   scrim.addEventListener('click',()=>closeDrawer(true));
   document.querySelectorAll('.icon-rail .rail-button[data-view]').forEach(button=>{
