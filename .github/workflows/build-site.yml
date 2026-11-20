@@ -172,6 +172,13 @@ jobs:
       - name: Test ICT scan Excel reports and AI categorization
         run: node tests/test_ict_scan_export.mjs
 
+      - name: Controleer de brondata en JSON-import van Applicatielandschap 2026
+        run: |
+          node --check tools/ict-scan/app.js
+          node --check tools/ict-scan/enhancements.js
+          node --check tools/ict-scan/github-sync.js
+          node --test tests/test_ict_scan_2026_data.mjs tests/test_ict_scan_github_sync.mjs
+
       - name: Check first-party clicks and session privacy
         run: |
           php -l statistieken/collect.php
