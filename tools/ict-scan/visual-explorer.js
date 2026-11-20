@@ -261,7 +261,7 @@
   function familyScore(app){return matchingFamily(app).reduce((n,g)=>n+g.entries.length,0);}
   function renderFamily(){
     const apps=array(state.apps),select=el('familyApp'),panel=el('familyVisual');panel.replaceChildren();
-    const families=apps.filter(a=>familyScore(a)>0).sort((a,b)=>familyScore(b)-familyScore(a)||a.name.localeCompare(b.name,'nl'));
+    const families=apps.slice().sort((a,b)=>familyScore(b)-familyScore(a)||a.name.localeCompare(b.name,'nl'));
     if(!families.length){subtitle(panel,'Er zijn nog geen relaties beschreven.');el('familyContext').textContent='Geen relaties verzonnen uit productnamen.';return;}
     const active=focusedFamily&&families.some(x=>x.id===focusedFamily)?focusedFamily:families[0].id;
     if(select.options.length!==families.length||select.value!==active){
@@ -277,6 +277,7 @@
     const open=dom('button','family-open','Toepassing openen');
     open.type='button';open.addEventListener('click',()=>openRecord('apps',app.id));root.append(open);
     panel.append(root);
+    if(!groups.length)panel.append(dom('p','family-no-links','Er zijn voor deze toepassing nog geen onderdelen, AI-functies of Entra-matches vastgelegd.'));
     if(choice.family==='list'){
       const list=dom('div','family-list');
       for(const group of groups){
@@ -322,7 +323,7 @@
       }
       panel.append(grid);
     }
-    el('familyContext').textContent=fmt(size)+' bronrelaties in '+fmt(groups.length)+' soorten; onderdelen en matches kunnen naar dezelfde registratie verwijzen. Een Entra-match is geen bevestigde actieve koppeling.';
+    el('familyContext').textContent=size?fmt(size)+' bronrelaties in '+fmt(groups.length)+' soorten; onderdelen en matches kunnen naar dezelfde registratie verwijzen. Een Entra-match is geen bevestigde actieve koppeling.':'Geen bronrelaties vastgesteld; dit zegt niets over de feitelijke technische inrichting.';
   }
 
   const previousRenderOverview=renderOverview;
