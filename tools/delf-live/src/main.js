@@ -54,6 +54,7 @@ let dutchPulseAt = -Infinity;
 let frenchAnalyser = null;
 let visualFrame = null;
 let smoothedLevel = 0;
+let reserveSpeechActive = false;
 let frenchSegmentIndex = 0;
 let frenchSegmentTotal = 0;
 
@@ -929,7 +930,12 @@ async function streamFrench() {
     }
     feedback('runtimeStatus', `Franse speech loopt. ${totalChunks} live audiostukken.`, 'good');
     await waitForPlayback(ctx, controller, t);
-    if (!controller.signal.aborted && phase === 'french') goHandback();
+    if (!controller.signal.aborted && phase === 'french') {
+      if (reserveSpeechActive) {
+        feedback('runtimeStatus','Franse speech klaar. Klik op Woord terugnemen om weer live te vertalen.','good');
+        feedback('phaseStatus','Speech afgerond · woord terugnemen');
+      } else goHandback();
+    }
   } catch (e) { if (!controller.signal.aborted) reportError(`Franse stem onderbroken: ${e.message || e}`); }
 }
 function updateSpeechProgress() {
@@ -946,7 +952,11 @@ function nextFrenchPassage() {
   frenchSegmentIndex = next;
   frenchSegmentTotal = segments.length;
   updateSpeechProgress();
-  if (frenchSegmentIndex >= frenchSegmentTotal) {goHandback();return;}
+  if (frenchSegmentIndex >= frenchSegmentTotal) {
+    if(reserveSpeechActive) feedback('runtimeStatus','Franse speech klaar. Neem het woord terug wanneer je wilt.','good');
+    else goHandback();
+    return;
+  }
   void streamFrench().catch(error=>{
     componentStatus('frenchStatus','error','Volgende passage kon niet starten',error);
     reportError('Franse speech kon niet hervatten: '+String(error?.message||error));
@@ -959,6 +969,40 @@ function previousFrenchPassage() {
   frenchSegmentIndex = Math.max(0,frenchSegmentIndex-1);
   updateSpeechProgress();
   void streamFrench().catch(error=>reportError('Vorige passage kon niet starten: '+String(error?.message||error)));
+}
+function reserveFrenchSpeech(){
+  if(!translator) {
+    feedback('runtimeStatus','Laad eerst de vertaling bij Taal en start de ondertiteling.','bad');
+    panel(true);return;
+  }
+  if(!french) {
+    feedback('runtimeStatus','Laad eerst de Franse stem bij Stem. De reserve blijft beschikbaar zodra de stem klaar is.','bad');
+    panel(true);return;
+  }
+  if(phase!=='live') {
+    feedback('runtimeStatus','Start eerst de live vertaling. Daarna kun je de Franse speech overnemen.','bad');
+    panel(true);return;
+  }
+  reserveSpeechActive=true;
+  stopMic();
+  stopVoices();
+  prewarmFrenchAudio();
+  setPhase('interrupted','FRANSE SPEECH');
+  feedback('runtimeStatus','Reserveprogramma: de vaste Franse speech start. Gebruik Woord terugnemen wanneer je weer zelf wilt spreken.');
+  goFrench();
+}
+function reserveTakeBack(){
+  if(!reserveSpeechActive || phase!=='french'){
+    feedback('runtimeStatus','De reserve-speech is niet actief.','bad');
+    return;
+  }
+  stopVoices();
+  const next=stageAdvance(phase,'handback');
+  if(next===null) return;
+  setPhase('handback','WOORD TERUG');
+  blankStage();
+  reserveSpeechActive=false;
+  goFinish();
 }
 function goStart() {
   if (!translator) {
@@ -1050,6 +1094,7 @@ function goFinish() {
   }
 }
 function goReset() {
+  reserveSpeechActive=false;
   releasePreparedAudio();
   stopMic(); stopVoices(); clearLiveState(); closing = false;
   setPhase('intro', 'CÉRÉMONIE');
@@ -1057,13 +1102,14 @@ function goReset() {
   panel(false);
 }
 function panic() {
+  reserveSpeechActive=false;
   releasePreparedAudio();
   stopMic(); stopVoices(); previewSequence++;
   setPhase('stopped', 'PAUSE');
   blankStage();
   feedback('runtimeStatus', 'Alles gestopt. Toets 0 om opnieuw te beginnen.', 'bad');
 }
-const actions = {start:goStart, interrupt:goInterrupt, french:goFrench, handback:goHandback, finish:goFinish, reset:goReset, panic, nextFrenchPassage, previousFrenchPassage};
+const actions = {start:goStart, interrupt:goInterrupt, french:goFrench, handback:goHandback, finish:goFinish, reset:goReset, panic, nextFrenchPassage, previousFrenchPassage, reserveSpeech:reserveFrenchSpeech, reserveTakeBack};
 for (const [name, fn] of Object.entries(actions)) $(name).onclick = fn;
 $('fullscreen').onclick = () => document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.();
 $('testTranslate').onclick = async () => {
