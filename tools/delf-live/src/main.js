@@ -182,6 +182,11 @@ function feedback(id, message, type = '') {
   el.classList.remove('good', 'bad');
   if (type) el.classList.add(type);
 }
+function componentStatus(id,state,message,error=null) {
+  window.dispatchEvent(new CustomEvent('cloud-function-status',{
+    detail:{id,state,message,error:error?String(error?.message||error):null}
+  }));
+}
 let glowTimer = null;
 function pulseText() {
   if (glowTimer) clearTimeout(glowTimer);
@@ -298,11 +303,13 @@ let preparingTranslation = null;
 async function prepareTranslation() {
   if (translator) {
     feedback('translationStatus', 'Franse vertaling is geladen.', 'good');
+    componentStatus('translationStatus','idle','Model geladen. Nog niet vertaald.');
     return true;
   }
   if (preparingTranslation) return preparingTranslation;
   preparingTranslation = (async () => {
     feedback('translationStatus', 'Franse vertaling voorbereiden…');
+    componentStatus('translationStatus','busy','Vertaling laden');
     const opts = { sourceLanguage: 'nl', targetLanguage: 'fr' };
     if (typeof globalThis.Translator !== 'undefined') {
       try {
@@ -314,6 +321,7 @@ async function prepareTranslation() {
           }});
           translator.kind = 'chrome';
           feedback('translationStatus', 'Nederlandse spraak → Franse tekst. Chrome-vertaling klaar.', 'good');
+          componentStatus('translationStatus','idle','Chrome-model geladen. Nog niet vertaald.');
           return true;
         }
       } catch (e) {
@@ -326,11 +334,13 @@ async function prepareTranslation() {
       const { createBrowserTranslator } = await import('./translation-fallback.js');
       translator = await createBrowserTranslator(progress => feedback('translationStatus', progress));
       feedback('translationStatus', 'Nederlands → Frans geladen via browsermodel. Probeer een korte zin.', 'good');
+      componentStatus('translationStatus','idle','Browsermodel geladen. Nog niet vertaald.');
       return true;
     } catch (e) {
       translator = null;
       const msg = 'Browservertaling niet geladen: ' + (e.message || e);
       feedback('translationStatus', msg, 'bad');
+      componentStatus('translationStatus','error','Vertaling niet geladen',e);
       reportError(msg);
       return false;
     }
@@ -366,6 +376,7 @@ $('prepareMic').onclick = () => {
   const SR = globalThis.SpeechRecognition || globalThis.webkitSpeechRecognition;
   if (!SR) {
     feedback('microphoneStatus','Deze browser heeft geen ondersteunde spraakherkenning. Toestemming voor de microfoon alleen is niet genoeg.','bad');
+    componentStatus('microphoneStatus','unavailable','Spraakherkenning ontbreekt',new Error('Geen SpeechRecognition'));
     return;
   }
   const instance = new SR();
@@ -378,6 +389,7 @@ $('prepareMic').onclick = () => {
     if (microphoneCheck !== instance) return;
     $('prepareMic').textContent = 'Stop spraaktest';
     feedback('microphoneStatus','Luistert naar Nederlands… Spreek een korte zin uit.');
+    componentStatus('microphoneStatus','busy','Luistert, nog geen woorden herkend');
   };
   instance.onresult = event => {
     if (microphoneCheck !== instance) return;
@@ -386,17 +398,19 @@ $('prepareMic').onclick = () => {
     heard = true;
     const final = Array.from(event.results).every(result => result.isFinal);
     feedback('microphoneStatus', (final ? 'Herkend Nederlands: ' : 'Herkenning bezig: ') + words, final ? 'good' : '');
+    componentStatus('microphoneStatus','ready','Nederlandse woorden herkend');
   };
   instance.onerror = event => {
     if (microphoneCheck !== instance) return;
     const msg = event.error || 'onbekende fout';
     feedback('microphoneStatus','Spraakherkenning mislukt ('+ msg +'). De toestemmingspop-up bewijst alleen toegang tot de microfoon.','bad');
+    componentStatus('microphoneStatus','error','Spraakherkenning mislukt',new Error(msg));
     stopMicrophoneCheck();
   };
   instance.onend = () => {
     if (microphoneCheck !== instance) return;
     stopMicrophoneCheck();
-    if (!heard) feedback('microphoneStatus','De microfoon is gestopt, maar er zijn geen woorden herkend. Probeer het opnieuw.','bad');
+    if (!heard) {feedback('microphoneStatus','De microfoon is gestopt, maar er zijn geen woorden herkend. Probeer het opnieuw.','bad');componentStatus('microphoneStatus','error','Geen woorden herkend',new Error('Geen spraak ontvangen'));}
   };
   try {
     instance.start();
@@ -405,11 +419,12 @@ $('prepareMic').onclick = () => {
     microphoneCheckTimer = setTimeout(() => {
       if (microphoneCheck !== instance) return;
       stopMicrophoneCheck();
-      if (!heard) feedback('microphoneStatus','Geen Nederlandse woorden ontvangen binnen 12 seconden.','bad');
+      if (!heard) {feedback('microphoneStatus','Geen Nederlandse woorden ontvangen binnen 12 seconden.','bad');componentStatus('microphoneStatus','error','Spraakherkenning reageert niet',new Error('Timeout'));}
     },12000);
   } catch (error) {
     stopMicrophoneCheck();
     feedback('microphoneStatus','Kon de spraaktest niet starten: ' + error.message,'bad');
+    componentStatus('microphoneStatus','error','Microfoontest kon niet starten',error);
   }
 };
 
@@ -440,11 +455,12 @@ function translateFinal(fragment) {
     try {
       const translated = await translator.translate(text);
       if (phase !== 'live' || epoch !== localEpoch) return;
-      finalTranslations.push(...splitFrenchCaption(translated));
+      if(translated?.trim()) componentStatus('translationStatus','ready','Live vertaling uitgevoerd');
+       finalTranslations.push(...splitFrenchCaption(translated));
       finalTranslations = finalTranslations.slice(-2);
       renderCaptions();
       feedback('runtimeStatus', `Herkend: ${text}`, 'good');
-    } catch (e) { reportError(`Vertaling mislukt: ${e.message}`); }
+    } catch (e) { componentStatus('translationStatus','error','Live vertaling mislukt',e);reportError(`Vertaling mislukt: ${e.message}`); }
   }).finally(() => { finalInFlight = Math.max(0, finalInFlight - 1); });
 }
 function translatePreview(fragment) {
@@ -474,7 +490,7 @@ function translatePreview(fragment) {
 }
 function startMic() {
   const SR = globalThis.SpeechRecognition || globalThis.webkitSpeechRecognition;
-  if (!SR) { reportError('Spraakherkenning ontbreekt. Er wordt geen tekst verzonnen.'); return false; }
+  if (!SR) { componentStatus('microphoneStatus','unavailable','Geen spraakherkenning',new Error('SpeechRecognition ontbreekt'));reportError('Spraakherkenning ontbreekt. Er wordt geen tekst verzonnen.'); return false; }
   stopMic();
   wantsMic = true;
   const instance = new SR();
@@ -491,6 +507,7 @@ function startMic() {
     micSilentTimer = setTimeout(() => {
       if (mic === instance && phase === 'live' && !recognized) {
         feedback('runtimeStatus','Geen Nederlandse woorden ontvangen. iOS kan spraakherkenning blokkeren ondanks een actieve microfoon. Open instellingen en gebruik Start ondertiteling om opnieuw te proberen.','bad');
+        componentStatus('microphoneStatus','error','iOS: geen spraak ontvangen',new Error('Timeout'));
       }
     },18000);
   };
@@ -500,6 +517,7 @@ function startMic() {
       const value = event.results[i];
       const words = value[0]?.transcript || '';
       if (words.trim()) {
+        componentStatus('microphoneStatus','ready','Live Nederlandse woorden herkend');
         recognized = true;
         if (micSilentTimer) { clearTimeout(micSilentTimer); micSilentTimer = null; }
       }
@@ -509,6 +527,7 @@ function startMic() {
     if (interim) { feedback('runtimeStatus', `Luistert: ${interim}`); translatePreview(interim); }
   };
   instance.onerror = e => {
+    componentStatus('microphoneStatus','error','Spraakherkenning mislukt',new Error(e.error));
     reportError(`Spraakherkenning: ${e.error}`);
     if (['not-allowed', 'service-not-allowed', 'audio-capture'].includes(e.error)) wantsMic = false;
   };
@@ -520,8 +539,8 @@ function startMic() {
       }
     }, 300);
   };
-  try { instance.start(); feedback('runtimeStatus', 'Live vertaling luistert naar Nederlands', 'good'); return true; }
-  catch (e) { reportError('Microfoon kon niet beginnen: ' + e.message); wantsMic = false; return false; }
+  try { instance.start(); componentStatus('microphoneStatus','busy','Live microfoon gestart, nog geen woorden');feedback('runtimeStatus', 'Live vertaling luistert naar Nederlands', 'good'); return true; }
+  catch (e) { componentStatus('microphoneStatus','error','Microfoon kon niet starten',e);reportError('Microfoon kon niet beginnen: ' + e.message); wantsMic = false; return false; }
 }
 
 function releaseModelUrls() { modelUrls.forEach(url => URL.revokeObjectURL(url)); modelUrls = []; }
@@ -539,6 +558,7 @@ $('loadPublicFrench').onclick = async () => {
   const button = $('loadPublicFrench');
   button.disabled = true;
   feedback('frenchStatus','Frans Phonon-model laden. Eerste keer ongeveer 75 MB; gebruik wifi.');
+   componentStatus('frenchStatus','busy','Frans model laden');
   const source = 'https://huggingface.co/ldenoue/phonon-40m-multilingual/resolve/main/';
   const voice = 'https://huggingface.co/gradium/phonon-voices/resolve/main/voices/';
   const model = {
@@ -560,11 +580,13 @@ $('loadPublicFrench').onclick = async () => {
     });
     const elapsed = Math.round((performance.now()-started)/1000);
     feedback('frenchStatus','Franse Phonon-stem klaar na '+elapsed+' s. Druk op Franse stem beluisteren.','good');
+     componentStatus('frenchStatus','idle','Model geladen. Nog niet beluisterd.');
     feedback('latencyStatus','Franse stem geladen. Eerste klank nog niet gemeten.','good');
   } catch (error) {
     french = null;
     feedback('frenchStatus','Franse Phonon-stem niet geladen: '+(error.message || error),'bad');
-    reportError('Frans model laden mislukt');
+    componentStatus('frenchStatus','error','Franse stem niet geladen',error);
+     reportError('Frans model laden mislukt');
   } finally { button.disabled = false; }
 };
 $('loadFrench').onclick = async () => {
@@ -582,14 +604,16 @@ $('loadFrench').onclick = async () => {
   };
   const started = performance.now();
   feedback('frenchStatus', 'Phonon 40M French laden…');
+   componentStatus('frenchStatus','busy','Eigen Frans model laden');
   try {
     french = await PhononTTS.load({ model, lang: 'fr', quant: 'q8', device: 'auto', threads: 1,
       onProgress: p => feedback('frenchStatus', `${p.file || 'Model'} ${p.total ? Math.round(p.loaded / p.total * 100) + '%' : ''}`)
     });
     const ms = Math.round(performance.now() - started);
     feedback('frenchStatus', `Franse stem gereed in ${ms} ms · ${french.device} · ${french.threads} thread(s)`, 'good');
+     componentStatus('frenchStatus','idle','Eigen model geladen. Nog niet beluisterd.');
     feedback('latencyStatus', `Model laden: ${ms} ms. Nog geen spraak gemeten.`, 'good');
-  } catch (e) { french = null; releaseModelUrls(); reportError(`Frans model kon niet starten: ${e.message}`); feedback('frenchStatus', 'Model niet geladen', 'bad'); }
+  } catch (e) { french = null; releaseModelUrls(); componentStatus('frenchStatus','error','Eigen model kon niet starten',e);reportError(`Frans model kon niet starten: ${e.message}`); feedback('frenchStatus', 'Model niet geladen', 'bad'); }
 };
 
 // Listen to the real French model before the ceremony, without saving audio.
@@ -609,7 +633,7 @@ $('previewFrench').onclick = async () => {
     let pieces = 0;
     for await (const pcm of sample) {
       if (controller.signal.aborted || ctx.state === 'closed') return;
-      if (pieces === 0) feedback('latencyStatus', `Franse stem: eerste klank na ${Math.round(performance.now() - started)} ms`, 'good');
+      if (pieces === 0) {feedback('latencyStatus', `Franse stem: eerste klank na ${Math.round(performance.now() - started)} ms`, 'good');componentStatus('frenchStatus','ready','Franse audiobuffer geproduceerd');}
       const buffer = ctx.createBuffer(1, pcm.length, french.sampleRate);
       buffer.copyToChannel(pcm, 0);
       const node = ctx.createBufferSource();
@@ -625,7 +649,7 @@ $('previewFrench').onclick = async () => {
     await sample.done;
     await waitForPlayback(ctx, controller, playTime);
     if (!controller.signal.aborted) feedback('frenchStatus', 'Franse stem beluisterd. Beoordeel accent en intonatie.', 'good');
-  } catch (e) { if (!controller.signal.aborted) reportError(`Franse stemproef: ${e.message || e}`); }
+  } catch (e) { if (!controller.signal.aborted) {componentStatus('frenchStatus','error','Franse stemproef mislukt',e);reportError(`Franse stemproef: ${e.message || e}`);} }
 };
 
 function populateVoices() {
@@ -642,6 +666,7 @@ if ('speechSynthesis' in window) {
 $('nlVoice').onchange = () => {
   selectedDutchVoice = speechSynthesis.getVoices().find(v => v.voiceURI === $('nlVoice').value && /^nl(?:-|$)/i.test(v.lang)) || null;
   feedback('dutchStatus', selectedDutchVoice ? `Gekozen: ${selectedDutchVoice.name}. Beluister deze stem vóór gebruik.` : 'Nog geen Nederlandse stem gekozen', selectedDutchVoice ? 'good' : 'bad');
+   componentStatus('dutchStatus','idle',selectedDutchVoice?'Stem gekozen. Nog niet getest.':'Geen Nederlandse stem gekozen');
 };
 function speakDutch(text, onEnd) {
   if (!selectedDutchVoice) { reportError('Kies eerst een Nederlandse stem. Geen automatische standaardstem.'); return false; }
@@ -658,6 +683,7 @@ function speakDutch(text, onEnd) {
     dutchSpeaking = true;
     dutchPulseAt = performance.now();
     feedback('latencyStatus', `Nederlandse stem gestart na ${Math.round(performance.now() - started)} ms`, 'good');
+     componentStatus('dutchStatus','ready','Nederlandse spraakuitvoer gestart');
   };
   utterance.onboundary = () => { dutchPulseAt = performance.now(); };
   utterance.onend = () => {
@@ -667,7 +693,7 @@ function speakDutch(text, onEnd) {
       onEnd?.();
     }
   };
-  utterance.onerror = e => { dutchSpeaking = false; reportError(`Nederlandse stem: ${e.error}`); };
+  utterance.onerror = e => { dutchSpeaking = false;componentStatus('dutchStatus','error','Nederlandse spraakuitvoer mislukt',new Error(e.error));reportError(`Nederlandse stem: ${e.error}`); };
   try { speechSynthesis.speak(utterance); return true; } catch(e) { reportError(`Nederlandse stem: ${e.message}`); return false; }
 }
 $('previewDutch').onclick = () => { speakDutch('Goedenavond. Mag ik je even onderbreken?'); };
@@ -872,6 +898,7 @@ function goFrench() {
   setPhase('french', 'DISCOURS EN FRANÇAIS');
   panel(false);
   void streamFrench().catch(error => {
+    componentStatus('frenchStatus','error','Franse speech kon niet starten',error);
     reportError('Franse audio kon niet starten: ' + (error.message || error));
     panel(true);
   });
@@ -923,9 +950,11 @@ $('testTranslate').onclick = async () => {
     const translated = await translator.translate($('testDutch').value);
     $('translationTestResult').textContent = translated;
     feedback('runtimeStatus', 'Vertaaltest geslaagd. De uitslag staat in de studio.', 'good');
+     componentStatus('translationStatus',translated?.trim()?'ready':'error',translated?.trim()?'Franse tekst geproduceerd':'Geen Franse tekst ontvangen',translated?.trim()?null:new Error('Lege vertaling'));
   } catch(e) {
     $('translationTestResult').textContent = 'Vertalen is niet gelukt: ' + e.message;
-    reportError('Vertaaltest: ' + e.message);
+    componentStatus('translationStatus','error','Vertaaltest mislukt',e);
+     reportError('Vertaaltest: ' + e.message);
   }
 };
 document.addEventListener('keydown', event => {
