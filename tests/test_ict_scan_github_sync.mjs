@@ -7,7 +7,7 @@ import {File} from 'node:buffer';
 
 const source=readFileSync(resolve('tools/ict-scan/github-sync.js'),'utf8');
 const maps=['apps','ai','connections','checks','devices','parts','dpia','aiControls','policyDocs','signals','candidates','licenseReview','workActions','softwareReview'];
-function setup({bad=false,unauthorized=false,cancelDuringImport=false,largeDirectory=false}={}) {
+function setup({bad=false,unauthorized=false,cancelDuringImport=false,largeDirectory=false,withManifest=false,shaMismatch=false,badCounts=false}={}) {
   const fields={};
   for(const id of ['githubRepo','githubFolder','githubRef','githubToken','githubSyncStart','githubSyncCancel','githubSyncStatus','githubSyncSummary','githubReplace','topGithubSync']) {
     fields[id]={events:{},value:'',checked:false,hidden:false,disabled:false,textContent:'',dataset:{},addEventListener(event,handler){this.events[event]=handler;},focus(){}};
@@ -22,6 +22,8 @@ function setup({bad=false,unauthorized=false,cancelDuringImport=false,largeDirec
   for(const name of maps)state[name]=new Map();
   const content=Buffer.from(JSON.stringify({apps:[{id:'APP-1',name:'Dummy software'}]}));
   const sha='a'.repeat(40);
+  const manifestSha='b'.repeat(40);
+  const manifestContent=Buffer.from(JSON.stringify({schema:'eai-school-ict-manifest-v1',metadata:{firstInventoryStarted:'2026-08-10',compiledBy:'Hans Visser'},dataFiles:[{path:'school.json',sha:shaMismatch?'c'.repeat(40):sha,recordCounts:{apps:badCounts?2:1}}]}));
   const context={
     document:{getElementById:id=>fields[id],addEventListener(event,handler){this.events??={};this.events[event]=handler;}}, state,
     URL, AbortController, File, atob,
@@ -39,9 +41,11 @@ function setup({bad=false,unauthorized=false,cancelDuringImport=false,largeDirec
     async fetch(url,options){
       calls.push({url,options});
       if(unauthorized)return {ok:false,status:404};
+      const files=[{name:'school.json',type:'file',path:'bronmap/school.json',size:content.length,sha}];
+      if(withManifest)files.push({name:'manifest.json',type:'file',path:'bronmap/manifest.json',size:manifestContent.length,sha:manifestSha});
       const data=url.includes('/contents/')
-        ?(largeDirectory?Array.from({length:1000},(_,i)=>({name:'item-'+i+'.txt',type:'file',path:'bronmap/item-'+i+'.txt',size:100,sha})):[{name:'school.json',type:'file',path:'bronmap/school.json',size:content.length,sha}])
-        :{encoding:'base64',content:content.toString('base64')};
+        ?(largeDirectory?Array.from({length:1000},(_,i)=>({name:'item-'+i+'.txt',type:'file',path:'bronmap/item-'+i+'.txt',size:100,sha})):files)
+        :{encoding:'base64',content:(url.endsWith(manifestSha)?manifestContent:content).toString('base64')};
       return {ok:true,async json(){return data;}};
     },
   };
@@ -126,4 +130,36 @@ test('Annuleren tijdens import herstelt de bestaande inventaris',async()=>{
   assert.equal(x.state.sources.length,1);
   assert.match(x.fields.githubSyncStatus.textContent,/afgebroken/i);
   assert.equal(x.fields.githubToken.value,'');
+});
+
+test('Manifestcontrole accepteert overeenkomstige GitHub-SHA en aantallen',async()=>{
+  const x=setup({withManifest:true});
+  await x.fields.githubSyncStart.events.click();
+  assert.equal(x.state.apps.size,1);
+  assert.equal(x.state.sources.length,1);
+  assert.match(x.fields.githubSyncStatus.textContent,/manifest\.json/i);
+  assert.match(x.fields.githubSyncStatus.textContent,/geslaagd/i);
+  assert.equal(x.state.metadata.firstInventoryStarted,'2026-08-10');
+});
+
+test('Manifest met verkeerde SHA blokkeert synchronisatie zonder data te vervangen',async()=>{
+  const x=setup({withManifest:true,shaMismatch:true});
+  x.state.apps.set('APP-old',{id:'APP-old',name:'Vorige registratie'});
+  x.state.ready=true;
+  await x.fields.githubSyncStart.events.click();
+  assert.equal(x.state.apps.size,1);
+  assert.equal(x.state.apps.get('APP-old').name,'Vorige registratie');
+  assert.match(x.fields.githubSyncStatus.textContent,/wijkt af van het manifest/);
+});
+
+test('Manifest met onjuiste aantallen herstelt vorige gegevens',async()=>{
+  const x=setup({withManifest:true,badCounts:true});
+  x.state.apps.set('APP-old',{id:'APP-old',name:'Vorige registratie'});
+  x.state.sources.push({name:'oud.json'});
+  x.state.ready=true;
+  await x.fields.githubSyncStart.events.click();
+  assert.equal(x.state.apps.size,1);
+  assert.equal(x.state.apps.get('APP-old').name,'Vorige registratie');
+  assert.equal(x.state.sources.length,1);
+  assert.match(x.fields.githubSyncStatus.textContent,/ingelezen, 2 verwacht/);
 });
