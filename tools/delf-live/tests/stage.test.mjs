@@ -367,3 +367,18 @@ test('vrij praten is gescheiden van de vaste voorstelling',()=>{
   assert.match(chat,/if\(own!==turn\)return/);
   assert.doesNotMatch(chat,/ollama serve|localhost:11434|Caddy/);
 });
+
+test('EAIspeak is de naam van de hub en de bestaande DELF-scènes blijven behouden',()=>{
+  assert.match(html,/<title>EAIspeak \| praten, vertalen en presenteren<\/title>/);
+  assert.match(html,/id="scriptedStart"/);
+  assert.match(html,/id="freeTalkSpeak"/);
+  assert.match(html,/id="arrowWave"/);
+  const doc=readFileSync(new URL('../EAISPEAK-PIM-TECH.md',import.meta.url),'utf8');
+  assert.match(doc,/project-pim/);
+  assert.match(doc,/WebGPU/);
+  assert.match(doc,/design-only/);
+  const workflow=readFileSync(new URL('../../../.github/workflows/delf-live.yml',import.meta.url),'utf8');
+  assert.match(workflow,/mkdir -p \/tools\/eaispeak/);
+  assert.match(workflow,/mkdir -p \/tools\/delf-live/);
+  assert.match(workflow,/https:\/\/eaimodel\.nl\/tools\/eaispeak\//);
+});

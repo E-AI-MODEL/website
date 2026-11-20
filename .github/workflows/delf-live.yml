@@ -138,6 +138,8 @@ jobs:
           set net:max-retries 1
           set xfer:use-temp-file yes
           set net:connection-limit 4
+          mkdir -p /tools/eaispeak
+          mirror -R --parallel=3 --verbose tools/delf-live/dist/ /tools/eaispeak/
           mkdir -p /tools/delf-live
           mirror -R --parallel=3 --verbose tools/delf-live/dist/ /tools/delf-live/
           bye
@@ -152,7 +154,7 @@ jobs:
           from pathlib import Path
           import re
           import time
-          base = 'https://eaimodel.nl/tools/delf-live/'
+          base = 'https://eaimodel.nl/tools/eaispeak/'
           expected = (Path('tools/delf-live/dist/index.html')).read_bytes()
           urls = re.findall(rb'(?:src|href)="([^"]+)"', expected)
           assets = [url.decode() for url in urls if b'/assets/' in url]
@@ -187,7 +189,7 @@ jobs:
               assert res.status == 200
           assert b'DELF' in mobile_page and b'Franse modelproef' in mobile_page
           assert b'/assets/' in mobile_page, 'Mobile model JS not linked'
-          print('DELF MacBook and mobile pages publicly available at', base)
+          print('EAIspeak and DELF pages publicly available at', base)
           PY
 
   # Eenmalig: bouw de definitieve Franse opnamen in GitHub, niet op de Mac.
