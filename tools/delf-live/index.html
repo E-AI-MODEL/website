@@ -10,6 +10,7 @@
 <script type="module" src="./src/main.js"></script>
 <script type="module" src="./src/cloud-shell.js"></script>
 <script type="module" src="./src/system-status.js"></script>
+<script type="module" src="./src/ollama-setup.js"></script>
 </head>
 <body>
 <div class="stage" id="stage" data-phase="intro" tabindex="-1" data-display="statement">
@@ -30,7 +31,7 @@
     <button id="panelClose" class="close studio-return" type="button" aria-label="Terug naar het podium">
       <span class="close-strokes" aria-hidden="true"></span><span>Podium</span>
     </button>
-    <span class="studio-current" id="studioSessionLabel">DELF scolaire</span>
+    <span class="studio-current" id="studioSessionLabel" hidden aria-hidden="true"></span>
     <span class="studio-mark" aria-hidden="true">·</span>
   </header>
   <nav class="studio-nav" role="tablist" aria-label="Studio-onderdelen">
@@ -54,6 +55,15 @@
         <button id="panic" class="action studio-action studio-action-quiet">Stop</button>
         <button id="reset" class="action studio-action studio-action-quiet">Opnieuw</button>
       </div>
+      <details class="studio-disclosure cloud-reveal" id="speechNavigation">
+        <summary>Franse speech bedienen</summary>
+        <p class="studio-support" id="speechProgress" aria-live="polite">Franse speech nog niet begonnen</p>
+        <div class="studio-action-grid">
+          <button id="previousFrenchPassage" class="action studio-action studio-action-quiet" type="button">Vorige passage</button>
+          <button id="nextFrenchPassage" class="action studio-action studio-action-quiet" type="button">Volgende passage</button>
+        </div>
+        <p class="studio-support">Op het podium: ← en → voor passages, spatie om te pauzeren. De speechtekst blijft vaststaan.</p>
+      </details>
       <p class="studio-aside cloud-reveal">1 starten · → overname · Esc studio</p>
     </div>
 
@@ -64,11 +74,15 @@
         <p class="studio-support">Spreek een korte zin.</p>
         <button id="prepareMic" class="action studio-action">Test microfoon</button>
         <p class="feedback" id="microphoneStatus" aria-live="polite">Nog niet getest</p>
+        <p class="studio-support" id="microphoneDeviceStatus" aria-live="polite">Chrome vraagt pas bij de test om toestemming.</p>
       </section>
       <section class="studio-section cloud-reveal"><div class="studio-section-top"><span class="studio-section-no">02</span><h2>Vertaling</h2></div>
         <p class="studio-support">Eerste keer laden via wifi.</p>
         <button id="prepareTranslate" class="action studio-action">Laad vertaling</button>
         <p class="feedback" id="translationStatus" aria-live="polite">Nog niet geladen</p>
+        <label class="studio-field">Vertaalroute<select id="translationEngine"><option value="chrome">Chrome Translator</option><option value="onnx">Lokaal browsermodel</option></select></label>
+        <label class="studio-field"><input id="translationDrafts" type="checkbox"> Toon voorlopige vertalingen tijdens het spreken (sneller, minder stabiel)</label>
+        <p class="studio-support">Laatst herkend Nederlands:</p><p class="feedback" id="recognizedDutch">Nog geen woorden herkend.</p>
       </section>
       <details class="studio-disclosure cloud-reveal"><summary>Vertaling proberen</summary>
         <label class="studio-field">Nederlandse tekst<textarea id="testDutch" rows="3">Goedemiddag allemaal. Vandaag feliciteren we leerlingen met hun DELF scolaire-diploma.</textarea></label>
@@ -79,13 +93,13 @@
 
     <div class="studio-page" id="page-stem" role="tabpanel" aria-labelledby="tab-stem" data-studio-page="stem" hidden>
       <div class="studio-hero cloud-reveal"><span class="studio-overline">AUDIO</span><h1 class="cloud-heading">Stem</h1>
-        <p class="cloud-intro">Frans en Nederlands op jouw apparaat.</p></div>
+        <p class="cloud-intro">De Franse spreker gebruikt geen Nederlandse stem. Een Nederlandse aankondiging is optioneel.</p></div>
       <section class="studio-section cloud-reveal"><div class="studio-section-top"><span class="studio-section-no">01</span><h2>Frans</h2></div>
         <button id="loadPublicFrench" class="action studio-action">Laad Franse stem</button>
         <button id="previewFrench" class="action studio-action studio-action-quiet">Luister Frans</button>
         <p class="feedback" id="frenchStatus" aria-live="polite">Nog niet geladen</p>
       </section>
-      <section class="studio-section cloud-reveal"><div class="studio-section-top"><span class="studio-section-no">02</span><h2>Nederlands</h2></div>
+      <section class="studio-section cloud-reveal"><div class="studio-section-top"><span class="studio-section-no">02</span><h2>Optionele Nederlandse aankondiging</h2></div>
         <label class="studio-field">Nederlandse stem<select id="nlVoice"><option value="">Kies een aanwezige stem</option></select></label>
         <button id="previewDutch" class="action studio-action studio-action-quiet">Luister Nederlands</button>
         <p class="feedback" id="dutchStatus">Kies een stem</p>
@@ -162,7 +176,7 @@
           </select>
         </label>
         <p class="feedback" id="latencyStatus">Nog geen stemmeting</p>
-        <p class="studio-support">MacBook: 1 start, → overname, spatie pauze, X stopt, 0 opnieuw, Esc opent de studio.</p>
+        <p class="studio-support">MacBook: 1 start, → overname. Tijdens de Franse speech: ← vorige, → volgende passage, spatie pauze. X stopt, 0 opnieuw, Esc opent de studio.</p>
       </section>
     </div>
   </div>

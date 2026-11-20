@@ -54,6 +54,8 @@ let dutchPulseAt = -Infinity;
 let frenchAnalyser = null;
 let visualFrame = null;
 let smoothedLevel = 0;
+let frenchSegmentIndex = 0;
+let frenchSegmentTotal = 0;
 
 // De centrale lijnen reageren tijdens Frans op de audiobuffers.
  // Nederlandse browser-TTS levert geen audiobuffers: dan volgen ze woordgrenzen.
@@ -301,6 +303,10 @@ function reportError(message) {
 
 let preparingTranslation = null;
 async function prepareTranslation() {
+  if (translator && translator.kind !== $('translationEngine').value) {
+    await translator.dispose?.();
+    translator=null;
+  }
   if (translator) {
     feedback('translationStatus', 'Franse vertaling is geladen.', 'good');
     componentStatus('translationStatus','idle','Model geladen. Nog niet vertaald.');
@@ -311,7 +317,7 @@ async function prepareTranslation() {
     feedback('translationStatus', 'Franse vertaling voorbereiden…');
     componentStatus('translationStatus','busy','Vertaling laden');
     const opts = { sourceLanguage: 'nl', targetLanguage: 'fr' };
-    if (typeof globalThis.Translator !== 'undefined') {
+    if ($('translationEngine').value === 'chrome' && typeof globalThis.Translator !== 'undefined') {
       try {
         const availability = await Translator.availability(opts);
         if (availability !== 'unavailable') {
@@ -348,83 +354,157 @@ async function prepareTranslation() {
   try { return await preparingTranslation; } finally { preparingTranslation = null; }
 }
 $('prepareTranslate').onclick = prepareTranslation;
+$('translationEngine').addEventListener('change',()=>{
+  feedback('translationStatus','Andere vertaalroute gekozen. Klik op Laad vertaling om over te schakelen.');
+  componentStatus('translationStatus','idle','Andere route gekozen, nog niet getest');
+});
 let microphoneCheck = null;
 let microphoneCheckTimer = null;
+let microphoneTestGeneration = 0;
+let microphonePreparing = false;
+function microphoneAdvice(error) {
+  const code = String(error?.name || error?.error || error || '').toLowerCase();
+  if (/notallowed|permissiondenied|not-allowed|service-not-allowed/.test(code))
+    return 'Chrome heeft geen toegang. Klik op het icoon links van het webadres, sta Microfoon toe en laad de pagina opnieuw.';
+  if (/notfound|devicesnotfound|audio-capture/.test(code))
+    return 'Geen microfoon gevonden. Controleer de invoer bij macOS > Systeeminstellingen > Geluid.';
+  if (/notreadable|trackstarterror/.test(code))
+    return 'De microfoon is bezet of niet beschikbaar. Sluit andere programma’s die de microfoon gebruiken.';
+  if (/network/.test(code))
+    return 'Chrome bereikt de spraakherkenningsdienst niet. De microfoon kan wel werken, maar er komt geen Nederlandse tekst terug. Controleer netwerk en browserinstellingen.';
+  if (/no-speech/.test(code))
+    return 'Er zijn geen woorden herkend. Controleer de gekozen microfoon en spreek duidelijk.';
+  if (/timeout|aborted/.test(code))
+    return 'De spraakherkenning reageert niet. Controleer de microfoontoestemming, je netwerk en probeer opnieuw.';
+  return 'Controleer de microfoon in Chrome en probeer de spraaktest opnieuw.';
+}
 function stopMicrophoneCheck() {
+  microphoneTestGeneration++;
+  microphonePreparing = false;
   if (microphoneCheckTimer) { clearTimeout(microphoneCheckTimer); microphoneCheckTimer = null; }
   const previous = microphoneCheck;
   microphoneCheck = null;
   if (previous) {
-    previous.onstart = null;
-    previous.onresult = null;
-    previous.onend = null;
-    previous.onerror = null;
+    previous.onstart = null; previous.onresult = null;
+    previous.onend = null; previous.onerror = null;
     try { previous.abort(); } catch {}
   }
-  $('prepareMic').textContent = 'Nederlandse spraak testen';
+  $('prepareMic').textContent = 'Test microfoon';
 }
-$('prepareMic').onclick = () => {
-  if (microphoneCheck) {
+$('prepareMic').onclick = async () => {
+  if (microphonePreparing || microphoneCheck) {
     stopMicrophoneCheck();
-    feedback('microphoneStatus','Test gestopt.','');
+    feedback('microphoneStatus','Spraaktest gestopt.');
+    componentStatus('microphoneStatus','idle','Test gestopt');
     return;
   }
   if (phase !== 'intro') {
     feedback('microphoneStatus','Stop eerst de voorstelling. Daarna kun je de microfoon testen.','bad');
     return;
   }
-  const SR = globalThis.SpeechRecognition || globalThis.webkitSpeechRecognition;
+  const generation = ++microphoneTestGeneration;
+  microphonePreparing = true;
+  $('prepareMic').textContent = 'Stop spraaktest';
+  feedback('microphoneStatus','Controleert de microfoontoegang…');
+  componentStatus('microphoneStatus','busy','Microfoontoegang controleren');
+  const setDeviceMessage = message => {
+    if (generation === microphoneTestGeneration) $('microphoneDeviceStatus').textContent = message;
+  };
+  if (!window.isSecureContext || !navigator.mediaDevices?.getUserMedia) {
+    microphonePreparing = false;
+    setDeviceMessage('Microfoontoegang niet beschikbaar.');
+    const reason = new Error('De browser heeft geen beveiligde microfoontoegang.');
+    feedback('microphoneStatus','Open deze pagina via HTTPS in Chrome. Microfoontoegang is hier niet beschikbaar.','bad');
+    componentStatus('microphoneStatus','error','Geen browsertoegang',reason);
+    $('prepareMic').textContent = 'Test microfoon';
+    return;
+  }
+  // Test de fysieke microfoon apart van Web Speech. Geen opname of audio wordt bewaard.
+  let stream;
+  try {
+    const request = navigator.mediaDevices.getUserMedia({audio:true}).then(openedStream => {
+      if (generation !== microphoneTestGeneration || !microphonePreparing) openedStream.getTracks().forEach(track=>track.stop());
+      return openedStream;
+    });
+    const timeout = new Promise((_,reject) => {
+      microphoneCheckTimer = setTimeout(() => reject(new Error('Timeout microfoontoestemming')),12000);
+    });
+    stream = await Promise.race([request,timeout]);
+    if (microphoneCheckTimer) {clearTimeout(microphoneCheckTimer);microphoneCheckTimer=null;}
+    if (generation !== microphoneTestGeneration) { stream.getTracks().forEach(track=>track.stop()); return; }
+    const track = stream.getAudioTracks()[0];
+    setDeviceMessage('Microfoon bereikbaar: '+(track?.label || 'audio-invoer')+'. Geen audio opgeslagen.');
+    stream.getTracks().forEach(track=>track.stop());
+  } catch(error) {
+    if (generation !== microphoneTestGeneration) return;
+    microphonePreparing = false;
+    $('prepareMic').textContent = 'Test microfoon';
+    setDeviceMessage('Microfoontoegang mislukt.');
+    feedback('microphoneStatus',microphoneAdvice(error),'bad');
+    componentStatus('microphoneStatus','error','Microfoontoegang mislukt',error);
+    return;
+  } finally {
+    stream?.getTracks().forEach(track=>track.stop());
+  }
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SR) {
-    feedback('microphoneStatus','Deze browser heeft geen ondersteunde spraakherkenning. Toestemming voor de microfoon alleen is niet genoeg.','bad');
-    componentStatus('microphoneStatus','unavailable','Spraakherkenning ontbreekt',new Error('Geen SpeechRecognition'));
+    microphonePreparing = false;
+    $('prepareMic').textContent='Test microfoon';
+    feedback('microphoneStatus','De microfoon is bereikbaar. Deze Chrome-versie biedt geen spraakherkenning.','bad');
+    componentStatus('microphoneStatus','unavailable','Spraakherkenning ontbreekt',new Error('SpeechRecognition ontbreekt'));
     return;
   }
   const instance = new SR();
   microphoneCheck = instance;
+  microphonePreparing = false;
   let heard = false;
   instance.lang = 'nl-NL';
   instance.continuous = false;
   instance.interimResults = true;
   instance.onstart = () => {
-    if (microphoneCheck !== instance) return;
-    $('prepareMic').textContent = 'Stop spraaktest';
-    feedback('microphoneStatus','Luistert naar Nederlands… Spreek een korte zin uit.');
-    componentStatus('microphoneStatus','busy','Luistert, nog geen woorden herkend');
+    if (generation !== microphoneTestGeneration || microphoneCheck !== instance) return;
+    feedback('microphoneStatus','Microfoon werkt. Chrome luistert nu naar Nederlands. Spreek een korte zin.');
+    componentStatus('microphoneStatus','busy','Spraakherkenning luistert');
   };
   instance.onresult = event => {
-    if (microphoneCheck !== instance) return;
-    const words = Array.from(event.results).map(result => result[0]?.transcript || '').join(' ').trim();
+    if (generation !== microphoneTestGeneration || microphoneCheck !== instance) return;
+    const words = Array.from(event.results).map(result=>result[0]?.transcript||'').join(' ').trim();
     if (!words) return;
     heard = true;
-    const final = Array.from(event.results).every(result => result.isFinal);
-    feedback('microphoneStatus', (final ? 'Herkend Nederlands: ' : 'Herkenning bezig: ') + words, final ? 'good' : '');
+    const final = Array.from(event.results).every(result=>result.isFinal);
+    feedback('microphoneStatus',(final?'Herkend Nederlands: ':'Herkenning bezig: ')+words,final?'good':'');
     componentStatus('microphoneStatus','ready','Nederlandse woorden herkend');
   };
   instance.onerror = event => {
-    if (microphoneCheck !== instance) return;
-    const msg = event.error || 'onbekende fout';
-    feedback('microphoneStatus','Spraakherkenning mislukt ('+ msg +'). De toestemmingspop-up bewijst alleen toegang tot de microfoon.','bad');
-    componentStatus('microphoneStatus','error','Spraakherkenning mislukt',new Error(msg));
+    if (generation !== microphoneTestGeneration || microphoneCheck !== instance) return;
+    const code = event.error || 'onbekend';
     stopMicrophoneCheck();
+    feedback('microphoneStatus','Spraakherkenning: '+code+'. '+microphoneAdvice(code),'bad');
+    componentStatus('microphoneStatus','error','Spraakherkenning mislukt',new Error(code));
   };
   instance.onend = () => {
-    if (microphoneCheck !== instance) return;
+    if (generation !== microphoneTestGeneration || microphoneCheck !== instance) return;
     stopMicrophoneCheck();
-    if (!heard) {feedback('microphoneStatus','De microfoon is gestopt, maar er zijn geen woorden herkend. Probeer het opnieuw.','bad');componentStatus('microphoneStatus','error','Geen woorden herkend',new Error('Geen spraak ontvangen'));}
+    if (!heard) {
+      feedback('microphoneStatus','De microfoon werkt, maar Chrome heeft geen woorden herkend. '+microphoneAdvice('no-speech'),'bad');
+      componentStatus('microphoneStatus','error','Geen woorden herkend',new Error('no-speech'));
+    }
   };
-  try {
-    instance.start();
-    $('prepareMic').textContent = 'Stop spraaktest';
-    feedback('microphoneStatus','Toegang en spraakherkenning starten…');
-    microphoneCheckTimer = setTimeout(() => {
-      if (microphoneCheck !== instance) return;
-      stopMicrophoneCheck();
-      if (!heard) {feedback('microphoneStatus','Geen Nederlandse woorden ontvangen binnen 12 seconden.','bad');componentStatus('microphoneStatus','error','Spraakherkenning reageert niet',new Error('Timeout'));}
-    },12000);
-  } catch (error) {
+  microphoneCheckTimer = setTimeout(() => {
+    if (generation !== microphoneTestGeneration || microphoneCheck !== instance) return;
     stopMicrophoneCheck();
-    feedback('microphoneStatus','Kon de spraaktest niet starten: ' + error.message,'bad');
-    componentStatus('microphoneStatus','error','Microfoontest kon niet starten',error);
+    if (!heard) {
+      feedback('microphoneStatus','De microfoon is bereikbaar, maar spraakherkenning reageert niet. '+microphoneAdvice('timeout'),'bad');
+      componentStatus('microphoneStatus','error','Spraakherkenning reageert niet',new Error('Timeout'));
+    }
+  },15000);
+  try {
+    feedback('microphoneStatus','Chrome-spraakherkenning starten…');
+    instance.start();
+  } catch(error) {
+    stopMicrophoneCheck();
+    feedback('microphoneStatus','Spraakherkenning kon niet starten. '+microphoneAdvice(error),'bad');
+    componentStatus('microphoneStatus','error','Spraakherkenning kon niet starten',error);
   }
 };
 
@@ -440,7 +520,8 @@ function stopMic() {
   if (previous) { previous.onend = null; previous.onresult = null; previous.onerror = null; try { previous.abort(); } catch {} }
 }
 function translateFinal(fragment) {
-  const text = fragment.trim();
+  const text = fragment.replace(/\\s+/g,' ').trim();
+  if (text) $('recognizedDutch').textContent = text;
   if (!text || !translator || phase !== 'live') return;
   const localEpoch = epoch;
   // A finished Dutch fragment always wins over an older interim preview.
@@ -455,6 +536,7 @@ function translateFinal(fragment) {
     try {
       const translated = await translator.translate(text);
       if (phase !== 'live' || epoch !== localEpoch) return;
+      if (!translated?.trim()) throw new Error('Het vertaalmodel gaf geen Franse tekst');
       if(translated?.trim()) componentStatus('translationStatus','ready','Live vertaling uitgevoerd');
        finalTranslations.push(...splitFrenchCaption(translated));
       finalTranslations = finalTranslations.slice(-2);
@@ -464,6 +546,7 @@ function translateFinal(fragment) {
   }).finally(() => { finalInFlight = Math.max(0, finalInFlight - 1); });
 }
 function translatePreview(fragment) {
+  if (!$('translationDrafts').checked) return;
   if (!translator || phase !== 'live') return;
   latestInterim = fragment.trim();
   if (latestInterim.split(/\s+/).length < 3) return;
@@ -803,11 +886,16 @@ async function streamFrench() {
   let t = ctx.currentTime + 0.11;
   let totalChunks = 0;
   const segments = speechSegments(getActiveSession().speech); // Vaste tekst van de gekozen sessie
+  frenchSegmentTotal = segments.length;
+  updateSpeechProgress();
   const started = performance.now();
   followAudioClock(ctx, controller);
   blankStage();
   try {
-    for (const line of segments) {
+    for (let i = frenchSegmentIndex; i < segments.length; i++) {
+      frenchSegmentIndex = i;
+      updateSpeechProgress();
+      const line = segments[i];
       if (controller.signal.aborted || phase !== 'french') return;
       const stream = french.stream(line, { signal: controller.signal });
       let firstChunk = true;
@@ -835,11 +923,42 @@ async function streamFrench() {
       }
       t += 0.24;
       await stream.done;
+      if (controller.signal.aborted || phase !== 'french') return;
+      frenchSegmentIndex = i + 1;
+      updateSpeechProgress();
     }
     feedback('runtimeStatus', `Franse speech loopt. ${totalChunks} live audiostukken.`, 'good');
     await waitForPlayback(ctx, controller, t);
     if (!controller.signal.aborted && phase === 'french') goHandback();
   } catch (e) { if (!controller.signal.aborted) reportError(`Franse stem onderbroken: ${e.message || e}`); }
+}
+function updateSpeechProgress() {
+  const target = $('speechProgress');
+  if (target) target.textContent = frenchSegmentTotal
+    ? 'Franse passage ' + Math.min(frenchSegmentIndex+1,frenchSegmentTotal) + ' van ' + frenchSegmentTotal
+    : 'Franse speech nog niet begonnen';
+}
+function nextFrenchPassage() {
+  if (phase !== 'french') return;
+  const segments = speechSegments(getActiveSession().speech);
+  const next = Math.min(segments.length, frenchSegmentIndex+1);
+  stopVoices();
+  frenchSegmentIndex = next;
+  frenchSegmentTotal = segments.length;
+  updateSpeechProgress();
+  if (frenchSegmentIndex >= frenchSegmentTotal) {goHandback();return;}
+  void streamFrench().catch(error=>{
+    componentStatus('frenchStatus','error','Volgende passage kon niet starten',error);
+    reportError('Franse speech kon niet hervatten: '+String(error?.message||error));
+    panel(true);
+  });
+}
+function previousFrenchPassage() {
+  if (phase !== 'french') return;
+  stopVoices();
+  frenchSegmentIndex = Math.max(0,frenchSegmentIndex-1);
+  updateSpeechProgress();
+  void streamFrench().catch(error=>reportError('Vorige passage kon niet starten: '+String(error?.message||error)));
 }
 function goStart() {
   if (!translator) {
@@ -874,27 +993,27 @@ function goInterrupt() {
     panel(true);
     return;
   }
-  if (!selectedDutchVoice) {
-    reportError('Selecteer eerst een Nederlandse stem.');
-    panel(true);
-    return;
-  }
   stopMic(); stopVoices();
   prewarmFrenchAudio();
   setPhase('interrupted', 'UN INSTANT…');
   blankStage();
   const now = epoch;
-  const started = speakDutch(getActiveSession().interrupt, () => {
-    // Een eigen reactie is welkom. Daarna volgt altijd de goedgekeurde Franse speech.
+  if (selectedDutchVoice) {
+    const started = speakDutch(getActiveSession().interrupt, () => beginReplyWindow(now));
+    if (!started) { releasePreparedAudio(); reportError('De onderbreking kon niet starten.'); }
+  } else {
+    feedback('runtimeStatus','De Franse spreker is klaar voor de overname. Jij kunt nog reageren of doorgaan naar de speech.');
     beginReplyWindow(now);
-  });
-  if (!started) { releasePreparedAudio(); reportError('De onderbreking kon niet starten.'); }
+  }
   panel(false);
 }
 function goFrench() {
   if (!french) { reportError('Laad eerst het Franse Phonon-model.'); return; }
   if (stageAdvance(phase, 'french') === null) return;
   stopMic(); stopVoices(); firstAudioMs = null;
+  frenchSegmentIndex = 0;
+  frenchSegmentTotal = speechSegments(getActiveSession().speech).length;
+  updateSpeechProgress();
   setPhase('french', 'DISCOURS EN FRANÇAIS');
   panel(false);
   void streamFrench().catch(error => {
@@ -904,15 +1023,18 @@ function goFrench() {
   });
 }
 function goHandback() {
-  if (!selectedDutchVoice) { reportError('Nederlandse teruggavestem ontbreekt.'); return; }
   if (stageAdvance(phase, 'handback') === null) return;
   stopVoices();
   setPhase('handback', 'À VOUS');
   blankStage();
   const now = epoch;
-  speakDutch(getActiveSession().handback, () => {
-    if (phase === 'handback' && epoch === now) goFinish();
-  });
+  if (selectedDutchVoice) {
+    speakDutch(getActiveSession().handback, () => {
+      if (phase === 'handback' && epoch === now) goFinish();
+    });
+  } else {
+    feedback('runtimeStatus','De Franse spreker heeft het woord teruggegeven. Klik op Nederlands slot om verder te gaan.');
+  }
   panel(false);
 }
 function goFinish() {
@@ -941,7 +1063,7 @@ function panic() {
   blankStage();
   feedback('runtimeStatus', 'Alles gestopt. Toets 0 om opnieuw te beginnen.', 'bad');
 }
-const actions = {start:goStart, interrupt:goInterrupt, french:goFrench, handback:goHandback, finish:goFinish, reset:goReset, panic};
+const actions = {start:goStart, interrupt:goInterrupt, french:goFrench, handback:goHandback, finish:goFinish, reset:goReset, panic, nextFrenchPassage, previousFrenchPassage};
 for (const [name, fn] of Object.entries(actions)) $(name).onclick = fn;
 $('fullscreen').onclick = () => document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.();
 $('testTranslate').onclick = async () => {
@@ -964,9 +1086,11 @@ document.addEventListener('keydown', event => {
   if (event.target instanceof HTMLButtonElement || event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement || event.target instanceof HTMLSelectElement) return;
   if (event.code === 'ArrowRight') {
     event.preventDefault();
-    if (phase === 'live' && !closing) goInterrupt();
+    if (phase === 'french') nextFrenchPassage();
+    else if (phase === 'live' && !closing) goInterrupt();
     return;
   }
+  if (event.code === 'ArrowLeft' && phase === 'french') { event.preventDefault(); previousFrenchPassage(); return; }
   if (event.code === 'Space') { event.preventDefault(); togglePause(); return; }
   const map = {'1':goStart,'2':goInterrupt,'3':goFrench,'4':goHandback,'5':goFinish,'0':goReset,'x':panic,'X':panic,'f':$('fullscreen').onclick,'F':$('fullscreen').onclick};
   if (map[event.key]) { event.preventDefault(); map[event.key](); }

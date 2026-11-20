@@ -125,3 +125,26 @@ test('navigatie en titel blijven als schim zichtbaar na inactiviteit',()=>{
   assert.ok(css.includes('body.cloud-studio-idle.panel-visible:not(:has(:focus-visible))'));
   assert.ok(css.includes('opacity:.13'));
 });
+
+
+test('Chrome-microfoon: toegang en spraakherkenning zijn afzonderlijk gecontroleerd',()=>{
+  assert.ok(html.includes('id="microphoneDeviceStatus"'));
+  assert.ok(main.includes('navigator.mediaDevices.getUserMedia({audio:true})'));
+  assert.ok(main.includes('window.SpeechRecognition || window.webkitSpeechRecognition'));
+  assert.ok(main.includes("Microfoon bereikbaar: "));
+  assert.ok(main.includes("Spraakherkenning: "));
+  assert.ok(main.includes("Spraakherkenning reageert niet"));
+  assert.ok(main.includes("openedStream.getTracks().forEach(track=>track.stop())"));
+  assert.ok(main.includes("componentStatus('microphoneStatus','error'"));
+  assert.ok(main.includes("instance.onresult = event =>"));
+});
+test('desktop en mobiel behouden dezelfde instellingen en bewegende mist',()=>{
+  assert.ok(html.includes('id="mobileSettings"'));
+  assert.ok(html.includes('id="studioSessionLabel" hidden'));
+  assert.ok(css.includes('@keyframes studio-cloud-current'));
+  assert.ok(css.includes('@keyframes studio-cloud-wave'));
+  assert.ok(css.includes('.cloud-studio .studio-clouds::before'));
+  assert.ok(css.includes('.cloud-studio .studio-current[hidden]'));
+  assert.ok(css.includes('.mobile-settings.cloud-entry{display:grid!important'));
+  assert.ok(css.includes('@media(prefers-reduced-motion:reduce)'));
+});
