@@ -102,6 +102,10 @@ for(const [index,id] of ['scriptedAudioOne','scriptedAudioTwo'].entries()){
   });
 }
 function startScriptedShow(){
+  if(scriptedMode!=='off' && scriptedMode!=='armed'){
+    scriptedFeedback('De voorstelling loopt al. Gebruik Stop of Opnieuw om opnieuw te starten.',true);
+    return;
+  }
   if(!scriptedShowReady()){
     scriptedFeedback('Kies eerst de audio van scène 1 en scène 2 bij Audio voor de voorstelling.',true);
     $('scriptedShow').querySelector('details').open=true;
@@ -144,6 +148,8 @@ function playScriptedScene(index) {
       scriptedMode='finished';
       setPhase('handback','JOUW NEDERLANDSE SLOT');
       blankStage();
+      // Zonder knopdruk: dezelfde zachte golf geeft aan dat jij weer aan zet bent.
+      acknowledgeArrow();
       scriptedFeedback('De Franse spreker is klaar. Rustig wit podium. Jij sluit zelf af.');
     }
   };
@@ -688,6 +694,11 @@ function translatePreview(fragment) {
   }, 180);
 }
 function startMic() {
+  // Tussen beide opgenomen scènes en tijdens het Nederlandse antwoord blijft de microfoon uit.
+  if (['scene1','reply','scene2','finished'].includes(scriptedMode)) {
+    feedback('runtimeStatus','De microfoon blijft uit tijdens de gescripte scènes en jouw antwoord.');
+    return false;
+  }
   const SR = globalThis.SpeechRecognition || globalThis.webkitSpeechRecognition;
   if (!SR) { componentStatus('microphoneStatus','unavailable','Geen spraakherkenning',new Error('SpeechRecognition ontbreekt'));reportError('Spraakherkenning ontbreekt. Er wordt geen tekst verzonnen.'); return false; }
   stopMic();
@@ -955,6 +966,16 @@ function stopVoices() {
   stopReplyMic();
 }
 function togglePause() {
+  if (scriptedPlayer && (scriptedMode==='scene1' || scriptedMode==='scene2')) {
+    if (scriptedPlayer.paused) {
+      void scriptedPlayer.play().catch(e => reportError('Opname hervatten: '+String(e?.message||e)));
+      feedback('phaseStatus','Opname hervat');
+    } else {
+      scriptedPlayer.pause();
+      feedback('phaseStatus','Opname gepauzeerd');
+    }
+    return;
+  }
   if (!['interrupted', 'french', 'handback'].includes(phase)) return;
   paused = !paused;
   if (paused) pauseAuto(); else resumeAuto();
