@@ -2801,7 +2801,9 @@ def build(sources: Path, out: Path) -> None:
     # article and toolbox pages continue to come from their content/generator.
     for page in repo_root.rglob("*.html"):
         relative = page.relative_to(repo_root)
-        if relative.parts[0] in {"content", "nl", "en", "site-build"}:
+        # TOPO has its own complete publication path; the generic site build must not copy
+        # an isolated TOPO landing page without its settings, map and data files.
+        if relative.parts[0] in {"content", "nl", "en", "site-build", "topo"}:
             continue
         # tools/index.html is generated above from the current Tools catalogue.
         # The old refreshed output must not overwrite that newly built page.
@@ -2834,12 +2836,21 @@ def build(sources: Path, out: Path) -> None:
     leif_source = repo_root / "leif"
     if leif_source.is_dir():
         shutil.copytree(leif_source, out / "leif", dirs_exist_ok=True)
-    # Self-contained DELF podiumapp. When built, copy the Vite output unchanged.
-    # Other local site builds do not require installing Node dependencies.
+    # The independent EAIspeak bundle is also published at the old DELF address.
+    # Never copy unbuilt source into a live route.
     delf_dist = repo_root / "tools" / "delf-live" / "dist"
     if (delf_dist / "index.html").is_file():
-        shutil.copytree(delf_dist, out / "tools" / "delf-live", dirs_exist_ok=True)
+        for route in ("eaispeak", "delf-live"):
+            shutil.copytree(delf_dist, out / "tools" / route, dirs_exist_ok=True)
     finish_generated_pages(out)
+    # Standalone local-only school ICT scan. Not part of navigation or sitemap.
+    ict_scan_source = repo_root / "tools" / "ict-scan"
+    if ict_scan_source.is_dir():
+        for name in ("index.html", "style.css", "app.js"):
+            if not (ict_scan_source / name).is_file():
+                raise FileNotFoundError(f"Missing local ICT scan asset: {name}")
+        shutil.copytree(ict_scan_source, out / "tools" / "ict-scan", dirs_exist_ok=True)
+
     # EAIgit is a separate browser wizard: publish only its four intended pages.
     # Do not let the general site generator rewrite their UI or JavaScript.
     eai_routes = (
@@ -2863,6 +2874,17 @@ def build(sources: Path, out: Path) -> None:
     ):
         if not (out / relative).is_file():
             raise FileNotFoundError(f"Missing EAIgit browser asset: {relative}")
+    # Schoolbrede ICT-scan: standalone local-first browser tool. No public navigation,
+    # no sitemap entry and no public source data. Files stay in the browser.
+    ict_scan_source = repo_root / "tools" / "ict-scan"
+    for filename in ("index.html", "style.css", "monitor.css", "app.js", "enhancements.js", "github-sync.js", "rail-drawer.js", "visual-explorer.js", "visual-explorer.css", "record-cards.js", "record-github.js", "record-cards.css", "frameworks.json", "emmaus-logo.svg", "README.md"):
+        source_file = ict_scan_source / filename
+        if not source_file.is_file():
+            raise FileNotFoundError(f"Missing ICT-scan source file: {source_file}")
+        destination_file = out / "tools" / "ict-scan" / filename
+        destination_file.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(source_file, destination_file)
+
     # Standalone LEIF and its private continuation page are kept byte-for-byte.
     # Neither page is in the public sitemap or shared editorial UI.
     leif_source = repo_root / "leif"
