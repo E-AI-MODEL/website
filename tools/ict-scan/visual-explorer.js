@@ -250,7 +250,7 @@
     table.append(body);shell.append(table);result.append(shell);
   }
   function recordedConnections(app){
-    const groups=[['apps','apps'],['ai','ai'],['connections','connections'],['parts','parts'],['additionalCandidates','candidates'],['checks','checks'],['dpia','dpia'],['aiControls','aiControls'],['devices','devices'],['licenseReview','licenseReview'],['workActions','workActions'],['softwareReview','softwareReview']];
+    const groups=[['apps','apps'],['ai','ai'],['connections','connections'],['parts','parts'],['additionalCandidates','candidates'],['checks','checks'],['dpia','dpia'],['aiControls','aiControls'],['devices','devices'],['licenseReview','licenseReview'],['workActions','workActions'],['softwareReview','softwareReview'],['faqs','faqs']];
     const lookup=Object.fromEntries(groups.map(([type,store])=>[type,state[store]]));
     const linked=[],seen=new Set();
     for(const [type,store] of groups){
