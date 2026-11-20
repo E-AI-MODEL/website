@@ -51,7 +51,7 @@
         }
       }
     }
-    if(!hits.length){
+    if(!hits.length && !(/\b(welke|alle|hoeveel)\b/.test(q)&&/\b(applicaties|toepassingen|apps|diensten)\b/.test(q))){
       const phraseTokens=words(q).filter(x=>x.length>3);
       const matched=apps.filter(app=>phraseTokens.some(w=>norm(app.name).split(' ').includes(w)));
       if(matched.length===1)hits=[{app:matched[0],score:2}];
