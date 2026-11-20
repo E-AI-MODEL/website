@@ -5,6 +5,34 @@
     "institution": "Emmauscollege Rotterdam",
     "inventoryYear": 2026,
     "firstInventoryStarted": "2026-08-10",
-    "compiledBy": "Hans Visser"
-  }
+    "compiledBy": "Hans Visser",
+    "referencePeriod": "november 2026",
+    "evidenceCutoff": "2026-11-17",
+    "dataVersion": "2026-11-20-inventaris-v1"
+  },
+  "dataFiles": [
+    {
+      "path": "2026-applicatielandschap.json",
+      "schema": "eai-school-ict-v1",
+      "recordCounts": {
+        "apps": 61,
+        "ai": 76,
+        "connections": 93,
+        "additionalCandidates": 76,
+        "parts": 13,
+        "dpia": 10,
+        "aiControls": 22,
+        "checks": 16,
+        "devices": 4,
+        "licenseReview": 40
+      },
+      "sha": "dae0fc2917cd61fe0e0ec50a11cda9ea2d271253",
+      "verified": true
+    }
+  ],
+  "notes": [
+    "De basisinventaris telt 61 toepassingen en diensten; dit is geen bevestigd volledig aantal.",
+    "76 aanvullende kandidaten tellen niet als bevestigd schoolgebruik.",
+    "De ruwe Entra-roltoewijzingen en persoonlijke gegevens zijn niet gepubliceerd."
+  ]
 }
