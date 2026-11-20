@@ -52,7 +52,7 @@ export async function probeLocalModel(provider,endpoint,selectedModel=null,promp
   const model=selectedModel||candidates[0];
   if(!candidates.includes(model)) throw new Error('Gekozen model staat niet op de server');
   const payload=provider==='ollama'
-    ? {model,prompt,stream:false,options:{num_predict:80}}
+    ? {model,prompt,stream:false,options:{num_predict:128},...(model.startsWith('qwen3:')?{think:false}:{})}
     : {model,messages:[{role:'user',content:prompt}],max_tokens:80,stream:false};
   const result=await request(origin+(provider==='ollama'?'/api/generate':'/v1/chat/completions'),{
     method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)
