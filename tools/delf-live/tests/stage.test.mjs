@@ -356,7 +356,7 @@ test('vrij praten is gescheiden van de vaste voorstelling',()=>{
   assert.match(html,/id="freeTalkPlay"/);
   assert.match(html,/id="freeTalkSend"/);
   assert.match(html,/\.\/src\/free-talk\.js/);
-  assert.match(html,/https:\/\/js\.puter\.com\/v2\//);
+  assert.doesNotMatch(html,/https:\/\/js\.puter\.com\/v2\//);
   const chat=readFileSync(new URL('../src/free-talk.js',import.meta.url),'utf8');
   assert.match(chat,/SpeechRecognition\|\|window\.webkitSpeechRecognition/);
   assert.match(chat,/rec\.lang=inputLang\.value/);
@@ -421,4 +421,30 @@ test('Vrij praten gebruikt een compact zwevend taal- en modelmenu',()=>{
   assert.match(css,/\.free-talk-floating>\.mist-detail-body/);
   assert.match(css,/backdrop-filter:blur\(24px\)/);
   assert.match(chat,/modelSummary\.textContent=languages\[inputLang\.value\]/);
+});
+
+test('EAIspeak laadt Puter uit vaste websitebundle, niet van extern CDN',()=>{
+  const pkg=JSON.parse(readFileSync(new URL('../package.json',import.meta.url),'utf8'));
+  const talk=readFileSync(new URL('../src/free-talk.js',import.meta.url),'utf8');
+  assert.equal(pkg.dependencies['@heyputer/puter.js'],'2.6.5');
+  assert.match(talk,/import\('@heyputer\/puter\.js'\)/);
+  assert.doesNotMatch(html,/js\.puter\.com\/v2/);
+  assert.match(html,/id="freeTalkConnect"/);
+  assert.match(html,/id="freeTalkCloudModel"/);
+  assert.match(talk,/api\.auth\.signIn\(\)/);
+  assert.match(talk,/api\.auth\.isSignedIn\(\)/);
+  assert.match(talk,/api\.ai\.listModels\(\)/);
+  assert.match(talk,/model:cloudModel\.value/);
+});
+test('lokaal praten vraagt geen Puter-login en stop onderbreekt echte generatie',()=>{
+  const chat=readFileSync(new URL('../src/free-talk.js',import.meta.url),'utf8');
+  const local=readFileSync(new URL('../src/browser-llm.js',import.meta.url),'utf8');
+  assert.match(html,/<option value="browser">Op dit apparaat/);
+  assert.match(html,/<option value="browser">Stem van deze browser/);
+  assert.match(chat,/if\(engine\.value==='puter'&&!puterSdk\?\.auth\?\.isSignedIn\(\)\)/);
+  assert.match(chat,/function stopConversation\(\)[\s\S]{0,90}interruptBrowserReply\(\)/);
+  assert.match(local,/navigator\.gpu\.requestAdapter\(\)/);
+  assert.match(local,/prebuiltAppConfig\.model_list\.some/);
+  assert.match(local,/engine\.interruptGenerate\(\)/);
+  assert.match(local,/finally\{generating=false;\}/);
 });

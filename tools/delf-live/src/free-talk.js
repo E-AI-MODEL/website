@@ -1,12 +1,14 @@
 // EAIspeak: vrij spreken, met apart gekozen model, taal en stem.
-import {BROWSER_MODELS,localReply} from './browser-llm.js';
+import {localReply,interruptBrowserReply} from './browser-llm.js';
 const $=id=>document.getElementById(id);
 const speak=$('freeTalkSpeak'),stop=$('freeTalkStop'),send=$('freeTalkSend'),play=$('freeTalkPlay');
 const status=$('freeTalkStatus'),heard=$('freeTalkHeard'),answer=$('freeTalkAnswer'),typed=$('freeTalkTyped');
-const engine=$('freeTalkEngine'),browserModel=$('freeTalkBrowserModel');
+const engine=$('freeTalkEngine'),browserModel=$('freeTalkBrowserModel'),cloudModel=$('freeTalkCloudModel');
+const connect=$('freeTalkConnect'),connectStatus=$('freeTalkConnectionStatus'),onlineOptions=$('freeTalkOnlineOptions');
 const inputLang=$('freeTalkInputLang'),outputLang=$('freeTalkOutputLang'),voice=$('freeTalkVoice');
 const modelRow=$('freeTalkBrowserModelRow'),hint=$('freeTalkModelHint'),modelSummary=$('freeTalkSummary');
 let recognition=null,audio=null,utterance=null,pending=false,turn=0,lastAnswer='';
+let puterSdk=null,puterLoad=null;
 const history=[];
 const languages={'nl-NL':'Nederlands','en-US':'Engels','fr-FR':'Frans'};
 function setStatus(message,kind=''){
@@ -23,6 +25,7 @@ function cancelSound(){
 }
 function stopConversation(){
   turn++;
+  interruptBrowserReply();
   const rec=recognition;recognition=null;
   if(rec){rec.onresult=null;rec.onerror=null;rec.onend=null;try{rec.abort();}catch{}}
   cancelSound();ready();
@@ -32,10 +35,11 @@ function updateControls(){
   const local=engine.value==='browser';
   modelSummary.textContent=languages[inputLang.value]+' → '+languages[outputLang.value]+' · '+(local?'in browser':'online');
   modelRow.hidden=!local;
+  onlineOptions.hidden=local;
   hint.textContent=local
-    ? 'Dit model draait op je apparaat. Eerste keer downloaden. WebGPU vereist; de downloads kunnen honderden MB zijn.'
-    : 'Online route via Puter. Eenmalig aanmelden en beperkt gratis tegoed.';
-  if(local&&!navigator.gpu)hint.textContent+=' WebGPU is hier niet beschikbaar: kies voor nu de online route.';
+    ? 'Het taalmodel draait op dit apparaat. De eerste download kan enkele minuten duren. De microfoonherkenning kan wel een internetdienst gebruiken.'
+    : 'Online via Puter. Meld je aan voordat je spreekt. Het gebruik kan kosten meebrengen.';
+  if(local&&!navigator.gpu)hint.textContent+=' WebGPU is niet beschikbaar: gebruik een andere browser of kies online.';
   if(voice.value==='cloud'&&outputLang.value!=='fr-FR'){
     voice.value='browser';
     setStatus('Voor Nederlands en Engels gebruiken we voorlopig de gekozen browserstem.');
@@ -46,20 +50,77 @@ function syncChanges(){
   history.length=0;
   updateControls();
 }
-for(const control of [browserModel,inputLang,outputLang,voice])control.addEventListener('change',syncChanges);
+for(const control of [browserModel,cloudModel,inputLang,outputLang,voice])control.addEventListener('change',syncChanges);
 engine.addEventListener('change',()=>{
   // Een browsermodel werkt standaard volledig zonder extern account.
   if(engine.value==='browser'&&voice.value==='cloud')voice.value='browser';
+  if(engine.value==='puter')void loadPuterSdk().catch(error=>{connectStatus.textContent='Puter kon niet laden: '+String(error?.message||error);});
   syncChanges();
 });
 updateControls();
+function loadPuterSdk(){
+  if(puterSdk)return Promise.resolve(puterSdk);
+  if(puterLoad)return puterLoad;
+  connectStatus.textContent='Puter laden…';
+  puterLoad=import('@heyputer/puter.js').then(module=>{
+    const api=module.puter||module.default||globalThis.puter;
+    if(!api?.auth?.signIn||!api?.ai?.chat)throw Error('De online module is niet beschikbaar.');
+    puterSdk=api;
+    connectStatus.textContent=api.auth.isSignedIn()?'Verbonden met Puter.':'Klaar voor aanmelden.';
+    return api;
+  }).catch(error=>{puterLoad=null;throw error;});
+  return puterLoad;
+}
 async function ensurePuter(required){
-  const api=globalThis.puter;
+  const api=await loadPuterSdk();
+  if(!api.auth.isSignedIn())throw Error('Nog niet verbonden met Puter. Open Taal en model en klik op Verbind met Puter.');
   if(!api?.ai || (required&&!api.ai.chat) || (!required&&!api.ai.txt2speech))
-    throw new Error('Puter is nog niet geladen of wordt door de browser geblokkeerd.');
-  if(!api.auth.isSignedIn())await api.auth.signIn();
+    throw Error('De gekozen online functie is niet beschikbaar.');
   return api;
 }
+async function listOnlineModels(api){
+  if(typeof api.ai.listModels!=='function')return;
+  try{
+    const response=await api.ai.listModels();
+    const entries=Array.isArray(response)?response:Array.isArray(response?.models)?response.models:Array.isArray(response?.data)?response.data:[];
+    const ids=[...new Set(entries.map(x=>typeof x==='string'?x:String(x?.id||x?.model||'')).filter(x=>x&&x.length<100))];
+    if(!ids.length)return;
+    ids.sort((a,b)=>{
+      const score=x=>/nano|flash-lite|mini|haiku/i.test(x)?0:/flash|small|qwen|mistral/i.test(x)?1:2;
+      return score(a)-score(b)||a.localeCompare(b,'en');
+    });
+    const selected=cloudModel.value;
+    cloudModel.replaceChildren();
+    for(const id of ids.slice(0,100)){
+      const option=document.createElement('option');option.value=id;option.textContent=id;
+      cloudModel.append(option);
+    }
+    if(ids.includes(selected))cloudModel.value=selected;
+    connectStatus.textContent='Puter verbonden · '+ids.length+' online modellen gevonden. Gebruik kan kosten meebrengen.';
+  }catch{
+    connectStatus.textContent='Puter verbonden. De online modellenlijst kon niet worden geladen; het standaardmodel blijft beschikbaar.';
+  }
+}
+connect.addEventListener('click',()=>{
+  if(!puterSdk){
+    void loadPuterSdk().then(()=>{
+      setStatus('Puter is klaar. Klik nogmaals op Verbind met Puter om aan te melden.');
+    }).catch(error=>{setStatus('Online module kan niet laden: '+String(error?.message||error),'error');});
+    return;
+  }
+  // Aanmelden moet direct vanuit deze klik starten, anders blokkeert Safari de popup.
+  const api=puterSdk;
+  if(api.auth.isSignedIn()){
+    connectStatus.textContent='Puter is verbonden.';void listOnlineModels(api);return;
+  }
+  connectStatus.textContent='Aanmelden bij Puter…';
+  void api.auth.signIn().then(()=>{
+    connectStatus.textContent='Puter verbonden.';
+    void listOnlineModels(api);
+  }).catch(error=>{
+    connectStatus.textContent='Aanmelden is gestopt: '+String(error?.msg||error?.message||error);
+  });
+});
 function extractResponse(result){
   const c=result?.message?.content;
   if(typeof c==='string')return c.trim();
@@ -118,7 +179,7 @@ async function ask(question){
     }else{
       const api=await ensurePuter(true);
       if(own!==turn)return;
-      const result=await api.ai.chat(messages,{model:'gpt-5.4-nano',normalize:true});
+      const result=await api.ai.chat(messages,{model:cloudModel.value,normalize:true});
       text=extractResponse(result);
     }
     if(own!==turn)return;
@@ -146,6 +207,10 @@ play.addEventListener('click',()=>{
 speak.addEventListener('click',()=>{
   if(pending)return;
   if(recognition){try{recognition.stop();}catch{}return;}
+  if(engine.value==='puter'&&!puterSdk?.auth?.isSignedIn()){
+    setStatus('Verbind eerst met Puter via Taal en model.','error');
+    $('freeTalkOptions').open=true;return;
+  }
   const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
   if(!SR){setStatus('Geen spraakherkenning. Gebruik Typ een zin.','error');return;}
   const rec=new SR();recognition=rec;
@@ -172,6 +237,10 @@ send.addEventListener('click',()=>{
   if(pending)return;
   const q=typed.value.trim();
   if(!q){setStatus('Typ eerst een vraag.');return;}
+  if(engine.value==='puter'&&!puterSdk?.auth?.isSignedIn()){
+    setStatus('Verbind eerst met Puter via Taal en model.','error');
+    $('freeTalkOptions').open=true;return;
+  }
   typed.value='';void ask(q);
 });
 stop.addEventListener('click',stopConversation);
