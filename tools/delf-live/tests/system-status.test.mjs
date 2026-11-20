@@ -24,7 +24,7 @@ test('alleen loopbackadressen zonder toegangsgegevens worden geaccepteerd',()=>{
   for(const address of ['http://localhost:11434/','http://127.0.0.1:1234/','http://[::1]:1234/']){
     assert.ok(validateLocalEndpoint(address).startsWith('http://'));
   }
-  assert.ok(wizard.includes('https://localhost:11435/'));
+  assert.equal(validateLocalEndpoint('https://localhost:11435/'),'https://localhost:11435');
   for(const address of ['https://example.org/','http://192.168.1.12:11434/','http://host.local/','file:///etc/passwd','http://localhost:11434/private','http://user:pass@localhost:11434/','http://localhost:11434/?token=abc']){
     assert.throws(()=>validateLocalEndpoint(address));
   }
