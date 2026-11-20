@@ -1,5 +1,5 @@
 // EAIspeak: vrij spreken, met apart gekozen model, taal en stem.
-import {localReply,interruptBrowserReply} from './browser-llm.js';
+import {localReply,interruptBrowserReply,ensureBrowserModel,browserModelStatus} from './browser-llm.js';
 const $=id=>document.getElementById(id);
 const speak=$('freeTalkSpeak'),stop=$('freeTalkStop'),send=$('freeTalkSend'),play=$('freeTalkPlay');
 const status=$('freeTalkStatus'),heard=$('freeTalkHeard'),answer=$('freeTalkAnswer'),typed=$('freeTalkTyped');
@@ -7,6 +7,7 @@ const engine=$('freeTalkEngine'),browserModel=$('freeTalkBrowserModel'),cloudMod
 const connect=$('freeTalkConnect'),connectStatus=$('freeTalkConnectionStatus'),onlineOptions=$('freeTalkOnlineOptions');
 const inputLang=$('freeTalkInputLang'),outputLang=$('freeTalkOutputLang'),voice=$('freeTalkVoice');
 const modelRow=$('freeTalkBrowserModelRow'),hint=$('freeTalkModelHint'),modelSummary=$('freeTalkSummary');
+const preload=$('freeTalkPreload'),preloadStatus=$('freeTalkPreloadStatus');
 let recognition=null,audio=null,utterance=null,pending=false,turn=0,lastAnswer='';
 let puterSdk=null,puterLoad=null;
 const history=[];
@@ -36,6 +37,9 @@ function updateControls(){
   modelSummary.textContent=languages[inputLang.value]+' → '+languages[outputLang.value]+' · '+(local?'in browser':'online');
   modelRow.hidden=!local;
   onlineOptions.hidden=local;
+  const current=browserModelStatus();
+  if(current.ready&&current.model===browserModel.value)preloadStatus.textContent='Model staat klaar voor dit gesprek.';
+  else if(!current.loading)preloadStatus.textContent='Laad het model vooraf om de eerste wachttijd te vermijden.';
   hint.textContent=local
     ? 'Het taalmodel draait op dit apparaat. De eerste download kan enkele minuten duren. De microfoonherkenning kan wel een internetdienst gebruiken.'
     : 'Online via Puter. Meld je aan voordat je spreekt. Het gebruik kan kosten meebrengen.';
@@ -58,6 +62,22 @@ engine.addEventListener('change',()=>{
   syncChanges();
 });
 updateControls();
+preload.addEventListener('click',async()=>{
+  if(pending||preload.disabled)return;
+  const selected=browserModel.value;
+  preload.disabled=true;browserModel.disabled=true;
+  const report=message=>{
+    if(browserModel.value===selected)preloadStatus.textContent=message;
+  };
+  try{
+    await ensureBrowserModel(selected,report);
+    preloadStatus.textContent='Model staat klaar. Je kunt nu praten.';
+  }catch(error){
+    preloadStatus.textContent='Laden mislukt: '+String(error?.message||error);
+  }finally{
+    browserModel.disabled=false;preload.disabled=false;
+  }
+});
 function loadPuterSdk(){
   if(puterSdk)return Promise.resolve(puterSdk);
   if(puterLoad)return puterLoad;
