@@ -127,3 +127,12 @@ body.record-card-open{overflow:hidden}
  .card-github-panel .card-button{justify-self:stretch}
 }
 @media(prefers-reduced-motion:reduce){.card-scrim:not([hidden]){backdrop-filter:none}}
+
+.card-logbook-list{display:grid;gap:8px;max-height:460px;overflow:auto}
+.card-logbook-row{display:grid;grid-template-columns:100px minmax(0,1fr) auto;gap:4px 12px;background:#fafbfd;border:1px solid #e6eaf1;border-radius:7px;padding:11px 12px;font-size:11px;align-items:start}
+.card-logbook-date{font-size:10px;color:#8391a4;white-space:nowrap}
+.card-logbook-row strong{color:#304971;font-weight:720;overflow-wrap:anywhere}
+.card-logbook-row small{font-size:10px;color:#647b95;text-align:right}
+.card-logbook-row p{grid-column:2/4;margin:0;font-size:10px;color:#63748e;line-height:1.5;overflow-wrap:anywhere}
+.card-logbook-row button{grid-column:2/4;justify-self:start}
+@media(max-width:600px){.card-logbook-row{grid-template-columns:1fr 1fr}.card-logbook-row .card-logbook-date{grid-column:1}.card-logbook-row strong{grid-column:1/-1;grid-row:2}.card-logbook-row small{grid-column:2;grid-row:1}.card-logbook-row p,.card-logbook-row button{grid-column:1/-1}}
