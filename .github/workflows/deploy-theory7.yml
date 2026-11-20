@@ -58,6 +58,40 @@ jobs:
             echo "Unexpected FTPS certificate fingerprint."
             exit 1
           fi
+      - name: Vergelijk alle bestaande HTML-bestanden met de nieuwe publicatie
+        shell: bash
+        env:
+          FTP_USER: ${{ secrets.THEORY7_FTP_USER }}
+          FTP_PASSWORD: ${{ secrets.THEORY7_FTP_PASSWORD }}
+        run: |
+          set -euo pipefail
+          test -n "$FTP_USER"
+          test -n "$FTP_PASSWORD"
+          # Lees alleen de serverlijst. Verwijder of overschrijf hier niets.
+          lftp -u "$FTP_USER","$FTP_PASSWORD" "ftp://ftp.eaimodel.nl:21" <<'EOF' > "$RUNNER_TEMP/server-file-list.txt"
+          set cmd:fail-exit yes
+          set ftp:ssl-force true
+          set ftp:ssl-protect-data true
+          set ssl:verify-certificate false
+          set net:timeout 20
+          set net:max-retries 1
+          find -d 10 /
+          bye
+          EOF
+          test -s "$RUNNER_TEMP/server-file-list.txt"
+          python scripts/compare_published_pages.py \
+            --root site-build \
+            --listing "$RUNNER_TEMP/server-file-list.txt" \
+            --http-limit 30 \
+            --json "$RUNNER_TEMP/server-versus-build.json" \
+            --summary "$GITHUB_STEP_SUMMARY"
+      - name: Bewaar serververgelijking voor controle
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: server-versus-nieuwe-website
+          path: ${{ runner.temp }}/server-versus-build.json
+          if-no-files-found: warn
       - name: Publish assets before HTML
         shell: bash
         env:
