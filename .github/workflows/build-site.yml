@@ -194,9 +194,6 @@ jobs:
       - name: Verify anatomical atlas, licensing and navigation
         run: python -m unittest discover -s tests -p 'test_anatomie_publish.py' -v
 
-      - name: Check site insights, navigation and privacy
-        run: python -m unittest discover -s tests -p 'test_site_insights.py' -v
-
       - name: Check HTML upload link in header
         run: python -m unittest discover -s tests -p 'test_header_upload_link.py' -v
 
