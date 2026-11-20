@@ -61,3 +61,23 @@ export async function probeLocalModel(provider,endpoint,selectedModel=null) {
   if(typeof answer!=='string'||!answer.trim()) throw new Error('Het model gaf geen tekst terug');
   return {model,answer};
 }
+
+export async function chatLocalModel(provider,endpoint,model,messages) {
+  const origin=validateLocalEndpoint(endpoint);
+  if(!['ollama','lmstudio','llamacpp'].includes(provider)) throw new Error('Onbekende modelserver');
+  if(typeof model!=='string'||!model.trim()) throw new Error('Kies eerst een taalmodel');
+  if(!Array.isArray(messages)||!messages.length||messages.length>24) throw new Error('Ongeldige gespreksgeschiedenis');
+  const history=messages.map(message=>{
+    if(!['system','user','assistant'].includes(message.role)||typeof message.content!=='string') throw new Error('Ongeldige gespreksregel');
+    return {role:message.role,content:message.content.slice(0,2000)};
+  });
+  const payload=provider==='ollama'
+    ? {model,messages:history,stream:false,options:{num_predict:180}}
+    : {model,messages:history,stream:false,max_tokens:180,temperature:0.35};
+  const result=await request(origin+(provider==='ollama'?'/api/chat':'/v1/chat/completions'),{
+    method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)
+  },45000);
+  const answer=provider==='ollama'?result.message?.content:result.choices?.[0]?.message?.content;
+  if(typeof answer!=='string'||!answer.trim()) throw new Error('Het taalmodel gaf geen antwoord');
+  return answer.trim().slice(0,1400);
+}
