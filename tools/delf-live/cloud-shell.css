@@ -1185,3 +1185,21 @@ html,body{width:100%;height:100%;overflow:hidden;overscroll-behavior:none}
  .free-talk-floating>.mist-detail-body{width:min(420px,calc(100vw - 34px));max-height:min(60dvh,530px)}
 }
 @media(prefers-reduced-motion:reduce){.free-talk-visual canvas{transition:none}}
+
+/* Rustige overgang: actieve bediening blijft leesbaar, verdwijnt niet abrupt. */
+.studio-scroll.is-idle .cloud-reveal.is-revealed:not(:focus-within){
+ opacity:.72;filter:blur(.65px);transform:translateY(-1px) scale(.999);
+ transition:opacity 2.6s ease,filter 2.8s ease,transform 2.8s ease;
+}
+.studio-scroll.is-idle:has(select:focus,input:focus,button:focus,textarea:focus) .cloud-reveal.is-revealed{
+ opacity:1;filter:none;transform:none;
+}
+body.cloud-studio-idle.panel-visible:not(:has(:focus-visible)) .cloud-studio .studio-header,
+body.cloud-studio-idle.panel-visible:not(:has(:focus-visible)) .cloud-studio .studio-nav{
+ opacity:.48;filter:blur(.8px);
+ transition:opacity 2.5s ease,filter 2.6s ease,transform 2.6s ease;
+}
+body.panel-visible:not(.cloud-studio-idle) .cloud-studio .studio-header,
+body.panel-visible:not(.cloud-studio-idle) .cloud-studio .studio-nav{
+ transition:opacity 1.2s ease,filter 1.3s ease,transform 1.2s ease;
+}
