@@ -99,6 +99,21 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Kies de vakspecifieke tests voor gewijzigde bestanden
+        id: scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$GITHUB_EVENT_NAME" != "pull_request" ] || ! git rev-parse --verify HEAD^1 >/dev/null 2>&1; then
+            python3 scripts/ci_pr_scope.py --all --output "$GITHUB_OUTPUT"
+          else
+            mapfile -d '' changed < <(git diff --name-only -z HEAD^1 HEAD)
+            python3 scripts/ci_pr_scope.py --output "$GITHUB_OUTPUT" "${changed[@]}"
+          fi
+      - name: Controleer selectie van tests
+        run: python3 -m unittest discover -s tests -p 'test_ci_pr_scope.py' -v
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -125,9 +140,11 @@ jobs:
         run: python -m unittest discover -s tests -p 'test_home_model.py' -v
 
       - name: Check shared dashboard-card scope and homepage content
+        if: ${{ steps.scope.outputs.home == 'true' }}
         run: python -m unittest discover -s tests -p 'test_dashboard_cards.py' -v
 
       - name: Test LEIF en het toevoegen van testers
+        if: ${{ steps.scope.outputs.leif == 'true' }}
         run: node --test tests/test_leif_kei.mjs tests/test_leif_multitenant.mjs tests/test_leif_testers.mjs tests/test_leif_unified_login.mjs tests/test_leif_site_texts.mjs
 
       - name: Verify Cloudflare beacon on public sitemap pages
@@ -155,12 +172,15 @@ jobs:
         run: python -m unittest discover -s tests -p 'test_story_cards.py' -v
 
       - name: Check EAIwork public demonstration
+        if: ${{ steps.scope.outputs.eaiwork == 'true' }}
         run: python -m unittest discover -s tests -p 'test_eaiwork_dashboard_publish.py' -v
 
       - name: Test EAIgit browser analysis
+        if: ${{ steps.scope.outputs.eaigit == 'true' }}
         run: node --test tests/test_projecthulp.mjs tests/test_eaigit_help.mjs tests/test_eaigit_single_file.mjs
 
       - name: Check EAIgame 300 questions and gameplay mechanics
+        if: ${{ steps.scope.outputs.eaigame == 'true' }}
         run: node --test tests/test_eaigame.mjs
 
       - name: Build site
@@ -193,8 +213,10 @@ jobs:
         run: python scripts/build_anatomie.py --out site-build/tools/anatomie
 
       - name: Test physiological sequence in Hartslaglab
+        if: ${{ steps.scope.outputs.anatomy == 'true' }}
         run: node scripts/test_hartslaglab_cycle.mjs
       - name: Check 3D anatomy geometry in Hartslaglab
+        if: ${{ steps.scope.outputs.anatomy == 'true' }}
         run: node scripts/test_hartslaglab_geometry.mjs
       - name: Verify anatomical atlas, licensing and navigation
         run: python -m unittest discover -s tests -p 'test_anatomie_publish.py' -v
@@ -212,37 +234,51 @@ jobs:
         run: python -m unittest discover -s tests -p "test_wihtml_publish.py" -v
 
       - name: Check LLM observatory source and menus
+        if: ${{ steps.scope.outputs.llm == 'true' }}
         run: python -m unittest discover -s tests -p 'test_llm_observatorium_source.py' -v
 
       - name: Check ABYSS source and mobile menu
         run: python -m unittest discover -s tests -p 'test_abyss_publish.py' -v
 
       - name: Check Science Observatory pilot publication
+        if: ${{ steps.scope.outputs.physics == 'true' }}
         run: python -m unittest discover -s tests -p 'test_science_observatory_publish.py' -v
       - name: Check adaptive mathematics and physics workspaces
+        if: ${{ steps.scope.outputs.physics == 'true' }}
         run: node --test tests/test_science_adaptive_workspaces.mjs
       - name: Check physics reference values and drawings
+        if: ${{ steps.scope.outputs.physics == 'true' }}
         run: node --test tests/test_science_physics_models.mjs
       - name: Check wave motion and optical models
+        if: ${{ steps.scope.outputs.physics == 'true' }}
         run: node --test tests/test_science_physics_round3.mjs
       - name: Check 53 proefspecifieke natuurkundeberekeningen
+        if: ${{ steps.scope.outputs.physics == 'true' }}
         run: node --test tests/test_science_physics_insights.mjs
       - name: Check physics source references and independent calculations
+        if: ${{ steps.scope.outputs.physics == 'true' }}
         run: node --test tests/test_science_physics_evidence.mjs
       - name: Check independent model references for the other 48 physics labs
+        if: ${{ steps.scope.outputs.physics == 'true' }}
         run: node --test tests/test_science_physics_reference_48.mjs
       - name: Check physics visuals against the simulated equations
+        if: ${{ steps.scope.outputs.physics == 'true' }}
         run: node --test tests/test_science_physics_visual_fidelity.mjs
       - name: Check physical graph axes and comparisons
+        if: ${{ steps.scope.outputs.physics == 'true' }}
         run: node --test tests/test_science_physical_graphs.mjs
       - name: Check animation, graph and measurement agreement
+        if: ${{ steps.scope.outputs.physics == 'true' }}
         run: node --test tests/test_science_graph_animation_alignment.mjs
       - name: Check three experiment-specific inquiry methods
+        if: ${{ steps.scope.outputs.physics == 'true' }}
         run: node --test tests/test_science_inquiry_variants.mjs
       - name: Check quality register for all 53 physics experiments
+        if: ${{ steps.scope.outputs.physics == 'true' }}
         run: node --test tests/test_science_quality_register.mjs
 
       - name: Check Melkweg Lab publication
+        if: ${{ steps.scope.outputs.melkweg == 'true' }}
         run: python -m unittest discover -s tests -p 'test_melkweg_lab_publish.py' -v
 
       - name: Verify EAIstudio and EAImesh source publication
