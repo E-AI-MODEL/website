@@ -51,6 +51,7 @@ if(host) {
   function update(id,status,message,error=null){
     const prior=states.get(id);
     if(!prior) return;
+    if(prior.status===status && prior.message===message && !error) return;
     const diagnosed=error?classifyError(error,id):null;
     states.set(id,{status,message:String(message).slice(0,180),code:diagnosed?.code||'',advice:diagnosed?.advice||'',cause:error?String(error?.message||error).slice(0,240):''});
     history.push({at:new Date().toISOString(),id,status,code:diagnosed?.code||''});
