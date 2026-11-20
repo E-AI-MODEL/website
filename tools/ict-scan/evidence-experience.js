@@ -77,7 +77,7 @@
       ['Externe bronstatus',external,'Verwijzingen met bevestigde externe onderbouwing'],
       ['FG-advies','Niet aangeleverd','Niet opgenomen in deze inventarisatie'],
       ['Besluit bevoegd gezag','Niet aangeleverd','Geen besluit in de aangeleverde bronnen']
-    ].map(([name,n,caption])=>'<div class="evidence-stat"><small>'+safe(name)+'</small><strong>'+fmt(n)+'</strong><span>'+safe(caption)+'</span></div>').join('');
+    ].map(([name,n,caption])=>'<div class="evidence-stat"><small>'+safe(name)+'</small><strong>'+(typeof n==='number'?fmt(n):safe(n))+'</strong><span>'+safe(caption)+'</span></div>').join('');
     const grouped=new Map();
     for(const record of controls){const group=record.domain||'Overige beheerpunten';if(!grouped.has(group))grouped.set(group,[]);grouped.get(group).push(record);}
     byId('privacyControls').innerHTML=[...grouped].map(([name,records],i)=>
