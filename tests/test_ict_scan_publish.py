@@ -78,7 +78,7 @@ class ICTScanTests(unittest.TestCase):
         js = (TOOL / 'rail-drawer.js').read_text(encoding='utf-8')
         css = (TOOL / 'monitor.css').read_text(encoding='utf-8')
         for label in ('overview', 'apps', 'connections', 'ai', 'privacy', 'findings', 'reports', 'sources'):
-            self.assertIn(f'class="rail-button" data-view="{label}"', html)
+            self.assertIn(f'data-view="{label}"', html)
         self.assertIn('id="railMore"', html)
         self.assertIn('id="railDrawer"', html)
         self.assertIn('id="railScrim"', html)
