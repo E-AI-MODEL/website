@@ -345,6 +345,45 @@
     $c('cardTypeFilter').value=model.current?.type||'apps';
     showList();showPane();
   }
+  function logbookRows(){
+    const rows=[];
+    const meta=state.metadata||{};
+    if(meta.firstInventoryStarted){
+      rows.push({id:'START-2026',type:null,at:meta.firstInventoryStarted+'T00:00:00',actor:meta.compiledBy||'Samensteller',name:'Inventarisatie gestart',
+        message:'Eerste inventarisatie van het applicatielandschap. Startdatum volgens GitHub-metadata.',initial:true});
+    }
+    for(const spec of SPECS){
+      for(const record of state[spec.store].values()){
+        for(const event of record.auditTrail||[]){
+          rows.push({id:record.id,type:spec.key,at:event.timestamp||'',actor:event.actor||'Onbekend',name:record.name||record.id,
+            message:(event.action||'Wijziging')+' · '+(event.fields||[]).map(label).join(', ')+(event.reason?' · '+event.reason:'')});
+        }
+      }
+    }
+    return rows.sort((a,b)=>String(b.at||'').localeCompare(String(a.at||'')));
+  }
+  function renderLogbook(){
+    const target=$c('logbookList');if(!target)return;
+    const rows=logbookRows(),query=$c('logbookSearch').value.trim().toLocaleLowerCase('nl-NL');
+    const visible=rows.filter(x=>(x.at+' '+x.actor+' '+x.name+' '+x.message).toLocaleLowerCase('nl-NL').includes(query));
+    $c('logbookCount').textContent=rows.filter(x=>!x.initial).length;
+    target.replaceChildren();
+    if(!visible.length){target.append(text('p','card-empty','Nog geen wijzigingsregels voor deze selectie.'));return;}
+    for(const event of visible){
+      const row=text('article','card-logbook-row');
+      const stamp=text('span','card-logbook-date',event.at?new Date(event.at).toLocaleDateString('nl-NL',{day:'numeric',month:'short',year:'numeric'}):'Datum onbekend');
+      const name=text('strong','',event.name),actor=text('small','',event.actor),message=text('p','',event.message);
+      row.append(stamp,name,actor,message);
+      if(event.type){
+        const link=text('button','card-text-action','Open kaart');
+        link.type='button';link.addEventListener('click',()=>open(event.type,event.id));row.append(link);
+      }
+      target.append(row);
+    }
+  }
+  const oldRenderSources=renderSources;
+  renderSources=function(){oldRenderSources();renderLogbook();};
+  $c('logbookSearch').addEventListener('input',renderLogbook);
   $c('cardOpen').addEventListener('click',launch);
   $c('cardEditorClose').addEventListener('click',close);
   $c('cardScrim').addEventListener('click',close);
@@ -383,5 +422,6 @@
     specs:SPECS.map(s=>({...s})),
     catalog:()=>model.catalog
   });
-  void init();
+  fillTypeSelect();
+  document.addEventListener('ict-scan:opened',()=>void init());
 })();
