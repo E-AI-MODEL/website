@@ -1,18 +1,14 @@
 name: Publiceer alleen de gewijzigde LEIF-pagina's
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/deploy-leif-quick.yml'
   workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: leif-direct-publish
-  cancel-in-progress: true
+  group: theory7-production
+  cancel-in-progress: false
 
 jobs:
   publish-leif:
