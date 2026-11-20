@@ -68,6 +68,50 @@ function acknowledgeArrow(){
 
 let scriptedPlayer = null;
 let scriptedAudioUrls = [null,null];
+let scriptedAudioChosen = [false,false];
+// Eenmalig kiezen is genoeg: bewaar de twee audiofragmenten lokaal in Safari.
+const scriptedDbName='delf-scene-audio-v1';
+function sceneDb(){
+  return new Promise((resolve,reject)=>{
+    if(!('indexedDB' in window))return reject(new Error('Lokale opslag niet beschikbaar'));
+    const req=indexedDB.open(scriptedDbName,1);
+    req.onupgradeneeded=()=>{if(!req.result.objectStoreNames.contains('audio'))req.result.createObjectStore('audio');};
+    req.onsuccess=()=>resolve(req.result);
+    req.onerror=()=>reject(req.error||new Error('Lokale opslag niet beschikbaar'));
+  });
+}
+async function saveSceneAudio(index,file){
+  const db=await sceneDb();
+  try {
+    await new Promise((resolve,reject)=>{
+      const tx=db.transaction('audio','readwrite');
+      tx.oncomplete=resolve;
+      tx.onerror=()=>reject(tx.error);
+      if(file)tx.objectStore('audio').put(file,index);
+      else tx.objectStore('audio').delete(index);
+    });
+  } finally {db.close();}
+}
+async function restoreSceneAudio(){
+  try {
+    const db=await sceneDb();
+    const values=await Promise.all([0,1].map(index=>new Promise((resolve,reject)=>{
+      const tx=db.transaction('audio','readonly');
+      const req=tx.objectStore('audio').get(index);
+      req.onsuccess=()=>resolve(req.result);
+      req.onerror=()=>reject(req.error);
+    })));
+    db.close();
+    values.forEach((blob,index)=>{
+      if(blob instanceof Blob && !scriptedAudioChosen[index]){
+        scriptedAudioUrls[index]=URL.createObjectURL(blob);
+      }
+    });
+    if(scriptedShowReady())scriptedFeedback('Twee opnamen teruggevonden. Klik op Voorbereiden.');
+  } catch {
+    // Browseropslag is optioneel. Handmatig kiezen blijft mogelijk.
+  }
+}
 function scriptedFeedback(message, problem=false) {
   feedback('scriptedStatus',message,problem?'bad':'good');
 }
@@ -97,10 +141,15 @@ for(const [index,id] of ['scriptedAudioOne','scriptedAudioTwo'].entries()){
   $(id).addEventListener('change',event=>{
     const file=event.target.files?.[0];
     if(scriptedAudioUrls[index]) URL.revokeObjectURL(scriptedAudioUrls[index]);
+    scriptedAudioChosen[index]=true;
     scriptedAudioUrls[index]=file?URL.createObjectURL(file):null;
     scriptedFeedback(scriptedShowReady()?'Beide opnamen klaar. Start voorstelling.':'Laad ook de andere Franse opname.',!scriptedShowReady());
+    void saveSceneAudio(index,file).catch(()=>{
+      scriptedFeedback('Opname gekozen, maar bewaren in Safari lukt niet. Na verversen opnieuw kiezen.',true);
+    });
   });
 }
+void restoreSceneAudio();
 function startScriptedShow(){
   if(scriptedMode!=='off' && scriptedMode!=='armed'){
     scriptedFeedback('De voorstelling loopt al. Gebruik Stop of Opnieuw om opnieuw te starten.',true);
