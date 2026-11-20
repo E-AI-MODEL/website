@@ -253,7 +253,7 @@
     const key=normalize(app.name);
     return [
       {key:'child',title:'Onderliggende toepassingen',entries:array(state.apps).filter(x=>x.id!==app.id&&(x.parent===app.id||normalize(x.parent||'')===key)),view:'apps'},
-      {key:'part',title:'Technische onderdelen',entries:array(state.parts).filter(x=>x.parent===app.id),view:''},
+      {key:'part',title:'Technische registraties',entries:array(state.parts).filter(x=>x.parent===app.id),view:''},
       {key:'ai',title:'Beschreven AI-functies',entries:array(state.ai).filter(x=>x.parentId===app.id),view:'ai'},
       {key:'entra',title:'Mogelijke Entra-matches',entries:array(state.connections).filter(x=>x.matchedId===app.id),view:'connections'}
     ].filter(g=>g.entries.length>0);
