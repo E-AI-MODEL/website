@@ -227,7 +227,7 @@ test('podium bereidt onderdelen samen voor zonder Terminal',()=>{
   assert.match(html,/Franse speech/);
   assert.match(main,/async function prepareShow\(\)/);
   assert.match(main,/await prepareTranslation\(\)/);
-  assert.match(main,/await \$\('loadPublicFrench'\)\.onclick\(\)/);
+  assert.doesNotMatch(main.slice(main.indexOf('async function prepareShow()'),main.indexOf("$('prepareShow').addEventListener")), /loadPublicFrench/);
 });
 test('Franse noodspeech kan zonder actieve vertaling starten',()=>{
   const part=main.slice(main.indexOf('function reserveFrenchSpeech()'),main.indexOf('function reserveTakeBack()'));
@@ -288,4 +288,22 @@ test('scène bevestigen met golf verandert de handmatige wachtstand niet',()=>{
   const key=main.slice(main.indexOf("if (event.code === 'ArrowRight')"));
   assert.match(key,/if\(scriptedMode!=='off'\)\{scriptedNext\(\);return;\}/);
   assert.match(key,/acknowledgeArrow\(\)/);
+});
+
+test('einde scene twee geeft vanzelf een golf zonder de microfoon te starten',()=>{
+  const block=main.slice(main.indexOf('function playScriptedScene('),main.indexOf('function scriptedNext()'));
+  assert.match(block,/scriptedMode='finished';\s*setPhase\('handback','JOUW NEDERLANDSE SLOT'\);\s*blankStage\(\);[\s\S]*?acknowledgeArrow\(\)/);
+  assert.doesNotMatch(block,/startMic\(/);
+  assert.doesNotMatch(block,/goFinish\(/);
+});
+test('microfoon is uit tijdens scene een, eigen antwoord, scene twee en slot',()=>{
+  const start=main.slice(main.indexOf('function startMic()'), main.indexOf('function stopMic()',main.indexOf('function startMic()')));
+  assert.match(start,/\['scene1','reply','scene2','finished'\]\.includes\(scriptedMode\)/);
+  const block=main.slice(main.indexOf('function playScriptedScene('),main.indexOf('function scriptedNext()'));
+  assert.match(block,/stopMic\(\);stopVoices\(\);stopScriptedPlayer\(\)/);
+});
+test('de pauzeknop stopt een vooraf opgenomen fragment zonder nieuwe stem aan te zetten',()=>{
+  const block=main.slice(main.indexOf('function togglePause()'),main.indexOf('function followAudioClock('));
+  assert.match(block,/scriptedPlayer\.pause\(\)/);
+  assert.match(block,/scriptedPlayer\.play\(\)/);
 });
