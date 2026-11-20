@@ -2832,6 +2832,11 @@ def build(sources: Path, out: Path) -> None:
         shutil.copytree(handoff_site, out / "houseoftalents", dirs_exist_ok=True)
         # Mirror under the existing Onderwijs in publishing directory.
         shutil.copytree(handoff_site, out / "onderwijsin" / "houseoftalents", dirs_exist_ok=True)
+    # Public EAIwork entry. Never publish backend code, credentials or private task data.
+    work_entry = repo_root / "work" / "index.html"
+    if not work_entry.is_file():
+        raise FileNotFoundError(f"EAIwork entry missing: {work_entry}")
+    write(out, "work/index.html", work_entry.read_text(encoding="utf-8"))
     # Standalone, unlisted LEIF reflection page. Keep its source untouched.
     leif_source = repo_root / "leif"
     if leif_source.is_dir():
