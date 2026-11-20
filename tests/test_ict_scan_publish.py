@@ -7,7 +7,7 @@ TOOL = ROOT / "tools" / "ict-scan"
 
 class ICTScanTests(unittest.TestCase):
     def test_files_exist(self):
-        for filename in ("index.html", "style.css", "app.js", "README.md"):
+        for filename in ("index.html", "style.css", "monitor.css", "app.js", "enhancements.js", "emmaus-logo.svg", "README.md"):
             self.assertTrue((TOOL / filename).is_file(), filename)
 
     def test_secret_not_security_and_404_first_digit(self):
@@ -24,6 +24,9 @@ class ICTScanTests(unittest.TestCase):
     def test_no_remote_scripts(self):
         html = (TOOL / "index.html").read_text(encoding="utf-8")
         self.assertIn('src="./app.js"', html)
+        self.assertIn('src="./enhancements.js"', html)
+        self.assertIn('href="./monitor.css"', html)
+        self.assertIn('src="./emmaus-logo.svg"', html)
         self.assertNotIn('<script src="http', html)
         self.assertNotIn('https://cdn.', html)
         self.assertIn('PDF-inhoud is niet beoordeeld', (TOOL / 'app.js').read_text(encoding='utf-8'))
@@ -32,6 +35,17 @@ class ICTScanTests(unittest.TestCase):
         builder = (ROOT / 'scripts' / 'build_site.py').read_text(encoding='utf-8')
         self.assertIn('ict_scan_source = repo_root / "tools" / "ict-scan"', builder)
         self.assertNotIn('"/tools/ict-scan/"', builder.split('urls.extend(')[-1])
+
+    def test_school_style_fixed_viewport_and_reports(self):
+        css = (TOOL / 'monitor.css').read_text(encoding='utf-8')
+        js = (TOOL / 'enhancements.js').read_text(encoding='utf-8')
+        self.assertIn('height:100dvh', css.replace(' ', ''))
+        self.assertIn('overflow:auto', css.replace(' ', ''))
+        self.assertIn('function renderReports()', js)
+        for report in ('schoolbreed','koppelingen','ai','privacy','controles'):
+            self.assertIn(report, js)
+        self.assertIn('indexedDB', js)
+        self.assertIn('snapshotWrite', js)
 
 if __name__ == '__main__':
     unittest.main()
