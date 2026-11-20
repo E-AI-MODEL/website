@@ -179,3 +179,20 @@ test('op iOS zichtbaar waarschuwen wanneer microfoon geen woorden herkent',()=>{
   assert.ok(main.includes('if (phase === \'live\') {\n    stopMic();'));
   assert.ok(main.includes('De microfoon kon na de Franse speech niet opnieuw starten'));
 });
+
+test('Franse speech kan per passage worden bediend, zonder Nederlandse stem als voorwaarde',()=>{
+  assert.ok(html.includes('id="nextFrenchPassage"'));
+  assert.ok(html.includes('id="previousFrenchPassage"'));
+  assert.ok(html.includes('id="speechProgress"'));
+  assert.ok(main.includes('function nextFrenchPassage()'));
+  assert.ok(main.includes('function previousFrenchPassage()'));
+  assert.ok(main.includes('frenchSegmentIndex = i + 1'));
+  assert.ok(main.includes("if (phase === 'french') nextFrenchPassage();"));
+  const block=main.slice(main.indexOf('function goInterrupt()'),main.indexOf('function goFrench()'));
+  assert.ok(block.includes('if (selectedDutchVoice)'));
+  assert.ok(block.includes('beginReplyWindow(now)'));
+  assert.ok(!block.includes("reportError('Selecteer eerst een Nederlandse stem.')"));
+  const handbackBlock=main.slice(main.indexOf('function goHandback()'),main.indexOf('function goFinish()'));
+  assert.ok(handbackBlock.includes('if (selectedDutchVoice)'));
+  assert.ok(!handbackBlock.includes('Nederlandse teruggavestem ontbreekt'));
+});
