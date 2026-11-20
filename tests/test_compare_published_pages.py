@@ -42,6 +42,32 @@ class ServerComparisonTests(unittest.TestCase):
         self.assertEqual("TOPO (eigen publicatie)", owner("topo/instellingen/index.html"))
         self.assertEqual("DELF (eigen publicatie)", owner("tools/delf-live/mobile-preview.html"))
 
+    def test_published_source_copies_and_eaispeak_remain_separate(self):
+        report = compare(self.root, self.list([
+            "/content/bronnen-page.html", "/tools/eaispeak/index.html"
+        ]), 0)
+        self.assertEqual(1, report["aantallen"]["bronkopieen_op_ftp"])
+        self.assertEqual(1, report["aantallen"]["eaispeak_buiten_build"])
+        self.assertEqual(0, report["aantallen"]["apart_gepubliceerd"])
+        labels = {x["bestand"]: x["beheer"] for x in report["alleen_ftp"]}
+        self.assertIn("Bronkopie", labels["content/bronnen-page.html"])
+        self.assertIn("EAIspeak", labels["tools/eaispeak/index.html"])
+
+    def test_partial_scan_does_not_claim_deeper_build_routes_are_missing(self):
+        deep = self.root / "tools/voorbeeld/extra/deeper/achter/index.html"
+        deep.parent.mkdir(parents=True)
+        deep.write_text("<html>Diep</html>", encoding="utf-8")
+        report = compare(self.root, self.list(), http_limit=0, max_depth=4)
+        self.assertNotIn("tools/voorbeeld/extra/deeper/achter/index.html", report["alleen_build"])
+        self.assertEqual(4, report["scan_diepte"])
+
+    def test_publication_checks_server_before_upload(self):
+        workflow = (ROOT / ".github/workflows/deploy-theory7.yml").read_text(encoding="utf-8")
+        self.assertLess(workflow.index("python scripts/compare_published_pages.py"),
+                        workflow.index("Publish assets before HTML"))
+        self.assertIn("find -d 10 /", workflow)
+        self.assertNotIn("mirror -R --delete", workflow)
+
     def test_restricted_locations_never_enter_report(self):
         report = compare(self.root, self.list(["/admin/secret.html", "/leif/beheer/index.html"]), 0)
         self.assertNotIn("admin/secret.html", [x["bestand"] for x in report["alleen_ftp"]])
