@@ -114,7 +114,7 @@ try {
   await page.locator('#jumpAiBeheer').click();
   assert.equal(await page.locator('#viewAi .scene-tab').count(),3,'AI-beheer moet onder AI staan');
   assert((await page.locator('#privacyControls .evidence-group').count())>=4,'Beheerpunten zijn niet gegroepeerd');
-  assert.equal(await page.locator('#viewAiScene2').isVisible(),true);
+  await page.locator('#viewAiScene2').waitFor({state:'visible'});
   await page.locator('#railMore').click();
   await page.locator('#roleModeAI').uncheck();
   assert.equal(await page.locator('.rail-button[data-view="ai"]').isVisible(),false);
