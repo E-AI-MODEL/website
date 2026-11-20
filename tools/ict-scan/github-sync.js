@@ -104,6 +104,41 @@
     assertNotCancelled(signal);
     return new File([bytes],entry.name,{type:'application/octet-stream'});
   }
+  function verifyManifest(entries,manifest,cfg) {
+    if(!Array.isArray(manifest?.dataFiles))return null; // Legacy or external GitHub source.
+    if(!manifest.dataFiles.length)throw Error('Het GitHub-manifest bevat geen bronbestanden.');
+    const expected=new Map();
+    for(const source of manifest.dataFiles){
+      if(!source||typeof source.path!=='string'||!source.path||source.path.includes('..')||source.path.startsWith('/'))throw Error('Ongeldig pad in manifest.');
+      const path=cfg.folder+'/'+source.path;
+      if(expected.has(path))throw Error('Dubbele bronverwijzing in manifest: '+source.path);
+      if(!/^[a-f0-9]{40}$/i.test(source.sha||''))throw Error('Geen controleerbare GitHub-SHA voor '+source.path);
+      expected.set(path,source);
+    }
+    if(entries.length!==expected.size)throw Error('GitHub bevat '+entries.length+' bronbestanden, maar het manifest vermeldt '+expected.size+'. Synchronisatie gestopt.');
+    for(const entry of entries){
+      const source=expected.get(entry.path);
+      if(!source)throw Error('Niet-geregistreerd bronbestand in GitHub: '+entry.path);
+      if(source.sha!==entry.sha)throw Error('Bronbestand '+source.path+' wijkt af van het manifest. Werk eerst manifest.json bij.');
+    }
+    return manifest.dataFiles;
+  }
+  function verifyCounts(spec){
+    if(!spec)return;
+    const mapping={apps:'apps',ai:'ai',connections:'connections',checks:'checks',parts:'parts',dpia:'dpia',aiControls:'aiControls',devices:'devices',additionalCandidates:'candidates',licenseReview:'licenseReview',workActions:'workActions',softwareReview:'softwareReview'};
+    const totals=new Map();
+    for(const entry of spec){
+      for(const [kind,n] of Object.entries(entry.recordCounts||{})){
+        if(!(kind in mapping))continue;
+        if(!Number.isSafeInteger(n)||n<0)throw Error('Ongeldig aantal '+kind+' in manifest.');
+        totals.set(kind,(totals.get(kind)||0)+n);
+      }
+    }
+    for(const [kind,n] of totals){
+      const actual=state[mapping[kind]].size;
+      if(actual!==n)throw Error('Controle van '+kind+' mislukt: '+actual+' ingelezen, '+n+' verwacht. Vorige gegevens worden hersteld.');
+    }
+  }
   function snapshotState() {
     const maps={};
     for(const k of ['apps','ai','connections','checks','devices','parts','dpia','aiControls','policyDocs','signals','candidates','licenseReview','workActions','softwareReview'])maps[k]=new Map(state[k]);
@@ -136,8 +171,8 @@
       showStatus('GitHub-map controleren…');
       const entries=await listFiles(cfg,token,abort.signal);
       assertNotCancelled(abort.signal);
-      let manifestMetadata=null;
-      if(entries.manifest){const manifestFile=await downloadFile(cfg,entries.manifest,token,abort.signal);const manifest=JSON.parse(await manifestFile.text());assertNotCancelled(abort.signal);if(manifest.schema!=='eai-school-ict-manifest-v1'||!manifest.metadata||typeof manifest.metadata!=='object')throw Error('Ongeldig metadata-bestand in GitHub.');manifestMetadata=manifest.metadata;}
+      let manifestMetadata=null,manifestSpec=null;
+      if(entries.manifest){const manifestFile=await downloadFile(cfg,entries.manifest,token,abort.signal);const manifest=JSON.parse(await manifestFile.text());assertNotCancelled(abort.signal);if(manifest.schema!=='eai-school-ict-manifest-v1'||!manifest.metadata||typeof manifest.metadata!=='object')throw Error('Ongeldig metadata-bestand in GitHub.');manifestMetadata=manifest.metadata;manifestSpec=verifyManifest(entries,manifest,cfg);}
       if(!entries.length){if(manifestMetadata){state.metadata=manifestMetadata;renderAll();}showStatus('GitHub is bereikbaar en de metadata zijn gelezen. Er staan nog geen applicatiebronnen in '+cfg.folder+'.','warning');return;}
       // Always reapply the selected GitHub revision. A local import may have changed
       // the dashboard since the last sync even when the remote file SHAs are unchanged.
@@ -172,6 +207,7 @@
           }
         }
         assertNotCancelled(abort.signal);
+        if(replacing)verifyCounts(manifestSpec);
         state.ready=state.apps.size+state.connections.size+state.ai.size+state.checks.size+state.signals.size+state.devices.size+state.parts.size>0;
         buildDerived();
         state.view='overview';
@@ -182,7 +218,7 @@
       const msg=files.length+' GitHub-bestanden geladen ('+date+'). '+state.apps.size+' toepassingen, '+state.ai.size+' AI-functies, '+state.connections.size+' Entra-koppelingen.';
       $('githubSyncSummary').hidden=false;
       $('githubSyncSummary').textContent=msg;
-      showStatus('Synchronisatie geslaagd. '+files.length+' bestanden bijgewerkt.','success');
+      showStatus('Synchronisatie geslaagd. '+files.length+' bestanden ingelezen'+(manifestSpec&&replacing?' en aantallen gecontroleerd met manifest.json':'')+'.','success');
       toast('GitHub-gegevens ingelezen. Er is niets naar GitHub geüpload.');
     }catch(error){
       if(error.name==='AbortError')showStatus('Synchronisatie afgebroken. Het bestaande overzicht is behouden.','warning');
