@@ -227,7 +227,7 @@ test('podium bereidt onderdelen samen voor zonder Terminal',()=>{
   assert.match(html,/Franse speech/);
   assert.match(main,/async function prepareShow\(\)/);
   assert.match(main,/await prepareTranslation\(\)/);
-  assert.match(main,/await \$\('loadPublicFrench'\)\.onclick\(\)/);
+  assert.doesNotMatch(main.slice(main.indexOf('async function prepareShow()'),main.indexOf("$('prepareShow').addEventListener")), /loadPublicFrench/);
 });
 test('Franse noodspeech kan zonder actieve vertaling starten',()=>{
   const part=main.slice(main.indexOf('function reserveFrenchSpeech()'),main.indexOf('function reserveTakeBack()'));
@@ -267,4 +267,52 @@ test('Scène-afspelen gebruikt geluidsbestanden, niet browserstem of AI-model',(
   assert.match(part,/player\.play\(\)/);
   assert.doesNotMatch(part,/speechSynthesis\.speak/);
   assert.doesNotMatch(part,/french\.stream/);
+});
+
+test('rechterpijl bevestigt de handeling met een subtiele visuele golf',()=>{
+  const css=readFileSync(new URL('../cloud-shell.css',import.meta.url),'utf8');
+  assert.match(html,/id="arrowWave" class="arrow-wave" aria-hidden="true"/);
+  assert.match(css,/\.arrow-wave\.is-pulsing/);
+  assert.match(css,/@keyframes delf-arrow-wave/);
+  assert.match(css,/pointer-events:none/);
+  assert.match(main,/function acknowledgeArrow\(\)/);
+  assert.match(main,/wave\.classList\.remove\('is-pulsing'\)/);
+  assert.match(main,/wave\.classList\.add\('is-pulsing'\)/);
+});
+test('scène bevestigen met golf verandert de handmatige wachtstand niet',()=>{
+  const block=main.slice(main.indexOf('function scriptedNext()'),main.indexOf("$('scriptedStart').addEventListener"));
+  assert.match(block,/acknowledgeArrow\(\)/);
+  assert.match(block,/if\(scriptedMode==='armed'\)playScriptedScene\(0\)/);
+  assert.match(block,/scriptedMode==='reply'\)playScriptedScene\(1\)/);
+  assert.doesNotMatch(block,/setTimeout\(/);
+  const key=main.slice(main.indexOf("if (event.code === 'ArrowRight')"));
+  assert.match(key,/if\(scriptedMode!=='off'\)\{scriptedNext\(\);return;\}/);
+  assert.match(key,/acknowledgeArrow\(\)/);
+});
+
+test('einde scene twee geeft vanzelf een golf zonder de microfoon te starten',()=>{
+  const block=main.slice(main.indexOf('function playScriptedScene('),main.indexOf('function scriptedNext()'));
+  assert.match(block,/scriptedMode='finished';\s*setPhase\('handback','JOUW NEDERLANDSE SLOT'\);\s*blankStage\(\);[\s\S]*?acknowledgeArrow\(\)/);
+  assert.doesNotMatch(block,/startMic\(/);
+  assert.doesNotMatch(block,/goFinish\(/);
+});
+test('microfoon is uit tijdens scene een, eigen antwoord, scene twee en slot',()=>{
+  const start=main.slice(main.indexOf('function startMic()'), main.indexOf('function stopMic()',main.indexOf('function startMic()')));
+  assert.match(start,/\['scene1','reply','scene2','finished'\]\.includes\(scriptedMode\)/);
+  const block=main.slice(main.indexOf('function playScriptedScene('),main.indexOf('function scriptedNext()'));
+  assert.match(block,/stopMic\(\);stopVoices\(\);stopScriptedPlayer\(\)/);
+});
+test('de pauzeknop stopt een vooraf opgenomen fragment zonder nieuwe stem aan te zetten',()=>{
+  const block=main.slice(main.indexOf('function togglePause()'),main.indexOf('function followAudioClock('));
+  assert.match(block,/scriptedPlayer\.pause\(\)/);
+  assert.match(block,/scriptedPlayer\.play\(\)/);
+});
+
+test('Franse scene-opnamen blijven zonder externe hosting lokaal in Safari',()=>{
+  const block=main.slice(main.indexOf('const scriptedDbName='),main.indexOf('function scriptedFeedback('));
+  assert.match(block,/indexedDB\.open\(scriptedDbName,1\)/);
+  assert.match(block,/tx\.objectStore\('audio'\)\.put\(file,index\)/);
+  assert.match(block,/tx\.objectStore\('audio'\)\.get\(index\)/);
+  assert.match(block,/!scriptedAudioChosen\[index\]/);
+  assert.match(main,/void restoreSceneAudio\(\)/);
 });

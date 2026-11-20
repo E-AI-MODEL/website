@@ -58,8 +58,60 @@ let reserveSpeechActive = false;
 let frenchSegmentIndex = 0;
 let frenchSegmentTotal = 0;
 let scriptedMode = 'off'; // off | armed | scene1 | reply | scene2 | finished
+function acknowledgeArrow(){
+  const wave=$('arrowWave');
+  if(!wave)return;
+  wave.classList.remove('is-pulsing');
+  void wave.offsetWidth; // iedere druk geeft een nieuwe subtiele golf
+  wave.classList.add('is-pulsing');
+}
+
 let scriptedPlayer = null;
 let scriptedAudioUrls = [null,null];
+let scriptedAudioChosen = [false,false];
+// Eenmalig kiezen is genoeg: bewaar de twee audiofragmenten lokaal in Safari.
+const scriptedDbName='delf-scene-audio-v1';
+function sceneDb(){
+  return new Promise((resolve,reject)=>{
+    if(!('indexedDB' in window))return reject(new Error('Lokale opslag niet beschikbaar'));
+    const req=indexedDB.open(scriptedDbName,1);
+    req.onupgradeneeded=()=>{if(!req.result.objectStoreNames.contains('audio'))req.result.createObjectStore('audio');};
+    req.onsuccess=()=>resolve(req.result);
+    req.onerror=()=>reject(req.error||new Error('Lokale opslag niet beschikbaar'));
+  });
+}
+async function saveSceneAudio(index,file){
+  const db=await sceneDb();
+  try {
+    await new Promise((resolve,reject)=>{
+      const tx=db.transaction('audio','readwrite');
+      tx.oncomplete=resolve;
+      tx.onerror=()=>reject(tx.error);
+      if(file)tx.objectStore('audio').put(file,index);
+      else tx.objectStore('audio').delete(index);
+    });
+  } finally {db.close();}
+}
+async function restoreSceneAudio(){
+  try {
+    const db=await sceneDb();
+    const values=await Promise.all([0,1].map(index=>new Promise((resolve,reject)=>{
+      const tx=db.transaction('audio','readonly');
+      const req=tx.objectStore('audio').get(index);
+      req.onsuccess=()=>resolve(req.result);
+      req.onerror=()=>reject(req.error);
+    })));
+    db.close();
+    values.forEach((blob,index)=>{
+      if(blob instanceof Blob && !scriptedAudioChosen[index]){
+        scriptedAudioUrls[index]=URL.createObjectURL(blob);
+      }
+    });
+    if(scriptedShowReady())scriptedFeedback('Twee opnamen teruggevonden. Klik op Voorbereiden.');
+  } catch {
+    // Browseropslag is optioneel. Handmatig kiezen blijft mogelijk.
+  }
+}
 function scriptedFeedback(message, problem=false) {
   feedback('scriptedStatus',message,problem?'bad':'good');
 }
@@ -89,11 +141,20 @@ for(const [index,id] of ['scriptedAudioOne','scriptedAudioTwo'].entries()){
   $(id).addEventListener('change',event=>{
     const file=event.target.files?.[0];
     if(scriptedAudioUrls[index]) URL.revokeObjectURL(scriptedAudioUrls[index]);
+    scriptedAudioChosen[index]=true;
     scriptedAudioUrls[index]=file?URL.createObjectURL(file):null;
     scriptedFeedback(scriptedShowReady()?'Beide opnamen klaar. Start voorstelling.':'Laad ook de andere Franse opname.',!scriptedShowReady());
+    void saveSceneAudio(index,file).catch(()=>{
+      scriptedFeedback('Opname gekozen, maar bewaren in Safari lukt niet. Na verversen opnieuw kiezen.',true);
+    });
   });
 }
+void restoreSceneAudio();
 function startScriptedShow(){
+  if(scriptedMode!=='off' && scriptedMode!=='armed'){
+    scriptedFeedback('De voorstelling loopt al. Gebruik Stop of Opnieuw om opnieuw te starten.',true);
+    return;
+  }
   if(!scriptedShowReady()){
     scriptedFeedback('Kies eerst de audio van scène 1 en scène 2 bij Audio voor de voorstelling.',true);
     $('scriptedShow').querySelector('details').open=true;
@@ -136,6 +197,8 @@ function playScriptedScene(index) {
       scriptedMode='finished';
       setPhase('handback','JOUW NEDERLANDSE SLOT');
       blankStage();
+      // Zonder knopdruk: dezelfde zachte golf geeft aan dat jij weer aan zet bent.
+      acknowledgeArrow();
       scriptedFeedback('De Franse spreker is klaar. Rustig wit podium. Jij sluit zelf af.');
     }
   };
@@ -155,6 +218,7 @@ function playScriptedScene(index) {
   });
 }
 function scriptedNext(){
+  acknowledgeArrow();
   if(scriptedMode==='armed')playScriptedScene(0);
   else if(scriptedMode==='reply')playScriptedScene(1);
   else if(scriptedMode==='scene1'||scriptedMode==='scene2') scriptedFeedback('Deze scène speelt. Wacht tot de stem klaar is.');
@@ -679,6 +743,11 @@ function translatePreview(fragment) {
   }, 180);
 }
 function startMic() {
+  // Tussen beide opgenomen scènes en tijdens het Nederlandse antwoord blijft de microfoon uit.
+  if (['scene1','reply','scene2','finished'].includes(scriptedMode)) {
+    feedback('runtimeStatus','De microfoon blijft uit tijdens de gescripte scènes en jouw antwoord.');
+    return false;
+  }
   const SR = globalThis.SpeechRecognition || globalThis.webkitSpeechRecognition;
   if (!SR) { componentStatus('microphoneStatus','unavailable','Geen spraakherkenning',new Error('SpeechRecognition ontbreekt'));reportError('Spraakherkenning ontbreekt. Er wordt geen tekst verzonnen.'); return false; }
   stopMic();
@@ -946,6 +1015,16 @@ function stopVoices() {
   stopReplyMic();
 }
 function togglePause() {
+  if (scriptedPlayer && (scriptedMode==='scene1' || scriptedMode==='scene2')) {
+    if (scriptedPlayer.paused) {
+      void scriptedPlayer.play().catch(e => reportError('Opname hervatten: '+String(e?.message||e)));
+      feedback('phaseStatus','Opname hervat');
+    } else {
+      scriptedPlayer.pause();
+      feedback('phaseStatus','Opname gepauzeerd');
+    }
+    return;
+  }
   if (!['interrupted', 'french', 'handback'].includes(phase)) return;
   paused = !paused;
   if (paused) pauseAuto(); else resumeAuto();
@@ -1111,30 +1190,25 @@ function reserveTakeBack(){
   else goReset();
 }
 async function prepareShow(){
-  if(phase!=='intro') {feedback('runtimeStatus','Druk eerst op Opnieuw. Daarna kun je voorbereiden.');return;}
+  if(phase!=='intro') {feedback('runtimeStatus','Druk eerst op Opnieuw om de vertaling opnieuw voor te bereiden.');return;}
   const button=$('prepareShow');
   button.disabled=true;
   const status=$('showReadyStatus');
   try{
-    status.textContent='Vertaling laden…';
+    status.textContent='Nederlandse spraak naar Franse tekst laden…';
     if($('translationEngine').value==='chrome' && typeof globalThis.Translator==='undefined') $('translationEngine').value='onnx';
     const translated=await prepareTranslation();
-    status.textContent=translated?'Franse stem laden…':'Vertaling niet beschikbaar. Franse stem proberen…';
-    if(!french) await $('loadPublicFrench').onclick();
-    if(translated&&french){
-      status.textContent='Klaar. Start Nederlands of Franse spreker.';
-      feedback('runtimeStatus','Alles voorbereid. Start Nederlands of de Franse spreker.','good');
-    }else if(french){
-      status.textContent='Franse stem klaar. Live vertaling niet beschikbaar.';
-      feedback('runtimeStatus','De Franse spreker is beschikbaar. Live vertaling nog niet.','bad');
-    }else{
-      status.textContent='Voorbereiding niet volledig. Bekijk Taal of Stem.';
-      feedback('runtimeStatus','Voorbereiding niet volledig. Bekijk de melding bij Taal of Stem.','bad');
+    if(translated) {
+      status.textContent='Franse ondertiteling klaar. Kies twee opnamen en start de voorstelling.';
+      feedback('runtimeStatus','Franse ondertiteling klaar. De opgenomen scènes hebben geen stemmodel nodig.','good');
+    } else {
+      status.textContent='Vertaling niet beschikbaar. Kijk bij Instellingen.';
+      feedback('runtimeStatus','De vertaling kon niet laden. Kijk bij Instellingen.','bad');
     }
-  }catch(error){
-    status.textContent='Voorbereiding mislukt: '+String(error?.message||error);
+  } catch(error) {
+    status.textContent='Vertaling laden mislukt: '+String(error?.message||error);
     reportError('Voorbereiden: '+String(error?.message||error));
-  }finally{button.disabled=false;}
+  } finally {button.disabled=false;}
 }
 $('prepareShow').addEventListener('click',prepareShow);
 function goStart() {
@@ -1269,6 +1343,7 @@ document.addEventListener('keydown', event => {
   if (event.code === 'ArrowRight') {
     event.preventDefault();
     if(scriptedMode!=='off'){scriptedNext();return;}
+    acknowledgeArrow();
     if (phase === 'french') nextFrenchPassage();
     else if (phase === 'live' && !closing) reserveFrenchSpeech();
     return;
