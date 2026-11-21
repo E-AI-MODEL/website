@@ -125,7 +125,9 @@ class NativeOpusCodec:
         encoded = bytearray()
         while self.pending.size >= self.frame_size:
             chunk = self.pending[:self.frame_size]
-            encoded.extend(self.encoder.append_pcm(chunk))
+            packet = self.encoder.append_pcm(chunk)
+            if packet:
+                encoded.extend(packet)
             self.pending = self.pending[self.frame_size:]
         return b"\x01" + bytes(encoded) if encoded else b""
 
@@ -133,7 +135,7 @@ class NativeOpusCodec:
         if not native_opus:
             return b""
         pcm = self.decoder.append_bytes(native_opus)
-        if pcm.size == 0:
+        if pcm is None or pcm.size == 0:
             return b""
         scaled = np.rint(np.clip(pcm, -1.0, 1.0) * 32767).astype("<i2")
         return scaled.tobytes()
