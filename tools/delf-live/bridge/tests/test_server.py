@@ -212,3 +212,22 @@ async def test_probe_checks_real_native_handshake_without_transmitting_microphon
                     assert "ready" in kinds
                     assert "end" in kinds
     assert received == [], "Probe must never send user audio to the native model"
+
+
+
+def test_real_opus_encoded_audio_can_be_decoded_back_to_pcm():
+    """Tests the actual native audio framing, not a fake codec."""
+    codec = NativeOpusCodec(48000)
+    samples = (np.sin(np.arange(48000 * 2, dtype=np.float32) * .047) * 10000).astype("<i2")
+    packets = []
+    for index in range(0, len(samples), 2048):
+        packet = codec.browser_to_native(samples[index:index + 2048].tobytes())
+        if packet:
+            assert packet[0] == 1
+            packets.append(packet[1:])
+    assert len(packets) >= 5, "Opus stream must emit multiple audio chunks"
+    decoded = [codec.native_to_browser(packet) for packet in packets]
+    combined = b"".join(decoded)
+    assert len(combined) > 4800, "Opus must produce actual PCM16 audio, not only a ready signal"
+    assert len(combined) % 2 == 0
+    assert np.frombuffer(combined, dtype="<i2").std() > 100, "Audio must not be all silence"
