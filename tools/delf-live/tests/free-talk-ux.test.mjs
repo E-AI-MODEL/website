@@ -23,7 +23,8 @@ test('browserstemmen worden per taal en naam aangeboden',()=>{
   assert.ok(js.includes('speechSynthesis.getVoices()'));
   assert.ok(js.includes('voiceschanged'));
   assert.ok(js.includes('voices.find(v=>v.voiceURI===voiceName.value)'));
-  assert.ok(js.includes('outputLang.value.slice(0,2)'));
+  assert.ok(js.includes('voiceLanguage(outputLang.value)'));
+  assert.ok(js.includes('availableVoices(window.speechSynthesis,language)'));
 });
 
 test('handsfree heeft een stopmogelijkheid en luistert na antwoord',()=>{
