@@ -61,7 +61,7 @@ Dit is een bewust vermomde ingang en geen server-side login. Een echte 404 van d
 
 Onder **Bronnen** staat **Sync data met GitHub**. Deze functie leest uitsluitend gegevens uit GitHub en verandert geen bestanden in de repository. De GitHub-map, branch/tag en repository zijn instelbaar. Dezelfde invoer voor XLSX, CSV, JSON, DOCX en PDF wordt gebruikt als bij lokale bestanden; PDF's worden alleen geregistreerd, niet inhoudelijk beoordeeld.
 
-- De standaardbron is de openbare repository `E-AI-MODEL/website`, map `ict-scan/bronnen` op `main`. Een openbare repository kan zonder token worden gelezen. Publiceer geen wachtwoorden, toegangssleutels of ruwe accountgegevens. Voor andere, afgeschermde bronmappen kan een privé-repository met beperkte leestoken worden gebruikt.
+- De standaardbron is de openbare repository `E-AI-MODEL/website`, map `tools/ict-scan/bronnen` op `main`. Een openbare repository kan zonder token worden gelezen. Publiceer geen wachtwoorden, toegangssleutels of ruwe accountgegevens. Voor andere, afgeschermde bronmappen kan een privé-repository met beperkte leestoken worden gebruikt.
 - Voor een privé-repository wordt een tijdelijke GitHub fine-grained access token gevraagd, beperkt tot die repository met **Contents: Read**. De token gaat alleen met GET-verzoeken naar `https://api.github.com`, wordt niet opgeslagen, niet meegestuurd in exports en na de synchronisatie uit het scherm gewist. Gebruik geen accountbrede of schrijfgerechtigde token.
 - Alle bestanden worden eerst opgehaald en pas daarna ingelezen. Bij een importfout of annulering tijdens het verwerken wordt de vorige werkstand teruggezet. Bij een vooraf gevuld overzicht vraagt **Vervangen** om bevestiging, ook wanneer dezelfde GitHub-versie eerder is gesynchroniseerd.
 - De scanner leest een map met ondersteunde bronbestanden (ook submappen, begrensd). Bij een GitHub-lijst met 1.000 items weigert de synchronisatie om onvolledige data ongemerkt als compleet te presenteren. Beperk de map tot de te gebruiken nulmeting. Een `README.md` en andere documenten zonder ondersteunde extensie worden overgeslagen.
@@ -69,7 +69,7 @@ Onder **Bronnen** staat **Sync data met GitHub**. Deze functie leest uitsluitend
 - Er wordt niet automatisch gesynchroniseerd of geüpload. Iedere handmatige synchronisatie verwerkt de gekozen GitHub-versie opnieuw, ook na lokale aanpassingen. Lokaal opslaan blijft een afzonderlijke handeling.
 - Voor een snelle openbare *technische test* bestaat `tests/fixtures/ict-scan-github-sync/demo.json`; dit bevat uitsluitend fictieve gegevens. Nooit gebruiken als schoolinventaris.
 
-De publieke repository `E-AI-MODEL/website` bevat nu een gestructureerde 2026-inventaris in `ict-scan/bronnen/2026-applicatielandschap.json` en een gecontroleerd werkregister in `ict-scan/bronnen/2026-werkregister.json`. Beide bestanden worden beschreven in `manifest.json`. De ruwe Entra-roltoewijzingen en persoonlijke accountgegevens zijn niet gepubliceerd. De verborgen 404-ingang is geen toegangsbeveiliging.
+De publieke repository `E-AI-MODEL/website` bevat nu een gestructureerde 2026-inventaris in `tools/ict-scan/bronnen/2026-applicatielandschap.json` en een gecontroleerd werkregister in `tools/ict-scan/bronnen/2026-werkregister.json`. Beide bestanden worden beschreven in `manifest.json`. De ruwe Entra-roltoewijzingen en persoonlijke accountgegevens zijn niet gepubliceerd. De verborgen 404-ingang is geen toegangsbeveiliging.
 
 Voor een technische test: `node --test tests/test_ict_scan_github_sync.mjs`. De websitebuild controleert ook dat `github-sync.js` wordt gepubliceerd en dat de toegestane netwerkverbinding beperkt blijft tot `https://api.github.com`.
 
@@ -97,7 +97,7 @@ De zijbalk, de acht schermen en de uitgebreide beschrijvingen blijven behouden. 
 
 De bronpopulaties blijven gescheiden: 61 basisregistraties, 76 beschreven AI-functies, 93 Entra-registraties en 76 aanvullende kandidaten volgens de gecontroleerde bronnen uit november 2026. De grafieken presenteren deze groepen niet als het definitieve aantal daadwerkelijk gebruikte applicaties.
 
-De GitHub-sync vergelijkt de bestanden en de aantallen met het manifest in ict-scan/bronnen. Een verschil tussen het manifest en de GitHub-versie stopt de import; bij een mislukte verwerking wordt de vorige stand hersteld. De bronbestanden zelf worden niet veranderd vanuit de browser. De nieuwe grafieken zijn uitgevoerd met HTML, CSS en JavaScript, zonder externe bibliotheken of extra netwerkverzoeken.
+De GitHub-sync vergelijkt de bestanden en de aantallen met het manifest in tools/ict-scan/bronnen. Een verschil tussen het manifest en de GitHub-versie stopt de import; bij een mislukte verwerking wordt de vorige stand hersteld. De bronbestanden zelf worden niet veranderd vanuit de browser. De nieuwe grafieken zijn uitgevoerd met HTML, CSS en JavaScript, zonder externe bibliotheken of extra netwerkverzoeken.
 
 ## Eén JSON-kaart, wettelijke kaders en logboek
 
@@ -140,7 +140,7 @@ De bestaande zoekfunctie in de uitklapbare zijbalk heeft een antwoordweergave. E
 De drie antwoordroutes zijn:
 - **Geregistreerde feiten:** antwoorden op vragen over een specifieke toepassing, zoals verantwoordelijke, omschrijving, gebruikte gegevens, verwerkersafspraken, DPIA-status, bron, AI-functies of Entra-matches. Een niet-bevestigd veld blijft expliciet niet vastgesteld.
 - **Berekende selecties:** aantallen en lijsten uit de geladen JSON-registers. Bijvoorbeeld toepassingen met beschreven AI-functies, open verantwoordelijken, Entra-matches, printersoftware en telefonie.
-- **Vaste FAQ's:** brongebonden, redactioneel nog te beoordelen antwoorden uit het afzonderlijke bestand ict-scan/bronnen/2026-faq.json. Iedere kaart bevat een ID, hoofdvraag, alternatieve vragen, antwoord, onderwerp, status en bronverwijzing.
+- **Vaste FAQ's:** brongebonden, redactioneel nog te beoordelen antwoorden uit het afzonderlijke bestand tools/ict-scan/bronnen/2026-faq.json. Iedere kaart bevat een ID, hoofdvraag, alternatieve vragen, antwoord, onderwerp, status en bronverwijzing.
 
 De FAQ is als dertiende register beschikbaar via dezelfde JSON-kaarteneditor. Concepten worden voor de FAQ op dezelfde manier gecontroleerd en via een pull request voorgesteld als voor de andere twaalf registers. Het manifest bevat de SHA en het aantal FAQ's; de GitHub-synchronisatie weigert afwijkende bronbestanden.
 

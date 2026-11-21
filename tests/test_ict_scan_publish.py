@@ -96,6 +96,20 @@ class ICTScanTests(unittest.TestCase):
         self.assertIn('await importOneFile(file)', js)
         self.assertIn('restoreState(backup)', js)
 
+    def test_sources_share_project_folder_but_do_not_ship_in_site(self):
+        data = TOOL / "bronnen"
+        self.assertTrue(data.is_dir())
+        for name in ("manifest.json", "2026-applicatielandschap.json", "2026-werkregister.json", "2026-faq.json"):
+            self.assertTrue((data / name).is_file(), name)
+        self.assertFalse((ROOT / "ict-scan").exists(), "Verouderde bronmap op repository-root")
+        builder = (ROOT / "scripts" / "build_site.py").read_text(encoding="utf-8")
+        self.assertNotIn("shutil.copytree(ict_scan_source", builder)
+        self.assertIn('destination_file = out / "tools" / "ict-scan" / filename', builder)
+        html = (TOOL / "index.html").read_text(encoding="utf-8")
+        github = (TOOL / "record-github.js").read_text(encoding="utf-8")
+        self.assertIn('value="tools/ict-scan/bronnen"', html)
+        self.assertIn("const SOURCE_DIR='tools/ict-scan/bronnen/'", github)
+
     def test_routes_copied_by_builder(self):
         builder = (ROOT / 'scripts' / 'build_site.py').read_text(encoding='utf-8')
         self.assertIn('ict_scan_source = repo_root / "tools" / "ict-scan"', builder)

@@ -12,7 +12,7 @@
     ['devices','2026-applicatielandschap.json'],['licenseReview','2026-applicatielandschap.json'],
     ['workActions','2026-werkregister.json'],['softwareReview','2026-werkregister.json'],['faqs','2026-faq.json']
   ]);
-  const SOURCE_DIR='ict-scan/bronnen/';
+  const SOURCE_DIR='tools/ict-scan/bronnen/';
   const equals=(a,b)=>JSON.stringify(a??null)===JSON.stringify(b??null);
   const clone=value=>JSON.parse(JSON.stringify(value));
   const safeJson=x=>JSON.stringify(x,null,2)+'\n';

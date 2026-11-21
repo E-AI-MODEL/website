@@ -4,10 +4,10 @@ import {readFileSync} from 'node:fs';
 import {createHash} from 'node:crypto';
 import {resolve} from 'node:path';
 
-const source=JSON.parse(readFileSync(resolve('ict-scan/bronnen/2026-applicatielandschap.json'),'utf8'));
-const manifest=JSON.parse(readFileSync(resolve('ict-scan/bronnen/manifest.json'),'utf8'));
-const work=JSON.parse(readFileSync(resolve('ict-scan/bronnen/2026-werkregister.json'),'utf8'));
-const faq=JSON.parse(readFileSync(resolve('ict-scan/bronnen/2026-faq.json'),'utf8'));
+const source=JSON.parse(readFileSync(resolve('tools/ict-scan/bronnen/2026-applicatielandschap.json'),'utf8'));
+const manifest=JSON.parse(readFileSync(resolve('tools/ict-scan/bronnen/manifest.json'),'utf8'));
+const work=JSON.parse(readFileSync(resolve('tools/ict-scan/bronnen/2026-werkregister.json'),'utf8'));
+const faq=JSON.parse(readFileSync(resolve('tools/ict-scan/bronnen/2026-faq.json'),'utf8'));
 
 const html=readFileSync(resolve('tools/ict-scan/index.html'),'utf8');
 const app=readFileSync(resolve('tools/ict-scan/app.js'),'utf8');
@@ -73,9 +73,9 @@ test('FAQ-registraties en hun bronnen zijn afzonderlijk gecontroleerd',()=>{
 
 test('Manifest-SHA controleert de exacte publicatiebestanden',()=>{
   const sources=[
-    ['2026-applicatielandschap.json',readFileSync(resolve('ict-scan/bronnen/2026-applicatielandschap.json'))],
-    ['2026-werkregister.json',readFileSync(resolve('ict-scan/bronnen/2026-werkregister.json'))],
-    ['2026-faq.json',readFileSync(resolve('ict-scan/bronnen/2026-faq.json'))]
+    ['2026-applicatielandschap.json',readFileSync(resolve('tools/ict-scan/bronnen/2026-applicatielandschap.json'))],
+    ['2026-werkregister.json',readFileSync(resolve('tools/ict-scan/bronnen/2026-werkregister.json'))],
+    ['2026-faq.json',readFileSync(resolve('tools/ict-scan/bronnen/2026-faq.json'))]
   ];
   for(const [name,bytes] of sources){
     const expected=createHash('sha1').update('blob '+bytes.length+'\0').update(bytes).digest('hex');

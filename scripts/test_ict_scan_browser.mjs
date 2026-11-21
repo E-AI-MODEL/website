@@ -6,20 +6,20 @@ import {resolve} from 'node:path';
 
 const root=resolve(process.argv[2]||'site-build');
 const base='http://127.0.0.1:8797';
-const manifest=JSON.parse(readFileSync('ict-scan/bronnen/manifest.json','utf8'));
+const manifest=JSON.parse(readFileSync('tools/ict-scan/bronnen/manifest.json','utf8'));
 const sources=new Map();
 const listing=[];
 for(const source of manifest.dataFiles){
- const path='ict-scan/bronnen/'+source.path;
+ const path='tools/ict-scan/bronnen/'+source.path;
  const content=readFileSync(path);
  const sha=source.sha;
  sources.set(sha,content);
  listing.push({type:'file',name:source.path,path,sha,size:content.length});
 }
-const manifestContent=readFileSync('ict-scan/bronnen/manifest.json');
+const manifestContent=readFileSync('tools/ict-scan/bronnen/manifest.json');
 const manifestSha='f'.repeat(40);
 sources.set(manifestSha,manifestContent);
-listing.push({type:'file',name:'manifest.json',path:'ict-scan/bronnen/manifest.json',sha:manifestSha,size:manifestContent.length});
+listing.push({type:'file',name:'manifest.json',path:'tools/ict-scan/bronnen/manifest.json',sha:manifestSha,size:manifestContent.length});
 const server=spawn('python3',['-m','http.server','8797','--bind','127.0.0.1','--directory',root],{stdio:'ignore'});
 let browser;
 const cors={
@@ -45,7 +45,7 @@ try {
    const url=new URL(route.request().url());
    if(route.request().method()==='OPTIONS'){await route.fulfill({status:204,headers:cors});return;}
    let data;
-   if(url.pathname.endsWith('/contents/ict-scan/bronnen'))data=listing;
+   if(url.pathname.endsWith('/contents/tools/ict-scan/bronnen'))data=listing;
    else if(url.pathname.includes('/git/blobs/')){
     const sha=url.pathname.split('/').pop();
     assert(sources.has(sha),'Onverwachte GitHub SHA: '+sha);

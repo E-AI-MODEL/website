@@ -2842,14 +2842,6 @@ def build(sources: Path, out: Path) -> None:
     if leif_source.is_dir():
         shutil.copytree(leif_source, out / "leif", dirs_exist_ok=True)
     finish_generated_pages(out)
-    # Standalone local-only school ICT scan. Not part of navigation or sitemap.
-    ict_scan_source = repo_root / "tools" / "ict-scan"
-    if ict_scan_source.is_dir():
-        for name in ("index.html", "style.css", "app.js"):
-            if not (ict_scan_source / name).is_file():
-                raise FileNotFoundError(f"Missing local ICT scan asset: {name}")
-        shutil.copytree(ict_scan_source, out / "tools" / "ict-scan", dirs_exist_ok=True)
-
     # EAIgit is a separate browser wizard: publish only its four intended pages.
     # Do not let the general site generator rewrite their UI or JavaScript.
     eai_routes = (
@@ -2873,8 +2865,8 @@ def build(sources: Path, out: Path) -> None:
     ):
         if not (out / relative).is_file():
             raise FileNotFoundError(f"Missing EAIgit browser asset: {relative}")
-    # Schoolbrede ICT-scan: standalone local-first browser tool. No public navigation,
-    # no sitemap entry and no public source data. Files stay in the browser.
+    # Publish only the explicit app asset allowlist. Never copy sources/
+    # (tools/ict-scan/bronnen), which stay readable through GitHub only.
     ict_scan_source = repo_root / "tools" / "ict-scan"
     for filename in ("index.html", "style.css", "monitor.css", "app.js", "enhancements.js", "github-sync.js", "rail-drawer.js", "visual-explorer.js", "visual-explorer.css", "record-cards.js", "record-github.js", "record-cards.css", "scene-navigation.js", "scene-navigation.css", "evidence-experience.js", "evidence-experience.css", "dashboard-composer.js", "dashboard-composer.css", "studio-interface.css", "relationship-orbit.css", "role-modes.js", "role-modes.css", "answer-engine.js", "answer-engine.css", "frameworks.json", "emmaus-logo.svg", "README.md"):
         source_file = ict_scan_source / filename

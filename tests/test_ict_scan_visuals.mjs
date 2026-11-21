@@ -7,7 +7,7 @@ import vm from 'node:vm';
 const source=readFileSync(resolve('tools/ict-scan/visual-explorer.js'),'utf8');
 const html=readFileSync(resolve('tools/ict-scan/index.html'),'utf8');
 const css=readFileSync(resolve('tools/ict-scan/visual-explorer.css'),'utf8');
-const data=JSON.parse(readFileSync(resolve('ict-scan/bronnen/2026-applicatielandschap.json'),'utf8'));
+const data=JSON.parse(readFileSync(resolve('tools/ict-scan/bronnen/2026-applicatielandschap.json'),'utf8'));
 const context={window:{},document:{getElementById(){return null;}}};
 vm.runInNewContext(source,context,{filename:'visual-explorer.js'});
 const {tally,pairs,treemap}=context.window.EAIApplicatieVisualMath;
