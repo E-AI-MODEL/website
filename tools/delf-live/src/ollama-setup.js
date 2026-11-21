@@ -19,8 +19,8 @@ if(host) {
     </div>
     </details>
   `;
-  const before=host.querySelector('.studio-section');
-  if(before)host.insertBefore(section,before);else host.append(section);
+  // Na Bediening, Status en Systeem: vaste leesvolgorde zonder dubbele nummers.
+  host.append(section);
 
   const steps=[
     {title:'Installatie',instruction:'Ollama moet op je Mac zijn geïnstalleerd. Heb je Ollama al? Ga dan verder.'},
