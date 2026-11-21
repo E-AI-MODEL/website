@@ -35,7 +35,7 @@
   const PROTECTED=new Set(['id','originalNumber','sourceFields','otherDescription','provenance','sources','auditTrail','relations','frameworkLinks','sourceMeta','recordMeta','sourceRefs']);
   const MULTILINE=/answer|aliases|description|action|explanation|attention|didactics|learning|evidence|processing|agreement|note|instructions|source|data|links|review|unknown|advice|formative|usageContext|m365Context|nuance|execution|nextStep|limitation|input|teacher|student|known|status/i;
   const typesByKey=Object.fromEntries(SPECS.map(s=>[s.key,s]));
-  const model={drafts:new Map(),current:null,editing:false,adding:false,original:null,working:null,catalog:null,loading:false};
+  const model={drafts:new Map(),current:null,editing:false,adding:false,original:null,working:null,catalog:null,loading:false,contextMode:false,returnFocus:null};
   const key=(type,id)=>type+':'+id;
   const text=(tag,cls,value)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(value!==undefined)n.textContent=String(value);return n;};
   const copy=obj=>JSON.parse(JSON.stringify(obj));
@@ -69,7 +69,7 @@
       if(model.current?.type===type&&model.current?.id===r.id)button.classList.add('active');
       button.append(text('small','',r.id),text('strong','',r.name||'Zonder naam'));
       if(model.drafts.has(key(type,r.id)))button.append(text('em','','Concept'));
-      button.addEventListener('click',()=>open(type,r.id));
+      button.addEventListener('click',()=>open(type,r.id,false,'manager'));
       list.append(button);
     }
     if(!items.length)list.append(text('p','card-empty','Geen registraties bij deze selectie.'));
@@ -83,14 +83,18 @@
     $c('cardNewFromRecord').hidden=!recordObj||model.editing;
     $c('cardForm').hidden=!model.editing;
     $c('cardReadView').hidden=model.editing;
-    $c('cardJsonPanel').hidden=!recordObj;
+    $c('cardJsonPanel').hidden=true;
     $c('cardJson').textContent=recordObj?JSON.stringify(recordObj,null,2):'';
+    $c('cardEditor').classList.toggle('card-context-mode',!!model.contextMode);
+    
     if(!model.editing)showRead(recordObj);
     else showForm();
     showPending();
+    const pending=$c('cardPendingPanel');
+    if(pending)pending.hidden=model.contextMode&&!model.editing&&model.drafts.size===0;
   }
   function lines(container,title,items){
-    const group=text('section','card-read-section');group.append(text('h4','',title));
+    const group=text('section','card-read-section');if(title)group.append(text('h4','',title));
     const dl=text('dl','card-read-grid');
     for(const [name,value] of items){
       if(value===undefined||value===null||value===''||(Array.isArray(value)&&!value.length))continue;
@@ -100,34 +104,104 @@
     if(dl.children.length){group.append(dl);container.append(group);}
   }
   function showRead(r){
-    const container=$c('cardReadView');container.replaceChildren();
-    if(!r){container.append(text('p','card-empty','Kies links een registratie of maak een nieuwe kaart.'));return;}
-    const spec=specFor(model.current.type),main=spec.fields.filter(f=>f!=='name').map(f=>[label(f),r[f]]);
-    lines(container,'Gegevens',main);
-    const used=new Set([...spec.fields,'id','originalNumber','sourceFields','otherDescription','provenance','sources','auditTrail','relations','frameworkLinks','recordMeta','sourceMeta','sourceRefs']);
-    const extras=Object.keys(r).filter(k=>!used.has(k)).map(k=>[label(k),r[k]]);
-    if(extras.length){const advanced=text('details','card-details'),summary=text('summary','','Aanvullende velden ('+extras.length+')');advanced.append(summary);lines(advanced,'Overige gegevens',extras);container.append(advanced);}
+    const container=$c('cardReadView');
+    container.replaceChildren();
+    if(!r){
+      container.append(text('p','card-empty','Kies een registratie. De details verschijnen hier.'));
+      $c('cardJsonPanel').hidden=true;
+      return;
+    }
+    const spec=specFor(model.current.type);
+    const important={
+      apps:['description','local','owner','area','kind','reviewAction'],
+      ai:['product','action','phase','teacher','local','unknown'],
+      connections:['enabled','matched','assessment','local'],
+      devices:['quantity','measurementDate','limitation'],
+      dpia:['assessment','sourceDate','evidence','local'],
+      aiControls:['advice','managementLocation','execution','nextStep'],
+      additionalCandidates:['kind','status','action','priority'],
+      checks:['category','status','explanation','priority']
+    };
+    const first=(important[spec.key]||['description','local','status','action','owner','priority'])
+      .filter(k=>k in r && r[k]!==undefined && r[k]!==null && String(r[k]).trim());
+    const other=spec.fields.filter(k=>k!=='name'&&!first.includes(k));
+    const nav=text('nav','card-read-tabs');nav.setAttribute('role','tablist');
+    nav.setAttribute('aria-label','Inhoud van de registratie');
+    const panes=new Map(),tabs=new Map();
+    const sections=[
+      ['overview','Overzicht'],['details','Meer gegevens'],['links','Verbanden'],['source','Herkomst']
+    ];
+    for(const [id,name] of sections){
+      const panel=text('section','card-tab-panel');
+      panel.dataset.cardTab=id;panel.id='cardTabPanel'+id;
+      panel.hidden=id!=='overview';panel.setAttribute('role','tabpanel');
+      const button=text('button','card-read-tab'+(id==='overview'?' active':''),name);
+      button.type='button';button.dataset.target=id;
+      button.setAttribute('role','tab');button.setAttribute('aria-controls',panel.id);
+      button.setAttribute('aria-selected',String(id==='overview'));
+      button.tabIndex=id==='overview'?0:-1;
+      nav.append(button);panes.set(id,panel);tabs.set(id,button);
+    }
+    const overview=panes.get('overview');
+    lines(overview,'',first.map(k=>[label(k),r[k]]));
+    if(!overview.children.length)overview.append(text('p','card-empty','Voor deze registratie zijn nog geen hoofdgegevens ingevuld.'));
+    const details=panes.get('details');
+    lines(details,'',other.map(k=>[label(k),r[k]]));
+    const hiddenFields=new Set([...spec.fields,'id','originalNumber','sourceFields','otherDescription','provenance','sources','auditTrail','relations','frameworkLinks','recordMeta','sourceMeta','sourceRefs']);
+    const extras=Object.keys(r).filter(k=>!hiddenFields.has(k)).map(k=>[label(k),r[k]]);
+    if(extras.length)lines(details,'Overige gegevens',extras);
+    if(!details.children.length)details.append(text('p','card-empty','Geen aanvullende gegevens.'));
+    const links=panes.get('links');
     const relations=Array.isArray(r.relations)?r.relations:[];
-    const fLinks=Array.isArray(r.frameworkLinks)?r.frameworkLinks:[];
-    const meta=r.recordMeta||{};
-    const rels=relations.map(x=>[x.relationType+' → '+x.targetType+':'+x.targetId,x.status+' · '+(x.evidence||'Bron ontbreekt')+(x.note?' · '+x.note:'')]);
-    lines(container,'Verbanden',rels.length?rels:[['Vastgelegde verbanden','Nog geen handmatig beoordeelde verbanden']]);
+    const references=Array.isArray(r.frameworkLinks)?r.frameworkLinks:[];
     const catalog=new Map((model.catalog?.references||[]).map(x=>[x.id,x]));
-    lines(container,'IBP, AVG, AI Act en overige regels',fLinks.length?fLinks.map(x=>[(catalog.get(x.frameworkId)?.name||x.frameworkId)+' '+(x.article||''),x.status+' · '+(x.evidence||'Bewijs niet ingevuld')+(x.note?' · '+x.note:'')]):[['Toetsingen','Nog niet per bepaling beoordeeld']]);
-    lines(container,'Herkomst',[
+    lines(links,'Vastgelegde verbanden',relations.length
+      ?relations.map(x=>[x.relationType+' · '+x.targetType+':'+x.targetId,(x.status||'Niet bevestigd')+' · '+(x.evidence||'Bron ontbreekt')+(x.note?' · '+x.note:'')])
+      :[['Verbanden','Nog geen beoordeelde verbanden vastgelegd']]);
+    lines(links,'Normverwijzingen',references.length
+      ?references.map(x=>[(catalog.get(x.frameworkId)?.name||x.frameworkId)+' '+(x.article||''),(x.status||'Nog te beoordelen')+' · '+(x.evidence||'Geen bewijs vastgelegd')])
+      :[['Normen','Nog niet per bepaling beoordeeld']]);
+    const source=panes.get('source'),meta=r.recordMeta||{};
+    lines(source,'Herkomst',[
       ['Bronnen',(r.sources||[]).join('; ')],
-      ['Verwijzingen',(r.sourceRefs||[]).join('; ')],
-      ['Oorspronkelijk nummer',r.originalNumber],
+      ['Bronverwijzingen',(r.sourceRefs||[]).join('; ')],
       ['Bronrijen',(r.provenance||[]).map(x=>[x.file,x.sheet,x.row].join(' / ')).join('; ')],
+      ['Oorspronkelijk nummer',r.originalNumber],
       ['Broninstellingen',Object.keys(meta).length?JSON.stringify(meta):'']
     ]);
-    const histories=r.auditTrail||[];
-    lines(container,'Logboek',histories.length?histories.map(x=>[(x.timestamp||'Datum onbekend')+' · '+(x.actor||'Onbekend'),(x.action||'Wijziging')+' · '+(x.fields||[]).join(', ')+' · '+(x.reason||'Geen toelichting')]):[['Wijzigingen','Nog geen vastgelegde wijzigingen via de kaart']]);
+    const history=r.auditTrail||[];
+    lines(source,'Logboek',history.length?history.map(x=>[(x.timestamp||'Datum onbekend')+' · '+(x.actor||'Onbekend'),(x.action||'Wijziging')+' · '+(x.fields||[]).join(', ')+' · '+(x.reason||'Geen toelichting')]):[['Wijzigingen','Nog geen vastgelegde wijzigingen']]);
     if(r.sourceFields||r.otherDescription){
-      const legacy=text('details','card-details');legacy.append(text('summary','','Oorspronkelijke Excelbeschrijvingen'));
-      for(const [title,key] of [['Oorspronkelijke velden','sourceFields'],['Tweede beschrijving','otherDescription']])if(r[key])lines(legacy,title,Object.entries(r[key]));
-      container.append(legacy);
+      const legacy=text('details','card-details');
+      legacy.append(text('summary','','Oorspronkelijke bronvelden'));
+      if(r.sourceFields)lines(legacy,'Excelvelden',Object.entries(r.sourceFields));
+      if(r.otherDescription)lines(legacy,'Aanvullende bronbeschrijving',[['Beschrijving',r.otherDescription]]);
+      source.append(legacy);
     }
+    function activate(key){
+      for(const [name,panel] of panes)panel.hidden=name!==key;
+      for(const [name,tab] of tabs){
+        const active=name===key;tab.classList.toggle('active',active);
+        tab.setAttribute('aria-selected',String(active));tab.tabIndex=active?0:-1;
+      }
+      $c('cardJsonPanel').hidden=key!=='source';
+      if(key!=='source')$c('cardJsonPanel').open=false;
+      $c('cardEditSurface').scrollTop=0;
+    }
+    const names=sections.map(([id])=>id);
+    for(const [index,id] of names.entries()){
+      const button=tabs.get(id);
+      button.addEventListener('click',()=>activate(id));
+      button.addEventListener('keydown',e=>{
+        if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;
+        e.preventDefault();
+        const next=e.key==='Home'?0:e.key==='End'?names.length-1:
+          (index+(e.key==='ArrowRight'?1:names.length-1))%names.length;
+        activate(names[next]);tabs.get(names[next]).focus();
+      });
+    }
+    container.append(nav,...panes.values());
+    activate('overview');
   }
   function inputControl(name,value,group){
     const outer=text('label','card-field'),title=text('span','card-field-label',label(name));
@@ -299,11 +373,13 @@
     model.original=copy(r);model.working=copy(r);model.editing=true;model.adding=!entry(model.current.type,model.current.id);
     feedback('');showPane();
   }
-  function open(type,id,edit=false){
+  function open(type,id,edit=false,mode='context'){
     if($c('workspace').hidden)return;
     if(model.editing&&!confirm('Niet-bewaarde invoer verlaten?'))return;
     const spec=specFor(type);
     if(!record(type,id)){feedback('Registratie niet gevonden.',true);return;}
+    model.returnFocus=document.activeElement;
+    model.contextMode=!edit&&mode!=='manager';
     $c('cardEditor').hidden=false;$c('cardScrim').hidden=false;document.body.classList.add('record-card-open');
     model.current={type,id};model.editing=false;model.working=null;model.adding=false;
     $c('cardTypeFilter').value=type;$c('cardSearch').value='';
@@ -316,7 +392,7 @@
     const source={id,name:'',relations:[],frameworkLinks:[],sources:[],recordMeta:{sourceSystem:'Handmatige registratie',referenceDate:new Date().toISOString().slice(0,10)}};
     if(type==='additionalCandidates')source.confirmed=false;
     if(type==='connections')source.usageConfirmed=false;
-    model.current={type,id};model.working=source;model.original=null;model.adding=true;model.editing=true;
+    model.current={type,id};model.working=source;model.original=null;model.adding=true;model.editing=true;model.contextMode=false;
     $c('cardEditor').hidden=false;$c('cardScrim').hidden=false;
     document.body.classList.add('record-card-open');
     showList();showPane();
@@ -326,7 +402,7 @@
     if(model.editing&&!confirm('Niet-bewaarde invoer sluiten?'))return;
     model.editing=false;model.working=null;$c('cardEditor').hidden=true;$c('cardScrim').hidden=true;
     document.body.classList.remove('record-card-open');$c('cardGithubToken').value='';
-    $c('cardOpen').focus();
+    if(model.returnFocus?.isConnected)model.returnFocus.focus();else $c('cardOpen').focus();model.returnFocus=null;
   }
   function undo(){
     if(!model.current)return;
@@ -351,6 +427,7 @@
     fillTypeSelect();model.loading=false;
   }
   function launch(){
+    model.contextMode=false;
     if(!$c('cardEditor').hidden){showList();showPane();return;}
     $c('cardEditor').hidden=false;$c('cardScrim').hidden=false;
     document.body.classList.add('record-card-open');

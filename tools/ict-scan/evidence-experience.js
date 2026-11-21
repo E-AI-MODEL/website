@@ -135,8 +135,25 @@
     if(relationApp!==app.id){relationApp=app.id;relationTab='ai';}
     const sets=relationSets(app);
     if(!sets.some(x=>x.key===relationTab&&x.items.length))relationTab=(sets.find(x=>x.items.length)||sets[0]).key;
-    root.innerHTML='<div class="relation-overview"><div class="relation-center"><small>'+safe(app.id)+' · '+safe(app.kind)+'</small><strong>'+safe(app.name)+'</strong><span>Geregistreerde toepassing · '+safe(unknown(app.local)?'lokaal gebruik niet bevestigd':app.local)+'</span></div>'+
-      '<div class="relation-spokes">'+sets.map(group=>'<button type="button" data-relation="'+group.key+'" class="relation-spoke '+(relationTab===group.key?'active':'')+'"><small>'+safe(group.name)+'</small><strong>'+fmt(group.items.length)+'</strong><span>'+safe(group.items.length?'Bronrelaties':'Geen relatie vastgelegd')+'</span></button>').join('')+'</div></div>'+
+    const positions=sets.length===5?[[230,105],[765,110],[847,242],[725,373],[228,369]]:
+      sets.length===4?[[234,112],[765,112],[765,372],[234,372]]:
+      sets.length===3?[[245,122],[775,230],[245,365]]:
+      sets.length===2?[[245,230],[765,230]]:[[500,95]];
+    const connectors=sets.map((group,i)=>{
+      const [x,y]=positions[i]||[500,90],active=group.key===relationTab;
+      return '<path class="'+(group.items.length?'linked':'empty')+(active?' selected':'')+'" d="M500 240 Q'+Math.round((500+x)/2)+' '+Math.round((240+y)/2-12)+' '+x+' '+y+'"/>'+
+      '<circle class="'+(active?'selected':'')+'" cx="'+x+'" cy="'+y+'" r="'+(active?7:4)+'"/>';
+    }).join('');
+    const orbit='<svg class="relation-orbit-lines" viewBox="0 0 1000 480" preserveAspectRatio="none" aria-hidden="true">'+
+      '<circle class="orbit-trace orbit-trace-a" cx="500" cy="240" r="119"/>'+
+      '<ellipse class="orbit-trace orbit-trace-b" cx="500" cy="240" rx="302" ry="181"/>'+
+      connectors+'</svg>';
+    root.innerHTML='<div class="relation-overview" data-node-count="'+sets.length+'">'+orbit+
+      '<div class="relation-center"><small>'+safe(app.id)+' · '+safe(app.kind)+'</small><strong>'+safe(app.name)+'</strong><span>'+safe(unknown(app.local)?'Gebruik niet bevestigd':app.local)+'</span></div>'+
+      '<div class="relation-spokes">'+sets.map((group,i)=>{
+         const [x,y]=positions[i]||[500,95];
+         return '<button type="button" data-relation="'+group.key+'" style="--node-x:'+x/10+'%;--node-y:'+y/4.8+'%;" class="relation-spoke '+(relationTab===group.key?'active':'')+'" aria-pressed="'+(relationTab===group.key?'true':'false')+'"><small>'+safe(group.name)+'</small><strong>'+fmt(group.items.length)+'</strong><span>'+safe(group.items.length?'Vastgelegde relaties':'Geen relatie gevonden')+'</span></button>';
+      }).join('')+'</div><span class="orbit-axis-label" aria-hidden="true">VERBANDEN UIT BRONNEN · NIET AUTOMATISCH BEVESTIGD</span></div>'+
       '<div class="relation-detail" id="relationDetail"></div>';
     for(const b of root.querySelectorAll('[data-relation]'))b.addEventListener('click',()=>{relationTab=b.dataset.relation;renderRelations();});
     const chosen=sets.find(x=>x.key===relationTab);
