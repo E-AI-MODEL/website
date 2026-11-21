@@ -4,6 +4,7 @@ import vm from 'node:vm';
 const source = fs.readFileSync(new URL('../tools/ict-scan/app.js', import.meta.url),'utf8').replace(/\$\('reportDate'\)\.textContent[\s\S]*$/, '');
 const ctx = {Blob, TextDecoder, TextEncoder, console};
 vm.createContext(ctx);
+vm.runInContext(source,ctx);
 console.log('ICT-scan testcase: bronlengte',source.length,'rapportdefinitie',source.indexOf('function generateReportSheets'),'zichtbaar?',vm.runInContext("typeof generateReportSheets",ctx));
 vm.runInContext(source + '\nglobalThis.scanTest={state,createReportWorkbook,generateReportSheets,isClassroomAi};',ctx);
 const state = ctx.scanTest.state;
