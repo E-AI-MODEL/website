@@ -41,7 +41,7 @@
     <button class="studio-tab" role="tab" type="button" data-studio-view="gesprek" id="tab-gesprek" aria-controls="page-gesprek" aria-selected="false" tabindex="-1">Vrij praten</button>
     <button class="studio-tab" role="tab" type="button" data-studio-view="taal" id="tab-taal" aria-controls="page-taal" aria-selected="false" tabindex="-1">Instellingen</button>
     <details id="extraStudioTabs" class="studio-more-tabs">
-      <summary>Overige opties</summary>
+      <summary aria-label="Overige studio-onderdelen" aria-haspopup="true"><span id="studioMoreLabel">Overige opties</span></summary>
       <div class="studio-extra-links">
         <button class="studio-tab" role="tab" type="button" data-studio-view="stem" id="tab-stem" aria-controls="page-stem" aria-selected="false" tabindex="-1">Stem</button>
         <button class="studio-tab" role="tab" type="button" data-studio-view="sessie" id="tab-sessie" aria-controls="page-sessie" aria-selected="false" tabindex="-1">Sessie</button>
@@ -239,7 +239,7 @@
 
     <div class="studio-page" id="page-stem" role="tabpanel" aria-labelledby="tab-stem" data-studio-page="stem" hidden>
       <div class="studio-hero cloud-reveal"><span class="studio-overline">AUDIO</span><h1 class="cloud-heading">Stem</h1>
-        <p class="cloud-intro">De Franse spreker gebruikt geen Nederlandse stem. Een Nederlandse aankondiging is optioneel.</p></div>
+        <p class="cloud-intro">Kies een browserstem voor Nederlands en Engels. De Franse podiumstem blijft apart instelbaar.</p></div>
       <section class="studio-section cloud-reveal"><div class="studio-section-top"><span class="studio-section-no">01</span><h2>Frans</h2></div>
         <button id="loadPublicFrench" class="action studio-action">Laad Franse stem</button>
         <button id="previewFrench" class="action studio-action studio-action-quiet">Luister Frans</button>
@@ -249,6 +249,15 @@
         <label class="studio-field">Nederlandse stem<select id="nlVoice"><option value="">Kies een aanwezige stem</option></select></label>
         <button id="previewDutch" class="action studio-action studio-action-quiet">Luister Nederlands</button>
         <p class="feedback" id="dutchStatus">Kies een stem</p>
+      </section>
+      <section class="studio-section cloud-reveal" id="englishVoiceSection">
+        <div class="studio-section-top"><span class="studio-section-no">03</span><h2>Engelse stem</h2></div>
+        <p class="studio-support">Kies een Engelse stem op dit apparaat. In Vrij praten wordt deze keuze gebruikt zodra de antwoordtaal Engels is.</p>
+        <label class="studio-field">Engelse browserstem
+          <select id="enVoice"><option value="">Kies een beschikbare Engelse stem</option></select>
+        </label>
+        <button id="previewEnglish" type="button" class="action studio-action studio-action-quiet">Luister Engels</button>
+        <p class="feedback" id="englishStatus" role="status" aria-live="polite">Nog geen Engelse stem gekozen.</p>
       </section>
       <details class="studio-disclosure cloud-reveal advanced-setting"><summary>Eigen stemmodel</summary>
         <p class="studio-support">Alleen voor een eigen modelbestand.</p>
@@ -299,8 +308,8 @@
     </div>
 
     <div class="studio-page" id="page-meer" role="tabpanel" aria-labelledby="tab-meer" data-studio-page="meer" hidden>
-      <div class="studio-hero cloud-reveal"><span class="studio-overline">OPTIES</span><h1 class="cloud-heading">Meer</h1>
-        <p class="cloud-intro">Handmatige stappen en voorkeuren.</p></div>
+      <div class="studio-hero cloud-reveal"><span class="studio-overline">OPTIES</span><h1 class="cloud-heading">Techniek</h1>
+        <p class="cloud-intro">Bediening, verbindingen en controles.</p></div>
       <section class="studio-section cloud-reveal">
         <div class="studio-section-top"><span class="studio-section-no">01</span><h2>Bediening</h2></div>
         <div class="studio-action-grid">

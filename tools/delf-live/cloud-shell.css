@@ -1203,3 +1203,74 @@ body.panel-visible:not(.cloud-studio-idle) .cloud-studio .studio-header,
 body.panel-visible:not(.cloud-studio-idle) .cloud-studio .studio-nav{
  transition:opacity 1.2s ease,filter 1.3s ease,transform 1.2s ease;
 }
+
+/* EAIspeak: precies verankerd optiemenu, geen blijvende open dropdown. */
+.cloud-studio .studio-more-tabs{flex:0 0 auto;min-width:0}
+.cloud-studio .studio-more-tabs>summary{
+  display:inline-flex;align-items:center;justify-content:center;min-height:40px;
+  border:1px solid transparent;border-radius:999px;padding:9px 16px;
+  font:400 11px/1.2 var(--cloud-fine,system-ui);color:#68838a;
+  transition:background .35s ease,border-color .35s ease,color .35s ease;
+}
+.cloud-studio .studio-more-tabs>summary:after{
+  content:'';display:inline-block;width:6px;height:6px;padding:0;margin:0 0 3px 10px;
+  transform:rotate(45deg);border-right:1px solid currentColor;border-bottom:1px solid currentColor;opacity:.6;
+  transition:transform .32s ease;
+}
+.cloud-studio .studio-more-tabs[open]>summary:after{transform:translateY(3px) rotate(225deg)}
+.cloud-studio .studio-more-tabs.has-selected-extra>summary{
+  background:rgba(218,234,234,.38);border-color:rgba(141,181,182,.21);color:#2e5158;
+}
+.cloud-studio .studio-more-tabs>summary:hover,.cloud-studio .studio-more-tabs>summary:focus-visible{
+  background:rgba(226,237,236,.46);border-color:rgba(141,181,182,.26);
+}
+.cloud-studio .studio-extra-links{
+  position:fixed!important;top:var(--extra-menu-top,98px)!important;
+  left:var(--extra-menu-left,calc(50% + 28px))!important;
+  right:auto!important;z-index:120;min-width:165px;padding:7px;
+  border-radius:15px;border:1px solid rgba(155,184,184,.24);
+  background:rgba(251,253,251,.95);
+  backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);
+  box-shadow:0 16px 42px rgba(57,84,86,.095);
+}
+.cloud-studio .studio-more-tabs[open]:not(.is-closing) .studio-extra-links{
+  animation:eaispeak-menu-in .38s cubic-bezier(.2,.66,.22,1) both;
+}
+.cloud-studio .studio-more-tabs.is-closing .studio-extra-links{
+  pointer-events:none;animation:eaispeak-menu-out .21s ease both;
+}
+.cloud-studio .studio-extra-links>.studio-tab{
+  display:flex;align-items:center;width:100%;border-radius:9px;
+  padding:10px 13px;font-size:11px;min-height:37px;
+  background:transparent;text-align:left;
+}
+.cloud-studio .studio-extra-links>.studio-tab:hover,
+.cloud-studio .studio-extra-links>.studio-tab[aria-selected=true]{background:rgba(223,240,237,.53)}
+@keyframes eaispeak-menu-in{
+ from{opacity:0;filter:blur(11px);transform:translateY(-7px) scale(.97)}
+ to{opacity:1;filter:blur(0);transform:translateY(0) scale(1)}
+}
+@keyframes eaispeak-menu-out{
+ from{opacity:1;filter:blur(0);transform:translateY(0)}
+ to{opacity:0;filter:blur(8px);transform:translateY(-5px)}
+}
+body.cloud-studio-idle.panel-visible:has(.studio-more-tabs[open]) .cloud-studio .studio-nav{
+ opacity:1!important;filter:none!important;transform:none!important;
+}
+.cloud-studio .studio-extra-links .studio-tab:focus-visible,
+.cloud-studio .studio-more-tabs>summary:focus-visible{outline:1px solid #8fb2b5;outline-offset:2px}
+@media(max-width:700px){
+  .cloud-studio .studio-nav{min-height:42px;overflow-x:auto;overscroll-behavior-x:contain}
+  .cloud-studio .studio-extra-links{position:fixed!important;right:auto!important;top:var(--extra-menu-top,98px)!important}
+}
+@media(prefers-reduced-motion:reduce){
+ .cloud-studio .studio-more-tabs[open] .studio-extra-links{animation:none!important}
+}
+
+/* Opties van Vrij praten blijven binnen de vaste werkruimte, ook op lage schermen. */
+.free-talk-floating>.mist-detail-body{
+ max-height:var(--free-popup-max-height,min(64dvh,550px));
+ max-width:calc(100vw - 24px);
+ overscroll-behavior:contain;scrollbar-gutter:stable;
+}
+.free-talk-floating[open]>.mist-detail-body{box-shadow:0 14px 42px rgba(51,77,78,.105)}
