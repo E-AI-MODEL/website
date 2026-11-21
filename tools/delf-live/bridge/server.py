@@ -15,7 +15,7 @@ import logging
 import os
 from urllib.parse import urlsplit
 
-from aiohttp import ClientSession, ClientTimeout, WSMsgType, web
+from aiohttp import ClientSession, ClientTimeout, ClientWSTimeout, WSMsgType, web
 import numpy as np
 import soxr
 import sphn
@@ -111,16 +111,23 @@ class NativeOpusCodec:
         self.resampler = soxr.ResampleStream(input_rate, MODEL_RATE, 1, dtype="float32", quality="MQ")
         self.encoder = sphn.OpusStreamWriter(MODEL_RATE)
         self.decoder = sphn.OpusStreamReader(MODEL_RATE)
+        # Opus accepts fixed frame sizes. Browser audio and SOXR produce variable chunks.
+        self.pending = np.empty(0, dtype=np.float32)
+        self.frame_size = 960  # 40 ms at 24 kHz
 
     def browser_to_native(self, raw_pcm: bytes) -> bytes:
         if not raw_pcm or len(raw_pcm) % 2 or len(raw_pcm) > MAX_PCM_MESSAGE:
             raise ValueError("Ongeldig PCM16-audioblok.")
         pcm = np.frombuffer(raw_pcm, dtype="<i2").astype(np.float32) / 32768.0
         samples = self.resampler.resample_chunk(pcm)
-        if samples.size == 0:
-            return b""
-        packet = self.encoder.append_pcm(samples)
-        return b"\x01" + packet if len(packet) else b""
+        if samples.size:
+            self.pending = np.concatenate((self.pending, samples))
+        encoded = bytearray()
+        while self.pending.size >= self.frame_size:
+            chunk = self.pending[:self.frame_size]
+            encoded.extend(self.encoder.append_pcm(chunk))
+            self.pending = self.pending[self.frame_size:]
+        return b"\x01" + bytes(encoded) if encoded else b""
 
     def native_to_browser(self, native_opus: bytes) -> bytes:
         if not native_opus:
@@ -214,7 +221,8 @@ async def bridge_socket(request: web.Request) -> web.StreamResponse:
             await notify(browser, "status", message="Verbinden met Kyutai-model…")
             session: ClientSession = request.app[APP_SESSION]
             async with session.ws_connect(
-                upstream_url, heartbeat=20, timeout=config.upstream_timeout,
+                upstream_url, heartbeat=20,
+                timeout=ClientWSTimeout(ws_receive=config.upstream_timeout),
                 max_msg_size=MAX_PCM_MESSAGE,
             ) as model:
                 first = await asyncio.wait_for(model.receive(), timeout=config.upstream_timeout)
@@ -263,8 +271,8 @@ def main() -> None:
     parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--port", default=8765, type=int)
     args = parser.parse_args()
-    if args.host not in ("127.0.0.1", "localhost", "::1") and os.getenv("EAISPEAK_ALLOW_PUBLIC_BIND") != "1":
-        parser.error("Alleen localhost is standaard toegestaan. Remote gebruik vereist bewuste beveiligde configuratie.")
+    if args.host not in ("127.0.0.1", "localhost", "::1"):
+        parser.error("De bridge luistert uitsluitend op localhost. Gebruik voor remote toegang een beveiligde reverse proxy.")
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(name)s: %(message)s")
     web.run_app(create_app(), host=args.host, port=args.port, access_log=None)
 
