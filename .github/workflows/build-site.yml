@@ -188,6 +188,9 @@ jobs:
       - name: Controleer visuele applicatiedashboardbouwer
         run: |
           node --check tools/ict-scan/dashboard-composer.js
+          node --check tools/ict-scan/dashboard-bridge.js
+          node --check tools/ict-scan/builder-src/ict-bridge.js
+          python -m py_compile scripts/patch_ict_dashboard_builder.py
           node --test tests/test_ict_scan_dashboard_builder.mjs
 
       - name: Check first-party clicks and session privacy
@@ -247,6 +250,8 @@ jobs:
           test -s site-build/tools/ict-scan/app.js
           test -s site-build/tools/ict-scan/dashboard-builder-app/index.html
           test -s site-build/tools/ict-scan/dashboard-builder-app/LICENSE
+          test -s site-build/tools/ict-scan/dashboard-bridge.js
+          test -s site-build/tools/ict-scan/dashboard-layouts/apps.json
           test -s site-build/tools/ict-scan/style.css
           test -s site-build/tools/ict-scan/monitor.css
           test -s site-build/tools/ict-scan/enhancements.js
