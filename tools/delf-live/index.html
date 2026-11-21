@@ -117,7 +117,7 @@
         <p class="cloud-intro">Spreek vrij. Kies zelf de taal en de stem.</p>
       </div>
       <section class="studio-section cloud-reveal">
-        <p class="studio-support">Geen vaste tekst. Kies een browsermodel, een online model of een spraakengine op je eigen server. Niet elke engine ondersteunt dezelfde talen.</p>
+        <p class="mist-talk-prelude">Geen vaste tekst. Alleen jouw stem en het antwoord.</p>
         <details class="studio-disclosure free-talk-floating mist-voice-console" id="freeTalkOptions">
           <summary class="mist-voice-launch">
             <span class="mist-voice-halo" aria-hidden="true"><i></i><i></i></span>
@@ -186,7 +186,9 @@
                 </label>
                 <button id="freeTalkPreload" class="action studio-action studio-action-quiet" type="button">Model vooraf laden</button>
                 <p id="freeTalkPreloadStatus" class="studio-support" role="status" aria-live="polite">Een eerste download wordt normaal in de browsercache bewaard. Na herstart wordt het model opnieuw geladen, niet automatisch opnieuw gedownload.</p>
-                <p id="freeTalkCacheStatus" class="studio-support"></p>
+                <details class="mist-voice-advanced mist-voice-download"><summary>Download en geheugen</summary>
+                  <p id="freeTalkCacheStatus" class="studio-support"></p>
+                </details>
               </div>
               <div id="freeTalkOllamaOptions" hidden>
                 <label class="studio-field">Ollama op deze computer
@@ -239,7 +241,7 @@
             </details>
           </div>
         </details>
-        <div class="studio-action-grid">
+        <div class="studio-action-grid mist-talk-actions">
           <button id="freeTalkSpeak" class="action studio-action studio-action-emphasis" type="button">Begin met spreken</button>
           <button id="freeTalkStop" class="action studio-action studio-action-quiet" type="button">Stop gesprek</button>
           <button id="freeTalkPlay" class="action studio-action studio-action-quiet" type="button" disabled>Luister naar antwoord</button>
@@ -249,15 +251,19 @@
           <span id="freeTalkSpeechIndicator" class="free-talk-visual-label" aria-hidden="true">Wacht op je stem</span>
         </div>
         <p class="feedback" id="freeTalkStatus" role="status" aria-live="polite">Klaar om een gesprek te beginnen.</p>
-        <p class="studio-support">Jij zei</p>
-        <p class="feedback" id="freeTalkHeard">Nog niets.</p>
-        <p class="studio-support">Antwoord</p>
-        <p class="feedback" id="freeTalkAnswer">Nog geen antwoord.</p>
-        <details class="studio-disclosure"><summary>Typ een zin als de microfoon niet werkt</summary>
+        <div class="mist-talk-dialogue">
+          <div class="mist-talk-utterance"><span class="mist-talk-role">Jij</span>
+            <p class="feedback" id="freeTalkHeard">Nog niets.</p>
+          </div>
+          <div class="mist-talk-utterance"><span class="mist-talk-role">Antwoord</span>
+            <p class="feedback" id="freeTalkAnswer">Nog geen antwoord.</p>
+          </div>
+        </div>
+        <details class="studio-disclosure mist-talk-typing"><summary>Typ een zin als de microfoon niet werkt</summary>
           <label class="studio-field">Jouw zin <textarea id="freeTalkTyped" rows="2" placeholder="Wat vind jij van deze diploma-uitreiking?"></textarea></label>
           <button id="freeTalkSend" type="button" class="action studio-action studio-action-quiet">Verstuur</button>
         </details>
-        <p class="studio-support">Een eerste klik geeft de microfoon toestemming. In handsfree stand luistert het gesprek na ieder antwoord opnieuw, zolang je dit scherm openhoudt. Met Stop gesprek sluit je de microfoon. Er wordt niets naar de vaste voorstelling gestuurd.</p>
+        <p class="studio-support mist-talk-footnote">De microfoon start pas als je op Spreken klikt. Stop gesprek sluit hem weer.</p>
       </section>
     </div>
     <div class="studio-page" id="page-taal" role="tabpanel" aria-labelledby="tab-taal" data-studio-page="taal" hidden>
