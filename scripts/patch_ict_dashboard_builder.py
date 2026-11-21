@@ -26,6 +26,22 @@ text = text.replace(
     "})();",
     1,
 )
+# Keep the normal standalone workspace intact. The connected instance starts
+# empty until the real school registers arrive; never flash sample charts.
+storage_at = 'const STORAGE_KEY = "dashboard-builder:layout:v1";'
+storage_new = ('const STORAGE_KEY = new URLSearchParams(location.search).get("emmaus")==="1" '
+               '? "dashboard-builder:emmaus:layout:v1" : "dashboard-builder:layout:v1";')
+empty_at = "    raw = localStorage.getItem(STORAGE_KEY);"
+empty_new = '    raw = new URLSearchParams(location.search).get("emmaus")==="1" ? null : localStorage.getItem(STORAGE_KEY);'
+starter_at = '    loadLayout(starterLayout());'
+starter_new = ('    loadLayout(new URLSearchParams(location.search).get("emmaus")==="1" '
+               '? {app:"dashboard-builder",version:5,rowHeight:ROW_HEIGHT,defaultDataset:{kind:"samples"},'
+               'pages:[{id:"page-1",name:"Overzicht"}],currentPageId:"page-1",theme:getThemeId(),'
+               'filters:[],parameters:[],savedViews:[],tiles:[]} : starterLayout());')
+for old, new in ((storage_at,storage_new),(empty_at,empty_new),(starter_at,starter_new)):
+    if text.count(old)!=1:
+        raise SystemExit("Upstream startup code changed; refusing to patch: "+old)
+    text=text.replace(old,new,1)
 source.write_text(text, encoding="utf-8")
 for name in ("ict-bridge.js", "ict-bridge.css"):
     shutil.copy2(repo / "tools" / "ict-scan" / "builder-src" / name, upstream / "src" / name)
