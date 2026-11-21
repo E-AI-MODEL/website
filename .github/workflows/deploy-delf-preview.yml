@@ -1,11 +1,7 @@
 name: Publish DELF MacBook and mobile tests
 
+# Alleen handmatige herstelpublicatie, naast de automatische algemene sitepublicatie.
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - '.github/workflows/deploy-delf-preview.yml'
   workflow_dispatch:
 
 permissions:
@@ -13,7 +9,7 @@ permissions:
   actions: read
 
 concurrency:
-  group: theory7-delf-preview
+  group: theory7-production
   cancel-in-progress: false
 
 jobs:
