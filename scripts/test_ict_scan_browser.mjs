@@ -99,7 +99,9 @@ try {
   assert.match(await page.locator('#dsCanvas .ds-hardware').textContent(),/161/);
   if(width<700)await page.locator('#dsCloseControls').click();
   await page.locator('#dsSave').click();
-  assert.match(await page.evaluate(()=>localStorage.getItem('emmaus-ict-dashboard-studio-v1')),/"layout":"editorial"/);
+  assert.match(await page.evaluate(()=>localStorage.getItem('emmaus-ict-dashboard-studio-v2')),/"layout":"editorial"/);
+  assert.equal(await page.locator('#dsCategoryFilter').count(),1,'De dashboardmaker moet een gemeenschappelijk categoriefilter tonen');
+  assert.equal(await page.locator('#dsCanvas .ds-distribution .ds-chart-mode option').count(),3,'Er moeten drie verwisselbare grafiekvormen zijn');
   await page.screenshot({path:'test-results/ict-scan-'+width+'-composer-technology.png'});
   await page.locator('.rail-button[data-view="overview"]').click();
 
