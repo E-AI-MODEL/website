@@ -35,7 +35,7 @@
   const PROTECTED=new Set(['id','originalNumber','sourceFields','otherDescription','provenance','sources','auditTrail','relations','frameworkLinks','sourceMeta','recordMeta','sourceRefs']);
   const MULTILINE=/answer|aliases|description|action|explanation|attention|didactics|learning|evidence|processing|agreement|note|instructions|source|data|links|review|unknown|advice|formative|usageContext|m365Context|nuance|execution|nextStep|limitation|input|teacher|student|known|status/i;
   const typesByKey=Object.fromEntries(SPECS.map(s=>[s.key,s]));
-  const model={drafts:new Map(),current:null,editing:false,adding:false,original:null,working:null,catalog:null,loading:false};
+  const model={drafts:new Map(),current:null,editing:false,adding:false,original:null,working:null,catalog:null,loading:false,contextMode:false,returnFocus:null};
   const key=(type,id)=>type+':'+id;
   const text=(tag,cls,value)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(value!==undefined)n.textContent=String(value);return n;};
   const copy=obj=>JSON.parse(JSON.stringify(obj));
@@ -69,7 +69,7 @@
       if(model.current?.type===type&&model.current?.id===r.id)button.classList.add('active');
       button.append(text('small','',r.id),text('strong','',r.name||'Zonder naam'));
       if(model.drafts.has(key(type,r.id)))button.append(text('em','','Concept'));
-      button.addEventListener('click',()=>open(type,r.id));
+      button.addEventListener('click',()=>open(type,r.id,false,'manager'));
       list.append(button);
     }
     if(!items.length)list.append(text('p','card-empty','Geen registraties bij deze selectie.'));
@@ -85,6 +85,8 @@
     $c('cardReadView').hidden=model.editing;
     $c('cardJsonPanel').hidden=!recordObj;
     $c('cardJson').textContent=recordObj?JSON.stringify(recordObj,null,2):'';
+    $c('cardEditor').classList.toggle('card-context-mode',!!model.contextMode&&!model.editing);
+    $c('cardExpandManager').hidden=!model.contextMode||model.editing;
     if(!model.editing)showRead(recordObj);
     else showForm();
     showPending();
@@ -128,6 +130,82 @@
       for(const [title,key] of [['Oorspronkelijke velden','sourceFields'],['Tweede beschrijving','otherDescription']])if(r[key])lines(legacy,title,Object.entries(r[key]));
       container.append(legacy);
     }
+    mountCardReadTabs(container,r,spec);
+  }
+
+  function mountCardReadTabs(container,source,spec){
+    const existing=Array.from(container.children);
+    const groups={summary:[],fields:[],links:[],source:[]};
+    const nav=text('div','card-read-tabs');nav.setAttribute('role','tablist');
+    nav.setAttribute('aria-label','Onderdelen van de gegevenskaart');
+    const fieldList={
+      apps:['description','area','process','kind','local','owner','reviewAction'],
+      ai:['product','domain','phase','action','teacher','local','unknown'],
+      connections:['enabled','matched','visible','assessment','local'],
+      devices:['type','quantity','measurementDate','limitation'],
+      dpia:['type','assessment','description','sourceDate','evidence','local'],
+      aiControls:['domain','advice','managementLocation','execution','nextStep']
+    };
+    const keys=fieldList[spec.key]||['description','status','local','action','owner','priority'];
+    const quick=text('div','card-quick');
+    const sourceFiles=(source.provenance||[]).map(p=>String(p.file||''))
+      .concat(source.sources||[]).filter(Boolean);
+    const excelFiles=[...new Set(sourceFiles.flatMap(s=>String(s).match(/[\w\- .()]+\.xlsx?\b/gi)||[]).map(s=>s.trim()))];
+    const chain=text('div','card-lineage');
+    chain.append(
+      text('span','card-lineage-step',excelFiles.length?'Excel: '+excelFiles[0]:'Excel: bronbestand niet gekoppeld'),
+      text('span','card-lineage-arrow','›'),
+      text('span','card-lineage-step','JSON: '+spec.file),
+      text('span','card-lineage-arrow','›'),
+      text('span','card-lineage-step current','Kaart: '+source.id)
+    );
+    quick.append(chain);
+    const intro=text('div','card-quick-intro');
+    intro.append(text('strong','',source.name||source.id));
+    intro.append(text('small','','Dit is een bronregistratie. De inhoud is geen bewijs van lokaal gebruik of goedkeuring.'));
+    quick.append(intro);
+    lines(quick,'In één oogopslag',keys.map(key=>[label(key),source[key]]));
+    const more=text('button','card-source-jump','Bekijk volledige herkomst en oorspronkelijke Excelvelden');
+    more.type='button';quick.append(more);
+    groups.summary.push(quick);
+    for(const child of existing){
+      const title=child.querySelector?.('h4')?.textContent||'';
+      if(child.matches('.card-details')){
+        if(/Oorspronkelijke Excel/.test(child.textContent||''))groups.source.push(child);
+        else groups.fields.push(child);
+      }else if(title==='Gegevens')groups.fields.push(child);
+      else if(title==='Verbanden'||title.includes('IBP, AVG'))groups.links.push(child);
+      else groups.source.push(child);
+    }
+    const sections=[],buttons=[];
+    const names=[['summary','Overzicht'],['fields','Alle velden'],['links','Verbanden'],['source','Bron & logboek']];
+    for(const [k,name] of names){
+      const panel=text('section','card-tab-panel');panel.dataset.cardTab=k;
+      panel.id='cardPanel'+k[0].toUpperCase()+k.slice(1);
+      panel.setAttribute('role','tabpanel');panel.hidden=k!=='summary';
+      panel.append(...groups[k]);
+      const button=text('button','card-read-tab',name);button.type='button';button.dataset.target=k;
+      button.setAttribute('role','tab');button.setAttribute('aria-controls',panel.id);
+      button.setAttribute('aria-selected',String(k==='summary'));button.tabIndex=k==='summary'?0:-1;
+      button.classList.toggle('active',k==='summary');
+      nav.append(button);sections.push(panel);buttons.push(button);
+    }
+    function activate(k){
+      for(const panel of sections)panel.hidden=panel.dataset.cardTab!==k;
+      for(const button of buttons){const is=button.dataset.target===k;button.classList.toggle('active',is);button.setAttribute('aria-selected',String(is));button.tabIndex=is?0:-1;}
+      $c('cardEditSurface').scrollTop=0;
+    }
+    buttons.forEach((button,index)=>{
+      button.addEventListener('click',()=>activate(button.dataset.target));
+      button.addEventListener('keydown',e=>{
+        if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;
+        e.preventDefault();
+        const next=e.key==='Home'?0:e.key==='End'?buttons.length-1:(index+(e.key==='ArrowRight'?1:buttons.length-1))%buttons.length;
+        activate(buttons[next].dataset.target);buttons[next].focus();
+      });
+    });
+    more.addEventListener('click',()=>activate('source'));
+    container.replaceChildren(nav,...sections);
   }
   function inputControl(name,value,group){
     const outer=text('label','card-field'),title=text('span','card-field-label',label(name));
@@ -296,14 +374,16 @@
   function startEdit(){
     if(!model.current)return;
     const r=record(model.current.type,model.current.id);if(!r)return;
-    model.original=copy(r);model.working=copy(r);model.editing=true;model.adding=!entry(model.current.type,model.current.id);
+    model.original=copy(r);model.working=copy(r);model.editing=true;model.adding=!entry(model.current.type,model.current.id);model.contextMode=false;
     feedback('');showPane();
   }
-  function open(type,id,edit=false){
+  function open(type,id,edit=false,mode='context'){
     if($c('workspace').hidden)return;
     if(model.editing&&!confirm('Niet-bewaarde invoer verlaten?'))return;
     const spec=specFor(type);
     if(!record(type,id)){feedback('Registratie niet gevonden.',true);return;}
+    model.returnFocus=document.activeElement;
+    model.contextMode=!edit&&mode!=='manager';
     $c('cardEditor').hidden=false;$c('cardScrim').hidden=false;document.body.classList.add('record-card-open');
     model.current={type,id};model.editing=false;model.working=null;model.adding=false;
     $c('cardTypeFilter').value=type;$c('cardSearch').value='';
@@ -316,7 +396,7 @@
     const source={id,name:'',relations:[],frameworkLinks:[],sources:[],recordMeta:{sourceSystem:'Handmatige registratie',referenceDate:new Date().toISOString().slice(0,10)}};
     if(type==='additionalCandidates')source.confirmed=false;
     if(type==='connections')source.usageConfirmed=false;
-    model.current={type,id};model.working=source;model.original=null;model.adding=true;model.editing=true;
+    model.current={type,id};model.working=source;model.original=null;model.adding=true;model.editing=true;model.contextMode=false;
     $c('cardEditor').hidden=false;$c('cardScrim').hidden=false;
     document.body.classList.add('record-card-open');
     showList();showPane();
@@ -326,7 +406,7 @@
     if(model.editing&&!confirm('Niet-bewaarde invoer sluiten?'))return;
     model.editing=false;model.working=null;$c('cardEditor').hidden=true;$c('cardScrim').hidden=true;
     document.body.classList.remove('record-card-open');$c('cardGithubToken').value='';
-    $c('cardOpen').focus();
+    if(model.returnFocus?.isConnected)model.returnFocus.focus();else $c('cardOpen').focus();model.returnFocus=null;
   }
   function undo(){
     if(!model.current)return;
@@ -351,6 +431,7 @@
     fillTypeSelect();model.loading=false;
   }
   function launch(){
+    model.contextMode=false;
     if(!$c('cardEditor').hidden){showList();showPane();return;}
     $c('cardEditor').hidden=false;$c('cardScrim').hidden=false;
     document.body.classList.add('record-card-open');
@@ -397,6 +478,7 @@
   renderSources=function(){oldRenderSources();renderLogbook();};
   $c('logbookSearch').addEventListener('input',renderLogbook);
   $c('cardOpen').addEventListener('click',launch);
+  $c('cardExpandManager').addEventListener('click',()=>{model.contextMode=false;showPane();$c('cardSearch').focus();});
   $c('cardEditorClose').addEventListener('click',close);
   $c('cardScrim').addEventListener('click',close);
   $c('cardTypeFilter').addEventListener('change',()=>{if(model.editing&&!confirm('Niet-bewaarde invoer verlaten?')){$c('cardTypeFilter').value=model.current.type;return;}model.current=null;model.editing=false;model.working=null;showList();showPane();});
