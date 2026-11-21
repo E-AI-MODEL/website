@@ -349,7 +349,7 @@
     $('dsScope').textContent=list.length?list.map(d=>d.label).join(' · '):'Nog geen gegevens gekozen';
     $('dsStageMessage').textContent=n+' onderdelen · '+list.length+' gegevensgroepen · automatisch ingedeeld';
     $('dsSourceMessage').textContent=(state.ready?'Gegevens ingelezen':'Wachten op bronnen')+' · ontwerp wordt lokaal bewaard';
-    $('dsCanvasScroll').scrollTop=0;
+
   }
   function usePreset(name){
     const preset=PRESETS[name];if(!preset)return;
