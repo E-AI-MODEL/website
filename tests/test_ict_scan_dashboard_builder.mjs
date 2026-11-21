@@ -42,6 +42,13 @@ test('Original upstream Builder bundle is built from a pinned commit, not a remo
   if(existsSync(join(root,builder))){
     assert.ok(existsSync(join(root,builder,'index.html')));
     assert.ok(existsSync(join(root,builder,'LICENSE')));
+    const entry=load('tools/ict-scan/dashboard-builder-app/index.html');
+    assert.match(entry,/Content-Security-Policy/);
+    assert.match(entry,/frame-ancestors 'self'/);
+    const asset=entry.match(/src="\.\/assets\/(index-[^"]+\.js)"/)?.[1];
+    assert.ok(asset,'The original Vite app bundle is not linked');
+    assert.match(load(builder+'/assets/'+asset),/emmaus-ict-builder-v1/,'The compiled upstream app must contain our source-backed bridge');
+
   }
 });
 test('No school source data is added to the self-hosted Builder',()=>{
@@ -64,6 +71,13 @@ test('Direct handshake never uses manual file upload or crosses origins',()=>{
   assert.match(parent,/source-data/);
   assert.match(child,/writeback-request/);
   assert.match(parent,/builderWriteback/);
+});
+test('Card source changes also trigger a separate confirmation popup',()=>{
+  const js=load('tools/ict-scan/record-github.js');
+  const css=load('tools/ict-scan/record-cards.css');
+  assert.match(js,/confirmChangePopup/);
+  assert.match(js,/if\(!await confirmChangePopup\(drafts\)\)/);
+  assert.match(css,/card-publish-review::backdrop/);
 });
 test('Writeback is a reviewed GitHub PR and never sends source data',()=>{
   const parent=load('tools/ict-scan/dashboard-bridge.js');
