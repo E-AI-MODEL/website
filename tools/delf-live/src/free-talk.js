@@ -208,9 +208,13 @@ function updateControls(){
   hint.textContent=selectedSpeech?selectedSpeech.detail:local
     ? 'WebLLM gebruikt browsercache. Kleine modellen antwoorden in het Nederlands niet altijd goed; kies bewust op taal en apparaat.'
     : isOllama?'Ollama gebruikt geïnstalleerde modellen op je computer. Het websiteadres moet door je browser bereikbaar zijn.':'Online via Puter. Meld je aan voordat je spreekt. Het gebruik kan kosten meebrengen.';
-  deviceStatus.textContent=device.label+' · '+(gpuSupport?(gpuSupport.usable?'WebGPU beschikbaar':'Geen WebGPU-adapter'):'WebGPU controleren…')+' · '+(hasMicrophone?'Spreken mogelijk':'Gebruik typen');
-  deviceAdvice.textContent=gpuSupport?modelDeviceAdvice({kind:device.kind,gpuUsable:gpuSupport.usable,
-    memoryGB,saveData,modelId:browserModel.value}):'De website kiest straks een passende startinstelling. Je kunt die zelf wijzigen.';
+  deviceStatus.textContent=selectedSpeech
+    ?device.label+' · spraakengine op eigen server · '+(navigator.mediaDevices?.getUserMedia?'Microfoon mogelijk':'Geen microfoon beschikbaar')
+    :device.label+' · '+(gpuSupport?(gpuSupport.usable?'WebGPU beschikbaar':'Geen WebGPU-adapter'):'WebGPU controleren…')+' · '+(hasMicrophone?'Spreken mogelijk':'Gebruik typen');
+  deviceAdvice.textContent=selectedSpeech
+    ?selectedSpeech.availability==='unreleased'?'Dessa is nog niet te installeren of verbinden.':'Dit apparaat verstuurt live audio naar jouw ingestelde spraakserver. Het model draait niet in de browser.'
+    :gpuSupport?modelDeviceAdvice({kind:device.kind,gpuUsable:gpuSupport.usable,
+      memoryGB,saveData,modelId:browserModel.value}):'De website kiest straks een passende startinstelling. Je kunt die zelf wijzigen.';
   if(local)void probeGpu();
   else gpuProbeSequence++;
   persist();
