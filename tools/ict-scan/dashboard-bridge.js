@@ -108,7 +108,8 @@
     $('dsFullBuilder')?.focus();
   }
   function changeSummary(layout){
-    const before=new Map((original?.tiles||[]).map(t=>[t.id,JSON.stringify(t)]));
+    const compared=original?.source===layout.source?original:null;
+    const before=new Map((compared?.tiles||[]).map(t=>[t.id,JSON.stringify(t)]));
     const after=new Map(layout.tiles.map(t=>[t.id,JSON.stringify(t)]));
     const added=[...after.keys()].filter(id=>!before.has(id)).length;
     const changed=[...after.keys()].filter(id=>before.has(id)&&before.get(id)!==after.get(id)).length;
@@ -171,7 +172,9 @@
         if(String(e.message).includes('(404)'))return null;
         throw e;
       });
-      if(original&&baseline?.sha&&baseline.content){
+      if(original?.source===pending.source&&!baseline)throw Error('De opgeslagen indeling bestaat niet meer. Open de bouwer opnieuw.');
+      if(original?.source!==pending.source&&baseline)throw Error('De indeling is sinds je opening veranderd. Open de bouwer opnieuw.');
+      if(original?.source===pending.source&&baseline?.sha&&baseline.content){
         const raw=atob(baseline.content.replace(/\s+/g,''));const bytes=Uint8Array.from(raw,c=>c.charCodeAt(0));
         const remote=checkLayout(JSON.parse(new TextDecoder().decode(bytes)));
         if(JSON.stringify(remote)!==JSON.stringify(original))
@@ -203,6 +206,18 @@
     const packet=event.data;if(!packet||packet.channel!==CHANNEL)return;
     if(packet.type==='ready'){void sendSources().catch(err=>text('builderStatus',err.message));}
     if(packet.type==='source-loaded')text('builderStatus',packet.registers+' registers gekoppeld · '+packet.source+' · brondata blijven in deze browser');
+    if(packet.type==='source-selected'&&validKey(packet.source)){
+      const target=registeredData().find(r=>r.key===packet.source);
+      if(target){
+        sourceKey=target.key;
+        void storedLayout(sourceKey).then(layout=>{
+          original=layout;
+          if(!surface.hidden&&frame.contentWindow){
+            frame.contentWindow.postMessage({channel:CHANNEL,type:'source-layout',source:sourceKey,layout},location.origin);
+          }
+        }).catch(err=>text('builderStatus',err.message));
+      }
+    }
     if(packet.type==='edit-record'){
       const reg=registeredData().find(r=>r.key===packet.register),id=String(packet.id||'');
       if(reg&&reg.rows.some(row=>row.id===id)){
