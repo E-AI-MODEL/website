@@ -47,7 +47,14 @@ jobs:
 
   deploy-preview:
     needs: check-and-build
-    if: github.event_name == 'push' && github.ref == 'refs/heads/feature/delf-live-stage-2026-11-19'
+    # Preview mag ook na een interne PR-update op de vaste DELF-branch publiceren.
+    # Publicatie van andere PR's en forks blijft uitgeschakeld.
+    if: >-
+      (github.event_name == 'push' && github.ref == 'refs/heads/feature/delf-live-stage-2026-11-19')
+      || (github.event_name == 'pull_request'
+          && github.head_ref == 'feature/delf-live-stage-2026-11-19'
+          && github.base_ref == 'main'
+          && github.event.pull_request.head.repo.full_name == github.repository)
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
