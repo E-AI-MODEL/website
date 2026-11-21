@@ -35,7 +35,7 @@ export function parseBridgeMessage(text){
   return data;
 }
 export async function startSpeechBridge({
-  endpoint,engine,sourceLanguage,targetLanguage,onStatus=()=>{},onTranscript=()=>{},
+  endpoint,engine,sourceLanguage,targetLanguage,signal,onStatus=()=>{},onTranscript=()=>{},
   onTranslation=()=>{},onActivity=()=>{},onEnd=()=>{}
 }){
   const target=validateSpeechEndpoint(endpoint);
@@ -44,14 +44,18 @@ export async function startSpeechBridge({
   if(!window.AudioContext&&!window.webkitAudioContext)throw new Error('Deze browser ondersteunt geen Web Audio.');
   // AudioContext must be opened during the user's button click for Safari/iOS.
   const Context=window.AudioContext||window.webkitAudioContext;
+  if(signal?.aborted)throw new Error('Spraaksessie geannuleerd.');
   const context=new Context();
   const resume=context.resume();
   let stream=null,source=null,processor=null,socket=null,ended=false,ready=false;
   let nextAudioAt=0,outputRate=24000;
+  const onAbort=()=>finish('Spraaksessie geannuleerd.');
+  signal?.addEventListener('abort',onAbort,{once:true});
   function finish(message){
     if(ended)return;
     ended=true;
     ready=false;
+    signal?.removeEventListener('abort',onAbort);
     try{processor?.disconnect();source?.disconnect();}catch{}
     for(const track of stream?.getTracks()||[])track.stop();
     try{if(socket&&socket.readyState<2)socket.close(1000,'Stopped');}catch{}
@@ -77,8 +81,12 @@ export async function startSpeechBridge({
   }
   try{
     await resume;
+    if(ended||signal?.aborted)throw new Error('Gesprek is gestopt.');
     stream=await navigator.mediaDevices.getUserMedia({audio:{channelCount:1,echoCancellation:true,noiseSuppression:true}});
-    if(ended)throw new Error('Gesprek is gestopt.');
+    if(ended||signal?.aborted){
+      for(const track of stream.getTracks())track.stop();
+      throw new Error('Gesprek is gestopt.');
+    }
     source=context.createMediaStreamSource(stream);
     // ScriptProcessor is used as a compatibility fallback for older Safari.
     // A worklet can replace this transport without changing the wire protocol.
@@ -117,7 +125,9 @@ export async function startSpeechBridge({
         }else if(msg.type==='status'){onStatus(String(msg.message||'Spraakserver bezig.').slice(0,250));}
         else if(msg.type==='transcript'){onTranscript(String(msg.text||'').slice(0,5000));}
         else if(msg.type==='translation'){onTranslation(String(msg.text||'').slice(0,5000));}
-        else if(msg.type==='audio'){if(msg.sample_rate&&Number.isInteger(msg.sample_rate))outputRate=msg.sample_rate;}
+        else if(msg.type==='audio'){
+          if(Number.isInteger(msg.sample_rate)&&msg.sample_rate>=8000&&msg.sample_rate<=96000)outputRate=msg.sample_rate;
+        }
         else if(msg.type==='error')finish('Spraakserver: '+String(msg.message||'onbekende fout').slice(0,250));
         else if(msg.type==='end')finish('Spraaksessie voltooid.');
       }catch(error){finish('Bridge-protocol: '+String(error?.message||error));}
