@@ -134,6 +134,10 @@ function activateView(name, options={focus:false}) {
     } else page.classList.remove('mist-page-arriving');
   }
   scroll.scrollTop = 0;
+  if(name!=='gesprek'){
+    const talk=$('freeTalkOptions');
+    if(talk?.open){talk.open=false;talk.classList.remove('is-dissolving');}
+  }
   const extra=extraViews.has(name);
   moreLabel.textContent=extra?extraNames[name]:'Overige opties';
   moreMenu.classList.toggle('has-selected-extra',extra);
@@ -185,6 +189,49 @@ for (const detail of document.querySelectorAll('.studio-disclosure')) {
     if (detail.open) markActivity();
   });
 }
+
+// Het zwevende spreekmenu past binnen het scherm, niet onder de menubalk of schermrand.
+const talkOptions=$('freeTalkOptions');
+const talkPopup=talkOptions.querySelector('.mist-detail-body');
+function positionTalkPopup(){
+  if(!talkOptions.open||$('page-gesprek').hidden)return;
+  const anchor=talkOptions.querySelector('summary').getBoundingClientRect();
+  const navBottom=document.querySelector('.studio-nav').getBoundingClientRect().bottom;
+  const room=Math.max(180,innerHeight-navBottom-24);
+  const maxHeight=Math.min(550,room);
+  talkPopup.style.setProperty('--free-popup-max-height',maxHeight+'px');
+  // Houd het huidige zwevende ontwerp aan, maar verplaats het bij weinig hoogte naar boven.
+  const popup=talkPopup.getBoundingClientRect();
+  const desiredHeight=Math.min(maxHeight,talkPopup.offsetHeight);
+  const desiredTop=Math.max(navBottom+8,Math.min(anchor.bottom+8,innerHeight-desiredHeight-12));
+  const desiredLeft=Math.max(12,Math.min(anchor.left,innerWidth-popup.width-12));
+  const top=parseFloat(getComputedStyle(talkPopup).top)||46;
+  const left=parseFloat(getComputedStyle(talkPopup).left)||0;
+  talkPopup.style.top=(top+desiredTop-popup.top)+'px';
+  talkPopup.style.left=(left+desiredLeft-popup.left)+'px';
+}
+talkOptions.addEventListener('toggle',()=>{
+  if(talkOptions.open){
+    requestAnimationFrame(()=>requestAnimationFrame(positionTalkPopup));
+    setTimeout(positionTalkPopup,460);
+  }else{
+    talkPopup.style.removeProperty('top');
+    talkPopup.style.removeProperty('left');
+  }
+});
+document.addEventListener('pointerdown',event=>{
+  if(talkOptions.open&&!talkOptions.contains(event.target)){
+    talkOptions.open=false;
+    talkOptions.classList.remove('is-dissolving');
+  }
+});
+document.addEventListener('keydown',event=>{
+  if(event.key==='Escape'&&talkOptions.open){
+    event.preventDefault();talkOptions.open=false;
+    talkOptions.querySelector('summary').focus();
+  }
+});
+window.addEventListener('resize',()=>{if(talkOptions.open)requestAnimationFrame(positionTalkPopup);});
 
 function onStudioVisibility() {
   const open = panel.classList.contains('open');
