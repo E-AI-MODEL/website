@@ -8,7 +8,7 @@
 <meta name="color-scheme" content="dark light">
 <meta name="theme-color" content="#000000">
 <meta name="referrer" content="no-referrer">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.github.com; form-action 'none'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.github.com; frame-src 'self'; form-action 'none'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'">
 <title>404 Not Found</title>
 
 <link rel="stylesheet" href="./style.css?v=20261120b">
@@ -21,6 +21,7 @@
 <link rel="stylesheet" href="./answer-engine.css?v=20261120b">
 <link rel="stylesheet" href="./studio-interface.css?v=20261121a">
 <link rel="stylesheet" href="./dashboard-composer.css?v=20261121b">
+<link rel="stylesheet" href="./dashboard-bridge.css?v=20261121c">
 <link rel="stylesheet" href="./relationship-orbit.css?v=20261121a">
 <script defer src="./app.js?v=20261121a"></script>
 <script defer src="./enhancements.js?v=20261120b"></script>
@@ -33,7 +34,8 @@
 <script defer src="./scene-navigation.js?v=20261121a"></script>
 <script defer src="./evidence-experience.js?v=20261121a"></script>
 <script defer src="./role-modes.js?v=20261120d"></script>
-<script defer src="./dashboard-composer.js?v=20261121b"></script>
+<script defer src="./dashboard-composer.js?v=20261121c"></script>
+<script defer src="./dashboard-bridge.js?v=20261121c"></script>
 </head>
 <body>
 <div id="notFound" class="litespeed-404" aria-label="404 Not Found">
@@ -129,8 +131,7 @@
           <label class="ds-visual-select"><span class="ds-sr-only">Indeling</span><select id="dsLayout" aria-label="Indeling"><option value="balanced">In balans</option><option value="editorial">Redactioneel</option><option value="focus">Focus</option><option value="compact">Compact</option><option value="custom">Eigen indeling</option></select></label>
           <button type="button" id="dsShuffle" class="ds-icon-action" title="Nieuwe indeling" aria-label="Nieuwe indeling maken"><svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7h3c6 0 6 10 12 10h3m-4-4 4 4-4 4M3 17h3c6 0 6-10 12-10h3m-4-4 4 4-4 4"/></svg></button>
           <button type="button" id="dsSave" class="ds-icon-action" aria-label="Bewaar ontwerp" title="Bewaar ontwerp"><svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 3h14l3 3v15H3V3h1Zm3 0v7h10V3M7 21v-8h10v8"/></svg></button>
-          <button type="button" id="dsBuilderData" class="ds-icon-action" title="Download geselecteerde gegevens als JSON voor Dashboard Builder">Data JSON</button>
-          <a class="ds-icon-action ds-builder-link" href="./dashboard-builder-app/" title="Open de originele Dashboard Builder op deze website">Volledige bouwer</a>
+          <button type="button" id="dsFullBuilder" class="ds-icon-action ds-builder-link" title="Open Dashboard Builder met directe verbinding naar de applicatieregistraties">Volledige bouwer</button>
           <button type="button" id="dsImport" class="ds-icon-action" aria-label="Laad dashboardontwerp" title="Importeer ontwerp">Import</button><input type="file" id="dsImportFile" accept="application/json,.json" hidden>
           <button type="button" id="dsExport" class="ds-icon-action" aria-label="Download ontwerpconfiguratie" title="Download ontwerpconfiguratie"><svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3v13m-5-5 5 5 5-5M4 19v2h16v-2"/></svg></button>
         </div>
@@ -298,6 +299,35 @@
       </div>
     </div>
   </section>
+<section id="builderSurface" aria-label="Volledige dashboardbouwer" role="dialog" aria-modal="true" hidden>
+  <div class="builder-surface-head">
+    <strong>Applicatielandschap · Dashboard Builder</strong>
+    <small id="builderStatus" role="status">De gegevens worden uit de huidige inventaris gelezen</small>
+    <button type="button" id="builderClose">Sluiten</button>
+  </div>
+  <iframe id="builderFrame" title="Dashboard Builder met gekoppelde applicatieregistraties" referrerpolicy="no-referrer" src="about:blank"></iframe>
+</section>
+<section id="builderWriteback" role="dialog" aria-modal="true" aria-labelledby="builderWriteTitle" hidden>
+  <div class="builder-write-dialog">
+    <span class="builder-write-eyebrow">CONTROLE VOOR TERUGSCHRIJVEN</span>
+    <h2 id="builderWriteTitle">Wijzigingen terugschrijven?</h2>
+    <p id="builderWriteSummary"></p>
+    <div id="builderWriteDiff" class="builder-write-diff"></div>
+    <p>Alleen de dashboardindeling wordt voorgesteld in GitHub. De bronregistraties blijven ongewijzigd. De wijziging wordt pas gepubliceerd na goedkeuring van de pull request.</p>
+    <p id="builderWriteTarget" class="builder-write-target"></p>
+    <ul id="builderWriteTiles" class="builder-write-tile-list" aria-label="Onderdelen die worden voorgesteld"></ul>
+    <label for="builderWriteReason">Reden van de wijziging</label>
+    <input id="builderWriteReason" type="text" maxlength="180" placeholder="Bijvoorbeeld: indeling voor bespreking ICT">
+    <label for="builderWriteToken">GitHub-token, alleen voor dit voorstel</label>
+    <input id="builderWriteToken" type="password" spellcheck="false" autocomplete="off" placeholder="Niet opgeslagen">
+    <label class="builder-write-consent"><input type="checkbox" id="builderWriteConsent"> Ik heb gecontroleerd dat de titels, toelichtingen en indeling openbaar mogen worden voorgesteld.</label>
+    <p id="builderWriteStatus" role="status" aria-live="polite"></p>
+    <div class="builder-write-actions">
+      <button type="button" id="builderWriteCancel">Annuleren</button>
+      <button type="button" class="primary" id="builderWriteSubmit">Maak GitHub-voorstel</button>
+    </div>
+  </div>
+</section>
 <input id="fileInput" type="file" multiple accept=".xlsx,.csv,.json,.docx,.pdf" hidden>
 <div id="printReport" class="print-report" aria-hidden="true"></div>
 </body>
