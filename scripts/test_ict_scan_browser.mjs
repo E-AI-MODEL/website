@@ -68,6 +68,39 @@ try {
   const message=await page.locator('#githubSyncStatus').textContent();
   assert.match(message,/geslaagd/i,'GitHub-sync mislukt: '+message);
   await page.waitForFunction(()=>document.getElementById('statusText')?.textContent.includes('61 toepassingen'));
+  await page.locator('#viewStudio:not([hidden])').waitFor();
+  assert.equal(await page.locator('#dsDataOptions .ds-option').count(),8,'Gegevenskeuze moet alle acht beschikbare bronsoorten bevatten');
+  assert.equal(await page.locator('#dsPartOptions .ds-part').count(),9,'Er ontbreken vrij kiesbare dashboardonderdelen');
+  assert.equal(await page.locator('#dsCanvas .ds-component').count(),5,'Het startdashboard moet direct bruikbaar zijn');
+  assert.match(await page.locator('#dsCanvas .ds-numbers').textContent(),/61/);
+  assert.match(await page.locator('#dsCanvas .ds-numbers').textContent(),/93/);
+  await page.screenshot({path:'test-results/ict-scan-'+width+'-composer-default.png'});
+  if(width<700){await page.locator('#dsToggleControls').click();assert.equal(await page.locator('#viewStudio.ds-controls-open').count(),1);}
+  await page.locator('#dsBlank').click();
+  assert.equal(await page.locator('#dsCanvas .ds-component').count(),0,'Leeg beginnen moet echt een leeg werkvlak tonen');
+  await page.locator('#dsPartOptions button').first().click();
+  assert.equal(await page.locator('#dsCanvas .ds-numbers').count(),1,'Een klik moet het gekozen onderdeel meteen plaatsen');
+  await page.locator('#dsSuggest').click();
+  assert((await page.locator('#dsCanvas .ds-component').count())>=4,'Automatische samenstelling moet meerdere bruikbare onderdelen kiezen');
+  await page.locator('#dsLayout').selectOption('editorial');
+  assert.equal(await page.locator('#dsCanvas').getAttribute('data-layout'),'editorial');
+  await page.locator('#dsPrimary').selectOption('ai');
+  assert.match(await page.locator('#dsCanvas .ds-distribution .ds-inline-label').textContent(),/AI-functies/);
+  await page.locator('#dsPrimary').selectOption('apps');
+  const chart=page.locator('#dsCanvas .ds-distribution');
+  assert((await chart.locator('svg .ds-figure-row[role="button"]').count())>0,'De lijnvisual moet bedienbaar zijn');
+  await chart.locator('svg .ds-figure-row[role="button"]').first().click();
+  assert.match(await page.locator('#dsCanvas .ds-distribution .ds-inline-link').textContent(),/wissen/);
+  await page.locator('#dsCanvas .ds-distribution .ds-inline-link').click();
+  await page.locator('[data-ds-preset="technology"]').click();
+  assert.equal(await page.locator('#dsCanvas .ds-hardware').count(),1,'Hardware moet als afzonderlijk onderdeel te kiezen zijn');
+  assert.match(await page.locator('#dsCanvas .ds-hardware').textContent(),/161/);
+  await page.locator('#dsSave').click();
+  assert.match(await page.evaluate(()=>localStorage.getItem('emmaus-ict-dashboard-studio-v1')),/"layout":"editorial"/);
+  await page.screenshot({path:'test-results/ict-scan-'+width+'-composer-technology.png'});
+  if(width<700)await page.locator('#dsToggleControls').click();
+  await page.locator('.rail-button[data-view="overview"]').click();
+
   assert.equal(await page.locator('#kpiGrid .kpi').count(),4,'Vier statuscijfers ontbreken');
   assert.equal(await page.locator('#viewOverview .scene-tab').count(),4,'Schoolbreed, relaties, broncontrole en toepassingen moeten afzonderlijk toegankelijk zijn');
   const size=await page.evaluate(()=>({scrollWidth:document.documentElement.scrollWidth,clientWidth:document.documentElement.clientWidth,height:innerHeight,main:document.querySelector('.main-content').getBoundingClientRect().height,cardWidth:document.querySelector('.panel')?.getBoundingClientRect().width}));
@@ -153,7 +186,7 @@ try {
   await page.locator('#railDrawerClose').click();
   assert.match(await page.evaluate(()=>localStorage.getItem('emmaus-ict-scan-visible-roles-v1')),/"fg":true/);
 
-  for(const name of ['overview','apps','connections','devices','ai','privacy','findings','reports','sources']){
+  for(const name of ['studio','overview','apps','connections','devices','ai','privacy','findings','reports','sources']){
     await page.locator('[data-view="'+name+'"]').click();
     const result=await page.evaluate(()=>({width:document.documentElement.scrollWidth,viewport:document.documentElement.clientWidth,heading:document.getElementById('sectionTitle')?.textContent}));
     assert(result.width<=result.viewport+1,'Horizontale overloop bij '+width+' in '+name+': '+JSON.stringify(result));
