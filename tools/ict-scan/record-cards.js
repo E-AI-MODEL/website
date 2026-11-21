@@ -82,7 +82,7 @@
       return {current:'Goedkeuring bevestigd voor deze bronversie',missing:'Bevestiging voor deze bronversie ontbreekt',stale:'Brongegevens gewijzigd: opnieuw goedkeuren',invalid:'Goedkeuring heeft een ongeldige versiekoppeling'}[result.status]||'Opnieuw goedkeuren';
     }catch(_){return 'Versiekoppeling niet gecontroleerd';}
   }
-  function label(field){return labels[field]||field.replace(/([a-z])([A-Z])/g,'$1 $2');}
+  function label(field,source){return IctScanTaxonomy.fieldLabel(field,source,labels[field]||field.replace(/([a-z])([A-Z])/g,'$1 $2'));}
   function provenanceText(value){
     const rows=Array.isArray(value)?value:value==null?[]:[value];
     return rows.map(row=>{
@@ -184,12 +184,12 @@
       nav.append(button);panes.set(id,panel);tabs.set(id,button);
     }
     const overview=panes.get('overview');
-    lines(overview,'',first.map(k=>[label(k),r[k]]));
+    lines(overview,'',first.map(k=>[label(k,r),r[k]]));
     if(!overview.children.length)overview.append(text('p','card-empty','Voor deze registratie zijn nog geen hoofdgegevens ingevuld.'));
     const details=panes.get('details');
-    lines(details,'',other.map(k=>[label(k),r[k]]));
+    lines(details,'',other.map(k=>[label(k,r),r[k]]));
     const hiddenFields=new Set([...spec.fields,'id','originalNumber','sourceFields','otherDescription','provenance','sources','auditTrail','relations','frameworkLinks','recordMeta','sourceMeta','sourceRefs','sourceIds','referenceKeys','approvalBinding']);
-    const extras=Object.keys(r).filter(k=>!hiddenFields.has(k)).map(k=>[label(k),r[k]]);
+    const extras=Object.keys(r).filter(k=>!hiddenFields.has(k)).map(k=>[label(k,r),r[k]]);
     if(extras.length)lines(details,'Overige gegevens',extras);
     if(!details.children.length)details.append(text('p','card-empty','Geen aanvullende gegevens.'));
     const links=panes.get('links');
@@ -247,8 +247,8 @@
     container.append(nav,...panes.values());
     activate('overview');
   }
-  function inputControl(name,value,group){
-    const outer=text('label','card-field'),title=text('span','card-field-label',model.current?.type==='sourceRegister'&&name==='owner'?'Bronhouder':label(name));
+  function inputControl(name,value,group,record){
+    const outer=text('label','card-field'),title=text('span','card-field-label',model.current?.type==='sourceRegister'&&name==='owner'?'Bronhouder':label(name,record));
     if(value!==null&&typeof value==='object'){
       const output=text('pre','card-original-json',JSON.stringify(value,null,2));
       outer.append(title,text('span','card-help','Gestructureerde gegevens blijven bij deze bewerking behouden.'),output);
@@ -338,7 +338,11 @@
     const holder=$c('cardFormFields');holder.replaceChildren();
     const grid=text('div','card-input-grid');
     const fields=[...new Set(['name',...spec.fields,...Object.keys(r).filter(k=>!PROTECTED.has(k))])];
-    for(const field of fields)if(!PROTECTED.has(field))grid.append(inputControl(field,r[field]));
+    for(const field of fields){
+      if(PROTECTED.has(field))continue;
+      if(spec.key==='ai'&&IctScanTaxonomy.fieldStatus(r,field)==='niet-van-toepassing'&&!String(r[field]??'').trim())continue;
+      grid.append(inputControl(field,r[field],undefined,r));
+    }
     holder.append(grid);
     const links=text('section','card-form-section');links.append(text('h4','','Onderlinge verbanden'));
     links.append(text('p','card-help','Koppel twee bestaande registraties en geef aan waarop het verband berust.'));

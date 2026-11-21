@@ -4,6 +4,7 @@ import vm from 'node:vm';
 const source = fs.readFileSync(new URL('../tools/ict-scan/app.js', import.meta.url),'utf8').replace(/\$\('reportDate'\)\.textContent[\s\S]*$/, '');
 const ctx = {Blob, TextDecoder, TextEncoder, console};
 vm.createContext(ctx);
+vm.runInContext(fs.readFileSync(new URL('../tools/ict-scan/record-taxonomy.js',import.meta.url),'utf8'),ctx);
 vm.runInContext(source,ctx);
 // Evalueer de browsercode eerst volledig. Voeg de testtoegang pas na de
 // declaraties toe: een aangeplakte opdracht kan anders midden in de

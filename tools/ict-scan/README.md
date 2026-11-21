@@ -39,6 +39,22 @@ Volledige offline herstart is niet aangetoond. De toepassing heeft geen servicew
 
 De paragrafen hieronder beschrijven de bestaande functies en hun ontwikkeling. De bovenstaande uitbreiding is de actuele beschrijving van controles en schrijven naar GitHub.
 
+## Eén gegevensbetekenis, geen AI in de website
+
+De ICT-scan gebruikt geen taalmodel. Zoeken, gegevenskaarten, grafieken,
+rapporten en controles zijn deterministisch. Het woord AI verwijst uitsluitend
+naar geïnventariseerde functies en toepassingen, niet naar de techniek van de site.
+
+`record-taxonomy.js` legt de interpretatie vast van de bestaande JSON-velden
+`domain` en `phase`, en van de contextafhankelijke veldnamen. De bron-JSON
+blijft de enige inhoudelijke registratie. Kaarten, schermen en exports
+gebruiken dezelfde indeling. Onbekende domeinen worden niet op basis
+van andere ingevulde velden geraden.
+
+Bij `Onderwijsleerproces` is een lesfase relevant; bij `Organisatie en beheer`
+is de lesfase niet van toepassing. Oorspronkelijke gegevens, technische
+ID's, bronverwijzingen, 404-ingang en gecontroleerde PR-route blijven behouden.
+
 ## Gebruik
 
 De route staat niet in de gewone website-navigatie of de sitemap. De pagina begint met de standaard 404-weergave. Dubbelklik op de middelste 0 van 404. Het dashboard opent direct, zonder toegangscode of wachtwoord. De verborgen ingang is geen authenticatie of beveiliging van de broncode.
