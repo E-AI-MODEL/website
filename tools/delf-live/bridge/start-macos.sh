@@ -54,7 +54,7 @@ if [[ "$ENGINE" == 'moshi' ]]; then
 else
   export EAISPEAK_HIBIKI_WS='ws://127.0.0.1:8998/api/chat'
 fi
-if [[ -z "$EAISPEAK_ALLOWED_ORIGINS" ]]; then
+if [[ -z "${EAISPEAK_ALLOWED_ORIGINS:-}" ]]; then
   export EAISPEAK_ALLOWED_ORIGINS='https://eaimodel.nl,https://www.eaimodel.nl,http://localhost:5173,http://127.0.0.1:5173'
 fi
 
