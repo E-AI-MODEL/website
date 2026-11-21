@@ -1,0 +1,7 @@
+{
+  "schema": "eai-ict-dashboard-layout-index-v1",
+  "version": 1,
+  "layouts": [
+    "apps"
+  ]
+}
