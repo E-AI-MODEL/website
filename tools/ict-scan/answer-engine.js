@@ -5,7 +5,7 @@
   const stop=new Set(['de','het','een','en','of','in','op','met','voor','van','tot','bij','aan','wat','wie','waar','hoe','welke','welk','zijn','is','hebben','heeft','we','wij','er','deze','die','ons','onze','dit','ik','nog','kan','kun','moet','doet','over']);
   function norm(value){return String(value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim().replace(/\s+/g,' ');}
   function words(value){return norm(value).split(' ').filter(w=>w&&!stop.has(w));}
-  function unknown(value){const v=norm(value);return !v||v==='?'||v.startsWith('nog ')||v.startsWith('niet vastgesteld')||v.startsWith('onbekend')||v.startsWith('schoolgebruik nog niet')||v.startsWith('afhankelijk van')||v.startsWith('standaard volgens leverancier');}
+  function unknown(value){const v=norm(value);return !v||v.startsWith('?')||v.startsWith('nog ')||v.startsWith('niet vastgesteld')||v.startsWith('onbekend')||v.startsWith('schoolgebruik nog niet')||v.startsWith('afhankelijk van')||v.startsWith('standaard volgens leverancier');}
   const label={apps:'Toepassing',ai:'AI-functie',connections:'Entra-registratie',candidates:'Kandidaat',faqs:'FAQ',parts:'Technisch onderdeel'};
   const result=(kind,answer,records=[],status='Brongebonden',sources=[],question='')=>({kind,answer,status,records:records.slice(0,12),sources:[...new Set(sources.filter(Boolean))].slice(0,5),question});
   function entry(type,x){return {type,id:x.id,name:x.name||x.question||x.id,detail:type==='apps'?(x.description||''):type==='ai'?(x.product||''):type==='connections'?(x.matched||''):type==='faqs'?(x.topic||''):(x.kind||'')};}
@@ -94,14 +94,14 @@
     }
     if(/\b(ai|copilot|kunstmatige|functie|functies)\b/.test(q)){
       if(!ai.length)return result('relations','Aan '+own+' zijn in het AI-register geen AI-functies gekoppeld. Dat bewijst niet dat de leverancier geen AI-functies aanbiedt.',base,'Geen bronkoppeling',src);
-      return result('relations','Voor '+own+' zijn '+ai.length+' AI-functies beschreven, waaronder '+shortList(ai)+'. Beschrijving betekent niet dat de functies op school zijn ingeschakeld.',ai.map(x=>entry('ai',x)).concat(base),'Beschreven functies',recordSources(ai).concat(src));
+      return result('relations','Voor '+own+' zijn '+ai.length+' AI-functies beschreven, waaronder '+shortList(ai)+'. Beschrijving betekent niet dat de functies op school zijn ingeschakeld.',base.concat(ai.map(x=>entry('ai',x))),'Beschreven functies',recordSources(ai).concat(src));
     }
     if(/\b(onderdelen|modules|onderdeel|module|familie|parent|child)\b/.test(q)){
       if(!parts.length)return result('relations','Bij '+own+' zijn nog geen technische onderdelen in het bronregister gekoppeld. Eventuele andere modules zijn hiermee niet uitgesloten.',base,'Geen bronkoppeling',src);
       return result('relations','Bij '+own+' staan '+parts.length+' technische registraties: '+shortList(parts)+'. Hun productrelatie en actieve werking vragen afzonderlijke bevestiging.',parts.map(x=>entry('parts',x)).concat(base),'Geregistreerde onderdelen',recordSources(parts).concat(src));
     }
     if(/\b(gebruiken|gebruikt|gebruik|actief|ingeschakeld|aanwezig|hebben|heeft|installatie)\b/.test(q)){
-      if(unknown(app.local))return result('usage',own+' staat in het applicatieregister ('+app.id+'). Het daadwerkelijke schoolgebruik is nog niet bevestigd.',base,'Niet vastgesteld',src);
+      if(unknown(app.local))return result('usage',own+' is geregistreerd in het applicatieregister ('+app.id+'). Het daadwerkelijke schoolgebruik is nog niet bevestigd.',base,'Niet vastgesteld',src);
       return result('usage','Bij '+own+' staat als lokale gebruiksstatus: '+app.local+'.',base,'Geregistreerde status',src);
     }
     if(/\b(wat|waarvoor|functie|beschrijving|doel)\b/.test(q)){
@@ -181,9 +181,11 @@
     if(q.length<2)return result('empty','');
     const faq=exactFaq(q,data.faqs);
     if(faq)return result('faq',faq.answer,[entry('faqs',faq)],faq.status||'Vast antwoord',faq.sources||[],question);
+    // Een vraag naar aantallen moet vóór de naamherkenning worden afgehandeld:
+    // anders kan 'Entra ID / LDAP' het overzicht van alle Entra-registraties onderscheppen.
+    const count=countQuery(q,data);if(count)return count;
     const app=findApp(q,data.apps);
     if(app)return describeApp(q,app,data);
-    const count=countQuery(q,data);if(count)return count;
     const list=listQuery(q,data);if(list)return list;
     const near=fuzzyFaq(q,data.faqs);
     if(near)return result('faq',near.answer,[entry('faqs',near)],near.status||'Vast antwoord',near.sources||[],question);
