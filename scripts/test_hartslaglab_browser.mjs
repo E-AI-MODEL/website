@@ -163,10 +163,55 @@ try {
 
   // Bewijs dat afspelen doorloopt over de overgang 100% -> 0%.
   await setTime(page,.98);
-  await page.locator('#play').click();
-  await page.waitForTimeout(520);
-  const wrapped=await state(page);
-  assert(wrapped.playing&&wrapped.t<.35,'Hartslag moet vanzelf opnieuw beginnen');
+  const beforeWrap=await state(page);
+  assert(!beforeWrap.playing&&beforeWrap.t>.97,'De cyclusproef begint gepauzeerd aan het einde');
+  // Observeer de overgang per beeld, ook wanneer software-WebGL traag is.
+  // Bewaar de waarneming in de pagina; een latere protocolrespons mag haar
+  // niet vervangen door een momentopname uit een volgende fase.
+  await page.evaluate(()=>{
+    const observation={previous:window.__EAI_HEART_LAB__.state.t,started:null,transition:null,frame:0};
+    window.__EAI_HEART_WRAP_OBSERVATION__=observation;
+    document.getElementById('play').addEventListener('click',()=>{
+      const started=window.__EAI_HEART_LAB__.state;
+      observation.started={t:started.t,playing:started.playing};
+    },{once:true});
+    const sample=()=>{
+      const current=window.__EAI_HEART_LAB__.state;
+      if(current.playing&&observation.previous>.95&&current.t<.35){
+        observation.transition={from:observation.previous,to:current.t,playing:current.playing,started:observation.started};
+        return;
+      }
+      observation.previous=current.t;
+      observation.frame=requestAnimationFrame(sample);
+    };
+    observation.frame=requestAnimationFrame(sample);
+  });
+  let wrapped;
+  try{
+    await page.locator('#play').click();
+    const transition=await page.waitForFunction(
+      ()=>window.__EAI_HEART_WRAP_OBSERVATION__.transition,
+      undefined,{timeout:10000,polling:'raf'}
+    );
+    wrapped=await transition.jsonValue();
+    await transition.dispose();
+  }catch(error){
+    console.error('Hartslag cyclusproef:',await page.evaluate(()=>({
+      state:window.__EAI_HEART_LAB__.state,
+      observation:window.__EAI_HEART_WRAP_OBSERVATION__
+    })));
+    throw error;
+  }finally{
+    await page.evaluate(()=>{
+      cancelAnimationFrame(window.__EAI_HEART_WRAP_OBSERVATION__.frame);
+      delete window.__EAI_HEART_WRAP_OBSERVATION__;
+    });
+  }
+  assert(wrapped.started?.playing&&Math.abs(wrapped.started.t-.98)<.001,
+    'Afspelen moet vanaf de ingestelde eindfase beginnen');
+  assert(wrapped.playing&&wrapped.from>.95&&wrapped.to<.35,
+    'Hartslag moet tijdens afspelen van het cyclus-einde naar het begin gaan');
+  console.log('Hartslag cyclusovergang:',JSON.stringify(wrapped));
   await page.locator('#play').click();
 
   mkdirSync('test-results',{recursive:true});
