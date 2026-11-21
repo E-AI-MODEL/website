@@ -1,0 +1,52 @@
+{
+  "schema": "eai-ict-dashboard-layout-v1",
+  "version": 1,
+  "source": "apps",
+  "title": "Toepassingen",
+  "theme": "paper",
+  "pages": [
+    {
+      "id": "page-1",
+      "name": "Overzicht"
+    }
+  ],
+  "currentPageId": "page-1",
+  "tiles": [
+    {
+      "id": "emmaus-headlines",
+      "type": "kpi",
+      "title": "Geregistreerd",
+      "sourceRole": "headlines",
+      "x": 0,
+      "y": 0,
+      "w": 12,
+      "h": 4,
+      "pageId": "page-1",
+      "tileOptions": {}
+    },
+    {
+      "id": "emmaus-distribution",
+      "type": "bar",
+      "title": "Verdeling",
+      "sourceRole": "distribution",
+      "x": 0,
+      "y": 4,
+      "w": 6,
+      "h": 13,
+      "pageId": "page-1",
+      "tileOptions": {}
+    },
+    {
+      "id": "emmaus-records",
+      "type": "table",
+      "title": "Bronregistraties",
+      "sourceRole": "records",
+      "x": 6,
+      "y": 4,
+      "w": 6,
+      "h": 13,
+      "pageId": "page-1",
+      "tileOptions": {}
+    }
+  ]
+}
