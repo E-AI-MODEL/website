@@ -120,6 +120,39 @@
     }
     return changedFiles;
   }
+  function confirmChangePopup(drafts){
+    return new Promise(resolve=>{
+      const dialog=document.createElement('dialog');
+      dialog.className='card-publish-review';dialog.setAttribute('aria-labelledby','cardPublishReviewHeading');
+      const heading=document.createElement('div');heading.className='card-publish-review-head';
+      const eyebrow=document.createElement('small');eyebrow.textContent='CONTROLE VOOR TERUGSCHRIJVEN';
+      const title=document.createElement('h2');title.id='cardPublishReviewHeading';title.textContent='Wijzigingen terugschrijven?';
+      heading.append(eyebrow,title);dialog.append(heading);
+      const intro=document.createElement('p');intro.textContent=drafts.length+' registratie'+(drafts.length===1?'':'s')+' wordt/worden voorgesteld aan GitHub. Publicatie volgt pas na beoordeling van het pull request.';
+      dialog.append(intro);
+      const list=document.createElement('div');list.className='card-publish-review-list';
+      for(const d of drafts){
+        const item=document.createElement('article');
+        const h=document.createElement('strong');h.textContent=(d.before?'Wijzig':'Nieuw')+' '+d.id+' · '+d.after.name;
+        const summary=document.createElement('p');summary.textContent='Velden: '+d.changed.join(', ');
+        const reason=document.createElement('small');reason.textContent=d.reason;
+        item.append(h,summary,reason);list.append(item);
+      }
+      dialog.append(list);
+      const target=document.createElement('p');target.className='card-publish-review-target';
+      target.textContent='Bestemming: E-AI-MODEL/website · nieuwe branch, pull request naar main';dialog.append(target);
+      const controls=document.createElement('div');controls.className='card-publish-review-actions';
+      const cancel=document.createElement('button');cancel.type='button';cancel.textContent='Annuleren';
+      const approve=document.createElement('button');approve.type='button';approve.className='card-publish-review-approve';approve.textContent='Ja, wijzigingsvoorstel maken';
+      controls.append(cancel,approve);dialog.append(controls);document.body.append(dialog);
+      let accepted=false;
+      cancel.addEventListener('click',()=>dialog.close());
+      approve.addEventListener('click',()=>{accepted=true;dialog.close();});
+      dialog.addEventListener('close',()=>{dialog.remove();resolve(accepted);},{once:true});
+      try{dialog.showModal();cancel.focus();}
+      catch(_){dialog.remove();resolve(false);}
+    });
+  }
   async function post(){
     const cards=window.EmmausRecordCards,button=el('cardCreatePR');
     if(!cards)return;
@@ -131,6 +164,7 @@
       if(!consent)fail('Bevestig eerst dat deze wijzigingen openbaar mogen worden voorgesteld.');
       if(!token)fail('Vul een GitHub-token met beperkte schrijfrechten in.');
       assertPublicSafe(drafts);
+      if(!await confirmChangePopup(drafts)){cards.feedback('Niet verstuurd. De conceptwijzigingen blijven behouden.');return;}
       button.disabled=true;button.textContent='GitHub controleren…';
       const request=api(token);
       const [user,head]=await Promise.all([
