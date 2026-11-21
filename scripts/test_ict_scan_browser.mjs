@@ -108,6 +108,7 @@ try {
   assert.equal(await page.locator('#cardReadView .card-read-tab').count(),4);
   assert.equal(await page.locator('#cardReadView .card-tab-panel:not([hidden])').count(),1);
   assert.equal(await page.locator('#cardJsonPanel').isVisible(),false,'JSON is technische broninformatie, geen tweede kaart');
+  await page.waitForFunction(()=>{const r=document.getElementById('cardEditor')?.getBoundingClientRect();return !!r&&r.left>=-1&&r.right<=innerWidth+1;},null,{timeout:4500});
   const panelBounds=await page.locator('#cardEditor').boundingBox();
   assert(panelBounds&&panelBounds.x>=0&&panelBounds.x+panelBounds.width<=width+1,'Detailpaneel loopt buiten scherm');
   if(width>700)assert(panelBounds.width<700,'Detailpaneel moet compact zijn');
