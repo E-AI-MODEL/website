@@ -280,3 +280,20 @@ body.record-card-open{overflow:hidden}
  .card-editor.card-context-mode:not([hidden]),.card-editor .card-tab-panel:not([hidden]){animation:none!important}
  .card-editor .card-read-tab,.item-list .item-card.item-card-direct .item-summary{transition:none!important}
 }
+
+/* Explicit confirmation before any registered source change is proposed. */
+.card-publish-review{width:min(580px,calc(100vw - 24px));max-height:85dvh;overflow:auto;padding:26px;background:#fbfcfe;color:#324b6e;border:1px solid #cbd8e5;border-radius:12px;box-shadow:0 20px 80px rgba(18,34,58,.21);font:inherit}
+.card-publish-review::backdrop{background:rgba(8,25,47,.52);backdrop-filter:blur(8px)}
+.card-publish-review-head small{font-size:9px;font-weight:740;color:#a18054;letter-spacing:.1em}
+.card-publish-review h2{font-size:23px;margin:5px 0 13px;letter-spacing:-.03em;font-weight:640;color:#2e496d}
+.card-publish-review>p{font-size:11px;line-height:1.55;color:#73859b;margin:8px 0 13px}
+.card-publish-review-list{max-height:230px;overflow:auto;border-top:1px solid #d8e3ed;border-bottom:1px solid #d8e3ed}
+.card-publish-review-list article{padding:11px 0;border-bottom:1px solid #e5edf4;display:grid;gap:4px}
+.card-publish-review-list article:last-child{border:0}
+.card-publish-review-list strong{font-size:12px;line-height:1.35;color:#375374}
+.card-publish-review-list p{margin:0;font-size:10px;color:#647c96}
+.card-publish-review-list small{font-size:10px;color:#8395a8}
+.card-publish-review-actions{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:9px;margin-top:20px}
+.card-publish-review-actions button{font:inherit;font-size:11px;padding:9px 13px;border:1px solid #c2d3e1;color:#355475;background:transparent;border-radius:5px;cursor:pointer}
+.card-publish-review-actions .card-publish-review-approve{background:#314e75;color:white;border-color:#314e75}
+@media(max-width:610px){.card-publish-review{max-height:92dvh;padding:18px;margin:auto 8px}.card-publish-review-actions button{flex:1 1 100%}}
