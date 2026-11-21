@@ -1,6 +1,7 @@
 // EAIspeak: vrij spreken, met apart gekozen model, taal en stem.
 import {localReply,interruptBrowserReply,ensureBrowserModel,browserModelStatus} from './browser-llm.js';
 import {checkWebGpuAvailability} from './gpu-capability.mjs';
+import {availableVoices,readVoicePreference,saveVoicePreference,voiceLanguage} from './browser-voice-choice.mjs';
 import {listLocalModels,validateLocalEndpoint} from './system-probes.mjs';
 import {describeDevice,suggestDeviceSetup,modelDeviceAdvice} from './device-profile.mjs';
 const $=id=>document.getElementById(id);
@@ -112,12 +113,16 @@ let preferredVoiceURI=String(saved.voiceURI||'');
 let chosenOllamaModel=String(saved.ollamaModel||'');
 function refreshVoices(){
   if(!hasBrowserVoice)return;
-  const voices=window.speechSynthesis.getVoices().filter(v=>v.lang.toLowerCase().startsWith(outputLang.value.slice(0,2).toLowerCase()));
-  const previously=voiceName.value||preferredVoiceURI;
-  voiceName.replaceChildren(new Option(voices.length?'Automatisch passende stem':'Geen stem voor deze taal gevonden',''));
+  const language=voiceLanguage(outputLang.value);
+  const voices=availableVoices(window.speechSynthesis,language);
+  // Bewaar en herstel per taal: Nederlands, Engels en Frans hebben elk hun eigen stem.
+  const selectedHere=voiceName.dataset.language===language?voiceName.value:'';
+  const previously=readVoicePreference(language)||selectedHere
+    ||(voiceLanguage(saved.outputLang)===language?(saved.voiceURI||preferredVoiceURI):'');
+  voiceName.replaceChildren(new Option(voices.length?'Automatisch passende stem':'Geen '+languages[outputLang.value]+' stem beschikbaar',''));
   for(const v of voices)voiceName.add(new Option(v.name+' · '+v.lang+(v.localService?' · op apparaat':' · netwerk mogelijk'),v.voiceURI));
-  if(voices.some(v=>v.voiceURI===previously))voiceName.value=previously;
-  else voiceName.value='';
+  voiceName.value=voices.some(v=>v.voiceURI===previously)?previously:'';
+  voiceName.dataset.language=language;
   preferredVoiceURI=voiceName.value;
 }
 const hardwareCheck=checkWebGpuAvailability(navigator.gpu).then(result=>{
@@ -204,7 +209,7 @@ function syncChanges(){
   updateControls();
 }
 for(const control of [cloudModel,inputLang,outputLang,voice])control.addEventListener('change',syncChanges);
-voiceName.addEventListener('change',()=>{preferredVoiceURI=voiceName.value;persist();});
+voiceName.addEventListener('change',()=>{preferredVoiceURI=voiceName.value;saveVoicePreference(outputLang.value,voiceName.value);persist();});
 autoListen.addEventListener('change',persist);
 ollamaEndpoint.addEventListener('change',persist);
 ollamaModel.addEventListener('change',()=>{chosenOllamaModel=ollamaModel.value;syncChanges();});
@@ -242,6 +247,7 @@ if(!hasBrowserVoice){
 const talkTab=$('tab-gesprek');
 if(talkTab)talkTab.addEventListener('click',()=>{
   if(engine.value==='puter'&&!puterSdk)void primePuter();
+  refreshVoices();
 });
 preload.addEventListener('click',async()=>{
   if(pending||preload.disabled)return;
