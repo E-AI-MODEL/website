@@ -17,18 +17,20 @@
 <link rel="stylesheet" href="./scene-navigation.css?v=20261120b">
 <link rel="stylesheet" href="./evidence-experience.css?v=20261120c">
 <link rel="stylesheet" href="./role-modes.css?v=20261120d">
-<link rel="stylesheet" href="./record-cards.css?v=20261120b">
+<link rel="stylesheet" href="./record-cards.css?v=20261121a">
 <link rel="stylesheet" href="./answer-engine.css?v=20261120b">
-<script defer src="./app.js?v=20261120b"></script>
+<link rel="stylesheet" href="./studio-interface.css?v=20261121a">
+<link rel="stylesheet" href="./relationship-orbit.css?v=20261121a">
+<script defer src="./app.js?v=20261121a"></script>
 <script defer src="./enhancements.js?v=20261120b"></script>
 <script defer src="./visual-explorer.js?v=20261120b"></script>
 <script defer src="./github-sync.js?v=20261120b"></script>
 <script defer src="./rail-drawer.js?v=20261120b"></script>
-<script defer src="./record-cards.js?v=20261120b"></script>
+<script defer src="./record-cards.js?v=20261121a"></script>
 <script defer src="./record-github.js?v=20261120b"></script>
 <script defer src="./answer-engine.js?v=20261120b"></script>
-<script defer src="./scene-navigation.js?v=20261120b"></script>
-<script defer src="./evidence-experience.js?v=20261120c"></script>
+<script defer src="./scene-navigation.js?v=20261121a"></script>
+<script defer src="./evidence-experience.js?v=20261121a"></script>
 <script defer src="./role-modes.js?v=20261120d"></script>
 </head>
 <body>
@@ -120,17 +122,17 @@
             <p class="viz-caption" id="kindChartCaption"></p>
           </article>
         </div>
-        <article class="panel matrix-panel">
-          <div class="panel-head"><div><p class="panel-kicker">VERBAND</p><h2>Gebruiksgebied en soort voorziening</h2></div>
-            <label class="viz-select-label"><span class="visually-hidden">Weergave kruising</span><select id="matrixVizMode" aria-label="Weergave van gebruiksgebied en soort voorziening"><option value="matrix">Matrix</option><option value="table">Tabel</option></select></label>
-          </div>
-          <p id="matrixContext" class="viz-caption"></p>
-          <div id="crossMatrix" class="cross-matrix"></div>
+        <article class="panel atlas-panel">
+          <div class="panel-head"><div><p class="panel-kicker">SYSTEEMRELATIES</p><h2>Waar is deze toepassing mee verbonden?</h2></div><span class="atlas-hint">Bronregistraties · geen automatische gebruiksbevestiging</span></div>
+          <div class="family-controls"><label class="visually-hidden" for="familyApp">Toepassing kiezen</label><select id="familyApp" aria-label="Kies een toepassing voor de relatievisual"></select><label class="visually-hidden" for="familyMode">Familieweergave</label><select id="familyMode" aria-label="Familieweergave"><option value="map">Kaart</option><option value="list">Lijst</option></select></div>
+          <div id="familyVisual" class="family-visual"></div><p class="viz-caption" id="familyContext"></p>
         </article>
         <div class="two-col gap-lg">
+          <article class="panel matrix-panel">
+            <div class="panel-head"><div><p class="panel-kicker">VERDELING</p><h2>Gebruiksgebied en soort voorziening</h2></div><label class="viz-select-label"><span class="visually-hidden">Weergave kruising</span><select id="matrixVizMode" aria-label="Weergave van gebruiksgebied en soort voorziening"><option value="matrix">Matrix</option><option value="table">Tabel</option></select></label></div>
+            <p id="matrixContext" class="viz-caption"></p><div id="crossMatrix" class="cross-matrix"></div>
+          </article>
           <article class="panel"><div class="panel-head"><div><p class="panel-kicker">GEGEVENSDEKKING</p><h2>Wat weten we al?</h2></div></div><div id="coverage" class="coverage"></div></article>
-          <article class="panel"><div class="panel-head"><div><p class="panel-kicker">SAMENHANG</p><h2>Toepassingen en hun onderdelen</h2></div></div><div class="family-controls"><label class="visually-hidden" for="familyApp">Toepassing kiezen</label><select id="familyApp" aria-label="Toepassing kiezen"></select><label class="visually-hidden" for="familyMode">Familieweergave</label><select id="familyMode" aria-label="Familieweergave"><option value="map">Kaart</option><option value="list">Lijst</option></select></div>
-            <div id="familyVisual" class="family-visual"></div><p class="viz-caption" id="familyContext"></p></article>
         </div>
         <article class="panel preview-panel"><div class="panel-head"><div><p class="panel-kicker">TOEPASSINGEN</p><h2>In het overzicht</h2></div><button class="text-button" id="overviewToApps" data-open="apps">Selectie openen &#8594;</button></div><div id="overviewApps"></div></article>
       </section>
