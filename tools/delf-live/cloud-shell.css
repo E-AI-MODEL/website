@@ -1282,3 +1282,6 @@ body.cloud-studio-idle.panel-visible:has(.studio-more-tabs[open]) .cloud-studio 
 .free-talk-floating #freeTalkSpeechSource{display:inline-block;align-self:flex-start;color:inherit;text-decoration:underline;text-underline-offset:3px;opacity:.78}
 .free-talk-floating #freeTalkSpeechSource:hover{opacity:1}
 .free-talk-floating #freeTalkSpeechEndpoint{max-width:100%;font-size:12px}
+
+.free-talk-floating #freeTalkSpeechProbe{align-self:flex-start;max-width:100%;font-size:11px;padding:8px 13px}
+.free-talk-floating #freeTalkSpeechProbe:disabled{opacity:.48;cursor:not-allowed}
