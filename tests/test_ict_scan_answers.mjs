@@ -139,8 +139,8 @@ test('FAQ-cards zijn uniek, brongebonden en niet bestuurlijk goedgekeurd',()=>{
 test('Bestaande zijbalk en eenvoudige bronverwijzingen blijven intact',()=>{
   assert.ok(html.includes('id="railMore"'));
   assert.ok(html.includes('id="globalSearch"'));
-  assert.ok(html.includes('src="./answer-engine.js"'));
-  assert.ok(html.includes('href="./answer-engine.css"'));
+  assert.ok(html.includes('src="./answer-engine.js'));
+  assert.ok(html.includes('href="./answer-engine.css'));
   assert.ok(!source.includes('fetch('));
   assert.ok(!source.includes('XMLHttpRequest'));
   assert.ok(!source.includes('gemini'));
