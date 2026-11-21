@@ -117,7 +117,7 @@
         <p class="cloud-intro">Spreek vrij. Kies zelf de taal en de stem.</p>
       </div>
       <section class="studio-section cloud-reveal">
-        <p class="studio-support">Geen vaste tekst. Het gesprek verandert met wat je zegt. Kies een model in de browser of verbind een online model.</p>
+        <p class="studio-support">Geen vaste tekst. Kies een browsermodel, een online model of een spraakengine op je eigen server. Niet elke engine ondersteunt dezelfde talen.</p>
         <details class="studio-disclosure free-talk-floating" id="freeTalkOptions">
           <summary><span id="freeTalkSummary">Nederlands → Frans · in browser</span></summary>
           <div class="free-talk-floating-content">
@@ -127,6 +127,9 @@
                 <option value="nl-NL">Nederlands</option>
                 <option value="en-US">Engels</option>
                 <option value="fr-FR">Frans</option>
+                <option value="es-ES">Spaans</option>
+                <option value="pt-PT">Portugees</option>
+                <option value="de-DE">Duits</option>
               </select>
             </label>
             <label class="studio-field">AI antwoordt in
@@ -142,6 +145,10 @@
               <option value="browser">Op dit apparaat · WebLLM</option>
               <option value="ollama">Op mijn computer · Ollama</option>
               <option value="puter">Online · Puter-account</option>
+              <option value="moshi">Moshi · spraakgesprek (eigen server)</option>
+              <option value="hibiki">Hibiki · FR naar EN (eigen server)</option>
+              <option value="hibiki-zero">Hibiki-Zero · 4 talen naar EN</option>
+              <option value="dessa">Dessa · nog niet beschikbaar</option>
             </select>
           </label>
           <div id="freeTalkBrowserModelRow">
@@ -174,7 +181,15 @@
             <button class="action studio-action studio-action-quiet" type="button" id="freeTalkConnect">Verbind met Puter</button>
             <p class="studio-support" id="freeTalkConnectionStatus">Voor online AI is een Puter-account nodig. Gebruik kan kosten meebrengen.</p>
           </div>
-          <label class="studio-field">Stem
+          <div id="freeTalkSpeechOptions" hidden>
+            <p class="studio-support" id="freeTalkSpeechDescription">De spraakengine heeft een eigen server nodig.</p>
+            <label class="studio-field" for="freeTalkSpeechEndpoint">EAIspeak-spraakbridge (WebSocket)
+              <input id="freeTalkSpeechEndpoint" type="url" value="ws://localhost:8765/eaispeak" autocomplete="off" spellcheck="false" aria-describedby="freeTalkSpeechConnection">
+            </label>
+            <p class="studio-support" id="freeTalkSpeechConnection" role="status" aria-live="polite">Verbind een eigen spraakserver. De modelserver gebruikt een EAIspeak-bridge, niet rechtstreeks het modelprotocol.</p>
+            <a class="studio-support" id="freeTalkSpeechSource" href="https://github.com/kyutai-labs/moshi" target="_blank" rel="noopener noreferrer">Bekijk de modelbron</a>
+          </div>
+          <label class="studio-field" id="freeTalkVoiceRow">Stem
             <select id="freeTalkVoice">
               <option value="browser">Stem van deze browser</option>
               <option value="cloud">Franse cloudstem (Puter)</option>
@@ -184,7 +199,7 @@
           <label class="studio-field" id="freeTalkVoiceNameRow">Beschikbare stem op dit apparaat
             <select id="freeTalkVoiceName"><option value="">Automatisch passende stem</option></select>
           </label>
-          <label class="studio-field free-talk-handsfree"><input id="freeTalkAutoListen" type="checkbox" checked> Handsfree: luister na ieder antwoord opnieuw</label>
+          <label class="studio-field free-talk-handsfree" id="freeTalkAutoListenRow"><input id="freeTalkAutoListen" type="checkbox" checked> Handsfree: luister na ieder antwoord opnieuw</label>
           <div class="free-talk-device-details" aria-live="polite">
             <p class="studio-support" id="freeTalkDeviceStatus">Apparaat controleren…</p>
             <p class="studio-support" id="freeTalkDeviceAdvice"></p>

@@ -1274,3 +1274,11 @@ body.cloud-studio-idle.panel-visible:has(.studio-more-tabs[open]) .cloud-studio 
  overscroll-behavior:contain;scrollbar-gutter:stable;
 }
 .free-talk-floating[open]>.mist-detail-body{box-shadow:0 14px 42px rgba(51,77,78,.105)}
+
+/* EAIspeak speech engines: same compact floating menu, no separate panels. */
+.free-talk-floating [hidden]{display:none!important}
+.free-talk-floating #freeTalkSpeechOptions{display:flex;flex-direction:column;gap:7px}
+.free-talk-floating #freeTalkSpeechOptions .studio-support{margin:0;font-size:11px;line-height:1.5}
+.free-talk-floating #freeTalkSpeechSource{display:inline-block;align-self:flex-start;color:inherit;text-decoration:underline;text-underline-offset:3px;opacity:.78}
+.free-talk-floating #freeTalkSpeechSource:hover{opacity:1}
+.free-talk-floating #freeTalkSpeechEndpoint{max-width:100%;font-size:12px}

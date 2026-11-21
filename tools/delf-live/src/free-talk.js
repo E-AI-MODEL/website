@@ -4,6 +4,8 @@ import {checkWebGpuAvailability} from './gpu-capability.mjs';
 import {availableVoices,readVoicePreference,saveVoicePreference,voiceLanguage} from './browser-voice-choice.mjs';
 import {listLocalModels,validateLocalEndpoint} from './system-probes.mjs';
 import {describeDevice,suggestDeviceSetup,modelDeviceAdvice} from './device-profile.mjs';
+import {isSpeechEngine,speechEngine,validateSpeechPair} from './speech-engines.mjs';
+import {startSpeechBridge} from './speech-bridge.mjs';
 const $=id=>document.getElementById(id);
 const speak=$('freeTalkSpeak'),stop=$('freeTalkStop'),send=$('freeTalkSend'),play=$('freeTalkPlay');
 const status=$('freeTalkStatus'),heard=$('freeTalkHeard'),answer=$('freeTalkAnswer'),typed=$('freeTalkTyped');
@@ -17,6 +19,10 @@ const ollamaOptions=$('freeTalkOllamaOptions'),ollamaEndpoint=$('freeTalkOllamaE
 const ollamaModel=$('freeTalkOllamaModel'),ollamaConnect=$('freeTalkOllamaConnect'),ollamaStatus=$('freeTalkOllamaStatus');
 const voiceName=$('freeTalkVoiceName'),voiceNameRow=$('freeTalkVoiceNameRow');
 const autoListen=$('freeTalkAutoListen'),speechIndicator=$('freeTalkSpeechIndicator'),voiceCanvas=$('freeTalkVoiceLines');
+const speechOptions=$('freeTalkSpeechOptions'),speechEndpoint=$('freeTalkSpeechEndpoint');
+const speechDescription=$('freeTalkSpeechDescription'),speechConnection=$('freeTalkSpeechConnection');
+const speechSource=$('freeTalkSpeechSource'),voiceRow=$('freeTalkVoiceRow'),autoListenRow=$('freeTalkAutoListenRow');
+let speechSession=null,speechAbort=null,speechStarting=false;
 const voiceCtx=voiceCanvas?.getContext('2d')||null;
 let speakingLevel=0,speechLoop=null,microphoneStream=null,microphoneContext=null,microphoneAnalyser=null;
 let handsfree=false,manualReplay=false,restartTimer=null;
@@ -26,7 +32,8 @@ try{saved=JSON.parse(localStorage.getItem(STORAGE_KEY)||'{}');}catch{}
 function persist(){
   try{localStorage.setItem(STORAGE_KEY,JSON.stringify({
     engine:engine.value,model:browserModel.value,voice:voice.value,voiceURI:voiceName.value,
-    inputLang:inputLang.value,outputLang:outputLang.value,autoListen:autoListen.checked,endpoint:ollamaEndpoint.value,ollamaModel:ollamaModel.value
+    inputLang:inputLang.value,outputLang:outputLang.value,autoListen:autoListen.checked,endpoint:ollamaEndpoint.value,ollamaModel:ollamaModel.value,
+    speechEndpoint:speechEndpoint.value
   }));}catch{}
 }
 function setSpeechActivity(kind){
@@ -92,7 +99,7 @@ function afterResponse(own,message='Jij bent weer aan zet.'){
 let recognition=null,audio=null,utterance=null,pending=false,turn=0,lastAnswer='';
 let puterSdk=null,puterLoad=null,gpuProbeSequence=0;
 const history=[];
-const languages={'nl-NL':'Nederlands','en-US':'Engels','fr-FR':'Frans'};
+const languages={'nl-NL':'Nederlands','en-US':'Engels','fr-FR':'Frans','es-ES':'Spaans','pt-PT':'Portugees','de-DE':'Duits'};
 const hasMicrophone=!!(window.SpeechRecognition||window.webkitSpeechRecognition);
 const hasBrowserVoice=!!(window.speechSynthesis&&window.SpeechSynthesisUtterance);
 const device=describeDevice({userAgent:navigator.userAgent,userAgentDataMobile:navigator.userAgentData?.mobile,
@@ -109,6 +116,7 @@ for(const [element,value] of [[inputLang,saved.inputLang],[outputLang,saved.outp
 }
 if(typeof saved.autoListen==='boolean')autoListen.checked=saved.autoListen;
 if(typeof saved.endpoint==='string')ollamaEndpoint.value=saved.endpoint;
+if(typeof saved.speechEndpoint==='string')speechEndpoint.value=saved.speechEndpoint;
 let preferredVoiceURI=String(saved.voiceURI||'');
 let chosenOllamaModel=String(saved.ollamaModel||'');
 function refreshVoices(){
@@ -147,9 +155,13 @@ function setStatus(message,kind=''){
   status.dataset.kind=kind;
 }
 function ready(){
-  pending=false;speak.disabled=!hasMicrophone;
-  speak.textContent=hasMicrophone?(handsfree?'Ik luister':'Begin met spreken'):'Geen microfoonherkenning';
-  send.disabled=false;
+  pending=false;
+  const speechModel=isSpeechEngine(engine.value);
+  const micAvailable=speechModel?!!navigator.mediaDevices?.getUserMedia:hasMicrophone;
+  speak.disabled=!micAvailable||engine.value==='dessa';
+  speak.textContent=engine.value==='dessa'?'Nog niet beschikbaar'
+    :micAvailable?(handsfree?'Ik luister':'Begin met spreken'):'Geen microfoon beschikbaar';
+  send.disabled=speechModel;
 }
 function cancelSound(){
   if(audio){audio.onended=null;audio.onerror=null;audio.pause();audio=null;}
@@ -159,6 +171,9 @@ function cancelSound(){
 function stopConversation(){
   turn++;
   interruptBrowserReply();
+  speechAbort?.abort();speechAbort=null;
+  speechSession?.stop();speechSession=null;
+  speechStarting=false;
   handsfree=false;manualReplay=false;clearTimeout(restartTimer);
   releaseMicrophone();setSpeechActivity('idle');
   const rec=recognition;recognition=null;
@@ -168,26 +183,43 @@ function stopConversation(){
 }
 function updateControls(){
   const local=engine.value==='browser',isOllama=engine.value==='ollama';
-  modelSummary.textContent=languages[inputLang.value]+' → '+languages[outputLang.value]+' · '+(local?'in browser':isOllama?'Ollama':'online');
+  const selectedSpeech=speechEngine(engine.value),usingSpeech=!!selectedSpeech;
+  modelSummary.textContent=languages[inputLang.value]+' → '+languages[outputLang.value]+' · '+(selectedSpeech?selectedSpeech.label:local?'in browser':isOllama?'Ollama':'online');
   modelRow.hidden=!local;
   ollamaOptions.hidden=!isOllama;
   onlineOptions.hidden=engine.value!=='puter';
-  voiceNameRow.hidden=voice.value!=='browser';
+  speechOptions.hidden=!usingSpeech;
+  voiceRow.hidden=usingSpeech;
+  autoListenRow.hidden=usingSpeech;
+  voiceNameRow.hidden=usingSpeech||voice.value!=='browser';
+  if(selectedSpeech){
+    speechDescription.textContent=selectedSpeech.detail;
+    speechSource.href=selectedSpeech.source;
+    speechConnection.textContent=selectedSpeech.availability==='unreleased'
+      ? 'Dessa heeft nog geen publieke API of modelgewichten. Starten is niet mogelijk.'
+      : 'Vereist een eigen modelserver met een EAIspeak PCM WebSocket-bridge. Alleen een model installeren is niet genoeg.';
+    if(selectedSpeech.availability==='unreleased')setStatus('Dessa is aangekondigd, maar niet beschikbaar voor gebruik.');
+  }
   refreshVoices();
   const current=browserModelStatus();
   if(current.ready&&current.model===browserModel.value)preloadStatus.textContent='Model staat klaar voor dit gesprek.';
   else if(!current.loading)preloadStatus.textContent='Model opnieuw in geheugen laden. Bestanden komen uit de cache zolang die bewaard is.';
   $('freeTalkCacheStatus').textContent='Na een browserherstart wordt het model opnieuw in het werkgeheugen geladen. Een download is alleen nodig als de browsercache ontbreekt, is gewist of wordt geweigerd.';
-  hint.textContent=local
+  hint.textContent=selectedSpeech?selectedSpeech.detail:local
     ? 'WebLLM gebruikt browsercache. Kleine modellen antwoorden in het Nederlands niet altijd goed; kies bewust op taal en apparaat.'
     : isOllama?'Ollama gebruikt geïnstalleerde modellen op je computer. Het websiteadres moet door je browser bereikbaar zijn.':'Online via Puter. Meld je aan voordat je spreekt. Het gebruik kan kosten meebrengen.';
-  deviceStatus.textContent=device.label+' · '+(gpuSupport?(gpuSupport.usable?'WebGPU beschikbaar':'Geen WebGPU-adapter'):'WebGPU controleren…')+' · '+(hasMicrophone?'Spreken mogelijk':'Gebruik typen');
-  deviceAdvice.textContent=gpuSupport?modelDeviceAdvice({kind:device.kind,gpuUsable:gpuSupport.usable,
-    memoryGB,saveData,modelId:browserModel.value}):'De website kiest straks een passende startinstelling. Je kunt die zelf wijzigen.';
+  deviceStatus.textContent=selectedSpeech
+    ?device.label+' · spraakengine op eigen server · '+(navigator.mediaDevices?.getUserMedia?'Microfoon mogelijk':'Geen microfoon beschikbaar')
+    :device.label+' · '+(gpuSupport?(gpuSupport.usable?'WebGPU beschikbaar':'Geen WebGPU-adapter'):'WebGPU controleren…')+' · '+(hasMicrophone?'Spreken mogelijk':'Gebruik typen');
+  deviceAdvice.textContent=selectedSpeech
+    ?selectedSpeech.availability==='unreleased'?'Dessa is nog niet te installeren of verbinden.':'Dit apparaat verstuurt live audio naar jouw ingestelde spraakserver. Het model draait niet in de browser.'
+    :gpuSupport?modelDeviceAdvice({kind:device.kind,gpuUsable:gpuSupport.usable,
+      memoryGB,saveData,modelId:browserModel.value}):'De website kiest straks een passende startinstelling. Je kunt die zelf wijzigen.';
   if(local)void probeGpu();
   else gpuProbeSequence++;
   persist();
-  if(voice.value==='cloud'&&outputLang.value!=='fr-FR'){
+  if(!pending)ready();
+  if(!usingSpeech&&voice.value==='cloud'&&outputLang.value!=='fr-FR'){
     voice.value='browser';
     setStatus('Voor Nederlands en Engels gebruiken we voorlopig de gekozen browserstem.');
   }
@@ -204,7 +236,7 @@ async function probeGpu(){
   preloadStatus.textContent=support.message;
 }
 function syncChanges(){
-  if(pending||recognition)stopConversation();
+  if(pending||recognition||speechSession||speechStarting)stopConversation();
   history.length=0;
   updateControls();
 }
@@ -212,6 +244,7 @@ for(const control of [cloudModel,inputLang,outputLang,voice])control.addEventLis
 voiceName.addEventListener('change',()=>{preferredVoiceURI=voiceName.value;saveVoicePreference(outputLang.value,voiceName.value);persist();});
 autoListen.addEventListener('change',persist);
 ollamaEndpoint.addEventListener('change',persist);
+speechEndpoint.addEventListener('change',persist);
 ollamaModel.addEventListener('change',()=>{chosenOllamaModel=ollamaModel.value;syncChanges();});
 ollamaConnect.addEventListener('click',async()=>{
   ollamaConnect.disabled=true;ollamaStatus.textContent='Lokale modellen zoeken…';
@@ -230,6 +263,13 @@ refreshVoices();
 browserModel.addEventListener('change',()=>{userSelectedModel=true;syncChanges();});
 engine.addEventListener('change',()=>{
   userSelectedEngine=true;
+  // Kies een ondersteunde taalrichting bij een nieuwe spraakengine.
+  // Handmatige wijzigingen daarna worden gecontroleerd, niet heimelijk vertaald.
+  const chosen=speechEngine(engine.value);
+  if(chosen?.inputs.length){
+    if(!chosen.inputs.includes(inputLang.value))inputLang.value=chosen.inputs[0];
+    if(!chosen.outputs.includes(outputLang.value))outputLang.value=chosen.outputs[0];
+  }
   // Een browsermodel werkt standaard volledig zonder extern account.
   if(engine.value==='browser'&&voice.value==='cloud')voice.value='browser';
   if(engine.value==='puter')void primePuter();
@@ -439,7 +479,46 @@ play.addEventListener('click',()=>{
     try{sayInBrowser(lastAnswer,own);}catch(e){ready();setStatus(String(e?.message||e),'error');}
   }
 });
+async function startSpeechSession(){
+  if(speechStarting||speechSession?.active||pending)return;
+  const own=++turn;
+  try{validateSpeechPair(engine.value,inputLang.value,outputLang.value);}
+  catch(error){setStatus(String(error.message),'error');$('freeTalkOptions').open=true;return;}
+  speechStarting=true;pending=true;speak.disabled=true;send.disabled=true;
+  heard.textContent='…';answer.textContent='…';lastAnswer='';play.disabled=true;
+  cancelSound();setSpeechActivity('thinking');
+  const controller=new AbortController();speechAbort=controller;
+  try{
+    const session=await startSpeechBridge({
+      endpoint:speechEndpoint.value,engine:engine.value,
+      sourceLanguage:inputLang.value,targetLanguage:outputLang.value,
+      signal:controller.signal,
+      onStatus:message=>{
+        if(own===turn){
+          setStatus(message);speechConnection.textContent=message;
+          if(message==='Verbonden. Je kunt praten.')speak.textContent='Gesprek actief';
+        }
+      },
+      onTranscript:text=>{if(own===turn)heard.textContent=text||'…';},
+      onTranslation:text=>{if(own===turn)answer.textContent=text||'…';},
+      onActivity:kind=>{if(own===turn)setSpeechActivity(kind);},
+      onEnd:message=>{
+        if(own!==turn)return;
+        speechSession=null;speechAbort=null;speechStarting=false;
+        ready();setStatus(message);setSpeechActivity('idle');
+      }
+    });
+    if(own!==turn||controller.signal.aborted){session.stop();return;}
+    speechSession=session;
+    speak.textContent='Verbinding maken…';
+    speak.disabled=true;
+    persist();
+  }catch(error){
+    if(own===turn){ready();setSpeechActivity('idle');setStatus('Spraakverbinding: '+String(error?.message||error),'error');}
+  }finally{if(own===turn)speechStarting=false;}
+}
 function startListening(){
+  if(isSpeechEngine(engine.value)){void startSpeechSession();return;}
   if(pending||recognition)return;
   if(engine.value==='puter'&&!puterSdk?.auth?.isSignedIn()){
     setStatus('Verbind eerst met Puter via Taal en model.','error');
@@ -470,12 +549,14 @@ function startListening(){
 }
 speak.addEventListener('click',()=>{
   if(pending)return;
+  if(isSpeechEngine(engine.value)){void startSpeechSession();return;}
   if(recognition){recognition.stop();return;}
   handsfree=autoListen.checked;manualReplay=false;
   if(handsfree)void connectMicVisual();
   startListening();
 });
 send.addEventListener('click',()=>{
+  if(isSpeechEngine(engine.value)){setStatus('Deze engine werkt rechtstreeks met microfoonaudio. Kies Begin met spreken.');return;}
   if(pending)return;
   const q=typed.value.trim();
   if(!q){setStatus('Typ eerst een vraag.');return;}
@@ -487,9 +568,9 @@ send.addEventListener('click',()=>{
 });
 stop.addEventListener('click',stopConversation);
 document.addEventListener('visibilitychange',()=>{
-  if(document.hidden){handsfree=false;releaseMicrophone();if(recognition){try{recognition.abort();}catch{}}}
+  if(document.hidden){handsfree=false;if(speechSession||speechStarting)stopConversation();releaseMicrophone();if(recognition){try{recognition.abort();}catch{}}}
 });
 
 // Het vrije gesprek stopt bij weggaan, zonder de vaste podiumvoorstelling te beïnvloeden.
-$('tab-podium').addEventListener('click',()=>{if(handsfree||recognition)stopConversation();});
-for(const tab of document.querySelectorAll('.studio-tab:not(#tab-gesprek)'))tab.addEventListener('click',()=>{if(handsfree||recognition)stopConversation();});
+$('tab-podium').addEventListener('click',()=>{if(handsfree||recognition||speechSession||speechStarting)stopConversation();});
+for(const tab of document.querySelectorAll('.studio-tab:not(#tab-gesprek)'))tab.addEventListener('click',()=>{if(handsfree||recognition||speechSession||speechStarting)stopConversation();});
