@@ -464,7 +464,31 @@ try {
   assert.equal((await state(mobile)).anatomyView,true,'Onderzoek behoudt echte anatomie');
   const guided=await mobile.evaluate(()=>window.__EAI_HEART_LAB__.motion);
   assert(guided.playbackSeconds>=7.5,'Begeleide klepbeweging is vertraagd');
-  await mobile.waitForFunction(()=>window.__EAI_HEART_LAB__.state.studyStage==='compare',undefined,{timeout:20000});
+  const studyWaitStarted=performance.now();
+  let finishedStudy;
+  try{
+    // De oude aanroep gebruikte effectief de standaard van Playwright 1.56.1:
+    // 30 seconden. Bewaar die grens nu expliciet op de juiste parameter.
+    const completed=await mobile.waitForFunction(()=>{
+      const current=window.__EAI_HEART_LAB__.state;
+      return current.studyStage==='compare'?{
+        t:current.t,playing:current.playing,studyStage:current.studyStage
+      }:false;
+    },undefined,{timeout:30000,polling:'raf'});
+    try{finishedStudy=await completed.jsonValue();}
+    finally{await completed.dispose();}
+  }catch(error){
+    console.error('Begeleide hartbeweging:',JSON.stringify({
+      waitMs:Math.round(performance.now()-studyWaitStarted),state:await state(mobile)
+    }));
+    throw error;
+  }
+  assert.equal(finishedStudy.studyStage,'compare');
+  assert.equal(finishedStudy.playing,false,'De begeleide beweging pauzeert op het eindpunt');
+  assert(Math.abs(finishedStudy.t-.90)<1e-6,'De beweging stopt op het afgesproken vergelijkingspunt');
+  console.log('Begeleide hartbeweging afgerond:',JSON.stringify({
+    waitMs:Math.round(performance.now()-studyWaitStarted),...finishedStudy
+  }));
   await mobile.locator('#discoveryAction').click();
   assert.match(await mobile.locator('#discoveryFeedback').textContent(),/AV-kleppen sluiten eerst/);
   assert.deepEqual(errors,[],'Browserfouten: '+errors.join(' | '));
