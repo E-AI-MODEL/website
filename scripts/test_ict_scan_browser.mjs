@@ -69,7 +69,7 @@ try {
   assert.match(message,/geslaagd/i,'GitHub-sync mislukt: '+message);
   await page.waitForFunction(()=>document.getElementById('statusText')?.textContent.includes('61 toepassingen'));
   assert.equal(await page.locator('#kpiGrid .kpi').count(),4,'Vier statuscijfers ontbreken');
-  assert.equal(await page.locator('#viewOverview .scene-tab').count(),3,'De lange overzichtspagina is niet verdeeld');
+  assert.equal(await page.locator('#viewOverview .scene-tab').count(),4,'Schoolbreed, relaties, broncontrole en toepassingen moeten afzonderlijk toegankelijk zijn');
   const size=await page.evaluate(()=>({scrollWidth:document.documentElement.scrollWidth,clientWidth:document.documentElement.clientWidth,height:innerHeight,main:document.querySelector('.main-content').getBoundingClientRect().height,cardWidth:document.querySelector('.panel')?.getBoundingClientRect().width}));
   assert(size.scrollWidth<=size.clientWidth+1,'Horizontale overflow bij '+width+': '+JSON.stringify(size));
   assert(size.main<size.height,'Hoofdvenster groeit buiten de viewport bij '+width);
