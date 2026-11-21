@@ -82,6 +82,6 @@ test('Elke kaart heeft eigen weergavekeuze en het 404-menu en de zijbalk blijven
   assert.ok(!html.includes('class="monitor-hero"'));
   assert.ok(!html.includes('class="relation-tree"'));
   assert.ok(css.includes('@media(max-width:720px)'));
-  assert.ok(html.includes('href="./visual-explorer.css"'));
-  assert.ok(html.includes('src="./visual-explorer.js"'));
+  assert.ok(html.includes('href="./visual-explorer.css'));
+  assert.ok(html.includes('src="./visual-explorer.js'));
 });
