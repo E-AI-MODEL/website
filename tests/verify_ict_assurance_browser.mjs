@@ -124,6 +124,9 @@ async function exerciseBoundApprovals(target){
   ]);
   await waitForChecks(target,expectedRecords+3);
   await target.setViewportSize({width:1440,height:960});
+  await target.locator('#railMore').click();
+  await target.locator('#railDrawer').waitFor({state:'visible'});
+  assert.equal(await target.locator('#railMore').getAttribute('aria-expanded'),'true');
   await target.locator('#cardOpen').click();
   await target.locator('#cardEditor').waitFor({state:'visible'});
   await target.locator('#cardTypeFilter').selectOption('sourceRegister');
