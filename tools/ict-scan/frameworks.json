@@ -1,7 +1,7 @@
 {
   "schema": "eai-applicable-frameworks-v1",
   "title": "Toetsingskaders applicatielandschap",
-  "version": "2026-11-20",
+  "version": "2026-11-21",
   "sourcePolicy": "Een verwijzing is een toetsingsvraag, geen automatisch nalevingsoordeel. De gebruiker onderbouwt toepasselijkheid, bevinding en bewijs per registratie.",
   "references": [
     {
@@ -58,6 +58,32 @@
         "art. 27",
         "art. 50"
       ]
+    },
+    {
+      "id": "EN18286",
+      "name": "EN 18286:2026 | kwaliteitsmanagement voor hoogrisico-AI",
+      "category": "Europese geharmoniseerde norm",
+      "authority": "CEN/CENELEC, aangewezen bij Uitvoeringsbesluit (EU) 2026/2274",
+      "url": "https://www.nen.nl/nen-en-18286-2026-en-354718",
+      "scope": "Vrijwillige geharmoniseerde norm voor kwaliteitsmanagement bij aanbieders van hoogrisico-AI (AI Act artikel 17). Controleer per AI-systeem eerst de rol van de school (aanbieder of gebruiksverantwoordelijke). Een normverwijzing, observatie of ingevulde checklist bewijst geen volledige naleving. Annex ZA noemt ook onderdelen die buiten de dekking vallen.",
+      "suggestedRefs": [
+        "4.2",
+        "4.5",
+        "5.3",
+        "7.2",
+        "8.1",
+        "8.2",
+        "8.4",
+        "8.5",
+        "8.9",
+        "9.3",
+        "9.4",
+        "9.5",
+        "9.6",
+        "9.7",
+        "10.1"
+      ],
+      "note": "Gebruiken als controle- en observatiekader. Scheid leverancierseisen, eigen schoolmaatregelen, constateringen en genomen besluiten. Aangewezen in het EU-Publicatieblad op 14 oktober 2026."
     },
     {
       "id": "WVO2020",
