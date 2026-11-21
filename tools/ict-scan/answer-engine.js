@@ -5,7 +5,7 @@
   const stop=new Set(['de','het','een','en','of','in','op','met','voor','van','tot','bij','aan','wat','wie','waar','hoe','welke','welk','zijn','is','hebben','heeft','we','wij','er','deze','die','ons','onze','dit','ik','nog','kan','kun','moet','doet','over']);
   function norm(value){return String(value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim().replace(/\s+/g,' ');}
   function words(value){return norm(value).split(' ').filter(w=>w&&!stop.has(w));}
-  function unknown(value){const v=norm(value);return !v||v.startsWith('?')||v.startsWith('nog ')||v.startsWith('niet vastgesteld')||v.startsWith('onbekend')||v.startsWith('schoolgebruik nog niet')||v.startsWith('afhankelijk van')||v.startsWith('standaard volgens leverancier');}
+  function unknown(value){const v=norm(value);return String(value??'').trim().startsWith('?')||!v||v.startsWith('nog ')||v.startsWith('niet vastgesteld')||v.startsWith('onbekend')||v.startsWith('schoolgebruik nog niet')||v.startsWith('afhankelijk van')||v.startsWith('standaard volgens leverancier');}
   const label={apps:'Toepassing',ai:'AI-functie',connections:'Entra-registratie',candidates:'Kandidaat',faqs:'FAQ',parts:'Technisch onderdeel'};
   const result=(kind,answer,records=[],status='Brongebonden',sources=[],question='')=>({kind,answer,status,records:records.slice(0,12),sources:[...new Set(sources.filter(Boolean))].slice(0,5),question});
   function entry(type,x){return {type,id:x.id,name:x.name||x.question||x.id,detail:type==='apps'?(x.description||''):type==='ai'?(x.product||''):type==='connections'?(x.matched||''):type==='faqs'?(x.topic||''):(x.kind||'')};}
