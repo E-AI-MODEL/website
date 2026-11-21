@@ -288,6 +288,10 @@
       b.append(text('span',d.label),text('small',fmt(source(d).length)));a.append(b);
     }
     const effective=availableData();$('dsDataCount').textContent=effective.length+' gekozen';
+    const focus=$('dsPrimary');focus.replaceChildren();
+    for(const d of effective){const o=text('option',d.label);o.value=d.key;focus.append(o);}
+    focus.disabled=!effective.length;
+    if(effective.length)focus.value=effective.some(d=>d.key===config.primary)?config.primary:effective[0].key;
     const parts=$('dsPartOptions');parts.replaceChildren();
     for(const p of PARTS){
       const on=config.parts.includes(p.id),valid=compatible(p);
@@ -381,6 +385,7 @@
   document.querySelectorAll('[data-ds-preset]').forEach(b=>b.addEventListener('click',()=>usePreset(b.dataset.dsPreset)));
   $('dsSuggest').addEventListener('click',suggest);
   $('dsBlank').addEventListener('click',()=>{config.parts=[];config.filter=null;config.title='Nieuw dashboard';refresh();});
+  $('dsPrimary').addEventListener('change',()=>{config.primary=$('dsPrimary').value;config.filter=null;refresh();});
   $('dsLayout').addEventListener('change',()=>{config.layout=$('dsLayout').value;config.variant=0;refresh();});
   $('dsShuffle').addEventListener('click',()=>{config.variant=(config.variant+1)%9;refresh();});
   $('dsSave').addEventListener('click',()=>{showMessage(persist()?'Ontwerp bewaard in deze browser.':'Bewaren is hier niet toegestaan.');});
