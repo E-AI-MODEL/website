@@ -89,6 +89,7 @@ try {
   assert.match(await page.locator('#dsCanvas .ds-distribution .ds-inline-label').textContent(),/AI-functies/);
   await page.locator('#dsPrimary').selectOption('apps');
   const chart=page.locator('#dsCanvas .ds-distribution');
+  assert.equal(await page.locator('#dsCanvas .ds-distribution .ds-chart-mode option').count(),3,'Er moeten drie verwisselbare grafiekvormen zijn');
   assert((await chart.locator('svg .ds-figure-row[role="button"]').count())>0,'De lijnvisual moet bedienbaar zijn');
   await chart.locator('svg .ds-figure-row[role="button"]').first().click();
   assert.match(await page.locator('#dsCanvas .ds-distribution .ds-inline-link').textContent(),/wissen/);
@@ -101,7 +102,6 @@ try {
   await page.locator('#dsSave').click();
   assert.match(await page.evaluate(()=>localStorage.getItem('emmaus-ict-dashboard-studio-v2')),/"layout":"editorial"/);
   assert.equal(await page.locator('#dsCategoryFilter').count(),1,'De dashboardmaker moet een gemeenschappelijk categoriefilter tonen');
-  assert.equal(await page.locator('#dsCanvas .ds-distribution .ds-chart-mode option').count(),3,'Er moeten drie verwisselbare grafiekvormen zijn');
   await page.screenshot({path:'test-results/ict-scan-'+width+'-composer-technology.png'});
   await page.locator('.rail-button[data-view="overview"]').click();
 
