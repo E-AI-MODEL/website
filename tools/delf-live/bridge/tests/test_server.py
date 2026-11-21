@@ -42,6 +42,7 @@ def test_language_coverage_and_no_dessa():
     {**start_message(), "engine": "dessa"},
     {**start_message(), "source_language": "nl-NL"},
     {**start_message(), "protocol": "other"},
+    {**start_message(), "type": "unknown"},
     {**start_message(), "input": {"codec": "opus", "sample_rate": 48000, "channels": 1}},
     {**start_message(), "input": {"codec": "pcm_s16le", "sample_rate": 48000, "channels": 2}},
     {**start_message(), "input": {"codec": "pcm_s16le", "sample_rate": True, "channels": 1}},
@@ -169,3 +170,45 @@ async def test_no_audio_before_native_ready(monkeypatch):
                     messages = [await asyncio.wait_for(ws.receive(), 2) for _ in range(3)]
                     assert not any(m.type == WSMsgType.TEXT and json.loads(m.data).get("type") == "ready" for m in messages)
                     assert any(m.type == WSMsgType.TEXT and json.loads(m.data).get("type") == "error" for m in messages)
+
+
+
+@pytest.mark.asyncio
+async def test_probe_checks_real_native_handshake_without_transmitting_microphone_audio():
+    received = []
+
+    async def native_handler(request):
+        ws = web.WebSocketResponse()
+        await ws.prepare(request)
+        await ws.send_bytes(b"\x00")
+        async for event in ws:
+            if event.type == WSMsgType.BINARY:
+                received.append(event.data)
+        return ws
+
+    native = web.Application()
+    native.router.add_get("/api/chat", native_handler)
+    async with TestServer(native) as upstream:
+        native_url = str(upstream.make_url("/api/chat")).replace("http://", "ws://")
+        cfg = Config(origins=frozenset([ORIGIN]), upstreams={"moshi": native_url})
+        async with TestServer(create_app(cfg)) as bridge:
+            url = str(bridge.make_url("/eaispeak")).replace("http://", "ws://")
+            async with aiohttp.ClientSession() as session:
+                async with session.ws_connect(url, headers={"Origin": ORIGIN}) as socket:
+                    hello = start_message()
+                    hello["type"] = "probe"
+                    await socket.send_json(hello)
+                    kinds = []
+                    while True:
+                        item = await asyncio.wait_for(socket.receive(), timeout=3)
+                        if item.type == WSMsgType.TEXT:
+                            msg = json.loads(item.data)
+                            kinds.append(msg["type"])
+                            if msg["type"] == "ready":
+                                assert msg["probe"] is True
+                                assert msg["protocol"] == PROTOCOL
+                        if item.type in (WSMsgType.CLOSE, WSMsgType.CLOSED):
+                            break
+                    assert "ready" in kinds
+                    assert "end" in kinds
+    assert received == [], "Probe must never send user audio to the native model"
