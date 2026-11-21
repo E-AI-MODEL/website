@@ -27,9 +27,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-          cache: npm
-          cache-dependency-path: tools/ict-scan/package.json
-        continue-on-error: true
       - name: Checkout exact reviewed upstream commit
         run: |
           git clone https://github.com/nateriera/dashboard-builder.git /tmp/ict-dashboard-builder
