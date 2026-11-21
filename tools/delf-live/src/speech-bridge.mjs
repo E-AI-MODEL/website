@@ -49,12 +49,14 @@ export async function startSpeechBridge({
   const resume=context.resume();
   let stream=null,source=null,processor=null,socket=null,ended=false,ready=false;
   let nextAudioAt=0,outputRate=24000;
+  let connectionTimeout=null;
   const onAbort=()=>finish('Spraaksessie geannuleerd.');
   signal?.addEventListener('abort',onAbort,{once:true});
   function finish(message){
     if(ended)return;
     ended=true;
     ready=false;
+    clearTimeout(connectionTimeout);
     signal?.removeEventListener('abort',onAbort);
     try{processor?.disconnect();source?.disconnect();}catch{}
     for(const track of stream?.getTracks()||[])track.stop();
@@ -102,6 +104,7 @@ export async function startSpeechBridge({
     const mute=context.createGain();mute.gain.value=0;
     processor.connect(mute);mute.connect(context.destination);
     socket=new WebSocket(target);socket.binaryType='arraybuffer';
+    connectionTimeout=setTimeout(()=>{if(!ready)finish('Spraakserver heeft binnen 25 seconden geen gereedmelding gegeven.');},25000);
     onStatus('Verbinden met de eigen spraakserver…');
     socket.addEventListener('open',()=>{
       if(ended)return;
@@ -121,7 +124,8 @@ export async function startSpeechBridge({
               throw new Error('Ongeldige samplefrequentie van de spraakserver.');
             outputRate=msg.output_sample_rate;
           }
-          ready=true;onStatus('Verbonden. Je kunt praten.');onActivity('listening');
+          ready=true;clearTimeout(connectionTimeout);
+          onStatus('Verbonden. Je kunt praten.');onActivity('listening');
         }else if(msg.type==='status'){onStatus(String(msg.message||'Spraakserver bezig.').slice(0,250));}
         else if(msg.type==='transcript'){onTranscript(String(msg.text||'').slice(0,5000));}
         else if(msg.type==='translation'){onTranslation(String(msg.text||'').slice(0,5000));}
