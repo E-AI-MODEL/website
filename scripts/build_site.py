@@ -2868,7 +2868,7 @@ def build(sources: Path, out: Path) -> None:
     # Publish only the explicit app asset allowlist. Never copy sources/
     # (tools/ict-scan/bronnen), which stay readable through GitHub only.
     ict_scan_source = repo_root / "tools" / "ict-scan"
-    for filename in ("index.html", "style.css", "monitor.css", "app.js", "enhancements.js", "github-sync.js", "rail-drawer.js", "visual-explorer.js", "visual-explorer.css", "record-cards.js", "record-github.js", "record-cards.css", "scene-navigation.js", "scene-navigation.css", "evidence-experience.js", "evidence-experience.css", "dashboard-composer.js", "dashboard-composer.css", "studio-interface.css", "relationship-orbit.css", "role-modes.js", "role-modes.css", "answer-engine.js", "answer-engine.css", "frameworks.json", "emmaus-logo.svg", "README.md"):
+    for filename in ("index.html", "style.css", "monitor.css", "app.js", "enhancements.js", "github-sync.js", "rail-drawer.js", "visual-explorer.js", "visual-explorer.css", "record-cards.js", "record-github.js", "record-cards.css", "scene-navigation.js", "scene-navigation.css", "evidence-experience.js", "evidence-experience.css", "dashboard-composer.js", "dashboard-composer.css", "dashboard-bridge.js", "dashboard-bridge.css", "studio-interface.css", "relationship-orbit.css", "role-modes.js", "role-modes.css", "answer-engine.js", "answer-engine.css", "frameworks.json", "emmaus-logo.svg", "README.md"):
         source_file = ict_scan_source / filename
         if not source_file.is_file():
             raise FileNotFoundError(f"Missing ICT-scan source file: {source_file}")
@@ -2887,6 +2887,16 @@ def build(sources: Path, out: Path) -> None:
             ict_builder, out / "tools" / "ict-scan" / "dashboard-builder-app",
             dirs_exist_ok=True,
         )
+
+    # Only reviewed presentation layouts, never exported school records.
+    dashboard_layouts = ict_scan_source / "dashboard-layouts"
+    if dashboard_layouts.is_dir():
+        for layout in sorted(dashboard_layouts.glob("*.json")):
+            if layout.name.startswith("."):
+                continue
+            target = out / "tools" / "ict-scan" / "dashboard-layouts" / layout.name
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(layout, target)
 
     # Standalone LEIF and its private continuation page are kept byte-for-byte.
     # Neither page is in the public sitemap or shared editorial UI.
