@@ -4,23 +4,63 @@ Deze vier keuzes staan onder **Vrij praten > Taal en model > Model draait**, naa
 
 | Engine | Functie | Talen | Status |
 | --- | --- | --- | --- |
-| [Moshi](https://github.com/kyutai-labs/moshi) | Live full-duplex gesprek | Engels → Engels | Eigen Moshi-server + adapter nodig |
-| [Hibiki](https://github.com/kyutai-labs/hibiki) | Live spraakvertaling | Frans → Engels | Eigen Hibiki-server + adapter nodig |
-| [Hibiki-Zero](https://github.com/kyutai-labs/hibiki-zero) | Live spraakvertaling | Frans/Spaans/Portugees/Duits → Engels | Eigen NVIDIA-server + adapter nodig (8 GB VRAM minimum volgens makers) |
+| [Moshi](https://github.com/kyutai-labs/moshi) | Live full-duplex gesprek | Engels → Engels | Eigen Moshi-server + meegeleverde bridge |
+| [Hibiki](https://github.com/kyutai-labs/hibiki) | Live spraakvertaling | Frans → Engels | Eigen Hibiki-server + meegeleverde bridge |
+| [Hibiki-Zero](https://github.com/kyutai-labs/hibiki-zero) | Live spraakvertaling | Frans/Spaans/Portugees/Duits → Engels | Eigen NVIDIA-server + meegeleverde bridge (8 GB VRAM minimum volgens makers) |
 | [Dessa](https://block.xyz/dessa) | Live full-duplex gesprek | Niet publiek geverifieerd | Niet startbaar: geen publieke API/gewichten |
 
 **Nederlands is niet ondersteund door deze open spraakmodellen.** De bestaande browser-, Ollama- en Puter-routes blijven voor Nederlands beschikbaar. Geen automatische taalomzetting naar een andere taal of heimelijke terugval.
 
 ## Aansluiten
 
-De browser heeft een generieke **EAIspeak PCM WebSocket v1**-client. Moshi, Hibiki en Hibiki-Zero spreken *niet rechtstreeks* dit protocol. Je moet zelf een serveradapter inzetten die hun echte transport en audiocodecs vertaalt. Het selectievakje is geen modelinstallatie, en een groene frontendtest is geen bewijs dat de audio met een modelserver werkt.
+De browser heeft een generieke **EAIspeak PCM WebSocket v1**-client. Moshi, Hibiki en Hibiki-Zero spreken *niet rechtstreeks* dit protocol. De map `tools/delf-live/bridge/` bevat nu een Python-adapter die via het native Kyutai-WebSocket-protocol audio vertaalt en doorstuurt. Het selectievakje is geen modelinstallatie, en een groene frontendtest is geen bewijs dat de audio met een modelserver werkt.
 
 1. Start de passende Moshi/Hibiki-server volgens zijn officiële repository en controleer het licentiegebruik.
-2. Draai op dezelfde machine een **eigen** WebSocket-adapter die het protocol hieronder spreekt. Die adapter is nog **niet** meegeleverd en is noodzakelijk. Direct verbinden met de standaardserver van Kyutai werkt dus niet.
+2. Installeer de meegeleverde bridge met `python -m pip install -r tools/delf-live/bridge/requirements.txt` en start `python tools/delf-live/bridge/server.py` na het instellen van de upstream-URL. De bridge luistert standaard alleen op `127.0.0.1:8765`.
 3. Stel in EAIspeak het bridge-adres in, bijvoorbeeld `ws://localhost:8765/eaispeak` op de eigen computer, of `wss://spraak.example.nl/eaispeak` met een correct geconfigureerde HTTPS reverse proxy.
 4. Kies de ondersteunde bron- en antwoordtaal, kies **Begin met spreken** en geef microfoontoestemming. **Stop gesprek** sluit de socket en microfoon.
 
-Voor een remote bridge hoort de server Origin-verificatie, authenticatie/autorisatie, limieten op sessies en audiogrootte, versleutelde verbindingen, privacybeleid en een duidelijke bewaartermijn af te dwingen. De client verstuurt microfoonaudio naar de gekozen server. Een `wss://`-adres betekent **niet** dat de verwerking lokaal is.
+De meegeleverde bridge heeft een expliciete Origin-allowlist, localhost-binding, één sessie per model en audiogroottelimieten. Voor remote gebruik is nog een eigen reverse proxy met toegangscontrole, TLS, authenticatie, rate limits, privacybeleid en bewaartermijn vereist. De client verstuurt microfoonaudio naar de gekozen server. Een `wss://`-adres betekent **niet** dat de verwerking lokaal is.
+
+
+## De meegeleverde native spraakbridge starten
+
+Zorg voor Python 3.12, een werkende modelserver en voldoende hardware. Voor de lokale Moshi MLX-versie op macOS kan de server gestart worden met:
+
+```bash
+python -m pip install -U moshi_mlx
+python -m moshi_mlx.local_web --host localhost --port 8998
+```
+
+Voor Hibiki (MLX op macOS):
+
+```bash
+python -m moshi_mlx.local_web --hf-repo kyutai/hibiki-1b-mlx-bf16 --host localhost --port 8998
+```
+
+Voor Hibiki-Zero (NVIDIA GPU met ongeveer 8 tot 12 GB VRAM):
+
+```bash
+uvx -p 3.13 hibiki-zero serve --host localhost --port 8998
+```
+
+Moshi en Hibiki-Zero gebruiken in deze configuratie standaard dezelfde poort. Start verschillende modellen op **verschillende poorten** of slechts één tegelijk. De native modellen zijn grote downloads, niet geschikt voor elke telefoon of laptop.
+
+Start de bridge in een **andere terminal** met de juiste model-URL:
+
+```bash
+python -m pip install -r tools/delf-live/bridge/requirements.txt
+export EAISPEAK_MOSHI_WS=ws://localhost:8998/api/chat
+export EAISPEAK_HIBIKI_WS=ws://localhost:8999/api/chat
+export EAISPEAK_HIBIKI_ZERO_WS=ws://localhost:9000/api/chat
+python tools/delf-live/bridge/server.py
+```
+
+De drie omgevingsvariabelen zijn onafhankelijk. Laat een niet-gebruikte engine weg. Een ingestelde URL garandeert niet dat het model draait: de bridge controleert dat bij verbinden. De bridge ondersteunt ook een beperkte herkomstlijst, te configureren met `EAISPEAK_ALLOWED_ORIGINS`, met komma's tussen de volledige origins. De standaardlijst bevat de EAIspeak-site en lokale Vite-ontwikkelservers.
+
+De controle-URL is `http://127.0.0.1:8765/health`. Voer de tests uit met `python -m pytest -q tools/delf-live/bridge/tests`.
+
+De Python-server kan niet in een gewone mobiele browser draaien. EAIspeak op een telefoon kan wel verbinden met een beveiligde bridge op een andere machine. De bridge is standaard alleen via localhost bereikbaar. Een eigen, beveiligde reverse proxy is nodig voor externe apparaten.
 
 ### Browser → bridge
 
@@ -49,11 +89,11 @@ De werkelijke `input.sample_rate` komt uit de browser-AudioContext (kan 44.100 o
 - **Binaire WebSocket-frames:** ruwe mono PCM16 little-endian voor audio-uitvoer. De browser speelt de chunks direct en in volgorde af.
 - `{"type":"error","message":"..."}`, `{"type":"end"}`: beëindigen de sessie.
 
-De bridge moet de native modelcodec (bijvoorbeeld Mimi voor Moshi) decoderen naar PCM16. Bij Dessa is geen bruikbaar modelprotocol beschikbaar en blijft starten geblokkeerd.
+De bridge vertaalt de browser-PCM-audio naar de Kyutai Opus-stream op 24 kHz en zet ontvangen Opus-audio terug naar PCM16. De echte modelservers gebruiken daarnaast Mimi intern. Bij Dessa is geen bruikbaar modelprotocol beschikbaar en blijft starten geblokkeerd.
 
 ## Grenzen van deze eerste integratie
 
-- Getest in code: catalogus, taalcontrole, WebSocket-URL-validatie, PCM16-conversie, UI-koppeling en stoppen.
+- Automatische controles: catalogus, taalcontrole, WebSocket-URL-validatie, PCM16/Opus-conversie, mock-native-WebSocket-server, Origin-beveiliging, UI-koppeling en stoppen.
 - **Niet aangetoond:** een end-to-end live sessie met een echte Moshi/Hibiki(-Zero)-server, vloeiende full-duplex turn-taking, latency, stabiele iOS/WebKit-microfoon, of Nederlandse vertaling.
 - Audio loopt via een `ScriptProcessorNode` als brede browsercompatibiliteit. Dat is een verouderde API; een `AudioWorklet` is nodig voor een definitieve, nauwkeuriger streamingimplementatie. Geen claim van productierijpheid.
 - De bestaande tekstgesprekken werken los van deze audio-engines. Aparte audio-sessies slaan geen modelresponsen in gespreksgeschiedenis op.
