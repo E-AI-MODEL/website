@@ -19,6 +19,24 @@ permissions:
   actions: read
 
 jobs:
+  bridge-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: tools/delf-live/bridge
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Python audio bridge dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Run audio, protocol and security tests
+        run: |
+          python -m compileall -q server.py tests
+          python -m pytest -q tests
+
   check-and-build:
     runs-on: ubuntu-latest
     timeout-minutes: 10
