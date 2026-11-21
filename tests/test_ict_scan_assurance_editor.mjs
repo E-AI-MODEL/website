@@ -69,6 +69,7 @@ async function setup(records = [{id: 'APP-001', name: 'Original name', descripti
   context.IctOrganisation = {profile, ready: Promise.resolve(profile)};
   state.sources = [remoteSource(profile)];
   vm.runInContext(read('tools/ict-scan/record-github.js'), context, {filename: 'record-github.js'});
+  vm.runInContext(read('tools/ict-scan/record-taxonomy.js'), context, {filename: 'record-taxonomy.js'});
   vm.runInContext(read('tools/ict-scan/record-cards.js'), context, {filename: 'record-cards.js'});
   document.dispatch('ict-scan:opened');
   await new Promise(resolve => setImmediate(resolve));

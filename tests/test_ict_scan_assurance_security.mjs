@@ -286,6 +286,7 @@ test('Lange API-fouten maskeren de sleutel voordat de tekst wordt ingekort', asy
 test('Kaartnamen, bewijs en foutmeldingen worden als tekst weergegeven', async () => {
   const payload = '<img src=x onerror="globalThis.injected=true"><script>injected=true</script>';
   const app = setup({record: {id: 'APP-001', name: payload, description: payload, sources: [payload], frameworkLinks: [{frameworkId: 'IBP', article: '1', status: 'In onderzoek', evidence: payload}]}, fetchResponse: async () => ({ok: true, json: async () => clone(catalog)})});
+  vm.runInContext(read('tools/ict-scan/record-taxonomy.js'), app.context, {filename: 'record-taxonomy.js'});
   vm.runInContext(read('tools/ict-scan/record-cards.js'), app.context, {filename: 'record-cards.js'});
   app.document.dispatch('ict-scan:opened');
   await new Promise(resolve => setImmediate(resolve));
