@@ -24,7 +24,7 @@
     const folder = $('githubFolder').value.trim().replace(/^\/+|\/+$/g,'');
     const ref = $('githubRef').value.trim();
     if (!/^[\w.-]+\/[\w.-]+$/.test(repo) || repo.includes('..')) throw Error('Gebruik een repository als eigenaar/naam.');
-    if (!folder || folder.length > 240 || folder.split('/').some(s=>!s || s==='.' || s==='..' || !/^[\w .()\-]+$/.test(s))) throw Error('Vul een bestaande GitHub-map in, bijvoorbeeld ict-scan/bronnen.');
+    if (!folder || folder.length > 240 || folder.split('/').some(s=>!s || s==='.' || s==='..' || !/^[\w .()\-]+$/.test(s))) throw Error('Vul een bestaande GitHub-map in, bijvoorbeeld tools/ict-scan/bronnen.');
     if (!ref || ref.length > 120 || !/^[\w./-]+$/.test(ref) || ref.includes('..') || ref.startsWith('/') || ref.endsWith('/')) throw Error('Controleer de branch of tag.');
     return {repo,folder,ref};
   }
