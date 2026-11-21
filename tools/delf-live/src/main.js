@@ -1,5 +1,6 @@
 import { PhononTTS } from 'phonon-tts';
 import { getActiveSession } from './session-store.js';
+import {availableVoices,readVoicePreference,saveVoicePreference} from './browser-voice-choice.mjs';
 import { opening, reply, closing as closingScript, interrupt, handback, speech, speechSegments, modelFiles, stageAdvance, replyPauseMs } from './script.mjs';
 
 const $ = id => document.getElementById(id);
@@ -972,19 +973,31 @@ $('previewFrench').onclick = async () => {
   } catch (e) { if (!controller.signal.aborted) {componentStatus('frenchStatus','error','Franse stemproef mislukt',e);reportError(`Franse stemproef: ${e.message || e}`);} }
 };
 
+function populateVoiceSelect(select,language,title) {
+  const all=availableVoices(window.speechSynthesis,language);
+  const current=select.value||readVoicePreference(language);
+  select.replaceChildren(new Option(all.length?'Kies een '+title+' stem':'Geen '+title+' stemmen beschikbaar',''));
+  for(const v of all)select.add(new Option(v.name+' · '+v.lang+(v.localService?' · lokaal':' · mogelijk online'),v.voiceURI));
+  select.value=all.some(v=>v.voiceURI===current)?current:'';
+  if(!all.length && language==='en'){
+    feedback('englishStatus','Geen Engelse systeemstem gevonden. Installeer een Engelse stem in de apparaatinstellingen.','bad');
+  }
+  return all.find(v=>v.voiceURI===select.value)||null;
+}
 function populateVoices() {
-  const all = speechSynthesis.getVoices().filter(v => /^nl(?:-|$)/i.test(v.lang));
-  const current = $('nlVoice').value;
-  $('nlVoice').replaceChildren(new Option('Kies zelf een Nederlandse stem', ''));
-  all.forEach(v => $('nlVoice').add(new Option(`${v.name} · ${v.lang}${v.localService ? ' · lokaal' : ''}`, v.voiceURI)));
-  $('nlVoice').value = all.some(v => v.voiceURI === current) ? current : '';
+  selectedDutchVoice=populateVoiceSelect($('nlVoice'),'nl','Nederlandse');
+  populateVoiceSelect($('enVoice'),'en','Engelse');
 }
 if ('speechSynthesis' in window) {
   populateVoices();
-  speechSynthesis.addEventListener?.('voiceschanged', populateVoices);
-} else feedback('dutchStatus', 'Deze browser heeft geen spraakvoorziening voor Nederlandse stemmen', 'bad');
+  speechSynthesis.addEventListener?.('voiceschanged',populateVoices);
+} else {
+  feedback('dutchStatus','Deze browser biedt geen spraakuitvoer.','bad');
+  feedback('englishStatus','Deze browser biedt geen spraakuitvoer.','bad');
+}
 $('nlVoice').onchange = () => {
-  selectedDutchVoice = speechSynthesis.getVoices().find(v => v.voiceURI === $('nlVoice').value && /^nl(?:-|$)/i.test(v.lang)) || null;
+  selectedDutchVoice = availableVoices(window.speechSynthesis,'nl').find(v => v.voiceURI === $('nlVoice').value) || null;
+  saveVoicePreference('nl',$('nlVoice').value);
   feedback('dutchStatus', selectedDutchVoice ? `Gekozen: ${selectedDutchVoice.name}. Beluister deze stem vóór gebruik.` : 'Nog geen Nederlandse stem gekozen', selectedDutchVoice ? 'good' : 'bad');
    componentStatus('dutchStatus','idle',selectedDutchVoice?'Stem gekozen. Nog niet getest.':'Geen Nederlandse stem gekozen');
 };
@@ -1017,6 +1030,25 @@ function speakDutch(text, onEnd) {
   try { speechSynthesis.speak(utterance); return true; } catch(e) { reportError(`Nederlandse stem: ${e.message}`); return false; }
 }
 $('previewDutch').onclick = () => { speakDutch('Goedenavond. Mag ik je even onderbreken?'); };
+$('enVoice').addEventListener('change',()=>{
+  const chosen=availableVoices(window.speechSynthesis,'en').find(v=>v.voiceURI===$('enVoice').value);
+  saveVoicePreference('en',$('enVoice').value);
+  feedback('englishStatus',chosen?'Gekozen: '+chosen.name+'. Luister voor gebruik.':'Kies een beschikbare Engelse stem.',chosen?'good':'bad');
+});
+$('previewEnglish').addEventListener('click',()=>{
+  const chosen=availableVoices(window.speechSynthesis,'en').find(v=>v.voiceURI===$('enVoice').value);
+  if(!chosen){feedback('englishStatus','Kies eerst een Engelse stem.','bad');return;}
+  if(phase!=='intro' && phase!=='stopped'){
+    feedback('englishStatus','Een Engelse stem kun je buiten een lopende voorstelling beluisteren.','bad');return;
+  }
+  const utterance=new SpeechSynthesisUtterance('Good evening, everyone. Congratulations on your achievements.');
+  utterance.voice=chosen;utterance.lang=chosen.lang;utterance.rate=.95;
+  utterance.onstart=()=>feedback('englishStatus','Engelse voorbeeldstem klinkt…','good');
+  utterance.onend=()=>feedback('englishStatus','Voorbeeld afgespeeld. Beoordeel uitspraak en intonatie.','good');
+  utterance.onerror=()=>feedback('englishStatus','Deze stem kon niet worden afgespeeld. Probeer een andere.','bad');
+  speechSynthesis.cancel();
+  speechSynthesis.speak(utterance);
+});
 
 function scheduleAuto(callback, durationMs) {
   if (autoTimer) { clearTimeout(autoTimer); autoTimer = null; }
