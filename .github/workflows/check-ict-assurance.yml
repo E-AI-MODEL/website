@@ -1,6 +1,7 @@
 name: ICT-registers en deterministische controles
 
 on:
+  workflow_call:
   pull_request:
     branches: [main]
     paths:
@@ -42,7 +43,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: ict-assurance-${{ github.ref }}
+  group: ict-assurance-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:

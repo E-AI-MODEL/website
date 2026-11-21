@@ -46,6 +46,12 @@ en publiceert niets. Het dagelijkse schema werkt pas nadat de workflow in de
 standaardbranch staat. Een geslaagde CI-run is bewijs voor de geteste commit
 en omgeving, geen uitgevoerde externe penetratietest.
 
+De sitebrede publicatie roept dezelfde ICT-workflow aan en heeft die als verplichte
+jobafhankelijkheid. Een mislukte ICT-controle blokkeert zo de upload, ook zonder
+ingestelde branchbescherming. Dit maakt samenvoegen naar `main` niet onmogelijk:
+de op 21 november 2026 uitgelezen branchmetadata meldt bescherming uit en geen
+verplichte statuschecks. Branchbescherming blijft een afzonderlijke instelling.
+
 ## Aanvullingen die nog eigen ontwerp en bewijs vragen
 
 Voor bredere inzet moeten onderstaande onderwerpen apart worden ingevuld.

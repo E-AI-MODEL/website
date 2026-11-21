@@ -150,6 +150,16 @@ class ICTScanTests(unittest.TestCase):
         checks = (ROOT / '.github' / 'workflows' / 'check-ict-assurance.yml').read_text(encoding='utf-8')
         self.assertEqual(checks.count("- '.github/workflows/deploy-theory7.yml'"), 2)
 
+    def test_deployment_requires_the_same_ict_checks_including_browser_validation(self):
+        deploy = (ROOT / '.github' / 'workflows' / 'deploy-theory7.yml').read_text(encoding='utf-8')
+        checks = (ROOT / '.github' / 'workflows' / 'check-ict-assurance.yml').read_text(encoding='utf-8')
+        self.assertIn('  ict-controls:\n    uses: ./.github/workflows/check-ict-assurance.yml\n', deploy)
+        self.assertIn('  deploy:\n    needs: ict-controls\n', deploy)
+        self.assertIn('  workflow_call:\n', checks)
+        self.assertIn('node tests/verify_ict_assurance_browser.mjs', checks)
+        self.assertIn('group: ict-assurance-${{ github.workflow }}-${{ github.ref }}', checks,
+                      'Standalone checks must not cancel the reusable deployment check')
+
     def test_expandable_sidebar_keeps_primary_navigation(self):
         html = (TOOL / 'index.html').read_text(encoding='utf-8')
         js = (TOOL / 'rail-drawer.js').read_text(encoding='utf-8')
