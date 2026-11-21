@@ -86,13 +86,15 @@
     $c('cardJsonPanel').hidden=true;
     $c('cardJson').textContent=recordObj?JSON.stringify(recordObj,null,2):'';
     $c('cardEditor').classList.toggle('card-context-mode',!!model.contextMode);
-    $c('cardExpandManager').hidden=!model.contextMode||model.editing;
+    
     if(!model.editing)showRead(recordObj);
     else showForm();
     showPending();
+    const pending=$c('cardPendingPanel');
+    if(pending)pending.hidden=model.contextMode&&!model.editing&&model.drafts.size===0;
   }
   function lines(container,title,items){
-    const group=text('section','card-read-section');group.append(text('h4','',title));
+    const group=text('section','card-read-section');if(title)group.append(text('h4','',title));
     const dl=text('dl','card-read-grid');
     for(const [name,value] of items){
       if(value===undefined||value===null||value===''||(Array.isArray(value)&&!value.length))continue;
@@ -472,7 +474,6 @@
   renderSources=function(){oldRenderSources();renderLogbook();};
   $c('logbookSearch').addEventListener('input',renderLogbook);
   $c('cardOpen').addEventListener('click',launch);
-  $c('cardExpandManager').addEventListener('click',()=>{model.contextMode=false;showPane();$c('cardSearch').focus();});
   $c('cardEditorClose').addEventListener('click',close);
   $c('cardScrim').addEventListener('click',close);
   $c('cardTypeFilter').addEventListener('change',()=>{if(model.editing&&!confirm('Niet-bewaarde invoer verlaten?')){$c('cardTypeFilter').value=model.current.type;return;}model.current=null;model.editing=false;model.working=null;showList();showPane();});
