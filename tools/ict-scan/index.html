@@ -65,7 +65,7 @@
         <p class="role-mode-note">Alleen de weergave verandert. Geen roltoekenning of toegangsbeveiliging.</p>
       </div>
       <div class="rail-drawer-section"><p class="rail-drawer-label">Registraties</p>
-        <button type="button" id="cardOpen" class="rail-action"><svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h4"/></svg><span>JSON-kaarten beheren</span><span id="cardPending" class="rail-pending" hidden>0</span></button>
+        <button type="button" id="cardOpen" class="rail-action"><svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h4"/></svg><span>Gegevens beheren</span><span id="cardPending" class="rail-pending" hidden>0</span></button>
       </div>
       <div class="rail-drawer-section"><p class="rail-drawer-label">Bronnen</p>
         <button type="button" id="topGithubSync" class="rail-action"><svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 18c-3 0-5-2-5-5s2-5 5-5h2m4 0h2c3 0 5 2 5 5s-2 5-5 5h-2"/><path d="M8 12h8M12 8l4 4-4 4"/></svg><span>Synchroniseren met GitHub</span></button>
@@ -206,7 +206,7 @@
   <div id="cardScrim" class="card-scrim" hidden></div>
   <section id="cardEditor" class="card-editor" role="dialog" aria-modal="true" aria-labelledby="cardEditorTitle" hidden>
     <div class="card-editor-heading">
-      <div><span class="card-eyebrow">APPLICATIELANDSCHAP · 2026</span><h2 id="cardEditorTitle">JSON-kaarten</h2></div>
+      <div><span class="card-eyebrow">APPLICATIELANDSCHAP · 2026</span><h2 id="cardEditorTitle">Gegevens</h2></div>
       <button type="button" class="card-icon-close" id="cardEditorClose" aria-label="Kaart sluiten">×</button>
     </div>
     <div class="card-editor-body">
@@ -232,10 +232,10 @@
             <button type="submit" id="cardSaveDraft" class="card-button card-button-primary">Concept bewaren</button>
           </div>
         </form>
-        <details class="card-json-panel" id="cardJsonPanel"><summary>JSON en oorspronkelijke bronvelden</summary>
+        <details class="card-json-panel" id="cardJsonPanel"><summary>Technische JSON tonen</summary>
           <pre id="cardJson" tabindex="0"></pre><button type="button" id="cardCopyJson" class="card-button card-button-subtle">Kopieer JSON</button>
         </details>
-        <section class="card-pending-panel">
+        <section class="card-pending-panel" id="cardPendingPanel">
           <div class="card-pending-title"><strong id="cardDraftCount">Geen wijzigingen</strong><button type="button" id="cardUndo" class="card-text-action" hidden>Herstel concept</button></div>
           <div id="cardChangeSummary" class="card-change-summary"></div>
           <button type="button" id="cardPublishToggle" class="card-button card-button-subtle" hidden>Wijzigingen voorstellen in GitHub</button>
