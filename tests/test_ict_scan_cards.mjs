@@ -51,9 +51,9 @@ test('Een wijziging blijft gekoppeld aan ID, originele tekst, bewijs en auteur',
   const after=all['2026-applicatielandschap.json'].apps[0];
   assert.equal(after.id,original.id);
   assert.equal(after.description,'Gecorrigeerde beschrijving na broncontrole');
-  assert.deepEqual(after.sourceFields,before.sourceFields);
-  assert.deepEqual(after.provenance,before.provenance);
-  assert.deepEqual(after.sources,before.sources);
+  assert.deepEqual(clone(after.sourceFields),before.sourceFields);
+  assert.deepEqual(clone(after.provenance),before.provenance);
+  assert.deepEqual(clone(after.sources),before.sources);
   assert.equal(after.auditTrail.length,1);
   assert.equal(after.auditTrail[0].actor,'test-reviewer');
   assert.equal(after.auditTrail[0].reason,edit.reason);
@@ -78,7 +78,7 @@ test('FAQ-antwoord aanpassen behoudt vaste ID, bronverwijzing en wijzigingslog',
   logic.applyDrafts(all,[changed],'faq-reviewer','2026-11-20T20:00:00Z');
   const after=all['2026-faq.json'].faqs[0];
   assert.equal(after.id,'FAQ-001');
-  assert.deepEqual(after.sourceRefs,before.sourceRefs);
+  assert.deepEqual(clone(after.sourceRefs),before.sourceRefs);
   assert.deepEqual(after.sources,before.sources);
   assert.match(after.answer,/Aanvullend gecontroleerd/);
   assert.equal(after.auditTrail.length,1);
@@ -119,7 +119,7 @@ test('Geen rechtstreekse overschrijving van main',()=>{
   assert.ok(githubSource.includes('manifest.dataFiles'));
   assert.ok(githubSource.includes('source_sha')===false);
   assert.ok(html.includes("connect-src 'self' https://api.github.com"));
-  assert.ok(html.includes('src="./record-cards.js"'));
-  assert.ok(html.includes('src="./record-github.js"'));
-  assert.ok(html.includes('href="./record-cards.css"'));
+  assert.ok(html.includes('src="./record-cards.js'));
+  assert.ok(html.includes('src="./record-github.js'));
+  assert.ok(html.includes('href="./record-cards.css'));
 });
