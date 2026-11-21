@@ -5,7 +5,7 @@ import {availableVoices,readVoicePreference,saveVoicePreference,voiceLanguage} f
 import {listLocalModels,validateLocalEndpoint} from './system-probes.mjs';
 import {describeDevice,suggestDeviceSetup,modelDeviceAdvice} from './device-profile.mjs';
 import {isSpeechEngine,speechEngine,validateSpeechPair} from './speech-engines.mjs';
-import {startSpeechBridge} from './speech-bridge.mjs';
+import {startSpeechBridge,probeSpeechBridge} from './speech-bridge.mjs';
 const $=id=>document.getElementById(id);
 const speak=$('freeTalkSpeak'),stop=$('freeTalkStop'),send=$('freeTalkSend'),play=$('freeTalkPlay');
 const status=$('freeTalkStatus'),heard=$('freeTalkHeard'),answer=$('freeTalkAnswer'),typed=$('freeTalkTyped');
@@ -19,10 +19,10 @@ const ollamaOptions=$('freeTalkOllamaOptions'),ollamaEndpoint=$('freeTalkOllamaE
 const ollamaModel=$('freeTalkOllamaModel'),ollamaConnect=$('freeTalkOllamaConnect'),ollamaStatus=$('freeTalkOllamaStatus');
 const voiceName=$('freeTalkVoiceName'),voiceNameRow=$('freeTalkVoiceNameRow');
 const autoListen=$('freeTalkAutoListen'),speechIndicator=$('freeTalkSpeechIndicator'),voiceCanvas=$('freeTalkVoiceLines');
-const speechOptions=$('freeTalkSpeechOptions'),speechEndpoint=$('freeTalkSpeechEndpoint');
+const speechOptions=$('freeTalkSpeechOptions'),speechEndpoint=$('freeTalkSpeechEndpoint'),speechProbe=$('freeTalkSpeechProbe');
 const speechDescription=$('freeTalkSpeechDescription'),speechConnection=$('freeTalkSpeechConnection');
 const speechSource=$('freeTalkSpeechSource'),voiceRow=$('freeTalkVoiceRow'),autoListenRow=$('freeTalkAutoListenRow');
-let speechSession=null,speechAbort=null,speechStarting=false;
+let speechSession=null,speechAbort=null,speechStarting=false,speechProbing=false;
 const voiceCtx=voiceCanvas?.getContext('2d')||null;
 let speakingLevel=0,speechLoop=null,microphoneStream=null,microphoneContext=null,microphoneAnalyser=null;
 let handsfree=false,manualReplay=false,restartTimer=null;
@@ -189,6 +189,7 @@ function updateControls(){
   ollamaOptions.hidden=!isOllama;
   onlineOptions.hidden=engine.value!=='puter';
   speechOptions.hidden=!usingSpeech;
+  speechProbe.disabled=!usingSpeech||selectedSpeech.availability==='unreleased'||speechProbing;
   voiceRow.hidden=usingSpeech;
   autoListenRow.hidden=usingSpeech;
   voiceNameRow.hidden=usingSpeech||voice.value!=='browser';
@@ -244,7 +245,38 @@ for(const control of [cloudModel,inputLang,outputLang,voice])control.addEventLis
 voiceName.addEventListener('change',()=>{preferredVoiceURI=voiceName.value;saveVoicePreference(outputLang.value,voiceName.value);persist();});
 autoListen.addEventListener('change',persist);
 ollamaEndpoint.addEventListener('change',persist);
-speechEndpoint.addEventListener('change',persist);
+speechEndpoint.addEventListener('change',()=>{
+  persist();
+  speechConnection.textContent='Het serveradres is gewijzigd. Controleer de verbinding opnieuw.';
+});
+speechProbe.addEventListener('click',async()=>{
+  if(speechProbing||pending||speechStarting||speechSession)return;
+  const chosen={
+    endpoint:speechEndpoint.value,engine:engine.value,
+    sourceLanguage:inputLang.value,targetLanguage:outputLang.value
+  };
+  speechProbing=true;speechProbe.disabled=true;
+  speechConnection.textContent='Verbinding controleren zonder microfoon…';
+  const stillSelected=()=>engine.value===chosen.engine&&inputLang.value===chosen.sourceLanguage
+    &&outputLang.value===chosen.targetLanguage&&speechEndpoint.value===chosen.endpoint;
+  try{
+    await probeSpeechBridge({...chosen,onStatus:message=>{
+      if(stillSelected())speechConnection.textContent=message;
+    }});
+    if(stillSelected()){
+      speechConnection.textContent='Modelserver reageert. Microfoon en spraakuitvoer zijn nog niet getest.';
+      setStatus('Modelserver bereikbaar. Kies Begin met spreken voor een echte spraakproef.','ready');
+    }
+  }catch(error){
+    if(stillSelected()){
+      speechConnection.textContent='Verbinding mislukt: '+String(error?.message||error);
+      setStatus('Modelserver niet bereikbaar. Controleer adres, server en verbinding.','error');
+    }
+  }finally{
+    speechProbing=false;
+    speechProbe.disabled=engine.value==='dessa'||!isSpeechEngine(engine.value);
+  }
+});
 ollamaModel.addEventListener('change',()=>{chosenOllamaModel=ollamaModel.value;syncChanges();});
 ollamaConnect.addEventListener('click',async()=>{
   ollamaConnect.disabled=true;ollamaStatus.textContent='Lokale modellen zoeken…';

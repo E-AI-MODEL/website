@@ -98,4 +98,27 @@ De bridge vertaalt de browser-PCM-audio naar de Kyutai Opus-stream op 24 kHz en 
 - Audio loopt via een `ScriptProcessorNode` als brede browsercompatibiliteit. Dat is een verouderde API; een `AudioWorklet` is nodig voor een definitieve, nauwkeuriger streamingimplementatie. Geen claim van productierijpheid.
 - De bestaande tekstgesprekken werken los van deze audio-engines. Aparte audio-sessies slaan geen modelresponsen in gespreksgeschiedenis op.
 
-De integratie staat bewust in een eigen pull request naar `feature/delf-live-stage-2026-11-19`, niet rechtstreeks op `main` en niet automatisch op de gepubliceerde site.
+De model- en bridgecode staat op de EAIspeak-ontwikkelbranch. Alleen de statische webapp wordt via de afgeschermde EAIspeak-publicatieworkflow geüpload; de Python-server moet afzonderlijk draaien.
+
+## Modellen echt verbinden en testen
+
+De knop **Controleer modelverbinding** staat onder **Vrij praten → Taal en model → EAIspeak-spraakbridge**. Hij opent **geen microfoon**. De browser vraagt de EAIspeak-bridge een native Kyutai-verbinding te openen. Alleen een echte `0x00`-gereedmelding van de geselecteerde modelserver leidt tot een positieve uitslag. De bridge sluit die proefverbinding daarna weer. Zo is het verschil zichtbaar tussen:
+
+- een bereikbaar serveradres (onvoldoende);
+- een native model dat een geldige handdruk geeft (verbindingsproef geslaagd);
+- een daadwerkelijk gesproken gesprek met herkenning, audio en onderbrekingen (aparte gebruikerstest).
+
+Een **Mac met Apple Silicon** kan voor Moshi of Hibiki de lokale modelserver en bridge starten met één opdracht vanuit de root van de repository:
+
+```bash
+bash tools/delf-live/bridge/start-macos.sh moshi
+# Of:
+bash tools/delf-live/bridge/start-macos.sh hibiki
+```
+
+Het script vereist Python 3.12, installeert twee **gescheiden virtuele omgevingen** en downloadt het gekozen model via de officiële PyPI- en Hugging Face-pakketten. Het draait beide processen lokaal; het installeert **geen** service, maakt **geen** publieke tunnel en start **geen** GPU in de cloud. Stoppen met Ctrl-C sluit beide af. De eerste download kan meerdere gigabytes kosten aan schijfruimte en tijd. Het opstartscript is een hulpmiddel, **nog geen bevestigde Mac-proef**.
+
+De webapp staat op HTTPS. Lokale `ws://localhost`-verbindingen kunnen op Safari of door beveiligingsinstellingen worden geweigerd. Op de iPhone verwijst `localhost` naar de **iPhone zelf**, niet naar de Mac. Een mobiele proef vereist een eigen GPU/Mac-server met een afgeschermde `wss://`-verbinding, authenticatie en toegangscontrole. **Origin-controle is geen gebruikersauthenticatie.** Een openbare anonieme WebSocket-proxy is hiervoor niet geschikt.
+
+De nieuwe verbindingstest en de bridge worden met GitHub Actions getoetst via een nagebootste native Kyutai-server. Dat is geen bewijs van een realistisch gesprek: daarvoor is een draaiend model nodig, plus handmatige meting van latency, audiokwaliteit en onderbreken.
+
