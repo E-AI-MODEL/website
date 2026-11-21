@@ -17,7 +17,7 @@ import_at = 'import { validateLayout, assertNoCollisions } from "./data/layout.j
 start_at = "  syncGridGuidance();\n})();"
 if text.count(import_at) != 1 or text.count(start_at) != 1:
     raise SystemExit("Upstream Dashboard Builder changed: integration anchors no longer match.")
-text = text.replace(import_at, "import { mountEmmausBridge } from './ict-bridge.js';\n" + import_at, 1)
+text = text.replace(import_at, "import { mountEmmausBridge } from './ict-bridge.js';\n"\n    "import './ict-bridge.css';\n" + import_at, 1)
 text = text.replace(
     start_at,
     "  syncGridGuidance();\n"
