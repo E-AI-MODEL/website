@@ -84,7 +84,7 @@ def parse_handshake(text: str) -> tuple[str, str, str, int]:
         message = json.loads(text)
     except (TypeError, json.JSONDecodeError) as exc:
         raise ValueError("Ongeldige JSON-handshake.") from exc
-    if not isinstance(message, dict) or message.get("type") != "start" or message.get("protocol") != PROTOCOL:
+    if not isinstance(message, dict) or message.get("type") not in ("start", "probe") or message.get("protocol") != PROTOCOL:
         raise ValueError("EAIspeak-protocol niet herkend.")
     engine = message.get("engine")
     input_lang = message.get("source_language")
@@ -213,6 +213,7 @@ async def bridge_socket(request: web.Request) -> web.StreamResponse:
         if greeting.type != WSMsgType.TEXT:
             raise ValueError("Verwacht eerst een JSON-startbericht.")
         engine, _, _, input_rate = parse_handshake(greeting.data)
+        probe = json.loads(greeting.data)["type"] == "probe"
         upstream_url = config.upstreams.get(engine)
         if not upstream_url:
             raise ValueError("Deze modelserver is nog niet geconfigureerd. Controleer de bridge-instellingen.")
@@ -230,9 +231,14 @@ async def bridge_socket(request: web.Request) -> web.StreamResponse:
                 first = await asyncio.wait_for(model.receive(), timeout=config.upstream_timeout)
                 if first.type != WSMsgType.BINARY or first.data != b"\x00":
                     raise ValueError("Modelserver gaf geen geldige Kyutai-startmelding.")
-                codec = NativeOpusCodec(input_rate)
-                await notify(browser, "ready", protocol=PROTOCOL, output_sample_rate=MODEL_RATE)
-                await relay(browser, model, codec, engine)
+                if probe:
+                    # Health probe: no microphone permission or audio frames are needed.
+                    await notify(browser, "ready", protocol=PROTOCOL, output_sample_rate=MODEL_RATE, probe=True)
+                    await notify(browser, "end")
+                else:
+                    codec = NativeOpusCodec(input_rate)
+                    await notify(browser, "ready", protocol=PROTOCOL, output_sample_rate=MODEL_RATE)
+                    await relay(browser, model, codec, engine)
     except (asyncio.TimeoutError, ConnectionError, OSError, ValueError) as exc:
         # Do not log user audio, transcripts or private URLs.
         await notify(browser, "error", message=str(exc)[:230])
