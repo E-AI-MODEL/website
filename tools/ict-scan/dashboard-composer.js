@@ -391,6 +391,7 @@
   $('dsSave').addEventListener('click',()=>{showMessage(persist()?'Ontwerp bewaard in deze browser.':'Bewaren is hier niet toegestaan.');});
   $('dsExport').addEventListener('click',exportDesign);
   for(const role of ['AI','FG'])$('roleMode'+role)?.addEventListener('change',()=>queueMicrotask(refresh));
+  $('dsCloseControls')?.addEventListener('click',()=>{const shell=$('viewStudio');shell.classList.remove('ds-controls-open');$('dsToggleControls')?.setAttribute('aria-expanded','false');});
   const rbutton=$('dsToggleControls');rbutton?.addEventListener('click',()=>{
     const shell=$('viewStudio');shell.classList.toggle('ds-controls-open');rbutton.setAttribute('aria-expanded',String(shell.classList.contains('ds-controls-open')));
   });
