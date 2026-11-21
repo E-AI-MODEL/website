@@ -493,7 +493,12 @@ async function startSpeechSession(){
       endpoint:speechEndpoint.value,engine:engine.value,
       sourceLanguage:inputLang.value,targetLanguage:outputLang.value,
       signal:controller.signal,
-      onStatus:message=>{if(own===turn){setStatus(message);speechConnection.textContent=message;}},
+      onStatus:message=>{
+        if(own===turn){
+          setStatus(message);speechConnection.textContent=message;
+          if(message==='Verbonden. Je kunt praten.')speak.textContent='Gesprek actief';
+        }
+      },
       onTranscript:text=>{if(own===turn)heard.textContent=text||'…';},
       onTranslation:text=>{if(own===turn)answer.textContent=text||'…';},
       onActivity:kind=>{if(own===turn)setSpeechActivity(kind);},
@@ -505,7 +510,7 @@ async function startSpeechSession(){
     });
     if(own!==turn||controller.signal.aborted){session.stop();return;}
     speechSession=session;
-    speak.textContent='Gesprek actief';
+    speak.textContent='Verbinding maken…';
     speak.disabled=true;
     persist();
   }catch(error){
