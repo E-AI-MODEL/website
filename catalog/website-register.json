@@ -1278,6 +1278,21 @@
       "search_scope": "niet_indexeren"
     },
     {
+      "id": "page:/tools/ict-scan/dashboard-builder-app/",
+      "url": "/tools/ict-scan/dashboard-builder-app/",
+      "file": "tools/ict-scan/dashboard-builder-app/index.html",
+      "title": "Dashboard Builder · Applicatielandschap",
+      "kind": "afgeschermd_of_app",
+      "category": null,
+      "review": "noindex_in_bron_gecontroleerd",
+      "parent": "page:/tools/ict-scan/",
+      "family": "technisch",
+      "robots_noindex_in_html": true,
+      "page_status": "niet_voor_zoekmachines",
+      "in_committed_sitemap": false,
+      "search_scope": "niet_indexeren"
+    },
+    {
       "id": "page:/tools/eaigit/hulp/",
       "url": "/tools/eaigit/hulp/",
       "file": "tools/eaigit/hulp/index.html",
@@ -7102,10 +7117,13 @@
     },
     {
       "path": "content/wihtml/verdubbelen-halveren-v9.html"
+    },
+    {
+      "path": "tools/ict-scan/dashboard-builder-app/export-template.html"
     }
   ],
   "audit": {
-    "tracked_html_files": 219,
+    "tracked_html_files": 221,
     "public_page_files": 179,
     "generated_pages": 2,
     "search_index_entries": 289,
@@ -7149,8 +7167,8 @@
       "/verdieping/"
     ],
     "orphan_items": [],
-    "additional_html_files": 40,
-    "all_html_files": 219,
+    "additional_html_files": 41,
+    "all_html_files": 221,
     "pages_not_in_public_search": 36,
     "page_families_needing_review": 0,
     "redirect_title_candidates": 9,
