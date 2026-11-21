@@ -1,0 +1,69 @@
+name: Build original Dashboard Builder for ICT scan
+
+on:
+  push:
+    branches:
+      - feature/ict-scan-dashboard-builder-studio
+    paths:
+      - .github/workflows/import-ict-dashboard-builder.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ict-dashboard-builder-import-${{ github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  vendor-upstream:
+    if: github.ref == 'refs/heads/feature/ict-scan-dashboard-builder-studio'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: tools/ict-scan/package.json
+        continue-on-error: true
+      - name: Checkout exact reviewed upstream commit
+        run: |
+          git clone https://github.com/nateriera/dashboard-builder.git /tmp/ict-dashboard-builder
+          git -C /tmp/ict-dashboard-builder checkout --detach 0c72e80b6b2106c24dd643607157932ca25f7717
+          test "$(git -C /tmp/ict-dashboard-builder rev-parse HEAD)" = 0c72e80b6b2106c24dd643607157932ca25f7717
+      - name: Install locked dependencies and build actual Dashboard Builder
+        working-directory: /tmp/ict-dashboard-builder
+        run: |
+          npm ci --ignore-scripts
+          npm run build
+          test -s dist/index.html
+          test -s dist/export-template.html
+      - name: Copy self-hosted build, no source datasets
+        run: |
+          rm -rf tools/ict-scan/dashboard-builder-app
+          mkdir -p tools/ict-scan/dashboard-builder-app
+          cp -a /tmp/ict-dashboard-builder/dist/. tools/ict-scan/dashboard-builder-app/
+          cp /tmp/ict-dashboard-builder/LICENSE tools/ict-scan/dashboard-builder-app/LICENSE
+          cat > tools/ict-scan/dashboard-builder-app/UPSTREAM.md <<'EOF'
+          # Upstream Dashboard Builder
+          Source: https://github.com/nateriera/dashboard-builder
+          Revision: 0c72e80b6b2106c24dd643607157932ca25f7717
+          License: MIT (LICENSE)
+          The source was built with npm ci and npm run build in GitHub Actions.
+          This is the original upstream app, hosted locally under the ICT scan.
+          Data are not preloaded. Users explicitly import files in the browser.
+          EOF
+          test -s tools/ict-scan/dashboard-builder-app/index.html
+      - name: Commit static build to feature branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add tools/ict-scan/dashboard-builder-app
+          if ! git diff --cached --quiet; then
+            git commit -m "Vendor pinned Dashboard Builder upstream static build"
+            git push origin HEAD:feature/ict-scan-dashboard-builder-studio
+          fi
