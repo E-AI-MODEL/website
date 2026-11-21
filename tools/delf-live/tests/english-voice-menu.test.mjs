@@ -50,7 +50,8 @@ test('Overige opties sluit na keuze en toont de actieve paginanaam',()=>{
 test('Dezelfde vaste layout past ook bij kleine schermhoogte',()=>{
   assert.ok(shell.includes('positionMoreMenu()'));
   assert.ok(shell.includes('positionTalkPopup()'));
-  assert.ok(shell.includes('innerHeight-desiredHeight-12'));
+  assert.ok(shell.includes('window.innerHeight-navBottom-24'));
+  assert.ok(shell.includes('panel.appendChild(talkPopup)'));
   assert.ok(css.includes('--extra-menu-top'));
-  assert.ok(css.includes('--free-popup-max-height'));
+  assert.ok(css.includes('.cloud-studio.panel>.mist-voice-portal'));
 });
