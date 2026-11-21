@@ -144,3 +144,54 @@ export async function startSpeechBridge({
     throw error;
   }
 }
+
+
+/**
+ * Probe the real model handshake through the EAIspeak bridge, without ever
+ * opening the microphone. A successful probe proves transport readiness,
+ * not generation quality or a successful spoken conversation.
+ */
+export async function probeSpeechBridge({
+  endpoint,engine,sourceLanguage,targetLanguage,onStatus=()=>{},
+  timeoutMs=20000,WebSocketClass=globalThis.WebSocket
+}){
+  const url=validateSpeechEndpoint(endpoint);
+  validateSpeechPair(engine,sourceLanguage,targetLanguage);
+  if(typeof WebSocketClass!=='function')throw new Error('Deze browser ondersteunt geen WebSocket.');
+  if(!Number.isFinite(timeoutMs)||timeoutMs<1000||timeoutMs>120000)throw new Error('Ongeldige verbindingstimeout.');
+  return new Promise((resolve,reject)=>{
+    let settled=false,socket;
+    const timeout=setTimeout(()=>done(new Error('Geen gereedmelding ontvangen. Controleer de server en het gekozen model.')),timeoutMs);
+    function done(error,result){
+      if(settled)return;
+      settled=true;clearTimeout(timeout);
+      try{if(socket?.readyState<2)socket.close(1000,'Probe complete');}catch{}
+      if(error)reject(error);else resolve(result);
+    }
+    try{
+      socket=new WebSocketClass(url);
+      socket.addEventListener('open',()=>{
+        if(settled)return;
+        const hello=bridgeHandshake({engine,sourceLanguage,targetLanguage,sampleRate:48000});
+        hello.type='probe';
+        socket.send(JSON.stringify(hello));
+        onStatus('Kyutai-model controleren…');
+      });
+      socket.addEventListener('message',event=>{
+        if(settled)return;
+        try{
+          if(typeof event.data!=='string')throw new Error('Onverwacht binair bericht tijdens controle.');
+          const msg=parseBridgeMessage(event.data);
+          if(msg.type==='status'){onStatus(String(msg.message||'Modelserver bezig.').slice(0,250));return;}
+          if(msg.type==='error')throw new Error('Modelserver: '+String(msg.message||'onbekende fout').slice(0,250));
+          if(msg.type==='ready'){
+            if(msg.protocol!=='eaispeak-pcm-v1'||msg.probe!==true)throw new Error('De server ondersteunt de veilige EAIspeak-modelcontrole niet.');
+            done(null,{engine,sourceLanguage,targetLanguage});
+          }else if(msg.type==='end')throw new Error('De modelserver sloot de controle af zonder gereedmelding.');
+        }catch(error){done(error);}
+      });
+      socket.addEventListener('error',()=>done(new Error('Kan de spraakserver niet bereiken. Controleer het adres, HTTPS/WSS en of de server draait.')));
+      socket.addEventListener('close',()=>done(new Error('De spraakserver sloot de verbinding voordat het model gereed was.')));
+    }catch(error){done(error);}
+  });
+}
