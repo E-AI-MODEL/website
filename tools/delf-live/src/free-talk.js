@@ -259,6 +259,13 @@ refreshVoices();
 browserModel.addEventListener('change',()=>{userSelectedModel=true;syncChanges();});
 engine.addEventListener('change',()=>{
   userSelectedEngine=true;
+  // Kies een ondersteunde taalrichting bij een nieuwe spraakengine.
+  // Handmatige wijzigingen daarna worden gecontroleerd, niet heimelijk vertaald.
+  const chosen=speechEngine(engine.value);
+  if(chosen?.inputs.length){
+    if(!chosen.inputs.includes(inputLang.value))inputLang.value=chosen.inputs[0];
+    if(!chosen.outputs.includes(outputLang.value))outputLang.value=chosen.outputs[0];
+  }
   // Een browsermodel werkt standaard volledig zonder extern account.
   if(engine.value==='browser'&&voice.value==='cloud')voice.value='browser';
   if(engine.value==='puter')void primePuter();
