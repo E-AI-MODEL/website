@@ -225,7 +225,7 @@
  .workspace.monitor-layout #viewStudio .ds-toolbar{padding:13px 16px;min-height:76px}
  .workspace.monitor-layout #viewStudio .ds-canvas-scroll{padding:14px 16px 18px}
  .workspace.monitor-layout #viewStudio .ds-canvas{grid-template-columns:repeat(6,minmax(0,1fr));gap:15px}
- .workspace.monitor-layout #viewStudio .ds-component{grid-column:span min(var(--span,6),6)}
+ .workspace.monitor-layout #viewStudio .ds-component{grid-column:span 6}
  .workspace.monitor-layout #viewStudio .ds-measure-strip{grid-template-columns:repeat(2,minmax(0,1fr))}
  .workspace.monitor-layout #viewStudio .ds-measure:nth-child(2){border-right:0}
  .workspace.monitor-layout #viewStudio .ds-measure:nth-child(-n+2){border-bottom:1px solid var(--ds-line)}
