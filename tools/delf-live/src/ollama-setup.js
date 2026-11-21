@@ -7,7 +7,7 @@ if(host) {
   section.className='studio-section cloud-reveal ollama-setup';
   section.id='ollamaSetup';
   section.innerHTML=`
-    <div class="studio-section-top"><span class="studio-section-no">03</span><h2>Ollama op je Mac</h2></div>
+    <div class="studio-section-top"><span class="studio-section-no">04</span><h2>Ollama installeren</h2></div>
     <p class="studio-support">Je hoeft de website niet te installeren. De handleiding opent pas wanneer je Ollama wilt koppelen.</p>
     <details class="ollama-guide"><summary>Ollama instellen op deze Mac</summary>
     <div class="ollama-steps" role="group" aria-label="Voortgang Ollama installatie"></div>
