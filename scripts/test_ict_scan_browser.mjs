@@ -91,8 +91,21 @@ try {
   await page.locator('#builderWriteSubmit').click();
   assert.match(await page.locator('#builderWriteStatus').textContent(),/minimaal acht tekens/);
   await page.locator('#builderWriteCancel').click();
-  await page.locator('#builderClose').click();
+  await liveBuilder.locator('.emmaus-bridge-select').first().selectOption('ai');
+  await page.waitForFunction(()=>{
+    const frame=document.getElementById('builderFrame');
+    return frame?.contentDocument?.querySelector('.emmaus-bridge-source')?.textContent.includes('76 van 76');
+  },null,{timeout:15000});
+  await liveBuilder.locator('.emmaus-bridge-submit').click();
+  await page.locator('#builderWriteback:not([hidden])').waitFor();
+  assert.match(await page.locator('#builderWriteTarget').textContent(),/dashboard-layouts\/ai.json/);
+  await page.locator('#builderWriteCancel').click();
+  await liveBuilder.locator('.emmaus-bridge-action').click();
+  await page.locator('#cardEditor:not([hidden])').waitFor();
   assert.equal(await page.locator('#builderSurface:not([hidden])').count(),0);
+  assert.equal(await page.locator('#cardForm').isVisible(),true,'Bronkaart moet in dezelfde editor bewerkbaar zijn');
+  await page.locator('#cardCancelEdit').click();
+  await page.locator('#cardEditorClose').click();
 
   if(width<700){await page.locator('#dsToggleControls').click();assert.equal(await page.locator('#viewStudio.ds-controls-open').count(),1);}
   await page.locator('#dsBlank').click();
