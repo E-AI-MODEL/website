@@ -256,7 +256,8 @@ body.record-card-open{overflow:hidden}
 .item-list .item-card.item-card-direct .id-pill{font-size:9px;padding:4px 6px}
 .item-list .item-card.item-card-direct .chevron{font-size:18px}
 .item-list .item-card.item-card-direct .item-detail[hidden]{display:none!important}
-@keyframes recordDrawerEnter{from{opacity:0;transform:translateX(15px)}to{opacity:1;transform:translateX(0)}}
+@keyframes recordDrawerEnter{from{opacity:0;transform:translateX(7px)}to{opacity:1;transform:translateX(0)}}
+@keyframes recordDrawerMobile{from{opacity:0;transform:scale(.992)}to{opacity:1;transform:scale(1)}}
 @keyframes recordPanelEnter{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
 @media(max-width:720px){
  .card-editor.card-context-mode:not([hidden]){
@@ -267,6 +268,7 @@ body.record-card-open{overflow:hidden}
    border-radius:0;
  }
  .card-editor.card-context-mode .card-edit-surface{padding:14px 15px 24px}
+ .card-editor.card-context-mode:not([hidden]){animation:recordDrawerMobile 260ms ease-out both}
  .card-editor.card-context-mode .card-record-header h3{font-size:18px}
  .card-editor .card-read-tabs{gap:2px;padding:3px}
  .card-editor .card-read-tab{font-size:10px;padding:8px 9px;min-height:32px}
