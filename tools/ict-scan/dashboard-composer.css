@@ -219,6 +219,7 @@
 @media(max-width:900px){
  .workspace.monitor-layout #viewStudio .ds-shell{display:block}
  .workspace.monitor-layout #viewStudio .ds-stage{height:100%;width:100%}
+ .workspace.monitor-layout #viewStudio .ds-panel-close{display:block;float:right;font-size:10px;color:#68819b;background:transparent;border:0;border-bottom:1px solid var(--ds-line);padding:5px 0;margin:-7px 0 6px auto;}
  .workspace.monitor-layout #viewStudio .ds-panel{
    position:absolute;left:0;top:0;bottom:0;z-index:15;width:min(320px,calc(100vw - 70px));
    border-right:1px solid var(--ds-line);box-shadow:8px 0 35px rgba(35,57,86,.14);
@@ -237,7 +238,10 @@
 @media(max-width:610px){
  .workspace.monitor-layout #viewStudio .ds-stage-title h2{font-size:18px}
  .workspace.monitor-layout #viewStudio .ds-stage-title>span{display:none}
- .workspace.monitor-layout #viewStudio .ds-toolbar{min-height:67px;padding:9px 11px}
+ .workspace.monitor-layout #viewStudio .ds-toolbar{min-height:67px;padding:9px 11px;flex-wrap:wrap;gap:8px}
+ .workspace.monitor-layout #viewStudio .ds-toolbar-actions{width:100%;justify-content:space-between}
+ .workspace.monitor-layout #viewStudio .ds-focus select{max-width:100px}
+
  .workspace.monitor-layout #viewStudio .ds-toolbar-actions{gap:2px}
  .workspace.monitor-layout #viewStudio .ds-visual-select select{max-width:100px;font-size:9px;padding:4px}
  .workspace.monitor-layout #viewStudio .ds-icon-action{min-width:29px;min-height:29px;padding:5px}
