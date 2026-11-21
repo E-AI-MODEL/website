@@ -57,6 +57,16 @@ jobs:
               if 'name="robots"' not in content:
                   content = content.replace("<head>", '<head>\n    <meta name="robots" content="noindex, nofollow" />', 1)
                   file.write_text(content, encoding="utf-8")
+              if name == "index.html":
+                  policy = ("default-src 'none'; script-src 'self' 'wasm-unsafe-eval'; "
+                            "style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; "
+                            "font-src 'self' data:; connect-src 'self' blob:; "
+                            "worker-src 'self' blob:; object-src 'none'; base-uri 'none'; "
+                            "form-action 'none'; frame-ancestors 'self'")
+                  marker = '<meta http-equiv="Content-Security-Policy" content="' + policy + '" />'
+                  if 'http-equiv="Content-Security-Policy"' not in content:
+                      content = content.replace('<head>', '<head>\n    ' + marker, 1)
+                      file.write_text(content, encoding="utf-8")
           PY
           cat > tools/ict-scan/dashboard-builder-app/UPSTREAM.md <<'EOF'
           # Upstream Dashboard Builder
