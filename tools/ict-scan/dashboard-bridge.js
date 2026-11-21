@@ -207,7 +207,7 @@
         manifest.layouts=[...new Set([...manifest.layouts,pending.source])].sort((a,b)=>a.localeCompare(b,'nl'));
         await call('PUT','/contents/'+manifestPath,{
           message:'Applicatielandschap: dashboardregister bijwerken',branch,
-          sha:storedManifest.sha,content:encode(JSON.stringify(manifest,null,2)+'\\n')
+          sha:storedManifest.sha,content:encode(JSON.stringify(manifest,null,2)+'\n')
         });
       }
       status.textContent='Pull request aanmaken…';
