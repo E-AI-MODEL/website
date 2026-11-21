@@ -1,0 +1,901 @@
+{
+  "id": "assurance-regression-corpus",
+  "version": "1.0.0",
+  "synthetic": true,
+  "purpose": "Vaste tests van technisch controlegedrag. Geen schoolgegevens, conformiteitsmeting of evaluatie van een AI-model.",
+  "cases": [
+    {
+      "id": "valid-record",
+      "input": {
+        "records": [
+          {
+            "type": "assets",
+            "id": "EX-001",
+            "data": {
+              "id": "EX-001",
+              "name": "Synthetische testregistratie",
+              "sources": [
+                "Fictieve bron / rij 1"
+              ],
+              "recordMeta": {
+                "referenceDate": "2026-11-20"
+              },
+              "frameworkLinks": [
+                {
+                  "frameworkId": "TEST",
+                  "article": "4.2",
+                  "status": "Onderbouwd",
+                  "evidence": "Fictief besluit 1",
+                  "reviewedBy": "Testbeoordelaar",
+                  "reviewedAt": "2026-11-20",
+                  "nextReviewAt": "2027-11-20"
+                }
+              ]
+            }
+          }
+        ],
+        "context": {
+          "asOf": "2026-11-21",
+          "organisationId": "synthetic-fixtures",
+          "scopeId": "engine-regression",
+          "sourceVersion": "fixture-1"
+        },
+        "policy": {
+          "id": "fixture-policy",
+          "version": "1",
+          "reviewMaxAgeDays": 365
+        }
+      },
+      "expect": [
+        {
+          "checkId": "structure",
+          "status": "pass"
+        },
+        {
+          "checkId": "sources",
+          "status": "pass"
+        },
+        {
+          "checkId": "review",
+          "status": "pass"
+        },
+        {
+          "checkId": "drift",
+          "status": "not_run",
+          "code": "NO_BASELINE"
+        }
+      ]
+    },
+    {
+      "id": "empty-dataset",
+      "input": {
+        "records": [],
+        "context": {
+          "asOf": "2026-11-21",
+          "organisationId": "synthetic-fixtures",
+          "scopeId": "engine-regression",
+          "sourceVersion": "fixture-1"
+        },
+        "policy": {
+          "id": "fixture-policy",
+          "version": "1",
+          "reviewMaxAgeDays": 365
+        }
+      },
+      "expect": [
+        {
+          "checkId": "structure",
+          "status": "not_run",
+          "code": "EMPTY_DATASET"
+        }
+      ]
+    },
+    {
+      "id": "missing-source-reference",
+      "input": {
+        "records": [
+          {
+            "type": "assets",
+            "id": "EX-001",
+            "data": {
+              "id": "EX-001",
+              "name": "Synthetische testregistratie",
+              "sources": [],
+              "recordMeta": {
+                "referenceDate": "2026-11-20"
+              },
+              "frameworkLinks": [
+                {
+                  "frameworkId": "TEST",
+                  "article": "4.2",
+                  "status": "Onderbouwd",
+                  "evidence": "Fictief besluit 1",
+                  "reviewedBy": "Testbeoordelaar",
+                  "reviewedAt": "2026-11-20",
+                  "nextReviewAt": "2027-11-20"
+                }
+              ]
+            }
+          }
+        ],
+        "context": {
+          "asOf": "2026-11-21",
+          "organisationId": "synthetic-fixtures",
+          "scopeId": "engine-regression",
+          "sourceVersion": "fixture-1"
+        },
+        "policy": {
+          "id": "fixture-policy",
+          "version": "1",
+          "reviewMaxAgeDays": 365
+        }
+      },
+      "expect": [
+        {
+          "checkId": "sources",
+          "status": "attention",
+          "code": "SOURCE_REFERENCE_MISSING"
+        }
+      ]
+    },
+    {
+      "id": "dangling-relation",
+      "input": {
+        "records": [
+          {
+            "type": "assets",
+            "id": "EX-001",
+            "data": {
+              "id": "EX-001",
+              "name": "Synthetische testregistratie",
+              "sources": [
+                "Fictieve bron / rij 1"
+              ],
+              "recordMeta": {
+                "referenceDate": "2026-11-20"
+              },
+              "frameworkLinks": [
+                {
+                  "frameworkId": "TEST",
+                  "article": "4.2",
+                  "status": "Onderbouwd",
+                  "evidence": "Fictief besluit 1",
+                  "reviewedBy": "Testbeoordelaar",
+                  "reviewedAt": "2026-11-20",
+                  "nextReviewAt": "2027-11-20"
+                }
+              ],
+              "relations": [
+                {
+                  "targetType": "assets",
+                  "targetId": "EX-999",
+                  "relationType": "uses",
+                  "status": "Geregistreerd",
+                  "evidence": ""
+                }
+              ]
+            }
+          }
+        ],
+        "context": {
+          "asOf": "2026-11-21",
+          "organisationId": "synthetic-fixtures",
+          "scopeId": "engine-regression",
+          "sourceVersion": "fixture-1"
+        },
+        "policy": {
+          "id": "fixture-policy",
+          "version": "1",
+          "reviewMaxAgeDays": 365
+        }
+      },
+      "expect": [
+        {
+          "checkId": "structure",
+          "status": "fail",
+          "code": "DANGLING_RELATION"
+        }
+      ]
+    },
+    {
+      "id": "missing-assessment",
+      "input": {
+        "records": [
+          {
+            "type": "assets",
+            "id": "EX-001",
+            "data": {
+              "id": "EX-001",
+              "name": "Synthetische testregistratie",
+              "sources": [
+                "Fictieve bron / rij 1"
+              ],
+              "recordMeta": {
+                "referenceDate": "2026-11-20"
+              },
+              "frameworkLinks": []
+            }
+          }
+        ],
+        "context": {
+          "asOf": "2026-11-21",
+          "organisationId": "synthetic-fixtures",
+          "scopeId": "engine-regression",
+          "sourceVersion": "fixture-1"
+        },
+        "policy": {
+          "id": "fixture-policy",
+          "version": "1",
+          "reviewMaxAgeDays": 365
+        }
+      },
+      "expect": [
+        {
+          "checkId": "review",
+          "status": "not_run",
+          "code": "NO_ASSESSMENTS"
+        }
+      ]
+    },
+    {
+      "id": "unsupported-assessment",
+      "input": {
+        "records": [
+          {
+            "type": "assets",
+            "id": "EX-001",
+            "data": {
+              "id": "EX-001",
+              "name": "Synthetische testregistratie",
+              "sources": [
+                "Fictieve bron / rij 1"
+              ],
+              "recordMeta": {
+                "referenceDate": "2026-11-20"
+              },
+              "frameworkLinks": [
+                {
+                  "frameworkId": "TEST",
+                  "article": "4.2",
+                  "status": "Onderbouwd",
+                  "evidence": "",
+                  "reviewedBy": "Testbeoordelaar",
+                  "reviewedAt": "2026-11-20",
+                  "nextReviewAt": "2027-11-20"
+                }
+              ]
+            }
+          }
+        ],
+        "context": {
+          "asOf": "2026-11-21",
+          "organisationId": "synthetic-fixtures",
+          "scopeId": "engine-regression",
+          "sourceVersion": "fixture-1"
+        },
+        "policy": {
+          "id": "fixture-policy",
+          "version": "1",
+          "reviewMaxAgeDays": 365
+        }
+      },
+      "expect": [
+        {
+          "checkId": "review",
+          "status": "fail",
+          "code": "REVIEW_EVIDENCE_REQUIRED"
+        }
+      ]
+    },
+    {
+      "id": "overdue-assessment",
+      "input": {
+        "records": [
+          {
+            "type": "assets",
+            "id": "EX-001",
+            "data": {
+              "id": "EX-001",
+              "name": "Synthetische testregistratie",
+              "sources": [
+                "Fictieve bron / rij 1"
+              ],
+              "recordMeta": {
+                "referenceDate": "2026-11-20"
+              },
+              "frameworkLinks": [
+                {
+                  "frameworkId": "TEST",
+                  "article": "4.2",
+                  "status": "Onderbouwd",
+                  "evidence": "Fictief besluit 1",
+                  "reviewedBy": "Testbeoordelaar",
+                  "reviewedAt": "2026-11-20",
+                  "nextReviewAt": "2026-11-20"
+                }
+              ]
+            }
+          }
+        ],
+        "context": {
+          "asOf": "2026-11-21",
+          "organisationId": "synthetic-fixtures",
+          "scopeId": "engine-regression",
+          "sourceVersion": "fixture-1"
+        },
+        "policy": {
+          "id": "fixture-policy",
+          "version": "1",
+          "reviewMaxAgeDays": 365
+        }
+      },
+      "expect": [
+        {
+          "checkId": "review",
+          "status": "attention",
+          "code": "REVIEW_OVERDUE"
+        }
+      ]
+    },
+    {
+      "id": "future-assessment",
+      "input": {
+        "records": [
+          {
+            "type": "assets",
+            "id": "EX-001",
+            "data": {
+              "id": "EX-001",
+              "name": "Synthetische testregistratie",
+              "sources": [
+                "Fictieve bron / rij 1"
+              ],
+              "recordMeta": {
+                "referenceDate": "2026-11-20"
+              },
+              "frameworkLinks": [
+                {
+                  "frameworkId": "TEST",
+                  "article": "4.2",
+                  "status": "Onderbouwd",
+                  "evidence": "Fictief besluit 1",
+                  "reviewedBy": "Testbeoordelaar",
+                  "reviewedAt": "2026-11-22",
+                  "nextReviewAt": "2027-11-20"
+                }
+              ]
+            }
+          }
+        ],
+        "context": {
+          "asOf": "2026-11-21",
+          "organisationId": "synthetic-fixtures",
+          "scopeId": "engine-regression",
+          "sourceVersion": "fixture-1"
+        },
+        "policy": {
+          "id": "fixture-policy",
+          "version": "1",
+          "reviewMaxAgeDays": 365
+        }
+      },
+      "expect": [
+        {
+          "checkId": "review",
+          "status": "fail",
+          "code": "REVIEW_DATE_FUTURE"
+        }
+      ]
+    },
+    {
+      "id": "invalid-calendar-date",
+      "input": {
+        "records": [
+          {
+            "type": "assets",
+            "id": "EX-001",
+            "data": {
+              "id": "EX-001",
+              "name": "Synthetische testregistratie",
+              "sources": [
+                "Fictieve bron / rij 1"
+              ],
+              "recordMeta": {
+                "referenceDate": "2026-02-29"
+              },
+              "frameworkLinks": [
+                {
+                  "frameworkId": "TEST",
+                  "article": "4.2",
+                  "status": "Onderbouwd",
+                  "evidence": "Fictief besluit 1",
+                  "reviewedBy": "Testbeoordelaar",
+                  "reviewedAt": "2026-11-20",
+                  "nextReviewAt": "2027-11-20"
+                }
+              ]
+            }
+          }
+        ],
+        "context": {
+          "asOf": "2026-11-21",
+          "organisationId": "synthetic-fixtures",
+          "scopeId": "engine-regression",
+          "sourceVersion": "fixture-1"
+        },
+        "policy": {
+          "id": "fixture-policy",
+          "version": "1",
+          "reviewMaxAgeDays": 365
+        }
+      },
+      "expect": [
+        {
+          "checkId": "sources",
+          "status": "fail",
+          "code": "SOURCE_DATE_INVALID"
+        }
+      ]
+    },
+    {
+      "id": "closed-action-without-evidence",
+      "input": {
+        "records": [
+          {
+            "type": "assets",
+            "id": "EX-001",
+            "data": {
+              "id": "EX-001",
+              "name": "Synthetische testregistratie",
+              "sources": [
+                "Fictieve bron / rij 1"
+              ],
+              "recordMeta": {
+                "referenceDate": "2026-11-20"
+              },
+              "frameworkLinks": [
+                {
+                  "frameworkId": "TEST",
+                  "article": "4.2",
+                  "status": "Onderbouwd",
+                  "evidence": "Fictief besluit 1",
+                  "reviewedBy": "Testbeoordelaar",
+                  "reviewedAt": "2026-11-20",
+                  "nextReviewAt": "2027-11-20",
+                  "followUp": "Fictieve herstelactie",
+                  "followUpOwner": "Testbeheerder",
+                  "followUpStatus": "Afgerond"
+                }
+              ]
+            }
+          }
+        ],
+        "context": {
+          "asOf": "2026-11-21",
+          "organisationId": "synthetic-fixtures",
+          "scopeId": "engine-regression",
+          "sourceVersion": "fixture-1"
+        },
+        "policy": {
+          "id": "fixture-policy",
+          "version": "1",
+          "reviewMaxAgeDays": 365
+        }
+      },
+      "expect": [
+        {
+          "checkId": "review",
+          "status": "fail",
+          "code": "CLOSED_ACTION_WITHOUT_EVIDENCE"
+        }
+      ]
+    },
+    {
+      "id": "unchanged-baseline",
+      "input": {
+        "records": [
+          {
+            "type": "assets",
+            "id": "EX-001",
+            "data": {
+              "id": "EX-001",
+              "name": "Synthetische testregistratie",
+              "sources": [
+                "Fictieve bron / rij 1"
+              ],
+              "recordMeta": {
+                "referenceDate": "2026-11-20"
+              },
+              "frameworkLinks": [
+                {
+                  "frameworkId": "TEST",
+                  "article": "4.2",
+                  "status": "Onderbouwd",
+                  "evidence": "Fictief besluit 1",
+                  "reviewedBy": "Testbeoordelaar",
+                  "reviewedAt": "2026-11-20",
+                  "nextReviewAt": "2027-11-20"
+                }
+              ]
+            }
+          }
+        ],
+        "context": {
+          "asOf": "2026-11-21",
+          "organisationId": "synthetic-fixtures",
+          "scopeId": "engine-regression",
+          "sourceVersion": "fixture-1"
+        },
+        "policy": {
+          "id": "fixture-policy",
+          "version": "1",
+          "reviewMaxAgeDays": 365
+        },
+        "baseline": {
+          "schema": "assurance-baseline-v1",
+          "context": {
+            "asOf": "2026-11-21",
+            "organisationId": "synthetic-fixtures",
+            "scopeId": "engine-regression",
+            "sourceVersion": "fixture-1",
+            "policyId": "fixture-policy",
+            "policyVersion": "1",
+            "rulesetVersion": "1.0.0"
+          },
+          "controlPolicy": {
+            "id": "fixture-policy",
+            "version": "1",
+            "reviewMaxAgeDays": 365,
+            "requiredFields": [
+              "name"
+            ],
+            "sourceFields": [
+              "sources",
+              "sourceRefs"
+            ],
+            "reviewStatuses": [
+              "Nog te beoordelen",
+              "In onderzoek",
+              "Onderbouwd",
+              "Niet van toepassing"
+            ],
+            "supportedReviewStatus": "Onderbouwd",
+            "notApplicableReviewStatus": "Niet van toepassing",
+            "relationStatuses": [
+              "Vermoedelijk",
+              "Geregistreerd",
+              "Bevestigd",
+              "Historisch"
+            ],
+            "confirmedRelationStatus": "Bevestigd",
+            "followUpStatuses": [
+              "Open",
+              "In uitvoering",
+              "Afgerond",
+              "Niet van toepassing"
+            ],
+            "completedFollowUpStatus": "Afgerond",
+            "notApplicableFollowUpStatus": "Niet van toepassing",
+            "knownFrameworkIds": [],
+            "knownRelationTypes": [],
+            "roleRequiredFrameworkIds": [],
+            "allowedRoles": [],
+            "unknownValues": [
+              "?",
+              "onbekend",
+              "unknown",
+              "n.t.b.",
+              "nog te beoordelen",
+              "niet vastgesteld"
+            ]
+          },
+          "records": [
+            {
+              "type": "assets",
+              "id": "EX-001",
+              "data": {
+                "id": "EX-001",
+                "name": "Synthetische testregistratie",
+                "sources": [
+                  "Fictieve bron / rij 1"
+                ],
+                "recordMeta": {
+                  "referenceDate": "2026-11-20"
+                },
+                "frameworkLinks": [
+                  {
+                    "frameworkId": "TEST",
+                    "article": "4.2",
+                    "status": "Onderbouwd",
+                    "evidence": "Fictief besluit 1",
+                    "reviewedBy": "Testbeoordelaar",
+                    "reviewedAt": "2026-11-20",
+                    "nextReviewAt": "2027-11-20"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "expect": [
+        {
+          "checkId": "drift",
+          "status": "pass"
+        }
+      ]
+    },
+    {
+      "id": "changed-record",
+      "input": {
+        "records": [
+          {
+            "type": "assets",
+            "id": "EX-001",
+            "data": {
+              "id": "EX-001",
+              "name": "Gewijzigde synthetische registratie",
+              "sources": [
+                "Fictieve bron / rij 1"
+              ],
+              "recordMeta": {
+                "referenceDate": "2026-11-20"
+              },
+              "frameworkLinks": [
+                {
+                  "frameworkId": "TEST",
+                  "article": "4.2",
+                  "status": "Onderbouwd",
+                  "evidence": "Fictief besluit 1",
+                  "reviewedBy": "Testbeoordelaar",
+                  "reviewedAt": "2026-11-20",
+                  "nextReviewAt": "2027-11-20"
+                }
+              ]
+            }
+          }
+        ],
+        "context": {
+          "asOf": "2026-11-21",
+          "organisationId": "synthetic-fixtures",
+          "scopeId": "engine-regression",
+          "sourceVersion": "fixture-1"
+        },
+        "policy": {
+          "id": "fixture-policy",
+          "version": "1",
+          "reviewMaxAgeDays": 365
+        },
+        "baseline": {
+          "schema": "assurance-baseline-v1",
+          "context": {
+            "asOf": "2026-11-21",
+            "organisationId": "synthetic-fixtures",
+            "scopeId": "engine-regression",
+            "sourceVersion": "fixture-1",
+            "policyId": "fixture-policy",
+            "policyVersion": "1",
+            "rulesetVersion": "1.0.0"
+          },
+          "controlPolicy": {
+            "id": "fixture-policy",
+            "version": "1",
+            "reviewMaxAgeDays": 365,
+            "requiredFields": [
+              "name"
+            ],
+            "sourceFields": [
+              "sources",
+              "sourceRefs"
+            ],
+            "reviewStatuses": [
+              "Nog te beoordelen",
+              "In onderzoek",
+              "Onderbouwd",
+              "Niet van toepassing"
+            ],
+            "supportedReviewStatus": "Onderbouwd",
+            "notApplicableReviewStatus": "Niet van toepassing",
+            "relationStatuses": [
+              "Vermoedelijk",
+              "Geregistreerd",
+              "Bevestigd",
+              "Historisch"
+            ],
+            "confirmedRelationStatus": "Bevestigd",
+            "followUpStatuses": [
+              "Open",
+              "In uitvoering",
+              "Afgerond",
+              "Niet van toepassing"
+            ],
+            "completedFollowUpStatus": "Afgerond",
+            "notApplicableFollowUpStatus": "Niet van toepassing",
+            "knownFrameworkIds": [],
+            "knownRelationTypes": [],
+            "roleRequiredFrameworkIds": [],
+            "allowedRoles": [],
+            "unknownValues": [
+              "?",
+              "onbekend",
+              "unknown",
+              "n.t.b.",
+              "nog te beoordelen",
+              "niet vastgesteld"
+            ]
+          },
+          "records": [
+            {
+              "type": "assets",
+              "id": "EX-001",
+              "data": {
+                "id": "EX-001",
+                "name": "Synthetische testregistratie",
+                "sources": [
+                  "Fictieve bron / rij 1"
+                ],
+                "recordMeta": {
+                  "referenceDate": "2026-11-20"
+                },
+                "frameworkLinks": [
+                  {
+                    "frameworkId": "TEST",
+                    "article": "4.2",
+                    "status": "Onderbouwd",
+                    "evidence": "Fictief besluit 1",
+                    "reviewedBy": "Testbeoordelaar",
+                    "reviewedAt": "2026-11-20",
+                    "nextReviewAt": "2027-11-20"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "expect": [
+        {
+          "checkId": "drift",
+          "status": "attention",
+          "code": "RECORD_DRIFT"
+        }
+      ]
+    },
+    {
+      "id": "wrong-organisation-baseline",
+      "input": {
+        "records": [
+          {
+            "type": "assets",
+            "id": "EX-001",
+            "data": {
+              "id": "EX-001",
+              "name": "Synthetische testregistratie",
+              "sources": [
+                "Fictieve bron / rij 1"
+              ],
+              "recordMeta": {
+                "referenceDate": "2026-11-20"
+              },
+              "frameworkLinks": [
+                {
+                  "frameworkId": "TEST",
+                  "article": "4.2",
+                  "status": "Onderbouwd",
+                  "evidence": "Fictief besluit 1",
+                  "reviewedBy": "Testbeoordelaar",
+                  "reviewedAt": "2026-11-20",
+                  "nextReviewAt": "2027-11-20"
+                }
+              ]
+            }
+          }
+        ],
+        "context": {
+          "asOf": "2026-11-21",
+          "organisationId": "synthetic-fixtures",
+          "scopeId": "engine-regression",
+          "sourceVersion": "fixture-1"
+        },
+        "policy": {
+          "id": "fixture-policy",
+          "version": "1",
+          "reviewMaxAgeDays": 365
+        },
+        "baseline": {
+          "schema": "assurance-baseline-v1",
+          "context": {
+            "asOf": "2026-11-21",
+            "organisationId": "another-synthetic-org",
+            "scopeId": "engine-regression",
+            "sourceVersion": "fixture-1",
+            "policyId": "fixture-policy",
+            "policyVersion": "1",
+            "rulesetVersion": "1.0.0"
+          },
+          "controlPolicy": {
+            "id": "fixture-policy",
+            "version": "1",
+            "reviewMaxAgeDays": 365,
+            "requiredFields": [
+              "name"
+            ],
+            "sourceFields": [
+              "sources",
+              "sourceRefs"
+            ],
+            "reviewStatuses": [
+              "Nog te beoordelen",
+              "In onderzoek",
+              "Onderbouwd",
+              "Niet van toepassing"
+            ],
+            "supportedReviewStatus": "Onderbouwd",
+            "notApplicableReviewStatus": "Niet van toepassing",
+            "relationStatuses": [
+              "Vermoedelijk",
+              "Geregistreerd",
+              "Bevestigd",
+              "Historisch"
+            ],
+            "confirmedRelationStatus": "Bevestigd",
+            "followUpStatuses": [
+              "Open",
+              "In uitvoering",
+              "Afgerond",
+              "Niet van toepassing"
+            ],
+            "completedFollowUpStatus": "Afgerond",
+            "notApplicableFollowUpStatus": "Niet van toepassing",
+            "knownFrameworkIds": [],
+            "knownRelationTypes": [],
+            "roleRequiredFrameworkIds": [],
+            "allowedRoles": [],
+            "unknownValues": [
+              "?",
+              "onbekend",
+              "unknown",
+              "n.t.b.",
+              "nog te beoordelen",
+              "niet vastgesteld"
+            ]
+          },
+          "records": [
+            {
+              "type": "assets",
+              "id": "EX-001",
+              "data": {
+                "id": "EX-001",
+                "name": "Synthetische testregistratie",
+                "sources": [
+                  "Fictieve bron / rij 1"
+                ],
+                "recordMeta": {
+                  "referenceDate": "2026-11-20"
+                },
+                "frameworkLinks": [
+                  {
+                    "frameworkId": "TEST",
+                    "article": "4.2",
+                    "status": "Onderbouwd",
+                    "evidence": "Fictief besluit 1",
+                    "reviewedBy": "Testbeoordelaar",
+                    "reviewedAt": "2026-11-20",
+                    "nextReviewAt": "2027-11-20"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "expect": [
+        {
+          "checkId": "drift",
+          "status": "fail",
+          "code": "BASELINE_SCOPE_MISMATCH"
+        }
+      ]
+    }
+  ]
+}

@@ -63,9 +63,9 @@
       "id": "EN18286",
       "name": "EN 18286:2026 | kwaliteitsmanagement voor hoogrisico-AI",
       "category": "Europese geharmoniseerde norm",
-      "authority": "CEN/CENELEC, aangewezen bij Uitvoeringsbesluit (EU) 2026/2274",
+      "authority": "CEN/CENELEC; verwijzing gepubliceerd via Uitvoeringsbesluit (EU) 2026/2274",
       "url": "https://www.nen.nl/nen-en-18286-2026-en-354718",
-      "scope": "Vrijwillige geharmoniseerde norm voor kwaliteitsmanagement bij aanbieders van hoogrisico-AI (AI Act artikel 17). Controleer per AI-systeem eerst de rol van de school (aanbieder of gebruiksverantwoordelijke). Een normverwijzing, observatie of ingevulde checklist bewijst geen volledige naleving. Annex ZA noemt ook onderdelen die buiten de dekking vallen.",
+      "scope": "Sectoronafhankelijke norm voor kwaliteitsmanagement, primair voor aanbieders van hoogrisico-AI. Bepaal per systeem de rol van de organisatie en welke bepalingen van toepassing zijn. Het vermoeden van overeenstemming geldt alleen voor gedekte eisen en onder de voorwaarden van Annex ZA. Een normverwijzing of ingevulde controle bewijst geen volledige naleving.",
       "suggestedRefs": [
         "4.2",
         "4.5",
@@ -83,7 +83,16 @@
         "9.7",
         "10.1"
       ],
-      "note": "Gebruiken als controle- en observatiekader. Scheid leverancierseisen, eigen schoolmaatregelen, constateringen en genomen besluiten. Aangewezen in het EU-Publicatieblad op 14 oktober 2026."
+      "note": "Besluit van 12 oktober 2026; gepubliceerd in het EU-Publicatieblad op 14 oktober 2026. Annex ZA bevat voorwaarden en uitgesloten bepalingen. Bronstatus opnieuw controleren bij een formeel besluit.",
+      "edition": "EN 18286:2026",
+      "sourceCheckedAt": "2026-11-21",
+      "harmonisation": {
+        "status": "cited-in-OJ",
+        "decision": "(EU) 2026/2274",
+        "decisionDate": "2026-10-12",
+        "ojPublicationDate": "2026-10-14",
+        "url": "https://eur-lex.europa.eu/eli/dec_impl/2026/2274/oj/eng"
+      }
     },
     {
       "id": "WVO2020",

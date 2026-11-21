@@ -3,16 +3,7 @@
    Token lives only in the input and this one asynchronous click handler. */
 (function(){
   const el=id=>document.getElementById(id);
-  const REPO='E-AI-MODEL/website',API='https://api.github.com/repos/'+REPO;
-  const TYPES=Object.fromEntries([
-    ['apps','2026-applicatielandschap.json'],['ai','2026-applicatielandschap.json'],
-    ['connections','2026-applicatielandschap.json'],['parts','2026-applicatielandschap.json'],
-    ['additionalCandidates','2026-applicatielandschap.json'],['checks','2026-applicatielandschap.json'],
-    ['dpia','2026-applicatielandschap.json'],['aiControls','2026-applicatielandschap.json'],
-    ['devices','2026-applicatielandschap.json'],['licenseReview','2026-applicatielandschap.json'],
-    ['workActions','2026-werkregister.json'],['softwareReview','2026-werkregister.json'],['faqs','2026-faq.json']
-  ]);
-  const SOURCE_DIR='tools/ict-scan/bronnen/';
+  function configuredProfile(input){return window.AssuranceProfile.validate(input||window.IctOrganisation?.profile);}
   const equals=(a,b)=>JSON.stringify(a??null)===JSON.stringify(b??null);
   const clone=value=>JSON.parse(JSON.stringify(value));
   const safeJson=x=>JSON.stringify(x,null,2)+'\n';
@@ -28,37 +19,53 @@
     return new TextDecoder().decode(bytes);
   }
   function fail(message){throw Error(message);}
-  function tokenFail(message){throw Error(message.replace(/github_pat_[\w-]+|ghp_[A-Za-z0-9]+/g,'[afgeschermd]'));}
-  function api(token){
+  const secretPattern=/(?:gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{15,}|sk-(?:proj-)?[A-Za-z0-9_-]{20,})/;
+  function assertNoSecrets(value,token=''){
+    const payload=typeof value==='string'?value:JSON.stringify(value);
+    if((token.length>=8&&payload.includes(token))||secretPattern.test(payload))fail('Verwijder de toegangssleutel uit de voorgestelde inhoud of wijzigingsomschrijving.');
+  }
+  function safeMessage(message,token){const text=String(message||'Onbekende fout');return (token?text.split(token).join('[afgeschermd]'):text).replace(/github_pat_[\w-]+|gh[pousr]_[A-Za-z0-9]+|sk-(?:proj-)?[A-Za-z0-9_-]{20,}/g,'[afgeschermd]').slice(0,260);}
+  function tokenFail(message,token){throw Error(safeMessage(message,token));}
+  function apiTarget(path,profile){
+    const prefix='/repos/'+profile.source.repository;
+    const url=new URL(path.startsWith('https://')?path:'https://api.github.com'+prefix+path);
+    if(url.origin!=='https://api.github.com'||url.username||url.password||url.hash||(url.pathname!=='/user'&&!url.pathname.startsWith(prefix+'/')))fail('GitHub-verzoek valt buiten de ingestelde repository.');
+    return url.href;
+  }
+  function api(token,profile){
     return async function(method,path,payload){
       const headers={'Accept':'application/vnd.github+json','Authorization':'Bearer '+token,'X-GitHub-Api-Version':'2022-11-28'};
       if(payload!==undefined)headers['Content-Type']='application/json';
-      const resp=await fetch(path.startsWith('https://')?path:API+path,{method,headers,body:payload===undefined?undefined:JSON.stringify(payload),cache:'no-store',credentials:'omit'});
+      const resp=await fetch(apiTarget(path,profile),{method,headers,body:payload===undefined?undefined:JSON.stringify(payload),cache:'no-store',credentials:'omit',redirect:'error'});
       const data=await resp.json().catch(()=>({message:'Geen geldig JSON-antwoord'}));
       if(!resp.ok){
-        const status=resp.status,reason=String(data.message||'Onbekende GitHub-fout').slice(0,220);
-        tokenFail('GitHub ('+status+'): '+reason);
+        const status=resp.status,reason=String(data.message||'Onbekende GitHub-fout');
+        tokenFail('GitHub ('+status+'): '+reason,token);
       }
       return data;
     };
   }
-  function assertPublicSafe(drafts){
+  function assertPublicSafe(drafts,profile){
+    const TYPES=profile.source.registerFiles;
     if(!drafts.length)fail('Er zijn geen conceptwijzigingen.');
     for(const d of drafts){
+      if(d.sourceScope!==window.AssuranceProfile.scopeKey(profile))fail('Het concept is niet gekoppeld aan de GitHub-bron van dit organisatieprofiel. Synchroniseer de juiste bron en maak het concept opnieuw.');
       if(!TYPES[d.type])fail('Onbekend register in wijzigingsvoorstel.');
       if(!/^[A-Z]+-\d{2,5}$/.test(d.id))fail('Ongeldig registratie-ID: '+d.id);
       if(!d.after.name?.trim())fail('Een registratie heeft geen naam.');
       if(!d.reason||d.reason.length<8)fail('Een wijziging mist een toelichting.');
       if(d.after.id!==d.id)fail('Het registratie-ID mag niet veranderen.');
+      if(!Array.isArray(d.changed)||d.changed.some(field=>['id','sourceFields','provenance','otherDescription','auditTrail','originalNumber'].includes(field)))fail('Oorspronkelijke bronvelden mogen niet worden overschreven.');
       const payload=JSON.stringify({fields:d.changed.map(k=>d.after[k]),reason:d.reason});
-      if(/ghp_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{15,}|sk-proj-[A-Za-z0-9_-]{12,}/.test(payload))fail('Gegevens bevatten mogelijk een toegangssleutel.');
+      assertNoSecrets(payload);
     }
   }
   function currentFields(remote,baseline,changed){
     if(!remote||!baseline)return false;
     return changed.every(field=>field==='sources'||equals(remote[field],baseline[field]));
   }
-  function checkGraph(files){
+  function checkGraph(files,inputProfile,asOf){
+    const profile=configuredProfile(inputProfile),TYPES=profile.source.registerFiles;
     const byType={};
     for(const [name,json] of Object.entries(files)){
       for(const key of Object.keys(TYPES))if(TYPES[key]===name)byType[key]=new Set((json[key]||[]).map(x=>x.id));
@@ -77,14 +84,16 @@
             if(link.status==='Bevestigd'&&!link.evidence)fail('Bevestigde relatie zonder bewijs in '+rec.id);
           }
           for(const rule of rec.frameworkLinks||[]){
-            if(rule.status==='Onderbouwd'&&!rule.evidence)fail('Onderbouwd oordeel zonder bewijs in '+rec.id);
-            if(!rule.frameworkId||!rule.article)fail('Onvolledige normverwijzing in '+rec.id);
+            window.AssuranceRecord.assertValid(rule,{asOf});
           }
         }
       }
     }
   }
-  function applyDrafts(files,drafts,actor,stamp){
+  function applyDrafts(targetFiles,drafts,actor,stamp,inputProfile){
+    const profile=configuredProfile(inputProfile),TYPES=profile.source.registerFiles;
+    assertPublicSafe(drafts,profile);
+    const files=clone(targetFiles);
     const changedFiles=new Set();
     for(const d of drafts){
       const filename=TYPES[d.type],src=files[filename],list=src[d.type];
@@ -109,16 +118,25 @@
       if(isNew)list.push(next);else list[index]=next;
       changedFiles.add(filename);
     }
-    checkGraph(files);
+    checkGraph(files,profile,stamp.slice(0,10));
     for(const filename of changedFiles){
       const data=files[filename];
       if(!data.metadata)data.metadata={};
       data.metadata.dataVersion=stamp.slice(0,10);
-      if(filename==='2026-applicatielandschap.json'){
-        for(const [key,value] of Object.entries(data.metadata.counts||{}))if(Array.isArray(data[key]))data.metadata.counts[key]=data[key].length;
-      }
+      for(const key of Object.keys(data.metadata.counts||{}))if(Array.isArray(data[key]))data.metadata.counts[key]=data[key].length;
     }
+    for(const filename of changedFiles)targetFiles[filename]=files[filename];
     return changedFiles;
+  }
+  function assertSourceMatches(profile,sources){
+    if(!Array.isArray(sources)||!sources.length)fail('Synchroniseer eerst de GitHub-bron van dit organisatieprofiel.');
+    for(const source of sources||[]){
+      const remote=source.githubRemote;
+      if(!remote||remote.repository!==profile.source.repository||remote.ref!==profile.source.baseRef||typeof remote.path!=='string'||!remote.path.startsWith(profile.source.sourceDir+'/')||!/^[a-f0-9]{40}$/i.test(remote.sha||''))fail('De geladen gegevens zijn niet volledig gekoppeld aan de GitHub-bron van dit organisatieprofiel. Synchroniseer eerst die bron.');
+    }
+  }
+  function sourceScope(profile,sources){
+    try{assertSourceMatches(profile,sources);return window.AssuranceProfile.scopeKey(profile);}catch(_){return null;}
   }
   async function post(){
     const cards=window.EmmausRecordCards,button=el('cardCreatePR');
@@ -128,19 +146,24 @@
     const message=el('cardCommitMessage').value.trim()||'Bijwerken Applicatielandschap 2026';
     const consent=el('cardConfirmPublic').checked;
     try{
+      if(window.top!==window.self)fail('Open het dashboard rechtstreeks om wijzigingen voor te stellen.');
+      const profile=await window.IctOrganisation.ready;
+      const SOURCE_DIR=profile.source.sourceDir+'/',baseRef=profile.source.baseRef;
       if(!consent)fail('Bevestig eerst dat deze wijzigingen openbaar mogen worden voorgesteld.');
       if(!token)fail('Vul een GitHub-token met beperkte schrijfrechten in.');
-      assertPublicSafe(drafts);
+      assertNoSecrets({drafts,message},token);
+      assertSourceMatches(profile,state.sources);
+      assertPublicSafe(drafts,profile);
       button.disabled=true;button.textContent='GitHub controleren…';
-      const request=api(token);
+      const request=api(token,profile);
       const [user,head]=await Promise.all([
         request('GET','https://api.github.com/user'),
-        request('GET','/git/ref/heads/main')
+        request('GET','/git/ref/heads/'+encodeURIComponent(baseRef))
       ]);
       if(!user.login)fail('GitHub heeft geen gebruikersnaam teruggegeven.');
       const baseSha=head?.object?.sha;
-      if(!/^[a-f0-9]{40}$/i.test(baseSha||''))fail('De versie van main is niet vastgesteld.');
-      const paths=['2026-applicatielandschap.json','2026-werkregister.json','2026-faq.json'];
+      if(!/^[a-f0-9]{40}$/i.test(baseSha||''))fail('De versie van de ingestelde bronbranch is niet vastgesteld.');
+      const paths=[...new Set(Object.values(profile.source.registerFiles))];
       const names=paths.concat(['manifest.json']);
       const fetched={};
       for(const name of names){
@@ -161,7 +184,8 @@
         if(!entry||entry.sha!==fetched[name].sha)fail('Het manifest en de bron komen niet overeen: '+name);
       }
       button.textContent='Wijzigingen controleren…';
-      const changed=applyDrafts(docs,drafts,user.login,new Date().toISOString());
+      const changed=applyDrafts(docs,drafts,user.login,new Date().toISOString(),profile);
+      assertNoSecrets({documents:docs,manifest,message},token);
       if(!changed.size)fail('Er zijn geen gewijzigde bestanden.');
       const branch='applicatielandschap/kaart-'+new Date().toISOString().slice(0,10)+'-'+crypto.randomUUID().slice(0,8);
       button.textContent='GitHub-branch maken…';
@@ -185,26 +209,27 @@
         button.textContent='Pull request maken…';
         const summary=drafts.map(d=>(d.before?'Wijzig':'Nieuw')+' '+d.type+'/'+d.id+' ('+d.after.name+') · '+d.reason);
         const pr=await request('POST','/pulls',{
-          title:'Applicatielandschap 2026: '+message.slice(0,90),head:branch,base:'main',
+          title:profile.organisation.name+': '+message.slice(0,90),head:branch,base:baseRef,
           body:'## Wijzigingen vanuit JSON-kaarten\n\n'+summary.map(x=>'- '+x).join('\n')+
             '\n\n## Controles\n- Bestaande bronvelden intact gelaten\n- Wijzigingen gekoppeld aan record-ID en bronversie\n- Relaties en normverwijzingen gecontroleerd\n- Wijzigingslog per registratie toegevoegd\n- Manifest en bestands-SHA bijgewerkt\n\nGoedkeuring vereist voordat de website de nieuwe gegevens uit main kan laden.'
         });
         if(!pr.html_url||!/^https:\/\/github\.com\//.test(pr.html_url))fail('GitHub heeft geen PR-link teruggegeven.');
-        cards.clearPublished();
+        const remaining=cards.clearPublished(drafts)?.remaining||0;
         const p=el('cardFeedback');p.replaceChildren();
         p.append(document.createTextNode('Wijzigingsvoorstel aangemaakt: '));
         const link=document.createElement('a');link.href=pr.html_url;link.textContent='Pull request #'+pr.number;link.target='_blank';link.rel='noopener noreferrer';
         p.append(link);
+        if(remaining)p.append(document.createTextNode('. '+remaining+' nieuwe conceptwijziging'+(remaining===1?' blijft':'en blijven')+' bewaard.'));
       }catch(error){
-        cards.feedback('Wijzigingsvoorstel niet afgerond. De branch '+branch+' kan gedeeltelijke commits bevatten. '+error.message,true);
+        cards.feedback('Wijzigingsvoorstel niet afgerond. De branch '+branch+' kan gedeeltelijke commits bevatten. '+safeMessage(error.message,token),true);
         return;
       }
-    }catch(error){cards.feedback(error.message,true);}
+    }catch(error){cards.feedback(safeMessage(error.message,token),true);}
     finally{
       el('cardGithubToken').value='';button.disabled=false;button.textContent='Wijzigingsvoorstel maken';
     }
   }
   el('cardCreatePR').addEventListener('click',()=>void post());
   // Expose pure validation helpers for deterministic tests, never token or write access.
-  window.EmmausCardGitLogic=Object.freeze({applyDrafts,checkGraph,equals});
+  window.EmmausCardGitLogic=Object.freeze({applyDrafts,checkGraph,equals,assertSourceMatches,sourceScope,assertNoSecrets,apiTarget});
 })();

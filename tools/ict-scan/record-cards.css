@@ -280,3 +280,10 @@ body.record-card-open{overflow:hidden}
  .card-editor.card-context-mode:not([hidden]),.card-editor .card-tab-panel:not([hidden]){animation:none!important}
  .card-editor .card-read-tab,.item-list .item-card.item-card-direct .item-summary{transition:none!important}
 }
+.card-linked-row .card-framework-review{grid-column:1/-1;border-top:1px solid var(--line,#dce3e5);padding-top:8px;min-width:0}
+.card-framework-review summary{cursor:pointer;font-weight:600;font-size:12px;padding:4px 0}
+.card-framework-review-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:10px}
+.card-framework-review-fields .card-field{min-width:0}
+.card-framework-review-fields input,.card-framework-review-fields select{width:100%;min-width:0;box-sizing:border-box}
+.card-linked-row>.card-help{grid-column:1/-1;margin:0}
+@media(max-width:600px){.card-framework-review-fields{grid-template-columns:1fr}}

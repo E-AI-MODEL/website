@@ -1,5 +1,5 @@
 'use strict';
-/* The scan runs entirely in the browser. Source files are not uploaded, logged or persisted. */
+/* Parsing and reporting run locally. Explicit user actions can save a snapshot or propose GitHub changes. */
 const $ = (id) => document.getElementById(id);
 const state = {apps:new Map(),ai:new Map(),connections:new Map(),checks:new Map(),devices:new Map(),parts:new Map(),dpia:new Map(),aiControls:new Map(),policyDocs:new Map(),signals:new Map(),candidates:new Map(),licenseReview:new Map(),workActions:new Map(),softwareReview:new Map(),faqs:new Map(),sources:[],docs:[],view:'overview',findingMode:'registered',aiMode:'klas',area:'',type:'',phase:'',aiProduct:'',ready:false,metadata:null};
 const viewNames={overview:'Overzicht',apps:'Toepassingen',connections:'Entra-koppelingen',ai:'AI in onderwijs',findings:'Controles',sources:'Bronnen en export'};
@@ -9,6 +9,7 @@ const inventoryMetadata=Object.freeze({title:'Applicatielandschap Emmauscollege'
 const legalSources=[
  {name:'Kennisnet | IBP-normenkader',url:'https://normenkaderibp.kennisnet.nl/',description:'Informatiebeveiliging, privacy, verantwoordelijken en schoolafspraken.'},
  {name:'Autoriteit Persoonsgegevens | DPIA',url:'https://www.autoriteitpersoonsgegevens.nl/themas/basis-avg/praktisch-avg/data-protection-impact-assessment-dpia',description:'Wanneer een gegevensbeschermingseffectbeoordeling nodig kan zijn.'},
+ {name:'EN 18286:2026 | Kwaliteitsmanagement',url:'https://eur-lex.europa.eu/eli/dec_impl/2026/2274/oj/eng',description:'Geharmoniseerde norm voor kwaliteitsmanagement bij AI. Toepasselijkheid en dekking per systeem beoordelen; een ingevulde controle is geen conformiteitsverklaring.'},
  {name:'EUR-Lex | AI-verordening',url:'https://eur-lex.europa.eu/eli/reg/2024/1689/oj',description:'Officiele tekst en actuele wijzigingen. Beoordeel per concrete AI-toepassing.'},
  {name:'SURF | Compliance en DPIA',url:'https://vendorcompliance.surf.nl/alle-compliance-trajecten/',description:'Externe leveranciersrapporten; afzonderlijk beoordelen of de versie van toepassing is.'},
  {name:'Kennisnet | IBP-voorbeeldmaterialen',url:'https://www.kennisnet.nl/informatiebeveiliging-en-privacy/',description:'Praktische documenten en afspraken over ICT, leveranciers en toegang.'}
@@ -179,6 +180,20 @@ function rfeature(sheet,item,isVisible=false){rgroup(sheet,item.id,item.name,[it
 }
 function rsummaryCounts(values,field){const map=new Map();for(const v of values){const label=String(v[field]||'Niet ingedeeld').trim()||'Niet ingedeeld';map.set(label,(map.get(label)||0)+1);}return [...map.entries()];}
 function phaseBreakdown(items){const map=new Map();for(const item of items){const phases=String(item.phase||'').split(/[\/,;]/).map(s=>s.trim()).filter(Boolean);if(!phases.length){map.set('Nog niet ingedeeld',(map.get('Nog niet ingedeeld')||0)+1);continue;}for(const p of new Set(phases))map.set(p,(map.get(p)||0)+1);}return [...map.entries()];}
+function appendAssuranceRows(s){
+ rsection(s,'AUTOMATISCHE CONTROLES','Uitslagen gelden voor de gecontroleerde registraties. Geen goedkeuring van een systeem of organisatie.');
+ const result=globalThis.IctAssurance?.result();
+ if(!result){rsource(s,'Geen actuele controleuitslag beschikbaar. Open Controles en voer de controle uit.');return;}
+ const labels={pass:'Geslaagd',attention:'Aandacht',fail:'Afgekeurd',not_run:'Niet uitgevoerd'};
+ for(const check of result.checks){rgroup(s,check.id,check.title,labels[check.status]||check.status);for(const item of check.findings)rdetail(s,item.recordId||item.code,item.message,true);}
+ rdetail(s,'Controledatum',result.context.asOf,true);rdetail(s,'Gegevensversie',result.context.sourceFingerprint,true);rdetail(s,'Regels',result.rulesetVersion+' / '+result.context.policyId+' '+result.context.policyVersion,true);
+}
+function assurancePrintSection(){
+ const result=globalThis.IctAssurance?.result();
+ if(!result)return '<h2>Automatische controles</h2><p>Geen actuele controleuitslag beschikbaar.</p>';
+ const labels={pass:'Geslaagd',attention:'Aandacht',fail:'Afgekeurd',not_run:'Niet uitgevoerd'};
+ return '<h2>Automatische controles</h2><p>Controledatum: '+esc(result.context.asOf)+'. De uitslagen gelden voor de gecontroleerde registraties.</p>'+result.checks.map(check=>'<p><strong>'+esc(check.title)+'</strong>: '+esc(labels[check.status]||check.status)+'</p>').join('');
+}
 function generateReportSheets(){const apps=array(state.apps),parts=array(state.parts),entr=array(state.connections),ai=array(state.ai),checks=allFindings(),controls=array(state.aiControls),dpias=array(state.dpia),signals=state.derived||[],devices=array(state.devices),classroom=ai.filter(isClassroomAi),school=ai.filter(x=>!isClassroomAi(x));
  const sheets=[];
  {const s=reportSheet('Schoolbreed');rtitle(s,'EMMAUSCOLLEGE  /  DIGITALE OMGEVING','Schoolbreed overzicht van toepassingen, diensten, identiteit, koppelingen en beheer. Gebaseerd op de ingelezen bronnen.');rkpis(s,[['TOEPASSINGEN EN DIENSTEN',apps.length,'Geregistreerd, gebruik niet overal bevestigd'],['MET BESCHREVEN AI',aiAppsCount(),'Aantal toepassingen met beschreven AI'],['ENTRA-KOPPELINGEN',entr.length,'Registraties, actieve uitwisseling niet bewezen'],['CONTROLES OPEN',checks.length,'Open punten, geen vastgestelde fouten']]);
@@ -209,11 +224,12 @@ function generateReportSheets(){const apps=array(state.apps),parts=array(state.p
  for(const x of linked){rgroup(s,x.id,x.name,x.rel.relationType+' / '+x.rel.status);rdetail(s,'Gerelateerde registratie',x.rel.targetType+' / '+x.rel.targetId,true);rdetail(s,'Bronbewijs',x.rel.evidence,true);rdetail(s,'Toelichting',x.rel.note,true);}
  if(!linked.length)rsource(s,'Nog geen handmatig beoordeelde verbanden via de JSON-kaart.');
  rsection(s,'IBP, AVG, AI ACT EN WETTELIJKE VERWIJZINGEN','Een gekoppelde norm of wet is een beoordelingspunt; geen automatische nalevingsverklaring.');
- for(const x of rules){rgroup(s,x.id,x.name,x.rule.frameworkId+' / '+x.rule.article);rdetail(s,'Beoordelingsstatus',x.rule.status,true);rdetail(s,'Bewijs',x.rule.evidence,true);rdetail(s,'Toelichting',x.rule.note,true);}
+ for(const x of rules){rgroup(s,x.id,x.name,x.rule.frameworkId+' / '+x.rule.article);rdetail(s,'Beoordelingsstatus',x.rule.status,true);rdetail(s,'Bewijs',x.rule.evidence,true);rdetail(s,'Toelichting',x.rule.note,true);for(const [field,title] of [['role','Rol van de organisatie'],['reviewedBy','Beoordeeld door'],['reviewedAt','Beoordeeld op'],['nextReviewAt','Volgende beoordeling'],['followUp','Vervolgactie'],['followUpOwner','Actiehouder'],['followUpStatus','Opvolging'],['completionEvidence','Bewijs van uitvoering']])rdetail(s,title,x.rule[field],true);}
  if(!rules.length)rsource(s,'Nog geen concrete wets- of normverwijzingen beoordeeld via de JSON-kaart.');
  rsection(s,'WIJZIGINGSLOGBOEK','De datum, auteur en toelichting zijn opgeslagen bij de registratie. De GitHub-pull-request vormt het externe wijzigingsspoor.');
  for(const x of logbook.sort((a,b)=>String(b.change.timestamp||'').localeCompare(String(a.change.timestamp||'')))){rgroup(s,x.id,x.name,x.change.timestamp+' / '+x.change.actor);rdetail(s,'Bewerking',x.change.action,true);rdetail(s,'Velden',(x.change.fields||[]).join(', '),true);rdetail(s,'Waarom',x.change.reason,true);}
  if(!logbook.length)rsource(s,'Eerste inventarisatie gestart op 10 augustus 2026. Geen gepubliceerde wijzigingen via JSON-kaarten gevonden.');
+ appendAssuranceRows(s);
  rsection(s,'TOETSINGSKADERS','Beoordeel altijd de actuele versie. Een externe DPIA geeft geen automatische goedkeuring voor lokaal gebruik.');for(const l of legalSources){rgroup(s,'BRON',l.name,l.url);rdetail(s,'Onderwerp',l.description,true);}
  sheets.push(s);}
  return sheets;
@@ -254,7 +270,7 @@ function exportPdf(){if(!state.ready){toast('Voeg eerst bronbestanden toe.');ret
  const ict=printBarSection('Waarvoor gebruikt de school ICT?','Verdeling van de vastgelegde toepassingen en diensten naar gebruiksgebied.',rsummaryCounts(apps,'area'))+printBarSection('Soorten ICT-voorzieningen','Dezelfde toepassingen, maar ingedeeld naar hun technische functie.',rsummaryCounts(apps,'kind'))+printTable('Toepassingen en diensten',['ID','Toepassing','Gebruiksgebied','Wat doet dit?'],apps.map(x=>[x.id,x.name,x.area,x.description]),100);
  const classText='<div class="pagebreak"></div><h2>AI in de klas</h2><p class="section-lead">'+classroom.length+' beschreven functies bij het onderwijsleerproces. De toelichting is per functie gekoppeld aan wat AI uitvoert, wat de docent instelt, welke handeling bij de leerling ligt en wat didactisch nog niet is vastgesteld.</p>'+printBarSection('Verdeling per lesfase','Eén AI-functie kan bij meer lesfasen zijn geregistreerd. De aantallen zijn dus niet optelbaar tot een totaal.',phaseBreakdown(classroom),13)+classroom.map(printFeature).join('');
  const schoolText='<div class="pagebreak"></div><h2>AI in de school</h2><p class="section-lead">'+school.length+' functies voor schoolorganisatie en beheer. Deze vallen buiten de lesfasegrafiek. Een functie die de leverancier aanbiedt, is niet automatisch in de eigen omgeving beschikbaar of ingeschakeld.</p>'+school.map(printFeature).join('')+'<h2>AI-beheer en inrichting</h2><p class="section-lead">Advies, leveranciersinstelling en geverifieerde schoolinstelling zijn verschillende zaken.</p>'+controls.map(x=>printGovernanceItem(x,'control')).join('')+'<h2>DPIA en privacy</h2><p class="section-lead">Rapportbeoordelingen en lokale implementatie worden afzonderlijk vermeld. Een groen deelonderwerp verandert de totale beoordeling niet.</p>'+dpias.map(x=>printGovernanceItem(x,'dpia')).join('');
- const close='<div class="pagebreak"></div><h2>Openstaande controles</h2><p class="section-lead">'+checks.length+' verschillende controle-ID’s. Een open punt is geen vastgesteld probleem. De volledige technische registratie staat in de Excel-uitvoer en blijft beschikbaar voor de controle.</p>'+printBarSection('Verdeling open punten','Verschillende onderwerpen die op bevestiging wachten.',rsummaryCounts(checks,'category'),12)+'<h2>Bronnen en toetsingskaders</h2><p>'+state.sources.map(x=>esc(x.kind==='financieel'?'ICT-registratie 2026':x.name)).join('; ')+'</p>'+legalSources.map(x=>'<p><strong>'+esc(x.name)+'</strong>: '+esc(x.url)+'</p>').join('')+'<p>Er zijn geen financiële bedragen of boekingsgegevens opgenomen. Verifieer actuele wetgeving en externe DPIA-versies bij een formeel besluit.</p>';
+ const close=assurancePrintSection()+'<div class="pagebreak"></div><h2>Openstaande controles</h2><p class="section-lead">'+checks.length+' verschillende controle-ID’s. Een open punt is geen vastgesteld probleem. De volledige technische registratie staat in de Excel-uitvoer en blijft beschikbaar voor de controle.</p>'+printBarSection('Verdeling open punten','Verschillende onderwerpen die op bevestiging wachten.',rsummaryCounts(checks,'category'),12)+'<h2>Bronnen en toetsingskaders</h2><p>'+state.sources.map(x=>esc(x.kind==='financieel'?'ICT-registratie 2026':x.name)).join('; ')+'</p>'+legalSources.map(x=>'<p><strong>'+esc(x.name)+'</strong>: '+esc(x.url)+'</p>').join('')+'<p>Er zijn geen financiële bedragen of boekingsgegevens opgenomen. Verifieer actuele wetgeving en externe DPIA-versies bij een formeel besluit.</p>';
  $('printReport').innerHTML=lead+ict+classText+schoolText+close;window.print();}
 
 function installEvents(){

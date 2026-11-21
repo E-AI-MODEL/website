@@ -37,11 +37,11 @@
   }
   async function githubJson(url,token,signal) {
     assertNotCancelled(signal);
-    const response = await fetch(url,{method:'GET',mode:'cors',credentials:'omit',cache:'no-store',headers:headers(token),signal});
+    const response = await fetch(url,{method:'GET',mode:'cors',credentials:'omit',redirect:'error',cache:'no-store',headers:headers(token),signal});
     if(!response.ok) {
       if(response.status===401)throw Error('GitHub heeft de token geweigerd.');
       if(response.status===403)throw Error('GitHub weigert toegang. Controleer leesrechten of de API-limiet.');
-      if(response.status===404)throw Error('GitHub geeft 404: repository of bronmap niet gevonden. Controleer de map in GitHub. Voor de openbare E-AI-MODEL/website is geen token nodig.');
+      if(response.status===404)throw Error('Repository of bronmap niet gevonden. Controleer de broninstellingen. Een privérepository vraagt een token met leesrechten.');
       throw Error('GitHub antwoordt met HTTP '+response.status+'.');
     }
     const data=await response.json();
@@ -162,6 +162,7 @@
     if(busy)return;
     let token='';let files=[];let cfg;
     try {
+      if(window.IctOrganisation)await window.IctOrganisation.ready;
       cfg=validInput();
       token=$('githubToken').value.trim();
       busy=true; abort=new AbortController();

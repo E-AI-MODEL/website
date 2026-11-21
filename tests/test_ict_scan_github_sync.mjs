@@ -24,7 +24,7 @@ function setup({bad=false,unauthorized=false,cancelDuringImport=false,largeDirec
   const sha='a'.repeat(40);
   const manifestSha='b'.repeat(40);
   const manifestContent=Buffer.from(JSON.stringify({schema:'eai-school-ict-manifest-v1',metadata:{firstInventoryStarted:'2026-08-10',compiledBy:'Hans Visser'},dataFiles:[{path:'school.json',sha:shaMismatch?'c'.repeat(40):sha,recordCounts:{apps:badCounts?2:1}}]}));
-  const context={
+  const context={window:{},
     document:{getElementById:id=>fields[id],addEventListener(event,handler){this.events??={};this.events[event]=handler;}}, state,
     URL, AbortController, File, atob,
     Date, Error, Uint8Array, console,
