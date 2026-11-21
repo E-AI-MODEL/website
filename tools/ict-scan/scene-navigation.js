@@ -94,6 +94,10 @@
     if(searches[view]&&document.getElementById(searches[view])?.value.trim())show(view,1,false);
     scenes.get(view).frame.scrollTop=0;
   };
+  // The school AI mode has no analytical chart yet: show the actual records,
+  // rather than a nearly empty introductory screen.
+  document.getElementById('aiModeSchool')?.addEventListener('click',()=>queueMicrotask(()=>show('ai',1)));
+  document.getElementById('aiModeKlas')?.addEventListener('click',()=>queueMicrotask(()=>show('ai',0)));
   // Open the record list rather than leaving a filtered graph on screen.
   for(const [chart,view] of [['connectionChart','connections'],['phaseChart','ai'],['aiProducts','ai'],['findingsChart','findings']]){
     document.getElementById(chart)?.addEventListener('click',e=>{
