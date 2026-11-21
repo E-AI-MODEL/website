@@ -19,9 +19,9 @@ function positionMoreMenu(){
   const anchor=moreSummary.getBoundingClientRect();
   const width=165,margin=12;
   const left=Math.max(margin,Math.min(anchor.right-width,window.innerWidth-width-margin));
-  const top=Math.max(anchor.bottom+7,Math.min(window.innerHeight-moreLinks.offsetHeight-margin,anchor.bottom+7));
+  const top=Math.max(margin,Math.min(anchor.bottom+7,window.innerHeight-moreLinks.offsetHeight-margin));
   moreLinks.style.setProperty('--extra-menu-left',left+'px');
-  moreLinks.style.setProperty('--extra-menu-top',Math.min(top,window.innerHeight-140)+'px');
+  moreLinks.style.setProperty('--extra-menu-top',top+'px');
 }
 function closeMoreMenu(immediate=false){
   clearTimeout(moreClosingTimer);
