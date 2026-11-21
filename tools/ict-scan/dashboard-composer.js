@@ -514,7 +514,7 @@
   $('dsShuffle').addEventListener('click',()=>{config.variant=(config.variant+1)%9;refresh();});
   $('dsSave').addEventListener('click',()=>{showMessage(persist()?'Ontwerp bewaard in deze browser.':'Bewaren is hier niet toegestaan.');});
   $('dsExport').addEventListener('click',exportDesign);
-  $('dsBuilderData').addEventListener('click',exportBuilderData);
+  // The full Builder receives source data directly through the same-origin bridge.
   $('dsImport').addEventListener('click',()=>$('dsImportFile').click());
   $('dsImportFile').addEventListener('change',e=>importDesign(e.target.files?.[0]));
   for(const role of ['AI','FG'])$('roleMode'+role)?.addEventListener('change',()=>queueMicrotask(refresh));
@@ -526,7 +526,7 @@
   // remain accessible through the normal rail; they are not duplicated.
   state.view='studio';selectView('studio');
   window.EmmausDashboardStudio=Object.freeze({
-    config:()=>({data:config.data.slice(),parts:config.parts.slice(),layout:config.layout,primary:config.primary,order:config.order.slice(),sizes:{...config.sizes},visuals:{...config.visuals}}),
+    config:()=>({data:config.data.slice(),parts:config.parts.slice(),layout:config.layout,primary:config.primary,filter:config.filter?{...config.filter}:null,order:config.order.slice(),sizes:{...config.sizes},visuals:{...config.visuals}}),
     build:refresh
   });
 })();
