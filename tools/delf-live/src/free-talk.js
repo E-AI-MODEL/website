@@ -170,10 +170,10 @@ function cancelSound(){
 }
 function stopConversation(){
   turn++;
+  interruptBrowserReply();
   speechAbort?.abort();speechAbort=null;
   speechSession?.stop();speechSession=null;
   speechStarting=false;
-  interruptBrowserReply();
   handsfree=false;manualReplay=false;clearTimeout(restartTimer);
   releaseMicrophone();setSpeechActivity('idle');
   const rec=recognition;recognition=null;
