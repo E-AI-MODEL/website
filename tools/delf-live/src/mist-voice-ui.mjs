@@ -120,17 +120,21 @@ export function initMistVoiceUI({panel,root,details,closeMenu}){
   // Avoid nested buttons inside HTML <label>; convert these select-only
   // labels into equivalent field groups before adding the custom controls.
   for(const select of root.querySelectorAll('select:not(#freeTalkEngine)')){
-    let container=select.closest('label.studio-field');
-    if(container){
-      const field=document.createElement('div');
-      field.className=container.className;
-      const label=document.createElement('span');
-      label.className='mist-voice-field-label';
-      label.textContent=[...container.childNodes].filter(n=>n.nodeType===3).map(n=>n.textContent).join(' ').trim();
-      container.replaceWith(field);
-      field.append(label,select);
-      container=field;
-    } else container=select.parentElement;
+    const fieldLabel=select.closest('label.studio-field');
+    const container=document.createElement('div');
+    container.className='mist-voice-select-field';
+    if(fieldLabel){
+      // Preserve the original label node. Existing voice logic keeps a reference
+      // to it and toggles its hidden property for live speech engines.
+      fieldLabel.replaceWith(container);
+      container.append(fieldLabel);
+      container.hidden=fieldLabel.hidden;
+      new MutationObserver(()=>{container.hidden=fieldLabel.hidden;})
+        .observe(fieldLabel,{attributes:true,attributeFilter:['hidden']});
+    } else{
+      select.before(container);
+      container.append(select);
+    }
     select.classList.add('mist-voice-native');
     select.tabIndex=-1;
     select.setAttribute('aria-hidden','true');
@@ -147,7 +151,7 @@ export function initMistVoiceUI({panel,root,details,closeMenu}){
     chevron.setAttribute('aria-hidden','true');
     chevron.textContent='⌄';
     button.append(value,chevron);
-    select.after(button);
+    container.append(button);
     const picker={select,button,value,label:labelForSelect(select)};
     pickers.push(picker);
     button.addEventListener('click',()=>showPicker(picker));
@@ -161,7 +165,8 @@ export function initMistVoiceUI({panel,root,details,closeMenu}){
   }
 
   function labelForSelect(select){
-    const text=select.closest('.studio-field')?.querySelector('.mist-voice-field-label')?.textContent?.trim();
+    const label=select.closest('label.studio-field');
+    const text=label?[...label.childNodes].filter(n=>n.nodeType===3).map(n=>n.textContent).join(' ').trim():'';
     return text||select.id||'Kies een optie';
   }
   function updatePickers(){
