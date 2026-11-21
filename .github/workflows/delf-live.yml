@@ -161,7 +161,9 @@ jobs:
           set ssl:verify-certificate false
           set net:timeout 20
           set net:max-retries 1
-          set xfer:use-temp-file yes
+          # Theory7 FTPS rejects lftp's .in.* temporary filenames for larger media.
+          # Upload directly and rely on the existing post-upload byte-for-byte checks.
+          set xfer:use-temp-file no
           set net:connection-limit 4
           mkdir -p /tools/eaispeak
           mirror -R --parallel=3 --verbose tools/delf-live/dist/ /tools/eaispeak/
