@@ -262,6 +262,64 @@ body.playing .hint-chip{z-index:3}
  body.playing.keyboard-open .hint-chip{font-size:10px}
 }
 </style>
+<style id="northPortraitReadableCard">
+/* Noord-Nederland: the answer, hint and navigation must stay in view in mobile Safari.
+   The map uses the remaining space; do not hide card content inside a clipped scroll area. */
+@media (max-width:850px) and (orientation:portrait) {
+ body.playing:not(.keyboard-open) .game-grid{min-height:0;gap:8px}
+ body.playing:not(.keyboard-open) .question-card{
+  flex:0 0 auto;max-height:none;overflow:visible;
+  padding:10px 13px 11px;gap:0;
+  border-radius:20px
+ }
+ body.playing:not(.keyboard-open) .question-card h2{
+  font-size:clamp(22px,5.8vw,31px);line-height:1.08;
+  margin:6px 0 4px;overflow-wrap:break-word
+ }
+ body.playing:not(.keyboard-open) .question-card #sub{
+  font-size:12px;line-height:1.2;margin:0 0 3px
+ }
+ body.playing:not(.keyboard-open) .question-card #answerOptions{
+  flex:0 0 auto;overflow:visible
+ }
+ body.playing:not(.keyboard-open) .question-card .feedback{
+  flex:0 0 auto;min-height:0;max-height:none;
+  overflow:visible;transform:none;
+  padding:7px 10px;margin:5px 0 3px;
+  font-size:clamp(13px,3.5vw,16px);line-height:1.25
+ }
+ body.playing:not(.keyboard-open) .question-card .small-links{
+  display:flex;flex:none;align-items:center;
+  justify-content:space-between;gap:3px;
+  margin:6px 0 0;padding:0
+ }
+ body.playing:not(.keyboard-open) .question-card .small-links button{
+  flex:0 1 auto;min-height:30px;padding:3px 1px;
+  font-size:clamp(10px,2.8vw,12px);line-height:1.16
+ }
+ body.playing:not(.keyboard-open) .question-card .next{
+  flex:none;margin:5px 0 0;min-height:39px;padding:7px 10px;font-size:17px
+ }
+ body.playing:not(.keyboard-open) .game-board{
+  flex:1 1 0;min-height:125px;overflow:hidden
+ }
+}
+@media (max-width:850px) and (orientation:portrait) and (max-height:700px){
+ body.playing:not(.keyboard-open) .game-top{min-height:34px}
+ body.playing:not(.keyboard-open) .question-card{padding:8px 11px 9px}
+ body.playing:not(.keyboard-open) .question-card h2{font-size:clamp(21px,5.6vw,28px);margin:4px 0 3px}
+ body.playing:not(.keyboard-open) .question-card #sub{margin-bottom:0}
+ body.playing:not(.keyboard-open) .question-card .small-links{margin-top:3px}
+ body.playing:not(.keyboard-open) .question-card .small-links button{min-height:28px}
+ body.playing:not(.keyboard-open) .question-card .feedback{margin:3px 0 2px;padding:6px 9px}
+}
+@media (max-width:850px) and (orientation:portrait) and (max-height:520px){
+ body.playing:not(.keyboard-open) .question-card #sub{display:none}
+ body.playing:not(.keyboard-open) .question-card .q-label{display:none}
+ body.playing:not(.keyboard-open) .question-card h2{margin-top:0}
+ body.playing:not(.keyboard-open) .game-board{min-height:85px}
+}
+</style>
 <style id="sheetZoomStyles">
 .sheet-zoom-tools{display:flex;align-items:center;gap:10px;margin:8px 0 11px}
 .sheet-zoom-tools button{border:2px solid var(--ink);background:white;border-radius:12px;min-width:46px;min-height:44px;font-size:24px;font-weight:1000;color:var(--ink);box-shadow:0 3px 0 var(--ink)}
