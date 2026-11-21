@@ -60,6 +60,8 @@ class ICTScanTests(unittest.TestCase):
         self.assertIn('href="./scene-navigation.css', html)
         self.assertIn('src="./evidence-experience.js', html)
         self.assertIn('href="./evidence-experience.css', html)
+        self.assertIn('href="./studio-interface.css', html)
+        self.assertIn('href="./relationship-orbit.css', html)
         self.assertIn('id="roleModeFG"', html)
         self.assertIn('id="roleModeAI"', html)
         self.assertIn('class="fg-role-boundary"', html)
