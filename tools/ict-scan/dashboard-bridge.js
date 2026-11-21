@@ -78,10 +78,21 @@
     ensure(!secret.test(JSON.stringify(obj)));
     return obj;
   }
+  let layoutIndexPromise=null;
+  async function layoutIndex(){
+    if(!layoutIndexPromise)layoutIndexPromise=fetch('./dashboard-layouts/manifest.json',{cache:'no-store',credentials:'omit'})
+      .then(async response=>{
+        if(!response.ok)throw Error('Dashboardoverzicht niet beschikbaar ('+response.status+').');
+        const data=await response.json();
+        if(data.schema!=='eai-ict-dashboard-layout-index-v1'||!Array.isArray(data.layouts))throw Error('Ongeldig overzicht van dashboardindelingen.');
+        return data.layouts.filter(validKey);
+      }).catch(error=>{layoutIndexPromise=null;throw error;});
+    return layoutIndexPromise;
+  }
   async function storedLayout(source){
     if(!validKey(source))return null;
+    if(!(await layoutIndex()).includes(source))return null;
     const response=await fetch('./dashboard-layouts/'+source+'.json',{cache:'no-store',credentials:'omit'});
-    if(response.status===404)return null;
     if(!response.ok)throw Error('Opgeslagen dashboard niet beschikbaar ('+response.status+').');
     return checkLayout(await response.json());
   }
@@ -168,10 +179,15 @@
         call('GET','/git/ref/heads/main')]);
       if(!user.login||!/^([a-f0-9]{40})$/i.test(head?.object?.sha||''))throw Error('De GitHub-versie kon niet worden vastgesteld.');
       const sourcePath=SOURCE+pending.source+'.json';
-      const baseline=await call('GET','/contents/'+sourcePath+'?ref=main').catch(e=>{
-        if(String(e.message).includes('(404)'))return null;
-        throw e;
-      });
+      const manifestPath=SOURCE+'manifest.json';
+      const storedManifest=await call('GET','/contents/'+manifestPath+'?ref='+encodeURIComponent(head.object.sha));
+      if(storedManifest.encoding!=='base64'||typeof storedManifest.content!=='string')throw Error('Het dashboardmanifest kon niet worden gecontroleerd.');
+      const manifestBytes=Uint8Array.from(atob(storedManifest.content.replace(/\s+/g,'')),c=>c.charCodeAt(0));
+      const manifest=JSON.parse(new TextDecoder().decode(manifestBytes));
+      if(manifest.schema!=='eai-ict-dashboard-layout-index-v1'||!Array.isArray(manifest.layouts))throw Error('Het dashboardmanifest heeft een onbekende structuur.');
+      const baseline=manifest.layouts.includes(pending.source)
+        ? await call('GET','/contents/'+sourcePath+'?ref='+encodeURIComponent(head.object.sha))
+        : null;
       if(original?.source===pending.source&&!baseline)throw Error('De opgeslagen indeling bestaat niet meer. Open de bouwer opnieuw.');
       if(original?.source!==pending.source&&baseline)throw Error('De indeling is sinds je opening veranderd. Open de bouwer opnieuw.');
       if(original?.source===pending.source&&baseline?.sha&&baseline.content){
@@ -187,6 +203,13 @@
         message:'Applicatielandschap: '+reason.slice(0,115),branch,
         ...(baseline?.sha?{sha:baseline.sha}:{}),
         content:encode(JSON.stringify(pending,null,2)+'\n')});
+      if(!manifest.layouts.includes(pending.source)){
+        manifest.layouts=[...new Set([...manifest.layouts,pending.source])].sort((a,b)=>a.localeCompare(b,'nl'));
+        await call('PUT','/contents/'+manifestPath,{
+          message:'Applicatielandschap: dashboardregister bijwerken',branch,
+          sha:storedManifest.sha,content:encode(JSON.stringify(manifest,null,2)+'\\n')
+        });
+      }
       status.textContent='Pull request aanmaken…';
       const pr=await call('POST','/pulls',{
         title:'Applicatielandschap dashboard: '+reason.slice(0,90),head:branch,base:'main',
