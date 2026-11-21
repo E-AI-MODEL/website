@@ -149,3 +149,15 @@ Een ingevoerde vraag wordt eerst vergeleken met exacte FAQ-vragen of alternatiev
 De vragenverzameling in tests/test_ict_scan_answers.mjs bevat 28 echte Nederlandse zoekvragen, met controles op bronvelden, aantallen, onvoldoende bewijs, de bronverwijzing en de afwezigheid van generatieve tekst. De JavaScript-code is lokaal: tools/ict-scan/answer-engine.js. De vormgeving staat in answer-engine.css.
 
 Vragen worden niet opgeslagen als zoeklog, niet gebruikt als profiel en niet verzonden naar externe zoekdiensten. De verborgen 404-ingang is geen beveiliging. De gepubliceerde JSON-bestanden zijn openbaar in de GitHub-repository.
+
+## Interactieve Dashboard Builder (21 november 2026)
+
+De bestaande Dashboard Studio is uitgebreid met keuze tussen lijn-, staaf- en ringweergave, een categoriefilter voor de gekozen gegevensgroep, slepen en verplaatsen van panelen, afzonderlijke kaartbreedtes en JSON-import/export van de persoonlijke opmaak. Het ontwerp en de selecties staan gescheiden van de bronregisters. Op een smal scherm worden de kaarten onder elkaar geplaatst en zijn verplaatsknoppen beschikbaar.
+
+Daarnaast is de originele open-source [Dashboard Builder](https://github.com/nateriera/dashboard-builder) van Nate Riera geselecteerd, niet vervangen door alleen een nagebouwde schermafbeelding. De GitHub Actions-workflow `.github/workflows/import-ict-dashboard-builder.yml` bouwt de onveranderlijke upstream-revisie `0c72e80b6b2106c24dd643607157932ca25f7717` met Node 22, bewaart de MIT-licentie en voegt de statische bestanden toe onder `tools/ict-scan/dashboard-builder-app/`. De websitebuilder publiceert deze bestanden onder dezelfde URL-structuur, zonder de schoolse bronmap mee te kopiëren. De publicatie is afhankelijk van een geslaagde importworkflow en review van het pull request.
+
+Binnen de Dashboard Studio kun je met **Data JSON** de gekozen gegevensgroep en het actuele categoriefilter als lokaal JSON-bestand exporteren. **Volledige bouwer** opent de oorspronkelijke Dashboard Builder. Import van het JSON-bestand gebeurt expliciet door de gebruiker, lokaal in diens browser. Er is bewust geen automatisch doorgeven van schooldata via externe websites en er wordt niet vanuit de builder naar GitHub teruggeschreven. De oorspronkelijke editor, kaarten, rapporten en GitHub-synchronisatie van het Applicatielandschap blijven werken.
+
+Dit is een veilige eerste koppeling, geen volledige gedeelde editor: de originele Builder heeft nog een eigen opslag voor dashboardindelingen. De JSON-kaart en het formele schoolregister blijven leidend voor bronwijzigingen. Controleer bij een eventuele HTML-export uit de Builder of de gebruikte gegevens openbaar mogen worden gedeeld, want die export kan de dataset bevatten.
+
+Validatie: `node --check tools/ict-scan/dashboard-composer.js`, `node --test tests/test_ict_scan_dashboard_builder.mjs` en de bestaande ICT-scan/publicatietests. Een PR mag pas worden samengevoegd nadat de Builder-bundel door de importworkflow is aangemaakt en de tests slagen.
