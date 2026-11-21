@@ -156,9 +156,13 @@ export function mountEmmausBridge({saveDataset,serializeLayout,replaceLayout,val
   }
   selector.addEventListener('change',()=>{
     if(serializeLayout().tiles.length&&!window.confirm('Andere bron openen? De huidige indeling blijft alleen bewaard als je die eerst terugschrijft of exporteert.')){selector.value=state.selected;return;}
-    state.selected=selector.value;state.filter='';fillFilters();rebind();
+    state.selected=selector.value;state.filter='';state.saved=null;fillFilters();rebind();
+    talk('source-selected',{source:state.selected});
   });
-  filter.addEventListener('change',()=>{state.filter=filter.value;rebind();});
+  filter.addEventListener('change',()=>{
+    try{state.saved=projectLayout();}catch(_){}
+    state.filter=filter.value;rebind();
+  });
   edit.addEventListener('click',()=>{
     const reg=active();if(reg&&entries.value)talk('edit-record',{register:reg.key,id:entries.value});
   });
@@ -185,6 +189,9 @@ export function mountEmmausBridge({saveDataset,serializeLayout,replaceLayout,val
         if(state.selected)rebind();else setStatus('Geen geregistreerde bronnen ontvangen.');
         talk('source-loaded',{registers:state.registers.length,source:state.selected});
       }catch(error){setStatus(error.message);talk('bridge-error',{message:error.message});}
+    }
+    if(data.type==='source-layout'&&data.source===state.selected){
+      state.saved=data.layout||null;rebind();
     }
     if(data.type==='writeback-result')setStatus(asText(data.message,250));
   });
