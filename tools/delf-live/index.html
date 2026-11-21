@@ -186,7 +186,8 @@
             <label class="studio-field" for="freeTalkSpeechEndpoint">EAIspeak-spraakbridge (WebSocket)
               <input id="freeTalkSpeechEndpoint" type="url" value="ws://localhost:8765/eaispeak" autocomplete="off" spellcheck="false" aria-describedby="freeTalkSpeechConnection">
             </label>
-            <p class="studio-support" id="freeTalkSpeechConnection" role="status" aria-live="polite">Verbind een eigen spraakserver. De modelserver gebruikt een EAIspeak-bridge, niet rechtstreeks het modelprotocol.</p>
+            <button id="freeTalkSpeechProbe" class="action studio-action studio-action-quiet" type="button">Controleer modelverbinding</button>
+            <p class="studio-support" id="freeTalkSpeechConnection" role="status" aria-live="polite">Verbind een eigen spraakserver. Test de verbinding zonder je microfoon te openen.</p>
             <a class="studio-support" id="freeTalkSpeechSource" href="https://github.com/kyutai-labs/moshi" target="_blank" rel="noopener noreferrer">Bekijk de modelbron</a>
           </div>
           <label class="studio-field" id="freeTalkVoiceRow">Stem
