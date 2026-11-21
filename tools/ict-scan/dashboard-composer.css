@@ -319,3 +319,5 @@
 .workspace.monitor-layout #viewStudio .ds-builder-link{text-decoration:none;font-size:10px;white-space:nowrap;border-color:var(--ds-line)}
 .workspace.monitor-layout #viewStudio .ds-builder-link:hover{text-decoration:none;background:#edf5fb}
 @media(max-width:610px){.workspace.monitor-layout #viewStudio .ds-builder-link{padding:5px;font-size:9px}}
+
+.workspace.monitor-layout #viewStudio .ds-canvas[data-layout="custom"]{grid-auto-flow:row}
