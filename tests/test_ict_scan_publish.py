@@ -7,7 +7,7 @@ TOOL = ROOT / "tools" / "ict-scan"
 
 class ICTScanTests(unittest.TestCase):
     def test_files_exist(self):
-        for filename in ("index.html", "style.css", "monitor.css", "app.js", "enhancements.js", "github-sync.js", "rail-drawer.js", "visual-explorer.js", "visual-explorer.css", "record-cards.js", "record-github.js", "record-cards.css", "frameworks.json", "answer-engine.js", "answer-engine.css", "scene-navigation.js", "scene-navigation.css", "evidence-experience.js", "evidence-experience.css", "role-modes.js", "role-modes.css", "emmaus-logo.svg", "README.md"):
+        for filename in ("index.html", "style.css", "monitor.css", "app.js", "enhancements.js", "github-sync.js", "rail-drawer.js", "visual-explorer.js", "visual-explorer.css", "record-cards.js", "record-github.js", "record-cards.css", "frameworks.json", "answer-engine.js", "answer-engine.css", "scene-navigation.js", "scene-navigation.css", "evidence-experience.js", "evidence-experience.css", "role-modes.js", "role-modes.css", "dashboard-composer.js", "dashboard-composer.css", "emmaus-logo.svg", "README.md"):
             self.assertTrue((TOOL / filename).is_file(), filename)
 
     def test_secret_not_security_and_litespeed_404_middle_zero(self):
@@ -65,6 +65,12 @@ class ICTScanTests(unittest.TestCase):
         self.assertIn('id="roleModeFG"', html)
         self.assertIn('id="roleModeAI"', html)
         self.assertIn('class="fg-role-boundary"', html)
+        self.assertIn('id="viewStudio"', html)
+        self.assertIn('id="dsCanvas"', html)
+        self.assertIn('id="dsDataOptions"', html)
+        self.assertIn('id="dsPartOptions"', html)
+        self.assertIn('src="./dashboard-composer.js', html)
+        self.assertIn('href="./dashboard-composer.css', html)
         self.assertIn('src="./role-modes.js', html)
         self.assertIn('href="./role-modes.css', html)
         self.assertNotIn('<h2>DPIA-beoordelingen</h2>', html)
