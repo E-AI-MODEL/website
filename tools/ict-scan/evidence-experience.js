@@ -204,6 +204,113 @@
     if(sub)sub.textContent=fmt(state.apps.size)+' basis · '+fmt(state.ai.size)+' AI-functies · '+fmt(state.connections.size)+' Entra · '+fmt(state.candidates.size)+' kandidaten · '+(d.amount?fmt(d.amount)+' apparaatrecords':'apparaatrecords onbekend')+' · verschillende tellingen, niet optelbaar';
   }
   renderOverview=function(){earlierOverview();if(state.ready){renderOverviewMetrics();renderRelations();}};
+
+  /*
+   * Thin-line measurement figures.
+   * All marks derive from the 2026 application register. No artificial timeline,
+   * inactive/active flag, trend, completeness judgement, or live use is inferred.
+   * The same filters drive the legacy exports and the source record list.
+   */
+  const BI_NS='http://www.w3.org/2000/svg';
+  function biNode(tag,attrs={},value){
+    const node=document.createElementNS(BI_NS,tag);
+    for(const [key,val] of Object.entries(attrs))node.setAttribute(key,String(val));
+    if(value!==undefined)node.textContent=String(value);
+    return node;
+  }
+  const biCategory=value=>String(value||'').trim()||'Niet ingedeeld';
+  function biCount(rows,field){
+    const counts=new Map();
+    for(const row of rows){
+      const name=biCategory(row[field]);
+      counts.set(name,(counts.get(name)||0)+1);
+    }
+    return [...counts].sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0],'nl'));
+  }
+  function biDrawThinChart(root,rows,field,selected,onSelect){
+    if(!root)return;
+    const values=biCount(rows,field);
+    root.replaceChildren();
+    root.className='viz-stage bi-thin-stage';
+    if(!values.length){
+      root.append(Object.assign(document.createElement('p'),{className:'bi-chart-empty',textContent:'Geen registraties binnen deze selectie.'}));
+      return;
+    }
+    const threshold=7;
+    const shown=values.slice(0,threshold);
+    const hidden=values.slice(threshold);
+    const extra=hidden.reduce((n,entry)=>n+entry[1],0);
+    if(extra)shown.push(['Overige ('+hidden.length+' categorieën)',extra]);
+    const max=Math.max(1,...shown.map(x=>x[1]));
+    const W=680,L=198,R=617,top=39,step=39,base=top+shown.length*step+10;
+    const H=base+35;
+    const svg=biNode('svg',{viewBox:'0 0 '+W+' '+H,role:'img','aria-label':rows.length+' registraties verdeeld over '+values.length+' categorieën',class:'bi-lollipop-svg'});
+    const desc=biNode('desc',{},'Een klik op een regel filtert de toepassingen. De laatste regel groepeert eventuele kleinere categorieën.');svg.append(desc);
+    const labelWidth=35;
+    const sx=n=>L+(R-L)*n/max;
+    const ticks=[0,.25,.5,.75,1].map(x=>Math.round(x*max)).filter((x,i,a)=>i===0||x>a[i-1]);
+    for(const tick of [...new Set(ticks)]){
+      const x=sx(tick);
+      svg.append(biNode('line',{x1:x,y1:25,x2:x,y2:base,class:'bi-axis-line'}));
+      const t=biNode('text',{x,y:17,class:'bi-axis-tick','text-anchor':'middle'},tick);
+      svg.append(t);
+    }
+    const xAxis=biNode('line',{x1:L,y1:base,x2:R,y2:base,class:'bi-axis-baseline'});svg.append(xAxis);
+    for(const [i,[name,count]] of shown.entries()){
+      const y=top+i*step;
+      const grouped=i===shown.length-1&&extra>0;
+      const active=name===selected;
+      const faded=Boolean(selected)&&!active;
+      const g=biNode('g',{class:'bi-mark'+(active?' is-selected':'')+(faded?' is-muted':'')+(grouped?' is-aggregate':''),role:grouped?'group':'button','aria-label':name+' '+count+' registraties'+(grouped?', gegroepeerd':', klik om te filteren')});
+      if(!grouped){g.setAttribute('tabindex','0');g.setAttribute('aria-pressed',String(active));}
+      g.append(biNode('rect',{x:0,y:y-15,width:W,height:32,class:'bi-hit'}));
+      g.append(biNode('text',{x:L-16,y:y+4,'text-anchor':'end',class:'bi-label'},name.length>29?name.slice(0,27)+'…':name));
+      g.append(biNode('line',{x1:L,y1:y,x2:R,y2:y,class:'bi-guide'}));
+      g.append(biNode('line',{x1:L,y1:y,x2:sx(count),y2:y,class:'bi-value-line'}));
+      g.append(biNode('circle',{cx:sx(count),cy:y,r:active?5.7:4.1,class:'bi-dot'}));
+      g.append(biNode('text',{x:R+16,y:y+4,class:'bi-value'},count));
+      if(!grouped){
+        const fn=()=>onSelect(name);
+        g.addEventListener('click',fn);
+        g.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();fn();}});
+      }
+      svg.append(g);
+    }
+    root.append(svg);
+    const foot=document.createElement('p');foot.className='bi-chart-footnote';
+    foot.textContent=values.length>threshold?'De zeven grootste categorieën; '+hidden.length+' andere samengenomen. Totaal: '+rows.length+'.':
+      'Alle '+values.length+' categorieën · '+rows.length+' bronregistraties.';
+    root.append(foot);
+  }
+  function biRender(){
+    if(!state.ready)return;
+    const all=items(state.apps);
+    const byKind=all.filter(x=>!state.overviewKind||biCategory(x.kind)===state.overviewKind);
+    const byArea=all.filter(x=>!state.overviewArea||biCategory(x.area)===state.overviewArea);
+    const areaControl=byId('areaVizMode'),kindControl=byId('kindVizMode');
+    if(areaControl?.value==='lines'){
+      biDrawThinChart(byId('areaChart'),byKind,'area',state.overviewArea,value=>{
+        state.overviewArea=state.overviewArea===value?'':value;renderOverview();
+      });
+    }
+    if(kindControl?.value==='lines'){
+      biDrawThinChart(byId('typeChart'),byArea,'kind',state.overviewKind,value=>{
+        state.overviewKind=state.overviewKind===value?'':value;renderOverview();
+      });
+    }
+    const activeCount=all.filter(x=>
+      (!state.overviewArea||biCategory(x.area)===state.overviewArea)&&
+      (!state.overviewKind||biCategory(x.kind)===state.overviewKind)).length;
+    const result=byId('overviewResultCount');
+    if(result)result.textContent=activeCount+' van '+all.length+' basisregistraties';
+    for(const [key,id] of [['overviewArea','overviewArea'],['overviewKind','overviewKind']]){
+      const select=byId(id);
+      if(select&&select.value!==String(state[key]||''))select.value=String(state[key]||'');
+    }
+  }
+  const biBeforeOverview=renderOverview;
+  renderOverview=function(){biBeforeOverview();biRender();};
+
   const oldCandidates=renderCandidates;
   renderCandidates=function(){
     oldCandidates();
