@@ -128,7 +128,7 @@
       const eyebrow=document.createElement('small');eyebrow.textContent='CONTROLE VOOR TERUGSCHRIJVEN';
       const title=document.createElement('h2');title.id='cardPublishReviewHeading';title.textContent='Wijzigingen terugschrijven?';
       heading.append(eyebrow,title);dialog.append(heading);
-      const intro=document.createElement('p');intro.textContent=drafts.length+' registratie'+(drafts.length===1?'':'s')+' wordt/worden voorgesteld aan GitHub. Publicatie volgt pas na beoordeling van het pull request.';
+      const intro=document.createElement('p');intro.textContent=drafts.length===1?'Eén registratie wordt voorgesteld aan GitHub. Publicatie volgt pas na beoordeling van het pull request.':drafts.length+' registraties worden voorgesteld aan GitHub. Publicatie volgt pas na beoordeling van het pull request.';
       dialog.append(intro);
       const list=document.createElement('div');list.className='card-publish-review-list';
       for(const d of drafts){
