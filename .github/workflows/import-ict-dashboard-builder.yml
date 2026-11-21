@@ -13,7 +13,7 @@ permissions:
 
 concurrency:
   group: ict-dashboard-builder-import-${{ github.ref_name }}
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   vendor-upstream:
@@ -62,5 +62,7 @@ jobs:
           git add tools/ict-scan/dashboard-builder-app
           if ! git diff --cached --quiet; then
             git commit -m "Vendor pinned Dashboard Builder upstream static build"
+            git fetch origin feature/ict-scan-dashboard-builder-studio
+            git rebase origin/feature/ict-scan-dashboard-builder-studio
             git push origin HEAD:feature/ict-scan-dashboard-builder-studio
           fi
