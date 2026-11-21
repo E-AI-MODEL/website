@@ -75,6 +75,25 @@ try {
   assert.match(await page.locator('#dsCanvas .ds-numbers').textContent(),/61/);
   assert.match(await page.locator('#dsCanvas .ds-numbers').textContent(),/93/);
   await page.screenshot({path:'test-results/ict-scan-'+width+'-composer-default.png'});
+  // The real upstream Builder must receive the current records without a
+  // download/re-upload step. Writeback must open a review popup.
+  await page.locator('#dsFullBuilder').click();
+  await page.locator('#builderSurface:not([hidden])').waitFor();
+  const liveBuilder=page.frameLocator('#builderFrame');
+  await liveBuilder.locator('.emmaus-bridge-bar').waitFor({state:'visible',timeout:20000});
+  await page.waitForFunction(()=>/registers gekoppeld/.test(document.getElementById('builderStatus')?.textContent||''),null,{timeout:20000});
+  assert.match(await liveBuilder.locator('.emmaus-bridge-source').textContent(),/61 van 61/);
+  assert.equal(await liveBuilder.locator('.emmaus-bridge-select').first().locator('option').count(),13,'Alle dertien registraties moeten rechtstreeks beschikbaar zijn');
+  await liveBuilder.locator('.emmaus-bridge-submit').click();
+  await page.locator('#builderWriteback:not([hidden])').waitFor();
+  assert.match(await page.locator('#builderWriteTarget').textContent(),/dashboard-layouts\/apps.json/);
+  assert.match(await page.locator('#builderWriteSummary').textContent(),/61 bronregistraties/);
+  await page.locator('#builderWriteSubmit').click();
+  assert.match(await page.locator('#builderWriteStatus').textContent(),/minimaal acht tekens/);
+  await page.locator('#builderWriteCancel').click();
+  await page.locator('#builderClose').click();
+  assert.equal(await page.locator('#builderSurface:not([hidden])').count(),0);
+
   if(width<700){await page.locator('#dsToggleControls').click();assert.equal(await page.locator('#viewStudio.ds-controls-open').count(),1);}
   await page.locator('#dsBlank').click();
   assert.equal(await page.locator('#dsCanvas .ds-component').count(),0,'Leeg beginnen moet echt een leeg werkvlak tonen');
