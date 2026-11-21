@@ -185,6 +185,11 @@ jobs:
           node --check tools/ict-scan/answer-engine.js
           node --test tests/test_ict_scan_2026_data.mjs tests/test_ict_scan_github_sync.mjs tests/test_ict_scan_visuals.mjs tests/test_ict_scan_cards.mjs tests/test_ict_scan_answers.mjs
 
+      - name: Controleer visuele applicatiedashboardbouwer
+        run: |
+          node --check tools/ict-scan/dashboard-composer.js
+          node --test tests/test_ict_scan_dashboard_builder.mjs
+
       - name: Check first-party clicks and session privacy
         run: |
           php -l statistieken/collect.php
