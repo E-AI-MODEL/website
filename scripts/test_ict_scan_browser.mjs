@@ -82,6 +82,7 @@ try {
   assert.equal(await page.locator('#dsCanvas .ds-numbers').count(),1,'Een klik moet het gekozen onderdeel meteen plaatsen');
   await page.locator('#dsSuggest').click();
   assert((await page.locator('#dsCanvas .ds-component').count())>=4,'Automatische samenstelling moet meerdere bruikbare onderdelen kiezen');
+  if(width<700)await page.locator('#dsCloseControls').click();
   await page.locator('#dsLayout').selectOption('editorial');
   assert.equal(await page.locator('#dsCanvas').getAttribute('data-layout'),'editorial');
   await page.locator('#dsPrimary').selectOption('ai');
@@ -92,13 +93,14 @@ try {
   await chart.locator('svg .ds-figure-row[role="button"]').first().click();
   assert.match(await page.locator('#dsCanvas .ds-distribution .ds-inline-link').textContent(),/wissen/);
   await page.locator('#dsCanvas .ds-distribution .ds-inline-link').click();
+  if(width<700)await page.locator('#dsToggleControls').click();
   await page.locator('[data-ds-preset="technology"]').click();
   assert.equal(await page.locator('#dsCanvas .ds-hardware').count(),1,'Hardware moet als afzonderlijk onderdeel te kiezen zijn');
   assert.match(await page.locator('#dsCanvas .ds-hardware').textContent(),/161/);
+  if(width<700)await page.locator('#dsCloseControls').click();
   await page.locator('#dsSave').click();
   assert.match(await page.evaluate(()=>localStorage.getItem('emmaus-ict-dashboard-studio-v1')),/"layout":"editorial"/);
   await page.screenshot({path:'test-results/ict-scan-'+width+'-composer-technology.png'});
-  if(width<700)await page.locator('#dsToggleControls').click();
   await page.locator('.rail-button[data-view="overview"]').click();
 
   assert.equal(await page.locator('#kpiGrid .kpi').count(),4,'Vier statuscijfers ontbreken');
