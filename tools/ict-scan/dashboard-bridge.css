@@ -1,0 +1,53 @@
+/* Full Builder overlay and explicit GitHub writeback confirmation. */
+body.builder-surface-open{overflow:hidden!important}
+#builderSurface,#builderWriteback{position:fixed;inset:0;z-index:8000;background:#f8fafc}
+#builderSurface[hidden],#builderWriteback[hidden]{display:none!important}
+#builderSurface{display:flex;flex-direction:column;min-height:0;height:100dvh;overscroll-behavior:contain}
+#builderSurface .builder-surface-head{
+  flex:0 0 auto;min-height:50px;padding:7px clamp(12px,2.5vw,32px);
+  display:flex;align-items:center;gap:14px;background:#f7f9fc;
+  border-bottom:1px solid rgba(67,99,137,.22);color:#334c70
+}
+#builderSurface .builder-surface-head strong{font-size:12px;font-weight:650}
+#builderSurface .builder-surface-head small{margin-left:auto;font-size:10px;color:#8796a9;max-width:55%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#builderSurface .builder-surface-head button{
+  border:1px solid rgba(83,116,152,.25);background:transparent;color:#36557b;
+  min-height:33px;padding:5px 12px;border-radius:5px;font-size:11px
+}
+#builderFrame{display:block;flex:1 1 0;min-height:0;width:100%;border:0;background:#fff}
+#builderWriteback{
+  z-index:8200;display:grid;place-items:center;padding:16px;
+  background:rgba(12,26,45,.48);backdrop-filter:blur(10px)
+}
+#builderWriteback .builder-write-dialog{
+  width:min(540px,100%);max-height:min(760px,calc(100dvh - 32px));overflow-y:auto;
+  padding:clamp(18px,3vw,32px);color:#344b68;
+  background:#fbfcfe;border:1px solid #c5d4e2;box-shadow:0 22px 75px rgba(13,33,59,.22);
+  border-radius:12px
+}
+#builderWriteback .builder-write-eyebrow{font-size:9px;letter-spacing:.11em;font-weight:700;color:#a07f52}
+#builderWriteback h2{margin:6px 0 10px;font-size:23px;letter-spacing:-.035em;font-weight:640}
+#builderWriteback p{font-size:11px;line-height:1.6;margin:6px 0}
+#builderWriteback .builder-write-diff{margin:14px 0;border-top:1px solid #dbe5ef;border-bottom:1px solid #dbe5ef;padding:10px 0;font-size:11px;color:#45698b}
+#builderWriteback .builder-write-target{overflow-wrap:anywhere;color:#657c94}
+#builderWriteback .builder-write-tile-list{max-height:145px;overflow:auto;padding:0 0 0 19px;margin:8px 0 16px;color:#566c85;font-size:10px;line-height:1.6}
+#builderWriteback label{display:block;font-size:10px;font-weight:620;margin:12px 0 5px}
+#builderWriteback input[type="text"],#builderWriteback input[type="password"]{
+  display:block;width:100%;min-height:39px;border:1px solid #cbd8e6;background:#fff;
+  color:#203955;border-radius:6px;font-size:12px;padding:7px 10px;box-sizing:border-box
+}
+#builderWriteback .builder-write-consent{display:flex;align-items:flex-start;gap:9px;font-size:10px;font-weight:450;line-height:1.5}
+#builderWriteback .builder-write-consent input{margin:2px 0 0;flex:0 0 auto}
+#builderWriteback .builder-write-actions{display:flex;flex-wrap:wrap;gap:9px;justify-content:flex-end;margin-top:17px}
+#builderWriteback .builder-write-actions button{min-height:37px;padding:8px 15px;font-size:11px;border-radius:5px;border:1px solid #bfd0df;background:transparent;color:#385877}
+#builderWriteback .builder-write-actions button.primary{background:#314f77;border-color:#314f77;color:#fff}
+#builderWriteback .builder-write-actions button:disabled{opacity:.6;cursor:not-allowed}
+#builderWriteStatus{font-size:11px;color:#4a698c;min-height:16px;overflow-wrap:anywhere}
+#builderWriteStatus a{color:#1a6399;text-decoration:underline}
+@media(max-width:640px){
+ #builderSurface .builder-surface-head{min-height:42px;padding:6px 9px}
+ #builderSurface .builder-surface-head small{display:none}
+ #builderSurface .builder-surface-head button{margin-left:auto}
+ #builderWriteback{padding:7px;align-items:end}
+ #builderWriteback .builder-write-dialog{width:100%;border-radius:12px 12px 0 0;max-height:90dvh;padding:20px 16px}
+}
