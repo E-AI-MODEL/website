@@ -9,6 +9,40 @@ const stage = $('stage');
 const scroll = $('studioScroll');
 const tabs = Array.from(document.querySelectorAll('.studio-tab'));
 const pages = Array.from(document.querySelectorAll('.studio-page'));
+const moreMenu=$('extraStudioTabs'),moreLabel=$('studioMoreLabel');
+const moreSummary=moreMenu.querySelector('summary'),moreLinks=moreMenu.querySelector('.studio-extra-links');
+let moreClosingTimer=null;
+const extraViews=new Set(['stem','sessie','meer']);
+const extraNames={stem:'Stem',sessie:'Sessie',meer:'Techniek'};
+function positionMoreMenu(){
+  if(!moreMenu.open)return;
+  const anchor=moreSummary.getBoundingClientRect();
+  const width=165,margin=12;
+  const left=Math.max(margin,Math.min(anchor.right-width,window.innerWidth-width-margin));
+  const top=Math.max(anchor.bottom+7,Math.min(window.innerHeight-moreLinks.offsetHeight-margin,anchor.bottom+7));
+  moreLinks.style.setProperty('--extra-menu-left',left+'px');
+  moreLinks.style.setProperty('--extra-menu-top',Math.min(top,window.innerHeight-140)+'px');
+}
+function closeMoreMenu(immediate=false){
+  clearTimeout(moreClosingTimer);
+  if(!moreMenu.open){moreMenu.classList.remove('is-closing');return;}
+  if(immediate||window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    moreMenu.open=false;moreMenu.classList.remove('is-closing');return;
+  }
+  moreMenu.classList.add('is-closing');
+  moreClosingTimer=setTimeout(()=>{moreMenu.open=false;moreMenu.classList.remove('is-closing');},210);
+}
+moreMenu.addEventListener('toggle',()=>{
+  if(moreMenu.open){clearTimeout(moreClosingTimer);moreMenu.classList.remove('is-closing');requestAnimationFrame(positionMoreMenu);}
+});
+document.addEventListener('pointerdown',event=>{
+  if(moreMenu.open&&!moreMenu.contains(event.target))closeMoreMenu();
+});
+document.addEventListener('keydown',event=>{
+  if(event.key==='Escape'&&moreMenu.open){event.preventDefault();event.stopPropagation();closeMoreMenu(true);moreSummary.focus();}
+},true);
+window.addEventListener('resize',()=>{if(moreMenu.open)positionMoreMenu();});
+
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 let revealObserver = null;
 let idleControlsTimer = null;
@@ -100,7 +134,11 @@ function activateView(name, options={focus:false}) {
     } else page.classList.remove('mist-page-arriving');
   }
   scroll.scrollTop = 0;
-  if (options.focus) tab.focus({preventScroll:true});
+  const extra=extraViews.has(name);
+  moreLabel.textContent=extra?extraNames[name]:'Overige opties';
+  moreMenu.classList.toggle('has-selected-extra',extra);
+  closeMoreMenu();
+  if (options.focus) (extra?moreSummary:tab).focus({preventScroll:true});
   markActivity();
   requestAnimationFrame(revealVisible);
 }
@@ -160,6 +198,7 @@ function onStudioVisibility() {
     activateView(current.dataset.studioView);
     markActivity();
   } else {
+    closeMoreMenu(true);
     revealObserver?.disconnect();
     markActivity();
   }
