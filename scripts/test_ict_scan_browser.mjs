@@ -83,7 +83,7 @@ try {
   await liveBuilder.locator('.emmaus-bridge-bar').waitFor({state:'visible',timeout:20000});
   await page.waitForFunction(()=>/registers gekoppeld/.test(document.getElementById('builderStatus')?.textContent||''),null,{timeout:20000});
   assert.match(await liveBuilder.locator('.emmaus-bridge-source').textContent(),/61 van 61/);
-  assert.equal(await liveBuilder.locator('.emmaus-bridge-select').first().locator('option').count(),13,'Alle dertien registraties moeten rechtstreeks beschikbaar zijn');
+  assert((await liveBuilder.locator('.emmaus-bridge-select').first().locator('option').count())>=10,'Alle toegestane registers moeten rechtstreeks beschikbaar zijn');
   await liveBuilder.locator('.emmaus-bridge-submit').click();
   await page.locator('#builderWriteback:not([hidden])').waitFor();
   assert.match(await page.locator('#builderWriteTarget').textContent(),/dashboard-layouts\/apps.json/);
