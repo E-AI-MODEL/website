@@ -79,7 +79,7 @@ test('FAQ-antwoord aanpassen behoudt vaste ID, bronverwijzing en wijzigingslog',
   const after=all['2026-faq.json'].faqs[0];
   assert.equal(after.id,'FAQ-001');
   assert.deepEqual(clone(after.sourceRefs),before.sourceRefs);
-  assert.deepEqual(after.sources,before.sources);
+  assert.deepEqual(clone(after.sources),before.sources);
   assert.match(after.answer,/Aanvullend gecontroleerd/);
   assert.equal(after.auditTrail.length,1);
   assert.equal(after.auditTrail[0].actor,'faq-reviewer');
