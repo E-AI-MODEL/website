@@ -465,6 +465,18 @@
     const link=document.createElement('a');link.href=url;link.download='Emmaus-dashboard-ontwerp.json';document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),600);
     showMessage('Ontwerp gedownload. Er zijn geen leerling- of applicatiegegevens opgenomen.');
   }
+  function exportBuilderData(){
+    const d=activeSource();
+    if(!d){showMessage('Selecteer eerst een register.');return;}
+    const fields=[...new Set(['id','name',d.field,...d.fields,'description','status'].filter(Boolean))];
+    const rows=filtered(d).map(record=>Object.fromEntries(fields.filter(field=>Object.prototype.hasOwnProperty.call(record,field)).map(field=>[field,record[field]??null])));
+    const payload={dataset:d.label,rows};
+    const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+    const url=URL.createObjectURL(blob),a=document.createElement('a');
+    a.href=url;a.download='Emmaus-'+d.key+'-dashboard-data.json';a.rel='noopener';document.body.append(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),1000);
+    showMessage(rows.length+' registraties lokaal gedownload. Importeer het JSON-bestand in de volledige bouwer. Controleer of de gegevens gedeeld mogen worden voordat je een HTML-dashboard exporteert.');
+  }
   function importDesign(file){
     if(!file||file.size>100000){showMessage('Geen geldig ontwerpbestand.');return;}
     const reader=new FileReader();
@@ -502,6 +514,7 @@
   $('dsShuffle').addEventListener('click',()=>{config.variant=(config.variant+1)%9;refresh();});
   $('dsSave').addEventListener('click',()=>{showMessage(persist()?'Ontwerp bewaard in deze browser.':'Bewaren is hier niet toegestaan.');});
   $('dsExport').addEventListener('click',exportDesign);
+  $('dsBuilderData').addEventListener('click',exportBuilderData);
   $('dsImport').addEventListener('click',()=>$('dsImportFile').click());
   $('dsImportFile').addEventListener('change',e=>importDesign(e.target.files?.[0]));
   for(const role of ['AI','FG'])$('roleMode'+role)?.addEventListener('change',()=>queueMicrotask(refresh));
