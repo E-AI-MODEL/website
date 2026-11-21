@@ -210,7 +210,7 @@
         if(replacing)verifyCounts(manifestSpec);
         state.ready=state.apps.size+state.connections.size+state.ai.size+state.checks.size+state.signals.size+state.devices.size+state.parts.size>0;
         buildDerived();
-        state.view='overview';
+        state.view=(state.view==='sources'||state.view==='overview')?'studio':state.view;
         renderAll();
         assertNotCancelled(abort.signal);
       }catch(error){restoreState(backup);if(error.name==='AbortError')throw error;throw Error('Gegevens niet bijgewerkt: '+error.message);}
