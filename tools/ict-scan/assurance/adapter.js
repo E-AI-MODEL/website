@@ -27,13 +27,15 @@
       }
     }
     records.sort((a,b)=>a.type<b.type?-1:a.type>b.type?1:String(a.id)<String(b.id)?-1:String(a.id)>String(b.id)?1:0);
-    return {records,context:{...context,organisationId:p.organisation.id,scopeId:profiles.scopeKey(p)},policy:policyFor(p,catalog)};
+    return {records,context:{...context,organisationId:p.organisation.id,scopeId:profiles.scopeKey(p)},policy:policyFor(p,catalog),
+      reviewRules:{catalog:clone(catalog),registerFiles:clone(p.source.registerFiles)}};
   }
   function fromState(profile,state,catalog,context){
     const registers={};
     for(const type of Object.keys(profile.source.registerFiles)){
       const source=state[stores[type]||type];
       if(!source||typeof source.values!=='function')throw Error('Register ontbreekt in het dashboard: '+type);
+      if(type==='sourceRegister'&&source.size===0&&state.sourceRegisterLoaded!==true)throw Error('Het verplichte bronregister is nog niet ingelezen.');
       registers[type]=Array.from(source.values());
     }
     return fromRegisters(profile,registers,catalog,context);

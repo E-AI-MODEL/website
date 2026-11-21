@@ -76,7 +76,7 @@
       await ready;if(id!==serial)return;
       const input=inputNow(),signature=basis(input);
       lastInput=input;
-      worker=new Worker('./assurance/worker.js?v=20261121b');
+      worker=new Worker('./assurance/worker.js?v=20261121d');
       timer=setTimeout(()=>{if(id!==serial)return;stop();fail('De controle duurde te lang. Probeer opnieuw.');},10000);
       worker.onerror=()=>{if(id!==serial)return;stop();fail('De controle kon niet worden uitgevoerd. Probeer opnieuw.');};
       worker.onmessage=event=>{

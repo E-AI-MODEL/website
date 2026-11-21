@@ -9,7 +9,7 @@ const profiles = require('../tools/ict-scan/assurance/profile.js');
 const read = path => readFileSync(path, 'utf8');
 const loadProfile = name => profiles.validate(JSON.parse(read('tools/ict-scan/assurance/profiles/' + name + '.json')));
 const clone = value => structuredClone(value);
-const storeNames = ['apps','ai','connections','checks','devices','parts','dpia','aiControls','policyDocs','signals','candidates','licenseReview','workActions','softwareReview','faqs'];
+const storeNames = ['apps','ai','connections','checks','devices','parts','dpia','aiControls','policyDocs','signals','candidates','licenseReview','workActions','softwareReview','faqs','sourceRegister'];
 const source = read('tools/ict-scan/enhancements.js');
 // Run the actual snapshot functions with an IndexedDB substitute. Rendering and
 // browser persistence are outside this unit test's scope.
@@ -35,7 +35,7 @@ function database() {
 function setup(profile, shared) {
   const elements = new Map();
   const downloads = [];
-  const state = {...Object.fromEntries(storeNames.map(name => [name, new Map()])), ready: false, sources: [], docs: [], metadata: null};
+  const state = {...Object.fromEntries(storeNames.map(name => [name, new Map()])), ready: false, sources: [], docs: [], metadata: null, sourceRegisterLoaded: false};
   const context = {
     state, Map, Set, Date, Promise, Blob, indexedDB: shared.indexedDB,
     AssuranceProfile: profiles, IctOrganisation: {profile, ready: Promise.resolve(profile)},
@@ -138,4 +138,44 @@ test('De downloadactie voor een ontbrekende oudere kopie maakt geen leeg archief
   await app.context.downloadLegacySnapshot();
   assert.equal(app.downloads.length, 0);
   assert.match(app.elements.get('saveStatus').textContent, /geen oudere lokale kopie/);
+});
+
+test('Bronregister en expliciete laadstatus blijven exact bewaard in een momentopname', async () => {
+  const shared=database(),app=setup(loadProfile('emmauscollege'),shared);
+  app.fill('Bewaren');
+  const source={id:'SRC-00001',name:'Bron',referenceKeys:['exact'],approvalStatus:'Afgewezen',extension:{nested:[1,false]}};
+  app.state.sourceRegister.set(source.id,clone(source));app.state.sourceRegisterLoaded=true;
+  await app.context.saveSnapshot();
+  const restored=setup(app.profile,shared);await restored.context.restoreSnapshot();
+  assert.deepEqual([...restored.state.sourceRegister.values()],[source]);
+  assert.equal(restored.state.sourceRegisterLoaded,true);
+  await restored.context.clearSnapshot();
+  assert.equal(restored.state.sourceRegister.size,0);assert.equal(restored.state.sourceRegisterLoaded,false);
+});
+
+test('Een eerdere profielgebonden kopie blijft herstelbaar en noemt het ontbrekende bronregister', async () => {
+  const shared=database(),app=setup(loadProfile('emmauscollege'),shared);
+  app.fill('Eerder werk');await app.context.saveSnapshot();
+  const saved=shared.values.get(app.key);delete saved.maps.sourceRegister;delete saved.sourceRegisterLoaded;
+  const restored=setup(app.profile,shared);await restored.context.restoreSnapshot();
+  assert.equal(restored.state.apps.get('APP-001').name,'Eerder werk');
+  assert.equal(restored.state.sourceRegisterLoaded,false);assert.equal(restored.state.sourceRegister.size,0);
+  assert.match(restored.elements.get('saveStatus').textContent,/bronregister ontbreekt/);
+  const adapter=require('../tools/ict-scan/assurance/adapter.js');
+  const catalog=JSON.parse(read('tools/ict-scan/frameworks.json'));
+  assert.throws(()=>adapter.fromState(app.profile,restored.state,catalog,{asOf:'2026-11-21',sourceVersion:'test'}),/nog niet ingelezen/);
+});
+
+test('Een dubbele bron-ID in de opgeslagen kopie wordt vóór alle mutaties geweigerd', async () => {
+  const shared=database(),app=setup(loadProfile('emmauscollege'),shared);
+  app.fill('Opgeslagen werk');await app.context.saveSnapshot();
+  shared.values.get(app.key).maps.sourceRegister=[{id:'SRC-00001',name:'A'},{id:'SRC-00001',name:'B'}];
+  const restored=setup(app.profile,shared);
+  restored.state.apps.set('APP-OLD',{id:'APP-OLD',name:'Behouden invoer'});
+  restored.state.sourceRegister.set('SRC-00999',{id:'SRC-00999',name:'Behouden bron'});
+  await restored.context.restoreSnapshot();
+  assert.equal(restored.state.apps.get('APP-OLD').name,'Behouden invoer');
+  assert.equal(restored.state.sourceRegister.get('SRC-00999').name,'Behouden bron');
+  assert.equal(restored.state.apps.has('APP-001'),false);
+  assert.match(restored.elements.get('saveStatus').textContent,/dubbel/);
 });

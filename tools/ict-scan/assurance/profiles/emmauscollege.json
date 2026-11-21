@@ -1,6 +1,6 @@
 {
   "schema": "eai-ict-assurance-profile-v1",
-  "profileVersion": "1.0.0",
+  "profileVersion": "1.2.0",
   "organisation": {
     "id": "emmauscollege",
     "name": "Emmauscollege Rotterdam",
@@ -24,7 +24,14 @@
       "licenseReview": "2026-applicatielandschap.json",
       "workActions": "2026-werkregister.json",
       "softwareReview": "2026-werkregister.json",
-      "faqs": "2026-faq.json"
+      "faqs": "2026-faq.json",
+      "sourceRegister": "2026-bronnenregister.json"
+    },
+    "configurationFiles": {
+      "profile": "tools/ict-scan/assurance/profiles/emmauscollege.json",
+      "catalog": "tools/ict-scan/frameworks.json",
+      "engine": "tools/ict-scan/assurance/engine.js",
+      "sourceRegister": "tools/ict-scan/assurance/source-register.js"
     }
   },
   "policy": {

@@ -17,30 +17,31 @@
 <link rel="stylesheet" href="./scene-navigation.css?v=20261120b">
 <link rel="stylesheet" href="./evidence-experience.css?v=20261120c">
 <link rel="stylesheet" href="./role-modes.css?v=20261120d">
-<link rel="stylesheet" href="./record-cards.css?v=20261121b">
+<link rel="stylesheet" href="./record-cards.css?v=20261121d">
 <link rel="stylesheet" href="./assurance.css?v=20261121b">
 <link rel="stylesheet" href="./answer-engine.css?v=20261120b">
 <link rel="stylesheet" href="./studio-interface.css?v=20261121a">
 <link rel="stylesheet" href="./dashboard-composer.css?v=20261121a">
 <link rel="stylesheet" href="./relationship-orbit.css?v=20261121a">
-<script defer src="./assurance/profile.js?v=20261121b"></script>
+<script defer src="./assurance/profile.js?v=20261121e"></script>
 <script defer src="./organisation.js?v=20261121b" data-profile="./assurance/profiles/emmauscollege.json"></script>
-<script defer src="./assurance/engine.js?v=20261121b"></script>
-<script defer src="./assurance/adapter.js?v=20261121b"></script>
+<script defer src="./assurance/source-register.js?v=20261121d"></script>
+<script defer src="./assurance/engine.js?v=20261121d"></script>
+<script defer src="./assurance/adapter.js?v=20261121d"></script>
 <script defer src="./assurance/record-contract.js?v=20261121b"></script>
-<script defer src="./app.js?v=20261121b"></script>
-<script defer src="./enhancements.js?v=20261121c"></script>
+<script defer src="./app.js?v=20261121d"></script>
+<script defer src="./enhancements.js?v=20261121d"></script>
 <script defer src="./visual-explorer.js?v=20261120b"></script>
-<script defer src="./github-sync.js?v=20261121b"></script>
+<script defer src="./github-sync.js?v=20261121d"></script>
 <script defer src="./rail-drawer.js?v=20261120b"></script>
-<script defer src="./record-cards.js?v=20261121c"></script>
-<script defer src="./record-github.js?v=20261121c"></script>
+<script defer src="./record-cards.js?v=20261121d"></script>
+<script defer src="./record-github.js?v=20261121e"></script>
 <script defer src="./answer-engine.js?v=20261120b"></script>
 <script defer src="./scene-navigation.js?v=20261121a"></script>
 <script defer src="./evidence-experience.js?v=20261121a"></script>
 <script defer src="./role-modes.js?v=20261120d"></script>
 <script defer src="./dashboard-composer.js?v=20261121a"></script>
-<script defer src="./assurance-ui.js?v=20261121b"></script>
+<script defer src="./assurance-ui.js?v=20261121d"></script>
 </head>
 <body>
 <div id="notFound" class="litespeed-404" aria-label="404 Not Found">
@@ -301,7 +302,7 @@
             <input id="cardCommitMessage" type="text" maxlength="180" placeholder="Bijwerken applicatieregister 2026" autocomplete="off">
             <label for="cardGithubToken">GitHub-token met Contents en Pull requests: Read and write</label>
             <input id="cardGithubToken" type="password" spellcheck="false" autocomplete="off" placeholder="Wordt niet opgeslagen">
-            <label class="card-confirm-public"><input id="cardConfirmPublic" type="checkbox"> Ik heb gecontroleerd dat de wijzigingen openbaar mogen worden voorgesteld.</label>
+            <label class="card-confirm-public"><input id="cardConfirmPublic" type="checkbox"> Ik heb gecontroleerd dat deze gegevens in de ingestelde repository mogen worden opgeslagen.</label>
             <button type="button" id="cardCreatePR" class="card-button card-button-primary">Wijzigingsvoorstel maken</button>
           </div>
           <p id="cardFeedback" class="card-feedback" role="status" aria-live="polite"></p>

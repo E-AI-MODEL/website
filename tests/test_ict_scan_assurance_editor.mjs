@@ -8,7 +8,7 @@ const read = path => readFileSync(path, 'utf8');
 const clone = value => JSON.parse(JSON.stringify(value));
 const profileJson = JSON.parse(read('tools/ict-scan/assurance/profiles/emmauscollege.json'));
 const catalog = JSON.parse(read('tools/ict-scan/frameworks.json'));
-const registerStores = ['apps', 'ai', 'connections', 'parts', 'candidates', 'checks', 'dpia', 'aiControls', 'devices', 'licenseReview', 'workActions', 'softwareReview', 'faqs'];
+const registerStores = ['apps', 'ai', 'connections', 'parts', 'candidates', 'checks', 'dpia', 'aiControls', 'devices', 'licenseReview', 'workActions', 'softwareReview', 'faqs', 'sourceRegister'];
 
 // Small DOM substitute for data roundtrips through the real form handlers.
 // It does not claim browser layout, focus or accessibility coverage.
@@ -64,7 +64,7 @@ async function setup(records = [{id: 'APP-001', name: 'Original name', descripti
     fetch: async () => ({ok: true, json: async () => clone(catalog)})};
   context.window = context;
   vm.createContext(context);
-  for (const path of ['tools/ict-scan/assurance/profile.js', 'tools/ict-scan/assurance/record-contract.js']) vm.runInContext(read(path), context, {filename: path});
+  for (const path of ['tools/ict-scan/assurance/profile.js', 'tools/ict-scan/assurance/source-register.js', 'tools/ict-scan/assurance/engine.js', 'tools/ict-scan/assurance/adapter.js', 'tools/ict-scan/assurance/record-contract.js']) vm.runInContext(read(path), context, {filename: path});
   const profile = context.AssuranceProfile.validate(clone(profileJson));
   context.IctOrganisation = {profile, ready: Promise.resolve(profile)};
   state.sources = [remoteSource(profile)];
@@ -82,7 +82,7 @@ async function setup(records = [{id: 'APP-001', name: 'Original name', descripti
 }
 function documents(profile, apps) {
   const files = {};
-  for (const [type, file] of Object.entries(profile.source.registerFiles)) {(files[file] ??= {})[type] = type === 'apps' ? clone(apps) : [];}
+  for (const [type, file] of Object.entries(profile.source.registerFiles)) {(files[file] ??= {schema:'eai-school-ict-v1'})[type] = type === 'apps' ? clone(apps) : [];}
   return files;
 }
 
@@ -214,6 +214,8 @@ test('De publicatiecallback behoudt een tijdens de API-aanvraag gemaakt concept'
   const original = [{id: 'APP-001', name: 'First', sources: ['S-1']}, {id: 'APP-002', name: 'Second', sources: ['S-2']}];
   const app = await setup(original); app.open('APP-001'); app.set('name', 'Submitted change'); app.save();
   const files = documents(app.profile, original), base = 'https://api.github.com/repos/' + app.profile.source.repository;
+  const configuration = Object.fromEntries(Object.entries(app.profile.source.configurationFiles).map(([type,path]) => [path,
+    type === 'profile' ? JSON.stringify(app.profile) : type === 'catalog' ? JSON.stringify(catalog) : read('tools/ict-scan/assurance/' + (type === 'engine' ? 'engine.js' : 'source-register.js'))]));
   for (const value of Object.values(files)) value.schema = 'eai-school-ict-v1';
   const names = Object.keys(files), shas = Object.fromEntries(names.map((name, index) => [name, String(index + 1).repeat(40)]));
   files['manifest.json'] = {schema: 'eai-school-ict-manifest-v1', metadata: {}, dataFiles: names.map(path => ({path, sha: shas[path], recordCounts: Object.fromEntries(Object.entries(files[path]).filter(([, value]) => Array.isArray(value)).map(([type, value]) => [type, value.length]))}))};
@@ -227,7 +229,9 @@ test('De publicatiecallback behoudt een tijdens de API-aanvraag gemaakt concept'
     if (url === 'https://api.github.com/user') {userStarted(); return new Promise(resolve => {resolveUser = () => resolve({ok: true, json: async () => ({login: 'test-reviewer'})});});}
     if (url === base + '/git/ref/heads/main') return {ok: true, json: async () => ({object: {sha: 'b'.repeat(40)}})};
     if (method === 'GET' && url.startsWith(base + '/contents/')) {
-      const path = new URL(url).pathname.split('/contents/')[1].slice(app.profile.source.sourceDir.length + 1);
+      const repoPath = decodeURIComponent(new URL(url).pathname.split('/contents/')[1]);
+      if (configuration[repoPath]) return {ok:true, json:async () => ({sha:'a'.repeat(40),encoding:'base64',content:Buffer.from(configuration[repoPath]).toString('base64')})};
+      const path = repoPath.slice(app.profile.source.sourceDir.length + 1);
       assert.ok(files[path], path);
       return {ok: true, json: async () => ({sha: shas[path], encoding: 'base64', content: Buffer.from(JSON.stringify(files[path])).toString('base64')})};
     }
@@ -254,4 +258,181 @@ test('De publicatiecallback behoudt een tijdens de API-aanvraag gemaakt concept'
   assert.equal(published.apps.find(record => record.id === 'APP-001').name, 'Submitted change');
   assert.equal(published.apps.find(record => record.id === 'APP-002').name, 'Second');
   assert.equal(app.document.getElementById('cardGithubToken').value, '');
+});
+
+function approvedSource(app, overrides = {}) {
+  const source = {id:'SRC-00001',name:'Fictieve bron',referenceKeys:['S-1'],owner:'Fictieve bronhouder',version:'1',rightsStatus:'Toegestaan',rightsBasis:'Fictieve toestemming',allowedUse:'Deze regressietest',scope:'Testomgeving',retention:'Tot einde van de test',approvalStatus:'Goedgekeurd',approvedBy:'Testbeoordelaar',approvedAt:'2026-11-20',approvalEvidence:'Testbesluit',nextReviewAt:'2027-11-20',...overrides};
+  const context = {asOf:'2026-11-21',organisationId:app.profile.organisation.id,scopeId:app.context.AssuranceProfile.scopeKey(app.profile)};
+  source.approvalBinding = app.context.AssuranceSourceRegister.createApprovalBinding(source, context);
+  return source;
+}
+function filesWithSources(app, apps = [...app.state.apps.values()]) {
+  const files = documents(app.profile, apps);
+  files[app.profile.source.registerFiles.sourceRegister].sourceRegister = clone([...app.state.sourceRegister.values()]);
+  return files;
+}
+function bindReviewDraft(app, files) {
+  const before = clone(files[app.profile.source.registerFiles.apps].apps[0]);
+  const link = {frameworkId:'AVG',article:'art. 30',status:'Onderbouwd',evidence:'Fictief vastgesteld besluit',reviewedBy:'Testbeoordelaar',reviewedAt:'2026-11-20',nextReviewAt:'2027-11-20'};
+  const after = {...clone(before),frameworkLinks:[link]}, proposed = clone(files);
+  proposed[app.profile.source.registerFiles.apps].apps[0] = after;
+  const input = app.context.AssuranceAdapter.fromDocuments(app.profile, proposed, catalog, {asOf:'2026-11-21',sourceVersion:''});
+  const record = input.records.find(item => item.type === 'apps' && item.id === after.id);
+  link.reviewBinding = app.context.AssuranceEngine.createReviewBinding(input, record, link);
+  return {type:'apps',id:after.id,before,after,changed:['frameworkLinks'],reason:'Expliciete beoordeling voor deze bronversie',sourceScope:app.context.AssuranceProfile.scopeKey(app.profile)};
+}
+function currentBinding(app, files, id = 'APP-001') {
+  const input = app.context.AssuranceAdapter.fromDocuments(app.profile, files, catalog, {asOf:'2026-11-21',sourceVersion:''});
+  const record = input.records.find(item => item.type === 'apps' && item.id === id);
+  return app.context.AssuranceEngine.inspectReviewBinding(input, record, record.data.frameworkLinks[0]);
+}
+
+test('Een normbeoordeling vraagt expliciete bevestiging en gewone inhoudsbewerking bindt niet opnieuw', async () => {
+  const original = {id:'APP-001',name:'Fictieve toepassing',description:'Oorspronkelijke inhoud',sources:['S-1'],frameworkLinks:[{frameworkId:'AVG',article:'art. 30',status:'In onderzoek',evidence:'Fictief bewijs'}]};
+  const app = await setup([original]); const source = approvedSource(app); app.state.sourceRegister.set(source.id, source);
+  app.open();
+  let row = app.document.getElementById('cardFrameworkRows').children[0];
+  for (const [field, value] of Object.entries({status:'Onderbouwd',reviewedBy:'Testbeoordelaar',reviewedAt:'2026-11-20',nextReviewAt:'2027-11-20'})) row.querySelector('[data-part="'+field+'"]').value = value;
+  assert.equal(row.querySelector('[data-part="confirmReviewBinding"]').checked, false);
+  app.save();
+  assert.equal(app.cards.drafts().length, 0);
+  assert.match(app.document.getElementById('cardFeedback').textContent, /Bevestig de gewijzigde beoordeling/);
+  row.querySelector('[data-part="confirmReviewBinding"]').checked = true;
+  app.save();
+  const first = clone(app.cards.drafts()[0]); assert.ok(first.after.frameworkLinks[0].reviewBinding);
+  const files = filesWithSources(app); files[app.profile.source.registerFiles.apps].apps[0] = clone(first.after);
+  assert.equal(currentBinding(app, files).status, 'current');
+  app.open(); row = app.document.getElementById('cardFrameworkRows').children[0];
+  assert.equal(row.querySelector('[data-part="confirmReviewBinding"]').checked, false);
+  app.set('description', 'Inhoud gewijzigd zonder nieuw oordeel'); app.save();
+  const changed = clone(app.cards.drafts()[0]);
+  assert.deepEqual(changed.after.frameworkLinks[0].reviewBinding, first.after.frameworkLinks[0].reviewBinding);
+  files[app.profile.source.registerFiles.apps].apps[0] = changed.after;
+  assert.equal(currentBinding(app, files).status, 'stale');
+});
+
+test('Een nieuwe review past niet stil op remote inhoud die buiten de gewijzigde velden veranderde', async () => {
+  const app = await setup(); const source = approvedSource(app); app.state.sourceRegister.set(source.id, source);
+  const files = filesWithSources(app), draft = bindReviewDraft(app, files);
+  files[app.profile.source.registerFiles.apps].apps[0].extension = {changedAfterReview:true};
+  const before = JSON.stringify(files);
+  assert.throws(() => app.logic.applyDrafts(files, [draft], 'publisher', '2026-11-21T15:00:00Z', app.profile, catalog), /nieuwe beoordeling.*actuele gegevens/);
+  assert.equal(JSON.stringify(files), before);
+});
+
+test('Een nieuwe review wordt geweigerd na een remote bronaanvulling', async () => {
+  const app = await setup(); const source = approvedSource(app); app.state.sourceRegister.set(source.id, source);
+  const files = filesWithSources(app), draft = bindReviewDraft(app, files);
+  files[app.profile.source.registerFiles.apps].apps[0].sources.push('Een later toegevoegde bron');
+  const before = JSON.stringify(files);
+  assert.throws(() => app.logic.applyDrafts(files, [draft], 'publisher', '2026-11-21T15:00:00Z', app.profile, catalog), /nieuwe beoordeling.*actuele gegevens/);
+  assert.equal(JSON.stringify(files), before);
+});
+
+test('Bindingscontrole gebruikt de finale bronwijziging in dezelfde batch, ongeacht volgorde', async () => {
+  const app = await setup(); const source = approvedSource(app); app.state.sourceRegister.set(source.id, source);
+  const original = filesWithSources(app), review = bindReviewDraft(app, original);
+  const change = {type:'sourceRegister',id:source.id,before:clone(source),after:{...clone(source),version:'2'},changed:['version'],reason:'Bronversie vernieuwd na de lokale beoordeling',sourceScope:review.sourceScope};
+  for (const batch of [[review,change],[change,review]]) {
+    const files = clone(original), before = JSON.stringify(files);
+    assert.throws(() => app.logic.applyDrafts(files, batch, 'publisher', '2026-11-21T15:00:00Z', app.profile, catalog), /nieuwe beoordeling.*actuele gegevens/);
+    assert.equal(JSON.stringify(files), before);
+  }
+});
+
+test('Een reeds verouderde review blijft bewaard bij een gewone gegevenscorrectie', async () => {
+  const app = await setup(); const source = approvedSource(app); app.state.sourceRegister.set(source.id, source);
+  const files = filesWithSources(app), reviewed = bindReviewDraft(app, files);
+  app.logic.applyDrafts(files, [reviewed], 'publisher', '2026-11-21T15:00:00Z', app.profile, catalog);
+  assert.equal(currentBinding(app, files).status, 'current');
+  const before = clone(files[app.profile.source.registerFiles.apps].apps[0]);
+  const edit = {type:'apps',id:before.id,before,after:{...clone(before),description:'Nieuwe inhoud'},changed:['description'],reason:'Gegevens gecorrigeerd zonder nieuwe beoordeling',sourceScope:reviewed.sourceScope};
+  app.logic.applyDrafts(files, [edit], 'publisher', '2026-11-21T16:00:00Z', app.profile, catalog);
+  assert.equal(currentBinding(app, files).status, 'stale');
+  assert.deepEqual(clone(files[app.profile.source.registerFiles.apps].apps[0].frameworkLinks[0].reviewBinding), clone(before.frameworkLinks[0].reviewBinding));
+});
+
+test('Een nieuw bronbesluit wordt pas na samenvoegen gecontroleerd en een auditstempel maakt het niet ongeldig', async () => {
+  const app = await setup(), approved = approvedSource(app);
+  const original = {...clone(approved),approvalStatus:'Nog te beoordelen'}; delete original.approvalBinding;
+  app.state.sourceRegister.set(original.id, original);
+  const draft = {type:'sourceRegister',id:approved.id,before:clone(original),after:clone(approved),changed:['approvalStatus','approvalBinding'],reason:'Brongebruik expliciet goedgekeurd voor deze gegevens',sourceScope:app.context.AssuranceProfile.scopeKey(app.profile)};
+  const valid = filesWithSources(app);
+  app.logic.applyDrafts(valid, [draft], 'publisher', '2026-11-21T15:00:00Z', app.profile, catalog);
+  const written = valid[app.profile.source.registerFiles.sourceRegister].sourceRegister[0];
+  assert.equal(written.auditTrail[0].actor, 'publisher');
+  const context = {asOf:'2026-11-21',organisationId:app.profile.organisation.id,scopeId:draft.sourceScope};
+  assert.equal(app.context.AssuranceSourceRegister.inspectApprovalBinding(written, context).status, 'current');
+  const conflicted = filesWithSources(app); conflicted[app.profile.source.registerFiles.sourceRegister].sourceRegister[0].allowedUse = 'Remote gewijzigd gebruik';
+  const snapshot = JSON.stringify(conflicted);
+  assert.throws(() => app.logic.applyDrafts(conflicted, [draft], 'publisher', '2026-11-21T15:00:00Z', app.profile, catalog), /nieuwe brongoedkeuring.*actuele gegevens/);
+  assert.equal(JSON.stringify(conflicted), snapshot);
+});
+
+test('Gewijzigde regels of catalogusinhoud maken een nieuwe lokale review onbruikbaar', async () => {
+  const app = await setup(); const source = approvedSource(app); app.state.sourceRegister.set(source.id, source);
+  const files = filesWithSources(app), draft = bindReviewDraft(app, files), changedCatalog = clone(catalog);
+  changedCatalog.references[0].name += ' gewijzigde uitleg';
+  assert.throws(() => app.logic.applyDrafts(files, [draft], 'publisher', '2026-11-21T15:00:00Z', app.profile, changedCatalog), /nieuwe beoordeling.*actuele gegevens/);
+});
+
+test('Een verdubbelde oude review omzeilt de bindingscontrole niet', async () => {
+  const link = {frameworkId:'AVG',article:'art. 30',status:'Onderbouwd',evidence:'Fictief bewijs',reviewedBy:'Testbeoordelaar',reviewedAt:'2026-11-20'};
+  const record = {id:'APP-001',name:'Fictief',sources:['S-1'],frameworkLinks:[link]};
+  const app = await setup([record]); const source = approvedSource(app); app.state.sourceRegister.set(source.id, source);
+  const files = filesWithSources(app), draft = {type:'apps',id:record.id,before:clone(record),after:{...clone(record),frameworkLinks:[clone(link),clone(link)]},changed:['frameworkLinks'],reason:'Dubbele oude review vereist alsnog een nieuwe binding',sourceScope:app.context.AssuranceProfile.scopeKey(app.profile)};
+  const before = JSON.stringify(files);
+  assert.throws(() => app.logic.applyDrafts(files, [draft], 'publisher', '2026-11-21T15:00:00Z', app.profile, catalog), /nieuwe beoordeling.*actuele gegevens/);
+  assert.equal(JSON.stringify(files), before);
+});
+
+test('Een bronkaart toont provenance als object of lijst zonder de brongegevens te wijzigen', async () => {
+  const seed=JSON.parse(read('tools/ict-scan/bronnen/2026-bronnenregister.json')).sourceRegister;
+  const grouped=seed.find(source=>source.provenance?.file);
+  assert.ok(grouped,'De gegroepeerde bronfixture ontbreekt');
+  for(const provenance of [clone(grouped.provenance),[{file:grouped.provenance.file,sheet:'Tabblad',row:0}]]){
+    const app=await setup(),source={...clone(grouped),provenance};
+    app.state.sourceRegister.set(source.id,source);
+    assert.doesNotThrow(()=>app.cards.open('sourceRegister',source.id,false,'manager'));
+    const visible=node=>[node.textContent||'',...(node.children||[]).flatMap(child=>visible(child))];
+    assert.ok(visible(app.document.body).join('\n').includes(grouped.provenance.file));
+    assert.deepEqual(app.state.sourceRegister.get(source.id),source);
+    assert.doesNotThrow(()=>app.cards.open('sourceRegister',source.id,true,'manager'));
+    assert.deepEqual(app.state.sourceRegister.get(source.id),source);
+  }
+});
+
+test('Een gewone naamwijziging bewaart exacte bronaliassen met spaties, tabs en regeleinden', async () => {
+  const app=await setup(),source=approvedSource(app,{referenceKeys:[' Exacte bronref ','\tTweede bron\t','Verwijzing\nmet regeleinde']});
+  source.approvalStatus='Nog te beoordelen';delete source.approvalBinding;
+  app.state.sourceRegister.set(source.id,source);
+  app.cards.open('sourceRegister',source.id,true,'manager');app.set('name','Alleen de naam is gewijzigd');app.save();
+  const draft=app.cards.drafts()[0];assert.ok(draft);
+  assert.deepEqual(clone(draft.after.referenceKeys),source.referenceKeys);
+  assert.equal(draft.changed.includes('referenceKeys'),false);
+});
+
+test('Expliciete aliasinvoer bewaart randspaties en tabs en weigert een regel met alleen spaties', async () => {
+  const app=await setup(),source=approvedSource(app);source.approvalStatus='Nog te beoordelen';delete source.approvalBinding;
+  app.state.sourceRegister.set(source.id,source);app.cards.open('sourceRegister',source.id,true,'manager');
+  app.set('referenceKeys',' Eerste bron \n\tTweede bron\t');app.save();
+  assert.deepEqual(clone(app.cards.drafts()[0].after.referenceKeys),[' Eerste bron ','\tTweede bron\t']);
+  const accepted=clone(app.cards.drafts()[0]);
+  app.cards.open('sourceRegister',source.id,true,'manager');app.set('referenceKeys',' \t ');app.save();
+  assert.deepEqual(clone(app.cards.drafts()[0]),accepted);
+  assert.match(app.document.getElementById('cardFeedback').textContent,/alleen spaties/);
+});
+
+test('Een bevestigde normreview bewaart een onbekend null-veld en blijft geldig na remote samenvoegen', async () => {
+  const original={id:'APP-001',name:'Fictief',description:'Inhoud',sources:['S-1'],extension:null,frameworkLinks:[{frameworkId:'AVG',article:'art. 30',status:'In onderzoek',evidence:'Fictief bewijs'}]};
+  const app=await setup([original]),source=approvedSource(app);app.state.sourceRegister.set(source.id,source);app.open();
+  const row=app.document.getElementById('cardFrameworkRows').children[0];
+  for(const [field,value] of Object.entries({status:'Onderbouwd',reviewedBy:'Testbeoordelaar',reviewedAt:'2026-11-20',nextReviewAt:'2027-11-20'}))row.querySelector('[data-part="'+field+'"]').value=value;
+  row.querySelector('[data-part="confirmReviewBinding"]').checked=true;app.save();
+  const draft=app.cards.drafts()[0];assert.ok(draft);assert.ok(Object.hasOwn(draft.after,'extension'));assert.equal(draft.after.extension,null);
+  assert.equal(draft.changed.includes('extension'),false);
+  const files=filesWithSources(app);
+  assert.doesNotThrow(()=>app.logic.applyDrafts(files,[draft],'publisher','2026-11-21T15:00:00Z',app.profile,catalog));
+  assert.equal(currentBinding(app,files).status,'current');
+  assert.equal(files[app.profile.source.registerFiles.apps].apps[0].extension,null);
 });

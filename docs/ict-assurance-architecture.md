@@ -2,7 +2,7 @@
 
 ## Keuze
 
-De toepassing krijgt gedeelde controlecode en afzonderlijke organisatieprofielen. Emmauscollege blijft de eerste toepassing. De bestaande bronregistraties, relaties, kaarteditor, rapportages en GitHub-voorstellen blijven behouden.
+De toepassing gebruikt gedeelde controlecode en afzonderlijke organisatieprofielen. Emmauscollege blijft de eerste toepassing. De bestaande bronregistraties, relaties, kaarteditor, rapportages en GitHub-voorstellen blijven behouden.
 
 Deze keuze maakt de regels herhaalbaar in browser en CI. Zij voorkomt dat een nieuwe organisatie een kopie met afwijkende controlelogica nodig heeft. Dezelfde wijziging maakt het volledige dashboard nog niet geschikt voor iedere sector. Onderwijslabels, importconventies en gebruikershandelingen vragen bij een volgende toepassing een eigen beproeving.
 
@@ -16,7 +16,7 @@ Een volledige herschrijving zou bestaande bronbewaring en gebruikershandelingen 
 | Bronadapter | Bestanden lezen, werkelijke revisie vastleggen, records aanbieden | Nieuwe feiten of onbewezen lokale instellingen |
 | Controlefunctie | Vaste regels toepassen op records, context, policy en eerdere versie | Modelaanroepen, zelfstandig netwerkverkeer of wijziging van de bron |
 | Resultaatweergave | Uitkomst, reden, bereik en peildatum tonen | Een algemeen keurmerk voor juridische of onderwijskundige kwaliteit |
-| Wijzigingsroute | Concept, bronvergelijking, logboek en reviewbaar voorstel | Rechtstreekse goedkeuring van een eigen beoordeling |
+| Wijzigingsroute | Concept, bronvergelijking, logboek en controle van nieuwe bevestigingen vóór een GitHub-voorstel | Identiteitscontrole of een verplicht tweede menselijk oordeel |
 
 Een Web Worker of CI-job is een plaats waar code draait. De workernaam geeft geen extra inhoudelijke betrouwbaarheid. De onderzochte invoer, uitgevoerde regels en bewaarde resultaten leveren het bewijs.
 
@@ -31,6 +31,7 @@ De bestaande websitecode is onderzocht op branch `feat/ict-scan-en18286-observat
 | `tools/ict-scan/answer-engine.js` | Bestaande code behouden | Vaste FAQ-antwoorden en selecties uit ingelezen gegevens zonder generatief antwoord | Antwoordkwaliteit hangt ook af van de broninhoud en de ondersteunde vraagroute. |
 | `tools/ict-scan/assurance/profile.js` | Nieuwe code | Profielvalidatie, onveranderlijke configuratie en gescheiden bronidentiteiten | Een geldig profiel bewijst geen rechten op de genoemde repository. |
 | `tools/ict-scan/assurance/engine.js` | Nieuwe code | Herhaalbare controle-uitkomsten op expliciete invoer | Resultaten gelden voor de geïmplementeerde regels en de onderzochte versie. |
+| `tools/ict-scan/assurance/source-register.js` | Nieuwe code | Exacte bronverwijzingen oplossen, bronmetadata controleren en bronbevestigingen vergelijken | Verifieert geen broninhoud, rechten of identiteit buiten de aangeleverde registratie. |
 | EAI Standard `system-profiles/` | Ontwerp en mogelijke mapping onderzocht; geen runtime overgenomen | Capaciteit, configuratie, observatie en bewijs onderscheiden | Kandidaatcontract; geen bewijs dat dit dashboard de hele EAI Standard implementeert. |
 
 De aanwezige import- en kaarttests zijn als regressies relevant. Het actuele uitvoeringsbewijs bestaat uit de testresultaten voor de geleverde commit. Een groene historische run, een gelezen test of een bestandsnaam is geen vervanging daarvoor. Voor overname van extra code uit andere repositories moet dezelfde tabel worden aangevuld met broncommit, exacte bestanden, licentie, aanpassingen en een test die de bedoelde bijdrage controleert.
@@ -51,7 +52,81 @@ De actuele EAI Standard is gericht onderzocht op commit `bb200eac693c63acafbebbf
 
 Bronnen voor deze mapping zijn het [status-evidence-contract](https://github.com/E-AI-MODEL/EAI-standard/blob/bb200eac693c63acafbebbf49e06bdeed87b16f8/system-profiles/status-evidence-contract.yaml), het [verificatieschema](https://github.com/E-AI-MODEL/EAI-standard/blob/bb200eac693c63acafbebbf49e06bdeed87b16f8/system-profiles/verification-event.schema.json) en de [beschrijving van het evidence-register](https://github.com/E-AI-MODEL/EAI-standard/blob/bb200eac693c63acafbebbf49e06bdeed87b16f8/evidence/README.md). De tabel beschrijft een ontwerpaansluiting, geen al uitgevoerde conversie.
 
-Een corpus kan versie, herkomst, rechten, peildatum, claimverwijzingen en een beoordeling krijgen. Bewaar originele broninhoud, annotaties en evaluatievoorbeelden afzonderlijk. Een testverzameling krijgt vooraf vastgelegde verwachte uitkomsten. De uitkomsten mogen niet achteraf worden aangepast om een wijziging groen te laten lijken. Deze wijziging herschrijft geen corpusbron en voegt geen volledige normtekst aan een openbare dataset toe.
+Het bronregister ondersteunt versie, herkomst, rechten, gebruiksgrenzen en een bevestigde beoordeling. Originele broninhoud, annotaties en evaluatievoorbeelden blijven afzonderlijk. Het synthetische evaluatiecorpus is uitgebreid tot 31 gevallen met 35 vooraf vastgelegde verwachtingen, waaronder ontbrekende, verouderde en ongeldige bevestigingen. Dit corpus toetst de controlecode. Het is geen inhoudelijke evaluatie van een extern AI-systeem. De wijziging herschrijft geen oorspronkelijke corpusbron en voegt geen volledige normtekst aan de repository toe.
+
+## Vastgelegde bronnen en beoordelingen
+
+De twee geleverde profielen bevatten veertien registermappings: de bestaande
+dertien en `sourceRegister`. Oudere profielen met dertien mappings blijven
+leesbaar. De eerste toepassing bevat 450 oorspronkelijke inventarisrecords en
+51 voorgestelde bronregistraties. De 468 bestaande verwijzingen zijn exact aan
+die voorstellen gekoppeld via `referenceKeys`; een record kan ook expliciete
+`sourceIds` gebruiken. Dubbele, onbekende of dubbelzinnige verwijzingen leiden
+tot een melding. Er is geen semantische of modelgestuurde overeenkomst.
+
+Twee expliciete bestandsidentiteiten in de bestaande herkomstgegevens leveren
+twee brongroepen. De overige 49 verwijzingen blijven apart. De registratie
+verzint geen bronhouder, gebruiksrecht, bronversie of goedkeuring. Een ontbrekend
+bronregister blijft te onderscheiden van een bewust ingelezen leeg register.
+
+Native JSON-import bewaart de oorspronkelijke waarden per record-ID. Een korter
+veld, ingetrokken besluit, lege waarde of onbekend veld wordt niet door oudere
+inhoud overschreven. De geïmporteerde bestandsnaam staat in de laadgeschiedenis,
+niet als nieuwe bewijsverwijzing in iedere registratie. Export en herimport
+onder een andere bestandsnaam behouden de 501 records exact.
+
+Een bronbevestiging bewaart organisatie, toepassingsbereik en de brongegevens.
+Een normbeoordeling bewaart daarnaast de registratie, gekoppelde brongegevens,
+effectief beleid, volledige geladen kadercatalogus, registermapping en versies
+van de controlecode. Gewijzigde opgenomen inhoud of regels maken een eerdere
+bevestiging verouderd. De editor maakt een nieuwe bevestiging uitsluitend na een apart
+aangevinkt besluit van de gebruiker.
+
+De vergelijking negeert alleen de bovenste velden `auditTrail` en
+`frameworkLinks` van registraties en bronnen. De bronbevestiging sluit ook haar
+eigen `approvalBinding` uit; de normbeoordeling sluit haar eigen `reviewBinding`
+uit. Andere onbekende velden blijven onderdeel van de vergelijking.
+De volgorde van objectsleutels is niet betekenisvol; lijstvolgorde blijft behouden.
+De afzonderlijke lijst van opgeloste bronnen wordt op bron-ID gesorteerd.
+Afwezig, `null` en leeg zijn verschillende waarden. De module begrenst omvang,
+diepte en aantal waarden en weigert waarden die niet geldig als JSON kunnen
+worden bewaard.
+
+De peildatum, globale bestandsrevisie en globale invoerhash maken geen deel uit
+van de reviewbinding. De gekoppelde bronregels met hun eigen versie en eventuele
+inhoudshash wel. Datumcontroles gebruiken de actuele peildatum afzonderlijk.
+De adapter levert catalogus en registermapping via `reviewRules`. Een
+rechtstreekse engine-aanroep kan dit object weglaten; de binding legt die
+afwezigheid vast en bevat dan geen catalogus of mapping.
+`current` betekent dat de vastgelegde inhoud overeenkomt. De afzonderlijke
+metadata-, datum- en broncontroles kunnen nog steeds aandacht of een fout melden.
+
+Vóór een GitHub-voorstel worden nieuwe bevestigingen opnieuw vergeleken met de
+opgehaalde repositorygegevens plus de volledige voorgenomen wijzigingsbatch.
+Een gewijzigde bron binnen diezelfde batch telt dus mee. De schrijver neemt
+geen nieuwe bevestiging over uit een vervalste lokale vergelijkingsbasis en
+maakt zelf geen vervangende bevestiging. Bestaande beoordelingen mogen als
+verouderd bewaard blijven.
+
+Het profiel wijst met `source.configurationFiles` expliciet de profiel-,
+catalogus-, engine- en bronmodulebestanden in de ingestelde repository aan.
+De schrijver leest deze op dezelfde `baseSha` als de bronbestanden, vóór de
+eerste schrijfactie. Het volledige gevalideerde profiel en de volledige
+catalogus moeten overeenkomen met de lokaal gebruikte configuratie. Voor de
+engine en bronmodule worden de opgegeven versies vergeleken, zonder remote
+JavaScript uit te voeren. De schrijver volgt geen gewijzigde paden of
+repository uit een opgehaald profiel.
+
+Een oudere configuratie zonder deze expliciete paden blijft leesbaar, maar
+blokkeert publiceren. Een afzonderlijke datarepository moet de aangewezen
+configuratiebestanden bevatten. Dit voorkomt een stilzwijgende aanname dat
+een website-URL ook een repositorypad is. De versiecontrole van modules is
+geen vergelijking van alle uitvoerbare bytes; CI toetst de nieuwe commit.
+
+Dit is een controle op de geldigheid van een opgeslagen vergelijking. Het is
+geen cryptografisch bewijs van de identiteit of bevoegdheid van een beoordelaar.
+Een bevestigde bron met beperkt gebruik blijft een aandachtspunt. Een afgewezen
+bron blijft rood, ook wanneer de technische verwerking van dat besluit slaagt.
 
 ## Normverwijzingen
 

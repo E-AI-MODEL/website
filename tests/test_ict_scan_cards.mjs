@@ -11,18 +11,19 @@ const catalog=JSON.parse(read('tools/ict-scan/frameworks.json'));
 const main=JSON.parse(read('tools/ict-scan/bronnen/2026-applicatielandschap.json'));
 const work=JSON.parse(read('tools/ict-scan/bronnen/2026-werkregister.json'));
 const faq=JSON.parse(read('tools/ict-scan/bronnen/2026-faq.json'));
+const sourceRegister=JSON.parse(read('tools/ict-scan/bronnen/2026-bronnenregister.json'));
 const clone=v=>JSON.parse(JSON.stringify(v));
 const profile=JSON.parse(read('tools/ict-scan/assurance/profiles/emmauscollege.json'));
 const ctx={URL,window:{},document:{getElementById:()=>({addEventListener(){}})},TextEncoder,TextDecoder,atob,btoa,Uint8Array};
-vm.createContext(ctx);vm.runInContext(read('tools/ict-scan/assurance/profile.js'),ctx);vm.runInContext(read('tools/ict-scan/assurance/record-contract.js'),ctx);ctx.window.AssuranceRecord=ctx.AssuranceRecord;ctx.window.IctOrganisation={profile};vm.runInContext(githubSource,ctx);
+vm.createContext(ctx);vm.runInContext(read('tools/ict-scan/assurance/profile.js'),ctx);vm.runInContext(read('tools/ict-scan/assurance/source-register.js'),ctx);vm.runInContext(read('tools/ict-scan/assurance/engine.js'),ctx);ctx.window.AssuranceEngine=ctx.AssuranceEngine;vm.runInContext(read('tools/ict-scan/assurance/adapter.js'),ctx);vm.runInContext(read('tools/ict-scan/assurance/record-contract.js'),ctx);ctx.window.AssuranceRecord=ctx.AssuranceRecord;ctx.window.IctOrganisation={profile};vm.runInContext(githubSource,ctx);
 const sourceScope=ctx.window.AssuranceProfile.scopeKey(profile);
 const logic=ctx.window.EmmausCardGitLogic;
-function docs(){return {'2026-applicatielandschap.json':clone(main),'2026-werkregister.json':clone(work),'2026-faq.json':clone(faq)};}
+function docs(){return {'2026-applicatielandschap.json':clone(main),'2026-werkregister.json':clone(work),'2026-faq.json':clone(faq),'2026-bronnenregister.json':clone(sourceRegister)};}
 function change(type,record,fields){
   return {sourceScope,type,id:record.id,before:clone(record),after:{...clone(record),...fields},changed:Object.keys(fields),reason:'Broncorrectie op basis van vastgelegde inventarisatie'};
 }
-test('Één editor voor dertien registers, zonder weggooien bronvelden',()=>{
-  for(const token of ["{key:'apps'","{key:'ai'","{key:'connections'","{key:'parts'","{key:'additionalCandidates'","{key:'checks'","{key:'dpia'","{key:'aiControls'","{key:'devices'","{key:'licenseReview'","{key:'workActions'","{key:'softwareReview'","{key:'faqs'"])
+test('Één editor voor veertien registers, zonder weggooien bronvelden',()=>{
+  for(const token of ["{key:'apps'","{key:'ai'","{key:'connections'","{key:'parts'","{key:'additionalCandidates'","{key:'checks'","{key:'dpia'","{key:'aiControls'","{key:'devices'","{key:'licenseReview'","{key:'workActions'","{key:'softwareReview'","{key:'faqs'","{key:'sourceRegister'"])
     assert.ok(cardSource.includes(token),token);
   assert.ok(cardSource.includes("'sourceFields'"));
   assert.ok(cardSource.includes("'otherDescription'"));

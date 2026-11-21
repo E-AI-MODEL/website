@@ -1,6 +1,6 @@
 {
   "schema": "eai-ict-assurance-profile-v1",
-  "profileVersion": "1.0.0",
+  "profileVersion": "1.2.0",
   "organisation": {
     "id": "example-organisation",
     "name": "Example Organisation (fictief)",
@@ -24,7 +24,14 @@
       "licenseReview": "inventory.json",
       "workActions": "inventory.json",
       "softwareReview": "inventory.json",
-      "faqs": "inventory.json"
+      "faqs": "inventory.json",
+      "sourceRegister": "source-register.json"
+    },
+    "configurationFiles": {
+      "profile": "configuration/organisation.json",
+      "catalog": "configuration/frameworks.json",
+      "engine": "configuration/assurance/engine.js",
+      "sourceRegister": "configuration/assurance/source-register.js"
     }
   },
   "policy": {

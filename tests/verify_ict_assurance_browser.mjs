@@ -14,6 +14,8 @@ const readJson=path=>JSON.parse(readFileSync(path,'utf8'));
 const manifest=readJson(resolve(root,'tools/ict-scan/bronnen/manifest.json'));
 const sourceFiles=manifest.dataFiles.map(file=>resolve(root,'tools/ict-scan/bronnen',file.path));
 const expectedRecords=manifest.dataFiles.reduce((total,file)=>total+Object.values(file.recordCounts).reduce((sum,count)=>sum+count,0),0);
+const expectedSourceRecords=manifest.dataFiles.reduce((total,file)=>total+(file.recordCounts.sourceRegister||0),0);
+const expectedInventoryRecords=expectedRecords-expectedSourceRecords;
 const corpus=readJson(resolve(root,'tools/ict-scan/assurance/evaluation-corpus.json'));
 const headerSource=readFileSync(resolve(root,'tools/ict-scan/.htaccess'),'utf8');
 const responseHeaders=Object.fromEntries([...headerSource.matchAll(/^\s*Header\s+(?:always\s+)?set\s+([\w-]+)\s+"([^"]*)"\s*$/gm)].map(match=>[match[1].toLowerCase(),match[2]]));
@@ -23,7 +25,7 @@ const fixturePrefix='/__assurance_guard_only';
 const types={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.mjs':'text/javascript; charset=utf-8','.json':'application/json; charset=utf-8','.css':'text/css; charset=utf-8','.svg':'image/svg+xml','.png':'image/png','.jpg':'image/jpeg'};
 const externalRequests=[],pageErrors=[],completedSteps=[];
 let browser,context,page,server,origin;
-const summary={passed:false,expectedRecords,expectedEvaluationCases:corpus.cases.length,completedSteps,externalRequests,pageErrors,headerFixture:{source:'tools/ict-scan/.htaccess',headers:responseHeaders,productionResponseVerified:false}};
+const summary={passed:false,expectedRecords,expectedInventoryRecords,expectedSourceRecords,expectedEvaluationCases:corpus.cases.length,completedSteps,externalRequests,pageErrors,headerFixture:{source:'tools/ict-scan/.htaccess',headers:responseHeaders,productionResponseVerified:false}};
 const finishStep=(name,details={})=>{completedSteps.push({name,...details});process.stdout.write('Geslaagd: '+name+'\n');};
 function serve(request,response){
   try {
@@ -73,6 +75,185 @@ async function assertFits(target,label){
   }
   return dimensions;
 }
+async function openCard(target,type,id){
+  await target.locator('#cardTypeFilter').selectOption(type);
+  await target.locator('#cardSearch').fill(id);
+  const item=target.locator('#cardBrowserList .card-browser-item').filter({hasText:id});
+  assert.equal(await item.count(),1,'Er moet precies één kaart zijn voor '+id);
+  await item.click();
+  assert.equal(await target.locator('#cardRecordId').innerText(),id);
+}
+async function saveCard(target){
+  await target.locator('#cardSaveDraft').click();
+  await target.locator('#cardForm').waitFor({state:'hidden',timeout:10000});
+  assert.match(await target.locator('#cardFeedback').innerText(),/Concept bewaard/);
+}
+async function draft(target,type,id){
+  return target.evaluate(({type,id})=>window.EmmausRecordCards.drafts().find(item=>item.type===type&&item.id===id),{type,id});
+}
+async function inspectSyntheticBindings(target,sourceId,recordId){
+  return target.evaluate(({sourceId,recordId})=>{
+    const profile=window.IctOrganisation.profile;
+    const registers=Object.fromEntries(Object.keys(profile.source.registerFiles).map(type=>[type,[]]));
+    for(const item of window.EmmausRecordCards.drafts())registers[item.type].push(item.after);
+    // Read the actual UI-created drafts. No approval or review binding is
+    // constructed or altered by the test's inspection code.
+    const input=window.AssuranceAdapter.fromRegisters(profile,registers,window.EmmausRecordCards.catalog(),{asOf:new Date().toISOString().slice(0,10)});
+    const source=input.records.find(item=>item.type==='sourceRegister'&&item.id===sourceId);
+    const record=input.records.find(item=>item.type==='apps'&&item.id===recordId);
+    const link=record?.data.frameworkLinks?.[0];
+    return {approval:window.AssuranceSourceRegister.inspectApprovalBinding(source.data,input.context),
+      review:link?window.AssuranceEngine.inspectReviewBinding(input,record,link):null};
+  },{sourceId,recordId});
+}
+async function exerciseBoundApprovals(target){
+  const sourceId='SRC-99001',recordId='APP-99002';
+  const reference='Uitsluitend synthetische bron voor de lokale browserproef';
+  const setup=await target.evaluate(()=>{
+    const date=new Date(),asOf=date.toISOString().slice(0,10);
+    date.setUTCDate(date.getUTCDate()+30);
+    return {asOf,nextReviewAt:date.toISOString().slice(0,10),files:window.IctOrganisation.profile.source.registerFiles};
+  });
+  const sourceDocument={schema:'eai-school-ict-v1',sourceRegister:[{id:sourceId,name:'Synthetische bron, nog in te vullen',referenceKeys:[]}]};
+  const inventoryDocument={schema:'eai-school-ict-v1',apps:[{id:recordId,name:'Fictieve toepassing voor bevestigingsproef',description:'Oorspronkelijke synthetische inhoud',sources:[reference],sourceIds:[]}]};
+  // Matching configured filenames exercise the importer's ordinary source-name
+  // normalization. Every approval field is completed in the real card form.
+  await target.locator('#fileInput').setInputFiles([
+    {name:setup.files.sourceRegister,mimeType:'application/json',buffer:Buffer.from(JSON.stringify(sourceDocument))},
+    {name:setup.files.apps,mimeType:'application/json',buffer:Buffer.from(JSON.stringify(inventoryDocument))}
+  ]);
+  await waitForChecks(target,expectedRecords+3);
+  await target.setViewportSize({width:1440,height:960});
+  await target.locator('#cardOpen').click();
+  await target.locator('#cardEditor').waitFor({state:'visible'});
+  await target.locator('#cardTypeFilter').selectOption('sourceRegister');
+  await target.locator('#cardNew').click();
+  assert.equal(await target.locator('#cardRecordId').innerText(),'SRC-99002','Een nieuwe bronkaart moet een geldig bron-ID met minimaal vijf cijfers krijgen');
+  assert.equal(await target.locator('#cardFormFields [data-field="owner"]').inputValue(),'');
+  assert.equal(await target.locator('#cardFormFields [name="confirmSourceApproval"]').isChecked(),false);
+  await target.locator('#cardCancelEdit').click();
+  assert.equal(await draft(target,'sourceRegister','SRC-99002'),undefined);
+  await openCard(target,'sourceRegister',sourceId);
+  await target.locator('#cardEditButton').click();
+  for(const [field,value] of Object.entries({
+    name:'Synthetische bron voor bevestigingsproef',owner:'Fictieve bronhouder',version:'browser-1',
+    rightsBasis:'Zelfgemaakt synthetisch testmateriaal',allowedUse:'Uitsluitend deze lokale browserproef',
+    scope:'Fictieve toepassing '+recordId,retention:'Verwijderen na de browserproef',
+    approvedBy:'Fictieve bronbeoordelaar',approvedAt:setup.asOf,
+    approvalEvidence:'Synthetisch toestemmingsbewijs voor browserproef',nextReviewAt:setup.nextReviewAt
+  }))await target.locator('#cardFormFields [data-field="'+field+'"]').fill(value);
+  await target.locator('#cardFormFields [data-field="rightsStatus"]').selectOption('Toegestaan');
+  await target.locator('#cardFormFields [data-field="approvalStatus"]').selectOption('Goedgekeurd');
+  await target.locator('#cardFormFields [name="referenceKeys"]').fill(reference);
+  await target.locator('#cardFormFields [name="changeReason"]').fill('Synthetische bron volledig invullen en expliciet goedkeuren.');
+  const sourceConfirmation=target.locator('#cardFormFields [name="confirmSourceApproval"]');
+  assert.equal(await sourceConfirmation.isChecked(),false);
+  await target.locator('#cardSaveDraft').click();
+  await target.locator('#cardFeedback').filter({hasText:/Bevestig de gewijzigde brongoedkeuring/}).waitFor();
+  assert.equal(await target.locator('#cardForm').isVisible(),true);
+  assert.equal(await draft(target,'sourceRegister',sourceId),undefined,'Zonder bevestiging mag geen goedgekeurd bronconcept ontstaan');
+  await sourceConfirmation.check();
+  await saveCard(target);
+  const approvedSource=await draft(target,'sourceRegister',sourceId);
+  assert.ok(approvedSource.after.approvalBinding,'De echte bronbevestiging moet een binding vastleggen');
+  assert.equal((await inspectSyntheticBindings(target,sourceId,recordId)).approval.status,'current');
+  await target.locator('#cardReadView [data-target="source"]').click();
+  assert.match(await target.locator('#cardTabPanelsource').innerText(),/Goedkeuring bevestigd voor deze bronversie/);
+  await target.screenshot({path:resolve(output,'approved-source.png')});
+  finishStep('Bron via formulier ingevuld en uitsluitend na expliciete bevestiging goedgekeurd',{sourceId,screenshot:'approved-source.png'});
+
+  await openCard(target,'apps',recordId);
+  await target.locator('#cardEditButton').click();
+  await target.getByRole('button',{name:'+ Bron koppelen',exact:true}).click();
+  await target.locator('#cardSourceRows [data-part="sourceId"]').selectOption(sourceId);
+  await target.getByRole('button',{name:'+ Toetsing',exact:true}).click();
+  const review=target.locator('#cardFrameworkRows [data-group="framework"]');
+  assert.equal(await review.count(),1);
+  await review.locator('[data-part="frameworkId"]').selectOption('EN18286');
+  await review.locator('[data-part="article"]').fill('8.4');
+  await review.locator('[data-part="status"]').selectOption('Onderbouwd');
+  await review.locator('[data-part="evidence"]').fill(sourceId+' / synthetisch bewijs voor browserproef');
+  await review.locator('[data-part="note"]').fill('Alleen fictieve gegevens; geen oordeel over een echte organisatie.');
+  await review.locator('[data-part="role"]').selectOption('Gebruiksverantwoordelijke');
+  await review.locator('[data-part="reviewedBy"]').fill('Fictieve normbeoordelaar');
+  await review.locator('[data-part="reviewedAt"]').fill(setup.asOf);
+  await review.locator('[data-part="nextReviewAt"]').fill(setup.nextReviewAt);
+  await review.locator('[data-part="followUpStatus"]').selectOption('Niet van toepassing');
+  await target.locator('#cardFormFields [name="changeReason"]').fill('Synthetische beoordeling met een exact gekoppelde, goedgekeurde bron.');
+  const reviewConfirmation=review.locator('[data-part="confirmReviewBinding"]');
+  assert.equal(await reviewConfirmation.isChecked(),false);
+  await target.locator('#cardSaveDraft').click();
+  await target.locator('#cardFeedback').filter({hasText:/Bevestig de gewijzigde beoordeling/}).waitFor();
+  assert.equal(await draft(target,'apps',recordId),undefined,'Zonder bevestiging mag geen afgerond beoordelingsconcept ontstaan');
+  await reviewConfirmation.check();
+  await saveCard(target);
+  const reviewedRecord=await draft(target,'apps',recordId);
+  const originalReviewBinding=reviewedRecord.after.frameworkLinks[0].reviewBinding;
+  assert.ok(originalReviewBinding);
+  assert.deepEqual(reviewedRecord.after.sourceIds,[sourceId]);
+  assert.deepEqual(originalReviewBinding.basis.sourceIds,[sourceId]);
+  const confirmed=await inspectSyntheticBindings(target,sourceId,recordId);
+  assert.equal(confirmed.approval.status,'current');
+  assert.equal(confirmed.review.status,'current');
+  await target.locator('#cardReadView [data-target="links"]').click();
+  assert.match(await target.locator('#cardTabPanellinks').innerText(),/Bevestigd voor deze gegevens/);
+  finishStep('Normbeoordeling via formulier bevestigd voor exacte inhoud en gekoppelde bron',{recordId,sourceId});
+
+  await openCard(target,'sourceRegister',sourceId);
+  await target.locator('#cardEditButton').click();
+  assert.equal(await target.locator('[name="confirmSourceApproval"]').isChecked(),false);
+  await target.locator('#cardFormFields [data-field="version"]').fill('browser-2');
+  await target.locator('#cardFormFields [name="changeReason"]').fill('Bronversie gewijzigd zonder de eerdere goedkeuring te vernieuwen.');
+  await saveCard(target);
+  const changedSource=await draft(target,'sourceRegister',sourceId);
+  assert.deepEqual(changedSource.after.approvalBinding,approvedSource.after.approvalBinding,'Een broncorrectie mag niet stil opnieuw goedkeuren');
+  await target.locator('#cardReadView [data-target="source"]').click();
+  assert.match(await target.locator('#cardTabPanelsource').innerText(),/Brongegevens gewijzigd: opnieuw goedkeuren/);
+  const sourceChanged=await inspectSyntheticBindings(target,sourceId,recordId);
+  assert.equal(sourceChanged.approval.status,'stale');
+  assert.equal(sourceChanged.review.status,'stale');
+  assert.ok(sourceChanged.review.findings.some(item=>item.part==='sources'));
+  await openCard(target,'apps',recordId);
+  await target.locator('#cardReadView [data-target="links"]').click();
+  assert.match(await target.locator('#cardTabPanellinks').innerText(),/Gegevens of beoordeling gewijzigd: opnieuw beoordelen/);
+  assert.deepEqual((await draft(target,'apps',recordId)).after.frameworkLinks[0].reviewBinding,originalReviewBinding);
+  finishStep('Gewijzigde bron maakt bestaande bron- en normbevestiging verouderd zonder herbinding');
+
+  // Restore precisely the reviewed source content through the same form, then
+  // change only the inventory content. This isolates the two stale conditions.
+  await openCard(target,'sourceRegister',sourceId);
+  await target.locator('#cardEditButton').click();
+  assert.equal(await target.locator('[name="confirmSourceApproval"]').isChecked(),false);
+  await target.locator('#cardFormFields [data-field="version"]').fill('browser-1');
+  await target.locator('#cardFormFields [name="changeReason"]').fill('De oorspronkelijke synthetische bronversie herstellen voor een afzonderlijke inhoudsproef.');
+  await saveCard(target);
+  assert.deepEqual((await draft(target,'sourceRegister',sourceId)).after.approvalBinding,approvedSource.after.approvalBinding);
+  const restored=await inspectSyntheticBindings(target,sourceId,recordId);
+  assert.equal(restored.approval.status,'current');
+  assert.equal(restored.review.status,'current');
+  await openCard(target,'apps',recordId);
+  await target.locator('#cardEditButton').click();
+  assert.equal(await target.locator('[data-part="confirmReviewBinding"]').isChecked(),false);
+  await target.locator('#cardFormFields [data-field="description"]').fill('Gewijzigde synthetische inhoud die nog niet opnieuw is beoordeeld');
+  await target.locator('#cardFormFields [name="changeReason"]').fill('Alleen de inhoud aanpassen met behoud van de oorspronkelijke beoordeling.');
+  await saveCard(target);
+  const changedRecord=await draft(target,'apps',recordId);
+  assert.deepEqual(changedRecord.after.frameworkLinks[0].reviewBinding,originalReviewBinding,'Een inhoudscorrectie mag de beoordeling niet stil opnieuw binden');
+  const contentChanged=await inspectSyntheticBindings(target,sourceId,recordId);
+  assert.equal(contentChanged.approval.status,'current');
+  assert.equal(contentChanged.review.status,'stale');
+  assert.ok(contentChanged.review.findings.some(item=>item.part==='record'));
+  assert.ok(!contentChanged.review.findings.some(item=>item.part==='sources'),'De inhoudsproef moet een ongewijzigde bron gebruiken');
+  await target.locator('#cardReadView [data-target="links"]').click();
+  assert.match(await target.locator('#cardTabPanellinks').innerText(),/Gegevens of beoordeling gewijzigd: opnieuw beoordelen/);
+  await target.screenshot({path:resolve(output,'stale-review.png')});
+  summary.boundApprovals={sourceId,recordId,explicitSourceApprovalRequired:true,explicitReviewConfirmationRequired:true,
+    sourceChange:{approval:sourceChanged.approval.status,review:sourceChanged.review.status},
+    contentChange:{approval:contentChanged.approval.status,review:contentChanged.review.status},originalBindingsPreserved:true,
+    screenshots:{approvedSource:'approved-source.png',staleReview:'stale-review.png'}};
+  finishStep('Gewijzigde inhoud toont de oorspronkelijke beoordeling als verouderd en behoudt de bronbevestiging',{screenshot:'stale-review.png'});
+  await target.locator('#cardEditorClose').click();
+}
 try {
   const dependencyRoot=process.env.ASSURANCE_PLAYWRIGHT_ROOT;
   const require=dependencyRoot?createRequire(resolve(dependencyRoot,'package.json')):createRequire(import.meta.url);
@@ -110,6 +291,9 @@ try {
   assert.equal(await page.locator('#assuranceChecks .assurance-check').count(),5);
   const initial=await downloadJson(page,'#assuranceExport','initial-report.json');
   assert.equal(initial.checks.find(check=>check.id==='structure').coverage.records,expectedRecords);
+  assert.equal(initial.checks.find(check=>check.id==='structure').coverage.inventoryRecords,expectedInventoryRecords);
+  assert.equal(initial.checks.find(check=>check.id==='structure').coverage.sourceRegisterRecords,expectedSourceRecords);
+  assert.ok(expectedSourceRecords>0,'Het manifest moet het verplichte bronregister bevatten');
   assert.equal(initial.checks.find(check=>check.id==='structure').status,'pass');
   assert.equal(initial.checks.find(check=>check.id==='drift').status,'not_run');
   assert.equal(initial.checks.find(check=>check.id==='evaluation').status,'pass');
@@ -160,6 +344,8 @@ try {
   summary.mobile=await assertFits(page,'Mobiel 390');
   await page.screenshot({path:resolve(output,'mobile.png')});
   finishStep('Controleweergave past binnen een scherm van 390 pixels');
+
+  await exerciseBoundApprovals(page);
 
   const embedded=await context.newPage();
   embedded.on('pageerror',error=>pageErrors.push(error.message));

@@ -6,22 +6,23 @@
   else (typeof window === 'object' ? window : globalThis).AssuranceProfile = api;
 })(function () {
   const SCHEMA = 'eai-ict-assurance-profile-v1';
-  const REGISTERS = Object.freeze([
+  const LEGACY_REGISTERS = Object.freeze([
     'apps', 'ai', 'connections', 'parts', 'additionalCandidates', 'checks',
     'dpia', 'aiControls', 'devices', 'licenseReview', 'workActions',
     'softwareReview', 'faqs'
   ]);
+  const REGISTERS = Object.freeze([...LEGACY_REGISTERS, 'sourceRegister']);
   const fail = message => { throw new TypeError('Ongeldig organisatieprofiel: ' + message); };
   const object = (value, label) => {
     if (!value || typeof value !== 'object' || Array.isArray(value)) fail(label + ' moet een object zijn.');
   };
-  function keys(value, required, label) {
+  function keys(value, required, label, optional = []) {
     object(value, label);
     for (const key of required) {
       if (!Object.prototype.hasOwnProperty.call(value, key)) fail(label + '.' + key + ' ontbreekt.');
     }
     for (const key of Object.keys(value)) {
-      if (!required.includes(key)) fail(label + '.' + key + ' is niet ondersteund.');
+      if (!required.includes(key) && !optional.includes(key)) fail(label + '.' + key + ' is niet ondersteund.');
     }
   }
   function text(value, label, max = 240) {
@@ -66,7 +67,7 @@
       if (Intl.getCanonicalLocales(input.organisation.locale).length !== 1) fail('organisation.locale is ongeldig.');
     } catch (_) { fail('organisation.locale is ongeldig.'); }
 
-    keys(input.source, ['repository', 'baseRef', 'sourceDir', 'scopeId', 'registerFiles'], 'source');
+    keys(input.source, ['repository', 'baseRef', 'sourceDir', 'scopeId', 'registerFiles'], 'source', ['configurationFiles']);
     text(input.source.repository, 'source.repository', 200);
     if (!/^[A-Za-z0-9][A-Za-z0-9_.-]*\/[A-Za-z0-9][A-Za-z0-9_.-]*$/.test(input.source.repository) || input.source.repository.includes('..')) {
       fail('source.repository moet eigenaar/repository gebruiken.');
@@ -77,8 +78,18 @@
     }
     path(input.source.sourceDir, 'source.sourceDir');
     identifier(input.source.scopeId, 'source.scopeId');
-    keys(input.source.registerFiles, REGISTERS, 'source.registerFiles');
-    for (const type of REGISTERS) path(input.source.registerFiles[type], 'source.registerFiles.' + type, true);
+    keys(input.source.registerFiles, LEGACY_REGISTERS, 'source.registerFiles', ['sourceRegister']);
+    for (const type of Object.keys(input.source.registerFiles)) path(input.source.registerFiles[type], 'source.registerFiles.' + type, true);
+    if (Object.prototype.hasOwnProperty.call(input.source, 'configurationFiles')) {
+      const files = input.source.configurationFiles;
+      keys(files, ['profile', 'catalog', 'engine', 'sourceRegister'], 'source.configurationFiles');
+      for (const [type, file] of Object.entries(files)) {
+        const label = 'source.configurationFiles.' + type;
+        path(file, label, type === 'profile' || type === 'catalog');
+        if (['engine', 'sourceRegister'].includes(type) && !/\.js$/.test(file)) fail(label + ' moet naar een JavaScript-bestand verwijzen.');
+      }
+      if (new Set(Object.values(files)).size !== 4) fail('source.configurationFiles moet vier verschillende bestanden aanwijzen.');
+    }
 
     keys(input.policy, ['id', 'version', 'reviewMaxAgeDays', 'basis', 'description'], 'policy');
     identifier(input.policy.id, 'policy.id');
@@ -94,5 +105,5 @@
     const profile = validate(input);
     return [profile.organisation.id, profile.source.repository, profile.source.baseRef, profile.source.sourceDir, profile.source.scopeId].join('|');
   }
-  return Object.freeze({ SCHEMA, REGISTERS, validate, scopeKey });
+  return Object.freeze({ SCHEMA, REGISTERS, LEGACY_REGISTERS, validate, scopeKey });
 });

@@ -45,6 +45,46 @@
       return data;
     };
   }
+  async function repositoryFile(request,path,baseSha){
+    const encodedPath=path.split('/').map(encodeURIComponent).join('/');
+    const raw=await request('GET','/contents/'+encodedPath+'?ref='+encodeURIComponent(baseSha));
+    if(!/^[a-f0-9]{40}$/i.test(raw.sha||'')||(raw.type&&raw.type!=='file'))fail('Bestand zonder controleerbare GitHub-SHA: '+path);
+    let content=raw.content;
+    if(raw.encoding!=='base64'||typeof content!=='string'||!content.trim()){
+      const blob=await request('GET','/git/blobs/'+raw.sha);
+      if(blob.encoding!=='base64'||typeof blob.content!=='string')fail('GitHub kan het bestand niet lezen: '+path);
+      content=blob.content;
+    }
+    return {sha:raw.sha,text:decodeBase64(content)};
+  }
+  function configurationFor(profile,catalog){
+    const files=profile.source.configurationFiles;
+    if(!files)fail('Publiceren is nog niet ingericht: het organisatieprofiel moet de repositorypaden van het profiel, de toetsingskaders en beide controlemodules benoemen. De gegevens blijven lokaal beschikbaar.');
+    if(!catalog||catalog.schema!=='eai-applicable-frameworks-v1')fail('De geladen toetsingskaders ontbreken. Open het dashboard opnieuw.');
+    const versions={engine:window.AssuranceEngine?.VERSION,sourceRegister:window.AssuranceSourceRegister?.VERSION};
+    if(Object.values(versions).some(value=>typeof value!=='string'||!/^\d+\.\d+\.\d+$/.test(value)))fail('De geladen controleversies ontbreken. Open het dashboard opnieuw.');
+    return {files,catalog:clone(catalog),versions};
+  }
+  function declaredModuleVersion(source,label){
+    // Read the one explicit version declaration; never execute remote JavaScript.
+    // Version equality does not claim that every code byte is identical.
+    const matches=[...source.matchAll(/^[ \t]*const[ \t]+VERSION[ \t]*=[ \t]*(['"])(\d+\.\d+\.\d+)\1[ \t]*;[ \t]*(?:\/\/[^\r\n]*)?$/gm)];
+    if(matches.length!==1)fail('De controleversie van '+label+' op GitHub is niet eenduidig vastgelegd. Publicatie is gestopt.');
+    return matches[0][2];
+  }
+  async function assertRepositoryConfiguration(request,profile,configuration,baseSha){
+    const labels={profile:'het organisatieprofiel',catalog:'de toetsingskaders',engine:'de controle-engine',sourceRegister:'de broncontrole'};
+    const contents={};
+    for(const [type,path] of Object.entries(configuration.files)){
+      try{contents[type]=(await repositoryFile(request,path,baseSha)).text;}
+      catch(error){fail('Configuratie voor '+labels[type]+' is niet leesbaar op de gekozen GitHub-basis: '+path+'. De bronrepository moet de ingestelde configuratiebestanden bevatten. '+error.message);}
+    }
+    const remoteProfile=window.AssuranceProfile.validate(JSON.parse(contents.profile));
+    if(window.AssuranceEngine.canonicalize(remoteProfile)!==window.AssuranceEngine.canonicalize(profile))fail('Het organisatieprofiel op GitHub verschilt van het geladen profiel. Laad de actuele configuratie en bevestig nieuwe beoordelingen opnieuw.');
+    const remoteCatalog=JSON.parse(contents.catalog);
+    if(window.AssuranceEngine.canonicalize(remoteCatalog)!==window.AssuranceEngine.canonicalize(configuration.catalog))fail('De toetsingskaders op GitHub verschillen van de geladen toetsingskaders. Laad de actuele configuratie en bevestig nieuwe beoordelingen opnieuw.');
+    for(const type of ['engine','sourceRegister'])if(declaredModuleVersion(contents[type],labels[type])!==configuration.versions[type])fail('De versie van '+labels[type]+' op GitHub verschilt van de geladen controleversie. Open de actuele dashboardversie en bevestig nieuwe beoordelingen opnieuw.');
+  }
   function assertPublicSafe(drafts,profile){
     const TYPES=profile.source.registerFiles;
     if(!drafts.length)fail('Er zijn geen conceptwijzigingen.');
@@ -66,7 +106,7 @@
   }
   function checkGraph(files,inputProfile,asOf){
     const profile=configuredProfile(inputProfile),TYPES=profile.source.registerFiles;
-    const byType={};
+    const byType={},sourceAliases=new Map();
     for(const [name,json] of Object.entries(files)){
       for(const key of Object.keys(TYPES))if(TYPES[key]===name)byType[key]=new Set((json[key]||[]).map(x=>x.id));
     }
@@ -78,6 +118,18 @@
         for(const rec of json[key]||[]){
           if(!rec.id||existing.has(rec.id))fail('Dubbel of ontbrekend ID in '+key+': '+String(rec.id));
           existing.add(rec.id);
+          if(key==='sourceRegister'){
+            const errors=window.AssuranceSourceRegister.validate(rec,{asOf,organisationId:profile.organisation.id,scopeId:window.AssuranceProfile.scopeKey(profile)});
+            const invalid=errors.find(item=>item.severity==='fail'&&item.category!=='business');
+            if(invalid)fail(invalid.message+' ('+rec.id+')');
+            for(const alias of rec.referenceKeys||[]){
+              if(sourceAliases.has(alias))fail('Een bronverwijzing hoort bij meerdere bronregels: '+alias);
+              sourceAliases.set(alias,rec.id);
+            }
+          }
+          if(rec.sourceIds!==undefined){
+            if(!Array.isArray(rec.sourceIds)||rec.sourceIds.some(id=>typeof id!=='string'||!byType.sourceRegister?.has(id))||new Set(rec.sourceIds).size!==rec.sourceIds.length)fail('Ongeldige of ontbrekende bronkoppeling in '+rec.id);
+          }
           for(const link of rec.relations||[]){
             if(!byType[link.targetType]?.has(link.targetId))fail('Relatie naar ontbrekende registratie: '+link.targetType+'/'+link.targetId);
             if(link.targetType===key&&link.targetId===rec.id)fail('Relatie naar zichzelf in '+rec.id);
@@ -90,7 +142,35 @@
       }
     }
   }
-  function applyDrafts(targetFiles,drafts,actor,stamp,inputProfile){
+  function assertNewBindings(beforeFiles,afterFiles,drafts,profile,catalog,asOf){
+    const pending=[];
+    for(const draft of drafts){
+      const file=profile.source.registerFiles[draft.type];
+      const before=beforeFiles[file]?.[draft.type]?.find(item=>item.id===draft.id);
+      const after=afterFiles[file]?.[draft.type]?.find(item=>item.id===draft.id);
+      if(!after)fail('De voorgestelde registratie ontbreekt.');
+      const original=new Map();
+      for(const link of before?.frameworkLinks||[]){const value=window.AssuranceEngine.canonicalize(link);original.set(value,(original.get(value)||0)+1);}
+      for(const link of after.frameworkLinks||[]){
+        const value=window.AssuranceEngine.canonicalize(link),count=original.get(value)||0;
+        if(count){original.set(value,count-1);continue;}
+        if(['Onderbouwd','Niet van toepassing'].includes(link.status))pending.push({type:draft.type,id:draft.id,link});
+      }
+      if(draft.type==='sourceRegister'&&after.approvalStatus==='Goedgekeurd'){
+        const decision=record=>Object.fromEntries(['approvalStatus','approvedBy','approvedAt','approvalEvidence','nextReviewAt','approvalBinding'].filter(field=>record&&Object.prototype.hasOwnProperty.call(record,field)).map(field=>[field,record[field]]));
+        if(window.AssuranceEngine.canonicalize(decision(before))!==window.AssuranceEngine.canonicalize(decision(after)))pending.push({type:draft.type,id:draft.id,sourceApproval:true});
+      }
+    }
+    if(!pending.length)return;
+    if(!catalog)fail('De gebruikte toetsingskaders ontbreken. Open het dashboard opnieuw.');
+    const input=window.AssuranceAdapter.fromDocuments(profile,afterFiles,catalog,{asOf,sourceVersion:''});
+    for(const item of pending){
+      const record=input.records.find(row=>row.type===item.type&&row.id===item.id);
+      const result=item.sourceApproval?window.AssuranceSourceRegister.inspectApprovalBinding(record.data,input.context):window.AssuranceEngine.inspectReviewBinding(input,record,item.link);
+      if(result.status!=='current')fail('De nieuwe '+(item.sourceApproval?'brongoedkeuring':'beoordeling')+' van '+item.id+' past niet bij de actuele gegevens. Synchroniseer en bevestig opnieuw.');
+    }
+  }
+  function applyDrafts(targetFiles,drafts,actor,stamp,inputProfile,catalog){
     const profile=configuredProfile(inputProfile),TYPES=profile.source.registerFiles;
     assertPublicSafe(drafts,profile);
     const files=clone(targetFiles);
@@ -111,7 +191,7 @@
           next.sources=[...new Set([...(next.sources||[]),...additions])];
         }else next[field]=clone(d.after[field]);
       }
-      if(!Array.isArray(next.sources))next.sources=[];
+      if(next.sources!==undefined&&!Array.isArray(next.sources))fail('Bronverwijzingen moeten een lijst zijn in '+d.id+'.');
       const history=Array.isArray(next.auditTrail)?next.auditTrail:[];
       history.push({timestamp:stamp,actor,action:isNew?'toegevoegd':'aangepast',fields:d.changed.slice(),reason:d.reason,method:'GitHub-pull-request',source:'Applicatielandschap · JSON-kaart'});
       next.auditTrail=history;
@@ -119,6 +199,7 @@
       changedFiles.add(filename);
     }
     checkGraph(files,profile,stamp.slice(0,10));
+    assertNewBindings(targetFiles,files,drafts,profile,catalog,stamp.slice(0,10));
     for(const filename of changedFiles){
       const data=files[filename];
       if(!data.metadata)data.metadata={};
@@ -149,11 +230,12 @@
       if(window.top!==window.self)fail('Open het dashboard rechtstreeks om wijzigingen voor te stellen.');
       const profile=await window.IctOrganisation.ready;
       const SOURCE_DIR=profile.source.sourceDir+'/',baseRef=profile.source.baseRef;
-      if(!consent)fail('Bevestig eerst dat deze wijzigingen openbaar mogen worden voorgesteld.');
+      if(!consent)fail('Bevestig eerst dat deze gegevens in de ingestelde repository mogen worden opgeslagen.');
       if(!token)fail('Vul een GitHub-token met beperkte schrijfrechten in.');
       assertNoSecrets({drafts,message},token);
       assertSourceMatches(profile,state.sources);
       assertPublicSafe(drafts,profile);
+      const configuration=configurationFor(profile,cards.catalog?.());
       button.disabled=true;button.textContent='GitHub controleren…';
       const request=api(token,profile);
       const [user,head]=await Promise.all([
@@ -163,19 +245,13 @@
       if(!user.login)fail('GitHub heeft geen gebruikersnaam teruggegeven.');
       const baseSha=head?.object?.sha;
       if(!/^[a-f0-9]{40}$/i.test(baseSha||''))fail('De versie van de ingestelde bronbranch is niet vastgesteld.');
+      await assertRepositoryConfiguration(request,profile,configuration,baseSha);
       const paths=[...new Set(Object.values(profile.source.registerFiles))];
       const names=paths.concat(['manifest.json']);
       const fetched={};
       for(const name of names){
-        const raw=await request('GET','/contents/'+SOURCE_DIR+name+'?ref='+encodeURIComponent(baseSha));
-        if(!/^[a-f0-9]{40}$/i.test(raw.sha||''))fail('Bronbestand zonder controleerbare GitHub-SHA: '+name);
-        let base64=raw.content;
-        if(raw.encoding!=='base64'||typeof base64!=='string'||!base64.trim()){
-          const blob=await request('GET','/git/blobs/'+raw.sha);
-          if(blob.encoding!=='base64'||typeof blob.content!=='string')fail('GitHub kan de JSON-bron niet lezen: '+name);
-          base64=blob.content;
-        }
-        fetched[name]={sha:raw.sha,data:JSON.parse(decodeBase64(base64))};
+        const raw=await repositoryFile(request,SOURCE_DIR+name,baseSha);
+        fetched[name]={sha:raw.sha,data:JSON.parse(raw.text)};
       }
       const manifest=fetched['manifest.json'].data,docs=Object.fromEntries(paths.map(name=>[name,fetched[name].data]));
       if(manifest.schema!=='eai-school-ict-manifest-v1')fail('Het manifest heeft een onbekende structuur.');
@@ -184,7 +260,7 @@
         if(!entry||entry.sha!==fetched[name].sha)fail('Het manifest en de bron komen niet overeen: '+name);
       }
       button.textContent='Wijzigingen controleren…';
-      const changed=applyDrafts(docs,drafts,user.login,new Date().toISOString(),profile);
+      const changed=applyDrafts(docs,drafts,user.login,new Date().toISOString(),profile,configuration.catalog);
       assertNoSecrets({documents:docs,manifest,message},token);
       if(!changed.size)fail('Er zijn geen gewijzigde bestanden.');
       const branch='applicatielandschap/kaart-'+new Date().toISOString().slice(0,10)+'-'+crypto.randomUUID().slice(0,8);

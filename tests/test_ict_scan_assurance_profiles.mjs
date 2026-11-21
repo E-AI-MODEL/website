@@ -17,7 +17,7 @@ test('Organisatieprofielen benoemen hun eigen bron en de herkomst van de termijn
     assert.equal(profile.organisation.id, name);
     assert.equal(profile.policy.basis, 'project-default');
     assert.equal(profile.policy.reviewMaxAgeDays, 365);
-    assert.equal(Object.keys(profile.source.registerFiles).length, 13);
+    assert.equal(Object.keys(profile.source.registerFiles).length, 14);
     assert.ok(Object.isFrozen(profile));
     assert.ok(Object.isFrozen(profile.source.registerFiles));
   }
@@ -38,7 +38,42 @@ test('Het tweede profiel bevat uitsluitend een eigen fictieve configuratie', () 
   assert.equal(profile.source.sourceDir, 'inventory');
   assert.equal(profile.organisation.locale, 'en-GB');
   assert.doesNotMatch(JSON.stringify(profile), /Emmaus|E-AI-MODEL|2026-applicatielandschap|Hans Visser/i);
-  assert.ok(Object.values(profile.source.registerFiles).every(file => file === 'inventory.json'));
+  assert.ok(Object.entries(profile.source.registerFiles).every(([type,file]) => file === (type === 'sourceRegister' ? 'source-register.json' : 'inventory.json')));
+});
+
+test('Publicatieconfiguratie is expliciet; oudere profielen blijven leesbaar zonder impliciete paden', () => {
+  const current = api.validate(read('emmauscollege'));
+  assert.deepEqual(Object.keys(current.source.configurationFiles).sort(), ['catalog','engine','profile','sourceRegister']);
+  for (const path of Object.values(current.source.configurationFiles)) assert.ok(readFileSync(path,'utf8').length > 0);
+  assert.deepEqual(JSON.parse(readFileSync(current.source.configurationFiles.profile,'utf8')),copy(current));
+  const original = read('emmauscollege');delete original.source.configurationFiles;
+  assert.equal(Object.hasOwn(api.validate(original).source,'configurationFiles'),false);
+});
+
+test('Configuratiepaden zijn volledig, uniek en veilig relatief aan de ingestelde repository', () => {
+  for (const value of ['../outside.json','/absolute.json','https://example.org/profile.json','config/%2e%2e/profile.json','config/profile.json?path=other','config/profile.json#other','config\\profile.json','config/profile.js']) {
+    const profile = read('emmauscollege');profile.source.configurationFiles.profile = value;
+    assert.throws(() => api.validate(profile),/configurationFiles/);
+  }
+  for (const mutate of [
+    files => {delete files.catalog;},
+    files => {files.extra = 'extra.json';},
+    files => {files.catalog = files.profile;},
+    files => {files.engine = 'engine.json';},
+    files => {files.sourceRegister = null;}
+  ]) {
+    const profile = read('emmauscollege');mutate(profile.source.configurationFiles);
+    assert.throws(() => api.validate(profile),/configurationFiles/);
+  }
+});
+
+test('Een eerder profiel met dertien registers blijft leesbaar zonder stil bronregister toe te voegen', () => {
+  const original = read('emmauscollege');
+  delete original.source.registerFiles.sourceRegister;
+  const profile = api.validate(original);
+  assert.equal(Object.keys(profile.source.registerFiles).length, 13);
+  assert.equal(Object.hasOwn(profile.source.registerFiles, 'sourceRegister'), false);
+  assert.ok(api.REGISTERS.includes('sourceRegister'));
 });
 
 test('Validatie gebruikt geen impliciete terugval naar de Emmauscollege-bron', () => {

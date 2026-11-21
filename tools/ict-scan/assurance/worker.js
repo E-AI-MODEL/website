@@ -1,6 +1,6 @@
 'use strict';
 /* One bounded, local worker. The caller terminates obsolete runs. */
-importScripts('./engine.js?v=20261121b');
+importScripts('./source-register.js?v=20261121d','./engine.js?v=20261121d');
 async function digest(value){
   const bytes=new TextEncoder().encode(AssuranceEngine.canonicalize(value));
   const hash=await crypto.subtle.digest('SHA-256',bytes);
@@ -15,7 +15,7 @@ self.onmessage=async event=>{
     input.context={...input.context,sourceFingerprint:await digest(input.records)};
     if(!input.context.sourceVersion)input.context.sourceVersion=input.context.sourceFingerprint;
     const result=AssuranceEngine.evaluate(input);
-    result.provenance={inputFingerprint:input.context.sourceFingerprint,policyFingerprint:await digest(input.policy),corpusFingerprint:await digest(input.evaluation),execution:'browser-worker',modelCalls:0};
+    result.provenance={inputFingerprint:input.context.sourceFingerprint,policyFingerprint:await digest(input.policy),reviewRulesFingerprint:await digest(input.reviewRules||null),sourceRegisterVersion:AssuranceSourceRegister.VERSION,corpusFingerprint:await digest(input.evaluation),execution:'browser-worker',modelCalls:0};
     let baseline=null;
     if(result.checks.find(check=>check.id==='structure')?.status==='pass')baseline=AssuranceEngine.createBaseline(input);
     self.postMessage({id:message.id,result,baseline});

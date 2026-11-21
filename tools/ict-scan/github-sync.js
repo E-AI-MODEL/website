@@ -125,7 +125,7 @@
   }
   function verifyCounts(spec){
     if(!spec)return;
-    const mapping={apps:'apps',ai:'ai',connections:'connections',checks:'checks',parts:'parts',dpia:'dpia',aiControls:'aiControls',devices:'devices',additionalCandidates:'candidates',licenseReview:'licenseReview',workActions:'workActions',softwareReview:'softwareReview',faqs:'faqs'};
+    const mapping={apps:'apps',ai:'ai',connections:'connections',checks:'checks',parts:'parts',dpia:'dpia',aiControls:'aiControls',devices:'devices',additionalCandidates:'candidates',licenseReview:'licenseReview',workActions:'workActions',softwareReview:'softwareReview',faqs:'faqs',sourceRegister:'sourceRegister'};
     const totals=new Map();
     for(const entry of spec){
       for(const [kind,n] of Object.entries(entry.recordCounts||{})){
@@ -141,8 +141,8 @@
   }
   function snapshotState() {
     const maps={};
-    for(const k of ['apps','ai','connections','checks','devices','parts','dpia','aiControls','policyDocs','signals','candidates','licenseReview','workActions','softwareReview','faqs'])maps[k]=new Map(state[k]);
-    return {maps,sources:state.sources.slice(),docs:state.docs.slice(),derived:Array.isArray(state.derived)?state.derived.slice():[],ready:state.ready,view:state.view,metadata:state.metadata||null};
+    for(const k of ['apps','ai','connections','checks','devices','parts','dpia','aiControls','policyDocs','signals','candidates','licenseReview','workActions','softwareReview','faqs','sourceRegister'])maps[k]=new Map(state[k]);
+    return {maps,sources:state.sources.slice(),docs:state.docs.slice(),derived:Array.isArray(state.derived)?state.derived.slice():[],ready:state.ready,view:state.view,metadata:state.metadata||null,sourceRegisterLoaded:state.sourceRegisterLoaded===true};
   }
   function restoreState(backup) {
     for(const [name,value] of Object.entries(backup.maps))state[name]=value;
@@ -152,17 +152,31 @@
     state.ready=backup.ready;
     state.view=backup.view;
     state.metadata=backup.metadata;
+    state.sourceRegisterLoaded=backup.sourceRegisterLoaded;
     renderAll();
   }
   function resetWorkingState() {
-    for(const name of ['apps','ai','connections','checks','devices','parts','dpia','aiControls','policyDocs','signals','candidates','licenseReview','workActions','softwareReview','faqs'])state[name].clear();
-    state.sources=[];state.docs=[];state.derived=[];state.ready=false;state.metadata=null;
+    for(const name of ['apps','ai','connections','checks','devices','parts','dpia','aiControls','policyDocs','signals','candidates','licenseReview','workActions','softwareReview','faqs','sourceRegister'])state[name].clear();
+    state.sources=[];state.docs=[];state.derived=[];state.ready=false;state.metadata=null;state.sourceRegisterLoaded=false;
+  }
+  async function verifyProfileDocuments(files,profile,cfg){
+    if(!profile||profile.source.repository!==cfg.repo||profile.source.baseRef!==cfg.ref||profile.source.sourceDir!==cfg.folder)return;
+    const documents=new Map();
+    for(const [type,filename] of Object.entries(profile.source.registerFiles)){
+      if(!documents.has(filename)){
+        const downloaded=files.find(item=>item.entry.path===cfg.folder+'/'+filename);
+        if(!downloaded)throw Error('Verplicht bronbestand ontbreekt voor dit organisatieprofiel: '+filename);
+        documents.set(filename,JSON.parse(await downloaded.file.text()));
+      }
+      const document=documents.get(filename);
+      if(document?.schema!=='eai-school-ict-v1'||!Array.isArray(document[type]))throw Error('Verplicht register '+type+' ontbreekt in '+filename+'.');
+    }
   }
   async function syncGitHub() {
     if(busy)return;
-    let token='';let files=[];let cfg;
+    let token='';let files=[];let cfg,profile;
     try {
-      if(window.IctOrganisation)await window.IctOrganisation.ready;
+      if(window.IctOrganisation)profile=await window.IctOrganisation.ready;
       cfg=validInput();
       token=$('githubToken').value.trim();
       busy=true; abort=new AbortController();
@@ -174,7 +188,7 @@
       assertNotCancelled(abort.signal);
       let manifestMetadata=null,manifestSpec=null;
       if(entries.manifest){const manifestFile=await downloadFile(cfg,entries.manifest,token,abort.signal);const manifest=JSON.parse(await manifestFile.text());assertNotCancelled(abort.signal);if(manifest.schema!=='eai-school-ict-manifest-v1'||!manifest.metadata||typeof manifest.metadata!=='object')throw Error('Ongeldig metadata-bestand in GitHub.');manifestMetadata=manifest.metadata;manifestSpec=verifyManifest(entries,manifest,cfg);}
-      if(!entries.length){if(manifestMetadata){state.metadata=manifestMetadata;renderAll();}showStatus('GitHub is bereikbaar en de metadata zijn gelezen. Er staan nog geen applicatiebronnen in '+cfg.folder+'.','warning');return;}
+      if(!entries.length){await verifyProfileDocuments([],profile,cfg);if(manifestMetadata){state.metadata=manifestMetadata;renderAll();}showStatus('GitHub is bereikbaar en de metadata zijn gelezen. Er staan nog geen applicatiebronnen in '+cfg.folder+'.','warning');return;}
       // Always reapply the selected GitHub revision. A local import may have changed
       // the dashboard since the last sync even when the remote file SHAs are unchanged.
       for(let i=0;i<entries.length;i++) {
@@ -185,6 +199,7 @@
         files.push({file,entry});
       }
       // Only after ALL downloads succeed do we alter the current inventory.
+      await verifyProfileDocuments(files,profile,cfg);
       assertNotCancelled(abort.signal);
       const replacing=$('githubReplace').checked;
       if(replacing&&state.ready&&!confirm('Het huidige overzicht in de browser vervangen door de GitHub-bestanden? Een eerder lokaal bewaarde momentopname blijft bestaan.')){
@@ -209,7 +224,7 @@
         }
         assertNotCancelled(abort.signal);
         if(replacing)verifyCounts(manifestSpec);
-        state.ready=state.apps.size+state.connections.size+state.ai.size+state.checks.size+state.signals.size+state.devices.size+state.parts.size>0;
+        state.ready=state.apps.size+state.connections.size+state.ai.size+state.checks.size+state.signals.size+state.devices.size+state.parts.size+state.sourceRegister.size>0;
         buildDerived();
         state.view=(state.view==='sources'||state.view==='overview')?'studio':state.view;
         renderAll();

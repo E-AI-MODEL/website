@@ -8,7 +8,7 @@ const read = path => readFileSync(path, 'utf8');
 const clone = value => JSON.parse(JSON.stringify(value));
 const profileJson = JSON.parse(read('tools/ict-scan/assurance/profiles/emmauscollege.json'));
 const catalog = JSON.parse(read('tools/ict-scan/frameworks.json'));
-const registers = ['apps', 'ai', 'connections', 'parts', 'candidates', 'checks', 'dpia', 'aiControls', 'devices', 'licenseReview', 'workActions', 'softwareReview', 'faqs'];
+const registers = ['apps', 'ai', 'connections', 'parts', 'candidates', 'checks', 'dpia', 'aiControls', 'devices', 'licenseReview', 'workActions', 'softwareReview', 'faqs', 'sourceRegister'];
 
 // This DOM substitute detects use of HTML-parsing sinks. It is not a browser
 // sandbox, a layout test or an external penetration test.
@@ -51,7 +51,7 @@ function dom() {
   return document;
 }
 
-function setup({token = 'synthetic-secret-for-security-tests', message = 'Registratie bijwerken', fetchResponse, record} = {}) {
+function setup({token = 'synthetic-secret-for-security-tests', message = 'Registratie bijwerken', fetchResponse, record, rawProfile = profileJson} = {}) {
   const document = dom(), calls = [], feedback = [];
   let resolveFeedback;
   const feedbackReceived = new Promise(resolve => {resolveFeedback = resolve;});
@@ -70,13 +70,14 @@ function setup({token = 'synthetic-secret-for-security-tests', message = 'Regist
   };
   context.window = context;
   vm.createContext(context);
-  for (const path of ['tools/ict-scan/assurance/profile.js', 'tools/ict-scan/assurance/record-contract.js']) vm.runInContext(read(path), context, {filename: path});
-  const profile = context.AssuranceProfile.validate(clone(profileJson));
+  for (const path of ['tools/ict-scan/assurance/profile.js', 'tools/ict-scan/assurance/source-register.js', 'tools/ict-scan/assurance/engine.js', 'tools/ict-scan/assurance/adapter.js', 'tools/ict-scan/assurance/record-contract.js']) vm.runInContext(read(path), context, {filename: path});
+  const profile = context.AssuranceProfile.validate(clone(rawProfile));
   context.IctOrganisation = {profile, ready: Promise.resolve(profile)};
   state.sources = [{name: profile.source.registerFiles.apps, githubRemote: {repository: profile.source.repository, ref: profile.source.baseRef, path: profile.source.sourceDir + '/' + profile.source.registerFiles.apps, sha: 'a'.repeat(40)}}];
   const draft = {type: 'apps', id: original.id, before: clone(original), after: {...clone(original), description: 'Gecorrigeerde omschrijving'}, changed: ['description'], reason: 'Correctie na broncontrole', sourceScope: context.AssuranceProfile.scopeKey(profile)};
   context.EmmausRecordCards = {
     drafts: () => [clone(draft)],
+    catalog: () => clone(catalog),
     feedback(message, error) {feedback.push({message, error}); resolveFeedback();},
     clearPublished() {throw Error('No successful publication expected in this test');}
   };
@@ -95,6 +96,125 @@ function setup({token = 'synthetic-secret-for-security-tests', message = 'Regist
     }
   };
 }
+
+async function publicationFixture({rawProfile = profileJson, changeConfiguration, omitConfiguration} = {}) {
+  const resources = new Map(), writes = [];
+  const baseSha = 'b'.repeat(40);
+  let app, finish;
+  const done = new Promise(resolve => {finish = resolve;});
+  app = setup({rawProfile, fetchResponse: async (url, options) => {
+    const method = options.method, base = 'https://api.github.com/repos/' + app.profile.source.repository;
+    const reply = data => ({ok:true, json:async () => data});
+    if (url === 'https://api.github.com/user') return reply({login:'test-reviewer'});
+    if (url === base + '/git/ref/heads/' + encodeURIComponent(app.profile.source.baseRef)) return reply({object:{sha:baseSha}});
+    if (method === 'GET' && url.startsWith(base + '/contents/')) {
+      assert.equal(new URL(url).searchParams.get('ref'), baseSha);
+      const path = decodeURIComponent(new URL(url).pathname.split('/contents/')[1]);
+      const resource = resources.get(path);
+      if (!resource) return {ok:false, status:404, json:async () => ({message:'Not Found'})};
+      return reply({type:'file', sha:resource.sha, encoding:'base64', content:Buffer.from(resource.text).toString('base64')});
+    }
+    writes.push({url, method, body:JSON.parse(options.body)});
+    if (method === 'POST' && url === base + '/git/refs') return reply({});
+    if (method === 'PUT' && url.startsWith(base + '/contents/')) return reply({content:{sha:'e'.repeat(40)}});
+    if (method === 'POST' && url === base + '/pulls') return reply({html_url:'https://github.com/' + app.profile.source.repository + '/pull/123', number:123});
+    throw Error('Onverwacht verzoek: ' + method + ' ' + url);
+  }});
+  const files = {};
+  for (const [type, filename] of Object.entries(app.profile.source.registerFiles)) (files[filename] ??= {schema:'eai-school-ict-v1'})[type] = type === 'apps' ? [clone(app.draft.before)] : [];
+  const dataFiles = [];
+  for (const [filename, data] of Object.entries(files)) {
+    const sha = String(dataFiles.length + 1).repeat(40);
+    resources.set(app.profile.source.sourceDir + '/' + filename, {sha, text:JSON.stringify(data)});
+    dataFiles.push({path:filename, sha, recordCounts:Object.fromEntries(Object.entries(data).filter(([, value]) => Array.isArray(value)).map(([type,value]) => [type,value.length]))});
+  }
+  resources.set(app.profile.source.sourceDir + '/manifest.json', {sha:'9'.repeat(40), text:JSON.stringify({schema:'eai-school-ict-manifest-v1', metadata:{}, dataFiles})});
+  const configuration = {profile:clone(app.profile), catalog:clone(catalog), engine:read('tools/ict-scan/assurance/engine.js'), sourceRegister:read('tools/ict-scan/assurance/source-register.js')};
+  changeConfiguration?.(configuration);
+  for (const [type, path] of Object.entries(app.profile.source.configurationFiles || {})) {
+    if (type !== omitConfiguration) resources.set(path, {sha:'a'.repeat(40), text:typeof configuration[type] === 'string' ? configuration[type] : JSON.stringify(configuration[type])});
+  }
+  const priorFeedback = app.context.EmmausRecordCards.feedback;
+  app.context.EmmausRecordCards.feedback = (...args) => {priorFeedback(...args);finish();};
+  let cleared = 0;
+  app.context.EmmausRecordCards.clearPublished = submitted => {cleared = submitted.length;finish();return {remaining:0};};
+  app.document.getElementById('cardCreatePR').dispatch('click');
+  let timer;
+  try {await Promise.race([done, new Promise((_,reject) => {timer = setTimeout(() => reject(Error('Publicatie niet afgerond')),1500);})]);}
+  finally {clearTimeout(timer);}
+  await new Promise(resolve => setImmediate(resolve));
+  return {...app, writes, cleared, configuration, baseSha};
+}
+
+test('De echte publiceerroute controleert expliciete configuratiepaden op dezelfde basis vóór alle schrijfacties', async () => {
+  const rawProfile = JSON.parse(read('tools/ict-scan/assurance/profiles/example-organisation.json'));
+  rawProfile.source.configurationFiles.profile = 'configuration/chosen organisation.json';
+  const app = await publicationFixture({rawProfile, changeConfiguration: configuration => {
+    configuration.catalog = Object.fromEntries(Object.entries(configuration.catalog).reverse());
+    configuration.profile = Object.fromEntries(Object.entries(configuration.profile).reverse());
+    configuration.engine += '\nglobalThis.remoteScriptExecuted = true;\n';
+  }});
+  assert.equal(app.feedback.length,0);
+  assert.equal(app.cleared,1);
+  assert.equal(app.context.remoteScriptExecuted,undefined,'Remote JavaScript wordt uitsluitend gelezen.');
+  const firstWrite = app.calls.findIndex(call => call.options.method !== 'GET');
+  for (const path of Object.values(app.profile.source.configurationFiles)) {
+    const index = app.calls.findIndex(call => decodeURIComponent(new URL(call.url).pathname).endsWith('/contents/' + path));
+    assert.ok(index >= 0 && index < firstWrite,path);
+  }
+  assert.ok(app.calls.every(call => call.url === 'https://api.github.com/user' || call.url.startsWith('https://api.github.com/repos/example-org/example-inventory/')));
+  const branch = app.writes.find(write => write.url.endsWith('/git/refs'));
+  assert.equal(branch.body.sha,app.baseSha);
+  assert.ok(app.writes.some(write => write.url.endsWith('/pulls')));
+  const dataWrite = app.writes.find(write => write.method === 'PUT' && write.url.endsWith('/' + app.profile.source.registerFiles.apps));
+  const published = JSON.parse(Buffer.from(dataWrite.body.content,'base64').toString('utf8'));
+  assert.equal(published.apps[0].description,app.draft.after.description);
+  assert.equal(published.apps[0].reviewBinding,undefined);
+});
+
+test('Een inmiddels gewijzigde GitHub-catalogus stopt de echte publiceerroute vóór branch, PUT en PR', async () => {
+  const app = await publicationFixture({changeConfiguration: configuration => {configuration.catalog.references[0].name += ' gewijzigd';}});
+  assert.equal(app.writes.length,0);assert.equal(app.cleared,0);
+  assert.match(app.feedback[0].message,/toetsingskaders op GitHub verschillen/);
+});
+
+test('Gewijzigd beleid, registermapping en profielscope stoppen publicatie zonder remote configuratie over te nemen', async () => {
+  for (const change of [
+    profile => {profile.policy.reviewMaxAgeDays += 1;},
+    profile => {profile.source.registerFiles.apps = 'changed-apps.json';},
+    profile => {profile.source.repository = 'other-owner/other-repository';profile.source.baseRef = 'other-branch';profile.source.configurationFiles.catalog = 'other/catalog.json';}
+  ]) {
+    const app = await publicationFixture({changeConfiguration: configuration => change(configuration.profile)});
+    assert.equal(app.writes.length,0);assert.equal(app.cleared,0);
+    assert.match(app.feedback[0].message,/organisatieprofiel op GitHub verschilt/);
+    assert.ok(app.calls.every(call => call.url === 'https://api.github.com/user' || call.url.startsWith('https://api.github.com/repos/' + app.profile.source.repository + '/')));
+    assert.ok(!app.calls.some(call => call.url.includes('other/catalog.json') || call.url.includes('changed-apps.json')));
+  }
+});
+
+test('Een ontbrekende configuratiemapping of ontbrekend configuratiebestand laat geen schrijfactie toe', async () => {
+  const legacy = clone(profileJson);delete legacy.source.configurationFiles;
+  const older = await publicationFixture({rawProfile:legacy});
+  assert.equal(older.calls.length,0);assert.equal(older.writes.length,0);
+  assert.match(older.feedback[0].message,/Publiceren is nog niet ingericht/);
+  const missing = await publicationFixture({omitConfiguration:'catalog'});
+  assert.equal(missing.writes.length,0);assert.equal(missing.cleared,0);
+  assert.match(missing.feedback[0].message,/Configuratie.*niet leesbaar.*bronrepository moet/);
+});
+
+test('Gewijzigde of onduidelijke moduleversies blokkeren vóór publicatie en remote code wordt niet uitgevoerd', async () => {
+  for (const type of ['engine','sourceRegister']) {
+    for (const duplicate of [false,true]) {
+      const app = await publicationFixture({changeConfiguration: configuration => {
+        configuration[type] = duplicate ? configuration[type] + '\nconst VERSION = "999.0.0";\n' : configuration[type].replace(/const VERSION = '[^']+';/,'const VERSION = "999.0.0";');
+        configuration[type] += '\nglobalThis.remoteScriptExecuted = true;\n';
+      }});
+      assert.equal(app.writes.length,0);assert.equal(app.cleared,0);
+      assert.equal(app.context.remoteScriptExecuted,undefined);
+      assert.match(app.feedback[0].message,/controleversie|niet eenduidig/);
+    }
+  }
+});
 
 test('GitHub-verzoeken blijven binnen de ingestelde repository en de gebruikerscontrole', () => {
   const {logic, profile} = setup();

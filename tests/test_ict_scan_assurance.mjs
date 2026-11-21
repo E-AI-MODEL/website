@@ -6,17 +6,24 @@ import vm from 'node:vm';
 
 const require=createRequire(import.meta.url);
 const engine=require('../tools/ict-scan/assurance/engine.js');
+const sources=require('../tools/ict-scan/assurance/source-register.js');
 const clone=value=>JSON.parse(JSON.stringify(value));
 const result=(input,id)=>engine.evaluate(input).checks.find(c=>c.id===id);
 const hasCode=(check,code)=>check.findings.some(f=>f.code===code);
 const goodLink=()=>({frameworkId:'FRAMEWORK',article:'4.2',status:'Onderbouwd',evidence:'Bronbewijs / besluit 17',reviewedBy:'Beoordelaar',reviewedAt:'2026-11-20',nextReviewAt:'2027-11-20'});
 function dataset() {
-  return {
+  const input={
     records:[{type:'assets',id:'A-01',data:{id:'A-01',name:'Fictieve toepassing',sources:['Broninventaris / rij 2'],recordMeta:{referenceDate:'2026-11-20'},frameworkLinks:[goodLink()]}}],
     context:{asOf:'2026-11-21',organisationId:'example-org',scopeId:'example-inventory',sourceVersion:'fixture-1'},
     policy:{id:'test-policy',version:'1',reviewMaxAgeDays:365}
   };
+  const source={id:'SRC-00001',name:'Synthetische bron',referenceKeys:['Broninventaris / rij 2'],owner:'Bronhouder',version:'1',rightsStatus:'Toegestaan',rightsBasis:'Toestemming vastgelegd',allowedUse:'Interne inventariscontrole',scope:'Testorganisatie',retention:'Tot einde inventarisjaar',approvalStatus:'Goedgekeurd',approvedBy:'Reviewer',approvedAt:'2026-11-20',approvalEvidence:'TEST-BESLUIT-001',nextReviewAt:'2027-11-20'};
+  source.approvalBinding=sources.createApprovalBinding(source,input.context);
+  input.records.push({type:'sourceRegister',id:source.id,data:source});
+  confirmReview(input);
+  return input;
 }
+function confirmReview(input){const record=input.records[0],link=record.data.frameworkLinks[0];link.reviewBinding=engine.createReviewBinding(input,record,link);}
 function suite() {
   return {id:'behaviour-fixtures',version:'1',cases:[
     {id:'valid-structure',input:dataset(),expect:[{checkId:'structure',status:'pass'}]},
@@ -59,13 +66,13 @@ test('Controledatum en scope zijn verplicht en gebruiken geen systeemklok',()=>{
     assert.equal(output.checks[0].status,'fail');
     assert.equal(output.checks[2].status,'not_run');
   }
-  const ctx={module:{exports:{}},Date:class extends Date {constructor(...args){if(!args.length)throw Error('System clock forbidden');super(...args);}static now(){throw Error('System clock forbidden');}}};
-  vm.createContext(ctx);vm.runInContext(readFileSync('tools/ict-scan/assurance/engine.js','utf8'),ctx);
-  assert.equal(ctx.module.exports.evaluate(dataset()).checks[0].status,'pass');
+  const ctx={Date:class extends Date {constructor(...args){if(!args.length)throw Error('System clock forbidden');super(...args);}static now(){throw Error('System clock forbidden');}}};
+  vm.createContext(ctx);vm.runInContext(readFileSync('tools/ict-scan/assurance/source-register.js','utf8'),ctx);vm.runInContext(readFileSync('tools/ict-scan/assurance/engine.js','utf8'),ctx);
+  assert.equal(ctx.AssuranceEngine.evaluate(dataset()).checks[0].status,'pass');
 });
 
 test('Browser en Node gebruiken dezelfde engine en leveren dezelfde uitkomst',()=>{
-  const ctx={};vm.createContext(ctx);vm.runInContext(readFileSync('tools/ict-scan/assurance/engine.js','utf8'),ctx);
+  const ctx={};vm.createContext(ctx);vm.runInContext(readFileSync('tools/ict-scan/assurance/source-register.js','utf8'),ctx);vm.runInContext(readFileSync('tools/ict-scan/assurance/engine.js','utf8'),ctx);
   assert.equal(typeof ctx.AssuranceEngine.evaluate,'function');
   assert.equal(JSON.stringify(ctx.AssuranceEngine.evaluate(complete())),JSON.stringify(engine.evaluate(complete())));
 });
@@ -131,6 +138,8 @@ test('Ongeldige en toekomstige brondata falen; schrikkeldag wordt juist behandel
   input.records[0].data.recordMeta.referenceDate='2028-02-29';
   assert.ok(hasCode(result(input,'sources'),'SOURCE_DATE_FUTURE'));
   input.context.asOf='2028-03-01';
+  input.records[1].data.nextReviewAt='2029-03-01';
+  input.records[1].data.approvalBinding=sources.createApprovalBinding(input.records[1].data,input.context);
   assert.equal(result(input,'sources').status,'pass');
 });
 
@@ -139,7 +148,8 @@ test('Een registratie zonder normbeoordeling krijgt geen groene beoordelingsstat
   const output=result(input,'review');
   assert.equal(output.status,'not_run');
   assert.ok(hasCode(output,'NO_ASSESSMENTS'));
-  assert.equal(output.coverage.recordsWithoutAssessments,1);
+  assert.equal(output.coverage.inventoryRecordsWithoutAssessments,1);
+  assert.equal(output.coverage.sourceRegisterRecords,1);
 });
 
 test('Onderbouwde beoordelingen vereisen bewijs, beoordelaar en beoordelingsdatum',()=>{
@@ -157,6 +167,7 @@ test('Verplichte rollen en toegestane kaders komen uit het controlebeleid',()=>{
   assert.ok(hasCode(result(input,'review'),'REVIEW_ROLE_REQUIRED'));
   input.records[0].data.frameworkLinks[0].role='Aanbieder';
   input.policy.allowedRoles=['Aanbieder','Gebruiksverantwoordelijke'];
+  confirmReview(input);
   assert.equal(result(input,'review').status,'pass');
   input.policy.knownFrameworkIds=['OTHER'];
   assert.ok(hasCode(result(input,'structure'),'UNKNOWN_FRAMEWORK'));
@@ -164,6 +175,7 @@ test('Verplichte rollen en toegestane kaders komen uit het controlebeleid',()=>{
 
 test('Niet van toepassing heeft een onderbouwing, persoon en datum nodig',()=>{
   const input=dataset(),link=input.records[0].data.frameworkLinks[0];link.status='Niet van toepassing';
+  confirmReview(input);
   assert.equal(result(input,'review').status,'not_run');
   link.evidence='';
   assert.ok(hasCode(result(input,'review'),'NOT_APPLICABLE_WITHOUT_REASON'));
@@ -178,7 +190,7 @@ test('Beoordelingsdatums onderscheiden ongeldig, toekomstig, verlopen en vandaag
   link.reviewedAt='2025-11-20';assert.ok(hasCode(result(input,'review'),'REVIEW_STALE'));
   link.reviewedAt='2026-11-20';link.nextReviewAt='2026-11-19';assert.ok(hasCode(result(input,'review'),'REVIEW_DATE_ORDER'));
   link.nextReviewAt='2026-11-20';assert.ok(hasCode(result(input,'review'),'REVIEW_OVERDUE'));
-  link.nextReviewAt='2026-11-21';assert.equal(result(input,'review').status,'pass');
+  link.nextReviewAt='2026-11-21';confirmReview(input);assert.equal(result(input,'review').status,'pass');
 });
 
 test('Open opvolging en afgeronde acties zonder bewijs blijven zichtbaar',()=>{
@@ -188,7 +200,7 @@ test('Open opvolging en afgeronde acties zonder bewijs blijven zichtbaar',()=>{
   assert.equal(output.status,'attention');assert.ok(hasCode(output,'ACTION_OWNER_MISSING'));assert.ok(hasCode(output,'ACTION_OPEN'));
   link.followUpOwner='Contractbeheer';link.followUpStatus='Afgerond';
   output=result(input,'review');assert.equal(output.status,'fail');assert.ok(hasCode(output,'CLOSED_ACTION_WITHOUT_EVIDENCE'));
-  link.completionEvidence='Verslag controle 2026-11-20';assert.equal(result(input,'review').status,'pass');
+  link.completionEvidence='Verslag controle 2026-11-20';confirmReview(input);assert.equal(result(input,'review').status,'pass');
 });
 
 test('Drift zonder eerdere stand is niet uitgevoerd, niet geslaagd',()=>{
@@ -220,7 +232,7 @@ test('Drift ziet verschil tussen ontbrekend veld, null en lege tekst; volgorde v
 });
 
 test('Andere organisatie, selectie, regels of beleidsinstellingen maken een baseline ongeschikt',()=>{
-  for (const field of ['organisationId','scopeId','policyId','policyVersion','rulesetVersion']) {
+  for (const field of ['organisationId','scopeId','policyId','policyVersion']) {
     const input=dataset();input.baseline=engine.createBaseline(input);input.baseline.context[field]='other';
     const output=result(input,'drift');assert.equal(output.status,'fail');assert.ok(hasCode(output,'BASELINE_SCOPE_MISMATCH'));
   }
@@ -228,6 +240,8 @@ test('Andere organisatie, selectie, regels of beleidsinstellingen maken een base
   assert.ok(hasCode(result(input,'drift'),'BASELINE_POLICY_MISMATCH'));
   input.policy.reviewMaxAgeDays=365;input.baseline.context.asOf='2027-01-01';
   assert.ok(hasCode(result(input,'drift'),'BASELINE_DATE_INVALID'));
+  const prior=dataset();prior.baseline=engine.createBaseline(prior);prior.baseline.context.rulesetVersion='1.0.0';
+  assert.equal(result(prior,'drift').status,'attention');assert.ok(hasCode(result(prior,'drift'),'BASELINE_RULESET_MISMATCH'));
 });
 
 test('Bronwijzigingen worden ook gemeld wanneer de genormaliseerde registratie gelijk bleef',()=>{
@@ -273,14 +287,15 @@ test('Canonieke JSON bewaart waarden en is onafhankelijk van sleutelvolgorde',()
   assert.throws(()=>engine.canonicalize([,1]),/ontbrekende waarde/);
 });
 
-test('Het gepubliceerde synthetische evaluatiecorpus voert dertien vaste cases uit',()=>{
+test('Het gepubliceerde synthetische evaluatiecorpus voert 31 vaste cases uit',()=>{
   const corpus=JSON.parse(readFileSync('tools/ict-scan/assurance/evaluation-corpus.json','utf8'));
   assert.equal(corpus.synthetic,true);
-  assert.equal(corpus.version,'1.0.0');
-  assert.equal(corpus.cases.length,13);
+  assert.equal(corpus.version,'1.1.0');
+  assert.equal(corpus.cases.length,31);
   const output=result({...dataset(),evaluation:corpus},'evaluation');
   assert.equal(output.status,'pass');
-  assert.equal(output.coverage.executedCases,13);
-  assert.equal(output.coverage.passedCases,13);
+  assert.equal(output.coverage.executedCases,31);
+  assert.equal(output.coverage.passedCases,31);
+  assert.equal(output.coverage.assertions,35);
   assert.equal(output.coverage.failedCases,0);
 });

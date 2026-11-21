@@ -17,7 +17,8 @@
     {key:'licenseReview',store:'licenseReview',label:'Licenties ter controle',prefix:'LIC',fields:['name','domain','type','status','aiPossibilities','localAI','license2026','priority','action','sourceNotes','sourceCode']},
     {key:'workActions',store:'workActions',label:'Werkregisteracties',prefix:'WRK',fields:['name','action','involvedRoles','status']},
     {key:'softwareReview',store:'softwareReview',label:'Softwarecontroles',prefix:'SWR',fields:['name','known','action','status']},
-    {key:'faqs',store:'faqs',label:'Veelgestelde vragen',prefix:'FAQ',fields:['name','answer','aliases','topic','reference','status','reviewedAt']}
+    {key:'faqs',store:'faqs',label:'Veelgestelde vragen',prefix:'FAQ',fields:['name','answer','aliases','topic','reference','status','reviewedAt']},
+    {key:'sourceRegister',store:'sourceRegister',label:'Bronnenregister',prefix:'SRC',fields:['name','owner','version','contentSha256','rightsStatus','rightsBasis','allowedUse','scope','retention','approvalStatus','approvedBy','approvedAt','approvalEvidence','nextReviewAt']}
   ];
   const labels={
     name:'Naam',id:'ID',answer:'Vast antwoord',aliases:'Andere vraagformuleringen (gescheiden door |)',topic:'Onderwerp',reference:'Verwijzing naar bron',reviewedAt:'Beoordeeld op',description:'Beschrijving',area:'Gebruiksgebied',process:'Proces',kind:'Soort voorziening',type:'Type',local:'Gebruik op school',owner:'Verantwoordelijke',users:'Gebruikers',
@@ -30,9 +31,10 @@
     source:'Bron',evidenceDate:'Bewijsdatum',evidence:'Bewijs',value:'Waarde',url:'Bron-URL',sourceDate:'Datum bron',knownUse:'Bekend gebruik',managementLocation:'Beheerlocatie',advice:'Advies',nuance:'Nuance',execution:'Uitvoering',
     nextStep:'Vervolgstap',sourceInternal:'Interne bron',extraSources:'Aanvullende bronnen',quantity:'Aantal of waarde',measurementDate:'Meetdatum',limitation:'Beperking van de meting',license2026:'Licentie 2026',aiPossibilities:'Mogelijke AI-functies',
     localAI:'AI lokaal ingeschakeld?',sourceNotes:'Bronnotities',sourceCode:'Broncode',involvedRoles:'Betrokken rollen',known:'Bekend uit documenten',
-    originalNumber:'Oorspronkelijk nummer',sourceRow:'Rij in export',moduleId:'Module-ID',usageContext:'Gebruikssituatie',m365Context:'Microsoft 365-context'
+    originalNumber:'Oorspronkelijk nummer',sourceRow:'Rij in export',moduleId:'Module-ID',usageContext:'Gebruikssituatie',m365Context:'Microsoft 365-context',
+    version:'Bronversie',contentSha256:'SHA-256 van het bronbestand',rightsStatus:'Gebruiksrecht',rightsBasis:'Grondslag voor gebruik',allowedUse:'Toegestaan gebruik',scope:'Toepassingsgebied',retention:'Bewaarafspraak',approvalStatus:'Goedkeuring',approvedBy:'Goedgekeurd door',approvedAt:'Goedgekeurd op',approvalEvidence:'Bewijs van goedkeuring',nextReviewAt:'Opnieuw beoordelen op',referenceKeys:'Bijbehorende bronverwijzingen'
   };
-  const PROTECTED=new Set(['id','originalNumber','sourceFields','otherDescription','provenance','sources','auditTrail','relations','frameworkLinks','sourceMeta','recordMeta','sourceRefs']);
+  const PROTECTED=new Set(['id','originalNumber','sourceFields','otherDescription','provenance','sources','auditTrail','relations','frameworkLinks','sourceMeta','recordMeta','sourceRefs','sourceIds','referenceKeys','approvalBinding']);
   const MULTILINE=/answer|aliases|description|action|explanation|attention|didactics|learning|evidence|processing|agreement|note|instructions|source|data|links|review|unknown|advice|formative|usageContext|m365Context|nuance|execution|nextStep|limitation|input|teacher|student|known|status/i;
   const typesByKey=Object.fromEntries(SPECS.map(s=>[s.key,s]));
   const model={drafts:new Map(),current:null,editing:false,adding:false,original:null,working:null,catalog:null,loading:false,contextMode:false,returnFocus:null,editSourceScope:null};
@@ -43,22 +45,59 @@
   function record(type,id){const draft=model.drafts.get(key(type,id));return draft?draft.after:entry(type,id);}
   function records(type){
     const spec=typesByKey[type];if(!spec)return[];
-    const map=new Map([...state[spec.store].values()].map(r=>[r.id,r]));
+    const map=new Map([...(state[spec.store]?.values()||[])].map(r=>[r.id,r]));
     for(const draft of model.drafts.values())if(draft.type===type)map.set(draft.id,draft.after);
     return [...map.values()].sort((a,b)=>String(a.name||'').localeCompare(String(b.name||''),'nl'));
   }
   function availableTargets(){
     return SPECS.flatMap(spec=>records(spec.key).map(r=>({type:spec.key,id:r.id,label:spec.label+' · '+r.name+' ('+r.id+')'})));
   }
+  function reviewInput(replacement){
+    const profile=window.IctOrganisation.profile,registers={};
+    for(const type of Object.keys(profile.source.registerFiles)){
+      registers[type]=records(type).map(copy);
+      if(replacement?.type===type){
+        const index=registers[type].findIndex(item=>item.id===replacement.data.id);
+        if(index<0)registers[type].push(copy(replacement.data));else registers[type][index]=copy(replacement.data);
+      }
+    }
+    return window.AssuranceAdapter.fromRegisters(profile,registers,model.catalog,{asOf:new Date().toISOString().slice(0,10),sourceVersion:''});
+  }
+  function reviewState(record,link){
+    if(!['Onderbouwd','Niet van toepassing'].includes(link.status))return '';
+    try{
+      const input=reviewInput({type:model.current.type,data:record});
+      const wrapper=input.records.find(item=>item.type===model.current.type&&item.id===record.id);
+      const result=window.AssuranceEngine.inspectReviewBinding(input,wrapper,link);
+      return {current:'Bevestigd voor deze gegevens',missing:'Nog niet aan deze gegevens bevestigd',stale:'Gegevens of beoordeling gewijzigd: opnieuw beoordelen',invalid:'Versiekoppeling ongeldig'}[result.status]||'Opnieuw beoordelen';
+    }catch(_){return 'Versiekoppeling niet gecontroleerd';}
+  }
+  function sourceApprovalState(record){
+    if(record.approvalStatus!=='Goedgekeurd')return '';
+    try{
+      const input=reviewInput({type:'sourceRegister',data:record});
+      const source=input.records.find(item=>item.type==='sourceRegister'&&item.id===record.id);
+      const result=window.AssuranceSourceRegister.inspectApprovalBinding(source.data,input.context);
+      return {current:'Goedkeuring bevestigd voor deze bronversie',missing:'Bevestiging voor deze bronversie ontbreekt',stale:'Brongegevens gewijzigd: opnieuw goedkeuren',invalid:'Goedkeuring heeft een ongeldige versiekoppeling'}[result.status]||'Opnieuw goedkeuren';
+    }catch(_){return 'Versiekoppeling niet gecontroleerd';}
+  }
   function label(field){return labels[field]||field.replace(/([a-z])([A-Z])/g,'$1 $2');}
+  function provenanceText(value){
+    const rows=Array.isArray(value)?value:value==null?[]:[value];
+    return rows.map(row=>{
+      if(!row||typeof row!=='object')return String(row??'');
+      const parts=[row.file,row.sheet,row.row].filter(part=>part!==undefined&&part!==null&&part!=='');
+      return parts.length?parts.join(' / '):JSON.stringify(row);
+    }).filter(Boolean).join('; ');
+  }
   function specFor(type){const spec=typesByKey[type];if(!spec)throw Error('Onbekend register: '+type);return spec;}
   function nextId(spec){
     const suffixes=records(spec.key).map(r=>Number((String(r.id||'').match(new RegExp('^'+spec.prefix+'-(\\d+)$'))||[])[1])).filter(Number.isFinite);
-    const num=Math.max(0,...suffixes)+1;return spec.prefix+'-'+String(num).padStart(spec.prefix==='DPIA'||spec.prefix==='C'||spec.prefix==='B'?2:3,'0');
+    const num=Math.max(0,...suffixes)+1;return spec.prefix+'-'+String(num).padStart(spec.prefix==='SRC'?5:spec.prefix==='DPIA'||spec.prefix==='C'||spec.prefix==='B'?2:3,'0');
   }
   function fillTypeSelect(){
     const list=$c('cardTypeFilter');list.replaceChildren();
-    for(const spec of SPECS){const o=text('option','',spec.label);o.value=spec.key;list.append(o);}
+    for(const spec of SPECS){if(!window.IctOrganisation.profile?.source.registerFiles[spec.key])continue;const o=text('option','',spec.label);o.value=spec.key;list.append(o);}
   }
   function showList(){
     const type=$c('cardTypeFilter').value,query=$c('cardSearch').value.trim().toLocaleLowerCase('nl-NL');
@@ -120,7 +159,8 @@
       dpia:['assessment','sourceDate','evidence','local'],
       aiControls:['advice','managementLocation','execution','nextStep'],
       additionalCandidates:['kind','status','action','priority'],
-      checks:['category','status','explanation','priority']
+      checks:['category','status','explanation','priority'],
+      sourceRegister:['owner','version','rightsStatus','allowedUse','approvalStatus','approvedBy','approvedAt']
     };
     const first=(important[spec.key]||['description','local','status','action','owner','priority'])
       .filter(k=>k in r && r[k]!==undefined && r[k]!==null && String(r[k]).trim());
@@ -147,7 +187,7 @@
     if(!overview.children.length)overview.append(text('p','card-empty','Voor deze registratie zijn nog geen hoofdgegevens ingevuld.'));
     const details=panes.get('details');
     lines(details,'',other.map(k=>[label(k),r[k]]));
-    const hiddenFields=new Set([...spec.fields,'id','originalNumber','sourceFields','otherDescription','provenance','sources','auditTrail','relations','frameworkLinks','recordMeta','sourceMeta','sourceRefs']);
+    const hiddenFields=new Set([...spec.fields,'id','originalNumber','sourceFields','otherDescription','provenance','sources','auditTrail','relations','frameworkLinks','recordMeta','sourceMeta','sourceRefs','sourceIds','referenceKeys','approvalBinding']);
     const extras=Object.keys(r).filter(k=>!hiddenFields.has(k)).map(k=>[label(k),r[k]]);
     if(extras.length)lines(details,'Overige gegevens',extras);
     if(!details.children.length)details.append(text('p','card-empty','Geen aanvullende gegevens.'));
@@ -159,13 +199,16 @@
       ?relations.map(x=>[x.relationType+' · '+x.targetType+':'+x.targetId,(x.status||'Niet bevestigd')+' · '+(x.evidence||'Bron ontbreekt')+(x.note?' · '+x.note:'')])
       :[['Verbanden','Nog geen beoordeelde verbanden vastgelegd']]);
     lines(links,'Normverwijzingen',references.length
-      ?references.map(x=>[(catalog.get(x.frameworkId)?.name||x.frameworkId)+' '+(x.article||''),[(x.status||'Nog te beoordelen'),(x.evidence||'Geen bewijs vastgelegd'),x.note,x.role&&'Rol: '+x.role,x.reviewedBy&&'Beoordeeld door: '+x.reviewedBy,x.reviewedAt&&'Beoordeeld: '+x.reviewedAt,x.nextReviewAt&&'Volgende beoordeling: '+x.nextReviewAt,x.followUp&&'Actie: '+x.followUp,x.followUpOwner&&'Actiehouder: '+x.followUpOwner,x.followUpStatus&&'Opvolging: '+x.followUpStatus,x.completionEvidence&&'Uitvoering: '+x.completionEvidence].filter(Boolean).join(' · ')])
+      ?references.map(x=>[(catalog.get(x.frameworkId)?.name||x.frameworkId)+' '+(x.article||''),[(x.status||'Nog te beoordelen'),reviewState(r,x),(x.evidence||'Geen bewijs vastgelegd'),x.note,x.role&&'Rol: '+x.role,x.reviewedBy&&'Beoordeeld door: '+x.reviewedBy,x.reviewedAt&&'Beoordeeld: '+x.reviewedAt,x.nextReviewAt&&'Volgende beoordeling: '+x.nextReviewAt,x.followUp&&'Actie: '+x.followUp,x.followUpOwner&&'Actiehouder: '+x.followUpOwner,x.followUpStatus&&'Opvolging: '+x.followUpStatus,x.completionEvidence&&'Uitvoering: '+x.completionEvidence].filter(Boolean).join(' · ')])
       :[['Normen','Nog niet per bepaling beoordeeld']]);
     const source=panes.get('source'),meta=r.recordMeta||{};
     lines(source,'Herkomst',[
+      ['Brongoedkeuring',spec.key==='sourceRegister'?sourceApprovalState(r):''],
       ['Bronnen',(r.sources||[]).join('; ')],
       ['Bronverwijzingen',(r.sourceRefs||[]).join('; ')],
-      ['Bronrijen',(r.provenance||[]).map(x=>[x.file,x.sheet,x.row].join(' / ')).join('; ')],
+      ['Gekoppelde bronnen',(r.sourceIds||[]).map(id=>record('sourceRegister',id)?.name||id).join('; ')],
+      ['Verwijzingen bij deze bron',(r.referenceKeys||[]).join('; ')],
+      ['Bronrijen',provenanceText(r.provenance)],
       ['Oorspronkelijk nummer',r.originalNumber],
       ['Broninstellingen',Object.keys(meta).length?JSON.stringify(meta):'']
     ]);
@@ -204,17 +247,19 @@
     activate('overview');
   }
   function inputControl(name,value,group){
-    const outer=text('label','card-field'),title=text('span','card-field-label',label(name));
+    const outer=text('label','card-field'),title=text('span','card-field-label',model.current?.type==='sourceRegister'&&name==='owner'?'Bronhouder':label(name));
     if(value!==null&&typeof value==='object'){
       const output=text('pre','card-original-json',JSON.stringify(value,null,2));
       outer.append(title,text('span','card-help','Gestructureerde gegevens blijven bij deze bewerking behouden.'),output);
       return outer;
     }
-    const multiline=MULTILINE.test(name)||String(value||'').length>130;
-    const input=document.createElement(multiline?'textarea':'input');
+    const choice=model.current?.type==='sourceRegister'?{rightsStatus:window.AssuranceSourceRegister?.RIGHTS_STATUSES,approvalStatus:window.AssuranceSourceRegister?.APPROVAL_STATUSES}[name]:null;
+    const multiline=!choice&&(MULTILINE.test(name)||String(value||'').length>130);
+    const input=document.createElement(choice?'select':multiline?'textarea':'input');
     input.name=name;input.dataset.field=name;
-    if(multiline){input.rows=String(value||'').length>250?4:2;}
-    else{input.type='text';input.autocomplete='off';}
+    if(choice){options(input,[['','Nog vaststellen'],...choice.map(item=>[item,item]),...(value&&!choice.includes(value)?[[value,value]]:[])],value||'');}
+    else if(multiline){input.rows=String(value||'').length>250?4:2;}
+    else{input.type=model.current?.type==='sourceRegister'&&['approvedAt','nextReviewAt'].includes(name)?'date':'text';input.autocomplete='off';}
     input.value=typeof value==='boolean'?String(value):String(value??'');
     if(name==='name')input.required=true;
     if(name==='parentId'||name==='matchedId'||name==='parent'||name==='connectionId'){
@@ -267,12 +312,25 @@
       else{control.type=/At$/.test(part)?'date':'text';control.value=obj[part]||'';control.autocomplete='off';}
       field.append(text('span','card-field-label',name),control);grid.append(field);
     }
-    review.append(grid,text('p','card-help','Vul de beoordeling en eventuele vervolgactie in.'));
+    const confirmation=text('label','card-confirm-review'),confirm=text('input');confirm.type='checkbox';confirm.dataset.part='confirmReviewBinding';confirm.checked=false;
+    confirmation.append(confirm,text('span','','Ik bevestig deze beoordeling voor de ingevulde gegevens en gekoppelde bronnen.'));
+    review.append(grid,confirmation);
+    if(obj.reviewBinding)review.append(text('p','card-help',reviewState(model.working||record(model.current.type,model.current.id),obj)));
     status.addEventListener('change',()=>{if(['Onderbouwd','Niet van toepassing'].includes(status.value))review.open=true;});
     const hint=text('p','card-help');
     function updateHint(){hint.textContent=reference.value==='EN18286'?'EN 18286: bepaal eerst de rol en toepasselijkheid per systeem. Voor Onderbouwd zijn een rol, beoordelaar, datum en bewijs nodig.':'';hint.hidden=!hint.textContent;}
     reference.addEventListener('change',updateHint);updateHint();
     row.append(reference,article,status,evidence,note,remove,review,hint);return row;
+  }
+  function sourceRow(id=''){
+    const row=text('div','card-source-row');row.dataset.group='source';
+    const select=text('select');select.dataset.part='sourceId';select.setAttribute('aria-label','Gekoppelde bron');
+    const sources=records('sourceRegister');
+    const choices=[['','Kies een bron'],...sources.map(item=>[item.id,item.name+' · '+item.id])];
+    if(id&&!sources.some(item=>item.id===id))choices.push([id,'Niet gevonden · '+id]);
+    options(select,choices,id);
+    const remove=text('button','card-remove-row','×');remove.type='button';remove.title='Bronkoppeling verwijderen';remove.addEventListener('click',()=>row.remove());
+    row.append(select,remove);return row;
   }
   function showForm(){
     const r=model.working,spec=specFor(model.current.type);
@@ -298,6 +356,19 @@
     for(const item of model.catalog?.references||[]){const a=text('a','',item.id);a.href=item.url;a.target='_blank';a.rel='noopener noreferrer';a.title=item.name+' · bron openen';refs.append(a);}
     laws.append(refs);holder.append(laws);
     const evidence=text('section','card-form-section');evidence.append(text('h4','','Herkomst en opvolging'));
+    if(spec.key==='sourceRegister'){
+      const field=text('label','card-field'),input=text('textarea');input.name='referenceKeys';input.rows=4;input.value=Array.isArray(r.referenceKeys)?r.referenceKeys.join('\n'):String(r.referenceKeys??'');
+      input.originalReferenceText=input.value;
+      field.append(text('span','card-field-label','Bijbehorende bronverwijzingen, één per regel'),input);evidence.append(field);
+      const confirmation=text('label','card-confirm-review'),confirm=text('input');confirm.type='checkbox';confirm.name='confirmSourceApproval';confirm.checked=false;
+      confirmation.append(confirm,text('span','','Ik keur deze bronversie goed voor het vastgelegde gebruik.'));evidence.append(confirmation);
+      if(r.approvalBinding)evidence.append(text('p','card-help',sourceApprovalState(r)));
+    }else if(window.IctOrganisation.profile.source.registerFiles.sourceRegister){
+      const sourceRows=text('div','card-form-rows');sourceRows.id='cardSourceRows';
+      for(const id of r.sourceIds||[])sourceRows.append(sourceRow(id));
+      const addSource=text('button','card-button card-button-subtle','+ Bron koppelen');addSource.type='button';addSource.addEventListener('click',()=>sourceRows.append(sourceRow()));
+      evidence.append(text('h4','','Gekoppelde bronnen'),sourceRows,addSource);
+    }
     const meta=r.recordMeta||{};
     for(const [field,lbl] of [['sourceSystem','Oorspronkelijke bron / leverancier'],['externalId','Oorspronkelijk bron-ID'],['referenceDate','Peildatum (jjjj-mm-dd)'],['rights','Gebruiksrecht / publicatie'],['confidentiality','Vertrouwelijkheid']]){
       const labelEl=text('label','card-field'),title=text('span','card-field-label',lbl),inp=text('input','');
@@ -317,7 +388,11 @@
     holder.append(datalist);
   }
   function parseRows(id,parts){
-    return [...$c(id).children].filter(x=>x.dataset.group).map(row=>({...copy(row.sourceValue||{}),...Object.fromEntries(parts.map(part=>[part,row.querySelector('[data-part="'+part+'"]')?.value.trim()||'']))}));
+    return [...$c(id).children].filter(x=>x.dataset.group).map(row=>{
+      const result=copy(row.sourceValue||{});
+      for(const part of parts){const value=row.querySelector('[data-part="'+part+'"]')?.value.trim()||'';if(value||Object.prototype.hasOwnProperty.call(result,part))result[part]=value;}
+      return result;
+    });
   }
   function collect(){
     if(!model.working||!model.current)throw Error('Kies eerst een registratie.');
@@ -325,24 +400,36 @@
     for(const input of $c('cardFormFields').querySelectorAll('[data-field]')){
       const field=input.dataset.field;
       const raw=input.value.trim();
-      if(!raw&&(r[field]===undefined||r[field]===null)){delete r[field];continue;}
+      if(!raw&&(r[field]===undefined||r[field]===null)){if(r[field]!==null)delete r[field];continue;}
       if(typeof r[field]==='boolean'){if(!['true','false'].includes(raw.toLowerCase()))throw Error(label(field)+' moet true of false zijn.');r[field]=raw.toLowerCase()==='true';}
       else if(typeof r[field]==='number'){if(raw!==''&&!Number.isFinite(Number(raw)))throw Error(label(field)+' moet een getal zijn.');r[field]=raw===''?null:Number(raw);}
       else r[field]=raw;
     }
-    r.relations=parseRows('cardRelationRows',['targetType','targetId','relationType','status','evidence','note']);
+    const relations=parseRows('cardRelationRows',['targetType','targetId','relationType','status','evidence','note']);
+    if(relations.length||Object.prototype.hasOwnProperty.call(r,'relations'))r.relations=relations;
     r.frameworkLinks=parseRows('cardFrameworkRows',window.AssuranceRecord.fields);
+    const referenceKeys=$c('cardFormFields').querySelector('[name="referenceKeys"]');
+    if(model.current.type==='sourceRegister'&&referenceKeys&&(!Array.isArray(r.referenceKeys)||referenceKeys.value!==referenceKeys.originalReferenceText)){
+      const values=referenceKeys.value.split(/\r\n|\n|\r/).filter(value=>value!=='');
+      if(values.some(value=>!value.trim()))throw Error('Een bronverwijzing bevat alleen spaties. Vul de verwijzing in of verwijder de lege regel.');
+      r.referenceKeys=values;
+    }
+    if(model.current.type!=='sourceRegister'&&window.IctOrganisation.profile.source.registerFiles.sourceRegister){
+      const ids=[...$c('cardSourceRows').children].map(row=>row.querySelector('[data-part="sourceId"]')?.value||'').filter(Boolean);
+      if(ids.length||Object.prototype.hasOwnProperty.call(r,'sourceIds'))r.sourceIds=ids;
+    }
     const sourceInput=$c('cardFormFields').querySelector('[name="newSourceReference"]');
     if(sourceInput&&sourceInput.value.trim())r.sources=[...new Set([...(r.sources||[]),sourceInput.value.trim()])];
-    r.recordMeta={...(r.recordMeta||{})};
-    for(const input of $c('cardFormFields').querySelectorAll('[name^="recordMeta."]')){const field=input.name.slice(11);if(input.value.trim())r.recordMeta[field]=input.value.trim();else delete r.recordMeta[field];}
+    const recordMeta={...(r.recordMeta||{})};
+    for(const input of $c('cardFormFields').querySelectorAll('[name^="recordMeta."]')){const field=input.name.slice(11);if(input.value.trim())recordMeta[field]=input.value.trim();else delete recordMeta[field];}
+    if(Object.keys(recordMeta).length||Object.prototype.hasOwnProperty.call(r,'recordMeta'))r.recordMeta=recordMeta;
     const reason=$c('cardFormFields').querySelector('[name="changeReason"]').value.trim();
     if(!r.name?.trim())throw Error('Naam is verplicht.');
     if(!reason||reason.length<8)throw Error('Beschrijf de wijziging en de herkomst in minimaal acht tekens.');
-    if(r.recordMeta.referenceDate&&!window.AssuranceRecord.validDate(r.recordMeta.referenceDate))throw Error('Peildatum moet een bestaande datum zijn (jjjj-mm-dd).');
+    if(r.recordMeta?.referenceDate&&!window.AssuranceRecord.validDate(r.recordMeta.referenceDate))throw Error('Peildatum moet een bestaande datum zijn (jjjj-mm-dd).');
     const targets=new Set(availableTargets().map(x=>key(x.type,x.id)));
     const seen=new Set();
-    for(const rel of r.relations){
+    for(const rel of r.relations||[]){
       if(!rel.targetId||!targets.has(key(rel.targetType,rel.targetId)))throw Error('Een verband verwijst niet naar een bestaande registratie.');
       if(rel.targetType===model.current.type&&rel.targetId===r.id)throw Error('Een registratie kan niet naar zichzelf verwijzen.');
       if(!model.catalog.relationTypes.some(x=>x.id===rel.relationType))throw Error('Onbekend relatietype.');
@@ -354,6 +441,32 @@
     for(const [index,link] of r.frameworkLinks.entries()){
       const errors=window.AssuranceRecord.validate(link,{catalog:model.catalog,asOf:new Date().toISOString().slice(0,10)});
       if(errors.length){const row=$c('cardFrameworkRows').children[index];const detail=row.querySelector('details');if(detail)detail.open=true;row.querySelector('[data-part="'+errors[0].field+'"]')?.focus();throw Error(errors[0].message);}
+    }
+    const input=reviewInput({type:model.current.type,data:r});
+    const wrapper=input.records.find(item=>item.type===model.current.type&&item.id===r.id);
+    if(model.current.type==='sourceRegister'){
+      const confirmed=$c('cardFormFields').querySelector('[name="confirmSourceApproval"]')?.checked;
+      if(confirmed){
+        r.approvalBinding=window.AssuranceSourceRegister.createApprovalBinding(wrapper.data,input.context);
+        wrapper.data.approvalBinding=copy(r.approvalBinding);
+      }
+      const errors=window.AssuranceSourceRegister.validate(wrapper.data,input.context);
+      const invalid=errors.find(item=>item.severity==='fail'&&item.category!=='business');if(invalid)throw Error(invalid.message);
+      const decision=record=>Object.fromEntries(['approvalStatus','approvedBy','approvedAt','approvalEvidence','nextReviewAt','approvalBinding'].filter(field=>Object.prototype.hasOwnProperty.call(record,field)).map(field=>[field,record[field]]));
+      if(r.approvalStatus==='Goedgekeurd'&&window.AssuranceEngine.canonicalize(decision(model.working))!==window.AssuranceEngine.canonicalize(decision(r))&&!confirmed)throw Error('Bevestig de gewijzigde brongoedkeuring voor deze bronversie.');
+    }
+    for(const [index,link] of r.frameworkLinks.entries()){
+      const row=$c('cardFrameworkRows').children[index],confirmed=row.querySelector('[data-part="confirmReviewBinding"]')?.checked;
+      if(confirmed){
+        if(!['Onderbouwd','Niet van toepassing'].includes(link.status))throw Error('Rond de beoordeling af voordat je deze bevestigt.');
+        link.reviewBinding=window.AssuranceEngine.createReviewBinding(input,wrapper,link);
+      }
+      const original=row.sourceValue||{};
+      if(['Onderbouwd','Niet van toepassing'].includes(link.status)&&window.AssuranceEngine.canonicalize(original)!==window.AssuranceEngine.canonicalize(link)){
+        if(!confirmed)throw Error('Bevestig de gewijzigde beoordeling voor deze gegevens.');
+        const binding=window.AssuranceEngine.inspectReviewBinding(input,wrapper,link);
+        if(binding.status!=='current')throw Error('De beoordeling past niet bij deze gegevens. Controleer de bronkoppelingen en bevestig opnieuw.');
+      }
     }
     const allText=JSON.stringify(r);
     if(/ghp_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{15,}|sk-proj-[A-Za-z0-9_-]{12,}/.test(allText))throw Error('De kaart lijkt een toegangssleutel te bevatten. Haal die eerst weg.');
