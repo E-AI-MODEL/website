@@ -224,6 +224,8 @@ function updateControls(){
     voice.value='browser';
     setStatus('Voor Nederlands en Engels gebruiken we voorlopig de gekozen browserstem.');
   }
+  // Native selects remain authoritative; the mist menu mirrors these updates.
+  document.dispatchEvent(new Event('eaispeak-mist-update'));
 }
 async function probeGpu(){
   const sequence=++gpuProbeSequence;
