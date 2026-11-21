@@ -2,6 +2,7 @@ import {
   getActiveSession, listSessions, selectSession, storeSession, deleteSession,
   exportSessionData, importSessionData
 } from './session-store.js';
+import {initMistVoiceUI} from './mist-voice-ui.mjs';
 
 const $ = id => document.getElementById(id);
 const panel = $('panel');
@@ -170,6 +171,7 @@ for (const detail of document.querySelectorAll('.studio-disclosure')) {
   detail.append(body);
   let closingTimer = null;
   summary.addEventListener('click', event => {
+    if(detail.id==='freeTalkOptions')return; // dedicated floating fog palette owns its close transition
     if (!detail.open || prefersReducedMist.matches) return;
     event.preventDefault();
     if (detail.classList.contains('is-dissolving')) return;
@@ -190,48 +192,80 @@ for (const detail of document.querySelectorAll('.studio-disclosure')) {
   });
 }
 
-// Het zwevende spreekmenu past binnen het scherm, niet onder de menubalk of schermrand.
+// Het spreekmenu is geen formulier in het scrollvak meer. De zachte glaslaag
+// hangt rechtstreeks in de full-screen studio: nergens afgeknipt op mobiel.
 const talkOptions=$('freeTalkOptions');
-const talkPopup=talkOptions.querySelector('.mist-detail-body');
+const talkSummary=talkOptions.querySelector(':scope > summary');
+const talkPopup=talkOptions.querySelector(':scope > .mist-detail-body');
+talkPopup.classList.add('mist-voice-portal');
+talkPopup.hidden=true;
+panel.appendChild(talkPopup);
+let talkClosingTimer=null;
 function positionTalkPopup(){
   if(!talkOptions.open||$('page-gesprek').hidden)return;
-  const anchor=talkOptions.querySelector('summary').getBoundingClientRect();
+  const anchor=talkSummary.getBoundingClientRect();
   const navBottom=document.querySelector('.studio-nav').getBoundingClientRect().bottom;
-  const room=Math.max(180,innerHeight-navBottom-24);
-  const maxHeight=Math.min(550,room);
-  talkPopup.style.setProperty('--free-popup-max-height',maxHeight+'px');
-  // Houd het huidige zwevende ontwerp aan, maar verplaats het bij weinig hoogte naar boven.
-  const popup=talkPopup.getBoundingClientRect();
-  const desiredHeight=Math.min(maxHeight,talkPopup.offsetHeight);
-  const desiredTop=Math.max(navBottom+8,Math.min(anchor.bottom+8,innerHeight-desiredHeight-12));
-  const desiredLeft=Math.max(12,Math.min(anchor.left,innerWidth-popup.width-12));
-  const top=parseFloat(getComputedStyle(talkPopup).top)||46;
-  const left=parseFloat(getComputedStyle(talkPopup).left)||0;
-  talkPopup.style.top=(top+desiredTop-popup.top)+'px';
-  talkPopup.style.left=(left+desiredLeft-popup.left)+'px';
+  const width=Math.min(428,window.innerWidth-24);
+  const maxHeight=Math.max(168,Math.min(608,window.innerHeight-navBottom-24));
+  const top=Math.max(navBottom+9,Math.min(anchor.bottom+12,window.innerHeight-maxHeight-12));
+  const left=Math.max(12,Math.min(anchor.left,window.innerWidth-width-12));
+  talkPopup.style.width=width+'px';
+  talkPopup.style.maxHeight=maxHeight+'px';
+  talkPopup.style.left=left+'px';
+  talkPopup.style.top=top+'px';
 }
-talkOptions.addEventListener('toggle',()=>{
+let mistUI=null;
+function closeTalkMenu(immediate=false,restoreFocus=false){
+  clearTimeout(talkClosingTimer);
+  mistUI?.closePicker();
+  if(!talkOptions.open)return;
+  if(immediate||reduceMotion.matches){
+    talkOptions.open=false;
+    talkPopup.hidden=true;
+    talkPopup.classList.remove('is-dissolving');
+    if(restoreFocus)talkSummary.focus({preventScroll:true});
+    return;
+  }
+  talkPopup.classList.add('is-dissolving');
+  talkClosingTimer=setTimeout(()=>{
+    talkOptions.open=false;
+    talkPopup.hidden=true;
+    talkPopup.classList.remove('is-dissolving');
+    if(restoreFocus)talkSummary.focus({preventScroll:true});
+  },710);
+}
+talkSummary.addEventListener('click',event=>{
   if(talkOptions.open){
+    event.preventDefault();
+    closeTalkMenu(false,true);
+  }
+});
+talkOptions.addEventListener('toggle',()=>{
+  clearTimeout(talkClosingTimer);
+  if(talkOptions.open){
+    talkPopup.hidden=false;
+    talkPopup.classList.remove('is-dissolving');
     requestAnimationFrame(()=>requestAnimationFrame(positionTalkPopup));
-    setTimeout(positionTalkPopup,460);
   }else{
-    talkPopup.style.removeProperty('top');
-    talkPopup.style.removeProperty('left');
+    talkPopup.hidden=true;
+    talkPopup.classList.remove('is-dissolving');
   }
 });
 document.addEventListener('pointerdown',event=>{
-  if(talkOptions.open&&!talkOptions.contains(event.target)){
-    talkOptions.open=false;
-    talkOptions.classList.remove('is-dissolving');
+  if(talkOptions.open&&!talkOptions.contains(event.target)&&!talkPopup.contains(event.target)
+      &&!$('mistVoiceSelectLayer')?.contains(event.target)){
+    closeTalkMenu();
   }
 });
 document.addEventListener('keydown',event=>{
-  if(event.key==='Escape'&&talkOptions.open){
-    event.preventDefault();talkOptions.open=false;
-    talkOptions.querySelector('summary').focus();
+  if(event.key==='Escape'&&talkOptions.open&&!event.defaultPrevented){
+    if(!$('mistVoiceSelectLayer')?.hidden)return;
+    event.preventDefault();closeTalkMenu(false,true);
   }
 });
-window.addEventListener('resize',()=>{if(talkOptions.open)requestAnimationFrame(positionTalkPopup);});
+window.addEventListener('resize',positionTalkPopup);
+window.addEventListener('eaispeak-mist-layout',()=>requestAnimationFrame(positionTalkPopup));
+mistUI=initMistVoiceUI({panel,root:talkPopup,details:talkOptions,closeMenu:()=>closeTalkMenu(false,true)});
 
 function onStudioVisibility() {
   const open = panel.classList.contains('open');
