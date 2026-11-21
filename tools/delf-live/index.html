@@ -118,30 +118,54 @@
       </div>
       <section class="studio-section cloud-reveal">
         <p class="studio-support">Geen vaste tekst. Kies een browsermodel, een online model of een spraakengine op je eigen server. Niet elke engine ondersteunt dezelfde talen.</p>
-        <details class="studio-disclosure free-talk-floating" id="freeTalkOptions">
-          <summary><span id="freeTalkSummary">Nederlands → Frans · in browser</span></summary>
-          <div class="free-talk-floating-content">
-          <div class="studio-action-grid">
-            <label class="studio-field">Ik spreek
-              <select id="freeTalkInputLang">
-                <option value="nl-NL">Nederlands</option>
-                <option value="en-US">Engels</option>
-                <option value="fr-FR">Frans</option>
-                <option value="es-ES">Spaans</option>
-                <option value="pt-PT">Portugees</option>
-                <option value="de-DE">Duits</option>
-              </select>
-            </label>
-            <label class="studio-field">AI antwoordt in
-              <select id="freeTalkOutputLang">
-                <option value="fr-FR">Frans</option>
-                <option value="en-US">Engels</option>
-                <option value="nl-NL">Nederlands</option>
-              </select>
-            </label>
-          </div>
-          <label class="studio-field">Model draait
-            <select id="freeTalkEngine">
+        <details class="studio-disclosure free-talk-floating mist-voice-console" id="freeTalkOptions">
+          <summary class="mist-voice-launch">
+            <span class="mist-voice-halo" aria-hidden="true"><i></i><i></i></span>
+            <span class="mist-voice-launch-copy"><span class="mist-voice-launch-eyebrow">SPRAAK · INSTELLINGEN</span>
+              <span id="freeTalkSummary">Nederlands → Frans · in browser</span>
+            </span>
+            <span class="mist-voice-launch-arrow" aria-hidden="true">⌄</span>
+          </summary>
+          <div class="free-talk-floating-content mist-voice-body">
+            <div class="mist-voice-head">
+              <span class="mist-voice-micro">KIES JE GESPREK</span>
+              <button type="button" id="freeTalkMenuClose" class="mist-voice-close" aria-label="Sluit gespreksinstellingen">Sluiten <span aria-hidden="true">×</span></button>
+            </div>
+            <div class="mist-voice-direction" aria-label="Gesprekstalen">
+              <label class="studio-field mist-voice-language">Jij spreekt
+                <select id="freeTalkInputLang">
+                  <option value="nl-NL">Nederlands</option>
+                  <option value="en-US">Engels</option>
+                  <option value="fr-FR">Frans</option>
+                  <option value="es-ES">Spaans</option>
+                  <option value="pt-PT">Portugees</option>
+                  <option value="de-DE">Duits</option>
+                </select>
+              </label>
+              <span class="mist-voice-direction-arrow" aria-hidden="true">→</span>
+              <label class="studio-field mist-voice-language">Antwoord in
+                <select id="freeTalkOutputLang">
+                  <option value="fr-FR">Frans</option>
+                  <option value="en-US">Engels</option>
+                  <option value="nl-NL">Nederlands</option>
+                </select>
+              </label>
+            </div>
+            <div class="mist-voice-route" role="group" aria-label="Waar draait het model">
+              <button type="button" data-mist-route="device" aria-pressed="true">Apparaat</button>
+              <button type="button" data-mist-route="online" aria-pressed="false">Online</button>
+              <button type="button" data-mist-route="speech" aria-pressed="false">Live spraak</button>
+            </div>
+            <div class="mist-voice-models" id="freeTalkModelChoices" role="group" aria-label="Kies het model">
+              <button type="button" data-mist-engine="browser" data-mist-group="device" aria-pressed="true"><span>WebLLM</span><small>Op dit apparaat · geen account</small></button>
+              <button type="button" data-mist-engine="ollama" data-mist-group="device" aria-pressed="false"><span>Ollama</span><small>Je eigen computer</small></button>
+              <button type="button" data-mist-engine="puter" data-mist-group="online" aria-pressed="false"><span>Puter</span><small>Online model · account nodig</small></button>
+              <button type="button" data-mist-engine="moshi" data-mist-group="speech" aria-pressed="false"><span>Moshi</span><small>Live gesprek in het Engels</small></button>
+              <button type="button" data-mist-engine="hibiki" data-mist-group="speech" aria-pressed="false"><span>Hibiki</span><small>Frans naar Engels</small></button>
+              <button type="button" data-mist-engine="hibiki-zero" data-mist-group="speech" aria-pressed="false"><span>Hibiki-Zero</span><small>Vier talen naar Engels</small></button>
+              <button type="button" data-mist-engine="dessa" data-mist-group="speech" aria-pressed="false"><span>Dessa</span><small>Nog niet beschikbaar</small></button>
+            </div>
+            <select id="freeTalkEngine" class="mist-voice-native" tabindex="-1" aria-hidden="true">
               <option value="browser">Op dit apparaat · WebLLM</option>
               <option value="ollama">Op mijn computer · Ollama</option>
               <option value="puter">Online · Puter-account</option>
@@ -150,62 +174,69 @@
               <option value="hibiki-zero">Hibiki-Zero · 4 talen naar EN</option>
               <option value="dessa">Dessa · nog niet beschikbaar</option>
             </select>
-          </label>
-          <div id="freeTalkBrowserModelRow">
-            <label class="studio-field">Browsermodel
-              <select id="freeTalkBrowserModel">
-              <option value="Qwen2.5-0.5B-Instruct-q4f16_1-MLC">Qwen 0,5B · beperkt Nederlands</option>
-              <option value="Llama-3.2-1B-Instruct-q4f16_1-MLC">Llama 1B · ±880 MB</option>
-              <option value="Qwen2.5-1.5B-Instruct-q4f16_1-MLC">Qwen 1,5B · ±1,6 GB</option>
-              <option value="Qwen2.5-3B-Instruct-q4f16_1-MLC">Qwen 3B · ±2,4 GB, betere taalvaardigheid</option>
-              </select>
-            </label>
-            <button id="freeTalkPreload" class="action studio-action studio-action-quiet" type="button">Model vooraf laden</button>
-            <p id="freeTalkPreloadStatus" class="studio-support" role="status" aria-live="polite">Een eerste download wordt normaal in de browsercache bewaard. Na herstart wordt het model opnieuw geladen, niet automatisch opnieuw gedownload.</p>
-            <p id="freeTalkCacheStatus" class="studio-support"></p>
-          </div>
-          <div id="freeTalkOllamaOptions" hidden>
-            <label class="studio-field">Ollama op deze computer
-              <input id="freeTalkOllamaEndpoint" type="url" value="http://localhost:11434/" autocomplete="off" spellcheck="false" aria-describedby="freeTalkOllamaStatus">
-            </label>
-            <button id="freeTalkOllamaConnect" type="button" class="action studio-action studio-action-quiet">Zoek lokale modellen</button>
-            <label class="studio-field">Geïnstalleerd model
-              <select id="freeTalkOllamaModel"><option value="">Nog geen modellen gevonden</option></select>
-            </label>
-            <p id="freeTalkOllamaStatus" class="studio-support" role="status" aria-live="polite">Start Ollama op je computer en kies Zoek lokale modellen. Onder Techniek staat hulp bij het verbinden.</p>
-          </div>
-          <div id="freeTalkOnlineOptions" hidden>
-            <label class="studio-field">Online model
-              <select id="freeTalkCloudModel"><option value="gpt-5.4-nano">GPT-5.4 nano · snel</option></select>
-            </label>
-            <button class="action studio-action studio-action-quiet" type="button" id="freeTalkConnect">Verbind met Puter</button>
-            <p class="studio-support" id="freeTalkConnectionStatus">Voor online AI is een Puter-account nodig. Gebruik kan kosten meebrengen.</p>
-          </div>
-          <div id="freeTalkSpeechOptions" hidden>
-            <p class="studio-support" id="freeTalkSpeechDescription">De spraakengine heeft een eigen server nodig.</p>
-            <label class="studio-field" for="freeTalkSpeechEndpoint">EAIspeak-spraakbridge (WebSocket)
-              <input id="freeTalkSpeechEndpoint" type="url" value="ws://localhost:8765/eaispeak" autocomplete="off" spellcheck="false" aria-describedby="freeTalkSpeechConnection">
-            </label>
-            <button id="freeTalkSpeechProbe" class="action studio-action studio-action-quiet" type="button">Controleer modelverbinding</button>
-            <p class="studio-support" id="freeTalkSpeechConnection" role="status" aria-live="polite">Verbind een eigen spraakserver. Test de verbinding zonder je microfoon te openen.</p>
-            <a class="studio-support" id="freeTalkSpeechSource" href="https://github.com/kyutai-labs/moshi" target="_blank" rel="noopener noreferrer">Bekijk de modelbron</a>
-          </div>
-          <label class="studio-field" id="freeTalkVoiceRow">Stem
-            <select id="freeTalkVoice">
-              <option value="browser">Stem van deze browser</option>
-              <option value="cloud">Franse cloudstem (Puter)</option>
-              <option value="none">Alleen tekst</option>
-            </select>
-          </label>
-          <label class="studio-field" id="freeTalkVoiceNameRow">Beschikbare stem op dit apparaat
-            <select id="freeTalkVoiceName"><option value="">Automatisch passende stem</option></select>
-          </label>
-          <label class="studio-field free-talk-handsfree" id="freeTalkAutoListenRow"><input id="freeTalkAutoListen" type="checkbox" checked> Handsfree: luister na ieder antwoord opnieuw</label>
-          <div class="free-talk-device-details" aria-live="polite">
-            <p class="studio-support" id="freeTalkDeviceStatus">Apparaat controleren…</p>
-            <p class="studio-support" id="freeTalkDeviceAdvice"></p>
-          </div>
-          <p class="studio-support" id="freeTalkModelHint">Lokaal model: eerste download nodig. Spraakherkenning kan een browserdienst gebruiken.</p>
+            <div class="mist-voice-provider">
+              <div id="freeTalkBrowserModelRow">
+                <label class="studio-field">Browsermodel
+                  <select id="freeTalkBrowserModel">
+                    <option value="Qwen2.5-0.5B-Instruct-q4f16_1-MLC">Qwen 0,5B · beperkt Nederlands</option>
+                    <option value="Llama-3.2-1B-Instruct-q4f16_1-MLC">Llama 1B · ±880 MB</option>
+                    <option value="Qwen2.5-1.5B-Instruct-q4f16_1-MLC">Qwen 1,5B · ±1,6 GB</option>
+                    <option value="Qwen2.5-3B-Instruct-q4f16_1-MLC">Qwen 3B · ±2,4 GB, betere taalvaardigheid</option>
+                  </select>
+                </label>
+                <button id="freeTalkPreload" class="action studio-action studio-action-quiet" type="button">Model vooraf laden</button>
+                <p id="freeTalkPreloadStatus" class="studio-support" role="status" aria-live="polite">Een eerste download wordt normaal in de browsercache bewaard. Na herstart wordt het model opnieuw geladen, niet automatisch opnieuw gedownload.</p>
+                <p id="freeTalkCacheStatus" class="studio-support"></p>
+              </div>
+              <div id="freeTalkOllamaOptions" hidden>
+                <label class="studio-field">Ollama op deze computer
+                  <input id="freeTalkOllamaEndpoint" type="url" value="http://localhost:11434/" autocomplete="off" spellcheck="false" aria-describedby="freeTalkOllamaStatus">
+                </label>
+                <button id="freeTalkOllamaConnect" type="button" class="action studio-action studio-action-quiet">Zoek lokale modellen</button>
+                <label class="studio-field">Geïnstalleerd model
+                  <select id="freeTalkOllamaModel"><option value="">Nog geen modellen gevonden</option></select>
+                </label>
+                <p id="freeTalkOllamaStatus" class="studio-support" role="status" aria-live="polite">Start Ollama op je computer en kies Zoek lokale modellen. Onder Techniek staat hulp bij het verbinden.</p>
+              </div>
+              <div id="freeTalkOnlineOptions" hidden>
+                <label class="studio-field">Online model
+                  <select id="freeTalkCloudModel"><option value="gpt-5.4-nano">GPT-5.4 nano · snel</option></select>
+                </label>
+                <button class="action studio-action studio-action-quiet" type="button" id="freeTalkConnect">Verbind met Puter</button>
+                <p class="studio-support" id="freeTalkConnectionStatus">Voor online AI is een Puter-account nodig. Gebruik kan kosten meebrengen.</p>
+              </div>
+              <div id="freeTalkSpeechOptions" hidden>
+                <p class="studio-support" id="freeTalkSpeechDescription">De spraakengine heeft een eigen server nodig.</p>
+                <button id="freeTalkSpeechProbe" class="action studio-action studio-action-quiet" type="button">Controleer modelverbinding</button>
+                <p class="studio-support" id="freeTalkSpeechConnection" role="status" aria-live="polite">Test de modelverbinding zonder de microfoon te openen.</p>
+                <details class="mist-voice-advanced">
+                  <summary>Serveradres en bron</summary>
+                  <label class="studio-field">EAIspeak-spraakbridge
+                    <input id="freeTalkSpeechEndpoint" type="url" value="ws://localhost:8765/eaispeak" autocomplete="off" spellcheck="false" aria-describedby="freeTalkSpeechConnection">
+                  </label>
+                  <a class="studio-support" id="freeTalkSpeechSource" href="https://github.com/kyutai-labs/moshi" target="_blank" rel="noopener noreferrer">Bekijk de modelbron</a>
+                </details>
+              </div>
+            </div>
+            <details class="mist-voice-advanced mist-voice-tuning">
+              <summary>Stem en apparaat <span aria-hidden="true">⌄</span></summary>
+              <label class="studio-field" id="freeTalkVoiceRow">Stem
+                <select id="freeTalkVoice">
+                  <option value="browser">Stem van deze browser</option>
+                  <option value="cloud">Franse cloudstem (Puter)</option>
+                  <option value="none">Alleen tekst</option>
+                </select>
+              </label>
+              <label class="studio-field" id="freeTalkVoiceNameRow">Beschikbare stem op dit apparaat
+                <select id="freeTalkVoiceName"><option value="">Automatisch passende stem</option></select>
+              </label>
+              <label class="studio-field free-talk-handsfree" id="freeTalkAutoListenRow"><input id="freeTalkAutoListen" type="checkbox" checked> Handsfree: luister na ieder antwoord opnieuw</label>
+              <div class="free-talk-device-details" aria-live="polite">
+                <p class="studio-support" id="freeTalkDeviceStatus">Apparaat controleren…</p>
+                <p class="studio-support" id="freeTalkDeviceAdvice"></p>
+              </div>
+              <p class="studio-support" id="freeTalkModelHint">Lokaal model: eerste download nodig. Spraakherkenning kan een browserdienst gebruiken.</p>
+            </details>
           </div>
         </details>
         <div class="studio-action-grid">
