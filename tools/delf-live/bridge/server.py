@@ -113,7 +113,7 @@ class NativeOpusCodec:
         self.decoder = sphn.OpusStreamReader(MODEL_RATE)
         # Opus accepts fixed frame sizes. Browser audio and SOXR produce variable chunks.
         self.pending = np.empty(0, dtype=np.float32)
-        self.frame_size = 960  # 40 ms at 24 kHz
+        self.frame_size = 1920  # 80 ms at 24 kHz, same as Kyutai's reference clients
 
     def browser_to_native(self, raw_pcm: bytes) -> bytes:
         if not raw_pcm or len(raw_pcm) % 2 or len(raw_pcm) > MAX_PCM_MESSAGE:
