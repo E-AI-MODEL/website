@@ -6,6 +6,8 @@ on:
       - feature/ict-scan-dashboard-builder-studio
     paths:
       - .github/workflows/import-ict-dashboard-builder.yml
+      - scripts/patch_ict_dashboard_builder.py
+      - tools/ict-scan/builder-src/**
   workflow_dispatch:
 
 permissions:
@@ -32,6 +34,8 @@ jobs:
           git clone https://github.com/nateriera/dashboard-builder.git /tmp/ict-dashboard-builder
           git -C /tmp/ict-dashboard-builder checkout --detach 0c72e80b6b2106c24dd643607157932ca25f7717
           test "$(git -C /tmp/ict-dashboard-builder rev-parse HEAD)" = 0c72e80b6b2106c24dd643607157932ca25f7717
+      - name: Patch upstream source with the same-origin ICT bridge
+        run: python3 scripts/patch_ict_dashboard_builder.py /tmp/ict-dashboard-builder
       - name: Install locked dependencies and build actual Dashboard Builder
         working-directory: /tmp/ict-dashboard-builder
         run: |
@@ -61,7 +65,8 @@ jobs:
           License: MIT (LICENSE)
           The source was built with npm ci and npm run build in GitHub Actions.
           This is the original upstream app, hosted locally under the ICT scan.
-          Data are not preloaded. Users explicitly import files in the browser.
+          The local same-origin bridge reads in-memory register snapshots.
+          Data are not included in the published static bundle. A writeback is a reviewed PR.
           EOF
           test -s tools/ict-scan/dashboard-builder-app/index.html
       - name: Commit static build to feature branch
