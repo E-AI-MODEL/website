@@ -209,6 +209,22 @@ try {
   assert.deepEqual(errors,[],'JavaScript-fouten: '+errors.join(' / '));
   await page.close();
  }
+ // Original Dashboard Builder must load as a self-hosted application,
+ // rather than only appearing as a link in the ICT scan toolbar.
+ const builder=await browser.newPage({viewport:{width:1280,height:800}});
+ const builderErrors=[];
+ builder.on('pageerror',error=>builderErrors.push(error.message));
+ await builder.route('**/*',route=>{
+   if(route.request().url().startsWith(base+'/tools/ict-scan/dashboard-builder-app/'))return route.continue();
+   return route.abort();
+ });
+ await builder.goto(base+'/tools/ict-scan/dashboard-builder-app/',{waitUntil:'load'});
+ await builder.locator('#btn-data').waitFor({state:'visible',timeout:15000});
+ await builder.locator('#palette-items .palette-item').first().waitFor({state:'visible',timeout:15000});
+ assert.equal(await builder.locator('.grid-stack').count(),1);
+ assert.deepEqual(builderErrors,[],'Fouten in de originele Dashboard Builder');
+ await builder.screenshot({path:'test-results/ict-scan-original-builder.png'});
+ await builder.close();
  console.log('ICT-scan: 61 toepassingen geladen, vaste schermen, menu en desktop/mobiele sync gecontroleerd');
 }finally{
  await browser?.close();
