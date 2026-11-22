@@ -202,3 +202,15 @@ Een ingevoerde vraag wordt eerst vergeleken met exacte FAQ-vragen of alternatiev
 De vragenverzameling in tests/test_ict_scan_answers.mjs bevat 28 echte Nederlandse zoekvragen, met controles op bronvelden, aantallen, onvoldoende bewijs, de bronverwijzing en de afwezigheid van generatieve tekst. De JavaScript-code is lokaal: tools/ict-scan/answer-engine.js. De vormgeving staat in answer-engine.css.
 
 Vragen worden niet opgeslagen als zoeklog, niet gebruikt als profiel en niet verzonden naar externe zoekdiensten. De verborgen 404-ingang is geen beveiliging. De gepubliceerde JSON-bestanden zijn openbaar in de GitHub-repository.
+
+
+## Dashboardweergaven
+
+De bestaande Dashboardmaker gebruikt de acht bronregistergroepen en negen onderdelen.
+De verdeling heeft vijf expliciete weergavekeuzes: dunne lijnen, staaf, ring,
+tegels en tabel. Ring, staaf, tegels en tabel gebruiken de bestaande gedeelde
+visualisatierenderers. De kruistabel heeft een matrix- en lijstweergave. De
+keuze wordt in de browser bewaard naast de indeling; de bron-JSON verandert niet.
+Op mobiel worden onderdelen in de gewone documentstroom onder elkaar geplaatst,
+met een afzonderlijk scrollbaar dashboardvlak. De laadillustratie blijft in
+haar eigen ruimte. De afzonderlijke Builder uit PR #358 is hier niet inbegrepen.

@@ -33,7 +33,7 @@
     technology:{data:['apps','connections','devices'],parts:['numbers','relations','matrix','hardware','records'],primary:'connections',title:'Technische inrichting'},
     review:{data:['apps','checks','candidates'],parts:['numbers','coverage','actions','distribution','records'],primary:'checks',title:'Wat moet nog worden nagegaan?'}
   };
-  function defaultConfig(){const p=PRESETS.school;return {data:p.data.slice(),parts:p.parts.slice(),primary:p.primary,title:p.title,layout:'balanced',variant:0,focusApp:'APP-034',filter:null};}
+  function defaultConfig(){const p=PRESETS.school;return {data:p.data.slice(),parts:p.parts.slice(),primary:p.primary,title:p.title,layout:'balanced',variant:0,focusApp:'APP-034',filter:null,visuals:{distribution:'lines',matrix:'matrix'}};}
   const config=defaultConfig();
   try{const saved=JSON.parse(localStorage.getItem(KEY)||'null');if(saved&&typeof saved==='object'){
     if(Array.isArray(saved.data))config.data=saved.data.filter(k=>DATA.some(d=>d.key===k));
@@ -43,6 +43,10 @@
     if(['balanced','editorial','focus','compact'].includes(saved.layout))config.layout=saved.layout;
     if(Number.isInteger(saved.variant))config.variant=((saved.variant%9)+9)%9;
     if(typeof saved.focusApp==='string')config.focusApp=saved.focusApp;
+    if(saved.visuals&&typeof saved.visuals==='object'){
+      if(['lines','bars','donut','treemap','table'].includes(saved.visuals.distribution))config.visuals.distribution=saved.visuals.distribution;
+      if(['matrix','table'].includes(saved.visuals.matrix))config.visuals.matrix=saved.visuals.matrix;
+    }
   }}catch(_){}
   const text=(tag,value,cls)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(value!==undefined)n.textContent=String(value);return n;};
   const svgEl=(tag,attrs,body)=>{const e=document.createElementNS(NS,tag);for(const [k,v] of Object.entries(attrs||{}))e.setAttribute(k,String(v));if(body!==undefined)e.textContent=String(body);return e;};
@@ -69,7 +73,7 @@
     const m=new Map();for(const r of rows){const k=category(r[field]);m.set(k,(m.get(k)||0)+1);}
     return [...m].sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0],'nl'));
   }
-  function persist(){try{localStorage.setItem(KEY,JSON.stringify({data:config.data,parts:config.parts,primary:config.primary,title:config.title,layout:config.layout,variant:config.variant,focusApp:config.focusApp}));return true;}catch(_){return false;}}
+  function persist(){try{localStorage.setItem(KEY,JSON.stringify({data:config.data,parts:config.parts,primary:config.primary,title:config.title,layout:config.layout,variant:config.variant,focusApp:config.focusApp,visuals:{...config.visuals}}));return true;}catch(_){return false;}}
   function button(label,cls,action){
     const b=text('button',label,cls);b.type='button';if(action)b.addEventListener('click',action);return b;
   }
@@ -91,9 +95,30 @@
     const h=text('header',undefined,'ds-component-head');
     const label=text('div',undefined,'ds-component-label');
     label.append(text('small',String(index+1).padStart(2,'0')+' / '+p.name.toUpperCase()),text('h3',p.name));
+    const actions=text('div',undefined,'ds-component-controls');
+    const modes=p.id==='distribution'
+      ?[['lines','Lijnen'],['bars','Staaf'],['donut','Ring'],['treemap','Tegels'],['table','Tabel']]
+      :p.id==='matrix'?[['matrix','Matrix'],['table','Tabel']]:null;
+    if(modes){
+      const control=text('label',undefined,'ds-component-view');
+      control.append(text('span','Weergave'));
+      const selection=text('select',undefined,'ds-chart-mode');
+      selection.setAttribute('aria-label','Weergave voor '+p.name);
+      for(const [value,name] of modes){
+        const option=text('option',name);option.value=value;selection.append(option);
+      }
+      selection.value=config.visuals[p.id];
+      selection.addEventListener('change',()=>{
+        config.visuals[p.id]=selection.value;
+        refresh();
+      });
+      control.append(selection);
+      actions.append(control);
+    }
     const remove=button('×','ds-component-remove',()=>selectPart(p.id));
     remove.setAttribute('aria-label','Verwijder '+p.name);remove.title='Verwijderen';
-    h.append(label,remove);return h;
+    actions.append(remove);
+    h.append(label,actions);return h;
   }
   function createComponent(p,index){
     const outer=text('section',undefined,'ds-component ds-'+p.id);
@@ -127,10 +152,23 @@
     if(config.filter?.dataset===d.key)top.append(button('Filter wissen','ds-inline-link',()=>{config.filter=null;refresh();}));
     root.append(top);
     if(!groups.length){root.append(text('p','Geen registraties binnen deze selectie.','ds-note'));return;}
+    const selected=config.filter?.dataset===d.key?config.filter.value:'';
+    const choose=name=>{
+      config.filter=selected===name?null:{dataset:d.key,field:d.field,value:name};
+      refresh();
+    };
+    if(config.visuals.distribution!=='lines'){
+      const chart=text('div',undefined,'ds-shared-chart');
+      root.append(chart);
+      if(!window.EmmausChartViews)throw Error('De gedeelde grafiekweergaven zijn niet geladen.');
+      window.EmmausChartViews.render(chart,groups,config.visuals.distribution,selected,choose,d.unit);
+      root.append(text('p',fmt(rows.length)+' van '+fmt(all.length)+' '+d.unit+'. Alle '+groups.length+' categorieën zijn weergegeven.','ds-note'));
+      return;
+    }
     const shown=groups.slice(0,8),rest=groups.slice(8).reduce((n,e)=>n+e[1],0);
     if(rest)shown.push(['Overige categorieën',rest]);
     const W=760,L=204,R=691,Y=36,H=47*shown.length+70,max=Math.max(1,...shown.map(e=>e[1]));
-    const svg=svgEl('svg',{viewBox:'0 0 '+W+' '+H,class:'ds-figure',role:'img','aria-label':rows.length+' '+d.unit+' naar '+d.fieldLabel});
+    const svg=svgEl('svg',{viewBox:'0 0 '+W+' '+H,class:'ds-figure ds-desktop-lines',role:'img','aria-label':rows.length+' '+d.unit+' naar '+d.fieldLabel});
     svg.append(svgEl('title',{},'Verdeling '+d.label),svgEl('desc',{},'Selecteer een regel om op deze categorie te filteren.'));
     const xx=v=>L+(R-L)*v/max;
     for(let i=0;i<=4;i++){const count=+(max*i/4).toFixed(0);const x=xx(count);
@@ -152,6 +190,22 @@
       svg.append(g);
     });
     root.append(svg);
+    const compact=text('div',undefined,'ds-mobile-lines');
+    compact.setAttribute('aria-label','Verdeling in dunne lijnen');
+    for(const [name,n] of shown){
+      const aggregate=name==='Overige categorieën'&&rest>0;
+      const selectedRow=selected===name;
+      const item=button('','ds-mobile-line-row'+(selectedRow?' selected':''),aggregate?undefined:()=>choose(name));
+      if(aggregate)item.disabled=true;
+      item.setAttribute('aria-label',name+' · '+fmt(n)+(aggregate?'':' · filter instellen'));
+      const track=text('span',undefined,'ds-mobile-line-track');
+      const fill=text('span',undefined,'ds-mobile-line-fill');
+      fill.style.setProperty('--value',(n/max*100).toFixed(3)+'%');
+      track.append(fill);
+      item.append(text('span',name,'ds-mobile-line-label'),track,text('strong',fmt(n),'ds-mobile-line-count'));
+      compact.append(item);
+    }
+    root.append(compact);
     const infoLine=groups.length>8?'Acht grootste categorieën en een samengevoegde restgroep. ':''; 
     root.append(text('p',infoLine+fmt(rows.length)+' van '+fmt(all.length)+' '+d.unit+'. Elke registratie telt eenmaal.','ds-note'));
   }
@@ -217,6 +271,36 @@
     const apps=source(definition('apps'));
     const areas=[...new Set(apps.map(x=>category(x.area)))].sort((a,b)=>a.localeCompare(b,'nl'));
     const kinds=[...new Set(apps.map(x=>category(x.kind)))].sort((a,b)=>a.localeCompare(b,'nl'));
+    const openArea=area=>{
+      config.data=['apps',...config.data.filter(x=>x!=='apps')];
+      config.primary='apps';
+      config.filter={dataset:'apps',field:'area',value:area};
+      if(!config.parts.includes('records'))config.parts.push('records');
+      refresh();
+    };
+    if(config.visuals.matrix==='table'){
+      const list=text('table',undefined,'ds-matrix ds-matrix-list');
+      const head=text('thead'),header=text('tr');
+      for(const title of ['Gebruiksgebied','Soort','Aantal']){
+        const cell=text('th',title);cell.scope='col';header.append(cell);
+      }
+      head.append(header);list.append(head);
+      const body=text('tbody');
+      for(const area of areas)for(const kind of kinds){
+        const matching=apps.filter(x=>category(x.area)===area&&category(x.kind)===kind);
+        if(!matching.length)continue;
+        const row=text('tr');
+        row.append(text('td',area),text('td',kind));
+        const cell=text('td');
+        const action=button(fmt(matching.length),'ds-matrix-cell',()=>openArea(area));
+        action.title=area+' · '+kind+' · '+matching.length+' registraties. Filter op gebruiksgebied.';
+        cell.append(action);row.append(cell);body.append(row);
+      }
+      list.append(body);
+      const scroll=text('div',undefined,'ds-table-wrap');scroll.append(list);root.append(scroll);
+      root.append(text('p','Alle '+fmt(apps.length)+' basisregistraties. Selecteer een aantal om op het gebruiksgebied te filteren.','ds-note'));
+      return;
+    }
     const table=text('table',undefined,'ds-matrix');const thead=text('thead');const tr=text('tr');
     const corner=text('th','Gebied / soort');corner.scope='col';tr.append(corner);
     for(const kind of kinds){const th=text('th',kind);th.scope='col';tr.append(th);}
@@ -226,7 +310,7 @@
       const row=text('tr'),left=text('th',area);left.scope='row';row.append(left);
       for(const kind of kinds){
         const matching=apps.filter(x=>category(x.area)===area&&category(x.kind)===kind);
-        const cell=text('td');if(matching.length){const b=button(fmt(matching.length),'ds-matrix-cell',()=>{config.data=['apps',...config.data.filter(x=>x!=='apps')];config.primary='apps';config.filter={dataset:'apps',field:'area',value:area};if(!config.parts.includes('records'))config.parts.push('records');refresh();});
+        const cell=text('td');if(matching.length){const b=button(fmt(matching.length),'ds-matrix-cell',()=>openArea(area));
           b.title=area+' · '+kind+' · '+matching.length+' registraties';b.style.setProperty('--intensity',String(matching.length));cell.append(b);}
         else cell.textContent='·';row.append(cell);
       }
@@ -371,7 +455,7 @@
     config.parts=[...new Set(parts)];config.filter=null;refresh();
   }
   function exportDesign(){
-    const output={format:'emmaus-dashboard-layout',version:1,title:config.title,content:config.data,components:config.parts,layout:config.layout,variant:config.variant,primary:config.primary};
+    const output={format:'emmaus-dashboard-layout',version:1,title:config.title,content:config.data,components:config.parts,layout:config.layout,variant:config.variant,primary:config.primary,visuals:{...config.visuals}};
     const blob=new Blob([JSON.stringify(output,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob);
     const link=document.createElement('a');link.href=url;link.download='Emmaus-dashboard-ontwerp.json';document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),600);
     showMessage('Ontwerp gedownload. Er zijn geen leerling- of applicatiegegevens opgenomen.');
@@ -399,7 +483,7 @@
   // remain accessible through the normal rail; they are not duplicated.
   state.view='studio';selectView('studio');
   window.EmmausDashboardStudio=Object.freeze({
-    config:()=>({data:config.data.slice(),parts:config.parts.slice(),layout:config.layout,primary:config.primary}),
+    config:()=>({data:config.data.slice(),parts:config.parts.slice(),layout:config.layout,primary:config.primary,visuals:{...config.visuals}}),
     build:refresh
   });
 })();

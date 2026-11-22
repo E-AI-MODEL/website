@@ -91,7 +91,7 @@
 .workspace.monitor-layout #viewStudio .ds-component-label>h3{font-size:12px;line-height:1.3;font-weight:640;color:#2b4365;letter-spacing:-.012em;margin:0}
 .workspace.monitor-layout #viewStudio .ds-component-remove{border:0;background:transparent;color:#a0afbf;padding:4px 7px;font-size:19px;font-weight:300;line-height:1;opacity:.65}
 .workspace.monitor-layout #viewStudio .ds-component-remove:hover{color:#9e774b;opacity:1}
-.workspace.monitor-layout #viewStudio .ds-component-body{flex:1 1 0;min-width:0;min-height:0}
+.workspace.monitor-layout #viewStudio .ds-component-body{flex:1 1 auto;min-width:0;min-height:auto}
 .workspace.monitor-layout #viewStudio .ds-component-hint{font-size:11px;color:#8192a9;line-height:1.55}
 .workspace.monitor-layout #viewStudio .ds-note{font-size:9px;line-height:1.6;color:#8998ac;margin:8px 0 0}
 .workspace.monitor-layout #viewStudio .ds-measure-strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;margin:2px 0 7px;border-bottom:1px solid var(--ds-line)}
@@ -106,7 +106,7 @@
 .workspace.monitor-layout #viewStudio .ds-inline-head{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:0 0 1px}
 .workspace.monitor-layout #viewStudio .ds-inline-label{font-size:10px;color:#7488a1;margin:0}
 .workspace.monitor-layout #viewStudio .ds-inline-link{font-size:9px;color:#9b7548;padding:3px 0;background:none;border:0;border-bottom:1px solid #d8c0a0}
-.workspace.monitor-layout #viewStudio .ds-figure{display:block;width:100%;max-height:390px;min-height:135px;overflow:visible;font-family:inherit}
+.workspace.monitor-layout #viewStudio .ds-figure{display:block;width:100%;height:auto;max-height:none;min-height:0;overflow:hidden;font-family:inherit}
 .workspace.monitor-layout #viewStudio .ds-grid-line{stroke:rgba(104,140,174,.17);stroke-width:.65}
 .workspace.monitor-layout #viewStudio .ds-grid-label{fill:#94a3b5;font-size:10px;font-variant-numeric:tabular-nums}
 .workspace.monitor-layout #viewStudio .ds-row-label{fill:#586f8a;font-size:12px;font-weight:520}
@@ -273,4 +273,100 @@
  .workspace.monitor-layout #viewStudio .ds-stage{height:auto;overflow:visible}
  .workspace.monitor-layout #viewStudio .ds-canvas-scroll{overflow:visible;height:auto}
  .workspace.monitor-layout #viewStudio .ds-component{break-inside:avoid}
+}
+
+/* Layout repair: let actual content determine component height. Grid items must
+   not paint over the next component in narrow WebKit and Chromium viewports. */
+.workspace.monitor-layout #viewStudio .ds-component-view{
+  display:inline-flex;align-items:center;gap:7px;margin-left:auto;
+  font-size:10px;color:#657990;min-width:0;
+}
+.workspace.monitor-layout #viewStudio .ds-component-view select{
+  min-height:32px;border:1px solid #dbe5ee;border-radius:7px;
+  background:#fff;color:#2a466f;padding:5px 8px;font:600 11px/1.25 inherit;
+  max-width:134px;
+}
+.workspace.monitor-layout #viewStudio .ds-mobile-lines{display:none}
+@media(max-width:900px){
+  .workspace.monitor-layout #viewStudio .ds-canvas{
+    display:flex;flex-direction:column;align-items:stretch;gap:19px;
+    min-height:0;width:100%;max-width:100%;
+  }
+  .workspace.monitor-layout #viewStudio .ds-component{
+    display:block;width:100%;height:auto;min-height:0;flex:0 0 auto;
+    box-sizing:border-box;overflow:visible;grid-column:auto!important;
+  }
+  .workspace.monitor-layout #viewStudio .ds-component-body{
+    display:flow-root;width:100%;height:auto;min-height:0;
+    flex:none;overflow:visible;
+  }
+  .workspace.monitor-layout #viewStudio .ds-component-head{
+    flex-wrap:wrap;align-items:center;height:auto;min-height:46px;
+  }
+  .workspace.monitor-layout #viewStudio .ds-component:has(.ds-network){min-height:0}
+}
+@media(max-width:610px){
+  .workspace.monitor-layout #viewStudio .ds-desktop-lines{display:none}
+  .workspace.monitor-layout #viewStudio .ds-mobile-lines{
+    display:grid;gap:7px;margin:10px 0 3px;
+  }
+  .workspace.monitor-layout #viewStudio .ds-mobile-line-row{
+    min-width:0;width:100%;display:grid;align-items:center;
+    grid-template-columns:minmax(105px,1.2fr) minmax(55px,1fr) 25px;
+    column-gap:9px;padding:5px 0;border:0;border-bottom:1px solid #e5ebf2;
+    background:transparent;color:#526b89;text-align:left;min-height:39px;
+  }
+  .workspace.monitor-layout #viewStudio .ds-mobile-line-row:disabled{opacity:.57}
+  .workspace.monitor-layout #viewStudio .ds-mobile-line-row.selected{color:#263f68;font-weight:700}
+  .workspace.monitor-layout #viewStudio .ds-mobile-line-label{
+    overflow-wrap:anywhere;font-size:10px;line-height:1.35;
+  }
+  .workspace.monitor-layout #viewStudio .ds-mobile-line-track{
+    display:block;height:1px;position:relative;background:#c5d5e4;
+  }
+  .workspace.monitor-layout #viewStudio .ds-mobile-line-fill{
+    position:absolute;left:0;top:0;height:1px;background:#628aa8;
+    width:var(--value,0%);
+  }
+  .workspace.monitor-layout #viewStudio .ds-mobile-line-fill:after{
+    content:"";display:block;position:absolute;right:0;top:-4px;
+    width:8px;height:8px;border:1.5px solid #6388a8;
+    border-radius:50%;background:#fbfdff;
+  }
+  .workspace.monitor-layout #viewStudio .ds-mobile-line-count{
+    color:#344f73;text-align:right;font-size:10px;font-variant-numeric:tabular-nums;
+  }
+  .workspace.monitor-layout #viewStudio .ds-component-view{margin-left:0}
+  .workspace.monitor-layout #viewStudio .ds-component-view select{max-width:112px}
+  .workspace.monitor-layout #viewStudio .ds-shared-chart.viz-stage{
+    min-height:0;max-width:100%;
+  }
+  .workspace.monitor-layout #viewStudio .ds-shared-chart .viz-donut-layout{
+    grid-template-columns:minmax(100px,125px) minmax(0,1fr);
+    gap:9px;min-height:170px;
+  }
+  .workspace.monitor-layout #viewStudio .ds-shared-chart .viz-donut-ring{width:115px;height:115px}
+  .workspace.monitor-layout #viewStudio .ds-shared-chart .viz-donut-center{width:80px;height:80px}
+  .workspace.monitor-layout #viewStudio .ds-shared-chart .viz-donut-center strong{font-size:23px}
+}
+
+
+/* A view choice belongs to its component, not to a duplicate side panel. */
+.workspace.monitor-layout #viewStudio .ds-component-controls{
+  display:flex;align-items:center;justify-content:flex-end;gap:8px;min-width:0;
+}
+.workspace.monitor-layout #viewStudio .ds-matrix-list{width:100%;min-width:0}
+.workspace.monitor-layout #viewStudio .ds-matrix-list td:nth-child(1),
+.workspace.monitor-layout #viewStudio .ds-matrix-list td:nth-child(2){text-align:left;white-space:normal}
+.workspace.monitor-layout #viewStudio .ds-component-view select{
+  font-family:inherit;font-size:11px;font-weight:600;line-height:1.25;
+}
+@media(max-width:610px){
+  .workspace.monitor-layout #viewStudio .ds-component-controls{margin-left:auto}
+}
+
+/* The mobile canvas must not fade all data during every filter or view change. */
+@media(max-width:610px){
+  .workspace.monitor-layout #viewStudio:not([hidden]),
+  .workspace.monitor-layout #viewStudio .ds-component{animation:none!important}
 }
