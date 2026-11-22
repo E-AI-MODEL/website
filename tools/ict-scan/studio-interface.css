@@ -380,3 +380,8 @@ body>.rail-drawer .rail-drawer-navigation{display:none}
   .workspace.monitor-layout #emptyState p,
   .workspace.monitor-layout #emptyState button{flex-shrink:0}
 }
+
+/* Display the mobile menu immediately with its scrim, not after a blurred delay. */
+@media(max-width:720px){
+  body>.rail-drawer:not([hidden]){animation:none!important}
+}

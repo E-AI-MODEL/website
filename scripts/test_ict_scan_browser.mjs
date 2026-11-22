@@ -128,6 +128,11 @@ try {
   if(width<700)await assertNoComponentOverlap('start');
   assert.match(await page.locator('#dsCanvas .ds-numbers').textContent(),/61/);
   assert.match(await page.locator('#dsCanvas .ds-numbers').textContent(),/93/);
+  await page.waitForFunction(()=>{
+    const view=document.getElementById('viewStudio'),parts=[...document.querySelectorAll('#dsCanvas .ds-component')];
+    return view&&!view.hidden&&Number(getComputedStyle(view).opacity)>.98
+      &&parts.every(p=>Number(getComputedStyle(p).opacity)>.98);
+  });
   await page.screenshot({path:'test-results/ict-scan-'+width+'-composer-default.png'});
   const distributionMode=page.locator('#dsCanvas [data-component="distribution"] select.ds-chart-mode');
   assert.deepEqual(await distributionMode.locator('option').allTextContents(),['Lijnen','Staaf','Ring','Tegels','Tabel']);
@@ -172,6 +177,11 @@ try {
   const savedVisuals=await page.evaluate(()=>JSON.parse(localStorage.getItem('emmaus-ict-dashboard-studio-v1')||'{}').visuals);
   assert.deepEqual(savedVisuals,{distribution:'lines',matrix:'matrix'},'Visualisatiekeuzes ontbreken bij bewaren');
   assert.match(await page.evaluate(()=>localStorage.getItem('emmaus-ict-dashboard-studio-v1')),/"layout":"editorial"/);
+  if(width<700&&await page.locator('#viewStudio.ds-controls-open').count())await page.locator('#dsCloseControls').click();
+  await page.waitForFunction(()=>{
+    const parts=[...document.querySelectorAll('#dsCanvas .ds-component')];
+    return parts.length>0&&parts.every(p=>Number(getComputedStyle(p).opacity)>.98);
+  });
   await page.screenshot({path:'test-results/ict-scan-'+width+'-composer-technology.png'});
   await navigate('overview');
 
@@ -270,6 +280,10 @@ try {
   assert(pop&&pop.x>=0&&pop.x+pop.width<=width+1,'Functiemenu buiten viewport: '+JSON.stringify(pop));
   const field=await page.evaluate(()=>{const e=document.getElementById('githubRepo');const c=getComputedStyle(e);return {background:c.backgroundColor,color:c.color}});
   assert(!field.color.includes('255, 255, 255'),'Invoerveld heeft onleesbare witte letters: '+JSON.stringify(field));
+  await page.waitForFunction(()=>{
+    const menu=document.getElementById('railDrawer');
+    return menu&&!menu.hidden&&Number(getComputedStyle(menu).opacity)>.98;
+  });
   await page.screenshot({path:'test-results/ict-scan-'+width+'-menu.png'});
   await page.locator('#railDrawerClose').click();
   await navigate('sources');

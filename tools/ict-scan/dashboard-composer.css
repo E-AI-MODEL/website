@@ -364,3 +364,9 @@
 @media(max-width:610px){
   .workspace.monitor-layout #viewStudio .ds-component-controls{margin-left:auto}
 }
+
+/* The mobile canvas must not fade all data during every filter or view change. */
+@media(max-width:610px){
+  .workspace.monitor-layout #viewStudio:not([hidden]),
+  .workspace.monitor-layout #viewStudio .ds-component{animation:none!important}
+}
