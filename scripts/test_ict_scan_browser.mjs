@@ -1,10 +1,11 @@
 import assert from 'node:assert/strict';
-import {chromium} from 'playwright';
+import {chromium,webkit} from 'playwright';
 import {spawn} from 'node:child_process';
 import {readFileSync,mkdirSync} from 'node:fs';
 import {resolve} from 'node:path';
 
 const root=resolve(process.argv[2]||'site-build');
+const browserType=process.argv[3]==='webkit'?webkit:chromium;
 const base='http://127.0.0.1:8797';
 const manifest=JSON.parse(readFileSync('tools/ict-scan/bronnen/manifest.json','utf8'));
 const sources=new Map();
@@ -32,7 +33,7 @@ try {
  let ready=false;
  for(let n=0;n<60;n++){try{ready=(await fetch(base+'/tools/ict-scan/')).ok}catch{}if(ready)break;await new Promise(r=>setTimeout(r,100));}
  assert(ready,'De ICT-scan ontbreekt in de sitebuild');
- browser=await chromium.launch({headless:true});
+ browser=await browserType.launch({headless:true});
  mkdirSync('test-results',{recursive:true});
  for(const width of [1440,390]){
   const page=await browser.newPage({viewport:{width,height:900},isMobile:width<600,hasTouch:width<600});
@@ -300,7 +301,7 @@ try {
   assert.deepEqual(errors,[],'JavaScript-fouten: '+errors.join(' / '));
   await page.close();
  }
- console.log('ICT-scan: 61 toepassingen geladen, vaste schermen, menu en desktop/mobiele sync gecontroleerd');
+ console.log('ICT-scan '+browserType.name()+': 61 toepassingen geladen, vaste schermen, menu, grafieken en desktop/mobiele sync gecontroleerd');
 }finally{
  await browser?.close();
  server.kill('SIGTERM');
