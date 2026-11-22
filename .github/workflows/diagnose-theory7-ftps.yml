@@ -34,3 +34,10 @@ jobs:
           except OSError as error:
               print("No reverse DNS:", error)
           PY
+          echo "== Validate certified server hostname =="
+          server="web0102.theory7.net"
+          getent ahostsv4 "$server" | awk '{print $1}' | sort -u
+          getent ahostsv4 "$server" | awk '{print $1}' | grep -Fxq '213.154.231.202'
+          openssl x509 -in "$cert" -noout -checkhost "$server"
+          echo "== TLS handshake with verified server hostname =="
+          timeout 25s openssl s_client -starttls ftp -connect "$server:21" -servername "$server" -verify_hostname "$server" -verify_return_error -brief </dev/null 2>&1
