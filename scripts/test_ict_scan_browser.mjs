@@ -279,11 +279,15 @@ try {
     await page.setViewportSize({width:320,height:740});
     await navigate('studio');
     if(width<700)await assertNoComponentOverlap('320px');
-    await page.evaluate(()=>{const scroll=document.getElementById('dsCanvasScroll');scroll.scrollTop=scroll.scrollHeight;});
     const scrollEnd=await page.evaluate(()=>{
-      const content=document.getElementById('dsCanvasScroll').getBoundingClientRect(),items=[...document.querySelectorAll('#dsCanvas .ds-component')];
-      return {last:items.at(-1)?.getBoundingClientRect().bottom,containerBottom:content.bottom};
+      const scroll=document.getElementById('dsCanvasScroll');
+      scroll.style.scrollBehavior='auto'; // Deterministic measurement; scrolling is normally smooth.
+      scroll.scrollTop=scroll.scrollHeight;
+      const content=scroll.getBoundingClientRect(),items=[...document.querySelectorAll('#dsCanvas .ds-component')];
+      return {last:items.at(-1)?.getBoundingClientRect().bottom,containerBottom:content.bottom,
+        scrollTop:scroll.scrollTop,scrollHeight:scroll.scrollHeight,clientHeight:scroll.clientHeight};
     });
+    assert(scrollEnd.scrollTop>0,'Dashboardvlak scrolt niet: '+JSON.stringify(scrollEnd));
     assert(scrollEnd.last<=scrollEnd.containerBottom+3,'Laatste onderdeel valt buiten scrollruimte: '+JSON.stringify(scrollEnd));
     const dock=await page.locator('.sidebar.icon-rail').boundingBox();
     assert(dock&&dock.width>=319,'Dock is op een smalle telefoon afgesneden: '+JSON.stringify(dock));
