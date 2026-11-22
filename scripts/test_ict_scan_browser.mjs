@@ -37,6 +37,15 @@ try {
  for(const width of [1440,390]){
   const page=await browser.newPage({viewport:{width,height:900},isMobile:width<600,hasTouch:width<600});
   const errors=[],network=[];
+  const secondaryMobile=new Set(['connections','devices','privacy','findings','reports']);
+  const navigate=async view=>{
+    if(width<700&&secondaryMobile.has(view)){
+      await page.locator('#railMore').click();
+      await page.locator('[data-drawer-view="'+view+'"]').click();
+    }else{
+      await page.locator('.rail-button[data-view="'+view+'"]').click();
+    }
+  };
   page.on('request',r=>{if(r.url().includes('api.github.com'))network.push(r.method()+' '+r.url().slice(-100));});
   page.on('console',m=>{if(m.type()==='error'&&!m.text().includes("frame-ancestors' is ignored"))errors.push('console: '+m.text());});
   page.on('pageerror',error=>errors.push(error.message));
@@ -69,6 +78,20 @@ try {
   assert.match(message,/geslaagd/i,'GitHub-sync mislukt: '+message);
   await page.waitForFunction(()=>document.getElementById('statusText')?.textContent.includes('61 toepassingen'));
   await page.locator('#viewStudio:not([hidden])').waitFor();
+  assert.equal(await page.locator('#sectionTitle').textContent(),'Applicatielandschap');
+  assert.equal(await page.locator('#evidencePath').textContent(),'Overzicht samenstellen');
+  if(width<700){
+    const dock=await page.locator('.sidebar.icon-rail').boundingBox();
+    assert(dock&&dock.x>=-1&&dock.width>=width-2&&dock.x+dock.width<=width+1,'Mobiele navigatie is geen volledige balk: '+JSON.stringify(dock));
+    for(const view of ['studio','overview','apps','ai','sources']){
+      assert(await page.locator('.rail-button[data-view="'+view+'"]').isVisible(),'Primair onderdeel niet bereikbaar: '+view);
+    }
+    assert.equal(await page.locator('.rail-button[data-view="connections"]').isVisible(),false,'Secundaire onderdelen horen onder Meer');
+    await navigate('connections');
+    assert.equal(await page.locator('#sectionTitle').textContent(),'Entra-koppelingen');
+    await navigate('studio');
+    assert.equal(await page.locator('#sectionTitle').textContent(),'Applicatielandschap');
+  }
   assert.equal(await page.locator('#dsDataOptions .ds-option').count(),8,'Gegevenskeuze moet alle acht beschikbare bronsoorten bevatten');
   assert.equal(await page.locator('#dsPartOptions .ds-part').count(),9,'Er ontbreken vrij kiesbare dashboardonderdelen');
   assert.equal(await page.locator('#dsCanvas .ds-component').count(),5,'Het startdashboard moet direct bruikbaar zijn');
@@ -101,7 +124,7 @@ try {
   await page.locator('#dsSave').click();
   assert.match(await page.evaluate(()=>localStorage.getItem('emmaus-ict-dashboard-studio-v1')),/"layout":"editorial"/);
   await page.screenshot({path:'test-results/ict-scan-'+width+'-composer-technology.png'});
-  await page.locator('.rail-button[data-view="overview"]').click();
+  await navigate('overview');
 
   assert.equal(await page.locator('#kpiGrid .kpi').count(),4,'Vier statuscijfers ontbreken');
   assert.equal(await page.locator('#viewOverview .scene-tab').count(),4,'Schoolbreed, relaties, broncontrole en toepassingen moeten afzonderlijk toegankelijk zijn');
@@ -113,7 +136,7 @@ try {
   assert.equal(await page.locator('#relationshipExplorer .relation-spoke').count(),4,'FG-informatie mag niet standaard zichtbaar zijn');
   assert.equal(await page.locator('.rail-button[data-view="privacy"]').isVisible(),false,'FG-modus moet standaard uit staan');
   await page.screenshot({path:'test-results/ict-scan-'+width+'-relationships.png'});
-  await page.locator('[data-view="devices"]').click();
+  await navigate('devices');
   assert.equal(await page.locator('#viewDevices .scene-tab').count(),2,'Hardware heeft geen duidelijke schermindeling');
   assert.match(await page.locator('#deviceStats').textContent(),/161/);
   assert.match(await page.locator('#deviceCoverage').textContent(),/92 \/ 161/,'De bekende compliancewaarden ontbreken');
@@ -126,14 +149,14 @@ try {
   assert.equal(await page.locator('#roleModeFG').isChecked(),true);
   await page.locator('#railDrawerClose').click();
   assert.equal(await page.locator('#relationshipExplorer .relation-spoke').count(),5);
-  await page.locator('[data-view="privacy"]').click();
+  await navigate('privacy');
   assert.equal(await page.locator('#viewPrivacy .scene-tab').count(),2);
   assert.equal(await page.locator('#viewPrivacy .privacy-governance-panel').count(),0,'AI-beheer mag niet onder FG staan');
   assert.equal(await page.locator('#privacyDpia .dpia-evidence').count(),10,'DPIA-bronvermeldingen niet volledig');
   assert.match(await page.locator('.fg-role-boundary').textContent(),/geen DPIA|Geen DPIA/i);
   assert.match(await page.locator('#privacySummary').textContent(),/Niet aangeleverd/);
   await page.screenshot({path:'test-results/ict-scan-'+width+'-privacy.png'});
-  await page.locator('[data-view="apps"]').click();
+  await navigate('apps');
   assert.equal(await page.locator('#candidatePanel').isVisible(),false,'Kandidaten zijn niet gescheiden van basisregistraties');
   // One compact inspector, not nested Excel/JSON/read-card duplicates.
   await page.locator('#appsList .item-card-direct .item-summary').first().click();
@@ -162,11 +185,11 @@ try {
   await page.locator('.app-register-tab').nth(1).click();
   assert.equal(await page.locator('#candidatePanel').isVisible(),true);
   assert(!/76\s+aanwijzingen/.test(await page.locator('#candidateInfo').textContent()),'Dezelfde 76 wordt dubbel getoond');
-  await page.locator('[data-view="reports"]').click();
+  await navigate('reports');
   assert.equal(await page.locator('#reportPicker [data-report]').count(),7);
   await page.locator('[data-report="devices"]').click();
   assert.match(await page.locator('#reportPreviewTitle').textContent(),/Apparaten/);
-  await page.locator('[data-view="ai"]').click();
+  await navigate('ai');
   await page.locator('#aiModeSchool').click();
   await page.locator('#viewAiScene1').waitFor({state:'visible'});
   assert((await page.locator('#aiList .item-card-direct').count())>0,'AI in de school mag geen lege introductie tonen');
@@ -189,7 +212,7 @@ try {
   assert.match(await page.evaluate(()=>localStorage.getItem('emmaus-ict-scan-visible-roles-v1')),/"fg":true/);
 
   for(const name of ['studio','overview','apps','connections','devices','ai','privacy','findings','reports','sources']){
-    await page.locator('[data-view="'+name+'"]').click();
+    await navigate(name);
     const result=await page.evaluate(()=>({width:document.documentElement.scrollWidth,viewport:document.documentElement.clientWidth,heading:document.getElementById('sectionTitle')?.textContent}));
     assert(result.width<=result.viewport+1,'Horizontale overloop bij '+width+' in '+name+': '+JSON.stringify(result));
   }
@@ -200,10 +223,20 @@ try {
   assert(!field.color.includes('255, 255, 255'),'Invoerveld heeft onleesbare witte letters: '+JSON.stringify(field));
   await page.screenshot({path:'test-results/ict-scan-'+width+'-menu.png'});
   await page.locator('#railDrawerClose').click();
-  await page.locator('[data-view="sources"]').click();
+  await navigate('sources');
   await page.locator('#githubSyncStart').click();
   await page.waitForFunction(()=>/geslaagd|niet gelukt/i.test(document.getElementById('githubSyncStatus')?.textContent||''),{timeout:45000});
   assert.match(await page.locator('#githubSyncStatus').textContent(),/geslaagd/i);
+  if(width===390){
+    await page.setViewportSize({width:320,height:740});
+    const dock=await page.locator('.sidebar.icon-rail').boundingBox();
+    assert(dock&&dock.width>=319,'Dock is op een smalle telefoon afgesneden: '+JSON.stringify(dock));
+    await page.locator('#railMore').click();
+    const menu=await page.locator('#railDrawer').boundingBox();
+    assert(menu&&menu.x>=0&&menu.x+menu.width<=321,'Menu valt buiten 320px viewport: '+JSON.stringify(menu));
+    await page.locator('[data-drawer-view="findings"]').click();
+    assert.equal(await page.locator('#sectionTitle').textContent(),'Wat moet nog worden gecontroleerd?');
+  }
   assert.deepEqual(errors,[],'JavaScript-fouten: '+errors.join(' / '));
   await page.close();
  }
