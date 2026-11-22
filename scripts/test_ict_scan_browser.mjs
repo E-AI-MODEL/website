@@ -37,6 +37,7 @@ try {
  for(const width of [1440,390]){
   const page=await browser.newPage({viewport:{width,height:900},isMobile:width<600,hasTouch:width<600});
   const errors=[],network=[];
+  let initialSyncDelayed=false;
   const secondaryMobile=new Set(['connections','devices','privacy','findings','reports']);
   const navigate=async view=>{
     if(width<700&&secondaryMobile.has(view)){
@@ -54,6 +55,10 @@ try {
    const url=new URL(route.request().url());
    if(route.request().method()==='OPTIONS'){await route.fulfill({status:204,headers:cors});return;}
    let data;
+   if(url.pathname.endsWith('/contents/tools/ict-scan/bronnen')&&width<700&&!initialSyncDelayed){
+     initialSyncDelayed=true;
+     await new Promise(done=>setTimeout(done,1100));
+   }
    if(url.pathname.endsWith('/contents/tools/ict-scan/bronnen'))data=listing;
    else if(url.pathname.includes('/git/blobs/')){
     const sha=url.pathname.split('/').pop();
@@ -72,6 +77,15 @@ try {
   assert.equal(await page.title(),'404 Not Found');
   await page.locator('#unlockZero').dblclick({force:true});
   await page.locator('#workspace:not([hidden])').waitFor();
+  if(width<700){
+    await page.locator('#emptyState:not([hidden])').waitFor();
+    const geometry=await page.evaluate(()=>{
+      const icon=document.querySelector('#emptyState .empty-illustration').getBoundingClientRect();
+      const title=document.querySelector('#emptyState h2').getBoundingClientRect();
+      return {iconBottom:icon.bottom,titleTop:title.top};
+    });
+    assert(geometry.iconBottom+8<=geometry.titleTop,'Laadillustratie overlapt de titel: '+JSON.stringify(geometry));
+  }
   try{await page.waitForFunction(()=>/geslaagd|niet gelukt/i.test(document.getElementById('githubSyncStatus')?.textContent||''),null,{timeout:15000});}
   catch(error){const state=await page.evaluate(()=>({status:document.getElementById('githubSyncStatus')?.textContent,view:document.getElementById('workspace')?.hidden,ready:typeof window.state==='object'?window.state.ready:null,button:document.getElementById('githubSyncStart')?.disabled}));throw Error('Synchronisatie voltooit niet: '+JSON.stringify({state,network,errors,reason:error.message}));}
   const message=await page.locator('#githubSyncStatus').textContent();
@@ -95,9 +109,32 @@ try {
   assert.equal(await page.locator('#dsDataOptions .ds-option').count(),8,'Gegevenskeuze moet alle acht beschikbare bronsoorten bevatten');
   assert.equal(await page.locator('#dsPartOptions .ds-part').count(),9,'Er ontbreken vrij kiesbare dashboardonderdelen');
   assert.equal(await page.locator('#dsCanvas .ds-component').count(),5,'Het startdashboard moet direct bruikbaar zijn');
+  const assertNoComponentOverlap=async where=>{
+    const result=await page.evaluate(()=>{
+      const nodes=[...document.querySelectorAll('#dsCanvas .ds-component')];
+      return nodes.map(el=>{
+        const rect=el.getBoundingClientRect(),body=el.querySelector('.ds-component-body');
+        const children=body?[...body.children].filter(x=>getComputedStyle(x).display!=='none').map(x=>({name:x.className?.baseVal||x.className||x.tagName,bottom:x.getBoundingClientRect().bottom})):[];
+        return {name:el.dataset.component,top:rect.top,bottom:rect.bottom,height:rect.height,children};
+      });
+    });
+    for(let i=0;i<result.length;i++){
+      const part=result[i];
+      if(i)assert(part.top>=result[i-1].bottom-1,'Overlappende dashboardonderdelen '+where+': '+JSON.stringify([result[i-1],part]));
+      for(const child of part.children)assert(child.bottom<=part.bottom+2,'Dashboardinhoud loopt buiten '+part.name+' ('+where+'): '+JSON.stringify({part,child}));
+    }
+  };
+  if(width<700)await assertNoComponentOverlap('start');
   assert.match(await page.locator('#dsCanvas .ds-numbers').textContent(),/61/);
   assert.match(await page.locator('#dsCanvas .ds-numbers').textContent(),/93/);
   await page.screenshot({path:'test-results/ict-scan-'+width+'-composer-default.png'});
+  const distributionMode=page.locator('#dsCanvas [data-component="distribution"] select.ds-chart-mode');
+  assert.deepEqual(await distributionMode.locator('option').allTextContents(),['Lijnen','Staaf','Ring','Tegels','Tabel']);
+  for(const [mode,selector] of [['bars','.viz-bar'],['donut','.viz-donut-ring'],['treemap','.viz-treemap'],['table','.viz-data-table'],['lines',width<700?'.ds-mobile-line-row':'.ds-figure-row']]){
+    await distributionMode.selectOption(mode);
+    assert(await page.locator('#dsCanvas [data-component="distribution"] '+selector).count()>0,'Visualisatie '+mode+' ontbreekt');
+    if(width<700)await assertNoComponentOverlap('verdelen '+mode);
+  }
   if(width<700){await page.locator('#dsToggleControls').click();assert.equal(await page.locator('#viewStudio.ds-controls-open').count(),1);}
   await page.locator('#dsBlank').click();
   assert.equal(await page.locator('#dsCanvas .ds-component').count(),0,'Leeg beginnen moet echt een leeg werkvlak tonen');
@@ -112,8 +149,9 @@ try {
   assert.match(await page.locator('#dsCanvas .ds-distribution .ds-inline-label').textContent(),/AI-functies/);
   await page.locator('#dsPrimary').selectOption('apps');
   const chart=page.locator('#dsCanvas .ds-distribution');
-  assert((await chart.locator('svg .ds-figure-row[role="button"]').count())>0,'De lijnvisual moet bedienbaar zijn');
-  await chart.locator('svg .ds-figure-row[role="button"]').first().click();
+  const activeLine=width<700?chart.locator('.ds-mobile-line-row:not(:disabled)'):chart.locator('svg .ds-figure-row[role="button"]');
+  assert((await activeLine.count())>0,'De lijnvisual moet bedienbaar zijn');
+  await activeLine.first().click();
   assert.match(await page.locator('#dsCanvas .ds-distribution .ds-inline-link').textContent(),/wissen/);
   await page.locator('#dsCanvas .ds-distribution .ds-inline-link').click();
   if(width<700)await page.locator('#dsToggleControls').click();
@@ -121,7 +159,17 @@ try {
   assert.equal(await page.locator('#dsCanvas .ds-hardware').count(),1,'Hardware moet als afzonderlijk onderdeel te kiezen zijn');
   assert.match(await page.locator('#dsCanvas .ds-hardware').textContent(),/161/);
   if(width<700)await page.locator('#dsCloseControls').click();
+  const matrixMode=page.locator('#dsCanvas [data-component="matrix"] select.ds-chart-mode');
+  assert.deepEqual(await matrixMode.locator('option').allTextContents(),['Matrix','Tabel']);
+  await matrixMode.selectOption('table');
+  assert((await page.locator('#dsCanvas [data-component="matrix"] .ds-matrix-list tbody tr').count())>0,'Matrix tabelweergave is leeg');
+  if(width<700)await assertNoComponentOverlap('matrix als tabel');
+  await matrixMode.selectOption('matrix');
+  assert((await page.locator('#dsCanvas [data-component="matrix"] .ds-matrix:not(.ds-matrix-list)').count())===1);
+  if(width<700)await assertNoComponentOverlap('matrix');
   await page.locator('#dsSave').click();
+  const savedVisuals=await page.evaluate(()=>JSON.parse(localStorage.getItem('emmaus-ict-dashboard-studio-v1')||'{}').visuals);
+  assert.deepEqual(savedVisuals,{distribution:'lines',matrix:'matrix'},'Visualisatiekeuzes ontbreken bij bewaren');
   assert.match(await page.evaluate(()=>localStorage.getItem('emmaus-ict-dashboard-studio-v1')),/"layout":"editorial"/);
   await page.screenshot({path:'test-results/ict-scan-'+width+'-composer-technology.png'});
   await navigate('overview');
@@ -229,6 +277,14 @@ try {
   assert.match(await page.locator('#githubSyncStatus').textContent(),/geslaagd/i);
   if(width===390){
     await page.setViewportSize({width:320,height:740});
+    await navigate('studio');
+    if(width<700)await assertNoComponentOverlap('320px');
+    await page.evaluate(()=>{const scroll=document.getElementById('dsCanvasScroll');scroll.scrollTop=scroll.scrollHeight;});
+    const scrollEnd=await page.evaluate(()=>{
+      const content=document.getElementById('dsCanvasScroll').getBoundingClientRect(),items=[...document.querySelectorAll('#dsCanvas .ds-component')];
+      return {last:items.at(-1)?.getBoundingClientRect().bottom,containerBottom:content.bottom};
+    });
+    assert(scrollEnd.last<=scrollEnd.containerBottom+3,'Laatste onderdeel valt buiten scrollruimte: '+JSON.stringify(scrollEnd));
     const dock=await page.locator('.sidebar.icon-rail').boundingBox();
     assert(dock&&dock.width>=319,'Dock is op een smalle telefoon afgesneden: '+JSON.stringify(dock));
     await page.locator('#railMore').click();
