@@ -8,7 +8,7 @@
 <meta name="color-scheme" content="dark light">
 <meta name="theme-color" content="#000000">
 <meta name="referrer" content="no-referrer">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.github.com; form-action 'none'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; worker-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.github.com; form-action 'none'; object-src 'none'; base-uri 'none'">
 <title>404 Not Found</title>
 
 <link rel="stylesheet" href="./style.css?v=20261120b">
@@ -17,23 +17,32 @@
 <link rel="stylesheet" href="./scene-navigation.css?v=20261120b">
 <link rel="stylesheet" href="./evidence-experience.css?v=20261120c">
 <link rel="stylesheet" href="./role-modes.css?v=20261120d">
-<link rel="stylesheet" href="./record-cards.css?v=20261121a">
+<link rel="stylesheet" href="./record-cards.css?v=20261121d">
+<link rel="stylesheet" href="./assurance.css?v=20261121b">
 <link rel="stylesheet" href="./answer-engine.css?v=20261120b">
 <link rel="stylesheet" href="./studio-interface.css?v=20261121a">
 <link rel="stylesheet" href="./dashboard-composer.css?v=20261121a">
 <link rel="stylesheet" href="./relationship-orbit.css?v=20261121a">
-<script defer src="./app.js?v=20261121a"></script>
-<script defer src="./enhancements.js?v=20261120b"></script>
+<script defer src="./assurance/profile.js?v=20261121e"></script>
+<script defer src="./organisation.js?v=20261121b" data-profile="./assurance/profiles/emmauscollege.json"></script>
+<script defer src="./assurance/source-register.js?v=20261121d"></script>
+<script defer src="./assurance/engine.js?v=20261121d"></script>
+<script defer src="./assurance/adapter.js?v=20261121d"></script>
+<script defer src="./assurance/record-contract.js?v=20261121b"></script>
+<script defer src="./record-taxonomy.js?v=20261121a"></script>
+<script defer src="./app.js?v=20261121d"></script>
+<script defer src="./enhancements.js?v=20261121d"></script>
 <script defer src="./visual-explorer.js?v=20261120b"></script>
-<script defer src="./github-sync.js?v=20261120b"></script>
+<script defer src="./github-sync.js?v=20261121d"></script>
 <script defer src="./rail-drawer.js?v=20261120b"></script>
-<script defer src="./record-cards.js?v=20261121a"></script>
-<script defer src="./record-github.js?v=20261120b"></script>
+<script defer src="./record-cards.js?v=20261121e"></script>
+<script defer src="./record-github.js?v=20261121e"></script>
 <script defer src="./answer-engine.js?v=20261120b"></script>
 <script defer src="./scene-navigation.js?v=20261121a"></script>
 <script defer src="./evidence-experience.js?v=20261121a"></script>
 <script defer src="./role-modes.js?v=20261120d"></script>
 <script defer src="./dashboard-composer.js?v=20261121a"></script>
+<script defer src="./assurance-ui.js?v=20261121d"></script>
 </head>
 <body>
 <div id="notFound" class="litespeed-404" aria-label="404 Not Found">
@@ -196,7 +205,15 @@
   
   <article class="panel"><div class="panel-head"><div><p class="panel-kicker">JURIDISCHE EN SECTORALE BRONNEN</p><h2>Privacybronnen en kaders</h2></div></div><p class="explain">Een normverwijzing helpt om te toetsen, maar vormt op zichzelf geen bewijs dat een maatregel is uitgevoerd.</p><div id="privacyLegal" class="legal-list"></div></article>
 </section>
-      <section id="viewFindings" class="view" hidden><article class="panel"><div class="panel-head"><div><p class="panel-kicker">VERDELING</p><h2>Welke onderwerpen vragen aandacht?</h2></div><span class="tiny-help">Klik om te filteren</span></div><div id="findingsChart" class="bars"></div></article><article class="panel intro-panel"><h2>Open controles</h2><p>Een open punt is geen vastgestelde fout. Je ziet welke informatie nodig is om iets te kunnen bevestigen.</p></article><div id="findingsSummary" class="finding-chips"></div><div class="mode-tabs"><button type="button" id="modeRegistered" class="mode-button is-active">Vastgelegde controles</button><button type="button" id="modeSignals" class="mode-button">Aanvullende signalen</button></div><div class="list-tools"><input id="findingsSearch" type="search" placeholder="Zoek controlepunt" aria-label="Zoek controlepunt"><select id="findingsFilter" aria-label="Categorie controles"><option value="">Alle onderwerpen</option></select><span id="findingsCount" class="result-count"></span></div><div id="findingsList" class="item-list"></div>
+      <section id="viewFindings" class="view" hidden><article class="panel assurance-panel" id="assurancePanel" aria-labelledby="assuranceTitle">
+  <div class="assurance-header"><div><p class="panel-kicker">CONTROLES</p><h2 id="assuranceTitle">Gegevens en opvolging</h2><p id="assuranceStamp">Nog geen controle uitgevoerd.</p></div><span id="assuranceSummary" class="assurance-summary" data-status="not_run" role="status" aria-live="polite">Niet uitgevoerd</span></div>
+  <div id="assuranceChecks" class="assurance-checks" aria-label="Uitkomsten van de controles"></div>
+  <div class="assurance-actions"><button type="button" class="monitor-button subtle" id="assuranceRun">Opnieuw controleren</button><button type="button" class="monitor-button subtle" id="assuranceExport" disabled>Download controleverslag</button></div>
+  <p class="panel-foot">De uitslag geldt voor de gecontroleerde registraties. Het is geen goedkeuring van een systeem of organisatie.</p>
+  <details id="assuranceDetails" class="assurance-details"><summary>Bekijk aandachtspunten</summary><div id="assuranceFindings"></div></details>
+  <details class="assurance-details"><summary>Vergelijken met een eerdere stand</summary><p id="assuranceBaselineNote" class="assurance-baseline-note">Nog geen vergelijkingsstand gekozen.</p><div class="assurance-actions"><button type="button" class="monitor-button subtle" id="assuranceSaveBaseline" disabled>Gebruik deze stand als vergelijking</button><button type="button" class="monitor-button subtle" id="assuranceExportBaseline" disabled>Bewaar vergelijkingsbestand</button><button type="button" class="monitor-button subtle" id="assuranceClearBaseline" disabled>Vergelijking verwijderen</button></div><label class="assurance-baseline-note" for="assuranceBaselineInput">Open een bewaard vergelijkingsbestand</label><input class="assurance-baseline-input" id="assuranceBaselineInput" type="file" accept=".json,application/json"><p class="assurance-baseline-note">Bewaar het bestand om deze vergelijking later opnieuw te gebruiken.</p></details>
+  <details class="assurance-distribution"><summary>Open punten per onderwerp</summary><div id="findingsChart" class="bars"></div></details>
+</article><article class="panel intro-panel"><h2>Open controles</h2><p>Een open punt is geen vastgestelde fout. Je ziet welke informatie nodig is om iets te kunnen bevestigen.</p></article><div id="findingsSummary" class="finding-chips"></div><div class="mode-tabs"><button type="button" id="modeRegistered" class="mode-button is-active">Vastgelegde controles</button><button type="button" id="modeSignals" class="mode-button">Aanvullende signalen</button></div><div class="list-tools"><input id="findingsSearch" type="search" placeholder="Zoek controlepunt" aria-label="Zoek controlepunt"><select id="findingsFilter" aria-label="Categorie controles"><option value="">Alle onderwerpen</option></select><span id="findingsCount" class="result-count"></span></div><div id="findingsList" class="item-list"></div>
         <details class="panel candidates-panel" id="workPanel"><summary><strong>Openstaande acties uit het werkregister</strong><small><span id="workTotal">0</span> acties</small></summary><div class="candidate-content"><div class="list-tools"><input id="workSearch" type="search" placeholder="Zoek openstaande actie" aria-label="Zoek openstaande acties"></div><div id="workList" class="item-list"></div></div></details>
       </section>
       <section id="viewReports" class="view" hidden>
@@ -211,7 +228,7 @@
           <button type="button" data-report="controles" class="report-tile"><span class="report-category">07</span><strong>Onderzoekspunten</strong><small>Open controles, dubbelingen en bewijsstatus</small></button>
         </div>
         <article class="panel report-workbench"><div class="report-workbench-text"><p class="panel-kicker">GESELECTEERD RAPPORT</p><h2 id="reportPreviewTitle">Volledige nulmeting</h2><p id="reportPreviewDescription">Overzicht van de volledige digitale omgeving, inclusief de beschikbare onderbouwing.</p><div id="reportPreviewMeta" class="report-preview-meta"></div></div><div class="report-workbench-actions"><button type="button" id="reportExcel" class="monitor-button primary">Excel downloaden</button><button type="button" id="reportPdf" class="monitor-button subtle">PDF maken</button><button type="button" id="reportJson" class="monitor-button subtle">Gegevens als JSON</button></div></article>
-        <article class="panel local-panel"><div><p class="panel-kicker">LOKAAL GEGEVENSBEHEER</p><h2>Deze inventaris bewaren</h2><p>Bewaar de ingelezen en verwerkte gegevens alleen op dit apparaat, zodat de overzichten bij een volgend bezoek beschikbaar blijven. Gegevens worden niet naar de website verzonden.</p></div><div class="local-actions"><button type="button" class="monitor-button subtle" id="saveLocal">Bewaar op dit apparaat</button><button type="button" class="monitor-button subtle" id="deleteLocal">Wis lokale gegevens</button></div><span class="save-status" id="saveStatus"></span></article>
+        <article class="panel local-panel"><div><p class="panel-kicker">LOKAAL GEGEVENSBEHEER</p><h2>Deze inventaris bewaren</h2><p>Bewaar de ingelezen en verwerkte gegevens alleen op dit apparaat, zodat de overzichten bij een volgend bezoek beschikbaar blijven. Gegevens worden niet naar de website verzonden.</p></div><div class="local-actions"><button type="button" class="monitor-button subtle" id="saveLocal">Bewaar op dit apparaat</button><button type="button" class="monitor-button subtle" id="deleteLocal">Wis lokale gegevens</button></div><span class="save-status" id="saveStatus"></span><details class="local-legacy"><summary>Eerdere lokale kopie</summary><p>Bewaar een kopie uit de vorige versie als archiefbestand. Het bestand bevat de oorspronkelijke gegevens, zonder ze aan een organisatie toe te wijzen.</p><button type="button" class="monitor-button subtle" id="downloadLegacyLocal">Oude lokale kopie downloaden</button></details></article>
       </section>
       <section id="viewSources" class="view" hidden>
         <article class="panel"><div class="panel-head"><div><p class="panel-kicker">INFORMATIE</p><h2>Over deze inventarisatie</h2></div></div><p class="explain" id="inventoryInfo">Eerste inventarisatie gestart: 10 augustus 2026 · Samenstelling: Hans Visser.</p></article>
@@ -280,13 +297,13 @@
           <div class="card-pending-title"><strong id="cardDraftCount">Geen wijzigingen</strong><button type="button" id="cardUndo" class="card-text-action" hidden>Herstel concept</button></div>
           <div id="cardChangeSummary" class="card-change-summary"></div>
           <button type="button" id="cardPublishToggle" class="card-button card-button-subtle" hidden>Wijzigingen voorstellen in GitHub</button>
-          <div id="cardGithubPanel" class="card-github-panel" hidden>
+          <div id="cardGithubPanel" class="card-github-panel" hidden><p id="cardPublishTarget" class="card-help">Organisatieprofiel wordt geladen.</p>
             <p>De wijziging gaat als pull request naar <strong>E-AI-MODEL/website</strong>. Publicatie volgt pas na beoordeling.</p>
             <label for="cardCommitMessage">Beschrijving wijziging</label>
             <input id="cardCommitMessage" type="text" maxlength="180" placeholder="Bijwerken applicatieregister 2026" autocomplete="off">
             <label for="cardGithubToken">GitHub-token met Contents en Pull requests: Read and write</label>
             <input id="cardGithubToken" type="password" spellcheck="false" autocomplete="off" placeholder="Wordt niet opgeslagen">
-            <label class="card-confirm-public"><input id="cardConfirmPublic" type="checkbox"> Ik heb gecontroleerd dat de wijzigingen openbaar mogen worden voorgesteld.</label>
+            <label class="card-confirm-public"><input id="cardConfirmPublic" type="checkbox"> Ik heb gecontroleerd dat deze gegevens in de ingestelde repository mogen worden opgeslagen.</label>
             <button type="button" id="cardCreatePR" class="card-button card-button-primary">Wijzigingsvoorstel maken</button>
           </div>
           <p id="cardFeedback" class="card-feedback" role="status" aria-live="polite"></p>

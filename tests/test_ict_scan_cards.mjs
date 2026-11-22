@@ -11,16 +11,19 @@ const catalog=JSON.parse(read('tools/ict-scan/frameworks.json'));
 const main=JSON.parse(read('tools/ict-scan/bronnen/2026-applicatielandschap.json'));
 const work=JSON.parse(read('tools/ict-scan/bronnen/2026-werkregister.json'));
 const faq=JSON.parse(read('tools/ict-scan/bronnen/2026-faq.json'));
+const sourceRegister=JSON.parse(read('tools/ict-scan/bronnen/2026-bronnenregister.json'));
 const clone=v=>JSON.parse(JSON.stringify(v));
-const ctx={window:{},document:{getElementById:()=>({addEventListener(){}})},TextEncoder,TextDecoder,atob,btoa,Uint8Array};
-vm.createContext(ctx);vm.runInContext(githubSource,ctx);
+const profile=JSON.parse(read('tools/ict-scan/assurance/profiles/emmauscollege.json'));
+const ctx={URL,window:{},document:{getElementById:()=>({addEventListener(){}})},TextEncoder,TextDecoder,atob,btoa,Uint8Array};
+vm.createContext(ctx);vm.runInContext(read('tools/ict-scan/assurance/profile.js'),ctx);vm.runInContext(read('tools/ict-scan/assurance/source-register.js'),ctx);vm.runInContext(read('tools/ict-scan/assurance/engine.js'),ctx);ctx.window.AssuranceEngine=ctx.AssuranceEngine;vm.runInContext(read('tools/ict-scan/assurance/adapter.js'),ctx);vm.runInContext(read('tools/ict-scan/assurance/record-contract.js'),ctx);ctx.window.AssuranceRecord=ctx.AssuranceRecord;ctx.window.IctOrganisation={profile};vm.runInContext(githubSource,ctx);
+const sourceScope=ctx.window.AssuranceProfile.scopeKey(profile);
 const logic=ctx.window.EmmausCardGitLogic;
-function docs(){return {'2026-applicatielandschap.json':clone(main),'2026-werkregister.json':clone(work),'2026-faq.json':clone(faq)};}
+function docs(){return {'2026-applicatielandschap.json':clone(main),'2026-werkregister.json':clone(work),'2026-faq.json':clone(faq),'2026-bronnenregister.json':clone(sourceRegister)};}
 function change(type,record,fields){
-  return {type,id:record.id,before:clone(record),after:{...clone(record),...fields},changed:Object.keys(fields),reason:'Broncorrectie op basis van vastgelegde inventarisatie'};
+  return {sourceScope,type,id:record.id,before:clone(record),after:{...clone(record),...fields},changed:Object.keys(fields),reason:'Broncorrectie op basis van vastgelegde inventarisatie'};
 }
-test('Één editor voor dertien registers, zonder weggooien bronvelden',()=>{
-  for(const token of ["{key:'apps'","{key:'ai'","{key:'connections'","{key:'parts'","{key:'additionalCandidates'","{key:'checks'","{key:'dpia'","{key:'aiControls'","{key:'devices'","{key:'licenseReview'","{key:'workActions'","{key:'softwareReview'","{key:'faqs'"])
+test('Één editor voor veertien registers, zonder weggooien bronvelden',()=>{
+  for(const token of ["{key:'apps'","{key:'ai'","{key:'connections'","{key:'parts'","{key:'additionalCandidates'","{key:'checks'","{key:'dpia'","{key:'aiControls'","{key:'devices'","{key:'licenseReview'","{key:'workActions'","{key:'softwareReview'","{key:'faqs'","{key:'sourceRegister'"])
     assert.ok(cardSource.includes(token),token);
   assert.ok(cardSource.includes("'sourceFields'"));
   assert.ok(cardSource.includes("'otherDescription'"));
@@ -32,7 +35,7 @@ test('Één editor voor dertien registers, zonder weggooien bronvelden',()=>{
   assert.ok(html.includes('id="railMore"'));
   assert.ok(html.includes('id="unlockZero"'));
 });
-test('Het normregister bevat verifieerbare officiële bronnen',()=>{
+test('Het normregister bevat de vereiste IDs, bronlinks en beoordelingsstatussen',()=>{
   assert.equal(catalog.schema,'eai-applicable-frameworks-v1');
   for(const id of ['IBP','AVG','AIACT','UAVG','WVO2020']){
     const item=catalog.references.find(x=>x.id===id);
@@ -63,7 +66,7 @@ test('Nieuwe bronverwijzingen worden toegevoegd zonder originele bronnen te verv
   const all=docs(),original=all['2026-applicatielandschap.json'].apps[0];
   const baseline=clone(original);baseline.sources=baseline.sources.concat(['2026-applicatielandschap.json']);
   const updated=clone(baseline);updated.sources.push('Getekend verwerkerscontract 2026');
-  const staged={type:'apps',id:original.id,before:baseline,after:updated,changed:['sources'],reason:'Nieuwe bewijsverwijzing toegevoegd aan bestaande registratie'};
+  const staged={sourceScope,type:'apps',id:original.id,before:baseline,after:updated,changed:['sources'],reason:'Nieuwe bewijsverwijzing toegevoegd aan bestaande registratie'};
   logic.applyDrafts(all,[staged],'reviewer','2026-11-20T15:00:00Z');
   const stored=all['2026-applicatielandschap.json'].apps[0];
   assert.equal(stored.sources.includes('Getekend verwerkerscontract 2026'),true);
@@ -89,7 +92,7 @@ test('FAQ-antwoord aanpassen behoudt vaste ID, bronverwijzing en wijzigingslog',
 test('Nieuwe kaart wijzigt alleen het juiste register en de telling',()=>{
   const all=docs();
   const entry={id:'APP-999',name:'Nieuwe testtoepassing',description:'Voorbeeldregistratie',relations:[],frameworkLinks:[],sources:[]};
-  const newItem={type:'apps',id:entry.id,before:null,after:entry,changed:['name','description'],reason:'Nieuwe registratie uit handmatige inventarisatie'};
+  const newItem={sourceScope,type:'apps',id:entry.id,before:null,after:entry,changed:['name','description'],reason:'Nieuwe registratie uit handmatige inventarisatie'};
   logic.applyDrafts(all,[newItem],'reviewer','2026-11-20T15:00:00Z');
   assert.equal(all['2026-applicatielandschap.json'].apps.length,62);
   assert.equal(all['2026-applicatielandschap.json'].metadata.counts.apps,62);
@@ -101,7 +104,7 @@ test('Gelijktijdige wijzigingen en dubbele IDs stoppen publicatie',()=>{
   const edit=change('apps',base,{description:'Test gecorrigeerd'});
   all['2026-applicatielandschap.json'].apps[0].description='Andere auteur was eerder';
   assert.throws(()=>logic.applyDrafts(all,[edit],'reviewer','2026-11-20T15:00:00Z'),/sinds jouw laatste bronversie gewijzigd/);
-  const add={type:'apps',id:base.id,before:null,after:{id:base.id,name:'Dubbel'},changed:['name'],reason:'Toets van dubbele registraties'};
+  const add={sourceScope,type:'apps',id:base.id,before:null,after:{id:base.id,name:'Dubbel'},changed:['name'],reason:'Toets van dubbele registraties'};
   assert.throws(()=>logic.applyDrafts(docs(),[add],'reviewer','2026-11-20T15:00:00Z'),/bestaat inmiddels al/);
 });
 test('Bevestigde relaties en oordelen vereisen bewijs',()=>{
@@ -115,7 +118,9 @@ test('Bevestigde relaties en oordelen vereisen bewijs',()=>{
 test('Geen rechtstreekse overschrijving van main',()=>{
   assert.ok(githubSource.includes("request('POST','/git/refs'"));
   assert.ok(githubSource.includes("request('POST','/pulls'"));
-  assert.ok(githubSource.includes("'main'"));
+  assert.equal(profile.source.baseRef,'main');
+  assert.ok(githubSource.includes('base:baseRef'));
+  assert.ok(githubSource.includes('profile.source.registerFiles'));
   assert.ok(githubSource.includes('manifest.dataFiles'));
   assert.ok(githubSource.includes('source_sha')===false);
   assert.ok(html.includes("connect-src 'self' https://api.github.com"));

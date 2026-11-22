@@ -6,8 +6,8 @@ import vm from 'node:vm';
 import {File} from 'node:buffer';
 
 const source=readFileSync(resolve('tools/ict-scan/github-sync.js'),'utf8');
-const maps=['apps','ai','connections','checks','devices','parts','dpia','aiControls','policyDocs','signals','candidates','licenseReview','workActions','softwareReview','faqs'];
-function setup({bad=false,unauthorized=false,cancelDuringImport=false,largeDirectory=false,withManifest=false,shaMismatch=false,badCounts=false}={}) {
+const maps=['apps','ai','connections','checks','devices','parts','dpia','aiControls','policyDocs','signals','candidates','licenseReview','workActions','softwareReview','faqs','sourceRegister'];
+function setup({bad=false,unauthorized=false,cancelDuringImport=false,largeDirectory=false,withManifest=false,shaMismatch=false,badCounts=false,withSources=false,badSourceCounts=false,profile}={}) {
   const fields={};
   for(const id of ['githubRepo','githubFolder','githubRef','githubToken','githubSyncStart','githubSyncCancel','githubSyncStatus','githubSyncSummary','githubReplace','topGithubSync']) {
     fields[id]={events:{},value:'',checked:false,hidden:false,disabled:false,textContent:'',dataset:{},addEventListener(event,handler){this.events[event]=handler;},focus(){}};
@@ -18,13 +18,13 @@ function setup({bad=false,unauthorized=false,cancelDuringImport=false,largeDirec
   fields.githubToken.value='test-token-not-real';
   fields.githubReplace.checked=true;
   let calls=[],renders=0;
-  const state={sources:[],docs:[],derived:[],ready:false,view:'sources'};
+  const state={sources:[],docs:[],derived:[],ready:false,view:'sources',sourceRegisterLoaded:false};
   for(const name of maps)state[name]=new Map();
-  const content=Buffer.from(JSON.stringify({apps:[{id:'APP-1',name:'Dummy software'}]}));
+  const content=Buffer.from(JSON.stringify({schema:'eai-school-ict-v1',apps:[{id:'APP-1',name:'Dummy software'}],...(withSources?{sourceRegister:[{id:'SRC-00001',name:'Exact source',extension:{keep:true}}]}:{})}));
   const sha='a'.repeat(40);
   const manifestSha='b'.repeat(40);
-  const manifestContent=Buffer.from(JSON.stringify({schema:'eai-school-ict-manifest-v1',metadata:{firstInventoryStarted:'2026-08-10',compiledBy:'Hans Visser'},dataFiles:[{path:'school.json',sha:shaMismatch?'c'.repeat(40):sha,recordCounts:{apps:badCounts?2:1}}]}));
-  const context={
+  const manifestContent=Buffer.from(JSON.stringify({schema:'eai-school-ict-manifest-v1',metadata:{firstInventoryStarted:'2026-08-10',compiledBy:'Hans Visser'},dataFiles:[{path:'school.json',sha:shaMismatch?'c'.repeat(40):sha,recordCounts:{apps:badCounts?2:1,...(withSources?{sourceRegister:badSourceCounts?2:1}:{})}}]}));
+  const context={window:profile?{IctOrganisation:{ready:Promise.resolve(profile)}}:{},
     document:{getElementById:id=>fields[id],addEventListener(event,handler){this.events??={};this.events[event]=handler;}}, state,
     URL, AbortController, File, atob,
     Date, Error, Uint8Array, console,
@@ -36,6 +36,7 @@ function setup({bad=false,unauthorized=false,cancelDuringImport=false,largeDirec
       if(cancelDuringImport)fields.githubSyncCancel.events.click();
       const payload=JSON.parse(await file.text());
       state.apps.set(payload.apps[0].id,{...payload.apps[0],sources:[file.name]});
+      if(payload.sourceRegister){for(const entry of payload.sourceRegister)state.sourceRegister.set(entry.id,entry);state.sourceRegisterLoaded=true;}
       state.sources.push({name:file.name,kind:'toepassingen',rows:1,info:'Herkomst van de registratie.'});
     },
     async fetch(url,options){
@@ -162,4 +163,52 @@ test('Manifest met onjuiste aantallen herstelt vorige gegevens',async()=>{
   assert.equal(x.state.apps.get('APP-old').name,'Vorige registratie');
   assert.equal(x.state.sources.length,1);
   assert.match(x.fields.githubSyncStatus.textContent,/ingelezen, 2 verwacht/);
+});
+
+test('Bronregister wordt geladen en de nieuwe manifesttelling wordt gecontroleerd',async()=>{
+  const x=setup({withManifest:true,withSources:true});
+  await x.fields.githubSyncStart.events.click();
+  assert.equal(x.state.sourceRegisterLoaded,true);
+  assert.equal(x.state.sourceRegister.size,1);
+  assert.deepEqual(x.state.sourceRegister.get('SRC-00001').extension,{keep:true});
+  assert.match(x.fields.githubSyncStatus.textContent,/geslaagd/i);
+});
+
+test('Een verkeerde bronregistertelling herstelt ook bronregels en hun laadstatus',async()=>{
+  const x=setup({withManifest:true,withSources:true,badSourceCounts:true});
+  const original={id:'SRC-00999',name:'Vorige bron',extension:{keep:['oud']}};
+  x.state.sourceRegister.set(original.id,original);x.state.sourceRegisterLoaded=true;
+  x.state.apps.set('APP-OLD',{id:'APP-OLD',name:'Vorige app'});x.state.ready=true;
+  await x.fields.githubSyncStart.events.click();
+  assert.deepEqual([...x.state.sourceRegister.values()],[original]);
+  assert.equal(x.state.sourceRegisterLoaded,true);
+  assert.equal(x.state.apps.get('APP-OLD').name,'Vorige app');
+  assert.match(x.fields.githubSyncStatus.textContent,/sourceRegister.*ingelezen, 2 verwacht/);
+});
+
+test('Annuleren na bronimport herstelt ook een eerdere bronregistratie',async()=>{
+  const x=setup({withSources:true,cancelDuringImport:true});
+  const original={id:'SRC-00999',name:'Vorige bron'};
+  x.state.sourceRegister.set(original.id,original);x.state.sourceRegisterLoaded=true;
+  await x.fields.githubSyncStart.events.click();
+  assert.deepEqual([...x.state.sourceRegister.values()],[original]);
+  assert.equal(x.state.sourceRegisterLoaded,true);
+  assert.match(x.fields.githubSyncStatus.textContent,/afgebroken/);
+});
+
+test('Vervangen uit een oudere externe bron laat geen vorige bron-goedkeuring achter',async()=>{
+  const x=setup();
+  x.state.sourceRegister.set('SRC-00999',{id:'SRC-00999',approvalStatus:'Goedgekeurd'});x.state.sourceRegisterLoaded=true;
+  await x.fields.githubSyncStart.events.click();
+  assert.equal(x.state.sourceRegister.size,0);assert.equal(x.state.sourceRegisterLoaded,false);
+});
+
+test('Het verplichte bronbestand of register wordt vóór wijziging van de inventaris geëist',async()=>{
+  for(const file of ['missing.json','school.json']){
+    const profile={source:{repository:'E-AI-MODEL/private-data',baseRef:'main',sourceDir:'bronmap',registerFiles:{apps:'school.json',sourceRegister:file}}};
+    const x=setup({profile});x.state.apps.set('APP-OLD',{id:'APP-OLD',name:'Vorige app'});x.state.ready=true;
+    await x.fields.githubSyncStart.events.click();
+    assert.equal(x.state.apps.size,1);assert.equal(x.state.apps.get('APP-OLD').name,'Vorige app');
+    assert.match(x.fields.githubSyncStatus.textContent,/Verplicht.*ontbreekt/);
+  }
 });

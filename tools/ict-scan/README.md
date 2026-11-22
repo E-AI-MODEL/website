@@ -1,6 +1,59 @@
 # Applicatielandschap Emmauscollege
 
-Een zelfstandige pagina van de EAI-website. Geen bronbestanden, tokens, wachtwoorden, persoonsgegevens, boekingsregels of andere schoolinhoud worden naar GitHub of naar een server verstuurd. De import, de controles en de exports draaien in het browservenster.
+Een zelfstandige pagina van de EAI-website. Inlezen, zoeken, controleren en rapporteren werken met gewone JavaScript-code, zonder modelaanroepen. De gepubliceerde inventaris staat in GitHub. Het dashboard leest die bron bij het openen. Lokale imports en exports blijven op het apparaat. Alleen de afzonderlijke, uitdrukkelijk gekozen wijzigingsroute verstuurt kaartwijzigingen naar een nieuwe GitHub-branch en pull request.
+
+## Huidige uitbreiding: herbruikbare controles
+
+De map [assurance](assurance/README.md) bevat een zelfstandige controlefunctie, een vast testcorpus en expliciete organisatieprofielen. Het huidige dashboard gebruikt Emmauscollege. Dezelfde controlefunctie is ook met een tweede, fictieve organisatie beproefd. De bestaande onderwijsinterface is daarmee nog niet voor iedere sector aangepast.
+
+Het scherm **Controles** toont Gegevens, Bronnen, Beoordelingen, Wijzigingen en Tests. Elke kleur heeft een tekst. Groen betekent dat die controle slaagde; oranje vraagt aandacht; rood wijst op een afgekeurde controle; grijs betekent dat de controle niet is uitgevoerd. Een lege inventaris, ontbrekende vergelijking of ontbrekende beoordeling kan niet ongemerkt groen worden. De uitslag is geen verklaring van juridische conformiteit.
+
+De controles lopen in een lokale Web Worker. Een nieuwe invoer maakt de vorige uitslag direct ongeldig en beëindigt een oudere run. Ook vóór een export wordt de invoer opnieuw vergeleken. Een fout of timeout geeft een zichtbare mislukking. Een vergelijkingsstand wordt alleen na een bewuste handeling gebruikt. Bewaar het vergelijkingsbestand voor hergebruik; de browser schrijft dit niet vanzelf naar GitHub of lokale permanente opslag.
+
+Dezelfde code draait via:
+
+```bash
+node scripts/check_ict_assurance.mjs --as-of 2026-11-21 --output artifacts/ict-assurance.json
+node --test tests/test_ict_scan_assurance*.mjs tests/test_ict_scan_cards.mjs tests/test_ict_scan_github_sync.mjs
+```
+
+De CLI controleert eerst de exacte bronbytes tegen de Git-blob-SHA's en registertellingen in het manifest. Het verslag bevat datum, bronidentiteit, controleversie, policy en bestandsvingerafdrukken. Exit 0 betekent dat geen technische afkeuring is gevonden. Oranje en grijs blijven in het verslag zichtbaar en worden niet als een groen totaal gepresenteerd.
+
+De workflow `check-ict-assurance.yml` voert deze controles op relevante PR's en pushes, op aanvraag en dagelijks uit. De dagelijkse planning wordt pas actief wanneer de workflow op de standaardbranch staat. De workflow heeft alleen leesrechten en publiceert geen wijzigingen. Resultaten worden als run-artifact bewaard.
+
+### Beoordeling en opvolging
+
+Iedere normverwijzing kan rol, beoordelaar, datum, volgende beoordeling, vervolgactie, actiehouder, actiestatus en uitvoeringsbewijs bewaren. Voor Onderbouwd zijn bronbewijs, beoordelaar en datum nodig; EN 18286 vereist ook de rol. Niet van toepassing vereist een toelichting, beoordelaar en datum. Afgerond vereist een omschreven actie met uitvoeringsbewijs. Bestaande bronvelden en onbekende gestructureerde velden blijven behouden. Excel, JSON en het afzonderlijke controleverslag bewaren de relevante gegevens.
+
+Het organisatieprofiel bepaalt de bronmap en de bestemming voor wijzigingen. Een concept wordt bij het begin van de bewerking aan zijn bron gebonden. Een latere bronwissel maakt een lokaal of vreemd concept niet geschikt voor publicatie naar die andere bron. De hele wijzigingsbatch wordt eerst op een kopie gevalideerd. Onjuiste invoer wijzigt de originele documenten niet.
+
+### Beveiliging en gebruik
+
+GitHub-tokens blijven alleen tijdens de gekozen handeling beschikbaar en worden uit het invoerveld gewist. De publicatieroute beperkt verzoeken tot de ingestelde GitHub-repository en de gebruikerscontrole, weigert redirects en controleert ook committeksten op toegangssleutels. Kaart- en foutteksten worden als tekst getoond. Schrijfhandelingen vanuit een iframe worden geweigerd.
+
+De `.htaccess` bevat HTTP-headers voor Apache/LiteSpeed, waaronder `frame-ancestors 'none'` en `X-Frame-Options: DENY`. De daadwerkelijke productieheaders moeten na publicatie worden gecontroleerd. Een bestand in Git is daarvoor geen uitvoeringsbewijs. De verborgen 404-ingang blijft een navigatiekeuze, geen toegangssysteem.
+
+Volledige offline herstart is niet aangetoond. De toepassing heeft geen serviceworker die de volledige installatie vooraf bewaart. Geen AI tijdens gebruik betekent ook niet dat de code, gegevens of eerdere redactiewerkzaamheden nooit met AI-hulp zijn gemaakt.
+
+[Architectuur](../../docs/ict-assurance-architecture.md), [broncontrole EN 18286](../../docs/ict-assurance-sources.md) en [herkomst van hergebruik](../../docs/ict-assurance-reuse.md) beschrijven de gemaakte keuzes en hun bewijsgrenzen.
+
+De paragrafen hieronder beschrijven de bestaande functies en hun ontwikkeling. De bovenstaande uitbreiding is de actuele beschrijving van controles en schrijven naar GitHub.
+
+## Eén gegevensbetekenis, geen AI in de website
+
+De ICT-scan gebruikt geen taalmodel. Zoeken, gegevenskaarten, grafieken,
+rapporten en controles zijn deterministisch. Het woord AI verwijst uitsluitend
+naar geïnventariseerde functies en toepassingen, niet naar de techniek van de site.
+
+`record-taxonomy.js` legt de interpretatie vast van de bestaande JSON-velden
+`domain` en `phase`, en van de contextafhankelijke veldnamen. De bron-JSON
+blijft de enige inhoudelijke registratie. Kaarten, schermen en exports
+gebruiken dezelfde indeling. Onbekende domeinen worden niet op basis
+van andere ingevulde velden geraden.
+
+Bij `Onderwijsleerproces` is een lesfase relevant; bij `Organisatie en beheer`
+is de lesfase niet van toepassing. Oorspronkelijke gegevens, technische
+ID's, bronverwijzingen, 404-ingang en gecontroleerde PR-route blijven behouden.
 
 ## Gebruik
 
@@ -16,13 +69,13 @@ Open een of meer bestanden via Bronnen en export. Op het overzicht staan de aant
 - .docx: tekst uit Word lokaal lezen; nog geen geautomatiseerd juridisch oordeel.
 - .pdf: bronregistratie, geen automatische inhoudsextractie.
 
-Het dashboard start leeg. Er worden geen aantallen of controles verzonnen. Categorieen en namen komen uit de ingevoerde bestanden. De 2026-ICT-registratie levert alleen mogelijke toepassingen op; het systeem verwijdert alle financiële velden en gebruikt die niet in de rapportages. Een vermelding is geen bewijs van gebruik. De Excel en de PDF zijn rapportages, geen volledige herimportbestanden; bewaar het JSON-bestand of de oorspronkelijke bronexports voor de volgende sessie.
+De eerste weergave bevat geen verzonnen aantallen. Na het openen worden de ingestelde openbare bronbestanden geladen, tenzij een bewaarde lokale stand wordt hersteld. Categorieen en namen komen uit de ingevoerde bestanden. De 2026-ICT-registratie levert alleen mogelijke toepassingen op; het systeem verwijdert alle financiële velden en gebruikt die niet in de rapportages. Een vermelding is geen bewijs van gebruik. De Excel en de PDF zijn rapportages, geen volledige herimportbestanden; bewaar het JSON-bestand of de oorspronkelijke bronexports voor de volgende sessie.
 
 ## Grenzen
 
-Er is geen toegangscode of server-side toegangsbeveiliging. De 404-ingang is alleen een verborgen navigatieroute. Bestanden worden niet geüpload. Standaard verdwijnen gegevens na herladen. Alleen via de uitdrukkelijke knop **Bewaar op dit apparaat** wordt een lokale momentopname opgeslagen in IndexedDB, te verwijderen met **Wis lokale gegevens**. De site heeft geen toegang tot de live Microsoft 365-tenant. Een Entra-registratie is geen bewijs van een actieve gegevenskoppeling. Juridische verwijzingen zijn niet automatisch juridisch advies. DPIA-beoordelingen hebben een bewijsstatus en vragen lokale verificatie. Publicatie op een openbaar domein maakt de code openbaar, niet de lokaal ingelezen inhoud.
+Er is geen toegangscode of server-side toegangsbeveiliging. De 404-ingang is alleen een verborgen navigatieroute. Lokale bestanden worden niet tijdens import geüpload; de aparte PR-route verstuurt alleen de uitdrukkelijk voorgestelde kaartwijzigingen. Standaard verdwijnen gegevens na herladen. Alleen via de uitdrukkelijke knop **Bewaar op dit apparaat** wordt een lokale momentopname opgeslagen in IndexedDB, te verwijderen met **Wis lokale gegevens**. De site heeft geen toegang tot de live Microsoft 365-tenant. Een Entra-registratie is geen bewijs van een actieve gegevenskoppeling. Juridische verwijzingen zijn niet automatisch juridisch advies. DPIA-beoordelingen hebben een bewijsstatus en vragen lokale verificatie. Publicatie op een openbaar domein maakt de code openbaar, niet de lokaal ingelezen inhoud.
 
-De pagina laadt geen externe JavaScript-bibliotheken, analytics of lettertypen. `emmaus-logo.svg` bevat het originele Emmauscollege-logo lokaal en vraagt niets op van een externe website. De CSP staat alleen GitHub API-verzoeken toe voor de vrijwillige, alleen-lezen-synchronisatie; andere externe verbindingen vanuit JavaScript zijn niet toegestaan. Exports worden lokaal gegenereerd. PDF loopt via het afdrukvenster van de browser.
+De pagina laadt geen externe JavaScript-bibliotheken, analytics of lettertypen. `emmaus-logo.svg` bevat het originele Emmauscollege-logo lokaal en vraagt niets op van een externe website. De CSP staat naast eigen bestanden alleen verbinding met de GitHub API toe voor bronimport en expliciet gekozen wijzigingsvoorstellen. Andere externe verbindingen vanuit JavaScript zijn niet toegestaan. Exports worden lokaal gegenereerd. PDF loopt via het afdrukvenster van de browser.
 
 ## Controle
 
@@ -48,7 +101,7 @@ De website volgt de navigatie van de EAIact Model Monitor, maar gebruikt de kleu
 - Klikbare staafgrafieken op het schoolbrede dashboard, keuzelijstfilters, een ringdiagram als alternatieve weergave en een staafdiagram naar lesfase op het AI-scherm.
 - Aanvullende staafdiagrammen voor Entra-registratiestatus en controlepunten; openen van applicaties via overzicht en wereldwijde zoekbalk.
 - Een rapportmaker met zes selecties; Excel exporteert per onderwerp aparte tabbladen en behoudt uitgebreide inhoud, PDF ontstaat via de printdialoog van de browser.
-- Lege startpositie, geen schoolgegevens in de publieke code.
+- De brongegevens worden apart uit de ingestelde GitHub-bron geladen; de gepubliceerde inventaris is daar openbaar.
 
 Bestanden: `index.html` (ingang en structuur), `style.css` (basis), `monitor.css` (schoolstijl en vaste schermindeling), `app.js` (inlezen, normaliseren en export), `enhancements.js` (dashboards, grafieken, rapportkeuze en vrijwillige lokale opslag), `emmaus-logo.svg` (schoollogo). De websitebuild moet al deze bestanden meenemen.
 
@@ -101,7 +154,7 @@ De GitHub-sync vergelijkt de bestanden en de aantallen met het manifest in tools
 
 ## Eén JSON-kaart, wettelijke kaders en logboek
 
-De uitklapbare zijbalk bevat **JSON-kaarten beheren**. De editor werkt voor dertien registers: toepassingen, AI-functies, Entra, technische onderdelen, kandidaten, controles, DPIA, AI-beheer, apparaten, licenties, werkacties, softwarecontroles en veelgestelde vragen. Per type verschijnen de juiste invulvelden. Originele Excelteksten, bronnummers, bronrijen en herkomst blijven bewaard.
+De uitklapbare zijbalk bevat **Gegevens beheren**. De editor werkt voor dertien registers: toepassingen, AI-functies, Entra, technische onderdelen, kandidaten, controles, DPIA, AI-beheer, apparaten, licenties, werkacties, softwarecontroles en veelgestelde vragen. Per type verschijnen de juiste invulvelden. Originele Excelteksten, bronnummers, bronrijen en herkomst blijven bewaard.
 
 De kaart bewaart conceptwijzigingen buiten de actuele inventaris. Nog niet goedgekeurde concepten veranderen de grafieken en rapportages niet. Nieuwe registraties krijgen een ID per register; bestaande IDs blijven onveranderd.
 

@@ -280,3 +280,14 @@ body.record-card-open{overflow:hidden}
  .card-editor.card-context-mode:not([hidden]),.card-editor .card-tab-panel:not([hidden]){animation:none!important}
  .card-editor .card-read-tab,.item-list .item-card.item-card-direct .item-summary{transition:none!important}
 }
+.card-linked-row .card-framework-review{grid-column:1/-1;border-top:1px solid var(--line,#dce3e5);padding-top:8px;min-width:0}
+.card-framework-review summary{cursor:pointer;font-weight:600;font-size:12px;padding:4px 0}
+.card-framework-review-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:10px}
+.card-framework-review-fields .card-field{min-width:0}
+.card-framework-review-fields input,.card-framework-review-fields select{width:100%;min-width:0;box-sizing:border-box}
+.card-linked-row>.card-help{grid-column:1/-1;margin:0}
+@media(max-width:600px){.card-framework-review-fields{grid-template-columns:1fr}}
+.card-confirm-review{display:flex;align-items:flex-start;gap:10px;grid-column:1/-1;font-size:.83rem;line-height:1.5;margin:12px 0;color:var(--ink,#223641)}
+.card-confirm-review input[type="checkbox"]{width:18px;min-width:18px;height:18px;flex:0 0 18px;margin:2px 0 0;accent-color:var(--accent,#166b73)}
+.card-source-row{display:flex;align-items:center;gap:8px;min-width:0;margin:8px 0}
+.card-source-row select{flex:1;min-width:0;width:100%;max-width:100%;padding:9px;border:1px solid var(--line,#d5e0e6);border-radius:7px;background:var(--surface,#fff);color:inherit}

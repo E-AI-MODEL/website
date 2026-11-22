@@ -147,5 +147,5 @@ test('Bestaande zijbalk en eenvoudige bronverwijzingen blijven intact',()=>{
   assert.ok(!source.includes('openai'));
   const app=read('tools/ict-scan/app.js');
   assert.ok(app.includes('faqs:new Map()'));
-  assert.ok(app.includes("['faqs',state.faqs]"));
+  assert.ok(app.includes("faqs:'faqs'"),'De native JSON-import moet FAQ-registraties blijven inlezen.');
 });

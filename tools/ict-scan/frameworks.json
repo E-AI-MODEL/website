@@ -1,7 +1,7 @@
 {
   "schema": "eai-applicable-frameworks-v1",
   "title": "Toetsingskaders applicatielandschap",
-  "version": "2026-11-20",
+  "version": "2026-11-21",
   "sourcePolicy": "Een verwijzing is een toetsingsvraag, geen automatisch nalevingsoordeel. De gebruiker onderbouwt toepasselijkheid, bevinding en bewijs per registratie.",
   "references": [
     {
@@ -58,6 +58,41 @@
         "art. 27",
         "art. 50"
       ]
+    },
+    {
+      "id": "EN18286",
+      "name": "EN 18286:2026 | kwaliteitsmanagement voor hoogrisico-AI",
+      "category": "Europese geharmoniseerde norm",
+      "authority": "CEN/CENELEC; verwijzing gepubliceerd via Uitvoeringsbesluit (EU) 2026/2274",
+      "url": "https://www.nen.nl/nen-en-18286-2026-en-354718",
+      "scope": "Sectoronafhankelijke norm voor kwaliteitsmanagement, primair voor aanbieders van hoogrisico-AI. Bepaal per systeem de rol van de organisatie en welke bepalingen van toepassing zijn. Het vermoeden van overeenstemming geldt alleen voor gedekte eisen en onder de voorwaarden van Annex ZA. Een normverwijzing of ingevulde controle bewijst geen volledige naleving.",
+      "suggestedRefs": [
+        "4.2",
+        "4.5",
+        "5.3",
+        "7.2",
+        "8.1",
+        "8.2",
+        "8.4",
+        "8.5",
+        "8.9",
+        "9.3",
+        "9.4",
+        "9.5",
+        "9.6",
+        "9.7",
+        "10.1"
+      ],
+      "note": "Besluit van 12 oktober 2026; gepubliceerd in het EU-Publicatieblad op 14 oktober 2026. Annex ZA bevat voorwaarden en uitgesloten bepalingen. Bronstatus opnieuw controleren bij een formeel besluit.",
+      "edition": "EN 18286:2026",
+      "sourceCheckedAt": "2026-11-21",
+      "harmonisation": {
+        "status": "cited-in-OJ",
+        "decision": "(EU) 2026/2274",
+        "decisionDate": "2026-10-12",
+        "ojPublicationDate": "2026-10-14",
+        "url": "https://eur-lex.europa.eu/eli/dec_impl/2026/2274/oj/eng"
+      }
     },
     {
       "id": "WVO2020",

@@ -48,11 +48,21 @@
       },
       "sha": "44962fa1747a882cc65999c89bc6b3ec0a30e890",
       "verified": true
+    },
+    {
+      "path": "2026-bronnenregister.json",
+      "schema": "eai-school-ict-v1",
+      "recordCounts": {
+        "sourceRegister": 51
+      },
+      "sha": "a9a426872fd93d60ee7042084f9fa61bb699a12d",
+      "verified": true
     }
   ],
   "notes": [
     "De basisinventaris telt 61 toepassingen en diensten; dit is geen bevestigd volledig aantal.",
     "76 aanvullende kandidaten tellen niet als bevestigd schoolgebruik.",
-    "De ruwe Entra-roltoewijzingen en persoonlijke gegevens zijn niet gepubliceerd."
+    "De ruwe Entra-roltoewijzingen en persoonlijke gegevens zijn niet gepubliceerd.",
+    "Het bronregister bevat 51 voorstelregels met 468 exact overgenomen verwijzingen. De vermelde SHA controleert de JSON-bestandsinhoud; bronhouderschap, rechten en goedkeuring zijn nog niet vastgesteld."
   ]
 }

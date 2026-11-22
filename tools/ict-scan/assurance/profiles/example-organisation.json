@@ -1,0 +1,45 @@
+{
+  "schema": "eai-ict-assurance-profile-v1",
+  "profileVersion": "1.2.0",
+  "organisation": {
+    "id": "example-organisation",
+    "name": "Example Organisation (fictief)",
+    "locale": "en-GB"
+  },
+  "source": {
+    "repository": "example-org/example-inventory",
+    "baseRef": "main",
+    "sourceDir": "inventory",
+    "scopeId": "application-inventory",
+    "registerFiles": {
+      "apps": "inventory.json",
+      "ai": "inventory.json",
+      "connections": "inventory.json",
+      "parts": "inventory.json",
+      "additionalCandidates": "inventory.json",
+      "checks": "inventory.json",
+      "dpia": "inventory.json",
+      "aiControls": "inventory.json",
+      "devices": "inventory.json",
+      "licenseReview": "inventory.json",
+      "workActions": "inventory.json",
+      "softwareReview": "inventory.json",
+      "faqs": "inventory.json",
+      "sourceRegister": "source-register.json"
+    },
+    "configurationFiles": {
+      "profile": "configuration/organisation.json",
+      "catalog": "configuration/frameworks.json",
+      "engine": "configuration/assurance/engine.js",
+      "sourceRegister": "configuration/assurance/source-register.js"
+    }
+  },
+  "policy": {
+    "id": "ict-record-review",
+    "version": "1.0.0",
+    "reviewMaxAgeDays": 365,
+    "basis": "project-default",
+    "description": "Fictief voorbeeld met een instelbare signaleringstermijn van 365 dagen. De organisatienaam, repository en bronmap zijn voorbeeldwaarden. Dit profiel bevat geen inventaris, verklaringen over werkelijk gebruik of vastgestelde naleving."
+  },
+  "synthetic": true
+}

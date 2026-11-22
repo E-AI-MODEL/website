@@ -394,12 +394,7 @@
     if(!state.ready)return;
     const ai=array(state.ai).filter(isClassroomAi);
     const assignments=[];
-    for(const item of ai){
-      const phases=(item.phase||'Niet ingedeeld').split(/[\/,;]/).map(s=>s.trim()).filter(Boolean);
-      for(const phase of new Set(phases.length?phases:['Niet ingedeeld'])){
-        if(!/beheer|organisatie/i.test(phase))assignments.push({phase});
-      }
-    }
+    for(const item of ai)for(const phase of IctScanTaxonomy.chartPhases(item))assignments.push({phase});
     showChart('phaseChart',assignments,'phase',choice.phase,state.phase,value=>{
       state.phase=state.phase===value?'':value;renderAi();
     });

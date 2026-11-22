@@ -75,7 +75,8 @@ test('Manifest-SHA controleert de exacte publicatiebestanden',()=>{
   const sources=[
     ['2026-applicatielandschap.json',readFileSync(resolve('tools/ict-scan/bronnen/2026-applicatielandschap.json'))],
     ['2026-werkregister.json',readFileSync(resolve('tools/ict-scan/bronnen/2026-werkregister.json'))],
-    ['2026-faq.json',readFileSync(resolve('tools/ict-scan/bronnen/2026-faq.json'))]
+    ['2026-faq.json',readFileSync(resolve('tools/ict-scan/bronnen/2026-faq.json'))],
+    ['2026-bronnenregister.json',readFileSync(resolve('tools/ict-scan/bronnen/2026-bronnenregister.json'))]
   ];
   for(const [name,bytes] of sources){
     const expected=createHash('sha1').update('blob '+bytes.length+'\0').update(bytes).digest('hex');
@@ -105,7 +106,7 @@ test('Website kan de registers laden en toont ze in eigen panelen',()=>{
   for(const id of ['candidatePanel','candidatesList','candidateTotal','licensePanel','licenseList','licenseTotal','workPanel','workList','workTotal','softwareReviewList']){
     assert.ok(html.includes('id="'+id+'"'),id+' mist in HTML');
   }
-  for(const piece of ["['additionalCandidates',state.candidates]","['licenseReview',state.licenseReview]","function renderCandidates()","function renderLicenseReview()"]){
+  for(const piece of ["function renderCandidates()","function renderLicenseReview()"]){
     assert.ok(app.includes(piece),piece);
   assert.ok(app.includes('function renderWorkActions()'));
   assert.ok(app.includes('function renderSoftwareReview()'));
