@@ -363,3 +363,20 @@ body>.rail-drawer .rail-drawer-navigation{display:none}
   .workspace.monitor-layout .panel{box-shadow:none!important;background:#fff!important;backdrop-filter:none!important}
   .workspace.monitor-layout .scene-frame{mask-image:none!important}
 }
+
+/* Keep the no-data illustration in normal flow. On short iPhone screens the
+   icon must not shrink into the heading while source sync is running. */
+@media(max-width:720px){
+  .workspace.monitor-layout #emptyState:not([hidden]){
+    flex:1 1 0;min-height:0;overflow-y:auto;justify-content:flex-start;
+    padding:24px 16px 34px;box-sizing:border-box;
+  }
+  .workspace.monitor-layout #emptyState .empty-illustration{
+    flex:0 0 96px;height:96px;min-height:96px;margin:4px auto 22px;
+  }
+  .workspace.monitor-layout #emptyState h2{
+    flex:0 0 auto;line-height:1.3;max-width:100%;margin:0 0 13px;
+  }
+  .workspace.monitor-layout #emptyState p,
+  .workspace.monitor-layout #emptyState button{flex-shrink:0}
+}

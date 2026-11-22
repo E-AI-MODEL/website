@@ -80,7 +80,7 @@
     const ring=dom('div','viz-donut-ring');
     ring.style.background='conic-gradient('+slices.join(',')+')';
     ring.setAttribute('role','img');
-    const unit=root.id==='phaseChart'?'lesfasevermeldingen':(root.id==='aiProducts'?'AI-functies':'registraties');
+    const unit=root.dataset.unit||(root.id==='phaseChart'?'lesfasevermeldingen':(root.id==='aiProducts'?'AI-functies':'registraties'));
     ring.setAttribute('aria-label',fmt(total)+' '+unit+' verdeeld over '+entries.length+' categorieën');
     const center=dom('div','viz-donut-center');
     center.append(dom('strong','',fmt(total)),dom('span','',unit));ring.append(center);
@@ -123,14 +123,30 @@
     }
     table.append(body);shell.append(table);root.append(shell);
   }
-  function showChart(id,rows,field,mode,selected,select){
-    const root=el(id);root.className='viz-stage';
-    root.replaceChildren();const entries=tally(rows,field),total=sum(entries);
+  function showEntries(root,entries,mode,selected,select){
+    root.classList.add('viz-stage');
+    root.replaceChildren();
+    const total=sum(entries);
     if(!total){subtitle(root,'Geen registraties bij deze combinatie. Wis een filter.');return;}
     if(mode==='donut')renderDonut(root,entries,total,selected,select);
     else if(mode==='treemap')renderTiles(root,entries,total,selected,select);
     else if(mode==='table')renderTable(root,entries,total,selected,select);
     else renderBars(root,entries,total,selected,select);
+  }
+  // The dashboard composer reuses these exact, already verified chart renderers.
+  // The existing view code remains the owner of all source-specific definitions.
+  window.EmmausChartViews=Object.freeze({
+    modes:Object.freeze(['bars','donut','treemap','table']),
+    render(root,entries,mode,selected,select,unit){
+      if(!root||!Array.isArray(entries)||!this.modes.includes(mode))throw Error('Ongeldige visualisatiekeuze');
+      if(unit)root.dataset.unit=unit;
+      showEntries(root,entries,mode,selected,select);
+    }
+  });
+  function showChart(id,rows,field,mode,selected,select){
+    const root=el(id);root.className='viz-stage';
+    const entries=tally(rows,field);
+    showEntries(root,entries,mode,selected,select);
     // Every mode includes all categories. No silent top-N truncation.
     if(sum(entries)!==rows.length)throw Error('De telling per '+field+' sluit niet op de bron aan.');
   }
