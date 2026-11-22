@@ -202,6 +202,27 @@
     lines(links,'Normverwijzingen',references.length
       ?references.map(x=>[(catalog.get(x.frameworkId)?.name||x.frameworkId)+' '+(x.article||''),[(x.status||'Nog te beoordelen'),reviewState(r,x),(x.evidence||'Geen bewijs vastgelegd'),x.note,x.role&&'Rol: '+x.role,x.reviewedBy&&'Beoordeeld door: '+x.reviewedBy,x.reviewedAt&&'Beoordeeld: '+x.reviewedAt,x.nextReviewAt&&'Volgende beoordeling: '+x.nextReviewAt,x.followUp&&'Actie: '+x.followUp,x.followUpOwner&&'Actiehouder: '+x.followUpOwner,x.followUpStatus&&'Opvolging: '+x.followUpStatus,x.completionEvidence&&'Uitvoering: '+x.completionEvidence].filter(Boolean).join(' · ')])
       :[['Normen','Nog niet per bepaling beoordeeld']]);
+    // Read-only navigation naar de officiële tekst. Geen normtoepasselijkheid afleiden.
+    const documentShelf=text('div','card-document-links');
+    const documentButton=(label,frameworkId)=>{
+      const b=text('button','card-button card-doc-open',label);
+      b.type='button';
+      b.addEventListener('click',()=>{if(window.EmmausDocs?.open)void window.EmmausDocs.open(frameworkId);});
+      documentShelf.append(b);
+    };
+    if(references.length){
+      const seen=new Set();
+      for(const reference of references){
+        const id=String(reference.frameworkId||'').toUpperCase().trim();
+        if(!id||seen.has(id))continue;
+        seen.add(id);
+        documentButton('Lees bron: '+(catalog.get(id)?.name||id),id);
+      }
+    }else{
+      documentShelf.append(text('p','card-help','Nog geen normverwijzingen vastgelegd bij dit record.'));
+      documentButton('Open juridische documentbibliotheek','');
+    }
+    links.append(documentShelf);
     const source=panes.get('source'),meta=r.recordMeta||{};
     lines(source,'Herkomst',[
       ['Brongoedkeuring',spec.key==='sourceRegister'?sourceApprovalState(r):''],
