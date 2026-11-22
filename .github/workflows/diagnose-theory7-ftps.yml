@@ -25,3 +25,12 @@ jobs:
           openssl x509 -in "$cert" -noout -subject -issuer -dates -ext subjectAltName -fingerprint -sha256
           echo "== FTP host address (public DNS only) =="
           getent ahostsv4 "$host" | awk '{print $1}' | sort -u
+          echo "== Reverse DNS (public PTR only) =="
+          python3 - <<'PY'
+          import socket
+          address = "213.154.231.202"
+          try:
+              print(socket.gethostbyaddr(address))
+          except OSError as error:
+              print("No reverse DNS:", error)
+          PY
