@@ -211,7 +211,7 @@
     if(info)info.textContent='Gebruik en overlap nog controleren; niet meegeteld bij basisregistraties';
   };
   // Record population and status instead of suggesting every recorded item is in use.
-  const sourceLabels={overview:'Schoolbreed',apps:'Toepassingen',connections:'Entra',devices:'Apparaten',ai:'AI-functies',privacy:'Privacy en beheer',findings:'Controles',reports:'Rapporten',sources:'Bronnen'};
+  const sourceLabels={studio:'Overzicht samenstellen',overview:'Schoolbreed',apps:'Toepassingen',connections:'Entra',devices:'Apparaten',ai:'AI-functies',privacy:'Privacy en beheer',findings:'Controles',reports:'Rapporten',sources:'Bronnen'};
   function updatePath(view){
     let path=byId('evidencePath');
     if(!path){path=document.createElement('div');path.id='evidencePath';path.className='evidence-path';byId('sectionEyebrow').insertAdjacentElement('afterend',path);}
