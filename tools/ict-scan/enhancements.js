@@ -435,7 +435,11 @@ enhancementEvents();
       else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}
     }
   });
-  document.addEventListener('ict-scan:opened',()=>void catalog().catch(()=>{}));
+  // Geen verborgen netwerkverzoeken bij openen van de ICT-scan. De bibliotheek
+  // wordt pas op verzoek geladen, zodat bestaande GitHub-sync en browserproeven
+  // dezelfde routevolgorde behouden.
+  el('docLibrarySearch')?.addEventListener('focus',()=>void catalog().catch(()=>{}));
+  el('docLibraryType')?.addEventListener('focus',()=>void catalog().catch(()=>{}));
   window.EmmausDocs=Object.freeze({open,refresh:()=>{catalogPromise=null;return catalog();},known:()=>documents.map(d=>({id:d.id,availability:d.availability}))});
 })();
 
