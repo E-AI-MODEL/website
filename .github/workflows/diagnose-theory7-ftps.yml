@@ -1,0 +1,27 @@
+name: Diagnose Theory7 FTPS certificate (temporary)
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/diagnose-theory7-ftps.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  certificate:
+    name: Inspect public FTPS certificate (no login)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Read public TLS certificate without credentials
+        shell: bash
+        run: |
+          set -euo pipefail
+          host="ftp.eaimodel.nl"
+          cert="$(mktemp)"
+          trap 'rm -f "$cert"' EXIT
+          timeout 25s openssl s_client -starttls ftp -connect "$host:21" -servername "$host" </dev/null 2>/dev/null | openssl x509 -out "$cert"
+          echo "== Certificate identity (public fields only) =="
+          openssl x509 -in "$cert" -noout -subject -issuer -dates -ext subjectAltName -fingerprint -sha256
+          echo "== FTP host address (public DNS only) =="
+          getent ahostsv4 "$host" | awk '{print $1}' | sort -u
