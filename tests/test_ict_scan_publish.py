@@ -147,6 +147,8 @@ class ICTScanTests(unittest.TestCase):
         for option in ('ssl:verify-certificate', 'ssl:check-hostname', 'ftp:ssl-force', 'ftp:ssl-protect-data'):
             self.assertEqual(settings.get(option), 'true', option)
         self.assertEqual(settings.get('cmd:fail-exit'), 'yes')
+        self.assertEqual(workflow.count('HOST: web0102.theory7.net'), 2, 'FTPS preflight and upload must use the certified server name')
+        self.assertNotIn('HOST: ftp.eaimodel.nl', workflow)
         checks = (ROOT / '.github' / 'workflows' / 'check-ict-assurance.yml').read_text(encoding='utf-8')
         self.assertEqual(checks.count("- '.github/workflows/deploy-theory7.yml'"), 2)
 

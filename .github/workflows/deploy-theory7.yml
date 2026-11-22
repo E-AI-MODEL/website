@@ -51,7 +51,7 @@ jobs:
       - name: Verify Theory7 FTPS certificate fingerprint
         shell: bash
         env:
-          HOST: ftp.eaimodel.nl
+          HOST: web0102.theory7.net
         run: |
           set -euo pipefail
           expected="4D:F5:15:4C:F3:11:5E:5B:DD:91:BD:5F:BD:0F:0E:A7:35:71:5C:32"
@@ -63,7 +63,7 @@ jobs:
       - name: Publish assets before HTML
         shell: bash
         env:
-          HOST: ftp.eaimodel.nl
+          HOST: web0102.theory7.net
           FTP_USER: ${{ secrets.THEORY7_FTP_USER }}
           FTP_PASSWORD: ${{ secrets.THEORY7_FTP_PASSWORD }}
         run: |
