@@ -13,14 +13,14 @@ vm.runInNewContext(source,context,{filename:'visual-explorer.js'});
 const {tally,pairs,treemap}=context.window.EAIApplicatieVisualMath;
 const apps=data.apps;
 
-test('Tellingen zijn afkomstig uit de 61 basisregistraties en sluiten exact',()=>{
-  assert.equal(apps.length,61);
+test('Tellingen zijn afkomstig uit de 69 basisregistraties en sluiten exact',()=>{
+  assert.equal(apps.length,69);
   const byArea=tally(apps,'area'),byKind=tally(apps,'kind'),joint=pairs(apps);
   assert.equal(byArea.length,8);
   assert.equal(byKind.length,14);
-  assert.equal(byArea.reduce((n,x)=>n+x[1],0),61);
-  assert.equal(byKind.reduce((n,x)=>n+x[1],0),61);
-  assert.equal(joint.reduce((n,x)=>n+x.count,0),61);
+  assert.equal(byArea.reduce((n,x)=>n+x[1],0),69);
+  assert.equal(byKind.reduce((n,x)=>n+x[1],0),69);
+  assert.equal(joint.reduce((n,x)=>n+x.count,0),69);
   assert.deepEqual(JSON.parse(JSON.stringify(byArea.slice(0,2))),[['Schoolorganisatie',19],['Onderwijs',18]]);
   assert.ok(byKind.some(([name,count])=>name==='Applicatie'&&count===34));
 });
@@ -61,7 +61,7 @@ test('Bronrelaties zijn expliciet; technische matches worden niet als actieve ko
   const ids=new Set(apps.map(x=>x.id));
   assert.equal(data.ai.filter(x=>ids.has(x.parentId)).length,76);
   assert.equal(data.connections.filter(x=>ids.has(x.matchedId)).length,21);
-  assert.equal(data.parts.filter(x=>ids.has(x.parent)).length,13);
+  assert.equal(data.parts.filter(x=>ids.has(x.parent)).length,53);
   assert.ok(!source.includes('Microsoft 365 Copilot</span>'));
   assert.ok(source.includes('matchingFamily(app,index)'));
   assert.ok(source.includes("index.connected('apps',app.id)"));
