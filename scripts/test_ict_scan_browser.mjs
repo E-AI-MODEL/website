@@ -1,10 +1,12 @@
 import assert from 'node:assert/strict';
+import {createHash} from 'node:crypto';
 import {chromium,webkit} from 'playwright';
 import {spawn} from 'node:child_process';
 import {readFileSync,mkdirSync} from 'node:fs';
 import {resolve} from 'node:path';
 
 const root=resolve(process.argv[2]||'site-build');
+const profileHash=createHash('sha256').update(readFileSync('tools/ict-scan/assurance/profile.js')).digest('hex').slice(0,16);
 const browserType=process.argv[3]==='webkit'?webkit:chromium;
 const base='http://127.0.0.1:8797';
 const manifest=JSON.parse(readFileSync('tools/ict-scan/bronnen/manifest.json','utf8'));
@@ -75,6 +77,7 @@ try {
    return route.abort();
   });
   await page.goto(base+'/tools/ict-scan/',{waitUntil:'load'});
+  assert.equal(await page.locator('script[src^="./assurance/profile.js"]').getAttribute('src'),'./assurance/profile.js?v='+profileHash,'De browser moet de juiste, versienummergebonden validator laden');
   assert.equal(await page.title(),'404 Not Found');
   await page.locator('#unlockZero').dblclick({force:true});
   await page.locator('#workspace:not([hidden])').waitFor();
