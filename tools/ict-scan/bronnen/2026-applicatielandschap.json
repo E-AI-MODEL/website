@@ -8,7 +8,7 @@
     "compiledBy": "Hans Visser",
     "referencePeriod": "november 2026",
     "evidenceCutoff": "2026-11-23",
-    "dataVersion": "2026-11-23-index-en-m365-producten-v3",
+    "dataVersion": "2026-11-23-m365-standaardinstellingen-en-dv-v1",
     "classification": "Openbare, gestructureerde inventaris. Geen persoonsgebonden Entra-roltoewijzingen, wachtwoorden of toegangssleutels.",
     "limitations": [
       "61 basisregistraties zijn nog niet het gegarandeerde totaal",
@@ -20,7 +20,9 @@
       "Nieuwe bronrelaties zijn geen bevestiging van actief gebruik, betaalde licenties of getoetste autorisaties.",
       "De 69 schoolbrede basisregels omvatten acht nog te verifiëren aanvullingen; het aantal is geen actief gebruik.",
       "Microsoft Education-onderdelen zijn productcatalogusvermeldingen, geen bewijs van toegewezen toegang of ingeschakelde functies.",
-      "15 hardwaregroepen zijn geen actuele apparaatmetingen; aantallen en beheer worden gecontroleerd."
+      "15 hardwaregroepen zijn geen actuele apparaatmetingen; aantallen en beheer worden gecontroleerd.",
+      "Standaardinstellingen voor M365 A5-medewerkers en A3-leerlingen zijn nu als leveranciersuitgangspunt opgenomen; dit is geen meting van accounts, tenantbeleid of licentietoewijzing.",
+      "Voor verwerkersovereenkomsten geldt beoordeling en bevoegde ondertekening via de Kennisnet-dienst met eHerkenning voor deelnemende leveranciers. Per leverancier blijft de contractstatus apart."
     ],
     "sourceFiles": [
       "Emmauscollege_nulmeting_gerepareerd_Excel_2026.xlsx",
@@ -73,6 +75,40 @@
       "materialization": "De browser bouwt een afgeleide getypeerde relatie-index zonder eigen feiten.",
       "auditAsOf": "2026-11-23",
       "usagePolicy": "Bronmelding, beschikbaarheid, actieve tenantinstelling en normbeoordeling zijn afzonderlijke uitspraken."
+    },
+    "m365DefaultPolicy": {
+      "assumptionStatus": "Leveranciersstandaard als werkuitgangspunt; niet uit de schooltenant gemeten.",
+      "context": "Voortgezet onderwijs (K-12). Medewerkers/docenten A5, leerlingen A3 volgens de aangeleverde schoolcontext; geen controle op individuele licentietoewijzing.",
+      "staffLicense": "Microsoft 365 Education A5",
+      "studentLicense": "Microsoft 365 Education A3",
+      "licenseRule": "Bij toewijzing van een Education-licentie worden inbegrepen services normaal standaard aangezet; een beheerder kan onderdelen uitschakelen of beperken.",
+      "classTeams": "Een klasTeam gebruikt de Microsoft Teams for Education-standaard voor docenten en leerlingen. Opdrachten, Klaswerk en Klasnotitieblok zijn onderdeel van de klaservaring zodra het klasTeam is ingericht; lidmaatschap volgt uit aanmaken en toevoegen/synchroniseren.",
+      "teamsPolicy": "Het onderwijsbeleid voor leerlingen is niet gelijk aan het gewone organisatiebeleid. De Education Policy Wizard kan het aanbevolen leerlingenbeleid toepassen; of de wizard in de schooltenant is uitgevoerd, is niet gemeten.",
+      "copilotStudents": "Bij een K-12-tenant staat Copilot Chat voor 13-17-jarigen standaard uit en is deze pas toegankelijk na expliciete leeftijds-/toestemmingsinstellingen; onder 13 is Copilot Chat niet toegankelijk.",
+      "sourceIds": [
+        "SRC-00055",
+        "SRC-00056",
+        "SRC-00057",
+        "SRC-00058",
+        "SRC-00059",
+        "SRC-00060",
+        "SRC-00061"
+      ],
+      "asOf": "2026-11-23"
+    },
+    "processorAgreementRoute": {
+      "name": "Dienst Verwerkersovereenkomsten van Kennisnet",
+      "url": "https://dv.kennisnet.nl/",
+      "login": "Inloggen met eHerkenning door bevoegd persoon of gemachtigde",
+      "process": "Bekijk per leverancier de aangeboden overeenkomst en bijlagen, beoordeel privacybijsluiter en beveiligingsbijlage, leg eventuele afwijkingen vast en laat bevoegd gezag of gemachtigde akkoord geven en digitaal ondertekenen.",
+      "reviewRole": "FG/privacyfunctionaris kan inhoudelijk beoordelen; goedkeuring/ondertekening ligt bij bevoegd gezag of schriftelijk gemachtigde.",
+      "verification": "De status per leverancier blijft 'nog vast te stellen' totdat een geldige overeenkomst en de ondertekening zijn vastgelegd.",
+      "exception": "Niet alle leveranciers staan in de Kennisnet-dienst. Met name Microsoft werkt niet met de modelovereenkomst van het Nederlandse Privacyconvenant; controleer waar nodig de afzonderlijke contractuele DPA.",
+      "sourceIds": [
+        "SRC-00062",
+        "SRC-00063"
+      ],
+      "asOf": "2026-11-23"
     }
   },
   "apps": [
@@ -156,7 +192,24 @@
       "recordMeta": {
         "ownerSource": "Uitdrukkelijke opdracht schoolleiding, 23 november 2026: verantwoordelijke functie; geen toewijzing van Microsoft- of applicatierechten.",
         "ownerScope": "Verantwoordelijke voor de technische inrichting en het technisch beheer; overige beslis- en toezichtrollen blijven afzonderlijk."
-      }
+      },
+      "defaultPolicy": {
+        "subject": "Microsoft 365 Education",
+        "staff": "A5-medewerkers: inbegrepen diensten standaard beschikbaar volgens de licentie, tenzij beheerbeleid ze uitschakelt.",
+        "students": "A3-leerlingen: inbegrepen diensten standaard beschikbaar volgens de licentie; klasTeams kent aanvullende leerlingenregels.",
+        "condition": "Standaardpakket is geen bewijs van toegewezen licenties, lokale activatie of individueel toegangsrecht.",
+        "sourceIds": [
+          "SRC-00055",
+          "SRC-00056",
+          "SRC-00059"
+        ],
+        "evidenceStatus": "Leveranciersstandaard; niet uit schooltenant gemeten"
+      },
+      "sourceIds": [
+        "SRC-00055",
+        "SRC-00056",
+        "SRC-00059"
+      ]
     },
     {
       "id": "APP-022",
@@ -280,7 +333,22 @@
       "recordMeta": {
         "ownerSource": "Uitdrukkelijke opdracht schoolleiding, 23 november 2026: verantwoordelijke functie; geen toewijzing van Microsoft- of applicatierechten.",
         "ownerScope": "Verantwoordelijke voor de technische inrichting en het technisch beheer; overige beslis- en toezichtrollen blijven afzonderlijk."
-      }
+      },
+      "defaultPolicy": {
+        "subject": "KlasTeams",
+        "staff": "Docent heeft een eigenaar/beheerrol in een aangemaakt klasTeam en kan standaard Opdrachten, Klaswerk en Klasnotitieblok gebruiken.",
+        "students": "Leerling heeft na toevoeging aan een klasTeam een deelnemersrol en toegang tot de voor leerlingen bedoelde onderdelen.",
+        "condition": "KlasTeam en deelnemers moeten zijn aangemaakt of gesynchroniseerd. De Education Policy Wizard is een aanbevolen configuratie, geen bewezen tenantinstelling.",
+        "sourceIds": [
+          "SRC-00060",
+          "SRC-00061"
+        ],
+        "evidenceStatus": "Leveranciersstandaard; niet uit schooltenant gemeten"
+      },
+      "sourceIds": [
+        "SRC-00060",
+        "SRC-00061"
+      ]
     },
     {
       "id": "APP-035",
@@ -380,7 +448,22 @@
       "recordMeta": {
         "ownerSource": "Uitdrukkelijke opdracht schoolleiding, 23 november 2026: verantwoordelijke functie; geen toewijzing van Microsoft- of applicatierechten.",
         "ownerScope": "Verantwoordelijke voor de technische inrichting en het technisch beheer; overige beslis- en toezichtrollen blijven afzonderlijk."
-      }
+      },
+      "defaultPolicy": {
+        "subject": "Copilot voor onderwijs",
+        "staff": "A5-medewerkers kunnen de in Microsoft Education opgenomen Copilot-functies volgens licentie en beleid gebruiken.",
+        "students": "Copilot Chat is voor K-12 leerlingen van 13-17 jaar standaard uit en voor kinderen onder 13 niet toegankelijk.",
+        "condition": "Leeftijdsgroep, toestemming, tenantidentificatie, licentie en beheerinstellingen zijn bepalend.",
+        "sourceIds": [
+          "SRC-00057",
+          "SRC-00058"
+        ],
+        "evidenceStatus": "Leveranciersstandaard; niet uit schooltenant gemeten"
+      },
+      "sourceIds": [
+        "SRC-00057",
+        "SRC-00058"
+      ]
     },
     {
       "id": "APP-058",
@@ -14258,6 +14341,8 @@
       "description": "Delen, toegang, beheer en standaardinstellingen. Niet als aparte bevestigde schoolapplicatie geteld.",
       "local": "Inrichting nog controleren",
       "audience": [
+        "medewerkers",
+        "leerlingen",
         "ict-beheer"
       ],
       "availability": "Afhankelijk van licentie, rechten en configuratie; niet afzonderlijk tenant-gecontroleerd.",
@@ -14267,11 +14352,24 @@
         "Emmauscollege_nulmeting_M365_en_applicaties_2026(1).xlsx / M365 & ICT!A73:P73 (ICT-065)"
       ],
       "sourceIds": [
-        "SRC-00054"
+        "SRC-00054",
+        "SRC-00055",
+        "SRC-00059"
       ],
       "recordMeta": {
         "sourceKind": "Schoolbrede M365-inrichting",
         "usageIsConfirmed": false
+      },
+      "defaultPolicy": {
+        "evidenceStatus": "Microsoft Education-standaard; geen lokale tenantcontrole",
+        "staff": "Volgens Education-standaard inbegrepen bij toepasselijke A5-licentie, zolang de service niet door beleid of licentiebeheer is uitgezet.",
+        "students": "Niet als algemene leerlingenservice aangemerkt; rechten en licentie apart benodigd.",
+        "licenseBasis": "A5 medewerkers / A3 leerlingen (schooluitgangspunt; geen per-account toewijzing bevestigd)",
+        "verifiedInTenant": false,
+        "sourceIds": [
+          "SRC-00055",
+          "SRC-00059"
+        ]
       }
     },
     {
@@ -14283,6 +14381,8 @@
       "description": "Opslag, synchronisatie en migratie uit Google Drive; geen actuele synchronisatie aangetoond.",
       "local": "Inrichting nog controleren",
       "audience": [
+        "medewerkers",
+        "leerlingen",
         "ict-beheer"
       ],
       "availability": "Afhankelijk van licentie, rechten en configuratie; niet afzonderlijk tenant-gecontroleerd.",
@@ -14292,11 +14392,24 @@
         "Emmauscollege_nulmeting_M365_en_applicaties_2026(1).xlsx / M365 & ICT!A74:P75 (ICT-066/067)"
       ],
       "sourceIds": [
-        "SRC-00054"
+        "SRC-00054",
+        "SRC-00055",
+        "SRC-00059"
       ],
       "recordMeta": {
         "sourceKind": "Schoolbrede M365-inrichting",
         "usageIsConfirmed": false
+      },
+      "defaultPolicy": {
+        "evidenceStatus": "Microsoft Education-standaard; geen lokale tenantcontrole",
+        "staff": "Volgens Education-standaard inbegrepen bij toepasselijke A5-licentie, zolang de service niet door beleid of licentiebeheer is uitgezet.",
+        "students": "Niet als algemene leerlingenservice aangemerkt; rechten en licentie apart benodigd.",
+        "licenseBasis": "A5 medewerkers / A3 leerlingen (schooluitgangspunt; geen per-account toewijzing bevestigd)",
+        "verifiedInTenant": false,
+        "sourceIds": [
+          "SRC-00055",
+          "SRC-00059"
+        ]
       }
     },
     {
@@ -14308,6 +14421,8 @@
       "description": "Mailboxtoewijzing en licenties; eerdere ontbrekende mailbox geen bewijs van de huidige stand.",
       "local": "Inrichting nog controleren",
       "audience": [
+        "medewerkers",
+        "leerlingen",
         "ict-beheer"
       ],
       "availability": "Afhankelijk van licentie, rechten en configuratie; niet afzonderlijk tenant-gecontroleerd.",
@@ -14317,11 +14432,24 @@
         "Emmauscollege_nulmeting_M365_en_applicaties_2026(1).xlsx / M365 & ICT!A76:P76 (ICT-068)"
       ],
       "sourceIds": [
-        "SRC-00054"
+        "SRC-00054",
+        "SRC-00055",
+        "SRC-00059"
       ],
       "recordMeta": {
         "sourceKind": "Schoolbrede M365-inrichting",
         "usageIsConfirmed": false
+      },
+      "defaultPolicy": {
+        "evidenceStatus": "Microsoft Education-standaard; geen lokale tenantcontrole",
+        "staff": "Volgens Education-standaard inbegrepen bij toepasselijke A5-licentie, zolang de service niet door beleid of licentiebeheer is uitgezet.",
+        "students": "Niet als algemene leerlingenservice aangemerkt; rechten en licentie apart benodigd.",
+        "licenseBasis": "A5 medewerkers / A3 leerlingen (schooluitgangspunt; geen per-account toewijzing bevestigd)",
+        "verifiedInTenant": false,
+        "sourceIds": [
+          "SRC-00055",
+          "SRC-00059"
+        ]
       }
     },
     {
@@ -14342,11 +14470,24 @@
         "Emmauscollege_nulmeting_M365_en_applicaties_2026(1).xlsx / M365 & ICT!A77:P80 (ICT-069/070/072)"
       ],
       "sourceIds": [
-        "SRC-00054"
+        "SRC-00054",
+        "SRC-00055",
+        "SRC-00059"
       ],
       "recordMeta": {
         "sourceKind": "Schoolbrede M365-inrichting",
         "usageIsConfirmed": false
+      },
+      "defaultPolicy": {
+        "evidenceStatus": "Microsoft Education-standaard; geen lokale tenantcontrole",
+        "staff": "Beheerfunctie: alleen met passende beheerdersrol en toepasselijke licentie; niet standaard toegankelijk voor iedere docent.",
+        "students": "Geen algemene leerlingapp; beheerrollen en rechten vereist.",
+        "licenseBasis": "A5 medewerkers / A3 leerlingen (schooluitgangspunt; geen per-account toewijzing bevestigd)",
+        "verifiedInTenant": false,
+        "sourceIds": [
+          "SRC-00055",
+          "SRC-00059"
+        ]
       }
     },
     {
@@ -14367,11 +14508,24 @@
         "Emmauscollege_nulmeting_M365_en_applicaties_2026(1).xlsx / M365 & ICT!A14:P14 (ICT-006); Emmauscollege_nulmeting_M365_en_applicaties_2026(1).xlsx / M365 & ICT!A82:P83 (ICT-074/075)"
       ],
       "sourceIds": [
-        "SRC-00054"
+        "SRC-00054",
+        "SRC-00055",
+        "SRC-00059"
       ],
       "recordMeta": {
         "sourceKind": "Schoolbrede M365-inrichting",
         "usageIsConfirmed": false
+      },
+      "defaultPolicy": {
+        "evidenceStatus": "Microsoft Education-standaard; geen lokale tenantcontrole",
+        "staff": "Beheerfunctie: alleen met passende beheerdersrol en toepasselijke licentie; niet standaard toegankelijk voor iedere docent.",
+        "students": "Geen algemene leerlingapp; beheerrollen en rechten vereist.",
+        "licenseBasis": "A5 medewerkers / A3 leerlingen (schooluitgangspunt; geen per-account toewijzing bevestigd)",
+        "verifiedInTenant": false,
+        "sourceIds": [
+          "SRC-00055",
+          "SRC-00059"
+        ]
       }
     },
     {
@@ -14392,11 +14546,24 @@
         "Overzicht applicaties Emmauscollege (1)(2).xlsx / M365-inrichting!B21:H34; Emmauscollege_nulmeting_M365_en_applicaties_2026(1).xlsx / M365 & ICT!A99:P99 (ICT-091)"
       ],
       "sourceIds": [
-        "SRC-00053"
+        "SRC-00053",
+        "SRC-00055",
+        "SRC-00059"
       ],
       "recordMeta": {
         "sourceKind": "Schoolbrede M365-inrichting",
         "usageIsConfirmed": false
+      },
+      "defaultPolicy": {
+        "evidenceStatus": "Microsoft Education-standaard; geen lokale tenantcontrole",
+        "staff": "Beheerfunctie: alleen met passende beheerdersrol en toepasselijke licentie; niet standaard toegankelijk voor iedere docent.",
+        "students": "Geen algemene leerlingapp; beheerrollen en rechten vereist.",
+        "licenseBasis": "A5 medewerkers / A3 leerlingen (schooluitgangspunt; geen per-account toewijzing bevestigd)",
+        "verifiedInTenant": false,
+        "sourceIds": [
+          "SRC-00055",
+          "SRC-00059"
+        ]
       }
     },
     {
@@ -14418,13 +14585,25 @@
         "https://learn.microsoft.com/office365/servicedescriptions/office-365-platform-service-description/microsoft-365-education"
       ],
       "sourceIds": [
-        "SRC-00055"
+        "SRC-00055",
+        "SRC-00059"
       ],
       "recordMeta": {
         "sourceKind": "Leverancierscatalogus",
         "schoolConfigured": false,
         "asOf": "2026-11-23",
         "notAnActiveUseClaim": true
+      },
+      "defaultPolicy": {
+        "evidenceStatus": "Microsoft Education-standaard; geen lokale tenantcontrole",
+        "staff": "Volgens Education-standaard inbegrepen bij toepasselijke A5-licentie, zolang de service niet door beleid of licentiebeheer is uitgezet.",
+        "students": "Volgens Education-standaard inbegrepen bij toepasselijke A3-licentie, zolang de service niet door beleid of licentiebeheer is uitgezet.",
+        "licenseBasis": "A5 medewerkers / A3 leerlingen (schooluitgangspunt; geen per-account toewijzing bevestigd)",
+        "verifiedInTenant": false,
+        "sourceIds": [
+          "SRC-00055",
+          "SRC-00059"
+        ]
       }
     },
     {
@@ -14446,13 +14625,25 @@
         "https://learn.microsoft.com/office365/servicedescriptions/office-365-platform-service-description/microsoft-365-education"
       ],
       "sourceIds": [
-        "SRC-00055"
+        "SRC-00055",
+        "SRC-00059"
       ],
       "recordMeta": {
         "sourceKind": "Leverancierscatalogus",
         "schoolConfigured": false,
         "asOf": "2026-11-23",
         "notAnActiveUseClaim": true
+      },
+      "defaultPolicy": {
+        "evidenceStatus": "Microsoft Education-standaard; geen lokale tenantcontrole",
+        "staff": "Volgens Education-standaard inbegrepen bij toepasselijke A5-licentie, zolang de service niet door beleid of licentiebeheer is uitgezet.",
+        "students": "Volgens Education-standaard inbegrepen bij toepasselijke A3-licentie, zolang de service niet door beleid of licentiebeheer is uitgezet.",
+        "licenseBasis": "A5 medewerkers / A3 leerlingen (schooluitgangspunt; geen per-account toewijzing bevestigd)",
+        "verifiedInTenant": false,
+        "sourceIds": [
+          "SRC-00055",
+          "SRC-00059"
+        ]
       }
     },
     {
@@ -14474,13 +14665,25 @@
         "https://learn.microsoft.com/office365/servicedescriptions/office-365-platform-service-description/microsoft-365-education"
       ],
       "sourceIds": [
-        "SRC-00055"
+        "SRC-00055",
+        "SRC-00059"
       ],
       "recordMeta": {
         "sourceKind": "Leverancierscatalogus",
         "schoolConfigured": false,
         "asOf": "2026-11-23",
         "notAnActiveUseClaim": true
+      },
+      "defaultPolicy": {
+        "evidenceStatus": "Microsoft Education-standaard; geen lokale tenantcontrole",
+        "staff": "Volgens Education-standaard inbegrepen bij toepasselijke A5-licentie, zolang de service niet door beleid of licentiebeheer is uitgezet.",
+        "students": "Volgens Education-standaard inbegrepen bij toepasselijke A3-licentie, zolang de service niet door beleid of licentiebeheer is uitgezet.",
+        "licenseBasis": "A5 medewerkers / A3 leerlingen (schooluitgangspunt; geen per-account toewijzing bevestigd)",
+        "verifiedInTenant": false,
+        "sourceIds": [
+          "SRC-00055",
+          "SRC-00059"
+        ]
       }
     },
     {
@@ -14502,13 +14705,25 @@
         "https://learn.microsoft.com/office365/servicedescriptions/office-365-platform-service-description/microsoft-365-education"
       ],
       "sourceIds": [
-        "SRC-00055"
+        "SRC-00055",
+        "SRC-00059"
       ],
       "recordMeta": {
         "sourceKind": "Leverancierscatalogus",
         "schoolConfigured": false,
         "asOf": "2026-11-23",
         "notAnActiveUseClaim": true
+      },
+      "defaultPolicy": {
+        "evidenceStatus": "Microsoft Education-standaard; geen lokale tenantcontrole",
+        "staff": "Volgens Education-standaard inbegrepen bij toepasselijke A5-licentie, zolang de service niet door beleid of licentiebeheer is uitgezet.",
+        "students": "Volgens Education-standaard inbegrepen bij toepasselijke A3-licentie, zolang de service niet door beleid of licentiebeheer is uitgezet.",
+        "licenseBasis": "A5 medewerkers / A3 leerlingen (schooluitgangspunt; geen per-account toewijzing bevestigd)",
+        "verifiedInTenant": false,
+        "sourceIds": [
+          "SRC-00055",
+          "SRC-00059"
+        ]
       }
     },
     {
@@ -14530,13 +14745,25 @@
         "https://learn.microsoft.com/office365/servicedescriptions/office-365-platform-service-description/microsoft-365-education"
       ],
       "sourceIds": [
-        "SRC-00055"
+        "SRC-00055",
+        "SRC-00059"
       ],
       "recordMeta": {
         "sourceKind": "Leverancierscatalogus",
         "schoolConfigured": false,
         "asOf": "2026-11-23",
         "notAnActiveUseClaim": true
+      },
+      "defaultPolicy": {
+        "evidenceStatus": "Microsoft Education-standaard; geen lokale tenantcontrole",
+        "staff": "Volgens Education-standaard inbegrepen bij toepasselijke A5-licentie, zolang de service niet door beleid of licentiebeheer is uitgezet.",
+        "students": "Volgens Education-standaard inbegrepen bij toepasselijke A3-licentie, zolang de service niet door beleid of licentiebeheer is uitgezet.",
+        "licenseBasis": "A5 medewerkers / A3 leerlingen (schooluitgangspunt; geen per-account toewijzing bevestigd)",
+        "verifiedInTenant": false,
+        "sourceIds": [
+          "SRC-00055",
+          "SRC-00059"
+        ]
       }
     },
     {
@@ -14558,13 +14785,25 @@
         "https://learn.microsoft.com/office365/servicedescriptions/office-365-platform-service-description/microsoft-365-education"
       ],
       "sourceIds": [
-        "SRC-00055"
+        "SRC-00055",
+        "SRC-00059"
       ],
       "recordMeta": {
         "sourceKind": "Leverancierscatalogus",
         "schoolConfigured": false,
         "asOf": "2026-11-23",
         "notAnActiveUseClaim": true
+      },
+      "defaultPolicy": {
+        "evidenceStatus": "Microsoft Education-standaard; geen lokale tenantcontrole",
+        "staff": "Volgens Education-standaard inbegrepen bij toepasselijke A5-licentie, zolang de service niet door beleid of licentiebeheer is uitgezet.",
+        "students": "Volgens Education-standaard inbegrepen bij toepasselijke A3-licentie, zolang de service niet door beleid of licentiebeheer is uitgezet.",
+        "licenseBasis": "A5 medewerkers / A3 leerlingen (schooluitgangspunt; geen per-account toewijzing bevestigd)",
+        "verifiedInTenant": false,
+        "sourceIds": [
+          "SRC-00055",
+          "SRC-00059"
+        ]
       }
     },
     {
@@ -14586,13 +14825,25 @@
         "https://learn.microsoft.com/office365/servicedescriptions/office-365-platform-service-description/microsoft-365-education"
       ],
       "sourceIds": [
-        "SRC-00055"
+        "SRC-00055",
+        "SRC-00059"
       ],
       "recordMeta": {
         "sourceKind": "Leverancierscatalogus",
         "schoolConfigured": false,
         "asOf": "2026-11-23",
         "notAnActiveUseClaim": true
+      },
+      "defaultPolicy": {
+        "evidenceStatus": "Microsoft Education-standaard; geen lokale tenantcontrole",
+        "staff": "Volgens Education-standaard inbegrepen bij toepasselijke A5-licentie, zolang de service niet door beleid of licentiebeheer is uitgezet.",
+        "students": "Volgens Education-standaard inbegrepen bij toepasselijke A3-licentie, zolang de service niet door beleid of licentiebeheer is uitgezet.",
+        "licenseBasis": "A5 medewerkers / A3 leerlingen (schooluitgangspunt; geen per-account toewijzing bevestigd)",
+        "verifiedInTenant": false,
+        "sourceIds": [
+          "SRC-00055",
+          "SRC-00059"
+        ]
       }
     },
     {
@@ -14614,13 +14865,25 @@
         "https://learn.microsoft.com/office365/servicedescriptions/office-365-platform-service-description/microsoft-365-education"
       ],
       "sourceIds": [
-        "SRC-00055"
+        "SRC-00055",
+        "SRC-00059"
       ],
       "recordMeta": {
         "sourceKind": "Leverancierscatalogus",
         "schoolConfigured": false,
         "asOf": "2026-11-23",
         "notAnActiveUseClaim": true
+      },
+      "defaultPolicy": {
+        "evidenceStatus": "Microsoft Education-standaard; geen lokale tenantcontrole",
+        "staff": "Volgens Education-standaard inbegrepen bij toepasselijke A5-licentie, zolang de service niet door beleid of licentiebeheer is uitgezet.",
+        "students": "Volgens Education-standaard inbegrepen bij toepasselijke A3-licentie, zolang de service niet door beleid of licentiebeheer is uitgezet.",
+        "licenseBasis": "A5 medewerkers / A3 leerlingen (schooluitgangspunt; geen per-account toewijzing bevestigd)",
+        "verifiedInTenant": false,
+        "sourceIds": [
+          "SRC-00055",
+          "SRC-00059"
+        ]
       }
     },
     {
@@ -14642,13 +14905,25 @@
         "https://learn.microsoft.com/office365/servicedescriptions/office-365-platform-service-description/microsoft-365-education"
       ],
       "sourceIds": [
-        "SRC-00055"
+        "SRC-00055",
+        "SRC-00059"
       ],
       "recordMeta": {
         "sourceKind": "Leverancierscatalogus",
         "schoolConfigured": false,
         "asOf": "2026-11-23",
         "notAnActiveUseClaim": true
+      },
+      "defaultPolicy": {
+        "evidenceStatus": "Microsoft Education-standaard; geen lokale tenantcontrole",
+        "staff": "Volgens Education-standaard inbegrepen bij toepasselijke A5-licentie, zolang de service niet door beleid of licentiebeheer is uitgezet.",
+        "students": "Volgens Education-standaard inbegrepen bij toepasselijke A3-licentie, zolang de service niet door beleid of licentiebeheer is uitgezet.",
+        "licenseBasis": "A5 medewerkers / A3 leerlingen (schooluitgangspunt; geen per-account toewijzing bevestigd)",
+        "verifiedInTenant": false,
+        "sourceIds": [
+          "SRC-00055",
+          "SRC-00059"
+        ]
       }
     },
     {
@@ -14670,13 +14945,25 @@
         "https://learn.microsoft.com/office365/servicedescriptions/office-365-platform-service-description/microsoft-365-education"
       ],
       "sourceIds": [
-        "SRC-00055"
+        "SRC-00055",
+        "SRC-00059"
       ],
       "recordMeta": {
         "sourceKind": "Leverancierscatalogus",
         "schoolConfigured": false,
         "asOf": "2026-11-23",
         "notAnActiveUseClaim": true
+      },
+      "defaultPolicy": {
+        "evidenceStatus": "Microsoft Education-standaard; geen lokale tenantcontrole",
+        "staff": "Volgens Education-standaard inbegrepen bij toepasselijke A5-licentie, zolang de service niet door beleid of licentiebeheer is uitgezet.",
+        "students": "Volgens Education-standaard inbegrepen bij toepasselijke A3-licentie, zolang de service niet door beleid of licentiebeheer is uitgezet.",
+        "licenseBasis": "A5 medewerkers / A3 leerlingen (schooluitgangspunt; geen per-account toewijzing bevestigd)",
+        "verifiedInTenant": false,
+        "sourceIds": [
+          "SRC-00055",
+          "SRC-00059"
+        ]
       }
     },
     {
@@ -14698,13 +14985,25 @@
         "https://learn.microsoft.com/office365/servicedescriptions/office-365-platform-service-description/microsoft-365-education"
       ],
       "sourceIds": [
-        "SRC-00055"
+        "SRC-00055",
+        "SRC-00059"
       ],
       "recordMeta": {
         "sourceKind": "Leverancierscatalogus",
         "schoolConfigured": false,
         "asOf": "2026-11-23",
         "notAnActiveUseClaim": true
+      },
+      "defaultPolicy": {
+        "evidenceStatus": "Microsoft Education-standaard; geen lokale tenantcontrole",
+        "staff": "Volgens Education-standaard inbegrepen bij toepasselijke A5-licentie, zolang de service niet door beleid of licentiebeheer is uitgezet.",
+        "students": "Volgens Education-standaard inbegrepen bij toepasselijke A3-licentie, zolang de service niet door beleid of licentiebeheer is uitgezet.",
+        "licenseBasis": "A5 medewerkers / A3 leerlingen (schooluitgangspunt; geen per-account toewijzing bevestigd)",
+        "verifiedInTenant": false,
+        "sourceIds": [
+          "SRC-00055",
+          "SRC-00059"
+        ]
       }
     },
     {
@@ -14726,13 +15025,25 @@
         "https://learn.microsoft.com/office365/servicedescriptions/office-365-platform-service-description/microsoft-365-education"
       ],
       "sourceIds": [
-        "SRC-00055"
+        "SRC-00055",
+        "SRC-00059"
       ],
       "recordMeta": {
         "sourceKind": "Leverancierscatalogus",
         "schoolConfigured": false,
         "asOf": "2026-11-23",
         "notAnActiveUseClaim": true
+      },
+      "defaultPolicy": {
+        "evidenceStatus": "Microsoft Education-standaard; geen lokale tenantcontrole",
+        "staff": "Volgens Education-standaard inbegrepen bij toepasselijke A5-licentie, zolang de service niet door beleid of licentiebeheer is uitgezet.",
+        "students": "Volgens Education-standaard inbegrepen bij toepasselijke A3-licentie, zolang de service niet door beleid of licentiebeheer is uitgezet.",
+        "licenseBasis": "A5 medewerkers / A3 leerlingen (schooluitgangspunt; geen per-account toewijzing bevestigd)",
+        "verifiedInTenant": false,
+        "sourceIds": [
+          "SRC-00055",
+          "SRC-00059"
+        ]
       }
     },
     {
@@ -14754,13 +15065,25 @@
         "https://learn.microsoft.com/office365/servicedescriptions/office-365-platform-service-description/microsoft-365-education"
       ],
       "sourceIds": [
-        "SRC-00055"
+        "SRC-00055",
+        "SRC-00059"
       ],
       "recordMeta": {
         "sourceKind": "Leverancierscatalogus",
         "schoolConfigured": false,
         "asOf": "2026-11-23",
         "notAnActiveUseClaim": true
+      },
+      "defaultPolicy": {
+        "evidenceStatus": "Microsoft Education-standaard; geen lokale tenantcontrole",
+        "staff": "Volgens Education-standaard inbegrepen bij toepasselijke A5-licentie, zolang de service niet door beleid of licentiebeheer is uitgezet.",
+        "students": "Volgens Education-standaard inbegrepen bij toepasselijke A3-licentie, zolang de service niet door beleid of licentiebeheer is uitgezet.",
+        "licenseBasis": "A5 medewerkers / A3 leerlingen (schooluitgangspunt; geen per-account toewijzing bevestigd)",
+        "verifiedInTenant": false,
+        "sourceIds": [
+          "SRC-00055",
+          "SRC-00059"
+        ]
       }
     },
     {
@@ -14781,13 +15104,25 @@
         "https://learn.microsoft.com/office365/servicedescriptions/office-365-platform-service-description/microsoft-365-education"
       ],
       "sourceIds": [
-        "SRC-00055"
+        "SRC-00055",
+        "SRC-00059"
       ],
       "recordMeta": {
         "sourceKind": "Leverancierscatalogus",
         "schoolConfigured": false,
         "asOf": "2026-11-23",
         "notAnActiveUseClaim": true
+      },
+      "defaultPolicy": {
+        "evidenceStatus": "Microsoft Education-standaard; geen lokale tenantcontrole",
+        "staff": "Volgens Education-standaard inbegrepen bij toepasselijke A5-licentie, zolang de service niet door beleid of licentiebeheer is uitgezet.",
+        "students": "Niet als algemene leerlingenservice aangemerkt; rechten en licentie apart benodigd.",
+        "licenseBasis": "A5 medewerkers / A3 leerlingen (schooluitgangspunt; geen per-account toewijzing bevestigd)",
+        "verifiedInTenant": false,
+        "sourceIds": [
+          "SRC-00055",
+          "SRC-00059"
+        ]
       }
     },
     {
@@ -14809,13 +15144,32 @@
         "https://learn.microsoft.com/en-us/microsoft-365/education/guide/0-start/all-license"
       ],
       "sourceIds": [
-        "SRC-00056"
+        "SRC-00056",
+        "SRC-00055",
+        "SRC-00059",
+        "SRC-00060",
+        "SRC-00061"
       ],
       "recordMeta": {
         "sourceKind": "Leverancierscatalogus",
         "schoolConfigured": false,
         "asOf": "2026-11-23",
         "notAnActiveUseClaim": true
+      },
+      "defaultPolicy": {
+        "evidenceStatus": "Microsoft Education-standaard; geen lokale tenantcontrole",
+        "staff": "Onderdeel van de klasTeams-ervaring voor docenten met passend A5-account en ingericht klasTeam.",
+        "students": "Onderdeel van de klasTeams-ervaring voor leerlingen met passend A3-account nadat zij aan het klasTeam zijn toegevoegd.",
+        "classTeams": "KlasTeams: beschikbare standaardonderwijsfunctie na aanmaken van het klasTeam. Docenten beheren, leerlingen zien de voor hen bestemde inhoud; per rol en beleid.",
+        "licenseBasis": "A5 medewerkers / A3 leerlingen (schooluitgangspunt; geen per-account toewijzing bevestigd)",
+        "verifiedInTenant": false,
+        "sourceIds": [
+          "SRC-00056",
+          "SRC-00055",
+          "SRC-00059",
+          "SRC-00060",
+          "SRC-00061"
+        ]
       }
     },
     {
@@ -14837,13 +15191,32 @@
         "https://learn.microsoft.com/en-us/microsoft-365/education/guide/0-start/all-license"
       ],
       "sourceIds": [
-        "SRC-00056"
+        "SRC-00056",
+        "SRC-00055",
+        "SRC-00059",
+        "SRC-00060",
+        "SRC-00061"
       ],
       "recordMeta": {
         "sourceKind": "Leverancierscatalogus",
         "schoolConfigured": false,
         "asOf": "2026-11-23",
         "notAnActiveUseClaim": true
+      },
+      "defaultPolicy": {
+        "evidenceStatus": "Microsoft Education-standaard; geen lokale tenantcontrole",
+        "staff": "Onderdeel van de klasTeams-ervaring voor docenten met passend A5-account en ingericht klasTeam.",
+        "students": "Onderdeel van de klasTeams-ervaring voor leerlingen met passend A3-account nadat zij aan het klasTeam zijn toegevoegd.",
+        "classTeams": "KlasTeams: beschikbare standaardonderwijsfunctie na aanmaken van het klasTeam. Docenten beheren, leerlingen zien de voor hen bestemde inhoud; per rol en beleid.",
+        "licenseBasis": "A5 medewerkers / A3 leerlingen (schooluitgangspunt; geen per-account toewijzing bevestigd)",
+        "verifiedInTenant": false,
+        "sourceIds": [
+          "SRC-00056",
+          "SRC-00055",
+          "SRC-00059",
+          "SRC-00060",
+          "SRC-00061"
+        ]
       }
     },
     {
@@ -14865,13 +15238,32 @@
         "https://learn.microsoft.com/en-us/microsoft-365/education/guide/0-start/all-license"
       ],
       "sourceIds": [
-        "SRC-00056"
+        "SRC-00056",
+        "SRC-00055",
+        "SRC-00059",
+        "SRC-00060",
+        "SRC-00061"
       ],
       "recordMeta": {
         "sourceKind": "Leverancierscatalogus",
         "schoolConfigured": false,
         "asOf": "2026-11-23",
         "notAnActiveUseClaim": true
+      },
+      "defaultPolicy": {
+        "evidenceStatus": "Microsoft Education-standaard; geen lokale tenantcontrole",
+        "staff": "Onderdeel van de klasTeams-ervaring voor docenten met passend A5-account en ingericht klasTeam.",
+        "students": "Onderdeel van de klasTeams-ervaring voor leerlingen met passend A3-account nadat zij aan het klasTeam zijn toegevoegd.",
+        "classTeams": "KlasTeams: beschikbare standaardonderwijsfunctie na aanmaken van het klasTeam. Docenten beheren, leerlingen zien de voor hen bestemde inhoud; per rol en beleid.",
+        "licenseBasis": "A5 medewerkers / A3 leerlingen (schooluitgangspunt; geen per-account toewijzing bevestigd)",
+        "verifiedInTenant": false,
+        "sourceIds": [
+          "SRC-00056",
+          "SRC-00055",
+          "SRC-00059",
+          "SRC-00060",
+          "SRC-00061"
+        ]
       }
     },
     {
@@ -14893,13 +15285,32 @@
         "https://learn.microsoft.com/en-us/microsoft-365/education/guide/0-start/all-license"
       ],
       "sourceIds": [
-        "SRC-00056"
+        "SRC-00056",
+        "SRC-00055",
+        "SRC-00059",
+        "SRC-00060",
+        "SRC-00061"
       ],
       "recordMeta": {
         "sourceKind": "Leverancierscatalogus",
         "schoolConfigured": false,
         "asOf": "2026-11-23",
         "notAnActiveUseClaim": true
+      },
+      "defaultPolicy": {
+        "evidenceStatus": "Microsoft Education-standaard; geen lokale tenantcontrole",
+        "staff": "Onderdeel van de klasTeams-ervaring voor docenten met passend A5-account en ingericht klasTeam.",
+        "students": "Onderdeel van de klasTeams-ervaring voor leerlingen met passend A3-account nadat zij aan het klasTeam zijn toegevoegd.",
+        "classTeams": "KlasTeams: standaard onderwijsonderdeel na inrichting van een klasTeam. Docent is eigenaar; leerling heeft een rol als deelnemer. Beleid kan functies beperken.",
+        "licenseBasis": "A5 medewerkers / A3 leerlingen (schooluitgangspunt; geen per-account toewijzing bevestigd)",
+        "verifiedInTenant": false,
+        "sourceIds": [
+          "SRC-00056",
+          "SRC-00055",
+          "SRC-00059",
+          "SRC-00060",
+          "SRC-00061"
+        ]
       }
     },
     {
@@ -14921,13 +15332,32 @@
         "https://learn.microsoft.com/en-us/microsoft-365/education/guide/0-start/all-license"
       ],
       "sourceIds": [
-        "SRC-00056"
+        "SRC-00056",
+        "SRC-00055",
+        "SRC-00059",
+        "SRC-00060",
+        "SRC-00061"
       ],
       "recordMeta": {
         "sourceKind": "Leverancierscatalogus",
         "schoolConfigured": false,
         "asOf": "2026-11-23",
         "notAnActiveUseClaim": true
+      },
+      "defaultPolicy": {
+        "evidenceStatus": "Microsoft Education-standaard; geen lokale tenantcontrole",
+        "staff": "Onderdeel van de klasTeams-ervaring voor docenten met passend A5-account en ingericht klasTeam.",
+        "students": "Onderdeel van de klasTeams-ervaring voor leerlingen met passend A3-account nadat zij aan het klasTeam zijn toegevoegd.",
+        "classTeams": "KlasTeams: standaard onderwijsonderdeel na inrichting van een klasTeam. Docent is eigenaar; leerling heeft een rol als deelnemer. Beleid kan functies beperken.",
+        "licenseBasis": "A5 medewerkers / A3 leerlingen (schooluitgangspunt; geen per-account toewijzing bevestigd)",
+        "verifiedInTenant": false,
+        "sourceIds": [
+          "SRC-00056",
+          "SRC-00055",
+          "SRC-00059",
+          "SRC-00060",
+          "SRC-00061"
+        ]
       }
     },
     {
@@ -14949,13 +15379,32 @@
         "https://learn.microsoft.com/en-us/microsoft-365/education/guide/0-start/all-license"
       ],
       "sourceIds": [
-        "SRC-00056"
+        "SRC-00056",
+        "SRC-00055",
+        "SRC-00059",
+        "SRC-00060",
+        "SRC-00061"
       ],
       "recordMeta": {
         "sourceKind": "Leverancierscatalogus",
         "schoolConfigured": false,
         "asOf": "2026-11-23",
         "notAnActiveUseClaim": true
+      },
+      "defaultPolicy": {
+        "evidenceStatus": "Microsoft Education-standaard; geen lokale tenantcontrole",
+        "staff": "Onderdeel van de klasTeams-ervaring voor docenten met passend A5-account en ingericht klasTeam.",
+        "students": "Onderdeel van de klasTeams-ervaring voor leerlingen met passend A3-account nadat zij aan het klasTeam zijn toegevoegd.",
+        "classTeams": "KlasTeams: standaard onderwijsonderdeel na inrichting van een klasTeam. Docent is eigenaar; leerling heeft een rol als deelnemer. Beleid kan functies beperken.",
+        "licenseBasis": "A5 medewerkers / A3 leerlingen (schooluitgangspunt; geen per-account toewijzing bevestigd)",
+        "verifiedInTenant": false,
+        "sourceIds": [
+          "SRC-00056",
+          "SRC-00055",
+          "SRC-00059",
+          "SRC-00060",
+          "SRC-00061"
+        ]
       }
     },
     {
@@ -14977,13 +15426,32 @@
         "https://learn.microsoft.com/en-us/microsoft-365/education/guide/0-start/all-license"
       ],
       "sourceIds": [
-        "SRC-00056"
+        "SRC-00056",
+        "SRC-00055",
+        "SRC-00059",
+        "SRC-00060",
+        "SRC-00061"
       ],
       "recordMeta": {
         "sourceKind": "Leverancierscatalogus",
         "schoolConfigured": false,
         "asOf": "2026-11-23",
         "notAnActiveUseClaim": true
+      },
+      "defaultPolicy": {
+        "evidenceStatus": "Microsoft Education-standaard; geen lokale tenantcontrole",
+        "staff": "Onderdeel van de klasTeams-ervaring voor docenten met passend A5-account en ingericht klasTeam.",
+        "students": "Onderdeel van de klasTeams-ervaring voor leerlingen met passend A3-account nadat zij aan het klasTeam zijn toegevoegd.",
+        "classTeams": "KlasTeams: standaard onderwijsonderdeel na inrichting van een klasTeam. Docent is eigenaar; leerling heeft een rol als deelnemer. Beleid kan functies beperken.",
+        "licenseBasis": "A5 medewerkers / A3 leerlingen (schooluitgangspunt; geen per-account toewijzing bevestigd)",
+        "verifiedInTenant": false,
+        "sourceIds": [
+          "SRC-00056",
+          "SRC-00055",
+          "SRC-00059",
+          "SRC-00060",
+          "SRC-00061"
+        ]
       }
     },
     {
@@ -15004,13 +15472,32 @@
         "https://learn.microsoft.com/en-us/microsoft-365/education/guide/0-start/all-license"
       ],
       "sourceIds": [
-        "SRC-00056"
+        "SRC-00056",
+        "SRC-00055",
+        "SRC-00059",
+        "SRC-00060",
+        "SRC-00061"
       ],
       "recordMeta": {
         "sourceKind": "Leverancierscatalogus",
         "schoolConfigured": false,
         "asOf": "2026-11-23",
         "notAnActiveUseClaim": true
+      },
+      "defaultPolicy": {
+        "evidenceStatus": "Microsoft Education-standaard; geen lokale tenantcontrole",
+        "staff": "Onderdeel van de klasTeams-ervaring voor docenten met passend A5-account en ingericht klasTeam.",
+        "students": "Alleen voor docenten/beheerders binnen de klasTeams-ervaring; niet voor leerlingen.",
+        "classTeams": "In een klasTeam beschikbaar voor docenten volgens rol en beleid; geen leerlinginzage in het docentendashboard.",
+        "licenseBasis": "A5 medewerkers / A3 leerlingen (schooluitgangspunt; geen per-account toewijzing bevestigd)",
+        "verifiedInTenant": false,
+        "sourceIds": [
+          "SRC-00056",
+          "SRC-00055",
+          "SRC-00059",
+          "SRC-00060",
+          "SRC-00061"
+        ]
       }
     },
     {
@@ -15032,13 +15519,32 @@
         "https://learn.microsoft.com/en-us/microsoft-365/education/guide/0-start/all-license"
       ],
       "sourceIds": [
-        "SRC-00056"
+        "SRC-00056",
+        "SRC-00055",
+        "SRC-00059",
+        "SRC-00060",
+        "SRC-00061"
       ],
       "recordMeta": {
         "sourceKind": "Leverancierscatalogus",
         "schoolConfigured": false,
         "asOf": "2026-11-23",
         "notAnActiveUseClaim": true
+      },
+      "defaultPolicy": {
+        "evidenceStatus": "Microsoft Education-standaard; geen lokale tenantcontrole",
+        "staff": "Onderdeel van de klasTeams-ervaring voor docenten met passend A5-account en ingericht klasTeam.",
+        "students": "Onderdeel van de klasTeams-ervaring voor leerlingen met passend A3-account nadat zij aan het klasTeam zijn toegevoegd.",
+        "classTeams": "KlasTeams: standaard onderwijsonderdeel na inrichting van een klasTeam. Docent is eigenaar; leerling heeft een rol als deelnemer. Beleid kan functies beperken.",
+        "licenseBasis": "A5 medewerkers / A3 leerlingen (schooluitgangspunt; geen per-account toewijzing bevestigd)",
+        "verifiedInTenant": false,
+        "sourceIds": [
+          "SRC-00056",
+          "SRC-00055",
+          "SRC-00059",
+          "SRC-00060",
+          "SRC-00061"
+        ]
       }
     },
     {
@@ -15060,13 +15566,32 @@
         "https://learn.microsoft.com/en-us/microsoft-365/education/guide/0-start/all-license"
       ],
       "sourceIds": [
-        "SRC-00056"
+        "SRC-00056",
+        "SRC-00055",
+        "SRC-00059",
+        "SRC-00060",
+        "SRC-00061"
       ],
       "recordMeta": {
         "sourceKind": "Leverancierscatalogus",
         "schoolConfigured": false,
         "asOf": "2026-11-23",
         "notAnActiveUseClaim": true
+      },
+      "defaultPolicy": {
+        "evidenceStatus": "Microsoft Education-standaard; geen lokale tenantcontrole",
+        "staff": "Onderdeel van de klasTeams-ervaring voor docenten met passend A5-account en ingericht klasTeam.",
+        "students": "Onderdeel van de klasTeams-ervaring voor leerlingen met passend A3-account nadat zij aan het klasTeam zijn toegevoegd.",
+        "classTeams": "KlasTeams: standaard onderwijsonderdeel na inrichting van een klasTeam. Docent is eigenaar; leerling heeft een rol als deelnemer. Beleid kan functies beperken.",
+        "licenseBasis": "A5 medewerkers / A3 leerlingen (schooluitgangspunt; geen per-account toewijzing bevestigd)",
+        "verifiedInTenant": false,
+        "sourceIds": [
+          "SRC-00056",
+          "SRC-00055",
+          "SRC-00059",
+          "SRC-00060",
+          "SRC-00061"
+        ]
       }
     },
     {
@@ -15087,13 +15612,25 @@
         "https://learn.microsoft.com/office365/servicedescriptions/office-365-platform-service-description/microsoft-365-education"
       ],
       "sourceIds": [
-        "SRC-00055"
+        "SRC-00055",
+        "SRC-00059"
       ],
       "recordMeta": {
         "sourceKind": "Leverancierscatalogus",
         "schoolConfigured": false,
         "asOf": "2026-11-23",
         "notAnActiveUseClaim": true
+      },
+      "defaultPolicy": {
+        "evidenceStatus": "Microsoft Education-standaard; geen lokale tenantcontrole",
+        "staff": "Beschreven Education-/platformfunctie, maar uitgebreide of premium mogelijkheden vereisen aanvullende licentie, capaciteit of beheerkeuzes.",
+        "students": "Niet als standaard beschikbare leerlingenfunctie opgenomen; eventuele toegang vraagt aparte licentie- en beleidscontrole.",
+        "licenseBasis": "A5 medewerkers / A3 leerlingen (schooluitgangspunt; geen per-account toewijzing bevestigd)",
+        "verifiedInTenant": false,
+        "sourceIds": [
+          "SRC-00055",
+          "SRC-00059"
+        ]
       }
     },
     {
@@ -15114,13 +15651,25 @@
         "https://learn.microsoft.com/office365/servicedescriptions/office-365-platform-service-description/microsoft-365-education"
       ],
       "sourceIds": [
-        "SRC-00055"
+        "SRC-00055",
+        "SRC-00059"
       ],
       "recordMeta": {
         "sourceKind": "Leverancierscatalogus",
         "schoolConfigured": false,
         "asOf": "2026-11-23",
         "notAnActiveUseClaim": true
+      },
+      "defaultPolicy": {
+        "evidenceStatus": "Microsoft Education-standaard; geen lokale tenantcontrole",
+        "staff": "Beschreven Education-/platformfunctie, maar uitgebreide of premium mogelijkheden vereisen aanvullende licentie, capaciteit of beheerkeuzes.",
+        "students": "Niet als standaard beschikbare leerlingenfunctie opgenomen; eventuele toegang vraagt aparte licentie- en beleidscontrole.",
+        "licenseBasis": "A5 medewerkers / A3 leerlingen (schooluitgangspunt; geen per-account toewijzing bevestigd)",
+        "verifiedInTenant": false,
+        "sourceIds": [
+          "SRC-00055",
+          "SRC-00059"
+        ]
       }
     },
     {
@@ -15142,13 +15691,25 @@
         "https://learn.microsoft.com/office365/servicedescriptions/office-365-platform-service-description/microsoft-365-education"
       ],
       "sourceIds": [
-        "SRC-00055"
+        "SRC-00055",
+        "SRC-00059"
       ],
       "recordMeta": {
         "sourceKind": "Leverancierscatalogus",
         "schoolConfigured": false,
         "asOf": "2026-11-23",
         "notAnActiveUseClaim": true
+      },
+      "defaultPolicy": {
+        "evidenceStatus": "Microsoft Education-standaard; geen lokale tenantcontrole",
+        "staff": "Volgens Education-standaard inbegrepen bij toepasselijke A5-licentie, zolang de service niet door beleid of licentiebeheer is uitgezet.",
+        "students": "Volgens Education-standaard inbegrepen bij toepasselijke A3-licentie, zolang de service niet door beleid of licentiebeheer is uitgezet.",
+        "licenseBasis": "A5 medewerkers / A3 leerlingen (schooluitgangspunt; geen per-account toewijzing bevestigd)",
+        "verifiedInTenant": false,
+        "sourceIds": [
+          "SRC-00055",
+          "SRC-00059"
+        ]
       }
     },
     {
@@ -15170,13 +15731,29 @@
         "https://learn.microsoft.com/en-us/microsoft-365/education/guide/1-reference/enable-copilot-chat-for-learners"
       ],
       "sourceIds": [
-        "SRC-00058"
+        "SRC-00058",
+        "SRC-00055",
+        "SRC-00059",
+        "SRC-00057"
       ],
       "recordMeta": {
         "sourceKind": "Leverancierscatalogus",
         "schoolConfigured": false,
         "asOf": "2026-11-23",
         "notAnActiveUseClaim": true
+      },
+      "defaultPolicy": {
+        "evidenceStatus": "Microsoft Education-standaard; geen lokale tenantcontrole",
+        "staff": "Voor geschikte A5-medewerkers in beginsel beschikbaar volgens Microsoft Education; instellingen en functiebeperkingen blijven van toepassing.",
+        "students": "K-12: voor 13-17 jaar standaard uit; alleen na instellen van leeftijdsgroep en vereiste toestemming/licentie. Onder 13 geen Copilot Chat; 18+ volgens licentie en leeftijdsbeleid.",
+        "licenseBasis": "A5 medewerkers / A3 leerlingen (schooluitgangspunt; geen per-account toewijzing bevestigd)",
+        "verifiedInTenant": false,
+        "sourceIds": [
+          "SRC-00058",
+          "SRC-00055",
+          "SRC-00059",
+          "SRC-00057"
+        ]
       }
     },
     {
@@ -15197,13 +15774,27 @@
         "https://learn.microsoft.com/microsoft-365/education/guide/1-reference/manage-microsoft-365-education-ai-features"
       ],
       "sourceIds": [
-        "SRC-00057"
+        "SRC-00057",
+        "SRC-00055",
+        "SRC-00059"
       ],
       "recordMeta": {
         "sourceKind": "Leverancierscatalogus",
         "schoolConfigured": false,
         "asOf": "2026-11-23",
         "notAnActiveUseClaim": true
+      },
+      "defaultPolicy": {
+        "evidenceStatus": "Microsoft Education-standaard; geen lokale tenantcontrole",
+        "staff": "Volgens Education-standaard inbegrepen bij toepasselijke A5-licentie, zolang de service niet door beleid of licentiebeheer is uitgezet.",
+        "students": "Niet als algemene leerlingenservice aangemerkt; rechten en licentie apart benodigd.",
+        "licenseBasis": "A5 medewerkers / A3 leerlingen (schooluitgangspunt; geen per-account toewijzing bevestigd)",
+        "verifiedInTenant": false,
+        "sourceIds": [
+          "SRC-00057",
+          "SRC-00055",
+          "SRC-00059"
+        ]
       }
     },
     {
@@ -15225,13 +15816,29 @@
         "https://learn.microsoft.com/microsoft-365/education/guide/1-reference/manage-microsoft-365-education-ai-features"
       ],
       "sourceIds": [
-        "SRC-00057"
+        "SRC-00057",
+        "SRC-00055",
+        "SRC-00059",
+        "SRC-00058"
       ],
       "recordMeta": {
         "sourceKind": "Leverancierscatalogus",
         "schoolConfigured": false,
         "asOf": "2026-11-23",
         "notAnActiveUseClaim": true
+      },
+      "defaultPolicy": {
+        "evidenceStatus": "Microsoft Education-standaard; geen lokale tenantcontrole",
+        "staff": "Ondersteunde Learning Activities kunnen voor docenten standaard beschikbaar zijn binnen het Education-aanbod.",
+        "students": "Oefenen met door een docent gedeelde activiteiten kan standaard beschikbaar zijn; zelf AI-activiteiten genereren staat bij 13-17 jaar standaard uit en is onder 13 niet beschikbaar.",
+        "licenseBasis": "A5 medewerkers / A3 leerlingen (schooluitgangspunt; geen per-account toewijzing bevestigd)",
+        "verifiedInTenant": false,
+        "sourceIds": [
+          "SRC-00057",
+          "SRC-00055",
+          "SRC-00059",
+          "SRC-00058"
+        ]
       }
     },
     {
@@ -15253,13 +15860,29 @@
         "https://learn.microsoft.com/microsoft-365/education/guide/1-reference/manage-microsoft-365-education-ai-features"
       ],
       "sourceIds": [
-        "SRC-00057"
+        "SRC-00057",
+        "SRC-00055",
+        "SRC-00059",
+        "SRC-00058"
       ],
       "recordMeta": {
         "sourceKind": "Leverancierscatalogus",
         "schoolConfigured": false,
         "asOf": "2026-11-23",
         "notAnActiveUseClaim": true
+      },
+      "defaultPolicy": {
+        "evidenceStatus": "Microsoft Education-standaard; geen lokale tenantcontrole",
+        "staff": "Voor geschikte A5-medewerkers in beginsel beschikbaar volgens Microsoft Education; instellingen en functiebeperkingen blijven van toepassing.",
+        "students": "K-12: voor 13-17 jaar standaard uit; alleen na instellen van leeftijdsgroep en vereiste toestemming/licentie. Onder 13 geen Copilot Chat; 18+ volgens licentie en leeftijdsbeleid.",
+        "licenseBasis": "A5 medewerkers / A3 leerlingen (schooluitgangspunt; geen per-account toewijzing bevestigd)",
+        "verifiedInTenant": false,
+        "sourceIds": [
+          "SRC-00057",
+          "SRC-00055",
+          "SRC-00059",
+          "SRC-00058"
+        ]
       }
     },
     {
@@ -15281,13 +15904,29 @@
         "https://learn.microsoft.com/microsoft-365/education/guide/1-reference/manage-microsoft-365-education-ai-features"
       ],
       "sourceIds": [
-        "SRC-00057"
+        "SRC-00057",
+        "SRC-00055",
+        "SRC-00059",
+        "SRC-00058"
       ],
       "recordMeta": {
         "sourceKind": "Leverancierscatalogus",
         "schoolConfigured": false,
         "asOf": "2026-11-23",
         "notAnActiveUseClaim": true
+      },
+      "defaultPolicy": {
+        "evidenceStatus": "Microsoft Education-standaard; geen lokale tenantcontrole",
+        "staff": "Voor geschikte A5-medewerkers in beginsel beschikbaar volgens Microsoft Education; instellingen en functiebeperkingen blijven van toepassing.",
+        "students": "K-12: voor 13-17 jaar standaard uit; alleen na instellen van leeftijdsgroep en vereiste toestemming/licentie. Onder 13 geen Copilot Chat; 18+ volgens licentie en leeftijdsbeleid.",
+        "licenseBasis": "A5 medewerkers / A3 leerlingen (schooluitgangspunt; geen per-account toewijzing bevestigd)",
+        "verifiedInTenant": false,
+        "sourceIds": [
+          "SRC-00057",
+          "SRC-00055",
+          "SRC-00059",
+          "SRC-00058"
+        ]
       }
     },
     {
@@ -15308,13 +15947,27 @@
         "https://learn.microsoft.com/microsoft-365/education/guide/1-reference/manage-microsoft-365-education-ai-features"
       ],
       "sourceIds": [
-        "SRC-00057"
+        "SRC-00057",
+        "SRC-00055",
+        "SRC-00059"
       ],
       "recordMeta": {
         "sourceKind": "Leverancierscatalogus",
         "schoolConfigured": false,
         "asOf": "2026-11-23",
         "notAnActiveUseClaim": true
+      },
+      "defaultPolicy": {
+        "evidenceStatus": "Microsoft Education-standaard; geen lokale tenantcontrole",
+        "staff": "Beschreven Education-/platformfunctie, maar uitgebreide of premium mogelijkheden vereisen aanvullende licentie, capaciteit of beheerkeuzes.",
+        "students": "Niet als standaard beschikbare leerlingenfunctie opgenomen; eventuele toegang vraagt aparte licentie- en beleidscontrole.",
+        "licenseBasis": "A5 medewerkers / A3 leerlingen (schooluitgangspunt; geen per-account toewijzing bevestigd)",
+        "verifiedInTenant": false,
+        "sourceIds": [
+          "SRC-00057",
+          "SRC-00055",
+          "SRC-00059"
+        ]
       }
     },
     {
@@ -15336,13 +15989,27 @@
         "https://learn.microsoft.com/en-us/microsoft-365/education/guide/0-start/all-license"
       ],
       "sourceIds": [
-        "SRC-00056"
+        "SRC-00056",
+        "SRC-00055",
+        "SRC-00059"
       ],
       "recordMeta": {
         "sourceKind": "Leverancierscatalogus",
         "schoolConfigured": false,
         "asOf": "2026-11-23",
         "notAnActiveUseClaim": true
+      },
+      "defaultPolicy": {
+        "evidenceStatus": "Microsoft Education-standaard; geen lokale tenantcontrole",
+        "staff": "Volgens Education-standaard inbegrepen bij toepasselijke A5-licentie, zolang de service niet door beleid of licentiebeheer is uitgezet.",
+        "students": "Onderwijsfunctie in de catalogus; beschikbaarheid voor leerlingen blijft afhankelijk van implementatie en beleid, niet automatisch geactiveerd.",
+        "licenseBasis": "A5 medewerkers / A3 leerlingen (schooluitgangspunt; geen per-account toewijzing bevestigd)",
+        "verifiedInTenant": false,
+        "sourceIds": [
+          "SRC-00056",
+          "SRC-00055",
+          "SRC-00059"
+        ]
       }
     }
   ],
