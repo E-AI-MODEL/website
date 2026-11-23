@@ -63,8 +63,8 @@ test('Bronrelaties zijn expliciet; technische matches worden niet als actieve ko
   assert.equal(data.connections.filter(x=>ids.has(x.matchedId)).length,21);
   assert.equal(data.parts.filter(x=>ids.has(x.parent)).length,13);
   assert.ok(!source.includes('Microsoft 365 Copilot</span>'));
-  assert.ok(source.includes('matchingFamily(app)'));
-  assert.ok(source.includes("matchedId===app.id"));
+  assert.ok(source.includes('matchingFamily(app,index)'));
+  assert.ok(source.includes("index.connected('apps',app.id)"));
   assert.ok(source.includes('Een Entra-match is geen bevestigde actieve koppeling'));
 });
 
