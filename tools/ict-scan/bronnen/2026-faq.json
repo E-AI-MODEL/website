@@ -329,8 +329,8 @@
       ],
       "status": "Brongebonden werkversie",
       "sourceRefs": [
-        "https://learn.microsoft.com/en-us/microsoftteams/teams-edu-licensing",
-        "https://learn.microsoft.com/en-us/microsoftteams/teams-edu-licensing",
+        "https://learn.microsoft.com/office365/servicedescriptions/office-365-platform-service-description/microsoft-365-education",
+        "https://learn.microsoft.com/en-us/microsoft-365/education/guide/0-start/all-license",
         "https://learn.microsoft.com/en-us/microsoftteams/teams-edu-licensing"
       ],
       "sources": [
