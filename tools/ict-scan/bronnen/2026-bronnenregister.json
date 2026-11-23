@@ -1631,7 +1631,8 @@
       "id": "SRC-00059",
       "name": "Microsoft Learn: toewijzing Microsoft 365- en Teams Education-licenties",
       "referenceKeys": [
-        "https://learn.microsoft.com/en-us/microsoftteams/teams-edu-licensing"
+        "https://learn.microsoft.com/en-us/microsoftteams/teams-edu-licensing",
+        "Microsoft Learn Education, licenties en standaardservices"
       ],
       "owner": "",
       "version": "",
@@ -1681,7 +1682,8 @@
       "name": "Microsoft Learn: standaardbeleid voor leerlingen in Teams Education",
       "referenceKeys": [
         "https://learn.microsoft.com/en-us/microsoftteams/easy-policy-setup-edu",
-        "https://learn.microsoft.com/en-us/microsoft-365/education/guide/2-baseline/applications/baseline-apps-teams-policies"
+        "https://learn.microsoft.com/en-us/microsoft-365/education/guide/2-baseline/applications/baseline-apps-teams-policies",
+        "Microsoft Learn, klasTeams en Education Policy Wizard"
       ],
       "owner": "",
       "version": "",
@@ -1707,7 +1709,8 @@
       "referenceKeys": [
         "https://www.kennisnet.nl/diensten/dienst-verwerkersovereenkomsten/",
         "https://www.kennisnet.nl/diensten/dienst-verwerkersovereenkomsten/inloggen/",
-        "https://dv.kennisnet.nl/"
+        "https://dv.kennisnet.nl/",
+        "Kennisnet Dienst Verwerkersovereenkomsten en Privacyconvenant"
       ],
       "owner": "",
       "version": "",
