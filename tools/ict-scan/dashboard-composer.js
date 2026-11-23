@@ -223,104 +223,102 @@
     }
     root.append(text('small','Peilmoment uit de ingelezen bron. Een lege waarde is niet automatisch een tekortkoming.','ds-note'));
   }
-  function relationSets(app){
-    const id=app.id;const ai=Array.from(state.ai.values()).filter(r=>r.parentId===id);
-    const ids=new Set(ai.map(x=>x.id));
+  function relationSets(app,index){
+    const ai=index.connected('apps',app.id,{type:'ai'}).map(link=>link.other);
+    const controls=new Map();
+    for(const row of ai)for(const link of index.connected('ai',row.id,{type:'aiControls'})){
+      controls.set(link.otherId,link.other);
+    }
     return [
-      {label:'AI-functies',key:'ai',card:'ai',rows:window.EmmausRoles?.isEnabled('ai')===false?[]:ai,note:'In de bron aan deze toepassing gekoppeld'},
-      {label:'Entra-matches',key:'connections',card:'connections',rows:Array.from(state.connections.values()).filter(r=>r.matchedId===id),note:'Een match bevestigt geen actieve koppeling'},
-      {label:'Onderdelen',key:'parts',card:'parts',rows:Array.from(state.parts.values()).filter(r=>r.parent===id),note:'Expliciete hoofdtoepassing-ID'},
-      {label:'AI-beheer',key:'aiControls',card:'aiControls',rows:window.EmmausRoles?.isEnabled('ai')===false?[]:Array.from(state.aiControls.values()).filter(r=>(String(r.aiRefs||'').match(/AI-\d+/gi)||[]).some(x=>ids.has(x))),note:'Via een AI-functie verbonden'}
-    ].filter(x=>x.key!=='ai'&&x.key!=='aiControls'||window.EmmausRoles?.isEnabled('ai')!==false);
+      {label:'AI-functies',key:'ai',card:'ai',
+        rows:window.EmmausRoles?.isEnabled('ai')===false?[]:ai,note:'Beschreven functies, niet automatisch lokaal ingeschakeld'},
+      {label:'Entra-matches',key:'connections',card:'connections',
+        rows:index.connected('apps',app.id,{type:'connections'}).map(link=>link.other),
+        note:'Mogelijke Entra-matches. Een registratie is geen actieve koppeling.'},
+      {label:'Onderdelen',key:'parts',card:'parts',
+        rows:index.connected('apps',app.id,{type:'parts',relationType:'part_of'}).map(link=>link.other),
+        note:'Onderdelen en modules uit de gezamenlijke index, niet automatisch ingeschakeld'},
+      {label:'AI-beheer',key:'aiControls',card:'aiControls',
+        rows:window.EmmausRoles?.isEnabled('ai')===false?[]:[...controls.values()],
+        note:'Beheer- en controlepunten gekoppeld via AI-ID'}
+    ].filter(g=>g.key!=='ai'&&g.key!=='aiControls'||window.EmmausRoles?.isEnabled('ai')!==false);
   }
   function drawRelations(root){
-    if(!availableData().some(x=>x.key==='apps')){root.append(text('p','Selecteer Toepassingen om vastgelegde verbanden te verkennen.','ds-component-hint'));return;}
-    const apps=source(definition('apps')).slice().sort((a,b)=>a.name.localeCompare(b.name,'nl'));
+    if(!availableData().some(x=>x.key==='apps')){
+      root.append(text('p','Selecteer Toepassingen om vastgelegde verbanden te verkennen.','ds-component-hint'));return;
+    }
+    const index=window.IctInventoryIndex?.build(state);
+    if(!index){root.append(text('p','De relatie-index kon niet worden geladen.','ds-note'));return;}
+    const apps=index.records('apps').slice().sort((a,b)=>a.name.localeCompare(b.name,'nl'));
     const app=apps.find(x=>x.id===config.focusApp)||apps.find(x=>x.id==='APP-034')||apps[0];
     if(!app){root.append(text('p','Geen toepassingen ingelezen.','ds-component-hint'));return;}
     const select=text('select',undefined,'ds-link-choice');select.setAttribute('aria-label','Toepassing voor de systeemkaart');
-    for(const r of apps){const o=text('option',r.name);o.value=r.id;select.append(o);}select.value=app.id;
+    for(const record of apps){const o=text('option',record.name);o.value=record.id;select.append(o);}
+    select.value=app.id;
     select.addEventListener('change',()=>{config.focusApp=select.value;refresh();});root.append(select);
-    const groups=relationSets(app);const stage=text('div',undefined,'ds-network');
+    const groups=relationSets(app,index),stage=text('div',undefined,'ds-network');
     const svg=svgEl('svg',{viewBox:'0 0 900 280',class:'ds-network-lines','aria-hidden':'true',preserveAspectRatio:'none'});
     svg.append(svgEl('circle',{cx:450,cy:140,r:84,class:'ds-orbit-guide'}));
     const positions=[[130,71],[755,71],[755,221],[130,221]];
     for(const [i,g] of groups.entries()){
-      const [x,y]=positions[i];svg.append(svgEl('path',{d:'M450 140 Q'+(450+(x-450)*.5)+' '+(140+(y-140)*.2)+' '+x+' '+y,class:'ds-network-edge'+(g.rows.length?'':' is-empty')}));
+      const [x,y]=positions[i];
+      svg.append(svgEl('path',{d:'M450 140 Q'+(450+(x-450)*.5)+' '+(140+(y-140)*.2)+' '+x+' '+y,
+        class:'ds-network-edge'+(g.rows.length?'':' is-empty')}));
       svg.append(svgEl('circle',{cx:x,cy:y,r:3.5,class:'ds-network-end'}));
     }
     stage.append(svg);
-    const center=text('div',undefined,'ds-network-center');center.append(text('small',app.id),text('strong',app.name),text('span','Geregistreerde toepassing'));stage.append(center);
+    const center=text('div',undefined,'ds-network-center');
+    center.append(text('small',app.id),text('strong',app.name),text('span','Geregistreerde toepassing'));
+    stage.append(center);
     for(const [i,g] of groups.entries()){
-      const b=button('', 'ds-network-node',()=>showRelationList(stage,g));
-      b.style.setProperty('--x',(positions[i][0]/9)+'%');b.style.setProperty('--y',(positions[i][1]/2.8)+'%');
-      b.replaceChildren(text('small',g.label),text('strong',fmt(g.rows.length)),text('span',g.rows.length?'Bronrelaties':'Geen relatie vastgelegd'));
+      const b=button('','ds-network-node',()=>showRelationList(g));
+      b.style.setProperty('--x',(positions[i][0]/9)+'%');
+      b.style.setProperty('--y',(positions[i][1]/2.8)+'%');
+      b.replaceChildren(text('small',g.label),text('strong',fmt(g.rows.length)),
+        text('span',g.rows.length?'Brongebonden registraties':'Geen relatie vastgelegd'));
       b.setAttribute('aria-label',g.rows.length+' '+g.label+', bekijk onderliggende registraties');
       stage.append(b);
     }
-    root.append(stage,text('p','De lijnen tonen bronrelaties, geen bevestigde actieve gegevensuitwisseling.','ds-note'));
+    root.append(stage,text('p','De lijnen zijn bronrelaties en bevestigen geen actieve gegevensuitwisseling.','ds-note'));
     if(app.owner&&!/^\?/.test(app.owner))root.append(text('p','Verantwoordelijke: '+app.owner,'ds-note'));
-    const relationshipTypes={
-      license_review:'Licentiecontrole',
-      software_review:'Softwarecontrole',
-      follow_up:'Open werkactie',
-      part_of:'Onderdeel van',
-      integration:'Mogelijke integratie',
-      sso:'Mogelijke aanmeldroute',
-      supports:'Mogelijke functie',
-      managed_by:'Mogelijk beheer'
-    };
-    const stores={apps:state.apps,licenseReview:state.licenseReview,softwareReview:state.softwareReview,workActions:state.workActions};
-    const outgoing=(app.relations||[]).map(link=>{
-      const target=stores[link.targetType]?.get(link.targetId);
-      return target?{link,target,direction:'Vanuit deze toepassing'}:null;
-    }).filter(Boolean);
-    const incoming=Array.from(state.apps.values()).filter(other=>other.id!==app.id).flatMap(other=>
-      (other.relations||[]).filter(link=>link.targetType==='apps'&&link.targetId===app.id)
-        .map(link=>({link,target:other,direction:'Naar deze toepassing'})));
-    const recorded=outgoing.concat(incoming);
-    if(recorded.length){
+    const links=index.connected('apps',app.id).filter(x=>
+      x.origin==='declared'||x.origin==='embedded-legacy'||x.otherType==='hardwareGroups');
+    if(links.length){
       const section=text('section',undefined,'ds-network-records ds-recorded-links');
-      section.append(text('strong','Vastgelegde relaties · '+recorded.length));
-      section.append(text('small','Bronstatus per relatie. Vermoedelijke technische koppelingen zijn niet als actief bevestigd.'));
+      section.append(text('strong','Vastgelegde verbanden · '+links.length),
+        text('small','Klik op een regel voor de betekenis en bewijsstatus. Bronverwijzingen worden apart bewaard.'));
       const list=text('div',undefined,'ds-record-links');
-      for(const {link,target,direction} of recorded){
-        const label=(relationshipTypes[link.relationType]||link.relationType)+' · '+(target.name||target.id);
+      for(const link of links){
         const details=text('details',undefined,'ds-relationship-detail');
-        details.append(text('summary',label+' · '+link.status+' · '+direction));
+        const name=link.other?.name||link.otherId;
+        details.append(text('summary',name+' · '+link.relationType+' · '+link.status));
         const body=text('div',undefined,'ds-relationship-proof');
-        body.append(text('p',link.note||'Geen nadere toelichting.','ds-note'));
-        body.append(text('small','Bron: '+(link.evidence||'Niet vastgelegd')));
-        body.append(button('Open '+(target.name||target.id),'ds-record-link',()=>openCard({card:link.targetType==='apps'?'apps':link.targetType},target)));
+        body.append(text('p',link.note||'Geen nadere toelichting vastgelegd.','ds-note'));
+        const store=link.otherType==='additionalCandidates'?'candidates':link.otherType;
+        if(state[store] instanceof Map&&state[store].has(link.otherId)){
+          body.append(button('Open '+name,'ds-record-link',()=>openCard({card:link.otherType},link.other)));
+        }
         details.append(body);list.append(details);
       }
       section.append(list);root.append(section);
     }
-
-    for(const [title,items] of [
-      ['Apparatuur en beheer',app.hardwareLinks||[]],
-      ['Microsoft 365-onderdelen',app.serviceLinks||[]]
-    ]){
-      if(!items.length)continue;
-      const section=text('section',undefined,'ds-network-records ds-context-links');
-      section.append(text('strong',title+' · '+items.length));
-      const list=text('div',undefined,'ds-record-links');
-      for(const item of items){
-        const details=text('details',undefined,'ds-relationship-detail');
-        details.append(text('summary',item.name+' · '+(item.owner||item.status||'Status onbekend')));
-        const body=text('div',undefined,'ds-relationship-proof');
-        body.append(text('p',item.note||'Geen nadere toelichting.','ds-note'),text('small','Bron: '+(item.evidence||'Niet vastgelegd')));
-        details.append(body);list.append(details);
-      }
-      section.append(list);root.append(section);
-    }
-    function showRelationList(stage,g){
+    function showRelationList(group){
       const old=root.querySelector('.ds-network-current-list');if(old)old.remove();
-      const wrap=text('div',undefined,'ds-network-records ds-network-current-list');wrap.append(text('strong',g.label+' · '+g.rows.length));
-      wrap.append(text('small',g.note));
+      const wrap=text('div',undefined,'ds-network-records ds-network-current-list');
+      wrap.append(text('strong',group.label+' · '+group.rows.length),text('small',group.note));
       const list=text('div',undefined,'ds-record-links');
-      for(const record of g.rows.slice(0,12)){list.append(button(record.name||record.id,'ds-record-link',()=>openCard({card:g.card},record)));}
-      if(!g.rows.length)list.append(text('p','Geen relatie vastgelegd.','ds-note'));
+      for(const record of group.rows.slice(0,30)){
+        const store=group.card==='additionalCandidates'?'candidates':group.card;
+        if(state[store] instanceof Map&&state[store].has(record.id)){
+          list.append(button(record.name||record.id,'ds-record-link',()=>openCard({card:group.card},record)));
+        }else{
+          const details=text('details',undefined,'ds-relationship-detail');
+          details.append(text('summary',record.name||record.id));
+          details.append(text('p',record.note||record.description||record.local||'Nog te controleren','ds-note'));
+          list.append(details);
+        }
+      }
+      if(!group.rows.length)list.append(text('p','Geen relatie vastgelegd.','ds-note'));
       wrap.append(list);root.append(wrap);
     }
   }
