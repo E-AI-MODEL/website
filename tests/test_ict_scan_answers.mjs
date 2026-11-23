@@ -156,6 +156,21 @@ test('M365-vragen tellen uitsluitend productonderdelen uit de gedeelde index',()
   assert.equal(parts.kind,'relations');
   assert.match(parts.answer,/40 Microsoft 365-onderdelen/);
 });
+test('Aantallen AI-functies en Entra-matches horen bij de gekozen toepassing',()=>{
+  const data=indexedDataset();
+  const ai=query('Hoeveel AI-functies heeft Microsoft 365?',data);
+  assert.equal(ai.kind,'count');
+  assert.match(ai.answer,/Bij Microsoft 365 zijn 16 AI-functies beschreven/i);
+  assert.doesNotMatch(ai.answer,/76 beschreven AI-functies/);
+  const entra=query('Hoeveel Entra-registraties heeft 3CX?',data);
+  assert.equal(entra.kind,'count');
+  assert.match(entra.answer,/Bij 3CX zijn \d+ mogelijke Entra-matches beschreven/i);
+  assert.doesNotMatch(entra.answer,/93 Entra-registraties/);
+  const students=query('Welke AI-functies van Microsoft 365 zijn beschikbaar voor leerlingen?',data);
+  assert.equal(students.kind,'relations');
+  assert.match(students.answer,/16 AI-functies beschreven/);
+  assert.match(students.answer,/niet dat de functies op school zijn ingeschakeld/);
+});
 test('Onbekende M365-toegang blijft onbekend, ook als de productcatalogus compleet is',()=>{
   const data=indexedDataset();
   assert.ok(data.index.records('parts').filter(x=>x.kind==='Microsoft 365-onderdeel')
