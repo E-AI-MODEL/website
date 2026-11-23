@@ -48,13 +48,13 @@ test('LessonUp, Showbie en Microsoft-productfamilie zijn bereikbaar via de nieuw
 });
 test('Manifest is gebonden aan de exacte bronbytes en bevat geen individuele accountgegevens',()=>{
  const file=readFileSync(dir+'2026-applicatielandschap.json');
- const blob=createHash('sha1').update('blob '+file.length+'\\0').update(file).digest('hex');
+ const blob=createHash('sha1').update('blob '+file.length+String.fromCharCode(0)).update(file).digest('hex');
  const recorded=manifest.dataFiles.find(x=>x.path==='2026-applicatielandschap.json');
  assert.equal(recorded.sha,blob);
  const body=file.toString('utf8');
- assert.doesNotMatch(body,/[\\w.%+-]+@emmauscollege\\.nl/i);
- assert.doesNotMatch(body,/"(?:email|assignedUser|personName)"\\s*:/i);
- assert.doesNotMatch(body,/"(?:accountCountLessonUp|showbieProUsers)"\\s*:/i);
+ assert.doesNotMatch(body,/[\w.%+-]+@emmauscollege\.nl/i);
+ assert.doesNotMatch(body,/"(?:email|assignedUser|personName)"\s*:/i);
+ assert.doesNotMatch(body,/"(?:accountCountLessonUp|showbieProUsers)"\s*:/i);
 });
 test('De systeemkaart toont licenties, werkacties en de bronstatus',()=>{
  const js=readFileSync('tools/ict-scan/dashboard-composer.js','utf8');
