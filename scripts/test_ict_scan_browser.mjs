@@ -211,7 +211,7 @@ try {
   await page.locator('#roleModeFG').check();
   assert.equal(await page.locator('#roleModeFG').isChecked(),true);
   await page.locator('#railDrawerClose').click();
-  assert.equal(await page.locator('#relationshipExplorer .relation-spoke').count(),5);
+  assert.equal(await page.locator('#relationshipExplorer .relation-spoke').count(),4,'FG-modus mag geen DPIA-koppelingen verzinnen op basis van naamgelijkenis');
   await navigate('privacy');
   assert.equal(await page.locator('#viewPrivacy .scene-tab').count(),2);
   assert.equal(await page.locator('#viewPrivacy .privacy-governance-panel').count(),0,'AI-beheer mag niet onder FG staan');
@@ -226,7 +226,7 @@ try {
   await page.locator('#cardEditor').waitFor({state:'visible'});
   assert.equal(await page.locator('#cardEditor').evaluate(el=>el.classList.contains('card-context-mode')),true);
   assert.equal(await page.locator('#cardBrowserList').isVisible(),false,'Extra registerlijst mag een gekozen kaart niet verdringen');
-  assert.equal(await page.locator('#cardReadView .card-read-tab').count(),4);
+  assert.equal(await page.locator('#cardReadView .card-read-tab').count(),3,'Overzicht, gegevens en relaties zonder openbare herkomsttab');
   assert.equal(await page.locator('#cardReadView .card-tab-panel:not([hidden])').count(),1);
   assert.equal(await page.locator('#cardJsonPanel').isVisible(),false,'JSON is technische broninformatie, geen tweede kaart');
   await page.waitForFunction(()=>{const r=document.getElementById('cardEditor')?.getBoundingClientRect();return !!r&&r.left>=-1&&r.right<=innerWidth+1;},null,{timeout:4500});
@@ -236,8 +236,7 @@ try {
   await page.screenshot({path:'test-results/ict-scan-'+width+'-single-record.png'});
   await page.locator('#cardReadView .card-read-tab[data-target="details"]').click();
   assert.equal(await page.locator('#cardReadView [data-card-tab="details"]').isVisible(),true);
-  await page.locator('#cardReadView .card-read-tab[data-target="source"]').click();
-  assert.equal(await page.locator('#cardJsonPanel').isVisible(),true);
+  assert.equal(await page.locator('#cardReadView .card-read-tab[data-target="source"]').count(),0);
   await page.locator('#cardReadView .card-read-tab[data-target="overview"]').click();
   assert.equal(await page.locator('#cardJsonPanel').isVisible(),false);
   await page.locator('#cardEditButton').click();
