@@ -144,6 +144,21 @@
       "id": "replaces",
       "label": "Vervangt",
       "note": "Historische opvolging, met peildatum."
+    },
+    {
+      "id": "license_review",
+      "label": "Licentiecontrole",
+      "note": "Een toepassing verwijst naar een licentieregistratie; geen bewijs dat een licentie betaald of toegewezen is."
+    },
+    {
+      "id": "software_review",
+      "label": "Softwarecontrole",
+      "note": "Een toepassing wordt genoemd bij een gerichte controle in het werkregister."
+    },
+    {
+      "id": "follow_up",
+      "label": "Openstaande actie",
+      "note": "Een toepassing is expliciet genoemd in een open werkactie; geen automatische afronding."
     }
   ],
   "statuses": [
