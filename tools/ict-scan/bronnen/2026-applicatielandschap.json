@@ -7,8 +7,8 @@
     "firstInventoryStarted": "2026-08-10",
     "compiledBy": "Hans Visser",
     "referencePeriod": "november 2026",
-    "evidenceCutoff": "2026-11-17",
-    "dataVersion": "2026-11-23-relaties-v1",
+    "evidenceCutoff": "2026-11-23",
+    "dataVersion": "2026-11-23-eigenaars-en-m365-verbanden-v2",
     "classification": "Openbare, gestructureerde inventaris. Geen persoonsgebonden Entra-roltoewijzingen, wachtwoorden of toegangssleutels.",
     "limitations": [
       "61 basisregistraties zijn nog niet het gegarandeerde totaal",
@@ -42,7 +42,45 @@
       "asOf": "2026-11-23",
       "method": "Naamgelijke licentiecontrole, expliciet benoemde softwarecontrole en werkacties, bronvermeld productverband, afzonderlijk historisch signaal.",
       "interpretation": "Relaties tonen bronverwijzingen of productgroepering. Ze bewijzen niet dat een integratie actief is, dat licenties betaald zijn of dat rollen zijn toegekend.",
-      "sourcePrivacy": "Geen persoonlijke licentieoverzichten, boekingsbedragen, mailadressen of privé-accounts opgenomen."
+      "sourcePrivacy": "Geen persoonlijke licentieoverzichten, boekingsbedragen, mailadressen of privé-accounts opgenomen.",
+      "addedTechnicalRelations": 10,
+      "technicalRelationshipStatus": "Vermoedelijk"
+    },
+    "relationshipUpdate": {
+      "asOf": "2026-11-23",
+      "ownerAuthority": "Uitdrukkelijke opdracht schoolleiding, 23 november 2026: verantwoordelijke functie; geen toewijzing van Microsoft- of applicatierechten.",
+      "hardwareGroups": [
+        {
+          "id": "H01",
+          "name": "iPads leerlingen",
+          "owner": "ICT-beheer",
+          "source": "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Hardware!A19:K19"
+        },
+        {
+          "id": "H02",
+          "name": "Laptops medewerkers",
+          "owner": "ICT-beheer",
+          "source": "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Hardware!A20:K20"
+        },
+        {
+          "id": "H03",
+          "name": "Smartboards",
+          "owner": "ICT-beheer",
+          "source": "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Hardware!A21:K21"
+        },
+        {
+          "id": "H07",
+          "name": "Printers en toners",
+          "owner": "ICT-beheer",
+          "source": "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Hardware!A25:K25"
+        }
+      ],
+      "evidenceBoundaries": "M365 en hardware zijn brongeregistreerd, maar actieve koppelingen, apparaatstatus, betaalde licenties, AI-instellingen en toegangsrechten blijven onbevestigd.",
+      "sources": [
+        "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Hardware / Applicaties",
+        "Emmauscollege_nulmeting_M365_en_applicaties_2026(1).xlsx / M365 & ICT",
+        "Overzicht applicaties Emmauscollege (1)(2).xlsx / M365-inrichting"
+      ]
     }
   },
   "apps": [
@@ -56,7 +94,7 @@
       "description": "E-mail, documenten, samenwerking en toegang tot schooltools",
       "aiRefs": "16",
       "local": "? Schoolgebruik nog niet apart bevestigd",
-      "owner": "? Nog vaststellen",
+      "owner": "ICT-beheer",
       "users": "? Nog vaststellen",
       "data": "? Nog vaststellen",
       "links": "? Nog controleren",
@@ -122,6 +160,60 @@
           "evidence": "AI-werkregister-Emmauscollege-gecontroleerd.xlsx / Openstaande acties rij 6",
           "note": "De open actie gaat aantoonbaar over deze toepassing; er is geen nieuwe verantwoordelijke of uitvoeringsstatus vastgesteld."
         }
+      ],
+      "recordMeta": {
+        "ownerSource": "Uitdrukkelijke opdracht schoolleiding, 23 november 2026: verantwoordelijke functie; geen toewijzing van Microsoft- of applicatierechten.",
+        "ownerScope": "Verantwoordelijke voor de technische inrichting en het technisch beheer; overige beslis- en toezichtrollen blijven afzonderlijk."
+      },
+      "serviceLinks": [
+        {
+          "id": "M365-SP",
+          "name": "SharePoint Online",
+          "category": "Microsoft 365-onderdeel",
+          "status": "Inrichting nog controleren",
+          "evidence": "Emmauscollege_nulmeting_M365_en_applicaties_2026(1).xlsx / M365 & ICT!A73:P73 (ICT-065)",
+          "note": "Delen, toegang, beheer en standaardinstellingen. Niet als aparte bevestigde schoolapplicatie geteld."
+        },
+        {
+          "id": "M365-OD",
+          "name": "OneDrive voor Bedrijven",
+          "category": "Microsoft 365-onderdeel",
+          "status": "Inrichting nog controleren",
+          "evidence": "Emmauscollege_nulmeting_M365_en_applicaties_2026(1).xlsx / M365 & ICT!A74:P75 (ICT-066/067)",
+          "note": "Opslag, synchronisatie en migratie uit Google Drive; geen actuele synchronisatie aangetoond."
+        },
+        {
+          "id": "M365-EX",
+          "name": "Exchange Online",
+          "category": "Microsoft 365-onderdeel",
+          "status": "Inrichting nog controleren",
+          "evidence": "Emmauscollege_nulmeting_M365_en_applicaties_2026(1).xlsx / M365 & ICT!A76:P76 (ICT-068)",
+          "note": "Mailboxtoewijzing en licenties; eerdere ontbrekende mailbox geen bewijs van de huidige stand."
+        },
+        {
+          "id": "M365-PUR",
+          "name": "Microsoft Purview",
+          "category": "Beveiligings- en gegevensbeheer",
+          "status": "Inrichting nog controleren",
+          "evidence": "Emmauscollege_nulmeting_M365_en_applicaties_2026(1).xlsx / M365 & ICT!A77:P80 (ICT-069/070/072)",
+          "note": "Bewaren, DLP, labels en auditlogging genoemd als controleonderwerpen."
+        },
+        {
+          "id": "M365-DEF",
+          "name": "Microsoft Defender",
+          "category": "Beveiligings- en gegevensbeheer",
+          "status": "Licentie en inrichting nog controleren",
+          "evidence": "Emmauscollege_nulmeting_M365_en_applicaties_2026(1).xlsx / M365 & ICT!A14:P14 (ICT-006); Emmauscollege_nulmeting_M365_en_applicaties_2026(1).xlsx / M365 & ICT!A82:P83 (ICT-074/075)",
+          "note": "Defender-onderdelen en phishingbescherming genoemd als controlevragen; levering en activatie niet verondersteld."
+        },
+        {
+          "id": "M365-EDU",
+          "name": "Onderwijsinstellingen en leerlingtoegang",
+          "category": "Microsoft 365-beheer",
+          "status": "Inrichting nog controleren",
+          "evidence": "Overzicht applicaties Emmauscollege (1)(2).xlsx / M365-inrichting!B21:H34; Emmauscollege_nulmeting_M365_en_applicaties_2026(1).xlsx / M365 & ICT!A99:P99 (ICT-091)",
+          "note": "Leeftijdsgroepen, Copilot Chat, Teams, Learning Activities en beleid. Standaardinstelling is geen bewijs voor lokale configuratie."
+        }
       ]
     },
     {
@@ -134,7 +226,7 @@
       "description": "Azure-diensten in Microsoft-omgeving",
       "aiRefs": "0",
       "local": "? Schoolgebruik nog niet apart bevestigd",
-      "owner": "? Nog vaststellen",
+      "owner": "ICT-beheer",
       "users": "? Nog vaststellen",
       "data": "? Nog vaststellen",
       "links": "? Nog controleren",
@@ -174,7 +266,11 @@
       "sources": [
         "Emmauscollege_schoolbreed_applicatielandschap_en_AI_2026.xlsx / Applicaties rij 7",
         "Emmauscollege_nulmeting_gerepareerd_Excel_2026.xlsx / Applicatieoverzicht 2026 rij 24"
-      ]
+      ],
+      "recordMeta": {
+        "ownerSource": "Uitdrukkelijke opdracht schoolleiding, 23 november 2026: verantwoordelijke functie; geen toewijzing van Microsoft- of applicatierechten.",
+        "ownerScope": "Verantwoordelijke voor de technische inrichting en het technisch beheer; overige beslis- en toezichtrollen blijven afzonderlijk."
+      }
     },
     {
       "id": "APP-010",
@@ -186,7 +282,7 @@
       "description": "KlasTeams, Klaswerk en opdrachten binnen Microsoft 365",
       "aiRefs": "12",
       "local": "? Schoolgebruik nog niet apart bevestigd",
-      "owner": "? Nog vaststellen",
+      "owner": "ICT-beheer",
       "users": "? Nog vaststellen",
       "data": "? Nog vaststellen",
       "links": "? Nog controleren",
@@ -238,7 +334,11 @@
           "evidence": "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Applicaties!X22",
           "note": "In het schoolbrede werkblad staat Microsoft 365 als hoofdproduct. Dit is een productindeling, geen bewijs voor inbegrepen licenties, actieve synchronisatie of vastgesteld beheer."
         }
-      ]
+      ],
+      "recordMeta": {
+        "ownerSource": "Uitdrukkelijke opdracht schoolleiding, 23 november 2026: verantwoordelijke functie; geen toewijzing van Microsoft- of applicatierechten.",
+        "ownerScope": "Verantwoordelijke voor de technische inrichting en het technisch beheer; overige beslis- en toezichtrollen blijven afzonderlijk."
+      }
     },
     {
       "id": "APP-035",
@@ -250,7 +350,7 @@
       "description": "AI-functies binnen de Microsoft-werkomgeving",
       "aiRefs": "15",
       "local": "? Schoolgebruik nog niet apart bevestigd",
-      "owner": "? Nog vaststellen",
+      "owner": "ICT-beheer",
       "users": "? Nog vaststellen",
       "data": "? Nog vaststellen",
       "links": "? Nog controleren",
@@ -325,8 +425,20 @@
           "status": "Vermoedelijk",
           "evidence": "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Applicaties!X23",
           "note": "In het schoolbrede werkblad staat Microsoft 365 als hoofdproduct. Dit is een productindeling, geen bewijs voor inbegrepen licenties, actieve synchronisatie of vastgesteld beheer."
+        },
+        {
+          "relationType": "supports",
+          "targetType": "apps",
+          "targetId": "APP-058",
+          "status": "Vermoedelijk",
+          "evidence": "Overzicht applicaties Emmauscollege (1)(2).xlsx / M365-inrichting!B32:H32",
+          "note": "Power BI Copilot wordt als aparte mogelijkheid genoemd waarvoor extra licenties of capaciteit nodig kunnen zijn. Niet veronderstellen dat de functie beschikbaar is."
         }
-      ]
+      ],
+      "recordMeta": {
+        "ownerSource": "Uitdrukkelijke opdracht schoolleiding, 23 november 2026: verantwoordelijke functie; geen toewijzing van Microsoft- of applicatierechten.",
+        "ownerScope": "Verantwoordelijke voor de technische inrichting en het technisch beheer; overige beslis- en toezichtrollen blijven afzonderlijk."
+      }
     },
     {
       "id": "APP-058",
@@ -338,7 +450,7 @@
       "description": "Dashboards en gegevensanalyse",
       "aiRefs": "5",
       "local": "? Schoolgebruik nog niet apart bevestigd",
-      "owner": "? Nog vaststellen",
+      "owner": "ICT-beheer",
       "users": "? Nog vaststellen",
       "data": "? Nog vaststellen",
       "links": "? Nog controleren",
@@ -396,7 +508,11 @@
           "evidence": "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Applicaties!X24",
           "note": "In het schoolbrede werkblad staat Microsoft 365 als hoofdproduct. Dit is een productindeling, geen bewijs voor inbegrepen licenties, actieve synchronisatie of vastgesteld beheer."
         }
-      ]
+      ],
+      "recordMeta": {
+        "ownerSource": "Uitdrukkelijke opdracht schoolleiding, 23 november 2026: verantwoordelijke functie; geen toewijzing van Microsoft- of applicatierechten.",
+        "ownerScope": "Verantwoordelijke voor de technische inrichting en het technisch beheer; overige beslis- en toezichtrollen blijven afzonderlijk."
+      }
     },
     {
       "id": "APP-027",
@@ -408,7 +524,7 @@
       "description": "Accounts, groepen en identiteitskoppelingen",
       "aiRefs": "0",
       "local": "? Schoolgebruik nog niet apart bevestigd",
-      "owner": "? Nog vaststellen",
+      "owner": "ICT-beheer",
       "users": "? Nog vaststellen",
       "data": "? Nog vaststellen",
       "links": "? Nog controleren",
@@ -466,7 +582,11 @@
           "evidence": "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Applicaties!X25",
           "note": "In het schoolbrede werkblad staat Microsoft 365 als hoofdproduct. Dit is een productindeling, geen bewijs voor inbegrepen licenties, actieve synchronisatie of vastgesteld beheer."
         }
-      ]
+      ],
+      "recordMeta": {
+        "ownerSource": "Uitdrukkelijke opdracht schoolleiding, 23 november 2026: verantwoordelijke functie; geen toewijzing van Microsoft- of applicatierechten.",
+        "ownerScope": "Verantwoordelijke voor de technische inrichting en het technisch beheer; overige beslis- en toezichtrollen blijven afzonderlijk."
+      }
     },
     {
       "id": "APP-025",
@@ -478,7 +598,7 @@
       "description": "Lokale server- en Active Directory-diensten",
       "aiRefs": "0",
       "local": "? Schoolgebruik nog niet apart bevestigd",
-      "owner": "? Nog vaststellen",
+      "owner": "ICT-beheer",
       "users": "? Nog vaststellen",
       "data": "? Nog vaststellen",
       "links": "? Nog controleren",
@@ -518,6 +638,20 @@
       "sources": [
         "Emmauscollege_schoolbreed_applicatielandschap_en_AI_2026.xlsx / Applicaties rij 12",
         "Emmauscollege_nulmeting_gerepareerd_Excel_2026.xlsx / Applicatieoverzicht 2026 rij 67"
+      ],
+      "recordMeta": {
+        "ownerSource": "Uitdrukkelijke opdracht schoolleiding, 23 november 2026: verantwoordelijke functie; geen toewijzing van Microsoft- of applicatierechten.",
+        "ownerScope": "Verantwoordelijke voor de technische inrichting en het technisch beheer; overige beslis- en toezichtrollen blijven afzonderlijk."
+      },
+      "relations": [
+        {
+          "relationType": "integration",
+          "targetType": "apps",
+          "targetId": "APP-027",
+          "status": "Vermoedelijk",
+          "evidence": "Emmauscollege_nulmeting_M365_en_applicaties_2026(1).xlsx / M365 & ICT!A21:P21 (ICT-013)",
+          "note": "De mogelijke route lokale AD via Entra Connect/Cloud Sync of NIVO is een onderzoeksvraag; geen bevestiging van technische koppeling."
+        }
       ]
     },
     {
@@ -530,7 +664,7 @@
       "description": "Uitwisseling van accounts en schoolgegevens tussen systemen",
       "aiRefs": "0",
       "local": "? Schoolgebruik nog niet apart bevestigd",
-      "owner": "? Nog vaststellen",
+      "owner": "ICT-beheer",
       "users": "? Nog vaststellen",
       "data": "? Nog vaststellen",
       "links": "? Nog controleren",
@@ -570,6 +704,20 @@
       "sources": [
         "Emmauscollege_schoolbreed_applicatielandschap_en_AI_2026.xlsx / Applicaties rij 13",
         "Emmauscollege_nulmeting_gerepareerd_Excel_2026.xlsx / Applicatieoverzicht 2026 rij 233"
+      ],
+      "recordMeta": {
+        "ownerSource": "Uitdrukkelijke opdracht schoolleiding, 23 november 2026: verantwoordelijke functie; geen toewijzing van Microsoft- of applicatierechten.",
+        "ownerScope": "Verantwoordelijke voor de technische inrichting en het technisch beheer; overige beslis- en toezichtrollen blijven afzonderlijk."
+      },
+      "relations": [
+        {
+          "relationType": "integration",
+          "targetType": "apps",
+          "targetId": "APP-027",
+          "status": "Vermoedelijk",
+          "evidence": "Emmauscollege_nulmeting_M365_en_applicaties_2026(1).xlsx / M365 & ICT!A20:P20 (ICT-012)",
+          "note": "NIVO wordt als bestaande voorziening genoemd; actuele provisioning, gegevensstroom en bevoegdheden moeten worden geverifieerd."
+        }
       ]
     },
     {
@@ -582,7 +730,7 @@
       "description": "Beheer van apparaten, instellingen en naleving",
       "aiRefs": "0",
       "local": "? Schoolgebruik nog niet apart bevestigd",
-      "owner": "? Nog vaststellen",
+      "owner": "ICT-beheer",
       "users": "? Nog vaststellen",
       "data": "? Nog vaststellen",
       "links": "? Nog controleren",
@@ -631,6 +779,28 @@
           "status": "Vermoedelijk",
           "evidence": "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Applicaties!X28",
           "note": "In het schoolbrede werkblad staat Microsoft 365 als hoofdproduct. Dit is een productindeling, geen bewijs voor inbegrepen licenties, actieve synchronisatie of vastgesteld beheer."
+        },
+        {
+          "relationType": "integration",
+          "targetType": "apps",
+          "targetId": "APP-027",
+          "status": "Vermoedelijk",
+          "evidence": "Emmauscollege_nulmeting_M365_en_applicaties_2026(1).xlsx / M365 & ICT!A61:P61 (ICT-053); Emmauscollege_nulmeting_M365_en_applicaties_2026(1).xlsx / M365 & ICT!A64:P64 (ICT-056)",
+          "note": "Intune/Entra-apparaatregistraties zijn controlegegevens, geen bewijs dat alle laptops beheerd of compliant zijn."
+        }
+      ],
+      "recordMeta": {
+        "ownerSource": "Uitdrukkelijke opdracht schoolleiding, 23 november 2026: verantwoordelijke functie; geen toewijzing van Microsoft- of applicatierechten.",
+        "ownerScope": "Verantwoordelijke voor de technische inrichting en het technisch beheer; overige beslis- en toezichtrollen blijven afzonderlijk."
+      },
+      "hardwareLinks": [
+        {
+          "id": "H02",
+          "name": "Laptops medewerkers",
+          "owner": "ICT-beheer",
+          "status": "Geregistreerd als beheerrelatie",
+          "evidence": "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Hardware!A20:K20",
+          "note": "MacBooks via Jamf, Windows-laptops via Intune volgens hardwareoverzicht. Aantallen en actuele instelling nog controleren."
         }
       ]
     },
@@ -644,7 +814,7 @@
       "description": "Beheer en aanmelding van Apple-apparaten",
       "aiRefs": "0",
       "local": "? Schoolgebruik nog niet apart bevestigd",
-      "owner": "? Nog vaststellen",
+      "owner": "ICT-beheer",
       "users": "? Nog vaststellen",
       "data": "? Nog vaststellen",
       "links": "? Nog controleren",
@@ -693,6 +863,36 @@
           "status": "Geregistreerd",
           "evidence": "2026-applicatielandschap.json / licenseReview LIC-017",
           "note": "Naamvariant Jamf uit licentiecontrole; de precieze modules, aantallen en rechten zijn nog niet gecontroleerd."
+        },
+        {
+          "relationType": "sso",
+          "targetType": "apps",
+          "targetId": "APP-027",
+          "status": "Vermoedelijk",
+          "evidence": "Emmauscollege_nulmeting_M365_en_applicaties_2026(1).xlsx / M365 & ICT!A62:P62 (ICT-054); 2026-applicatielandschap.json / parts MOD-005",
+          "note": "Jamf Connect/SSO en Entra worden als mogelijke beheerverbinding genoemd; actuele configuratie nog te controleren."
+        }
+      ],
+      "recordMeta": {
+        "ownerSource": "Uitdrukkelijke opdracht schoolleiding, 23 november 2026: verantwoordelijke functie; geen toewijzing van Microsoft- of applicatierechten.",
+        "ownerScope": "Verantwoordelijke voor de technische inrichting en het technisch beheer; overige beslis- en toezichtrollen blijven afzonderlijk."
+      },
+      "hardwareLinks": [
+        {
+          "id": "H01",
+          "name": "iPads leerlingen",
+          "owner": "ICT-beheer",
+          "status": "Geregistreerd als beheerrelatie",
+          "evidence": "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Hardware!A19:K19",
+          "note": "De werkmap noemt Jamf Pro, Apple Klaslokaal en NetSupport School; de toelichting noemt ook Jamf School via Amac. Werkelijke MDM-configuratie en omvang zijn niet bevestigd."
+        },
+        {
+          "id": "H02",
+          "name": "Laptops medewerkers",
+          "owner": "ICT-beheer",
+          "status": "Geregistreerd als beheerrelatie",
+          "evidence": "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Hardware!A20:K20",
+          "note": "MacBooks via Jamf, Windows-laptops via Intune volgens hardwareoverzicht. Aantallen en actuele instelling nog controleren."
         }
       ]
     },
@@ -1326,7 +1526,7 @@
       "description": "Aansturen en begeleiden van leerlingapparaten in de klas",
       "aiRefs": "0",
       "local": "? Schoolgebruik nog niet apart bevestigd",
-      "owner": "? Nog vaststellen",
+      "owner": "ICT-beheer",
       "users": "? Nog vaststellen",
       "data": "? Nog vaststellen",
       "links": "? Nog controleren",
@@ -1375,6 +1575,20 @@
           "status": "Geregistreerd",
           "evidence": "2026-applicatielandschap.json / licenseReview LIC-018",
           "note": "Zelfde productnaam in beide registers; de status van een contract en het feitelijke licentiegebruik moeten nog afzonderlijk worden gecontroleerd."
+        }
+      ],
+      "recordMeta": {
+        "ownerSource": "Uitdrukkelijke opdracht schoolleiding, 23 november 2026: verantwoordelijke functie; geen toewijzing van Microsoft- of applicatierechten.",
+        "ownerScope": "Verantwoordelijke voor de technische inrichting en het technisch beheer; overige beslis- en toezichtrollen blijven afzonderlijk."
+      },
+      "hardwareLinks": [
+        {
+          "id": "H01",
+          "name": "iPads leerlingen",
+          "owner": "ICT-beheer",
+          "status": "Geregistreerd als beheerrelatie",
+          "evidence": "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Hardware!A19:K19",
+          "note": "De werkmap noemt Jamf Pro, Apple Klaslokaal en NetSupport School; de toelichting noemt ook Jamf School via Amac. Werkelijke MDM-configuratie en omvang zijn niet bevestigd."
         }
       ]
     },
@@ -1544,7 +1758,7 @@
       "description": "Voorbereiden en uitvoeren van interactieve lessen",
       "aiRefs": "11",
       "local": "? Schoolgebruik nog niet apart bevestigd",
-      "owner": "? Nog vaststellen",
+      "owner": "Stuurgroep ICT",
       "users": "? Nog vaststellen",
       "data": "? Nog vaststellen",
       "links": "? Nog controleren",
@@ -1602,7 +1816,11 @@
           "evidence": "AI-werkregister-Emmauscollege-gecontroleerd.xlsx / Software en AI rij 10",
           "note": "Deze toepassing wordt in de softwarecontrole genoemd. De open controle wordt hierdoor niet automatisch afgerond. Een gecombineerde bronregel kan ook andere producten noemen."
         }
-      ]
+      ],
+      "recordMeta": {
+        "ownerSource": "Uitdrukkelijke opdracht schoolleiding, 23 november 2026: verantwoordelijke functie; geen toewijzing van Microsoft- of applicatierechten.",
+        "ownerScope": "Verantwoordelijke voor inzet en afspraken rond deze onderwijsapplicatie."
+      }
     },
     {
       "id": "APP-009",
@@ -1728,7 +1946,7 @@
       "description": "Leerlingwerk, opdrachten en feedback",
       "aiRefs": "3",
       "local": "? Schoolgebruik nog niet apart bevestigd",
-      "owner": "? Nog vaststellen",
+      "owner": "Stuurgroep ICT",
       "users": "? Nog vaststellen",
       "data": "? Nog vaststellen",
       "links": "? Nog controleren",
@@ -1794,7 +2012,11 @@
           "evidence": "2026-applicatielandschap.json / licenseReview LIC-008 / sourceNotes",
           "note": "Showbie-integratie wordt genoemd als historisch bronspoor bij Socrative. Werking, gegevensuitwisseling en actuele status zijn niet vastgesteld."
         }
-      ]
+      ],
+      "recordMeta": {
+        "ownerSource": "Uitdrukkelijke opdracht schoolleiding, 23 november 2026: verantwoordelijke functie; geen toewijzing van Microsoft- of applicatierechten.",
+        "ownerScope": "Verantwoordelijke voor inzet en afspraken rond deze onderwijsapplicatie."
+      }
     },
     {
       "id": "APP-013",
@@ -2429,6 +2651,14 @@
           "status": "Geregistreerd",
           "evidence": "2026-applicatielandschap.json / licenseReview LIC-023",
           "note": "Zelfde productnaam in beide registers; de status van een contract en het feitelijke licentiegebruik moeten nog afzonderlijk worden gecontroleerd."
+        },
+        {
+          "relationType": "sso",
+          "targetType": "apps",
+          "targetId": "APP-027",
+          "status": "Vermoedelijk",
+          "evidence": "2026-applicatielandschap.json / parts MOD-011",
+          "note": "'Kuario EntraID' is een technische registratie; niet bevestigd dat SSO actief wordt gebruikt."
         }
       ]
     },
@@ -2849,6 +3079,14 @@
           "status": "Geregistreerd",
           "evidence": "AI-werkregister-Emmauscollege-gecontroleerd.xlsx / Openstaande acties rij 10",
           "note": "De open actie gaat aantoonbaar over deze toepassing; er is geen nieuwe verantwoordelijke of uitvoeringsstatus vastgesteld."
+        },
+        {
+          "relationType": "integration",
+          "targetType": "apps",
+          "targetId": "APP-027",
+          "status": "Vermoedelijk",
+          "evidence": "Emmauscollege_nulmeting_M365_en_applicaties_2026(1).xlsx / M365 & ICT!A19:P19 (ICT-011)",
+          "note": "Magister staat genoemd bij bronidentiteit leerlingen en Entra. Actuele synchronisatie of leverancierstoegang nog niet vastgesteld."
         }
       ]
     },
@@ -3085,6 +3323,14 @@
           "status": "Geregistreerd",
           "evidence": "AI-werkregister-Emmauscollege-gecontroleerd.xlsx / Software en AI rij 7",
           "note": "Deze toepassing wordt in de softwarecontrole genoemd. De open controle wordt hierdoor niet automatisch afgerond. Een gecombineerde bronregel kan ook andere producten noemen."
+        },
+        {
+          "relationType": "integration",
+          "targetType": "apps",
+          "targetId": "APP-027",
+          "status": "Vermoedelijk",
+          "evidence": "Emmauscollege_nulmeting_M365_en_applicaties_2026(1).xlsx / M365 & ICT!A18:P18 (ICT-010)",
+          "note": "AFAS/AD/Entra staat genoemd als te controleren keten voor personeelsidentiteit. Geen bewezen actieve provisioning."
         }
       ]
     },
@@ -3098,7 +3344,7 @@
       "description": "Printopdrachten en documentverwerking",
       "aiRefs": "0",
       "local": "? Schoolgebruik nog niet apart bevestigd",
-      "owner": "? Nog vaststellen",
+      "owner": "ICT-beheer",
       "users": "? Nog vaststellen",
       "data": "? Nog vaststellen",
       "links": "? Nog controleren",
@@ -3147,6 +3393,36 @@
           "status": "Geregistreerd",
           "evidence": "2026-applicatielandschap.json / licenseReview LIC-027",
           "note": "Zelfde productnaam in beide registers; de status van een contract en het feitelijke licentiegebruik moeten nog afzonderlijk worden gecontroleerd."
+        },
+        {
+          "relationType": "integration",
+          "targetType": "apps",
+          "targetId": "APP-010",
+          "status": "Vermoedelijk",
+          "evidence": "2026-applicatielandschap.json / parts MOD-003",
+          "note": "Entra vermeldt 'MS Teams for uniFLOW Online'. Dit is een productregistratie, geen bevestiging van een werkende Teams-koppeling."
+        },
+        {
+          "relationType": "integration",
+          "targetType": "apps",
+          "targetId": "APP-034",
+          "status": "Vermoedelijk",
+          "evidence": "2026-applicatielandschap.json / parts MOD-007",
+          "note": "Er is een uniFLOW Online-registratie voor SharePoint/OneDrive voor Bedrijven. Gegevensuitwisseling en gebruik zijn niet bevestigd."
+        }
+      ],
+      "recordMeta": {
+        "ownerSource": "Uitdrukkelijke opdracht schoolleiding, 23 november 2026: verantwoordelijke functie; geen toewijzing van Microsoft- of applicatierechten.",
+        "ownerScope": "Verantwoordelijke voor de technische inrichting en het technisch beheer; overige beslis- en toezichtrollen blijven afzonderlijk."
+      },
+      "hardwareLinks": [
+        {
+          "id": "H07",
+          "name": "Printers en toners",
+          "owner": "ICT-beheer",
+          "status": "Geregistreerd als voorzieningenrelatie",
+          "evidence": "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Hardware!A25:K25",
+          "note": "Canon uniFLOW wordt als beheer genoemd; financiële gegevens bevestigen niet de huidige printerpopulatie."
         }
       ]
     },
@@ -3500,7 +3776,7 @@
       "description": "Beheer en onderhoud van digiborden",
       "aiRefs": "0",
       "local": "? Schoolgebruik nog niet apart bevestigd",
-      "owner": "? Nog vaststellen",
+      "owner": "ICT-beheer",
       "users": "? Nog vaststellen",
       "data": "? Nog vaststellen",
       "links": "? Nog controleren",
@@ -3540,6 +3816,20 @@
       "sources": [
         "Emmauscollege_schoolbreed_applicatielandschap_en_AI_2026.xlsx / Applicaties rij 63",
         "Emmauscollege_nulmeting_gerepareerd_Excel_2026.xlsx / Applicatieoverzicht 2026 rij 342"
+      ],
+      "recordMeta": {
+        "ownerSource": "Uitdrukkelijke opdracht schoolleiding, 23 november 2026: verantwoordelijke functie; geen toewijzing van Microsoft- of applicatierechten.",
+        "ownerScope": "Verantwoordelijke voor de technische inrichting en het technisch beheer; overige beslis- en toezichtrollen blijven afzonderlijk."
+      },
+      "hardwareLinks": [
+        {
+          "id": "H03",
+          "name": "Smartboards",
+          "owner": "ICT-beheer",
+          "status": "Geregistreerd als onderhoudsrelatie",
+          "evidence": "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Hardware!A21:K21",
+          "note": "Limid onderhoudscontract; het aantal borden en het werkelijke gebruik zijn niet uit de facturen af te leiden."
+        }
       ]
     },
     {
