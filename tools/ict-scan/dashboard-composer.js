@@ -7,25 +7,25 @@
   const NS='http://www.w3.org/2000/svg';
   const KEY='emmaus-ict-dashboard-studio-v1';
   const DATA=[
-    {key:'apps',store:'apps',card:'apps',label:'Toepassingen',unit:'basisregistraties',field:'area',fieldLabel:'Gebruiksgebied',fields:['owner','local','kind']},
-    {key:'ai',store:'ai',card:'ai',label:'AI-functies',unit:'beschreven functies',field:'domain',fieldLabel:'Domein',fields:['product','local','parentId'],role:'ai'},
-    {key:'connections',store:'connections',card:'connections',label:'Entra',unit:'Entra-registraties',field:'category',fieldLabel:'Categorie',fields:['matchedId','local','usageConfirmed']},
-    {key:'devices',store:'devices',card:'devices',label:'Apparaten',unit:'apparaatmetingen',field:'type',fieldLabel:'Meettype',fields:['measurementDate','quantity','limitation']},
-    {key:'checks',store:'checks',card:'checks',label:'Controles',unit:'controlepunten',field:'category',fieldLabel:'Categorie',fields:['status','evidence','action']},
-    {key:'candidates',store:'candidates',card:'additionalCandidates',label:'Kandidaten',unit:'mogelijke toepassingen',field:'kind',fieldLabel:'Soort',fields:['status','confirmed','action']},
-    {key:'aiControls',store:'aiControls',card:'aiControls',label:'AI-beheer',unit:'beheerpunten',field:'domain',fieldLabel:'Domein',fields:['local','execution','managementLocation'],role:'ai'},
-    {key:'dpia',store:'dpia',card:'dpia',label:'FG-bronnen',unit:'brononderwerpen',field:'type',fieldLabel:'Soort bron',fields:['sourceDate','local','evidence'],role:'fg'}
+    {key:'apps',store:'apps',card:'apps',label:'Toepassingen',help:'Software en online diensten in het register.',unit:'basisregistraties',field:'area',fieldLabel:'Gebruiksgebied',fields:['owner','local','kind']},
+    {key:'ai',store:'ai',card:'ai',label:'AI-functies',help:'Beschreven functies, niet automatisch ingeschakeld.',unit:'beschreven functies',field:'domain',fieldLabel:'Domein',fields:['product','local','parentId'],role:'ai'},
+    {key:'connections',store:'connections',card:'connections',label:'Entra-registraties',help:'Toegang en mogelijke systeemkoppelingen.',unit:'Entra-registraties',field:'category',fieldLabel:'Categorie',fields:['matchedId','local','usageConfirmed']},
+    {key:'devices',store:'devices',card:'devices',label:'Apparaatmetingen',help:'Beschikbare metingen, niet het aantal apparaten.',unit:'apparaatmetingen',field:'type',fieldLabel:'Meettype',fields:['measurementDate','quantity','limitation']},
+    {key:'checks',store:'checks',card:'checks',label:'Controlepunten',help:'Vastgelegde vragen die nog moeten worden nagegaan.',unit:'controlepunten',field:'category',fieldLabel:'Categorie',fields:['status','evidence','action']},
+    {key:'candidates',store:'candidates',card:'additionalCandidates',label:'Mogelijke toepassingen',help:'Aanwijzingen voor software, nog niet bevestigd.',unit:'mogelijke toepassingen',field:'kind',fieldLabel:'Soort',fields:['status','confirmed','action']},
+    {key:'aiControls',store:'aiControls',card:'aiControls',label:'AI-beheer',help:'Beheerafspraken, inrichting en controleacties.',unit:'beheerpunten',field:'domain',fieldLabel:'Domein',fields:['local','execution','managementLocation'],role:'ai'},
+    {key:'dpia',store:'dpia',card:'dpia',label:'Privacybronnen',help:'Bronnen over DPIA en privacytoezicht.',unit:'brononderwerpen',field:'type',fieldLabel:'Soort bron',fields:['sourceDate','local','evidence'],role:'fg'}
   ];
   const PARTS=[
-    {id:'numbers',name:'Meetstrook',caption:'Aantallen per gekozen register',span:12},
-    {id:'distribution',name:'Verdeling',caption:'Dunne lijnen, direct filteren',span:6},
-    {id:'relations',name:'Systeemkaart',caption:'Alleen vastgelegde verbanden',span:8,needs:'apps'},
-    {id:'coverage',name:'Gegevensdekking',caption:'Wat is ingevuld?',span:4},
-    {id:'matrix',name:'Kruistabel',caption:'Gebiedsindeling en soort',span:6,needs:'apps'},
-    {id:'records',name:'Registraties',caption:'Direct naar één gegevenskaart',span:6},
-    {id:'hardware',name:'Apparaatmetingen',caption:'Bronpeildatum en onzekerheid',span:5,needs:'devices'},
-    {id:'actions',name:'Controlewerk',caption:'Status en vervolgstappen',span:5,needsAny:['checks','candidates','aiControls']},
-    {id:'sources',name:'Herkomst',caption:'Welke bron ligt eronder?',span:4}
+    {id:'numbers',name:'Aantallen per register',eyebrow:'AANTALLEN',caption:'Tel de registraties in de gekozen gegevensgroepen.',span:12},
+    {id:'distribution',name:'Verdeling naar categorie',eyebrow:'VERDELING',caption:'Bekijk de verdeling en klik om te filteren.',span:6},
+    {id:'relations',name:'Vastgelegde systeemverbanden',eyebrow:'VERBANDEN',caption:'Bekijk beschreven relaties, geen bewezen live koppelingen.',span:8,needs:'apps'},
+    {id:'coverage',name:'Ingevulde gegevens',eyebrow:'INVULSTATUS',caption:'Zie welke velden wel en niet zijn ingevuld.',span:4},
+    {id:'matrix',name:'Gebruiksgebied en soort toepassing',eyebrow:'UITSPLITSING',caption:'Vergelijk gebruiksgebieden met soorten voorzieningen.',span:6,needs:'apps'},
+    {id:'records',name:'Gegevenskaarten openen',eyebrow:'REGISTRATIES',caption:'Klik op een registratie voor inhoud en bronnen.',span:6},
+    {id:'hardware',name:'Apparaatmetingen bekijken',eyebrow:'APPARATEN',caption:'Bekijk de gemeten waarden, datum en beperkingen.',span:5,needs:'devices'},
+    {id:'actions',name:'Controlepunten en opvolging',eyebrow:'CONTROLE',caption:'Bekijk geregistreerde vragen en vervolgstappen.',span:5,needsAny:['checks','candidates','aiControls']},
+    {id:'sources',name:'Ingelezen bronbestanden',eyebrow:'BRONNEN',caption:'Bekijk van welke bestanden de cijfers afkomstig zijn.',span:4}
   ];
   const PRESETS={
     school:{data:['apps','ai','connections','devices'],parts:['numbers','distribution','relations','coverage','records'],primary:'apps',title:'Schoolbreed overzicht'},
@@ -94,7 +94,9 @@
   function componentTitle(p,index){
     const h=text('header',undefined,'ds-component-head');
     const label=text('div',undefined,'ds-component-label');
-    label.append(text('small',String(index+1).padStart(2,'0')+' / '+p.name.toUpperCase()),text('h3',p.name));
+    const d=activeSource();
+    const title=p.id==='distribution'&&d?d.label+' per '+d.fieldLabel.toLocaleLowerCase('nl-NL'):p.name;
+    label.append(text('small',String(index+1).padStart(2,'0')+' / '+p.eyebrow),text('h3',title));
     const actions=text('div',undefined,'ds-component-controls');
     const modes=p.id==='distribution'
       ?[['lines','Lijnen'],['bars','Staaf'],['donut','Ring'],['treemap','Tegels'],['table','Tabel']]
@@ -368,8 +370,12 @@
     const chosen=new Set(config.data),a=$('dsDataOptions');a.replaceChildren();
     for(const d of DATA){
       const on=chosen.has(d.key),role=enabled(d),b=button('','ds-option'+(on?' selected':'')+(role?'':' unavailable'),()=>toggleData(d.key));
-      b.disabled=!role;b.setAttribute('aria-pressed',String(on));b.title=role?'':(d.role==='fg'?'Zet FG aan via Functies':'Zet AI aan via Functies');
-      b.append(text('span',d.label),text('small',fmt(source(d).length)));a.append(b);
+      const textGroup=text('span',undefined,'ds-option-text');
+      textGroup.append(text('strong',d.label,'ds-option-name'),text('small',d.help,'ds-option-description'));
+      const count=text('span',fmt(source(d).length),'ds-option-count');
+      b.disabled=!role;b.setAttribute('aria-pressed',String(on));
+      if(!role)b.title=d.role==='fg'?'Zet Privacy aan via Menu':'Zet AI aan via Menu';
+      b.append(textGroup,count);a.append(b);
     }
     const effective=availableData();$('dsDataCount').textContent=effective.length+' gekozen';
     const focus=$('dsPrimary');focus.replaceChildren();
@@ -381,10 +387,19 @@
       const on=config.parts.includes(p.id),valid=compatible(p);
       const b=button('','ds-option ds-part'+(on?' selected':'')+(valid?'':' unavailable'),()=>selectPart(p.id));
       b.disabled=!valid;b.setAttribute('aria-pressed',String(on));
-      b.append(text('span',p.name),text('small',p.caption));parts.append(b);
+      const why=!valid?'. Selecteer eerst '+(p.needs?definition(p.needs)?.label||'de bijbehorende gegevens':'de bijbehorende gegevens')+'.':'';
+      const group=text('span',undefined,'ds-option-text');
+      group.append(text('strong',p.name,'ds-option-name'),text('small',p.caption+why,'ds-option-description'));
+      b.append(group);parts.append(b);
     }
     $('dsPartCount').textContent=config.parts.filter(k=>compatible(PARTS.find(p=>p.id===k))).length+' gekozen';
     $('dsLayout').value=config.layout;
+    for(const button of document.querySelectorAll('[data-ds-preset]')){
+      const preset=PRESETS[button.dataset.dsPreset];
+      const active=!!preset&&preset.data.length===config.data.length&&preset.data.every(k=>config.data.includes(k))&&preset.parts.length===config.parts.length&&preset.parts.every(k=>config.parts.includes(k));
+      button.classList.toggle('selected',active);
+      button.setAttribute('aria-pressed',String(active));
+    }
   }
   function arrange(items){
     const rank={
@@ -422,8 +437,8 @@
       const empty=text('div',undefined,'ds-empty');const svg=svgEl('svg',{viewBox:'0 0 480 220','aria-hidden':'true'});
       for(let i=0;i<4;i++){svg.append(svgEl('line',{x1:55,y1:38+i*49,x2:423,y2:38+i*49,class:'ds-empty-line'}));}
       for(let i=0;i<7;i++){const x=67+i*53;svg.append(svgEl('circle',{cx:x,cy:36+((i*i+3)%4)*49,r:3,class:'ds-empty-dot'}));}
-      empty.append(svg,text('h3','Dit werkvlak is leeg.'),text('p','Klik links gegevens en onderdelen aan. De indeling ontstaat vanzelf.'));
-      const b=button('Stel een dashboard samen','ds-empty-action',()=>suggest());empty.append(b);stage.append(empty);return;
+      empty.append(svg,text('h3','Geen grafieken gekozen'),text('p','Kies links hoe je de geselecteerde gegevens wilt bekijken.'));
+      const b=button('Kies passende grafieken','ds-empty-action',()=>suggest());empty.append(b);stage.append(empty);return;
     }
     for(const [i,p] of items.entries()){
       const node=createComponent(p,i);node.style.setProperty('--span',spanFor(p,items.length));
@@ -435,7 +450,7 @@
     const list=availableData(),n=config.parts.filter(id=>compatible(PARTS.find(p=>p.id===id))).length;
     $('dsTitle').textContent=config.title;
     $('dsScope').textContent=list.length?list.map(d=>d.label).join(' · '):'Nog geen gegevens gekozen';
-    $('dsStageMessage').textContent=n+' onderdelen · '+list.length+' gegevensgroepen · automatisch ingedeeld';
+    $('dsStageMessage').textContent=n+' grafieken en kaarten · '+list.length+' gegevensgroepen gekozen';
     $('dsSourceMessage').textContent=(state.ready?'Gegevens ingelezen':'Wachten op bronnen')+' · ontwerp wordt lokaal bewaard';
 
   }
@@ -461,7 +476,7 @@
     showMessage('Ontwerp gedownload. Er zijn geen leerling- of applicatiegegevens opgenomen.');
   }
   viewNames.studio='Samenstellen';viewTitles.studio='Applicatielandschap';
-  sectionTexts.studio='Kies gegevens en onderdelen. De weergave volgt vanzelf.';
+  sectionTexts.studio='Kies gegevens en grafieken. Het overzicht verandert meteen.';
   const originalSelectView=selectView;
   selectView=function(view){originalSelectView(view);if(view==='studio'&&state.ready)refresh();};
   const originalRenderAll=renderAll;
