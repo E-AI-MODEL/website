@@ -510,15 +510,22 @@
       const b=text('button','card-text-action','Open');b.type='button';b.addEventListener('click',()=>open(d.type,d.id));line.append(b);changes.append(line);
     }
   }
-  function startEdit(){
+  function focusEditField(field){
+    if(!field)return;
+    const target=[...$c('cardFormFields').querySelectorAll('[data-field]')].find(el=>el.dataset.field===field);
+    if(!target){feedback('Dit invulveld is nog niet beschikbaar op deze kaart.',true);return;}
+    target.scrollIntoView({block:'center',behavior:'auto'});target.focus({preventScroll:true});
+  }
+  async function startEdit(fieldName){
     if(!model.current)return;
     const r=record(model.current.type,model.current.id);if(!r)return;
+    if(!await window.EmmausEditGate?.request())return;
     const previous=model.drafts.get(key(model.current.type,model.current.id));
     model.original=copy(previous?previous.before:r);model.working=copy(r);model.editing=true;model.adding=!entry(model.current.type,model.current.id);
     model.editSourceScope=model.drafts.get(key(model.current.type,model.current.id))?.sourceScope??window.EmmausCardGitLogic.sourceScope(window.IctOrganisation.profile,state.sources);
-    feedback('');showPane();
+    feedback('');showPane();focusEditField(typeof fieldName==='string'?fieldName:'');
   }
-  function open(type,id,edit=false,mode='context'){
+  async function open(type,id,edit=false,mode='context',fieldName=''){
     if($c('workspace').hidden)return;
     if(model.editing&&!confirm('Niet-bewaarde invoer verlaten?'))return;
     const spec=specFor(type);
@@ -528,9 +535,10 @@
     $c('cardEditor').hidden=false;$c('cardScrim').hidden=false;document.body.classList.add('record-card-open');
     model.current={type,id};model.editing=false;model.working=null;model.adding=false;
     $c('cardTypeFilter').value=type;$c('cardSearch').value='';
-    showList();showPane();if(edit)startEdit();
+    showList();showPane();if(edit)await startEdit(fieldName);
   }
-  function create(){
+  async function create(){
+    if(!await window.EmmausEditGate?.request())return;
     if(model.editing&&!confirm('Niet-bewaarde invoer verlaten?'))return;
     if(!state.ready){feedback('Laad eerst de brongegevens vanuit GitHub voordat je een nieuwe kaart maakt.',true);return;}
     const type=$c('cardTypeFilter').value,spec=specFor(type),id=nextId(spec);
@@ -628,7 +636,7 @@
   $c('cardSearch').addEventListener('input',showList);
   $c('cardNew').addEventListener('click',create);
   $c('cardNewFromRecord').addEventListener('click',create);
-  $c('cardEditButton').addEventListener('click',startEdit);
+  $c('cardEditButton').addEventListener('click',()=>void startEdit());
   $c('cardCancelEdit').addEventListener('click',()=>{
     if(model.adding&&!entry(model.current.type,model.current.id)&&!model.drafts.has(key(model.current.type,model.current.id)))model.current=null;
     model.editing=false;model.working=null;showList();showPane();

@@ -11,6 +11,19 @@ class ICTScanTests(unittest.TestCase):
         for filename in ("index.html", "style.css", "monitor.css", "app.js", "enhancements.js", "github-sync.js", "rail-drawer.js", "visual-explorer.js", "visual-explorer.css", "record-cards.js", "record-github.js", "record-cards.css", "frameworks.json", "answer-engine.js", "answer-engine.css", "scene-navigation.js", "scene-navigation.css", "evidence-experience.js", "evidence-experience.css", "role-modes.js", "role-modes.css", "dashboard-composer.js", "dashboard-composer.css", "emmaus-logo.svg", "organisation.js", "assurance-ui.js", "assurance.css", "assurance/source-register.js", "assurance/engine.js", "assurance/profile.js", "assurance/adapter.js", "assurance/record-contract.js", "assurance/worker.js", "assurance/evaluation-corpus.json", "assurance/profiles/emmauscollege.json", "README.md"):
             self.assertTrue((TOOL / filename).is_file(), filename)
 
+    def test_composer_and_edit_gate_assets_published(self):
+        html = (TOOL / "index.html").read_text(encoding="utf-8")
+        builder = (ROOT / "scripts" / "build_site.py").read_text(encoding="utf-8")
+        for filename in ("composer-resize.js", "composer-resize.css", "edit-gate.css", "edit-gate.js"):
+            self.assertTrue((TOOL / filename).is_file(), filename)
+            self.assertIn(f'"{filename}"', builder, f"{filename} must be shipped")
+            self.assertIn(f'./{filename}', html, f"{filename} must be referenced")
+        app = (TOOL / "app.js").read_text(encoding="utf-8")
+        cards = (TOOL / "record-cards.js").read_text(encoding="utf-8")
+        self.assertIn("signalTarget.type,signalTarget.id,true", app)
+        self.assertIn("focusEditField", cards)
+        self.assertIn("EmmausEditGate?.request()", cards)
+
     def test_secret_not_security_and_litespeed_404_middle_zero(self):
         html = (TOOL / "index.html").read_text(encoding="utf-8")
         js = (TOOL / "app.js").read_text(encoding="utf-8")

@@ -63,6 +63,7 @@ async function setup(records = [{id: 'APP-001', name: 'Original name', descripti
     renderSources() {}, confirm: () => true,
     fetch: async () => ({ok: true, json: async () => clone(catalog)})};
   context.window = context;
+  context.EmmausEditGate = {request: async () => true};
   vm.createContext(context);
   for (const path of ['tools/ict-scan/assurance/profile.js', 'tools/ict-scan/assurance/source-register.js', 'tools/ict-scan/assurance/engine.js', 'tools/ict-scan/assurance/adapter.js', 'tools/ict-scan/assurance/record-contract.js']) vm.runInContext(read(path), context, {filename: path});
   const profile = context.AssuranceProfile.validate(clone(profileJson));
@@ -76,7 +77,7 @@ async function setup(records = [{id: 'APP-001', name: 'Original name', descripti
   const cards = context.EmmausRecordCards, logic = context.EmmausCardGitLogic;
   return {
     document, state, context, profile, cards, logic,
-    open(id = 'APP-001') {cards.open('apps', id, true, 'manager');},
+    open(id = 'APP-001') {return cards.open('apps', id, true, 'manager');},
     set(name, value) {const input = document.getElementById('cardFormFields').querySelector('[name="' + name + '"]'); assert.ok(input, 'Input ontbreekt: ' + name); input.value = value;},
     save() {this.set('changeReason', 'Correctie op basis van vastgelegde brongegevens'); document.getElementById('cardForm').dispatch('submit', {preventDefault() {}});}
   };
@@ -89,7 +90,7 @@ function documents(profile, apps) {
 
 test('Een naamwijziging bewaart onbekende objecten, lijsten en geneste bronmetadata', async () => {
   const record = {id: 'APP-001', name: 'Original name', sources: ['S-1'], extension: {custom: ['retained', 7]}, customList: ['one', {value: 2}], recordMeta: {external: {source: 'foreign-schema'}}};
-  const app = await setup([record]); app.open();
+  const app = await setup([record]); await app.open();
   const form = app.document.getElementById('cardFormFields');
   assert.equal(form.querySelector('[name="extension"]'), null);
   assert.equal(form.querySelector('[name="customList"]'), null);
@@ -105,13 +106,13 @@ test('Een naamwijziging bewaart onbekende objecten, lijsten en geneste bronmetad
 test('Een ongewijzigde normverwijzing bewaart onbekende gestructureerde uitbreidingen', async () => {
   const link = {frameworkId: 'AVG', article: 'art. 28', status: 'In onderzoek', evidence: 'DOC-1', extra: {clauseVersion: 3, observations: ['keep']}};
   const app = await setup([{id: 'APP-001', name: 'Original name', sources: ['S-1'], frameworkLinks: [link]}]);
-  app.open(); app.set('name', 'Changed name'); app.save();
+  await app.open(); app.set('name', 'Changed name'); app.save();
   assert.deepEqual(clone(app.cards.drafts()[0].after.frameworkLinks[0].extra), link.extra);
 });
 
 test('Concepten uit een vreemde of lokale bron worden na bronomschakeling niet publiceerbaar', async () => {
   for (const sources of [[{name: 'local.json'}], [remoteSource(profileJson, {repository: 'different-org/data'})]]) {
-    const app = await setup(); app.state.sources = sources; app.open(); app.set('description', 'Details from a different organisation'); app.save();
+    const app = await setup(); app.state.sources = sources; await app.open(); app.set('description', 'Details from a different organisation'); app.save();
     const [draft] = app.cards.drafts(); assert.ok(draft); assert.equal(draft.sourceScope, null);
     app.state.sources = [remoteSource(app.profile)];
     app.logic.assertSourceMatches(app.profile, app.state.sources);
@@ -119,7 +120,7 @@ test('Concepten uit een vreemde of lokale bron worden na bronomschakeling niet p
     const before = JSON.stringify(files);
     assert.throws(() => app.logic.applyDrafts(files, [draft], 'reviewer', '2026-11-21T15:00:00Z', app.profile), /niet gekoppeld/);
     assert.equal(JSON.stringify(files), before);
-    app.open(); app.set('name', 'Another draft change'); app.save();
+    await app.open(); app.set('name', 'Another draft change'); app.save();
     assert.equal(app.cards.drafts()[0].sourceScope, null, 'Later bewerken mag bronbinding niet verhogen');
   }
 });
@@ -128,7 +129,7 @@ test('Een bronwissel tijdens de eerste bewerking verhoogt de bronbinding niet', 
   const original = {id: 'APP-001', name: 'Original name', description: 'Text from source B', sources: ['B']};
   const app = await setup([original]);
   app.state.sources = [remoteSource(app.profile, {repository: 'different-org/data'})];
-  app.open(); app.set('name', 'Name edited while source B was open');
+  await app.open(); app.set('name', 'Name edited while source B was open');
   app.state.sources = [remoteSource(app.profile)];
   app.state.apps.set(original.id, {id: original.id, name: original.name, description: 'Text from source A', sources: ['A']});
   app.save();
@@ -141,7 +142,7 @@ test('Een bronwissel tijdens de eerste bewerking verhoogt de bronbinding niet', 
 
 test('Een gelijktijdige bronwijziging blijft zichtbaar tegenover de oorspronkelijke bewerkbasis', async () => {
   const original = {id: 'APP-001', name: 'Original name', description: 'Old description', sources: ['S-1']};
-  const app = await setup([original]); app.open(); app.set('description', 'My pending change');
+  const app = await setup([original]); await app.open(); app.set('description', 'My pending change');
   app.state.apps.set(original.id, {...original, description: 'Another committed change'});
   app.save(); const [draft] = app.cards.drafts(); assert.ok(draft);
   assert.equal(draft.before.description, original.description);
@@ -164,7 +165,7 @@ test('Een latere ongeldige normbeoordeling maakt een hele wijzigingsbatch ongewi
 
 test('Een geldige wijziging blijft gebonden aan haar bron en bewaart originele velden', async () => {
   const record = {id: 'APP-001', name: 'Original name', description: 'Old description', sources: ['S-1'], sourceFields: {original: 'Keep'}, extension: {value: 2}};
-  const app = await setup([record]); app.open(); app.set('description', 'Corrected description'); app.save();
+  const app = await setup([record]); await app.open(); app.set('description', 'Corrected description'); app.save();
   const [draft] = app.cards.drafts(); assert.equal(draft.sourceScope, app.context.AssuranceProfile.scopeKey(app.profile));
   const files = documents(app.profile, [record]);
   app.logic.applyDrafts(files, [draft], 'reviewer', '2026-11-21T15:00:00Z', app.profile);
@@ -177,9 +178,9 @@ test('Een geldige wijziging blijft gebonden aan haar bron en bewaart originele v
 
 test('Een nieuwe kaartwijziging tijdens publicatie blijft na voltooiing bewaard', async () => {
   const app = await setup([{id: 'APP-001', name: 'First', sources: ['S-1']}, {id: 'APP-002', name: 'Second', sources: ['S-2']}]);
-  app.open('APP-001'); app.set('name', 'First submitted change'); app.save();
+  await app.open('APP-001'); app.set('name', 'First submitted change'); app.save();
   const submitted = app.cards.drafts();
-  app.open('APP-002'); app.set('name', 'Second change made during publication'); app.save();
+  await app.open('APP-002'); app.set('name', 'Second change made during publication'); app.save();
   const newer = clone(app.cards.drafts().find(draft => draft.id === 'APP-002'));
   const result = app.cards.clearPublished(submitted);
   assert.equal(result.cleared, 1); assert.equal(result.remaining, 1);
@@ -187,9 +188,9 @@ test('Een nieuwe kaartwijziging tijdens publicatie blijft na voltooiing bewaard'
 });
 
 test('Een nieuwere versie van hetzelfde concept houdt haar originele bewerkbasis', async () => {
-  const app = await setup(); app.open(); app.set('description', 'First submitted change'); app.save();
+  const app = await setup(); await app.open(); app.set('description', 'First submitted change'); app.save();
   const submitted = app.cards.drafts();
-  app.open(); app.set('description', 'Later change of the same record'); app.save();
+  await app.open(); app.set('description', 'Later change of the same record'); app.save();
   const newer = clone(app.cards.drafts()[0]);
   const result = app.cards.clearPublished(submitted);
   assert.equal(result.cleared, 0); assert.equal(result.remaining, 1);
@@ -198,9 +199,9 @@ test('Een nieuwere versie van hetzelfde concept houdt haar originele bewerkbasis
 });
 
 test('Voltooide publicatie wist geen onbewaarde invoer of de oorspronkelijke vergelijkingsbasis', async () => {
-  const app = await setup(); app.open(); app.set('description', 'First submitted change'); app.save();
+  const app = await setup(); await app.open(); app.set('description', 'First submitted change'); app.save();
   const submitted = app.cards.drafts();
-  app.open(); app.set('description', 'Typing while publication completes');
+  await app.open(); app.set('description', 'Typing while publication completes');
   app.cards.clearPublished(submitted);
   const input = app.document.getElementById('cardFormFields').querySelector('[name="description"]');
   assert.equal(input.value, 'Typing while publication completes');
@@ -213,7 +214,7 @@ test('Voltooide publicatie wist geen onbewaarde invoer of de oorspronkelijke ver
 
 test('De publicatiecallback behoudt een tijdens de API-aanvraag gemaakt concept', async () => {
   const original = [{id: 'APP-001', name: 'First', sources: ['S-1']}, {id: 'APP-002', name: 'Second', sources: ['S-2']}];
-  const app = await setup(original); app.open('APP-001'); app.set('name', 'Submitted change'); app.save();
+  const app = await setup(original); await app.open('APP-001'); app.set('name', 'Submitted change'); app.save();
   const files = documents(app.profile, original), base = 'https://api.github.com/repos/' + app.profile.source.repository;
   const configuration = Object.fromEntries(Object.entries(app.profile.source.configurationFiles).map(([type,path]) => [path,
     type === 'profile' ? JSON.stringify(app.profile) : type === 'catalog' ? JSON.stringify(catalog) : read('tools/ict-scan/assurance/' + (type === 'engine' ? 'engine.js' : 'source-register.js'))]));
@@ -246,7 +247,7 @@ test('De publicatiecallback behoudt een tijdens de API-aanvraag gemaakt concept'
   app.document.getElementById('cardConfirmPublic').checked = true;
   app.document.getElementById('cardCreatePR').dispatch('click');
   await requested;
-  app.open('APP-002'); app.set('name', 'New unsent change'); app.save();
+  await app.open('APP-002'); app.set('name', 'New unsent change'); app.save();
   const unsent = clone(app.cards.drafts().find(draft => draft.id === 'APP-002'));
   resolveUser();
   let timeout;
@@ -291,7 +292,7 @@ function currentBinding(app, files, id = 'APP-001') {
 test('Een normbeoordeling vraagt expliciete bevestiging en gewone inhoudsbewerking bindt niet opnieuw', async () => {
   const original = {id:'APP-001',name:'Fictieve toepassing',description:'Oorspronkelijke inhoud',sources:['S-1'],frameworkLinks:[{frameworkId:'AVG',article:'art. 30',status:'In onderzoek',evidence:'Fictief bewijs'}]};
   const app = await setup([original]); const source = approvedSource(app); app.state.sourceRegister.set(source.id, source);
-  app.open();
+  await app.open();
   let row = app.document.getElementById('cardFrameworkRows').children[0];
   for (const [field, value] of Object.entries({status:'Onderbouwd',reviewedBy:'Testbeoordelaar',reviewedAt:'2026-11-20',nextReviewAt:'2027-11-20'})) row.querySelector('[data-part="'+field+'"]').value = value;
   assert.equal(row.querySelector('[data-part="confirmReviewBinding"]').checked, false);
@@ -303,7 +304,7 @@ test('Een normbeoordeling vraagt expliciete bevestiging en gewone inhoudsbewerki
   const first = clone(app.cards.drafts()[0]); assert.ok(first.after.frameworkLinks[0].reviewBinding);
   const files = filesWithSources(app); files[app.profile.source.registerFiles.apps].apps[0] = clone(first.after);
   assert.equal(currentBinding(app, files).status, 'current');
-  app.open(); row = app.document.getElementById('cardFrameworkRows').children[0];
+  await app.open(); row = app.document.getElementById('cardFrameworkRows').children[0];
   assert.equal(row.querySelector('[data-part="confirmReviewBinding"]').checked, false);
   app.set('description', 'Inhoud gewijzigd zonder nieuw oordeel'); app.save();
   const changed = clone(app.cards.drafts()[0]);
@@ -398,7 +399,7 @@ test('Een bronkaart toont provenance als object of lijst zonder de brongegevens 
     const visible=node=>[node.textContent||'',...(node.children||[]).flatMap(child=>visible(child))];
     assert.ok(visible(app.document.body).join('\n').includes(grouped.provenance.file));
     assert.deepEqual(app.state.sourceRegister.get(source.id),source);
-    assert.doesNotThrow(()=>app.cards.open('sourceRegister',source.id,true,'manager'));
+    await app.cards.open('sourceRegister',source.id,true,'manager');
     assert.deepEqual(app.state.sourceRegister.get(source.id),source);
   }
 });
@@ -407,7 +408,7 @@ test('Een gewone naamwijziging bewaart exacte bronaliassen met spaties, tabs en 
   const app=await setup(),source=approvedSource(app,{referenceKeys:[' Exacte bronref ','\tTweede bron\t','Verwijzing\nmet regeleinde']});
   source.approvalStatus='Nog te beoordelen';delete source.approvalBinding;
   app.state.sourceRegister.set(source.id,source);
-  app.cards.open('sourceRegister',source.id,true,'manager');app.set('name','Alleen de naam is gewijzigd');app.save();
+  await app.cards.open('sourceRegister',source.id,true,'manager');app.set('name','Alleen de naam is gewijzigd');app.save();
   const draft=app.cards.drafts()[0];assert.ok(draft);
   assert.deepEqual(clone(draft.after.referenceKeys),source.referenceKeys);
   assert.equal(draft.changed.includes('referenceKeys'),false);
@@ -415,18 +416,18 @@ test('Een gewone naamwijziging bewaart exacte bronaliassen met spaties, tabs en 
 
 test('Expliciete aliasinvoer bewaart randspaties en tabs en weigert een regel met alleen spaties', async () => {
   const app=await setup(),source=approvedSource(app);source.approvalStatus='Nog te beoordelen';delete source.approvalBinding;
-  app.state.sourceRegister.set(source.id,source);app.cards.open('sourceRegister',source.id,true,'manager');
+  app.state.sourceRegister.set(source.id,source);await app.cards.open('sourceRegister',source.id,true,'manager');
   app.set('referenceKeys',' Eerste bron \n\tTweede bron\t');app.save();
   assert.deepEqual(clone(app.cards.drafts()[0].after.referenceKeys),[' Eerste bron ','\tTweede bron\t']);
   const accepted=clone(app.cards.drafts()[0]);
-  app.cards.open('sourceRegister',source.id,true,'manager');app.set('referenceKeys',' \t ');app.save();
+  await app.cards.open('sourceRegister',source.id,true,'manager');app.set('referenceKeys',' \t ');app.save();
   assert.deepEqual(clone(app.cards.drafts()[0]),accepted);
   assert.match(app.document.getElementById('cardFeedback').textContent,/alleen spaties/);
 });
 
 test('Een bevestigde normreview bewaart een onbekend null-veld en blijft geldig na remote samenvoegen', async () => {
   const original={id:'APP-001',name:'Fictief',description:'Inhoud',sources:['S-1'],extension:null,frameworkLinks:[{frameworkId:'AVG',article:'art. 30',status:'In onderzoek',evidence:'Fictief bewijs'}]};
-  const app=await setup([original]),source=approvedSource(app);app.state.sourceRegister.set(source.id,source);app.open();
+  const app=await setup([original]),source=approvedSource(app);app.state.sourceRegister.set(source.id,source);await app.open();
   const row=app.document.getElementById('cardFrameworkRows').children[0];
   for(const [field,value] of Object.entries({status:'Onderbouwd',reviewedBy:'Testbeoordelaar',reviewedAt:'2026-11-20',nextReviewAt:'2027-11-20'}))row.querySelector('[data-part="'+field+'"]').value=value;
   row.querySelector('[data-part="confirmReviewBinding"]').checked=true;app.save();
