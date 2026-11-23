@@ -264,8 +264,8 @@ try {
   assert.equal(sourceOverview.original.version,'');
   await page.locator('#cardReadView .card-read-tab[data-target="details"]').click();
   const sourceDetails=await page.locator('#cardReadView [data-card-tab="details"]').textContent();
-  assert.match(sourceDetails,/Grondslag voor gebruik\\s*Onbekend/);
-  assert.match(sourceDetails,/Bewijs van goedkeuring\\s*Onbekend/);
+  assert.match(sourceDetails,/Grondslag voor gebruik\s*Onbekend/);
+  assert.match(sourceDetails,/Bewijs van goedkeuring\s*Onbekend/);
   await page.locator('#cardEditorClose').click();
   await page.locator('#railDrawerClose').click();
   await page.locator('.app-register-tab').nth(1).click();
