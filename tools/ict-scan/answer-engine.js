@@ -81,7 +81,7 @@
       return result('legal','Bij '+own+' staan '+rules.length+' toetsingsverwijzingen: '+rules.map(x=>x.frameworkId+' '+x.article+' ('+(x.status||'nog te beoordelen')+')').join('; ')+'. Een verwijzing betekent geen automatische naleving.',base,'Beoordelingsregistratie',src);
     }
     if(/\b(bron|bronnen|herkomst|vandaan|afkomst)\b/.test(q)){
-      return result('source','Bronnen en originele bestandsverwijzingen zijn bewaard voor de interne controle. De gewone kaart toont geen Excel-herkomst.',base,'Broncontrole apart',[],question);
+      return result('source','Bronnen en originele bestandsverwijzingen zijn bewaard voor de interne controle. De gewone kaart toont geen Excel-herkomst.',base,'Broncontrole apart',[],q);
     }
     if(/\b(gegevens|persoonsgegevens|data|verwerkt|gegevenscategorie)\b/.test(q)&&!/\b(koppel|koppelingen|deelt|uitwisseling)\b/.test(q)){
       return result('field',candidateAnswer(app.data,'Bij '+own+' zijn de volgende gegevens geregistreerd: ','Voor '+own+' is nog niet vastgesteld welke gegevens worden verwerkt.'),base,unknown(app.data)?'Niet vastgesteld':'Geregistreerd',src);
