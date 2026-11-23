@@ -259,36 +259,64 @@
       stage.append(b);
     }
     root.append(stage,text('p','De lijnen tonen bronrelaties, geen bevestigde actieve gegevensuitwisseling.','ds-note'));
+    if(app.owner&&!/^\?/.test(app.owner))root.append(text('p','Verantwoordelijke: '+app.owner,'ds-note'));
     const relationshipTypes={
-      license_review:'Licentiecontroles',
-      software_review:'Softwarecontroles',
-      follow_up:'Open werkacties',
-      part_of:'Productonderdelen',
-      integration:'Mogelijke integraties'
+      license_review:'Licentiecontrole',
+      software_review:'Softwarecontrole',
+      follow_up:'Open werkactie',
+      part_of:'Onderdeel van',
+      integration:'Mogelijke integratie',
+      sso:'Mogelijke aanmeldroute',
+      supports:'Mogelijke functie',
+      managed_by:'Mogelijk beheer'
     };
     const stores={apps:state.apps,licenseReview:state.licenseReview,softwareReview:state.softwareReview,workActions:state.workActions};
-    const recorded=(app.relations||[]).map(link=>{
+    const outgoing=(app.relations||[]).map(link=>{
       const target=stores[link.targetType]?.get(link.targetId);
-      return target?{link,target}:null;
+      return target?{link,target,direction:'Vanuit deze toepassing'}:null;
     }).filter(Boolean);
+    const incoming=Array.from(state.apps.values()).filter(other=>other.id!==app.id).flatMap(other=>
+      (other.relations||[]).filter(link=>link.targetType==='apps'&&link.targetId===app.id)
+        .map(link=>({link,target:other,direction:'Naar deze toepassing'})));
+    const recorded=outgoing.concat(incoming);
     if(recorded.length){
       const section=text('section',undefined,'ds-network-records ds-recorded-links');
       section.append(text('strong','Vastgelegde relaties · '+recorded.length));
       section.append(text('small','Bronstatus per relatie. Vermoedelijke technische koppelingen zijn niet als actief bevestigd.'));
       const list=text('div',undefined,'ds-record-links');
-      for(const {link,target} of recorded){
+      for(const {link,target,direction} of recorded){
         const label=(relationshipTypes[link.relationType]||link.relationType)+' · '+(target.name||target.id);
-        const b=button(label+' · '+link.status,'ds-record-link',()=>openCard({card:link.targetType},target));
-        b.title=(link.note||'')+' | Bron: '+(link.evidence||'Niet vastgelegd');
-        if(link.status==='Vermoedelijk')b.dataset.status='vermoedelijk';
-        list.append(b);
+        const details=text('details',undefined,'ds-relationship-detail');
+        details.append(text('summary',label+' · '+link.status+' · '+direction));
+        const body=text('div',undefined,'ds-relationship-proof');
+        body.append(text('p',link.note||'Geen nadere toelichting.','ds-note'));
+        body.append(text('small','Bron: '+(link.evidence||'Niet vastgelegd')));
+        body.append(button('Open '+(target.name||target.id),'ds-record-link',()=>openCard({card:link.targetType==='apps'?'apps':link.targetType},target)));
+        details.append(body);list.append(details);
       }
       section.append(list);root.append(section);
     }
 
+    for(const [title,items] of [
+      ['Apparatuur en beheer',app.hardwareLinks||[]],
+      ['Microsoft 365-onderdelen',app.serviceLinks||[]]
+    ]){
+      if(!items.length)continue;
+      const section=text('section',undefined,'ds-network-records ds-context-links');
+      section.append(text('strong',title+' · '+items.length));
+      const list=text('div',undefined,'ds-record-links');
+      for(const item of items){
+        const details=text('details',undefined,'ds-relationship-detail');
+        details.append(text('summary',item.name+' · '+(item.owner||item.status||'Status onbekend')));
+        const body=text('div',undefined,'ds-relationship-proof');
+        body.append(text('p',item.note||'Geen nadere toelichting.','ds-note'),text('small','Bron: '+(item.evidence||'Niet vastgelegd')));
+        details.append(body);list.append(details);
+      }
+      section.append(list);root.append(section);
+    }
     function showRelationList(stage,g){
-      const old=root.querySelector('.ds-network-records');if(old)old.remove();
-      const wrap=text('div',undefined,'ds-network-records');wrap.append(text('strong',g.label+' · '+g.rows.length));
+      const old=root.querySelector('.ds-network-current-list');if(old)old.remove();
+      const wrap=text('div',undefined,'ds-network-records ds-network-current-list');wrap.append(text('strong',g.label+' · '+g.rows.length));
       wrap.append(text('small',g.note));
       const list=text('div',undefined,'ds-record-links');
       for(const record of g.rows.slice(0,12)){list.append(button(record.name||record.id,'ds-record-link',()=>openCard({card:g.card},record)));}
