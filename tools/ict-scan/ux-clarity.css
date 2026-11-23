@@ -13,7 +13,7 @@
 }
 .workspace.monitor-layout .icon-rail .rail-button svg{width:18px;height:18px;flex:0 0 18px}
 .workspace.monitor-layout .icon-rail .rail-label{
-  display:block;color:inherit;font:600 8px/1.15 inherit;
+  display:block;color:inherit;font-size:8px;font-weight:600;line-height:1.15;font-family:inherit;
   letter-spacing:0;text-align:center;white-space:nowrap;
   max-width:100%;overflow:hidden;text-overflow:clip;
 }
@@ -89,6 +89,11 @@
   }
   .workspace.monitor-layout .icon-rail .rail-label{font-size:7.5px}
   .workspace.monitor-layout .icon-rail .rail-more{margin:0 0 0 auto}
+  .workspace.monitor-layout .side-nav .rail-button[data-view="connections"],
+  .workspace.monitor-layout .side-nav .rail-button[data-view="devices"],
+  .workspace.monitor-layout .side-nav .rail-button[data-view="privacy"],
+  .workspace.monitor-layout .side-nav .rail-button[data-view="findings"],
+  .workspace.monitor-layout .side-nav .rail-button[data-view="reports"]{display:none}
   .workspace.monitor-layout .icon-rail .rail-button.active:after{bottom:2px}
 }
 @media(max-width:370px){
