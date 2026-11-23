@@ -194,7 +194,7 @@ function renderGlobalSuggestions(){
 }
 const snapshotStore='emmaus-ict-scan-v2';
 const snapshotSchema='ict-scan-snapshot-v1';
-const snapshotRegisters=['apps','ai','connections','checks','devices','parts','dpia','aiControls','policyDocs','signals','candidates','licenseReview','workActions','softwareReview','faqs','sourceRegister'];
+const snapshotRegisters=['apps','ai','connections','checks','devices','hardwareGroups','parts','dpia','aiControls','policyDocs','signals','candidates','licenseReview','workActions','softwareReview','faqs','sourceRegister'];
 function snapshotScope(profile){return window.AssuranceProfile.scopeKey(profile);}
 function snapshotKey(profile){return 'profile:'+snapshotScope(profile);}
 function openSnapshotDB(){return new Promise((resolve,reject)=>{if(!('indexedDB' in window))return reject(Error('Opslag is niet beschikbaar in deze browser.'));const req=indexedDB.open(snapshotStore,1);req.onupgradeneeded=()=>{if(!req.result.objectStoreNames.contains('scans'))req.result.createObjectStore('scans');};req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error||Error('Lokale opslag is niet beschikbaar.'));});}
@@ -211,7 +211,7 @@ function validateSnapshot(saved,profile){
   for(const key of snapshotRegisters){
     // A scoped snapshot from before the source register remains recoverable.
     // Its missing register stays explicitly unloaded; the adapter rejects it.
-    if(key==='sourceRegister'&&!Object.prototype.hasOwnProperty.call(saved.maps,key)&&saved.sourceRegisterLoaded===undefined)continue;
+    if((key==='sourceRegister'&&saved.sourceRegisterLoaded===undefined||key==='hardwareGroups')&&!Object.prototype.hasOwnProperty.call(saved.maps,key))continue;
     const items=saved.maps[key];if(!Array.isArray(items))throw Error('Een register ontbreekt in de momentopname: '+key);
     const ids=new Set();
     for(const item of items){if(!item||typeof item!=='object'||Array.isArray(item)||(!item.id&&!item.name))throw Error('Een registratie in de momentopname is ongeldig.');const id=String(item.id||item.name);if(ids.has(id))throw Error('Een registratie staat dubbel in de momentopname.');ids.add(id);}
