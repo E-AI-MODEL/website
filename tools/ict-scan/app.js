@@ -147,9 +147,36 @@ function itemCard(item,kind){let info='',label='',sub='',chip='',detailHtml='';
  const div=document.createElement('div');div.className='item-card';const summary=document.createElement('button');summary.className='item-summary';summary.type='button';summary.setAttribute('aria-expanded','false');summary.innerHTML='<span class="id-pill">'+esc(item.id)+'</span><span><span class="item-name">'+esc(label)+'</span><span class="item-sub" style="display:block">'+esc(sub)+'</span></span><span class="item-end"><span class="chip '+(chip.match(/onbekend|open|\?/i)?'caution':'')+'">'+esc(short(chip,28))+'</span><span class="chevron" aria-hidden="true">&#8250;</span></span>';
  const detailBox=document.createElement('div');detailBox.className='item-detail';detailBox.hidden=true;detailBox.innerHTML=detailHtml+'<div class="detail-field"><span class="detail-label">Bron</span><span class="detail-value">'+esc((item.sources||[]).join('; ')||item.source||'Geen bronverwijzing')+'</span></div>';
  const editTypes={app:'apps',ai:'ai',connection:'connections',candidate:'additionalCandidates',license:'licenseReview',workaction:'workActions',softwarereview:'softwareReview',check:'checks'};
- const editType=editTypes[kind];
- if(editType){const edit=document.createElement('button');edit.type='button';edit.className='card-edit-inline';edit.textContent='Gegevens bekijken';edit.addEventListener('click',()=>window.EmmausRecordCards?.open(editType,item.id));detailBox.appendChild(edit);}
- summary.addEventListener('click',()=>{if(editType&&window.EmmausRecordCards?.open){window.EmmausRecordCards.open(editType,item.id);return;}detailBox.hidden=!detailBox.hidden;summary.setAttribute('aria-expanded',String(!detailBox.hidden));div.classList.toggle('is-open',!detailBox.hidden);});if(editType){summary.setAttribute('aria-haspopup','dialog');summary.removeAttribute('aria-expanded');summary.setAttribute('aria-label',label+' · open gegevenskaart');div.classList.add('item-card-direct');if(window.EmmausRecordCards?.open){div.append(summary);return div;}}div.append(summary,detailBox);return div;
+ let editType=editTypes[kind];
+ let signalTarget=null;
+ if(kind==='check'&&/^CHK-/.test(item.id||'')){
+   editType=null;
+   const ref=item.related;
+   if(ref&&state.apps.has(ref)){
+     const field={Verantwoordelijkheid:'owner',Gebruik:'local',Koppelingen:'links'}[item.category];
+     if(field)signalTarget={type:'apps',id:ref,field};
+   }else if(ref&&state.connections.has(ref)){
+     signalTarget={type:'connections',id:ref,field:'assessment'};
+   }else if(ref&&state.ai.has(ref)){
+     signalTarget={type:'ai',id:ref,field:'local'};
+   }
+ }
+ const openTarget=()=>{
+   if(signalTarget&&window.EmmausRecordCards?.open){
+     window.EmmausRecordCards.open(signalTarget.type,signalTarget.id,true,'context',signalTarget.field);return true;
+   }
+   if(editType&&window.EmmausRecordCards?.open){
+     window.EmmausRecordCards.open(editType,item.id);return true;
+   }
+   return false;
+ };
+ if(editType||signalTarget){const edit=document.createElement('button');edit.type='button';edit.className='card-edit-inline';edit.textContent=signalTarget?'Invulveld openen':'Gegevens bekijken';edit.addEventListener('click',openTarget);detailBox.appendChild(edit);}
+ summary.addEventListener('click',()=>{if(openTarget())return;detailBox.hidden=!detailBox.hidden;summary.setAttribute('aria-expanded',String(!detailBox.hidden));div.classList.toggle('is-open',!detailBox.hidden);});
+ if(editType||signalTarget){
+   summary.setAttribute('aria-haspopup','dialog');summary.removeAttribute('aria-expanded');summary.setAttribute('aria-label',label+' · '+(signalTarget?'open invulveld':'open gegevenskaart'));div.classList.add('item-card-direct');
+   if(window.EmmausRecordCards?.open){div.append(summary);return div;}
+ }
+ div.append(summary,detailBox);return div;
 }
 function renderList(parent,items,kind,limit=100){const el=$(parent);el.replaceChildren();if(!items.length){el.innerHTML='<div class="no-results">Geen resultaten bij deze selectie.</div>';return;}const f=document.createDocumentFragment();items.slice(0,limit).forEach(it=>f.appendChild(itemCard(it,kind)));el.appendChild(f);if(items.length>limit){const hint=document.createElement('p');hint.className='load-status';hint.textContent='De eerste '+limit+' van '+items.length+' resultaten worden getoond. Gebruik zoeken om specifieker te kijken.';el.appendChild(hint);}}
 function fillSelect(el,items,value){const select=$(el);const selected=value??select.value;const first=select.firstElementChild?.cloneNode(true);select.replaceChildren();if(first)select.append(first);items.sort((a,b)=>a.localeCompare(b,'nl')).forEach(v=>{if(!v)return;const opt=document.createElement('option');opt.value=v;opt.textContent=v;select.append(opt);});if(items.includes(selected))select.value=selected;}
