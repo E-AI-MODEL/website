@@ -161,6 +161,13 @@ function itemCard(item,kind){let info='',label='',sub='',chip='',detailHtml='';
      signalTarget={type:'ai',id:ref,field:'local'};
    }
  }
+ if(kind==='check'){
+   const end=summary.querySelector('.item-end');
+   const hint=document.createElement('span');
+   hint.className='item-action-hint';
+   hint.textContent=signalTarget?'Veld invullen':editType?'Kaart openen':'Toelichting';
+   end?.insertBefore(hint,end.querySelector('.chevron'));
+ }
  const openTarget=()=>{
    if(signalTarget&&window.EmmausRecordCards?.open){
      window.EmmausRecordCards.open(signalTarget.type,signalTarget.id,true,'context',signalTarget.field);return true;
