@@ -8,26 +8,28 @@
     "compiledBy": "Hans Visser",
     "referencePeriod": "november 2026",
     "evidenceCutoff": "2026-11-23",
-    "dataVersion": "2026-11-23-eigenaars-en-m365-verbanden-v2",
-    "faqDataVersion": "2026-11-20"
+    "dataVersion": "2026-11-23-index-en-m365-producten-v3",
+    "faqDataVersion": "2026-11-20",
+    "indexContractVersion": "1.0.0"
   },
   "dataFiles": [
     {
       "path": "2026-applicatielandschap.json",
       "schema": "eai-school-ict-v1",
       "recordCounts": {
-        "apps": 61,
+        "apps": 69,
         "ai": 76,
         "connections": 93,
         "additionalCandidates": 76,
-        "parts": 13,
+        "parts": 53,
         "dpia": 10,
         "aiControls": 22,
         "checks": 16,
         "devices": 4,
-        "licenseReview": 40
+        "licenseReview": 40,
+        "hardwareGroups": 15
       },
-      "sha": "f44f0b83ff516abe5b35a90328adbff6a598e128",
+      "sha": "d6be29b643398933492efc50cd82fd45f3ef24da",
       "verified": true
     },
     {
@@ -53,9 +55,9 @@
       "path": "2026-bronnenregister.json",
       "schema": "eai-school-ict-v1",
       "recordCounts": {
-        "sourceRegister": 51
+        "sourceRegister": 58
       },
-      "sha": "a9a426872fd93d60ee7042084f9fa61bb699a12d",
+      "sha": "98a6afea5a3bd1cc378ce3f58b07b1da51088c42",
       "verified": true
     }
   ],
@@ -64,8 +66,10 @@
     "76 aanvullende kandidaten tellen niet als bevestigd schoolgebruik.",
     "De ruwe Entra-roltoewijzingen en persoonlijke gegevens zijn niet gepubliceerd.",
     "Het bronregister bevat 51 voorstelregels met 468 exact overgenomen verwijzingen. De vermelde SHA controleert de JSON-bestandsinhoud; bronhouderschap, rechten en goedkeuring zijn nog niet vastgesteld.",
-    "64 brongebonden relaties op 34 bestaande applicaties, waaronder 10 extra onderzoekskoppelingen voor identiteit, Microsoft 365, printvoorzieningen en beheer. Bestaande populaties blijven ongewijzigd.",
-    "15 verantwoordelijke functies expliciet ingevuld: ICT-beheer voor 13 technische toepassingen, Stuurgroep ICT voor LessonUp en Showbie. Vier hardwaregroepen met ICT-beheer gekoppeld aan bestaande applicaties; geen extra device-meting.",
-    "Zes Microsoft 365-beheeronderdelen zijn als context bij APP-034 opgenomen; gegevens uit controlematrices zijn geen bevestiging van actieve tenantinstellingen."
+    "Zes Microsoft 365-beheeronderdelen zijn als context bij APP-034 opgenomen; gegevens uit controlematrices zijn geen bevestiging van actieve tenantinstellingen.",
+    "69 basisapplicaties, waaronder acht aanvullende regels waarvoor schoolgebruik nog moet worden geverifieerd; telt niet als 69 actieve applicaties.",
+    "15 schoolbrede hardwaregroepen, 53 onderdelen (13 Entra-registraties en 40 Microsoft 365-productvermeldingen), zonder extra Entra-apparaatmeting.",
+    "58 bronnen in register, waaronder zeven aangevulde school- en leveranciersbronnen, die nog afzonderlijk moeten worden beoordeeld.",
+    "Één afgeleide index verbindt de vier gecontroleerde bronbestanden, geen vijfde bronbestand."
   ]
 }
