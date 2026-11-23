@@ -36,7 +36,7 @@
     version:'Bronversie',contentSha256:'SHA-256 van het bronbestand',rightsStatus:'Gebruiksrecht',rightsBasis:'Grondslag voor gebruik',allowedUse:'Toegestaan gebruik',scope:'Toepassingsgebied',retention:'Bewaarafspraak',approvalStatus:'Goedkeuring',approvedBy:'Goedgekeurd door',approvedAt:'Goedgekeurd op',approvalEvidence:'Bewijs van goedkeuring',nextReviewAt:'Opnieuw beoordelen op',referenceKeys:'Bijbehorende bronverwijzingen',
     sourceIds:'Gekoppelde bronnen',frameworkLinks:'Normbeoordelingen',approvalBinding:'Bevestigde bronversie',reviewBinding:'Bevestigde beoordeling',relations:'Verbanden',recordMeta:'Beoordelingsgegevens'
   };
-  const PROTECTED=new Set(['id','originalNumber','sourceFields','otherDescription','provenance','sources','auditTrail','hardwareLinks','serviceLinks','relations','frameworkLinks','sourceMeta','recordMeta','sourceRefs','sourceIds','referenceKeys','approvalBinding']);
+  const PROTECTED=new Set(['id','originalNumber','sourceFields','otherDescription','provenance','sources','auditTrail','hardwareLinks','serviceLinks','relations','frameworkLinks','sourceMeta','recordMeta','sourceRefs','sourceIds','referenceKeys','approvalBinding','defaultPolicy']);
   const MULTILINE=/answer|aliases|description|action|explanation|attention|didactics|learning|evidence|processing|agreement|note|instructions|source|data|links|review|unknown|advice|formative|usageContext|m365Context|nuance|execution|nextStep|limitation|input|teacher|student|known|status/i;
   const typesByKey=Object.fromEntries(SPECS.map(s=>[s.key,s]));
   const model={drafts:new Map(),current:null,editing:false,adding:false,original:null,working:null,catalog:null,loading:false,contextMode:false,returnFocus:null,editSourceScope:null};
@@ -188,6 +188,25 @@
     const overview=panes.get('overview');
     lines(overview,'',first.map(k=>[label(k,r),r[k]]));
     if(spec.key==='sourceRegister')lines(overview,'Bronbeoordeling',[['Goedkeuringsstatus',sourceApprovalState(r)]]);
+    if((spec.key==='apps'||spec.key==='parts')&&r.defaultPolicy){
+      const p=r.defaultPolicy;
+      lines(overview,'Standaardinstellingen volgens Microsoft',[
+        ['Medewerkers / docenten',p.staff],['Leerlingen',p.students],
+        ['KlasTeams',p.classTeams],['Voorwaarde',p.condition],['Licentie-uitgangspunt',p.licenseBasis],
+        ['Bewijsstatus',p.evidenceStatus],
+        ['Werkelijke toegang in schooltenant',p.verifiedInTenant===true?'Gecontroleerd':'Niet onafhankelijk gecontroleerd']
+      ]);
+    }
+    if(spec.key==='apps'&&Object.prototype.hasOwnProperty.call(r,'processorAgreement')){
+      lines(overview,'Verwerkersovereenkomst: beoordelingsroute',[
+        ['Route','Dienst Verwerkersovereenkomsten Kennisnet (https://dv.kennisnet.nl/), voor aangesloten leveranciers'],
+        ['Toegang','eHerkenning: beoordelen DV of beheren voor beoordeling; ondertekenen vereist afzonderlijke machtiging'],
+        ['Beoordeling','Controleer overeenkomst, privacybijsluiter, beveiligingsbijlage en afwijkingen'],
+        ['Besluit','Bevoegd ondertekenaar accordeert; status en ondertekenbewijs pas na afronding vastleggen'],
+        ['Andere leveranciers','Bijvoorbeeld Microsoft: toepasselijke DPA afzonderlijk beoordelen']
+      ]);
+    }
+
     if(spec.key==='apps'){const ix=window.IctInventoryIndex?.build(state);
       if(ix)lines(overview,'AI-functies',[['Beschreven functies',ix.connected('apps',r.id,{type:'ai'}).length]]);
     }
