@@ -102,26 +102,24 @@
   renderAi=function(){previouslyRenderedAi();byId('aiSchoolPanels')?.classList.toggle('evidence-organisational',state.aiMode==='school');};
 
   function relationSets(app){
-    const ai=items(state.ai).filter(x=>x.parentId===app.id);
-    const entra=items(state.connections).filter(x=>x.matchedId===app.id);
-    const parts=items(state.parts).filter(x=>x.parent===app.id);
-    const refs=new Set(ai.map(x=>x.id));
-    const controls=items(state.aiControls).filter(x=>(String(x.aiRefs||'').match(/AI-\d+/gi)||[]).some(id=>refs.has(id)));
-    const isMicrosoft=/^(Microsoft 365|Microsoft Copilot|Teams for Education)(?:$|\s)/i.test(app.name||'');
-    const isToetsPers=/toetspers/i.test(app.name||'');
-    const dpia=items(state.dpia).filter(x=>{
-      const name=String(x.name||'');
-      return isMicrosoft&&/m365|microsoft|copilot|flex routing|leerlingen en minderjarigen/i.test(name)||
-             isToetsPers&&/toetspers/i.test(name);
-    });
+    const index=window.IctInventoryIndex?.build(state);
+    if(!index)return[];
+    const ai=index.connected('apps',app.id,{type:'ai'}).map(link=>link.other);
+    const parts=index.connected('apps',app.id,{type:'parts',relationType:'part_of'}).map(link=>link.other);
+    const entra=index.connected('apps',app.id,{type:'connections'}).map(link=>link.other);
+    const controls=new Map();
+    for(const item of ai)for(const link of index.connected('ai',item.id,{type:'aiControls'})){
+      controls.set(link.otherId,link.other);
+    }
+    const dpia=index.connected('apps',app.id,{type:'dpia'}).map(link=>link.other);
     return [
       {key:'ai',name:'AI-functies',items:ai,type:'ai',note:'Beschrijving, niet automatisch lokaal actief'},
-      {key:'parts',name:'Onderdelen',items:parts,type:'parts',note:'Vastgelegde onderliggende registraties'},
+      {key:'parts',name:'Onderdelen',items:parts,type:'parts',note:'Vastgelegde productonderdelen; beschikbare functie is niet automatisch actief'},
       {key:'entra',name:'Entra-matches',items:entra,type:'connections',note:'Mogelijke overeenkomst, werking niet bewezen'},
-      {key:'controls',name:'AI-beheer',items:controls,type:'aiControls',note:'Via expliciete AI-ID gekoppeld'},
-      {key:'dpia',name:'FG | DPIA-bronnen',items:dpia,type:'dpia',note:'Thematische bronverwijzing voor FG, geen beoordeling door deze scan'}
+      {key:'controls',name:'AI-beheer',items:[...controls.values()],type:'aiControls',note:'Via AI-ID gekoppelde beheercontroles'},
+      {key:'dpia',name:'DPIA-beoordelingen',items:dpia,type:'dpia',note:'Alleen expliciet vastgelegde relaties; geen automatisch privacyoordeel'}
     ].filter(group=>{
-      if(group.key==='dpia')return window.EmmausRoles?.isEnabled('fg')===true;
+      if(group.key==='dpia')return window.EmmausRoles?.isEnabled('fg')===true&&group.items.length>0;
       if(group.key==='ai'||group.key==='controls')return window.EmmausRoles?.isEnabled('ai')!==false;
       return true;
     });
@@ -165,7 +163,12 @@
     for(const rec of rows.slice(0,32)){
       const item=document.createElement('div');item.className='relation-item';
       item.innerHTML='<span><small>'+safe(rec.id)+'</small><strong>'+safe(rec.name)+'</strong></span>';
-      item.append(action('Bekijk',()=>openCard(chosen.type,rec.id),'evidence-link'));
+      const store=chosen.type==='additionalCandidates'?'candidates':chosen.type;
+      if(state[store] instanceof Map&&state[store].has(rec.id)){
+        item.append(action('Bekijk',()=>openCard(chosen.type,rec.id),'evidence-link'));
+      }else if(rec.description||rec.note||rec.local){
+        item.append(document.createTextNode(' · '+(rec.note||rec.description||rec.local)));
+      }
       list.append(item);
     }
     box.append(list);
