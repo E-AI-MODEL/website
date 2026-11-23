@@ -24,6 +24,22 @@ class ICTScanTests(unittest.TestCase):
         self.assertIn("focusEditField", cards)
         self.assertIn("EmmausEditGate?.request()", cards)
 
+    def test_clear_dashboard_labels_and_published_styles(self):
+        html = (TOOL / "index.html").read_text(encoding="utf-8")
+        composer = (TOOL / "dashboard-composer.js").read_text(encoding="utf-8")
+        builder = (ROOT / "scripts" / "build_site.py").read_text(encoding="utf-8")
+        self.assertNotIn("Kies. De rest volgt.", html)
+        self.assertNotIn("Dunne lijnen, direct filteren", composer)
+        self.assertNotIn("De weergave volgt vanzelf", composer)
+        for label in ("Dashboard instellen", "Welke gegevens?", "Hoe wil je ze bekijken?", "Bewaar hier", "Download indeling"):
+            self.assertIn(label, html)
+        self.assertEqual(html.count('class="rail-label"'), 11)
+        self.assertIn("ds-option-description", composer)
+        self.assertIn("ds-option-count", composer)
+        self.assertIn("ux-clarity.css", builder)
+        self.assertIn('href="./ux-clarity.css', html)
+        self.assertTrue((TOOL / "ux-clarity.css").is_file())
+
     def test_secret_not_security_and_litespeed_404_middle_zero(self):
         html = (TOOL / "index.html").read_text(encoding="utf-8")
         js = (TOOL / "app.js").read_text(encoding="utf-8")
