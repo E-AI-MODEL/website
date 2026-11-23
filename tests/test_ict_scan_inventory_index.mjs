@@ -22,13 +22,14 @@ function state(){
 }
 test('Een index uit vier bestaande bronbestanden, zonder extra bronbestand of gedupliceerde feiten',()=>{
   const built=index.build(state(),{catalog});
-  assert.equal(built.nodes.size,571,'501 oorspronkelijke registraties plus acht applicaties, 40 modules, 15 hardwaregroepen en zeven bronnen');
+  assert.equal(built.nodes.size,579,'501 oorspronkelijke registraties plus acht apps, 40 modules, 15 hardwaregroepen, twaalf extra bronnen en drie extra FAQ’s');
   assert.equal(built.errors.length,0,JSON.stringify(built.errors.slice(0,6)));
   assert.equal(built.count('apps'),69);
   assert.equal(built.count('ai'),76);
   assert.equal(built.count('connections'),93);
   assert.equal(built.count('devices'),4);
-  assert.equal(built.count('sourceRegister'),58);
+  assert.equal(built.count('sourceRegister'),63);
+  assert.equal(built.count('faqs'),17);
   assert.equal(built.count('parts'),53,'13 Entra-registraties en 40 Microsoft 365-productonderdelen');
   assert.equal(built.count('hardwareGroups'),15,'Hardwaregroepen zijn geen Entra-apparaatmetingen');
   assert.ok(built.sourceCoverage.directReferences>=485);
