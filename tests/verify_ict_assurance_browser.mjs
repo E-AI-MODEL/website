@@ -162,8 +162,8 @@ async function exerciseBoundApprovals(target){
   const approvedSource=await draft(target,'sourceRegister',sourceId);
   assert.ok(approvedSource.after.approvalBinding,'De echte bronbevestiging moet een binding vastleggen');
   assert.equal((await inspectSyntheticBindings(target,sourceId,recordId)).approval.status,'current');
-  await target.locator('#cardReadView [data-target="source"]').click();
-  assert.match(await target.locator('#cardTabPanelsource').innerText(),/Goedkeuring bevestigd voor deze bronversie/);
+  await target.locator('#cardReadView [data-target="overview"]').click();
+  assert.match(await target.locator('#cardTabPaneloverview').innerText(),/Goedkeuring bevestigd voor deze bronversie/);
   await target.screenshot({path:resolve(output,'approved-source.png')});
   finishStep('Bron via formulier ingevuld en uitsluitend na expliciete bevestiging goedgekeurd',{sourceId,screenshot:'approved-source.png'});
 
@@ -212,8 +212,8 @@ async function exerciseBoundApprovals(target){
   await saveCard(target);
   const changedSource=await draft(target,'sourceRegister',sourceId);
   assert.deepEqual(changedSource.after.approvalBinding,approvedSource.after.approvalBinding,'Een broncorrectie mag niet stil opnieuw goedkeuren');
-  await target.locator('#cardReadView [data-target="source"]').click();
-  assert.match(await target.locator('#cardTabPanelsource').innerText(),/Brongegevens gewijzigd: opnieuw goedkeuren/);
+  await target.locator('#cardReadView [data-target="overview"]').click();
+  assert.match(await target.locator('#cardTabPaneloverview').innerText(),/Brongegevens gewijzigd: opnieuw goedkeuren/);
   const sourceChanged=await inspectSyntheticBindings(target,sourceId,recordId);
   assert.equal(sourceChanged.approval.status,'stale');
   assert.equal(sourceChanged.review.status,'stale');
