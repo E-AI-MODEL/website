@@ -150,7 +150,7 @@ test('M365-vragen tellen uitsluitend productonderdelen uit de gedeelde index',()
   const list=query('Welke apps van Microsoft 365 zijn beschikbaar voor leerlingen?',data);
   assert.equal(list.kind,'relations');
   assert.match(list.answer,/40 Microsoft 365-onderdelen/);
-  assert.match(list.answer,/daadwerkelijk toegang hebben/i);
+  assert.match(list.answer,/leerlingen werkelijk toegang hebben/i);
   assert.ok(list.records.some(x=>x.type==='parts'));
   const parts=query('Welke onderdelen heeft Microsoft 365?',data);
   assert.equal(parts.kind,'relations');
