@@ -1,3 +1,15 @@
+## Gedeelde index en bronaanvulling (23 november 2026)
+
+De vier bronbestanden blijven de enige gegevensbasis. `inventory-index.js` maakt daaruit een tijdelijke index met getypeerde inkomende en uitgaande relaties. Kaarten, relatievisualisaties, dashboard en vraagantwoorden gebruiken dezelfde index. Geen vijfde bronbestand.
+
+Het applicatieregister telt 69 basisregels: 61 oorspronkelijke en acht nog te verifiëren aanvullingen. Verder zijn er 76 beschreven AI-functies, 93 Entra-registraties, 53 onderdelen (13 Entra-onderdelen en 40 Microsoft 365-productvermeldingen), 15 hardwaregroepen en vier afzonderlijke Entra-apparaatmetingen. Het bronnenregister telt 58 bronregistraties; die zijn nog niet formeel goedgekeurd.
+
+Microsoft-productvermeldingen bewijzen geen daadwerkelijke activering, leerlingtoegang of betaalde licentie. De onderdelen hebben aparte velden voor doelgroep, licentieafhankelijkheid en tenantverificatie. Hardwaregroepen bevatten geen verzonnen aantallen. De eerdere `serviceLinks[]` en `hardwareLinks[]` zijn omgezet naar gewone product- en hardware-registraties met ID-koppelingen. Hun oorspronkelijke bewijs blijft bewaard.
+
+De publieke gegevenskaart heeft geen tab Herkomst. Excel-rijverwijzingen blijven beschikbaar voor de interne controle maar worden niet in de gewone kaart weergegeven. De vraagengine mag nooit een totaal licentiecontrolepunten verwarren met daadwerkelijk toegewezen licenties. Persoonsgebonden accountlijsten en financiële details zijn niet in de openbare GitHub-repo toegevoegd.
+
+Alle wijzigingen staan voorlopig alleen in concept-PR #376. De livewebsite gebruikt nog `main`. Samenvoegen pas na groene CI en browsertests.
+
 # Applicatielandschap Emmauscollege
 
 Een zelfstandige pagina van de EAI-website. Inlezen, zoeken, controleren en rapporteren werken met gewone JavaScript-code, zonder modelaanroepen. De gepubliceerde inventaris staat in GitHub. Het dashboard leest die bron bij het openen. Lokale imports en exports blijven op het apparaat. Alleen de afzonderlijke, uitdrukkelijk gekozen wijzigingsroute verstuurt kaartwijzigingen naar een nieuwe GitHub-branch en pull request.
@@ -6,9 +18,9 @@ Een zelfstandige pagina van de EAI-website. Inlezen, zoeken, controleren en rapp
 
 De eigenaar op de applicatiekaart is de door de schoolleiding aangewezen **verantwoordelijke functie**, geen autorisatie in Microsoft Entra of elders. De technische inrichting van Microsoft 365, Teams, Copilot, Power BI, Entra, Intune, Jamf, de lokale identiteitsvoorzieningen, Apple Klaslokaal, Canon uniFLOW en Limid staat op `ICT-beheer`. LessonUp en Showbie staan op `Stuurgroep ICT`. Het veld `recordMeta.ownerSource` bewaart de herkomst van de aanvulling.
 
-De bestaande 61 applicaties tellen nu 64 brongebonden relaties op 34 applicaties. De 10 nieuwe technische relatievoorstellen verbinden onder meer NIVO, lokale AD, AFAS, Magister, Jamf en Intune met Entra, en uniFLOW met Microsoft 365 en Teams. Deze staan op **Vermoedelijk**; een controlevraag of technische registratie bewijst geen actuele werkende synchronisatie, SSO of gegevensuitwisseling. Het dashboard toont ook inkomende verbanden, zodat Microsoft 365 en Entra niet als losse, nauwelijks verbonden kaarten verschijnen.
+De 69 basisregels hebben 64 expliciete bronrelaties op 34 applicaties. De 10 nieuwe technische relatievoorstellen verbinden onder meer NIVO, lokale AD, AFAS, Magister, Jamf en Intune met Entra, en uniFLOW met Microsoft 365 en Teams. Deze staan op **Vermoedelijk**; een controlevraag of technische registratie bewijst geen actuele werkende synchronisatie, SSO of gegevensuitwisseling. Het dashboard toont ook inkomende verbanden, zodat Microsoft 365 en Entra niet als losse, nauwelijks verbonden kaarten verschijnen.
 
-Voor vier hardwaregroepen uit de IAM-werkmap (iPads, laptops, smartboards en printers) is `ICT-beheer` vastgelegd. Hun koppelingen aan Jamf, Intune, Apple Klaslokaal, Limid en Canon staan als `hardwareLinks[]` op bestaande applicatiekaarten. De zes Microsoft 365-beheeronderwerpen, waaronder SharePoint, OneDrive, Exchange, Purview, Defender en leerlingtoegang, staan als `serviceLinks[]` bij Microsoft 365. Beide lijsten behouden bronverwijzing en bewijsgrens; ze worden niet als actieve apparaten, losse applicaties of aparte licenties geteld. De oorspronkelijke vier Entra-apparaatmetingen blijven ongewijzigd.
+De 15 hardwaregroepen staan als `hardwareGroups` in de bestaande hoofd-JSON en verwijzen met `appRefs` naar de juiste beheertoepassing. De 40 M365-onderdelen staan als `parts`, niet in een aparte lijst op de kaart. De vier oorspronkelijke Entra-apparaatmetingen blijven ongewijzigd.
 
 De persoonlijke LessonUp- en Showbie-accountlijsten en financiële detailregels zijn **niet** toegevoegd aan de openbare GitHub-bron. Bewerkvoorstellen blijven via de bestaande gecontroleerde PR-route gaan; de 404-ingang en de bewerkpop-up zijn geen toegangsbeveiliging.
 
@@ -140,11 +152,11 @@ Voor een technische test: `node --test tests/test_ict_scan_github_sync.mjs`. De 
 
 De acht oorspronkelijke iconen voor de hoofdonderdelen zijn gehandhaafd. De extra knop onderaan opent zoeken, GitHub-synchronisatie, lokale bestandsimport en rapportexports (Excel, PDF, JSON). De zoekbalk en losse acties zijn uit de bovenbalk gehaald; de dubbele horizontale navigatie bestaat niet meer. Op een klein scherm opent de functiesectie boven de onderste iconenbalk. Sluiten kan met Escape, de sluitknop of een klik buiten het menu. De toets `/` opent de zoekfunctie buiten invoervelden.
 
-De GitHub-actie in dit menu start de alleen-lezen-synchronisatie en opent het bronnenscherm voor de status. Bij de eerste opening haalt de website de twee openbare JSON-bestanden op, mits er geen lokale momentopname klaarstaat. Handmatig synchroniseren blijft mogelijk. Het manifest bevat de startdatum (10 augustus 2026), samensteller (Hans Visser) en aantallen. De 61 basisregistraties zijn niet het definitieve totaal; 76 kandidaten blijven apart.
+De GitHub-actie in dit menu start de alleen-lezen-synchronisatie en opent het bronnenscherm voor de status. Bij de eerste opening haalt de website de vier openbare JSON-bestanden op, mits er geen lokale momentopname klaarstaat. Handmatig synchroniseren blijft mogelijk. Het manifest bevat de startdatum (10 augustus 2026), samensteller (Hans Visser) en aantallen. De 69 basisregistraties zijn niet het definitieve totaal; 76 kandidaten blijven apart.
 
 ## Brondata 2026 (20 november)
 
-De hoofdbron bewaart 61 basisregistraties, 76 volledig beschreven AI-functies, 93 Entra-registraties, 76 aanvullende kandidaten, 10 DPIA-punten, 22 AI-beheerpunten, 16 samenvattende controles, 13 technisch gekoppelde onderdelen, 40 licentiecontrole-registraties en vier afzonderlijke apparaatmetingen. Het werkregister bevat daarnaast 13 open acties en 12 softwarecontroles. De 76 kandidaten tellen niet mee bij de basisregistraties. De JSON bewaart zowel de velden voor het dashboard als de oorspronkelijke teksten en herkomstverwijzingen uit de Excelbestanden.
+De hoofdbron bewaart 69 basisregistraties, 76 AI-functies, 93 Entra-registraties, 76 aanvullende kandidaten, 10 DPIA-brononderwerpen, 22 AI-beheerpunten, 16 controles, 53 productonderdelen, 15 hardwaregroepen, 40 licentiecontroles en vier afzonderlijke apparaatmetingen.
 
 De code kent aparte registers voor kandidaten, licentiecontrole, werkacties en softwarecontrole. Bij synchronisatie worden de bronnen uit GitHub gelezen zonder terugschrijven. De website en de exports vermelden een bronstatus en mogen ontbrekende bevestigingen niet invullen.
 
