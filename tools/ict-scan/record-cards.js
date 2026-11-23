@@ -35,7 +35,7 @@
     version:'Bronversie',contentSha256:'SHA-256 van het bronbestand',rightsStatus:'Gebruiksrecht',rightsBasis:'Grondslag voor gebruik',allowedUse:'Toegestaan gebruik',scope:'Toepassingsgebied',retention:'Bewaarafspraak',approvalStatus:'Goedkeuring',approvedBy:'Goedgekeurd door',approvedAt:'Goedgekeurd op',approvalEvidence:'Bewijs van goedkeuring',nextReviewAt:'Opnieuw beoordelen op',referenceKeys:'Bijbehorende bronverwijzingen',
     sourceIds:'Gekoppelde bronnen',frameworkLinks:'Normbeoordelingen',approvalBinding:'Bevestigde bronversie',reviewBinding:'Bevestigde beoordeling',relations:'Verbanden',recordMeta:'Beoordelingsgegevens'
   };
-  const PROTECTED=new Set(['id','originalNumber','sourceFields','otherDescription','provenance','sources','auditTrail','relations','frameworkLinks','sourceMeta','recordMeta','sourceRefs','sourceIds','referenceKeys','approvalBinding']);
+  const PROTECTED=new Set(['id','originalNumber','sourceFields','otherDescription','provenance','sources','auditTrail','hardwareLinks','serviceLinks','relations','frameworkLinks','sourceMeta','recordMeta','sourceRefs','sourceIds','referenceKeys','approvalBinding']);
   const MULTILINE=/answer|aliases|description|action|explanation|attention|didactics|learning|evidence|processing|agreement|note|instructions|source|data|links|review|unknown|advice|formative|usageContext|m365Context|nuance|execution|nextStep|limitation|input|teacher|student|known|status/i;
   const typesByKey=Object.fromEntries(SPECS.map(s=>[s.key,s]));
   const model={drafts:new Map(),current:null,editing:false,adding:false,original:null,working:null,catalog:null,loading:false,contextMode:false,returnFocus:null,editSourceScope:null};
@@ -199,6 +199,26 @@
     lines(links,'Vastgelegde verbanden',relations.length
       ?relations.map(x=>[x.relationType+' · '+x.targetType+':'+x.targetId,(x.status||'Niet bevestigd')+' · '+(x.evidence||'Bron ontbreekt')+(x.note?' · '+x.note:'')])
       :[['Verbanden','Nog geen beoordeelde verbanden vastgelegd']]);
+    if(spec.key==='apps'){
+      const byName=(type,id)=>record(type,id)?.name||id;
+      const reverse=records('apps').flatMap(other=>(other.relations||[])
+        .filter(link=>link.targetType==='apps'&&link.targetId===r.id&&other.id!==r.id)
+        .map(link=>({other,link})));
+      lines(links,'Verbanden met deze toepassing',reverse.map(({other,link})=>[
+        other.name+' ('+other.id+') · '+link.relationType,
+        (link.status||'Niet bevestigd')+' · '+(link.evidence||'Bron ontbreekt')+(link.note?' · '+link.note:'')
+      ]));
+      const hardware=Array.isArray(r.hardwareLinks)?r.hardwareLinks:[];
+      lines(links,'Apparatuur en technisch beheer',hardware.map(item=>[
+        item.name+' ('+item.id+') · '+(item.owner||'Verantwoordelijke niet vermeld'),
+        (item.status||'Niet bevestigd')+' · '+(item.evidence||'Bron ontbreekt')+(item.note?' · '+item.note:'')
+      ]));
+      const services=Array.isArray(r.serviceLinks)?r.serviceLinks:[];
+      lines(links,'Microsoft 365-onderdelen en inrichting',services.map(item=>[
+        item.name,
+        (item.status||'Inrichting nog controleren')+' · '+(item.evidence||'Bron ontbreekt')+(item.note?' · '+item.note:'')
+      ]));
+    }
     lines(links,'Normverwijzingen',references.length
       ?references.map(x=>[(catalog.get(x.frameworkId)?.name||x.frameworkId)+' '+(x.article||''),[(x.status||'Nog te beoordelen'),reviewState(r,x),(x.evidence||'Geen bewijs vastgelegd'),x.note,x.role&&'Rol: '+x.role,x.reviewedBy&&'Beoordeeld door: '+x.reviewedBy,x.reviewedAt&&'Beoordeeld: '+x.reviewedAt,x.nextReviewAt&&'Volgende beoordeling: '+x.nextReviewAt,x.followUp&&'Actie: '+x.followUp,x.followUpOwner&&'Actiehouder: '+x.followUpOwner,x.followUpStatus&&'Opvolging: '+x.followUpStatus,x.completionEvidence&&'Uitvoering: '+x.completionEvidence].filter(Boolean).join(' · ')])
       :[['Normen','Nog niet per bepaling beoordeeld']]);
