@@ -134,12 +134,14 @@
     const pending=$c('cardPendingPanel');
     if(pending)pending.hidden=model.contextMode&&!model.editing&&model.drafts.size===0;
   }
-  function lines(container,title,items){
+  function lines(container,title,items,showUnknown=false){
     const group=text('section','card-read-section');if(title)group.append(text('h4','',title));
     const dl=text('dl','card-read-grid');
     for(const [name,value] of items){
-      if(value===undefined||value===null||value===''||(Array.isArray(value)&&!value.length))continue;
-      const dt=text('dt','',name),dd=text('dd','',typeof value==='object'?JSON.stringify(value,null,2):value);
+      const missing=value===undefined||value===null||(typeof value==='string'&&!value.trim())||(Array.isArray(value)&&!value.length);
+      if(missing&&!showUnknown)continue;
+      // Alleen een weergavelabel. Een onbekend bronveld blijft leeg in de JSON en in de controles.
+      const dt=text('dt','',name),dd=text('dd','',missing?'Onbekend':typeof value==='object'?JSON.stringify(value,null,2):value);
       dl.append(dt,dd);
     }
     if(dl.children.length){group.append(dl);container.append(group);}
@@ -166,7 +168,7 @@
       sourceRegister:['owner','version','rightsStatus','allowedUse','approvalStatus','approvedBy','approvedAt']
     };
     const first=(important[spec.key]||['description','local','status','action','owner','priority'])
-      .filter(k=>k in r && r[k]!==undefined && r[k]!==null && String(r[k]).trim());
+      .filter(k=>spec.key==='sourceRegister'||(k in r && r[k]!==undefined && r[k]!==null && String(r[k]).trim()));
     const other=spec.fields.filter(k=>k!=='name'&&!first.includes(k)&&!['aiRefs','sourceDescription','sourceNotes','sourceCode','sourceInternal','supplierSource','source'].includes(k));
     const nav=text('nav','card-read-tabs');nav.setAttribute('role','tablist');
     nav.setAttribute('aria-label','Inhoud van de registratie');
@@ -186,7 +188,7 @@
       nav.append(button);panes.set(id,panel);tabs.set(id,button);
     }
     const overview=panes.get('overview');
-    lines(overview,'',first.map(k=>[label(k,r),r[k]]));
+    lines(overview,'',first.map(k=>[label(k,r),r[k]]),spec.key==='sourceRegister');
     if(spec.key==='sourceRegister')lines(overview,'Bronbeoordeling',[['Goedkeuringsstatus',sourceApprovalState(r)]]);
     if((spec.key==='apps'||spec.key==='parts')&&r.defaultPolicy){
       const p=r.defaultPolicy;
@@ -212,7 +214,7 @@
     }
     if(!overview.children.length)overview.append(text('p','card-empty','Voor deze registratie zijn nog geen hoofdgegevens ingevuld.'));
     const details=panes.get('details');
-    lines(details,'',other.map(k=>[label(k,r),r[k]]));
+    lines(details,'',other.map(k=>[label(k,r),r[k]]),spec.key==='sourceRegister');
     const hiddenFields=new Set([...spec.fields,'id','originalNumber','sourceFields','otherDescription','provenance','sources','auditTrail','hardwareLinks','serviceLinks','relations','frameworkLinks','recordMeta','sourceMeta','sourceRefs','sourceIds','referenceKeys','approvalBinding']);
     const extras=Object.keys(r).filter(k=>!hiddenFields.has(k)).map(k=>[label(k,r),r[k]]);
     if(extras.length)lines(details,'Overige gegevens',extras);
@@ -282,6 +284,7 @@
     else if(multiline){input.rows=String(value||'').length>250?4:2;}
     else{input.type=model.current?.type==='sourceRegister'&&['approvedAt','nextReviewAt'].includes(name)?'date':'text';input.autocomplete='off';}
     input.value=typeof value==='boolean'?String(value):String(value??'');
+    if(model.current?.type==='sourceRegister'&&!choice&&!String(value??'').trim())input.placeholder='Onbekend';
     if(name==='name')input.required=true;
     if(name==='parentId'||name==='matchedId'||name==='parent'||name==='connectionId'){
       input.setAttribute('list','cardKnownIds');input.title='Gebruik een bestaand ID, geen nieuwe naam';
