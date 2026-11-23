@@ -17,15 +17,17 @@
         "identityField": "provenance.file",
         "groupingRule": "Alleen een exact gelijk provenance.file of die exacte bestandsnaam gevolgd door de letterlijke scheiding \" / \" koppelt een verwijzing aan een bestandsidentiteit. Overige verwijzingen blijven afzonderlijk.",
         "referenceCount": 517,
-        "recordCount": 58,
+        "recordCount": 63,
         "groupedFileCount": 2,
-        "previousRecordCount": 51
+        "previousRecordCount": 51,
+        "notes": []
       },
       "notes": [
         "Dit register bewaart bestaande bronverwijzingen. Het bevestigt niet dat de oorspronkelijke bestanden zijn ingezien of geverifieerd.",
         "Twee expliciet vastgelegde bestandsidentiteiten bevatten samen 419 exacte verwijzingen; 49 overige verwijzingen zijn afzonderlijk behouden.",
         "Bronhouder, versie, rechten, toegestaan gebruik en goedkeuring zijn niet uit verwijsteksten afgeleid. Deze gegevens moeten nog worden beoordeeld.",
-        "Zeven aanvullende bronidentiteiten voor het schoolbrede IAM-overzicht, M365-werkbladen en vier officiële Microsoft Learn-pagina's; nog geen formele goedkeuring."
+        "Zeven aanvullende bronidentiteiten voor het schoolbrede IAM-overzicht, M365-werkbladen en vier officiële Microsoft Learn-pagina's; nog geen formele goedkeuring.",
+        "Vijf extra openbare bronnen: licentietoewijzing, klasTeams, leerlingenbeleid en verwerkersovereenkomsten via Kennisnet. Geen schooltenanttoegang of ondertekende overeenkomst afgeleid."
       ]
     }
   },
@@ -1623,6 +1625,130 @@
       "provenance": {
         "classification": "Werkblad of leveranciersbron",
         "asOf": "2026-11-23"
+      }
+    },
+    {
+      "id": "SRC-00059",
+      "name": "Microsoft Learn: toewijzing Microsoft 365- en Teams Education-licenties",
+      "referenceKeys": [
+        "https://learn.microsoft.com/en-us/microsoftteams/teams-edu-licensing"
+      ],
+      "owner": "",
+      "version": "",
+      "rightsStatus": "Onbekend",
+      "rightsBasis": "",
+      "allowedUse": "",
+      "scope": "",
+      "retention": "",
+      "approvalStatus": "Nog te beoordelen",
+      "approvedBy": "",
+      "approvedAt": "",
+      "approvalEvidence": "",
+      "nextReviewAt": "",
+      "provenance": {
+        "classification": "Openbare leveranciersinformatie / procesbron",
+        "asOf": "2026-11-23",
+        "note": "Beschikbaarheid en proces beschreven; schooltoepassing en gebruiksrecht niet formeel beoordeeld."
+      }
+    },
+    {
+      "id": "SRC-00060",
+      "name": "Microsoft Learn: klasTeams en leerlingfuncties",
+      "referenceKeys": [
+        "https://learn.microsoft.com/en-us/microsoftteams/remote-learning-edu",
+        "https://learn.microsoft.com/en-us/microsoft-365/education/deploy/set-up-teams-for-education"
+      ],
+      "owner": "",
+      "version": "",
+      "rightsStatus": "Onbekend",
+      "rightsBasis": "",
+      "allowedUse": "",
+      "scope": "",
+      "retention": "",
+      "approvalStatus": "Nog te beoordelen",
+      "approvedBy": "",
+      "approvedAt": "",
+      "approvalEvidence": "",
+      "nextReviewAt": "",
+      "provenance": {
+        "classification": "Openbare leveranciersinformatie / procesbron",
+        "asOf": "2026-11-23",
+        "note": "Beschikbaarheid en proces beschreven; schooltoepassing en gebruiksrecht niet formeel beoordeeld."
+      }
+    },
+    {
+      "id": "SRC-00061",
+      "name": "Microsoft Learn: standaardbeleid voor leerlingen in Teams Education",
+      "referenceKeys": [
+        "https://learn.microsoft.com/en-us/microsoftteams/easy-policy-setup-edu",
+        "https://learn.microsoft.com/en-us/microsoft-365/education/guide/2-baseline/applications/baseline-apps-teams-policies"
+      ],
+      "owner": "",
+      "version": "",
+      "rightsStatus": "Onbekend",
+      "rightsBasis": "",
+      "allowedUse": "",
+      "scope": "",
+      "retention": "",
+      "approvalStatus": "Nog te beoordelen",
+      "approvedBy": "",
+      "approvedAt": "",
+      "approvalEvidence": "",
+      "nextReviewAt": "",
+      "provenance": {
+        "classification": "Openbare leveranciersinformatie / procesbron",
+        "asOf": "2026-11-23",
+        "note": "Beschikbaarheid en proces beschreven; schooltoepassing en gebruiksrecht niet formeel beoordeeld."
+      }
+    },
+    {
+      "id": "SRC-00062",
+      "name": "Kennisnet: Dienst Verwerkersovereenkomsten via eHerkenning",
+      "referenceKeys": [
+        "https://www.kennisnet.nl/diensten/dienst-verwerkersovereenkomsten/",
+        "https://www.kennisnet.nl/diensten/dienst-verwerkersovereenkomsten/inloggen/",
+        "https://dv.kennisnet.nl/"
+      ],
+      "owner": "",
+      "version": "",
+      "rightsStatus": "Onbekend",
+      "rightsBasis": "",
+      "allowedUse": "",
+      "scope": "",
+      "retention": "",
+      "approvalStatus": "Nog te beoordelen",
+      "approvedBy": "",
+      "approvedAt": "",
+      "approvalEvidence": "",
+      "nextReviewAt": "",
+      "provenance": {
+        "classification": "Openbare leveranciersinformatie / procesbron",
+        "asOf": "2026-11-23",
+        "note": "Beschikbaarheid en proces beschreven; schooltoepassing en gebruiksrecht niet formeel beoordeeld."
+      }
+    },
+    {
+      "id": "SRC-00063",
+      "name": "Privacyconvenant onderwijs: modelovereenkomst en bestuurlijke verantwoordelijkheid",
+      "referenceKeys": [
+        "https://www.privacyconvenant.nl/veelgestelde-vragen/"
+      ],
+      "owner": "",
+      "version": "",
+      "rightsStatus": "Onbekend",
+      "rightsBasis": "",
+      "allowedUse": "",
+      "scope": "",
+      "retention": "",
+      "approvalStatus": "Nog te beoordelen",
+      "approvedBy": "",
+      "approvedAt": "",
+      "approvalEvidence": "",
+      "nextReviewAt": "",
+      "provenance": {
+        "classification": "Openbare leveranciersinformatie / procesbron",
+        "asOf": "2026-11-23",
+        "note": "Beschikbaarheid en proces beschreven; schooltoepassing en gebruiksrecht niet formeel beoordeeld."
       }
     }
   ]
