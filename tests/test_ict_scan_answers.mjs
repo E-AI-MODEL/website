@@ -126,11 +126,16 @@ test('LessonUp-telling is geen totaal van veertig schoolbrede licentiecontrolepu
   assert.ok(output.records.some(x=>x.id==='APP-008'));
 });
 
-test('M365-leerlingvraag noemt geen ongecontroleerde tenanttoegang',()=>{
+test('M365-leerlingvraag volgt de getrapte index zonder tenanttoegang te verzinnen',()=>{
+  const byId=new Map(main.apps.map(x=>[x.id,x]));
+  const children=new Set(['APP-034',...main.apps.filter(x=>(x.relations||[]).some(r=>r.targetType==='apps'&&r.targetId==='APP-034'&&r.relationType==='part_of')).map(x=>x.id)]);
+  const relevant=main.parts.filter(x=>x.kind==='Microsoft 365-onderdeel'&&children.has(x.parent));
+  assert.ok(relevant.length>30,'De M365-productcatalogus omvat ook onderdelen van Teams en Copilot');
+  assert.ok(relevant.some(x=>x.name==='Forms'));
+  assert.ok(relevant.every(x=>x.accessStatus==='Niet onafhankelijk geverifieerd'));
   const output=ask('Welke apps van Microsoft 365 zijn beschikbaar voor leerlingen?');
   assert.equal(output.kind,'relations');
-  assert.match(output.answer,/Microsoft 365-onderdelen/i);
-  assert.match(output.answer,/niet.*bevestiging|niet vastgesteld|moeten afzonderlijk worden gecontroleerd/i);
+  assert.match(output.answer,/moeten afzonderlijk worden gecontroleerd/i);
 });
 test('Geen automatisch FAQ-antwoord bij onduidelijke vragen',()=>{
   const out=ask('heeft 3CX een actieve verwerkersovereenkomst en een DPIA');
