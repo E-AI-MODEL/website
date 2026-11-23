@@ -237,6 +237,8 @@ try {
   await page.locator('#cardReadView .card-read-tab[data-target="overview"]').click();
   assert.equal(await page.locator('#cardJsonPanel').isVisible(),false);
   await page.locator('#cardEditButton').click();
+  await page.locator('#cardGatePassword').fill('Emmauscollege');
+  await page.locator('.card-edit-gate [data-unlock]').click();
   assert.equal(await page.locator('#cardForm').isVisible(),true,'Bewerken hoort in dezelfde kaart');
   await page.locator('#cardCancelEdit').click();
   await page.locator('#cardEditorClose').click();
