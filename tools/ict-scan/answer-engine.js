@@ -63,7 +63,10 @@
   function describeApp(q,app,data){
     const own=app.name,base=[entry('apps',app)],src=recordSources([app]);
     const ix=data.index;
-    const related=type=>ix?ix.connected('apps',app.id,{type}).map(x=>x.other):[];
+    const related=type=>ix?ix.connected('apps',app.id,{type}).map(x=>x.other):
+      (type==='ai'?data.ai.filter(x=>x.parentId===app.id):
+       type==='connections'?data.connections.filter(x=>x.matchedId===app.id):
+       type==='parts'?data.parts.filter(x=>x.parent===app.id):[]);
     const ai=related('ai'),entra=related('connections');
     const parts=related('parts').filter(x=>x.kind==='Microsoft 365-onderdeel'||x.parent===app.id);
     if(/\b(wie|verantwoordelijk|beheerder|beheert|eigenaar|beheer)\b/.test(q)){
