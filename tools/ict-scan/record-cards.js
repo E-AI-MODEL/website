@@ -510,29 +510,6 @@
       const b=text('button','card-text-action','Open');b.type='button';b.addEventListener('click',()=>open(d.type,d.id));line.append(b);changes.append(line);
     }
   }
-  // UI-only guard: password in publicly served JavaScript is not authentication.
-  let editingUnlocked=false;
-  function requestEditingAccess(){
-    if(editingUnlocked)return Promise.resolve(true);
-    return new Promise(resolve=>{
-      const dialog=document.createElement('dialog');
-      dialog.className='card-edit-gate';
-      dialog.setAttribute('aria-labelledby','cardEditGateTitle');
-      dialog.innerHTML='<form method="dialog" class="card-edit-gate-form"><p class="card-gate-eyebrow">BEWERKMODUS</p><h2 id="cardEditGateTitle">Bewerken ontgrendelen</h2><p>Vul het wachtwoord in om gegevenskaarten te bewerken. Dit beschermt alleen de bediening, niet de brongegevens.</p><label for="cardGatePassword">Wachtwoord</label><input id="cardGatePassword" type="password" autocomplete="off" required><p class="card-gate-error" role="alert" hidden>Het wachtwoord klopt niet.</p><div class="card-gate-actions"><button type="button" data-cancel>Annuleren</button><button type="submit" data-unlock>Ontgrendelen</button></div></form>';
-      document.body.append(dialog);
-      const input=dialog.querySelector('input'),error=dialog.querySelector('.card-gate-error');
-      let finished=false;
-      const complete=ok=>{if(finished)return;finished=true;if(ok)editingUnlocked=true;dialog.close();dialog.remove();resolve(ok);};
-      dialog.querySelector('[data-cancel]').addEventListener('click',()=>complete(false));
-      dialog.addEventListener('cancel',e=>{e.preventDefault();complete(false)});
-      dialog.querySelector('form').addEventListener('submit',e=>{
-        e.preventDefault();
-        if(input.value==='Emmauscollege'){complete(true);return;}
-        error.hidden=false;input.value='';input.focus();
-      });
-      dialog.showModal();input.focus();
-    });
-  }
   function focusEditField(field){
     if(!field)return;
     const target=[...$c('cardFormFields').querySelectorAll('[data-field]')].find(el=>el.dataset.field===field);
@@ -542,13 +519,13 @@
   async function startEdit(fieldName){
     if(!model.current)return;
     const r=record(model.current.type,model.current.id);if(!r)return;
-    if(!await requestEditingAccess())return;
+    if(!await window.EmmausEditGate?.request())return;
     const previous=model.drafts.get(key(model.current.type,model.current.id));
     model.original=copy(previous?previous.before:r);model.working=copy(r);model.editing=true;model.adding=!entry(model.current.type,model.current.id);
     model.editSourceScope=model.drafts.get(key(model.current.type,model.current.id))?.sourceScope??window.EmmausCardGitLogic.sourceScope(window.IctOrganisation.profile,state.sources);
     feedback('');showPane();focusEditField(typeof fieldName==='string'?fieldName:'');
   }
-  function open(type,id,edit=false,mode='context',fieldName=''){
+  async function open(type,id,edit=false,mode='context',fieldName=''){
     if($c('workspace').hidden)return;
     if(model.editing&&!confirm('Niet-bewaarde invoer verlaten?'))return;
     const spec=specFor(type);
@@ -558,10 +535,10 @@
     $c('cardEditor').hidden=false;$c('cardScrim').hidden=false;document.body.classList.add('record-card-open');
     model.current={type,id};model.editing=false;model.working=null;model.adding=false;
     $c('cardTypeFilter').value=type;$c('cardSearch').value='';
-    showList();showPane();if(edit)void startEdit(fieldName);
+    showList();showPane();if(edit)await startEdit(fieldName);
   }
   async function create(){
-    if(!await requestEditingAccess())return;
+    if(!await window.EmmausEditGate?.request())return;
     if(model.editing&&!confirm('Niet-bewaarde invoer verlaten?'))return;
     if(!state.ready){feedback('Laad eerst de brongegevens vanuit GitHub voordat je een nieuwe kaart maakt.',true);return;}
     const type=$c('cardTypeFilter').value,spec=specFor(type),id=nextId(spec);
