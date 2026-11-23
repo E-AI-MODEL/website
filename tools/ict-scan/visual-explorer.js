@@ -307,7 +307,13 @@
       {key:'part',title:'Technische registraties',entries:array(state.parts).filter(x=>x.parent===app.id),view:''},
       {key:'ai',title:'Beschreven AI-functies',entries:array(state.ai).filter(x=>x.parentId===app.id),view:'ai'},
       {key:'entra',title:'Mogelijke Entra-matches',entries:array(state.connections).filter(x=>x.matchedId===app.id),view:'connections'},
-      {key:'recorded',title:'Beoordeelde verbanden',entries:recordedConnections(app),view:''},
+      {key:'recorded',title:'Vastgelegde verbanden',entries:recordedConnections(app),view:''},
+      {key:'hardware',title:'Apparatuur en beheer',entries:(app.hardwareLinks||[]).map(h=>({
+        id:h.id,name:h.name,description:(h.owner||'Verantwoordelijke onbekend')+' · '+(h.status||'Nog te controleren')+' · '+(h.note||'')+' · Bron: '+(h.evidence||'Bron ontbreekt')
+      })),view:''},
+      {key:'services',title:'Microsoft 365-onderdelen',entries:(app.serviceLinks||[]).map(h=>({
+        id:h.id,name:h.name,description:(h.status||'Nog te controleren')+' · '+(h.note||'')+' · Bron: '+(h.evidence||'Bron ontbreekt')
+      })),view:''},
       {key:'legal',title:'Gekoppelde normen en wetten',entries:applicableRules(app),view:''}
     ].filter(g=>g.entries.length>0);
   }
