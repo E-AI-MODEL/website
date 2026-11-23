@@ -43,7 +43,7 @@
       if(hay.includes(' '+name+' '))hits.push({app,score:name.length+20});
     }
     if(!hits.length){
-      const aliases=[['microsoft 365','office 365|m365|ms 365'],['canon uniflow','uniflow|canon printer'],['3cx','telefooncentrale 3cx']];
+      const aliases=[['microsoft 365','office 365|m365|ms 365'],['canon uniflow','uniflow|canon printer'],['3cx','telefooncentrale 3cx'],['teams for education','klasteams|klas teams|class teams|teams klas|klasteam']];
       for(const [name,forms] of aliases){
         if(forms.split('|').some(x=>hay.includes(' '+x+' '))){
           const app=apps.find(x=>norm(x.name)===name);
@@ -79,7 +79,9 @@
       return result('field',candidateAnswer(app.owner,'Bij '+own+' staat als verantwoordelijke: ','Voor '+own+' is de verantwoordelijke nog niet vastgesteld in de inventarisatie.'),base,unknown(app.owner)?'Niet vastgesteld':'Geregistreerd',src);
     }
     if(/\b(verwerkersovereenkomst|verwerkerscontract|dpa|verwerker)\b/.test(q)){
-      return result('field',candidateAnswer(app.processorAgreement,'Bij '+own+' staat over de verwerkersovereenkomst: ','Voor '+own+' is de status van de verwerkersovereenkomst nog niet vastgesteld.'),base,unknown(app.processorAgreement)?'Niet vastgesteld':'Geregistreerd',src);
+      const detail=candidateAnswer(app.processorAgreement,'Bij '+own+' staat over de verwerkersovereenkomst: ','Voor '+own+' is de status van de verwerkersovereenkomst nog niet vastgesteld.');
+      const route=' Voor deelnemende leveranciers kun je via https://dv.kennisnet.nl/ met eHerkenning de overeenkomst en bijlagen beoordelen en door een bevoegd ondertekenaar laten ondertekenen. Beoordelen en ondertekenen hebben verschillende eHerkenning-machtigingen. Bij andere leveranciers, waaronder Microsoft, moet de toepasselijke overeenkomst apart worden gecontroleerd. Dit is geen bevestiging van een ondertekende overeenkomst.';
+      return result('field',detail+route,base,unknown(app.processorAgreement)?'Niet vastgesteld':'Geregistreerde contractstatus',src);
     }
     if(/\b(dpia|gegevensbeschermingseffectbeoordeling)\b/.test(q)){
       return result('field',candidateAnswer(app.dpiaStatus,'Bij '+own+' is de geregistreerde DPIA-status: ','Voor '+own+' is de DPIA-status nog niet vastgesteld. Dat betekent niet automatisch dat een DPIA vereist of afgerond is.'),base,unknown(app.dpiaStatus)?'Niet vastgesteld':'Geregistreerd',src);
@@ -107,6 +109,15 @@
           'Mogelijke verbindingen',src);
       }
       return result('field',candidateAnswer(app.links,'Bij '+own+' staat over koppelingen: ','Voor '+own+' is de feitelijke gegevensuitwisseling nog niet vastgesteld.'),base,unknown(app.links)?'Niet vastgesteld':'Geregistreerd',src);
+    }
+    if(app.defaultPolicy&&/\b(standaard|default|defaults|defaultsettings|defaultinstellingen|standaardinstellingen|a3|a5)\b/.test(q)){
+      const policy=app.defaultPolicy;
+      const audience=/\b(leerling|leerlingen|student|studenten)\b/.test(q)?'leerlingen':/\b(docent|docenten|medewerker|medewerkers)\b/.test(q)?'medewerkers':'beide doelgroepen';
+      const described=audience==='leerlingen'?policy.students:
+        audience==='medewerkers'?policy.staff:policy.staff+' Voor leerlingen: '+policy.students;
+      return result('field','Volgens de Microsoft Education-standaard voor '+own+': '+described+
+        ' '+(policy.condition||'')+' De beschrijving is een leveranciersuitgangspunt en geen controle van de schooltenant of individuele licentietoewijzing.',
+        base,'Leveranciersstandaard; schooltenant niet gecontroleerd',src);
     }
     if(app.id==='APP-034'&&/\b(welke|wat|overzicht|beschikbaar|toegang)\b/.test(q)&&
       /\b(apps|applicaties|diensten|onderdelen|modules|producten|software|mogelijkheden|leerlingen|docenten|medewerkers)\b/.test(q)&&
