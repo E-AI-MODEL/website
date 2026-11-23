@@ -196,6 +196,36 @@ test('Geen automatisch FAQ-antwoord bij onduidelijke vragen',()=>{
   const nonsense=ask('xyzksdt');
   assert.equal(nonsense.kind,'none');
 });
+test('Standaard Microsoft 365-instellingen blijven onderscheiden van tenanttoegang',()=>{
+  const microsoft=main.apps.find(x=>x.id==='APP-034');
+  const teams=main.apps.find(x=>x.id==='APP-010');
+  const copilot=main.parts.find(x=>x.id==='M365-COPCHAT');
+  const classAssignments=main.parts.find(x=>x.id==='M365-ASSIGN');
+  assert.ok(microsoft.defaultPolicy.staff.includes('A5'));
+  assert.ok(microsoft.defaultPolicy.students.includes('A3'));
+  assert.ok(teams.defaultPolicy.students.includes('Leerling'));
+  assert.match(classAssignments.defaultPolicy.classTeams,/klasTeam/i);
+  assert.match(copilot.defaultPolicy.students,/13-17 jaar standaard uit/);
+  assert.ok(main.parts.filter(x=>x.kind==='Microsoft 365-onderdeel').every(x=>
+    x.defaultPolicy&&x.defaultPolicy.verifiedInTenant===false));
+  const studentAnswer=ask('Wat zijn de standaardinstellingen van Microsoft 365 voor leerlingen?');
+  assert.equal(studentAnswer.kind,'field');
+  assert.match(studentAnswer.answer,/A3-leerlingen/);
+  assert.match(studentAnswer.answer,/geen controle van de schooltenant/i);
+  const classAnswer=ask('Wat zijn de defaultsettings van klasTeams?');
+  assert.equal(classAnswer.kind,'field');
+  assert.match(classAnswer.answer,/klasTeam/i);
+  const question=ask('Hoe beoordelen en ondertekenen we verwerkersovereenkomsten via eHerkenning?');
+  assert.equal(question.kind,'faq');
+  assert.ok(question.records.some(x=>x.id==='FAQ-017'));
+});
+test('Verwerkersovereenkomst blijft onbekend totdat bevoegde ondertekening is vastgelegd',()=>{
+  const response=ask('Heeft 3CX een verwerkersovereenkomst?');
+  assert.equal(response.status,'Niet vastgesteld');
+  assert.match(response.answer,/dv.kennisnet.nl/);
+  assert.match(response.answer,/verschillende eHerkenning-machtigingen/);
+  assert.match(response.answer,/geen bevestiging van een ondertekende overeenkomst/);
+});
 test('FAQ-cards zijn uniek, brongebonden en niet bestuurlijk goedgekeurd',()=>{
   assert.equal(faq.schema,'eai-school-ict-v1');
   assert.equal(faq.faqs.length,17);
