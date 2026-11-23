@@ -86,7 +86,7 @@ test('FAQ-antwoord aanpassen behoudt vaste ID, bronverwijzing en wijzigingslog',
   assert.match(after.answer,/Aanvullend gecontroleerd/);
   assert.equal(after.auditTrail.length,1);
   assert.equal(after.auditTrail[0].actor,'faq-reviewer');
-  assert.equal(all['2026-applicatielandschap.json'].apps.length,61);
+  assert.equal(all['2026-applicatielandschap.json'].apps.length,69);
 });
 
 test('Nieuwe kaart wijzigt alleen het juiste register en de telling',()=>{
@@ -94,8 +94,8 @@ test('Nieuwe kaart wijzigt alleen het juiste register en de telling',()=>{
   const entry={id:'APP-999',name:'Nieuwe testtoepassing',description:'Voorbeeldregistratie',relations:[],frameworkLinks:[],sources:[]};
   const newItem={sourceScope,type:'apps',id:entry.id,before:null,after:entry,changed:['name','description'],reason:'Nieuwe registratie uit handmatige inventarisatie'};
   logic.applyDrafts(all,[newItem],'reviewer','2026-11-20T15:00:00Z');
-  assert.equal(all['2026-applicatielandschap.json'].apps.length,62);
-  assert.equal(all['2026-applicatielandschap.json'].metadata.counts.apps,62);
+  assert.equal(all['2026-applicatielandschap.json'].apps.length,70);
+  assert.equal(all['2026-applicatielandschap.json'].metadata.counts.apps,70);
   assert.equal(all['2026-werkregister.json'].workActions.length,13);
   assert.equal(all['2026-applicatielandschap.json'].apps.at(-1).auditTrail[0].action,'toegevoegd');
 });
