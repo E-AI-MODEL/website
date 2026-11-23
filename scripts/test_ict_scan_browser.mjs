@@ -91,7 +91,7 @@ try {
   catch(error){const state=await page.evaluate(()=>({status:document.getElementById('githubSyncStatus')?.textContent,view:document.getElementById('workspace')?.hidden,ready:typeof window.state==='object'?window.state.ready:null,button:document.getElementById('githubSyncStart')?.disabled}));throw Error('Synchronisatie voltooit niet: '+JSON.stringify({state,network,errors,reason:error.message}));}
   const message=await page.locator('#githubSyncStatus').textContent();
   assert.match(message,/geslaagd/i,'GitHub-sync mislukt: '+message);
-  await page.waitForFunction(()=>document.getElementById('statusText')?.textContent.includes('61 toepassingen'));
+  await page.waitForFunction(()=>document.getElementById('statusText')?.textContent.includes('69 toepassingen'));
   await page.locator('#viewStudio:not([hidden])').waitFor();
   assert.equal(await page.locator('#sectionTitle').textContent(),'Applicatielandschap');
   assert.equal(await page.locator('#evidencePath').textContent(),'Overzicht samenstellen');
@@ -130,7 +130,7 @@ try {
     }
   };
   if(width<700)await assertNoComponentOverlap('start');
-  assert.match(await page.locator('#dsCanvas .ds-numbers').textContent(),/61/);
+  assert.match(await page.locator('#dsCanvas .ds-numbers').textContent(),/69/);
   assert.match(await page.locator('#dsCanvas .ds-numbers').textContent(),/93/);
   await page.waitForFunction(()=>{
     const view=document.getElementById('viewStudio'),parts=[...document.querySelectorAll('#dsCanvas .ds-component')];
@@ -320,7 +320,7 @@ try {
   assert.deepEqual(errors,[],'JavaScript-fouten: '+errors.join(' / '));
   await page.close();
  }
- console.log('ICT-scan '+browserType.name()+': 61 toepassingen geladen, vaste schermen, menu, grafieken en desktop/mobiele sync gecontroleerd');
+ console.log('ICT-scan '+browserType.name()+': 69 toepassingen geladen, vaste schermen, menu, grafieken en desktop/mobiele sync gecontroleerd');
 }finally{
  await browser?.close();
  server.kill('SIGTERM');
