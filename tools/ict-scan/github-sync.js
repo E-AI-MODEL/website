@@ -135,7 +135,7 @@
       }
     }
     for(const [kind,n] of totals){
-      const actual=state[mapping[kind]].size;
+      const actual=state[mapping[kind]] instanceof Map?state[mapping[kind]].size:0;
       if(actual!==n)throw Error('Controle van '+kind+' mislukt: '+actual+' ingelezen, '+n+' verwacht. Vorige gegevens worden hersteld.');
     }
   }
@@ -156,7 +156,7 @@
     renderAll();
   }
   function resetWorkingState() {
-    for(const name of ['apps','ai','connections','checks','devices','hardwareGroups','parts','dpia','aiControls','policyDocs','signals','candidates','licenseReview','workActions','softwareReview','faqs','sourceRegister'])state[name].clear();
+    for(const name of ['apps','ai','connections','checks','devices','hardwareGroups','parts','dpia','aiControls','policyDocs','signals','candidates','licenseReview','workActions','softwareReview','faqs','sourceRegister']){if(state[name] instanceof Map)state[name].clear();else state[name]=new Map();}
     state.sources=[];state.docs=[];state.derived=[];state.ready=false;state.metadata=null;state.sourceRegisterLoaded=false;
   }
   async function verifyProfileDocuments(files,profile,cfg){
