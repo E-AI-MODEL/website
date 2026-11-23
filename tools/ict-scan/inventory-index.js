@@ -141,6 +141,25 @@
       return chosen.filter(x=>(!options.type||x.otherType===equalType(options.type))&&
         (!options.relationType||x.relationType===options.relationType));
     }
+    // Children are reached only through recorded part_of edges; the direction
+    // stays distinct from ordinary integrations and possible matches.
+    function descendants(type,id,options={}){
+      const result=[],seen=new Set([key(type,id)]),maxDepth=Math.min(5,Math.max(1,options.maxDepth||3));
+      const queue=[{type,id,depth:0}];
+      while(queue.length){
+        const current=queue.shift();
+        if(current.depth>=maxDepth)continue;
+        for(const link of connected(current.type,current.id,{direction:'incoming',relationType:'part_of'})){
+          if(!['apps','parts'].includes(link.otherType))continue;
+          const k=key(link.otherType,link.otherId);
+          if(seen.has(k))continue;
+          seen.add(k);
+          const item={type:link.otherType,id:link.otherId,record:link.other,depth:current.depth+1};
+          result.push(item);queue.push(item);
+        }
+      }
+      return result;
+    }
     function sourcesFor(type,id){
       const node=get(type,id);
       if(!node)return {matched:[],unmatched:[]};
@@ -175,7 +194,7 @@
     }
     return Object.freeze({
       version:VERSION,nodes,edges,errors,sourceCoverage,
-      get,records,connected,sourcesFor,
+      get,records,connected,descendants,sourcesFor,
       count:type=>records(type).length,
       countLinked:(type,id,targetType)=>new Set(connected(type,id,{type:targetType}).map(x=>x.otherId)).size
     });
