@@ -109,5 +109,5 @@ test('Manifest is gebonden aan de exacte bronbytes en bevat geen individuele acc
 });
 test('De systeemkaart toont licenties, werkacties en de bronstatus',()=>{
  const js=readFileSync('tools/ict-scan/dashboard-composer.js','utf8');
- for(const token of ['ds-recorded-links','IctInventoryIndex','index.connected','link.status','ds-relationship-detail','link.origin'])assert.ok(js.includes(token),token);
+ for(const token of ['ds-recorded-links','IctInventoryIndex','index.connected','link.status','ds-relationship-detail','x.origin'])assert.ok(js.includes(token),token);
 });
