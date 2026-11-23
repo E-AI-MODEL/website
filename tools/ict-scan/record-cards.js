@@ -167,7 +167,7 @@
     };
     const first=(important[spec.key]||['description','local','status','action','owner','priority'])
       .filter(k=>k in r && r[k]!==undefined && r[k]!==null && String(r[k]).trim());
-    const other=spec.fields.filter(k=>k!=='name'&&!first.includes(k)&&!['sourceDescription','sourceNotes','sourceCode','sourceInternal','supplierSource','source'].includes(k));
+    const other=spec.fields.filter(k=>k!=='name'&&!first.includes(k)&&!['aiRefs','sourceDescription','sourceNotes','sourceCode','sourceInternal','supplierSource','source'].includes(k));
     const nav=text('nav','card-read-tabs');nav.setAttribute('role','tablist');
     nav.setAttribute('aria-label','Inhoud van de registratie');
     const panes=new Map(),tabs=new Map();
@@ -187,6 +187,9 @@
     }
     const overview=panes.get('overview');
     lines(overview,'',first.map(k=>[label(k,r),r[k]]));
+    if(spec.key==='apps'){const ix=window.IctInventoryIndex?.build(state);
+      if(ix)lines(overview,'AI-functies',[['Beschreven functies',ix.connected('apps',r.id,{type:'ai'}).length]]);
+    }
     if(!overview.children.length)overview.append(text('p','card-empty','Voor deze registratie zijn nog geen hoofdgegevens ingevuld.'));
     const details=panes.get('details');
     lines(details,'',other.map(k=>[label(k,r),r[k]]));
