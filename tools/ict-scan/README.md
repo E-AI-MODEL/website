@@ -2,13 +2,26 @@
 
 De vier bronbestanden blijven de enige gegevensbasis. `inventory-index.js` maakt daaruit een tijdelijke index met getypeerde inkomende en uitgaande relaties. Kaarten, relatievisualisaties, dashboard en vraagantwoorden gebruiken dezelfde index. Geen vijfde bronbestand.
 
-Het applicatieregister telt 69 basisregels: 61 oorspronkelijke en acht nog te verifiëren aanvullingen. Verder zijn er 76 beschreven AI-functies, 93 Entra-registraties, 53 onderdelen (13 Entra-onderdelen en 40 Microsoft 365-productvermeldingen), 15 hardwaregroepen en vier afzonderlijke Entra-apparaatmetingen. Het bronnenregister telt 58 bronregistraties; die zijn nog niet formeel goedgekeurd.
+Het applicatieregister telt 69 basisregels: 61 oorspronkelijke en acht nog te verifiëren aanvullingen. Verder zijn er 76 beschreven AI-functies, 93 Entra-registraties, 53 onderdelen (13 Entra-onderdelen en 40 Microsoft 365-productvermeldingen), 15 hardwaregroepen en vier afzonderlijke Entra-apparaatmetingen. Het bronnenregister telt 63 bronregistraties; die zijn nog niet formeel goedgekeurd.
 
 Microsoft-productvermeldingen bewijzen geen daadwerkelijke activering, leerlingtoegang of betaalde licentie. De onderdelen hebben aparte velden voor doelgroep, licentieafhankelijkheid en tenantverificatie. Hardwaregroepen bevatten geen verzonnen aantallen. De eerdere `serviceLinks[]` en `hardwareLinks[]` zijn omgezet naar gewone product- en hardware-registraties met ID-koppelingen. Hun oorspronkelijke bewijs blijft bewaard.
 
 De publieke gegevenskaart heeft geen tab Herkomst. Excel-rijverwijzingen blijven beschikbaar voor de interne controle maar worden niet in de gewone kaart weergegeven. De vraagengine mag nooit een totaal licentiecontrolepunten verwarren met daadwerkelijk toegewezen licenties. Persoonsgebonden accountlijsten en financiële details zijn niet in de openbare GitHub-repo toegevoegd.
 
 Alle wijzigingen staan voorlopig alleen in concept-PR #376. De livewebsite gebruikt nog `main`. Samenvoegen pas na groene CI en browsertests.
+
+
+### Microsoft 365: A5/A3 en klasTeams (23 november 2026)
+
+De registratie gebruikt nu als *leveranciersuitgangspunt* Microsoft 365 Education A5 voor medewerkers en A3 voor leerlingen. Bij toewijzing van een passende licentie zijn de inbegrepen services volgens Microsoft normaal ingeschakeld. Beheerders kunnen services uitschakelen of beperken. De 40 bestaande Microsoft 365-onderdelen bevatten elk `defaultPolicy` met uitleg voor docenten, leerlingen en waar passend klasTeams. De UI toont die inhoud als gewone velden, niet als JSON. Deze informatie is geen controle van de werkelijke schooltenant, licentietoewijzing per gebruiker of specifieke groepsinstellingen.
+
+Een klasTeam heeft na inrichting onder meer Opdrachten, Klaswerk en Klasnotitieblok. Docenten en leerlingen hebben verschillende rollen. De Teams for Education Policy Wizard heeft aanbevolen onderwijsinstellingen, maar die staan niet automatisch ingesteld wanneer er nog geen wizard is uitgevoerd. Copilot Chat staat in een K-12-tenant voor leerlingen van 13 tot en met 17 standaard uit en is voor leerlingen onder de 13 niet beschikbaar. Leeftijdsgroepen, toestemming en tenantidentificatie bepalen de toegang. Bronregistraties SRC-00055 tot en met SRC-00061 beschrijven deze uitgangspunten.
+
+### Verwerkersovereenkomsten via eHerkenning
+
+De voorgeschreven route voor deelnemende leveranciers is de [Dienst Verwerkersovereenkomsten van Kennisnet](https://dv.kennisnet.nl/). Het schoolbestuur regelt eHerkenning-machtigingen: **Kennisnet beoordelen DV** of **Kennisnet beheren** voor het beoordelen en **Kennisnet ondertekenen** voor de bevoegde ondertekenaar. Controleer overeenkomst en bijlagen, leg opmerkingen vast en onderteken pas na inhoudelijke goedkeuring. Een vermelding in de dienst is geen bevestigde schoolovereenkomst. Bij leveranciers buiten de dienst, waaronder Microsoft, moet de toepasselijke afzonderlijke DPA worden beoordeeld. FAQ-017 geeft de route. SRC-00062 en SRC-00063 geven openbare informatie, geen toegangscontrole of ondertekenbewijs.
+
+De vier bestaande JSON-bestanden blijven de enige gegevensbasis. Er is geen apart standaardinstellingen- of contractregister aangemaakt. De goedkeuring van bronnen, verwerkersovereenkomsten en feitelijke tenantinstellingen is niet automatisch gewijzigd.
 
 # Applicatielandschap Emmauscollege
 
