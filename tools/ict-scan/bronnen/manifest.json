@@ -7,8 +7,8 @@
     "firstInventoryStarted": "2026-08-10",
     "compiledBy": "Hans Visser",
     "referencePeriod": "november 2026",
-    "evidenceCutoff": "2026-11-17",
-    "dataVersion": "2026-11-20-inventaris-v1",
+    "evidenceCutoff": "2026-11-23",
+    "dataVersion": "2026-11-23-relaties-v1",
     "faqDataVersion": "2026-11-20"
   },
   "dataFiles": [
@@ -27,7 +27,7 @@
         "devices": 4,
         "licenseReview": 40
       },
-      "sha": "153ce56af55558a93ac0db6a5150c981c65f7c37",
+      "sha": "762d89f63060517995ad04bca15cc74247505d5d",
       "verified": true
     },
     {
@@ -63,6 +63,7 @@
     "De basisinventaris telt 61 toepassingen en diensten; dit is geen bevestigd volledig aantal.",
     "76 aanvullende kandidaten tellen niet als bevestigd schoolgebruik.",
     "De ruwe Entra-roltoewijzingen en persoonlijke gegevens zijn niet gepubliceerd.",
-    "Het bronregister bevat 51 voorstelregels met 468 exact overgenomen verwijzingen. De vermelde SHA controleert de JSON-bestandsinhoud; bronhouderschap, rechten en goedkeuring zijn nog niet vastgesteld."
+    "Het bronregister bevat 51 voorstelregels met 468 exact overgenomen verwijzingen. De vermelde SHA controleert de JSON-bestandsinhoud; bronhouderschap, rechten en goedkeuring zijn nog niet vastgesteld.",
+    "54 aanvullende brongebonden relaties verbonden aan 32 bestaande applicaties. Status Geregistreerd/Vermoedelijk betekent geen bevestigd gebruik of actuele integratie; aantal basisregistraties blijft 61."
   ]
 }
